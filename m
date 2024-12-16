@@ -1,47 +1,47 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011061.outbound.protection.outlook.com [52.101.65.61])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011045.outbound.protection.outlook.com [52.101.65.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2966B1885A5
-	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 16:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF6914A0A8
+	for <imx@lists.linux.dev>; Mon, 16 Dec 2024 17:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734367750; cv=fail; b=BsxisUsKpi6YOK+pu67h3SdJPKBcfOvDK3KT8vZYeRUChsoG6QrzxGF/iCbvRq70iQ4J6Ai3QlhipCxp6vilskatfY1fII4tam18/0mpGz/CLE5gVN+O3ou66Za3requx315J5OBj3g34Hu2JHYd1YzgbNM10dYGXO8llUZEAJk=
+	t=1734368732; cv=fail; b=n2qGzU8VOtql0HciiPzV8bvw8Ps0EjEY368PI1ZFzwi3utTDUirqT1JEUcSUnoWxg8s+4nS1Oc1uy7GVjKZinItwYHlsj9wzzzqKzEpu3mV62x9FamdUFith5uuHXb8pVAVgoI8oYt6D5eifIrds7ZhZlIMmXwg60Q1uXqz8pjc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734367750; c=relaxed/simple;
-	bh=FqYxMyLQPHmqiYjJkVWIHK2PkgR4FLfq/UjZeyqKOuA=;
+	s=arc-20240116; t=1734368732; c=relaxed/simple;
+	bh=GFtHfR/3rAo2QCqfhYA2cxvKsN1WzQ90Zlau3znJWi0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=e7jLy7QxYwAOjkR6ER+RMXuqMtbn3gwdohPo99E5w6YUbJG8vTok+5adE4Ih7SC+vTOZANjetv5g7OiRVWjdtyGeSlR1tyuTqK7y4TMF1sp1r/i8WQV5J3ivFp9hVY1MwgzwW1K97/zyFryU57FOFltg6nElo2o2UHnniVyCtjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RjUV1aPu; arc=fail smtp.client-ip=52.101.65.61
+	 Content-Disposition:In-Reply-To:MIME-Version; b=K9KMZHxjWNGe8UA4LFrnoDg8DitNqBUHItblqU0bdlSj5xVMz2I/3e4Az+Qe4HS+U1kK/rQlBSSaae/J/HbdPms2964E1Nn1Bsd53SOmuRTZuRTcwFyugGHk/3o1zfDXUyWOBQlhiE1GwtpMeliS6cEh72yfaoqF8zMByaqOQ98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Xnavs/IW; arc=fail smtp.client-ip=52.101.65.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RjUV1aPu"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Xnavs/IW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=srvwy2+lcbliOsv7u+G+EKpDHQNZrInpODWM3hkZ1hG9bApMk7UG5DslaQw0cjmJNUR3d67pRAX5z1wSRnLM+lhNlSxZsjIxNmZon3L0JCvJkN58IS5j0e6lG8ajTb/7fLkNxd0RI7DGiAGGKe9wQBIitQ0fMyPclwrF09UflMdgXIyhcrmTxIF9LJr5HYCNI8zic8bWkeQLV6A9GD33VhYKeMzgL8SeTBnf9CzDXIhzK2jR3072QI2aevdU/0G8UgB7jKMa+/SD8QoGx+3YHxLCqQyT8Qbse0m9F6ApNeCCc7Y1ubIxFi7i0kh1VsRr8uC5bKwMJOOdwNo4Jhg3HQ==
+ b=s6zMjGb5k1n6CIthw8pDOt0j8uXcJvhO0O8apjMdJ1HRajnjpcX5DjNu2b/+hLNVT0uiXswigLPhNPKwRxRyaJCC1dygXBcUCmc+Wb7AhzWXWgVsx2ADEpDhXvjeAoCcjtky2yU0pqOZt+0IQGfeVIykUH6QkDAO/vLFRgHxUbgNJIwWASt8GrnlE8V1LTbYCTZjcNw/2zliuFCA3xUXYN5S2ic69sLaYHP742yF3UPBpQiNQ/0/iB4zUjulEF1hj1WtADJKUgqRvEq2uUQMAiX48v0NK7S4BbiOfimqdQo3jQgzT5ZqdP3sbfh3BGpzhP/QqyWKx7Lr7cP96XtuRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4HgoCuy2agtPfX0MqdS91ayxtzRPRKXnqXwvKH4IWX0=;
- b=srr2X2lI+f1hYJM0t4SKnYTC3EfpWLVViJwhszF2hsYh5xEIQPwbLEGLpJL2mQeA/Zsz7QWY0vabaBJOhtOLEZqr9dvSVYLnyydeuAiJ0NJ9M6OJtaVgo3GDDWDe5oju8V1Hh00anb2Pp1OIy5TsmPvbEAmG4HgZ7cb7u3VMB6IBhEtpsK3vNNyfZ2J2+wX3W8/ftTu/DQCs2a5gfpHWqQAv6ehKat3lJOWB56Mq8qGBEqHIDxQUzki135OZtAqoFVJx9aP6NLyAJKo1dAoWInRXe+/T9oMOkcbJTgSKskofrkFDphk9BTcfHUm5O1OfkXVDGmVPSgwF/d2GvrsYEw==
+ bh=p/wMXGWT5zV9EdCBDfgLyDiiqSUR6SKKO/j7KI7ucXg=;
+ b=UnOZ/urrvDLVjJwurlZ8mIG20BQU5+U/MIDu4vL7pRFcPIEaIvMwp5V9Rc4YwPHWOT+h1TRzb5QsBi5WvneIOJlLEvob403MyOHQvftnu72wD3Xlet+2rKsiTt11TAcnRh/GTeStmyI1hvMkT2j/c+C2NzV8xocgoPmWkR13uqQdDjR6h1r2baPZHZOG8zwyGHGl1dQzZmBfg75p+FtL72+pGYpUsVZfocXxZvoucB+C86I83YoJDmKyHFQK5Md1NWciAkbU3RfqVL1qxnUeBPMiZ+KXwnPtA/KH4f6+GUDCI0nD5rU+xDo3JqbO97Jo3mFSqHZCj2y88hO0LkM8Zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4HgoCuy2agtPfX0MqdS91ayxtzRPRKXnqXwvKH4IWX0=;
- b=RjUV1aPu+ie5L4nMRJ1E6jGpYeCLHdzjAg3x7AgPwnH5Vh5GE4c6Lyiqq+YryWZGxk+iPmCm694xlPIbdUQj/Ece1a+Gz9gQXcZrfQQ7vYxPAFzmkvbvZU1YjbTsmxISlLoQFxHpHdrMWENdxzAnKlevVexCE6tBc0JToE89me54Ue5wwggoOA0oT2TnfGrG5Le37UcnYlVnim4w31lPaDfDzoHh92ju4og58GT0SkiX4IB/fUht6J9jOs/H2pea+KtQdOGhkcfFEX8Ll25kcA/JW7iWzht4+uthS6c68Fp/YUISsSE9xNBkAwh5OYmsjCHcPCLHOWf+Cil6N4T5lA==
+ bh=p/wMXGWT5zV9EdCBDfgLyDiiqSUR6SKKO/j7KI7ucXg=;
+ b=Xnavs/IWzXGmXm4DWN40ZUr9vdYlhFFIdxoj3gTrNLza9h0+IDEwpRh93p2VF7/Nc09s159sWIy7tlO0v2OcPU7m4Z796a7tUy6b24cR6S2uMjF9taqh2Yaqa3I1IQ6CIYSsV7ehUskOhpMw7br/HPA4FynqUfBAR7U7CUDcGFWO8h52IVNZyuOyFaAKZjrm4aYZ0dXXb0sxoVhmvza3bVG/AA7pzbxxP3yYygaQ8RiPGQwBnPIILXMqq8RX6+zrgg8m3DkjwXyxRXwpKEhyAX0+RMxXyi19zxP5CifgfEsldWXMLDFwXUyBFJLALbLOWCOtNx7ZcVBmG2gx/Kf+Ew==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10625.eurprd04.prod.outlook.com (2603:10a6:102:48a::20) with
+ by AM9PR04MB8438.eurprd04.prod.outlook.com (2603:10a6:20b:411::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Mon, 16 Dec
- 2024 16:49:05 +0000
+ 2024 17:05:26 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8251.008; Mon, 16 Dec 2024
- 16:49:05 +0000
-Date: Mon, 16 Dec 2024 11:48:57 -0500
+ 17:05:26 +0000
+Date: Mon, 16 Dec 2024 12:05:18 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -56,15 +56,15 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
 	linux-sound@vger.kernel.org, imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] ASoC: SOF: imx: add driver for imx95
-Message-ID: <Z2BZ+WUY6ecIwhEt@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v3 5/5] arm64: dts: imx: add imx95 dts for sof
+Message-ID: <Z2Bdzr4/hs4b+s83@lizhi-Precision-Tower-5810>
 References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
- <20241216145039.3074-5-laurentiumihalcea111@gmail.com>
+ <20241216145039.3074-6-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241216145039.3074-5-laurentiumihalcea111@gmail.com>
-X-ClientProxiedBy: SJ0PR05CA0007.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20241216145039.3074-6-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: SJ0PR03CA0332.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,540 +73,195 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10625:EE_
-X-MS-Office365-Filtering-Correlation-Id: d58dddb5-2abf-460a-b1a0-08dd1df18d65
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8438:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2af40392-016c-431f-5963-08dd1df3d64f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TF7S/Ych+EQ3Zk6+XDy3Nc81Hfsuvl0HPq1dHTsAE8dltqW45bQpGWmSTNTD?=
- =?us-ascii?Q?F8Pust/SjO7/hVsBwLBYnzGcsrbVFtzx/WxQQj/z9qo4JLX2J8CW3bgF6X8G?=
- =?us-ascii?Q?9CnV4oeZOcT5gfy5XYbKYcuxSAF+2Pbjaw8A/pJPVTQYlu8zAb/yGoLJZPWl?=
- =?us-ascii?Q?RHabgjCMmyevCbYZFeOZaCz5NV/1MLUKR1oJS+3lj/xx7waks5rI6G4Y1sqW?=
- =?us-ascii?Q?AXUtdPO0AhHzRgQn4oC47+2iYWlhjdUX8JKhQRO5r40c5YUUX5UcrdMolfz1?=
- =?us-ascii?Q?AO3bdkBxwKDwt4Picfbtf9B8SWFwfGvrSXZLnicEApjK9R2tHinpYJBhUMGd?=
- =?us-ascii?Q?IgVFowxx9K9lYn7yUcoiwEnF8adxIRA79eZIgiQ3SxJOq8IkYjNtkGd6Yqve?=
- =?us-ascii?Q?8X3jW7f54pKdn+V9fwUGoAHVy9VHbuMZIcQNl8JBAeiTGhvGCm2yw2qUgV0L?=
- =?us-ascii?Q?OkZFX+uRvKbREK8SlOhb3EZUMQygxXgcyAbz1SJiZp3tVMKxv+KBTidSIl9z?=
- =?us-ascii?Q?YjYXO1wAFmWiMbUB4agNlwUC6IuR0q4tpsuYXbO9o08XjcIly947yWWk6+5M?=
- =?us-ascii?Q?rcRxq1cCWPHiq2PEsmrBhvpXvMX33/9S+BGfvd3KCdLQLSJL2872kt61tCBn?=
- =?us-ascii?Q?VNptv3/8gVIS95xARNGeiXNxSNWbjcGP03uwxOAozqzJhZ4wDSxGT3e9H51d?=
- =?us-ascii?Q?jLUQ960pWgiA5z7O1e+Q3uggrqVfNbETicMQH4E/hcsa/c/uOUSRdJIBT9JG?=
- =?us-ascii?Q?wSJnnVRwZfz3UFICDSx64M7JXl1TmRrFx1Ke2Nj5y5PUIzLhztVx3jivGdzz?=
- =?us-ascii?Q?w0Z5qzYmm31OeARc9HJZiarw6kNLRpgWhtNcogJOBxYn0iVDTEmSZ8RLFmIr?=
- =?us-ascii?Q?ap3W59S0KjauL9VcL6gsyCbgY9vWhCzunE1SYZ9q5qTSG12iQNzx0S3DCSVa?=
- =?us-ascii?Q?wcHAHFQpKYQz1RQDFs6gR70F1Q6IE2Pv3KD6ZJX5LJV/V2KfDyMoX1nMlHdj?=
- =?us-ascii?Q?7Qy+Q/Lm3ITT36JjGy1ubGzkvu7KABQL08jYyPkRoWXkSIjfbPZWAsiScjHi?=
- =?us-ascii?Q?aVTRdIOCNAIUYNI97ki1OphjzJuFwfZKXgSB4wWvwyKNDPtZqTLvWXkz2Fzy?=
- =?us-ascii?Q?DLS4S3Gh5cfkaXB8dOmOHfXvI+Qbrfqs7yyvOKec5DAPsrH81ZvWiEn2d/JU?=
- =?us-ascii?Q?7K0a8ENdBz8S5hTqTtgnKsyBlvuxkgxj+RyP3mbd5nP16/7H3d/cJBKXd6sQ?=
- =?us-ascii?Q?yx4CUmw1OkUSVubhNHtoT/c+1X0rlP/+d5/JyxfDZaRoQ1fXnJQbGzTOgjLx?=
- =?us-ascii?Q?gD8BBtMAn5egXnDzqGvstgBs7CVQyFmSClNziuVll7wieQpcqN/LffysdTYP?=
- =?us-ascii?Q?5RiJyr15ScP4g9O3CQedb3FLnPZlOoc5MjxyfaCXIDttLHFnlq0xVVIykUBx?=
- =?us-ascii?Q?uilx/7xu5QbVEin4vt833tWSl2pJBhTS?=
+	=?us-ascii?Q?RYRj2JKBzEH4bOvjqo4GTfrixF+wHURabFpYjQrfVMO0aSrKSNGo4aFVfaKg?=
+ =?us-ascii?Q?WXePoINhZ8Qy7IRPhPjacs7GdSwNpm1mYSeDc0f2in0wFhBDcEANWeMHKFor?=
+ =?us-ascii?Q?2Y+fbExUuHORv6yfle1jT5Gs+D8jS14wLlbDAYR/BSrpqiAQW1+JuniqqoIi?=
+ =?us-ascii?Q?EpoCEm6GJvKSE+r44pE+AmLl1cNFmZ1xT+/AvsHgF7kE0t7VJ2Y/UAfD2bn8?=
+ =?us-ascii?Q?8rEt7GjfkLysmUCFR8CzUzkR6FErbTkLwgyq5rouyQCH35DwDvt0ozlrWZWM?=
+ =?us-ascii?Q?FRzg9sToIls87mEfu+ynxA6LZv61x0owr5QBkZD8004+9hsf3tDcnbqgPMjj?=
+ =?us-ascii?Q?ueC/kv9kathXjCnPsok3aD5WnDQ64MzZDdTikZhN/UmLExvnbJ3il3wWFNKG?=
+ =?us-ascii?Q?CGfH5E/WrO38ylJBuZ/TxGaHchQ0//o7zPnmdsU0j3CCOqDEkZK2g+3C2vwy?=
+ =?us-ascii?Q?aA3Ci7vgu+qimew33MnD8EzPYcK1G7noM3KLeD9q5OK4awIwkDIqoHEy9AqZ?=
+ =?us-ascii?Q?h+YxboxJ+IwcFspJ1F/elHaLI/1xmqNjV3obJ61sZD9SpDwqjih0Ei2/1BkZ?=
+ =?us-ascii?Q?w6Lsdtu/tpnY6jybwIBXUE3pkiPoYqlTQR/gnQnnD08UA1kxUBGYTg7B6hNN?=
+ =?us-ascii?Q?vR7NjDUF+oAR3Yxzi+VdYUY8E/oiqeDKwiCuqaJup/ji0ODHQ+XEPEuQtcy8?=
+ =?us-ascii?Q?302NC9btvdWIlU9wdyqxGC3uteMPSZJwn4YUl16a5n1u+FZzduawUr0u8CHb?=
+ =?us-ascii?Q?SElmjzwa3oquf71VS/62nv+X3PBv9m61O37Jtrs2X48GvK+c8JtcDIUbbn/V?=
+ =?us-ascii?Q?3xiPRAq6cKLJEt1VLoRoOkGsgEqtVN7koIIEraNzy7qEVdqGqRhFKQYbmPRI?=
+ =?us-ascii?Q?GbcJRP8MW0lvBQRQrOIhqRmZrW+P9jdYTYf5g1gSPkvJHBc4Br+uILtD9+Yr?=
+ =?us-ascii?Q?jdkaMLO7mOprKDvCB53pWRjqGWOrc4xaYhXIrwwMb5vACnKhkPjTpCAFHeu5?=
+ =?us-ascii?Q?VDRhWvD2Th8gjhvspiKJ89kgwsRubkrGG4GPfoWmnd2prfJFoxcNAhBZflOO?=
+ =?us-ascii?Q?bJliU9am5F3HZqkpqUl6Bi9KukfQAkkTdnXsj+BD0BhHoErKvtXqV0lzeO9W?=
+ =?us-ascii?Q?/PuYIAC8bNi5nAJumg6KHOn/jIJTvXNnEo41j+JbCmjyaPM9hUr2g9GtG9Qe?=
+ =?us-ascii?Q?o1ADDU0uUtG9xFfwcYmuTNqpKDaCVBMwVeQkxKLvritkm0gwW8vLOgAO6VY5?=
+ =?us-ascii?Q?ABuqUweDmOsF7sXDnrNjPpBFZJg+T+n48TQ7wXx1RZ1ulKfgSkChpjhHA2EW?=
+ =?us-ascii?Q?YGmyhTvO/dJfZHkCMxBfZG3R8w/AWnXztotRs28LOSqgrEmeSPuvKedFCDjS?=
+ =?us-ascii?Q?HzODReh2IKNzppnglEtNkNrmeMK7GmiiS7DStH4oZ4GZBzBeD2D9MXXfVLku?=
+ =?us-ascii?Q?Ln6ykn745hlHUJtKmuYRcz71Hsr4g+hy?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ioW/xapzpMgCqKt8p4ecnyCj1i219yI7y0ad4qwk4zScSqQxigcOruoNmnyd?=
- =?us-ascii?Q?gL3aWNM7WlRGNZFRkIz7/htJOeSF+knooK6eHmCAmk5CULYKdVMItBK9fe/o?=
- =?us-ascii?Q?0ubnjcVAlsjluTdiB8wiGuALCOafNXWTGeIOq8Cok/UwbDdVsz9oN7ZhF45o?=
- =?us-ascii?Q?Mu4E8J0MMZkS4/d8hA7rlH4iQ6fP3CZ5wQALIypw3adxUynvoN0es9ziJdoX?=
- =?us-ascii?Q?PEqdFyPuwP58rWHv82kpkOG3IkE27DTOHkDM2xFWbNmEMa5RquRQNxCfAV+y?=
- =?us-ascii?Q?DbuajUbiRYFkcqDfWpr2lT9/8zE6S58GGZRgI0L3lTiOTHcNWqS9cTX6Cu5t?=
- =?us-ascii?Q?3q52XrVzSJxZhI6uwxeE1qFsmm1aovNxcb7+vNMNtfqDGNFEkRZwMuULyfhA?=
- =?us-ascii?Q?b5p9sT5ft+CeMvzPrsB5dkAQ8Ed/5W7Fw+6zhoT+zNNWhadqN6NvTgvuu/AS?=
- =?us-ascii?Q?tAmJOVEsVWIcGh7gEzYs9URfrqhz88/siZ+ajV8ahty+6FJnK9+eVhMX5y4T?=
- =?us-ascii?Q?CGNGHHp3Kjsc3hJkmwOk+axhXeiJhb1WdiNg5laCUihVtFLf5oWS8u33a1Vn?=
- =?us-ascii?Q?rMWe5QYMCJxhuA/zwJM/oq5NK29yoyzPuJF7l1pEn++/pl1Jq8w1IkDXGRvW?=
- =?us-ascii?Q?JkcXmjnDXHhI0kPrxDSPh+HX277wSNpX5cmeFWCMot4wZFkXYhVuTWfBUKM7?=
- =?us-ascii?Q?ezhW6rHaWNvQbaktea2ytq8kaWwGlA145VgvUWbwNRjeOhsn5vdc0tLES+Hn?=
- =?us-ascii?Q?qTPlRBMHNqTQ0VzA3Jm5o5M3DFk/ot3BB/+y7ItmRWD9XwOl3weP2KgySQQp?=
- =?us-ascii?Q?VSPvyK2UhxV3BYay/0k1UdAYXYrlfdD/yJJf0lpu/EFKKp5oXoGOUx1ObBBr?=
- =?us-ascii?Q?LQAb4qNUQOkGbWodVRD/uGp1YFCd4oGv2OANdy0JSODGBO9i0P6ZV7hwXEiu?=
- =?us-ascii?Q?Utvm33wSBmORI9POxDWsdVaZ6K5c90lWy3RfyvnEeutdo9ArAz3rNdmLWivP?=
- =?us-ascii?Q?iEAUjjGFE2NO/csKlK3UP+u0BBosO6J53fbFGhL5Oy/4yGz/grwis3+wk0EB?=
- =?us-ascii?Q?LcbK03KERu7KbwVYA2WJvTM2k+YA2NNlQedU2XpJzd6PkYD8hYw1PAocl1gu?=
- =?us-ascii?Q?Pptc6pUyNb6OrcgnyxW18niVEdQlEZbBJBUkyTAdPdLRaFMw7tB+mLeweESq?=
- =?us-ascii?Q?JEq8iCRbdop6PCRcIA1/XP9hKD0RRYNjjT0T+McP3pt17+DqmnuowwyBPvNW?=
- =?us-ascii?Q?7OwtAE5HKvycdzbBgbzQayZP+y9gPbKhHPQVpaF0UMUiqDOlEurj9MhdY2Mc?=
- =?us-ascii?Q?AfxaXXTQv787cBTN96f3cPe+ad69xqpxBqh/NU1VOQNhhAi/bPiR0XHJvCeK?=
- =?us-ascii?Q?wZ3cfqUpPJQ/66CHQq4AWjMKblA+UbivlKyZE+F5y2xfolKBS4WqqWbDX6ve?=
- =?us-ascii?Q?HzYc0SPuHA8JWowWV7JreEMrN5C//4UTHwFb0pDco54n+L6pHHkml9DEuWwo?=
- =?us-ascii?Q?gh/8KjklnhPwwbYZ4U7zkHi00VcEXrJltSCHHtmSxdFrmgndJ4YFwcn2QoZ4?=
- =?us-ascii?Q?7m5KMxAX19MiIsoOHwtGsTme/ONBvoomiSfxvruZ?=
+	=?us-ascii?Q?Gu/0J9+NC1cf8d9bWoYcXM1nxCyThbBCcWVZPNlAOv6JF2SP6shiwUR43yoc?=
+ =?us-ascii?Q?UlAfOtEdL6gL/yQPjpMIbGZggJ3oz8BMd7R3ZVu7iwBkojdhcTOrAs3Z/J8M?=
+ =?us-ascii?Q?14MzKYhJ/xj4wQZgVrOgTZQLpu3t7qkH7lDUQTtPXax83pqkLBOJ2VuJ/Pu0?=
+ =?us-ascii?Q?LO4KrXM7Qt6Ti3XkCET7zL6kEmu8/6OkPtsWJk6v+W4wG4VXYqlU4JC9rcSH?=
+ =?us-ascii?Q?pQsNvirukfWoezV1uDrW0NXwkX29e/mpfqYVJLtvsJtnM5H2VzrF76e3/NTm?=
+ =?us-ascii?Q?sJp+TPFWCumw5BIfiwVp31R2WAl8X2OZc+okHVju2Fjzpwq3V7EH7J1f9afI?=
+ =?us-ascii?Q?Q+8St7OvVC5yHsO7ygWS3ve+AUUHzlKOSU4L7M7XkXsnH76UovWOCjVGz3sR?=
+ =?us-ascii?Q?hSi23r4BFZsg4qY2D3bJ3YebNA8VvAkEFNOSK9jnNobo+q3pW6CVrXhj0obm?=
+ =?us-ascii?Q?ee4+KM9uPnfYDlUzG7qk00TxctISXk21MrUjy65sN46fXUn6ybMflqqa7tG4?=
+ =?us-ascii?Q?T9vW5d1GFS8AqeVkNFvwsp+J0ifUxI02qqi+l+HvAqRqpgYgHGY+BVjaDIF0?=
+ =?us-ascii?Q?dWVZI0dcG5Avk7ftYIn/StRqhBR0sABKMSDNMZ7TEX/8hBupcTbl2tWNO52h?=
+ =?us-ascii?Q?tgq6gcmld9z4whl4Lh7Y2wRpVupUmN/aPhba0jqLulICeiJz+L3u0F55o7hh?=
+ =?us-ascii?Q?30P9hF3BCSfLsF2KfMMUFNJJY9MtU8s9MeMrLyWUhTkFcx3M7HCdcBNuCGhg?=
+ =?us-ascii?Q?/2ZU1n2Svb8v6ihh2Fddq1wdHTRuINybk0Y5KksKSactw4oQQlqnOK38/IJT?=
+ =?us-ascii?Q?K8216B9Dzn+/Qn+rLN0PvIGTdlz5xUpUw/kmb2APtzziqwjRn2QMaLLDkQYG?=
+ =?us-ascii?Q?+7vh3FDD67HtwyQ0X15gqqhvIB9rSq+TzEepWrvqdWlCS8me73Glh1mmzETA?=
+ =?us-ascii?Q?UsbBqjg5gwajE5EUzpNgZeEdAtW6HJDq/O6CwvSRt6r9gDpgFpknTRhR9Tb1?=
+ =?us-ascii?Q?/hhzcwylwEQqOQReKc4QP8Fj5Dpk4YpzAxg0hg1gN/PB9LM142ZFtV16sP/o?=
+ =?us-ascii?Q?hWaL4PZ5cXwgZMYXi9gePSKDOyphWYrJtOOzDTD3fG7RWivk6xS0gAm6r46V?=
+ =?us-ascii?Q?5FiUdyCpaUAB7V3I62r1aF7h1ENEdPnHCnU1JI3YJNte48/1fkB3oib0qIUE?=
+ =?us-ascii?Q?Qi5vDgNZl9pBA2m1OIrgG1u9bok8Elkwdcx4dd6ksSEewtRImOjSFujxX/ed?=
+ =?us-ascii?Q?9LxlOAIHrPQG7+LHOlKn8VDGWsWtnUGkv6aReLjHRovZ2tTRdnirUuCh8oYa?=
+ =?us-ascii?Q?CHsni9hjQPTUWLggX3q1kTVD6EziV8XA29k8oVfIwgRShpvKpm54cDbIqF8k?=
+ =?us-ascii?Q?ss7XszEBY5xB5N8KdwgOpBKzl+7uGfxGFc+vWaPMteq/1KKOwFXfqcRz5P3x?=
+ =?us-ascii?Q?HfNWJEDI8/0dI9OHX//V8j44lOeXRs6XaLwIv3Gsqi9JHDxxH0PhkVXhT+vF?=
+ =?us-ascii?Q?2YBuZs6VlI4qDaqaSWK9dAODQXngrl6OEfdG3xkc0Bu+2UzjYqMShdaEPNFx?=
+ =?us-ascii?Q?qHYvbtentJ0ZWQQvgyU=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d58dddb5-2abf-460a-b1a0-08dd1df18d65
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2af40392-016c-431f-5963-08dd1df3d64f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 16:49:05.5889
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 17:05:26.7610
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BhugRBNatlOFyCJlr4tZqTfbkM7WMoFQzz3XBXEjzU4lWOpVFUJunmtHHruiai92S9rLUi0LqQ5B5eKhcXnUng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10625
+X-MS-Exchange-CrossTenant-UserPrincipalName: TA9iV/CHzU/SKNMUnrt92+msBVl2ZTpiPFdV9c/CN8c6uftnbeYzTM2dkWvqbqmn4Qlgy23DMub5KdzemaS5gQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8438
 
-On Mon, Dec 16, 2024 at 09:50:38AM -0500, Laurentiu Mihalcea wrote:
+On Mon, Dec 16, 2024 at 09:50:39AM -0500, Laurentiu Mihalcea wrote:
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> Add SOF driver for imx95.
+> Add imx95 DTS for SOF usage.
 >
 > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  sound/soc/sof/imx/Kconfig  |   8 +
->  sound/soc/sof/imx/Makefile |   2 +
->  sound/soc/sof/imx/imx95.c  | 401 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 411 insertions(+)
->  create mode 100644 sound/soc/sof/imx/imx95.c
+>  arch/arm64/boot/dts/freescale/Makefile        |  1 +
+>  .../dts/freescale/imx95-19x19-evk-sof.dts     | 75 +++++++++++++++++++
+>  2 files changed, 76 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
 >
-> diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
-> index 4751b04d5e6f..51a70a193533 100644
-> --- a/sound/soc/sof/imx/Kconfig
-> +++ b/sound/soc/sof/imx/Kconfig
-> @@ -50,4 +50,12 @@ config SND_SOC_SOF_IMX8ULP
->  	  Say Y if you have such a device.
->  	  If unsure select "N".
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 839432153cc7..27f64e333e4b 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -282,6 +282,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
 >
-> +config SND_SOC_SOF_IMX95
-> +	tristate "SOF support for i.MX95"
-> +	depends on IMX_DSP
-> +	help
-> +	  This adds support for Sound Open Firmware for NXP i.MX95 platforms.
-> +	  Say Y if you have such a device.
-> +	  If unsure select "N".
-> +
->  endif ## SND_SOC_SOF_IMX_TOPLEVEL
-> diff --git a/sound/soc/sof/imx/Makefile b/sound/soc/sof/imx/Makefile
-> index be0bf0736dfa..715ac3798668 100644
-> --- a/sound/soc/sof/imx/Makefile
-> +++ b/sound/soc/sof/imx/Makefile
-> @@ -2,10 +2,12 @@
->  snd-sof-imx8-y := imx8.o
->  snd-sof-imx8m-y := imx8m.o
->  snd-sof-imx8ulp-y := imx8ulp.o
-> +snd-sof-imx95-y := imx95.o
+>  imx8mm-kontron-dl-dtbs			:= imx8mm-kontron-bl.dtb imx8mm-kontron-dl.dtbo
 >
->  snd-sof-imx-common-y := imx-common.o
->
->  obj-$(CONFIG_SND_SOC_SOF_IMX8) += snd-sof-imx8.o
->  obj-$(CONFIG_SND_SOC_SOF_IMX8M) += snd-sof-imx8m.o
->  obj-$(CONFIG_SND_SOC_SOF_IMX8ULP) += snd-sof-imx8ulp.o
-> +obj-$(CONFIG_SND_SOC_SOF_IMX95) += snd-sof-imx95.o
->  obj-$(CONFIG_SND_SOC_SOF_IMX_COMMON) += imx-common.o
-> diff --git a/sound/soc/sof/imx/imx95.c b/sound/soc/sof/imx/imx95.c
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
 > new file mode 100644
-> index 000000000000..5a0e44f5bd48
+> index 000000000000..8eef83d7bdd7
 > --- /dev/null
-> +++ b/sound/soc/sof/imx/imx95.c
-> @@ -0,0 +1,401 @@
-> +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
+> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
+> @@ -0,0 +1,75 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 > +/*
 > + * Copyright 2024 NXP
 > + */
 > +
-> +#include <linux/arm-smccc.h>
-> +#include <linux/clk.h>
-> +#include <linux/firmware/imx/dsp.h>
-> +#include <linux/module.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/of_reserved_mem.h>
-> +#include <sound/sof.h>
+> +/dts-v1/;
 > +
-> +#include "../sof-of-dev.h"
-> +#include "../ops.h"
+> +#include "imx95-19x19-evk.dts"
 > +
-> +#define IMX_SIP_SRC 0xC2000005
-> +#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
-> +
-> +#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
-> +
-> +#define IMX_SIP_LMM 0xC200000F
-> +#define IMX_SIP_LMM_BOOT 0x0
-> +#define IMX_SIP_LMM_SHUTDOWN 0x1
-> +
-> +#define IMX95_M7_LM_ID 0x1
-> +
-> +#define MBOX_DSPBOX_OFFSET 0x1000
-> +#define MBOX_WINDOW_OFFSET 0x6000000
-> +
-> +struct imx95_priv {
-> +	struct platform_device *ipc_dev;
-> +	struct imx_dsp_ipc *ipc_handle;
-> +	resource_size_t bootaddr;
-> +};
-> +
-> +static void imx95_ipc_handle_reply(struct imx_dsp_ipc *ipc)
-> +{
-> +	unsigned long flags;
-> +	struct snd_sof_dev *sdev = imx_dsp_get_data(ipc);
-> +
-> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
-> +	snd_sof_ipc_process_reply(sdev, 0);
-> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
-> +}
-> +
-> +static void imx95_ipc_handle_request(struct imx_dsp_ipc *ipc)
-> +{
-> +	snd_sof_ipc_msgs_rx(imx_dsp_get_data(ipc));
-> +}
-> +
-> +static struct imx_dsp_ops ipc_ops = {
-> +	.handle_reply = imx95_ipc_handle_reply,
-> +	.handle_request = imx95_ipc_handle_request,
-> +};
-> +
-> +static int imx95_disable_enable_core(bool enable)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	if (enable)
-> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT, IMX95_M7_LM_ID,
-> +			      0, 0, 0, 0, 0, &res);
-> +	else
-> +		arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN, IMX95_M7_LM_ID,
-> +			      0, 0, 0, 0, 0, &res);
-> +
-> +	return res.a0;
-> +}
-> +
-> +static int imx95_run(struct snd_sof_dev *sdev)
-> +{
-> +	return imx95_disable_enable_core(true);
-> +}
-> +
-> +static int imx95_send_msg(struct snd_sof_dev *sdev, struct snd_sof_ipc_msg *msg)
-> +{
-> +	struct imx95_priv *priv = sdev->pdata->hw_pdata;
-> +
-> +	sof_mailbox_write(sdev, sdev->host_box.offset,
-> +			  msg->msg_data, msg->msg_size);
-> +
-> +	imx_dsp_ring_doorbell(priv->ipc_handle, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx95_get_mailbox_offset(struct snd_sof_dev *sdev)
-> +{
-> +	return MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
-> +}
-> +
-> +static int imx95_get_bar_index(struct snd_sof_dev *sdev, u32 type)
-> +{
-> +	switch (type) {
-> +	case SOF_FW_BLK_TYPE_SRAM:
-> +		return type;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int imx95_get_window_offset(struct snd_sof_dev *sdev, u32 id)
-> +{
-> +	return MBOX_WINDOW_OFFSET;
-> +}
-> +
-> +static int imx95_set_power_state(struct snd_sof_dev *sdev,
-> +				 const struct sof_dsp_power_state *target_state)
-> +{
-> +	sdev->dsp_power_state = *target_state;
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx95_suspend_resume(struct snd_sof_dev *sdev, bool suspend)
-> +{
-> +	struct imx95_priv *priv;
-> +	int ret, i;
-> +
-> +	priv = sdev->pdata->hw_pdata;
-> +
-> +	if (suspend) {
-> +		ret = imx95_disable_enable_core(false);
-> +		if (ret) {
-> +			dev_err(sdev->dev, "failed to stop core\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < DSP_MU_CHAN_NUM; i++) {
-> +		if (suspend)
-> +			imx_dsp_free_channel(priv->ipc_handle, i);
-> +		else
-> +			imx_dsp_request_channel(priv->ipc_handle, i);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx95_runtime_resume(struct snd_sof_dev *sdev)
-> +{
-> +	int ret;
-> +	const struct sof_dsp_power_state target_state = {
-> +		.state = SOF_DSP_PM_D0,
-> +	};
-> +
-> +	ret = imx95_suspend_resume(sdev, false);
-> +	if (ret < 0) {
-> +		dev_err(sdev->dev, "failed to runtime resume: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
-> +}
-> +
-> +static int imx95_resume(struct snd_sof_dev *sdev)
-> +{
-> +	int ret;
-> +	const struct sof_dsp_power_state target_state = {
-> +		.state = SOF_DSP_PM_D0,
-> +	};
-> +
-> +	ret = imx95_suspend_resume(sdev, false);
-> +	if (ret < 0) {
-> +		dev_err(sdev->dev, "failed to resume: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	if (pm_runtime_suspended(sdev->dev)) {
-> +		pm_runtime_disable(sdev->dev);
-> +		pm_runtime_set_active(sdev->dev);
-> +		pm_runtime_mark_last_busy(sdev->dev);
-> +		pm_runtime_enable(sdev->dev);
-> +		pm_runtime_idle(sdev->dev);
-> +	}
-> +
-> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
-> +}
-> +
-> +static int imx95_runtime_suspend(struct snd_sof_dev *sdev)
-> +{
-> +	int ret;
-> +	const struct sof_dsp_power_state target_state = {
-> +		.state = SOF_DSP_PM_D3,
-> +	};
-> +
-> +	ret = imx95_suspend_resume(sdev, true);
-> +	if (ret < 0) {
-> +		dev_err(sdev->dev, "failed to runtime suspend: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return snd_sof_dsp_set_power_state(sdev, &target_state);
-> +}
-> +
-> +static int imx95_suspend(struct snd_sof_dev *sdev, unsigned int target_state)
-> +{
-> +	int ret;
-> +	const struct sof_dsp_power_state target_power_state = {
-> +		.state = target_state,
-> +	};
-> +
-> +	if (!pm_runtime_suspended(sdev->dev)) {
-> +		ret = imx95_suspend_resume(sdev, true);
-> +		if (ret < 0) {
-> +			dev_err(sdev->dev, "failed to suspend: %d\n", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return snd_sof_dsp_set_power_state(sdev, &target_power_state);
-> +}
-> +
-> +static struct snd_soc_dai_driver imx95_dai[] = {
-> +	{
-> +		.name = "sai3",
-> +		.playback = {
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +		},
-> +		.capture = {
-> +			.channels_min = 1,
-> +			.channels_max = 32,
-> +		},
-> +	},
-> +};
-> +
-> +static int imx95_probe(struct snd_sof_dev *sdev)
-> +{
-> +	struct platform_device *pdev;
-> +	struct imx95_priv *priv;
-> +	struct resource *res;
-> +	struct arm_smccc_res smc_ret;
-> +	int ret;
-> +
-> +	pdev = container_of(sdev->dev, struct platform_device, dev);
-> +
-> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return dev_err_probe(&pdev->dev, -ENOMEM, "failed to alloc priv\n");
-> +
-> +	sdev->pdata->hw_pdata = priv;
-> +
-> +	/* map SRAM */
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res)
-> +		return dev_err_probe(&pdev->dev, -ENODEV,
-> +				     "failed to fetch SRAM region\n");
-> +
-> +	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap(&pdev->dev, res->start,
-> +						       resource_size(res));
-> +	if (IS_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]))
-> +		return dev_err_probe(&pdev->dev,
-> +				     PTR_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]),
-> +				     "failed to map SRAM region\n");
-> +
-> +	sdev->mmio_bar = SOF_FW_BLK_TYPE_SRAM;
-> +	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
-> +	sdev->dsp_box.offset = MBOX_DSPBOX_OFFSET + MBOX_WINDOW_OFFSET;
-> +	priv->bootaddr = res->start;
-> +
-> +	ret = of_reserved_mem_device_init(sdev->dev);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret,
-> +				     "failed to bind DMA region\n");
-> +
-> +	priv->ipc_dev = platform_device_register_data(&pdev->dev, "imx-dsp",
-> +						      PLATFORM_DEVID_NONE,
-> +						      pdev, sizeof(*pdev));
-> +	if (IS_ERR(priv->ipc_dev))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(priv->ipc_dev),
-> +				     "failed to create IPC device\n");
-> +
-> +	priv->ipc_handle = dev_get_drvdata(&priv->ipc_dev->dev);
-> +	if (!priv->ipc_handle) {
-> +		ret = -EPROBE_DEFER;
-> +		dev_err(&pdev->dev, "failed to fetch ipc handle\n");
-> +		goto err_unregister_ipc_dev;
-> +	}
-> +
-> +	priv->ipc_handle->ops = &ipc_ops;
-> +	imx_dsp_set_data(priv->ipc_handle, sdev);
-> +
-> +	/* set core boot reset address */
-> +	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, priv->bootaddr,
-> +		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_ret);
-> +	if ((int)smc_ret.a0 < 0) {
-> +		ret = smc_ret.a0;
-> +		dev_err(&pdev->dev, "failed to set boot address: %d", ret);
-> +		goto err_unregister_ipc_dev;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_unregister_ipc_dev:
-> +	platform_device_unregister(priv->ipc_dev);
+> +/ {
+> +	sof_cpu: cm7-cpu@80000000 {
+> +		compatible = "fsl,imx95-cm7-sof";
+> +		reg = <0x0 0x80000000 0x0 0x6100000>;
+> +		memory-region = <&adma_res>;
+> +		mboxes = <&mu7 2 0>, <&mu7 2 1>, <&mu7 3 0>, <&mu7 3 1>;
+> +		mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
 
-If use devm_add_action(), this and imx95_remove() can be removed.
+need empty line here.
 
-Frank
+> +		cpu: port {
+> +			cpu_ep: endpoint { remote-endpoint = <&codec_ep>; };
+> +		};
+> +	};
+> +
+> +	reserved-memory {
+> +		adma_res: memory@86100000 {
+> +			compatible = "shared-dma-pool";
+> +			reg = <0x0 0x86100000 0x0 0x100000>;
+> +			no-map;
+> +		};
+> +	};
+> +
+> +	sof-sound-wm8962 {
+> +		compatible = "audio-graph-card2";
+> +		links = <&cpu>;
+> +		label = "wm8962-audio";
+> +		hp-det-gpios = <&gpio2 11 GPIO_ACTIVE_HIGH>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_hp>;
+> +		widgets =
+> +			"Headphone", "Headphones",
+> +			"Microphone", "Headset Mic";
+> +		routing =
+> +			"Headphones", "HPOUTL",
+> +			"Headphones", "HPOUTR",
+> +			"Headset Mic", "MICBIAS",
+> +			"IN3R", "Headset Mic",
+> +			"IN1R", "Headset Mic";
+> +	};
+> +
+> +	sound-wm8962 {
+> +		status = "disabled";
+> +	};
+> +
+> +};
+> +
+> +&edma2 {
+> +	dma-channel-mask = <0xc0000000>, <0x0>;
+> +};
+
+why need change dma mask here?
 
 > +
-> +	return ret;
-> +}
-> +
-> +static void imx95_remove(struct snd_sof_dev *sdev)
-> +{
-> +	struct imx95_priv *priv;
-> +
-> +	priv = sdev->pdata->hw_pdata;
-> +
-> +	if (imx95_disable_enable_core(false))
-> +		dev_err(sdev->dev, "failed to stop core\n");
-> +
-> +	platform_device_unregister(priv->ipc_dev);
-> +}
-> +
-> +static const struct snd_sof_dsp_ops sof_imx95_ops = {
-> +	.probe = imx95_probe,
-> +	.remove = imx95_remove,
-> +
-> +	/* mandatory "DSP" ops */
-> +	.run = imx95_run,
-> +	.block_read = sof_block_read,
-> +	.block_write = sof_block_write,
-> +	.send_msg = imx95_send_msg,
-> +	.load_firmware = snd_sof_load_firmware_memcpy,
-> +	.ipc_msg_data = sof_ipc_msg_data,
-> +
-> +	.mailbox_read = sof_mailbox_read,
-> +	.mailbox_write = sof_mailbox_write,
-> +
-> +	.get_mailbox_offset = imx95_get_mailbox_offset,
-> +	.get_bar_index = imx95_get_bar_index,
-> +	.get_window_offset = imx95_get_window_offset,
-> +
-> +	.pcm_open = sof_stream_pcm_open,
-> +	.pcm_close = sof_stream_pcm_close,
-> +	.set_stream_data_offset = sof_set_stream_data_offset,
-> +
-> +	.runtime_suspend = imx95_runtime_suspend,
-> +	.runtime_resume = imx95_runtime_resume,
-> +
-> +	.resume = imx95_resume,
-> +	.suspend = imx95_suspend,
-> +
-> +	.set_power_state = imx95_set_power_state,
-> +
-> +	.drv = imx95_dai,
-> +	.num_drv = ARRAY_SIZE(imx95_dai),
-> +
-> +	.hw_info = SNDRV_PCM_INFO_MMAP |
-> +		   SNDRV_PCM_INFO_MMAP_VALID |
-> +		   SNDRV_PCM_INFO_INTERLEAVED |
-> +		   SNDRV_PCM_INFO_PAUSE |
-> +		   SNDRV_PCM_INFO_BATCH |
-> +		   SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
+> +&sai3 {
+> +	status = "disabled";
 > +};
 > +
-> +static struct snd_sof_of_mach sof_imx95_machs[] = {
-> +	{
-> +		.compatible = "fsl,imx95-19x19-evk",
-> +		.sof_tplg_filename = "sof-imx95-wm8962.tplg",
-> +		.drv_name = "asoc-audio-graph-card2",
-> +	},
-> +	{
-> +	},
+> +&wm8962 {
+> +	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
+> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
+> +			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
+> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
+> +			  <&scmi_clk IMX95_CLK_SAI3>;
+> +	assigned-clock-parents = <0>, <0>, <0>, <0>, <&scmi_clk IMX95_CLK_AUDIOPLL1>;
+> +	assigned-clock-rates = <3932160000>, <3612672000>,
+> +			       <393216000>, <361267200>,
+> +			       <12288000>;
+
+empty line here
+
+> +	port {
+> +		codec_ep: endpoint { remote-endpoint = <&cpu_ep>; };
+> +	};
 > +};
-> +
-> +static struct sof_dev_desc sof_of_imx95_desc = {
-> +	.of_machines = sof_imx95_machs,
-> +	.ipc_supported_mask = BIT(SOF_IPC_TYPE_3),
-> +	.ipc_default = SOF_IPC_TYPE_3,
-> +	.default_fw_path = {
-> +		[SOF_IPC_TYPE_3] = "imx/sof",
-> +	},
-> +	.default_tplg_path = {
-> +		[SOF_IPC_TYPE_3] = "imx/sof-tplg",
-> +	},
-> +	.default_fw_filename = {
-> +		[SOF_IPC_TYPE_3] = "sof-imx95.ri",
-> +	},
-> +	.ops = &sof_imx95_ops,
-> +};
-> +
-> +static const struct of_device_id sof_of_imx95_ids[] = {
-> +	{ .compatible = "fsl,imx95-cm7-sof", .data = &sof_of_imx95_desc },
-> +	{ },
-> +};
-> +MODULE_DEVICE_TABLE(of, sof_of_imx95_ids);
-> +
-> +static struct platform_driver snd_sof_of_imx95_driver = {
-> +	.probe = sof_of_probe,
-> +	.remove = sof_of_remove,
-> +	.driver = {
-> +		.name = "sof-audio-of-imx95",
-> +		.pm = &sof_of_pm,
-> +		.of_match_table = sof_of_imx95_ids,
-> +	},
-> +};
-> +module_platform_driver(snd_sof_of_imx95_driver);
-> +
-> +MODULE_LICENSE("Dual BSD/GPL");
-> +MODULE_DESCRIPTION("SOF support for i.MX95 platforms");
-> +MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
 > --
 > 2.34.1
 >
