@@ -1,343 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9237E1F12FA
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 12:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD601F4733
+	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 13:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734440054; cv=none; b=OCdvRMwlsCz2S0+JqKMpGvtn1a9rEacqc/V6XnzORZEKRO7iCUW7BARXUZoEiokTDBM7CIe2jjCcvZ30t7odvtHH5zwMBlFWiU3GRXyPh+tAC3loU+FbzF7bTvHl/nfisvw4H0s9VP3TaSqEQumgANXiCz0w7h58tMK+dNzRSSo=
+	t=1734441625; cv=none; b=UYS992H/k6TCheKhLuCCNp6XLMRvGHBxgfNdyPNjg7y12BRjrAH5UhvBoTEetQfj0xfvuDQvWKjjGyWdRm7QOBU22LAZfJI0QhX3U+xX1zEhYyFl3ftaZhDm5ngSsN9pr2lLSHOvDxWw9eRrEhEv+OKNi7tfYAUaWlE7J7bXImc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734440054; c=relaxed/simple;
-	bh=7iMZ6aNwsw79QYn7QgLJveNLyG3HIzWwNMZstEsZBwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6O89hi0Wi9mfhySb6Fgtpsbvk6o0FibRgi+gU+3/GYK2XGeywfByIzeGKVKjiIaRY+k399vSm6T0ODOcwy7Jll4r5M1c/1iNIWmAY/vwKXUZ3mz86HNo+TlxtZqlfaFYpQSzq3RvdVZJ3OwngJ2yrRg3cgYdwIf8E3r2AXCaSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FmfQ0vJl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734441625; c=relaxed/simple;
+	bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eGzilk+FD77jn5BiG9SWKmmlPFgFNV57IsYBSo1S70lJPB20YkRp7XoKZFI12OpTHPsW5LuFqXMkRrYAwDGcGs4c411noTelkaaOX6IdImyXxGUFLaSU+/RN9y3RaxsZdhpATBo5w2/jT8b8kmkXhRq/SGT6akOlWj/4ICrfeQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tyml8HKp; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FmfQ0vJl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734440051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qt0hgYUkhdSw9YGOXZDiovx6cGPH476ifAhBNbJmSmk=;
-	b=FmfQ0vJlJx8w1Vh3rNAuBUHJ5TmSGyylfZR8oa6SlZoMTQVzZ7B7M/XmWDUeoMH0ee8ut/
-	TztGl2DwJIMHBt7mpe0nVz4G+zo/q4r5BpMER/SHz852645sWhiV5ZSl25LP4gitpoIzmd
-	S5V09fnowZpnGNb8KzsZrScntdXf44s=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-5i2Oz-6ZMmqq1Gh0tAMimA-1; Tue, 17 Dec 2024 07:54:09 -0500
-X-MC-Unique: 5i2Oz-6ZMmqq1Gh0tAMimA-1
-X-Mimecast-MFC-AGG-ID: 5i2Oz-6ZMmqq1Gh0tAMimA
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4361efc9d23so47863055e9.3
-        for <imx@lists.linux.dev>; Tue, 17 Dec 2024 04:54:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734440048; x=1735044848;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tyml8HKp"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53ff1f7caaeso5903379e87.0
+        for <imx@lists.linux.dev>; Tue, 17 Dec 2024 05:20:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734441617; x=1735046417; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qt0hgYUkhdSw9YGOXZDiovx6cGPH476ifAhBNbJmSmk=;
-        b=f2JgU53QG+RzSPt67xGu5q0rilDxlM4zDfPzn5d1s/p8/XODbInb0pp1rnz0229svX
-         7g6AYFITrlyT6ryd4pUl7ttZVkXvQQQi0NuaZ+TGeQWcuSADAs5t3wImQvkJfhFPTePC
-         RDB2OUhE56uXRN1my7A1sIxAs0XL2ijRQWKTJONJEt76IH49ttaIDRjPALPXl3ganThx
-         prTPD4dYoZ1EV1Vb0a7swYK9yvdQVYStT4i3w/hpQjmpIF7AtoZkd3b6ec8dyXIrwRF9
-         702bO2A+WBo4l+9wn7rqrIg2NlQ5wWB7QhtSRjSGXFi4mFV/Ku+mp6gvX/SM98p/2bQC
-         B57w==
-X-Forwarded-Encrypted: i=1; AJvYcCX+0B+m5iA8y3oDc0iygDO3owl8Ceo0CLBb0Oui5rvKx39zIZDjRiXUglihmb2xtp/n6mI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzwFLni8Zhot2oiVOdYqpe0labwz+ESF27gfyS3o/5PbDtKjsJ+
-	xJeTQtFb6SnnPFSXK4xoKUuZU/lyOsePLX8Qn4g9svF84C2uYsIVQQQyef/tbisiHdhaM+QNYmx
-	4h7gAugnm4Dxx5DE4sQIU7bR4E/g8uvQ3hEzCbVInRYZLTzB79A==
-X-Gm-Gg: ASbGnctBdDozDWWNNZy9XXkC9hvHFNuRZNywMM0AvKnhbmLHWwtXkgboTa36XRdVDc7
-	f6bPpI466hQvOXPB+BACmZxjq/nFyegDB3C/0AvjP+AuCVtVWLjCM88zdbgzfUsdZssStDfQsBU
-	mz3VvWtSjvTsl68vhTQW6tZ9f+0wdyOXPaZtZI9jRgrK6750oi3GWN3y0F+Xn3jwSntKBDLR6mF
-	OUpJJKw/krm8zYpLzyawSW8Uf2125D4
-X-Received: by 2002:a05:600c:4fc8:b0:434:ff45:cbbe with SMTP id 5b1f17b1804b1-4362aa509ccmr170719755e9.18.1734440048512;
-        Tue, 17 Dec 2024 04:54:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6/mV7a7l9PdPVcBSF+Q5Iql4bcDZqcKo3PolwhKQi6lByJruRUxTbVUJ9oenuwDgbps3/kQ==
-X-Received: by 2002:a05:600c:4fc8:b0:434:ff45:cbbe with SMTP id 5b1f17b1804b1-4362aa509ccmr170719175e9.18.1734440047995;
-        Tue, 17 Dec 2024 04:54:07 -0800 (PST)
-Received: from localhost ([2a01:e0a:b25:f902::ff])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43625706cb9sm175071475e9.27.2024.12.17.04.54.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 04:54:07 -0800 (PST)
-Date: Tue, 17 Dec 2024 13:54:07 +0100
-From: Maxime Ripard <mripard@redhat.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Liu Ying <victor.liu@nxp.com>, Abel Vesa <abelvesa@kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Abel Vesa <abel.vesa@linaro.org>, Herve Codina <herve.codina@bootlin.com>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Ian Ray <ian.ray@ge.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
-Message-ID: <20241217-didactic-hedgehog-from-heaven-004c37@houat>
-References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
- <b98fdf46-3d09-4693-86fe-954fc723e3a6@nxp.com>
- <87zflrpp8w.fsf@bootlin.com>
+        bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
+        b=Tyml8HKp0AcAsD3luMmHPOYFWfIiJf6FXfCVyu2SmzIJVSJNSfS7Ux3WoDb3wKjdG3
+         plL/5YHgf4Vpm1YT1aa/KokjoRFKt6x+rtszKy+XNl2OUgklPusv4B7un0EkdCnSmASC
+         2UooMeL7rOFzJaezq7YZWScZlj+6+4EL8Y9zDkAdCa7fo+tyYG2xgeZ3Yy79em438/b/
+         kJ9qDyYoIMHnDZDsVx3pX6/LhLej6zt0zXO7bui2i8kjsjz9vMMAL5HskEuIkX9vFrJA
+         ufCdmYV6s7CNBB/x7TijAqltV0eibFdRcExsSjDWdLFia7hj2LA9faOgyy7jyzH0WYtk
+         b7fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734441617; x=1735046417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
+        b=iJQBVNcLxI2qM19YiEZvysBAhPP7QBrjC+4ROUfjmP97pGkD4A+3b/CcZnc4y3GVwD
+         luS+R0xzyzxDQwFeqhovGGR0Hgn4kT4d+i6EmlzV3LAJaXfJZZtVNFQnL6JogzZW0FE0
+         VrvSl70wcAq9O2zlEFOlWEXBzd4iU5PmaELTRYckhubyZztZSivTOlF5zfHrZfvhD1Nu
+         bWgoXPLCmnfTBb6Z7D1orA4hqvicUPKZz9QA0NYg8NTbIh6FD+Jg4pKOQ2fyz/jCsY1K
+         BNdje73MF35STbJG1i6x1XUjTsuYDSKfHjN4jitfYU2nZvXdfJUsnZXFsnE1BlgGj2pW
+         BFTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWk3x6NqZtHJsfUmy0avreI+Cqs9e6XZhjqMPJKEpLoiBmILwzNFtbFRYcTXX6l9VnvV2o=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyQRvdhou86lF3W9XfGA0G9hvqqR4P7S8ORUTicsm2k71eXNjCP
+	ODt5lroRw/VYWD32WKObecr+LECh5J4ynAIMgdqtboDnNccVexkP+yPgKu8G6xTq2FFUC4bi4Mm
+	Rz/zDTAoCck0EGInD22HSWPeOO6A=
+X-Gm-Gg: ASbGncsykK6Z25ndKR3fSLwpDqAaKRUtNUhIwEFqMpbJHPLAQ0jn9e6gLXCGKA+Cu57
+	/YVdWlQsJ3NonXCrDb8F4Y98t25QOWXerx/1V/E621bGJaANLbhEX5cuDDC4KauL+LKV5
+X-Google-Smtp-Source: AGHT+IFFx90kPbpMheYOE1177/QLK8nVCI4FlXeGlR99M7gIZTPd37rucl/NQo0g2oJIrbiMhA6SNFXFscAA/m2smM4=
+X-Received: by 2002:ac2:4e04:0:b0:540:21d6:d681 with SMTP id
+ 2adb3069b0e04-54090555494mr4984098e87.19.1734441616935; Tue, 17 Dec 2024
+ 05:20:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="cprkny6syjc7plb7"
-Content-Disposition: inline
-In-Reply-To: <87zflrpp8w.fsf@bootlin.com>
-
-
---cprkny6syjc7plb7
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20241101135406.47836-1-festevam@gmail.com> <173073495749.210192.9138587910771237679.robh@kernel.org>
+In-Reply-To: <173073495749.210192.9138587910771237679.robh@kernel.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 17 Dec 2024 10:20:05 -0300
+Message-ID: <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif fallback
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, shawnguo@kernel.org, imx@lists.linux.dev, 
+	conor+dt@kernel.org, Fabio Estevam <festevam@denx.de>, 
+	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de, 
+	krzk+dt@kernel.org, a.fatoum@pengutronix.de, dri-devel@lists.freedesktop.org, 
+	andreas@kemnade.info, marex@denx.de
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 0/5] clk: Fix simple video pipelines on i.MX8
-MIME-Version: 1.0
 
-On Fri, Nov 22, 2024 at 10:54:55AM +0100, Miquel Raynal wrote:
-> Hello Liu,
->=20
-> Thanks for the feedback!
->=20
-> On 22/11/2024 at 14:01:49 +08, Liu Ying <victor.liu@nxp.com> wrote:
->=20
-> > Hi Miquel,
+Rob,
+
+On Mon, Nov 4, 2024 at 12:42=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
+>
+>
+> On Fri, 01 Nov 2024 10:54:04 -0300, Fabio Estevam wrote:
+> > From: Fabio Estevam <festevam@denx.de>
 > >
-> > On 11/22/2024, Miquel Raynal wrote:
-> >> Recent changes in the clock tree have set CLK_SET_RATE_PARENT to the t=
-wo
-> >> LCDIF pixel clocks. The idea is, instead of using assigned-clock
-> >> properties to set upstream PLL rates to high frequencies and hoping th=
-at
-> >> a single divisor (namely media_disp[12]_pix) will be close enough in
-> >> most cases, we should tell the clock core to use the PLL to properly
-> >> derive an accurate pixel clock rate in the first place. Here is the
-> >> situation.
-> >>=20
-> >> [Before ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel cl=
-ock reconfigure parent rate")]
-> >>=20
-> >> Before setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, t=
-he sequence of events was:
-> >> - PLL is assigned to a high rate,
-> >> - media_disp[12]_pix is set to approximately freq A by using a single =
-divisor,
-> >> - media_ldb is set to approximately freq 7*A by using another single d=
-ivisor.
-> >> =3D> The display was working, but the pixel clock was inaccurate.
-> >>=20
-> >> [After ff06ea04e4cf ("clk: imx: clk-imx8mp: Allow media_disp pixel clo=
-ck reconfigure parent rate")]
-> >>=20
-> >> After setting CLK_SET_RATE_PARENT to the media_disp[12]_pix clocks, the
-> >> sequence of events became:
-> >> - media_disp[12]_pix is set to freq A by using a divisor of 1 and
-> >>   setting video_pll1 to freq A.
-> >> - media_ldb is trying to compute its divisor to set freq 7*A, but the
-> >>   upstream PLL is to low, it does not recompute it, so it ends up
-> >>   setting a divisor of 1 and being at freq A instead of 7*A.
-> >> =3D> The display is sadly no longer working
-> >>=20
-> >> [After applying PATCH "clk: imx: clk-imx8mp: Allow LDB serializer cloc=
-k reconfigure parent rate"]
-> >>=20
-> >> This is a commit from Marek, which is, I believe going in the right
-> >> direction, so I am including it. Just with this change, the situation =
-is
-> >> slightly different, but the result is the same:
-> >> - media_disp[12]_pix is set to freq A by using a divisor of 1 and
-> >>   setting video_pll1 to freq A.
-> >> - media_ldb is set to 7*A by using a divisor of 1 and setting video_pl=
-l1
-> >>   to freq 7*A.
-> >>   /!\ This as the side effect of changing media_disp[12]_pix from freq=
- A
-> >>   to freq 7*A.
+> > imx6sx.dtsi has the following lcdif entries:
 > >
-> > Although I'm not of a fan of setting CLK_SET_RATE_PARENT flag to the
-> > LDB clock and pixel clocks,
->=20
-> I haven't commented much on this. For me, inaccurate pixel clocks mostly
-> work fine (if not too inaccurate), but it is true that having very
-> powerful PLL like the PLL1443, it is a pity not to use them at their
-> highest capabilities. However, I consider "not breaking users" more
-> important than having "perfect clock rates".
-
-Whether an inaccurate clock "works" depends on the context. A .5%
-deviation will be out of spec for HDMI for example. An inaccurate VBLANK
-frequency might also break some use cases.
-
-So that your display still works is not enough to prove it works.
-
-> This series has one unique goal: accepting more accurate frequencies
-> *and* not breaking users in the most simplest cases.
->=20
-> > would it work if the pixel clock rate is
-> > set after the LDB clock rate is set in fsl_ldb_atomic_enable()?
->=20
-> The situation would be:
-> - media_ldb is set to 7*A by using a divisor of 1 and setting video_pll1
->   to freq 7*A.
-> - media_disp[12]_pix is set to freq A by using a divisor of 7.
->=20
-> So yes, and the explanation of why is there:
-> https://elixir.bootlin.com/linux/v6.11.8/source/drivers/clk/clk-divider.c=
-#L322
->=20
-> > The
-> > pixel clock can be got from LDB's remote input LCDIF DT node by
-> > calling of_clk_get_by_name() in fsl_ldb_probe() like the below patch
-> > does. Similar to setting pixel clock rate, I think a chance is that
-> > pixel clock enablement can be moved from LCDIF driver to
-> > fsl_ldb_atomic_enable() to avoid on-the-fly division ratio change.
->=20
-> TBH, this sounds like a hack and is no longer required with this series.
->=20
-> You are just trying to circumvent the fact that until now, applying a
-> rate in an upper clock would unconfigure the downstream rates, and I
-> think this is our first real problem.
->=20
-> > https://patchwork.kernel.org/project/linux-clk/patch/20241114065759.334=
-1908-6-victor.liu@nxp.com/
+> > compatible =3D "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
 > >
-> > Actually, one sibling patch of the above patch reverts ff06ea04e4cf
-> > because I thought "fixed PLL rate" is the only solution, though I'm
-> > discussing any alternative solution of "dynamically changeable PLL
-> > rate" with Marek in the thread of the sibling patch.
->=20
-> I don't think we want fixed PLL rates. Especially if you start using
-> external (hot-pluggable) displays with different needs: it just does not
-> fly. There is one situation that cannot yet be handled and needs
-> manual reparenting: using 3 displays with a non-divisible pixel
-> frequency.
-
-Funnily, external interfaces (ie, HDMI, DP) tend to be easier to work
-with than panels. HDMI for example works with roughly three frequencies:
-148.5MHz, 297MHz and 594MHz. If you set the PLL to 594MHz and the
-downstream clock has a basic divider, it works just fine.
-
-> FYI we managed this specific "advanced" case with assigned-clock-parents
-> using an audio PLL as hinted by Marek. It mostly works, event though the
-> PLL1416 are less precise and offer less accurate pixel clocks.
-
-Note that assigned-clock-parents doesn't provide any guarantee on
-whether the parent will change in the future or not. It's strictly
-equivalent to calling clk_set_parent in the driver's probe.
-
-> > BTW, as you know the LDB clock rate is 3.5x faster than the pixel
-> > clock rate in dual-link LVDS use cases, the lowest PLL rate needs to
-> > be explicitly set to 7x faster than the pixel clock rate *before*
-> > LDB clock rate is set.  This way, the pixel clock would be derived
-> > from the PLL with integer division ratio =3D 7, not the unsupported
-> > 3.5.
+> > This causes the following dt-schema warning:
 > >
-> > pixel    LDB         PLL
-> > A        3.5*A       7*A      --> OK
-> > A        3.5*A       3.5*A    --> not OK
->=20
-> This series was mostly solving the simpler case, with one display, but I
-> agree we should probably also consider the dual case.
->=20
-> The situation here is that you require the LDB to be aware of some
-> clocks constraints, like the fact that the downstream pixel clocks only
-> feature simple dividors which cannot achieve a 3.5 rate. That is all.
->=20
-> It is clearly the LDB driver duty to make this feasible. I cannot test
-> the dual case so I didn't brought any solution to it in this series, but
-> I already had a solution in mind. Please find a patch below, it is very
-> simple, and should, in conjunction with this series, fix the dual case
-> as well.
->=20
-> FYI here is the final clock tree with this trick "manually" enabled. You
-> can see video_pll1 is now twice media_ldb, and media ldb is still 7
-> times media_disp[12]_pix (video_pll1 is assigned in DT to 1039500000, so
-> it has effectively been reconfigured).
->=20
->        video_pll1                            1   1   0   1006600000
->           video_pll1_bypass                  1   1   0   1006600000
->              video_pll1_out                  2   2   0   1006600000
->                 media_ldb                    1   1   0    503300000
->                    media_ldb_root_clk        1   1   0    503300000
->                 media_disp2_pix              1   1   0     71900000
->                    media_disp2_pix_root_clk  1   1   0     71900000
->                 media_disp1_pix              0   0   0     71900000
->                    media_disp1_pix_root_clk  0   0   0     71900000
->=20
-> ---8<---
-> Author: Miquel Raynal <miquel.raynal@bootlin.com>
->=20
->     drm: bridge: ldb: Make sure the upper PLL is compatible with dual out=
-put
->    =20
->     The i.MX8 display pipeline has a number of clock constraints, among w=
-hich:
->     - The bridge clock must be 7 times faster than the pixel clock in sin=
-gle mode
->     - The bridge clock must be 3.5 times faster than the pixel clocks in =
-dual mode
->     While a ratio of 7 is easy to build with simple divisors, 3.5 is not
->     achievable. In order to make sure we keep these clock ratios correct =
-is
->     to configure the upper clock (usually video_pll1, but that does not
->     matter really) to twice it's usual value. This way, the bridge clock =
-is
->     configured to divide the upstream rate by 2, and the pixel clocks are
->     configured to divide the upstream rate by 7, achieving a final 3.5 ra=
-tio
->     between the two.
->    =20
->     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
->=20
-> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fs=
-l-ldb.c
-> index 81ff4e5f52fa..069c960ee56b 100644
-> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
-> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-> @@ -177,6 +177,17 @@ static void fsl_ldb_atomic_enable(struct drm_bridge =
-*bridge,
->         mode =3D &crtc_state->adjusted_mode;
-> =20
->         requested_link_freq =3D fsl_ldb_link_frequency(fsl_ldb, mode->clo=
-ck);
-> +       /*
-> +        * Dual cases require a 3.5 rate division on the pixel clocks, wh=
-ich
-> +        * cannot be achieved with regular single divisors. Instead, doub=
-le the
-> +        * parent PLL rate in the first place. In order to do that, we fi=
-rst
-> +        * require twice the target clock rate, which will program the up=
-per
-> +        * PLL. Then, we ask for the actual targeted rate, which can be a=
-chieved
-> +        * by dividing by 2 the already configured upper PLL rate, without
-> +        * making further changes to it.
-> +        */
-> +       if (fsl_ldb_is_dual(fsl_ldb))
-> +               clk_set_rate(fsl_ldb->clk, requested_link_freq * 2);
->         clk_set_rate(fsl_ldb->clk, requested_link_freq);
+> > ['fsl,imx6sx-lcdif', 'fsl,imx28-lcdif'] is too long
+> >
+> > To keep DT compatibility, document 'fsl,imx28-lcdif' as a possible
+> > 'fsl,imx6sx-lcdif' fallback.
+> >
+> > Signed-off-by: Fabio Estevam <festevam@denx.de>
 
-This has nothing to do in a DRM driver. The clock driver logic needs to han=
-dle it.
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-Maxime
-
---cprkny6syjc7plb7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ2F0bgAKCRAnX84Zoj2+
-doOhAX99AJVEUh7gaK+uQrKP/Rmo6Mnh5hH5+hjn0gGdK2IqUkD0TwG6+RVjKBoZ
-aV81dYQBfjS+MEK+/lit/77rUaexBhW1LYDc0G+Oa3UFbahuJHfv1Qg2vEJcyQAd
-y401dukV0Q==
-=pd5A
------END PGP SIGNATURE-----
-
---cprkny6syjc7plb7--
-
+Can you apply 1/3 and 2/3?
