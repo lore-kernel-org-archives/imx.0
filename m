@@ -1,100 +1,270 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD601F4733
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 13:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B611F4E26;
+	Tue, 17 Dec 2024 14:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734441625; cv=none; b=UYS992H/k6TCheKhLuCCNp6XLMRvGHBxgfNdyPNjg7y12BRjrAH5UhvBoTEetQfj0xfvuDQvWKjjGyWdRm7QOBU22LAZfJI0QhX3U+xX1zEhYyFl3ftaZhDm5ngSsN9pr2lLSHOvDxWw9eRrEhEv+OKNi7tfYAUaWlE7J7bXImc=
+	t=1734444470; cv=none; b=hk9Mz6UYT5HFDuxx6jB0P0NHsYhtRn41/GbAT9Qs+lqhJGAB+pMJJ0nCtGpBLLlzcmPVBcfh/VndDUmLrv7sYouxSWckZyaYjuq5GMiPG5MtirYKEOGL39XgVBmucmNxnEUcDDZH6KUnjb4octUY2PaqZ3hds/f4s/48hYtcbXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734441625; c=relaxed/simple;
-	bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eGzilk+FD77jn5BiG9SWKmmlPFgFNV57IsYBSo1S70lJPB20YkRp7XoKZFI12OpTHPsW5LuFqXMkRrYAwDGcGs4c411noTelkaaOX6IdImyXxGUFLaSU+/RN9y3RaxsZdhpATBo5w2/jT8b8kmkXhRq/SGT6akOlWj/4ICrfeQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tyml8HKp; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734444470; c=relaxed/simple;
+	bh=NHRPgt9wZuKfaDWbuJvrt8FxIJ18k5TlIbXw6qXpATM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ItH499gpqShXIZiOalyVk43QRRLpe4k8OlMF2J3hr824ggIs6b1wEHBe82UAkwXnjXPt2piUgGWgjTEvoK6+gK8bOI+rYlGJ563twiLf5GqHT9K9KoUef5YSbZ4/5Rywx8GyD4I8XlXdeo3Y4vDH8hcIOH3uVXCNpcKy1+ybcMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdqrvRks; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tyml8HKp"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53ff1f7caaeso5903379e87.0
-        for <imx@lists.linux.dev>; Tue, 17 Dec 2024 05:20:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734441617; x=1735046417; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
-        b=Tyml8HKp0AcAsD3luMmHPOYFWfIiJf6FXfCVyu2SmzIJVSJNSfS7Ux3WoDb3wKjdG3
-         plL/5YHgf4Vpm1YT1aa/KokjoRFKt6x+rtszKy+XNl2OUgklPusv4B7un0EkdCnSmASC
-         2UooMeL7rOFzJaezq7YZWScZlj+6+4EL8Y9zDkAdCa7fo+tyYG2xgeZ3Yy79em438/b/
-         kJ9qDyYoIMHnDZDsVx3pX6/LhLej6zt0zXO7bui2i8kjsjz9vMMAL5HskEuIkX9vFrJA
-         ufCdmYV6s7CNBB/x7TijAqltV0eibFdRcExsSjDWdLFia7hj2LA9faOgyy7jyzH0WYtk
-         b7fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734441617; x=1735046417;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FstVX3CFTj+42MS9laftTg04okRbVpQOvmKeh9DZMHs=;
-        b=iJQBVNcLxI2qM19YiEZvysBAhPP7QBrjC+4ROUfjmP97pGkD4A+3b/CcZnc4y3GVwD
-         luS+R0xzyzxDQwFeqhovGGR0Hgn4kT4d+i6EmlzV3LAJaXfJZZtVNFQnL6JogzZW0FE0
-         VrvSl70wcAq9O2zlEFOlWEXBzd4iU5PmaELTRYckhubyZztZSivTOlF5zfHrZfvhD1Nu
-         bWgoXPLCmnfTBb6Z7D1orA4hqvicUPKZz9QA0NYg8NTbIh6FD+Jg4pKOQ2fyz/jCsY1K
-         BNdje73MF35STbJG1i6x1XUjTsuYDSKfHjN4jitfYU2nZvXdfJUsnZXFsnE1BlgGj2pW
-         BFTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWk3x6NqZtHJsfUmy0avreI+Cqs9e6XZhjqMPJKEpLoiBmILwzNFtbFRYcTXX6l9VnvV2o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQRvdhou86lF3W9XfGA0G9hvqqR4P7S8ORUTicsm2k71eXNjCP
-	ODt5lroRw/VYWD32WKObecr+LECh5J4ynAIMgdqtboDnNccVexkP+yPgKu8G6xTq2FFUC4bi4Mm
-	Rz/zDTAoCck0EGInD22HSWPeOO6A=
-X-Gm-Gg: ASbGncsykK6Z25ndKR3fSLwpDqAaKRUtNUhIwEFqMpbJHPLAQ0jn9e6gLXCGKA+Cu57
-	/YVdWlQsJ3NonXCrDb8F4Y98t25QOWXerx/1V/E621bGJaANLbhEX5cuDDC4KauL+LKV5
-X-Google-Smtp-Source: AGHT+IFFx90kPbpMheYOE1177/QLK8nVCI4FlXeGlR99M7gIZTPd37rucl/NQo0g2oJIrbiMhA6SNFXFscAA/m2smM4=
-X-Received: by 2002:ac2:4e04:0:b0:540:21d6:d681 with SMTP id
- 2adb3069b0e04-54090555494mr4984098e87.19.1734441616935; Tue, 17 Dec 2024
- 05:20:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdqrvRks"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E9AC4CED4;
+	Tue, 17 Dec 2024 14:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734444469;
+	bh=NHRPgt9wZuKfaDWbuJvrt8FxIJ18k5TlIbXw6qXpATM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kdqrvRksl62YTEOQQxP1LPgHv/7pPyNLtnne7/dp54gk73TTLTzdxItrRyyzkQ51f
+	 rou+tPY6lfyrmFkCJMrDQRv50YppGFwlUSS7yKJv/4un61EOQ/5UNMUjH6j9MyfWgk
+	 q2odp09139vKJtO9tl/Ivkiy3EXrOckHr/ow0qIjmBllbamOm6MQLFbR8TSsNuVnFm
+	 fK8McHqaQbbWxsXeZj1/kQARRFtkrrx7MRDBvePedetWl7mMu2n8WSLl6lX05XPQm3
+	 8aI1ZmIWHsPE/WpoEOn6posksLs2CyZwLgVkmlS2x/+QQME+5B/v9UkgDFj+Q/05I3
+	 EPc+wFXCS4k/w==
+Date: Tue, 17 Dec 2024 15:07:47 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, catalin.marinas@arm.com, will@kernel.org, abelvesa@kernel.org, 
+	peng.fan@nxp.com, mturquette@baylibre.com, sboyd@kernel.org, 
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+	quic_bjorande@quicinc.com, geert+renesas@glider.be, dmitry.baryshkov@linaro.org, 
+	arnd@arndb.de, nfraprado@collabora.com, marex@denx.de
+Subject: Re: [PATCH v7 0/7] Add ITE IT6263 LVDS to HDMI converter support
+Message-ID: <20241217-uppish-sapphire-dinosaur-4c40a2@houat>
+References: <20241114065759.3341908-1-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241101135406.47836-1-festevam@gmail.com> <173073495749.210192.9138587910771237679.robh@kernel.org>
-In-Reply-To: <173073495749.210192.9138587910771237679.robh@kernel.org>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 17 Dec 2024 10:20:05 -0300
-Message-ID: <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif fallback
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, shawnguo@kernel.org, imx@lists.linux.dev, 
-	conor+dt@kernel.org, Fabio Estevam <festevam@denx.de>, 
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de, 
-	krzk+dt@kernel.org, a.fatoum@pengutronix.de, dri-devel@lists.freedesktop.org, 
-	andreas@kemnade.info, marex@denx.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="hu6r2ojwiq6ufs4p"
+Content-Disposition: inline
+In-Reply-To: <20241114065759.3341908-1-victor.liu@nxp.com>
+
+
+--hu6r2ojwiq6ufs4p
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v7 0/7] Add ITE IT6263 LVDS to HDMI converter support
+MIME-Version: 1.0
 
-Rob,
+Hi,
 
-On Mon, Nov 4, 2024 at 12:42=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
->
->
-> On Fri, 01 Nov 2024 10:54:04 -0300, Fabio Estevam wrote:
-> > From: Fabio Estevam <festevam@denx.de>
-> >
-> > imx6sx.dtsi has the following lcdif entries:
-> >
-> > compatible =3D "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
-> >
-> > This causes the following dt-schema warning:
-> >
-> > ['fsl,imx6sx-lcdif', 'fsl,imx28-lcdif'] is too long
-> >
-> > To keep DT compatibility, document 'fsl,imx28-lcdif' as a possible
-> > 'fsl,imx6sx-lcdif' fallback.
-> >
-> > Signed-off-by: Fabio Estevam <festevam@denx.de>
+Thanks for the description, I have several questions here.
 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+On Thu, Nov 14, 2024 at 02:57:52PM +0800, Liu Ying wrote:
+> This patch series aims to add ITE IT6263 LVDS to HDMI converter on
+> i.MX8MP EVK.
+>=20
+> Since IT6263 DT binding and driver were picked up from v5 and landed
+> in drm-misc, this patch series contains patches almost all i.MX8MP
+> SoC/platform specific.
+>=20
+> Patch 1 is a preparation patch to allow display mode of an existing
+> panel to pass the added mode validation logic in patch 3.
+>=20
+> Patch 2 is a preparation patch to drop CLK_SET_RATE_PARENT flag for
+> media_disp{1,2}_pix clocks.  Patch 5 depends on patch 2.
+>=20
+> Patch 3 allows i.MX8MP LVDS Display Bridge(LDB) bridge driver to find
+> the next non-panel bridge, that is the IT6263 in this case.
+>=20
+> Patch 4 adds mode validation logic to i.MX8MP LDB bridge driver against
+> "ldb" clock so that it can filter out unsupported display modes read
+> from EDID.
+>=20
+> Patch 5 adds mode validation logic to i.MX8MP LDB bridge driver against
+> "pix" clock so that it can filter out display modes which are not
+> supported by pixel clock tree.
+>=20
+> Patch 6 adds DT overlays to support NXP adapter cards[1][2] with IT6263
+> populated.
+>=20
+> Patch 7 enables the IT6263 bridge driver in defconfig.
+>=20
+> Note that patch 3 and 4 depend on patch[3] in shawnguo/imx/fixes.
+>=20
+> Since this patch series is related to another one[4] authored by Marek,
+> Maxime asked for a proper description[5] about the exact problem.
+>=20
+> Admittedly, it's a bit complicated.  Here, I'm trying to do so and explain
+> a bit more.
+>=20
+> [ Description ]
+> It's a clock problem about shared i.MX8MP video PLL between MIPI DSI and
+> LVDS display pipelines.  The pipelines are driven by separate DRM driver
+> instances, hence there is no way to negotiate a dynamically changeable
+> PLL rate to satisfy both of them.  The only solution is to assign a
+> sensible/unchangeable clock rate for the PLL in DT.
+>=20
+> Admittedly, sys_pll3_out can be another clock source to derive pixel clock
+> for i.MX8MP MIPI DSI display pipeline if a particalur i.MX8MP platform
+> doesn't use audio(sys_pll3_out is supposed to derive audio AXI clock runn=
+ing
+> at nominal 600MHz).  However, for i.MX8MP platforms with audio features,
+> the shared video PLL case has to be handled and it determines that the ab=
+ove
+> solution(unchangeable PLL rate assigned in DT) has to be used no matter
+> sys_pll3_out is for display or audio, because the separate DRM driver
+> instances really don't know if they are sharing the video PLL or not.
+>=20
+> [[ i.MX8MP Display Hardware ]]
+> i.MX8MP SoC supports three display pipelines:
+>=20
+>  -----------------------------           ------------------------
+> | imx8mp_media_disp_pix_sels  |         | imx8mp_media_ldb_sels  |
+>  -----------------------------           ------------------------
+> |  osc_24m (fixed 24MHz)      |         |  osc_24m (fixed 24MHz) |
+> |*-video_pll1_out (video)     |         |  sys_pll2_333m (sys)   |
+> |  audio_pll2_out (audio)     |         |  sys_pll2_100m (sys)   |
+> |  audio_pll1_out (audio)     |         | -sys_pll1_800m (sys)   |
+> | -sys_pll1_800m (sys)        |         | -sys_pll2_1000m (sys)  |
+> | -sys_pll2_1000m (sys)       |         |  clk_ext2 (external)   |
+> |  sys_pll3_out (audio ?)     |         |  audio_pll2_out (audio)|
+> |  clk_ext4 (external)        |         |*-video_pll1_out (video)|
+>  -----------------------------           ------------------------
+>              ||                                     |
+>  -----------------------------           ------------------------
+> |   media_disp{1,2}_pix       |         |        media_ldb       |
+>  ----------------------------- mux+div   ------------------------ mux+div
+>              ||                                     |
+>  -----------------------------           ------------------------
+> | media_disp{1,2}_pix_root_clk|         |   media_ldb_root_clk   |
+>  ----------------------------- gate      ------------------------ gate
+>              ||                                     | (LVDS serial clock)
+>              ||                                     V
+> 	     || (Disp2 Pclk)  --------      ------------------
+> 	     | ------------> | LCDIF2 | -> |       LDB        | -> panel/bridge
+> 	     |                --------      ------------------
+> 	     |  (Disp1 Pclk)  --------      ------------------
+> 	      -------------> | LCDIF1 | -> | Samsung MIPI DSI | -> panel/bridge
+> 	                      --------      ------------------
+>                               --------      ------------------      -----=
+-----
+>                              | LCDIF3 | -> | Synopsys HDMI TX | -> | HDMI=
+ PHY |
+>                               --------      ------------------     |     =
++    |
+>                                  ^                                 |    P=
+LL   |
+>                                  |                                  -----=
+-----
+>                                  | (Disp3 pclk)                         |=
+ |
+>                                   -------------------------------------- =
+ |
+>                                                                          =
+ V
+>                                                                     panel=
+/bridge
+>=20
+> * video_pll1_out is supposed to be used by video outputs.
+>=20
+> - LCDIF2 + LDB can only use the *same* video_pll1_out, sys_pll1_800m or
+>   sys_pll2_1000m.
+>=20
+> [[ i.MX8MP Display Drivers ]]
+> LCDIF: drivers/gpu/drm/mxsfb/lcdif_*.c
+> Three LCDIFv3 display controllers are driven by three imx-lcdif DRM insta=
+nces
+> separately.
+>=20
+> LDB: drivers/gpu/drm/bridge/fsl-ldb.c
+>=20
+> Samsung MIPI DSI: drivers/gpu/drm/bridge/samsung-dsim.c
+>=20
+> Synopsys HDMI TX: drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>=20
+> [[ Problem - Shared Video PLL Between Samsung MIPI DSI and LDB ]]
+> osc_24m, audio_pll*, sys_pll* and clk_ext* are not for video outputs,
+> because:
+> a. Aparently, osc_24m runs at fixed 24MHz which is too low for most displ=
+ays.
+> b. Audio subsystem may consume all audio_pll*.
+> c. sys_pll* are system clocks which are supposed to run at fixed typical
+>    rates, e.g., sys_pll2_1000m runs at 1000MHz.
+> d. sys_pll3_out is supposed to derive audio AXI clock running at nominal
+>    600MHz(i.MX8MP data sheet specifies the rate), see NXP downstream kern=
+el:
+>    https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts=
+/freescale/imx8mp-evk-ndm.dts#L19
+>    https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts=
+/freescale/imx8mp-ddr4-evk.dts#L25
 
-Can you apply 1/3 and 2/3?
+Is there any downside to using any of these clocks, aside from the fact
+that their rate must not change?
+
+Also, if they can't change their rate, why do they have
+CLK_SET_RATE_PARENT (sys_pll* in particular) ?
+
+> e. clk_ext* are external clocks without known capabilities.
+>=20
+> So, the only eligible video_pll1_out is supposed to be shared between LDB
+> and Samsung MIPI DSI in the two separate display pipelines if sys_pll3_out
+> is already used to derive the audio AXI clock.
+>=20
+> With the shared video_pll1_out, drivers for the two display pipelines can=
+not
+> change the PLL clock rate in runtime, since the pipelines are driven by t=
+wo
+> DRM driver instances.
+
+What is the typicall frequency on those pipelines? Could setting the PLL
+high enough that any frequency required by any of these pipelines can be
+accomodated through a divider work?
+
+Something like you run the PLL at 594MHz, and then most HDMI frequencies
+can be reached by a 1, 2 or 4 divider.
+
+> [[ Solution ]]
+> Assign the PLL clock source(s) and the PLL clock rate(s) in DT.  Disallow
+> display drivers to change the PLL clock source(s) or rate(s) in runtime
+> including LCDIF driver and bridge drivers.  With sensible PLL clock rate(=
+s),
+> typical display modes like 1920x1080@60 can be supported if external HDMI
+> bridges are connected, and panel display modes can be too.  Also the unne=
+eded
+> CLK_SET_RATE_PARENT flag can be dropped for media_disp{1,2}_pix clocks.
+> If needed, bridge drivers just call clk_round_rate() to validate clocks so
+> that unsupported display modes can be filtered out.  Although the
+> unchangeable PLL clock rate disallows more potential display modes, the
+> solution works for single/dual/triple display pipelines(OFC, hardware des=
+igners
+> should pick panel/bridge display devices carefully first by considering c=
+lock
+> resources).
+
+I think it's a reasonable idea, if not for the hardcode-it it DT stuff.
+If we can manage to have a fixed setup work ok for all display use
+cases, why would it be in DT? The clock driver seems like a much better
+choice to me.
+
+Maxime
+
+--hu6r2ojwiq6ufs4p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ2GFsgAKCRAnX84Zoj2+
+dqQLAYCRSDLH9Dk0IbJPl1PnlpU1xkDY6LSYkVLWuS23g3GMCrbH9gGpziHKzx9l
+ziOFGckBf1rzk1R/u3ruFBm7DPVqwUbT7KGPmGeCy5xWW+5wrDtunG95cZqOq19p
+3g9fbpNyzQ==
+=JMAM
+-----END PGP SIGNATURE-----
+
+--hu6r2ojwiq6ufs4p--
