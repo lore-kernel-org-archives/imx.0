@@ -1,88 +1,95 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CE91DD529
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 06:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4886018C008;
+	Tue, 17 Dec 2024 06:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734418404; cv=none; b=ZxNvzlc+pirOIat54femQ4oKHIok/OPvEzgBPKTnGVATDtcpoRFiFK+r6A2IZjEE8PB+0SHceGtPlvd2ON+MYGyURO+uTHyi4EpGyyU/CvcT1aL6iV3DSCOIFa87cOe1JNwKxPID3R/uniGW4gGEZFtUG3bOjyrC2YLxoBCbf1Q=
+	t=1734418590; cv=none; b=LtId7rCDxGEriksJeKAKYAJqfA/hzm+YGQnvzeOEfElJ8IB7BBS6L+32WqX4UrEs/g23b0m+GAdHqeVWyQXaaDpeTrJ5teOnyy/TjS+E88PCO1SIuVqbsFUXkf0Hjg5296LeIRE68dVs3Q0Dzt+EC0DlBTRHvkI06seXNt483Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734418404; c=relaxed/simple;
-	bh=V5v0lNkKk40IY3Gj/m4+uJf5hLK5Tg98NdjWvK4g80w=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=VRr+YVYmz1TnRu997H67qv4WDx5GWjrqO46V4500L+wbzc8PnLDK/mNGM/9FoGsZp6sMyfSfkGltU/9nOQi4u5vtR4KyPCOZHk6ILBOw7PtJyU3jB/OdQvSaDB+a7lBoYNpwM6sxjGDLevxZ5ZTUc6c+AzOWpdULE2JVJnMlZbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g9fCuMyp; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1734418590; c=relaxed/simple;
+	bh=FCSExKI+sgfvXIQDvMbcaGs6YRB5dHmX79mWUjjc3eA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=osaPNcXG5b/JDH/oGnvwk/X0sOLTGqsI0Zu20m3kgoHkoBlFhkvFgm9R0+fztb2DIy7o6JWXU3pp8mmFa3Yvz3BCSYecDlczQogcgGi6f1JZfNEmmypv6TG+DqJ80LZlmGLc5ZEMr5HlfscWkW23bYKfwLSN55iNro3FA1wujaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFfO8JQg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g9fCuMyp"
-Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 63E9C59D;
-	Tue, 17 Dec 2024 07:52:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1734418364;
-	bh=V5v0lNkKk40IY3Gj/m4+uJf5hLK5Tg98NdjWvK4g80w=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=g9fCuMypy6JIfUqCZbRSUybDYo3BHTvj2P8c7ZXWnuSKJj2M/DZFhva5EY2QvSHeP
-	 PBv+49c0VSirMFSg14kjsRpoMzev3V8wrAJ9RyVMsanxh/+uSSDdPyVlZ/82xOPXwP
-	 I/a3EBQ+TMgKpKj4sREqzaRSH1wX09EJ6zYKcsM0=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFfO8JQg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C729C4CED3;
+	Tue, 17 Dec 2024 06:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734418590;
+	bh=FCSExKI+sgfvXIQDvMbcaGs6YRB5dHmX79mWUjjc3eA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bFfO8JQg3wxopxrXFvL6Gw3ZPLinopI5zBctBetd4wKhWw4eaY+ogB5PbWvBlVwg7
+	 C+LjxWNxzudKW61+tD/qQ8wNTzA/bmYXcSRH1fSIl/FFtOsfEnQeYT2+fyyl56F+mu
+	 zAjaF91teEODc4HFMIzFCO2XgYn+AgG/C6QWao0JlVgeiDcmaswLwgA+f8soTbzMTG
+	 gr4E+DFIx56etk80NP/eZ5bVd+7XLvFzXmxpKgGidL8SWD+QRejrM2nVpoi47qVzf0
+	 kwZFYMyJnLlJIF7RK83pxjEDSP+caRx+8DrAKcTDN1VBMTng9RB94vt2vxwW3ACyaZ
+	 gXaGfW0W2eQuQ==
+Date: Tue, 17 Dec 2024 07:56:26 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Mark Brown <broonie@kernel.org>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Takashi Iwai <tiwai@suse.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Frank Li <Frank.li@nxp.com>, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-sound@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] ASoC: dt-bindings: support imx95's CM7 core
+Message-ID: <jwhjz7a7spikaj3sgrpqqt5deygeedspz4iar7h6tofadk44nr@ytl7dnnbcrom>
+References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
+ <20241216145039.3074-3-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20241217032821.1712916-1-david@ixit.cz>
-References: <20241217032821.1712916-1-david@ixit.cz>
-Subject: Re: [PATCH] dt-bindings: media: imx283: Describe sensor address using the reg property
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: David Heidelberg <david@ixit.cz>, linux-media@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Umang Jain <umang.jain@ideasonboard.com>
-Date: Tue, 17 Dec 2024 06:53:18 +0000
-Message-ID: <173441839809.2983864.13556053856142193864@ping.linuxembedded.co.uk>
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241216145039.3074-3-laurentiumihalcea111@gmail.com>
 
-Quoting David Heidelberg (2024-12-17 03:28:17)
-> Use the reg property instead of text in the description.
->=20
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+On Mon, Dec 16, 2024 at 09:50:36AM -0500, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> Add binding for imx95's CM7 core, used for audio processing.
 
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Adding common binding and using it should be the same patch, for such
+relatively small bindings.
 
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  .../devicetree/bindings/media/i2c/sony,imx283.yaml         | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->=20
-> diff --git ./Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml=
- ./Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
-> index e4f49f1435a5..f4ee991c89a3 100644
-> --- ./Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
-> +++ ./Documentation/devicetree/bindings/media/i2c/sony,imx283.yaml
-> @@ -13,16 +13,15 @@ maintainers:
-> =20
->  description:
->    IMX283 sensor is a Sony CMOS active pixel digital image sensor with an=
- active
-> -  array size of 5472H x 3648V. It is programmable through I2C interface.=
- The
-> -  I2C client address is fixed to 0x1a as per sensor data sheet. Image da=
-ta is
-> -  sent through MIPI CSI-2.
-> +  array size of 5472H x 3648V. It is programmable through I2C interface.
-> +  Image data is sent through MIPI CSI-2.
-> =20
->  properties:
->    compatible:
->      const: sony,imx283
-> =20
->    reg:
-> -    maxItems: 1
-> +    const: 0x1a
-> =20
->    clocks:
->      description: Clock frequency from 6 to 24 MHz.
-> --=20
-> 2.45.2
->
+>  .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 44 +++++++++++++++++++
+>  1 file changed, 44 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+
+...
+
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    cm7-cpu@80000000 {
+> +        compatible = "fsl,imx95-cm7-sof";
+> +        reg = <0x80000000 0x6100000>;
+> +        mboxes = <&mu7 2 0>, <&mu7 2 1>, <&mu7 3 0>, <&mu7 3 1>;
+> +        mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
+> +        memory-region = <&adma_res>;
+> +        port {
+> +          /* SAI3-WM8962 link */
+
+Keep consistent indentation.
+
+> +          endpoint { remote-endpoint = <&wm8962_ep>; };
+
+This should not be one line, but three lines.
+
+> +        };
+> +    };
+> -- 
+> 2.34.1
+> 
