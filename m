@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B918F5A;
-	Tue, 17 Dec 2024 18:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8104E1F8676;
+	Tue, 17 Dec 2024 18:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734459656; cv=none; b=bgq5Wpg0UmonUZxv69hmt41DXWxPMfYuu0ntxGRqsvzaobAeTspmQShVhuwnwrnlEmZL/zHXXuAP3QdyLs0APZnSxg4Cik6hgkXsUWSwaKkEzXLIvM0Q28X78gTgEpepaeE2mev0GWSU3lrqz/VDK7xCdxhkYOO8I2SDDOuZf+I=
+	t=1734459953; cv=none; b=SSvIIh+8lLdNEjK4plvBC1IkirUtvSur3WgDGaIUn+1XL9Fq77ySR+Chyu6qBQ1K788o734sm1WtTFpbwnWfcaHFlwu3+BtNPuEBjYIv3NZZLLEOuZtFgY9tmNBqHuYmMZiDR5aneeOVePfIWdUIhREiEN3zouqY7evXX+OLk5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734459656; c=relaxed/simple;
-	bh=yildsclURKwBrFcuZYzExOtDLbmKY9IGWCKkE4r0JCA=;
+	s=arc-20240116; t=1734459953; c=relaxed/simple;
+	bh=5sbBvDuhs4dH19A+TJjyjA7fZtevh11swNjccUwIf0Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rhTGC7f64FE01oFvjjKF27W2ejKmwzRK0EO+UbN1nC5641pd/cwNM6O8Udv7a7dOVN9wqJHIdwhTs+OkPl5jCpwumFhHO7BUKWKL/ETV96z8MTnK1MEawZg2f+4IMOF8iI6bOBYxlOfnLb0nZwndCbcHJUY/nNhtp5x6U5iR9sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s8TKNLVu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=WR9qIhtYjt+dwBaCpXHmTsKKWhPu6MJUlaheYCfmJZdGFzCHgQxQAF1RQ10/WHXs+HtSWwCimCnr+bwm4tlMLqDEtAZzr91/DjE1bTa248qUE4o2akXPIvFFeUnrW2I1ILlwhIcV/Rv1vdedm+22T1FmiOF87nGXMsnRbE1VWl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWz+gccz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s8TKNLVu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E710C4CED3;
-	Tue, 17 Dec 2024 18:20:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWz+gccz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20634C4CED3;
+	Tue, 17 Dec 2024 18:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734459655;
-	bh=yildsclURKwBrFcuZYzExOtDLbmKY9IGWCKkE4r0JCA=;
+	s=k20201202; t=1734459953;
+	bh=5sbBvDuhs4dH19A+TJjyjA7fZtevh11swNjccUwIf0Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s8TKNLVu7XA5lXmycWns29seqO2hyRgVnNOPtDYIK1ZvGtRRuq3/lni9a7rj6NRwA
-	 7PpxpAOIusn9wTEce/uJMivoDJ+t8Cc3myGHyo5l6Cw8DZI1J1QJSMfrPz6N0ipLsA
-	 ioIkdczq83kqYRtTaUBLRAzkiqu8O2gDl0OhAQhgA/vXU/gZvuKk1xeUXBTBOnOqq/
-	 QCzvGg8isuiccF9y3WIVz1BJnMjH8FvJKEIeFD5hz9gmozKkDk/FVFtlOHVAH+rn3c
-	 2XI0zdgvBVBIRFYcy/81QfCNBTGKJ9R6qw136CcVzdD2qopafyyEA3mMt0jWNldRH5
-	 40N1rjSlTBjTw==
-Date: Tue, 17 Dec 2024 18:20:51 +0000
+	b=QWz+gcczWJ1xJeJsETvul4MmoE4EKFFA2aEgNoNr4wSIUrwO+IDJbPrgXFldeltcj
+	 B7157twx6vXJQ3073e1wnjc/GdL7NAHGqf56f9qiDT8T/ynQRw5egSbuWIPwY+0M8a
+	 T5AK8nzsmHnl4GnLULal7eA0zsS3YhBlyxjhXgMVK3LN86nb/VRc1IchjeOwqf2ezW
+	 9qYeG+ZtclrGKt/zPNBWsUA6fIXLQR6sI7JBnbwEomg4qGAv8FnSqW5AgmBPqefHEe
+	 NsVKDDWkUqjnh8GibmHf7WurEMNQu2IGiWCJ+Hxaafefl+0vKuGiMRwCOMM/SNAM5+
+	 E9eHChbObZ05w==
+Date: Tue, 17 Dec 2024 18:25:47 +0000
 From: Conor Dooley <conor@kernel.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+To: David Heidelberg <david@ixit.cz>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: nvmem: imx-ocotp: Introduce
- #access-controller-cells
-Message-ID: <20241217-compare-craftily-94425c53b4d8@spud>
-References: <20241217-imx-ocotp-v2-0-3faa6cbff41b@nxp.com>
- <20241217-imx-ocotp-v2-1-3faa6cbff41b@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: media: imx283: Describe sensor address
+ using the reg property
+Message-ID: <20241217-moving-rubble-712bba91af4d@spud>
+References: <20241217032821.1712916-1-david@ixit.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,39 +51,32 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xHQ/yDLv8t1eplxP"
+	protocol="application/pgp-signature"; boundary="irNW15vzf8lQLXCc"
 Content-Disposition: inline
-In-Reply-To: <20241217-imx-ocotp-v2-1-3faa6cbff41b@nxp.com>
+In-Reply-To: <20241217032821.1712916-1-david@ixit.cz>
 
 
---xHQ/yDLv8t1eplxP
+--irNW15vzf8lQLXCc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 04:43:36PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Mon, Dec 16, 2024 at 10:28:17PM -0500, David Heidelberg wrote:
+> Use the reg property instead of text in the description.
 >=20
-> Introduce "#access-controller-cells" to make OCOTP be an accessing
-> controller, because i.MX Family OCOTP supports a specific peripheral
-> or function being fused which means being disabled.
->=20
-> Add the i.MX[95,93] OCOTP gate index.
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---xHQ/yDLv8t1eplxP
+--irNW15vzf8lQLXCc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2HBAgAKCRB4tDGHoIJi
-0mqiAQCvW9eoF6N7cbHaOx0lGoN8Anj0wtcz8D/mTXwQMot4WgD+NXPCSLjx/jyI
-l1ucvLcVZh77ERggFbTtxPhpmvr9hA0=
-=qNnf
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2HCKwAKCRB4tDGHoIJi
+0tyiAQC0iy2jX2LBj7PYVNqONiCpx88AuaFbzMJXh/vYVCVf+QD/Tmz+g72CKmZo
+B4P8X7o7961wpSemOaHoBTCBMbbbCQI=
+=4fjz
 -----END PGP SIGNATURE-----
 
---xHQ/yDLv8t1eplxP--
+--irNW15vzf8lQLXCc--
