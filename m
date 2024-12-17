@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73FA653;
-	Tue, 17 Dec 2024 07:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE6B13D244;
+	Tue, 17 Dec 2024 07:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734419262; cv=none; b=mcprLTk+BAKUZQXgguxRHRlapgoKMuEvLK+HkWSf2nj/XIITTaYC4HfzHMMjvWUzKfvsEQYxlrCBLtZTi3Xjpx/BqtLKrmGoY0epXAUp/fAMtC6LbdstFnJtVyTOvWM4xIWt4V3bQFwz18H/rBXtzq9zYlXcrVNG4ursyyVoaTA=
+	t=1734421257; cv=none; b=jGBXqiHknY7S0LQkIm2KC2vZaNFzDi4RVJ5/+L4zoms1B+6hCP+06NBnypmdOu5xj62oN9zjXi+YHAJIODgp8kbXd6o2bVBKcKlodVPg1xAAhgVVaHBDp4MHDRG1eOw9BcXTTrT1BJTtiGexZD6JBFwGyoR7hzZw36wXpjOyc5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734419262; c=relaxed/simple;
-	bh=5pNv1T3alykB+CBmVUBDGGead9uQSVHWIwqxJDAEdLQ=;
+	s=arc-20240116; t=1734421257; c=relaxed/simple;
+	bh=qh5Rv3ZXcyqgzSC7cezcMXk4bK1CN2n8Om3V6cn9Eqk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H74p138l5uYL442K6g0L43ayHVFjKKgiWn1tnLLsxCGBGZU6UREWB0RyVQu5arftGp4RKvYnN1uinP6gg9PL1jABMS8+zci8ZitAnbacbcZ/BHHlj4B4Whc9B1NCNRgAP5P6OizGMjtHptF4EuOpawnrxrpgPLx7teYfgMu+P04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhEJSAO0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CprsFjxsa8W+43oYrB83WPBsSmkPZpi8rtHuTLn7yOGFHWRnmmGOeMX8zbAXJ69t87lvgeheOF/rqG8/0TnQPCCgK6kuC4Hu/jl2MCwGbYeD5bDESL3c7e2FKS6D3Aiperye2lmmNGh9nsR4VNs0h4yT8jVK9YP8PDZgVO5MCjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzaWEVm1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhEJSAO0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A640C4CED3;
-	Tue, 17 Dec 2024 07:07:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzaWEVm1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8690DC4CED3;
+	Tue, 17 Dec 2024 07:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734419262;
-	bh=5pNv1T3alykB+CBmVUBDGGead9uQSVHWIwqxJDAEdLQ=;
+	s=k20201202; t=1734421256;
+	bh=qh5Rv3ZXcyqgzSC7cezcMXk4bK1CN2n8Om3V6cn9Eqk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fhEJSAO0xDkczEnGSQrwYr7gbOUFKz1QFvbhU76Go4rxPIe041b/qSWNgT1X9JSqO
-	 PM8N+tB3axhHT9yiVuY5pMhI5cPypp1z+8ttpGvyJt/rczfRQdNo+zA50tGMUZ0X+6
-	 0mN/HCFStdqOYetFZzIHcrX4X024iwAOp/zEra9xq6Ll+zjVqnEWz/8HqNv3yIzrfW
-	 bTYQVdEt23cxKHM+YYw/VpQv0Wld8VsgtYzYrqAP8ZZJFPm32yJA7ZOcysL7Cc/JPZ
-	 K+pWKdUbbIxRE3YeXwWqr9DAEfBW0S+d6UPGbvW10OfxN98r9BWQds/1uLnav6XRCD
-	 As3upYwGDgnjA==
-Date: Tue, 17 Dec 2024 08:07:38 +0100
+	b=XzaWEVm17jBCCgA6EawOmJaL13vCmwwYoDM8LchPQZRPjXJsEdki1DPL0LaVTOKOL
+	 33lDiZl1cKjx/bvh8FTAuDG3IeAeyGJRXBP3HQYavNdwioH3e3/WwbNSfAKqerMer9
+	 4AIbhD7o5TdQu3Ks7hBxOILpteYBgK3bufnSVx+xpQtef8O3vn0tl7PrbGL01CsReQ
+	 /myqOsnKL2oIsxlKamz1YdFgT0g7dh9naLeA0wssLMpuQqS/2PmbV/qY483BZTLk9/
+	 V06T6WZPxiVtU6WwGQY4tNzpw+JY/0bt5UnEb5pwhiCBeSXYr+OwVimrckSE4YkyT4
+	 S5eInycqMSSig==
+Date: Tue, 17 Dec 2024 08:40:52 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Mark Brown <broonie@kernel.org>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Takashi Iwai <tiwai@suse.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Frank Li <Frank.li@nxp.com>, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-sound@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] ASoC: dt-bindings: audio-graph-card2: add widgets
- and hp-det-gpios support
-Message-ID: <nxcoukgiwtcsowi2uxytxa32mdp5dhl4tvnetpd2spti7oiiu3@mpqbv43ivznc>
-References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
- <20241216145039.3074-4-laurentiumihalcea111@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: media: imx219: Describe sensor address
+ using the reg property
+Message-ID: <6djxfcuroxlth2th3tpuesauhdnowatzgnyhesewjfz32v6gbz@q2dj7jsxiqlw>
+References: <20241217024206.1700170-1-david@ixit.cz>
+ <20241217024206.1700170-2-david@ixit.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,24 +49,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241216145039.3074-4-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20241217024206.1700170-2-david@ixit.cz>
 
-On Mon, Dec 16, 2024 at 09:50:37AM -0500, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Mon, Dec 16, 2024 at 09:41:51PM -0500, David Heidelberg wrote:
+> Use the reg property instead of text in the description.
+> Drop useless description of reg property.
 > 
-> Introduce the 'widgets' property, allowing the creation of widgets from
-> 4 template widgets: Microphone, Line, Headphone, and Speaker. Also
-> introduce the 'hp-det-gpios' property, which allows using headphone
-> detection using the specified GPIO.
-> 
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  .../devicetree/bindings/sound/audio-graph-card2.yaml          | 4 ++++
+>  Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git ./Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml ./Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
 
-I have impression you are duplicating audio graph properties instead of
-referencing proper schema, but considering that the bindings
-audio-graph-card and audio-graph-card2 differ only by number "2" without
-any description, not sure what is correct here.
+You are using non-standard tools to generate patches. See checkpatch
+warnings.
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
