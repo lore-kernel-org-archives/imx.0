@@ -1,93 +1,105 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054A2161302
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 09:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91F91D2B11
+	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 09:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734427755; cv=none; b=NV7WdHJQwN+HZ/1/8nNxoBVV/GBOPaxwhQgJ8PUnBKbs/yAQ1sTC9JS5blQK0nkIxj8S703GF+PE3iDs3X1g2LlHuECrbu5k3o0xZ+I6TDrwIbK5WSQ/f3kuhh6sTIIFCjwOgU1V8s5Powso+oxEzeP7Cc0XE0t2UwFIWGCjbOA=
+	t=1734428245; cv=none; b=VbuvnzVYkgKlNHG2kJM5LtrW4cl3e1mgAUROMO22itcYwg1I5bb+f2j3LFRMi6Wc1fmGRyNV3iIVSSsYUFTUxjSP84fcWEM3GwB+ByF5IyfTtD6me5rDuWCFDucSzrQ8lCnsZQzA0Vv1m3uEprYbw7mb2S+3A7435Ps3wLH4Zzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734427755; c=relaxed/simple;
-	bh=6EsR1fEePDqd7eW7ARPwVy7kxfj5U4yICOiUVKDoqZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a85ksqJY+ZkQMukmdUW7mx78qBYngjXhrHEQRIpQ4MmCAJkCcUjGXgeqeh7u5yRko3OE2lCN0ZLVjoC9opou8XI2gEOPeE1Kd3fGpBYhyVPAZgfboWOVOnYookA7aV3k63kFn04GJ6tq2EUs5MlQiEFjpko8+HHvJLjI27rTNHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=rA2z4up/; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="rA2z4up/"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5E0981FCF9;
-	Tue, 17 Dec 2024 10:29:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1734427750;
-	bh=yJKtBsWc7dPmPTDAETF1bwIRjDSjPeGWjKE21ceWNoA=; h=From:To:Subject;
-	b=rA2z4up/vwt7PbPE3+iMFu+Mfeu465MQgIhW0A1lAXMsC00hqEtGZATqirkac/YX1
-	 ac/uCTVvAeHno8p/uJpI6pGvQRXeM4/xJaI6XHJP9cULSzTdsFVydcgcexUVKm4sHs
-	 L8xYnbhApdTQ9OqbOCfPtdINLi5NZLvNjPmQQi86xV4z0e5tnmmeWKxTk271jj0mAy
-	 AQh/4NthJnH78Byzobcbl0+ZmD/ppJdoef9kcjcTLqpgxbYUrWr/KQHDtqt9qg3kkJ
-	 IkdNCQG0nlHz9L5vexbFWA8khKUz4NaoqX9wdvCBQTpv+2o+sNXFjBBaW5u+U7vNQ1
-	 2P7BcnhPvmlkw==
-Date: Tue, 17 Dec 2024 10:29:05 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-	andre.draszik@linaro.org, rdbabiera@google.com,
-	m.felsch@pengutronix.de, dan.carpenter@linaro.org,
-	emanuele.ghidoli@toradex.com, parth.pancholi@toradex.com,
-	francesco.dolcini@toradex.com, u.kleine-koenig@baylibre.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 2/2] usb: typec: tcpci: set ALERT_MASK register after
- devm_request_threaded_irq()
-Message-ID: <20241217092905.GA27489@francesco-nb>
-References: <20241217091208.2416971-1-xu.yang_2@nxp.com>
- <20241217091208.2416971-2-xu.yang_2@nxp.com>
+	s=arc-20240116; t=1734428245; c=relaxed/simple;
+	bh=PbdsB2BhIDuxuM2K/h5mPZ7JGcHKlNVmrrssGgyp37A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HCUIjLOh0iA2tfvof94ZGYoVF3rbK2SAuPkLTcRJSkTAos3njnIA6ghindL3RJ86Wo5hiajXH/euODpVBOpW/Clu0k0bf6eEtqA9HC8bz/0Swv6sEaq2ToDDH+4iWxvT8xg18aNbJulgBHfIPl9W/gG420/o1kAtqcAfh62Sdq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tNU0y-0006bG-N7; Tue, 17 Dec 2024 10:37:16 +0100
+Message-ID: <8956e0daffc89f8c6791f8a53b1666ca31011a45.camel@pengutronix.de>
+Subject: Re: imx8m-blk-ctrl: WARNING, no release() function
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Peng Fan <peng.fan@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, "linux-pm@vger.kernel.org"
+ <linux-pm@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>, Marek Vasut
+ <marex@denx.de>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Jindong Yue <jindong.yue@nxp.com>, Benjamin
+ Gaignard <benjamin.gaignard@collabora.com>, Paul Elder
+ <paul.elder@ideasonboard.com>,  =?ISO-8859-1?Q?Herv=E9?= Codina
+ <herve.codina@bootlin.com>
+Date: Tue, 17 Dec 2024 10:37:14 +0100
+In-Reply-To: <20241217094219.788cad88@booty>
+References: <20241212141003.GA44219@francesco-nb>
+	 <PAXPR04MB8459AB53B142CB43782757D988042@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	 <20241217094219.788cad88@booty>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217091208.2416971-2-xu.yang_2@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Dec 17, 2024 at 05:12:08PM +0800, Xu Yang wrote:
-> With edge irq support, the ALERT event may be missed currently. The reason
-> is that ALERT_MASK register is written before devm_request_threaded_irq().
-> If ALERT event happens in this time gap, it will be missed and ALERT line
-> will not recover to high level. However, we don't meet this issue with
-> level irq. To avoid the issue, this will set ALERT_MASK register after
-> devm_request_threaded_irq() return.
-> 
-> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Changes in v3:
->  - remove set_alert_mask flag
-> Changes in v2:
->  - new patch
-> ---
->  drivers/usb/typec/tcpm/tcpci.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-> index db42f4bf3632..48762508cc86 100644
-> --- a/drivers/usb/typec/tcpm/tcpci.c
-> +++ b/drivers/usb/typec/tcpm/tcpci.c
-> @@ -700,7 +700,7 @@ static int tcpci_init(struct tcpc_dev *tcpc)
->  
->  	tcpci->alert_mask = reg;
->  
-> -	return tcpci_write16(tcpci, TCPC_ALERT_MASK, reg);
-> +	return 0;
+Hi Luca,
 
-Should we set the alert mask to 0 at the beginning of tcpci_init() ?
+Am Dienstag, dem 17.12.2024 um 09:42 +0100 schrieb Luca Ceresoli:
+> Hello Peng,
+>=20
+> On Tue, 17 Dec 2024 01:39:09 +0000
+> Peng Fan <peng.fan@nxp.com> wrote:
+>=20
+> > > Subject: imx8m-blk-ctrl: WARNING, no release() function =20
+> >=20
+> > Please try this patch.
+> > https://lore.kernel.org/all/20241206112731.98244-1-peng.fan@oss.nxp.com=
+/
+>=20
+> I cherry-picked the two patches from linux-next:
+>=20
+>   e1a875703470 ("pmdomain: imx-gpcv2: Suppress bind attrs")
+>   afb2a86f002b ("pmdomain: imx8m[p]-blk-ctrl: Suppress bind attrs")
+>=20
+> but I still have the same warnings:
+>=20
+> [    5.427038] Device 'mediablk-mipi-csi2-1' does not have a release() fu=
+nction, it is broken and must be fixed. See Documentation/core-api/kobject.=
+rst.
+> [    6.464219] Device 'mediablk-mipi-dsi-1' does not have a release() fun=
+ction, it is broken and must be fixed. See Documentation/core-api/kobject.r=
+st.
+> [    6.752903] Device 'mediablk-mipi-csi2-1' does not have a release() fu=
+nction, it is broken and must be fixed. See Documentation/core-api/kobject.=
+rst.
+> [    7.303529] Device 'mediablk-mipi-dsi-1' does not have a release() fun=
+ction, it is broken and must be fixed. See Documentation/core-api/kobject.r=
+st.
+> [    8.006575] Device 'mediablk-mipi-csi2-1' does not have a release() fu=
+nction, it is broken and must be fixed. See Documentation/core-api/kobject.=
+rst.
+> [    8.598453] Device 'mediablk-mipi-dsi-1' does not have a release() fun=
+ction, it is broken and must be fixed. See Documentation/core-api/kobject.r=
+st.
+>=20
+> This is with 6.13-rc3 on a imx8mp.
 
-Just wondering if some bind/unbind or module reload use case would need
-it.
+As far as I can see this isn't emitted due to the blk-ctrl device
+itself missing the release function, but from the pseudo devices used
+by genpd to control the power of the secondary power domains.
 
-Francesco
+I think this needs to be fixed in genpd itself. I'll take a look.
 
+Regards,
+Lucas
