@@ -1,125 +1,155 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495942A9B
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 20:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167111F9AAD
+	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 21:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734467382; cv=none; b=r06Pf/S5Ge12/YuqenkA59Mbn5SICh6pEVNMeXLPWk+SiDllLWto3M7bZB2VSbHvWNWU6TUvfSvPz0j7qz/hAJ5TWchhZanoPJWD59l6hmxuLXGGpdH9Vtck0LFAH7KYvs90YjdRxzVpDhRYaVeC9KCvWaRNzvG6/reTlTO9eXA=
+	t=1734470561; cv=none; b=As9lZL+4x0bIo5RKRrhxIXplTlAv1tENxwBvjHTPSq6s1WhbYwStaZQIF6G3HfANw1kLks/yTKZ95xdekB11GkwPc2tmKSIs+nZiVS3AHvTWHWMjyxBrrTSv/lFE6z8WtCJhxgB0mN+FwOMZaUx84sv1gl2/wPLmSJeIsPMqjJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734467382; c=relaxed/simple;
-	bh=wjtVSp5e/gtP2bPB0gVaig8Ytq2WZDbCWtlVs+teKRM=;
+	s=arc-20240116; t=1734470561; c=relaxed/simple;
+	bh=2U+tA3XnkbU5WpsKT6RWZgnqLfCYuPrbx3I/SHK4gpg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HuoH1jHmbXFNRUhdOiPCR5ynYuYBRyWQlJYIenSkrX4odJhXZV5FO/mjsAZ/eAvxxUCrWdFHQfUgMpgtMIwvMFUU1FCBZn5yYE1RAGlpYD58jWqcWZiTUZYFNioi4GMh83RW5kHfljaWsiGVAR6Mj4irm7e/wwJuCk0GLtFK9kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ar65+oj3; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=eC8oKDHA1Jx4mpfNZgyJ5F7zaK+kDKFguR2k/+mO2wH/VEvf7Q0a+JnQa9+m9SRnY62dNwfuCOvgI8e4pQ0ExD8OZOwH4inm5OgUfq8HsR5a961upPWVVerciy0QkRUDrBSwj+ny4TKSDI4cBwmeD4FE2lr9UZ9M2V/X5dwFut4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=PPdU/2bK; arc=none smtp.client-ip=89.177.23.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ar65+oj3"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385de59c1a0so3737465f8f.2
-        for <imx@lists.linux.dev>; Tue, 17 Dec 2024 12:29:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734467379; x=1735072179; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=riuJ6VXEH1r2xq2adD8Hh5Js5iv32b824b2rOzdDs1o=;
-        b=ar65+oj3KDLTy5I/Bi79/oDeAdBHklB2/djw7XuKPk3OG3RqqyBYYdUFIEuDaxZlxt
-         poiaoe90DgBDjCCBp5Qs4s2YZZ9SRdrRA5tJLSYyzQHsAsbeZoNr8YuO3g0B1GVjUKwi
-         r8IS2hzdDwiUYkt6duRJ/jaQ9RvEZgedFjxcRkaK2gFVYF0AWDKpuw2/op8MxqLqOBVK
-         M7o/RQCj8WG3c3RtVEYf5nOkn3tisO3KBeDxEYKyXaJQGvg6w95tUn6Ha2i2feIY5R3I
-         SZwE4BiLlETNav6OQ250sf24STOYRdx0hCrB/Z66QPSp9dtyAn8vBvLRxpu46QgQMaNE
-         Oyqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734467379; x=1735072179;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=riuJ6VXEH1r2xq2adD8Hh5Js5iv32b824b2rOzdDs1o=;
-        b=rCmJaqb8HemmCapO7HVjUJfFQUFQ6SCpFzhnEhK6IE/opz+BbWb3O2agejFtuybWR3
-         qUl9LWRsQJNBT0EeJ20v0kNDt0oyowGVoCKhqcX4ub7Yy2PkA3oiTZMd6TmtzXuaSdce
-         4l1DcBfC6qUeyeN8bgezhXhTSMGQlfVCCsnXZkhxTdY+INaue/FUDrWUQnTKWtn3x3+4
-         gzrLTHuNwmaGychxCc3BxDFIegOlC/Irm3Y1laa/yZe7Qu1/bSODyC9nWhtRGsrWvJ3q
-         TBKbwgC0Lo5jvD74Ixi/1XagQAAxSY7Ig9TjTfw9Bv3Y6PueFokeAi3EgPDY0qB3Elhl
-         4n4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWDe+rlfYRoLtIfaqcciNVZPEL6b6LuVsXG9hqL+9nGiazrjKLbZvBI60mkIlmiXsWtbjE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6fCxx/pz5gwUlTThklerfNEUmIJ4Lxy7L8NwF7rtBoWoGhSDG
-	EQENnvJdlbOixXk15W94PU8JWESrA4phws6UGm6TblQHtEhNDecw
-X-Gm-Gg: ASbGncsStFEKoNqq6Io7ENGArhyn+NkwLttEYDJ4bbJFdYNAmMMIE4USoTKk9Sz0avx
-	yLVlZo5Ajv3I+QO49M/MCUuJhP4hpjLKrvIMG6udmRWhQnYXKFcNpmZakn+osNSkcUGu3DHlqpf
-	2SnJFKHnXBGftlW/IO9r6AhvuOFkRPRubrC2ihvlnhwWaXNDizhb3NfDLlnPEE28XpwuFJQAwYo
-	DWOykRuUlz/yrfRRRnoqN9MCIFm5kJMiuyTKULu24pvmR7smXjDAM/Z5njEJP8Ua06oNYkHEH18
-	ah1WLnRZaopEx4YDDp0cExD4Zx2gd35f6g==
-X-Google-Smtp-Source: AGHT+IH/Wtjlwcy/lm0MF5OCpgkb7cKII6hjVT2qz0bgw5fzVp/w5I5vtqsgR9DhW8S+zU/HcCbehQ==
-X-Received: by 2002:a5d:6d09:0:b0:387:8604:5023 with SMTP id ffacd0b85a97d-388e4d8edf2mr206319f8f.44.1734467378883;
-        Tue, 17 Dec 2024 12:29:38 -0800 (PST)
-Received: from ?IPV6:2001:b07:aac:705d:5605:668a:52f3:a096? ([2001:b07:aac:705d:5605:668a:52f3:a096])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c8016bdfsm12153714f8f.43.2024.12.17.12.29.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Dec 2024 12:29:38 -0800 (PST)
-Message-ID: <b378e1ab-5699-4369-8fed-fa6973d5aed7@gmail.com>
-Date: Tue, 17 Dec 2024 21:29:36 +0100
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="PPdU/2bK"
+Received: from [192.168.86.31] (99-158-29-91.lightspeed.miamfl.sbcglobal.net [99.158.29.91])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id E228816553D;
+	Tue, 17 Dec 2024 22:22:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1734470555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wW2QXiZBbLE1wGkEl5zN+AiTfa/9pU9LFPSeGXm2aqg=;
+	b=PPdU/2bK5myHkzFdmAK4Og92ZTDgAbIJsFCJddzmjOXImeU8masyqUcXSsGLMqeAUYJg3F
+	oQe4iJEFqoucuFYWGWlE/YjZH53EdujIhz2i0/ECguQPRuSUyToBMyLFVhZQSKDcas5759
+	pkOPT1LxrgeOmXGg0d2xgyFyjU1lNXg=
+Message-ID: <bf619a0e-f470-4bdb-8d09-2cea172bfe8e@ixit.cz>
+Date: Tue, 17 Dec 2024 16:22:29 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] usb: typec: tcpci: set ALERT_MASK register after
- devm_request_threaded_irq()
-To: Francesco Dolcini <francesco@dolcini.it>, Xu Yang <xu.yang_2@nxp.com>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
- andre.draszik@linaro.org, rdbabiera@google.com, m.felsch@pengutronix.de,
- dan.carpenter@linaro.org, emanuele.ghidoli@toradex.com,
- parth.pancholi@toradex.com, francesco.dolcini@toradex.com,
- u.kleine-koenig@baylibre.com, linux-usb@vger.kernel.org,
- imx@lists.linux.dev, jun.li@nxp.com
-References: <20241217091208.2416971-1-xu.yang_2@nxp.com>
- <20241217091208.2416971-2-xu.yang_2@nxp.com>
- <20241217163506.GA80703@francesco-nb>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 2/2] dt-bindings: media: imx219: Describe sensor address
+ using the reg property
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20241217024206.1700170-1-david@ixit.cz>
+ <20241217024206.1700170-2-david@ixit.cz>
+ <6djxfcuroxlth2th3tpuesauhdnowatzgnyhesewjfz32v6gbz@q2dj7jsxiqlw>
 Content-Language: en-US
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-In-Reply-To: <20241217163506.GA80703@francesco-nb>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <6djxfcuroxlth2th3tpuesauhdnowatzgnyhesewjfz32v6gbz@q2dj7jsxiqlw>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Oh, the checkpatch script keeps warning me every time I commit—I guess 
+it needs to be addressed.
 
+I currently use:
 
-On 17/12/2024 17:35, Francesco Dolcini wrote:
-> On Tue, Dec 17, 2024 at 05:12:08PM +0800, Xu Yang wrote:
->> With edge irq support, the ALERT event may be missed currently. The reason
->> is that ALERT_MASK register is written before devm_request_threaded_irq().
->> If ALERT event happens in this time gap, it will be missed and ALERT line
->> will not recover to high level. However, we don't meet this issue with
->> level irq. To avoid the issue, this will set ALERT_MASK register after
->> devm_request_threaded_irq() return.
+[diff]
+   srcprefix = ./
+   dstprefix = ./
+
+Originally, my intention was to use:
+
+[diff]
+   noprefix = true
+
+This was to make it easier to copy-paste directly into the shell (git 
+log -p, etc.). However, it ended up breaking too many applications. 
+Setting srcprefix and dstprefix instead keeps everything working properly.
+
+Is there any chance a patch allowing a ./ prefix could make it into 
+checkpatch? What do you think, Krzysztof?
+
+Thank you,
+David
+
+On 17/12/2024 02:40, Krzysztof Kozlowski wrote:
+> On Mon, Dec 16, 2024 at 09:41:51PM -0500, David Heidelberg wrote:
+>> Use the reg property instead of text in the description.
+>> Drop useless description of reg property.
 >>
->> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git ./Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml ./Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
 > 
-> I had an offline chat with a Emanuele (in Cc:) that worked on this a few
-> weeks ago and he remember that he already tried a similar approach, but
-> for some reason he did not work.
+> You are using non-standard tools to generate patches. See checkpatch
+> warnings.
 > 
-> He should be able to try this patch in a few days, but with the upcoming
-> winter holidays he might not be super responsive.
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> I wonder if we could wait a little before merging this to allow this
-> testing to happen. Or maybe you can just test if this is working on your
-> setup using edge interrupts (you would need to use only one TCPCI, for
-> the test).
-> 
-> Francesco
+> Best regards,
+> Krzysztof
 > 
 
-Hi all,
+-- 
+David Heidelberg
 
-I was curious, so I tested the two patches. I can confirm that if both are applied, 
-edge interrupts still work correctly.
-However, with only the first patch applied, it does not work.
-
-I hope this helps.
-
-Emanuele
