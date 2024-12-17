@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0CB154BE0;
-	Tue, 17 Dec 2024 05:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32952136347;
+	Tue, 17 Dec 2024 06:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734413262; cv=none; b=LnF5BH/+shTWlT227sRpE32SI6d25XUYnMOX0SMm/MLZxufgCjrdnkulF4/kU5CWguNWVzQTKzWG+6bbgtWxLrRr+ddzvn3xOjUHPBpBTx7rozVr0bryTjoekJMkxklUyPAASWNnqrpGeQWnqeQjDiZJ6A6cCcEwfBJuu6+mp5Y=
+	t=1734416045; cv=none; b=hUsz5btB77w5nzuG7+XRDegkbub7DRiC7wZQHMmhTP/hSYRFsVLQxoG9eefG5qb73e1LIOBFFJDd+PaFw5Jmox0PHOG5ignOevUu/yfYAc2Vx7ZhJsC+CgSWFhScuUFktju+qxdLv8Z7LFlm3vfrzmwxDZiYDcd5JuSDCf4ZToM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734413262; c=relaxed/simple;
-	bh=/5RJEeJzLlqr1J7OdtS8uUI9PVZSwCxm3JRxVcr15/w=;
+	s=arc-20240116; t=1734416045; c=relaxed/simple;
+	bh=ecn4cVP/HVxlytKknmHrPKraZ3LM0f8wRwebQY8JxiY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NM+DMlwMGdRZeeBYQCoLU1ui5HfnoTPz6ZWUo3YB/MuunIV9DId6bfnaiZ8XxaydS047foBWZO3VJ6/R/bMtRGLilkWgHvZ3xa68G3N2eSPUlWixqlOFKHg0Nvigv1p+Yj0ze3VehD46SnjU099TO2odP/UTODHljZOr2XPqi/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyLb5xLi; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=nbJNkpKIMUwCHnC4WqUVdarhydI8uBgbVpfm9mB0JXtGOA6mUlHJanpZ5Sj4/pX8g3o7YJzpFM/lqN2jNkyjqMXhOrERWqhLiSU2yTdqckxE5+4Mjfpo+ql4aMN5xbMgDclDhVg0oZMCXMF5yMHAlRgoO3S3RmX7FKhzQOtEHPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzQ973Ez; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyLb5xLi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACF1C4CED3;
-	Tue, 17 Dec 2024 05:27:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzQ973Ez"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B92C4CED7;
+	Tue, 17 Dec 2024 06:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734413261;
-	bh=/5RJEeJzLlqr1J7OdtS8uUI9PVZSwCxm3JRxVcr15/w=;
+	s=k20201202; t=1734416044;
+	bh=ecn4cVP/HVxlytKknmHrPKraZ3LM0f8wRwebQY8JxiY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fyLb5xLiKef9oVb4V3OC5Uk43LdnbuHnuq7LcfXvJBSzahQFOmtJGjaO9Z6I3MsCl
-	 5rcL6AMatH3TxSiSCKzkABiibU+7KS30V3WA0AEbKd4JsUKUhVXF+pMDnPGC8PoEH3
-	 klzHqzh5KtzoATSMuC6tLN9xi3DGHTqtp5yXPEbaiHtya9tFscfHgxRN8C8fwiC6F1
-	 dxMt8XeugGX1oAYZ+n4azwxII7gUELEBoTEcrHQszBsgaFdDJn1sbT8wOY9IFLhZXm
-	 ZlrJTtcGWQtbGEKdwoXw9bMM0eVJQDIVWeGfV1pPcZZJY2QtCffgHti6KkKvASfKLW
-	 JliKc/rPOg+Iw==
-Message-ID: <d4afb25d-5993-4f80-9f80-0a548b6532cd@kernel.org>
-Date: Tue, 17 Dec 2024 06:27:36 +0100
+	b=rzQ973EzL+aRNaq9VfSCXN3XAJi8TfmbMbSgWEEQFVPVTPUzQ6v9rMBkzXB4HIMNg
+	 vB4+bDSlzr7JPXFDSsIR98HIZ2f86L3dunJLmzkuXbNxcMXsa/MEZNG4NuGrnCUFS+
+	 wl7MjU6X4zfz+94zARluVdPOK4FJVttbfB694sXwoTKUaHbXN5/odTaPVJwF8rx9Av
+	 4dGeGpivJf9um/sxjh2XrFBsw+jpvOqQ6f5XfnQoNzx+eCOCYIi3q+3DGyuwzxUkTV
+	 Yck3Vfpbt2tk+24fjbpgVKQJMPd15hfytcAMMKNoPKywC5sn73jBqb2/RWtPtsWjvB
+	 Q14fOl9a4GvHg==
+Message-ID: <0216b38b-70f7-4832-bda4-ed268b767b80@kernel.org>
+Date: Tue, 17 Dec 2024 07:13:57 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,15 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] dmaengine: fsl-edma: wait until no hardware request
- is in progress
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>, Frank.Li@nxp.com
-Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, s32@nxp.com,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20241216075819.2066772-1-larisa.grigore@oss.nxp.com>
- <20241216075819.2066772-8-larisa.grigore@oss.nxp.com>
+Subject: Re: [PATCH 1/2] dt-bindings: media: imx219: Rename to include vendor
+ prefix
+To: David Heidelberg <david@ixit.cz>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20241217024206.1700170-1-david@ixit.cz>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -89,19 +94,25 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241216075819.2066772-8-larisa.grigore@oss.nxp.com>
+In-Reply-To: <20241217024206.1700170-1-david@ixit.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/12/2024 08:58, Larisa Grigore wrote:
-> Wait DMA hardware complete cleanup work by checking HRS bit before
-> disabling the channel to make sure trail data is already written to
-> memory.
+On 17/12/2024 03:41, David Heidelberg wrote:
+> imx219.yaml doesn't include the vendor prefix of sony,
+> so rename to add it.
 > 
-> Fixes: 72f5801a4e2b7 ("dmaengine: fsl-edma: integrate v3 support")
+> Update the id entry and MAINTAINERS to match.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  .../bindings/media/i2c/{imx219.yaml => sony,imx219.yaml}        | 2 +-
+>  MAINTAINERS                                                     | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>  rename Documentation/devicetree/bindings/media/i2c/{imx219.yaml => sony,imx219.yaml} (97%)
 
-Why Fixes are at the end of the patchset? They must be either separate
-patchset or first patches.
+If you are doing changes like this, fix entire subsystem so all bindings
+there. Not one file.
 
 Best regards,
 Krzysztof
