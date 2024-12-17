@@ -1,80 +1,89 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A5A14885B
-	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 16:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B918F5A;
+	Tue, 17 Dec 2024 18:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734453318; cv=none; b=G66WgMvW/WgC37Ia/Mpu0sEas5yVI2zBngYg6pRwWGyRTw8OWptKCIzFFrYtT/JwSoVXKikqD9pUHiTCh6bzCtNIaOKUdMRE3OauS6DbuntyCB+3xyGVo/c8nLJKUl26bVVuxJBai5J22uyUxfcMm76JctmWor2Xij7OUr/UvYI=
+	t=1734459656; cv=none; b=bgq5Wpg0UmonUZxv69hmt41DXWxPMfYuu0ntxGRqsvzaobAeTspmQShVhuwnwrnlEmZL/zHXXuAP3QdyLs0APZnSxg4Cik6hgkXsUWSwaKkEzXLIvM0Q28X78gTgEpepaeE2mev0GWSU3lrqz/VDK7xCdxhkYOO8I2SDDOuZf+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734453318; c=relaxed/simple;
-	bh=z+sKILHrYA245NrgRttN0pC45EwQN/0ppfsg7/ECJ14=;
+	s=arc-20240116; t=1734459656; c=relaxed/simple;
+	bh=yildsclURKwBrFcuZYzExOtDLbmKY9IGWCKkE4r0JCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+ugOUcJgTQor9QMKaaNpJryLb/ILgwTnj/WtRcgk57knAa51gdFhso9dQ/TuBzGm30GHO27v5IQy/OpVSbON3jmCedzuqdpkm2z6ou5sWEzHOav5qXizTjNIgCdE17nPkPnnltqbQhcUSG5k/SDgXh+L0IoPC0iUZ8drUAASNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=SzLP0Xpz; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=rhTGC7f64FE01oFvjjKF27W2ejKmwzRK0EO+UbN1nC5641pd/cwNM6O8Udv7a7dOVN9wqJHIdwhTs+OkPl5jCpwumFhHO7BUKWKL/ETV96z8MTnK1MEawZg2f+4IMOF8iI6bOBYxlOfnLb0nZwndCbcHJUY/nNhtp5x6U5iR9sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s8TKNLVu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="SzLP0Xpz"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 197C320778;
-	Tue, 17 Dec 2024 17:35:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1734453312;
-	bh=QrltxmbhHGaNdSNea/2J9Q+FwymcSy9dUR2LsgmKmGo=; h=From:To:Subject;
-	b=SzLP0XpzHSBP8kDNlZarqi1iE9Fl9+SioPWEsYTYHwrKEHdoWVxqoVKWI5lkZGwfk
-	 G0b8iAy1Xj08RmM8gPtXbs37wzASHu7vmUO+CSFtRnvTJ8b5PUXIrvvnJRb8a819Zg
-	 QUkMfjWbMrH4SqqLgjG5EYVhJqoqK8ZtEDmlE1xAV1YsYcqMDTe7WmiKpLPGcs+DAp
-	 D8JEbZ53S3zj4OJBpk9GF+BLs/VechTQ0SPOSPmidNfhjpAQ6CvBEGhLNMe6nJZ6/y
-	 v4xvgT3FvG7EmS0MY5PK38Ni8pmmTxWK9muHykSzAYJ+2NniqpTJM3o3jnKLppqokw
-	 nvepmqCmhRi2w==
-Date: Tue, 17 Dec 2024 17:35:06 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-	andre.draszik@linaro.org, rdbabiera@google.com,
-	m.felsch@pengutronix.de, dan.carpenter@linaro.org,
-	emanuele.ghidoli@toradex.com, parth.pancholi@toradex.com,
-	francesco.dolcini@toradex.com, u.kleine-koenig@baylibre.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 2/2] usb: typec: tcpci: set ALERT_MASK register after
- devm_request_threaded_irq()
-Message-ID: <20241217163506.GA80703@francesco-nb>
-References: <20241217091208.2416971-1-xu.yang_2@nxp.com>
- <20241217091208.2416971-2-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s8TKNLVu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E710C4CED3;
+	Tue, 17 Dec 2024 18:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734459655;
+	bh=yildsclURKwBrFcuZYzExOtDLbmKY9IGWCKkE4r0JCA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s8TKNLVu7XA5lXmycWns29seqO2hyRgVnNOPtDYIK1ZvGtRRuq3/lni9a7rj6NRwA
+	 7PpxpAOIusn9wTEce/uJMivoDJ+t8Cc3myGHyo5l6Cw8DZI1J1QJSMfrPz6N0ipLsA
+	 ioIkdczq83kqYRtTaUBLRAzkiqu8O2gDl0OhAQhgA/vXU/gZvuKk1xeUXBTBOnOqq/
+	 QCzvGg8isuiccF9y3WIVz1BJnMjH8FvJKEIeFD5hz9gmozKkDk/FVFtlOHVAH+rn3c
+	 2XI0zdgvBVBIRFYcy/81QfCNBTGKJ9R6qw136CcVzdD2qopafyyEA3mMt0jWNldRH5
+	 40N1rjSlTBjTw==
+Date: Tue, 17 Dec 2024 18:20:51 +0000
+From: Conor Dooley <conor@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: nvmem: imx-ocotp: Introduce
+ #access-controller-cells
+Message-ID: <20241217-compare-craftily-94425c53b4d8@spud>
+References: <20241217-imx-ocotp-v2-0-3faa6cbff41b@nxp.com>
+ <20241217-imx-ocotp-v2-1-3faa6cbff41b@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="xHQ/yDLv8t1eplxP"
+Content-Disposition: inline
+In-Reply-To: <20241217-imx-ocotp-v2-1-3faa6cbff41b@nxp.com>
+
+
+--xHQ/yDLv8t1eplxP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241217091208.2416971-2-xu.yang_2@nxp.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 05:12:08PM +0800, Xu Yang wrote:
-> With edge irq support, the ALERT event may be missed currently. The reason
-> is that ALERT_MASK register is written before devm_request_threaded_irq().
-> If ALERT event happens in this time gap, it will be missed and ALERT line
-> will not recover to high level. However, we don't meet this issue with
-> level irq. To avoid the issue, this will set ALERT_MASK register after
-> devm_request_threaded_irq() return.
-> 
-> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+On Tue, Dec 17, 2024 at 04:43:36PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> Introduce "#access-controller-cells" to make OCOTP be an accessing
+> controller, because i.MX Family OCOTP supports a specific peripheral
+> or function being fused which means being disabled.
+>=20
+> Add the i.MX[95,93] OCOTP gate index.
+>=20
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-I had an offline chat with a Emanuele (in Cc:) that worked on this a few
-weeks ago and he remember that he already tried a similar approach, but
-for some reason he did not work.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-He should be able to try this patch in a few days, but with the upcoming
-winter holidays he might not be super responsive.
+--xHQ/yDLv8t1eplxP
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I wonder if we could wait a little before merging this to allow this
-testing to happen. Or maybe you can just test if this is working on your
-setup using edge interrupts (you would need to use only one TCPCI, for
-the test).
+-----BEGIN PGP SIGNATURE-----
 
-Francesco
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2HBAgAKCRB4tDGHoIJi
+0mqiAQCvW9eoF6N7cbHaOx0lGoN8Anj0wtcz8D/mTXwQMot4WgD+NXPCSLjx/jyI
+l1ucvLcVZh77ERggFbTtxPhpmvr9hA0=
+=qNnf
+-----END PGP SIGNATURE-----
 
+--xHQ/yDLv8t1eplxP--
