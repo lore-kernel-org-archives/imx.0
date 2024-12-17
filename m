@@ -1,87 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49621F893B;
-	Tue, 17 Dec 2024 18:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495942A9B
+	for <imx@lists.linux.dev>; Tue, 17 Dec 2024 20:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734460044; cv=none; b=QPq74wOu4L8oLmpM7L5RgxQsYTVOqm1dP7R4Y+W42Ra6u/VwK3+Btn5KO/xx30vRrbprz8xcqaeyvZYb27bNmvvM19TgdAV6NrejaIzHc5e3jKz0a2j1VLKdiHbT7hm6nMTiD4Mi9ZUhhXCez5L3GfV/DIqKv9RMikOqHbhHVBk=
+	t=1734467382; cv=none; b=r06Pf/S5Ge12/YuqenkA59Mbn5SICh6pEVNMeXLPWk+SiDllLWto3M7bZB2VSbHvWNWU6TUvfSvPz0j7qz/hAJ5TWchhZanoPJWD59l6hmxuLXGGpdH9Vtck0LFAH7KYvs90YjdRxzVpDhRYaVeC9KCvWaRNzvG6/reTlTO9eXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734460044; c=relaxed/simple;
-	bh=RB/vl1xZENeqYUPqxa8Gv9J0tIN+fUFldgQCXs2ENbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PBvVQlsz+c1eyceqV6ZT3eIzT2Ay7+/bm9BUkAZghc63lrkgLx9KzD+52ryKn2W5ct6w53gCKTvzTfzsv9b3OuQSE8Ji6c694+qIrWWxAG3/QRLzHGXn1SUWo4a6ptoCRUnrqKlY6WXbc9Khi9BQSWyN440XlD2stSD23BYJl0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMHOyiam; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734467382; c=relaxed/simple;
+	bh=wjtVSp5e/gtP2bPB0gVaig8Ytq2WZDbCWtlVs+teKRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HuoH1jHmbXFNRUhdOiPCR5ynYuYBRyWQlJYIenSkrX4odJhXZV5FO/mjsAZ/eAvxxUCrWdFHQfUgMpgtMIwvMFUU1FCBZn5yYE1RAGlpYD58jWqcWZiTUZYFNioi4GMh83RW5kHfljaWsiGVAR6Mj4irm7e/wwJuCk0GLtFK9kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ar65+oj3; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMHOyiam"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D930C4CED7;
-	Tue, 17 Dec 2024 18:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734460044;
-	bh=RB/vl1xZENeqYUPqxa8Gv9J0tIN+fUFldgQCXs2ENbk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jMHOyiam9cF06gX0sD/20gWYwACF7ZcYC4bAxANmYK5U8cBWBNnXUgKQqzk8W6fEM
-	 HOuzdxFXxsiUbOleKLBK64JAqGfL2OvWMnV1EYDYAH73TP09xFrixmB8hzmyJNQCkO
-	 /a24rjx9xtANDjlvuf6CfBqEpVD367G1tx9Rt+ZN7nhp61wp+QSJ8bQIQFhZ7S1Ueq
-	 szjnRe/cluvX8+2k26fvudnR2ltiUNlMrZD+ZOu9Yg4w5ueE3vGsOXDiaQs+PEbD4B
-	 LWMnhTHdlJyJmIlU9rvt6iidldoDVtPxwiS7/uac2BGtwHD9PAaPpld1lRN5XWfiZw
-	 4Y8cNp6Vdvk5Q==
-Date: Tue, 17 Dec 2024 18:27:19 +0000
-From: Conor Dooley <conor@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: media: imx283: Describe sensor address
- using the reg property
-Message-ID: <20241217-strongly-twiddle-b9e1ade32570@spud>
-References: <20241217032821.1712916-1-david@ixit.cz>
- <20241217-moving-rubble-712bba91af4d@spud>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ar65+oj3"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385de59c1a0so3737465f8f.2
+        for <imx@lists.linux.dev>; Tue, 17 Dec 2024 12:29:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734467379; x=1735072179; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=riuJ6VXEH1r2xq2adD8Hh5Js5iv32b824b2rOzdDs1o=;
+        b=ar65+oj3KDLTy5I/Bi79/oDeAdBHklB2/djw7XuKPk3OG3RqqyBYYdUFIEuDaxZlxt
+         poiaoe90DgBDjCCBp5Qs4s2YZZ9SRdrRA5tJLSYyzQHsAsbeZoNr8YuO3g0B1GVjUKwi
+         r8IS2hzdDwiUYkt6duRJ/jaQ9RvEZgedFjxcRkaK2gFVYF0AWDKpuw2/op8MxqLqOBVK
+         M7o/RQCj8WG3c3RtVEYf5nOkn3tisO3KBeDxEYKyXaJQGvg6w95tUn6Ha2i2feIY5R3I
+         SZwE4BiLlETNav6OQ250sf24STOYRdx0hCrB/Z66QPSp9dtyAn8vBvLRxpu46QgQMaNE
+         Oyqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734467379; x=1735072179;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=riuJ6VXEH1r2xq2adD8Hh5Js5iv32b824b2rOzdDs1o=;
+        b=rCmJaqb8HemmCapO7HVjUJfFQUFQ6SCpFzhnEhK6IE/opz+BbWb3O2agejFtuybWR3
+         qUl9LWRsQJNBT0EeJ20v0kNDt0oyowGVoCKhqcX4ub7Yy2PkA3oiTZMd6TmtzXuaSdce
+         4l1DcBfC6qUeyeN8bgezhXhTSMGQlfVCCsnXZkhxTdY+INaue/FUDrWUQnTKWtn3x3+4
+         gzrLTHuNwmaGychxCc3BxDFIegOlC/Irm3Y1laa/yZe7Qu1/bSODyC9nWhtRGsrWvJ3q
+         TBKbwgC0Lo5jvD74Ixi/1XagQAAxSY7Ig9TjTfw9Bv3Y6PueFokeAi3EgPDY0qB3Elhl
+         4n4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWDe+rlfYRoLtIfaqcciNVZPEL6b6LuVsXG9hqL+9nGiazrjKLbZvBI60mkIlmiXsWtbjE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz6fCxx/pz5gwUlTThklerfNEUmIJ4Lxy7L8NwF7rtBoWoGhSDG
+	EQENnvJdlbOixXk15W94PU8JWESrA4phws6UGm6TblQHtEhNDecw
+X-Gm-Gg: ASbGncsStFEKoNqq6Io7ENGArhyn+NkwLttEYDJ4bbJFdYNAmMMIE4USoTKk9Sz0avx
+	yLVlZo5Ajv3I+QO49M/MCUuJhP4hpjLKrvIMG6udmRWhQnYXKFcNpmZakn+osNSkcUGu3DHlqpf
+	2SnJFKHnXBGftlW/IO9r6AhvuOFkRPRubrC2ihvlnhwWaXNDizhb3NfDLlnPEE28XpwuFJQAwYo
+	DWOykRuUlz/yrfRRRnoqN9MCIFm5kJMiuyTKULu24pvmR7smXjDAM/Z5njEJP8Ua06oNYkHEH18
+	ah1WLnRZaopEx4YDDp0cExD4Zx2gd35f6g==
+X-Google-Smtp-Source: AGHT+IH/Wtjlwcy/lm0MF5OCpgkb7cKII6hjVT2qz0bgw5fzVp/w5I5vtqsgR9DhW8S+zU/HcCbehQ==
+X-Received: by 2002:a5d:6d09:0:b0:387:8604:5023 with SMTP id ffacd0b85a97d-388e4d8edf2mr206319f8f.44.1734467378883;
+        Tue, 17 Dec 2024 12:29:38 -0800 (PST)
+Received: from ?IPV6:2001:b07:aac:705d:5605:668a:52f3:a096? ([2001:b07:aac:705d:5605:668a:52f3:a096])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c8016bdfsm12153714f8f.43.2024.12.17.12.29.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2024 12:29:38 -0800 (PST)
+Message-ID: <b378e1ab-5699-4369-8fed-fa6973d5aed7@gmail.com>
+Date: Tue, 17 Dec 2024 21:29:36 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tqzicyYakCoVLuvO"
-Content-Disposition: inline
-In-Reply-To: <20241217-moving-rubble-712bba91af4d@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] usb: typec: tcpci: set ALERT_MASK register after
+ devm_request_threaded_irq()
+To: Francesco Dolcini <francesco@dolcini.it>, Xu Yang <xu.yang_2@nxp.com>
+Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+ andre.draszik@linaro.org, rdbabiera@google.com, m.felsch@pengutronix.de,
+ dan.carpenter@linaro.org, emanuele.ghidoli@toradex.com,
+ parth.pancholi@toradex.com, francesco.dolcini@toradex.com,
+ u.kleine-koenig@baylibre.com, linux-usb@vger.kernel.org,
+ imx@lists.linux.dev, jun.li@nxp.com
+References: <20241217091208.2416971-1-xu.yang_2@nxp.com>
+ <20241217091208.2416971-2-xu.yang_2@nxp.com>
+ <20241217163506.GA80703@francesco-nb>
+Content-Language: en-US
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+In-Reply-To: <20241217163506.GA80703@francesco-nb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---tqzicyYakCoVLuvO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 06:25:47PM +0000, Conor Dooley wrote:
-> On Mon, Dec 16, 2024 at 10:28:17PM -0500, David Heidelberg wrote:
-> > Use the reg property instead of text in the description.
-> >=20
-> > Signed-off-by: David Heidelberg <david@ixit.cz>
->=20
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On 17/12/2024 17:35, Francesco Dolcini wrote:
+> On Tue, Dec 17, 2024 at 05:12:08PM +0800, Xu Yang wrote:
+>> With edge irq support, the ALERT event may be missed currently. The reason
+>> is that ALERT_MASK register is written before devm_request_threaded_irq().
+>> If ALERT event happens in this time gap, it will be missed and ALERT line
+>> will not recover to high level. However, we don't meet this issue with
+>> level irq. To avoid the issue, this will set ALERT_MASK register after
+>> devm_request_threaded_irq() return.
+>>
+>> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> I had an offline chat with a Emanuele (in Cc:) that worked on this a few
+> weeks ago and he remember that he already tried a similar approach, but
+> for some reason he did not work.
+> 
+> He should be able to try this patch in a few days, but with the upcoming
+> winter holidays he might not be super responsive.
+> 
+> I wonder if we could wait a little before merging this to allow this
+> testing to happen. Or maybe you can just test if this is working on your
+> setup using edge interrupts (you would need to use only one TCPCI, for
+> the test).
+> 
+> Francesco
+> 
 
-Heh, I was super confused as to why I couldn't find this in patchwork
-but then realised Krzk had already acked it, d'oh.=20
+Hi all,
 
---tqzicyYakCoVLuvO
-Content-Type: application/pgp-signature; name="signature.asc"
+I was curious, so I tested the two patches. I can confirm that if both are applied, 
+edge interrupts still work correctly.
+However, with only the first patch applied, it does not work.
 
------BEGIN PGP SIGNATURE-----
+I hope this helps.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2HChwAKCRB4tDGHoIJi
-0kFoAQCOhVUZvn6NqTMY+RR2X1uEyOAU6/iXeUyvpRjegTYoMgEA++gnaSbACMxl
-hhbNIVzB2UIPcvKgT+yVJURaMtryjA4=
-=MDSt
------END PGP SIGNATURE-----
-
---tqzicyYakCoVLuvO--
+Emanuele
