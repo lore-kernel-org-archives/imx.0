@@ -1,210 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D42193079
-	for <imx@lists.linux.dev>; Wed, 18 Dec 2024 11:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802181ACEA9
+	for <imx@lists.linux.dev>; Wed, 18 Dec 2024 12:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734522769; cv=none; b=b/Y+3r9W6/QO0//XcTS9/BquJlG0kpGHDcDbBKp3k+HBdTf5OmztknVEvF/smeNEG6p8W11ni3fKSp3jHvw+yjM3LSiwtS7bECr6qMch8KXuqNl18+wLP2a4mBptr7AdxnobncD1e3a6xZ3WgIhlvhBL8va/BRX/0eT2wUAetJU=
+	t=1734526796; cv=none; b=RIpAFIMSIM7mWKc/TgptYzyLUCyV1G0r9sUMy5zIEZ/3bRUBZSUWj9A5DKSrExdb2PO+mxig3A9zqSASLmrdNHRpI1pGFST8WAjAZNCcRxmQVMgCfzSB+KIUHXETMC1cwLYFvQtInSP66vLeFVzPfMjFfwyzDhxiSV/+9Myeelc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734522769; c=relaxed/simple;
-	bh=k7zJD6tvKOhJ5u/ZV0oN3BE14o4iPW3mvVFm4FJ2PuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvGh5/QnzfN7gNqJsv/oKCK9d2Za95Od9MI6BJKY9pPjTYMd9CVTRLZP4MQ1J89rcLRuh398qzn+OcJthLnGuA2MWlPCimQ0EKvGY35+ayY34SzQjvBFYcTRa8JY2bzyubqyqDw42L/qVzAgYPvydIV0g33r5085/L02ZqPRK9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cWYgFrQ3; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1734526796; c=relaxed/simple;
+	bh=/qWCv9pXBNXlSLTUOgXh7xlzBdgLrJ6tkCgRkmuCAqU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BCJ84Eqa2djSeUlyRwnY8o9ZsQ8AAbCY5+BiFUO4TBIp8EAItoX5N76Kx8uC3Ap8qOyTxn3kvaZma8Af8PC3v8VcGY8X1RbKHjM4wu5ISa07tdBRVU4tSwVGCY3qpRi49rx7m8U0Scih/mucR1OioUQ/wCzu50adu/SIbenXxJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bqvPn6CK; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cWYgFrQ3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734522768; x=1766058768;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=k7zJD6tvKOhJ5u/ZV0oN3BE14o4iPW3mvVFm4FJ2PuY=;
-  b=cWYgFrQ3HZxmfH0wvcO2MUhWYOMMtX82FIk2VuzAmFRTJQySKvWu3ZDv
-   TB3MB3Q9yh0qHxqwWCgX7QnKgAWwrR/cXgy/64pWzOFUVJQ3bVlb2zcQ+
-   xkdJD64yn4ybw9R2+xokA2ONobEj+ZShR29A+i0myIUy7rlOMV4Q/ICyR
-   UIG3S1llRMREJISAqstC885WVi4IHxu3gSbSTwelojvSUS8VseOvDTqH1
-   9JRpJZsK+WXMdVbl2qXGXfQRv6ao+9xcUvpUfItWwDXhhNalRiKvU49xM
-   pnz7deOs/a+9EzZzEdbFR+XCfdHSeG4nnV2gybdwOREK0gDMuRPUI6yNh
-   A==;
-X-CSE-ConnectionGUID: J17AbK6GQpKEbN1WgykGSA==
-X-CSE-MsgGUID: OPMl2bvZQQmx2EU9hAG1fQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35025995"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="35025995"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 03:52:47 -0800
-X-CSE-ConnectionGUID: Dp2czX6TT2+nlZjVdslyhw==
-X-CSE-MsgGUID: DzR3am8LTKKZDqOKL9z6Cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="101977020"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa003.fm.intel.com with SMTP; 18 Dec 2024 03:52:43 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 18 Dec 2024 13:52:42 +0200
-Date: Wed, 18 Dec 2024 13:52:42 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, andre.draszik@linaro.org,
-	rdbabiera@google.com, m.felsch@pengutronix.de,
-	dan.carpenter@linaro.org, emanuele.ghidoli@toradex.com,
-	parth.pancholi@toradex.com, francesco.dolcini@toradex.com,
-	u.kleine-koenig@baylibre.com, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v4] usb: typec: tcpci: fix NULL pointer issue on shared
- irq case
-Message-ID: <Z2K3ilIMDaN306JM@kuha.fi.intel.com>
-References: <20241218095328.2604607-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bqvPn6CK"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-8019338c2b2so4159592a12.3
+        for <imx@lists.linux.dev>; Wed, 18 Dec 2024 04:59:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734526795; x=1735131595; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/qWCv9pXBNXlSLTUOgXh7xlzBdgLrJ6tkCgRkmuCAqU=;
+        b=bqvPn6CKZnsce+DEux1dJwAKDhjM4Owc84YjqOXEBVseuM1kOTtHpXiSFddsLjrsiy
+         WElIUFZPlT4jzxa/Rh8fBElyoaYebdZ0xkw7JjHq/vdnZz9DNQxiTEujO4vbyFWLsP54
+         iC3aguPFuzbqIx0hcmXxqdsHEkhS4QsDL6tr0K4N4hkD5Bu5dCl7vl3qQYuoCba+D59P
+         xQCbZez4t8oQYYVsN2tilWKOq0fE3gr6IFXINxXExT6uDbNCax0XsQvmgcGOB6/gziYC
+         pBSzyHeA4joCgrvuJHlZkFKc/nKV99loyKPMyHOFrooWvP8ENghpwNXF7rUlgJsWxK8O
+         UU/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734526795; x=1735131595;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/qWCv9pXBNXlSLTUOgXh7xlzBdgLrJ6tkCgRkmuCAqU=;
+        b=mPZd3DuPH368/nd5tiqQt8EDijaO4lcHPEIYzVzke3J+s/dTEudFRUeOI0vA1gZN+G
+         MYb5JvcSn9URAVCyYszzu4k9/y17FcjgjLmBFN2c1nymzrr/i9zLBaTQn0O7EmGg/R5s
+         B52lAicTZso9XIQ40Ns2Ojofp6f+mo+JRAFi0TBJg1O5+pIV/F69AYaZqIh5ave3/YHJ
+         z63dXSZ/h0emPl8pM1yTzS2lZC/1EcvMI9727UgjGWJEeeSgdJ6+jt1Lpg9pMNa3tKHk
+         Teje+l7mWK3xaoSUpvXMtj7Xze5EUnuuxSdcePSMrsdYOqB5Uy1D5e4uXx66UTPvVAmA
+         vHyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXSd94PPKeX9t1wxDKjdQQOr1KS0OSKg/if7SgepizFhk/D8AkyLzGiyV2HSwZH6uw54as=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxsGFPv+hur6ecRjecI4vCso7PTZLZrbOI3iKOGnJdkqNjAG7zU
+	NXkKWP6COz0GFLtuPCzGWi+zzB2jEBduytv/mZnMfbQ6eDn6L/+ODwiR8juxivH8fizKEoHslZ6
+	g2djYhrTy1llEb/udi0fZjkH4nt0=
+X-Gm-Gg: ASbGncvd3P06cNZ8p4MfL+js78mC85I4+yfMVb/9lTbC4QrC/MLvlMvzONBYvZ7jOqc
+	tlvod/ueOcPaiWNBZhKg1lcX4+qay5PTUpA==
+X-Google-Smtp-Source: AGHT+IHrwBpS6CcQxAZmukcsGo476EQmoqWM2slhHPAXzThtNb2IK1NBH/tbUgYtw/82HwemO/owjrylht1ANbiMZYg=
+X-Received: by 2002:a17:90b:380e:b0:2ee:f22a:61dd with SMTP id
+ 98e67ed59e1d1-2f2e9374547mr3475436a91.32.1734526794842; Wed, 18 Dec 2024
+ 04:59:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241218095328.2604607-1-xu.yang_2@nxp.com>
+References: <20241113195240.3699-1-laurentiumihalcea111@gmail.com>
+ <20241113195240.3699-5-laurentiumihalcea111@gmail.com> <ZzUJQCeWclsrr/lr@lizhi-Precision-Tower-5810>
+ <c47710a5-7e53-48b1-bd6b-c0123865aee5@gmail.com> <Z1r9hWH1ioR5vI5H@lizhi-Precision-Tower-5810>
+ <c3c9389f-5116-4a5f-99f6-1b37c1e8c457@gmail.com>
+In-Reply-To: <c3c9389f-5116-4a5f-99f6-1b37c1e8c457@gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 18 Dec 2024 15:01:11 +0200
+Message-ID: <CAEnQRZArKSOtka46A_SOiV2=8bs9B36ubAJM3GqYJZkKyBt_4A@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] ASoC: SOF: imx: add driver for imx95
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Frank Li <Frank.li@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Mark Brown <broonie@kernel.org>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Takashi Iwai <tiwai@suse.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Jaroslav Kysela <perex@perex.cz>, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 18, 2024 at 05:53:28PM +0800, Xu Yang wrote:
-> The tcpci_irq() may meet below NULL pointer dereference issue:
-> 
-> [    2.641851] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-> [    2.641951] status 0x1, 0x37f
-> [    2.650659] Mem abort info:
-> [    2.656490]   ESR = 0x0000000096000004
-> [    2.660230]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [    2.665532]   SET = 0, FnV = 0
-> [    2.668579]   EA = 0, S1PTW = 0
-> [    2.671715]   FSC = 0x04: level 0 translation fault
-> [    2.676584] Data abort info:
-> [    2.679459]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-> [    2.684936]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> [    2.689980]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [    2.695284] [0000000000000010] user address but active_mm is swapper
-> [    2.701632] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-> [    2.707883] Modules linked in:
-> [    2.710936] CPU: 1 UID: 0 PID: 87 Comm: irq/111-2-0051 Not tainted 6.12.0-rc6-06316-g7f63786ad3d1-dirty #4
-> [    2.720570] Hardware name: NXP i.MX93 11X11 EVK board (DT)
-> [    2.726040] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [    2.732989] pc : tcpci_irq+0x38/0x318
-> [    2.736647] lr : _tcpci_irq+0x14/0x20
-> [    2.740295] sp : ffff80008324bd30
-> [    2.743597] x29: ffff80008324bd70 x28: ffff800080107894 x27: ffff800082198f70
-> [    2.750721] x26: ffff0000050e6680 x25: ffff000004d172ac x24: ffff0000050f0000
-> [    2.757845] x23: ffff000004d17200 x22: 0000000000000001 x21: ffff0000050f0000
-> [    2.764969] x20: ffff000004d17200 x19: 0000000000000000 x18: 0000000000000001
-> [    2.772093] x17: 0000000000000000 x16: ffff80008183d8a0 x15: ffff00007fbab040
-> [    2.779217] x14: ffff00007fb918c0 x13: 0000000000000000 x12: 000000000000017a
-> [    2.786341] x11: 0000000000000001 x10: 0000000000000a90 x9 : ffff80008324bd00
-> [    2.793465] x8 : ffff0000050f0af0 x7 : ffff00007fbaa840 x6 : 0000000000000031
-> [    2.800589] x5 : 000000000000017a x4 : 0000000000000002 x3 : 0000000000000002
-> [    2.807713] x2 : ffff80008324bd3a x1 : 0000000000000010 x0 : 0000000000000000
-> [    2.814838] Call trace:
-> [    2.817273]  tcpci_irq+0x38/0x318
-> [    2.820583]  _tcpci_irq+0x14/0x20
-> [    2.823885]  irq_thread_fn+0x2c/0xa8
-> [    2.827456]  irq_thread+0x16c/0x2f4
-> [    2.830940]  kthread+0x110/0x114
-> [    2.834164]  ret_from_fork+0x10/0x20
-> [    2.837738] Code: f9426420 f9001fe0 d2800000 52800201 (f9400a60)
-> 
-> This may happen on shared irq case. Such as two Type-C ports share one
-> irq. After the first port finished tcpci_register_port(), it may trigger
-> interrupt. However, if the interrupt comes by chance the 2nd port finishes
-> devm_request_threaded_irq(), the 2nd port interrupt handler will run at
-> first. Then the above issue happens due to tcpci is still a NULL pointer
-> in tcpci_irq() when dereference to regmap.
-> 
->   devm_request_threaded_irq()
-> 				<-- port1 irq comes
->   disable_irq(client->irq);
->   tcpci_register_port()
-> 
-> This will restore the logic to the state before commit (77e85107a771 "usb:
-> typec: tcpci: support edge irq").
-> 
-> However, moving tcpci_register_port() earlier creates a problem when use
-> edge irq because tcpci_init() will be called before
-> devm_request_threaded_irq(). The tcpci_init() writes the ALERT_MASK to
-> the hardware to tell it to start generating interrupts but we're not ready
-> to deal with them yet, then the ALERT events may be missed and ALERT line
-> will not recover to high level forever. To avoid the issue, this will also
-> set ALERT_MASK register after devm_request_threaded_irq() return.
-> 
-> Fixes: 77e85107a771 ("usb: typec: tcpci: support edge irq")
-> Cc: stable@vger.kernel.org
-> Tested-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> >>> Frank
+> >> the SOF drivers do indeed have some similarities, but each of them has=
+ their own quirks which IMO makes it a bit harder to add the 95 support. We=
+ need to figure out the common parts and then move them to imx-common, but =
+I believe this can be solved incrementally.
+> > You should create common part firstly, then implement equal function wi=
+th
+> > existed part. Finially add imx95 part.
+> >
+> > Frank
+>
+> Yes, I'm aware of how this _should_ be done, but, like I mentioned, the c=
+hange is not trivial and will
+> require tweaking the other drivers as well. As such, I'd like to get the =
+95 support in as-is firstly.
+>
+> Are there any other thoughts on this?
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Laurentiu, Frank please trim the emails and keep only the relevant
+part for discussion.
 
-> ---
-> Changes in v4:
->  - squash two patches to one
->  - rewrite commit message
->  - add Tested-by
-> Changes in v3:
->  - no changes
-> Changes in v2:
->  - no changes
-> ---
->  drivers/usb/typec/tcpm/tcpci.c | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-> index 2f15734a5043..48762508cc86 100644
-> --- a/drivers/usb/typec/tcpm/tcpci.c
-> +++ b/drivers/usb/typec/tcpm/tcpci.c
-> @@ -700,7 +700,7 @@ static int tcpci_init(struct tcpc_dev *tcpc)
->  
->  	tcpci->alert_mask = reg;
->  
-> -	return tcpci_write16(tcpci, TCPC_ALERT_MASK, reg);
-> +	return 0;
->  }
->  
->  irqreturn_t tcpci_irq(struct tcpci *tcpci)
-> @@ -923,22 +923,27 @@ static int tcpci_probe(struct i2c_client *client)
->  
->  	chip->data.set_orientation = err;
->  
-> +	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
-> +	if (IS_ERR(chip->tcpci))
-> +		return PTR_ERR(chip->tcpci);
-> +
->  	err = devm_request_threaded_irq(&client->dev, client->irq, NULL,
->  					_tcpci_irq,
->  					IRQF_SHARED | IRQF_ONESHOT,
->  					dev_name(&client->dev), chip);
->  	if (err < 0)
-> -		return err;
-> +		goto unregister_port;
->  
-> -	/*
-> -	 * Disable irq while registering port. If irq is configured as an edge
-> -	 * irq this allow to keep track and process the irq as soon as it is enabled.
-> -	 */
-> -	disable_irq(client->irq);
-> -	chip->tcpci = tcpci_register_port(&client->dev, &chip->data);
-> -	enable_irq(client->irq);
-> +	/* Enable chip interrupts at last */
-> +	err = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
-> +	if (err < 0)
-> +		goto unregister_port;
->  
-> -	return PTR_ERR_OR_ZERO(chip->tcpci);
-> +	return 0;
-> +
-> +unregister_port:
-> +	tcpci_unregister_port(chip->tcpci);
-> +	return err;
->  }
->  
->  static void tcpci_remove(struct i2c_client *client)
-> -- 
-> 2.34.1
+As for this matter I think we should go with the current version Laurentiu =
+sent.
 
--- 
-heikki
+It is inline with the implementation for imx8qxp, imx8qm, imx8mp and
+imx8ulp which we already have upstream.
+
+There is always space for refactorization and improvements. The
+current version of the code
+is simple enough to go in as it is.
+
+With this,
+
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+
+thanks,
+Daniel.
