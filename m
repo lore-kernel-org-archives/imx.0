@@ -1,240 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE77519CD01
-	for <imx@lists.linux.dev>; Wed, 18 Dec 2024 14:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734532254; cv=fail; b=BKlH+ed6PZWF968icBteQ3vYAwHB/awnrR07cLdNK7rkh3XtElak4KdwqVaQHqfcsz1weQllHNhr4aZcW8NIk42hSYb4Xj9GKG5C8pD398+OdRrh2BWWvjE0ZJ/dHOVvdu5G2D4CuDTI59BkZa7VXxfl6xjZH+TIS/XhimXhylw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734532254; c=relaxed/simple;
-	bh=itDNalUMyeZ2it+I/zZwkRZMJt6QtvHn5AJr1+K3/r8=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=J45WJqWvHsvZBMqYaNeVqEyZtnHMpKwaGo+sKt9TgVJTSWgYS1CSYED6jp9HO8B5/vfOfAUo/exfIAsWjVL/S7IMb2wsjYBpYrSnu42rnHdf+kMXN2dEFtcBhGsYgQLBk/1xfmOCvVsLM7YborZBIjxOW+U82J8+xf2pDhGzpVw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n1sbw4rk; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71DE1F37D8
+	for <imx@lists.linux.dev>; Wed, 18 Dec 2024 15:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734535802; cv=none; b=ZWA1TkqQsYEDRMwOxPX9tU+dR+Bh9lp/QDPa4S1ngWWXIEbY+NBEF9AZNSiUCPUXYSz9doztLb6eP7Rq3B2+qC9MjhpZh2pFb392uivI2OdChxUFEnyOqi3YSJ1tRqBPGjfq7wlQ5EIYQkWUpd2NZRP/TozztOlB4v+HJbLBhOM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734535802; c=relaxed/simple;
+	bh=3GhKKXTEXCvntGyNBDodbsRxDxpF+wHZHM2/dqvARGU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TtPGvFTwLX1pqcm0tcQbY86qkhn4OlTgtO4V4ssPBkMi70bAgTTIOctB7BsgnPv9p9xPz8hrkmtgqbj031o22TX6f8R6BP9AlpzICe6g2/SjoI3gjJTEFfrq3ktlUp+s8BunF0G8G+2SvHmW5OOaMDfIR6aHD74QaLYE3MMtAzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=0rUi7MJc; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n1sbw4rk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734532252; x=1766068252;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=itDNalUMyeZ2it+I/zZwkRZMJt6QtvHn5AJr1+K3/r8=;
-  b=n1sbw4rkU1QGnkjQ0FYQ2bn7Bp7ls22Mf3aQdEvGR65GKLtCzwInQhYf
-   6ogEbXfx1h0jvLYlWVyN669HhzFfsWolNz+q9Z6lCYE5YlE3qhgU09DO4
-   AUNEy1ljQidCYPBCwQzkHLwH0yXNCVunI246pRX2I6o/MX78+IduaCwfp
-   G1DmTfwlAbwPrYfulOaER5g6AtcS/oWtrvZFU0v8dudhVKiZXHO0NwiwR
-   qrfovhmSPZK0FadQCr8XYhJy9wkfVEDIWsHCYQgYENe/xqCaCfHmA8DBS
-   288ILU5+dUpZhsqvFigXcSgLmNyCMzHdPBSeWLpzalDTydhN9HhChcpLh
-   A==;
-X-CSE-ConnectionGUID: /42Dy/gKRiqS6vbgalV5hQ==
-X-CSE-MsgGUID: DMEAnPjaSROWEwAsuioG3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="34900535"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="34900535"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 06:30:51 -0800
-X-CSE-ConnectionGUID: J7TBkL5vQauzgHMC7NUDcg==
-X-CSE-MsgGUID: GqZRJfClRCKt8AwWH70eyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="128863484"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Dec 2024 06:30:51 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 18 Dec 2024 06:30:51 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Wed, 18 Dec 2024 06:30:51 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 18 Dec 2024 06:30:50 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gGV7raktdjM5HWfO4e8xtreCtAYE0X+KOtVonCshB+Am3CvKgPL36YRFbD4GU8qL541jkXR/mXYqNnEMcJwrwwiSicnE3z7jyXSMkrthicNmVSnLiEISLdSa16SiLO4rAqUV3A1WxAW4DYSR9YN6F9ry75n9SWr9P86HxjXa4riczzkstSW2hWMCr9EeLtaiMcSQ0creQO5/OcU21zTp9fStDQLPrfAx4oC4Ek+AOsSDok9ILxfiEkMcujvivCE/K80HiWRJXwAu71xCIiDrjAIBYBYEoTzVRFL9ce+aI1nHtnhprXRGiF0U3XD65KQ6H9e1m02T+QGhF+W5t180KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QHIJGdgBnvy5bgw3NH/g7IS8F7Xhezbu1Z7sIZ43+PE=;
- b=XczJJyLTunnXdUfHqEvVKDiad0PqVwmXar8jS4qMWHgXpOTDtuiPMYycjdI5iFyo64KEnqftxhR8X8y8kJ1DPE4Wj8dDU0IitZ6V+o7OsnDBdjbY99ggFl8Xfp0E984Cqw08C1dc2YjABhl+OD3T5J2D0u3tiB9kRnP217Knrj3ZmIGE8iCm/IJ6/T5mXOhBQx4LgzyahvksjQD3XDV6ezbo8YwkV2DxPBOuB9cH/m2rkYfMu+EVpdNxbz9CCv89nOzzReEg+SX3t8WOc2aHu+AelLXaQV2yqLELGVTQU7O4/L17GeFaoPX5WtKrMVmeTAhMeYWmLdxtxgQcseedDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by PH7PR11MB6769.namprd11.prod.outlook.com (2603:10b6:510:1af::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Wed, 18 Dec
- 2024 14:30:34 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%4]) with mapi id 15.20.8272.013; Wed, 18 Dec 2024
- 14:30:34 +0000
-Message-ID: <48f2de4d-1695-4d8d-834d-b306b17e09a1@intel.com>
-Date: Wed, 18 Dec 2024 15:30:03 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 net-next 3/4] net: enetc: add LSO support for i.MX95
- ENETC PF
-To: Wei Fang <wei.fang@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	Frank Li <frank.li@nxp.com>, "horms@kernel.org" <horms@kernel.org>,
-	"idosch@idosch.org" <idosch@idosch.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-References: <20241213021731.1157535-1-wei.fang@nxp.com>
- <20241213021731.1157535-4-wei.fang@nxp.com>
- <ee42c65c-cc35-4c6b-a9d0-956d06c56f7e@intel.com>
- <PAXPR04MB8510CFF87187B095D15DBD6088052@PAXPR04MB8510.eurprd04.prod.outlook.com>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <PAXPR04MB8510CFF87187B095D15DBD6088052@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR07CA0244.eurprd07.prod.outlook.com
- (2603:10a6:802:58::47) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="0rUi7MJc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95AC3BFB88;
+	Wed, 18 Dec 2024 16:29:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1734535799; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wfB/TCZTripQjH6hLxg9WpKQmWcxnwexAWuVAFpfJ2o=;
+	b=0rUi7MJcJDi1Eu2sqR834LN6dsxJ0Y+1qRM4wHJlZz+SOkl5n8riq56UcMNjrKHx6XaACh
+	XR/vM0M0ENp0QCj3azfIG0VkHOsYNwY+O53c/Bi+xo1R3/1vegiJ08wDQxJXhmCJAbDE1V
+	5vPZxtv/dTX7hahx2f7XAkP37ECRtM2/uOqoewhA/xIz1IfvJ6yfH+APshydh18CHIp6IX
+	YUksesdWmF9KI9CEZQixAMPHmkBy8hvwqCx5S5+WpXf1n20pBtISLXbQR9CIXtmpm51ie/
+	mbVyheV8rleluz0KuayaeZ5e19rWAKX3/s7t2SSsBBQfWwRaMOe2rcSlN/SMfA==
+From: Frieder Schrempf <frieder@fris.de>
+To: linux-arm-kernel@lists.infradead.org,
+	Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v3 7/9] arm64: dts: imx8mm-kontron: Add support for reading SD_VSEL signal
+Date: Wed, 18 Dec 2024 16:27:30 +0100
+Message-ID: <20241218152842.97483-8-frieder@fris.de>
+In-Reply-To: <20241218152842.97483-1-frieder@fris.de>
+References: <20241218152842.97483-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|PH7PR11MB6769:EE_
-X-MS-Office365-Filtering-Correlation-Id: 462087af-95f4-4544-f246-08dd1f708855
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WC9mOWp0bWJlM01Id2RPeENmZFM1bnE4YVdSckg3NVMybVBtaWExSjRSQUlz?=
- =?utf-8?B?a3dLNEVjL2EyZ3dlT3I1U0Mxb0xSNmNqZG9DTTNNenpLcU1hZTJoaTFMaXNH?=
- =?utf-8?B?a3N5TXZqbFlIdk9lWUtRL3E0WnI3M0dQNzFUWHJlOGpWY0YwWlNtQzFWdWxY?=
- =?utf-8?B?a3VTTExvWWRxWEJnSjdzNFE5OXJzODFEMWk0eTAybERDYit2VzJJZ1c5SEFk?=
- =?utf-8?B?MFZVRkNLZ2d3dkdTajY2cUgzNU9NSGhoOE5JVzdHMFJYb0N4V1p2djZhTVdi?=
- =?utf-8?B?SUhGQXlXZXducGRnZGVUalZ0NVA4NnFyUGgvc0l4MTBNTit0aDlheHpmNXpS?=
- =?utf-8?B?OWtKRXhQeDR3QjRqT3hSaHdJbStVeVYrU2k2R1lseXg5b2tHUGdEalg4SlRj?=
- =?utf-8?B?K2lBQ3NTbHd3VUY3ZmFZa2IzVk5zV0R1SHNDakhIN2lOVUJkTEtqaFEzYU9u?=
- =?utf-8?B?NUNUWkQ3cnJoU2tTM2RiVzF6U25iS3hIenZPdkhDbEtmZ1BLV29yVG9nQStm?=
- =?utf-8?B?aUlZSVR6bXNUMndGNFhRZFdLd005TUk0VlBkekRUenZJWDBZa1RGbGh5bkJN?=
- =?utf-8?B?TzAxU3F3WGljWjhDZ2hHL25nUmV1cWZ5YWdYNC8vUlcvWUluREhtMHZZTktY?=
- =?utf-8?B?eXMreFU3cGdLbFVKSm5Md3Ywb2o1bklHMFB5N21KaW4yb0RkQWgwTlZ4WVJY?=
- =?utf-8?B?MlJtUlZpNVZoNUhYSzlJVzh4bnp3STFDL0pJakVWY2F4RVcxK1lKUTgvTlha?=
- =?utf-8?B?cjZvQ2ZaU1hTZGdMQ0RtaG1jQ3VGKzJqdWo0SWVkS3ROU1ZFeHVDRDlIazha?=
- =?utf-8?B?SzF4cFBDUU9JTDNwTzJSS21kWWFoL1dkMmpIbmQxRVBzZzhxL3h3c25ITmtH?=
- =?utf-8?B?L1g3amRWYU45alJMcVFYQllxajR0RUE2dWJ4cjNsQi9JdWhRSDdOdnVMZXVn?=
- =?utf-8?B?RDZSbGR3S3c3N2NJWlhhSERxSnpVY2VqY1R5dG94SmJieSt6N1BVNmNuMFJz?=
- =?utf-8?B?NjQ3MVN0Mk9reE1STTJqdWpLMVJpZFkydnh2clRmY2EzbzFORG1tUlhVWU02?=
- =?utf-8?B?NkJmTkNFVU1SYnNweG5aQWFwc0d2cHdBNkRwOWl3OXRqVVlhcFpEQTlNbWtS?=
- =?utf-8?B?cVZ5TmJVMWJXbEdZdDZRYnhwdHdMQ2Nodk05YUNPcjl2MGFyL1IwNE5McDdR?=
- =?utf-8?B?TU56ZWpEQ2FMRzROMWRpNmhobnM5ZGxUOE4xK0J4T0ZjZXgvTU9xbm5aSTZa?=
- =?utf-8?B?OGZKb1lUd1JYckpMZ2lTMmZsSWlwWEk2eTVIbTdxdWpGaHJyNXIyeUhpRlVL?=
- =?utf-8?B?OWtKRzhxcDlKUmJCWTdrWmhrWUo0R1FkQjF0NGpud1NVZXJpZ0VWQUJNajlS?=
- =?utf-8?B?a0kwajdTL2tlSEs1a0dnQzVIR2p0TDc3UFd4NFlKMis4aUhuRU1zY1NwZ2pS?=
- =?utf-8?B?QUZyUWtGdlBLNFhrN0RmLzJsRURmMFNMK1k0d2FJY3NrNWp5ZEhMM3Fkck9w?=
- =?utf-8?B?VTlobUFRSVFxaVRlR09zbkFFdXFHMG1TRWE3UzI1dWw1RTlaQitLeHNqUFQ4?=
- =?utf-8?B?WUUvU2x5WHlHaHNlZ3hoN2lIZytlVzVMV29FdzNQNW5OenYwTis2bzVrRlps?=
- =?utf-8?B?cVE4NjJ6MEVnaDdlcERRb0UxUmE2aGdMbFhwdVBQekxEbkhIU0xwYmtvd2FQ?=
- =?utf-8?B?TjYxeXpCQkxQVkVGZFlVdFg3RnJTR2lVKzdQSkozTjlUQnJyaHJTMU1IT3lX?=
- =?utf-8?B?eW90OVRyb051Tm9pMkppL2luQzNxQ0lsN3JQMzVhRnIxZzhERUFZZ0VXWlM3?=
- =?utf-8?B?NXNBbkdRMTJoRDRLVkhIVWl2VWNqNnpxWFdTNVFUNWpwOUVyWVNGN1ZvbDcw?=
- =?utf-8?Q?ULMwlWv//yRDs?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFBCbFB5SWhFdmFOekFsTVpHcTdmallpcHFQaFZld2dkQVd6S2N2Yjc2aXJC?=
- =?utf-8?B?aUVTWnhxSi9pOThGdVlGckFueGFrRFVEMjdianR3QmtmYWRtYTdENlJRTjFn?=
- =?utf-8?B?THgyUXRaYktCcGpjQW0wdTM4Z2orMVM5ZHRWMHVqcjRkMFVvNXo1M21jdlhy?=
- =?utf-8?B?dkl6YTFOZ1Y1Y29vb1RzQTdybUc3aGc4d0R4dUdhenFKNUpOZmFlc2J2MWJj?=
- =?utf-8?B?dkNNcDQwNi9IQ1hSSmIwVGdMeGpML3NVTXkxM0V4VnVpSWJMVnFIdnFrOUlU?=
- =?utf-8?B?TFZCdTZialUwWVRMRzhKSlMrQjVVRllScmdSN0ttRmg3NXZ3SlhJY0tORzdH?=
- =?utf-8?B?bmFRMjk2cFYyQ3FYV0I1Y1VGWktGcG53SWxZM2gveWUwRko0TVlEeURoNGVp?=
- =?utf-8?B?T3pHalBmZmcyWmJHOFZuUkNSUzBqcjNtNjZPS1FZOHNlbFBFUDUvNTRzM2ll?=
- =?utf-8?B?azF3cXFYNVQvNnF4VEtvVFM3NHZ3bG9qSlhOcFZrVWlVcTVzVjVMM1hnSHF5?=
- =?utf-8?B?dWRkZ3I5TDdzUUpKSEZ0WVRoOEVydVBJeERFUmE4QlJZb0dnS1ZuUEp5Tm9P?=
- =?utf-8?B?R2FjeTU3SDF1Z2lNdjR6aXFvbkVzZkU3eDlEMEdaZm1RTVRobkUydStQYjR1?=
- =?utf-8?B?Z0pNcjVHS0M1ZFk4dHptZm5MMXg5cXVBY1AydGxKUkFKZXN6QnZsdEZFWWJX?=
- =?utf-8?B?TEs4dkxYWkQ5NTFWVitENlNCdy9JLy9YVTdseGE5SGVtSmQ1MThoVHJLWEdC?=
- =?utf-8?B?UXNVaEltYmtaMmQxY3A3STBjS09YVGlVdkxJalVENktiYXEraXY4V0x3NVcr?=
- =?utf-8?B?a1JtWFVZMU5Rd1MrbTNIMVRWcXQyNmxxdElmWWk0Z0pwTitzZ0NEejkzcUFl?=
- =?utf-8?B?dUhlSkFQZ2RiUlozL0g4MEF0bkVRY3NqY1dnM3UrZXdrRTRmM2xTeEVkN1Vk?=
- =?utf-8?B?NmJWSlJYL09SVkYxNUthallvRUViMGxlMGJxNDdKWmdvZ1NpTlROK1QwOHln?=
- =?utf-8?B?eE8wemNlalFmVXpCdllZZC9ac3M4cWk1QWtLYTFabWxJQ1hmdXNvenR2V2hh?=
- =?utf-8?B?a3ZEOW9McXlXWEo5WUc0VWxhcy9QV0d4TVMzY3NoTGhRUnRWeG15MWUvNzRz?=
- =?utf-8?B?ZnJHcExiT0o2ajlTbXEyZnhLOUdUbmtXTTV0ZVhCM0NvU2dtUEovOFFHbmpP?=
- =?utf-8?B?czhZS2UxT1JteENkSFdMaXNhbVhWd3BNNUlBU2w3RCtwdkF5VUhhM2V3YXpo?=
- =?utf-8?B?RkRZaXFGMU85WExucGs5WHhUUlZZQ1VLbFpmQzRjV3MzZ2UrNENyZlVuYURk?=
- =?utf-8?B?cmtZV2RRNHpVcm5GY1FKZnFwMzFYMTJiMXlGaFZ4RnZaQmhEaE5tVmIxTFhr?=
- =?utf-8?B?eDloU3FYRzlsLzNVdHljQkJRSDdKcUhRVWdTS2tpTm5uOWtrMDd5MGxsbE44?=
- =?utf-8?B?elVidlhxdGNvd2xuOE1ad3luZTZUSXVlajJna294TGgyMUludFhZdklUMHRr?=
- =?utf-8?B?Q0hDd2hka3IwWkZMOVQ2blBaL2tYK0NJYmR3dlIvWTNuNDNHeTlaSWhjbUh2?=
- =?utf-8?B?clZGWmluS0lVNyszTzRXcTV5eUpjWk4rZEtHMW9RSXpUNlNndTRycEFPRm9n?=
- =?utf-8?B?MS96UDJZUlF0WGxyS2t4MFdud3UwbnBSbTN2ZFJueEM5Kzl6dE9aK0MvL0JQ?=
- =?utf-8?B?aU9ET1F6b2o5WGllVGlrV2RrTDd1OUdHZ1NEQVkrbUI5cmRDRmRSTGNYYTZG?=
- =?utf-8?B?ZFB5dm5xUlpiRmNWV0FYSnFxZTBhU1FzemJOUVM1Y29ad3pEK1JUc1oyK0w5?=
- =?utf-8?B?bGxNQWJpanBmS0h4WHhEeis3R2dyM2hkejVoVnEyK1FMaHo0YVd3b1laWGdy?=
- =?utf-8?B?cE1ETGhoL1IzMVMzYTJJSUtocTdvK1g2TDBYd0hsdFE3WDExQlBic09FS2RP?=
- =?utf-8?B?amZVK2ptSVdJUG5Ndnd5QXNXWFpDNFRIa3pWbXE4WWxCSUpMYjVLbzFrOEhR?=
- =?utf-8?B?SlA4WTBUU1FvazZTMW91K0NFdmtCOUp1Q0luOCtxaHEvWkhSTEdURnc1aEVU?=
- =?utf-8?B?NzFDNWtwaWhIbWRGSFBjWGRiUXlJazhoMGtVQzU4Mm0ya003OTRQSHhXWG5s?=
- =?utf-8?B?Z0tHRXdLNGh5bFpNRTJDY1JyN2V6ckI1Sm5pRVVoMlMvYnB1MzRQaXpqUSt1?=
- =?utf-8?B?RXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 462087af-95f4-4544-f246-08dd1f708855
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 14:30:34.3701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S8Si4Ms2Os6Nc35fFbuj8b5RMrv7Ln7twBFSPgyBvI/NhLURZ/vFGYLd8LhhJnd3yqt2bnWE2Z/bX0+hzOgj4kiI7hd3t/GlUt28V9Eb1zo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6769
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Wei Fang <wei.fang@nxp.com>
-Date: Wed, 18 Dec 2024 03:06:06 +0000
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
->>> +static inline int enetc_lso_count_descs(const struct sk_buff *skb) {
->>> +	/* 4 BDs: 1 BD for LSO header + 1 BD for extended BD + 1 BD
->>> +	 * for linear area data but not include LSO header, namely
->>> +	 * skb_headlen(skb) - lso_hdr_len. And 1 BD for gap.
+This fixes the LDO5 regulator handling of the pca9450 driver by
+taking the status of the SD_VSEL into account to determine which
+configuration register is used for the voltage setting.
 
-[...]
+Even without this change there is no functional issue, as the code
+for switching the voltage in sdhci.c currently switches both, the
+VSELECT/SD_VSEL signal and the regulator voltage at the same time
+and doesn't run into an invalid corner case.
 
->>> +					 ((first) & SILSOSFMR0_TCP_1ST_SEG))
->>> +
->>> +#define ENETC4_SILSOSFMR1		0x1304
->>> +#define  SILSOSFMR1_TCP_LAST_SEG	GENMASK(11, 0)
->>> +#define   TCP_FLAGS_FIN			BIT(0)
->>> +#define   TCP_FLAGS_SYN			BIT(1)
->>> +#define   TCP_FLAGS_RST			BIT(2)
->>> +#define   TCP_FLAGS_PSH			BIT(3)
->>> +#define   TCP_FLAGS_ACK			BIT(4)
->>> +#define   TCP_FLAGS_URG			BIT(5)
->>> +#define   TCP_FLAGS_ECE			BIT(6)
->>> +#define   TCP_FLAGS_CWR			BIT(7)
->>> +#define   TCP_FLAGS_NS			BIT(8)
->>
->> Why are you open-coding these if they're present in uapi/linux/tcp.h?
-> 
-> Okay, I will add 'ENETC' prefix.
+We should still make sure, that we always use the correct register
+when controlling the regulator. At least in U-Boot this fixes an
+actual bug where the wrong IO voltage is used and it makes sure
+that the correct voltage can be read from sysfs.
 
-You don't need to add a prefix, you need to just use the generic
-definitions from the abovementioned file.
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+Changes for v3:
+* Rebase to next-20241218
 
->>
->>> +/* According to tso_build_hdr(), clear all special flags for not last
->>> +packet. */
->>
->> But this mask is used only to do a writel(), I don't see it anywhere clearing
->> anything...
+Changes for v2:
+* rebase to current master
+---
+ arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts    | 10 +++++++---
+ .../arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi |  7 ++++---
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-Thanks,
-Olek
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+index a8ef4fba16a9e..d16490d876874 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+@@ -254,6 +254,10 @@ &pwm2 {
+ 	status = "okay";
+ };
+ 
++&reg_nvcc_sd {
++	sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++};
++
+ &uart1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart1>;
+@@ -454,7 +458,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
+ 		>;
+ 	};
+ 
+@@ -467,7 +471,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
+ 		>;
+ 	};
+ 
+@@ -480,7 +484,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6
+ 			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0xd0
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000d0
+ 		>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+index 663ae52b48526..d455429652305 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-osm-s.dtsi
+@@ -342,6 +342,7 @@ reg_nvcc_sd: LDO5 {
+ 				regulator-name = "NVCC_SD (LDO5)";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3300000>;
++				sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+ 			};
+ 		};
+ 	};
+@@ -794,7 +795,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d0 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d0 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d0 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
+ 		>;
+ 	};
+ 
+@@ -807,7 +808,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
+ 		>;
+ 	};
+ 
+@@ -820,7 +821,7 @@ MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d6 /* SDIO_A_D1 */
+ 			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d6 /* SDIO_A_D2 */
+ 			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d6 /* SDIO_A_D3 */
+ 			MX8MM_IOMUXC_SD2_WP_USDHC2_WP			0x400000d6 /* SDIO_A_WP */
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x90
++			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x40000090
+ 		>;
+ 	};
+ 
+-- 
+2.47.1
+
