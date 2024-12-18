@@ -1,52 +1,56 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB55A1BEF88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3661A23AE
 	for <imx@lists.linux.dev>; Wed, 18 Dec 2024 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734536211; cv=none; b=CQIgP9rTgWGhoSzHzYbiggXMalFqU2mzGGYfrMEKj3vF5Fff+TL96PB0MX59xK6ZKAqXgRTOwvtd9EOMgfULOLj7+keEhzcrliZTRf7L2q7RBKSvhdPrb6GPRwsy3Gvn41fERed3Ddvkt5SL2/QFf8KL4uvI1TWvl1LoJ+SfRfg=
+	t=1734536212; cv=none; b=UUh1EPmoA84RD4Qf2I0zk1PW33g3UVWFhP3MBREg72RZ5kI5VB0YqpvJNo6KZCbZikokarkqGO65oe1CBuB/E2FyxlYIHpNtze/ZNg2peAkDcNOj3k4XzMtq3lL/dQQhkSC3fzH719inizb9R1re9iKxQu7w65obMpC3QFJBQSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734536211; c=relaxed/simple;
-	bh=tGc9xVwfmgpgk71ZWecJKg+KkXdqZ2zUCeIsc1Nr4a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAlX7xrrq348TXycxM7n/XwLvww55L+jGuRlt+cPrzswOCl1fKnQQmUQzgOQ5bFXo2tVJyHI8eSyGJY4LoX7BDpbUxiwC+ZNpTARGT2XyUUsFY3xzcqO4KWO1RkWcHRD3sFDRXDoA96uHaxq7PtoV6hwaw54MfPkvyjo+YSNdnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=zTTNS0Ek; arc=none smtp.client-ip=116.203.77.234
+	s=arc-20240116; t=1734536212; c=relaxed/simple;
+	bh=5fMsmLg5KHUEUPrUf2Pto3GpDW2VQowzb6lukkGsX+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ahOSzJdJebxiaX8kLKLKEhfGb/9Je/8jvVYCHum1Oysd6W52SO5aQ0j849wduqt2x0i6TQBghwfRRbq9BA1qERYSWZVuGQfozbFLtQ6w4iFdMrtmP1ycvrUcLLBsJKj5PhHbjhPSAAoo/Q7rHv/UCdUsZfyVNLxX1OoByUgRQ/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=BwINfTHU; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="zTTNS0Ek"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D80F0BFB70;
-	Wed, 18 Dec 2024 16:29:45 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="BwINfTHU"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B09E4BFB25;
+	Wed, 18 Dec 2024 16:29:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1734535786; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=A+MEtWqv+jtuMkcOt3EU3LJknR9R8KvXbro2h2nqPjw=;
-	b=zTTNS0Ekiu3XFX9gHx6F0jaivYzGs4wdcpgnCHwLtjWnAeINTdfGHJccOgQiDD1PGJem0R
-	fzpbonJQFl94z6tF6/owTw/85uW3gRHHPN+VBNYM0+M0B2s3IqvrZHLJ8+ISIwbOMh00mv
-	k1KTIKGV+e/xC0sp2q2EUIemqAWmej2woXCVxC3e3Kmp6S/8YJwgBjDiMNbQzpjlPzE0pz
-	aQD8o5Pe0a5Z7jjbB/1EGSV6uZCzb2fNqfr15CuMLet8N8gAQWoNBl8vrxqraM2jl9Lo88
-	/NGmGne1M+DSYtZx91mUnc+5W4Q8CNXzdPCWozo1r1gyiRlI8pcJqQt5LoCAiw==
+	t=1734535782; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=fZ799AujDvtHo1AcXdC1mifOZNGSfZzq30OtsIXAG1U=;
+	b=BwINfTHUHw0yknjCNyH11gosF6cTLF5S52H/bsiZPizbQ6lFiRAdVf5lOlTTGHW9LS9OqO
+	IB3FQCUE6tu5CVMH8S1BMvUnrhRXvQSLEfMU8wA86tpirVpEzNMrjNa5aFhbdzMgfu43PJ
+	aYQEAVwsIIuNC98oRlGvhBNOmNGFkCe0jyLanvzVC8rp8lzcEHbSzxryKkxzeFobTwUuUD
+	3k46oI967WYscyUjctXxXHVdIYqqXcsDfT2TH6ulJN88/vf9L3JK9RJP+5DzUw2tcSqlaz
+	G2i3ZKl/SdOlNMTM5rJW5MXt7DHyt0FzJt9SddoJxsPg0uhiG86vtWDunbMgOg==
 From: Frieder Schrempf <frieder@fris.de>
 To: linux-arm-kernel@lists.infradead.org,
 	Marek Vasut <marex@denx.de>,
 	Conor Dooley <conor@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	devicetree@vger.kernel.org,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	imx@lists.linux.dev,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
 	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
+	Robin Gong <yibin.gong@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+Cc: Bo Liu <liubo03@inspur.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Joy Zou <joy.zou@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 2/9] arm64: dts: imx8mp-skov-reva: Use hardware signal for SD card VSELECT
-Date: Wed, 18 Dec 2024 16:27:25 +0100
-Message-ID: <20241218152842.97483-3-frieder@fris.de>
-In-Reply-To: <20241218152842.97483-1-frieder@fris.de>
-References: <20241218152842.97483-1-frieder@fris.de>
+Subject: [PATCH v3 0/9] Use correct LDO5 control registers for PCA9450
+Date: Wed, 18 Dec 2024 16:27:23 +0100
+Message-ID: <20241218152842.97483-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,64 +62,107 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-The USDHC controller is able to control the IO voltage of the SD card.
-There is no reason to use a GPIO to control it.
+This is a follow-up of [1].
 
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
----
-Changes for v3:
+The main objective of this is to fix the PCA9450 driver to
+use the correct control register for the LDO5 regulator.
+
+Currently the control register to use for LDO5 is hardcoded to
+LDO5CTRL_H. This is wrong for two reasons:
+
+1. LDO5CTRL_H doesn't contain the bits for enabling/disabling
+   the regulator. Only LDO5CTRL_L does.
+
+2. The actual output voltage of the regulator is determined by
+   the LDO5CTRL_H only if the SD_VSEL input is HIGH. If it is
+   low, then LDO5CTRL_L is used. The driver does not take this
+   into account.
+
+This can cause several problems:
+
+1. LDO5 can not be turned on/off and we rely on the bootloader
+   to leave it turned on. On the other hand we can't save
+   power if LDO5 is unused.
+
+2. There is a potential for corner-cases where switching
+   SD_VSEL via USDHC_VSELECT and writing to the (wrong)
+   control register can cause wrong output voltage and therfore
+   SD card failures (not observed yet).
+
+3. Reading the current voltage of the LDO5 regulator (e. g. via
+   sysfs can yield the wrong value as the voltage is read from
+   the wrong control register.
+
+At the same time there is now hardware that hardwires SD_VSEL
+to a fixed LOW level and therefore relies on switching the
+voltage only via a single control register. We add support for
+this through an additional property "nxp,sd-vsel-fixed-low" in
+the LDO5 node.
+
+Summary of binding changes (patch 1):
+
+1. Adjust the bindings to remove the old and abandoned use of
+   sd-vsel-gpios property.
+
+2. Adjust the bindings to use sd-vsel-gpios in the LDO5 node to
+   retrieve an input that can be used to sample the SD_VSEL
+   status.
+
+3. Adjust bindings to allow "nxp,sd-vsel-fixed-low" to be used
+   for boards that have SD_VSEL hardwired to low level.
+
+Summary of driver changes (patch 2-6):
+
+1. Remove the old sd-vsel-gpios handling.
+
+2. Use the new sd-vsel-gpios property to determine the correct
+   control register for LDO5.
+
+3. Fix the enable register for LDO5.
+
+4. Support hardware with fixed low level of SD_VSEL.
+
+Summary of devicetree changes (patch 7-9):
+
+Implement the changes in the devicetrees for Kontron hardware
+(i.MX8MM, i.MX8MP and i.MX93).
+
+Changelog:
+
+v2 -> v3:
+
+* Merge binding patches into one and extend commit message
 * Rebase to next-20241218
 
-Changes for v2:
-* new patch
----
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+v1 -> v2:
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 59813ef8e2bb3..33031e946329d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -232,7 +232,6 @@ pmic@25 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupts-extended = <&gpio1 3 IRQ_TYPE_EDGE_RISING>;
--		sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
- 
- 		regulators {
- 			reg_vdd_soc: BUCK1 {
-@@ -555,7 +554,6 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA				0x400001c3
- 	pinctrl_pmic: pmicirqgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03			0x41
--			MX8MP_IOMUXC_GPIO1_IO04__GPIO1_IO04			0x41
- 		>;
- 	};
- 
-@@ -623,6 +621,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d0
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d0
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
- 		>;
- 	};
- 
-@@ -634,6 +633,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d4
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d4
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
- 		>;
- 	};
- 
-@@ -645,6 +645,7 @@ MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2			0x1d6
- 			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3			0x1d6
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT			0xc0
- 		>;
- 	};
- 
+* Split binding patch
+* Add solution for hardwired SD_VSEL
+* Leave regulator core untouched as requested by Mark
+* Add devicetree changes for i.MX8MP and i.MX93
+
+[1] https://lore.kernel.org/lkml/20230213155833.1644366-1-frieder@fris.de/
+
+Frieder Schrempf (9):
+  dt-bindings: regulator: pca9450: Add properties for handling LDO5
+  arm64: dts: imx8mp-skov-reva: Use hardware signal for SD card VSELECT
+  Revert "regulator: pca9450: Add SD_VSEL GPIO for LDO5"
+  regulator: pca9450: Fix control register for LDO5
+  regulator: pca9450: Fix enable register for LDO5
+  regulator: pca9450: Handle hardware with fixed SD_VSEL for LDO5
+  arm64: dts: imx8mm-kontron: Add support for reading SD_VSEL signal
+  arm64: dts: imx93-kontron: Fix SD card IO voltage control
+  arm64: dts: imx8mp-kontron: Add support for reading SD_VSEL signal
+
+ .../regulator/nxp,pca9450-regulator.yaml      |  29 ++++-
+ .../boot/dts/freescale/imx8mm-kontron-bl.dts  |  10 +-
+ .../dts/freescale/imx8mm-kontron-osm-s.dtsi   |   7 +-
+ .../dts/freescale/imx8mp-kontron-osm-s.dtsi   |   7 +-
+ .../boot/dts/freescale/imx8mp-skov-reva.dtsi  |   5 +-
+ .../dts/freescale/imx93-kontron-osm-s.dtsi    |   5 +-
+ drivers/regulator/pca9450-regulator.c         | 103 +++++++++++++++---
+ 7 files changed, 133 insertions(+), 33 deletions(-)
+
 -- 
 2.47.1
 
