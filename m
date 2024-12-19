@@ -1,196 +1,194 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2052.outbound.protection.outlook.com [40.107.241.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4751A0BC5
-	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 01:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734573140; cv=fail; b=GyZEWOazf8d7DaI9fHtmM/V7i6uIzM/i/pC4n1sbHvNqh1046W7FZeERhCh+ouE6BR0le4mT8nYtHzAwBDC5RIIcT0RA89gHB80+pOI+ijtKOWX8f2djZ1V4ERZsX3o+wMQb/g50ZQ/iB7IcuYJicG6glRaQVmrW28eIWTVkS/U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734573140; c=relaxed/simple;
-	bh=jFYk1bkFyEOxgBpENF5cGYonSsciv2XWr7+bcB/Tbi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iNf55jNTQHN8qmS8PKWmxWLVZGkHaFKGHzHQjAhwrcVgvNpcBv4EQUw+B7EOAv4T/tDW950qHyLrwb1HmK0WtV+R4To7aRzl4dEbkijPoaRG7MK0WlrmFU2AC4rSJl0Hb9lVmSIOEEA5GmM0XuM0NEYYIfAIPkHOfmuqmOyC8xg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bLPFv7W/; arc=fail smtp.client-ip=40.107.241.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D9D154BF5
+	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 03:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734578935; cv=none; b=GVs0LG9SjmpK82SeqC2rCtmez+G95USK0nK5SQ+FDb7jjzz0xddsVsCttKWxk0iBS1su7IrGvIoS9wYtoPbYfW9tUZ+qZ2XbXN7e99qnDLnU8fH6cDEDv9BGXAGQVq4J/Of1cpXzcXIHJtiFyi2TYbA134by1dLTyGWzYbd4AhI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734578935; c=relaxed/simple;
+	bh=TgQoTM7RHgTyd5kqZ0+JqwQZh2zE0y5HlFmNDBfPuQc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PKvZh6ostwV1xI5WYXs0ZXcs5XcuqSpnSakRrFGzcy1R+3D1sOgO9ht8rinxLO1Nmde7H9kzJy8vr3KqD+MXWUyVmNv2qKfGtxPTQP00BDZkpaYHqjmCeYz/538BAoPEw31RMfDWeadyCIXtmiEpZ/5xyvORJGDgM+70e3I9Ed0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=toCDQtDP; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bLPFv7W/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aSHlt0sxWT4lneYJi+F9JyCF6paHduf4h2X5T8MqTkzUb0oCP6vvKnV6Dj9dr3MjS7KHo7NrFXL4OMs97C8IvjxmWDHVdTyzAyaM+enEOJV+8JB4KtUFyCeUKeKcqdl4T70mpd2ftmnWEOMk8sH2nlmObFo2FR4f1kpVesuSJT4FMT+Tn4t1OOthkawnMHoyceObKLLH/Jh0e8X5YvJzQwexYk0uIyyVNQ0FCTKlQg6V1+B3WmrlQysFFVZDePxSEkVEsgb+sqK64D+ZlrNfArJ1A/tFr0KTV+Ny25VejGmSeRf4QDBYyx2njoGY3BRJDOMWxlKIC57cgN5wzWDWTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K4GTpso0mlsozeK4RcyvaU+aLxbFdGzPqeTRGi+FuCQ=;
- b=JNIzfRtTnXpmusFfRPABJNsJbpZX4yX6nw7mhx1TTDi6yvoFw4S8XZA3NNmXNgcVEIh4N47TVQLDGnzIILiQIdxkrRf8zWyayCOWxLM1mE4sfmmDOqTzNKLeaoSErBX9QURC3eKunYRhYvCi1CrVxdJmVcEr1b7PcNEoIHyipHGv5HuhlRHr1l7aLScY3Y+FAQFd2f49M7n95CUZrOyh70K01FwgPCfoeKRIUTzCbpyrTuldE1cb9bpRyY80tKD3HR8hQc30tJLKy8GUIhkOdYT7r/d12kP6QP8KBuMEjSE7cXy+hXYit09QsHJClA1cvfDQByRTrngQ0Pk/XmJAjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K4GTpso0mlsozeK4RcyvaU+aLxbFdGzPqeTRGi+FuCQ=;
- b=bLPFv7W/U6QPjHSzcoqhTW8k24il3nS5U9OcuoGfIMzCbHg9s2GQPzSddl2ecjttLOttDPp7u4zWouG0gIkCbymPFivaGvxdKvkj+fqnURfF1ILjM4vWTBIY19f/I9BGCBFXrNUtr2j8xE1JM0dIioSY8mq2pEJTYySyunBFdlnfQdJcoqsTWcgQEgsM/oWCJyWoR3XhdARO/+DSfR3uHx7hJJdtVrdXYgkIc3AgPEC08xYg5BqqK7SRi4s+pGG2OsMHhSqgpFZ0feT4HMBdwXyGRBVzYSOhhNDF8ECxTaMVKZxPhVUXjE5KGZ5kOrkpiLkllenlbAOS5JxWeD6Zyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by DBAPR04MB7270.eurprd04.prod.outlook.com (2603:10a6:10:1af::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Thu, 19 Dec
- 2024 01:52:16 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8272.005; Thu, 19 Dec 2024
- 01:52:16 +0000
-From: Ming Qian <ming.qian@oss.nxp.com>
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl
-Cc: nicolas@ndufresne.ca,
-	shawnguo@kernel.org,
-	robh+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	tao.jiang_2@nxp.com,
-	ming.qian@oss.nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/2] media: amphion: Add a frame flush mode for decoder
-Date: Thu, 19 Dec 2024 10:51:46 +0900
-Message-ID: <20241219015146.706482-2-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0-rc1
-In-Reply-To: <20241219015146.706482-1-ming.qian@oss.nxp.com>
-References: <20241219015146.706482-1-ming.qian@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0074.apcprd02.prod.outlook.com
- (2603:1096:4:90::14) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="toCDQtDP"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-216281bc30fso4235725ad.0
+        for <imx@lists.linux.dev>; Wed, 18 Dec 2024 19:28:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1734578931; x=1735183731; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mu/Gp2AfOLl5gMxEWfSrJwQIXStZLSI5hTx+5EDV72U=;
+        b=toCDQtDPtMkmMNG7kw5SSboEBggICdCbRUF7or79j/UIAmiRIajojtBwrtMMmEKlXT
+         x35Zam7COjkFBIeWr5GBUnA+wZNtrXcCc7n5p0NgCbnruwCf6dgDC8xT2R+ovR5FH2sr
+         dmZaJx9JELqKde34OpNH6t92iNAbvZh9FsGXyjiPSXhrIuSzYT2SiqX9pDIspgACSvQ9
+         HXi8cr8XjJtZfuSCBOT6aHVh3t4pE5/VQXkFKNXYgDDbG/GdGjCIXTxNUM14j11kypg/
+         GS2FUnioNF6pXS8fHjBVZQUrsu1ZXiMYEG+4E4mcX4toe6iQrvHSKpFCjozaBh3CuBKH
+         CZ4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734578931; x=1735183731;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mu/Gp2AfOLl5gMxEWfSrJwQIXStZLSI5hTx+5EDV72U=;
+        b=Dl7oT5V7wHZRdVmpSvQHiysqVdAyY7jc6rUt3mMjyNqtbmhkaIPrOXSx4ly80asgVA
+         HM7G5lkDnEYXEvRN5rMlyky/aGX3AsVFPlshMxlgK+yotZEP5oqxk9KObmYAihpcPGzI
+         3oUUbmkwrgPigzlxL//u684kDPP9xFQO+kCtxI8GOtlSY5x/TqLYEXMRfX6fV9cQGT73
+         yLtB5b0CH623dARgbA4iBB2iSJmphXWzyP0u6y10XUkFtZW2mnMfwibbrDo+PIkqSquu
+         wCpwJHbE7G0/DV6qpE6OCQ9TefQQsoNR6kiKcISkOM81SkXLnVr59NqLug5WwpKT80gJ
+         685Q==
+X-Gm-Message-State: AOJu0Yw0R8AvBltTPkUE6XbIHFlEpT/0/tVrZnWFUZZJS/fq+HroOJI+
+	XYRopS3oxR0fsl0hqXZsZmWRadCWAgDxpl29mjoa+cC8ZYeVTbp3spTurj5eyIU=
+X-Gm-Gg: ASbGncsLXlXfuWrEazc6zIVv0vu5nnb/c49v29227Em/lK9RySwW6U2eO8AfTRDmhX5
+	20BK+OYUKm3tveGWOvYcaPWVz9Eti2Dt6tkmHUi2KYbDiyWT31Jn77r7NRcQ7ysjPjtlUU/eIZv
+	7LiuwqZq9YH5KC85dpnqkPHFq5tZuQDnXsXSrc8lGlQ4Twr64rYINAStAS4Sc/0MpbTv7rYpEcS
+	JWQWYpSPXLB7U2n3CbBgWE/4dVFVsauU7pkDxmofwhRqUxykFSOtDvvKrwjuiU1eHyxQg9EJXZH
+	a2yJ
+X-Google-Smtp-Source: AGHT+IFXq5353qTVSLVrDkezfOVzQ/mZfo7SKeKFilsdMJtLUejEcR/ferSFclNacdrsgpca8n1vWA==
+X-Received: by 2002:a17:902:d512:b0:216:66d2:f172 with SMTP id d9443c01a7336-218d727de69mr78095825ad.56.1734578931097;
+        Wed, 18 Dec 2024 19:28:51 -0800 (PST)
+Received: from localhost.localdomain ([2001:f70:39c0:3a00:fecc:4d38:da26:bf4b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f4fbcsm2671865ad.174.2024.12.18.19.28.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Dec 2024 19:28:50 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: Frank.Li@nxp.com,
+	vkoul@kernel.org
+Cc: imx@lists.linux.dev,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH v2] dmaengine: fsl-edma: implement the cleanup path of fsl_edma3_attach_pd()
+Date: Thu, 19 Dec 2024 12:28:45 +0900
+Message-Id: <20241219032845.2067851-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DBAPR04MB7270:EE_
-X-MS-Office365-Filtering-Correlation-Id: af8f7f88-f2bd-406c-7980-08dd1fcfc3bc
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pQQfJk5tVOZ02wcwUn1JxXGUpGo5EmHsvPlYQ54uo5mqT8dVhvmOqY6oQ2GL?=
- =?us-ascii?Q?oBe5WeMDPy1QSUpCl1NhCzipI5FSj8tGffCYYFQFLL2RUfYombSGDfoYokHE?=
- =?us-ascii?Q?oYOn1aNwtxzz9GDfwmzbrO3aQnYg8jrg/iauJ2dwyUuzHL6asZ9W31v/ADk5?=
- =?us-ascii?Q?7Y0h2EX5+WVqCdVUKieafqsVLwlLE5I3LOUz02iQk25mQt9s4zsrErb09JjT?=
- =?us-ascii?Q?yG5mnML/ArYE2rnNIGmRTVu0PxVQJvUqQHDph5xpYQJ/uhBcPNf9qpEPD2z8?=
- =?us-ascii?Q?A50AHwerjCzZfSFdwX+CzeFngv0DAc20z1T5afhMcTDHtBuJixgTmohc+SbM?=
- =?us-ascii?Q?Mfe/E4VapK6nLLrQZslXin4h3TtYPJ0YWFoxD7AsYmvUeQVR/fjY6t2xlDlI?=
- =?us-ascii?Q?ViMxpAhSP1InlNLZp7M4qwxBmVqJw/pF7NY/tGvTC2ShAhi75fSqnRAx2Gl3?=
- =?us-ascii?Q?rHKXcOGpeBrXY0ExNRmK/HLDJOQtV2WDDZqvXcopKly3/L98zcRou6BGlHOZ?=
- =?us-ascii?Q?dsnIacyDqYrMColBWRgyfm3usurizcJMeuEP0GefJ6zZRp2pQvfaS8X77hqh?=
- =?us-ascii?Q?48UJhU/pWD661Pk5pLrvoDXcqAiUPcrRYobK+G5lsypOWphueqjJnLNSM6d/?=
- =?us-ascii?Q?TndwLXTKe9XX6+Lm/TfmmgiC+3UNJ0CAYjcC3geuzE3dVtSfE6zZJBxFm2jh?=
- =?us-ascii?Q?niuOQ8c0qZuHHLcsMGLQAAZIO7T3uirD7B3P4Ft5bLE/19szaZFKp8vyXBI7?=
- =?us-ascii?Q?PBnOOpZId4AAPOZC5L+0sLHBsUDda6b/349ncJJR22u6C5kovoEIk8niuVD2?=
- =?us-ascii?Q?K/6/gDuwxhURcBpM1tUJs0b7xNKAIfOuFBRkTY7I0wGl7zlKWjLb776DC9s5?=
- =?us-ascii?Q?5+sCwQqLpCDJVqQyh6AuT/oAG0gnKKCRR23XB8oRoNvk524yERPY+AHZ6npT?=
- =?us-ascii?Q?TV8WyA/9Y1U9PLcmrfsGNgtDwBeiVROu1eXWgGlDL7OruPUsMi0Ou2X0yALq?=
- =?us-ascii?Q?Dh6LE5XY3mZtOWXNKCwvNTIHyqv+5s+TLMe/S1T3NyreIikisWWb+qWibPjV?=
- =?us-ascii?Q?ZeMHttTamA0pseR2JRq8ZfYTkbwrYNpbMxO/0WE+OKTGjbM3F0Ps29uLxyiL?=
- =?us-ascii?Q?a7JI0A9w95VfXMf3lOopCVCJBIU5mHH0F8dyoxH4UK31SnIgemHYAt76fGm5?=
- =?us-ascii?Q?EP6kC3IL42JjiLryhdoeAFcGELpr04x9eIgwczAMuYlxYeVkqm83hzszUkaa?=
- =?us-ascii?Q?aAp/BZqyqJuV0BZDa9XDWFljWoI0jHqtoJlAKSdDjL7FU/xwzCj0iD/x78kP?=
- =?us-ascii?Q?SHGZn0ZNymbHUUC/ZtSdFBpw7KDUXpP7MrP/lnkoltNtk83vSUp7LHwLkT0c?=
- =?us-ascii?Q?AcSP7Eh22mZHnilnTPcOW4CHAOy4Altssu3jd//YDmaX0m9CES2jRAeDjAVU?=
- =?us-ascii?Q?s26lEnS679s0DEAdWPU7EU3nC6RGEN5H?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+iROILbRevuVZVy3Ezygj+B1vb3Z7xGsIPFNi1vYOv+vxL5/VNJcKjUwST7Z?=
- =?us-ascii?Q?8VWv1rBFxYvB+DV9SjJeHQtDzvZh0s2XiLhmXdN9Vnqt52UsKaJzayge74bL?=
- =?us-ascii?Q?xAY1C6HTUysb0j3J6nXMil6BUiwiftDV7BHqFvUyUyZkmg8mvt4jSrYsxtM8?=
- =?us-ascii?Q?sgf8dgtgnlQdFNBWReK5+d1CrW6WWEwvBtQcRvp1vr9dsj6F7D5l0lVeIyi2?=
- =?us-ascii?Q?ApVr+5UVsuCRJQQuYP9OdFyarrYZGgfn4Mb+yxX6pvs0zi4KXZJSXM3SaMat?=
- =?us-ascii?Q?suFdeKLmftbVhke8Lby6w6xy2A2rTdUSqfyuGDLlHRwqdCYd2dkNvNWtybwC?=
- =?us-ascii?Q?/edKws6Uq6Irar0VGt2k6r5ViTX2FZy6LmWEWQyCU8/+VasKMZRf3kugx4lu?=
- =?us-ascii?Q?eC/a5HJp2GpMKv/+NQc+VRjq9/aQ3sfx+SrlbE1H1j7BGJoZaHawJHeDnHcL?=
- =?us-ascii?Q?goW5FEgo1JC09pfqfMgOuApX+5LW9G9l/R8itd19UjELlzvhlGnUZAZXPkZj?=
- =?us-ascii?Q?vnc5UXAjERNGeMttpQdhHqzlvaL8kw3ViprnXE/NcspFmsLeW/F3BJxDnMo/?=
- =?us-ascii?Q?w5Dv3d1TxOovKbD63M5mVF96Truuk6L3rV+A2SoZprL1xVAxWeszcdbDZcfh?=
- =?us-ascii?Q?0mMuC327OedY5epZoSVP+H5+JCuCrwCOsqMEjyGmM40MxJt80bEIEbEUtF6K?=
- =?us-ascii?Q?Z5BbYwcwYLwmk/mQgVW4MhA9OYChBKGiSh2rLaA91BYAjQXz7l5EnhaU5HmL?=
- =?us-ascii?Q?NZG7HTacQatLPxX7sMTpBqJFAuqo6dl95stQmSMkVx9pZiqjtbrC21BJslCI?=
- =?us-ascii?Q?XnvOuvbizGYpg34KWFjBEKMbGnOPUGY4UVOrWMclI+U7q0MMUFwTw6ftkz10?=
- =?us-ascii?Q?YnIaHIXyDI3Y4VHX75aT0U0gMZsvBpIUJZEUFuQQPeTMmF/c+l44M3QTVXFR?=
- =?us-ascii?Q?rkpi30LphhYGLZv5Et8kd+c5I7yveF4lLfQd0n74ns8nc8TmP5ngHKVRWLAR?=
- =?us-ascii?Q?ejNNTHBPqYWOxGVeNlVrJsr5aMZpOkMvVEaVzd19cfLn9TahOn8FEKCe5p5F?=
- =?us-ascii?Q?Br5ridyEp9GHp5guRTVwP7hSIdspDmJF/GXBJM9i/loQmcaCt/BBt0uyHCck?=
- =?us-ascii?Q?MsvvGpNKafbzrTvZJ0oDiqY5nDWqfcogteGH0W83IaOEG7CzfNJCjtoEQ569?=
- =?us-ascii?Q?7f9zbNbbz//KEScTGd45bEuErrdH8AZKA3GiYKV1zwbdfpcGjGOg5EWu2eIl?=
- =?us-ascii?Q?i8BjtywdAAhectNRzMTdeLvgtS44fh1J4DHadah21RnRDC7JQxe3Nl1rEPl3?=
- =?us-ascii?Q?5s9/TKDXdoweyr/hwE2kQK6inbjk323cTHKyZRs5Oe61BNAgbQt1PkTWeoOp?=
- =?us-ascii?Q?1cTy+tjzTf0LoQTpqKiGAPwuGGlFTxqE4HL2PswBXz6qLr5obN7msI0t2gYR?=
- =?us-ascii?Q?QS5zWxFzgkHIiJGFK7PX1byuCJ//OHkGLxXoCybsTW3yn3PJWsnCU5RIsuC4?=
- =?us-ascii?Q?DF2wKCCIFkn/nQTwaO/81tZUF698biPzDR5B9tuhcyByT1SjJ6J0VV4B1EVD?=
- =?us-ascii?Q?TKlT4MxgUanJWoMeArEKqfIPTl30eBRRIlZFclYz?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af8f7f88-f2bd-406c-7980-08dd1fcfc3bc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 01:52:16.0890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c9bzuN2im9XoAIv2aF8LCge8f3Fo1e3uXryvOVofKFPPUS1RB3XTkMaEi0m8IXmh1tWb6dPcJ1CkMIeYrKAm9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7270
+Content-Transfer-Encoding: 8bit
 
-The amphion decoder will pre-parse 3 frames before decoding the first
-frame. If we append a flush padding data after frame, the decoder
-will finish parsing and start to decode when the flush data is parsed.
-It can reduce the decoding latency.
-In the past, we only enable this mode when the display delay is set to
-0. But we still can enable this mode without changing the display order,
-so we add a frame_flush_mode parameter to enable it.
+Current implementation of fsl_edma3_attach_pd() does not provide a
+cleanup path, resulting in a memory leak. For example,
+dev_pm_domain_detach() is not called after dev_pm_domain_attach_by_id(),
+and the device link created with the DL_FLAG_STATELESS is not released
+explicitly.
 
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Therefore, provide a cleanup function fsl_edma3_detach_pd() and call it
+upon failure. Also add a devm_add_action_or_reset() call with this
+function after a successful fsl_edma3_attach_pd().
+
+This bug was found by an experimental verification tool that I am
+developing.
+
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 ---
- drivers/media/platform/amphion/vpu_malone.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v2:
+- Use devm_add_action_or_reset() to avoid goto in .probe().
+- Use fsl_edma3_detach_pd() in the error path of fsl_edma3_attach_pd()
+- Update the commit message to elaborate the leak.
+---
+ drivers/dma/fsl-edma-common.h |  1 +
+ drivers/dma/fsl-edma-main.c   | 41 ++++++++++++++++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index 8f4aa48b2d65..3750a2618b0e 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -25,6 +25,9 @@
- #include "vpu_imx8q.h"
- #include "vpu_malone.h"
+diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
+index ce37e1ee9c46..fe8f103d4a63 100644
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -166,6 +166,7 @@ struct fsl_edma_chan {
+ 	struct work_struct		issue_worker;
+ 	struct platform_device		*pdev;
+ 	struct device			*pd_dev;
++	struct device_link		*pd_dev_link;
+ 	u32				srcid;
+ 	struct clk			*clk;
+ 	int                             priority;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 60de1003193a..1a613236b3e4 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -417,10 +417,33 @@ static const struct of_device_id fsl_edma_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
  
-+static bool frame_flush_mode;
-+module_param(frame_flush_mode, bool, 0644);
++static void fsl_edma3_detach_pd(struct fsl_edma_engine *fsl_edma)
++{
++	struct fsl_edma_chan *fsl_chan;
++	int i;
 +
- #define CMD_SIZE			25600
- #define MSG_SIZE			25600
- #define CODEC_SIZE			0x1000
-@@ -1571,7 +1574,7 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
++	for (i = 0; i < fsl_edma->n_chans; i++) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_chan->pd_dev_link)
++			device_link_del(fsl_chan->pd_dev_link);
++		if (fsl_chan->pd_dev) {
++			dev_pm_domain_detach(fsl_chan->pd_dev, false);
++			pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++			pm_runtime_set_suspended(fsl_chan->pd_dev);
++		}
++	}
++}
++
++static void devm_fsl_edma3_detach_pd(void *data)
++{
++	fsl_edma3_detach_pd(data);
++}
++
+ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	struct fsl_edma_chan *fsl_chan;
+-	struct device_link *link;
+ 	struct device *pd_chan;
+ 	struct device *dev;
+ 	int i;
+@@ -436,15 +459,16 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 		pd_chan = dev_pm_domain_attach_by_id(dev, i);
+ 		if (IS_ERR_OR_NULL(pd_chan)) {
+ 			dev_err(dev, "Failed attach pd %d\n", i);
+-			return -EINVAL;
++			goto detach;
+ 		}
  
- 	vpu_malone_update_wptr(str_buf, wptr);
+-		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
++		fsl_chan->pd_dev_link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
+ 					     DL_FLAG_PM_RUNTIME |
+ 					     DL_FLAG_RPM_ACTIVE);
+-		if (!link) {
++		if (!fsl_chan->pd_dev_link) {
+ 			dev_err(dev, "Failed to add device_link to %d\n", i);
+-			return -EINVAL;
++			dev_pm_domain_detach(pd_chan, false);
++			goto detach;
+ 		}
  
--	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
-+	if ((disp_imm || frame_flush_mode) && !vpu_vb_is_codecconfig(vbuf)) {
- 		ret = vpu_malone_add_scode(inst->core->iface,
- 					   inst->id,
- 					   &inst->stream_buffer,
+ 		fsl_chan->pd_dev = pd_chan;
+@@ -455,6 +479,10 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 	}
+ 
+ 	return 0;
++
++detach:
++	fsl_edma3_detach_pd(fsl_edma);
++	return -EINVAL;
+ }
+ 
+ static int fsl_edma_probe(struct platform_device *pdev)
+@@ -544,6 +572,9 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+ 		if (ret)
+ 			return ret;
++		ret = devm_add_action_or_reset(&pdev->dev, devm_fsl_edma3_detach_pd, fsl_edma);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (drvdata->flags & FSL_EDMA_DRV_TCD64)
 -- 
-2.43.0-rc1
+2.34.1
 
