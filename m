@@ -1,46 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95949221DA0;
-	Thu, 19 Dec 2024 10:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE251208A7;
+	Thu, 19 Dec 2024 10:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734603942; cv=none; b=EpskPgP++/M8u2NR00lBiQQ5cRh1JHCm+vTSMfzsRIJPdeBX/mSlgGJX3rTV6qgapWgK6WAZW6CPdh5VAIOqZWTotvbgaeyhwSU4ifB/eLRO/yqUVocX+9nPFv6paHqB6C05NxGWiw5K2T79l636QptdQuokRS0rqo/xsapZT4U=
+	t=1734605454; cv=none; b=OmfNGmknK5GuWgHnn/uwpVMjCm9Q54r8yP9DA0LEP9oesa+3hQLaEZQdwuXR/lFHuGNjg7djCdYobacDye0PFSs07V1yKy13gIYGI6HolXfeE9zSOWzt2wFXA/1i4t7hPzUgo7UkYvtH353H0WNIKca19TQT8RXHbPSHRxW/riI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734603942; c=relaxed/simple;
-	bh=sOajlXr03gCO837sr0DFIcJPkyWadXfKtuB8F1ddqSQ=;
+	s=arc-20240116; t=1734605454; c=relaxed/simple;
+	bh=+jKPb1DiLgdqyf0yAd9cWxMvSxidTaZJTgk8dWiYFWE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+DM8mAw8yu2lzL+eNkWFBysFHw/+vFSwHof4+0ExdCq54qHfElSuShe1Tjch6gVan9olz0lLIzLNe/r43zfNGxscUAjbm4U2rZ6L6US+MluwbQVVYAHz6SCqqU2vB99ABw2899zUOmXlzp7ngMvcquSCGFoHJ1uIqkI1fLOvTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5PWR4JB; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZMgdbtEax8VIDkdKxTh7iAwX0sLvW5QijjGacKJAF1upZQeJORs2WW6A5Qac/Y+B410SDmbQga0gLE8vyA55COgmnyw/kQUP/+w1GHF2gzTLaSkLrxdO5oPCsIAQG6pEUdT2A781ezKjNUm4D+5GpP+wGmrMeOMMqliooGC2xz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgKWfre8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5PWR4JB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CE2C4CECE;
-	Thu, 19 Dec 2024 10:25:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgKWfre8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EC8C4CECE;
+	Thu, 19 Dec 2024 10:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734603940;
-	bh=sOajlXr03gCO837sr0DFIcJPkyWadXfKtuB8F1ddqSQ=;
+	s=k20201202; t=1734605454;
+	bh=+jKPb1DiLgdqyf0yAd9cWxMvSxidTaZJTgk8dWiYFWE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B5PWR4JBUIJuWd/fafdoEaGj6mheDRaqR7fH3Npq1gTBx9ZClTfCs8fPRyBk0MXgt
-	 z14xPffVBtqgPG5RsnV1SVCp1iS13JdptWa0U0Usn6qhw+O0FHwQPF0gNDGPkwnxA4
-	 87YSU5pvDCSaj0uANSmRCs3rD3X8UnCsRqTOyxoS4uo8tkCB3bPtIiiG4sa5RNQmcv
-	 ZW55izRDY+883+WnPBqgVksFdALvRxWI6BXGmopJ8eG/XHYYkRqBpPVtuUIBGMI53A
-	 Bt7IM2gE8MDWT8O6MNkFijxnQUq9msee/FsbHrEtjbDPl4EERatTvUFtRqw+ddQJks
-	 /TSY2dSmL9Wug==
-Date: Thu, 19 Dec 2024 11:25:36 +0100
+	b=GgKWfre8ohxoaSA8FjHZFHHyo488aiCRBfOalWy9qXW/zBWa7o3iAi0HuXaHSQZY2
+	 Kc5HAloqnZbcC71lMV40hSBGilOZLxwmMPpi5dla7bv4VaHvDpREYrFzlLAyz7bxXQ
+	 3bTyYOLMgcR2mZW+T4QZURFeCyPnE652xr4P/XkJ8o2blSKKiYpF/+om0gwaraI/OG
+	 PsYd+YAPD2zyUHKFZXynzvHJAvMPhNLotj+fGnmsmDkcGHDfVNKQqfmBOuVQYbNQy2
+	 D6Om+/FVZ6EHmpIl+cx4qUzAQgKHRxvPDJlTCpwUhI9lVn/6NrbIIdKcC02gZg3Bqi
+	 T7XW7XgxQrcog==
+Date: Thu, 19 Dec 2024 11:50:51 +0100
 From: Andi Shyti <andi.shyti@kernel.org>
 To: Carlos Song <carlos.song@nxp.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Frank Li <frank.li@nxp.com>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Bough Chen <haibo.chen@nxp.com>
+Cc: frank.li@nxp.com, o.rempel@pengutronix.de, kernel@pengutronix.de, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
 Subject: Re: [PATCH v3] i2c: imx: add imx7d compatible string for applying
  errata ERR007805
-Message-ID: <brzvlpspjm66awnkshxvw7xefxxjbjx5v5mhqd3jl7befx33fy@mfi3pbagfy7a>
+Message-ID: <zhl7dmzfvoizotjb567psnvyu34vee3hlrbsgb6uchshrj7bti@touezue3vqwe>
 References: <20241218044238.143414-1-carlos.song@nxp.com>
- <Z2O1PFr4ZQHXTsrX@pengutronix.de>
- <AM0PR0402MB39379D10473292DA6533A757E8062@AM0PR0402MB3937.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,12 +45,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM0PR0402MB39379D10473292DA6533A757E8062@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+In-Reply-To: <20241218044238.143414-1-carlos.song@nxp.com>
 
 Hi Carlos,
 
-> It will be this in V4:
+On Wed, Dec 18, 2024 at 12:42:38PM +0800, Carlos Song wrote:
+> Compatible string "fsl,imx7d-i2c" is not exited at i2c-imx driver
+> compatible string table, at the result, "fsl,imx21-i2c" will be
+> matched, but it will cause errata ERR007805 not be applied in fact.
+> 
+> So Add "fsl,imx7d-i2c" compatible string in i2c-imx driver to apply
+> the errata ERR007805(https://www.nxp.com/webapp/Download?colCode=
+> IMX7DS_2N09P).
+> 
+> "fsl,imx7d-i2c" already is documented in binding doc. This errata
+> fix has been included in imx6_i2c_hwdata and it is the same in all
+> I.MX6/7/8, so just reuse it.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-no need to send a v4.
+with the commit log changes, merged to i2c/i2c-host-fixes.
 
+Thanks,
 Andi
