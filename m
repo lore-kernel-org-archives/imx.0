@@ -1,71 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE251208A7;
-	Thu, 19 Dec 2024 10:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5802208A7;
+	Thu, 19 Dec 2024 10:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734605454; cv=none; b=OmfNGmknK5GuWgHnn/uwpVMjCm9Q54r8yP9DA0LEP9oesa+3hQLaEZQdwuXR/lFHuGNjg7djCdYobacDye0PFSs07V1yKy13gIYGI6HolXfeE9zSOWzt2wFXA/1i4t7hPzUgo7UkYvtH353H0WNIKca19TQT8RXHbPSHRxW/riI=
+	t=1734605554; cv=none; b=LZJG7g+huKMLk5iuYhKi6QEsTWRjlvl4LoyopxLKPqU+m0xnia+4stiF2U5xNjMuJiqCvk96bfY89RBw9XIXgsualinMAz3+ju4P8xwIr9Lt6YfiPQvhVGSxM5J3CzzkvAJMTAWvFvZe1QUd2m1kAzQMnu6swANGvsynYNScvv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734605454; c=relaxed/simple;
-	bh=+jKPb1DiLgdqyf0yAd9cWxMvSxidTaZJTgk8dWiYFWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZMgdbtEax8VIDkdKxTh7iAwX0sLvW5QijjGacKJAF1upZQeJORs2WW6A5Qac/Y+B410SDmbQga0gLE8vyA55COgmnyw/kQUP/+w1GHF2gzTLaSkLrxdO5oPCsIAQG6pEUdT2A781ezKjNUm4D+5GpP+wGmrMeOMMqliooGC2xz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgKWfre8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734605554; c=relaxed/simple;
+	bh=vW13L2zwHZ3hPtsWWe7muVvrgkpQiIKqYaJQXfMjg2A=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SZgRNBBeNETEgTAwjZ1uwm3ecZwZ+/waF3ywQ6nkQsAu6VbCtg9VhX1JOdthphF0fIHzDrDG3ekDQDSofrTWkpb64qhvJ9WBs15koi4bks2nnxvZ54e1HWlz3lVAfsLcKwPSAYfmeUUTkpNFMPa/FjmiYHfMEQNu0jZ6+pf5cr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgO1FvQD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgKWfre8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EC8C4CECE;
-	Thu, 19 Dec 2024 10:50:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgO1FvQD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BDFC4CECE;
+	Thu, 19 Dec 2024 10:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734605454;
-	bh=+jKPb1DiLgdqyf0yAd9cWxMvSxidTaZJTgk8dWiYFWE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GgKWfre8ohxoaSA8FjHZFHHyo488aiCRBfOalWy9qXW/zBWa7o3iAi0HuXaHSQZY2
-	 Kc5HAloqnZbcC71lMV40hSBGilOZLxwmMPpi5dla7bv4VaHvDpREYrFzlLAyz7bxXQ
-	 3bTyYOLMgcR2mZW+T4QZURFeCyPnE652xr4P/XkJ8o2blSKKiYpF/+om0gwaraI/OG
-	 PsYd+YAPD2zyUHKFZXynzvHJAvMPhNLotj+fGnmsmDkcGHDfVNKQqfmBOuVQYbNQy2
-	 D6Om+/FVZ6EHmpIl+cx4qUzAQgKHRxvPDJlTCpwUhI9lVn/6NrbIIdKcC02gZg3Bqi
-	 T7XW7XgxQrcog==
-Date: Thu, 19 Dec 2024 11:50:51 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: frank.li@nxp.com, o.rempel@pengutronix.de, kernel@pengutronix.de, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v3] i2c: imx: add imx7d compatible string for applying
- errata ERR007805
-Message-ID: <zhl7dmzfvoizotjb567psnvyu34vee3hlrbsgb6uchshrj7bti@touezue3vqwe>
-References: <20241218044238.143414-1-carlos.song@nxp.com>
+	s=k20201202; t=1734605554;
+	bh=vW13L2zwHZ3hPtsWWe7muVvrgkpQiIKqYaJQXfMjg2A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NgO1FvQD7/sFmTiuv1faa8PAkx1blRdl3ATIlf4H+k/GeG0ulKNYLmaxbUWNKO7r1
+	 s9EPm9MfLp9jQ/NBdYAMXNwdBsw0NZi//ME/W0jTPpBBYYYQBcJgxXdZL7WmtkYNZr
+	 ZygM4PibVRaVacKU/WYa21wFcNjenc5ulAlvmVEUp+VC/OC2u9QIlrnjqdbx2+OF9/
+	 Ou2WHLt/36NnV3MnOB3fDgkqNGk186Rs33q9t7/+pC3OXErJ9BdsxQfxS5r3RA+nrE
+	 TIn9dfF3bErr15lDUkew2vkuMajHOuiGKp7+ZCEEosukS3Vs53rkzlM0b8g5Gqkrqe
+	 xjCLVdsWf7AQw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tOE8s-005F37-Q2;
+	Thu, 19 Dec 2024 10:52:30 +0000
+Date: Thu, 19 Dec 2024 10:52:30 +0000
+Message-ID: <868qscq70x.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,	Krzysztof
+ =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,	Kishon Vijay Abraham I
+ <kishon@kernel.org>,	Bjorn Helgaas <bhelgaas@google.com>,	Arnd Bergmann
+ <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,	Thomas Gleixner
+ <tglx@linutronix.de>,	Anup Patel <apatel@ventanamicro.com>,
+	linux-kernel@vger.kernel.org,	linux-pci@vger.kernel.org,
+	imx@lists.linux.dev,	Niklas Cassel <cassel@kernel.org>,	dlemoal@kernel.org,
+	jdmason@kudzu.us,	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v13 4/9] irqchip/gic-v3-its: Add DOMAIN_BUS_DEVICE_PCI_EP_MSI support
+In-Reply-To: <20241218-ep-msi-v13-4-646e2192dc24@nxp.com>
+References: <20241218-ep-msi-v13-0-646e2192dc24@nxp.com>
+	<20241218-ep-msi-v13-4-646e2192dc24@nxp.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241218044238.143414-1-carlos.song@nxp.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Frank.Li@nxp.com, manivannan.sadhasivam@linaro.org, kw@linux.com, kishon@kernel.org, bhelgaas@google.com, arnd@arndb.de, gregkh@linuxfoundation.org, rafael@kernel.org, tglx@linutronix.de, apatel@ventanamicro.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, cassel@kernel.org, dlemoal@kernel.org, jdmason@kudzu.us, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Carlos,
+On Wed, 18 Dec 2024 23:08:39 +0000,
+Frank Li <Frank.Li@nxp.com> wrote:
+>=20
+>            =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=90
+>            =E2=94=82                                =E2=94=82
+>            =E2=94=82     PCI Endpoint Controller    =E2=94=82
+>            =E2=94=82                                =E2=94=82
+>            =E2=94=82   =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=90     =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90 =
+=E2=94=82
+> PCI Bus    =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=94=82  =
+   =E2=94=82     =E2=94=82 =E2=94=82
+> =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=96=BA =E2=94=82   =E2=94=82Func1=E2=94=82  =E2=94=82Func2=E2=
+=94=82 ... =E2=94=82Func =E2=94=82 =E2=94=82
+> Doorbell   =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=94=82  =
+   =E2=94=82<n>  =E2=94=82 =E2=94=82
+>            =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=94=82  =
+   =E2=94=82     =E2=94=82 =E2=94=82
+>            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=
+=94=80=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=
+=94=98     =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=98 =
+=E2=94=82
+>            =E2=94=82      =E2=94=82        =E2=94=82           =E2=94=82 =
+   =E2=94=82
+>            =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=98
+>                   =E2=94=82        =E2=94=82           =E2=94=82
+>                   =E2=96=BC        =E2=96=BC           =E2=96=BC
+>                =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90
+>                =E2=94=82    MSI Controller      =E2=94=82
+>                =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98
+>=20
+> Add domain DOMAIN_BUS_DEVICE_PCI_EP_MSI to allocate MSI domain for Endpoi=
+nt
+> function in PCI Endpoint (EP) controller, So PCI Root Complex (RC) can
+> write MSI message to MSI controller to trigger doorbell IRQ for difference
+> EP functions.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change from v12 to v13
+> - new patch
 
-On Wed, Dec 18, 2024 at 12:42:38PM +0800, Carlos Song wrote:
-> Compatible string "fsl,imx7d-i2c" is not exited at i2c-imx driver
-> compatible string table, at the result, "fsl,imx21-i2c" will be
-> matched, but it will cause errata ERR007805 not be applied in fact.
-> 
-> So Add "fsl,imx7d-i2c" compatible string in i2c-imx driver to apply
-> the errata ERR007805(https://www.nxp.com/webapp/Download?colCode=
-> IMX7DS_2N09P).
-> 
-> "fsl,imx7d-i2c" already is documented in binding doc. This errata
-> fix has been included in imx6_i2c_hwdata and it is the same in all
-> I.MX6/7/8, so just reuse it.
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+This might be v13, but after all this time, I have no idea what you
+are trying to do. You keep pasting this non-ASCII drawing in commit
+messages, but I still have no idea what this PCI Bus Doorbell
+represents.
 
-with the commit log changes, merged to i2c/i2c-host-fixes.
+I appreciate the knowledge shortage is on my end, but it would
+definitely help if someone would take the time to explain what this is
+all about.
+
+=46rom what I gather, the ITS is actually on an end-point, and get
+writes from the host, but that doesn't answer much.
+
+> ---
+>  drivers/irqchip/irq-gic-v3-its-msi-parent.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/irqchip/irq-gic-v3-its-msi-parent.c b/drivers/irqchi=
+p/irq-gic-v3-its-msi-parent.c
+> index b2a4b67545b82..16e7d53f0b133 100644
+> --- a/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+> +++ b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+> @@ -5,6 +5,7 @@
+>  // Copyright (C) 2022 Intel
+> =20
+>  #include <linux/acpi_iort.h>
+> +#include <linux/pci-ep-msi.h>
+>  #include <linux/pci.h>
+> =20
+>  #include "irq-gic-common.h"
+> @@ -173,6 +174,19 @@ static int its_pmsi_prepare(struct irq_domain *domai=
+n, struct device *dev,
+>  	return its_pmsi_prepare_devid(domain, dev, nvec, info, dev_id);
+>  }
+> =20
+> +static int its_pci_ep_msi_prepare(struct irq_domain *domain, struct devi=
+ce *dev,
+> +				  int nvec, msi_alloc_info_t *info)
+> +{
+> +	u32 dev_id;
+> +	int ret;
+> +
+> +	ret =3D pci_epf_msi_domain_get_msi_rid(dev, &dev_id);
+
+What this doesn't express is *how* are the writes conveyed to the ITS.
+Specifically, the DevID is normally sampled as sideband information at
+during the write transaction.
+
+Obviously, you can't do that over PCI. So there is a lot of
+undisclosed assumption about how the ITS is integrated, and how it
+samples the DevID.
+
+My conclusion is that this is not as generic as it seems to be. It is
+definitely tied to implementation-specific behaviours, none of which
+are explained.
 
 Thanks,
-Andi
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
