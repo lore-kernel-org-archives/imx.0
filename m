@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE86217F4C
-	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 07:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD562185B4
+	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 07:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734593274; cv=none; b=VFGPeNCmmd1iZ7iXwoGkjiXhzydj7wxt51IlxlVT8rdVqG+9+Z9aUGT0us6ud3w5U6HwZQAAJx8ZnVRP4MC77B01Cjhw/5A0K5GgLVozeujaSBs6uSyn3uKPv1jR5XuF1gCrQOz8rpafaL2upa4TpLBGG8x9TeAyt2LbHAgmn2o=
+	t=1734593282; cv=none; b=AeAnq3OzcssOUDh4No8qelDjL2eTO9s/YHm/lRasgMnk6BZsRG9QdeUlWOLx1XGkOBeSatQeXzaKhhaLd5zWL7X2r1goq/oyna0e6iiG/3Xno7CYbaaXXdZhDav73EhE8DFVQS3sgEfNMYyzOM69rQ509Gs2wY4487ZmrN4R8vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734593274; c=relaxed/simple;
-	bh=4wlXlrcvAoFBD5bO4p74HPRRLLelFGeOYkDT9zVIU6E=;
+	s=arc-20240116; t=1734593282; c=relaxed/simple;
+	bh=TYtwdPjSTuL+w065ebq0Jx6PYDr/qnE3TnwfhwToEFY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b8IMFrHpfzpMhJpI1COg0ZIEHKXBD4IxVGGdmYF55eL1xUD4giLlJoGT8CtcOO5xBD49EibBOLHeT/SPjNCKE0I+GTz9F8m8p/faaPsRomeaHnfghWfofFLBguuD7ZerdOmZScHHhxkes/O+40oS2FZC1p2Sh5EAt6S1LbJvux4=
+	 In-Reply-To:To:Cc; b=G83a/xH95xJ2lKVwTSiQVTANdidNqcDRdXTsVcyNlUP8m08kj94r2YOdmgNMML02GYDfPx+8GN838yBSq1610+FU9qZzfTUxpencKuLjWntWyQB8Mu0Ea4S7wJTrmUxSjFO1KqMj5JYSZAgntlZH71RAp29q9m4i6XYr5JvSzMU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAwX-000728-N6; Thu, 19 Dec 2024 08:27:33 +0100
+	id 1tOAwX-00072D-Mx; Thu, 19 Dec 2024 08:27:33 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAwW-004AP6-1J;
+	id 1tOAwW-004APA-1S;
 	Thu, 19 Dec 2024 08:27:33 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAwX-00Gewn-0J;
+	id 1tOAwX-00Gewn-0N;
 	Thu, 19 Dec 2024 08:27:33 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 19 Dec 2024 08:27:32 +0100
-Subject: [PATCH 1/6] dt-bindings: clock: imx8m: document nominal/overdrive
- properties
+Date: Thu, 19 Dec 2024 08:27:36 +0100
+Subject: [PATCH 5/6] arm64: dts: freescale: imx8mp-skov: operate SoC in
+ nominal mode
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-imx8m-clk-v1-1-cfaffa087da6@pengutronix.de>
+Message-Id: <20241219-imx8m-clk-v1-5-cfaffa087da6@pengutronix.de>
 References: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
 In-Reply-To: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
 To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
@@ -63,57 +63,41 @@ X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The imx8m-clock.yaml binding covers the clock controller inside all
-of the i.MX8M Q/M/N/P SoCs. All of them have in common that they
-support two operating modes: nominal and overdrive mode.
+To reduce heat generation, the Skov i.MX8MP boards should run in nominal
+drive mode with a VDD_SOC voltage of 850 mV.
 
-While the overdrive mode allows for higher frequencies for many IPs,
-the nominal mode needs a lower SoC voltage, thereby reducing
-heat generation and power usage.
-
-In any case, software should respect the maximum clock rate limits
-described in the datasheet for each of the two operating modes.
-
-To allow device tree consumers to enforce these limits, document two new
-optional properties that can be used to sanity check the clock tree.
+At this operating point, not all frequencies that are achievable with
+overdrive mode are possible, so import imx8mp-nominal.dtsi to clock down
+the clocks.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devicetree/bindings/clock/imx8m-clock.yaml | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-index c643d4a81478..a6ae5257ef53 100644
---- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-+++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-@@ -43,6 +43,14 @@ properties:
-       ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
-       for the full list of i.MX8M clock IDs.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+index 59813ef8e2bb..9dc36517e90c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: (GPL-2.0 OR MIT)
  
-+  fsl,nominal-mode:
-+    description: Set if SoC is operated in nominal mode
-+    $ref: /schemas/types.yaml#/definitions/flag
-+
-+  fsl,overdrive-mode:
-+    description: Set if SoC is operated in overdrive mode
-+    $ref: /schemas/types.yaml#/definitions/flag
-+
- required:
-   - compatible
-   - reg
-@@ -95,6 +103,12 @@ allOf:
-             - const: clk_ext2
-             - const: clk_ext3
-             - const: clk_ext4
-+  - if:
-+      required:
-+        - fsl,overdrive-mode
-+    then:
-+      properties:
-+        fsl,nominal-mode: false
+ #include "imx8mp.dtsi"
++#include "imx8mp-nominal.dtsi"
  
- additionalProperties: false
+ #include <dt-bindings/leds/common.h>
  
+@@ -237,8 +238,8 @@ pmic@25 {
+ 		regulators {
+ 			reg_vdd_soc: BUCK1 {
+ 				regulator-name = "VDD_SOC";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <850000>;
+ 				vin-supply = <&reg_5v_p>;
+ 				regulator-boot-on;
+ 				regulator-always-on;
 
 -- 
 2.39.5
