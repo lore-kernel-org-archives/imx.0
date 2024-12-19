@@ -1,67 +1,75 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2073.outbound.protection.outlook.com [40.107.20.73])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2083.outbound.protection.outlook.com [40.107.20.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911A921A44A
-	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 13:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D091BC5C
+	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 13:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734613700; cv=fail; b=rAHgYMdiIvj8VAAqtm7xCYdgENToFrauG0ooTko+9BUAvcv2sIM7VtNg22P8N5MLBY2eEwXcFrW5ETbz7rh6UEO75ru1GYfQX8SLTqNX2BONzG14qYJoQsaca2Crp01xQwQCRKf8tKpScqm3KTuTGn+sbSb+gUfnTAmjBYz0pQA=
+	t=1734613841; cv=fail; b=IhpLXwyfcgoMwyXnuNhT5aSSmLV/pk4bdDCVxuAlZvAVIjv6RAa346hM7dcfvKDwhiBcYil1IfO2Nfpx7Gq6FqsDHwURfXXI51336XBFr5gE4HjFopKoEamuWKSWNRzh2kepgkceKhz9VPNYf+u725GXYlM0GO7cxTI48ulUQuU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734613700; c=relaxed/simple;
-	bh=ck9r729SRDV93ZDvF34YztgwA+2I4tt/niD1UPpoW/A=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IVcN8MTuZjnxCS3i/5ZSBGD3CCdCkqg8krL7bt3V4vT7E2K9Eu1TpDCdJLnN47q/uomwZ5eM5Cw9M6HkWB5n2MlDYiXZdiHzp71k/p82uWy3B8dL1/dGUIggb1eUQluY8sZPWct+RtomLoBmJe7od2T+AzREoYOcnkR1EUlTAnI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HqY757ll; arc=fail smtp.client-ip=40.107.20.73
+	s=arc-20240116; t=1734613841; c=relaxed/simple;
+	bh=xZfnwLsaRWh5b3U2krWyYj4gxxTu7csSNyVDPJfXafo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LZYADK69HefF+VupQz/H2fZ4WlTnMzUX1xPuaVK5V2Aje5pLHMudRXSsZTngNorYYRlU2qFl5FmZNv73Md6B6BHlo040U6CY0bcaJHNLrKEfTXSXZCFcuWIIy23WkGrANrMu3Vq8D9tLkOEJSoiZZ5JDAJ/Ktbq/iDgrtoHOTqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=aQ2CV3Ne; arc=fail smtp.client-ip=40.107.20.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HqY757ll"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="aQ2CV3Ne"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tpfhq9BZa7miiBPCt0EM2wfmwiL+RoDX1bVid6lvZefPk+rIA8aZfsNQWCndouBrmyQP7e9OI5gdgOSryOcBHIF4NYQpS/meHv9TN0CyJvRu0QweL5dppn31DcJ38Z5PRgqvcWDbo96Z3762PNPzz6CeKoE1rjz1AVgK/GD4QHtfA4XxbbTePdB4TQGIOxuOJwbg7KzbJoDyLhPvnDKZC5ALYlguqGZISFfiGs4zinvkqDy1jOjVkz3Ho8H8iEtST4DeJY20NYE4VpFW7zc31IwygoZkoGJrqUvT3DFoiXXeiZ5hCo5I3Ygzy5tcu0wfWo9MdnSGasdhvGzHTLUHdA==
+ b=xLUG5b7wakw4Bv+JnSp0SJVKOmZVwdVMqn+yy4sYLy62BAVaxUZs47heOW60TXt+X/lZKL+MXMRHEPSfMgvfcoXuNEEeBPk4bekVMuOjpK2kD9sasOGg45DyH+IpIP/NRbJKJY8gEgy3HCeyPfeJz4EyKydAmX1/s5CSRMnMmv8rt3cTf2XatFuaODxKnmnHv9z7hvXaHHrnzCSPy2VvB7nV4SNNpggOmu2/EPnpyP8C6XYL/SlbH9tcPVOLSmZCrH8oUBPcdTRD3n2bJmbkIPHbNqj29x73cS2VttlffMLjGx5G+rvnbC/7jt4XzJYwroPyDSjIxTZXZ5HJdBKCvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tf9fIs4+tmWJqZ2Wj8+yoEf75XlkYQ71iygtPWJDzjc=;
- b=nLC69XHf+TknZ6+NjkF9ivcLbqVaOfzq/bRDqb3AaqCfM77IkRthJKfoR5cA6tacJZOIHPKNxFxz/LfUCIEDiDVVYk6evqJBb1beRojPrcl0R9EQ6U6Fs+8+NcszOcxGMLr6GENFWuy5eX1EVJQ5lk2Jm6h6Anf1WkUJytzH2PU6xwfp57pS8ggQT/kSOOeZ0OQ2ZDanbVvste8hFPqMQ6wwC3TZY6c8B9JuID64gAB8bvB5bcp8OgMPQbG2H8w7ozBujYQjgThv52qe0JTTEV2YiilklWLmPH1uCQHxpiMPvVBKnHixkMWT8z2kYFTcuFr8qzmsOKLRwoqwSLHEdA==
+ bh=1O37GGDiNqX9BN5G4PEOUKadcZso7tqGm3oWW9QOEMI=;
+ b=ulpTh7IrrI0AvYH1mDuO7RGyEnKDbAz2DEV+8My058z2uZXSBFC8X7tu7Qijmi9dDXVbPhQIruyd629d/TsVR+TMcuyjldiCRbq3BN1IHGYEQdDrvDW87PnwhJQMHjfgq90Mzl7C59SmBJ5mRo6IixUPiCLJJALpaxi+suxt8bqTgxyfiNCn4uI5MGG1midMz4ZCNu/s9MU7/8k4MkCJTBlhg66WqPmM2tDh6yWEtC6ybO2W61/7T/Jx8oG99aQk+YbZaubGuYwsGSiKCISGd3S+X3cA9vUf2ZmEqwcosTHxyre4vTsDFtX6HTsUP/EXvp6iPJZY/Mwpx1EQiTOGvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tf9fIs4+tmWJqZ2Wj8+yoEf75XlkYQ71iygtPWJDzjc=;
- b=HqY757llyk2zcowY6BtymmqBcWdZ4ZjPCiqVcR62aOMM60MAKKR/pq0DgMRBckG2BGmqI2lmvVJy0/wrUtHTGmpINVbrvRJyDEaVJhGc68S1dRR+77/tYGbYCl6xtAJpxb2tmdBm5pdukk3WGc5Y/q0HCoSkXc/uHZFCYhNDnD+NM6flbU22t43SwQVQiu1krn9yDbWSdrWOK1wQudBFMm+2EG2b2saNJgCaPSc2lDyzIE61MdtSn+ie7WzG/JXf2hEz6eBsv8XXnH25wzMFTHmyWb24WiRZ7lt8NDLMpXyw48mOWq5aNf+H6lPk+XSiFTmWxbZESyR0DRaGagOMog==
+ bh=1O37GGDiNqX9BN5G4PEOUKadcZso7tqGm3oWW9QOEMI=;
+ b=aQ2CV3NeThMEp8fTStf0XOlZqW6R4qhLgHngDV5YQfsZCFfj6AGdBjVNY8vCnYPbQU39i1iuqtDAvqcuAXGMSkMJnLK/5/cQZBpKpiB7NiQVzTI3sB2VpMn/jWh8ZDzAoE148f6gg2VUp2LmG4/RunvwzJNRgQRj5vlbLi61kB/yRGh2vlrFDikkHWhiPcFjCyUYroUHgNiwgfg9BWVYF8kQY3iiNC1C1dkSDbpC7IkQWjq3wVN3Z0Vb0NwadosP9MvQ3no/GNgctjzvn4hm15eRNHnvnSBUu357dPZxUFu4yVKMqQey4AB5jc1Llxy+YOafTA6IezBprePpQMaJuQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PA4PR04MB9567.eurprd04.prod.outlook.com (2603:10a6:102:26d::9)
- by AS1PR04MB9653.eurprd04.prod.outlook.com (2603:10a6:20b:475::14) with
+Received: from DU0SPRMB0099.eurprd04.prod.outlook.com (2603:10a6:10:47e::21)
+ by DBBPR04MB7754.eurprd04.prod.outlook.com (2603:10a6:10:1ee::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.13; Thu, 19 Dec
- 2024 13:08:15 +0000
-Received: from PA4PR04MB9567.eurprd04.prod.outlook.com
- ([fe80::83be:fff8:5a00:a515]) by PA4PR04MB9567.eurprd04.prod.outlook.com
- ([fe80::83be:fff8:5a00:a515%5]) with mapi id 15.20.8272.005; Thu, 19 Dec 2024
- 13:08:14 +0000
-Message-ID: <804ed6c5-0842-47e2-b13c-6f733be5ee19@oss.nxp.com>
-Date: Thu, 19 Dec 2024 15:08:01 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] Add eDMAv3 support for S32G2/S32G3 SoCs
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20241219092045.1161182-1-larisa.grigore@oss.nxp.com>
-Content-Language: en-US
-From: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>
-In-Reply-To: <20241219092045.1161182-1-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR10CA0009.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:17c::19) To PA4PR04MB9567.eurprd04.prod.outlook.com
- (2603:10a6:102:26d::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.14; Thu, 19 Dec
+ 2024 13:10:34 +0000
+Received: from DU0SPRMB0099.eurprd04.prod.outlook.com
+ ([fe80::81f7:ab08:594d:c11a]) by DU0SPRMB0099.eurprd04.prod.outlook.com
+ ([fe80::81f7:ab08:594d:c11a%4]) with mapi id 15.20.8251.015; Thu, 19 Dec 2024
+ 13:10:34 +0000
+From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: [PATCH v3 0/4] add I2C DTS support for S32G2/S32G3 SoCs
+Date: Thu, 19 Dec 2024 15:10:25 +0200
+Message-ID: <20241219131029.1139720-1-ciprianmarian.costea@oss.nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR04CA0057.eurprd04.prod.outlook.com
+ (2603:10a6:208:1::34) To DU0SPRMB0099.eurprd04.prod.outlook.com
+ (2603:10a6:10:47e::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,149 +78,132 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9567:EE_|AS1PR04MB9653:EE_
-X-MS-Office365-Filtering-Correlation-Id: 679c3d3a-928e-4b1a-6c22-08dd202e3197
+X-MS-TrafficTypeDiagnostic: DU0SPRMB0099:EE_|DBBPR04MB7754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0876c3bf-fc72-4264-de52-08dd202e85eb
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?KzV5TTFUQTl2bDhKdGt0UitySWZjWk5nc1NMRndUUFVDT25iN2VteVdUUGc0?=
- =?utf-8?B?WGdmYmlIQkRBQzlzVnhudmZLdjZpMHRZS2tKSjRibTA2ZWs5cmZPS2NzeDZn?=
- =?utf-8?B?b2xzNnBSSklxU0Vab2tLWDc0cllocVJ6Y0lVUG55bjRlTU01V3pzQTJISFFQ?=
- =?utf-8?B?UkhYWWoxS2lqc0p2R2o2MlBqNTlIUVB0VHk0dENHSW9KWnF6MWFFNSs1MHhj?=
- =?utf-8?B?cXBTd1ZwZkdSdUttWVJrYVEybzZPWU9lZjdmN0lEZmIzQjhCNTQrTmNZdHlS?=
- =?utf-8?B?Vmk1eGgrUUZIamxGTng2SWVHbHVJcHhWRWdoVzlaSEJnVWg5TXM1VEpWVE5C?=
- =?utf-8?B?elpYM0t2aTl3bjJvZHhmdEo1dW1jWEtiRUR4bjlvSjZhU2o3bjNKUGhOUTli?=
- =?utf-8?B?MmNHenB5RS8zK0ZnVEFkdjhQczRtNDJxYldJb1AvRnN4YllWNVJNYTlxTWNp?=
- =?utf-8?B?bVBtY3JCQVUxM0ZpckpqZkxRVEwvdzZISW9mSXcxY3BCZms5VFlRWFFEUGkx?=
- =?utf-8?B?aUx2YUM3N0dObkRLeGdoV01qRHI5WmhjcEhlTndBeHJ4S0xRcXJiS1BDOEMv?=
- =?utf-8?B?SGVzN09MS0daL1crQlpHYk11dEFLaGxPU0htV3NyUmJOQUhaOGJYZWQ0VXcx?=
- =?utf-8?B?SkZpWHJWU1d0VEV6VlFoOUl4SFR0UUFVT1ZKMXVsSzlyaGtVSlp2bnNsbS9Y?=
- =?utf-8?B?ak5hUUZ2SFdpZjc2bWpzYzdQQm8rQlBNbkVsTUNjYWtNc1NWWTJXMXJ6WkNw?=
- =?utf-8?B?ZmRHMURQOFFYM2hDcXRTYkYvOVNhdkpBYlduNkJhQVVHZUYzSnpkT25IN1U1?=
- =?utf-8?B?Q0dLcVVnUGVRRXltRDRwZ0xQV2J0WHhXa2JXMnJNdzRRQjVrVk1URmxnbmxi?=
- =?utf-8?B?QTJONzk5MEk1S2hVM1lKbHFpTGpMOVEwVjRkWUVNUFVVVStaY1EyR29FQUdl?=
- =?utf-8?B?dU5xRG5kblJqcUlTU1g3dUlpNTJvTS9TWjQ0MUVUc3ZCT2psc1IzaTN6cmZh?=
- =?utf-8?B?S2JzY0pCVEhDdzROSnJoSFZra25kNjdBbnR4KzdSQ2Y3a1N4bks4RW9NM1dW?=
- =?utf-8?B?WGRuZFU2ZEdoeklnQkZkcThEQnZ1T2ZiWS9USU9ONVlMSWlqWFo5NS9aSWtK?=
- =?utf-8?B?S2xJWk9ldW9sNDdhUlRHZjB3Tk04TmxPVUNVQTdJVitpSE9VOStmSHEvcFVU?=
- =?utf-8?B?WTBncUYrb29JbHZZU0l2anlLMlBZOWdTVzF1Q3Y2Ujl3ell1dkJjN2hrR01E?=
- =?utf-8?B?QUVUTHRwc1JKajJieUlKeTd2cHBKZjRFaUpyUzdUZFBCZWRXeWcycVdmM3dH?=
- =?utf-8?B?NUtUYThjNDFtYTAvR3YxaWRyU2pQS3FCRWMrWmtMdVZBa2lmQjdmbGNHZzNK?=
- =?utf-8?B?M0kxd0ErM3c0c0F3VXVmMmFVU3hOS2lwTld6aU5jRnNDY0tFQlhhRkFEQVJl?=
- =?utf-8?B?M0hxRk5yQmtvMW85RjlranRTQTJUN04yQWJCK1JnM2ZVam4vN1hBem9WTlY0?=
- =?utf-8?B?eG5IcmxDV0IxbmRFd0grZWVOZlRuUFNBT090UXgxNndSUDVHemNXakZMQStW?=
- =?utf-8?B?R3NONnl5NGhRMlV6TUgzSmVyNXo0cVgvTy9VK0VDWTZ0a2ZSc3RMUGR0eC9i?=
- =?utf-8?B?OTFoVGMyTlpLOXYyS1RzSGdyeEp6VGtqRmlnazQvc1dOU3JpV3hVOTBuL0RE?=
- =?utf-8?B?elJFWFUrSi9XRUlHaTZWaTdTWFQ5MXQ1bWYyUVNVTnhLVktLRmxUOUZhaXdi?=
- =?utf-8?B?YUpPZ0FZaXMvMHRGWGYxdTY4MnhDdm15c3RwZVNCQ1Q2VEFwMGozVitCZHVT?=
- =?utf-8?Q?rsLs/4rlYJyU0z11TdCwXSWt6Gm8owDuSeLB8=3D?=
+	=?utf-8?B?UkViSFNNSllXMXV2Y2l5eHNNSHRwRHRmWTVSWGo5SlEzNHhrT1lodW5WdUlF?=
+ =?utf-8?B?S1BPUnVyNkgvdTNaN3c4ZW1tYzZveWVnWXZGNmg1U3lzRmkrNGF2VUdLVmIx?=
+ =?utf-8?B?azZhMFJVNk5LZ2dtQzBvcUNYSXpzN0VWM0Z0M05lMlpLZmFwZG9CcDVhc1Bt?=
+ =?utf-8?B?enRQcERwaTgyVmdOaFE4NFVWdGZId1V5VU95QVhPYTBFcXBpSmMvMFdNU29z?=
+ =?utf-8?B?L3RNRXQ3U0g3ZDNxRFYxeFZCbFhxcmZNYWtCaXBIbVp3cjhCbEY3VEptS015?=
+ =?utf-8?B?elhvN0orcDZRZkJqcnlvZGVFRTBUMFg0c0QvZUorM08wR04vQ1UyODNkRUw1?=
+ =?utf-8?B?VVYrRmc2MXJWSG1wd1pPMTZWR1JCNXZjK3NoTFJienlKd21Uc1Z5K2p3Tzla?=
+ =?utf-8?B?SzZhb09iV1hndW1tT1Z2M01yREVaYVd2ckxoekpTNnppMTJQQ2FHUElWazEv?=
+ =?utf-8?B?WXppU3cyazMrTzZoazBZVWl3Q2dRR2p1cGNRODNQZ0RxZTNXNWtqR0EwWGlG?=
+ =?utf-8?B?WlZYWVdwVndRWmczSkIwWnFVZlJ3UXJxN0I5T0JSdEJWNmJKR0h2STBxSHRH?=
+ =?utf-8?B?SnZkaXlmSjJicm1ab2p0VmUwU2Zyc3ZMUnkvWnJTaWdCcEQ2bkNFMXIvZk5q?=
+ =?utf-8?B?UFBZSVJCRXZzdGNLWjA5cmV2WDhWMFNEVDVkUTAybEhQdVhxTG8rV1pZWkc5?=
+ =?utf-8?B?UXFTcy9uVmE1UUcrOWRZK0UyQkxSTGZQUVE1V2U2RXl5Zml2dDR0dk5GWk4y?=
+ =?utf-8?B?RlNaMUlJOGFkcTdDa1VYRWxjczVJMVJFTit5RmpIUzNmaDg0bkg0Q3JrRWtq?=
+ =?utf-8?B?Sk12M3JSNm80MXdmUysyQlVuNWpibjdveFFNSVpiOTlqRGpnZGJsd3Bodkd1?=
+ =?utf-8?B?azFSZDlTSVZ4S3ZIYWxRYWN1OUlMUEFBTVdPMlhxdHdxdGJ6WDl4OXZGb0t4?=
+ =?utf-8?B?cnd6MHVROHk0a3Q2VTBmeDdRZG4vSm5DbGVzc1pvMzdmNXhRTGd0bFRhRk5P?=
+ =?utf-8?B?bldxNXZaNGM1TnlNMCtPUGpuK1RZZm1lUGdORGNjeDRubzIvRGFTOTZxdGlW?=
+ =?utf-8?B?Vno5UE1aNzdmQlhQWk9qRmVEU0pGRmxOMXgxSEZwNkF6TkFjanBMT0EyNGNs?=
+ =?utf-8?B?cTJ1U0dnakEzY2tEVHJaUkIwQkFsVFJiVnZvTS9wVElIalNNNTl1emErWFVk?=
+ =?utf-8?B?TnFLb3FwZ2UwQldBRHZ3NE5OS2VJSmxTblo0SEFlL2czUGtuQTcybVdpeUp5?=
+ =?utf-8?B?Y0diU2tyZnlMcHpXMjVXRzJhdnNMUHI0eDBrN1JUemhmbWxlT2xZZzkzUUVS?=
+ =?utf-8?B?ajgyNzJDbVJ4N2p5a0wwMjRoMDRuQm5ieit4aVJzcnB3UXFXeWZaTWgydFlO?=
+ =?utf-8?B?dFExKzJNM1U0YitiRWdIT3ZONjJlY3JGUnF2MWFKYWZGVDVON1gxNjN4VU9F?=
+ =?utf-8?B?TXZCY1pYTnJJTisxc2ZwdWlINWtBemFPdFRHTkFrcFBVN1VaTGcwNTR5dXRD?=
+ =?utf-8?B?S2kyMkp5SGplME81bVFtd0ROdkZmNzk2WS9rWWRLVWtOSnVLK3JxVWFNK3VE?=
+ =?utf-8?B?b0ZiNG54SWpXN3ZaNmk1aDIyS2VJTkdjaG90emdPd3V1T3FBTEVKcFI1QUN3?=
+ =?utf-8?B?UndqbnlVeWtWVGNsRFVYRUxGZ1p2bVFDZ2VMM0wyK2J0Y1F3Nm4vNDVrdXVJ?=
+ =?utf-8?B?TkZISkUzMStrVUt1U3hmVDRXTURxVjU1RlNBK0YzNW9ibHd2RnZSNnN4Wk1N?=
+ =?utf-8?B?SGNWRk9oS1RUZisyekozeVZ5cEt0OGlNUmVVNzVuZG5VMVFXa2x5RSs4YnFs?=
+ =?utf-8?B?OFVkd3VLZXE2OTlUSXhCZjBNQitzNWxkOFVDdnZ6UmVkcXFScWJicTZBQ2tu?=
+ =?utf-8?Q?zb3oY69p0bUsq?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0SPRMB0099.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djdyWkptZWRNUTRrbmkzNzMvQS8xM1c1VllPbzhBdGhtYlRBRkZJRC9yWFg1?=
- =?utf-8?B?MHQvVTlyZzN5R1ltYlRhOHhVclplc1Z0OFp2MW80REtqS0tqNU5BekwwMFEw?=
- =?utf-8?B?NXQrK3B4aUZ1aERqZmJKSFhGQ05vdk1ybElyTkR1TmV0VDd5TXFPcUVhdm5m?=
- =?utf-8?B?dDV0Q0VnWWU1cWtkMUdKUndYZ3VKMUNXTThBczJ5bG1TeDdjN0tCRXc1TXFZ?=
- =?utf-8?B?a0Q2WDJuQ3d2czVDaCtRcmQvQmU5dkVtcXpDbURXSlM0bThtL3pVeHo3U2Fz?=
- =?utf-8?B?THdmY2tlWGJqdGQwOHlaT3FlUFdxWDJJeVljSTlyVTlVVjVtTHovVXgrWDVv?=
- =?utf-8?B?bHhBN2RlZFp5NkpDVXRadHhjV1h5emdYb3c5bXlYSWJNLzVqRDBHd0hMcTFX?=
- =?utf-8?B?RUxXekM3aklSdHdlREhBeU1KQU1obWMvNGN2Y0djd3dpU2VNNVI1cHNFek1r?=
- =?utf-8?B?bGxLNlRsWExYQTFwMTZNOStkMTZ5V1NSMFE1TDhaTHhLbTUyR3hDaEQvYVc2?=
- =?utf-8?B?QmZxTTlqbDJrMkRsT0N4akVUam9HMGMrcmNKM1FvNEdoWkdPNlRJdm1xMUZW?=
- =?utf-8?B?YjM0OVdIWVFkaXdzZSszRDF6dUd5UjVCdS8rMjh2RjJXUEVOOHpDaHc1UHhs?=
- =?utf-8?B?SGFDQjN4TnR0b2JiaFNxN0M4OW1SSWtvejdpaW53dExJbVQvVURyQ3RQVzhw?=
- =?utf-8?B?cy82eFpKUE9CT1NPbWF2VGpZRHFuT3JON2FSQ3R1Sm0xclh5WU5DNTVHOFhM?=
- =?utf-8?B?eTArUzAxb3dLVHA0L2VUNnRoMERUSDdXYVZlZW82d1pQandlMDh3MWU2bjZW?=
- =?utf-8?B?cnhxRGNnelBLWFRaVS9ZRmN6cDJiZE55KzMrNFVQalZpbktFZWlTNVoxRTZk?=
- =?utf-8?B?NzR3aURDVWxDUUQzSVI5NGlPZXdqVFRJMXhVTHJrYmZjTEJHd29SMHk3TWVu?=
- =?utf-8?B?UVI1YllNdTdTSkdaTlAxZXRta3p3SnNWME5kdHk4OXdwc2hSRXFTRVNmVHJW?=
- =?utf-8?B?akhwZUE5QUpsbW5JeXhmVUJpRnc1bWJWcFd2Vms1TmlCeFVGOGVMRk9xUXd4?=
- =?utf-8?B?UThtREhyd0VJMmVaK001alVWQXV5TnZWeVIxZVJQbjJVVE4vN0FKUmlkNHFh?=
- =?utf-8?B?NW1GWExGWFE0bzBrbmNTaXk5TWdlM2hsYzRycm5Da09LSzRGSnFsSHF5R2Rw?=
- =?utf-8?B?S3lhL0dzTXdsZzcrSHhEU0dHaXR3Q1dtN0RHWWFHMHV2dnBGNG1tdFNuU0ha?=
- =?utf-8?B?SGxwbHgvL3pYTnFCMk85S0RyU2xlKzRxd3hpeXQ4NVdyZUJwYjVVTGxFbXB3?=
- =?utf-8?B?bG5jY2VPcXRMRW9MNzFtbnRQN0RrM3pmNlNYV0s4SVRSU1A2RmRKQmRxU0hS?=
- =?utf-8?B?dDM0d1hxaGI5NjhKSTNhM3ZJN09hSk1RZlkvM3VEKyttNDQ5ZE9sSjc0OGIz?=
- =?utf-8?B?NUQvTE54V3FBS3lXaGlaUGZadm0ydW5hZGNUYkhmdmFsWXIzalZCV014TVNS?=
- =?utf-8?B?R0VJTG02TDhkWDdOSEtzaWVCTWo3Rk5PRU0vVjJLc01ST0Fmby94Q3MvWklK?=
- =?utf-8?B?bFM1NzJXRnpZZHo2b0x1SzJVQnNEMEM5cmFzVDZNdC9LR3JXN0ZNZ3RMSnVV?=
- =?utf-8?B?ZWdFTGFvalM2M1gvc05rbXpVT29hZlduN1ZTRExvSVRERGNvWTRBSFJhUSs0?=
- =?utf-8?B?ZndaNDk1NzU2amg1Z283U0xDa1MySEQyM3EraFBQUmkzNkl4UjVud1lRUnh6?=
- =?utf-8?B?R3NPdzJCQU80encwdWcxYlhuTkNGY3llQ2F0aWlmTkNHbWdYNDFlTis1WTBt?=
- =?utf-8?B?K2pnc2ZwMlEvWGlleXJXcXc3Q1cwNHdrYlMrOXluNkwrcUJqd2J3NlZlV28y?=
- =?utf-8?B?OXRNVGpVOVVjVUU3c21TcWR5Q05xSEZpMFgzY2JaUlQyblJlRnZwSzhsTHFB?=
- =?utf-8?B?c2ttTW9GMVNyOHViWVhXbzRPNnZJTHNUcm5qM214YmZ2U1h0b1F0TFlscE1Z?=
- =?utf-8?B?dVA3RFY4S2tsOFhVRzlodk90bUQ0ajlrdFZYTmJXSkloL2JTR0pXdkRmODFW?=
- =?utf-8?B?RTNYTGMvaGRxdUZaK0Q3SjFYU0xRUnBaQjRKY2tQeGZhbmozSEo2RHBvN3Fp?=
- =?utf-8?B?dkE5MWhMMDRtelZKQjloWFVOQVRrcUwyV3FKOEQzdFN3U2x0R3pNNWRCQUU0?=
- =?utf-8?B?Z0E9PQ==?=
+	=?utf-8?B?UFp2akRBK1grOWJaQXBaTzE2M1huMDJZT3h4NTkrQWpmK0pXWnFzYTdUV3BQ?=
+ =?utf-8?B?a08wQk1pTVhnbkdCaEVGZGVjVzdvRUUrbG1yd2pKRTZ3aityUXdkdlY3YnlL?=
+ =?utf-8?B?U1VCSm9wdHRNTVVZVXdkLzJtQm56UmkrS1hIRUJIK2ZYY1UxdlJuVDZDR1Zn?=
+ =?utf-8?B?Y1dLL0YvVFk3b3lTVlN2dmxRekplYWowK3JYdkxzVW90TTJvZUZFQmJQRm4r?=
+ =?utf-8?B?ZWYrcGdERFZqWFp0Z2Rza3hQZ0pnWkc3YnJYaVZNZVlKVS94MUdPMnczVE1h?=
+ =?utf-8?B?aHFUTUo3SkhhSEMwSkNyLy9QWUV1L2E4YzdvZWN2cVlCai9iSEdrWEdtRWpa?=
+ =?utf-8?B?SWRDVWNSbTJrMjVSZkp4NkhxOHFUaXRmSTNzbFJGNGl6bUlKSzRXR2oxVUxm?=
+ =?utf-8?B?bk94SEp5M1pDUnE4dmpPWmNyc1RrMkc3emx3Q0ZMa09MM3gzYWFacHMxUXV3?=
+ =?utf-8?B?WVVCNnAyM2dwVHQ4Rko0U21laE5OUWIvVE1TeWZrdGpMVHhzemFHbWh6ZE9B?=
+ =?utf-8?B?eXQ5djUvSDhNNlM4QTRXOVhsWWpYYWQvNlVWV3RNd2s3cThYRUt2UzltaElG?=
+ =?utf-8?B?S1VGeENtT0h1MGpNVnVnSURLZ3JEMEc5Wm5HRkJwanBxZ1FNVUQ3Nk43Y2pv?=
+ =?utf-8?B?WXRUNWxoOWNMblhEQmNoOXBoVEVXb2tXR2Qwa01kRVIyYUlReXJuYisvNlli?=
+ =?utf-8?B?Mm0wS3FYelVqWmIxK1g1SzBET3pBallHWGNyM2doSmswYk44QitaRXh6ZXhz?=
+ =?utf-8?B?SC9XUTZlTlFkVm85RjltM1NtQTVMZkkvcFppaEF1aEt5TDRjdkRTZmc5RHVy?=
+ =?utf-8?B?eng4V0tYeHJidzN5SFJldCsyUTVRWlErU3RhZUEzM3dXWHpSV2RQUlQxcVEr?=
+ =?utf-8?B?bXc2RlhYU0pEaE9qSnNkYkYvQUZGeEFCOVp0cHZLRFpPa2FVMTlZVkFudm9K?=
+ =?utf-8?B?L1JYZW9OUzJBMDhxb1FGWVBLOFk0NUJuT2xlbjZhTzh5Y2lZQzlmaHgyNXVI?=
+ =?utf-8?B?LzQzcGZGekg0cHA1TTN0QmFKVUpFZ3MwMm5IOUVaeVRxOFVZQUJtS3RKMVJy?=
+ =?utf-8?B?ays5dzFUN0JMYUZWMmUvUmMzYytSWW5YbUxnVklVZnN2SEFnYU1FbXB4Nmkr?=
+ =?utf-8?B?MzlzNExLdzRKbmRFRXltOXNaYVdQMlY0cll6ejBubnJQWldBTHBZYWdFRTlO?=
+ =?utf-8?B?a09iczVNdVF3RGJVV1BWelNJYXlTZzdSZXg2c3NRd3dmRWpDcXJWUXF6MUt4?=
+ =?utf-8?B?VGtCczVNWXc1UDdFQ1JuRklZSXQrdFY5d2hody9VZGptNnNsQStDcE5yV3Qr?=
+ =?utf-8?B?R3V1TC9iM1hONENuL3lxOUZtd2FuRVl4UTNrNFRkVVJaZEZoVlI0L3dhVVY3?=
+ =?utf-8?B?bWU4bDIxcjU0UHlOdlViK01yVnZFdmRoN3UzUUVzM1ZGWjdKNmQ1aUMrbzBI?=
+ =?utf-8?B?eWVwUkgrRi90WG54dVhqVEs4MnVNUHFwdUFuSE9vUlNrN0IrdmZhTU8rU1lF?=
+ =?utf-8?B?R2JsQ3hKb0tEbGlXOXJ2ODNkSzkzaDlwUDNoV1dPL3dFdUZERHEydmtqanhT?=
+ =?utf-8?B?bHo1SmZUUWNpU0NPYWUxbm92RUw1NnpYVllnVU5qSENNUGtzUTBOM2ZrQmM3?=
+ =?utf-8?B?WmVnYm9PUk5wb3NkV3VZaVdXRFVoUGt3bTQ3ZjhXeERhWmpReWVicEJlQnlM?=
+ =?utf-8?B?S0ZQZjdyQkhibUU0UTRxYnV6TDh3VGNTdHNmRWtaYk9kMW5jYVRhTWZ3R1dt?=
+ =?utf-8?B?eEVWR0syMWFnSnk1WHJOaU1ETW0zUW40dFR5djd5V0dMcE1qcmVTeEVZZDJv?=
+ =?utf-8?B?ZlQxQTJxNWxFZHNaaGRlM1RucmdnYXhBT1liK2VWSzVkbmkzcHNERnlBNDdN?=
+ =?utf-8?B?N3U3bzB5YXlZd2h6RUVCdHRPYTA3ZDB0cDRxbGxaVkY5WENGMkRvanl4MmE1?=
+ =?utf-8?B?SEZFVGN4elBnWENxazEwNTEwbmhRL1hLK3hPcmlTMkZqL0s2MVVUYnVrMTBK?=
+ =?utf-8?B?K0gzVFVQSzJTbnB3YnZ0TUdCMmhiWW9teHNYMEwxVy9lOUJYS01FWWFETHN0?=
+ =?utf-8?B?NHhJZ2xJVzRjTDY2cE9wT1JTUTFSWmQxV21PRFRHektpWXh3aEpTZkZxbFNp?=
+ =?utf-8?B?d1hQOFlDREhDYlNxN2ZOM0RYaXdxZ2xYZGFZKzFuQTFYbHhZeU15N1hianNu?=
+ =?utf-8?B?Ymc9PQ==?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 679c3d3a-928e-4b1a-6c22-08dd202e3197
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9567.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0876c3bf-fc72-4264-de52-08dd202e85eb
+X-MS-Exchange-CrossTenant-AuthSource: DU0SPRMB0099.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 13:08:14.8185
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2024 13:10:34.5422
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XO9fYH+EheNK1h3CMYvl8WN5GWRE76XsuqP508YO9cTtdXiJCj3dKzSotKnVkkVCGWyaRl3tvHiCkQ2y+9oJjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9653
+X-MS-Exchange-CrossTenant-UserPrincipalName: doWZ1SQvnvavCvWr5F1InZ8tCQQdhrBZ1VadZteVHNMOluGs1xg92Yh3V9CxNbMWFUQvHvsYxGHcZzZGV/BNHwZIIjNa/MSeyRvQqtPWE2U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7754
 
-On 12/19/2024 11:18 AM, Larisa Grigore wrote:
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Please disregard V2. V3 was sent with the changelog added for review.
+This patchset aims to add two changes to the S32G2/S32G3 dtsi support:
+- Adding I2C dts support for S32G SoC based boards
+- Centralize the common part of 'S32G-EVB' and 'S32G-RDB' board revisions
+into dtsi files. This refactor will serve I2C in this patchset, but in the
+future it will also be used for other modules such as : FlexCAN and DSPI.
 
-Best regards,
-Larisa
+Changes in V3:
+- Separated patchset into multiple stages: common 'I2C' dts entries, board
+'I2C' dts entries and the introduction of common 'S32GXXXA-EVB/RDB' dtsi.
+- Added missing changelog for V2 of this patchset
 
-> S32G2 and S32G3 SoCs share the eDMAv3 module with i.MX SoCs, with some hardware
-> integration particularities.
-> 
-> S32G2/S32G3 includes two system eDMA instances based on v3 version, each of
-> them integrated with 2 DMAMUX blocks.
-> Another particularity of these SoCs is that the interrupts are shared between
-> channels as follows:
-> - DMA Channels 0-15 share the 'tx-0-15' interrupt
-> - DMA Channels 16-31 share the 'tx-16-31' interrupt
-> - all channels share the 'err' interrupt
-> 
-> Larisa Grigore (6):
->    dmaengine: fsl-edma: select of_dma_xlate based on the dmamuxs presence
->    dmaengine: fsl-edma: remove FSL_EDMA_DRV_SPLIT_REG check when parsing
->      muxbase
->    dt-bindings: dma: fsl-edma: add nxp,s32g2-edma compatible string
->    dmaengine: fsl-edma: add support for S32G based platforms
->    dmaengine: fsl-edma: read/write multiple registers in cyclic
->      transactions
->    upstream: add eDMAv3 support for S32G2/S32G3 SoCs
-> 
->   .../devicetree/bindings/dma/fsl,edma.yaml     |  34 +++
->   drivers/dma/fsl-edma-common.c                 |  36 +++-
->   drivers/dma/fsl-edma-common.h                 |   3 +
->   drivers/dma/fsl-edma-main.c                   | 115 +++++++++-
->   outgoing/description                          |  12 ++
->   outgoing/v2-0000-cover-letter.patch           |  42 ++++
->   ...-edma-select-of_dma_xlate-based-on-t.patch |  39 ++++
->   ...-edma-remove-FSL_EDMA_DRV_SPLIT_REG-.patch |  35 +++
->   ...-edma-move-eDMAv2-related-registers-.patch | 199 +++++++++++++++++
->   ...-edma-add-eDMAv3-registers-to-edma_r.patch | 104 +++++++++
->   ...ma-fsl-edma-add-nxp-s32g2-edma-compa.patch |  83 ++++++++
->   ...-edma-add-support-for-S32G-based-pla.patch | 200 ++++++++++++++++++
->   ...-edma-wait-until-no-hardware-request.patch |  68 ++++++
->   ...-edma-read-write-multiple-registers-.patch |  90 ++++++++
->   14 files changed, 1045 insertions(+), 15 deletions(-)
->   create mode 100644 outgoing/description
->   create mode 100644 outgoing/v2-0000-cover-letter.patch
->   create mode 100644 outgoing/v2-0001-dmaengine-fsl-edma-select-of_dma_xlate-based-on-t.patch
->   create mode 100644 outgoing/v2-0002-dmaengine-fsl-edma-remove-FSL_EDMA_DRV_SPLIT_REG-.patch
->   create mode 100644 outgoing/v2-0003-dmaengine-fsl-edma-move-eDMAv2-related-registers-.patch
->   create mode 100644 outgoing/v2-0004-dmaengine-fsl-edma-add-eDMAv3-registers-to-edma_r.patch
->   create mode 100644 outgoing/v2-0005-dt-bindings-dma-fsl-edma-add-nxp-s32g2-edma-compa.patch
->   create mode 100644 outgoing/v2-0006-dmaengine-fsl-edma-add-support-for-S32G-based-pla.patch
->   create mode 100644 outgoing/v2-0007-dmaengine-fsl-edma-wait-until-no-hardware-request.patch
->   create mode 100644 outgoing/v2-0008-dmaengine-fsl-edma-read-write-multiple-registers-.patch
-> 
+Changes in V2:
+- Moved I2C end device '#address-size' and '#address-cells' entries from
+board dts to common 's32gxxxa-evb/rdb' common dtsi.
+
+Ciprian Marian Costea (4):
+  arm64: dts: s32g: add 'I2C' common board support
+  arm64: dts: s32g: add common 'S32G-EVB' and 'S32G-RDB' board support
+  arm64: dts: s32g: include necessary 'EVB/RDB' common board dtsi
+  arm64: dts: s32g399a-rdb3: Add INA231 sensor entry over I2C4
+
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      |  45 ++++++
+ .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
+ .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
+ arch/arm64/boot/dts/freescale/s32g3.dtsi      |  50 ++++++
+ .../boot/dts/freescale/s32g399a-rdb3.dts      |   9 ++
+ .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
+ .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 126 +++++++++++++++
+ 7 files changed, 382 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+
+-- 
+2.45.2
 
