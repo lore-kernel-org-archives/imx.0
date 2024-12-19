@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F681FA8F2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F0D7082A
 	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 07:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734593139; cv=none; b=CsUka00SYui5rLqcYolJ3tOifyoLkql088MwVajMocFjvxQ/YHmtwAl8s2XCi8DO5X3mm8QgdljqG8z4laY5RdYcsjP3qM2gxfnVLAWnzae6UGGgUNNbVKV5BMAjBCsS4dDXIJz+5Mr4PPx1r65kPMMdgyo5cjqidEP9p0F14Qo=
+	t=1734593140; cv=none; b=i2W0eizm8zjiyhJltPKNP5h+uGTcqAB6Cv3oKM62kzRFs6wI3wUACk4Pe1Q6AtsIFZBCevK+/4En55Ay/GnDf2pGRFXnEy1C6dCfRiCiHiM3/ZhdnOAbt6C0iyzA2/kJm6WWLvKYCOKS4jQSb6uVBZY7ce8W9fCQzsrvNJKijh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734593139; c=relaxed/simple;
-	bh=YX07+/n9XASjJgCpeP2uJbf77HswOZmpelyYpm2bwIo=;
+	s=arc-20240116; t=1734593140; c=relaxed/simple;
+	bh=JbO6NfMPvHMUJyBboycvE+Q+VwA3y1BdJCOUBWkfd4o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WdW7A2WF1sE2d/EHhTHM6rWd5yQPvVQtmlb0XjU8GOxtKycJTe7zX6AHFnzoxRPe16m1PVialpREf2B/fPWYrTNKSe7RJ5MkpfIcg9+dkPDuwq6js0hEhqcgGzskpyt4tSc6wnxe0Mz38GhBR2BNbq/aquscjGBEDFOfMq77Mhk=
+	 In-Reply-To:To:Cc; b=sI3l+DNRN4n+LHtcAcXwuOYiXqlZNquGdaNrR4AwLAfBMJewvtPEtiR6KYdUxsSHOrgY0CrHkvLQNZzaPy21kg7Jrx9V8i3X+JOBHvIVxcFOpcmD1o+a6KrIi/XLCrrrJGtuK/VIpTrMw7uB9wjHrF8YVzExIzV0IoBwZO8uIp4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,21 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAuc-00064P-1L; Thu, 19 Dec 2024 08:25:34 +0100
+	id 1tOAuc-00064M-0h; Thu, 19 Dec 2024 08:25:34 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAua-004AOI-2t;
+	id 1tOAua-004AOF-2s;
 	Thu, 19 Dec 2024 08:25:33 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOAub-00GenW-1m;
+	id 1tOAub-00GenW-1j;
 	Thu, 19 Dec 2024 08:25:33 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 19 Dec 2024 08:25:33 +0100
-Subject: [PATCH 09/10] arm64: dts: imx8mp-skov: fix phy-mode
+Date: Thu, 19 Dec 2024 08:25:30 +0100
+Subject: [PATCH 06/10] arm64: dts: imx8mp-skov: describe LVDS display
+ pipeline
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-skov-dt-updates-v1-9-38bf80dc22df@pengutronix.de>
+Message-Id: <20241219-skov-dt-updates-v1-6-38bf80dc22df@pengutronix.de>
 References: <20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de>
 In-Reply-To: <20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -61,28 +62,93 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-Use rgmii-rxid instead of rgmii-txid. It should have no effect here,
-but rxid is the correct value in our case.
+The Skov i.MX8MP LT6 device tree so far described the touch screen, but
+didn't describe the screen itself. Fill out these missing pieces.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/freescale/imx8mp-skov-revb-lt6.dts    | 60 ++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-index 80d212acc0c3..a683f46fcbab 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
-@@ -215,7 +215,7 @@ adc: adc@0 {
- &eqos {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_eqos>;
--	phy-mode = "rgmii-txid";
-+	phy-mode = "rgmii-rxid";
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
+index ccbd3abedd69..baecf768a2ee 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
+@@ -8,6 +8,45 @@ / {
+ 	model = "SKOV IMX8MP CPU revB - LT6";
+ 	compatible = "skov,imx8mp-skov-revb-lt6", "fsl,imx8mp";
  
- 	fixed-link {
++	lvds-decoder {
++		compatible = "ti,sn65lvds822", "lvds-decoder";
++		power-supply = <&reg_3v3>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				in_lvds1: endpoint {
++					data-mapping = "vesa-24";
++					remote-endpoint = <&ldb_lvds_ch1>;
++				};
++			};
++
++			port@1 {
++				reg = <1>;
++
++				lvds_decoder_out: endpoint {
++					remote-endpoint = <&panel_in>;
++				};
++			};
++		};
++	};
++
++	panel {
++		compatible = "logictechno,lttd800480070-l6wh-rt";
++		backlight = <&backlight>;
++		power-supply = <&reg_tft_vcom>;
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lvds_decoder_out>;
++			};
++		};
++	};
++
+ 	touchscreen {
+ 		compatible = "resistive-adc-touch";
+ 		io-channels = <&adc_ts 1>, <&adc_ts 3>, <&adc_ts 4>, <&adc_ts 5>;
+@@ -78,6 +117,27 @@ channel@5 {
+ 	};
+ };
+ 
++&lcdif2 {
++	status = "okay";
++};
++
++&lvds_bridge {
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
++				 <&clk IMX8MP_VIDEO_PLL1>;
++	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
++	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
++	assigned-clock-rates = <0>, <462000000>;
++	status = "okay";
++
++	ports {
++		port@2 {
++			ldb_lvds_ch1: endpoint {
++				remote-endpoint = <&in_lvds1>;
++			};
++		};
++	};
++};
++
+ &pwm1 {
+ 	status = "okay";
+ };
 
 -- 
 2.39.5
