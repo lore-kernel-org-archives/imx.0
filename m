@@ -1,75 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9DF22146F;
-	Thu, 19 Dec 2024 12:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B212F33EA
+	for <imx@lists.linux.dev>; Thu, 19 Dec 2024 12:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734609755; cv=none; b=n1geVk1huILJYXiDW2P3y1dk++vTlK4Ldbpy9cRPqGveN9WmWAughqfivIoCb4Q1fSbxy7KSnY26eqTi97yOiXfh6iFO5bZ6wBDSHzQS7FTkwA4drM9z88KcD+BqvUO6YADsH/t3KMUemdAwOcYiAjUzZFv3e5csWV3/uOwu8jM=
+	t=1734611001; cv=none; b=ZFX5AC5VFTYf/Al7ixCd1qXql/zitu/2ooQxlcOf8xRCRzs2hMzz7V62IKgvsMjyk0/sXnJe1X7xtAb7YVirOVvQbm7APJzq4CZfeeW77GZpu91BYxQvSkPd850NSPBFPdcUTskUPgQerubrD9GhjaK+FARSJttP3WdjQjh0944=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734609755; c=relaxed/simple;
-	bh=hFX3zZUpFJljafxwc6mZtbVjERwcv2b9BVgvXBWnGGw=;
+	s=arc-20240116; t=1734611001; c=relaxed/simple;
+	bh=nx/ClxoX/uva0K0jBMWBhjzkN2ZHZO0y8U0MBz9buis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=li7Z+50nAoMHkAK1aFReXB3AwNPWUt9cIcaIzKmeUAla6U8oLcshyJVvMO93HjcCuxcnBbPjvN6JvgdMtmDO0G+g3jR6Zoj+RjgDw1mjHOqTYUx4HooqaLml/W8W5TwpFqP5gQjjd9QdYOsr0T3FFD32HRA0foKPZ96GWpM8kc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0lDq/YG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0lDq/YG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10F9C4CECE;
-	Thu, 19 Dec 2024 12:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734609754;
-	bh=hFX3zZUpFJljafxwc6mZtbVjERwcv2b9BVgvXBWnGGw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E0lDq/YGgQS3XixO17VMlzszN0bELqF56oxoFRog7N4hgtR0PUiEgbJqO7ud5y9tg
-	 d8Zizqpdyc3XrrjJ1y4SmfvfBB/oUopfrKBEfNEaQo10TigZ+5dHgP/P5BRVqXQh5r
-	 RFMRhOqwYO5W1mX3SREIjucpkl+sp5yLcljg61F3M9SNfVDAd6YVEkaZpMor7zBrM4
-	 Sh44vkaFBj3gAN2mwsWaUNzlwYjyiqPnF60BfWnc7+0IhlE4dTg2foMQTRcC+aiMIb
-	 s2WLXZkA6RAYrd4a2dlVwErbXFHeiC0AhxD0v/lweqT8Ob5t9hfq7s3WhfAoBbPdwj
-	 fnxywvxtCfexg==
-Date: Thu, 19 Dec 2024 13:02:29 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: frank.li@nxp.com, o.rempel@pengutronix.de, kernel@pengutronix.de, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Clark Wang <xiaoning.wang@nxp.com>, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=qW72sEQcB+qxO0gIOXYhnW4oZgMHIVjkiyeJMRfat/kTobD9tr2mgY6/KCezbbLFWX2tmwkbdzbEIw1YA09l1bS0Xk2eWZkm0xS2FvLbqYxvt8MrQeJ/D0pXyGD5ny+jPXrgsp3zIEbdhTVSJdT0bswTgWZeBKoHXRvW2hlvNoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOFYR-000535-OG; Thu, 19 Dec 2024 13:22:59 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOFYQ-004CcC-2E;
+	Thu, 19 Dec 2024 13:22:59 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tOFYR-008SaE-19;
+	Thu, 19 Dec 2024 13:22:59 +0100
+Date: Thu, 19 Dec 2024 13:22:59 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Carlos Song <carlos.song@nxp.com>, frank.li@nxp.com,
+	kernel@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	festevam@gmail.com, linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Clark Wang <xiaoning.wang@nxp.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
 Subject: Re: [PATCH v5] i2c: imx: support DMA defer probing
-Message-ID: <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
+Message-ID: <Z2QQI2gJNLjI-fam@pengutronix.de>
 References: <20241218043541.143194-1-carlos.song@nxp.com>
+ <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241218043541.143194-1-carlos.song@nxp.com>
+In-Reply-To: <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Carlos,
+On Thu, Dec 19, 2024 at 01:02:29PM +0100, Andi Shyti wrote:
+> Hi Carlos,
+> 
+> > +	/*
+> > +	 * Init DMA config if supported, -ENODEV means DMA not enabled at
+> > +	 * this platform, that is not a real error, so just remind "only
+> > +	 * PIO mode is used". If DMA is enabled, but meet error when request
+> > +	 * DMA channel, error should be showed in probe error log. PIO mode
+> > +	 * should be available regardless of DMA.
+> > +	 */
+> > +	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
+> > +	if (ret) {
+> > +		if (ret == -EPROBE_DEFER)
+> > +			goto clk_notifier_unregister;
+> > +		else if (ret == -ENODEV)
+> > +			dev_dbg(&pdev->dev, "Only use PIO mode\n");
+> > +		else
+> > +			dev_err_probe(&pdev->dev, ret, "Failed to setup DMA, only use PIO mode\n");
+> 
+> Just for understanding, should we quit in this last case, as
+> well?
+> 
+> Before we were ignoring ENODEV and EPROBE_DEFER, but now you are
+> making it clear that other failures like ENOMEM might happen.
 
-> +	/*
-> +	 * Init DMA config if supported, -ENODEV means DMA not enabled at
-> +	 * this platform, that is not a real error, so just remind "only
-> +	 * PIO mode is used". If DMA is enabled, but meet error when request
-> +	 * DMA channel, error should be showed in probe error log. PIO mode
-> +	 * should be available regardless of DMA.
-> +	 */
-> +	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
-> +	if (ret) {
-> +		if (ret == -EPROBE_DEFER)
-> +			goto clk_notifier_unregister;
-> +		else if (ret == -ENODEV)
-> +			dev_dbg(&pdev->dev, "Only use PIO mode\n");
-> +		else
-> +			dev_err_probe(&pdev->dev, ret, "Failed to setup DMA, only use PIO mode\n");
+Good point, dev_err_probe() would not print an error in case of EPROBE_DEFER,
+but in this case we should only print error and continue with PIO.
 
-Just for understanding, should we quit in this last case, as
-well?
-
-Before we were ignoring ENODEV and EPROBE_DEFER, but now you are
-making it clear that other failures like ENOMEM might happen.
-
-Thanks,
-Andi
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
