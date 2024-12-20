@@ -1,359 +1,213 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2049.outbound.protection.outlook.com [40.107.247.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C36204596
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 12:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734697799; cv=none; b=q+udHsV/MfFsF6cS19qdSCjHjAvSSDa/WjNYCQ32ofTCdAAfbSL2wZRnjM1dRM8XGLuCz4jaET4n7/e4Wjryv0yKTEldq0a9qrUh9oPLNWg7s3raTQi0h+2ylU2M5WnJDKD3Vf5/BtHDGIdBDeekeEslipJyuuUGiyCPyJn+Eek=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734697799; c=relaxed/simple;
-	bh=66CvT6ns+hHH6BDz1EEtJ1zFnpF+MWdHM0cUPxVKIZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FaA/28/G8N4Q+z0m6LN5GjMmisYrEQ2lMHjfz9aUT/mXe7UBjCD+zMQ/jQUWPmvx605/w2K1v6Oz97jyph13LSjfaJYP0pzWIlP1JS0VNLGdtXqe/8eH4k1HnfULIHHBiO8lWX81K7mRHq2HLx3I4QNhChsyN7DEcra5t41Be4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a7E4ytdP; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9887207DFF
+	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 12:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734698368; cv=fail; b=Ipn7QlM+5QL7JXkEAWfgGVojuArUoDEjvA3mhogHUA08r5yurtF/f6bpn3/SKJx0UPopR8l8IcEyXyHx5LNNUIXSVaJTyYWtAN5sQK09pJlMaUIL54wxgda56sMhqILxqQTmWa0v9xB2luWTfk9RJiZ70SRewC0MAMMaVVcLFBo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734698368; c=relaxed/simple;
+	bh=5d5g+J68C3qmw2zdQWcZpWTBXlazCviwM7+Z4rF1DO4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CYYygA1E26m3b3mbLnwdkgAoNyBas3/WVjxHHc1VrACbgFIarYSyiXyPT0P1gZ6LECT0qTiF+/IzTEKADOf4ZsWwcwR8m6hxwAL9pAfRFVlG2OaoPCkvX5aSXoC7IrXMPHzH25hTU47polaN1AQbN/8KFwjveIJ0ijCP3u5jmP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dQhdsDi7; arc=fail smtp.client-ip=40.107.247.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a7E4ytdP"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e46ebe19368so1390745276.0
-        for <imx@lists.linux.dev>; Fri, 20 Dec 2024 04:29:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734697796; x=1735302596; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VmRCmaPkLkPswmKEyB/ZICUJHMBmUsSjq9Yct5NQ1ro=;
-        b=a7E4ytdP+HKYbnY8nVAoZjc8hHFpGBHmhxLcMAbD3sQa44hMENjb+6oTsaPnGkntZV
-         YpTWol47XKG6B9PK57/sq0lByLJBDTWCYbMjLLxMOXpEKcFQuhRqbcIDMsG+B7++18gv
-         eqvFdwpcblpzi5+hXdsF6cbzBvBWTcjHO+ik4Rcxe8lksTJOVwuwoQs0yvEMKx7dRXUh
-         s7249NM5Zn88CCi2rxdkZC+/eUuU8eknRvU6Hbp8UvWFa5sgyXrZ7bos5VcNEKsPE6VP
-         m0lP8/QUHRJ6PHPSnzpSLP/QeUkLON+tc1b3WLSD1LnIgslz7zxA911Vycr+jEC7Y8oI
-         Bu5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734697796; x=1735302596;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VmRCmaPkLkPswmKEyB/ZICUJHMBmUsSjq9Yct5NQ1ro=;
-        b=J3/O85x3JULrCygg2P2M7/4Bxg4s/DTEP1tiWI56f+wIIaDUmFReFVwiIr6ay3myKv
-         XVRNw2rlG/9luxkL/hWF8Y5Kn0lUjGHlcwglfTjVvRbwVYxVoeZrQ8dwRVhUw3wGUCzM
-         EededNIkywsK6TINqmuVAPraGBlpUxgYz53WwGzfX74wLeZDwISlKr6C8JqcKAF5XfL2
-         gtiGiRfEfgpQHbM2zc4Kr2D5GAEE3m+soZiBRoU1zaYQkdvTm3qTaHvSEKOS2yPHphip
-         0qZqiDXHdOep9G1kZQ1LHGIg/9FyNpoaeTaw3uQrqrWDHBsV1FlrMGXoFeUtw+eimhPS
-         AzUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwfwLZnWHflClS366iHmC+JEl0qJDP4uqIzBKhM6W6wmE7qVGclmuAxi98/VpEPhTgJxE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyat0Lpm21Min3EmqMdVeNGSemzHaVmcTDJRJ88eqQCCZqm4O2I
-	BGFiiCbXPfROWYQB5/SD+RwoXp00eH69P9Cj+o3XzYabbdHL6z2jw/Z1wEydrtdVFSrWLOxMoyM
-	ho/hx9mbXzoM41BfVUXLxP7pHyTsJ3hDUkJmh1Q==
-X-Gm-Gg: ASbGncs2y/8vAjLyhRcs6CxTEkpi+KjwK/0YD+o8n1rxVRcVdiniyvJfZ0WgOolC9ol
-	M+2ngt+FVaWk4mZAA2mvs7coNZfYafZVY91jADw==
-X-Google-Smtp-Source: AGHT+IGSsUG4iSnRRcdUuCq27bUw63jRg+t86G+uWqSkEhiBTf+pNCH23b3m4irAGr9UmyGYIOuuYUx3ncEVJac77D0=
-X-Received: by 2002:a05:6902:982:b0:e3c:8ec9:c896 with SMTP id
- 3f1490d57ef6-e538c350d10mr1981319276.34.1734697795572; Fri, 20 Dec 2024
- 04:29:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dQhdsDi7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vgB6bgji92cpUeQGZIPk2cq/tFCN7OvSfxZkL0O4VNleQ+U4lbalQUs0Bh/SZqpr3/vK6vXl4o+oUlrxQlVD4TetB85+K8BX537xEG/T+EWkhPIF1OwbVatQ5sbtOCyb9NC84+fio8+TO1GOSLH8EGYTvUUe7e9yXd+y23MG7EBWFEZvUXnpylz3FHm7zt6q3tSyCDk8u+KhE0zoRcKb22sgtxZw6yNWzqOFELR8fG7oYgDNk2pbDyA5yCBQT0lwy8fDaYTLJ1R0CazJ3AxSZXI8f/E84PW1a3+e5lvFD6Sku02jLp3U8/WTD5WU6iIe4HObQHRoCDyQ6E9tsBo5ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Gf/9rGHENxjT5ACZhjcMUIW0LdrLcyaqsAvGTatcyLk=;
+ b=DM7Z70AnC5/dsyCQoZy6vemWv8hrJ4M946/xO1axKnDbJBrUTp7giJnLs4YsLmehlCzlOWn1bNLX7mtUC1rrBynI4d/b7JFsKKLuqAbHHOMLFnI/X1AzWgbMorLT+WLFC0K+MrWN1v6NhH+038/q6cn5i1du4hfM7KqmFrxGDpOui8i2Yy3Mv+Uh8OUfeBMOqLNQyAZZgG+DelUOz8VUkAHLlRLJ83V1MtjN1nqjnhLpRMii94S4RyFeoem0MkWoUjSPP+BS6em+HfWofXeruQr05QjBLLZ1cqLxSCPxTjkq2Ugk8+Wm7SeOGCRvmvqmtRGnL0djtjYxwOcj42Mw5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gf/9rGHENxjT5ACZhjcMUIW0LdrLcyaqsAvGTatcyLk=;
+ b=dQhdsDi7LW5IJody8t9DSdkcbNXwbJk1D4NTFnLBo5iPFbA9IJyoHKEpEGulimMW0Mg/D4jbTa2GkVw465R0QMHOG1Snp7095kSt5zAf8QRkDe3xkZLYYtvDAyengKDF8z7trWj4ZlviQz2n+CDjW/dBaHU3v8CfQaxBkgTy6FTVYmYCyVMP6K3LM1lO7aHy1pWtPl0adZM9ohatmsmqIzWlW5htrLT0APZiJSCWZkBNB91O2UrPf69fS1D0p1xldIXjo9+rip1vVwgnq28r4vgeAb9oSsrZMbX4cnGZk6Xh1iDbjVxn9E0sAoyaxA4kfV/kKRbQ7z3kZ3j+M4mz8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by GV1PR04MB9516.eurprd04.prod.outlook.com (2603:10a6:150:29::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.16; Fri, 20 Dec
+ 2024 12:39:23 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%5]) with mapi id 15.20.8272.013; Fri, 20 Dec 2024
+ 12:39:23 +0000
+From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: [PATCH v4 0/4] add I2C DTS support for S32G2/S32G3 SoCs
+Date: Fri, 20 Dec 2024 14:39:12 +0200
+Message-ID: <20241220123916.1452582-1-ciprianmarian.costea@oss.nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR02CA0018.eurprd02.prod.outlook.com
+ (2603:10a6:208:3e::31) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241213122739.4050137-1-linyunsheng@huawei.com> <20241213122739.4050137-2-linyunsheng@huawei.com>
-In-Reply-To: <20241213122739.4050137-2-linyunsheng@huawei.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Fri, 20 Dec 2024 14:29:19 +0200
-Message-ID: <CAC_iWj+3Q7CAS3xH9+zWA7nXdFNSJ-XMKQB3ZT0YvUQ-Q2gMCQ@mail.gmail.com>
-Subject: Re: [PATCH RFCv5 1/8] page_pool: introduce page_pool_to_pp() API
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	somnath.kotur@broadcom.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
-	zhangkun09@huawei.com, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Shailend Chand <shailend@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon Horman <horms@kernel.org>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|GV1PR04MB9516:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bec7dc3-ba0a-4efd-2a32-08dd20f354c3
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WUc2aDVTOGFFMkZ2SU5yTVo4THRIeTgrUXJBZ1BybnhDaHFXeFIzcjJiSnpP?=
+ =?utf-8?B?akxpY2I4ZzRrNW9zR00zZE1BdU5uQUExZTFEU0xPaThLSGc2b3c5ampQcHBq?=
+ =?utf-8?B?REhiSWROUkljTXUwazQwODN0U3FOVlAyMWw2bUpBcEthTzZ4bmh3MmF2S29U?=
+ =?utf-8?B?TDN1aTdKbS9tZWxsSVdEcEhuc2hLWGpKSm4rQkVNY0ZyeWdtVG4ydjIzZ1Vl?=
+ =?utf-8?B?VE5ZRXFXWG5oYmUyMW45TmNKTGpuUDlKTVloZTRLazU3RUlhaXFnSnpGSjNm?=
+ =?utf-8?B?QmtKVmlZMEdtK2lwTFloT3Nib295R0orYm5vTlZBNGh0amdJbGo3NW9veDFs?=
+ =?utf-8?B?bXhwM0VrVDdWUEdoQzNIaVd6ak5WMGVRNVB6OHpwdWI3eU96VUxqZmZ0aTVD?=
+ =?utf-8?B?VXJHOEE3U0RNaTBsZlpwTXkvZ00wSzhYVFB4Lzc0aWdTOUFWTytaT0tZeFlN?=
+ =?utf-8?B?RVBqb2EzSEtMM3dOYitVNVpVNFBiT3JDMXNVODBiaENvZUNtZ2JxVy9HUTlZ?=
+ =?utf-8?B?YmF5bkFDN3dYM3hPU1FnbXRBdHNnTE44WUJ6TUFJUWl1b2VRa3Z6U2VuMThZ?=
+ =?utf-8?B?MVkwUHlKZUVwRVdsV2NTcnErdG9WdDM4UHkxMSsrOGtIZm1NZGd2SURUa2lh?=
+ =?utf-8?B?N0orZWJFN0RPODRTSzFsaSs2U3llZ0RzTDQ3OW5yaWVNaXYxckRYSTgxd0xk?=
+ =?utf-8?B?emJEcFlxRlN0Rlc3TUMwTXlwQnBENEUyQlMxYjZqWWR2STNxMmpPWGNWWURq?=
+ =?utf-8?B?V0xLTSttTzd0cy8rbnlvYmxBdzQzay9vaWJod0pSTmhPNXFuMFk2ZG9ZTlh1?=
+ =?utf-8?B?bDNBRWNnakY4NGNDcWlWQU84TFpWOHpkekpQaXllRXUxc1VvYTFkS0ZhV0s0?=
+ =?utf-8?B?UzhBNytSRzR1bG9CV1JvRHRLK2NLUktWU2x6dDdVK0JuYlNsV2ZXNFJ4dHN3?=
+ =?utf-8?B?dGpxS3Ayamt3U2pJdGFWSldsUVhVa2ZrV1RtbCtNbDd6aVp2bWlSUzFnMG9t?=
+ =?utf-8?B?SzhKb0l1T3pqNjlTL3IydUwvK2hzeWs3QlFoM2tZdmdRdjZTd0pxcGduQUhl?=
+ =?utf-8?B?NWMzSHB2aHVWVlQ3Qk93Zkh2bzVMeDdTcmlKcmZ4WjNvbUtkeFlsOTlDc2pF?=
+ =?utf-8?B?aEZXZ0hCSTlEZEJyeGZYQ1hpWFpYVUJPRWVKV1QwTGZjNHVjRlVmK1B6SkpV?=
+ =?utf-8?B?SGVSTkN2TDN0UWNPOE9pajBWbTgzLzdtV0ljQ1VNYmdQYVFNK3VMeCtSSTIw?=
+ =?utf-8?B?TVdGa09IK0ltbFdvN092OG5pbnNnM205R3cydnpGUXZBME5VczZDb1RSREc2?=
+ =?utf-8?B?VUJCRkUrNzZPSmVwUGRvTmpnc01Kck1BSFVxejlNVmluRERHZE9CS09RM2Vl?=
+ =?utf-8?B?TDFPZnc3SVAydjVuRW5LY2NoUHkwc3lyMStwRmRVZUdXMk42OGUzWnR1M3ky?=
+ =?utf-8?B?NHRnMUp5YXpOYm9KQXlyaWF3K1M0SEl4ZzJaRHZPd1U5enBubTN2bnJsZ2N4?=
+ =?utf-8?B?RS9aVzdhVE1PRmxFckV1SnljWm1lcTlHQ1FvdEN0ZUYxdGROb1M0czZ3cSt2?=
+ =?utf-8?B?QU1Lc214Vm5wd2JoOXFKVmJxeFAweVhBZzl2VGp4aFFselNQUUxKMXdQNVVD?=
+ =?utf-8?B?bVI1bFhZblh2Z2pnVkVlVFNqTHVjTUFQTWw3azJPQ2xlSVV5VDd6N3MzVnVw?=
+ =?utf-8?B?VTFnYm5WKzdqbUN5N3NpVkx0VVlWd3l2OHpjOEtoSm5ZMjBhNGhNNldpTWtK?=
+ =?utf-8?B?bUpJVFdjRnp6OXV0K2F1dm41T0MyZHE0eWtTN29VUWMzaldtQmhDSHdTR3pS?=
+ =?utf-8?B?bmJUMjhEbDdPNUtEM3V5dGtWTWY3ZUppeEtxL2owcHlITitaK0tJT3Z0Qkg2?=
+ =?utf-8?Q?sbMOHfTqGc+bs?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WFBjNEFRZitIcFdPUXRJT1pFdlp1NmtpaVVJb25sZ2ZtOXZ2ZU4wTUk5TUxL?=
+ =?utf-8?B?cHFnc010NGpNVE5aR0NqaUF6bm9LT29GaUxSVkFLN0FTcDh0UFhJVWxLS3ZC?=
+ =?utf-8?B?N3hMSTBIWE5Fb0dNL3QvRWJWc3pockpKOExHUGlmMVlxcUVGN0hQU25NWWZD?=
+ =?utf-8?B?RGpyaE1vMTFvclAvRGV1dzczd2FwM1ZkVGluOHZrMmcvRUZzWDZORWFyS3Uv?=
+ =?utf-8?B?SnNSeVh2MFgxbE93VStEa0RCRzNlcStjVk0yZ1QyZDkyL2UzZC9JbG8zdFVt?=
+ =?utf-8?B?Wk9iVU9Wb1BXU1FBN2JreWQrNzlMemw4Y0lLQXlmYmpNUmZGdTRYSHBVaFJh?=
+ =?utf-8?B?eTF6OFBmeFN0LzNia21DWWoyS1dIZTNNcnY3SHJVL2kvWmUzYUExRUEvcDBl?=
+ =?utf-8?B?TTRDT1RudGdRMERjNEhvMHlmeVFwbUtWRE9Gd2tIMWpFazg0d2pBbGRPbXlu?=
+ =?utf-8?B?Q2JLbDYvYU82ZjdkMW93dFd5Tlptdy94NkZiMW4waUVIelBPMTJ2eXlCZzl6?=
+ =?utf-8?B?NU1sdW1lQjRPRCtXbzdZOWFqNGwzNHRCMlpQOEdIVXExdjF4TURZT3lUN1R1?=
+ =?utf-8?B?T1k4LzFMYk1yalN4dm4vaU84V3A5dEVhTXh4bFRCcEtoYXBzQ1JGOCs1V0Z4?=
+ =?utf-8?B?SFNZYURVT2NqUkZIaS9DWGNsa3pReWg2elZibWRQT3AwZ1d0R0xQejFlclV5?=
+ =?utf-8?B?Y2lDM1VLZ3JrcGZwNVdDWThKaUF1QTJJS2kvc0xBRjlLYU51NDVxSjRCZXBO?=
+ =?utf-8?B?V0lSQnc3ZGdJZkpDYi9hUnRZbDhEM1A3NWdlKytmMGxrcmswREtDcXA2alR4?=
+ =?utf-8?B?TDRrYkVXa3FsZ2Z5amtIN1B0UHp6NXkwTDRhKzIrMlZWK3UwRldVeDJvUzFI?=
+ =?utf-8?B?dDhUOENsaUdEQUdZcFU5NVFZcXp2Y0k0UnV1UWFjNExNYU9MNUExTVRFQzhr?=
+ =?utf-8?B?T0pReWF6aFlyaEtSbTJEdjJjZXl0ZThxbnpXUFpBZGc4WDVDcDJUZTNndVlh?=
+ =?utf-8?B?WXhTMzBBR09Ra3JQMnBDNWxmNG1IVFl5SmU2dk00VG51WnRlS1ZoVkh2Nlp1?=
+ =?utf-8?B?ZXg1MEVwQ01uU3JnRmIvNUZrV3crWGNrVmhjWnhnRXpYMDU0bldsMXNhc3Zk?=
+ =?utf-8?B?YTcxSm9xcjhxcjNrR1poMHJtbis5c2d4enh5blJuQkEwckhpbTMyc1J4VnU4?=
+ =?utf-8?B?M1ltbmtBZXJnVldSMnljeWtFVXV2THMwYVpMZzBub1dwVDB4U3dFaXN5dXBl?=
+ =?utf-8?B?NUZ2ZERjRTgyTGlxc0QxbTFwWm05ZU9CbmhhWlVud2t0S0tzYW5CWEQwZWU0?=
+ =?utf-8?B?b2NOQlAxUXdLV3VIOHZqOEQ0UTVVRERoVms0c2ZSbzZhTjNLOHB6ejBpeHdX?=
+ =?utf-8?B?WE9VbWJZcXd0YllxQ1hwS0tpcm1tTmJvNE9wZDJMcTZuUHE3bi9TNHR6OEtm?=
+ =?utf-8?B?UE9TcHZkY2VkR3Z3TWM1TGJOVkkyNUZkOXFRQ1NWYklXZlhTVTIxVXdEVVhX?=
+ =?utf-8?B?ZEVkb3E1T1phTGlOa2tOc2hDRmt6ejNNbDI3d2FYR28zUHNGbVNLdVpvbWd6?=
+ =?utf-8?B?a0dtVGprU212eXVhNEJid0phRHg3dVJlQzlTZzNrMVVES2oreDlEVDhqSTh0?=
+ =?utf-8?B?MitXaC93dzBNa3I4LytlNkdLam13c3BiKy8xVXpVL2VvamV3NzJsTGtIdTZ2?=
+ =?utf-8?B?ajZzajIzWGg1cElCekVIdjRxOWlZWEs4cnAyQ0h6OXAvb1E1RzdXQnFJSVpo?=
+ =?utf-8?B?K3VhNGpLY1RRbHgxaTN4TU1yN3VKcnRkY0loWk5ybVNzVmJvdlA0TWlPQmZK?=
+ =?utf-8?B?Y1BENmR1eTBIRExWNDM4UFlKNW80QWxOYWQvZlAzb0I5bGMvNGlMa3NLTWZQ?=
+ =?utf-8?B?YUZmNkx5MXBJNDNIOVFnbkFlVXl4YmkzZlZ3OE1lZTkrUFBZZHRDcmllbm91?=
+ =?utf-8?B?WXlXVGRVVzd0bHlIRDIzUERuWkxnUklKeUtEeWtZbXpIMU95dW1iQ24yZGJz?=
+ =?utf-8?B?M0o1OHZGTWo3NzRWQS95OFZVQmNZS01URUc5Njhyd2N4RkpJRmtrT3hFdEZj?=
+ =?utf-8?B?ekFDTm83SWMyd1hUTjVRMmhVSm9IY2huaVhOWkNUdFlnL3BEQTVFK2dZMkpz?=
+ =?utf-8?B?Tm9aZE1IRWg1ZHNOZWFOVHNZWitndEhzS0twb05qNXYwc3NHcDFHazIraG1t?=
+ =?utf-8?B?dVE9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bec7dc3-ba0a-4efd-2a32-08dd20f354c3
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 12:39:23.0093
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e8czxixB5KMXj/vL/rXwn0fI22ullsTyOgMdvq9aPdpqa/xZR1oHzvtIzwIzfxgMphVmp0Zy65he8F2gkz1QWfXS5p/TQRmwyBvsQo+jFdI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9516
 
-Hi Yunsheng,
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-On Fri, 13 Dec 2024 at 14:35, Yunsheng Lin <linyunsheng@huawei.com> wrote:
->
-> introduce page_pool_to_pp() API to avoid caller accessing
-> page->pp directly.
->
+This patchset aims to add two changes to the S32G2/S32G3 dtsi support:
+- Adding I2C dts support for S32G SoC based boards
+- Centralize the common part of 'S32G-EVB' and 'S32G-RDB' board revisions
+into dtsi files. This refactor will serve I2C in this patchset, but in the
+future it will also be used for other modules such as : FlexCAN and DSPI.
 
-I think we already have way too many abstractions, I'd say we need
-less not more. I don't know what others think, but I don't see what we
-gain from this
+Changes in V4:
+- Moved I2C nodes '#address-size' and '#address-cells' entries from board
+common level to S32G2/S32G3 SoC level.
 
-Thanks
-/Ilias
-> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-> ---
->  drivers/net/ethernet/freescale/fec_main.c          |  8 +++++---
->  .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c  |  2 +-
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c        |  6 ++++--
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c        | 14 +++++++++-----
->  drivers/net/ethernet/intel/libeth/rx.c             |  2 +-
->  drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |  3 ++-
->  drivers/net/netdevsim/netdev.c                     |  6 ++++--
->  drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
->  include/net/libeth/rx.h                            |  3 ++-
->  include/net/page_pool/helpers.h                    |  5 +++++
->  net/core/skbuff.c                                  |  3 ++-
->  net/core/xdp.c                                     |  3 ++-
->  12 files changed, 38 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 1b55047c0237..98fce41d088c 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
->                                 struct page *page = txq->tx_buf[i].buf_p;
->
->                                 if (page)
-> -                                       page_pool_put_page(page->pp, page, 0, false);
-> +                                       page_pool_put_page(page_pool_to_pp(page),
-> +                                                          page, 0, false);
->                         }
->
->                         txq->tx_buf[i].buf_p = NULL;
-> @@ -1549,7 +1550,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->                         xdp_return_frame_rx_napi(xdpf);
->                 } else { /* recycle pages of XDP_TX frames */
->                         /* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
-> -                       page_pool_put_page(page->pp, page, 0, true);
-> +                       page_pool_put_page(page_pool_to_pp(page), page, 0, true);
->                 }
->
->                 txq->tx_buf[index].buf_p = NULL;
-> @@ -3311,7 +3312,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
->                         } else {
->                                 struct page *page = txq->tx_buf[i].buf_p;
->
-> -                               page_pool_put_page(page->pp, page, 0, false);
-> +                               page_pool_put_page(page_pool_to_pp(page),
-> +                                                  page, 0, false);
->                         }
->
->                         txq->tx_buf[i].buf_p = NULL;
-> diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> index 403f0f335ba6..db5926152c72 100644
-> --- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> +++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> @@ -210,7 +210,7 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
->         if (!page)
->                 return;
->
-> -       page_pool_put_full_page(page->pp, page, allow_direct);
-> +       page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
->         buf_state->page_info.page = NULL;
->  }
->
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> index 26b424fd6718..658d8f9a6abb 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> @@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
->                              const struct libeth_fqe *rx_buffer,
->                              unsigned int size)
->  {
-> -       u32 hr = rx_buffer->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-> +       u32 hr = pool->p.offset;
->
->         skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
->                         rx_buffer->offset + hr, size, rx_buffer->truesize);
-> @@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
->  static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
->                                       unsigned int size)
->  {
-> -       u32 hr = rx_buffer->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-> +       u32 hr = pool->p.offset;
->         struct sk_buff *skb;
->         void *va;
->
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index da2a5becf62f..38ad32678bcc 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
->         if (unlikely(!rx_buf->page))
->                 return;
->
-> -       page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
-> +       page_pool_put_full_page(page_pool_to_pp(rx_buf->page), rx_buf->page,
-> +                               false);
->
->         rx_buf->page = NULL;
->         rx_buf->offset = 0;
-> @@ -3097,7 +3098,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
->  void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
->                       unsigned int size)
->  {
-> -       u32 hr = rx_buf->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buf->page);
-> +       u32 hr = pool->p.offset;
->
->         skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
->                         rx_buf->offset + hr, size, rx_buf->truesize);
-> @@ -3129,8 +3131,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
->         if (!libeth_rx_sync_for_cpu(buf, copy))
->                 return 0;
->
-> -       dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
-> -       src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
-> +       dst = page_address(hdr->page) + hdr->offset +
-> +               page_pool_to_pp(hdr->page)->p.offset;
-> +       src = page_address(buf->page) + buf->offset +
-> +               page_pool_to_pp(buf->page)->p.offset;
->         memcpy(dst, src, LARGEST_ALIGN(copy));
->
->         buf->offset += copy;
-> @@ -3148,7 +3152,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
->   */
->  struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
->  {
-> -       u32 hr = buf->page->pp->p.offset;
-> +       u32 hr = page_pool_to_pp(buf->page)->p.offset;
->         struct sk_buff *skb;
->         void *va;
->
-> diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
-> index f20926669318..385afca0e61d 100644
-> --- a/drivers/net/ethernet/intel/libeth/rx.c
-> +++ b/drivers/net/ethernet/intel/libeth/rx.c
-> @@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, LIBETH);
->   */
->  void libeth_rx_recycle_slow(struct page *page)
->  {
-> -       page_pool_recycle_direct(page->pp, page);
-> +       page_pool_recycle_direct(page_pool_to_pp(page), page);
->  }
->  EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, LIBETH);
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> index 94b291662087..78866b5473da 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> @@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
->                                 /* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
->                                  * as we know this is a page_pool page.
->                                  */
-> -                               page_pool_recycle_direct(page->pp, page);
-> +                               page_pool_recycle_direct(page_pool_to_pp(page),
-> +                                                        page);
->                         } while (++n < num);
->
->                         break;
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> index 0be47fed4efc..088f4836a0e2 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -632,7 +632,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
->                 if (!ns->page)
->                         ret = -ENOMEM;
->         } else {
-> -               page_pool_put_full_page(ns->page->pp, ns->page, false);
-> +               page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-> +                                       false);
->                 ns->page = NULL;
->         }
->         rtnl_unlock();
-> @@ -831,7 +832,8 @@ void nsim_destroy(struct netdevsim *ns)
->
->         /* Put this intentionally late to exercise the orphaning path */
->         if (ns->page) {
-> -               page_pool_put_full_page(ns->page->pp, ns->page, false);
-> +               page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-> +                                       false);
->                 ns->page = NULL;
->         }
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-> index 0b75a45ad2e8..94a277290909 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
->  {
->         struct page *page = virt_to_head_page(buf);
->
-> -       page_pool_put_full_page(page->pp, page, allow_direct);
-> +       page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
->  }
->
->  static inline void *
-> diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-> index 43574bd6612f..beee7ddd77a5 100644
-> --- a/include/net/libeth/rx.h
-> +++ b/include/net/libeth/rx.h
-> @@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
->                 return false;
->         }
->
-> -       page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
-> +       page_pool_dma_sync_for_cpu(page_pool_to_pp(page), page, fqe->offset,
-> +                                  len);
->
->         return true;
->  }
-> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
-> index 793e6fd78bc5..1659f1995985 100644
-> --- a/include/net/page_pool/helpers.h
-> +++ b/include/net/page_pool/helpers.h
-> @@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
->  }
->  #endif
->
-> +static inline struct page_pool *page_pool_to_pp(struct page *page)
-> +{
-> +       return page->pp;
-> +}
-> +
->  /**
->   * page_pool_dev_alloc_pages() - allocate a page.
->   * @pool:      pool from which to allocate
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 6841e61a6bd0..54e8e7cf2bc9 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1033,7 +1033,8 @@ bool napi_pp_put_page(netmem_ref netmem)
->         if (unlikely(!is_pp_netmem(netmem)))
->                 return false;
->
-> -       page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
-> +       page_pool_put_full_netmem(page_pool_to_pp(netmem_to_page(netmem)),
-> +                                 netmem, false);
->
->         return true;
->  }
-> diff --git a/net/core/xdp.c b/net/core/xdp.c
-> index bcc5551c6424..e8582036b411 100644
-> --- a/net/core/xdp.c
-> +++ b/net/core/xdp.c
-> @@ -384,7 +384,8 @@ void __xdp_return(void *data, struct xdp_mem_info *mem, bool napi_direct,
->                 /* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
->                  * as mem->type knows this a page_pool page
->                  */
-> -               page_pool_put_full_page(page->pp, page, napi_direct);
-> +               page_pool_put_full_page(page_pool_to_pp(page), page,
-> +                                       napi_direct);
->                 break;
->         case MEM_TYPE_PAGE_SHARED:
->                 page_frag_free(data);
-> --
-> 2.33.0
->
+Changes in V3:
+- Separated patchset into multiple stages: common 'I2C' dts entries, board
+'I2C' dts entries and the introduction of common 'S32GXXXA-EVB/RDB' dtsi.
+- Added missing changelog for V2 of this patchset
+
+Changes in V2:
+- Moved I2C end device '#address-size' and '#address-cells' entries from
+board dts to common 's32gxxxa-evb/rdb' common dtsi.
+
+Ciprian Marian Costea (4):
+  arm64: dts: s32g: add 'I2C' common board support
+  arm64: dts: s32g: add common 'S32G-EVB' and 'S32G-RDB' board support
+  arm64: dts: s32g: include necessary 'EVB/RDB' common board dtsi
+  arm64: dts: s32g399a-rdb3: Add INA231 sensor entry over I2C4
+
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      |  55 +++++++
+ .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
+ .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
+ arch/arm64/boot/dts/freescale/s32g3.dtsi      |  60 +++++++
+ .../boot/dts/freescale/s32g399a-rdb3.dts      |   9 ++
+ .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
+ .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 122 ++++++++++++++
+ 7 files changed, 398 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
+ create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+
+-- 
+2.45.2
+
