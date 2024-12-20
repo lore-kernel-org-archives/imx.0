@@ -1,25 +1,25 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897711A9B25
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 08:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8061A8404
+	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 09:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734684017; cv=none; b=SzfBXrUUVNkR3/Owa70wEH7l5aVUHbgsrYEK8yl2VCeyK8tLuUOQhG4Y2l+4ZNblGIW9kl2Us0ywRJC7hXHe5Sp9VcIxF/j6WdgzxgpVQNAY0ugiPJeMdNB1kRTzZVaQlOO+bvtf9ISaqmGgFsMGHIvbohZ8NxdNQhoEr5OrehY=
+	t=1734685985; cv=none; b=ibD6d73FcLO0YTCdTUqLE0DHlqm2cDLfSD+dbqQbi6usFxEeLzDXckeRxjcfSTqK1mgmbIbDHEOs0cjGpJOFf6gjoPI7YLX7XTIj++fPmqE21pZKjQRd0Yn5B61thPaDVe6Il6AhTG+EqZE74WeF0KMN8Jmz/yyEsU7sY65N4qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734684017; c=relaxed/simple;
-	bh=4aJFptvIeHzniCcmOScVlZAwdge3SpUiUj5ZsCRsiR4=;
+	s=arc-20240116; t=1734685985; c=relaxed/simple;
+	bh=P9Z1Xc2pr5eYKuUuGHIlR5bXUAv56e8luAeU9HCZNWM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=APMjnqOBImUx1ciqbvgVbnjp13x7QBTmyxayfgeaBxSy/ZTfzE2XuMzLJQ4o+bJTWsy51+6tUb0LJkX+XRZXGwIsGPyuFJjPHSS9ebrpS0tgqnUb7+JFVu9TPYjuFKBOKzlkdSr3T7L8/4vH7K+8LRISXA905x5/2Pne1bbcqcg=
+	 In-Reply-To:Content-Type; b=FPqFVC2saW0QX1eCvbNR3rDjjWr3yCNNYIVUU9kmvMlQAZbSjDo7dit1bUTstLvk7zUbwY+UonEyETo9xcB+7VireiFZMaNjoN9LxQt8lImhh8sR55BPRiIhucRpzRGds/zqqhTayxfWX7HJnNDfaxKiPoL14/RQPydA3x5i/vw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOYYJ-0003lY-5P; Fri, 20 Dec 2024 09:40:07 +0100
-Message-ID: <89a3b1c9-2be2-4e7f-a0c6-abbf8b88957b@pengutronix.de>
-Date: Fri, 20 Dec 2024 09:40:06 +0100
+	id 1tOZ41-00023l-Cx; Fri, 20 Dec 2024 10:12:53 +0100
+Message-ID: <2ae085fa-6f13-4eb7-88c1-e625309fc35e@pengutronix.de>
+Date: Fri, 20 Dec 2024 10:12:49 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -27,128 +27,130 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] i2c: imx: support DMA defer probing
-To: Carlos Song <carlos.song@nxp.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Clark Wang <xiaoning.wang@nxp.com>
-References: <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
- <Z2QQI2gJNLjI-fam@pengutronix.de>
- <AM0PR0402MB3937C9A79C55BF4C279F8099E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2UBfcq6pE-JMUrb@pengutronix.de>
- <AM0PR0402MB3937347200BF1967EB677123E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2UK4rMxrtNsPw5V@pengutronix.de>
- <AM0PR0402MB393781D3109B1B3FF3C2529FE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <b919e252-6ff4-4e55-9bd6-4d610dda5348@pengutronix.de>
- <Z2UeKZcpeRUt2OQ4@pengutronix.de>
- <AM0PR0402MB393739E1D91ED2A539B5A2C7E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2Ugt8NVued0_4c4@pengutronix.de>
- <AM0PR0402MB3937419BBB58B75FB8F8DE2DE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH 10/10] arm64: dts: imx8mp-skov: increase I2C clock
+ frequency for RTC
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de>
+ <20241219-skov-dt-updates-v1-10-38bf80dc22df@pengutronix.de>
+ <Z2RcJCaYC2FW3Ks6@lizhi-Precision-Tower-5810>
+ <30dbe486-7e36-426d-8fa4-3ecd83193a10@pengutronix.de>
+ <Z2Rw8qnn9hULyh8l@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <AM0PR0402MB3937419BBB58B75FB8F8DE2DE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+In-Reply-To: <Z2Rw8qnn9hULyh8l@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
+Hello Frank,
 
-On 20.12.24 09:06, Carlos Song wrote:
->> -----Original Message-----
->> On Fri, Dec 20, 2024 at 07:38:47AM +0000, Carlos Song wrote:
->>>> -----Original Message-----
+On 19.12.24 20:16, Frank Li wrote:
+> On Thu, Dec 19, 2024 at 06:51:35PM +0100, Ahmad Fatoum wrote:
+>> On 19.12.24 18:47, Frank Li wrote:
+>>> On Thu, Dec 19, 2024 at 08:25:34AM +0100, Ahmad Fatoum wrote:
 >>>> From: Oleksij Rempel <o.rempel@pengutronix.de>
->>>> Sent: Friday, December 20, 2024 3:35 PM
->>>> To: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> Cc: Carlos Song <carlos.song@nxp.com>; Andi Shyti
->>>> <andi.shyti@kernel.org>; Frank Li <frank.li@nxp.com>;
->>>> kernel@pengutronix.de; shawnguo@kernel.org; s.hauer@pengutronix.de;
->>>> festevam@gmail.com; linux-i2c@vger.kernel.org; imx@lists.linux.dev;
->>>> linux-arm-kernel@lists.infradead.org;
->>>> linux-kernel@vger.kernel.org; Clark Wang <xiaoning.wang@nxp.com>
->>>> Subject: [EXT] Re: [PATCH v5] i2c: imx: support DMA defer probing
-
->>>>>> I think this is what you want to see, right?
->>>>>
->>>>> This loses the information why the error happens (ret). Using
->>>>> dev_err_probe even if no probe deferral is expected in that branch
->>>>> is perfectly fine and the kernel-doc even points it out:
->>>>>
->>>>>   Using this helper in your probe function is totally fine even if @err
->>>>>   is known to never be -EPROBE_DEFER.
 >>>>
->>>> Thank you for the feedback. While I recognize the benefits of
->>>> dev_err_probe() for compact and standardized error handling, using
->>>> it without returning its result raises a red flag.
-
-Agreed, which is what spawned this thread in the first place.
-
-If we want to ignore errors intentionally, I think a comment
-like the following would make this clearer:
-
-  /*
-   * As we can always fall back to PIO, let's ignore the error setting up
-   * DMA and see if we run into errors while setting up PIO mode.
-   */
-
-
->>>> The function's primary purpose is to combine error logging with
->>>> returning the error code. If the return value is not used, it can
->>>> create confusion and suggests potential oversight or unintended
->>>> behavior. This misuse might mislead readers into thinking that the
->>>> function always returns at that point, which is not the case here.
->>>>
->>>> In this scenario, using dev_err() directly is more explicit and
->>>> avoids any ambiguity about the control flow or error handling
->>>> intent. It keeps the code clear and aligned with its actual behavior.
-
-This is a fair point. I don't mind whether we use dev_err_probe or
-dev_err with a return code, it's up to you ultimately. I just wanted
-the error code to be included and I think a comment would be a good
-idea to avoid confusion (provided we keep behavior as-is).
-
->>> how about this?
+>>>> The NXP PCF85063TP RTC we use is capable of up to 400 kHz of SCL clock
+>>>> frequency, so let's make use of this instead of the 100 kHz bus frequency
+>>>> we are currently using.
 >>>
->>> +       ret = i2c_imx_dma_request(i2c_imx, phy_addr);
->>> +       if (ret) {
->>> +               if (ret == -EPROBE_DEFER)
->>> +                       goto clk_notifier_unregister;
->>> +               else if (ret == -ENODEV)
->>> +                       dev_dbg(&pdev->dev, "Only use PIO mode\n");
->>> +               else
->>> +                       dev_err(&pdev->dev, "Failed to setup DMA (%d),
->> only use PIO mode\n", ret);
->>> +       }
+>>> Increase I2C frequency to 400khz from 100kHz because NXP PCF85063TP RTC
+>>> support it.
 >>
->> Please use human readable version of error value. In this case it will
->> be:
->>   dev_err(&pdev->dev, "Failed to setup DMA (%pe), only use PIO mode\n",
->> ERR_PTR(ret));
+>> Unlike your other suggestions, these is no information lost by rewriting
+>> the commit message as you suggest. I don't mind, but must admit it feels
+>> like bikeshedding. What is your concrete objection to my commit message?
+> 
+> According to
+> https://docs.kernel.org/process/submitting-patches.html
+> 
+> Describe your changes in imperative mood, e.g. “make xyzzy do frotz”
+> instead of “[This patch] makes xyzzy do frotz” or
+> “[I] changed xyzzy to do frotz”, as if you are giving orders to the
+> codebase to change its behaviour.
 
-Sounds good to me.
+I have to disagree with your interpretation. The imperative mood is primarily
+expected for commit message titles, but if you take a look at normal commit
+message _bodies_ that make it into the kernel, you'll find that a whole lot
+of them start off like I do: Describe the situation and then what's done about
+it.
 
-> Hi, the ret is from i2c_imx_dma_request() and look like that ret has been converted by PTR_ERR,
-> So the ret error has been human readable version?
+I personally find that this is often easier to follow than just having two
+imperatives back-to-back.
 
-I am not sure I understand the question. ERR_PTR() makes an error pointer and %pe
-formats that pointer as error message. So you don't need to change any function
-return types unless needed, just at the end print it with %pe instead of %d
-(and after error pointer conversion if needed).
+I have just Cc'd you on an RFC patch to amend the documentation you linked
+to reflect this. I am happy to continue the discussion over there:
 
-Cheers,
+https://lore.kernel.org/workflows/20241220-submitting-patches-imperative-v1-0-ee874c1859b3@pengutronix.de/T/#t
+
+Thanks,
 Ahmad
+
+> 
+> Generally, avoid use
+> 
+> "this patch ..."
+> "let's ...."
+> "we do ... for ... "
+> 
+> Just simple said
+> 
+> Do ... to ...
+> Do ... because ...
+> 
+> Frank
+> 
+>>
+>> Thanks,
+>> Ahmad
+>>
+>>
+>>>
+>>> Frank
+>>>
+>>>>
+>>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+>>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> ---
+>>>>  arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+>>>> index a683f46fcbab..ec7857db7bf0 100644
+>>>> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+>>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+>>>> @@ -333,7 +333,7 @@ reg_nvcc_sd2: LDO5 {
+>>>>  };
+>>>>
+>>>>  &i2c3 {
+>>>> -	clock-frequency = <100000>;
+>>>> +	clock-frequency = <400000>;
+>>>>  	pinctrl-names = "default";
+>>>>  	pinctrl-0 = <&pinctrl_i2c3>;
+>>>>  	status = "okay";
+>>>>
+>>>> --
+>>>> 2.39.5
+>>>>
+>>>
+>>
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
 -- 
