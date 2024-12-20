@@ -1,101 +1,128 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63DE19C578
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 06:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0A619ADA2
+	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 06:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734675180; cv=none; b=Rjn7oaj/HQai3WjYhuOY4c5GR9UhW0JDpI9PotOvRQNAzqImJx+Yg8WWzxDBl4ZVeku6HFZQZFIL+ukQ9fTc88aemctIV+qiEtswsw9F+3DoU8Gdf8PLL8eZE/Sr6iVSVbuuqZ5NzNvQdC8+YMqJfxgmvHsicLhqnNpAj4iuG8g=
+	t=1734675716; cv=none; b=pgrNXsikioU8a+yFLa4MHIDLoRWv6GOH2F/yuCbt0Qm8s8ZM2srgKU7kwWYGLqI4Y2dX/U1oTgRpi/b3/VdqC4t4vANCMdWfKCHmr94TJW89pRXFutJFECI7mSPUbCKfSFS/P8OBq+Kgr1OQN0xh+IXVHD+T2fcIZD54lRUp9UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734675180; c=relaxed/simple;
-	bh=BUf8yu9L7g3vHlkDBpNNG40Xqnz5Op0dlB85KJjv/xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZpYzcleuT4eR2BGLDU8WXqaNxXYKO6PP8D4kHNRAsHnA4JkiAl0JfRfZ+eYITuZIvTeV9zl9Ndrajl06pgPRzBri5j/WjUhjW0NCRyqROwEmrECNcT8yPdRq3bQ17SkVQ78jNnvEfkIb8fvqbMAk25MGWdiElC02kgNYkIQ3SGo=
+	s=arc-20240116; t=1734675716; c=relaxed/simple;
+	bh=pj7C+/bZ4z34+CzJxnGcye+wRavGrcAeTEJD2XDARlE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XAfTL06GULo0dcyE3C9FsPz++iz30vstMTNEuZnIbpeb/hDDZ/7nFQfc2q7QA9EEwp3C6SQYf6ZELLzsiF3gZagTpknLIuHA0OzTSSMA3dpm9HUEFMwgKwjMsmO3dvoKPLdi4bdkI7ah3LvFRJipjD4GEazsH/Manu49R/NnkP8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tOWFn-0000a5-09; Fri, 20 Dec 2024 07:12:51 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tOWFl-004KXK-2y;
-	Fri, 20 Dec 2024 07:12:50 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tOWFm-00AMqK-1s;
-	Fri, 20 Dec 2024 07:12:50 +0100
-Date: Fri, 20 Dec 2024 07:12:50 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH v5] i2c: imx: support DMA defer probing
-Message-ID: <Z2UK4rMxrtNsPw5V@pengutronix.de>
-References: <20241218043541.143194-1-carlos.song@nxp.com>
- <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
- <Z2QQI2gJNLjI-fam@pengutronix.de>
- <AM0PR0402MB3937C9A79C55BF4C279F8099E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2UBfcq6pE-JMUrb@pengutronix.de>
- <AM0PR0402MB3937347200BF1967EB677123E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tOWOI-0001i8-15; Fri, 20 Dec 2024 07:21:38 +0100
+Message-ID: <44278a64-7578-4109-aef3-4888627166d1@pengutronix.de>
+Date: Fri, 20 Dec 2024 07:21:36 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <AM0PR0402MB3937347200BF1967EB677123E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] arm64: dts: freescale: imx8mp-skov: switch to nominal
+ drive mode
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abel.vesa@linaro.org>,
+ Marek Vasut <marex@denx.de>, linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
+ <20241220061613.GB8295@localhost.localdomain>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20241220061613.GB8295@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Dec 20, 2024 at 05:59:38AM +0000, Carlos Song wrote:
-> > > So we make this logic. Anyway we let the I2C controller registered whether
-> > DMA is available or not(except defer probe).
-> > > Ignoring ENODEV and EPROBE_DEFER makes it looks like nothing happened if
-> > DMA is defer probed or not enabled(This is an expected).
-> > > However we still need i2c DMA status is known when meet an unexpected
-> > error, so we use dev_err_probe() to print error.
-> >
-> > Why dev_err_probe() instead of dev_err()?
-> >
-> Hi,
-> In patch V2 discussion, Marc suggested just return dev_err_probe(), but I don't accept it so I choose to use dev_err_probe() to print error in V3.[1]
-> In this case, the two APIs have the same function, do you mean dev_err() is more suitable?
+Hello Peng,
 
-Yes, dev_err_probe() should be used in combination with return. For
-example:
-  return dev_err_probe(...);
+On 20.12.24 07:16, Peng Fan wrote:
+> On Thu, Dec 19, 2024 at 08:27:31AM +0100, Ahmad Fatoum wrote:
+>> Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the imx8mp.dtsi
+>> configures some clocks at frequencies that are only validated for
+>> overdrive mode, i.e., when VDD_SOC is 950 mV.
+>>
+>> For the Skov i.MX8MP board, we want to run the SoC at the lower voltage of
+>> 850 mV though to reduce heat generation and power usage. For this to work,
+>> clock rates need to adhere to the limits of the nominal drive mode.
+>>
+>> This is done by this series: A new imx8mp-nominal.dtsi reconfigures
+>> the imx8mp.dtsi clock tree to be compatible with nominal mode, an adaptation
+>> to the Linux clock driver makes it sanity check the actual clock rates against
+>> the SoC operating mode's constraints and finally the Skov DT makes use
+>> of it.
+>>
+>> Actual configuration of the VDD_SOC rail continues to happen prior to Linux
+>> as well as PLL configuration that needs to happen earlier than the kernel
+>> running. See the corresponding barebox patch series[1] for details.
+>> Note that the barebox series didn't yet include VDD_SOC reconfiguration
+>> to 850mV, that would follow once the kernel changes have been merged.
+> 
+> Good to see this. I had same plan to support i.MX9.
+> 
+> I see you introduce a new property, how about using a boot pararmeter,
+> saying "mode=nominal" or "mode=overdrive". Then drivers could
+> act accordingly.
 
-It will pass the return value on exit of the function and optionally
-print of the error message if it is not EPROBE_DEFER. Practically it
-replace commonly used coding pattern:
-  if (ret == -EPROBE_DEFER) {
-    return ret;
-  } else if (ret) {
-    dev_err(..);
-    return ret;
-  }
+I assume you would place that parameter in drivers/soc/imx/soc-imx8m.c?
+
+That's certainly possible as well, but I think for such a hardware property,
+the device tree is the natural place.
+
+Thanks,
+Ahmad
+
+> 
+> Regards,
+> Peng
+> 
+>>
+>> [1]: https://lore.kernel.org/barebox/20240503103717.1370636-1-a.fatoum@pengutronix.de/
+>>
+>> ---
+>> Ahmad Fatoum (6):
+>>      dt-bindings: clock: imx8m: document nominal/overdrive properties
+>>      arm64: dts: imx8mp: Add optional nominal drive mode DTSI
+>>      arm64: dts: imx8mp: add fsl,nominal-mode property into nominal.dtsi
+>>      arm64: dts: freescale: imx8mp-skov: fix LDB clock rate configuration
+>>      arm64: dts: freescale: imx8mp-skov: operate SoC in nominal mode
+>>      clk: imx8mp: inform CCF of maximum frequency of clocks
+>>
+>> .../devicetree/bindings/clock/imx8m-clock.yaml     |  14 ++
+>> arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi  |  64 +++++++++
+>> .../arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi |   5 +-
+>> .../freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts  |  19 +--
+>> drivers/clk/imx/clk-imx8mp.c                       | 147 +++++++++++++++++++++
+>> 5 files changed, 233 insertions(+), 16 deletions(-)
+>> ---
+>> base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
+>> change-id: 20241217-imx8m-clk-9467763dfcd8
+>>
+>> Best regards,
+>> -- 
+>> Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>
+> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
