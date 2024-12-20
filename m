@@ -1,65 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622BA19D88B;
-	Fri, 20 Dec 2024 22:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0CB227B8A;
+	Fri, 20 Dec 2024 23:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734732102; cv=none; b=OW88Z6/q8vcza6fwDvGbsDDOZk7v5CLsEq93UkhraFOFpCsz1OHcscJXLp1vZkQK4s9oqmVAePxQJU2Z0FsYxVDFbCOUT8KtqRaINAQ/my5gw4fSCn+q198otZdxH7R4EnxNOi0/81uEacKFp5olLkOBVC4a8irR26ok4H5Z1so=
+	t=1734738235; cv=none; b=I7h2cq30T+dXADVTYzzHZXEI0yGb64qrUDG4Y10PGSN3uL8yEDH9MaJ2wsK8sgMUdmH+kLoAOtAWwg7u85LW6wuuYORl95IQ8CupLMoye1KGh/rfkBvO7goo2NR5BhSsu/utSaHrCYWokWp0+BIiXP6/vjz1zrEE3UE0Em5G8zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734732102; c=relaxed/simple;
-	bh=AkFDAdGYAZwPeNowaJnnrFIGrNYl4SvJvDqNGrtVyz0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VNZLmfLRw1UL8+S5ICLeaGryPDX4oYzHteXdFytIVtt3NmE0S72xH3w/z4KN6Ak9V8ak74IQQMHXfzMeGtzJQBNoUbLNk7IuGoJo08gZ58D1olXFw+a6I+jwFBRbHQGsqkysTWNt6DuwHcNOIDCT1PbiRSZ6UdzVcU4ZvNRyt+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccldjYSC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734738235; c=relaxed/simple;
+	bh=Tl3idrE2LCcllxqdl/sbYQYJDQoP869azWPMoZLhxKg=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=qpDaKZ8kLttrpaH/M3O1SNvFpNeZSQ4EI5uW5cIAqXu2U88j7r2FHA+0/zXbMQBvTOMPgyS+xk5ikTKEgfYiAnYmAB0TknUs0I1prGUWNVsznnNNSs3q0h9OHC4SPXgmbcR4xFu9WBx+jY+aDbc8Rem2ZOLW8o0Emb/y1D8ur6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rs76IXBb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccldjYSC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692D1C4CECD;
-	Fri, 20 Dec 2024 22:01:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rs76IXBb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95CFC4CECD;
+	Fri, 20 Dec 2024 23:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734732101;
-	bh=AkFDAdGYAZwPeNowaJnnrFIGrNYl4SvJvDqNGrtVyz0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ccldjYSCWo3h4pBQ/H2a51CJtIf7U6/juaE7A2hALoReQSwu5EewRZmcj8/HW+h+1
-	 QouWXU1V1ojauyov52If7lyWaUeLy43qTd/8IubpqdihyLgI6yrGjNQsYdu6/YCMU7
-	 7qE4KdHk2Lbjw9OMTCAlA9q2ShVYBtUJBHviN8eIXr6JjIXP/Ij/G3IQazvgzf/RV5
-	 km7LKxoAwVflzPFfDl4h8gkdZlrMkA/52bQOKYQcAyGEAjaiJ/wHGs+0TBuvfD97ft
-	 sD8tQCiRYGfDGDhTIaqyEUL0w7p5mZQGow/mSZz3RPPGBnKPjyJuAHc/+y+O2G24RJ
-	 F5LHN29NQ0iLw==
-Date: Fri, 20 Dec 2024 14:01:39 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mathieu Othacehe <othacehe@gnu.org>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
- <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: dwmac-imx: add imx93 clock input support in RMII
- mode
-Message-ID: <20241220140139.5c0cee2f@kernel.org>
-In-Reply-To: <20241217084942.4071-1-othacehe@gnu.org>
-References: <20241217084942.4071-1-othacehe@gnu.org>
+	s=k20201202; t=1734738234;
+	bh=Tl3idrE2LCcllxqdl/sbYQYJDQoP869azWPMoZLhxKg=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=rs76IXBbEJgspYIxkUgYirKR9qdmMusTU04RfQ8aYSpA7brl0GXjq/Yq4/XWliLMK
+	 BVByk3LAviLPBldIHj9nvLbKJrFXPJT04YyDvG41rkMKehi+edYeMbSlAVmHstwkF2
+	 dnDuhgBnarL2HzdPqA013C4xnOUYU1rjlJgiyAwHL03/GuiRQlOhkrDu1lpumxFz/8
+	 yRbtRkY4o6l9kLyimWgokfGcSoae5SSXslnAEPdyo9/3+g9N/Uaika5PnyU1tVhxLs
+	 FMuSGTI2u3HPVTL+BJmSVzTNTndvgtCd3S3ePoqMWT8UdEhVk6HZpKDR2wnErrIVJR
+	 ZRj3UaLGkLUXQ==
+Message-ID: <ae80d29442890a356289ad1f0caab906.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241219105447.889CB11FE@mail.steuer-voss.de>
+References: <20241219105447.889CB11FE@mail.steuer-voss.de>
+Subject: Re: [PATCH] clk: clk-imx8mp-audiomix: fix function signature
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Abel Vesa <abelvesa@kernel.org>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>, Michael Turquette <mturquette@baylibre.com>, Nikolaus Voss <nv@vosn.de>, Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Date: Fri, 20 Dec 2024 15:43:52 -0800
+User-Agent: alot/0.12.dev1+gaa8c22fdeedb
 
-On Tue, 17 Dec 2024 09:49:42 +0100 Mathieu Othacehe wrote:
-> +			ret = regmap_update_bits(dwmac->intf_regmap,
-> +						 dwmac->intf_reg_off +
-> +						 MX93_GPR_CLK_SEL_OFFSET,
-> +						 MX93_GPR_ENET_QOS_CLK_SEL_MASK,
-> +						 0);
+Quoting Nikolaus Voss (2024-12-19 02:54:11)
+> clk_imx8mp_audiomix_reset_controller_register() in the
+> "if !CONFIG_RESET_CONTROLLER" branch had the first
+> argument missing. It is an empty function for this branch
+> so it wasn't immediately apparent.
+>=20
+> Fixes: 6f0e817175c5 ("clk: imx: clk-audiomix: Add reset controller")
+> Cc: <stable@vger.kernel.org> # 6.12.x
+> Signed-off-by: Nikolaus Voss <nv@vosn.de>
+> ---
 
-nit: regmap_clear_bits() ?
--- 
-pw-bot: cr
+Applied to clk-fixes
