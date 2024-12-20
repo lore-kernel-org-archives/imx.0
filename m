@@ -1,127 +1,185 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011052.outbound.protection.outlook.com [52.101.70.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6F91AAE01
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 09:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734687128; cv=none; b=DX6uRr1vxOendBuNIQLJIF17B+lx7bFSvkfSEJ2tj9RJMgghmXzUVqSxDjeFHCLS+CFGr3sCL41h+cZkZYC+2qEoTV3vSiMLsureU97O33fvXSY6D3ahwgejXkDIWAqQETFS9mCECfXFRgACeXwIDEoC+H87RPf7KJrNuC/hgKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734687128; c=relaxed/simple;
-	bh=WqNU/sa3J6EB9si587Rjlr27AdSxLeaAIatY0TSNIeo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZEDi6Z4efwn3U93+NMaJoXjvjRYhYDZhvkw7XWy/9/x4+CHJJsVbogivZ7tXgVvMJfSqDZoUHWMJeCEQFcFRs+wtZre5qWQ76eEdy6MolRGHjEyoKlN+G9Fp/itdH43FjntVib/MFxYigQd8Q3SHdWZwchIv68gzpITKHl1hGMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tOZMW-0005JY-9M; Fri, 20 Dec 2024 10:32:00 +0100
-Message-ID: <451e8c12-7b45-4b12-af10-63f60ba6e92e@pengutronix.de>
-Date: Fri, 20 Dec 2024 10:31:59 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C19F1A841B
+	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 09:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734687376; cv=fail; b=r2xyj28zfXavW9JSZ4oNdLCtkDLYwtM9fKy4y14IgWuXGmugg7vvRGQuIREeLHahQlAYzZjgPokf/ETaV2o8QOMWWA3/1fxxBOhH+uvtmedrHft9Eri4RoYQSABOcW5veo86qHF6wCzj7uI8YsS8t4resxCsV4YB2jCmCociymg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734687376; c=relaxed/simple;
+	bh=t95/TClJPZIvWeuRdlrksawbmrXagTjQXpsb9SUvOTY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PEHkl6LVtSpMdRQXAX+qp6+CISiQp9Dak6YVEwn+lxSZPYRCCvX96P/H6WoXMdkYVhDCRwu468mCbz7FMtpHoBcaU4dPEkkXH0b/3tRqE8BbCHoXzf0f5wNLq/y8LIhN6QpsVAjvK71gMUxX8/0Bsn4IXrkD93zzzwp3dB3TXpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=k5DpVzoJ; arc=fail smtp.client-ip=52.101.70.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="k5DpVzoJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SiglDt5N7Sk56V3xBD5xN+ct4uLF5pX5fz5r2/iKn6FBAvjT+zR1gfJAvc+VZ5xbXVWDir2zV6Ox1NXfQla7IKeQZvM3vTkUyum6jwyYVItq5wao4DVrNAi1llyxzjgL1qXZwT++vTRPZu1Jnzjb+qNoEoKluR2DmuNnk7KFCAw2bQwfvObjbsWftm1Bkc7t8pXRt8XXnp7Fy1WIL8QxvWFxa2QSVQnS4O4fEmAwcruLgKEZemlrnNmZFZSsw/R7L2LZdvuP2yjQaAjxzDDmKt2IAFJNH9sDJaaWLQi4J/yUWpeAaf6SwgVHSZ3MxNv1QHVsXNsqC0XcBTP8ySR4Fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O/FlyTJUC3wJeeKxFbl/Bj4pj/DLPbPYuLp0tQ+Jd4A=;
+ b=T+vfkOLgkpRf71dP8M1v75fCV6CMfcv2H10+b49XMNK0DbldfyYiVGNf8bGdkRLK+2oXj4OUMVZDosDwcd3b/DBrIqjDaArpryrhw4y1PpNJ4RZhRc+b7Q8TAG74x23dmOinR4SqyG9LZ65t9gWHNbmoaaQtUntjY34jfCq7/MUVN/UozkyVjX6cHXi4LHFkJvBBrV9mu10HQSjoOeId3XF4fxqtpMXos9i+fDy/TTrBWoStB/d6MxBwqbyzcdJe7wufyFoJ4prrT5dQ7CxNWRnctPX0Wb5L8/SJf4OjPHpShFByf9qgTA0BH2tKyiXMYOSevnflLfVLENe/p8EiUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O/FlyTJUC3wJeeKxFbl/Bj4pj/DLPbPYuLp0tQ+Jd4A=;
+ b=k5DpVzoJkMOp34Ui2dBj50sTohp/iWQlo0+JXNFH+ey6/Zk6R8JWn9r4oKgJAlc+G+BHKwjWBtFnvCaAwl4uX8MYb82Yt3DqZ6c9fwsReNHPNhHz6b+aTY+KhFtysNOdfOaUNAFDYZx4N9r9OWE3ko2Mw/Vg0l1MA7AtncmcNGaNo8tZuMeY8M2UblpdkDBOGg+I45pt6OSF8Mv40E6nysj4Z3FnwG5GOrtFUo4y1Hc6BN/eGmfY5xIisLoWGA56WpLFmcpjIJ1Ljp6okM7gh7hoRjQiRZ76g1znlOBROFxx3yQAaE+spsG+wY36A666RQwy6C+qt5IamB9vN4lQew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI0PR04MB10292.eurprd04.prod.outlook.com (2603:10a6:800:243::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.14; Fri, 20 Dec
+ 2024 09:36:11 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8272.005; Fri, 20 Dec 2024
+ 09:36:11 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	mykolal@fb.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	shuah@kernel.org
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH bpf] selftests/bpf: add XDP_UMEM_TX_METADATA_LEN flag to umem_config
+Date: Fri, 20 Dec 2024 17:18:06 +0800
+Message-Id: <20241220091806.1856223-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0113.apcprd03.prod.outlook.com
+ (2603:1096:4:91::17) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] i2c: imx: support DMA defer probing
-To: Carlos Song <carlos.song@nxp.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Frank Li <frank.li@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Clark Wang <xiaoning.wang@nxp.com>
-References: <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
- <Z2QQI2gJNLjI-fam@pengutronix.de>
- <AM0PR0402MB3937C9A79C55BF4C279F8099E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2UBfcq6pE-JMUrb@pengutronix.de>
- <AM0PR0402MB3937347200BF1967EB677123E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2UK4rMxrtNsPw5V@pengutronix.de>
- <AM0PR0402MB393781D3109B1B3FF3C2529FE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <b919e252-6ff4-4e55-9bd6-4d610dda5348@pengutronix.de>
- <Z2UeKZcpeRUt2OQ4@pengutronix.de>
- <AM0PR0402MB393739E1D91ED2A539B5A2C7E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <Z2Ugt8NVued0_4c4@pengutronix.de>
- <AM0PR0402MB3937419BBB58B75FB8F8DE2DE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
- <89a3b1c9-2be2-4e7f-a0c6-abbf8b88957b@pengutronix.de>
- <AM0PR0402MB39374CFFA66D8121DB218334E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <AM0PR0402MB39374CFFA66D8121DB218334E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI0PR04MB10292:EE_
+X-MS-Office365-Filtering-Correlation-Id: d58fb74a-144d-40c1-ebf5-08dd20d9bd4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nA9mJ7xpVyCgymRuDZhIZwl0EjZKFeSYdjtgPML7RwkM5v4OcPMneDaavVd/?=
+ =?us-ascii?Q?V21mGHFze386xV2dbhp3+Cs/NJ+L8m2tHen4vu3bRAH93lv19No4a5A50QPr?=
+ =?us-ascii?Q?r3D/goO0g7Q8Lf3YVLUDyvt4ZlvaktuZN9gYPSWjVTyRgHTUQkkjP3DY1g7n?=
+ =?us-ascii?Q?NocsdMkbpW7Z6yoXvz49rrCsT7rusaSTQHqeApWjg9Bh5eUpJW/YWsteIpXu?=
+ =?us-ascii?Q?yThpCPB8ruwLmQQzW8rQmZ+RMAfzfg0VLRJ6zKM2ZbCeL6A3aYjdnTNjutEt?=
+ =?us-ascii?Q?p3OXWwNBmUZkY1mhxrFbtlFfOp4EOq1BYCK9UR3pqNf6SXCxa8AVOpsduA2Z?=
+ =?us-ascii?Q?I7DD3IFLwh6FAA2yhQfjJZclNRYDyTMDoXjJRv1aKaK5pYzwyWCOMqi0uGP5?=
+ =?us-ascii?Q?gbEXyu853UpsUNSqEiYWyE58thhRhGe4/CWz2ZSI9Qivx1EF7QI7/SOifHe7?=
+ =?us-ascii?Q?eH7XfbpsShbDYsCNDGlL16gdS2CcH+IpLECyGVvMb/eieffqZVnZigsniOOu?=
+ =?us-ascii?Q?tJ5tNZINAvSrvCNIfqxTEfqbnBH1z92cWuky/W0WfLZfXFp8p0MSpEQMJt0H?=
+ =?us-ascii?Q?pGaSvGkhjM1HlUSJTr8O3mtkBWMTNKNarc8fGqoOy2uJrEIUXBa8PGIcyg/Q?=
+ =?us-ascii?Q?ChBEG8BsylASmNvXErb4kAmepwpTX+BTHSzU5SkubpjvplQ5X49OsaU/QlRc?=
+ =?us-ascii?Q?jzKUQdRswYad3YnUJWqj4ZPIFdoEaEvD9TNogR7nDkQouQy5beZH4udPBOer?=
+ =?us-ascii?Q?hiKfrTCd5w2GGOn/SKjsZp4H6tUaWAQLkfM4TTFb3d9pw/xqmXboTTPMUCml?=
+ =?us-ascii?Q?JEupkUNU13AnTi1MPuZqmlKkR4ELGJafGEcuH/0+BHemGbOj+XvmNFCMbV6i?=
+ =?us-ascii?Q?zRQtSr1x9F0yMHrBa5hybeW5bxoJztcF4Gp22IuxXfrza2yK0rwfC8vz8/NV?=
+ =?us-ascii?Q?X9aGkJdXceCZx3cJIPoz7wqxdFGpXdOVomfIbW/R1nSRumfH0myhglTapmWr?=
+ =?us-ascii?Q?+/UdRZQaBxXSr1cHLN9sbCSTltowgKRS34+xgi1DOU351LZQDTMP7j5APcQ9?=
+ =?us-ascii?Q?0Ju0zBCGuFUlksQW/NOpQMkCP1VxTQ32RPPuvwUFnfgQ7AqdbMaX6mmd/xfV?=
+ =?us-ascii?Q?I6dVrSa8letnxGE+rNvptZy3wwwv3l3odp7HGZ497J6kzC52tAxubh1zjU4O?=
+ =?us-ascii?Q?4MteZUNKK4PTxvCPqGjX8Mf/NjgPDu2fMD9AgsywsRWAIQIuNlt1lYVqZMRy?=
+ =?us-ascii?Q?R0bW9iB508474Kkf4xkJH5m3KBXOH1vl5j+J5b/X9y+bWCPTcM7CI1OgxN4k?=
+ =?us-ascii?Q?tUU1b1eT2pedU+4WrQpItgTAZmcnMzRkHP1lWjhsK0USqTpAIshZXZzPtx1j?=
+ =?us-ascii?Q?8YnO1C+j1iVegRNnr9EHpZKdUeQZBgauCjzn13kd8ZTzAV/Md/3IU+RrSfAi?=
+ =?us-ascii?Q?HMVf/j+KMMSPRBI7GWKyzLmlePM//BEX?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iWWTXCWj+Y50cTeTPYfTUhskwuIBx2MTrNH5lgrs/aKhBhEwaVOUD5lWxv5o?=
+ =?us-ascii?Q?X7jj+fDrhB1cyML6fs11lP43tSx5AQTUEnW9r848hIAyt21CdIx7vsp97arS?=
+ =?us-ascii?Q?5CJSg9yXeL7U6Bl5yPOAH93l8NVKB57zU+TjpY4O5SlX7RVIoXXKFGszf18z?=
+ =?us-ascii?Q?n5FuvDLZHd21aUhIo0k0NyZNzXZJh0PEdr8m4tuU6SllZlm8+u7gUq7VboJc?=
+ =?us-ascii?Q?wRjlV9Snlmch9NJNOvNb48XideNoxCvmXqevu5+gWbzuSpGUQr7L+E6i6O2b?=
+ =?us-ascii?Q?YLuaYl1DmmCEyZVeaTrgnLCV636lgE9PwAAWHlm3vyKAO588Rv7n30kI4Qat?=
+ =?us-ascii?Q?plsLVx4eY4e0ut6g5gNvhmgZgKGHrYrXbKD8qyKn7tgp6euTWqK25bnf0onm?=
+ =?us-ascii?Q?LwH4GKAOnFExSeMwOZVDICVdAIHNXIZ4mOD3llxAND2hDLj9Nnzwg0X6l46Z?=
+ =?us-ascii?Q?PqF6QUuYPZ+mCMBQLbOQCQE5yMU661sE42r8H5A3+WsYsWxWH7d4TTcIjjCG?=
+ =?us-ascii?Q?getjKtBv6oG19WieCEf74jh0o9uYxW5Dp4mH9TqlAaBYvguldpSC1ThZFfMc?=
+ =?us-ascii?Q?SMuf5DgbhEFh9cLWZWLyxZLcoT+wpM6SZHtyxTqyG8cdoyOzK5srZo0bfTh+?=
+ =?us-ascii?Q?ubbZlroVhQLggMDwCjQWGz/Wqka1jKvY9a6WIdohXDlvNR+yel6E1uFOXuYd?=
+ =?us-ascii?Q?nQDwysX2sV7oEQiGfLw0pvI9wgXdNo7QEapxESVU+4ovqVvguZEvP0YBZq0O?=
+ =?us-ascii?Q?rSL3VMzqaEtxF0HzPQNKtH3x1YTvXuYkRcFsAxsEkh4rbYvMBr1pHChofAqY?=
+ =?us-ascii?Q?GhlmPr6yk6DnRwfA3cnvvoxyysrUPa79CTp2eNJ8o8V81kEBDEp2nIVd8Sos?=
+ =?us-ascii?Q?spulC0rhZQ4iCz5UePXdNLbV+gqyYRU5xZnZaIS4xSMBhxJzkrYeZ7JJCKzL?=
+ =?us-ascii?Q?hBPzU6v/PJXVpNQRzJzXLC7VHGHTZT/qVqElDJYi3uJ2eg9IXH2PBSlKkEjm?=
+ =?us-ascii?Q?GvdknGu3Gs3jyA8nTtmMU7Tn44RGZe2fbUtDgO5kIO80gqdEyjjvfYHIOROJ?=
+ =?us-ascii?Q?OBAWGb+ehUX5S6daVmMli1mCfOyE4mQVdCzybG2Zy9bOqpn+sOXoza9e0yqT?=
+ =?us-ascii?Q?BY/WdK4VrKnrjW2Q5q/NzT1e5SWdCoN+oeFWFDLRIPnuoqPgjRWwZq2tSpPj?=
+ =?us-ascii?Q?O+O4bzuqmmW2b/hRv4ex2HM0t0Jt98SxrXu14qeK2OfK5v82paqogsM1Uq8O?=
+ =?us-ascii?Q?TwKHCE6Gwx5MHNG5ALYDfs0MUG+ysA5ref7Avj/QYXlmmXRA2yLaK6uDKT88?=
+ =?us-ascii?Q?PoL137sXcP5g7RcwzqUwRI8xsl7n/6cgJ4A69zY0ett3mtz446RiIqmsaLZo?=
+ =?us-ascii?Q?k4NDizoTN1kmIiQArJi9zVFpc8zYsLzdIbJdSNLZtqH1Dh8wujXbHN4xH1ek?=
+ =?us-ascii?Q?CzLBZ7lPNofeUTeww/0ZbAUlqnuZYYqsZNrhpGwICQnhbt075S3/+dA0oM6z?=
+ =?us-ascii?Q?9VgTRPDc8dcWJiD+UO6pfL+XL8JkQJ2Cb/LUJnJ4lpkfyQ7OpX0rKSUw1D66?=
+ =?us-ascii?Q?2dnCyPalwFoguAubxg3UOfGAQGcGHZ+SCh468jsk?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d58fb74a-144d-40c1-ebf5-08dd20d9bd4f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 09:36:11.5684
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U5HK5MCV6LPb6JGc/wpCRHgZK/aMLzxyPPghGqm19pZSC5Vxz1k45qzQpVzGZDIU6kUnpvf85E9NVGvgKhccwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10292
 
-Hi Carlos,
+The Tx metadata test has been broken since the commit d5e726d9143c ("xsk:
+Require XDP_UMEM_TX_METADATA_LEN to actuate tx_metadata_len"). Because
+this change requires XDP_UMEM_TX_METADATA_LEN flag to be set, otherwise
+xsk_buff_pool::tx_metadata_len will be initialized to 0, which means that
+the driver cannot get Tx metadata and cannot execute AF_XDP Tx metadata
+hooks.
 
-On 20.12.24 10:23, Carlos Song wrote:
->>> Hi, the ret is from i2c_imx_dma_request() and look like that ret has
->>> been converted by PTR_ERR, So the ret error has been human readable
->> version?
->>
->> I am not sure I understand the question. ERR_PTR() makes an error pointer
->> and %pe formats that pointer as error message. So you don't need to change
->> any function return types unless needed, just at the end print it with %pe
->> instead of %d (and after error pointer conversion if needed).
-> 
-> Sorry, I don't know if I understand it incorrectly.
-> I review other driver code, most choose to return error value but not an error pointer.
-> Shouldn't error value ​be more readable than error pointers?
-> When we see -110 we know TIMEOUT and we see -12 we know NO MEM.
+Fixes: d5e726d9143c ("xsk: Require XDP_UMEM_TX_METADATA_LEN to actuate tx_metadata_len")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ tools/testing/selftests/bpf/xdp_hw_metadata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I know -110, but -12 I need to look up :)
-Both are cryptic to end users, which is why %pe was added
-on top of the existing %p:
-
-If CONFIG_SYMBOLIC_ERRNAME is enabled %pe expands to an error string,
-e.g. "ENOMEM" or "ETIMEDOUT". If it's disabled, you get the same
-error number that was printed raw before.
-
-Cheers,
-Ahmad
-
-> 
-> i2c_imx_dma_request is using PTR_ERR to convert pointer to error value[1].
-> I don't know why need to use ERR_PTR to reconvert the value to pointer:
-> 
-> dev_err(&pdev->dev, "Failed to setup DMA (%pe), only use PIO mode\n", ERR_PTR(ret));
-> 
-> Is there some strong reason?
-> 
-> [1] https://lore.kernel.org/imx/AM0PR0402MB3937419BBB58B75FB8F8DE2DE8072@AM0PR0402MB3937.eurprd04.prod.outlook.com/
->>
->> --
->> Pengutronix e.K.                           |
->> |
->> Steuerwalder Str. 21                       |
->> http://www.pen/
->> gutronix.de%2F&data=05%7C02%7Ccarlos.song%40nxp.com%7C594497db1b5
->> 44e479a8f08dd20d1e88e%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0
->> %7C638702808104903131%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGki
->> OnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ
->> %3D%3D%7C0%7C%7C%7C&sdata=EnhsIFlBooqjB%2FSRWF7uAqRHE3yN6rbdD
->> 1yQueTrRus%3D&reserved=0  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
->> |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:
->> +49-5121-206917-5555 |
-
-
+diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+index 6f9956eed797..ad6c08dfd6c8 100644
+--- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
++++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+@@ -79,7 +79,7 @@ static int open_xsk(int ifindex, struct xsk *xsk, __u32 queue_id)
+ 		.fill_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
+ 		.comp_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
+ 		.frame_size = XSK_UMEM__DEFAULT_FRAME_SIZE,
+-		.flags = XSK_UMEM__DEFAULT_FLAGS,
++		.flags = XDP_UMEM_TX_METADATA_LEN,
+ 		.tx_metadata_len = sizeof(struct xsk_tx_metadata),
+ 	};
+ 	__u32 idx = 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
