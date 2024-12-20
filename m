@@ -1,396 +1,239 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2066.outbound.protection.outlook.com [40.107.103.66])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2078.outbound.protection.outlook.com [40.107.247.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94281F9EC
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 02:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0F53BBC1
+	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 02:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734660716; cv=fail; b=jDDFL/nacN88JUUi/VCtGZiaMIKkCBXbu2cpfiOCzo4QQGe+oAZuEU45IGVcf6L1qUTWy3aSYgdOeH0QZ1pXVWwmL/B38sI3Gki7jsqyIMxpiRjED3jk+Meik338cORDcp36aMNwLImWi43yDPyyKJ3zFU8dWe5IOilluVLSZsk=
+	t=1734662717; cv=fail; b=eP3b5M38VY8Zlnoh4RlKFB17wEQZtQR84aDfRsCZdE9fKuvPJi/NdRFWN8/ScbYUXJydSDCu8MGky7BZG+iFNO0+fZ9G4HbQ+KNjN26X7VMRKjDr34ottt9O4fnvYghuYWbSfTUHcIik+yt985/p0ug5t3xqUVAzUNrqZxep/zY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734660716; c=relaxed/simple;
-	bh=wFpxUicdgO7eCfpQjZvFwMtYVYUxyGLSsCibfWZl0es=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=icULt7CIFpLS/iYDZtL30j89vyPha3kH79byMdF0VYqpGisa8iXhOsQPwl36Bc+GQNI9deBnxdcq4qpGkSsAFjnqgj2iJqvO8NXXGnG29AAQfRQnyjwkrnT1t3IwrpI+ir0b8+uUt0YGqIDaubPwo1k/b0GnuQ6W01fKAiRAf7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TKKB2ti1; arc=fail smtp.client-ip=40.107.103.66
+	s=arc-20240116; t=1734662717; c=relaxed/simple;
+	bh=QQE4WRPR6A3gMHAAaKvkuHZtUy0AC37kby+lpUtAGM8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JG4B21HnDmYgXIaxfjC5zmeRR+5I48bceS6SvzfAGGxxtEDFQIzjvvRS2omPanEN4ee/otZnrRj2GSORE8VSUocOawTFab5S/90hL92ZzGaSsaj+YEJGa6ziI323ni5pQ70pFQEE8dLMdSOHImOdevvK4R8ITdyLQG/i3rhZZIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oCEj8Mil; arc=fail smtp.client-ip=40.107.247.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TKKB2ti1"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oCEj8Mil"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tEWpildQQmwwWvir/Cw5LHL+ZoSMhxrNrRDbWLOPQTKwh9yl6Q7uNHHCspqbSZT8dVMR9zEIuvQeEIgnEp/fLNiMb+EeF1XxYe7cDp0VOp/dqdarIicxoGmwxdh9RICYxG+N6sgNYB6qH1jgulhhGXY5cH1uUtM9iRHiTarpUog7xTS5gtjg7gv5dvT8NVrfwl3Nvk9emAZZQup7MqXmwoZsfpW/LFKBGNzwRt/XLkE8lqMyC/rIipp6LwJXIoDg+YjVodeoH4EeIDedt873MEyia0F9eBGd4a3fWqpG/V8AI2qkLtIhAY5ocvHal7ifBnk29MoxXH8Y3DxkLA/UDA==
+ b=DY9VBJj1w2RwOdGkT7kQPm5/wjfXW8e/plTxw2XnxXZ9IMXSQpNzP1WX/1LO8WVLvKyJ2VlVYcCd7xErpOLoq8kSUkgHM+XishOaOHl994IiEEY18hClsRUIVAM1IOrxu4Rh6qafQ25Xpb5/ypHwdjvNLZerBgeJOivxUpthcQEWJj9QAzCzpF5j3OVE6T2M5LmmEszi4WSsvf5LZxhfr8TXL/LMuqm/scbCOw8dXg9Sf4WOUDNjDTMGAp5IMgd1K27WO0G7UmF7D1FN/ThlRcVMxwBG8QvWyFyMCsI/1EIuitHtNrJjqWK5dcxJC4492y+FOW46o2sdsPCvakazOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kHmyHCNLQ3IpaWusqGtA45cV2HbIeB3HMirXPIDdU74=;
- b=MuwHtFo1dXN055Oz8EQ3M+j6fy0PVAG9J0JZav0nVzBGAUSTVu4bT/LUjjojboavFpModaxf7+dHNLBzEuBPClNKt3eMs0naLYq57ze22pdsdwnVO2KsySIb72HoohijOWSyfTaQVUP7Td3XTwaMFJxBbwq/P7ajZDpGncGGTZ/q9/WQ+EG/uRtgRncJjSi4jCBJn/qQ8oOKhG2Z/oNbzunjhNQH/4PGe9mZ3/Fx9Ts9BDH94C9D68Both9jkiyNfc01yatkhTckFkKVqMKFxoF+reeP3UCIV0P5Jk8l7yTn8n5xVjILLKUCtYTFgGiAOyDRqbUQMJVuxX02R3Y6Zw==
+ bh=7tfdx6dGS/5Q1+ycHgaryilGRCpL638tP4TIpSXzD3o=;
+ b=Ncbnm18sOGXuqOSJ4/h38Vrxr0ir0yy/qEtq9tKJhXUvw5oh7bbm16J1mbTVGoPzsjLENZ++6ArIWkEHKtUYxT5QDrRzeXyqyQe8pP2itNFt8Y4GlTY0ybN2aNL8G5jvwvUDgjsV970VX0gK5Uh8yXgpTtWaX5ScKslQdo7QaX+HUTxMVqzkrBjXBFIQMlTDvijhQySMj0JU+9MmLG9vTRdCZYLCxeoPotha6WS+N/t2tBfUSFgxkInXYXgy3szjqYa/t7mQ18Sm1AhK4iuuKlOHaue+ffOZzhdQIgtBXVJrUQB2GilQOgLwhygdKKsfXxLdYYbAJxIwMRTYGyuSyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kHmyHCNLQ3IpaWusqGtA45cV2HbIeB3HMirXPIDdU74=;
- b=TKKB2ti1LES0pSco5wQ7vxx3A2i9uCmMTmgCd+AZQBrRwotSgiebu5LP1CuxQOMXdjkZm14EhCbc3iWZdXnLEK8b4+dP71DbgFrmUvdC51Bza521/GC6jlR+D4vr8znasmjXYYwThdl3+acIZsrWIlVmzz9bCPyQHy5bhxgRNgLi7jCxlkgL6/p6dO/M1HPfygD0I6Z+oMzFkpKO14jI83EtTmiJ86/ZLh7ll+nzfLUdogAjDQ+FQuRaNoleK+KoFU28zNUdzoTScoR9ecTVz4R7Vv5K2pBq3SRFkH1MjnLBX/Kn+D2si6iSZ+/2BCl65GBjlsZQxHZqmBiEcsYI3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
- by AM9PR04MB8682.eurprd04.prod.outlook.com (2603:10a6:20b:43d::9) with
+ bh=7tfdx6dGS/5Q1+ycHgaryilGRCpL638tP4TIpSXzD3o=;
+ b=oCEj8MilzlNElZjjHF6OXtQF8nFJCZeBIhaIehx3zYBZd86fAYhfi6WYiuqs5JGj3lwEtvoHtNt7yl3QhJs7JJgKD/v0iuJNHtY5TbWpzKxDO4mW8OybPEFbzxLICOV/ZVAMywhsZfJ4l7+ZQyC7Yrbg5yDtD/QAWt9jmGn0mVwl/YZL3fpp3ghqWCpyCDbCu2S9ncoJwGh8cA2/TA4kMePrKVY6g8UR+R/lJ033EhDYAUs+rysM3NWNr7wnOFGM7i9WBPGfKM2mOST8x1Nq737vQ94/TyDsqOa2K0QRi9qphSWS3Zb8QPZF4+kCDRnhEBacUDmHQfWY8FKlOkNPtg==
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
+ by VI2PR04MB10666.eurprd04.prod.outlook.com (2603:10a6:800:27f::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.16; Fri, 20 Dec
- 2024 02:11:50 +0000
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c%6]) with mapi id 15.20.8272.005; Fri, 20 Dec 2024
- 02:11:50 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: frank.li@nxp.com,
-	vkoul@kernel.org,
-	shengjiu.wang@nxp.com
-Cc: imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] dmaengine: fsl-edma: add runtime suspend/resume support
-Date: Fri, 20 Dec 2024 10:11:09 +0800
-Message-Id: <20241220021109.2102294-1-joy.zou@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0130.apcprd03.prod.outlook.com
- (2603:1096:4:91::34) To AS4PR04MB9386.eurprd04.prod.outlook.com
- (2603:10a6:20b:4e9::8)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.14; Fri, 20 Dec
+ 2024 02:45:09 +0000
+Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
+ ([fe80::4e37:f56b:8a3e:bff0%5]) with mapi id 15.20.8272.005; Fri, 20 Dec 2024
+ 02:45:09 +0000
+From: Carlos Song <carlos.song@nxp.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>, Andi Shyti
+	<andi.shyti@kernel.org>
+CC: Frank Li <frank.li@nxp.com>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Clark Wang <xiaoning.wang@nxp.com>, Ahmad
+ Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH v5] i2c: imx: support DMA defer probing
+Thread-Topic: [PATCH v5] i2c: imx: support DMA defer probing
+Thread-Index: AQHbUokvFkUV6RKhsU+/99LW49W+fQ==
+Date: Fri, 20 Dec 2024 02:45:09 +0000
+Message-ID:
+ <AM0PR0402MB3937C9A79C55BF4C279F8099E8072@AM0PR0402MB3937.eurprd04.prod.outlook.com>
+References: <20241218043541.143194-1-carlos.song@nxp.com>
+ <dhn3f2xpdpu757pizdhcksqiqo53szeh65gtmddfxfhotimh2z@dfxfpl3int53>
+ <Z2QQI2gJNLjI-fam@pengutronix.de>
+In-Reply-To: <Z2QQI2gJNLjI-fam@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR0402MB3937:EE_|VI2PR04MB10666:EE_
+x-ms-office365-filtering-correlation-id: e2af1676-c8d6-4b36-a7c9-08dd20a051de
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?7aueyRK7Q25ES9p3EIbzjkb0Hv5Vs+jddYswnQcDMRkiUVfCaM211Ql5RPwS?=
+ =?us-ascii?Q?Cto3zg6gk8KVVWj/xjd/bixuCKabS3F4hZKeYTRjJ56WsgitAt48Zkqny5rM?=
+ =?us-ascii?Q?HX6Tp4HHME5wMmlt4S6AtUyKNsXFY9zo2mW+g/kI4NY42BqNptrRqwOC/+fj?=
+ =?us-ascii?Q?8l3H7vC3SxXZNqLG0ctmzHye1f7zvlrpK8oCW8Pdevimpkq1lv/JlIxPY4kP?=
+ =?us-ascii?Q?9d3m340Af7eEtSYJcUNwtiJv0stFX/97zRNpr/Wp6weDMdH4jYiRNhK6qYAO?=
+ =?us-ascii?Q?7cMAtg8qMAm7vG2YCwG9WfsOKjqyeBp9yxS1I+cd5d5SDPNARQdY2zVP/fX+?=
+ =?us-ascii?Q?AWPbOqTKasPtTiCwSG+MbTwCdI6CPCJ/qv/JetGVnIhuFFejsc6yM9ByMD3D?=
+ =?us-ascii?Q?gp6TFX+M9b55sRPa4UL0UoW4RU6kmWXuz/KTcsPlt6slH6UN1eXMMAStKSJr?=
+ =?us-ascii?Q?O5l5IjgebhJYb8DVfOtKOIe/SBbMVw5HYqH2k8DH/XrdbKYAcbcn2PrtjaoA?=
+ =?us-ascii?Q?kCcPixVG1lIEcHS0ZvXtnmar+R4L9O+vae42A0ngAvd0/vwZJhH8KuOtFyBR?=
+ =?us-ascii?Q?OFe7FhvtCmVeZ9RD0SepZeZvGcDo7uRciVoIvaHWwSE7+BIgyIkmvViOJ8+n?=
+ =?us-ascii?Q?3+izMxtOkAa91O4/5i0lGuX+zBhbNCzIfktEWEmcYsX27G0VGadqMoHppibD?=
+ =?us-ascii?Q?+9JMtpbR6pZqb0JVIE4We4c90IQUMLG/Y5rnFowcZgBMuF9Mk6J11buWoLhi?=
+ =?us-ascii?Q?FjFFljhWMvzxF0cVcHJrAhsxnhxzea0r4YqQqkjfjZZh+EmKm/os1nfmr1so?=
+ =?us-ascii?Q?VuDzhY5GXNK/13EpNoINb8Es/U+cNE5AZ2a1leonSXy1SY4xSfxCp7TuEl/h?=
+ =?us-ascii?Q?T4L5GXBRzZF8hHsBfLDv1/gA6FIC7q4pihQSucWyACdNHhLIz1e/DZv9TJTt?=
+ =?us-ascii?Q?5RxdxidHxAuTWxPPmSLSxjP9rvxLQf41Kt5vQuUXP3Khkxy6lIWzuKDi/96p?=
+ =?us-ascii?Q?UL7h4RF+k1JKB312yf6Rx7MAwDkFQV6w09aXchUWenNnIH+bO4kKUZO6EyYP?=
+ =?us-ascii?Q?zHFURmxE0zhDNDX7J2Mqr8LBzedG9YyCSw1RYGAxl9DrrZ+XiNytlZAAyfR8?=
+ =?us-ascii?Q?jTwK3e2gLgSWRgBOVeu0w69BWC4xmfYd9edRAffhgcmucUHL8epnLe+LxkkB?=
+ =?us-ascii?Q?5GW/j1vnKu8XR0KMF5lh47olBbgN9p2Cwc2D2KAyYQFW4cKCZpMww6vDVuHU?=
+ =?us-ascii?Q?PonbHikOKB99dMLZfN2CvBqI/O3NiXqlfzcqZ+pQYDHI4ExnGT7fGzCGWJQk?=
+ =?us-ascii?Q?92+yqt2PS5jRThYhYzKqRTPGnXkEQH6w/JbDk9wm7v9VGoay6ZR/HQfGPK2a?=
+ =?us-ascii?Q?bM2eRqhvqyjgiJ3/HU1ijMuAQnL98X0Y08YDeds8MvJlC8VFDg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?AwYGiEy8VQT4vEFFHBg3HEHGUck0meeHU3hXR7C7zN+PpKLDaBYBbOjyIoop?=
+ =?us-ascii?Q?nqseu9PJEb5wosFrdCJokwsiQ7jDySulDI4uPsLerr61LSbPCJVJYLkmtkfI?=
+ =?us-ascii?Q?lFjk72MY/37kDl2pC0qpn0VSnSFBq4LtG30MD/sFsBZnYgqIWS+w9oQo6hul?=
+ =?us-ascii?Q?1BmAV1Z1f873Itc8cA51HzGUYpuLRBjNg3HjcHZxiWekfwNNTYOllAc1PcIO?=
+ =?us-ascii?Q?6zpVeOlQ8IfEYNShz5jRi9XKEywBZCa1D1DC3dGP7149/cIzSZHvd+f/D8wi?=
+ =?us-ascii?Q?4+D4C8o4J6aQIiSBbDfS5uoWl7O5HtXXIE/hDvQO3Ezo5yxhVOZJSgLqsUO2?=
+ =?us-ascii?Q?L6ZpMG2+vh/DJalfjlZ1dnAPQPF+4kFSOGrdnMa3DvqOhUgFSPAEd/n09WbC?=
+ =?us-ascii?Q?qWHEi78xEGTiYpUKRfW+sOxkP3VaDx3meHaaeJMiwPjVCBf+jc9HY/Kay+05?=
+ =?us-ascii?Q?4Z2XdZrMocDAdlobSG/a7O4WEIsTIMCQ7FAHqUlON88uaDONBUDaPwcMPrJT?=
+ =?us-ascii?Q?pMwfou+UTiFSfUY77iMpYe96WrodChC4BAGooo6Lhv/f+gqI8PfHHNGh70oB?=
+ =?us-ascii?Q?v03o/CUpZOMu8xGz6QW44/4QJewRjkbg1pdc9Drjr0AIFWGdTStIxP2oY7RR?=
+ =?us-ascii?Q?Gzs3R0sBv9QL1BNwQXyPWrowwveC4VsWcV84zDWYJSTPsOoseOg3qjCLCsLU?=
+ =?us-ascii?Q?Xd3aJn75hBpaPpR2tVGmCJrZXK77y6olB5NNdZx69ucB1/O8sfO8eadQc/JP?=
+ =?us-ascii?Q?KM3rKKhrAuJyy5QQlWhdbA8E+PhmujK6E1HRbF3z7q0dNJjdkOjM9XlhyL/T?=
+ =?us-ascii?Q?qXMBFmaz3bqd7uLI2LhCpagZIsZqw36BcD/yRTDHX9/taaUv6SRFIX21UljS?=
+ =?us-ascii?Q?wNRASnzitU8cjL4HFhEMxWPvoPl0qMfauqKGCn0A05qg9chjLpGVjpdwc8cq?=
+ =?us-ascii?Q?QRwgKMDYTxwPlRyhB2gYVBK+Ujz40dmBnzkG+OO6mLjms++pXiR3Y0a4KXjI?=
+ =?us-ascii?Q?4jiyu55gPKMSuPUtQp2BNI1qB223etAilnp0up/6FHFl7zQsfOUU63vfLpRH?=
+ =?us-ascii?Q?rEgxg21odVyrCfJknkhY1jLzU0sF3NhP8XpHTOKy8hl2EFKTnDbVGuizb0fB?=
+ =?us-ascii?Q?ewo+d4ocZ5ETIYPxdfiWnAgJMoYivGVncNnLRqhFJLbblnNXORZCKxypMgtF?=
+ =?us-ascii?Q?dscWRmxq93AZdU7zWwEXtl3B+cVumhqXa4BoMQgRqrA3VKkVOW5Y44JzSZcZ?=
+ =?us-ascii?Q?DWTfxmJ99s2g0dNnrQVd3baBvtOjWXZhwFCVv5Yfn91B4E6Ga3UOvv73hKiO?=
+ =?us-ascii?Q?2xBwzmwRSslaYhQ23Xa9Wcu25jzGNbkRO2GqVN9nYNAX5aZml4Zp89pJJNHr?=
+ =?us-ascii?Q?lXYO1EzrZa9+/DlmVRG1vPjOa8hydRiXNhiZ4nJDMXU+gxAFDN1+VLzdNh8H?=
+ =?us-ascii?Q?jiXBuv7x1KYZFgSQvEThBaLmo0ANOh/aXorBlP6xaccrKD677Lkl2bvWgnVs?=
+ =?us-ascii?Q?kDSdLGfO+ffoXS/mjFcGAzRadoFxkdYM0Wz+vNyvYKaAEyD4l3PkMQeRmrx7?=
+ =?us-ascii?Q?pgTuiosHTHtxDwso/Nk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|AM9PR04MB8682:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdd83313-8787-4912-b8b2-08dd209baa14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?d+Ru3ALe4GBz0UW5yAvhTRIEMpB6WzVXIt+F9oK5qOhPZx74H0GptT72ZmvX?=
- =?us-ascii?Q?oIgelfOxI+WrM9G+aanTkT9jIEF5B4EAvZ6TjOqqa/bZ6kcBAC0UaLe88Zjm?=
- =?us-ascii?Q?8tUTehmNLk5S1GOslmVskVzkos2Na3CmyJxy8ljFzVMl99apLggkCF4okJGq?=
- =?us-ascii?Q?xgkASI6MqkrDuu4EOqc26UCgtjNGPEMi5UPEpnN+fYzZxm0NZj3MIe0P7qIL?=
- =?us-ascii?Q?Me+jEgzBd/nrWzlg2W7JS0hgitysNg8OILm4QICAXxKp2bwpUfMJx3eP3rTj?=
- =?us-ascii?Q?K7OUfxHNrYlsu6Eaiyaht6ua8GM75BsVeCcQNHR5ielWuowLfdhsKVxxtfR7?=
- =?us-ascii?Q?TDuuOv7Ei40Dl11tQSMLDbfdwcDisRsyDK28tuVGx7Fr+9NEA/zHA4JjKW/u?=
- =?us-ascii?Q?srcGgIDUyRx0SZ8DwSYzv7xk0egOXbA06Rkpcg8h81u16LPTLSsU3tKu1f2h?=
- =?us-ascii?Q?FwCDxQ8xuJYX4jPFr+gbzSIHlmom75zSoNDE7skIWWD/qE4BP7DnUXM5yOB8?=
- =?us-ascii?Q?WmHPXNRf96SGm3uJ6x5l88PW/dHCItFmaT60uKE4eK8PLJwBcBdSs0l7vOAC?=
- =?us-ascii?Q?CmD4rMZ47Zwl2P+wGkniJA/ONAxgl4WnUCnMc/BJAWK46hj1hmvf/WJfwj8E?=
- =?us-ascii?Q?kvSU1V4mmQECXmnsr2Kr802L+QjKQRCrhvyshv4WN7dtWaLqLqJujWs8n+bQ?=
- =?us-ascii?Q?TBPq3USl7iDYYeaFpMG6bBqL+5H+/tMYEv5TaTkYWvhuBR4rAsMjmT9P5lJ3?=
- =?us-ascii?Q?l9+gHnwgcfEFjeyMr2i1T5LYnN3VF5KDRanTmimR3yHMYmmCZYB853rBRdQ8?=
- =?us-ascii?Q?cUwKqY9AhpLun8cnxpeemCCA7XECdRmP/OYHdtIfZT5hb54i3x6fiz4vNH0I?=
- =?us-ascii?Q?DkmeyVDXDI/23qsjobOKNc93Hq3FrprLvG9Bg74MTQ4bpvUtOQ7WQ5+HZyuk?=
- =?us-ascii?Q?MydbmtjISwGtXSG08gDYf5f2miFxTd5C4OZrSiFwC16YcJkNOz9twCXNjlM1?=
- =?us-ascii?Q?UcLUUN9RsZA8888oeaiMQJNlQhWyrBQM4qdx5ziMvUZLAWyMxXs6YbXORyNu?=
- =?us-ascii?Q?5zWusLsbG+2bmbvc55jewjhB3ciittleMbTr4lDOu780a3c0LyuR5ikENBo5?=
- =?us-ascii?Q?gp55jYtGfFipYNZzotov7PLsSO2W8eWlgR/vourYmhBOagovqKpKClSuYGut?=
- =?us-ascii?Q?L5Sc2m6O0LFQ2pGt0G7ecPf+OPLB8pAKpsPwK/k6XvZmwjJj9TvhDM7Q5XYD?=
- =?us-ascii?Q?6rjb7z3ODJqo90WkiM6sbYjAb0qyehmTez2JCTN/fPKuX2XGzOaYdzAn/Ckq?=
- =?us-ascii?Q?AedVFHgDzkAIj1w4MP4xq9DPhcS/EM7dbGM0FwPCHGo2VMIH9lZvss1yE3OI?=
- =?us-ascii?Q?oqIXgOG5iJGs7VhjwwQ+M5J64Dmz0on7RzB0NfmaukVsIlE2DRIltczmSE0f?=
- =?us-ascii?Q?KpVK+dJQJEX9htJdgGUmWr0+cbPC4vOF?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?w9TVhTmw36ApPqoRD20qM/8NNBm4Y5X2uTmicUXCqVb6Ta61j/j1bjaFJ1Ga?=
- =?us-ascii?Q?SD/pEwm8/hAH4AE6UB+nOB+gp1tKCg6KxBk1UiajtKgUteFT/qFLZGx9/smW?=
- =?us-ascii?Q?nLyuHDtsFkGags4JL6yWKBUXu/5hg3fb20RHAeGzNtf8alVwQOeMA7M5SPF1?=
- =?us-ascii?Q?/yIwfSW1hFo+a3e8+BkVcqSukKXLGIYgKJ40iAGc5rg084BaZ28MJTmmipPN?=
- =?us-ascii?Q?2iAzJx7Y+6XW3eIbUE5US9bc9OTqfQX5aOg3WC0OYrFQmqDR+f2h5noJw9yo?=
- =?us-ascii?Q?3exT65ZD+DljXR1FaJM5DaISpFCC9xDHpllgoMITl3Z+fVo8t8hM++bQJM8U?=
- =?us-ascii?Q?tSOSIkaZrjkIfhrv8n3DUa7GFEtAYwVcirGOeYhmKvrxJTjwqKiAHkcHSmPC?=
- =?us-ascii?Q?OpaW28ee7GRWWJ5cdD7q8cQuEoSVUAq3fdgd/ppyUMBLx4MPFNmJTb43oBQg?=
- =?us-ascii?Q?+7fDqQLixbrQgAN2PTeqQDeOiZcfSQ2m4LkJAtLBDWJDdxDfc3pRWc97wCsX?=
- =?us-ascii?Q?uvWY9FPIa1LgYELAtt0yrqgpKIsP6xn3/BKbVIlfy5m4/wA+fJv44bSW4kgB?=
- =?us-ascii?Q?Vw7FBm15L18Qxvj1mqMZ2/xDQyL7Ur4Fdvc3tVaBrIJG57OBtzFmciSvkxPC?=
- =?us-ascii?Q?q00485Amk467MRRSwztY7lLYVsqTHM1cImzwyQENM5ii/pIvfDPt8Nr36wye?=
- =?us-ascii?Q?w0Y3WVmwFZB4myMtLwAUHhdQyHtlYoohVEi3fy7HdUDQiQM5sHb+jIeyrTem?=
- =?us-ascii?Q?81esVHY9895xHZYejaB7H6lpPaVOXcWR2FIlYQ36N7Xf9BYzGK8wQtxqpw7l?=
- =?us-ascii?Q?eDJH+bSd3iUfLcDS/ivP0WvXI083vn/LtVa1DdkSsG+GvcfOLKJ7l9mzlWkW?=
- =?us-ascii?Q?hCrCJcQM3LkYmeiX3ifaOZqKECDfKYM6IYVcgQGLoTHf9hXZeTOf/m0Z/bOq?=
- =?us-ascii?Q?QA/paU7QwRJ8v0vhZpOOFr4FSXBQ8+qA/VLU2u32S04vvsXw0l8Gh2ehDz/N?=
- =?us-ascii?Q?9Iro/cGwkighpmV8PM8cYKn9aVBCbhUD30GxGqApZ7oEGBNDqXXjfAcnrKEH?=
- =?us-ascii?Q?RgMBoYxZW18+h5MP0ErJ2ZKxP5lDhUZpVZI9Y4RwONRS/owggOQ9Y3m4xt+n?=
- =?us-ascii?Q?pcVk5G869gzuwlfrzC+DEuAyOS0DtpmbUKoRa7r2VjQSpACp0RQImmx9BV/+?=
- =?us-ascii?Q?wyOwLBW7ZfmMnCJTBo53Vauj9qE21YREz3bLTDFyd9ZihfADtDLrYMO1QGas?=
- =?us-ascii?Q?rT1w9xZZztzFTgf+jiupv2E/qFv2tTpE+FC+VVQ8zkB47SrJF0jg3KHDbMVW?=
- =?us-ascii?Q?eQrxBWNEV6F+2AgAgW2PUOr/uD4odN+LUUCXYWPtoX0AFn1OhNn7aKOLA2pS?=
- =?us-ascii?Q?ApGk2XztFDmQDEIVZi9UsXp8GBvl/VFZaxrDKoSeqUDq0m9cd3nHc7Q3oyEv?=
- =?us-ascii?Q?qC7/qv/xat0Ahjv96rlRxDDa2jKdRkpI3TUuDp/mo+qH6+Xj1Eby9woc7hce?=
- =?us-ascii?Q?ibpqLDK3nzcPaU7/isuifLzPNPMWbBii274BnH60gkO+vdzEkotQvGVfZuxW?=
- =?us-ascii?Q?H0dW64yOtuqLXIW3iaeHpi9GcBtpJjwH9U+jmMTy?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdd83313-8787-4912-b8b2-08dd209baa14
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2024 02:11:50.4275
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2af1676-c8d6-4b36-a7c9-08dd20a051de
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2024 02:45:09.6663
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y0bvMfjUnCJEKJCGiD0vAmO5X1h6zSpUw/pzfASdk381KnwIthovXwU0bnvCOZ4Q
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8682
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3FMJZQrjoVBFH3CN2yWlUIIlegmhMtQ2oNRuI1AZWpOfLAN3AED8QOWRHWdzCmTQb1McVylyi4TkKb8n+SEcMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10666
 
-Introduce runtime suspend and resume support for FSL eDMA. Enable
-per-channel power domain management to facilitate runtime suspend and
-resume operations.
 
-Implement runtime suspend and resume functions for the eDMA engine and
-individual channels.
 
-Link per-channel power domain device to eDMA per-channel device instead of
-eDMA engine device. So Power Manage framework manage power state of linked
-domain device when per-channel device request runtime resume/suspend.
+> -----Original Message-----
+> From: Oleksij Rempel <o.rempel@pengutronix.de>
+> Sent: Thursday, December 19, 2024 8:23 PM
+> To: Andi Shyti <andi.shyti@kernel.org>
+> Cc: Carlos Song <carlos.song@nxp.com>; Frank Li <frank.li@nxp.com>;
+> kernel@pengutronix.de; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> festevam@gmail.com; linux-i2c@vger.kernel.org; imx@lists.linux.dev;
+> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; Clark=
+ Wang
+> <xiaoning.wang@nxp.com>; Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Subject: [EXT] Re: [PATCH v5] i2c: imx: support DMA defer probing
+>
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report =
+this
+> email' button
+>
+>
+> On Thu, Dec 19, 2024 at 01:02:29PM +0100, Andi Shyti wrote:
+> > Hi Carlos,
+> >
+> > > +   /*
+> > > +    * Init DMA config if supported, -ENODEV means DMA not enabled at
+> > > +    * this platform, that is not a real error, so just remind "only
+> > > +    * PIO mode is used". If DMA is enabled, but meet error when requ=
+est
+> > > +    * DMA channel, error should be showed in probe error log. PIO mo=
+de
+> > > +    * should be available regardless of DMA.
+> > > +    */
+> > > +   ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
+> > > +   if (ret) {
+> > > +           if (ret =3D=3D -EPROBE_DEFER)
+> > > +                   goto clk_notifier_unregister;
+> > > +           else if (ret =3D=3D -ENODEV)
+> > > +                   dev_dbg(&pdev->dev, "Only use PIO mode\n");
+> > > +           else
+> > > +                   dev_err_probe(&pdev->dev, ret, "Failed to setup
+> > > + DMA, only use PIO mode\n");
+> >
+> > Just for understanding, should we quit in this last case, as well?
+> >
+> > Before we were ignoring ENODEV and EPROBE_DEFER, but now you are
+> > making it clear that other failures like ENOMEM might happen.
+>
+> Good point, dev_err_probe() would not print an error in case of EPROBE_DE=
+FER,
+> but in this case we should only print error and continue with PIO.
+>
+Hi,
 
-Trigger the eDMA engine's runtime suspend when all channels are suspended,
-disabling all common clocks through the runtime PM framework.
+Thank you all very much! As I comment at previous mail:
+DMA mode should be optional for i2c-imx, because i2c-imx can accept DMA mod=
+e not enabled, because it still can work in CPU mode.[1]
+[1]https://lore.kernel.org/imx/AM0PR0402MB39374E34FD6133B5E3D414D7E82F2@AM0=
+PR0402MB3937.eurprd04.prod.outlook.com/
 
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/dma/fsl-edma-common.c |  15 ++---
- drivers/dma/fsl-edma-main.c   | 115 ++++++++++++++++++++++++++++++----
- 2 files changed, 110 insertions(+), 20 deletions(-)
+Also we don't want to annoy current user without DMA[2]
+[2] https://lore.kernel.org/imx/20241127-analytic-azure-hamster-727fd8-mkl@=
+pengutronix.de/
 
-diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
-index b7f15ab96855..fcdb53b21f38 100644
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -243,9 +243,6 @@ int fsl_edma_terminate_all(struct dma_chan *chan)
- 	spin_unlock_irqrestore(&fsl_chan->vchan.lock, flags);
- 	vchan_dma_desc_free_list(&fsl_chan->vchan, &head);
- 
--	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_PD)
--		pm_runtime_allow(fsl_chan->pd_dev);
--
- 	return 0;
- }
- 
-@@ -805,8 +802,12 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
- 	struct fsl_edma_chan *fsl_chan = to_fsl_edma_chan(chan);
- 	int ret;
- 
--	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
--		clk_prepare_enable(fsl_chan->clk);
-+	ret = pm_runtime_get_sync(&fsl_chan->vchan.chan.dev->device);
-+	if (ret < 0) {
-+		dev_err(&fsl_chan->vchan.chan.dev->device, "pm_runtime_get_sync() failed\n");
-+		pm_runtime_disable(&fsl_chan->vchan.chan.dev->device);
-+		return ret;
-+	}
- 
- 	fsl_chan->tcd_pool = dma_pool_create("tcd_pool", chan->device->dev,
- 				fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_TCD64 ?
-@@ -819,6 +820,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
- 
- 		if (ret) {
- 			dma_pool_destroy(fsl_chan->tcd_pool);
-+			pm_runtime_put_sync_suspend(&fsl_chan->vchan.chan.dev->device);
- 			return ret;
- 		}
- 	}
-@@ -851,8 +853,7 @@ void fsl_edma_free_chan_resources(struct dma_chan *chan)
- 	fsl_chan->is_sw = false;
- 	fsl_chan->srcid = 0;
- 	fsl_chan->is_remote = false;
--	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
--		clk_disable_unprepare(fsl_chan->clk);
-+	pm_runtime_put_sync_suspend(&fsl_chan->vchan.chan.dev->device);
- }
- 
- void fsl_edma_cleanup_vchan(struct dma_device *dmadev)
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 60de1003193a..75d6c8984c8e 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -420,7 +420,6 @@ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
- static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
- {
- 	struct fsl_edma_chan *fsl_chan;
--	struct device_link *link;
- 	struct device *pd_chan;
- 	struct device *dev;
- 	int i;
-@@ -439,24 +438,39 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
- 			return -EINVAL;
- 		}
- 
--		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
--					     DL_FLAG_PM_RUNTIME |
--					     DL_FLAG_RPM_ACTIVE);
--		if (!link) {
--			dev_err(dev, "Failed to add device_link to %d\n", i);
--			return -EINVAL;
--		}
--
- 		fsl_chan->pd_dev = pd_chan;
--
--		pm_runtime_use_autosuspend(fsl_chan->pd_dev);
--		pm_runtime_set_autosuspend_delay(fsl_chan->pd_dev, 200);
--		pm_runtime_set_active(fsl_chan->pd_dev);
- 	}
- 
- 	return 0;
- }
- 
-+/* Per channel dma power domain */
-+static int fsl_edma_chan_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_edma_chan *fsl_chan = dev_get_drvdata(dev);
-+	int ret = 0;
-+
-+	clk_disable_unprepare(fsl_chan->clk);
-+
-+	return ret;
-+}
-+
-+static int fsl_edma_chan_runtime_resume(struct device *dev)
-+{
-+	struct fsl_edma_chan *fsl_chan = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = clk_prepare_enable(fsl_chan->clk);
-+
-+	return ret;
-+}
-+
-+static struct dev_pm_domain fsl_edma_chan_pm_domain = {
-+	.ops = {
-+		RUNTIME_PM_OPS(fsl_edma_chan_runtime_suspend, fsl_edma_chan_runtime_resume, NULL)
-+	}
-+};
-+
- static int fsl_edma_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -583,10 +597,15 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 		fsl_chan->pdev = pdev;
- 		vchan_init(&fsl_chan->vchan, &fsl_edma->dma_dev);
- 
-+		if (fsl_chan->pd_dev)
-+			pm_runtime_get_sync(fsl_chan->pd_dev);
-+
- 		edma_write_tcdreg(fsl_chan, cpu_to_le32(0), csr);
- 		fsl_edma_chan_mux(fsl_chan, 0, false);
- 		if (fsl_chan->edma->drvdata->flags & FSL_EDMA_DRV_HAS_CHCLK)
- 			clk_disable_unprepare(fsl_chan->clk);
-+		if (fsl_chan->pd_dev)
-+			pm_runtime_put_sync_suspend(fsl_chan->pd_dev);
- 	}
- 
- 	ret = fsl_edma->drvdata->setup_irq(pdev, fsl_edma);
-@@ -645,6 +664,34 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	pm_runtime_enable(&pdev->dev);
-+
-+	for (i = 0; i < fsl_edma->n_chans; i++) {
-+		struct fsl_edma_chan *fsl_chan = &fsl_edma->chans[i];
-+		struct device *chan_dev;
-+
-+		if (fsl_edma->chan_masked & BIT(i))
-+			continue;
-+
-+		chan_dev = &fsl_chan->vchan.chan.dev->device;
-+		dev_set_drvdata(chan_dev, fsl_chan);
-+		dev_pm_domain_set(chan_dev, &fsl_edma_chan_pm_domain);
-+
-+		if (fsl_chan->pd_dev) {
-+			struct device_link *link;
-+
-+			link = device_link_add(chan_dev, fsl_chan->pd_dev, DL_FLAG_STATELESS |
-+									   DL_FLAG_PM_RUNTIME |
-+									   DL_FLAG_RPM_ACTIVE);
-+			if (!link)
-+				return dev_err_probe(&pdev->dev, -EINVAL,
-+						     "Failed to add device_link to %d\n", i);
-+			pm_runtime_put_sync_suspend(fsl_chan->pd_dev);
-+		}
-+
-+		pm_runtime_enable(chan_dev);
-+	}
-+
- 	ret = of_dma_controller_register(np,
- 			drvdata->flags & FSL_EDMA_DRV_SPLIT_REG ? fsl_edma3_xlate : fsl_edma_xlate,
- 			fsl_edma);
-@@ -685,6 +732,13 @@ static int fsl_edma_suspend_late(struct device *dev)
- 		fsl_chan = &fsl_edma->chans[i];
- 		if (fsl_edma->chan_masked & BIT(i))
- 			continue;
-+
-+		if (pm_runtime_status_suspended(&fsl_chan->vchan.chan.dev->device) ||
-+		    (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_PD) &&
-+		     (fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) &&
-+		     !fsl_chan->srcid))
-+			continue;
-+
- 		spin_lock_irqsave(&fsl_chan->vchan.lock, flags);
- 		/* Make sure chan is idle or will force disable. */
- 		if (unlikely(fsl_chan->status == DMA_IN_PROGRESS)) {
-@@ -711,6 +765,13 @@ static int fsl_edma_resume_early(struct device *dev)
- 		fsl_chan = &fsl_edma->chans[i];
- 		if (fsl_edma->chan_masked & BIT(i))
- 			continue;
-+
-+		if (pm_runtime_status_suspended(&fsl_chan->vchan.chan.dev->device) ||
-+		    (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_HAS_PD) &&
-+		     (fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG) &&
-+		     !fsl_chan->srcid))
-+			continue;
-+
- 		fsl_chan->pm_state = RUNNING;
- 		edma_write_tcdreg(fsl_chan, 0, csr);
- 		if (fsl_chan->srcid != 0)
-@@ -723,6 +784,33 @@ static int fsl_edma_resume_early(struct device *dev)
- 	return 0;
- }
- 
-+/* edma engine runtime system/resume */
-+static int fsl_edma_runtime_suspend(struct device *dev)
-+{
-+	struct fsl_edma_engine *fsl_edma = dev_get_drvdata(dev);
-+	int i;
-+
-+	for (i = 0; i < fsl_edma->drvdata->dmamuxs; i++)
-+		clk_disable_unprepare(fsl_edma->muxclk[i]);
-+
-+	clk_disable_unprepare(fsl_edma->dmaclk);
-+
-+	return 0;
-+}
-+
-+static int fsl_edma_runtime_resume(struct device *dev)
-+{
-+	struct fsl_edma_engine *fsl_edma = dev_get_drvdata(dev);
-+	int i;
-+
-+	for (i = 0; i < fsl_edma->drvdata->dmamuxs; i++)
-+		clk_prepare_enable(fsl_edma->muxclk[i]);
-+
-+	clk_prepare_enable(fsl_edma->dmaclk);
-+
-+	return 0;
-+}
-+
- /*
-  * eDMA provides the service to others, so it should be suspend late
-  * and resume early. When eDMA suspend, all of the clients should stop
-@@ -731,6 +819,7 @@ static int fsl_edma_resume_early(struct device *dev)
- static const struct dev_pm_ops fsl_edma_pm_ops = {
- 	.suspend_late   = fsl_edma_suspend_late,
- 	.resume_early   = fsl_edma_resume_early,
-+	 RUNTIME_PM_OPS(fsl_edma_runtime_suspend, fsl_edma_runtime_resume, NULL)
- };
- 
- static struct platform_driver fsl_edma_driver = {
--- 
-2.37.1
+So we make this logic. Anyway we let the I2C controller registered whether =
+DMA is available or not(except defer probe).
+Ignoring ENODEV and EPROBE_DEFER makes it looks like nothing happened if DM=
+A is defer probed or not enabled(This is an expected).
+However we still need i2c DMA status is known when meet an unexpected error=
+, so we use dev_err_probe() to print error.
+
+> --
+> Pengutronix e.K.                           |
+> |
+> Steuerwalder Str. 21                       |
+> http://www.pen/
+> gutronix.de%2F&data=3D05%7C02%7Ccarlos.song%40nxp.com%7Cf0f2b14d05e4
+> 4bb9581408dd2027ef82%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%
+> 7C638702078063818207%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiO
+> nRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%
+> 3D%3D%7C0%7C%7C%7C&sdata=3Dq355QWfiCHuoREtM4pkuovpn%2F6MeXynD
+> hrpSEpWeCXk%3D&reserved=3D0  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
+> |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:
+> +49-5121-206917-5555 |
 
