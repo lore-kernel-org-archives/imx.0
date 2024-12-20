@@ -1,119 +1,81 @@
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F1D5680
-	for <imx@lists.linux.dev>; Fri, 20 Dec 2024 01:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0A1C6BE;
+	Fri, 20 Dec 2024 02:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734659998; cv=none; b=l+3WzjuBKzWOzUFLPLZ1zKagveMRROX2UH4jEDXn1l03zgG7OBz4EsqAYMC5udF4MihKfQxsuG3uaeq7RYUshT1cNtWWLk0vW5BLmYmSQNXFGr/3FJfXQXAmb3g5SwVYVTLjR0QbiuBF0Rqi/4sfKrtpni968cTu1WlpzTFTZMs=
+	t=1734660616; cv=none; b=oyfjJn+cTBgDQbfmryx/MEj9e07ascQcn6skTUyb+gj/PI0galBRNu2ZnAb/91aAKSANZkREVcy4SDLRvukQ2OZlHRo1jJnSzmjRfq+CGJCvR3xy8e7YwmueUKibqu1qGUMCgMgWAUoaMfBuOpHvto2HbWHxi0Ae1tVr4xdjlWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734659998; c=relaxed/simple;
-	bh=txGIzZDZ7emAst1jDCWk9iBkRM9m9iTw9c4HuFUPL+s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pVFNVwcaWiMYlwD6WaEd1Uf/Ocs+UxL+KQqEoclApPLQT2tFjYHbsq6xO0Nq+6fyjNm3u3ne+Qu4sFsfSYHc91zSpPU9PflhExURla8dEaqOIhMADtEmLmi3gxbhSpI2CFL8DaB2HXfWDHV+EZphsPjkyHmv+zeHi0RNz7pS/3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DSpQTVA6; arc=none smtp.client-ip=209.85.166.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734660616; c=relaxed/simple;
+	bh=iPjAPw6aqXtrteovxz27aCq3oYNC0QAbdY+/E99V0W4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=WKXyNxFWkeX2KNDdnQTeppmcATcm7497BMO0nswodqsEpx/+zNNFczArj8056jiDAlQohQuCNMbwvm6DhDPed7RgOcHaSTvBw+z+bMnjyU45tGy2DDuETknD4C83x0XT62GSvjnNo+mQM7QgV02yR7POq4epkfWe/jBHmMufxnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2bM2bon; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSpQTVA6"
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-844ce6d0716so111022339f.1
-        for <imx@lists.linux.dev>; Thu, 19 Dec 2024 17:59:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734659995; x=1735264795; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w68OVCNKDRUYLbgJOcwMFHEvgy4OB2hhFbrartVXJTg=;
-        b=DSpQTVA62cbekpSiqOBrcmOQrQ04/yHI8l5KvN/AUH9gTKGi2O2Yu4pHI9aNBPbG/b
-         10u7hcK3RQXnH7Y9TWyz5iMhBwi5UR87B6rxyf40hyv+1J/Dodx3Eib8oAYiFTpTvUze
-         4yQZxSirQ21evNhh7UYHc14f/p5kSRZ8/3tQNovUhFEfUMmrF0F6ypyIQCyS6FtKBRln
-         rKVYH5XquZFzHsKYV31FHIdJNjAcwSttOTDeaJrWqtw03tzf1pnjHzl5AU8PqxVdt+hO
-         DA/WODWvLBVyOLoRz3BJ54j95E2kDCXe9RFhJ3aXmJNsskZCu1N4D6qkAEe648hqfFzO
-         lnRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734659995; x=1735264795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w68OVCNKDRUYLbgJOcwMFHEvgy4OB2hhFbrartVXJTg=;
-        b=WWrP2a4LsdIik1Tf2DAxsk4RTqDI/48X/kOncCZXiUvYrmEassrcQvIlDzeH7epEFg
-         XDF9VY7TbHmHe9BRRjko13gANl4+iSG4lSc2fdHlSEwtjP5cRpbysalBEWiibnSiqj9B
-         o3VX+uIT0rBmFJpCe0SeloDrr5jWudoViqLNEv+Fr/+VEVPfu9vHqJc+mFaac+H8LKDg
-         A2nKrEf2ifopMQ9N0B7DT9g4P/WZPo3ktFjaFFTv/vN4/0FMFgaoDvaM1E0PpGKMtqYq
-         371CwPMPqymWEWNYjsnZ1E2wuYI/g8cb72H4YuydvkNlY78dPT4wmZLShSQTNIxsOQXj
-         jKhw==
-X-Forwarded-Encrypted: i=1; AJvYcCVtjunPALOdFOnv7p1O2dvU6fmGLe+SkR99ili9soBRwDQvuc1+ckVwPTonZvw5qDsQ6dI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwOm0zqcX/6bpBk/2Oy1ZwdNsnTEhzv3IYhHxt7N5SS2aQG0PFO
-	7Z1BAMnIUj2drfgK7loP++0uSIjvNMV4zhTuhEQXHOSmCtkRfcBpKeX33O8Xdd3oXe75Dw9Fbmv
-	XknJYDlVKt4WmjKW/8fymZyylNWU=
-X-Gm-Gg: ASbGncu7QFCWZKKQj71YsPkeEOwTQgL+YLk0s/bYLp5qDGTfDyiC0CEEsWKRoX8yDx7
-	e/++FPgsCdIf0+aaAx8dMoYGPEKFBqZLsBd677A==
-X-Google-Smtp-Source: AGHT+IGGWwEgfDagGWdRJ2sz9qd4EJDpuuMO//PocPQVWC4Le5q0Eh1GxoTcg1NZhKqs+MDGDTNUymTHBZPUut5L6BE=
-X-Received: by 2002:a05:6e02:2687:b0:3a7:e83c:2d10 with SMTP id
- e9e14a558f8ab-3c2d5b37857mr16006015ab.24.1734659995420; Thu, 19 Dec 2024
- 17:59:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2bM2bon"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EFEC4CECE;
+	Fri, 20 Dec 2024 02:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734660616;
+	bh=iPjAPw6aqXtrteovxz27aCq3oYNC0QAbdY+/E99V0W4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=V2bM2bonxgbmzsmBxFAoXqBOMZK39O2I8M+6vQy6AWm6sqMKZm90dOs5yxMYd8OO/
+	 8Juneouyt5MKO3CweZ7KIPhyl+ibYVHhOKzRaB7THKPLMIhA6BmviLvn9uS69rlHGC
+	 tMLh1aiCjxt9Spzqtp9wFbx/ZXzoFZUHJhV88TnEpNcgY4IHE7FEesnSSFOPBRumNU
+	 okfV9mTKnYzy6Wl6SyzpK6raYo+z7jTs/oRSiZQ/TwzPfcQ3Hy5SdI9Xdu0VVo4JSl
+	 OYUAjjFlg6TkLG5p0RCjXGcVYf89n4wBGaaESECgxTZdbF9prVtkwndq+X1+5k9k56
+	 vr3QWf9+WmK0w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ED6E53806656;
+	Fri, 20 Dec 2024 02:10:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241219105447.889CB11FE@mail.steuer-voss.de>
-In-Reply-To: <20241219105447.889CB11FE@mail.steuer-voss.de>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 20 Dec 2024 09:59:44 +0800
-Message-ID: <CAA+D8AMO+ia5ztD8Z97TOn-NBbXKHfd+T65zBc6vJuNkeVdVhQ@mail.gmail.com>
-Subject: Re: [PATCH] clk: clk-imx8mp-audiomix: fix function signature
-To: Nikolaus Voss <nv@vosn.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Marco Felsch <m.felsch@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 net] net: phy: micrel: Dynamically control external clock
+ of KSZ PHY
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173466063368.2449610.9075254555093719369.git-patchwork-notify@kernel.org>
+Date: Fri, 20 Dec 2024 02:10:33 +0000
+References: <20241217063500.1424011-1-wei.fang@nxp.com>
+In-Reply-To: <20241217063500.1424011-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ florian.fainelli@broadcom.com, heiko.stuebner@cherry.de, frank.li@nxp.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-On Thu, Dec 19, 2024 at 6:55=E2=80=AFPM Nikolaus Voss <nv@vosn.de> wrote:
->
-> clk_imx8mp_audiomix_reset_controller_register() in the
-> "if !CONFIG_RESET_CONTROLLER" branch had the first
-> argument missing. It is an empty function for this branch
-> so it wasn't immediately apparent.
->
-> Fixes: 6f0e817175c5 ("clk: imx: clk-audiomix: Add reset controller")
-> Cc: <stable@vger.kernel.org> # 6.12.x
-> Signed-off-by: Nikolaus Voss <nv@vosn.de>
+Hello:
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Best regards
-Shengjiu Wang
-> ---
->  drivers/clk/imx/clk-imx8mp-audiomix.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-=
-imx8mp-audiomix.c
-> index b2cb157703c57..c409fc7e06186 100644
-> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-> @@ -278,7 +278,8 @@ static int clk_imx8mp_audiomix_reset_controller_regis=
-ter(struct device *dev,
->
->  #else /* !CONFIG_RESET_CONTROLLER */
->
-> -static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8=
-mp_audiomix_priv *priv)
-> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *=
-dev,
-> +                                                        struct clk_imx8m=
-p_audiomix_priv *priv)
->  {
->         return 0;
->  }
-> --
-> 2.43.0
->
->
+On Tue, 17 Dec 2024 14:35:00 +0800 you wrote:
+> On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
+> clock sources for two external KSZ PHYs. However, after closing the two
+> FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
+> not 0. The root cause is that since the commit 985329462723 ("net: phy:
+> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+> external clock of KSZ PHY has been enabled when the PHY driver probes,
+> and it can only be disabled when the PHY driver is removed. This causes
+> the clock to continue working when the system is suspended or the network
+> port is down.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v5,net] net: phy: micrel: Dynamically control external clock of KSZ PHY
+    https://git.kernel.org/netdev/net/c/25c6a5ab151f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
