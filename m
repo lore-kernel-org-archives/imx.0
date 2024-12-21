@@ -1,217 +1,194 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925C679FE
-	for <imx@lists.linux.dev>; Sat, 21 Dec 2024 01:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734746189; cv=fail; b=ZmfMUJ+h7lef9nhT45VylNSRsJlYBE4u3BltugmxtU0xp+qSKXYz9g0MrYCdlNAosszAh2lSZjN/qs380NBXdcfy2Gj8jY1a1D1eVLZjNyoqX5GXi6TRK6E//b3r3Fx14D2CLmzFBMqIJS6D6m3QuEvdk0TnhEdh6EYTLYGkIsw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734746189; c=relaxed/simple;
-	bh=yofM1aFB8KoEomjQn3u5CKDKeB5tGp9sRFQKID6u5KI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AcDcH2sbRf73NmhCRXUdihiZGNk43FSVAW10dok7XfhYmUfdL7RGxywj7Ox2InoEA9W/IzU1QA72wpS2JtPHMmKh6sJH7mC340sPWBmOxcMbTMMw2hcgI9yiptHzkFAmeUEHbgaag7ZGaSLr37xXyMzSHFFnwgA5A9xok7AeeiE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UZmkicZK; arc=fail smtp.client-ip=40.107.20.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FB48837
+	for <imx@lists.linux.dev>; Sat, 21 Dec 2024 07:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734767842; cv=none; b=NJhnhZeP4jzWFGg1D5br1YOz/rQ2VrdxSnRpMoOKUCeK6TCKn1nPk1Uqr5uOEz3V6Usp6UC+028LiU31s3GdTXWYjRWvVBfe3CGeX0oV1/Vh0kLhlP8a3jczodPYLGxpBFZdIPRUB7HyzQ6A5NP2Pl3/pTkYKNyx71trGphvnuw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734767842; c=relaxed/simple;
+	bh=hGupqWQM2THrdA0T1NYk0Ac44lsQ4hY9BXLuT7lFICQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bIQQFA5W/NayLPtbJ9JrXpY1IyBeEEJXXWS3t89FyDGCAZm8ZpoyIbWFN0gSleuOCLl+zOlNcSmvES59H+8s283+xb/WU3i9oEf2XPbU9NycLtq79lRb/tAZkEdGJ9ZeOIFvEsi1Xak88btAfnGmG0dRNsFEtplR3mTq5N6w5Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=qCYL/8yP; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UZmkicZK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DKKGf6wEVTZY/8rdoBPyzrttBbxOklPn3tV2DYUQCbspY0nPMHs9GjDhjjdd7antk8VaKZqvzbbnEH11sWJ+M51voKElV6LYbomwKTOZPUQ9L3HETfSaj1jURMXf1pgwmAesacUfFNMppLm976OGEH+s/4nps69+gI3UedjpWK9AnnWQI19dfQAgp3r1vBD0u6VfTx6mSO4asJxDSj6Y/giajnLAlOyB3zX2CaLo9RqGv2+B8zTCK6UdFfDW/3n0b/m4z/EL42Y6R0ZVvv1wd5xg5VjobnPJnauvwY5AA8nRXDXkdAp9ZJ56TBnfRO80vlb2Kebop+XghXLDkzPFeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z0zPN+zDEIh8QGiUIlheRkUjYakt90ONNATSDHsgogY=;
- b=REein9RHNvvSrAgeZ2TKnSqQWjcFY/cK3TrdcemHgJJL3g7M+6xOAxFUCKK3UKJeujBEzutLUjGSwIjixTC8NXkT7uapWQYqUMKFrJWA2L6bVVp0/sx2V4wIkLpZdKmhLmUm/YGAV2T15v6kLIiHBsfKo2agQ+YGqrK+C7LQ/du2jmYFNzfmxws1LRoYbVhIQD2aVdY/cdlGHJ/ntaHE/33VAEWu4Cr5+nYZAJWA30n+ST05TI3Ecxy9pN79t/zDspkWmB5t3wIeDnISNb/s9/XWOfxkcH07NuUello3/JmQUz9HxnN7ZrSKxx5LnfAdg74ECNOtXIE0jLJOLX35sA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z0zPN+zDEIh8QGiUIlheRkUjYakt90ONNATSDHsgogY=;
- b=UZmkicZKAr6wiFnBzbSTdRzP+XeQ3I5gOPKHjez/CeyK9r4gqMS5ZDXDbKDYNAYzW7zvWCaje6qtlk1k42fvgqVnxJutvB+nV5xmxu2xNvkwNd7U50k73cUnzu1WHdxmsW/a7CsxuUDKYUjlvZ6gs2ufFWu7BLSjGyZftaJvF+84wwqIU356xQnjxLJBZcvYF3hUiYbbqMlnDs+GTDonKszIWvqTE7ZdEY5NnIWs2SgKyzrfC7E/+BnGMWF26rwtKuhFcZ5VAWenlf4lHp8h+1MJ4Jln22fsvWH/1jISjc7byyhmULI/ZqsvuJ6VhvL4vyBo/Fj3tUjeySq3yq1pKQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AM8PR04MB7858.eurprd04.prod.outlook.com (2603:10a6:20b:237::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.17; Sat, 21 Dec
- 2024 01:56:21 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8272.005; Sat, 21 Dec 2024
- 01:56:21 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>, "hawk@kernel.org" <hawk@kernel.org>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "andrii@kernel.org"
-	<andrii@kernel.org>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"mykolal@fb.com" <mykolal@fb.com>, "martin.lau@linux.dev"
-	<martin.lau@linux.dev>, "song@kernel.org" <song@kernel.org>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, "kpsingh@kernel.org"
-	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
-	<jolsa@kernel.org>, "shuah@kernel.org" <shuah@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH bpf] selftests/bpf: add XDP_UMEM_TX_METADATA_LEN flag to
- umem_config
-Thread-Topic: [PATCH bpf] selftests/bpf: add XDP_UMEM_TX_METADATA_LEN flag to
- umem_config
-Thread-Index: AQHbUsKbt+d4ByGi+UO0J+Wtft+nMbLvTeoAgACjCeA=
-Date: Sat, 21 Dec 2024 01:56:21 +0000
-Message-ID:
- <PAXPR04MB8510820FA25DA47C6A7781F388002@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20241220091806.1856223-1-wei.fang@nxp.com>
- <Z2WXAqNY4s+OKZbB@lizhi-Precision-Tower-5810>
-In-Reply-To: <Z2WXAqNY4s+OKZbB@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM8PR04MB7858:EE_
-x-ms-office365-filtering-correlation-id: 80987cad-3d8d-48b6-413b-08dd2162aac4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?FEs7IxRaNAwIJIN/Fj8qHFnj3iNmJLPcE97cvAHGExqU2brLhXFIbaOusv+Y?=
- =?us-ascii?Q?MlITNdiEkjFvNoLZ9QclMq5sXzK+8GNqJYeFKcMxppRnQlCo/zQLjonFShxa?=
- =?us-ascii?Q?091zUOXwudblyloCMsZJ83aFfUfvaRHoI20LLfAd26Puu95EQbnQlP+ugU1U?=
- =?us-ascii?Q?e8+0uXHW+5DSN60LDI5IpKSg0VzgsTIBjxd5+mpWJn1uB6LVAjiif1Z6C6mj?=
- =?us-ascii?Q?gos5lsoMZcGW8KHSdgoRylAR9WrQ1VMdyu762QgGVXZF1te+sNRpPCY717Yx?=
- =?us-ascii?Q?+mFWDe0KwV6PSzbeLVWHgll8bWLU/0j5c699SzuWvSVy1F5YeVIzF9By+Jhy?=
- =?us-ascii?Q?PqQ15PogHa8xMAxWpAVcyP3EpSuZJJk0rxoJeLF6uuDOekadHL0dI4W/N3MX?=
- =?us-ascii?Q?eTjpeAwTkthbd/PamPC4F1bCde1PNo0JNTEzUZkDtlqXEOpcD/nrx6OLW2wz?=
- =?us-ascii?Q?jum3+qwMQYppVHJ9KzBf4rlGVtOyRcyffdb9u/2qXOWS27rwZwNthTTdaFuE?=
- =?us-ascii?Q?cnPuCuX4w5m6QvKGh90CIO/nYwuWYfIeabSt9xG+C+4MciEZfG6GMTKKBssG?=
- =?us-ascii?Q?RmjU1iCXasMAu5Lgob85vRb+ZAX8z4+sqfr0p4cXyOnVe95hOgcTOqWfOneA?=
- =?us-ascii?Q?oL6vPsnAaptgfpTByqUe0Dqci02utLRd5POX5P+zRfsn8Xb77aGOHhXOsucs?=
- =?us-ascii?Q?LchC1UACmwno4MVtIOK9rVzLCSL9kmQemJ8/U0fPOIuDc27zjtGYzrM6tAgr?=
- =?us-ascii?Q?8Q/slWsYEF/2DGHkp01Q7YhBePrn/ml5sSvug9JPsghgB8GPNeXQxqTzp9qT?=
- =?us-ascii?Q?c1PaPdgvFhVvx7F2+3gle1mbiorxN0UKErWLKtStIvCp3irmY22QeVBvxkAK?=
- =?us-ascii?Q?Me2VDqyQ9/ptmfhVi4NT0N7ujVoi5Blc/JkerUTrANyBotZJTYYDxL9OCBD4?=
- =?us-ascii?Q?Aw8o/EUCuDqGsdzXyzF34oAPWTPpOcVhSE4KaS8U5KzAvzbTkOjSHYiAIW9J?=
- =?us-ascii?Q?juyUTz3l2Fjqv5WnR1yHI44EpqJBvXuL7cxMDRBM1QRvGUse/w5U4NOK2N0V?=
- =?us-ascii?Q?HSVWsB9yJDvAEe7hqi3Hu8Ys7j9dgT4vMd7zmQZ+E3I1+MQDD705YUfdZx+T?=
- =?us-ascii?Q?K6eaYRcm35zMWBGuyHAZVJRZ5RFoisxFWc0IQJ+zXWz288YLGX9gJZXAovOc?=
- =?us-ascii?Q?qR0Lm4EDQhL+oRLIo9b13+yRYc+2DwWRISWJf+cjYAsDlgpfHY17OIW/vEzM?=
- =?us-ascii?Q?rl4u3INpN8Jh1/GMTo/+0eElxquAY/gDzLiX8S/HA5IcL1/QsvAHp9h99G1j?=
- =?us-ascii?Q?IFlZ/Ve6m6zt6RG4qsc3eMIFPTKq5Vx6y0EEVRddALq3a4tSTWK02/wzUrJl?=
- =?us-ascii?Q?S50VEzdw9WvK8Pp0PeC6/JiCFZU3/ENrHXlm9snip7gNoIw0lZilcqZtl28M?=
- =?us-ascii?Q?Gxare2xsEJBlnrhU3rHHpaErRpEJoTHh?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4BhipF7H1OyiW/3PNA3lkW4QwFOHSv7+Bu8BLJNfADkJqpIx0dHIxpV9y4VW?=
- =?us-ascii?Q?kf5QaFgOHpFDsZ5qO7+3nyKdox5QJ5s3xslGBy7nCefIFJqw3T7XVGgIRGEA?=
- =?us-ascii?Q?QVu2uX5Ftr75fY53M3HqJHNt1AKDkRORtWr/ZQ06Va6VeYKKObg4TcLZO2In?=
- =?us-ascii?Q?vOdWf23V5Te58E6bAFIBlvEPmSZIY3V7+dT32UKQeOJ6W1VIyGCr8+QqVdKe?=
- =?us-ascii?Q?UIKuzN66g39lnqxuNFYoBHF0fykogxNUfxf2NxF6MOlU20Xvlz0ECK0ji97z?=
- =?us-ascii?Q?loJsF8BjBTTIAeBBen3Bg1pfU6m7VM/gP9zDDDuiF3jk95APhJckJVk1Hhgm?=
- =?us-ascii?Q?F0/ICwRo4d9Aq16DX0oTlcPUgxYdURxKOAiJMPp+gnFvBgY0XoCwZY473i+d?=
- =?us-ascii?Q?4JDA20SiFIm5rezrAA55rA+ZtXXWEr92HVT0eg9SuPFi44bNRuX3rjG3Kdoz?=
- =?us-ascii?Q?qMRKKgsZjSkSKptscVLSQLgoE1IWqNeULjcTLe2CIfihm+CzUw9lO326N1MU?=
- =?us-ascii?Q?2qOdolx2is/Ub8l+StaM1ZL8lL+qkzvoV+YojNIMsKdOHqGmXRlcJD4vc3B+?=
- =?us-ascii?Q?q3wTvwWxY4Mas/KoLRCA3MCSZVO42sK3cWYIO+XjSuprNGRyHAE+876ZftrN?=
- =?us-ascii?Q?R5Ba9KskMDsdF/FbdUkiSHWYPy+gJvgFo7mQ7cwDLDEtuYy6g7KDg3BoSK05?=
- =?us-ascii?Q?g3Dvv35jBE6aWk8JujPjRq5yyPWSQNZcP3VD8sBxcIkSGPssD1wkQFRPAMQY?=
- =?us-ascii?Q?KCj5sLuTrO/TUQcgigBubc5HF6rPgeBRa9Dm2TRHHYVK4tiFs+GHwFmmnEOL?=
- =?us-ascii?Q?groUndUrZEW66VZvzi6NftxFaDEUmB8sOpYBDz0MrR3tPaELvcc+vRJDPQPY?=
- =?us-ascii?Q?VsN3UldmBKuJAyuNgJjzZiCHs1gFpnlDwlI6SEDal9FtJ4uoz2XCa2vHa1nq?=
- =?us-ascii?Q?/gQC1S/BSR9YpfrQhR+VeZ9SBFCeZm0eU3tgQFSOIRE6UR1fKr3dpjXThCA2?=
- =?us-ascii?Q?zQg/j5IjhmukOfRly6VONmYJg19dQssTEqmcAnHAjU8CnjPxMmq39Bva8Zdw?=
- =?us-ascii?Q?q9Kjip6S6snqitIxA+PXJOo1vx0r9J0WM9Fzv5mf2LhKvF6cnMONVnDkkgUg?=
- =?us-ascii?Q?TQ3YtvS0I3vUuGn80QkyM+KQf/rSY47Cj3IngU+0XkTRP+yCrHRgrsKUyPOa?=
- =?us-ascii?Q?a6IBt7Mw31iv/dsVJP7JqoKjwhHvrESceLbIzAyRnAxMyUCzRWkamxZUxSvS?=
- =?us-ascii?Q?E35UcLA5dmb+puosRvrFLXDfN+ezKHhMnEepJPNP+p6HpKwl8fukJ+VkQdjW?=
- =?us-ascii?Q?RSrJCrsKTphrfsooRTxlIwQYfXuhI0FKpj/HUkoxd/AvzwRqeyvvrEFZ/ZoK?=
- =?us-ascii?Q?DYulc9KURLrhHrBngfRYsqsU97syspA+kKxIUcpBGjSvJzgiY5CoD8EFv5hd?=
- =?us-ascii?Q?yG8ZMiECGvw+EUByQcOTHPbQiC7vL5D0h7kYL96OWzfY34dZQuXDeUWHfCh3?=
- =?us-ascii?Q?tCjCPrIwoRTDXnIaHHYrM0umK3/SVOz8JOcUwt1LhFmm9Z7IIHzRCjl2UD6f?=
- =?us-ascii?Q?t8fBJK9icVucWvgQaGE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="qCYL/8yP"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-725ee27e905so3412688b3a.2
+        for <imx@lists.linux.dev>; Fri, 20 Dec 2024 23:57:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1734767839; x=1735372639; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3ADUakN/RLjaNPky2iv2S0c+oiR3d+sV+jQWn1c0nY=;
+        b=qCYL/8yP7GcwtxnSx59vjB9W9u/HbMCMd0JBFS+uaiNHa9DCiCa6vH77BkySDhMmFn
+         K8qAQalym6+l2otfPDSNEd/4UFyh3DJeau28S/i/8Bq3i90U6bSklCAYCJj9IFfA9vod
+         dYgVrARmf/DkQBc6HCHO4Xeowq1j5zZHCDuSxeSA6fn2SKjkBZS5cfn6JF9D3453XOId
+         esKP8HDUNQ6YFMwfJ1jO9Tyo96o3PqYPConIKXUHMA26T7Vr6X21rbqtlbf1rrvIoj2N
+         eIm4seqoX8FiIwmgzUVS/sQFwXMFR+YgA7RnvyQNbPT7o+nwL3wEWZmMlTGa6cJCL2id
+         Uqjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734767839; x=1735372639;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S3ADUakN/RLjaNPky2iv2S0c+oiR3d+sV+jQWn1c0nY=;
+        b=DBTY9S/68jYSNgkEjCPuuU0H3EcKHo9/Q9yBdC8U2Nr42s4MElJAK8+3USY646ks2l
+         gWgpZ6lw732F7TdcjeAzY6rrFM65V0Jg6RZRLxQzjEsNwyBtnY9K8yYcC3g26qjgu8oT
+         0bOMUBo58p2DxFKi3VfjeLYiLCAMo7iyBzHOagetm2JZwO1sYVzaV11YVXdS8fHTd+k7
+         jU7AWYbY0vnMCcTDU4gh7apGZa/Uzwx4FS62HdD5dD+8u5ggn0/jd+PsGCctMyvph0eO
+         Zmi8BnpPbHHrNXr7qetSmicxKMFEPErHr+3WfaWA9BW/TCd2HJVEEgMX7CsXCuFZQDdV
+         03ow==
+X-Gm-Message-State: AOJu0YzntkXmNVZHZo+vLiRfVCXrYO80j5Klgf6eS4mmucBRq1lZm5bi
+	9SpWLpDRuFFDN71bwIxjo8M/YmTGf0vKaaCXogMVS/RlXZxNPZvCcrb/uxbjWTY=
+X-Gm-Gg: ASbGnct9scGQgjb4O2/mIn+rbA0QIkp1awmgwjD4xGtxYRA0UGxXsdoa7XEJ0GXQ8aS
+	rNWGdjgMOA25979cmUtgSphn6MwKd+ifl5x2qXhujsfePbagFeEsOFVDjA2dOPb25ck+uqRmO5D
+	d0yQSy0OY1EQ6nmh27ZGMu2RpGhN0yXbOulr3ryazz9odndXqMW87bmeccqY+9q1VaSHaM1NJEq
+	FcmRbGAJ5piItXsxRTpJ8m7jSjl9Uqnwr/4r2us6R+2AzhNiR/OxRX+cYvSD88syb8P4Vu3TEbA
+	RcfBmc+JSwW1iJF4M5U4hvNzBcEJei3j8uJG5xEZWXU=
+X-Google-Smtp-Source: AGHT+IEyQWWbeCYRwxnI8VV8GSkSDQ4lxsofzMyTHhJG/edHTBabUmC8KwgxolFtMAOrS/jDwZfxhQ==
+X-Received: by 2002:a05:6a20:d80d:b0:1e0:d848:9e8f with SMTP id adf61e73a8af0-1e5e046decbmr11463332637.13.1734767838714;
+        Fri, 20 Dec 2024 23:57:18 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8dbbb6sm4238013b3a.95.2024.12.20.23.57.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 23:57:18 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: Frank.Li@nxp.com,
+	vkoul@kernel.org
+Cc: imx@lists.linux.dev,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH v3] dmaengine: fsl-edma: implement the cleanup path of fsl_edma3_attach_pd()
+Date: Sat, 21 Dec 2024 16:57:12 +0900
+Message-Id: <20241221075712.3297200-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80987cad-3d8d-48b6-413b-08dd2162aac4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2024 01:56:21.1821
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rWc3rd6F+YYLqN5HCNMGa8/NY38oy4ZOmHMsMshFeLbXzx0jhAZpZTIFHo0asJxxrR1cKNjaRY2Tq6RptR2sJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7858
+Content-Transfer-Encoding: 8bit
 
-> On Fri, Dec 20, 2024 at 05:18:06PM +0800, Wei Fang wrote:
-> > The Tx metadata test has been broken since the commit d5e726d9143c
-> ("xsk:
-> > Require XDP_UMEM_TX_METADATA_LEN to actuate tx_metadata_len").
->=20
-> Nit:
->=20
-> Fixes tag already include this information.
->=20
-> The Tx metadata test has been broken becasue
-> XDP_UMEM_TX_METADATA_LEN flag is not set ....
->=20
-> > Because
-> > this change requires XDP_UMEM_TX_METADATA_LEN flag to be set,
-> > otherwise xsk_buff_pool::tx_metadata_len will be initialized to 0,
-> > which means that the driver cannot get Tx metadata and cannot execute
-> > AF_XDP Tx metadata hooks.
-> >
-> > Fixes: d5e726d9143c ("xsk: Require XDP_UMEM_TX_METADATA_LEN to
-> actuate
-> > tx_metadata_len")
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  tools/testing/selftests/bpf/xdp_hw_metadata.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-> > b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-> > index 6f9956eed797..ad6c08dfd6c8 100644
-> > --- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-> > +++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-> > @@ -79,7 +79,7 @@ static int open_xsk(int ifindex, struct xsk *xsk, __u=
-32
-> queue_id)
-> >  		.fill_size =3D XSK_RING_PROD__DEFAULT_NUM_DESCS,
-> >  		.comp_size =3D XSK_RING_CONS__DEFAULT_NUM_DESCS,
-> >  		.frame_size =3D XSK_UMEM__DEFAULT_FRAME_SIZE,
-> > -		.flags =3D XSK_UMEM__DEFAULT_FLAGS,
-> > +		.flags =3D XDP_UMEM_TX_METADATA_LEN,
->=20
-> look like "XSK_UMEM__DEFAULT_FLAGS | XDP_UMEM_TX_METADATA_LEN"
->=20
-> You clean other flags, does it what you what?
->=20
+Current implementation of fsl_edma3_attach_pd() does not provide a
+cleanup path, resulting in a memory leak. For example,
+dev_pm_domain_detach() is not called after dev_pm_domain_attach_by_id(),
+and the device link created with the DL_FLAG_STATELESS is not released
+explicitly.
 
-XSK_UMEM__DEFAULT_FLAGS is 0, so no need anymore. The same patch
-had been applied to bpf-next tree [1], so please ignore this one.
+Therefore, provide a cleanup function fsl_edma3_detach_pd() and call it
+upon failure. Also add a devm_add_action_or_reset() call with this
+function after a successful fsl_edma3_attach_pd().
 
-[1] https://lore.kernel.org/bpf/20241205044258.3155799-1-yoong.siang.song@i=
-ntel.com/#t
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+Changes in v3:
+- Update the commit message.
 
->=20
-> >  		.tx_metadata_len =3D sizeof(struct xsk_tx_metadata),
-> >  	};
-> >  	__u32 idx =3D 0;
-> > --
-> > 2.34.1
-> >
+Changes in v2:
+- Use devm_add_action_or_reset() to avoid goto in .probe().
+- Use fsl_edma3_detach_pd() in the error path of fsl_edma3_attach_pd()
+- Update the commit message to elaborate the leak.
+---
+ drivers/dma/fsl-edma-common.h |  1 +
+ drivers/dma/fsl-edma-main.c   | 41 ++++++++++++++++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/dma/fsl-edma-common.h b/drivers/dma/fsl-edma-common.h
+index ce37e1ee9c46..fe8f103d4a63 100644
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -166,6 +166,7 @@ struct fsl_edma_chan {
+ 	struct work_struct		issue_worker;
+ 	struct platform_device		*pdev;
+ 	struct device			*pd_dev;
++	struct device_link		*pd_dev_link;
+ 	u32				srcid;
+ 	struct clk			*clk;
+ 	int                             priority;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 60de1003193a..1a613236b3e4 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -417,10 +417,33 @@ static const struct of_device_id fsl_edma_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
+ 
++static void fsl_edma3_detach_pd(struct fsl_edma_engine *fsl_edma)
++{
++	struct fsl_edma_chan *fsl_chan;
++	int i;
++
++	for (i = 0; i < fsl_edma->n_chans; i++) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_chan->pd_dev_link)
++			device_link_del(fsl_chan->pd_dev_link);
++		if (fsl_chan->pd_dev) {
++			dev_pm_domain_detach(fsl_chan->pd_dev, false);
++			pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++			pm_runtime_set_suspended(fsl_chan->pd_dev);
++		}
++	}
++}
++
++static void devm_fsl_edma3_detach_pd(void *data)
++{
++	fsl_edma3_detach_pd(data);
++}
++
+ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	struct fsl_edma_chan *fsl_chan;
+-	struct device_link *link;
+ 	struct device *pd_chan;
+ 	struct device *dev;
+ 	int i;
+@@ -436,15 +459,16 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 		pd_chan = dev_pm_domain_attach_by_id(dev, i);
+ 		if (IS_ERR_OR_NULL(pd_chan)) {
+ 			dev_err(dev, "Failed attach pd %d\n", i);
+-			return -EINVAL;
++			goto detach;
+ 		}
+ 
+-		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
++		fsl_chan->pd_dev_link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
+ 					     DL_FLAG_PM_RUNTIME |
+ 					     DL_FLAG_RPM_ACTIVE);
+-		if (!link) {
++		if (!fsl_chan->pd_dev_link) {
+ 			dev_err(dev, "Failed to add device_link to %d\n", i);
+-			return -EINVAL;
++			dev_pm_domain_detach(pd_chan, false);
++			goto detach;
+ 		}
+ 
+ 		fsl_chan->pd_dev = pd_chan;
+@@ -455,6 +479,10 @@ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_eng
+ 	}
+ 
+ 	return 0;
++
++detach:
++	fsl_edma3_detach_pd(fsl_edma);
++	return -EINVAL;
+ }
+ 
+ static int fsl_edma_probe(struct platform_device *pdev)
+@@ -544,6 +572,9 @@ static int fsl_edma_probe(struct platform_device *pdev)
+ 		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+ 		if (ret)
+ 			return ret;
++		ret = devm_add_action_or_reset(&pdev->dev, devm_fsl_edma3_detach_pd, fsl_edma);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (drvdata->flags & FSL_EDMA_DRV_TCD64)
+-- 
+2.34.1
+
