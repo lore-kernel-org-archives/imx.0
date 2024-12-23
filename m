@@ -1,62 +1,62 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB56419992D
-	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 10:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F252AF1D
+	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 11:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734951106; cv=none; b=oBFga4YgpX1FUmxgfnWSlOD3qnPnkGbtkAo51G2WM8jnKl+lEzJyY5dSxUoGmyFC9q1pj3RVsRXzmwrqardQBYMUqOLeJmA2UuIXqGM6vyUoeArmsdEF3GusvPF4gjIAaI09qv5y3HHWvVBwoSWI6AkmHMP22sf2STVJfyAco9Y=
+	t=1734952546; cv=none; b=TXe1UgPg2WWasV/jcKALU23lo9MjiyJlWYSn/7nDk8bWYwIEpypcSr3aIb9RV0jeLouOYh0kHZqEZsjHzd+6NqgUK/OMDwZyOJYqvaFU3kKMero8FjiET+WjTY7mjh5yEMOtRfRHf6p2FemqEqlE3X4fDsTsKMvnPxBzzr+ewPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734951106; c=relaxed/simple;
-	bh=WI7HhcfpjcBt5fd7xwBht5+u2wyeHlcBV3wwBiN6ADY=;
+	s=arc-20240116; t=1734952546; c=relaxed/simple;
+	bh=idEEV1+MD0GqLsg8r4dUdSLvnO/fV2kMnl3JISpwPL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZhYxyuaYwMQQhl8ZJnT1krwQAVSBPuOB/cz0jVpAN0f62sgRPxoDJb2JRx8MFFlS/MJmh2088EVG6Fil+q5hE78vRFTXLiTL66ld8NKIyqhufLUXsHCMA+uykpl/s1pCnbhm/FqYnBHxAgitTUi1CuSkUYMVbS9SkGr3T8k6T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OSG7EvYT; arc=none smtp.client-ip=209.85.167.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=cCeHpehdp9Rt10VWjYRVzuciNSBtGFXFq/r5wkM+1Ry2et9BVEBjsRXhIBf+CDcOr8fmXAbCSzFybnRMaJjEd2T21Vt2jyb5JE/9JSS43L/UwK4JJzT/KPcYi+csPROm0WX+8zc4ApirVG21yWTAJN7+fo27nIp0dekX39XJ7QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yAUO74PM; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OSG7EvYT"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5401bd6cdb7so4603385e87.2
-        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 02:51:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yAUO74PM"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3022c61557cso51163941fa.0
+        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 03:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734951103; x=1735555903; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1734952543; x=1735557343; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PysGQXFhFIaY82I36Y7kVr5DOhB1P1lEm8vqt8odrR0=;
-        b=OSG7EvYTo1W8v1u1euTuijjDILx/OQMJCPmzYwBzxhME2WZ/I0MXgDDau3Le+RJpSt
-         DRrrSBNDpnDJHOomuBWVqftjt8oZlQ3Syyt5ZmqJ/XRZ7k6Y8CALm6S4MUMTONanEjF4
-         EQS7IC07mcbCrocDfdHcof2sByBOaUJE3s5tM+6WWQV8Yqm6OsHk5VqrLqdiU6HnG/4W
-         t39gdsltBqk/LooA4KzBGELwJLguIdO/mjYTD+OTNZQsskrCOQm1Y86N/Tpp4Mqdo91S
-         rqDhHCgnrME6iSibT1nul4fLwV536PaC6lln6RjTKPedWSRBpgyZJEtpdfQ79X1SzUvH
-         2CIA==
+        bh=3mo6MP2QToWKxW6CHGPpfwk7yms3zeJ7L1O8Z7JM6ls=;
+        b=yAUO74PMMekQnyxv2bFA/ngPQzBKfiyFZbs9CvK7XRMDuixp4NM+jvyHpyLZqkvD4J
+         RWNWqOZdxZsbHAiSFhdPObtP66erLI4f1NzCFouH7V/8GaUmhJa73KR9hxzQpKIIotPe
+         KfyhekFbIo3QP0jCY/0Pj5LzYPuC0iO31rO1Mp9//pAyN800+q06PDWYezst6ut2h/5q
+         YKoZ6EpDpC/BHAr1BvvaAqozww3+J37Iffqbvv3hB6TU91q2/dJZCwNhBZLgHaOt0qD8
+         tRJTKEJ8D85MH8aBT1djdXi8WFuRKpxCMDkpw9tY7FRGvyYA5lSyKWZB8fEkw49IJ1M7
+         NEJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734951103; x=1735555903;
+        d=1e100.net; s=20230601; t=1734952543; x=1735557343;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PysGQXFhFIaY82I36Y7kVr5DOhB1P1lEm8vqt8odrR0=;
-        b=MKiJkgAzAQMizDcA1MCDb56OilqHnaaFac9MDORwQw1etZfTFKYKyXPyxZ7FFqfpDC
-         ltvKjk9IItp2tIIZ/3cfZ5oqVyAnTx3c4s62RCGnTjQ6zxSzaUA9OcBUqYebZAb1oQnX
-         ss1JwLIrwc7EEeoMKm2/RQmSxDIjhXatfLQc4ZtkIHMAQdvt08IzaLSXGfscFEfVgYnK
-         LDJ2dfTq9P0oSCrDt9dURlMKe3+yhLWI6RmqVWwZnkXOCsib5P4tDeZD2lb2iS+cdiOa
-         rfwYPnma01lG/+yv7hpCxJqHpcqC5GkT79KQIC2DmbdLgROHRQOT8wbWD0Tx3E4pOb4N
-         9Hug==
-X-Forwarded-Encrypted: i=1; AJvYcCVYoZvIs9OBhtVFvYHkHbOhvcaGTEwY6dKF7x7SfXVmd4BwYSx8ZXCkNf9lDJXXEBwo0Pw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3Rs109UrT47+JAXGmZRIZd9vjzzD5/sZzMPPSPfsq2u9SBSdc
-	4kFu73ev5wiy9Fk4ye6eHRaq66DetbQ9SUBzM2BgUbWcJd3dykiewUZK7q9n+VQ=
-X-Gm-Gg: ASbGncvoYY7Icy5qz/uQaaBbd2oGBxwcf5UYuTi2S+UtZE+lTBkyuxke9rxLmwMOE02
-	jvXNHGBjK+genXzxyY+n6ggyfDGhFwaC+xo/mWIrt+1SpoGevChn/mpOahKyb4fGask3KiyaZBL
-	eVMRlvac7kFP7s3SJMGVtIVcD7UgcZSs2L3uR9m7oaHeI68rv0Hl72ENXiwkRMShR2Glf4OB0CB
-	p6+pb6eGiMiF1vL9nerVRMnwADWt7VFhbS4WItUXCeHONrBjupuXBrZJINeCrZU3T/vk4j32DIF
-	OiIE0LczYbOLzS5dTLnluLhycvBt0fZSllSe
-X-Google-Smtp-Source: AGHT+IG+15flgGLqsMrZ5BL4gMnDHWQG9KiSz+F4gPV4kBjlj5dHbyvd5yf8E3fFs/QR/3iviG06Bg==
-X-Received: by 2002:a05:6512:1150:b0:541:cdef:7ca3 with SMTP id 2adb3069b0e04-5422953c1a8mr3075505e87.27.1734951102906;
-        Mon, 23 Dec 2024 02:51:42 -0800 (PST)
+        bh=3mo6MP2QToWKxW6CHGPpfwk7yms3zeJ7L1O8Z7JM6ls=;
+        b=NzkP/446jwQVB14eatWSP9TenUgce68rTtBxOBq6bQFqTPnhqO5vLC945B5mrc4Y7+
+         KacZgR9gmBS6pKeGDRVAmFUsPkeE35jzZFOJrPKzK4Fa+6VPsDzGAxLDecPkv3PaflKn
+         9k0jqlWJwBKyN4v1Hez4bMI8EQNVzeFMs9Plz/UlbJ1oOdm7FdK3DuLDQNcFBzMABJ/c
+         AZW8153+avkXGSZXOoQQiJ4IhtEBc2lixfhdM8oytNSvSleFri9YbmWtmTyyzjb45rrh
+         ckIL0l71tsHSDU3katAlkBOK9AhJZ/6WJDx3eB3y3dkCinyl6zs+Xxw42seMENLj+NvE
+         yUgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWU0zw8bgw/MYlb1uxwdhQ57fIkaK6KUFrn4yF1G+YzU4W58K58JYrXtV67P1AXa8raVMw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YziJpOOa1VW6gLBjhSxfO3ddhpguyvkHvDw9M2/ioQR0KxICyzb
+	KPv7d727Yu0qUtLS52N6Ji5LlBP1m6AtaQwxKZ+HgqdtANxReHvITNU7rRVAPC4=
+X-Gm-Gg: ASbGncv5Bf/QdafAOGz7zwqTQLozIdtGfMAUPC9B4g21tQRM+tZ3B2TBc+8ue54lTCo
+	ZZC/UXa4l2L64hrCIRSffm8SNMOrIVj2lCmxGsxr8j85goIXL3fmgFaCkZBskwyDCQR6Vw+uBmK
+	TpEV2baObhokAVh6J6EF6lictgNdfcjNV4Ey/36bGgcVgMHCXBskDLMD9pV+m+HyfKotz/6VRFj
+	A9cc/nOlpU2Nyt5+KIDVYITl32c1w/dd3u2qn6F/5AK/KWzwFyfWQOZHKbLu5kfbR92nQIUFWl+
+	3Q53W5RYPshYe4HcbTAsq8/WHTi+NVxZGqZE
+X-Google-Smtp-Source: AGHT+IEgmX/5ATGHYxkBwsAFplT1zESRogm6vsP2Mbb2JNoPZ4jUEIIAF7+Dio6FJRuZVz2+3nzV0g==
+X-Received: by 2002:a05:651c:b0a:b0:304:4cac:d8ef with SMTP id 38308e7fff4ca-304685487c2mr37661981fa.7.1734952543223;
+        Mon, 23 Dec 2024 03:15:43 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542238216c0sm1231593e87.218.2024.12.23.02.51.41
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045b083e92sm12807641fa.116.2024.12.23.03.15.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2024 02:51:42 -0800 (PST)
-Date: Mon, 23 Dec 2024 12:51:40 +0200
+        Mon, 23 Dec 2024 03:15:41 -0800 (PST)
+Date: Mon, 23 Dec 2024 13:15:39 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Liu Ying <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
@@ -68,11 +68,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
 	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, 
 	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, 
 	u.kleine-koenig@baylibre.com, francesco@dolcini.it, frank.li@nxp.com
-Subject: Re: [PATCH v7 09/19] drm/imx: Add i.MX8qxp Display Controller
- display engine
-Message-ID: <6mhlb26vdfc7v3jmb7y3tlcuo336x7vkblbkzd5sosd6urirou@bbfalnfisdij>
+Subject: Re: [PATCH v7 10/19] drm/imx: Add i.MX8qxp Display Controller pixel
+ engine
+Message-ID: <7k2jqpkpagm3x7shywgzvtst364f6dmmhuz2covpbvghoa5rzc@3dvlbdgtnjck>
 References: <20241223064147.3961652-1-victor.liu@nxp.com>
- <20241223064147.3961652-10-victor.liu@nxp.com>
+ <20241223064147.3961652-11-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,15 +81,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241223064147.3961652-10-victor.liu@nxp.com>
+In-Reply-To: <20241223064147.3961652-11-victor.liu@nxp.com>
 
-On Mon, Dec 23, 2024 at 02:41:37PM +0800, Liu Ying wrote:
-> i.MX8qxp Display Controller display engine consists of all processing
-> units that operate in a display clock domain.  Add minimal feature
-> support with FrameGen and TCon so that the engine can output display
-> timings.  The FrameGen driver, TCon driver and display engine driver
-> are components to be aggregated by a master registered in the upcoming
-> DRM driver.
+On Mon, Dec 23, 2024 at 02:41:38PM +0800, Liu Ying wrote:
+> i.MX8qxp Display Controller pixel engine consists of all processing
+> units that operate in the AXI bus clock domain.  Add drivers for
+> ConstFrame, ExtDst, FetchLayer, FetchWarp and LayerBlend units, as
+> well as a pixel engine driver, so that two displays with primary
+> planes can be supported.  The pixel engine driver and those unit
+> drivers are components to be aggregated by a master registered in
+> the upcoming DRM driver.
 > 
 > Reviewed-by: Maxime Ripard <mripard@kernel.org>
 > Signed-off-by: Liu Ying <victor.liu@nxp.com>
@@ -100,180 +101,160 @@ On Mon, Dec 23, 2024 at 02:41:37PM +0800, Liu Ying wrote:
 >   ranges and setting max_register field.
 > * Get instance numbers from device data(compatible strings) instead of OF
 >   aliases.
-
-Unfortunately no. Your instances are compatible on the hardware level
-(at least they were with the previous versions, I don't think that
-there was a silicon change).
-
 > * Collect Maxime's R-b tag.
 > * Trivial tweaks.
 > 
 > v6:
-> * No change.
+> * Fix build warning by expanding sizeof(fu->name) from 13 to 21.
+>   (kernel test robot)
 > 
 > v5:
-> * Replace .remove_new with .remove in dc-{de,fg,tc}.c. (Uwe)
-> * Select REGMAP and REGMAP_MMIO Kconfig options.
-> * Fix commit message to state that display engine driver is a component driver
+> * Replace .remove_new with .remove in dc-{cf,de,fl,fw,lb,pe}.c. (Uwe)
+> * Fix commit message to state that pixel engine driver is a component driver
 >   instead of a master/aggregate driver.
 > 
 > v4:
 > * Use regmap to define register map for all registers. (Dmitry)
 > * Use regmap APIs to access registers. (Dmitry)
 > * Inline some small functions. (Dmitry)
-> * Move dc_fg_displaymode() and dc_fg_panic_displaymode() function calls from
->   KMS routine to initialization stage. (Dmitry)
+> * Move dc_lb_blendcontrol() function call from KMS routine to initialization
+>   stage. (Dmitry)
 > * Use devm_kzalloc() to drmm_kzalloc() to allocate dc_* data strutures.
 > * Drop unnecessary private struct dc_*_priv.
 > * Set suppress_bind_attrs driver flag to true to avoid unnecessary sys
 >   interfaces to bind/unbind the drivers.
+> * Make some fetch unit operations be aware of fractional fetch unit index(0-7).
 > 
 > v3:
 > * No change.
 > 
 > v2:
 > * Use OF alias id to get instance id.
-> * Add dev member to struct dc_tc.
+
+Carrying several comments from previous patch:
+- shdld vs shdload
+- use of indices in the compat strings
+- bind() behaviour depending on the particular order of device bindings
+
 > 
->  drivers/gpu/drm/imx/Kconfig     |   1 +
->  drivers/gpu/drm/imx/Makefile    |   1 +
->  drivers/gpu/drm/imx/dc/Kconfig  |   7 +
->  drivers/gpu/drm/imx/dc/Makefile |   5 +
->  drivers/gpu/drm/imx/dc/dc-de.c  | 153 +++++++++++++
->  drivers/gpu/drm/imx/dc/dc-de.h  |  62 ++++++
->  drivers/gpu/drm/imx/dc/dc-drv.c |  32 +++
->  drivers/gpu/drm/imx/dc/dc-drv.h |  29 +++
->  drivers/gpu/drm/imx/dc/dc-fg.c  | 378 ++++++++++++++++++++++++++++++++
->  drivers/gpu/drm/imx/dc/dc-tc.c  | 142 ++++++++++++
->  10 files changed, 810 insertions(+)
->  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
->  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
-> 
+> +
+> +void dc_fu_common_hw_init(struct dc_fu *fu)
+> +{
+> +	enum dc_fu_frac frac;
+> +	int i;
+> +
+> +	dc_fu_baddr_autoupdate(fu, 0x0);
+> +	dc_fu_enable_shden(fu);
+> +	dc_fu_set_linemode(fu, LINEMODE_DISPLAY);
+> +	dc_fu_set_numbuffers(fu, 16);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(dc_fetchunit_all_fracs); i++) {
+
+for (i = DC_FETCHUNIT_FRAC0 ; i < DC_FETCHUNIT_FRAC_NUM; i++) ?
+
+> +		frac = dc_fetchunit_all_fracs[i];
+> +
+> +		dc_fu_layeroffset(fu, frac, 0, 0);
+> +		dc_fu_clipoffset(fu, frac, 0, 0);
+> +		dc_fu_clipdimensions(fu, frac, 1, 1);
+> +		dc_fu_disable_src_buf(fu, frac);
+> +		dc_fu_set_pixel_blend_mode(fu, frac);
+> +	}
+> +}
+> +
 
 [...]
 
-> +
-> +static int dc_de_bind(struct device *dev, struct device *master, void *data)
+> +enum dc_link_id dc_lb_get_link_id(struct dc_lb *lb)
 > +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct dc_drm_device *dc_drm = data;
-> +	void __iomem *base_top;
-> +	struct dc_de *de;
-> +	int ret;
+> +	return lb->link;
+> +}
 > +
-> +	de = devm_kzalloc(dev, sizeof(*de), GFP_KERNEL);
-> +	if (!de)
-> +		return -ENOMEM;
+> +void dc_lb_pec_dynamic_prim_sel(struct dc_lb *lb, enum dc_link_id prim)
+> +{
+> +	int fixed_sels_num = ARRAY_SIZE(prim_sels) - 4;
+> +	int i;
 > +
-> +	de->id = (enum dc_de_id)(uintptr_t)device_get_match_data(dev);
-> +
-> +	base_top = devm_platform_ioremap_resource_byname(pdev, "top");
-> +	if (IS_ERR(base_top))
-> +		return PTR_ERR(base_top);
-> +
-> +	de->reg_top = devm_regmap_init_mmio(dev, base_top,
-> +					    &dc_de_top_regmap_config);
-> +	if (IS_ERR(de->reg_top))
-> +		return PTR_ERR(de->reg_top);
-> +
-> +	de->irq_shdld = platform_get_irq_byname(pdev, "shdload");
+> +	for (i = 0; i < fixed_sels_num + lb->id; i++) {
 
-Nit: shdload or shdld? Which one is used in the documentation?
+This function and the next one silently skip writing link ID if it is
+incorrect. Can it actually become incorrect? If not, I'd say, it is
+better to drop the loop and the array. If you are not sure, there should
+be some kind of dev_warn() or drm_warn().
 
-> +	if (de->irq_shdld < 0)
-> +		return de->irq_shdld;
+> +		if (prim_sels[i] == prim) {
+> +			regmap_write_bits(lb->reg_pec, PIXENGCFG_DYNAMIC,
+> +					  PIXENGCFG_DYNAMIC_PRIM_SEL_MASK,
+> +					  PIXENGCFG_DYNAMIC_PRIM_SEL(prim));
+> +			return;
+> +		}
+> +	}
+> +}
 > +
-> +	de->irq_framecomplete = platform_get_irq_byname(pdev, "framecomplete");
-> +	if (de->irq_framecomplete < 0)
-> +		return de->irq_framecomplete;
+> +void dc_lb_pec_dynamic_sec_sel(struct dc_lb *lb, enum dc_link_id sec)
+> +{
+> +	int i;
 > +
-> +	de->irq_seqcomplete = platform_get_irq_byname(pdev, "seqcomplete");
-> +	if (de->irq_seqcomplete < 0)
-> +		return de->irq_seqcomplete;
-> +
-> +	de->dev = dev;
-> +
-> +	dev_set_drvdata(dev, de);
-> +
-> +	ret = devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dc_drm->de[de->id] = de;
-> +
-> +	return 0;
+> +	for (i = 0; i < ARRAY_SIZE(sec_sels); i++) {
+> +		if (sec_sels[i] == sec) {
+> +			regmap_write_bits(lb->reg_pec, PIXENGCFG_DYNAMIC,
+> +					  PIXENGCFG_DYNAMIC_SEC_SEL_MASK,
+> +					  PIXENGCFG_DYNAMIC_SEC_SEL(sec));
+> +			return;
+> +		}
+> +	}
 > +}
 > +
 
 [...]
 
 > +
-> +struct dc_de {
-> +	struct device *dev;
-> +	struct regmap *reg_top;
-> +	struct dc_fg *fg;
-> +	struct dc_tc *tc;
-> +	int irq_shdld;
-> +	int irq_framecomplete;
-> +	int irq_seqcomplete;
-> +	enum dc_de_id id;
+> +static int dc_lb_bind(struct device *dev, struct device *master, void *data)
+> +{
+> +	struct platform_device *pdev = to_platform_device(dev);
+> +	struct dc_drm_device *dc_drm = data;
+> +	struct dc_pe *pe = dc_drm->pe;
+> +	void __iomem *base_pec;
+> +	void __iomem *base_cfg;
+> +	struct dc_lb *lb;
+> +
+> +	lb = devm_kzalloc(dev, sizeof(*lb), GFP_KERNEL);
+> +	if (!lb)
+> +		return -ENOMEM;
+> +
+> +	lb->id = (enum dc_lb_id)(uintptr_t)device_get_match_data(dev);
+> +
+> +	base_pec = devm_platform_ioremap_resource_byname(pdev, "pec");
+> +	if (IS_ERR(base_pec))
+> +		return PTR_ERR(base_pec);
+> +
+> +	base_cfg = devm_platform_ioremap_resource_byname(pdev, "cfg");
+> +	if (IS_ERR(base_cfg))
+> +		return PTR_ERR(base_cfg);
+> +
+> +	lb->reg_pec = devm_regmap_init_mmio(dev, base_pec,
+> +					    &dc_lb_pec_regmap_config);
+> +	if (IS_ERR(lb->reg_pec))
+> +		return PTR_ERR(lb->reg_pec);
+> +
+> +	lb->reg_cfg = devm_regmap_init_mmio(dev, base_cfg,
+> +					    &dc_lb_cfg_regmap_config);
+> +	if (IS_ERR(lb->reg_cfg))
+> +		return PTR_ERR(lb->reg_cfg);
+> +
+> +	lb->link = lb_links[lb->id];
 
-Why do you need to store it? This patch makes use of it just for the
-registration.
+lb->link = LINK_ID_LAYERBLEND0 + lb->id ?
 
+> +
+> +	pe->lb[lb->id] = lb;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct component_ops dc_lb_ops = {
+> +	.bind = dc_lb_bind,
 > +};
-> +
-
-[...]
-
-> +static int dc_fg_bind(struct device *dev, struct device *master, void *data)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct dc_drm_device *dc_drm = data;
-> +	void __iomem *base;
-> +	enum dc_fg_id id;
-> +	struct dc_fg *fg;
-> +	struct dc_de *de;
-> +
-> +	fg = devm_kzalloc(dev, sizeof(*fg), GFP_KERNEL);
-> +	if (!fg)
-> +		return -ENOMEM;
-> +
-> +	id = (enum dc_fg_id)(uintptr_t)device_get_match_data(dev);
-> +
-> +	base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(base))
-> +		return PTR_ERR(base);
-> +
-> +	fg->reg = devm_regmap_init_mmio(dev, base, &dc_fg_regmap_config);
-> +	if (IS_ERR(fg->reg))
-> +		return PTR_ERR(fg->reg);
-> +
-> +	fg->clk_disp = devm_clk_get(dev, NULL);
-> +	if (IS_ERR(fg->clk_disp))
-> +		return dev_err_probe(dev, PTR_ERR(fg->clk_disp),
-> +				     "failed to get display clock\n");
-> +
-> +	fg->dev = dev;
-> +
-> +	de = dc_drm->de[id];
-
-This depends on a particular order of component's being bound. If the
-order changes for whatever reason (e.g. due to component.c
-implementation being changed) then your driver might crash here.
-
-This applies to several other places in the driver.
-
-> +	de->fg = fg;
-> +
-> +	return 0;
-> +}
 > +
 
 -- 
