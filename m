@@ -1,71 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299381AE003;
-	Mon, 23 Dec 2024 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14AA86250;
+	Mon, 23 Dec 2024 18:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734966407; cv=none; b=L1oWSmi7tmjsC3PktCuoGZZeXtqSSkYzQGSNrXbgUyO+vtIKnF5BTwB6fr9xS9S8iBmQbW6xP+BEvOvD9OYwCO1oRNkRuLTn7xNGqP6FEYdeQ7s+JKJLxmgTFbjskYu4iw4zPeR7zR0Aynub98UUQuXBaZHkNdkMq4Vd9XiyvMA=
+	t=1734977423; cv=none; b=nJfiO6hzuQiCsj2F6eDZZFtGfrpXFlXPjfv0j/19sksuwDVD+6pEj4DmMnbvgJ9CPpH00VMotvWY8oFCvqv9XLaajOZX/t+KDEYznv1CTBxfBWBqoC69DMA1p7cqc4gLpnT5wjIQ4tB4ydfbvY5OXqrZUL7ezAFbaLWw9Sys358=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734966407; c=relaxed/simple;
-	bh=gkto7QS9LdR/GtBNVxViKH+qvPII1SzIpBgCHoMbph0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ai/sBdzJCV7odaFFmOMB5qOSF00E2CxpzJylJoJsh6bVTlbLyXRXGO1sxpddJld9bdRPsORVb5UHOSN5+xBKNFvce49ulzmWHXuQh8yIxP7g5gKfR4mvdBzmnpEGux2ElMOuZtJ/WrzzKdaSr/UDTPVCM+t7ula/aYkL/eHstp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDhfQCeq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734977423; c=relaxed/simple;
+	bh=kMBOYez1tgrB4tT5ZszAHyp+isWYUWXZYtFJFnk7aak=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Hfwoj1EaE0IS1rV4/HAeix8hEQZstQ2zbF2cjGT+SDOKQYc8p073QfHqE/WZaMTagJJTZcZDX//m7aOKctV/O4xwyqwN6HMdDlu6MpfqX/ImKQcTmHOEHZ+9IDysebsnCacvVvRlElJ9KJlVATRMl0+zOHHETvpOeaLHMbUQ8hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SK5wmFee; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDhfQCeq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FD8C4CED4;
-	Mon, 23 Dec 2024 15:06:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SK5wmFee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E08DC4CED3;
+	Mon, 23 Dec 2024 18:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734966406;
-	bh=gkto7QS9LdR/GtBNVxViKH+qvPII1SzIpBgCHoMbph0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CDhfQCeq3nB0Ax3J8VoywUU9YTkgTAltQ5mzmjp+X6GheNrZIxObQUslcfQJi3YLF
-	 YrhJzATvmcBHd4FTqS9NfcXfxGHlxrJ69Vl5VQrBlGrkot2bN2Ir+ZZZBcxaeXRoYf
-	 AD1WJkR88TftMaycZuzngqFpuvWDCzoQLAWtAR9cz0Ew0wwcM2VkQw/0yniiN3E1rV
-	 sCqnbPSP6qteqTNCamWf7RB9QZ0r75y8TDmZAWBU1fxIGzw2GhT2t7GyYui7YsXmAR
-	 oaRfozW+g+4JC5wP1K5YH/6REV4b/z8GGMErHnJi2LAyOBn8oJA9gkPnC9lkVNptTH
-	 WE+xqLNm1UOmw==
-Date: Mon, 23 Dec 2024 16:06:44 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v6 12/18] dt-bindings: clock: imx8m-clock: add PLLs
-Message-ID: <ftlezlv6cjgtj7qigebbkqhfsdhrxbde7x7vnemvuag5cs74v3@ww3t3zgs7c7y>
-References: <20241222170534.3621453-1-dario.binacchi@amarulasolutions.com>
- <20241222170534.3621453-13-dario.binacchi@amarulasolutions.com>
+	s=k20201202; t=1734977423;
+	bh=kMBOYez1tgrB4tT5ZszAHyp+isWYUWXZYtFJFnk7aak=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SK5wmFeeUb7ZPa1hbQlC/u2Kjhk9Nu4UNC8hvJ0KBGe6InIhyQazQyrAE2iv5G6gb
+	 seIWWTg1kmV9EkuyY4e8J9v0EbSzTIth8MySS0LEPZjarvwte2uRRGzH/s/W48W/he
+	 NxjuwC7Mm9hJVSmhXZSGRRkjSBH7umHAJLl4R/1cWgSO0g8bthq3C85C3WJlL5HRdq
+	 67mbU5gPZ3pimlwp2bgOFNO5BZAOwpDBMzOT0dM14MUVRPQAUujN3vhBBi8gm35Ode
+	 NXgFHlnLccj1l5L0Kc6rBs9mbhEJRwYRSZ1yt9xr2sT3sOnngKWv73/AGsB/ekeCqk
+	 zzWf7/fM2Sc4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33ED83805DB2;
+	Mon, 23 Dec 2024 18:10:43 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241222170534.3621453-13-dario.binacchi@amarulasolutions.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v9 net-next 0/4] Add more feautues for ENETC v4 - round 1
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173497744174.3921163.12880978370301151615.git-patchwork-notify@kernel.org>
+Date: Mon, 23 Dec 2024 18:10:41 +0000
+References: <20241219054755.1615626-1-wei.fang@nxp.com>
+In-Reply-To: <20241219054755.1615626-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, frank.li@nxp.com, horms@kernel.org,
+ idosch@idosch.org, aleksander.lobakin@intel.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-On Sun, Dec 22, 2024 at 06:04:27PM +0100, Dario Binacchi wrote:
-> Though adding the PLLs to clocks and clock-names properties will break
-> the ABI, it is required to accurately describe the hardware. Indeed,
-> the Clock Control Module (CCM) receives clocks from the PLLs and
-> oscillators and generates clocks for on-chip peripherals.
-> 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
-> ---
-> 
-> Changes in v6:
-> - New
+Hello:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Best regards,
-Krzysztof
+On Thu, 19 Dec 2024 13:47:51 +0800 you wrote:
+> Compared to ENETC v1 (LS1028A), ENETC v4 (i.MX95) adds more features, and
+> some features are configured completely differently from v1. In order to
+> more fully support ENETC v4, these features will be added through several
+> rounds of patch sets. This round adds these features, such as Tx and Rx
+> checksum offload, increase maximum chained Tx BD number and Large send
+> offload (LSO).
+> 
+> [...]
+
+Here is the summary with links:
+  - [v9,net-next,1/4] net: enetc: add Tx checksum offload for i.MX95 ENETC
+    https://git.kernel.org/netdev/net-next/c/d9a093d2d12a
+  - [v9,net-next,2/4] net: enetc: update max chained Tx BD number for i.MX95 ENETC
+    https://git.kernel.org/netdev/net-next/c/93c5d5a0ddf8
+  - [v9,net-next,3/4] net: enetc: add LSO support for i.MX95 ENETC PF
+    https://git.kernel.org/netdev/net-next/c/69797ff888d3
+  - [v9,net-next,4/4] net: enetc: add UDP segmentation offload support
+    https://git.kernel.org/netdev/net-next/c/c12e82c053f6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
