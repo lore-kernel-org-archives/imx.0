@@ -1,187 +1,156 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36861885A0
-	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 11:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AF946B5
+	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 13:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734953538; cv=none; b=A2lCvzMX9eIxNqXfaTTMmQ0wGug3TWzBJiedyLBVwMEsY3vw1ZgE9QDlPyc5j/L3wugFTF6/6ztXfWcCR3Wg9ggm6pU7lYlgdslzR09er9dESQ0S6ncDx8SES+YT+n+1blxi3hlni+qghIxjtRIjI4FPX9vAXacI05elXnLodCc=
+	t=1734960674; cv=none; b=UhEfnNoJWrrLIv09s1tY/BnBntJg4r4dRv5/EiSZDp/SPtq6O3osP5/SlfjRqlSLWAKQU/Cd9uDBCazA80Bi41eNDTYTtMbbB3FDWBH5xi8U55bbIF6RYYk5h9Gwdv4rXQllwt49TCEworgHD1/6LrVj+0+dmJnCmJu8dtZAZQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734953538; c=relaxed/simple;
-	bh=dwgXZ7OjRV0NuQeTGYq8Bqun8q13W8uT0PDCRiPFdCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsNoUQ98CPMFvtl+9dv/m8OYqAqmHqSjrwWART9kpfmTBOt2wvSNbc4UJiVxCuopI2EtZmxItlQlyGcdVBTN8n4tq7ElPZ9iOMhJa7vKq2wFy00iqdylO8qaNYvsIFh4o3gay8PqN634DZ0wVmkp1t+oMniOHkmM8a0Y7z/lunQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qr36ZfKG; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1734960674; c=relaxed/simple;
+	bh=o4Fom0Rpm9fWzhbvqugXg9BmbPqo3cs/0znTlLu54ck=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lJodlWKMB5Mepyk4XiGo7MbR3E0uSPRQWliBL87+BBNjK5RIyVT5yYnxiKJH57LZiF6GpU9AndYJvmT57sEAmOOk0/7CW54oEkiKv3TQw7iVGHMk+tUnk9XdOjHUqhl14EPdabHVWDptGf/TGhU3IxEp9WTeACMTmrMBUM2T19c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dg2kBSfS; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qr36ZfKG"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54020b0dcd2so5428115e87.1
-        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 03:32:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dg2kBSfS"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaecf50578eso199107166b.2
+        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 05:31:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734953534; x=1735558334; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Io0aFnNNwQiWHsIlYK7BZZBTMpe4hxTbSGJahPhqnd0=;
-        b=qr36ZfKGT5Ri+NoOFGGpQsuP/Xx7VxcFb9ELCte7yuYi+K0+2tKm9zGKV8QKhAy6i9
-         Q8fn+DYO1fos4fn8WgXU5yW3kMHpsXV1r0cJ/lprfgawhgLy72wrf156UHuL4Sf5PjS/
-         2vfQ0vJ23Iu+qYPRyCMGKo0IXyWBuh3ZTRVL43JsFEQi+g1yywFzbk5RudsOpdTCNshP
-         4Zx9/u3crCa1WDcLJpnYpJhtZ3ikYu7oCuL0xzL2EuXmIWUQ7ezMqR+1iGtLy5ZGugeK
-         azOclllkrv9EGi8UCrz+8Svg4rSYUziyjvg2kwRlHK82NxCRmdSoyVNF25u14mv7O0Ju
-         qVEA==
+        d=gmail.com; s=20230601; t=1734960671; x=1735565471; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0E20nH4nI7hZl+zQi4Z91y7ffU07fB4nfSqv0rzeH8M=;
+        b=Dg2kBSfSAPBfC2nSXMCorS3GWFLbQ7OagBdmWT2a5muAgbkTuv9NzBHgEDR0xuC8WA
+         haZywhyNoe90aL5v8WVEhhhDgvwdTlL9g2uIdV/W3opRWikacyxDLgE++Ms9WBkEhqT6
+         wG/rGPrFi+AbzSXYz4IBoWTOrSUC5sXN0rWt/tw3oKIbk1OjAYxwrlVL8vzGnbPBHHZR
+         SBCCLlmZsoj0kUDP5LtdewcSLBMJloWaRUNUY8X1rvgetb4Gi1dim50H9YcOXaMSimdG
+         0AVxz2i62LSiuXe9QapLaUSLhJ7Cj9Wa2LCus+qXVMQQ8ErbAzap5pqhY9lMliuPya0n
+         yiyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734953534; x=1735558334;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Io0aFnNNwQiWHsIlYK7BZZBTMpe4hxTbSGJahPhqnd0=;
-        b=P1Lk7gOuMVtEDaZvktId8r0IxEAOFm2aTANCguciXm8vSzFN+T/Xeq5gTFGj9CoQYj
-         BOwKJ0tfF/vlOkPbPe/ePaMNeryIThBxSojzdxwVhW/s83NuPiF/PqSoVlSiFF1GGaf5
-         bdvYZWS/TbYhcm+jEquLHI1bpP5MkOQbNPFYYDF7QJWlr9ZtX+ZV9eKUFeM5qzkFN/iL
-         ERJx4/e2frMf66G9Ib/CIZ28xPEPe9iXbTmnoRPRM7NeYrEgpbXuM+5jSvhMtUlNU6r+
-         0joO3gXAfKQr/pY6UFjXLIizPPOS3EvE6ijqN5DLAdzdkNL8pLeZD+FpP8UF9sMJAq9U
-         2ukg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvcqJF7IOSMfi74IWxnMwvjZEyPpNxiMM9d7Qu4Wm09MrvJ4mWeIQAzRpSkVdeYm4Np5M=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx/tYIKj0ltNfMuvB5O2cTeq8qpAbKiUNMPyUfE647Mih+mKR18
-	YTbo7QdYU9SuC/tiwKIG95Xz0XMTBjU6ywAHhV4ej9SxPOv91Hggq0jNCJ5qEso=
-X-Gm-Gg: ASbGncuJ30xfGCLofxcTySh8lJMRiLouuo/IUq5GpjtPoU4UdqrFhhAHfGkFO/8Pt9f
-	dmwjXUAyZw/8KQFXmIJbTXQHTeSbcqKvmk/KRbnrnU4SlEJOLRUZ3DEkgJyMaqytDBj8gw3VpF7
-	lmWsxQ5yfGn5Xdj4HkF4vpY47u1+/0XkLT2VV8o/TNezptymMEjF4JsTNaO7vU48TgqK0MNySu1
-	DQSUbb0bKLM9JgXNrKlCRu3dV7nusQ4NU6pgCR4XQs9gSoWAfawv97yAKudhSuuYfOJr8QHVPAJ
-	AqgMMsnZFZgYFV+NarMz2Sj07kfznFvt3XHS
-X-Google-Smtp-Source: AGHT+IFQAVVka8tfhQQLypKSuFFeZTfbXIdbwFKArHWMlABaOq9wX6sZw2Zp8LWAHfr0uv4tXZ5d1Q==
-X-Received: by 2002:a05:6512:23a2:b0:542:1bdb:9a61 with SMTP id 2adb3069b0e04-5422946f053mr3666830e87.19.1734953533962;
-        Mon, 23 Dec 2024 03:32:13 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223831fdesm1270675e87.241.2024.12.23.03.32.11
+        d=1e100.net; s=20230601; t=1734960671; x=1735565471;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0E20nH4nI7hZl+zQi4Z91y7ffU07fB4nfSqv0rzeH8M=;
+        b=pIUk2batOY0ZtogZdmh7JhPIyW0H4sUvX2zINkwiXSu7Asaspbp0a/PUhfv1l66P/k
+         VYIAndYjrMOG5aGg3wycRlUdZtH6lfGxI/lQjy1SOGbaEx/8/IPumWCvD23BG9EfUn+B
+         IO2KsfmgMJk5v4/GYJRSk9DexFD0d8sZWrm7YH9c7vJOLDoeWPvpTDdXkaKDx31c0qv2
+         Lkpy/OjFhJBR0ZIrDDqsehmQtudcMWvoHZ7CqyHK0MMotfMVAdvgpWih6Mac5Oc4cHaQ
+         OkpjgW4NvhzD+LZOD+XMsM6AvX40A2R/J3c7JepGYrimTQJAxnU4UnckFo5o64XYDb7Q
+         DEbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJsHJ3TxXIeFUbvRBeqtlsv4zW7rWnyYns4h3s3z2IB0+XTe02aZ0SlcpLWwnaTrwJiFc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyE7vSHsCIh0QM7aerVhG21oDcDisH2haStUpTFyteYRBUWw5td
+	6aoK95kwlRN+yyIucjwYacvzZueKa/tUOBk1/IMY37GaeukIKC6P
+X-Gm-Gg: ASbGncvlhLUkjip4kY4A6uxxv8jOOvHvpNfXojAL4EP6AFRSIaIIwFQVmt34Xm11jqL
+	pqwPuvSjfQ6P//EjBewa3Ai+qppcXpxFxKXOeBRIUsG9lPngtVFbX91bifNXNA+5TTm+5yEo0Rl
+	EPriBIb8RPo7qH9mGmV6Pu5mbWvY2rlx1n/OjHlqfWEbDyNqXHZS4MzLKm4xZM870XkxyRf7eyn
+	BKGo5++ron8vqP0zYp1QBwR5xZ/vSD6mzPoXt1I4c02wbwLu8I92EWaG7ho8WsJPzsgFLIYX76W
+	lB9dRMSoRHlS0JzlqQ2ZN1yv0w==
+X-Google-Smtp-Source: AGHT+IFtl3Jc4R8ZM18OiD8T35sINFW2yCCL1hkjUfHrIzuM/MvcGihGAKcF6iZA6+Q/hgFepUAa8g==
+X-Received: by 2002:a17:907:96a4:b0:aab:7507:7a94 with SMTP id a640c23a62f3a-aac2ad84badmr1228517466b.16.1734960670508;
+        Mon, 23 Dec 2024 05:31:10 -0800 (PST)
+Received: from [127.0.1.1] (nat6-minsk-pool-46-53-210-232.telecom.by. [46.53.210.232])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aac0e895502sm523749966b.63.2024.12.23.05.31.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2024 03:32:12 -0800 (PST)
-Date: Mon, 23 Dec 2024 13:32:10 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, p.zabel@pengutronix.de, 
-	airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, 
-	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, 
-	u.kleine-koenig@baylibre.com, francesco@dolcini.it, frank.li@nxp.com
-Subject: Re: [PATCH v7 12/19] drm/imx: Add i.MX8qxp Display Controller KMS
-Message-ID: <wpxxedxabgo2kxf5wuosu76i5ud3ce2tywm2imhvad4nyy5u2d@qgfhev2hndba>
-References: <20241223064147.3961652-1-victor.liu@nxp.com>
- <20241223064147.3961652-13-victor.liu@nxp.com>
+        Mon, 23 Dec 2024 05:31:10 -0800 (PST)
+From: Dzmitry Sankouski <dsankouski@gmail.com>
+Subject: [PATCH v5 0/2] power: supply: max17042: cleanup and more features
+Date: Mon, 23 Dec 2024 16:30:38 +0300
+Message-Id: <20241223-b4-max17042-v5-0-e4e409723bce@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241223064147.3961652-13-victor.liu@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP5laWcC/32OzQrCMBAGX6XkbCR/bRpPvod42CSbNmBbaSVUp
+ O9uKghVweO3MDP7IBOOESdyKB5kxBSnOPR5lLuCuBb6Bmn0eRPBhOKc1dQq2sHMNVOCGsmq4HQ
+ JAZBk4jpiiPPLdjrn3cbpNoz3lzzx9fr2mA9P4pRRg8IyjaVCXR2bDuJl74aOrJ4ktuznD0lkN
+ rCyDhp4ZcF+s3LD8i9Wrl3rAD0oAeynq/50VWZr7SpvjJVe+i27LMsT2LeUIloBAAA=
+To: Hans de Goede <hdegoede@redhat.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org, Dzmitry Sankouski <dsankouski@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734960669; l=2342;
+ i=dsankouski@gmail.com; s=20240619; h=from:subject:message-id;
+ bh=o4Fom0Rpm9fWzhbvqugXg9BmbPqo3cs/0znTlLu54ck=;
+ b=f8X4xAir/UsYai9B01gBdXs+JRfS4B/GpHsSQ6bQ+wpNPfRjetFZ6uLzwavBXVG0SW/VerEor
+ 87W4HwyJbVHB0I2ApwmvSY313JIzXsnoxdlHPVOGMYxp9vDxQqJ8SlI
+X-Developer-Key: i=dsankouski@gmail.com; a=ed25519;
+ pk=YJcXFcN1EWrzBYuiE2yi5Mn6WLn6L1H71J+f7X8fMag=
 
-On Mon, Dec 23, 2024 at 02:41:40PM +0800, Liu Ying wrote:
-> i.MX8qxp Display Controller(DC) is comprised of three main components that
-> include a blit engine for 2D graphics accelerations, display controller for
-> display output processing, as well as a command sequencer.  Add kernel
-> mode setting support for the display controller part with two CRTCs and
-> two primary planes(backed by FetchLayer and FetchWarp respectively).  The
-> registers of the display controller are accessed without command sequencer
-> involved, instead just by using CPU.  The command sequencer is supposed to
-> be used by the blit engine.
-> 
-> Reviewed-by: Maxime Ripard <mripard@kernel.org>
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> ---
-> v7:
-> * Drop using typeof in macros and explicitly define variable types. (Dmitry)
-> * Add a comment for disable_irq_nosync() to explain why _nosync. (Dmitry)
-> * Inline dc_crtc_check_clock(). (Dmitry)
-> * Use global drm_dc->pe. (Dmitry)
-> * Drop dc_crtc_disable_at_unbind(). (Dmitry)
-> * Add kernel doc for struct dc_{crtc,drm_device,plane}. (Dmitry)
-> * Define common IRQ handlers separately for each IRQs. (Dmitry)
-> * Rebase this patch upon next-20241220, so drop date entry from drm_driver
->   and correctly include drm/clients/drm_client_setup.h.
-> * Collect Maxime's R-b tag.
-> 
-> v6:
-> * No change.
-> 
-> v5:
-> * Replace .remove_new with .remove in dc-drv.c. (Uwe)
-> 
-> v4:
-> * Move dc_fg_displaymode(), dc_fg_panic_displaymode() and dc_lb_blendcontrol()
->   function calls from KMS routine to initialization stage. (Dmitry)
-> * Drop dc-crtc.h and dc-plane.h header files and move relevant defines to
->   appropriate .h header files or .c source files. (Dmitry)
-> * Drop futile "else" clause from dc_crtc_common_irq_handler(). (Dmitry)
-> * Drop dc_drm->pe_rpm_count. (Dmitry)
-> * Drop DC_{CRTCS,ENCODERS,PRIMARYS} macros and only use DC_DISPLAYS. (Dmitry)
-> * Drop drmm_kcalloc() function call to allocate an array for storing IRQs.
->   Instead, put it in struct dc_crtc.  (Dmitry)
-> * Call devm_request_irq() to request IRQs, instead of using drmm action.
->   (Dmitry)
-> * Call devm_drm_of_get_bridge() to find the next bridge. (Dmitry)
-> * Select DRM_CLIENT_SELECTION due to rebase.
-> * Select the missing DRM_DISPLAY_HELPER and DRM_BRIDGE_CONNECTOR.
-> * Use DRM_FBDEV_DMA_DRIVER_OPS due to rebase.
-> * Replace drm_fbdev_dma_setup() with drm_client_setup_with_fourcc() due to
->   rebase.
-> * Replace drmm_add_action_or_reset() with devm_add_action_or_reset() to
->   register dc_drm_component_unbind_all() action.
-> * Request interrupts in dc_crtc_post_init() after encoder initialization to
->   make sure next bridge is found first.
-> 
-> v3:
-> * No change.
-> 
-> v2:
-> * Find next bridge from TCon's port.
-> * Drop drm/drm_module.h include from dc-drv.c.
-> 
->  drivers/gpu/drm/imx/dc/Kconfig    |   5 +
->  drivers/gpu/drm/imx/dc/Makefile   |   5 +-
->  drivers/gpu/drm/imx/dc/dc-crtc.c  | 556 ++++++++++++++++++++++++++++++
->  drivers/gpu/drm/imx/dc/dc-de.h    |   3 +
->  drivers/gpu/drm/imx/dc/dc-drv.c   | 238 +++++++++++++
->  drivers/gpu/drm/imx/dc/dc-drv.h   |  22 ++
->  drivers/gpu/drm/imx/dc/dc-kms.c   | 143 ++++++++
->  drivers/gpu/drm/imx/dc/dc-kms.h   | 131 +++++++
->  drivers/gpu/drm/imx/dc/dc-plane.c | 241 +++++++++++++
->  9 files changed, 1342 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-crtc.c
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.c
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.h
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-plane.c
-> 
+Fuelgauge blocks often are incorporated in bigger chip,
+which may use only 1 line for interrupts. Shared-irq
+handles that case by requesting irq as shared.
 
+Maxim PMICs may include fuel gauge with additional features, which is
+out of single Linux power supply driver scope.
 
-> +
-> +static int dc_plane_check_no_off_screen(struct drm_plane_state *state,
-> +					struct drm_crtc_state *crtc_state)
-> +{
-> +	if (state->dst.x1 < 0 || state->dst.y1 < 0 ||
-> +	    state->dst.x2 > crtc_state->adjusted_mode.hdisplay ||
-> +	    state->dst.y2 > crtc_state->adjusted_mode.vdisplay) {
-> +		dc_plane_dbg(state->plane, "no off screen\n");
-> +		return -EINVAL;
-> +	}
+For example, in max77705 PMIC fuelgauge has additional registers,
+like IIN_REG, VSYS_REG, ISYS_REG. Those needed to measure PMIC input
+current, system voltage and current respectively. Those measurements
+cannot be bound to any of fuelgauge properties.
 
-Nit: doesn't drm_atomic_helper_check_plane_state() ensure in this already?
+The solution here add and option to use max17042 driver as a MFD
+sub device, thus allowing any additional functionality be implemented as
+another sub device. This will help to reduce code duplication in MFD
+fuel gauge drivers.
 
-With that in mind
+Make max17042 interrupt shared, and add platform driver
+version.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
+---
+Changes in v5:
+- platform version: use parent device of_node as current device.
+  This is because mfd driver matches fuel gauge node, and max17042
+  platform variant is intended to match a mfd subdevice.
+- fix platform version issues.
+- Link to v4: https://lore.kernel.org/r/20241108-b4-max17042-v4-0-87c6d99b3d3d@gmail.com
 
+Changes in v4:
+- review fixes.
+- Link to v3: https://lore.kernel.org/r/20241118-b4-max17042-v3-0-9bcaeda42a06@gmail.com
 
-> +
-> +	return 0;
-> +}
-> +
+Changes in v3:
+- pass dev pointer to probe
+- Link to v2: https://lore.kernel.org/r/20241108-b4-max17042-v2-0-f058f7a16bab@gmail.com
+
+Changes in v2:
+- drop NACKed commits
+- make shared interrupts unconditionally
+- rework descriptions
+- add platform driver version
+- Link to v1: https://lore.kernel.org/r/20241109-b4-max17042-v1-0-9e2b07e54e76@gmail.com
+
+---
+Dzmitry Sankouski (2):
+      power: supply: max17042: make interrupt shared
+      power: supply: max17042: add platform driver variant
+
+ drivers/power/supply/max17042_battery.c | 200 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------
+ 1 file changed, 142 insertions(+), 58 deletions(-)
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241108-b4-max17042-9306fc75afae
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+Dzmitry Sankouski <dsankouski@gmail.com>
+
