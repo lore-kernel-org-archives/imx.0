@@ -1,62 +1,62 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BD5192B60
-	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 11:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36861885A0
+	for <imx@lists.linux.dev>; Mon, 23 Dec 2024 11:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734952635; cv=none; b=HuNqNnTYWwjZTsv8mGdRK1R5gU6ifcPa7CcK6IlYi2mvbNSoDqUvALI/vnfbAc5PwFRwDwQ4CjCr0oWtBqBVHf4TWWurRK6P2SY/3fpgnKUyrmWRCAnABWLqfUu5e7IMUVfs8gV3Ajw99Y4rlNYlaYSpmtD4gqqHdzsRkLsaciw=
+	t=1734953538; cv=none; b=A2lCvzMX9eIxNqXfaTTMmQ0wGug3TWzBJiedyLBVwMEsY3vw1ZgE9QDlPyc5j/L3wugFTF6/6ztXfWcCR3Wg9ggm6pU7lYlgdslzR09er9dESQ0S6ncDx8SES+YT+n+1blxi3hlni+qghIxjtRIjI4FPX9vAXacI05elXnLodCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734952635; c=relaxed/simple;
-	bh=gddnFubPquA8KlRVCcM7OyD1/U0UlHokw/tbt7He7RM=;
+	s=arc-20240116; t=1734953538; c=relaxed/simple;
+	bh=dwgXZ7OjRV0NuQeTGYq8Bqun8q13W8uT0PDCRiPFdCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZuUN206StNBqqcu+CDsAy6NVhcSl8D95ZLvByKikpptUcZPPWsf0UUg4U7Zsn2pW1iSC/5ZJC35yPHYpxGa6oFcavQkXZ9stDTvZz8sHis6yI1U+nk/xV6GeAHwtvPr3OE7iAruvZhtIqxOUp+z3V5VvuNPtfHU9seZAuS4EkoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dfp+UjQq; arc=none smtp.client-ip=209.85.167.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=jsNoUQ98CPMFvtl+9dv/m8OYqAqmHqSjrwWART9kpfmTBOt2wvSNbc4UJiVxCuopI2EtZmxItlQlyGcdVBTN8n4tq7ElPZ9iOMhJa7vKq2wFy00iqdylO8qaNYvsIFh4o3gay8PqN634DZ0wVmkp1t+oMniOHkmM8a0Y7z/lunQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qr36ZfKG; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dfp+UjQq"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5401d3ea5a1so4201015e87.3
-        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 03:17:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qr36ZfKG"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54020b0dcd2so5428115e87.1
+        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 03:32:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734952631; x=1735557431; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1734953534; x=1735558334; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oAg0zQo1HvAo0iqaanIJTGGSdxrt4g4lbpXT4Fzk4t8=;
-        b=dfp+UjQqPkLvlXfSI9tBEqKAvx9J/tCmzrrGmYjXGOH2b7f9LA8VdenIYF14MJ6c4W
-         GUGiJpy1U6Zxtvz596nbPSlTdBWXeBqkerR8nXTr990OtOo6lZhS/vNxzcxGNmtfK/BF
-         1L5uoPxfszMUse4gLtF+74JA7lmthlLuEWMyOPDbXKEpsZx4F24QTybwkiWUSRVw4gA/
-         kJxDawzzLtwD53F92+XpMVM1FgHUlA6KscTwo4vRnZKgBDya7kdJUF1/gsFGDLqEu8BF
-         7TlPl95ggMcAE6Z0pEHWPV4QZkbUTHuiKC6iqr+3vV2NJju/5QcsogIWf/4GV8//BL5c
-         xDAQ==
+        bh=Io0aFnNNwQiWHsIlYK7BZZBTMpe4hxTbSGJahPhqnd0=;
+        b=qr36ZfKGT5Ri+NoOFGGpQsuP/Xx7VxcFb9ELCte7yuYi+K0+2tKm9zGKV8QKhAy6i9
+         Q8fn+DYO1fos4fn8WgXU5yW3kMHpsXV1r0cJ/lprfgawhgLy72wrf156UHuL4Sf5PjS/
+         2vfQ0vJ23Iu+qYPRyCMGKo0IXyWBuh3ZTRVL43JsFEQi+g1yywFzbk5RudsOpdTCNshP
+         4Zx9/u3crCa1WDcLJpnYpJhtZ3ikYu7oCuL0xzL2EuXmIWUQ7ezMqR+1iGtLy5ZGugeK
+         azOclllkrv9EGi8UCrz+8Svg4rSYUziyjvg2kwRlHK82NxCRmdSoyVNF25u14mv7O0Ju
+         qVEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734952631; x=1735557431;
+        d=1e100.net; s=20230601; t=1734953534; x=1735558334;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oAg0zQo1HvAo0iqaanIJTGGSdxrt4g4lbpXT4Fzk4t8=;
-        b=elnBCOb61DcSJ6jJEU63WdmVY/kFQ7b97OVfBQwn/ldzGvX/f9LUFvbVGj8sd5Sdxe
-         ZLleuvjlkOlQRJ370vPhI+fdjHSU9yHuZK+H/U4R/xecDKW+AhxwEYmBmdKzuOyIXlfD
-         7Mwn3rnappstMxgRzcvfr4g8jXbKA2/5ul6eMY8YP2Eebce8k8FMpE2mZRKO2H8KF0ok
-         Gj6ibvDK8fwmYB1NBVIbc2KzAK20lMUw3e+6jX4DXPfiG2vldgPFIBp822oZZIDir8a+
-         rt1ax1RpYrSeFnTB0+WmoBWDnpr+qOJ/nzJJ4HMgl0LiVnIbD/NhSvJS4CNclT4/Svfw
-         4UcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUEuws74nk3HP6u+99PJabmvq1QXST2CQhh12CMr2YO5D8RrHrC7ItyE55+0j9Ow1Fo6c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyvqNtwtFT/DI/UGWeCPXTHD2Emma0uOk7EWGYm9Hdh3GkDwZm0
-	kzCV+fOTOgyFwLa0jPL4c7ypljiN6GwXlBA1Jkeni4BicpEBErPBKVxeVqz20cQ=
-X-Gm-Gg: ASbGnct/pbctHYLWBeQVr+qr0YeJnXSJafPpagOeqZGJa2pVFilsD8e92JXjKBmiye6
-	nI2TC5Ju0F0zKEPWF+9aH+FpsEPBcj9K8r473TQTHZw4Su/wo3zrmMfv082tXSAKUGRwPDrI4DT
-	bfuzgbutGcTqHQOAmIA9rBEDPHKEgK4u1Qi2rG75rBld3Kn8uCS7Dt7hnIYcrUON3KTPfRRXKCq
-	klF7Y+5QWbncCBd3I5K7KkHAgOjjDaWZnilwv/S7cjpjcPpGGMfjxdJOrAOHa7FDmLeCYQGqeLk
-	8L/m8Z+F17nh85erz7PrcofTktJgFIBpINpO
-X-Google-Smtp-Source: AGHT+IGwOxJn54Td8r+NyaqARiydob0173z+5mppR6r0JXqtqFfPSqJJa2vifkVmQItUKQ/aSDHrlg==
-X-Received: by 2002:a05:6512:39cc:b0:542:250d:eefb with SMTP id 2adb3069b0e04-5422955fd2fmr4096765e87.41.1734952631337;
-        Mon, 23 Dec 2024 03:17:11 -0800 (PST)
+        bh=Io0aFnNNwQiWHsIlYK7BZZBTMpe4hxTbSGJahPhqnd0=;
+        b=P1Lk7gOuMVtEDaZvktId8r0IxEAOFm2aTANCguciXm8vSzFN+T/Xeq5gTFGj9CoQYj
+         BOwKJ0tfF/vlOkPbPe/ePaMNeryIThBxSojzdxwVhW/s83NuPiF/PqSoVlSiFF1GGaf5
+         bdvYZWS/TbYhcm+jEquLHI1bpP5MkOQbNPFYYDF7QJWlr9ZtX+ZV9eKUFeM5qzkFN/iL
+         ERJx4/e2frMf66G9Ib/CIZ28xPEPe9iXbTmnoRPRM7NeYrEgpbXuM+5jSvhMtUlNU6r+
+         0joO3gXAfKQr/pY6UFjXLIizPPOS3EvE6ijqN5DLAdzdkNL8pLeZD+FpP8UF9sMJAq9U
+         2ukg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvcqJF7IOSMfi74IWxnMwvjZEyPpNxiMM9d7Qu4Wm09MrvJ4mWeIQAzRpSkVdeYm4Np5M=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx/tYIKj0ltNfMuvB5O2cTeq8qpAbKiUNMPyUfE647Mih+mKR18
+	YTbo7QdYU9SuC/tiwKIG95Xz0XMTBjU6ywAHhV4ej9SxPOv91Hggq0jNCJ5qEso=
+X-Gm-Gg: ASbGncuJ30xfGCLofxcTySh8lJMRiLouuo/IUq5GpjtPoU4UdqrFhhAHfGkFO/8Pt9f
+	dmwjXUAyZw/8KQFXmIJbTXQHTeSbcqKvmk/KRbnrnU4SlEJOLRUZ3DEkgJyMaqytDBj8gw3VpF7
+	lmWsxQ5yfGn5Xdj4HkF4vpY47u1+/0XkLT2VV8o/TNezptymMEjF4JsTNaO7vU48TgqK0MNySu1
+	DQSUbb0bKLM9JgXNrKlCRu3dV7nusQ4NU6pgCR4XQs9gSoWAfawv97yAKudhSuuYfOJr8QHVPAJ
+	AqgMMsnZFZgYFV+NarMz2Sj07kfznFvt3XHS
+X-Google-Smtp-Source: AGHT+IFQAVVka8tfhQQLypKSuFFeZTfbXIdbwFKArHWMlABaOq9wX6sZw2Zp8LWAHfr0uv4tXZ5d1Q==
+X-Received: by 2002:a05:6512:23a2:b0:542:1bdb:9a61 with SMTP id 2adb3069b0e04-5422946f053mr3666830e87.19.1734953533962;
+        Mon, 23 Dec 2024 03:32:13 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223825f48sm1244622e87.225.2024.12.23.03.17.08
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223831fdesm1270675e87.241.2024.12.23.03.32.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2024 03:17:10 -0800 (PST)
-Date: Mon, 23 Dec 2024 13:17:07 +0200
+        Mon, 23 Dec 2024 03:32:12 -0800 (PST)
+Date: Mon, 23 Dec 2024 13:32:10 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Liu Ying <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
@@ -68,11 +68,10 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
 	kernel@pengutronix.de, festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, 
 	kishon@kernel.org, aisheng.dong@nxp.com, agx@sigxcpu.org, 
 	u.kleine-koenig@baylibre.com, francesco@dolcini.it, frank.li@nxp.com
-Subject: Re: [PATCH v7 11/19] drm/imx: Add i.MX8qxp Display Controller
- interrupt controller
-Message-ID: <6eg5ahmcxfvwzoybqqcksqergoeu5ivsqshfjjmotwe6t4brge@aahohpjlfqic>
+Subject: Re: [PATCH v7 12/19] drm/imx: Add i.MX8qxp Display Controller KMS
+Message-ID: <wpxxedxabgo2kxf5wuosu76i5ud3ce2tywm2imhvad4nyy5u2d@qgfhev2hndba>
 References: <20241223064147.3961652-1-victor.liu@nxp.com>
- <20241223064147.3961652-12-victor.liu@nxp.com>
+ <20241223064147.3961652-13-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,55 +80,108 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241223064147.3961652-12-victor.liu@nxp.com>
+In-Reply-To: <20241223064147.3961652-13-victor.liu@nxp.com>
 
-On Mon, Dec 23, 2024 at 02:41:39PM +0800, Liu Ying wrote:
-> i.MX8qxp Display Controller has a built-in interrupt controller to support
-> Enable/Status/Preset/Clear interrupt bit.  Add driver for it.
+On Mon, Dec 23, 2024 at 02:41:40PM +0800, Liu Ying wrote:
+> i.MX8qxp Display Controller(DC) is comprised of three main components that
+> include a blit engine for 2D graphics accelerations, display controller for
+> display output processing, as well as a command sequencer.  Add kernel
+> mode setting support for the display controller part with two CRTCs and
+> two primary planes(backed by FetchLayer and FetchWarp respectively).  The
+> registers of the display controller are accessed without command sequencer
+> involved, instead just by using CPU.  The command sequencer is supposed to
+> be used by the blit engine.
 > 
 > Reviewed-by: Maxime Ripard <mripard@kernel.org>
 > Signed-off-by: Liu Ying <victor.liu@nxp.com>
 > ---
 > v7:
-> * Fix regmap_config definition by removing name field, correcting read ranges
->   and setting max_register field.
+> * Drop using typeof in macros and explicitly define variable types. (Dmitry)
+> * Add a comment for disable_irq_nosync() to explain why _nosync. (Dmitry)
+> * Inline dc_crtc_check_clock(). (Dmitry)
+> * Use global drm_dc->pe. (Dmitry)
+> * Drop dc_crtc_disable_at_unbind(). (Dmitry)
+> * Add kernel doc for struct dc_{crtc,drm_device,plane}. (Dmitry)
+> * Define common IRQ handlers separately for each IRQs. (Dmitry)
+> * Rebase this patch upon next-20241220, so drop date entry from drm_driver
+>   and correctly include drm/clients/drm_client_setup.h.
 > * Collect Maxime's R-b tag.
 > 
 > v6:
 > * No change.
 > 
 > v5:
-> * Replace .remove_new with .remove in dc-ic.c. (Uwe)
+> * Replace .remove_new with .remove in dc-drv.c. (Uwe)
 > 
 > v4:
-> * Use regmap to define register map for all registers. (Dmitry)
-> * Use regmap APIs to access registers. (Dmitry)
-> * Use devm_kzalloc() to drmm_kzalloc() to allocate dc_ic_data data strutures.
-> * Set suppress_bind_attrs driver flag to true to avoid unnecessary sys
->   interfaces to bind/unbind the driver.
-> * Take DC interrupt controller driver as a standalone driver instead of a
->   component driver.
-> * Replace drmm_kcalloc() with devm_kcalloc() to allocate an array for
->   struct dc_ic_entry.
-> * Call platform_get_irq() from DC interrupt controller driver to make sure
->   parent interrupt controller driver is probed first.
+> * Move dc_fg_displaymode(), dc_fg_panic_displaymode() and dc_lb_blendcontrol()
+>   function calls from KMS routine to initialization stage. (Dmitry)
+> * Drop dc-crtc.h and dc-plane.h header files and move relevant defines to
+>   appropriate .h header files or .c source files. (Dmitry)
+> * Drop futile "else" clause from dc_crtc_common_irq_handler(). (Dmitry)
+> * Drop dc_drm->pe_rpm_count. (Dmitry)
+> * Drop DC_{CRTCS,ENCODERS,PRIMARYS} macros and only use DC_DISPLAYS. (Dmitry)
+> * Drop drmm_kcalloc() function call to allocate an array for storing IRQs.
+>   Instead, put it in struct dc_crtc.  (Dmitry)
+> * Call devm_request_irq() to request IRQs, instead of using drmm action.
+>   (Dmitry)
+> * Call devm_drm_of_get_bridge() to find the next bridge. (Dmitry)
+> * Select DRM_CLIENT_SELECTION due to rebase.
+> * Select the missing DRM_DISPLAY_HELPER and DRM_BRIDGE_CONNECTOR.
+> * Use DRM_FBDEV_DMA_DRIVER_OPS due to rebase.
+> * Replace drm_fbdev_dma_setup() with drm_client_setup_with_fourcc() due to
+>   rebase.
+> * Replace drmm_add_action_or_reset() with devm_add_action_or_reset() to
+>   register dc_drm_component_unbind_all() action.
+> * Request interrupts in dc_crtc_post_init() after encoder initialization to
+>   make sure next bridge is found first.
 > 
 > v3:
 > * No change.
 > 
 > v2:
-> * No change.
+> * Find next bridge from TCon's port.
+> * Drop drm/drm_module.h include from dc-drv.c.
 > 
->  drivers/gpu/drm/imx/dc/Kconfig  |   1 +
->  drivers/gpu/drm/imx/dc/Makefile |   2 +-
->  drivers/gpu/drm/imx/dc/dc-drv.c |   1 +
->  drivers/gpu/drm/imx/dc/dc-drv.h |   1 +
->  drivers/gpu/drm/imx/dc/dc-ic.c  | 282 ++++++++++++++++++++++++++++++++
->  5 files changed, 286 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/gpu/drm/imx/dc/dc-ic.c
+>  drivers/gpu/drm/imx/dc/Kconfig    |   5 +
+>  drivers/gpu/drm/imx/dc/Makefile   |   5 +-
+>  drivers/gpu/drm/imx/dc/dc-crtc.c  | 556 ++++++++++++++++++++++++++++++
+>  drivers/gpu/drm/imx/dc/dc-de.h    |   3 +
+>  drivers/gpu/drm/imx/dc/dc-drv.c   | 238 +++++++++++++
+>  drivers/gpu/drm/imx/dc/dc-drv.h   |  22 ++
+>  drivers/gpu/drm/imx/dc/dc-kms.c   | 143 ++++++++
+>  drivers/gpu/drm/imx/dc/dc-kms.h   | 131 +++++++
+>  drivers/gpu/drm/imx/dc/dc-plane.c | 241 +++++++++++++
+>  9 files changed, 1342 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-crtc.c
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.c
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.h
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-plane.c
+> 
+
+
+> +
+> +static int dc_plane_check_no_off_screen(struct drm_plane_state *state,
+> +					struct drm_crtc_state *crtc_state)
+> +{
+> +	if (state->dst.x1 < 0 || state->dst.y1 < 0 ||
+> +	    state->dst.x2 > crtc_state->adjusted_mode.hdisplay ||
+> +	    state->dst.y2 > crtc_state->adjusted_mode.vdisplay) {
+> +		dc_plane_dbg(state->plane, "no off screen\n");
+> +		return -EINVAL;
+> +	}
+
+Nit: doesn't drm_atomic_helper_check_plane_state() ensure in this already?
+
+With that in mind
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
+
+> +
+> +	return 0;
+> +}
+> +
 -- 
 With best wishes
 Dmitry
