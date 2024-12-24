@@ -1,70 +1,69 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D7B13B5A9
-	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 06:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3E214A604
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 06:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735022276; cv=none; b=ADUreJ+OvX2drM0JRfH3Tifzvdl9CmtEfYQwHYVfOoloQA7+bnwLR6t/eFx1ZnLf6XFk/r27iqkMx++TVZMFQdqlRqAPh18oQZ93hFHz7IPTXfl7vfsF0nFASDQfT85pZo5094mNOS1YuS+5oyvJ4SrN88jbSKn5Wr3doX2xVQs=
+	t=1735022655; cv=none; b=TpAik84RJNSbsu57NZKkvAMTPlg3rZPnS6GuW2KpGF9eqhikawkqloF46/4wh58RcTK8jT7YNryedVLlJmK0QASm+uMSk3UBBvuGq32T03RTLXh/ohu1v2nlarjta7Y0oONFLX+HNCAdCA2uqviKuBQ9Os0eTUH9Lv6qAMq1gX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735022276; c=relaxed/simple;
-	bh=mt3EqcyL8/UMGoGI1GrqjkkrWqp9NorsX25jSpwFOW8=;
+	s=arc-20240116; t=1735022655; c=relaxed/simple;
+	bh=LUabrqiPrCSZAufAxRrURBhdoqMXBCHPWlROHCIC/ho=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RUf+U2Odz5wxejG1IB+i9xNQ1ioFEFXvazWgCvzboefvngKC3Sey6HVvVgnpxR9rdullL/qZm/GxtvjLa/DeFZJKcRGT6HSnTlmWrco5aW+tNiQaSJYTFsqELoBfpEbDPvqpyjJTg+W8KsApL14H/jX0rrWo/Ob+I11GCypI+Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZtFy/X7r; arc=none smtp.client-ip=209.85.219.180
+	 To:Cc:Content-Type; b=MTAE5UtkUEvC1rTRV9fd1NX6vbI9seeRakmMYQd5XEoy7Ww3MEGhjp9KkAud/LiyqdY07axICItanFAmrvpgQnG6RESfTAU5pM9TxGeoCn6PfRYnjF5tiQOwNrloLGCM/PNEgSjjWyenU5QY2xvJKRItkoXPT8WM4mIvdWsRDNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yYPXdmqM; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZtFy/X7r"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e399e904940so3990741276.2
-        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 22:37:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yYPXdmqM"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e39841c8fd6so4293822276.3
+        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 22:44:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735022272; x=1735627072; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1735022652; x=1735627452; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=o1XvnZFs6gULC9u+/TF7lOR4yZnTuNv7QjOSNUS7iok=;
-        b=ZtFy/X7rDzTs2AU/xxO7eS2Y/6pX83dV5tLzugF0N4dY/S+fOQrb4qlEZBG2FqkNpD
-         RmSbkLXEkrFu8n8ZUEuSDVaSek6B1Dt9VABC/AOHL2YyXY2wC0rrp0qhF6lZP1gZBW1X
-         omALYmJ8s/XYZyZwCSWFA86H3t3uSzp+nJT+jv6bUtJ3VVUXk7vnpwll6uMMd1Egk7Nw
-         hDyu2nyXqJZRfmECD6suRscCp2WTV8JRg/dAXZEd7AylpNhiqylGayircYehAU2QEBN7
-         n0L4rUOkgwjLiWJbay9HuIvgEKTMgzwxBS++GBQ3RjNHQYYV7DSsH21EBTlz6gFmCXPh
-         pJNg==
+        bh=NZ/Zn/msJw83LpGcMMqNF9uWvU5YMyMm9vbqQhCTzPk=;
+        b=yYPXdmqM79jI2PzWtOkZ/iRuSMnHgMBtO4tNBwu8NmNi8FjT8hSTzU7hWRA0/3I8Ev
+         ZbK5cAe/qg2Zy73VGrIjlSWm/tmoKiZX/UJU2F4Zpk+byllm5cxBeRALpFoQLROmMdDK
+         hDJXzvqWoTxftqdZWYuZJDFvdMrsbxhyYIXX7YHkapRVy3dFmFSm+JKbjP2mG6CiAJS4
+         zYrHtpR+l/yqt55Xxy1piJJ/g+aeKhkdbNuC7PTXrWnNib6wfR7T8w7RuWiFeL1xccnZ
+         RJKxJAse+ZeAdiIPJ5GagWg/e3dIax4fPEZtkfUXo+7RfQJhXS1MTlvGKEucy09pYA8h
+         EGQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735022272; x=1735627072;
+        d=1e100.net; s=20230601; t=1735022652; x=1735627452;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=o1XvnZFs6gULC9u+/TF7lOR4yZnTuNv7QjOSNUS7iok=;
-        b=E16BZB0TWLv7BumKz8Hw6uYr18Fxy8asQirFvINYcdKicNeYGy7bYMFNMxp25R/iFS
-         5q2ie6DbNeEUM+ZmgRBmy8oHsxpA5fHER0cJUChkSIU3Vh4BDQz9WL8aGjzwvYY8LIqS
-         WEsZkIgcAyc9kZR+OAcroNEg0xji2PEubyuH33WygDwAcIc3IVsxyxXBaeJtChKzA1nh
-         U93+lSXFPE2NPTvZdx//mv4TSvc8I5iS05qH6i7PkhuCn1e5dyXcfoSOOWFubPv37NKr
-         7WSWa6UE9BwNgND+D2SE/oJ19GHqcYm1a09JVwi4vahgQvMtSOsao76hCh9qLPnt++ol
-         aasA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAKM3/V/5d7HtW0nr6HnO99duLP6uLH/TxEEsLcXOGVXdT2y1LMRmMTqv5k5qU1r1iv2s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhMYJd6EdyMXjMuLuD+Drbw/t5iBbUJe7y0w6F/AJLjuILSHRQ
-	5eQJ9/UiHdHD9g3FfFf6voW91i+lgskjBToSI970YofqdhKrVy16dndNPQs2xqK18HtYi2DnZyv
-	e10BBtfygSO+YHQh7B2bYBnW1am51af3f+BMt7g==
-X-Gm-Gg: ASbGnct9sZwj/NzxhhmxFrW93rb7w4u7j8gDbXb40okAe+8f45+xVJtI4O7F7N545fw
-	MjYijZ8yf35eOma1jCJpbN0Lcg7rcZ2rzZxdU+VnFLBxjRDX28dwI
-X-Google-Smtp-Source: AGHT+IFZ8ke7ALCJ3nOuLTQKsekeJoRs3cJKquLJ733BfXm3xrOprg1bOLqkxV6UJrbJ7rSuBs35FEWCK/hX2TFMd+E=
-X-Received: by 2002:a05:690c:7402:b0:6ef:7370:96ee with SMTP id
- 00721157ae682-6f3f812055fmr116458157b3.12.1735022271919; Mon, 23 Dec 2024
- 22:37:51 -0800 (PST)
+        bh=NZ/Zn/msJw83LpGcMMqNF9uWvU5YMyMm9vbqQhCTzPk=;
+        b=StDk1Yu3lRmp7Ov7/wN6Mq6KeYU/qsIpjuAH1iI1y6exJu9ssGsoKDDExYKUuckKJq
+         xLQx3K1Bznw5Sx+SGwGu5j2NDRdFDiYUGeVlJC9hdDxdFPOwrqgaHyFkaPd3h3N2+iCl
+         eLKL8jOaYCCYim8ykLoIDf4ZbmXUyuvbqRMEfGSpLnU0pT7PEBEckqaOwlvkNjuupJV8
+         jEliBr/h8q9ZFV1FImPsSRexpjqZJkce/1jogzTT6REdkFvv74QH4z73tBzh9Yi8axK4
+         zGr1PVt9G+uSXrkayBzHMlvLs9v+sjP0hBuO56ToqasV/LLBrfRYgfrr+S+GRYld7LDc
+         RmEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlj+hgLDKbP6OdprZQpgJMquRf7OC78s1u/LaXhRl4DkTMZEcq/I/lUIJcEskySUZpYb0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxriLOCDAwum5wWX6+6rCfT06A8maId7/oWBI0vGddvmfnfzdIz
+	Uuwrag5bvZ9Bg3YKzq5y3DeJANCRwpGDRESu6kieJ4LUXQPcw9TZ2hYLGrZpR6rPWgFherr+rI8
+	sdh/u25j0992d2YXhDrqmvz04LMb7I/MmldDrXA==
+X-Gm-Gg: ASbGncswSCfDZSim5joCnzrIQnlD1XxmX/tc6HAsCW6nl6SZLhilwb5K/ePFVH6g/zv
+	OSR/F1rBCyebCZE77gTPJFx9SFSl144bWxPbgjLI2l0z3JbG3d8Kd
+X-Google-Smtp-Source: AGHT+IH+tUx3wsKXoRccfhQ9sC/ui1pPyLa1/HDfJqJRr5j8UEnntJ1fSPiiiZze29cEu6LVIRZLDndyqvIvmsnlI1A=
+X-Received: by 2002:a05:690c:6182:b0:6ef:5fee:1ca6 with SMTP id
+ 00721157ae682-6f3f8110472mr107964417b3.18.1735022652292; Mon, 23 Dec 2024
+ 22:44:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241223064147.3961652-1-victor.liu@nxp.com> <20241223064147.3961652-4-victor.liu@nxp.com>
- <kpem2w4wu7ywc5pvbk3ls5hsyttrwcylomzfh567ejlxkymeqd@cujrbfxgrntc> <73c80079-582a-40cb-b9e1-e20fc96fe603@nxp.com>
-In-Reply-To: <73c80079-582a-40cb-b9e1-e20fc96fe603@nxp.com>
+References: <20241223064147.3961652-1-victor.liu@nxp.com> <20241223064147.3961652-10-victor.liu@nxp.com>
+ <6mhlb26vdfc7v3jmb7y3tlcuo336x7vkblbkzd5sosd6urirou@bbfalnfisdij> <b2d78f9f-014d-475b-86f1-9916ad6a3126@nxp.com>
+In-Reply-To: <b2d78f9f-014d-475b-86f1-9916ad6a3126@nxp.com>
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 24 Dec 2024 08:37:41 +0200
-Message-ID: <CAA8EJpqJiiR15Xxw3j+vGPUBYYLgvxuXKeigMGBb4F3w178cfA@mail.gmail.com>
-Subject: Re: [PATCH v7 03/19] dt-bindings: display: imx: Add i.MX8qxp Display
- Controller display engine
+Date: Tue, 24 Dec 2024 08:44:01 +0200
+Message-ID: <CAA8EJpom94QfZm5es7i1eVpzeL0svQYDEcGzd0atbgNYCv1osA@mail.gmail.com>
+Subject: Re: [PATCH v7 09/19] drm/imx: Add i.MX8qxp Display Controller display engine
 To: Liu Ying <victor.liu@nxp.com>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
@@ -78,338 +77,263 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
 	frank.li@nxp.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 24 Dec 2024 at 07:56, Liu Ying <victor.liu@nxp.com> wrote:
+On Tue, 24 Dec 2024 at 08:21, Liu Ying <victor.liu@nxp.com> wrote:
 >
 > On 12/23/2024, Dmitry Baryshkov wrote:
-> > On Mon, Dec 23, 2024 at 02:41:31PM +0800, Liu Ying wrote:
-> >> i.MX8qxp Display Controller display engine consists of all processing units
-> >> that operate in a display clock domain.
+> > On Mon, Dec 23, 2024 at 02:41:37PM +0800, Liu Ying wrote:
+> >> i.MX8qxp Display Controller display engine consists of all processing
+> >> units that operate in a display clock domain.  Add minimal feature
+> >> support with FrameGen and TCon so that the engine can output display
+> >> timings.  The FrameGen driver, TCon driver and display engine driver
+> >> are components to be aggregated by a master registered in the upcoming
+> >> DRM driver.
 > >>
+> >> Reviewed-by: Maxime Ripard <mripard@kernel.org>
 > >> Signed-off-by: Liu Ying <victor.liu@nxp.com>
 > >> ---
 > >> v7:
-> >> * Drop DT alias documentations and add instance numbers to compatible strings.
-> >>   (Rob)
+> >> * Add kernel doc for struct dc_drm_device. (Dmitry)
+> >> * Fix regmap_config definitions by correcting name field, correcting read
+> >>   ranges and setting max_register field.
+> >> * Get instance numbers from device data(compatible strings) instead of OF
+> >>   aliases.
+> >
+> > Unfortunately no. Your instances are compatible on the hardware level
+> > (at least they were with the previous versions, I don't think that
+> > there was a silicon change).
+>
+> v5/v6 use OF aliases to the instance numbers, but in v6 Rob said it's
+> abusing aliases because the aliases contain display controller instance
+> number, like "dc0-display-engine0"(i.MX8QM SoC has two display controllers).
+> Or, use OF graph to describe all connections between the display controller's
+> internal devices, but it's too complex. So, I choose to add the instance
+> numbers to compatible strings.
+>
+> >
+> >> * Collect Maxime's R-b tag.
+> >> * Trivial tweaks.
 > >>
 > >> v6:
 > >> * No change.
 > >>
 > >> v5:
-> >> * Document aliases.  Drop Rob's previous R-b tag. (Maxime)
+> >> * Replace .remove_new with .remove in dc-{de,fg,tc}.c. (Uwe)
+> >> * Select REGMAP and REGMAP_MMIO Kconfig options.
+> >> * Fix commit message to state that display engine driver is a component driver
+> >>   instead of a master/aggregate driver.
 > >>
 > >> v4:
-> >> * Collect Rob's R-b tag.
+> >> * Use regmap to define register map for all registers. (Dmitry)
+> >> * Use regmap APIs to access registers. (Dmitry)
+> >> * Inline some small functions. (Dmitry)
+> >> * Move dc_fg_displaymode() and dc_fg_panic_displaymode() function calls from
+> >>   KMS routine to initialization stage. (Dmitry)
+> >> * Use devm_kzalloc() to drmm_kzalloc() to allocate dc_* data strutures.
+> >> * Drop unnecessary private struct dc_*_priv.
+> >> * Set suppress_bind_attrs driver flag to true to avoid unnecessary sys
+> >>   interfaces to bind/unbind the drivers.
 > >>
 > >> v3:
 > >> * No change.
 > >>
 > >> v2:
-> >> * Drop fsl,dc-*-id DT properties. (Krzysztof)
-> >> * Drop port property. (Krzysztof)
-> >> * Fix register range sizes in example.
+> >> * Use OF alias id to get instance id.
+> >> * Add dev member to struct dc_tc.
 > >>
-> >>  .../imx/fsl,imx8qxp-dc-display-engine0.yaml   | 235 ++++++++++++++++++
-> >>  1 file changed, 235 insertions(+)
-> >>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
+> >>  drivers/gpu/drm/imx/Kconfig     |   1 +
+> >>  drivers/gpu/drm/imx/Makefile    |   1 +
+> >>  drivers/gpu/drm/imx/dc/Kconfig  |   7 +
+> >>  drivers/gpu/drm/imx/dc/Makefile |   5 +
+> >>  drivers/gpu/drm/imx/dc/dc-de.c  | 153 +++++++++++++
+> >>  drivers/gpu/drm/imx/dc/dc-de.h  |  62 ++++++
+> >>  drivers/gpu/drm/imx/dc/dc-drv.c |  32 +++
+> >>  drivers/gpu/drm/imx/dc/dc-drv.h |  29 +++
+> >>  drivers/gpu/drm/imx/dc/dc-fg.c  | 378 ++++++++++++++++++++++++++++++++
+> >>  drivers/gpu/drm/imx/dc/dc-tc.c  | 142 ++++++++++++
+> >>  10 files changed, 810 insertions(+)
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/Kconfig
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/Makefile
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-de.h
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-drv.h
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-fg.c
+> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-tc.c
 > >>
-> >> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
-> >> new file mode 100644
-> >> index 000000000000..60d1e0a4a5dd
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
-> >> @@ -0,0 +1,235 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-display-engine0.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Freescale i.MX8qxp Display Controller Display Engine
-> >> +
-> >> +description:
-> >> +  All Processing Units that operate in a display clock domain. Pixel pipeline
-> >> +  is driven by a video timing and cannot be stalled. Implements all display
-> >> +  specific processing.
-> >> +
-> >> +maintainers:
-> >> +  - Liu Ying <victor.liu@nxp.com>
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    enum:
-> >> +      - fsl,imx8qxp-dc-display-engine0
-> >> +      - fsl,imx8qxp-dc-display-engine1
 > >
-> > Is there actual difference between engines 0 and 1? If there is none,
-> > why are you artificially adding one here?
->
-> I think engine 0 and 1 have the same HW implementation, but they connect
-> to different ExtDsts through FrameGens.  The two compatible strings make
-> it possible for an operating system to figure out which engine is which
-> by getting the instance numbers from them.
-
-This is about HW description, no OS in place.
-
->
-> If the two engines use a same compatible string, then either 1) use
-> DT aliases to get the instance number(as v5/v6 do) or 2) use OF graph to
-> describe the connections between FrameGens and ExtDsts.  However, in v6,
-> Rob doesn't like 1) because it abuses the aliases which contain the display
-> controller instance number, like "dc0-display-engine0"(i.MX8QM SoC has
-> two display controllers), and 2) is too complex because all connections
-> between internal devices need to be documented with OF graph.  So, I choose
-> to use the two compatible strings, like brcm,bcm2835-pixelvalve0.yaml does.
-> Thinking about 2) more, maybe the connections between pixel engine and
-> display engines need to be documented too, which seems to be more or less
-> duplicating the connections between FrameGens and ExtDsts.
-
-3) use IO addresses to determine the block ID. I think this has been
-pointed out by somebody else too, not only by me.
-
->
->                                            CF0/1/4/5
->                            PE               | | | |
->                                             V V V V  primary layer cross bar
->                           +------------------------------------------+
->                           |                                          |
-> 4 FUs + (VS4/5 + HS4/5) =>|               LB0/1/2/3                  |
->    secondary layer        |                                          |
->    cross bar              +------------------------------------------+
->                              |          |              |          |
->                              V          V              V          V
->                           +-----+    +-----+        +-----+    +-----+
->                           | ED0 |    | ED4 |        | ED5 |    | ED1 |
->                           +-----+    +-----+        +-----+    +-----+
-> -----------------------------|----------|--------------|----------|-------------
->                           content     safety        safety     content
->                           stream0    stream0        stream1    stream1
->                              |          |              |          |
->                              |  DE0     V              V    DE1   |
->                              |       +-----+        +-----+       |
->                               ------>| FG0 |        | FG1 |<------
->                                      +-----+        +-----+
->                                         |              |
->                                         V              V
->                                        ...            ...
->
+> > [...]
 > >
 > >> +
-> >> +  reg:
-> >> +    maxItems: 2
+> >> +static int dc_de_bind(struct device *dev, struct device *master, void *data)
+> >> +{
+> >> +    struct platform_device *pdev = to_platform_device(dev);
+> >> +    struct dc_drm_device *dc_drm = data;
+> >> +    void __iomem *base_top;
+> >> +    struct dc_de *de;
+> >> +    int ret;
 > >> +
-> >> +  reg-names:
-> >> +    items:
-> >> +      - const: top
-> >> +      - const: cfg
+> >> +    de = devm_kzalloc(dev, sizeof(*de), GFP_KERNEL);
+> >> +    if (!de)
+> >> +            return -ENOMEM;
 > >> +
-> >> +  resets:
-> >> +    maxItems: 1
+> >> +    de->id = (enum dc_de_id)(uintptr_t)device_get_match_data(dev);
 > >> +
-> >> +  interrupts:
-> >> +    maxItems: 3
+> >> +    base_top = devm_platform_ioremap_resource_byname(pdev, "top");
+> >> +    if (IS_ERR(base_top))
+> >> +            return PTR_ERR(base_top);
 > >> +
-> >> +  interrupt-names:
-> >> +    items:
-> >> +      - const: shdload
-> >> +      - const: framecomplete
-> >> +      - const: seqcomplete
+> >> +    de->reg_top = devm_regmap_init_mmio(dev, base_top,
+> >> +                                        &dc_de_top_regmap_config);
+> >> +    if (IS_ERR(de->reg_top))
+> >> +            return PTR_ERR(de->reg_top);
 > >> +
-> >> +  power-domains:
-> >> +    maxItems: 1
+> >> +    de->irq_shdld = platform_get_irq_byname(pdev, "shdload");
+> >
+> > Nit: shdload or shdld? Which one is used in the documentation?
+> >
+> >> +    if (de->irq_shdld < 0)
+> >> +            return de->irq_shdld;
 > >> +
-> >> +  "#address-cells":
-> >> +    const: 1
+> >> +    de->irq_framecomplete = platform_get_irq_byname(pdev, "framecomplete");
+> >> +    if (de->irq_framecomplete < 0)
+> >> +            return de->irq_framecomplete;
 > >> +
-> >> +  "#size-cells":
-> >> +    const: 1
+> >> +    de->irq_seqcomplete = platform_get_irq_byname(pdev, "seqcomplete");
+> >> +    if (de->irq_seqcomplete < 0)
+> >> +            return de->irq_seqcomplete;
 > >> +
-> >> +  ranges: true
+> >> +    de->dev = dev;
 > >> +
-> >> +patternProperties:
-> >> +  "^dither@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >> +    dev_set_drvdata(dev, de);
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-dither0
-> >> +          - fsl,imx8qxp-dc-dither1
+> >> +    ret = devm_pm_runtime_enable(dev);
+> >> +    if (ret)
+> >> +            return ret;
 > >> +
-> >> +  "^framegen@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >> +    dc_drm->de[de->id] = de;
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-framegen0
-> >> +          - fsl,imx8qxp-dc-framegen1
+> >> +    return 0;
+> >> +}
 > >> +
-> >> +  "^gammacor@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >
+> > [...]
+> >
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-gammacor0
-> >> +          - fsl,imx8qxp-dc-gammacor1
+> >> +struct dc_de {
+> >> +    struct device *dev;
+> >> +    struct regmap *reg_top;
+> >> +    struct dc_fg *fg;
+> >> +    struct dc_tc *tc;
+> >> +    int irq_shdld;
+> >> +    int irq_framecomplete;
+> >> +    int irq_seqcomplete;
+> >> +    enum dc_de_id id;
+> >
+> > Why do you need to store it? This patch makes use of it just for the
+> > registration.
+>
+> dc-crtc.c added in patch 12 would reference de->id. If no strong opinions,
+> I'd keep this as-is.
+
+Patch 12 uses de->id for two purposes: to assign dc_drm->de[ID] and to
+include ID into error messages. It might be better to use the DE
+device in dev_err instead of using generic DRM device and de->id.
+
+>
+> >
+> >> +};
 > >> +
-> >> +  "^matrix@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >
+> > [...]
+> >
+> >> +static int dc_fg_bind(struct device *dev, struct device *master, void *data)
+> >> +{
+> >> +    struct platform_device *pdev = to_platform_device(dev);
+> >> +    struct dc_drm_device *dc_drm = data;
+> >> +    void __iomem *base;
+> >> +    enum dc_fg_id id;
+> >> +    struct dc_fg *fg;
+> >> +    struct dc_de *de;
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-matrix0
-> >> +          - fsl,imx8qxp-dc-matrix1
+> >> +    fg = devm_kzalloc(dev, sizeof(*fg), GFP_KERNEL);
+> >> +    if (!fg)
+> >> +            return -ENOMEM;
 > >> +
-> >> +  "^signature@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >> +    id = (enum dc_fg_id)(uintptr_t)device_get_match_data(dev);
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-signature0
-> >> +          - fsl,imx8qxp-dc-signature1
+> >> +    base = devm_platform_ioremap_resource(pdev, 0);
+> >> +    if (IS_ERR(base))
+> >> +            return PTR_ERR(base);
 > >> +
-> >> +  "^tcon@[0-9a-f]+$":
-> >> +    type: object
-> >> +    additionalProperties: true
+> >> +    fg->reg = devm_regmap_init_mmio(dev, base, &dc_fg_regmap_config);
+> >> +    if (IS_ERR(fg->reg))
+> >> +            return PTR_ERR(fg->reg);
 > >> +
-> >> +    properties:
-> >> +      compatible:
-> >> +        enum:
-> >> +          - fsl,imx8qxp-dc-tcon0
-> >> +          - fsl,imx8qxp-dc-tcon1
+> >> +    fg->clk_disp = devm_clk_get(dev, NULL);
+> >> +    if (IS_ERR(fg->clk_disp))
+> >> +            return dev_err_probe(dev, PTR_ERR(fg->clk_disp),
+> >> +                                 "failed to get display clock\n");
 > >> +
-> >> +required:
-> >> +  - compatible
-> >> +  - reg
-> >> +  - reg-names
-> >> +  - interrupts
-> >> +  - interrupt-names
-> >> +  - power-domains
-> >> +  - "#address-cells"
-> >> +  - "#size-cells"
-> >> +  - ranges
+> >> +    fg->dev = dev;
 > >> +
-> >> +allOf:
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          contains:
-> >> +            const: fsl,imx8qxp-dc-display-engine0
-> >> +    then:
-> >> +      patternProperties:
-> >> +        "^dither@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-dither0
+> >> +    de = dc_drm->de[id];
+> >
+> > This depends on a particular order of component's being bound. If the
+> > order changes for whatever reason (e.g. due to component.c
+> > implementation being changed) then your driver might crash here.
+>
+> Nope. There is no chance to crash here, because
+> 1) dc_drm is not NULL here
+> dc_drm is allocated in dc_drm_bind() and before component_bind_all() is
+> called.  dc_fg_bind() is called by component_bind_all().
+>
+> 2) dc_drm->de[id] is not NULL here
+> It's already set by dc_de_bind(), because component_bind_all() binds
+> components in match order and the component match for DE is added before
+> the one for FG(DE is a child device of display controller and FG is a
+> _grandchild_ of display controller).
+>
+> component_bind_all():
+>         /* Bind components in match order */
+>         for (i = 0; i < adev->match->num; i++)
+>                 if (!adev->match->compare[i].duplicate) {
+>                         c = adev->match->compare[i].component;
+>                         ret = component_bind(c, adev, data);
+
+Yes, this depends on the particular behaviour of both
+component_bind_all() (which is not documented this way, so somebody
+might decide to optimise things somehow) and of your component
+management. While you have control on the latter, you don't have
+control on the former code.
+
+Please, don't depend on the undocumented behaviour!
+
+>
+> dc_add_components():
+>         for_each_available_child_of_node(dev->of_node, child) {
+>                 ...
+>
+>                 drm_of_component_match_add(dev, matchptr, component_compare_of,
+>                                            child);
+>
+>                 for_each_available_child_of_node(child, grandchild)
+>                         drm_of_component_match_add(dev, matchptr,
+>                                                    component_compare_of,
+>                                                    grandchild);
+>         }
+>
+> >
+> > This applies to several other places in the driver.
+>
+> I don't see any other potential crash caused by the binding order of the
+> components.
+>
+> >
+> >> +    de->fg = fg;
 > >> +
-> >> +        "^framegen@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-framegen0
+> >> +    return 0;
+> >> +}
 > >> +
-> >> +        "^gammacor@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-gammacor0
-> >> +
-> >> +        "^matrix@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-matrix0
-> >> +
-> >> +        "^signature@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-signature0
-> >> +
-> >> +        "^tcon@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-tcon0
-> >> +    else:
-> >> +      patternProperties:
-> >> +        "^dither@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-dither1
-> >> +
-> >> +        "^framegen@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-framegen1
-> >> +
-> >> +        "^gammacor@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-gammacor1
-> >> +
-> >> +        "^matrix@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-matrix1
-> >> +
-> >> +        "^signature@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-signature1
-> >> +
-> >> +        "^tcon@[0-9a-f]+$":
-> >> +          properties:
-> >> +            compatible:
-> >> +              const: fsl,imx8qxp-dc-tcon1
-> >> +
-> >> +additionalProperties: false
-> >> +
-> >> +examples:
-> >> +  - |
-> >> +    #include <dt-bindings/clock/imx8-lpcg.h>
-> >> +    #include <dt-bindings/firmware/imx/rsrc.h>
-> >> +
-> >> +    display-engine@5618b400 {
-> >> +        compatible = "fsl,imx8qxp-dc-display-engine0";
-> >> +        reg = <0x5618b400 0x14>, <0x5618b800 0x1c00>;
-> >> +        reg-names = "top", "cfg";
-> >> +        interrupt-parent = <&dc0_intc>;
-> >> +        interrupts = <15>, <16>, <17>;
-> >> +        interrupt-names = "shdload", "framecomplete", "seqcomplete";
-> >> +        power-domains = <&pd IMX_SC_R_DC_0_PLL_0>;
-> >> +        #address-cells = <1>;
-> >> +        #size-cells = <1>;
-> >> +        ranges;
-> >> +
-> >> +        framegen@5618b800 {
-> >> +            compatible = "fsl,imx8qxp-dc-framegen0";
-> >> +            reg = <0x5618b800 0x98>;
-> >> +            clocks = <&dc0_disp_lpcg IMX_LPCG_CLK_0>;
-> >> +            interrupt-parent = <&dc0_intc>;
-> >> +            interrupts = <18>, <19>, <20>, <21>, <41>, <42>, <43>, <44>;
-> >> +            interrupt-names = "int0", "int1", "int2", "int3",
-> >> +                              "primsync_on", "primsync_off",
-> >> +                              "secsync_on", "secsync_off";
-> >> +        };
-> >> +
-> >> +        tcon@5618c800 {
-> >> +            compatible = "fsl,imx8qxp-dc-tcon0";
-> >> +            reg = <0x5618c800 0x588>;
-> >> +
-> >> +            port {
-> >> +                dc0_disp0_dc0_pixel_combiner_ch0: endpoint {
-> >> +                    remote-endpoint = <&dc0_pixel_combiner_ch0_dc0_disp0>;
-> >> +                };
-> >> +            };
-> >> +        };
-> >> +    };
-> >> --
-> >> 2.34.1
-> >>
 > >
 >
 > --
