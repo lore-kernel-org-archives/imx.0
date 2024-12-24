@@ -1,493 +1,712 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2072.outbound.protection.outlook.com [40.107.105.72])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2050.outbound.protection.outlook.com [40.107.249.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CB913774D
-	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 05:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A95C16D9C2
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 06:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735019820; cv=fail; b=hoRGBgzjkmpnWexSGz7QNaBVP2xmB/28eKzB0/4ni4JxbDtTSgPK0J2LXz8jmOSKM0MPtCynezl+/2h78lOawedz47hFSckRQs1BI4YFQA1COSZw1qgrMfg+FtEO+vVv4+3IJpjvyF9akiQmGLqdnuIcO7A90kvHcdUeDxUnuB8=
+	t=1735020916; cv=fail; b=rksEyJkDAqZ9MM6Z2iF3W9+N+l0Yx1e7EP2ah4v2Z0DG+KxSuG7LE/RC+8C7C+PNSnTjTXXNfVsAs3etFKa6Nmg7v5WBlGSgHvwm+tQEApSj+sonqLWm6HSfD8g6UgOXtVFpotMTJrqpkgHh87irB0idO3PIqzyh/bB5Hppjw9o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735019820; c=relaxed/simple;
-	bh=BQNUZ9faXrMchC4HWaFVsGvHDAJVzo0VdhwQ59OrpkA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qTX0uhbtzeuqQCJBHVDCxPmroqZXP+oOg/UZWwOPe2UdMsYJK9LbEwNv+eos0IBp71MQNLZ6DgE6K4oDW3E4KzAXzbAREfJk9H79ApdXl+9Mcjk4wQTVCI/r/7ULOaDijlSPQxjnTqa+7lgEcVH/cJJUVUDUAoumIpfhdN+qT/g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=G+t6UcTi; arc=fail smtp.client-ip=40.107.105.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1735020916; c=relaxed/simple;
+	bh=4hXBXNMJSU52Ebfo+hVn0vYve2L3VDCL7Jk3eNLDjLs=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=qRE+HoA29ioJh2Z4HevLkpIaMtNLKcJxhaqqlhPFPe33bcXdgLhXGaS3/ijgGEWeTfEOncl6WcHOMZr6ZL0mRqvPH2SxAKEYiyHVw6K9iROg3ed1HFass+G8njp4QmWV1JtkLiAQJZmha7GJnUDLB0tI4/eIoKW/uFWeybQBt64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uv8pI8ee; arc=fail smtp.client-ip=40.107.249.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="G+t6UcTi"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uv8pI8ee"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gwv6W+JBzBTs/p2Bgk4AMT2R7kQ7nURd3HWGeOSF23HqUzmNKuuQhFoIxV4SW/ZizepQcSwstCfOmN5QsnFgTU3C+GPvMVzW0ZxlT53TxCGb6AtT868Df5+y8B+I5FCIQ+HBcEUW2HZhYDq9VGhAm/9vtUXDUaNxrOEFhdc2ZLMSNT+Yan4++G2ZU4kEmjxcntf8q67ZWRtFHlq4Q8nR1Cq0FkfivQtmn5ea0h59qkQtwJRia3Ha66+EQCxQFV7esq3w2e3oKOk7+r5BbZR6LzYZFqywsRMmPUvQxiL/Zfd0EnF15ODWfbFCgmFnqxKF+d3QdNdb6qvArloUWZLmtQ==
+ b=BR9LUU7rtA7JE5dTORxSajs4Ew6SwOkA78lx6Icx51qQk0rFj752Z3/7Cv9YUyD+3zjbq9xcpdpSRvATPLI2VWN3KQ667+WVTepN4DWJz2mpoq+hlK+FXZNo9aSF5U2jbggQ/O+APDFIbgSFHptxK46vpNrvrpgLFWSRsBsr9MDVX+9ZB3AEAYiaF08Lp6CfH0OklJJEvgY1c+77lnzmR0d5PzgPUr4pKjr5D5aA0dQXsAAtIX/3BkURFNWEZdx9vGEqGLbo36geK7q4azJ1ivJFZxske3vIB/nM/DNrBoQWLbZ39MzCmyHOoiPWadhqBPfnS7a9vDO9d7QV+y6LBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qp/tujTHOLWsc06PSjZKANCv+EpNdPlckwhWLGfNCNo=;
- b=X+iesRhgFUdnqa3JBmO5fQ8L3V5UVk0HrhwnbSoRkA7ScYq/C7ChLd8XBST0rP8FL7TcaBO6yZkY34E3sixGdI4RdQHlb3X6H6x0uymmBYR0R1OvWb2605eFxoHLsbFU2Vba0H34xFn1hDaJje/KBvuZ4Qwr3YFxYaERjvT6q+H9dOp6LMyz20NZTtJPLwVsGx2RkKXuYRsFWLC/CWOIXZB/KijRPnuSFjJerEOhkEQZE8wirFHMLIFN/b2h2DoKAEwRcsRsBPiomfP/wiZzMvNo2fZ2BJDxIq14SZPPbQIlQjmL50FJQrPx6xjlQ9ErVx7IrggU14CjbSbG6NhF0g==
+ bh=nJd62m3K1jKY9xIVqa6TanU7LgWfWxNvzR/w4PYsSe0=;
+ b=CYCyX3S9WD/2yH3xz/zXDUt7Vqzqe3hniOXZfaB237EPljXXT+7VjA+z0Y0bUsQHx9uQhh/GG1ac/B1++mgQaPemCUR1iJw2gqDpvBznCyl4MxpcP61WhZlIw5MF9pOXIpPAAH6qX8veyWv22tbYX+PdESrkli+G7AGA01SCssI8Vt/8DqkyZW7xjldTcgFW8dXpAJWykwasbcvxXs5hbzub/TkDRl9Lhd+rnOR7xzlk7DYsUAzB11nLhvZ/8a84x6UuTXn+C41/u4+zCf4gZq/9s6PDSNSBeXNP1msJQeg4BnNtQ5KComQohdG8vVbdIdlG2YWi3PLHexxEMgFxBg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qp/tujTHOLWsc06PSjZKANCv+EpNdPlckwhWLGfNCNo=;
- b=G+t6UcTiMUf2wz7c/JWkyqyakE6473eGvsv6UHVaYZ3zuJgdY8t6vuVfxqDLr51wNkI0Ww1xKBR+cY24XrL9KOKsFVwiaKmOf1z5yGCDcOKAcMNLwiY2ESl7NWr+xAsZcMxBR0R3rH1TNlQM2qdxg1wyEwS3n11XrsaJMpkudPmu7stw7D3cm6WgMVModZQ+r7FZOiHSQFV9z1FYDZ3YK7+5G1nv6dipsAGaFDqQonz8i9/A3HQMmuRzzMVVhyDPfpawzB56AvA5YWaX6OxP38wGK+FR7f2EMlJsMaOkDv/7YPRg7SDEuZYA8GZUDveDSWe/ocxY8TRuVPdswh/IvA==
+ bh=nJd62m3K1jKY9xIVqa6TanU7LgWfWxNvzR/w4PYsSe0=;
+ b=uv8pI8eecMW5JHy+1fOkLb/vPeiXkfcQRhX6FAWInSLB764nZKXmIHYPYHip/ABf6MCGDC6XX6BKHb4w7FsR6Y+B1fmogM+fVsEJFiY6gsVjv1v2iV5RITNdDfY0biTPrn2k3BnM+p2KX/wmbKoxluSmpQ2pzP3iPuYyNZFLEd+b26/ERMPAa7HAEZJvqYYlQb1Ax538ljo2R+TSPcyLTQYJ18xpZO2aXA4NylP+L0lZs5QHt/K2mQ/POsdhQKZAcE/3/+3kC+jqdySJntXS02vXP0wCXuFddR74kBIZKnQOC73jicIDUXyuoa/A49FMnEgbkaFxxFur4wYXQy4BuQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by GVXPR04MB10634.eurprd04.prod.outlook.com (2603:10a6:150:219::20) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by VI1PR04MB6912.eurprd04.prod.outlook.com (2603:10a6:803:134::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.20; Tue, 24 Dec
- 2024 05:56:49 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%3]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
- 05:56:49 +0000
-Message-ID: <73c80079-582a-40cb-b9e1-e20fc96fe603@nxp.com>
-Date: Tue, 24 Dec 2024 13:57:31 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 03/19] dt-bindings: display: imx: Add i.MX8qxp Display
- Controller display engine
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
- aisheng.dong@nxp.com, agx@sigxcpu.org, u.kleine-koenig@baylibre.com,
- francesco@dolcini.it, frank.li@nxp.com
-References: <20241223064147.3961652-1-victor.liu@nxp.com>
- <20241223064147.3961652-4-victor.liu@nxp.com>
- <kpem2w4wu7ywc5pvbk3ls5hsyttrwcylomzfh567ejlxkymeqd@cujrbfxgrntc>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <kpem2w4wu7ywc5pvbk3ls5hsyttrwcylomzfh567ejlxkymeqd@cujrbfxgrntc>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SI2PR01CA0037.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::9) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.21; Tue, 24 Dec
+ 2024 06:15:01 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
+ 06:15:01 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl
+Cc: nicolas@ndufresne.ca,
+	shawnguo@kernel.org,
+	robh+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	tao.jiang_2@nxp.com,
+	ming.qian@oss.nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3] media: amphion: Support dmabuf and v4l2 buffer without binding
+Date: Tue, 24 Dec 2024 15:14:35 +0900
+Message-ID: <20241224061435.2084609-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0-rc1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0036.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::22) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB10634:EE_
-X-MS-Office365-Filtering-Correlation-Id: 37c19b0a-ef91-400d-e1dd-08dd23dfc196
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|VI1PR04MB6912:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30cdce35-6c1d-4fe0-e69b-08dd23e24c6d
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|1800799024|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L1A5SXNUQUR2YWFPcEV3Qm9CcnY3anA4aE05aEtISTI3YktyUGJ3UVQ5aHg1?=
- =?utf-8?B?YXFmUDN5ampINmVFNWxzdmR6aUJZRVAyUDZEa3g2aFdyMFdvbW9JMzhuSmti?=
- =?utf-8?B?UjVWeW5sMWpBZGtUUjFoYkMvL0U0MVB5U2xWRGpySHQ0cWJpUnM0NDc5cDdK?=
- =?utf-8?B?MHZQRlA5bEVyWFZhY3NodUdDWWF4Snk0Z2VqS0hYbVRpYjQwWmR1elNkR2FC?=
- =?utf-8?B?bE82VGJ1N24zOG4yd2tuazdwQmY0d3QyQnV5N1FKR3ducnNoaXdjMlMwb2RT?=
- =?utf-8?B?QXRvcWt6QmZNbWVJZXJiUHhNc0dRbHc4MXgxWjdsWEZxNjVKU21aWlhjVFNm?=
- =?utf-8?B?ODdCTWFvOUZmUUR2RnFDZGkzc2NkdkhTNmt0MCtJT0hCTkVwUGJOK2hqMEJC?=
- =?utf-8?B?aStHdmd3ZnkzSmNuQURaY2hnMWF3Zy84aEtxc1ZydDMvUGJtRjdOemI3R0FF?=
- =?utf-8?B?SG5NcFZVcTZtZTJWOFdJY2xXOWxsOFdweTl5b0pjdzMrNHFmU211ajRuNGdl?=
- =?utf-8?B?OUNSbEJsT2dmb3dEek4vSVppVUNFb3drRWRtNW9rNi9xUWpmam1wTVRKd2ZL?=
- =?utf-8?B?Zy9pV1djaXZjemdQTVU4WWRISTF0ekVrRFJBVWZleDZMSVYrS2w5L21GZzl6?=
- =?utf-8?B?cnRtS2ZDakhla0JMOUhHYjYrOFUySDkrVUlzTlYvN3FKdVNzcmFFWTdmWG5Z?=
- =?utf-8?B?WnFOTnd4NFlQMVFyamtrS1dFSURlZzNUcHpoR2YwaTFZWWgwbEh6Y0JudWhq?=
- =?utf-8?B?U0RPSUZMVDlxRUtIdGpsTXpYRSt6VG1tRTdNOGg3MkRZQjltbnNTTGFqcW9n?=
- =?utf-8?B?MzV0SDQvY1NLS2Mzclg1ODlYT2J3VmQvUTZhOXlNTUlSUVFueDVjbzYzS2Ru?=
- =?utf-8?B?RndaTHNkdmFLR3VvVzNZaERvakI4Z0U1UWtVSDJyTDNoY3JCYkRRL3NsWS96?=
- =?utf-8?B?ZEsvRDAzYjAvRFRURGhHVDhEWFBrb2kzcDVHU3d1bEVINHZJMWFkNVUrdWw4?=
- =?utf-8?B?TGdLNS9GUGRBM3hHWENBYTBta2Jic2E4c3gyR2R3cVN6ZlJ1aE9MNGc3aFVR?=
- =?utf-8?B?ZTlNRDJkRUJHQ3FvMkNZZkR0bU1EQm9VSU0vQWhrcHllYWduS2VGM2F1TGxu?=
- =?utf-8?B?ZXQ1ZEpteVNsU1Eva0YzZW14RUtNbUx2Z0F3UUJ1dndVRm15MDZSR1BlN2Vm?=
- =?utf-8?B?QWI3RGlDZ3Y3RkZQanhuWDVaWCtkb0ZzM0hpS3JNK0QvMHY3Zll4ZHZTR3Ey?=
- =?utf-8?B?VEhLcVdPbnpRWHpUWGM4UVIvSE1meW9ZYnliWXJNTUxlS1Q2bzk1eWZmNDN2?=
- =?utf-8?B?WWNLdlNHSjAwMHplZjBLOXNtR28wSllEUUtlREN0SFhoTjlIWkN6RnQ5MWZJ?=
- =?utf-8?B?cC85bFVLd1IrNXJRQUJlVDVzMTJjRXYrWWpqN0tNTFNndk5OSXdpNzVlVWQy?=
- =?utf-8?B?ZkM0SDVjYUFRb2hyb2dBcXJXZ3p1NjdqSzNHYnhDZnBra2Mwc25PVjRqQW1W?=
- =?utf-8?B?WTVISUdwR212RjFaZGFHa2tuTTVUR2p3ODBHNDZNQjBBbUFZaGtyQ1FZWWla?=
- =?utf-8?B?NlNMcDFxaERyWVQra3BTVDM0Um9sa2hUNSs3TkQ5NmFLM1AzeXE3djNjNVlo?=
- =?utf-8?B?MktodzRVSXhmam9FK1BLeWhBaHVCMHlnQzdXYWVheXlPSlIzVVRiMmEwSER4?=
- =?utf-8?B?ZkNqeTdrcVdKZk9vRndqd2U0NVRxWGVOWFhjcmhqalU0S1FYODdGNm5lcExz?=
- =?utf-8?B?Q0pHK1lSV2JqVHhFaXE4aEIrMURXNjcrTndhc1NEZGVmQnVrckl6bm54VS9I?=
- =?utf-8?B?MW13MEIvNWxiRkYxT1RMUT09?=
+	=?us-ascii?Q?amhhqdKPFfp3FjUxYQAdUa+my+FW/QzZq04mNjn+yLNVbJ4ysuqoWTnO4Yov?=
+ =?us-ascii?Q?MNr1aZb2TofSdLFIt2heKxacpYpor6GX5FCawtPo7j69hiYQgNcl6FOQrLEZ?=
+ =?us-ascii?Q?c4Z00VDlVzkFtML5IF4JcotDTBipOhHV9hlxSa6dlZLRVJGFBbIJsdSRdNv1?=
+ =?us-ascii?Q?gQbO2p5v2Y6rR9fWVBvTFMcdR7GnGTYomBM5DMtU58XqCCBHwoz4sZ0tzc1n?=
+ =?us-ascii?Q?kWq/5s3zgrtH9Zxzqcj1McH47cRS8k+4j9ZzCwRIFsBPTnfoHjtcth6M76Fm?=
+ =?us-ascii?Q?EvdtQCYCUL+6g0yiKEsyGk7zyfigEf7f+/LB2LJJx109Z9s9NwyotgIg+sXi?=
+ =?us-ascii?Q?nMLcGOwNV0x9xJFlsdmuN/MYGhta6bhCs7ztxf3XZKrn1UMLu3DYOpBsVVFb?=
+ =?us-ascii?Q?MGr5GhwYGwWUKHOUR8h6pn3imK606AJA/xFVGdCSSWHa4mxsJwzgiAt6AWQC?=
+ =?us-ascii?Q?ATIliISYtTLtVGdMIarLTczQUXNLZLrhPLMFu4w58DeceAJciWhn6MVcu7IA?=
+ =?us-ascii?Q?AFEDp2fjH8yXfFPWr58ZRByQZ5mofB8v0MJcFvAzIuKN5wneRgoCWTzruSUA?=
+ =?us-ascii?Q?+9H5qN03rp78LDDs8j9Ag2OKMyurAHhOKGlqYou5a+ilX/tli1VuPcPXXK/T?=
+ =?us-ascii?Q?EXfSayNhF7bDozDTrdjguNW5apMCu3o2586z+nRLznoPvyBhU5Thw3bsY4Ia?=
+ =?us-ascii?Q?JphTmkH7pOe8Ko0an0a9X/uQXnZPG5EMGgQu2x3NSbWUNyqP6PNiiVjuTitj?=
+ =?us-ascii?Q?gOhBrqZvHTFy0SrlgZ9dv94Kfi+KK54Zn1E3AXeGcnRubMOWMnckcCP33IGJ?=
+ =?us-ascii?Q?juueTrs+/gYM6mR/RpSR0gU1P27P5qGPjMO6P+JSvJT7PKJwdnxQw+n17GxF?=
+ =?us-ascii?Q?swqzcAf7lQVgutIZP8EHuEBlckFBg9bPU8slLNSX3xPjB53o9Z8S90PILNy0?=
+ =?us-ascii?Q?fvIkXy92QkuJzKi4oTLkreHlyboQ/cJZweJO/3ezX+c2h6NfQ0R/xPggfW5Z?=
+ =?us-ascii?Q?FZsckL7ewXKXVbLUBHpucYCHWobFusTaIbYXWWGKuywEC+iqxKDCcTwhu9OI?=
+ =?us-ascii?Q?7k651BNQ50SVlIgSK0X7HKDi/WBp2nox898rer0wW0ZIfKCUwuvugBhaRy6y?=
+ =?us-ascii?Q?l+5ErVI+ndpeFi276yQK56G4iG4mUl8UIIxnoC4WO2lF8u0jlwEWERQklZK9?=
+ =?us-ascii?Q?oHGHl0waviTmHiO4024sTz0ExuiF38Ct8JtzhHA/j0JmDzrizlCwP858rN5g?=
+ =?us-ascii?Q?Yduw3JsxFpFGKU9eUz//AY62VihsT9bh5CqhkXvfxlOcUWVoEd24TgY1rWSn?=
+ =?us-ascii?Q?EB0flYUTWeDo34WYfmbDGRTHodbGeAj/LqdKNyJnleg3JSRXfRFZw77AaXiM?=
+ =?us-ascii?Q?Yxwls2/Bdu91oa4kisiMzwaR2Z0fABW/02V5qH5Bxgn1t81u0HTHiggYJIa/?=
+ =?us-ascii?Q?qMvyWvdZt/29p4dI1x8x6ccOaxyNAByP?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SFNwejJaZUtwZEtNTHo2eWdBTmhMcURZWnZNcHZkN2VYK3JTcjE2S0JtZVlG?=
- =?utf-8?B?MjR5SzFWNW1weFN1MjVKczNLQ29jSnFKUmJTcnVkVktxNU5EYnhrVXZacE9n?=
- =?utf-8?B?ODgzbEg1b2hvSlJ1ZVRwZXVUNnQwL3A3aW05NXFEZFQ1VG0wK2psRHpqUFJN?=
- =?utf-8?B?eXZiWisxR2FVWjcxbWZzeHpaR0xaYk10UGJuOVRoVnc2VE5WOU9GQW9kZHU1?=
- =?utf-8?B?cUNQdUs1OThtSjFkeVI4L09qUFNsV0JNdkJyc2xKakdzYXRSQ0tZY0VBazhY?=
- =?utf-8?B?UEpVV3VvZWljb09yVHhFeUJaUmN5dEhqeEdjV0tqaTZCQW5HTm9xMDcyTjlO?=
- =?utf-8?B?K3hYRUk4UHF2eU81aGVkOVVJNHJrcjdUbEh5a21ocXB0VmxEcHRudVJacjhU?=
- =?utf-8?B?Rnk0NXhuMkx2VHoreWhMK2RtRDNCSnIvS214QWVhY3Z4bzJ5V2QwZEtlT1ND?=
- =?utf-8?B?Y01mR1Bsb1o3czNYdmhDVUs3R0wxYjNKZmIycGYwWEJkMHJ4dEpVcTNKcVNy?=
- =?utf-8?B?MkZsUHZWL3FkQlFTSkk0dCswQy81QUNNSWl3MEQ5NnFnQjAwQzQ0bU44eitq?=
- =?utf-8?B?a1BudjFZUHlBMGlNOVg3MzdXZWlUMnNHYUxxQ25PdTZQME9nL3J3S2U3b0p3?=
- =?utf-8?B?UVN3OEhJVW16U0JTTEpuNklsN3FTeWR6a0pSSlVVdnp4UGNTWTlPckpMc0pH?=
- =?utf-8?B?VlNKRE5YclZZSTk4K3ZXUU95b1dQRVR0bmkvR3dGK3o0enVXS0VrMFhTc1Ni?=
- =?utf-8?B?ak9yZkZ6RFpoWUJUSWhTd28yMGFkK1ZMZVkyWis4Q0lIVWwxS1RTRmRKVnJV?=
- =?utf-8?B?cWVvVjlNMXVXSmw5eFM2b0htbDVuQ2I3dGs0WGxlQXJHVnhoaEg4VWQ1dGow?=
- =?utf-8?B?R0hJaW0wUSsrcmN1SzZ4RGh2QUpkTVFsS28xVTAwMTgyV2NzWjhZRkhqUDFL?=
- =?utf-8?B?cTNnY0hrMnRPbnpCR3pGZXUwbmY3eTlvVnAzR2RkcHBVYnFFbkV5L1dkUEJ0?=
- =?utf-8?B?aStwUlN2WDJSUFh5eE1aTUFKMkxSLzFIV2UrQ3V1ZDRGd2tBRXVaV2pLSjgw?=
- =?utf-8?B?aWtLVVZ3b1IwK0wrdzJIOVpyaFNIa0hNcXBtZGlNSDdJN0I0RTk0ZHY3NjhK?=
- =?utf-8?B?cWNyTjFqQVlVa3VBOTl5dThLRVV2amlPMjJmWkdSNDNrbHhFY1RNS0lNeTEy?=
- =?utf-8?B?ZHNDellpeU5jYUZsOUJpRkNqQnpuVkJyeDQzaklibU81Vy9acVE1WkhLZkF1?=
- =?utf-8?B?cWM1bHRpeWVaelNCUkVTNmJOZE5rNDFuQzdxZDRURkJmSkJ6cjFNQzNSeUhY?=
- =?utf-8?B?bTFMZUN0Vzk3Y3dsTC9zNDVNUndDNVJEZXdXNU9OY1pUMkJvVHRvWjBUSms5?=
- =?utf-8?B?S0lFNjRRdVdWVXRCQm5JOVJieW1XbFYvRE5IdHRLeTJOT3Fhb2RDdFNFcHF1?=
- =?utf-8?B?VXdGZFp2MnQ2NDJvOTdYb2FEQWI5RFRLK0hicENRdmJwMXhHNUIyL1ROT21U?=
- =?utf-8?B?eHV3ejVHdURWT1EyQkVGWFh1UWVjSGx4cFYwZm9qV294dDRyZE92VE1KU0U5?=
- =?utf-8?B?TDVhTCtmMElEWnlxMXpPYmwra0hTV3pUSHhVSHNoUjNvOEJkR0cxQ0JtR3Q1?=
- =?utf-8?B?YmJLV2NyNndmRXJVNXR5VjJEWGJ6NmRHenYvUlRYbXVKMHVqR1JkcVNGdDlp?=
- =?utf-8?B?OHh2MWpRc3B3YWtlVzJUQTRzeVI0WCtLR1pHNnB3Smxoa1FUK3NpMk0xZnlS?=
- =?utf-8?B?ek1DVEh6anU3aVh6ZEZrSHBZUGw0QnFmV01yUElxeWZ4QmlMdjRVL09yL3hJ?=
- =?utf-8?B?cmptc3c5eFk1cjBaUDBCV3hWcGhCd2taRTYwaWlDT2M0YlAxMlY0WWV5eklr?=
- =?utf-8?B?R21JOStGL0xkaHdySzV4UFBCK3VHaVhYdzFmbURHK3dtZURLdGh3M3RvRDJN?=
- =?utf-8?B?Z2VXMWFNbjhGdUNmclNFdE9hUlZsQTFPMVhjdkpldWRsenA2S2dFQ2dWS3N4?=
- =?utf-8?B?UFRKSXY3K0srMFVQbDlsVUE1bnJzdUg5TVl4UXBSL0s2NDhleVloY256Z1lG?=
- =?utf-8?B?RlNtZmkvcktCZyttd1dkSENOeElWa1hya0pucjhUMEYvMk9ENXhnRnZkNGpm?=
- =?utf-8?Q?AWl7NzsKpLi/GJ19dYjEuB2Si?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 37c19b0a-ef91-400d-e1dd-08dd23dfc196
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+	=?us-ascii?Q?YihU3EngsNPXlH1svrOqg9iGNcfjpnFXjAfifLpAaWbB9udIwrVE/32cIfvv?=
+ =?us-ascii?Q?BRHivmQP8NbsAqKEa06hOgO+moRMKzB4P2iMtJHPdzPKcS1OydPV4hIwfk7n?=
+ =?us-ascii?Q?Av4I2/vGFR04q43gQahoNpWn+mp/qixiVHPEabl3ExpaXaOc8bTcwMyFFuaq?=
+ =?us-ascii?Q?zaMLkgMuau1uOdgYl9Fd3K2+Jdo328Q0Ic4ZLPR0wcLw7ANqzqUZy5DlnZBj?=
+ =?us-ascii?Q?ycEP6GSt6G5TuzVI3721LzA/wOVjWAyBQAXyqBHlQVOIP/lTssjm2DodSaDg?=
+ =?us-ascii?Q?22OlEO0VgEBK5thCG9H7rZdVGx4zePrfxqtg1d3xgdTqs5z0hw7U01pjaO6l?=
+ =?us-ascii?Q?tTFoagclQeE38v8lo3onM91dodHll7lofV+2L0Vi/IPOHjNAi5+8IDmf+luI?=
+ =?us-ascii?Q?Y1mOC+Rupf/fFnVdfBMVHY5p55qgkmbSThUn7iu/VFZsgbL5rH59D0XYs3LD?=
+ =?us-ascii?Q?4tg4gkscB43RBaX0ha61V0VvkxHOxMqnk+5WRrq50hJSZVv1ruUW3Xj46c4W?=
+ =?us-ascii?Q?lLyot0MS3ut2DJ71jBCGwlchsysup8MseNX26Yikbj21GUSK9Ljff8Fixxfx?=
+ =?us-ascii?Q?oAIYf0w4TYqrnj3XBU7cOEj+NMaLEH3a1FRbondWx0F7OqW6vl+CmFNrUGNC?=
+ =?us-ascii?Q?ITZ0gWc7PvnszsEn2IjZ9oXRW6A5Js3IQU7AlaMmlV33MiV9n6AQSKX5L1FL?=
+ =?us-ascii?Q?y4w9ABmg4zvG1RTMzi4kjR6wfOZ7l7A8UsmoVDiQmZqj8IxGw7LbVd5n1jfD?=
+ =?us-ascii?Q?ys+m9/ywNvGXeWIVyQC/v7Km/1cilggndGBLbyCl6igF8yfgod3tfbQwUYMT?=
+ =?us-ascii?Q?y2KPrdVScfqcm/TQOjzZmBXWptBItZwuJp1V6/6ZC0yhu0TbVAyGuKLaqybQ?=
+ =?us-ascii?Q?6F1Z4+QAto9ymd/9cY8qbHJJdfMN/Qyu8TsF9qQ4cajC+3bexkWeegGY8VRM?=
+ =?us-ascii?Q?oClR5JkdPujNLag3jVjn4n1EvFrq0ruQJvoS1muoiy7oLpS5OIf97ZsdveIU?=
+ =?us-ascii?Q?m8PDI+0xC2+3TO/Kt6Gm8IrNkH/KFWWKf/kwbh8kgknCkUV5oCs6W5DEjXfa?=
+ =?us-ascii?Q?Nm05lnyqv8bgffBpgSJ5WpQFVZpqGr5ysi93mjma4tSQs3hDRKie9Wr7mqEa?=
+ =?us-ascii?Q?g8n4KKpppHj4zeDH37MacErf+FxnMcEfh+yOKeiGizdr47BQG24dYirQn/id?=
+ =?us-ascii?Q?vq3yRaJf8t17SJWP+FgHZmpIzNQAEoCylfi9HAX0MWh9stYJo3GznWwOoOSH?=
+ =?us-ascii?Q?MkYq/oYQPci1qg0Jr5MmRXB0F3oUrK0NFMaqHP3+GtlijPiuiFcsbyMgIuE6?=
+ =?us-ascii?Q?5f+qLhBR4WVvvQfB1ubvig2WuqaY09REZOGt8it0SyJUovyt9IgDyWoWV8Gp?=
+ =?us-ascii?Q?DbkeyczZxNJFUBy1qnWFP1Gm2j4Aj2p1REDzuUFRcUW96KRwV2FSX3ny/0Hb?=
+ =?us-ascii?Q?+tEKvIWajsbey1tcPqR0mT3/oLWBSdRjD5P13zBGg5iLjKA7KZboj7Ld0TYm?=
+ =?us-ascii?Q?r0fhbVU8Y8MEno9hAORfrA08w1uvgF2nZO2SGEkqsYuvTUni4Emcijy3mGhC?=
+ =?us-ascii?Q?gueWqjFNIyrO9nAoNsvyHBbUV5tIw8A002NILC2W?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30cdce35-6c1d-4fe0-e69b-08dd23e24c6d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 05:56:49.2230
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 06:15:01.0249
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4sI3Rqsf9+ZUOWjUPQCYp3LcsyuF10bMhzrW6+4icY7OLCE2wOubewVC5UPCspzb5JF3tKRd+IX7m4oDSkIUDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10634
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6K8dWlzgWwOWf2N/00TdjwXJhHNBxMXdG0qTTA266DYUaScmdjn2WB1fPaFOzrMomr8a/Z04RESbUGfNmFM2Mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6912
 
-On 12/23/2024, Dmitry Baryshkov wrote:
-> On Mon, Dec 23, 2024 at 02:41:31PM +0800, Liu Ying wrote:
->> i.MX8qxp Display Controller display engine consists of all processing units
->> that operate in a display clock domain.
->>
->> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->> ---
->> v7:
->> * Drop DT alias documentations and add instance numbers to compatible strings.
->>   (Rob)
->>
->> v6:
->> * No change.
->>
->> v5:
->> * Document aliases.  Drop Rob's previous R-b tag. (Maxime)
->>
->> v4:
->> * Collect Rob's R-b tag.
->>
->> v3:
->> * No change.
->>
->> v2:
->> * Drop fsl,dc-*-id DT properties. (Krzysztof)
->> * Drop port property. (Krzysztof)
->> * Fix register range sizes in example.
->>
->>  .../imx/fsl,imx8qxp-dc-display-engine0.yaml   | 235 ++++++++++++++++++
->>  1 file changed, 235 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
->> new file mode 100644
->> index 000000000000..60d1e0a4a5dd
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
->> @@ -0,0 +1,235 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-display-engine0.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Freescale i.MX8qxp Display Controller Display Engine
->> +
->> +description:
->> +  All Processing Units that operate in a display clock domain. Pixel pipeline
->> +  is driven by a video timing and cannot be stalled. Implements all display
->> +  specific processing.
->> +
->> +maintainers:
->> +  - Liu Ying <victor.liu@nxp.com>
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - fsl,imx8qxp-dc-display-engine0
->> +      - fsl,imx8qxp-dc-display-engine1
-> 
-> Is there actual difference between engines 0 and 1? If there is none,
-> why are you artificially adding one here?
+When using VB2_DMABUF, the relationship between dma-buf and v4l2 buffer
+may not one-to-one, a single dma-buf may be queued via different
+v4l2 buffers, and different dma-bufs may be queued via the same
+v4l2 buffer, so it's not appropriate to use the v4l2 buffer index
+as the frame store id.
 
-I think engine 0 and 1 have the same HW implementation, but they connect
-to different ExtDsts through FrameGens.  The two compatible strings make
-it possible for an operating system to figure out which engine is which
-by getting the instance numbers from them.
+We can generate a frame store id according to the dma address.
+Then for a given dma-buf, the id is fixed.
 
-If the two engines use a same compatible string, then either 1) use
-DT aliases to get the instance number(as v5/v6 do) or 2) use OF graph to
-describe the connections between FrameGens and ExtDsts.  However, in v6,
-Rob doesn't like 1) because it abuses the aliases which contain the display
-controller instance number, like "dc0-display-engine0"(i.MX8QM SoC has
-two display controllers), and 2) is too complex because all connections
-between internal devices need to be documented with OF graph.  So, I choose
-to use the two compatible strings, like brcm,bcm2835-pixelvalve0.yaml does.
-Thinking about 2) more, maybe the connections between pixel engine and
-display engines need to be documented too, which seems to be more or less
-duplicating the connections between FrameGens and ExtDsts.
+Driver now manages the frame store and vb2-buffer states independently.
 
-                                           CF0/1/4/5
-                           PE               | | | |
-                                            V V V V  primary layer cross bar
-                          +------------------------------------------+
-                          |                                          |
-4 FUs + (VS4/5 + HS4/5) =>|               LB0/1/2/3                  |
-   secondary layer        |                                          |
-   cross bar              +------------------------------------------+
-                             |          |              |          |
-                             V          V              V          V
-                          +-----+    +-----+        +-----+    +-----+
-                          | ED0 |    | ED4 |        | ED5 |    | ED1 |
-                          +-----+    +-----+        +-----+    +-----+
------------------------------|----------|--------------|----------|-------------
-                          content     safety        safety     content
-                          stream0    stream0        stream1    stream1
-                             |          |              |          |
-                             |  DE0     V              V    DE1   |
-                             |       +-----+        +-----+       |
-                              ------>| FG0 |        | FG1 |<------
-                                     +-----+        +-----+
-                                        |              |
-                                        V              V
-                                       ...            ...
+When a dmabuf is queued via another v4l2 buffer before the buffer is
+released by firmware, need to pend it until firmware release it.
 
-> 
->> +
->> +  reg:
->> +    maxItems: 2
->> +
->> +  reg-names:
->> +    items:
->> +      - const: top
->> +      - const: cfg
->> +
->> +  resets:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 3
->> +
->> +  interrupt-names:
->> +    items:
->> +      - const: shdload
->> +      - const: framecomplete
->> +      - const: seqcomplete
->> +
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +  "#address-cells":
->> +    const: 1
->> +
->> +  "#size-cells":
->> +    const: 1
->> +
->> +  ranges: true
->> +
->> +patternProperties:
->> +  "^dither@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-dither0
->> +          - fsl,imx8qxp-dc-dither1
->> +
->> +  "^framegen@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-framegen0
->> +          - fsl,imx8qxp-dc-framegen1
->> +
->> +  "^gammacor@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-gammacor0
->> +          - fsl,imx8qxp-dc-gammacor1
->> +
->> +  "^matrix@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-matrix0
->> +          - fsl,imx8qxp-dc-matrix1
->> +
->> +  "^signature@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-signature0
->> +          - fsl,imx8qxp-dc-signature1
->> +
->> +  "^tcon@[0-9a-f]+$":
->> +    type: object
->> +    additionalProperties: true
->> +
->> +    properties:
->> +      compatible:
->> +        enum:
->> +          - fsl,imx8qxp-dc-tcon0
->> +          - fsl,imx8qxp-dc-tcon1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - reg-names
->> +  - interrupts
->> +  - interrupt-names
->> +  - power-domains
->> +  - "#address-cells"
->> +  - "#size-cells"
->> +  - ranges
->> +
->> +allOf:
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: fsl,imx8qxp-dc-display-engine0
->> +    then:
->> +      patternProperties:
->> +        "^dither@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-dither0
->> +
->> +        "^framegen@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-framegen0
->> +
->> +        "^gammacor@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-gammacor0
->> +
->> +        "^matrix@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-matrix0
->> +
->> +        "^signature@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-signature0
->> +
->> +        "^tcon@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-tcon0
->> +    else:
->> +      patternProperties:
->> +        "^dither@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-dither1
->> +
->> +        "^framegen@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-framegen1
->> +
->> +        "^gammacor@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-gammacor1
->> +
->> +        "^matrix@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-matrix1
->> +
->> +        "^signature@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-signature1
->> +
->> +        "^tcon@[0-9a-f]+$":
->> +          properties:
->> +            compatible:
->> +              const: fsl,imx8qxp-dc-tcon1
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/clock/imx8-lpcg.h>
->> +    #include <dt-bindings/firmware/imx/rsrc.h>
->> +
->> +    display-engine@5618b400 {
->> +        compatible = "fsl,imx8qxp-dc-display-engine0";
->> +        reg = <0x5618b400 0x14>, <0x5618b800 0x1c00>;
->> +        reg-names = "top", "cfg";
->> +        interrupt-parent = <&dc0_intc>;
->> +        interrupts = <15>, <16>, <17>;
->> +        interrupt-names = "shdload", "framecomplete", "seqcomplete";
->> +        power-domains = <&pd IMX_SC_R_DC_0_PLL_0>;
->> +        #address-cells = <1>;
->> +        #size-cells = <1>;
->> +        ranges;
->> +
->> +        framegen@5618b800 {
->> +            compatible = "fsl,imx8qxp-dc-framegen0";
->> +            reg = <0x5618b800 0x98>;
->> +            clocks = <&dc0_disp_lpcg IMX_LPCG_CLK_0>;
->> +            interrupt-parent = <&dc0_intc>;
->> +            interrupts = <18>, <19>, <20>, <21>, <41>, <42>, <43>, <44>;
->> +            interrupt-names = "int0", "int1", "int2", "int3",
->> +                              "primsync_on", "primsync_off",
->> +                              "secsync_on", "secsync_off";
->> +        };
->> +
->> +        tcon@5618c800 {
->> +            compatible = "fsl,imx8qxp-dc-tcon0";
->> +            reg = <0x5618c800 0x588>;
->> +
->> +            port {
->> +                dc0_disp0_dc0_pixel_combiner_ch0: endpoint {
->> +                    remote-endpoint = <&dc0_pixel_combiner_ch0_dc0_disp0>;
->> +                };
->> +            };
->> +        };
->> +    };
->> -- 
->> 2.34.1
->>
-> 
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+---
+v3
+-- fix a typo in NULL pointer check
+v2
+-- fix an uninitialized issue reported by media-ci
 
+ drivers/media/platform/amphion/vdec.c     | 234 +++++++++++++++++-----
+ drivers/media/platform/amphion/vpu.h      |   7 +-
+ drivers/media/platform/amphion/vpu_dbg.c  |  15 +-
+ drivers/media/platform/amphion/vpu_v4l2.c |  11 +
+ 4 files changed, 219 insertions(+), 48 deletions(-)
+
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index 61d5598ee6a1..2c159603a697 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -26,6 +26,7 @@
+ #include "vpu_cmds.h"
+ #include "vpu_rpc.h"
+ 
++#define VDEC_SLOT_CNT_DFT		32
+ #define VDEC_MIN_BUFFER_CAP		8
+ #define VDEC_MIN_BUFFER_OUT		8
+ 
+@@ -41,6 +42,14 @@ struct vdec_fs_info {
+ 	u32 tag;
+ };
+ 
++struct vdec_frame_store_t {
++	struct vpu_vb2_buffer *curr;
++	struct vpu_vb2_buffer *pend;
++	dma_addr_t addr;
++	unsigned int state;
++	u32 tag;
++};
++
+ struct vdec_t {
+ 	u32 seq_hdr_found;
+ 	struct vpu_buffer udata;
+@@ -48,7 +57,8 @@ struct vdec_t {
+ 	struct vpu_dec_codec_info codec_info;
+ 	enum vpu_codec_state state;
+ 
+-	struct vpu_vb2_buffer *slots[VB2_MAX_FRAME];
++	struct vdec_frame_store_t *slots;
++	u32 slot_count;
+ 	u32 req_frame_count;
+ 	struct vdec_fs_info mbi;
+ 	struct vdec_fs_info dcp;
+@@ -289,6 +299,64 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+ 	return 0;
+ }
+ 
++static void vdec_attach_frame_store(struct vpu_inst *inst, struct vb2_buffer *vb)
++{
++	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
++	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++	struct vdec_t *vdec = inst->priv;
++	struct vdec_frame_store_t *new_slots = NULL;
++	dma_addr_t addr;
++	int i;
++
++	addr = vpu_get_vb_phy_addr(vb, 0);
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (addr == vdec->slots[i].addr) {
++			if (vdec->slots[i].curr && vdec->slots[i].curr != vpu_buf) {
++				vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
++				vdec->slots[i].pend = vpu_buf;
++			} else {
++				vpu_set_buffer_state(vbuf, vdec->slots[i].state);
++			}
++			vpu_buf->fs_id = i;
++			return;
++		}
++	}
++
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].addr) {
++			vdec->slots[i].addr = addr;
++			vpu_buf->fs_id = i;
++			return;
++		}
++	}
++
++	new_slots = vzalloc(sizeof(*vdec->slots) * vdec->slot_count * 2);
++	if (!new_slots) {
++		dev_err(inst->dev, "fail to alloc frame store\n");
++		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_ERROR);
++		return;
++	}
++
++	memcpy(new_slots, vdec->slots, sizeof(*vdec->slots) * vdec->slot_count);
++	vfree(vdec->slots);
++	vdec->slots = new_slots;
++	vdec->slot_count *= 2;
++
++	vdec->slots[i].addr = addr;
++	vpu_buf->fs_id = i;
++}
++
++static void vdec_reset_frame_store(struct vpu_inst *inst)
++{
++	struct vdec_t *vdec = inst->priv;
++
++	if (!vdec->slots || !vdec->slot_count)
++		return;
++
++	vpu_trace(inst->dev, "inst[%d] reset slots\n", inst->id);
++	memset(vdec->slots, 0, sizeof(*vdec->slots) * vdec->slot_count);
++}
++
+ static void vdec_handle_resolution_change(struct vpu_inst *inst)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+@@ -745,11 +813,11 @@ static int vdec_frame_decoded(struct vpu_inst *inst, void *arg)
+ 	struct vb2_v4l2_buffer *src_buf;
+ 	int ret = 0;
+ 
+-	if (!info || info->id >= ARRAY_SIZE(vdec->slots))
++	if (!info || info->id >= vdec->slot_count)
+ 		return -EINVAL;
+ 
+ 	vpu_inst_lock(inst);
+-	vpu_buf = vdec->slots[info->id];
++	vpu_buf = vdec->slots[info->id].curr;
+ 	if (!vpu_buf) {
+ 		dev_err(inst->dev, "[%d] decoded invalid frame[%d]\n", inst->id, info->id);
+ 		ret = -EINVAL;
+@@ -770,11 +838,13 @@ static int vdec_frame_decoded(struct vpu_inst *inst, void *arg)
+ 	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_DECODED)
+ 		dev_info(inst->dev, "[%d] buf[%d] has been decoded\n", inst->id, info->id);
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_DECODED);
++	vdec->slots[info->id].state = VPU_BUF_STATE_DECODED;
+ 	vdec->decoded_frame_count++;
+ 	if (vdec->params.display_delay_enable) {
+ 		struct vpu_format *cur_fmt;
+ 
+ 		cur_fmt = vpu_get_format(inst, inst->cap_format.type);
++		vdec->slots[info->id].state = VPU_BUF_STATE_READY;
+ 		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_READY);
+ 		for (int i = 0; i < vbuf->vb2_buf.num_planes; i++)
+ 			vb2_set_plane_payload(&vbuf->vb2_buf,
+@@ -797,11 +867,11 @@ static struct vpu_vb2_buffer *vdec_find_buffer(struct vpu_inst *inst, u32 luma)
+ 	struct vdec_t *vdec = inst->priv;
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(vdec->slots); i++) {
+-		if (!vdec->slots[i])
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].curr)
+ 			continue;
+-		if (luma == vdec->slots[i]->luma)
+-			return vdec->slots[i];
++		if (luma == vdec->slots[i].addr)
++			return vdec->slots[i].curr;
+ 	}
+ 
+ 	return NULL;
+@@ -835,11 +905,11 @@ static void vdec_buf_done(struct vpu_inst *inst, struct vpu_frame_info *frame)
+ 
+ 	cur_fmt = vpu_get_format(inst, inst->cap_format.type);
+ 	vbuf = &vpu_buf->m2m_buf.vb;
+-	if (vbuf->vb2_buf.index != frame->id)
+-		dev_err(inst->dev, "[%d] buffer id(%d, %d) dismatch\n",
+-			inst->id, vbuf->vb2_buf.index, frame->id);
++	if (vpu_buf->fs_id != frame->id)
++		dev_err(inst->dev, "[%d] buffer id(%d(%d), %d) dismatch\n",
++			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index, frame->id);
+ 
+-	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_READY && vdec->params.display_delay_enable)
++	if (vdec->params.display_delay_enable)
+ 		return;
+ 
+ 	if (vpu_get_buffer_state(vbuf) != VPU_BUF_STATE_DECODED)
+@@ -852,10 +922,11 @@ static void vdec_buf_done(struct vpu_inst *inst, struct vpu_frame_info *frame)
+ 	vbuf->sequence = vdec->sequence;
+ 	dev_dbg(inst->dev, "[%d][OUTPUT TS]%32lld\n", inst->id, vbuf->vb2_buf.timestamp);
+ 
+-	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+ 	vpu_inst_lock(inst);
++	vdec->slots[vpu_buf->fs_id].state = VPU_BUF_STATE_READY;
+ 	vdec->display_frame_count++;
+ 	vpu_inst_unlock(inst);
++	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+ 	dev_dbg(inst->dev, "[%d] decoded : %d, display : %d, sequence : %d\n",
+ 		inst->id, vdec->decoded_frame_count, vdec->display_frame_count, vdec->sequence);
+ }
+@@ -1083,18 +1154,30 @@ static int vdec_response_frame(struct vpu_inst *inst, struct vb2_v4l2_buffer *vb
+ 	if (!vbuf)
+ 		return -EINVAL;
+ 
+-	if (vdec->slots[vbuf->vb2_buf.index]) {
+-		dev_err(inst->dev, "[%d] repeat alloc fs %d\n",
+-			inst->id, vbuf->vb2_buf.index);
++	vpu_buf = to_vpu_vb2_buffer(vbuf);
++	if (vpu_buf->fs_id < 0 || vpu_buf->fs_id >= vdec->slot_count) {
++		dev_err(inst->dev, "invalid fs %d for v4l2 buffer %d\n",
++			vpu_buf->fs_id, vbuf->vb2_buf.index);
+ 		return -EINVAL;
+ 	}
+ 
++	if (vdec->slots[vpu_buf->fs_id].curr) {
++		if (vdec->slots[vpu_buf->fs_id].curr != vpu_buf) {
++			vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
++			vdec->slots[vpu_buf->fs_id].pend = vpu_buf;
++		} else {
++			vpu_set_buffer_state(vbuf, vdec->slots[vpu_buf->fs_id].state);
++		}
++		dev_err(inst->dev, "[%d] repeat alloc fs %d (v4l2 index %d)\n",
++			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index);
++		return -EAGAIN;
++	}
++
+ 	dev_dbg(inst->dev, "[%d] state = %s, alloc fs %d, tag = 0x%x\n",
+ 		inst->id, vpu_codec_state_name(inst->state), vbuf->vb2_buf.index, vdec->seq_tag);
+-	vpu_buf = to_vpu_vb2_buffer(vbuf);
+ 
+ 	memset(&info, 0, sizeof(info));
+-	info.id = vbuf->vb2_buf.index;
++	info.id = vpu_buf->fs_id;
+ 	info.type = MEM_RES_FRAME;
+ 	info.tag = vdec->seq_tag;
+ 	info.luma_addr = vpu_get_vb_phy_addr(&vbuf->vb2_buf, 0);
+@@ -1109,12 +1192,13 @@ static int vdec_response_frame(struct vpu_inst *inst, struct vb2_v4l2_buffer *vb
+ 	if (ret)
+ 		return ret;
+ 
+-	vpu_buf->tag = info.tag;
+ 	vpu_buf->luma = info.luma_addr;
+ 	vpu_buf->chroma_u = info.chroma_addr;
+ 	vpu_buf->chroma_v = 0;
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_INUSE);
+-	vdec->slots[info.id] = vpu_buf;
++	vdec->slots[info.id].tag = info.tag;
++	vdec->slots[info.id].curr = vpu_buf;
++	vdec->slots[info.id].state = VPU_BUF_STATE_INUSE;
+ 	vdec->req_frame_count--;
+ 
+ 	return 0;
+@@ -1175,25 +1259,47 @@ static void vdec_recycle_buffer(struct vpu_inst *inst, struct vb2_v4l2_buffer *v
+ 	v4l2_m2m_buf_queue(inst->fh.m2m_ctx, vbuf);
+ }
+ 
+-static void vdec_clear_slots(struct vpu_inst *inst)
++static void vdec_release_curr_frame_store(struct vpu_inst *inst, u32 id)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+ 	struct vpu_vb2_buffer *vpu_buf;
+ 	struct vb2_v4l2_buffer *vbuf;
++
++	if (id >= vdec->slot_count)
++		return;
++	if (!vdec->slots[id].curr)
++		return;
++
++	vpu_buf = vdec->slots[id].curr;
++	vbuf = &vpu_buf->m2m_buf.vb;
++
++	vdec_response_fs_release(inst, id, vdec->slots[id].tag);
++	if (vpu_buf->fs_id == id) {
++		if (vpu_buf->state != VPU_BUF_STATE_READY)
++			vdec_recycle_buffer(inst, vbuf);
++		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++	}
++
++	vdec->slots[id].curr = NULL;
++	vdec->slots[id].state = VPU_BUF_STATE_IDLE;
++
++	if (vdec->slots[id].pend) {
++		vpu_set_buffer_state(&vdec->slots[id].pend->m2m_buf.vb, VPU_BUF_STATE_IDLE);
++		vdec->slots[id].pend = NULL;
++	}
++}
++
++static void vdec_clear_slots(struct vpu_inst *inst)
++{
++	struct vdec_t *vdec = inst->priv;
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(vdec->slots); i++) {
+-		if (!vdec->slots[i])
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].curr)
+ 			continue;
+ 
+-		vpu_buf = vdec->slots[i];
+-		vbuf = &vpu_buf->m2m_buf.vb;
+-
+ 		vpu_trace(inst->dev, "clear slot %d\n", i);
+-		vdec_response_fs_release(inst, i, vpu_buf->tag);
+-		vdec_recycle_buffer(inst, vbuf);
+-		vdec->slots[i]->state = VPU_BUF_STATE_IDLE;
+-		vdec->slots[i] = NULL;
++		vdec_release_curr_frame_store(inst, i);
+ 	}
+ }
+ 
+@@ -1324,39 +1430,29 @@ static void vdec_event_req_fs(struct vpu_inst *inst, struct vpu_fs_info *fs)
+ static void vdec_evnet_rel_fs(struct vpu_inst *inst, struct vpu_fs_info *fs)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+-	struct vpu_vb2_buffer *vpu_buf;
+-	struct vb2_v4l2_buffer *vbuf;
+ 
+-	if (!fs || fs->id >= ARRAY_SIZE(vdec->slots))
++	if (!fs || fs->id >= vdec->slot_count)
+ 		return;
+ 	if (fs->type != MEM_RES_FRAME)
+ 		return;
+ 
+-	if (fs->id >= vpu_get_num_buffers(inst, inst->cap_format.type)) {
++	if (fs->id >= vdec->slot_count) {
+ 		dev_err(inst->dev, "[%d] invalid fs(%d) to release\n", inst->id, fs->id);
+ 		return;
+ 	}
+ 
+ 	vpu_inst_lock(inst);
+-	vpu_buf = vdec->slots[fs->id];
+-	vdec->slots[fs->id] = NULL;
+-
+-	if (!vpu_buf) {
++	if (!vdec->slots[fs->id].curr) {
+ 		dev_dbg(inst->dev, "[%d] fs[%d] has bee released\n", inst->id, fs->id);
+ 		goto exit;
+ 	}
+ 
+-	vbuf = &vpu_buf->m2m_buf.vb;
+-	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_DECODED) {
++	if (vdec->slots[fs->id].state == VPU_BUF_STATE_DECODED) {
+ 		dev_dbg(inst->dev, "[%d] frame skip\n", inst->id);
+ 		vdec->sequence++;
+ 	}
+ 
+-	vdec_response_fs_release(inst, fs->id, vpu_buf->tag);
+-	if (vpu_get_buffer_state(vbuf) != VPU_BUF_STATE_READY)
+-		vdec_recycle_buffer(inst, vbuf);
+-
+-	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++	vdec_release_curr_frame_store(inst, fs->id);
+ 	vpu_process_capture_buffer(inst);
+ 
+ exit:
+@@ -1552,6 +1648,11 @@ static void vdec_cleanup(struct vpu_inst *inst)
+ 		return;
+ 
+ 	vdec = inst->priv;
++	if (vdec) {
++		vfree(vdec->slots);
++		vdec->slots = NULL;
++		vdec->slot_count = 0;
++	}
+ 	vfree(vdec);
+ 	inst->priv = NULL;
+ 	vfree(inst);
+@@ -1683,11 +1784,43 @@ static int vdec_stop_session(struct vpu_inst *inst, u32 type)
+ 	return 0;
+ }
+ 
+-static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
++static int vdec_get_slot_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
+ {
+ 	struct vdec_t *vdec = inst->priv;
++	struct vpu_vb2_buffer *vpu_buf;
+ 	int num = -1;
+ 
++	vpu_inst_lock(inst);
++	if (i >= vdec->slot_count || !vdec->slots[i].addr)
++		goto exit;
++
++	vpu_buf = vdec->slots[i].curr;
++
++	num = scnprintf(str, size, "slot[%2d] :", i);
++	if (vpu_buf) {
++		num += scnprintf(str + num, size - num, " %2d",
++				 vpu_buf->m2m_buf.vb.vb2_buf.index);
++		num += scnprintf(str + num, size - num, "; state = %d", vdec->slots[i].state);
++	} else {
++		num += scnprintf(str + num, size - num, " -1");
++	}
++
++	if (vdec->slots[i].pend)
++		num += scnprintf(str + num, size - num, "; %d",
++				 vdec->slots[i].pend->m2m_buf.vb.vb2_buf.index);
++
++	num += scnprintf(str + num, size - num, "\n");
++exit:
++	vpu_inst_unlock(inst);
++
++	return num;
++}
++
++static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
++{
++	struct vdec_t *vdec = inst->priv;
++	int num;
++
+ 	switch (i) {
+ 	case 0:
+ 		num = scnprintf(str, size,
+@@ -1741,6 +1874,7 @@ static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i
+ 				vdec->codec_info.vui_present);
+ 		break;
+ 	default:
++		num = vdec_get_slot_debug_info(inst, str, size, i - 10);
+ 		break;
+ 	}
+ 
+@@ -1764,6 +1898,8 @@ static struct vpu_inst_ops vdec_inst_ops = {
+ 	.get_debug_info = vdec_get_debug_info,
+ 	.wait_prepare = vpu_inst_unlock,
+ 	.wait_finish = vpu_inst_lock,
++	.attach_frame_store = vdec_attach_frame_store,
++	.reset_frame_store = vdec_reset_frame_store,
+ };
+ 
+ static void vdec_init(struct file *file)
+@@ -1804,6 +1940,14 @@ static int vdec_open(struct file *file)
+ 		return -ENOMEM;
+ 	}
+ 
++	vdec->slots = vzalloc(sizeof(*vdec->slots) * VDEC_SLOT_CNT_DFT);
++	if (!vdec->slots) {
++		vfree(vdec);
++		vfree(inst);
++		return -ENOMEM;
++	}
++	vdec->slot_count = VDEC_SLOT_CNT_DFT;
++
+ 	inst->ops = &vdec_inst_ops;
+ 	inst->formats = vdec_formats;
+ 	inst->type = VPU_CORE_TYPE_DEC;
+diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platform/amphion/vpu.h
+index 22f0da26ccec..76bfd6b26170 100644
+--- a/drivers/media/platform/amphion/vpu.h
++++ b/drivers/media/platform/amphion/vpu.h
+@@ -223,6 +223,8 @@ struct vpu_inst_ops {
+ 	int (*get_debug_info)(struct vpu_inst *inst, char *str, u32 size, u32 i);
+ 	void (*wait_prepare)(struct vpu_inst *inst);
+ 	void (*wait_finish)(struct vpu_inst *inst);
++	void (*attach_frame_store)(struct vpu_inst *inst, struct vb2_buffer *vb);
++	void (*reset_frame_store)(struct vpu_inst *inst);
+ };
+ 
+ struct vpu_inst {
+@@ -296,7 +298,8 @@ enum {
+ 	VPU_BUF_STATE_DECODED,
+ 	VPU_BUF_STATE_READY,
+ 	VPU_BUF_STATE_SKIP,
+-	VPU_BUF_STATE_ERROR
++	VPU_BUF_STATE_ERROR,
++	VPU_BUF_STATE_CHANGED
+ };
+ 
+ struct vpu_vb2_buffer {
+@@ -305,8 +308,8 @@ struct vpu_vb2_buffer {
+ 	dma_addr_t chroma_u;
+ 	dma_addr_t chroma_v;
+ 	unsigned int state;
+-	u32 tag;
+ 	u32 average_qp;
++	s32 fs_id;
+ };
+ 
+ void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);
+diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/platform/amphion/vpu_dbg.c
+index 940e5bda5fa3..497ae4e8a229 100644
+--- a/drivers/media/platform/amphion/vpu_dbg.c
++++ b/drivers/media/platform/amphion/vpu_dbg.c
+@@ -48,6 +48,7 @@ static char *vpu_stat_name[] = {
+ 	[VPU_BUF_STATE_READY] = "ready",
+ 	[VPU_BUF_STATE_SKIP] = "skip",
+ 	[VPU_BUF_STATE_ERROR] = "error",
++	[VPU_BUF_STATE_CHANGED] = "changed",
+ };
+ 
+ static inline const char *to_vpu_stat_name(int state)
+@@ -164,6 +165,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 	for (i = 0; i < vb2_get_num_buffers(vq); i++) {
+ 		struct vb2_buffer *vb;
+ 		struct vb2_v4l2_buffer *vbuf;
++		struct vpu_vb2_buffer *vpu_buf;
+ 
+ 		vb = vb2_get_buffer(vq, i);
+ 		if (!vb)
+@@ -173,13 +175,24 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 			continue;
+ 
+ 		vbuf = to_vb2_v4l2_buffer(vb);
++		vpu_buf = to_vpu_vb2_buffer(vbuf);
+ 
+ 		num = scnprintf(str, sizeof(str),
+-				"capture[%2d] state = %10s, %8s\n",
++				"capture[%2d] state = %10s, %8s",
+ 				i, vb2_stat_name[vb->state],
+ 				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
+ 		if (seq_write(s, str, num))
+ 			return 0;
++
++		if (vpu_buf->fs_id >= 0) {
++			num = scnprintf(str, sizeof(str), "; fs %d", vpu_buf->fs_id);
++			if (seq_write(s, str, num))
++				return 0;
++		}
++
++		num = scnprintf(str, sizeof(str), "\n");
++		if (seq_write(s, str, num))
++			return 0;
+ 	}
+ 
+ 	num = scnprintf(str, sizeof(str), "sequence = %d\n", inst->sequence);
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index 45707931bc4f..74668fa362e2 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -501,14 +501,25 @@ static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+ 		call_void_vop(inst, release);
+ 	}
+ 
++	if (V4L2_TYPE_IS_CAPTURE(vq->type))
++		call_void_vop(inst, reset_frame_store);
++
+ 	return 0;
+ }
+ 
+ static int vpu_vb2_buf_init(struct vb2_buffer *vb)
+ {
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
++	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++	struct vpu_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
+ 
++	vpu_buf->fs_id = -1;
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++
++	if (!inst->ops->attach_frame_store || V4L2_TYPE_IS_OUTPUT(vb->type))
++		return 0;
++
++	call_void_vop(inst, attach_frame_store, vb);
+ 	return 0;
+ }
+ 
 -- 
-Regards,
-Liu Ying
+2.43.0-rc1
+
