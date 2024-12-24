@@ -1,161 +1,493 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2072.outbound.protection.outlook.com [40.107.105.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A401392
-	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 04:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735014076; cv=none; b=Vr8qnEHbPd0NZxo5bDMiTLD9I3wSVg08YAyXEOkUIIubi9T/RoEazTc5BgGURRQPbXnMADjJe2cbohA3oQEVCZ49Ne6C/lf/kNIPrECxC0T97Hop/8bZ+un5S120JEP3VcTKl3aY7tUvXHuqAeLQa5K1CaI8QOGqoJRaWRr18U8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735014076; c=relaxed/simple;
-	bh=mTI/WaM+mE8Y654mcC8CdKqpAh4+bl/Kxuc3cELBTic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iv1w3JOPBlARwBRlgB4a4x9tIVtRTh8+DH9Dzy5E1WzcVhQeiQLu0/++LZIh/09/S/XV+tFjhU8hnob+V5oCYCfRRDdf9vdtKM6U7KMVdu67OH6phhzEVen1/ej9cEf2IrDLsb9T/OlfDNzcuMKKB8CJfPI78bQ7IpllJNrv1nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BZqPsPlO; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CB913774D
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 05:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735019820; cv=fail; b=hoRGBgzjkmpnWexSGz7QNaBVP2xmB/28eKzB0/4ni4JxbDtTSgPK0J2LXz8jmOSKM0MPtCynezl+/2h78lOawedz47hFSckRQs1BI4YFQA1COSZw1qgrMfg+FtEO+vVv4+3IJpjvyF9akiQmGLqdnuIcO7A90kvHcdUeDxUnuB8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735019820; c=relaxed/simple;
+	bh=BQNUZ9faXrMchC4HWaFVsGvHDAJVzo0VdhwQ59OrpkA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qTX0uhbtzeuqQCJBHVDCxPmroqZXP+oOg/UZWwOPe2UdMsYJK9LbEwNv+eos0IBp71MQNLZ6DgE6K4oDW3E4KzAXzbAREfJk9H79ApdXl+9Mcjk4wQTVCI/r/7ULOaDijlSPQxjnTqa+7lgEcVH/cJJUVUDUAoumIpfhdN+qT/g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=G+t6UcTi; arc=fail smtp.client-ip=40.107.105.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BZqPsPlO"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53e3a227b82so4439557e87.0
-        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 20:21:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735014073; x=1735618873; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TrtrBK5bSD0BG4gQ3/HFzyh9uM4A4XrCEOCe7dy4fgk=;
-        b=BZqPsPlObqQuApfbdK4TSz6ejfUE1GwrFx2dhOWpL9Kim6sJWmiyQr4KX/cPCvKyHV
-         btTqzZBfXNfc+2BoDcPxoyBRIjEVx2RIUwDEcSeZp8mKeQ8tqqfEF2KgxlrteE/AH7Bu
-         tKnt26hi5PkqjBCzMGjc5j8rRBefeH8cs0M0hXR9lZI5lrf4Y+nvNDSTNosj+eH9l5zR
-         o/GINABk6RMqLxcdAR05q22NueT3094VZ4krTADzzsNMHsREDiAAqfj+x0ppjHjhIsZe
-         QjKed6U3Xq/af/RpTGTElFgzyvvbhAiXMm6Rt/DtCyfMKniKAbi7ADPxMihrYlnN77JV
-         N7FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735014073; x=1735618873;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TrtrBK5bSD0BG4gQ3/HFzyh9uM4A4XrCEOCe7dy4fgk=;
-        b=WYGj1Ew0NCa/5xOP83oL8Uxi+YEIre7xXRi7gtytXa2EH3wvcRMb0bT1avkwywShC6
-         HRPwFUkxiTl+eMAjaW/4DMINc156o/Y1pOI/5WWnzJn+0nhtvBV0ZyM/e2vj5I5nIZdt
-         fdxVGbV+h42E7EPDU/vrFrHJ7GNWiY84u4QiC0I3SnAsf6VwPZ2bWYEAX7L4MAWR2kEN
-         9yok178RfGfU6479rlsZ871ApDQ38x4X/Qp03LklcguVNGaaZCRJjkx44F1CINvbnByA
-         waiK2IAcg1L8RnQkYz0xwNUPZgf3svaUxi5X80j9Mgc5aIZ67vDjwWMFM817akWIkaj0
-         MHcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3Ilj69FnXU2uyIIc1Tmggua+6Q6QtK8353At85ZHD3ZFj+kedJ2gvwkJma6xFj+Tutaw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxgkEouAtvOLJg5T39oHFUc3T63x6Uqv7U9kU037TZLRM7vY4m
-	6Xon559IB7wp+RkQg/zvs2PWzOhkzF4qdPnyjEGgFfX74ki1mJWtaP1eVRQzYCw=
-X-Gm-Gg: ASbGncunOWgD6yXdbYQPveyQGl9bqv6NzVpnkHIUdDyuMrVfVm+7YDZcDY1Q7KnZBHq
-	hxiDen21lRnwkhi9MG2Hwm2DqvbMskFwzugsNf2Ms67pGrak1uGmQ3X7tn/mhqmbcVEeWGAY+LS
-	deV8VgTKk+Uj2QPw/FUVuUXUZjMrtVKLcQ0we0yKPz8ywK2qkhUPx7vCU8z8vAtUVAFpfT4faaF
-	yKhe+oNGJRKuarNSiY1dSEPIl2nHppI25LBN5G+X3m9G7WCrLPIx4F1hto5yNj4XP7De37d3mHL
-	kTGJIjwkV4Nptj7YNgC8KXNxmSfZf1Q+1rd+
-X-Google-Smtp-Source: AGHT+IFnlazk3zp2S6fkLYTj/a/W11Tm8ZQUr/v3AouJ9WApV+dF+AqJMzBzTQnC6rJjgT9VhrQ83Q==
-X-Received: by 2002:a05:6512:b22:b0:540:5b5c:c196 with SMTP id 2adb3069b0e04-5422956be94mr4052066e87.56.1735014072611;
-        Mon, 23 Dec 2024 20:21:12 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5422360054csm1498117e87.111.2024.12.23.20.21.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2024 20:21:11 -0800 (PST)
-Date: Tue, 24 Dec 2024 06:21:08 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Marek Vasut <marex@denx.de>
-Cc: dri-devel@lists.freedesktop.org, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie <airlied@gmail.com>, 
-	Fabio Estevam <festevam@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Liu Ying <victor.liu@nxp.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
-	Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] drm/bridge: imx8mp-hdmi-tx: switch to bridge
- DRM_BRIDGE_ATTACH_NO_CONNECTOR
-Message-ID: <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
-References: <20241224014701.253490-1-marex@denx.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="G+t6UcTi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gwv6W+JBzBTs/p2Bgk4AMT2R7kQ7nURd3HWGeOSF23HqUzmNKuuQhFoIxV4SW/ZizepQcSwstCfOmN5QsnFgTU3C+GPvMVzW0ZxlT53TxCGb6AtT868Df5+y8B+I5FCIQ+HBcEUW2HZhYDq9VGhAm/9vtUXDUaNxrOEFhdc2ZLMSNT+Yan4++G2ZU4kEmjxcntf8q67ZWRtFHlq4Q8nR1Cq0FkfivQtmn5ea0h59qkQtwJRia3Ha66+EQCxQFV7esq3w2e3oKOk7+r5BbZR6LzYZFqywsRMmPUvQxiL/Zfd0EnF15ODWfbFCgmFnqxKF+d3QdNdb6qvArloUWZLmtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qp/tujTHOLWsc06PSjZKANCv+EpNdPlckwhWLGfNCNo=;
+ b=X+iesRhgFUdnqa3JBmO5fQ8L3V5UVk0HrhwnbSoRkA7ScYq/C7ChLd8XBST0rP8FL7TcaBO6yZkY34E3sixGdI4RdQHlb3X6H6x0uymmBYR0R1OvWb2605eFxoHLsbFU2Vba0H34xFn1hDaJje/KBvuZ4Qwr3YFxYaERjvT6q+H9dOp6LMyz20NZTtJPLwVsGx2RkKXuYRsFWLC/CWOIXZB/KijRPnuSFjJerEOhkEQZE8wirFHMLIFN/b2h2DoKAEwRcsRsBPiomfP/wiZzMvNo2fZ2BJDxIq14SZPPbQIlQjmL50FJQrPx6xjlQ9ErVx7IrggU14CjbSbG6NhF0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qp/tujTHOLWsc06PSjZKANCv+EpNdPlckwhWLGfNCNo=;
+ b=G+t6UcTiMUf2wz7c/JWkyqyakE6473eGvsv6UHVaYZ3zuJgdY8t6vuVfxqDLr51wNkI0Ww1xKBR+cY24XrL9KOKsFVwiaKmOf1z5yGCDcOKAcMNLwiY2ESl7NWr+xAsZcMxBR0R3rH1TNlQM2qdxg1wyEwS3n11XrsaJMpkudPmu7stw7D3cm6WgMVModZQ+r7FZOiHSQFV9z1FYDZ3YK7+5G1nv6dipsAGaFDqQonz8i9/A3HQMmuRzzMVVhyDPfpawzB56AvA5YWaX6OxP38wGK+FR7f2EMlJsMaOkDv/7YPRg7SDEuZYA8GZUDveDSWe/ocxY8TRuVPdswh/IvA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by GVXPR04MB10634.eurprd04.prod.outlook.com (2603:10a6:150:219::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.20; Tue, 24 Dec
+ 2024 05:56:49 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%3]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
+ 05:56:49 +0000
+Message-ID: <73c80079-582a-40cb-b9e1-e20fc96fe603@nxp.com>
+Date: Tue, 24 Dec 2024 13:57:31 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 03/19] dt-bindings: display: imx: Add i.MX8qxp Display
+ Controller display engine
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org,
+ aisheng.dong@nxp.com, agx@sigxcpu.org, u.kleine-koenig@baylibre.com,
+ francesco@dolcini.it, frank.li@nxp.com
+References: <20241223064147.3961652-1-victor.liu@nxp.com>
+ <20241223064147.3961652-4-victor.liu@nxp.com>
+ <kpem2w4wu7ywc5pvbk3ls5hsyttrwcylomzfh567ejlxkymeqd@cujrbfxgrntc>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <kpem2w4wu7ywc5pvbk3ls5hsyttrwcylomzfh567ejlxkymeqd@cujrbfxgrntc>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SI2PR01CA0037.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::9) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241224014701.253490-1-marex@denx.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GVXPR04MB10634:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37c19b0a-ef91-400d-e1dd-08dd23dfc196
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?L1A5SXNUQUR2YWFPcEV3Qm9CcnY3anA4aE05aEtISTI3YktyUGJ3UVQ5aHg1?=
+ =?utf-8?B?YXFmUDN5ampINmVFNWxzdmR6aUJZRVAyUDZEa3g2aFdyMFdvbW9JMzhuSmti?=
+ =?utf-8?B?UjVWeW5sMWpBZGtUUjFoYkMvL0U0MVB5U2xWRGpySHQ0cWJpUnM0NDc5cDdK?=
+ =?utf-8?B?MHZQRlA5bEVyWFZhY3NodUdDWWF4Snk0Z2VqS0hYbVRpYjQwWmR1elNkR2FC?=
+ =?utf-8?B?bE82VGJ1N24zOG4yd2tuazdwQmY0d3QyQnV5N1FKR3ducnNoaXdjMlMwb2RT?=
+ =?utf-8?B?QXRvcWt6QmZNbWVJZXJiUHhNc0dRbHc4MXgxWjdsWEZxNjVKU21aWlhjVFNm?=
+ =?utf-8?B?ODdCTWFvOUZmUUR2RnFDZGkzc2NkdkhTNmt0MCtJT0hCTkVwUGJOK2hqMEJC?=
+ =?utf-8?B?aStHdmd3ZnkzSmNuQURaY2hnMWF3Zy84aEtxc1ZydDMvUGJtRjdOemI3R0FF?=
+ =?utf-8?B?SG5NcFZVcTZtZTJWOFdJY2xXOWxsOFdweTl5b0pjdzMrNHFmU211ajRuNGdl?=
+ =?utf-8?B?OUNSbEJsT2dmb3dEek4vSVppVUNFb3drRWRtNW9rNi9xUWpmam1wTVRKd2ZL?=
+ =?utf-8?B?Zy9pV1djaXZjemdQTVU4WWRISTF0ekVrRFJBVWZleDZMSVYrS2w5L21GZzl6?=
+ =?utf-8?B?cnRtS2ZDakhla0JMOUhHYjYrOFUySDkrVUlzTlYvN3FKdVNzcmFFWTdmWG5Z?=
+ =?utf-8?B?WnFOTnd4NFlQMVFyamtrS1dFSURlZzNUcHpoR2YwaTFZWWgwbEh6Y0JudWhq?=
+ =?utf-8?B?U0RPSUZMVDlxRUtIdGpsTXpYRSt6VG1tRTdNOGg3MkRZQjltbnNTTGFqcW9n?=
+ =?utf-8?B?MzV0SDQvY1NLS2Mzclg1ODlYT2J3VmQvUTZhOXlNTUlSUVFueDVjbzYzS2Ru?=
+ =?utf-8?B?RndaTHNkdmFLR3VvVzNZaERvakI4Z0U1UWtVSDJyTDNoY3JCYkRRL3NsWS96?=
+ =?utf-8?B?ZEsvRDAzYjAvRFRURGhHVDhEWFBrb2kzcDVHU3d1bEVINHZJMWFkNVUrdWw4?=
+ =?utf-8?B?TGdLNS9GUGRBM3hHWENBYTBta2Jic2E4c3gyR2R3cVN6ZlJ1aE9MNGc3aFVR?=
+ =?utf-8?B?ZTlNRDJkRUJHQ3FvMkNZZkR0bU1EQm9VSU0vQWhrcHllYWduS2VGM2F1TGxu?=
+ =?utf-8?B?ZXQ1ZEpteVNsU1Eva0YzZW14RUtNbUx2Z0F3UUJ1dndVRm15MDZSR1BlN2Vm?=
+ =?utf-8?B?QWI3RGlDZ3Y3RkZQanhuWDVaWCtkb0ZzM0hpS3JNK0QvMHY3Zll4ZHZTR3Ey?=
+ =?utf-8?B?VEhLcVdPbnpRWHpUWGM4UVIvSE1meW9ZYnliWXJNTUxlS1Q2bzk1eWZmNDN2?=
+ =?utf-8?B?WWNLdlNHSjAwMHplZjBLOXNtR28wSllEUUtlREN0SFhoTjlIWkN6RnQ5MWZJ?=
+ =?utf-8?B?cC85bFVLd1IrNXJRQUJlVDVzMTJjRXYrWWpqN0tNTFNndk5OSXdpNzVlVWQy?=
+ =?utf-8?B?ZkM0SDVjYUFRb2hyb2dBcXJXZ3p1NjdqSzNHYnhDZnBra2Mwc25PVjRqQW1W?=
+ =?utf-8?B?WTVISUdwR212RjFaZGFHa2tuTTVUR2p3ODBHNDZNQjBBbUFZaGtyQ1FZWWla?=
+ =?utf-8?B?NlNMcDFxaERyWVQra3BTVDM0Um9sa2hUNSs3TkQ5NmFLM1AzeXE3djNjNVlo?=
+ =?utf-8?B?MktodzRVSXhmam9FK1BLeWhBaHVCMHlnQzdXYWVheXlPSlIzVVRiMmEwSER4?=
+ =?utf-8?B?ZkNqeTdrcVdKZk9vRndqd2U0NVRxWGVOWFhjcmhqalU0S1FYODdGNm5lcExz?=
+ =?utf-8?B?Q0pHK1lSV2JqVHhFaXE4aEIrMURXNjcrTndhc1NEZGVmQnVrckl6bm54VS9I?=
+ =?utf-8?B?MW13MEIvNWxiRkYxT1RMUT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFNwejJaZUtwZEtNTHo2eWdBTmhMcURZWnZNcHZkN2VYK3JTcjE2S0JtZVlG?=
+ =?utf-8?B?MjR5SzFWNW1weFN1MjVKczNLQ29jSnFKUmJTcnVkVktxNU5EYnhrVXZacE9n?=
+ =?utf-8?B?ODgzbEg1b2hvSlJ1ZVRwZXVUNnQwL3A3aW05NXFEZFQ1VG0wK2psRHpqUFJN?=
+ =?utf-8?B?eXZiWisxR2FVWjcxbWZzeHpaR0xaYk10UGJuOVRoVnc2VE5WOU9GQW9kZHU1?=
+ =?utf-8?B?cUNQdUs1OThtSjFkeVI4L09qUFNsV0JNdkJyc2xKakdzYXRSQ0tZY0VBazhY?=
+ =?utf-8?B?UEpVV3VvZWljb09yVHhFeUJaUmN5dEhqeEdjV0tqaTZCQW5HTm9xMDcyTjlO?=
+ =?utf-8?B?K3hYRUk4UHF2eU81aGVkOVVJNHJrcjdUbEh5a21ocXB0VmxEcHRudVJacjhU?=
+ =?utf-8?B?Rnk0NXhuMkx2VHoreWhMK2RtRDNCSnIvS214QWVhY3Z4bzJ5V2QwZEtlT1ND?=
+ =?utf-8?B?Y01mR1Bsb1o3czNYdmhDVUs3R0wxYjNKZmIycGYwWEJkMHJ4dEpVcTNKcVNy?=
+ =?utf-8?B?MkZsUHZWL3FkQlFTSkk0dCswQy81QUNNSWl3MEQ5NnFnQjAwQzQ0bU44eitq?=
+ =?utf-8?B?a1BudjFZUHlBMGlNOVg3MzdXZWlUMnNHYUxxQ25PdTZQME9nL3J3S2U3b0p3?=
+ =?utf-8?B?UVN3OEhJVW16U0JTTEpuNklsN3FTeWR6a0pSSlVVdnp4UGNTWTlPckpMc0pH?=
+ =?utf-8?B?VlNKRE5YclZZSTk4K3ZXUU95b1dQRVR0bmkvR3dGK3o0enVXS0VrMFhTc1Ni?=
+ =?utf-8?B?ak9yZkZ6RFpoWUJUSWhTd28yMGFkK1ZMZVkyWis4Q0lIVWwxS1RTRmRKVnJV?=
+ =?utf-8?B?cWVvVjlNMXVXSmw5eFM2b0htbDVuQ2I3dGs0WGxlQXJHVnhoaEg4VWQ1dGow?=
+ =?utf-8?B?R0hJaW0wUSsrcmN1SzZ4RGh2QUpkTVFsS28xVTAwMTgyV2NzWjhZRkhqUDFL?=
+ =?utf-8?B?cTNnY0hrMnRPbnpCR3pGZXUwbmY3eTlvVnAzR2RkcHBVYnFFbkV5L1dkUEJ0?=
+ =?utf-8?B?aStwUlN2WDJSUFh5eE1aTUFKMkxSLzFIV2UrQ3V1ZDRGd2tBRXVaV2pLSjgw?=
+ =?utf-8?B?aWtLVVZ3b1IwK0wrdzJIOVpyaFNIa0hNcXBtZGlNSDdJN0I0RTk0ZHY3NjhK?=
+ =?utf-8?B?cWNyTjFqQVlVa3VBOTl5dThLRVV2amlPMjJmWkdSNDNrbHhFY1RNS0lNeTEy?=
+ =?utf-8?B?ZHNDellpeU5jYUZsOUJpRkNqQnpuVkJyeDQzaklibU81Vy9acVE1WkhLZkF1?=
+ =?utf-8?B?cWM1bHRpeWVaelNCUkVTNmJOZE5rNDFuQzdxZDRURkJmSkJ6cjFNQzNSeUhY?=
+ =?utf-8?B?bTFMZUN0Vzk3Y3dsTC9zNDVNUndDNVJEZXdXNU9OY1pUMkJvVHRvWjBUSms5?=
+ =?utf-8?B?S0lFNjRRdVdWVXRCQm5JOVJieW1XbFYvRE5IdHRLeTJOT3Fhb2RDdFNFcHF1?=
+ =?utf-8?B?VXdGZFp2MnQ2NDJvOTdYb2FEQWI5RFRLK0hicENRdmJwMXhHNUIyL1ROT21U?=
+ =?utf-8?B?eHV3ejVHdURWT1EyQkVGWFh1UWVjSGx4cFYwZm9qV294dDRyZE92VE1KU0U5?=
+ =?utf-8?B?TDVhTCtmMElEWnlxMXpPYmwra0hTV3pUSHhVSHNoUjNvOEJkR0cxQ0JtR3Q1?=
+ =?utf-8?B?YmJLV2NyNndmRXJVNXR5VjJEWGJ6NmRHenYvUlRYbXVKMHVqR1JkcVNGdDlp?=
+ =?utf-8?B?OHh2MWpRc3B3YWtlVzJUQTRzeVI0WCtLR1pHNnB3Smxoa1FUK3NpMk0xZnlS?=
+ =?utf-8?B?ek1DVEh6anU3aVh6ZEZrSHBZUGw0QnFmV01yUElxeWZ4QmlMdjRVL09yL3hJ?=
+ =?utf-8?B?cmptc3c5eFk1cjBaUDBCV3hWcGhCd2taRTYwaWlDT2M0YlAxMlY0WWV5eklr?=
+ =?utf-8?B?R21JOStGL0xkaHdySzV4UFBCK3VHaVhYdzFmbURHK3dtZURLdGh3M3RvRDJN?=
+ =?utf-8?B?Z2VXMWFNbjhGdUNmclNFdE9hUlZsQTFPMVhjdkpldWRsenA2S2dFQ2dWS3N4?=
+ =?utf-8?B?UFRKSXY3K0srMFVQbDlsVUE1bnJzdUg5TVl4UXBSL0s2NDhleVloY256Z1lG?=
+ =?utf-8?B?RlNtZmkvcktCZyttd1dkSENOeElWa1hya0pucjhUMEYvMk9ENXhnRnZkNGpm?=
+ =?utf-8?Q?AWl7NzsKpLi/GJ19dYjEuB2Si?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37c19b0a-ef91-400d-e1dd-08dd23dfc196
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 05:56:49.2230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4sI3Rqsf9+ZUOWjUPQCYp3LcsyuF10bMhzrW6+4icY7OLCE2wOubewVC5UPCspzb5JF3tKRd+IX7m4oDSkIUDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10634
 
-On Tue, Dec 24, 2024 at 02:46:14AM +0100, Marek Vasut wrote:
-> The dw-hdmi output_port is set to 1 in order to look for a connector
-> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
-> The output_port set to 1 makes the DW HDMI driver core look up the
-> next bridge in DT, where the next bridge is often the hdmi-connector .
+On 12/23/2024, Dmitry Baryshkov wrote:
+> On Mon, Dec 23, 2024 at 02:41:31PM +0800, Liu Ying wrote:
+>> i.MX8qxp Display Controller display engine consists of all processing units
+>> that operate in a display clock domain.
+>>
+>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+>> ---
+>> v7:
+>> * Drop DT alias documentations and add instance numbers to compatible strings.
+>>   (Rob)
+>>
+>> v6:
+>> * No change.
+>>
+>> v5:
+>> * Document aliases.  Drop Rob's previous R-b tag. (Maxime)
+>>
+>> v4:
+>> * Collect Rob's R-b tag.
+>>
+>> v3:
+>> * No change.
+>>
+>> v2:
+>> * Drop fsl,dc-*-id DT properties. (Krzysztof)
+>> * Drop port property. (Krzysztof)
+>> * Fix register range sizes in example.
+>>
+>>  .../imx/fsl,imx8qxp-dc-display-engine0.yaml   | 235 ++++++++++++++++++
+>>  1 file changed, 235 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
+>> new file mode 100644
+>> index 000000000000..60d1e0a4a5dd
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8qxp-dc-display-engine0.yaml
+>> @@ -0,0 +1,235 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8qxp-dc-display-engine0.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Freescale i.MX8qxp Display Controller Display Engine
+>> +
+>> +description:
+>> +  All Processing Units that operate in a display clock domain. Pixel pipeline
+>> +  is driven by a video timing and cannot be stalled. Implements all display
+>> +  specific processing.
+>> +
+>> +maintainers:
+>> +  - Liu Ying <victor.liu@nxp.com>
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - fsl,imx8qxp-dc-display-engine0
+>> +      - fsl,imx8qxp-dc-display-engine1
 > 
-> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+> Is there actual difference between engines 0 and 1? If there is none,
+> why are you artificially adding one here?
+
+I think engine 0 and 1 have the same HW implementation, but they connect
+to different ExtDsts through FrameGens.  The two compatible strings make
+it possible for an operating system to figure out which engine is which
+by getting the instance numbers from them.
+
+If the two engines use a same compatible string, then either 1) use
+DT aliases to get the instance number(as v5/v6 do) or 2) use OF graph to
+describe the connections between FrameGens and ExtDsts.  However, in v6,
+Rob doesn't like 1) because it abuses the aliases which contain the display
+controller instance number, like "dc0-display-engine0"(i.MX8QM SoC has
+two display controllers), and 2) is too complex because all connections
+between internal devices need to be documented with OF graph.  So, I choose
+to use the two compatible strings, like brcm,bcm2835-pixelvalve0.yaml does.
+Thinking about 2) more, maybe the connections between pixel engine and
+display engines need to be documented too, which seems to be more or less
+duplicating the connections between FrameGens and ExtDsts.
+
+                                           CF0/1/4/5
+                           PE               | | | |
+                                            V V V V  primary layer cross bar
+                          +------------------------------------------+
+                          |                                          |
+4 FUs + (VS4/5 + HS4/5) =>|               LB0/1/2/3                  |
+   secondary layer        |                                          |
+   cross bar              +------------------------------------------+
+                             |          |              |          |
+                             V          V              V          V
+                          +-----+    +-----+        +-----+    +-----+
+                          | ED0 |    | ED4 |        | ED5 |    | ED1 |
+                          +-----+    +-----+        +-----+    +-----+
+-----------------------------|----------|--------------|----------|-------------
+                          content     safety        safety     content
+                          stream0    stream0        stream1    stream1
+                             |          |              |          |
+                             |  DE0     V              V    DE1   |
+                             |       +-----+        +-----+       |
+                              ------>| FG0 |        | FG1 |<------
+                                     +-----+        +-----+
+                                        |              |
+                                        V              V
+                                       ...            ...
+
 > 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: Jonas Karlman <jonas@kwiboo.se>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Robert Foss <rfoss@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
-> V2: No change
-> ---
->  drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> index 9a480c6abb856..d8e9fbf75edbb 100644
-> --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> @@ -27,6 +27,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
->  config DRM_IMX8MP_HDMI_PVI
->  	tristate "Freescale i.MX8MP HDMI PVI bridge support"
->  	depends on OF
-> +	select DRM_DISPLAY_CONNECTOR
->  	help
->  	  Choose this to enable support for the internal HDMI TX Parallel
->  	  Video Interface found on the Freescale i.MX8MP SoC.
-> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> index 1e7a789ec2890..4ebae5ad072ad 100644
-> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> @@ -101,6 +101,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
->  	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
->  	plat_data->priv_data = hdmi;
->  	plat_data->phy_force_vendor = true;
-> +	plat_data->output_port = 1;
-
-Quoting my feedback to a similar Liu's patch:
-
-This will break compatibility with older DT files, which don't have
-output port. I think you need to add output_port_optional flag to
-dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
-is set, but there is no remote node.
-
->  
->  	hdmi->dw_hdmi = dw_hdmi_probe(pdev, plat_data);
->  	if (IS_ERR(hdmi->dw_hdmi))
-> -- 
-> 2.45.2
+>> +
+>> +  reg:
+>> +    maxItems: 2
+>> +
+>> +  reg-names:
+>> +    items:
+>> +      - const: top
+>> +      - const: cfg
+>> +
+>> +  resets:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 3
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: shdload
+>> +      - const: framecomplete
+>> +      - const: seqcomplete
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +  "#address-cells":
+>> +    const: 1
+>> +
+>> +  "#size-cells":
+>> +    const: 1
+>> +
+>> +  ranges: true
+>> +
+>> +patternProperties:
+>> +  "^dither@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-dither0
+>> +          - fsl,imx8qxp-dc-dither1
+>> +
+>> +  "^framegen@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-framegen0
+>> +          - fsl,imx8qxp-dc-framegen1
+>> +
+>> +  "^gammacor@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-gammacor0
+>> +          - fsl,imx8qxp-dc-gammacor1
+>> +
+>> +  "^matrix@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-matrix0
+>> +          - fsl,imx8qxp-dc-matrix1
+>> +
+>> +  "^signature@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-signature0
+>> +          - fsl,imx8qxp-dc-signature1
+>> +
+>> +  "^tcon@[0-9a-f]+$":
+>> +    type: object
+>> +    additionalProperties: true
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        enum:
+>> +          - fsl,imx8qxp-dc-tcon0
+>> +          - fsl,imx8qxp-dc-tcon1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reg-names
+>> +  - interrupts
+>> +  - interrupt-names
+>> +  - power-domains
+>> +  - "#address-cells"
+>> +  - "#size-cells"
+>> +  - ranges
+>> +
+>> +allOf:
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: fsl,imx8qxp-dc-display-engine0
+>> +    then:
+>> +      patternProperties:
+>> +        "^dither@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-dither0
+>> +
+>> +        "^framegen@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-framegen0
+>> +
+>> +        "^gammacor@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-gammacor0
+>> +
+>> +        "^matrix@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-matrix0
+>> +
+>> +        "^signature@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-signature0
+>> +
+>> +        "^tcon@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-tcon0
+>> +    else:
+>> +      patternProperties:
+>> +        "^dither@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-dither1
+>> +
+>> +        "^framegen@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-framegen1
+>> +
+>> +        "^gammacor@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-gammacor1
+>> +
+>> +        "^matrix@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-matrix1
+>> +
+>> +        "^signature@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-signature1
+>> +
+>> +        "^tcon@[0-9a-f]+$":
+>> +          properties:
+>> +            compatible:
+>> +              const: fsl,imx8qxp-dc-tcon1
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/clock/imx8-lpcg.h>
+>> +    #include <dt-bindings/firmware/imx/rsrc.h>
+>> +
+>> +    display-engine@5618b400 {
+>> +        compatible = "fsl,imx8qxp-dc-display-engine0";
+>> +        reg = <0x5618b400 0x14>, <0x5618b800 0x1c00>;
+>> +        reg-names = "top", "cfg";
+>> +        interrupt-parent = <&dc0_intc>;
+>> +        interrupts = <15>, <16>, <17>;
+>> +        interrupt-names = "shdload", "framecomplete", "seqcomplete";
+>> +        power-domains = <&pd IMX_SC_R_DC_0_PLL_0>;
+>> +        #address-cells = <1>;
+>> +        #size-cells = <1>;
+>> +        ranges;
+>> +
+>> +        framegen@5618b800 {
+>> +            compatible = "fsl,imx8qxp-dc-framegen0";
+>> +            reg = <0x5618b800 0x98>;
+>> +            clocks = <&dc0_disp_lpcg IMX_LPCG_CLK_0>;
+>> +            interrupt-parent = <&dc0_intc>;
+>> +            interrupts = <18>, <19>, <20>, <21>, <41>, <42>, <43>, <44>;
+>> +            interrupt-names = "int0", "int1", "int2", "int3",
+>> +                              "primsync_on", "primsync_off",
+>> +                              "secsync_on", "secsync_off";
+>> +        };
+>> +
+>> +        tcon@5618c800 {
+>> +            compatible = "fsl,imx8qxp-dc-tcon0";
+>> +            reg = <0x5618c800 0x588>;
+>> +
+>> +            port {
+>> +                dc0_disp0_dc0_pixel_combiner_ch0: endpoint {
+>> +                    remote-endpoint = <&dc0_pixel_combiner_ch0_dc0_disp0>;
+>> +                };
+>> +            };
+>> +        };
+>> +    };
+>> -- 
+>> 2.34.1
+>>
 > 
 
 -- 
-With best wishes
-Dmitry
+Regards,
+Liu Ying
