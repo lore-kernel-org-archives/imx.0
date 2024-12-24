@@ -1,129 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEEE4689;
-	Tue, 24 Dec 2024 14:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5D17BA0
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 17:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735049813; cv=none; b=s1MUaqTrDqhHtOdoueXzs60bT8rppHkJ2w3yFuwf1YzjkI/Db/lOu3f+bhlmq9B9DkauPBLhf+/wsaDKOXo/QRPP26NnC4oeINxPhYK5COPebSRPWacJwIqnhWST8cAj3ZwcGWY1y7Ubn9wxIUS/ZrGOVpDKsI5/AfIh7+z9G0g=
+	t=1735059993; cv=none; b=qydMoeelXQ5YTr7aaJ+WZZ0Bo0GzoII8gLVGdqp8naJT/ESLyd46jRNj+Xdt6pYuivFne5KqBVKmkm+Lnz/m9TWeCp8vFr+eS3Diq512NAK/ZmkKanC+Hfji3v7JOkA9hywoJYr6K5Dom8Sv6s/pKjkOnxx6dJlQCPwlEqVpPr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735049813; c=relaxed/simple;
-	bh=nTU/BdSBgAVCv4Dh2x2LodKDjoS/hWzg4rkX6ehbQQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uiOLmlhhuKnNRn2ex/eGKdpt8ddqSmeCORrzKZ3lAo8fx6+2vt3nV6WIc4Twj2S89Dkhxz+6mr7w7CMwuE1ExS1O2hvJcrU9/KYnpXowhFtJCupQBkMIdPvXtL2aFtyiK5cCTd1f9M9oNeJHOZctAMD+5fBoi2xQTlHR9U8Wqaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRG9s4N7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1735059993; c=relaxed/simple;
+	bh=Kk5h4cnnOsYNuUBFGJHNCgTfRRlkJVKs1n7IQTVr72A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TxRWco9J2nxpj+hb6WFIWyimXpCfJWj9LHTshGKBKI3xRMZhc6jYJtIT7rM70JbeEUUdfCFDdJ5irKHAF38+KGKkPe8PrPqwoAxj3/be7IBJxdJkghJqTunKK5eXaRNxAGTjSLD4R06ezHzWgdFwqpWu0DQRVKU3dd0QkUQQd2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ji12gTav; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRG9s4N7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADF0C4CED0;
-	Tue, 24 Dec 2024 14:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735049812;
-	bh=nTU/BdSBgAVCv4Dh2x2LodKDjoS/hWzg4rkX6ehbQQc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PRG9s4N7SiHVRD+Ff8nhfSm4jwjXgqQxP0UD4QbDKHnoCT/KgqW+5iAFm5SLo+OvX
-	 qMcc7w+D6bF0nq2l+Aknm9yYa7fd7wg4B2KPAwd4YRiPteyS+39EZinIaGj+mzj3Bl
-	 XEovDUXzB1y0iKfbo6VPl60A+9/iiAG5AGPHioMV650lStWt70yBrKcrHPL2UIKIs9
-	 dQDphDxQ2TGLiltKVr8703Etp+G3Vmo4gbvCX74F7yRsIZyPhDHRkKKeBdQqgDwTPy
-	 L6T82n+PDFMpHOAIL6xmGlppzoOo1zTPzQze2QjFe3V6jghldusNMBTnhHB7K9XwFk
-	 sbVBuH6ereZHQ==
-Message-ID: <fa68df6a-f8dc-4701-8e02-fc90e3561544@kernel.org>
-Date: Tue, 24 Dec 2024 15:16:44 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ji12gTav"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7712C40004;
+	Tue, 24 Dec 2024 17:06:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1735059983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r/Gn3c6Z2+oOxsTlq15aX44iSBF2ngtpY5A8qzg8rVM=;
+	b=ji12gTaveVn1lCP9UvPR+lkewDUv8CjCn0LOn5zGo0v79llUFWB6v2y+102nr1zl6n9jBC
+	0clzBYCG3ZysNzwaHVFSlmYUHUiVmLTmNEocUe48zTa0Vz5JtEW8Pf44pvyi7zbtozvv2r
+	LzXmlzO4kxANnZVsIvaWHRuRro9pdTSe3WVI7xKA/gaJHGhedzr0uVbu+2qROKMI4a7sNz
+	ADkmUKNe+kuhpOajUlCu0MaTzP+u+fssGUgj80ySYyhqmKQYNQnF0BYJiEkzRX8EaQS0AP
+	vW8Yiwy5rO5E+wjkrkXA3jg7McS1I4rk4AsLkRIAv6CgT6vbd7JEjJeycg4/Wg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 00/27] spi-nand/spi-mem DTR support
+Date: Tue, 24 Dec 2024 18:05:45 +0100
+Message-Id: <20241224-winbond-6-11-rc1-quad-support-v2-0-ad218dbc406f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] power: supply: max17042: add platform driver
- variant
-To: Dzmitry Sankouski <dsankouski@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
- Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>,
- Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-msm@vger.kernel.org
-References: <20241223-b4-max17042-v5-0-e4e409723bce@gmail.com>
- <20241223-b4-max17042-v5-2-e4e409723bce@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241223-b4-max17042-v5-2-e4e409723bce@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOnpamcC/yXNyw6DIBCF4VcxrDuGmYAxXfU9GheotE6ioOClx
+ vjupXb5ncV/DhFtYBvFPTtEsCtH9i6BbploOuPeFrhNFiRJIaGEjV3tXQsFIEJoEKbFtBCXcfR
+ hBomqJKkNoSGRGmOwL/5c/WeV3HGcfdivuxV/678sSWOBWmKuSl2UChAGnhbb58HszvSP2vu5Z
+ 5c3fhDVeZ5f4IGW6LkAAAA=
+X-Change-ID: 20241210-winbond-6-11-rc1-quad-support-0148205a21a2
+To: Mark Brown <broonie@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, 
+ Serge Semin <fancer.lancer@gmail.com>, Han Xu <han.xu@nxp.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Heiko Stuebner <heiko@sntech.de>, Michal Simek <michal.simek@amd.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+ Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Raju Rangoju <Raju.Rangoju@amd.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Steam Lin <stlin2@winbond.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-mtd@lists.infradead.org, linux-aspeed@lists.ozlabs.org, 
+ openbmc@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, stable+noautosel@kernel.org
+X-Mailer: b4 0.15-dev
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 23/12/2024 14:30, Dzmitry Sankouski wrote:
-> Maxim PMICs may include fuel gauge with additional features, which is
-> out of single Linux power supply driver scope.
-> 
-> For example, in max77705 PMIC fuelgauge has additional registers,
-> like IIN_REG, VSYS_REG, ISYS_REG. Those needed to measure PMIC input
-> current, system voltage and current respectively. Those measurements
-> cannot be bound to any of fuelgauge properties.
-> 
-> The solution here add and option to use max17042 driver as a MFD
-> sub device, thus allowing any additional functionality be implemented as
-> another sub device. This will help to reduce code duplication in MFD
-> fuel gauge drivers.
-> 
+Hello Mark, hello MTD folks,
 
+Here is a (big) series supposed to bring DTR support in SPI-NAND.
 
-I did not perform a thorough review, but skimmed through the code. Looks
-fine.
+I could have split this into two but I eventually preferred showing the
+big picture. Once v1 will be over, I can make it two. However when we'll
+discuss merging, we'll have to share an immutable tag among the two
+subsystems.
 
+Here is the logic:
+* patches 1 & 2 add support for spi-mem operations with a specific
+  frequency limitation. This is not only related to DTR support, because
+  as you can see I could use this to support basic features in the
+  Winbond driver.
+* patches 3-17 are going through all the easy controller drivers, where
+  effectively supporting these per-operation limitation was easy to
+  do. In practice, I believe all controllers can, but software is
+  sometimes the limiting factor. All controllers without spi-mem support
+  will gracefully handle the request (provided that they already care
+  about the maximum speed of course), and all the updated controllers in
+  this series will also handle the situation correctly. For the others,
+  it's an opt-in parameter, so they will simply refuse the operation
+  during the checks_op/supports_op() phase.
+* patches 18-20 add DTR support in spi-mem.
+* patches 21-24 add DTR support in SPI-NAND.
+* patches 25-27 add DTR support to Winbon chips.
 
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+Changes in v2:
+- Fixed breakage reported by Mark.
+- Created an "adjust_op_freq" helper in the core and used it from
+  spi_mem_exec_op(). This way it is called only once. The main parameter
+  must still be casted otherwise we would need to do the call outside of
+  spi_mem_exec_op() which would imply about 40 different changes in the
+  core and drivers and also the assurance that we would get it wrong
+  again later.
+- Reworked the logic for picking the best variant to include all
+  subtleties due to maximum/supported frequencies. The choice takes
+  slightly longer now but should return the truly fastest variant for
+  each case.
+- Removed unique parenthesis in some kdoc comment.
+- Fixed the inconsistency when handling the maximum per operation
+  frequencies between spi-mem and non spi-mem controllers.
+- Fixed many typos.
+- Added a core check to validate the per op frequency against the minimum
+  supported frequencies by controller drivers.
+- Removed a useless check from the amd driver and turned a function
+  void. Also used the controller parameters in this driver rather than
+  the top-level definitions.
+- Clarified some of the commit logs.
+- Collected tags.
+- Prevented a patch from being picked-up automatically by the stable
+  team.
+- Reordered some terms in macros in the spi-mem core.
+- Rebased on top of v6.13-rc1.
+- Link to v1: https://lore.kernel.org/r/20241025161501.485684-1-miquel.raynal@bootlin.com
+
+---
+Miquel Raynal (27):
+      spi: spi-mem: Extend spi-mem operations with a per-operation maximum frequency
+      spi: spi-mem: Add a new controller capability
+      spi: amd: Support per spi-mem operation frequency switches
+      spi: amd: Drop redundant check
+      spi: amlogic-spifc-a1: Support per spi-mem operation frequency switches
+      spi: cadence-qspi: Support per spi-mem operation frequency switches
+      spi: dw: Support per spi-mem operation frequency switches
+      spi: fsl-qspi: Support per spi-mem operation frequency switches
+      spi: microchip-core-qspi: Support per spi-mem operation frequency switches
+      spi: mt65xx: Support per spi-mem operation frequency switches
+      spi: mxic: Support per spi-mem operation frequency switches
+      spi: nxp-fspi: Support per spi-mem operation frequency switches
+      spi: rockchip-sfc: Support per spi-mem operation frequency switches
+      spi: spi-sn-f-ospi: Support per spi-mem operation frequency switches
+      spi: spi-ti-qspi: Support per spi-mem operation frequency switches
+      spi: zynq-qspi: Support per spi-mem operation frequency switches
+      spi: zynqmp-gqspi: Support per spi-mem operation frequency switches
+      spi: spi-mem: Reorder spi-mem macro assignments
+      spi: spi-mem: Create macros for DTR operation
+      spi: spi-mem: Estimate the time taken by operations
+      mtd: spinand: Create distinct fast and slow read from cache variants
+      mtd: spinand: Add an optional frequency to read from cache macros
+      mtd: spinand: Enhance the logic when picking a variant
+      mtd: spinand: Add support for read DTR operations
+      mtd: spinand: winbond: Update the *JW chip definitions
+      mtd: spinand: winbond: Add comment about naming
+      mtd: spinand: winbond: Add support for DTR operations
+
+ drivers/mtd/nand/spi/alliancememory.c |  4 +--
+ drivers/mtd/nand/spi/ato.c            |  4 +--
+ drivers/mtd/nand/spi/core.c           | 15 ++++++--
+ drivers/mtd/nand/spi/esmt.c           |  4 +--
+ drivers/mtd/nand/spi/foresee.c        |  4 +--
+ drivers/mtd/nand/spi/gigadevice.c     | 16 ++++-----
+ drivers/mtd/nand/spi/macronix.c       |  4 +--
+ drivers/mtd/nand/spi/micron.c         |  8 ++---
+ drivers/mtd/nand/spi/paragon.c        |  4 +--
+ drivers/mtd/nand/spi/toshiba.c        |  4 +--
+ drivers/mtd/nand/spi/winbond.c        | 27 ++++++++++++---
+ drivers/mtd/nand/spi/xtx.c            |  4 +--
+ drivers/spi/spi-amd.c                 | 21 ++++++------
+ drivers/spi/spi-amlogic-spifc-a1.c    |  7 +++-
+ drivers/spi/spi-cadence-quadspi.c     |  3 +-
+ drivers/spi/spi-dw-core.c             | 10 ++++--
+ drivers/spi/spi-fsl-qspi.c            | 12 +++++--
+ drivers/spi/spi-mem.c                 | 64 +++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-microchip-core-qspi.c | 26 +++++++++++---
+ drivers/spi/spi-mt65xx.c              |  7 +++-
+ drivers/spi/spi-mxic.c                |  3 +-
+ drivers/spi/spi-nxp-fspi.c            | 12 +++++--
+ drivers/spi/spi-rockchip-sfc.c        | 11 ++++--
+ drivers/spi/spi-sn-f-ospi.c           |  8 +++--
+ drivers/spi/spi-ti-qspi.c             |  7 +++-
+ drivers/spi/spi-zynq-qspi.c           | 13 +++++--
+ drivers/spi/spi-zynqmp-gqspi.c        | 13 ++++---
+ include/linux/mtd/spinand.h           | 58 ++++++++++++++++++++++++++++---
+ include/linux/spi/spi-mem.h           | 56 +++++++++++++++++++++++++++++-
+ 29 files changed, 349 insertions(+), 80 deletions(-)
+---
+base-commit: 9100187b36091e5cc046d1f415f50a04ec31c25f
+change-id: 20241210-winbond-6-11-rc1-quad-support-0148205a21a2
 
 Best regards,
-Krzysztof
+-- 
+Miquel Raynal <miquel.raynal@bootlin.com>
+
