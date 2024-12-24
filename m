@@ -1,35 +1,35 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8B2FB6
-	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 00:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC40C23A9
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 00:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735001121; cv=none; b=GS34mcYnqFarmsncJ0xY7QWtxZ13ovbVl1mzxMOJHWxqoB7dSNDm67WGZo4yLSCCwf9wcKjbilatx/EEvUzt0ubdU9HsdvyIbta7N523EVJd5yKg03hKmp+mYDXWISTC42wQHbr03SfIuVhwQOw/BSSwhuKdu7Zm3stzQL3EnJM=
+	t=1735001123; cv=none; b=uJgEoXPqijKVraXfE/u9cVUAR3pYJA+Bakezv/zyjeIiDsKv048Vm4hbQaQlX0EA+SVDNRbav6k+nebnjCW+6ZVxuHrxrTyJ5DMthUUxx2WGoSnIRvcHB2WRAs4szOv7TMUNd13lyqCws2Y06bYjCMQH6oqGnqT9xeeMXPpYLQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735001121; c=relaxed/simple;
-	bh=ad9jLTQ9yFhBgMK4SpCzx666hsLZCWWQHB78uYt216s=;
+	s=arc-20240116; t=1735001123; c=relaxed/simple;
+	bh=vuMw6iyevM3hva1kvhPuOnvGa7KGixmeMlab5kpohn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTZatC/L+Y0qEBZMvhLX2a5TrR/0y5/6QCAogMY078b9CUS8lYwS0B7yBWPAyYUyg0w3z05ZY3tJfWFdtZwPqaOY6AOmhr4SiIwXnpwhtyAeUQZh0ZxHo1jMeajSE2l0Y2jicEMXaVPbMor24f3pg0NmUrH4i19WZ3kVs/kpdXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hRANGfKp; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=E77TxGfuZgC7SIfrfozPW1WdzCq73fwh8jl4oFyiO4Qykye9CvgaYTHr8k2MZ7N8nSDXzHbSDZH3naCjA6290z2R+eB3cxaQZtMlafU5TWujDm1vPxKt0CUc8tZeNQLER7P1HdnmRFJitdWUcGBEnAAjzurSFEKg3s6rx/Lflms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gH2qAQaf; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hRANGfKp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EA5F2101EC114;
-	Tue, 24 Dec 2024 01:45:13 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gH2qAQaf"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B25C108A88C9;
+	Tue, 24 Dec 2024 01:45:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735001115;
+	t=1735001117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8Eu/UkuEd73FgMvGaujLuGdH66PYZ3/sKN1baeAfyWM=;
-	b=hRANGfKpPLgd86CE9yahz4RtaiI0v6/m3Bfa9/NzDI3l9LxNAjolc/ZKfXXDF/KsHuB0Zi
-	/hKmsw1IHLnZgoC6EJ4gXPF6hAtqRTxxVTc0u3mCmEN14BEdO2QHvbRF2mrNdw/Xn4RYN3
-	zGJACBpU9GA+akeWAlZvqbyf63MzHMGo7nQIrEgZe++o+742Kq3q2lX5hov0fMt/IiLEi2
-	aoD1HpwKX8AT+H0Dy6bwvj3eD45/IAGLThTTxa00VxbJ8rI/sqOhIgcSSa8KFQ52I5mQu4
-	WEe7p3xmZ+Y9QKPR4N1tHCle+Pimt8LM+BnzQpl0RASFSxfWd+PnBr7RauQQxw==
+	bh=gYl7espBpfQCSZ04CIcZ4uuuRLv2sy+4r9Xwl0BYNDI=;
+	b=gH2qAQafzf246O+u2kTbIvSH6tnUJbDzk7WYDHM2ShEn+nLlb6X45WLVKCaY6VJ1He3+1E
+	Gx09ICu3sRG0oGYxKuOEgC1Zdcz2e6xeQTEpLBvNB5X0UUu0JgqBg+V/A1mwz5OsHLgei9
+	8RVdE1Wa0jQtK36KgjDo3FrpQfrbPr29cT1mdwIgC9+Shz8BYJ2A0lECHDyGbU7pLXNWi1
+	osqdEFsBRY38UF9Zgbt4HSczSelfOqQENfwIWtZplbL0P76LTNswbTyMhKXZz2PjLH+WWb
+	jrDpcHyYFMR4kcO5awoReAxSUWzfW2oprDeU3zFpNSrhb3nCrn8wKX+LGf6Gsg==
 From: Marek Vasut <marex@denx.de>
 To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -52,9 +52,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/3] drm/lcdif: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach
-Date: Tue, 24 Dec 2024 01:42:48 +0100
-Message-ID: <20241224004439.239880-2-marex@denx.de>
+Subject: [PATCH 3/3] drm/mxsfb: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach
+Date: Tue, 24 Dec 2024 01:42:49 +0100
+Message-ID: <20241224004439.239880-3-marex@denx.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241224004439.239880-1-marex@denx.de>
 References: <20241224004439.239880-1-marex@denx.de>
@@ -79,7 +79,7 @@ by the display controller.
 
 Based on 2e87bf389e13 ("drm/rockchip: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach")
 
-This makes LT9611 work with i.MX8M Plus.
+This makes LT9611 work with i.MX8M Mini.
 
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
@@ -105,14 +105,16 @@ Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
  drivers/gpu/drm/mxsfb/Kconfig     |  1 +
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 23 ++++++++++++++++++++++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 36 +++++++++++++++++++++----------
+ drivers/gpu/drm/mxsfb/mxsfb_drv.h |  2 +-
+ drivers/gpu/drm/mxsfb/mxsfb_kms.c |  6 +++---
+ 4 files changed, 30 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 264e74f455547..07fb6901996ae 100644
+index 07fb6901996ae..e67de148955b2 100644
 --- a/drivers/gpu/drm/mxsfb/Kconfig
 +++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -30,6 +30,7 @@ config DRM_IMX_LCDIF
+@@ -12,6 +12,7 @@ config DRM_MXSFB
  	select DRM_CLIENT_SELECTION
  	select DRM_MXS
  	select DRM_KMS_HELPER
@@ -120,60 +122,112 @@ index 264e74f455547..07fb6901996ae 100644
  	select DRM_GEM_DMA_HELPER
  	select DRM_PANEL
  	select DRM_PANEL_BRIDGE
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 8ee00f59ca821..40dfbc3e6118e 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -17,6 +17,7 @@
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 59020862cf65e..d034c21e186a4 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -20,6 +20,7 @@
  #include <drm/clients/drm_client_setup.h>
  #include <drm/drm_atomic_helper.h>
  #include <drm/drm_bridge.h>
 +#include <drm/drm_bridge_connector.h>
+ #include <drm/drm_connector.h>
  #include <drm/drm_drv.h>
- #include <drm/drm_encoder.h>
  #include <drm/drm_fbdev_dma.h>
-@@ -48,6 +49,8 @@ static const struct drm_encoder_funcs lcdif_encoder_funcs = {
- static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- {
- 	struct device *dev = lcdif->drm->dev;
-+	struct drm_device *drm = lcdif->drm;
-+	struct drm_connector *connector;
- 	struct device_node *ep;
- 	struct drm_bridge *bridge;
- 	int ret;
-@@ -97,13 +100,31 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 			return ret;
- 		}
+@@ -118,10 +119,10 @@ static const struct drm_mode_config_helper_funcs mxsfb_mode_config_helpers = {
  
--		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-+		ret = drm_bridge_attach(encoder, bridge, NULL,
-+					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 		if (ret) {
- 			of_node_put(ep);
- 			return dev_err_probe(dev, ret,
- 					     "Failed to attach bridge for endpoint%u\n",
- 					     of_ep.id);
- 		}
+ static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
+ {
++	struct drm_connector *connector = &mxsfb->connector;
+ 	struct drm_device *drm = mxsfb->drm;
+-	struct drm_connector_list_iter iter;
+-	struct drm_panel *panel;
+ 	struct drm_bridge *bridge;
++	struct drm_panel *panel;
+ 	int ret;
+ 
+ 	ret = drm_of_find_panel_or_bridge(drm->dev->of_node, 0, 0, &panel,
+@@ -139,21 +140,34 @@ static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
+ 	if (!bridge)
+ 		return -ENODEV;
+ 
+-	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL, 0);
++	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL,
++				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 	if (ret)
+ 		return dev_err_probe(drm->dev, ret, "Failed to attach bridge\n");
+ 
+-	mxsfb->bridge = bridge;
++	connector = drm_bridge_connector_init(drm, &mxsfb->encoder);
++	if (IS_ERR(connector)) {
++		ret = PTR_ERR(connector);
++		dev_err_probe(drm->dev, ret,
++			      "Failed to initialize bridge connector: %pe\n",
++			      connector);
++		return ret;
++	}
+ 
+-	/*
+-	 * Get hold of the connector. This is a bit of a hack, until the bridge
+-	 * API gives us bus flags and formats.
+-	 */
+-	drm_connector_list_iter_begin(drm, &iter);
+-	mxsfb->connector = drm_connector_list_iter_next(&iter);
+-	drm_connector_list_iter_end(&iter);
++	ret = drm_connector_attach_encoder(connector, &mxsfb->encoder);
++	if (ret < 0) {
++		dev_err_probe(drm->dev, ret,
++			      "Failed to attach encoder.\n");
++		goto err_cleanup_connector;
++	}
 +
-+		connector = drm_bridge_connector_init(drm, encoder);
-+		if (IS_ERR(connector)) {
-+			ret = PTR_ERR(connector);
-+			dev_err_probe(drm->dev, ret,
-+				      "Failed to initialize bridge connector: %pe\n",
-+				      connector);
-+			return ret;
-+		}
-+
-+		ret = drm_connector_attach_encoder(connector, encoder);
-+		if (ret < 0) {
-+			dev_err_probe(drm->dev, ret,
-+				      "Failed to attach encoder.\n");
-+			drm_connector_cleanup(connector);
-+			return ret;
-+		}
- 	}
++	mxsfb->bridge = bridge;
  
  	return 0;
++
++err_cleanup_connector:
++	drm_connector_cleanup(connector);
++	return ret;
+ }
+ 
+ static irqreturn_t mxsfb_irq_handler(int irq, void *data)
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.h b/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+index d160d921b25fc..7a24e96ab4263 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.h
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.h
+@@ -43,7 +43,7 @@ struct mxsfb_drm_private {
+ 	} planes;
+ 	struct drm_crtc			crtc;
+ 	struct drm_encoder		encoder;
+-	struct drm_connector		*connector;
++	struct drm_connector		connector;
+ 	struct drm_bridge		*bridge;
+ 
+ 	bool				crc_active;
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_kms.c b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+index 7ed2516b6de05..30584091e2aa8 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_kms.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_kms.c
+@@ -281,7 +281,7 @@ static void mxsfb_crtc_mode_set_nofb(struct mxsfb_drm_private *mxsfb,
+ {
+ 	struct drm_device *drm = mxsfb->crtc.dev;
+ 	struct drm_display_mode *m = &mxsfb->crtc.state->adjusted_mode;
+-	u32 bus_flags = mxsfb->connector->display_info.bus_flags;
++	u32 bus_flags = mxsfb->connector.display_info.bus_flags;
+ 	int err;
+ 
+ 	if (mxsfb->bridge && mxsfb->bridge->timings)
+@@ -378,8 +378,8 @@ static void mxsfb_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	}
+ 
+ 	/* If there is no bridge, use bus format from connector */
+-	if (!bus_format && mxsfb->connector->display_info.num_bus_formats)
+-		bus_format = mxsfb->connector->display_info.bus_formats[0];
++	if (!bus_format && mxsfb->connector.display_info.num_bus_formats)
++		bus_format = mxsfb->connector.display_info.bus_formats[0];
+ 
+ 	/* If all else fails, default to RGB888_1X24 */
+ 	if (!bus_format)
 -- 
 2.45.2
 
