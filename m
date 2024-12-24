@@ -1,246 +1,101 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011063.outbound.protection.outlook.com [52.101.70.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406BE1442E8
-	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 02:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735008930; cv=fail; b=k34EXF4ofm2ntShrDiSdZ1bzKGQniaWBZeTAw2gjSJ9m5HPG0b1V3m4s/GJcF8OiFgtAHLeEpEFinUOLDX+C6sVQH+NKT//3Eu/jQkz2HGAjRBsmbCrh7A6HO220pyQZkQgGXfZ4BxfFc3MkYu1sF4C+nx5x39WXsGOAkziQNTE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735008930; c=relaxed/simple;
-	bh=lUuPXNqB5LK70MzR80ccV+qz9BBjjjm1uInBnz5ACo4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BFpbEEW7FyEZakcXnynE9Ayfo5G7PUGIJlvxG+j9C0YjKqEtCCTIJopfa4V2y5D6jiLYHJH70/v+gwMx3CFSwMbn63a+q9PD9+OwxYd1WFAT1AYtiJl2J9t+nD2T5TTTYnf2jrIZ2b4Lq3JW4GVxCAzdi8DfY8XNWQJ4KJE79/4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OA+chLIr; arc=fail smtp.client-ip=52.101.70.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D8AA47
+	for <imx@lists.linux.dev>; Tue, 24 Dec 2024 03:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735011310; cv=none; b=nCy1Q36oS93Kgvh5fDnz03t9Y8Vkweyut9+uT8sc20RO7vBCYDUnVmdrpQPK8B80sTQiIBpbBfxGKc6dfsjdYyaBuRS+CCuI1Vv95bYfj4W2PS00beqZWgfkXKy0eiTLKInmhgIIZthjllpoEkNGkam7Lj5eYcYdtueDME8xyUw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735011310; c=relaxed/simple;
+	bh=EG0Sqau4beoYU52EZ1pfjjsmXv4bg6teF7p2N+TGzuM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a/yqJ+38KjtcCqucJAVevPZkzTwhgMN/57RQs8qhYu2AE72hZvbPl1zDrXmEbIuzDNfTmGScFUBMQpLuD9XGHptXoVnZO3j0stUrFhU7AbTjv4SOptFDSzRW66+rkfTT2nqydxUEwf9sN1AbLL2KYcdaAx7dxSorIRiyNi33R1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=Kt5HV+of; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OA+chLIr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xh6xFXN9DMtGP2/oD8RMWKB7nocrSHXQU/d5boMeJWSiMOoRzpCOxebaWC4I2n7CDEbOiFS2UIBG1jAkPYQ1PfszAwUbD0bd+VqlfsxjUQE0MYArPzPrCLw1uqWN+zgtYAVXOGu2g0ZkKF01Ze/1klOOs9L2dYr8EfFTYZl1IzlS3ATWuAwZAMO57ITPZd69J1BIWYxYm2gwBE2XI+OY9Oxf2pvQgKAFJEzBcMJkX8qXRyzfzxVO1fyoEPFAfbMwm6un9gVr+THYHrMulu1x2sWObKXVxPH+5JyBOl7g3djrvQ4m/+52rY04GcN5QvALz6KKz4SFaW8PFguwCiYx4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=44OFw4mUtAsMEmO3ODhizwkKIvUhW1eXHJAyXV43h0c=;
- b=DJy+chMJrB8m9GmOLHL8FP27U2lVFltJFh8uH6K/6MAUv3KWosC6e/jKIIzyrsWGpItbeAM4h++Y7S6vzwEoSfqP/bqtLfHby28rDxPBwON/1SsWairandEgKYkbZwWjSOjmEDkRhW3E6aadUiZPJlxj9WNBQr6cMh/IhT8wffpXAz5Rxd7Lppfi/wCBvrTnxxXHOpCDv/t40Ih2fmbiufiIPy71qfaR9qfRQY6Sf4eg1zMKHAnxwzqbbbwOxony2j908+sv8DbXeGvXi89hwO6OOWVjs3wWrIXJNWB4/7nXlrSQBMBOjQYRlASnoyddzmhOjjQuGjALDcfK0FraAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=44OFw4mUtAsMEmO3ODhizwkKIvUhW1eXHJAyXV43h0c=;
- b=OA+chLIrVx9ha9scnXtVejBx+PCEIBQ8ADSwAMcqck36RRayq0AgWBaavYPPmZY1WMH21cFA4fPom9fbI+ELfA01Nx7iK02SL442KpQ6XX0i+5o90/KZBCago+A8Y/Qkyayb0sToeLIH5fDjfsaY89KbNj0eei058j6Xkm4JPwp/KKeMm1J+UshXsDb9nCosA6511LSEY8zWPBPjGz3ApMdiqcof1t7ZTh4GX9CgdfJGNLYQHc6QN5YbQFoVv/xV7w3hGA82VtpYg7mez0iwXrWtntlPafS2jkIA8K0bQueDNioARaCThADXs1CYY7mhUgtnDr/jmzrEx2SO9nblCw==
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
- by AS4PR04MB9690.eurprd04.prod.outlook.com (2603:10a6:20b:4fd::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.20; Tue, 24 Dec
- 2024 02:55:18 +0000
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0%5]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
- 02:55:18 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Clark Wang <xiaoning.wang@nxp.com>, Ahmad
- Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH v6] i2c: imx: support DMA defer probing
-Thread-Topic: [PATCH v6] i2c: imx: support DMA defer probing
-Thread-Index: AQHbVa9DNCg8MK0CFkatqoCL+ZPXwQ==
-Date: Tue, 24 Dec 2024 02:55:18 +0000
-Message-ID:
- <AM0PR0402MB3937905A3108833DD8F52982E8032@AM0PR0402MB3937.eurprd04.prod.outlook.com>
-References: <20241223034416.544022-1-carlos.song@nxp.com>
- <gfjir4qyyptxjizkc2k5r2elwn74fndia644evv6acwyuj3fr5@3pl3xt7rqntw>
-In-Reply-To: <gfjir4qyyptxjizkc2k5r2elwn74fndia644evv6acwyuj3fr5@3pl3xt7rqntw>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR0402MB3937:EE_|AS4PR04MB9690:EE_
-x-ms-office365-filtering-correlation-id: 4e524ad8-5c25-496d-8585-08dd23c66666
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?VUzLBC0sT1jSAHyQwZdQCtF7TyKzoIwE9o6bzpSUD/4TZRdiOw8Xkx7pYPY3?=
- =?us-ascii?Q?BzfxtPoKgweFCODDreHmgSqYNvl4eiObU/a+Oc9R8y3vxzvW5X2jTJBM1Lcf?=
- =?us-ascii?Q?i2yXfu89rSBUD9PX60gtUp9OEyHElf8gbOJg+r2/m8ObrG3gjtmABajXr0sM?=
- =?us-ascii?Q?52DsaCwBdXpApSTQwvn2iN1al7zIimMaW856jJlEY1QiElrzAOjC6VtL7V8o?=
- =?us-ascii?Q?vw+//SUf9qBgSyJjc/pvtcrWCZgVhH9Q7Tl7i8qTCdvoyHFnA0kgxWcN2FCs?=
- =?us-ascii?Q?i+O2BSxxdKw4BaYqt5N/QhduGwbs3TdtgVSb08ZX4H48+rsW0rgHD9TgR4dW?=
- =?us-ascii?Q?p3IFarQz3nIeEpV8jjENMM/kqX3WzQ6HDsXDuL2a2YQ4ulNH2guF48raUzrz?=
- =?us-ascii?Q?DnpiQv9e7BCRY5fDizTqChieCUV93W+Wui8RpiASxO/6TVecqgguRfx4yra0?=
- =?us-ascii?Q?cm1IwppaFukhnZ6x735siEruvAaG2Xvo1cXp1WbDykkvLabGInghlUez0Mp5?=
- =?us-ascii?Q?YvpMkzWlDptS/NhQuwhFqONYfj87CjWnZfuNkS5jHWHbsQ6LWYx1cSp2cj6b?=
- =?us-ascii?Q?K91IlyhB9jpmcX+qLGOyjNAmUQBp24NXsSbVwN3wVfyXehM2NFhmMKxWlFKI?=
- =?us-ascii?Q?884A166bzNa9jCLz/TDziKiB7/8ym6LDNdTBxwpSOeeOtOH7fN1KxUrpSSaI?=
- =?us-ascii?Q?18qFodoxGdWH5cacmJKRoOIKeWrWxjwusoT7kQEGrqS2MKAo2SFWWWG37Rn1?=
- =?us-ascii?Q?DqUVwbykI71+qS9HhQLML01AvmINdG3hN+e6c82jTfzTcKfmhOsLrq+c0u7B?=
- =?us-ascii?Q?eumRGTLA42grtEu2wx9Ft9WX+q97f3j4nbpcaj0CgeWW3cgFQST2Ip2CDYBD?=
- =?us-ascii?Q?58iKpNY42rzapgcvogib+TZSOg35SslymNIx+8pVq6nwBm/SGatdvXNH9fOd?=
- =?us-ascii?Q?eY53yPMGIuUABAhM7WuPa020jTHt23f/X8W7tlmdRjCYPjoBJedxWFZHOd2x?=
- =?us-ascii?Q?Lnzqfe5dmVGiMtLFPa5jft8Ac/D6cS3Xu+wea/bvBElsyjg/mzT4xvW1y5Bs?=
- =?us-ascii?Q?1Mh9qhpOHCZVXH0nAApdrqNPKVMItZV2w8Wt4no1atFUbYyFo+nv5vLAJ0MA?=
- =?us-ascii?Q?CHVUwpcyURMhjPTZ1BPUVktOY3doMnAhMUrlZSmPiKWJr8zNLDCnNH1THAmQ?=
- =?us-ascii?Q?l2/WY+so6OH3014+EIMkn+OUhzKJv8Jj+uGaliU+vvVDXJqLzuXezHzWpIP2?=
- =?us-ascii?Q?pjoWtQptqsy963fjt7+nHYrp/4qrX5dBOBKI2lRvaUCzt8t1twmVCxUDu2h1?=
- =?us-ascii?Q?iK4mDZqndZuFsR8lZEA7LpNzAXV66KUlq5zqG8Pu3SPX5PVXdavjxtXHwXZQ?=
- =?us-ascii?Q?h5BDTsFt6OKvP7QU5lNqFO2tv5ckL8itQB4NvRJphFn+dz8CymjenUnSh/my?=
- =?us-ascii?Q?fBStq+FvglVI4T1gUqRCoOj1yeKUM2DI?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?2gQ2oMI6GKyLelvL/JKq+FiOFNGEkPVyNxKd/FgFfPMCJcXomxbXDyVaSL+c?=
- =?us-ascii?Q?7cokMK7Ywi7Astx6GkPu+kdI2fiL+O+tIE+ylWmEFxwuJqMH/ppL00FyWCVO?=
- =?us-ascii?Q?oOOR8HkhR7ku9DdUl3XxeKkdroE//2Eyd6M0upAL/5XO05v9CLKHb0JguXHD?=
- =?us-ascii?Q?Vclbyaql18I0eyTdcciRyjDXKp479ipRPuEm6vr2Ra0vA0mUtuqbEnooRm88?=
- =?us-ascii?Q?PdyUmc9+CPhE5zJ/Fb6G1RjSGagIa77TeMLldW9YUdKcyeN56/E/wB3qKXK9?=
- =?us-ascii?Q?+xfnLwjz/8HjzOoInoLOBNZ53zqkAhzbiHCghQtqxKJ/bpAi5Md9ASbYwQb7?=
- =?us-ascii?Q?nYQAFIFrsSOAwH4GDh/4X38+pxG6X1emR9B5YpLkGLRjb5+Ft7wLa1AJmjSL?=
- =?us-ascii?Q?eA46paOvnh/cvlsnKQ3hGsP2boefHetoykA9Bb+hv7HfxdhmA60i5TXFXT8p?=
- =?us-ascii?Q?v6G7NONZvASlHIEoKnS1nmujJOpxAjxUJ3A9uZCxJeWmPIgzyIZApfXeVd98?=
- =?us-ascii?Q?YnzZolsRwYC23hhyccCN5O0AnCiD/nzHWg7ciVeLWK47acjOffnJjDHN0XoD?=
- =?us-ascii?Q?c3OPA0vWUpdfXpZ+RhxZ3Z7jRQtDCTNyxXB2Zh/xFwm0kE6eUEluHdjm3sCP?=
- =?us-ascii?Q?tDN6O+mIOGMNB3AEiG14EEUfBxkdAaF6pUB8SLZ/UutWg6YnzR7oAAQhdLXl?=
- =?us-ascii?Q?G55A7KgGPnVNgxS5hzUDB9lIoFjBPowptbbNhjhYL9y9sBkupYqZSfwmm2FH?=
- =?us-ascii?Q?BMjTcIyMJ8IdH50jSB2RhJ55kwPia2fXs7LK4OdsJJrrdyb1RshCRRemZBse?=
- =?us-ascii?Q?zJiKjQsYmNY6ZAAKrXwJsocA5kz5UtnsYhfB4lYdA/WOAWO/pULfiIKcelFs?=
- =?us-ascii?Q?lN31sgxJ12Gy6TqtPvkfRVt/9k59wpE424wgw3u0qKM/jRJYf7fuLvTtdqW4?=
- =?us-ascii?Q?/gR45qkSrFgsMC4r6/fDg4p/Mgt5T2qHvtWHZ3Z9Qc7InLJMdCFvITa5f2mg?=
- =?us-ascii?Q?7bFkLMCSwSnDOXS6A2smB2VNr2F7JRLYgcqJLuyAo3MibtMnfC+VcuGpW+Ih?=
- =?us-ascii?Q?pCIWOBGVkyKwYIP3m2Pvd09ljmwWyCpMoBlg91t5NTAaTMVgKECsYFRBo89m?=
- =?us-ascii?Q?NoibOsqz2LSGEpTs5xKEWcCykFOW5efBETgfV/lnwDMB9PwrokyGoQGUSTBJ?=
- =?us-ascii?Q?PInRh7L30mwybvfmPCkv2og98m0SAaOfUL6X2v2/wLXUEFbMo8kvEqYFYpmi?=
- =?us-ascii?Q?4blmsrAQpmVRNkC7DLF9QW7HDNkA+Hwn8Xo8t9NI+B7q42xuCXSe4Fz7Je1B?=
- =?us-ascii?Q?Qc61pF+cRIqjvT4qNGms8rPYBIdhPVPkV/sgFN3FNxM+TcLH6GEIc4xfxHAq?=
- =?us-ascii?Q?TCokq4fEU0ZhWw0jCSW7OGPB7GmGD8HpvsA8kWrJi8jPW0OjcUhSJzt6mxbT?=
- =?us-ascii?Q?kfm00GYnL8/1AQE/VPGz6Ds2i1zkZDuoblx+SHFB/sXcUvTTdebFSv2lt/Cy?=
- =?us-ascii?Q?f4UFt+2cJZ0dUwJXtdprpWPtG/wj3SfQvzxE74r8YX/IGAGI334Nw0F4fTrE?=
- =?us-ascii?Q?Gr1UqDRzLfKUA/vtbP6slfttJTJuMOE9kETSP9Yr?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="Kt5HV+of"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2161eb94cceso32621295ad.2
+        for <imx@lists.linux.dev>; Mon, 23 Dec 2024 19:35:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1735011307; x=1735616107; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZYWpRq+1xJQBocTKhhdOtH152ag/y1pcS32FvRM6WwI=;
+        b=Kt5HV+of0dtHnTx86DXMUYTWWPKXXxu0Yc/FySBjeFsBwVkSbzRzPp0u5RxqQ/UchL
+         kaYb3tDWIuHs8ER/sZgXnNBqW0n4+xDV9ae60+dfyIFVK50rkqinveg9n+w8bNwXKFdI
+         9eWutzrIV90Qfy2aos7gjBELlNkLxGSZRWGag+Wmct4RC4Rug/wyOu60BH/udMf9Axi/
+         Gdp0cvUfwewoHvZtbLCvTrfgRImpOoYij6sVETD+THGXzCMxy6dII0XJqww2lsSAHTFc
+         xkoisKQXIuvjuNAvWYQYWDO0nv/Bgk7JoqLD0RbEcjet0kBXQ3r5Vg6u7jqSm77j/bb1
+         J8VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735011307; x=1735616107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZYWpRq+1xJQBocTKhhdOtH152ag/y1pcS32FvRM6WwI=;
+        b=ZNeZFbKRiQ9oTq4G0PmT1YdIbbbd94M2yYQL1/Jlw4CwnPcYMtQhc/K9c3oJWSS21T
+         f8hQPHNifiGY/G5+JQbJgpGYCOcDT/iujBa68e+OcexrVR8G9K5eKu1dWCiMl58AOvng
+         Q4jENRxZvkQ3ORom36LGCJp8+aTd/enexpjgHFMbkakJPJtWXYGZCIOiXnHC1qfwbTJC
+         8qyrUuzm5JS5LddIrab3A+Px/+qjhX0DUW3OBfkZup+ZD9uR8wIZtIqqkkuYcaJKuooc
+         Ux4V4rPA4JbW2ZjTJDkCwWP/6pfkcvMr/o3qX9Ge163KpFKNLItUPUcqUvbL9Dmw+9wK
+         yWTg==
+X-Gm-Message-State: AOJu0YzEyOAS+qrQVhrOngsHQpbt1najbPUg+DQcApkv5wLhqVSFe70B
+	AEvyYuSK4iPcPxbQq8HQx+UmabfE/N1A96BIimbXZnUHug1LiQQEBko4WwyhjgHtIqyCbJ1cjkB
+	zAu8=
+X-Gm-Gg: ASbGncsWbLWUt5lAOXd2FJGeqITgTWJHfhxszNr/vAxyzKf7deWSohNtWG+/HR9zIhv
+	DQ1iyh4LZtYhZFW1fyrIQOWbh3VhYJ1xpCY7fNlxdF+4w8ssXgHwj6TruxMBYw8UFghcl8habj1
+	Ep8ZGX5eLcQDUxiGnBZ5f+LtMjPpLr5Iamdma55AFllLx0ZPAjXXldvkI5zGeL9m3OaCXQebb9x
+	OKd9ZkRhcqWgLBZHrafXb+eiVprNzAXh2oUIhbw3rZFTnC/I0mB3fhsDrX729Mz18M/FSRRTdUv
+	JW2A49hM5deHX5UbqC2iqAn56qRCwyUejmnBHwBrsQY=
+X-Google-Smtp-Source: AGHT+IEAqHFYrt1jNYrNMorMBx7/oxc08Zq63PTEfndEK5byLv8IstZ8xpO+mfomO9/4yPUYkKmPdg==
+X-Received: by 2002:a05:6a00:2405:b0:725:aa5d:f217 with SMTP id d2e1a72fcca58-72abdd912fdmr19359517b3a.7.1735011306861;
+        Mon, 23 Dec 2024 19:35:06 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842aba73267sm8016840a12.13.2024.12.23.19.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Dec 2024 19:35:06 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: imx@lists.linux.dev,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH] firmware: imx-scu: fix OF node leak in .probe()
+Date: Tue, 24 Dec 2024 12:34:56 +0900
+Message-Id: <20241224033456.1312930-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e524ad8-5c25-496d-8585-08dd23c66666
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2024 02:55:18.4500
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: It+6UJES3NfGxON0AZsPvbKXxTCylaGXFdL0k2Bj82KmBhuWQFYpmG/wrdSsvQZSeP1eHTLNWzQCUWdRsqJnJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9690
+Content-Transfer-Encoding: 8bit
 
+imx_scu_probe() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it. Add a of_node_put() call
+after done with the node.
 
+Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/firmware/imx/imx-scu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> -----Original Message-----
-> From: Andi Shyti <andi.shyti@kernel.org>
-> Sent: Tuesday, December 24, 2024 7:14 AM
-> To: Carlos Song <carlos.song@nxp.com>
-> Cc: o.rempel@pengutronix.de; kernel@pengutronix.de; shawnguo@kernel.org;
-> s.hauer@pengutronix.de; festevam@gmail.com; linux-i2c@vger.kernel.org;
-> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
-> linux-kernel@vger.kernel.org; Clark Wang <xiaoning.wang@nxp.com>; Ahmad
-> Fatoum <a.fatoum@pengutronix.de>
-> Subject: [EXT] Re: [PATCH v6] i2c: imx: support DMA defer probing
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report =
-this
-> email' button
->=20
->=20
-> Hi Carlos,
->=20
-> ...
->=20
-> > @@ -1802,6 +1803,18 @@ static int i2c_imx_probe(struct platform_device
-> *pdev)
-> >       if (ret =3D=3D -EPROBE_DEFER)
-> >               goto clk_notifier_unregister;
-> >
-> > +     /* As we can always fall back to PIO, let's ignore the error sett=
-ing up
-> DMA. */
-> > +     ret =3D i2c_imx_dma_request(i2c_imx, phy_addr);
-> > +     if (ret) {
-> > +             if (ret =3D=3D -EPROBE_DEFER)
-> > +                     goto clk_notifier_unregister;
-> > +             else if (ret =3D=3D -ENODEV)
-> > +                     dev_dbg(&pdev->dev, "Only use PIO mode\n");
-> > +             else
-> > +                     dev_err(&pdev->dev, "Failed to setup DMA (%pe),
-> only use PIO mode\n",
-> > +                             ERR_PTR(ret));
->=20
-> My question here is not just about the use of dev_err vs dev_err_probe, b=
-ut why
-> don't we exit the probe if we get an error.
->=20
-> We should use PIO only in case of ENODEV, in all the other cases I think =
-we
-> should just leave. E.g. why don't we exit if we meet ret =3D=3D -ENOMEM?
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index 1dd4362ef9a3..8c28e25ddc8a 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -280,6 +280,7 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
++	of_node_put(args.np);
+ 
+ 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
+ 	for (i = 0; i < num_channel; i++) {
+-- 
+2.34.1
 
-Hi, Andi
-
-Thank you! From my point, I2C is critical bus so it should be available as =
-much as possible.
--ENOMEM or other unknown errors all are from i2c_imx_dma_request(). So erro=
-r happened in enable DMA mode process.
-
-As I comment at previous mail[1]:
-DMA mode should be optional for i2c-imx[2], i2c-imx can accept DMA mode not=
- enabled.
-Even though DMA mode can not be enabled by some known/unknown issue, I2C st=
-ill can work in PIO mode in all time for all cases.
-As a result, don't exit the I2C probe and only print error to show i2c DMA =
-error.
-
-This patch just is used to make i2c-imx can support defer probe to use DMA =
-resources as much as possible.
-
-If meet a DMA error then exit i2c probe, which means binding I2C to DMA, th=
-is is not what we expect. Once the DMA encounters a problem,
-the entire I2C bus and peripherals will not be able to start, this is not a=
- small damage, so we use current logic.
-
-[1]: https://lore.kernel.org/imx/AM0PR0402MB39374E34FD6133B5E3D414D7E82F2@A=
-M0PR0402MB3937.eurprd04.prod.outlook.com/
-[2]:
-commit ce1a78840ff7ab846065d5b65eaac959bafe1949
-Author: Yao Yuan <yao.yuan@freescale.com>
-Date:   Tue Nov 18 18:31:06 2014 +0800
-
-    i2c: imx: add DMA support for freescale i2c driver
-
-    Add dma support for i2c. This function depend on DMA driver.
-    You can turn on it by write both the dmas and dma-name properties in dt=
-s node.
-    DMA is optional, even DMA request unsuccessfully, i2c can also work wel=
-l.
-
-    Signed-off-by: Yuan Yao <yao.yuan@freescale.com>
-    Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-
-Carlos
->=20
-> Andi
