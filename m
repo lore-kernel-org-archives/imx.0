@@ -1,191 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DB111CA9;
-	Wed, 25 Dec 2024 14:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10861DFE1
+	for <imx@lists.linux.dev>; Wed, 25 Dec 2024 20:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735136432; cv=none; b=O+EkRQAGhzanNFJRkFvYtz5QAkhLz1j2sbqChB/oXQxs0uMZLt/jSDY24V/bCrSmUfQSYNajDiMfWVmCUZnfj1lamDJ9Z0c7sgTLkRgeXKzzsMdcb41iesQnvCCGUhxiMFF0vn8LjWTM2KgZL/QmUius6GLXSOsjdYYqB32nCho=
+	t=1735159815; cv=none; b=fD8d9YgTbWVrOBj5SmAafdG/SNdAfabTgCdEwJGvmw1GnvQ/Kt2NPqcdOt5JGm4N6b/sx6yhMKYvvTnQ3Wb072WRRxABEJAjRfYmncvM7zteDOHypAO+fQ/KGprvn9gJx52wMqu/hypqIe8X+HksstWlZLp4DEWX4mVAbNlvkWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735136432; c=relaxed/simple;
-	bh=UgQVZjB1pmffoGVrWrpjv7ck7OetayH/qC7/X1DRQMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nFiSJKlaLLLAVeErmvPUPci+sonRQSw1Pa5Xzo+TSx06MnaC65h3BEkIVwS5ZOMm+12rDRR8vGIGic+ozHZNhjFz4fnttp7LoYsEAzrwWmk4/eNakdUM86b9xFeXdVSiywqad8ET170mYyVJ0XK9sHtanhY4E+07eyhdJO70A/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+JeCAvL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1735159815; c=relaxed/simple;
+	bh=BNmb2VVZFsIjMRcdliG2H8NqXsv1KtwdPvJJvoIJSv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jkxe5BoUcUbcbVa8yUpDUk9LdsGkINAVz/QdJ7RHVMbnFtw1qW0p68KN1XOLKWcm4QUUvLodyRwbSBM6GZKzMYmo/iM8JG3sxhshy8HZ1AoU268vaGBlZruAN+O1mJHH0I0OyRW3PfnJ6OsaGYN9V8Yt5bc1KgUv+GSkfQ1uMcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=XUtzIYse; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+JeCAvL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FABC4CECD;
-	Wed, 25 Dec 2024 14:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735136432;
-	bh=UgQVZjB1pmffoGVrWrpjv7ck7OetayH/qC7/X1DRQMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+JeCAvLMaNI8JrFYoFuro5tKwLF+o3ItGz5d/FRNm+WAvtky/4qVqqe1xjRKHqHf
-	 78c1Wt4MRTsoyBqoKv3hvaPSF8oZBAB3+1azgFdRL55x+F37tE0HfQs6Fz0xbwIeH8
-	 gGgdwQHNKB0cTr5Z0a2oCLngmnCQ3T4cQWhiN0D5RCKf8PripojoIiRf4H2h1zewBW
-	 83NCSB+kaWSEdchLk+FP3Lq6hBagMR96/2srtyLuWf87GNYMgSHYnDvCGTz+WKDruX
-	 djnCmdb74XqyhH4C/dEGLxR7OLkLYwlNzsAR+PAqdd6J3fm0L3nmGwuNrTJbTzAaqQ
-	 EjSmGBhyJVXxQ==
-Date: Wed, 25 Dec 2024 14:20:26 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Abel Vesa <abel.vesa@linaro.org>, Marek Vasut <marex@denx.de>,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m: document
- nominal/overdrive properties
-Message-ID: <20241225-untapped-flyover-47254d06d418@spud>
-References: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
- <20241219-imx8m-clk-v1-1-cfaffa087da6@pengutronix.de>
- <20241219-lash-lather-31443ced0e0c@spud>
- <4e2250b3-5170-4e88-aa0a-dd796b81e78b@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="XUtzIYse"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98BA8101ECBAB;
+	Wed, 25 Dec 2024 21:49:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1735159804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j1aKFcorootUYVtMFPW/mgDVu+jID0c/UKLZ3rEjMkg=;
+	b=XUtzIYseNKvVglNpfrWy4JZf5UDR0LygYVLIYjGMWIURe2VGSw9m0BROpIjFW2GcVwxZRT
+	oNwxXTpw+o6ZmvcOXTds7frgeDq7nNDDYth7iqUblMu674db0ZH7ePk0lzc5yj7NEbWQlP
+	3jtFBLB8O01UirBg9mgK4ogojhovYOFt9G+S9MO+qWXcS7fqhj6ELZH/zsXZkpoeCddi3m
+	VKHgyOGExi6RlKiCfKju+ViFFe9s55r6XyVnt/sb58M/QvOL7VbJ6o2QO72deVIDebzHgE
+	PhRUAwHy/97CxNBvsiTZ83BoJ5V0Wn3ExPJNKc9wbSlAMkXsaLP8Tk8WAiHRzQ==
+Message-ID: <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
+Date: Wed, 25 Dec 2024 21:40:55 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="24USIZEjsi+7fMqF"
-Content-Disposition: inline
-In-Reply-To: <4e2250b3-5170-4e88-aa0a-dd796b81e78b@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] drm/bridge: imx8mp-hdmi-tx: switch to bridge
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Liu Ying <victor.liu@nxp.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20241224014701.253490-1-marex@denx.de>
+ <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 12/24/24 5:21 AM, Dmitry Baryshkov wrote:
+> On Tue, Dec 24, 2024 at 02:46:14AM +0100, Marek Vasut wrote:
+>> The dw-hdmi output_port is set to 1 in order to look for a connector
+>> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+>> The output_port set to 1 makes the DW HDMI driver core look up the
+>> next bridge in DT, where the next bridge is often the hdmi-connector .
+>>
+>> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Fabio Estevam <festevam@gmail.com>
+>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+>> Cc: Jonas Karlman <jonas@kwiboo.se>
+>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>> Cc: Liu Ying <victor.liu@nxp.com>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>> Cc: Robert Foss <rfoss@kernel.org>
+>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+>> Cc: Shawn Guo <shawnguo@kernel.org>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: Stefan Agner <stefan@agner.ch>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: imx@lists.linux.dev
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> ---
+>> V2: No change
+>> ---
+>>   drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
+>>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+>>   2 files changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+>> index 9a480c6abb856..d8e9fbf75edbb 100644
+>> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+>> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+>> @@ -27,6 +27,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+>>   config DRM_IMX8MP_HDMI_PVI
+>>   	tristate "Freescale i.MX8MP HDMI PVI bridge support"
+>>   	depends on OF
+>> +	select DRM_DISPLAY_CONNECTOR
+>>   	help
+>>   	  Choose this to enable support for the internal HDMI TX Parallel
+>>   	  Video Interface found on the Freescale i.MX8MP SoC.
+>> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> index 1e7a789ec2890..4ebae5ad072ad 100644
+>> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> @@ -101,6 +101,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+>>   	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+>>   	plat_data->priv_data = hdmi;
+>>   	plat_data->phy_force_vendor = true;
+>> +	plat_data->output_port = 1;
+> 
+> Quoting my feedback to a similar Liu's patch:
+> 
+> This will break compatibility with older DT files, which don't have
+> output port. I think you need to add output_port_optional flag to
+> dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
+> is set, but there is no remote node.
+Looking at the upstream imx8mp*dts , the oldest commit which adds HDMI 
+support is commit:
 
---24USIZEjsi+7fMqF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
 
-On Thu, Dec 19, 2024 at 09:14:10PM +0100, Ahmad Fatoum wrote:
-> Hello Conor,
->=20
-> On 19.12.24 20:49, Conor Dooley wrote:
-> > On Thu, Dec 19, 2024 at 08:27:32AM +0100, Ahmad Fatoum wrote:
-> >> The imx8m-clock.yaml binding covers the clock controller inside all
-> >> of the i.MX8M Q/M/N/P SoCs. All of them have in common that they
-> >> support two operating modes: nominal and overdrive mode.
-> >=20
-> > This implies that only the two modes you mention are possible, but you
-> > leave the option open to a dts author to use either. How come?
-> >=20
-> > Makes it seem like we only need one of these, for whatever the
-> > non-default option is?
->=20
-> There is no real default. The mode is configured implicitly by the
-> bootloader setting VDD_SOC and then kernel needs to adhere to the
-> limits that imposes.
->=20
-> For i.MX8M Mini and Nano, the kernel SoC DTSIs has assigned-clock-rates
-> that are all achievable in nominal mode. For i.MX8MP, there are some
-> rates only validated for overdrive mode.
->=20
-> But even for the i.MX8M Mini/Nano boards, we don't know what rates they
-> may configure at runtime, so it's not possible to infer from just the
-> device tree what the mode is, which is why I need to allow for absence
-> of either property. I can make it a single property with two possible
-> values though if that's preferable.
->=20
-> Theoretically, we could infer mode at runtime from VDD_SOC voltage,
-> but we need to set up clocks to read out the PMIC and I want to
-> apply the constraints as early as possible as I don't want the SoC
-> to run outside of spec even for a short while.
-
-Apologies for the delay responding to you, doing it today cos I feel
-guilty! I think what you've explained here is fine, but could you add a
-bit more of that info to the commit message, explaining why one cannot
-be default? With that,
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
->=20
-> Thanks,
-> Ahmad
->=20
-> >=20
-> >>
-> >> While the overdrive mode allows for higher frequencies for many IPs,
-> >> the nominal mode needs a lower SoC voltage, thereby reducing
-> >> heat generation and power usage.
-> >>
-> >> In any case, software should respect the maximum clock rate limits
-> >> described in the datasheet for each of the two operating modes.
-> >>
-> >> To allow device tree consumers to enforce these limits, document two n=
-ew
-> >> optional properties that can be used to sanity check the clock tree.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  Documentation/devicetree/bindings/clock/imx8m-clock.yaml | 14 +++++++=
-+++++++
-> >>  1 file changed, 14 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml =
-b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> index c643d4a81478..a6ae5257ef53 100644
-> >> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> >> @@ -43,6 +43,14 @@ properties:
-> >>        ID in its "clocks" phandle cell. See include/dt-bindings/clock/=
-imx8m-clock.h
-> >>        for the full list of i.MX8M clock IDs.
-> >> =20
-> >> +  fsl,nominal-mode:
-> >> +    description: Set if SoC is operated in nominal mode
-> >> +    $ref: /schemas/types.yaml#/definitions/flag
-> >> +
-> >> +  fsl,overdrive-mode:
-> >> +    description: Set if SoC is operated in overdrive mode
-> >> +    $ref: /schemas/types.yaml#/definitions/flag
-> >> +
-> >>  required:
-> >>    - compatible
-> >>    - reg
-> >> @@ -95,6 +103,12 @@ allOf:
-> >>              - const: clk_ext2
-> >>              - const: clk_ext3
-> >>              - const: clk_ext4
-> >> +  - if:
-> >> +      required:
-> >> +        - fsl,overdrive-mode
-> >> +    then:
-> >> +      properties:
-> >> +        fsl,nominal-mode: false
-> >> =20
-> >>  additionalProperties: false
-> >> =20
-> >>
-> >> --=20
-> >> 2.39.5
-> >>
->=20
->=20
-> --=20
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---24USIZEjsi+7fMqF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2wUqgAKCRB4tDGHoIJi
-0hbzAQC65sEK2UR7g/h59lMD//eMqtEkiciZ/1hCYAlQJ3x5gwD/T+rnKe1r/9c6
-nZAZoSKGnW67n9Nso3RjpYTwQfyYQwI=
-=s/GH
------END PGP SIGNATURE-----
-
---24USIZEjsi+7fMqF--
+That already contains the HDMI connector node. Every follow up addition 
+of HDMI to another device has been a copy of the same commit, with 
+connector, so I think it is safe to say, no upstream DT is going to be 
+broken by this change. Do we care about hypothetical downstream DTs 
+which may be missing the connector ?
