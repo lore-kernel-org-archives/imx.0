@@ -1,190 +1,166 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFE7146A60
-	for <imx@lists.linux.dev>; Thu, 26 Dec 2024 20:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E12C18E1F
+	for <imx@lists.linux.dev>; Thu, 26 Dec 2024 20:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735244383; cv=none; b=oc69ihYfpUq3cgvANNPDIsv7TIHdaFtyrsRZWkPgMz1sBm6mRyNmyFH7VbHk5yKRhjwp4M6aOAZL0d983W+gjZPoSEUPNRdT4bOZwHh4qOIeaxH6ajxZ66VHC7iLK6VBGTwu9h/F3VlkdJjEMcmfcGA2GISZB+64NmUh8k0cpZ8=
+	t=1735244479; cv=none; b=kltNfkQ1hQ67hbPyO/vgWEcx6pf/5r+t2xbwT6UEDxb4mvVFC4xI9qaA5OjUJYgO/ftMib5Y7P4wZY31BqEqWMtcHx+ViIciXmuG/YZtUjGS8yU1bmWhq7jQZ76L/oN+r/CLlZglY4n+0AXt+DhJgbMBWtYgLfIzLcw2m4tHyQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735244383; c=relaxed/simple;
-	bh=TVS+vm40f/mpxvJRtzWcOHfhrK9nycHvNxQB9JavOPQ=;
+	s=arc-20240116; t=1735244479; c=relaxed/simple;
+	bh=LWkNSQJdovHkRXCgoswLP7uTvW7wVZx4qgvdZr4oivw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kSf2Ku7+iKxv0u++TNUOdTQC2PcZbIXvB3LI9W8Ex+o9V6PvmKUK9bDQBpO11dp02Bb59NIrEz13W5n4G/G3e2oHHxMMGo8qtKS5ysDditDkIlKreRTl5HiyGAh1kP4G8yRD2SSeK8P+f8+WTc5WaB1i0hq/CWr75LIydyMP43w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gYttD72j; arc=none smtp.client-ip=209.85.219.172
+	 To:Cc:Content-Type; b=s2R7Sacy6Yi5nhIKkX7iaxAiSORhWrFkY8kyJY1sUr3+A4WKO0FkQ6vzT4vsX5HHpzjwGLVZzwYe2fsSwyXzAE7pArTlKBXMpmBPDEAt1FSMFMqJYgPxp2Ci9cDZMpRryV4/Jg1RB0wBtjp7DIKjCrlS3fYBHzu2ccBiPWmCEjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WKho8zTK; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gYttD72j"
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e46ac799015so6558175276.0
-        for <imx@lists.linux.dev>; Thu, 26 Dec 2024 12:19:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WKho8zTK"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e455bf1f4d3so5977502276.2
+        for <imx@lists.linux.dev>; Thu, 26 Dec 2024 12:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735244381; x=1735849181; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1735244476; x=1735849276; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sb98FCKmeyAT2DVLwKOv3zAbNwq73exSEOZGxjhvBeY=;
-        b=gYttD72jGJwa25zhgaYQR6Ft0O/RAVYWxdOjN+c0varDvTSxnb0K+chM8dDDfgdU53
-         MXgjIObSFHHHsCaQ4XY81NlDO0oWAJtOSgOCE9KPnsX0dR/jDDxbz6ZimWSrk/Peskrf
-         Itii+Nqs4I8ocFspMfJhER/zPCE0sIGoQrwwF+N5/A1cwDTSsKyEhSAjDMHRRdbJFjCQ
-         nsndU59Zsk0TBHKCPzsRJJSQdHJuNe5McRytID2+tSRYEpvNG3YwF3Yabj3Tr7q6Vwtu
-         cTQIYIMYTcWMF0q9xZf/fIt974QYiRGa/ZtCGsE1BeZB9YyLIQ2QXoqTxFm7WR2VcM5c
-         8hCw==
+        bh=jLsVwUAfZmDtYibCKMVr36pxn6WsjEglULQ5ElBq4jE=;
+        b=WKho8zTKDrU544084rdwfTa44rGe2DOX8LSCbmZ7DJZYGe7j3T7OljanGwAGnvdu8L
+         oNFvsgYXXYSBidNZp7r9v9R9+7/2FT0isSIf7dmO5QVl6VAA/dMRdUyhDcTTii7bGvja
+         rfbC1Dsi9lywaUNlOyS9GiReoNwfZO9UvUL9RhYQYgv1PJmuPlsOeaEKDoUWid+GTYHx
+         LIUrHKuyB0SLAgyL+ImsABxTSiwhDep8rOiPRfU4aJ2EnOnGK66dTrTQzgX1+ACtuxMl
+         VItR/Vp6+c17rmrkY9EB0kTfCEcqIXitMHe0DyjTj8L7EXor10yMElI56MV5cQ2egdCh
+         KRMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735244381; x=1735849181;
+        d=1e100.net; s=20230601; t=1735244476; x=1735849276;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Sb98FCKmeyAT2DVLwKOv3zAbNwq73exSEOZGxjhvBeY=;
-        b=Ww9EtIgtNtkhzAYSGEqzpHNoJb/kk7yqbbUakk/cjKGAISCDNVsBa4vlOaubIn5IId
-         Rqc3CihovD0VnOnao/Tc+JOxa/ICj3pwUnpe/PrDb65CbGBiX+oSIHxWaPrQRzEzs6sU
-         aecrndF351Ma03mEF42yjiuWZ7vPr9xHNfAiPULmjTxhJw4s7rbFQ4kwgw+TVpRxYV7C
-         vJPkwN2sNq8/K2gSNBDKeNtZq17dhvE43P1RXkJEndtv9gIcsPpIgN9eq5YjvRilQcxR
-         nK7QId6H7i0ebjRWdeRhn+fevsWuTM5eQHwvjWblqE6HmTA2n8TPn4MnamK4tugQG7Zo
-         ZXoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+yNUfUHaI4WCLYxRwl5Au239zkNTgNPwUAOf8GTOJvXknTx7/3tZxOhQ9L+0YAI6VAco=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0N/6uAwdN/xT0oaG6Xx8l6/Ov8brV+IcUh0HP2JthxYFKuoBt
-	LE0mkIn0N6uj/mhETfRQab7m//QODS4FgZHK19gbyGA5XEwQjIn/BQeZL6mIBoqCeaM4S2KkbDq
-	DLx2nW7cokw2akr+ouqrgNabz3OkZ71d5NMNmBA==
-X-Gm-Gg: ASbGnct5/3jazDbEt1sIx8o0vyM/awvtEJKdU+1nmOsrYUepZjrlHCl8s+6M+LH1TWE
-	WeFnI+PyMgcHvBzz5LvaPhcnwkHcvDxFfy+bRkku1arYS0TJiYPF1wowlrfuTT3eK+NYC7Q==
-X-Google-Smtp-Source: AGHT+IGoBxXuv5ahv6Ndnqrf1Xf1S/+gYnZ7NrPaaZ39WftDOcJ5Lr0nHUjNy/jMupZW6W2JyistA+0q73RmPyQIxNE=
-X-Received: by 2002:a05:690c:62c6:b0:6ef:59ef:f194 with SMTP id
- 00721157ae682-6f3f80de678mr165847907b3.4.1735244380669; Thu, 26 Dec 2024
- 12:19:40 -0800 (PST)
+        bh=jLsVwUAfZmDtYibCKMVr36pxn6WsjEglULQ5ElBq4jE=;
+        b=b0IPR7fpLC6jhh1DNYbJkBW9/DjCuyhrLS4EpgblyCg5n/8k74tcn+khwHlGZZxLyd
+         gnqojQa2oBRe7Tl5mac2b2dbwTCHUwycKKOnTmEQ7xvJ9PKdAmMWaahNF2iv8iY/VdED
+         YjczplXp2c/HrwJwuvF08pOM8uZzd7Uswh8qZUIImIp5SiMc8RwfnyMuC/DRqqQPaMSC
+         1+Dtej99pij1UbkVBKHTP0KU70s0K3U/JZ8hQxeBRqHu+ZaylpUytEiFWjiro/Afd95O
+         fl+t68iMIH+UL+/NFRP8OsBSrj4ygGtV37GMmnmaDAdY2oL6WNtSsizL5CdwTZykJ6Se
+         4aPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7JxPCWD1Ww+nlMZVGoaSSY06JHiTX2VW1iK2Ugdjdluzf89LYX/8vE/kqAaI9ftjGNUA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZYxQe3EeQnYDyIfl55baG16cOwbAwF58vlTOQrSsGYNIhidfc
+	62wB6sqV08jECC9HNztmRj0lOWyrNYHcyQJwJy82xqDd3RBSJQJGEpWkrZfImBAhiJH2Koa2DLK
+	T84ifHOeGbdJqZrqIsh35gWT+gFCDn0k+Z8CdHg==
+X-Gm-Gg: ASbGnctsqKC16GRW6kP3Oz8savZvPy3CbR1hTwt4BJ736p38yxiZ0T6zf9uM5mM3CjQ
+	PiitZKJ6gn9hvZaOcDp7yDsARQmkbqPy9JJmoohzOZg04ECp9vHEajjwwJ+ZrqMZi4eTLgA==
+X-Google-Smtp-Source: AGHT+IHpTK50yeGUEdpQbMNQSFdQBzjTFqErLlWqrFBeWf8+TuAIQeq3gV48/gavm3fRyyCFeJxcIJC5tp7UGxWvuvs=
+X-Received: by 2002:a05:690c:fcc:b0:6ef:6035:82b4 with SMTP id
+ 00721157ae682-6f3f823d3afmr184345497b3.35.1735244476035; Thu, 26 Dec 2024
+ 12:21:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241223064147.3961652-1-victor.liu@nxp.com> <20241223064147.3961652-13-victor.liu@nxp.com>
- <wpxxedxabgo2kxf5wuosu76i5ud3ce2tywm2imhvad4nyy5u2d@qgfhev2hndba> <77540387-b1ac-46c1-a3c0-afbd34337d61@nxp.com>
-In-Reply-To: <77540387-b1ac-46c1-a3c0-afbd34337d61@nxp.com>
+References: <20241224014701.253490-1-marex@denx.de> <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
+ <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
+In-Reply-To: <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 26 Dec 2024 22:19:29 +0200
-Message-ID: <CAA8EJpqwRfkjGCYfeRPj7u5hb_8fkMFDtcK1+YDG4nsez1WNXw@mail.gmail.com>
-Subject: Re: [PATCH v7 12/19] drm/imx: Add i.MX8qxp Display Controller KMS
-To: Liu Ying <victor.liu@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
-	p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	tglx@linutronix.de, vkoul@kernel.org, kishon@kernel.org, aisheng.dong@nxp.com, 
-	agx@sigxcpu.org, u.kleine-koenig@baylibre.com, francesco@dolcini.it, 
-	frank.li@nxp.com
+Date: Thu, 26 Dec 2024 22:21:05 +0200
+Message-ID: <CAA8EJppyPQETyJgYmJPZZu47kb-kVQ8tp9zjrbNO+GRavDXpEg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] drm/bridge: imx8mp-hdmi-tx: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR
+To: Marek Vasut <marex@denx.de>
+Cc: dri-devel@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 25 Dec 2024 at 09:18, Liu Ying <victor.liu@nxp.com> wrote:
+On Wed, 25 Dec 2024 at 22:50, Marek Vasut <marex@denx.de> wrote:
 >
-> On 12/23/2024, Dmitry Baryshkov wrote:
-> > On Mon, Dec 23, 2024 at 02:41:40PM +0800, Liu Ying wrote:
-> >> i.MX8qxp Display Controller(DC) is comprised of three main components that
-> >> include a blit engine for 2D graphics accelerations, display controller for
-> >> display output processing, as well as a command sequencer.  Add kernel
-> >> mode setting support for the display controller part with two CRTCs and
-> >> two primary planes(backed by FetchLayer and FetchWarp respectively).  The
-> >> registers of the display controller are accessed without command sequencer
-> >> involved, instead just by using CPU.  The command sequencer is supposed to
-> >> be used by the blit engine.
+> On 12/24/24 5:21 AM, Dmitry Baryshkov wrote:
+> > On Tue, Dec 24, 2024 at 02:46:14AM +0100, Marek Vasut wrote:
+> >> The dw-hdmi output_port is set to 1 in order to look for a connector
+> >> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+> >> The output_port set to 1 makes the DW HDMI driver core look up the
+> >> next bridge in DT, where the next bridge is often the hdmi-connector .
 > >>
-> >> Reviewed-by: Maxime Ripard <mripard@kernel.org>
-> >> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> >> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+> >>
+> >> Signed-off-by: Marek Vasut <marex@denx.de>
 > >> ---
-> >> v7:
-> >> * Drop using typeof in macros and explicitly define variable types. (Dmitry)
-> >> * Add a comment for disable_irq_nosync() to explain why _nosync. (Dmitry)
-> >> * Inline dc_crtc_check_clock(). (Dmitry)
-> >> * Use global drm_dc->pe. (Dmitry)
-> >> * Drop dc_crtc_disable_at_unbind(). (Dmitry)
-> >> * Add kernel doc for struct dc_{crtc,drm_device,plane}. (Dmitry)
-> >> * Define common IRQ handlers separately for each IRQs. (Dmitry)
-> >> * Rebase this patch upon next-20241220, so drop date entry from drm_driver
-> >>   and correctly include drm/clients/drm_client_setup.h.
-> >> * Collect Maxime's R-b tag.
+> >> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> >> Cc: David Airlie <airlied@gmail.com>
+> >> Cc: Fabio Estevam <festevam@gmail.com>
+> >> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> >> Cc: Jonas Karlman <jonas@kwiboo.se>
+> >> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> >> Cc: Liu Ying <victor.liu@nxp.com>
+> >> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> >> Cc: Maxime Ripard <mripard@kernel.org>
+> >> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> >> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> >> Cc: Robert Foss <rfoss@kernel.org>
+> >> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> >> Cc: Shawn Guo <shawnguo@kernel.org>
+> >> Cc: Simona Vetter <simona@ffwll.ch>
+> >> Cc: Stefan Agner <stefan@agner.ch>
+> >> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> >> Cc: dri-devel@lists.freedesktop.org
+> >> Cc: imx@lists.linux.dev
+> >> Cc: linux-arm-kernel@lists.infradead.org
+> >> ---
+> >> V2: No change
+> >> ---
+> >>   drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
+> >>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+> >>   2 files changed, 2 insertions(+)
 > >>
-> >> v6:
-> >> * No change.
-> >>
-> >> v5:
-> >> * Replace .remove_new with .remove in dc-drv.c. (Uwe)
-> >>
-> >> v4:
-> >> * Move dc_fg_displaymode(), dc_fg_panic_displaymode() and dc_lb_blendcontrol()
-> >>   function calls from KMS routine to initialization stage. (Dmitry)
-> >> * Drop dc-crtc.h and dc-plane.h header files and move relevant defines to
-> >>   appropriate .h header files or .c source files. (Dmitry)
-> >> * Drop futile "else" clause from dc_crtc_common_irq_handler(). (Dmitry)
-> >> * Drop dc_drm->pe_rpm_count. (Dmitry)
-> >> * Drop DC_{CRTCS,ENCODERS,PRIMARYS} macros and only use DC_DISPLAYS. (Dmitry)
-> >> * Drop drmm_kcalloc() function call to allocate an array for storing IRQs.
-> >>   Instead, put it in struct dc_crtc.  (Dmitry)
-> >> * Call devm_request_irq() to request IRQs, instead of using drmm action.
-> >>   (Dmitry)
-> >> * Call devm_drm_of_get_bridge() to find the next bridge. (Dmitry)
-> >> * Select DRM_CLIENT_SELECTION due to rebase.
-> >> * Select the missing DRM_DISPLAY_HELPER and DRM_BRIDGE_CONNECTOR.
-> >> * Use DRM_FBDEV_DMA_DRIVER_OPS due to rebase.
-> >> * Replace drm_fbdev_dma_setup() with drm_client_setup_with_fourcc() due to
-> >>   rebase.
-> >> * Replace drmm_add_action_or_reset() with devm_add_action_or_reset() to
-> >>   register dc_drm_component_unbind_all() action.
-> >> * Request interrupts in dc_crtc_post_init() after encoder initialization to
-> >>   make sure next bridge is found first.
-> >>
-> >> v3:
-> >> * No change.
-> >>
-> >> v2:
-> >> * Find next bridge from TCon's port.
-> >> * Drop drm/drm_module.h include from dc-drv.c.
-> >>
-> >>  drivers/gpu/drm/imx/dc/Kconfig    |   5 +
-> >>  drivers/gpu/drm/imx/dc/Makefile   |   5 +-
-> >>  drivers/gpu/drm/imx/dc/dc-crtc.c  | 556 ++++++++++++++++++++++++++++++
-> >>  drivers/gpu/drm/imx/dc/dc-de.h    |   3 +
-> >>  drivers/gpu/drm/imx/dc/dc-drv.c   | 238 +++++++++++++
-> >>  drivers/gpu/drm/imx/dc/dc-drv.h   |  22 ++
-> >>  drivers/gpu/drm/imx/dc/dc-kms.c   | 143 ++++++++
-> >>  drivers/gpu/drm/imx/dc/dc-kms.h   | 131 +++++++
-> >>  drivers/gpu/drm/imx/dc/dc-plane.c | 241 +++++++++++++
-> >>  9 files changed, 1342 insertions(+), 2 deletions(-)
-> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-crtc.c
-> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.c
-> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-kms.h
-> >>  create mode 100644 drivers/gpu/drm/imx/dc/dc-plane.c
-> >>
+> >> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+> >> index 9a480c6abb856..d8e9fbf75edbb 100644
+> >> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> >> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> >> @@ -27,6 +27,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+> >>   config DRM_IMX8MP_HDMI_PVI
+> >>      tristate "Freescale i.MX8MP HDMI PVI bridge support"
+> >>      depends on OF
+> >> +    select DRM_DISPLAY_CONNECTOR
+> >>      help
+> >>        Choose this to enable support for the internal HDMI TX Parallel
+> >>        Video Interface found on the Freescale i.MX8MP SoC.
+> >> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >> index 1e7a789ec2890..4ebae5ad072ad 100644
+> >> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >> @@ -101,6 +101,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+> >>      plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+> >>      plat_data->priv_data = hdmi;
+> >>      plat_data->phy_force_vendor = true;
+> >> +    plat_data->output_port = 1;
 > >
+> > Quoting my feedback to a similar Liu's patch:
 > >
-> >> +
-> >> +static int dc_plane_check_no_off_screen(struct drm_plane_state *state,
-> >> +                                    struct drm_crtc_state *crtc_state)
-> >> +{
-> >> +    if (state->dst.x1 < 0 || state->dst.y1 < 0 ||
-> >> +        state->dst.x2 > crtc_state->adjusted_mode.hdisplay ||
-> >> +        state->dst.y2 > crtc_state->adjusted_mode.vdisplay) {
-> >> +            dc_plane_dbg(state->plane, "no off screen\n");
-> >> +            return -EINVAL;
-> >> +    }
-> >
-> > Nit: doesn't drm_atomic_helper_check_plane_state() ensure in this already?
+> > This will break compatibility with older DT files, which don't have
+> > output port. I think you need to add output_port_optional flag to
+> > dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
+> > is set, but there is no remote node.
+> Looking at the upstream imx8mp*dts , the oldest commit which adds HDMI
+> support is commit:
 >
-> The can_position argument is set to true, though it is a bit unusual
-> for primary plane.  If can_position is false, I think this should be
-> ensured already by drm_atomic_helper_check_plane_state().
-
-The function still calls drm_rect_clip_scaled() to clip the
-plane_state->dst, does it not?
-
-> > With that in mind
-> >
-> > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
 >
-> Thanks.
+> That already contains the HDMI connector node. Every follow up addition
+> of HDMI to another device has been a copy of the same commit, with
+> connector, so I think it is safe to say, no upstream DT is going to be
+> broken by this change. Do we care about hypothetical downstream DTs
+> which may be missing the connector ?
 
+I'd say, not really. If you have to resend the series for whatever
+reason, please mention that in the commit message.
+If you don't it should be fine.
 
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 -- 
 With best wishes
