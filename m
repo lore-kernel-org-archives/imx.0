@@ -1,114 +1,106 @@
-Received: from eggs.gnu.org (eggs.gnu.org [209.51.188.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327FC1482F5;
-	Fri, 27 Dec 2024 10:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.51.188.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99C113C3C2
+	for <imx@lists.linux.dev>; Fri, 27 Dec 2024 12:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735293697; cv=none; b=qWU6F6VKHdo5OKlQ3tlZgl/t4bHK0vFoxySeLeelVmqDHpC22K9HhSgrKP1kXZPpGEuPG3ORZoP1z0nhksjv+KhpjhecQyEzABAmIBv8qH/N4fJhtpZyoHYZUOEWXECN8COZYBPDTBhrkmP7nC3uGUw9fou5GRNSjBynNRz9GXA=
+	t=1735303606; cv=none; b=g2T2CUcVj6Lg22afWDJR/TxKpDk1bO9Hszlp82bPAbzP9MSMJjlqwMIZhEloenxbrR9aCyERumsYlGjiou60MSQy9IhLQ00j+L3vX4QOhtTGsYXpRmtFitU6wL8yO9q85cHD5rGKCcApRCGSajxNgR4kD1PuTnx3PjDhe91rm3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735293697; c=relaxed/simple;
-	bh=WcWF+12kV1uySm5w0srYjFsY9GMysQQXdW5PghXjOXc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RXplGmF1H/5gKxYYdEMbVqmksNAoqkubE6SdnS1dL0VwLxvKdXjep9YL6oyv4T7Bk/g+z5sWg9Q2/JQNvBovDo+A1mRMg4h3jTvAHkJQ5BP6car//+82pWXLaeolCH6GvwBu2XoS6IK4h5RWMnqQU5aEUYM/W629RsTWL61vZI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gnu.org; spf=pass smtp.mailfrom=gnu.org; dkim=pass (2048-bit key) header.d=gnu.org header.i=@gnu.org header.b=GCZTIsl+; arc=none smtp.client-ip=209.51.188.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gnu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnu.org
+	s=arc-20240116; t=1735303606; c=relaxed/simple;
+	bh=IX1Pbb9e9j1HoYmbUCLz0vmxGQOa9VaE8MApR1YCGOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FH7v0EkB308EZf+E+5I1yQ+XlBmWalb5fiK+hF3VubZ99Q6CEBkrybO24d6g2zwRcZ3sVS5DeuLrFVG86I7AszpYSa9toBDMa0TSxJ6ysgM31liFJhRUrVxIC6/RwkdLer1dGN9QyloYlECn0vty9+eh/XGaoRqq6p7KcLdV8i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B/JoGxiK; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gnu.org header.i=@gnu.org header.b="GCZTIsl+"
-Received: from fencepost.gnu.org ([2001:470:142:3::e])
-	by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.90_1)
-	(envelope-from <othacehe@gnu.org>)
-	id 1tR79r-0006cy-Oc; Fri, 27 Dec 2024 05:01:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
-	s=fencepost-gnu-org; h=MIME-Version:Date:Subject:To:From:in-reply-to:
-	references; bh=9DEKZGF8SvaLlJuIGDJ5lSPb68oHIixULPaNolYeeXA=; b=GCZTIsl+LbYSO8
-	l4bY+WiXSIvY+GOdNZ7kNjRFrd5IDSoEOBtn8Z1QJ/KVKNdw/sUbElI/rLIhbFR7nNgC/4G+uieqH
-	ISDF6pivvf//dZdEQoRAkOy/F4u0BWdWAvwSWGqdu1pCS8Qr+zjMsvDh3XYJHgg3DESvw4b0834ga
-	MshwfVQYSw+gaVRYDgANpfSg9mM+MXy3I3oywgu1gtKSNB2WBiRJThs2GG+plt2TwtMNh+G36qSU5
-	0cVmnzAqwFP4DUsM18eVMVCByD5JmEqwfHv7ToGDrK9FL6wWv7HmCDtjJo33je5m1UFDgrzz4B8kE
-	ApzkKa7Msu8NNwQS0kCg==;
-From: Mathieu Othacehe <othacehe@gnu.org>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B/JoGxiK"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43622354a3eso49627555e9.1
+        for <imx@lists.linux.dev>; Fri, 27 Dec 2024 04:46:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1735303603; x=1735908403; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qAr5MJyxW4tliQqtSvIibq4rtO0kf94wwATw2mUtoLU=;
+        b=B/JoGxiK+CigKvsIPOgYiXcW9vHLuCpSRqprMOrayN+/V+8Az83TsWPeLT7kl0ykDq
+         7wS2SHZh2+cWn9C5lPZrDMn2BRxUOV1tt7mZpKPW9u5IqAFYI7kW4FQ+0Vrxydvc5MqC
+         2AcFUvbDPCDrDI2IwjPoTzuRT0hac6hQrmieFKHX+PRFeILNvXbpmwC7pkXHgUAkoDW3
+         fikPcanTp3h1wqFLBAm1oFfHslg9sTKtDSV1pnfcDwmWjFzQBsP+5GQxnjRAaEfm3MP3
+         QUn4hbGUmIZvPdvVHckpFuoZD0a+GvavJdjoPH5uF6fC8q7Uu7ZvUlj8987tGmI9tU5Y
+         ROpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735303603; x=1735908403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qAr5MJyxW4tliQqtSvIibq4rtO0kf94wwATw2mUtoLU=;
+        b=NKRhjmEdGtyoxLgc0p55Iye6RpJ//mjV0TXPQu4QWTNcQOTjv5vcil1Qzsecu15XR5
+         q3UV8CUzZcMyjYmx5/PewOjqQHIpBUBO6gRcUUSts1zMQrT9cTdxOPKFHdQi5wS+9URs
+         BKulyBIGsgLoiDs2j0b4cdV7ecnnUDBqaGi/MgTp+FWa5nBGZbF7XGBG+eOxEtatrL9O
+         DRoyJ6dsgOrtC5vd7Q/IlFBZ7xJMQr76OIex2wkH/2/j/01Lpa+DRvGtXRZ0/VLH2Hbt
+         U+ggMJyZjusMriGWByEZkWj+NczGgtc4i7bXk0XjeJ0RoPTJ1E8Q4N4Mc6weTFCV106z
+         KRrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWM+AtPe/U0pf00K1oeofbSUAChOr+lPTT3dtZlAk03WLykVwmDfueKCstrAiME9TEZqKk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQWFBbFr1x+5Nt6cytWoKqckrAlvuAp0V7drRzhFqkbCX3a91e
+	WHA9sM8jxoRMfXzb76XCCY/WF5oCyEcC4n/GeqnABfjwFX16sjRuMWt4bEx89fI=
+X-Gm-Gg: ASbGnctUP3ps/DFhUtb8opRDAaHxG4aUo2ZAUZDR+LVANItOPNE+Hp8ymhyocwRkr/g
+	dT7oKSvgipD+dUbfbEloppHqzUvZCgYGL6lw2viwCtEWoWdU2V6juQk3Gmgm1/HWBlDYfIDrWMA
+	pez+BlsS1OOD5UPLhn8n0zJhc+49XjbCqpMumiOWD1Tyw33dZ+nnroi9ERKKzFsgPJH9RYAkvnP
+	ytYHk49KhJoIgT70Faril/bgbpLw4ofNT2ubQGTKeywHYNEdm0oTU0t
+X-Google-Smtp-Source: AGHT+IFOSyN6MsRY52PNGIySqb8jJ3jiAJ8ipn+mH7OpC8pga8Vo0BdkKK7utvCX05gXYmLza6GGZg==
+X-Received: by 2002:a5d:584d:0:b0:385:e0d6:fb73 with SMTP id ffacd0b85a97d-38a221fa9cdmr21953130f8f.15.1735303603117;
+        Fri, 27 Dec 2024 04:46:43 -0800 (PST)
+Received: from hackbox.lan ([82.76.168.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b11495sm297172905e9.19.2024.12.27.04.46.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Dec 2024 04:46:42 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: linux-clk@vger.kernel.org,
+	Marek Vasut <marex@denx.de>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mathieu Othacehe <othacehe@gnu.org>
-Subject: [PATCH v2] net: dwmac-imx: add imx93 clock input support in RMII mode
-Date: Fri, 27 Dec 2024 10:59:22 +0100
-Message-ID: <20241227095923.4414-1-othacehe@gnu.org>
-X-Mailer: git-send-email 2.47.1
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] clk: imx8mp: Fix clkout1/2 support
+Date: Fri, 27 Dec 2024 14:45:59 +0200
+Message-Id: <173530350106.4140483.17403614068290152779.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241112013718.333771-1-marex@denx.de>
+References: <20241112013718.333771-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-If the rmii_refclk_ext boolean is set, configure the ENET QOS TX_CLK pin
-direction to input. Otherwise, it defaults to output.
 
-That mirrors what is already happening for the imx8mp in the
-imx8mp_set_intf_mode function.
+On Tue, 12 Nov 2024 02:36:54 +0100, Marek Vasut wrote:
+> The CLKOUTn may be fed from PLL1/2/3, but the PLL1/2/3 has to be enabled
+> first by setting PLL_CLKE bit 11 in CCM_ANALOG_SYS_PLLn_GEN_CTRL register.
+> The CCM_ANALOG_SYS_PLLn_GEN_CTRL bit 11 is modeled by plln_out clock. Fix
+> the clock tree and place the clkout1/2 under plln_sel instead of plain plln
+> to let the clock subsystem correctly control the bit 11 and enable the PLL
+> in case the CLKOUTn is supplied by PLL1/2/3.
+> 
+> [...]
 
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
----
-Changelog:
-v2: regmap_update_bits -> regmap_clear_bits
+Applied, thanks!
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+[1/1] clk: imx8mp: Fix clkout1/2 support
+      commit: a9b7c84d22fb1687d63ca2a386773015cf59436b
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 43e0fbba4f77b..4ac7a78f4b14b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -36,6 +36,8 @@
- #define MX93_GPR_ENET_QOS_INTF_SEL_RMII		(0x4 << 1)
- #define MX93_GPR_ENET_QOS_INTF_SEL_RGMII	(0x1 << 1)
- #define MX93_GPR_ENET_QOS_CLK_GEN_EN		(0x1 << 0)
-+#define MX93_GPR_ENET_QOS_CLK_SEL_MASK		BIT_MASK(0)
-+#define MX93_GPR_CLK_SEL_OFFSET			(4)
- 
- #define DMA_BUS_MODE			0x00001000
- #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
-@@ -108,13 +110,21 @@ imx8dxl_set_intf_mode(struct plat_stmmacenet_data *plat_dat)
- static int imx93_set_intf_mode(struct plat_stmmacenet_data *plat_dat)
- {
- 	struct imx_priv_data *dwmac = plat_dat->bsp_priv;
--	int val;
-+	int val, ret;
- 
- 	switch (plat_dat->mac_interface) {
- 	case PHY_INTERFACE_MODE_MII:
- 		val = MX93_GPR_ENET_QOS_INTF_SEL_MII;
- 		break;
- 	case PHY_INTERFACE_MODE_RMII:
-+		if (dwmac->rmii_refclk_ext) {
-+			ret = regmap_clear_bits(dwmac->intf_regmap,
-+						dwmac->intf_reg_off +
-+						MX93_GPR_CLK_SEL_OFFSET,
-+						MX93_GPR_ENET_QOS_CLK_SEL_MASK);
-+			if (ret)
-+				return ret;
-+		}
- 		val = MX93_GPR_ENET_QOS_INTF_SEL_RMII;
- 		break;
- 	case PHY_INTERFACE_MODE_RGMII:
+Best regards,
 -- 
-2.47.1
-
+Abel Vesa <abel.vesa@linaro.org>
