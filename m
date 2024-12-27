@@ -1,167 +1,75 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E12C18E1F
-	for <imx@lists.linux.dev>; Thu, 26 Dec 2024 20:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08A3184F;
+	Fri, 27 Dec 2024 00:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735244479; cv=none; b=kltNfkQ1hQ67hbPyO/vgWEcx6pf/5r+t2xbwT6UEDxb4mvVFC4xI9qaA5OjUJYgO/ftMib5Y7P4wZY31BqEqWMtcHx+ViIciXmuG/YZtUjGS8yU1bmWhq7jQZ76L/oN+r/CLlZglY4n+0AXt+DhJgbMBWtYgLfIzLcw2m4tHyQM=
+	t=1735259660; cv=none; b=k3e3bG20R+5qiqFwXrcnJ+cOrsHcICW9v3tID6j/tuVAiPXNWGgrSmIhr//gJbKl4cepwAa+C5LUn/BOo1kEoT51zw3qrjOqJMDCcpbtefKnrdmPMjMtgdQnzDzrD+bd+uySyEw6p8L+ibEgG67nG/I7J/m4XJ5udcRj85xaCS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735244479; c=relaxed/simple;
-	bh=LWkNSQJdovHkRXCgoswLP7uTvW7wVZx4qgvdZr4oivw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s2R7Sacy6Yi5nhIKkX7iaxAiSORhWrFkY8kyJY1sUr3+A4WKO0FkQ6vzT4vsX5HHpzjwGLVZzwYe2fsSwyXzAE7pArTlKBXMpmBPDEAt1FSMFMqJYgPxp2Ci9cDZMpRryV4/Jg1RB0wBtjp7DIKjCrlS3fYBHzu2ccBiPWmCEjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WKho8zTK; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1735259660; c=relaxed/simple;
+	bh=b+gm1WSzwJE9pv5g6KUpAQXcbNCHd04L3jmCW0zzBRo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Awq1S5VAIZgnSN49nD25SBXOg9C0YpfsOP+Eq7yizu9TmDPzmgfqI/YC/Lo/UbRatiyudvZDPt81fPv0Xb0cTSO1+wEG3HoeXNsfojOu2KYx/bgfDzimaki3u+/0u8W/T6ezb4o7/oFWMovQpLuw3q3QSVjzZ0iP/6OLNlq9XWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmiUHS6T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WKho8zTK"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e455bf1f4d3so5977502276.2
-        for <imx@lists.linux.dev>; Thu, 26 Dec 2024 12:21:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735244476; x=1735849276; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jLsVwUAfZmDtYibCKMVr36pxn6WsjEglULQ5ElBq4jE=;
-        b=WKho8zTKDrU544084rdwfTa44rGe2DOX8LSCbmZ7DJZYGe7j3T7OljanGwAGnvdu8L
-         oNFvsgYXXYSBidNZp7r9v9R9+7/2FT0isSIf7dmO5QVl6VAA/dMRdUyhDcTTii7bGvja
-         rfbC1Dsi9lywaUNlOyS9GiReoNwfZO9UvUL9RhYQYgv1PJmuPlsOeaEKDoUWid+GTYHx
-         LIUrHKuyB0SLAgyL+ImsABxTSiwhDep8rOiPRfU4aJ2EnOnGK66dTrTQzgX1+ACtuxMl
-         VItR/Vp6+c17rmrkY9EB0kTfCEcqIXitMHe0DyjTj8L7EXor10yMElI56MV5cQ2egdCh
-         KRMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735244476; x=1735849276;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jLsVwUAfZmDtYibCKMVr36pxn6WsjEglULQ5ElBq4jE=;
-        b=b0IPR7fpLC6jhh1DNYbJkBW9/DjCuyhrLS4EpgblyCg5n/8k74tcn+khwHlGZZxLyd
-         gnqojQa2oBRe7Tl5mac2b2dbwTCHUwycKKOnTmEQ7xvJ9PKdAmMWaahNF2iv8iY/VdED
-         YjczplXp2c/HrwJwuvF08pOM8uZzd7Uswh8qZUIImIp5SiMc8RwfnyMuC/DRqqQPaMSC
-         1+Dtej99pij1UbkVBKHTP0KU70s0K3U/JZ8hQxeBRqHu+ZaylpUytEiFWjiro/Afd95O
-         fl+t68iMIH+UL+/NFRP8OsBSrj4ygGtV37GMmnmaDAdY2oL6WNtSsizL5CdwTZykJ6Se
-         4aPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7JxPCWD1Ww+nlMZVGoaSSY06JHiTX2VW1iK2Ugdjdluzf89LYX/8vE/kqAaI9ftjGNUA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZYxQe3EeQnYDyIfl55baG16cOwbAwF58vlTOQrSsGYNIhidfc
-	62wB6sqV08jECC9HNztmRj0lOWyrNYHcyQJwJy82xqDd3RBSJQJGEpWkrZfImBAhiJH2Koa2DLK
-	T84ifHOeGbdJqZrqIsh35gWT+gFCDn0k+Z8CdHg==
-X-Gm-Gg: ASbGnctsqKC16GRW6kP3Oz8savZvPy3CbR1hTwt4BJ736p38yxiZ0T6zf9uM5mM3CjQ
-	PiitZKJ6gn9hvZaOcDp7yDsARQmkbqPy9JJmoohzOZg04ECp9vHEajjwwJ+ZrqMZi4eTLgA==
-X-Google-Smtp-Source: AGHT+IHpTK50yeGUEdpQbMNQSFdQBzjTFqErLlWqrFBeWf8+TuAIQeq3gV48/gavm3fRyyCFeJxcIJC5tp7UGxWvuvs=
-X-Received: by 2002:a05:690c:fcc:b0:6ef:6035:82b4 with SMTP id
- 00721157ae682-6f3f823d3afmr184345497b3.35.1735244476035; Thu, 26 Dec 2024
- 12:21:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmiUHS6T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE37BC4CED1;
+	Fri, 27 Dec 2024 00:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735259659;
+	bh=b+gm1WSzwJE9pv5g6KUpAQXcbNCHd04L3jmCW0zzBRo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EmiUHS6TySLMGKePlezMOxMkxAatvmMvvPHB/EjLta1hWsADt4Q4SzpUiJKctCK77
+	 R1Wu+SuMXoi++HZgO0r+DXJUCHF6t/GaBGZU4sdYIo72ytCzsAZXYcqUNyROZ9Del9
+	 /1/6csmTfZkNZkuBtg3u2/iPhCaeAW+6H/El4qeQuwYR9mxNRZ/mdw9MXNMjlOdZpZ
+	 muq/CW5ikFl/2PaUavau9+6l66ea8hUpoJNraIqr96+LcPmy6xcuv+A+XmWOlqhpnP
+	 1+CEcJS2mEXuSKQ7zTJMPbY9p7EHTir5YUqkwkvyUcnYvqf3TJSbPjccw+679fT6EE
+	 NINe52RhA+l5g==
+Date: Fri, 27 Dec 2024 01:34:14 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: carlos.song@nxp.com
+Cc: aisheng.dong@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] i2c: imx-lpi2c: add target mode support
+Message-ID: <vfesmhe47tj5cwib4dl5zxxy7sn5g4swjg7tozcv2otcqgsjpd@sjj35a7c5fhu>
+References: <20241125143140.1613282-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241224014701.253490-1-marex@denx.de> <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
- <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
-In-Reply-To: <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 26 Dec 2024 22:21:05 +0200
-Message-ID: <CAA8EJppyPQETyJgYmJPZZu47kb-kVQ8tp9zjrbNO+GRavDXpEg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] drm/bridge: imx8mp-hdmi-tx: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR
-To: Marek Vasut <marex@denx.de>
-Cc: dri-devel@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241125143140.1613282-1-carlos.song@nxp.com>
 
-On Wed, 25 Dec 2024 at 22:50, Marek Vasut <marex@denx.de> wrote:
->
-> On 12/24/24 5:21 AM, Dmitry Baryshkov wrote:
-> > On Tue, Dec 24, 2024 at 02:46:14AM +0100, Marek Vasut wrote:
-> >> The dw-hdmi output_port is set to 1 in order to look for a connector
-> >> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
-> >> The output_port set to 1 makes the DW HDMI driver core look up the
-> >> next bridge in DT, where the next bridge is often the hdmi-connector .
-> >>
-> >> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
-> >>
-> >> Signed-off-by: Marek Vasut <marex@denx.de>
-> >> ---
-> >> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> >> Cc: David Airlie <airlied@gmail.com>
-> >> Cc: Fabio Estevam <festevam@gmail.com>
-> >> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> >> Cc: Jonas Karlman <jonas@kwiboo.se>
-> >> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> >> Cc: Liu Ying <victor.liu@nxp.com>
-> >> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> >> Cc: Maxime Ripard <mripard@kernel.org>
-> >> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> >> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> >> Cc: Robert Foss <rfoss@kernel.org>
-> >> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> >> Cc: Shawn Guo <shawnguo@kernel.org>
-> >> Cc: Simona Vetter <simona@ffwll.ch>
-> >> Cc: Stefan Agner <stefan@agner.ch>
-> >> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> >> Cc: dri-devel@lists.freedesktop.org
-> >> Cc: imx@lists.linux.dev
-> >> Cc: linux-arm-kernel@lists.infradead.org
-> >> ---
-> >> V2: No change
-> >> ---
-> >>   drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
-> >>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
-> >>   2 files changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> >> index 9a480c6abb856..d8e9fbf75edbb 100644
-> >> --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> >> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> >> @@ -27,6 +27,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
-> >>   config DRM_IMX8MP_HDMI_PVI
-> >>      tristate "Freescale i.MX8MP HDMI PVI bridge support"
-> >>      depends on OF
-> >> +    select DRM_DISPLAY_CONNECTOR
-> >>      help
-> >>        Choose this to enable support for the internal HDMI TX Parallel
-> >>        Video Interface found on the Freescale i.MX8MP SoC.
-> >> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >> index 1e7a789ec2890..4ebae5ad072ad 100644
-> >> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >> @@ -101,6 +101,7 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
-> >>      plat_data->phy_name = "SAMSUNG HDMI TX PHY";
-> >>      plat_data->priv_data = hdmi;
-> >>      plat_data->phy_force_vendor = true;
-> >> +    plat_data->output_port = 1;
-> >
-> > Quoting my feedback to a similar Liu's patch:
-> >
-> > This will break compatibility with older DT files, which don't have
-> > output port. I think you need to add output_port_optional flag to
-> > dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
-> > is set, but there is no remote node.
-> Looking at the upstream imx8mp*dts , the oldest commit which adds HDMI
-> support is commit:
->
-> 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
->
-> That already contains the HDMI connector node. Every follow up addition
-> of HDMI to another device has been a copy of the same commit, with
-> connector, so I think it is safe to say, no upstream DT is going to be
-> broken by this change. Do we care about hypothetical downstream DTs
-> which may be missing the connector ?
+Hi Carlos,
 
-I'd say, not really. If you have to resend the series for whatever
-reason, please mention that in the commit message.
-If you don't it should be fine.
+...
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> +static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
+> +{
+> +	struct lpi2c_imx_struct *lpi2c_imx = dev_id;
+> +
+> +	if (lpi2c_imx->target) {
+> +		u32 scr = readl(lpi2c_imx->base + LPI2C_SCR);
+> +		u32 ssr = readl(lpi2c_imx->base + LPI2C_SSR);
+> +		u32 sier_filter = ssr & readl(lpi2c_imx->base + LPI2C_SIER);
+> +
+> +		/*
+> +		 * The target is enabled and an interrupt has been triggered.
+> +		 * Enter the target's irq handler.
+> +		 */
+> +		if ((scr & SCR_SEN) && sier_filter)
+> +			return lpi2c_imx_target_isr(lpi2c_imx, ssr, sier_filter);
 
--- 
-With best wishes
-Dmitry
+you have answered my question here and thanks for that.
+
+I was trying to apply this patch but it didn't apply. Do you mind
+resending it?
+
+Thanks,
+Andi
