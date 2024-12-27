@@ -1,114 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4267080D;
-	Fri, 27 Dec 2024 17:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FF12C475;
+	Fri, 27 Dec 2024 22:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735321732; cv=none; b=Ouh8OiCTKXJCClKMrMkVkY2hCb/geUkqdaXQNRoJPeNhduPm4DJIKjCxyJ9vzk/KavONhlrtpZIp6TQV0vsdabOp93v3vXDGsmo1s86+lP8HrtvZEy90py1HhGEYigd3RlIahw84GxMFQ3h4IfAdMhWAWhVsdxYxrZF9sAalJlQ=
+	t=1735337391; cv=none; b=Yscmp0vHUCL8CXtoHnoONKXzA5FON1NGO1/3DeAVVVdckgnuTwW67QLQ0RCDxbAf5ZYCalGeqp0IlQT8uaNffXOfBgqdrc/mIstzXsuCEcAvD4u/twR9hNAJ7ChsnZsa6a8QKWug49tujjb8bO8Ct1TAYyZdBe3GIlyrzDjkZps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735321732; c=relaxed/simple;
-	bh=Gpp/+IUBDLZ9HXWJtheRXr3yudwHj26ifQkhR6iljgU=;
+	s=arc-20240116; t=1735337391; c=relaxed/simple;
+	bh=Gy7RQh43p81red2VPwbsXvh8YfkHq1heFjtuOnZf4eg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IctALZA+8CF5wrLANBZ4fMhJhJsKWL21DNHlu4axiO4N0K2N27H3q4n5nlQk2xI3o3mN2ipojEJVhr+3aKLI5kiInr/hBTCCa0L131aWGZYnRbLeYgQ6l5c/+ksl4BSzfuyMLejXG5tujXqu0MQHaYTnd7DxXEzvsBws13vTEu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sj140oDF; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdS4j9A6+gX+1xdY42NMGKn67sWkEoUKYBYIK5KymwofCE5VF30D5SvJ4x7B/HH8mL38ZwbYMrEIZLiQ9/9gczVvoDc515O68dleplrCTTzJ+ELSICAi7rEBT1Zo3Hrp87/MIGM0/CELWjp593LAHp1nKHjp8N6/q3Al13Cumls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyPt0OUW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sj140oDF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBC8C4CED0;
-	Fri, 27 Dec 2024 17:48:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyPt0OUW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE59C4CED0;
+	Fri, 27 Dec 2024 22:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735321732;
-	bh=Gpp/+IUBDLZ9HXWJtheRXr3yudwHj26ifQkhR6iljgU=;
+	s=k20201202; t=1735337391;
+	bh=Gy7RQh43p81red2VPwbsXvh8YfkHq1heFjtuOnZf4eg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sj140oDFk5GBWYm4hwua6PH61Rd69ZHuoSOyRg5MQUXIvx6HRE2kVa7/nN0jZMK9g
-	 Dne0GlXVAvK9Fc0akjfWv6Z3nIkrYHUMzFP/E3/+rRHQGtwuymbldVy7XZ5sPuaBeG
-	 OlMSL9Q7qaRFrWw3p8vq7sjHE3gyye34C3Hb684joqacPWkQ3SaDZ0t71B2/hUIUgo
-	 HReete7V2ZrwI6ksUwg5dfhAzdlKMwtvprnuGOjgnK4avH9uIdalDdD0Oo/R96M9pZ
-	 WCJ1CN0pBfWyuEY5jxtg4cukVX2BrdMRbZAZX6kEauIlZdho/7JdL+joiZZlw69XoJ
-	 16RMSVb4WWaLg==
-Date: Fri, 27 Dec 2024 17:48:46 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Abel Vesa <abel.vesa@linaro.org>, Marek Vasut <marex@denx.de>,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	b=lyPt0OUW/c4pxG1tG9qOmg9Ru2qnoqFv7b2m6OLSUlaqkt6+yrbTPOhmr776PGa4G
+	 Hlmq/lUUtECGt/KHm4oF+SI/pj3rYK+dlHCsciy8KOI3Vb9OqLISaOPcehJnVf5eFz
+	 1cFXK0R+vM7O4XTTB3A0QoNjP2TpRIQLkqnQDSj8dQuJr2HghJMoigIlfYSoidvOOq
+	 dsg1z9RHqUvhyO41I7eRA5WY9XWVzoUotmtZCYf+dwIe9kKqJBb2IvjQb29jc07SY7
+	 cwdQawAhcbRx4PFtZF/geVeQc1vOECEvEez+zCRGDZT19Mdf6Z6pvatunPvPNKieP4
+	 h4DhlXytL6N8g==
+Date: Fri, 27 Dec 2024 23:09:47 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: aisheng.dong@nxp.com, frank.li@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: clock: imx8m: document
- nominal/overdrive properties
-Message-ID: <20241227-scenic-haziness-3806c50177cb@spud>
-References: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
- <20241219-imx8m-clk-v1-1-cfaffa087da6@pengutronix.de>
- <20241219-lash-lather-31443ced0e0c@spud>
- <4e2250b3-5170-4e88-aa0a-dd796b81e78b@pengutronix.de>
- <20241225-untapped-flyover-47254d06d418@spud>
- <8a8f315b-9e6b-4c18-985e-5df4ecbe34da@pengutronix.de>
+Subject: Re: [PATCH v6] i2c: imx-lpi2c: add target mode support
+Message-ID: <bnc3walr3iemiz4ljb4agoer7moevnph4sm4x34nc7ybo3irhk@z65dk3nvr66u>
+References: <20241227072857.1146099-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ftb44cQFhFFMb4XF"
-Content-Disposition: inline
-In-Reply-To: <8a8f315b-9e6b-4c18-985e-5df4ecbe34da@pengutronix.de>
-
-
---ftb44cQFhFFMb4XF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241227072857.1146099-1-carlos.song@nxp.com>
 
-On Thu, Dec 26, 2024 at 05:54:15PM +0100, Ahmad Fatoum wrote:
-> Hi Conor,
->=20
-> On 25.12.24 15:20, Conor Dooley wrote:
-> > On Thu, Dec 19, 2024 at 09:14:10PM +0100, Ahmad Fatoum wrote:
-> >> On 19.12.24 20:49, Conor Dooley wrote:
-> >>> On Thu, Dec 19, 2024 at 08:27:32AM +0100, Ahmad Fatoum wrote:
-> >> Theoretically, we could infer mode at runtime from VDD_SOC voltage,
-> >> but we need to set up clocks to read out the PMIC and I want to
-> >> apply the constraints as early as possible as I don't want the SoC
-> >> to run outside of spec even for a short while.
-> >=20
-> > Apologies for the delay responding to you, doing it today cos I feel
-> > guilty!
->=20
-> I am fully aware that I needn't expect prompt review feedback so late in
-> December. Thanks a lot for taking the time still.
+Hi Carlos,
 
-I guess, but I /had/ replied to other things that came in after your
-mail, which is where my guilt comes from!
+On Fri, Dec 27, 2024 at 03:28:57PM +0800, Carlos Song wrote:
+> LPI2C support master controller and target controller enabled
+> simultaneously. Both controllers share the same SDA/SCL lines
+> and interrupt source but has a separate control and status
+> registers. When target is enabled and an interrupt has been
+> triggered, target register status will be checked to determine
+> IRQ source. Then enter the corresponding interrupt handler
+> function of master or target to handle the interrupt event.
+> 
+> This patch supports basic target data read/write operations in
+> 7-bit target address. LPI2C target mode can be enabled by using
+> I2C slave backend. I2C slave backend behaves like a standard I2C
+> client. For simple use and test, Linux I2C slave EEPROM backend
+> can be used.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-> > I think what you've explained here is fine, but could you add a
-> > bit more of that info to the commit message, explaining why one cannot
-> > be default? With that,
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> Thanks. I will await further review feedback and adjust this commit's
-> message for v2 as requested.
->=20
-> Wishing you nice holidays,
+merged to i2c/i2c-host.
 
-You too (or what's left of em at least).
-
---ftb44cQFhFFMb4XF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ27ofgAKCRB4tDGHoIJi
-0sQ/AQDOR3WXvsSsQFz+lLhiYbrYkjtuZAWDaLhBmi9uJKNtVQD/YB2Vbo249Q2C
-KhJBej2Wm204JRHpcFQv2oe1TtQx8wA=
-=pjOU
------END PGP SIGNATURE-----
-
---ftb44cQFhFFMb4XF--
+Thanks,
+Andi
