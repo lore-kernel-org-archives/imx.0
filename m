@@ -1,43 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC2C158A09;
-	Sat, 28 Dec 2024 21:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E174DF5C
+	for <imx@lists.linux.dev>; Sun, 29 Dec 2024 04:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735419681; cv=none; b=Rw3mkSTvQBdW0+NvEDnHzRzrTPqE1j5plfYDkBMv+Zh11KXZ7jqtgoPx3Kuf24VxrhOuSd32pFRFm2NNcqvMa/2G7UgcwyvSyZ8+LvQcSfKTQRfhmOWbadxXiFkhNAHjsjDcPZxPlV1fxi43UelTMHeQ0Zs1q96HI8VtHEtl7ys=
+	t=1735447854; cv=none; b=jYIawWoHPo2onuK5hmFMR5CJmN8FqZyL1tLQ8C+29ABuepgy3EdFFVIxPCGzjAlHkwrs7/yQLgVlLfbR9cGkixuTFeV7QPChcTnYfwtBhU5dKSCiBhy9jTATKsA1fo+clwtOcNCPT3/98aU+/QYLPvTmPp3q6xmLu1V54qNlYVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735419681; c=relaxed/simple;
-	bh=JSy7kKq7vvXln6X37mx3NLcerk0ooPQdIqGHyzb0PMU=;
+	s=arc-20240116; t=1735447854; c=relaxed/simple;
+	bh=A9Utw4Ievs8DrIF+31k4OffyyIv1G+bxB759Ajy1L5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjX5PuZV0Yj4vcU39wDsMxwenLzKKlzHdihbUlsfaJse0KcDKQohyLJH83ICIcy8z1uZ08ZHBGJfdYIpudas3SIOS4xpdSEDtcWHB9RgLNqm11xa5H8rcC/JkrkE4PkyZGUdWsY1/e670ID2dsF5pWB4JJ4XqIskdrCLQXkTRZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbFiLOuA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SEjN9dfEi0Ihkk/DKT4h+IoZbZz3ukRER/Gm2VzK1RAYYXDF1A8QKKEIl/3GazYDCA9imzGZS6V5scFzlRyq3G+TuWEvLXhUkrVeY1CqN5h+tlrqcsqYlBGTMK7bpCUmfju8rHVTfKaBpODdnLFLWRC5iuIR39eSfqob0Az2HwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zMAvnseC; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbFiLOuA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CD7C4CECD;
-	Sat, 28 Dec 2024 21:01:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735419681;
-	bh=JSy7kKq7vvXln6X37mx3NLcerk0ooPQdIqGHyzb0PMU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bbFiLOuA0eQ9ejBBfHrFyL7mSreqjiOeJrMmtw0Zuu+93uRaUSdR55Upta+G551/8
-	 x38gTjEkC9+NKvr4kH6egRYEXPXhVFCSsNSmIyfxiA5NsFLH0VcNG+j29E122Ii/LZ
-	 RkXVWMit7LVjKDkMMgwPg8Gz+j8sGjJeOq85aSATw0z9K4y4aDca3J79eIIbHCGwEf
-	 ojBwJi4NFyGc6Vq/JKdqPEls0vOliOD8orYtjPj4sk4vSsLsa7pL8lV3xcvOwgJ1pY
-	 QfAX2O9Ta9f8HkYxwG7Q6nsQLmbzZGfhXv3Zt0OPUy3m8BYgUE4j0xrVERqquOtI0a
-	 iAzFdPAugk31g==
-Date: Sat, 28 Dec 2024 22:01:13 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: frank.li@nxp.com, aisheng.dong@nxp.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] i2c: imx-lpi2c: fix build warning "function defined but
- not used"
-Message-ID: <lv7cliatuynamsimld546tjr7uhn3r7dqq5d7uhype2wh3au45@mdiv4asd33ti>
-References: <20241228090852.2049321-1-carlos.song@nxp.com>
- <o4hxr2redr6dp4ot35pbc5vyjldiec6sxy72xesharhphsvdsm@mnufmvmpd2dm>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zMAvnseC"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30227ccf803so99948741fa.2
+        for <imx@lists.linux.dev>; Sat, 28 Dec 2024 20:50:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1735447850; x=1736052650; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/vkoVwSLPI1coIX/JA0W8yclcKQGo59oXgI/Yfces/4=;
+        b=zMAvnseCHNNZ0tINIxlxbigVuzF9D4ExmZWosLU//7716krwCltnWThZMmbowREuj5
+         qZUzqRSTKnwR4dEL3gar5lb9CmztDntkm++NLTy9ptOKYzOnsC0MUpp7TZPGVqkmaQ1J
+         h4EDLz5yQRVNWiHFgMuzhSvbnIlsg8aczvPWEidwPCP18QfZGClYgAuAWNqFnQQjtU5D
+         aUPuNyqIbFOiK6gizg5yhSfoZc0zL0u6qkL//9pB1ZLDrBekL5KH3LgeKL670gL+Gr3z
+         e514Zg6P+47xlyU5ThOtQRPb2BnofxQo2w8hkvjwZg7iawWCH+/56ibiOfMTROaO55fm
+         s39A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735447850; x=1736052650;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/vkoVwSLPI1coIX/JA0W8yclcKQGo59oXgI/Yfces/4=;
+        b=BTDUUq/Ec0VCGdY2HmXoeC38Ks62Y8dIQW+o2M5KcOrD+Zd9Ya7hLCvz4lEvcYEAdQ
+         hK1O8L2VtaTJYoO7ECQPJnMEucwKyUyUueNx0nyc8VJ/BRn3sFChfUJms3xpI03hDpHM
+         z/gdaEFfDv9NgaGMU61/epTRUHMK9dilmFYRRzhTiHPYR9yyT6AGyrQl5kY0rfWUwHto
+         Q+ofRHBAjndd2xA/5eMk9K9vnqs6GPP2VWjxMbc7+i7cRJLbbIeNHcUv042byiQ/FDlg
+         f1FDhz5DFVMbcPmd53BMaLvJHDCt19Ts/5EmfEXjjfd/TMgNRggEzTn+OKqPuaPQ5Tnd
+         1hcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYMG8kNpzDdT7w46ZIouaZWO0ZzsZnHP7K2Z4BT2MVlAj5lRoEUemD37FINCDHKim4Zq4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw5qW847F0Te/cbdAYq9XsV3KxVDXrOdzrb/F+GHlCs5TcR9vLG
+	CyGqHd1gZJtZwu+eLXrDOIPDBDzwjyCHmJQ9KYfpjFeJxd87MnW/+mjo/tQ75DQ=
+X-Gm-Gg: ASbGncsmBGWmmyhmE+xbNWDH9IH0VGXlhj0sXAXwRaIvI34NwJOJtV49RWVZ8jyPEx7
+	qJek8oFuPDiaRipPd14lvfdlAyBg3UvT6GKHxzXHkvvj2MM4p5EqzMWxhAS8oT1gDHSmzoV0vqm
+	ErO4K7EXsB54HsxMXmj7AbN/8zuLXu7ws0TypgeavNNMwjVuXw2fvRZVjJHEl1X83wY+UWqbJVq
+	DyozaGlR/zxlis7IvpZJHw3XbMW+5pBYTczwygQFMqUSViHayUU5RtnH3P5v5DLo5NuvYQymiQx
+	aoAEDWfcSDoFEp862OOkFwOqVQh3Zrgjz9ds
+X-Google-Smtp-Source: AGHT+IEsNXGZt2QOXuXj9OJSqWCxJoh9IxQNwSFDjV5JTFWQrndLXIX8JMTwPgrw564c1ha9VHBhRw==
+X-Received: by 2002:a05:6512:1114:b0:540:2567:469b with SMTP id 2adb3069b0e04-54229533e5amr11323899e87.16.1735447850491;
+        Sat, 28 Dec 2024 20:50:50 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542236024c7sm2833143e87.110.2024.12.28.20.50.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Dec 2024 20:50:49 -0800 (PST)
+Date: Sun, 29 Dec 2024 06:50:47 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: linux@treblig.org
+Cc: p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch, 
+	deller@gmx.de, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, dri-devel@lists.freedesktop.org, 
+	linux-fbdev@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] gpu: ipu-v3: Remove unused functions
+Message-ID: <gugwtvw6qqknstlscr4hxfrvcgfa4gfwwgxdosr24mf7huk433@oh7axkbesrjs>
+References: <20241226022752.219399-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,32 +75,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <o4hxr2redr6dp4ot35pbc5vyjldiec6sxy72xesharhphsvdsm@mnufmvmpd2dm>
+In-Reply-To: <20241226022752.219399-1-linux@treblig.org>
 
-Hi Carlos,
-
-On Sat, Dec 28, 2024 at 09:53:22PM +0100, Andi Shyti wrote:
-> On Sat, Dec 28, 2024 at 05:08:52PM +0800, Carlos Song wrote:
-> > lpi2c_resume_noirq() and lpi2c_suspend_noirq() are defined but it maybe
-> > unused, so should add __maybe_unused to both functions to avoid build
-> > warning.
-> > 
-> > Fixes: fa89723f7a78 ("i2c: imx-lpi2c: add target mode support")
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202412280835.LRAV3z0g-lkp@intel.com/
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+On Thu, Dec 26, 2024 at 02:27:45AM +0000, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
 > 
-> yeah, I have different PM configuration to catch these kind of
-> error and I missed this.
+> Hi,
+>   This set removes a bunch of functions in ipu-v3 that
+> have been unused for a long time (since 2012-2017).
 > 
-> Rather than applying a fix over a recent patch, I am going to
-> remove your original patch and ask you to send a v7 of your
-> "imx-lpi2c: add target mode support".
+>   No changes to functions are made, just full deletions.
 > 
-> Is it OK with you?
+>   Build tested only.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> 
 
-I removed the patch and updated patchwork. I will be waiting for
-your v7.
 
-Thanks,
-Andi
+For the series:
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+-- 
+With best wishes
+Dmitry
