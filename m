@@ -1,48 +1,46 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE212AE8D
-	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 04:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BB6166F06
+	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 05:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735533688; cv=none; b=tkO+F0KagaljhNcy3zSZkDlYm7uXjbE7lhJEcA/P1aZQof5sTZ7h1/9W1F7qP6E6NGy/4fbQbnJbiFkZtHBEx/8PjG3c4HSlO5dT5LQmzcy8H2h2oRsx49Cf97qd9k7duj3KCTLtu2TtbP38AjYRTvSxK1HMboA+1qj+rNcXqro=
+	t=1735534890; cv=none; b=Ht3Unwd4a6JSMwRWuxy+9E3jZShcU2S771vZO/9OMPZmse3shUnOn0sB3iZQEWsB2kxnjxIZR5thp5UiYMGavUUsMcNItB7TgwQvqDJJlGc38j2eGQWf/j6uK7BW28Isi/PfdFgQr79iFj8mQd3fxPZikgO5AUWYzi0jpNDh4iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735533688; c=relaxed/simple;
-	bh=01AEnGO9TM16o7SKHfLWZaq1gvfyVrFYBYCzXmijilY=;
+	s=arc-20240116; t=1735534890; c=relaxed/simple;
+	bh=KLHM+rpepwSZyO/0gnAKI+H3/80GL+dsgYoO+t1S2ew=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nawyqWxSNyh+xMhFNG81j1Cc7JT5yo4qRmadBtBZfIxy/1cuDhMe15Q5AMjPHF9sy5XM+P96OkYTrb3JcpKxCDXIgF4fprI973iqR4Y809Jc2I8rjCcPx5U5GO1c3bOtvMgPSAZtc1/Rjl2+eLkvz3ycXrhah3Ozjn3uuQwwG/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=kQzYwbRG; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=W44RdKU6SpTVY9XW8HwYZASdHNp7RW1ohU0W7iW6NB/DmGGKd0Vj3XdhOSizjw54KeL72NRpfdjiGiB2a6eIlDWxlYLojPg0hQrXV/X9KNzgr0W1MFz3Abt+QvK40K/zZHgZeBIKEkx1HnJFr1Cxm1d1b3dvIQAdSGrFKmGhIsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=G0nXrO2X; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="kQzYwbRG"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="G0nXrO2X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=byvfiLkLHPQubLRAWzosDVyl6ug4veFdMUvKeRG1Mgo=;
-	b=kQzYwbRGvjebhm7dSfWJz53E+xjqhVOpw2A5AY1Oc2e4KzaSVjn6Mp+SlrtiUo
-	+AG1q50CCEAF11eBSeD5PdbOkcx1LnZt5jUNuZXIaZqgB0GRt0phigiQhpjBrg/p
-	Cxcd2uKl7JFrmjZC2WegXb0B73gB8bN4tY2SkzU0zwAZ0=
+	Content-Type; bh=OHwRFtQUHlQqYZRjfSIJzhBbHo/GTEW1e31T/9IquVk=;
+	b=G0nXrO2Xn4TzdE9KrIdxZgbo7U5Mm8+F0GcgP3hIvJX/Ccbt0aHXSzbhOlouHv
+	XklteE1FgdpTBfNLU76z3hiWXWZ0PccBWqNNFPQTyYYy9X0NQkwxRV3f5zv+rVXl
+	rhzMOGrx4o4y3X8bL2XhM0EbNR1aH2MBcGh/6+A8rPriY=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDX3ghgJHJn9CX2BQ--.60471S3;
-	Mon, 30 Dec 2024 12:41:06 +0800 (CST)
-Date: Mon, 30 Dec 2024 12:41:04 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBHvoAJKXJn_iUEBg--.60675S3;
+	Mon, 30 Dec 2024 13:00:59 +0800 (CST)
+Date: Mon, 30 Dec 2024 13:00:57 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>
-Subject: Re: [PATCH] arm64: dts: s32g: add I2C support
-Message-ID: <Z3IkYGFGb12LCVIO@dragon>
-References: <20241206123119.1688712-1-ciprianmarian.costea@oss.nxp.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"marex@denx.de" <marex@denx.de>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] soc: imx8m: Add remove function
+Message-ID: <Z3IpCXUL+tjHq9M8@dragon>
+References: <20241206112843.98720-1-peng.fan@oss.nxp.com>
+ <20241206114130.zt4rkotzbzi3xt5n@pengutronix.de>
+ <PAXPR04MB8459052EFE2C6137146F9CFC883C2@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,29 +49,116 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241206123119.1688712-1-ciprianmarian.costea@oss.nxp.com>
-X-CM-TRANSID:M88vCgDX3ghgJHJn9CX2BQ--.60471S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFWDtr4DWr43Zw15Cw1xZrb_yoW3Jrb_ur
-	WSkr1kCrW5JF4xKr4fXws8Gw1I93ykGrn3Z3ySga93Gas5Jrs3GFZIqFyjqrsxX34xZr9I
-	vw1DJF40krZFqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0wYFJUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQXFZWdyEUJH+AAAsV
+In-Reply-To: <PAXPR04MB8459052EFE2C6137146F9CFC883C2@PAXPR04MB8459.eurprd04.prod.outlook.com>
+X-CM-TRANSID:Mc8vCgBHvoAJKXJn_iUEBg--.60675S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWFWruw18KF47CFyDWFWruFg_yoWrJF43pF
+	y8uF4rGFW8WFsFg3yaqa15Za4YywnFkw48Wr1xt347Kw1qvFy3XFyIqFy5C3W3JrWkZr4f
+	JF1qy3yfuFWFvr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2byAUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAXFZWdyDmBizwAAs3
 
-On Fri, Dec 06, 2024 at 02:31:19PM +0200, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On Mon, Dec 09, 2024 at 08:26:48AM +0000, Peng Fan wrote:
+> > Subject: Re: [PATCH] soc: imx8m: Add remove function
+> > 
+> > On 24-12-06, Peng Fan (OSS) wrote:
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > Unregister the cpufreq device and soc device in remove path,
+> > otherwise
+> > > there will be warning when do removing test:
+> > > sysfs: cannot create duplicate filename '/devices/platform/imx-
+> > cpufreq-dt'
+> > > CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted
+> > > 6.13.0-rc1-next-20241204 Hardware name: NXP i.MX8MPlus EVK
+> > board (DT)
+> > >
+> > > Fixes: 9cc832d37799 ("soc: imx8m: Probe the SoC driver as platform
+> > > driver")
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > ---
+> > >  drivers/soc/imx/soc-imx8m.c | 32 +++++++++++++++++++++++++++----
+> > -
+> > >  1 file changed, 27 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-
+> > imx8m.c
+> > > index 8ac7658e3d52..8c368947d1e5 100644
+> > > --- a/drivers/soc/imx/soc-imx8m.c
+> > > +++ b/drivers/soc/imx/soc-imx8m.c
+> > > @@ -33,6 +33,11 @@ struct imx8_soc_data {
+> > >  	int (*soc_revision)(u32 *socrev, u64 *socuid);  };
+> > >
+> > > +struct imx8m_soc_priv {
+> > > +	struct soc_device *soc_dev;
+> > > +	struct platform_device *cpufreq_dev; };
+> > > +
+> > >  #ifdef CONFIG_HAVE_ARM_SMCCC
+> > >  static u32 imx8mq_soc_revision_from_atf(void)
+> > >  {
+> > > @@ -198,7 +203,7 @@ static int imx8m_soc_probe(struct
+> > platform_device *pdev)
+> > >  	const struct imx8_soc_data *data;
+> > >  	struct device *dev = &pdev->dev;
+> > >  	const struct of_device_id *id;
+> > > -	struct soc_device *soc_dev;
+> > > +	struct imx8m_soc_priv *priv;
+> > >  	u32 soc_rev = 0;
+> > >  	u64 soc_uid = 0;
+> > >  	int ret;
+> > > @@ -207,6 +212,10 @@ static int imx8m_soc_probe(struct
+> > platform_device *pdev)
+> > >  	if (!soc_dev_attr)
+> > >  		return -ENOMEM;
+> > >
+> > > +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > > +	if (!priv)
+> > > +		return -ENOMEM;
+> > > +
+> > >  	soc_dev_attr->family = "Freescale i.MX";
+> > >
+> > >  	ret = of_property_read_string(of_root, "model",
+> > > &soc_dev_attr->machine); @@ -235,21 +244,34 @@ static int
+> > imx8m_soc_probe(struct platform_device *pdev)
+> > >  	if (!soc_dev_attr->serial_number)
+> > >  		return -ENOMEM;
+> > >
+> > > -	soc_dev = soc_device_register(soc_dev_attr);
+> > > -	if (IS_ERR(soc_dev))
+> > > -		return PTR_ERR(soc_dev);
+> > > +	priv->soc_dev = soc_device_register(soc_dev_attr);
+> > > +	if (IS_ERR(priv->soc_dev))
+> > > +		return PTR_ERR(priv->soc_dev);
+> > >
+> > >  	pr_info("SoC: %s revision %s\n", soc_dev_attr->soc_id,
+> > >  		soc_dev_attr->revision);
+> > >
+> > >  	if (IS_ENABLED(CONFIG_ARM_IMX_CPUFREQ_DT))
+> > > -		platform_device_register_simple("imx-cpufreq-dt", -1,
+> > NULL, 0);
+> > > +		priv->cpufreq_dev =
+> > > +platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
+> > 
+> > If CONFIG_ARM_IMX_CPUFREQ_DT is enabled, I asusme that
+> > platform_device_register_simple() shouldn't fail else it will be an error,
+> > right? Therefore I would like to add the 'if(!IS_ERR())' check here
+> > instead of the remove function.
 > 
-> Add the I2C Devicetree nodes and pinmux for S32G2 and S32G3 SoCs.
-> 
-> With respect to S32G2/S32G3 SoC based boards, there are multiple RDB
-> (rdb2 vs rdb3) and EVB (for G2 vs for G3) board revisions. These versions
-> are quite similar. The common part for the EVB revisions will be
-> centralized in 's32gxxa-evb.dtsi' file, while the RDB commonalities will
-> be placed in 's32gxxa-rdb.dtsi' file.
-> 
-> This refactor will also serve for other modules in the future, such as
-> FlexCAN, DSPI.
-> 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> You mean below?
+> dev = platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
+> if (!IS_ERR(dev))
+>    plat->cpufreq_dev = dev;
+> else
+>   pr_err("Failed to register imx-cpufreq-dt: %d\n", ERR_PTR(dev))?
 
-Applied, thanks!
+Hmm, I'm not sure why we do not have error check on
+platform_device_register_simple().  Shouldn't we do the following?
+
+	priv->cpufreq_dev = platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
+	if (IS_ERR(priv->cpufreq_dev))
+		return PTR_ERR(priv->cpufreq_dev);
+
+Then I'm with Marco that we only need to check 'if (priv->cpufreq_dev)' in
+remove function.
+
+Shawn
 
