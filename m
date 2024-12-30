@@ -1,499 +1,993 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2077.outbound.protection.outlook.com [40.107.21.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CE8152196
-	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 03:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735529275; cv=fail; b=V9NvYDnaN2bjayTsSVl6CGvTh6+rtDnmd3UN14CICTLyJjCgXfnoVTb/cQ2R5uJ4SYDJ6XSro5F6hE4VtVuaXOyX3P1+GDYwmAwMI3XRqBMFjh2xOCPfzGFdvBH6byTavYOPydLNPz+iLWEFwvV7nFB3d9+qfs5IzzLW6ObkuTE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735529275; c=relaxed/simple;
-	bh=pgvOVho9zsSZrIOGrZWHMufxuDrw/08FzhbzWOXHqXY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=R2c1j2sfLfvruVy0EDR3Xjf78SJdJqJK1kdalVlnFFwQQuYXiuHsLDFm4tIu/IWdWZrduCDqki/tT7ob5SHBVXWeAcknn8dH6Z6ULKb54fr14Z9hrJoOXyCNndyQU9k+aqSGRvbhzejHKHnpuMPpf3+Jwcjn8u1/zPTKifkTZbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eo9zR+/p; arc=fail smtp.client-ip=40.107.21.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013C41F957
+	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 03:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735529391; cv=none; b=A/QpgPnoWoFwbR8xK20cUcSJJbSDSAtHRP2NxjuXB1E7za1jyf9x7J9JfbdXU1EyO10icbAOggLIERcx6/kHTg6llHZ6/vjlwZP450vhzIqW9maCHaz2tRH5+9hnmLt9oZbSI0IRfnQ9DdRHD5H68WhbLo3OyYHnZyoJVnAwzwI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735529391; c=relaxed/simple;
+	bh=/1VRIVp3dlpHy3z26txhvIOeYNIoMvv2zBOds9QWe98=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OlhFFQniNvlnIkPTOMXMPNnDKCSGe0jD3+0A0KTzovi1U3j06JsiLAP8HCrJ1s5aCQ+1uFUWbfKk7HH9NwgVjzHoMVoljhDjVyfdjqnyFpdOHcjsEzPwTqvf0eE82GhbjGJYTQGzWjqwPTnE8CiQioGAqPrbhCGNrNspNU0xS1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PWiSHYKh; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eo9zR+/p"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aQpkzxy//mh+L/y6d1MJLc2DM+TZDCReyRxei3OOrVcFXH7BPMsO6OCWsUqSkuzc2+4gQUXQD/+/iBV+Ihkm4g0ahryhmfUUIWj6uJPvyd4Exrg8WJHKycG73TfWJwbPh4F+O247h23OWWWsCDrmF8LKaIup9IYQFex9QsBazZvpp6vCSvC4rZ9epue95epTOsqKLjOZtqTCn476qwXgUTpxaGFSP1zTX5f2uX9nquTV06dRctMp1XLFL/ax8kAndXaaztm9Nu3BT2XvvuFFDB2bK/pCAcPYgvJZlzzzzjyFapulin5mZyx2i/LRLFKL1Z3oIbBMcwH5Nmc6uIvzRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xvnlrCDbp1vwxe7jXhtnT5AYKGJDZBA6xKqwb+x/mwY=;
- b=Z2Q0YlmqMxEwXpAqneGtf0AOC6J/Z6gxhU52FK87X+VxVsNMdzRopZSpjBmrD99JRu7haXsgBWDie/Jr98RDcU0guAi/pOR7NGkx2Wpbl3/aA2AYYYAdzg7eBUDPoI84VtvE6QODJVZKTiSUFn22DPkjfp4JHo0caxUfCE5lGWIcKJnYmmgoJXKndCxggV98S9T5eFV4FN2W8KB9ho1udHCEw0koA8oUuojzNEqRPhO8embjqmn9a6kOGCsOjDVz8NahKpEpJBJUqpHMyhrVgSdz7/aXn+YBHuHYj4JKdOE9R8xM9TtEVdt3ziAi2EzjTSFuoif+8yIGrXh7rNforA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xvnlrCDbp1vwxe7jXhtnT5AYKGJDZBA6xKqwb+x/mwY=;
- b=eo9zR+/pTp77EuHb0eymJGNIdzvwcEycB45zP9q1v2aQHWZysxDKp/bkE+IkvhoO04P4UF2VdkM7MyrIZ9HwVKLOXh3dwdokvg/7VcV9KNUe1WZ4QBFMht/h3KkykYJPXcZ9JQntHwjmMwvb/stI2Gym41c9qu7TruasKvcpwAcUbin5GRWllzUJb/m2BHuPQXAAXDidG/ZfLGpneLnuUmsCDTP+Yw583HZxMkj4jg6xTXxQ521TDZn+oypUnptHGkqiFfAcXf6a2kcC8cjISsu/Lm1i3hA3DF7CFiWV0XJSbfUjMeQnG9IVYBoDGai0IN+rMng26L/MYhxHrUPeUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com (2603:10a6:208:5::22)
- by DBBPR04MB7707.eurprd04.prod.outlook.com (2603:10a6:10:1f4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.19; Mon, 30 Dec
- 2024 03:27:45 +0000
-Received: from AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0]) by AM0PR0402MB3937.eurprd04.prod.outlook.com
- ([fe80::4e37:f56b:8a3e:bff0%4]) with mapi id 15.20.8293.000; Mon, 30 Dec 2024
- 03:27:45 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: andi.shyti@kernel.org,
-	frank.li@nxp.com,
-	aisheng.dong@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>
-Subject: [PATCH v7] i2c: imx-lpi2c: add target mode support
-Date: Mon, 30 Dec 2024 11:38:46 +0800
-Message-Id: <20241230033846.2302500-1-carlos.song@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BE1P281CA0095.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:79::10) To AM0PR0402MB3937.eurprd04.prod.outlook.com
- (2603:10a6:208:5::22)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PWiSHYKh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=7IAOg/mAWoU4L7C1DsWS+lH8jqjZPcuiOpcfq17r6sk=;
+	b=PWiSHYKhxon5m5bpT0fIct1D10b7ASUWihuKXbtW7z+F0LnSyoiDY1TxPjWFx2
+	/G7dw7+arUYe7UEmjRqvDkDysh9Wun6FTBPiNV7p6vhVMQ5LNj/bucBUUXieI1km
+	lZZqcIM4hdHwfFdj/2qmgX3Kf7xvIVZUtpaSPPGn9OU2E=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHKlRmE3JnvC8cBg--.62044S3;
+	Mon, 30 Dec 2024 11:28:41 +0800 (CST)
+Date: Mon, 30 Dec 2024 11:28:38 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Pengfei Li <pengfei.li_1@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de,
+	catalin.marinas@arm.com, will@kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com, joao.goncalves@toradex.com, marex@denx.de,
+	hvilleneuve@dimonoff.com, hiago.franco@toradex.com,
+	peng.fan@nxp.com, frieder.schrempf@kontron.de,
+	alexander.stein@ew.tq-group.com, m.othacehe@gmail.com,
+	mwalle@kernel.org, Max.Merchel@ew.tq-group.com,
+	quic_bjorande@quicinc.com, geert+renesas@glider.be,
+	dmitry.baryshkov@linaro.org, neil.armstrong@linaro.org,
+	arnd@arndb.de, nfraprado@collabora.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, ping.bai@nxp.com,
+	ye.li@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com,
+	carlos.song@nxp.com
+Subject: Re: [PATCH v3 3/4] arm64: dts: freescale: Add i.MX91 11x11 EVK basic
+ support
+Message-ID: <Z3ITZtXIMZ/ZjxEB@dragon>
+References: <20241120094945.3032663-1-pengfei.li_1@nxp.com>
+ <20241120094945.3032663-4-pengfei.li_1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR0402MB3937:EE_|DBBPR04MB7707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c9e3de2-e744-4f5f-021a-08dd2881ed13
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qPpNZgKN9F/C/QPoTo7Kil+iJvZWJL0cnZf85leK6V3PQ1HFYwF5T+6PkoL1?=
- =?us-ascii?Q?IdVoT7Wf+N77JElnjEeb8SR5HtRjnRmoLNKz9+BqhIAh9MxNIBOLPWayyC6m?=
- =?us-ascii?Q?7+ztFIzd0EAVSk3+TwS/n+5YOop4abT3YBZaPa6iKPU9cDIlapUm6wgoBtSS?=
- =?us-ascii?Q?2SXviAXGVbK4rExX+nitUh125SgRt4/3Q8SRn8QmrD8JB7fx2GHEs0WnAPEW?=
- =?us-ascii?Q?TNT2s481pLhMgecgU/zOR+P9KPMKGb6dcw3rLfifhbPd4tTUmadpBl+RLHhJ?=
- =?us-ascii?Q?yI7F0DUWlLHFb2NhQf2PZlPnJ2jRzZ0SgtHqr7lbOp7QVfGfojbFIZHZSbyz?=
- =?us-ascii?Q?WuCkqAD+6IKhbMqG6YuMzOUm8uGySaAUP9FZy/tfDoS4IE44R1/Gqi0ykJ31?=
- =?us-ascii?Q?e/27+HDtM28YfxlqYk0QseQ7yFQgVxu52AeeeI+oqgoPW1gqtra21t6MHW2C?=
- =?us-ascii?Q?v1EV8cFWPzaCy1kWsaFOl0f4L0CCuSdHTWq5wrQyO4X7WgWvUKfq701opEnM?=
- =?us-ascii?Q?DM4U8gLgjrf1UNFV8nqYRTUn09WFl3UiIujZh/Vqhj9U1f1TdXaW07I4JyDY?=
- =?us-ascii?Q?EZcdyyepQ5XAYQ/7DmDGPIVsDEatdbqi7CA1IQINR267pqDBHSgPRrM3xr5Z?=
- =?us-ascii?Q?I9vBWCUgaq3OUbp7Zo40ydD6rsxKuvBWPkfrGY3wLVJeov1OFQaMd72cxb7F?=
- =?us-ascii?Q?KvFw7q8JZEHud3VZf8DBHOQiTCZNO1XY2NbZV13mgNI3AM6r+mdTAKi570zv?=
- =?us-ascii?Q?olw77Ubj1Ba/Ec4p57bGylnDmT1tctQe7vAOeBwu0osGipUbTTg0aZvX2uEk?=
- =?us-ascii?Q?NFhnYIj068ZlEkEF/cgZigqjESOC/9BrDTBTjmh1pflG+nYG8n2uqNQ72A2/?=
- =?us-ascii?Q?39uOi+G4DvC0oML2HDoLKnZBtIdSO7PyMBLpjZ3LmcqY0KZ47AhtBiuZVHAr?=
- =?us-ascii?Q?k8yFWNVGw7zxHwu+69fpySvJ+JvjM7EgZgZptXWPWT/pLkXmrAuDbFVDKyyL?=
- =?us-ascii?Q?4YWl4me1PWENcHqalNkcvxS0tRlsq0hpgX3vJbKxvH7LqXXGaB/5DZNy3HtZ?=
- =?us-ascii?Q?2dZOO2bDY3LeJU7M3OJY23anDK08eCPSoZMzReiptpYls9GnELrO+RwoeCJM?=
- =?us-ascii?Q?a5yM+fS9lSdgMlpab/BRNU/M2huK30qqHgpd98dA66+WhWx1cdvUaDDgStyx?=
- =?us-ascii?Q?7Z+j3pgxKfe8yglc8vQoPTY0CWVM7MZlLyMnP8+Y5lEfltNtaCEkl7BJmgRw?=
- =?us-ascii?Q?ePy+vX9tIdTh/CLJ9vVWdbl01+gzB52HeOXaOYV2Y56pVKJrsX5jVagPbWLY?=
- =?us-ascii?Q?d5AYs3UlsY1oEkWLjOlDmOKFW00sBxr1tmQsBW0i2smxjvspl1zjhPqZrDnz?=
- =?us-ascii?Q?9TKu155WrTE5zNOgIt3eo1875LFSIPyT5O3d1NnK58qAfZEt3Mb4gjZpO4Lm?=
- =?us-ascii?Q?M+Xv8diq5uQm83dnWmwj8Eb0rivGe+NP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3937.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?C1VSiQDFb7f1bo2c26iJa+9QiJXM5r2BTE/AF/NyOaa7eumF+wzpvVBjHBP9?=
- =?us-ascii?Q?VhdABpfLx4XfbIvugCfQboOxgONSMMWtMDHTsVMnrO3gXJ93DgYFNtDZmxRx?=
- =?us-ascii?Q?yAOBORAlGcK76bNh4o61pYLRtczYQmJrmKF5mv7SGErl5sOE2mX5mCLEw1Ig?=
- =?us-ascii?Q?uSARUqYJrZKv03CvqlcS2kjh7tPJwE63akR7AErzoMsgp9IKKqc4HWuHhUTW?=
- =?us-ascii?Q?dDKRrPkbikth/v9vUOZ7hUKE3hhqppt5htPU9ok2LnMXahJz17RnRl0U/P6N?=
- =?us-ascii?Q?2E3pqYW1rqINE0hI247BXHSYauHxLxPW+1eUt1DvivRu/ZRxGYtvFtUKvZw9?=
- =?us-ascii?Q?Z7EURaX4Z9oBosiIPfEm3utLIVOG9eQDSHXLK7mCYmIToMqL1qlTadfXAZtv?=
- =?us-ascii?Q?E2lVGPJVOQj5wyJASKa823FAxC5fJfoYtXvECa0umygsZJvgygox37uU0q0W?=
- =?us-ascii?Q?tu4ni/dsxp0osO9Max8+gTFHAy9P/7ju4DEA0Qd52XHZFWYTYEmG0sxb0hk2?=
- =?us-ascii?Q?nLQWhnl4rte7vuoV8HlyrkiuPsrfxNxOmxuVzpqPg9v9p6X/1wg+t306U39+?=
- =?us-ascii?Q?8c/deBm5vmox+ip727Om7ccjRi1HerYgbj9uYdFFhv/d2NEUwm8zv7UV1XpU?=
- =?us-ascii?Q?CRmJJ3bBdwMU5RWVi8OYq81x7rCB+2rVmelNBhOFoR78DAscPc2+th45nvAB?=
- =?us-ascii?Q?PNdlTr/yQC40Dgd6Aaj81cSP/eHpKbS4sI1fLZ7Ra3R4ArD7e6Cewz++tWz4?=
- =?us-ascii?Q?SQD0EcvKQtXBWPuXvMc4l4JxHktkeOgABqwHu6iIvLpQzwAXIACZ2dj7oXAw?=
- =?us-ascii?Q?1EsKL979456TQ/NDvDHRwLFRZdpVv1Ma1uWbOirOkCZsslGZxGeU99qgZ1h4?=
- =?us-ascii?Q?FRVMkTYvfL9/PagAOk7XXT1/3Q+Vn8YPym8MVQpc2qg6BNkXZe8smuhsqZSo?=
- =?us-ascii?Q?uFOaxPsjnjPxO1XnSJl60RMthGKG4f8PU74ywHKJVPEcdcoPgEhRka53SVLY?=
- =?us-ascii?Q?Uzhgn340jfBQJ6Si/GistTaIqcQGBJAFGPtspiY00AVwdcZk2RuY/khNXgvO?=
- =?us-ascii?Q?45/X9Z5aCOig+V8s1TL+Ha9OJ0hYz9FwJDIWpYMxpeyBmet5fTSgtV398pKF?=
- =?us-ascii?Q?/1FfnZbOhpMnbMoDNASc7jMQWS6iADck4wNkPoBmCenRHepr88e0seGkWsEL?=
- =?us-ascii?Q?sy8Ynj1Cvg/pm0C6hyrMZ73xOajoN8cozs1VnkgLi7fBzhdKprs2WdEfjdyP?=
- =?us-ascii?Q?wnhLUcm9LKz0g39JOsptCUcp1H18MVx+7F32s3gDkzGMpppgLd7obGYiTR5K?=
- =?us-ascii?Q?+5am1l6t/hV/NrPEVvddDyjI37QiQnXQGaVz3MvwfsWQzDlYxVj9CFGs6AsW?=
- =?us-ascii?Q?GXdDzzhDXHONwX/LQrW04MZvAkvMbi4Iq20YhZcGZQTI4Ae6AP25M1xGFrwk?=
- =?us-ascii?Q?ZthCNf2XsCSSN5jvslr+3y2wHPhtS9lk4cPS4/2/AW8JsQq9lql7mWIDUOVO?=
- =?us-ascii?Q?MzPqulvIj+GQzCB/2cm/xtQcfGMjumMCpGaNd7ephUZKdd30kGqrsLFIgHud?=
- =?us-ascii?Q?hpZMJiRys5teDc3xsIVrj7Ev6PgEXheio/C3qj7r?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c9e3de2-e744-4f5f-021a-08dd2881ed13
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3937.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2024 03:27:45.4142
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1ytPgJWL8MPYuMwC8/xQ27xNZ6A677cCwtusY8x5FjButHh3jFOY8V0ivOic/Rl7gQU3+QWCivAv5VyT5qLwVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7707
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241120094945.3032663-4-pengfei.li_1@nxp.com>
+X-CM-TRANSID:Ms8vCgDHKlRmE3JnvC8cBg--.62044S3
+X-Coremail-Antispam: 1Uf129KBjvAXoWfAw4kWrW5Xw47KrWrXryfCrg_yoW5GrWfto
+	WYvFZYkry8Kryavr4fJwnFya1xAr1qqa1YkayayryrWF1xtFyqvws8Xa1jqr1rJF4FyFyD
+	Z34fZa48ZwsFvws5n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYPfQDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxrFZWdyEhAFgQAAsi
 
-LPI2C support master controller and target controller enabled
-simultaneously. Both controllers share the same SDA/SCL lines
-and interrupt source but has a separate control and status
-registers. When target is enabled and an interrupt has been
-triggered, target register status will be checked to determine
-IRQ source. Then enter the corresponding interrupt handler
-function of master or target to handle the interrupt event.
+On Wed, Nov 20, 2024 at 05:49:44PM +0800, Pengfei Li wrote:
+> Add i.MX91 11x11 EVK board support.
+> - Enable ADC1.
+> - Enable lpuart1 and lpuart5.
+> - Enable network eqos and fec.
+> - Enable I2C bus and children nodes under I2C bus.
+> - Enable USB and related nodes.
+> - Enable uSDHC1 and uSDHC2.
+> - Enable Watchdog3.
+> 
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../boot/dts/freescale/imx91-11x11-evk.dts    | 875 ++++++++++++++++++
+>  2 files changed, 876 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 42e6482a31cb..9174c9e215d5 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -256,6 +256,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-colibri-iris-v2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx91-11x11-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb
+>  
+>  imx93-9x9-qsb-i3c-dtbs += imx93-9x9-qsb.dtb imx93-9x9-qsb-i3c.dtbo
+> diff --git a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+> new file mode 100644
+> index 000000000000..65571fc223b7
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+> @@ -0,0 +1,875 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/usb/pd.h>
+> +#include "imx91.dtsi"
+> +
+> +/ {
+> +	compatible = "fsl,imx91-11x11-evk", "fsl,imx91";
+> +	model = "NXP i.MX91 11X11 EVK board";
+> +
+> +	aliases {
+> +		ethernet0 = &fec;
+> +		ethernet1 = &eqos;
+> +		rtc0 = &bbnsm_rtc;
+> +	};
+> +
+> +	chosen {
+> +		stdout-path = &lpuart1;
+> +	};
+> +
+> +	reg_vref_1v8: regulator-adc-vref {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-name = "vref_1v8";
+> +	};
+> +
+> +	reg_audio_pwr: regulator-audio-pwr {
+> +		compatible = "regulator-fixed";
+> +		regulator-always-on;
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "audio-pwr";
+> +		gpio = <&adp5585 1 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_usdhc2_vmmc: regulator-usdhc2 {
+> +		compatible = "regulator-fixed";
+> +		off-on-delay-us = <12000>;
+> +		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+> +		pinctrl-names = "default";
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "VSD_3V3";
+> +		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_usdhc3_vmmc: regulator-usdhc3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "WLAN_EN";
+> +		gpio = <&pcal6524 20 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		/*
+> +		 * IW612 wifi chip needs more delay than other wifi chips to complete
+> +		 * the host interface initialization after power up, otherwise the
+> +		 * internal state of IW612 may be unstable, resulting in the failure of
+> +		 * the SDIO3.0 switch voltage.
+> +		 */
+> +		startup-delay-us = <20000>;
+> +	};
+> +
+> +	reg_vdd_12v: regulator-vdd-12v {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <12000000>;
+> +		regulator-min-microvolt = <12000000>;
+> +		regulator-name = "reg_vdd_12v";
+> +		gpio = <&pcal6524 14 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_vrpi_3v3: regulator-vrpi-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "VRPI_3V3";
+> +		vin-supply = <&buck4>;
+> +		gpio = <&pcal6524 2 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_vrpi_5v: regulator-vrpi-5v {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-name = "VRPI_5V";
+> +		gpio = <&pcal6524 8 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reserved-memory {
+> +		ranges;
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +
+> +		linux,cma {
+> +			compatible = "shared-dma-pool";
+> +			alloc-ranges = <0 0x80000000 0 0x40000000>;
+> +			reusable;
+> +			size = <0 0x10000000>;
+> +			linux,cma-default;
+> +		};
+> +	};
+> +};
+> +
+> +&adc1 {
+> +	vref-supply = <&reg_vref_1v8>;
+> +	status = "okay";
+> +};
+> +
+> +&eqos {
+> +	phy-handle = <&ethphy1>;
+> +	phy-mode = "rgmii-id";
+> +	pinctrl-0 = <&pinctrl_eqos>;
+> +	pinctrl-1 = <&pinctrl_eqos_sleep>;
+> +	pinctrl-names = "default", "sleep";
+> +	status = "okay";
+> +
+> +	mdio {
+> +		compatible = "snps,dwmac-mdio";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		clock-frequency = <5000000>;
+> +
+> +		ethphy1: ethernet-phy@1 {
+> +			reg = <1>;
+> +			eee-broken-1000t;
+> +		};
+> +	};
+> +};
+> +
+> +&fec {
+> +	phy-handle = <&ethphy2>;
+> +	phy-mode = "rgmii-id";
+> +	pinctrl-0 = <&pinctrl_fec>;
+> +	pinctrl-1 = <&pinctrl_fec_sleep>;
+> +	pinctrl-names = "default", "sleep";
+> +	fsl,magic-packet;
+> +	status = "okay";
+> +
+> +	mdio {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		clock-frequency = <5000000>;
+> +
+> +		ethphy2: ethernet-phy@2 {
+> +			reg = <2>;
+> +			eee-broken-1000t;
+> +		};
+> +	};
+> +};
+> +
+> +/*
+> + * When add, delete or change any target device setting in &lpi2c1,
+> + * please synchronize the changes to the &i3c1 bus in imx91-11x11-evk-i3c.dts.
+> + */
+> +&lpi2c1 {
+> +	clock-frequency = <400000>;
+> +	pinctrl-0 = <&pinctrl_lpi2c1>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +
+> +	codec: wm8962@1a {
+> +		compatible = "wlf,wm8962";
+> +		reg = <0x1a>;
+> +		clocks = <&clk IMX93_CLK_SAI3_GATE>;
+> +		AVDD-supply = <&reg_audio_pwr>;
+> +		CPVDD-supply = <&reg_audio_pwr>;
+> +		DBVDD-supply = <&reg_audio_pwr>;
+> +		DCVDD-supply = <&reg_audio_pwr>;
+> +		MICVDD-supply = <&reg_audio_pwr>;
+> +		PLLVDD-supply = <&reg_audio_pwr>;
+> +		SPKVDD1-supply = <&reg_audio_pwr>;
+> +		SPKVDD2-supply = <&reg_audio_pwr>;
+> +		gpio-cfg = <
+> +			0x0000 /* 0:Default */
+> +			0x0000 /* 1:Default */
+> +			0x0000 /* 2:FN_DMICCLK */
+> +			0x0000 /* 3:Default */
+> +			0x0000 /* 4:FN_DMICCDAT */
+> +			0x0000 /* 5:Default */
+> +		>;
+> +	};
+> +
+> +	lsm6dsm@6a {
+> +		compatible = "st,lsm6dso";
+> +		reg = <0x6a>;
+> +	};
+> +};
+> +
+> +&lpi2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-0 = <&pinctrl_lpi2c2>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +
+> +	pcal6524: gpio@22 {
+> +		compatible = "nxp,pcal6524";
+> +		reg = <0x22>;
+> +		#interrupt-cells = <2>;
+> +		interrupt-controller;
+> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> +		#gpio-cells = <2>;
+> +		gpio-controller;
+> +		interrupt-parent = <&gpio3>;
+> +		pinctrl-0 = <&pinctrl_pcal6524>;
+> +		pinctrl-names = "default";
+> +	};
+> +
+> +	pmic@25 {
+> +		compatible = "nxp,pca9451a";
+> +		reg = <0x25>;
+> +		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
+> +		interrupt-parent = <&pcal6524>;
+> +
+> +		regulators {
+> +
 
-This patch supports basic target data read/write operations in
-7-bit target address. LPI2C target mode can be enabled by using
-I2C slave backend. I2C slave backend behaves like a standard I2C
-client. For simple use and test, Linux I2C slave EEPROM backend
-can be used.
+This newline is not useful.
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Change for V7:
-- Add __maybe_unused to lpi2c_suspend_noirq()/lpi2c_resume_noirq()
-  functions to avoid build warning.
-Change for V6:
-- Just notice reg_slave and unreg_slave is deprecated, so change
-  to reg_target and unreg_target, no function change.
-- Simply return pm_runtime_force_suspend at lpi2c_suspend_noirq
-  to reduce some redundant code.
-Change for V5:
-- According to Andi's suggestion, modify commit log to align with
-  driver logic.
-- Fix syntax errors in some comments.
-- Change function names to lpi2c_imx_unregister_target() and
-  lpi2c_imx_register_target().
-- Using strict codespell to checkpatch and fix codespell and
-  alignment error.
-Change for V4:
-- According to Andi's suggestion, simplify the code, fix alignment,
-  remove redundant definitions.
-Change for V3:
-- According to Andi's suggestion, enrich this patch commit log.
-  No code change.
-Change for V2:
-- remove unused variable 'lpi2c_imx' in lpi2c_suspend_noirq.
----
- drivers/i2c/busses/i2c-imx-lpi2c.c | 251 ++++++++++++++++++++++++++++-
- 1 file changed, 247 insertions(+), 4 deletions(-)
+> +			buck1: BUCK1 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <2237500>;
+> +				regulator-min-microvolt = <650000>;
+> +				regulator-name = "BUCK1";
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck2: BUCK2 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <2187500>;
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-name = "BUCK2";
+> +				regulator-ramp-delay = <3125>;
+> +			};
+> +
+> +			buck4: BUCK4 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-name = "BUCK4";
+> +			};
+> +
+> +			buck5: BUCK5 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-name = "BUCK5";
+> +			};
+> +
+> +			buck6: BUCK6 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3400000>;
+> +				regulator-min-microvolt = <600000>;
+> +				regulator-name = "BUCK6";
+> +			};
+> +
+> +			ldo1: LDO1 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-min-microvolt = <1600000>;
+> +				regulator-name = "LDO1";
+> +			};
+> +
+> +			ldo4: LDO4 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-min-microvolt = <800000>;
+> +				regulator-name = "LDO4";
+> +			};
+> +
+> +			ldo5: LDO5 {
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +				regulator-max-microvolt = <3300000>;
+> +				regulator-min-microvolt = <1800000>;
+> +				regulator-name = "LDO5";
+> +			};
+> +		};
+> +	};
+> +
+> +	adp5585: io-expander@34 {
+> +		compatible = "adi,adp5585-00", "adi,adp5585";
+> +		reg = <0x34>;
+> +		#gpio-cells = <2>;
+> +		gpio-controller;
+> +		#pwm-cells = <3>;
+> +		gpio-reserved-ranges = <5 1>;
+> +
+> +		exp-sel-hog {
+> +			gpio-hog;
+> +			gpios = <4 GPIO_ACTIVE_HIGH>;
+> +			output-low;
+> +		};
+> +	};
+> +};
+> +
+> +&lpi2c3 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	clock-frequency = <400000>;
+> +	pinctrl-0 = <&pinctrl_lpi2c3>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +
+> +	ptn5110: tcpc@50 {
+> +		compatible = "nxp,ptn5110", "tcpci";
+> +		reg = <0x50>;
+> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> +		interrupt-parent = <&gpio3>;
+> +		status = "okay";
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index 9778dc8f6d36..dc25d7dfe1ab 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -43,6 +43,20 @@
- #define LPI2C_MTDR	0x60	/* i2c master TX data register */
- #define LPI2C_MRDR	0x70	/* i2c master RX data register */
- 
-+#define LPI2C_SCR	0x110	/* i2c target control register */
-+#define LPI2C_SSR	0x114	/* i2c target status register */
-+#define LPI2C_SIER	0x118	/* i2c target interrupt enable */
-+#define LPI2C_SDER	0x11C	/* i2c target DMA enable */
-+#define LPI2C_SCFGR0	0x120	/* i2c target configuration */
-+#define LPI2C_SCFGR1	0x124	/* i2c target configuration */
-+#define LPI2C_SCFGR2	0x128	/* i2c target configuration */
-+#define LPI2C_SAMR	0x140	/* i2c target address match */
-+#define LPI2C_SASR	0x150	/* i2c target address status */
-+#define LPI2C_STAR	0x154	/* i2c target transmit ACK */
-+#define LPI2C_STDR	0x160	/* i2c target transmit data */
-+#define LPI2C_SRDR	0x170	/* i2c target receive data */
-+#define LPI2C_SRDROR	0x178	/* i2c target receive data read only */
-+
- /* i2c command */
- #define TRAN_DATA	0X00
- #define RECV_DATA	0X01
-@@ -76,6 +90,42 @@
- #define MDER_TDDE	BIT(0)
- #define MDER_RDDE	BIT(1)
- 
-+#define SCR_SEN		BIT(0)
-+#define SCR_RST		BIT(1)
-+#define SCR_FILTEN	BIT(4)
-+#define SCR_RTF		BIT(8)
-+#define SCR_RRF		BIT(9)
-+#define SSR_TDF		BIT(0)
-+#define SSR_RDF		BIT(1)
-+#define SSR_AVF		BIT(2)
-+#define SSR_TAF		BIT(3)
-+#define SSR_RSF		BIT(8)
-+#define SSR_SDF		BIT(9)
-+#define SSR_BEF		BIT(10)
-+#define SSR_FEF		BIT(11)
-+#define SSR_SBF		BIT(24)
-+#define SSR_BBF		BIT(25)
-+#define SSR_CLEAR_BITS	(SSR_RSF | SSR_SDF | SSR_BEF | SSR_FEF)
-+#define SIER_TDIE	BIT(0)
-+#define SIER_RDIE	BIT(1)
-+#define SIER_AVIE	BIT(2)
-+#define SIER_TAIE	BIT(3)
-+#define SIER_RSIE	BIT(8)
-+#define SIER_SDIE	BIT(9)
-+#define SIER_BEIE	BIT(10)
-+#define SIER_FEIE	BIT(11)
-+#define SIER_AM0F	BIT(12)
-+#define SCFGR1_RXSTALL	BIT(1)
-+#define SCFGR1_TXDSTALL	BIT(2)
-+#define SCFGR2_FILTSDA_SHIFT	24
-+#define SCFGR2_FILTSCL_SHIFT	16
-+#define SCFGR2_CLKHOLD(x)	(x)
-+#define SCFGR2_FILTSDA(x)	((x) << SCFGR2_FILTSDA_SHIFT)
-+#define SCFGR2_FILTSCL(x)	((x) << SCFGR2_FILTSCL_SHIFT)
-+#define SASR_READ_REQ	0x1
-+#define SLAVE_INT_FLAG	(SIER_TDIE | SIER_RDIE | SIER_AVIE | \
-+			 SIER_SDIE | SIER_BEIE)
-+
- #define I2C_CLK_RATIO	2
- #define CHUNK_DATA	256
- 
-@@ -134,6 +184,7 @@ struct lpi2c_imx_struct {
- 	struct i2c_bus_recovery_info rinfo;
- 	bool			can_use_dma;
- 	struct lpi2c_imx_dma	*dma;
-+	struct i2c_client	*target;
- };
- 
- static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
-@@ -957,9 +1008,56 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
- 	return (result < 0) ? result : num;
- }
- 
--static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
-+static irqreturn_t lpi2c_imx_target_isr(struct lpi2c_imx_struct *lpi2c_imx,
-+					u32 ssr, u32 sier_filter)
-+{
-+	u8 value;
-+	u32 sasr;
-+
-+	/* Arbitration lost */
-+	if (sier_filter & SSR_BEF) {
-+		writel(0, lpi2c_imx->base + LPI2C_SIER);
-+		return IRQ_HANDLED;
-+	}
-+
-+	/* Address detected */
-+	if (sier_filter & SSR_AVF) {
-+		sasr = readl(lpi2c_imx->base + LPI2C_SASR);
-+		if (SASR_READ_REQ & sasr) {
-+			/* Read request */
-+			i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_READ_REQUESTED, &value);
-+			writel(value, lpi2c_imx->base + LPI2C_STDR);
-+			goto ret;
-+		} else {
-+			/* Write request */
-+			i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_WRITE_REQUESTED, &value);
-+		}
-+	}
-+
-+	if (sier_filter & SSR_SDF)
-+		/* STOP */
-+		i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_STOP, &value);
-+
-+	if (sier_filter & SSR_TDF) {
-+		/* Target send data */
-+		i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_READ_PROCESSED, &value);
-+		writel(value, lpi2c_imx->base + LPI2C_STDR);
-+	}
-+
-+	if (sier_filter & SSR_RDF) {
-+		/* Target receive data */
-+		value = readl(lpi2c_imx->base + LPI2C_SRDR);
-+		i2c_slave_event(lpi2c_imx->target, I2C_SLAVE_WRITE_RECEIVED, &value);
-+	}
-+
-+ret:
-+	/* Clear SSR */
-+	writel(ssr & SSR_CLEAR_BITS, lpi2c_imx->base + LPI2C_SSR);
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t lpi2c_imx_master_isr(struct lpi2c_imx_struct *lpi2c_imx)
- {
--	struct lpi2c_imx_struct *lpi2c_imx = dev_id;
- 	unsigned int enabled;
- 	unsigned int temp;
- 
-@@ -979,6 +1077,124 @@ static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+static irqreturn_t lpi2c_imx_isr(int irq, void *dev_id)
-+{
-+	struct lpi2c_imx_struct *lpi2c_imx = dev_id;
-+
-+	if (lpi2c_imx->target) {
-+		u32 scr = readl(lpi2c_imx->base + LPI2C_SCR);
-+		u32 ssr = readl(lpi2c_imx->base + LPI2C_SSR);
-+		u32 sier_filter = ssr & readl(lpi2c_imx->base + LPI2C_SIER);
-+
-+		/*
-+		 * The target is enabled and an interrupt has been triggered.
-+		 * Enter the target's irq handler.
-+		 */
-+		if ((scr & SCR_SEN) && sier_filter)
-+			return lpi2c_imx_target_isr(lpi2c_imx, ssr, sier_filter);
-+	}
-+
-+	/*
-+	 * Otherwise the interrupt has been triggered by the master.
-+	 * Enter the master's irq handler.
-+	 */
-+	return lpi2c_imx_master_isr(lpi2c_imx);
-+}
-+
-+static void lpi2c_imx_target_init(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	u32 temp;
-+
-+	/* reset target module */
-+	writel(SCR_RST, lpi2c_imx->base + LPI2C_SCR);
-+	writel(0, lpi2c_imx->base + LPI2C_SCR);
-+
-+	/* Set target address */
-+	writel((lpi2c_imx->target->addr << 1), lpi2c_imx->base + LPI2C_SAMR);
-+
-+	writel(SCFGR1_RXSTALL | SCFGR1_TXDSTALL, lpi2c_imx->base + LPI2C_SCFGR1);
-+
-+	/*
-+	 * set SCFGR2: FILTSDA, FILTSCL and CLKHOLD
-+	 *
-+	 * FILTSCL/FILTSDA can eliminate signal skew. It should generally be
-+	 * set to the same value and should be set >= 50ns.
-+	 *
-+	 * CLKHOLD is only used when clock stretching is enabled, but it will
-+	 * extend the clock stretching to ensure there is an additional delay
-+	 * between the target driving SDA and the target releasing the SCL pin.
-+	 *
-+	 * CLKHOLD setting is crucial for lpi2c target. When master read data
-+	 * from target, if there is a delay caused by cpu idle, excessive load,
-+	 * or other delays between two bytes in one message transmission, it
-+	 * will cause a short interval time between the driving SDA signal and
-+	 * releasing SCL signal. The lpi2c master will mistakenly think it is a stop
-+	 * signal resulting in an arbitration failure. This issue can be avoided
-+	 * by setting CLKHOLD.
-+	 *
-+	 * In order to ensure lpi2c function normally when the lpi2c speed is as
-+	 * low as 100kHz, CLKHOLD should be set to 3 and it is also compatible with
-+	 * higher clock frequency like 400kHz and 1MHz.
-+	 */
-+	temp = SCFGR2_FILTSDA(2) | SCFGR2_FILTSCL(2) | SCFGR2_CLKHOLD(3);
-+	writel(temp, lpi2c_imx->base + LPI2C_SCFGR2);
-+
-+	/*
-+	 * Enable module:
-+	 * SCR_FILTEN can enable digital filter and output delay counter for LPI2C
-+	 * target mode. So SCR_FILTEN need be asserted when enable SDA/SCL FILTER
-+	 * and CLKHOLD.
-+	 */
-+	writel(SCR_SEN | SCR_FILTEN, lpi2c_imx->base + LPI2C_SCR);
-+
-+	/* Enable interrupt from i2c module */
-+	writel(SLAVE_INT_FLAG, lpi2c_imx->base + LPI2C_SIER);
-+}
-+
-+static int lpi2c_imx_register_target(struct i2c_client *client)
-+{
-+	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(client->adapter);
-+	int ret;
-+
-+	if (lpi2c_imx->target)
-+		return -EBUSY;
-+
-+	lpi2c_imx->target = client;
-+
-+	ret = pm_runtime_resume_and_get(lpi2c_imx->adapter.dev.parent);
-+	if (ret < 0) {
-+		dev_err(&lpi2c_imx->adapter.dev, "failed to resume i2c controller");
-+		return ret;
-+	}
-+
-+	lpi2c_imx_target_init(lpi2c_imx);
-+
-+	return 0;
-+}
-+
-+static int lpi2c_imx_unregister_target(struct i2c_client *client)
-+{
-+	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(client->adapter);
-+	int ret;
-+
-+	if (!lpi2c_imx->target)
-+		return -EINVAL;
-+
-+	/* Reset target address. */
-+	writel(0, lpi2c_imx->base + LPI2C_SAMR);
-+
-+	writel(SCR_RST, lpi2c_imx->base + LPI2C_SCR);
-+	writel(0, lpi2c_imx->base + LPI2C_SCR);
-+
-+	lpi2c_imx->target = NULL;
-+
-+	ret = pm_runtime_put_sync(lpi2c_imx->adapter.dev.parent);
-+	if (ret < 0)
-+		dev_err(&lpi2c_imx->adapter.dev, "failed to suspend i2c controller");
-+
-+	return ret;
-+}
-+
- static int lpi2c_imx_init_recovery_info(struct lpi2c_imx_struct *lpi2c_imx,
- 				  struct platform_device *pdev)
- {
-@@ -1054,6 +1270,8 @@ static u32 lpi2c_imx_func(struct i2c_adapter *adapter)
- static const struct i2c_algorithm lpi2c_imx_algo = {
- 	.master_xfer	= lpi2c_imx_xfer,
- 	.functionality	= lpi2c_imx_func,
-+	.reg_target	= lpi2c_imx_register_target,
-+	.unreg_target	= lpi2c_imx_unregister_target,
- };
- 
- static const struct of_device_id lpi2c_imx_of_match[] = {
-@@ -1204,9 +1422,34 @@ static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
-+static int __maybe_unused lpi2c_suspend_noirq(struct device *dev)
-+{
-+	return pm_runtime_force_suspend(dev);
-+}
-+
-+static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
-+{
-+	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * If the I2C module powers down during system suspend,
-+	 * the register values will be lost. Therefore, reinitialize
-+	 * the target when the system resumes.
-+	 */
-+	if (lpi2c_imx->target)
-+		lpi2c_imx_target_init(lpi2c_imx);
-+
-+	return 0;
-+}
-+
- static const struct dev_pm_ops lpi2c_pm_ops = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				      pm_runtime_force_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(lpi2c_suspend_noirq,
-+				      lpi2c_resume_noirq)
- 	SET_RUNTIME_PM_OPS(lpi2c_runtime_suspend,
- 			   lpi2c_runtime_resume, NULL)
- };
--- 
-2.34.1
+The "okay" status is usually used to flip "disabled" defined in dtsi.
+It's not needed here.
+
+> +
+> +		typec1_con: connector {
+> +			compatible = "usb-c-connector";
+> +			data-role = "dual";
+> +			label = "USB-C";
+> +			op-sink-microwatt = <15000000>;
+> +			power-role = "dual";
+> +			self-powered;
+> +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+> +				     PDO_VAR(5000, 20000, 3000)>;
+> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+> +			try-power-role = "sink";
+> +
+> +			ports {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +
+> +				port@0 {
+> +					reg = <0>;
+> +
+> +					typec1_dr_sw: endpoint {
+> +						remote-endpoint = <&usb1_drd_sw>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	ptn5110_2: tcpc@51 {
+> +		compatible = "nxp,ptn5110", "tcpci";
+> +		reg = <0x51>;
+> +		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+> +		interrupt-parent = <&gpio3>;
+> +		status = "okay";
+> +
+> +		typec2_con: connector {
+> +			compatible = "usb-c-connector";
+> +			data-role = "dual";
+> +			label = "USB-C";
+> +			op-sink-microwatt = <15000000>;
+> +			power-role = "dual";
+> +			self-powered;
+> +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+> +				     PDO_VAR(5000, 20000, 3000)>;
+> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+> +			try-power-role = "sink";
+> +
+> +			ports {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +
+> +				port@0 {
+> +					reg = <0>;
+> +
+> +					typec2_dr_sw: endpoint {
+> +						remote-endpoint = <&usb2_drd_sw>;
+> +					};
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	pcf2131: rtc@53 {
+> +		compatible = "nxp,pcf2131";
+> +		reg = <0x53>;
+> +		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> +		interrupt-parent = <&pcal6524>;
+> +		status = "okay";
+> +	};
+> +};
+> +
+> +&lpuart1 {
+> +	pinctrl-0 = <&pinctrl_uart1>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +};
+> +
+> +&lpuart5 {
+> +	pinctrl-0 = <&pinctrl_uart5>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +};
+> +
+> +&usbotg1 {
+> +	adp-disable;
+> +	disable-over-current;
+> +	dr_mode = "otg";
+> +	hnp-disable;
+> +	srp-disable;
+> +	usb-role-switch;
+> +	samsung,picophy-dc-vol-level-adjust = <7>;
+> +	samsung,picophy-pre-emp-curr-control = <3>;
+> +	status = "okay";
+> +
+> +	port {
+> +		usb1_drd_sw: endpoint {
+> +			remote-endpoint = <&typec1_dr_sw>;
+> +		};
+> +	};
+> +};
+> +
+> +&usbotg2 {
+> +	adp-disable;
+> +	disable-over-current;
+> +	dr_mode = "otg";
+> +	hnp-disable;
+> +	srp-disable;
+> +	usb-role-switch;
+> +	samsung,picophy-dc-vol-level-adjust = <7>;
+> +	samsung,picophy-pre-emp-curr-control = <3>;
+> +	status = "okay";
+> +
+> +	port {
+> +		usb2_drd_sw: endpoint {
+> +			remote-endpoint = <&typec2_dr_sw>;
+> +		};
+> +	};
+> +};
+> +
+> +&usdhc1 {
+> +	bus-width = <8>;
+> +	non-removable;
+> +	pinctrl-0 = <&pinctrl_usdhc1>;
+> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
+> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> +	status = "okay";
+> +};
+> +
+> +&usdhc2 {
+> +	bus-width = <4>;
+> +	cd-gpios = <&gpio3 00 GPIO_ACTIVE_LOW>;
+> +	no-mmc;
+> +	no-sdio;
+> +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+> +	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_gpio_sleep>;
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+> +	vmmc-supply = <&reg_usdhc2_vmmc>;
+> +	status = "okay";
+> +};
+> +
+> +&wdog3 {
+> +	fsl,ext-reset-output;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_eqos: eqosgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_ENET1_MDC__ENET1_MDC			0x57e
+> +			MX91_PAD_ENET1_MDIO__ENET_QOS_MDIO			0x57e
+> +			MX91_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x57e
+> +			MX91_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x57e
+> +			MX91_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2			0x57e
+> +			MX91_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3			0x57e
+> +			MX91_PAD_ENET1_RXC__ENET_QOS_RGMII_RXC	0x5fe
+
+There are a couple of issues with aligning pad hex values.
+
+ - Not all aligning at the same column
+ - Some indentation are using spaces instead tabs
+
+Shawn
+
+> +			MX91_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x57e
+> +			MX91_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x57e
+> +			MX91_PAD_ENET1_TD1__ENET1_RGMII_TD1			0x57e
+> +			MX91_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2			0x57e
+> +			MX91_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
+> +			MX91_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x5fe
+> +			MX91_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
+> +		>;
+> +	};
+> +
+> +	pinctrl_eqos_sleep: eqossleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_ENET1_MDC__GPIO4_IO0				0x31e
+> +			MX91_PAD_ENET1_MDIO__GPIO4_IO1				0x31e
+> +			MX91_PAD_ENET1_RD0__GPIO4_IO10                          0x31e
+> +			MX91_PAD_ENET1_RD1__GPIO4_IO11				0x31e
+> +			MX91_PAD_ENET1_RD2__GPIO4_IO12				0x31e
+> +			MX91_PAD_ENET1_RD3__GPIO4_IO13				0x31e
+> +			MX91_PAD_ENET1_RXC__GPIO4_IO9                          0x31e
+> +			MX91_PAD_ENET1_RX_CTL__GPIO4_IO8			0x31e
+> +			MX91_PAD_ENET1_TD0__GPIO4_IO5                          0x31e
+> +			MX91_PAD_ENET1_TD1__GPIO4_IO4                          0x31e
+> +			MX91_PAD_ENET1_TD2__GPIO4_IO3				0x31e
+> +			MX91_PAD_ENET1_TD3__GPIO4_IO3				0x31e
+> +			MX91_PAD_ENET1_TXC__GPIO4_IO7                          0x31e
+> +			MX91_PAD_ENET1_TX_CTL__GPIO4_IO6                       0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_fec: fecgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_ENET2_MDC__ENET2_MDC			0x57e
+> +			MX91_PAD_ENET2_MDIO__ENET2_MDIO			0x57e
+> +			MX91_PAD_ENET2_RD0__ENET2_RGMII_RD0		0x57e
+> +			MX91_PAD_ENET2_RD1__ENET2_RGMII_RD1		0x57e
+> +			MX91_PAD_ENET2_RD2__ENET2_RGMII_RD2		0x57e
+> +			MX91_PAD_ENET2_RD3__ENET2_RGMII_RD3		0x57e
+> +			MX91_PAD_ENET2_RXC__ENET2_RGMII_RXC		0x5fe
+> +			MX91_PAD_ENET2_RX_CTL__ENET2_RGMII_RX_CTL	0x57e
+> +			MX91_PAD_ENET2_TD0__ENET2_RGMII_TD0		0x57e
+> +			MX91_PAD_ENET2_TD1__ENET2_RGMII_TD1		0x57e
+> +			MX91_PAD_ENET2_TD2__ENET2_RGMII_TD2		0x57e
+> +			MX91_PAD_ENET2_TD3__ENET2_RGMII_TD3		0x57e
+> +			MX91_PAD_ENET2_TXC__ENET2_RGMII_TXC		0x5fe
+> +			MX91_PAD_ENET2_TX_CTL__ENET2_RGMII_TX_CTL	0x57e
+> +		>;
+> +	};
+> +
+> +	pinctrl_fec_sleep: fecsleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_ENET2_MDC__GPIO4_IO14			0x51e
+> +			MX91_PAD_ENET2_MDIO__GPIO4_IO15			0x51e
+> +			MX91_PAD_ENET2_RD0__GPIO4_IO24			0x51e
+> +			MX91_PAD_ENET2_RD1__GPIO4_IO25			0x51e
+> +			MX91_PAD_ENET2_RD2__GPIO4_IO26			0x51e
+> +			MX91_PAD_ENET2_RD3__GPIO4_IO27			0x51e
+> +			MX91_PAD_ENET2_RXC__GPIO4_IO23			0x51e
+> +			MX91_PAD_ENET2_RX_CTL__GPIO4_IO22		0x51e
+> +			MX91_PAD_ENET2_TD0__GPIO4_IO19			0x51e
+> +			MX91_PAD_ENET2_TD1__GPIO4_IO18			0x51e
+> +			MX91_PAD_ENET2_TD2__GPIO4_IO17			0x51e
+> +			MX91_PAD_ENET2_TD3__GPIO4_IO16			0x51e
+> +			MX91_PAD_ENET2_TXC__GPIO4_IO21			0x51e
+> +			MX91_PAD_ENET2_TX_CTL__GPIO4_IO20		0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_flexcan2: flexcan2grp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO25__CAN2_TX	0x139e
+> +			MX91_PAD_GPIO_IO27__CAN2_RX	0x139e
+> +		>;
+> +	};
+> +
+> +	pinctrl_flexcan2_sleep: flexcan2sleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO25__GPIO2_IO25  0x31e
+> +			MX91_PAD_GPIO_IO27__GPIO2_IO27	0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lcdif_gpio: lcdifgpiogrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO00__GPIO2_IO0			0x51e
+> +			MX91_PAD_GPIO_IO01__GPIO2_IO1			0x51e
+> +			MX91_PAD_GPIO_IO02__GPIO2_IO2			0x51e
+> +			MX91_PAD_GPIO_IO03__GPIO2_IO3			0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lcdif: lcdifgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO00__MEDIAMIX_DISP_CLK		0x31e
+> +			MX91_PAD_GPIO_IO01__MEDIAMIX_DISP_DE		0x31e
+> +			MX91_PAD_GPIO_IO02__MEDIAMIX_DISP_VSYNC		0x31e
+> +			MX91_PAD_GPIO_IO03__MEDIAMIX_DISP_HSYNC		0x31e
+> +			MX91_PAD_GPIO_IO04__MEDIAMIX_DISP_DATA0		0x31e
+> +			MX91_PAD_GPIO_IO05__MEDIAMIX_DISP_DATA1		0x31e
+> +			MX91_PAD_GPIO_IO06__MEDIAMIX_DISP_DATA2		0x31e
+> +			MX91_PAD_GPIO_IO07__MEDIAMIX_DISP_DATA3		0x31e
+> +			MX91_PAD_GPIO_IO08__MEDIAMIX_DISP_DATA4		0x31e
+> +			MX91_PAD_GPIO_IO09__MEDIAMIX_DISP_DATA5		0x31e
+> +			MX91_PAD_GPIO_IO10__MEDIAMIX_DISP_DATA6		0x31e
+> +			MX91_PAD_GPIO_IO11__MEDIAMIX_DISP_DATA7		0x31e
+> +			MX91_PAD_GPIO_IO12__MEDIAMIX_DISP_DATA8		0x31e
+> +			MX91_PAD_GPIO_IO13__MEDIAMIX_DISP_DATA9		0x31e
+> +			MX91_PAD_GPIO_IO14__MEDIAMIX_DISP_DATA10	0x31e
+> +			MX91_PAD_GPIO_IO15__MEDIAMIX_DISP_DATA11	0x31e
+> +			MX91_PAD_GPIO_IO16__MEDIAMIX_DISP_DATA12	0x31e
+> +			MX91_PAD_GPIO_IO17__MEDIAMIX_DISP_DATA13	0x31e
+> +			MX91_PAD_GPIO_IO18__MEDIAMIX_DISP_DATA14	0x31e
+> +			MX91_PAD_GPIO_IO19__MEDIAMIX_DISP_DATA15	0x31e
+> +			MX91_PAD_GPIO_IO20__MEDIAMIX_DISP_DATA16	0x31e
+> +			MX91_PAD_GPIO_IO21__MEDIAMIX_DISP_DATA17	0x31e
+> +			MX91_PAD_GPIO_IO27__GPIO2_IO27			0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lpi2c1: lpi2c1grp {
+> +		fsl,pins = <
+> +			MX91_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
+> +			MX91_PAD_I2C1_SDA__LPI2C1_SDA			0x40000b9e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lpi2c2: lpi2c2grp {
+> +		fsl,pins = <
+> +			MX91_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
+> +			MX91_PAD_I2C2_SDA__LPI2C2_SDA			0x40000b9e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lpi2c3: lpi2c3grp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO28__LPI2C3_SDA			0x40000b9e
+> +			MX91_PAD_GPIO_IO29__LPI2C3_SCL			0x40000b9e
+> +		>;
+> +	};
+> +
+> +	pinctrl_pcal6524: pcal6524grp {
+> +		fsl,pins = <
+> +			MX91_PAD_CCM_CLKO2__GPIO3_IO27			0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_pdm: pdmgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_PDM_CLK__PDM_CLK			0x31e
+> +			MX91_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0	0x31e
+> +			MX91_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM1	0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_pdm_sleep: pdmsleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_PDM_CLK__GPIO1_IO8			0x31e
+> +			MX91_PAD_PDM_BIT_STREAM0__GPIO1_IO9		0x31e
+> +			MX91_PAD_PDM_BIT_STREAM1__GPIO1_IO10		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_RESET_B__GPIO3_IO7	0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_sai1: sai1grp {
+> +		fsl,pins = <
+> +			MX91_PAD_SAI1_TXC__SAI1_TX_BCLK			0x31e
+> +			MX91_PAD_SAI1_TXFS__SAI1_TX_SYNC		0x31e
+> +			MX91_PAD_SAI1_TXD0__SAI1_TX_DATA0		0x31e
+> +			MX91_PAD_SAI1_RXD0__SAI1_RX_DATA0		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_sai1_sleep: sai1sleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SAI1_TXC__GPIO1_IO12                   0x51e
+> +			MX91_PAD_SAI1_TXFS__GPIO1_IO11			0x51e
+> +			MX91_PAD_SAI1_TXD0__GPIO1_IO13			0x51e
+> +			MX91_PAD_SAI1_RXD0__GPIO1_IO14			0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_sai3: sai3grp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO26__SAI3_TX_SYNC		0x31e
+> +			MX91_PAD_GPIO_IO16__SAI3_TX_BCLK		0x31e
+> +			MX91_PAD_GPIO_IO17__SAI3_MCLK			0x31e
+> +			MX91_PAD_GPIO_IO19__SAI3_TX_DATA0		0x31e
+> +			MX91_PAD_GPIO_IO20__SAI3_RX_DATA0		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_sai3_sleep: sai3sleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO26__GPIO2_IO26			0x51e
+> +			MX91_PAD_GPIO_IO16__GPIO2_IO16			0x51e
+> +			MX91_PAD_GPIO_IO17__GPIO2_IO17			0x51e
+> +			MX91_PAD_GPIO_IO19__GPIO2_IO19			0x51e
+> +			MX91_PAD_GPIO_IO20__GPIO2_IO20			0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_spdif: spdifgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO22__SPDIF_IN		0x31e
+> +			MX91_PAD_GPIO_IO23__SPDIF_OUT		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_spdif_sleep: spdifsleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_GPIO_IO22__GPIO2_IO22		0x31e
+> +			MX91_PAD_GPIO_IO23__GPIO2_IO23		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_uart1: uart1grp {
+> +		fsl,pins = <
+> +			MX91_PAD_UART1_RXD__LPUART1_RX			0x31e
+> +			MX91_PAD_UART1_TXD__LPUART1_TX			0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_uart5: uart5grp {
+> +		fsl,pins = <
+> +			MX91_PAD_DAP_TDO_TRACESWO__LPUART5_TX	0x31e
+> +			MX91_PAD_DAP_TDI__LPUART5_RX		0x31e
+> +			MX91_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B	0x31e
+> +			MX91_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B	0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD1_CLK__USDHC1_CLK		0x158e
+> +			MX91_PAD_SD1_CMD__USDHC1_CMD		0x138e
+> +			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x138e
+> +			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x138e
+> +			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x138e
+> +			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x138e
+> +			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x138e
+> +			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x138e
+> +			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x138e
+> +			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x138e
+> +			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x158e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD1_CLK__USDHC1_CLK		0x15fe
+> +			MX91_PAD_SD1_CMD__USDHC1_CMD		0x13fe
+> +			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x13fe
+> +			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x13fe
+> +			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x13fe
+> +			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x13fe
+> +			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x13fe
+> +			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x13fe
+> +			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x13fe
+> +			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x13fe
+> +			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x15fe
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc1: usdhc1grp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD1_CLK__USDHC1_CLK		0x1582
+> +			MX91_PAD_SD1_CMD__USDHC1_CMD		0x1382
+> +			MX91_PAD_SD1_DATA0__USDHC1_DATA0	0x1382
+> +			MX91_PAD_SD1_DATA1__USDHC1_DATA1	0x1382
+> +			MX91_PAD_SD1_DATA2__USDHC1_DATA2	0x1382
+> +			MX91_PAD_SD1_DATA3__USDHC1_DATA3	0x1382
+> +			MX91_PAD_SD1_DATA4__USDHC1_DATA4	0x1382
+> +			MX91_PAD_SD1_DATA5__USDHC1_DATA5	0x1382
+> +			MX91_PAD_SD1_DATA6__USDHC1_DATA6	0x1382
+> +			MX91_PAD_SD1_DATA7__USDHC1_DATA7	0x1382
+> +			MX91_PAD_SD1_STROBE__USDHC1_STROBE	0x1582
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CLK__USDHC2_CLK		0x158e
+> +			MX91_PAD_SD2_CMD__USDHC2_CMD		0x138e
+> +			MX91_PAD_SD2_DATA0__USDHC2_DATA0	0x138e
+> +			MX91_PAD_SD2_DATA1__USDHC2_DATA1	0x138e
+> +			MX91_PAD_SD2_DATA2__USDHC2_DATA2	0x138e
+> +			MX91_PAD_SD2_DATA3__USDHC2_DATA3	0x138e
+> +			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CLK__USDHC2_CLK		0x15fe
+> +			MX91_PAD_SD2_CMD__USDHC2_CMD		0x13fe
+> +			MX91_PAD_SD2_DATA0__USDHC2_DATA0	0x13fe
+> +			MX91_PAD_SD2_DATA1__USDHC2_DATA1	0x13fe
+> +			MX91_PAD_SD2_DATA2__USDHC2_DATA2	0x13fe
+> +			MX91_PAD_SD2_DATA3__USDHC2_DATA3	0x13fe
+> +			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CD_B__GPIO3_IO0		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_gpio_sleep: usdhc2gpiosleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CD_B__GPIO3_IO0		0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2: usdhc2grp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CLK__USDHC2_CLK		0x1582
+> +			MX91_PAD_SD2_CMD__USDHC2_CMD		0x1382
+> +			MX91_PAD_SD2_DATA0__USDHC2_DATA0	0x1382
+> +			MX91_PAD_SD2_DATA1__USDHC2_DATA1	0x1382
+> +			MX91_PAD_SD2_DATA2__USDHC2_DATA2	0x1382
+> +			MX91_PAD_SD2_DATA3__USDHC2_DATA3	0x1382
+> +			MX91_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc2_sleep: usdhc2sleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD2_CLK__GPIO3_IO1            0x51e
+> +			MX91_PAD_SD2_CMD__GPIO3_IO2		0x51e
+> +			MX91_PAD_SD2_DATA0__GPIO3_IO3		0x51e
+> +			MX91_PAD_SD2_DATA1__GPIO3_IO4		0x51e
+> +			MX91_PAD_SD2_DATA2__GPIO3_IO5		0x51e
+> +			MX91_PAD_SD2_DATA3__GPIO3_IO6		0x51e
+> +			MX91_PAD_SD2_VSELECT__GPIO3_IO19	0x51e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD3_CLK__USDHC3_CLK		0x158e
+> +			MX91_PAD_SD3_CMD__USDHC3_CMD		0x138e
+> +			MX91_PAD_SD3_DATA0__USDHC3_DATA0	0x138e
+> +			MX91_PAD_SD3_DATA1__USDHC3_DATA1	0x138e
+> +			MX91_PAD_SD3_DATA2__USDHC3_DATA2	0x138e
+> +			MX91_PAD_SD3_DATA3__USDHC3_DATA3	0x138e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD3_CLK__USDHC3_CLK		0x15fe
+> +			MX91_PAD_SD3_CMD__USDHC3_CMD		0x13fe
+> +			MX91_PAD_SD3_DATA0__USDHC3_DATA0	0x13fe
+> +			MX91_PAD_SD3_DATA1__USDHC3_DATA1	0x13fe
+> +			MX91_PAD_SD3_DATA2__USDHC3_DATA2	0x13fe
+> +			MX91_PAD_SD3_DATA3__USDHC3_DATA3	0x13fe
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3: usdhc3grp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD3_CLK__USDHC3_CLK		0x1582
+> +			MX91_PAD_SD3_CMD__USDHC3_CMD		0x1382
+> +			MX91_PAD_SD3_DATA0__USDHC3_DATA0	0x1382
+> +			MX91_PAD_SD3_DATA1__USDHC3_DATA1	0x1382
+> +			MX91_PAD_SD3_DATA2__USDHC3_DATA2	0x1382
+> +			MX91_PAD_SD3_DATA3__USDHC3_DATA3	0x1382
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_sleep: usdhc3sleepgrp {
+> +		fsl,pins = <
+> +			MX91_PAD_SD3_CLK__GPIO3_IO20		0x31e
+> +			MX91_PAD_SD3_CMD__GPIO3_IO21		0x31e
+> +			MX91_PAD_SD3_DATA0__GPIO3_IO22		0x31e
+> +			MX91_PAD_SD3_DATA1__GPIO3_IO23		0x31e
+> +			MX91_PAD_SD3_DATA2__GPIO3_IO24		0x31e
+> +			MX91_PAD_SD3_DATA3__GPIO3_IO25		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_wlan: usdhc3wlangrp {
+> +		fsl,pins = <
+> +			MX91_PAD_CCM_CLKO1__GPIO3_IO26		0x31e
+> +		>;
+> +	};
+> +};
+> -- 
+> 2.34.1
+> 
 
