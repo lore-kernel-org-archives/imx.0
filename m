@@ -1,90 +1,92 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9A025948E
-	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 08:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C43B784
+	for <imx@lists.linux.dev>; Mon, 30 Dec 2024 09:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735548946; cv=none; b=ZOY8QK8U1EDUPAcOir+KeosKLuYxI3YAPWYYKF1zKSKtTPGWcp8LSi42nZJJYx3jNa1WiQtfcLyDu2tgdv1eH8HybZmfhfxvE38YwkFrKtoBPpdHw7Chs48xRHg6US87xsvVrks624/o52jfImVT7aynFcv1HHnQOPyN0U2gjUA=
+	t=1735550125; cv=none; b=JPRXE0O+Wrnj1SL8XJbtkOJVarKWhrvhgNMt85ClVCtcchsIfFTEYMfw/xmhPwFATpaF5O4k6hqkjeQLRyNnWNGTXFkhBvzXLaoxB56XtMSfRlO/WM7Miqtc2oTszrkgMecnOw3qcNBe1m/TRlJevTOInv4AAYjN79sAClicq6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735548946; c=relaxed/simple;
-	bh=HSPJudKip8xsAkK+VgHsqxznwELDFqQ8B5BLHxpggII=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BOd6IThTebYIef8EjeJPN/5PYhvX+i5aSy7sJmyNcvthijD+b9N9lIlFBEGXZnnWQTXzVJKx4dEwPkjv+NB9xqzdFJfJ04VuzzsWvKuxvkFUpTfIApZXIhhYF3vAC3B+CyONJZ6st4sqD0mLUNQ8PJ9Gs2Hgmi0Eoajw7HdqrVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iFBnYqMJ; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iFBnYqMJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=IjhTyIk85EtpNPozN27xxdVmdA+yXi+gjfkzcQ6a74c=;
-	b=iFBnYqMJqaikGPTd2JOQK6c5ctUwkZKCAj9vBwTj7blaP+TXHq1si3Lt8oSX62
-	u1dAG78ZNumNWkhOBONf17DX1t2B4h7YYo79Wgi4HUaFhHJlaixvaXWV2GFZ1bOs
-	39CqSucAA9NAh3KYuKSabIsbGQhma5fmHn3r5uG+6XiQc=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgC3WW33X3JnAhn5BQ--.60155S3;
-	Mon, 30 Dec 2024 16:55:21 +0800 (CST)
-Date: Mon, 30 Dec 2024 16:55:19 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	kernel@pengutronix.de, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.13
-Message-ID: <Z3Jf9zbv/xH3YzuB@dragon>
+	s=arc-20240116; t=1735550125; c=relaxed/simple;
+	bh=mW34OzIcEipYpv+1fB0287jMNmYeJfn2mFWjcuu4MOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=T4xPu9wJjcHS3JatKo3FyDsOrjtotusBS8VEhXlCS+GioRC3jJ0cGd7aPMaviPTyipbVQ6fGg8iuhR3whA4D619Kp0IoUug/lu5NKXyGvQEWl+9oPdZ7cO8lCaGtcqgXhrGjony2fgpCx5v8JY+rNQoCbA2eECeHdnCJM7JUI+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YM9R84Z9Wz1JGfM;
+	Mon, 30 Dec 2024 17:14:44 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 326781A0188;
+	Mon, 30 Dec 2024 17:15:20 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 30 Dec 2024 17:15:19 +0800
+Message-ID: <354e423e-1111-43d5-accd-17a099690369@huawei.com>
+Date: Mon, 30 Dec 2024 17:15:19 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-CM-TRANSID:M88vCgC3WW33X3JnAhn5BQ--.60155S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZFy8AF1ktrWDtw18uF1xKrg_yoW8XFWDpF
-	sxCwsrGr48WFy5JrZrAr1vv3y5JwsrJFn8XrW5GrW8tr98Zw1UJF13Gr1ru3yUXry2gw4F
-	yF1rXrnFyr1DXw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jazuAUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAfFZWdyVU0nLgAAsn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFCv5 1/8] page_pool: introduce page_pool_to_pp() API
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<somnath.kotur@broadcom.com>, <liuyonglong@huawei.com>,
+	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+	<edumazet@google.com>, Jeroen de Borst <jeroendb@google.com>, Praveen
+ Kaligineedi <pkaligineedi@google.com>, Shailend Chand <shailend@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+References: <20241213122739.4050137-1-linyunsheng@huawei.com>
+ <20241213122739.4050137-2-linyunsheng@huawei.com>
+ <CAC_iWj+3Q7CAS3xH9+zWA7nXdFNSJ-XMKQB3ZT0YvUQ-Q2gMCQ@mail.gmail.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <CAC_iWj+3Q7CAS3xH9+zWA7nXdFNSJ-XMKQB3ZT0YvUQ-Q2gMCQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
+On 2024/12/20 20:29, Ilias Apalodimas wrote:
+> Hi Yunsheng,
+> 
+> On Fri, 13 Dec 2024 at 14:35, Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>>
+>> introduce page_pool_to_pp() API to avoid caller accessing
+>> page->pp directly.
+>>
+> 
+> I think we already have way too many abstractions, I'd say we need
+> less not more. I don't know what others think, but I don't see what we
+> gain from this
 
-  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
+I am not sure how it is related to 'abstraction' here.
+Either we don't allow drivers accessing the page->pp directly, otherwise
+it seems better to provide a proper API for that as my understanding as it
+seems better not to mess with internal detail of page_pool.
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.13
-
-for you to fetch changes up to 5f122030061db3e5d2bddd9cf5c583deaa6c54ff:
-
-  ARM: dts: imxrt1050: Fix clocks for mmc (2024-12-09 20:40:23 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.13:
-
-- Add fallback for i.MX8QM ESAI compatible to fix a dt-schema warning
-  caused by bindings update
-- Fix uSDHC1 clock for i.MX RT1050
-- Enable SND_SOC_SPDIF in imx_v6_v7_defconfig to fix a regression caused
-  by an i.MX6 SPDIF sound card change in DT
-- Fix address length of i.MX95 netcmix_blk_ctrl
-
-----------------------------------------------------------------
-Frank Li (1):
-      arm64: dts: imx8-ss-audio: add fallback compatible string fsl,imx6ull-esai for esai
-
-Jesse Taube (1):
-      ARM: dts: imxrt1050: Fix clocks for mmc
-
-Stefan Eichenberger (1):
-      ARM: imx_v6_v7_defconfig: enable SND_SOC_SPDIF
-
-Wei Fang (1):
-      arm64: dts: imx95: correct the address length of netcmix_blk_ctrl
-
- arch/arm/boot/dts/nxp/imx/imxrt1050.dtsi           | 2 +-
- arch/arm/configs/imx_v6_v7_defconfig               | 1 +
- arch/arm64/boot/dts/freescale/imx8-ss-audio.dtsi   | 2 +-
- arch/arm64/boot/dts/freescale/imx8qm-ss-audio.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/imx95.dtsi           | 2 +-
- 5 files changed, 5 insertions(+), 4 deletions(-)
-
+> 
+> Thanks
+> /Ilias
