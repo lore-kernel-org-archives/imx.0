@@ -1,39 +1,38 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9435C19A298
-	for <imx@lists.linux.dev>; Tue, 31 Dec 2024 19:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7C0189F45
+	for <imx@lists.linux.dev>; Tue, 31 Dec 2024 19:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735673399; cv=none; b=H9nTtGal/Vr9pdDxIZ0atLEGTUcSolRG2RGU0Nncd6cA54WD1qFyl9o1lENVLWyNbfkztcUeXQ8a2hD9k7GDLBfT1p+3ms5MxvAF1gdo0tuskUCkgJ/0U8Sz7FwfXtBOhwWBhkIX54jPI32DqHFEBOdAxZqw4yiLyL4HYVD6MKw=
+	t=1735673401; cv=none; b=Ea96Tjxa99/MVCeMLeW9PnFlObCdiRUXmzFhVZY53YESw5KT5J0tyVdQCt0Bxv+fwuLCNdXb1JE1hAEUFZX4x3i9Hs14NjF5Y1VXY32FohzN73R2EY00BroRtZ+wjDykybYpflRsOHk2ahuh5+CHZ3dnjxc4hm2UsDRTUr+An+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735673399; c=relaxed/simple;
-	bh=SGFzh3bFtkF6FMLaZK0Sts3sjZxbrKQQIYoYDhJ0qwA=;
+	s=arc-20240116; t=1735673401; c=relaxed/simple;
+	bh=WiZiI1JqPJSnbuDr/qPEGAJ5KfP2S8jaUcPK7vxcQCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnvUzEtEjgYkVtoxFvuEDSyJON3YTkXoIHxCbrpemWCMgaK9BiUk2lvy5tcVobSyhDe/BHGUqoMDIxFPywE+ossSpXwCn9y+clpBVF762QIRLMnCsHyJ9hH/auxc5v/9LsN0zlzHUCBZYTHWpIP2Xl3jXQKX+ObGjqhiI05tn9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=h9rm6F9N; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=iyyxtdkX2keRJSS5I1Eoft34TgFAm8LGIGVTtv5vGXyCtb8+h4eP73zor7y4obvmJa3w2uolNZKb2mtoJFwQI3An+b+eAlo6DGDYbiES2Hj4tpYlBqys50U6GeOkcZ4PnOaacILh13p+QC8f9HfYQfHTeUT+J4mZlZNLzmI3yuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=c38AdIuT; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="h9rm6F9N"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92AE110486DA6;
-	Tue, 31 Dec 2024 20:29:53 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="c38AdIuT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7CD3510486D9D;
+	Tue, 31 Dec 2024 20:29:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735673395;
+	t=1735673391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9jYDMn7lKraYIfnDyUnBlYqR8h6KGDWyESEreotAHAU=;
-	b=h9rm6F9NWbsUU3Cjdobgv+kIpILYFn66sS8CZ5iDZA6GOU+hknbVb/Dowq11d6IzVAHF2R
-	PM6Dm2vFr0BNY3cxsnKKXrBepFAhp61X0b6faPu0ujbXcnRPi52gFG3WIYiGbWSNZLO9wc
-	pO7iVzm+l4JBke3aoK18IjAW5CzD8wxVGsHtjoJSrEIC60uF9rke0jLan0Lxsz7xxnZlIM
-	JOmXzkDwZBvNlD77zb/NBd1XWkr5NtbxXNd0ORpexbil8ZWYU06HNa1Z6M4Y8Gh//AWRiW
-	IFy4nciRHS7M3/CNyyOvztahzMz1b8hV0zYHJL/NZojqD6vnMoqnV72pNDvxMQ==
+	bh=kTSJsYIKJaeGiKuNRfscuVxGJheBzxdje6XQbYHlkxw=;
+	b=c38AdIuTLSdhpBlpGZ+3ez2eVK/z12Mo4ZVAbJrj/sqqrvSS6N09PV3tVEZ00G/jvyZtk2
+	0XMEW5t+vQWlmtGQO2JuafFxD37tRNCkPuJsK8Lg67llc2MrKdH7Oh9JS+aex11Ir59D/B
+	m6XJkajkKff2iOhYZ4paud8tCngHEoZJ5N2TeWL2y4CZEu60IvFC4rk+XmCDTD6UjQfzYo
+	1SU4D1dhbsSGjlJHZgCPqGDpWXsuZVyj6hykrW2a763UhZD6x5csAvYxIBm4LkO1sE+UNN
+	MEF+a59QJblXoP1Ki06BX447vFMI0sNXdYURucuwt+IEn/IN8ywf8j8JIEme0Q==
 From: Marek Vasut <marex@denx.de>
 To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marex@denx.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Andrzej Hajda <andrzej.hajda@intel.com>,
 	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
@@ -53,9 +52,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 4/4] drm/mxsfb: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach
-Date: Tue, 31 Dec 2024 20:28:51 +0100
-Message-ID: <20241231192925.97614-4-marex@denx.de>
+Subject: [PATCH v3 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Date: Tue, 31 Dec 2024 20:28:49 +0100
+Message-ID: <20241231192925.97614-2-marex@denx.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241231192925.97614-1-marex@denx.de>
 References: <20241231192925.97614-1-marex@denx.de>
@@ -68,21 +67,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Commit a25b988ff83f ("drm/bridge: Extend bridge API to disable connector creation")
-added DRM_BRIDGE_ATTACH_NO_CONNECTOR bridge flag and all bridges handle
-this flag in some way since then.
-Newly added bridge drivers must no longer contain the connector creation and
-will fail probing if this flag isn't set.
+The dw-hdmi output_port is set to 1 in order to look for a connector
+next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+The output_port set to 1 makes the DW HDMI driver core look up the
+next bridge in DT, where the next bridge is often the hdmi-connector .
 
-In order to be able to connect to those newly added bridges as well,
-make use of drm_bridge_connector API and have the connector initialized
-by the display controller.
+Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
 
-Based on 2e87bf389e13 ("drm/rockchip: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach")
+Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
+the oldest commit which adds HDMI support is commit:
 
-This makes LT9611 work with i.MX8M Mini.
+3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+That already contains the HDMI connector node. Most follow up additions
+of HDMI support to another devices has been a variation of the same commit,
+including connector node, which is the proper way of eanbling HDMI on the
+i.MX8MP.
+
+The rest should be covered by output_port_optional which should make systems
+with DTs without HDMI connector node work, but such DTs should be updated and
+the HDMI connector node should be added.
+
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>
@@ -106,97 +111,40 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
-V2: Cache connector from drm_bridge_connector_init()
-V3: - Add RB from Dmitry
-    - Select DRM_DISPLAY_HELPER
-    - Use return dev_err_probe() directly
-    - Drop the single use fail path
+V2: No change
+V3: - Update commit message
+    - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
+    - Enable output_port_optional
 ---
- drivers/gpu/drm/mxsfb/Kconfig     |  2 ++
- drivers/gpu/drm/mxsfb/mxsfb_drv.c | 31 ++++++++++++++++++++-----------
- 2 files changed, 22 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index fe98674d5a298..eb51d38455a6c 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -10,6 +10,7 @@ config DRM_MXSFB
+diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+index 9a480c6abb856..db5c8a76193ac 100644
+--- a/drivers/gpu/drm/bridge/imx/Kconfig
++++ b/drivers/gpu/drm/bridge/imx/Kconfig
+@@ -17,6 +17,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+ 	tristate "Freescale i.MX8MP HDMI-TX bridge support"
+ 	depends on OF
  	depends on COMMON_CLK
- 	depends on ARCH_MXS || ARCH_MXC || COMPILE_TEST
- 	select DRM_CLIENT_SELECTION
-+	select DRM_DISPLAY_HELPER
- 	select DRM_MXS
- 	select DRM_KMS_HELPER
- 	select DRM_BRIDGE_CONNECTOR
-@@ -32,6 +33,7 @@ config DRM_IMX_LCDIF
- 	select DRM_DISPLAY_HELPER
- 	select DRM_MXS
- 	select DRM_KMS_HELPER
-+	select DRM_BRIDGE_CONNECTOR
- 	select DRM_GEM_DMA_HELPER
- 	select DRM_PANEL
- 	select DRM_PANEL_BRIDGE
-diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-index 59020862cf65e..07784c4f5be48 100644
---- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-+++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-@@ -20,6 +20,7 @@
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
- #include <drm/drm_connector.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -119,9 +120,9 @@ static const struct drm_mode_config_helper_funcs mxsfb_mode_config_helpers = {
- static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
- {
- 	struct drm_device *drm = mxsfb->drm;
--	struct drm_connector_list_iter iter;
--	struct drm_panel *panel;
-+	struct drm_connector *connector;
- 	struct drm_bridge *bridge;
-+	struct drm_panel *panel;
- 	int ret;
++	select DRM_DISPLAY_CONNECTOR
+ 	select DRM_DW_HDMI
+ 	imply DRM_IMX8MP_HDMI_PVI
+ 	imply PHY_FSL_SAMSUNG_HDMI_PHY
+diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+index 1e7a789ec2890..3d63200e468bf 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
++++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+@@ -101,6 +101,8 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+ 	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+ 	plat_data->priv_data = hdmi;
+ 	plat_data->phy_force_vendor = true;
++	plat_data->output_port = 1;
++	plat_data->output_port_optional = true;
  
- 	ret = drm_of_find_panel_or_bridge(drm->dev->of_node, 0, 0, &panel,
-@@ -139,19 +140,27 @@ static int mxsfb_attach_bridge(struct mxsfb_drm_private *mxsfb)
- 	if (!bridge)
- 		return -ENODEV;
- 
--	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL, 0);
-+	ret = drm_bridge_attach(&mxsfb->encoder, bridge, NULL,
-+				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 	if (ret)
- 		return dev_err_probe(drm->dev, ret, "Failed to attach bridge\n");
- 
--	mxsfb->bridge = bridge;
-+	connector = drm_bridge_connector_init(drm, &mxsfb->encoder);
-+	if (IS_ERR(connector)) {
-+		return dev_err_probe(drm->dev, PTR_ERR(connector),
-+				     "Failed to initialize bridge connector: %pe\n",
-+				     connector);
-+	}
- 
--	/*
--	 * Get hold of the connector. This is a bit of a hack, until the bridge
--	 * API gives us bus flags and formats.
--	 */
--	drm_connector_list_iter_begin(drm, &iter);
--	mxsfb->connector = drm_connector_list_iter_next(&iter);
--	drm_connector_list_iter_end(&iter);
-+	ret = drm_connector_attach_encoder(connector, &mxsfb->encoder);
-+	if (ret < 0) {
-+		drm_connector_cleanup(connector);
-+		return dev_err_probe(drm->dev, ret,
-+				     "Failed to attach encoder.\n");
-+	}
-+
-+	mxsfb->bridge = bridge;
-+	mxsfb->connector = connector;
- 
- 	return 0;
- }
+ 	hdmi->dw_hdmi = dw_hdmi_probe(pdev, plat_data);
+ 	if (IS_ERR(hdmi->dw_hdmi))
 -- 
 2.45.2
 
