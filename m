@@ -1,77 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFEFCA4B;
-	Tue, 31 Dec 2024 14:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29D7154430
+	for <imx@lists.linux.dev>; Tue, 31 Dec 2024 18:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735655392; cv=none; b=BjG5sp6eUqgNnScW4rjVD74r+AWnX7pkaT9gxr3NJP6xWpWiFDdhHeEpk+3wd5LOzFDb+Sb1WdHTNaN4ZdRNPSOFVD8hfhThYOWmXajt61E8A24TzHOzY+5FhwEMSxDgUQAY0wXNQQPMeLlG8l1piyf0tfKSc/uKFvuGbI/1iy8=
+	t=1735668487; cv=none; b=TP6Ib9MmD7lX8d9yXzL8J8zO4M2l74EbUyjlOV1sSD47JA0xcjUfo0FDjC9COJ+hcHjV4JlXFSg/g1983mZV/KPajCHRKIehHATqPpmGIlWk0c/MKiaJwlXfW7LackawfcmwPuMDEI8+sbaJJaUV0wojkgOEUpAYzeA2Xb1rl6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735655392; c=relaxed/simple;
-	bh=D9i1BNvhWcyg16vVHBlPx2JLBoZflWFhfs/w06j/PbQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CDC8rHm8w+X7gZ/iFDQFPyewceDOjjRzZ9aCnPctEZp7/kDMExSNYWWbRAJi7qIxqske801lR/Sm7zN8fFCGI1hrMILJF/EOZwIiSXvbD6hUf3eg87cj23GdBEOsuAhtoNswNl5wFfEvDg/tr2IoCibrEhGrl54/SkQn8TSmuqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oo+3wSz9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oo+3wSz9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E72C4CED2;
-	Tue, 31 Dec 2024 14:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735655391;
-	bh=D9i1BNvhWcyg16vVHBlPx2JLBoZflWFhfs/w06j/PbQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oo+3wSz988zqtSFPYwqw0fJCO6r+TJVQauWzidt1vSOk3gTFEu21AP836iVWVcyMW
-	 vbNHZCtHBGdV3kYKwtSfQx45eo502onauozTsXqvaUcz+2ycvwykRE5Z+sirKJiq2i
-	 uT2Xk9iC7h367l07G+05h/7LrHhN5O6ofPXaIHPsFbwpNKOsgO2z0lpCh5dOGRiwWQ
-	 hYapF+aL3noaRMJdSUiqyhZfTOBLGVvL4Uo+Vslr+vH8eICI1dO1hpscvvXx1TyaXb
-	 jWHJaZ4s8Kd9GtrnU7d9MDzd+02KZ7VODeCrDEjHUAnspDKpQM2q+3MHojnPIwgQhT
-	 nVoY9Hr2yEWfg==
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Frank <Li@nxp.com>,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: PCI: mobiveil: convert mobiveil-pcie.txt to yaml format
-Date: Tue, 31 Dec 2024 15:29:43 +0100
-Message-ID: <173565535275.212052.10594403575755993718.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241211171318.4129818-1-Frank.Li@nxp.com>
-References: <20241211171318.4129818-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1735668487; c=relaxed/simple;
+	bh=asG8QUsAcpivCII00hEuLDTjwAoR6SlLqH18zpcB2v0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tuz4W27ULLtSrBQODhbhTZAxduQR0Aokqn/fj0/7c6ln/U+1JqaNqvAOn16F21TbucQV51DJHUtptyIBt0KhCvvUOKFkcZVou/Ga/9WSSqkDclyGEFquRYxfpdVB2wdSrEi0m+B5C4kOCp8qN+DiqJ7WTrylM9kgP1hqnkdfCo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 307581063;
+	Tue, 31 Dec 2024 10:08:32 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80B523F673;
+	Tue, 31 Dec 2024 10:08:01 -0800 (PST)
+Date: Tue, 31 Dec 2024 18:07:53 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <Z3Qy-br-wVCLpo7Q@pluto>
+References: <20241225-scmi-fwdevlink-v1-0-e9a3a5341362@nxp.com>
+ <20241225-scmi-fwdevlink-v1-1-e9a3a5341362@nxp.com>
+ <20241227151306.jh2oabc64xd54dms@bogus>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241227151306.jh2oabc64xd54dms@bogus>
 
-On Wed, 11 Dec 2024 12:13:16 -0500, Frank Li wrote:
-> Convert device tree binding doc mobiveil-pcie.txt to yaml format. Merge
-> layerscape-pcie-gen4.txt into this file.
+On Fri, Dec 27, 2024 at 03:13:06PM +0000, Sudeep Holla wrote:
+> On Wed, Dec 25, 2024 at 04:20:44PM +0800, Peng Fan (OSS) wrote:
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > Two drivers scmi_cpufreq.c and scmi_perf_domain.c both use
+> > SCMI_PROTCOL_PERF protocol, but with different name, so two scmi devices
+> > will be created. But the fwnode->dev could only point to one device.
+> >
+> > If scmi cpufreq device created earlier, the fwnode->dev will point to
+> > the scmi cpufreq device. Then the fw_devlink will link performance
+> > domain user device(consumer) to the scmi cpufreq device(supplier).
+> > But actually the performance domain user device, such as GPU, should use
+> > the scmi perf device as supplier. Also if 'cpufreq.off=1' in bootargs,
+> > the GPU driver will defer probe always, because of the scmi cpufreq
+> > device not ready.
+> >
+> > Because for cpufreq, no need use fw_devlink. So bypass setting fwnode
+> > for scmi cpufreq device.
+> >
+
+Hi,
+
+> > Fixes: 96da4a99ce50 ("firmware: arm_scmi: Set fwnode for the scmi_device")
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  drivers/firmware/arm_scmi/bus.c | 15 ++++++++++++++-
+> >  1 file changed, 14 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+> > index 157172a5f2b577ce4f04425f967f548230c1ebed..12190d4dabb65484543044b4424fbe3b67245466 100644
+> > --- a/drivers/firmware/arm_scmi/bus.c
+> > +++ b/drivers/firmware/arm_scmi/bus.c
+> > @@ -345,6 +345,19 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
+> >  	device_unregister(&scmi_dev->dev);
+> >  }
+> >
+> > +static int
+> > +__scmi_device_set_node(struct scmi_device *scmi_dev, struct device_node *np,
+> > +		       int protocol, const char *name)
+> > +{
+> > +	/* cpufreq device does not need to be supplier from devlink perspective */
+> > +	if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq"))
+> > +		return 0;
+> >
 > 
-> Additional change:
-> - interrupt-names: "aer", "pme", "intr", which align order in examples.
-> - reg-names: reorder as csr_axi_slave, config_axi_slave to match
-> layerscape-pcie-gen4 and existed Layerscape DTS users.
-> 
-> [...]
+> This is just a assumption based on current implementation. What happens
+> if this is needed. Infact, it is used in the current implementation to
+> create a dummy clock provider, so for sure with this change that will
+> break IMO.
 
-Applied to controller/dt, thanks!
+I agree with Sudeep on this: if you want to exclude some SCMI device from the
+fw_devlink handling to address the issues with multiple SCMI devices
+created on the same protocol nodes, cant we just flag this requirement here and
+avoid to call device_link_add in driver:scmi_set_handle(), instead of
+killing completely any possibility of referencing phandles (and having
+device_link_add failing as a consequence of having a NULL supplier)
 
-[1/1] dt-bindings: PCI: mobiveil: convert mobiveil-pcie.txt to yaml format
-      https://git.kernel.org/pci/pci/c/a45646d86e69
+i.e. something like:
+
+@bus.c
+------
+static int
+__scmi_device_set_node(struct scmi_device *scmi_dev, struct device_node *np,
+		       int protocol, const char *name)
+{
+	if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq"))
+		scmi_dev->avoid_devlink = true;
+
+	device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
+	....
+
+
+and @driver.c
+-------------
+
+static void scmi_set_handle(struct scmi_device *scmi_dev)
+{
+	scmi_dev->handle = scmi_handle_get(&scmi_dev->dev);
+	if (scmi_dev->handle && !scmi_dev->avoid_devlink)
+		scmi_device_link_add(&scmi_dev->dev, scmi_dev->handle->dev);
+}
+
+.... so that you can avoid fw_devlink BUT keep the device_node NON-null
+for the device.
+
+This would mean also restoring the pre-existing explicit blacklisting in
+pinctrl-imx to avoid issues when pinctrl subsystem searches by
+device_node...
+
+..or I am missing something ?
 
 Thanks,
-Lorenzo
+Cristian
