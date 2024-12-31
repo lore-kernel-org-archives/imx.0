@@ -1,63 +1,53 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856571AF0BB
-	for <imx@lists.linux.dev>; Tue, 31 Dec 2024 19:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B70DDBE
+	for <imx@lists.linux.dev>; Tue, 31 Dec 2024 20:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735673403; cv=none; b=EI0aRv956DMNJVW3GeRJE35/HXfdwOUX/RrzvXKqSjx19+4C6mpy36fVREljN9TY79YsW9FWhTdE0hPmvYxcj583wqvvJ1o6CnBW+NZSEl4ksHIVJnMTGOfmazLAce+pfkZziVzkeUGEaB2UCXkLdEPgVbCt3gh5Z3u6ZwA2xx4=
+	t=1735677108; cv=none; b=f0Dzrp7oo8wRO/zmnOyfFGpg+HFtN7NZOolS5VFuf19iPGmIpc7x8jZgK09J6iqeytXCpzyva7wBNiH2Tx4JD9zg80RnacasWJFdnoSim++q+pHGclzfW/BhYn8MU/h55Q/yzbbig9XpBFIHWr6AhsVWLaurqn8iJGd/At/n85Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735673403; c=relaxed/simple;
-	bh=aX+YwZ4WCYvhMyoxdLllZPWb6WzpAE9hzJ6DCWW1ftk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csN8KjmgWch2GSkkcOiI9t4hkluzLLYuQ8FfF85vZGa8uzGvXInp6yFS+DOKgEKfdVgnDJJSw9ZPUcK6FS5jCE9VX00RHyHNdJ+16r+JW56LOclhPBRWIURz1cy3cWbhNb7v/45dv8OCW050HN71o7jfGxQDKbptkGyBNKnc27w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=IUOEsjQZ; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1735677108; c=relaxed/simple;
+	bh=kG+D/lnDclS7q11yLFrQ3G5z3SUsllmGGc3CrYLCNI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lATipN6WP8qiLZnaIo1JZgfn1quqgjm4onRhpFd2ujCbPS2ALRvenxOK7aIFT6hZ/fkcUOKHlT+jRQciSugBXpC4NWXan9Nka6kqceeDdlXu7Xm8ux/eAdg0qUPXf2dm/wG2Rm6FOFdFGtUI4AjMYB1rfGUv7WNz1SnuxkwqFqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=I+QQXNix; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="IUOEsjQZ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 822C810486D9F;
-	Tue, 31 Dec 2024 20:29:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735673393;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zjnnI3iPrWwOE0R208z670xT6TwIYqYj6odvgiZrgw=;
-	b=IUOEsjQZRLNPIjI7Ed+UsxthNvxR028jHVDEfiqfTA2JOEEImbpUOYkKZqo+9YbAIBcoBZ
-	j/nPXfW4Fh3xsgX67siwVYtGzU9Cqx9QP9ei7eRbnnbsSzGPJjZ3VqcoTLK3QmBzE3ggRK
-	l5eKR9CMQBJtn6Pkq+6SGSSUbd1QA+j9DNlhOKLdzUZCuBIr+1h3IfUg52QWEt1Y0m7aDv
-	yCCeAg0zAiMf24ewR0qIfhu2/6ZWfPjFT9ZQmBYjIIshvSftPMK4BIKCt+VwsqZP0Vkb8x
-	t8296MP6z5byvs5yqjWj/7ypJcpUxiloC1Sc2EBZJ8OSTTqMxWQUWa6LFzLhOQ==
-From: Marek Vasut <marex@denx.de>
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marex@denx.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="I+QQXNix"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 42A5A1E6;
+	Tue, 31 Dec 2024 21:30:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1735677050;
+	bh=kG+D/lnDclS7q11yLFrQ3G5z3SUsllmGGc3CrYLCNI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I+QQXNixBkbtrHbpWlJmbDiCWN8gRN4e9e+EKWvPe+cAW2/Y6RPCWzCHrXT7Re4II
+	 ou6MGteZhP8EJfuaKN3cypfznt2DJ6pM+wFJrm9ZOCIzvXItmtxro36aS5P4BFszc9
+	 NAsEIJPtmawdQj2k40RjuRUHSMZvaRGLjuLzXABI=
+Date: Tue, 31 Dec 2024 22:31:36 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Marek Vasut <marex@denx.de>
+Cc: dri-devel@lists.freedesktop.org,
 	Andrzej Hajda <andrzej.hajda@intel.com>,
 	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Liu Ying <victor.liu@nxp.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Liu Ying <victor.liu@nxp.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Robert Foss <rfoss@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
+	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
 	Stefan Agner <stefan@agner.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	imx@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 3/4] drm/lcdif: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach
-Date: Tue, 31 Dec 2024 20:28:50 +0100
-Message-ID: <20241231192925.97614-3-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241231192925.97614-1-marex@denx.de>
+Subject: Re: [PATCH v3 1/4] drm: bridge: dw_hdmi: Add flag to indicate output
+ port is optional
+Message-ID: <20241231203136.GD31768@pendragon.ideasonboard.com>
 References: <20241231192925.97614-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,141 +55,106 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241231192925.97614-1-marex@denx.de>
 
-Commit a25b988ff83f ("drm/bridge: Extend bridge API to disable connector creation")
-added DRM_BRIDGE_ATTACH_NO_CONNECTOR bridge flag and all bridges handle
-this flag in some way since then.
-Newly added bridge drivers must no longer contain the connector creation and
-will fail probing if this flag isn't set.
+Hi Marek,
 
-In order to be able to connect to those newly added bridges as well,
-make use of drm_bridge_connector API and have the connector initialized
-by the display controller.
+Thank you for the patch.
 
-Based on 2e87bf389e13 ("drm/rockchip: add DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to drm_bridge_attach")
+On Tue, Dec 31, 2024 at 08:28:48PM +0100, Marek Vasut wrote:
+> Add a flag meant purely to work around broken i.MX8MP DTs which enable
+> HDMI but do not contain the HDMI connector node. This flag allows such
+> DTs to work by creating the connector in the HDMI bridge driver. Do not
+> use this flag, do not proliferate this flag, please fix your DTs.
 
-This makes LT9611 work with i.MX8M Plus.
+What's the rationale for this, what prevents fixing DT instead of using
+this flag ? Adding such a flag will most likely open the door to
+proliferation.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Liu Ying <victor.liu@nxp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Stefan Agner <stefan@agner.ch>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
-V2: Add RB from Dmitry
-V3: - Select DRM_DISPLAY_HELPER
-    - Use return dev_err_probe() directly
-    - Add missing of_node_put(ep)
-    - Add test using drm_bridge_get_next_bridge() to try and determine
-      if the HDMI connector was missing in DT or not, and if it was
-      missing, if it was created by the HDMI bridge driver.
----
- drivers/gpu/drm/mxsfb/Kconfig     |  2 ++
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 30 ++++++++++++++++++++++++++++--
- 2 files changed, 30 insertions(+), 2 deletions(-)
+If you can't fix the DT on particular boards, patching it could be an
+option. We had a similar problem on Renesas boards, which we fixed with
+a DT overlay, see commit 81c0e3dd82927064 ("drm: rcar-du: Fix legacy DT
+to create LVDS encoder nodes"). This made the workaround self-contained,
+and allowed dropping it several kernel versions later (in commit
+841281fe52a769fe, "drm: rcar-du: Drop LVDS device tree backward
+compatibility").
 
-diff --git a/drivers/gpu/drm/mxsfb/Kconfig b/drivers/gpu/drm/mxsfb/Kconfig
-index 264e74f455547..fe98674d5a298 100644
---- a/drivers/gpu/drm/mxsfb/Kconfig
-+++ b/drivers/gpu/drm/mxsfb/Kconfig
-@@ -12,6 +12,7 @@ config DRM_MXSFB
- 	select DRM_CLIENT_SELECTION
- 	select DRM_MXS
- 	select DRM_KMS_HELPER
-+	select DRM_BRIDGE_CONNECTOR
- 	select DRM_GEM_DMA_HELPER
- 	select DRM_PANEL
- 	select DRM_PANEL_BRIDGE
-@@ -28,6 +29,7 @@ config DRM_IMX_LCDIF
- 	depends on COMMON_CLK
- 	depends on ARCH_MXC || COMPILE_TEST
- 	select DRM_CLIENT_SELECTION
-+	select DRM_DISPLAY_HELPER
- 	select DRM_MXS
- 	select DRM_KMS_HELPER
- 	select DRM_GEM_DMA_HELPER
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 8ee00f59ca821..dc39adabb3cd9 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -17,6 +17,7 @@
- #include <drm/clients/drm_client_setup.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-+#include <drm/drm_bridge_connector.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_fbdev_dma.h>
-@@ -48,8 +49,10 @@ static const struct drm_encoder_funcs lcdif_encoder_funcs = {
- static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- {
- 	struct device *dev = lcdif->drm->dev;
-+	struct drm_device *drm = lcdif->drm;
-+	struct drm_connector *connector;
- 	struct device_node *ep;
--	struct drm_bridge *bridge;
-+	struct drm_bridge *bridge, *nextbridge;
- 	int ret;
- 
- 	for_each_endpoint_of_node(dev->of_node, ep) {
-@@ -97,13 +100,36 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
- 			return ret;
- 		}
- 
--		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-+		ret = drm_bridge_attach(encoder, bridge, NULL,
-+					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 		if (ret) {
- 			of_node_put(ep);
- 			return dev_err_probe(dev, ret,
- 					     "Failed to attach bridge for endpoint%u\n",
- 					     of_ep.id);
- 		}
-+
-+		nextbridge = drm_bridge_get_next_bridge(bridge);
-+		nextbridge = drm_bridge_get_next_bridge(nextbridge);
-+		/* Test if connector node in DT, if not, it was created already */
-+		if (!nextbridge)
-+			continue;
-+
-+		connector = drm_bridge_connector_init(drm, encoder);
-+		if (IS_ERR(connector)) {
-+			of_node_put(ep);
-+			return dev_err_probe(drm->dev, PTR_ERR(connector),
-+					     "Failed to initialize bridge connector: %pe\n",
-+					     connector);
-+		}
-+
-+		ret = drm_connector_attach_encoder(connector, encoder);
-+		if (ret < 0) {
-+			of_node_put(ep);
-+			drm_connector_cleanup(connector);
-+			return dev_err_probe(drm->dev, ret,
-+					     "Failed to attach encoder.\n");
-+		}
- 	}
- 
- 	return 0;
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Cc: Jonas Karlman <jonas@kwiboo.se>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Liu Ying <victor.liu@nxp.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Robert Foss <rfoss@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Stefan Agner <stefan@agner.ch>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> ---
+> V3: New patch
+> ---
+>  drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 12 ++++++++----
+>  include/drm/bridge/dw_hdmi.h              |  2 ++
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> index 996733ed2c004..852e73c0f686f 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -2893,9 +2893,13 @@ static int dw_hdmi_bridge_attach(struct drm_bridge *bridge,
+>  {
+>  	struct dw_hdmi *hdmi = bridge->driver_private;
+>  
+> -	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
+> -		return drm_bridge_attach(bridge->encoder, hdmi->next_bridge,
+> -					 bridge, flags);
+> +	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR) {
+> +		if (hdmi->plat_data->output_port_optional && !hdmi->next_bridge)
+> +			return dw_hdmi_connector_create(hdmi);
+> +		else
+> +			return drm_bridge_attach(bridge->encoder, hdmi->next_bridge,
+> +						 bridge, flags);
+> +	}
+>  
+>  	return dw_hdmi_connector_create(hdmi);
+>  }
+> @@ -3298,7 +3302,7 @@ static int dw_hdmi_parse_dt(struct dw_hdmi *hdmi)
+>  					  hdmi->plat_data->output_port,
+>  					  -1);
+>  	if (!remote)
+> -		return -ENODEV;
+> +		return hdmi->plat_data->output_port_optional ? 0 : -ENODEV;
+>  
+>  	hdmi->next_bridge = of_drm_find_bridge(remote);
+>  	of_node_put(remote);
+> diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdmi.h
+> index 6a46baa0737cd..3bb6e633424a8 100644
+> --- a/include/drm/bridge/dw_hdmi.h
+> +++ b/include/drm/bridge/dw_hdmi.h
+> @@ -127,6 +127,8 @@ struct dw_hdmi_plat_data {
+>  	struct regmap *regm;
+>  
+>  	unsigned int output_port;
+> +	/* Used purely by MX8MP HDMI to work around broken DTs without HDMI connector node. */
+> +	bool output_port_optional;
+>  
+>  	unsigned long input_bus_encoding;
+>  	bool use_drm_infoframe;
+
 -- 
-2.45.2
+Regards,
 
+Laurent Pinchart
