@@ -1,286 +1,137 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2057.outbound.protection.outlook.com [40.107.20.57])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848E18FDC8
-	for <imx@lists.linux.dev>; Thu,  2 Jan 2025 07:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735803495; cv=fail; b=GzIurqi7iScsId8mfhqBc27G8MV8kNftDK4UKMWYfGcZMq3b8CYI2D7ZWD4No8EMUDDszwuAsckrgjxr9p5n8cGPvofwUAyWCtZ+Plezg/AHs6xYZU4/I7v4kao1i58rO8OkbZcS9R0L9DxiOuCFhfPi7598XSv76OmZ75sne+E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735803495; c=relaxed/simple;
-	bh=BtKVThMEmBohBcZ+Hc1z6N60rIAHLB2SNxUGKE5aypQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=c7ViRLU9nkBGhV3lCmGiNH6NkFFVRyydXplEtbeUieOTjn5yqAUh0iNjOPjo+oj3XnDtGvAeJ0jqbYV3DeodA5igs5AbjD9Nj/gyu09Kr6QYjKjR/oINeONHsv96Dtqy6YQRsSDpPM8VBDIHHQQvW2B4goxNJuqznoM1dQK9EOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K3/PQTSg; arc=fail smtp.client-ip=40.107.20.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD171195B37
+	for <imx@lists.linux.dev>; Thu,  2 Jan 2025 08:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735806641; cv=none; b=EToIvBm+k1Ge6O9krCWdATQ6N/ZSRVNufw9XcyzZcvq4Lj5V10bP3bkV/gkBps2586egppCB3v8UO3wyb0fn+POyspqNDQ5iT+0asA2fBgd1Fo/xycJMwZPOth90GkZs7Og9HFPxVaTqSJkNlOVLvygVLwbiqWq7Iz7WCwpPEts=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735806641; c=relaxed/simple;
+	bh=tsPS3XAjtH/3cde0vUoy4i3L6/+p1mMnya4QFPd7W3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMuOuJDRWT8D1XzWcYqok52M7+sPf9NGH018hOYbGh+KY9vDB9qN+zCvdL/gARp3XED7aY3w/N2cnfMowK1tpmu//PNoPc0OvsJ6YXZgZw1EJ33lBlhd+O9s3FmOmKvwD0YtDTwHZWM7klZgSL4a1hJN8JnVgfzuEZB5YyoHaY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=tZyvflE9; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K3/PQTSg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iYQiaa9aSEk2I6IPhkXS452r6iDi80B+g+CjfVnn+1uNhdRySQcejf1RfNXOmG0wnelscrm9Z9HaBZvYBz1mGDwxSdoj3W5rOPURDaf9uKqc+2Bke2nDqkTyz1PFNnV8T6PYvwmgmMJ2RhoGZ2oS4WUZu73qwwvFN1a9iohdYL5+MLFfD2zea7Iw6Oj8ZnscfFb1r3UNPn+1p+uTmjWxYw4IDdT+W4XN+FaGIkao+WmHFVp9Ki14GDeJQPGzhyTi4mbBhSM3DITlZbij/iSE4g1wTLGSExEm1007GvacVJC6MTbO8vQFnlVOMpWUcJKmv414/zsZDKsmNv5vxGsOhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ruWSvnGLJHANS7z/xpiu33pBrUibYtWEqoY+5aRndnM=;
- b=ZkkpoASXJxxrdWPTK2PKMzaiR7JnqZ4w1a7/wBBb/BxMX2e8TGaKyrIHXHVZd9g/2D0c1/q8jLI39BEZ9SjFezDKruIDf/GxLybFsGjMdfrmA+ZVPMwDvvJxYo05HNn0bvxkg9iJCyJ3hJgvq9vycDoD6g+Z9XNTxhlEUxJYMrHJz7xrjbMs4RrNODD7VF7YxFlOUEnOR5EL4fwE9UQQtRZSrXNpbRYePhlT/Zcrs5IthRpbpmH4MtYK2RzMSqkN7iD6StJ9JR1e4yJpBIKx9hFunT9yebipCcPSMYTtiB54UZ40iMk/WXe6GQas3Mp9A/3yh8EDPGkwSU6F0L7xfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ruWSvnGLJHANS7z/xpiu33pBrUibYtWEqoY+5aRndnM=;
- b=K3/PQTSgrjD84HzaW3UmnpGlJgVU6HXz4JnUeGAF4clapgqREiharsMTuLeEinKmtQnB7uAsRWdnV21BJlwmcwEXlIOTT6/IZqIDtwgDuACxXePtJ/uK7K0e2QNp67MCwhU4gxdZmAWO2mGePZMADneSAHlDdC1kbc9aEQr1cBQr/qMKDs5ipUVTY6rYyOOxOCs6i8VP2h6zEu/zT+ySOZtBYym1I7m528HsKM8jWUmGm4eaBWVdtu3DH8hoaMMmKUxYLckbXRv04jEzqCsvLomRoLJe+gHdqMliAkOxPIDXriMjJMyTDkxC3AIlYViycYuPtAySj0OaSopIGP1osA==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA4PR04MB7565.eurprd04.prod.outlook.com (2603:10a6:102:e7::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.13; Thu, 2 Jan
- 2025 07:38:07 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8314.012; Thu, 2 Jan 2025
- 07:38:06 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Cristian Marussi <cristian.marussi@arm.com>, Sudeep Holla
-	<sudeep.holla@arm.com>
-CC: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Saravana Kannan <saravanak@google.com>, Linus
- Walleij <linus.walleij@linaro.org>, Aisheng Dong <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Jacky
- Bai <ping.bai@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, "arm-scmi@vger.kernel.org"
-	<arm-scmi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Thread-Topic: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Thread-Index: AQHbVqX7U3UKEfrBUUq6t/L7CeKKLbL6Nl0AgAZ6KYCAAnPHIA==
-Date: Thu, 2 Jan 2025 07:38:06 +0000
-Message-ID:
- <PAXPR04MB8459AB05EEC7107D500A826688142@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20241225-scmi-fwdevlink-v1-0-e9a3a5341362@nxp.com>
- <20241225-scmi-fwdevlink-v1-1-e9a3a5341362@nxp.com>
- <20241227151306.jh2oabc64xd54dms@bogus> <Z3Qy-br-wVCLpo7Q@pluto>
-In-Reply-To: <Z3Qy-br-wVCLpo7Q@pluto>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PA4PR04MB7565:EE_
-x-ms-office365-filtering-correlation-id: c6cee40e-cfb9-4dae-ed21-08dd2b00660b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?PtXP2kovXGet88rmDgONt6b8l/GqpFX1cRqUD08Lh7j0EZYUu3IZcSaYPvp8?=
- =?us-ascii?Q?zGJqbluosFGv41HyYe2SfQgh9cjbR8Ql51OcSqCPRig426y2DUillD0kC5YI?=
- =?us-ascii?Q?Irz8Skm++vPpSG/366L0gMlX4EIulgLbzRwUOMbdvyQffliz+JBMe0/rhZkT?=
- =?us-ascii?Q?KRVewQ8WaNR37/PhvOXHBsDuOEMpLrj6mA9gkTt5T5ymRzOsVH2ajv5WJUVA?=
- =?us-ascii?Q?wr48VGIC3qZpYoAKxPAc7v5FMlu9E/SNobRgk/9bvR2xOHeQ+dqfXvrnjTUB?=
- =?us-ascii?Q?DVOSBRVafa7X7v6AqDWg5g0aZmDhcz7FI5pQougEcTCCPwSsB5eze5bD7pDG?=
- =?us-ascii?Q?QhuwYHcNfydreSBG3V0wp6wjoIjJBTt3N+ymO48bkRJ0bJ3MlzYn49ixwd3I?=
- =?us-ascii?Q?r09IizvYiKKaJ6FlCAjEQKFJk20MXuhRlSQqVOZdMPrje7+WlVa0HbWewKcF?=
- =?us-ascii?Q?yhQ7KLTyoCF3dXAy65BbYfy7hJOsmrvlbBGve1OhA+qKCbwrlZpuJifbs7Ct?=
- =?us-ascii?Q?Yca+WrIoqOUamUlTyTKmT4tYgLcVfFSOEXlY1FQFQBGwLDxpPE/PAVkO51+g?=
- =?us-ascii?Q?OFMSnDX8yjl6F/p0Q8GdCvtBi3NsphsVSNTRVDHA7Huh7PU0SE/lVshngCeu?=
- =?us-ascii?Q?l+cZ8m6KTq4Cz3uwzlo2/JqBEalO0LywCQqFSfnYErwX9+f0ZmHcWsgiydFw?=
- =?us-ascii?Q?v3MDrfY5LTrFMLqa1H2ypiuMg339xi4fYLcGFko7xVdHPZL3fS8OvcalWIRP?=
- =?us-ascii?Q?BB98hQlMQgIiLbnm3vnzyUs9ZVJ60orlBjQ9v7XFm2NQIne0IYJXVd3MQ+ho?=
- =?us-ascii?Q?9k272n/mnaKcQHLCGrfHT6GKLe/V9m4ZP8TiV3qUiRdAmHQKZrn2nmodzGMA?=
- =?us-ascii?Q?mRfI3cqBQcJlM5LHYQXK/lyOUcMipoKFY5X58KIGqhrIxdXrTyJUZrpWA5kN?=
- =?us-ascii?Q?EGCLEWRaihCrx2Rp37wfuzXNP/NOT1YpfXyFlYDJADqlJ4gC8+V+jBh0/zr1?=
- =?us-ascii?Q?DopX0PDn5F9TtjtXvNlnl+PbBMdVy+LrUWwr+TiFJLVk9q028DJIGTNLJ88h?=
- =?us-ascii?Q?/2olPfA8B+Uj7Gt6ZBZHWEgwQGsMcUnhyIztzaZ9uJr4J6U2bHVaVjfLuSHI?=
- =?us-ascii?Q?GxClj3Pcdq/2QqhKnnWa5fS2EawgQu+E43wI0H77yiux3lrnPQ4CLgqoBsqJ?=
- =?us-ascii?Q?FBvsG+Z9IkQuIf4XIBxECPc5WAuf6k/D26957X/N9CEl0W7gIoVMkINr9XlN?=
- =?us-ascii?Q?DbWnuGzptrm4nSDrkBVL8RsQVZrWaMUEGqvI7lIC9dBFiojaanF3BdvcpV2w?=
- =?us-ascii?Q?xBSE3wYS2mFOHTOdiASW/qSmovs5uLTgHO3ejSqmA9p0OO1v42Ij0wMfGHj6?=
- =?us-ascii?Q?mhTxJnVyaJDBQsZIGdRThTDahCuqRmvBX5mMgshIffWZZqEF7PW4T9N5bmM1?=
- =?us-ascii?Q?BdKpeprLa+uLQDBGQekzTfEir8tnDXqW?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?udxJlmNGO2nkib9GqGWk85jQF6vIl53eaIj8U1RAhvPRCHRvluwvu+/28jbY?=
- =?us-ascii?Q?D+9esqVcHetRhzX2iliLCm9iJumXL8VoZTkhGSSp+b5QyFY3co4JDNIWiFCh?=
- =?us-ascii?Q?Qbc7WB7qKk5q4HFpIWsbAtbPlVdQIRjRHXGfXf90QMvFNP+yv4NU0RsUUaHY?=
- =?us-ascii?Q?NTaOTGdlIDeyKAAn7+ov4VMRvlKeBSm2MqTY1SYTu0aHoKTWmFGT9+SRwvTR?=
- =?us-ascii?Q?BM6Tpr4Euw7pJ9+GYcVCttcufv3AgfWNkzPb76ZjXbh+KmhVECvnMIpt081B?=
- =?us-ascii?Q?1wvazxrWwmA4eH/8vBEub3xOxWjD9EevDWRNqSh+MW189zgG7r01mdzSrd+H?=
- =?us-ascii?Q?ANf+Gv/kanaTrpqywQw74y0A8+idDi8wmtfPgI5WRcVZZVTmnLxN1GPjfdlu?=
- =?us-ascii?Q?K20KHdpBVg4ztS/DRVeh1N4tcfXuO9g6+wn2JwpdJFg1Z4uxom2RQjcbEbM2?=
- =?us-ascii?Q?JWM/mGI2kMsLJ4D8teLjYFiQptsTZ81Nb+goEX5fhSILazyIcvq54e3uYUI8?=
- =?us-ascii?Q?dHcVMXydb0wy2WwQRkZxI8cXVONpzeVYSyFvYPENQwn1JU1u12xmWKKHLOMg?=
- =?us-ascii?Q?mvNer2FURre2pUH7zZqNhPgfkqnRjgTVUixXYgUk9P3rbvTArLo8BN6XJ22q?=
- =?us-ascii?Q?mqS6y35I/xnnv6z3AiV4p/TCqL5YczL5RVwpo5xg9WpuJe5u8Mpt4hMwqq8A?=
- =?us-ascii?Q?SMHGpD6Icly+H1amvNbjpt1Q3a8xi11Oecm95nyyv+cPC0ShNIHBllE+OaJv?=
- =?us-ascii?Q?eCzsf8VZG2rkp0wXR7QXrylyoQPfqHBMKAFj+Rb9MNPxnFSG28ELd+2Sq2MC?=
- =?us-ascii?Q?x04Gml6StolmEQqhtdhGg/OcBogTYDNCRegY7MPqCi2USnTIOs0ulxGcckMB?=
- =?us-ascii?Q?8HzNKdXrAeEh+CQkZJdcX+B24/El3/3GnZOnWIFQj46FLzPSQn7KvsSWiD2S?=
- =?us-ascii?Q?jjBBsfvXc7v+6FrRskB6V8YR5CwoeGMa22OTjm/Bry64UBmMhyIjmXvVyDH9?=
- =?us-ascii?Q?22ujIrAficollWS5kcyjQwhDH0GfKfdbspHcUKEgl9J1cXz/koLIiZiDIcSa?=
- =?us-ascii?Q?z7Do/pgslxfk6i9FN9c3KFtPXvPQrYSAFo+1p673TRD5H0yS6t+my9IaMKdJ?=
- =?us-ascii?Q?uLZf/6fY2ps8tGLbuvc+orPKMqY3oje/zRYS68+BCmukA+rFgLd5+mGD0Oog?=
- =?us-ascii?Q?zVZdCX6BkuqLpe4lsmNDTfZff3cKMIwA4qwRMuDYb+fgL3R5wUGQRM2O783T?=
- =?us-ascii?Q?lD0qR+BhzQEn13qASGh6l1mXfU2cUuspdzXNKpzwNFUpHSFIUKCjJrz4i3Yb?=
- =?us-ascii?Q?kE5FHvvz7qxHdQMSy9Efj7Q2UkviTP1XIYFSQq6xnlUfcLW3hlk5SKbDJeiY?=
- =?us-ascii?Q?mUU/0c/Y0qRHusIKRBKDWpohtO/yqAjzRJO8GduGvJX65fyDiHnbfSkqDD3m?=
- =?us-ascii?Q?tlOMEnEpQEOK2KC+tbSjjzooNXhvp6/kEqkj3EzfIh+SAX3DdiSXbKa5pV8p?=
- =?us-ascii?Q?43Ngb8HJXktvmLsFOu/Bn+rBquYP+/74qFCJPV+sDo67EF5S11TNgXf9BLuE?=
- =?us-ascii?Q?UbMFYeWJxnWhJGDluyc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="tZyvflE9"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id F2ED880A;
+	Thu,  2 Jan 2025 09:29:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1735806589;
+	bh=tsPS3XAjtH/3cde0vUoy4i3L6/+p1mMnya4QFPd7W3o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tZyvflE9bGalNjH64JCp91O/Nkbh5ppDx9gHPP7SK0PTzo90bCPEwlpD1vGVO7mK8
+	 JS4baft8eTdMYwZ4ozBdzqT2qWQ1Hhly6zqfWzM5cQZK/7quRD63iNSCh/i0x2Jh5H
+	 iHxHMnc/04Vei0rVMx1AE+FQlU3Kd6cazQZCzHSI=
+Date: Thu, 2 Jan 2025 10:30:38 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+	dri-devel@lists.freedesktop.org,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Liu Ying <victor.liu@nxp.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/4] drm: bridge: dw_hdmi: Add flag to indicate output
+ port is optional
+Message-ID: <20250102083038.GB14307@pendragon.ideasonboard.com>
+References: <20241231192925.97614-1-marex@denx.de>
+ <20241231203136.GD31768@pendragon.ideasonboard.com>
+ <88778e2b-8c43-46a1-bb79-0d9c968a5233@denx.de>
+ <20250101223620.GA7206@pendragon.ideasonboard.com>
+ <ac4kkjv2nmziu6pd6vkuxbllhkqaueu32snfetpemtu2l5s6ud@cvystps3734o>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6cee40e-cfb9-4dae-ed21-08dd2b00660b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jan 2025 07:38:06.8311
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XgjerqPgZa7xYwR6XSZ2LKqT3rrHPo/cMic4zZrbgDIS3HeaRXB2k3WK2/VREzF6vr7+bC9CWznrljIUjtewzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7565
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ac4kkjv2nmziu6pd6vkuxbllhkqaueu32snfetpemtu2l5s6ud@cvystps3734o>
 
-> Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting
-> fwnode for scmi cpufreq
->=20
-> On Fri, Dec 27, 2024 at 03:13:06PM +0000, Sudeep Holla wrote:
-> > On Wed, Dec 25, 2024 at 04:20:44PM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
+On Thu, Jan 02, 2025 at 05:26:50AM +0200, Dmitry Baryshkov wrote:
+> On Thu, Jan 02, 2025 at 12:36:20AM +0200, Laurent Pinchart wrote:
+> > On Tue, Dec 31, 2024 at 10:10:51PM +0100, Marek Vasut wrote:
+> > > On 12/31/24 9:31 PM, Laurent Pinchart wrote:
+> > > > Hi Marek,
+> > > 
+> > > Hi,
+> > > 
+> > > > Thank you for the patch.
+> > > > 
+> > > > On Tue, Dec 31, 2024 at 08:28:48PM +0100, Marek Vasut wrote:
+> > > >> Add a flag meant purely to work around broken i.MX8MP DTs which enable
+> > > >> HDMI but do not contain the HDMI connector node. This flag allows such
+> > > >> DTs to work by creating the connector in the HDMI bridge driver. Do not
+> > > >> use this flag, do not proliferate this flag, please fix your DTs.
+> > > > 
+> > > > What's the rationale for this, what prevents fixing DT instead of using
+> > > > this flag ? Adding such a flag will most likely open the door to
+> > > > proliferation.
+> > > 
+> > > See the V2 series discussion, there are a few in-tree DTs which do not 
+> > > have the HDMI connector node. The rationale is there might be more and 
+> > > they might come from vendors, so this flag is necessary to work around 
+> > > those DTs.
 > > >
-> > > Two drivers scmi_cpufreq.c and scmi_perf_domain.c both use
-> > > SCMI_PROTCOL_PERF protocol, but with different name, so two
-> scmi
-> > > devices will be created. But the fwnode->dev could only point to
-> one device.
+> > > > If you can't fix the DT on particular boards, patching it could be an
+> > > > option. We had a similar problem on Renesas boards, which we fixed with
+> > > > a DT overlay, see commit 81c0e3dd82927064 ("drm: rcar-du: Fix legacy DT
+> > > > to create LVDS encoder nodes"). This made the workaround self-contained,
+> > > > and allowed dropping it several kernel versions later (in commit
+> > > > 841281fe52a769fe, "drm: rcar-du: Drop LVDS device tree backward
+> > > > compatibility").
 > > >
-> > > If scmi cpufreq device created earlier, the fwnode->dev will point
-> > > to the scmi cpufreq device. Then the fw_devlink will link
-> > > performance domain user device(consumer) to the scmi cpufreq
-> device(supplier).
-> > > But actually the performance domain user device, such as GPU,
-> should
-> > > use the scmi perf device as supplier. Also if 'cpufreq.off=3D1' in
-> > > bootargs, the GPU driver will defer probe always, because of the
-> > > scmi cpufreq device not ready.
-> > >
-> > > Because for cpufreq, no need use fw_devlink. So bypass setting
-> > > fwnode for scmi cpufreq device.
-> > >
->=20
-> Hi,
->=20
-> > > Fixes: 96da4a99ce50 ("firmware: arm_scmi: Set fwnode for the
-> > > scmi_device")
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > >  drivers/firmware/arm_scmi/bus.c | 15 ++++++++++++++-
-> > >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/firmware/arm_scmi/bus.c
-> > > b/drivers/firmware/arm_scmi/bus.c index
-> > >
-> 157172a5f2b577ce4f04425f967f548230c1ebed..12190d4dabb654845
-> 43044b442
-> > > 4fbe3b67245466 100644
-> > > --- a/drivers/firmware/arm_scmi/bus.c
-> > > +++ b/drivers/firmware/arm_scmi/bus.c
-> > > @@ -345,6 +345,19 @@ static void __scmi_device_destroy(struct
-> scmi_device *scmi_dev)
-> > >  	device_unregister(&scmi_dev->dev);
-> > >  }
-> > >
-> > > +static int
-> > > +__scmi_device_set_node(struct scmi_device *scmi_dev, struct
-> device_node *np,
-> > > +		       int protocol, const char *name) {
-> > > +	/* cpufreq device does not need to be supplier from devlink
-> perspective */
-> > > +	if ((protocol =3D=3D SCMI_PROTOCOL_PERF) && !strcmp(name,
-> "cpufreq"))
-> > > +		return 0;
-> > >
-> >
-> > This is just a assumption based on current implementation. What
-> > happens if this is needed. Infact, it is used in the current
-> > implementation to create a dummy clock provider, so for sure with
-> this
-> > change that will break IMO.
->=20
-> I agree with Sudeep on this: if you want to exclude some SCMI device
-> from the fw_devlink handling to address the issues with multiple SCMI
-> devices created on the same protocol nodes, cant we just flag this
-> requirement here and avoid to call device_link_add in
-> driver:scmi_set_handle(), instead of killing completely any possibility o=
-f
-> referencing phandles (and having device_link_add failing as a
-> consequence of having a NULL supplier)
->=20
-> i.e. something like:
->=20
-> @bus.c
-> ------
-> static int
-> __scmi_device_set_node(struct scmi_device *scmi_dev, struct
-> device_node *np,
-> 		       int protocol, const char *name) {
-> 	if ((protocol =3D=3D SCMI_PROTOCOL_PERF) && !strcmp(name,
-> "cpufreq"))
-> 		scmi_dev->avoid_devlink =3D true;
->=20
-> 	device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
-> 	....
->=20
->=20
-> and @driver.c
-> -------------
->=20
-> static void scmi_set_handle(struct scmi_device *scmi_dev) {
-> 	scmi_dev->handle =3D scmi_handle_get(&scmi_dev->dev);
-> 	if (scmi_dev->handle && !scmi_dev->avoid_devlink)
-> 		scmi_device_link_add(&scmi_dev->dev, scmi_dev-
-> >handle->dev); }
->=20
-> .... so that you can avoid fw_devlink BUT keep the device_node NON-
-> null for the device.
->=20
-> This would mean also restoring the pre-existing explicit blacklisting in
-> pinctrl-imx to avoid issues when pinctrl subsystem searches by
-> device_node...
->=20
-> ..or I am missing something ?
+> > > Frankly, I would much rather fix the few in-tree DTs and mandate the 
+> > > HDMI connector node in DT, which would keep the code simple, rather than 
+> > > maintain a backward compatibility workaround for problem which might not 
+> > > even exist.
+> > 
+> > The in-tree device tree sources should be converted as part of the
+> > series, I don't see a point trying to maintain backward compatibility
+> > for in-tree DT sources.
+> 
+> DT is an ABI. We are supposed to keep backwards compatibility with
+> existing device trees (at least for a while). I'm adding DT list and
+> maintainers to be able to provide comments on this topic.
 
-link_ret =3D device_links_check_suppliers(dev); to check fw_devlink
-is before "ret =3D driver_sysfs_add(dev);" which
-issue bus notify.
+Backward compatibility is about supporting old DT binaries with a newer
+kernel. There's no need to support old DT bindings in in-kernel DT
+sources. By definition, if someone compiles a DT from a newer kernel and
+installs it along with the newer kernel, there's no "backward"
+direction.
 
-The link is fw_devlink, the devlink is created in 'device_add'
-        if (dev->fwnode && !dev->fwnode->dev) {                            =
-                        =20
-                dev->fwnode->dev =3D dev;                                  =
-                          =20
-                fw_devlink_link_device(dev);                               =
-                        =20
-        }
-The check condition is fwnode.
+The backward compatibility requirements aim at ensuring no breakage when
+upgrading the kernel without upgrading the device tree. As I mentioned,
+there is no regression if nobody is affected in the first place. Proving
+there is no affected DT in the wild is difficult though.
 
-I think scmi_dev->avoid_devlink not help here.
+> > For out-of-tree sources it depends on how likely the problem is. There's
+> > no regression if nobody is affected. I personally like restricting
+> > backward compatibility to the strict minimum, to ensure that all new DTs
+> > will use proper bindings. Making the backward compatibility code
+> > self-contained helps there, and we could also print a loud warning
+> > (WARN_ON() seems appropriate) and set a date for the removal of the
+> > workaround.
 
-Thanks,
-Peng=20
->=20
-> Thanks,
-> Cristian
+-- 
+Regards,
+
+Laurent Pinchart
