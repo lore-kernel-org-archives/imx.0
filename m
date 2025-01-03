@@ -1,62 +1,62 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F376B19F115
-	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 05:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDD61B2191
+	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 05:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735882585; cv=none; b=TFMgPj0SsKY3iIMNgW180C0cDUpULEczFcAFRES9CwsC68EwmJDSzQfl8uCDk29/3fs3Y1iMOyWitJ5+2kVknEIw0dmJ8PYwKdxpFrHQqiTP+DaWlwdB8nCIpNIX7T/Y2GGtgC184jKHQGWOraVcDJIHYxsuAK9Ih2DQoeF7i9w=
+	t=1735882635; cv=none; b=adW73eD1L4t36o3LaEUR7zGrI/vbtjSyz09Ap7+WjpQLmhqKpJciSzIvOKg5yfYcybq+Q9sqL1Ug0M5sLQIFpNKW+TCxe4cHKvVflcZzh3YF1qU4BmI85dTiUpDsCqJEjEUJsoZdm9I0ZFwt0neoStzn/lz1gwtyXh481U0J81g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735882585; c=relaxed/simple;
-	bh=9okAlr1d9wvf4E6yVwtQr6UO2uUHaXRd4lakH0Wf+PI=;
+	s=arc-20240116; t=1735882635; c=relaxed/simple;
+	bh=p9Wc2EhvFzf0qMDOYVAQQly/vhOo+LrryL9kNcSxPyU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eGLcCjoGW2XxiaquHTnGRkqzmUbsI1CaX0OnaoV1m7YUUTtFfIeEhqQq0JeReZEac0rp1EUOkcE2akGGmct4JT74Qy9ZZG3ZZxClIuguYW/5Guo7Tau4ReKb/03Okq77uH9DCpKr0R2yYjl0Td8RddhZhXRWuLYK1QT8+wq0gEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ncUPTYo1; arc=none smtp.client-ip=209.85.208.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALnNyVRHMiKPIgamQc6rJ5TJYx88VRm+D9i6P+aEqIEH95rmkDRCIXcxxN1Zi0mtYvDDrRABlw+rELcuIh8QcZ2rzo61nL1UBqINkdJ8zbuIT2VSENNM3l2jeWuqynVmJw/n8/TZ98eg0KK9ofXAC1Msk+ZRwZtnG6Sf7cTbXFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c2UfxegG; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ncUPTYo1"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso128169921fa.0
-        for <imx@lists.linux.dev>; Thu, 02 Jan 2025 21:36:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c2UfxegG"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5401bd6cdb4so12049900e87.2
+        for <imx@lists.linux.dev>; Thu, 02 Jan 2025 21:37:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735882582; x=1736487382; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1735882632; x=1736487432; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MmN8unikKCAbDTYmOgv4w7VHd2QHTqvHtpUA+yq5Q+w=;
-        b=ncUPTYo189+TCv5z5Jfm7rqwht3cGm0UpKFlQocWgp8ybUHOCZhkYBk2yKCjk2y6yZ
-         ap1VMSsudDGDyaEVwlGlNlA84nDwNOJLtLYDA124o5krm4isMinERK751S48dtcXyC2f
-         QppdrJICtrhqxfpwvWLmd1tMNCVRYq15p3NTqY1bm9dkVOGeztkJT+Tm8EQj7FxXDg+K
-         KVb4Pmom6JBnxv+FugVJZSi8s5yI1W0lVH624fQ38NjtBNQ0tnenAgyx1hqeg4l7MvWF
-         y92QQoXCx1l3HkvW2Yc/BtYVpm1YNt6c1sU2QVA0cc9DjGy/nGHLcgagc8zpb1LKGOVH
-         nMSA==
+        bh=KOcDqtGRXf/UHLTIfgwSITvMK0QtY2PkEv0bG0mXGH8=;
+        b=c2UfxegGHLWZNlgcXx3aZ11ygzgWTtyyRIj/+8JOSXUCNs38KLNUT+la3XgPr1Pshq
+         7WLXDqf/Fs0uJBpuA2ZEGM4/01/+6RdnHEfGf8vIFZdplIs3KDNluLHwNCAfIRfyvC+A
+         diCge/5sxB/ue9CrqSyU0IuKSUEtK9o0Q9jUZ+VzFU9IJo91LKYQPFJGFd+JDUiRzxGT
+         EFhMbIzbzbf98qaGWpkK5QDo0c1XNeVAdmoUvjAr8hw3MCKrouC/cMtmHxfk46ekA+9S
+         iVtUYU9PUDuiivvFWFotsOYwiuQim4YxIuUxUp23Nt1tXygRc6+/OPk57ta9J+nXQNbb
+         HBiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735882582; x=1736487382;
+        d=1e100.net; s=20230601; t=1735882632; x=1736487432;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MmN8unikKCAbDTYmOgv4w7VHd2QHTqvHtpUA+yq5Q+w=;
-        b=QW1HG/wpCv1GVh4eu89M1l1Wc88x3WH3343u9coJEkQbvswVY3yxTnEdQuMfjifQ0G
-         hXnNajsFRlZM9hp6jWS7i2sDLxaLA/qAuZUYIWBBhq3v66/DF53nVmr1jkP5uGOHnYVR
-         Tmd7dgGjZ+iYI8eSCF+eWXfL62GK+bD/yInKRIhVvB/cM/BJgcdb4ozgkwZ9HPzMFBIz
-         2EVeTpi5s5oHakcA/tcAD+dPdSO4enmZCY1Cb4EIPjDu3NVxeLeBBb2QjEkSlzTTHlHm
-         E2nKMHocE1vTeHojGu/N9FuBXJCOMQz8GkB64mwxhXWkFCxr+I+HVkUYG34rjphBzdsx
-         Q2Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCXlK/mGQZuv9tPtVLb6HvVqSyAupTZq6Ci6tca7j3bGLNPjy4qlWcNLOX8aATkiAsncgxQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx09vjBKBh1gAVqvwExeamyhaR+sDJhafyqPbC0Z9Gj3pFXK24b
-	kw68LQvXBaQbEGvZmVw/YDQQTVe5YlDEm1aBpqadjGNV1ZgYjNLITOQIxaOSgDQ=
-X-Gm-Gg: ASbGncsI1eHtWc78PZF3uJUUCpQi4sFIU1e5d0eE2WBj6Ne0VaWbgZTjo9zeH/Jr70u
-	yiPAeEtKyydZ/6+NI73AIxzEDqoKwmMfW2M33N6U7FDQYi8bXNKO1Pag9HovIt4F371w/9eBfh3
-	DVmmE4S6STHyvlp829Rp8CqK9RgCrhRMAqHTvd/BYMOdZe+KkCmI+C5Sxk1L0c0z5ajhzZTf+dK
-	m2jmqby0aq7bkovWZ6SZnsmoAd9UC3+dgq+OlXaVpJQhfeSlzuxAuEQSN2mO8QMJA3bzovWOB90
-	pWOOOlzdI0yrtUrSAdZuZ1WopFHIcqJJACL0
-X-Google-Smtp-Source: AGHT+IE6OID3IdhzMP3XEYNXHpLMaRxF1DCc2ymnBRQhO5cl+gFLOI6zrATEO677AB0hiGN2d3yNug==
-X-Received: by 2002:a05:651c:2114:b0:300:38ff:f8cd with SMTP id 38308e7fff4ca-30468543d63mr161870081fa.9.1735882582025;
-        Thu, 02 Jan 2025 21:36:22 -0800 (PST)
+        bh=KOcDqtGRXf/UHLTIfgwSITvMK0QtY2PkEv0bG0mXGH8=;
+        b=dDnHpNyr0YZvYJ2BhvYXSXD3uXj79YWMVX2QB73EzYUmBxu7irwlvVfmxlcyguCt9D
+         64sxK/jhVojb2GUzafnj/+Ob09iM+NqjFU7JCkvExI7zcdRcKAzfejLd6p4TXI4r6vE9
+         +yX52I8qHooQ4hUtxwMtjZtcv4viVjDKQa8gg2h8HifF8RqRBcW5T8H3gLI8idhJHHP1
+         hbq6xrwJF3vU+tLblis6Jp4SislWSZAB1ZtuQXRbymqGXoKXWEc76ONIAuP85qVrOV9w
+         L29zA9TAY/FD4Hz4dHdcmslaKCSRAcfl7KHZuPnzC1MAaf1v5aI8BJh5azxATTOeXvYq
+         7t1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVq7oGAscEBy2skfuqtE8qaCfeGzCmtLDzvpI/PHn46wOIy8FdhO3BHMmkGDQKGXpkycuk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUJiQdFmOLZQbIck8rxEdnnMbiSMiV8i0Y2WkERcBtTu/v776L
+	3V+15cZrfR39cYhYKxIqz7CrzhY7V7oaV8zAbKmaEh7RwjUeB76xFXA1seszr68=
+X-Gm-Gg: ASbGnctdA1gWopyIl58q5N8+kNSmh2J8lVX4upR8EiNn6eoGXS0blfxjyxYJVpwitni
+	uwsHG20Kmu4sXczbK38lShgHD9M7kMNX9ljkPri0k9//SxwnEef7jXuu9WpI5NFWpdRdaYGYe5S
+	lyeAuwOEqOkwoBKWGJgG8ycyb+gP9DXXLcxQk1dgvXL0e45iqvsJyiUSC3SxVuPX8gKnxwpqV9X
+	6vdpVGkKX0y2RHqblZiIhC1seFfhaFXRJtovw37o7JnrJZXd7yy11P7VQSpfET9LINVmTJWDXb2
+	Ascq0Au/E9gONQPp3giVlCW4DnkmErLmNFZm
+X-Google-Smtp-Source: AGHT+IGHQO4fKXV4A6UUeSv9pwYWeECIbpOiy9USqHzKJoO5upSfChVq4x5/CdajiSuV1O+v4t+BjQ==
+X-Received: by 2002:a05:6512:334e:b0:542:218a:343 with SMTP id 2adb3069b0e04-542295989femr10755627e87.52.1735882631424;
+        Thu, 02 Jan 2025 21:37:11 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045ad99d6dsm47284711fa.28.2025.01.02.21.36.19
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542238215c1sm3942084e87.206.2025.01.02.21.37.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 21:36:20 -0800 (PST)
-Date: Fri, 3 Jan 2025 07:36:18 +0200
+        Thu, 02 Jan 2025 21:37:10 -0800 (PST)
+Date: Fri, 3 Jan 2025 07:37:08 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Marek Vasut <marex@denx.de>
 Cc: dri-devel@lists.freedesktop.org, 
@@ -69,13 +69,13 @@ Cc: dri-devel@lists.freedesktop.org,
 	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
 	Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/4] drm/lcdif: add DRM_BRIDGE_ATTACH_NO_CONNECTOR
- flag to drm_bridge_attach
-Message-ID: <a62utyd6bjhx33ru2aaxwiesexcltbgdcvhgd57c5uyl3htuoa@2kdgodqrqabu>
+Subject: Re: [PATCH v3 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Message-ID: <elhtblbv265iorfwagrdenkujrbufakqakgajkdmldcen3xrar@plu5h3jrfqmh>
 References: <20241231192925.97614-1-marex@denx.de>
- <20241231192925.97614-3-marex@denx.de>
- <u4hjoteybchte2fdmxle5rsu5jbohm7hjjoejrxiqa6lszqm56@6facok3v55kg>
- <2f2bdcb1-6d83-4939-9dd0-3fb206202273@denx.de>
+ <20241231192925.97614-2-marex@denx.de>
+ <sjyw3afx5qyrupf5tixgtubevmklgmstjvj3hjt5xukzmgluuv@47j6afzl5dp6>
+ <549d96ee-a675-47fd-9af0-0dc05744591c@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,48 +84,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2f2bdcb1-6d83-4939-9dd0-3fb206202273@denx.de>
+In-Reply-To: <549d96ee-a675-47fd-9af0-0dc05744591c@denx.de>
 
-On Fri, Jan 03, 2025 at 12:20:19AM +0100, Marek Vasut wrote:
-> On 1/2/25 6:58 PM, Dmitry Baryshkov wrote:
-> 
-> [...]
-> 
-> > > @@ -97,13 +100,36 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
-> > >   			return ret;
-> > >   		}
-> > > -		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-> > > +		ret = drm_bridge_attach(encoder, bridge, NULL,
-> > > +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-> > >   		if (ret) {
-> > >   			of_node_put(ep);
-> > >   			return dev_err_probe(dev, ret,
-> > >   					     "Failed to attach bridge for endpoint%u\n",
-> > >   					     of_ep.id);
-> > >   		}
-> > > +
-> > > +		nextbridge = drm_bridge_get_next_bridge(bridge);
-> > > +		nextbridge = drm_bridge_get_next_bridge(nextbridge);
-> > > +		/* Test if connector node in DT, if not, it was created already */
+On Fri, Jan 03, 2025 at 12:22:34AM +0100, Marek Vasut wrote:
+> On 1/2/25 5:55 AM, Dmitry Baryshkov wrote:
+> > On Tue, Dec 31, 2024 at 08:28:49PM +0100, Marek Vasut wrote:
+> > > The dw-hdmi output_port is set to 1 in order to look for a connector
+> > > next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+> > > The output_port set to 1 makes the DW HDMI driver core look up the
+> > > next bridge in DT, where the next bridge is often the hdmi-connector .
+> > > 
+> > > Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+> > > 
+> > > Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
+> > > the oldest commit which adds HDMI support is commit:
+> > > 
+> > > 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
+> > > 
+> > > That already contains the HDMI connector node. Most follow up additions
+> > > of HDMI support to another devices has been a variation of the same commit,
+> > > including connector node, which is the proper way of eanbling HDMI on the
+> > > i.MX8MP.
+> > > 
+> > > The rest should be covered by output_port_optional which should make systems
+> > > with DTs without HDMI connector node work, but such DTs should be updated and
+> > > the HDMI connector node should be added.
+> > > 
+> > > Signed-off-by: Marek Vasut <marex@denx.de>
+> > > ---
+> > > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> > > Cc: David Airlie <airlied@gmail.com>
+> > > Cc: Fabio Estevam <festevam@gmail.com>
+> > > Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> > > Cc: Jonas Karlman <jonas@kwiboo.se>
+> > > Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> > > Cc: Liu Ying <victor.liu@nxp.com>
+> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> > > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > > Cc: Robert Foss <rfoss@kernel.org>
+> > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> > > Cc: Shawn Guo <shawnguo@kernel.org>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Cc: Stefan Agner <stefan@agner.ch>
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: dri-devel@lists.freedesktop.org
+> > > Cc: imx@lists.linux.dev
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > ---
+> > > V2: No change
+> > > V3: - Update commit message
+> > >      - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
+> > >      - Enable output_port_optional
+> > > ---
+> > >   drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
+> > >   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
+> > >   2 files changed, 3 insertions(+)
+> > > 
+> > > diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+> > > index 9a480c6abb856..db5c8a76193ac 100644
+> > > --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> > > +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> > > @@ -17,6 +17,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+> > >   	tristate "Freescale i.MX8MP HDMI-TX bridge support"
+> > >   	depends on OF
+> > >   	depends on COMMON_CLK
+> > > +	select DRM_DISPLAY_CONNECTOR
 > > 
-> > By whom? And why?
-> 
-> By the HDMI bridge driver, see 1/4.
-> 
-> > There is no display-connector bridge, but there is a
-> > normal bridge chain, you have passed DRM_BRIDGE_ATTACH_NO_CONNECTOR, so
-> > now it's a proper time to create drm_bridge_connector. You have added
-> > the next_bridge_optional flag, but it should just prevent the dw driver
-> > from returning the error if there is no next_bridge.
-> So what exactly should I do here ?
-> 
-> If dw_hdmi_parse_dt() only exits with 0 if there is no connector node in DT,
-> I don't get any output on the HDMI. I have to create a connector in the HDMI
-> bridge driver instead and not here, right ?
+> > I was going to write that it is not to be selected by anybody, but then
+> > I stumbled upon meson driver, which also selects the symbol.
+> > 
+> > I still think that it is not to be selected by your driver as there is
+> > no direct dependency (and there can be other bridges inbetween or the
+> > bridge chain can end up with some other bridge). Such decisions belong
+> > to defconfig or distribution's kernel config file.
+> Wouldn't that only lead to unnecessary surprises on user side ?
 
-No. Please make dw_hdmi_parse_dt() return 0 if there is no connector and
-the flag is set. Then create drm_bridge_connector here.
-
+This is of no concerns to Kconfig. You can't select all drivers that can
+possibly be used with your platform / driver. `git grep
+DRM_DISPLAY_CONNECTOR`.
 
 -- 
 With best wishes
