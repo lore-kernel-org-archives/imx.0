@@ -1,83 +1,81 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CA32E401
-	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 05:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F376B19F115
+	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 05:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735882426; cv=none; b=CwUBLOq4VCvW+OdFEbA9Nk9xCerA55neRYOj+FCsk7cMz0c2Xpop7OtooRN5lGbxxMIk00/1NpFjYIZZ5agmORFwFE3Hs/CUVLAequhitoQV8qte+zRZZm0WOaBrS5U8ZAJwg5sa6PS4Ax6q68aUH1Bu+Ts88eUlqOr+EiuELUU=
+	t=1735882585; cv=none; b=TFMgPj0SsKY3iIMNgW180C0cDUpULEczFcAFRES9CwsC68EwmJDSzQfl8uCDk29/3fs3Y1iMOyWitJ5+2kVknEIw0dmJ8PYwKdxpFrHQqiTP+DaWlwdB8nCIpNIX7T/Y2GGtgC184jKHQGWOraVcDJIHYxsuAK9Ih2DQoeF7i9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735882426; c=relaxed/simple;
-	bh=5o+fZ5vS6zENX6ARZ8J1kYOLho4QnIT89p4IlB2FjgM=;
+	s=arc-20240116; t=1735882585; c=relaxed/simple;
+	bh=9okAlr1d9wvf4E6yVwtQr6UO2uUHaXRd4lakH0Wf+PI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IxFc1Hf8QpeVwUfc6ZSMzP8QFSeV2Wqs00IyGK1s/bkdx33+0CXCg5ndLeEmS1BPyMUp78vN64DBk4Wn7FTTwPCQL6UYooUTr9UJDHVyDFpKr8na47AN7nMlLIZOztP7uzOFm2arRCqaV1UocxbEDdmxxofgNZcQ6P836Bk93ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TIbfeHuW; arc=none smtp.client-ip=209.85.167.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=eGLcCjoGW2XxiaquHTnGRkqzmUbsI1CaX0OnaoV1m7YUUTtFfIeEhqQq0JeReZEac0rp1EUOkcE2akGGmct4JT74Qy9ZZG3ZZxClIuguYW/5Guo7Tau4ReKb/03Okq77uH9DCpKr0R2yYjl0Td8RddhZhXRWuLYK1QT8+wq0gEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ncUPTYo1; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TIbfeHuW"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5401bd6cdb7so12591329e87.2
-        for <imx@lists.linux.dev>; Thu, 02 Jan 2025 21:33:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ncUPTYo1"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso128169921fa.0
+        for <imx@lists.linux.dev>; Thu, 02 Jan 2025 21:36:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735882422; x=1736487222; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1735882582; x=1736487382; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HUrhr336s+60zt23QDWZqcGTF0DZKHiNks6mhysqyVM=;
-        b=TIbfeHuWPjR+erIGoNvOFLwKXqzf403Lm9DWpfUA+YrIJSqOEyNEByJcI0EcSC0g7I
-         qQ+4PaFtpidpMHvV7jQ4jTH4N0iaZys+vHD1ZayX6LZ7v/NBwfB5Ql15EyWFe3yLcyRI
-         3NtGk5+baRlbEDuus/ZdsUtuUEitXalCE1ID9D5RkfZuWriCrXbX9JBAs1ZcIKAIwnNZ
-         jhlZO2CtU17nf5cuEY1eum6gDE1Z8/qYsGdffpBAEQrsoddWXS2Cc6MbKyfWp1uWlJzZ
-         YOVrJBLHEsdiRZBxm9DLQz0gdGjSxvV47tsHjLM/tIMjbHC64jAy1Rt0hop/yXQm/h5d
-         HSEw==
+        bh=MmN8unikKCAbDTYmOgv4w7VHd2QHTqvHtpUA+yq5Q+w=;
+        b=ncUPTYo189+TCv5z5Jfm7rqwht3cGm0UpKFlQocWgp8ybUHOCZhkYBk2yKCjk2y6yZ
+         ap1VMSsudDGDyaEVwlGlNlA84nDwNOJLtLYDA124o5krm4isMinERK751S48dtcXyC2f
+         QppdrJICtrhqxfpwvWLmd1tMNCVRYq15p3NTqY1bm9dkVOGeztkJT+Tm8EQj7FxXDg+K
+         KVb4Pmom6JBnxv+FugVJZSi8s5yI1W0lVH624fQ38NjtBNQ0tnenAgyx1hqeg4l7MvWF
+         y92QQoXCx1l3HkvW2Yc/BtYVpm1YNt6c1sU2QVA0cc9DjGy/nGHLcgagc8zpb1LKGOVH
+         nMSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735882422; x=1736487222;
+        d=1e100.net; s=20230601; t=1735882582; x=1736487382;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HUrhr336s+60zt23QDWZqcGTF0DZKHiNks6mhysqyVM=;
-        b=UYkrjM7vBWWFld9HyAYwp4/zTuZ1HAkDqekzCfZqSmOmQp22usaGlqgWEAZ4wTStgI
-         GTT+F5HfqdPtwAlQ0uCQd7v7YYdcIb8ZHzkW0R4po60losBPiHenzOYCn6nMgqWPa512
-         MNT3WknXkJyPqcmr/kHgwoD57/Er6W6UF8igS/r4w7wmU/BSBtIyeB2yhYGqdCQEorHk
-         h0vVKRTt/dqv872aW5mdiMdTWNMxUZ2hPdV1kj29YffZV0NBiMmuR7P5U6LIeGgwh+am
-         8gvSi6pSVfwmJjTUduOnS+lxmIceq5WQW+zcxpj/GTxkaaRqSSii317dvh3WB4F3s9aS
-         5DZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPYiyL6HlBuPbIJhQwY8vi1st8bkVp0GtVmSq44vPHje8TvmXflLuN7JOM4b2opeqmRYE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUy++RsdVQFqjAY9mMhdxTcLutRZo5QOOZKuDVAYcJX973YBmW
-	v3i49dfY6D4yZKFq4qJyUSJ1H68GLq7d8cia/ti+S56r641ouPYdViLjG/8D5DM=
-X-Gm-Gg: ASbGncslCHd1txE/5ZvcIHMgA6k+JOjb3ZaAtI+R90S5PVhopnH7ZwpN/SVVdNqhhcp
-	2MCMG0dEZFFqeuVgsZxVTjDWa/ETwqbLMv1voMJvEbU9MokCKQXfo0yl/wQB6KdKRPTGWw4tMPY
-	tm90vkrmGxbpyee9ieehfub2hG03CDrS563QoQuIS5mT1hDdYsRmBk/SzOB9Me84R3TCVa5KObJ
-	lQOfMv3ZuBs2iE1Uz6Dw1KZA4vgaCqoh30nkZNQ4Vkw/9TFMaAhje7F+LSiIxvDUEfwS1BgSqwC
-	ieoEK8gHbM21gY2VHGYb35fNh3Fdxe9foVct
-X-Google-Smtp-Source: AGHT+IEsLjhbu2jSaiZPN8bLQCUM6NVU655VzJ0kcFZvInsNgvUMyCwvCcQ0/H8BekM4Tf47nmpS8w==
-X-Received: by 2002:a05:6512:118e:b0:540:22e0:1f80 with SMTP id 2adb3069b0e04-54229530295mr13502516e87.20.1735882422120;
-        Thu, 02 Jan 2025 21:33:42 -0800 (PST)
+        bh=MmN8unikKCAbDTYmOgv4w7VHd2QHTqvHtpUA+yq5Q+w=;
+        b=QW1HG/wpCv1GVh4eu89M1l1Wc88x3WH3343u9coJEkQbvswVY3yxTnEdQuMfjifQ0G
+         hXnNajsFRlZM9hp6jWS7i2sDLxaLA/qAuZUYIWBBhq3v66/DF53nVmr1jkP5uGOHnYVR
+         Tmd7dgGjZ+iYI8eSCF+eWXfL62GK+bD/yInKRIhVvB/cM/BJgcdb4ozgkwZ9HPzMFBIz
+         2EVeTpi5s5oHakcA/tcAD+dPdSO4enmZCY1Cb4EIPjDu3NVxeLeBBb2QjEkSlzTTHlHm
+         E2nKMHocE1vTeHojGu/N9FuBXJCOMQz8GkB64mwxhXWkFCxr+I+HVkUYG34rjphBzdsx
+         Q2Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlK/mGQZuv9tPtVLb6HvVqSyAupTZq6Ci6tca7j3bGLNPjy4qlWcNLOX8aATkiAsncgxQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx09vjBKBh1gAVqvwExeamyhaR+sDJhafyqPbC0Z9Gj3pFXK24b
+	kw68LQvXBaQbEGvZmVw/YDQQTVe5YlDEm1aBpqadjGNV1ZgYjNLITOQIxaOSgDQ=
+X-Gm-Gg: ASbGncsI1eHtWc78PZF3uJUUCpQi4sFIU1e5d0eE2WBj6Ne0VaWbgZTjo9zeH/Jr70u
+	yiPAeEtKyydZ/6+NI73AIxzEDqoKwmMfW2M33N6U7FDQYi8bXNKO1Pag9HovIt4F371w/9eBfh3
+	DVmmE4S6STHyvlp829Rp8CqK9RgCrhRMAqHTvd/BYMOdZe+KkCmI+C5Sxk1L0c0z5ajhzZTf+dK
+	m2jmqby0aq7bkovWZ6SZnsmoAd9UC3+dgq+OlXaVpJQhfeSlzuxAuEQSN2mO8QMJA3bzovWOB90
+	pWOOOlzdI0yrtUrSAdZuZ1WopFHIcqJJACL0
+X-Google-Smtp-Source: AGHT+IE6OID3IdhzMP3XEYNXHpLMaRxF1DCc2ymnBRQhO5cl+gFLOI6zrATEO677AB0hiGN2d3yNug==
+X-Received: by 2002:a05:651c:2114:b0:300:38ff:f8cd with SMTP id 38308e7fff4ca-30468543d63mr161870081fa.9.1735882582025;
+        Thu, 02 Jan 2025 21:36:22 -0800 (PST)
 Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223813595sm4103333e87.136.2025.01.02.21.33.40
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045ad99d6dsm47284711fa.28.2025.01.02.21.36.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 21:33:41 -0800 (PST)
-Date: Fri, 3 Jan 2025 07:33:38 +0200
+        Thu, 02 Jan 2025 21:36:20 -0800 (PST)
+Date: Fri, 3 Jan 2025 07:36:18 +0200
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
-	dri-devel@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>, Liu Ying <victor.liu@nxp.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] drm: bridge: dw_hdmi: Add flag to indicate output
- port is optional
-Message-ID: <zijtpn55edeeepzfqiv6d5xv3vyaircloeaa2pbauwlxow7h3a@a5v6p37o3ppq>
+To: Marek Vasut <marex@denx.de>
+Cc: dri-devel@lists.freedesktop.org, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie <airlied@gmail.com>, 
+	Fabio Estevam <festevam@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Liu Ying <victor.liu@nxp.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
+	Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 3/4] drm/lcdif: add DRM_BRIDGE_ATTACH_NO_CONNECTOR
+ flag to drm_bridge_attach
+Message-ID: <a62utyd6bjhx33ru2aaxwiesexcltbgdcvhgd57c5uyl3htuoa@2kdgodqrqabu>
 References: <20241231192925.97614-1-marex@denx.de>
- <20241231203136.GD31768@pendragon.ideasonboard.com>
- <88778e2b-8c43-46a1-bb79-0d9c968a5233@denx.de>
- <20250101223620.GA7206@pendragon.ideasonboard.com>
- <ac4kkjv2nmziu6pd6vkuxbllhkqaueu32snfetpemtu2l5s6ud@cvystps3734o>
- <20250102083038.GB14307@pendragon.ideasonboard.com>
+ <20241231192925.97614-3-marex@denx.de>
+ <u4hjoteybchte2fdmxle5rsu5jbohm7hjjoejrxiqa6lszqm56@6facok3v55kg>
+ <2f2bdcb1-6d83-4939-9dd0-3fb206202273@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,82 +84,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250102083038.GB14307@pendragon.ideasonboard.com>
+In-Reply-To: <2f2bdcb1-6d83-4939-9dd0-3fb206202273@denx.de>
 
-On Thu, Jan 02, 2025 at 10:30:38AM +0200, Laurent Pinchart wrote:
-> On Thu, Jan 02, 2025 at 05:26:50AM +0200, Dmitry Baryshkov wrote:
-> > On Thu, Jan 02, 2025 at 12:36:20AM +0200, Laurent Pinchart wrote:
-> > > On Tue, Dec 31, 2024 at 10:10:51PM +0100, Marek Vasut wrote:
-> > > > On 12/31/24 9:31 PM, Laurent Pinchart wrote:
-> > > > > Hi Marek,
-> > > > 
-> > > > Hi,
-> > > > 
-> > > > > Thank you for the patch.
-> > > > > 
-> > > > > On Tue, Dec 31, 2024 at 08:28:48PM +0100, Marek Vasut wrote:
-> > > > >> Add a flag meant purely to work around broken i.MX8MP DTs which enable
-> > > > >> HDMI but do not contain the HDMI connector node. This flag allows such
-> > > > >> DTs to work by creating the connector in the HDMI bridge driver. Do not
-> > > > >> use this flag, do not proliferate this flag, please fix your DTs.
-> > > > > 
-> > > > > What's the rationale for this, what prevents fixing DT instead of using
-> > > > > this flag ? Adding such a flag will most likely open the door to
-> > > > > proliferation.
-> > > > 
-> > > > See the V2 series discussion, there are a few in-tree DTs which do not 
-> > > > have the HDMI connector node. The rationale is there might be more and 
-> > > > they might come from vendors, so this flag is necessary to work around 
-> > > > those DTs.
-> > > >
-> > > > > If you can't fix the DT on particular boards, patching it could be an
-> > > > > option. We had a similar problem on Renesas boards, which we fixed with
-> > > > > a DT overlay, see commit 81c0e3dd82927064 ("drm: rcar-du: Fix legacy DT
-> > > > > to create LVDS encoder nodes"). This made the workaround self-contained,
-> > > > > and allowed dropping it several kernel versions later (in commit
-> > > > > 841281fe52a769fe, "drm: rcar-du: Drop LVDS device tree backward
-> > > > > compatibility").
-> > > >
-> > > > Frankly, I would much rather fix the few in-tree DTs and mandate the 
-> > > > HDMI connector node in DT, which would keep the code simple, rather than 
-> > > > maintain a backward compatibility workaround for problem which might not 
-> > > > even exist.
-> > > 
-> > > The in-tree device tree sources should be converted as part of the
-> > > series, I don't see a point trying to maintain backward compatibility
-> > > for in-tree DT sources.
+On Fri, Jan 03, 2025 at 12:20:19AM +0100, Marek Vasut wrote:
+> On 1/2/25 6:58 PM, Dmitry Baryshkov wrote:
+> 
+> [...]
+> 
+> > > @@ -97,13 +100,36 @@ static int lcdif_attach_bridge(struct lcdif_drm_private *lcdif)
+> > >   			return ret;
+> > >   		}
+> > > -		ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+> > > +		ret = drm_bridge_attach(encoder, bridge, NULL,
+> > > +					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+> > >   		if (ret) {
+> > >   			of_node_put(ep);
+> > >   			return dev_err_probe(dev, ret,
+> > >   					     "Failed to attach bridge for endpoint%u\n",
+> > >   					     of_ep.id);
+> > >   		}
+> > > +
+> > > +		nextbridge = drm_bridge_get_next_bridge(bridge);
+> > > +		nextbridge = drm_bridge_get_next_bridge(nextbridge);
+> > > +		/* Test if connector node in DT, if not, it was created already */
 > > 
-> > DT is an ABI. We are supposed to keep backwards compatibility with
-> > existing device trees (at least for a while). I'm adding DT list and
-> > maintainers to be able to provide comments on this topic.
+> > By whom? And why?
 > 
-> Backward compatibility is about supporting old DT binaries with a newer
-> kernel. There's no need to support old DT bindings in in-kernel DT
-> sources. By definition, if someone compiles a DT from a newer kernel and
-> installs it along with the newer kernel, there's no "backward"
-> direction.
+> By the HDMI bridge driver, see 1/4.
+> 
+> > There is no display-connector bridge, but there is a
+> > normal bridge chain, you have passed DRM_BRIDGE_ATTACH_NO_CONNECTOR, so
+> > now it's a proper time to create drm_bridge_connector. You have added
+> > the next_bridge_optional flag, but it should just prevent the dw driver
+> > from returning the error if there is no next_bridge.
+> So what exactly should I do here ?
+> 
+> If dw_hdmi_parse_dt() only exits with 0 if there is no connector node in DT,
+> I don't get any output on the HDMI. I have to create a connector in the HDMI
+> bridge driver instead and not here, right ?
 
-Hmm, nobody is asking to provide compatibility with old DT bindings.
-However supporting DTs with no extra "display-connector" bridge after
-the DW bridge is exactly "supporting old DT binaries" in my opinion.
+No. Please make dw_hdmi_parse_dt() return 0 if there is no connector and
+the flag is set. Then create drm_bridge_connector here.
 
-> The backward compatibility requirements aim at ensuring no breakage when
-> upgrading the kernel without upgrading the device tree. As I mentioned,
-> there is no regression if nobody is affected in the first place. Proving
-> there is no affected DT in the wild is difficult though.
-> 
-> > > For out-of-tree sources it depends on how likely the problem is. There's
-> > > no regression if nobody is affected. I personally like restricting
-> > > backward compatibility to the strict minimum, to ensure that all new DTs
-> > > will use proper bindings. Making the backward compatibility code
-> > > self-contained helps there, and we could also print a loud warning
-> > > (WARN_ON() seems appropriate) and set a date for the removal of the
-> > > workaround.
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
 
 -- 
 With best wishes
