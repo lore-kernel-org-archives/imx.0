@@ -1,264 +1,137 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2053.outbound.protection.outlook.com [40.107.20.53])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B39938DC0
-	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 09:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735897329; cv=fail; b=cyngokqNohl2lHBChRjqxIkGiL0GBUe3JtgmO6cfJKZtpRyy1RhXAbDeaKPxl41qVyU8YOTV+IbBilzSC3j3nPjAFo6c6iE7m2w7nk8OIsYnyEO1gr3gMoYc0RIaAIxxlIIhx7Mxan5vb3Mgj3xLjqPdtzy2kjzI8j3mtSiGO3g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735897329; c=relaxed/simple;
-	bh=7gcsAybzLDc5mNJKtbXwn6ltXFZCvM4DABPWrwtIVkg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iicz+YOre5SP/stTwzSgiRjFr+jXmQJAYmxn7B8DYuhU5eLpzLJqX68kAq26f0X86vTg20Zq357pP34lIdFppIVUjNzD/B0cgt+hfz5X/zU0i8occJ49SelAbjepQzIyF+Inq0W0BimyrVwrHl5bDAr96tK+h9l8elmVOpsQu5E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kRHZ13jU; arc=fail smtp.client-ip=40.107.20.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0BB192B88;
+	Fri,  3 Jan 2025 16:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735921247; cv=none; b=HobN7Mrpdhn7fDSKNjE0ixtYUubDEwAY3gDCo9X4sYBcGIQey2k9owzmwnqCG8s3n8gq2/qYcmH/PYkG1FV4fZD1aO761IMbrQo/+vuAbex2Jn4i74yxN8cH/Q3J3aeZRFiwgYcTONzpq/qseioS8RyonS0OHkxxY5XSMDYwGko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735921247; c=relaxed/simple;
+	bh=s/azmUCMfyDwbtYMhSXYBEe/qseumADYqEPrgpJX78A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W2ZMhOyQ1Cd8Y8fHOt/gOajUPNXEhjVSERgt/yp1eMt3mW4aMy7LvwX6bjpCFkfxzcdl6Pxo0brEIrQz8g/uO4h4vvCKbvi9rMljqGMnR1r++xGAeFi517+xAVyL0rxGJ2GwQqQvuyWx9qstakc3qd6havT30vCG+Tfachqt1/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QKkMte/r; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kRHZ13jU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ay4Su3Rp3o7lXuzezW0p55CfB39bBTtofBU/fksnoeUJGBbie5WSdwWJzgitfyCmgkYam5mTSs2XAJzIT85p7Cuo47GqJP7mopx9Ga6jcQlFUS+NWoyZ6MaWvwvxjfvYVwRuFPw88QIA1nrXtvWQrTi7qrzVcTsfmsfyAgQQJxBBdNrR9pFXPHVgDfb2+cBOzf8zNiOSUAfkVvZq7qrrYIf2OXuVCh8bKAcLu7xCXwPEfSs+6glz+LG453lRj8dOM/u6i081gLlGQYVSCLkBxzM8JioyfR2I5d3sGp9KKKWjHRlmckFGpPx7ZaJdtFB4TRuoKv3plNOgatQi/3fMqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ur9fVBsRlBZrQZPYJ4wG1TMCoiPBL7pTpm+rrjvX/uk=;
- b=xIFpnJw7dBlPniiqkkOXmwRlay8u3fwWWQvPgQ7qTQ7GFBNON+coqGseB1OTS1iTbCoHLFCWRPIwefzT9VbQTBtsZuxuFsFk5+Q8VxK5vVaWl0XBYSRfEqVB5mvHNinUMDPwoqEpkLjp/rrhWioHQwXiskvmFwP0w5S6PMPwRokvuJZ3J5/Stl6xF+9Pk+S3xC/AIlRNihJZmSMCR/A1M1dRZaDgTQu3HdUvE+Sck29y321XukJjcHdOnNRH7piFbcm8LoF963btbDaynbvMwrHJlMYP13fa1pLH6pPb86IkGtsqSvm9F5Ier2DCnrBZdh3X2K+hE6Shhg10P9WpsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ur9fVBsRlBZrQZPYJ4wG1TMCoiPBL7pTpm+rrjvX/uk=;
- b=kRHZ13jUKXRodsOJ/vUO/tTGUcUJQMGviPV8qQfPqeGX0NDGTe+06xzldR6KMPm4w/LOcYRsxkAq4hkAMSIKgxYStY+X/5Wip0qSiVWMZ/9ktrWHiKr4n43B8VoSTk71xo9vXor8hRMtk4Erzyn4BPEWAo6ATm5dcvVsFOmYY8y2KKP/DwIZjUjQbgYzrzReY5iI8Mu4jeIKt6YTk9uG/+HTyx/M8YNG0xe8bcc+WeOkszUv3uE451Gg/4HCm+/C9Y1xe46bNYrLgZzWaS7VIJH6IdxYjMiyik7Qc8ioJtDJ6CkbP4oZZv8zwMB3Mv/RIDWc/K7brQSaiL6VTfQWwg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by PA4PR04MB7934.eurprd04.prod.outlook.com (2603:10a6:102:ca::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.14; Fri, 3 Jan
- 2025 09:41:59 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8314.013; Fri, 3 Jan 2025
- 09:41:59 +0000
-Message-ID: <f8572239-1398-4737-af8d-d920f089bb49@nxp.com>
-Date: Fri, 3 Jan 2025 17:42:47 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge
- DRM_BRIDGE_ATTACH_NO_CONNECTOR
-To: Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie
- <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- alexander.stein@ew.tq-group.com
-References: <20241231192925.97614-1-marex@denx.de>
- <20241231192925.97614-2-marex@denx.de>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20241231192925.97614-2-marex@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0018.apcprd02.prod.outlook.com
- (2603:1096:4:194::18) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QKkMte/r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=B2WYsGMPQpFANCHXxl2mkfQyQ24a8EKaADn28F99e5I=; b=QKkMte/rHHfXcBmU0nceXRubrn
+	iQeMg4csyJfv3OOg9qe1ys9p6TcH3O+Uf7s16qM+6WDAiPySZIRXwyfDVd+723zmFSHs2cCwFF1NX
+	kycyeuUZRyJC6CiabE2wIamZg+SUnhNRrzGWcz+ye5LemvpCn9yPnrtYm+GrJjRGMyYU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tTkPb-0015Hv-95; Fri, 03 Jan 2025 17:20:35 +0100
+Date: Fri, 3 Jan 2025 17:20:35 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, christophe.leroy@csgroup.eu,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH net-next 01/13] net: enetc: add initial netc-lib driver
+ to support NTMP
+Message-ID: <829ccd93-8b4e-4dd9-bd15-58d345797aca@lunn.ch>
+References: <20250103060610.2233908-1-wei.fang@nxp.com>
+ <20250103060610.2233908-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PA4PR04MB7934:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fbc768d-412c-4c3e-b8c5-08dd2bdadeb4
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?NXBTOGl2empGbUFMamxGeFFsS2FFa3poaVRJMnhKdVZZYTJPUEdOZjZMUUxK?=
- =?utf-8?B?M0phbFgwUUpuSTNiMHBnRm1NWHQrTkpQeWs3V1BMcnpESE9adXo1dXRoSVBy?=
- =?utf-8?B?M2JMdm1Ra3k3azlPVkJtZzFVQnZBT0p5MTdGblFRUTFpMHZYaFBzRE0zUGZC?=
- =?utf-8?B?Sjc3Z2s4NnVBQ1ZyODI5WWFPelNBUVhMd21JQVZ5Uk94bFJkYU1vZEc3Tkov?=
- =?utf-8?B?R1lGV051VWFNd01USS82MEs3Q1VCTlllNmtPWTNaU3NxVUpnOWZjaUNPVHg4?=
- =?utf-8?B?M3F3a2EzMzVaRHFCZkZLYVVyejM2TFhJVVFFZXRmbDE0ajYreWNVMVVJY1FU?=
- =?utf-8?B?K1NxU0dqOWtydGpSazFKVlN2Q2ZKNHM2b1loZDBlbUpBc2NZMXl2bFFnTmhP?=
- =?utf-8?B?ekZFeE1mUnV2L0k0Y05QQXJZakZTWUpZdzJyQ3phWFhwNEVVeE5NRitsK2Ny?=
- =?utf-8?B?OW52cnZNbHlib0E2b3NKQzV4SWszcmNXR0w4Q3MzaTBVYktnZ2dEdjJhbm1P?=
- =?utf-8?B?alJGZnJNM3ljUjBiK0ZsT1UwTVJxU2FBN2RMaHg1V1YxVzVqTk11cmRwWU9Y?=
- =?utf-8?B?ZDdlMmFMMFptV1NVVkdzb1NFZ0FRR05UV05oWlpiZ0hEL3A2SFUyM2dPMTk1?=
- =?utf-8?B?Q1BtRStmUHlDNnJtemU3dUdSMys3aUZnQWxkeFRMRTdNWUlYakZ6NGc5VVA0?=
- =?utf-8?B?Y2dEQ2lGUUhuUVNpTUJZcWZYMk83YVRvUUxiQ01pTDJDeWNWWklMU2xQY3BD?=
- =?utf-8?B?RWlZdUs3cmtDbG84SDFCZlhESzM3ZUkxRWpvVWM1YVVYSjhtWHN3UWdRR09S?=
- =?utf-8?B?SkIzdVV4c0RHWWFDQllsZzNnUHN4NEhYdTh4RjVjZTFQb0NKTFZEQWJIRS9B?=
- =?utf-8?B?T083a1o2dnZFMi9GWDhLN01wSVo4TllPekdlbzFxb1lKL1l6cjFVcGE4V0Ry?=
- =?utf-8?B?M3RVbFljZUEvdWpXRk9uMGZtZTJUbzkzTmFGaVkwaDVhUG9nRUhtQkdadXd2?=
- =?utf-8?B?QWlQS3VCY2cvaVphZHlsZmMrYUIvcWlqcHU4VHl2OW5WcHl4YU1OaGJaSkhl?=
- =?utf-8?B?VmxwYW9LMnREQ01Pb1JIQjl4bS9YYkdLS0w2S3I5bFB6UWVYZG9iNGZDbXFF?=
- =?utf-8?B?ZmJQUXovVll6SmZJd0c2V2g2MEdaK01ncjc5TEIvam1wMWFXUVpyc1BvbVFh?=
- =?utf-8?B?QWlxWFN3bW56R1V1NnRWWjc0c1F0QTRxdWN0RmVQcnB4SUk0OVlYNXhwcjU3?=
- =?utf-8?B?d1JTVU1TSVo3MkFhcis0RXA1UkZrK1BjVFNHT3dSYitOT0xVMmJRM3ZaSkNr?=
- =?utf-8?B?QkU0QUlDZEQrVmxRUXArVTgrSkN1K2lHbElZVzJsQ0xDTzh0bFNZSHdTVmgr?=
- =?utf-8?B?UTBTbHZ1NzdoWHpxTndIT25pdEJFc0VFKzhYZXZPNnhlTDRDcjZ2UjJmU1Na?=
- =?utf-8?B?VDgrNDBqK1RxcTNsNXZvM1BxYkd2b0NxeTRUTG1tN3dkbERKNXY5Q1VTem5N?=
- =?utf-8?B?dERuNWRaNWs4VkJsSkZaUkRQYnBJUjBoeFZwMXpYNnVOZ2E1Qm5aTU03OFgy?=
- =?utf-8?B?NVgzYkl6M1FBWXJNYUZyR3o0aWZFZ2JpREpzSTlmZ201V1V5YW5Ka0pJRTNE?=
- =?utf-8?B?ZkNmTVlNNTR3Y25Ec0NadnZLU0NhNFhuTVN1WmtlbTNpMmRiVXBoU3A5bzJW?=
- =?utf-8?B?VllaY000T0M0RFhOT1IxYkhCd0EybjlqNlpjdVNNYTdiTlo5NHJsclYwL3Jw?=
- =?utf-8?B?Nk8rVVE3aTdMeEU4eUk2K2RiejdpdDdSbzFPbGRyUUJGaExnYllrQXZ4eVA2?=
- =?utf-8?B?WUoxaEFZczNoNEZCMEZFektRRUhYdnpiUWZJbVV4WlZnNG5TOUgzQS9UTi9C?=
- =?utf-8?Q?zimtU1JskuO15?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?TDVNSlNwdC9xN20raCtxY3lKanlJREZ6UmszaFMyL0xNNVRLc2lJbTllVGRr?=
- =?utf-8?B?dmY2TWtITEdUSi85RmdVUUhZQmV5Q0J5Tk5DM0pQamo4SEovcFNwZlBpMmRo?=
- =?utf-8?B?NHYzaW04UERRSkVxc3VidXV4RDB2Q1JoSGYyd1BlUXZWNWpxV3JRa0Ywakda?=
- =?utf-8?B?bHZLMmhkMGJWMGs3YkxhVUU5eGdqejY4QmZxUmhEaThBNTFjMDZ4YWRqUURj?=
- =?utf-8?B?WURTWEprN1hUNUw1ZVRVOVJ6Lzl6aCtnUDlEWDZyYThRUkFDYk13allqUlhs?=
- =?utf-8?B?T2dkc0dDdW9RNjQ1N05hM2piYjJSQ0MyNVVUbWo1M3Bib0hUMEZwak5iQ0Ja?=
- =?utf-8?B?ZFZ0UkxROFB0VVdNS09TY2tFaXAyTjhDc3FIV1Rla052TzAwOTAySHRBY3o4?=
- =?utf-8?B?aWJWL0M3dG9FQkRzNlVZdm1peEVidGtkdWZYVy9OK0J4NXk4akhmNEtabm9T?=
- =?utf-8?B?bGJOL2RzUk9Qc1Y1N21FWWl0NS90ZEF0cVY5a2IwTjVQYTZ0QWNYbCttb3lq?=
- =?utf-8?B?UmRqSmN1Vlg3Q0ZhVVdUcUtFQnRsTGxYaGFpYkhyOCs1Sm9QcUpONmNaazYw?=
- =?utf-8?B?SUxqU25malpSd2RFdUlUL280aFpWeGlCcHdLOXFpdnRRWjVXa2hMTHJTNE01?=
- =?utf-8?B?T3paK2wxbGNkbHJzcEIrcVcrRmtVdFNPNkFyNE9rN3VxNnozZ2RZOFg0bHNG?=
- =?utf-8?B?eGordnlLdVJ6NVdockNBMFk0Y2s2Mll6SEh0cVh2TVFGMTRZQVhQbUNMR01R?=
- =?utf-8?B?S2pvRWlRaU5kN09Wb2RiK0VIQVlmTGZvbHBZUVAyd0JxbWZnT1FGNGdzRk9P?=
- =?utf-8?B?ZmMza1hUVEFQY0tURjFSMlZzRXlZNExra0xtS3Y3Ri9yM29RT3FwOTFVQ1Rl?=
- =?utf-8?B?TXo0Z3NGVWYrY2FjR1BtS1lKUU5mdE5XRldGR203aG94ZmFDUDR2aTFiNU84?=
- =?utf-8?B?ekhoZDZOcVcxakJyU002VnNsanpJQzVsV1NMQ1dUcVA5S0JXS1ppVzQ2R1dj?=
- =?utf-8?B?NHRQNTVCeDIzcFdEUEdjYlRqWitWM2I3VlFJWXh3N1FPNXkxZ2RQN214UjFM?=
- =?utf-8?B?dEdvcTdCU25kZmY5Tlh6ZGx6eVRNWktOcnRXQTU2aEFwcHBHOE5Vdm82RVJ5?=
- =?utf-8?B?UzYwZW1iMElaL3o1M045MmJHcVNORmhQOVBFYUhxdEpYb3ZqT3g4OTljU1Ry?=
- =?utf-8?B?aUJsVzBXWEM1WnZ6WVd5bWRERHA2RURtY3hrYlhNL01Pdy83N1BjNkQyM1BV?=
- =?utf-8?B?cnMyMmwxN0RqNEpBL0REazZzU3RvMW9wZEFPL0tRWHJaWXF3Sno2ZDIwNVJJ?=
- =?utf-8?B?ZUozR1ZRUnhkZnpVWFhUbDkrUjNrYXZIY0cyQ0hBTzhKMDVWR0x2Zmg4RHdU?=
- =?utf-8?B?YThjY285TmU4a2ptMVpCaXdReHp2U2xSK3JaVXJqVmFMSGlZanEzY1BLSFVu?=
- =?utf-8?B?YTBjditNcFJrWHg1RFVOaHdzaWpVM0ZTck4yWmZpY1l1VWlhMlRCaWl1Z1o4?=
- =?utf-8?B?ZEo3WlRUdmxpaU1mRHhpN2NRSkhzdXVjazhSbDkyMXZQVlE5eFZyaC9kSTll?=
- =?utf-8?B?N3N3TFNxMjJ5eTlMQ1I5cDRPS3AxdzhYV3E0UmJkUGcvcWhjVFJRcFJwVTZa?=
- =?utf-8?B?NjVUVHZpYXZzTFAwYTdkNE4wS016ZDMyRGM5YzN3UjNxOFBlaDV4YWIrc0x4?=
- =?utf-8?B?TnNDVmRLUE4zMVlMNyswVS9STDQ0SWVXYWMxZTlHczhwUWRmcWY2eVNwa3ky?=
- =?utf-8?B?VlFwbWp6L2hMRDZXVkJlbytnZHV3RFpERzk2Z1N4SVE1Rnl0UTFPY1hPNmdQ?=
- =?utf-8?B?bnpOWWNRYXRabjFIcTdLSS81TFZQNDBXbXdBeFFBc0EzTXluM0tnRmRBN3li?=
- =?utf-8?B?WE5DZlhhUlZpbmkvZ3pZRElHTm1DM0gwTFkrRjRqRnp4QWhHQ1FZVUNqMkhY?=
- =?utf-8?B?cnZxc2RXZmtZUzZQR3pQR2xVK2lTTitvV2luM0lCVVd3N2tRUlRlUGYxNmdu?=
- =?utf-8?B?RUxjbi9ERTNuK1JKdzltVXozQmFMeE13UnZjWW5qbXBVV3ljcGxrN3c0clp2?=
- =?utf-8?B?VU5HL3Jjbk9zeUx1ZlJrcTJSVzErWWpJYlFqL2ZQWUZsR2VYMFlNTjF5RWJI?=
- =?utf-8?Q?UYrbsdaeXBXPm3/Am1bqCPTvS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fbc768d-412c-4c3e-b8c5-08dd2bdadeb4
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2025 09:41:59.7225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5ZMFYZ9xKC6/ScIS9MGMEBKtIp9mRDXFbGAx5ZHAEFHLrqG3VvCzCvboGDzKSoAJA8lkoGqXiLA0YZ4txJoIuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7934
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250103060610.2233908-2-wei.fang@nxp.com>
 
-On 01/01/2025, Marek Vasut wrote:
-> The dw-hdmi output_port is set to 1 in order to look for a connector
-> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
-> The output_port set to 1 makes the DW HDMI driver core look up the
-> next bridge in DT, where the next bridge is often the hdmi-connector .
-> 
-> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
-> 
-> Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
-> the oldest commit which adds HDMI support is commit:
-> 
-> 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
-> 
-> That already contains the HDMI connector node. Most follow up additions
-> of HDMI support to another devices has been a variation of the same commit,
-> including connector node, which is the proper way of eanbling HDMI on the
-> i.MX8MP.
-> 
-> The rest should be covered by output_port_optional which should make systems
-> with DTs without HDMI connector node work, but such DTs should be updated and
-> the HDMI connector node should be added.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: Jonas Karlman <jonas@kwiboo.se>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Robert Foss <rfoss@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Stefan Agner <stefan@agner.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
-> V2: No change
-> V3: - Update commit message
->     - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
->     - Enable output_port_optional
-> ---
->  drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
->  2 files changed, 3 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> index 9a480c6abb856..db5c8a76193ac 100644
-> --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> @@ -17,6 +17,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
->  	tristate "Freescale i.MX8MP HDMI-TX bridge support"
->  	depends on OF
->  	depends on COMMON_CLK
-> +	select DRM_DISPLAY_CONNECTOR
->  	select DRM_DW_HDMI
->  	imply DRM_IMX8MP_HDMI_PVI
->  	imply PHY_FSL_SAMSUNG_HDMI_PHY
-> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> index 1e7a789ec2890..3d63200e468bf 100644
-> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> @@ -101,6 +101,8 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
->  	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
->  	plat_data->priv_data = hdmi;
->  	plat_data->phy_force_vendor = true;
-> +	plat_data->output_port = 1;
+> +#define NTMP_FILL_CRD(crd, tblv, qa, ua) \
+> +({ \
+> +	typeof(crd) _crd = (crd); \
+> +	(_crd)->update_act = cpu_to_le16(ua); \
+> +	(_crd)->tblv_qact = NTMP_TBLV_QACT(tblv, qa); \
+> +})
+> +
+> +#define NTMP_FILL_CRD_EID(req, tblv, qa, ua, eid) \
+> +({ \
+> +	typeof(req) _req = (req); \
+> +	NTMP_FILL_CRD(&(_req)->crd, tblv, qa, ua); \
+> +	(_req)->entry_id = cpu_to_le32(eid); \
+> +})
 
-I mentioned Dmitry's comments in my reply on v2:
-https://lore.kernel.org/all/vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he/
 
-It looks like your patch set still fails to keep the behaviour of
-dw_hdmi_connector_create() as part of those comments. Note that it won't be
-called when the connector is created by the display controller drivers. CEC
-is impacted at least in theory and Alexander tried to test it with my previous
-patch set.
+These are pretty complex for #defines. Can they be made into
+functions? That will get you type checking, finding bugs where
+parameters are swapped.
 
-> +	plat_data->output_port_optional = true;
->  
->  	hdmi->dw_hdmi = dw_hdmi_probe(pdev, plat_data);
->  	if (IS_ERR(hdmi->dw_hdmi))
+> +int netc_setup_cbdr(struct device *dev, int cbd_num,
+> +		    struct netc_cbdr_regs *regs,
+> +		    struct netc_cbdr *cbdr)
+> +{
+> +	int size;
+> +
+> +	size = cbd_num * sizeof(union netc_cbd) + NTMP_BASE_ADDR_ALIGN;
+> +
+> +	cbdr->addr_base = dma_alloc_coherent(dev, size, &cbdr->dma_base,
+> +					     GFP_KERNEL);
+> +	if (!cbdr->addr_base)
+> +		return -ENOMEM;
+> +
+> +	cbdr->dma_size = size;
+> +	cbdr->bd_num = cbd_num;
+> +	cbdr->regs = *regs;
+> +
+> +	/* The base address of the Control BD Ring must be 128 bytes aligned */
+> +	cbdr->dma_base_align =  ALIGN(cbdr->dma_base,  NTMP_BASE_ADDR_ALIGN);
+> +	cbdr->addr_base_align = PTR_ALIGN(cbdr->addr_base,
+> +					  NTMP_BASE_ADDR_ALIGN);
+> +
+> +	cbdr->next_to_clean = 0;
+> +	cbdr->next_to_use = 0;
+> +	spin_lock_init(&cbdr->ring_lock);
+> +
+> +	/* Step 1: Configure the base address of the Control BD Ring */
+> +	netc_write(cbdr->regs.bar0, lower_32_bits(cbdr->dma_base_align));
+> +	netc_write(cbdr->regs.bar1, upper_32_bits(cbdr->dma_base_align));
+> +
+> +	/* Step 2: Configure the producer index register */
+> +	netc_write(cbdr->regs.pir, cbdr->next_to_clean);
+> +
+> +	/* Step 3: Configure the consumer index register */
+> +	netc_write(cbdr->regs.cir, cbdr->next_to_use);
+> +
+> +	/* Step4: Configure the number of BDs of the Control BD Ring */
+> +	netc_write(cbdr->regs.lenr, cbdr->bd_num);
+> +
+> +	/* Step 5: Enable the Control BD Ring */
+> +	netc_write(cbdr->regs.mr, NETC_CBDR_MR_EN);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(netc_setup_cbdr);
 
--- 
-Regards,
-Liu Ying
+I assume there is a version 3 in development, which will need a
+different library, or at least different symbols. Maybe you should
+think about the naming issues now?
+
+> diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
+> new file mode 100644
+> index 000000000000..7cf322a1c8e3
+> --- /dev/null
+> +++ b/include/linux/fsl/ntmp.h
+> @@ -0,0 +1,178 @@
+> +/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
+> +/* Copyright 2025 NXP */
+> +#ifndef __NETC_NTMP_H
+> +#define __NETC_NTMP_H
+
+Does this header need to be global? What else will use it outside of
+drivers/net/ethernet/freescale/enetc?
+
+	Andrew
