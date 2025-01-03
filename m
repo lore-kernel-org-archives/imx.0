@@ -1,170 +1,204 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2085.outbound.protection.outlook.com [40.107.103.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDD61B2191
-	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 05:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735882635; cv=none; b=adW73eD1L4t36o3LaEUR7zGrI/vbtjSyz09Ap7+WjpQLmhqKpJciSzIvOKg5yfYcybq+Q9sqL1Ug0M5sLQIFpNKW+TCxe4cHKvVflcZzh3YF1qU4BmI85dTiUpDsCqJEjEUJsoZdm9I0ZFwt0neoStzn/lz1gwtyXh481U0J81g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735882635; c=relaxed/simple;
-	bh=p9Wc2EhvFzf0qMDOYVAQQly/vhOo+LrryL9kNcSxPyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ALnNyVRHMiKPIgamQc6rJ5TJYx88VRm+D9i6P+aEqIEH95rmkDRCIXcxxN1Zi0mtYvDDrRABlw+rELcuIh8QcZ2rzo61nL1UBqINkdJ8zbuIT2VSENNM3l2jeWuqynVmJw/n8/TZ98eg0KK9ofXAC1Msk+ZRwZtnG6Sf7cTbXFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c2UfxegG; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785C114A629
+	for <imx@lists.linux.dev>; Fri,  3 Jan 2025 06:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735885387; cv=fail; b=LiwP7HOABWYhtJ7LKdngGte23AtsHovgCDZKBlPJwiztVEC3s36n4axs/vG6oQG4+foxF3osb+aYU8WSwlOBHZcWpdU0ruaSrFRnSvGyd1Cx90gejJlBibduWrKFIIDgDXMuZGC22l4w48948ZIsVoEPFx4Df+7/L+rYhUJBmVg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735885387; c=relaxed/simple;
+	bh=Aj3SC06kqka32Ov28msqj2F3u0hnqpli+0+uQSJjO40=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=r4WJZne/gb1CcGhjdBZdKFU0GBKCYZRy4czd+1lA75Pdlza82Pa64LCCFwWMmIhskxWZzAYh48jTt4aVVQsn1QjJiWA+QjVLIXPbL7IeANztSiLGWII7J/t8DLwOvz30f0R6jL+6Sw/P8b4ao+VNZlSqS3mWqGDuLMTjlUBTWso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LVsjgVKv; arc=fail smtp.client-ip=40.107.103.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c2UfxegG"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5401bd6cdb4so12049900e87.2
-        for <imx@lists.linux.dev>; Thu, 02 Jan 2025 21:37:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735882632; x=1736487432; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KOcDqtGRXf/UHLTIfgwSITvMK0QtY2PkEv0bG0mXGH8=;
-        b=c2UfxegGHLWZNlgcXx3aZ11ygzgWTtyyRIj/+8JOSXUCNs38KLNUT+la3XgPr1Pshq
-         7WLXDqf/Fs0uJBpuA2ZEGM4/01/+6RdnHEfGf8vIFZdplIs3KDNluLHwNCAfIRfyvC+A
-         diCge/5sxB/ue9CrqSyU0IuKSUEtK9o0Q9jUZ+VzFU9IJo91LKYQPFJGFd+JDUiRzxGT
-         EFhMbIzbzbf98qaGWpkK5QDo0c1XNeVAdmoUvjAr8hw3MCKrouC/cMtmHxfk46ekA+9S
-         iVtUYU9PUDuiivvFWFotsOYwiuQim4YxIuUxUp23Nt1tXygRc6+/OPk57ta9J+nXQNbb
-         HBiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735882632; x=1736487432;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KOcDqtGRXf/UHLTIfgwSITvMK0QtY2PkEv0bG0mXGH8=;
-        b=dDnHpNyr0YZvYJ2BhvYXSXD3uXj79YWMVX2QB73EzYUmBxu7irwlvVfmxlcyguCt9D
-         64sxK/jhVojb2GUzafnj/+Ob09iM+NqjFU7JCkvExI7zcdRcKAzfejLd6p4TXI4r6vE9
-         +yX52I8qHooQ4hUtxwMtjZtcv4viVjDKQa8gg2h8HifF8RqRBcW5T8H3gLI8idhJHHP1
-         hbq6xrwJF3vU+tLblis6Jp4SislWSZAB1ZtuQXRbymqGXoKXWEc76ONIAuP85qVrOV9w
-         L29zA9TAY/FD4Hz4dHdcmslaKCSRAcfl7KHZuPnzC1MAaf1v5aI8BJh5azxATTOeXvYq
-         7t1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVq7oGAscEBy2skfuqtE8qaCfeGzCmtLDzvpI/PHn46wOIy8FdhO3BHMmkGDQKGXpkycuk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUJiQdFmOLZQbIck8rxEdnnMbiSMiV8i0Y2WkERcBtTu/v776L
-	3V+15cZrfR39cYhYKxIqz7CrzhY7V7oaV8zAbKmaEh7RwjUeB76xFXA1seszr68=
-X-Gm-Gg: ASbGnctdA1gWopyIl58q5N8+kNSmh2J8lVX4upR8EiNn6eoGXS0blfxjyxYJVpwitni
-	uwsHG20Kmu4sXczbK38lShgHD9M7kMNX9ljkPri0k9//SxwnEef7jXuu9WpI5NFWpdRdaYGYe5S
-	lyeAuwOEqOkwoBKWGJgG8ycyb+gP9DXXLcxQk1dgvXL0e45iqvsJyiUSC3SxVuPX8gKnxwpqV9X
-	6vdpVGkKX0y2RHqblZiIhC1seFfhaFXRJtovw37o7JnrJZXd7yy11P7VQSpfET9LINVmTJWDXb2
-	Ascq0Au/E9gONQPp3giVlCW4DnkmErLmNFZm
-X-Google-Smtp-Source: AGHT+IGHQO4fKXV4A6UUeSv9pwYWeECIbpOiy9USqHzKJoO5upSfChVq4x5/CdajiSuV1O+v4t+BjQ==
-X-Received: by 2002:a05:6512:334e:b0:542:218a:343 with SMTP id 2adb3069b0e04-542295989femr10755627e87.52.1735882631424;
-        Thu, 02 Jan 2025 21:37:11 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542238215c1sm3942084e87.206.2025.01.02.21.37.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 21:37:10 -0800 (PST)
-Date: Fri, 3 Jan 2025 07:37:08 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Marek Vasut <marex@denx.de>
-Cc: dri-devel@lists.freedesktop.org, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie <airlied@gmail.com>, 
-	Fabio Estevam <festevam@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Liu Ying <victor.liu@nxp.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
-	Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge
- DRM_BRIDGE_ATTACH_NO_CONNECTOR
-Message-ID: <elhtblbv265iorfwagrdenkujrbufakqakgajkdmldcen3xrar@plu5h3jrfqmh>
-References: <20241231192925.97614-1-marex@denx.de>
- <20241231192925.97614-2-marex@denx.de>
- <sjyw3afx5qyrupf5tixgtubevmklgmstjvj3hjt5xukzmgluuv@47j6afzl5dp6>
- <549d96ee-a675-47fd-9af0-0dc05744591c@denx.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LVsjgVKv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dp+OPRqB0MvAJiI/i3RoOuVukd5ZG+QeHCcpwkt3GGIyt6gUcjW8VE1WjQOQGJPHsVEcVS65QcR55VAiYx9RlSPeqFDLvw6lmHm3ddp9cZbe0+CxQhJi0Tp01IuykdMmW8Nmry6l7fFs3CPpb33uvffDTgPgcryR0qM5NanZRKZnaf/XJFu0DgxkgTXBIyrGcDXkQb4nOz3ihVuQFxcWVVw8ypQhuqZbFdFbWA7ebLwPcWQ1Z3YkuM10+zgBwr4ElxhjQGRilsQaccFihsQ9IKUk3Fd8s7Lb1fereOLjRNWACqCIeM6fDAlTgo8B3L8rQpToIBaVW6RxjxPrWO6NCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qIXDhH5SgQR3bxvFEYH62B32Nky0LwiVnCao6GRTEMI=;
+ b=NPku/dLGhjCkBraj3FIKVnt15lOYOxgvomDQXM3WZ6kYdd7o9c+9XyYstX0dcwZqqbccM4hXCOuIdIO6gnEVuQ7aq4XEIGnQzPXfMshhhR/9B2HeP76jyqYnLI4rIxJ6tKJzIF7j8LaYm9IEypx+XC6lEp5M6tsKGD2lJiAFq0wx4Q+GSEb1kyQ371w2uGUBC+I3TlmalhqbIjhLGbCU0V/Fjvfml3RLmLpEZF5Mzfjd5dE9sTk8bml/Irh+5O+0vhqMVZMV/TccEoj8hlRrYhD1fqJud9mjJ63KTdGIAikCO36kggxnlNiHF37krjYMnY1HBobEOA/YF0Vr1Dxn+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qIXDhH5SgQR3bxvFEYH62B32Nky0LwiVnCao6GRTEMI=;
+ b=LVsjgVKvL4/jQ1yduhggph+LWemjymzaL+ioi4cw8E+5PFffqMGTJAm3H7xHUrdV2k1inUFfylQiUzv+sJjFy07Xbx+/PddOJX6xYmUYX4nN6n9Qx+AAK5N87aq3VyXloSOiXoIJeAvxGGMSosx8YnY0r80+CHXCCAUeE+bCOqW7YSBglrfygFocuaX5iKfLIYprFHNJe/yLh/KqNsEgkXPhV5V7nii3C3OEhYUO9GVhpoRePdmp0xl+oJ+QeqI8P2ngnCFYiy2+DoeYxW2PxA5ZiU7sqhxyvTEuwi9FdRBGsjZRL688UbBG6jGq2PRMWzfxk8o4vT0fyuucNWfucA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DB9PR04MB9331.eurprd04.prod.outlook.com (2603:10a6:10:36d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.12; Fri, 3 Jan
+ 2025 06:22:57 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8314.013; Fri, 3 Jan 2025
+ 06:22:57 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	christophe.leroy@csgroup.eu
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH net-next 00/13] Add more feautues for ENETC v4 - round 2
+Date: Fri,  3 Jan 2025 14:05:56 +0800
+Message-Id: <20250103060610.2233908-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0127.apcprd03.prod.outlook.com
+ (2603:1096:4:91::31) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <549d96ee-a675-47fd-9af0-0dc05744591c@denx.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DB9PR04MB9331:EE_
+X-MS-Office365-Filtering-Correlation-Id: a60118d2-8afc-40c7-6c0b-08dd2bbf10b1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?VdMZLXJAzwv9iOLTYQiIiiIsT8umYpydoeZVnWGnCavdsf4PETQhnpmzP6Z5?=
+ =?us-ascii?Q?VSgFY2DWTdvKagVlVkjKmX5he9++mpNfKtVJq0QKkc7sal7rwdkh3wpFAkYm?=
+ =?us-ascii?Q?UHZOevrzFkgvdTuASZcLE4Yre5UAgon+y6bhg+buFTuV6x8ElSiOIm2lDg/Y?=
+ =?us-ascii?Q?7RXyy5+0FO9oblTyEqr4++HgzOlPmi3/lUEtGvvtyECSFepINqY+K8dkf069?=
+ =?us-ascii?Q?CECA12qlN/1d+WYGAdHvcoogtjbfg4uslIsYKMEQOeMVrZDsCizrHRkzCC5t?=
+ =?us-ascii?Q?MNOBrMXBnzp9mGWruFJFIgDjgn6XrZYqjJ3gst0UmBFCOA3t7piT/AGU1/AO?=
+ =?us-ascii?Q?xe3kwLW/oI9Ku+bLdTk18jeZ4kSApTZLbW4NnqERhFRvIyUybKQB55Hif+8f?=
+ =?us-ascii?Q?osHWxmRc2rTMhxc/DJVxPI6fE8Dc8r7TT5Rs9Fl8krCqsekKz87UANUFUoia?=
+ =?us-ascii?Q?/nuYf08tqTITSp+K9EbDRqzM68fTUlO/7KGmvW+Wu3FrJ3EELECGX84hFaO9?=
+ =?us-ascii?Q?qkUqGJvbdk6Zr2qyKGuimwPed0J5W2pPpK9Uj7vXzrk+Pv89R2VrVY4iBhEa?=
+ =?us-ascii?Q?N73l/TBbHvim1+UwmYOoJ8rflgFvuBNRUtpHd9jTyRcSt2X2Q5OqNp/CO2bZ?=
+ =?us-ascii?Q?gTVaNK09mfLXayX35ILGi2wllaNui0zu0IQuYv45DVlnjFtfvxueDsVjNTzV?=
+ =?us-ascii?Q?lown4cxZNgO5BaDvwdfKdsepZ4BLi9DcRWA5DGPCbtlfSt6NHR+IIO7PwsIL?=
+ =?us-ascii?Q?4V0SsOE5Oi9bPFJ0SrIJDaTr62nf71HWzR6TtBCrxkmpRgOktJw895poSv6p?=
+ =?us-ascii?Q?FVj+9JBzUeg/cp2xySNM8UMO057KhvHchdSDBDwITeisX5XrDJIwyEHrlNqL?=
+ =?us-ascii?Q?pHe/XXD//Y3oblAbxwy0eo4XKNz2FeOlYqFYGGmAfZDODkN/DlqX0WL1c5ar?=
+ =?us-ascii?Q?6dKETSwBUDxJwJtY8DZz5N4m3RVE8dEsDm1YRDy/xyhl7EbwP19gu2JSBWKQ?=
+ =?us-ascii?Q?pnTRKvSwlmsY04YdXgJ+s1/X72t95yGNmoGYRToCXTbenyeWrVeVvDltf2IY?=
+ =?us-ascii?Q?hrkXgIiEUIdwRluVIkPRRVKieQFPjctONJWbiB3e8VnC0f8N1NPGY7p/a32q?=
+ =?us-ascii?Q?X66Ygy4qoxKl0tgxHHaFhQC0wBQVBqURgczsdw3eXLuUfmBp+ECz3UDHlbhw?=
+ =?us-ascii?Q?6tN7x3ek490ovxVUnFX5RZmRinhLFDOd77Ys2Q/A1JgNPE8rOEE5ODePm2av?=
+ =?us-ascii?Q?pO1tiqkhTYfE5StWBJgbizKKIM9ybp3J90l1Ny/I9rqmgZOTeZHOJUIwg5p1?=
+ =?us-ascii?Q?bG7iP0pFNbitPMFWzOVAR7OjgTQsoUht74nC5Y+wYSqU5+wWr/l3ThuALcGC?=
+ =?us-ascii?Q?614VlyzzCbDDzc9AOI0PcMMX33CEfcEjY6wmDyTuSRzDHrXGzG0U4YsJz622?=
+ =?us-ascii?Q?XG63vys6Xq0Ecknlizfi6r521GdGsUsa?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8OyO59vwc879NwVkPYOvWZlAf5feaRDxjttZEyHyTc7v47FrHSlqcj4fH+z/?=
+ =?us-ascii?Q?K0ZQqrgXZgorEZjDD8cbTezVLXxnc/fxxYFf2khsI3WCXcJn+lP3aMdpUOow?=
+ =?us-ascii?Q?ZslV8Je2n3st7/TyQZZHH81vpdiiJLR7K5NN89aPv0KOOz9ODApbSIfM9iAp?=
+ =?us-ascii?Q?Z8i67zGZt+hM9zWT+/to8K2a6SVK+q8meY2/r7pdkBa5BU333cib9TxLW8xN?=
+ =?us-ascii?Q?2XikZtDO9jfkG1PTFZ/71/70VdHD5phxthr3c4wrsqk8M3mrnegR+mBokafD?=
+ =?us-ascii?Q?uD9zsFm6MREGVsBMpbekLy5cgRVT4TwzCzDIXYM9oyhetCovmHDnrZPB8Me6?=
+ =?us-ascii?Q?RM7TpasUzA88M5oKQykwpaxoM5ueDOcU+wWic+UB065gGktPLiqhxDsVTfc8?=
+ =?us-ascii?Q?Zam6NoFUtfICzsEmzCSQ/Bd8UUDanrHWdm9CaI4RzMwv7mkgyekSHsq4iybS?=
+ =?us-ascii?Q?nHVLndA4pJUN8t3dt8kYkd2gjuZ6AuRDN4EjKrgIiXvDtyy5SmYHLH4ReIct?=
+ =?us-ascii?Q?TVxZoQ+Foo6aOPMFcj1VD/b917/Y1x2Kt1Rmnb12hmLsYsJDwgKlNOZO/vmA?=
+ =?us-ascii?Q?7voZPg8jhPdaP9uO4Q3J14L+BZPZM5C5cFtgLQoFPp2N8gZKN2wGFDUpH/WP?=
+ =?us-ascii?Q?A6fEQph5PVmqaIHLV4ywHhUg/M9n+cBpN/1V/esG4hD0dnX6sDXkCuHMBqhP?=
+ =?us-ascii?Q?k/qL1p/K51CsISpowNmuNo4kcZyZFidofbtbicpvyR7rL+f4zr8u2jbmPnvL?=
+ =?us-ascii?Q?uph1DSolBodBYyHekQ9U35hUHgyYmWTfU4TH6bpDKIO7M1fZNLt5n2wRQRxh?=
+ =?us-ascii?Q?atiknBxCClKC7uNJG2fhGS4+xvG+TPCZKcbNQJt0Lsg9fVdsVyTEh9dr7vML?=
+ =?us-ascii?Q?W2nmVJ3PkJNa7dcXFIxQBS2G0WhB4VsRwwrzR5psSAxHmxJhZNbjoHHsVFYJ?=
+ =?us-ascii?Q?MTqCLknLhqrejKD1Nbu8qAQedt3MzP71VRCqXGqPSabwXlrM6MxUDg6TS3vF?=
+ =?us-ascii?Q?D8/+cdEA6Hpc70DKMT6ZPeIoBxrr4Y1WWrIxnntIOpAeL8GfIn9PaRAGOqOi?=
+ =?us-ascii?Q?/igPgSO0DTTO6Phb5nxjbjPc+rMb+CQYC8cXS5+Af+9yOpHptsK+MnYSVKVB?=
+ =?us-ascii?Q?Nr+By3IvPOSzkNGXRaxuAcgnJ6PgYKXdbdHmPofjaR9MQfGs78NYsPM1lHbv?=
+ =?us-ascii?Q?6UQwFVf9XDk5/MsBhClnesIR5dxOuRk51NZXC5u+IYEp8p29WZjHyWCUN6t5?=
+ =?us-ascii?Q?bPzpjIg6pJjpcyQ+b/dW0oLZ2z+ey0pV/T1yqOqRdyNBIZ2INYxwrOILvAmZ?=
+ =?us-ascii?Q?wpvSWZTQGlqnZD+XEO1DcacFeNHBTddnPJjIvk6gfbUHyawMCGATfa7CUPQB?=
+ =?us-ascii?Q?SYBqevmaL0r+lS23IPi9/alwyhGlOishlAFbDz3NICVXuvd4aZ95LcAgMV3Y?=
+ =?us-ascii?Q?gYjsPmnSAtD5eqKlGjck+KoKPz9NM3TpJajkaFM2F3c3V3IJ8TMXI2U5ZylL?=
+ =?us-ascii?Q?+3g9KT7o4BsKw1YFtL0gsm+tZPc5pOP+DyugcNdYr367JejgcMRVks/ZSoPf?=
+ =?us-ascii?Q?AfzlGnrqwGFLhySt1vrUtZsKChJSzXrVsfHNNRju?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a60118d2-8afc-40c7-6c0b-08dd2bbf10b1
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2025 06:22:57.7640
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wrqH6E6Oi6+Psjl99cEbglC3Fd+CmmwW7jtYh/qPwvCUmVfRHQAOs3EqpQaMwaF0wqeIJa2ptaggebuHJgk8gA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9331
 
-On Fri, Jan 03, 2025 at 12:22:34AM +0100, Marek Vasut wrote:
-> On 1/2/25 5:55 AM, Dmitry Baryshkov wrote:
-> > On Tue, Dec 31, 2024 at 08:28:49PM +0100, Marek Vasut wrote:
-> > > The dw-hdmi output_port is set to 1 in order to look for a connector
-> > > next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
-> > > The output_port set to 1 makes the DW HDMI driver core look up the
-> > > next bridge in DT, where the next bridge is often the hdmi-connector .
-> > > 
-> > > Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
-> > > 
-> > > Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
-> > > the oldest commit which adds HDMI support is commit:
-> > > 
-> > > 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
-> > > 
-> > > That already contains the HDMI connector node. Most follow up additions
-> > > of HDMI support to another devices has been a variation of the same commit,
-> > > including connector node, which is the proper way of eanbling HDMI on the
-> > > i.MX8MP.
-> > > 
-> > > The rest should be covered by output_port_optional which should make systems
-> > > with DTs without HDMI connector node work, but such DTs should be updated and
-> > > the HDMI connector node should be added.
-> > > 
-> > > Signed-off-by: Marek Vasut <marex@denx.de>
-> > > ---
-> > > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> > > Cc: David Airlie <airlied@gmail.com>
-> > > Cc: Fabio Estevam <festevam@gmail.com>
-> > > Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> > > Cc: Jonas Karlman <jonas@kwiboo.se>
-> > > Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> > > Cc: Liu Ying <victor.liu@nxp.com>
-> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > > Cc: Maxime Ripard <mripard@kernel.org>
-> > > Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> > > Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > Cc: Robert Foss <rfoss@kernel.org>
-> > > Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Cc: Shawn Guo <shawnguo@kernel.org>
-> > > Cc: Simona Vetter <simona@ffwll.ch>
-> > > Cc: Stefan Agner <stefan@agner.ch>
-> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > Cc: dri-devel@lists.freedesktop.org
-> > > Cc: imx@lists.linux.dev
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > ---
-> > > V2: No change
-> > > V3: - Update commit message
-> > >      - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
-> > >      - Enable output_port_optional
-> > > ---
-> > >   drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
-> > >   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
-> > >   2 files changed, 3 insertions(+)
-> > > 
-> > > diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> > > index 9a480c6abb856..db5c8a76193ac 100644
-> > > --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> > > +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> > > @@ -17,6 +17,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
-> > >   	tristate "Freescale i.MX8MP HDMI-TX bridge support"
-> > >   	depends on OF
-> > >   	depends on COMMON_CLK
-> > > +	select DRM_DISPLAY_CONNECTOR
-> > 
-> > I was going to write that it is not to be selected by anybody, but then
-> > I stumbled upon meson driver, which also selects the symbol.
-> > 
-> > I still think that it is not to be selected by your driver as there is
-> > no direct dependency (and there can be other bridges inbetween or the
-> > bridge chain can end up with some other bridge). Such decisions belong
-> > to defconfig or distribution's kernel config file.
-> Wouldn't that only lead to unnecessary surprises on user side ?
+This patch set adds the following features.
+1. Compared with ENETC v1, the formats of tables and command BD of ENETC
+v4 have changed significantly, and the two are not compatible. Therefore,
+in order to support the NETC Table Management Protocol (NTMP) v2.0, we
+introduced the netc-lib driver and added support for MAC address filter
+table and RSS table.
+2. Add MAC filter and VLAN filter support for i.MX95 ENETC PF.
+3. Add RSS support for i.MX95 ENETC PF.
+4. Add loopback support for i.MX95 ENETC PF.
 
-This is of no concerns to Kconfig. You can't select all drivers that can
-possibly be used with your platform / driver. `git grep
-DRM_DISPLAY_CONNECTOR`.
+Wei Fang (13):
+  net: enetc: add initial netc-lib driver to support NTMP
+  net: enetc: add command BD ring support for i.MX95 ENETC
+  net: enetc: move generic MAC filterng interfaces to enetc-core
+  net: enetc: add MAC filter for i.MX95 ENETC PF
+  net: enetc: add debugfs interface to dump MAC filter
+  net: enetc: make enetc_set_rxfh() and enetc_get_rxfh() reusable
+  net: enetc: add RSS support for i.MX95 ENETC PF
+  net: enetc: enable RSS feature by default
+  net: enetc: move generic VLAN filter interfaces to enetc-core
+  net: enetc: move generic VLAN hash filter functions to
+    enetc_pf_common.c
+  net: enetc: add VLAN filtering support for i.MX95 ENETC PF
+  net: enetc: add loopback support for i.MX95 ENETC PF
+  MAINTAINERS: add new file ntmp.h to ENETC driver
+
+ MAINTAINERS                                   |   1 +
+ drivers/net/ethernet/freescale/enetc/Kconfig  |  11 +
+ drivers/net/ethernet/freescale/enetc/Makefile |   4 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 103 +++-
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  58 +-
+ .../ethernet/freescale/enetc/enetc4_debugfs.c |  93 +++
+ .../ethernet/freescale/enetc/enetc4_debugfs.h |  20 +
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  12 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 537 +++++++++++++++++-
+ .../net/ethernet/freescale/enetc/enetc_cbdr.c |  65 ++-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  71 ++-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |   6 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 140 ++---
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  32 +-
+ .../freescale/enetc/enetc_pf_common.c         |  46 +-
+ .../freescale/enetc/enetc_pf_common.h         |   2 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |  19 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 468 +++++++++++++++
+ .../ethernet/freescale/enetc/ntmp_formats.h   |  61 ++
+ include/linux/fsl/ntmp.h                      | 178 ++++++
+ 20 files changed, 1731 insertions(+), 196 deletions(-)
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_debugfs.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp_formats.h
+ create mode 100644 include/linux/fsl/ntmp.h
 
 -- 
-With best wishes
-Dmitry
+2.34.1
+
