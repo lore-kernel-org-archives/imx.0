@@ -1,46 +1,41 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8CF1F9EA4;
-	Fri,  3 Jan 2025 16:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43781C5491;
+	Sat,  4 Jan 2025 00:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735921521; cv=none; b=lILrYjjm2wVMeIq7g29fLXICiFPG2z1vbPfdz6AG3Vs7G+fT/EaQSxPOizvAjjQOamAt9R4Sff5eaCLVcsS5BzqyJnSnQn0JWNTXuUzbRVqjGJAkKakef/9EtNH1zk/MSHLzRGQ6+vu/y8fDohrUG/Y0HbCBRzO9cxa/331cIDs=
+	t=1735948819; cv=none; b=W3MyFBOYJ4O/h4PhHqZyhS3ETCr1hjFDEAi13b9PhkoCdQvtQg5EhOVHoCAISoxh6UFtQR/0Zl5Xsy8AjFXO4bQSiCudsw08tj0bV58vSISNEr8ZlUTVi7d900PWVtmaFqpju7k0deVijmX4EVNcLasdRIJUScrkFcT1EYAwqXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735921521; c=relaxed/simple;
-	bh=sBdH//KuCPagBTrv+itcpCBNhY6HCWRqK2hHTlHWIQk=;
+	s=arc-20240116; t=1735948819; c=relaxed/simple;
+	bh=Et6JqiybWk9MSa1Zne4js3r2VxnP/jj4oz63xhlzhuI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KkDYLaaXEryfdUodOK+7Lfy5MUY6AEcS0AT42JTS/ixSp4999udgj4roMGFc9QALAA1zgaTSUw1jvA4dVDnpXWKPUcv+BYJTv4ovHiv2qg/37gOuXj13plrhD5NUYT+benZOtndVaJ8K1QWe4yd9lC+oMActggmMsDO3evloCMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nNfH4Lh4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=iEXmPK7RB0ku5tQ6y8v5PNEHa6R6Zfc5rhzT1koRxxW8LrgcHQZlzaZKkC7v4WGDQUWgbawQ9rPW3Hd48u1m2+Zugz6baqlMGmhoWu9nLsaAGYHCiJyOe/jSbBuB3H0barzJxvMY5Zn/ZAk3jlONYKLFqJS5fHhyWd0UlRjEr1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cpn7WtY/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nNfH4Lh4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=unC2Fhn6EJ32Xsi2ODneZGcaNI6Y5JHf0QRbi/IbyPo=; b=nNfH4Lh4tOUqX+xZn1XjPeQHHF
-	gFsOfzz8PlpDhe8RzH1in7ekPJfClWgJcCj52YWEv/WO6PNBF7tbqOBmftkQ3r4ECsjthmIsNsklL
-	zb6MUEM8BF/DDwVkrTm1p7+QGspl2CRgzr414HmCNtSgZz6N3yjl/UgwZW6UvdIfmMvo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tTkU4-0015M9-KI; Fri, 03 Jan 2025 17:25:12 +0100
-Date: Fri, 3 Jan 2025 17:25:12 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH net-next 05/13] net: enetc: add debugfs interface to dump
- MAC filter
-Message-ID: <696fb436-40f6-4a9c-af0b-2851f8450bd1@lunn.ch>
-References: <20250103060610.2233908-1-wei.fang@nxp.com>
- <20250103060610.2233908-6-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cpn7WtY/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8879EC4CEDE;
+	Sat,  4 Jan 2025 00:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735948819;
+	bh=Et6JqiybWk9MSa1Zne4js3r2VxnP/jj4oz63xhlzhuI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cpn7WtY/kz5+PtH14NJRo86nlCfALN85ERUjlRAFZ/3i60BaBXTQTN8OU6U4NdBhW
+	 d9cK0wBQcpqsujZbaqPCzQfZfMWcnsNsiMPkyYnxjS0WbsIkw2UKxLXr3VEqJXr0Lu
+	 D4kPrEjWZjSwEF5SKUPfTtG/9ax0vH/M/7oVt/SOaVJn04li22SDJRvW6Ewu3RHVYq
+	 gienaPWVNbJCw8W2N3Ztw+6AQN3cyx1cInSi9YB3d165c8C6BB/bpdVWLCJ0WSD+TJ
+	 Yw0guNIb3ilpwghDiL5T6RU/MpDbI7iftgd8HMuCg4ZKf20E/mYa9KhYkNxuQf2H5l
+	 i1jq7+Wxt8YnQ==
+Date: Sat, 4 Jan 2025 01:00:15 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: frank.li@nxp.com, aisheng.dong@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7] i2c: imx-lpi2c: add target mode support
+Message-ID: <zjgclpreptiv3vtc3bstsuupdrv5rtydzedx2ktgjuzumdtosr@z6xlgawi7lie>
+References: <20241230033846.2302500-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,25 +44,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250103060610.2233908-6-wei.fang@nxp.com>
+In-Reply-To: <20241230033846.2302500-1-carlos.song@nxp.com>
 
-On Fri, Jan 03, 2025 at 02:06:01PM +0800, Wei Fang wrote:
-> ENETC's MAC filter consists of hash MAC filter and exact MAC filter. Hash
-> MAC filter is a 64-entry hash table consisting of two 32-bit registers.
-> Exact MAC filter is implemented by configuring MAC address filter table
-> through command BD ring. The table is stored in ENETC's internal memory
-> and needs to be read through command BD ring. In order to facilitate
-> debugging, added a debugfs interface to get the relevant information
-> about MAC filter.
+Hi Carlos,
 
-How do other drivers do this?
+On Mon, Dec 30, 2024 at 11:38:46AM +0800, Carlos Song wrote:
+> LPI2C support master controller and target controller enabled
+> simultaneously. Both controllers share the same SDA/SCL lines
+> and interrupt source but has a separate control and status
+> registers. When target is enabled and an interrupt has been
+> triggered, target register status will be checked to determine
+> IRQ source. Then enter the corresponding interrupt handler
+> function of master or target to handle the interrupt event.
+> 
+> This patch supports basic target data read/write operations in
+> 7-bit target address. LPI2C target mode can be enabled by using
+> I2C slave backend. I2C slave backend behaves like a standard I2C
+> client. For simple use and test, Linux I2C slave EEPROM backend
+> can be used.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-You should only use debugfs if there is no standard way to accomplish
-something. And if there is no standard way, you should be thinking is
-this a common feature other drivers will need, and if so, add a
-standard mechanism.
+merged to i2c/i2c-host.
 
-You will get pushback for using debugfs as a bumping ground without
-adding some justification that debugfs is the only possible solution.
-
-	 Andrew
+Thanks,
+Andi
