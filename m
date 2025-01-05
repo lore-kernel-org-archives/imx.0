@@ -1,42 +1,63 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A854F4642D
-	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 09:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846E81B78E7
+	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 19:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736070737; cv=none; b=Q5S1F12zCE4QMCFGUn/AdZHxRq9+Ae3WoYIvYhvWClSPWTW+1DFkmkjqgxk0arVIKvY7TLatvy22+kn0nT6iTztFURJQ/jTEYk55mEWzTW/TFlhFH/x5G0N6it+bcvtP9f0LZM0p20a5vIcmEX4Wo86E2EF7H8IjTmXtWvJXfzM=
+	t=1736104054; cv=none; b=FP74ET1o7lyqK+Uc3f9wFIglI+ulJRL+oHZl3cSRMcgRSuyBt4hTJC3o5RHisvai+KYpHb1Q1QDJC5wRFe4ekBrr17HMnM3f/fp4pDTIuwDDwqYBzKFxDp93UqYG3p51ITYrMazr/2bew2HmPiI7fDHHKwuKbuMD9uV5BTGi8Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736070737; c=relaxed/simple;
-	bh=/Sh5KOE59Aui8PfGjqhIZobjeZ/zYvSj9HOW+x5WOFk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qYD60OWIUI39bZimKS0ywYBWMyg3HLlrqOvQCXE8ZEeSjmAzyKR650809wnax5nDiR/UKbES8mhcXfUuquYc27jZKFjkkDX0zzBp6WBrUjs9LqcGL0RW6foClPpwPtmtZqEuF3CPMggA33xuTUl86/MEE+NkcwrqTVJDmtaG83o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=p+4mRzd3; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1736104054; c=relaxed/simple;
+	bh=J12ZuudKX/EiiiMFhl8ZG4yts0tjziUbn4vHdsslr/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KLP+O41WDzT2apQW4g7AuqX0p9h7laRnng4qmsZIRxaHhBV6Gj9YqBi0+zJSW+HkBKmLEOCW37I3sheeA5eSSWMcXjTZLToSYquQV432N8zHz4AA8bTRjPqRmQ/5uicg3dQzFhSZhDoWv+ikrx/cvw67CJjcPF5dXmxojS42h3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=fqVm5ZlV; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="p+4mRzd3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=LsIb6
-	OZ4T07vFbCXdxpznnWsqzl75iiZFjf5L5ekvZg=; b=p+4mRzd3s/Fm8HKUSzUuK
-	99kyU1m3r5gYrDTwEBnqhBbpmsA5px5fvSxKj+qC6ebdGV1AolJh0TSXfjnBVNiM
-	A7o2MrNfeIdMtQkyhJ7uDt59VfvxFhlXr15zrNeg+ACcUcwI9IlKEkFx4gHbn73O
-	O/Zhnmsvi+cyeRGzXL3wfU=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S6;
-	Sun, 05 Jan 2025 17:51:45 +0800 (CST)
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org,
-	arm@kernel.org
-Cc: Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="fqVm5ZlV"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBC74104811FC;
+	Sun,  5 Jan 2025 20:07:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1736104049;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gOuDV8a14zXoIoSeFvjSZmd07jSEQLJMy50etppxByE=;
+	b=fqVm5ZlVF64yMGqkhmXc1JZKUP0YaZCtHd3rtYMxRb43FkbnhAruX/L2doszWy1IVk54AB
+	jxLJQZv56VpyoNrLoE9cgX2BaeiWZouSJAGUULwNfmyZxeEBPyVl/s+PZQMBaTJ6+oEr8Q
+	VEYhOkJPkKTPpqttwl++W3loV56O5FV0S5mJTeDhNc2pZozkHIEMxwLaD2vSE65tIEGbaJ
+	j/VjMYq5v7C71i9Eby5eSSlIRrkmhSP9PpizTmthZYZ5QzNyKrgL08EJEeXdoA6JbdhPub
+	tsB4iuRu0oT1Cii6LdotfL+NazokwyDDFO4FqXMiRrXEIyEa3YC9cE/mbntPwg==
+From: Marek Vasut <marex@denx.de>
+To: dri-devel@lists.freedesktop.org
+Cc: Marek Vasut <marex@denx.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	kernel@pengutronix.de,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Robert Foss <rfoss@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 5/5] i.MX defconfig change for 6.14
-Date: Sun,  5 Jan 2025 17:51:38 +0800
-Message-Id: <20250105095139.714590-5-shawnguo2@yeah.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250105095139.714590-1-shawnguo2@yeah.net>
-References: <20250105095139.714590-1-shawnguo2@yeah.net>
+Subject: [PATCH v4 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Date: Sun,  5 Jan 2025 20:06:04 +0100
+Message-ID: <20250105190659.99941-2-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250105190659.99941-1-marex@denx.de>
+References: <20250105190659.99941-1-marex@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,43 +65,74 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S6
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryxXry8Jw4ftr4UArW7CFg_yoWkJrX_AF
-	y7Ga4DGrn8CrWUGF15Xwn7Gr4UKF1UX3WUJr1UtrW3Xr1aq3W5Aw18XrWfXr1UX3W8Gr1D
-	ArZ8Aw1DAr1UCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8TGQDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxnLZWd6UukIDwAAsd
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Shawn Guo <shawnguo@kernel.org>
+The dw-hdmi output_port is set to 1 in order to look for a connector
+next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+The output_port set to 1 makes the DW HDMI driver core look up the
+next bridge in DT, where the next bridge is often the hdmi-connector .
 
-The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
+Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
 
-  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
+Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
+the oldest commit which adds HDMI support is commit:
 
-are available in the Git repository at:
+3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-defconfig-6.14
+That already contains the HDMI connector node. Most follow up additions
+of HDMI support to another devices has been a variation of the same commit,
+including connector node, which is the proper way of eanbling HDMI on the
+i.MX8MP.
 
-for you to fetch changes up to 2b21c2306a9006e401c1ee3c694ecd327de4dc16:
+The rest should be covered by output_port_optional which should make systems
+with DTs without HDMI connector node work, but such DTs should be updated and
+the HDMI connector node should be added.
 
-  arm64: defconfig: Enable ITE IT6263 driver (2024-12-09 19:51:03 +0800)
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Jonas Karlman <jonas@kwiboo.se>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Liu Ying <victor.liu@nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Robert Foss <rfoss@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Stefan Agner <stefan@agner.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+---
+V2: No change
+V3: - Update commit message
+    - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
+    - Enable output_port_optional
+V4: - Remove select DRM_DISPLAY_CONNECTOR
+---
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-----------------------------------------------------------------
-i.MX defconfig change for 6.14:
-
-- Enable JC42 temperature sensor driver support in imx_v6_v7_defconfig
-  (Alexander Stein)
-- Enable ITE IT6263 LVDS to HDMI converter driver support in arm64
-  defconfig (Liu Ying)
-
-----------------------------------------------------------------
-Alexander Stein (1):
-      ARM: imx_v6_v7_defconfig: enable JC42 for TQMa7x
-
-Liu Ying (1):
-      arm64: defconfig: Enable ITE IT6263 driver
-
- arch/arm/configs/imx_v6_v7_defconfig | 1 +
- arch/arm64/configs/defconfig         | 1 +
- 2 files changed, 2 insertions(+)
+diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+index 1e7a789ec2890..3d63200e468bf 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
++++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+@@ -101,6 +101,8 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+ 	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+ 	plat_data->priv_data = hdmi;
+ 	plat_data->phy_force_vendor = true;
++	plat_data->output_port = 1;
++	plat_data->output_port_optional = true;
+ 
+ 	hdmi->dw_hdmi = dw_hdmi_probe(pdev, plat_data);
+ 	if (IS_ERR(hdmi->dw_hdmi))
+-- 
+2.45.2
 
