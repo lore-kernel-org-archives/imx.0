@@ -1,28 +1,28 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476EA145335
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1551428E7
 	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 09:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736070735; cv=none; b=O+pjTixcU0nxRIEshY7BeR1E3657Cv286uXYqe3lzifwyzm2dTzb//r+DkUmcELBTBlU4z11mR91ON2+uxXR9evbT/0ksRNjGr8lfsEP0FBSDWYi1ChVYhws27Okm/i3lUNKyHmNkoRMJUw7JspMyZ4O/rSDJGV/IumCgey+TA8=
+	t=1736070736; cv=none; b=sj0F75uz3kquDI+52YBmmSOQeA2VKvRlsrVsr8aIbcEwxApgwJ1jaAYr9Ips8yRcPERlHcoYUXKbyAUwoE6pg/xY7MRAH/TwxPw4w14IyHYQhi4UN/XpWtWBz1s0/W8X4CzKxZDqH39YzZEKkJYm0KtEXhbJiddmLtYIveP+/O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736070735; c=relaxed/simple;
-	bh=JZLfAPPMCzeDdu4qlLJczPxua5AN2Svan7ndi5hadeY=;
+	s=arc-20240116; t=1736070736; c=relaxed/simple;
+	bh=ImRUmjkuC+Ts2+IPd+R2QR7BrD9LnLFRZdXE/oe1kKw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R4jq8rbVi+DKHdGhkt3qi2gweakEVX/CQPvNupghcAZHk2xmsbMlJoKP2wO4+hXwmkhvTm382UTdrMRMuzldo0E/72CqQNx8oqqgHgsRWB546cTxfqr3ozUzi29vfGo2h8M0h80n/ifXqyhVd9EmGbryAdyFTWBd5SjaKsyfbSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=NKsrhu9D; arc=none smtp.client-ip=1.95.21.16
+	 MIME-Version; b=DOibklk65SDmKE+ZBfepi7O1fAZPkVvT0KT7ixwfdDAIKBm9e+NIj6hh7q+8BR2kaiwuk/tI19pH+iu2XgqIt+q4ObYiGid3PaymM5nDtbD+9RoccxhyM+1gbTiQPuq4QkXNm8hcopJsoCwbdEHtGuyWf4rDOzwrkkMU1a/kPlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iYay7waF; arc=none smtp.client-ip=1.95.21.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="NKsrhu9D"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iYay7waF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Irbm6
-	VfXAI9JkqQJkfYYSPhkzCdRNt1ZTBLO5TrSmYo=; b=NKsrhu9D0M9m5idwyE84s
-	QNWN2gIbNqbcOfbYhAkYnig53zcfE+v3yb3kxkgYC4yAemz6OmjX4W/DCpZZPP0e
-	zMH/idLF/HfXlLjI7ZGCTP9izzId/snlroJJ5+ow0GYpSDGjpiPr33V/TsWWDEZw
-	wevS3PCiR8xV/9Zqg04DJs=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=69snu
+	UwpsyIrkbZcnnFbbFnV//a9mRAcTgRbnMk9dG8=; b=iYay7waFFvMKKIGcEWceB
+	RgxawlCM6JQiV1w0BNkINlXq1Jl3zmuz8TMIF1j0/6+/AC6VIZ9LNOoWfhivRyfZ
+	8tOozGD0fFxqhfyVazWcUlzly4YDdUChYf0qvIu6YHsk8oqTZYW/GxTF6QQeDFSv
+	4s3j1zBq0jM26rqN0Oxq+M=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S5;
-	Sun, 05 Jan 2025 17:51:45 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S4;
+	Sun, 05 Jan 2025 17:51:44 +0800 (CST)
 From: Shawn Guo <shawnguo2@yeah.net>
 To: soc@kernel.org,
 	arm@kernel.org
@@ -31,9 +31,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 4/5] i.MX arm64 device tree change for 6.14
-Date: Sun,  5 Jan 2025 17:51:37 +0800
-Message-Id: <20250105095139.714590-4-shawnguo2@yeah.net>
+Subject: [GIT PULL 3/5] i.MX ARM device tree change for 6.14
+Date: Sun,  5 Jan 2025 17:51:36 +0800
+Message-Id: <20250105095139.714590-3-shawnguo2@yeah.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250105095139.714590-1-shawnguo2@yeah.net>
 References: <20250105095139.714590-1-shawnguo2@yeah.net>
@@ -44,12 +44,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S5
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr4Utr17Gw4rGrWrZr18Xwb_yoW7Zry3pa
-	43urW3Gr17GFW8Cr9xW3Wvq3s8tw45JF45Cr17WrWxKrW5AFyqqF1rKr1fury2vryxZw4F
-	y3W8Jry7Grn8ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j7BMNUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERPLZWd6RRkrYQAAsn
+X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr4rJrW7Gw1kuF4fAF4UXFb_yoW5Cr1fpr
+	1fZrsrJr4xGryfJ34DA3yjk3yYyw15Zr1fZr15Jay8Cr45Za47Xr9Igw1ft34UXFyrWay5
+	tr18ZF9rJrn5uF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jQ2-8UUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBALLZWd6TKsXoQAAsk
 
 From: Shawn Guo <shawnguo@kernel.org>
 
@@ -59,105 +59,68 @@ The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-dt64-6.14
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-dt-6.14
 
-for you to fetch changes up to bd38fa3aaaceb371cf92f115c905579024b9feac:
+for you to fetch changes up to c7418a6e7ac9bca66a8a49793cbfa5a45c01bcbb:
 
-  arm64: dts: freescale: imx93-9x9-qsb: enable fsl,ext-reset-output for wdog3 (2024-12-30 16:31:58 +0800)
-
-----------------------------------------------------------------
-i.MX arm64 device tree change for 6.14:
-
-- Add simple-framebuffer support for imx8mn-bsh-smm-s2/pro board
-  (Dario Binacchi)
-- Add LVDS compatible string for imx8mm-phg board (Fabio Estevam)
-- Add P3T1085 temperature sensor support for imx93-9x9-qsb board (Frank Li)
-- Add support for i.MX8MP based aristainetos3 boards from ABB
-  (Heiko Schocher)
-- Add PCA9452 system PMIC support for imx93-14x14-evk board (Joy Zou)
-- Support NXP LVDS to HDMI adapter cards for imx8mp-evk board with DT
-  overlays (Liu Ying)
-- A couple of changes from Markus Niebel to enable Open Drain for MDIO
-  on imx93-tqma9352 boards
-- A series from Peng Fan to enable wdog3 fsl,ext-reset-output support
-  for NXP i.MX93 boards
-- A couple changes from Wei Fang to add NETC support for i.MX95
+  ARM: dts: imx: Use the correct mdio pattern (2024-12-30 16:03:58 +0800)
 
 ----------------------------------------------------------------
-Dario Binacchi (1):
-      arm64: dts: imx8mn-bsh-smm-s2/pro: add simple-framebuffer
+i.MX ARM device tree change for 6.14:
 
-Fabio Estevam (1):
-      arm64: dts: imx8mm-phg: Add LVDS compatible string
+- Clean up TQMa7x device trees (Alexander Stein)
+- Correct node name pattern for mdio-gpio devices (Fabio Estevam)
+- Update deprecated GPIO properties for Generic ASoC Sound Card device
+  (Geert Uytterhoeven)
+- Set USB dr_mode property to OTG explicitly for imx6qdl-sabresd based
+  boards (Hui Wang)
+- Update MAINTAINERS entry for DH electronics DHSOM boards (Marek Vasut)
+- A series from Stefan Kerkmann to add phy-3p0-supply for usb phys
 
-Frank Li (2):
-      arm64: dts: imx8mq-zii-ultra: remove #address-cells of eeprom@a4
-      arm64: dts: imx93-9x9-qsb: add temp-sensor nxp,p3t1085
+----------------------------------------------------------------
+Alexander Stein (7):
+      ARM: dts: imx7-mba7: remove LVDS transmitter regulator
+      ARM: dts: imx7-tqma7: Remove superfluous status="okay" property
+      ARM: dts: imx7-tqma7: add missing vs-supply for LM75A (rev. 01xxx)
+      ARM: dts: imx7-mba7: Add 3.3V and 5.0V regulators
+      ARM: dts: imx7-mba7: Fix SD card vmmc-supply
+      ARM: dts: imx7-mba7: Remove duplicated power supply
+      ARM: dts: imx7[d]-mba7: add Ethernet PHY IRQ support
+
+Fabio Estevam (2):
+      ARM: dts: imx6qdl-apalis: Change to "adi,force-bt656-4"
+      ARM: dts: imx: Use the correct mdio pattern
 
 Geert Uytterhoeven (1):
-      arm64: dts: imx: Switch to simple-audio-card,hp-det-gpios
+      ARM: dts: imx: Switch to {hp,mic}-det-gpios
 
-Heiko Schocher (1):
-      arm64: dts: imx8mp: add aristainetos3 board support
+Hui Wang (1):
+      ARM: dts: imx6qdl-sabresd: add dr_mode to usbotg
 
-Joy Zou (1):
-      arm64: dts: imx93: add pca9452 support
+Marek Vasut (1):
+      MAINTAINERS: Update entry for DH electronics DHSOM SoMs and boards
 
-Liu Ying (2):
-      arm64: dts: imx8mp-skov-revb-mi1010ait-1cp1: Set "media_disp2_pix" clock rate to 70MHz
-      arm64: dts: imx8mp-evk: Add NXP LVDS to HDMI adapter cards
+Stefan Kerkmann (3):
+      ARM: dts: imx6qdl: add phy-3p0-supply to usb phys
+      ARM: dts: imx6sl: add phy-3p0-supply to usb phys
+      ARM: dts: imx6sx: add phy-3p0-supply to usb phys
 
-Markus Niebel (2):
-      arm64: dts: imx93-tqma9352-mba93xxca: enable Open Drain for MDIO
-      arm64: dts: imx93-tqma9352-mba93xxla: enable Open Drain for MDIO
-
-Peng Fan (3):
-      arm64: dts: freescale: imx93-11x11-evk: enable fsl,ext-reset-output for wdog3
-      arm64: dts: freescale: imx93-14x14-evk: enable fsl,ext-reset-output for wdog3
-      arm64: dts: freescale: imx93-9x9-qsb: enable fsl,ext-reset-output for wdog3
-
-Wei Fang (2):
-      arm64: dts: imx95: add NETC related nodes
-      arm64: dts: imx95-19x19-evk: add ENETC 0 support
-
- arch/arm64/boot/dts/freescale/Makefile             |   13 +
- arch/arm64/boot/dts/freescale/imx8mm-phg.dts       |    2 +-
- .../dts/freescale/imx8mn-bsh-smm-s2-display.dtsi   |   28 +
- .../freescale/imx8mp-aristainetos3-adpismarc.dts   |   37 +
- .../imx8mp-aristainetos3-helios-lvds.dtso          |  113 ++
- .../dts/freescale/imx8mp-aristainetos3-helios.dts  |   98 ++
- .../freescale/imx8mp-aristainetos3-proton2s.dts    |  161 +++
- .../freescale/imx8mp-aristainetos3a-som-v1.dtsi    | 1107 ++++++++++++++++++++
- .../freescale/imx8mp-evk-imx-lvds-hdmi-common.dtsi |   29 +
- .../imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtso  |   44 +
- .../imx8mp-evk-lvds0-imx-lvds-hdmi-common.dtsi     |   43 +
- .../freescale/imx8mp-evk-lvds0-imx-lvds-hdmi.dtso  |   28 +
- .../imx8mp-evk-lvds1-imx-dlvds-hdmi-channel0.dtso  |   44 +
- .../imx8mp-evk-lvds1-imx-lvds-hdmi-common.dtsi     |   43 +
- .../freescale/imx8mp-evk-lvds1-imx-lvds-hdmi.dtso  |   28 +
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts       |    6 +
- .../freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts  |    8 +-
- .../boot/dts/freescale/imx8mq-librem5-devkit.dts   |    2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi  |    2 +-
- .../arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi |    2 -
- arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts  |    8 +
- arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts  |   92 ++
- arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts    |   14 +
- .../dts/freescale/imx93-tqma9352-mba93xxca.dts     |    8 +-
- .../dts/freescale/imx93-tqma9352-mba93xxla.dts     |    8 +-
- arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts  |   52 +
- arch/arm64/boot/dts/freescale/imx95.dtsi           |   93 ++
- 27 files changed, 2096 insertions(+), 17 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios-lvds.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-imx-lvds-hdmi-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-lvds-hdmi-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-lvds-hdmi.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-dlvds-hdmi-channel0.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-lvds-hdmi-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-evk-lvds1-imx-lvds-hdmi.dtso
+ MAINTAINERS                                       | 13 ++---
+ arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts      |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6q-bx50v3.dtsi       |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi     |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi    |  5 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi            |  6 ++-
+ arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts          |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sl.dtsi             |  6 ++-
+ arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts         |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi         |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx.dtsi             |  6 ++-
+ arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi   |  2 +-
+ arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi          | 61 +++++++----------------
+ arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi         |  3 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-mba7.dts          |  3 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts           |  2 +-
+ 17 files changed, 48 insertions(+), 73 deletions(-)
 
