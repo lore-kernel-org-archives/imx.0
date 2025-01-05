@@ -1,117 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB3E1C5F08;
-	Sat,  4 Jan 2025 14:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D949652;
+	Sun,  5 Jan 2025 01:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736001825; cv=none; b=IGDLcbVWoAeBIkighmU3eDvbuHSTorZ3mOsZHB0I6vmorfc5sU54svTGgXWd0FjeKV9KtqxgqFczibGm5HhPC6SEt2tYH4Os/2W5wYAC33GZSBtE9AK1FINiLX0BwMs40dHfIqHWHHlQsorHrbNePm4yhoM88Pj4wx+NMfvIn5Q=
+	t=1736041504; cv=none; b=nUA+T3E4C0Q7FcKRsP/g1pQJa09OO6G2sN94Bw3dOgdHDEo969Pq8xhOwKqM3y3MfCdDcfHaZ3rGLBvu2gd4kpb/I04bT5R+pmMf6EoK+sZgJGvgXBStOMnWMOUxhSykFEDdq+xWnzVLqaIiTaLN0HUT1hfL0jVEQtCwBVPDvaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736001825; c=relaxed/simple;
-	bh=9vyKJIp5A3trkwUj/vySmv5/pKr00XO/j9e32R7kQ2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ojhzfC4md7Nwl07EOfB26GPmC0Tttc/JG0Pzb5ERgZxbunK41qS/rW+KiArG+tqaDMP1fhrrZw7oopwz7/B5oI5Vc3AP93QV1fzkWduTiSicqG2eOuGSWDapG79vL1zTdj6Eg7SKghByoya/mREOpGHuSi8nAC5qAj+obqR+XjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxFbc8FX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736041504; c=relaxed/simple;
+	bh=oq/Zazx3snTJ//HvVkRX0cBRbpMDsarbsm2tecQIdeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d7OC3qYRnEYOxNCWLbe/TE1QNcHiyTmMVioduT3iN8QZ5CZ7W7l+riyC9t+lAQYHl2cRxRetkD7QfpFtgSf9tNNSGxvpSZX2+frV6UvdX4YSJmAIW43uZLLprN0UosGgYeJCvts9tXdUmV7jztGYhXoHbHNktKCF/LuI/iLVMIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzldYET2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fxFbc8FX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926E6C4CED1;
-	Sat,  4 Jan 2025 14:43:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzldYET2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE66C4CED1;
+	Sun,  5 Jan 2025 01:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736001824;
-	bh=9vyKJIp5A3trkwUj/vySmv5/pKr00XO/j9e32R7kQ2w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fxFbc8FXRiCbagh6o8hc81EhzYHHXyptgub/vLjAfxP7Zg4ZmMoymjMmLMcSRAo4L
-	 bef//jE97Cgj1y5x6Wu2HV/k+QreLJWZTVS2IoiJrn2NKA2q/gSL2O6V9Q7Wk0Xqek
-	 JGY8ujPWfG5tEQHy1xQVu3tFYULhzCPjZsMaLo/S/KD3W16HfTZ+9/Wd/n8j8i7RV8
-	 +O4ufftYIvXkgoj2JPVOIeE3bbn61/HHq9DYkZLwE83fKjV7EsRteYGmCtecqk/xwq
-	 uDU6lxrTLOX79jQpNjJJ1UEPyXD+TTyJUztq0i0ko0kken09W8nG7dIh3oQl3NV3uX
-	 IobOGq5WYDw5A==
-Message-ID: <4666f8e9-d19e-45bd-be9c-a7f111168d66@kernel.org>
-Date: Sat, 4 Jan 2025 15:43:37 +0100
+	s=k20201202; t=1736041504;
+	bh=oq/Zazx3snTJ//HvVkRX0cBRbpMDsarbsm2tecQIdeI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dzldYET2emHDIAf7pzP0JoImS29VgCeY5/sCXhrOSKaxR6uYeadUuElqftv4FLpGK
+	 fLXF6VYE8kqqFAQgqJ5ZPUAl6NcPe4N8yw63oF0pCNU7QCaQ3rUiaqrNkXAGZSAUpe
+	 pOml0TNelBOAPn8HO/MR/lobpU5ydKFYEuhZIIkndr2ok5amNRxKyyog/lE+QZ4Tz3
+	 Xt7sYf0lK3xoiLYHzahbLj3ljbjWtL4Z0eZvM4y4hwfBhihxbDjXJwBNr5R9HSE9Zb
+	 BZ6sVBRhXiQBLYpjk3km+425LXrZTM4OXYTHXwruV2TsbfxR1OMLFbkqUDq/PcpCaw
+	 W4mevP1ED11vQ==
+Date: Sat, 4 Jan 2025 17:45:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next 04/13] net: enetc: add MAC filter for i.MX95
+ ENETC PF
+Message-ID: <20250104174502.0d43e7c0@kernel.org>
+In-Reply-To: <20250103060610.2233908-5-wei.fang@nxp.com>
+References: <20250103060610.2233908-1-wei.fang@nxp.com>
+	<20250103060610.2233908-5-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Update i.MX95 compatible
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Peng Fan <peng.fan@nxp.com>
-References: <20250104-imx9-machine-v1-0-18a78e41456b@nxp.com>
- <20250104-imx9-machine-v1-1-18a78e41456b@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250104-imx9-machine-v1-1-18a78e41456b@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 04/01/2025 13:13, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+On Fri,  3 Jan 2025 14:06:00 +0800 Wei Fang wrote:
+> The i.MX95 ENETC supports both MAC hash filter and MAC exact filter. MAC
+> hash filter is implenented through a 64-bits hash table to match against
+> the hashed addresses, PF and VFs each have two MAC hash tables, one is
+> for unicast and the other one is for multicast. But MAC exact filter is
+> shared between SIs (PF and VFs), each table entry contains a MAC address
+> that may be unicast or multicast and the entry also contains an SI bitmap
+> field that indicates for which SIs the entry is valid.
 > 
-> i.MX95 features a System Controller and SCMI Spec 3.2 compatible
-> firmware System Manager(SM) runs on the controller.
-> Add "fsl,imx-sm" compatible string as fallback for "fsl,imx95" to
-> indicate it is compatible with i.MX System Manager.
+> For i.MX95 ENETC, MAC exact filter only has 4 entries. According to the
+> observation of the system default network configuration, the MAC filter
+> will be configured with multiple multicast addresses, so MAC exact filter
+> does not have enough entries to implement multicast filtering. Therefore,
+> the current MAC exact filter is only used for unicast filtering. If the
+> number of unicast addresses exceeds 4, then MAC hash filter is used.
+> 
+> Note that both MAC hash filter and MAC exact filter can only be accessed
+> by PF, VFs can notify PF to set its corresponding MAC filter through the
+> mailbox mechanism of ENETC. But currently MAC filter is only added for
+> i.MX95 ENETC PF. The MAC filter support of ENETC VFs will be supported in
+> subsequent patches.
 
-I see little value in generic compatible like that. All these are
-aarch64 so why not adding that compatible?
+clang reports:
 
-How this generic compatible would be used?
-
-And by what exactly?
-
-All this must be explained in the commit msg.
-
-Best regards,
-Krzysztof
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:6: warning: variable 'pf' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+ 1158 |         if (err)
+      |             ^~~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1179:24: note: uninitialized use occurs here
+ 1179 |         enetc4_pf_struct_free(pf);
+      |                               ^~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:2: note: remove the 'if' if its condition is always false
+ 1158 |         if (err)
+      |         ^~~~~~~~
+ 1159 |                 goto err_wq_task_init;
+      |                 ~~~~~~~~~~~~~~~~~~~~~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1128:21: note: initialize the variable 'pf' to silence this warning
+ 1128 |         struct enetc_pf *pf;
+      |                            ^
+      |                             = NULL
+-- 
+pw-bot: cr
