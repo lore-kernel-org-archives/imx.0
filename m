@@ -1,92 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D949652;
-	Sun,  5 Jan 2025 01:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDFE144304
+	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 09:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736041504; cv=none; b=nUA+T3E4C0Q7FcKRsP/g1pQJa09OO6G2sN94Bw3dOgdHDEo969Pq8xhOwKqM3y3MfCdDcfHaZ3rGLBvu2gd4kpb/I04bT5R+pmMf6EoK+sZgJGvgXBStOMnWMOUxhSykFEDdq+xWnzVLqaIiTaLN0HUT1hfL0jVEQtCwBVPDvaU=
+	t=1736070734; cv=none; b=h2TpqFFuAk3hB3jkf0AqHXnqkPw2LiIGzWj0YUKCKkGY/m1wepR4RsDpk/IDpg1dc1jxuDefP2N7sH37WNysRjX4YlOmYgP5E98iChEDrO6IR4Leom8/PByTsmBMuEjdR2UAIKvvK1HnGKgtzjHM4BWQLfdf3zDTHI+CIPNGtuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736041504; c=relaxed/simple;
-	bh=oq/Zazx3snTJ//HvVkRX0cBRbpMDsarbsm2tecQIdeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7OC3qYRnEYOxNCWLbe/TE1QNcHiyTmMVioduT3iN8QZ5CZ7W7l+riyC9t+lAQYHl2cRxRetkD7QfpFtgSf9tNNSGxvpSZX2+frV6UvdX4YSJmAIW43uZLLprN0UosGgYeJCvts9tXdUmV7jztGYhXoHbHNktKCF/LuI/iLVMIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzldYET2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736070734; c=relaxed/simple;
+	bh=zCsB99Kol/SqL+CCZCUnDvI/M+vNIrE+qLCy82bMk2w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N8BeFbxQ1+tLgD7R/ZKr29M7EKBT6SCKCybmFCZOqFJVXQcDFHL0W8Iskm6dL6t/s09oY3bYJkRBooB+ZKKW8pa84DHQNMf1tg85YNDlOvzJ7lvODdsPbBnCNDjSJXQDmf6Ay7sRTv8iTTU+NFBIRVCNcuQcqY5/VZj3ld0uS+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fLxZ+zBg; arc=none smtp.client-ip=220.197.32.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzldYET2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE66C4CED1;
-	Sun,  5 Jan 2025 01:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736041504;
-	bh=oq/Zazx3snTJ//HvVkRX0cBRbpMDsarbsm2tecQIdeI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dzldYET2emHDIAf7pzP0JoImS29VgCeY5/sCXhrOSKaxR6uYeadUuElqftv4FLpGK
-	 fLXF6VYE8kqqFAQgqJ5ZPUAl6NcPe4N8yw63oF0pCNU7QCaQ3rUiaqrNkXAGZSAUpe
-	 pOml0TNelBOAPn8HO/MR/lobpU5ydKFYEuhZIIkndr2ok5amNRxKyyog/lE+QZ4Tz3
-	 Xt7sYf0lK3xoiLYHzahbLj3ljbjWtL4Z0eZvM4y4hwfBhihxbDjXJwBNr5R9HSE9Zb
-	 BZ6sVBRhXiQBLYpjk3km+425LXrZTM4OXYTHXwruV2TsbfxR1OMLFbkqUDq/PcpCaw
-	 W4mevP1ED11vQ==
-Date: Sat, 4 Jan 2025 17:45:02 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH net-next 04/13] net: enetc: add MAC filter for i.MX95
- ENETC PF
-Message-ID: <20250104174502.0d43e7c0@kernel.org>
-In-Reply-To: <20250103060610.2233908-5-wei.fang@nxp.com>
-References: <20250103060610.2233908-1-wei.fang@nxp.com>
-	<20250103060610.2233908-5-wei.fang@nxp.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fLxZ+zBg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=CRzs+
+	lBteckHuBiMPASLvCpYpP9+LhqXWoobnD31UvA=; b=fLxZ+zBgWI8P5hD4HoLHb
+	L5eywEIW7d9KwzWNkGKdUwNJB0icGlTyO9CA0RMDZSenBydCrZJCMrjfhqlRzKZj
+	KqAbOgYeho959U8FNi6cM+8+vUTHchg8VF7kFyqvlaYORy/ACHNTUKUz/HVK+e7j
+	Z4EmkgBf41TRNUJc/Qoil0=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S2;
+	Sun, 05 Jan 2025 17:51:43 +0800 (CST)
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org,
+	arm@kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL 1/5] i.MX drivers change for 6.14
+Date: Sun,  5 Jan 2025 17:51:34 +0800
+Message-Id: <20250105095139.714590-1-shawnguo2@yeah.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZryxXry8Jw4ftr4UArW7CFg_yoWDJwc_CF
+	y8Xa4UJryUJF17Ja45Cr10vryjyF47Jr97AF18KrWUJr47Jr15JF18Xr4xXr1DXr1UJF1D
+	Jr1UXr18Ar4UJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbc4S5UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAjLZWd6TKsXngAAsR
 
-On Fri,  3 Jan 2025 14:06:00 +0800 Wei Fang wrote:
-> The i.MX95 ENETC supports both MAC hash filter and MAC exact filter. MAC
-> hash filter is implenented through a 64-bits hash table to match against
-> the hashed addresses, PF and VFs each have two MAC hash tables, one is
-> for unicast and the other one is for multicast. But MAC exact filter is
-> shared between SIs (PF and VFs), each table entry contains a MAC address
-> that may be unicast or multicast and the entry also contains an SI bitmap
-> field that indicates for which SIs the entry is valid.
-> 
-> For i.MX95 ENETC, MAC exact filter only has 4 entries. According to the
-> observation of the system default network configuration, the MAC filter
-> will be configured with multiple multicast addresses, so MAC exact filter
-> does not have enough entries to implement multicast filtering. Therefore,
-> the current MAC exact filter is only used for unicast filtering. If the
-> number of unicast addresses exceeds 4, then MAC hash filter is used.
-> 
-> Note that both MAC hash filter and MAC exact filter can only be accessed
-> by PF, VFs can notify PF to set its corresponding MAC filter through the
-> mailbox mechanism of ENETC. But currently MAC filter is only added for
-> i.MX95 ENETC PF. The MAC filter support of ENETC VFs will be supported in
-> subsequent patches.
+From: Shawn Guo <shawnguo@kernel.org>
 
-clang reports:
+The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
 
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:6: warning: variable 'pf' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
- 1158 |         if (err)
-      |             ^~~
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1179:24: note: uninitialized use occurs here
- 1179 |         enetc4_pf_struct_free(pf);
-      |                               ^~
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:2: note: remove the 'if' if its condition is always false
- 1158 |         if (err)
-      |         ^~~~~~~~
- 1159 |                 goto err_wq_task_init;
-      |                 ~~~~~~~~~~~~~~~~~~~~~
-drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1128:21: note: initialize the variable 'pf' to silence this warning
- 1128 |         struct enetc_pf *pf;
-      |                            ^
-      |                             = NULL
--- 
-pw-bot: cr
+  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-drivers-6.14
+
+for you to fetch changes up to 0b4dc35529f87d99fca91b259d50f54613bf9ec0:
+
+  soc: imx: Add SoC device register for i.MX9 (2024-12-09 20:31:39 +0800)
+
+----------------------------------------------------------------
+i.MX drivers change for 6.14:
+
+- Add a SoC driver for i.MX9 (Alice Guo)
+
+----------------------------------------------------------------
+alice.guo (1):
+      soc: imx: Add SoC device register for i.MX9
+
+ drivers/soc/imx/Makefile   |   2 +-
+ drivers/soc/imx/soc-imx9.c | 128 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 129 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/soc/imx/soc-imx9.c
+
