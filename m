@@ -1,27 +1,28 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDFE144304
-	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 09:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D7013C9D9
+	for <imx@lists.linux.dev>; Sun,  5 Jan 2025 09:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736070734; cv=none; b=h2TpqFFuAk3hB3jkf0AqHXnqkPw2LiIGzWj0YUKCKkGY/m1wepR4RsDpk/IDpg1dc1jxuDefP2N7sH37WNysRjX4YlOmYgP5E98iChEDrO6IR4Leom8/PByTsmBMuEjdR2UAIKvvK1HnGKgtzjHM4BWQLfdf3zDTHI+CIPNGtuY=
+	t=1736070735; cv=none; b=rLS5HUHW5hGQie1IiY2+SY4Pp4UGTEuVuVcCvfu01FksZiBm+PoXhPwh9BKlc2myDCTqytvZLIegM+P1NaOWkWmjg7EKu4WYChC//EbeMSuTY+XFWAxbqiyrhUq3svaVeKVMjNQ2R1UMBNqHTV7hCJQvtaiBvmf1Asiu8REOk8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736070734; c=relaxed/simple;
-	bh=zCsB99Kol/SqL+CCZCUnDvI/M+vNIrE+qLCy82bMk2w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N8BeFbxQ1+tLgD7R/ZKr29M7EKBT6SCKCybmFCZOqFJVXQcDFHL0W8Iskm6dL6t/s09oY3bYJkRBooB+ZKKW8pa84DHQNMf1tg85YNDlOvzJ7lvODdsPbBnCNDjSJXQDmf6Ay7sRTv8iTTU+NFBIRVCNcuQcqY5/VZj3ld0uS+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fLxZ+zBg; arc=none smtp.client-ip=220.197.32.18
+	s=arc-20240116; t=1736070735; c=relaxed/simple;
+	bh=Yz6V1K3dVhdnxIo5rPnGcMu3KhBIkIWjChRt8K22yIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aGvVNOEQHhTdd68frH/6D+n2B7395loyitpDwhTbH/eoAvWZCVXmYH5INcEVXW6TMnLQMrZdubNAH5ua6k7DjQNQF9tn4zTykYIKnQq3fr4xo+u7anHdoK1YGOAvYXw5gync35pJ6Jfp5710j8STztaWIDu15qJAkud4NR9XfYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CvSpIHcI; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fLxZ+zBg"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CvSpIHcI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=CRzs+
-	lBteckHuBiMPASLvCpYpP9+LhqXWoobnD31UvA=; b=fLxZ+zBgWI8P5hD4HoLHb
-	L5eywEIW7d9KwzWNkGKdUwNJB0icGlTyO9CA0RMDZSenBydCrZJCMrjfhqlRzKZj
-	KqAbOgYeho959U8FNi6cM+8+vUTHchg8VF7kFyqvlaYORy/ACHNTUKUz/HVK+e7j
-	Z4EmkgBf41TRNUJc/Qoil0=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=AvaoX
+	9cLj1j/PbPbkHelZ5srVkW5zdoaCOit3aZBk9c=; b=CvSpIHcIMM/+kmwy5nAMk
+	pre3HBNRo6x2XdEde1KmPj9BjQgf1b7GpOzbPkAxruhyrY8Ay8AGFSlVLS8/6hrY
+	SM6SgZr26f8eJ7l+ZoGu96t6PNi8Y6UHaGe0qhHaV/Zz31hnrNh8pzbRKfVEZEkx
+	CVdUFCYQ0X2Gm3R/wuoVDM=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S2;
-	Sun, 05 Jan 2025 17:51:43 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXGWwuVnpnZZRPBg--.62165S3;
+	Sun, 05 Jan 2025 17:51:44 +0800 (CST)
 From: Shawn Guo <shawnguo2@yeah.net>
 To: soc@kernel.org,
 	arm@kernel.org
@@ -30,10 +31,12 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	kernel@pengutronix.de,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 1/5] i.MX drivers change for 6.14
-Date: Sun,  5 Jan 2025 17:51:34 +0800
-Message-Id: <20250105095139.714590-1-shawnguo2@yeah.net>
+Subject: [GIT PULL 2/5] i.MX dt-bindings change for 6.14
+Date: Sun,  5 Jan 2025 17:51:35 +0800
+Message-Id: <20250105095139.714590-2-shawnguo2@yeah.net>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250105095139.714590-1-shawnguo2@yeah.net>
+References: <20250105095139.714590-1-shawnguo2@yeah.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,12 +44,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryxXry8Jw4ftr4UArW7CFg_yoWDJwc_CF
-	y8Xa4UJryUJF17Ja45Cr10vryjyF47Jr97AF18KrWUJr47Jr15JF18Xr4xXr1DXr1UJF1D
-	Jr1UXr18Ar4UJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbc4S5UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAjLZWd6TKsXngAAsR
+X-CM-TRANSID:M88vCgBXGWwuVnpnZZRPBg--.62165S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZryxXry8Jw4ftr4UArW7CFg_yoWfWwb_Ga
+	4xA3WUJrWUZF1UtryDGr1xtr15Jw17JF1UZ3W5Jr47Ar17t3s8JryktrWfXF18XFs8JFsx
+	AF4kJw1kXr47AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8Tq2tUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAhnLZWd6LaNicgAAs2
 
 From: Shawn Guo <shawnguo@kernel.org>
 
@@ -56,23 +59,21 @@ The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-drivers-6.14
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-bindings-6.14
 
-for you to fetch changes up to 0b4dc35529f87d99fca91b259d50f54613bf9ec0:
+for you to fetch changes up to 9723142eae655bcf4d26feb6893acfa03e011587:
 
-  soc: imx: Add SoC device register for i.MX9 (2024-12-09 20:31:39 +0800)
-
-----------------------------------------------------------------
-i.MX drivers change for 6.14:
-
-- Add a SoC driver for i.MX9 (Alice Guo)
+  dt-bindings: arm: fsl: Add ABB SoM and carrier (2024-12-09 16:35:30 +0800)
 
 ----------------------------------------------------------------
-alice.guo (1):
-      soc: imx: Add SoC device register for i.MX9
+i.MX dt-bindings change for 6.14:
 
- drivers/soc/imx/Makefile   |   2 +-
- drivers/soc/imx/soc-imx9.c | 128 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 129 insertions(+), 1 deletion(-)
- create mode 100644 drivers/soc/imx/soc-imx9.c
+- Add compatibles for i.MX8MP based SoM and carrier from ABB
+
+----------------------------------------------------------------
+Heiko Schocher (1):
+      dt-bindings: arm: fsl: Add ABB SoM and carrier
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
