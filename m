@@ -1,176 +1,226 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566844A04
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 22:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE741DA614;
+	Mon,  6 Jan 2025 23:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736201817; cv=none; b=DnRvktwxkgsnUcQ/qxcQmABqPArfBSkZLDW2qA8mgu9bQZ/z2N2cGXwZdTfN7SaGKypX24HwrYbSCvm6Pc76D2XnkiuZM+tlxfrXw+kVTHcMR1mlxe3gbgPoi0LjsibQc09kJWVp7TzXPv0BP3f3tesB1wzuT1E12H11S4txRpU=
+	t=1736204792; cv=none; b=YefTparzhiNH+FvIykmnlOwipCf+yrx9fZ7P2QcYG8MD6Divxe5HtZbVld2TaesCe6rVai9GVvOllPCmtI7gdCBogtBgSQxZoOa1+YZYMZvZ0F1LQqXxOfyvFKbCmQOoxbHdb6c2E14B5bF2GW09bsPDtCicgkoP049IT7EknuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736201817; c=relaxed/simple;
-	bh=uJoQ0VAGlfyNJz06xkKxvmBToLcte81JyTpjF5zZu1M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SHc8cVWwJd4gRc5dG+xbXjesEpNjEhrtgHp+2SryTcU7bKi9a0nfLe6nh7gCGvcyl1Pc2hmCHMqgfXlRO29lvCT7dF+nkMxCAKjEh4cR4A0zD3aTSCeBIU/TlwnVcWh1lfgUwT9pFA5A0o4LA5qpOBuqecBdhMYs+tiCSdCiN7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=bxChGPP8; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1736204792; c=relaxed/simple;
+	bh=L8NoW+GWrw6LkXXrWhcopZuOZE6yMFONkdHwl1YdEPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d/t19C+MoAyKmqA80ESyFEXaDjVN5poWYMPyfBRrxYrDLVOoPmArltbR442Ge6MheNtKXNz14FOegaef0pB0Rutf25Tl3wWIOjqf/YS2S2nH/lt+ScmFEMque0I0zOvtA/JBLMqvWUhxvpLfl4WMgXFVkf83I/W0kujSFkCA9Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rH8dAlj0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="bxChGPP8"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6d8f916b40bso195732026d6.3
-        for <imx@lists.linux.dev>; Mon, 06 Jan 2025 14:16:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1736201814; x=1736806614; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MKTyGHq16tbtZ727IbGG7iAWKjSMFE0JRUn0L2vZOLI=;
-        b=bxChGPP84mJxm+7FqObDgTvz8PkZ6oPVfIEfUnbOUuM6EQMooXs/3fqUtH8LuhBpVW
-         R2ChsF5FCHG6rtjTTYW55NvfhgOWiNHRzVTh/RwuKzMARTol+kmElWNtpAzv81Z9mici
-         wg3ZO5jpf3veekeZYeLfvbaAiPAOs9+cZxcTUX5x2sBPGGWaXU2I/lYUqx9L5SrUenOZ
-         RFQJXnJeszVk8v62Js9P0Y7v702ugxGKxGmVj2oBzNQ6IWC/OcB+bQZYY3F2c/qOa/lt
-         K7l6jsT/WSSoYHE2Bu6U0KfgvItPQfBdrOWw/IPn3EA9//riB/JWJ8J8xXeRewJkR660
-         0d1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736201814; x=1736806614;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MKTyGHq16tbtZ727IbGG7iAWKjSMFE0JRUn0L2vZOLI=;
-        b=fVkhinna2n0PwW+tK/o2/wYzqEUPRLDBc6uHqCOxw60WMpyK6UXo7G+IlBWAAgdK1Q
-         ObzbydDWLCBOTe4/ddeUrP8oat6UBZpr3xEN1Nwl01i4q3KX+RG5YL5M5JLFgAhoQqR9
-         ptdfLb6NWh7KyweCYD4TKTPpdG/h7tYYz4ZQo6b8co+Dny4/bWFclkjYlXvc2ETxuF5L
-         b9p3UyLchk1uE27y91pCNuT7deJvXbhqbXRrJaVR5O59uQhTugNxrcV6iMss1xlWRDZb
-         mdlS8Uj+u3gwzi2msN6Nl2oTcxj5+9CBjyOEQ0K6Yba7fKvOL+VEqbs+LuajfoJyIdau
-         uofQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLGGv5LMRGMNNmZ+ejTvpRynTMhEpucj1bNWkapnKmppnO/BiAs93OulBk9jBuA4kJTf4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0ATe6SzLnGPD123OahfuI+OB37y0ffw9pQRGplsd1MXrDUF6Y
-	TS4A3To4BxCe9E3l11a5OSXO+JraKMi+N4fa4+u6lObuf662jDlHeAJ/qVy7LBQ=
-X-Gm-Gg: ASbGnctvSCOtbonOxuK55V+HAEChrMD9lzAhKCLxaFKE9AVENsx7yWckk+gY6b9OC/a
-	0ScLhoqXmDgodmm7fspl92pSVeJew5pOyChh0OiSi2KBGj2wEEWlAu9S0MXm69NgSesKVs/URwx
-	rguGrQP/AzNil+jat8XVR5f4IuQZYILbCnyA6pr8MeeQaXZYV4sOCE8db1zGefNsX41ywy1pAOt
-	N7SMayyiJjNd/y0fAIpgRUCnxzZd/+xF8nJ7qYGoXUTz1JkbGxk1sFfPA==
-X-Google-Smtp-Source: AGHT+IFBCd5sFXzWy1gcNmqfDzYVOs8lG40yFCqGt0rSh5Hxou3JAyyvVXilB2wQl4wInH3b+m+z+Q==
-X-Received: by 2002:ad4:5cc6:0:b0:6d4:e0a:230e with SMTP id 6a1803df08f44-6dd23337823mr949624936d6.16.1736201814187;
-        Mon, 06 Jan 2025 14:16:54 -0800 (PST)
-Received: from nicolas-tpx395.localdomain ([2606:6d00:15:862e::7a9])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac2bd0b9sm1541514285a.23.2025.01.06.14.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 14:16:53 -0800 (PST)
-Message-ID: <86d9eb915432c6b070f7c7f524973e9a363de76e.camel@ndufresne.ca>
-Subject: Re: [PATCH 1/2] media: amphion: Support display delay for Hevc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rH8dAlj0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AB6C4CEDD;
+	Mon,  6 Jan 2025 23:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736204792;
+	bh=L8NoW+GWrw6LkXXrWhcopZuOZE6yMFONkdHwl1YdEPw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rH8dAlj0wtUy7xFErwehEOX1KyySG6mvDaTZkoAK+Iu+BFNQBU272riKgcMKBopha
+	 jq936IQKtT/s5znsFkcm9TnOSRVyrrCOu5gTlA7XzwvIzilUHbkLIqWzB/dGcgffas
+	 wfbuEPcExSKcgS166KigyzOThbXW3ZqbZeXUc6mFylNnxq2riEKSqBmPz/5co/KmD3
+	 De84AKZf7hXRaJjfOzWr+r0pyOBkKClVKmHqksy6JgdUVUjcxXtkN2hmKSB8MKpxTB
+	 lor3UVkfdR1H6XiA29mBCqvzSQ1moyeiXO0IPnf9GpMiBg8fvEX/I7kROmM/bp7oDO
+	 EzZvtKb5W4Mkg==
+Date: Mon, 6 Jan 2025 17:06:31 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	"open list:LED SUBSYSTEM" <linux-leds@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: leds: Convert leds-tlc591xx.txt to yaml
  format
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Ming Qian <ming.qian@oss.nxp.com>, mchehab@kernel.org, 
-	hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, 	linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Mon, 06 Jan 2025 17:16:52 -0500
-In-Reply-To: <20241219015146.706482-1-ming.qian@oss.nxp.com>
-References: <20241219015146.706482-1-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+Message-ID: <20250106230631.GA1287822-robh@kernel.org>
+References: <20250106210621.526224-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250106210621.526224-1-Frank.Li@nxp.com>
 
-Hi,
-
-nit: use capital HEVC in the subject
-
-Le jeudi 19 d=C3=A9cembre 2024 =C3=A0 10:51 +0900, Ming Qian a =C3=A9crit=
-=C2=A0:
-> The amphion decoder firmware v1.9.0 supports display delay 0 for
-> hevc format, then driver can enable this feature.
-
-nit: HEVC
-
-I think this added "feature" hides a bug you haven't fixed in this patch.
-
-
-        v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
-                          V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
-                          0, 1, 1, 0);
-
-With the control registered this way, 0 is the default, and the range of 0-=
-1.
-But from your commit message, this is only supported from firmware 1.9.0 an=
-d up.
-I think the patch should basically adjust the min and def values according =
-to
-the detected firmware version.
-
-This might actually be more complex, aka per CODEC, and for that you may wa=
-nt to
-use v4l2_ctrl_config structure.
-
-Nicolas
-
-
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+On Mon, Jan 06, 2025 at 04:06:20PM -0500, Frank Li wrote:
+> Convert binding doc leds-tlc591xx.txt to yaml format to fix below DTB_CHECK
+> warning.
+> 
+> arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtb:
+>   /soc@0/bus@30800000/i2c@30a30000/tlc59108@40: failed to match any schema with compatible: ['ti,tlc59108']
+> 
+> Additional change:
+> - ref to common.yaml for child nodes.
+> - limit child's reg to 0 - 7 for ti,tlc59108.
+> - fix typo 'linux,default_trigger' in example.
+> - change child node name's prefix to led-.
+> - change nodename to led-controller.
+> - fix properties order in example.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/media/platform/amphion/vpu_malone.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/=
-platform/amphion/vpu_malone.c
-> index 5c6b2a841b6f..8f4aa48b2d65 100644
-> --- a/drivers/media/platform/amphion/vpu_malone.c
-> +++ b/drivers/media/platform/amphion/vpu_malone.c
-> @@ -332,6 +332,8 @@ struct vpu_dec_ctrl {
->  	u32 buf_addr[VID_API_NUM_STREAMS];
->  };
-> =20
-> +static const struct malone_padding_scode *get_padding_scode(u32 type, u3=
-2 fmt);
+>  .../bindings/leds/leds-tlc591xx.txt           | 40 --------
+>  .../devicetree/bindings/leds/ti,tlc59116.yaml | 91 +++++++++++++++++++
+>  2 files changed, 91 insertions(+), 40 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/leds/leds-tlc591xx.txt
+>  create mode 100644 Documentation/devicetree/bindings/leds/ti,tlc59116.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/leds-tlc591xx.txt b/Documentation/devicetree/bindings/leds/leds-tlc591xx.txt
+> deleted file mode 100644
+> index 3bbbf70244119..0000000000000
+> --- a/Documentation/devicetree/bindings/leds/leds-tlc591xx.txt
+> +++ /dev/null
+> @@ -1,40 +0,0 @@
+> -LEDs connected to tlc59116 or tlc59108
+> -
+> -Required properties
+> -- compatible: should be "ti,tlc59116" or "ti,tlc59108"
+> -- #address-cells: must be 1
+> -- #size-cells: must be 0
+> -- reg: typically 0x68
+> -
+> -Each led is represented as a sub-node of the ti,tlc59116.
+> -See Documentation/devicetree/bindings/leds/common.txt
+> -
+> -LED sub-node properties:
+> -- reg: number of LED line, 0 to 15 or 0 to 7
+> -- label: (optional) name of LED
+> -- linux,default-trigger : (optional)
+> -
+> -Examples:
+> -
+> -tlc59116@68 {
+> -	#address-cells = <1>;
+> -	#size-cells = <0>;
+> -	compatible = "ti,tlc59116";
+> -	reg = <0x68>;
+> -
+> -	wan@0 {
+> -		label = "wrt1900ac:amber:wan";
+> -		reg = <0x0>;
+> -	};
+> -
+> -	2g@2 {
+> -		label = "wrt1900ac:white:2g";
+> -		reg = <0x2>;
+> -	};
+> -
+> -	alive@9 {
+> -		label = "wrt1900ac:green:alive";
+> -		reg = <0x9>;
+> -		linux,default_trigger = "heartbeat";
+> -	};
+> -};
+> diff --git a/Documentation/devicetree/bindings/leds/ti,tlc59116.yaml b/Documentation/devicetree/bindings/leds/ti,tlc59116.yaml
+> new file mode 100644
+> index 0000000000000..cbf1a79b9cf6c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/leds/ti,tlc59116.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/leds/ti,tlc59116.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  u32 vpu_malone_get_data_size(void)
->  {
->  	return sizeof(struct vpu_dec_ctrl);
-> @@ -654,8 +656,10 @@ static int vpu_malone_set_params(struct vpu_shared_a=
-ddr *shared,
->  		hc->jpg[instance].jpg_mjpeg_interlaced =3D 0;
->  	}
-> =20
-> -	hc->codec_param[instance].disp_imm =3D params->display_delay_enable ? 1=
- : 0;
-> -	if (malone_format !=3D MALONE_FMT_AVC)
-> +	if (params->display_delay_enable &&
-> +	    get_padding_scode(SCODE_PADDING_BUFFLUSH, params->codec_format))
-> +		hc->codec_param[instance].disp_imm =3D 1;
-> +	else
->  		hc->codec_param[instance].disp_imm =3D 0;
->  	hc->codec_param[instance].dbglog_enable =3D 0;
->  	iface->dbglog_desc.level =3D 0;
-> @@ -1024,6 +1028,7 @@ static const struct malone_padding_scode padding_sc=
-odes[] =3D {
->  	{SCODE_PADDING_EOS,      V4L2_PIX_FMT_JPEG,        {0x0, 0x0}},
->  	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264,        {0x15010000, 0x0}},
->  	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264_MVC,    {0x15010000, 0x0}},
-> +	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_HEVC,        {0x3e010000, 0x20}},
->  };
-> =20
->  static const struct malone_padding_scode padding_scode_dft =3D {0x0, 0x0=
-};
-> @@ -1058,8 +1063,11 @@ static int vpu_malone_add_padding_scode(struct vpu=
-_buffer *stream_buffer,
->  	int ret;
-> =20
->  	ps =3D get_padding_scode(scode_type, pixelformat);
-> -	if (!ps)
-> +	if (!ps) {
-> +		if (scode_type =3D=3D SCODE_PADDING_BUFFLUSH)
-> +			return 0;
->  		return -EINVAL;
-> +	}
-> =20
->  	wptr =3D readl(&str_buf->wptr);
->  	if (wptr < stream_buffer->phys || wptr > stream_buffer->phys + stream_b=
-uffer->length)
+> +title: LEDs connected to tlc59116 or tlc59108
+> +
+> +maintainers:
+> +  - Andrew Lunn <andrew@lunn.ch>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,tlc59108
+> +      - ti,tlc59116
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +patternProperties:
+> +  "(^led-[0-9a-f]$|led)":
 
+You have reg, so this should always have a unit-address: "^led@[0-9a-f]$"
+
+> +    type: object
+> +    $ref: common.yaml#
+> +    properties:
+> +      reg:
+> +        items:
+> +          minimum: 0
+> +          maximum: 15
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,tlc59108
+> +    then:
+> +      patternProperties:
+> +        "(^led-[0-9a-f]$|led)":
+> +          properties:
+> +            reg:
+> +              items:
+> +                minimum: 0
+
+0 is already the min.
+
+> +                maximum: 7
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        led-controller@68 {
+> +            compatible = "ti,tlc59116";
+> +            reg = <0x68>;
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            led-wan@0 {
+> +                reg = <0x0>;
+> +                label = "wrt1900ac:amber:wan";
+> +            };
+> +
+> +            led-2g@2 {
+> +                reg = <0x2>;
+> +                label = "wrt1900ac:white:2g";
+> +            };
+> +
+> +            led-alive@9 {
+> +                reg = <0x9>;
+> +                label = "wrt1900ac:green:alive";
+> +                linux,default-trigger = "heartbeat";
+> +            };
+> +        };
+> +    };
+> +
+> -- 
+> 2.34.1
+> 
