@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FE415C120
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB0F1DF251
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179631; cv=none; b=LGx3N6yY/zYaEqPUV/M1/5/B1vZVaTcDOkk+4A4Clb5s6+qp8sJd2/yUPsTKcHw3iFXpjjaUcQgIBsCQAtA4jurYphS9o7iPxLxWVFa2UMn4cSuGdCs0ZyiyWR28qEkMRPX4y3qCqH1ATiTD/eF3X0ZA9fDfWmge+DWzoU+iev8=
+	t=1736179639; cv=none; b=s4IC60oVIxViVGBwK4MnAShPdmwwTkhvIbzq0y1t+hCsawbfQBlZwdIpuGYMxGOjR8rjHhxef8hljd6XfGZN7MsopxpJm+ACuAJeQylTTr9ZSVlJ6jRik05Ctgul4g9U2Ah2ifVQJJPAH1BR+jc0BbJHxNNaDNv2exMbi8NGJKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179631; c=relaxed/simple;
-	bh=EU9qni+9kj2/BSp6QJ7cQAb3mXr+ZwEsDc7gJwrsMB0=;
+	s=arc-20240116; t=1736179639; c=relaxed/simple;
+	bh=C451IDPs2diiR6Jobe/SheJ2I89XLWctnX9fEv/gyl4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KpOpR7H6Nv9qWCMNvUB/rg0nHGBTVRIG/jpdOBfulc6/FztHfYZzUsR/Vl3Da6gXQogdP+T25wsfdId+AuCKDNdP/5vvfmjHr2ow5HzVHoIkdAK//a97Cs7MeVGlYiuIg3PxkwHtwxUSxZQZaMkUngVBVX0gtg+8efHIrkZxJKY=
+	 In-Reply-To:To:Cc; b=u+6UY7Rw8jWnf/x/18rREQD5vBXRrxRfsg+o/SGjyYxNFm3d3O4iG4CmxRm63srpsLGf0wvcOE1p+oEBNz4q3w3HPlzu9O9Ve5cRLemQYk4+kOif9smK6aov5X4X9TZZEfc83UzukHegbmLd+eIhFqSScvj/o91ONd4yOnJ4xTk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,21 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcx-0000C6-KC; Mon, 06 Jan 2025 17:06:51 +0100
+	id 1tUpcx-0000CA-KD; Mon, 06 Jan 2025 17:06:51 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-007C9n-0y;
+	id 1tUpcw-007C9s-17;
 	Mon, 06 Jan 2025 17:06:51 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-009dVc-34;
+	id 1tUpcw-009dVc-39;
 	Mon, 06 Jan 2025 17:06:50 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 06 Jan 2025 17:06:38 +0100
-Subject: [PATCH v2 03/10] arm64: dts: imx8mp-skov: use I2C5 for DDC
+Date: Mon, 06 Jan 2025 17:06:43 +0100
+Subject: [PATCH v2 08/10] arm64: dts: imx8mp-skov: describe mains fail
+ detection
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250106-skov-dt-updates-v2-3-4504d3f00ecb@pengutronix.de>
+Message-Id: <20250106-skov-dt-updates-v2-8-4504d3f00ecb@pengutronix.de>
 References: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
 In-Reply-To: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -60,73 +61,50 @@ X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The HDMI DDC pads can be muxed either to an i.MX I2C controller or
-to a limited I2C controller within the Designware HDMI bridge.
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-So far, the pads were muxed to the HDMI bridge, but the i.MX I2C controller
-is the better choice:
+The main 24V regulator will toggle GPIO4_IO23 to signal imminent voltage
+loss. Reflect this in the DT, so the OS can take appropriate action when
+this happens.
 
-  - The Designware HDMI I2C controller doesn't support multi-byte
-    requests and the Linux driver refuses[1] transfers to/from address
-    0x37, but these are required for display/brightness configuration,
-
-  - The driver doesn't support I2C bus recovery, but some HDMI panels used
-    with the board can be flaky and require it.
-
-As the i.MX I2C controller and driver don't have either of these
-limitations, let's make use of it instead.
-
-[1]: https://lore.kernel.org/all/20190722181945.244395-1-mka@chromium.org/
-
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - use passive voice instead of "we" (Frank)
+  - no change
 ---
- .../boot/dts/freescale/imx8mp-skov-revb-hdmi.dts   | 26 ++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dts
-index c1ca69da3cb8edf5424b727e3ba8bb74affe8e93..206116be816662349ef5b54e288b945f171f5637 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dts
-@@ -9,12 +9,34 @@ / {
- 	compatible = "skov,imx8mp-skov-revb-hdmi", "fsl,imx8mp";
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+index bce23d62cd277b89ec9ce5ed3651cfe787987158..80d212acc0c33af0b2a812e0b03b36dbb6b3b3fd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+@@ -116,6 +116,11 @@ reg_24v: regulator-24v {
+ 		regulator-name = "24V";
+ 		regulator-min-microvolt = <24000000>;
+ 		regulator-max-microvolt = <24000000>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg24v>;
++		interrupts-extended = <&gpio4 23 IRQ_TYPE_EDGE_FALLING>;
++		system-critical-regulator;
++		regulator-uv-less-critical-window-ms = <50>;
+ 	};
  
-+&i2c5 {
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c5>;
-+	pinctrl-1 = <&pinctrl_i2c5_gpio>;
-+	scl-gpios = <&gpio3 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio3 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+};
-+
- &iomuxc {
- 	pinctrl_hdmi: hdmigrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL		0x1c3
--			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA		0x1c3
- 			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD			0x19
+ 	reg_can2rs: regulator-can2rs {
+@@ -591,6 +596,12 @@ MX8MP_IOMUXC_SAI3_MCLK__PWM4_OUT			0x116
  		>;
  	};
-+
-+	pinctrl_i2c5: i2c5grp {
+ 
++	pinctrl_reg24v: reg24vgrp {
 +		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__I2C5_SCL			0x400001c2
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__I2C5_SDA			0x400001c2
++			MX8MP_IOMUXC_SAI2_RXD0__GPIO4_IO23			0x154
 +		>;
 +	};
 +
-+	pinctrl_i2c5_gpio: i2c5gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__GPIO3_IO26			0x400001c2
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27			0x400001c2
-+		>;
-+	};
- };
+ 	pinctrl_reg_vsd_3v3: regvsd3v3grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x40
 
 -- 
 2.39.5
