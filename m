@@ -1,340 +1,205 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F4B1D63EA;
-	Mon,  6 Jan 2025 09:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DB41D63FB
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 09:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736154086; cv=none; b=EgmSlBxhIFcxvQVoeRc3RQUUegGuZnB2GnL+e/solze1izJfGDuN4SSYGTu/HtB6kd32gNGxSnmZ/oP2j6tstY3bfEgkNywB6ANGzSyVJdU8n9lf/jvGdg0cudhnLZU+FPer75mlPQCC33m1dz2Dp8XK2s+V08/XohedDL7Q4fE=
+	t=1736155690; cv=none; b=FGr3Lq3+IoCHUt3qg/l9RtvswIET+UE9aoit2/PEzt+wbGnRh4fL0P5AxpbfkJUL9Oanx6GzF0mRtXjB/kqAv7jxuHhIt/hjnEXtZ7ZAo5RCPFxUWfh0UpboVkM3JXtZawXdBLa1K/qaKIfaf9lIyTUG1cCw2NiRZCsFbGNbS1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736154086; c=relaxed/simple;
-	bh=QwzRl9cFcTDbRVbk698nAEVuAz1H8G84kJCzIhaC/i4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D397sk9j32H4Xn+N/6tIk0jDx2DkCsIPggzFF2CLpMZUj+x7byw4Rkg7KOy7/Bjqp+Ktq4OQchEISdrb8KPZWs+xXnTpRr/8pzuHxwrRc4mDI+W7BtmfpIqcX+ZAXLhBKxDmrE7Aaeba7Clhyn/Lxpr/MxkI5fPHkd8vwriZ46E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2WoCnwwa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KIBzDEyx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0qA4+zGF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Aey7PDWT; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1736155690; c=relaxed/simple;
+	bh=61pt++uOPk+Ukq45+uKljv/Q11loRn0ODQhsbO4s/pQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=maGguP8lUZnZ5hTMn8/vhsNpW49ZOKWgeCShSohncqmDXrDHKbjpSWKoJQI1k+hXbN70Pp0NU8ofWQy/zcIxELRzTg6ZQ9qViy5AUh5I9Utup6i9JXDP/e/vrKT1jq8rH+geV7gj5G4HByibZ+9Z8KBZxxpzQjJEBLYabdnzR34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aSzkyW9t; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qBgKK/c2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2WoCnwwa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KIBzDEyx";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0qA4+zGF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Aey7PDWT"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DFCC21F441;
-	Mon,  6 Jan 2025 09:01:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1736154081; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aSzkyW9t";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qBgKK/c2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1736155687; x=1767691687;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PXCnaWSWoS9YIAoAn/Kz0auizRnOExZj6rmeVZu6DlA=;
+  b=aSzkyW9teCHRSLNzHNR35W0NBwa1M9NNZOd24TP0v2JS5KvwDgBa/65x
+   0Y7wRAeH2aJXJ6xa/kl3yxymBQ5KLt4ZdSR0pzF8PgwlcEX2kgPG2a34h
+   sQBEA1NEVKZSaZj6Ib/yZmYEG39SbtCnvSoTr6yE/ege1jb0NCwpIbP+c
+   k55xgnM8a/W4dNOGfBs2GB0r1Nof9/1LoHcS3V5f5AuceA+sJbolYl6Ph
+   8GDO2/CJLpT0GAF7opYihMaMtP4O7MU5nGbW0mRLdUkfAnsTk8Q+GFflC
+   vwNrH5q7bDfk+dSHr3nfihUjTa3c2pryONvl6PCTRtpZSqXwFCKm5h82H
+   Q==;
+X-CSE-ConnectionGUID: 6x+pJm1kQV+PLyHp27u1Og==
+X-CSE-MsgGUID: Q8H4DRZ5SH2ERl3GvlTiWQ==
+X-IronPort-AV: E=Sophos;i="6.12,292,1728943200"; 
+   d="scan'208";a="40872479"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 06 Jan 2025 10:28:04 +0100
+X-CheckPoint: {677BA224-1D-93478228-E4E4FEDD}
+X-MAIL-CPID: 656E0C9F61E47A078C794C090AB99A91_5
+X-Control-Analysis: str=0001.0A682F18.677BA224.00D7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF2041611BC;
+	Mon,  6 Jan 2025 10:27:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1736155680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L9eo9eLrGZ8kbAkajy2+fQREdfqGj9Khgjn/UA2FQ4E=;
-	b=2WoCnwwapqN+n2bKEuOpX6LKFaYfAfnzRg4Wq1OxpCAs9RyJD0Eop+PDb5LuytEsUGaZte
-	EA45ojWGt7xc/1Iqh7kvLG2kUOFNFjCSkyEbvU1Sj9CKtO/mOMhg6ojPGH6IOIB9DNTxVU
-	QV+3xiE9zNWgIK9N9n3J9bfjXFS/mDc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1736154081;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L9eo9eLrGZ8kbAkajy2+fQREdfqGj9Khgjn/UA2FQ4E=;
-	b=KIBzDEyxpGeRt3gZkCEmUyIwCNglEAZWwqBuYD8sloE1dbuaS95LBiPf7fCW16HIS2e9IH
-	94SPkhdy2HZ3hmCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1736154079; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L9eo9eLrGZ8kbAkajy2+fQREdfqGj9Khgjn/UA2FQ4E=;
-	b=0qA4+zGFPAj6fwkN1pZRgu7xN6NttKaiS05UlWQcpBUR6iU67stKlm01IMgKhMJgvEyXgn
-	vOz8GwNljIyF4eQ/7nQmQ6LpZekr9v+o+xR00NUJGLE0gqoMqnumRSCbc+ABje62uBXur6
-	XaNDRghs0t5OUX45eqEWtypKHK2zhW4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1736154079;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L9eo9eLrGZ8kbAkajy2+fQREdfqGj9Khgjn/UA2FQ4E=;
-	b=Aey7PDWT6welzplhPVwpQXyTo3mFttIrV9GWNhahjddiAJD6zB5xHz94dPFeEB6pM9e85i
-	GK3bWMMEbBTlCACQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 00D36139AB;
-	Mon,  6 Jan 2025 09:01:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HdNLOt2be2cHZwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 06 Jan 2025 09:01:17 +0000
-Message-ID: <8f137bc5-6b65-4792-949f-7bec5bd115fb@suse.de>
-Date: Mon, 6 Jan 2025 10:01:17 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=PXCnaWSWoS9YIAoAn/Kz0auizRnOExZj6rmeVZu6DlA=;
+	b=qBgKK/c2OOczIJKtnZla8yDN6CVkurjHjRX7unHcq1ZBTSH3bn/FmTKaT8MbBKgJEZZqXl
+	Fh33/mhESZ4HpuHSLc+bPJvIPUHRv0hj4tWj4W0UBZscl6KqFwtSLEsb67NPdoRRorUrn+
+	lARXlALXdx4Zyu+MsYfdnNdlcmxIPKsGzy5ENuPaKP4p2aKLNbeXD70w7NFDtHgjBRKP9S
+	bd2aCA7NzihRxltsh8N2KB2tWB5FyMHeS1C+Fo+5ebys7MLKs4efzApGIOB1+7x5j0o5+S
+	7WXqfGoIFPPVQoPS7ehCgqo4+X0L1Vf6gmljz0x0h4N7L48nRVub5cxyT2oWeQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Wei Fang <wei.fang@nxp.com>
+Subject: Re: [PATCH v2 1/2] arm64: dts: imx95: add NETC related nodes
+Date: Mon, 06 Jan 2025 10:27:57 +0100
+Message-ID: <12612864.O9o76ZdvQC@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20241219061340.1633173-2-wei.fang@nxp.com>
+References: <20241219061340.1633173-1-wei.fang@nxp.com> <20241219061340.1633173-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] drm/connector: make mode_valid() callback accept
- const mode pointer
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Karol Herbst <kherbst@redhat.com>,
- Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>,
- Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat <alain.volmat@foss.st.com>,
- Raphael Gallais-Pou <rgallaispou@gmail.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Peter Senna Tschudin <peter.senna@gmail.com>, Ian Ray <ian.ray@ge.com>,
- Martyn Welch <martyn.welch@collabora.co.uk>, Inki Dae
- <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Stefan Agner <stefan@agner.ch>,
- Alison Wang <alison.wang@nxp.com>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
- <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
- Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
- <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Jani Nikula <jani.nikula@intel.com>
-References: <20241214-drm-connector-mode-valid-const-v2-0-4f9498a4c822@linaro.org>
- <76ho36jqcraehnsgpjralpye52w7ryshhgizekn4qqfsikiojd@3yyorbvjkc7b>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <76ho36jqcraehnsgpjralpye52w7ryshhgizekn4qqfsikiojd@3yyorbvjkc7b>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[linaro.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,kernel.org,redhat.com,amd.com,foss.st.com,arm.com,ideasonboard.com,kwiboo.se,ge.com,collabora.co.uk,samsung.com,agner.ch,nxp.com,pengutronix.de,quicinc.com,poorly.run,somainline.org,rock-chips.com,sntech.de,csie.org,sholland.org,nvidia.com,raspberrypi.com,igalia.com,chromium.org,broadcom.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[renesas];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLe7nwz9j5tg8m3cgi1onksm86)];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[82];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi
+Am Donnerstag, 19. Dezember 2024, 07:13:39 CET schrieb Wei Fang:
+> Add NETC related nodes for i.MX95.
+>=20
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 94 ++++++++++++++++++++++++
+>  1 file changed, 94 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index e9c7a8265d71..8b0eb1d835e8 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1697,10 +1697,104 @@ sai2: sai@4c880000 {
+>  			status =3D "disabled";
+>  		};
+> =20
+> +		netc_blk_ctrl: system-controller@4cde0000 {
+> +			compatible =3D "nxp,imx95-netc-blk-ctrl";
+> +			reg =3D <0x0 0x4cde0000 0x0 0x10000>,
+> +			      <0x0 0x4cdf0000 0x0 0x10000>,
+> +			      <0x0 0x4c81000c 0x0 0x18>;
+> +			reg-names =3D "ierb", "prb", "netcmix";
+> +			#address-cells =3D <2>;
+> +			#size-cells =3D <2>;
+> +			ranges;
+> +			power-domains =3D <&scmi_devpd IMX95_PD_NETC>;
+> +			assigned-clocks =3D <&scmi_clk IMX95_CLK_ENET>,
+> +					  <&scmi_clk IMX95_CLK_ENETREF>;
+> +			assigned-clock-parents =3D <&scmi_clk IMX95_CLK_SYSPLL1_PFD2>,
+> +						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD0>;
+> +			assigned-clock-rates =3D <666666666>, <250000000>;
+> +			clocks =3D <&scmi_clk IMX95_CLK_ENET>;
+> +			clock-names =3D "ipg";
+> +			status =3D "disabled";
+> +
+> +			netc_bus0: pcie@4ca00000 {
+> +				compatible =3D "pci-host-ecam-generic";
+> +				reg =3D <0x0 0x4ca00000 0x0 0x100000>;
+> +				#address-cells =3D <3>;
+> +				#size-cells =3D <2>;
+> +				device_type =3D "pci";
+> +				bus-range =3D <0x0 0x0>;
+> +				msi-map =3D <0x0 &its 0x60 0x1>,	//ENETC0 PF
+> +					  <0x10 &its 0x61 0x1>, //ENETC0 VF0
+> +					  <0x20 &its 0x62 0x1>, //ENETC0 VF1
+> +					  <0x40 &its 0x63 0x1>, //ENETC1 PF
+> +					  <0x80 &its 0x64 0x1>, //ENETC2 PF
+> +					  <0x90 &its 0x65 0x1>, //ENETC2 VF0
+> +					  <0xa0 &its 0x66 0x1>, //ENETC2 VF1
+> +					  <0xc0 &its 0x67 0x1>; //NETC Timer
+> +					 /* ENETC0~2 and Timer BAR0 - non-prefetchable memory */
+> +				ranges =3D <0x82000000 0x0 0x4cc00000  0x0 0x4cc00000  0x0 0xe0000
+> +					 /* Timer BAR2 - prefetchable memory */
+> +					 0xc2000000 0x0 0x4cd00000  0x0 0x4cd00000  0x0 0x10000
+> +					 /* ENETC0~2: VF0-1 BAR0 - non-prefetchable memory */
+> +					 0x82000000 0x0 0x4cd20000  0x0 0x4cd20000  0x0 0x60000
+> +					 /* ENETC0~2: VF0-1 BAR2 - prefetchable memory */
+> +					 0xc2000000 0x0 0x4cd80000  0x0 0x4cd80000  0x0 0x60000>;
+> +
+> +				enetc_port0: ethernet@0,0 {
+> +					compatible =3D "pci1131,e101";
+> +					reg =3D <0x000000 0 0 0 0>;
+> +					clocks =3D <&scmi_clk IMX95_CLK_ENETREF>;
+> +					clock-names =3D "ref";
+> +					status =3D "disabled";
+> +				};
+> +
+> +				enetc_port1: ethernet@8,0 {
+> +					compatible =3D "pci1131,e101";
+> +					reg =3D <0x004000 0 0 0 0>;
+> +					clocks =3D <&scmi_clk IMX95_CLK_ENETREF>;
+> +					clock-names =3D "ref";
+> +					status =3D "disabled";
+> +				};
+> +
+> +				enetc_port2: ethernet@10,0 {
+> +					compatible =3D "pci1131,e101";
+> +					reg =3D <0x008000 0 0 0 0>;
+> +					status =3D "disabled";
+> +				};
+> +
+> +				netc_timer: ethernet@18,0 {
+> +					reg =3D <0x00c000 0 0 0 0>;
+> +					status =3D "disabled";
+> +				};
+> +			};
+> +
+> +			netc_bus1: pcie@4cb00000 {
+> +				compatible =3D "pci-host-ecam-generic";
+> +				reg =3D <0x0 0x4cb00000 0x0 0x100000>;
+> +				#address-cells =3D <3>;
+> +				#size-cells =3D <2>;
+> +				device_type =3D "pci";
+> +				bus-range =3D <0x1 0x1>;
+> +					 /* EMDIO BAR0 - non-prefetchable memory */
+> +				ranges =3D <0x82000000 0x0 0x4cce0000  0x0 0x4cce0000  0x0 0x20000
+> +					 /* EMDIO BAR2 - prefetchable memory */
+> +					 0xc2000000 0x0 0x4cd10000  0x0 0x4cd10000  0x0 0x10000>;
+> +
+> +				netc_emdio: mdio@0,0 {
+> +					compatible =3D "pci1131,ee00";
+> +					reg =3D <0x010000 0 0 0 0>;
+> +					#address-cells =3D <1>;
+> +					#size-cells =3D <0>;
+> +					status =3D "disabled";
+> +				};
+> +			};
+> +		};
+> +
+>  		ddr-pmu@4e090dc0 {
+>  			compatible =3D "fsl,imx95-ddr-pmu", "fsl,imx93-ddr-pmu";
+>  			reg =3D <0x0 0x4e090dc0 0x0 0x200>;
+>  			interrupts =3D <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
+>  		};
+> +
+>  	};
+>  };
+>=20
 
 
-Am 05.01.25 um 23:47 schrieb Dmitry Baryshkov:
-> On Sat, Dec 14, 2024 at 03:37:04PM +0200, Dmitry Baryshkov wrote:
->> While working on the generic mode_valid() implementation for the HDMI
->> Connector framework I noticed that unlike other DRM objects
->> drm_connector accepts non-const pointer to struct drm_display_mode,
->> while obviously mode_valid() isn't expected to modify the argument.
->>
->> Mass-change the DRM framework code to pass const argument to that
->> callback.
->>
->> The series has been compile-tested with defconfig for x86-64, arm and
->> arm64.
->>
->> Note: yes, I understand that this change might be hard to review and
->> merge. The only viable option that I foresee is to add new callback,
->> having the const argument and migrate drivers into using it one by one.
-> Colleagues, I'd like to graciously ping regarding this series. Should it
-> be merged as is (possibly requiring more R-B's)? Or should I rework it
-> adding something like .mode_valid_new() callback which takes const
-> argument?
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Please merge as-is. No need to complicate things. For the whole series:
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Thanks for doing this.
-
-Best regards
-Thomas
-
->
->> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->> ---
->> Changes in v2:
->> - Rebased on top of linux-next
->> - Replaced 'accept const argument' with 'take a const arugment'
->>    (Laurent)
->> - Link to v1: https://lore.kernel.org/r/20241115-drm-connector-mode-valid-const-v1-0-b1b523156f71@linaro.org
->>
->> ---
->> Dmitry Baryshkov (5):
->>        drm/encoder_slave: make mode_valid accept const struct drm_display_mode
->>        drm/amdgpu: don't change mode in amdgpu_dm_connector_mode_valid()
->>        drm/sti: hda: pass const struct drm_display_mode* to hda_get_mode_idx()
->>        drm/connector: make mode_valid_ctx take a const struct drm_display_mode
->>        drm/connector: make mode_valid take a const struct drm_display_mode
->>
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c           |  8 ++++----
->>   drivers/gpu/drm/amd/amdgpu/atombios_dp.c                 |  2 +-
->>   drivers/gpu/drm/amd/amdgpu/atombios_dp.h                 |  2 +-
->>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c        | 12 +++++++++---
->>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h        |  2 +-
->>   drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |  2 +-
->>   drivers/gpu/drm/arm/malidp_mw.c                          |  2 +-
->>   drivers/gpu/drm/bridge/adv7511/adv7511_drv.c             |  2 +-
->>   drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c      |  2 +-
->>   drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c |  7 -------
->>   drivers/gpu/drm/display/drm_bridge_connector.c           |  2 +-
->>   drivers/gpu/drm/display/drm_hdmi_state_helper.c          |  2 +-
->>   drivers/gpu/drm/drm_crtc_helper_internal.h               |  2 +-
->>   drivers/gpu/drm/drm_probe_helper.c                       |  2 +-
->>   drivers/gpu/drm/exynos/exynos_hdmi.c                     |  2 +-
->>   drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_rgb.c                |  2 +-
->>   drivers/gpu/drm/gma500/cdv_intel_crt.c                   |  2 +-
->>   drivers/gpu/drm/gma500/cdv_intel_dp.c                    |  2 +-
->>   drivers/gpu/drm/gma500/cdv_intel_hdmi.c                  |  2 +-
->>   drivers/gpu/drm/gma500/cdv_intel_lvds.c                  |  2 +-
->>   drivers/gpu/drm/gma500/oaktrail_hdmi.c                   |  2 +-
->>   drivers/gpu/drm/gma500/psb_intel_drv.h                   |  2 +-
->>   drivers/gpu/drm/gma500/psb_intel_lvds.c                  |  2 +-
->>   drivers/gpu/drm/gma500/psb_intel_sdvo.c                  |  2 +-
->>   drivers/gpu/drm/i2c/ch7006_drv.c                         |  2 +-
->>   drivers/gpu/drm/i2c/sil164_drv.c                         |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_ch7017.c                |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_ch7xxx.c                |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_ivch.c                  |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_ns2501.c                |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_sil164.c                |  2 +-
->>   drivers/gpu/drm/i915/display/dvo_tfp410.c                |  2 +-
->>   drivers/gpu/drm/i915/display/icl_dsi.c                   |  2 +-
->>   drivers/gpu/drm/i915/display/intel_crt.c                 |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dp.c                  |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dp_mst.c              |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dsi.c                 |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dsi.h                 |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dvo.c                 |  2 +-
->>   drivers/gpu/drm/i915/display/intel_dvo_dev.h             |  2 +-
->>   drivers/gpu/drm/i915/display/intel_hdmi.c                |  2 +-
->>   drivers/gpu/drm/i915/display/intel_lvds.c                |  2 +-
->>   drivers/gpu/drm/i915/display/intel_sdvo.c                |  2 +-
->>   drivers/gpu/drm/i915/display/intel_tv.c                  |  2 +-
->>   drivers/gpu/drm/i915/display/vlv_dsi.c                   |  2 +-
->>   drivers/gpu/drm/imx/ipuv3/imx-tve.c                      |  2 +-
->>   drivers/gpu/drm/msm/disp/mdp4/mdp4_lvds_connector.c      |  2 +-
->>   drivers/gpu/drm/nouveau/dispnv04/tvnv17.c                |  2 +-
->>   drivers/gpu/drm/nouveau/dispnv50/disp.c                  |  2 +-
->>   drivers/gpu/drm/nouveau/nouveau_connector.c              |  2 +-
->>   drivers/gpu/drm/qxl/qxl_display.c                        |  2 +-
->>   drivers/gpu/drm/radeon/atombios_dp.c                     |  2 +-
->>   drivers/gpu/drm/radeon/radeon_connectors.c               | 10 +++++-----
->>   drivers/gpu/drm/radeon/radeon_mode.h                     |  2 +-
->>   drivers/gpu/drm/rockchip/cdn-dp-core.c                   |  2 +-
->>   drivers/gpu/drm/rockchip/inno_hdmi.c                     |  4 ++--
->>   drivers/gpu/drm/rockchip/rk3066_hdmi.c                   |  2 +-
->>   drivers/gpu/drm/sti/sti_dvo.c                            |  2 +-
->>   drivers/gpu/drm/sti/sti_hda.c                            | 12 ++++++------
->>   drivers/gpu/drm/sti/sti_hdmi.c                           |  2 +-
->>   drivers/gpu/drm/tegra/dsi.c                              |  2 +-
->>   drivers/gpu/drm/tegra/hdmi.c                             |  2 +-
->>   drivers/gpu/drm/tegra/sor.c                              |  2 +-
->>   drivers/gpu/drm/vc4/vc4_txp.c                            |  2 +-
->>   drivers/gpu/drm/virtio/virtgpu_display.c                 |  2 +-
->>   drivers/gpu/drm/vmwgfx/vmwgfx_kms.c                      |  2 +-
->>   drivers/gpu/drm/vmwgfx/vmwgfx_kms.h                      |  2 +-
->>   drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c                     |  2 +-
->>   include/drm/display/drm_hdmi_state_helper.h              |  2 +-
->>   include/drm/drm_encoder_slave.h                          |  2 +-
->>   include/drm/drm_modeset_helper_vtables.h                 |  4 ++--
->>   71 files changed, 92 insertions(+), 93 deletions(-)
->> ---
->> base-commit: 4176cf5c5651c33769de83bb61b0287f4ec7719f
->> change-id: 20241115-drm-connector-mode-valid-const-ae3db0ef6cb7
->>
->> Best regards,
->> -- 
->> Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
 
