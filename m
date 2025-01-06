@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0859E145A03
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BDA13AD11
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179629; cv=none; b=MwXiJn3LwxAOyvVvvo0MMfdoTtIxNR5hpG2BKOMqGuy8iHLcg42MCx+HqOIediLj3gBTaT+bAFoGPzmIIwHNR/TLarr/uZQFwAch0cSdCQ09wZFP7XcfCo8CcF2TmFVq6DWQtPZWI8WAfM9rDAVwWQt2xfM74K5PRwVj1zz3cWU=
+	t=1736179630; cv=none; b=IklOc/m3vrOKRBjD4oPJGhczYIqRa9ecl56teFzEd35SSTpW+JTaCotpyI5kHsgCh5IxWWRB5U4aHXbSIfbOL1Tm7pzVi8+clB9J0o1KRJ1cx6Eyo9DNFujBPrliuJDlcduB1t7xQ0YxvHi2px/MDOK5y23AD8fsms9emnzJKGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179629; c=relaxed/simple;
-	bh=JgElm34N/sOv5K2+5R3NLC6BTokNVeI0oM1Tqw+fuSU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BtWxqSSTTc7q5/zPclH/dp+CwAq6HsWjhf7UWIgwT9+xu6N9jftfYjjEwFH4G6mjgR8BXT5pM1Nuoe2HxiqnFboYZqTHdrv4fmNR1P2sDfXedYOrHmZD35brvktZRwcsFoFQTDaoRL+42DPdkZTve9danaje976f5q8WApwp8zg=
+	s=arc-20240116; t=1736179630; c=relaxed/simple;
+	bh=8eLyGTFPIWON0AfJ0+yanZQGGg1BWYIr3cBwibhSELI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FifJldY8p76P6xvWuhmf3zzNUoTkXI9eoDP+jeUy1oYw9SpsJ9oR3iNE3MYaUk/QmfDP6jiP/SgxHwd3OZlJ/hbbp2C6bXpFENPjpU9O2tDZEx6HHHPsCS9Ezl/YyGrP5Xgz11333X4OdoKNsg6NzVdx2cnyGYvCCR+pIBVHwro=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,22 +18,21 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcy-0000C7-Gl; Mon, 06 Jan 2025 17:06:52 +0100
+	id 1tUpcx-0000CB-KC; Mon, 06 Jan 2025 17:06:51 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-007C9l-0z;
+	id 1tUpcw-007C9t-17;
 	Mon, 06 Jan 2025 17:06:51 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-009dVc-31;
+	id 1tUpcw-009dVc-3A;
 	Mon, 06 Jan 2025 17:06:50 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH v2 00/10] arm64: dts: imx8mp-skov: flesh out device trees
-Date: Mon, 06 Jan 2025 17:06:35 +0100
-Message-Id: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
+Date: Mon, 06 Jan 2025 17:06:44 +0100
+Subject: [PATCH v2 09/10] arm64: dts: imx8mp-skov: fix phy-mode
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIv/e2cC/2WNQQqDMBBFryKz7hQTSxu76j2KC3VGHQqJJDFYx
- Ls3Fbrq8j34728Q2AsHuBcbeE4SxNkM+lRAP7V2ZBTKDLrUF6WVwfByCSniMlMbOSB3prtV/bW
- uSEFezZ4HWY/is8k8SYjOv4+DpL7216r/WklhiZXpBlNSrzUNj5ntuETvrKxnYmj2ff8AGDVim
- LMAAAA=
-X-Change-ID: 20241218-skov-dt-updates-eb8b73c693d1
+Message-Id: <20250106-skov-dt-updates-v2-9-4504d3f00ecb@pengutronix.de>
+References: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
+In-Reply-To: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -55,59 +53,41 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  Frank Li <Frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org, 
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-When the Skov device trees were added a year ago, there were no
-upstream bindings yet for many parts of the display pipeline.
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This has changed now, so this series fleshes the display pipeline parts
-out and adds some more fixes/enhancements that have accrued in the
-meantime.
+Use rgmii-rxid instead of rgmii-txid. It should have no effect here,
+because we have a fixed-link, but rxid reflects the board design.
 
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v2:
-- Add Rob's Acked-by
-- Reword some commit messages. See individual patches for details
-- Link to v1: https://lore.kernel.org/r/20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de
-
+v1 -> v2:
+  - explain why no functional change is expected
 ---
-Ahmad Fatoum (5):
-      arm64: dts: imx8mp-skov: correct PMIC board limits
-      arm64: dts: imx8mp-skov: operate CPU at 850 mV by default
-      arm64: dts: imx8mp-skov: use I2C5 for DDC
-      dt-bindings: display/lvds-codec: add ti,sn65lvds822
-      arm64: dts: imx8mp-skov: configure uart1 for RS485
+ arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Oleksij Rempel (5):
-      arm64: dts: imx8mp-skov: describe HDMI display pipeline
-      arm64: dts: imx8mp-skov: describe LVDS display pipeline
-      arm64: dts: imx8mp-skov: describe mains fail detection
-      arm64: dts: imx8mp-skov: fix phy-mode
-      arm64: dts: imx8mp-skov: increase I2C clock frequency for RTC
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+index 80d212acc0c33af0b2a812e0b03b36dbb6b3b3fd..a683f46fcbab62f320bad4ab47b4112071fc24e0 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+@@ -215,7 +215,7 @@ adc: adc@0 {
+ &eqos {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_eqos>;
+-	phy-mode = "rgmii-txid";
++	phy-mode = "rgmii-rxid";
+ 	status = "okay";
+ 
+ 	fixed-link {
 
- .../bindings/display/bridge/lvds-codec.yaml        |  1 +
- .../arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 63 ++++++++++++++++------
- .../boot/dts/freescale/imx8mp-skov-revb-hdmi.dts   | 45 +++++++++++++++-
- .../boot/dts/freescale/imx8mp-skov-revb-lt6.dts    | 60 +++++++++++++++++++++
- 4 files changed, 152 insertions(+), 17 deletions(-)
----
-base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
-change-id: 20241218-skov-dt-updates-eb8b73c693d1
-
-Best regards,
 -- 
-Ahmad Fatoum <a.fatoum@pengutronix.de>
+2.39.5
 
