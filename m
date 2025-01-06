@@ -1,205 +1,148 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DB41D63FB
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 09:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3FF1DA0ED
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 09:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736155690; cv=none; b=FGr3Lq3+IoCHUt3qg/l9RtvswIET+UE9aoit2/PEzt+wbGnRh4fL0P5AxpbfkJUL9Oanx6GzF0mRtXjB/kqAv7jxuHhIt/hjnEXtZ7ZAo5RCPFxUWfh0UpboVkM3JXtZawXdBLa1K/qaKIfaf9lIyTUG1cCw2NiRZCsFbGNbS1E=
+	t=1736156740; cv=none; b=pOFyengd+7Wz4C/eAoITiBiqOLy+BpjvSN3c8UL4nP4F/nUkIHH+q+pxpd9qaOY82pYc2U0pTHSzpOqM4jfs2MclYAcNiutyUrZe3bPRRNBZ3IbfSb2S8J2qHK2vE6UfSmy2LzC00fi3K9GLFV7uNyxrDnX7bhsTglqKuE2MAvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736155690; c=relaxed/simple;
-	bh=61pt++uOPk+Ukq45+uKljv/Q11loRn0ODQhsbO4s/pQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=maGguP8lUZnZ5hTMn8/vhsNpW49ZOKWgeCShSohncqmDXrDHKbjpSWKoJQI1k+hXbN70Pp0NU8ofWQy/zcIxELRzTg6ZQ9qViy5AUh5I9Utup6i9JXDP/e/vrKT1jq8rH+geV7gj5G4HByibZ+9Z8KBZxxpzQjJEBLYabdnzR34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=aSzkyW9t; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qBgKK/c2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1736156740; c=relaxed/simple;
+	bh=IZYlUVs7+fKI40GFvfmgAb22nVpN8Q2at4NYNL8nKTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OJuTmvGkyEuAhWCuYALj1sHFI5NC1+A4lhmmCxu1c4GwT48DFQuqOwB2Mku/TemdqDXCUmzEsSl8xKWCPA/mJ4l4u7lUdWovyh7bY/epLLLgWEQQZsBIsyLtME/fQrvsUQY/keoCjjz8cLY8kgyPYNteK5hrY6fJ4RDcuzYwLUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O1mAqmZ5; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="aSzkyW9t";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qBgKK/c2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O1mAqmZ5"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e53ef7462b6so14763841276.3
+        for <imx@lists.linux.dev>; Mon, 06 Jan 2025 01:45:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1736155687; x=1767691687;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PXCnaWSWoS9YIAoAn/Kz0auizRnOExZj6rmeVZu6DlA=;
-  b=aSzkyW9teCHRSLNzHNR35W0NBwa1M9NNZOd24TP0v2JS5KvwDgBa/65x
-   0Y7wRAeH2aJXJ6xa/kl3yxymBQ5KLt4ZdSR0pzF8PgwlcEX2kgPG2a34h
-   sQBEA1NEVKZSaZj6Ib/yZmYEG39SbtCnvSoTr6yE/ege1jb0NCwpIbP+c
-   k55xgnM8a/W4dNOGfBs2GB0r1Nof9/1LoHcS3V5f5AuceA+sJbolYl6Ph
-   8GDO2/CJLpT0GAF7opYihMaMtP4O7MU5nGbW0mRLdUkfAnsTk8Q+GFflC
-   vwNrH5q7bDfk+dSHr3nfihUjTa3c2pryONvl6PCTRtpZSqXwFCKm5h82H
-   Q==;
-X-CSE-ConnectionGUID: 6x+pJm1kQV+PLyHp27u1Og==
-X-CSE-MsgGUID: Q8H4DRZ5SH2ERl3GvlTiWQ==
-X-IronPort-AV: E=Sophos;i="6.12,292,1728943200"; 
-   d="scan'208";a="40872479"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 06 Jan 2025 10:28:04 +0100
-X-CheckPoint: {677BA224-1D-93478228-E4E4FEDD}
-X-MAIL-CPID: 656E0C9F61E47A078C794C090AB99A91_5
-X-Control-Analysis: str=0001.0A682F18.677BA224.00D7,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF2041611BC;
-	Mon,  6 Jan 2025 10:27:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1736155680;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXCnaWSWoS9YIAoAn/Kz0auizRnOExZj6rmeVZu6DlA=;
-	b=qBgKK/c2OOczIJKtnZla8yDN6CVkurjHjRX7unHcq1ZBTSH3bn/FmTKaT8MbBKgJEZZqXl
-	Fh33/mhESZ4HpuHSLc+bPJvIPUHRv0hj4tWj4W0UBZscl6KqFwtSLEsb67NPdoRRorUrn+
-	lARXlALXdx4Zyu+MsYfdnNdlcmxIPKsGzy5ENuPaKP4p2aKLNbeXD70w7NFDtHgjBRKP9S
-	bd2aCA7NzihRxltsh8N2KB2tWB5FyMHeS1C+Fo+5ebys7MLKs4efzApGIOB1+7x5j0o5+S
-	7WXqfGoIFPPVQoPS7ehCgqo4+X0L1Vf6gmljz0x0h4N7L48nRVub5cxyT2oWeQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, frank.li@nxp.com, linux-arm-kernel@lists.infradead.org
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Wei Fang <wei.fang@nxp.com>
-Subject: Re: [PATCH v2 1/2] arm64: dts: imx95: add NETC related nodes
-Date: Mon, 06 Jan 2025 10:27:57 +0100
-Message-ID: <12612864.O9o76ZdvQC@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20241219061340.1633173-2-wei.fang@nxp.com>
-References: <20241219061340.1633173-1-wei.fang@nxp.com> <20241219061340.1633173-2-wei.fang@nxp.com>
+        d=linaro.org; s=google; t=1736156736; x=1736761536; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DNzark5qtCDwQ7M0G9ZBrwk42sp8e6A1IdLf0YnVhag=;
+        b=O1mAqmZ5jJ1Xk/Su+43xPt4B7yIDZ/Bqsn+PQmKncsHlL+yDm9VWqWFUCxnojiVGqg
+         qoXWkYZKntqKYR0aQpSyjLzSC6JH6J4jtl/L9maya35Sz5w3LxtyrveQczTB1Nm4KUkF
+         sIOPS6UE6vacnreIMbc4LGoj0ndUWwVJ1lacL6ERm4C99m02j2mhIEo94XG+VLiJv9Zh
+         ftdlizN5CiRc6d7246C2QXDW/gMuTA2tJ2cuP1bt/z96In7P0zh7AB1jjBtf6AaAkKIu
+         jxHetwJpD9ZdAm8WMDQLTyjyNMH8y2LJX1xhjjLVaYg0A0Hr30Xo6XAyDJYPLPUIB1Hg
+         /E5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736156736; x=1736761536;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DNzark5qtCDwQ7M0G9ZBrwk42sp8e6A1IdLf0YnVhag=;
+        b=U3LZuTSSzaFhsq/NAJBTWkbSTYslJ/Qgx5GBe8Wlk7w621CRf2ozOqooATQcJhnb89
+         5Sy1nesKdbR1V+WLhPqXdwN4pxIVsxPAidvfoA7DyNG0OxiDhJ5uSzpbQfV2apmus5o5
+         nOlGqRZQzn3ScgcRMjkltqAYotmcLhAB3ydXCC3kiFPJ+FRxYVApSk65Fzb0X3+zppzu
+         mqn5ovPTFhz37AtqLq901soDH6vc7Rhoato4GfqZJnFNuFy4jcwmPTDTIqU7rX+rBXMB
+         2ehebaFjlGDrnTT6QuUHwFEAtiXOO8DiOBdZumOS7oa03DBIgZ6+2zjzbxq7qMhSz3TV
+         xIbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXIREcY/nFRlWapanipqmd9gj15QHfnLMgeYPb+Qs76lbSGUJ9J7W0PeXIGciadZwnr3Vo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSjphHqu3rS2lCyY04GMYvQEKMTCOplvHJxBIui0AnU/FcwloX
+	Meadzm5yU3fsNdAvu6g2lkhWwHS6B/9X9uuTjnpx09bxSzvrIqH1O2S6gXpEkHQY1BbHvK/6+E8
+	XD1zL4fjN2M0HuyLfEh8Q9v0ia0fdi/fGdqrdxw==
+X-Gm-Gg: ASbGnctRhv6D3maWm1HrKocWnvTYpjqGovQyFWKaOkDrcz0CNmVEP6RLcvalLTCgyn9
+	3gSdnnZGpZLNXnnT7xT8jvCFfX62pJWsSO0Ilcu6Ii1dSOYR4A5wE6drnRY0au6tp30BECA==
+X-Google-Smtp-Source: AGHT+IF4a956+UIVmRcZnhNjgi8nOMg6IoaI0eIk4X2K6tB7iwrgpwMF+LBupvdnoC+iyKAmLzs7x15lyjySzs2uP7E=
+X-Received: by 2002:a05:690c:6d09:b0:6ef:a187:f377 with SMTP id
+ 00721157ae682-6f3f820e059mr436161257b3.34.1736156736064; Mon, 06 Jan 2025
+ 01:45:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20241214-drm-connector-mode-valid-const-v2-0-4f9498a4c822@linaro.org>
+ <76ho36jqcraehnsgpjralpye52w7ryshhgizekn4qqfsikiojd@3yyorbvjkc7b> <20250106-passionate-lorikeet-of-apotheosis-c62ff1@houat>
+In-Reply-To: <20250106-passionate-lorikeet-of-apotheosis-c62ff1@houat>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 6 Jan 2025 11:45:26 +0200
+Message-ID: <CAA8EJprwNFVV-1pr64_es6XbmOSYtTUYUUK3eOf7LFKBotbrQA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] drm/connector: make mode_valid() callback accept
+ const mode pointer
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Danilo Krummrich <dakr@redhat.com>, Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Raphael Gallais-Pou <rgallaispou@gmail.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Peter Senna Tschudin <peter.senna@gmail.com>, Ian Ray <ian.ray@ge.com>, 
+	Martyn Welch <martyn.welch@collabora.co.uk>, Inki Dae <inki.dae@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Sandy Huang <hjc@rock-chips.com>, 
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Samuel Holland <samuel@sholland.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Gurchetan Singh <gurchetansingh@chromium.org>, 
+	Chia-I Wu <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	amd-gfx@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
+	linux-rockchip@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Jani Nikula <jani.nikula@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Am Donnerstag, 19. Dezember 2024, 07:13:39 CET schrieb Wei Fang:
-> Add NETC related nodes for i.MX95.
->=20
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+On Mon, 6 Jan 2025 at 10:55, Maxime Ripard <mripard@kernel.org> wrote:
+>
+> On Mon, Jan 06, 2025 at 12:47:07AM +0200, Dmitry Baryshkov wrote:
+> > On Sat, Dec 14, 2024 at 03:37:04PM +0200, Dmitry Baryshkov wrote:
+> > > While working on the generic mode_valid() implementation for the HDMI
+> > > Connector framework I noticed that unlike other DRM objects
+> > > drm_connector accepts non-const pointer to struct drm_display_mode,
+> > > while obviously mode_valid() isn't expected to modify the argument.
+> > >
+> > > Mass-change the DRM framework code to pass const argument to that
+> > > callback.
+> > >
+> > > The series has been compile-tested with defconfig for x86-64, arm and
+> > > arm64.
+> > >
+> > > Note: yes, I understand that this change might be hard to review and
+> > > merge. The only viable option that I foresee is to add new callback,
+> > > having the const argument and migrate drivers into using it one by one.
+> >
+> > Colleagues, I'd like to graciously ping regarding this series. Should it
+> > be merged as is (possibly requiring more R-B's)? Or should I rework it
+> > adding something like .mode_valid_new() callback which takes const
+> > argument?
+>
+> I think your patch is fine, and you can add my
+>
+> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+>
+> We seem to lack an Acked-by for amdgpu though?
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-> ---
->  arch/arm64/boot/dts/freescale/imx95.dtsi | 94 ++++++++++++++++++++++++
->  1 file changed, 94 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx95.dtsi
-> index e9c7a8265d71..8b0eb1d835e8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -1697,10 +1697,104 @@ sai2: sai@4c880000 {
->  			status =3D "disabled";
->  		};
-> =20
-> +		netc_blk_ctrl: system-controller@4cde0000 {
-> +			compatible =3D "nxp,imx95-netc-blk-ctrl";
-> +			reg =3D <0x0 0x4cde0000 0x0 0x10000>,
-> +			      <0x0 0x4cdf0000 0x0 0x10000>,
-> +			      <0x0 0x4c81000c 0x0 0x18>;
-> +			reg-names =3D "ierb", "prb", "netcmix";
-> +			#address-cells =3D <2>;
-> +			#size-cells =3D <2>;
-> +			ranges;
-> +			power-domains =3D <&scmi_devpd IMX95_PD_NETC>;
-> +			assigned-clocks =3D <&scmi_clk IMX95_CLK_ENET>,
-> +					  <&scmi_clk IMX95_CLK_ENETREF>;
-> +			assigned-clock-parents =3D <&scmi_clk IMX95_CLK_SYSPLL1_PFD2>,
-> +						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD0>;
-> +			assigned-clock-rates =3D <666666666>, <250000000>;
-> +			clocks =3D <&scmi_clk IMX95_CLK_ENET>;
-> +			clock-names =3D "ipg";
-> +			status =3D "disabled";
-> +
-> +			netc_bus0: pcie@4ca00000 {
-> +				compatible =3D "pci-host-ecam-generic";
-> +				reg =3D <0x0 0x4ca00000 0x0 0x100000>;
-> +				#address-cells =3D <3>;
-> +				#size-cells =3D <2>;
-> +				device_type =3D "pci";
-> +				bus-range =3D <0x0 0x0>;
-> +				msi-map =3D <0x0 &its 0x60 0x1>,	//ENETC0 PF
-> +					  <0x10 &its 0x61 0x1>, //ENETC0 VF0
-> +					  <0x20 &its 0x62 0x1>, //ENETC0 VF1
-> +					  <0x40 &its 0x63 0x1>, //ENETC1 PF
-> +					  <0x80 &its 0x64 0x1>, //ENETC2 PF
-> +					  <0x90 &its 0x65 0x1>, //ENETC2 VF0
-> +					  <0xa0 &its 0x66 0x1>, //ENETC2 VF1
-> +					  <0xc0 &its 0x67 0x1>; //NETC Timer
-> +					 /* ENETC0~2 and Timer BAR0 - non-prefetchable memory */
-> +				ranges =3D <0x82000000 0x0 0x4cc00000  0x0 0x4cc00000  0x0 0xe0000
-> +					 /* Timer BAR2 - prefetchable memory */
-> +					 0xc2000000 0x0 0x4cd00000  0x0 0x4cd00000  0x0 0x10000
-> +					 /* ENETC0~2: VF0-1 BAR0 - non-prefetchable memory */
-> +					 0x82000000 0x0 0x4cd20000  0x0 0x4cd20000  0x0 0x60000
-> +					 /* ENETC0~2: VF0-1 BAR2 - prefetchable memory */
-> +					 0xc2000000 0x0 0x4cd80000  0x0 0x4cd80000  0x0 0x60000>;
-> +
-> +				enetc_port0: ethernet@0,0 {
-> +					compatible =3D "pci1131,e101";
-> +					reg =3D <0x000000 0 0 0 0>;
-> +					clocks =3D <&scmi_clk IMX95_CLK_ENETREF>;
-> +					clock-names =3D "ref";
-> +					status =3D "disabled";
-> +				};
-> +
-> +				enetc_port1: ethernet@8,0 {
-> +					compatible =3D "pci1131,e101";
-> +					reg =3D <0x004000 0 0 0 0>;
-> +					clocks =3D <&scmi_clk IMX95_CLK_ENETREF>;
-> +					clock-names =3D "ref";
-> +					status =3D "disabled";
-> +				};
-> +
-> +				enetc_port2: ethernet@10,0 {
-> +					compatible =3D "pci1131,e101";
-> +					reg =3D <0x008000 0 0 0 0>;
-> +					status =3D "disabled";
-> +				};
-> +
-> +				netc_timer: ethernet@18,0 {
-> +					reg =3D <0x00c000 0 0 0 0>;
-> +					status =3D "disabled";
-> +				};
-> +			};
-> +
-> +			netc_bus1: pcie@4cb00000 {
-> +				compatible =3D "pci-host-ecam-generic";
-> +				reg =3D <0x0 0x4cb00000 0x0 0x100000>;
-> +				#address-cells =3D <3>;
-> +				#size-cells =3D <2>;
-> +				device_type =3D "pci";
-> +				bus-range =3D <0x1 0x1>;
-> +					 /* EMDIO BAR0 - non-prefetchable memory */
-> +				ranges =3D <0x82000000 0x0 0x4cce0000  0x0 0x4cce0000  0x0 0x20000
-> +					 /* EMDIO BAR2 - prefetchable memory */
-> +					 0xc2000000 0x0 0x4cd10000  0x0 0x4cd10000  0x0 0x10000>;
-> +
-> +				netc_emdio: mdio@0,0 {
-> +					compatible =3D "pci1131,ee00";
-> +					reg =3D <0x010000 0 0 0 0>;
-> +					#address-cells =3D <1>;
-> +					#size-cells =3D <0>;
-> +					status =3D "disabled";
-> +				};
-> +			};
-> +		};
-> +
->  		ddr-pmu@4e090dc0 {
->  			compatible =3D "fsl,imx95-ddr-pmu", "fsl,imx93-ddr-pmu";
->  			reg =3D <0x0 0x4e090dc0 0x0 0x200>;
->  			interrupts =3D <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
->  		};
-> +
->  	};
->  };
->=20
+Yes. I think the AMD is the only one missing
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-- 
+With best wishes
+Dmitry
