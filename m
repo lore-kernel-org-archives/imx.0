@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A044813BC39
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0859E145A03
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179624; cv=none; b=baFJWBOhU99Bmg6hHvN5EOP/e7pxiTcQZ2SVaOwKsWVopmiHJDN4TTg4Pv5imbX1qVYwuh5hztXl2Yl1DbT/QmGRYizDFNutxKttv8dRv2YaUsey6X/DP6IQSq0KPMltTC8ioldJ0KgcUfYcr7rlQrHJubSDLY55C9F6hgnebjM=
+	t=1736179629; cv=none; b=MwXiJn3LwxAOyvVvvo0MMfdoTtIxNR5hpG2BKOMqGuy8iHLcg42MCx+HqOIediLj3gBTaT+bAFoGPzmIIwHNR/TLarr/uZQFwAch0cSdCQ09wZFP7XcfCo8CcF2TmFVq6DWQtPZWI8WAfM9rDAVwWQt2xfM74K5PRwVj1zz3cWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179624; c=relaxed/simple;
-	bh=C7FNz4bjGX8W6Y8+SP4qiXkv0DABRuqMs0gDxZoTTE8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kFK9ZEU+WbrH+Ipec13E3hsS4pJQcj4g66x/Fx2OPUWU7bw7aTpO+5qxF87ODEOm4jvCZL44z+pfXOJbdbfg0lQBh/j2QvtpB/EXkDdgV3ZK+tb8laECQmu9lVowNHK9rMg4af0pjHSNJJAvQ91PjUUYi/wQtSo3cqJictU+J4s=
+	s=arc-20240116; t=1736179629; c=relaxed/simple;
+	bh=JgElm34N/sOv5K2+5R3NLC6BTokNVeI0oM1Tqw+fuSU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BtWxqSSTTc7q5/zPclH/dp+CwAq6HsWjhf7UWIgwT9+xu6N9jftfYjjEwFH4G6mjgR8BXT5pM1Nuoe2HxiqnFboYZqTHdrv4fmNR1P2sDfXedYOrHmZD35brvktZRwcsFoFQTDaoRL+42DPdkZTve9danaje976f5q8WApwp8zg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +17,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcy-0000CC-Gl; Mon, 06 Jan 2025 17:06:52 +0100
+	id 1tUpcy-0000C7-Gl; Mon, 06 Jan 2025 17:06:52 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-007C9p-1C;
+	id 1tUpcw-007C9l-0z;
 	Mon, 06 Jan 2025 17:06:51 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUpcw-009dVc-36;
+	id 1tUpcw-009dVc-31;
 	Mon, 06 Jan 2025 17:06:50 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 06 Jan 2025 17:06:40 +0100
-Subject: [PATCH v2 05/10] dt-bindings: display/lvds-codec: add
- ti,sn65lvds822
+Subject: [PATCH v2 00/10] arm64: dts: imx8mp-skov: flesh out device trees
+Date: Mon, 06 Jan 2025 17:06:35 +0100
+Message-Id: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,9 +41,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250106-skov-dt-updates-v2-5-4504d3f00ecb@pengutronix.de>
-References: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
-In-Reply-To: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIv/e2cC/2WNQQqDMBBFryKz7hQTSxu76j2KC3VGHQqJJDFYx
+ Ls3Fbrq8j34728Q2AsHuBcbeE4SxNkM+lRAP7V2ZBTKDLrUF6WVwfByCSniMlMbOSB3prtV/bW
+ uSEFezZ4HWY/is8k8SYjOv4+DpL7216r/WklhiZXpBlNSrzUNj5ntuETvrKxnYmj2ff8AGDVim
+ LMAAAA=
+X-Change-ID: 20241218-skov-dt-updates-eb8b73c693d1
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -69,43 +70,44 @@ X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add compatible strings for TI SN65LVDS822, a FlatLink LVDS receiver.
+When the Skov device trees were added a year ago, there were no
+upstream bindings yet for many parts of the display pipeline.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+This has changed now, so this series fleshes the display pipeline parts
+out and adds some more fixes/enhancements that have accrued in the
+meantime.
+
 ---
-v1 -> v2:
-  - Add Rob's Acked-by
+Changes in v2:
+- Add Rob's Acked-by
+- Reword some commit messages. See individual patches for details
+- Link to v1: https://lore.kernel.org/r/20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de
 
-To: Andrzej Hajda <andrzej.hajda@intel.com> (maintainer:DRM DRIVERS FOR BRIDGE CHIPS)
-To: Neil Armstrong <neil.armstrong@linaro.org> (maintainer:DRM DRIVERS FOR BRIDGE CHIPS)
-To: Robert Foss <rfoss@kernel.org> (maintainer:DRM DRIVERS FOR BRIDGE CHIPS)
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com> (reviewer:DRM DRIVERS FOR BRIDGE CHIPS,in file)
-Cc: Jonas Karlman <jonas@kwiboo.se> (reviewer:DRM DRIVERS FOR BRIDGE CHIPS)
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com> (reviewer:DRM DRIVERS FOR BRIDGE CHIPS)
-Cc: David Airlie <airlied@gmail.com> (maintainer:DRM DRIVERS)
-Cc: Simona Vetter <simona@ffwll.ch> (maintainer:DRM DRIVERS)
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com> (maintainer:DRM DRIVERS AND MISC GPU PATCHES)
-Cc: Maxime Ripard <mripard@kernel.org> (maintainer:DRM DRIVERS AND MISC GPU PATCHES)
-Cc: Thomas Zimmermann <tzimmermann@suse.de> (maintainer:DRM DRIVERS AND MISC GPU PATCHES)
-Cc: dri-devel@lists.freedesktop.org (open list:DRM DRIVERS)
 ---
- Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml | 1 +
- 1 file changed, 1 insertion(+)
+Ahmad Fatoum (5):
+      arm64: dts: imx8mp-skov: correct PMIC board limits
+      arm64: dts: imx8mp-skov: operate CPU at 850 mV by default
+      arm64: dts: imx8mp-skov: use I2C5 for DDC
+      dt-bindings: display/lvds-codec: add ti,sn65lvds822
+      arm64: dts: imx8mp-skov: configure uart1 for RS485
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-index 6ceeed76e88ece6d86ecd6588ead7a65362dfe62..0487bbffd7f7c4bcce3f71df19548d601715fb98 100644
---- a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-@@ -41,6 +41,7 @@ properties:
-           - enum:
-               - ti,ds90cf364a # For the DS90CF364A FPD-Link LVDS Receiver
-               - ti,ds90cf384a # For the DS90CF384A FPD-Link LVDS Receiver
-+              - ti,sn65lvds822  # For the SN65LVDS822 FlatLink LVDS Receiver
-               - ti,sn65lvds94 # For the SN65DS94 LVDS serdes
-           - const: lvds-decoder # Generic LVDS decoders compatible fallback
-       - enum:
+Oleksij Rempel (5):
+      arm64: dts: imx8mp-skov: describe HDMI display pipeline
+      arm64: dts: imx8mp-skov: describe LVDS display pipeline
+      arm64: dts: imx8mp-skov: describe mains fail detection
+      arm64: dts: imx8mp-skov: fix phy-mode
+      arm64: dts: imx8mp-skov: increase I2C clock frequency for RTC
 
+ .../bindings/display/bridge/lvds-codec.yaml        |  1 +
+ .../arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 63 ++++++++++++++++------
+ .../boot/dts/freescale/imx8mp-skov-revb-hdmi.dts   | 45 +++++++++++++++-
+ .../boot/dts/freescale/imx8mp-skov-revb-lt6.dts    | 60 +++++++++++++++++++++
+ 4 files changed, 152 insertions(+), 17 deletions(-)
+---
+base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
+change-id: 20241218-skov-dt-updates-eb8b73c693d1
+
+Best regards,
 -- 
-2.39.5
+Ahmad Fatoum <a.fatoum@pengutronix.de>
 
