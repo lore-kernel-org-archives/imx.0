@@ -1,170 +1,138 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2064.outbound.protection.outlook.com [40.107.105.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381B71C3F1C
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 08:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736151365; cv=fail; b=K3wRgzn3CQJQ2vc5yTtnOsOLQiaj8CliCFRzzeZoiu4RbOSbi2KyL+wfzptD7LheKG/u7oDorAF2xrgBK4UHXEyasu8qFL3Fsixpor9NiW+Tplq4UIzl7PXh/o4o1fF+ubMQomjEXAyaU1sTBICdGJv4n6UOYZCtBcbxfHs7Yko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736151365; c=relaxed/simple;
-	bh=kMRw9Y3DAvLC39pC0jjoTqEQDhg/IYwuNHFziPNqNqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eHslhQFIzZdbf+eqeSGOWT+yTXFnRudwyhEMOY9TAacb1GlENy76jQEFm4YaTI4AFzo03qFDHpjx1O2yav39w9mlTbTTH0zVhr/E/UjB00JcIfIuJ6lU49T1txtQYktYk9GUx3/m+ETMTmT1AyXAUs4GFPc4YZcynRH6BLttqUQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IPk7l4jW; arc=fail smtp.client-ip=40.107.105.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620C71BF58;
+	Mon,  6 Jan 2025 08:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736153752; cv=none; b=HH/RPz/bKdjvKE/nakBzLpnraMDvvuGzjvOn9Rb24OOd89lzoYJnrAMNotxTpFBnBnHKre3NZGtm0AEeuG4hzSbrX8WD3YmroSqqy4JsVGYttqrdlAQh8sDpxgD/0yRydpjN1cr70ZxRDdyGN0EbGeW9eauw7rxbpnziCVHumfk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736153752; c=relaxed/simple;
+	bh=gG4SiTyR1rjNKpTSl7F5DKYKTnsEbd9XXx+wOP8RmzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uJq7Epev3Rf6ltVR8zvqogpY628K4oG+XJY/yMKaRevwL4sudud7CXlfmvnp58CSD0FEDkKZABduqU9w/g5U9R++26MwY38Ki/IwWCvpvww6TRdpeq7kGRXdjoCuqZMoopBz5BlOME5a1XbBVOpK1M8+dmF3RteI71WSaDAUcHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqJv2SZ9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IPk7l4jW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JyLHB3ZA6i+oCplFiGPzl6ZKzMWjya3KbX6F0L2cdy6D50fHIsVzsNjoQe6fobZC9uV+/S+PU+7NCaKrtSs4xpVIgXBpM+wJyunvLAiZfSmINb8nK/yqZq8HJorqWQ11QiF3e1tdlsC/4L/GFkw4sHehsyly4G9cb5vKT9UJDRdPhk15NWOtXqljE8PR0mPwK7pg2baQmQEXMMsGk+XpRIZtkcOqtbU8aTOL++WdJ/7YA+0UsgN9q9BWp9Pg2BXLePDzPnlgKVH7SGqNMVO73Jn/rmswNrHW/daUKvZkYpepns4+M+4xbxEWCIKVj5jnIC7d3A4dlqjcZxb0LFm3Jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kMRw9Y3DAvLC39pC0jjoTqEQDhg/IYwuNHFziPNqNqk=;
- b=LOz0KmreuUsQN/9KdLnLK6MA1Ee2Wjp6iLZZ04H7EpITb8e6J7PkO3BUQ3uKONVE+sxvaRh253JCjNYHnbP/4j0IqwORwN5Cwct9HbtsEA5eR0Gj2iS8y2Xna3W240SEpMkdhq/1arTt4MIqcZXFZv3O8RTM3KrW4vu2JP/jXUbENbb0tImk6Auu/ZGSXa+xbKMYkT4kb3Qe7Wy5ViQrki5MpYrepmNAYfN9dTRLY8fDkbpnrFm+fSu9yBuadA37E02PcCbLXXIi9jJSJ96Kcdm2UyNkV+svVPCAPPK9l9AgUWpjK8E4XIAFsZbl22ONQUXAWi9sI8CKzoYbsza01Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kMRw9Y3DAvLC39pC0jjoTqEQDhg/IYwuNHFziPNqNqk=;
- b=IPk7l4jWLSicV5RlUPSEiDTeW5PoOLHTxIg7ku57vYFrQS1LJ4IWRcqedCuTZ8wizCP8kI6ewAQKk234h7Y6EyNXeek2loAzFR6R1kY8nPLJykNTF2oVnWDKoBOxT32Nof0edxsFt2IMiGFsMMqFHzR7RlgdNRiAnBEhg21Ibe/HTcM9hMmFw6NJsVg0H8SXlZH0vQep8s+6D7UAvJlv6ol439fYoC/n7zCaYmoe3QgKKi89w3tlx22O+R4OoYFXRUx337KhZlRhgYPUFhpHMWhrMOdrOXBkTBXoCEY2VoISTsizOWKKDX1EAM31BwWAzKG3tD9KVufclknDBFuthw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB9PR04MB8249.eurprd04.prod.outlook.com (2603:10a6:10:25c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 08:15:52 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 08:15:52 +0000
-Date: Mon, 6 Jan 2025 17:21:51 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Abel Vesa <abel.vesa@linaro.org>, Marek Vasut <marex@denx.de>,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/6] arm64: dts: imx8mp: Add optional nominal drive mode
- DTSI
-Message-ID: <20250106092151.GE19598@localhost.localdomain>
-References: <20241219-imx8m-clk-v1-0-cfaffa087da6@pengutronix.de>
- <20241219-imx8m-clk-v1-2-cfaffa087da6@pengutronix.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219-imx8m-clk-v1-2-cfaffa087da6@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0042.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::23) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqJv2SZ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5F5C4CED2;
+	Mon,  6 Jan 2025 08:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736153751;
+	bh=gG4SiTyR1rjNKpTSl7F5DKYKTnsEbd9XXx+wOP8RmzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AqJv2SZ9q16OyArWqElTwLOPNwqTm/ShNQQWffb96q1lj4AqFBu2S8K57PHmnRH7/
+	 xzupTm63UbfD3+7hQmj/mjtk7Ni2a3mv4rg5ZyC7gx0mF08AN7kqGfWIqKC458mCKN
+	 gwQp1eC6iRJnKLYxcKdFS5a/G+MvmBRmjaM6UcbaHc3qmp9xl3044q8FgfIkpESvIn
+	 ifJDNyYD52oEbg9I7c1Dg0+YMil4dxoxeB9GxG9BEJ3g21c7PaizTkseSF5f+HfCFD
+	 c/9goNwKH4U8aSo3khRGr2Y22RbMLY00xLu/mzuLGW5AwAZLSwqWV1X5wYZD2lVzu1
+	 C6+ttlxaCH/rg==
+Date: Mon, 6 Jan 2025 09:55:49 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Danilo Krummrich <dakr@redhat.com>, Harry Wentland <harry.wentland@amd.com>, 
+	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Xinhui Pan <Xinhui.Pan@amd.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Raphael Gallais-Pou <rgallaispou@gmail.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Peter Senna Tschudin <peter.senna@gmail.com>, Ian Ray <ian.ray@ge.com>, 
+	Martyn Welch <martyn.welch@collabora.co.uk>, Inki Dae <inki.dae@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	Dave Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Sandy Huang <hjc@rock-chips.com>, Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, 
+	Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Samuel Holland <samuel@sholland.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Gurchetan Singh <gurchetansingh@chromium.org>, 
+	Chia-I Wu <olvaffe@gmail.com>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	amd-gfx@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, virtualization@lists.linux.dev, 
+	spice-devel@lists.freedesktop.org, linux-rockchip@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Jani Nikula <jani.nikula@intel.com>
+Subject: Re: [PATCH v2 0/5] drm/connector: make mode_valid() callback accept
+ const mode pointer
+Message-ID: <20250106-passionate-lorikeet-of-apotheosis-c62ff1@houat>
+References: <20241214-drm-connector-mode-valid-const-v2-0-4f9498a4c822@linaro.org>
+ <76ho36jqcraehnsgpjralpye52w7ryshhgizekn4qqfsikiojd@3yyorbvjkc7b>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8249:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b0342f6-9495-4b1e-00c5-08dd2e2a5605
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ohjD1VmIdT/TNm7gIGdormTz01HfE/fW8PGaUO9OiUbBi0B/vgMPSzd6Nu+W?=
- =?us-ascii?Q?sl30V/1MeC59pCkTtnwwS/1UnvP+in1tsdMBnbtHlL1qHdCJaKeNGmTbYFas?=
- =?us-ascii?Q?FG6G6/NbyEcEVlljG+19eCu09g4Dh/ydsZxror+sgkb4J7aAp5IRrM7TfYHD?=
- =?us-ascii?Q?EZkbnTY53UTC987ubFZaMRjp9cTuWcG1ZXuCPVar9v3IaJ06dTgWUNL6gfo1?=
- =?us-ascii?Q?DqKyjOVTA7vjn9KVm7ZGnJ6SuOgcuw9prTIUu5YlYQpB8lP5XNxMmH71pnGL?=
- =?us-ascii?Q?oGoPPqAUKOGMhS4OgMFPzduiBcmse66QaG7OnxshsuZSIUEIGg8XnFImwbaI?=
- =?us-ascii?Q?XsxRprXCmnjBtHQqqSWnxDTcvl0OyGzQU6FOszaymd1dNozzDjRj97R/VUWG?=
- =?us-ascii?Q?w47ctqYREURfNAaUzjg6F9hNkWKjVrgX8FB2a7ThIPeYdxj+GY8nUhWcrwHD?=
- =?us-ascii?Q?ugSKKCG7a3iuTDKF3SIcIaas/joMtx5oi46IJ5c7HBXTTUGEEPoShboYEbZS?=
- =?us-ascii?Q?p3qzh1OspC/HGrxvv4MNXCZxRFXdfZBNiJWr+hOi1gaGRv1dFjbVHp2mty/p?=
- =?us-ascii?Q?3k+SWLTM5/IwbybBeYnUXKqZuFjOA894R81qIKb285Gj5TvOoy9bEy1USN2b?=
- =?us-ascii?Q?xaf6qIWrjxonOMBl07nCxPHXBZb/eOBfnFLlSShSrfQp5vNmhrzkJNlYW4pp?=
- =?us-ascii?Q?vGAfQiLrN+SPxCDHTXBIzGSbMp+3OWf3LITRTioaNGObqoQrKKIsCUzmgxce?=
- =?us-ascii?Q?drzKQS/mw0iSoII+5//u8qJnKDm98ch7G3HaN6A1ijuAkGH5i1zJ///s709z?=
- =?us-ascii?Q?kCr28rhtk3ZsmcyOdFd2pW+wpT3udwX3VEc5QC/VzcP5pOk1e6nkqNmVFrRN?=
- =?us-ascii?Q?r9c5+/cZQ22qj9lYaSMUtzzVLgiHTUJIDSeKfGmeO4HViAj1VBEEmQBAugRi?=
- =?us-ascii?Q?Uh5Y63iekKbIRQqv/eMjOUpVdE1uySnPaAM3NVxglJiWqoLKC/dD/Jg+vpl1?=
- =?us-ascii?Q?1nxSZIbqzHi9TTcNVlgJ+YSQ2ZrKTzPqliXJjjHT8IxBFvRTIaZudH4392je?=
- =?us-ascii?Q?91IcE2LNyDHTZVdBti5asKAiY0qz8w/s8xFRUK2ldXlkFeB7DKRuv/W9Rr5m?=
- =?us-ascii?Q?RBKGy7cnWcNu8D9AkyJ8mxi6dmgD+QLNnXkR/HBYbXVIzJq1Dvzs6yddCGBo?=
- =?us-ascii?Q?9mq3m/lSxyZ+oQpBYzSuQ8C6K3S/JYEh9j2FrxFzZXaRR6fuRkSXLiXR5Tow?=
- =?us-ascii?Q?XuVyhveN1BJH0YQpS+5yzB3n1HM5UBQv8hlEtKZuqe5PLA9Eeh1c+92Euk/n?=
- =?us-ascii?Q?2tHHEfgI3EO+gaS3/qQKHreAAlwsh+NppmR06kRFKC4rlsKpvEjwxaX2JsvU?=
- =?us-ascii?Q?CMJ61qbHnm1UoRtZTF6MTVNiNJXLH3lEH7yqS1C+WHfnHFrCcY2W+Eo2n83T?=
- =?us-ascii?Q?8O0v3+h3LaC1kznbcCeJHpJocO7IBVge?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?z8Rju9STNxz30C2QqnngxPOXBRc3ehk/QZzcQh0IuCmMsu4/NHBIUvCzoyI0?=
- =?us-ascii?Q?ur2on+F2nnA2eRrnimfCEpUm5Qcamo1dScEqc+phT1Uze7F3n64Eqcmrmnn+?=
- =?us-ascii?Q?Z84pHY95FF9k8kFGvyS/G4rqRxch2pEl6NbZrBZd+lPCaCWfGL449mMjFxXz?=
- =?us-ascii?Q?skKlezkV3gRavym2bjlDCB0rqZrKP6gPVY0VxDnPGVQxyCcu4AIak5K27eKq?=
- =?us-ascii?Q?8dsI/OcoxErSFCOyAadXsGUgi3H9HFHAUcdlKs+VPYd8lTu6KUcu5JX/z0kc?=
- =?us-ascii?Q?eX+sNfKqG8lUfuSKEwyWbQF2rdpAC/rHK4I59a0XtHI3xf0vHLi5gij/SJ8+?=
- =?us-ascii?Q?/DZsNVuYG02Dw0LlwYmwpVGYUFBlFyYCUCnu8Y/rPPNnGKvZ8jyuvuqLvrhO?=
- =?us-ascii?Q?6+ofjgjoshonIwKrIRMnZ1EDw27AF4tygRC3AJIGjgssEw/3wVOH55qsA3bX?=
- =?us-ascii?Q?BbhjyQhEu6a2OL3jiAhZ/+PEnW6Gu9BLISFUzN4mly6+dESoOCjbevBMkFRw?=
- =?us-ascii?Q?LzwfxVKvUlouKKT17ET8gjq7ENfMToI/sksbO3BzXEF9mMqCZVTqhJj0nl7T?=
- =?us-ascii?Q?9aVBnNoUsYLC0caIAnE0Je5zV7/1jIIwaR6JuqWCj3Y/GcoO7pt768jSAxb8?=
- =?us-ascii?Q?XJVJbNYlW5abqIa8Tm//iKxB7eRl4goAw532VL2TeDjqWSTg3kQuCVW/8wKr?=
- =?us-ascii?Q?99OgUX98JH1+Cbn4MiV9ivbbzct7l3SwNlXSvQb0SRJrFePzIVjjWfPWerXp?=
- =?us-ascii?Q?JXHQ9oOrwSLHW0EYAB6hlf9bq9DW5ZPNtcvwTbip4m4BBOoQKVZBs4kjs54H?=
- =?us-ascii?Q?AAM5tRDTDKNvvud0LzBpA/zJrC4JvjooHpdHXfWz1fK0akUKqQ8lUR5BqeGb?=
- =?us-ascii?Q?nVbpv+Wb1fOim1091DqdNn/oVCFrnfdPn7/rvMeVxMPnoNQ+1HIgmIajHpgJ?=
- =?us-ascii?Q?xx+skriX1Z1RzR3O2oWLRLxTEnHhlAqkaB2vcXf9b4VvgYODLAlOqQfA8fV1?=
- =?us-ascii?Q?K3O32I5w6jC8ylMtabllkaOZEBa709FiRruZCnkqBw+WxbfzmewVWwJlulES?=
- =?us-ascii?Q?lrQV6fXrGFT5Ac0qsYjp5bnxqV2IftWkUD5GHqhNWt0DPVwuG/fbeYg6MQQQ?=
- =?us-ascii?Q?BGIs6fcnLmsTLYhzUQ1aImoII6ST2pfhkLDErbKkx1Fl1GYhaTjxFZNqFt/f?=
- =?us-ascii?Q?Fm8DaI2g0JPJVnNiq/r7vF8EvcXY7f8WTdNQ9kh0ctGD/UqgN2QcOkX/ShcQ?=
- =?us-ascii?Q?BlYJr6MK6FSnCa0GvuQ1cjR7TIvqh7QLLmyv5dpeVXLn/J2+Z7k92hYuFtwk?=
- =?us-ascii?Q?LaFeS7RFRNHZoFL1LNdssRAvkeZPuF3Y797tmZiZvBOOvAguBQX/mi3SX0FC?=
- =?us-ascii?Q?wICLlsCovXf5OvM0JdTCPLACHm8fEhea4q/EgZ/4vxsHWa0RYrvfCYEwVIDU?=
- =?us-ascii?Q?NMqRd9ScQrJNRExUQYCZNS1ytPn159Xrk0EqEpV83FuDh/uNYN5Hz1Q6WxeR?=
- =?us-ascii?Q?C93aPFpXgH64GrB9b2xC7OnwZIDG1NE7UzSSIHwARNsaBmxl8DgF+gpsk9xQ?=
- =?us-ascii?Q?1QxdKpbd6VbfZDXAH3Nn9qxK3jBMGHL6IBksxVbb?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b0342f6-9495-4b1e-00c5-08dd2e2a5605
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2025 08:15:52.4616
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PQwWaotbLSq68aIfB4jSU8Fbppk8gAFIDK2cypJ0Blwv4SAa/5JOds1m3BPdvhYzcctN8kGHIIL2gEqYP33Teg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8249
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="7fhp4op5b7mhfhd4"
+Content-Disposition: inline
+In-Reply-To: <76ho36jqcraehnsgpjralpye52w7ryshhgizekn4qqfsikiojd@3yyorbvjkc7b>
 
-On Thu, Dec 19, 2024 at 08:27:33AM +0100, Ahmad Fatoum wrote:
->Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the device tree for
->the i.MX8MP configures some clocks at frequencies that are only validated
->for overdrive mode, i.e. when VDD_SOC is 950 mV.
->
->Boards may want to run their SoC at the lower voltage of 850 mV though
->to reduce heat generation and power usage. For this to work, clock rates
->need to adhere to the limits of the nominal drive mode.
->
->Add an optional DTSI file which can be included by various boards to run
->in this mode.
->
->Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+--7fhp4op5b7mhfhd4
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 0/5] drm/connector: make mode_valid() callback accept
+ const mode pointer
+MIME-Version: 1.0
+
+On Mon, Jan 06, 2025 at 12:47:07AM +0200, Dmitry Baryshkov wrote:
+> On Sat, Dec 14, 2024 at 03:37:04PM +0200, Dmitry Baryshkov wrote:
+> > While working on the generic mode_valid() implementation for the HDMI
+> > Connector framework I noticed that unlike other DRM objects
+> > drm_connector accepts non-const pointer to struct drm_display_mode,
+> > while obviously mode_valid() isn't expected to modify the argument.
+> >=20
+> > Mass-change the DRM framework code to pass const argument to that
+> > callback.
+> >=20
+> > The series has been compile-tested with defconfig for x86-64, arm and
+> > arm64.
+> >=20
+> > Note: yes, I understand that this change might be hard to review and
+> > merge. The only viable option that I foresee is to add new callback,
+> > having the const argument and migrate drivers into using it one by one.
+>=20
+> Colleagues, I'd like to graciously ping regarding this series. Should it
+> be merged as is (possibly requiring more R-B's)? Or should I rework it
+> adding something like .mode_valid_new() callback which takes const
+> argument?
+
+I think your patch is fine, and you can add my
+
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+
+We seem to lack an Acked-by for amdgpu though?
+
+Maxime
+
+--7fhp4op5b7mhfhd4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ3ualAAKCRAnX84Zoj2+
+ds65AYCm0HY0VDiw9/7lDbcyH0YuzRQu/+7FuV8GS6p+ubfGmvGVGOS+07oCUheK
+PN/gOxwBgOc9gl1vmxFUVrfM3LjcOixdshbfH49V0dlOMzIZO3m/L5caQ4O6jchE
+p0sk4xSGUQ==
+=4eTB
+-----END PGP SIGNATURE-----
+
+--7fhp4op5b7mhfhd4--
