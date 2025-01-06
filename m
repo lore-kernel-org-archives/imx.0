@@ -1,177 +1,369 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2066.outbound.protection.outlook.com [40.107.249.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E53C1DE899
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 16:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181763; cv=fail; b=iYcPq2b9fveWlGjp9RwkNyrf7ZJv3FLQIZcQyECz+3T1VP+VgYK+KAp8G+mhg//KbhpKGr5pNcaVVs0c0lK+f5oX4U41ZWNVsnMyJ4LXJV748HdTtnA1aGtoYPvBuVGOgwGQ+ix+jSWwX9QMYDaPOIu4Paig0Q8dH1dZBGV5WwY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181763; c=relaxed/simple;
-	bh=NQUv8d0ij6rFKMkqDRIV2FdPiThM3y2uTmili2uXQPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=odFRmTFA4R5R8/sigqON6q8zhMHu+JcDmKRPjEtPjRQ6wPbv/tRWnpGnmW5sNtEKxBjdvWjtmM30uzL1uR73bRcVspl6KoM7jSDbwF7J5FjgogEmzj1eBN4+WsqfDnsa/W86atVouAuj03FN43J8rx42URFJm7Wo2wUtMRZlZAU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QEQWFDlV; arc=fail smtp.client-ip=40.107.249.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D12CA64;
+	Mon,  6 Jan 2025 17:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736183594; cv=none; b=ZAhfnuD9Xtl7DdmXOpIZIgS/HAF25suQ3NrKKZcjMoIDloX/KiC46U8VunJOoCLuX0d3srKVCWq4biqOAVxkxUpo9WOs9ZIgBx/+sICLS9U2u+Ey6PsIWV+YkWRpsfJgk5akwK8+9oP1CJxZdi4M7hTwUa7GX6IQ2CyYKjB3OAg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736183594; c=relaxed/simple;
+	bh=Dwnnr5kiXC1fjmc09CMLSRDw65OhSZzQ1RkgRz4mSvc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eY6Mgo4XDv6zvDlgO10TxkO7NbAa9d9kWQPl2z5eUzyiZFdDwxsYeR4a3DlQllLfdFmvXfulvsJzGjLBktq0hiUHmBRMWFNupMozs0+4LzTQ0K/oaJDOW35IB6KFFQbkxGa3U/jHaw21Hx2xIwLzJB2lVKD7AI85lzGuksuKj3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYKTRX+w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QEQWFDlV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sSKHYQZzIdEAbvMycGYk+SG6nAJ7wL/dOMRgQGuQB0pDtOHm4V6ryEIWZ/pqfmOOWNE+74Qb9lrMtIw7LiTtX+hLrpXLhlolObFb+0Uvit2eWNOhOIsPS8g04XZFFnMtez8Cg0opvGz8ArMHZxm3R54nEB6BcXcJ1ov3ov57ZOG8pp1zzRQ8lSPu2qMAk4s29FF4sipfHR+DRZlXEqDN4hNehmtiXULy6+jMBv7sgYrCx0O2V5cQi5QER2/sOKRIYZJjrcOWB4h5VXPCNLB1X2FexSe94B32kneB5khzapQDIoqkCFsTArkI4OCNDtKfiHmjJLR6z92c6AFWqVZJnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7CRsG/nYorG2F1PPrLjTJSwIhUFgjNLF8a3lY9S6blY=;
- b=CDxH6FUU2d5tpw5DNzRF2vx8KsFxZ2rBYR/k3tqaq3PX0UTnFmW/2+d+sL0XrVHg/kjhAw9qXasXFOd/E9ybWjZ7k3fH6Fojx2noxVLvA9kY2bb3rFOkXhecG/fDtuE54MPT/zpjZcevres+YwZykN+lFWvh50LX4+j959U/7h/QqAiybsWeDtaTqVZY4q6G9Ft4ocdQZctA5lM+kD7Jib7dzraBHkGLaboWHPFkOW6JGEUG3H6HzmYj0IVYOKprqHMg9rU9jY0yUdbCXHojQULwh0Qcf1qs7kf05oNhNSCsLWrV20s0IGdYfXS3nOvKcIqT2sJv1ftF0h/DiDaJfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7CRsG/nYorG2F1PPrLjTJSwIhUFgjNLF8a3lY9S6blY=;
- b=QEQWFDlVR2PFMPbX91Scb20YE/Cqn1cpeZmDNNkcALUmN+eQUYfkjN4Iq5MsVT+HvffbmHSs3H+B9QaUpuri0OngbbrHmFbccZ9aQLw/XPEZBA4Yarfmgobc24CRco7bxLRmzr+jvyAX56VG/kphKffvcwNZfPux4XjGanY5AViqT341LPiiRrRY6Jb+dUuYigAXuaDga1Q/SzgpWbf+fUyGHqX0seNqFDFQKX/xW1oHz2c4YFVIbZnZ2TQGHZntvg4Fmwta32kfbSzn/Jf3g7VkNvAEuylw1fu9uqJ53JOt0cn5TpzcXBze42LWoE3btngXd+Dz4hu20DXidkNsew==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8125.eurprd04.prod.outlook.com (2603:10a6:102:1cc::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 16:42:34 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 16:42:34 +0000
-Date: Mon, 6 Jan 2025 11:42:26 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>
-Subject: Re: [PATCH RESEND] arm64: dts: imx8mn-bsh-smm-s2pro: Remove invalid
- audio codec clock
-Message-ID: <Z3wH8qcPlP6Vw720@lizhi-Precision-Tower-5810>
-References: <20250106140330.2071858-1-festevam@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250106140330.2071858-1-festevam@gmail.com>
-X-ClientProxiedBy: BY5PR04CA0008.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYKTRX+w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9449BC4CED2;
+	Mon,  6 Jan 2025 17:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736183593;
+	bh=Dwnnr5kiXC1fjmc09CMLSRDw65OhSZzQ1RkgRz4mSvc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MYKTRX+w+baHYyivC3bP0r6cj+gE/F4d3h0T9UH1rCZZazfxSifyTpo6CdcTcYLU0
+	 2FUbH2FfYEPM27FrUNEOns3C+IItUogJLN3OM37+ZACTojnSZDVPXnAKjdE+14eXdS
+	 Vj9jXR0ydwXW7TQHk93sM0CKbfHqpaabQUOu57oXiXDDmDq0AzZVv8FAT92OtihP4q
+	 oJ8JuISw3JLIBCgtNNdL6Lr3U56qNWH7Pv9sY2VJW6hL5T9k8QiqhjXAIZN71Wx5vk
+	 UlVURy2I7qoS8OHH7zHdgAbooSDht16G0INokLkFTna8PiRcadbA0DHmerKxupAgZ3
+	 osRW3vLo+RaFQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tUqf9-009UnQ-2p;
+	Mon, 06 Jan 2025 17:13:11 +0000
+Date: Mon, 06 Jan 2025 17:13:10 +0000
+Message-ID: <861pxfq315.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,	Krzysztof
+ =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,	Kishon Vijay Abraham I
+ <kishon@kernel.org>,	Bjorn Helgaas <bhelgaas@google.com>,	Arnd Bergmann
+ <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,	Thomas Gleixner
+ <tglx@linutronix.de>,	Anup Patel <apatel@ventanamicro.com>,
+	linux-kernel@vger.kernel.org,	linux-pci@vger.kernel.org,
+	imx@lists.linux.dev,	Niklas Cassel <cassel@kernel.org>,	dlemoal@kernel.org,
+	jdmason@kudzu.us,	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v13 4/9] irqchip/gic-v3-its: Add DOMAIN_BUS_DEVICE_PCI_EP_MSI support
+In-Reply-To: <Z3wG6pMbjsldqU/n@lizhi-Precision-Tower-5810>
+References: <20241218-ep-msi-v13-0-646e2192dc24@nxp.com>
+	<20241218-ep-msi-v13-4-646e2192dc24@nxp.com>
+	<868qscq70x.wl-maz@kernel.org>
+	<Z2RRimPlT41Ru281@lizhi-Precision-Tower-5810>
+	<Z3wG6pMbjsldqU/n@lizhi-Precision-Tower-5810>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8125:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bcaf3a2-a75a-4e17-e14e-08dd2e711f10
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|366016|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FvDgCWAcVvMldOO5PYyRYVDFp0oE1Mum8E83ToLH9SPNge1JdCiS2/TIyEtO?=
- =?us-ascii?Q?iTBm1doEijVCRHdXXLEKFucf03fn+0P8oywn30WWpKSCun6+NJKPLxw59Pvs?=
- =?us-ascii?Q?wU2uz+j37jWxJdUssXdk4NUQenJR8S2FroxBRPpqGsqQsxKg27LDktBrOOh2?=
- =?us-ascii?Q?6SLkdGI7Sm4L9dI84dGQ3FrJl5cS+BYYEqY1GfyR8OlmEYG2zdEMeITdjoNV?=
- =?us-ascii?Q?ljGBndtjYgMlvAk88LA9tBKT+WEjX55A+qMzgz+1U1KxCSE7FOTu0UEJMqLC?=
- =?us-ascii?Q?OBQxu4MjOx9gHwio3CFu1ALbYSQvIksIffARtiQPsZPHkn8q8iAYXuydRF1L?=
- =?us-ascii?Q?PM2kbWhfE7m+o6Reh/MfHBkmu+DmKYP9Uq8oNCLwV4JYjirsDYXcoxmAu6nC?=
- =?us-ascii?Q?jdyTDooLATvSdRhCzvHKINU268m/SE3lxVcRvpbr4m3UrkjXUOwdkDiysadV?=
- =?us-ascii?Q?283A6TP1WN63Gv8Lu4aPokqfWkKPar7PtmwQcUVNxl1yZg40LCKxpuhX9fny?=
- =?us-ascii?Q?irmegDirEwKDEGrw+Uw3HvtbsvPWr3U/iFJE9iyccyjtbsbLg+m5QgHFKMyk?=
- =?us-ascii?Q?GqMRkAuqLosMkwUQK5RV3SvdvHoAd07Ge6ONoltTAEOrBqCPyOgv8V06sIGu?=
- =?us-ascii?Q?2gofZQoIvUKPRVqact29K8p7KW8NCWHE1hK7JL7DPvZUMLtlLW/b31hpSgY1?=
- =?us-ascii?Q?U81ol7xoPGV7P3X0t38Xngi4BUavWW50X+xzJ+0ROsKhhrzMaiI+3a/S81Wh?=
- =?us-ascii?Q?nWXAoofRFAFBrGDOKZayTtzpYXoR+DkU1hT0wgBajy1E9PV48ZatnmMD7Md/?=
- =?us-ascii?Q?PB64ffgbwadIxEjVJVuXp6jPp2sWNNG3fkl8d6wDc816oYsAVnZxSjEugAc3?=
- =?us-ascii?Q?47rsKW9cXs3dhlY9X+ZYUNvoTXXSb1ouSp0j5glGlxP6ulEPyo48wHuFMh9D?=
- =?us-ascii?Q?s72pfQZyd8hIU+9yDJjQed1B7x1+lJcjyxVzrKSqkwrI16FylbXXAV3/xhZy?=
- =?us-ascii?Q?VxisxTdmVbpVpDNW+gkkc99SSru3/MjOUekT/mWaBq3DvLeATfdg6a5z0cIe?=
- =?us-ascii?Q?rNjIzCMa9qbjW+4aggSF9HEMJ3OLerQVyYG0KOZUnRWrv2FOrYw9yvNGk2eI?=
- =?us-ascii?Q?+fzPHmXsbvnOEtyqiC8LpgM9qQ3dXrkKmAtOowwDrI1gixy60PA4e0nD40AO?=
- =?us-ascii?Q?S6MoKXnFwixhpPgmrgWZczwecaqH5c/wzsIjujInguUxLOF+IyxP2OMjPPvg?=
- =?us-ascii?Q?rk/VVyoVWLFMBgpzI2TcwdHb4ugkAudGmwk6GGZBPLX+k9b9MP/VsJ2wcKVz?=
- =?us-ascii?Q?3k8pXQWydxZehTdoU/BfO2GrV9vcfrHaCouyJ62zw3kjGhinGXMoaBMIIGb5?=
- =?us-ascii?Q?aVTeY7rv6Y32bzAPgBa9f3f9YbfCG8L+sh3zN7Km2LzRiEXbhUsZLYic4GLA?=
- =?us-ascii?Q?ewVsL/PEaDkWVUFFAABegmD8rTjDSW46?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?l33AGYlY9RV8/brWEKgUIdid8Ate2Urs8R3+ZDLFQhwBtkYyerazNM/KXPH9?=
- =?us-ascii?Q?I511CkGj6Os4QDoNI6vBcUJ0iZXa+cnnvRl0lYzpqkwj78hRMVQgNgYnQ8uC?=
- =?us-ascii?Q?WTo9twSYGBNo0IK4ANXDAtHq4H9Dfeehk+MFixSymXaa8XllNswQyHh5n8gv?=
- =?us-ascii?Q?3/J7dT8vTCDOLncPqAm7IYNHvXgVy2Mkk1FtQ7eBMXUcA6GN5XnKSJOTIvLD?=
- =?us-ascii?Q?ofjoUuqTqr9J0dBMBnk5iY1Kn7eVAH1H6detDmYIxXJXUyuijcGTlFaQ7TLH?=
- =?us-ascii?Q?uBrPSA88l0fvi3wtK4Y8ISyGBjP1tIMxCe1MJwLXDBRS1TN4GGCDW2YuJgNW?=
- =?us-ascii?Q?1yiZN0ectdyw6susEi9hacM9aJs9nFJphIUwVbp26h3ZvhhonL0hfPVaP7g5?=
- =?us-ascii?Q?3LlV/hlLMUjfiZ8HenetNx+yIsmWi0z+ysQGucAAJUmzLjetyoh8wu/0rQ4G?=
- =?us-ascii?Q?feNxRGF26SjWHSYpVoqHn08lv7VaYogaBEQ1wlcDVCCB9s3hX93JBL6frPix?=
- =?us-ascii?Q?xsORfXtWYnl1OjEzLRk77Pz1XFM3Z9Qu5lIMDzd2UGRBqARph0SjRkQjReMn?=
- =?us-ascii?Q?v7wO94KwB0Rke8/s/hA7bmqP+z4YwTK8OZaSR24htLCGEyUm+Ujzrs+AB4H7?=
- =?us-ascii?Q?/DwSjs4vWzB3bTY/lWd7zNbpDonOeYR0zGHgg7JBDsHq1iRzCXecUhdLjnku?=
- =?us-ascii?Q?yB5yKdtdGYrqXkw9Uk0CmtHZvz2tZYaEKl7jjPJxIzRmgL3wkfmRFqBhefTR?=
- =?us-ascii?Q?55AP7my97Mc68m+yjZlsuve3zGZumWqARDZXX19iAJB6wfi2FavWEZfb+sdZ?=
- =?us-ascii?Q?ActXmSbSR8i+DRGxFMBDtasMkIeSUVs5ZKy54VvxGBgWyFcKbQZa9Nn3Wtks?=
- =?us-ascii?Q?+sgptugB6WMM5QC76cuZvwCt+SMwB1S05DlLiawDStU4z+st913XEjJp7u8F?=
- =?us-ascii?Q?JrZ7tFU3jdy1X2ZP6ZLcfJLSBplszkOTJe+7R1LF5lkh0UsRhLzs8Ush3whx?=
- =?us-ascii?Q?klnU3EDLQnAyu/d/bKjpZxcpBuoaJoI9JLOaHmYsrl/bcet8E/S1BvDX/HZ0?=
- =?us-ascii?Q?fqF4jbBYVtnUrDIYySMvc6SMLxnOUXVQTP+ECxWWxis4We3rRLx7ndRP5F5M?=
- =?us-ascii?Q?81+roqP4XfzWJ8iolg14ZyecURNpJaihV+FpTyG1VF6jfbfxLO5YIMklc+kS?=
- =?us-ascii?Q?Nl7EiJw0uSnN1Oa5XMq8WiOR/uTqtpmr/5QVKmDkNFfnXIHB7I8sfWGKRawh?=
- =?us-ascii?Q?pefDyHYmLKtyjMg96nJCkfqBFClBZOJOPD+IlNqTlsClS6GK2KR0cu8MEVMY?=
- =?us-ascii?Q?l0AnQfCrKFjbzm+g3xnfOeqBN+H1aO8fKfyLXHAlQXAx/1MQrkXzl7QZ1JwG?=
- =?us-ascii?Q?d0ErQmqmLhpU+SZWofJRvl1GuBXBZYUHKuv+K6rbJhqdB7Vy7HHQWjP8uiC8?=
- =?us-ascii?Q?b/b9Px/KeIs6GheohksOHKOX5QXFyUsAZGM57o5owF8N5EXAmId1MtB0gdmV?=
- =?us-ascii?Q?Yv/b1tpw5w00uetdWCy39Nwd5RIyZeKQgaDsJdq47GuOQUWhmI4+MdGvmZYB?=
- =?us-ascii?Q?b/1NKEKRY5bKLhtXcyTW7GfZelnOS83LnPzK1z6T?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bcaf3a2-a75a-4e17-e14e-08dd2e711f10
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2025 16:42:34.4751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kgsduBlIysgLj8OH32+2uFM0c56eBnqbR/OqDL4hK1vqtlRf0YkL8sq0Xj70YLw5zC/wnJja7II0ERv7oR+OTQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8125
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Frank.li@nxp.com, manivannan.sadhasivam@linaro.org, kw@linux.com, kishon@kernel.org, bhelgaas@google.com, arnd@arndb.de, gregkh@linuxfoundation.org, rafael@kernel.org, tglx@linutronix.de, apatel@ventanamicro.com, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, imx@lists.linux.dev, cassel@kernel.org, dlemoal@kernel.org, jdmason@kudzu.us, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Jan 06, 2025 at 11:03:30AM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
->
-> According to ti,tlv320dac3100.yaml, 'clocks' is not a valid
-> property.
->
-> Remove it to fix the following dt-schema warning:
->
-> Unevaluated properties are not allowed ('clocks' was unexpected)
->
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+On Mon, 06 Jan 2025 16:38:02 +0000,
+Frank Li <Frank.li@nxp.com> wrote:
+>=20
+> On Thu, Dec 19, 2024 at 12:02:02PM -0500, Frank Li wrote:
+> > On Thu, Dec 19, 2024 at 10:52:30AM +0000, Marc Zyngier wrote:
+> > > On Wed, 18 Dec 2024 23:08:39 +0000,
+> > > Frank Li <Frank.Li@nxp.com> wrote:
+> > > >
+> > > >            =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90
+> > > >            =E2=94=82                                =E2=94=82
+> > > >            =E2=94=82     PCI Endpoint Controller    =E2=94=82
+> > > >            =E2=94=82                                =E2=94=82
+> > > >            =E2=94=82   =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=90  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=90     =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=90 =E2=94=82
+> > > > PCI Bus    =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=
+=94=82     =E2=94=82     =E2=94=82 =E2=94=82
+> > > > =E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=96=BA =E2=94=82   =E2=94=82Func1=E2=94=82  =E2=94=82Func=
+2=E2=94=82 ... =E2=94=82Func =E2=94=82 =E2=94=82
+> > > > Doorbell   =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=
+=94=82     =E2=94=82<n>  =E2=94=82 =E2=94=82
+> > > >            =E2=94=82   =E2=94=82     =E2=94=82  =E2=94=82     =E2=
+=94=82     =E2=94=82     =E2=94=82 =E2=94=82
+> > > >            =E2=94=82   =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=
+=80=E2=94=80=E2=94=98  =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=
+=80=E2=94=98     =E2=94=94=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=
+=94=98 =E2=94=82
+> > > >            =E2=94=82      =E2=94=82        =E2=94=82           =E2=
+=94=82    =E2=94=82
+> > > >            =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98
+> > > >                   =E2=94=82        =E2=94=82           =E2=94=82
+> > > >                   =E2=96=BC        =E2=96=BC           =E2=96=BC
+> > > >                =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=90
+> > > >                =E2=94=82    MSI Controller      =E2=94=82
+> > > >                =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=98
+> > > >
+> > > > Add domain DOMAIN_BUS_DEVICE_PCI_EP_MSI to allocate MSI domain for =
+Endpoint
+> > > > function in PCI Endpoint (EP) controller, So PCI Root Complex (RC) =
+can
+> > > > write MSI message to MSI controller to trigger doorbell IRQ for dif=
+ference
+> > > > EP functions.
+> > > >
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > change from v12 to v13
+> > > > - new patch
+> > >
+> > > This might be v13, but after all this time, I have no idea what you
+> > > are trying to do. You keep pasting this non-ASCII drawing in commit
+> > > messages, but I still have no idea what this PCI Bus Doorbell
+> > > represents.
+> >
+> > PCI Bus/Doorbell is two words. Basic over picture is a PCI EP devices (=
+such
+> > as imx95), which run linux and PCI Endpoint framework. i.MX95 connect to
+> > PCI Host, such as PC (x86).
+> >
+> > i.MX95 can use standard PCI MSI framework to issue a irq to X86. but th=
+ere
+> > are not reverse direction. X86 try write some MMIO register ( mapped PCI
+> > bar0). But i.MX95 don't know it have been modified. So currently soluti=
+on
+> > is create a polling thread to check every 10ms.
+> >
+> > So this patches try resolve this problem at the platform, which have MSI
+> > controller such as ITS.
+> >
+> > after this patches, i.MX95 can create a PCI Bar1, which map to MSI
+> > controller register space,  when X86 write data to Bar1 (call as doorbe=
+ll),
+> > a irq will be triggered at i.MX95.
+> >
+> > Doorbell in diagram means 'push doorbell' (write data to bar<n>).
+> >
+> > >
+> > > I appreciate the knowledge shortage is on my end, but it would
+> > > definitely help if someone would take the time to explain what this is
+> > > all about.
+> >
+> > I am not sure if diagram in corver letter can help this, or above
+> > descriptions is enough.
+> >
+> >
+> > =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =E2=94=8C=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90   =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=90
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82 PCI Endpoint                =
+      =E2=94=82   =E2=94=82 PCI Host       =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=94=A4 1.pl=
+atform_msi_domain_alloc_irqs()=E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82 MSI        =E2=94=9C=E2=94=80=E2=94=80=E2=96=BA=E2=94=82 2.wr=
+ite_msi_msg()                 =E2=94=9C=E2=94=80=E2=94=80=E2=96=BA=E2=94=9C=
+=E2=94=80BAR<n>         =E2=94=82
+> > =E2=94=82 Controller =E2=94=82   =E2=94=82   update doorbell register a=
+ddress=E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82   for BAR                   =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82 3. Write BAR<n>=E2=94=82
+> > =E2=94=82            =E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=94=BC=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=A4                =
+=E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=9C=E2=94=80=E2=94=80=E2=96=BA=E2=94=82 4.Ir=
+q Handle                      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=82            =E2=94=82   =E2=94=82                             =
+      =E2=94=82   =E2=94=82                =E2=94=82
+> > =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98   =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=98
+> > (* some detail have been changed and don't affect understand overall
+> > picture)
+> >
+> > >
+> > > From what I gather, the ITS is actually on an end-point, and get
+> > > writes from the host, but that doesn't answer much.
+> >
+> > Yes, baisc it is correct. PCI RC -> PCIe Bus TLP -> PCI Endpoint Ctrl ->
+> > AXI transaction -> ITS MMIO map register -> CPU IRQ.
+> >
+> > The major problem how to distingiush from difference PCI Endpoint funct=
+ion
+> > driver. There are have many EP functions as much as 8, which quite simi=
+lar
+> > standard PCI, one PCIe device can have 8 physical functions.
+> >
+> > >
+> > > > ---
+> > > >  drivers/irqchip/irq-gic-v3-its-msi-parent.c | 19 +++++++++++++++++=
++-
+> > > >  1 file changed, 18 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/irqchip/irq-gic-v3-its-msi-parent.c b/drivers/=
+irqchip/irq-gic-v3-its-msi-parent.c
+> > > > index b2a4b67545b82..16e7d53f0b133 100644
+> > > > --- a/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+> > > > +++ b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+> > > > @@ -5,6 +5,7 @@
+> > > >  // Copyright (C) 2022 Intel
+> > > >
+> > > >  #include <linux/acpi_iort.h>
+> > > > +#include <linux/pci-ep-msi.h>
+> > > >  #include <linux/pci.h>
+> > > >
+> > > >  #include "irq-gic-common.h"
+> > > > @@ -173,6 +174,19 @@ static int its_pmsi_prepare(struct irq_domain =
+*domain, struct device *dev,
+> > > >  	return its_pmsi_prepare_devid(domain, dev, nvec, info, dev_id);
+> > > >  }
+> > > >
+> > > > +static int its_pci_ep_msi_prepare(struct irq_domain *domain, struc=
+t device *dev,
+> > > > +				  int nvec, msi_alloc_info_t *info)
+> > > > +{
+> > > > +	u32 dev_id;
+> > > > +	int ret;
+> > > > +
+> > > > +	ret =3D pci_epf_msi_domain_get_msi_rid(dev, &dev_id);
+> > >
+> > > What this doesn't express is *how* are the writes conveyed to the ITS.
+> > > Specifically, the DevID is normally sampled as sideband information at
+> > > during the write transaction.
+> >
+> > Like PCI host, there msi-map in dts file, which descript how map PCI RID
+> > to DevID, such as
+> > 	msi-map =3D <0 $its 0x80 8>;
+> >
+> > This informtion should be descripted in DTS or ACPI ...
+> >
+> > >
+> > > Obviously, you can't do that over PCI. So there is a lot of
+> > > undisclosed assumption about how the ITS is integrated, and how it
+> > > samples the DevID.
+> >
+> > Yes, it should be platform PCI endpoint ctrl driver jobs.  Platform EP
+> > driver should implement this type of covert. Such as i.MX95, there are
+> > hardware call LUT in PCI ctrl,  which can convert PCI' request ID to De=
+vID
+> > here.
+> >
+> > On going patch may help understand these
+> > https://lore.kernel.org/linux-pci/20241210-imx95_lut-v8-0-2e730b2e5fde@=
+nxp.com/
+> >
+> > If use latest ITS MSI64 should be simple, only need descript it at DTS
+> > (I have not hardware to test this case yet).
+> > pci-ep {
+> > 	...
+> > 	msi-map =3D <0 &its, 0x<8_0000, 0xff>;
+> > 			      ^, ctrl ID.
+> > 	msi-mask =3D <0xff>;
+> > 	...
+> > }
+> >
+> > >
+> > > My conclusion is that this is not as generic as it seems to be. It is
+> > > definitely tied to implementation-specific behaviours, none of which
+> > > are explained.
+> >
+> > Compared to standard PCI MSI, which also have implementation-specific
+> > behaviours, which convert PCI request ID to DevID Or stream ID.
+> > https://lore.kernel.org/linux-pci/20241210-imx95_lut-v8-0-2e730b2e5fde@=
+nxp.com/
+> > (I have struggle this for almost one year for this implementation-speci=
+fic
+> > part)
+> >
+> > Well defined and mature PCI standard, MSI still need two parts, common =
+part
+> > and "implementation-specific" part.
+> >
+> > Common part of standard PCI is at several place, such its driver/msi
+> > libary/ kernel msi code ...
+> >
+> > "implementation-specific" part is in PCI host bridge driver, such as
+> > drivers/pci/controller/dwc/pcie-qcom.c
+> >
+> > This solution already test by Tested-by: Niklas Cassel <cassel@kernel.o=
+rg>
+> > who use another dwc controller, which they already implemented
+> > "implementation-specific" by only update dts to provide hardware
+> > information.(I guest he use ITS's MSI64)
+> >
+> > Because it is new patches, I have not added Niklas's test-by tag. There
+> > are not big functional change since Nikas test. The major change is make
+> > msi part better align current MSI framework according to Thomas's
+> > suggestion.
+>=20
+> Thomas Gleixner and Marc Zyngier:
+>=20
+> Happy new year! Do you have additioinal comments for this?
 
-nit: wrap at 75 chars.
+I think this is pretty pointless.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+- DOMAIN_BUS_DEVICE_PCI_EP_MSI is just a reinvention of platform MSI,
+  and I don't see why we need to have *two* square wheels
 
-> ---
->  arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-> index c6ad65becc97..475cbf9e0d1e 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2pro.dts
-> @@ -64,7 +64,6 @@ tlv320dac3101: audio-codec@18 {
->  		DVDD-supply = <&buck5_reg>;
->  		reset-gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
->  		ai31xx-micbias-vg = <MICBIAS_AVDDV>;
-> -		clocks = <&clk IMX8MN_CLK_SAI3_ROOT>;
->  	};
->  };
->
-> --
-> 2.34.1
->
+- The whole thing relies on IMPDEF behaviours that are not described,
+  making it impossible to write a *host* driver that works
+  universally.  Specifically, you completely ignored my comment about
+  *how* is the DevID sampled on the ITS side. How is that supposed to
+  work when the DevID is carried as AXI user bits instead of data? How
+  can the host provide that information?
+
+- your "but it's been tested by..." argument doesn't carry much
+  weight, as the kernel has at least one critical bug per "Tested-by"
+  tag
+
+Given that, I don't see how this series is fit for purpose.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
