@@ -1,50 +1,79 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385A32BAEC
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 10:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F041DB95E
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 11:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736159555; cv=none; b=f2YntwqGT6vXxrTCX1syW0fDGy7TupPxEsVYYF7XHYNhxCHmzVRkbUSKyQ9UX5sQQ1tPynURnYZXiYPjbHjxY3YufcKQ5mleMIGcwgH13pLdDCCIdxMyMKWD79tQuGjSXFJj2DLOLjoTC8kG15fxozw1sW1tgqjv8DvExLK2E0o=
+	t=1736161603; cv=none; b=teL+xam7LPjf1Zdv0meeHl5jkTyNyC4rPBBSXw3vnxmPqDT4khCN/AJU+5zkDv3rvTGdN1CghUVDLRX3ltt+lWseefdqUM6NTxYFqgBJ3u7VUyEYFlf8ebR07oFQBLGNy1VVBizghAbAoJ0SR1PxdRjz0oTUgi2IeRGVq7y2Lwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736159555; c=relaxed/simple;
-	bh=lYTZq2bMqMlctyxARaclRj0U75z5r/HBAXfV4eGRaMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iwV8qb9WQozL81E0EbrNX7zQRpQwNnaQTSw4o+Yu2ORwv1yMVdle4mWDdGUJirJ69G0PiBfnWVifrQEhaWnQj4fukY7QTMymzQ8ESXMfDrOsBScUXdjM3SCYJxZP/goPOhcTcaU23A1QDWGCNfOsD9Pm7HcPRN8uJh7zJVyJD3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tUkPG-0006cA-5y; Mon, 06 Jan 2025 11:32:22 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tUkPF-0079Mx-05;
-	Mon, 06 Jan 2025 11:32:21 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1tUkPF-007Zgy-2D;
-	Mon, 06 Jan 2025 11:32:21 +0100
-Date: Mon, 6 Jan 2025 11:32:21 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1736161603; c=relaxed/simple;
+	bh=A6JobZoPrq69BuqxXh3qmnmCjaegCYBZNWC2wJ3H0Mw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MyxXeIHXiQmhQkJmhiDyArUNMnBP1/NWLMlfMDa/+eolQNwW0K0CwjROIJX5QxIAe8F/iLWs4vD+t8kN6lWhHDmuRYm78p9WE2xg3k20Cdfe6t3On8gI9NCkzpMAOZpLzvBQZ2/Be4lHGW5PnzW7BPQlatoEaN68zmuua+3BGbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zHtDu6xQ; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zHtDu6xQ"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361dc6322fso94320985e9.3
+        for <imx@lists.linux.dev>; Mon, 06 Jan 2025 03:06:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736161598; x=1736766398; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SV0FBVRxpsuCLb/nRDIZe8jsu0IEUwlF/EBuP03LhIc=;
+        b=zHtDu6xQuWK1NgDf79MNeBj4F2cD//Zx8+GQ8QoqIQRPF3w3uYO6JR6DSH7ifXctzy
+         VGNSGrUQ6dFFV1+QCXUirMe6D002LTIzirJQd6lIz4sNv5YAMFTKk3kK4huFfTQx+C6c
+         iVq2opO/vZAsL5LEN6wGJTL31z1O/4XUlMk085pt4C/L5wDqJuNmrt3W3eWo9Q62yHkQ
+         /ydXYKBnjXa5AG20NWdscwZBxolnA2bwDFVjn9F9Hk+5TKXoaXUyA/Lc/8dSpe7ecpWC
+         1YVI2FBO1/yCO2l1Nm0DDnVlQ1AEqvvekF8eudR8Ixs6R0roq7n/DFp2Pi15kRguiT05
+         Tx+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736161598; x=1736766398;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SV0FBVRxpsuCLb/nRDIZe8jsu0IEUwlF/EBuP03LhIc=;
+        b=GXTlE9PERrkKNyncs6oHpB47itEH7TkvBRktAjzFRmmLwzmg6Q7QAFaFtRRvYVGBeW
+         y2+nvI2S1DWCUsYr7SctHRqKu01ikSX+JtF0y7HYEpEEsr4ScumPKA8hWA0+O5JaIeh0
+         +3NyH6MrQqBr9bwp1OMNdbV2rbCb77wP7fdPjJ0P8tOM46atZTW35gBMVVoSdEYdQWTh
+         ffVs7H3TWzY/WR+/PNLu3Mjknx3W14NV6MhDK3OD6vFuF7t5sPw+oKeApeVLtCcndPcT
+         Jzi0CIZPagjFnjQRkx32CnQbTmPOyymMQ+tc7D/Vwr1rX2LCKILOE1fVXU6NN8dsf17t
+         DVyA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+PLU8tAj9oQrelCz6JlKGOZ2CaNzVpBGnxgXkGGbe7Rt+M5HWhGbqZgEV8UTNi0cTMJs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx6AAqYpvzwWF+ElNluRWEQqL1qCz9TSWSynl0QvZ43t6Kc22hw
+	lpiEeEqX6D0cAuJ7IGjzrGoJJKz8Yma/zDI5flG5qvHrJqpya2zXXwJvZiQ4DTI=
+X-Gm-Gg: ASbGncvMwI3127YwPshucZtlLYYolur4O6pArB7roM/tkXnjU4s/+yxLTSUm1ppI85D
+	AoWYvJAQUDqKYEdQTClq9KeLX29N2mE4booyTKEl7S/YqfxIk12Fo2QJxuo4q6cqFu5LhUFc9XB
+	QRRsotJvyFrRuyVVMmMZ/OgbYWUn50yohadoF9BLijLFIeZd5oi7/wdQFeMw+B4XoGRIEYacPtr
+	aCf3C9wGMVqZ0W04Z4mdKCoFmy6Zty3qiAuDXf+z04NP4b1szi3LZuBv7pOrg==
+X-Google-Smtp-Source: AGHT+IGYhdHyJQz2T6sQnktrmfPOEHIa+NxQvfHmqaXAv8NSDYeXhh8uDw3YLAg6DXD0ySC+Pw0+TA==
+X-Received: by 2002:a05:600c:1d0c:b0:431:54d9:da57 with SMTP id 5b1f17b1804b1-43668b78e66mr508486965e9.30.1736161598070;
+        Mon, 06 Jan 2025 03:06:38 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4364b0532a6sm577668545e9.1.2025.01.06.03.06.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2025 03:06:37 -0800 (PST)
+Date: Mon, 6 Jan 2025 14:06:34 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	linux-kernel@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Abel Vesa <abelvesa@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v4 2/2] nvmem: imx-ocotp-ele: Support accessing
- controller for i.MX9
-Message-ID: <Z3uxNZLM6-HHnRZM@pengutronix.de>
-References: <20241223-imx-ocotp-v4-0-f504c1420640@nxp.com>
- <20241223-imx-ocotp-v4-2-f504c1420640@nxp.com>
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH v8 11/18] clk: imx: add support for i.MX8MN anatop clock
+ driver
+Message-ID: <a495faf8-6cfb-4d24-b7b5-cd94e1a8b3ca@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,326 +82,259 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241223-imx-ocotp-v4-2-f504c1420640@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20241229145027.3984542-12-dario.binacchi@amarulasolutions.com>
 
-On Mon, Dec 23, 2024 at 08:46:14AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> i.MX9 OCOTP supports a specific peripheral or function being fused
-> which means disabled, so
->  - Introduce ocotp_access_gates to be container of efuse gate info
->  - Iterate all nodes to check accessing permission. If not
->    allowed to be accessed, detach the node
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/nvmem/imx-ocotp-ele.c | 184 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 183 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-> index ca6dd71d8a2e29888c6e556aaea116c1a967cb5f..5a07d8b780ecfc13874cff338d6926d0e2a87c8a 100644
-> --- a/drivers/nvmem/imx-ocotp-ele.c
-> +++ b/drivers/nvmem/imx-ocotp-ele.c
-> @@ -5,6 +5,8 @@
->   * Copyright 2023 NXP
->   */
->  
-> +#include <dt-bindings/nvmem/fsl,imx93-ocotp.h>
-> +#include <dt-bindings/nvmem/fsl,imx95-ocotp.h>
->  #include <linux/device.h>
->  #include <linux/io.h>
->  #include <linux/module.h>
-> @@ -27,6 +29,7 @@ struct ocotp_map_entry {
->  };
->  
->  struct ocotp_devtype_data {
-> +	const struct ocotp_access_gates *access_gates;
->  	u32 reg_off;
->  	char *name;
->  	u32 size;
-> @@ -36,11 +39,26 @@ struct ocotp_devtype_data {
->  	struct ocotp_map_entry entry[];
->  };
->  
-> +#define OCOTP_MAX_NUM_GATE_WORDS 4
-> +#define IMX93_OCOTP_NUM_GATES 17
-> +#define IMX95_OCOTP_NUM_GATES 36
-> +
-> +struct ocotp_access_gates {
-> +	u32 num_words;
-> +	u32 words[OCOTP_MAX_NUM_GATE_WORDS];
-> +	u32 num_gates;
-> +	struct access_gate {
-> +		u32 word;
-> +		u32 mask;
-> +	} gates[];
-> +};
+Hi Dario,
 
-Make gates[] a pointer so you can use ARRAY_SIZE() for determining the
-number of gates rather than having to define num_gates manually.
+kernel test robot noticed the following build warnings:
 
-> +
->  struct imx_ocotp_priv {
->  	struct device *dev;
->  	void __iomem *base;
->  	struct nvmem_config config;
->  	struct mutex lock;
-> +	u32 value[OCOTP_MAX_NUM_GATE_WORDS];
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-'value' is a poor naming choice. Is storing the register values in the
-private data necessary at all? You could read the values when you need
-them.
+url:    https://github.com/intel-lab-lkp/linux/commits/Dario-Binacchi/dt-bindings-clock-imx8mm-add-VIDEO_PLL-clocks/20241229-225716
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20241229145027.3984542-12-dario.binacchi%40amarulasolutions.com
+patch subject: [PATCH v8 11/18] clk: imx: add support for i.MX8MN anatop clock driver
+config: arm-randconfig-r071-20241231 (https://download.01.org/0day-ci/archive/20241231/202412311031.781qvq8q-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
 
->  	const struct ocotp_devtype_data *data;
->  };
->  
-> @@ -131,6 +149,97 @@ static void imx_ocotp_fixup_dt_cell_info(struct nvmem_device *nvmem,
->  	cell->read_post_process = imx_ocotp_cell_pp;
->  }
->  
-> +static int imx_ele_ocotp_check_access(struct platform_device *pdev, u32 id)
-> +{
-> +	struct imx_ocotp_priv *priv = platform_get_drvdata(pdev);
-> +	const struct ocotp_access_gates *access_gates = priv->data->access_gates;
-> +	u32 word, mask;
-> +
-> +	if (id >= access_gates->num_gates) {
-> +		dev_err(&pdev->dev, "Index %d too large\n", id);
-> +		return -EACCES;
-> +	}
-> +
-> +	word = access_gates->gates[id].word;
-> +	mask = access_gates->gates[id].mask;
-> +
-> +	dev_dbg(&pdev->dev, "id:%d word:%d mask:0x%08x\n", id, word, mask);
-> +	/* true means not allow access */
-> +	if (priv->value[word] & mask)
-> +		return -EACCES;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202412311031.781qvq8q-lkp@intel.com/
 
-priv->value[] is an array with 4 entries whereas 'word' is some value
-between 17 and 21.
+smatch warnings:
+drivers/clk/imx/clk-imx8mn-anatop.c:244 imx8mn_anatop_clocks_probe() error: buffer overflow 'hws' 62 <= 62
 
-As said above, just read needed register value here instead of storing
-all register values upfront in an array.
+vim +/hws +244 drivers/clk/imx/clk-imx8mn-anatop.c
 
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx_ele_ocotp_grant_access(struct platform_device *pdev, struct device_node *parent)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +
-> +	for_each_available_child_of_node_scoped(parent, child) {
-> +		struct of_phandle_iterator it;
-> +		int err;
-> +		u32 id;
-> +
-> +		of_for_each_phandle(&it, err, child, "access-controllers",
-> +				    "#access-controller-cells", 0) {
-> +			struct of_phandle_args provider_args;
-> +			struct device_node *provider = it.node;
-> +
-> +			if (err) {
-> +				dev_err(dev, "Unable to get access-controllers property for node %s\n, err: %d",
-> +					child->full_name, err);
+87df58feb5834e Dario Binacchi 2024-12-29   40  static int imx8mn_anatop_clocks_probe(struct platform_device *pdev)
+87df58feb5834e Dario Binacchi 2024-12-29   41  {
+87df58feb5834e Dario Binacchi 2024-12-29   42  	struct device *dev = &pdev->dev;
+87df58feb5834e Dario Binacchi 2024-12-29   43  	struct device_node *np = dev->of_node;
+87df58feb5834e Dario Binacchi 2024-12-29   44  	void __iomem *base;
+87df58feb5834e Dario Binacchi 2024-12-29   45  	int ret;
+87df58feb5834e Dario Binacchi 2024-12-29   46  
+87df58feb5834e Dario Binacchi 2024-12-29   47  	base = devm_platform_ioremap_resource(pdev, 0);
+87df58feb5834e Dario Binacchi 2024-12-29   48  	if (IS_ERR(base)) {
+87df58feb5834e Dario Binacchi 2024-12-29   49  		dev_err(dev, "failed to get base address\n");
+87df58feb5834e Dario Binacchi 2024-12-29   50  		return PTR_ERR(base);
+87df58feb5834e Dario Binacchi 2024-12-29   51  	}
+87df58feb5834e Dario Binacchi 2024-12-29   52  
+87df58feb5834e Dario Binacchi 2024-12-29   53  	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
+87df58feb5834e Dario Binacchi 2024-12-29   54  						    IMX8MN_ANATOP_CLK_END),
 
-You can print device nodes with %pOF
+IMX8MN_ANATOP_CLK_END is IMX8MN_ANATOP_CLK_CLKOUT2
 
-> +				of_node_put(provider);
+87df58feb5834e Dario Binacchi 2024-12-29   55  				   GFP_KERNEL);
+87df58feb5834e Dario Binacchi 2024-12-29   56  	if (WARN_ON(!clk_hw_data))
+87df58feb5834e Dario Binacchi 2024-12-29   57  		return -ENOMEM;
+87df58feb5834e Dario Binacchi 2024-12-29   58  
+87df58feb5834e Dario Binacchi 2024-12-29   59  	clk_hw_data->num = IMX8MN_ANATOP_CLK_END;
+87df58feb5834e Dario Binacchi 2024-12-29   60  	hws = clk_hw_data->hws;
+87df58feb5834e Dario Binacchi 2024-12-29   61  
+87df58feb5834e Dario Binacchi 2024-12-29   62  	hws[IMX8MN_ANATOP_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0);
+87df58feb5834e Dario Binacchi 2024-12-29   63  	hws[IMX8MN_ANATOP_CLK_32K] = imx_get_clk_hw_by_name(np, "osc_32k");
+87df58feb5834e Dario Binacchi 2024-12-29   64  	hws[IMX8MN_ANATOP_CLK_24M] = imx_get_clk_hw_by_name(np, "osc_24m");
+87df58feb5834e Dario Binacchi 2024-12-29   65  
+87df58feb5834e Dario Binacchi 2024-12-29   66  	hws[IMX8MN_ANATOP_AUDIO_PLL1_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   67  		imx_clk_hw_mux("audio_pll1_ref_sel", base + 0x0, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   68  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   69  	hws[IMX8MN_ANATOP_AUDIO_PLL2_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   70  		imx_clk_hw_mux("audio_pll2_ref_sel", base + 0x14, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   71  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   72  	hws[IMX8MN_ANATOP_VIDEO_PLL_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   73  		imx_clk_hw_mux("video_pll_ref_sel", base + 0x28, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   74  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   75  	hws[IMX8MN_ANATOP_DRAM_PLL_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   76  		imx_clk_hw_mux("dram_pll_ref_sel", base + 0x50, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   77  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   78  	hws[IMX8MN_ANATOP_GPU_PLL_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   79  		imx_clk_hw_mux("gpu_pll_ref_sel", base + 0x64, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   80  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   81  	hws[IMX8MN_ANATOP_M7_ALT_PLL_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   82  		imx_clk_hw_mux("m7_alt_pll_ref_sel", base + 0x74, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   83  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   84  	hws[IMX8MN_ANATOP_ARM_PLL_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   85  		imx_clk_hw_mux("arm_pll_ref_sel", base + 0x84, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   86  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   87  	hws[IMX8MN_ANATOP_SYS_PLL3_REF_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29   88  		imx_clk_hw_mux("sys_pll3_ref_sel", base + 0x114, 0, 2,
+87df58feb5834e Dario Binacchi 2024-12-29   89  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
+87df58feb5834e Dario Binacchi 2024-12-29   90  
+87df58feb5834e Dario Binacchi 2024-12-29   91  	hws[IMX8MN_ANATOP_AUDIO_PLL1] =
+87df58feb5834e Dario Binacchi 2024-12-29   92  		imx_clk_hw_pll14xx("audio_pll1", "audio_pll1_ref_sel",
+87df58feb5834e Dario Binacchi 2024-12-29   93  				   base, &imx_1443x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29   94  	hws[IMX8MN_ANATOP_AUDIO_PLL2] =
+87df58feb5834e Dario Binacchi 2024-12-29   95  		imx_clk_hw_pll14xx("audio_pll2", "audio_pll2_ref_sel",
+87df58feb5834e Dario Binacchi 2024-12-29   96  				   base + 0x14, &imx_1443x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29   97  	hws[IMX8MN_ANATOP_VIDEO_PLL] =
+87df58feb5834e Dario Binacchi 2024-12-29   98  		imx_clk_hw_pll14xx("video_pll", "video_pll_ref_sel",
+87df58feb5834e Dario Binacchi 2024-12-29   99  				   base + 0x28, &imx_1443x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  100  	hws[IMX8MN_ANATOP_DRAM_PLL] =
+87df58feb5834e Dario Binacchi 2024-12-29  101  		imx_clk_hw_pll14xx("dram_pll", "dram_pll_ref_sel", base + 0x50,
+87df58feb5834e Dario Binacchi 2024-12-29  102  				   &imx_1443x_dram_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  103  	hws[IMX8MN_ANATOP_GPU_PLL] =
+87df58feb5834e Dario Binacchi 2024-12-29  104  		imx_clk_hw_pll14xx("gpu_pll", "gpu_pll_ref_sel", base + 0x64,
+87df58feb5834e Dario Binacchi 2024-12-29  105  				   &imx_1416x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  106  	hws[IMX8MN_ANATOP_M7_ALT_PLL] =
+87df58feb5834e Dario Binacchi 2024-12-29  107  		imx_clk_hw_pll14xx("m7_alt_pll", "m7_alt_pll_ref_sel",
+87df58feb5834e Dario Binacchi 2024-12-29  108  				   base + 0x74, &imx_1416x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  109  	hws[IMX8MN_ANATOP_ARM_PLL] =
+87df58feb5834e Dario Binacchi 2024-12-29  110  		imx_clk_hw_pll14xx("arm_pll", "arm_pll_ref_sel", base + 0x84,
+87df58feb5834e Dario Binacchi 2024-12-29  111  				   &imx_1416x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  112  	hws[IMX8MN_ANATOP_SYS_PLL1] = imx_clk_hw_fixed("sys_pll1", 800000000);
+87df58feb5834e Dario Binacchi 2024-12-29  113  	hws[IMX8MN_ANATOP_SYS_PLL2] = imx_clk_hw_fixed("sys_pll2", 1000000000);
+87df58feb5834e Dario Binacchi 2024-12-29  114  	hws[IMX8MN_ANATOP_SYS_PLL3] =
+87df58feb5834e Dario Binacchi 2024-12-29  115  		imx_clk_hw_pll14xx("sys_pll3", "sys_pll3_ref_sel", base + 0x114,
+87df58feb5834e Dario Binacchi 2024-12-29  116  				   &imx_1416x_pll);
+87df58feb5834e Dario Binacchi 2024-12-29  117  
+87df58feb5834e Dario Binacchi 2024-12-29  118  	/* PLL bypass out */
+87df58feb5834e Dario Binacchi 2024-12-29  119  	hws[IMX8MN_ANATOP_AUDIO_PLL1_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  120  		imx_clk_hw_mux_flags("audio_pll1_bypass", base, 16, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  121  				     audio_pll1_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  122  				     ARRAY_SIZE(audio_pll1_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  123  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  124  	hws[IMX8MN_ANATOP_AUDIO_PLL2_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  125  		imx_clk_hw_mux_flags("audio_pll2_bypass", base + 0x14, 16, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  126  				     audio_pll2_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  127  				     ARRAY_SIZE(audio_pll2_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  128  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  129  	hws[IMX8MN_ANATOP_VIDEO_PLL_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  130  		imx_clk_hw_mux_flags("video_pll_bypass", base + 0x28, 16, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  131  				     video_pll_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  132  				     ARRAY_SIZE(video_pll_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  133  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  134  	hws[IMX8MN_ANATOP_DRAM_PLL_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  135  		imx_clk_hw_mux_flags("dram_pll_bypass", base + 0x50, 16, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  136  				     dram_pll_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  137  				     ARRAY_SIZE(dram_pll_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  138  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  139  	hws[IMX8MN_ANATOP_GPU_PLL_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  140  		imx_clk_hw_mux_flags("gpu_pll_bypass", base + 0x64, 28, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  141  				     gpu_pll_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  142  				     ARRAY_SIZE(gpu_pll_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  143  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  144  	hws[IMX8MN_ANATOP_M7_ALT_PLL_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  145  		imx_clk_hw_mux_flags("m7_alt_pll_bypass", base + 0x74, 28, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  146  				     m7_alt_pll_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  147  				     ARRAY_SIZE(m7_alt_pll_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  148  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  149  	hws[IMX8MN_ANATOP_ARM_PLL_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  150  		imx_clk_hw_mux_flags("arm_pll_bypass", base + 0x84, 28, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  151  				     arm_pll_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  152  				     ARRAY_SIZE(arm_pll_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  153  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  154  	hws[IMX8MN_ANATOP_SYS_PLL3_BYPASS] =
+87df58feb5834e Dario Binacchi 2024-12-29  155  		imx_clk_hw_mux_flags("sys_pll3_bypass", base + 0x114, 28, 1,
+87df58feb5834e Dario Binacchi 2024-12-29  156  				     sys_pll3_bypass_sels,
+87df58feb5834e Dario Binacchi 2024-12-29  157  				     ARRAY_SIZE(sys_pll3_bypass_sels),
+87df58feb5834e Dario Binacchi 2024-12-29  158  				     CLK_SET_RATE_PARENT);
+87df58feb5834e Dario Binacchi 2024-12-29  159  
+87df58feb5834e Dario Binacchi 2024-12-29  160  	/* PLL out gate */
+87df58feb5834e Dario Binacchi 2024-12-29  161  	hws[IMX8MN_ANATOP_AUDIO_PLL1_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  162  		imx_clk_hw_gate("audio_pll1_out", "audio_pll1_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  163  				base, 13);
+87df58feb5834e Dario Binacchi 2024-12-29  164  	hws[IMX8MN_ANATOP_AUDIO_PLL2_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  165  		imx_clk_hw_gate("audio_pll2_out", "audio_pll2_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  166  				base + 0x14, 13);
+87df58feb5834e Dario Binacchi 2024-12-29  167  	hws[IMX8MN_ANATOP_VIDEO_PLL_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  168  		imx_clk_hw_gate("video_pll_out", "video_pll_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  169  				base + 0x28, 13);
+87df58feb5834e Dario Binacchi 2024-12-29  170  	hws[IMX8MN_ANATOP_DRAM_PLL_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  171  		imx_clk_hw_gate("dram_pll_out", "dram_pll_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  172  				base + 0x50, 13);
+87df58feb5834e Dario Binacchi 2024-12-29  173  	hws[IMX8MN_ANATOP_GPU_PLL_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  174  		imx_clk_hw_gate("gpu_pll_out", "gpu_pll_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  175  				base + 0x64, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  176  	hws[IMX8MN_ANATOP_M7_ALT_PLL_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  177  		imx_clk_hw_gate("m7_alt_pll_out", "m7_alt_pll_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  178  				base + 0x74, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  179  	hws[IMX8MN_ANATOP_ARM_PLL_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  180  		imx_clk_hw_gate("arm_pll_out", "arm_pll_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  181  				base + 0x84, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  182  	hws[IMX8MN_ANATOP_SYS_PLL3_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  183  		imx_clk_hw_gate("sys_pll3_out", "sys_pll3_bypass",
+87df58feb5834e Dario Binacchi 2024-12-29  184  				base + 0x114, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  185  
+87df58feb5834e Dario Binacchi 2024-12-29  186  	/* SYS PLL1 fixed output */
+87df58feb5834e Dario Binacchi 2024-12-29  187  	hws[IMX8MN_ANATOP_SYS_PLL1_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  188  		imx_clk_hw_gate("sys_pll1_out", "sys_pll1", base + 0x94, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  189  	hws[IMX8MN_ANATOP_SYS_PLL1_40M] =
+87df58feb5834e Dario Binacchi 2024-12-29  190  		imx_clk_hw_fixed_factor("sys_pll1_40m", "sys_pll1_out", 1, 20);
+87df58feb5834e Dario Binacchi 2024-12-29  191  	hws[IMX8MN_ANATOP_SYS_PLL1_80M] =
+87df58feb5834e Dario Binacchi 2024-12-29  192  		imx_clk_hw_fixed_factor("sys_pll1_80m", "sys_pll1_out", 1, 10);
+87df58feb5834e Dario Binacchi 2024-12-29  193  	hws[IMX8MN_ANATOP_SYS_PLL1_100M] =
+87df58feb5834e Dario Binacchi 2024-12-29  194  		imx_clk_hw_fixed_factor("sys_pll1_100m", "sys_pll1_out", 1, 8);
+87df58feb5834e Dario Binacchi 2024-12-29  195  	hws[IMX8MN_ANATOP_SYS_PLL1_133M] =
+87df58feb5834e Dario Binacchi 2024-12-29  196  		imx_clk_hw_fixed_factor("sys_pll1_133m", "sys_pll1_out", 1, 6);
+87df58feb5834e Dario Binacchi 2024-12-29  197  	hws[IMX8MN_ANATOP_SYS_PLL1_160M] =
+87df58feb5834e Dario Binacchi 2024-12-29  198  		imx_clk_hw_fixed_factor("sys_pll1_160m", "sys_pll1_out", 1, 5);
+87df58feb5834e Dario Binacchi 2024-12-29  199  	hws[IMX8MN_ANATOP_SYS_PLL1_200M] =
+87df58feb5834e Dario Binacchi 2024-12-29  200  		imx_clk_hw_fixed_factor("sys_pll1_200m", "sys_pll1_out", 1, 4);
+87df58feb5834e Dario Binacchi 2024-12-29  201  	hws[IMX8MN_ANATOP_SYS_PLL1_266M] =
+87df58feb5834e Dario Binacchi 2024-12-29  202  		imx_clk_hw_fixed_factor("sys_pll1_266m", "sys_pll1_out", 1, 3);
+87df58feb5834e Dario Binacchi 2024-12-29  203  	hws[IMX8MN_ANATOP_SYS_PLL1_400M] =
+87df58feb5834e Dario Binacchi 2024-12-29  204  		imx_clk_hw_fixed_factor("sys_pll1_400m", "sys_pll1_out", 1, 2);
+87df58feb5834e Dario Binacchi 2024-12-29  205  	hws[IMX8MN_ANATOP_SYS_PLL1_800M] =
+87df58feb5834e Dario Binacchi 2024-12-29  206  		imx_clk_hw_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
+87df58feb5834e Dario Binacchi 2024-12-29  207  
+87df58feb5834e Dario Binacchi 2024-12-29  208  	/* SYS PLL2 fixed output */
+87df58feb5834e Dario Binacchi 2024-12-29  209  	hws[IMX8MN_ANATOP_SYS_PLL2_OUT] =
+87df58feb5834e Dario Binacchi 2024-12-29  210  		imx_clk_hw_gate("sys_pll2_out", "sys_pll2", base + 0x104, 11);
+87df58feb5834e Dario Binacchi 2024-12-29  211  	hws[IMX8MN_ANATOP_SYS_PLL2_50M] =
+87df58feb5834e Dario Binacchi 2024-12-29  212  		imx_clk_hw_fixed_factor("sys_pll2_50m", "sys_pll2_out", 1, 20);
+87df58feb5834e Dario Binacchi 2024-12-29  213  	hws[IMX8MN_ANATOP_SYS_PLL2_100M] =
+87df58feb5834e Dario Binacchi 2024-12-29  214  		imx_clk_hw_fixed_factor("sys_pll2_100m", "sys_pll2_out", 1, 10);
+87df58feb5834e Dario Binacchi 2024-12-29  215  	hws[IMX8MN_ANATOP_SYS_PLL2_125M] =
+87df58feb5834e Dario Binacchi 2024-12-29  216  		imx_clk_hw_fixed_factor("sys_pll2_125m", "sys_pll2_out", 1, 8);
+87df58feb5834e Dario Binacchi 2024-12-29  217  	hws[IMX8MN_ANATOP_SYS_PLL2_166M] =
+87df58feb5834e Dario Binacchi 2024-12-29  218  		imx_clk_hw_fixed_factor("sys_pll2_166m", "sys_pll2_out", 1, 6);
+87df58feb5834e Dario Binacchi 2024-12-29  219  	hws[IMX8MN_ANATOP_SYS_PLL2_200M] =
+87df58feb5834e Dario Binacchi 2024-12-29  220  		imx_clk_hw_fixed_factor("sys_pll2_200m", "sys_pll2_out", 1, 5);
+87df58feb5834e Dario Binacchi 2024-12-29  221  	hws[IMX8MN_ANATOP_SYS_PLL2_250M] =
+87df58feb5834e Dario Binacchi 2024-12-29  222  		imx_clk_hw_fixed_factor("sys_pll2_250m", "sys_pll2_out", 1, 4);
+87df58feb5834e Dario Binacchi 2024-12-29  223  	hws[IMX8MN_ANATOP_SYS_PLL2_333M] =
+87df58feb5834e Dario Binacchi 2024-12-29  224  		imx_clk_hw_fixed_factor("sys_pll2_333m", "sys_pll2_out", 1, 3);
+87df58feb5834e Dario Binacchi 2024-12-29  225  	hws[IMX8MN_ANATOP_SYS_PLL2_500M] =
+87df58feb5834e Dario Binacchi 2024-12-29  226  		imx_clk_hw_fixed_factor("sys_pll2_500m", "sys_pll2_out", 1, 2);
+87df58feb5834e Dario Binacchi 2024-12-29  227  	hws[IMX8MN_ANATOP_SYS_PLL2_1000M] =
+87df58feb5834e Dario Binacchi 2024-12-29  228  		imx_clk_hw_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
+87df58feb5834e Dario Binacchi 2024-12-29  229  
+87df58feb5834e Dario Binacchi 2024-12-29  230  	hws[IMX8MN_ANATOP_CLK_CLKOUT1_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29  231  		imx_clk_hw_mux2("clkout1_sel", base + 0x128, 4, 4,
+87df58feb5834e Dario Binacchi 2024-12-29  232  				clkout_sels, ARRAY_SIZE(clkout_sels));
+87df58feb5834e Dario Binacchi 2024-12-29  233  	hws[IMX8MN_ANATOP_CLK_CLKOUT1_DIV] =
+87df58feb5834e Dario Binacchi 2024-12-29  234  		imx_clk_hw_divider("clkout1_div", "clkout1_sel", base + 0x128,
+87df58feb5834e Dario Binacchi 2024-12-29  235  				   0, 4);
+87df58feb5834e Dario Binacchi 2024-12-29  236  	hws[IMX8MN_ANATOP_CLK_CLKOUT1] =
+87df58feb5834e Dario Binacchi 2024-12-29  237  		imx_clk_hw_gate("clkout1", "clkout1_div", base + 0x128, 8);
+87df58feb5834e Dario Binacchi 2024-12-29  238  	hws[IMX8MN_ANATOP_CLK_CLKOUT2_SEL] =
+87df58feb5834e Dario Binacchi 2024-12-29  239  		imx_clk_hw_mux2("clkout2_sel", base + 0x128, 20, 4,
+87df58feb5834e Dario Binacchi 2024-12-29  240  				clkout_sels, ARRAY_SIZE(clkout_sels));
+87df58feb5834e Dario Binacchi 2024-12-29  241  	hws[IMX8MN_ANATOP_CLK_CLKOUT2_DIV] =
+87df58feb5834e Dario Binacchi 2024-12-29  242  		imx_clk_hw_divider("clkout2_div", "clkout2_sel", base + 0x128,
+87df58feb5834e Dario Binacchi 2024-12-29  243  				   16, 4);
+87df58feb5834e Dario Binacchi 2024-12-29 @244  	hws[IMX8MN_ANATOP_CLK_CLKOUT2] =
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Corruption.
 
-On error it.node will be NULL. No of_node_put() necessary here.
-
-> +				return err;
-> +			}
-
-You don't check if the provider actually matches the fsl,imx9x-ocotp
-node, otherwise it breaks when multiple access providers are in the
-system, i.e. do a
-
-			if (provider != dev->of_node)
-				continue;
-
-> +
-> +			/* Only support one cell */
-> +			if (of_phandle_iterator_args(&it, provider_args.args, 1) != 1) {
-> +				dev_err(dev, "wrong args count\n");
-> +				of_node_put(provider);
-> +				return -EINVAL;
-> +			}
-
-When there's a node that has he wrong number of arguments in the
-access-controllers property then there's no need to fail the others.
-Just continue instead of returning an error.
-
-> +
-> +			id = provider_args.args[0];
-> +
-> +			dev_dbg(dev, "Checking node: %s gate: %d\n", child->full_name, id);
-> +
-> +			if (imx_ele_ocotp_check_access(pdev, id)) {
-> +				of_detach_node(child);
-> +				dev_err(dev, "%s: Not granted, device driver will not be probed\n",
-> +					child->full_name);
-
-It's not an error when a specific unit is not present on a particular
-SoC. This should be dev_info at maximum.
-
-> +			}
-> +		}
-> +
-> +		imx_ele_ocotp_grant_access(pdev, child);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int imx_ele_ocotp_access_control(struct platform_device *pdev)
-> +{
-
-Use imx_ocotp_priv *priv as context pointer to this function and to
-imx_ele_ocotp_grant_access().
-
-Sascha
-
-> +	struct imx_ocotp_priv *priv = platform_get_drvdata(pdev);
-> +	struct device_node *root __free(device_node) = of_find_node_by_path("/");
-> +	const struct ocotp_access_gates *access_gates = priv->data->access_gates;
-> +	void __iomem *reg = priv->base + priv->data->reg_off;
-> +	u32 off;
-> +	int i;
-> +
-> +	if (!priv->data->access_gates)
-> +		return 0;
-> +
-> +	/* This should never happen */
-> +	WARN_ON(!root);
-> +
-> +	for (i = 0; i < access_gates->num_words; i++) {
-> +		off = access_gates->words[i] << 2;
-> +		priv->value[i] = readl(reg + off);
-> +		dev_dbg(&pdev->dev, "word:%d 0x%08x\n", access_gates->words[i], priv->value[i]);
-> +	}
-> +
-> +	return imx_ele_ocotp_grant_access(pdev, root);
-> +}
-> +
->  static int imx_ele_ocotp_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> @@ -161,14 +270,43 @@ static int imx_ele_ocotp_probe(struct platform_device *pdev)
->  	priv->config.fixup_dt_cell_info = imx_ocotp_fixup_dt_cell_info;
->  	mutex_init(&priv->lock);
->  
-> +	platform_set_drvdata(pdev, priv);
-> +
->  	nvmem = devm_nvmem_register(dev, &priv->config);
->  	if (IS_ERR(nvmem))
->  		return PTR_ERR(nvmem);
->  
-> -	return 0;
-> +
-> +	return imx_ele_ocotp_access_control(pdev);
->  }
->  
-> +static const struct ocotp_access_gates imx93_access_gates = {
-> +	.num_words = 3,
-> +	.words = {19, 20, 21},
-> +	.num_gates = IMX93_OCOTP_NUM_GATES,
-> +	.gates = {
-> +		[IMX93_OCOTP_NPU_GATE]		= { .word = 19, .mask = BIT(13) },
-> +		[IMX93_OCOTP_A550_GATE]		= { .word = 19, .mask = BIT(14) },
-> +		[IMX93_OCOTP_A551_GATE]		= { .word = 19, .mask = BIT(15) },
-> +		[IMX93_OCOTP_M33_GATE]		= { .word = 19, .mask = BIT(24) },
-> +		[IMX93_OCOTP_CAN1_FD_GATE]	= { .word = 19, .mask = BIT(28) },
-> +		[IMX93_OCOTP_CAN2_FD_GATE]	= { .word = 19, .mask = BIT(29) },
-> +		[IMX93_OCOTP_CAN1_GATE]		= { .word = 19, .mask = BIT(30) },
-> +		[IMX93_OCOTP_CAN2_GATE]		= { .word = 19, .mask = BIT(31) },
-> +		[IMX93_OCOTP_USB1_GATE]		= { .word = 20, .mask = BIT(3) },
-> +		[IMX93_OCOTP_USB2_GATE]		= { .word = 20, .mask = BIT(4) },
-> +		[IMX93_OCOTP_ENET1_GATE]	= { .word = 20, .mask = BIT(5) },
-> +		[IMX93_OCOTP_ENET2_GATE]	= { .word = 20, .mask = BIT(6) },
-> +		[IMX93_OCOTP_PXP_GATE]		= { .word = 20, .mask = BIT(10) },
-> +		[IMX93_OCOTP_MIPI_CSI1_GATE]	= { .word = 20, .mask = BIT(17) },
-> +		[IMX93_OCOTP_MIPI_DSI1_GATE]	= { .word = 20, .mask = BIT(19) },
-> +		[IMX93_OCOTP_LVDS1_GATE]	= { .word = 20, .mask = BIT(24) },
-> +		[IMX93_OCOTP_ADC1_GATE]		= { .word = 21, .mask = BIT(7) },
-> +	},
-> +};
-> +
->  static const struct ocotp_devtype_data imx93_ocotp_data = {
-> +	.access_gates = &imx93_access_gates,
->  	.reg_off = 0x8000,
->  	.reg_read = imx_ocotp_reg_read,
->  	.size = 2048,
-> @@ -183,7 +321,51 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
->  	},
->  };
->  
-> +static const struct ocotp_access_gates imx95_access_gates = {
-> +	.num_words = 3,
-> +	.words = {17, 18, 19},
-> +	.num_gates = IMX95_OCOTP_NUM_GATES,
-> +	.gates = {
-> +		[IMX95_OCOTP_CANFD1_GATE]	= { .word = 17, .mask = BIT(20) },
-> +		[IMX95_OCOTP_CANFD2_GATE]	= { .word = 17, .mask = BIT(21) },
-> +		[IMX95_OCOTP_CANFD3_GATE]	= { .word = 17, .mask = BIT(22) },
-> +		[IMX95_OCOTP_CANFD4_GATE]	= { .word = 17, .mask = BIT(23) },
-> +		[IMX95_OCOTP_CANFD5_GATE]	= { .word = 17, .mask = BIT(24) },
-> +		[IMX95_OCOTP_CAN1_GATE]		= { .word = 17, .mask = BIT(25) },
-> +		[IMX95_OCOTP_CAN2_GATE]		= { .word = 17, .mask = BIT(26) },
-> +		[IMX95_OCOTP_CAN3_GATE]		= { .word = 17, .mask = BIT(27) },
-> +		[IMX95_OCOTP_CAN4_GATE]		= { .word = 17, .mask = BIT(28) },
-> +		[IMX95_OCOTP_CAN5_GATE]		= { .word = 17, .mask = BIT(29) },
-> +		[IMX95_OCOTP_NPU_GATE]		= { .word = 18, .mask = BIT(0) },
-> +		[IMX95_OCOTP_A550_GATE]		= { .word = 18, .mask = BIT(1) },
-> +		[IMX95_OCOTP_A551_GATE]		= { .word = 18, .mask = BIT(2) },
-> +		[IMX95_OCOTP_A552_GATE]		= { .word = 18, .mask = BIT(3) },
-> +		[IMX95_OCOTP_A553_GATE]		= { .word = 18, .mask = BIT(4) },
-> +		[IMX95_OCOTP_A554_GATE]		= { .word = 18, .mask = BIT(5) },
-> +		[IMX95_OCOTP_A555_GATE]		= { .word = 18, .mask = BIT(6) },
-> +		[IMX95_OCOTP_M7_GATE]		= { .word = 18, .mask = BIT(9) },
-> +		[IMX95_OCOTP_DCSS_GATE]		= { .word = 18, .mask = BIT(22) },
-> +		[IMX95_OCOTP_LVDS1_GATE]	= { .word = 18, .mask = BIT(27) },
-> +		[IMX95_OCOTP_ISP_GATE]		= { .word = 18, .mask = BIT(29) },
-> +		[IMX95_OCOTP_USB1_GATE]		= { .word = 19, .mask = BIT(2) },
-> +		[IMX95_OCOTP_USB2_GATE]		= { .word = 19, .mask = BIT(3) },
-> +		[IMX95_OCOTP_NETC_GATE]		= { .word = 19, .mask = BIT(4) },
-> +		[IMX95_OCOTP_PCIE1_GATE]	= { .word = 19, .mask = BIT(6) },
-> +		[IMX95_OCOTP_PCIE2_GATE]	= { .word = 19, .mask = BIT(7) },
-> +		[IMX95_OCOTP_ADC1_GATE]		= { .word = 19, .mask = BIT(8) },
-> +		[IMX95_OCOTP_EARC_RX_GATE]	= { .word = 19, .mask = BIT(11) },
-> +		[IMX95_OCOTP_GPU3D_GATE]	= { .word = 19, .mask = BIT(16) },
-> +		[IMX95_OCOTP_VPU_GATE]		= { .word = 19, .mask = BIT(17) },
-> +		[IMX95_OCOTP_JPEG_ENC_GATE]	= { .word = 19, .mask = BIT(18) },
-> +		[IMX95_OCOTP_JPEG_DEC_GATE]	= { .word = 19, .mask = BIT(19) },
-> +		[IMX95_OCOTP_MIPI_CSI1_GATE]	= { .word = 19, .mask = BIT(21) },
-> +		[IMX95_OCOTP_MIPI_CSI2_GATE]	= { .word = 19, .mask = BIT(22) },
-> +		[IMX95_OCOTP_MIPI_DSI1_GATE]	= { .word = 19, .mask = BIT(23) },
-> +	}
-> +};
-> +
->  static const struct ocotp_devtype_data imx95_ocotp_data = {
-> +	.access_gates = &imx95_access_gates,
->  	.reg_off = 0x8000,
->  	.reg_read = imx_ocotp_reg_read,
->  	.size = 2048,
-> 
-> -- 
-> 2.37.1
-> 
-> 
+87df58feb5834e Dario Binacchi 2024-12-29  245  		imx_clk_hw_gate("clkout2", "clkout2_div", base + 0x128, 24);
+87df58feb5834e Dario Binacchi 2024-12-29  246  
+87df58feb5834e Dario Binacchi 2024-12-29  247  	imx_check_clk_hws(hws, IMX8MN_ANATOP_CLK_END);
+87df58feb5834e Dario Binacchi 2024-12-29  248  
+87df58feb5834e Dario Binacchi 2024-12-29  249  	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
+87df58feb5834e Dario Binacchi 2024-12-29  250  	if (ret < 0) {
+87df58feb5834e Dario Binacchi 2024-12-29  251  		imx_unregister_hw_clocks(hws, IMX8MN_ANATOP_CLK_END);
+87df58feb5834e Dario Binacchi 2024-12-29  252  		return dev_err_probe(dev, ret,
+87df58feb5834e Dario Binacchi 2024-12-29  253  				     "failed to register anatop clock provider\n");
+87df58feb5834e Dario Binacchi 2024-12-29  254  	}
+87df58feb5834e Dario Binacchi 2024-12-29  255  
+87df58feb5834e Dario Binacchi 2024-12-29  256  	dev_info(dev, "NXP i.MX8MN anatop clock driver probed\n");
+87df58feb5834e Dario Binacchi 2024-12-29  257  	return 0;
+87df58feb5834e Dario Binacchi 2024-12-29  258  }
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
