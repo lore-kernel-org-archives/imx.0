@@ -1,25 +1,37 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A71153814
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 15:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE4014D28C
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 15:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177824; cv=none; b=ESurrw/AbQ4HUet4hyj09FvtKvyFeW1nvWFdX1AeCnDboxtEeIVvycIts/INjjETdYjlLy585hYCGzWOCv+rHXSfHa8Kgq0n78DFTWfftiXCJ25vdK6vG7my3j5oWH4x2gSyHYvl00cFssw6pcU7vXpFIZzG4jvmPUI6wWvAfaI=
+	t=1736177947; cv=none; b=UJjuL5ECb8P9NDv/mgr7FO3DZGp/grwuniPDxiLVqQkQuNZtBYpednigWhPExeotyN4JqF9CL7gjAfWqCyw6gG2iGAdoj6gWrS6DcBSmOaakTk5kQBfbN+yYlmkK87iI4CzwE3YepFz8mqrPTB9xb10WCcRT44xxiNwLzyDj0po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177824; c=relaxed/simple;
-	bh=y3313PA1GgHj2hbSKN+QamgqjBYo8A+vklwM3sm0+yE=;
+	s=arc-20240116; t=1736177947; c=relaxed/simple;
+	bh=ou96UoGxEznzvCV4rFpD+h9ycbOGfw4a/2U26xxSfUU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SnILEtDO1j02pt3ClD+3fJO9xXnx5IAsIqjoe5cSjPHJbXbGKGTvCf4ID/ekhRNpBT8M30qg5YoY5DrKZS+p+2d2Pa6ksNIL8JFUSTFQKKNUoFaEGDhS6WNC02TiVDkNfKFfIMuHelEEQY8Xi1dbnhCQ/nAGBi2libHs4vAnhQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tUp9w-00031f-TD; Mon, 06 Jan 2025 16:36:52 +0100
-Message-ID: <c0068bd7-a49a-49b0-889f-a864dd9170a8@pengutronix.de>
-Date: Mon, 6 Jan 2025 16:36:52 +0100
+	 In-Reply-To:Content-Type; b=OilabNs3NZO4m8mQWe4L+/CG4MDbsGUlyjV55khzSjz7U+w8+KbSvb4zDFza35BZlAfbrjqddtjzFVNF2lJ69FhHpspjV1xjFSxsYZm52UwKHjEWj7mfufUGFDHzNJXoHlV6AYUz9GsxcBPogroDdN/yKLVGBPedYqy87ou2S14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=J5Bc69JM; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="J5Bc69JM"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9378A104839FD;
+	Mon,  6 Jan 2025 16:38:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1736177942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tl7b9/uRfU9PjT0DsfX4Aw1ecJNaqnOdlVBiZttQ580=;
+	b=J5Bc69JMzDz1JGBjuEG8POURFwwohBsDV7iwgOJ1wM64dUyGP6zajsQ6sN7IaumEBx7r0F
+	nEJl0cgtzI1qwksNgBWfJvNPAvXxpK194rKZVz/hdnC4WxFnFvuPFAE+z3xhFug+QpQM/Z
+	Q/PLZVVd5CP42opCzvcJIfGc+9+QMnLMehgMxhuAa9PS7XHP3EOYv9/rwbFwJPPqV9fgc8
+	1HZuAoufbXSdN5mmeS2727iCE0O8p+K6TaeNgWvGOM7GKRVJQY2/cEbe3cDQGVoc0TYW/I
+	+Gcf7cb6MwcgzFx3dXF92m2G9EQYJl65yJ28iIxwPBV11o2+4bwRePnTdHNWmg==
+Message-ID: <add68d4c-51d8-4c1a-9560-7c95213dd524@denx.de>
+Date: Mon, 6 Jan 2025 16:36:26 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -27,167 +39,82 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] arm64: dts: imx8mp-skov: describe LVDS display
- pipeline
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH v4 1/4] drm: bridge: dw_hdmi: Add flag to indicate output
+ port is optional
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: dri-devel@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Liu Ying <victor.liu@nxp.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Oleksij Rempel
- <o.rempel@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20241219-skov-dt-updates-v1-0-38bf80dc22df@pengutronix.de>
- <20241219-skov-dt-updates-v1-6-38bf80dc22df@pengutronix.de>
- <Z2RZ1o6AWGRe0ww9@lizhi-Precision-Tower-5810>
- <1b5236db-9a2c-475c-825c-3feae22ea32e@pengutronix.de>
- <Z2RzA5S/ch1YDdUD@lizhi-Precision-Tower-5810>
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250105190659.99941-1-marex@denx.de>
+ <20250105232219.GC21164@pendragon.ideasonboard.com>
+ <a783fe47-89dc-479b-8e85-f956d95cf404@denx.de>
+ <20250106070514.GA5568@pendragon.ideasonboard.com>
 Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z2RzA5S/ch1YDdUD@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20250106070514.GA5568@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Frank,
-
-On 19.12.24 20:24, Frank Li wrote:
-> On Thu, Dec 19, 2024 at 06:45:24PM +0100, Ahmad Fatoum wrote:
->> On 19.12.24 18:37, Frank Li wrote:
->>> On Thu, Dec 19, 2024 at 08:25:30AM +0100, Ahmad Fatoum wrote:
->>>> From: Oleksij Rempel <o.rempel@pengutronix.de>
->>>>
->>>> The Skov i.MX8MP LT6 device tree so far described the touch screen, but
->>>> didn't describe the screen itself. Fill out these missing pieces.
+On 1/6/25 8:05 AM, Laurent Pinchart wrote:
+> On Mon, Jan 06, 2025 at 03:48:52AM +0100, Marek Vasut wrote:
+>> On 1/6/25 12:22 AM, Laurent Pinchart wrote:
+>>> Hi Marek,
+>>
+>> Hi,
+>>
+>>> Thank you for the patch.
 >>>
->>> Add "ti,sn65lvds822" touch screen description for i.MX8MP LT6 board.
->>
->> This is not what this patch does. Touch screen was already described
->> and now the remainder is being added, just like what my message said.
-> 
-> My main means, use below order to descript commit message
-> 
-> Add ... for ...
-
-Sorry, I won't start every sentence with a verb. The commit message
-is fine IMO.
-
-Thanks,
-Ahmad
-
-> 
-> Frank
-> 
->>
->> Thanks,
->> Ahmad
->>
+>>> On Sun, Jan 05, 2025 at 08:06:03PM +0100, Marek Vasut wrote:
+>>>> Add a flag meant purely to work around broken i.MX8MP DTs which enable
+>>>> HDMI but do not contain the HDMI connector node. This flag allows such
+>>>> DTs to work by creating the connector in the HDMI bridge driver. Do not
+>>>> use this flag, do not proliferate this flag, please fix your DTs and add
+>>>> the connector node this way:
+>>>>
+>>>> ```
+>>>> / {
+>>>>       hdmi-connector {
+>>>>           compatible = "hdmi-connector";
+>>>>           label = "FIXME-Board-Specific-Connector-Label"; // Modify this
+>>>>           type = "a";
+>>>>
+>>>>           port {
+>>>>               hdmi_connector_in: endpoint {
+>>>>                   remote-endpoint = <&hdmi_tx_out>;
+>>>>               };
+>>>>           };
+>>>>       };
+>>>> };
+>>>>
+>>>> &hdmi_tx {
+>>>>       ...
+>>>>
+>>>>       ports {
+>>>>           port@1 {
+>>>>               hdmi_tx_out: endpoint {
+>>>>                   remote-endpoint = <&hdmi_connector_in>;
+>>>>               };
+>>>>           };
+>>>>       };
+>>>> };
+>>>> ```
 >>>
->>> Frank
->>>
->>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
->>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>> ---
->>>>  .../boot/dts/freescale/imx8mp-skov-revb-lt6.dts    | 60 ++++++++++++++++++++++
->>>>  1 file changed, 60 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
->>>> index ccbd3abedd69..baecf768a2ee 100644
->>>> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
->>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
->>>> @@ -8,6 +8,45 @@ / {
->>>>  	model = "SKOV IMX8MP CPU revB - LT6";
->>>>  	compatible = "skov,imx8mp-skov-revb-lt6", "fsl,imx8mp";
->>>>
->>>> +	lvds-decoder {
->>>> +		compatible = "ti,sn65lvds822", "lvds-decoder";
->>>> +		power-supply = <&reg_3v3>;
->>>> +
->>>> +		ports {
->>>> +			#address-cells = <1>;
->>>> +			#size-cells = <0>;
->>>> +
->>>> +			port@0 {
->>>> +				reg = <0>;
->>>> +
->>>> +				in_lvds1: endpoint {
->>>> +					data-mapping = "vesa-24";
->>>> +					remote-endpoint = <&ldb_lvds_ch1>;
->>>> +				};
->>>> +			};
->>>> +
->>>> +			port@1 {
->>>> +				reg = <1>;
->>>> +
->>>> +				lvds_decoder_out: endpoint {
->>>> +					remote-endpoint = <&panel_in>;
->>>> +				};
->>>> +			};
->>>> +		};
->>>> +	};
->>>> +
->>>> +	panel {
->>>> +		compatible = "logictechno,lttd800480070-l6wh-rt";
->>>> +		backlight = <&backlight>;
->>>> +		power-supply = <&reg_tft_vcom>;
->>>> +
->>>> +		port {
->>>> +			panel_in: endpoint {
->>>> +				remote-endpoint = <&lvds_decoder_out>;
->>>> +			};
->>>> +		};
->>>> +	};
->>>> +
->>>>  	touchscreen {
->>>>  		compatible = "resistive-adc-touch";
->>>>  		io-channels = <&adc_ts 1>, <&adc_ts 3>, <&adc_ts 4>, <&adc_ts 5>;
->>>> @@ -78,6 +117,27 @@ channel@5 {
->>>>  	};
->>>>  };
->>>>
->>>> +&lcdif2 {
->>>> +	status = "okay";
->>>> +};
->>>> +
->>>> +&lvds_bridge {
->>>> +	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
->>>> +				 <&clk IMX8MP_VIDEO_PLL1>;
->>>> +	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
->>>> +	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
->>>> +	assigned-clock-rates = <0>, <462000000>;
->>>> +	status = "okay";
->>>> +
->>>> +	ports {
->>>> +		port@2 {
->>>> +			ldb_lvds_ch1: endpoint {
->>>> +				remote-endpoint = <&in_lvds1>;
->>>> +			};
->>>> +		};
->>>> +	};
->>>> +};
->>>> +
->>>>  &pwm1 {
->>>>  	status = "okay";
->>>>  };
->>>>
->>>> --
->>>> 2.39.5
->>>>
->>>
+>>> Are there any in-tree DT sources that use the old bindings ?
 >>
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>> See
+>> https://lore.kernel.org/dri-devel/AM7PR04MB704688150ACD5D209290246A98092@AM7PR04MB7046.eurprd04.prod.outlook.com/
+> 
+> Maybe I'm missing something obvious, but where is the patch series that
+> moves the DT sources mentioned in that mail thread to the new bindings ?
+Since this optional flag is added, that DT update series can be done 
+separately.
