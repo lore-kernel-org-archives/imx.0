@@ -1,340 +1,298 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F041DB95E
-	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 11:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F001DD9A6
+	for <imx@lists.linux.dev>; Mon,  6 Jan 2025 13:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736161603; cv=none; b=teL+xam7LPjf1Zdv0meeHl5jkTyNyC4rPBBSXw3vnxmPqDT4khCN/AJU+5zkDv3rvTGdN1CghUVDLRX3ltt+lWseefdqUM6NTxYFqgBJ3u7VUyEYFlf8ebR07oFQBLGNy1VVBizghAbAoJ0SR1PxdRjz0oTUgi2IeRGVq7y2Lwo=
+	t=1736168912; cv=none; b=GTF2186G1kM1cDOSWZlwd+1z3I4Ap4ia8oPP6eDZZearMi+9IQ+WxVa/v6cyAj58opsKkxyEjGOwMUFRt/UlHtxL7LtuSVeaOrn3mekB63OhP47tNIMy3hOoWFiwGjNcsc2oZC5ja+5jVUhDS9x01UUOAhgyD1EGdH31xlqeoUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736161603; c=relaxed/simple;
-	bh=A6JobZoPrq69BuqxXh3qmnmCjaegCYBZNWC2wJ3H0Mw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MyxXeIHXiQmhQkJmhiDyArUNMnBP1/NWLMlfMDa/+eolQNwW0K0CwjROIJX5QxIAe8F/iLWs4vD+t8kN6lWhHDmuRYm78p9WE2xg3k20Cdfe6t3On8gI9NCkzpMAOZpLzvBQZ2/Be4lHGW5PnzW7BPQlatoEaN68zmuua+3BGbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zHtDu6xQ; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zHtDu6xQ"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361dc6322fso94320985e9.3
-        for <imx@lists.linux.dev>; Mon, 06 Jan 2025 03:06:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736161598; x=1736766398; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SV0FBVRxpsuCLb/nRDIZe8jsu0IEUwlF/EBuP03LhIc=;
-        b=zHtDu6xQuWK1NgDf79MNeBj4F2cD//Zx8+GQ8QoqIQRPF3w3uYO6JR6DSH7ifXctzy
-         VGNSGrUQ6dFFV1+QCXUirMe6D002LTIzirJQd6lIz4sNv5YAMFTKk3kK4huFfTQx+C6c
-         iVq2opO/vZAsL5LEN6wGJTL31z1O/4XUlMk085pt4C/L5wDqJuNmrt3W3eWo9Q62yHkQ
-         /ydXYKBnjXa5AG20NWdscwZBxolnA2bwDFVjn9F9Hk+5TKXoaXUyA/Lc/8dSpe7ecpWC
-         1YVI2FBO1/yCO2l1Nm0DDnVlQ1AEqvvekF8eudR8Ixs6R0roq7n/DFp2Pi15kRguiT05
-         Tx+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736161598; x=1736766398;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SV0FBVRxpsuCLb/nRDIZe8jsu0IEUwlF/EBuP03LhIc=;
-        b=GXTlE9PERrkKNyncs6oHpB47itEH7TkvBRktAjzFRmmLwzmg6Q7QAFaFtRRvYVGBeW
-         y2+nvI2S1DWCUsYr7SctHRqKu01ikSX+JtF0y7HYEpEEsr4ScumPKA8hWA0+O5JaIeh0
-         +3NyH6MrQqBr9bwp1OMNdbV2rbCb77wP7fdPjJ0P8tOM46atZTW35gBMVVoSdEYdQWTh
-         ffVs7H3TWzY/WR+/PNLu3Mjknx3W14NV6MhDK3OD6vFuF7t5sPw+oKeApeVLtCcndPcT
-         Jzi0CIZPagjFnjQRkx32CnQbTmPOyymMQ+tc7D/Vwr1rX2LCKILOE1fVXU6NN8dsf17t
-         DVyA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+PLU8tAj9oQrelCz6JlKGOZ2CaNzVpBGnxgXkGGbe7Rt+M5HWhGbqZgEV8UTNi0cTMJs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx6AAqYpvzwWF+ElNluRWEQqL1qCz9TSWSynl0QvZ43t6Kc22hw
-	lpiEeEqX6D0cAuJ7IGjzrGoJJKz8Yma/zDI5flG5qvHrJqpya2zXXwJvZiQ4DTI=
-X-Gm-Gg: ASbGncvMwI3127YwPshucZtlLYYolur4O6pArB7roM/tkXnjU4s/+yxLTSUm1ppI85D
-	AoWYvJAQUDqKYEdQTClq9KeLX29N2mE4booyTKEl7S/YqfxIk12Fo2QJxuo4q6cqFu5LhUFc9XB
-	QRRsotJvyFrRuyVVMmMZ/OgbYWUn50yohadoF9BLijLFIeZd5oi7/wdQFeMw+B4XoGRIEYacPtr
-	aCf3C9wGMVqZ0W04Z4mdKCoFmy6Zty3qiAuDXf+z04NP4b1szi3LZuBv7pOrg==
-X-Google-Smtp-Source: AGHT+IGYhdHyJQz2T6sQnktrmfPOEHIa+NxQvfHmqaXAv8NSDYeXhh8uDw3YLAg6DXD0ySC+Pw0+TA==
-X-Received: by 2002:a05:600c:1d0c:b0:431:54d9:da57 with SMTP id 5b1f17b1804b1-43668b78e66mr508486965e9.30.1736161598070;
-        Mon, 06 Jan 2025 03:06:38 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4364b0532a6sm577668545e9.1.2025.01.06.03.06.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 03:06:37 -0800 (PST)
-Date: Mon, 6 Jan 2025 14:06:34 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	linux-kernel@vger.kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Abel Vesa <abelvesa@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v8 11/18] clk: imx: add support for i.MX8MN anatop clock
- driver
-Message-ID: <a495faf8-6cfb-4d24-b7b5-cd94e1a8b3ca@stanley.mountain>
+	s=arc-20240116; t=1736168912; c=relaxed/simple;
+	bh=+D4VNYTgIwwWMxTiK1lJjo3rk6IBtMA9Ka3FjNPbRRw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SrXPM5Ry5GbmKIRD2MQ5acIEvDH5CGGyT7x7V1++f1MbzUVSKBhBLfNcC+PotNB76PgwqjE7UMSaSO6EDGZzfPeJwHRjVP7FQSd6SFNO+eKtneNLprhU0nmKHH3uMXLehdXQfdBS7LUwgyFHD/RQoRGrDg6d6XMyom8N61yptyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YRZF22Jdcz22kfs;
+	Mon,  6 Jan 2025 21:06:14 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 53F69140135;
+	Mon,  6 Jan 2025 21:08:27 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 6 Jan 2025 21:08:26 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <liuyonglong@huawei.com>, <fanghaiqing@huawei.com>,
+	<zhangkun09@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+	<edumazet@google.com>, Jeroen de Borst <jeroendb@google.com>, Praveen
+ Kaligineedi <pkaligineedi@google.com>, Shailend Chand <shailend@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v6 1/8] page_pool: introduce page_pool_get_pp() API
+Date: Mon, 6 Jan 2025 21:01:09 +0800
+Message-ID: <20250106130116.457938-2-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250106130116.457938-1-linyunsheng@huawei.com>
+References: <20250106130116.457938-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241229145027.3984542-12-dario.binacchi@amarulasolutions.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-Hi Dario,
+introduce page_pool_get_pp() API to avoid caller accessing
+page->pp directly.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c          |  8 +++++---
+ .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c  |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c        |  6 ++++--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c        | 14 +++++++++-----
+ drivers/net/ethernet/intel/libeth/rx.c             |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |  3 ++-
+ drivers/net/netdevsim/netdev.c                     |  6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
+ include/net/libeth/rx.h                            |  3 ++-
+ include/net/page_pool/helpers.h                    |  5 +++++
+ 10 files changed, 34 insertions(+), 17 deletions(-)
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dario-Binacchi/dt-bindings-clock-imx8mm-add-VIDEO_PLL-clocks/20241229-225716
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20241229145027.3984542-12-dario.binacchi%40amarulasolutions.com
-patch subject: [PATCH v8 11/18] clk: imx: add support for i.MX8MN anatop clock driver
-config: arm-randconfig-r071-20241231 (https://download.01.org/0day-ci/archive/20241231/202412311031.781qvq8q-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202412311031.781qvq8q-lkp@intel.com/
-
-smatch warnings:
-drivers/clk/imx/clk-imx8mn-anatop.c:244 imx8mn_anatop_clocks_probe() error: buffer overflow 'hws' 62 <= 62
-
-vim +/hws +244 drivers/clk/imx/clk-imx8mn-anatop.c
-
-87df58feb5834e Dario Binacchi 2024-12-29   40  static int imx8mn_anatop_clocks_probe(struct platform_device *pdev)
-87df58feb5834e Dario Binacchi 2024-12-29   41  {
-87df58feb5834e Dario Binacchi 2024-12-29   42  	struct device *dev = &pdev->dev;
-87df58feb5834e Dario Binacchi 2024-12-29   43  	struct device_node *np = dev->of_node;
-87df58feb5834e Dario Binacchi 2024-12-29   44  	void __iomem *base;
-87df58feb5834e Dario Binacchi 2024-12-29   45  	int ret;
-87df58feb5834e Dario Binacchi 2024-12-29   46  
-87df58feb5834e Dario Binacchi 2024-12-29   47  	base = devm_platform_ioremap_resource(pdev, 0);
-87df58feb5834e Dario Binacchi 2024-12-29   48  	if (IS_ERR(base)) {
-87df58feb5834e Dario Binacchi 2024-12-29   49  		dev_err(dev, "failed to get base address\n");
-87df58feb5834e Dario Binacchi 2024-12-29   50  		return PTR_ERR(base);
-87df58feb5834e Dario Binacchi 2024-12-29   51  	}
-87df58feb5834e Dario Binacchi 2024-12-29   52  
-87df58feb5834e Dario Binacchi 2024-12-29   53  	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws,
-87df58feb5834e Dario Binacchi 2024-12-29   54  						    IMX8MN_ANATOP_CLK_END),
-
-IMX8MN_ANATOP_CLK_END is IMX8MN_ANATOP_CLK_CLKOUT2
-
-87df58feb5834e Dario Binacchi 2024-12-29   55  				   GFP_KERNEL);
-87df58feb5834e Dario Binacchi 2024-12-29   56  	if (WARN_ON(!clk_hw_data))
-87df58feb5834e Dario Binacchi 2024-12-29   57  		return -ENOMEM;
-87df58feb5834e Dario Binacchi 2024-12-29   58  
-87df58feb5834e Dario Binacchi 2024-12-29   59  	clk_hw_data->num = IMX8MN_ANATOP_CLK_END;
-87df58feb5834e Dario Binacchi 2024-12-29   60  	hws = clk_hw_data->hws;
-87df58feb5834e Dario Binacchi 2024-12-29   61  
-87df58feb5834e Dario Binacchi 2024-12-29   62  	hws[IMX8MN_ANATOP_CLK_DUMMY] = imx_clk_hw_fixed("dummy", 0);
-87df58feb5834e Dario Binacchi 2024-12-29   63  	hws[IMX8MN_ANATOP_CLK_32K] = imx_get_clk_hw_by_name(np, "osc_32k");
-87df58feb5834e Dario Binacchi 2024-12-29   64  	hws[IMX8MN_ANATOP_CLK_24M] = imx_get_clk_hw_by_name(np, "osc_24m");
-87df58feb5834e Dario Binacchi 2024-12-29   65  
-87df58feb5834e Dario Binacchi 2024-12-29   66  	hws[IMX8MN_ANATOP_AUDIO_PLL1_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   67  		imx_clk_hw_mux("audio_pll1_ref_sel", base + 0x0, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   68  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   69  	hws[IMX8MN_ANATOP_AUDIO_PLL2_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   70  		imx_clk_hw_mux("audio_pll2_ref_sel", base + 0x14, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   71  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   72  	hws[IMX8MN_ANATOP_VIDEO_PLL_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   73  		imx_clk_hw_mux("video_pll_ref_sel", base + 0x28, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   74  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   75  	hws[IMX8MN_ANATOP_DRAM_PLL_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   76  		imx_clk_hw_mux("dram_pll_ref_sel", base + 0x50, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   77  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   78  	hws[IMX8MN_ANATOP_GPU_PLL_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   79  		imx_clk_hw_mux("gpu_pll_ref_sel", base + 0x64, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   80  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   81  	hws[IMX8MN_ANATOP_M7_ALT_PLL_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   82  		imx_clk_hw_mux("m7_alt_pll_ref_sel", base + 0x74, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   83  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   84  	hws[IMX8MN_ANATOP_ARM_PLL_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   85  		imx_clk_hw_mux("arm_pll_ref_sel", base + 0x84, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   86  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   87  	hws[IMX8MN_ANATOP_SYS_PLL3_REF_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29   88  		imx_clk_hw_mux("sys_pll3_ref_sel", base + 0x114, 0, 2,
-87df58feb5834e Dario Binacchi 2024-12-29   89  			       pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-87df58feb5834e Dario Binacchi 2024-12-29   90  
-87df58feb5834e Dario Binacchi 2024-12-29   91  	hws[IMX8MN_ANATOP_AUDIO_PLL1] =
-87df58feb5834e Dario Binacchi 2024-12-29   92  		imx_clk_hw_pll14xx("audio_pll1", "audio_pll1_ref_sel",
-87df58feb5834e Dario Binacchi 2024-12-29   93  				   base, &imx_1443x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29   94  	hws[IMX8MN_ANATOP_AUDIO_PLL2] =
-87df58feb5834e Dario Binacchi 2024-12-29   95  		imx_clk_hw_pll14xx("audio_pll2", "audio_pll2_ref_sel",
-87df58feb5834e Dario Binacchi 2024-12-29   96  				   base + 0x14, &imx_1443x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29   97  	hws[IMX8MN_ANATOP_VIDEO_PLL] =
-87df58feb5834e Dario Binacchi 2024-12-29   98  		imx_clk_hw_pll14xx("video_pll", "video_pll_ref_sel",
-87df58feb5834e Dario Binacchi 2024-12-29   99  				   base + 0x28, &imx_1443x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  100  	hws[IMX8MN_ANATOP_DRAM_PLL] =
-87df58feb5834e Dario Binacchi 2024-12-29  101  		imx_clk_hw_pll14xx("dram_pll", "dram_pll_ref_sel", base + 0x50,
-87df58feb5834e Dario Binacchi 2024-12-29  102  				   &imx_1443x_dram_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  103  	hws[IMX8MN_ANATOP_GPU_PLL] =
-87df58feb5834e Dario Binacchi 2024-12-29  104  		imx_clk_hw_pll14xx("gpu_pll", "gpu_pll_ref_sel", base + 0x64,
-87df58feb5834e Dario Binacchi 2024-12-29  105  				   &imx_1416x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  106  	hws[IMX8MN_ANATOP_M7_ALT_PLL] =
-87df58feb5834e Dario Binacchi 2024-12-29  107  		imx_clk_hw_pll14xx("m7_alt_pll", "m7_alt_pll_ref_sel",
-87df58feb5834e Dario Binacchi 2024-12-29  108  				   base + 0x74, &imx_1416x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  109  	hws[IMX8MN_ANATOP_ARM_PLL] =
-87df58feb5834e Dario Binacchi 2024-12-29  110  		imx_clk_hw_pll14xx("arm_pll", "arm_pll_ref_sel", base + 0x84,
-87df58feb5834e Dario Binacchi 2024-12-29  111  				   &imx_1416x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  112  	hws[IMX8MN_ANATOP_SYS_PLL1] = imx_clk_hw_fixed("sys_pll1", 800000000);
-87df58feb5834e Dario Binacchi 2024-12-29  113  	hws[IMX8MN_ANATOP_SYS_PLL2] = imx_clk_hw_fixed("sys_pll2", 1000000000);
-87df58feb5834e Dario Binacchi 2024-12-29  114  	hws[IMX8MN_ANATOP_SYS_PLL3] =
-87df58feb5834e Dario Binacchi 2024-12-29  115  		imx_clk_hw_pll14xx("sys_pll3", "sys_pll3_ref_sel", base + 0x114,
-87df58feb5834e Dario Binacchi 2024-12-29  116  				   &imx_1416x_pll);
-87df58feb5834e Dario Binacchi 2024-12-29  117  
-87df58feb5834e Dario Binacchi 2024-12-29  118  	/* PLL bypass out */
-87df58feb5834e Dario Binacchi 2024-12-29  119  	hws[IMX8MN_ANATOP_AUDIO_PLL1_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  120  		imx_clk_hw_mux_flags("audio_pll1_bypass", base, 16, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  121  				     audio_pll1_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  122  				     ARRAY_SIZE(audio_pll1_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  123  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  124  	hws[IMX8MN_ANATOP_AUDIO_PLL2_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  125  		imx_clk_hw_mux_flags("audio_pll2_bypass", base + 0x14, 16, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  126  				     audio_pll2_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  127  				     ARRAY_SIZE(audio_pll2_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  128  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  129  	hws[IMX8MN_ANATOP_VIDEO_PLL_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  130  		imx_clk_hw_mux_flags("video_pll_bypass", base + 0x28, 16, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  131  				     video_pll_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  132  				     ARRAY_SIZE(video_pll_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  133  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  134  	hws[IMX8MN_ANATOP_DRAM_PLL_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  135  		imx_clk_hw_mux_flags("dram_pll_bypass", base + 0x50, 16, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  136  				     dram_pll_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  137  				     ARRAY_SIZE(dram_pll_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  138  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  139  	hws[IMX8MN_ANATOP_GPU_PLL_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  140  		imx_clk_hw_mux_flags("gpu_pll_bypass", base + 0x64, 28, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  141  				     gpu_pll_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  142  				     ARRAY_SIZE(gpu_pll_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  143  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  144  	hws[IMX8MN_ANATOP_M7_ALT_PLL_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  145  		imx_clk_hw_mux_flags("m7_alt_pll_bypass", base + 0x74, 28, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  146  				     m7_alt_pll_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  147  				     ARRAY_SIZE(m7_alt_pll_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  148  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  149  	hws[IMX8MN_ANATOP_ARM_PLL_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  150  		imx_clk_hw_mux_flags("arm_pll_bypass", base + 0x84, 28, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  151  				     arm_pll_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  152  				     ARRAY_SIZE(arm_pll_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  153  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  154  	hws[IMX8MN_ANATOP_SYS_PLL3_BYPASS] =
-87df58feb5834e Dario Binacchi 2024-12-29  155  		imx_clk_hw_mux_flags("sys_pll3_bypass", base + 0x114, 28, 1,
-87df58feb5834e Dario Binacchi 2024-12-29  156  				     sys_pll3_bypass_sels,
-87df58feb5834e Dario Binacchi 2024-12-29  157  				     ARRAY_SIZE(sys_pll3_bypass_sels),
-87df58feb5834e Dario Binacchi 2024-12-29  158  				     CLK_SET_RATE_PARENT);
-87df58feb5834e Dario Binacchi 2024-12-29  159  
-87df58feb5834e Dario Binacchi 2024-12-29  160  	/* PLL out gate */
-87df58feb5834e Dario Binacchi 2024-12-29  161  	hws[IMX8MN_ANATOP_AUDIO_PLL1_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  162  		imx_clk_hw_gate("audio_pll1_out", "audio_pll1_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  163  				base, 13);
-87df58feb5834e Dario Binacchi 2024-12-29  164  	hws[IMX8MN_ANATOP_AUDIO_PLL2_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  165  		imx_clk_hw_gate("audio_pll2_out", "audio_pll2_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  166  				base + 0x14, 13);
-87df58feb5834e Dario Binacchi 2024-12-29  167  	hws[IMX8MN_ANATOP_VIDEO_PLL_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  168  		imx_clk_hw_gate("video_pll_out", "video_pll_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  169  				base + 0x28, 13);
-87df58feb5834e Dario Binacchi 2024-12-29  170  	hws[IMX8MN_ANATOP_DRAM_PLL_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  171  		imx_clk_hw_gate("dram_pll_out", "dram_pll_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  172  				base + 0x50, 13);
-87df58feb5834e Dario Binacchi 2024-12-29  173  	hws[IMX8MN_ANATOP_GPU_PLL_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  174  		imx_clk_hw_gate("gpu_pll_out", "gpu_pll_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  175  				base + 0x64, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  176  	hws[IMX8MN_ANATOP_M7_ALT_PLL_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  177  		imx_clk_hw_gate("m7_alt_pll_out", "m7_alt_pll_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  178  				base + 0x74, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  179  	hws[IMX8MN_ANATOP_ARM_PLL_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  180  		imx_clk_hw_gate("arm_pll_out", "arm_pll_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  181  				base + 0x84, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  182  	hws[IMX8MN_ANATOP_SYS_PLL3_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  183  		imx_clk_hw_gate("sys_pll3_out", "sys_pll3_bypass",
-87df58feb5834e Dario Binacchi 2024-12-29  184  				base + 0x114, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  185  
-87df58feb5834e Dario Binacchi 2024-12-29  186  	/* SYS PLL1 fixed output */
-87df58feb5834e Dario Binacchi 2024-12-29  187  	hws[IMX8MN_ANATOP_SYS_PLL1_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  188  		imx_clk_hw_gate("sys_pll1_out", "sys_pll1", base + 0x94, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  189  	hws[IMX8MN_ANATOP_SYS_PLL1_40M] =
-87df58feb5834e Dario Binacchi 2024-12-29  190  		imx_clk_hw_fixed_factor("sys_pll1_40m", "sys_pll1_out", 1, 20);
-87df58feb5834e Dario Binacchi 2024-12-29  191  	hws[IMX8MN_ANATOP_SYS_PLL1_80M] =
-87df58feb5834e Dario Binacchi 2024-12-29  192  		imx_clk_hw_fixed_factor("sys_pll1_80m", "sys_pll1_out", 1, 10);
-87df58feb5834e Dario Binacchi 2024-12-29  193  	hws[IMX8MN_ANATOP_SYS_PLL1_100M] =
-87df58feb5834e Dario Binacchi 2024-12-29  194  		imx_clk_hw_fixed_factor("sys_pll1_100m", "sys_pll1_out", 1, 8);
-87df58feb5834e Dario Binacchi 2024-12-29  195  	hws[IMX8MN_ANATOP_SYS_PLL1_133M] =
-87df58feb5834e Dario Binacchi 2024-12-29  196  		imx_clk_hw_fixed_factor("sys_pll1_133m", "sys_pll1_out", 1, 6);
-87df58feb5834e Dario Binacchi 2024-12-29  197  	hws[IMX8MN_ANATOP_SYS_PLL1_160M] =
-87df58feb5834e Dario Binacchi 2024-12-29  198  		imx_clk_hw_fixed_factor("sys_pll1_160m", "sys_pll1_out", 1, 5);
-87df58feb5834e Dario Binacchi 2024-12-29  199  	hws[IMX8MN_ANATOP_SYS_PLL1_200M] =
-87df58feb5834e Dario Binacchi 2024-12-29  200  		imx_clk_hw_fixed_factor("sys_pll1_200m", "sys_pll1_out", 1, 4);
-87df58feb5834e Dario Binacchi 2024-12-29  201  	hws[IMX8MN_ANATOP_SYS_PLL1_266M] =
-87df58feb5834e Dario Binacchi 2024-12-29  202  		imx_clk_hw_fixed_factor("sys_pll1_266m", "sys_pll1_out", 1, 3);
-87df58feb5834e Dario Binacchi 2024-12-29  203  	hws[IMX8MN_ANATOP_SYS_PLL1_400M] =
-87df58feb5834e Dario Binacchi 2024-12-29  204  		imx_clk_hw_fixed_factor("sys_pll1_400m", "sys_pll1_out", 1, 2);
-87df58feb5834e Dario Binacchi 2024-12-29  205  	hws[IMX8MN_ANATOP_SYS_PLL1_800M] =
-87df58feb5834e Dario Binacchi 2024-12-29  206  		imx_clk_hw_fixed_factor("sys_pll1_800m", "sys_pll1_out", 1, 1);
-87df58feb5834e Dario Binacchi 2024-12-29  207  
-87df58feb5834e Dario Binacchi 2024-12-29  208  	/* SYS PLL2 fixed output */
-87df58feb5834e Dario Binacchi 2024-12-29  209  	hws[IMX8MN_ANATOP_SYS_PLL2_OUT] =
-87df58feb5834e Dario Binacchi 2024-12-29  210  		imx_clk_hw_gate("sys_pll2_out", "sys_pll2", base + 0x104, 11);
-87df58feb5834e Dario Binacchi 2024-12-29  211  	hws[IMX8MN_ANATOP_SYS_PLL2_50M] =
-87df58feb5834e Dario Binacchi 2024-12-29  212  		imx_clk_hw_fixed_factor("sys_pll2_50m", "sys_pll2_out", 1, 20);
-87df58feb5834e Dario Binacchi 2024-12-29  213  	hws[IMX8MN_ANATOP_SYS_PLL2_100M] =
-87df58feb5834e Dario Binacchi 2024-12-29  214  		imx_clk_hw_fixed_factor("sys_pll2_100m", "sys_pll2_out", 1, 10);
-87df58feb5834e Dario Binacchi 2024-12-29  215  	hws[IMX8MN_ANATOP_SYS_PLL2_125M] =
-87df58feb5834e Dario Binacchi 2024-12-29  216  		imx_clk_hw_fixed_factor("sys_pll2_125m", "sys_pll2_out", 1, 8);
-87df58feb5834e Dario Binacchi 2024-12-29  217  	hws[IMX8MN_ANATOP_SYS_PLL2_166M] =
-87df58feb5834e Dario Binacchi 2024-12-29  218  		imx_clk_hw_fixed_factor("sys_pll2_166m", "sys_pll2_out", 1, 6);
-87df58feb5834e Dario Binacchi 2024-12-29  219  	hws[IMX8MN_ANATOP_SYS_PLL2_200M] =
-87df58feb5834e Dario Binacchi 2024-12-29  220  		imx_clk_hw_fixed_factor("sys_pll2_200m", "sys_pll2_out", 1, 5);
-87df58feb5834e Dario Binacchi 2024-12-29  221  	hws[IMX8MN_ANATOP_SYS_PLL2_250M] =
-87df58feb5834e Dario Binacchi 2024-12-29  222  		imx_clk_hw_fixed_factor("sys_pll2_250m", "sys_pll2_out", 1, 4);
-87df58feb5834e Dario Binacchi 2024-12-29  223  	hws[IMX8MN_ANATOP_SYS_PLL2_333M] =
-87df58feb5834e Dario Binacchi 2024-12-29  224  		imx_clk_hw_fixed_factor("sys_pll2_333m", "sys_pll2_out", 1, 3);
-87df58feb5834e Dario Binacchi 2024-12-29  225  	hws[IMX8MN_ANATOP_SYS_PLL2_500M] =
-87df58feb5834e Dario Binacchi 2024-12-29  226  		imx_clk_hw_fixed_factor("sys_pll2_500m", "sys_pll2_out", 1, 2);
-87df58feb5834e Dario Binacchi 2024-12-29  227  	hws[IMX8MN_ANATOP_SYS_PLL2_1000M] =
-87df58feb5834e Dario Binacchi 2024-12-29  228  		imx_clk_hw_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
-87df58feb5834e Dario Binacchi 2024-12-29  229  
-87df58feb5834e Dario Binacchi 2024-12-29  230  	hws[IMX8MN_ANATOP_CLK_CLKOUT1_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29  231  		imx_clk_hw_mux2("clkout1_sel", base + 0x128, 4, 4,
-87df58feb5834e Dario Binacchi 2024-12-29  232  				clkout_sels, ARRAY_SIZE(clkout_sels));
-87df58feb5834e Dario Binacchi 2024-12-29  233  	hws[IMX8MN_ANATOP_CLK_CLKOUT1_DIV] =
-87df58feb5834e Dario Binacchi 2024-12-29  234  		imx_clk_hw_divider("clkout1_div", "clkout1_sel", base + 0x128,
-87df58feb5834e Dario Binacchi 2024-12-29  235  				   0, 4);
-87df58feb5834e Dario Binacchi 2024-12-29  236  	hws[IMX8MN_ANATOP_CLK_CLKOUT1] =
-87df58feb5834e Dario Binacchi 2024-12-29  237  		imx_clk_hw_gate("clkout1", "clkout1_div", base + 0x128, 8);
-87df58feb5834e Dario Binacchi 2024-12-29  238  	hws[IMX8MN_ANATOP_CLK_CLKOUT2_SEL] =
-87df58feb5834e Dario Binacchi 2024-12-29  239  		imx_clk_hw_mux2("clkout2_sel", base + 0x128, 20, 4,
-87df58feb5834e Dario Binacchi 2024-12-29  240  				clkout_sels, ARRAY_SIZE(clkout_sels));
-87df58feb5834e Dario Binacchi 2024-12-29  241  	hws[IMX8MN_ANATOP_CLK_CLKOUT2_DIV] =
-87df58feb5834e Dario Binacchi 2024-12-29  242  		imx_clk_hw_divider("clkout2_div", "clkout2_sel", base + 0x128,
-87df58feb5834e Dario Binacchi 2024-12-29  243  				   16, 4);
-87df58feb5834e Dario Binacchi 2024-12-29 @244  	hws[IMX8MN_ANATOP_CLK_CLKOUT2] =
-                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Corruption.
-
-87df58feb5834e Dario Binacchi 2024-12-29  245  		imx_clk_hw_gate("clkout2", "clkout2_div", base + 0x128, 24);
-87df58feb5834e Dario Binacchi 2024-12-29  246  
-87df58feb5834e Dario Binacchi 2024-12-29  247  	imx_check_clk_hws(hws, IMX8MN_ANATOP_CLK_END);
-87df58feb5834e Dario Binacchi 2024-12-29  248  
-87df58feb5834e Dario Binacchi 2024-12-29  249  	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
-87df58feb5834e Dario Binacchi 2024-12-29  250  	if (ret < 0) {
-87df58feb5834e Dario Binacchi 2024-12-29  251  		imx_unregister_hw_clocks(hws, IMX8MN_ANATOP_CLK_END);
-87df58feb5834e Dario Binacchi 2024-12-29  252  		return dev_err_probe(dev, ret,
-87df58feb5834e Dario Binacchi 2024-12-29  253  				     "failed to register anatop clock provider\n");
-87df58feb5834e Dario Binacchi 2024-12-29  254  	}
-87df58feb5834e Dario Binacchi 2024-12-29  255  
-87df58feb5834e Dario Binacchi 2024-12-29  256  	dev_info(dev, "NXP i.MX8MN anatop clock driver probed\n");
-87df58feb5834e Dario Binacchi 2024-12-29  257  	return 0;
-87df58feb5834e Dario Binacchi 2024-12-29  258  }
-
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index b2daed55bf6c..18d2119dbec1 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+ 				if (page)
+-					page_pool_put_page(page->pp, page, 0, false);
++					page_pool_put_page(page_pool_get_pp(page),
++							   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+@@ -1549,7 +1550,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 			xdp_return_frame_rx_napi(xdpf);
+ 		} else { /* recycle pages of XDP_TX frames */
+ 			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
+-			page_pool_put_page(page->pp, page, 0, true);
++			page_pool_put_page(page_pool_get_pp(page), page, 0, true);
+ 		}
+ 
+ 		txq->tx_buf[index].buf_p = NULL;
+@@ -3307,7 +3308,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
+ 			} else {
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+-				page_pool_put_page(page->pp, page, 0, false);
++				page_pool_put_page(page_pool_get_pp(page),
++						   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+index 403f0f335ba6..87422b8828ff 100644
+--- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+@@ -210,7 +210,7 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
+ 	if (!page)
+ 		return;
+ 
+-	page_pool_put_full_page(page->pp, page, allow_direct);
++	page_pool_put_full_page(page_pool_get_pp(page), page, allow_direct);
+ 	buf_state->page_info.page = NULL;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+index 26b424fd6718..e1bf5554f6e3 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+@@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ 			     const struct libeth_fqe *rx_buffer,
+ 			     unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
+ 			rx_buffer->offset + hr, size, rx_buffer->truesize);
+@@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
+ 				      unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 2fa9c36e33c9..04f2347716ca 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
+ 	if (unlikely(!rx_buf->page))
+ 		return;
+ 
+-	page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
++	page_pool_put_full_page(page_pool_get_pp(rx_buf->page), rx_buf->page,
++				false);
+ 
+ 	rx_buf->page = NULL;
+ 	rx_buf->offset = 0;
+@@ -3098,7 +3099,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
+ 		      unsigned int size)
+ {
+-	u32 hr = rx_buf->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buf->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
+ 			rx_buf->offset + hr, size, rx_buf->truesize);
+@@ -3130,8 +3132,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+ 	if (!libeth_rx_sync_for_cpu(buf, copy))
+ 		return 0;
+ 
+-	dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
+-	src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
++	dst = page_address(hdr->page) + hdr->offset +
++		page_pool_get_pp(hdr->page)->p.offset;
++	src = page_address(buf->page) + buf->offset +
++		page_pool_get_pp(buf->page)->p.offset;
+ 	memcpy(dst, src, LARGEST_ALIGN(copy));
+ 
+ 	buf->offset += copy;
+@@ -3149,7 +3153,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+  */
+ struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
+ {
+-	u32 hr = buf->page->pp->p.offset;
++	u32 hr = page_pool_get_pp(buf->page)->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
+index 66d1d23b8ad2..8de0c3a3b146 100644
+--- a/drivers/net/ethernet/intel/libeth/rx.c
++++ b/drivers/net/ethernet/intel/libeth/rx.c
+@@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, "LIBETH");
+  */
+ void libeth_rx_recycle_slow(struct page *page)
+ {
+-	page_pool_recycle_direct(page->pp, page);
++	page_pool_recycle_direct(page_pool_get_pp(page), page);
+ }
+ EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, "LIBETH");
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 94b291662087..30baca49c71e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+ 				 * as we know this is a page_pool page.
+ 				 */
+-				page_pool_recycle_direct(page->pp, page);
++				page_pool_recycle_direct(page_pool_get_pp(page),
++							 page);
+ 			} while (++n < num);
+ 
+ 			break;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index e068a9761c09..e583415f9088 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -632,7 +632,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		if (!ns->page)
+ 			ret = -ENOMEM;
+ 	} else {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_get_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 
+@@ -831,7 +832,8 @@ void nsim_destroy(struct netdevsim *ns)
+ 
+ 	/* Put this intentionally late to exercise the orphaning path */
+ 	if (ns->page) {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_get_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index ca2dba3ac65d..4d0e41a7bf4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
+ {
+ 	struct page *page = virt_to_head_page(buf);
+ 
+-	page_pool_put_full_page(page->pp, page, allow_direct);
++	page_pool_put_full_page(page_pool_get_pp(page), page, allow_direct);
+ }
+ 
+ static inline void *
+diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
+index 43574bd6612f..f4ae75f9cc1b 100644
+--- a/include/net/libeth/rx.h
++++ b/include/net/libeth/rx.h
+@@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
+ 		return false;
+ 	}
+ 
+-	page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
++	page_pool_dma_sync_for_cpu(page_pool_get_pp(page), page, fqe->offset,
++				   len);
+ 
+ 	return true;
+ }
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+index 543f54fa3020..9c4dbd2289b1 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+ }
+ #endif
+ 
++static inline struct page_pool *page_pool_get_pp(struct page *page)
++{
++	return page->pp;
++}
++
+ /**
+  * page_pool_dev_alloc_pages() - allocate a page.
+  * @pool:	pool from which to allocate
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.33.0
 
