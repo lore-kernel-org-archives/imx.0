@@ -1,142 +1,138 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB5F1E3DC4
-	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 10:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65311EBA1C
+	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 11:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246668; cv=none; b=A4YwzBuvLIjSzUvEehaVkCjW6Lz7fPXOUEc2QMA2CGB/pEbOpV9BeleC1NHXrNoDbPnNHdnYT25jsJM5q/Pk7dcy86aoyVhb4d2P6ncqOHGe+GF05nKdwlXRVGoioNP2zXLD6j6n3Rwq4/BPRXT9HnFWtrjKQ7wu6ZK3XGLyQMc=
+	t=1736249108; cv=none; b=PfUeFTsPsrx6DVj1uFtJKQH4qndX1mOZfFMI1H55bRqwr809XKlL8dnmWmeh1wwxi1+HbDyXHefBnIKDFck3N1SLerRVpkKZTJ70IqIXlM11Rkp/g3Bdc4QrEsVi/PD9W9iQJAkt5SU1NU5c7f9MczLUTI0FaArbS1wA2l2BBQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246668; c=relaxed/simple;
-	bh=9QeiEwFgSO54/qEv1gNWfGViuzafH1D2ITwxAK1wYL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DdQdjr1yw+P8nn4mm09q7l+b1C7ahWtL59TA59/CJXLxozQrYjxyLcOPAOjDZtXhW89x7/New709trfwSUX6AaYqVjOeWLYeQZJ5JjfjxCx6w8ifQn5TTVi3wsm1U7ny7DZWI6pXl2EhxYZMit2F81HRsh2CI0ZUesgO2XizPXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=WU8KthIk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=g5GU7kqq reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1736249108; c=relaxed/simple;
+	bh=q/cENcLO/Vvq8OXJhVTUQW6YZgU6qWCviNrMQ44MFR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uJHmAk7s75mEFKj9G1NpLcNCCmExyn/85FQIpWQVcWCBcYPkdzmjqHHih4KlCWDVVY5HgXWLulAYjETxVL6R/G7jP+PhTKzKZrPO3r19rd6jurjav3aO9jDCIuaxfBEEKLYi8p/eSmpANKgdxhmDA5Nra1GvqjBoUGTcp0DN4Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=RTRWgK8M; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="WU8KthIk";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="g5GU7kqq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1736246663; x=1767782663;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=y+jHg0ZRQrFyhampVjN9ER8cthsZkPVauZNM9jlIGhs=;
-  b=WU8KthIkvA/bOT0wnQ3hyn8YVOkbHGLKGxkfo5KuIAN9zSqOTSizp2fs
-   jNY88VAkUJYuAEWQILxzfLruBF92D6TIPCyWWsQRnu5w26S9BBgjqC8Hy
-   Im5b9gXBEdU5Qtg8tbG+GYMndeqo8/B7CsBEYH/DRrpjJTiSM6mPzi1oZ
-   jwvmdiUnqX/m40oYU/8EMTL9Z7NhWBl2CwezQMUJYzeo56GZtgoxpVb1w
-   NLsSbseworsOlAuuMHB/djPvL7jhsydNH4nSELh+UtQBjFV8yah/Wc3n/
-   dIQ88qdLhTpV1NQIre3ENcr/sE+VisSb4TQj+8nmwsYxjSKBjpkvoxbVL
-   w==;
-X-CSE-ConnectionGUID: Ou6ReafJR7SkqcE1EYK60w==
-X-CSE-MsgGUID: tKisNOsmRJWh6tH7qXJrIQ==
-X-IronPort-AV: E=Sophos;i="6.12,295,1728943200"; 
-   d="scan'208";a="40890871"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Jan 2025 11:44:20 +0100
-X-CheckPoint: {677D0584-E-7C22D67C-DB53DE17}
-X-MAIL-CPID: A3034B88B8AF551AC765663C245DBFCB_3
-X-Control-Analysis: str=0001.0A682F24.677D0585.0019,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80EDA163815;
-	Tue,  7 Jan 2025 11:44:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1736246655;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="RTRWgK8M"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1CF61101ECB24;
+	Tue,  7 Jan 2025 12:24:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1736249096;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y+jHg0ZRQrFyhampVjN9ER8cthsZkPVauZNM9jlIGhs=;
-	b=g5GU7kqqoZap7uAn4UMBWajpOzprQFaxD556BOi1CgZY6rHJNyHUk9jGerT8Wb4sf8lln9
-	pheiYjByt1f2wMFLy9QBUC8+1IR3FSRFikQexnlwfzwcJOi0idLSAjld7IS2L8LX7vFly4
-	7eSj9sVnb59W1uAaYipSUotv7IFuEVeFf3A8XLF19tAmnuZZZmDmuuJ1bOKnVsiXryu3i2
-	delK0r0S/xJ11fn9Jc1DjCX1cpijQ8EgYsFz1W6EdMhBsS/aujrc13r7Np1ASoi+f51G/8
-	hyQC62sqORa4OhKIA80cMODoOPGd23KHBB03EBfhxmN+JKKveO5R5WPngkyq9A==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] dt-bindings: samsung, mipi-dsim: Add imx7d specific compatible
-Date: Tue, 07 Jan 2025 11:44:10 +0100
-Message-ID: <3358169.aeNJFYEL58@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <CAOMZO5CasQDRu=U7zUxzuFVBHyREZ7oyG8+SJjg2BF58B9G3wg@mail.gmail.com>
-References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com> <20250107094943.518474-3-alexander.stein@ew.tq-group.com> <CAOMZO5CasQDRu=U7zUxzuFVBHyREZ7oyG8+SJjg2BF58B9G3wg@mail.gmail.com>
+	bh=r2ff0HaCcjmmj9KnhUdBh5w7Yu5An6vyL+EnPFzNUxM=;
+	b=RTRWgK8MQwcxk8DstoWOZvN2/3kvry5mG8JD2y5yOxA82ctZZp6KWEPNEDoXWsNkRCxPK9
+	kK1yUy0mcKomy/pLdtu34wp/qBQLj06fK3+hhFedORfXEvPglXKnhk3wDBR9/1bIrj7ArB
+	OI2Gi5edckf4vOG2KjWaWu+P6f9vIbMuVDg6/v6mglbrQWFw0T4QNNTZUK1gZomy83NqsC
+	ftDYnHdWjlAcmxOpSFRZzEVd6ch+K6IalzRuHt3hy9ZEradm/uQkophOkQ8lIk4uhiWbKg
+	/ar4bJIYqR0nefQKmR4kFGQxyau7P4yEHom8Hnuh+rYPqpxWzm2L0EcVpS/9CA==
+Message-ID: <c02d8298-28dd-4e48-8899-7316bd60dddb@denx.de>
+Date: Tue, 7 Jan 2025 12:08:12 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] drm/bridge: imx8mp-hdmi-tx: switch to bridge
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie
+ <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250105190659.99941-1-marex@denx.de>
+ <20250105190659.99941-2-marex@denx.de>
+ <0b1c9897-2769-4ca0-9927-ac930b4c634b@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <0b1c9897-2769-4ca0-9927-ac930b4c634b@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Fabio,
-
-Am Dienstag, 7. Januar 2025, 11:35:48 CET schrieb Fabio Estevam:
-> Hi Alexander,
->=20
-> On Tue, Jan 7, 2025 at 6:50=E2=80=AFAM Alexander Stein
-> <alexander.stein@ew.tq-group.com> wrote:
-> >
-> > This add a imx7(d) specific compatible which is compatible to imx8mm.
-> > This silences the dtbs_check warning:
-> > arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: dsi@30760000: compatible: 'on=
-eOf' conditional failed, one must be fixed:
-> >  ['fsl,imx7d-mipi-dsim', 'fsl,imx8mm-mipi-dsim'] is too long
->=20
-> The warning here is about using fsl,imx8mm-mipi-dsim.
-
-I'm not sure what you exactly mean. The warning isn't about using fsl,imx8m=
-m-mipi-dsim, instead
-fsl,imx7d-mipi-dsim does not match any compatibles listed in the schema.
-
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../devicetree/bindings/display/bridge/samsung,mipi-dsim.yaml | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/display/bridge/samsung,m=
-ipi-dsim.yaml b/Documentation/devicetree/bindings/display/bridge/samsung,mi=
-pi-dsim.yaml
-> > index 4ed7a799ba26b..e43fec5609417 100644
-> > --- a/Documentation/devicetree/bindings/display/bridge/samsung,mipi-dsi=
-m.yaml
-> > +++ b/Documentation/devicetree/bindings/display/bridge/samsung,mipi-dsi=
-m.yaml
-> > @@ -27,7 +27,9 @@ properties:
-> >            - fsl,imx8mm-mipi-dsim
-> >            - fsl,imx8mp-mipi-dsim
-> >        - items:
-> > -          - const: fsl,imx8mn-mipi-dsim
-> > +          - enum:
-> > +              - fsl,imx7d-mipi-dsim
-> > +              - fsl,imx8mn-mipi-dsim
->=20
-> But you added a fallback to fsl,imx8mn-mipi-dsim, so this does not look r=
-ight.
-
-Admittedly I'm having a hard time on DT schemas at times, but this change a=
-llows
-imx7d OR imx8mn to be used together with imx8mm.
-
-> I have already sent the following fix to address this issue:
->=20
-> https://lore.kernel.org/all/20241217131431.1464983-1-festevam@gmail.com/T/
-
-This patch essentially does the same but add a new entry to the oneOf.
-If you add fsl,imx8mn-mipi-dsim to that enum as we end up with the same
-solution.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
-
+On 1/7/25 6:38 AM, Liu Ying wrote:
+> On 01/06/2025, Marek Vasut wrote:
+>> The dw-hdmi output_port is set to 1 in order to look for a connector
+>> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR working.
+>> The output_port set to 1 makes the DW HDMI driver core look up the
+>> next bridge in DT, where the next bridge is often the hdmi-connector .
+>>
+>> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+>>
+>> Note that looking at the upstream arch/arm64/boot/dts/freescale/imx8mp*dts ,
+>> the oldest commit which adds HDMI support is commit:
+>>
+>> 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on TQMa8MPxL/MBa8MPxL")
+>>
+>> That already contains the HDMI connector node. Most follow up additions
+>> of HDMI support to another devices has been a variation of the same commit,
+>> including connector node, which is the proper way of eanbling HDMI on the
+>> i.MX8MP.
+>>
+>> The rest should be covered by output_port_optional which should make systems
+>> with DTs without HDMI connector node work, but such DTs should be updated and
+>> the HDMI connector node should be added.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Fabio Estevam <festevam@gmail.com>
+>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+>> Cc: Jonas Karlman <jonas@kwiboo.se>
+>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>> Cc: Liu Ying <victor.liu@nxp.com>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>> Cc: Robert Foss <rfoss@kernel.org>
+>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+>> Cc: Shawn Guo <shawnguo@kernel.org>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: Stefan Agner <stefan@agner.ch>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: imx@lists.linux.dev
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> ---
+>> V2: No change
+>> V3: - Update commit message
+>>      - Move select DRM_DISPLAY_CONNECTOR to DRM_IMX8MP_DW_HDMI_BRIDGE
+>>      - Enable output_port_optional
+>> V4: - Remove select DRM_DISPLAY_CONNECTOR
+>> ---
+>>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> index 1e7a789ec2890..3d63200e468bf 100644
+>> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>> @@ -101,6 +101,8 @@ static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+>>   	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+>>   	plat_data->priv_data = hdmi;
+>>   	plat_data->phy_force_vendor = true;
+>> +	plat_data->output_port = 1;
+> 
+> How would you keep the behaviour of the connector after adding
+> DRM_BRIDGE_ATTACH_NO_CONNECTOR in display controller driver?
+> dw_hdmi_connector_create() implements CEC support at least.  This was pointed
+> out in v2 and v3 comments.
+> 
+> https://lore.kernel.org/all/vvsj6ri2ke25nzocbq736yv7rphzma6pn3yk2uh7iu43zfe2sa@2fwye4k4w6he/
+As far as I understand it, the CEC is being worked on separately already ?
