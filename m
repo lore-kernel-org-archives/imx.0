@@ -1,59 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F793273F9;
-	Tue,  7 Jan 2025 23:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982171E570B;
+	Tue,  7 Jan 2025 23:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736292081; cv=none; b=dgPRxqEKoYN6hDaR45c/6UJ/WdGg5rijFrHP8D/akinS1fDQWiipcEKQ82h1i6y4+zZSoUQ0Rn6z3ttgP9lddzag6fQ9T713dbNBw+N3HGMIMRK/4hqz3tKsB9DAM2ZsmYWWl7wpmHI4aAK1jZEkak5lMMEbvmdk3PZP7LPWN+U=
+	t=1736292092; cv=none; b=EZPD6B6vYc+WEuDkpSEms5qkJFPVeUDV3q8UegDOXwiX3/S+DPwGRLnQxljZV74xPY7+nkCmmAikXeR5mxhZ55L8NvgOqMbXVDzWzVQKkuOjdn6g7dLbwdbYYWqf/IqRTce0c8fpmB8S9+A5tMAzuMsI1f997IkI/tgVn/8EqWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736292081; c=relaxed/simple;
-	bh=Kilm1ZAdWzy3rPEDUVkX5c9b+aYHLITqsZsNfgNyC2Q=;
+	s=arc-20240116; t=1736292092; c=relaxed/simple;
+	bh=/1LOyZMlv1B2fL4VwwpbUjJPWCQXqG5BhAuu7Wl2DrE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iEjiWGjhQSq8PDSBDXcQGRfrMslgIx+cwZVLJZXX43GC1NamwvoBFXsy7DB8gicFqVaGOCmxZiOggkk0TL/2UrQTi0wiQSdeGSHzRWq55E9teG2OLPKFgkmLk88NXw0aDxb9efETDfnUrl56R7sK++nlUiL0jXpkbOI5yZJQH2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUgylO24; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=C3rKVKk7U/82FL7e6zQvtmGQQ9YyZtjmfjyrxr44V+h7bCWpahx2vSAo047TBHZdsxNX4OCpEj3CUyXItwo87O/viA4mh9osEdQyW4zU9cirjgr+hFHmbhd7HzmGD/dPwl1VBK0+MwuaXekvXhyYldwmOE4l35Qk4dtHv9k5/eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMljQaOk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUgylO24"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F12C4CED6;
-	Tue,  7 Jan 2025 23:21:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMljQaOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD8FC4CED6;
+	Tue,  7 Jan 2025 23:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736292077;
-	bh=Kilm1ZAdWzy3rPEDUVkX5c9b+aYHLITqsZsNfgNyC2Q=;
+	s=k20201202; t=1736292092;
+	bh=/1LOyZMlv1B2fL4VwwpbUjJPWCQXqG5BhAuu7Wl2DrE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sUgylO24DAttxYL26qZXve5hvrgsTvvOnKU7yq7oY/O13PXLgH2yaUT8j3dzbDI4F
-	 G9gnqx8F2ap2hpu7iaASyaqHOfJli9UmxBevnHSF7UXBo7Bqje8zyZzfoNad0rvDYK
-	 vctghzjYXEqQ6+9kIBAuHDSzFRUEXsjZP0JkDg0Y3iyXzdr47eYgDJZl8innUNJuU+
-	 Bs1ibYZaqkYXENoWmYZnZVM0qE0RP3h0HMurlFB65jj78ZeB2qN0Ewezg7o0W1sTRR
-	 FZ36XWzWe1sJeV5wOs0+d6l8bAnqoQBa1Xeo3tBY8iJRyz6zCy7HUDFNEaPVtGoBOM
-	 wehUeO4yRC1Jw==
-Date: Tue, 7 Jan 2025 17:21:16 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: imx@lists.linux.dev, Simona Vetter <simona@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>, Inki Dae <inki.dae@samsung.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	devicetree@vger.kernel.org, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>, Robert Foss <rfoss@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	linux-kernel@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	David Airlie <airlied@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 2/2] dt-bindings: samsung,mipi-dsim: Add imx7d specific
- compatible
-Message-ID: <173629198495.2036683.9877314471091548361.robh@kernel.org>
-References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com>
- <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
+	b=hMljQaOkIWwSw02QbPPi5VMVP5spEVkc4EO9Jx0R9Q69sXrJmWyoQg+4EDQv4vQjE
+	 2B4uRDdSetXtdzr+neGZnd6SfpOkBaVflyJGoex9Gvj3oJ3hfdozEyg7xwxm35rxgB
+	 D65gYtCLZx0WDPXlICEV5ijlKAriG0Qp3/N1P0Wo4NIuSX45ZUEFlh3AhlSj2VjPO6
+	 FH7ar+suJWuS1d6rxkBPSc6n43WGzTMYBEopYfsdukSNu42A5q+b3UL7rKmAMwIzNs
+	 w6g+NI19JCraKIe+LPvUK4sOOIEm3TYQ2WvTPiVq0KAPDQFUrlyVU3/EyzaqCnRqeG
+	 pVJksJSz5S7vw==
+Date: Wed, 8 Jan 2025 00:21:28 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: frank.li@nxp.com, aisheng.dong@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: imx-lpi2c: make controller available until the
+ system enters suspend_noirq() and from resume_noirq().
+Message-ID: <2pikoj7o5qppdysbyhrla2ur3vfsrhl5nfmp2ot3iqii5msuac@qky2ij7jtgov>
+References: <20241227084736.1323943-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,24 +45,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20241227084736.1323943-1-carlos.song@nxp.com>
 
+Hi Carlos,
 
-On Tue, 07 Jan 2025 10:49:42 +0100, Alexander Stein wrote:
-> This add a imx7(d) specific compatible which is compatible to imx8mm.
-> This silences the dtbs_check warning:
-> arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: dsi@30760000: compatible: 'oneOf' conditional failed, one must be fixed:
->  ['fsl,imx7d-mipi-dsim', 'fsl,imx8mm-mipi-dsim'] is too long
+On Fri, Dec 27, 2024 at 04:47:36PM +0800, Carlos Song wrote:
+> This is a general i2c controller feature. Some I2C devices may need the
+> I2C controller to remain active during resume_noirq() or suspend_noirq().
+> If the controller is autosuspended, there is no way to wake it up once
+> runtime PM disabled (in suspend_late()). During system resume, the I2C
+> controller will be available only after runtime PM is re-enabled
+> (in resume_early()). However, this may be too late for some devices.
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  .../devicetree/bindings/display/bridge/samsung,mipi-dsim.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Wake up the controller in the suspend() callback while runtime PM is
+> still enabled. The I2C controller will remain available until the
+> suspend_noirq() callback (pm_runtime_force_suspend()) is called. During
+> resume, the I2C controller can be restored by the resume_noirq() callback
+> (pm_runtime_force_resume()). Finally, the resume() callback re-enables
+> autosuspend. As a result, the I2C controller can remain available until
+> the system enters suspend_noirq() and from resume_noirq().
 > 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 
-Fabio is clearly confused, and I prefer this patch over his. As 
-it is probably past the drm-misc cutoff, I applied it to DT tree.
- 
+Merged to i2c/i2c-host.
+
 Thanks,
-Rob
-
+Andi
