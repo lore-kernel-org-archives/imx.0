@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8385F1F2374
-	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 14:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2E61F37A9
+	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736260766; cv=none; b=MaPAGINuJXBRKuMH7jwWAAw16MTCXuWspfhTB8R3I2/U4l7DrCYDaS26xDbO1EBLhUtMm1b8HcMArpCq5qh8a6MMkK7NhLvlwwCTtc6l5SMehrehlyfAvZk1GeCJpTerFfvqbQE5AreF8Mr2tC3feicsMWFzb/iECeYnscra+RU=
+	t=1736260773; cv=none; b=uhLnVP1pdMF+A2DkcNAo8NP5BTKHOlzWa0IM3NCacN8IGIHZVUfHxcaKZTWz81qtSKPKE/uhQ0VqizDHc8eJFI8VMQg2T6oqroBS8pWc+0/1blcu+nV6QpRMVM9AerVAYdX0eZNSfYneKCq2hVpok90QgT4zMpp3Apo1krdIY80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736260766; c=relaxed/simple;
-	bh=e+0X1BggzI17wpNLe/RyuVsMjKUn0ApW1Dj5ZWUGf74=;
+	s=arc-20240116; t=1736260773; c=relaxed/simple;
+	bh=XWT2uhfUx7vF7rHsptlywIBKn4fnMYvdUd+pJhFZmww=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DDK46qqBik12xjkqyBPM+ylXLxzvvr5ibcR+8hMGOGFCcydm0S/CKYeqVze9fan/vPWOmIAWuv+tykb8+nKai81kCeCOwGdTKwir4pAx1MJJq85C2Ua/0N7YarQBq1mQUct5XHRW4OR9Zm+iP9NQF3GCujXxBTVTSI9v6BihaSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=doI0a3x0; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=akmXuBPK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=bTWUkYIGT0O/KM9ckdX/FkVPnHGf70oSpAn/QoLFlTIOYTrsfGLJeSTJUjnJ776geaUHQokHeJCeAW9PyLrdQiSSZWyLqbH31uFbBB8+NMG3vJZyzpsiqS3q9aA7joINlA4v5jNzLPETACdaoicxBoOEKb1x2I1HAyNS4XqEH50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZhH2gjgG; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Kz/TNRA2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="doI0a3x0";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="akmXuBPK"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZhH2gjgG";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Kz/TNRA2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1736260763; x=1767796763;
+  t=1736260770; x=1767796770;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=J1yM4GW4YkH4sSr6aDIK6r6U62z1pZvrPK786Xfjgcc=;
-  b=doI0a3x0pSRJj9JqnBlbxJgDJtnvb8vnm68n75PYUoc0kjivXrXRe3MK
-   7DCiYPA2uiSFWniRnAjRtLh64II0pO/Vbwe0DZfzndcGoujizVsSU1ynh
-   TmiUX5qGAI6wxTHn1nluFHk8kWneca+90ZfNQI5KsTB90AKjPrPj/Ijtk
-   /LCKBzhQOKyOEpb9ftN0l+cog61UCYQFcjtEzbwZxGnRggBFXLGrJl9IS
-   Zf2x42rOAkzohW613vEsUM3RCt3XrPD568mHK0jRgtK7bNkXO8s7eL7fk
-   1KPqzjCazgyGLVAy6NMH2RdB0hceTQ4yX9vPvkSVSmDsVzEI9bgu3drv3
-   A==;
-X-CSE-ConnectionGUID: QyWCmoWdR92sY8SQ4BDnPQ==
-X-CSE-MsgGUID: d1obu0ihSym4Fk1pIal47Q==
+  bh=v6ZalIwFfK9vUB0/HSTtySwzznHuXDMQLLMZDZH/dAc=;
+  b=ZhH2gjgGQjG6YsFx31yKWMxec6hynBXay0dGhSCT7XgaCxqObbZmPwUs
+   w/KY171Gs8NCgPznLHQA29u3IBQV0pkK9RFOJBqJ9TPYmzxbOdJ7zDY9G
+   7Vcc/3EYBmCl3K8Fwh1tkQrO1jqb5asG5vcEnFduqiGu1gUhQngInu/fq
+   /LHe0QMWkIS3Jf2/z6kyA5salTtvuo+TuiORE6iGKGHI8PnaGPOP9Uu4K
+   1FHAJOP82CBmQCsw2AGKBTxNe4iPYHZ0jzfMdS6b/6eN7rBO3gGJ7BDJN
+   3QIO17Bt1w4JUpqWwgpnsZ1Q+pKlIuCvN/eh2qECUfhrVPrBXe+2yKXMt
+   w==;
+X-CSE-ConnectionGUID: OLkKxxOYQ2O7L3x2p5kTEg==
+X-CSE-MsgGUID: kBmI3pPLQ6y9k7ktctXARQ==
 X-IronPort-AV: E=Sophos;i="6.12,295,1728943200"; 
-   d="scan'208";a="40897242"
+   d="scan'208";a="40897247"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Jan 2025 15:39:21 +0100
-X-CheckPoint: {677D3C99-4B-9B2B6168-EB6F31C5}
-X-MAIL-CPID: AF5E493BE366F514177D66585BB4F2B7_5
-X-Control-Analysis: str=0001.0A682F20.677D3C9A.001E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A593A160B22;
-	Tue,  7 Jan 2025 15:39:16 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 07 Jan 2025 15:39:27 +0100
+X-CheckPoint: {677D3C9F-1F-3C670366-E45AD810}
+X-MAIL-CPID: 5D665BE28A4386F0867A29349A815CCC_4
+X-Control-Analysis: str=0001.0A682F27.677D3C9F.00CA,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 59956160B22;
+	Tue,  7 Jan 2025 15:39:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1736260757;
+	s=dkim; t=1736260763;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J1yM4GW4YkH4sSr6aDIK6r6U62z1pZvrPK786Xfjgcc=;
-	b=akmXuBPKfC17Ejx73+QbFvd05OTCIsI5Dt+hgvY83nLqR4nzyp502jEuUCNexo9oc/i2Ro
-	eq6T4ruk2tSVjGYgPC/Tm7Y2jbGe4yqfm9dYCdHMWjBO9tIfVEFjNWS0rB4kV/BCygFWE/
-	1YTfIfmwx7aWVM/Sg40deUJLtk71JVSvue1EiO7rWpeqa3hp34cqcmJmuhBsm95g0keP3Z
-	k2R7R34HKxMaNHDVIsUtjm1kE4UAI8zfTTfFaj57JI5HukXGkF1Yx01W0QWF8kEGO8l8z5
-	M8CUzn75n1WAm2zG17icnbnMRCQW8WFYcKTNVQcQeOvExjM7nZk/Rwm4mfUfTQ==
+	bh=v6ZalIwFfK9vUB0/HSTtySwzznHuXDMQLLMZDZH/dAc=;
+	b=Kz/TNRA2k3u0PyJ5oHB+nYGayQGkRTxZ/4I43G45iHR3By/K8jB9CNTC3ABHnqQ+5j4yi1
+	JK0iWidsvqz2r9mSf8ykklx9V5qMaTkR7iAxw2V8CPSar/qAY4r74lKL/noQSeVcC3VVOj
+	je4FFLa5DIqPgszBZ3nBkUAmqXvJnXvKX30Y1XIgBDai1BUJ6zBIZ/BlC2qN9HwAzVqHmQ
+	hNivDMYEMYc6BHoSSj8KRGOVdaMfOGRVTg8i89h8UNQBaLgqsi9GP1SeITDB3QCVktFNGH
+	tENFAAGPUqz8kL4ALPtJ9jxdwF68cdWI7BZbASmcBCgXIL03jobcxGjHDJ+xOQ==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Liu Ying <victor.liu@nxp.com>,
 	Andrzej Hajda <andrzej.hajda@intel.com>,
@@ -75,9 +75,9 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/4] drm/bridge: imx8qxp-pxl2dpi: Use dev_err_probe
-Date: Tue,  7 Jan 2025 15:38:57 +0100
-Message-Id: <20250107143900.988567-2-alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 2/4] drm/bridge: imx8qxp-ldb: Use dev_err_probe
+Date: Tue,  7 Jan 2025 15:38:58 +0100
+Message-Id: <20250107143900.988567-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250107143900.988567-1-alexander.stein@ew.tq-group.com>
 References: <20250107143900.988567-1-alexander.stein@ew.tq-group.com>
@@ -94,54 +94,72 @@ This simplifies the code and gives additional information upon deferral.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 26 ++++++--------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c | 37 ++++++++----------------
+ 1 file changed, 12 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-index 65cf3a6c8ec69..038eaff889bb7 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -398,20 +398,12 @@ static int imx8qxp_pxl2dpi_bridge_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
+index 7bce2305d6767..d5e123173f354 100644
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
+@@ -557,10 +557,8 @@ static int imx8qxp_ldb_parse_dt_companion(struct imx8qxp_ldb *imx8qxp_ldb)
  
- 	p2d->regmap = syscon_node_to_regmap(np->parent);
--	if (IS_ERR(p2d->regmap)) {
--		ret = PTR_ERR(p2d->regmap);
--		if (ret != -EPROBE_DEFER)
--			DRM_DEV_ERROR(dev, "failed to get regmap: %d\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(p2d->regmap))
-+		return dev_err_probe(dev, ret, "failed to get regmap\n");
- 
- 	ret = imx_scu_get_handle(&p2d->ipc_handle);
--	if (ret) {
--		if (ret != -EPROBE_DEFER)
--			DRM_DEV_ERROR(dev, "failed to get SCU ipc handle: %d\n",
--				      ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to get SCU ipc handle\n");
- 
- 	p2d->dev = dev;
- 
-@@ -422,13 +414,9 @@ static int imx8qxp_pxl2dpi_bridge_probe(struct platform_device *pdev)
+ 	imx8qxp_ldb->companion = of_drm_find_bridge(companion_port);
+ 	if (!imx8qxp_ldb->companion) {
+-		ret = -EPROBE_DEFER;
+-		DRM_DEV_DEBUG_DRIVER(dev,
+-				     "failed to find bridge for companion bridge: %d\n",
+-				     ret);
++		ret = dev_err_probe(dev, -EPROBE_DEFER,
++				    "failed to find bridge for companion bridge\n");
+ 		goto out;
  	}
  
- 	p2d->next_bridge = imx8qxp_pxl2dpi_find_next_bridge(p2d);
--	if (IS_ERR(p2d->next_bridge)) {
--		ret = PTR_ERR(p2d->next_bridge);
+@@ -590,22 +588,14 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	imx8qxp_ldb->clk_pixel = devm_clk_get(dev, "pixel");
+-	if (IS_ERR(imx8qxp_ldb->clk_pixel)) {
+-		ret = PTR_ERR(imx8qxp_ldb->clk_pixel);
 -		if (ret != -EPROBE_DEFER)
--			DRM_DEV_ERROR(dev, "failed to find next bridge: %d\n",
--				      ret);
+-			DRM_DEV_ERROR(dev,
+-				      "failed to get pixel clock: %d\n", ret);
 -		return ret;
 -	}
-+	if (IS_ERR(p2d->next_bridge))
-+		return dev_err_probe(dev, PTR_ERR(p2d->next_bridge),
-+				     "failed to find next bridge\n");
++	if (IS_ERR(imx8qxp_ldb->clk_pixel))
++		return dev_err_probe(dev, PTR_ERR(imx8qxp_ldb->clk_pixel),
++				     "failed to get pixel clock\n");
  
- 	ret = imx8qxp_pxl2dpi_set_pixel_link_sel(p2d);
+ 	imx8qxp_ldb->clk_bypass = devm_clk_get(dev, "bypass");
+-	if (IS_ERR(imx8qxp_ldb->clk_bypass)) {
+-		ret = PTR_ERR(imx8qxp_ldb->clk_bypass);
+-		if (ret != -EPROBE_DEFER)
+-			DRM_DEV_ERROR(dev,
+-				      "failed to get bypass clock: %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(imx8qxp_ldb->clk_bypass))
++		return dev_err_probe(dev, PTR_ERR(imx8qxp_ldb->clk_bypass),
++				     "failed to get bypass clock\n");
+ 
+ 	imx8qxp_ldb->dev = dev;
+ 
+@@ -640,13 +630,10 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	imx8qxp_ldb_ch->phy = devm_of_phy_get(dev, ldb_ch->np, "lvds_phy");
+-	if (IS_ERR(imx8qxp_ldb_ch->phy)) {
+-		ret = PTR_ERR(imx8qxp_ldb_ch->phy);
+-		if (ret != -EPROBE_DEFER)
+-			DRM_DEV_ERROR(dev, "failed to get channel%d PHY: %d\n",
+-				      imx8qxp_ldb->active_chno, ret);
+-		return ret;
+-	}
++	if (IS_ERR(imx8qxp_ldb_ch->phy))
++		return dev_err_probe(dev, PTR_ERR(imx8qxp_ldb_ch->phy),
++				     "failed to get channel%d PHY\n",
++				     imx8qxp_ldb->active_chno);
+ 
+ 	ret = ldb_find_next_bridge_helper(ldb);
  	if (ret)
 -- 
 2.34.1
