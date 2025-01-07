@@ -1,70 +1,70 @@
 Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597B61E2007
-	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 10:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7009E1E5738
+	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 10:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246166; cv=none; b=Zm61Do3oSGjYRbHbZmUE0pfhHCTgzI02C0jJGs9sAIth5NpQLmSfuJ3OxJ3ExtBoLQMK6X/OrhJpzq58IerbGONTOjh93PcyL9+mr9sed1Udl6yAjKLr7x4l9mJFOUKMoxznK1l5M3BBO029c4QZZa0p3Y1FpDcwa54U9unk9os=
+	t=1736246244; cv=none; b=GbnJTQWViQtziu77wQHu9FvJljO96YfUryt8kNDd8UCjMRemGwnn2AIigqoS5IHyYjtSfD9K53SzHIT4iKXW1OAxD2cCqYCq3cP5NHS70ADb1Zg1XO+kDHVEh2ecfvUgHIix6Lcyo+VyikSxdSfsuCzEXL2y0nPWjH2L99BXKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246166; c=relaxed/simple;
-	bh=V46PQ8mG34pgi2wB7fE68m4CiUds/VtZ4km+ZeQTlNM=;
+	s=arc-20240116; t=1736246244; c=relaxed/simple;
+	bh=RNVYdwGeBEZ8n3x/7EiZLzqJLaDPgw+w3yHRiFecNjo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VL6FtEFHfep0UsT49DPkEPMM3fbU/7VZcEkc3fxIMebb8nFzWzcW+fGMtY9FLvwoMho6M2MGSljfQcpbPYNp58vDlzPUM3lTqQf+46V6p8T6KUM7SP7+KguEY41ZG14O1okfNg3VJcHYsF3cKU2U1vNUVHGUphGBsZe6UMejmp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPn//grC; arc=none smtp.client-ip=209.85.167.46
+	 To:Cc:Content-Type; b=ZYpscr6AXtlBXrv3DY5eTsNdT5Qil1lTWGheGMDvBB/oe58U1BLlOOihBJHxMAffdF1xGhkggaEOBwDUnBjC3BRdxOmujwRFWpBn2Cndawgl8bIe5E27KDG3ZY3WJfu3p/nyA9/Sgxpd4Sub2Gjcdu9pOjAEtEviP1FLhYCf7nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fDua2iC9; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPn//grC"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54025432becso16140202e87.1
-        for <imx@lists.linux.dev>; Tue, 07 Jan 2025 02:36:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fDua2iC9"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53e399e3310so17991786e87.1
+        for <imx@lists.linux.dev>; Tue, 07 Jan 2025 02:37:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736246160; x=1736850960; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1736246237; x=1736851037; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EbZfbhz7iEzPycXJ2CVFWfaIcALTm8Fom6fe6QVaJ3Y=;
-        b=cPn//grCf1jV2kUmj4ECNYA6Ik9lLwFUIYsLNk/igcNApN8QRz9wtd7qoKeT71BkQb
-         hBd19Cp0ZZk+RVYKycH+cZwWHoATb784GkwsUWmk0amVBTuGWrxHgYIcvwrXiwRnkcOQ
-         ufqIBlMtUGoSSPWZkN4lQBE0TskE+qR1p6pEnjR0vv5VeFUtzgzsN/A3/UixzS189BdR
-         MVJS04K7/xC5L9PnX2w8Fbw0wMzHSIWMdUapvt6w/VSxzvGWQhT0M2akrdkjcrX8woi7
-         Ql7gD/+NNOJGoEQ7nVA3dhWHVOIJIvBFgXj8Ra5gsId/fppSReedO9sh8Hwlfj23UWKL
-         oIDA==
+        bh=Xje32BOdw7wAqN9VcKNPAq9+7Mpm31xiFrYaEG4gc8o=;
+        b=fDua2iC9qnON6agMMSe7gFTAQhPekupNm1f9EVOjt7PlSRxTjqO2fk1QumWAsEglOc
+         m9oKjJrrSN8C4oQehbpmyY+YiNHlK/d8MNh+ZLC7jldT2cWm/EVusetdNzYUEExIqGsG
+         pjHcOh7PwoS8b0pqMVa+qHY4Z8FIsk2qG8zr91Dk87hn4ZBi+SlfVHmqR+kdjEe0Q/hP
+         2yc6M0jtBv7BVHlAp2fyWW4wBQXZLxp4oH/5Hf0vCgm5Ed+C3hpoxzrwuvnEyHSdRhfW
+         cNwlKFbd/Rw85SYzChepww4zbjTsZEMAH+h36ZWCuoCYqszv92Wf5f7qEUO9l2D5TQ0n
+         Iinw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736246160; x=1736850960;
+        d=1e100.net; s=20230601; t=1736246237; x=1736851037;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EbZfbhz7iEzPycXJ2CVFWfaIcALTm8Fom6fe6QVaJ3Y=;
-        b=s7tQnqBgnLRM4n18qilj74AD/GUOpTywxy8o1FT64GYFI37VCdWAY4VZzqELPbpLeY
-         CpwQ34kjaMKN5IjB0Yv20CTQzNAQYSCqv3hkHLTC2LbgBlUM+qO0fLrW8TS5y6D0u3Wh
-         4MpRH5S/PezDD9Hfp2s2FfQNtX+blKL4LmelwtEVYWzhUoXp8gyphKG8guqPjfbJp/GD
-         +ZSWxP6e5xU3sujDbSDRnYjJR9h9dQFb0OA6yNvp8HCjqJ+0D8TzF6u1hKmYr2r+9ZRH
-         W8inqj+JK522AnZKH86Wd+BgEP0atiq//j2Oygo3JUe9k+LCbx2Oof4JnbbjQB9j+LE0
-         HPpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbM2gcgtWCekaRkp3v5dbFuv237VmN/gk0C0ok8JcjLtN7ng864LT8fFS+f6X5tozHTMg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxYJN3o23kImwoihQw0V/1XyCkDaTozDMtMrLRhdt6T3K3VmNla
-	t/PmzIxCEHTo+2MD5/wxfDByEKROsVY2rWNMtzDcRxqkUG6VG2WO8LQpY2y24sSrm5iHWHq6ci1
-	jm5p91YsdvrGmBVi1r8v4CgxBVrE=
-X-Gm-Gg: ASbGncvFkBgm4Q2WNCG6EdMmDdF2kDmLPPjASLQr4lbRAlB1XMckPuI1iUpcMNUhviS
-	NRvJHfDf2n3cS5JfkYM4wQLOCAP4P/MEnTbTTnh4uACq677l3A5ceWVB1aYWzBPxstL7iqg==
-X-Google-Smtp-Source: AGHT+IH/zgB5AIW8SXe9fLjt6csgYHV150OAiMaYUNGL55jIFK9HyFHffxA0F1up0XAC1lvyFU3qoTZjri7PgMpYmPM=
-X-Received: by 2002:a05:6512:104c:b0:540:1fec:f321 with SMTP id
- 2adb3069b0e04-5422958243bmr18443941e87.41.1736246160170; Tue, 07 Jan 2025
- 02:36:00 -0800 (PST)
+        bh=Xje32BOdw7wAqN9VcKNPAq9+7Mpm31xiFrYaEG4gc8o=;
+        b=Y+fLhiIDZKtIAJ+BTKDsUxPLUNeMXG+WFhpuVyd8XYoKmqEKP3D6A2tHUWjTSELw7j
+         3p4SEv57/i6exOFDYsIDSQb+4UJSNon+R+sxhunVc39BzIrdaNWmxSeb3wpkrz69aaNu
+         wZVUS11vXvy1wjYnUWZeHCxgVUIc5YFhvzkEq9OyLWbEKMVvQxlhAkYC3U+DpUypwF0K
+         Iw03ilB5bQSV1R3able2Debbfmwt9f6hwL6/ErDCa7UdwGymLYM5/Kv9L7Y8bHHFqEzS
+         0sYVkon5dejlJBD/Yj9El+Xwhc5qKW4HL95VRMPLFB7iQY3KXPvuFqAf8BDMcCBxRvBB
+         k0mA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkjSl5tWjkCcGnt7zBt0cRHL87I1b8kwD9JgE0ITs/hkAUBKgaKEu/JQy8vTrpdnQlAT8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyrUtcERzHjjHaN7aFqzEME6N0nMy/vjhiaKQrNV/Y76A6AddPw
+	aHRs7lDWgrOUgpaGfy0pfnEsJ5TI6V7dTeVzDYF/hDDlL0AO6lLdk4GRS6zlRrIKbhr5MGiGmSi
+	a8N32sixc832Y7e2Y93Cav/41MrU=
+X-Gm-Gg: ASbGnct3aalOQ52KVtfT0rofn9edWiEwugriW14j9Huhp+nfGbZUYOVNO5ywk6wvAMP
+	Jx8Sr9HVwIclDPMQnfefkdKIzKeDEWpt1L4esF3weW6MD1cN0A1DaODpVC0Abprz/wKBOfA==
+X-Google-Smtp-Source: AGHT+IHS3njRhHL7YfFO0iWHF22sHLsH5C52QKY9UxYlGlYE//joyWAtO538qgeg1ERJpfJproNazJyxMl4X57hOWEc=
+X-Received: by 2002:a05:6512:1110:b0:540:75d3:95c0 with SMTP id
+ 2adb3069b0e04-5422956b7cfmr16752741e87.47.1736246237133; Tue, 07 Jan 2025
+ 02:37:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com> <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
+References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com> <20250107094943.518474-2-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20250107094943.518474-2-alexander.stein@ew.tq-group.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 7 Jan 2025 07:35:48 -0300
-X-Gm-Features: AbW1kvbqKfp_hBVMEYDDaHbQzJ92mQ9GQWt0UJSLPvbJH41ssSImPCn2Z_2AU3U
-Message-ID: <CAOMZO5CasQDRu=U7zUxzuFVBHyREZ7oyG8+SJjg2BF58B9G3wg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: samsung,mipi-dsim: Add imx7d specific compatible
+Date: Tue, 7 Jan 2025 07:37:05 -0300
+X-Gm-Features: AbW1kvZdLxR4RaObsuUJc1Glb-jI0wjh8lFemgvwEzpoXOeKA2MO9ZmwnSRVm90
+Message-ID: <CAOMZO5Csc+cOmOaRofWZW7Z9HL6d2NjMhZUdcomuyS_rtZwz0w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: dts: imx7s: Move csi-mux to below root
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc: Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
 	Marek Szyprowski <m.szyprowski@samsung.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -81,44 +81,17 @@ Cc: Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
-
 On Tue, Jan 7, 2025 at 6:50=E2=80=AFAM Alexander Stein
 <alexander.stein@ew.tq-group.com> wrote:
 >
-> This add a imx7(d) specific compatible which is compatible to imx8mm.
-> This silences the dtbs_check warning:
-> arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: dsi@30760000: compatible: 'oneO=
-f' conditional failed, one must be fixed:
->  ['fsl,imx7d-mipi-dsim', 'fsl,imx8mm-mipi-dsim'] is too long
-
-The warning here is about using fsl,imx8mm-mipi-dsim.
-
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  .../devicetree/bindings/display/bridge/samsung,mipi-dsim.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> fsl,imx-iomuxc-gpr.yaml only contains the mux-controller but the actual
+> video-mux is not part of it. So move it below root node.
+> Fixes the dtbs_check warning:
+> arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: iomuxc-gpr@30340000: 'csi-mux' =
+does not match any of the regexes: 'pinctrl-[0-9]+'
+>   from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-g=
+pr.yaml#
 >
-> diff --git a/Documentation/devicetree/bindings/display/bridge/samsung,mip=
-i-dsim.yaml b/Documentation/devicetree/bindings/display/bridge/samsung,mipi=
--dsim.yaml
-> index 4ed7a799ba26b..e43fec5609417 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/samsung,mipi-dsim.=
-yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/samsung,mipi-dsim.=
-yaml
-> @@ -27,7 +27,9 @@ properties:
->            - fsl,imx8mm-mipi-dsim
->            - fsl,imx8mp-mipi-dsim
->        - items:
-> -          - const: fsl,imx8mn-mipi-dsim
-> +          - enum:
-> +              - fsl,imx7d-mipi-dsim
-> +              - fsl,imx8mn-mipi-dsim
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-But you added a fallback to fsl,imx8mn-mipi-dsim, so this does not look rig=
-ht.
-
-I have already sent the following fix to address this issue:
-
-https://lore.kernel.org/all/20241217131431.1464983-1-festevam@gmail.com/T/
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
