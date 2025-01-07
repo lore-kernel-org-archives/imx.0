@@ -1,93 +1,59 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD081A83E0
-	for <imx@lists.linux.dev>; Tue,  7 Jan 2025 22:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F793273F9;
+	Tue,  7 Jan 2025 23:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736288550; cv=none; b=dJa5L2KMSSm8yhkyGci9Nbp8CTZLn9eVyZPQqCXTJAOz2CrToY6xCmfeEd1bjeQNYu5KPlJwtwgPde+Zy6zYeH8OaPlNmLwi3a9WbDfNa3WI7azK6QFkG/Hxw80hqenCFLErwJzhsEsXyMLDwtKeJvQgn2n+sUjpCcf8HnK+VSM=
+	t=1736292081; cv=none; b=dgPRxqEKoYN6hDaR45c/6UJ/WdGg5rijFrHP8D/akinS1fDQWiipcEKQ82h1i6y4+zZSoUQ0Rn6z3ttgP9lddzag6fQ9T713dbNBw+N3HGMIMRK/4hqz3tKsB9DAM2ZsmYWWl7wpmHI4aAK1jZEkak5lMMEbvmdk3PZP7LPWN+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736288550; c=relaxed/simple;
-	bh=/C9V9k4oRr9NIMlvxTFyU0lVbVL2D3A5g1PZx/mlgWw=;
+	s=arc-20240116; t=1736292081; c=relaxed/simple;
+	bh=Kilm1ZAdWzy3rPEDUVkX5c9b+aYHLITqsZsNfgNyC2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IegkLqxk4u77XzIAJMfY2UbKhsALrIgIjRk/5drfCQNUvkSihYZzy9c65nfeDT8yC+1lpEDln18015WFg4xTn8GUdOu1paZzpWTElIlUpJerLYCCC36Gxtng31+8Tmrs+hTlCzN/0tbulvXzQrieGZzTRmMNj4Kwc0thBlrb89A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DrrrM2gq; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=iEjiWGjhQSq8PDSBDXcQGRfrMslgIx+cwZVLJZXX43GC1NamwvoBFXsy7DB8gicFqVaGOCmxZiOggkk0TL/2UrQTi0wiQSdeGSHzRWq55E9teG2OLPKFgkmLk88NXw0aDxb9efETDfnUrl56R7sK++nlUiL0jXpkbOI5yZJQH2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUgylO24; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DrrrM2gq"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5401be44b58so16974103e87.0
-        for <imx@lists.linux.dev>; Tue, 07 Jan 2025 14:22:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736288546; x=1736893346; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6ESQnJJ6RaWplIB/jgPT0AvvoPiUybJLXeZ80lh+Xy4=;
-        b=DrrrM2gqoG5dP6llykmiTbGXC23c5vRIeU1Iz/tbZCcSkS4aOLJqE6cFLHPqp8rewP
-         zs+Q+dTXA3jp0/DxJl8Ivwfpn7ZZxc1XBUel6pAJp5OM/o2TEl7F+iUgC/3waJQ/cd3I
-         2QqmVZJMDgeJfbZCMX5YWUxeBg6tRpWzM582V+wPbL5PuDBfS001rkDyYDw5ZLOr5SHy
-         aOXMrSkg01i5DOC4+y8j6mNNmpDs6wVV4qqf3cyjhJrGCKSMJAhwtVZcp64zoEUEu8OY
-         c+s00sgrL6Pt/AW36leJg0ThjnzEmwT1/e5DUNrWsZ85F3LzD4FECHXcYPQS7n7P4hvf
-         aDsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736288546; x=1736893346;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ESQnJJ6RaWplIB/jgPT0AvvoPiUybJLXeZ80lh+Xy4=;
-        b=VTZBzQYvV0kBiAWQbIUwYd7YwVEuOx+9fyoOxAo3BV+JTxuBJxQUwFjI5Li94OQiWx
-         fOWpYY2tVVHA1j6GkNNtQbuRMy67XNZv88Yb56XI+6JLlaDo7QWEzRRi8g1oo1wycoAm
-         NMso7Fpv3KnASokDUt0lHeF9EWId22Gum0riHD5Zuxq6exJgGf8jzhN4sDqhn0GpYVL7
-         94xWWMnm01GzksLXtE6EmDUBjVb+fpshu+04G5IpLNFYB6Kp40eFDvRdJrEy/ZjWYtPd
-         34xmLwIUULaWJc4Zl5m4/3CyIbNjeELQ86dMvam8ZxZBUbuUHWc2xq4OUsUSWZCPFL03
-         aPSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTQ8cmB22koXXWqjQhEqXBYfxOAP8D4sCPrK6wy343ak4Lw8Wo8X+fSzSsY8ynnO182hc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzO/VhNxd1gdIAeEdQ2jZGkrbYwdLYx2VNjXw4AbxVfitBUAypE
-	VHCtl3gFqBo44lGw17yaEj2PT39IAiXWXx1EFohahizwaDtEojt4/V6XsH/Est8=
-X-Gm-Gg: ASbGncsxlf3hL6XZlZo/UZG1akk2F8vfCjvfPavcqDz+UQ4S5WHcnJ+G55J/28sUX7D
-	Pq+m1PoEjZ+9aqnqG5V1QD6I8O/JvgX4PJm0zRjWpjGL9CUe55kQ0L/8EOgk8sOyXiFYYx3WrB0
-	J+gypb8WjI/BhhMwRURRhiRlu/aVEIY9Ne2/9oVh6FjZtT7sf5g1yxIWNhbpnXOkxtR2FkJXwOK
-	vQZibVbFNMPYOpUkaGpyXMaRDeV2c8+vntBzXqspihsOHN/W+/uElef6XxdUzPejx2svXoHBYm2
-	awWo7kwFmYgGkLivWqfa5xmufIS9BBetFaBz
-X-Google-Smtp-Source: AGHT+IFnS+89P+R20rxSVwXMFgmVIida5oAviwnvCG7UgPRL6sqycM/IAnw4EINYUJaJOUGjeMeCug==
-X-Received: by 2002:a05:6512:23aa:b0:540:358d:d9b5 with SMTP id 2adb3069b0e04-542844ad98bmr149812e87.0.1736288546084;
-        Tue, 07 Jan 2025 14:22:26 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223832b6csm5379607e87.273.2025.01.07.14.22.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 14:22:24 -0800 (PST)
-Date: Wed, 8 Jan 2025 00:22:22 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Rob Clark <robdclark@gmail.com>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Krishna Manikandan <quic_mkrishn@quicinc.com>, Jonathan Marek <jonathan@marek.ca>, 
-	Mahadevan <quic_mahap@quicinc.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Jacopo Mondi <jacopo+renesas@jmondi.org>, dri-devel@lists.freedesktop.org, 
-	linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-mediatek@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: display: Correct indentation and style in
- DTS example
-Message-ID: <g5u4xazpsgoxes3bwowufrdd266uhwqw2qidqs3tm4wq2qbk6h@bpzh4cnwybaj>
-References: <20250107125854.227233-1-krzysztof.kozlowski@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUgylO24"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F12C4CED6;
+	Tue,  7 Jan 2025 23:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736292077;
+	bh=Kilm1ZAdWzy3rPEDUVkX5c9b+aYHLITqsZsNfgNyC2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sUgylO24DAttxYL26qZXve5hvrgsTvvOnKU7yq7oY/O13PXLgH2yaUT8j3dzbDI4F
+	 G9gnqx8F2ap2hpu7iaASyaqHOfJli9UmxBevnHSF7UXBo7Bqje8zyZzfoNad0rvDYK
+	 vctghzjYXEqQ6+9kIBAuHDSzFRUEXsjZP0JkDg0Y3iyXzdr47eYgDJZl8innUNJuU+
+	 Bs1ibYZaqkYXENoWmYZnZVM0qE0RP3h0HMurlFB65jj78ZeB2qN0Ewezg7o0W1sTRR
+	 FZ36XWzWe1sJeV5wOs0+d6l8bAnqoQBa1Xeo3tBY8iJRyz6zCy7HUDFNEaPVtGoBOM
+	 wehUeO4yRC1Jw==
+Date: Tue, 7 Jan 2025 17:21:16 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: imx@lists.linux.dev, Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>, Inki Dae <inki.dae@samsung.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>, Robert Foss <rfoss@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	David Airlie <airlied@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 2/2] dt-bindings: samsung,mipi-dsim: Add imx7d specific
+ compatible
+Message-ID: <173629198495.2036683.9877314471091548361.robh@kernel.org>
+References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com>
+ <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -96,37 +62,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107125854.227233-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250107094943.518474-3-alexander.stein@ew.tq-group.com>
 
-On Tue, Jan 07, 2025 at 01:58:51PM +0100, Krzysztof Kozlowski wrote:
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.
+
+On Tue, 07 Jan 2025 10:49:42 +0100, Alexander Stein wrote:
+> This add a imx7(d) specific compatible which is compatible to imx8mm.
+> This silences the dtbs_check warning:
+> arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: dsi@30760000: compatible: 'oneOf' conditional failed, one must be fixed:
+>  ['fsl,imx7d-mipi-dsim', 'fsl,imx8mm-mipi-dsim'] is too long
 > 
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > ---
->  .../display/amlogic,meson-dw-hdmi.yaml        |  8 +-
->  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 28 +++---
->  .../display/bridge/samsung,mipi-dsim.yaml     | 66 ++++++-------
->  .../display/mediatek/mediatek,aal.yaml        | 46 ++++-----
->  .../display/msm/dsi-controller-main.yaml      | 98 +++++++++----------
->  .../bindings/display/msm/dsi-phy-10nm.yaml    | 40 ++++----
->  .../bindings/display/msm/dsi-phy-14nm.yaml    | 34 +++----
->  .../bindings/display/msm/dsi-phy-20nm.yaml    | 36 +++----
->  .../bindings/display/msm/dsi-phy-28nm.yaml    | 34 +++----
->  .../bindings/display/msm/dsi-phy-7nm.yaml     | 34 +++----
->  .../display/msm/qcom,sa8775p-mdss.yaml        |  7 +-
->  .../bindings/display/renesas,cmm.yaml         | 12 +--
->  12 files changed, 221 insertions(+), 222 deletions(-)
+>  .../devicetree/bindings/display/bridge/samsung,mipi-dsim.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # msm
+Fabio is clearly confused, and I prefer this patch over his. As 
+it is probably past the drm-misc cutoff, I applied it to DT tree.
+ 
+Thanks,
+Rob
 
-I think we can take it through drm-misc-next (or even
-drm-misc-next-fixes) once we get acks from Renesas and iMX maintainers.
-
--- 
-With best wishes
-Dmitry
