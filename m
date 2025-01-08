@@ -1,122 +1,116 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9014190664
-	for <imx@lists.linux.dev>; Wed,  8 Jan 2025 12:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38B91F8AE3
+	for <imx@lists.linux.dev>; Wed,  8 Jan 2025 12:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736338761; cv=none; b=SVqI5egFpca/LgUrQywtevBCWiVyNeJcHI5Y25ccGMd+c/da302dVx4cD4X9naeaascz6yyTCVvDJROipzs56LKLjLWxN6j0JxJxQXKDDw5IekVFxRSafTKypXhfUejeDXHBFnm1Aux33beihssflFyGhGy4WGUCftThepX7c8c=
+	t=1736339827; cv=none; b=UZz/DLlvKZ9dVajD2uGAICeUHB6snwJdDHgcuk0m0IBSLCEURIrQconfVCOUbqUjYxpc4iQ3diVqpkjSNqUwpQEAyTB4fdib4dEfbMWmkM0W7auYUI0KphebQLu+MVtZo77f5AAz45gqrbCo2vVLt6zDyNTnkfOzdEM654iyzMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736338761; c=relaxed/simple;
-	bh=l2wuy6uutmjlMwmvqqU1Go/FyQ3viVYg51+dLSMo4CA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ANeq76Ox1LgkN7vHGWpHYCHmTWAdKMBOgXm/DjTi7sec8fJNeptSRiAkEdIjvn7CIQlHDdFwnr6ID10BYTWjTKdNHfOgfYCRzARDwFjVrjcwXKZOoE/Cbo1knDkKBFEK7PnINEbQo2KWKU8K/OogsOKXvp2I89WqteKxzshjYOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIqOZi0D; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736339827; c=relaxed/simple;
+	bh=CDf9a2m0imE6fmCPPuDkE3P+yBsJZwYlK7mp2qPDVJA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bn0CjJJ4hZ2aoxmtJJR4pwmaxxxpDCWpQz76Jjsqm7njAv82i5lQdjPs/HEPkvjEORUiIYo0T8vCGem1ztAtRHtE8EBQuaWhFqwhFXFFDIyNYxT3pVgFWUw57jOCiLfS1WFub0VeDSPUJR8pwLbadZJInfj4JaKEBhZuhdwAFUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CEoCebKW; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIqOZi0D"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso4998095e9.1
-        for <imx@lists.linux.dev>; Wed, 08 Jan 2025 04:19:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CEoCebKW"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso5130075e9.1
+        for <imx@lists.linux.dev>; Wed, 08 Jan 2025 04:37:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736338758; x=1736943558; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D0wrsrPGAdDXBV5iPTRGFFFX12teH6issL2b7lrnEgE=;
-        b=YIqOZi0DlIADXsE6kuY21QUTLHaSLsMdYaqW1m5S5AeL+v5cGE3GaoI4Fy6Zc38t1B
-         vrYMxCtVcs4jj1761fjdrh+ihKSb2KhJ6Rr7iBmQNyKzfjP5XGe2UavA8NYmM8FlRqDn
-         F5Fzjm5TYm7h7/94Jh6vvLj5bCNZaJcQbI+HP9JXfDElZmkmo0KO1lLvtYgXT9+sb8qF
-         1FKL9ng+dLci/Fwf1PpDuJdmDW1YK1SruEfBSQWlKQJbIi2gMPw9A9Y19aQsZ1ynCtEt
-         TKvEgmm3X0IeEe1B5H43upBWpKmilpvMFSvHBWEeStLxl7TG1wYVPHflq2k+yd2DAm9T
-         hh1A==
+        d=linaro.org; s=google; t=1736339823; x=1736944623; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0I9+VC2uPEBNPBTJjj9DiA9XkKjLM+nkrhkEM/H4bW8=;
+        b=CEoCebKWLTa7XMibfESellOJ9MPksuNdxC4nOW0acDDZJVp/H0bwXk9oKT2D2mNeV9
+         X7+SO1bUBLfZLBFiDS6IAcfMC0YIEEIV2iPKJPiUA1PHQpH/+jzDntTtzOE9egwJefEQ
+         XizqjjXuxvPGsMpHVnnO4LJzPfOZ7X+9+BXHaNAT+CM4mqS3U1wG2haaguIp1qssgrET
+         HL247rLsFN1Mg5NPWyiL4hRq/EF+QdS9MwfYfoE3CrIns1XYHQoiE57AWwsCH3sORdht
+         yPRTGb6KlGsdsiyNxNZEP80kWS6zFNp7ALO1puAjllp3c4SUX/4MMGUbqJLhD4zwMOi5
+         Q9Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736338758; x=1736943558;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D0wrsrPGAdDXBV5iPTRGFFFX12teH6issL2b7lrnEgE=;
-        b=hsMm16s8j07UAfzjaqURh/k1ds8AMhCpivEPhDDG8QOfiFQmwlehQinRNWu+P5cp4C
-         1pmMxkZf0UeiOjYyzedu+kYLdLOgYHU8BQWfL2z3w1oLvQEG8pxwH+8IwzRlJwHUM/Gm
-         nulpl0wycO6XjnQNDDxqDT8/qBdT3xzuhpJAWgqDPWG9HWuN+ISJqragdT0GUDKe8OHP
-         poGjzZQoFBkSqJbg5LyDc0nJ1rSvn7HXmM9ABgH5XHQ5GJ4YkGPBZvRZKL9cj2a/XxWf
-         BSRiWqeQP96BnYeadYvYkRZ3T4q4CskcEF+Xf2W5rYNSVmfVCszX6X1SG0vuA8AjMREf
-         go/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUisCbv6c2Jxudrmb33MbYcyD+0i7kYpONrUUGVrCZAmg3mxdjclSGfyTr/woT1tB38Fb0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywudhp9nSzxXToCvLsalLQBehOz7ktZWO5gZbRfrw6FRm2zg1Ia
-	iwJCe59+GFz7jIHUBvvC9NlNvSAChepXSxKiJUZAHuVpugUgSmAT
-X-Gm-Gg: ASbGncu6DDYL2LkLCpu1+zqUMiwW3WEl1dq+yKDUbJlb4mxz0YL0VzbsfDjgLL9DGjS
-	IsRouGxE/ES+I6bp04TSkA5ECPjnp+Q2SirkprrEXSmRcxqQkgfFMBnLVSox+1+GxnALXvBFfQL
-	L5pAPpBxqHMHufhO78+ZcWgypbOU+7/ZRG6nNNvuUVocEzGqk2ICV7nstpBWldGLDp+VOF5DhqC
-	NHqaFusxqSqRpJKwh+pmkLQBhgW1WMEnQuWb2L7JfEsqa+xcBRrXcKCUm7WcI7ckIE5UuW5q7jZ
-	NJpH2Q==
-X-Google-Smtp-Source: AGHT+IEZ2TsyG7bFlOCK2TmeGPogWLKZEqI34rc1uiTT2N6nITdoJEt+KA1su4EcHw8h6jyV9z9qzA==
-X-Received: by 2002:a05:600c:510b:b0:434:fb8b:deee with SMTP id 5b1f17b1804b1-436e1e4ae91mr23270555e9.16.1736338757809;
-        Wed, 08 Jan 2025 04:19:17 -0800 (PST)
-Received: from [192.168.4.226] ([92.120.5.1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2c27008sm19375005e9.0.2025.01.08.04.19.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 04:19:17 -0800 (PST)
-Message-ID: <e5665b6a-c2ad-470f-8a36-b7adc05c1cf0@gmail.com>
-Date: Wed, 8 Jan 2025 14:19:14 +0200
+        d=1e100.net; s=20230601; t=1736339823; x=1736944623;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0I9+VC2uPEBNPBTJjj9DiA9XkKjLM+nkrhkEM/H4bW8=;
+        b=nZgpC7Xcmiplmz5qUUGhWL+eOiArM39fePUW2bNrWukqPYHiCO+znUcX4o40lwIg0Q
+         KIY2uLRTQq6gO5Tu828Y63NR52b2cYEYuOu/NVb7A71/xjz8CVOHZwJVmLGAFwdQBPTk
+         RlCIxvuV50X9a2HX601mBSQqCN/C5c/ToIyuTWj6mAhCUqkPBzvK7iy3/cc+ELybI5au
+         qdfdPT7p08hUF87PAJubt+Qb8mw7WI5x0kefPs/axf9/rNPN3M8raM/ASi35bLgPrVsU
+         ivE9QwM0L0lU2NuB7N3US2jWTSgytwh1aC0RQzQqqJhqdiVE0jQsgRKlzAvg9v7VeSOb
+         Bx3Q==
+X-Gm-Message-State: AOJu0YwVDsnQ4GIt/3STFwIEaGkT8vJIo7t/KI2qCWevIdYrsFyLba9g
+	ENz2zrs/9PFZ1rD2VnMPQb06KyDmKD0RszmBPO13DZcJnoZn42x2LyNX1N5DOzQ=
+X-Gm-Gg: ASbGncurYjKHSaZcTYcfNdwxaZUAU70eMyiyXPtgPw391VvLOLC9atk872woIQ105ZP
+	0smIVdHT+zRK4Oxas+GP3aiECnJ6wnGykIsvRpaw+WuxIp98IdO/54M5FXv9Oaz77pTIw2h1ry+
+	n0b/p7QGKQ9I5s7cZCxWM9iL4YpWWbZ3cl0GSlLqh9qyErQl1fFhbsgJWw9/R4fM4KV2F0vnw8s
+	wjdPG1FgPCG/CxY55DUTVDUR9cv2g+JjxmzwoqdhjcYwrtgt7ZLyYR1
+X-Google-Smtp-Source: AGHT+IG7/5cPf2PXps78wifVaZOeskzey0wLtVNJQ9pTQA6HY4831o/cwKfWew1xSu4tBYNeqfjruw==
+X-Received: by 2002:a05:600c:a03:b0:434:f3d8:62db with SMTP id 5b1f17b1804b1-436e1dcad1amr22413055e9.2.1736339823091;
+        Wed, 08 Jan 2025 04:37:03 -0800 (PST)
+Received: from hackbox.lan ([86.121.162.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e96365sm19377775e9.43.2025.01.08.04.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 04:37:02 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Mike Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-clk@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v6.14
+Date: Wed,  8 Jan 2025 14:24:31 +0200
+Message-Id: <20250108122431.3063396-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] ASoC: dt-bindings: audio-graph-card2: add widgets
- and hp-det-gpios support
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>,
- Mark Brown <broonie@kernel.org>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Takashi Iwai <tiwai@suse.com>, Bard Liao <yung-chuan.liao@linux.intel.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Jaroslav Kysela <perex@perex.cz>, Frank Li <Frank.li@nxp.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
- <20241216145039.3074-4-laurentiumihalcea111@gmail.com>
- <nxcoukgiwtcsowi2uxytxa32mdp5dhl4tvnetpd2spti7oiiu3@mpqbv43ivznc>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <nxcoukgiwtcsowi2uxytxa32mdp5dhl4tvnetpd2spti7oiiu3@mpqbv43ivznc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
 
+  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
 
+are available in the Git repository at:
 
-On 12/17/2024 9:07 AM, Krzysztof Kozlowski wrote:
-> On Mon, Dec 16, 2024 at 09:50:37AM -0500, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> Introduce the 'widgets' property, allowing the creation of widgets from
->> 4 template widgets: Microphone, Line, Headphone, and Speaker. Also
->> introduce the 'hp-det-gpios' property, which allows using headphone
->> detection using the specified GPIO.
->>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  .../devicetree/bindings/sound/audio-graph-card2.yaml          | 4 ++++
-> I have impression you are duplicating audio graph properties instead of
-> referencing proper schema, but considering that the bindings
-> audio-graph-card and audio-graph-card2 differ only by number "2" without
-> any description, not sure what is correct here.
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-6.14
 
-Please correct me if I'm wrong here.
+for you to fetch changes up to 48806be086360846bb308c5ee21fcab8405a3da7:
 
-As things stand now and based on Kuninori Morimoto's comment on this
-(https://lore.kernel.org/lkml/87cyhw8lg5.wl-kuninori.morimoto.gx@renesas.com/) I'd say we can't
-(or, rather, shouldn't) directly reference audio-graph.yaml here.
+  clk: imx: Apply some clks only for i.MX93 (2024-12-26 16:46:03 +0200)
 
-Now, I wonder if the "proper" solution here would be to take the common properties
-of audio-graph.yaml and audio-graph-card2.yaml and create a new binding that can be
-referenced by both aforementioned bindings? Would that make things even more confusing
-(we'd probably end up with audio-graph.yaml, audio-graph-card.yaml, audio-graph-card2.yaml,
-and audio-graph-common.yaml)? Should this be addressed as part of this series?
+----------------------------------------------------------------
+i.MX clock changes for 6.14
 
+- Fix the i.MX8MP clkout1/2 support by using sys_plln_out instead of
+  sys_plln as parents
+- Add 208 MHz and 416 MHz entries to the PLL1416x
+- Fix the i.MX93 provider by adding the SPDIF IPG clock
+- Fix the i.MX93 xcvr DT node clocks by using SPDIF IRP clock instead of
+  BUS_WAKEUP
+- Filter out LVDS, MIPI DSI, PXP, FLEXIO and MU clocks to i.MX93 only
+
+----------------------------------------------------------------
+Marek Vasut (2):
+      clk: imx8mp: Fix clkout1/2 support
+      clk: imx: pll14xx: Add 208 MHz and 416 MHz entries for PLL1416x
+
+Peng Fan (1):
+      clk: imx: Apply some clks only for i.MX93
+
+Shengjiu Wang (3):
+      dt-bindings: clock: imx93: Add SPDIF IPG clk
+      clk: imx93: Add IMX93_CLK_SPDIF_IPG clock
+      arm64: dts: imx93: Use IMX93_CLK_SPDIF_IPG as SPDIF IPG clock
+
+ arch/arm64/boot/dts/freescale/imx93.dtsi |  2 +-
+ drivers/clk/imx/clk-imx8mp.c             |  5 +++--
+ drivers/clk/imx/clk-imx93.c              | 32 +++++++++++++++++---------------
+ drivers/clk/imx/clk-pll14xx.c            |  2 ++
+ include/dt-bindings/clock/imx93-clock.h  |  1 +
+ 5 files changed, 24 insertions(+), 18 deletions(-)
