@@ -1,157 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A724818E377;
-	Thu,  9 Jan 2025 17:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A484C18C92F;
+	Thu,  9 Jan 2025 18:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736442927; cv=none; b=dGubg2ijQ3RGfml4/jRRqPVBfbtvjATOSymRvY70WPKJWIk8rUUvTZYSke+ZqbHEIkxx6AcG3diS32WBh9eRG5nr2eV+Jl4267w/8V/i/CWPp4aNILeJdB+uprmLFMmFisE2mMJ9u+ex5E3rytvUcEbvwhKBKwmdxDbqp1C9VRs=
+	t=1736447000; cv=none; b=qcxIdhDwHFRqZdL3gAFHowWD+x4jcRFUtOEZwJ49CN4eODTXypS4POdKqqHRi49e9iHubwmacKXhrFk66uGxXS5Ez8c1Wi9DbtTFG7KI/Aep+sjw0QK/P9v9T4lk/Ay3G/hVwrQWcPJbYZD1zYtpyUPD7viOsKu8+uDPnk+hSWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736442927; c=relaxed/simple;
-	bh=iHe0e5c+fmzIEFb4JwfVINvpf7LWF6/4nvNtj0QRgPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gjSyq4wpUGf05i6SP16AyTL7Q/D1mofNYIHjzqkWVmkJo/2oWTtKqOHx8dnHzMwQM32I40wXMBUFD5CiAkxfQSLdXClJnUNz4ie3/D8V7XP0Fz2S58QCiuxw6HOrjFHinMcxHwbiY1chj8Lr+V7mAXOxHUs0h+Un6TG1cmcWKuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R0mEQ+Wu; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1736447000; c=relaxed/simple;
+	bh=30wB/WI/0/f7UcIF3TPsN2HMLACXVtv2YkGpGhKaM+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iUXIeAfOGc2zBFotcSfXyf8ovY8Ye63uoE2aUKiRwSvmAYATdTsb3o98XH3RrbeX14MsbWWeCnrTlG+ccU7gypGi6FDwbh3d4Km7Eh2xjTAhwVoD15WK/sJ2BlrmMv2I6U0h4z++Mh8fL2E7JZOtVwV0ZEmXBuH79fF9zxAmdKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVCmatJN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R0mEQ+Wu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736442926; x=1767978926;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iHe0e5c+fmzIEFb4JwfVINvpf7LWF6/4nvNtj0QRgPQ=;
-  b=R0mEQ+WuUaHa5xHsD1YsYxKojJgiuLbG7KgDusO19vIqAqLmP+cTqSwz
-   LfRIh+glbMsbVuJUi3jpL6ZBCDcehOwtV9cJgwIBIMg15JEUL3x4E8G1o
-   lpwJ/VJIDKIDtPHOQS7yk61zH9xneX1RDTLpMcdppznHK6wBPuw2t1JML
-   L7YkAbgzQxUYbircwgDBGXzhrcBz6KIvKdC4a/+qV6/Q+YtCuwCqYG21f
-   5SOcVm79KzpOdZWsUUlFggDHFv+yFLrGXwNiVdOeZlxFWjUg8jFkc+QsM
-   56bkzb6lj1qK/XBAtbWxQd5p9HU1GBfD3UdT86inl66/Oi4zaJq2YmPWL
-   Q==;
-X-CSE-ConnectionGUID: Peh5asWkTA+dLSWMuCiupg==
-X-CSE-MsgGUID: oPiX7R5tRhu0jAM4atieLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11310"; a="36604449"
-X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; 
-   d="scan'208";a="36604449"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 09:15:26 -0800
-X-CSE-ConnectionGUID: sCHGnpr3S22msRSMnEsaNw==
-X-CSE-MsgGUID: Kiw4VfoXQbSJcARHoMEU4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="140776648"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO [10.245.245.241]) ([10.245.245.241])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 09:15:20 -0800
-Message-ID: <ec240a46-3fe1-46fa-84bc-2f962d7441ce@intel.com>
-Date: Thu, 9 Jan 2025 17:15:17 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVCmatJN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A58C4CED2;
+	Thu,  9 Jan 2025 18:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736447000;
+	bh=30wB/WI/0/f7UcIF3TPsN2HMLACXVtv2YkGpGhKaM+Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mVCmatJNDUWzfqTMCBQzuH+/WwFgR7ZiBEoOhRtVouJ4etPjdmWg8Cml95dH3zBzr
+	 EZImpKYehXgqxOAL7HNgiFnu2mIv96I8uSxiD1WdKPeEnahEFdOxjxHYbWEOoOBfZd
+	 HSEcBX6LluhfuZPUj+SDfkxftr/NbjA9eFJMay7qZgcX1xjQlJdiyrP52hyw6wOkUy
+	 bLhfUzQW/8afz1h4rAVINdftN71VP4ew+B54zL1hyNbk/p99O71NYpjk0PgU12vWKt
+	 L85RvKCytBmp5jxrJFdTV6dPa3y95fqH5YPJHBLszrofzsrWUiZGjYkzJ0eLtXgKlm
+	 TgKOaRnUFGjNA==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH] ASoC: Use of_property_present() for non-boolean properties
+Date: Thu,  9 Jan 2025 12:23:00 -0600
+Message-ID: <20250109182303.3973082-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/25] drm/xe: Compute dumb-buffer sizes with
- drm_mode_size_dumb()
-To: Thomas Zimmermann <tzimmermann@suse.de>,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20250109150310.219442-1-tzimmermann@suse.de>
- <20250109150310.219442-24-tzimmermann@suse.de>
- <91c904f8-ba47-4595-be65-6fb57dcc9c64@intel.com>
- <6666af19-a98d-41d7-8329-7b50807c04a9@suse.de>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <6666af19-a98d-41d7-8329-7b50807c04a9@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 09/01/2025 16:26, Thomas Zimmermann wrote:
-> Hi
-> 
-> 
-> Am 09.01.25 um 17:05 schrieb Matthew Auld:
->> On 09/01/2025 14:57, Thomas Zimmermann wrote:
->>> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch
->>> and buffer size. Align the pitch to a multiple of 8. Align the
->>> buffer size according to hardware requirements.
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->>> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->>> ---
->>>   drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
->>>   1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
->>> index e6c896ad5602..d75e3c39ab14 100644
->>> --- a/drivers/gpu/drm/xe/xe_bo.c
->>> +++ b/drivers/gpu/drm/xe/xe_bo.c
->>> @@ -8,6 +8,7 @@
->>>   #include <linux/dma-buf.h>
->>>     #include <drm/drm_drv.h>
->>> +#include <drm/drm_dumb_buffers.h>
->>>   #include <drm/drm_gem_ttm_helper.h>
->>>   #include <drm/drm_managed.h>
->>>   #include <drm/ttm/ttm_device.h>
->>> @@ -2535,14 +2536,13 @@ int xe_bo_dumb_create(struct drm_file 
->>> *file_priv,
->>>       struct xe_device *xe = to_xe_device(dev);
->>>       struct xe_bo *bo;
->>>       uint32_t handle;
->>> -    int cpp = DIV_ROUND_UP(args->bpp, 8);
->>>       int err;
->>>       u32 page_size = max_t(u32, PAGE_SIZE,
->>>           xe->info.vram_flags & XE_VRAM_FLAGS_NEED64K ? SZ_64K : SZ_4K);
->>>   -    args->pitch = ALIGN(args->width * cpp, 64);
->>> -    args->size = ALIGN(mul_u32_u32(args->pitch, args->height),
->>> -               page_size);
->>> +    err = drm_mode_size_dumb(dev, args, SZ_64, page_size);
->>
->> AFAICT this looks to change the behaviour, where u64 size was 
->> technically possible and was allowed given that args->size is u64, but 
->> this helper is limiting the size to u32. Is that intentional? If so, 
->> we should probably make that clear in the commit message.
-> 
-> That's an interesting observation; thanks. The ioctl's internal checks 
-> have always limited the size to 32 bit. [1] I think it is not supposed 
-> to be larger than that. We can change the helper to support 64-bit sizes 
-> as well.
+The use of of_property_read_bool() for non-boolean properties is
+deprecated in favor of of_property_present() when testing for property
+presence.
 
-Ah, I missed the internal check.
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ sound/soc/fsl/fsl-asoc-card.c                    | 2 +-
+ sound/soc/fsl/imx-audmux.c                       | 2 +-
+ sound/soc/fsl/imx-card.c                         | 2 +-
+ sound/soc/fsl/imx-rpmsg.c                        | 2 +-
+ sound/soc/generic/simple-card-utils.c            | 4 ++--
+ sound/soc/intel/keembay/kmb_platform.c           | 2 +-
+ sound/soc/mediatek/common/mtk-soundcard-driver.c | 4 ++--
+ sound/soc/qcom/common.c                          | 6 +++---
+ sound/soc/qcom/sc7180.c                          | 2 +-
+ 9 files changed, 13 insertions(+), 13 deletions(-)
 
-> 
-> Having said that, is there any use case? Dumb buffers are for software 
-> rendering only. Allocating more than a few dozen MiB seems like a 
-> mistake. Maybe we should rather limit the allowed allocation size instead?
-
-Yeah, I doubt there are any real users. Given the existing internal 
-check, limiting to u32 makes sense to me.
-
-> 
-> Best regards
-> Thomas
-> 
-> [1] https://elixir.bootlin.com/linux/v6.12.6/source/drivers/gpu/drm/ 
-> drm_dumb_buffers.c#L82
-> 
->>
->>> +    if (err)
->>> +        return err;
->>>         bo = xe_bo_create_user(xe, NULL, NULL, args->size,
->>>                      DRM_XE_GEM_CPU_CACHING_WC,
->>
-> 
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 02e1594e8223..2bad9cb1daaf 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -932,7 +932,7 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	if (!asrc_pdev)
+ 		priv->card.num_dapm_routes /= 2;
+ 
+-	if (of_property_read_bool(np, "audio-routing")) {
++	if (of_property_present(np, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(&priv->card, "audio-routing");
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index 43e14f2eca8d..cc2918ee2cf5 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -237,7 +237,7 @@ static int imx_audmux_parse_dt_defaults(struct platform_device *pdev,
+ 					child);
+ 			continue;
+ 		}
+-		if (!of_property_read_bool(child, "fsl,port-config")) {
++		if (!of_property_present(child, "fsl,port-config")) {
+ 			dev_warn(&pdev->dev, "child node \"%pOF\" does not have property fsl,port-config\n",
+ 					child);
+ 			continue;
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 95a57fda0250..ac043ad367ac 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -529,7 +529,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	}
+ 
+ 	/* DAPM routes */
+-	if (of_property_read_bool(dev->of_node, "audio-routing")) {
++	if (of_property_present(dev->of_node, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
+ 		if (ret)
+ 			return ret;
+diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+index ce98d2288193..7cd3aa4c8706 100644
+--- a/sound/soc/fsl/imx-rpmsg.c
++++ b/sound/soc/fsl/imx-rpmsg.c
+@@ -218,7 +218,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto fail;
+ 
+-	if (of_property_read_bool(np, "audio-routing")) {
++	if (of_property_present(np, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(&data->card, "audio-routing");
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index a0c3111f7e08..91325286894e 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -713,7 +713,7 @@ int simple_util_parse_routing(struct snd_soc_card *card,
+ 
+ 	snprintf(prop, sizeof(prop), "%s%s", prefix, "routing");
+ 
+-	if (!of_property_read_bool(node, prop))
++	if (!of_property_present(node, prop))
+ 		return 0;
+ 
+ 	return snd_soc_of_parse_audio_routing(card, prop);
+@@ -731,7 +731,7 @@ int simple_util_parse_widgets(struct snd_soc_card *card,
+ 
+ 	snprintf(prop, sizeof(prop), "%s%s", prefix, "widgets");
+ 
+-	if (of_property_read_bool(node, prop))
++	if (of_property_present(node, prop))
+ 		return snd_soc_of_parse_audio_simple_widgets(card, prop);
+ 
+ 	/* no widgets is not error */
+diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
+index aa5de167e790..4ed71d11ad77 100644
+--- a/sound/soc/intel/keembay/kmb_platform.c
++++ b/sound/soc/intel/keembay/kmb_platform.c
+@@ -869,7 +869,7 @@ static int kmb_plat_dai_probe(struct platform_device *pdev)
+ 
+ 	kmb_i2s->fifo_th = (1 << COMP1_FIFO_DEPTH(comp1_reg)) / 2;
+ 
+-	kmb_i2s->use_pio = !(of_property_read_bool(np, "dmas"));
++	kmb_i2s->use_pio = !of_property_present(np, "dmas");
+ 
+ 	if (kmb_i2s->use_pio) {
+ 		irq = platform_get_irq_optional(pdev, 0);
+diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+index 3bbf42c42805..f4314dddc460 100644
+--- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
++++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+@@ -221,7 +221,7 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
+ 		card->name = pdata->card_name;
+ 	}
+ 
+-	needs_legacy_probe = !of_property_read_bool(pdev->dev.of_node, "audio-routing");
++	needs_legacy_probe = !of_property_present(pdev->dev.of_node, "audio-routing");
+ 	if (needs_legacy_probe) {
+ 		/*
+ 		 * If we have no .soc_probe() callback there's no way of using
+@@ -262,7 +262,7 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
+ 		adsp_node = NULL;
+ 
+ 	if (adsp_node) {
+-		if (of_property_read_bool(pdev->dev.of_node, "mediatek,dai-link")) {
++		if (of_property_present(pdev->dev.of_node, "mediatek,dai-link")) {
+ 			ret = mtk_sof_dailink_parse_of(card, pdev->dev.of_node,
+ 						       "mediatek,dai-link",
+ 						       card->dai_link, card->num_links);
+diff --git a/sound/soc/qcom/common.c b/sound/soc/qcom/common.c
+index 928cf5cb5999..7ee60a58a336 100644
+--- a/sound/soc/qcom/common.c
++++ b/sound/soc/qcom/common.c
+@@ -44,20 +44,20 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
+ 		return ret;
+ 	}
+ 
+-	if (of_property_read_bool(dev->of_node, "widgets")) {
++	if (of_property_present(dev->of_node, "widgets")) {
+ 		ret = snd_soc_of_parse_audio_simple_widgets(card, "widgets");
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	/* DAPM routes */
+-	if (of_property_read_bool(dev->of_node, "audio-routing")) {
++	if (of_property_present(dev->of_node, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
+ 		if (ret)
+ 			return ret;
+ 	}
+ 	/* Deprecated, only for compatibility with old device trees */
+-	if (of_property_read_bool(dev->of_node, "qcom,audio-routing")) {
++	if (of_property_present(dev->of_node, "qcom,audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "qcom,audio-routing");
+ 		if (ret)
+ 			return ret;
+diff --git a/sound/soc/qcom/sc7180.c b/sound/soc/qcom/sc7180.c
+index bc030ce29680..d95710b1ea4e 100644
+--- a/sound/soc/qcom/sc7180.c
++++ b/sound/soc/qcom/sc7180.c
+@@ -513,7 +513,7 @@ static int sc7180_snd_platform_probe(struct platform_device *pdev)
+ 	card->controls = sc7180_snd_controls;
+ 	card->num_controls = ARRAY_SIZE(sc7180_snd_controls);
+ 
+-	if (of_property_read_bool(dev->of_node, "dmic-gpios")) {
++	if (of_property_present(dev->of_node, "dmic-gpios")) {
+ 		card->dapm_widgets = sc7180_snd_dual_mic_widgets,
+ 		card->num_dapm_widgets = ARRAY_SIZE(sc7180_snd_dual_mic_widgets),
+ 		card->controls = sc7180_snd_dual_mic_controls,
+-- 
+2.45.2
 
