@@ -1,300 +1,257 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2072.outbound.protection.outlook.com [40.107.105.72])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2061.outbound.protection.outlook.com [40.107.20.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B38C3FC7
-	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 02:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DB91FFC7C
+	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 05:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736389718; cv=fail; b=Es/dAlmRZirJcgbQPndtVV/dMXBP9bn2Z8yJcIT2j+6TZIxNND1K3DyiccLpl8YGXQNuM7zYwvU43V2zILodkFH8BFEX+pCdFGwIUAMAC6xtMlxAnbjLPAmv1EZbkKVCxknqMI2tbwjwF0Z7KniGcI+oZtVSgoxGIL0JSiaP58s=
+	t=1736402118; cv=fail; b=hU6J1MnnSxe8BR3Ng+4tMSadgere/7c0i5frZbMZGW6xf7NUhUob6PrdlqgzJcetGaXHgErtE/dpeSi3ZxNeoOegssn1C+NrQvm41pYEdLo8q0ucjYus+lFB4+vOLUjAbjnGHoNKeJ4gaYcgD8w30gGm9t7LqS0z7mb3U58+WIE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736389718; c=relaxed/simple;
-	bh=mFJZ17hA9c2XARqLUQuQ7k8Fh4QVlL99z3EV+TFUxR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=He3o+fdFohksJrAwQZZt5J2W2tBUoSV0cWB1rRm8T90edWuSR/fjRPP3INh3715p14k3nR1CGcQRLB9Mk3gMf8YL4XQQxekqICB7x+Tf69klboNcOpGxhPOyTrSFsfgfkZODz3eKhwNOiKQkTFf3Na9OFR9PdRt02qoE227YW2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h6ri60TE reason="signature verification failed"; arc=fail smtp.client-ip=40.107.105.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1736402118; c=relaxed/simple;
+	bh=n71ZTkAYXcPn00o9+kYt/UR6y9LNEFELOob8nkGFs6A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Fifypec6WD4BQXbkuq2vdkCGpklplUZHUXuwGOC+3QswB4RKT+w6/OasIr/zEjJ6GfImvYcBL3fbMcCDB8psVKKCGZwbyS/7M4sbsVZRNhxzYacZaLLDU5r9a6IjlFHNFvi5YUZ1IN3iShfvSK/TmdQYAwZG1HP1X/EypuxRfOg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JAdC8Wpv; arc=fail smtp.client-ip=40.107.20.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h6ri60TE"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JAdC8Wpv"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=asLiZUKxyTPV+9sqB6YGbTXrn5/I51wqEfEVPWn1wouRXhbh4zhWW0bmT20ljC+Gt2nOZhqKnSCIKGqABFDOS4zFV2hKIGqGxO5Ge05/ncAGQiTJLhEpgwHLFp48FPqY1HuScf/Upg/MdlvN8xJ3RoZt2squAgSqLkbe7bBiuUMXFG6i+eSjoV6c09KloRS3uy44njrJdclL3/dScLKl7JjcKlNHfHA1fhpsFahcaF9+puSUiJbsklqAPC7SZ9uiBDy2opcb+FlSLAv421OUVg6ih+JY0Yblfs/P0MUDp2vHVQVWdpq5l0qPeSxEqHo72dryzxCuSfD2DfkSyG+yOA==
+ b=LiHq1c7KqO2OLVDoaknTiYYcStkyMZYqcu3K+tsm1jNkwhlNcCT5gejLm7qkf1tMQty34s2oHEEHotqo4QZeFykvMePqpGZyjmY7+3OEA49KTXpvO1hgTNGrlltjrZAfn9nlM7wOZpJVqbhWmThRWkTWSjO8rYhW/Bg7362VVaRQi0amWEeWrrc/tL647HWFTkj1Vj3u275Q5U1qm1zdz2qjQ33Wuod04HSJhYeZO0Jz8LC11dOIBmPGt0CCjoWIS0B23WgPLgBmSBvteUOzvp4tfH9Nt2z89wzWK9+3TKED2WhIaYAMKfQxp7q8pQDmRRfE8Xk/FGP01MU6tmb4Dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIFZE3Yp1nh93BeVR9xtEVwt6jHpgzpKWqkbLFXz0sE=;
- b=KTJqzrQdEk+jsbBKbtVkNYZSLdcC7c+DuHLKcoEWdl4kBoT1DNatEGCl1LqwzkJ64WmZX81TYakGVTjbqzD0sshzKnUY0W57irvtf3Dap+CnfIJIGb16i6IdhF89kpJweF8/Q0eGiuFh0sOLLTi+W2+PciUYHsLZf7d6tbXVbetRm5Ey6/Lj/qu6XtH5lBX5Ekv/Za595zt64H7Ba7O2iAdZ/XPS4nTP6DLqRdjyg0pDGu5hoCM4OHNR6sJv1dywaLuDkEg2gw58YbbhD1mi//OaP5rS4bGAlPXqd9Vcf8qwDrozQKuXO7tF/GVM54BWI1zjrnjvcA9E5UjKRoMqFw==
+ bh=AbdFQgnrHStA9g0rJ19U/KkRG3S+rI+kFWXWjkFdm48=;
+ b=PMPsuqvTBOduoGPZToUl4TX1qtu2K/3ytmMO33IYN2aICJfQvmC+OzcuB8YBYYZMi6ETiy4fxSkE704mE+QCAqG+2TtRK7FRsEA61bgt0P9eL9y9v1PaFixpxyR4jzvpumKPsmDJLlcily8SQwA4RMHoTJOics4kTDKbXzoVNCoXr5FXRgyWEM8Sww/lI8EnqnB9DTT2BCBxPtb1mCqcThpCX9t4OhE3+D6RPYCBVNenCT55UI7IsEVqfOWYmmWmVu5/hdkTdmYToM1QXfBsxdldCUwrdn9YDPXnKwEyeBQkmdYXsuhZXRiLbTIdPbRg1GolBbIxpcfxbIkd3sL1uA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIFZE3Yp1nh93BeVR9xtEVwt6jHpgzpKWqkbLFXz0sE=;
- b=h6ri60TEoi+nhCl90fpMFzP89aVS+DlFq1CyxBPt/0p5Gy0YuV11ACLXwGEV6U+47Q8FjrOkCpTEEnusxNyQZLnzYUtQWFWtbXpSomvZL3va65h4ScA1WcdREkhOWgNsHhF+3Pab3/7H+7H4HSPVTp/ZGdwAgkUjI/IxgUjBmZZ1Q3qDfHznj2asYHsW+sz7eiNqN8YUImDio4WrEvOGC0Iuf/DGsUX2pLEYPBLcv6V00U26FPYUxbQo5s7ySPkpcALUiE5TEvZvjjvyidS9aV5jvVIz9k+SbyyGA5zxh6wr5e9jXmA26MNQ7D6opfPFoE3A7n7YdwhBfAYz33SBJA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by GV1PR04MB11063.eurprd04.prod.outlook.com (2603:10a6:150:20c::20) with
+ bh=AbdFQgnrHStA9g0rJ19U/KkRG3S+rI+kFWXWjkFdm48=;
+ b=JAdC8WpvYle3TggV2UNJ+C0+z7VtApIe9DnUKF22Uz5IYcw8y3mIlz0PuYSQZ1FsRRVpCRuXkmmYGymlhQDW9bn9qVE/WEEul8xPKmMWIfPQSEWIyUVlG6PR5pwiUydMP2x0/NezZ8L+JbXSJ2pmiQMtuoKIwggxXLpAaZp7dnwjF/2bddYAeI3uCbs/gyPRiJjqMX+Tz/mcSV+GzxwqQlF5EtxLp5xQby1PIt2wpre91N+hJrU/7WR7AAzL9U0PS6cCRN3HZbwkfcn5x/ljZ5/jUXqTx0LG1Yk3TU7TdR2+2dxSgO1sPG/Zx6zG4PEWRN/SV+UN1eEiyQGo3SfV5g==
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
+ by DU4PR04MB10959.eurprd04.prod.outlook.com (2603:10a6:10:586::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Thu, 9 Jan
- 2025 02:28:28 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%4]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
- 02:28:28 +0000
-Date: Thu, 9 Jan 2025 11:34:18 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v5 2/2] nvmem: imx-ocotp-ele: Support accessing
- controller for i.MX9
-Message-ID: <20250109033418.GB31833@localhost.localdomain>
-References: <20250108-imx-ocotp-v5-0-a6d90e18ebe9@nxp.com>
- <20250108-imx-ocotp-v5-2-a6d90e18ebe9@nxp.com>
- <3823142.MHq7AAxBmi@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3823142.MHq7AAxBmi@steina-w>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR02CA0053.apcprd02.prod.outlook.com
- (2603:1096:4:196::16) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Thu, 9 Jan
+ 2025 05:55:11 +0000
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37%6]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
+ 05:55:11 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: Frank Li <frank.li@nxp.com>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"jirislaby@kernel.org" <jirislaby@kernel.org>, "linux-serial@vger.kernel.org"
+	<linux-serial@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH] tty: serial: fsl_lpuart: flush RX and TX FIFO when lpuart
+ shutdown
+Thread-Topic: [PATCH] tty: serial: fsl_lpuart: flush RX and TX FIFO when
+ lpuart shutdown
+Thread-Index: AQHbYNj2v8BFpuVx20yuSsHmjEgxJrMLdLwAgAC2wKCAAOsfgIAAs0pw
+Date: Thu, 9 Jan 2025 05:55:11 +0000
+Message-ID:
+ <DB9PR04MB8429A2E5B2E54ADFD6BE9CA192132@DB9PR04MB8429.eurprd04.prod.outlook.com>
+References: <20250107074834.3115230-1-sherry.sun@nxp.com>
+ <Z31MKgrQEsMAc3aR@lizhi-Precision-Tower-5810>
+ <DB9PR04MB842920F5FBB1E249ED8F78CA92122@DB9PR04MB8429.eurprd04.prod.outlook.com>
+ <Z36qs1+Ve92m1NC7@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z36qs1+Ve92m1NC7@lizhi-Precision-Tower-5810>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB8429:EE_|DU4PR04MB10959:EE_
+x-ms-office365-filtering-correlation-id: 0362b458-dd8d-4da5-5ba2-08dd30722e24
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|7053199007|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?+QWZ9KCA/eXahNqmQySkWf5Irkb//Bd11znq1hRre8hypoIq+Dpt2iZxQ7YT?=
+ =?us-ascii?Q?5Cy5j6exVGVisTtdhvgVNo5D6lGn+0FczUuOj5NM4KuRTW9tjdqcf3SXuNUs?=
+ =?us-ascii?Q?KYklblJD21aR5zVAVdBw9tTvfJQ8HPAFyJW8w/WFwkHODcczkR57AGPEfusY?=
+ =?us-ascii?Q?9Ly4N4rRDyVG55PNavwwNl1YdghubcwAtgJRC6R7jpvA8rGUkTCb7D05quzW?=
+ =?us-ascii?Q?F4S96+4uw+Zns4bQnBBzLPmzwIbX5rmKH1IDLRo6dU/Pm1qoLpHguJNuAf3i?=
+ =?us-ascii?Q?/TBm8Jjh9ADCBbJfOLoizr3+Xia0r276LkGrAhzeq26BU0MbHlR7Vz6x+NH6?=
+ =?us-ascii?Q?1nVwvqpXBFtLndOS50LKeG1vJmz0b7V/8Ha3j83HtWOs7qHMaFVl97kNn5jK?=
+ =?us-ascii?Q?NqtosVc2AURc9LVitbCB99SWFvMIva+vi+hnV42NeYO9B/RNnZ7MbfVN61ch?=
+ =?us-ascii?Q?50gvPxipEkBQV9QUs2DOTNktlC1Eu0ezCkOh9MjFJgEIc+pjPZXD/24PXdK+?=
+ =?us-ascii?Q?ENfuomvS7MBa5sq/9l++V4Kfu+DJDrkp7YophitwLM99s6//42g7NUUiVqhK?=
+ =?us-ascii?Q?fo/QZBPLPmoKzGsXswz22hHS5PCG3afsYso3vj+DaSGaagYfWTudNYQmltqK?=
+ =?us-ascii?Q?AKOAZNvLRJ3jMFLZen9QzSyIoCYfUxjPsxpF/0qON5Fd70FVt48Mft9PhbCP?=
+ =?us-ascii?Q?qrsLHheKKpsZSeF2a2x8YWv4R08K3kooKg2dxE6l7GUY/wNrWhZZXQ5ndcHs?=
+ =?us-ascii?Q?CO65DXSgHahpcvgbMjlDTN8BRwnHOyllMvGskCIx5oImzKcE31G5JWtWXVVh?=
+ =?us-ascii?Q?FjK4ifGSfuUKgkNU5sjM+c39Jy/srVPVqfgRRbWvY8yRSyNZLgzfVQgIk8Ir?=
+ =?us-ascii?Q?sQDNOk+8bSf4FuAzQvisaQaXAMs82TLRJBvZVNM1hROMGVt/6lFO4PzkfB8V?=
+ =?us-ascii?Q?TqpSnGgQCmcMR0/qg6LiTqaffYWOzcm79IQDZJ+z9uqUNt02OAROkMCyylLo?=
+ =?us-ascii?Q?XsV5IGWxHPaaHwFB8r/0ooJH5ZOlXIsRhWsU9xFZUUCVV5+vOZc63bLUIK88?=
+ =?us-ascii?Q?Q0TPIhGidROE/HnGsJY18kwsfpqrEP/b/CaxP1NtTynZCsibEwHhH6pFwhC4?=
+ =?us-ascii?Q?PvCr+wJOzxZPXKAazpBORu7YDFOmOfIawL8au8p31INiWrViDWldpf7/p3vX?=
+ =?us-ascii?Q?G6DB4WiibdZyE3/Rsyve3HQm2WiKZTuqzBnln4RuaQmChRMR5F/8oCkulULR?=
+ =?us-ascii?Q?iQO8HXOHNZ8vgv+VRXfdMSfpPhPYq2kxpYejf5Yu59MVTXqvg6HQbO18VDVO?=
+ =?us-ascii?Q?fZKMbX4SAiQUaixDOEjB04YIl9tumpSIlSEtguWdpDi2gqDWFpCz0wCA7cAl?=
+ =?us-ascii?Q?9sw3knr1QV2SMQ+MQIO1NWtgSxc/gPK+k4NR0yLYi7p0IyQp+0iLwkpDvJDN?=
+ =?us-ascii?Q?9tvLED8ztHQ9DfHiV/dBcdD6n+mSNJ9Y?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?iOe1aAg3mnrVsFrPW86f2d/QzWgW9OxqDMu4NLWO1CNFoTpQaeHDDchQIkZl?=
+ =?us-ascii?Q?bM+lsy0svivGVAHz6nwK4F+VrAOrDptTLUpX/m6KtK68KzzuEBSB3sxCp/do?=
+ =?us-ascii?Q?akGvHMVkTJJHycRUt6r/HE7200nOjNQ5OWjolo5bm11WnMSBVghFfJOBBDhh?=
+ =?us-ascii?Q?+HhJEomZfPYnedwc1Y9FbiPuiT4X/t8DRFX8x7kGupm3/ptcfy7CDLsnBMYD?=
+ =?us-ascii?Q?cB4+NCyc36sc6rmcznyyaILOj5ZH/zAuiQIZwCJc1Y6gdCoGJU4llOKwcRKy?=
+ =?us-ascii?Q?Hnu25su5zVt6KVhJSz2aksPvCbUUW9OiSdEFDWLXSvKDdY60UBDZiNOHUHuh?=
+ =?us-ascii?Q?LvfEp8oeExxjlSIe/pZBfQsF+ldREGHWMVQ1bCBNaRdWi1QvQrcgG25+IJc3?=
+ =?us-ascii?Q?lkd5qE0uZ54U0Gn/Hxx4uIMhySfABmTtHYLmg2W+l+/KA0QNcSv0ZXU9teoq?=
+ =?us-ascii?Q?YEJmz55kGK8BExxXIacRvm6UE1SR+j5XsRv9X/ZFbErSWBNLKbicDHykY7Bm?=
+ =?us-ascii?Q?3ZPptlBe/zMLM2S6Cv864dn5m59owVf3qazCd2AFOQZV0IHRDNc2d6XZJlG6?=
+ =?us-ascii?Q?LxfnvYcOaPa/IDUvLBkRck7v3Vh0qquOMZrbcwJ7O8xthW9+PAnnUnvcG13S?=
+ =?us-ascii?Q?LV1a7nSd/lyZjsJh8jiM6QsVLKtHAVLNhu+9kOKpHeLVJAtdGAJ3oesa5jEr?=
+ =?us-ascii?Q?A4E2cRZFsQVYVINAbstu7JV9gqckTwdpR3yHI/5B9XXjI4WykGwiMte3T5nc?=
+ =?us-ascii?Q?EQeCJpAdapOk4rlVgY8SWpk1VbOpMSF6kE3J+K/g40r/1BuZBtOuxu5qGSvK?=
+ =?us-ascii?Q?uwsACTK8wGDxbhLiJhWPBkqCNIqQG5F2rfzcXYBdaNTavVILkJ3C2tf0/pri?=
+ =?us-ascii?Q?Gyp/PGkf38R0VxrxKqwdLMOphqa+5z4xlBN3hfs/2jsE/4jANaPzqp2JiCLJ?=
+ =?us-ascii?Q?qyn06BHE+EcmDozTDnjDwOShBHKhYAMiesrays2hxpxQC9ppVyVIbc2254Kz?=
+ =?us-ascii?Q?etozYEDMPD68O4RO7nbw2qqRRLu94gzDD4kn+PQoy+lOB7cCHfUIrj65PCwl?=
+ =?us-ascii?Q?5sW/QqjcEcBjr4ppukdc/A3fTciTpLQ7il21AdiXS/3h+QU2Ljkzj+F/SHXs?=
+ =?us-ascii?Q?VKAHynkBwA71Ls2azvbPQPD4j/VeEVyftWaorseC1M4TwY3EcZpV7KTDt7xF?=
+ =?us-ascii?Q?C/wWiT+uRWs5hqDZ2dYNsOuO85zk1dgxB/MGh3yjwMHmA7muK6R1yrac2C/P?=
+ =?us-ascii?Q?U5YNsCxD7hmleWnQjwsfMXspMS331TM70nEm9Oj+Uvtgs7uvmVCClPh8iegs?=
+ =?us-ascii?Q?PowGiAfsNXfbUVXpzzc55l55njatNtSHfcgfrDCPVIdXn8jRaSTjfO6/Nsk9?=
+ =?us-ascii?Q?5NNG9C+Cqg/bOSNitZ0BKLlnduUMh0DwBKXTLfZ2ZG4X6IMTBycap3S3k0ZA?=
+ =?us-ascii?Q?d0TtPDBChKUw3c9PkndUvLph/tqNpWG1s9uGX4b3NmgZSvg0s82/qqIN5ZpQ?=
+ =?us-ascii?Q?oISLjdHCBb7ZpwyztnkKr/+VwLdO/IAvwdnjrSYxjer72eP70V06yhTODzQP?=
+ =?us-ascii?Q?dfoHwOAayTxRNCinZz8=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|GV1PR04MB11063:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21c901d7-0261-4265-ef3b-08dd30554d2a
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?Cb10DobNSGnl5pfaPnQuGE0V/fU1Ttl0v3Dlh/jX5efzDrRPaB4HJ3VMtb?=
- =?iso-8859-1?Q?RsNe/92R3f3pwXr9P7BIJ063jEZJFk20efCX14KJsSBvMQycOd9n4oiiFQ?=
- =?iso-8859-1?Q?y2jDhcB4qgk9TZMCt5jXQrxSVFJtRhQ08uRFJx2jeArzKRJLAgclgeo5JT?=
- =?iso-8859-1?Q?C7X+8UzzEblgCZzh4ntdDjJEtGJZZJNMhHTX7X9j9V4vi5zNhx8M3k/VcH?=
- =?iso-8859-1?Q?ZPh8C0m3yB2slarMbQjUXCYihEkz2juRKVf7P9QgERYOThhjQxtyPx7To3?=
- =?iso-8859-1?Q?8UWdAATOJWcuNMbPA6qohm914b6Y1MdM4eIZ/ZR6M3Ra3sleufTLpM7tjF?=
- =?iso-8859-1?Q?At5Rk74RVu9YEppYcjeD+9s7nNt5cG39Uot47QgHgt0ZFSCEC0nMp2Ina6?=
- =?iso-8859-1?Q?Rx0hwMBAb/U1UU8MTNfpdH/rXbTbcxQYrLHqDH89w96Nkkirgg4LxvOBMO?=
- =?iso-8859-1?Q?+O+l/g3f/TIyP0pt1eU1Oz/Zo9sPhW32kGgMSO+JKr1z+zd/Ze6WZWY1V5?=
- =?iso-8859-1?Q?l4lcaaFLevZyN4aQUkvzuS1o7JanGzRSkaHoTzUKvOXhVJOf90xUSeVZEe?=
- =?iso-8859-1?Q?RJpotqmeSydO9ZXnLAUEj1rLWE/sIdVXC7+S+NjupE/QDdKUhcXtpGdIVw?=
- =?iso-8859-1?Q?dW34GMqSAce1zmyfCDGBlFBJdNLEBU5qXfc8bSGb0Q8jKibB3FZmJuavTV?=
- =?iso-8859-1?Q?RFoh8MzDk9VLXWCmVSl8doGimLcX6Tpyk+JsZc7626+ZJQ9UnTFtRLLxK4?=
- =?iso-8859-1?Q?hhSRJviUp6695LUuRcDTsJxgHm8feACw9pLYan1trSNC63PKUQwSgxlLZP?=
- =?iso-8859-1?Q?rbhVmHsMkJogNohh3GwcMmbAqRUUPa2jAw3lrak2nRUY92HSFOGoAZ9ZWO?=
- =?iso-8859-1?Q?T5iiQjxxBzVp1z/pwh4XzSR4cR45zL36uXuIYD/m/NeCWmG4HkXUzOA2C3?=
- =?iso-8859-1?Q?XuEHjyH0IiuidAJZv810KeW5AUnXTqlGXsoXo2iLC0X/0oCYeqWg8xEtNG?=
- =?iso-8859-1?Q?rrry4BokZ7Vth40joPZe2C7kKx+I2ROFe6PuVAif13UGIxaAKsG9adrZcl?=
- =?iso-8859-1?Q?/YRv70cBtdanwL4QekKRybGix+fC+LvFGnAr5p0bmmQhiL/AxqRhvZCgid?=
- =?iso-8859-1?Q?GXDU3j8Q9UEypDMuddD0FIT7oZgBmpmAZB1DMU4xBNX+NJMDh0mHwjinxa?=
- =?iso-8859-1?Q?2qnFP/EX2zDxkd6khUf7SQi5+5n+vTigibLct/fIMcqW0Upng2aERgrsKx?=
- =?iso-8859-1?Q?7p4kCbpQxR5+1dO0o/HT+2d1AZcAIaEMEsYi0247GWb443HCpQ3iLF5oOq?=
- =?iso-8859-1?Q?MaSjDUWtG7eHgy+oKVJa2JQClAGUhMRssVUQfijqp7YcZ0xTFmDLi+wvMW?=
- =?iso-8859-1?Q?4jN7BOsDphaF+J5rbiyS6CXjU9gLGUQt4Wcw7kPftJnR/XorgXcr0eQHCt?=
- =?iso-8859-1?Q?LTDgUJjqjsL9m+6a?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?U+vm+dGj8AQ7ak54/2bJEb4tKJtJh3DcCNxB9C+mNw9NLUSl839OyNhy/0?=
- =?iso-8859-1?Q?CiXmh8BojsYLrvm0grYJBjZwLlpxKtzEg/t+MZxCrabFYmSPbx6X+pvQZ3?=
- =?iso-8859-1?Q?qkIgGIfaUf/zM1/cbMM8vHlrelwuu2JCCiiNwZoBgPW9vJ9dJyiYsN0S4g?=
- =?iso-8859-1?Q?NpJ+6yhEkodFUeXy9fay7P2VESg+H9MUT0oA8rN2Yd5PkVElG5bkd+zpCH?=
- =?iso-8859-1?Q?56rmR1SePDMojp8AEpkJD01X8dM8tnOkoNeDrdqiarlzkZvNBE7rK/x0Nt?=
- =?iso-8859-1?Q?UOGiEPtpZGA8sXI+gx/+K28pp+sI2uRmsyIYELXDW+1xy6ORT8usds7hy5?=
- =?iso-8859-1?Q?75opMiB+Au3T/6mgaVzh7vGcIS8DaStERIYp1jYP7avwd9rvI805agIA5F?=
- =?iso-8859-1?Q?z8xF7dCT+Z3KuAzKuSR479yPw35GuYZfXiguuEQJxFaFbiREATUfhpz2WK?=
- =?iso-8859-1?Q?Qe8hIByEF5z7NG0GqOBVgH7j0ysFa7s2+wTbaiTk8h1MJ2TK3TeXCZGHHg?=
- =?iso-8859-1?Q?a3MiJlIYymKpyP7oHCTvMjX82XqBePmIi6+ot44It1mniToD8Dzja2GBwO?=
- =?iso-8859-1?Q?zNX0HickWaFBgHCDnxNl87oAV1o/VqUjJFJSgmx9pcH9zhEgnnyknM72XH?=
- =?iso-8859-1?Q?fGoSMD2T6ilT7C6F0mv0W+uH7O5enfR+oyJ+LX9lDYDAOiA7qjcZ1KoO66?=
- =?iso-8859-1?Q?Z8Uy9n1A/GzqO5Oby0b9XurOnliL8wTckek13b+KN0mmkyVWPkA4eFQ7NN?=
- =?iso-8859-1?Q?22qAwPYDArQyDB6sZOSADHJAI5IK5VuIjicVQmzbayvHrexaa/W14VhO3S?=
- =?iso-8859-1?Q?ibuFq6DLZZs6Ta5YL0zF8m6bEb4gTXiD8NAYCPhEQfYJlsChyoP2Skx0D9?=
- =?iso-8859-1?Q?/UfU9DfADur+ukNrewXV2pBNkr4zCahzP8isiY7FEmonuGwAkT25c1fO4w?=
- =?iso-8859-1?Q?eUE6s+xI6l0aTbn5IDvi9z5alKP3xjDXp9HLs9xFKcdxg1dJQd+nx7oxnl?=
- =?iso-8859-1?Q?UYzOp/t978oBf1iX2bk4aD3SHYhKdKE5MQzGDG/HhhM2tIUe3q3voHTHFv?=
- =?iso-8859-1?Q?ZYuDftif0d5FMhV52F8K0/dAWIVLOxWlAkbQ7qRMFS+P1WXU8eNWPVAU5F?=
- =?iso-8859-1?Q?xvvDw3xr7XaM2TOGBAHZwYU98Zwt+gk01+3kyYu3EquCaVljDIn6Rh9ssl?=
- =?iso-8859-1?Q?7jWphOZ8JjQy4odSaAKSLJNHbsE2DKkL/9LJ2MgYOVMnXCQdMGLo2TWVHM?=
- =?iso-8859-1?Q?uyGmBs1r2CAk/vtJT3TR6HH0aBUqtyBBFzUwkzEyWa/odIMI+j/Adwj50V?=
- =?iso-8859-1?Q?ADSR25jq2F/bu+vGS+we9UEA5+xqTUVuRIRN14xaUx8M62AHmcE4dBJm6K?=
- =?iso-8859-1?Q?KAECCg9wvZDCq1+5vTlUfUoHN5gq9KDKngdve3fHzw09yHtVtoV37tWno9?=
- =?iso-8859-1?Q?xjqiAO2hcgD2iT0tBZxuzWDW7v7kIBrSicw2smaiJsW44fgRGwi/LV88Q7?=
- =?iso-8859-1?Q?at0MFd6eQw+ENQW4JCpv5ILN/kfZo0Q2HnHrOYs7axpt/g3EOUOdarmws6?=
- =?iso-8859-1?Q?Len8w7pNC3IFFeTIJXAuV7hZgyJOcX94zNXFuHQ+ujqBQLGXrIZxGaJzUA?=
- =?iso-8859-1?Q?2fqUaicvXSq8W/YYgi4FUy2j31JKEqfYDU?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21c901d7-0261-4265-ef3b-08dd30554d2a
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 02:28:28.2882
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0362b458-dd8d-4da5-5ba2-08dd30722e24
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2025 05:55:11.4945
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hX47de0zprdtZFvI+K8WUKthJqWB/sgMgxHpezpxokWbf0FLYadEGGswZYNbMMH/7ufOSeKs7Tj/JLWxkhCAhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB11063
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fWSvCJKvK0BaF/H5FqXkcAKGzTP2O6KgYIJ5ifcxgBBvS29+xYRKThw10pI8cZzsuLZGCnQmT2wD7FFiL0c7MA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10959
 
-On Wed, Jan 08, 2025 at 11:15:40AM +0100, Alexander Stein wrote:
->Hi Peng,
->
->Am Mittwoch, 8. Januar 2025, 08:00:18 CET schrieb Peng Fan (OSS):
->> From: Peng Fan <peng.fan@nxp.com>
->> 
->> i.MX9 OCOTP supports a specific peripheral or function being fused
->> which means disabled, so
->>  - Introduce ocotp_access_gates to be container of efuse gate info
->>  - Iterate all nodes to check accessing permission. If not
->>    allowed to be accessed, detach the node
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->>  drivers/nvmem/imx-ocotp-ele.c | 172 +++++++++++++++++++++++++++++++++++++++++-
->>  1 file changed, 171 insertions(+), 1 deletion(-)
->> 
-[....]
->> +
->> +	return imx_ele_ocotp_access_control(priv);
->
->In [1] you mentioned devlink should solve the probe order. How does this
->play when the driver is compiled in (e.g. ethernet for NFS boot) but
->this OCOTP driver is just a module?
 
-OCOTP needs to built in for using devlink. Or the users needs to be
-built as module.
 
->I'm not well versed with devlink, but is
->> access-controllers = <&ocotp IMX93_OCOTP_ENET1_GATE>;
->already enough to create that link?
+> -----Original Message-----
+> From: Frank Li <frank.li@nxp.com>
+> Sent: Thursday, January 9, 2025 12:41 AM
+> To: Sherry Sun <sherry.sun@nxp.com>
+> Cc: gregkh@linuxfoundation.org; jirislaby@kernel.org; linux-
+> serial@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> Subject: Re: [PATCH] tty: serial: fsl_lpuart: flush RX and TX FIFO when l=
+puart
+> shutdown
+>=20
+> On Wed, Jan 08, 2025 at 03:03:05AM +0000, Sherry Sun wrote:
+> >
+> >
+> > > -----Original Message-----
+> > > From: Frank Li <frank.li@nxp.com>
+> > > Sent: Tuesday, January 7, 2025 11:46 PM
+> > > To: Sherry Sun <sherry.sun@nxp.com>
+> > > Cc: gregkh@linuxfoundation.org; jirislaby@kernel.org; linux-
+> > > serial@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > imx@lists.linux.dev
+> > > Subject: Re: [PATCH] tty: serial: fsl_lpuart: flush RX and TX FIFO
+> > > when lpuart shutdown
+> > >
+> > > On Tue, Jan 07, 2025 at 03:48:34PM +0800, Sherry Sun wrote:
+> > > > Need to flush UART RX and TX FIFO when lpuart is shutting down to
+> > > > make sure restore a clean data transfer environment.
+> > >
+> > > why not flush it at open()?
+> >
+> > Hi Frank,
+> >
+> > Some background: We observed an issue during imx952 zebu simulation,
+> imx952 edma IP has a bug that if an edma error occurs, it will directly r=
+eturn
+> an error without marking the current request completed, so the current ua=
+rt
+> transfer will pending, the data will stuck in the FIFO even if we close t=
+he uart
+> port and reopen it, which will impact the next data transfer.
+> > Actually when we configure and enable the FIFO during uart startup, we
+> > also flush the RX/TX FIFO, but it is done after the rx/tx dma are
+> > started,
+>=20
+> Please wrap at 75 char to read easily.
 
-Yes, the drivers/of/property.c has this
-"DEFINE_SIMPLE_PROP(access_controllers, "access-controllers", "#access-controller-cells")"
+Hi Frank, sorry for that, will pay attention next time. :)
 
-The fw_devlink driver will create consumer/supplier to make sure proper
-order.
+>=20
+> It looks like make sense to move flash before start dma.
 
-Regards,
-Peng
+Yes, as we discussed internally, this is an improvement needs to
+be done. Thanks for the suggestions.
 
->
->Best regards,
->Alexander
->
->>  }
->>  
->> +struct access_gate imx93_access_gate[] = {
->> +		[IMX93_OCOTP_NPU_GATE]		= { .word = 19, .mask = BIT(13) },
->> +		[IMX93_OCOTP_A550_GATE]		= { .word = 19, .mask = BIT(14) },
->> +		[IMX93_OCOTP_A551_GATE]		= { .word = 19, .mask = BIT(15) },
->> +		[IMX93_OCOTP_M33_GATE]		= { .word = 19, .mask = BIT(24) },
->> +		[IMX93_OCOTP_CAN1_FD_GATE]	= { .word = 19, .mask = BIT(28) },
->> +		[IMX93_OCOTP_CAN2_FD_GATE]	= { .word = 19, .mask = BIT(29) },
->> +		[IMX93_OCOTP_CAN1_GATE]		= { .word = 19, .mask = BIT(30) },
->> +		[IMX93_OCOTP_CAN2_GATE]		= { .word = 19, .mask = BIT(31) },
->> +		[IMX93_OCOTP_USB1_GATE]		= { .word = 20, .mask = BIT(3) },
->> +		[IMX93_OCOTP_USB2_GATE]		= { .word = 20, .mask = BIT(4) },
->> +		[IMX93_OCOTP_ENET1_GATE]	= { .word = 20, .mask = BIT(5) },
->> +		[IMX93_OCOTP_ENET2_GATE]	= { .word = 20, .mask = BIT(6) },
->> +		[IMX93_OCOTP_PXP_GATE]		= { .word = 20, .mask = BIT(10) },
->> +		[IMX93_OCOTP_MIPI_CSI1_GATE]	= { .word = 20, .mask = BIT(17) },
->> +		[IMX93_OCOTP_MIPI_DSI1_GATE]	= { .word = 20, .mask = BIT(19) },
->> +		[IMX93_OCOTP_LVDS1_GATE]	= { .word = 20, .mask = BIT(24) },
->> +		[IMX93_OCOTP_ADC1_GATE]		= { .word = 21, .mask = BIT(7) },
->> +};
->> +
->> +static const struct ocotp_access_gates imx93_access_gates_info = {
->> +	.num_words = 3,
->> +	.words = {19, 20, 21},
->> +	.num_gates = ARRAY_SIZE(imx93_access_gate),
->> +	.gates = imx93_access_gate,
->> +};
->> +
->>  static const struct ocotp_devtype_data imx93_ocotp_data = {
->> +	.access_gates = &imx93_access_gates_info,
->>  	.reg_off = 0x8000,
->>  	.reg_read = imx_ocotp_reg_read,
->>  	.size = 2048,
->> @@ -183,7 +307,53 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
->>  	},
->>  };
->>  
->> +struct access_gate imx95_access_gate[] = {
->> +		[IMX95_OCOTP_CANFD1_GATE]	= { .word = 17, .mask = BIT(20) },
->> +		[IMX95_OCOTP_CANFD2_GATE]	= { .word = 17, .mask = BIT(21) },
->> +		[IMX95_OCOTP_CANFD3_GATE]	= { .word = 17, .mask = BIT(22) },
->> +		[IMX95_OCOTP_CANFD4_GATE]	= { .word = 17, .mask = BIT(23) },
->> +		[IMX95_OCOTP_CANFD5_GATE]	= { .word = 17, .mask = BIT(24) },
->> +		[IMX95_OCOTP_CAN1_GATE]		= { .word = 17, .mask = BIT(25) },
->> +		[IMX95_OCOTP_CAN2_GATE]		= { .word = 17, .mask = BIT(26) },
->> +		[IMX95_OCOTP_CAN3_GATE]		= { .word = 17, .mask = BIT(27) },
->> +		[IMX95_OCOTP_CAN4_GATE]		= { .word = 17, .mask = BIT(28) },
->> +		[IMX95_OCOTP_CAN5_GATE]		= { .word = 17, .mask = BIT(29) },
->> +		[IMX95_OCOTP_NPU_GATE]		= { .word = 18, .mask = BIT(0) },
->> +		[IMX95_OCOTP_A550_GATE]		= { .word = 18, .mask = BIT(1) },
->> +		[IMX95_OCOTP_A551_GATE]		= { .word = 18, .mask = BIT(2) },
->> +		[IMX95_OCOTP_A552_GATE]		= { .word = 18, .mask = BIT(3) },
->> +		[IMX95_OCOTP_A553_GATE]		= { .word = 18, .mask = BIT(4) },
->> +		[IMX95_OCOTP_A554_GATE]		= { .word = 18, .mask = BIT(5) },
->> +		[IMX95_OCOTP_A555_GATE]		= { .word = 18, .mask = BIT(6) },
->> +		[IMX95_OCOTP_M7_GATE]		= { .word = 18, .mask = BIT(9) },
->> +		[IMX95_OCOTP_DCSS_GATE]		= { .word = 18, .mask = BIT(22) },
->> +		[IMX95_OCOTP_LVDS1_GATE]	= { .word = 18, .mask = BIT(27) },
->> +		[IMX95_OCOTP_ISP_GATE]		= { .word = 18, .mask = BIT(29) },
->> +		[IMX95_OCOTP_USB1_GATE]		= { .word = 19, .mask = BIT(2) },
->> +		[IMX95_OCOTP_USB2_GATE]		= { .word = 19, .mask = BIT(3) },
->> +		[IMX95_OCOTP_NETC_GATE]		= { .word = 19, .mask = BIT(4) },
->> +		[IMX95_OCOTP_PCIE1_GATE]	= { .word = 19, .mask = BIT(6) },
->> +		[IMX95_OCOTP_PCIE2_GATE]	= { .word = 19, .mask = BIT(7) },
->> +		[IMX95_OCOTP_ADC1_GATE]		= { .word = 19, .mask = BIT(8) },
->> +		[IMX95_OCOTP_EARC_RX_GATE]	= { .word = 19, .mask = BIT(11) },
->> +		[IMX95_OCOTP_GPU3D_GATE]	= { .word = 19, .mask = BIT(16) },
->> +		[IMX95_OCOTP_VPU_GATE]		= { .word = 19, .mask = BIT(17) },
->> +		[IMX95_OCOTP_JPEG_ENC_GATE]	= { .word = 19, .mask = BIT(18) },
->> +		[IMX95_OCOTP_JPEG_DEC_GATE]	= { .word = 19, .mask = BIT(19) },
->> +		[IMX95_OCOTP_MIPI_CSI1_GATE]	= { .word = 19, .mask = BIT(21) },
->> +		[IMX95_OCOTP_MIPI_CSI2_GATE]	= { .word = 19, .mask = BIT(22) },
->> +		[IMX95_OCOTP_MIPI_DSI1_GATE]	= { .word = 19, .mask = BIT(23) },
->> +};
->> +
->> +static const struct ocotp_access_gates imx95_access_gates_info = {
->> +	.num_words = 3,
->> +	.words = {17, 18, 19},
->> +	.num_gates = ARRAY_SIZE(imx95_access_gate),
->> +	.gates = imx95_access_gate,
->> +};
->> +
->>  static const struct ocotp_devtype_data imx95_ocotp_data = {
->> +	.access_gates = &imx95_access_gates_info,
->>  	.reg_off = 0x8000,
->>  	.reg_read = imx_ocotp_reg_read,
->>  	.size = 2048,
->> 
->> 
->
->
->-- 
->TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
->Amtsgericht München, HRB 105018
->Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
->http://www.tq-group.com/
->
->
+>=20
+> > so the dma request is still triggered by mistake.
+> > And I think it is reasonable to flush the RX/TX FIFO when closing the u=
+art
+> port, so add this behavior in shutdown() to avoid changing the workflow o=
+f
+> startup().
+>=20
+> the target is make driver logic reasonable, not avoid changing ...
+> if external devices continue send data, even you flash fifo in closing, i=
+t may
+> still have data in FIFO if uart have not disabled yet.
+>=20
+
+Since we flush the FIFO after disabling the receiver and transmitter, so th=
+is
+won't happen.
+
+Best Regards
+Sherry
+
+
+> > >
+> > > >
+> > > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > > > ---
+> > > >  drivers/tty/serial/fsl_lpuart.c | 5 +++++
+> > > >  1 file changed, 5 insertions(+)
+> > > >
+> > > > diff --git a/drivers/tty/serial/fsl_lpuart.c
+> > > > b/drivers/tty/serial/fsl_lpuart.c index 7cb1e36fdaab..c91b9d9818cd
+> > > > 100644
+> > > > --- a/drivers/tty/serial/fsl_lpuart.c
+> > > > +++ b/drivers/tty/serial/fsl_lpuart.c
+> > > > @@ -1965,6 +1965,11 @@ static void lpuart32_shutdown(struct
+> > > > uart_port
+> > > *port)
+> > > >  			UARTCTRL_TIE | UARTCTRL_TCIE | UARTCTRL_RIE |
+> > > UARTCTRL_SBK);
+> > > >  	lpuart32_write(port, temp, UARTCTRL);
+> > > >
+> > > > +	/* flush Rx/Tx FIFO */
+> > > > +	temp =3D lpuart32_read(port, UARTFIFO);
+> > > > +	temp |=3D UARTFIFO_TXFLUSH | UARTFIFO_RXFLUSH;
+> > > > +	lpuart32_write(port, temp, UARTFIFO);
+> > > > +
+> > > >  	uart_port_unlock_irqrestore(port, flags);
+> > > >
+> > > >  	lpuart_dma_shutdown(sport);
+> > > > --
+> > > > 2.34.1
+> > > >
