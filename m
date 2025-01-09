@@ -1,112 +1,117 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4152147FA
-	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 07:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946392F2D
+	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 08:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736408612; cv=none; b=Go7gcEHiklr1YuKRGMYta1pKnq6X9aCET+A//MLU25gQeEJ6beCm1XrLwn8mCDkJsbt4wFIjvVtPwPfhZ5O0kCYeGR+OUDlIFb680Rwxzy105cCFqXd+jDVbtBO2WFeOD4wr34xCRifCa3ea9VQCtqEAQfuWD/v6lU7Vwk3cveA=
+	t=1736412627; cv=none; b=PnDbx3IvraYIdCZhOwp+QJmO7+SAxETpkSwrpGoTKhtUlVIrfQHMEwmXUYhjMNrbKYs6EdShg4cWktVrw954K5nqdQFJI/b2L3AnqRI8gjAbNlNFzduwVkJ04cC27LSv39pSZSZC0MK+bVEGhyljSj4ZbPk0EO2lWrvX6rGhNTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736408612; c=relaxed/simple;
-	bh=AujPO41+pvB1tomJV777Px8OTr25nzkE1wIQmICTRJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtUcmRFITxQMZ3Qv4NbMRDGY8u4ZJFfFSKH1vSc16D429XgidDn74fZhsS22tYS1yY6NL/DwY6ZaD3gqHVeMCE36ylhWMSWGAw2MCwRGKxTAQDp9ImgO55FGIYzV3WUBDzwoL+vfyEV5SIeutOmh2aQj8h/+DDUn/Z1xF2rNGns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=BePfcLIn; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1736412627; c=relaxed/simple;
+	bh=ptd6YEnRpCQ0xymGJkst6f2eugLHYzZkYTtQZEFUmKg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Vu+yMju+XwsytINgHStMNDLL6+14q9gvmLHz2FzWiz3eQqnPGIDSLTtpVbcXQJ1CxdhdgYi+7HloaLN3enBWqpwO8lZKN1Nc14STniGMt+KkeT0Dqm4lAn8erYppNBjxTZTZdNm5o0wjREHtNPXT5y9vSW8mPeLUK/ToBQyqwww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RJf6at5/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="BePfcLIn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=AujP
-	O41+pvB1tomJV777Px8OTr25nzkE1wIQmICTRJE=; b=BePfcLIn4IrZAAS5tCo/
-	hDYoIDd9VmOD+b08gXsBBL9sWQIggG1+/hDk91d6l9b7XqGFS0Nzw3AO4mByhHKQ
-	Xi0UaZ8WQgrDbNzIPQUYYxvSiUIwZmJeVRQr7fWIzfsvdvcWeiPO2u5j96PSg42D
-	b60JubSJKzkwxgZVh+1ITYU38vu9ePJ4E8LAHvz4zZl4r2kzkBrI55UrWhoKk7QM
-	T4au+2HUpHb9I6H9YQ+FgeydQdP7UM5saiyxqE8JM28O1rZDeT21m5DYaDO3JjDm
-	YUGe0eToaVA6/2bMm5EGhDAicNRW11ttIboIhflqsq+D6Og2OqmTaGUFTOzHc32j
-	tQ==
-Received: (qmail 2820930 invoked from network); 9 Jan 2025 08:43:25 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 9 Jan 2025 08:43:25 +0100
-X-UD-Smtp-Session: l3s3148p1@ucoRIkErIs0gAwDPXw20AOMQ2KO98fSH
-Date: Thu, 9 Jan 2025 08:43:24 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"moderated list:I3C SUBSYSTEM" <linux-i3c@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] i3c: master: Fix missing 'ret' assignment in
- set_speed()
-Message-ID: <Z39-HEG6AaAFvDk6@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"moderated list:I3C SUBSYSTEM" <linux-i3c@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-References: <20250108225533.915334-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RJf6at5/"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509418Ak030410;
+	Thu, 9 Jan 2025 08:50:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	he/XnQHzrk94R5LspwWCWwvtkBuM8+4yqBzwWYA4MwM=; b=RJf6at5/GdAFzjur
+	Pga4SWm/90TWSI8aLRrCLImtEmNVK0jv1omfYiYR8RmOUyP+DQqhMQCgznO4Nh5/
+	IGfKe/cKXo/pLxGAumxrkIRHR7LrFx/4fgW4pXcImconcEiAPGweGFQ0/wGkNx1L
+	/Vv9595F37VvtPUAkV9dFz+H5ntRXLMJkoojn8oFEHOq42JJ8C1yd0NelyVdfqGP
+	VZ9K30OqC1nuJSkPo5hR5RAUuGB3RDBZ5NV0NZCQPUoZWaLpQFzjpqEAiH+zU4HW
+	UMjsiIO7yZ9M+vEZC0uKWcoLxmtGBA/6imYwIGLksPYQLhst5BQJLKQoNvnpWxJN
+	R6fWzg==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442727rm3e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 08:50:20 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5098oJbP004724
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 9 Jan 2025 08:50:19 GMT
+Received: from [10.216.26.158] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 9 Jan 2025
+ 00:50:16 -0800
+Message-ID: <9d0dac6c-b9b2-4852-bd42-8aa14124b24c@quicinc.com>
+Date: Thu, 9 Jan 2025 14:20:11 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GJgCYyWEeZ2zf4nQ"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] i3c: master: Fix missing 'ret' assignment in
+ set_speed()
+To: Frank Li <Frank.Li@nxp.com>,
+        Alexandre Belloni
+	<alexandre.belloni@bootlin.com>,
+        Carlos Song <carlos.song@nxp.com>,
+        Miquel
+ Raynal <miquel.raynal@bootlin.com>,
+        "moderated list:I3C SUBSYSTEM"
+	<linux-i3c@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>
+CC: <imx@lists.linux.dev>
+References: <20250108225533.915334-1-Frank.Li@nxp.com>
+Content-Language: en-US
+From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
 In-Reply-To: <20250108225533.915334-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: zLUHJtMqEoSGYBRjPKlAYeWuCXlRxnFk
+X-Proofpoint-ORIG-GUID: zLUHJtMqEoSGYBRjPKlAYeWuCXlRxnFk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ mlxlogscore=999 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501090072
 
+Hi Frank, change looks good to me.
 
---GJgCYyWEeZ2zf4nQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jan 08, 2025 at 05:55:33PM -0500, Frank Li wrote:
+On 1/9/2025 4:25 AM, Frank Li wrote:
 > Fix a probe failure in the i3c master driver that occurs when no i3c
 > devices are connected to the bus.
->=20
+> 
 > The issue arises in `i3c_master_bus_init()` where the `ret` value is not
 > updated after calling `master->ops->set_speed()`. If no devices are
 > present, `ret` remains set to `I3C_ERROR_M2`, causing the code to
 > incorrectly proceed to `err_bus_cleanup`.
->=20
+> 
 > Cc: stable@vger.kernel.org
-> Fixes: aef79e189ba2 ("i3c: master: support to adjust first broadcast addr=
-ess speed")
+> Fixes: aef79e189ba2 ("i3c: master: support to adjust first broadcast address speed")
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-Precisely.
-
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-Tested with a Renesas RZ/G3S-SMARC board with some test code added to
-the still under-development controller driver:
-
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-
---GJgCYyWEeZ2zf4nQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmd/fhwACgkQFA3kzBSg
-KbakZxAArGY+//Z1bYxaZ81h2Z2Hd4yIU7OPjrtwT+JboeOO3tUXG9nkNWUr8+y5
-JS4vJPJNZJggTvZgz6xwY5IG4UwHxxwPpaDm7dv3SJZ1eu7YuRLzvCpYlNCsRDu3
-ysgtx0u6gTkbrEAQ82m/1XVhIs/TtwGOUpgkgAlP1VIb5U/fT6/FPi/Sd94oPYu0
-QeG5AqsFyXtRVtHgJi1HS0zdBuHdteaXmp6qKhJ+lPEyNnEaBSFFBXrw1qANUqJv
-0USsr7O8XlbINBm7ivQ+JmvWqti1e+eW6FuJFMPbyE37GLSM4CU2KpvBMoTZ4eYf
-uTHoZIuDpK9I57AbC5UQZs9+VJIEjel6H2sHxzCOnTZjrLrHPugyzZzzCqd+PKvK
-l3SYoVmgaXP8NwZal5IvNGpxmXQ94yR/rtbhzGHvIIdRZ6TNJjd6prYcEfducTWV
-NbLxT8393G+OPlbcknUmkI67udrAl7JwQ+/T9uyt7wKUaEZKXOddqeZCXTsogfoo
-ucpue1T0ZWShkcP8C0obanBzEFL8NCo2JvwNg2gveYeYnFkv6STqCMf+VXEh0LKC
-KUuhiQ69UmT6VoLFEYsTJ+Q2xsyzWI5dS6oVYf93KgTzMlbqn+JvhBEbbPYczJnf
-Xn4cGw8hGUQZoeipKWE/qHMqVkLIt+Tm7u4WzdWg2HMZ1D0nsEk=
-=ibUC
------END PGP SIGNATURE-----
-
---GJgCYyWEeZ2zf4nQ--
+> ---
+>   drivers/i3c/master.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index 42310c9a00c2d..53ab814b676ff 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -1919,7 +1919,7 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+>   		goto err_bus_cleanup;
+>   
+>   	if (master->ops->set_speed) {
+> -		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+> +		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
+>   		if (ret)
+>   			goto err_bus_cleanup;
+>   	}
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
