@@ -1,58 +1,48 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8321CA1E
-	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 15:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CB621E0B7;
+	Thu,  9 Jan 2025 15:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736437343; cv=none; b=UVbFyj/d+baTWW+yNCMEHBZh5ZdSGB1uuume0aUQ54a471mMbBqwSyoXRivwOBJudv/PEPK5PHwxiyvg/9EzJxeH5eyqAX4nexIcQ/K7ieKfFTBL8eWLvm+1OOyUmpJEM/2y2BA/EhqFvIU22uTbdpO81WOKKHRtni6jHVrsmZo=
+	t=1736437986; cv=none; b=rnbhA9mXPa8hJOF4Y2QaQHEpjjoV+QL8RANDg7BXQ2xl9vD+90gsjvk9c8L+PLNTi3VzP8fpw034/8BoYCTHhJyIdDpxP3Xsb5Jw4SGoiBbt6fQK6iU532wJ6onFGHgZNAIdqUbdLTdtQ56CSmJhEM7E+E30B5hSEYt+X1Zwpck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736437343; c=relaxed/simple;
-	bh=5Y2bIJcXUVeRq/52yqMTXRgAjwKnGM1KYGlk8qkGwzY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NcBREpUmevMByC8Y+flzDZpkeCKOccDmwBKu8TKvqhFLpB6HQufZM0ov4pcWceLlExxAxexzF34VpQTrNn4WNMqt3TOXWtmdp1IWG05Mp49nUvGTERdsBDCtgJ0u+XtAZ1JrV3mIPRm+YLIkqu2DK9jo7DKQCN4BzMSF+SzWfR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MwNH6SxM; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1736437986; c=relaxed/simple;
+	bh=Gr2UZqhGaCcBNCEFnPWcGvmfKjnT3yqrVaJPosur4RM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aUoh47ZB53WAeYVqa3WuPR3HqThyTa9WjSzIPN8+/sMGA5ZxkZlPMEtvJUbuqvSQ0dkTxyz0/TY9jGXv5kA+UhnwTIy+/Y1jL1Enj9uLNoFl4z+44Uhl4KYJqAwdWf2tMrrcKkmkpxmOEDq+1uA/SlR7LWeik/KLvqpPDaGUZp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZKig11aM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MwNH6SxM"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 970BF1047DC25;
-	Thu,  9 Jan 2025 16:42:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1736437338;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Juwn84S5vUX2aH6VsMCIM7pJOc3sVKVbXwLzJq3+1Jw=;
-	b=MwNH6SxMOaF55Up/l3Tbf4uOwxVhmBCllDmFgpH7//hYrGxM7H+0Ry1PZlNWv6O1LYpUjQ
-	47GI2VUN+e63rGR3ifUmACUxkWVg5p/7+BHx4UkyGGv6BNsbCNYsBy8tc3n8tRQfjN5ZVf
-	EWOQiOfXsJrI1PwfvqoI0hwvw22+QMmvs7Y9Bu8T7EW/Vx/EBZuDo8Bl2Y4daqtmcxf3Te
-	VQaZ8557tEVpnF7AeNmla4MqVZsmfzePK3xqh4rNy9PJyCjbtsTA3msaSDk/vPj7qT6bvV
-	EeYVUAnKOZIK+5u26nbaz5kj8qgWC0vYIZPTxeU+IQ/hGx6VnpWeeKLOU1m15w==
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZKig11aM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636D8C4CED6;
+	Thu,  9 Jan 2025 15:53:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736437985;
+	bh=Gr2UZqhGaCcBNCEFnPWcGvmfKjnT3yqrVaJPosur4RM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZKig11aMgs7dsX0OWshpoo/MsIIELNzaQGd8dcn4nX374inTFKyBUe0W6WG9T3MtJ
+	 agtZZSTzZ12moIqTepiuq0tjDdF18w4qfXP7DVl/ro+Tq7y/XEdfI9sPLEEArz+UU6
+	 Avx+57p8zuKqXas7oQvNe8AM4gJHnqrtTfPNwkjIlLO/KbR2r0zs6dkqyNuWr0q6f0
+	 sKmfP1+UXEWCN0zWUWmWD40fzCoskDiXT8QKGNsBzKACZIsmR1s8xK8mkYIBcAuMWW
+	 UVhE3LbZFhUTCLqYhZqKbmEHbNYmD+Wk4eJw50pTGj6zHc9TImWeAgXn+tD61t4Gss
+	 vk1AMVvq8Ik9A==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Dragan Simic <dsimic@manjaro.org>,
+	linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [RESEND PATCH v11 1/3] dt-bindings: display: Add powertip,{st7272|hx8238a} as DT Schema description
-Date: Thu,  9 Jan 2025 16:41:49 +0100
-Message-Id: <20250109154149.1212631-1-lukma@denx.de>
-X-Mailer: git-send-email 2.39.5
+	imx@lists.linux.dev,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] mmc: Use of_property_present() for non-boolean properties
+Date: Thu,  9 Jan 2025 09:52:54 -0600
+Message-ID: <20250109155255.3438450-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,105 +50,63 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-This patch provides the DT Schema description of:
-- powertip,st7272  320 x 240 LCD display
-- powertip,hx8238a 320 x 240 LCD display
+The use of of_property_read_bool() for non-boolean properties is
+deprecated in favor of of_property_present() when testing for property
+presence.
 
-Used with the different HW revisions of btt3 devices.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-
-Changes for v9:
-- New patch
-
-Changes for v10:
-- None
-
-Changes for v11:
-- Combine both separate dt-bindings patches for powertip,st7272 and
-  powertip,hx8238a into one
-- Drop the quotes for in "title" entry of powertip*.yaml files
+v2:
+ - Drop initialization of dat3_card_detect
+ - Rebase on next-20250109
 ---
- .../display/panel/powertip,hx8238a.yaml       | 29 +++++++++++++++++++
- .../display/panel/powertip,st7272.yaml        | 29 +++++++++++++++++++
- 2 files changed, 58 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
- create mode 100644 Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+ drivers/mmc/host/mxcmmc.c          | 8 ++++----
+ drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-new file mode 100644
-index 000000000000..b7d74faeb5d5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-@@ -0,0 +1,29 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/powertip,hx8238a.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Powertip Electronic Technology Co. 320 x 240 LCD panel
-+
-+maintainers:
-+  - Lukasz Majewski <lukma@denx.de>
-+
-+allOf:
-+  - $ref: panel-dpi.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: powertip,hx8238a
-+      - {} # panel-dpi, but not listed here to avoid false select
-+
-+  height-mm: true
-+  panel-timing: true
-+  port: true
-+  power-supply: true
-+  width-mm: true
-+
-+additionalProperties: false
-+
-+...
-diff --git a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-new file mode 100644
-index 000000000000..f3622800f13f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-@@ -0,0 +1,29 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Powertip Electronic Technology Co. 320 x 240 LCD panel
-+
-+maintainers:
-+  - Lukasz Majewski <lukma@denx.de>
-+
-+allOf:
-+  - $ref: panel-dpi.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: powertip,st7272
-+      - {} # panel-dpi, but not listed here to avoid false select
-+
-+  height-mm: true
-+  panel-timing: true
-+  port: true
-+  power-supply: true
-+  width-mm: true
-+
-+additionalProperties: false
-+
-+...
+diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
+index e7a286c3216f..0a9affd12532 100644
+--- a/drivers/mmc/host/mxcmmc.c
++++ b/drivers/mmc/host/mxcmmc.c
+@@ -995,7 +995,7 @@ static int mxcmci_probe(struct platform_device *pdev)
+ 	struct mxcmci_host *host;
+ 	struct resource *res;
+ 	int ret = 0, irq;
+-	bool dat3_card_detect = false;
++	bool dat3_card_detect;
+ 	dma_cap_mask_t mask;
+ 	struct imxmmc_platform_data *pdata = pdev->dev.platform_data;
+ 
+@@ -1048,9 +1048,9 @@ static int mxcmci_probe(struct platform_device *pdev)
+ 
+ 	if (pdata)
+ 		dat3_card_detect = pdata->dat3_card_detect;
+-	else if (mmc_card_is_removable(mmc)
+-			&& !of_property_read_bool(pdev->dev.of_node, "cd-gpios"))
+-		dat3_card_detect = true;
++	else
++		dat3_card_detect = mmc_card_is_removable(mmc) &&
++				   !of_property_present(pdev->dev.of_node, "cd-gpios");
+ 
+ 	ret = mmc_regulator_get_supply(mmc);
+ 	if (ret)
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index e23177ea9d91..ff78a7c6a04c 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1648,7 +1648,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+ 	 * Retrieving and requesting the actual WP GPIO will happen
+ 	 * in the call to mmc_of_parse().
+ 	 */
+-	if (of_property_read_bool(np, "wp-gpios"))
++	if (of_property_present(np, "wp-gpios"))
+ 		boarddata->wp_type = ESDHC_WP_GPIO;
+ 
+ 	of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
 -- 
-2.39.5
+2.45.2
 
