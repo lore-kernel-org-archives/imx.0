@@ -1,67 +1,74 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011069.outbound.protection.outlook.com [52.101.70.69])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2072.outbound.protection.outlook.com [40.107.105.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D32D052
-	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 02:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B38C3FC7
+	for <imx@lists.linux.dev>; Thu,  9 Jan 2025 02:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736389522; cv=fail; b=aSn8y7v+E0Sy78OSQ1d+dfClDxXspbF+2TyGlD8ex9ionGUqNaDKQg830CbtiGrtTQixVsBTQhSFMsJcb+EFp6ZOu2oCjHu7fDmdlcKWvKJXvIII7GeE+WOwYRrUsc0NVc6QoVpMG+sCZxGiH92gOHzkx2oecA3jde5poMAqTGI=
+	t=1736389718; cv=fail; b=Es/dAlmRZirJcgbQPndtVV/dMXBP9bn2Z8yJcIT2j+6TZIxNND1K3DyiccLpl8YGXQNuM7zYwvU43V2zILodkFH8BFEX+pCdFGwIUAMAC6xtMlxAnbjLPAmv1EZbkKVCxknqMI2tbwjwF0Z7KniGcI+oZtVSgoxGIL0JSiaP58s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736389522; c=relaxed/simple;
-	bh=X/clPeErfQkkASKpQ3L7r2Eu+Jlnn9+2zmrNi5b19PA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eCHngmotzBDiSqRbYgXywIN8TYQtf8jUGpERnKPR9l1soAWajfmJkCTV4eE6nZL7aaNg+c4CFrMc/rwXtgbOyuUek2NoKLvcojnrlxh+hdjBICzLLQiDyNDpZd9VjcNkV/UHm1IvEXoCw7m9xaV4MS8K0Ck7FW6/iPF20h+LSgU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FZiAa5/f; arc=fail smtp.client-ip=52.101.70.69
+	s=arc-20240116; t=1736389718; c=relaxed/simple;
+	bh=mFJZ17hA9c2XARqLUQuQ7k8Fh4QVlL99z3EV+TFUxR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=He3o+fdFohksJrAwQZZt5J2W2tBUoSV0cWB1rRm8T90edWuSR/fjRPP3INh3715p14k3nR1CGcQRLB9Mk3gMf8YL4XQQxekqICB7x+Tf69klboNcOpGxhPOyTrSFsfgfkZODz3eKhwNOiKQkTFf3Na9OFR9PdRt02qoE227YW2E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=h6ri60TE reason="signature verification failed"; arc=fail smtp.client-ip=40.107.105.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FZiAa5/f"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="h6ri60TE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M9wMkzkpf/fOyZfKcXDykoKygEqe7/Old2IKJAKOcc9JS9U7mhq4GNk+afTx69kqAdpWlI5woaFOAaDmI1Gzr5Qp8fOHNC6SVLwWmE2a1Q3w5tOFmZxY5qvtlPoBUYfLXecwvnB0SSlNFoiU9/pW1kDJ9Gzpih6qQzLjwb70bPZLml8WNnqtMBdEVGNyen9c7Ctje9L/G0ccf+hBP5R+dX/hj8+eonbSZaWUq+U3LXVEZ/urio317j7BNL3jMsW7mUwVHW2f1pz5IoZ5Uj6wph8l9KK2GrFTqIwKWoUh0uqxXvvM+m09/onn2TtwaYMGyTyBg6cfivjj6BK62gpEpQ==
+ b=asLiZUKxyTPV+9sqB6YGbTXrn5/I51wqEfEVPWn1wouRXhbh4zhWW0bmT20ljC+Gt2nOZhqKnSCIKGqABFDOS4zFV2hKIGqGxO5Ge05/ncAGQiTJLhEpgwHLFp48FPqY1HuScf/Upg/MdlvN8xJ3RoZt2squAgSqLkbe7bBiuUMXFG6i+eSjoV6c09KloRS3uy44njrJdclL3/dScLKl7JjcKlNHfHA1fhpsFahcaF9+puSUiJbsklqAPC7SZ9uiBDy2opcb+FlSLAv421OUVg6ih+JY0Yblfs/P0MUDp2vHVQVWdpq5l0qPeSxEqHo72dryzxCuSfD2DfkSyG+yOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L3pMp557PsyvPlJFSLBYujoJUCv6il9NIbKKUN8spUc=;
- b=dwa6nwr7UToPqC/UWTYYzrnhnPQvCCs8ulqcmy8gKm2L3msZY9wL03bByKjgXonlZepS8Zr5R4poT9b2tHXq+yvT67HGLnd3Qgu4+FE80NOwgsp3NRQjnfCb8+YSPXsaKNDXvvKcX4Qbesh4KTfAhfjh79qZw3yeJvDGGQRJ2i4B3VhiacMvAqhLIfeQhVA8kTj/HjeoDir197TZjonPdIu7yAQimzNqC4FGD3Qu6Ekq789Sl0BChEB9n9UoDKuks8xMpCAoiCfvaAfdF0qw6mnC8en742eClBtd6IlHGGTXMQXmJhfuj4618fz3KpAfZ+zw6wk/fB+yS9WvH35jXw==
+ bh=GIFZE3Yp1nh93BeVR9xtEVwt6jHpgzpKWqkbLFXz0sE=;
+ b=KTJqzrQdEk+jsbBKbtVkNYZSLdcC7c+DuHLKcoEWdl4kBoT1DNatEGCl1LqwzkJ64WmZX81TYakGVTjbqzD0sshzKnUY0W57irvtf3Dap+CnfIJIGb16i6IdhF89kpJweF8/Q0eGiuFh0sOLLTi+W2+PciUYHsLZf7d6tbXVbetRm5Ey6/Lj/qu6XtH5lBX5Ekv/Za595zt64H7Ba7O2iAdZ/XPS4nTP6DLqRdjyg0pDGu5hoCM4OHNR6sJv1dywaLuDkEg2gw58YbbhD1mi//OaP5rS4bGAlPXqd9Vcf8qwDrozQKuXO7tF/GVM54BWI1zjrnjvcA9E5UjKRoMqFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L3pMp557PsyvPlJFSLBYujoJUCv6il9NIbKKUN8spUc=;
- b=FZiAa5/f9bQXYiV1b8SrNJCaUdndLZCzfkRiSk1lNa4ZDdHLOvXk9vQlM0V8vMliNSWHNS9Aymhb9LMMaU7uM3ntiCq68myjaB7Csztkk7I6tGl7zQ3JYfu3YgXVRaIXhB9nuBCmdfW6F2GVk2c3i0z7JDFZymd/Z81NL6E5WeKefDyhdZghKKgdwle0JJE1QBpDS2quQqdgW1hHfRqumzaeBeA6AO+yxy6v3uFB6EkIw8l5IFc+7oTP17sVEYlJa6kR8rMCPhJ1Xp36RnGAIJS5pDc+cU2zV9Au1wEq38MgQwZIFDKfXLKumM0RSIF7nQj4ouZ3lttwAft2GwmPow==
+ bh=GIFZE3Yp1nh93BeVR9xtEVwt6jHpgzpKWqkbLFXz0sE=;
+ b=h6ri60TEoi+nhCl90fpMFzP89aVS+DlFq1CyxBPt/0p5Gy0YuV11ACLXwGEV6U+47Q8FjrOkCpTEEnusxNyQZLnzYUtQWFWtbXpSomvZL3va65h4ScA1WcdREkhOWgNsHhF+3Pab3/7H+7H4HSPVTp/ZGdwAgkUjI/IxgUjBmZZ1Q3qDfHznj2asYHsW+sz7eiNqN8YUImDio4WrEvOGC0Iuf/DGsUX2pLEYPBLcv6V00U26FPYUxbQo5s7ySPkpcALUiE5TEvZvjjvyidS9aV5jvVIz9k+SbyyGA5zxh6wr5e9jXmA26MNQ7D6opfPFoE3A7n7YdwhBfAYz33SBJA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by DB9PR04MB8171.eurprd04.prod.outlook.com (2603:10a6:10:24f::19) with
+Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
+ by GV1PR04MB11063.eurprd04.prod.outlook.com (2603:10a6:150:20c::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.12; Thu, 9 Jan
- 2025 02:25:16 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6%4]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
- 02:25:16 +0000
-Message-ID: <1c1bb1b3-7e58-4a49-83bb-2c560cd66858@oss.nxp.com>
-Date: Thu, 9 Jan 2025 10:25:04 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: docs: dev-decoder: Trigger dynamic source change
- for colorspace
-To: Nicolas Dufresne <nicolas@ndufresne.ca>, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250107053622.1287461-1-ming.qian@oss.nxp.com>
- <dcae7fbb810ebfa6e539c3b45c20e1d659600d80.camel@ndufresne.ca>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <dcae7fbb810ebfa6e539c3b45c20e1d659600d80.camel@ndufresne.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Thu, 9 Jan
+ 2025 02:28:28 +0000
+Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
+ ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
+ ([fe80::b1b9:faa9:901b:c197%4]) with mapi id 15.20.8335.011; Thu, 9 Jan 2025
+ 02:28:28 +0000
+Date: Thu, 9 Jan 2025 11:34:18 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v5 2/2] nvmem: imx-ocotp-ele: Support accessing
+ controller for i.MX9
+Message-ID: <20250109033418.GB31833@localhost.localdomain>
+References: <20250108-imx-ocotp-v5-0-a6d90e18ebe9@nxp.com>
+ <20250108-imx-ocotp-v5-2-a6d90e18ebe9@nxp.com>
+ <3823142.MHq7AAxBmi@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR04CA0173.apcprd04.prod.outlook.com (2603:1096:4::35)
- To AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
+In-Reply-To: <3823142.MHq7AAxBmi@steina-w>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: SI2PR02CA0053.apcprd02.prod.outlook.com
+ (2603:1096:4:196::16) To DB9PR04MB8461.eurprd04.prod.outlook.com
+ (2603:10a6:10:2cf::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,165 +77,224 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|DB9PR04MB8171:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1951ea8b-2405-4b65-f37a-08dd3054da24
+X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|GV1PR04MB11063:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21c901d7-0261-4265-ef3b-08dd30554d2a
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WVNOOG9Ba3Z3VmQ1TU16Qk0zQTltMkdLcUowRFV6TC9EVksvM205R3FHTUZC?=
- =?utf-8?B?Z0ZZNHdtak5YZmFzMzRUWk80Tjg1SHJUWjY1cjRwRkF0em0vSGVlckFwRFdB?=
- =?utf-8?B?TU5sRkNiZ3lyLzZ3MXBCRW1RaSt3YmI3bUJCbXlEN3hCNmI0WHU1Ny9JQkJt?=
- =?utf-8?B?RHlmSndsMElpYjJvWDFCVDVmRUc0VXIyVU91c3ZUcE5CdGlFSEdDMFFxaTNl?=
- =?utf-8?B?Njd0TVBCSWFZWS9FVVFYK1dTTWU4TDVVZnk3WDVQY21IeFFIZWt3UFRpVU53?=
- =?utf-8?B?NVdrb3FQd3BvTzhNdTVFNEFOSnZjSWJuLzV3QnpQTTQrQW9ydDV5bExBL3g4?=
- =?utf-8?B?TklCNUVHOENKTTV6cTNyejZ4NFJJdHhYMVJPM29pSlJ6c0lWZkROazNaUk5r?=
- =?utf-8?B?SlBoa1d6ZDJmNDlkdEwyWmw5Y3JRdUx6QVdrTzErZVBGckRURVZzdDZEaEhU?=
- =?utf-8?B?Zk5sb2dvTTFJZlJ0citSYmNaN2Vmd2gvc1Q3NXZmajBsdXdadTdyeklXbE9N?=
- =?utf-8?B?TVg2Q3BiVHBpVDBOdEUrVVgvUytraW9iaHRVL0YrSkhEcFBMb3N2aWhsanhy?=
- =?utf-8?B?b1JtNVBvajFvOFJOYzllOEpOejZublpiRENIWEtUdTkxZmVHTks4UGt0Q0xL?=
- =?utf-8?B?ZlNTMlZJem5uNHlHMTJ2bStueFkrYVdDVUI2TmJLYWZDNDRZTW02M1d5T0gx?=
- =?utf-8?B?blJ0djB0WnhjcGNSaXJPOU9JWXl2UWY3eDlHZjQ1b24wSU14RWQ0eFlnMUpx?=
- =?utf-8?B?aU92U3ArbVJaWXZmNUpyWG1TY0JITFRCMjQrVlU5Q21rVDg2bFdEeW43OU9o?=
- =?utf-8?B?UWpMeDh3Q1ZHc0JlQWhrRWppMDlaZ0VsNUltNDZ0bnRPMTdCN3l1RWZ5N1dM?=
- =?utf-8?B?ekFPSVEwNFRJcGNnQ0RaakgvMzE0NDhXcDhsenRnNWprV0RhL3VnbkI5MTNL?=
- =?utf-8?B?SjNNRENvUGd4aVprb0djWnMzbkE5T3djQW95NDBBdDRyMUVhd2dkekhZQ29U?=
- =?utf-8?B?YitrU1dYTUYvTXV0SDJLTVdmTkprcG5zcnQ2c25UTVlYQ1BhdmZ6dnMzelF5?=
- =?utf-8?B?WlRucDNGUjFFV2tuMVBzaitiaTNsZWxPeFpYNFZiZ3pHS1Yzc2dYZjZqYjIw?=
- =?utf-8?B?K2pKMnBxaGQ0UXB1MzNlSlJXM0NnQ21FZ3JWZFRyenF5OUw0WXgwUXQ2YUVF?=
- =?utf-8?B?UlI5MWRHc050THEzQWh3eGM4dk1pcldtYURtOFNTK0VVL2dZY3FXMm11Qncx?=
- =?utf-8?B?M2Mxak5WUzd0SzRkRFdVOEJvUC9OWkpVZkd5SHhGNHpBSVpTdHcrcklidVNN?=
- =?utf-8?B?eXZ1NllZSlJuTHVZZkwrMXdkM09TMHJpbDNqNkY5QS8waG00WGExUUpzYVgr?=
- =?utf-8?B?bGZKaXRSS3Bvdm1Jc21saU5iK2JVYjFyT25sWmtEYnRyQ0t4cjFzY081bS8r?=
- =?utf-8?B?c2locUJnUUdwTU9IMHRZdFdsRllDc0xsdUVXd2JUTXY5VjE2MStnUktrcXI1?=
- =?utf-8?B?MU9hRWVaVUdlZ29qeGlCdXRMaUJ5SmloeFhVc3R0UUpyQXI2VnExbXVUeGRH?=
- =?utf-8?B?aTRYT3NCVjNCZUdUWVRxc1lpQXo0emZIRVp2eUxKam1pWlJwMGhuOEZCVEhr?=
- =?utf-8?B?aUxJVHFUYmxJYnIxS3dsbkQzZnpUODV3eG9ZUUsxZC9DbTJMV3FmanNhTm02?=
- =?utf-8?B?aXNvOVJXZjJ1YWwxbTUzWFd6VUJ2MDczcXBhTUF0R0JZbkh3QnA4dUdvN2Iv?=
- =?utf-8?B?R2JoQU90OHlGRzBqYTNqL1VadEJ4T1dJdk5Ra2dHVW54U25UVHEvSVVKakVZ?=
- =?utf-8?B?dy8rZjArUzA2RDU1Ympua1RuQ3hmeUtqRU85SnpNNkMxWVJMRm1kSnh1bDhl?=
- =?utf-8?Q?lF2LqVN3VmqSB?=
+	=?iso-8859-1?Q?Cb10DobNSGnl5pfaPnQuGE0V/fU1Ttl0v3Dlh/jX5efzDrRPaB4HJ3VMtb?=
+ =?iso-8859-1?Q?RsNe/92R3f3pwXr9P7BIJ063jEZJFk20efCX14KJsSBvMQycOd9n4oiiFQ?=
+ =?iso-8859-1?Q?y2jDhcB4qgk9TZMCt5jXQrxSVFJtRhQ08uRFJx2jeArzKRJLAgclgeo5JT?=
+ =?iso-8859-1?Q?C7X+8UzzEblgCZzh4ntdDjJEtGJZZJNMhHTX7X9j9V4vi5zNhx8M3k/VcH?=
+ =?iso-8859-1?Q?ZPh8C0m3yB2slarMbQjUXCYihEkz2juRKVf7P9QgERYOThhjQxtyPx7To3?=
+ =?iso-8859-1?Q?8UWdAATOJWcuNMbPA6qohm914b6Y1MdM4eIZ/ZR6M3Ra3sleufTLpM7tjF?=
+ =?iso-8859-1?Q?At5Rk74RVu9YEppYcjeD+9s7nNt5cG39Uot47QgHgt0ZFSCEC0nMp2Ina6?=
+ =?iso-8859-1?Q?Rx0hwMBAb/U1UU8MTNfpdH/rXbTbcxQYrLHqDH89w96Nkkirgg4LxvOBMO?=
+ =?iso-8859-1?Q?+O+l/g3f/TIyP0pt1eU1Oz/Zo9sPhW32kGgMSO+JKr1z+zd/Ze6WZWY1V5?=
+ =?iso-8859-1?Q?l4lcaaFLevZyN4aQUkvzuS1o7JanGzRSkaHoTzUKvOXhVJOf90xUSeVZEe?=
+ =?iso-8859-1?Q?RJpotqmeSydO9ZXnLAUEj1rLWE/sIdVXC7+S+NjupE/QDdKUhcXtpGdIVw?=
+ =?iso-8859-1?Q?dW34GMqSAce1zmyfCDGBlFBJdNLEBU5qXfc8bSGb0Q8jKibB3FZmJuavTV?=
+ =?iso-8859-1?Q?RFoh8MzDk9VLXWCmVSl8doGimLcX6Tpyk+JsZc7626+ZJQ9UnTFtRLLxK4?=
+ =?iso-8859-1?Q?hhSRJviUp6695LUuRcDTsJxgHm8feACw9pLYan1trSNC63PKUQwSgxlLZP?=
+ =?iso-8859-1?Q?rbhVmHsMkJogNohh3GwcMmbAqRUUPa2jAw3lrak2nRUY92HSFOGoAZ9ZWO?=
+ =?iso-8859-1?Q?T5iiQjxxBzVp1z/pwh4XzSR4cR45zL36uXuIYD/m/NeCWmG4HkXUzOA2C3?=
+ =?iso-8859-1?Q?XuEHjyH0IiuidAJZv810KeW5AUnXTqlGXsoXo2iLC0X/0oCYeqWg8xEtNG?=
+ =?iso-8859-1?Q?rrry4BokZ7Vth40joPZe2C7kKx+I2ROFe6PuVAif13UGIxaAKsG9adrZcl?=
+ =?iso-8859-1?Q?/YRv70cBtdanwL4QekKRybGix+fC+LvFGnAr5p0bmmQhiL/AxqRhvZCgid?=
+ =?iso-8859-1?Q?GXDU3j8Q9UEypDMuddD0FIT7oZgBmpmAZB1DMU4xBNX+NJMDh0mHwjinxa?=
+ =?iso-8859-1?Q?2qnFP/EX2zDxkd6khUf7SQi5+5n+vTigibLct/fIMcqW0Upng2aERgrsKx?=
+ =?iso-8859-1?Q?7p4kCbpQxR5+1dO0o/HT+2d1AZcAIaEMEsYi0247GWb443HCpQ3iLF5oOq?=
+ =?iso-8859-1?Q?MaSjDUWtG7eHgy+oKVJa2JQClAGUhMRssVUQfijqp7YcZ0xTFmDLi+wvMW?=
+ =?iso-8859-1?Q?4jN7BOsDphaF+J5rbiyS6CXjU9gLGUQt4Wcw7kPftJnR/XorgXcr0eQHCt?=
+ =?iso-8859-1?Q?LTDgUJjqjsL9m+6a?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V2RFenFWcGwrY3FKbS8yYUZQK0h1YTBjTFZ4WE5QcWhPSlNSOEV0dDZNc0VU?=
- =?utf-8?B?NnRZNWd5eDJ1emp5TS9SMklMeVdlS2pTWE9QelN4S2NzL2NSWG5jWkM3cXVM?=
- =?utf-8?B?OXRVRjNsSUt3NjN4d1FpYUQ1Z0V2VUN1MGpyQUdHU0ZXQkNQaEZBY05sR0Rw?=
- =?utf-8?B?OVdBUG9lc3BpbVlnb0xKejBNV0RHOWNpMzZDbzZSb1I4R3VZWjFaeWNFbGZ5?=
- =?utf-8?B?UnF1ay8xZjVRdi9OdEpmUG5DbDNQTW4vR0JteUJOUjEwTERNUW4yRWxtU2hv?=
- =?utf-8?B?V0h3T0NqK01PZzBSRkxpUkI0MGxxS3NOVkh0MWM4blJ0UDZTUitZTXpOUmZT?=
- =?utf-8?B?Njdtc1lDYWNXNUUrcmJEMXd6amVMc2hMcDMzQ3RIV25WekdydWN6di9NOVBi?=
- =?utf-8?B?SXZ0SkMrMTE3QVQ0WFlURktDWnFHRlRTMklYL1gwV2xCaS9sOGk5aGJsYmh0?=
- =?utf-8?B?ejBuRVVhaUtBV01aS2JiemdVUm0zVkdqMkt0cC9Hd0hTNlYxWnNCZjZhZU5X?=
- =?utf-8?B?eUY0ZEM0ZHZtSlBaUFBOaGxKejVNYUNNb29BVDZRZG80MGN3ZjhTWTBkSnFF?=
- =?utf-8?B?Z1cxN1M3Sy93UG5IN1doaTlxNFRsa0pMSEduclk1aFM5QjcrcUNBMzVnNyt3?=
- =?utf-8?B?T0U5T1k5NTZmbVJqRXU4STgyMGpjSFZldkRXeDVuMWFIREh3QUxMRlhDcnpi?=
- =?utf-8?B?M1I0S01jK1NHWSt0cDREbGJKcE0rYmhCS1lKVVRzbmViN0cyYnIxVTF4MXRT?=
- =?utf-8?B?ZXdmUjZOMnUrbE9YdWw1TERQa0VXbG9NQ0lucDVaWE9GbVVMNlphbkpCZ1hX?=
- =?utf-8?B?dTByQ0pQc3BIVGc3T3ZncVIydmdmNXpYd0k2enZXa0I0SjNxMVNPdFdqd1JL?=
- =?utf-8?B?QVZ0bjBhQ09lb1IvVmNYQlBwTzQvZk94alhlMDR6Znp6UzBOTU1tZDZVWkE3?=
- =?utf-8?B?N1lseHEyV3pCN3c5VUNxV1BTNk95VEsxNHRzam1iM3RXeHVvc0NDeW9Fa2k0?=
- =?utf-8?B?Q2hrRTExcEM2S2EzLzMwOGg5TjdjTTM0RU01RmhMazNoTStLT3RrcGJBNmRI?=
- =?utf-8?B?SEJNOHh0RzcySmhTY01aMEFZOWNqZmhMZnJpVktLRGtpOCtMbDM4elpKQ0NG?=
- =?utf-8?B?Y2ptUkZuaU5TRnd6czMrZmR5eDFiUElEZjNmUFFnVTM0cTdMaWFiMUpmWCtC?=
- =?utf-8?B?VDQ0SkdBOHZPTmdOT25jNzFCNzVsQ2czaXBIa2pxVk42VzN3ZWxJa2l4MSsz?=
- =?utf-8?B?cjMyTklSM2ZIMUZxVG5VdFYxQ2RPaUpaMDBxVG9BMWZvZnBmeExNenZZWVNr?=
- =?utf-8?B?dXBsTlVkb0s3dUJuYzQ1Q0xCS2N5NGdnWThSbDhJUTNOSmVOTFdDSXloOHZR?=
- =?utf-8?B?dDNTUm9tdFFySDdlUUxmUDdYQzFEVWw4Rit3UHVDMTQzVGpNbStLOHE2cStP?=
- =?utf-8?B?d3paWVNiTUJYNi9sTUtSSFllZlY4RWFFT1c5TWFsT3JWMGliKzIvbXZ6TUpP?=
- =?utf-8?B?SmIxY2pzT2dGMTBYcUdHMlVnMkp0b3hLTW55MDl0WWNqYy8zNFpxNU4yeVRv?=
- =?utf-8?B?VjR3WW0vblFkMlc2V3htUEdLN2F1WldVejBOQnRGQXM0M2NRRmwvQk5SWTV2?=
- =?utf-8?B?ZFpXcmNjZndWNWJhZEt5b05lc1J3OWFiZFYrN1B2bnFzQitDdHc1MytZRExw?=
- =?utf-8?B?SVQzSlJFNHFabXpPNS9QU1N4L2ZnN1Njc1IrVEkwZFExbFNSdFpQTHN4TjYy?=
- =?utf-8?B?RzdoTVVmK05qakNsL3l3WHVTOFJYWG5WS0xxeGloek1PcjR3d3FjQUpmS0Vj?=
- =?utf-8?B?S1ovZ2J1QlBuajhpckpWZFphN0tnUkFqN2NSa3I3RXY4bnUxeGRuc2tPZVJm?=
- =?utf-8?B?USsrNmFrVXBTWS9WN2QyclUxQnJVMjVDZm1LcjRpc0phQWQwZWlpcTVPelZz?=
- =?utf-8?B?cHVBL2lKeUlySFIycy9MWGVPVmpEL3NaZVFHRENKZ0xBemd6Y244SzJsUzd6?=
- =?utf-8?B?eVdVNjkweXI1MS9NMW8vWk50WmxiWlRWQ3lIdmdEQnJYSUJocEM2MXhNVzFY?=
- =?utf-8?B?WUxWSmhHZDBleDhiZkRaVWkyM3E1ZGNiZmk1eTA1eFhOWVZ6VXNQd1ZoN2pH?=
- =?utf-8?Q?wUuuqL/K37oPGY3trIuxe+oe2?=
+	=?iso-8859-1?Q?U+vm+dGj8AQ7ak54/2bJEb4tKJtJh3DcCNxB9C+mNw9NLUSl839OyNhy/0?=
+ =?iso-8859-1?Q?CiXmh8BojsYLrvm0grYJBjZwLlpxKtzEg/t+MZxCrabFYmSPbx6X+pvQZ3?=
+ =?iso-8859-1?Q?qkIgGIfaUf/zM1/cbMM8vHlrelwuu2JCCiiNwZoBgPW9vJ9dJyiYsN0S4g?=
+ =?iso-8859-1?Q?NpJ+6yhEkodFUeXy9fay7P2VESg+H9MUT0oA8rN2Yd5PkVElG5bkd+zpCH?=
+ =?iso-8859-1?Q?56rmR1SePDMojp8AEpkJD01X8dM8tnOkoNeDrdqiarlzkZvNBE7rK/x0Nt?=
+ =?iso-8859-1?Q?UOGiEPtpZGA8sXI+gx/+K28pp+sI2uRmsyIYELXDW+1xy6ORT8usds7hy5?=
+ =?iso-8859-1?Q?75opMiB+Au3T/6mgaVzh7vGcIS8DaStERIYp1jYP7avwd9rvI805agIA5F?=
+ =?iso-8859-1?Q?z8xF7dCT+Z3KuAzKuSR479yPw35GuYZfXiguuEQJxFaFbiREATUfhpz2WK?=
+ =?iso-8859-1?Q?Qe8hIByEF5z7NG0GqOBVgH7j0ysFa7s2+wTbaiTk8h1MJ2TK3TeXCZGHHg?=
+ =?iso-8859-1?Q?a3MiJlIYymKpyP7oHCTvMjX82XqBePmIi6+ot44It1mniToD8Dzja2GBwO?=
+ =?iso-8859-1?Q?zNX0HickWaFBgHCDnxNl87oAV1o/VqUjJFJSgmx9pcH9zhEgnnyknM72XH?=
+ =?iso-8859-1?Q?fGoSMD2T6ilT7C6F0mv0W+uH7O5enfR+oyJ+LX9lDYDAOiA7qjcZ1KoO66?=
+ =?iso-8859-1?Q?Z8Uy9n1A/GzqO5Oby0b9XurOnliL8wTckek13b+KN0mmkyVWPkA4eFQ7NN?=
+ =?iso-8859-1?Q?22qAwPYDArQyDB6sZOSADHJAI5IK5VuIjicVQmzbayvHrexaa/W14VhO3S?=
+ =?iso-8859-1?Q?ibuFq6DLZZs6Ta5YL0zF8m6bEb4gTXiD8NAYCPhEQfYJlsChyoP2Skx0D9?=
+ =?iso-8859-1?Q?/UfU9DfADur+ukNrewXV2pBNkr4zCahzP8isiY7FEmonuGwAkT25c1fO4w?=
+ =?iso-8859-1?Q?eUE6s+xI6l0aTbn5IDvi9z5alKP3xjDXp9HLs9xFKcdxg1dJQd+nx7oxnl?=
+ =?iso-8859-1?Q?UYzOp/t978oBf1iX2bk4aD3SHYhKdKE5MQzGDG/HhhM2tIUe3q3voHTHFv?=
+ =?iso-8859-1?Q?ZYuDftif0d5FMhV52F8K0/dAWIVLOxWlAkbQ7qRMFS+P1WXU8eNWPVAU5F?=
+ =?iso-8859-1?Q?xvvDw3xr7XaM2TOGBAHZwYU98Zwt+gk01+3kyYu3EquCaVljDIn6Rh9ssl?=
+ =?iso-8859-1?Q?7jWphOZ8JjQy4odSaAKSLJNHbsE2DKkL/9LJ2MgYOVMnXCQdMGLo2TWVHM?=
+ =?iso-8859-1?Q?uyGmBs1r2CAk/vtJT3TR6HH0aBUqtyBBFzUwkzEyWa/odIMI+j/Adwj50V?=
+ =?iso-8859-1?Q?ADSR25jq2F/bu+vGS+we9UEA5+xqTUVuRIRN14xaUx8M62AHmcE4dBJm6K?=
+ =?iso-8859-1?Q?KAECCg9wvZDCq1+5vTlUfUoHN5gq9KDKngdve3fHzw09yHtVtoV37tWno9?=
+ =?iso-8859-1?Q?xjqiAO2hcgD2iT0tBZxuzWDW7v7kIBrSicw2smaiJsW44fgRGwi/LV88Q7?=
+ =?iso-8859-1?Q?at0MFd6eQw+ENQW4JCpv5ILN/kfZo0Q2HnHrOYs7axpt/g3EOUOdarmws6?=
+ =?iso-8859-1?Q?Len8w7pNC3IFFeTIJXAuV7hZgyJOcX94zNXFuHQ+ujqBQLGXrIZxGaJzUA?=
+ =?iso-8859-1?Q?2fqUaicvXSq8W/YYgi4FUy2j31JKEqfYDU?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1951ea8b-2405-4b65-f37a-08dd3054da24
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21c901d7-0261-4265-ef3b-08dd30554d2a
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 02:25:16.5390
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 02:28:28.2882
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9osS53fDBj8KuOBsUPCzbDIjb9z3D2AD9NrzVT+n5yaeW3VPx1oWTkio7Qm2xI3UnN/Woc1T06lEPEWD3gu8Jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8171
+X-MS-Exchange-CrossTenant-UserPrincipalName: hX47de0zprdtZFvI+K8WUKthJqWB/sgMgxHpezpxokWbf0FLYadEGGswZYNbMMH/7ufOSeKs7Tj/JLWxkhCAhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB11063
 
-
-Hi Nicolas,
-
-On 2025/1/9 3:34, Nicolas Dufresne wrote:
-> Hi,
-> 
-> Le mardi 07 janvier 2025 Ã  14:36 +0900, Ming Qian a Ã©crit :
->> If colorspace changes, the client needs to renegotiate the pipeline,
->> otherwise the decoded frame may not be displayed correctly.
->>
->> If it can trigger an source change event, then client can switch to the
->> correct stream setting. And each frame can be displayed properly.
->>
->> So add colorspace as a trigger parameter for dynamic resolution change.
->>
->> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+On Wed, Jan 08, 2025 at 11:15:40AM +0100, Alexander Stein wrote:
+>Hi Peng,
+>
+>Am Mittwoch, 8. Januar 2025, 08:00:18 CET schrieb Peng Fan (OSS):
+>> From: Peng Fan <peng.fan@nxp.com>
+>> 
+>> i.MX9 OCOTP supports a specific peripheral or function being fused
+>> which means disabled, so
+>>  - Introduce ocotp_access_gates to be container of efuse gate info
+>>  - Iterate all nodes to check accessing permission. If not
+>>    allowed to be accessed, detach the node
+>> 
+>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 >> ---
->>   Documentation/userspace-api/media/v4l/dev-decoder.rst | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rst b/Documentation/userspace-api/media/v4l/dev-decoder.rst
->> index ef8e8cf31f90..49566569ad26 100644
->> --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
->> +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
->> @@ -932,7 +932,9 @@ reflected by corresponding queries):
->>   
->>   * the minimum number of buffers needed for decoding,
->>   
->> -* bit-depth of the bitstream has been changed.
->> +* bit-depth of the bitstream has been changed,
+>>  drivers/nvmem/imx-ocotp-ele.c | 172 +++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 171 insertions(+), 1 deletion(-)
+>> 
+[....]
 >> +
->> +* colorspace of the bitstream has been changed.
-> 
-> Did you really mean colorspace in the way this term is used in V4L2 ? What we
-> want this event to be used for is when the capture storage size or amount
-> changes, perhaps you mean when the capture pixelformat changes ? This will
-> indeed happen if you change the bit-depth, subsampling (not mentioned here
-> either) or change the way colors are repsented (RGB, YCbCr, etc.).
-> 
+>> +	return imx_ele_ocotp_access_control(priv);
+>
+>In [1] you mentioned devlink should solve the probe order. How does this
+>play when the driver is compiled in (e.g. ethernet for NFS boot) but
+>this OCOTP driver is just a module?
 
-I am referring to the following attributes in v4l2_pix_fmt:
-	__u32		colorspace;	/* enum v4l2_colorspace */
-	__u32		ycbcr_enc;	/* enum v4l2_ycbcr_encoding */
-	__u32		quantization;	/* enum v4l2_quantization */
-	__u32		xfer_func;	/* enum v4l2_xfer_func */
+OCOTP needs to built in for using devlink. Or the users needs to be
+built as module.
 
-For decoder, they are parsed from the sequence header.
-Our issue is that when only these properties change in the middle of
-some bitstream, but not the resolution or dpb amount, the decoder needs
-to nofity the user.  As these properties are in v4l2_pix fmt, user need
-to get/set them via VIDIOC_G_FMT/VIDIOC_S_FMT.
-So in my opinion, it's reasonable to nitify user a source change event,
-then user can call v4l_g_fmt() and renegotiate the pipeline.
+>I'm not well versed with devlink, but is
+>> access-controllers = <&ocotp IMX93_OCOTP_ENET1_GATE>;
+>already enough to create that link?
 
-Apart from this, all I can think of is that user call v4l_g_fmt() before
-dequeueing each frame. But I don't think this is a good idea.
+Yes, the drivers/of/property.c has this
+"DEFINE_SIMPLE_PROP(access_controllers, "access-controllers", "#access-controller-cells")"
 
-As these properties are parts of the v4l2_format, I think it's
-reasonable to handle their changes via the dynamic source change flow.
+The fw_devlink driver will create consumer/supplier to make sure proper
+order.
 
-We're currently facing some real cases on android.
+Regards,
+Peng
 
-Or do you have any good suggestions? Then I can give a try.
-
-Thanks,
-Ming
-
->>   
->>   Whenever that happens, the decoder must proceed as follows:
->>   
-> 
+>
+>Best regards,
+>Alexander
+>
+>>  }
+>>  
+>> +struct access_gate imx93_access_gate[] = {
+>> +		[IMX93_OCOTP_NPU_GATE]		= { .word = 19, .mask = BIT(13) },
+>> +		[IMX93_OCOTP_A550_GATE]		= { .word = 19, .mask = BIT(14) },
+>> +		[IMX93_OCOTP_A551_GATE]		= { .word = 19, .mask = BIT(15) },
+>> +		[IMX93_OCOTP_M33_GATE]		= { .word = 19, .mask = BIT(24) },
+>> +		[IMX93_OCOTP_CAN1_FD_GATE]	= { .word = 19, .mask = BIT(28) },
+>> +		[IMX93_OCOTP_CAN2_FD_GATE]	= { .word = 19, .mask = BIT(29) },
+>> +		[IMX93_OCOTP_CAN1_GATE]		= { .word = 19, .mask = BIT(30) },
+>> +		[IMX93_OCOTP_CAN2_GATE]		= { .word = 19, .mask = BIT(31) },
+>> +		[IMX93_OCOTP_USB1_GATE]		= { .word = 20, .mask = BIT(3) },
+>> +		[IMX93_OCOTP_USB2_GATE]		= { .word = 20, .mask = BIT(4) },
+>> +		[IMX93_OCOTP_ENET1_GATE]	= { .word = 20, .mask = BIT(5) },
+>> +		[IMX93_OCOTP_ENET2_GATE]	= { .word = 20, .mask = BIT(6) },
+>> +		[IMX93_OCOTP_PXP_GATE]		= { .word = 20, .mask = BIT(10) },
+>> +		[IMX93_OCOTP_MIPI_CSI1_GATE]	= { .word = 20, .mask = BIT(17) },
+>> +		[IMX93_OCOTP_MIPI_DSI1_GATE]	= { .word = 20, .mask = BIT(19) },
+>> +		[IMX93_OCOTP_LVDS1_GATE]	= { .word = 20, .mask = BIT(24) },
+>> +		[IMX93_OCOTP_ADC1_GATE]		= { .word = 21, .mask = BIT(7) },
+>> +};
+>> +
+>> +static const struct ocotp_access_gates imx93_access_gates_info = {
+>> +	.num_words = 3,
+>> +	.words = {19, 20, 21},
+>> +	.num_gates = ARRAY_SIZE(imx93_access_gate),
+>> +	.gates = imx93_access_gate,
+>> +};
+>> +
+>>  static const struct ocotp_devtype_data imx93_ocotp_data = {
+>> +	.access_gates = &imx93_access_gates_info,
+>>  	.reg_off = 0x8000,
+>>  	.reg_read = imx_ocotp_reg_read,
+>>  	.size = 2048,
+>> @@ -183,7 +307,53 @@ static const struct ocotp_devtype_data imx93_ocotp_data = {
+>>  	},
+>>  };
+>>  
+>> +struct access_gate imx95_access_gate[] = {
+>> +		[IMX95_OCOTP_CANFD1_GATE]	= { .word = 17, .mask = BIT(20) },
+>> +		[IMX95_OCOTP_CANFD2_GATE]	= { .word = 17, .mask = BIT(21) },
+>> +		[IMX95_OCOTP_CANFD3_GATE]	= { .word = 17, .mask = BIT(22) },
+>> +		[IMX95_OCOTP_CANFD4_GATE]	= { .word = 17, .mask = BIT(23) },
+>> +		[IMX95_OCOTP_CANFD5_GATE]	= { .word = 17, .mask = BIT(24) },
+>> +		[IMX95_OCOTP_CAN1_GATE]		= { .word = 17, .mask = BIT(25) },
+>> +		[IMX95_OCOTP_CAN2_GATE]		= { .word = 17, .mask = BIT(26) },
+>> +		[IMX95_OCOTP_CAN3_GATE]		= { .word = 17, .mask = BIT(27) },
+>> +		[IMX95_OCOTP_CAN4_GATE]		= { .word = 17, .mask = BIT(28) },
+>> +		[IMX95_OCOTP_CAN5_GATE]		= { .word = 17, .mask = BIT(29) },
+>> +		[IMX95_OCOTP_NPU_GATE]		= { .word = 18, .mask = BIT(0) },
+>> +		[IMX95_OCOTP_A550_GATE]		= { .word = 18, .mask = BIT(1) },
+>> +		[IMX95_OCOTP_A551_GATE]		= { .word = 18, .mask = BIT(2) },
+>> +		[IMX95_OCOTP_A552_GATE]		= { .word = 18, .mask = BIT(3) },
+>> +		[IMX95_OCOTP_A553_GATE]		= { .word = 18, .mask = BIT(4) },
+>> +		[IMX95_OCOTP_A554_GATE]		= { .word = 18, .mask = BIT(5) },
+>> +		[IMX95_OCOTP_A555_GATE]		= { .word = 18, .mask = BIT(6) },
+>> +		[IMX95_OCOTP_M7_GATE]		= { .word = 18, .mask = BIT(9) },
+>> +		[IMX95_OCOTP_DCSS_GATE]		= { .word = 18, .mask = BIT(22) },
+>> +		[IMX95_OCOTP_LVDS1_GATE]	= { .word = 18, .mask = BIT(27) },
+>> +		[IMX95_OCOTP_ISP_GATE]		= { .word = 18, .mask = BIT(29) },
+>> +		[IMX95_OCOTP_USB1_GATE]		= { .word = 19, .mask = BIT(2) },
+>> +		[IMX95_OCOTP_USB2_GATE]		= { .word = 19, .mask = BIT(3) },
+>> +		[IMX95_OCOTP_NETC_GATE]		= { .word = 19, .mask = BIT(4) },
+>> +		[IMX95_OCOTP_PCIE1_GATE]	= { .word = 19, .mask = BIT(6) },
+>> +		[IMX95_OCOTP_PCIE2_GATE]	= { .word = 19, .mask = BIT(7) },
+>> +		[IMX95_OCOTP_ADC1_GATE]		= { .word = 19, .mask = BIT(8) },
+>> +		[IMX95_OCOTP_EARC_RX_GATE]	= { .word = 19, .mask = BIT(11) },
+>> +		[IMX95_OCOTP_GPU3D_GATE]	= { .word = 19, .mask = BIT(16) },
+>> +		[IMX95_OCOTP_VPU_GATE]		= { .word = 19, .mask = BIT(17) },
+>> +		[IMX95_OCOTP_JPEG_ENC_GATE]	= { .word = 19, .mask = BIT(18) },
+>> +		[IMX95_OCOTP_JPEG_DEC_GATE]	= { .word = 19, .mask = BIT(19) },
+>> +		[IMX95_OCOTP_MIPI_CSI1_GATE]	= { .word = 19, .mask = BIT(21) },
+>> +		[IMX95_OCOTP_MIPI_CSI2_GATE]	= { .word = 19, .mask = BIT(22) },
+>> +		[IMX95_OCOTP_MIPI_DSI1_GATE]	= { .word = 19, .mask = BIT(23) },
+>> +};
+>> +
+>> +static const struct ocotp_access_gates imx95_access_gates_info = {
+>> +	.num_words = 3,
+>> +	.words = {17, 18, 19},
+>> +	.num_gates = ARRAY_SIZE(imx95_access_gate),
+>> +	.gates = imx95_access_gate,
+>> +};
+>> +
+>>  static const struct ocotp_devtype_data imx95_ocotp_data = {
+>> +	.access_gates = &imx95_access_gates_info,
+>>  	.reg_off = 0x8000,
+>>  	.reg_read = imx_ocotp_reg_read,
+>>  	.size = 2048,
+>> 
+>> 
+>
+>
+>-- 
+>TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+>Amtsgericht München, HRB 105018
+>Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+>http://www.tq-group.com/
+>
+>
