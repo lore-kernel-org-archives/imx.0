@@ -1,163 +1,298 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B284A1A;
-	Fri, 10 Jan 2025 12:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D00E20DD53
+	for <imx@lists.linux.dev>; Fri, 10 Jan 2025 13:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736512978; cv=none; b=Toy9QiKsAEURI8u7oW0bN8RblYmX1yxmFKAIVXhedZXldXPnnTBHvktBPrn+oGFkUCCBc8VrZpX3//mlk+F81+nwSwwbEj5koFvsRYDIibL4svV2IlQFGYhKIvMFQeuvPb8Wimu1+NTByc6OMUVDy98GOP0RciJlkfbe2XRalqg=
+	t=1736514852; cv=none; b=TAn5htkdl0+U3pxO8vQ/ajDYoN5+l1Xi4zCdVBAgKzqmnW80Gf8WjJw3BK7nakhaQli074G+iDcErTVZozCOti2+tFZ5ZXY0rgwGT4LpWCdRiyt9Hh7JVvhnmUQqW0ytaK14DS3dUICIDX7jp9uNP1Hcv6sxwY4AZ9bP4NOG5RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736512978; c=relaxed/simple;
-	bh=jQisMlTjYfeo02yHCaf8/3pDTMXN8QMfrZ/MAhEXiCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HqPVodjHZvwWppQk3N8sXjNwvj8I+ZvRP5AzAwZ2irtpmFbG6fRHRjPIZC8eT9TLAU89xcNfxUzKO4U6EtuufksJej661wl9tLgsa+ILYZMdU7voIZ/cGQ4BOwzPoAzrtpp0rJgYJJBpv4wvxtRjglSZgM84+cHjIqJEz54dWvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpD0sW7U; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KpD0sW7U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0816AC4CEDD;
-	Fri, 10 Jan 2025 12:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736512977;
-	bh=jQisMlTjYfeo02yHCaf8/3pDTMXN8QMfrZ/MAhEXiCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KpD0sW7UIABuucxd/Qx8pWVveKRBTPjoee4MF0KjKw8i5YDBoDzL5JYvu4BaELO0t
-	 M/U8H/SXs0PIabw+VP/Wmcv2zkse9maGzd/9rSoZgJ6hC/Lu3TEGJ9VrLXjmmeRFg1
-	 vFZp71KV7rVxbfsUrwau0sxqutt53V+fSRgOWgFQTeVLDgWzOazdvg68BZ9FapN4Et
-	 JWbE4PuKzWFwlzYvCA+Uzkc1/eq5V73FfErBUEePlT0QeeVOCwHPXy/saY0DV/C3w1
-	 EubDaTDdWlxizzmd69Sr4YfE+GSogwgowB31K0GFRmk2/goQYinjInn1BjN5IFfOdI
-	 Cy3tqd/O7Qjaw==
-Date: Fri, 10 Jan 2025 12:42:47 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Sanjay R Mehta <sanju.mehta@amd.com>,
-	Serge Semin <fancer.lancer@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Steam Lin <stlin2@winbond.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 20/27] spi: spi-mem: Estimate the time taken by
- operations
-Message-ID: <ca317e2c-cd09-4884-b9eb-9cf23ae88078@sirena.org.uk>
-References: <20241224-winbond-6-11-rc1-quad-support-v2-0-ad218dbc406f@bootlin.com>
- <20241224-winbond-6-11-rc1-quad-support-v2-20-ad218dbc406f@bootlin.com>
+	s=arc-20240116; t=1736514852; c=relaxed/simple;
+	bh=YapzfX8zhsqJF4xYOsSbGugcFYM1h29EdnuJ/OeRsso=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mcOdjgHwxDsoiqkbIlN1pI7igpXy2mKPQrWNnXZw9YNBzibK4wPps/eloCwSKtnJ1trL5Wj5Sf/0w5Dz2KMzIVnJ6ZWdsM1yBPcvmFkXo0jUSNX8OlbslnKaYHRt6d9EWhjisl4oSfNFLGRp1gt/NysBNDeNJJDZd0+pogYfBsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YV27z0FHnz11Nvt;
+	Fri, 10 Jan 2025 21:10:23 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id CD0B8140203;
+	Fri, 10 Jan 2025 21:14:07 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 10 Jan 2025 21:14:07 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <zhangkun09@huawei.com>, <liuyonglong@huawei.com>,
+	<fanghaiqing@huawei.com>, Yunsheng Lin <linyunsheng@huawei.com>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet
+	<edumazet@google.com>, Jeroen de Borst <jeroendb@google.com>, Praveen
+ Kaligineedi <pkaligineedi@google.com>, Shailend Chand <shailend@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: [PATCH net-next v7 1/8] page_pool: introduce page_pool_get_pp() API
+Date: Fri, 10 Jan 2025 21:06:55 +0800
+Message-ID: <20250110130703.3814407-2-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250110130703.3814407-1-linyunsheng@huawei.com>
+References: <20250110130703.3814407-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RVMhmV/ewGAzdaKp"
-Content-Disposition: inline
-In-Reply-To: <20241224-winbond-6-11-rc1-quad-support-v2-20-ad218dbc406f@bootlin.com>
-X-Cookie: Many are cold, but few are frozen.
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
+introduce page_pool_get_pp() API to avoid caller accessing
+page->pp directly.
 
---RVMhmV/ewGAzdaKp
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c          |  8 +++++---
+ .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c  |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c        |  6 ++++--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c        | 14 +++++++++-----
+ drivers/net/ethernet/intel/libeth/rx.c             |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |  3 ++-
+ drivers/net/netdevsim/netdev.c                     |  6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
+ include/net/libeth/rx.h                            |  3 ++-
+ include/net/page_pool/helpers.h                    |  5 +++++
+ 10 files changed, 34 insertions(+), 17 deletions(-)
 
-On Tue, Dec 24, 2024 at 06:06:05PM +0100, Miquel Raynal wrote:
-> In the SPI-NAND layer, we currently make list of operation variants from
-> the fastest one to the slowest and there is a bit of logic in the core
-> to go over them and pick the first one that is supported by the
-> controller, ie. the fastest one among the supported ops.
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index b2daed55bf6c..18d2119dbec1 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+ 				if (page)
+-					page_pool_put_page(page->pp, page, 0, false);
++					page_pool_put_page(page_pool_get_pp(page),
++							   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+@@ -1549,7 +1550,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 			xdp_return_frame_rx_napi(xdpf);
+ 		} else { /* recycle pages of XDP_TX frames */
+ 			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
+-			page_pool_put_page(page->pp, page, 0, true);
++			page_pool_put_page(page_pool_get_pp(page), page, 0, true);
+ 		}
+ 
+ 		txq->tx_buf[index].buf_p = NULL;
+@@ -3307,7 +3308,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
+ 			} else {
+ 				struct page *page = txq->tx_buf[i].buf_p;
+ 
+-				page_pool_put_page(page->pp, page, 0, false);
++				page_pool_put_page(page_pool_get_pp(page),
++						   page, 0, false);
+ 			}
+ 
+ 			txq->tx_buf[i].buf_p = NULL;
+diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+index 403f0f335ba6..87422b8828ff 100644
+--- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+@@ -210,7 +210,7 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
+ 	if (!page)
+ 		return;
+ 
+-	page_pool_put_full_page(page->pp, page, allow_direct);
++	page_pool_put_full_page(page_pool_get_pp(page), page, allow_direct);
+ 	buf_state->page_info.page = NULL;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+index 26b424fd6718..e1bf5554f6e3 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+@@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ 			     const struct libeth_fqe *rx_buffer,
+ 			     unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
+ 			rx_buffer->offset + hr, size, rx_buffer->truesize);
+@@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
+ static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
+ 				      unsigned int size)
+ {
+-	u32 hr = rx_buffer->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buffer->page);
++	u32 hr = pool->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 2fa9c36e33c9..04f2347716ca 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
+ 	if (unlikely(!rx_buf->page))
+ 		return;
+ 
+-	page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
++	page_pool_put_full_page(page_pool_get_pp(rx_buf->page), rx_buf->page,
++				false);
+ 
+ 	rx_buf->page = NULL;
+ 	rx_buf->offset = 0;
+@@ -3098,7 +3099,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
+ 		      unsigned int size)
+ {
+-	u32 hr = rx_buf->page->pp->p.offset;
++	struct page_pool *pool = page_pool_get_pp(rx_buf->page);
++	u32 hr = pool->p.offset;
+ 
+ 	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
+ 			rx_buf->offset + hr, size, rx_buf->truesize);
+@@ -3130,8 +3132,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+ 	if (!libeth_rx_sync_for_cpu(buf, copy))
+ 		return 0;
+ 
+-	dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
+-	src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
++	dst = page_address(hdr->page) + hdr->offset +
++		page_pool_get_pp(hdr->page)->p.offset;
++	src = page_address(buf->page) + buf->offset +
++		page_pool_get_pp(buf->page)->p.offset;
+ 	memcpy(dst, src, LARGEST_ALIGN(copy));
+ 
+ 	buf->offset += copy;
+@@ -3149,7 +3153,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
+  */
+ struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
+ {
+-	u32 hr = buf->page->pp->p.offset;
++	u32 hr = page_pool_get_pp(buf->page)->p.offset;
+ 	struct sk_buff *skb;
+ 	void *va;
+ 
+diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
+index 66d1d23b8ad2..8de0c3a3b146 100644
+--- a/drivers/net/ethernet/intel/libeth/rx.c
++++ b/drivers/net/ethernet/intel/libeth/rx.c
+@@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, "LIBETH");
+  */
+ void libeth_rx_recycle_slow(struct page *page)
+ {
+-	page_pool_recycle_direct(page->pp, page);
++	page_pool_recycle_direct(page_pool_get_pp(page), page);
+ }
+ EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, "LIBETH");
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 94b291662087..30baca49c71e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				/* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
+ 				 * as we know this is a page_pool page.
+ 				 */
+-				page_pool_recycle_direct(page->pp, page);
++				page_pool_recycle_direct(page_pool_get_pp(page),
++							 page);
+ 			} while (++n < num);
+ 
+ 			break;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index d013b6498539..05a04f4b51d7 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -810,7 +810,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		if (!ns->page)
+ 			ret = -ENOMEM;
+ 	} else {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_get_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 
+@@ -1022,7 +1023,8 @@ void nsim_destroy(struct netdevsim *ns)
+ 
+ 	/* Put this intentionally late to exercise the orphaning path */
+ 	if (ns->page) {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(page_pool_get_pp(ns->page), ns->page,
++					false);
+ 		ns->page = NULL;
+ 	}
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index ca2dba3ac65d..4d0e41a7bf4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
+ {
+ 	struct page *page = virt_to_head_page(buf);
+ 
+-	page_pool_put_full_page(page->pp, page, allow_direct);
++	page_pool_put_full_page(page_pool_get_pp(page), page, allow_direct);
+ }
+ 
+ static inline void *
+diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
+index 43574bd6612f..f4ae75f9cc1b 100644
+--- a/include/net/libeth/rx.h
++++ b/include/net/libeth/rx.h
+@@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
+ 		return false;
+ 	}
+ 
+-	page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
++	page_pool_dma_sync_for_cpu(page_pool_get_pp(page), page, fqe->offset,
++				   len);
+ 
+ 	return true;
+ }
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+index 543f54fa3020..9c4dbd2289b1 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+ }
+ #endif
+ 
++static inline struct page_pool *page_pool_get_pp(struct page *page)
++{
++	return page->pp;
++}
++
+ /**
+  * page_pool_dev_alloc_pages() - allocate a page.
+  * @pool:	pool from which to allocate
+-- 
+2.33.0
 
-This breaks the build:
-
-/build/stage/linux/drivers/spi/spi-mem.c:580:5: error: conflicting types fo=
-r =E2=80=98spi_mem_calc_op_duration=E2=80=99; have =E2=80=98u64(struct spi_=
-mem_op *)=E2=80=99 {aka =E2=80=98long long unsigned int(struct spi_mem_op *=
-)=E2=80=99}
-  580 | u64 spi_mem_calc_op_duration(struct spi_mem_op *op)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from /build/stage/linux/drivers/spi/spi-mem.c:12:
-/build/stage/linux/include/linux/spi/spi-mem.h:427:5: note: previous declar=
-ation of =E2=80=98spi_mem_calc_op_duration=E2=80=99 with type =E2=80=98u64(=
-struct spi_mem *, struct spi_mem_op *)=E2=80=99 {aka =E2=80=98long long uns=
-igned int(struct spi_mem *, struct spi_mem_op *)=E2=80=99}
-  427 | u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op=
- *op);
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from /build/stage/linux/include/linux/linkage.h:7,
-                 from /build/stage/linux/arch/arm/include/asm/bug.h:5,
-                 from /build/stage/linux/include/linux/bug.h:5,
-                 from /build/stage/linux/include/linux/thread_info.h:13,
-                 from /build/stage/linux/include/linux/sched.h:14,
-                 from /build/stage/linux/include/linux/ratelimit.h:6,
-                 from /build/stage/linux/include/linux/dev_printk.h:16,
-                 from /build/stage/linux/include/linux/device.h:15,
-                 from /build/stage/linux/include/linux/dmaengine.h:8,
-                 from /build/stage/linux/drivers/spi/spi-mem.c:8:
-/build/stage/linux/drivers/spi/spi-mem.c:593:19: error: conflicting types f=
-or =E2=80=98spi_mem_calc_op_duration=E2=80=99; have =E2=80=98u64(struct spi=
-_mem_op *)=E2=80=99 {aka =E2=80=98long long unsigned int(struct spi_mem_op =
-*)=E2=80=99}
-  593 | EXPORT_SYMBOL_GPL(spi_mem_calc_op_duration);
-      |                   ^~~~~~~~~~~~~~~~~~~~~~~~
-/build/stage/linux/include/linux/export.h:56:28: note: in definition of mac=
-ro =E2=80=98__EXPORT_SYMBOL=E2=80=99
-   56 |         extern typeof(sym) sym;                                 \
-      |                            ^~~
-/build/stage/linux/include/linux/export.h:69:41: note: in expansion of macr=
-o =E2=80=98_EXPORT_SYMBOL=E2=80=99
-   69 | #define EXPORT_SYMBOL_GPL(sym)          _EXPORT_SYMBOL(sym, "GPL")
-      |                                         ^~~~~~~~~~~~~~
-/build/stage/linux/drivers/spi/spi-mem.c:593:1: note: in expansion of macro=
- =E2=80=98EXPORT_SYMBOL_GPL=E2=80=99
-  593 | EXPORT_SYMBOL_GPL(spi_mem_calc_op_duration);
-      | ^~~~~~~~~~~~~~~~~
-/build/stage/linux/include/linux/spi/spi-mem.h:427:5: note: previous declar=
-ation of =E2=80=98spi_mem_calc_op_duration=E2=80=99 with type =E2=80=98u64(=
-struct spi_mem *, struct spi_mem_op *)=E2=80=99 {aka =E2=80=98long long uns=
-igned int(struct spi_mem *, struct spi_mem_op *)=E2=80=99}
-  427 | u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op=
- *op);
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~
-
---RVMhmV/ewGAzdaKp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeBFcYACgkQJNaLcl1U
-h9BhIgf+KXE1JExJo+WBN7mYcyQ4HitVxI+rVexdbI+QMmjPpB2umRebJU2u0F2O
-zJlk5R6eGXdOn3H83H0CacUm11VVNZmqP1yUSytO4sjiyHdh7Zp70UkidrhA0O9F
-pRM9l9bBbWV3FzLgZCYjZ03y6A+A9CrIsGRVAuX/rAUHENGshIN+Wa1j4ZwRkI+u
-Nid4YWfQkB1UjSFhcx6d9iDq65hTlrHDn5ThFmIDGZCTS8NRcUAevtkdwoU9thC7
-1xTCkJ92ejUGQ3TTzVrlg6qsnSJTAARPhDZ8WasEfN+L/LWyRI181QAMRKG4oOOi
-swVXAClyqCX9avFjDoBP8aArkjRb4A==
-=qXZ3
------END PGP SIGNATURE-----
-
---RVMhmV/ewGAzdaKp--
