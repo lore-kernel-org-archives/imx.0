@@ -1,140 +1,96 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6F6211298
-	for <imx@lists.linux.dev>; Fri, 10 Jan 2025 15:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5B20E6E5
+	for <imx@lists.linux.dev>; Fri, 10 Jan 2025 15:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736522346; cv=none; b=eZ6KmlvUg1KBeKPnQjGVYJENqiUEPbwPGInL43vMX2ycxE9OTVFLJCmyvnm+7TXTEvC461phv/w5EJJjneF+1sG6Ut8PGFY1rSuwBaQeQ+1eqkvBMMlCx05IIeymxURO210k8Rqd8bBahG+WZbhdpE6QmW3dv4oZ1rP1ucMmvoY=
+	t=1736523495; cv=none; b=ajPsCcRhOzeMDuCnoOKhB/cpASpVJKVtZE4MulQ1uALFaYxBVUciCaqA2r4oRUiPvV6wMCVX28ZYVZHKcUHQDs+b2yyibv7FOCgn5OdIqADkvUXH4yNiiOAx197/BokLFJsAyT/Ywn5a0tKNFPqGayzsz7VDCtsL/DFa+IOIYlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736522346; c=relaxed/simple;
-	bh=GdxQAAhkvYNc45ogZEOTdokhwj27OmZxfHC7bNT6WS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lt84ipP5xY+6tU5+GjNRrLdNoV1PdVUP8MLqTdGVUF5057c8EgsP3eQB8jwgTg/7MVmsf9r5kUUtXiPIuxgBF50lD3WI/c1tJO0puzclSf3v1xWjO4FTg067ZU55Zd1R7jZvnQSWfLQhBGqd7lV0tfSejuR7KK6oEwwa+ZpcwP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CJdnr5m5; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736523495; c=relaxed/simple;
+	bh=g3zvNqD36Ly2VZ9tkKT3O7sEgisvEdurJQ6LVf2r8P8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TnoS7pY8rh0zRPsnq92HEU8jwvA304Sy0bvCf74ZRmSj83Gd/9+nkj25up9rOq537VQj4HciTnF8RIWU2iPm1oqMkZrDszNAy1llBujOt0Ihf3Qdj4noEM2rsKQmpz8VpQ/XEOKGfQJ1odHfCzCD3e+pQfRlQi4HbkefrZjZOQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=il0RCBZt; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CJdnr5m5"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43623f0c574so16516985e9.2
-        for <imx@lists.linux.dev>; Fri, 10 Jan 2025 07:19:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736522343; x=1737127143; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e5aEpMmoZZCQQPaRUNn2M/cjTXlmafGJ+ljwOWiSLUI=;
-        b=CJdnr5m5ORTqBaoqgAj4PoSyKBaxOl2/CDm6yq2QFsQLiXDKkgFXUNFgb11XGG1TPM
-         DV+RgxzrrBLlEBiIiAXsmUxmXqyGu6P85cYyBpCLLgfNoU35nUxDw/H0IsKTjUYDimPi
-         LBNsn0Cfx9vXeNJ+nFstLBhqRWk5XToxp46Soe9SRfW2n1nmemk2ND0xRFOxGr/KvjUk
-         kZ8SL6mudryF/QJO8Vfl07K12tYwI4AgQjtincRBaJY95tpZXcutEBV694nNXNwQKq57
-         l8h2ttbV64lSohqBqAJw81nwh06cVnA6yFnJK2XCoO7j71l9YNbZJ6Edj9UtudUwt1Ep
-         U+ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736522343; x=1737127143;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e5aEpMmoZZCQQPaRUNn2M/cjTXlmafGJ+ljwOWiSLUI=;
-        b=MoBgXqb47U9dbQKiLWPVvFB1bCZQYUJ3/VPhXzIjvcwyegtR2jIWRZMNuWjCfZ4oxU
-         zCsdO6QgFV1xKl+ZgRp9tE9ujMZo9S00ZZCvCKVBKP3xhok2xrgmQgpWWd3+mgGyYw3E
-         fQWPtmGwzGjxaL9LS5yzo02NZFPU1LEYHj3IgYov3mKiWbNQXoWszZ2MoXGY61FVy8pQ
-         uR/7TFL8NNmRp9YodBm5YFv7ik2RCr5Vy3U6HzaBYQCYRqFxmUMQBloBMyYvcTGKARVR
-         W4GAvL27GjlCK83K06sRkGeaBmtafZhnT43M3+uypYH57dRAVJ7NuV/I2GF2+HWKvnbE
-         CdFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWmDEjfunYtiUVIa8Q4dn67IyWYWeuwbhR2NUj5TmrghVKI2xC3ZRiLUrenHSDsJYunqJ4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7rMyIhhT6l8no3yVdkHXNV6D9fLLOv9fmEi48jRsaxfJpvnZr
-	xR1iTNSwLXZi8bjU2GiynYemi1tfRH4lOoQZc0tVKE5QvIXT5/cn
-X-Gm-Gg: ASbGncsMZSJ3z7f1IlHPXpmPL5J8pGxRHPh15L8usUfoZD6X8/7L+5RG55gp/hwbsmQ
-	j/OaZjJQ/OZD6ILP3ew+Sb7cU1p6KSGHJtRKPs2sanUPalMsZ17d9YdJL6t5H8PJafEdqOBN43F
-	ycct3ADvD2BV5eyNqcaTqYv7ht+zfR6cCY6Zcvecm58Sks949r9OB6atKkKNZo9wYKY+rYiCZTV
-	NF5I3dYXkBwTb1jsrPrUOSUVZwOLM6qvhHxtexYf3hwbh9yaia2Pe1aKYHq0W5gSZfewvtJ
-X-Google-Smtp-Source: AGHT+IECfAJ2WoCuNj7wvzCw79nESfWsenN47zMVWMkB4VRz8D5aWBaZsf1e+N3uhc6SbLU9mvw4vw==
-X-Received: by 2002:a05:600c:1e17:b0:434:9d62:aa23 with SMTP id 5b1f17b1804b1-436e26dda97mr99240525e9.20.1736522343081;
-        Fri, 10 Jan 2025 07:19:03 -0800 (PST)
-Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:d0fc:3598:a372:ece6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e6249csm54511425e9.38.2025.01.10.07.19.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 07:19:02 -0800 (PST)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	max.krummenacher@toradex.com,
-	francesco.dolcini@toradex.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
-Date: Fri, 10 Jan 2025 16:18:29 +0100
-Message-ID: <20250110151846.214234-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="il0RCBZt"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AF21660005;
+	Fri, 10 Jan 2025 15:38:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1736523491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g3zvNqD36Ly2VZ9tkKT3O7sEgisvEdurJQ6LVf2r8P8=;
+	b=il0RCBZtzS8MM8CP4vxI7ia+4m8a8on3dAjyRA714QxWf1h7Cemz9TvNjcwrsEsXeM+0fo
+	2GlfKRiqgDw0g6LFkFFsene205lRx/b1e2AnEsNq8nmkc5vA7INqPqwhgo14eNUtnvnKc2
+	wBgsGEKC09Aymfm+L7iAn3Rj8OIMS6X7ImxVv4TMlEIK3DZoFbsGvAf+7ftNkoQ50zmUuJ
+	f7Syqi7PfIWaV5uT85CZja6zaC+3yMaGQdMyIPtpmBMJSKdHur+CpJI5L1KkOv95v0/U90
+	10O/L9AgIj/PgbDAGZSZQkr6o9KeWd2T0Nd14/0S/BMnDJHEn1AIZSuN+MTneQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Stephen Boyd <sboyd@kernel.org>
+Cc: Maxime Ripard <mripard@redhat.com>,  Abel Vesa <abelvesa@kernel.org>,
+  Peng Fan <peng.fan@nxp.com>,  Michael Turquette
+ <mturquette@baylibre.com>,  Shawn Guo <shawnguo@kernel.org>,  Sascha Hauer
+ <s.hauer@pengutronix.de>,  Pengutronix Kernel Team
+ <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,  Ying Liu
+ <victor.liu@nxp.com>,  Marek Vasut <marex@denx.de>,  Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>,  linux-clk@vger.kernel.org,
+  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  dri-devel@lists.freedesktop.org,  Abel
+ Vesa <abel.vesa@linaro.org>,  Herve Codina <herve.codina@bootlin.com>,
+  Luca Ceresoli <luca.ceresoli@bootlin.com>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Ian Ray <ian.ray@ge.com>
+Subject: Re: [PATCH 4/5] clk: Add flag to prevent frequency changes when
+ walking subtrees
+In-Reply-To: <c80a9fcd3fbe99c77c2cef1c241e8610.sboyd@kernel.org> (Stephen
+	Boyd's message of "Mon, 30 Dec 2024 17:22:56 -0800")
+References: <20241121-ge-ian-debug-imx8-clk-tree-v1-0-0f1b722588fe@bootlin.com>
+	<20241121-ge-ian-debug-imx8-clk-tree-v1-4-0f1b722588fe@bootlin.com>
+	<20241217-brown-wapiti-of-promotion-e3bec6@houat>
+	<87bjx2tf3y.fsf@bootlin.com>
+	<c80a9fcd3fbe99c77c2cef1c241e8610.sboyd@kernel.org>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 10 Jan 2025 16:38:09 +0100
+Message-ID: <87msfy8yse.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Hi Stephen,
 
-The current solution for powering off the Apalis iMX6 is not functioning
-as intended. To resolve this, it is necessary to power off the
-vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
-state. This ensures the carrier board is properly informed to initiate
-its power-off sequence.
+>> The idea is: if the flag is set, instead of accepting the new upstream
+>> rate and recalculate the downstream rate based on a previously set
+>> divider value, we change our divider value to match the same frequency
+>> as before. But if we cannot, then we just keep the old way.
+>>=20
+>
+> The exclusive rate code could support this if it doesn't already do so.
+> If you call clk_set_rate_exclusive(child, <constant rate>) followed by
+> clk_set_rate(parent, <new rate>) the core code should try to keep the
+> child at the constant rate, or fail the clk_set_rate() call on the
+> parent. It should be possible to confirm this with some KUnit tests for
+> clk_set_rate_exclusive(). Similarly, if another child, child_B, of the
+> parent changes the parent rate, we should speculate the new rate of the
+> child_A that's protected and fail if we can't maintain the rate. We need
+> to start generating a list of clks that we operate a rate change on to
+> support this though, because right now we rely on the stack to track the
+> clks that we change the rate of.
+>
+> Initially we thought that we could do this with clk notifiers. That may
+> work here, but I suspect it will be clunky to get working because clk
+> notifiers operate on struct clk.
 
-The new solution uses the regulator-poweroff driver, which will power
-off the regulator during a system shutdown.
+I see, thanks a lot for the feedback, I'll have a look.
 
-CC: stable@vger.kernel.org
-Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-index 1c72da417011..614b65821995 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -108,6 +108,11 @@ lvds_panel_in: endpoint {
- 		};
- 	};
- 
-+	poweroff {
-+		compatible = "regulator-poweroff";
-+		cpu-supply = <&vgen2_reg>;
-+	};
-+
- 	reg_module_3v3: regulator-module-3v3 {
- 		compatible = "regulator-fixed";
- 		regulator-always-on;
-@@ -236,10 +241,6 @@ &can2 {
- 	status = "disabled";
- };
- 
--&clks {
--	fsl,pmic-stby-poweroff;
--};
--
- /* Apalis SPI1 */
- &ecspi1 {
- 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-@@ -527,7 +528,6 @@ &i2c2 {
- 
- 	pmic: pmic@8 {
- 		compatible = "fsl,pfuze100";
--		fsl,pmic-stby-poweroff;
- 		reg = <0x08>;
- 
- 		regulators {
--- 
-2.45.2
-
+Thanks,
+Miqu=C3=A8l
