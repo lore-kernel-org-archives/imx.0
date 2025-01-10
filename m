@@ -1,80 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA172066E5;
-	Fri, 10 Jan 2025 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E432905;
+	Fri, 10 Jan 2025 15:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736523825; cv=none; b=MgzCvEACj3caUd1lVDqhm25PE0PeVa94lcBloVfclVSaLzTxdG64EyND42D5sW5sIElekqIrKhyMHsJ2Y1y84BweD2+Oua0E02y0uyeo25u1WHlXb5mxff1gtxcDCWnOLsd6lMG6Ot2D4aGvTKLF40xx5d1gZr3mQZCaQGGNQ6Y=
+	t=1736523958; cv=none; b=QOXtHrbVyDFrFPyxrXIfKTLi7jJyeoYiJo6BbU+4/MC6QRWfL4I0iv874FncjX7bezrr8sfblGoaZzPS83XWtUwQv2abgh65EmapiSCvgviNvvSUFwUR9VjQBYSkwskjOv9sF2vlEc1nHktaUDgwP6XUI4gT5uBWfcUHNbruBGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736523825; c=relaxed/simple;
-	bh=TV8hH/0bAnpkstoi+VL/fkUNsub1wZaqlJIrE9SAU0w=;
+	s=arc-20240116; t=1736523958; c=relaxed/simple;
+	bh=QfmaRoHcJUdGvJKJWhaJqO0KNHOHH67k1vAJT62x7hM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DzPGO8YXDc7g85X1YW0BdSVkNPryQ81foI/CZ2O2XdP5zKPThEuLsOu/j4BSQ1nUSfiaGFVmsb9d6HlghmS4YIOjDZZAYOfC80BmlI2Bn6sa+XvyY7+yxeYGJbfuxmdjdrptgr4woV6vOWQE7PJkUudf6+z9gx3MQDqcpzWFBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lic+hpVt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMs54qHzY/ei8W80S4KEga2YxQxOTXxtSWJcAdeYan9BV1Czs4S6/wevYFGTDvlTysqBJlOuR1g0V6+e8TAVLHf49bN3qys8IXLS32kRviWsGOs/f+4qz5OQdy1r7qjft4bAHcVEEx1u9ywgzpM+oGSEddsPz08jGBK5ME/KxeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ur4ru0ae; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lic+hpVt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BC1C4CED6;
-	Fri, 10 Jan 2025 15:43:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ur4ru0ae"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96B3C4CED6;
+	Fri, 10 Jan 2025 15:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736523825;
-	bh=TV8hH/0bAnpkstoi+VL/fkUNsub1wZaqlJIrE9SAU0w=;
+	s=k20201202; t=1736523958;
+	bh=QfmaRoHcJUdGvJKJWhaJqO0KNHOHH67k1vAJT62x7hM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lic+hpVt20oa1Er3C2FAYUyESVm4xI1R5bOB51Lwq0HcLGCnKiblgXYVwUJx+/x3a
-	 cUE5/C15iWRWcxYhQ7FuprRryHpctO62F6THJqi2kKfvk+Cas5eVF9GJond+7Czs0d
-	 Sq9ly8reE9HqyyBdXXjI0k88f1kqJDIhQFJiodC0JNkBeXYmpGF7K8ilc84gnppjoF
-	 SObGl+J0WXIvuLoL9DwLURXjeeO8Y9vQ6JFj9FQST227QrX0RRiLxlawuiBkm+o9PR
-	 EjrKls13caeEu3LbAmQPkHNAfWXJM9HbtT18cmZWIhTYGjs5UGCWbp1gXqVGH8hy5u
-	 3+HsR8OYmgQAw==
-Date: Fri, 10 Jan 2025 09:43:44 -0600
+	b=Ur4ru0aeMO1UPqUMUz4EgMGX/ni3ypzALyQ2ZgQF6bsm1joJ7tjl+xM1mCybt7TQa
+	 x/p4KLyKxKt+EZ4YodzOhkZv2Yk8vmhizyCAUOxmNltvpoJpTKBT9Ady5aVakQD2IU
+	 YO7B+Fl6oGTYYBkUyynpGvvpFwQohewEONwavwSBuc/bCXqCyZj5futz+KFEFwoNSC
+	 3OKikCx21msO8bgmWGN03E7tQ/0Bt5zNbSwHgpjYa+V3C4GBQ94rNzXHLzY8uD18xq
+	 XhPK1NsZC/ZPiSgz7GUK3IzsLManGKV/VElWNhz2NZB531JkUp6GADNr4aPyZ6NkJH
+	 gyDk9xvrQCzMA==
+Date: Fri, 10 Jan 2025 09:45:57 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: devicetree@vger.kernel.org,
-	Krishna Manikandan <quic_mkrishn@quicinc.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Lucas Stach <l.stach@pengutronix.de>, linux-arm-msm@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jonas Karlman <jonas@kwiboo.se>, Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-amlogic@lists.infradead.org,
-	Mahadevan <quic_mahap@quicinc.com>, Rob Clark <robdclark@gmail.com>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Sean Paul <sean@poorly.run>, Simona Vetter <simona@ffwll.ch>,
-	Robert Foss <rfoss@kernel.org>,
+Cc: Zhang Rui <rui.zhang@intel.com>, Vasily Khoruzhick <anarsoul@gmail.com>,
+	linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	linux-pm@vger.kernel.org, Yangtao Li <tiny.windzz@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	devicetree@vger.kernel.org,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	linux-sunxi@lists.linux.dev, Lukasz Luba <lukasz.luba@arm.com>,
+	imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jacopo Mondi <jacopo+renesas@jmondi.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	linux-renesas-soc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
-	freedreno@lists.freedesktop.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jonathan Marek <jonathan@marek.ca>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	David Airlie <airlied@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [PATCH] dt-bindings: display: Correct indentation and style in
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] dt-bindings: thermal: Correct indentation and style in
  DTS example
-Message-ID: <173652382248.2923092.2349362703621090098.robh@kernel.org>
-References: <20250107125854.227233-1-krzysztof.kozlowski@linaro.org>
+Message-ID: <173652395667.2926063.1624072219753897598.robh@kernel.org>
+References: <20250107131027.246608-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,10 +56,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107125854.227233-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250107131027.246608-1-krzysztof.kozlowski@linaro.org>
 
 
-On Tue, 07 Jan 2025 13:58:51 +0100, Krzysztof Kozlowski wrote:
+On Tue, 07 Jan 2025 14:10:26 +0100, Krzysztof Kozlowski wrote:
 > DTS example in the bindings should be indented with 2- or 4-spaces and
 > aligned with opening '- |', so correct any differences like 3-spaces or
 > mixtures 2- and 4-spaces in one binding.
@@ -96,20 +69,11 @@ On Tue, 07 Jan 2025 13:58:51 +0100, Krzysztof Kozlowski wrote:
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
->  .../display/amlogic,meson-dw-hdmi.yaml        |  8 +-
->  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 28 +++---
->  .../display/bridge/samsung,mipi-dsim.yaml     | 66 ++++++-------
->  .../display/mediatek/mediatek,aal.yaml        | 46 ++++-----
->  .../display/msm/dsi-controller-main.yaml      | 98 +++++++++----------
->  .../bindings/display/msm/dsi-phy-10nm.yaml    | 40 ++++----
->  .../bindings/display/msm/dsi-phy-14nm.yaml    | 34 +++----
->  .../bindings/display/msm/dsi-phy-20nm.yaml    | 36 +++----
->  .../bindings/display/msm/dsi-phy-28nm.yaml    | 34 +++----
->  .../bindings/display/msm/dsi-phy-7nm.yaml     | 34 +++----
->  .../display/msm/qcom,sa8775p-mdss.yaml        |  7 +-
->  .../bindings/display/renesas,cmm.yaml         | 12 +--
->  12 files changed, 221 insertions(+), 222 deletions(-)
+>  .../thermal/allwinner,sun8i-a83t-ths.yaml     | 48 +++++++++----------
+>  .../bindings/thermal/imx-thermal.yaml         | 36 +++++++-------
+>  .../bindings/thermal/imx8mm-thermal.yaml      |  8 ++--
+>  3 files changed, 46 insertions(+), 46 deletions(-)
 > 
 
-Applied, thanks!
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
