@@ -1,59 +1,61 @@
 Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9562940D
-	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 12:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091C91B3921
+	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736685005; cv=none; b=nGMLFfm0hkyznSUR3Fwi1eXB0m15larArKfnkPJdlJztEd4VUfxD4vGJNe7ATXsL8Oh1Gz8nm9e9jXCqBsMJeUmTue9rXB3PoFTKXGeKOMErQxOhmhxvK8RwGUEiDumW2azZrdzM8/SnTH2/3Xj5G7dUaZzehbFVcNeVmBZNzCc=
+	t=1736685009; cv=none; b=XM1+ipPQWuVIojI16cxGHpE+pe4syz9VpPcuGoDpjnEpYL2zrlKeRl7LjFbIlMsYn8K4hzISOLRK75WPP+20qvyiP+wjMrjxGOJG8IVJ5KDTmLEUfDKerZklZQv2ROciTReD++Tlb99THPOCsKFs1p10COY0Z7zDBzcr0hfVYM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736685005; c=relaxed/simple;
-	bh=JqALaE1v++PpbcezM7wf/66LPJa9yR5iEjCEheIUvDo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aFmGsCct1XQFZcGMBj3qledUrp1a6jNDyOc0Jhcc1ukHSVo9JgtR3/6HbtXG9wHdCOrHbJFQAKxtKf9t/B48c4wFJpALRr6viFfgrDat9Fyx09gUsitrN4qEqiXbiitHTyy6NjP6+sjcRs3x99jNZ6F3xczqH+MNzk4drcY8A2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RP+O9Kmq; arc=none smtp.client-ip=209.85.167.177
+	s=arc-20240116; t=1736685009; c=relaxed/simple;
+	bh=55SJtEopymqDLK9jEfPDJlSY2zUu3iFsgAynO+ND2xQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oxVTefPvKwghZZnHcl6RivRAmVcNcl3+QzcxlZHpnWGL6C2085nhBSvCPnN1rhTaDMLP6J7rFWzxkTKrDS2jlISfjTz9kab6EkuEF/pm5whPXhrj1xpABy4Au+MB9Veey3T1VIX/x41Bt7zDQeTTfVPZaTdtgrJoPz87vGYNddg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=axYpwurT; arc=none smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RP+O9Kmq"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eba0f09c3aso1077745b6e.1
-        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 04:30:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="axYpwurT"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eb8accbde3so2163157b6e.0
+        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 04:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736685001; x=1737289801; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOiX4crFqNs9gEIrhVXrHiO5ip88JrNxPsu4lZh+erE=;
-        b=RP+O9Kmq3BqOXOb22xsqbqee8yEXK3u84U2hELxXDVSSHQe6g3yvDztejkFyopIekc
-         czI2fhRUXW5HALi6pnn/K80s1HfZHR5jeRyFgT8qv0/pqXGu5shfn0TQorFuTltw6eYE
-         m11Xj4DO7Zf8i1HpaiBDus1zjm3SY/u8KQVaSW3ufDqhdGmXt4u2xCk582Ml/3r75X61
-         74xpVHod7UPs83WOPAy9mB+bd5dhsPoE06ClSHsneTyVDy/Re4YxqV8NLgqzLOWpJ836
-         yIpFnN2z9lV8lnCuouTQrFXAYv/zfZR4PFFDOquh1bkrCOwSVjpHQ1OwMjoSOvpEU++E
-         e0uw==
+        d=gmail.com; s=20230601; t=1736685007; x=1737289807; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zxHvRU79mZPg7YVqFDPmYG/fyVRd96eq7pLfVRnFKlQ=;
+        b=axYpwurT/V8DrRmycuW3O/jym3dUjKTr38zZVI1k+mo2FXvxkSTbHrig8PYd5wrOZb
+         +RJHpxrhuS2JN3Vqo4W8y8ifz7AUJkTQwrgRKDfe+8QPfKQvOuxczxpnlvqSzjR2BEyX
+         X1ycHjEcklJyqAhHYGD5H0k/yalEUqR3Vzh35WrlfdzOKsG5/AUzkM+TRbsydoscLskU
+         zdUsf1yyO0ft6hEj+QVUAA9xG4KtTKQblXtPjJfyHvpgoCVYnJcH4b3CtHx5dG4e05zO
+         e2zHwVf8mjLK6owiXwh5wgOg0CBxxcbRYQxcmGdIZLMjr7uDqU0rQfCDdlEAXeNkEIDl
+         as8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736685001; x=1737289801;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EOiX4crFqNs9gEIrhVXrHiO5ip88JrNxPsu4lZh+erE=;
-        b=qsabJU96PllE2e8tsQdwTVl4f+m/M9U8Ij0iC4s8rSiNbCtUszB/+R/2/9DdVd68yd
-         K9Bmh2wb0TIqHBuy259sbqi7lv3eksWtJ64q5ZtYUOd+2qN7yXYrT2GjV96fFzct3EyC
-         d/GT/6UfQv+oBV2ANk2wQawAfIGY0zMpY0wQcxv+36mb73CAtaWnmE0wmnytS+8uai/k
-         Z+RYABvapM2alNZzh2tHMbh80b34cQAgQjJjO6jOq/rJqxiddAB23mEJUOsdWDS2B4Zh
-         iZMPoMOIsKYOBya+RF8lCyyj6mBnf3eG5+7DDBqnrJ8aOnKBi6mYfT7qJp9dvEddELTa
-         viJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXFhOXEduRTt/aPzZBe4CzEaPsrSNEV2txaNK4n65JL43Q+tG0ejbiQivWDpXjp2HqEraU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCGZfJHMo444uicUolwHg5AZfVonxf2EGf6BJ05cIyp9Gwby8o
-	dja2lx+poXG9ga0WpxUzwY02ZHPfIMYHrw3FEIG1OFXlvR6qat3R
-X-Gm-Gg: ASbGnctyOBytR8lX5vNyOzlit3PMfM+2R5OJNzrGDk4W1+Xondns6eDPaXMTOEXZ+G0
-	X1Hi5tbPJcddKSvV+r/mdAWLAjxJIIlpIIxNfeQpI3Zx8egSUrMaQylhoqawwmjcANmouvtreJn
-	kMsyebD93D74GdeOrMt/FtSpHNKFs/l6UvGIdtTxI9WppUDMkXOLQBYB/glGVteSmElWHDE6RCG
-	cOwkbnlZNATJVzE6/eU9CDhPK4d9EG7nyK/dkkyC3pM3ws32kaTQ57AME9aY3mHSDF4ng==
-X-Google-Smtp-Source: AGHT+IHUMa7cT6Nz+jMGSMZwZ5HGk0gv+giMFYc59Vdedh64PI165/u7NrAV0tRuTmem/Cd8rrEn1A==
-X-Received: by 2002:a05:6808:1922:b0:3eb:59f2:329c with SMTP id 5614622812f47-3ef2ec6c76fmr8758189b6e.3.1736685001618;
-        Sun, 12 Jan 2025 04:30:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736685007; x=1737289807;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zxHvRU79mZPg7YVqFDPmYG/fyVRd96eq7pLfVRnFKlQ=;
+        b=gN1lsGtt2/o8oULurIGKKapfC1E5Oiz4Q14wNZMEn/CzjVYMJiHPff3lV5apizxhmB
+         Mt0YCNov2N6lNW9wti0Sfq95Z04nSsWIwuR8QuzAtkqhJ0sCHlgRInsD0JZmPfLHoTmP
+         B58cigZ411yRgHY1LadsEONlzRkBx5iKfaGeZ3iRx0ipOZri0X0Mf++AAISphZ1q27eG
+         hrNMlVE1HPIcE3mOBXxQk93waMhFqHzbRtcfa3+1SEd2CH7LwCfLPAEF5DmZxycNN7B7
+         bH4ZnR2CAAKa7S4/Y34SHKLRduW1/sfMv4h0MLoABgCfccJ8xYsvHxArUjiIHsYreCUZ
+         BOQg==
+X-Forwarded-Encrypted: i=1; AJvYcCU83ZKSKQ5qREZNXuIcA8ZPNOz47GTV1jNcpBN0zMxLo1nLdnNtve2nZmCKQ9zu978u7Nc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5gxZYzSf3SBR+vQjKjsF4wgAD16I6H3G8xG5TbyaOXsJXH2d6
+	BBQWJtKjLfxXzJ3gvYSehpefuYnmHrl4by4m7w9si2z1nHjNzrQO
+X-Gm-Gg: ASbGncvm0DzBmflKmH1EhE4798FX13iOD0NYSo2P2GMLvgQgv9z6Z8eN4wqhCyVg8Kk
+	UhOTHztzzSO94TrPVUf6rmVWmu3cqQAJBLw2YDCCrY0sJQK3AHQVqLLZlxjYvxLYpI9wEuCO77k
+	bIRUnaVysr4h7ASC5o4fSfo8Ev2w+GbTc5toBbBFJRKbnefOnam47CNQQozJEmKjc3wTj8FkTD8
+	cxCz8fvPVrrVPRO0S6Mwki8jnmLa61yinZMSAwF0AsFq1LUEGbkyP3uoD0F93FomFfDTw==
+X-Google-Smtp-Source: AGHT+IHBEpxax2xMY9nJrTyjERREv7VKhbMGJmdVOS/eKfcaNST6ATYJ5Bmp1DZ6uORogDWU++riWw==
+X-Received: by 2002:a05:6808:3945:b0:3e7:bd4e:5b98 with SMTP id 5614622812f47-3f038359e56mr5897262b6e.0.1736685007081;
+        Sun, 12 Jan 2025 04:30:07 -0800 (PST)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8c53:b609:d83:9568])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f037653ff2sm2196609b6e.13.2025.01.12.04.29.56
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f037653ff2sm2196609b6e.13.2025.01.12.04.30.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 04:30:00 -0800 (PST)
+        Sun, 12 Jan 2025 04:30:05 -0800 (PST)
 From: Fabio Estevam <festevam@gmail.com>
 To: shawnguo@kernel.org
 Cc: robh@kernel.org,
@@ -64,10 +66,12 @@ Cc: robh@kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 1/2] ARM: dts: imx5: Fix the CCM interrupts description
-Date: Sun, 12 Jan 2025 09:29:38 -0300
-Message-Id: <20250112122939.988309-1-festevam@gmail.com>
+Subject: [PATCH 2/2] dt-bindings: clock: imx5: Fix the CCM interrupts description
+Date: Sun, 12 Jan 2025 09:29:39 -0300
+Message-Id: <20250112122939.988309-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250112122939.988309-1-festevam@gmail.com>
+References: <20250112122939.988309-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,61 +85,32 @@ From: Fabio Estevam <festevam@denx.de>
 On the i.MX5 chips the peripheral interrupts are represented directly only
 by their interrupt numbers.
 
-The CCM nodes are not following this format and cause the following
-dt-schema warnings:
-
-ccm@73fd4000: interrupts: [[0], [71], [4], [0], [72], [4]] is too long
-
-Fix it by passing only the two interrupt numbers.
-
-Run-time tested in on an imx53-qsb board.
+Make the CCM nodes to follow this format.
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
- arch/arm/boot/dts/nxp/imx/imx50.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/clock/imx5-clock.yaml | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx50.dtsi b/arch/arm/boot/dts/nxp/imx/imx50.dtsi
-index 1b6f444443dd..f0b12a70f614 100644
---- a/arch/arm/boot/dts/nxp/imx/imx50.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx50.dtsi
-@@ -338,7 +338,7 @@ src: reset-controller@53fd0000 {
- 			clks: ccm@53fd4000 {
- 				compatible = "fsl,imx50-ccm";
- 				reg = <0x53fd4000 0x4000>;
--				interrupts = <0 71 0x04 0 72 0x04>;
-+				interrupts = <71 72>;
- 				#clock-cells = <1>;
- 			};
+diff --git a/Documentation/devicetree/bindings/clock/imx5-clock.yaml b/Documentation/devicetree/bindings/clock/imx5-clock.yaml
+index 423c0142c1d3..ad03c0a13e64 100644
+--- a/Documentation/devicetree/bindings/clock/imx5-clock.yaml
++++ b/Documentation/devicetree/bindings/clock/imx5-clock.yaml
+@@ -46,13 +46,11 @@ additionalProperties: false
+ examples:
+   - |
+     #include <dt-bindings/clock/imx5-clock.h>
+-    #include <dt-bindings/interrupt-controller/arm-gic.h>
  
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51.dtsi b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-index cc88da4d7785..2bfb6baa67fc 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-@@ -458,7 +458,7 @@ src: reset-controller@73fd0000 {
- 			clks: ccm@73fd4000 {
- 				compatible = "fsl,imx51-ccm";
- 				reg = <0x73fd4000 0x4000>;
--				interrupts = <0 71 0x04 0 72 0x04>;
-+				interrupts = <71 72>;
- 				#clock-cells = <1>;
- 			};
- 		};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-index 845e2bf8460a..b7147cc7a316 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-@@ -598,7 +598,7 @@ src: reset-controller@53fd0000 {
- 			clks: ccm@53fd4000 {
- 				compatible = "fsl,imx53-ccm";
- 				reg = <0x53fd4000 0x4000>;
--				interrupts = <0 71 0x04 0 72 0x04>;
-+				interrupts = <71 72>;
- 				#clock-cells = <1>;
- 			};
- 
+     clock-controller@53fd4000{
+         compatible = "fsl,imx53-ccm";
+         reg = <0x53fd4000 0x4000>;
+-        interrupts = <0 71 IRQ_TYPE_LEVEL_HIGH>,
+-                     <0 72 IRQ_TYPE_LEVEL_HIGH>;
++        interrupts = <71 72>;
+         #clock-cells = <1>;
+     };
+ ...
 -- 
 2.34.1
 
