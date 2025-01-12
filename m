@@ -1,65 +1,65 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156641BCA1C
-	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCF71BCA0C
+	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736688789; cv=none; b=FFEId/4dKYLv+W5QfxwVCWFJrK2t+C0jfOP2FZiPCBBBw9+iTsbELbSIgFcMqZzF2DkVleCG+u7R6xzpgl9GgUMa0d4i684KZ7whwi9Pz+WBF0dgtoBRYDhiP3d6z959P5wwArOJG2slys4rRgdJM+lfase/teXVsfGiVlGSWkQ=
+	t=1736688792; cv=none; b=NVQfyA0Mtm8hdkEjUrX7C2AjoCyFf8tRKqNsQ4QbhuNTWR6zk10Sd8GOByqWTY0qxNjzTw72wbq6rb6g8f8fc63fcGPw4QlO8DSNQnXK5Y7eesXEN/9czgKCfX2E0pZ53JmlTWSc6yOu3tbYM0fSBLaT3nVz4A1jb0xS18SH9uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736688789; c=relaxed/simple;
-	bh=BLKjHvMGwRWG32GZtZYj7md0qQ8nB6LVGjC0kEjtJ8E=;
+	s=arc-20240116; t=1736688792; c=relaxed/simple;
+	bh=NXMkmgaOV2RUkC4HwkfQVhlGXXVP2A5zrSYO2RnmBmE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oLcy99Kx6r5i+YBxSOn+Sa8uFFl3aIGH/icrR44MCEJRA3rv0GwQS1ZQWi5oxOBmUMhC0iG335CWnKetjXIrNps7wwjmiwiOwOR+GWckgr1N6A3djzqsHKf27NW4cDRSRKWDjcmWtLxHBK8Kn4qhXe8unB9aHYUbphPCxZi4YTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TC/ppfud; arc=none smtp.client-ip=209.85.208.51
+	 In-Reply-To:To:Cc; b=JOj2k+Hvgbh8oak4U4ldnJ+P+wrlDq7FQ5q/osycHGcU1gUHhR7jUxOhyyQmiInQwG28oy5bNJVvnHfnkTd2C9cYyu8S2lMP2DeiFZflVHhKl505t6XGvh2KiR9r71KqUPHF3MnNxIVaPI9ndLfYg9ATlIn5Mrq7lBnIR8Zynew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ujQV5sad; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TC/ppfud"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d44550adb7so597026a12.2
-        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:33:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ujQV5sad"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d3e5c225aaso702007a12.3
+        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:33:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736688786; x=1737293586; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1736688788; x=1737293588; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ld8ZPAnxgwhvLaqsgPKYU5t+3ZDPQJl13t2skco9HCk=;
-        b=TC/ppfudry0XyeRC1jAufx2UJ1OTJJUOQG8pR2KUycL4uP6O5LwO2SlCBePn32k1al
-         oSD28o8SMQ+PT+KB9BMplSQANQH3JGcGHUzqs2EqE8JP13idFFYc7ABfun0Lo8LtuXp0
-         M30g5MkCJk0BPTGlglKnXgalG7le3YqdeDdH+6JSIRq0/PRgfBqB0HESogS3gNWSpRrX
-         yPKiOukeCRROJ4pSkyGK+ve50/Eu228Hb4PP+K7RWJkWxQBOmW4T8njoAyYw10m+sq8H
-         0Yn7Wlz7k1gTuJkubsV6TDHGuF2v9qVU9gXZs0Cxjekm23KcjCQTJePRBRqragRMutMn
-         kgIA==
+        bh=qkxcGNEB2JVbUM+gOy8SUbx7zqelxFkMblu3o9jMzUg=;
+        b=ujQV5sadED6Zuky1AsuWMYOnoPFSRucwBSfkRXmmeHmwcGO15fLc7nRDVRtK8FNm5o
+         VApF/LNt0sF4f+suoqeEa/EQJS9HUh6s9rkfUbgh9tNqQrGSTIQP2EWiBH8VpA2ujUiX
+         pYh3bf1/AqoZlz+U2+d7HYfp5TY67GwdXvSanYkBfsshjQJypnUzpYr0BUHfJ7wDeYW7
+         xzpoAADbbaXmyYZ+kH9gwbh8Ong1y9oVYWRQG5e3jUt8JARyNw3L1FP5+ebOJGCxkhZk
+         kzbjHEg+lMJnkcWcIEdSRVfIu1okp95+3D84M7h9Us+TsSWiMsHht34pXU/wmcwIeC++
+         zoyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736688786; x=1737293586;
+        d=1e100.net; s=20230601; t=1736688788; x=1737293588;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ld8ZPAnxgwhvLaqsgPKYU5t+3ZDPQJl13t2skco9HCk=;
-        b=cnSEx7euqf4YPm/OEEtZ/nXdyX6Sc5dEfcs/4ErjJ77KchQscOnXOeYayGHgdRwJuT
-         PxzUc9R6EhEknz8VCqaoJenpaifR2zsV38IUpM3V2szbBg9HBNcDqS8hKJPApCkZF4yV
-         tYUzhneVnAstSCvVvd63BGVx9GGLrIlBjHX+Te71T2crwMfPYwSLjoWYuC3hbnxMTcrC
-         3ZhtiIfNcJkg1WPGwVUSeeM8FityzrxEgFkM+9PQ1IVU65noLyXl514Z98cuKWPF2CTT
-         EQluExrc9RqKlhsfrRvUvtca03dzQ17TvhKxbDZlowBKWV3tYfa2FsYTPc194jEyvxln
-         AdGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCxPCtflAPhfUR7/ZpIqytlyEsrneJJvnetNrCxtjpmQEWvsGDs8N2EGH4KU2J+cm/Z+E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSVgMD4X4bJLcbrg3bVg+0kYfh2ykmYSbQkImounWOFASN8GHa
-	Mq42j+lF6GQN05g3NwZprR1fx37B1ijyjUt2RiFsf0DnRv7sJscfCC2feYoNMllZ0KRPP3t/j3B
-	f
-X-Gm-Gg: ASbGncu+CPcAaY3IH2kwYq5ORrU1IfsWMihD2vUk0rK+kA59uPHvKRj+F5DJo+s0tsJ
-	IBbLzy4hGlll0BeO+Rfo+LhPQ0z1GGMbuqCWmJw8ECoTIp/j17gKbUVVqhv1HnOPyOdKvMTV0Jh
-	PC1Xl0llxMCvjM0XCMW/KedQ7sLv6KXIt1WzWBBY0tprKJm4Z6KFyZuvgQkPR65KGtXf8mZXqYa
-	VCapNBEuUQyW61T0XB7Y677A1dKWFUCQEwrujdpUoQxo+jgblVCUkLNcEioGd4JqIUhl3uB
-X-Google-Smtp-Source: AGHT+IFHwHH4KKIrysGLvqwXWCgJxLn+t19M/gFmLmYbS8NY9BWAcFiBlWXc9XqfFSlrFDFKeUN0GA==
-X-Received: by 2002:a05:6402:13c1:b0:5d0:bf79:e925 with SMTP id 4fb4d7f45d1cf-5d972e65777mr5439603a12.6.1736688785817;
-        Sun, 12 Jan 2025 05:33:05 -0800 (PST)
+        bh=qkxcGNEB2JVbUM+gOy8SUbx7zqelxFkMblu3o9jMzUg=;
+        b=gJiZTnSltBINP8l0QxRqq4NpwtgQNBRSo10YK1lQ9BuyiBrmiaEI5uOIqGWv4w61pN
+         IQWsZN6BDK7w+25KspqyHUeLHiHHJABvc9oJHlr15bUQvaJJboM/BWIHDJDCHOj2iUcx
+         wO5AlbYbqWZjpQEzMr85PvWSB7IWwl4VLIcpWO2bIp6eS/OXS5/0s57dZ8t35A0yJnnb
+         6v2woThhAWbg2Vt3+R3x09xmKd//ruxvvtOLwFeoVdXIeGKPrqH1JauovTggVYc4HaUQ
+         Joj9hspps02GrMaWuVdSeYASXSPErTPuKQoKrh8QxXdB15Y+REKCRqu6REvuDVUMG1fJ
+         Kx4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWFoYvkvnoO0KcsLbI5Dvm4ZGskavBkDQ8l6i6KcTOp3cNAZ7btymSjKBaGMVoECpcDNs4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzqLGstTl4Cb3jsYLb9LYy8m7JgeGP4ljqkDLxWbHFjt/jVPyAO
+	Nd58KMdqed74K9stXNQYZHiiyfWkC5sgYUlXToOlMV8LuuNIdN7R1sgWPPEdJQwnteObTJVtARm
+	C
+X-Gm-Gg: ASbGnctxZqqbX0sFTCLCaScSBB8eBofXCZ6dKZEDBOibCDzRmkUmhgX+fXQZuALU8UU
+	KLqUuejGrJFhgHPzCAjdyCqvtxb2xEAYw4E/+mPKy3LaryIxtHQDnPIkF1CFVEIOj8jrvYSfUPt
+	Yf9n8Px79R1ZdKvuree9PCOBk7WdUkuOq7am8kToyfzQB08IqKV19uFG/2h55TWuVHTPFlNdjAJ
+	v0MUpfOEnjl7RJ2n2/eTgWQ8LfHxPhV084bumrlCxFfzXlgBO8ljCxRzNQg2gk5JYAtnHB3
+X-Google-Smtp-Source: AGHT+IGF6bnQlGOOJSwmTTavg2zo5fkx649YuwkX2KVGh7yeql8d0d2LdpF/plNT/VzyYLuHpWJzKA==
+X-Received: by 2002:a05:6402:13c8:b0:5d0:bb73:4947 with SMTP id 4fb4d7f45d1cf-5d972d26b14mr6157273a12.0.1736688788499;
+        Sun, 12 Jan 2025 05:33:08 -0800 (PST)
 Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.33.02
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.33.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 05:33:04 -0800 (PST)
+        Sun, 12 Jan 2025 05:33:07 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sun, 12 Jan 2025 14:32:45 +0100
-Subject: [PATCH net-next 3/5] net: stmmac: imx: Use
+Date: Sun, 12 Jan 2025 14:32:46 +0100
+Subject: [PATCH net-next 4/5] net: stmmac: sti: Use
  syscon_regmap_lookup_by_phandle_args
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250112-syscon-phandle-args-net-v1-3-3423889935f7@linaro.org>
+Message-Id: <20250112-syscon-phandle-args-net-v1-4-3423889935f7@linaro.org>
 References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 In-Reply-To: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 To: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
@@ -86,21 +86,21 @@ Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  imx@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1702;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1695;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=BLKjHvMGwRWG32GZtZYj7md0qQ8nB6LVGjC0kEjtJ8E=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SDFkc9BxhB/j87J5OokfF6ZsmgjWIg1zax0
- EyCdFlFVjaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEgwAKCRDBN2bmhouD
- 1x8AD/9Aau/f9uUdyr+OxKVQyIA5u+wnl31VUsMUYoZKktqRD/7R89XQcAZ4Ihv5P8LoYFUuGSk
- Ietj68aVH4LJP5HlzhkuI0R7ergp7NNod0odUeR15RVmyU5WQ9YSj5PvBGpfHdFPuefkEFt1kfw
- 6FNRml6vfFv9oNkE/EcY+g5RtQoSyyAzH5P42KSjH5G56gOJaaeUOQzRP45DP89NXKhbwdOz+cV
- IoU4HZYVAU6EnU0frwulSeum1/Wg4j+Je/kk8DjnQqGSTYQJisj6bKHLettlVZ900rN9Kbfcqow
- a+1Xr5Ja4Lh/z7Av0ogch3QekPRI6lnIPkOX1TpY3BXstIKjyO1KQqVuNTO3qUzj7qlei8hNN0e
- kzDgRqCIU6AqAvU+T43YltB33DLbadSqmwoIYu6ezF7TxsYDGuMmqp9DMpPf0sZrlxHKBI4kkYi
- rX+2JHrdxNjwS8F9F1y2KD6jCrNdECHTMq8e9FY3rhyHN6HQE8kVCV+/JvnwQvxdDbtT8dnjQzX
- /7r7MIXSBoXplzcK1f0vBwLGGxL5mjR3/WmzgH5zpEQth7DJvvIj+FU1F2ZZlZ45Tr6t9pStmgb
- P02MIOsocH27LT2DgRYEF7Qv0xxUSKyva8FtwrioyZg7dKpYTmtz3UkJn7bGdPUxEGY1A5W2OKc
- ophfP6EMaGl2RVA==
+ bh=NXMkmgaOV2RUkC4HwkfQVhlGXXVP2A5zrSYO2RnmBmE=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SEMvfAj1e6BkujbTFZ72MSWMgcm2SMXQBGK
+ GiE3r2n/mWJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEhAAKCRDBN2bmhouD
+ 1+CtD/9NYfzUH01iViVY6CFPIesUd//8aqafZv/j9gif1sZe4BnpQWtWRxsUu6VQdMZlDJKE9W2
+ glDpCZIW+8lLh+IbsiXM/flGx1S/efHzGzwpjeK7L/+01H4KcEeR/NDg1+8TsGk3d6NX1yF1/js
+ HwaSYCG5gF43SPXB2xa/7mE5PMEKpV30x5gImiU69/kQEkU+hG0h7SsxJIgj3xt/HOP5Z2VjmRd
+ c4HXi8KAUcvDdEeAC1MKg7tZ39OjLQFztwEufapop5grKUL5tbxEaeZ8o2BlJwG/uCvWOTpXYyE
+ XEW+sImdFKOMeKn464A5PXwEu2KkucXyL08nDihzDzhH4RmuG9XNtHs8yCTXvRmIAMtj1eYy2OU
+ idW1s7RxvW3VBVusNX1ehUd05WYPYctpK+gqlj4H6DzxGAUuHu7b+vdVjnbFX+XI4UuUpXlkztG
+ TkLWHNjvzf6OnOYG86bYh4Dr8IVPiD9ikN4N4rK+xw3ax9d2rsVK1/7ap4qJJt4iRlNaFQa5x89
+ prfGPAHxKBpsWwTTUQYDTjGg46zzir0mxKHPl+GxOyLo/9S+3xMdLTt7AAI874KFG7SjGAIgHcr
+ JNJ2MvA9XFr3QF2JPTvtkqonyCssxtjXflAge8uhZAveyDIMEC1DiktRW+Y3V0P5Xxfzk03OH8G
+ w23Ba9WErAio4Zg==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
@@ -116,32 +116,32 @@ static/build-time check for this already.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 4ac7a78f4b14b95169787538b56dad7f7fe162d3..20d3a202bb8d16743ba4f31fa8ebf19a246e8236 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -302,15 +302,11 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
- 		 * is required by i.MX8MP, i.MX93.
- 		 * is optinoal for i.MX8DXL.
- 		 */
--		dwmac->intf_regmap = syscon_regmap_lookup_by_phandle(np, "intf_mode");
-+		dwmac->intf_regmap =
-+			syscon_regmap_lookup_by_phandle_args(np, "intf_mode", 1,
-+							     &dwmac->intf_reg_off);
- 		if (IS_ERR(dwmac->intf_regmap))
- 			return PTR_ERR(dwmac->intf_regmap);
--
--		err = of_property_read_u32_index(np, "intf_mode", 1, &dwmac->intf_reg_off);
--		if (err) {
--			dev_err(dev, "Can't get intf mode reg offset (%d)\n", err);
--			return err;
--		}
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
+index eabc4da9e1a985101643908d2efdb0b4acaa9d60..d30d34fa6ca52e32b10c312c96d462bd6df859d1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
+@@ -199,16 +199,11 @@ static int sti_dwmac_parse_data(struct sti_dwmac *dwmac,
+ 	if (res)
+ 		dwmac->clk_sel_reg = res->start;
  
- 	return err;
+-	regmap = syscon_regmap_lookup_by_phandle(np, "st,syscon");
++	regmap = syscon_regmap_lookup_by_phandle_args(np, "st,syscon",
++						      1, &dwmac->ctrl_reg);
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
+-	err = of_property_read_u32_index(np, "st,syscon", 1, &dwmac->ctrl_reg);
+-	if (err) {
+-		dev_err(dev, "Can't get sysconfig ctrl offset (%d)\n", err);
+-		return err;
+-	}
+-
+ 	err = of_get_phy_mode(np, &dwmac->interface);
+ 	if (err && err != -ENODEV) {
+ 		dev_err(dev, "Can't get phy-mode\n");
 
 -- 
 2.43.0
