@@ -1,116 +1,133 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7A33C1F
-	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 12:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F981B4C35
+	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736685702; cv=none; b=OB7ZvMBQmb1iMYHIYAjr+qOAEEkcmHlPt5iTw3DeGcfOWn41/qrhEwRHO+rQUpU2atE779JvzQ8YgiOJQn0q6ihMWiDSOE1encEAYYrciOUBb4aQMyp5k+Rq3yZ1jK3u7ulqY1ZgRjAvCqOcjwJ2bqxb02YfCr/6ZdPTnGwF+ns=
+	t=1736688781; cv=none; b=SkEmx7wFJB4PCF6Ar1jdDK2OHfsxTGWXJBhoX302M+3N1/4SbNTRy3IF8z3vJgcWbhyJAb2MJkGQiZVoiP8IpPAGXVMyeRvaiI3JpptoNihI6kA+JGwKYTh/RWZU1Tjfhe1/YNI0wvv/5hQJB4G8wsPK7+YzQfU3XXEHKST4QtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736685702; c=relaxed/simple;
-	bh=ud/rqWRzKS8SRsdYmZI+BU/HuEG7B2MYPUTZALmGjcI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tG0OielvW3gjLcOLEUzsUhJAnQ6+vwNrJD98L5Ur9wyecn4QkZdF4jhoZAVEmWppaSeej1grGKlv2tsQ4xr5s3PGbOov1y2vw4l/DbkjYfIUxVdCbYVlarGbqdk8zSkzUxdi/WD8CavbJKmdfT+3u+yxaukmtDKZjLK7DKm9CoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eXxoHT/t; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736688781; c=relaxed/simple;
+	bh=XKxgPXkqRoVDNfOxWtITwzSpA1j1CzTTW6TU8zpRG9Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F8+EGHfmdYh+MtpGw2MAYVdlEIXWq2dcwA8W6rl5FWW+0m/Fcotak6AaJvPyrm0KJbHysOIu+l2kXGO2GzDpuwC3f0oKF4eeZrHy4gKzioiIp1f3MRbsR1yc/4wKRtwEmd2a3ZyO8Kv+TbTVqCH0PgY6s5fY9z5qzKTsx6JVPzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N4lcuGeY; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eXxoHT/t"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2aa179a8791so2069607fac.1
-        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 04:41:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N4lcuGeY"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d3da226a2aso598795a12.0
+        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:32:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736685700; x=1737290500; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yK8Ib4fw8NsyzmJDMSwKub58WZSMVWEX4G9CGBONcqc=;
-        b=eXxoHT/tPgHlvywmo9cbBSiXJCIRmLJJ/HhgdGtZOpeX/jovnjLGQj8WWitSIK7Se7
-         MzxEAlMrQpyrzXilXnx+PbQTVk27Byy2N1oTlCY5OJ/Rp1H5so2IhCovTz0CSJ8EX6Fl
-         1iInBRzXfkXRLRZhwxLWXhgiWFIzuXTDlzuTRynbKCR1Z0Xys3NW+KJEemCJnF/qCANX
-         LikbK9xHzyEf+D6a4ALpZDWTUiLoDh8iiGEX4JFElPFJ9jnyE3lNY3kbqIhEaRwpAZRg
-         MgG5hx3ytrANwJN3jEBxR9eyo/PTiQmMAdcj//ia0XeZXd7fMFYOuNi+PWGJ9utrukEg
-         a7aw==
+        d=linaro.org; s=google; t=1736688778; x=1737293578; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qagkZ/LU4rtTQes27vALssH2ImJamgS/6MR4uWjQHuc=;
+        b=N4lcuGeYm9DurSB6gehO7j/YCtyv/lFZhPEbfh5PDn2G9/tq+RX2oX44CvqmiZabQ0
+         pzm5rub8NPnuWj+gXokx9vXkNvKqfrZOOyORN3jmjrn9/xr0llHbkvtr1dzuaO/cBJOj
+         rbTvbBaFw7fAVKJQCMNr1Nolz+TILAqFyy+gFth9vMLQAqWwIdIrt4wgIuoqYXHFILi3
+         2KKOlvZjMJHAHbkyXgcNn8Ut7O7z9E6pUPTqZjf/EDlVmbDnKz8WmOnC2gDEVsg7RN4g
+         OGeZIYSuRHjecfsvLx8tkdj+HGhmTosKv4rhBW8wK2SXfIZFA4p4ZsU/YMZEXKeQkAtO
+         ro3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736685700; x=1737290500;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1736688778; x=1737293578;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yK8Ib4fw8NsyzmJDMSwKub58WZSMVWEX4G9CGBONcqc=;
-        b=h1MgHgVqCodbBYO4urvvCc8PNcfTdhyMfZghvjovAz2woOP9eYly7DBHe6eUas/nj9
-         155Xj1hZ1ngKSJmFK1EfikmfARuse1BV27QRtk1F0MpS0uM3G3jDi/SXsoBpkcyo8BjQ
-         qtXQStwfBsRdirTlgMXvNaKq4QkE9PN3isy+RJPrpGQ6N1/6AqJ1dOtTWyVvgJ/hj6yD
-         LoteDYPoa9LgCYUhzh2djDT8oU4xGkmq6S1ibFZ6jnmJTNUXK7YwyigSA/v9XQxYcyci
-         wnDTJtETJwb+kJGZBO4Dk9L2KRk01aozko6F9wBhDFcDvYsNrDIfcAfz0afG82ChMHBy
-         tz3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWhM6xXwjmrCKby+Xncw48qFkGz8aMdEuzvMm2/Y17cQf7dFWbvKG1Cq7w2n6RcYwFk8fU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywp9q9e33pOlws0skjsJUSFjpu27Lpo5XeMIGHrSgle9yuDLpKz
-	QHUg2F9PynuN8W7lknqKjjHPfW7qRbQkX5JHixqhYkF9KPvPQ5zz
-X-Gm-Gg: ASbGnctYENqaKdaufB3G3uEowFKaRj2D6WL8i/rmTSgLaEFarW3YUz3rLBNV1rXWOzz
-	0jQh8Lj/BGt/rXHlGt3+uc4MYwDAn3c1RTp5YyVGERmPAW89U23mjwvQ7fapYj9U0gbxI7R6yms
-	JKCB/Mw1b0dC1FLKUWFSwbQuNJ4Pr5liarOjT9Rxnuj0l5ZJbMPlwubLDPOPOqURdgalaw8uXDM
-	tzj0IfhcVFEk2elelGnoycYsCSUK+00iOkEYWbjp47xH9uSn+2BpLCKviE8wJ2/kMggoA==
-X-Google-Smtp-Source: AGHT+IHFr0aj/z+89tWIhkpVoC3SkOL7MWt04vlkUhov0KBX5ymEsZ1beGz7jSVZU6bNnGc2lrRlYg==
-X-Received: by 2002:a05:6871:a08b:b0:297:28ec:9b26 with SMTP id 586e51a60fabf-2aa06945c60mr10074338fac.33.1736685699705;
-        Sun, 12 Jan 2025 04:41:39 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8c53:b609:d83:9568])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad80a527fdsm2816771fac.50.2025.01.12.04.41.35
+        bh=qagkZ/LU4rtTQes27vALssH2ImJamgS/6MR4uWjQHuc=;
+        b=xH6wyccemVMVm5fCQNXgrqtrbXMQy2ndK6OQ4AN0HYfJQkSm0qhd4QcKcCLUG8rbzS
+         ih+diNYSctOrTA20GAl80MwRkfX2POg92MAOfaf5nyL/QMDlRtVhCKnt1YtIDS4GlCbH
+         8t+ykSooXB80Jtocc0tGfpiiqH8yVVrQtFuayDbBTeDlNksSJWtPjHy1mgpMMyjIiPle
+         fZG1GNmSpk2LZnTyKQCm62R4CausQ9satJz0PfQ6gRQTasbCcRWDkk5qk1bntMcRQfDm
+         uocemo+x/hkajR5GGyjqhVrTv2ZYY28TbTRIgpYvxEoT7UC94vZhh5UxeaUorqIVxnxW
+         8O2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXCGwNa3yuvP8jAA+hKWeSjQ7qlR6i4RNHEFa/7buhxKOe9JVQbcRQLGcy9TT7lZHw6cSw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVUdDwkkBHcy3vT/hoSUZeS1UNkZvgtad9qhqTH8dh/mihtwkC
+	9hhStZKEw6OgsOb4x7W4qFB/Tijz8kjTyFQq0IzsQm92UMHnQx0nxFstT6UT5oRxMZWZZ0F4wXJ
+	T
+X-Gm-Gg: ASbGnctnD1b1QQYbU4oNd1zfDks418ocAOzTINfchtju6EZiPsWA1F9L4pP8BfLfvBz
+	kO0aeS75PdlCcY8zMSRXZlFm+zJcDfLSUSRT5TssIKFZ/0UFU7qukYqcvDhF9ngDWYftgiBYm3P
+	ocGOUQzHyx1NtffONoe6y8I3PaZcG9a5rAUdkXmxOXDJv3176uY04rF/7FUKmvjwoc33NnChbg/
+	4C7gYLUbdO/Jkn411pBaOgbkST5WT04YBQRTgo3d4UUBRtV6WCPcf68jybkds7Sg2wj9q1v
+X-Google-Smtp-Source: AGHT+IHGPI5G9xAGCnu9erfmrPb75d7mnwukM12RbyFiKbkogF5yX4joUi45dN7aTJobJQAhBKZ7tA==
+X-Received: by 2002:a05:6402:1e8e:b0:5cf:f39f:3410 with SMTP id 4fb4d7f45d1cf-5d972dfaf04mr5579529a12.2.1736688777399;
+        Sun, 12 Jan 2025 05:32:57 -0800 (PST)
+Received: from [127.0.1.1] ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.32.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 04:41:39 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	kernel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH] ARM: dts: vfxxx: Fix the CAAM job ring node names
-Date: Sun, 12 Jan 2025 09:41:27 -0300
-Message-Id: <20250112124127.994141-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sun, 12 Jan 2025 05:32:55 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH net-next 0/5] net: ethernet: Simplify few things
+Date: Sun, 12 Jan 2025 14:32:42 +0100
+Message-Id: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHvEg2cC/x2M0QqDMBAEf0Xu2YMkoi39leKDJKselFNyUhTx3
+ 5v6OOzsnGTIAqNXdVLGV0wWLeDriuI86ASWVJiCC63zPrAdFhfltYzpAx7yZKzYuHl2ybUIMT1
+ A5b1mjLLf5Tf9BcW+UX9dPyiJad9zAAAA
+X-Change-ID: 20250112-syscon-phandle-args-net-386d05e2cd7e
+To: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1057;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=XKxgPXkqRoVDNfOxWtITwzSpA1j1CzTTW6TU8zpRG9Q=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SAA643Zo2cp/l+bcjvA4yh2jmRGdEETJsAm
+ Enhfy8ebEeJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEgAAKCRDBN2bmhouD
+ 16MrEACXZ72WUcShffV++I09qMxK0HXHtn8vUtnKitu0FCIocOPj/7yXCn5UNkwMiowlUD/SJU2
+ eJcDaunCkjH8J0KQfk7GFxGX5vk93eYQxv0HlD+RMRxaKnL9IJJFTwy7UCU53xCeMtLDPVo/iO8
+ GHcTw4W6rf9JhAdFzQAzZCXIyih19x9F+wejqS6Q1gbhTzpQdH0zpZ2eA5iOE9U/D1m5rfzBZDk
+ B4CBqgq+Km8WkZvkDsFtGQLV8vHiL8OxkQa9UFtrUOzVTyLmgh4iuCLXVz4qgeO/AoojroJ6UD9
+ UqyQTPPbEevML2onTmd6zO8u8P35sCy5mei8XuP6tTx/9xY4zj8vUBmIgNnDJTd1cdWIRpCaG2j
+ ASmSe/phuj/0Yn7KYirpKOECOZkvSWcwS0ScdA4DTLxpnwGyacg3B+7MZc2TcaLQiNtfKO26d5j
+ vaQiFJ75DmoCxwQabf+RYQ9umr+3c6yKY+pO7BC5z5DTLPv/NXBa8xTJNI03dK8YQMIC0dDCkpl
+ qxGQp/Vb4x8lv1ftODbrjU03Z4MWTeI6ahuBLX5mJC+L20oY2fVmZ1vIL6n+9noDROXO/WrRhD0
+ DlJiC2bxqKx7hcdSoCThDAzy30sDLBihn08oRSXZ0t9wxIhbCZYyeVSq539LUav3T/PLQgdIMwh
+ 6aN+wRTr39PFWGA==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-From: Fabio Estevam <festevam@denx.de>
+Few code simplifications without functional impact.  Not tested on
+hardware.
 
-According to fsl,sec-v4.0.yaml, the job ring node names
-should be 'jr'.
+Best regards,
+Krzysztof
 
-Change them to fix the following dt-schema warnings:
-
-crypto@400f0000: 'jr0@1000', 'jr1@2000' do not match any of the regexes:
-'^jr@[0-9a-f]+$', '^rtic@[0-9a-f]+$', 'pinctrl-[0-9]+'
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
- arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Krzysztof Kozlowski (5):
+      net: ti: icssg-prueth: Do not print physical memory addresses
+      net: ti: icssg-prueth: Use syscon_regmap_lookup_by_phandle_args
+      net: stmmac: imx: Use syscon_regmap_lookup_by_phandle_args
+      net: stmmac: sti: Use syscon_regmap_lookup_by_phandle_args
+      net: stmmac: stm32: Use syscon_regmap_lookup_by_phandle_args
 
-diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-index acccf9a3c898..6334ad4aec4b 100644
---- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-@@ -725,13 +725,13 @@ crypto: crypto@400f0000 {
- 				clocks = <&clks VF610_CLK_CAAM>;
- 				clock-names = "ipg";
- 
--				sec_jr0: jr0@1000 {
-+				sec_jr0: jr@1000 {
- 					compatible = "fsl,sec-v4.0-job-ring";
- 					reg = <0x1000 0x1000>;
- 					interrupts = <102 IRQ_TYPE_LEVEL_HIGH>;
- 				};
- 
--				sec_jr1: jr1@2000 {
-+				sec_jr1: jr@2000 {
- 					compatible = "fsl,sec-v4.0-job-ring";
- 					reg = <0x2000 0x1000>;
- 					interrupts = <102 IRQ_TYPE_LEVEL_HIGH>;
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   | 10 +++-------
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c   |  9 ++-------
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c |  9 ++-------
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c          |  9 ++-------
+ drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c  |  2 --
+ 5 files changed, 9 insertions(+), 30 deletions(-)
+---
+base-commit: 8a7b73388d7ab9aed82d5b81f943cc512ee54e9e
+change-id: 20250112-syscon-phandle-args-net-386d05e2cd7e
+
+Best regards,
 -- 
-2.34.1
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
