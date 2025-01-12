@@ -1,64 +1,66 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F981B4C35
-	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A741B6D0D
+	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736688781; cv=none; b=SkEmx7wFJB4PCF6Ar1jdDK2OHfsxTGWXJBhoX302M+3N1/4SbNTRy3IF8z3vJgcWbhyJAb2MJkGQiZVoiP8IpPAGXVMyeRvaiI3JpptoNihI6kA+JGwKYTh/RWZU1Tjfhe1/YNI0wvv/5hQJB4G8wsPK7+YzQfU3XXEHKST4QtI=
+	t=1736688784; cv=none; b=rsctptfKlz//obFBAlHSLkn4uYbqBlN1baiaQpizd0uTM/+TiXynOg0EW64dLgKv9xlAJ/CVsbDCPFA0wKqa4jrkPhjfkllAhgCiiyi3gOQYLWwyupBYVXXPWF2o/0W35aaBALbfxXJYy9H3Tau12mxppmdYbiAymVY8kblk+Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736688781; c=relaxed/simple;
-	bh=XKxgPXkqRoVDNfOxWtITwzSpA1j1CzTTW6TU8zpRG9Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F8+EGHfmdYh+MtpGw2MAYVdlEIXWq2dcwA8W6rl5FWW+0m/Fcotak6AaJvPyrm0KJbHysOIu+l2kXGO2GzDpuwC3f0oKF4eeZrHy4gKzioiIp1f3MRbsR1yc/4wKRtwEmd2a3ZyO8Kv+TbTVqCH0PgY6s5fY9z5qzKTsx6JVPzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N4lcuGeY; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1736688784; c=relaxed/simple;
+	bh=/XBAGwsAFpwFBBQSU961+beyZLkCUNZ5sGTLi9rt57I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=u/itdNXMuxRMURY5cw7Gqr48+XShZfpNx2SwcRP/EjVXuV34HWu0qn+Yy55Wr3AH20cphUCUBjHFhsHkq0x/UX2SqlC24IAsdHufybLjj6ZVRkxYxq9ojvRLcrJueX09O4YDZZZJDnYE9TwoZXQX2x9CniambeFm6FEWAti3COk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f6jwv//K; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N4lcuGeY"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d3da226a2aso598795a12.0
-        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:32:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f6jwv//K"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d3c0bd1cc4so553415a12.0
+        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:33:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736688778; x=1737293578; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qagkZ/LU4rtTQes27vALssH2ImJamgS/6MR4uWjQHuc=;
-        b=N4lcuGeYm9DurSB6gehO7j/YCtyv/lFZhPEbfh5PDn2G9/tq+RX2oX44CvqmiZabQ0
-         pzm5rub8NPnuWj+gXokx9vXkNvKqfrZOOyORN3jmjrn9/xr0llHbkvtr1dzuaO/cBJOj
-         rbTvbBaFw7fAVKJQCMNr1Nolz+TILAqFyy+gFth9vMLQAqWwIdIrt4wgIuoqYXHFILi3
-         2KKOlvZjMJHAHbkyXgcNn8Ut7O7z9E6pUPTqZjf/EDlVmbDnKz8WmOnC2gDEVsg7RN4g
-         OGeZIYSuRHjecfsvLx8tkdj+HGhmTosKv4rhBW8wK2SXfIZFA4p4ZsU/YMZEXKeQkAtO
-         ro3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736688778; x=1737293578;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1736688780; x=1737293580; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qagkZ/LU4rtTQes27vALssH2ImJamgS/6MR4uWjQHuc=;
-        b=xH6wyccemVMVm5fCQNXgrqtrbXMQy2ndK6OQ4AN0HYfJQkSm0qhd4QcKcCLUG8rbzS
-         ih+diNYSctOrTA20GAl80MwRkfX2POg92MAOfaf5nyL/QMDlRtVhCKnt1YtIDS4GlCbH
-         8t+ykSooXB80Jtocc0tGfpiiqH8yVVrQtFuayDbBTeDlNksSJWtPjHy1mgpMMyjIiPle
-         fZG1GNmSpk2LZnTyKQCm62R4CausQ9satJz0PfQ6gRQTasbCcRWDkk5qk1bntMcRQfDm
-         uocemo+x/hkajR5GGyjqhVrTv2ZYY28TbTRIgpYvxEoT7UC94vZhh5UxeaUorqIVxnxW
-         8O2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXCGwNa3yuvP8jAA+hKWeSjQ7qlR6i4RNHEFa/7buhxKOe9JVQbcRQLGcy9TT7lZHw6cSw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVUdDwkkBHcy3vT/hoSUZeS1UNkZvgtad9qhqTH8dh/mihtwkC
-	9hhStZKEw6OgsOb4x7W4qFB/Tijz8kjTyFQq0IzsQm92UMHnQx0nxFstT6UT5oRxMZWZZ0F4wXJ
-	T
-X-Gm-Gg: ASbGnctnD1b1QQYbU4oNd1zfDks418ocAOzTINfchtju6EZiPsWA1F9L4pP8BfLfvBz
-	kO0aeS75PdlCcY8zMSRXZlFm+zJcDfLSUSRT5TssIKFZ/0UFU7qukYqcvDhF9ngDWYftgiBYm3P
-	ocGOUQzHyx1NtffONoe6y8I3PaZcG9a5rAUdkXmxOXDJv3176uY04rF/7FUKmvjwoc33NnChbg/
-	4C7gYLUbdO/Jkn411pBaOgbkST5WT04YBQRTgo3d4UUBRtV6WCPcf68jybkds7Sg2wj9q1v
-X-Google-Smtp-Source: AGHT+IHGPI5G9xAGCnu9erfmrPb75d7mnwukM12RbyFiKbkogF5yX4joUi45dN7aTJobJQAhBKZ7tA==
-X-Received: by 2002:a05:6402:1e8e:b0:5cf:f39f:3410 with SMTP id 4fb4d7f45d1cf-5d972dfaf04mr5579529a12.2.1736688777399;
-        Sun, 12 Jan 2025 05:32:57 -0800 (PST)
+        bh=mRUu7xwt0GOb8hs+BKrBffaLbY4C8ptCLopKQNeTlgY=;
+        b=f6jwv//Kj6lpMJtwm/ZAQo5mgjfO4aX0/8WcUg9I+4TdxIq39vioV/AEzC9RrOfuAS
+         2mBljz+xOkQnlASBnEwV9YfwTopmzbPWVYDNSVFKJqjYSY/pM3l/9YWCBbfVraH+1MlC
+         x3kl30Zxe31gr/uPxuJI/ZSjR8448x6K1h6S+ZGdcr8mEn7Ukjp482J1bEEXsO+evveo
+         rFP+hoRiR4oTQGPW1wokcJQkPMEuAaxMKqxeGblo6QVHTG9N27FyZuXGDiGNJDTjcxQB
+         LIRk6Id5T6x+7btPN79ywwo+/fW96JMYDjVRIN43a0jCcBLve2xpdZqASbNMLRLZ2elh
+         ufxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736688780; x=1737293580;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mRUu7xwt0GOb8hs+BKrBffaLbY4C8ptCLopKQNeTlgY=;
+        b=WDtb9hkjn9SQfh2dxId25ggKeW5AQmTpadSPCef4ZM2frdFX8X2FWd8GzylQaBX3A4
+         wYCLzMKTsEBs5zzd7Z9xbBg5egCUSDyfnmFr6y5XGlf+OZotN2TeWxz6LynePjCuz77z
+         EhF2IB6mndRY11LcdMBoX6O/5uQvPFrwp0Vv6NIfpCpmmb9LWeIx9FKUNyTmfpfFSn1h
+         hPMP9FuhSIYZdbccvojLIeGht2NmBE/nteflFzSifxr7p1vCMDV+X7Qw+frH83bYvEon
+         wcLGi5mME73nlhDtT/PAXOyRUq7anEJVQyGteJGGyGuzv956kUAItvD9y8gEomxU2oM/
+         31kg==
+X-Forwarded-Encrypted: i=1; AJvYcCXlGWI4sgVKSYIlCIa0KoW3670zz4yHw2x4w4oBqYvqNdqS4vgmymxZztQLHtBtLEMgWdw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyI/VDr2dIDlR9z2yxvkQqnJskiOoyBEJKEBzOERmb3inpdX2iO
+	QgbUvDg3tAQUw2eAh3LWzdFrBsSClIgvlc6ZjO3cLBfuKu2qSP+pFaMlT7o0rEZjhoM/hGvXHWB
+	3
+X-Gm-Gg: ASbGnct139I1BMSyzfsw1jwiQAVHUstfWwraUDMo2MmYZYoFBtAy8B8riqvW4qoC2tC
+	00QGjke1vxwJ1Brb8Lnheai2hFCUTcVNVWrNgukfEzA/SlpVlz3ShyD3kHw6z1PS+McvnIjPVDh
+	t3u/XOMrhUEOfn+YgJlJjOQhjLv9tpBWo9E0VhGYlhTg4NMQNt5471/0EsLUSrTCR3PURt5NFof
+	qNZVkCAwpE1ZZWvmtiueGhPl2/ptgqIVs/yMbXy/epjkkA/KBI07J+akVrA4z0IzmskAeST
+X-Google-Smtp-Source: AGHT+IHe7/2lTE7/Nj6QfvaBW+C/pcgDJDaV2DeHYFVEZqu1pr4HggBi1zI3dnd6icGke5g9aysmUg==
+X-Received: by 2002:a05:6402:42ca:b0:5d0:eb6b:1a31 with SMTP id 4fb4d7f45d1cf-5d972e1eb67mr5915789a12.5.1736688780172;
+        Sun, 12 Jan 2025 05:33:00 -0800 (PST)
 Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.32.53
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.32.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 05:32:55 -0800 (PST)
+        Sun, 12 Jan 2025 05:32:59 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH net-next 0/5] net: ethernet: Simplify few things
-Date: Sun, 12 Jan 2025 14:32:42 +0100
-Message-Id: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
+Date: Sun, 12 Jan 2025 14:32:43 +0100
+Subject: [PATCH net-next 1/5] net: ti: icssg-prueth: Do not print physical
+ memory addresses
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,10 +69,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHvEg2cC/x2M0QqDMBAEf0Xu2YMkoi39leKDJKselFNyUhTx3
- 5v6OOzsnGTIAqNXdVLGV0wWLeDriuI86ASWVJiCC63zPrAdFhfltYzpAx7yZKzYuHl2ybUIMT1
- A5b1mjLLf5Tf9BcW+UX9dPyiJad9zAAAA
-X-Change-ID: 20250112-syscon-phandle-args-net-386d05e2cd7e
+Message-Id: <20250112-syscon-phandle-args-net-v1-1-3423889935f7@linaro.org>
+References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
+In-Reply-To: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 To: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -85,49 +86,49 @@ Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  imx@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1057;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1232;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=XKxgPXkqRoVDNfOxWtITwzSpA1j1CzTTW6TU8zpRG9Q=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SAA643Zo2cp/l+bcjvA4yh2jmRGdEETJsAm
- Enhfy8ebEeJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEgAAKCRDBN2bmhouD
- 16MrEACXZ72WUcShffV++I09qMxK0HXHtn8vUtnKitu0FCIocOPj/7yXCn5UNkwMiowlUD/SJU2
- eJcDaunCkjH8J0KQfk7GFxGX5vk93eYQxv0HlD+RMRxaKnL9IJJFTwy7UCU53xCeMtLDPVo/iO8
- GHcTw4W6rf9JhAdFzQAzZCXIyih19x9F+wejqS6Q1gbhTzpQdH0zpZ2eA5iOE9U/D1m5rfzBZDk
- B4CBqgq+Km8WkZvkDsFtGQLV8vHiL8OxkQa9UFtrUOzVTyLmgh4iuCLXVz4qgeO/AoojroJ6UD9
- UqyQTPPbEevML2onTmd6zO8u8P35sCy5mei8XuP6tTx/9xY4zj8vUBmIgNnDJTd1cdWIRpCaG2j
- ASmSe/phuj/0Yn7KYirpKOECOZkvSWcwS0ScdA4DTLxpnwGyacg3B+7MZc2TcaLQiNtfKO26d5j
- vaQiFJ75DmoCxwQabf+RYQ9umr+3c6yKY+pO7BC5z5DTLPv/NXBa8xTJNI03dK8YQMIC0dDCkpl
- qxGQp/Vb4x8lv1ftODbrjU03Z4MWTeI6ahuBLX5mJC+L20oY2fVmZ1vIL6n+9noDROXO/WrRhD0
- DlJiC2bxqKx7hcdSoCThDAzy30sDLBihn08oRSXZ0t9wxIhbCZYyeVSq539LUav3T/PLQgdIMwh
- 6aN+wRTr39PFWGA==
+ bh=/XBAGwsAFpwFBBQSU961+beyZLkCUNZ5sGTLi9rt57I=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SBqm1C6n54I2y3MlkXEqlfvD/rdrdWXja7l
+ F8+5Is0j1KJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEgQAKCRDBN2bmhouD
+ 17VVD/4qthD2/zGGxdy7/UvqcrbSUvelem2TFjP4otSbOQQWt2FoBYJM9pNa/ia4nDRzVPRxvWp
+ AB684QLqy1jsKUV6CGPT3D+zER5yVvYN4twzngQrr02IRwqmYMGieUhT4C5lGveMXOBMmGa2mfU
+ udJ4cuPGtlhH3fISl4u+3noNIZKMzIg3tNCkfvRsZDOAxAPyLpaePpjLMBYlgfahKqDSJJ3Ymly
+ +xpGJ/hwDta2luGxIuxazAdQWU4lIeXdwHWgMBrdSensqJLq59XmNTDvSvGOYe6RhYYZEOGkBh+
+ dowV/JQhEousq+sLQk8Vg6rJ20bAffXxCqMtmMMKK0iPtwmP7eeWQipA3SOUCyoWyqstPFDnJef
+ WwaKd5jhJ6isWq6wImBLMXOke7etQoi8jD70/MBSBHYv5utAytgbAPEPSfrKdDyrDKanOHAS3Uw
+ 3qfAbOu3ld+3DGyNuxGR9gKUfogV69mX1twFMUXFg01h/7HOcmqFUu4qyW79JH9Fm5zJO/kIneA
+ HbwYf3HvIrn7L1rWNCiZIli0eXsOgM6StdpoUZ9ty2Vp8tBg21cFVNlkY77/RG/d4ZAsx89Kw1p
+ bp3xe0sin6kUFa1weHxNQaVneoV7PfrWRYHktdBkv66MzEVc9Yneu5Hxr8HS3MmFxNSjVv5cFp0
+ Mqd3su6GpsWZLIQ==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Few code simplifications without functional impact.  Not tested on
-hardware.
+Debugging messages should not reveal anything about memory addresses.
+This also solves arm compile test warnings:
 
-Best regards,
-Krzysztof
+  drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:1034:49: error:
+    format specifies type 'unsigned long long' but the argument has type 'phys_addr_t' (aka 'unsigned int') [-Werror,-Wformat]
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
-Krzysztof Kozlowski (5):
-      net: ti: icssg-prueth: Do not print physical memory addresses
-      net: ti: icssg-prueth: Use syscon_regmap_lookup_by_phandle_args
-      net: stmmac: imx: Use syscon_regmap_lookup_by_phandle_args
-      net: stmmac: sti: Use syscon_regmap_lookup_by_phandle_args
-      net: stmmac: stm32: Use syscon_regmap_lookup_by_phandle_args
+ drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c | 2 --
+ 1 file changed, 2 deletions(-)
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   | 10 +++-------
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c   |  9 ++-------
- drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c |  9 ++-------
- drivers/net/ethernet/ti/am65-cpsw-nuss.c          |  9 ++-------
- drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c  |  2 --
- 5 files changed, 9 insertions(+), 30 deletions(-)
----
-base-commit: 8a7b73388d7ab9aed82d5b81f943cc512ee54e9e
-change-id: 20250112-syscon-phandle-args-net-386d05e2cd7e
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+index 3dc86397c367d2b195badcf1fcb5f1ef39ffabd6..64a19ff39562fa4a6ba6f7e9de903f689a3d5715 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+@@ -1031,8 +1031,6 @@ static int prueth_probe(struct platform_device *pdev)
+ 						   (unsigned long)prueth->msmcram.va);
+ 	prueth->msmcram.size = msmc_ram_size;
+ 	memset_io(prueth->msmcram.va, 0, msmc_ram_size);
+-	dev_dbg(dev, "sram: pa %llx va %p size %zx\n", prueth->msmcram.pa,
+-		prueth->msmcram.va, prueth->msmcram.size);
+ 
+ 	prueth->iep0 = icss_iep_get_idx(np, 0);
+ 	if (IS_ERR(prueth->iep0)) {
 
-Best regards,
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.43.0
 
