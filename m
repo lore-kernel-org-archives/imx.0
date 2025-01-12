@@ -1,65 +1,65 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8C51B983E
-	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156641BCA1C
+	for <imx@lists.linux.dev>; Sun, 12 Jan 2025 13:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736688786; cv=none; b=RMoXj9DDCO0z2QLddOzt/2PvD42B3qyTnZ462VNt5FcLtkkZUHOtaNCIwvBVwEan5U8KKJDOugE/Xx9fI8BTVpT8pzExVjgKq+74nOCl4mRG4RtakCHeCm+axfFE/PfkbBhi/aGuREoqKfoheKdhEEcmEAPbB5b3J2jOINUp+jw=
+	t=1736688789; cv=none; b=FFEId/4dKYLv+W5QfxwVCWFJrK2t+C0jfOP2FZiPCBBBw9+iTsbELbSIgFcMqZzF2DkVleCG+u7R6xzpgl9GgUMa0d4i684KZ7whwi9Pz+WBF0dgtoBRYDhiP3d6z959P5wwArOJG2slys4rRgdJM+lfase/teXVsfGiVlGSWkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736688786; c=relaxed/simple;
-	bh=9S7gVVHLbOOdhmOrgxdeq6yW9GeOcGb38tpUZkh03pU=;
+	s=arc-20240116; t=1736688789; c=relaxed/simple;
+	bh=BLKjHvMGwRWG32GZtZYj7md0qQ8nB6LVGjC0kEjtJ8E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZdPtF/qjcPqoZA5PozGwMp6szDZKpoCUHSdBuQk73GwxlmmvRZm2uyqocTTyAuwTW2s8StsWYvIqgfQeMihucE/PjUClNLylJ+P7WSm/1nrJrc0cTebb7AINP05072n9S0trXd9S3Z54lJBRhinoMhnrPP9tC6cPMmLXeqz6oYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PC/LMGfl; arc=none smtp.client-ip=209.85.208.44
+	 In-Reply-To:To:Cc; b=oLcy99Kx6r5i+YBxSOn+Sa8uFFl3aIGH/icrR44MCEJRA3rv0GwQS1ZQWi5oxOBmUMhC0iG335CWnKetjXIrNps7wwjmiwiOwOR+GWckgr1N6A3djzqsHKf27NW4cDRSRKWDjcmWtLxHBK8Kn4qhXe8unB9aHYUbphPCxZi4YTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TC/ppfud; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PC/LMGfl"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d0bf4ec53fso632042a12.0
-        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:33:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TC/ppfud"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d44550adb7so597026a12.2
+        for <imx@lists.linux.dev>; Sun, 12 Jan 2025 05:33:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736688782; x=1737293582; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1736688786; x=1737293586; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BOVqy08C6GsLjB0sMrq2+YSaSxUnwU9JmLZUrKlTUz0=;
-        b=PC/LMGflp+pClPe27NRhlVman8cFG9nhh0gXMTpKf5Fh4Hu3M3saNYPkA1WjoqXgmy
-         ulxW5vxU/UAEFhzrkigPKoHpy26WhwZhBcknVLiUXonnkdm2u6ak5LhVXvCvCSzCfAi4
-         cxGbH00tCBvcKFN4i1MC24SUXMXvxS/Wu1U9h3/qdHKrYjAxlQLP1v0sxrFnV4R8kOUJ
-         vsofKBH+zBFld12QEcrkSft2oNt5GWSxX5m6Z/n7xYew8izykGTyvjfPFs6sEtlNsZmd
-         5H00FEu/CCygSS4QxtvX0841xE/OKssLNuZUu89y9vXt1Wysz/6qqbIv5OnCVcTqMrS2
-         PA8w==
+        bh=ld8ZPAnxgwhvLaqsgPKYU5t+3ZDPQJl13t2skco9HCk=;
+        b=TC/ppfudry0XyeRC1jAufx2UJ1OTJJUOQG8pR2KUycL4uP6O5LwO2SlCBePn32k1al
+         oSD28o8SMQ+PT+KB9BMplSQANQH3JGcGHUzqs2EqE8JP13idFFYc7ABfun0Lo8LtuXp0
+         M30g5MkCJk0BPTGlglKnXgalG7le3YqdeDdH+6JSIRq0/PRgfBqB0HESogS3gNWSpRrX
+         yPKiOukeCRROJ4pSkyGK+ve50/Eu228Hb4PP+K7RWJkWxQBOmW4T8njoAyYw10m+sq8H
+         0Yn7Wlz7k1gTuJkubsV6TDHGuF2v9qVU9gXZs0Cxjekm23KcjCQTJePRBRqragRMutMn
+         kgIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736688782; x=1737293582;
+        d=1e100.net; s=20230601; t=1736688786; x=1737293586;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BOVqy08C6GsLjB0sMrq2+YSaSxUnwU9JmLZUrKlTUz0=;
-        b=ZJom2bne7hGNrPa3zYsUM3cSOc1XxIJe1IDWje3BV2mClqupP+0hjRHN3q5Atro0gT
-         /ICAHxZJbVHy2Ho8GNCzyp5DlD8fwajQNZ6HFEyatG+yfP92Dxq6AWM9gpddqLloDBbL
-         +If1ej42AQaL5YMMqHpDg+fGfxa/7AMxZWp7dZgwV+Gt6L15Urd9yOrq9+XiYvkmr7NP
-         8qeucFR2nv3MasxoSFQYeZXKIy87/xPja1XInYfSAKLwAcRLG/gKTtnr0pEz0tbhke7M
-         q+j9dMvtVUV2C432ysKx+3fqXdXRjQSs3SfNV80Tvj6lWpP1O1RIkU/9GW/j+QWT2Bup
-         9DAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMykDsusYCXOga75vhnZBP1HzgQnrDdcIWbgNTknjq0hKjJCh3Ugfo3SSSCD69fqcTPqE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzt8JzdwDvjX67knJ7e3gGWNIc40vL+Tk9u9/qO3FiScS7wpJ58
-	78tjNNjF5/9NlTJ+JCFUDerQ2TNAvksJZhGhDkqi9b2ionCwCyPUQb2eX5pa2QZDOIeVKCu8YjX
-	t
-X-Gm-Gg: ASbGncsPoIEZrC4t/OYigAMVN8Dgp18U5Ry/hPgylO5RWKDwQYvgK9s5jZGzcmX6Ofc
-	LUytOhg82mVgXNb/6ywITf670jg9eROxojjnfHCAXBa4nvbl9w700axsS0ZwDRr4A5jjwp7myp3
-	DcZLJhisxkR3PNlLB/QIIQqXi9jWGW79Qc3XOA/NQLjH1D2DLgDDizLE0JkwGKCwZ0nXMvK07Ep
-	aw9/7E7XxaDv6QrBaJWEElJp/iD7dLU9enOJ7z4jQzNllzc6maWlBhKnq0xNX2NRDV4jv8C
-X-Google-Smtp-Source: AGHT+IHAPDDqI1itoMeCFKalJTN43D2b88pk2KL4TDUxwjUyr+2n3z7I5NTnbvxsw1RUzD8twrEPcg==
-X-Received: by 2002:a05:6402:5206:b0:5d3:d747:6496 with SMTP id 4fb4d7f45d1cf-5d972e801dfmr6260298a12.10.1736688781780;
-        Sun, 12 Jan 2025 05:33:01 -0800 (PST)
+        bh=ld8ZPAnxgwhvLaqsgPKYU5t+3ZDPQJl13t2skco9HCk=;
+        b=cnSEx7euqf4YPm/OEEtZ/nXdyX6Sc5dEfcs/4ErjJ77KchQscOnXOeYayGHgdRwJuT
+         PxzUc9R6EhEknz8VCqaoJenpaifR2zsV38IUpM3V2szbBg9HBNcDqS8hKJPApCkZF4yV
+         tYUzhneVnAstSCvVvd63BGVx9GGLrIlBjHX+Te71T2crwMfPYwSLjoWYuC3hbnxMTcrC
+         3ZhtiIfNcJkg1WPGwVUSeeM8FityzrxEgFkM+9PQ1IVU65noLyXl514Z98cuKWPF2CTT
+         EQluExrc9RqKlhsfrRvUvtca03dzQ17TvhKxbDZlowBKWV3tYfa2FsYTPc194jEyvxln
+         AdGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCxPCtflAPhfUR7/ZpIqytlyEsrneJJvnetNrCxtjpmQEWvsGDs8N2EGH4KU2J+cm/Z+E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzSVgMD4X4bJLcbrg3bVg+0kYfh2ykmYSbQkImounWOFASN8GHa
+	Mq42j+lF6GQN05g3NwZprR1fx37B1ijyjUt2RiFsf0DnRv7sJscfCC2feYoNMllZ0KRPP3t/j3B
+	f
+X-Gm-Gg: ASbGncu+CPcAaY3IH2kwYq5ORrU1IfsWMihD2vUk0rK+kA59uPHvKRj+F5DJo+s0tsJ
+	IBbLzy4hGlll0BeO+Rfo+LhPQ0z1GGMbuqCWmJw8ECoTIp/j17gKbUVVqhv1HnOPyOdKvMTV0Jh
+	PC1Xl0llxMCvjM0XCMW/KedQ7sLv6KXIt1WzWBBY0tprKJm4Z6KFyZuvgQkPR65KGtXf8mZXqYa
+	VCapNBEuUQyW61T0XB7Y677A1dKWFUCQEwrujdpUoQxo+jgblVCUkLNcEioGd4JqIUhl3uB
+X-Google-Smtp-Source: AGHT+IFHwHH4KKIrysGLvqwXWCgJxLn+t19M/gFmLmYbS8NY9BWAcFiBlWXc9XqfFSlrFDFKeUN0GA==
+X-Received: by 2002:a05:6402:13c1:b0:5d0:bf79:e925 with SMTP id 4fb4d7f45d1cf-5d972e65777mr5439603a12.6.1736688785817;
+        Sun, 12 Jan 2025 05:33:05 -0800 (PST)
 Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.33.00
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d9903c4477sm3584609a12.51.2025.01.12.05.33.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 05:33:01 -0800 (PST)
+        Sun, 12 Jan 2025 05:33:04 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sun, 12 Jan 2025 14:32:44 +0100
-Subject: [PATCH net-next 2/5] net: ti: icssg-prueth: Use
+Date: Sun, 12 Jan 2025 14:32:45 +0100
+Subject: [PATCH net-next 3/5] net: stmmac: imx: Use
  syscon_regmap_lookup_by_phandle_args
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250112-syscon-phandle-args-net-v1-2-3423889935f7@linaro.org>
+Message-Id: <20250112-syscon-phandle-args-net-v1-3-3423889935f7@linaro.org>
 References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 In-Reply-To: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
 To: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>, 
@@ -86,21 +86,21 @@ Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  imx@lists.linux.dev, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1430;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1702;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=9S7gVVHLbOOdhmOrgxdeq6yW9GeOcGb38tpUZkh03pU=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SCCW0MlfjlA9K1TjLeHUu3QGRRtM/WgAZoC
- WMtHJkHeVGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEggAKCRDBN2bmhouD
- 10+YD/9A02R/3MQQubS4ahQZTK/vIgEnDoLeLOZ2z6ur0SaSsl8P8g2c7riLLdYF92lSsgr7uRd
- jmeT9wLRxCkXUvDb6BlQcaqDWHzdA8yCfatXJo3i/2gmM28IQU0DZHciCQ9Er059Bd1mWk1TZDp
- LNC55whGCCGmpzxIn2wGaL7HylIHDR0oWZ2JQ+IBGe4+Iw2oTVS4tPErPl7ysAZCJbqOl8oHjI4
- ijfACgxQuzSwv72lLqmbXddZZ5BsAbYIfA0ql2sUIVsXx7/dcdo+J+1922mAUQcDtuQ3L8YdsK1
- nrT2AECb9AT2yQFJUWCFgml36SGT/AAGcCDFhEGrSm5sqmRhO+pbePafGg1SzeB/ykFZP8pbtmI
- kYyHMLG58LuLSM9wBwV7e230On5UeKDGtoQB2lhdPZqpTAypo/lNglE9T0jBII67mTOsel8rhNY
- 8eWLdF/Ir8VjBmMK66BDKbEGh5NscM7qzw602iC1Zf4w/xVnMqR/P6ukm9kumXSAueVzXvGHj4P
- /9tyS3lSciwxAHxVcbKlC5/9XPgtg7i/7Ij3eN0jCdXqwbClXlaRNEYPaQ6bGPpOj4Ozpq7FzLc
- BDYupKiqx9fiH26x/CdTVFDC0seiQ9ZBJW9cttHi/2Pr2k57jYb1KWuMCQeroyLpY+MEyUYCjfb
- o98tiqTnTayP/uQ==
+ bh=BLKjHvMGwRWG32GZtZYj7md0qQ8nB6LVGjC0kEjtJ8E=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8SDFkc9BxhB/j87J5OokfF6ZsmgjWIg1zax0
+ EyCdFlFVjaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PEgwAKCRDBN2bmhouD
+ 1x8AD/9Aau/f9uUdyr+OxKVQyIA5u+wnl31VUsMUYoZKktqRD/7R89XQcAZ4Ihv5P8LoYFUuGSk
+ Ietj68aVH4LJP5HlzhkuI0R7ergp7NNod0odUeR15RVmyU5WQ9YSj5PvBGpfHdFPuefkEFt1kfw
+ 6FNRml6vfFv9oNkE/EcY+g5RtQoSyyAzH5P42KSjH5G56gOJaaeUOQzRP45DP89NXKhbwdOz+cV
+ IoU4HZYVAU6EnU0frwulSeum1/Wg4j+Je/kk8DjnQqGSTYQJisj6bKHLettlVZ900rN9Kbfcqow
+ a+1Xr5Ja4Lh/z7Av0ogch3QekPRI6lnIPkOX1TpY3BXstIKjyO1KQqVuNTO3qUzj7qlei8hNN0e
+ kzDgRqCIU6AqAvU+T43YltB33DLbadSqmwoIYu6ezF7TxsYDGuMmqp9DMpPf0sZrlxHKBI4kkYi
+ rX+2JHrdxNjwS8F9F1y2KD6jCrNdECHTMq8e9FY3rhyHN6HQE8kVCV+/JvnwQvxdDbtT8dnjQzX
+ /7r7MIXSBoXplzcK1f0vBwLGGxL5mjR3/WmzgH5zpEQth7DJvvIj+FU1F2ZZlZ45Tr6t9pStmgb
+ P02MIOsocH27LT2DgRYEF7Qv0xxUSKyva8FtwrioyZg7dKpYTmtz3UkJn7bGdPUxEGY1A5W2OKc
+ ophfP6EMaGl2RVA==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
@@ -109,38 +109,39 @@ syscon_regmap_lookup_by_phandle() combined with getting the syscon
 argument.  Except simpler code this annotates within one line that given
 phandle has arguments, so grepping for code would be easier.
 
+There is also no real benefit in printing errors on missing syscon
+argument, because this is done just too late: runtime check on
+static/build-time data.  Dtschema and Devicetree bindings offer the
+static/build-time check for this already.
+
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 5465bf872734a3fb9e7e481d556eaec3cce30e0e..68f1136e3db725eba239b10f337786ac735030ca 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2559,20 +2559,15 @@ static int am65_cpsw_am654_get_efuse_macid(struct device_node *of_node,
- {
- 	u32 mac_lo, mac_hi, offset;
- 	struct regmap *syscon;
--	int ret;
- 
--	syscon = syscon_regmap_lookup_by_phandle(of_node, "ti,syscon-efuse");
-+	syscon = syscon_regmap_lookup_by_phandle_args(of_node, "ti,syscon-efuse",
-+						      1, &offset);
- 	if (IS_ERR(syscon)) {
- 		if (PTR_ERR(syscon) == -ENODEV)
- 			return 0;
- 		return PTR_ERR(syscon);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 4ac7a78f4b14b95169787538b56dad7f7fe162d3..20d3a202bb8d16743ba4f31fa8ebf19a246e8236 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -302,15 +302,11 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
+ 		 * is required by i.MX8MP, i.MX93.
+ 		 * is optinoal for i.MX8DXL.
+ 		 */
+-		dwmac->intf_regmap = syscon_regmap_lookup_by_phandle(np, "intf_mode");
++		dwmac->intf_regmap =
++			syscon_regmap_lookup_by_phandle_args(np, "intf_mode", 1,
++							     &dwmac->intf_reg_off);
+ 		if (IS_ERR(dwmac->intf_regmap))
+ 			return PTR_ERR(dwmac->intf_regmap);
+-
+-		err = of_property_read_u32_index(np, "intf_mode", 1, &dwmac->intf_reg_off);
+-		if (err) {
+-			dev_err(dev, "Can't get intf mode reg offset (%d)\n", err);
+-			return err;
+-		}
  	}
  
--	ret = of_property_read_u32_index(of_node, "ti,syscon-efuse", 1,
--					 &offset);
--	if (ret)
--		return ret;
--
- 	regmap_read(syscon, offset, &mac_lo);
- 	regmap_read(syscon, offset + 4, &mac_hi);
- 
+ 	return err;
 
 -- 
 2.43.0
