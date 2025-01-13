@@ -1,109 +1,113 @@
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F60B15F41F
-	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 08:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C74232792
+	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 08:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736755667; cv=none; b=S+R4N1s1dw/BAzryPVXv7TaCGcHQZDuYOm17DU8i88DMgrwrm0I5XXrKIwYW7p3sjVvYcpbUDDfzPqEpcco1S78P/VAol+tRqPHwq8kxkGKkN6dOhB8eeUe3H85Q1qut3LDPr/5eJH94T1ci7LscU9Rwdgl0seuxhO254Rc5EGc=
+	t=1736756716; cv=none; b=o6h0uVrEUGHNyZSJbnCp1PGAe8EKB8jJ2ehQ0Y1XAVTNvPEBx6qgtcwV3NJPllbLmN5BqMGWEDgCMVs4CCWcvUfKhDGt2Y5nxZsTLjiqRJzcfYCj5ScLJMnvEDxuZZlZ+PwfvO1zx8yUyScc5yyriv0HAurz5/5hMl98kEmj8v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736755667; c=relaxed/simple;
-	bh=ihlPJedmJhM6B9OsggRkSmMnQ5wOaqu9osIIPdgoR4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=S/gTk9b5BP+7sclmGnB2vHjeG5/IrKfAtDIFzYCZ9Z96uOC+0CRZP4+OwLDgkOZ/1TswQa08ZQu80HYegaloz/vfCXmZZRDkidKUvlKTapddy6pUt7tWFHpYM8GE2P2wiBIZqvBr01T3RRhrtji0RR+5uV2MI5qtmT9YZKp48BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Ey3At2kG; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1736756716; c=relaxed/simple;
+	bh=5t/TrcuXNWNUZTuS5pgxHTJQKuHzmhw4UrOTlIJ4BOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QcVsB5JsE7iPBpnOdMJcmqcF0FOC+755+oUTtM8YE4vxQ+JXnzRnZQ/cTwGVcvuHSR0xO+gfTfe0B1kR4KzT1SzOwCfGmjsQQAL3QGS4KtwwaDM4QTsJ4nV83ycZWT0rlnXvg1gkgSj6Z8L/HReRm4tnCZaNiba0q8MjTnEmpZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ewRiOFrE; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Ey3At2kG"
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 50D87WMo069796;
-	Mon, 13 Jan 2025 02:07:32 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1736755652;
-	bh=y/1lruJzKBcWY1AjyuHdyOmumPccEBHX0hLR5fZdcWI=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Ey3At2kG9ACA1f6riMOY9OycdRAOu//rsLNT8mnxhjJntG1f9L1OnMR6h/IfeovpN
-	 8f5atMjHGVU3Puha5Cx6azjePTGnbw7oftK+O4nPhGKNiZzxlccWzuRaj8fP9/XT2Z
-	 UIjS+9v+D+jQN9TBxP0WfihH4Fw32duYwSmhd9oI=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50D87WBe079818
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 13 Jan 2025 02:07:32 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
- Jan 2025 02:07:32 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 13 Jan 2025 02:07:32 -0600
-Received: from [10.24.69.25] (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50D87QTQ117495;
-	Mon, 13 Jan 2025 02:07:27 -0600
-Message-ID: <0eaff868-f67f-4e8a-ade8-4bdf98d9d094@ti.com>
-Date: Mon, 13 Jan 2025 13:37:26 +0530
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ewRiOFrE"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5401ab97206so3985456e87.3
+        for <imx@lists.linux.dev>; Mon, 13 Jan 2025 00:25:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736756713; x=1737361513; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HsOOejTFjVwFwvDCfWyTG69OVT7YoO10LJVJy5N++GA=;
+        b=ewRiOFrEsokfpKwZ1bQcHZjYgHVEn1j2qW4EGVURUOU9CXz/omvW4jRKg4nO5AESwE
+         UAnC0cZsF0M4FnKLaGvj0nKJKBFB6YVh+l60FhH/MA4lBV8uxRZnTu3yYwx66cvqFwJT
+         iPAJ7DvlNYh4eekh11LXEFRGw4EnVDXJCdpSfKsYsVewZ2AFgbGMmZa74Xb4UVu5gPul
+         UntwDorxHdfIab2fWxiOYWtJId3+fEpCBI89vg/Cl8SBs9nTonurfifaufLDALEgdx7e
+         bW+ejhgY+8iy6VboomzQALY4y9ljgmb+h5Ltq86/YrBiOM6xgnVH0HsYRzwcWrge2pN7
+         aMyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736756713; x=1737361513;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HsOOejTFjVwFwvDCfWyTG69OVT7YoO10LJVJy5N++GA=;
+        b=qC9qTPWehPNI5EuYSUy8NJvl7yF59KcYdmq+88g9eHlzH1R7aTOIqXyRpEBrYPpQZ8
+         8Dg3IOHL8vhreBHc7Sb9ku0CbUbCdF6ONUbX1Z6UGtfsPHixD+Hu5MI7wgYdAOBqOmlu
+         nTq4dQyvkueWtlHHWzbzbqoIWHaFen+SCi2kIrHHvqVw3eEWqzQxglvzFLS11avVPWHg
+         dA1OiSjAk74rH0j4MTP3etxLI+B0pKmbSs+UFf0qKpmHUfrKKgyVJ4TLWVk+fmu6YeCf
+         2q2ePWWGEl7e79YOs/0HnORFx1vpmTJIgcGpLMo312DcsUi2NtvNMWU4BLQZ63N/93Bv
+         dfpA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/wiZb7oNSRv1ayxNJ8OWT8ldO1dIXBvGKLYuCjE9m3EcbXz487HLgQqbQ7wfgnj20aAc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwT/oC2jgFQZRfiVc5aBmDMn7RBDJBjDSoJUr96Abg5OTkuybVA
+	ioQEUG34FDMSOCJ2JqP1rjnvckd0B1XpN8DcsGLEBcxRzr0+tui5IdHbYm+mH7o=
+X-Gm-Gg: ASbGnct2KyIQwCCWpHj5IczoNDaQo5E/iJ0RBnmskKPFAmBLlNmtFpqyP97Z616OOxJ
+	nXjTZlYPKZnBXaM6uHWLxG2sm5mHkvD8LkU2YniQUquoNwJm72mW8tMHu1uNcaAYv4RThpV5WNX
+	BceFotusxdElXLQwHS50dJ2kA2eE9/NGDpxU49FPVzIcpftAfU/PSek7pIfXmTwrQ6PBGMJo1NW
+	d9o9wZS11hCQcKofJydDIc6Yd+U74JTWRy4V40/uVzMMsxWFD2Bq7yg1kArg60dToDSTutBuivX
+	4lQXOCvrItmHl/Xm/5Y4ET0MXCh41mAQC100
+X-Google-Smtp-Source: AGHT+IERZWZtkZrsbkHThnFiBHKfz//tsYW/urMLTgJODZNi9Tp473Grr1NqQ4M0NySCRCOoV5n3Rw==
+X-Received: by 2002:a05:6512:138c:b0:540:2188:763c with SMTP id 2adb3069b0e04-542845b0b55mr6338144e87.37.1736756712614;
+        Mon, 13 Jan 2025 00:25:12 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428bec0659sm1286326e87.185.2025.01.13.00.25.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 00:25:11 -0800 (PST)
+Date: Mon, 13 Jan 2025 10:25:09 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, Rob Clark <robdclark@gmail.com>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
+	Marijn Suijten <marijn.suijten@somainline.org>
+Subject: Re: [PATCH v2 13/25] drm/msm: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+Message-ID: <bbw2n4ccn5jlq7q7lsw3xdnbieazgexkwkycrqvk5aoiq5q3wx@nz6gd3unwkg4>
+References: <20250109150310.219442-1-tzimmermann@suse.de>
+ <20250109150310.219442-14-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/5] net: ti: icssg-prueth: Use
- syscon_regmap_lookup_by_phandle_args
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Roger Quadros
-	<rogerq@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime
- Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha
- Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team
-	<kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>, <imx@lists.linux.dev>
-References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
- <20250112-syscon-phandle-args-net-v1-2-3423889935f7@linaro.org>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <20250112-syscon-phandle-args-net-v1-2-3423889935f7@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109150310.219442-14-tzimmermann@suse.de>
 
+On Thu, Jan 09, 2025 at 03:57:07PM +0100, Thomas Zimmermann wrote:
+> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
+> buffer size. The hardware requires the scnaline pitch to be a multiple
+> of 32 pixels. Therefore compute the byte size of 32 pixels in the given
+> color mode and align the pitch accordingly.
 
+- scanline, not scnaline
+- the statement about 32-pixel alignment needs an explanation that it is
+  being currently handled by align_pitch().
 
-On 12/01/25 7:02 pm, Krzysztof Kozlowski wrote:
-> Use syscon_regmap_lookup_by_phandle_args() which is a wrapper over
-> syscon_regmap_lookup_by_phandle() combined with getting the syscon
-> argument.  Except simpler code this annotates within one line that given
-> phandle has arguments, so grepping for code would be easier.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+With that in mind:
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Sean Paul <sean@poorly.run>
+> Cc: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
->  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  drivers/gpu/drm/msm/msm_gem.c | 27 +++++++++++++++++++++++++--
+>  1 file changed, 25 insertions(+), 2 deletions(-)
 > 
-
-The patch only touches `drivers/net/ethernet/ti/am65-cpsw-nuss.c`
-however the subject suggests the patch is related to "icssg-prueth".
-
-I suppose the subject should be changed to "am65-cpsw-nuss" instead of
-"icssg-prueth"
 
 -- 
-Thanks and Regards,
-Danish
+With best wishes
+Dmitry
