@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08D1F9F44
-	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 22:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67851FA16E
+	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 22:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736806796; cv=none; b=miHyHaT9T3uZsJznfFqsg6V2jtNUnGjGGApzLLrSjFio44041mijWM9D9YfIph0aem6cUSkLORKD7CozKOpPUwppQW27oZ5qc2H2sqoac4iWXsqpbxtV9EHSz+eXxzz4HScRyIp7xABwWAvUAgYgBBNm7vjhZUH0PeY8If2IZso=
+	t=1736807372; cv=none; b=JEgvGu1lqkqn5Mte4XnpMZ1oNmrMxkYYzHeOWiFoEINhSFyPo1EA+vm3RYSTMKrwLDAdeg3GiEMv+6B8jSvlVP2kAFOTy7DtEYtm8f8B344xhj6cuMFYol/6+fPA3TB1bKmx9bZRxm1onV/HjLDIP1PpP7ORrIKE1oonKy3xDE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736806796; c=relaxed/simple;
-	bh=3tZhAPCNYwnEOO3+MI7+F0UKPfOLrwl6htzbycYw4qc=;
+	s=arc-20240116; t=1736807372; c=relaxed/simple;
+	bh=X38+NoUgc4aWQYVxi0JjbXNI5uUv5kZI/1kPjfbEpNg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c+f+Og0Y8epizXxpv/eGpWqPcN7orJhtn7XRY7O2Igx4qNYO3V4k0EK9dGkW9OMWl287q63Q83NUICvK4WwuBqNVvsPFemn2XvpsZjRm94MoHEc6dhtdDksGmV0FptW5aKyK8kEFnfOnluAGGlj4Fo9bzekdkx4XL073tF7ux5s=
+	 In-Reply-To:To:Cc; b=Ruqe+oNEEMSkv8UqgkQPAlm43QsGZwY7vZrj8yiXyCU7dTWT2iEjmuLuMQ8oqKbUUgwjiXVijVcd+Mfc34BKyrH9A1UW1on10gqg+S7HNnaqPln8ShsZ9vjg/fXboz4H5qBlJeR3C0OD7wJ/ARX1PBsc0nHBtK/Ilb33opM2Msw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tXSmF-0005yj-7t; Mon, 13 Jan 2025 23:19:19 +0100
+	id 1tXSvv-0006tt-5d; Mon, 13 Jan 2025 23:29:19 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tXSmD-000KYf-29;
-	Mon, 13 Jan 2025 23:19:18 +0100
+	id 1tXSvu-000KaH-0o;
+	Mon, 13 Jan 2025 23:29:18 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tXSmE-008p8i-2c;
-	Mon, 13 Jan 2025 23:19:18 +0100
+	id 1tXSvv-008syM-1J;
+	Mon, 13 Jan 2025 23:29:18 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 13 Jan 2025 23:19:09 +0100
-Subject: [PATCH 1/4] gpiolib: add opt-out for existing drivers with static
- GPIO base
+Date: Mon, 13 Jan 2025 23:29:07 +0100
+Subject: [PATCH 3/6] arm64: dts: imx8mp-skov: move I2C2 pin control group
+ into DTSI
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,20 +42,14 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250113-b4-imx-gpio-base-warning-v1-1-0a28731a5cf6@pengutronix.de>
-References: <20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de>
-In-Reply-To: <20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Whitcroft <apw@canonical.com>, 
- Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
- Andy Shevchenko <andy.shevchenko@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
- Haibo Chen <haibo.chen@nxp.com>, 
- Catalin Popescu <catalin.popescu@leica-geosystems.com>, 
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Message-Id: <20250113-skov-imx8mp-new-boards-v1-3-75288def1271@pengutronix.de>
+References: <20250113-skov-imx8mp-new-boards-v1-0-75288def1271@pengutronix.de>
+In-Reply-To: <20250113-skov-imx8mp-new-boards-v1-0-75288def1271@pengutronix.de>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.2
@@ -64,66 +58,74 @@ X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Some drivers have had deterministic GPIO numbering for most of
-their existence, e.g. the i.MX GPIO since commit 7e6086d9e54a
-("gpio/mxc: specify gpio base for device tree probe"), more than
-12 years ago.
+I2C2 is exposed on a pin header on the base board, so its pinmux is
+always the same if it's enabled.
 
-Reverting this to dynamically numbered will break existing setups in
-the worst manner possible: The build will succeed, the kernel will not
-print warnings, but users will find their devices essentially toggling
-GPIOs at random with the potential of permanent damage.
-
-As these concerns won't go away until the sysfs interface is removed,
-let's add a new struct gpio_chip::legacy_static_base member that can be
-used by existing drivers that have been grandfathered in to suppress
-the warning currently being printed:
-
-  gpio gpiochip0: Static allocation of GPIO base is deprecated,
-  use dynamic allocation.
+Therefore, move the definition to the common DTSI, so board DTs only
+need to override the status to enable it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c      | 2 +-
- include/linux/gpio/driver.h | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi          | 12 ++++++++++++
+ .../boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts   | 11 -----------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 679ed764cb143c4b3357106de1570e8d38441372..bedeb8f28badfb7287c4929f9ad0825e050a79c9 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1011,7 +1011,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 			 * drop this and assign a poison instead.
- 			 */
- 			gc->base = base;
--		} else {
-+		} else if (!gc->legacy_static_base) {
- 			dev_warn(&gdev->dev,
- 				 "Static allocation of GPIO base is deprecated, use dynamic allocation.\n");
- 		}
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index 2dd7cb9cc270a68ddedbcdd5d44e0d0f88dfa785..6e820d79d03e61123f89aaf884d35d4a1a5918a7 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -382,6 +382,10 @@ struct gpio_irq_chip {
-  *	implies that if the chip supports IRQs, these IRQs need to be threaded
-  *	as the chip access may sleep when e.g. reading out the IRQ status
-  *	registers.
-+ * @legacy_static_base: set for some existing drivers, where @base is non-negative
-+ *	and changing that would induce so much breakage that they were
-+ *	grandfathered in until GPIO sysfs support is removed altogether.
-+ *	Do not set this for any new drivers.
-  * @read_reg: reader function for generic GPIO
-  * @write_reg: writer function for generic GPIO
-  * @be_bits: if the generic GPIO has big endian bit order (bit 31 is representing
-@@ -467,6 +471,7 @@ struct gpio_chip {
- 	u16			offset;
- 	const char		*const *names;
- 	bool			can_sleep;
-+	bool			legacy_static_base;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+index 59813ef8e2bb3a3d5672ba1c5776cf0e45fb6862..9dca829581137bc0c3026caf7cda112b859ec092 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+@@ -314,6 +314,11 @@ reg_nvcc_sd2: LDO5 {
+ 	};
+ };
  
- #if IS_ENABLED(CONFIG_GPIO_GENERIC)
- 	unsigned long (*read_reg)(void __iomem *reg);
++&i2c2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++};
++
+ &i2c3 {
+ 	clock-frequency = <100000>;
+ 	pinctrl-names = "default";
+@@ -538,6 +543,13 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA				0x400001c2
+ 		>;
+ 	};
+ 
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL				0x400001c2
++			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA				0x400001c2
++		>;
++	};
++
+ 	pinctrl_i2c3: i2c3grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL				0x400001c2
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts
+index 2c75da5f064f2b0cd97f5040febac13c4adc020b..ba581765b52298ea26a5a63079c08f39f10e4e3b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dts
+@@ -27,8 +27,6 @@ &backlight {
+ 
+ &i2c2 {
+ 	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
+ 
+ 	touchscreen@38 {
+@@ -90,12 +88,3 @@ &reg_tft_vcom {
+ 	voltage-table = <3160000 73>;
+ 	status = "okay";
+ };
+-
+-&iomuxc {
+-	pinctrl_i2c2: i2c2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL				0x400001c2
+-			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA				0x400001c2
+-		>;
+-	};
+-};
 
 -- 
 2.39.5
