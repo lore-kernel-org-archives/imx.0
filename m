@@ -1,149 +1,285 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2129.outbound.protection.outlook.com [40.107.20.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C591234971
-	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 08:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736758682; cv=none; b=HQgjg72zls896JKOKnbld9LUkEZ1i2cnEFQuUK0IBqf5OuWksBzPh5+mHflPvyWugzaqeK4cI+I7AGkXd21CCogc/YpNIZ79tMQcPS9nvY8ZEKeHm5i98UWo6AdmxnDQpsG9Mo8RS7X9AqIlwJ1CQyeHaEEc53XeK32bELIRa8s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736758682; c=relaxed/simple;
-	bh=UiyOfZqJ61a0v0LL+GBK+ZV49nwfQkFLSWH2uWHwMyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ozoXSv2WIhCTWWK/N/QiXjSvU61lCF394ONXCcCksBqvt7plCAgi9QNwH5zxDDKrcas2kiwoTk6dueWQKTYzgoVzP+eZns7K6n57AKxhWJwtrL5tI+++zf2PA3dAUWr/AitiGP+kGxM9iZpLBJquV3QGrjVSDzPg4lmA8XQq1+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=nU5hetHk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LZdr2CBl reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9BE233D64
+	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 09:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.129
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736759639; cv=fail; b=GQye1ZU1KGTq4uuvjEHyGLlF7+ga8Lm6nuuA5MRI8rjHl2LmQtgTAvvzmdLfws5c1q7GRztfWP5cvFbePVzQoipHNEz6jKxPujLL+7EGmgrr1MiFSi6/anCJBsVGnx3llPzNGw/MKVS8VNpY+3j4LKT/TaiymuMXP/yvfBIes/4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736759639; c=relaxed/simple;
+	bh=fGgUJWMgCVRhysOppVhVXuoCbv7+bNR4W616Kz9ZzoQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fBfLA+OzeFeh/f9nYw1haWsjxNVZaJvFLNVhOFP4vTWV1X2A+S5onoWCOYLFljLLhJSKxtWt5sxxExMoxsyxJ/plE7z33wWvQo1mhzU176FHhk2slnXHqYvzrgDa+m15hfQxvG11bw7IFaOSScTgdQa4ADOkjPmbjCjej1EzRx8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b=idqLowgK; arc=fail smtp.client-ip=40.107.20.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="nU5hetHk";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LZdr2CBl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1736758679; x=1768294679;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Tbo5YrOw2H/3ruPHWEWAeiN8rdU9wVeQI9EvOOOmwNo=;
-  b=nU5hetHkGqEi7YMtEtdJgDOSHGto3gT2gFSswIiI0yhzt936Oo7yHY+J
-   5rtqI9iXRdO2xiIXYvln3zsN+K9faoce9L+whJyZRWbswQ9jNGhpnQS/S
-   UNRlLWwL/ZeOVp1OP5E1C/Yo+FamkIOGan+Gob2+KjwYqTTuULfYOPMBR
-   2MtkSBGzy0Y4h2ql3YluDzIFuN4RWwhxq2Ffr+OV4i8OzhtBKHd1sK458
-   uBid+V6kAkJaZMyORfXLFvup6MdL/jBbalFpYnXxnQnxbWpN95jNPwe4q
-   j09uohdLOuzdTzc8iAYmYR+b+h4M2bERzQA/BkHgd5oCLtQSp3/YHB1BT
-   A==;
-X-CSE-ConnectionGUID: r6C6qALjSYCdz8g3LMnIHg==
-X-CSE-MsgGUID: iTW4TdugQM6ZWsGwJfs2uA==
-X-IronPort-AV: E=Sophos;i="6.12,310,1728943200"; 
-   d="scan'208";a="41010458"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 13 Jan 2025 09:57:50 +0100
-X-CheckPoint: {6784D58E-24-3C670366-E45AD810}
-X-MAIL-CPID: 454A88758688CF77A57FFEA4212AB19F_4
-X-Control-Analysis: str=0001.0A682F17.6784D58E.00AF,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C44D416B92E;
-	Mon, 13 Jan 2025 09:57:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1736758666;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tbo5YrOw2H/3ruPHWEWAeiN8rdU9wVeQI9EvOOOmwNo=;
-	b=LZdr2CBlejpULzspz8QRDz4idx1VWuBMwPS8FhWiLZYZQeGear7/p4Mz4kf1ag+6tf/F97
-	hXfLVT+M7qMV5xVSOLgjqAJ3/bECAt3QA3hx9OKCVPJ3w2+6UNaowWQtelH5QWvNvILz7V
-	DPvG1jh3YxmmH1ow2k606eX5Oc9uGocMu1b49jNzVNNOf4TYSMX6CO5xeDqXmK5TBcHoMp
-	g0FPyBVAWTN8gv5PROTOeid4bIGxw3CoKlINPY7D77uIA/jpzQXomOgrwrUWnXQGZ+FBCo
-	B7CNXGFHBQ0NWbbLwUhh1yykm7aaxUNuJK8p3ZWlx0/2PHEkw5yebRvfHAlm5w==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Guido =?ISO-8859-1?Q?G=FAnther?= <agx@sigxcpu.org>, Robert Chiras <robert.chiras@nxp.com>, "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: display: nwl-dsi: Allow 'data-lanes' property for port@1
-Date: Mon, 13 Jan 2025 09:57:43 +0100
-Message-ID: <5856132.DvuYhMxLoT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250110161733.2515332-1-Frank.Li@nxp.com>
-References: <20250110161733.2515332-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b="idqLowgK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YWW1j/h8p+JY28OD4Z+Oj9c7mX3k73LHPsWZ38yX14OqZuMkwdeSFUPaywW9PQVeXTiXAxYZIZdC05XS2TK6Cr4kwrJ40/en3aIycwh5UOa9Av0CUL3mTEE7jQDpycKeqgSuR5RTW2P9PwOKgRVOPA8/iGVfOZRW/F6E5ZGqR9SiUtQDxADU3EX0sMm7IEhxlKShCW0uhCqKepcbdIn/x94SPUq92Yh8zjrU96V6zpis0xJDjHeuArC5eXoI7byHnzHtR4ZTZPvz1vb04CmaPIsqKLp+8DRkZknjQEOOoKPEVQCzzHAzkBrzjTnsiuwpcm1a0QaF5+zA4Txcjb7a2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=loJyIte5to3ds//hf6AqYkp8c1Pignl2NTtSL4wRa2w=;
+ b=lT0rXmwLYqDmMAFidLeuXgyogfvSP2btFF21py0aJ/ZTBCmS5P4fk3bfr7FkTqdjuuYLdfVS15kSbiP88dPWMehziNTQfx+SIdr1+8lRp3B/NiErbZ4BSy4Qh+oQ7hz9MHNaaJmoJ7LdYrTBSncHTjyJT5E0tbeWjOqCyrlDE3ZMt0JNr8WloZ+J2+WmmTISV+XHBxntLZSkbMBvjWAZagEppqTtouV+4rGo7NcTHZD7izzos0C+rxNLDZ9hWHQgFZmMCC9ukXiI7D9uPb2U8T3BtiRBwRspqddf+xnGE1eQqpoZ/M1jFpDYymexvleR2OWjxjid9L9ccAfbN7dnBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
+ s=selector2-mysnt-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=loJyIte5to3ds//hf6AqYkp8c1Pignl2NTtSL4wRa2w=;
+ b=idqLowgKiCLle6YkP31t3A5hdCP2DCyeA54w19syS3zWgFHVq1yufm+IqYB+3pRi1pNPRC5SS3WaJEYTlYLkqEujo1mukx7JevXN+GTY4XXA9z8V0p0qbtTlmF/waH4AdSbQKd7mDyOwGjcN0HZOTsHJWQtDDMgE9S5Ff5Y3Lno=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:263::10)
+ by DB9PR10MB8073.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:4f0::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.10; Mon, 13 Jan
+ 2025 09:13:53 +0000
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19]) by PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19%6]) with mapi id 15.20.8356.009; Mon, 13 Jan 2025
+ 09:13:53 +0000
+Message-ID: <939e023f-2d64-41e6-9aca-025e19daba83@kontron.de>
+Date: Mon, 13 Jan 2025 10:13:52 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] drm/bridge: imx8mp-hdmi-tx: switch to bridge
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Marek Vasut <marex@denx.de>
+Cc: Ying Liu <victor.liu@nxp.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Robert Foss <rfoss@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Stefan Agner <stefan@agner.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20241224014701.253490-1-marex@denx.de>
+ <nehmmkv22ortkw6ngzlhjqo7emxsptt2dzoulln5ili52uswfp@h3acrwrad2y5>
+ <75dc6f74-f828-49ac-8bf6-41fd4e197855@denx.de>
+ <AM7PR04MB704688150ACD5D209290246A98092@AM7PR04MB7046.eurprd04.prod.outlook.com>
+ <85d87cf5-26cd-4d71-b9ec-71d5e16d4e0b@denx.de>
+ <z5so7ce7ufjrf4h7owoupimvo7qhdhqpd6ov7cjq4yoqvcmitg@2gdo2c222hfp>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <z5so7ce7ufjrf4h7owoupimvo7qhdhqpd6ov7cjq4yoqvcmitg@2gdo2c222hfp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR5P281CA0043.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f3::14) To PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:102:263::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR10MB5681:EE_|DB9PR10MB8073:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7906b6c1-c7f3-48cc-21c9-08dd33b29995
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SEFUYkw2cTVrVS9lTEYxM1pDNDVZQUszUW1idVZHK3A0U01iYlNmU3Rwb00y?=
+ =?utf-8?B?RXFvbVllUkFLdnVqSGRxdWp1WUdxT01BMlVVNUtCY1NuZ3VEaTE5K0F0cUZQ?=
+ =?utf-8?B?dk1nakVlMEgrdEFQdVM2T1R4dmRjdmdaUmFMc2hEUFV2V2R4aWJ3THA5L3FJ?=
+ =?utf-8?B?UUZyV3JqVERBc1dSSTZ6c2J6bDd1aGw3NDlvclJCMkZyL294SDltbmlYQ1pn?=
+ =?utf-8?B?YjhZSFlydVg1dHB0MVFla3BTbEJlSHdtNHd3dDZaYWxRNjlrbjZsL1VBWFpG?=
+ =?utf-8?B?bWp3VG1sVUFqK1JvU1VHMkRxV3kwZkRBbDNFcXlVZ2d0SFFzSi9QZkFjbTJh?=
+ =?utf-8?B?OVRRLzhkcURzVVI1NTNFek1zZEFvK2dSRml3MVZMSWVYQUU1elVMbXJOd2ZU?=
+ =?utf-8?B?bkYvN01OdzhJUllsdUJGUzEwdlZRZUNhN2NURWVEMzByT3ZhTFJCbXdzcXB6?=
+ =?utf-8?B?M0QyZ3BnQkxRSVliYVFJTVlsV0hta1h2WkxlNzFBNFcrY2JqRyswWDV5dFhF?=
+ =?utf-8?B?NFgrc0dMWmdFWVFiTXYyamN5ZHMvS2JHZWFEVzB0STYwWnllQU14cGFNb0lj?=
+ =?utf-8?B?WGhrNE0vTzg5a1UzUnZkalJIOUtkR2dkTmpBaUJCakE5TVAwRGRzV1NoUm1E?=
+ =?utf-8?B?cUlxYUpDbEdyRkpIaFBveHAzaWtJeTFUZWhBRWNwTnZUTEZzNFVEblNJajFN?=
+ =?utf-8?B?ejA3OCsxQkxlQ2dGdm1weWJ5ZTZ5bkk5UmNnWmk2YU5reTFoM1NBZnEybndl?=
+ =?utf-8?B?MnBLWCtVY2o0aHpXaTV0TGYzRHJjNVZJNmM3STlTUnJ5cHBqNUptZ0xVOUNt?=
+ =?utf-8?B?ZGxnVEVPNU5BMTJQYVNMMDFmR1ZTUXNYcHR1YlNUMEJuQXJJRnFXZFFYNXk5?=
+ =?utf-8?B?cjVFTERENnBiTmdmTEtkbmV2RmE5bGdFT0R6S0pqR3NWNVIzMUpsaWNldG5o?=
+ =?utf-8?B?M3dxdU51OGRvTEN5RXd4Tk9hYzdCNDM4ZmFWbFc1bjdoT3NQNjduSERjS05w?=
+ =?utf-8?B?UGpUNTFiRWR2djB3MGovaExHSW5lNk5SMHlrcTQ3WmZVUm1ZZlpKUUw0TWM4?=
+ =?utf-8?B?cnZiZ1JHVTdFbFp5VDdJSENJb0xXK3F1eU52Y0gxRkV3Z1FTdUZxZENoL2dj?=
+ =?utf-8?B?SW1OeXpmT040WWhhalVxT3FJdHh1cnlOQ0hOUlJ2Q09lcDF4UkNuMkxjUFZB?=
+ =?utf-8?B?UWhuTnZrM2NOOXorMWZiTTUrT01NYTN4ajVxYzlZV1YwczNTazZxNzYvM1pH?=
+ =?utf-8?B?bUdyYXlHSmRQa1JDRTJhUHNzRWFBNXZNb01RY1FIM0xnV2tZa2RxMU1iN3Ru?=
+ =?utf-8?B?Um1YYUEzNnJoamRwdzBVSUhGNC83NUFxTjFyL3VveHd5TXM4MVR3YzB3WWw5?=
+ =?utf-8?B?QTR0dkpwMFc1Q0pJSmNlaUZiL0xvdTdZRWs2eDNoZ0ovYlZocTVVWHZxUWo3?=
+ =?utf-8?B?VWJNS3NjOGRjNTkySHRXTERidGV3VDJ0VUI1L0hVWXFJOWRMK2dWV2dFeUZP?=
+ =?utf-8?B?UkJXaFNZbDY1RVNUeUxVaTNlaWFVaXU2L2pUU290UG5KSGFxekNvUmFMUWJF?=
+ =?utf-8?B?Y2FqN0Z2TURFSVRTMmx0TlZ1cFQ0OThPZHkvY01lbU5rakV6U0pPbWVIS2Zh?=
+ =?utf-8?B?WmtvTk52UGdza2RhTE04ditTZ1BKdXAvVFpveTZ5cVo2dkJOOGNUcU5ReEJK?=
+ =?utf-8?B?T2NPbUFDMUpDcTBUbmVBL0xqY2lubHdkb2dEMHpHd0RFbk5kakpoYXNVanU2?=
+ =?utf-8?B?cERKNmdKMmZLUVFBN0NBWGJBOE96bkp2N09BYWZFRFFiK3RRa2RYdnI5ZFg5?=
+ =?utf-8?B?SkdvNk9SNElzYWJTTFNteDRqa2pnOHRRVG4wUXJZZTB1NXhWT1lCK2s2RXBF?=
+ =?utf-8?Q?jPWOFRQsdrt2Q?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YlRNSXNiSHNrSTduc0pzbHdDcjFsZXpoak1qelRremMyZFRpckZGUVdyY2o5?=
+ =?utf-8?B?S29POWkxNEJmOWtNeFl6TWt2R1JzdkZZWk1ySXZ3K253angxYS96THFBSmhL?=
+ =?utf-8?B?cklFMDZiMTQwZEYzK1h2S0cyRUx4TlZWWURJWE0zUG9UVGY1Z2ViOTNoeUlz?=
+ =?utf-8?B?TjM3SWF2ZWVubk4vMWJUV2ZrMjB5TW1vblQyOHJXWlc3NjNSekZSTTlMbHRq?=
+ =?utf-8?B?NVYvSElwdTBMK3lQMThjNFdTMEhrQTQ5U3BLc2gzT2ZvcXpDblRMcS91Q3ZQ?=
+ =?utf-8?B?MnVTWFFDemNHaWVoVnZDUDZyYVlNUGE2RXNhaGZpMjgwS2U3ZUQrY0RWZ3F3?=
+ =?utf-8?B?N3lWRjZUR09ZVThDd1NPMnNUd3gxZ1lmbTArM3o5cUNFZ1I1RFB2WCtxOW8v?=
+ =?utf-8?B?ek95Zmk5MzJ5bXBqS3V0NmZpcW9zTXZ0cUNnSlVhNjVlK3JVVHVSeGFWTUFo?=
+ =?utf-8?B?YVlic1VVREhHUVZ6SlNhVjZWZmRKaHM2aks4S3JEMEFLQTBYQTgzZlFqY1I1?=
+ =?utf-8?B?RGp0NGVxOGp2bHlIRjRGTmJMVW1KTjgxSWUyN24xSnFKS3BDakRXSW93MmRy?=
+ =?utf-8?B?Q3BwR3k0WGp4Y1NWb1NpMHVrdmpJam1BQTVhV3luTTdQaEtUemNhOU1Gc1NO?=
+ =?utf-8?B?a3A0UVhUN2lZWHJ2akRIa0NwK0JPcWs3c2ZXVE5waVV0VGxQblRxVDVrVzJW?=
+ =?utf-8?B?bEozZUtFU0E0SHJMSlh4UlFuWmNpeklOZEkyZCs0dEI4aFRzd3ZGaFRUczln?=
+ =?utf-8?B?Y2drZmFaYTFnKzRXa3ZhaHo4M1p1RkY2SVNXTEFBMlUwVC9lNENvL3M4MzdM?=
+ =?utf-8?B?b2NGNVJWamFoZUYxZE9nZmF0THVLZWZIM1dtTXp5YlFMMnN5b05DcFRSNnVs?=
+ =?utf-8?B?R0pSUG1KK1Z1UlZyTWhxTWdzNnpFVThKRjdCSkh2SFQ3ZkZjMUp2RFJJK2d5?=
+ =?utf-8?B?Q2NuL3h4aWhPa2pycVk5dHllRmFGUmRONC9QOU9JcVNXN2dMRjhPelR3ZnV0?=
+ =?utf-8?B?QTZCOHlUS1pPWDA4cCt6N3ZwR1Zla3Z4QkJQeDl3ZURZUEUzaTZmT01aaExB?=
+ =?utf-8?B?MDZ4S0hGZHVuOG5CR3RWK2JNbFBCNWdDZFhnQWJja3lHbmsxV0YvaUFBMWpB?=
+ =?utf-8?B?Zm9pMkhuNFhveEZhU2w2dHRWaU54eTlOc3g0aGdXYW1qSGQrdDhDSGl5blJj?=
+ =?utf-8?B?elZRZjB4MHRYbnJNQlNEMzR2RjVPWmJ5T0h4YmJYMjNNRkdHOXBkcWkxdWxG?=
+ =?utf-8?B?aDRqMXZXSVlncnZWQmsyYmUvalVVeEdERzEyelRoTEZtVzlhTTZFZEF2MFgz?=
+ =?utf-8?B?Q0xXVVo3MDRYb1hvY0ZnRGxRSHVJYThraVFiaWg5dytGRU5rdWwvZzRyc3JI?=
+ =?utf-8?B?dGEvVmZrSWxPOE5nZHY2cjA5OTZGWWtxTlQva2k2YzEwNzVpRmV1S2o3VVdi?=
+ =?utf-8?B?SkNaY0QvcHJaRGNnSTBYdms0eFU4VDJXSlgySHQvQ2UrY1BDc1haOFNjQjlp?=
+ =?utf-8?B?WWNEWkNJR0lRejEyVTNOcW5NY0R4a2lyQlBFM3ZoWXZNVFZOMUVCaXcyeEZF?=
+ =?utf-8?B?TERoN2EyV3dSa3NNWWZZZ1p2bFJHS1dBeWpGa0E1dGlhWkdWcWZlMlMyZU9v?=
+ =?utf-8?B?aGNSY3I0Ti81ZUlJSHdLQ0h6bHNQNXlMcGdMNlJ2V1dTU3Rzb0ZRUHN1RFNB?=
+ =?utf-8?B?UHZhb0dzaFpWeEZHOHlSaGRDd2trakRYZ2lnNnNxTTEzaUlMS2hsbFB3Ni9w?=
+ =?utf-8?B?b1JhVnpNY1pyRktJMkZnY3NyY3M2aHdjVzFwcHNZUjZyblZaQWszZEVkMzZI?=
+ =?utf-8?B?TUkvY0JNTEcxbnE2ZFB1a05xalUyR0h3SkYycHpUS3doUTlUNDFlT2RFVmlJ?=
+ =?utf-8?B?NFg3RWhRSEd1YjZaTnNXNTJzY3RKRVhUcU1tVjFMdW5WdWNISTRBNEdVYktx?=
+ =?utf-8?B?NTM5dzQ2YlpreDdmNWxFZ0RpQVdqZ01QcU1nQlFDdy9YOTR4MXQ5Q0N0VElX?=
+ =?utf-8?B?S0VxZlZFdXlPZWhTUmFSVXBnQnhodkFCUmJ0a3V1OCtzemdFZFIzcVhCeXdO?=
+ =?utf-8?B?TGRxUUlxbzh5QXNTYWtaRzdJVkhLM0wwemxsMHQ3bFdEZjVMcW96UlR5eERP?=
+ =?utf-8?B?bmdXb0l4cWtVRklvamRmdklmbklNQmNEUE5ZWHJUd01VVlpkWlZaTUhRaGdn?=
+ =?utf-8?B?TlE9PQ==?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7906b6c1-c7f3-48cc-21c9-08dd33b29995
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 09:13:53.1801
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 46jKYoK8ODyNDvyvUsn/qb/eJ6rpXC88j00j9dlU/iNM3amSCg4Tu5osKBrzMW44n+maFn+xPC+qNbAL7N854dyCAUi1ZKLYIXne8RES6Ac=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB8073
 
-Hi Frank,
+On 31.12.24 12:48 AM, Dmitry Baryshkov wrote:
+> On Mon, Dec 30, 2024 at 10:44:25PM +0100, Marek Vasut wrote:
+>> On 12/30/24 8:04 AM, Ying Liu wrote:
+>>> On 12/26/2024, Marek Vasut wrote:
+>>>> On 12/24/24 5:21 AM, Dmitry Baryshkov wrote:
+>>>>> On Tue, Dec 24, 2024 at 02:46:14AM +0100, Marek Vasut wrote:
+>>>>>> The dw-hdmi output_port is set to 1 in order to look for a connector
+>>>>>> next bridge in order to get DRM_BRIDGE_ATTACH_NO_CONNECTOR
+>>>> working.
+>>>>>> The output_port set to 1 makes the DW HDMI driver core look up the
+>>>>>> next bridge in DT, where the next bridge is often the hdmi-connector .
+>>>>>>
+>>>>>> Similar to 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge
+>>>> DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+>>>>>>
+>>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>>>> ---
+>>>>>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>> Cc: Fabio Estevam <festevam@gmail.com>
+>>>>>> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+>>>>>> Cc: Jonas Karlman <jonas@kwiboo.se>
+>>>>>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>>>>>> Cc: Liu Ying <victor.liu@nxp.com>
+>>>>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>>>>> Cc: Maxime Ripard <mripard@kernel.org>
+>>>>>> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+>>>>>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>>>>>> Cc: Robert Foss <rfoss@kernel.org>
+>>>>>> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+>>>>>> Cc: Shawn Guo <shawnguo@kernel.org>
+>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>> Cc: Stefan Agner <stefan@agner.ch>
+>>>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>>>>> Cc: dri-devel@lists.freedesktop.org
+>>>>>> Cc: imx@lists.linux.dev
+>>>>>> Cc: linux-arm-kernel@lists.infradead.org
+>>>>>> ---
+>>>>>> V2: No change
+>>>>>> ---
+>>>>>>    drivers/gpu/drm/bridge/imx/Kconfig          | 1 +
+>>>>>>    drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c | 1 +
+>>>>>>    2 files changed, 2 insertions(+)
+>>>>>>
+>>>>>> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig
+>>>> b/drivers/gpu/drm/bridge/imx/Kconfig
+>>>>>> index 9a480c6abb856..d8e9fbf75edbb 100644
+>>>>>> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+>>>>>> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+>>>>>> @@ -27,6 +27,7 @@ config DRM_IMX8MP_DW_HDMI_BRIDGE
+>>>>>>    config DRM_IMX8MP_HDMI_PVI
+>>>>>>    	tristate "Freescale i.MX8MP HDMI PVI bridge support"
+>>>>>>    	depends on OF
+>>>>>> +	select DRM_DISPLAY_CONNECTOR
+>>>>>>    	help
+>>>>>>    	  Choose this to enable support for the internal HDMI TX Parallel
+>>>>>>    	  Video Interface found on the Freescale i.MX8MP SoC.
+>>>>>> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>>>> b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>>>>>> index 1e7a789ec2890..4ebae5ad072ad 100644
+>>>>>> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>>>>>> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+>>>>>> @@ -101,6 +101,7 @@ static int imx8mp_dw_hdmi_probe(struct
+>>>> platform_device *pdev)
+>>>>>>    	plat_data->phy_name = "SAMSUNG HDMI TX PHY";
+>>>>>>    	plat_data->priv_data = hdmi;
+>>>>>>    	plat_data->phy_force_vendor = true;
+>>>>>> +	plat_data->output_port = 1;
+>>>>>
+>>>>> Quoting my feedback to a similar Liu's patch:
+>>>>>
+>>>>> This will break compatibility with older DT files, which don't have
+>>>>> output port. I think you need to add output_port_optional flag to
+>>>>> dw_hdmi_plat_data and still return 0 from dw_hdmi_parse_dt() if the flag
+>>>>> is set, but there is no remote node.
+>>>> Looking at the upstream imx8mp*dts , the oldest commit which adds HDMI
+>>>> support is commit:
+>>>>
+>>>> 3e67a1ddd56d ("arm64: dts: imx8mp: Enable HDMI on
+>>>> TQMa8MPxL/MBa8MPxL")
+>>>>
+>>>> That already contains the HDMI connector node. Every follow up addition
+>>>> of HDMI to another device has been a copy of the same commit, with
+>>>> connector, so I think it is safe to say, no upstream DT is going to be
+>>>> broken by this change. Do we care about hypothetical downstream DTs
+>>>> which may be missing the connector ?
+>>>
+>>> These have no HDMI connector nodes:
+>>> arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
+>>> arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts
+>>> arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+>>> arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dts
+>> Huh, I missed those, thanks.
+>>
+>> Would it be OK with you to fix those DTs up and add the missing connector,
+>> rather than introduce some optional port workaround for them ?
+> 
+> I can't say for iMX8 particularly, but usually we try to keep backwards
+> compatibility, as DT can be coming from device vendors. So, I'd say, we
+> need both, the fixed DTS and the workaround.
 
-Am Freitag, 10. Januar 2025, 17:17:32 CET schrieb Frank Li:
-> This controller support scalable data lanes from 1 to 4. Add the
-> 'data-lanes' property to configure the number of MIPI display panel lanes
-> selected for boards.
->=20
-> Change $ref of port@1 from 'port' to 'port-base' and add 'endpoint'
-> property referencing video-interfaces.yaml. Allow 'data-lanes' values
-> 1, 2, 3, and 4 for port@1.
->=20
-> Fix below CHECK_DTB warnings:
-> arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtb:
->  dsi@30a00000: ports:port@1:endpoint: Unevaluated properties are not allo=
-wed ('data-lanes' was unexpected)
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+FWIW, personally for the Kontron devicetrees mentioned above, I'm okay
+with adding the connector node and break compatibility. Those
+devicetrees have been added recently and I forgot to include the
+connector node.
 
-I've had a similar patch WIP. Looks good to me. For the record I based
-my local change according to commit 54df4868fb728 ("dt-bindings:
-samsung,mipi-dsim: Use port-base reference")
-
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-> ---
-> Change from v1 to v2
-> - Add the reason why need 'data-lanes' property in commit message.
-> ---
->  .../bindings/display/bridge/nwl-dsi.yaml       | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yam=
-l b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
-> index 350fb8f400f02..5952e6448ed47 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
-> @@ -111,11 +111,27 @@ properties:
->          unevaluatedProperties: false
-> =20
->        port@1:
-> -        $ref: /schemas/graph.yaml#/properties/port
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
->          description:
->            DSI output port node to the panel or the next bridge
->            in the chain
-> =20
-> +        properties:
-> +          endpoint:
-> +            $ref: /schemas/media/video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                description: array of physical DSI data lane indexes.
-> +                minItems: 1
-> +                items:
-> +                  - const: 1
-> +                  - const: 2
-> +                  - const: 3
-> +                  - const: 4
-> +
->      required:
->        - port@0
->        - port@1
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Of course I can only speak for myself and for Kontron, not for others.
