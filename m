@@ -1,173 +1,149 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD282451D9
-	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 08:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736757648; cv=fail; b=OFOtYA3dESMHu5T1LQKAock8ZdQrAJHp3x2USNF914i3nkuX8wEmoRQ95yvhSGPQHb6++ZqNMeio6r0ejvZEr4n72eCrB2b49vyqg9MAPAitZllQ7uECh4WaMXAel2vMLCkPftqjwQuzOHM+/I2On1r5qPl0m6jlJKPU74NETvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736757648; c=relaxed/simple;
-	bh=UZNEr5/duhRXZHkkjrpj4T9IL/BXng+qKAzz3U5mun4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gIuF6pru6RYbrVqTGO/ntisVtHxZU9m/no1fwX+NY167g3p5y4Mv3nVcpoA28vmV/hKKARHtC6TlurTuVfy0BBiJ+dzxXzjjrlK+7xgTawsGdAsn7qOc6ptwQmh7WIVRB/CjSSyvT47TwSwXxnawxthuBrWChKVB9wJT9SaQgIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SCRkxndy; arc=fail smtp.client-ip=52.101.70.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C591234971
+	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 08:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736758682; cv=none; b=HQgjg72zls896JKOKnbld9LUkEZ1i2cnEFQuUK0IBqf5OuWksBzPh5+mHflPvyWugzaqeK4cI+I7AGkXd21CCogc/YpNIZ79tMQcPS9nvY8ZEKeHm5i98UWo6AdmxnDQpsG9Mo8RS7X9AqIlwJ1CQyeHaEEc53XeK32bELIRa8s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736758682; c=relaxed/simple;
+	bh=UiyOfZqJ61a0v0LL+GBK+ZV49nwfQkFLSWH2uWHwMyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ozoXSv2WIhCTWWK/N/QiXjSvU61lCF394ONXCcCksBqvt7plCAgi9QNwH5zxDDKrcas2kiwoTk6dueWQKTYzgoVzP+eZns7K6n57AKxhWJwtrL5tI+++zf2PA3dAUWr/AitiGP+kGxM9iZpLBJquV3QGrjVSDzPg4lmA8XQq1+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=nU5hetHk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LZdr2CBl reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SCRkxndy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b7MOE0kkcaIUiMJ3o7L8zHCTOYW8NuVBJQxw9Cnx5jG4muKSnZ21IpwF4EknG6Hl7xYeZKj3TOq14AhEMg/795fN78jQo8hiOjI38KQMF62LmLcSSUQs/9igNkI7Ysbpd8zM8TJ0eUDnZStmbmGNioCll2efoak1dUodwde2F6D3QqkYpa9enPHFLqLdopDbBqRxCEi26p8TO9M2aUbBDhQ7FE35dR+QKptLuE8UDF+54mHQt9XZ00gModFN/Jcvs7JmQbknc7TDOwt9VWbXumvXXnuAQNqlcB8Abyk16WqhcjXOX7fbDMlvDUtGNmcWdtbD0OZAAgbAiaI4B5dIgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=awuFpiNnGnu8PB/g+d5F5dMPKyhjVA8lFpOWRmvZ6yU=;
- b=Js/ACnxHa/oZAuoiJ1G5LEFvH5QWE9pjwwFZdlb9HR8uVLfbkb7zJA/5jzt9ireBoXxQ1iP/k3fRykQsGsCdFIFee9n4LeNm45YO4LtG96dEDiK+BrWyfIE3t8ZqCi6slRA5xatNT7j+dqtIMobj6mbb8rwaP5wdhY8yVuJRi3r+1kOb/Dhs436Rssz4KbYlSsSIeuDP9A4hZFxz2lbwCi4M1oVDAH93KA8xrwHHY2iUJPer2ss5e8gf0c7ZtQAr65kfX7h4HQ5M9rZO2X7bPO1ytbLhw1HNPYZHUyvwp7GaHi82XQKMVvY0OmGFMNDPczpxCJ1OEZAJxOUvE1f4pA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=awuFpiNnGnu8PB/g+d5F5dMPKyhjVA8lFpOWRmvZ6yU=;
- b=SCRkxndy+qBweyqLbqLhrsK57glSd6aARKjcaDn4d/dt9VvvHDzcUr+L+C8becIyXIzMLkOSb91PgoyZ6zqFBGV0fpOwlwTDs6+QiGdTC5kHeN7AoKIQaV7dlUBCSWIxiP/42YPbk0oBdk96joLnQczIn2K81HAMvd4gRedPV706VDiae20rAUU5YOXt+AkZ6qpUdaPeRhBCMwKdqZrU18FRAWh9EuFygbyU2zqtJAEnmPFyT3OmZ/zV4G15S0ZzsKvMHHLoz6fyf3YDiL9vW83OGdywTbvRmDQtsrXmV6no3HbS9PYuH04+2wp5nJlnTIwDoI4GoThxKapD1+M9+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DBBPR04MB7740.eurprd04.prod.outlook.com (2603:10a6:10:1ee::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Mon, 13 Jan
- 2025 08:40:44 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8335.017; Mon, 13 Jan 2025
- 08:40:44 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	christophe.leroy@csgroup.eu
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 net-next 13/13] MAINTAINERS: add new file ntmp.h to ENETC driver
-Date: Mon, 13 Jan 2025 16:22:45 +0800
-Message-Id: <20250113082245.2332775-14-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250113082245.2332775-1-wei.fang@nxp.com>
-References: <20250113082245.2332775-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0046.apcprd02.prod.outlook.com
- (2603:1096:4:196::15) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="nU5hetHk";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LZdr2CBl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1736758679; x=1768294679;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Tbo5YrOw2H/3ruPHWEWAeiN8rdU9wVeQI9EvOOOmwNo=;
+  b=nU5hetHkGqEi7YMtEtdJgDOSHGto3gT2gFSswIiI0yhzt936Oo7yHY+J
+   5rtqI9iXRdO2xiIXYvln3zsN+K9faoce9L+whJyZRWbswQ9jNGhpnQS/S
+   UNRlLWwL/ZeOVp1OP5E1C/Yo+FamkIOGan+Gob2+KjwYqTTuULfYOPMBR
+   2MtkSBGzy0Y4h2ql3YluDzIFuN4RWwhxq2Ffr+OV4i8OzhtBKHd1sK458
+   uBid+V6kAkJaZMyORfXLFvup6MdL/jBbalFpYnXxnQnxbWpN95jNPwe4q
+   j09uohdLOuzdTzc8iAYmYR+b+h4M2bERzQA/BkHgd5oCLtQSp3/YHB1BT
+   A==;
+X-CSE-ConnectionGUID: r6C6qALjSYCdz8g3LMnIHg==
+X-CSE-MsgGUID: iTW4TdugQM6ZWsGwJfs2uA==
+X-IronPort-AV: E=Sophos;i="6.12,310,1728943200"; 
+   d="scan'208";a="41010458"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Jan 2025 09:57:50 +0100
+X-CheckPoint: {6784D58E-24-3C670366-E45AD810}
+X-MAIL-CPID: 454A88758688CF77A57FFEA4212AB19F_4
+X-Control-Analysis: str=0001.0A682F17.6784D58E.00AF,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C44D416B92E;
+	Mon, 13 Jan 2025 09:57:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1736758666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tbo5YrOw2H/3ruPHWEWAeiN8rdU9wVeQI9EvOOOmwNo=;
+	b=LZdr2CBlejpULzspz8QRDz4idx1VWuBMwPS8FhWiLZYZQeGear7/p4Mz4kf1ag+6tf/F97
+	hXfLVT+M7qMV5xVSOLgjqAJ3/bECAt3QA3hx9OKCVPJ3w2+6UNaowWQtelH5QWvNvILz7V
+	DPvG1jh3YxmmH1ow2k606eX5Oc9uGocMu1b49jNzVNNOf4TYSMX6CO5xeDqXmK5TBcHoMp
+	g0FPyBVAWTN8gv5PROTOeid4bIGxw3CoKlINPY7D77uIA/jpzQXomOgrwrUWnXQGZ+FBCo
+	B7CNXGFHBQ0NWbbLwUhh1yykm7aaxUNuJK8p3ZWlx0/2PHEkw5yebRvfHAlm5w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Guido =?ISO-8859-1?Q?G=FAnther?= <agx@sigxcpu.org>, Robert Chiras <robert.chiras@nxp.com>, "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: display: nwl-dsi: Allow 'data-lanes' property for port@1
+Date: Mon, 13 Jan 2025 09:57:43 +0100
+Message-ID: <5856132.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250110161733.2515332-1-Frank.Li@nxp.com>
+References: <20250110161733.2515332-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DBBPR04MB7740:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61e021ad-93ab-4d3b-8b04-08dd33adf7f2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|1800799024|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zQTZ0qrkACURqewpmBF+vq7cHPHpv76x2ItPeWp3Ob3lnG4EmVVAaS5/PZaA?=
- =?us-ascii?Q?ASDsOfMCV3v39e6bbSB6OXhywvtQPrboJmM6WoFl25sreqpxnsLZJ8uBJ0ym?=
- =?us-ascii?Q?APVSIZ+PrUUZdVjFLhWQ4/uHBlGpdDf1GwtI9JEMpycbsKcy+b8St5UjQCMG?=
- =?us-ascii?Q?chp+rfKA1//gKQM7tNhhBHIzohtsDJKxdLkoPSBtiTgrLDeX+ffo5Ba1hL1j?=
- =?us-ascii?Q?Lm/SbWYfurWhMYyrPCnJteDlvhyGWgbo45f2Vhs6ZG3t+q6VF4IIH6Wrl284?=
- =?us-ascii?Q?gAIaQi5FwQMaMqTmrUioGCfK6S9cZGX/LVcOobqz0xL222JVWdhRsdDeY/H5?=
- =?us-ascii?Q?1wGwWk8cboMt4XQDrk38upwNZ6gTJu0ToU2DQfYdrRVwwh4AKNzMEl5CQsdG?=
- =?us-ascii?Q?l4rf39NAlZKZmJ5rHr1bLA0dsDkeJrI4WQ5KXwsHu0H2Ca5hoT3IKcQe8I6o?=
- =?us-ascii?Q?SxH6B4TRsc4gQYmeV7RA8KNdFKKHX9i2KBsLWREUo8u3CXobtQXI1WGTzbRg?=
- =?us-ascii?Q?kszYnAgE3K+AO38sapNOmxLWOA30eGrqEJn6QHFEoLqG5TJmSO6KIsMQX69m?=
- =?us-ascii?Q?053mH2wKfhmHagl62K7sbM9p3mmJuiq/q+WZH0E+dYyRyTHos9VY9kq5H0FG?=
- =?us-ascii?Q?eS2Tmoz7LDmpGGhCInpPRGFi6zNOZZTi10QgE34tYJDEZXU+yAa/3kkzM0Nu?=
- =?us-ascii?Q?ePoWg8J9UqIKbgtkmV3lUx6uPnMgPQwQlhxNdnVuI6KQH6v5plRndRO7Wr8e?=
- =?us-ascii?Q?R13bgT413zsXwvtjMalgbzn2jrE8tsS1T8ZfXKUQ9t0aft7kyju5Q8cTogJk?=
- =?us-ascii?Q?+VaN4krhrNVfcv06UEZ8aWm6gG2ldCtED2KZ7okNrFycVo007tk9y0fmDyBI?=
- =?us-ascii?Q?NRr98+jS8XHZtFiKvCIOzc0DJYWstKiOoujVybgdWno1X5fSwQkBDYPp0eUC?=
- =?us-ascii?Q?ZmdtD9nO91RhMMfQ30OKu3Q6IG/aS1xsscL4YMWGVvD8B84zCAcrqYrEPXUh?=
- =?us-ascii?Q?IalgaSJyZ3l+69cAdc0CS6piZqohw3WLjzA0vMkOn7Vq5X5Md3YtZqmTj0kj?=
- =?us-ascii?Q?SzIR6ijAdZPKH0qYMB/r3d7J0zgVUR7kPJ39H9GWmGgunG8whn/FjHeQOra6?=
- =?us-ascii?Q?Fb008eoSNbNFDqeURyFcKth3JOzjAJPqWLpgYGT4ejjbAkVQ+KwkvG4HthRE?=
- =?us-ascii?Q?VFVlwrzBa9fkBmCkNB1mXUMhrn77vyEkx1sdMOHy9FJWQo5Zj9X/WbuCTMyC?=
- =?us-ascii?Q?06SQ+SEkKhlpz2qoLn5phc5w8nY3gKqwiII6vzFc6lIFAgJIoFoeBl7Z9uRK?=
- =?us-ascii?Q?5I16OWE0r2sEkx8U4aq4M4qgo1cgsd+UJrw6xI7SWxAFk7XNF+ZjQkubsJHk?=
- =?us-ascii?Q?S19vaev22bpBSQKwxObT/lyladFmODltMX7xyK2+5CNg0MrvGbTLq5odOuaR?=
- =?us-ascii?Q?3izYCUdbRvjTt2nBIghrKP0mgv0/ydiq?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/iCR7LmlEx/ZyRBaWfJm2OIuzG7+c7yV6q+zzGMUv+tdq+IY2g0ASqdUyATA?=
- =?us-ascii?Q?zzhFpRu0AdlD87RdgWZ8sbitvRfrnh5naWHKE5gLf4A34ECHcXHd3TinwmsV?=
- =?us-ascii?Q?tNt0qpRwQ8UCsBZO1JUiE6PP/dlIbNyv/OzwmG9W8TjFJb6ppIcuc2+UYCZT?=
- =?us-ascii?Q?rwcEGpuIBWg7mrJTsU12Otfs++b2RbktwANd3RBhFhbbyJFtY2oNlXua061a?=
- =?us-ascii?Q?LudWlcuJ7gx9Fqf6kwhbiXNgfpzgVgZKGtUfuE7iyyBs8az9TY/LYMHtxljM?=
- =?us-ascii?Q?15LeckE97JDvYig6Y5tfBpBZj0qsJafZCS7fzE7qNDTo1nXaIQWdYPsdlInU?=
- =?us-ascii?Q?3xM0G8XQoCTLk94UF1fW8fZra42XtAiSngV0CMXQnQ2ZX/cTzJXdJgc+X3Bz?=
- =?us-ascii?Q?SKJY+nzo6EkELzlSXUUKLj5jABBtRrhFnQEgkKtyXK5wCofA8GvVjRv9AFXh?=
- =?us-ascii?Q?2WAUGktUQ2nfL6Yfyqa5ydJ3GChhdQnyXxhZEQTc6+f1sMcFfPWTTI3EqB3p?=
- =?us-ascii?Q?dUZnLea+AEIvQuccDTj9UmxxDSB60U8uXSzEKKuCvYmqUiUV1/xZuetRS2qh?=
- =?us-ascii?Q?RCLqovhzfpTf17MXowVAaCPv0tOWXNjhVrfTvjcJuECANWzpyrFB01qkf0LB?=
- =?us-ascii?Q?9nIRLNuAThrwN5NGglIedD/eEMEYWB39s4JmspMAjqZ/ynqx7J02Un4Xs+j7?=
- =?us-ascii?Q?qk+Dcx1HSNCuIPccUMjG16iyQ1Wv9rdCbhqx450x9EZI9OXsv5djoUYuUI/K?=
- =?us-ascii?Q?le/HBh/YAoNratm4kvRNIePiinRj+RdbcXP5ZOlyUPBIiwb+jARHBnTR6vs8?=
- =?us-ascii?Q?SExP/DbNjyAYXgVGVCKimkCqQ+5OXef3DiBW8/0KS650yY0db8LqMBeSPC/l?=
- =?us-ascii?Q?03qjgEq5v7Ith0nmiiY1Kf8x5O+DtgIcSe4FLvt2akxY+Vx0IrTmC8oCaEqU?=
- =?us-ascii?Q?reKF9wDtc3X7u5P2kKVzvQjmqMCDfosKEJzLnQPG9xrbgUj5RukCDlK8XuMH?=
- =?us-ascii?Q?XI4wVVLEh9ZS+ItfYj1BfVkATktKUnXoenyT1ABF6vlUVfrPT8wtHjPRSeVD?=
- =?us-ascii?Q?jJ71J9bG8db6b3LC49waenoZczBJsg2zKjKIbX9a7zVQoOwqsL8lEeWjyH+X?=
- =?us-ascii?Q?nCL/P43B78f6cWHRAZjv4mSnREh8agvpqcaT8OdcVM93QFqWTwV6jryobnTX?=
- =?us-ascii?Q?HdWk+TuM6nkRJWENbdor1xVOdSLJovXAlHikozwnZOSrgWBh2nSDhsYZYrx4?=
- =?us-ascii?Q?1tEMHJSM+eYKVunkycI+7sbtjvvDJ0q+4tIweFxS3kwuW+DbPolXeKdG+dBW?=
- =?us-ascii?Q?TiFkaSeAVoQ7Re4wh+iQBHo3r7hbN+unaJXvch5BvRSjrQX42Sckln4j1OIa?=
- =?us-ascii?Q?lTNvBNRdWfiSl/ENEenSvaE4tXWjdHv1Z13bN3CDcZUI7O1jd4Od1dq8UOo4?=
- =?us-ascii?Q?DAwxc/rT8lR5NPO72Jf3qjm+P5cNdGAbGasToKIpgRTKJ0lZdZJvY2nli1TO?=
- =?us-ascii?Q?xlZ3Uy7YNW8JDDx0sIY+G4GjavcApKwyRgT+fqkIKDDr2vwXy7jzf+qCt+Dx?=
- =?us-ascii?Q?3OiSzkpB8RecFBKILXLevihe+2rR0G7i9FCGXlbc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61e021ad-93ab-4d3b-8b04-08dd33adf7f2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 08:40:44.2029
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZEb/AFjOlSMq0TRaDZC6MjmusLt71a8KTONStf+YzAM1RbYf/cp4hYnOTFOQ/dZD+VsJn1g1gY7nvrZ9xFy3Ug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7740
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add new file ntmp.h. to ENETC driver.
+Hi Frank,
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Am Freitag, 10. Januar 2025, 17:17:32 CET schrieb Frank Li:
+> This controller support scalable data lanes from 1 to 4. Add the
+> 'data-lanes' property to configure the number of MIPI display panel lanes
+> selected for boards.
+>=20
+> Change $ref of port@1 from 'port' to 'port-base' and add 'endpoint'
+> property referencing video-interfaces.yaml. Allow 'data-lanes' values
+> 1, 2, 3, and 4 for port@1.
+>=20
+> Fix below CHECK_DTB warnings:
+> arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtb:
+>  dsi@30a00000: ports:port@1:endpoint: Unevaluated properties are not allo=
+wed ('data-lanes' was unexpected)
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1579124ef426..ac28154f7eb5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9099,6 +9099,7 @@ F:	Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
- F:	drivers/net/ethernet/freescale/enetc/
- F:	include/linux/fsl/enetc_mdio.h
- F:	include/linux/fsl/netc_global.h
-+F:	include/linux/fsl/ntmp.h
- 
- FREESCALE eTSEC ETHERNET DRIVER (GIANFAR)
- M:	Claudiu Manoil <claudiu.manoil@nxp.com>
--- 
-2.34.1
+I've had a similar patch WIP. Looks good to me. For the record I based
+my local change according to commit 54df4868fb728 ("dt-bindings:
+samsung,mipi-dsim: Use port-base reference")
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+> Change from v1 to v2
+> - Add the reason why need 'data-lanes' property in commit message.
+> ---
+>  .../bindings/display/bridge/nwl-dsi.yaml       | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yam=
+l b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> index 350fb8f400f02..5952e6448ed47 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/nwl-dsi.yaml
+> @@ -111,11 +111,27 @@ properties:
+>          unevaluatedProperties: false
+> =20
+>        port@1:
+> -        $ref: /schemas/graph.yaml#/properties/port
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+>          description:
+>            DSI output port node to the panel or the next bridge
+>            in the chain
+> =20
+> +        properties:
+> +          endpoint:
+> +            $ref: /schemas/media/video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              data-lanes:
+> +                description: array of physical DSI data lane indexes.
+> +                minItems: 1
+> +                items:
+> +                  - const: 1
+> +                  - const: 2
+> +                  - const: 3
+> +                  - const: 4
+> +
+>      required:
+>        - port@0
+>        - port@1
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
