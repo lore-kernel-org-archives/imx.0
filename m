@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C3B22CF07;
-	Mon, 13 Jan 2025 11:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA80D22CF03;
+	Mon, 13 Jan 2025 11:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736768143; cv=none; b=AqaHfItnfSitQdDOzjk/D4NfT2ruobTSf0YKdhizUclog4i5+6vTOIh4gRq8AP2lCf/4txFFqh5WYbdhKHuONS1N13XNdj2B0T8grj4/9/Uw5f+Axd4oETVhUAKoqb6T2p4Jn7mboCrsQmoxPZz3b6a+OrrnoQ+ACKTowO8XQAg=
+	t=1736768697; cv=none; b=Sk6O5ifZkhJs9/TXKkxXcpf55dHTGCp4+lZlYWuE47Y8S74YOzgO9EDBtjaYrBAVcQPAevoGZgf8jEW3W7IyzQptSV+REkqxnOm0OaRapIwe9oZMzo/z3Z64iWvTY8ftgC6/uB4lgSpoRnwfJs7KZ13heEz8jX5P9LrxAKugVCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736768143; c=relaxed/simple;
-	bh=oGFhBInv1GRa5ya9fSnahpEiZAFr7o5nMSpPLDknsZU=;
+	s=arc-20240116; t=1736768697; c=relaxed/simple;
+	bh=LVtEFY41ensxufRFG4hAMlaOCuTkTZrxHeKsNslynlY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ogntxWMP/1j0VVTDUaRP7TjwoLOIbhP8E2NfGTD6oPVvEPhLNO2czcreAcm9fcL3yZA6LrmTZcGIM7HDYPAXfKcm8Dq+6eElI1MHLBXM19/kH7lt/Nxib1IbQdxIek5nwYZZWMNPS2LFwh8cownthw6rwPNtK987jL/JpkHzVVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tsp631Gx; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=Baj2SQQUeMpjqSxJBKUCDEF+4408/5tJyGTnTEz8s3iIzhxk+/L9mWe+6OMRAt4+Bxa8jFMqoY8rLsMihuL9ex/oGRf8hUzlauBtCCr0Hcb0YgimiNdjNS8KRlFRnmihkG3OWNGvwLjHMgpPYYDtSNq3kGBVQJZCi1QKaj1QRvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUJTtFYG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tsp631Gx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0E6C4CED6;
-	Mon, 13 Jan 2025 11:35:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUJTtFYG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB246C4CED6;
+	Mon, 13 Jan 2025 11:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736768143;
-	bh=oGFhBInv1GRa5ya9fSnahpEiZAFr7o5nMSpPLDknsZU=;
+	s=k20201202; t=1736768696;
+	bh=LVtEFY41ensxufRFG4hAMlaOCuTkTZrxHeKsNslynlY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tsp631Gxk8S3AFpH0igeU/jzV8q9yMMX4lqYNaAbGg99uBKEnlRBi50n7rxNrnxYI
-	 qPwb3PTyIidtSrGG+RKCjvhgMNfPEFUtV8G9n2Ow+0NR6AngkHCPCgyxYR7SZWYZfk
-	 d1XNbEks3CGoX9ss6dN8gXeSkk/5c4ZbtjQI5fE1C/OrEqHe154Bz+B+UdzdWUqrMi
-	 +ZA3h0bkII2+K6UTGyhFX74kOtdhJDll//ddo24KKVnjK0RhTN74/kqgxTjlDBLcAG
-	 xwNHxGRK2UfFGFxg1exUXR4X94NfaKvt1UicesbFnYs5mGlvoR5ivTEN9gKaGehIJ4
-	 hQXIopJdWbq1w==
-Message-ID: <eb85b7db-cd17-4dc0-8b0f-73bbf6ac8e37@kernel.org>
-Date: Mon, 13 Jan 2025 12:35:35 +0100
+	b=iUJTtFYGhRtto7Q3CbZ3GIkwWMLu5Cyb2J1ciWAftdVwfY69rW1h3XTDgnxfm5oHQ
+	 C+4yiDqDchI9QOQEi2lQtQpaiynatrAs2NtCwnJ3UE3CgEUGWeXeoPTu3w22WKqjvs
+	 DEFeshE5Wbvq5wgVPNQ//G03vJdi8+EdWq1rJhFS8RXANh2pyPH0EiMxv7mOOlriT6
+	 wzMc5ml+kl7BJZs+hgaRfSLc36weK54iCFK3L1evHkofYjvnf3aXhtDgIy2G3X+Bfv
+	 uyBHNovzgGk6SY7PZeZI8C4yvMut6iQcImtspCViAvxh+kDY2fCOTLgaKRIqtwn6fo
+	 xm5fB6Dd/0wag==
+Message-ID: <79672620-9bfa-4162-9555-3f7274914cbf@kernel.org>
+Date: Mon, 13 Jan 2025 12:44:49 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,24 +35,23 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Update i.MX95 compatible
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20250104-imx9-machine-v1-0-18a78e41456b@nxp.com>
- <20250104-imx9-machine-v1-1-18a78e41456b@nxp.com>
- <4666f8e9-d19e-45bd-be9c-a7f111168d66@kernel.org>
- <PAXPR04MB845922D5BCAA88C26C0149B488102@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <8d2746ba-47d2-429b-9df0-9448a4516ef1@kernel.org>
- <20250109024058.GA31833@localhost.localdomain>
+Subject: Re: [PATCH v3 3/5] ASoC: dt-bindings: audio-graph-card2: add widgets
+ and hp-det-gpios support
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Mark Brown <broonie@kernel.org>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Takashi Iwai <tiwai@suse.com>, Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Jaroslav Kysela <perex@perex.cz>, Frank Li <Frank.li@nxp.com>,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-sound@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20241216145039.3074-1-laurentiumihalcea111@gmail.com>
+ <20241216145039.3074-4-laurentiumihalcea111@gmail.com>
+ <nxcoukgiwtcsowi2uxytxa32mdp5dhl4tvnetpd2spti7oiiu3@mpqbv43ivznc>
+ <e5665b6a-c2ad-470f-8a36-b7adc05c1cf0@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -98,53 +97,52 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250109024058.GA31833@localhost.localdomain>
+In-Reply-To: <e5665b6a-c2ad-470f-8a36-b7adc05c1cf0@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/01/2025 03:40, Peng Fan wrote:
-> On Mon, Jan 06, 2025 at 07:12:29AM +0100, Krzysztof Kozlowski wrote:
->> On 06/01/2025 03:51, Peng Fan wrote:
->>>> Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Update i.MX95
->>>> compatible
->>>>
->>>> On 04/01/2025 13:13, Peng Fan (OSS) wrote:
->>>>> From: Peng Fan <peng.fan@nxp.com>
->>>>>
->>>>> i.MX95 features a System Controller and SCMI Spec 3.2 compatible
->>>>> firmware System Manager(SM) runs on the controller.
->>>>> Add "fsl,imx-sm" compatible string as fallback for "fsl,imx95" to
->>>>> indicate it is compatible with i.MX System Manager.
->>>>
->>>> I see little value in generic compatible like that. All these are
->>>> aarch64 so why not adding that compatible?
->>>>
->>>> How this generic compatible would be used?
->>>>
->>>> And by what exactly?
->>>
->>> There will be more i.MX9 chips with System Manager. I would
->>> not expand the list here each time to support a new SoC.
->>>
->>> https://elixir.bootlin.com/linux/v6.13-rc3/source/drivers/pinctrl/pinctrl-scmi.c#L508
->>> https://elixir.bootlin.com/linux/v6.13-rc3/source/drivers/pinctrl/freescale/pinctrl-imx-scmi.c#L290
->>
->> Problem is that compatible is way too generic to be used by Linux drivers.
+On 08/01/2025 13:19, Laurentiu Mihalcea wrote:
 > 
-> Is "fsl,imx9-sm" feasible here?
+> 
+> 
+> On 12/17/2024 9:07 AM, Krzysztof Kozlowski wrote:
+>> On Mon, Dec 16, 2024 at 09:50:37AM -0500, Laurentiu Mihalcea wrote:
+>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>>
+>>> Introduce the 'widgets' property, allowing the creation of widgets from
+>>> 4 template widgets: Microphone, Line, Headphone, and Speaker. Also
+>>> introduce the 'hp-det-gpios' property, which allows using headphone
+>>> detection using the specified GPIO.
+>>>
+>>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>> ---
+>>>  .../devicetree/bindings/sound/audio-graph-card2.yaml          | 4 ++++
+>> I have impression you are duplicating audio graph properties instead of
+>> referencing proper schema, but considering that the bindings
+>> audio-graph-card and audio-graph-card2 differ only by number "2" without
+>> any description, not sure what is correct here.
+> 
+> Please correct me if I'm wrong here.
+> 
+> As things stand now and based on Kuninori Morimoto's comment on this
+> (https://lore.kernel.org/lkml/87cyhw8lg5.wl-kuninori.morimoto.gx@renesas.com/) I'd say we can't
+> (or, rather, shouldn't) directly reference audio-graph.yaml here.
 
-It is better, but I am still not happy with the generic meaning of it.
-You claim now that certain SoCs will be compatible with imx9-sm, so with
-some sort of "sm". What is the meaning of sm in terms of ABI and
-interfaces? What do you exactly define here? And what happens if some
-other feature will require one more compatible and then one more?
+Thanks
 
-You will have:
-compatible = "fsl,imx95-19x19-evk", "fsl,imx95", "fsl,imx9-sm",
-"fsl,imx9-foo", "fsl,imx9-bar", "fsl,imx9-whatnot";
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-You add compatible for some unspecified interface called "System
-Manager" just to solve Linux driver issue.
+> 
+> Now, I wonder if the "proper" solution here would be to take the common properties
+> of audio-graph.yaml and audio-graph-card2.yaml and create a new binding that can be
+> referenced by both aforementioned bindings? Would that make things even more confusing
+> (we'd probably end up with audio-graph.yaml, audio-graph-card.yaml, audio-graph-card2.yaml,
+> and audio-graph-common.yaml)? Should this be addressed as part of this series?
+
+
+Really not sure. Common bindings are often good choice but I already
+struggle with grasping the differences between both audio-graph-cards,
+so more of it might not help.
 
 Best regards,
 Krzysztof
