@@ -1,108 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14C624024B;
-	Mon, 13 Jan 2025 15:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99581FBBEB
+	for <imx@lists.linux.dev>; Mon, 13 Jan 2025 15:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736781968; cv=none; b=howJyNXjP7vHi+ZI00yAbjvkEmoU6Y12F04TOanvCS4OK5GNpPSmP1LRMzjNxfgwiIoa9LQjUXyKwdUX5pcauOMVWAyJISDG1xkL/2ujjgakQWGj/Zzv8gesZ0BnNjQBevhxiZy1Zg9t81/t//kEXjjx1WCMrjwIJYQ519vpwG4=
+	t=1736782685; cv=none; b=BTnlnXHLpIajpHgtZMcKTBA9lvyBQt42f/qSg0+FLntOGLV+pgSr+v9k3tQhMuMHNOEF3WO0N1nmINqELb7F0O+8FBTLrBjL9sZ58eCLpk2280E9TplNJP4EyQ8spnuiMqchfyx9wA4Dm8eSe0Wl7pqgpSo4ML2OkEI2IzblskQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736781968; c=relaxed/simple;
-	bh=PDn7b4rZVG80Mpecsub3/9L/gDd/HzzWKwGdflNiHpo=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=D5LBRfOVRfv8XcDz3jgfTL1AO0DKGnxZGiG9xMJFUJ6t2Dey49lA4KNBeZN6rO/uo4Po6IpZr6LBn1DakpNHKxDQSKQ6fsu4PQv3UPihJF2ZVaWXhunOF9blaNDYRdQC1zLtEoYV1EtjexftJLNjflp6iW/9m8GyjFCTjXotHmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6sd3x9E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736782685; c=relaxed/simple;
+	bh=n2GWWrpePzNulQeQ8lZLK2FaByIUzza7i9a/Wuwpvpk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MrQPnAC76AXOL0Gh+XxJ1l/FSY9kdwF7mxT4MuyGLDrTWmH0dp3nKvAKSCq6QrpRpzmz1ByJgeLd3jZboj6bT/vvEH+4U/upvQoKPQJwzdq7OB0EFEYtG4I22n5pnr96SBZ1V3U+JLHCWjbRDaMwW+nn3AoANL/3zo9FohCs2x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L2lEq1Nk; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6sd3x9E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505FDC4CEE8;
-	Mon, 13 Jan 2025 15:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736781967;
-	bh=PDn7b4rZVG80Mpecsub3/9L/gDd/HzzWKwGdflNiHpo=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=Y6sd3x9EfE9NDXbhAt1sPTUbu89mP9g32MfuibLmihWDWTwIFgLAMcqC6Mf0CptFr
-	 AGmbffW31KHAo84ukeBA0bWtSpzOCmcxl8pYc01OL/Xpmu8Z0aTeipFyXpeLHZIE/3
-	 58pF0MwEvqwfAfE5zeKhC2dhtCRVMTsFeo+1EomeLXI+XrOOJKkyMC5wQ3a4NXk1Pz
-	 B0dmrvD20MLFxZl5yVRdA4nQVj942FzdrDQIhYCsMSSlPKYZ8Zr/rkGjR2XjkASluM
-	 Lh6cI1xcfNRmJ4oSBgoHe8Iwg+K/PRyu94VAxvqhvq8ymeuI+qfCT5tv7EwiHHz2bU
-	 r06z1Kgls05cg==
-Date: Mon, 13 Jan 2025 09:26:06 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L2lEq1Nk"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e5447fae695so7601262276.2
+        for <imx@lists.linux.dev>; Mon, 13 Jan 2025 07:38:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736782683; x=1737387483; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VH4Ljw0lA5sqSWylbksASfV+tDTzuOkHLk1j+OVHBqk=;
+        b=L2lEq1NkbajIb0s2uk+DUpsY8mfr5DHDMRKYv/vbQJPE4mttJR8K+Qm2h3qSwqcJ4v
+         0rMpNjluPwdphYuGISV4vPP/6oAaOq3rBhxkpczBwZeqnhvVHntxp/rmfg8vR/1hdbrC
+         jIhq+a3qVGyDR0OWQcOaMQBa5fiobwx+auaATDpy3UUiEqlIzVg1C6mHczg4Eo+StWVC
+         9mec8OKpneAnMkyD37ivPorsEmmNOoMs4VfuD1VefXOCdrN6JNiv/vsAY0jLI1UD1HxW
+         IQ4N1EmsmATvmC5n3EjNzjzxA8WSaecJTrn+IcYy7gLFt9POiottRZYv10qZ3XmXgEWg
+         adww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736782683; x=1737387483;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VH4Ljw0lA5sqSWylbksASfV+tDTzuOkHLk1j+OVHBqk=;
+        b=cT5Nz76pSxbXQYqRfA0msnGUI2gKzq09ck7e2EjTRqooQ6RiFC+R6kQI2ma2IiF5F7
+         9i9/ymNiU7D5HRteXfZNjiT2nVD/p6HHFcdmllNEPfqbI9Ylg1GjTMlW6w9xy9jFE266
+         DUnG0/ediCaXLbw5BMNEqkVzl2xtmnYksDHaJef0MJuH613P27UWroE+x3GEodugT7li
+         ptY26ecwuMXctRVvhQdiELwM5P7M9N3JjqPArS4T/RB6iGYgJuGzoA6NYiViyCrb+SRP
+         u2Gh4pQ3x4zBTuXZTzjlbLwTuk9Rs9Qn+WJoFvB4WURBcC0LFWzW8U4tMepx4I+nLhrK
+         51gA==
+X-Forwarded-Encrypted: i=1; AJvYcCVf6v4cHXVffaHIWflw/ZcdFXjr7fJnfvnJYpSjmN0w28r9GCZveoQOEpeWLbL3Sj5jD/U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNnQmS4KfAqspIJCIUg61+FPQLA92tlViEnvONJgmCJNXWkVKH
+	BEiHaEd4TJu7qkQF8MUk/EhFAR19BfbS7xnopHQf95pTdkrW0eRFM2caP9Ew527JVRAIU5Dls2C
+	5LpQnKMcCHJENAlTfNU4GIGm2CGzQNLFwtnw7MA==
+X-Gm-Gg: ASbGncvTlOZN89ZiX18NyB+WIEaO5DsXHqzIjSDeHdedQ2AwTEu1LvFP2RC69Odwn1k
+	6Y446AHgjebRpBsrc4KVtmqjcTKlSYXxSszklXlo=
+X-Google-Smtp-Source: AGHT+IFAIkS2Z8ev5ESTCzuaARgkLxMkSS7mawcnRpdDng9xAPRFBPJa8hXfaPAKe2aLptbdzrTd2lhyEVWCfYs6MeQ=
+X-Received: by 2002:a05:690c:968b:b0:6ea:8d6f:b1bf with SMTP id
+ 00721157ae682-6f530eea554mr168333797b3.0.1736782682941; Mon, 13 Jan 2025
+ 07:38:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Fabio Estevam <festevam@denx.de>, conor+dt@kernel.org, 
- kernel@pengutronix.de, devicetree@vger.kernel.org, shawnguo@kernel.org, 
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev
-To: Fabio Estevam <festevam@gmail.com>
-In-Reply-To: <20250112152745.1079880-1-festevam@gmail.com>
-References: <20250112152745.1079880-1-festevam@gmail.com>
-Message-Id: <173678159965.2153204.13999632845078780464.robh@kernel.org>
-Subject: Re: [PATCH v2 1/2] ARM: dts: imx5: Fix the CCM interrupts
- description
+References: <20250109155255.3438450-1-robh@kernel.org>
+In-Reply-To: <20250109155255.3438450-1-robh@kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 13 Jan 2025 16:37:27 +0100
+X-Gm-Features: AbW1kvYfxaP_KIAtRJ8ddiypXayufpQw7AFPlstt8F8TqoOMhlOX5qWAO8Gx8_g
+Message-ID: <CAPDyKFrPB-Sw2Un1tx_POXc_wRD-A9B_6Syhgu7NNeK9qEomsA@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: Use of_property_present() for non-boolean properties
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dragan Simic <dsimic@manjaro.org>, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, s32@nxp.com, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Thu, 9 Jan 2025 at 16:53, Rob Herring (Arm) <robh@kernel.org> wrote:
+>
+> The use of of_property_read_bool() for non-boolean properties is
+> deprecated in favor of of_property_present() when testing for property
+> presence.
+>
+> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+> Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
 
 
-On Sun, 12 Jan 2025 12:27:44 -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> On the i.MX5 chips the peripheral interrupts are represented directly only
-> by their interrupt numbers.
-> 
-> The CCM nodes are not following this format and cause the following
-> dt-schema warnings:
-> 
-> ccm@73fd4000: interrupts: [[0], [71], [4], [0], [72], [4]] is too long
-> 
-> Fix it by passing only the two interrupt numbers.
-> 
-> Run-time tested in on an imx53-qsb board.
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
 > ---
-> Changes since v1:
-> - Use interrupts = <71>, <72>;
-> 
->  arch/arm/boot/dts/nxp/imx/imx50.dtsi | 2 +-
->  arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
->  arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/nxp/' for 20250112152745.1079880-1-festevam@gmail.com:
-
-arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dtb: pinctrl@80018000: compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
-arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: sram@20000000: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-arch/arm/boot/dts/nxp/imx/imx6q-gw52xx.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
-arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
-arch/arm/boot/dts/nxp/imx/imx6dl-tx6u-8033.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
-arch/arm/boot/dts/nxp/imx/imx6dl-colibri-iris-v2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
-arch/arm/boot/dts/nxp/imx/imx6qp-tx6qp-8037-mb7.dtb: gpio-keys: 'power' does not match any of the regexes: '^(button|event|key|switch|(button|event|key|switch)-[a-z0-9-]+|[a-z0-9-]+-(button|event|key|switch))$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/input/gpio-keys.yaml#
-
-
-
-
-
+> v2:
+>  - Drop initialization of dat3_card_detect
+>  - Rebase on next-20250109
+> ---
+>  drivers/mmc/host/mxcmmc.c          | 8 ++++----
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 2 +-
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
+> index e7a286c3216f..0a9affd12532 100644
+> --- a/drivers/mmc/host/mxcmmc.c
+> +++ b/drivers/mmc/host/mxcmmc.c
+> @@ -995,7 +995,7 @@ static int mxcmci_probe(struct platform_device *pdev)
+>         struct mxcmci_host *host;
+>         struct resource *res;
+>         int ret = 0, irq;
+> -       bool dat3_card_detect = false;
+> +       bool dat3_card_detect;
+>         dma_cap_mask_t mask;
+>         struct imxmmc_platform_data *pdata = pdev->dev.platform_data;
+>
+> @@ -1048,9 +1048,9 @@ static int mxcmci_probe(struct platform_device *pdev)
+>
+>         if (pdata)
+>                 dat3_card_detect = pdata->dat3_card_detect;
+> -       else if (mmc_card_is_removable(mmc)
+> -                       && !of_property_read_bool(pdev->dev.of_node, "cd-gpios"))
+> -               dat3_card_detect = true;
+> +       else
+> +               dat3_card_detect = mmc_card_is_removable(mmc) &&
+> +                                  !of_property_present(pdev->dev.of_node, "cd-gpios");
+>
+>         ret = mmc_regulator_get_supply(mmc);
+>         if (ret)
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index e23177ea9d91..ff78a7c6a04c 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1648,7 +1648,7 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+>          * Retrieving and requesting the actual WP GPIO will happen
+>          * in the call to mmc_of_parse().
+>          */
+> -       if (of_property_read_bool(np, "wp-gpios"))
+> +       if (of_property_present(np, "wp-gpios"))
+>                 boarddata->wp_type = ESDHC_WP_GPIO;
+>
+>         of_property_read_u32(np, "fsl,tuning-step", &boarddata->tuning_step);
+> --
+> 2.45.2
+>
