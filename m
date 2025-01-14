@@ -1,136 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6F71F9A8E;
-	Mon, 13 Jan 2025 22:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13C517FE;
+	Tue, 14 Jan 2025 00:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736809147; cv=none; b=jKAPX04P/G1T8k60IBF5HZCS36OUYGYeS7/Z32OWoz42rPmKMDZKl5v+aa2q3w2ZoWxSiIiPtX6P0lrQ1IAFJ2agC/Busju9ATWuLCZVw1N0gFELndF9AQuXrwNHJRH39Ybk15o7vIcqzOjsCkRLqrmTCbtSE7juYyyf5QzZkCg=
+	t=1736813091; cv=none; b=h8sVX0Tmh91gZP89TB6zydy9u3gmQENnOIGu+/aDl/IT2NKrrknT81sM/jVnd6ScYDrXbFW8ueJE8icng3YgkuK9/nM6gsk9oFTDDWf2XnmS435bWeDxw2Y03APJL67w31x3MMA+U9NZ/3BJKXRneyL2bpWss94HqsRkUQVJ9ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736809147; c=relaxed/simple;
-	bh=n1oeyvHgtjf48GNwmyAUR0RM/+tJ12mmaPeKvDNvC7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QuPxB3DwMj9z/HcaCi6dvRmNbPceBD1J/YblREgV2G5E45I/eGzb+OxLw/HyVSmLWr96H9fjFcCaU+wbVW0OCbfYmOU3911gWo2wgKVzE/2BcUmChHO1WC67rM4U1igY+OQ6YWu4nAo3wqKjIdbm5XteS/b+ql2bX6xBabStZkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxAXjVFF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736813091; c=relaxed/simple;
+	bh=NrgMw8h+fitbqMNvG385KgsvxtlRiPe0cIHOPL1U6Vg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=SE4beW0QPups5E1qlNVMyIaE1alT+aRX5emKasxnYbqFyC+YKXaIkGTbRQo1RONF/MoNMOVSl2pEoAYbPn4TgvdAkTosF3GT42bpOKnyj926QLulX1lu3FXoZLvEGy/whHSckkPhKiGKjeEtrEijCBvlJzU9w762JrEhLN20cYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r1CZwdgd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxAXjVFF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9E6C4CED6;
-	Mon, 13 Jan 2025 22:59:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r1CZwdgd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16401C4CED6;
+	Tue, 14 Jan 2025 00:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736809146;
-	bh=n1oeyvHgtjf48GNwmyAUR0RM/+tJ12mmaPeKvDNvC7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BxAXjVFFtgapVMyWqFQYJtaM4MjM0tbw6wKmn+XgfwlbqQ6jPsB+X/SMPGVa2ko9j
-	 CklKrIu3MjvLQNtceyTQpyiRkJv73BirjTlPmeuBc0dUXqe5EyoLn8IuztY8Irka68
-	 EiLU31oGONV2tbJERUANVagQ1i/owH2gYY7OJPDFG8PsYBl+BKzxrg2IaA7lYPIcJF
-	 e9ITlaxl8E8pdUYxv2Y7knrMKNAllvHOHaYgV+9MqvbSACPYlVNvrmrt1hStGZfFhH
-	 7bajJw04rwyhQ6ewVi5wU9Dwo0XR54KcyfNyRzbnkhLew3N25h1oN/0ENEd61VGpMt
-	 F0Hi06lcQsHoA==
-Date: Mon, 13 Jan 2025 16:59:05 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, robin.murphy@arm.com,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
-	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
-	lgirdwood@gmail.com, maz@kernel.org, p.zabel@pengutronix.de,
-	will@kernel.org
-Subject: Re: [PATCH v8 2/2] PCI: imx6: Add IOMMU and ITS MSI support for
- i.MX95
-Message-ID: <20250113225905.GA3325507-robh@kernel.org>
-References: <20241210-imx95_lut-v8-0-2e730b2e5fde@nxp.com>
- <20241210-imx95_lut-v8-2-2e730b2e5fde@nxp.com>
- <Z1sTUaoA5yk9RcIc@lpieralisi>
- <Z1sdbH7N1Ly9eXc0@lizhi-Precision-Tower-5810>
- <Z1v/LCHsGOgnasuf@lpieralisi>
- <Z1xs6GkcdTg2c73F@lizhi-Precision-Tower-5810>
- <Z2FDp1zQ7JzxQKJT@lpieralisi>
- <Z2GdvpzT6MOygG4W@lizhi-Precision-Tower-5810>
- <Z256NxZF/+jO2bkR@lpieralisi>
- <Z31eaxD1h3Om3bHS@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1736813091;
+	bh=NrgMw8h+fitbqMNvG385KgsvxtlRiPe0cIHOPL1U6Vg=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=r1CZwdgdgX6W24ySZ8xoXJ8FoA5BU2ZIs96Owad1lg66t2hErixPRqi7xRpLfRYxO
+	 gIIDE4jFe2Y4VCxtIxUGYQkqnrAscy0Qm2AQPXxTD21BMEn42/lV6wvtBNAV3AEvNS
+	 4hEd0zFUO5CZdG59s//mzyXiiS0+uyB8z0LpreNyb6KCXYQWTx0pruRUJZuBa424Sa
+	 rZujphiQsDzskqZgYyE5hM8gdJVddaBo8u3KgiRnZFcfO4PbRA6nldsVeqwd3YaxSV
+	 fNXd8vhlPcZ+I0mvN+gaetlnJrkAUeYc8Wd6TK+6dk8lGTda6C1HUAGSa2Fgo+2mpi
+	 FHUAF1ejMU8rQ==
+Date: Mon, 13 Jan 2025 18:04:50 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z31eaxD1h3Om3bHS@lizhi-Precision-Tower-5810>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, linux-arm-kernel@lists.infradead.org, 
+ Shawn Guo <shawnguo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+To: Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com>
+References: <20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com>
+Message-Id: <173681284597.3684963.16712339968479881126.robh@kernel.org>
+Subject: Re: [PATCH 0/4] arm64: dts: add imx95_15x15_evk boards support
 
-On Tue, Jan 07, 2025 at 12:03:39PM -0500, Frank Li wrote:
-> On Fri, Dec 27, 2024 at 10:58:15AM +0100, Lorenzo Pieralisi wrote:
-> > On Tue, Dec 17, 2024 at 10:50:22AM -0500, Frank Li wrote:
-> >
-> > [...]
-> >
-> > > > > > Right. Question: what happens if DT shows that there are SMMU and/or
-> > > > > > ITS bindings/mappings but the SMMU driver and ITS driver are either not
-> > > > > > enabled or have not probed ?
-> > > > >
-> > > > > It is little bit complex.
-> > > > > iommu:
-> > > > > Case 1:
-> > > > > 	iommu{
-> > > > > 		status = "disabled"
-> > > > > 	};
-> > > > >
-> > > > > 	PCI driver normal probed. if RID is in range of iommu-map, not
-> > > > > any functional impact and harmless.
-> > > > > 	If RID is out of range of iommu-map, "false alarm" will return.
-> > > > > enable PCI EP device failure, but actually it can work without IOMMU.
-> > > >
-> > > > What does "false alarm" mean in practice ? PCI device enable fails
-> > > > but actually it should not ?
-> > >
-> > > Yes, you are right. It should work without iommu. but return failure for
-> > > this case.
-> >
-> > Rob, Robin, are you OK with this patch DT bindings usage (and the
-> > related dependencies described in Frank's reply) ?
-> >
-> > I am referring to "iommu-map" and "msi-map" usage, everything else
-> > is platform specific code.
-> >
-> > It looks like things can break in multiple ways but I don't want
-> > to hold up this series forever.
-> 
-> Rob and Robin:
-> 
-> 	Let me simple summary situation. PCIe controler driver need config
-> "stream id" for each PCI endpoint devices for IOMMU and MSI.
-> 
-> 	So add callback for host bridge enable/disable an endpoint devices.
-> In callback function, call of_map_id("iommu-map" | "msi-map") to get
-> devices's "stream id" from pci's rid.  Then config hardware.
-> 
-> 	The limiation is, if smmu/its controller's "status" is disabled
-> and rid is out of the range of "iommu-map" and "msi-map". Enable device
-> will be fail although it should be success because "stream id" will not be
-> used at all at this case. The out of range of "iommu-map" and "msi-map" is
-> rare.
-> 
-> 	dwc common pci driver simple check "msi-map", which should be
-> another limition and not related this patch.
-> 
-> 	In many dwc platform (like qcom) need config "stream id" also. But
-> that direct parse "iommu-map" and "msi-map" by their drivers, which is not
-> prefered by Rob now when I try to upstream at v3
-> https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
-> 
-> 	Rob: can you help check if this is correct direction?
 
-My objection was only parsing the property yourself rather than using 
-existing functions. So it looks fine to me now. Though you might 
-consider if there is something to be shared with QCom driver.
+On Mon, 13 Jan 2025 13:01:58 -0500, Frank Li wrote:
+> Add related binding doc.
+> 
+> Add imx95_15x15_evk boards, which have big difference with imx95_19x19_evk
+> boards.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Frank Li (4):
+>       dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
+>       arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
+>       arm64: dts: imx95: Add i3c1 and i3c2
+>       arm64: dts: imx95: Add imx95-15x15-evk support
+> 
+>  Documentation/devicetree/bindings/arm/fsl.yaml    |    1 +
+>  arch/arm64/boot/dts/freescale/Makefile            |    1 +
+>  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1064 +++++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx95.dtsi          |   27 +
+>  4 files changed, 1093 insertions(+)
+> ---
+> base-commit: 1300d5fe48f1e09a9a7d2dfe3b2e74be8ccaa322
+> change-id: 20250110-imx95_15x15-6a64db8c0187
+> 
+> Best regards,
+> ---
+> Frank Li <Frank.Li@nxp.com>
+> 
+> 
+> 
 
-Rob
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: i3c@42520000: Unevaluated properties are not allowed ('inctrl-names' was unexpected)
+	from schema $id: http://devicetree.org/schemas/i3c/silvaco,i3c-master.yaml#
+
+
+
+
+
