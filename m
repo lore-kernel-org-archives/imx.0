@@ -1,83 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564311DFD8B;
-	Tue, 14 Jan 2025 18:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311BE20CCCF;
+	Tue, 14 Jan 2025 18:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736878379; cv=none; b=XP/WxIREWoa9KaAQ7dkj2rzrhZbXQMj2qudDuRq67iToE/k9vyt/4qsSp1Y/DM9EDAFZUkzN37WWMHps4ytP2LuCufVNOYUe2qXNcOE3KYafx96mDufRTdGGRmmVWhnr+xayDFeUWlp0kW5oZzIRB98th33s3tuaDZwq3/AhZu0=
+	t=1736878523; cv=none; b=p53avlIkjCxH7oRQPHP7fTjgbyCU4iEOpmNAt3EJyOsGKRYKkM98K2857uChKhtmc+odPhzKXh7j093uALVk8vXeY0Db/M8+ZJC2+7TpPZLH9MbbSVoeZ833wna7M/gpnA0QoeuAvAobSAD2w03XRefkgQudX4Sf2jg1x6k4Mrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736878379; c=relaxed/simple;
-	bh=FZ0JYVdCbkB3X+LIyznCf/o5QfngqCx0aNGkx8ffvYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HtKxeopRo9mb78ih+AdAOZyEq/e8N0fK+Tj4Nl7MN77KQDwtVOacCvSCNKUrR/SFcldOxuCThmu5g70z/2Icn4nZMyETVVgpWBj61yUttP9Ctgqc0OZsrYDW1hwKXRDnMmiDoD1fO48Ry3cv7SLz9ZW2CvJpfA7PVtWigZkWpSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFfzljbs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736878523; c=relaxed/simple;
+	bh=CA5obihZgaBHMiIG6XVpkvHJ8pHqg/3yvFkGjSTsiEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=dihXCEgHaUhyj1f+cknjuxj2RtML62NUiE4a04T1hhffAGpBXPKca+jJpkenCP0ChNstLYCMwLLGdD/861Xdyvx+CCL8JKhCOEgznmhJ03uQD56GI6p8LLfYi0vrIcXq0Bs/00tMUaFGtbqnXCVN4yWt1ZlonRa8dfygkzEvoXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CM2IAdYJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFfzljbs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C277C4CEDD;
-	Tue, 14 Jan 2025 18:12:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CM2IAdYJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6E5C4CEDD;
+	Tue, 14 Jan 2025 18:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736878378;
-	bh=FZ0JYVdCbkB3X+LIyznCf/o5QfngqCx0aNGkx8ffvYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aFfzljbsUi3dbQQTqnFefJril2aJRmA/BMdF/t/kCM0K8Xr3LRoGob9nCaPm3DqCQ
-	 SttcfzmfGC1h9guyFn7hjbSrvcJxulHLvMiugqkDz9bKfVxSR8u6R8xE4CDV12b5FO
-	 T0PghZZegzCskJUPKRKtBoi7s+KL2JylRxh0WbPfNqKETLqSu61aungDGvwP2zi40G
-	 fnBK7keiA0HOM2eVZ2v4gKdkcOO99YHNyvtvX+gvMAmWKh2WVG2c/XLc1Ou6IUay+n
-	 69gGBvVs1RFtMrBfGyXSqvU5/z1Dho4RNgE5Wmud/eYMhZd14ErbRNBhMLXOBUNilH
-	 CD7zRVRdYX90A==
-Date: Tue, 14 Jan 2025 18:12:54 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/6] dt-bindings: arm: fsl: add more compatibles for Skov
- i.MX8MP variants
-Message-ID: <20250114-porous-scarf-8f57cf59d2bc@spud>
-References: <20250113-skov-imx8mp-new-boards-v1-0-75288def1271@pengutronix.de>
- <20250113-skov-imx8mp-new-boards-v1-1-75288def1271@pengutronix.de>
+	s=k20201202; t=1736878522;
+	bh=CA5obihZgaBHMiIG6XVpkvHJ8pHqg/3yvFkGjSTsiEI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CM2IAdYJmNYJMwnKyLz3UkT/N90jBHdifjAlmm5V9kGh3g+MZ+SSBeuGHbIW/xtWP
+	 J8ELdkFYRAx4DpulW2v4vftSVPz7/PqUFFG0Pr2U2mb+J+yn9nOtUCIXX/uhrDXj/1
+	 mBRCBueO/UFd6pIurWvp/knAxDhd/hTfS6I9so5yoAeHoUioW4cKH4XuRWkQEx1xyA
+	 ILXjK1uPQ4NErY9J9jy2sHCn18ULOviqLcaU+tECDUGcpXWY3HzdDqcM6N7n2UV7rp
+	 165drfZVOCjFAjw8Sw6Dg7xhA6l45d42zO92/5v7Aybzq7Ht8ZaIdCs9+ybbKgvuRn
+	 kzSQfzAsAF1dw==
+Date: Tue, 14 Jan 2025 12:15:18 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: dlemoal@kernel.org, jingoohan1@gmail.com, bhelgaas@google.com,
+	lpieralisi@kernel.org, kw@linux.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org, frank.li@nxp.com,
+	quic_krichai@quicinc.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] PCI: dwc: Always stop link in the
+ dw_pcie_suspend_noirq
+Message-ID: <20250114181518.GA473181@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="67+ZtTgybKyBgflV"
-Content-Disposition: inline
-In-Reply-To: <20250113-skov-imx8mp-new-boards-v1-1-75288def1271@pengutronix.de>
-
-
---67+ZtTgybKyBgflV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241210081557.163555-2-hongxing.zhu@nxp.com>
 
-On Mon, Jan 13, 2025 at 11:29:05PM +0100, Ahmad Fatoum wrote:
-> The Skov i.MX8MP boards are a family of climate controllers.
->=20
-> In preparation for adding device trees for three more variants,
-> describe their DT compatible in the bindings.
->=20
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Tue, Dec 10, 2024 at 04:15:56PM +0800, Richard Zhu wrote:
+> On i.MX8QM, PCIe link can't be re-established again in
+> dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared properly in
+> dw_pcie_suspend_noirq().
+>
+> Add dw_pcie_stop_link() into dw_pcie_suspend_noirq() to fix this issue and
+> keep symmetric in suspend/resume function since there is
+> dw_pcie_start_link() in dw_pcie_resume_noirq().
+> 
+> Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index f882b11fd7b94..f56cb7b9e6f99 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -1001,6 +1001,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  		return ret;
+>  	}
+>  
+> +	dw_pcie_stop_link(pci);
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+We should try to avoid changes to the generic DWC path just to
+accommodate one controller.  Since other DWC-based controllers
+apparently don't need dw_pcie_stop_link() here, this seems like it
+might be the wrong place for this change.
 
---67+ZtTgybKyBgflV
-Content-Type: application/pgp-signature; name="signature.asc"
+If doing dw_pcie_stop_link() here is really helpful for all DWC
+controllers, this would be fine, but the commit log should then explain
+why it helps everybody, not why one particular controller benefits.
 
------BEGIN PGP SIGNATURE-----
+If it's only needed for i.MX8QM, we do already have a
+controller-specific hook (.deinit()) just below; maybe that could be
+used?
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ4apJgAKCRB4tDGHoIJi
-0hESAP4kSZNl8bX508wWQ8RqKvF66vBP8r42Lh4HYi1CSHskOAEAg7bHJv0LRoXz
-p+sQIz+Lq0HDIIwfYeWQosSbrGSP1wo=
-=F2y6
------END PGP SIGNATURE-----
-
---67+ZtTgybKyBgflV--
+>  	if (pci->pp.ops->deinit)
+>  		pci->pp.ops->deinit(&pci->pp);
+>  
+> -- 
+> 2.37.1
+> 
