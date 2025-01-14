@@ -1,170 +1,190 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013053.outbound.protection.outlook.com [40.107.162.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BBE1ADC60
-	for <imx@lists.linux.dev>; Tue, 14 Jan 2025 10:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736850465; cv=fail; b=mWdw49bL6e915jn3O2pqtGyawGMJPGoFh7jFTbUguTTTmuO9Es3W+p86GBFR54ilQxSmbNEpBIISGNJ2OM9u4mVlFNuF8lFEms0xpW+B7JwHyxQMCnEX2La+qTq3S7AhLMwZ4O8nf56dpPLb6qOnkl10X0b2AWQcKF4FdqcLWD0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736850465; c=relaxed/simple;
-	bh=jhsKl5p08Vt9lk13TIk+sOyxLPv5TbZUR8cAGPA4RUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=E/gI+Wi2usahR+/KxQFRBYwicGqB0uOruKuEZFzcHSsDdxVfBodoT30WxrqX3SORsf7dbgiXs5FNLeFj+Ko1Y/S7mWDUMOKw858MNs5JyO+oWUhCxfCcy0xnu+yHVPH3fNmXHnB8w1gEEaYIxQyKXalRMrSLV0d9xWZ/Xd8r2RY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fRqbeDiL; arc=fail smtp.client-ip=40.107.162.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433ED229604
+	for <imx@lists.linux.dev>; Tue, 14 Jan 2025 10:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736852146; cv=none; b=jTfq33oI8THQS5pfpEqINlP1GC+dDXuThPo4FPVbKTvWinJBhvScrEl1jWrn4U8B4n7nRw551g3xUchUrkcoc50GPW1Y1jyQ1StcLVawLydJ1CYMI+X3HSAofA7ZtNIEzNz6NJl2er/Nir8K0ltnM3o20Ek3TJOq316pFLliHXc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736852146; c=relaxed/simple;
+	bh=PhAfGfQbBpz/wfvfFqXb65XCKmqiTpALKSOTqIQlbX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HcZW7NIBbFBeTiJnLn+X+D+RlyN4fKlyLUdTFDb7b6+Ir1gLMAAfXa3kPMJ3Nja8yB/D3lJk1SnX+wMHtCK/2Rd6RlBFNl25lueOggK0sxL1tTldYuMNUVB4vN8h0R1qheufocLOsfM/o5/HfastF0CRQR2ne1rRM1Xmh39Us9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DbCNuiNW; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fRqbeDiL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=em7vilHWJlNV6iYN6McB/o0XEKKwut5nNd7ZgCr9+Cbnhbl+4OmYWKCmYrJGIms9M/Zxws64GzeAKGR9TSkNhMLzAKfZQEHwtS5b/E3+umRXxcZCU17VjgrSbyXBNDIYG20mYAGlBT/2hkCNOUJEJQ4VLqNC1zAOzIM34NkaKTfSC104KSlpJG7Rsom2Y3ixAhiWjyklZXY+WHHarjG/P0Ulgpxe7SIdPGzzHW4x5fA0TMBSXANJcxL/ValUq4q28T+H10EsFNvtl+MuuhoWBEd24qWyzXnL1+LqsbvQQ3LGjYKNTJlqZ9r2qbG8qmmqJKQ+P07rwo+hcf21civVBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CqeEeYQpMhrJuNEY+9Ijt+waCNxeE3JV2CAF0R8VKDk=;
- b=cQGBBbS0+qo1Yvt99TMhYVfTmzvxPVqdU4pbrXIIwmVWHu2XtRXX6v4pGbriLpDLWocB+Tj22MHgBMHSPNK70WKM0tMqBlY7H10+kfxvwGgk+m0OR74xBc4fYvHtmEMyOvh5qCICcDAhOy/wLlnzI9z4DE/bWdyxPyvRvt2hA9Gqq85n3As7b/XngK+kdSX9eHn+Y8JpP7gk/aCpDDwMU7Y/VAZN6YreqnjaS/TPebb5oWPbUEBLdIoZ1KIEnQ1UltTwyaH4WwI/BuCwSXlrQcNWLBYQUttpNgmkTDpXAZUiVfmRn2O2bg77Wa53S5GkWddkEL8lkre0YrpLY05fYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CqeEeYQpMhrJuNEY+9Ijt+waCNxeE3JV2CAF0R8VKDk=;
- b=fRqbeDiLdYjLNAN4qFhlpFisg41pxOnR9DHzlSi3v5Rl8zGyvkcgjG6DOvxtx3JXZ9dw5X6lljUQvucOvjOmZLUsKS2D4YarFu+MoIPLOteXK02pIX+78yNCr1nDaSxCNtYPxGgmLz7KFpKF5bCr0fYvYfBWvs6EJioF4hZu12D/OdmNS4jhMYqvyZMxYp168COBROuFz7y/LpdWqeq1SsyvyOArHZJibc4peK+GBSd3NdcoeG8A8MVW4QkjicyZuBaf5WbtO3E6WEz/rLuORJAb652OnoCjWlh9u2EPe6lLrFGFCr6VxCyi5LZ5yb6SYUt07gnC2R7bJDikausB4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PA2PR04MB10185.eurprd04.prod.outlook.com (2603:10a6:102:401::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.17; Tue, 14 Jan
- 2025 10:27:40 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%7]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 10:27:39 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: heikki.krogerus@linux.intel.com,
-	peter.chen@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DbCNuiNW"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab30614c1d6so53638666b.1
+        for <imx@lists.linux.dev>; Tue, 14 Jan 2025 02:55:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736852143; x=1737456943; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w20vK13nhMzbjHJZSCggje7+hpPlrM9z3S//rlxScS4=;
+        b=DbCNuiNWduwpb3iHiWlj9RaZG9n6OBynqwUYh1xdYh28LDj/BSYSRJetE9iv/+uUuO
+         QuZA3Jj3D7/Iwg1DJJt0PZSFrFqNQy1AUQmN+A39+8rEWYnj4MzY/8PLehp1OB8uHWId
+         +JHSP0vDqV3p0r8+F1taXPYYQq9Fr/8xggqEk8t9YT50ZSQiVv3W1GYxgrl3F1b4OMUu
+         5NoC7UK70TEk13mbQvME6rPDqg47p5fjUlq41ZeQBTILNy+4zm8j2MXYLlQCzUe6a2NH
+         S+0TnwRft3tXQdgHyH8MP9yocDeI0Fx1qkVPm/QL8IUrP6AfhptpxtOb/jKVY4OWv2WQ
+         f8RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736852143; x=1737456943;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w20vK13nhMzbjHJZSCggje7+hpPlrM9z3S//rlxScS4=;
+        b=EM+tIjuvyV1EDxQycrVcySaj4Eh9Kf0rhAuTJBB5ww7iEyNdbkJsuwQ/+zHxvzqn7K
+         IIovkafNy2xFj/DPgbFFCNQktuAmSJiTYf1ofv48M6z8pzCZ1fnOPaA8K9bu9usN32gj
+         Dbt5yGba8+jdfgFy8FnS0OpS9Hm1JBV2d+eCZO92aF9OSZRrKVcfY4WJxSFduGMLrcvy
+         26SynvZuKUgU+iIAc85+HeJ9c0b6tNDBfyWKajEAdubYAR1+oAef9GzzuX8+ML4BsFAf
+         fWo0/HTTWzWEBeqYWmMNeqsqpByZrdPL40MwG6ODhcrYM6p+Ju/7En8+6Tsq1BNr+8uX
+         YZ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVxspTijssfBRZasf4pOQ4sAl7XTVJEHfEBzzDjFN1E1KGIEow+TVvZkI5Ug2P/o85AEUE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzmgshvqQmyvgsv/s/ph0/Mavk5yGtY7ccSAgMgOBU3rjYA5mu4
+	CJ6eLdn8f100eqEuZySdPFG/5kzNtF4yP//qxZn03lxW6zZTME/qB9FpQVPDYe8=
+X-Gm-Gg: ASbGncusoAHlQmN8iGUC/ALak79calzBh6fRbQwVehBRxie4k2muwLw8zt7E3NPENkt
+	C2OlI9mKDh6De1wtYicgv49KWltuczAF+FDi5aIExpMsGQkXj/E40L70i5JGtEhWC0d28mhAJou
+	xlyezcscp14mfVcedGHlXtsPmQXFn0Or3qn6rhbz9WJD1W20XdzBW4HZaoVGSKYcEHIF1eTgr8q
+	u9goi/82TJt5WHLEL/FqhFltYPpu5twJl2yp+mIgOuqL+4nJLsnwADSWLRCQ9gHXG0Unb0=
+X-Google-Smtp-Source: AGHT+IG+VYqAZEZjAkkDupQTvwlvu2SSq7a2Lp6yZVkX5waA19et6Qvi69lKI25WLQ+J8Hn9t77VNw==
+X-Received: by 2002:a17:906:c14b:b0:aac:619:6411 with SMTP id a640c23a62f3a-ab2abc6fd33mr825598566b.11.1736852142566;
+        Tue, 14 Jan 2025 02:55:42 -0800 (PST)
+Received: from krzk-bin.. ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95624e8sm611169266b.127.2025.01.14.02.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 02:55:42 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Vinod Koul <vkoul@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH] usb: chipidea: udc: initialize bounced_size to avoid coverity warning
-Date: Tue, 14 Jan 2025 18:28:15 +0800
-Message-Id: <20250114102815.2311956-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0122.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::26) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] dmaengine: Use str_enable_disable-like helpers
+Date: Tue, 14 Jan 2025 11:55:37 +0100
+Message-ID: <20250114105538.272963-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PA2PR04MB10185:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0663180a-6d2f-4133-8100-08dd34861252
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|1800799024|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sT693deM5G2S8IS4rTGlmlAYI9/SkXScAhiS6wPcd3Z3lcG9+rLamT4451Lv?=
- =?us-ascii?Q?TygouNIBvXMOCjvv5M0N04iLCsI6Z80XntBOKfcNoNJ4zyooxOQJBjyikz2u?=
- =?us-ascii?Q?+W8p4Pao4716EnQCHOC3ka53CHexQABeToZMI3x1aFuUxQ4MlHBnmlyzZpgZ?=
- =?us-ascii?Q?h0DOL56Rq3mme4B5p2rPpEUZ5fm04bkZq6krQy6mjxg1ZduskcHaj/Sc8omO?=
- =?us-ascii?Q?6nPzd1EugYQzHN6qX3OM+ClucUmWQorSo2DecmmenL9A2xctp3D4BWcwvzm5?=
- =?us-ascii?Q?1jPXHvLHipKlUgvtJnjBKF2vUCRl30bYe8TADuEmlN87A2G/s3rzDFVJwwMF?=
- =?us-ascii?Q?aH9Y9efmQylbWXi5/3aX/VWm0p3ionHBFjym1njcyBimDUZ/nryjtNNeFu1Q?=
- =?us-ascii?Q?fNwEQMggygelWGL1zl2kLvvVAT0sB+i6glDl4Kj9Jn35scbFI1SzfBMBboUq?=
- =?us-ascii?Q?tlFFjO67+mPXOsuH13sOBySM8swYmKJjfCj3T5y5BvfWDUmGXPfYhQYGE1EH?=
- =?us-ascii?Q?01R/YvTSafFskewz5gOsNjQRP5s4EaiBKqbKUtKaHI/9/rWld8U2NDLqCBlZ?=
- =?us-ascii?Q?Fq54JDrUR5ZBvp4gYDvtqOvGuz9b9KQEsYrwsAUMG/ZhTD78oOoHdDNdJHQ3?=
- =?us-ascii?Q?jU2dK6VkNIvOYYwyF8hw6/2JDoMxyk6vx1wJLwwwmBCr5m/QxfToF2zEcLqB?=
- =?us-ascii?Q?Z/E/0uHu7aQvewjw2jUUVqQ0oTvfLh+nnilP8U3MZvVbmrW16hwSrZq4f8bf?=
- =?us-ascii?Q?jaztAtWrwBD2ebKGV5gc/1XiPFDDr0bgwqgE24bWx48gg8UuuKzw6VOH+hNW?=
- =?us-ascii?Q?qzPHGmOfz8Gbwj/xuqnS1OrG+Ia9UVy0RFlIs7dH7x2D9+pGG1vAhEsYWV+L?=
- =?us-ascii?Q?RAITngHdud1W3UnwJfhkeL+FnxXrYlSJGXnWqVRJevLjqx826eoAYiGEAWOU?=
- =?us-ascii?Q?ceOqvoJh/dOi4pIEkhemD9rvopMrSeMAQb7L7JZOBmawOB/GVwNMa4sW+bXU?=
- =?us-ascii?Q?ySFUB/W4apGELxJYjRcnIrqEkeBZiACNxnulHiY2cMvzD041F0mOR62pn6Ga?=
- =?us-ascii?Q?97brDTvgnOGz8p3l/5i5YpfYIq401dY7G3SxM/C8x59s/ttgZKez+witDh7f?=
- =?us-ascii?Q?mxerfuqhcjHxxuHvYNurTKJT7pPD2YRChaRQAiV7LbbbXmPDhoKZjnCdfx6B?=
- =?us-ascii?Q?iqSzfp8yYxUJ/VQvqKi3lM9TDN5XZ0OzZ7OhN06lMnGxY40ymABwftpJ+zls?=
- =?us-ascii?Q?AqjJtU7ETpf3d2oy1lEYq14810dEtnMnmYeGIHwUVZQlMMl1OIxo3UqFNkxX?=
- =?us-ascii?Q?2erU4k07ydT/YOMvt0joarEre5oaR1jpJod/BfMkdqZt2OTB6Yd6TU+byTnd?=
- =?us-ascii?Q?Rkd9WuDDSAxXjpf2P63sr3Xx4rrbkqaQJBXaoV/ZgkmwdfzCG1pbun5/7gyk?=
- =?us-ascii?Q?xLrISbX+FH1cTfizg+robuty3ku2hOa4?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6X65GiVFup1xfqXzQMD0vCnb45VHYHjvBcUJkejg86w7MaOAWAYzzX/Xhi2U?=
- =?us-ascii?Q?ulZPaiM+bB6pgQzHRhVYyyBmpT5qm8DAa6DGQjORNJYiNRjrW98gHftUaFcL?=
- =?us-ascii?Q?7NbrpNy7imGyYDAGpPkx1AT4XxRxfqpdYXpRkP6JtN32g1/BNZsFkR+I3u/l?=
- =?us-ascii?Q?HAtQTTtINHlKXPM2KqD8xZfMifUErmgCnydixHpFTv5Jjef/IOQu207qWiN5?=
- =?us-ascii?Q?g6ZRMA34jVMXOiL8HAacsE+HLRIQRmcVUdY1BTCUsiTg7OnrwxEXtvXRfqvy?=
- =?us-ascii?Q?HBhfyMJJngLKlTmCbacDT/vynpgMoDviVwHqVcDk5jMrGxrEpFCn/j3QG8YU?=
- =?us-ascii?Q?3YMwbPwKEb7MWG8U0Ki3A0ttl6PHk4OVdTt+prOCHX9RxAVbxWs+CAh0hPfF?=
- =?us-ascii?Q?jHxwSjhz2SMFWIDkMYdEnPyeGSPZ6uaqAarZGQTX/3m/W8krTFJaX9XemfoO?=
- =?us-ascii?Q?zDJQjuG4mAcMkdlaNzYYdVnrY3AondP6lfrN0PAUyMTJk7vvYrMErVHBLjwy?=
- =?us-ascii?Q?8t1jcd258/ZaqWgXjupMpYefHy5PzFFT05bKSIk0jS1xFt76Capig97Hv+Os?=
- =?us-ascii?Q?7iXkzSlw3mWz1B6vu0c8LVR94RbcELtZlOEKQiEN1qvSb2zg0R/3BM/uRjbw?=
- =?us-ascii?Q?bRScEbRGARjMyOPmU0ZtTT/GWtWTbY1AsOMOJIyX1idwbD1k7/iR1HT34X2P?=
- =?us-ascii?Q?mMsPijFKlBCfDfM+yAz5hoAD3UeTdQQWpzqp/hAGXllOgqS14zJlIXHe/FfK?=
- =?us-ascii?Q?+AT1Z8RsU0d1/vKBP/ZcsVwZWpO/DfEjbbAIm/Ajt1SRy2s6N8G38z/rce+5?=
- =?us-ascii?Q?I+BBa5dIyfCeOhw3c6HdNXLzkOpPUSNJZUWwmuYOYCoBC94bu+XI5vT8CYZ/?=
- =?us-ascii?Q?11B7hlSsAHX1/Z0QHHMWxIYPA+QP9mrSDUCs7W17Jj9wSVU8sj+oilqZZJNV?=
- =?us-ascii?Q?sYM6xPx/F1Tqxpr066ezhyXLy32iS7wwpDCfFqSUMI8OblG+Z7JwdzeDCuQ+?=
- =?us-ascii?Q?mFUD7i0uF0a/FkOId2sbFC3SM1LY2W3mIGM5KeZVHPJdiIbQGN5/lpxQWAnp?=
- =?us-ascii?Q?Y62b1zfLcwuvhu27eaZJqJ75n36nuALlMd9hnhw/wBuj6ON73lK0YlsDyIKe?=
- =?us-ascii?Q?UmZIw8q7sfYT/tPA7OsKEYmeuX2SlDyBnTv/N5ccUZACQz4zZG1JFND+rlyy?=
- =?us-ascii?Q?ng/iMT4+0t6a5mmAHXgJUY0jY3V5DNgQoCE0920RTXbXodRtoIduINkCBwvc?=
- =?us-ascii?Q?XlMER0wLLEFLsnP7Z0F/RHLkKuCzX1+Cmsw2jc0axmFKO0DTLZAlFYXOBhmu?=
- =?us-ascii?Q?7i2fiIHAhIKJYD+VAjc/J16vcl4OsyVt5o9/UORFdtLYsBqfXElkuA5HBlSn?=
- =?us-ascii?Q?/CBvX/Wn53Hwn4QO+6w1nt+RuQRO6XS4cr2AGFsAvPEutecG1+F/DhEni2yE?=
- =?us-ascii?Q?5pD4hPSX8BrtXtut8YimR4n1DxHEEwN9tlWarap/UB/dAP3XWMZJQkCCz4ny?=
- =?us-ascii?Q?niyHPVKcR5cOX6xgWj0buTrS44U3Zui0OWzFiDdD9RWUINRvJBDZdBF9mpJj?=
- =?us-ascii?Q?AdrdNLYq/HxMxCpU81L+3NPrn/ws0VBYpm15MaO4?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0663180a-6d2f-4133-8100-08dd34861252
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 10:27:39.8047
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K5tJ7KsnjvxRrzunuRSNv8QXR/VhVXC26/dqD2MoTfMR8Wzq+MZgMpUdcF9UQEeuX70WgMOr3I2oi7eMGQOWwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10185
+Content-Transfer-Encoding: 8bit
 
-The synopsys covertiy tool complains "Using uninitialized value
-bounced_size." at some condition.
+Replace ternary (condition ? "enable" : "disable") syntax with helpers
+from string_choices.h because:
+1. Simple function call with one argument is easier to read.  Ternary
+   operator has three arguments and with wrapping might lead to quite
+   long code.
+2. Is slightly shorter thus also easier to read.
+3. It brings uniformity in the text - same string.
+4. Allows deduping by the linker, which results in a smaller binary
+   file.
 
-    sg_dma_len(sg) = min(sg_dma_len(sg), bounced_size);
-                                         ^~~~~~~~~~~~
-Although it can't happen, try remove the warning by initializing it.
-
-Fixes: edfcc455c85c ("usb: chipidea: udc: create bounce buffer for problem sglist entries if possible")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/usb/chipidea/udc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/imx-dma.c           | 3 ++-
+ drivers/dma/pxa_dma.c           | 4 ++--
+ drivers/dma/ti/edma.c           | 3 ++-
+ drivers/dma/xilinx/xilinx_dma.c | 3 ++-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 8a9b31fd5c89..8e496b7d940d 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -673,7 +673,7 @@ static int _hardware_enqueue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
- 	struct ci_hdrc *ci = hwep->ci;
- 	int ret = 0;
- 	struct td_node *firstnode, *lastnode;
--	unsigned int bounced_size;
-+	unsigned int bounced_size = 0;
- 	struct scatterlist *sg;
+diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
+index a651e0995ce8..de8d7070904e 100644
+--- a/drivers/dma/imx-dma.c
++++ b/drivers/dma/imx-dma.c
+@@ -17,6 +17,7 @@
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/platform_device.h>
+ #include <linux/clk.h>
+ #include <linux/dmaengine.h>
+@@ -942,7 +943,7 @@ static struct dma_async_tx_descriptor *imxdma_prep_dma_interleaved(
+ 		"   src_sgl=%s dst_sgl=%s numf=%zu frame_size=%zu\n", __func__,
+ 		imxdmac->channel, (unsigned long long)xt->src_start,
+ 		(unsigned long long) xt->dst_start,
+-		xt->src_sgl ? "true" : "false", xt->dst_sgl ? "true" : "false",
++		str_true_false(xt->src_sgl), str_true_false(xt->dst_sgl),
+ 		xt->numf, xt->frame_size);
  
- 	/* don't queue twice */
+ 	if (list_empty(&imxdmac->ld_free) ||
+diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+index e50cf3357e5e..249296389771 100644
+--- a/drivers/dma/pxa_dma.c
++++ b/drivers/dma/pxa_dma.c
+@@ -10,6 +10,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/dmaengine.h>
+ #include <linux/platform_device.h>
+ #include <linux/device.h>
+@@ -277,8 +278,7 @@ static int chan_state_show(struct seq_file *s, void *p)
+ 	seq_printf(s, "\tPriority : %s\n",
+ 			  str_prio[(phy->idx & 0xf) / 4]);
+ 	seq_printf(s, "\tUnaligned transfer bit: %s\n",
+-			  _phy_readl_relaxed(phy, DALGN) & BIT(phy->idx) ?
+-			  "yes" : "no");
++			  str_yes_no(_phy_readl_relaxed(phy, DALGN) & BIT(phy->idx)));
+ 	seq_printf(s, "\tDCSR  = %08x (%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s)\n",
+ 		   dcsr, PXA_DCSR_STR(RUN), PXA_DCSR_STR(NODESC),
+ 		   PXA_DCSR_STR(STOPIRQEN), PXA_DCSR_STR(EORIRQEN),
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 4ece125b2ae7..b1a54655e6ce 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -16,6 +16,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/string_choices.h>
+ #include <linux/of.h>
+ #include <linux/of_dma.h>
+ #include <linux/of_irq.h>
+@@ -2047,7 +2048,7 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
+ 	dev_dbg(dev, "num_qchannels: %u\n", ecc->num_qchannels);
+ 	dev_dbg(dev, "num_slots: %u\n", ecc->num_slots);
+ 	dev_dbg(dev, "num_tc: %u\n", ecc->num_tc);
+-	dev_dbg(dev, "chmap_exist: %s\n", ecc->chmap_exist ? "yes" : "no");
++	dev_dbg(dev, "chmap_exist: %s\n", str_yes_no(ecc->chmap_exist));
+ 
+ 	/* Nothing need to be done if queue priority is provided */
+ 	if (pdata->queue_priority_mapping)
+diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+index 108a7287f4cd..3ad44afd0e74 100644
+--- a/drivers/dma/xilinx/xilinx_dma.c
++++ b/drivers/dma/xilinx/xilinx_dma.c
+@@ -46,6 +46,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/clk.h>
+ #include <linux/io-64-nonatomic-lo-hi.h>
+ 
+@@ -2940,7 +2941,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+ 			    XILINX_DMA_DMASR_SG_MASK)
+ 			chan->has_sg = true;
+ 		dev_dbg(chan->dev, "ch %d: SG %s\n", chan->id,
+-			chan->has_sg ? "enabled" : "disabled");
++			str_enabled_disabled(chan->has_sg));
+ 	}
+ 
+ 	/* Initialize the tasklet */
 -- 
-2.34.1
+2.43.0
 
