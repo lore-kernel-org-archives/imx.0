@@ -1,130 +1,109 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE730205AB6
-	for <imx@lists.linux.dev>; Tue, 14 Jan 2025 19:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC3720AF65;
+	Tue, 14 Jan 2025 20:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736883822; cv=none; b=st2T7oFZTU3QjmLD7hllSHdJtGBqJLL+5kNSdshwDV5gPNTP1W9ZFJJVCxDwnG1HmDEfzZD0ow1fL77rRD9J0H23kkV8D20njD3V14JxDU9BVIboVo5rPnYoqYqOby0F2YXtZJE93qJ92Jo6H94SeenEvOBnaGOGB2K7ADZr8KY=
+	t=1736886385; cv=none; b=gr51Cp1Zvek9QVl0jFqzxqIhqOM9AHSW+wwTyPCWPVSG5uE8ezmritjFKSjXhtG+y+PMLZnjG/Tp5Luyb8Siq79gj5g+tmbSRLF2aUauiY9AlUMvV7Glpi55sshkPK04FgsFke6nN8TkHodoyFJ+AJvzZjR5wpRQo5WFq0U2RHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736883822; c=relaxed/simple;
-	bh=1gPjOfJWBv7udEX42R/lPZwZsVT3ZK5coiNp2Efpmis=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iX5pe55tUhDTHTMTJh3H4QmYWFzZWfUZI4YRGnLrAmXb6Qo/j5Ip10AW4LEsBaAb9Jz8Fd7GzJHqmC+Jq5NOYmXzzK7uScRmYRoyNZj5SAC9OjdfRHSCuiTtvJxEJT2pOyyXC+MIZV3IoqYF0rHIHW1xnVMG1hvxEAXK6gBQQsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAdUsma1; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736886385; c=relaxed/simple;
+	bh=1IgRfw629cmZrFu0qFbSHjpnPx0gzmnM39OIlUYVCHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IEXLIlfiFli7F0WUdY0yFbDw8oGPqQ2iOvedY1YnU0ygZ4EuBOxdvt9gY1HfrIhXqGdL/YSAVf5jWJZp6DXsswCrPmDrmPvU/omCJiasdEqwcPgqEKUW2RdnlRXxXXHqa3Se6GcO1mj0yZtNNhgUc3kqONSJZLhoLWdcc90hygU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qek0qVuN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAdUsma1"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aab6fa3e20eso1068688566b.2
-        for <imx@lists.linux.dev>; Tue, 14 Jan 2025 11:43:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736883819; x=1737488619; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1gPjOfJWBv7udEX42R/lPZwZsVT3ZK5coiNp2Efpmis=;
-        b=PAdUsma1OqsYWn/JC7fpx3JVcg6yep8fa9a9kGqHpFtiF1Sut/abCUHShA6vpO+l/a
-         6eGGgUthEMU6qunZawOA29E5FrUQaLVAm0j89lfPdTRbhriXy171uZ7hR6X8orSLHr/l
-         uLwA++CP2PtS4YMfCTNHvbqXCN/05DoG2ERfFeqND5cPgQbiNzIJJlzzu92ytdLggkGW
-         pd/evF1slxg0CXGNvs2e/Bb+23FyrmpwqDJZj2IJCSbXuhfijIi5vFr7gQOyGFjJ6StH
-         94Iu1E0IFbnCqPh09f2DfJVS3ULVrWCr3+FI5Q8XLyZ11BNSazsZ8mdll5cmTrr5QlO4
-         fxWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736883819; x=1737488619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1gPjOfJWBv7udEX42R/lPZwZsVT3ZK5coiNp2Efpmis=;
-        b=Ft3V6fg/w6oUN9FSqqARRYVEY5nE3ySi53Siuk6Jn6i2RMo9qfAk36wmp9MZYW7nTw
-         DTOXOYW4QvDOsbH+LXHjyhC3NA8oJTkBfgvNpG2wI/dC/pm4/ad2plbHyVq+jUHHcjqe
-         RHy9s1z/9zpVoojgqoGuxMpNNpRGUphx9wiA5iucBmUJ1IXp4WWDmSz/8ZWlPtV6Q6k6
-         hZ8YZSYOvgl+QnnL1vVaTjr20B9q4eISgXWOb+gRbg7i83yi1A/J3s+ORaUekYWg8nFl
-         ZXv8NtWmRmbZZ43wEJMjWMR6gqoziptreT5KL06RSh3a9oqZLDO8VQ0WEY9Bi/0Rd4OE
-         K9bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVA34nIKp9aqgLnIsMEcW1jgjPiajbsqcOuREXVfmR/SCpWKzQEdzO2nJh3Q3RuZY9L/Qg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxswZwAZES0Xifo9lfYX14lpxTyizWWNHuI6HKsTWr4szKtu6Kz
-	5DlofQ9zfab2LdLnz5wS6+kc23+bDuwlVHuahtxSx0AHWrDnCM7Fsc9dhNHoEGtZ0isSgZWh4wQ
-	l7B+5G7AO3ZafVvEFEAFbqSg+koA=
-X-Gm-Gg: ASbGncsta8W9zq5z+swQ40pgLTA0uJMyhMvus+xKLoFv7pjnOcoTJidgUr8MhmoIkXY
-	yn3yHH4nBxuvps7Fx9UGmgX73/owTLwHh+q29VBPR
-X-Google-Smtp-Source: AGHT+IE4RbVs71/smgDj/TU9UMPWxR9g62d8TumLSWo8W/n9+Z0nM2yXhOXr7N7e9uaINKsYnz0zeibsE5WgKYib+Ro=
-X-Received: by 2002:a17:907:9410:b0:aae:8495:e064 with SMTP id
- a640c23a62f3a-ab2abc78b52mr2090164566b.40.1736883818809; Tue, 14 Jan 2025
- 11:43:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qek0qVuN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1530C4CEE0;
+	Tue, 14 Jan 2025 20:26:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736886385;
+	bh=1IgRfw629cmZrFu0qFbSHjpnPx0gzmnM39OIlUYVCHY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Qek0qVuNhlWGFbwYGSKClZeZ/yWh5m00JJLLCPFkEr5CtllYfucr1Dimv1oH1j1fh
+	 gxsI8dog3/AWh/V+ymvKf3NxfN+N8STzU5qjFW9Bcua8CceMxUeSJpNZrV0RgKbuAG
+	 6IhAva51jinHP5Vx7EaMuRgTxgoMrbgBjCk6CDnYmOif5JLczexWPgabuUtfqdc4sp
+	 dFpUs4e88Z73DlSDtTkLL+XxxRFwqLi/kBahSiAiijRKP7k2vJKH5rLPDVBzVmNaX4
+	 pD6wgAEIjYjMW9hRq2PPS3RHistOP/YiVBgnNBYty6rtfv0nyLL/ae2fDXCVFaxrfZ
+	 2pu/GlARHWiow==
+Date: Tue, 14 Jan 2025 14:26:22 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, dlemoal@kernel.org,
+	jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
+	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	quic_krichai@quicinc.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] PCI: dwc: Always stop link in the
+ dw_pcie_suspend_noirq
+Message-ID: <20250114202622.GA483044@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de>
- <CAHp75Ve8d96Uw1obJVwRPyRE5E0eC8qU7uXe-UKuZeB-3XLPcA@mail.gmail.com> <528b6695-387e-436d-98fc-6f576636d16f@pengutronix.de>
-In-Reply-To: <528b6695-387e-436d-98fc-6f576636d16f@pengutronix.de>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 14 Jan 2025 21:43:02 +0200
-X-Gm-Features: AbW1kvZ6R2e3yRjumlny6gUuJSkRGD__NmZWUskaVnb9oMxLZs0nWXPBoBuMPXA
-Message-ID: <CAHp75VfOhAmkpB_nhQE8m25p=3P2wvTfOnQFEsLR5KEktLy4vQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] gpio: mxc: silence warning about GPIO base being
- statically allocated
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
-	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4a71nPa1H01+Ang@lizhi-Precision-Tower-5810>
 
-On Tue, Jan 14, 2025 at 11:55=E2=80=AFAM Ahmad Fatoum <a.fatoum@pengutronix=
-.de> wrote:
-> On 14.01.25 10:46, Andy Shevchenko wrote:
-> > On Tue, Jan 14, 2025 at 12:19=E2=80=AFAM Ahmad Fatoum <a.fatoum@pengutr=
-onix.de> wrote:
-> >>
-> >> The i.MX GPIO driver has had deterministic numbering for the GPIOs
-> >> for more than 12 years.
-> >>
-> >> Reverting this to dynamically numbered will break existing setups in t=
-he
-> >> worst manner possible: The build will succeed, the kernel will not pri=
-nt
-> >> warnings, but users will find their devices essentially toggling GPIOs
-> >> at random with the potential of permanent damage. We thus want to keep
-> >> the numbering as-is until the SysFS API is removed and script fail
-> >> instead of toggling GPIOs dependent on probe order.
+On Tue, Jan 14, 2025 at 02:32:38PM -0500, Frank Li wrote:
+> On Tue, Jan 14, 2025 at 12:15:18PM -0600, Bjorn Helgaas wrote:
+> > On Tue, Dec 10, 2024 at 04:15:56PM +0800, Richard Zhu wrote:
+> > > On i.MX8QM, PCIe link can't be re-established again in
+> > > dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared properly in
+> > > dw_pcie_suspend_noirq().
+> > >
+> > > Add dw_pcie_stop_link() into dw_pcie_suspend_noirq() to fix this issue and
+> > > keep symmetric in suspend/resume function since there is
+> > > dw_pcie_start_link() in dw_pcie_resume_noirq().
+> > >
+> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > ---
+> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > index f882b11fd7b94..f56cb7b9e6f99 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > @@ -1001,6 +1001,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> > >  		return ret;
+> > >  	}
+> > >
+> > > +	dw_pcie_stop_link(pci);
 > >
-> > While I understand the issue this tends to get never fixed until the
-> > entire support of iMX boards will be dropped.
->
-> i.MX is an actively developed and widely used platform. Why should suppor=
-t
-> be dropped?
+> > We should try to avoid changes to the generic DWC path just to
+> > accommodate one controller.  Since other DWC-based controllers
+> > apparently don't need dw_pcie_stop_link() here, this seems like it
+> > might be the wrong place for this change.
+> >
+> > If doing dw_pcie_stop_link() here is really helpful for all DWC
+> > controllers, this would be fine, but the commit log should then explain
+> > why it helps everybody, not why one particular controller benefits.
+> 
+> It should be for all dwc controllers although find such problem at i.MX8QM
+> platfrom. It should keep symmetric between suspend/resume function.
+> 
+> So far only layerscape and i.MX platform use these common functions. Other
+> dwc platform still have not switched to this common function yet.
 
-Exactly, Which means "tend to get never fixed".
+I see that layerscape uses dw_pcie_suspend_noirq():
 
-> > Personally I do not like
-> > this series at all. Rather let's try to go the hard way and understand
-> > what's going on to fix the current issues.
->
-> /sys/class/gpio is deprecated and when it is finally removed, this series=
- can
-> be reverted again. The alternatives are either do nothing and live with 6=
- kernel
-> warnings cluttering every boot or show users the finger as described in
-> the cover letter.
->
-> Do you see a different path forward?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/controller/dwc/pci-layerscape.c?id=v6.13-rc7#n379
 
-Yes, try to write your scripts based on the libgpiod or the tools
-provided by the project. I.o.w. follow the warning that SYSFS will be
-removed at some point and prepare yourself for that. If some kernel
-work needs to be done, contribute.
+But I don't see where imx6 does:
 
---=20
-With Best Regards,
-Andy Shevchenko
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/controller/dwc/pci-imx6.c?id=v6.13-rc7#n1236
+
+We don't currently have anything queued that touches pci-imx6.c; am I
+missing a patch that converts pci-imx6.c to use
+dw_pcie_suspend_noirq()?
+
+This doesn't feel urgent yet since the commit log talks about i.MX8QM,
+but I can't make a connection between i.MX8QM and this patch.
+
+Bjorn
