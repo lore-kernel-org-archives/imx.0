@@ -1,43 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C66C20C033;
-	Tue, 14 Jan 2025 20:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1281FC7C9;
+	Tue, 14 Jan 2025 20:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736887390; cv=none; b=OObUmo/d/yhxlcQ175zmkEZ6srnz8S5qTX799spqgS6JxhdG2qNgTaUV7Z6S9r9uGeTJODNAfYf603UNSiEA42RBb06G6zgXPvZht6h2UHimc5rMtAycFk9U9J/OQPOSmaewO3dXc8BvAhBx4Gf0XaTUPHrAFTZwb/fa+9pxwk0=
+	t=1736887563; cv=none; b=KLbyD5GIBzwaVGCor7bTCTq5AsoiDK4R1SBQzjuDkeQ3XJgM2wJw8wAuEKhBzRlnH/rXsJntgGLgaGhxkHArHpsEeLjZDzxqVYWSQH/K6TrtbZhymSTQ1ZT1SwlST0ZifT1GW01b6unOUhU+jwxlYsDhuNrh7b27ttDO/gAjueQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736887390; c=relaxed/simple;
-	bh=5naPrUPLbxOci8cRt6E7sbCrTb/uthSYLIIodI0L0DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=gFm5tTqivbfOkW8XU2S0zvbhJHQBnNWjYMoAJt90A+Pg/fplciCU0qq1TvnVDcvEautzkmwGz/NQv+RQua04F8nLilmOuMx/XgvmnrV1IUxNVjEIvs84VddtKGPj7Tk50yQhD2U7qQ2MIaKsDrQ3km9etixEcC5Ne5zlp2sk3AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvTvJaMf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736887563; c=relaxed/simple;
+	bh=cbrnKzQADWAdnh86AY10bxSbKYy1bTDuo3KND/+ugYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9PnEFM+vT8W8Zev+xI80uq8YGAeyt8eSqYXaLlUfD+n+Tk77X035ZcUMmZTOU9kau+MPqFFmnI1NkJ/1X5OGSdka9zF1vEw/ViClDfUiUxMDgaL7hhQ94IggcVcNaXP1UwfORuZJWh1LhqMVVl1uC1ZRDWO92u665pF0Bs24tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPPcCibx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvTvJaMf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3DDC4CEDD;
-	Tue, 14 Jan 2025 20:43:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPPcCibx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14417C4CEDD;
+	Tue, 14 Jan 2025 20:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736887389;
-	bh=5naPrUPLbxOci8cRt6E7sbCrTb/uthSYLIIodI0L0DY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=mvTvJaMfuz4yz1QXa5ogoibM3cSDwychVjUYZAfG1VaN9Hly9rBvWL8dvzmwyXTuG
-	 GEbvKRAWcNFu+rw2P1IDE9cwqz7353suMLlc1lQEVynkau74URracDE4xF4hZPIFYt
-	 dLSATmXYuxLwmRiNwSLmQ19SuHF7UtKjV5JjhPA7tan1o5lnN+3c8gLV21bAhcC6Ff
-	 z2uHCcwP8HhJqFVDHFuqb/8TqZh5ptQMD6TUP90a1aIxHxXgwEAYkmo4wg7AC8Qtp3
-	 d7B9tnOgAigf5MklJW+/1AGU2X4nKVLIntGTnGKRyI60yBdhhLlA1bT6ZzxxKi+9JK
-	 7UrdqN+MvDsIw==
-Date: Tue, 14 Jan 2025 14:43:07 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, dlemoal@kernel.org,
-	jingoohan1@gmail.com, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	quic_krichai@quicinc.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] PCI: dwc: Always stop link in the
- dw_pcie_suspend_noirq
-Message-ID: <20250114204307.GA484338@bhelgaas>
+	s=k20201202; t=1736887563;
+	bh=cbrnKzQADWAdnh86AY10bxSbKYy1bTDuo3KND/+ugYQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uPPcCibxhGoiDbBIqGpiKdx23HdCyo+Q5vtBiOY0Y/H+mHRV4GYVKQouU8F5BOp2S
+	 jocbaJJ2eqXKimxNjukIhVwTud6iJvtViNocLQPW6pN1y40guHPqqqPgCUJe9jxJ8o
+	 S+2kkVvYp87mqixeWvT7PMz9uSnaUf2+DQXoKAllI55Usx1lUfZ3m9nqQjzZ9OSCYh
+	 PDlshz7jQMhph4C/iq7VlpVh9lloSUggwSsjkT4UWD/IqGFpdbfz40FUP2W3gqGB8f
+	 JgtF0+AtdM0wljo6oMWNB1TM/wvW/L40HsP59TrFW6sjoIEh3qpy0QhfzVHdlfPKl6
+	 x6pKTFpQpaZJA==
+Date: Tue, 14 Jan 2025 14:46:01 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
+Message-ID: <173688756096.1689612.6453110742993386825.robh@kernel.org>
+References: <20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com>
+ <20250113-imx95_15x15-v1-1-8c20cbaab9ed@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,77 +49,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250114202622.GA483044@bhelgaas>
+In-Reply-To: <20250113-imx95_15x15-v1-1-8c20cbaab9ed@nxp.com>
 
-On Tue, Jan 14, 2025 at 02:26:25PM -0600, Bjorn Helgaas wrote:
-> On Tue, Jan 14, 2025 at 02:32:38PM -0500, Frank Li wrote:
-> > On Tue, Jan 14, 2025 at 12:15:18PM -0600, Bjorn Helgaas wrote:
-> > > On Tue, Dec 10, 2024 at 04:15:56PM +0800, Richard Zhu wrote:
-> > > > On i.MX8QM, PCIe link can't be re-established again in
-> > > > dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared properly in
-> > > > dw_pcie_suspend_noirq().
-> > > >
-> > > > Add dw_pcie_stop_link() into dw_pcie_suspend_noirq() to fix this issue and
-> > > > keep symmetric in suspend/resume function since there is
-> > > > dw_pcie_start_link() in dw_pcie_resume_noirq().
-> > > >
-> > > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-> > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > > ---
-> > > >  drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > >
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > index f882b11fd7b94..f56cb7b9e6f99 100644
-> > > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > > @@ -1001,6 +1001,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > > >  		return ret;
-> > > >  	}
-> > > >
-> > > > +	dw_pcie_stop_link(pci);
-> > >
-> > > We should try to avoid changes to the generic DWC path just to
-> > > accommodate one controller.  Since other DWC-based controllers
-> > > apparently don't need dw_pcie_stop_link() here, this seems like it
-> > > might be the wrong place for this change.
-> > >
-> > > If doing dw_pcie_stop_link() here is really helpful for all DWC
-> > > controllers, this would be fine, but the commit log should then explain
-> > > why it helps everybody, not why one particular controller benefits.
-> > 
-> > It should be for all dwc controllers although find such problem at i.MX8QM
-> > platfrom. It should keep symmetric between suspend/resume function.
-> > 
-> > So far only layerscape and i.MX platform use these common functions. Other
-> > dwc platform still have not switched to this common function yet.
-> 
-> I see that layerscape uses dw_pcie_suspend_noirq():
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/controller/dwc/pci-layerscape.c?id=v6.13-rc7#n379
-> 
-> But I don't see where imx6 does:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/controller/dwc/pci-imx6.c?id=v6.13-rc7#n1236
-> 
-> We don't currently have anything queued that touches pci-imx6.c; am I
-> missing a patch that converts pci-imx6.c to use
-> dw_pcie_suspend_noirq()?
 
-I guess it's this series:
-
-  https://lore.kernel.org/all/20241126075702.4099164-1-hongxing.zhu@nxp.com/
-
-where "[PATCH v7 08/10] PCI: imx6: Use dwc common suspend resume
-method" does this conversion.
-
-I see some review of v6
-(https://lore.kernel.org/r/20241101070610.1267391-1-hongxing.zhu@nxp.com),
-but no comments for v7, although Mani has already reviewed six of the
-ten.
-
-> This doesn't feel urgent yet since the commit log talks about i.MX8QM,
-> but I can't make a connection between i.MX8QM and this patch.
+On Mon, 13 Jan 2025 13:01:59 -0500, Frank Li wrote:
+> Add DT compatible string for NXP i.MX95 15x15 EVK board.
 > 
-> Bjorn
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+
