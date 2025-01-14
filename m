@@ -1,59 +1,61 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433ED229604
-	for <imx@lists.linux.dev>; Tue, 14 Jan 2025 10:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E5822DC48
+	for <imx@lists.linux.dev>; Tue, 14 Jan 2025 10:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736852146; cv=none; b=jTfq33oI8THQS5pfpEqINlP1GC+dDXuThPo4FPVbKTvWinJBhvScrEl1jWrn4U8B4n7nRw551g3xUchUrkcoc50GPW1Y1jyQ1StcLVawLydJ1CYMI+X3HSAofA7ZtNIEzNz6NJl2er/Nir8K0ltnM3o20Ek3TJOq316pFLliHXc=
+	t=1736852147; cv=none; b=qITIdKFl6DFXpgT1uDuvXXxp0KOrP9sXB9U5goeDqCLSuNaZh2bfhdU/3Q4h3SqI0bb5MRCTHD2rHjxidsYhvU14/Y0kgBpbpFAxTGoIp3zDz4CzowuoOLYFyHp2Nhq1MXxhNt+i2GpX/UgQbBSVt7sIqiSm67HvYCo9CkYiTpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736852146; c=relaxed/simple;
-	bh=PhAfGfQbBpz/wfvfFqXb65XCKmqiTpALKSOTqIQlbX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HcZW7NIBbFBeTiJnLn+X+D+RlyN4fKlyLUdTFDb7b6+Ir1gLMAAfXa3kPMJ3Nja8yB/D3lJk1SnX+wMHtCK/2Rd6RlBFNl25lueOggK0sxL1tTldYuMNUVB4vN8h0R1qheufocLOsfM/o5/HfastF0CRQR2ne1rRM1Xmh39Us9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DbCNuiNW; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1736852147; c=relaxed/simple;
+	bh=aSeZfaDwSFJIY4/vsKGZDV/+UPdIWOSQQL1Wnz64dx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Hd3dumMEdXe4uIW3TtdvX9EwjLEWbHjRTHYSOCsK9gj5+Zq6yvHWgoMB0nmL7lHG5YfagzxhaGk11SFCsetRN4s0Mm/u7w/q2RjSKA/NearVZWDKxItYvn6JmFkd3Hla68JJX5Rqj/HLe9qsPjHjofT0jkffc6LiB9XOcncCN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MlkL90mX; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DbCNuiNW"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab30614c1d6so53638666b.1
-        for <imx@lists.linux.dev>; Tue, 14 Jan 2025 02:55:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MlkL90mX"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa6965ad2a5so76535866b.3
+        for <imx@lists.linux.dev>; Tue, 14 Jan 2025 02:55:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736852143; x=1737456943; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=w20vK13nhMzbjHJZSCggje7+hpPlrM9z3S//rlxScS4=;
-        b=DbCNuiNWduwpb3iHiWlj9RaZG9n6OBynqwUYh1xdYh28LDj/BSYSRJetE9iv/+uUuO
-         QuZA3Jj3D7/Iwg1DJJt0PZSFrFqNQy1AUQmN+A39+8rEWYnj4MzY/8PLehp1OB8uHWId
-         +JHSP0vDqV3p0r8+F1taXPYYQq9Fr/8xggqEk8t9YT50ZSQiVv3W1GYxgrl3F1b4OMUu
-         5NoC7UK70TEk13mbQvME6rPDqg47p5fjUlq41ZeQBTILNy+4zm8j2MXYLlQCzUe6a2NH
-         S+0TnwRft3tXQdgHyH8MP9yocDeI0Fx1qkVPm/QL8IUrP6AfhptpxtOb/jKVY4OWv2WQ
-         f8RQ==
+        d=linaro.org; s=google; t=1736852144; x=1737456944; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+3rqPuNp/XAiHwmx1Pu2LDapqHlVBx3ScWZfxCOYmYA=;
+        b=MlkL90mXLq12mPfYyAQ4Srn93sfbNTiaCkBYWvZG+SXPII0IObh9EF4QTp6xu2XIV5
+         mX1sl7xqfni218upDNbOQWxZ10PW64DRzsywrXldtTeHKb/qNlNRE8vPBAs4vruaeD8+
+         y1hBgra1aJ6m/xAlQMltvHaQgL2SzL+c+rf3jFmifWYPfdbDGF4p/JXlk2YU1RjC7Bgz
+         sRekW21Y8rDrQdSxnqH45c3I/hFxpU5iZaV2DZZrtXGfoi0z0SJk6NspVvP6YnTCuGYm
+         EPhnuywTMLoIlNBsgQ3UdhiteElHRLtqkA2u0T6hogcRjPQlBk9ZDL8ozGSTuDMRwD73
+         5mHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736852143; x=1737456943;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w20vK13nhMzbjHJZSCggje7+hpPlrM9z3S//rlxScS4=;
-        b=EM+tIjuvyV1EDxQycrVcySaj4Eh9Kf0rhAuTJBB5ww7iEyNdbkJsuwQ/+zHxvzqn7K
-         IIovkafNy2xFj/DPgbFFCNQktuAmSJiTYf1ofv48M6z8pzCZ1fnOPaA8K9bu9usN32gj
-         Dbt5yGba8+jdfgFy8FnS0OpS9Hm1JBV2d+eCZO92aF9OSZRrKVcfY4WJxSFduGMLrcvy
-         26SynvZuKUgU+iIAc85+HeJ9c0b6tNDBfyWKajEAdubYAR1+oAef9GzzuX8+ML4BsFAf
-         fWo0/HTTWzWEBeqYWmMNeqsqpByZrdPL40MwG6ODhcrYM6p+Ju/7En8+6Tsq1BNr+8uX
-         YZ9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVxspTijssfBRZasf4pOQ4sAl7XTVJEHfEBzzDjFN1E1KGIEow+TVvZkI5Ug2P/o85AEUE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmgshvqQmyvgsv/s/ph0/Mavk5yGtY7ccSAgMgOBU3rjYA5mu4
-	CJ6eLdn8f100eqEuZySdPFG/5kzNtF4yP//qxZn03lxW6zZTME/qB9FpQVPDYe8=
-X-Gm-Gg: ASbGncusoAHlQmN8iGUC/ALak79calzBh6fRbQwVehBRxie4k2muwLw8zt7E3NPENkt
-	C2OlI9mKDh6De1wtYicgv49KWltuczAF+FDi5aIExpMsGQkXj/E40L70i5JGtEhWC0d28mhAJou
-	xlyezcscp14mfVcedGHlXtsPmQXFn0Or3qn6rhbz9WJD1W20XdzBW4HZaoVGSKYcEHIF1eTgr8q
-	u9goi/82TJt5WHLEL/FqhFltYPpu5twJl2yp+mIgOuqL+4nJLsnwADSWLRCQ9gHXG0Unb0=
-X-Google-Smtp-Source: AGHT+IG+VYqAZEZjAkkDupQTvwlvu2SSq7a2Lp6yZVkX5waA19et6Qvi69lKI25WLQ+J8Hn9t77VNw==
-X-Received: by 2002:a17:906:c14b:b0:aac:619:6411 with SMTP id a640c23a62f3a-ab2abc6fd33mr825598566b.11.1736852142566;
-        Tue, 14 Jan 2025 02:55:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736852144; x=1737456944;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+3rqPuNp/XAiHwmx1Pu2LDapqHlVBx3ScWZfxCOYmYA=;
+        b=PxcfE9/vz8TOK3tXvOcPDdUKNorTjciat8O6FJqqyHvxwPwFLmB6c6urv47ACWo1/+
+         sWyuLPosOTPr8KyiKpY2LsZVnMPcHaRi3GMyw5m4Kh8h8Imf84FZYGMenZzOEYcFx8tq
+         dgccLYzKGxt91UyMCF+IfvzeACyDD6u3TenP+Zp0tI/UJDpt6fK+q9mLiPdRZsDk59KL
+         f+J7UPWfpFneaqiONm0eAruLXFnnj7FUC1TR/yZzevVjHftBNKERuTkfSiAT0emac+u4
+         UzOPkl1zT8Q5bgDZhlF6wbKq8l/CnqrrfSDWh2vMiZH5MJ5O3PQh+YlBnae5UsyKNgcF
+         05GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoYRgipHaEcj+0u72nD7yDVzA4ANouuGsEtrdqPw4JReaty6ox5u3Ebkq1xfVPhnCtsaw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxmVvZYteOxqN5qoTQf2uhd2fBoiGGWaBz3rCZu5pM7szPoOrCK
+	5w2pXXPpl8x7TOn2ZCJk5WSICgMrmeb0dgp/P8MLM0fW797jLCxCaUMCf/m6li8=
+X-Gm-Gg: ASbGnctHb2QBsVimZnowWZrk7wZyhBerJhC4VoO/Yyw5+IFXuHuAf2U8iSQCZC+QNnf
+	VJW0xNmAA7TOs3lg/+k1Vp28GnxugpGX1eRHI/Xh2QaUyxxhOYxOyBNJPbQ1el4+y98qK27x8Jl
+	WNkeBkdwNEFgtJVgsy9+FW4EeGoWbGtDQJMVt5fMCCnMD7SmRxyMrU+6EHUYox29Yy1RAqBaMo8
+	rt8MD40+kKjNtJ8ykBpg+I7WzyKYOc8M5oqlGnyxjcckxPXuuVPOBKKFAcCCFx489aIaYY=
+X-Google-Smtp-Source: AGHT+IGGLNOo3Y6rZ9xm8aucjHmK0akRyTENMu3IpG6BrZjgAqoEyoZP/GxppQhWGAt606k5yDTcpQ==
+X-Received: by 2002:a17:907:2d8f:b0:aa6:6386:44de with SMTP id a640c23a62f3a-ab2ab73b693mr726196966b.8.1736852144389;
+        Tue, 14 Jan 2025 02:55:44 -0800 (PST)
 Received: from krzk-bin.. ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95624e8sm611169266b.127.2025.01.14.02.55.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95624e8sm611169266b.127.2025.01.14.02.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 02:55:42 -0800 (PST)
+        Tue, 14 Jan 2025 02:55:43 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Vinod Koul <vkoul@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
@@ -70,10 +72,12 @@ To: Vinod Koul <vkoul@kernel.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 1/2] dmaengine: Use str_enable_disable-like helpers
-Date: Tue, 14 Jan 2025 11:55:37 +0100
-Message-ID: <20250114105538.272963-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/2] dmaengine: pxa: Enavle compile test
+Date: Tue, 14 Jan 2025 11:55:38 +0100
+Message-ID: <20250114105538.272963-2-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250114105538.272963-1-krzysztof.kozlowski@linaro.org>
+References: <20250114105538.272963-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,109 +86,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace ternary (condition ? "enable" : "disable") syntax with helpers
-from string_choices.h because:
-1. Simple function call with one argument is easier to read.  Ternary
-   operator has three arguments and with wrapping might lead to quite
-   long code.
-2. Is slightly shorter thus also easier to read.
-3. It brings uniformity in the text - same string.
-4. Allows deduping by the linker, which results in a smaller binary
-   file.
+The PXA_DMA driver does not include any asm/mach headers, so it can be
+compile tested for build coverage.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/dma/imx-dma.c           | 3 ++-
- drivers/dma/pxa_dma.c           | 4 ++--
- drivers/dma/ti/edma.c           | 3 ++-
- drivers/dma/xilinx/xilinx_dma.c | 3 ++-
- 4 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/dma/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
-index a651e0995ce8..de8d7070904e 100644
---- a/drivers/dma/imx-dma.c
-+++ b/drivers/dma/imx-dma.c
-@@ -17,6 +17,7 @@
- #include <linux/device.h>
- #include <linux/dma-mapping.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/platform_device.h>
- #include <linux/clk.h>
- #include <linux/dmaengine.h>
-@@ -942,7 +943,7 @@ static struct dma_async_tx_descriptor *imxdma_prep_dma_interleaved(
- 		"   src_sgl=%s dst_sgl=%s numf=%zu frame_size=%zu\n", __func__,
- 		imxdmac->channel, (unsigned long long)xt->src_start,
- 		(unsigned long long) xt->dst_start,
--		xt->src_sgl ? "true" : "false", xt->dst_sgl ? "true" : "false",
-+		str_true_false(xt->src_sgl), str_true_false(xt->dst_sgl),
- 		xt->numf, xt->frame_size);
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index 8afea2e23360..cd856c990d17 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -546,7 +546,7 @@ config PL330_DMA
  
- 	if (list_empty(&imxdmac->ld_free) ||
-diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
-index e50cf3357e5e..249296389771 100644
---- a/drivers/dma/pxa_dma.c
-+++ b/drivers/dma/pxa_dma.c
-@@ -10,6 +10,7 @@
- #include <linux/interrupt.h>
- #include <linux/dma-mapping.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/dmaengine.h>
- #include <linux/platform_device.h>
- #include <linux/device.h>
-@@ -277,8 +278,7 @@ static int chan_state_show(struct seq_file *s, void *p)
- 	seq_printf(s, "\tPriority : %s\n",
- 			  str_prio[(phy->idx & 0xf) / 4]);
- 	seq_printf(s, "\tUnaligned transfer bit: %s\n",
--			  _phy_readl_relaxed(phy, DALGN) & BIT(phy->idx) ?
--			  "yes" : "no");
-+			  str_yes_no(_phy_readl_relaxed(phy, DALGN) & BIT(phy->idx)));
- 	seq_printf(s, "\tDCSR  = %08x (%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s)\n",
- 		   dcsr, PXA_DCSR_STR(RUN), PXA_DCSR_STR(NODESC),
- 		   PXA_DCSR_STR(STOPIRQEN), PXA_DCSR_STR(EORIRQEN),
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 4ece125b2ae7..b1a54655e6ce 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -16,6 +16,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/string_choices.h>
- #include <linux/of.h>
- #include <linux/of_dma.h>
- #include <linux/of_irq.h>
-@@ -2047,7 +2048,7 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
- 	dev_dbg(dev, "num_qchannels: %u\n", ecc->num_qchannels);
- 	dev_dbg(dev, "num_slots: %u\n", ecc->num_slots);
- 	dev_dbg(dev, "num_tc: %u\n", ecc->num_tc);
--	dev_dbg(dev, "chmap_exist: %s\n", ecc->chmap_exist ? "yes" : "no");
-+	dev_dbg(dev, "chmap_exist: %s\n", str_yes_no(ecc->chmap_exist));
- 
- 	/* Nothing need to be done if queue priority is provided */
- 	if (pdata->queue_priority_mapping)
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index 108a7287f4cd..3ad44afd0e74 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -46,6 +46,7 @@
- #include <linux/of_irq.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/clk.h>
- #include <linux/io-64-nonatomic-lo-hi.h>
- 
-@@ -2940,7 +2941,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 			    XILINX_DMA_DMASR_SG_MASK)
- 			chan->has_sg = true;
- 		dev_dbg(chan->dev, "ch %d: SG %s\n", chan->id,
--			chan->has_sg ? "enabled" : "disabled");
-+			str_enabled_disabled(chan->has_sg));
- 	}
- 
- 	/* Initialize the tasklet */
+ config PXA_DMA
+ 	bool "PXA DMA support"
+-	depends on (ARCH_MMP || ARCH_PXA)
++	depends on (ARCH_MMP || ARCH_PXA) || COMPILE_TEST
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
 -- 
 2.43.0
 
