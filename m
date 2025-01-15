@@ -1,137 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4511DA60F;
-	Wed, 15 Jan 2025 21:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DFB1DB55C;
+	Wed, 15 Jan 2025 21:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736974812; cv=none; b=OKO7qgN43UjfACEybSiylAXNpkXzMliTJzvZCrIRMHMxOazQCqNh4vliSJzlfDZ9VqZkgvWHxndtgrkzGPG6elfyeHAcOyTqMjAxNBoW2DtufNrXg12Ax5LH0vw4/1HGC5k1UW8CHv3Vv1SrN1PT+cC4X+KvYKgfyXJjkVFBlQ4=
+	t=1736975335; cv=none; b=erjg1Nb83Ep+LL7Sn9mMd2cdfYRfet+lCzrfy0nf5FmC8BKF8yDeWXTkmrl0KWh9HAjNrRXEFs5egSAnEjmizfFTQoz4RK5J733VGZId4ELVE7vNkqbD+vIZmi6XYN4qjbtV8bzx2emLi7Hzx01ajOCf6T6bXD13wKebY3J5etM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736974812; c=relaxed/simple;
-	bh=RlPD0kUWIPW5R0PKSVU27JaRoL2dMi9vvo/1Qhhlx7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MCUbaDarjwH5dmHKNN+ciLjZ7+83Bw1jm8n+TM/OCKldju5m8fihkwUL5m1XekXpa/RdZWnHKt+zA3u+/QqDfCbhPUVdQPIvdAB17erujKj82N/6aw4ICBr4soO8j/7aIIMkBrOSTshVX2/0upKcimjLQnuA43FU/eIohwmaAyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JLrz2I58; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLrz2I58"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDFEC4CED1;
-	Wed, 15 Jan 2025 21:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736974811;
-	bh=RlPD0kUWIPW5R0PKSVU27JaRoL2dMi9vvo/1Qhhlx7Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=JLrz2I58zheY19rQK47qVvp+t77dq2WMCZsCyasfRIy09JD1KERUCk98ZXRnBnnvG
-	 o7i50NxFKCdsWe97sGCjZhlF6XwW1zEDJRH0wrr0gFCuGRAWnkC65twQLcDXMPuFCP
-	 dUsqKh2CRhaPyNAWNMp+Nqi/XqvCIcJ8FWTpAKMeCg5a3W6E+pLdwuwFwOi77PL86R
-	 hqoA1YQBuH6l7LcEbZ5tawJpXZ4cBt72pebRmdZ1982K6PkrkOMgDLAOnQg+B40PJC
-	 6aj1IEJuKx5Ry8+YO4jwPUQZk+LO8utjRG6HdPnM2cq+Y53kNwPOAoch6Mlx9YCGqg
-	 uQwV5KiA3sbsQ==
-Date: Wed, 15 Jan 2025 15:00:10 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
-	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
-	lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com,
-	will@kernel.org
-Subject: Re: [PATCH v9 0/2] PCI: add enabe(disable)_device() hook for bridge
-Message-ID: <20250115210010.GA551375@bhelgaas>
+	s=arc-20240116; t=1736975335; c=relaxed/simple;
+	bh=GnH4ZUcA/sCwuS7PTVZS2oqb19EZjaPuc4kPRxXcaHI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=r5e2SL5JlHUQZho3bBTiYLH5mrYTAymfFwMMs96qray6wgKrnUFBbLh9Ovn9I3leqHIPlPBjnk73IHIBYPB7zk8ZeJBpXBOJC8f96qszAoCifIUFZ4Fi+5ieIWQx1VmBiWZ3y5Lc0bRaMyglAK/e9cog34sdajWO7rlF71HAzVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C43FC4CED1;
+	Wed, 15 Jan 2025 21:08:55 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 215D61060353; Wed, 15 Jan 2025 22:08:53 +0100 (CET)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Hans de Goede <hdegoede@redhat.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>, 
+ Purism Kernel Team <kernel@puri.sm>, Sebastian Reichel <sre@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Dzmitry Sankouski <dsankouski@gmail.com>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-msm@vger.kernel.org
+In-Reply-To: <20250107-b4-max17042-v6-0-3d0104ad5bc7@gmail.com>
+References: <20250107-b4-max17042-v6-0-3d0104ad5bc7@gmail.com>
+Subject: Re: [PATCH v6 0/2] power: supply: max17042: cleanup and more
+ features
+Message-Id: <173697533312.451358.11039936801510899973.b4-ty@collabora.com>
+Date: Wed, 15 Jan 2025 22:08:53 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <86bjw8wj05.wl-maz@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Wed, Jan 15, 2025 at 08:58:50AM +0000, Marc Zyngier wrote:
-> On Tue, 14 Jan 2025 22:33:41 +0000,
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > 
-> > On Tue, Jan 14, 2025 at 03:37:07PM -0500, Frank Li wrote:
-> > > Some system's IOMMU stream(master) ID bits(such as 6bits) less than
-> > > pci_device_id (16bit). It needs add hardware configuration to enable
-> > > pci_device_id to stream ID convert.
-> > > 
-> > > https://lore.kernel.org/imx/20240622173849.GA1432357@bhelgaas/
-> > > This ways use pcie bus notifier (like apple pci controller), when new PCIe
-> > > device added, bus notifier will call register specific callback to handle
-> > > look up table (LUT) configuration.
-> > > 
-> > > https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
-> > > which parse dt's 'msi-map' and 'iommu-map' property to static config LUT
-> > > table (qcom use this way). This way is rejected by DT maintainer Rob.
-> > > 
-> > > Above ways can resolve LUT take or stream id out of usage the problem. If
-> > > there are not enough stream id resource, not error return, EP hardware
-> > > still issue DMA to do transfer, which may transfer to wrong possition.
-> > > 
-> > > Add enable(disable)_device() hook for bridge can return error when not
-> > > enough resource, and PCI device can't enabled.
-> > > 
-> > > Basicallly this version can match Bjorn's requirement:
-> > > 1: simple, because it is rare that there are no LUT resource.
-> > > 2: EP driver probe failure when no LUT, but lspci can see such device.
-> > > 
-> > > [    2.164415] nvme nvme0: pci function 0000:01:00.0
-> > > [    2.169142] pci 0000:00:00.0: Error enabling bridge (-1), continuing
-> > > [    2.175654] nvme 0000:01:00.0: probe with driver nvme failed with error -12
-> > > 
-> > > > lspci
-> > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
-> > > 0000:01:00.0 Non-Volatile memory controller: Micron Technology Inc 2100AI NVMe SSD [Nitro] (rev 03)
-> > > 
-> > > To: Bjorn Helgaas <bhelgaas@google.com>
-> > > To: Richard Zhu <hongxing.zhu@nxp.com>
-> > > To: Lucas Stach <l.stach@pengutronix.de>
-> > > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> > > To: Krzysztof Wilczyński <kw@linux.com>
-> > > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > To: Rob Herring <robh@kernel.org>
-> > > To: Shawn Guo <shawnguo@kernel.org>
-> > > To: Sascha Hauer <s.hauer@pengutronix.de>
-> > > To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> > > To: Fabio Estevam <festevam@gmail.com>
-> > > Cc: linux-pci@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: imx@lists.linux.dev
-> > > Cc: Frank.li@nxp.com \
-> > > Cc: alyssa@rosenzweig.io \
-> > > Cc: bpf@vger.kernel.org \
-> > > Cc: broonie@kernel.org \
-> > > Cc: jgg@ziepe.ca \
-> > > Cc: joro@8bytes.org \
-> > > Cc: l.stach@pengutronix.de \
-> > > Cc: lgirdwood@gmail.com \
-> > > Cc: maz@kernel.org \
-> > > Cc: p.zabel@pengutronix.de \
-> > > Cc: robin.murphy@arm.com \
-> > > Cc: will@kernel.org \
-> > > Cc: Robin Murphy <robin.murphy@arm.com>
-> > > Cc: Marc Zyngier <maz@kernel.org>
-> > > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > 
-> > Applied to pci/controller/imx6 for v6.14, thanks!  And thanks for your
-> > patience.
-> 
-> While you're at it, could you please consider [1], which builds on top
-> of the same infrastructure to remove the Apple PCIe IOMMU hack?
-> 
-> [1] https://lore.kernel.org/linux-pci/20241204150145.800408-1-maz@kernel.org/
 
-Done, thanks for the reminder!
+On Tue, 07 Jan 2025 12:31:29 +0300, Dzmitry Sankouski wrote:
+> Fuelgauge blocks often are incorporated in bigger chip,
+> which may use only 1 line for interrupts. Shared-irq
+> handles that case by requesting irq as shared.
+> 
+> Maxim PMICs may include fuel gauge with additional features, which is
+> out of single Linux power supply driver scope.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/2] power: supply: max17042: make interrupt shared
+      commit: bed41f08e222efb6f77a3a68e847b7a1ad994e62
+[2/2] power: supply: max17042: add platform driver variant
+      commit: 0cd4f1f77ad4f021cd56aad00c1914583c3ddf3c
+
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
+
