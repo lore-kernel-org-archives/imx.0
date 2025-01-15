@@ -1,263 +1,166 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2081.outbound.protection.outlook.com [40.107.20.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D861DB122
-	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 07:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736925761; cv=fail; b=NIW2EGwdWtpyUAYC+fU252AINBksjTnm4dVwOBS2zl1/PB6yEaCH9qg3xtCGN5DzN21KcxBatnVJPHfPl+lYrQAMh+J/Gv8Mc5QT8E3uV7oDqHYX29BTCtN4vxIcPIk4d1dPLr755AJFcAP9SYRydEm/K1rm7H2L3aACu9MqDeA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736925761; c=relaxed/simple;
-	bh=s2EDA8CqKMdZR5Fm67Ma6C1GHvnVEoFNHaEDAbizGVQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mSysHA3mar6g88XVY8nw0k9FdC/bPN+49DKdS4ACFzSqJ5gh9FXKDl9gPuZhSlJHC+yqYtnwDw6JumTpx6YPXrUu7sWASzFWXDelBtvBYNeHpqQEyGdWU6u/NmJgDIIiL+FKZof4piZvkolmAdqiyjw9HOyR2250o1q+iR4IQME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ypi28Ca1; arc=fail smtp.client-ip=40.107.20.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978DF5223
+	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 08:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736930018; cv=none; b=hadtSZOQbxQKKqr5ELXX64c6BHSRPv4f7Xi97/LVy1aQ65VHkfB2TvhrjKeGFT84UStSXNxL0aFc0A9/tcFpsVrpJ5JFyrjvk5cFp1Wsrhr6ABms63aXyVGLLZAFnel1Es/YNyL+Rvn8S8IosfzUd0np8MBj+T2GxQ5jLjy04ng=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736930018; c=relaxed/simple;
+	bh=rr5s78EC3w/9YyGhSVI4b1y7Fm81akbFuF8CSzmLsUU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pINOfkbx8sj3sDVmNVAPC3CmNjPn/Mjy+mS9qMgqwZmqOniwBqqwTNHzYDQxpctenziS8uOj/b9Y/LL4cxGmm1upq0+njMXx2ftOiDlan631B1V1b4WRM7bbi0FKN7922elC0CJUR7pJcgacz0QbiyHZjULm4CfVG6qGAWLrNhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdeZTvwn; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ypi28Ca1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UlnqbG+MEm3ftcGPrY2w9Q375spuykWlnuh9Z+tbngTl5kmghIwgnmsDD3TtQNDiiI+bmRRw41J9SR8A5gj2Rbh3IbH8azEgJCtusMHjao2TUtBnIRVBDH7QX4YetOlQ6D+9+GxxHFs3H/yzLsLjCnER/S+7Gd6r3k8PcYtfemCrjs0KdRpuIIobHnzCThwwLiG9RlbJfkUaC3F428/RJ8tKKisk8/ENIwCFqSB5Eait+HqH+vVNOMePm5nUh4d7FoGPLrgtioihpKCwi9f/5D7UyYhQ0eo3IP/LLHmX2ka51NJePRPR+o+rXGfK1rxPaTr7Q6cDXTkKKM56BPUvBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J7b18xmo5Vf6lwf0KmXV3qi/a5Zv36iNjNxLHEnNTms=;
- b=iNezaUawiCsLhEnc3cXNhxWptOqCGLsdeYNAiILYTgokiwPD/0qoavLvbTwHytnK8vPMJFFc2pNRJYKzsRMi7RTtQdcinYJ+JoRtQowninMYH+zYhJOm2xPifbegh+/0XwsFvLTs/x0xWz4Hoo+Fv6meMimlFQwXvnFyQrZBmIDm7z4Swe2RbGCzZCt1wvIGMMjS6hWC5ZIHkWAlaL64coPnvpArLarT9p2KZuQ4XcTgGOsKHP0i8EWlDwb4pGNNbAepGBwQg65Z7L1Rj7DCaatbFOYIkyJzj6yVnoOpXLZ1qpRHRca5OdZOihFmagbHL7c8Fo5NiS2aod4RZJuzfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J7b18xmo5Vf6lwf0KmXV3qi/a5Zv36iNjNxLHEnNTms=;
- b=Ypi28Ca1JuvlUTlEVklo8pfVn9+V3LzJ4QmEms5HPNyMsKE71JrU6MH2DyeV7pdyUfdXnUKSDEV+gxkO+qwX7ybACXfnLHDqeLjtPeeCUdypL7Kwq6Or3BkaknN4rpUhwBEcsnBWpjx/zhevO5ITjBv9to05rV+Ijb+2JtYVNuCysxx2gwoBNgBLzdPxhCKK0BjEjHhZpdWxNcf0X12A1DHUfve3nW1GrpBHE0KU6/DiAKT2xxrzI26D9KjgtIAWw8aGR6KlC6m6MLj+qu/L+lLV41fpyFCCQ0W/RurqBmdeS9O7+kosSvKlKJY4C8X4NqGPwcwxAMmGDByummoNww==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM9PR04MB8812.eurprd04.prod.outlook.com (2603:10a6:20b:40b::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.19; Wed, 15 Jan
- 2025 07:22:36 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 07:22:36 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Cristian Marussi <cristian.marussi@arm.com>
-CC: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>, Linus Walleij
-	<linus.walleij@linaro.org>, Aisheng Dong <aisheng.dong@nxp.com>, Fabio
- Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Jacky Bai
-	<ping.bai@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha
- Hauer <s.hauer@pengutronix.de>, "arm-scmi@vger.kernel.org"
-	<arm-scmi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH 2/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- pinctrl
-Thread-Topic: [PATCH 2/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- pinctrl
-Thread-Index:
- AQHbVqX+0+eluachFU+QGh2fdZQsprL6Oo+AgAZ4SQCACIpSAIAM0h/QgAAbiICAAU+CUA==
-Date: Wed, 15 Jan 2025 07:22:35 +0000
-Message-ID:
- <PAXPR04MB8459B208BB8FE391C5E58DF788192@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20241225-scmi-fwdevlink-v1-0-e9a3a5341362@nxp.com>
- <20241225-scmi-fwdevlink-v1-2-e9a3a5341362@nxp.com>
- <20241227152807.xoc7gaatejdrxglg@bogus> <Z3Q07EDfN0kTiVRV@pluto>
- <20250106044120.GB14389@localhost.localdomain>
- <PAXPR04MB84595C6840D6B79B728F8B1B88182@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Z4Y3OE8ubIWGiDhb@pluto>
-In-Reply-To: <Z4Y3OE8ubIWGiDhb@pluto>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AM9PR04MB8812:EE_
-x-ms-office365-filtering-correlation-id: ccc698af-9ce9-4432-119b-08dd35356294
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?HwDIhNzY4dbXJQ9wT+6LSIUNGgHK7HXtb+sg8SE7DXxJANDWr9Qi4HbROMcz?=
- =?us-ascii?Q?yPJC+A0L1ryaDfB7wVHubqmn8tGpNjf/MdnqtyY1EgaJbhsZOXibcxs7jAj0?=
- =?us-ascii?Q?8OZA03gtE+77qa3jxMj2DzlhEwoOHPVogBID1I37dCmhvWpBqwSReBy0FFxB?=
- =?us-ascii?Q?UhRcZ5OXL5/RWmoDODVcAMuJo3vThdWFhrGQeHi2Ve0STs6QypOb1ij6NXG3?=
- =?us-ascii?Q?BspixgwDHYx9O/LlytcU7XtX6MdeoT2Kj8M05VijICBVP3tSqNiWhLyV/yDH?=
- =?us-ascii?Q?9hTRu6GzGME2zDshgdHwdgYNyVLFO+se4NssV6j7OacodoOnAdDmOUOgxB2r?=
- =?us-ascii?Q?mQEJMnYJsERdLOYOxhOEiY4HyJdBr4dt6VD13kjPVHhmAUeEgUtu8MmvNGj+?=
- =?us-ascii?Q?FriTK2vNFSBYJygd9ffNLXth0qB1/RfABQllxkZHvjKX+lX+jsBbOckEnCp4?=
- =?us-ascii?Q?KyefcxFitCDLlRGOFcaSjKzXx+N6xmDLUEOYuG0vuakSnqK2B+uo1EGmSyg1?=
- =?us-ascii?Q?9+KST+858mBRYkI92dndt60RtTUcMxV6IZ664BCPK6w8ARaFVuXGar9NabWQ?=
- =?us-ascii?Q?DO97EP1dqmhcitFyQe6brd91uvo5jpcXXnDBldEkez5Duwh1/WfEx2au+toK?=
- =?us-ascii?Q?TMYORXOmqLKkscOnkGZJnbTLSE2h7h4I+adLY4EnL/NnswHtIT3lQ8yNDJd2?=
- =?us-ascii?Q?CRrsA/acz1R1KivW3xAR4rhVddhio4jkX2GTZuYIFYBufR4jlZgvM4sF8syH?=
- =?us-ascii?Q?XHXAQ81gZmz9zkL+v6p2LVt6xdQxUB0xYHZeWc3lWyD7LowKfCRCzZB47H2/?=
- =?us-ascii?Q?oF2aizawDXUhCbslIQTywVlhKINNYGu3NOfCAzFQPUn3pV8XvknsQ8yMCt1n?=
- =?us-ascii?Q?2Kum6kJXx1noiHs0epDOwsE05BnoWuXaXnRkSHfm0JezyJsG0ckaQA4zT4lU?=
- =?us-ascii?Q?cHDig/Ok+PoiX9sXWt+zcrnUt3yaOPbLOmUR2QDzTg9u4mWhBH8ie+kUACiE?=
- =?us-ascii?Q?DHgkJo2vOnj++MUlZaht3isXko2/J9f5e46V2E8nD9hcssg4BPsNPUygVMNs?=
- =?us-ascii?Q?6h1taINcQuF9MFI2U6y/qHPNTsHxHp5cXl1kLG4lgHVoyQYYcEqEqJ2XHg8q?=
- =?us-ascii?Q?Y6ErKaCM3kEJ7yzBNosrzMrRQNTe4dhCprGmW4iyjJHjUFLq8OrAJWyrmdnE?=
- =?us-ascii?Q?EFECrxeQT3dmacq3wzlPFXRhU/UhTcKPpkLup26lQ5ivS9UczjBSMU4yCeLT?=
- =?us-ascii?Q?yBL0Sm3WhVLouczug0Xp9YI2tmlvYOPTUsyafizGByIOkx1hA3RFhh4WLIp+?=
- =?us-ascii?Q?kBhS0jWZ96rwyjzfQcf7v/S6Gl5AyPzAEWbc6+rGCr1E85xhdSyu6aaAE/+b?=
- =?us-ascii?Q?RlcqMG0oqMDBgYKfXdC3r4ol7UCT+tnm9La6a4pYZ8KwTkKlZSzR4Ajn1YDz?=
- =?us-ascii?Q?bhghUnS2Uqo=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?XASHl28l/qKPz2x+DtOYBALLnVrjT/22fXB841O2wh8BEAJt0BqzbmcJZKXx?=
- =?us-ascii?Q?H7KLpYIjFac63WUjztlwXC+zaMznNMvvxEm7RizQkpll2e0rFFA9+6Suf/Gk?=
- =?us-ascii?Q?gwGfNnM0fitFLP7nj0a8SaYl47LNEN04Dhq6zCXm2pRswxEX0v8wAr6hdfoi?=
- =?us-ascii?Q?3GeuqgCV8lpk43ZLe7nclnKVjljvFXmHWgYX0tX86tbC9HH21x2zpoHywlse?=
- =?us-ascii?Q?FoorP9OXI7+6a6gG9g+c+YTa4mxACNJ0IR67Bm02b/eihKeYOtAKonWsAMmO?=
- =?us-ascii?Q?WRFteHn9DWu2u/qUbY3ADuLv6oKa1NBDFthW63GZSengE+pmu7abrTcEoygO?=
- =?us-ascii?Q?IDf6DaJHtFEcS3V8nbuik80wCZpjHLVVNd3xxdQSVo757lem6FHzBdH+xXyj?=
- =?us-ascii?Q?PgT0396stLPU2oVi/1uCzMptM2mlWKlpQvvTFpFj0emLwDdCbloEPG3UVAoW?=
- =?us-ascii?Q?VqvagK465NmfonOFPviS60YXj6BmczZsfiUYI8WonB7IVo4wLUg7wPYYT/8h?=
- =?us-ascii?Q?6wNVyiuyXxoHlrqZ1OPcA12WrOXPy3RBRBjvqQHvBvksWxMtdypFtgzQl7My?=
- =?us-ascii?Q?ybsxUo1+jkcQD6P/TANgH3dTZB1MtPgoFAtYAdxWxS1QKZ/QJaAdqidkMs5+?=
- =?us-ascii?Q?UtNDzjHu+RqenKXTY/EVoGxo6jkdTzxBfmqUQHZnnsVw1BwsXnz+02s0kEo1?=
- =?us-ascii?Q?p9LnNeR1142OweFmZAxwihZk/ADn1SM/3cEwsz+wuTsIrXXF5wdxJxk4Zztr?=
- =?us-ascii?Q?xpsXYIf94CAhMQ/Ypaew2NYTJVUwRYr++ekdPiJa2zrFb5R0HbgwMXg5iXUX?=
- =?us-ascii?Q?IVFPcvrqtPwBkukXwplH4azD/opRpjsAmCn/+877y4KNcwpOmwJD+BqIlv9X?=
- =?us-ascii?Q?xaXoAHmfMs0b6vH7byUhN12PxLRoHjeoL6apZ7bx6qUQpSuwjxQvjB3bGNWb?=
- =?us-ascii?Q?z2u5SW8S4J3gJJ4yH7cKYN8VPx8q7VWbYD8OHN8enyzxDPhsJswjJG1K7rPf?=
- =?us-ascii?Q?7uuyBgW2gIAIoKsHje9n3wgWvVlOkLINmLddfq88u3+77CAK7dcnbESgUWnq?=
- =?us-ascii?Q?rGGO3fdkn3vkXCCoK8osdcvPzMg2ZJ3kZxK8F2vRDlCNpabI7dWfpOxA/v4C?=
- =?us-ascii?Q?H07LiAHJXPM3UH/dtPYJMtznmCceWByajtFZrjVbXr9wusgbmXp6GXhoO0PR?=
- =?us-ascii?Q?5SYGlLbHDR3BkHa/BeMcH3N8octgC8eUEARsM2m0yVPPRbicdYxYJ6jiwLPu?=
- =?us-ascii?Q?15LjdXqSQwBi5WmX20lihT5ejTVXN/YYIlnCPfa+JJc1bpPIo0yU7NW2lqmZ?=
- =?us-ascii?Q?EQUNW2vsFIh8jGtYQzvbS1bWPgGaE5dYK/FxnwTWhHxk9i2/Ltw6xIjX1jCU?=
- =?us-ascii?Q?FWtlOh2PT8Cswx9vXoJpFvUH54CW0NF3s2uCa6fnA43wv/zSmO+HT0qYCDDi?=
- =?us-ascii?Q?elVxAMenv31/rmyn+yuyRFEbSWPNHB6ohWvpK4ppLMgThr4eTpgZk4Tyh14U?=
- =?us-ascii?Q?d36eeVh3e493UHyVJc3ezy9MDMCpjpD2HVLyVqwpgB5p47OesQb46LTn0RlG?=
- =?us-ascii?Q?hGadYvWDjXXOaj/qWhA=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdeZTvwn"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43690d4605dso44351195e9.0
+        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 00:33:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736930015; x=1737534815; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
+        b=cdeZTvwnBDxu1MflbW/rkkIDWp2/x8ON9uYxgQtslUj5ABmoycHkSAw6MPU01NX/tD
+         MnnTVWOTiyzjcDEQSlvr1HTwGsbv4UZf+uJAhOgo197EvPdwtK1WIqhWqOYsXYDLnMej
+         NMIMbmJO3tmZb7S7QElhdELvlhTbldn1x7r2Fy1xL+BVLNBNvfbR5OuSJbm2osKXaoOu
+         z6yvOKb4dXuz9V9BpzfLQrCXugZLcJCIkWiTrU7cX066s9v/8hZ3RqjmNqAofGKD+zkk
+         3UuqI8XJEqOZ8WwT19HgSarSEMPoKjXYhD7qgl0HDKADBDVP8PCJ2ch5YpTkf4VwbcZJ
+         5Jvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736930015; x=1737534815;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
+        b=aB4nnJg8ywkAVJ3kclT1zAvgJ2L9IP8YNcawSZ40Gf3a+WqnBGyrRcdespbypGFdMS
+         9Wz6Vdf0bmO9RPA7HQGCCHqdptC0FVfp1V2vwjgx2qF1mz7VVTHqC56xODVDmfWIiHDO
+         dsM7T8wYj5YenNKhr/4g9M/LR8797X4LDEGab4HK3xSh04Chx8oc4RorBsj/mlVVAnkJ
+         WrO/iXps84lakfcA7iAmJfHkWwjPkcARF4wiBQy9/ApxYEa7dQR6aWj3Jmeq96GIOuuB
+         96EEgilzzTQGYJS4dFTc3IWXESjaZ5uSmd77Mul/YxoY8GGnj2I4eTdRhPvuZSSe6XPg
+         ww6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCViHQxL9kJqF8le4z8h6NL9wnPIVF9HwxDxtBiER7siYlad9LZd5NxbLl1A/uc80mhlhqs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywh7ErxyRZ2C1EgXMeLu4xh6GptpYk+QgzvoiSk55CF3vbs9tZ8
+	B2bLtSe8ibSIxVL0YRNgcN0AAYRRh2udTdY0z6aVyABykSkwrP1d
+X-Gm-Gg: ASbGncszKUw+xzIQk2nGCRKswo3vqUIrAphKG0O99Zq+XXIaZGLmOtpS6qgCLFY+jGA
+	71oKgPGpIn1ShbI0OrGX/KXta+t8n6XBuYZw9QKZCDFt1B9NAJCd0XPeH6VryJUiQjTKbPfo5Kv
+	/+BBn0e3vJD/CahqKylW2fgpwKe67E2GrKhYnGp5xMoct0Rd0vN4662wqgJosBdbyzQPH7oNLoS
+	FSdv/6Cqt2kYUL1IDj9iyCML3H+b5VVP0dfF8O+jL9pdZjTaes/w8xCPZkQk3matgE/hz4e/5H4
+	yIG7ZZge
+X-Google-Smtp-Source: AGHT+IF7Dra5d6ki8O3COk+SLqWcJq2xaGIUHP116tcbjhTFS3reuK1GgRmhqIcUq60sOxi9rfERQw==
+X-Received: by 2002:a05:600c:3b99:b0:434:f925:f5c9 with SMTP id 5b1f17b1804b1-436e266dfe9mr223940145e9.6.1736930014457;
+        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
+Received: from eichest-laptop (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749a127sm15360785e9.7.2025.01.15.00.33.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:33:32 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com,
+	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
+Message-ID: <Z4dy3LiEAQ_gkQGG@eichest-laptop>
+References: <20250113094654.12998-1-eichest@gmail.com>
+ <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
+ <Z4ZRYMf_uJW4poW9@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccc698af-9ce9-4432-119b-08dd35356294
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jan 2025 07:22:35.9533
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BX+aAxmEjslwgv3tpR/YI4ufwyeWZFoB/hXFRXDfUg/A7rbIkj8MTtDCYvUV5YXGxaciNtigbarV3+74SWtY8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8812
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z4ZRYMf_uJW4poW9@eichest-laptop>
 
-> Subject: Re: [PATCH 2/4] firmware: arm_scmi: bus: Bypass setting
-> fwnode for pinctrl
->=20
-> On Tue, Jan 14, 2025 at 08:31:03AM +0000, Peng Fan wrote:
-> > Hi Cristian, Sudeep
-> >
-> > > Subject: Re: [PATCH 2/4] firmware: arm_scmi: bus: Bypass setting
-> > > fwnode for pinctrl
+Hi Shengjiu Wang,
+
+On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wrote:
+> Hi Shengjiu Wang,
+> 
+> On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
+> > On Mon, Jan 13, 2025 at 5:54 PM Stefan Eichenberger <eichest@gmail.com> wrote:
 > > >
-> > [...]
-> >
-> > > >> fix here) than this change.
-> > > >
-> > > >...or indeed this is another possibility
+> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > > >
-> > > I am doing a patch as below, how to do you think?
-> >
-> > Do you have any comments on below ideas?
-> >
-> > I am thinking to send out new patchset based on below ideas in this
-> > week.
-> >
->=20
-> Hi Peng,
->=20
-> sorry for the delay.
->=20
-> Why both blacklist and allowlist ?
+> > > Currently, the flags for the ACM clocks are set to 0. This configuration
+> > > causes the fsl-sai audio driver to fail when attempting to set the
+> > > sysclk, returning an EINVAL error. The following error messages
+> > > highlight the issue:
+> > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on 59090000.sai: -22
+> > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
+> > 
+> > The reason for this error is that the current clock parent can't
+> > support the rate
+> > you require (I think you want 11289600).
+> > 
+> > We can configure the dts to provide such source, for example:
+> > 
+> >  &sai5 {
+> > +       assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
+> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
+> > +                       <&sai5_lpcg 0>;
+> > +       assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
+> > +       assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
+> > +                                <722534400>, <45158400>, <11289600>,
+> > +                               <49152000>;
+> >         status = "okay";
+> >  };
+> > 
+> > Then your case should work.
+> > 
+> > >
+> > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that the ACM
+> > 
+> > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. which will cause
+> > the driver don't get an error from clk_set_rate().
+> 
+> Thanks for the proposal, I will try it out tomorrow. Isn't this a
+> problem if other SAIs use the same clock source but with different
+> rates? 
+> 
+> If we have to define fixed rates in the DTS or else the clock driver
+> will return an error, isn't that a problem? Maybe I should change the
+> sai driver so that it ignores the failure and just takes the rate
+> configured? In the end audio works, even if it can't set the requested
+> rate.
 
-Because there is blocklist in pinctrl-scmi.c and allowlist in
-pinctrl-imx-scmi.c.
+The following clock tree change would allow the driver to work
+in our scenario:
+&sai5 {
+	assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>;
+	assigned-clock-parents = <&aud_pll_div1_lpcg 0>;
+	assigned-clock-rates = <0>, <11289600>;
+};
 
-we need to make sure only one pinctrl device are
-created when both drivers are built in. So to pinctrl-scmi.c,
-use blacklist, to pinctrl-imx-scmi.c use allowlist.
+However, this means we have to switch the parent clock to the audio pll
+1. For the simple setup with two SAIs, one for analog audio and one for
+HDMI this wouldn't be a problem. But I'm not sure if this is a good
+solution if a customer would add a third SAI which requires again a
+different parent clock rate.
 
-To vendor protocols, just need allowlist.
+One potential solution could be that the SAI driver tries to first
+derive the clock from the current parent and only if this fails it tries
+to modify its parent clock. What do you think about this solution?
 
 Regards,
-Peng.
+Stefan
 
->=20
-> Cristian
->=20
-> > >
-> > > With below patch, we could resolve the devlink issue and also
-> > > support mutitple vendor drivers built in, with each vendor driver
-> > > has a machine_allowlist.
-> > >
-> > > diff --git a/drivers/firmware/arm_scmi/bus.c
-> > > b/drivers/firmware/arm_scmi/bus.c index
-> > > 1d2aedfcfdb4..c1c45b545480 100644
-> > > --- a/drivers/firmware/arm_scmi/bus.c
-> > > +++ b/drivers/firmware/arm_scmi/bus.c
-> > > @@ -55,6 +55,20 @@ static int
-> scmi_protocol_device_request(const
-> > > struct scmi_device_id *id_table)
-> > >         unsigned int id =3D 0;
-> > >         struct list_head *head, *phead =3D NULL;
-> > >         struct scmi_requested_dev *rdev;
-> > > +       const char * const *allowlist =3D id_table->machine_allowlist=
-;
-> > > +       const char * const *blocklist =3D id_table->machine_blocklist=
-;
-> > > +
-> > > +       if (blocklist && of_machine_compatible_match(blocklist)) {
-> > > +               pr_debug("block SCMI device (%s) for protocol %x\n",
-> > > +                        id_table->name, id_table->protocol_id);
-> > > +               return 0;
-> > > +       }
-> > > +
-> > > +       if (allowlist && !of_machine_compatible_match(allowlist)) {
-> > > +               pr_debug("block SCMI device (%s) for protocol %x\n",
-> > > +                        id_table->name, id_table->protocol_id);
-> > > +               return 0;
-> > > +       }
-> > >
-> > >         pr_debug("Requesting SCMI device (%s) for protocol %x\n",
-> > >                  id_table->name, id_table->protocol_id); diff --git
-> > > a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
-> > > index 688466a0e816..e1b822d3522f 100644
-> > > --- a/include/linux/scmi_protocol.h
-> > > +++ b/include/linux/scmi_protocol.h
-> > > @@ -950,6 +950,9 @@ struct scmi_device {  struct scmi_device_id
-> {
-> > >         u8 protocol_id;
-> > >         const char *name;
-> > > +       /* Optional */
-> > > +       const char * const *machine_blocklist;
-> > > +       const char * const *machine_allowlist;
-> > >  };
-> >
-> > Thanks,
-> > Peng.
-> >
-> > >
-> > >  struct scmi_driver {
-> > >
-> > > Thanks,
-> > > Peng
-> > > >
-> > > >Thanks,
-> > > >Cristian
