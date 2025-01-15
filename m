@@ -1,123 +1,129 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22D016DECB
-	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 16:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D71D61A4
+	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 18:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736960166; cv=none; b=rufqcitxx6GGY5EjOj4Znlkae7fRAb8KOjk6cZUauW0E9x073I1gHCT80zk6EAUmYeawvIemGbVzB6TMqsSmaRQID3JqTIciP4UZkCuA4K4kOoVjVEn2mY++i+jdf16yT4tBJTwQ/V2FxwTxOrmdK/AFRszhPzLMl4b+7/KRpdQ=
+	t=1736965880; cv=none; b=US2c2WiZskTadPQl1truY4srAI4w5LPLEg/2HR5FVtxWW2q1fJNnPKk2d+xfOVpDnS+vk2tk+zhV97mjfcxUaHQ1Qc5wsb8Q9gQf/c4w3VMlru5nZ3bvXPU3i22DFBziiajlw6yhEemnAugLLVKn/mH4sEQylsB8XIwEw47Rnlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736960166; c=relaxed/simple;
-	bh=RSfkRbCWqIamZDO8E8ElkZP3AhnUl+QQuRPa3vEfpEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eW7hhKEg+rzUCyNQx+JDp1XIkHdFSAJToACLTDAh2PJodk4sh5GpoH40RXLTFvbqClqvTDmKakcEFtMHD5d1LQi7Lg9qE0I1F3GKBTy4/THEp8ytO9ugPJz2CzDHBKRcyV/5DxCzPFTcoIpgaXW755V3jWbB6aaVm6GXfkzOTdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=p+3k0sQ8; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1736965880; c=relaxed/simple;
+	bh=e9nl4zFZHGNpBZJqhNTI3zarOHWaiIaPGa2CaXHxtto=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eBkUqKF2g+gqKkBKXB1mkDeSecfwrdneSxAUz7/7Dwb70Uku+WARtrwsnLz+L2FtgO7bOPdEOq+T3neSIKVk06r4Sw/UgksC+R2xwZV3g4qAsuhP+Q8FdPC7uzJ9t3ZtncEe6Fhqw1o8IQBuKtuq6KfWGn/ZnEC+WzzYxN3DHiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XVoQSRAs; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="p+3k0sQ8"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30036310158so74751fa.0
-        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 08:56:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1736960162; x=1737564962; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xdDOl+2ekFWaRdVJqcysp5umnfHOOWv97QkbmEKnRbk=;
-        b=p+3k0sQ8Di3e1xwCcKYSCZhMvOst7zb1huzNem6E86GtX3BO/iaCVfzhwdLL3vSy4f
-         H9wMYEkwiOtXXc05NHNHqfsn88/i64iS+EJ1jMSKA0dyV4LjueI3lYjsQ3MKrTVQ0g+9
-         WQGJmU01eIBnjpKiFhc1yp+Z5Z87U4WewidtHYb4mvawV2KGQ9DIch3d9QeyTbz0kpSZ
-         xtuNTmZfQoETjHJFpMi9/SD/Z8NvTNVqUXKSABmFLGGLLoXySXkdK9YhIY0ETkl+QRJ6
-         5yxZwCIlYmaZXm2IbC1BPUN3o/4LimjL3W9/lPowNKm3DY4PcZzgZD01oUSsQG43RD2a
-         YaOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736960162; x=1737564962;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xdDOl+2ekFWaRdVJqcysp5umnfHOOWv97QkbmEKnRbk=;
-        b=beZFahvYbE2SlDVNuAFhIfTor2ndTuo2zA7daEHq5yhxKWuxnF+P9k+IlhdBTJ8A7E
-         UN+jAhgHqxvlWRIjf0xi9vvY+ixgj9f9+53AOgj8oANwbjO5nUqqSkicDAUASVIRfta9
-         oXjnwEWxlYp2mfflNx4rj7hFseSDbT/58sa4JlcduQIB8vEqnKDnPd+tChOHi+m9Wr8u
-         gg89Ao4tYfnyuSd6d8oE1i43UiPKmgy4/owWQmCBy4sKS27INm1PiTGqfgHqXv1GLL6e
-         MAHBsmo0q4SJARTbtX5pouGlg1IwmhfaQbN0kfc6xrOuxPvCbmJywGfUT05M7Epn32iJ
-         0hBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+ga7G6XO9xgpdWEnmWrewkCVQ1Qi43gQW0EnBReo5HWvu6inKoK0zhcBzE5QvuLoUxak=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy7w9MdRcJzifNwEHUhWjSkDZsk4Nc4xnQoc7ckiDCxO5ABUDEk
-	FfdqPJDlA3Y8jNIMbQLrpufrPvMYlakTjgJEK4EAkZTaVa3VG2INN5CRcBqexqPrHMAAVYm7Vqe
-	PXeq+3dP1bWE0dgZqEy8V1ji4W4LmRq2sIZYjAg==
-X-Gm-Gg: ASbGncubMb6nDrAPePE8KpuNS3Nne4XIgaodJWmgty+xHz5Kle9UjjzQ1edFvcn9n+9
-	zT+SsTdnso113pyR1+iA4TdVXO4akwrYnNRzWP0PfIpXktQ5GKvBti/tTcb7MmWwC8Qggvg==
-X-Google-Smtp-Source: AGHT+IGVCtsxu4Nxc8II+Al+gawBhAtzB4MYz+9Ecl8oqi13xJMRfbsu1WNLIppYV5ME9m0nmbvdoGhE02xkVmEh7JE=
-X-Received: by 2002:a05:651c:508:b0:302:2cdf:7fbb with SMTP id
- 38308e7fff4ca-305f4531690mr91529781fa.6.1736960161839; Wed, 15 Jan 2025
- 08:56:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XVoQSRAs"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 420B0FF803;
+	Wed, 15 Jan 2025 18:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1736965870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jLoWi3Wg0eiQh/tot5fchMc56NRkY1AedYStPaUs9Pk=;
+	b=XVoQSRAsHPXADFu3jVGI7dBwCecPD+dviwtiINSG7gG2QTYI7ZKoCGbAlzsXnHawAhGKwl
+	24LiXfzCQR3pIZBqvn9qb/WI76bBR/gYM5iK3v27XfrrihWyj6I9DuAIL0fsvT3vsw3I/q
+	czvnLPptcYBnGEnhrm8GhgmQ8vCeUtjENVYUkzFUKo7lU8h2121ib4vf8mK5lggJa2imhw
+	wuKxnh8Eev9ag9+Xsu7zpWrkt2h27deaKdBBBwhgImA9Rm+AwpotMeHj0kiG0/Az9PUc1t
+	KHhtrdM1rJLw5PWkyTBKEJFeu2A3AfGxN8CmN6JVLXE0bXGUEx1cXfp5ava0qA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>,
+	Sanjay R Mehta <sanju.mehta@amd.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Han Xu <han.xu@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Michal Simek <michal.simek@amd.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>,
+	Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Steam Lin <stlin2@winbond.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org,
+	openbmc@lists.ozlabs.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: Re: [PATCH v3 21/27] mtd: spinand: Create distinct fast and slow read from cache variants
+Date: Wed, 15 Jan 2025 19:31:02 +0100
+Message-ID: <173696548250.435435.10416906996871126975.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250110-winbond-6-11-rc1-quad-support-v3-21-7ab4bd56cf6e@bootlin.com>
+References: <20250110-winbond-6-11-rc1-quad-support-v3-0-7ab4bd56cf6e@bootlin.com> <20250110-winbond-6-11-rc1-quad-support-v3-21-7ab4bd56cf6e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de>
- <20250113-b4-imx-gpio-base-warning-v1-3-0a28731a5cf6@pengutronix.de>
-In-Reply-To: <20250113-b4-imx-gpio-base-warning-v1-3-0a28731a5cf6@pengutronix.de>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 15 Jan 2025 17:55:51 +0100
-X-Gm-Features: AbW1kvYbGBKWyTqAigHygOqZRSa-0z8NaBAPzFESViEk5Er4NeXPKYxQ6sb6LgU
-Message-ID: <CAMRc=MfZncRy_Qx_Yi_QjqX2cszv9X9st5Yk87Q7R3Hug2S9KQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] gpio: mxc: remove dead code after switch to DT-only
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Whitcroft <apw@canonical.com>, 
-	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Mon, Jan 13, 2025 at 11:19=E2=80=AFPM Ahmad Fatoum <a.fatoum@pengutronix=
-.de> wrote:
->
-> struct platform_device::id was only set by board code, but since i.MX
-> became a devicetree-only platform, this will always be -1
-> (PLATFORM_DEVID_NONE).
->
-> Note: of_alias_get_id() returns a negative number on error and base
-> treats all negative errors the same, so we need not add any additional
-> error handling.
->
-> Fixes: 0f2c7af45d7e ("gpio: mxc: Convert the driver to DT-only")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/gpio/gpio-mxc.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
-> index 4cb455b2bdee71ba4eb20c93567c3b8db100dbb2..619b6fb9d833a4bb94a93b420=
-9f01b49ad1cbdb0 100644
-> --- a/drivers/gpio/gpio-mxc.c
-> +++ b/drivers/gpio/gpio-mxc.c
-> @@ -490,8 +490,7 @@ static int mxc_gpio_probe(struct platform_device *pde=
-v)
->         port->gc.request =3D mxc_gpio_request;
->         port->gc.free =3D mxc_gpio_free;
->         port->gc.to_irq =3D mxc_gpio_to_irq;
-> -       port->gc.base =3D (pdev->id < 0) ? of_alias_get_id(np, "gpio") * =
-32 :
-> -                                            pdev->id * 32;
-> +       port->gc.base =3D of_alias_get_id(np, "gpio") * 32;
->
->         err =3D devm_gpiochip_add_data(&pdev->dev, &port->gc, port);
->         if (err)
->
-> --
-> 2.39.5
->
+On Fri, 10 Jan 2025 15:45:23 +0100, Miquel Raynal wrote:
+> So far, the SPINAND_PAGE_READ_FROM_CACHE_OP macro was taking a first
+> argument, "fast", which was inducing the possibility to support higher
+> bus frequencies than with the normal (slower) read from cache
+> alternative. In practice, without frequency change on the bus, this was
+> likely without effect, besides perhaps allowing another variant of the
+> same command, that could run at the default highest speed. If we want to
+> support this fully, we need to add a frequency parameter to the slowest
+> command. But before we do that, let's drop the "fast" boolean from the
+> macro and duplicate it, this will further help supporting having
+> different frequencies allowed for each variant.
+> 
+> [...]
 
-This looks like I can pick it up separately from the rest? Is that right?
+The following patches have been applied to nand/next:
 
-Bart
+[21/27] mtd: spinand: Create distinct fast and slow read from cache variants
+        commit: 042087247835dad1ec5e39052abf022fd13c6326
+[22/27] mtd: spinand: Add an optional frequency to read from cache macros
+        commit: 7ce0d16d5802bfde4209e52ee8ad644ca1eab423
+[23/27] mtd: spinand: Enhance the logic when picking a variant
+        commit: 666c299be696f02c3354da104295fb94b8f65d25
+[24/27] mtd: spinand: Add support for read DTR operations
+        commit: 8586bc8d95488dfaadbc1af89ba59900d2c39119
+[25/27] mtd: spinand: winbond: Update the *JW chip definitions
+        commit: 1ea808b4d15b9bddc48af75b0668b82366b5b927
+[26/27] mtd: spinand: winbond: Add comment about naming
+        commit: 61c7155e3fe938d4da4671b2f84e29eaf79f5f46
+[27/27] mtd: spinand: winbond: Add support for DTR operations
+        commit: be7a05db4252edbffb43484b14755048fb8db710
+
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
+
+Kind regards,
+Miquèl
