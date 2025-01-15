@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE7F3594F;
-	Wed, 15 Jan 2025 02:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBFE13AC1;
+	Wed, 15 Jan 2025 02:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736907010; cv=none; b=NDFr+abdhpws/nDYctyMVn4xy3S4MXtzgnB5niJ5tFiSgleOCe6l529pjtGlgIMv2Wea51/CIt9m1mst5plVINmM1/EJHSQIXmy2hQYzIlWX/tkse4C97CP14BPQ3/AbaOqvvG6EUsc2rs+tl/xUThu1EjG8MllIXDGlr+fbLIU=
+	t=1736909407; cv=none; b=Vg1dLKtD87ZUbZxDKiCrDVkltrcYwNdiETvw5KpTgA2iwfruVZQgRWGak/mk6i0oj7fK2wTjJI8KkHUI+qQJqgvl+jhXfe4pQaaTsp/bSPucqI/G4Mx50iLBB8mo/3JE3C8kJkqEAN+Af3uictxDFkuic2USrEE03lZDjvmCnnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736907010; c=relaxed/simple;
-	bh=VkD0rcWwKLY34VeqN/EnCIzaNzNTN+EiI+U6FIg54dM=;
+	s=arc-20240116; t=1736909407; c=relaxed/simple;
+	bh=5vRjQ0Ak6VS4Bjx+qWcc5Jj1D3n45Hd5LDHX8d9QKn8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ibsiHTlnpzZ5Do1NA/ZVypUW9ZWSkSQVdfXt/GuscrJAs3igLN+FWRHXyxQ5+7stgEm6iRqANSEdCcGPThiKXfwua4cgkOmmez4g5NG3F1ZKqZeU4arWt+8vvbdJRRvAaJfU/5OHfOd7fbcPM864bz2b5q/rpKVUw12WLKU4uA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMgDowTq; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=VeI+T2/IA3YGUCuMMQbn3ZSHVx68aTBeqv546E+iHRWBMlMjuJvzfgTftoMwRv1rBBHKA6cOoPNtCUmPqs1iFI6jwj2KRtST7P8mYuBLYeQjt0bsI27kkP/AhI6dGAxt9CwY7OwgzUQWyyUkj11JrN/ryxWX3gjoKT0W+zmazQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XtIAtuDP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMgDowTq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A632EC4CEDD;
-	Wed, 15 Jan 2025 02:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XtIAtuDP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F77C4CEDD;
+	Wed, 15 Jan 2025 02:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736907009;
-	bh=VkD0rcWwKLY34VeqN/EnCIzaNzNTN+EiI+U6FIg54dM=;
+	s=k20201202; t=1736909407;
+	bh=5vRjQ0Ak6VS4Bjx+qWcc5Jj1D3n45Hd5LDHX8d9QKn8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=WMgDowTqRPpbE57sxITSzs/kv1ehXK1gTO23zp8BZbecDWQc0eAcp6YLK85IGhlWI
-	 XG9NokMApljZw4MpAguV2jINE7uVcMsvRxasVIXR9zmy7POqMnTn9Yjt0NAO+G8uWw
-	 t1BOa82Z04DnOA/6lbKvNWx3fBT9k7qtg+lo675KgzLhqHn5xkMC2mQoXQVBeKOq3e
-	 gstguUqUKDFkVT0l5Ax6/3xEKBTbWjCQ5MzACJV5uL7vMkWpNvEDb2bb/wadS5bcKz
-	 hwqVpJYUD0xppn4PLKxTpFs5VbFP/Pkrkfd+KsvhxEvug5S5Xnq+uu3lIWlrtxxSHK
-	 r7Ah36iSz4htA==
+	b=XtIAtuDPC8ZoAKXRSvQZPgrINdu6+yLfXeaxx4hkNSytMzWdJUl5+OUuxxUqWFSvl
+	 6w6q5+Eyn61VkcEImP2yFp0RIszDU3Rw+CcXlHgKi2M6ivUEiCuKfRll1MkRyf325U
+	 ANt/xD0v5GPtuSI2pwYbPnfv2gLrscp0izMghGiLxtmQ9kApe0riBH5JhXjI1lVFts
+	 0o7lbAhgcOCBEhyq1SElfozY42oTWS55sXz5aww/VBmYQL3mS+aA1mit5FkA++zbg0
+	 1qcNBcbEZwGaILamacTtei7hjoOlkfwznQsi/GEOt9mOgP6kPkoMMnXj2U1wMCgOSz
+	 e44EVgZMe+zCw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE10A380AA5F;
-	Wed, 15 Jan 2025 02:10:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 356FD380AA5F;
+	Wed, 15 Jan 2025 02:50:31 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -37,49 +37,39 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/5] net: ethernet: Simplify few things
+Subject: Re: [PATCH v2 1/1] net: fec: handle page_pool_dev_alloc_pages error
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173690703250.220881.14038994805665516239.git-patchwork-notify@kernel.org>
-Date: Wed, 15 Jan 2025 02:10:32 +0000
-References: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
-In-Reply-To: <20250112-syscon-phandle-args-net-v1-0-3423889935f7@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- alexandre.torgue@foss.st.com, joabreu@synopsys.com,
- mcoquelin.stm32@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- imx@lists.linux.dev
+ <173690943001.230797.14718449559307154902.git-patchwork-notify@kernel.org>
+Date: Wed, 15 Jan 2025 02:50:30 +0000
+References: <20250113154846.1765414-1-kgroeneveld@lenbrook.com>
+In-Reply-To: <20250113154846.1765414-1-kgroeneveld@lenbrook.com>
+To: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 12 Jan 2025 14:32:42 +0100 you wrote:
-> Few code simplifications without functional impact.  Not tested on
-> hardware.
+On Mon, 13 Jan 2025 10:48:45 -0500 you wrote:
+> The fec_enet_update_cbd function calls page_pool_dev_alloc_pages but did
+> not handle the case when it returned NULL. There was a WARN_ON(!new_page)
+> but it would still proceed to use the NULL pointer and then crash.
 > 
-> Best regards,
-> Krzysztof
-> 
+> This case does seem somewhat rare but when the system is under memory
+> pressure it can happen. One case where I can duplicate this with some
+> frequency is when writing over a smbd share to a SATA HDD attached to an
+> imx6q.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/5] net: ti: icssg-prueth: Do not print physical memory addresses
-    https://git.kernel.org/netdev/net-next/c/136fff12a759
-  - [net-next,2/5] net: ti: icssg-prueth: Use syscon_regmap_lookup_by_phandle_args
-    https://git.kernel.org/netdev/net-next/c/621c88a39276
-  - [net-next,3/5] net: stmmac: imx: Use syscon_regmap_lookup_by_phandle_args
-    https://git.kernel.org/netdev/net-next/c/1e38b398b671
-  - [net-next,4/5] net: stmmac: sti: Use syscon_regmap_lookup_by_phandle_args
-    https://git.kernel.org/netdev/net-next/c/92ef3e4b3a5b
-  - [net-next,5/5] net: stmmac: stm32: Use syscon_regmap_lookup_by_phandle_args
-    https://git.kernel.org/netdev/net-next/c/6e9c6882f9ef
+  - [v2,1/1] net: fec: handle page_pool_dev_alloc_pages error
+    https://git.kernel.org/netdev/net/c/001ba0902046
 
 You are awesome, thank you!
 -- 
