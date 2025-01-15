@@ -1,96 +1,229 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4250824A7C6
-	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 13:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2823724A7D0;
+	Wed, 15 Jan 2025 13:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736948448; cv=none; b=kg7B8ogpC6a2sREuopsDVhAh7QkMeRCI1/uYQPX0dxIeY5sDIIIJdRpbfWe+LaTlXVT0Cd3V8w8LAf36ISzhUrEJcG0XU6WJbeUZ6PLUMw+Z/eD7/Aia/0yNg3NGgx7id6LHfcl7qMOcyJ/X6C1oIpSZcDou0kUpjB5bo9G4Cts=
+	t=1736948757; cv=none; b=nkC3teHxBsfKazVo+Kaa6XEA79kJSzWMjh5FobJBp8257DooCDOXK0ZSnA8ijjXRaAxxBUzY4n+5bCxB1t60Bf0M3qS5iOuPH2J+QZWUXCMlWXctcQxA2CSWga/WmbnUHILq9xULyamOyE1ZuKsQfGO3kd5nxYPLXhjo7oHsde8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736948448; c=relaxed/simple;
-	bh=ISRDE4tD8KT2AQ2Zab4eqiKfiW9C+Hfm8FDKxGol9EU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNgqIs7HVTDZ+P95X0+DicJpsbRCtJOXuoNy378yy3WWjCDKkdA5vuukqV326gqJ77ebU0OkaWQD4g5uCKBC3XiC6hIpxABh3ZUvOnqVoGyC5/23BH39i8BZraDfZIdrlMMYEhe/8YHxMcDh8c8+Cundh8smWNKzxnpel3g5t2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21636268e43so159245245ad.2
-        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 05:40:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736948446; x=1737553246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SjRxHp95fgWw/A/HfteiujvMA9qxAfC7IB/XFcENGNQ=;
-        b=dlLYKY7znU5Gonf7iYTp/yhQwIUJeUAjeWhtvcWmLo+kNjyN5RH7ZWMFe4mnq2DOl1
-         EOtCiX5fgcuawRbY5M0wZkMLjKlGfMLnekBSzZlOqzPU3n76qySkIk2UDL5C8zFJASqj
-         DOJjwUKCGM50HWXL8i+zLKe8QQhj9DPfvN/I2SYYLq3FooLXrGkF76Gw4qQgWfmQCTyA
-         1eJxgFsXhNe5UlVLGXDMMrBlRETgSLfsZKWCNsYYNEQ5njeeerDGABtbc7sO36+ub8XL
-         pRRl4hz3T+z587STrfJcrCULKGUkowN0k/oredz18pW35l8/WYrCqKG0aSKXDVg8ePxd
-         Jwmw==
-X-Forwarded-Encrypted: i=1; AJvYcCViA+a97LQPISRIdLfJ4TEPmZJsIEI7eP5yEX/oCtu5SBLkxkOv2VV4iLn27/KfVBiBsOk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxhO1/R2vptryh9oMXpk9Sg0Ve19T0M/uFO+QkWX6RIy2a1Yu93
-	BH/kR8smZZPJ+/u7yzHfDO1lSPmI2LTROgtwlMlsJiPrRxhZWL3w
-X-Gm-Gg: ASbGnct+fPsX1jlmF7Wb7x63nBctYNPU5BZYPYTOrWB9gVlv3FX8P6Tb1fU0jEF25eZ
-	N9X+gcQOsCKEBVprMb4wC9eAwjF7ChuI3MRT9IkTRvJRS67HRLZjXg69uGsjqDG+xAHyc0xQHaw
-	3FnDp2cDG4Kgpb0H0SqyUtq0b4ViTPz+Mlj0JWfuQPPB4GGkpjL+qtNCRHqcqgKTRw5kFUqCKzI
-	C0R9NDjR8T0LNahwtcBt22ZAZtiVVzOJKOkGb4oxTOTbf8q00LH0Zvw9P3bQ8nj9JmHBXLIeBbq
-	kS7FZU0mNy75N2Q=
-X-Google-Smtp-Source: AGHT+IFBc9u2m9CIKKe0EemdS8o4PhYCZliHYxexP/9pM9Xw1hjCmQoL6ghLKLnHjOXUvJ+g6cNyvQ==
-X-Received: by 2002:a17:902:cec3:b0:211:ce91:63ea with SMTP id d9443c01a7336-21a83f56f9emr450296855ad.15.1736948446445;
-        Wed, 15 Jan 2025 05:40:46 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f12f919sm82767655ad.69.2025.01.15.05.40.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 05:40:45 -0800 (PST)
-Date: Wed, 15 Jan 2025 22:40:43 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	frank.li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/10] A bunch of changes to refine i.MX PCIe driver
-Message-ID: <20250115134043.GA1049031@rocinante>
-References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
- <20250115130406.GS4176564@rocinante>
- <20250115130609.GT4176564@rocinante>
+	s=arc-20240116; t=1736948757; c=relaxed/simple;
+	bh=b934zu3G0HcZxBB8IkIK44c+dS0hFAjWVvvTYlT82eo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Px2sRQfR0eAGrWdXov6sbJ1fyU9lXxP+yt7SEt961u88flzYbCq/yCEH6/X2ZvTBe9IRtZSigWKNC1bQxKwqXbDntfghfP4hdP0DI0rmjxYSCdc6G3qKKb272gDkuTTuW3ZxAEdcloG+HDSBTowhbYi9GUdQKWwQy9lOB1N52Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TFLFJF3X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qSe023yu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TFLFJF3X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qSe023yu; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TFLFJF3X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qSe023yu";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TFLFJF3X";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qSe023yu"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 49A6821249;
+	Wed, 15 Jan 2025 13:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1736948753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RYyfSaVw6g5xMH+JMHghdrGYmdnvDx9Zhz3pv4DK3Xw=;
+	b=TFLFJF3XySI2ZDMNWqLtnYi9I2CkKelN5grA2a/4kQ0P1TqzT7tSXr4h7/8Ne+Qn4kV+7e
+	tAGkQWxCqwepai1cL8InSYizan9Cfu381FxyhQuTclpqleEGeeZqfcFFnvdBZ7J8flDV0C
+	llifefl5Ww7OTjsLlhec4er0F+GluGU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1736948753;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RYyfSaVw6g5xMH+JMHghdrGYmdnvDx9Zhz3pv4DK3Xw=;
+	b=qSe023yuize08pZVM2Q7kCwRc6uXGuV4ZJmU+N6SFdTO1SX53lQO+DbJQKBt7UwMutw4m7
+	wijvbfZ3D9R6vCBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TFLFJF3X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qSe023yu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1736948753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RYyfSaVw6g5xMH+JMHghdrGYmdnvDx9Zhz3pv4DK3Xw=;
+	b=TFLFJF3XySI2ZDMNWqLtnYi9I2CkKelN5grA2a/4kQ0P1TqzT7tSXr4h7/8Ne+Qn4kV+7e
+	tAGkQWxCqwepai1cL8InSYizan9Cfu381FxyhQuTclpqleEGeeZqfcFFnvdBZ7J8flDV0C
+	llifefl5Ww7OTjsLlhec4er0F+GluGU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1736948753;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RYyfSaVw6g5xMH+JMHghdrGYmdnvDx9Zhz3pv4DK3Xw=;
+	b=qSe023yuize08pZVM2Q7kCwRc6uXGuV4ZJmU+N6SFdTO1SX53lQO+DbJQKBt7UwMutw4m7
+	wijvbfZ3D9R6vCBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C332E139CB;
+	Wed, 15 Jan 2025 13:45:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ctv9LRC8h2cUZgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Jan 2025 13:45:52 +0000
+Message-ID: <4af0b6a7-c16a-4187-bbf5-365a9c86de21@suse.de>
+Date: Wed, 15 Jan 2025 14:45:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115130609.GT4176564@rocinante>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 25/25] drm/xlnx: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Andy Yan <andyshrk@163.com>
+References: <20250109150310.219442-1-tzimmermann@suse.de>
+ <20250109150310.219442-26-tzimmermann@suse.de>
+ <cdbe483d-0895-47aa-8c83-1c28220f4a02@ideasonboard.com>
+ <bc97b92e-7f8a-4b92-af8a-20fa165ead55@suse.de>
+ <f3ba05c7-6e49-4641-a3f9-ba418ebdb7c3@ideasonboard.com>
+ <c6735280-7c32-4319-8ca9-a7305d8117c3@suse.de>
+ <d67adb03-5cd0-4ac9-af58-cf4446dacee3@ideasonboard.com>
+ <0ea6be58-0e04-4172-87cd-064a3e4a43bc@suse.de>
+ <f35cb350-6be9-48ca-ad7e-e9dd418281d5@ideasonboard.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <f35cb350-6be9-48ca-ad7e-e9dd418281d5@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 49A6821249
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	URIBL_BLOCKED(0.00)[suse.de:dkim,suse.de:mid];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[ideasonboard.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[163.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,lists.infradead.org,vger.kernel.org,lists.linux.dev,lists.xenproject.org,ideasonboard.com,163.com];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Flag: NO
 
-Hello,
+Hi
 
-> > > A bunch of changes to refine i.MX PCIe driver.
-> > > - Add ref clock gate for i.MX95 PCIe.
-> > >   The changes of clock part are here [1], and had been applied by Abel.
-> > >   [1] https://lkml.org/lkml/2024/10/15/390
-> > > - Clean i.MX PCIe driver by removing useless codes.
-> > >   Patch #3 depends on dts changes. And the dts changes had been applied
-> > >   by Shawn, there is no dependecy now.
-> > > - Make core reset and enable_ref_clk symmetric for i.MX PCIe driver.
-> > > - Use dwc common suspend resume method, and enable i.MX8MQ, i.MX8Q and
-> > >   i.MX95 PCIe PM supports.
-> > 
-> > Applied to controller/imx6 for v6.14, thank you!
-> 
-> Richard and Frank, please have a look at the code to make sure that
-> everything looks fine to you.  There were some conflicts while I applied
-> the series, and I want to make sure that nothing is broken.
-> 
-> Thank you!
 
-I moved this series to the controller/dwc branch as we have changes there
-on which this series depends.  Hopefully, this will solve the build failure
-we've seen on our next.
+Am 15.01.25 um 14:33 schrieb Tomi Valkeinen:
+[...]
+>> Yeah, there are constrains in the scanline and buffer alignments and 
+>> orientation. And if we say that bpp==12 means NV12, it will be a 
+>> problem for all other cases where bpp==12 makes sense.
+>
+> I feel I still don't quite understand. Can't we define and document 
+> CREATE_DUMB like this:
+>
+> If (bpp < 8 || is_power_of_two(bpp))
+>     bpp means bitsperpixel
+>     pitch is args->width * args->bpp / 8, aligned up to 
+> driver-specific-align
+> else
+>     bpp is a legacy parameter, and we deal with it case by case.
+>     list the cases and what they mean
+>
+> And describe that when allocating subsampled buffers, the caller must 
+> adjust the width and height accordingly. And that the bpp and width 
+> can also refer to pixel groups.
+>
+> Or if the currently existing code prevents the above for 16 and 32 
+> bpps, how about defining that any non-RGB or not-simple buffer has to 
+> be allocated with bpp=8, and the userspace has to align the pitch 
+> correctly according to the format and platform's hw restrictions?
 
-	Krzysztof
+What if a hardware requires certain per-format alignments? Or requires 
+certain alignments for each plane? Or only supports tile modes? Or has 
+strict limits on the maximum buffer size?
+
+It is not possible to encode all this in a simple 32-bit value. So 
+user-space code has to be aware of all this and tweak bpp-based 
+allocation to make it work. Obviously you can use the current UAPI for 
+your use case. It's just not optimal or future proof.
+
+Best regards
+Thomas
+
+>
+>
+>  Tomi
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
