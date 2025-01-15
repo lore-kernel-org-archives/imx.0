@@ -1,129 +1,137 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739D71D61A4
-	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 18:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4511DA60F;
+	Wed, 15 Jan 2025 21:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736965880; cv=none; b=US2c2WiZskTadPQl1truY4srAI4w5LPLEg/2HR5FVtxWW2q1fJNnPKk2d+xfOVpDnS+vk2tk+zhV97mjfcxUaHQ1Qc5wsb8Q9gQf/c4w3VMlru5nZ3bvXPU3i22DFBziiajlw6yhEemnAugLLVKn/mH4sEQylsB8XIwEw47Rnlw=
+	t=1736974812; cv=none; b=OKO7qgN43UjfACEybSiylAXNpkXzMliTJzvZCrIRMHMxOazQCqNh4vliSJzlfDZ9VqZkgvWHxndtgrkzGPG6elfyeHAcOyTqMjAxNBoW2DtufNrXg12Ax5LH0vw4/1HGC5k1UW8CHv3Vv1SrN1PT+cC4X+KvYKgfyXJjkVFBlQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736965880; c=relaxed/simple;
-	bh=e9nl4zFZHGNpBZJqhNTI3zarOHWaiIaPGa2CaXHxtto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBkUqKF2g+gqKkBKXB1mkDeSecfwrdneSxAUz7/7Dwb70Uku+WARtrwsnLz+L2FtgO7bOPdEOq+T3neSIKVk06r4Sw/UgksC+R2xwZV3g4qAsuhP+Q8FdPC7uzJ9t3ZtncEe6Fhqw1o8IQBuKtuq6KfWGn/ZnEC+WzzYxN3DHiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XVoQSRAs; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1736974812; c=relaxed/simple;
+	bh=RlPD0kUWIPW5R0PKSVU27JaRoL2dMi9vvo/1Qhhlx7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MCUbaDarjwH5dmHKNN+ciLjZ7+83Bw1jm8n+TM/OCKldju5m8fihkwUL5m1XekXpa/RdZWnHKt+zA3u+/QqDfCbhPUVdQPIvdAB17erujKj82N/6aw4ICBr4soO8j/7aIIMkBrOSTshVX2/0upKcimjLQnuA43FU/eIohwmaAyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JLrz2I58; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XVoQSRAs"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 420B0FF803;
-	Wed, 15 Jan 2025 18:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736965870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jLoWi3Wg0eiQh/tot5fchMc56NRkY1AedYStPaUs9Pk=;
-	b=XVoQSRAsHPXADFu3jVGI7dBwCecPD+dviwtiINSG7gG2QTYI7ZKoCGbAlzsXnHawAhGKwl
-	24LiXfzCQR3pIZBqvn9qb/WI76bBR/gYM5iK3v27XfrrihWyj6I9DuAIL0fsvT3vsw3I/q
-	czvnLPptcYBnGEnhrm8GhgmQ8vCeUtjENVYUkzFUKo7lU8h2121ib4vf8mK5lggJa2imhw
-	wuKxnh8Eev9ag9+Xsu7zpWrkt2h27deaKdBBBwhgImA9Rm+AwpotMeHj0kiG0/Az9PUc1t
-	KHhtrdM1rJLw5PWkyTBKEJFeu2A3AfGxN8CmN6JVLXE0bXGUEx1cXfp5ava0qA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>,
-	Sanjay R Mehta <sanju.mehta@amd.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Han Xu <han.xu@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>,
-	Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Steam Lin <stlin2@winbond.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-mtd@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org,
-	openbmc@lists.ozlabs.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: Re: [PATCH v3 21/27] mtd: spinand: Create distinct fast and slow read from cache variants
-Date: Wed, 15 Jan 2025 19:31:02 +0100
-Message-ID: <173696548250.435435.10416906996871126975.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250110-winbond-6-11-rc1-quad-support-v3-21-7ab4bd56cf6e@bootlin.com>
-References: <20250110-winbond-6-11-rc1-quad-support-v3-0-7ab4bd56cf6e@bootlin.com> <20250110-winbond-6-11-rc1-quad-support-v3-21-7ab4bd56cf6e@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLrz2I58"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDFEC4CED1;
+	Wed, 15 Jan 2025 21:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736974811;
+	bh=RlPD0kUWIPW5R0PKSVU27JaRoL2dMi9vvo/1Qhhlx7Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=JLrz2I58zheY19rQK47qVvp+t77dq2WMCZsCyasfRIy09JD1KERUCk98ZXRnBnnvG
+	 o7i50NxFKCdsWe97sGCjZhlF6XwW1zEDJRH0wrr0gFCuGRAWnkC65twQLcDXMPuFCP
+	 dUsqKh2CRhaPyNAWNMp+Nqi/XqvCIcJ8FWTpAKMeCg5a3W6E+pLdwuwFwOi77PL86R
+	 hqoA1YQBuH6l7LcEbZ5tawJpXZ4cBt72pebRmdZ1982K6PkrkOMgDLAOnQg+B40PJC
+	 6aj1IEJuKx5Ry8+YO4jwPUQZk+LO8utjRG6HdPnM2cq+Y53kNwPOAoch6Mlx9YCGqg
+	 uQwV5KiA3sbsQ==
+Date: Wed, 15 Jan 2025 15:00:10 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org,
+	broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org,
+	lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH v9 0/2] PCI: add enabe(disable)_device() hook for bridge
+Message-ID: <20250115210010.GA551375@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+In-Reply-To: <86bjw8wj05.wl-maz@kernel.org>
 
-On Fri, 10 Jan 2025 15:45:23 +0100, Miquel Raynal wrote:
-> So far, the SPINAND_PAGE_READ_FROM_CACHE_OP macro was taking a first
-> argument, "fast", which was inducing the possibility to support higher
-> bus frequencies than with the normal (slower) read from cache
-> alternative. In practice, without frequency change on the bus, this was
-> likely without effect, besides perhaps allowing another variant of the
-> same command, that could run at the default highest speed. If we want to
-> support this fully, we need to add a frequency parameter to the slowest
-> command. But before we do that, let's drop the "fast" boolean from the
-> macro and duplicate it, this will further help supporting having
-> different frequencies allowed for each variant.
+On Wed, Jan 15, 2025 at 08:58:50AM +0000, Marc Zyngier wrote:
+> On Tue, 14 Jan 2025 22:33:41 +0000,
+> Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > 
+> > On Tue, Jan 14, 2025 at 03:37:07PM -0500, Frank Li wrote:
+> > > Some system's IOMMU stream(master) ID bits(such as 6bits) less than
+> > > pci_device_id (16bit). It needs add hardware configuration to enable
+> > > pci_device_id to stream ID convert.
+> > > 
+> > > https://lore.kernel.org/imx/20240622173849.GA1432357@bhelgaas/
+> > > This ways use pcie bus notifier (like apple pci controller), when new PCIe
+> > > device added, bus notifier will call register specific callback to handle
+> > > look up table (LUT) configuration.
+> > > 
+> > > https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
+> > > which parse dt's 'msi-map' and 'iommu-map' property to static config LUT
+> > > table (qcom use this way). This way is rejected by DT maintainer Rob.
+> > > 
+> > > Above ways can resolve LUT take or stream id out of usage the problem. If
+> > > there are not enough stream id resource, not error return, EP hardware
+> > > still issue DMA to do transfer, which may transfer to wrong possition.
+> > > 
+> > > Add enable(disable)_device() hook for bridge can return error when not
+> > > enough resource, and PCI device can't enabled.
+> > > 
+> > > Basicallly this version can match Bjorn's requirement:
+> > > 1: simple, because it is rare that there are no LUT resource.
+> > > 2: EP driver probe failure when no LUT, but lspci can see such device.
+> > > 
+> > > [    2.164415] nvme nvme0: pci function 0000:01:00.0
+> > > [    2.169142] pci 0000:00:00.0: Error enabling bridge (-1), continuing
+> > > [    2.175654] nvme 0000:01:00.0: probe with driver nvme failed with error -12
+> > > 
+> > > > lspci
+> > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+> > > 0000:01:00.0 Non-Volatile memory controller: Micron Technology Inc 2100AI NVMe SSD [Nitro] (rev 03)
+> > > 
+> > > To: Bjorn Helgaas <bhelgaas@google.com>
+> > > To: Richard Zhu <hongxing.zhu@nxp.com>
+> > > To: Lucas Stach <l.stach@pengutronix.de>
+> > > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > > To: Krzysztof Wilczyński <kw@linux.com>
+> > > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > To: Rob Herring <robh@kernel.org>
+> > > To: Shawn Guo <shawnguo@kernel.org>
+> > > To: Sascha Hauer <s.hauer@pengutronix.de>
+> > > To: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > > To: Fabio Estevam <festevam@gmail.com>
+> > > Cc: linux-pci@vger.kernel.org
+> > > Cc: linux-kernel@vger.kernel.org
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > Cc: imx@lists.linux.dev
+> > > Cc: Frank.li@nxp.com \
+> > > Cc: alyssa@rosenzweig.io \
+> > > Cc: bpf@vger.kernel.org \
+> > > Cc: broonie@kernel.org \
+> > > Cc: jgg@ziepe.ca \
+> > > Cc: joro@8bytes.org \
+> > > Cc: l.stach@pengutronix.de \
+> > > Cc: lgirdwood@gmail.com \
+> > > Cc: maz@kernel.org \
+> > > Cc: p.zabel@pengutronix.de \
+> > > Cc: robin.murphy@arm.com \
+> > > Cc: will@kernel.org \
+> > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > Cc: Marc Zyngier <maz@kernel.org>
+> > > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > 
+> > Applied to pci/controller/imx6 for v6.14, thanks!  And thanks for your
+> > patience.
 > 
-> [...]
+> While you're at it, could you please consider [1], which builds on top
+> of the same infrastructure to remove the Apple PCIe IOMMU hack?
+> 
+> [1] https://lore.kernel.org/linux-pci/20241204150145.800408-1-maz@kernel.org/
 
-The following patches have been applied to nand/next:
-
-[21/27] mtd: spinand: Create distinct fast and slow read from cache variants
-        commit: 042087247835dad1ec5e39052abf022fd13c6326
-[22/27] mtd: spinand: Add an optional frequency to read from cache macros
-        commit: 7ce0d16d5802bfde4209e52ee8ad644ca1eab423
-[23/27] mtd: spinand: Enhance the logic when picking a variant
-        commit: 666c299be696f02c3354da104295fb94b8f65d25
-[24/27] mtd: spinand: Add support for read DTR operations
-        commit: 8586bc8d95488dfaadbc1af89ba59900d2c39119
-[25/27] mtd: spinand: winbond: Update the *JW chip definitions
-        commit: 1ea808b4d15b9bddc48af75b0668b82366b5b927
-[26/27] mtd: spinand: winbond: Add comment about naming
-        commit: 61c7155e3fe938d4da4671b2f84e29eaf79f5f46
-[27/27] mtd: spinand: winbond: Add support for DTR operations
-        commit: be7a05db4252edbffb43484b14755048fb8db710
-
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
-
-Kind regards,
-Miquèl
+Done, thanks for the reminder!
