@@ -1,166 +1,158 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978DF5223
-	for <imx@lists.linux.dev>; Wed, 15 Jan 2025 08:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D672246A06;
+	Wed, 15 Jan 2025 08:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736930018; cv=none; b=hadtSZOQbxQKKqr5ELXX64c6BHSRPv4f7Xi97/LVy1aQ65VHkfB2TvhrjKeGFT84UStSXNxL0aFc0A9/tcFpsVrpJ5JFyrjvk5cFp1Wsrhr6ABms63aXyVGLLZAFnel1Es/YNyL+Rvn8S8IosfzUd0np8MBj+T2GxQ5jLjy04ng=
+	t=1736931534; cv=none; b=gdNr5cO3dVEba85gg5Qc+7Nf8pc7N9U/xwM35b03f53jUmp3gQE9K2sD2QhVzyhg98wh6H+FBVxQ3beEf0qAkN0qnmk0ikllPYjJOoapURnEWHRdVldmCa1XZ0lH1fwfT0/1iur9MkneA7QI4hmOT9+TWj2z3qGtdWLY3F/BnIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736930018; c=relaxed/simple;
-	bh=rr5s78EC3w/9YyGhSVI4b1y7Fm81akbFuF8CSzmLsUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pINOfkbx8sj3sDVmNVAPC3CmNjPn/Mjy+mS9qMgqwZmqOniwBqqwTNHzYDQxpctenziS8uOj/b9Y/LL4cxGmm1upq0+njMXx2ftOiDlan631B1V1b4WRM7bbi0FKN7922elC0CJUR7pJcgacz0QbiyHZjULm4CfVG6qGAWLrNhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdeZTvwn; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736931534; c=relaxed/simple;
+	bh=vI6Xwhvptn1zlvH6NJeG2RVQFhP751RykEiTaO65sxM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mkLcCiN+XaQgHvDdD0W+bm47KmSxcPKpY02UwBThuUjILjgEkB/Dquh+M6E8N3MNqff2TmtdSqqnih875Q0CyqSm56HW5RHtivqsTrz9NhQV4oW4Xsg+U4I149U2+KZqR3hO1q7vL18RInIUt4hhJd8zQuvvIjkR12lhlx1cBkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhqVzbb1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdeZTvwn"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43690d4605dso44351195e9.0
-        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 00:33:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736930015; x=1737534815; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
-        b=cdeZTvwnBDxu1MflbW/rkkIDWp2/x8ON9uYxgQtslUj5ABmoycHkSAw6MPU01NX/tD
-         MnnTVWOTiyzjcDEQSlvr1HTwGsbv4UZf+uJAhOgo197EvPdwtK1WIqhWqOYsXYDLnMej
-         NMIMbmJO3tmZb7S7QElhdELvlhTbldn1x7r2Fy1xL+BVLNBNvfbR5OuSJbm2osKXaoOu
-         z6yvOKb4dXuz9V9BpzfLQrCXugZLcJCIkWiTrU7cX066s9v/8hZ3RqjmNqAofGKD+zkk
-         3UuqI8XJEqOZ8WwT19HgSarSEMPoKjXYhD7qgl0HDKADBDVP8PCJ2ch5YpTkf4VwbcZJ
-         5Jvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736930015; x=1737534815;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jRbGA5hfKNQNoBMn6E9hxMPXAsQYQxuMoAfdDX+Ku3E=;
-        b=aB4nnJg8ywkAVJ3kclT1zAvgJ2L9IP8YNcawSZ40Gf3a+WqnBGyrRcdespbypGFdMS
-         9Wz6Vdf0bmO9RPA7HQGCCHqdptC0FVfp1V2vwjgx2qF1mz7VVTHqC56xODVDmfWIiHDO
-         dsM7T8wYj5YenNKhr/4g9M/LR8797X4LDEGab4HK3xSh04Chx8oc4RorBsj/mlVVAnkJ
-         WrO/iXps84lakfcA7iAmJfHkWwjPkcARF4wiBQy9/ApxYEa7dQR6aWj3Jmeq96GIOuuB
-         96EEgilzzTQGYJS4dFTc3IWXESjaZ5uSmd77Mul/YxoY8GGnj2I4eTdRhPvuZSSe6XPg
-         ww6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCViHQxL9kJqF8le4z8h6NL9wnPIVF9HwxDxtBiER7siYlad9LZd5NxbLl1A/uc80mhlhqs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywh7ErxyRZ2C1EgXMeLu4xh6GptpYk+QgzvoiSk55CF3vbs9tZ8
-	B2bLtSe8ibSIxVL0YRNgcN0AAYRRh2udTdY0z6aVyABykSkwrP1d
-X-Gm-Gg: ASbGncszKUw+xzIQk2nGCRKswo3vqUIrAphKG0O99Zq+XXIaZGLmOtpS6qgCLFY+jGA
-	71oKgPGpIn1ShbI0OrGX/KXta+t8n6XBuYZw9QKZCDFt1B9NAJCd0XPeH6VryJUiQjTKbPfo5Kv
-	/+BBn0e3vJD/CahqKylW2fgpwKe67E2GrKhYnGp5xMoct0Rd0vN4662wqgJosBdbyzQPH7oNLoS
-	FSdv/6Cqt2kYUL1IDj9iyCML3H+b5VVP0dfF8O+jL9pdZjTaes/w8xCPZkQk3matgE/hz4e/5H4
-	yIG7ZZge
-X-Google-Smtp-Source: AGHT+IF7Dra5d6ki8O3COk+SLqWcJq2xaGIUHP116tcbjhTFS3reuK1GgRmhqIcUq60sOxi9rfERQw==
-X-Received: by 2002:a05:600c:3b99:b0:434:f925:f5c9 with SMTP id 5b1f17b1804b1-436e266dfe9mr223940145e9.6.1736930014457;
-        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
-Received: from eichest-laptop (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749a127sm15360785e9.7.2025.01.15.00.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 00:33:34 -0800 (PST)
-Date: Wed, 15 Jan 2025 09:33:32 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
-	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com,
-	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
-Message-ID: <Z4dy3LiEAQ_gkQGG@eichest-laptop>
-References: <20250113094654.12998-1-eichest@gmail.com>
- <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
- <Z4ZRYMf_uJW4poW9@eichest-laptop>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhqVzbb1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94D2C4CEE1;
+	Wed, 15 Jan 2025 08:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736931533;
+	bh=vI6Xwhvptn1zlvH6NJeG2RVQFhP751RykEiTaO65sxM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dhqVzbb1B+OzzHH3tYcq27OtXwx3B8QUMRaVh7eMTaHQmCLYDZ8dNqqiNj6BXCxNo
+	 Cij4B3TpjBMH137MMS/VkjM8jhuE39hz1Ez9BIz+VjgDMwEuJ8Bf2dwbAIPw27QJQj
+	 b3OnQbxlQU4b5+zpEvhIYr8MdGmK9g6Gx+8IxTW+JCm+uAo87+eGvqEyKWLd7Tyb06
+	 i77XWUK3y6NVbctrB/iiyV7Ov379qzGBlfSIlkCadz2oZ2l9FEQ/rYc6e/Z1E2Q5qc
+	 ekHRD8Bvr2DA44oRnNP6Z2z1gdNUEZTCUKMj2K5Y1EjWAkqVzFDxQDuyXOGHa36GuI
+	 brV0E6djZUfTg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tXzEg-00CPh3-Pf;
+	Wed, 15 Jan 2025 08:58:51 +0000
+Date: Wed, 15 Jan 2025 08:58:50 +0000
+Message-ID: <86bjw8wj05.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,	Krzysztof =?UTF-8?B?V2lsY3p5?=
+ =?UTF-8?B?xYRza2k=?= <kw@linux.com>,	Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>,	Rob Herring <robh@kernel.org>,	Shawn
+ Guo <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,	Fabio Estevam
+ <festevam@gmail.com>,	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,	alyssa@rosenzweig.io,	bpf@vger.kernel.org,
+	broonie@kernel.org,	jgg@ziepe.ca,	joro@8bytes.org,	lgirdwood@gmail.com,
+	p.zabel@pengutronix.de,	robin.murphy@arm.com,	will@kernel.org
+Subject: Re: [PATCH v9 0/2] PCI: add enabe(disable)_device() hook for bridge
+In-Reply-To: <20250114223341.GA495433@bhelgaas>
+References: <20250114-imx95_lut-v9-0-39f58dbed03a@nxp.com>
+	<20250114223341.GA495433@bhelgaas>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z4ZRYMf_uJW4poW9@eichest-laptop>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: helgaas@kernel.org, Frank.Li@nxp.com, bhelgaas@google.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, alyssa@rosenzweig.io, bpf@vger.kernel.org, broonie@kernel.org, jgg@ziepe.ca, joro@8bytes.org, lgirdwood@gmail.com, p.zabel@pengutronix.de, robin.murphy@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Shengjiu Wang,
+On Tue, 14 Jan 2025 22:33:41 +0000,
+Bjorn Helgaas <helgaas@kernel.org> wrote:
+>=20
+> On Tue, Jan 14, 2025 at 03:37:07PM -0500, Frank Li wrote:
+> > Some system's IOMMU stream(master) ID bits(such as 6bits) less than
+> > pci_device_id (16bit). It needs add hardware configuration to enable
+> > pci_device_id to stream ID convert.
+> >=20
+> > https://lore.kernel.org/imx/20240622173849.GA1432357@bhelgaas/
+> > This ways use pcie bus notifier (like apple pci controller), when new P=
+CIe
+> > device added, bus notifier will call register specific callback to hand=
+le
+> > look up table (LUT) configuration.
+> >=20
+> > https://lore.kernel.org/imx/20240429150842.GC1709920-robh@kernel.org/
+> > which parse dt's 'msi-map' and 'iommu-map' property to static config LUT
+> > table (qcom use this way). This way is rejected by DT maintainer Rob.
+> >=20
+> > Above ways can resolve LUT take or stream id out of usage the problem. =
+If
+> > there are not enough stream id resource, not error return, EP hardware
+> > still issue DMA to do transfer, which may transfer to wrong possition.
+> >=20
+> > Add enable(disable)_device() hook for bridge can return error when not
+> > enough resource, and PCI device can't enabled.
+> >=20
+> > Basicallly this version can match Bjorn's requirement:
+> > 1: simple, because it is rare that there are no LUT resource.
+> > 2: EP driver probe failure when no LUT, but lspci can see such device.
+> >=20
+> > [    2.164415] nvme nvme0: pci function 0000:01:00.0
+> > [    2.169142] pci 0000:00:00.0: Error enabling bridge (-1), continuing
+> > [    2.175654] nvme 0000:01:00.0: probe with driver nvme failed with er=
+ror -12
+> >=20
+> > > lspci
+> > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+> > 0000:01:00.0 Non-Volatile memory controller: Micron Technology Inc 2100=
+AI NVMe SSD [Nitro] (rev 03)
+> >=20
+> > To: Bjorn Helgaas <bhelgaas@google.com>
+> > To: Richard Zhu <hongxing.zhu@nxp.com>
+> > To: Lucas Stach <l.stach@pengutronix.de>
+> > To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> > To: Krzysztof Wilczy=C5=84ski <kw@linux.com>
+> > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > To: Rob Herring <robh@kernel.org>
+> > To: Shawn Guo <shawnguo@kernel.org>
+> > To: Sascha Hauer <s.hauer@pengutronix.de>
+> > To: Pengutronix Kernel Team <kernel@pengutronix.de>
+> > To: Fabio Estevam <festevam@gmail.com>
+> > Cc: linux-pci@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: imx@lists.linux.dev
+> > Cc: Frank.li@nxp.com \
+> > Cc: alyssa@rosenzweig.io \
+> > Cc: bpf@vger.kernel.org \
+> > Cc: broonie@kernel.org \
+> > Cc: jgg@ziepe.ca \
+> > Cc: joro@8bytes.org \
+> > Cc: l.stach@pengutronix.de \
+> > Cc: lgirdwood@gmail.com \
+> > Cc: maz@kernel.org \
+> > Cc: p.zabel@pengutronix.de \
+> > Cc: robin.murphy@arm.com \
+> > Cc: will@kernel.org \
+> > Cc: Robin Murphy <robin.murphy@arm.com>
+> > Cc: Marc Zyngier <maz@kernel.org>
+> >=20
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>=20
+> Applied to pci/controller/imx6 for v6.14, thanks!  And thanks for your
+> patience.
 
-On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wrote:
-> Hi Shengjiu Wang,
-> 
-> On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
-> > On Mon, Jan 13, 2025 at 5:54 PM Stefan Eichenberger <eichest@gmail.com> wrote:
-> > >
-> > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > >
-> > > Currently, the flags for the ACM clocks are set to 0. This configuration
-> > > causes the fsl-sai audio driver to fail when attempting to set the
-> > > sysclk, returning an EINVAL error. The following error messages
-> > > highlight the issue:
-> > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on 59090000.sai: -22
-> > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
-> > 
-> > The reason for this error is that the current clock parent can't
-> > support the rate
-> > you require (I think you want 11289600).
-> > 
-> > We can configure the dts to provide such source, for example:
-> > 
-> >  &sai5 {
-> > +       assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-> > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
-> > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
-> > +                       <&sai5_lpcg 0>;
-> > +       assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
-> > +       assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
-> > +                                <722534400>, <45158400>, <11289600>,
-> > +                               <49152000>;
-> >         status = "okay";
-> >  };
-> > 
-> > Then your case should work.
-> > 
-> > >
-> > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that the ACM
-> > 
-> > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. which will cause
-> > the driver don't get an error from clk_set_rate().
-> 
-> Thanks for the proposal, I will try it out tomorrow. Isn't this a
-> problem if other SAIs use the same clock source but with different
-> rates? 
-> 
-> If we have to define fixed rates in the DTS or else the clock driver
-> will return an error, isn't that a problem? Maybe I should change the
-> sai driver so that it ignores the failure and just takes the rate
-> configured? In the end audio works, even if it can't set the requested
-> rate.
+While you're at it, could you please consider [1], which builds on top
+of the same infrastructure to remove the Apple PCIe IOMMU hack?
 
-The following clock tree change would allow the driver to work
-in our scenario:
-&sai5 {
-	assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>;
-	assigned-clock-parents = <&aud_pll_div1_lpcg 0>;
-	assigned-clock-rates = <0>, <11289600>;
-};
+Thanks,
 
-However, this means we have to switch the parent clock to the audio pll
-1. For the simple setup with two SAIs, one for analog audio and one for
-HDMI this wouldn't be a problem. But I'm not sure if this is a good
-solution if a customer would add a third SAI which requires again a
-different parent clock rate.
+	M.
 
-One potential solution could be that the SAI driver tries to first
-derive the clock from the current parent and only if this fails it tries
-to modify its parent clock. What do you think about this solution?
+[1] https://lore.kernel.org/linux-pci/20241204150145.800408-1-maz@kernel.or=
+g/
 
-Regards,
-Stefan
-
+--=20
+Without deviation from the norm, progress is not possible.
