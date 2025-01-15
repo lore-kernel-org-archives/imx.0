@@ -1,114 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28E5132C38;
-	Wed, 15 Jan 2025 22:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20D1DD9A6;
+	Wed, 15 Jan 2025 23:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736978444; cv=none; b=bBvxV5x2c5aq050sNu0zAkjz6UUWlnct+7YbfszxNSDn7/wgHSz4QQc0rxDE/gbJkK5NNOVp/09/w8tN8NK5Pwm5lpkSXG5dK/lMN2Nzzc6fiRR958d44AFKAvp4G4KPJ/3E1WepUbjZ4Xw64XrbEB208xacuivjEiSZkMPOnn8=
+	t=1736982272; cv=none; b=gqKzne3WTxVui4vOU0LgUtxG1uYQY9HMJUP8GXqjCi0C3ddg9AAXv502zB7tBXPinfw2yaB6fhdNHZDH54nl7cTXIRywC2aemj2hu35yapSlrGLHf76AGVAF8Grygsim/VKoREvlo+RDygXW4jAmDQpkbO/Du+LLGWqhIVlOQR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736978444; c=relaxed/simple;
-	bh=keIMQnDJxBzpB6xvALOz2UCHABne6y4Z0KtjLyVep5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HJp4vSzvY0VtLLovCF8uORFYCWaHacKD6BfvVNn33Nmh6WMWmCvEteCYlqJ76zjllbPBIZ4kbML3r6XNhpMEhQ2e3ZlkcDG8Z8KzFiZkfiD4wgET1r2wXs4HGMoFS9T/eIgWhZ4O41ffPn1foOtqVzkN+h1rP2CATomLJ99CJBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iTXpjadQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736982272; c=relaxed/simple;
+	bh=wXuBoyyk9ETcMFkcjs1CAzvucCe5P+ktEzNq56RKFKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=No/NU1gruIXVQkKC8VFhv5m1hLXq0OyIZEGJJL0hUWEUhshUrhtozO8nGunHLoFCE70WzaF9sYC1NxP4AMwBl7wNT24vyXCkIVvLJvzY8ly2HxRkRGh5GbgXlx5xOjyCNdLls+J1zADsbV6Pmz6EhlV3no+nA00jC/nAzN2k+3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndMSRS4a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iTXpjadQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8036C4CED1;
-	Wed, 15 Jan 2025 22:00:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndMSRS4a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EF6C4CED1;
+	Wed, 15 Jan 2025 23:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736978444;
-	bh=keIMQnDJxBzpB6xvALOz2UCHABne6y4Z0KtjLyVep5o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iTXpjadQmUDeZ0NqHYPMeKUPWl24TTEJXe90UuH6alD/w/TPayh70MuTKNekAjDpE
-	 VGaAvz6OaUPLF0gYbwFfqs3Xd4uEmc48PeR/UoQPsV4n250F/RWAQki2ObaYjqcPYq
-	 O+RzY4z2xcBfcqbW+GeD6YSHEKOu9peWXnnroxkmpscbMb2QKCcb3Xzw3KXEmLhg6c
-	 lYL8gXVsXX+uw4/geqD076j9LVuyxGKNgps2oga2SmyKeqatBNNxe6N/Bb7kRVKmVr
-	 TO5Z2iE3Fv23C0VuB7qyn0RbbhU5cOWNsIh3hiT8SOTUibQ6kRClU7wGMO9EOQ85sr
-	 n0Zdppzc/cuNg==
-Date: Wed, 15 Jan 2025 14:00:42 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 net-next 07/13] net: enetc: add RSS support for
- i.MX95 ENETC PF
-Message-ID: <20250115140042.63b99c4f@kernel.org>
-In-Reply-To: <20250113082245.2332775-8-wei.fang@nxp.com>
-References: <20250113082245.2332775-1-wei.fang@nxp.com>
-	<20250113082245.2332775-8-wei.fang@nxp.com>
+	s=k20201202; t=1736982272;
+	bh=wXuBoyyk9ETcMFkcjs1CAzvucCe5P+ktEzNq56RKFKc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ndMSRS4aPOQkcBRM8NZ8koAU62dLa6PMuBifPbWPnqACBtNUs7AkyKfx3Ng/ZaVHa
+	 b/TPH3VpMkqnRFVnjBO9OfxflS9K7ZA9gYYrMy8V0YbO4mTbrf6x8whUPSok08TE64
+	 E1qG2kySB8p3WLmzqXPakm9gS4SF6cI3x1FRKAxd4z6ovPSwnsh1ZHoTo2Kw67J/U9
+	 UWHXiZBMXR/buiJsuaNEWw3/vRb/KFCKk/XbzAMDL3YN4eFDGZTYjPP8pdAahioTw1
+	 8KzQdBlCVlpgm83ybNQPfdNWrjE147p9LYRlSPmZXEa3pKZsjTq74/r3ZYZfZJgSJ6
+	 4e3/DcgTV8OkQ==
+Date: Wed, 15 Jan 2025 17:04:30 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] PCI: dwc: dra7xx: Use
+ syscon_regmap_lookup_by_phandle_args
+Message-ID: <20250115230430.GA560547@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250112-syscon-phandle-args-pci-v1-1-fcb6ebcc0afc@linaro.org>
 
-On Mon, 13 Jan 2025 16:22:39 +0800 Wei Fang wrote:
-> Add Receive side scaling (RSS) support for i.MX95 ENETC PF to improve the
-> network performance and balance the CPU loading. In addition, since both
-> ENETC v1 and ENETC v4 only support the toeplitz algorithm, so a check for
-> hfunc was added.
-
-This and previous commits are a bi hard to follow. You plumb some
-stuff thru in the previous commit. In this one you reshuffle things,
-again. Try to separate code movement / restructuring in one commit. 
-And new additions more clearly in the next.
-
-> +static void enetc4_set_rss_key(struct enetc_hw *hw, const u8 *key)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ENETC_RSSHASH_KEY_SIZE / 4; i++)
-> +		enetc_port_wr(hw, ENETC4_PRSSKR(i), ((u32 *)key)[i]);
-> +}
-> +
-> +static void enetc4_get_rss_key(struct enetc_hw *hw, u8 *key)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < ENETC_RSSHASH_KEY_SIZE / 4; i++)
-> +		((u32 *)key)[i] = enetc_port_rd(hw, ENETC4_PRSSKR(i));
-> +}
-
-Isn't the only difference between the chips the register offset?
-Why create full ops for something this trivial?
-
-> +static int enetc4_get_rxnfc(struct net_device *ndev, struct ethtool_rxnfc *rxnfc,
-> +			    u32 *rule_locs)
-> +{
-> +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> +
-> +	switch (rxnfc->cmd) {
-> +	case ETHTOOL_GRXRINGS:
-> +		rxnfc->data = priv->num_rx_rings;
-> +		break;
-> +	case ETHTOOL_GRXFH:
-> +		return enetc_get_rsshash(rxnfc);
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	return 0;
-> +}
-
-Why add a new function instead of returning EOPNOTSUPP for new chips 
-in the existing one?
-
-> @@ -712,6 +730,12 @@ static int enetc_set_rxfh(struct net_device *ndev,
->  	struct enetc_hw *hw = &si->hw;
->  	int err = 0;
+On Sun, Jan 12, 2025 at 02:39:02PM +0100, Krzysztof Kozlowski wrote:
+> Use syscon_regmap_lookup_by_phandle_args() which is a wrapper over
+> syscon_regmap_lookup_by_phandle() combined with getting the syscon
+> argument.  Except simpler code this annotates within one line that given
+> phandle has arguments, so grepping for code would be easier.
+> 
+> There is also no real benefit in printing errors on missing syscon
+> argument, because this is done just too late: runtime check on
+> static/build-time data.  Dtschema and Devicetree bindings offer the
+> static/build-time check for this already.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 27 ++++++---------------------
+>  1 file changed, 6 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 5c62e1a3ba52919afe96fbcbc6edaf70775a69cb..33d6bf460ffe5bb724a061558dd93ec7bdadc336 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -635,30 +635,20 @@ static int dra7xx_pcie_unaligned_memaccess(struct device *dev)
+>  {
+>  	int ret;
+>  	struct device_node *np = dev->of_node;
+> -	struct of_phandle_args args;
+> +	unsigned int args[2];
+>  	struct regmap *regmap;
 >  
-> +	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-> +	    rxfh->hfunc != ETH_RSS_HASH_TOP) {
-> +		netdev_err(ndev, "Only toeplitz hash function is supported\n");
-> +		return -EOPNOTSUPP;
+> -	regmap = syscon_regmap_lookup_by_phandle(np,
+> -						 "ti,syscon-unaligned-access");
+> +	regmap = syscon_regmap_lookup_by_phandle_args(np, "ti,syscon-unaligned-access",
+> +						      2, args);
+>  	if (IS_ERR(regmap)) {
+>  		dev_dbg(dev, "can't get ti,syscon-unaligned-access\n");
+>  		return -EINVAL;
+>  	}
+>  
+> -	ret = of_parse_phandle_with_fixed_args(np, "ti,syscon-unaligned-access",
+> -					       2, 0, &args);
+> -	if (ret) {
+> -		dev_err(dev, "failed to parse ti,syscon-unaligned-access\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = regmap_update_bits(regmap, args.args[0], args.args[1],
+> -				 args.args[1]);
+> +	ret = regmap_update_bits(regmap, args[0], args[1], args[1]);
+>  	if (ret)
+>  		dev_err(dev, "failed to enable unaligned access\n");
+>  
+> -	of_node_put(args.np);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -671,18 +661,13 @@ static int dra7xx_pcie_configure_two_lane(struct device *dev,
+>  	u32 mask;
+>  	u32 val;
+>  
+> -	pcie_syscon = syscon_regmap_lookup_by_phandle(np, "ti,syscon-lane-sel");
+> +	pcie_syscon = syscon_regmap_lookup_by_phandle_args(np, "ti,syscon-lane-sel",
+> +							   1, &pcie_reg);
+>  	if (IS_ERR(pcie_syscon)) {
+>  		dev_err(dev, "unable to get ti,syscon-lane-sel\n");
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (of_property_read_u32_index(np, "ti,syscon-lane-sel", 1,
+> -				       &pcie_reg)) {
+> -		dev_err(dev, "couldn't get lane selection reg offset\n");
+> -		return -EINVAL;
+> -	}
 
-Should be a separate commit.
--- 
-pw-bot: cr
+Wow.  I believe you that syscon_regmap_lookup_by_phandle_args() is
+equivalent to both:
+
+  - syscon_regmap_lookup_by_phandle() followed by
+    of_parse_phandle_with_fixed_args(), and
+
+  - syscon_regmap_lookup_by_phandle() followed by
+    of_property_read_u32_index()
+
+but I can't say it's obvious to this syscon- and OF-naive reviewer,
+even after tracing a few layers in :)
+
+Bjorn
