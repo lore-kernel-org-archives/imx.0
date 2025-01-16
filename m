@@ -1,266 +1,197 @@
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2056.outbound.protection.outlook.com [40.107.21.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B26545005
-	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 04:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737000090; cv=none; b=Yq7lITX0ng3ME5l7uuyRGOo/rcaPOuz3sow37KpXVswL9OdSugn/X0Pkq4tV8n4XR3UpRnyVjSJvPNsm6Dpnz7Kmk0Kwjq4UfYDJoLpzgYXQHdOLYfLPphyLid4k6QPqpOI0fuWP0lVEloM4E1CMNAbJ4bY9EhrtvdeOtc/3YYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737000090; c=relaxed/simple;
-	bh=t3x2c8yD8TamSxAoUDt4VHvIAH2qKQef+BxbaMcI5bU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mcyy1UGKBuAzCo/qiYLLKzKLR8TzHe8t3cL3el1as3PS0AOjtaW88c/Wqgln5qNzrDihwxat70jxtEFQKlNznj9nvPQ7wQNrfElaNlZNu51Qoxz9o3auh8thrzXJVCi4Jagt1Xn3m8T1BGh/eEEg1sKf1UzTHr+w2/YxGdiZ3Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bgsOxOP5; arc=none smtp.client-ip=209.85.166.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B065B45005
+	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 04:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737000241; cv=fail; b=adK+pfVUg0E+9OouAP7QxYbxWoRHk+idJMvmzGjeu9apxT3M/6vzYbT3H6VKddF7OdVvny7AGEyvfeJL5vv4WhIr2pLFq5SKsfNGbaH7IO1z9h5GjE8AgvnhVm5cvfv9CnxDObfO0cAdmCukJIGP/JAEU3t315s3VCkgzRwHL6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737000241; c=relaxed/simple;
+	bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=o74CS/j+Vf2gdkTcEr+WygYJackS93lZrQBtiPVGSw9WxrKNBjKsrPpX854ldLv6ZmEMSxrT7k6y+4CXKgjCVv85h78QHJMsxLcQUtbNL+bgHo77DUwhsFYNmtNUVvuCwXaXHPrht5cbiz45JuFNhduhi+FHbB5KZ0sr/t+1or8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KYhPswJU; arc=fail smtp.client-ip=40.107.21.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bgsOxOP5"
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-844e55a981dso13890139f.3
-        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 20:01:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737000086; x=1737604886; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9M4SyKYooW3q4Dei0iCf9xE9Hjb2tN9dOmHlNyoAFI=;
-        b=bgsOxOP5xQubpkN959OuMh7BTelRuuhO0PcYPcQa+yWJ+u1MfNm+0bxgKMXaR88A4N
-         +0DcUzErItXE0dm8MOFfA+F7/ZqsXMEACCOud6L4Xs6ZeW9y83Q21j3+AJIhb62tC+C0
-         zxheijlIP8RHv+z/IECuDJIsXAsACazvWZldPMyiMzzp5D3fh3jPSiwzaj/nqnz88oOx
-         cZiF+epo/EOx2Ke9ePysFY60HIxBLcUcqVIW9nU6/i95S1iXdWcYrBSfxKRzySZjxgc9
-         TLl67BqIDR4iv6vBFyLaAuATg7n/kRZcP6cjde7K8WqNV8xUrL7gPz6WkxGUUqM1b3H2
-         Qbsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737000086; x=1737604886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o9M4SyKYooW3q4Dei0iCf9xE9Hjb2tN9dOmHlNyoAFI=;
-        b=etuHfZBXKlH3ytQzP90SjHLbnSPMNhId0FqGWSDVD5O0KBwE0ycNJnUkjQkDrg26Zd
-         8W1xnP8JQH9w9hr13pwptVqGrDZ9faoTu1oIHAm/RAkpM0EdQfJ35bhvHaLAEP4hmA6+
-         GoDtPtzkpUOkXZUzdKhICycZ+7ZMShA6C9WGACt5vfwCWzyORFR/QrYra5vVWObIxGB9
-         bRAfhvjtZxwjAS5i62LmW5ewEg6t+kfYBkdCcsUzQlGaPnadgePujbEOyV7JEk6wCgtm
-         sPUD6MXwslobLq1msK5mYANbY3Qcc8fHTEHbgr2bTVwGK8SaL3G6Y/kjSE4Ze8zSzdBi
-         SN/A==
-X-Forwarded-Encrypted: i=1; AJvYcCX6ZSJavVQIh2CrnNh7HkjlIjtBrvnOXj+w4Y2KO/F/DGGgRIqYuYAwraFx/KIf+tjPpCA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxogSRsq4qDmhmkxjR93fzJSLT+2XvibuGA2UBo/UV2ZLkvWjqh
-	ZZRq6tx6nC6F7RCuVmOTZgCBJXmxYb5bjmjnFggt3t20EbkGNK54oAf6kHGIPNkIoEq47z/p181
-	kdE79R0sWNuzis44N9OCYEJ5DRLj9BLNGCB0=
-X-Gm-Gg: ASbGncuebmDtAKl3TrqShTvCb2IkpSL1uKMTwmJwxGZvoCkZIOWlGNhktpwbxRSsprz
-	mmdM+968I5QYKP52z6fyPuJUJ479s8E0Qz7BI3g==
-X-Google-Smtp-Source: AGHT+IHQyfRw5kKg9ivPpFGOXhquLee3vQrmRPw5XCpd5KhNgurc5hPjzNgvG44Ia/WHmiwvSs0BEBCDTkY0jsl8GJw=
-X-Received: by 2002:a05:6e02:198a:b0:3ce:8cd1:f671 with SMTP id
- e9e14a558f8ab-3ce8cd1f9b5mr42766315ab.21.1737000086327; Wed, 15 Jan 2025
- 20:01:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KYhPswJU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UVO94YicnQIhhAkmg3BDvw6KBpRA/J8eccQ+r2L2m5xHQm2Z0Ecq+nsYSaAR3+6CYu03NIUYVGB9cVr25wNXeyTNpm24cOa4j7yW4p44sza2TkM1Ek5wODG7ZqXlU5NN1RG99+JUautsNOL4tBm/YhFdws474LcF6HWc5lZ80dAqoiq98uuHT7GyjP2YxH7I9uaN1tRqDeoL2rDxvXc/goT3gtULcNIocBiDqlpDSJ658yfPCntxsOtXHfv/VbpqgB9kh7wv5XrXlbafD8EnBLIhDQWH+Sj/6CSKt21CDkBNVO08HNSumvS1+1O7tkYDts57Sdna2diSNzczI1wO5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
+ b=gg1iDAV2kgIAmYuYVyhaEc8QyhCkc+OnmBIFet1FjwMisGpdGm8iU5RMjfYV4KcKzPXj2Y+8G7lkPxRFAh+SSxGyz1bo08RpcsIhjoc49bCbKcLPMgN0AuD6ox/CLUQ6//wYwEGgCydA00Wf5PtuYtvf3oQaM/P4PKU+g+AufSQyEGaDyt95k1g6xTa9EKYFTIgvzp5KMingkqU7lKoMOT51/bNgNeKJyM3o+FnTRtnJq7175CVuGdWOAIbaAfhXWp3hWbFUvAEs44V4TTgIkCZqKOgYkdD5HMtNuyI1W+OgP3DPtx+a24p5nIhIujixGE4y4gVwapclYVBuVGeWpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
+ b=KYhPswJUHuRFCQQU7BllNRMm9BzFRejCc+td9LbkqjN7xmHFAwoqvxr/UGu2u+7jczBC1v+ZqzSQIAwvViXIIF90eNbVVKTOLWW/uKtAc41303uPWQAhWfVAxqj1JNI2i9LRNjoGnyv2vK30TiV0/DTVbz1FgjWx5OxAuAqAvHxnwMYEocEGKqTtwN9st7aX/8VtIFeYVWSIy7fTNi096/osH0pB5TGXOMATlcDnnOaM37tpqX8x1uXe3HsNMXJwfaJB7UzdmQq+vjm4+ZeHVdOiK9BmhyOuVnmchMiar11IjPdK6zS0/EhesKjCLQDTGhYa7ItWbv01V6uimpuPXw==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBAPR04MB7413.eurprd04.prod.outlook.com (2603:10a6:10:1a6::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Thu, 16 Jan
+ 2025 04:03:54 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8335.017; Thu, 16 Jan 2025
+ 04:03:54 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: [PATCH v2 net-next 07/13] net: enetc: add RSS support for i.MX95
+ ENETC PF
+Thread-Topic: [PATCH v2 net-next 07/13] net: enetc: add RSS support for i.MX95
+ ENETC PF
+Thread-Index: AQHbZZbFHVAXua2Zbk+OQT+Myj+77LMYZqkAgAA+4eCAAA91gIAAFkEA
+Date: Thu, 16 Jan 2025 04:03:54 +0000
+Message-ID:
+ <PAXPR04MB85106EFD7CCC559489C00401881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250113082245.2332775-1-wei.fang@nxp.com>
+	<20250113082245.2332775-8-wei.fang@nxp.com>
+	<20250115140042.63b99c4f@kernel.org>
+	<PAXPR04MB8510B52B7D27640C557680B4881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250115184105.139aed9c@kernel.org>
+In-Reply-To: <20250115184105.139aed9c@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DBAPR04MB7413:EE_
+x-ms-office365-filtering-correlation-id: 43ca630f-d395-444d-1ab5-08dd35e2cb60
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?gb2312?B?VXBURmFoQXFPZTVrT09xN2tkc1V0ZDB5NkFtRzdJVEkzd3dxbHNyYUJhaE5U?=
+ =?gb2312?B?eHJ1cklhSERrSS9Hb3JGaG9MaURsaXRnb3pBOUIxYysvTHNNRXZaOWdYOFEx?=
+ =?gb2312?B?dW00NmdLVERyNkl6LzlBc25tSWJYSjFZVTdOZS8zSHBFU0R4T3RDZlF4VjQ5?=
+ =?gb2312?B?U2E1OUx6d0FKcVZVUkQzTUs2K0xSdHU3WWpFVXQwbnJqNlNnOXBuYjRyNXVa?=
+ =?gb2312?B?YTdySVBUOEg2M1cwK1BXeGZIKzVLc3EyYnFBUU1FQ003SE0yTU43SXhZbkpU?=
+ =?gb2312?B?dGJDVDYvQUdIU1lneHlGZWhPRkpNSklwRzdMMnM2endsY0pzbjBMNVhOUVlJ?=
+ =?gb2312?B?WW43cXZHZWpCVjk0dUt3Y3NIV20zYlFBd2laaVdRV0UyYUVDR09MaXVQdnRk?=
+ =?gb2312?B?ZFJRSzF4bllIYjNrSjZlVFM5SkFCS3ljTnFERitzdnh2Qk5HL1llellNNWV1?=
+ =?gb2312?B?bFBWaEtWVGFjRnovUzlhSUhzZ2R3QmxYTGhEU2pIakdwMjRtSkdSQUJoTDV0?=
+ =?gb2312?B?dzZwMVMyeVVnTmVWTjMwL0dxWXBmb3diaWQxeXU3eG93c29yNTRWMDJEbzFV?=
+ =?gb2312?B?L2I2MTJaRU52cDRKVjRHWVE1QzRodzZhK0pya0V0WS9sK3lJdXVCblN2Nll5?=
+ =?gb2312?B?Z1ZWcVlBY0xtOVY3eDF0NE5QMGJlSXliQyt0S0tyck1KNUxHbVV4M1dIOUFj?=
+ =?gb2312?B?aER0MTl0MnlMd1VCN20wUkFUamszUC9JYkJud3hiYkxoVmRXeEsveldpNzkz?=
+ =?gb2312?B?N00zVDZPZytpNU13S1ppRlYwbTBLa2h2Z3VOaEVvb0JpR0Ivc3VxbFNxK3RQ?=
+ =?gb2312?B?WnkyL0VLWnB6MFExQmNGME1lN1NDRWRSSjJ1WEN2ODVZVzFvRFZvMVlUbmJ4?=
+ =?gb2312?B?STh4N2tTTnRyUTQyWXRFQjd3dUxWdnJlbFYzY2ZCcnZlS3hiRHN1clpybFVo?=
+ =?gb2312?B?Y2lScGNBelpPR1NieDFvaXRZTmU0ejNoM3dpSDcrTlE2bzN5dE5CMGhEeTRS?=
+ =?gb2312?B?SWFieDRQTmN3TDZNd2NMd3dhN3ZxLzZCcG9RcTF1c01LWFY2ZW8rRWVZcWhE?=
+ =?gb2312?B?cUdQWGNRbFliWlRzMkM0ODJpRTNiZVMwRUFuOEJoK1dtNmpwUkxVeUF3SStv?=
+ =?gb2312?B?K2doejFzd25jVmpmb0plSWRNWFNuRkpPQnBrTVdDSmFGSnZRSlpYMld0bVBS?=
+ =?gb2312?B?c1NNbjcyRzcvbkIyTmhOWW1OWU94cm1IL2RzNm45eVc0cjBpWjgwTEFHeHdF?=
+ =?gb2312?B?UTNBRFBTZEVQQlVBREVaNlNvcjVCdGl3U3pNN0w0dmJCMlk5WUczRXZBYzFE?=
+ =?gb2312?B?cU9HK01ZK21QbGhMWUs5a0Fkc3FFdVVpUWtPWE5hY1RLam1QeGoweU1YZmVW?=
+ =?gb2312?B?c2xUL3B3WWhOWU5Kd21JWVpDckg0bEpVWlNFUmxUOFdtVVQ4KzZSbG4vL2k3?=
+ =?gb2312?B?YmpYeVZrQXdyNlZDWS81RmVQRk9nOU1ZZi96WHZRZkIrR3ZJcGZUZjFiclk3?=
+ =?gb2312?B?YlpCRzJEMEdwNGhXcmVqS202cE51d084OGR6aXp3WEpwdzNPbUpxRWhlb1BF?=
+ =?gb2312?B?TW1IUy8xdkJFNFE0bjFVSFp0dGZPTmdKRVA1UkZhck00UExMb1BNcnFNR2pq?=
+ =?gb2312?B?bWxVMXVjSFhDa3k0SUVYZkxoVHFWc0FJRjdBNGtYNFU3YWtKS1BQUm5USjFN?=
+ =?gb2312?B?d2dmOGRlaWpUYVYxS2VKYllaYTNGeHlQMC9jbDNVM0lqUU8zUE1IV3FPWGho?=
+ =?gb2312?B?VjFrdmlkS3FXenQ3SzUrakZNZGdsc1VMeFU2SEFFSFp2dCsrMWQyU01kZ2gx?=
+ =?gb2312?B?bmNaOVBaMEdCYzl4WHJzdnBlNWpRT0lEYUhoQ0R3T254ZitXWDRrem9kaXps?=
+ =?gb2312?B?b3F0TmxubXRQRHppaDU2a2FIR2dBc251SzM3ekxhNzdCYVFzYVkzV2NaRXFO?=
+ =?gb2312?Q?UX3+W3dphBGafyPgb9dvgWx9xWM9aYtJ?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?Wmw2emRuZ2xqSUtKaDdxR05rQTY2TUlHUHdUdC8vWkJRZGpVK2ZmTG1YMjhK?=
+ =?gb2312?B?TGxaL2tzNStSU2ZwSnRuRG03YlJVUjM2dGZ3VEg3NjgvTld3Wkg5Sy9aRFhN?=
+ =?gb2312?B?WjlwQkFiVFdub0o4NEYyOUxpRi9kNjlIM3YyWTJHWHl4YncxNHVqZzRMZ3RF?=
+ =?gb2312?B?ZUZ4YUJoVVVZWndZam1DWEIrdTBtZzhBOFpJelNFbjJUaS9qS1lrL012Z0NX?=
+ =?gb2312?B?S0s0S29mL3RLVHBxM0JsWkxjWG1RRFpjRTRPcHJtNHRpalp3WlEwdFJFNVlG?=
+ =?gb2312?B?b0d2eFVVRDY4TGQ4MUJpaFh1dWdZT3M2NGsrNDBYRUt6UitScWNveEgwWEwx?=
+ =?gb2312?B?dmJhTHNUaHBTbzhRdjE4dHdhNERzOGlsRERwRGRlcDAxRk9WazlPNWVCYUdp?=
+ =?gb2312?B?SnNlbWNYbi9vU1hONFNvSU05UGVLcWFiZEVxczhTeG5qR1ZJR1ZoekxnSnpV?=
+ =?gb2312?B?SnJucHgrYjZuNW1ub3ZvamJDcmZhNmZFN3RTbERKSE1ZdEQ3ODRBSmVEZlRS?=
+ =?gb2312?B?VVRoQmxLMlhGeUNHaWxVN1V2T2YycFhrZlFwQXBNMTB6OHh6eGhTdWg3bGJo?=
+ =?gb2312?B?d1VzK09SZTJVNFY2OHlSZ2RaMjYrekRadG9ZeW10eHk1c1dscUZ6ZW84ODdw?=
+ =?gb2312?B?TU5VWTNKNjJWc3llNlI3Nyt6QW0vWTRVbVgrMERYTzlHZzFBMVpkWG8rU21Y?=
+ =?gb2312?B?TGtCalhuWmY3MDh2MGtTMm9WTnhVWnJidUxHVlBVdVorZVhoSW8ybTZrb3Rz?=
+ =?gb2312?B?U0VyeVgxZ0VMN3A1alV1cktBaUR4Q0JmSkJTMEdoMlBLVGVaWkEvcGxGRDMz?=
+ =?gb2312?B?TkEyUzlnT0h3dVk5UUpTbU5RckpyNTRxTitXY3FlV0dEQ293YVd0ZEVpbFRL?=
+ =?gb2312?B?YllURFlVZTJrZE9SSkpTYitoL2p2R0xMU3NhSTB5d0hwZFhPRTh0TGxidHFi?=
+ =?gb2312?B?a1g4N3d2VGRBL0UvV2ZvN2ZWQzBzL2R2V3M5YWlweGoxTmZtcmhqUExpeFF0?=
+ =?gb2312?B?cWpLQ0hnZlJxaitTbHhLdTIrSGJCUHFTblFkbkY3bjRKemRjUUFsN3d0MWdQ?=
+ =?gb2312?B?MkFnYUFDM0YyNVJzMTB6NWZnUitpRVpaL3dTTEZNZENpaWcwTURBKzdXeUZo?=
+ =?gb2312?B?REc2UE50YnQwbWNkdkIzYkQzaGxyZmFNMlhHbTJuNnoxZWtRa2tPWnlFYzBK?=
+ =?gb2312?B?Y2FGRHljY0lCRHc4bHVCaHZDQzdJYTBaZEZqYlZ1WGtoZ2JRZ3pIcUppd2Vn?=
+ =?gb2312?B?NVRVRkJKNGZFZTEvSUdMWTlXbEwzelA2QXVIbW1ZNEtmVlo2WnlhbEY2SC9z?=
+ =?gb2312?B?dlRMTzYzL3dzV01Ic2hVRFFTN3NsOCsrMkppbWdqMWZYK2gweCt4VUY5QUEy?=
+ =?gb2312?B?NFZzWThiTmZwemVFZTdCR1NvZWdtMkhrWCtLQ09GblFOdnpOWGQxYW43YVFu?=
+ =?gb2312?B?dmRDUU1zeFVDYTdWNHJ3Zmk1ZWV2dW9BZ2VsSXU1cHhsdFUxdXA2czZDTU5y?=
+ =?gb2312?B?UjBIMm9zM1lmZ2xmNHpKYWdXVmdTemQxVzVxTDhGOTBGbFlnYzg5RVV1ZnFQ?=
+ =?gb2312?B?dlZKQVlpaFBrUmQ1L3BwZkpWeDNlVDBDQTlZT2JWYmJYTFVjOStYM1ovQTRs?=
+ =?gb2312?B?amtTVWZ5MW5iQ080L0JwMjlCRXZMWVlMcGFlRUF5Sng2WVNhSFVKdmp3ck9h?=
+ =?gb2312?B?bm9OejVSZGRYbUdYTWhGNXUyNXM1RUhpZktZTVEvNHluOFhoRXcyOE9vRHlj?=
+ =?gb2312?B?VlRHZ2RTSzJqbE5NS3d4Z0xaM1k3VGQ2OGM2TUI5eXNxSU5tMUlKNVhxc1dW?=
+ =?gb2312?B?Qjcvblo2RUhqS01jSFFlWWpidjNzeVBLaDhRVjhYekxZY3RXZWdQcmhIWEdx?=
+ =?gb2312?B?OVN3a3RiRkRRZGd0RGhQMlhNNUhlS0ZZVWV5U2VYcG1YMmx4ZEg4SEUzY0FC?=
+ =?gb2312?B?ZC9yN1hrNWt4Y3ZSVEJPMmJaQ0NiSGh5NmRLNDllRVZTR3p5NDhGWHI0ZVgw?=
+ =?gb2312?B?Mk04SlI5MUp4ckdGcnRKZnh5d0c3YktwQmhPUFZ1MDVVY05xTTg4TUF1TURV?=
+ =?gb2312?B?YWt6aURSZ3FvT2xBR2tGekZ2OFM5dWlEM1FRWDA4R2o1NkgrWS9GRnFQS3VF?=
+ =?gb2312?Q?zJYI=3D?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250113094654.12998-1-eichest@gmail.com> <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
- <Z4ZRYMf_uJW4poW9@eichest-laptop> <Z4dy3LiEAQ_gkQGG@eichest-laptop>
- <CAA+D8AO75MLyP5AWDJoogw8ae4GRtZfSR-HT+S26bXoaVs8saQ@mail.gmail.com> <Z4eQX_VnBEVqxT_r@eichest-laptop>
-In-Reply-To: <Z4eQX_VnBEVqxT_r@eichest-laptop>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 16 Jan 2025 12:01:13 +0800
-X-Gm-Features: AbW1kvbQkp5AqMkITUkxczD4Jz0nXSdjZCCO560XBpLCP-4-Hn1eL6UeOWJMsWo
-Message-ID: <CAA+D8APivJWD-AqwmQ-mtcr=ZHot5rfA8FRWF2+p-_mq5BGxHA@mail.gmail.com>
-Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
-	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com, 
-	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43ca630f-d395-444d-1ab5-08dd35e2cb60
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jan 2025 04:03:54.6748
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xLM/5bPdMrGfmzQuBgA0J/6Ptq6XdpDZ3Tf7ETMIwF7Ijo9T81SufYQaoXmv43MF0weu1lL7AjhiA2rqXqV9sA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7413
 
-On Wed, Jan 15, 2025 at 6:39=E2=80=AFPM Stefan Eichenberger <eichest@gmail.=
-com> wrote:
->
-> On Wed, Jan 15, 2025 at 05:14:09PM +0800, Shengjiu Wang wrote:
-> > On Wed, Jan 15, 2025 at 4:33=E2=80=AFPM Stefan Eichenberger <eichest@gm=
-ail.com> wrote:
-> > >
-> > > Hi Shengjiu Wang,
-> > >
-> > > On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wrote:
-> > > > Hi Shengjiu Wang,
-> > > >
-> > > > On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
-> > > > > On Mon, Jan 13, 2025 at 5:54=E2=80=AFPM Stefan Eichenberger <eich=
-est@gmail.com> wrote:
-> > > > > >
-> > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > > > > >
-> > > > > > Currently, the flags for the ACM clocks are set to 0. This conf=
-iguration
-> > > > > > causes the fsl-sai audio driver to fail when attempting to set =
-the
-> > > > > > sysclk, returning an EINVAL error. The following error messages
-> > > > > > highlight the issue:
-> > > > > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on =
-59090000.sai: -22
-> > > > > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
-> > > > >
-> > > > > The reason for this error is that the current clock parent can't
-> > > > > support the rate
-> > > > > you require (I think you want 11289600).
-> > > > >
-> > > > > We can configure the dts to provide such source, for example:
-> > > > >
-> > > > >  &sai5 {
-> > > > > +       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-> > > > > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_=
-PLL>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_=
-SLV_BUS>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_=
-MST_BUS>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_=
-PLL>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_=
-SLV_BUS>,
-> > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_=
-MST_BUS>,
-> > > > > +                       <&sai5_lpcg 0>;
-> > > > > +       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&aud_=
-rec1_lpcg 0>;
-> > > > > +       assigned-clock-rates =3D <0>, <0>, <786432000>, <49152000=
->, <12288000>,
-> > > > > +                                <722534400>, <45158400>, <112896=
-00>,
-> > > > > +                               <49152000>;
-> > > > >         status =3D "okay";
-> > > > >  };
-> > > > >
-> > > > > Then your case should work.
-> > > > >
-> > > > > >
-> > > > > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that th=
-e ACM
-> > > > >
-> > > > > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. which wi=
-ll cause
-> > > > > the driver don't get an error from clk_set_rate().
-> > > >
-> > > > Thanks for the proposal, I will try it out tomorrow. Isn't this a
-> > > > problem if other SAIs use the same clock source but with different
-> > > > rates?
-> > > >
-> > > > If we have to define fixed rates in the DTS or else the clock drive=
-r
-> > > > will return an error, isn't that a problem? Maybe I should change t=
-he
-> > > > sai driver so that it ignores the failure and just takes the rate
-> > > > configured? In the end audio works, even if it can't set the reques=
-ted
-> > > > rate.
-> > >
-> > > The following clock tree change would allow the driver to work
-> > > in our scenario:
-> > > &sai5 {
-> > >         assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-> > >                           <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PL=
-L>;
-> > >         assigned-clock-parents =3D <&aud_pll_div1_lpcg 0>;
-> > >         assigned-clock-rates =3D <0>, <11289600>;
-> > > };
-> >
-> > In which we configure PLL_0 for 48KHz series (8kHz/16kHz/32kHz/48kHz),
-> > PLL_1 for 44kHz series (11kHz/22kHz/44kHz),
-> > which should fit for most audio requirements.
-> >
-> > >
-> > > However, this means we have to switch the parent clock to the audio p=
-ll
-> > > 1. For the simple setup with two SAIs, one for analog audio and one f=
-or
-> > > HDMI this wouldn't be a problem. But I'm not sure if this is a good
-> > > solution if a customer would add a third SAI which requires again a
-> > > different parent clock rate.
-> >
-> > We won't change the PLL's rate in the driver,  so as PLL_0 for 48kHz,
-> > PLL_1 for 44kHz,  even with a third SAI or more,  they should work.
-> >
-> > >
-> > > One potential solution could be that the SAI driver tries to first
-> > > derive the clock from the current parent and only if this fails it tr=
-ies
-> > > to modify its parent clock. What do you think about this solution?
-> > >
->
-> I did some more testing and I'm still not happy with the current
-> solution. The problem is that if we change the SAI5 mclk clock parent it
-> can either support the 44kHz series or the 48kHz series. However, in the
-> case of HDMI we do not know in advance what the user wants.
->
-> This means when testing either this works:
-> speaker-test -D hw:2,0 -r 48000 -c 2
-> or this works:
-> speaker-test -D hw:2,0 -r 44100 -c 2
-> With:
-> card 2: imxaudiohdmitx [imx-audio-hdmi-tx], device 0: i.MX HDMI i2s-hifi-=
-0 [i.MX HDMI i2s-hifi-0]
-
-Are you using the setting below?  then should not either,  should both work=
-s
- &sai5 {
-+       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-+                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
-+                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
-+                       <&sai5_lpcg 0>;
-+       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg =
-0>;
-+       assigned-clock-rates =3D <0>, <0>, <786432000>, <49152000>, <122880=
-00>,
-+                                <722534400>, <45158400>, <11289600>,
-+                               <49152000>;
-        status =3D "okay";
- };
-
-best regards
-Shengjiu Wang
->
-> If I on the other hand avoid that fsl_sai_set_mclk_rate is called by
-> patching imx-hdmi.c. I can make both rates work with the standard clock
-> settings. So I wonder if calling snd_soc_dai_set_sysclk is really
-> necessary for the i.MX8?
-> diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-> index f9cec6f0aecd..7d8aa58645b7 100644
-> --- a/sound/soc/fsl/imx-hdmi.c
-> +++ b/sound/soc/fsl/imx-hdmi.c
-> @@ -92,15 +92,6 @@ static int imx_hdmi_hw_params(struct snd_pcm_substream=
- *substream,
->         u32 slot_width =3D data->cpu_priv.slot_width;
->         int ret;
->
-> -       /* MCLK always is (256 or 192) * rate. */
-> -       ret =3D snd_soc_dai_set_sysclk(cpu_dai, data->cpu_priv.sysclk_id[=
-tx],
-> -                                    8 * slot_width * params_rate(params)=
-,
-> -                                    tx ? SND_SOC_CLOCK_OUT : SND_SOC_CLO=
-CK_IN);
-> -       if (ret && ret !=3D -ENOTSUPP) {
-> -               dev_err(dev, "failed to set cpu sysclk: %d\n", ret);
-> -               return ret;
-> -       }
-> -
->         ret =3D snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0, 2, slot_width);
->         if (ret && ret !=3D -ENOTSUPP) {
->                 dev_err(dev, "failed to set cpu dai tdm slot: %d\n", ret)=
-;
->
-> Regards,
-> Stefan
->
->
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKYWt1YiBLaWNpbnNraSA8a3Vi
+YUBrZXJuZWwub3JnPg0KPiBTZW50OiAyMDI1xOox1MIxNsjVIDEwOjQxDQo+IFRvOiBXZWkgRmFu
+ZyA8d2VpLmZhbmdAbnhwLmNvbT4NCj4gQ2M6IENsYXVkaXUgTWFub2lsIDxjbGF1ZGl1Lm1hbm9p
+bEBueHAuY29tPjsgVmxhZGltaXIgT2x0ZWFuDQo+IDx2bGFkaW1pci5vbHRlYW5AbnhwLmNvbT47
+IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT47DQo+IGFuZHJldytuZXRkZXZAbHVu
+bi5jaDsgZGF2ZW1AZGF2ZW1sb2Z0Lm5ldDsgZWR1bWF6ZXRAZ29vZ2xlLmNvbTsNCj4gcGFiZW5p
+QHJlZGhhdC5jb207IGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldTsgbmV0ZGV2QHZnZXIua2Vy
+bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGludXhwcGMtZGV2QGxp
+c3RzLm96bGFicy5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsg
+aW14QGxpc3RzLmxpbnV4LmRldg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIG5ldC1uZXh0IDA3
+LzEzXSBuZXQ6IGVuZXRjOiBhZGQgUlNTIHN1cHBvcnQgZm9yIGkuTVg5NQ0KPiBFTkVUQyBQRg0K
+PiANCj4gT24gVGh1LCAxNiBKYW4gMjAyNSAwMjoyNDoxMCArMDAwMCBXZWkgRmFuZyB3cm90ZToN
+Cj4gPiA+IFdoeSBjcmVhdGUgZnVsbCBvcHMgZm9yIHNvbWV0aGluZyB0aGlzIHRyaXZpYWw/DQo+
+ID4NCj4gPiBXZSBhZGQgZW5ldGNfcGZfaHdfb3BzIHRvIGltcGxlbWVudCBkaWZmZXJlbnQgaGFy
+ZHdhcmUgb3BzDQo+ID4gZm9yIGRpZmZlcmVudCBjaGlwcy4gU28gdGhhdCB0aGV5IGNhbiBiZSBj
+YWxsZWQgaW4gY29tbW9uIGZ1bmN0aW9ucy4NCj4gPiBBbHRob3VnaCB0aGUgY2hhbmdlIGlzIG1p
+bm9yLCBpdCBpcyBjb25zaXN0ZW50IHdpdGggdGhlIG9yaWdpbmFsDQo+ID4gaW50ZW50aW9uIG9m
+IGFkZGluZyBlbmV0Y19wZl9od19vcHMuDQo+IA0KPiBJbiBvdGhlciB3b3JkcyB5b3UgcHJlZmVy
+IG9wcy4NCj4gDQo+IE5vdyBpbWFnaW5lIHlvdSBoYXZlIHRvIHJlZmFjdG9yIHN1Y2ggcGllY2Ug
+b2YgY29kZSBpbiAxMCBkcml2ZXJzDQo+IGFuZCBlYWNoIG9mIHRoZW0gaGFzIDIgbGF5ZXJzIG9m
+IGluZGlyZWN0IG9wcyBsaWtlIHlvdSBkby4NCj4gVW5uZWNlc3NhcnkgY29tcGxleGl0eS4NCg0K
+T2theSwgSSB3aWxsIHJlbW92ZSB0aGVtIGZyb20gb3BzLg0KDQo=
