@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A1C1D7E54;
-	Thu, 16 Jan 2025 22:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F050D23F263;
+	Thu, 16 Jan 2025 23:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737067744; cv=none; b=eAW2wBKQGE4i0T9Ph+5SwwGnKRI5mRLhpNyp7lwnQMP2IenKdqYI98YgnVUU326XfuOEo9YRlUAYA0jmBYNQuk5l/tNC9P67y4QH8GbPk8lwnjMAYym1eZlprdnSNuyNEx8Hg7uloLbSy7+bvbAJ3p2eByfIram8tRprGil1H8g=
+	t=1737069241; cv=none; b=NUT+DN00JrM1HcmBnw70ydYIFDLEP/FaJU4d+zBd7S9OAmY9immTvfhUs6hnoq/y4kOhz1/0bsIT0ZNIuW8Ew07wspH2bDZNNQsQ6ZHM2Q31Ocaa/55JupwdDZyTH8DHcD83VhJmJx4P3KbpTIKp0uehlKFw3n1V0t3bWhZMUXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737067744; c=relaxed/simple;
-	bh=5aThHilBPblCgfz/BgJ0mgjfS1hGQLJWECyx+bt7Wt0=;
+	s=arc-20240116; t=1737069241; c=relaxed/simple;
+	bh=M8EIC7pg0Wzyi0pL5SQg5Thdf/ff+JRgC1JyfSUFHds=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=h4mrVO8gGyxzIQm6ac8BX6tQgQ4gk2AeVnDGLPOg6G++t3ZWtoauCAquNULUcPdKoHH+JfZAREALGRTv7UXNImyTZzAqc9Y/LDnQxX1/Bw2YEEUoxAZ5wKI0GqZRsw+mJtT2T6C+qVxMeIkbSWJN61tF1S/28msqK8+MAZ3SgSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szH71zQE; arc=none smtp.client-ip=10.30.226.201
+	 Content-Disposition:In-Reply-To; b=tTS/2Psjgh2LOlJ/mvRNhoNrGksiN3PaU0g3Z00ztTxp4gbI7oIO24pCNhEn3Ffg6eHPVXjWvQz3SKCcDDDBBJIl/YG2YUmhEAiQJUEo8JhXeLCbxuB3LePKMOMpry5850Bxan655AByt0SiRvacg9p0/Sr2hpZHWksUUVt3VAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlBbMT1I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szH71zQE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD02C4CED6;
-	Thu, 16 Jan 2025 22:49:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlBbMT1I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36126C4CED6;
+	Thu, 16 Jan 2025 23:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737067744;
-	bh=5aThHilBPblCgfz/BgJ0mgjfS1hGQLJWECyx+bt7Wt0=;
+	s=k20201202; t=1737069240;
+	bh=M8EIC7pg0Wzyi0pL5SQg5Thdf/ff+JRgC1JyfSUFHds=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=szH71zQEi99amVjmugt5JvwXVGZ+pHOC18l1Q3auVKFW/ZAPJDY42oap4KZ82aiY+
-	 gjkfq/RF3lhECK8PSywzROXubYGQyzvw2tUXdzMc3GyHx18tWlc6MoSyxouoCuqslY
-	 F6wK7L7kbao7cwJg09R+JlwmmSVBswp8QDIL8JZRybxm62s5l+ZC1Iw5hll5y86Gtm
-	 HWoIoBjPagiX5tawGzfr3aQzJbXl94B6fySIbLUIIVcez2xiSB0ktxVQ5Pg2yqbpbx
-	 wXT/lV/5PjfbUkAIYeSiogqzX03X6RU14RyyGGA9soRDPKqUTTTi711X6fAtnCf0Zt
-	 c9FqqjDAf48AA==
-Date: Thu, 16 Jan 2025 16:49:02 -0600
+	b=nlBbMT1Ijt2VrpfQTtch051uILthsjl//w99RARSxLK3YBLv5BvNBb2BYRXTH1TBI
+	 ttnTjtts6lruViF6D4uMZRH3ba6GNopequdvdcWqn+zygPVTCOOmAlSG248KrGiQrF
+	 w4EJcEVl1RePa9HP6TLcgwey3zjOIo6b+o4dzycz7dNTk8QDAqxmqxqR5So3XldrS6
+	 pyIwzVNl5QN2HN9sviZmUfobLrsUD0PMB/SkNu6VcpJRP+BxRowy/sfuxGJxw6w6pK
+	 Q9UmlxFxuR+JqS2Sjn+Qab6IWO+WGGCFI01bfthuPDz4G/6gqjb4N9uMNrAf5Qplae
+	 foqxXHSkyCzKQ==
+Date: Thu, 16 Jan 2025 17:13:58 -0600
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
 	Jingoo Han <jingoohan1@gmail.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
@@ -43,9 +43,9 @@ Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v8 3/7] PCI: dwc: ep: Add bus_addr_base for outbound
- window
-Message-ID: <20250116224902.GA614046@bhelgaas>
+Subject: Re: [PATCH v8 2/7] PCI: dwc: Use devicetree 'ranges' property to get
+ rid of cpu_addr_fixup() callback
+Message-ID: <20250116231358.GA616783@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,98 +55,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z4ll5Ktyh5kmTzsd@lizhi-Precision-Tower-5810>
+In-Reply-To: <20241119-pci_fixup_addr-v8-2-c4bfa5193288@nxp.com>
 
-On Thu, Jan 16, 2025 at 03:02:44PM -0500, Frank Li wrote:
-> On Thu, Jan 16, 2025 at 01:45:58PM -0600, Bjorn Helgaas wrote:
-> > On Thu, Jan 16, 2025 at 01:04:16PM -0500, Frank Li wrote:
-> > > On Thu, Jan 16, 2025 at 09:32:39AM -0600, Bjorn Helgaas wrote:
-> > > > On Tue, Nov 19, 2024 at 02:44:21PM -0500, Frank Li wrote:
-> > > > >                    Endpoint
-> > > > >   ┌───────────────────────────────────────────────┐
-> > > > >   │                             pcie-ep@5f010000  │
-> > > > >   │                             ┌────────────────┐│
-> > > > >   │                             │   Endpoint     ││
-> > > > >   │                             │   PCIe         ││
-> > > > >   │                             │   Controller   ││
-> > > > >   │           bus@5f000000      │                ││
-> > > > >   │           ┌──────────┐      │                ││
-> > > > >   │           │          │ Outbound Transfer     ││
-> > > > >   │┌─────┐    │  Bus     ┼─────►│ ATU  ──────────┬┬─────►
-> > > > >   ││     │    │  Fabric  │Bus   │                ││PCI Addr
-> > > > >   ││ CPU ├───►│          │Addr  │                ││0xA000_0000
-> > > > >   ││     │CPU │          │0x8000_0000            ││
-> > > > >   │└─────┘Addr└──────────┘      │                ││
-> > > > >   │       0x7000_0000           └────────────────┘│
-> > > > >   └───────────────────────────────────────────────┘
-> > > > >
-> > > > > Use 'ranges' property in DT to configure the iATU outbound window address.
-> > > > > The bus fabric generally passes the same address to the PCIe EP controller,
-> > > > > but some bus fabrics map the address before sending it to the PCIe EP
-> > > > > controller.
-> > > > >
-> > > > > Above diagram, CPU write data to outbound windows address 0x7000_0000, Bus
-> > > > > fabric map it to 0x8000_0000. ATU should use bus address 0x8000_0000 as
-> > > > > input address and map to PCI address 0xA000_0000.
-> > > > >
-> > > > > Previously, 'cpu_addr_fixup()' was used to handle address conversion. Now,
-> > > > > the device tree provides this information, preferring a common method.
-> > > > >
-> > > > > bus@5f000000 {
-> > > > > 	compatible = "simple-bus";
-> > > > > 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
-> > > > >
-> > > > > 	pcie-ep@5f010000 {
-> > > > > 		reg = <0x80000000 0x10000000>;
-> > > > > 		reg-names ="addr_space";
-> > > > > 		...
-> > > > > 	};
-> > > > > 	...
-> > > > > };
-> > > > >
-> > > > > 'ranges' in bus@5f000000 descript how address map from CPU address to bus
-> > > > > address.
-> > > >
-> > > > Shouldn't there also be a pcie-ep@5f010000 'ranges' property to
-> > > > describe the translation for the window from bus addr 0x8000_0000 to
-> > > > PCI addr 0xA000_0000?
-> > >
-> > > Needn't 'ranges' under pcie-ep@5f010000 because history reason. DWC use
-> > > reg-names "addr_space" descript outbound windows space.
-> >
-> > If reg-name "addr_space" is used instead of 'ranges' for some
-> > historical reason, we should mention that in the commit log so people
-> > don't assume that this difference is the way it's *supposed* to be
-> > done.
+On Tue, Nov 19, 2024 at 02:44:20PM -0500, Frank Li wrote:
+> parent_bus_addr in struct of_range can indicate address information just
+> ahead of PCIe controller. Most system's bus fabric use 1:1 map between
+> input and output address. but some hardware like i.MX8QXP doesn't use 1:1
+> map. See below diagram:
 > 
-> How about add comments after
+>             ┌─────────┐                    ┌────────────┐
+>  ┌─────┐    │         │ IA: 0x8ff8_0000    │            │
+>  │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
+>  └─────┘    │   │     │ IA: 0x8ff0_0000 │  │            │
+>   CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
+> 0x7ff8_0000─┼───┘  │  │             │   │  │            │
+>             │      │  │             │   │  │            │   PCI Addr
+> 0x7ff0_0000─┼──────┘  │             │   └──► IOSpace   ─┼────────────►
+>             │         │             │      │            │    0
+> 0x7000_0000─┼────────►├─────────┐   │      │            │
+>             └─────────┘         │   └──────► CfgSpace  ─┼────────────►
+>              BUS Fabric         │          │            │    0
+>                                 │          │            │
+>                                 └──────────► MemSpace  ─┼────────────►
+>                         IA: 0x8000_0000    │            │  0x8000_0000
+>                                            └────────────┘
 > 
-> reg-names ="addr_space"; // Indicate EP outbound windows space instead use
-> ranges by histortical reason.
-
-OK, that seems reasonable.
-
-Where does the 0xA000_0000 PCI address come from?  I assume that's in
-DT somewhere too?
-
-Is there a binding in the tree that would take advantage of this patch
-that I can look at?  arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi 
-has bus@5f000000 that does this translation, but I don't see any
-endpoint mode that uses it.
-
-> > > All regs need call of_property_read_reg() to get untranslated address.
-> > > ranges:  use "parent_bus_addr" in [1].
-> >
-> > I think we should at least use the same name ("parent_bus_addr", not
-> > "bus_addr_base") and probably also figure out a wrapper or similar way
-> > to use 'ranges' for future endpoint drivers and fall back to
-> > "addr_space" for DWC.
+> bus@5f000000 {
+> 	compatible = "simple-bus";
+> 	#address-cells = <1>;
+> 	#size-cells = <1>;
+> 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
 > 
-> Okay for name parent_bus_addr.
-> Do you need me to respin it? Or you change it by yourself?
+> 	pcie@5f010000 {
+> 		compatible = "fsl,imx8q-pcie";
+> 		reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
+> 		reg-names = "dbi", "config";
+> 		#address-cells = <3>;
+> 		#size-cells = <2>;
+> 		device_type = "pci";
+> 		bus-range = <0x00 0xff>;
+> 		ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
+> 			 <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
+> 	...
+> 	};
+> };
+> 
+> Term internal address (IA) here means the address just before PCIe
+> controller. After ATU use this IA instead CPU address, cpu_addr_fixup() can
+> be removed.
 
-I can do that.
+> @@ -730,9 +779,15 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  
+>  		atu.index = i;
+>  		atu.type = PCIE_ATU_TYPE_MEM;
+> -		atu.cpu_addr = entry->res->start;
+> +		parent_bus_addr = entry->res->start;
+>  		atu.pci_addr = entry->res->start - entry->offset;
+>  
+> +		ret = dw_pcie_get_parent_addr(pci, entry->res->start, &parent_bus_addr);
+> +		if (ret)
+> +			return ret;
+> +
+> +		atu.cpu_addr = parent_bus_addr;
 
-Bjorn
+Here you set atu.cpu_addr to the intermediate bus address instead
+of the CPU physical address before calling
+dw_pcie_prog_outbound_atu().
 
-> > > > [1] https://lore.kernel.org/r/20241119-pci_fixup_addr-v8-1-c4bfa5193288@nxp.com
+But what about other callers of dw_pcie_prog_outbound_atu()?  Don't
+all of them need to use the intermediate bus address?
+
+Maybe struct dw_pcie_ob_atu_cfg.cpu_addr should be renamed since it is
+not necessarily a CPU physical address?
+
+> +	if (pci->ops && pci->ops->cpu_addr_fixup) {
+> +		/*
+> +		 * If the parent 'ranges' property in DT correctly describes
+> +		 * the address translation, cpu_addr_fixup() callback is not
+> +		 * needed.
+> +		 */
+> +		dev_warn_once(pci->dev, "cpu_addr_fixup() usage detected. Please fix DT!\n");
+> +	}
+
+I kinda wish this warning were in a separate patch because it will be
+a little cleaner if we ever want to revert or remove the warning.
