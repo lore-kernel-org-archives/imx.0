@@ -1,122 +1,237 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609B51DE4DF
-	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 13:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782537082B;
+	Thu, 16 Jan 2025 15:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737032974; cv=none; b=LffISiOaDZF2M8MbEYIKqh0pA0RlIFhF0lcANgfbanIZJglPRPFCoJtAXKfmYzBu0l+45jBoPZxquPEEMvBoRvY4eJqcydO81CGg76eGWFDe7MPfFPW8KmX+0BpFbj93xMK88ZH12shSISUULYl7rbFV7MQRLrLMByL7ymtQeYc=
+	t=1737041562; cv=none; b=TjkRjBcVwkEKyxYJ6Dn8zIgyOP7aLcZP/GBcTB7ueMzCihE8jOnRpUAUZ4W8Zk/myrkEy3B2NXIn8T8OwUggl7awparYXNt8fXmPTiy8Qe/ThATjA3swZZzwqcKwoIt9jYG32Vv6pbfKNadsHaYmg7KJdaSPbdMHdYyf6HoareM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737032974; c=relaxed/simple;
-	bh=cIAqiPzlev6Stxgd/seSBG5lcv2RnLx9IgIT7Mx0JD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gd6SxeatEWAmw7j6kBhqTPN4zyTU+7tWW7g75ZZz2jE/7UNiX8IdTobr9EUvT706XqgpjNf+RDGs4zr8a4SX3euBroNFUmC19Fho7SciZd54NNXvK621S3VaWygYPqJZ6M5EVSjAkAUsUA8Jp+BE2AW+LFRU/MEWuLMjEC3UjJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HpxygfAN; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737041562; c=relaxed/simple;
+	bh=9SUodvvg1rGYUqIXFOOqwLz+xUmk/vUWLOe/vZPWUjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=W6QV/iOUUwmhr736ry7SDGqLZwbcNTKwbEEyV2RmNkUtoUe2ZDKVoBbnQL0Y+Ln7RhKAb9OTiKJT5grSMjyfp6Ovq21wNg2nleXS7pJofWI6Jq1lljfRom7J460CRs4iCYwYx1F1uf/VroAZBN3P/rfl+6tc3zrp8JVywGUEMoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghZsGw/a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HpxygfAN"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21636268e43so19555125ad.2
-        for <imx@lists.linux.dev>; Thu, 16 Jan 2025 05:09:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737032973; x=1737637773; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=snptrSjCp/WTiLu8I8u0XSZwNccoh5U/0syc3p+zW30=;
-        b=HpxygfANOlr+qisT8aUNS8vLQjK6XUfCSlacXoTSGOp05i91/GZ11GkVrI7f5dCx58
-         s/a5p3uuhskILANvdtWUTSDBHWDTQwUW5G9XNB+A8R+tEZZelvhpkJB3Ry7YimumMwhD
-         Ffb/v2HKXLg+59KNgYdkKS9+Nef6cL5H7wKMPX2wXWaF8xPAAFm3oShhgyAzm49Q20Kz
-         vV5LCLXplTn8Yl307Ck24neRGw0gYJjudew4t83uxlKMwGuOTv+4WFsqWWQl5viNfA2/
-         aaGs4QFP7571byuw+gj86bFd1/ziGIqISoSiY9cXnJgZELt5ngEb4Q/u4blIUNFMVLA5
-         Qltw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737032973; x=1737637773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=snptrSjCp/WTiLu8I8u0XSZwNccoh5U/0syc3p+zW30=;
-        b=HzYisPlAPVJwtZhTPA3Es2t8KLByJi9sJZPV25Gr6k03QSMlUAPO09wM8w/CTde+Nb
-         3AAbSrWL+65EzSAy1imjcuiWguzlmyxzPS+tlG3MpEYh+2auBsLGkpWLf+6VX61hygWn
-         VZPTAxmphFMdX67Wn/byjdxarF1VHeCOZuXD+RDfJFPdcG/KwD94s0oQz9H429K7/1bo
-         J8lSrXpW1ok5WIiMCB5iR07WDu+vyRfRXcVjJ7/OqneX8VkvI89DNP230bUccrXSjYJ0
-         zgG0cIx7W/SAKWfgsP1r1edMlIo30XJVuF8hzYb0v95Fyn/5fLBo7xxf6NrnMGVsa9/W
-         gz2g==
-X-Forwarded-Encrypted: i=1; AJvYcCX+IqU8kfDkqlyNSdJu+hGCCHjHbM9gKOopsT92sNDGZmwmZYYoKWF94FK9fWBb+TiSTo0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxEzdP2aE9keEkEiEcpxtkLjD6fFaKQOC9T8+M1AGgx1GkHqJyS
-	4N3/KZU8qvPR2ibC7D/e279h76eFp+irNU7nd6UV2gEokFDDQGlr
-X-Gm-Gg: ASbGncvRGxiwUr9DWAEJ2FJRr+Yo2XUSV5oF4uc+EgfsnSMaj1zoNLQIFBSBuhEpCkx
-	L9t+IR0yys6rFfKKgrqcA0Gc3fXn8r05wP7yf0SsuFiqVWOJXrG5WCDGO0GD9Z8yQZz523tT8IJ
-	CcM98hiFw3Wlzwj96wZ60abpnpYoTlw6b9dhZwoPLai2K/ejkw4JCkdJVkEj4wnA1jjfRibyXld
-	gDqBAm2KHslaJnPVp/MYzSYd6wuBwZuLfg6+hzh7Mpyg8RbyuLfeprtLoTx
-X-Google-Smtp-Source: AGHT+IFwvxoH6j5w/7H364LI1PDnz4GWvdvRTrSBQCw/AugbZy6zJhUICULr6Udxk4KcvLdJYHGJmw==
-X-Received: by 2002:a17:902:ea0a:b0:216:6769:9ee7 with SMTP id d9443c01a7336-21a83ffbab5mr535838205ad.41.1737032972572;
-        Thu, 16 Jan 2025 05:09:32 -0800 (PST)
-Received: from HOME-PC ([223.185.135.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d0d7sm98728015ad.163.2025.01.16.05.09.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 05:09:32 -0800 (PST)
-From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-To: wei.fang@nxp.com,
-	shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Subject: [PATCH net-next] net: fec: implement TSO descriptor cleanup
-Date: Thu, 16 Jan 2025 18:39:20 +0530
-Message-Id: <20250116130920.30984-1-dheeraj.linuxdev@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghZsGw/a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04DDC4CEE1;
+	Thu, 16 Jan 2025 15:32:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737041562;
+	bh=9SUodvvg1rGYUqIXFOOqwLz+xUmk/vUWLOe/vZPWUjE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ghZsGw/aRdpoR6kljKlJeaZeVo3Vc94QQPFpq7jm7p8/L5LlkzigFUX56+Mb9Vq0P
+	 8U0rN3ApGsb5ZZkN4/Lvqap9/VFcr5u62bjBP2E5s3jl6GZa9QS8KiKQuui1rxYxzG
+	 qlc31wRqjgk37E7qPX1/riy9n8XeyY1dzDc0Zy9THmsIg7mn1i3xBEKvdrZ85O39+W
+	 vKIg1TSpoia+kqD+EQp1FsP0Viip4hMsvMdz9VhNrKWdZyQ47+y6FLXGcBNDLXC0md
+	 u5FdFkdQaMYA261Cu3/w2ZMatQDC05PCJady8+6rAoCoU6a4kvfD0FiXUxIfQPSTrD
+	 tQ8gWAokc/FCw==
+Date: Thu, 16 Jan 2025 09:32:39 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v8 3/7] PCI: dwc: ep: Add bus_addr_base for outbound
+ window
+Message-ID: <20250116153239.GA582080@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241119-pci_fixup_addr-v8-3-c4bfa5193288@nxp.com>
 
-Implement the TODO in fec_enet_txq_submit_tso() error path to properly
-release buffer descriptors that were allocated during a failed TSO
-operation. This prevents descriptor leaks when TSO operations fail
-partway through.
+On Tue, Nov 19, 2024 at 02:44:21PM -0500, Frank Li wrote:
+>                    Endpoint
+>   ┌───────────────────────────────────────────────┐
+>   │                             pcie-ep@5f010000  │
+>   │                             ┌────────────────┐│
+>   │                             │   Endpoint     ││
+>   │                             │   PCIe         ││
+>   │                             │   Controller   ││
+>   │           bus@5f000000      │                ││
+>   │           ┌──────────┐      │                ││
+>   │           │          │ Outbound Transfer     ││
+>   │┌─────┐    │  Bus     ┼─────►│ ATU  ──────────┬┬─────►
+>   ││     │    │  Fabric  │Bus   │                ││PCI Addr
+>   ││ CPU ├───►│          │Addr  │                ││0xA000_0000
+>   ││     │CPU │          │0x8000_0000            ││
+>   │└─────┘Addr└──────────┘      │                ││
+>   │       0x7000_0000           └────────────────┘│
+>   └───────────────────────────────────────────────┘
+> 
+> Use 'ranges' property in DT to configure the iATU outbound window address.
+> The bus fabric generally passes the same address to the PCIe EP controller,
+> but some bus fabrics map the address before sending it to the PCIe EP
+> controller.
+> 
+> Above diagram, CPU write data to outbound windows address 0x7000_0000, Bus
+> fabric map it to 0x8000_0000. ATU should use bus address 0x8000_0000 as
+> input address and map to PCI address 0xA000_0000.
+> 
+> Previously, 'cpu_addr_fixup()' was used to handle address conversion. Now,
+> the device tree provides this information, preferring a common method.
+> 
+> bus@5f000000 {
+> 	compatible = "simple-bus";
+> 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
+> 
+> 	pcie-ep@5f010000 {
+> 		reg = <0x80000000 0x10000000>;
+> 		reg-names ="addr_space";
+> 		...
+> 	};
+> 	...
+> };
+> 
+> 'ranges' in bus@5f000000 descript how address map from CPU address to bus
+> address.
 
-The cleanup iterates from the starting descriptor to where the error
-occurred, resetting the status and buffer address fields of each
-descriptor.
+Shouldn't there also be a pcie-ep@5f010000 'ranges' property to
+describe the translation for the window from bus addr 0x8000_0000 to
+PCI addr 0xA000_0000?
 
-Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
----
- drivers/net/ethernet/freescale/fec_main.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+I assume the pcie-ep@5f010000 controller also has its own registers in
+the bus addr space, separate from the window to PCI, and its 'reg'
+property would describe those?
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index b2daed55bf6c..eff065010c9e 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -913,7 +913,18 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	return 0;
- 
- err_release:
--	/* TODO: Release all used data descriptors for TSO */
-+	/* Release all used data descriptors for TSO */
-+	struct bufdesc *tmp_bdp = txq->bd.cur;
-+
-+	while (tmp_bdp != bdp) {
-+		tmp_bdp->cbd_sc = 0;
-+		tmp_bdp->cbd_bufaddr = 0;
-+		tmp_bdp->cbd_datlen = 0;
-+		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
-+	}
-+
-+	dev_kfree_skb_any(skb);
-+
- 	return ret;
- }
- 
--- 
-2.34.1
+The similar patch at [1] includes:
 
+  pcie@5f010000 {
+    reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
+
+I assumed that [bus 0x5f010000-0x5f01ffff] is PCIe controller register
+space and [bus 0x8ff00000-0x8ff7ffff] is ECAM space.
+
+But that can't be right because ECAM requires 1MB per bus, and
+[bus 0x8ff00000-0x8ff7ffff] is only 512KB.
+
+> Use `of_property_read_reg()` to obtain the bus address and set it to the
+> ATU correctly, eliminating the need for vendor-specific cpu_addr_fixup().
+
+Why is this different from [1], where parent_bus_addr comes from the
+'ranges' property?  Isn't this the same exact kind of address
+translation for both RC and EP mode?
+
+> Add 'using_dtbus_info' to indicate device tree reflect correctly bus
+> address translation in case break compatibility.
+
+'using_dtbus_info' doesn't exist; I assume this should be
+'use_parent_dt_ranges'?
+
+Sorry I'm so confused, please help me out :)
+
+[1] https://lore.kernel.org/r/20241119-pci_fixup_addr-v8-1-c4bfa5193288@nxp.com
+
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v7 to v8
+> - Add Mani's reviewedby tag
+> - s/convert/map in commit message
+> - update comments for of_property_read_reg()
+> - use 'use_parent_dt_ranges'
+> 
+> Change from v6 to v7
+> - none
+> 
+> Change from v5 to v6
+> - update diagram
+> - Add comments for of_property_read_reg()
+> - Remove unrelated 0x5f00_0000 in commit message
+> 
+> Change from v3 to v4
+> - change bus_addr_base to u64 to fix 32bit build error
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202410230328.BTHareG1-lkp@intel.com/
+> 
+> Change from v2 to v3
+> - Add using_dtbus_info to control if use device tree bus ranges
+> information.
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 18 +++++++++++++++++-
+>  drivers/pci/controller/dwc/pcie-designware.h    |  1 +
+>  2 files changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 43ba5c6738df1..42719ad263b11 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/align.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/of.h>
+> +#include <linux/of_address.h>
+>  #include <linux/platform_device.h>
+>  
+>  #include "pcie-designware.h"
+> @@ -294,7 +295,7 @@ static int dw_pcie_ep_map_addr(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+>  
+>  	atu.func_no = func_no;
+>  	atu.type = PCIE_ATU_TYPE_MEM;
+> -	atu.cpu_addr = addr;
+> +	atu.cpu_addr = addr - ep->phys_base + ep->bus_addr_base;
+>  	atu.pci_addr = pci_addr;
+>  	atu.size = size;
+>  	ret = dw_pcie_ep_outbound_atu(ep, &atu);
+> @@ -861,6 +862,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	struct device *dev = pci->dev;
+>  	struct platform_device *pdev = to_platform_device(dev);
+>  	struct device_node *np = dev->of_node;
+> +	int index;
+>  
+>  	INIT_LIST_HEAD(&ep->func_list);
+>  
+> @@ -873,6 +875,20 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  		return -EINVAL;
+>  
+>  	ep->phys_base = res->start;
+> +	ep->bus_addr_base = ep->phys_base;
+> +
+> +	if (pci->use_parent_dt_ranges) {
+> +		index = of_property_match_string(np, "reg-names", "addr_space");
+> +		if (index < 0)
+> +			return -EINVAL;
+> +
+> +		/*
+> +		 * Get the untranslated bus address from devicetree to use it
+> +		 * as the iATU CPU address in dw_pcie_ep_map_addr().
+> +		 */
+> +		of_property_read_reg(np, index, &ep->bus_addr_base, NULL);
+> +	}
+> +
+>  	ep->addr_size = resource_size(res);
+>  
+>  	if (ep->ops->pre_init)
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 4f31d4259a0de..5c14ed2cb91ed 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -410,6 +410,7 @@ struct dw_pcie_ep {
+>  	struct list_head	func_list;
+>  	const struct dw_pcie_ep_ops *ops;
+>  	phys_addr_t		phys_base;
+> +	u64			bus_addr_base;
+>  	size_t			addr_size;
+>  	size_t			page_size;
+>  	u8			bar_to_atu[PCI_STD_NUM_BARS];
+> 
+> -- 
+> 2.34.1
+> 
