@@ -1,129 +1,122 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF6D1DE4F0
-	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 12:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609B51DE4DF
+	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 13:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737030301; cv=none; b=aKADLm9r/D0p/bqEHXbW9AmHl9WeSrGDyvHxfrah8IfIBw9llsA4SjTylYIFf51lnk+f/WAtwmuvEwdhVKp30nbhGXD9tAgxks3mE/hi9MPB7EIhq5nJivad7Uxu+oNmLA5kMyBTSxBxgqRr3mGaK/5X7cslqpkk9UbQfosjImw=
+	t=1737032974; cv=none; b=LffISiOaDZF2M8MbEYIKqh0pA0RlIFhF0lcANgfbanIZJglPRPFCoJtAXKfmYzBu0l+45jBoPZxquPEEMvBoRvY4eJqcydO81CGg76eGWFDe7MPfFPW8KmX+0BpFbj93xMK88ZH12shSISUULYl7rbFV7MQRLrLMByL7ymtQeYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737030301; c=relaxed/simple;
-	bh=GBwF2KOXlFDp1MGeRltem3iAJtpX3AYE0x8w+f0gonM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uYz3kzWLC7rihWXtgU1flS5v292ivcL6fJgFgNRdPxDUlFBa9iVz6SMYI/qLs0vqnCLPnti4Vkb0+gTYdJ4ycebvAto0x9JcQrZXaYqQz5WzT+3RUoJ1htfM042He1hR1OmkVaD3kT/nU2x4Op2PwHWHJcUM+DnvGjLlNpGuUuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fooishbar.org; spf=pass smtp.mailfrom=fooishbar.org; dkim=pass (2048-bit key) header.d=fooishbar.org header.i=@fooishbar.org header.b=lpnSMmdv; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fooishbar.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fooishbar.org
+	s=arc-20240116; t=1737032974; c=relaxed/simple;
+	bh=cIAqiPzlev6Stxgd/seSBG5lcv2RnLx9IgIT7Mx0JD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gd6SxeatEWAmw7j6kBhqTPN4zyTU+7tWW7g75ZZz2jE/7UNiX8IdTobr9EUvT706XqgpjNf+RDGs4zr8a4SX3euBroNFUmC19Fho7SciZd54NNXvK621S3VaWygYPqJZ6M5EVSjAkAUsUA8Jp+BE2AW+LFRU/MEWuLMjEC3UjJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HpxygfAN; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fooishbar.org header.i=@fooishbar.org header.b="lpnSMmdv"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b6e9586b82so63590385a.1
-        for <imx@lists.linux.dev>; Thu, 16 Jan 2025 04:24:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HpxygfAN"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21636268e43so19555125ad.2
+        for <imx@lists.linux.dev>; Thu, 16 Jan 2025 05:09:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fooishbar.org; s=google; t=1737030298; x=1737635098; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GBwF2KOXlFDp1MGeRltem3iAJtpX3AYE0x8w+f0gonM=;
-        b=lpnSMmdvT5azzLhsn35/4ZZ83ZdDQMGK85r5DqcerE6fEXNL1BeLORXoOmi/tSdMvw
-         PtujlfCelotYVtVs1wIhDhXILkWXuUp7SiCvmov509kk7nUem3WviFcwIKa+fxNMr7Qc
-         WqySADphiEg8j4WJhruXtOUTidMidN9jwOpaB5GniphHsL0rHAOfy7Y7qteYsN7hF03l
-         gxhIyTEiSFtNDFcEiDMHsQMsdyUPMLXr6ESEYv/0KYTZ+32eV/9hmbLPShOqHcyaHTJL
-         SKJMEzoBwGbZhV+LyOQ2d1aB19Arck81zDTRE1UDRCwm5PG8LCRTqdD24xxsAL4oVWzu
-         dXuA==
+        d=gmail.com; s=20230601; t=1737032973; x=1737637773; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=snptrSjCp/WTiLu8I8u0XSZwNccoh5U/0syc3p+zW30=;
+        b=HpxygfANOlr+qisT8aUNS8vLQjK6XUfCSlacXoTSGOp05i91/GZ11GkVrI7f5dCx58
+         s/a5p3uuhskILANvdtWUTSDBHWDTQwUW5G9XNB+A8R+tEZZelvhpkJB3Ry7YimumMwhD
+         Ffb/v2HKXLg+59KNgYdkKS9+Nef6cL5H7wKMPX2wXWaF8xPAAFm3oShhgyAzm49Q20Kz
+         vV5LCLXplTn8Yl307Ck24neRGw0gYJjudew4t83uxlKMwGuOTv+4WFsqWWQl5viNfA2/
+         aaGs4QFP7571byuw+gj86bFd1/ziGIqISoSiY9cXnJgZELt5ngEb4Q/u4blIUNFMVLA5
+         Qltw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737030299; x=1737635099;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GBwF2KOXlFDp1MGeRltem3iAJtpX3AYE0x8w+f0gonM=;
-        b=uivncOtOWk067mfJ5S0tLOFeZNbdHFW8J/4mS5hNfpGmbHt7fwpwueDsDNTF1zJRuq
-         cp25tAh8McP6/jZgcWVzF9v0U1SU7SJq9Hi2ovejw/D8FK3SuFE9kQZeIXuLHQ1q6AUx
-         F/ZqkmnwEH9k92gX3nuiSnh78SH4RJc7srn9DbNryCg+z7RazePKvk1nQgAD/LMASVGf
-         lFawvEvmh+fMmnKXF5QM8iW1HsNN+VdsGWrd6AP0BAjXCbgYIHq44ReMoL1k6ocwOu0Y
-         q8NeFpX4qf9GjPbk54hVf+ywybaWJXQTT93fKCU2j7AM4vSCrqFHKDE0qogFCfkL0LV3
-         cLJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGpzQT1gZ9bjFG/m/nbHBSDmQH/JUE/Y7tHBhYv1ANpGDEx/ZVV7LWrVXqs9dYXFIxQp4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXNz2Qx9/hbcNetxQrlYfV/GTM2AcqHHxKLM3X3oRG+gbOxz8p
-	XhsCwppUVTwZlyfsrR+eZL/0XPdd7icqSIYxD4zuewwX6dj+JoyubhRr2KpQeU6Flx/9AEc2+/d
-	AdAUefk3x8HZ6buN3Ka83cHDcDC8t1Cqy0spf6Q==
-X-Gm-Gg: ASbGncsaDsdx5BBZiW7wmzINSRMRC/FKQsAb7ydYrPHK3FU6ctM1X4hbAUjc7BGuYbQ
-	OXhPpp13nxRFwXEpku4+oWNDfBoxIRYDNOM4=
-X-Google-Smtp-Source: AGHT+IHYPoThOqCGG0mIrocl9o1givl0D/RoYwWOKY0kUiZ64KPF9cSvP+6N1Rd6ke2PYtdS9xOibflODkJbaGvT990=
-X-Received: by 2002:a05:6214:528e:b0:6d9:3016:d0e7 with SMTP id
- 6a1803df08f44-6df9b2b1a21mr442378366d6.29.1737030298608; Thu, 16 Jan 2025
- 04:24:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737032973; x=1737637773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=snptrSjCp/WTiLu8I8u0XSZwNccoh5U/0syc3p+zW30=;
+        b=HzYisPlAPVJwtZhTPA3Es2t8KLByJi9sJZPV25Gr6k03QSMlUAPO09wM8w/CTde+Nb
+         3AAbSrWL+65EzSAy1imjcuiWguzlmyxzPS+tlG3MpEYh+2auBsLGkpWLf+6VX61hygWn
+         VZPTAxmphFMdX67Wn/byjdxarF1VHeCOZuXD+RDfJFPdcG/KwD94s0oQz9H429K7/1bo
+         J8lSrXpW1ok5WIiMCB5iR07WDu+vyRfRXcVjJ7/OqneX8VkvI89DNP230bUccrXSjYJ0
+         zgG0cIx7W/SAKWfgsP1r1edMlIo30XJVuF8hzYb0v95Fyn/5fLBo7xxf6NrnMGVsa9/W
+         gz2g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+IqU8kfDkqlyNSdJu+hGCCHjHbM9gKOopsT92sNDGZmwmZYYoKWF94FK9fWBb+TiSTo0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxEzdP2aE9keEkEiEcpxtkLjD6fFaKQOC9T8+M1AGgx1GkHqJyS
+	4N3/KZU8qvPR2ibC7D/e279h76eFp+irNU7nd6UV2gEokFDDQGlr
+X-Gm-Gg: ASbGncvRGxiwUr9DWAEJ2FJRr+Yo2XUSV5oF4uc+EgfsnSMaj1zoNLQIFBSBuhEpCkx
+	L9t+IR0yys6rFfKKgrqcA0Gc3fXn8r05wP7yf0SsuFiqVWOJXrG5WCDGO0GD9Z8yQZz523tT8IJ
+	CcM98hiFw3Wlzwj96wZ60abpnpYoTlw6b9dhZwoPLai2K/ejkw4JCkdJVkEj4wnA1jjfRibyXld
+	gDqBAm2KHslaJnPVp/MYzSYd6wuBwZuLfg6+hzh7Mpyg8RbyuLfeprtLoTx
+X-Google-Smtp-Source: AGHT+IFwvxoH6j5w/7H364LI1PDnz4GWvdvRTrSBQCw/AugbZy6zJhUICULr6Udxk4KcvLdJYHGJmw==
+X-Received: by 2002:a17:902:ea0a:b0:216:6769:9ee7 with SMTP id d9443c01a7336-21a83ffbab5mr535838205ad.41.1737032972572;
+        Thu, 16 Jan 2025 05:09:32 -0800 (PST)
+Received: from HOME-PC ([223.185.135.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22d0d7sm98728015ad.163.2025.01.16.05.09.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 05:09:32 -0800 (PST)
+From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+To: wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Subject: [PATCH net-next] net: fec: implement TSO descriptor cleanup
+Date: Thu, 16 Jan 2025 18:39:20 +0530
+Message-Id: <20250116130920.30984-1-dheeraj.linuxdev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <f3ba05c7-6e49-4641-a3f9-ba418ebdb7c3@ideasonboard.com>
- <c6735280-7c32-4319-8ca9-a7305d8117c3@suse.de> <d67adb03-5cd0-4ac9-af58-cf4446dacee3@ideasonboard.com>
- <0ea6be58-0e04-4172-87cd-064a3e4a43bc@suse.de> <f35cb350-6be9-48ca-ad7e-e9dd418281d5@ideasonboard.com>
- <4af0b6a7-c16a-4187-bbf5-365a9c86de21@suse.de> <e327ad84-b5c9-4480-b873-dc3aca605538@ideasonboard.com>
- <a2bbeb47-2569-4ee0-9265-92bab139bdc6@suse.de> <f3833771-fcd7-45dc-9019-1525fef34429@ideasonboard.com>
- <CAMuHMdXxYa+Na3XxpLTy=-eUL_zQ9kAiUKYu-E04u3KWApusSA@mail.gmail.com> <xz5ncq67bgmdase2jg3cfvyaxpiwhol2eqpfzow6dqpauvslo5@2w3rw27lhnxo>
-In-Reply-To: <xz5ncq67bgmdase2jg3cfvyaxpiwhol2eqpfzow6dqpauvslo5@2w3rw27lhnxo>
-From: Daniel Stone <daniel@fooishbar.org>
-Date: Thu, 16 Jan 2025 12:24:47 +0000
-X-Gm-Features: AbW1kvarRJv1VyJjUo1t8ScK0brJ2o4-Qq6ABYK10edUo6rgOW2PAccCb4uQWlM
-Message-ID: <CAPj87rNS7quwfqDmxyrW8_vQ6tnrcfWUn=81aTduDXtmdVkkAg@mail.gmail.com>
-Subject: Re: [PATCH v2 25/25] drm/xlnx: Compute dumb-buffer sizes with drm_mode_size_dumb()
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org, 
-	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org, 
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org, 
-	xen-devel@lists.xenproject.org, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Andy Yan <andyshrk@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 16 Jan 2025 at 10:35, Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
-> On Thu, Jan 16, 2025 at 11:17:50AM +0100, Geert Uytterhoeven wrote:
-> > On Thu, Jan 16, 2025 at 11:03=E2=80=AFAM Tomi Valkeinen
-> > <tomi.valkeinen@ideasonboard.com> wrote:
-> > > On the platforms I have been using (omap, tidss, xilinx, rcar) the du=
-mb
-> > > buffers are the only buffers you can get from the DRM driver. The dum=
-b
-> > > buffers have been used to allocate linear and multiplanar YUV buffers
-> > > for a very long time on those platforms.
-> > >
-> > > I tried to look around, but I did not find any mentions that CREATE_D=
-UMB
-> > > should only be used for RGB buffers. Is anyone outside the core
-> > > developers even aware of it?
-> > >
-> > > If we don't use dumb buffers there, where do we get the buffers? Mayb=
-e
-> > > from a v4l2 device or from a gpu device, but often you don't have tho=
-se.
-> > > DMA_HEAP is there, of course.
-> >
-> > Why can't there be a variant that takes a proper fourcc format instead =
-of
-> > an imprecise bpp value?
->
-> Backwards compatibility. We can add an IOCTL for YUV / etc. But
-> userspace must be able to continue allocating YUV buffers through
-> CREATE_DUMB.
+Implement the TODO in fec_enet_txq_submit_tso() error path to properly
+release buffer descriptors that were allocated during a failed TSO
+operation. This prevents descriptor leaks when TSO operations fail
+partway through.
 
-Right. If allocating YUYV dumb buffers works on AM68 today, then we
-need to keep that working. But it doesn't mean we should go out of our
-way to make CREATE_DUMB work for every YUV format on every device.
+The cleanup iterates from the starting descriptor to where the error
+occurred, resetting the status and buffer address fields of each
+descriptor.
 
-Currently, drivers are free to implement their own ioctls for anything
-specific they have. But like Laurent said, standardising on heaps and
-how to communicate requirements to userspace wrt heap selection / size
-/ alignment / etc is imo a better path forward for something generic.
+Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-Cheers,
-Daniel
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index b2daed55bf6c..eff065010c9e 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -913,7 +913,18 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	return 0;
+ 
+ err_release:
+-	/* TODO: Release all used data descriptors for TSO */
++	/* Release all used data descriptors for TSO */
++	struct bufdesc *tmp_bdp = txq->bd.cur;
++
++	while (tmp_bdp != bdp) {
++		tmp_bdp->cbd_sc = 0;
++		tmp_bdp->cbd_bufaddr = 0;
++		tmp_bdp->cbd_datlen = 0;
++		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
++	}
++
++	dev_kfree_skb_any(skb);
++
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
+
