@@ -1,197 +1,227 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2056.outbound.protection.outlook.com [40.107.21.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B065B45005
-	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 04:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737000241; cv=fail; b=adK+pfVUg0E+9OouAP7QxYbxWoRHk+idJMvmzGjeu9apxT3M/6vzYbT3H6VKddF7OdVvny7AGEyvfeJL5vv4WhIr2pLFq5SKsfNGbaH7IO1z9h5GjE8AgvnhVm5cvfv9CnxDObfO0cAdmCukJIGP/JAEU3t315s3VCkgzRwHL6c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737000241; c=relaxed/simple;
-	bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=o74CS/j+Vf2gdkTcEr+WygYJackS93lZrQBtiPVGSw9WxrKNBjKsrPpX854ldLv6ZmEMSxrT7k6y+4CXKgjCVv85h78QHJMsxLcQUtbNL+bgHo77DUwhsFYNmtNUVvuCwXaXHPrht5cbiz45JuFNhduhi+FHbB5KZ0sr/t+1or8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KYhPswJU; arc=fail smtp.client-ip=40.107.21.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3223818D620
+	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 07:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737012258; cv=none; b=YvzqL2M12gEPD9UZ2bh/be90eZ5zciOEC6ceeicOKqlhTR5N4QOho7w4IE7r7Sb9SuGRKDzLolANc5899GRpm2YBqvZpQ8GunFbW+jFGYET6xansNCd8yaaPXiX1ZwevmhJ1Uth91WRzVQREI/6v4PM7m9Pr9rTw4A1USMB9ykA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737012258; c=relaxed/simple;
+	bh=EJHXyEE0jtpEBe9StnNuUXOL/9zcbWBVwrq+49cPX8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FTnczQ3m/yJvDSLJUNsvyKkoDvKjpMkD7SL1YWD8+JyzLRDIRGmbHCS1pz1s/cLXW06LRSFbZdc2Pnz7Ru9prXgkrdo81Q1nV2N3qNg2NEmdg2rVFxW0Mt/euIJYCx0r1XDVCnp6BVoM/kK++i7TYlm/cgF86/S15oUpSOx0S28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a9/HeJQm; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KYhPswJU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UVO94YicnQIhhAkmg3BDvw6KBpRA/J8eccQ+r2L2m5xHQm2Z0Ecq+nsYSaAR3+6CYu03NIUYVGB9cVr25wNXeyTNpm24cOa4j7yW4p44sza2TkM1Ek5wODG7ZqXlU5NN1RG99+JUautsNOL4tBm/YhFdws474LcF6HWc5lZ80dAqoiq98uuHT7GyjP2YxH7I9uaN1tRqDeoL2rDxvXc/goT3gtULcNIocBiDqlpDSJ658yfPCntxsOtXHfv/VbpqgB9kh7wv5XrXlbafD8EnBLIhDQWH+Sj/6CSKt21CDkBNVO08HNSumvS1+1O7tkYDts57Sdna2diSNzczI1wO5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
- b=gg1iDAV2kgIAmYuYVyhaEc8QyhCkc+OnmBIFet1FjwMisGpdGm8iU5RMjfYV4KcKzPXj2Y+8G7lkPxRFAh+SSxGyz1bo08RpcsIhjoc49bCbKcLPMgN0AuD6ox/CLUQ6//wYwEGgCydA00Wf5PtuYtvf3oQaM/P4PKU+g+AufSQyEGaDyt95k1g6xTa9EKYFTIgvzp5KMingkqU7lKoMOT51/bNgNeKJyM3o+FnTRtnJq7175CVuGdWOAIbaAfhXWp3hWbFUvAEs44V4TTgIkCZqKOgYkdD5HMtNuyI1W+OgP3DPtx+a24p5nIhIujixGE4y4gVwapclYVBuVGeWpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e09UzvCjy2+a05z7kUeMjg/ll7zCLRUPCS61eOmfmZ4=;
- b=KYhPswJUHuRFCQQU7BllNRMm9BzFRejCc+td9LbkqjN7xmHFAwoqvxr/UGu2u+7jczBC1v+ZqzSQIAwvViXIIF90eNbVVKTOLWW/uKtAc41303uPWQAhWfVAxqj1JNI2i9LRNjoGnyv2vK30TiV0/DTVbz1FgjWx5OxAuAqAvHxnwMYEocEGKqTtwN9st7aX/8VtIFeYVWSIy7fTNi096/osH0pB5TGXOMATlcDnnOaM37tpqX8x1uXe3HsNMXJwfaJB7UzdmQq+vjm4+ZeHVdOiK9BmhyOuVnmchMiar11IjPdK6zS0/EhesKjCLQDTGhYa7ItWbv01V6uimpuPXw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DBAPR04MB7413.eurprd04.prod.outlook.com (2603:10a6:10:1a6::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Thu, 16 Jan
- 2025 04:03:54 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8335.017; Thu, 16 Jan 2025
- 04:03:54 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH v2 net-next 07/13] net: enetc: add RSS support for i.MX95
- ENETC PF
-Thread-Topic: [PATCH v2 net-next 07/13] net: enetc: add RSS support for i.MX95
- ENETC PF
-Thread-Index: AQHbZZbFHVAXua2Zbk+OQT+Myj+77LMYZqkAgAA+4eCAAA91gIAAFkEA
-Date: Thu, 16 Jan 2025 04:03:54 +0000
-Message-ID:
- <PAXPR04MB85106EFD7CCC559489C00401881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250113082245.2332775-1-wei.fang@nxp.com>
-	<20250113082245.2332775-8-wei.fang@nxp.com>
-	<20250115140042.63b99c4f@kernel.org>
-	<PAXPR04MB8510B52B7D27640C557680B4881A2@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250115184105.139aed9c@kernel.org>
-In-Reply-To: <20250115184105.139aed9c@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DBAPR04MB7413:EE_
-x-ms-office365-filtering-correlation-id: 43ca630f-d395-444d-1ab5-08dd35e2cb60
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?gb2312?B?VXBURmFoQXFPZTVrT09xN2tkc1V0ZDB5NkFtRzdJVEkzd3dxbHNyYUJhaE5U?=
- =?gb2312?B?eHJ1cklhSERrSS9Hb3JGaG9MaURsaXRnb3pBOUIxYysvTHNNRXZaOWdYOFEx?=
- =?gb2312?B?dW00NmdLVERyNkl6LzlBc25tSWJYSjFZVTdOZS8zSHBFU0R4T3RDZlF4VjQ5?=
- =?gb2312?B?U2E1OUx6d0FKcVZVUkQzTUs2K0xSdHU3WWpFVXQwbnJqNlNnOXBuYjRyNXVa?=
- =?gb2312?B?YTdySVBUOEg2M1cwK1BXeGZIKzVLc3EyYnFBUU1FQ003SE0yTU43SXhZbkpU?=
- =?gb2312?B?dGJDVDYvQUdIU1lneHlGZWhPRkpNSklwRzdMMnM2endsY0pzbjBMNVhOUVlJ?=
- =?gb2312?B?WW43cXZHZWpCVjk0dUt3Y3NIV20zYlFBd2laaVdRV0UyYUVDR09MaXVQdnRk?=
- =?gb2312?B?ZFJRSzF4bllIYjNrSjZlVFM5SkFCS3ljTnFERitzdnh2Qk5HL1llellNNWV1?=
- =?gb2312?B?bFBWaEtWVGFjRnovUzlhSUhzZ2R3QmxYTGhEU2pIakdwMjRtSkdSQUJoTDV0?=
- =?gb2312?B?dzZwMVMyeVVnTmVWTjMwL0dxWXBmb3diaWQxeXU3eG93c29yNTRWMDJEbzFV?=
- =?gb2312?B?L2I2MTJaRU52cDRKVjRHWVE1QzRodzZhK0pya0V0WS9sK3lJdXVCblN2Nll5?=
- =?gb2312?B?Z1ZWcVlBY0xtOVY3eDF0NE5QMGJlSXliQyt0S0tyck1KNUxHbVV4M1dIOUFj?=
- =?gb2312?B?aER0MTl0MnlMd1VCN20wUkFUamszUC9JYkJud3hiYkxoVmRXeEsveldpNzkz?=
- =?gb2312?B?N00zVDZPZytpNU13S1ppRlYwbTBLa2h2Z3VOaEVvb0JpR0Ivc3VxbFNxK3RQ?=
- =?gb2312?B?WnkyL0VLWnB6MFExQmNGME1lN1NDRWRSSjJ1WEN2ODVZVzFvRFZvMVlUbmJ4?=
- =?gb2312?B?STh4N2tTTnRyUTQyWXRFQjd3dUxWdnJlbFYzY2ZCcnZlS3hiRHN1clpybFVo?=
- =?gb2312?B?Y2lScGNBelpPR1NieDFvaXRZTmU0ejNoM3dpSDcrTlE2bzN5dE5CMGhEeTRS?=
- =?gb2312?B?SWFieDRQTmN3TDZNd2NMd3dhN3ZxLzZCcG9RcTF1c01LWFY2ZW8rRWVZcWhE?=
- =?gb2312?B?cUdQWGNRbFliWlRzMkM0ODJpRTNiZVMwRUFuOEJoK1dtNmpwUkxVeUF3SStv?=
- =?gb2312?B?K2doejFzd25jVmpmb0plSWRNWFNuRkpPQnBrTVdDSmFGSnZRSlpYMld0bVBS?=
- =?gb2312?B?c1NNbjcyRzcvbkIyTmhOWW1OWU94cm1IL2RzNm45eVc0cjBpWjgwTEFHeHdF?=
- =?gb2312?B?UTNBRFBTZEVQQlVBREVaNlNvcjVCdGl3U3pNN0w0dmJCMlk5WUczRXZBYzFE?=
- =?gb2312?B?cU9HK01ZK21QbGhMWUs5a0Fkc3FFdVVpUWtPWE5hY1RLam1QeGoweU1YZmVW?=
- =?gb2312?B?c2xUL3B3WWhOWU5Kd21JWVpDckg0bEpVWlNFUmxUOFdtVVQ4KzZSbG4vL2k3?=
- =?gb2312?B?YmpYeVZrQXdyNlZDWS81RmVQRk9nOU1ZZi96WHZRZkIrR3ZJcGZUZjFiclk3?=
- =?gb2312?B?YlpCRzJEMEdwNGhXcmVqS202cE51d084OGR6aXp3WEpwdzNPbUpxRWhlb1BF?=
- =?gb2312?B?TW1IUy8xdkJFNFE0bjFVSFp0dGZPTmdKRVA1UkZhck00UExMb1BNcnFNR2pq?=
- =?gb2312?B?bWxVMXVjSFhDa3k0SUVYZkxoVHFWc0FJRjdBNGtYNFU3YWtKS1BQUm5USjFN?=
- =?gb2312?B?d2dmOGRlaWpUYVYxS2VKYllaYTNGeHlQMC9jbDNVM0lqUU8zUE1IV3FPWGho?=
- =?gb2312?B?VjFrdmlkS3FXenQ3SzUrakZNZGdsc1VMeFU2SEFFSFp2dCsrMWQyU01kZ2gx?=
- =?gb2312?B?bmNaOVBaMEdCYzl4WHJzdnBlNWpRT0lEYUhoQ0R3T254ZitXWDRrem9kaXps?=
- =?gb2312?B?b3F0TmxubXRQRHppaDU2a2FIR2dBc251SzM3ekxhNzdCYVFzYVkzV2NaRXFO?=
- =?gb2312?Q?UX3+W3dphBGafyPgb9dvgWx9xWM9aYtJ?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?Wmw2emRuZ2xqSUtKaDdxR05rQTY2TUlHUHdUdC8vWkJRZGpVK2ZmTG1YMjhK?=
- =?gb2312?B?TGxaL2tzNStSU2ZwSnRuRG03YlJVUjM2dGZ3VEg3NjgvTld3Wkg5Sy9aRFhN?=
- =?gb2312?B?WjlwQkFiVFdub0o4NEYyOUxpRi9kNjlIM3YyWTJHWHl4YncxNHVqZzRMZ3RF?=
- =?gb2312?B?ZUZ4YUJoVVVZWndZam1DWEIrdTBtZzhBOFpJelNFbjJUaS9qS1lrL012Z0NX?=
- =?gb2312?B?S0s0S29mL3RLVHBxM0JsWkxjWG1RRFpjRTRPcHJtNHRpalp3WlEwdFJFNVlG?=
- =?gb2312?B?b0d2eFVVRDY4TGQ4MUJpaFh1dWdZT3M2NGsrNDBYRUt6UitScWNveEgwWEwx?=
- =?gb2312?B?dmJhTHNUaHBTbzhRdjE4dHdhNERzOGlsRERwRGRlcDAxRk9WazlPNWVCYUdp?=
- =?gb2312?B?SnNlbWNYbi9vU1hONFNvSU05UGVLcWFiZEVxczhTeG5qR1ZJR1ZoekxnSnpV?=
- =?gb2312?B?SnJucHgrYjZuNW1ub3ZvamJDcmZhNmZFN3RTbERKSE1ZdEQ3ODRBSmVEZlRS?=
- =?gb2312?B?VVRoQmxLMlhGeUNHaWxVN1V2T2YycFhrZlFwQXBNMTB6OHh6eGhTdWg3bGJo?=
- =?gb2312?B?d1VzK09SZTJVNFY2OHlSZ2RaMjYrekRadG9ZeW10eHk1c1dscUZ6ZW84ODdw?=
- =?gb2312?B?TU5VWTNKNjJWc3llNlI3Nyt6QW0vWTRVbVgrMERYTzlHZzFBMVpkWG8rU21Y?=
- =?gb2312?B?TGtCalhuWmY3MDh2MGtTMm9WTnhVWnJidUxHVlBVdVorZVhoSW8ybTZrb3Rz?=
- =?gb2312?B?U0VyeVgxZ0VMN3A1alV1cktBaUR4Q0JmSkJTMEdoMlBLVGVaWkEvcGxGRDMz?=
- =?gb2312?B?TkEyUzlnT0h3dVk5UUpTbU5RckpyNTRxTitXY3FlV0dEQ293YVd0ZEVpbFRL?=
- =?gb2312?B?YllURFlVZTJrZE9SSkpTYitoL2p2R0xMU3NhSTB5d0hwZFhPRTh0TGxidHFi?=
- =?gb2312?B?a1g4N3d2VGRBL0UvV2ZvN2ZWQzBzL2R2V3M5YWlweGoxTmZtcmhqUExpeFF0?=
- =?gb2312?B?cWpLQ0hnZlJxaitTbHhLdTIrSGJCUHFTblFkbkY3bjRKemRjUUFsN3d0MWdQ?=
- =?gb2312?B?MkFnYUFDM0YyNVJzMTB6NWZnUitpRVpaL3dTTEZNZENpaWcwTURBKzdXeUZo?=
- =?gb2312?B?REc2UE50YnQwbWNkdkIzYkQzaGxyZmFNMlhHbTJuNnoxZWtRa2tPWnlFYzBK?=
- =?gb2312?B?Y2FGRHljY0lCRHc4bHVCaHZDQzdJYTBaZEZqYlZ1WGtoZ2JRZ3pIcUppd2Vn?=
- =?gb2312?B?NVRVRkJKNGZFZTEvSUdMWTlXbEwzelA2QXVIbW1ZNEtmVlo2WnlhbEY2SC9z?=
- =?gb2312?B?dlRMTzYzL3dzV01Ic2hVRFFTN3NsOCsrMkppbWdqMWZYK2gweCt4VUY5QUEy?=
- =?gb2312?B?NFZzWThiTmZwemVFZTdCR1NvZWdtMkhrWCtLQ09GblFOdnpOWGQxYW43YVFu?=
- =?gb2312?B?dmRDUU1zeFVDYTdWNHJ3Zmk1ZWV2dW9BZ2VsSXU1cHhsdFUxdXA2czZDTU5y?=
- =?gb2312?B?UjBIMm9zM1lmZ2xmNHpKYWdXVmdTemQxVzVxTDhGOTBGbFlnYzg5RVV1ZnFQ?=
- =?gb2312?B?dlZKQVlpaFBrUmQ1L3BwZkpWeDNlVDBDQTlZT2JWYmJYTFVjOStYM1ovQTRs?=
- =?gb2312?B?amtTVWZ5MW5iQ080L0JwMjlCRXZMWVlMcGFlRUF5Sng2WVNhSFVKdmp3ck9h?=
- =?gb2312?B?bm9OejVSZGRYbUdYTWhGNXUyNXM1RUhpZktZTVEvNHluOFhoRXcyOE9vRHlj?=
- =?gb2312?B?VlRHZ2RTSzJqbE5NS3d4Z0xaM1k3VGQ2OGM2TUI5eXNxSU5tMUlKNVhxc1dW?=
- =?gb2312?B?Qjcvblo2RUhqS01jSFFlWWpidjNzeVBLaDhRVjhYekxZY3RXZWdQcmhIWEdx?=
- =?gb2312?B?OVN3a3RiRkRRZGd0RGhQMlhNNUhlS0ZZVWV5U2VYcG1YMmx4ZEg4SEUzY0FC?=
- =?gb2312?B?ZC9yN1hrNWt4Y3ZSVEJPMmJaQ0NiSGh5NmRLNDllRVZTR3p5NDhGWHI0ZVgw?=
- =?gb2312?B?Mk04SlI5MUp4ckdGcnRKZnh5d0c3YktwQmhPUFZ1MDVVY05xTTg4TUF1TURV?=
- =?gb2312?B?YWt6aURSZ3FvT2xBR2tGekZ2OFM5dWlEM1FRWDA4R2o1NkgrWS9GRnFQS3VF?=
- =?gb2312?Q?zJYI=3D?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a9/HeJQm"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4363dc916ceso10222785e9.0
+        for <imx@lists.linux.dev>; Wed, 15 Jan 2025 23:24:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737012254; x=1737617054; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IgVDZJK/ujB65O5I2vwx4J+q5AFipQItIeJr4iAC6iA=;
+        b=a9/HeJQmjekLJFlfSmoNCDmeOiv0qE1Q3b0Y/TdFLS6p1olnfahY62QA40aS6bT/pS
+         0pNU5ASdd12KJI4mtOW1wQ5Cs8QeA3ZwfvB+KqaGURyW3MxqwpZnrZeWMssLgb1WrCaz
+         zoXQ8rogsoEcfEpB+R6hxPmhAEg3oDLjP+vg8IWKhtJb90iFAZfHGf2wOGBi0WchwsAR
+         PedNYM9nU9/e3V3Q6H1Xssir64Snu6V1beXKr+7yAB4aaBJPOvLxOBeDr56HCTntd3/K
+         jWyjnhMj2od2Vp8K9hP6NNnPCSLJD6pLukfBZ07C+mNh/GLEX+H2nXmGi8CD4JDZlsV3
+         Bvww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737012254; x=1737617054;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IgVDZJK/ujB65O5I2vwx4J+q5AFipQItIeJr4iAC6iA=;
+        b=iwts6y2N/5c3nSZS9vlcZ8+l+f8wWdCdac+q2+hYG3w4ufUH1HIto+IoStjd+qLu9v
+         NzJJQs0aOPelGGlZPPQyD3eIEv1dWAM9tmVKXZ99KagkV4lk+pQiCF/jZYKCUfbA5luq
+         AUh068gtmofDieVGrNcsXc4kEOUK28pyNCwAgaIFajoiJEfW21PCeYpO29VbfnXTeKHy
+         mhldIJqfY9maqNmltnPxir38EbkJzHt3JCRZA3H5ygjcTF0odVx1DWS0hCOTdEJCV8EA
+         ziJpycqFMqwLs2J4w3e9IgilIWytbeoiYY+kehUp2HBt0K37vYLnzJcH4WhNfVqnjt8o
+         Nh7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXgnPaII1dtgM292GpVcM/UJD6J74uIulF9RHnNYVnHg8PcdNraEtSaxrnxWxomWfL7+wA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+5GBprg5L+IqELioWTkWnxXcKcXeTviSUsN6Ws8FnG1HRZ2Qx
+	A22TjDP+4YRbA9r2SuSMZW3ZLgJo8eUby++rd2UshK584KdacjLJ
+X-Gm-Gg: ASbGnctuNdInhstQaOwNWl0sRUaJ2H7iXgsYtrCIHVJvMB0H1KaXIOBQLGn0QSXHfaf
+	sAOAT18is0b8HI7dK++rr1Ki4SDs/FzxtA297Z7NiEzzjKWZooNUdkKgK9k2iEVpSRiXM94oFk6
+	owcG0ED7IR63yuvQ2/oI5ClVUf/Zq6YSPRYEPl8v/QgUeTiWcOFofxZ+sQ7Oi2MEkcyzJxQ/sZn
+	VPdRb/MBXDWNtkIJxFFL39tAgMPQQ1NwArFS88X+0Gc2zUKUrEUcKAL
+X-Google-Smtp-Source: AGHT+IEoUDQBvRyW1rj5PdvWwHSZrTwh0+MhedH5EL9nzscjOPcqJoxU9CPjQ5ErDBkS7bIkez2gdQ==
+X-Received: by 2002:a05:600c:c06:b0:434:fe3c:c662 with SMTP id 5b1f17b1804b1-437c6b26e74mr45097105e9.12.1737012254194;
+        Wed, 15 Jan 2025 23:24:14 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72:0:6c4e:8d77:c1b7:309e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74bf061sm48499725e9.17.2025.01.15.23.24.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 23:24:13 -0800 (PST)
+Date: Thu, 16 Jan 2025 08:24:11 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com,
+	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com,
+	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
+Message-ID: <Z4i0G5Tw4q0v8DTL@eichest-laptop>
+References: <20250113094654.12998-1-eichest@gmail.com>
+ <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
+ <Z4ZRYMf_uJW4poW9@eichest-laptop>
+ <Z4dy3LiEAQ_gkQGG@eichest-laptop>
+ <CAA+D8AO75MLyP5AWDJoogw8ae4GRtZfSR-HT+S26bXoaVs8saQ@mail.gmail.com>
+ <Z4eQX_VnBEVqxT_r@eichest-laptop>
+ <CAA+D8APivJWD-AqwmQ-mtcr=ZHot5rfA8FRWF2+p-_mq5BGxHA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43ca630f-d395-444d-1ab5-08dd35e2cb60
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jan 2025 04:03:54.6748
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xLM/5bPdMrGfmzQuBgA0J/6Ptq6XdpDZ3Tf7ETMIwF7Ijo9T81SufYQaoXmv43MF0weu1lL7AjhiA2rqXqV9sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7413
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAA+D8APivJWD-AqwmQ-mtcr=ZHot5rfA8FRWF2+p-_mq5BGxHA@mail.gmail.com>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKYWt1YiBLaWNpbnNraSA8a3Vi
-YUBrZXJuZWwub3JnPg0KPiBTZW50OiAyMDI1xOox1MIxNsjVIDEwOjQxDQo+IFRvOiBXZWkgRmFu
-ZyA8d2VpLmZhbmdAbnhwLmNvbT4NCj4gQ2M6IENsYXVkaXUgTWFub2lsIDxjbGF1ZGl1Lm1hbm9p
-bEBueHAuY29tPjsgVmxhZGltaXIgT2x0ZWFuDQo+IDx2bGFkaW1pci5vbHRlYW5AbnhwLmNvbT47
-IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT47DQo+IGFuZHJldytuZXRkZXZAbHVu
-bi5jaDsgZGF2ZW1AZGF2ZW1sb2Z0Lm5ldDsgZWR1bWF6ZXRAZ29vZ2xlLmNvbTsNCj4gcGFiZW5p
-QHJlZGhhdC5jb207IGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldTsgbmV0ZGV2QHZnZXIua2Vy
-bmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGludXhwcGMtZGV2QGxp
-c3RzLm96bGFicy5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsg
-aW14QGxpc3RzLmxpbnV4LmRldg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIG5ldC1uZXh0IDA3
-LzEzXSBuZXQ6IGVuZXRjOiBhZGQgUlNTIHN1cHBvcnQgZm9yIGkuTVg5NQ0KPiBFTkVUQyBQRg0K
-PiANCj4gT24gVGh1LCAxNiBKYW4gMjAyNSAwMjoyNDoxMCArMDAwMCBXZWkgRmFuZyB3cm90ZToN
-Cj4gPiA+IFdoeSBjcmVhdGUgZnVsbCBvcHMgZm9yIHNvbWV0aGluZyB0aGlzIHRyaXZpYWw/DQo+
-ID4NCj4gPiBXZSBhZGQgZW5ldGNfcGZfaHdfb3BzIHRvIGltcGxlbWVudCBkaWZmZXJlbnQgaGFy
-ZHdhcmUgb3BzDQo+ID4gZm9yIGRpZmZlcmVudCBjaGlwcy4gU28gdGhhdCB0aGV5IGNhbiBiZSBj
-YWxsZWQgaW4gY29tbW9uIGZ1bmN0aW9ucy4NCj4gPiBBbHRob3VnaCB0aGUgY2hhbmdlIGlzIG1p
-bm9yLCBpdCBpcyBjb25zaXN0ZW50IHdpdGggdGhlIG9yaWdpbmFsDQo+ID4gaW50ZW50aW9uIG9m
-IGFkZGluZyBlbmV0Y19wZl9od19vcHMuDQo+IA0KPiBJbiBvdGhlciB3b3JkcyB5b3UgcHJlZmVy
-IG9wcy4NCj4gDQo+IE5vdyBpbWFnaW5lIHlvdSBoYXZlIHRvIHJlZmFjdG9yIHN1Y2ggcGllY2Ug
-b2YgY29kZSBpbiAxMCBkcml2ZXJzDQo+IGFuZCBlYWNoIG9mIHRoZW0gaGFzIDIgbGF5ZXJzIG9m
-IGluZGlyZWN0IG9wcyBsaWtlIHlvdSBkby4NCj4gVW5uZWNlc3NhcnkgY29tcGxleGl0eS4NCg0K
-T2theSwgSSB3aWxsIHJlbW92ZSB0aGVtIGZyb20gb3BzLg0KDQo=
+Hi Shengjiu Wang,
+
+On Thu, Jan 16, 2025 at 12:01:13PM +0800, Shengjiu Wang wrote:
+> On Wed, Jan 15, 2025 at 6:39 PM Stefan Eichenberger <eichest@gmail.com> wrote:
+> >
+> > On Wed, Jan 15, 2025 at 05:14:09PM +0800, Shengjiu Wang wrote:
+> > > On Wed, Jan 15, 2025 at 4:33 PM Stefan Eichenberger <eichest@gmail.com> wrote:
+> > > >
+> > > > Hi Shengjiu Wang,
+> > > >
+> > > > On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger wrote:
+> > > > > Hi Shengjiu Wang,
+> > > > >
+> > > > > On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wrote:
+> > > > > > On Mon, Jan 13, 2025 at 5:54 PM Stefan Eichenberger <eichest@gmail.com> wrote:
+> > > > > > >
+> > > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > > > > > >
+> > > > > > > Currently, the flags for the ACM clocks are set to 0. This configuration
+> > > > > > > causes the fsl-sai audio driver to fail when attempting to set the
+> > > > > > > sysclk, returning an EINVAL error. The following error messages
+> > > > > > > highlight the issue:
+> > > > > > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sysclk on 59090000.sai: -22
+> > > > > > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
+> > > > > >
+> > > > > > The reason for this error is that the current clock parent can't
+> > > > > > support the rate
+> > > > > > you require (I think you want 11289600).
+> > > > > >
+> > > > > > We can configure the dts to provide such source, for example:
+> > > > > >
+> > > > > >  &sai5 {
+> > > > > > +       assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > > > > > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
+> > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
+> > > > > > +                       <&sai5_lpcg 0>;
+> > > > > > +       assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
+> > > > > > +       assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
+> > > > > > +                                <722534400>, <45158400>, <11289600>,
+> > > > > > +                               <49152000>;
+> > > > > >         status = "okay";
+> > > > > >  };
+> > > > > >
+> > > > > > Then your case should work.
+> > > > > >
+> > > > > > >
+> > > > > > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal that the ACM
+> > > > > >
+> > > > > > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. which will cause
+> > > > > > the driver don't get an error from clk_set_rate().
+> > > > >
+> > > > > Thanks for the proposal, I will try it out tomorrow. Isn't this a
+> > > > > problem if other SAIs use the same clock source but with different
+> > > > > rates?
+> > > > >
+> > > > > If we have to define fixed rates in the DTS or else the clock driver
+> > > > > will return an error, isn't that a problem? Maybe I should change the
+> > > > > sai driver so that it ignores the failure and just takes the rate
+> > > > > configured? In the end audio works, even if it can't set the requested
+> > > > > rate.
+> > > >
+> > > > The following clock tree change would allow the driver to work
+> > > > in our scenario:
+> > > > &sai5 {
+> > > >         assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > > >                           <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>;
+> > > >         assigned-clock-parents = <&aud_pll_div1_lpcg 0>;
+> > > >         assigned-clock-rates = <0>, <11289600>;
+> > > > };
+> > >
+> > > In which we configure PLL_0 for 48KHz series (8kHz/16kHz/32kHz/48kHz),
+> > > PLL_1 for 44kHz series (11kHz/22kHz/44kHz),
+> > > which should fit for most audio requirements.
+> > >
+> > > >
+> > > > However, this means we have to switch the parent clock to the audio pll
+> > > > 1. For the simple setup with two SAIs, one for analog audio and one for
+> > > > HDMI this wouldn't be a problem. But I'm not sure if this is a good
+> > > > solution if a customer would add a third SAI which requires again a
+> > > > different parent clock rate.
+> > >
+> > > We won't change the PLL's rate in the driver,  so as PLL_0 for 48kHz,
+> > > PLL_1 for 44kHz,  even with a third SAI or more,  they should work.
+> > >
+> > > >
+> > > > One potential solution could be that the SAI driver tries to first
+> > > > derive the clock from the current parent and only if this fails it tries
+> > > > to modify its parent clock. What do you think about this solution?
+> > > >
+> >
+> > I did some more testing and I'm still not happy with the current
+> > solution. The problem is that if we change the SAI5 mclk clock parent it
+> > can either support the 44kHz series or the 48kHz series. However, in the
+> > case of HDMI we do not know in advance what the user wants.
+> >
+> > This means when testing either this works:
+> > speaker-test -D hw:2,0 -r 48000 -c 2
+> > or this works:
+> > speaker-test -D hw:2,0 -r 44100 -c 2
+> > With:
+> > card 2: imxaudiohdmitx [imx-audio-hdmi-tx], device 0: i.MX HDMI i2s-hifi-0 [i.MX HDMI i2s-hifi-0]
+> 
+> Are you using the setting below?  then should not either,  should both works
+>  &sai5 {
+> +       assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
+> +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
+> +                       <&sai5_lpcg 0>;
+> +       assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
+> +       assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
+> +                                <722534400>, <45158400>, <11289600>,
+> +                               <49152000>;
+>         status = "okay";
+>  };
+
+Sorry I didn't communicate that properly. Yes I was trying with these
+settings but they do not work. The problem does not seem to be that the
+driver can not adjust the rate for the audio (so e.g. 44kHz or 48kHz)
+but that snd_soc_dai_set_sysclk in imx-hdmi.c fails with EINVAL. This
+results in a call to fsl_sai_set_mclk_rate in fsl_sai.c with clk_id 1
+(mclk_clk[1]) and a freq of 11289600 which causes the fail.
+Interestingly, in fsl_sai_set_bclk we then only use clk_get_rate on
+mclk_clk[0] which is set to audio_ipg_clk (rate 175000000) and we do not
+use mclk_clk[1] anymore at all. This is why I'm not sure if this call to
+snd_soc_dai_set_syclk is really necessary?
+
+Regards,
+Stefan
