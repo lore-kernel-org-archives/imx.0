@@ -1,152 +1,140 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D109222BAA2
-	for <imx@lists.linux.dev>; Thu, 16 Jan 2025 15:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DD37081E;
+	Thu, 16 Jan 2025 17:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737043115; cv=none; b=Myn9Hix6vGw9HOEShxP7xANzdlcjkWiVRGwGSPzaQ/XufGDWy0BWYoPj9MIB1G3UVgk1TAanFwlEvUq39/1G/M+6tjCSBBhsIDnrq+OWo7XwndLNdewXnbGH0bAtz3LiSAru9mpAYWeZALWFYQq0OjVFF/JmXt7nSSdk/MTU+MY=
+	t=1737046876; cv=none; b=PM8ZKmUfiBR3X6THA9lRX7hP+/r48aYc7HEoBOyGK3M5pMnMenT6qFjO9i/1lBu5dS+0dL2ptOdxpginypfPenUNL+tttgO80duAA307Mm4dO/E52c2sjRZPNJZh/+PT9ZQwaIgBGXSkarPZS4zV4X5QMt+xCtb8v/8G2udQ56Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737043115; c=relaxed/simple;
-	bh=TsAFTtAPHFDWqClgUwsN+5G3GYn9qmIlLxL/HqroH30=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJt0yD+oOTLcDhTZ7k016tbhRiTUC61nYXR3k5M9MVnKiEfeEFSW8N4PdATmfDwaNdAk1bjVn+VJx4wgoWiHuRTYnYhU3WuSj6/QsIwWYUmrtMaNEDUD3UtfL8b1nAMN64sTy2yxXnn9UUBouZ8BmYVRbHLyc6t9nOe7M/EO6zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uhHwpFmK; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1737046876; c=relaxed/simple;
+	bh=sIyEpcILKU6HkN+pcB5rrY1Ix3OJNrYy21QuDNq+2IQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PvCFO4quCIeuia5qzTWEhww6ItxAcMXBqg2teuoUIcBYNQ3gmxSStOEwhIDx9j3d97Ez3kie5elV9NZJle4w1ZmbybGIVqINt1K0FxbeT8HOeGmUvup/i9Y4R3KHqylmLkbWP0rgTWA+QxLV2s4OJprCwuBnFgcXzAPPIXjwyls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aihW9zUS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uhHwpFmK"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e479e529ebcso1571173276.3
-        for <imx@lists.linux.dev>; Thu, 16 Jan 2025 07:58:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737043113; x=1737647913; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZg7i9Gkt1p2UGCmQVCKIa0P9txKm7ecHDqIrA9B8RM=;
-        b=uhHwpFmKijI8jURoJvgk8bVxyuBIaTpk3sCcWOr9q82/6Y/lsn93W98Qgs68CKnFkX
-         h5Mqm7ZGgamKYAqvrlKJL7HCoKHfC2NDuMpSa8B8EFk/pjq2hzC0yeZLPtBGLf8vmjvL
-         mXrL6Yh0NOeL/XoYTQG10/3pljrCWZ+4lYD+oy243HJk0vQZojBS3QOBOQ215Va69GT3
-         n0LTsr1ng7EB/kv2/gg1XkdMc+twy2fFpfrkfGJXnkKb5PsjeTH/EcVaHwXIAmvhyLRL
-         9bvtTsYGWZcQjxVUNpm/7J+bq9IT4StEFgmi/dvShlBW1Vk9OwSm+OfvF3ZHGOGwId09
-         s6+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737043113; x=1737647913;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xZg7i9Gkt1p2UGCmQVCKIa0P9txKm7ecHDqIrA9B8RM=;
-        b=vwwMtONBUMXFDPCoP/0AIHds1/bSYgSJBK5HwOgubNyfW+O8Ju1lk2EcwJafxC/6Ga
-         R8PHNwUbufJJ4JHc35bgck819PmzixYrGjGijufZK3HltAbKflTmkL/O7jcI/UtyFwgW
-         wSnOKXeL/+nWdlhkCdCtrGLHtjpj4owNeWQK6mtOkQJT7tIAV30GUq/j45XhG/x5Gu5v
-         AlBLH9G641iG53h16NJ3D3PqKjcojjU3vAdPT+66Yz59rOWlojEBK1IV7ff489aw3j6e
-         I3axzatdohsB+eUzvqUWCA0Uwm/xw7jb+cjjaDnJdKlSkSjBT7Mrk4Dc42nVtw7LIsJC
-         znDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVa0upwpQ5AtBpeWzUgkttJIindsmCz36AEH5V3+ybcXd120psxiROK5e0Umzq+R9yqejk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzc96/5T2hS/mbtuIjfScU8E3Geqx5tQvo6tVC3U2GywlE6aLwV
-	tCBv5UV/KPW81Hh5qTeNz9QI28g5Dw36RZSWz6KKgigp4h04RfmQll02Qsl39Pglb5sqHkBkaao
-	uk3kANNcGICBLGEFh/otqUxQGUXzMP5s7FfMoTg==
-X-Gm-Gg: ASbGncslPnbuaXmW9Zp4TlteAgpkfuZP5RdJJ2HZerproD/5tgHK4gdOKT0qopDetBM
-	E9jT1pXEyYE1E/SQj6rUQ+CNKZvJcNOdeknWX1sk=
-X-Google-Smtp-Source: AGHT+IG1qVTRfq3rD5NuthhfaJDGZx9itjIkE76nEv6cFISZ83dbq/vsbg+foxsWE2MrG6pQrDxrf7Opr66/DdtZa/k=
-X-Received: by 2002:a05:6902:161b:b0:e57:31f1:972e with SMTP id
- 3f1490d57ef6-e5731f1a4b2mr20182789276.29.1737043112819; Thu, 16 Jan 2025
- 07:58:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aihW9zUS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2839C4CED6;
+	Thu, 16 Jan 2025 17:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737046876;
+	bh=sIyEpcILKU6HkN+pcB5rrY1Ix3OJNrYy21QuDNq+2IQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=aihW9zUS9HxRQsQOKMKJdhyogOtZ88U61HA5vehb8BNQHBNOkxW5Gq7CxpGbq7NGl
+	 wpUJTNDfKWCN0LABS5YhiT7jBJj3qD7q28Y7Rsny2FHg3EUi5VPkRWsgDYjijsv5Eq
+	 UEAmtqWoH8s7QtSFljoMe0T0gXKw+F2xFCAj3L3Iv8SboyG6cdPxfvwEmzLddxr3HX
+	 1vdFC/9NFNb0kj02O7ELPYxlydm1WKgg5BLtkaQe5UJQh6OO+ZFA9iI2KcRM32/9T0
+	 soQmWnGKaQURbLuJiSrZ0aL5WWP/GOAHf7hN9mB+66cbjG3HedpzL3d8BYibnCpAl+
+	 nUZw1VNynBg6w==
+Date: Thu, 16 Jan 2025 11:01:14 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
+	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	frank.li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 06/10] PCI: imx6: Fix the missing reference clock
+ disable logic
+Message-ID: <20250116170114.GA561930@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250115014118.4086729-1-xiaolei.wang@windriver.com>
-In-Reply-To: <20250115014118.4086729-1-xiaolei.wang@windriver.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 16 Jan 2025 16:57:56 +0100
-X-Gm-Features: AbW1kvYIxEEhaAOaS13it3QYjlHMEzrYgUS_q1Twane_cAE7ZLMDO-j-7TvLw_Y
-Message-ID: <CAPDyKFrpwPLjk+fzAC+1=z5rWJ0UiSTndbq2hET64KDcwsNzKw@mail.gmail.com>
-Subject: Re: [PATCH v3] pmdomain: imx8mp-blk-ctrl: add missing loop break condition
-To: Xiaolei Wang <xiaolei.wang@windriver.com>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, Frank.Li@nxp.com, ping.bai@nxp.com, 
-	l.stach@pengutronix.de, marex@denx.de, aford173@gmail.com, 
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241126075702.4099164-7-hongxing.zhu@nxp.com>
 
-On Wed, 15 Jan 2025 at 02:41, Xiaolei Wang <xiaolei.wang@windriver.com> wrote:
->
-> Currently imx8mp_blk_ctrl_remove() will continue the for loop
-> until an out-of-bounds exception occurs.
->
-> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : dev_pm_domain_detach+0x8/0x48
-> lr : imx8mp_blk_ctrl_shutdown+0x58/0x90
-> sp : ffffffc084f8bbf0
-> x29: ffffffc084f8bbf0 x28: ffffff80daf32ac0 x27: 0000000000000000
-> x26: ffffffc081658d78 x25: 0000000000000001 x24: ffffffc08201b028
-> x23: ffffff80d0db9490 x22: ffffffc082340a78 x21: 00000000000005b0
-> x20: ffffff80d19bc180 x19: 000000000000000a x18: ffffffffffffffff
-> x17: ffffffc080a39e08 x16: ffffffc080a39c98 x15: 4f435f464f006c72
-> x14: 0000000000000004 x13: ffffff80d0172110 x12: 0000000000000000
-> x11: ffffff80d0537740 x10: ffffff80d05376c0 x9 : ffffffc0808ed2d8
-> x8 : ffffffc084f8bab0 x7 : 0000000000000000 x6 : 0000000000000000
-> x5 : ffffff80d19b9420 x4 : fffffffe03466e60 x3 : 0000000080800077
-> x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000000
-> Call trace:
->  dev_pm_domain_detach+0x8/0x48
->  platform_shutdown+0x2c/0x48
->  device_shutdown+0x158/0x268
->  kernel_restart_prepare+0x40/0x58
->  kernel_kexec+0x58/0xe8
->  __do_sys_reboot+0x198/0x258
->  __arm64_sys_reboot+0x2c/0x40
->  invoke_syscall+0x5c/0x138
->  el0_svc_common.constprop.0+0x48/0xf0
->  do_el0_svc+0x24/0x38
->  el0_svc+0x38/0xc8
->  el0t_64_sync_handler+0x120/0x130
->  el0t_64_sync+0x190/0x198
-> Code: 8128c2d0 ffffffc0 aa1e03e9 d503201f
->
-> Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-> Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
+On Tue, Nov 26, 2024 at 03:56:58PM +0800, Richard Zhu wrote:
+> Ensure the *_enable_ref_clk() function is symmetric by addressing missing
+> disable parts on some platforms.
+> 
+> Fixes: d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match enable")
+
+The patch below looks fine to me, and I guess it's more than just
+making the code prettier; it also actually *fixes* something, right?
+
+It looks like a functional change because imx_pcie_clk_enable() will
+now enable the IMX7D refclk when it didn't before, and
+imx_pcie_clk_disable() will disable the IMX6SX and IMX8M* refclk when
+it didn't before?
+
+But I don't think the Fixes: tag is correct.  I looked at uses of
+these symbols:
+
+  IMX6SX_GPR12_PCIE_TEST_POWERDOWN
+    enabled by imx6_pcie_enable_ref_clk()
+    disabled by imx6_pcie_assert_core_reset()
+
+  IMX7D_GPR12_PCIE_PHY_REFCLK_SEL
+    enabled by imx6_pcie_init_phy()
+    disabled by imx6_pcie_clk_disable()
+
+  IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE
+    enabled by imx6_pcie_enable_ref_clk()
+
+As far as I can tell, these uses are identical before and after
+d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match
+enable").
+
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
-Applied for fixes, thanks!
-
-Kind regards
-Uffe
-
-
 > ---
-> v1:
->   https://patchwork.kernel.org/project/imx/patch/20250113045609.842243-1-xiaolei.wang@windriver.com/
->
-> v2:
->   Update commit subject
->
-> v3:
->   cc stable
->
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> index e3a0f64c144c..3668fe66b22c 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -770,7 +770,7 @@ static void imx8mp_blk_ctrl_remove(struct platform_device *pdev)
->
->         of_genpd_del_provider(pdev->dev.of_node);
->
-> -       for (i = 0; bc->onecell_data.num_domains; i++) {
-> +       for (i = 0; i < bc->onecell_data.num_domains; i++) {
->                 struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
->
->                 pm_genpd_remove(&domain->genpd);
-> --
-> 2.25.1
->
+>  drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 413db182ce9f..ab2c97a8c327 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -599,10 +599,9 @@ static int imx_pcie_attach_pd(struct device *dev)
+>  
+>  static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	if (enable)
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+> -
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> +			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
+> +			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+>  	return 0;
+>  }
+>  
+> @@ -631,19 +630,20 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+>  	int offset = imx_pcie_grp_offset(imx_pcie);
+>  
+> -	if (enable) {
+> -		regmap_clear_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
+> -	}
+> -
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
+> +			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
+> +			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
+> +			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
+> +			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
+>  	return 0;
+>  }
+>  
+>  static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+>  {
+> -	if (!enable)
+> -		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> -				IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+> +			   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
+> +			   enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.37.1
+> 
