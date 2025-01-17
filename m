@@ -1,353 +1,346 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306221F78E0
-	for <imx@lists.linux.dev>; Fri, 17 Jan 2025 06:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737094843; cv=fail; b=HY7Wz6+1ApRY9o+IYLraSnrTzu2VkWx0jK65JTz9ws6+rDfCbPA3rV9iYiXaSB/HXtKGY3EmxVXpd5Tvh3i+VEizylPnYmOJsn2hnHCs/jdyAQRMXyH86vqaAppfY+BgAV+Ej08IPHVOcaVrfyt1nMgL0bfL7P4FC7yoO5Y9bR4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737094843; c=relaxed/simple;
-	bh=5Qz7Uq5aQPFp53Tv/hB3WSfrqLpmg8IPHiNM+tjBjyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YJaV5ZiesPndj/HI0pvV8z0bIlhRFGvykM1IQ5G0Zhx7eYI1xqDDmjAkWL8MZUwLgGGz49Yox3Gv74moJYyCy2Dqvb9rNnUbsH14piBVTPA2DaqGSd5vHk6ZqdFEJNtqD8GOezeNiAtNa8T2wgmll7hYvQXlra5YBumOgfXTikY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OYt87qb4; arc=fail smtp.client-ip=40.107.21.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89E91F76CD
+	for <imx@lists.linux.dev>; Fri, 17 Jan 2025 06:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737096992; cv=none; b=tpjkSGrl0nQIPpNVplcCUS+/B6/T+UHUuEUoVm6inYkQGNpUk5wc6/D3rQcZn5Y5UsrnRmCDtlZ28RT44NAvO09tgZ0xekHkex7qHKGVziW6tbQ6GpY9/DJYQ244vnJFrTuY5eLRvQmEywKQeaw813Rq/zlkHpZ/Ga8mJe5c+Hc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737096992; c=relaxed/simple;
+	bh=6NJY+dMgU534blJWmgk2BR5CWDLguT8XUkGUOeqMuZQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dmaPUHbEN+Wx1WvR8PwTnDo4/rcLpTuBTVWfYKxAizhsOzeOGVmx80RqiewdP9fWv1Bh6y1mEXIkN9dU4VveL5d8QdkObD5m2xiSIKjcuFKu0QhyZLGbKQSCRNICkaIHg+JS3QWN+oWfAmztfXjmC+EdJc/YjtJip7HSNI6n5n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6pJZhHo; arc=none smtp.client-ip=209.85.166.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OYt87qb4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VmFWDo0f/HaBjZSBZTuuVc/74Y5p0gZ5aExXqgGSRQ997tISS/c4fDgDTWK2wOTr0QsKr+7LhhglKloGEX5bcSXwk8v/NAxsBEW7+ZKWXcCeVd4yqsVhUWZoBi6pMB5JfgaVszZm+j8MlKtdNL7GScCNbDIik9QxPRN3KLuYqlmwjAqoHDrzqUW+vQ9csR+Cd7p3HP/WzcmUzzJ2FMUmKcEtcHvakmptqhxukqz1Fie411RQiu2yfYH/Y7iQWY6oIptzLhaFDLphcTrMPS6c0QP2Rv3A1SCnIS4LCMO4XX5ZwTWBEvEUiCXtm/gJK0h+JUMArKX+aGI2+cUYC+xJ6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5jfLRs+kKbGCHafo18mdcRDLnkBBdOhBFl/jQRcVlhM=;
- b=HS4QJfaTLDOEoMlcDZVDZj5xdusPd5x/OK745bWN2ZMb2luOTu4Kf70gX/9IBeiiBaZMINMs81TK/Uyse8RBmjAVLVdcBXEIs59l+C7gAj0ZcpIM1SLqYHBwhsuvYLe+be4dfsW7TUyp2EbSD9u+JVdhkfgU6P09zh2T7N6gVaal6/12F0wuX7D56WMPVm/HFqbzNaR+TloayZ8Hf2SbfwNpCsQ/AjP6xxSRBBnDixWC45/rTMuIbvayyE7917bKxjFR7TByLFx9tWwb5TrD2yFmtf6zxSg1Fb9cgarfUtxGqxp/5gw4o3QfJUR3pwhrhodgxWRDC3u8VZBxGmhAmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5jfLRs+kKbGCHafo18mdcRDLnkBBdOhBFl/jQRcVlhM=;
- b=OYt87qb4lId+4d5NbxVgJBxM9mC0lEhqZsfnicfuy2orhbw46YRHPX1lb6ORPYwSFky085NxVe4I/6c8eHtD6ZmzaNMncpW4r5Nn7ZoSf8jOyVQts1Hn9fdwvZZtVlHfSuVPqWWUd9dYNuqM/zH5F3HD7bV4VtamjpRn4LgW6XdUFDH9Bc69GkuZzJ0CT1PjaRy/yzJx0KB/lrpftw+bHjcjofMWZ2yrp6+5iWCTmt+mhsl0Wg8NSmd3v8OzzkHvSlY8xRGfRmYSiBS/EqJM/kGUZ7rTPhHe1KkTaZVOEx2o9nnIr+5Qcm++Bv9bu4YauKEck/wWYFlcxb+PyIeCxw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by AS8PR04MB8053.eurprd04.prod.outlook.com (2603:10a6:20b:2ad::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.16; Fri, 17 Jan
- 2025 06:20:37 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8356.014; Fri, 17 Jan 2025
- 06:20:37 +0000
-From: Ming Qian <ming.qian@oss.nxp.com>
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl
-Cc: nicolas@ndufresne.ca,
-	shawnguo@kernel.org,
-	robh+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	tao.jiang_2@nxp.com,
-	ming.qian@oss.nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 4/4] media: amphion: Trigger source change if colorspace chagned
-Date: Fri, 17 Jan 2025 15:19:38 +0900
-Message-ID: <20250117061938.3923516-4-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0-rc1
-In-Reply-To: <20250117061938.3923516-1-ming.qian@oss.nxp.com>
-References: <20250117061938.3923516-1-ming.qian@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0034.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::9) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6pJZhHo"
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3cda56e1dffso5526905ab.1
+        for <imx@lists.linux.dev>; Thu, 16 Jan 2025 22:56:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737096990; x=1737701790; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I3hRdY4ybGQZXWv8/ibzifjG0ONmXDf3+lS8nO2D8vQ=;
+        b=M6pJZhHo39wUeLZj30T033Pvcg427ITUAsaEWl5P5yxhipHYqie2/q2ZpNSjKcmO3C
+         JHTC+LEwAnVw71aR/uVhVXQZp3gmeAQEqKlXxJXSl5bHeB2UasfckxkNgjLGha83Pbqh
+         TsqD1mSVAmuSleJCO8XxHaMLlj4bHJsXFXJ9QwDJGiFBw09/ApcNeI5NeW/NQBqmh7up
+         MR34kW0HbqvSShB8fgQofdtTrBuvp76WYOA3ysVUqfd08N2GwI7lVfaNyoXv/YTrMdK8
+         CLkWQfOdIENWeKL6Feo2tEs0WXf3L/GSu8bOwKEdpX7eMO3GkxHG9EsjR/qaZkeQvFqU
+         jGWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737096990; x=1737701790;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I3hRdY4ybGQZXWv8/ibzifjG0ONmXDf3+lS8nO2D8vQ=;
+        b=lHH1f4JBJ5zvvyDnH0e4lnzcgBG5AqftaJR06advDF0cLVmZiH9nM7oW3LSXeVABDh
+         Yevhc/2syoO5kgLJD3gidznW5G0SwNAbahf9g5DO4rtTiYsf3Wx/9gEL/flTKA37gGLs
+         A5jNh1uLkunmW5DAWfwacFZxG8uM7XQmZPA5Qc81YLI69V01RbW7LDNLBNQ3YE2m71nt
+         UFEUmiaYJlMPYR45Ynj+PzebxvrxAzidzRJccbgJBGhU5hjjT19a70/hXBXnZnQjU2XM
+         pOdvyHCBsBo5qTZDr6oHWTlekwBurCK7tk3hnIqA+TIu+0SBUEHD1gUMK4XPA5WNa3kP
+         lr4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWeCJ61HWIkE5kfDcxr3YeSc56om0o3h2x6G9HR4hoOTnJxyWsOEsl8E9IkJE+e6TnLdto=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwC6jD1uyOQ9f/Ft97HNUoQq9UBj1MeqU20w4yUJl7ejx0Qhj79
+	fUzofS9bJSyYPwmBYV1vkXrXtBObHk1Iwa4q9XtDt0ietOY0kvgVQOtz+A74Yi0Uk1F6fMjXFdz
+	ruu7+EvAcexBwEko/iY7bS7us0aM=
+X-Gm-Gg: ASbGncuAXirLs16vBvi59cvg1Oafsmx1txWyBsiHLOlOtPPv8/ltvPpvgIwyipqNn+P
+	YmS09kPchXh3j0Eixn0PO8WqoMyi9RMuKZ8uYSw==
+X-Google-Smtp-Source: AGHT+IHcknrvKPRacXTQ4IOEOcVDoZlmeewl4EHr/jAukgg4Kg4r7OXIb6t6lnm52Zq3vEqrHYl9Godl41t3Q1WTwXA=
+X-Received: by 2002:a05:6e02:2607:b0:3ce:8e89:90db with SMTP id
+ e9e14a558f8ab-3cf7447b9c6mr10583865ab.14.1737096989650; Thu, 16 Jan 2025
+ 22:56:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AS8PR04MB8053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 769ca391-603e-4492-25c2-08dd36bf0e91
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AdxVMmI09O8XvmPwhvJMXXSlHquINo2DI4IVClvB6HRyj4tQUwunYd5ostpp?=
- =?us-ascii?Q?JLuBo4OIEU9PqAIBxiyDmBlRBPWLIKvTjY8VgXBXXiyTwP1MowWDZXb5LCrQ?=
- =?us-ascii?Q?+RyKglJqJyN1AKUHNy9aRQtRLTXUmrnMsQsB4GAJMk2Y+JM3k22mI5LPDs3c?=
- =?us-ascii?Q?ahdUfJD3mkhj1Y1GecvHdGjEz7JRt/lNqOG6NnALqNKljkcbPbTjIixnwW/w?=
- =?us-ascii?Q?lNA/RNBeaUQ1Zr7ee97BuxM2aGt2FWGzhFWqRoTr+62w4YLNtssRTnMWeOfI?=
- =?us-ascii?Q?3LRGT+L1z34F/Rt5JM2dFBqtWpM8wcjVO02xbnN+5RxvhNxdjqfN9VjyRprx?=
- =?us-ascii?Q?LBhJhkHz4gkHgCuSHT7bST2/hwx+YJdumvI6hGDD57xB35EY+XK7minZ3NAU?=
- =?us-ascii?Q?XQTQyCMEvpn5GhqeN1c+CYaVuOld9rhb2yALcDVpBCXj06Chx8g7tfuNNasa?=
- =?us-ascii?Q?QwliCVW9oPx0FceKoebBjHwyNk1tgIHu9SvcXdXwWczBNHGNoDma/2rBGdjG?=
- =?us-ascii?Q?UUW6lwMCzRAz/bTL8r/T/vnKHdEJcHLiEUW1IJelMiz+wdFMe9jhsIXI6KTn?=
- =?us-ascii?Q?tSdHwG8Oa2NUTAhn0RSJzKV+SSAL5P1NYvC36+uiXzZvXjuEkC8fuegnKjXL?=
- =?us-ascii?Q?5OT+8etndUCXikjJJ+yk+K0Bg5NeSJSZqSQbFdi8Rq+vVEVobxlKed8vcEi7?=
- =?us-ascii?Q?lmwrEov0LxcHa8oyxi0yIeDCkDEm7ljPNjkHwdACQ8zXV4eYQM2jrMFVU2U7?=
- =?us-ascii?Q?c5YkjHLnsQlmghk3ZNyGaXWyDl7LdD4nZlvnKqvyz6NZHjH4i4csKwFkhiGt?=
- =?us-ascii?Q?Bj4Pq+XHFEkS5udNqzEVrZ0Utz9C98IqcXS0DVhfPrsP2w2Plc7k11fObl2R?=
- =?us-ascii?Q?bRb96EjTHlY0cjFJH6E4i4b8lkChuPgYY4lp5LwoIhko6RYlS3F1SnhdC51B?=
- =?us-ascii?Q?kLDQM3pztn9lLBvQhQWi8MTpOj2ysTSBSObfFmym4vzVSd3zCNrK0d6/ZOm6?=
- =?us-ascii?Q?7otcmLeg26bFQha6wDTf1eLV1cHQWwZ3eowxqXUnJnFuxRiYu0PtoU1SESC4?=
- =?us-ascii?Q?USUZXuCNJzIyt2S/WR4Nqey8KgfrXJqPO7+1fUcpBZ7pQZs/B98oIXrnOmy2?=
- =?us-ascii?Q?tmXw0XCgUynAuY5iT8SIJGyxoVYZmkKXH49EUOPQYLZOOv8+K7VeDSed1V4i?=
- =?us-ascii?Q?6ohkri7iKFWfyQbLSVnOGGX27aZWXr6DG/CQeUaW1nEAeVPktTiTC/03oy4O?=
- =?us-ascii?Q?qBY7E5n3oPXvqbUF7vODa1IWXEsjm8+x/o2DjGR08Jze1IcFGF0jgv+Dlx1j?=
- =?us-ascii?Q?bPCgQ27mhi3s34QYjSoLKZyJRcFFeegX53zJStzur5GMMFsw4pUwgpraBrf2?=
- =?us-ascii?Q?kC+a4mdqeoREGfFNkkmv2DZLuoYI3eAUGSHjmkXYceGo5YeVrRRvV7t7AVfM?=
- =?us-ascii?Q?xco7N1awvGOAMmpHyrh00IRsvR72S+7Y?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cK8xZngpfAS+QSMZaV5Qkh/+b0As8P9F2zYKGatxZyiRqn4jZFHnBqGIPk/6?=
- =?us-ascii?Q?hx46TEXbyuIGAjHac+2FsP5I4CtnmAYLFByBBdsvI4ZsZYel0Yqif5PfL4Fc?=
- =?us-ascii?Q?e3BNeMnhDwm/wS6EeH0RgLOTawb5R1qQqG8Gd2WrTYjByPEaQi98MZe20DwJ?=
- =?us-ascii?Q?KeIoFJcy9G+MMEzPNnv/RkCZclutorqX+gQB8Yo/K8XGxCIBKwNOxYezeUyq?=
- =?us-ascii?Q?K8SXxCzI74OT2Wzz5dzKkhhC6rY6l83rn06I/P2sOwp/ew4BKKbwJ+6aAj+N?=
- =?us-ascii?Q?j3IQ/pQ/Z0eMeLO1QEZpqNKHFPuL4gykIIMGhQ5XdkTpVV6rT+lah9P09Jzl?=
- =?us-ascii?Q?d32lXgjwj3AfvCQm0ciaDtnUvFIwr57LHaI/VLuL16pf2IBeo/a630DViuWE?=
- =?us-ascii?Q?CoDmkD6clw2s9pr6r7aNIBdqT9hvhtdy3KWFuDyxZmi4wJDGkwvtl30HsHcF?=
- =?us-ascii?Q?18gaRHF1Qmx/gHulAq0Bgyq4tCKaFMfxxIL2gvQj2hPQ+T5H6C3IXztc10MT?=
- =?us-ascii?Q?reHNggEmbAifAYmWHEjC7G+UeEAVoPVI05l2XCMfJLNkzzwl1PcwM3A5JNP2?=
- =?us-ascii?Q?ci5kgfxPWRcdBUG7XiHpZBHZplFvwO0W20mUwSKypHAYPibhjAlNk/OTM2yv?=
- =?us-ascii?Q?bm1yzWwXWipsu8/7mWaC2duRsLbbZpKzIJ+c30JgxUBbSsOFvar0u7bym7Z3?=
- =?us-ascii?Q?JIASsKVFRYCt92FssALYsKXJ+b1cyGlNLyynR+GMNDnmpTKMO4s46MAIOyh5?=
- =?us-ascii?Q?xCziy+lv6E0/x6VCfRSN79FelXFnuf2tyBNzJqRbVM/t4hTht2PImGEn0hvD?=
- =?us-ascii?Q?w0mVOKeqY7JWu/9EXd4COgt8U39BdWpTcjYGC4DgxkIEUFdWIRs4qwVEduE9?=
- =?us-ascii?Q?y/Xlxvby7NX/ZtXev+hpckaQlNwLjP6ktaiHtvoU0YtHzrsC2hFFCSLaYTkB?=
- =?us-ascii?Q?3a72CjZVzyEx3AGvYx/NIDD8pcuTdbl4038O9CCit8HxjhhVAO1KUv633aCG?=
- =?us-ascii?Q?tOSQL16mVfOpPx1MtKrzFNc2coY69G0kOthXePwvs1r0og+lm0EhN0XIy5Ew?=
- =?us-ascii?Q?pwRAQ64/KQxkjNhIo1ai0TTi4jVOzju2PyrstX8iYliJ5OxASCeCKIczWQiM?=
- =?us-ascii?Q?de+5WTFoOkZYnf1LMUbB2L/CWvaTdgRRvmdo+BODEK6b5VXycuXyvISqS9NS?=
- =?us-ascii?Q?UL5SL1iAHkykQiWPctBmKJRvlClslFmjyJAfeqpoPJaMQPjiQ2cb5i7cq1uu?=
- =?us-ascii?Q?0PZDVSGL4WITO4fSqBuiGjRYruM/fBlW8GVoNN117/vf5SZdohquzbBYBacx?=
- =?us-ascii?Q?1ekMXiZaWcVIwuZZAD9/YZAhf2NlVLqt00NwiD5uOncZ+zpKG7tanLVPaBGE?=
- =?us-ascii?Q?Z1/9UXuHSbr7/cMYLsq91x9PX9HQ/o/oZgM56LMjMNvxfZmt5UOKeWB+Il+V?=
- =?us-ascii?Q?BkCpoTbPR8GMhoMD8TSekNQ7xJ7P+juNZ/jP8vP11vkiQjqqDx7wqh4nelIM?=
- =?us-ascii?Q?07kqgGlqMbGxO6HEfCWAlxonr8wLc2qsjQccUKqbJWry3v+ZvYFKKqDj9KRz?=
- =?us-ascii?Q?1BosRIvHPNx6fJ60GOTOrPmVnGArouaL/FkXQZAN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 769ca391-603e-4492-25c2-08dd36bf0e91
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 06:20:37.0151
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2pjn5/LBraNnClm5ieD3tSH7hEMs/6TzjM1cYm2m925/7hJUoXLzRETC2BgPyZ85rDeS2aCiHDo55jISId9qfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8053
+References: <20250113094654.12998-1-eichest@gmail.com> <CAA+D8ANvKQKJhn6qKbPhQeXPD5kxUo3Hg-FBLkDMOaWLTA8vVg@mail.gmail.com>
+ <Z4ZRYMf_uJW4poW9@eichest-laptop> <Z4dy3LiEAQ_gkQGG@eichest-laptop>
+ <CAA+D8AO75MLyP5AWDJoogw8ae4GRtZfSR-HT+S26bXoaVs8saQ@mail.gmail.com>
+ <Z4eQX_VnBEVqxT_r@eichest-laptop> <CAA+D8APivJWD-AqwmQ-mtcr=ZHot5rfA8FRWF2+p-_mq5BGxHA@mail.gmail.com>
+ <Z4i0G5Tw4q0v8DTL@eichest-laptop> <CAA+D8AOakQdnEe9ZrfTCrWcjHJRRU0kqFVsiu8+FMiHeMAVV_g@mail.gmail.com>
+ <Z4lDbMqCYW2W7iyX@eichest-laptop>
+In-Reply-To: <Z4lDbMqCYW2W7iyX@eichest-laptop>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 17 Jan 2025 14:56:15 +0800
+X-Gm-Features: AbW1kvY8ZuJTUqrf1ZEzfzgYRxjyAcbIRbeiu-ak5g16dpFU5gdubE8mulJFk6c
+Message-ID: <CAA+D8AM9xwvyvU_0ODFwaq=YzzbP_R7hqMvHqx-Y1kHPpX_x_Q@mail.gmail.com>
+Subject: Re: [PATCH v1] clk: imx: imx8-acm: fix flags for acm clocks
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
+	sboyd@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, shengjiu.wang@nxp.com, 
+	francesco.dolcini@toradex.com, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ming Qian <ming.qian@nxp.com>
+On Fri, Jan 17, 2025 at 1:35=E2=80=AFAM Stefan Eichenberger <eichest@gmail.=
+com> wrote:
+>
+> Hi Shengjiu Wang,
+>
+> On Thu, Jan 16, 2025 at 03:30:55PM +0800, Shengjiu Wang wrote:
+> > On Thu, Jan 16, 2025 at 3:24=E2=80=AFPM Stefan Eichenberger <eichest@gm=
+ail.com> wrote:
+> > >
+> > > Hi Shengjiu Wang,
+> > >
+> > > On Thu, Jan 16, 2025 at 12:01:13PM +0800, Shengjiu Wang wrote:
+> > > > On Wed, Jan 15, 2025 at 6:39=E2=80=AFPM Stefan Eichenberger <eiches=
+t@gmail.com> wrote:
+> > > > >
+> > > > > On Wed, Jan 15, 2025 at 05:14:09PM +0800, Shengjiu Wang wrote:
+> > > > > > On Wed, Jan 15, 2025 at 4:33=E2=80=AFPM Stefan Eichenberger <ei=
+chest@gmail.com> wrote:
+> > > > > > >
+> > > > > > > Hi Shengjiu Wang,
+> > > > > > >
+> > > > > > > On Tue, Jan 14, 2025 at 12:58:24PM +0100, Stefan Eichenberger=
+ wrote:
+> > > > > > > > Hi Shengjiu Wang,
+> > > > > > > >
+> > > > > > > > On Tue, Jan 14, 2025 at 03:49:10PM +0800, Shengjiu Wang wro=
+te:
+> > > > > > > > > On Mon, Jan 13, 2025 at 5:54=E2=80=AFPM Stefan Eichenberg=
+er <eichest@gmail.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > From: Stefan Eichenberger <stefan.eichenberger@toradex.=
+com>
+> > > > > > > > > >
+> > > > > > > > > > Currently, the flags for the ACM clocks are set to 0. T=
+his configuration
+> > > > > > > > > > causes the fsl-sai audio driver to fail when attempting=
+ to set the
+> > > > > > > > > > sysclk, returning an EINVAL error. The following error =
+messages
+> > > > > > > > > > highlight the issue:
+> > > > > > > > > > fsl-sai 59090000.sai: ASoC: error at snd_soc_dai_set_sy=
+sclk on 59090000.sai: -22
+> > > > > > > > > > imx-hdmi sound-hdmi: failed to set cpu sysclk: -22
+> > > > > > > > >
+> > > > > > > > > The reason for this error is that the current clock paren=
+t can't
+> > > > > > > > > support the rate
+> > > > > > > > > you require (I think you want 11289600).
+> > > > > > > > >
+> > > > > > > > > We can configure the dts to provide such source, for exam=
+ple:
+> > > > > > > > >
+> > > > > > > > >  &sai5 {
+> > > > > > > > > +       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_=
+SEL>,
+> > > > > > > > > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC=
+_PM_CLK_PLL>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC=
+_PM_CLK_SLV_BUS>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC=
+_PM_CLK_MST_BUS>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC=
+_PM_CLK_PLL>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC=
+_PM_CLK_SLV_BUS>,
+> > > > > > > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC=
+_PM_CLK_MST_BUS>,
+> > > > > > > > > +                       <&sai5_lpcg 0>;
+> > > > > > > > > +       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>=
+, <&aud_rec1_lpcg 0>;
+> > > > > > > > > +       assigned-clock-rates =3D <0>, <0>, <786432000>, <=
+49152000>, <12288000>,
+> > > > > > > > > +                                <722534400>, <45158400>,=
+ <11289600>,
+> > > > > > > > > +                               <49152000>;
+> > > > > > > > >         status =3D "okay";
+> > > > > > > > >  };
+> > > > > > > > >
+> > > > > > > > > Then your case should work.
+> > > > > > > > >
+> > > > > > > > > >
+> > > > > > > > > > By setting the flag CLK_SET_RATE_NO_REPARENT, we signal=
+ that the ACM
+> > > > > > > > >
+> > > > > > > > > I don't think CLK_SET_RATE_NO_REPARENT is a good choice. =
+which will cause
+> > > > > > > > > the driver don't get an error from clk_set_rate().
+> > > > > > > >
+> > > > > > > > Thanks for the proposal, I will try it out tomorrow. Isn't =
+this a
+> > > > > > > > problem if other SAIs use the same clock source but with di=
+fferent
+> > > > > > > > rates?
+> > > > > > > >
+> > > > > > > > If we have to define fixed rates in the DTS or else the clo=
+ck driver
+> > > > > > > > will return an error, isn't that a problem? Maybe I should =
+change the
+> > > > > > > > sai driver so that it ignores the failure and just takes th=
+e rate
+> > > > > > > > configured? In the end audio works, even if it can't set th=
+e requested
+> > > > > > > > rate.
+> > > > > > >
+> > > > > > > The following clock tree change would allow the driver to wor=
+k
+> > > > > > > in our scenario:
+> > > > > > > &sai5 {
+> > > > > > >         assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>=
+,
+> > > > > > >                           <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_P=
+M_CLK_PLL>;
+> > > > > > >         assigned-clock-parents =3D <&aud_pll_div1_lpcg 0>;
+> > > > > > >         assigned-clock-rates =3D <0>, <11289600>;
+> > > > > > > };
+> > > > > >
+> > > > > > In which we configure PLL_0 for 48KHz series (8kHz/16kHz/32kHz/=
+48kHz),
+> > > > > > PLL_1 for 44kHz series (11kHz/22kHz/44kHz),
+> > > > > > which should fit for most audio requirements.
+> > > > > >
+> > > > > > >
+> > > > > > > However, this means we have to switch the parent clock to the=
+ audio pll
+> > > > > > > 1. For the simple setup with two SAIs, one for analog audio a=
+nd one for
+> > > > > > > HDMI this wouldn't be a problem. But I'm not sure if this is =
+a good
+> > > > > > > solution if a customer would add a third SAI which requires a=
+gain a
+> > > > > > > different parent clock rate.
+> > > > > >
+> > > > > > We won't change the PLL's rate in the driver,  so as PLL_0 for =
+48kHz,
+> > > > > > PLL_1 for 44kHz,  even with a third SAI or more,  they should w=
+ork.
+> > > > > >
+> > > > > > >
+> > > > > > > One potential solution could be that the SAI driver tries to =
+first
+> > > > > > > derive the clock from the current parent and only if this fai=
+ls it tries
+> > > > > > > to modify its parent clock. What do you think about this solu=
+tion?
+> > > > > > >
+> > > > >
+> > > > > I did some more testing and I'm still not happy with the current
+> > > > > solution. The problem is that if we change the SAI5 mclk clock pa=
+rent it
+> > > > > can either support the 44kHz series or the 48kHz series. However,=
+ in the
+> > > > > case of HDMI we do not know in advance what the user wants.
+> > > > >
+> > > > > This means when testing either this works:
+> > > > > speaker-test -D hw:2,0 -r 48000 -c 2
+> > > > > or this works:
+> > > > > speaker-test -D hw:2,0 -r 44100 -c 2
+> > > > > With:
+> > > > > card 2: imxaudiohdmitx [imx-audio-hdmi-tx], device 0: i.MX HDMI i=
+2s-hifi-0 [i.MX HDMI i2s-hifi-0]
+> > > >
+> > > > Are you using the setting below?  then should not either,  should b=
+oth works
+> > > >  &sai5 {
+> > > > +       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
+> > > > +                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PL=
+L>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SL=
+V_BUS>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MS=
+T_BUS>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PL=
+L>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SL=
+V_BUS>,
+> > > > +                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MS=
+T_BUS>,
+> > > > +                       <&sai5_lpcg 0>;
+> > > > +       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&aud_re=
+c1_lpcg 0>;
+> > > > +       assigned-clock-rates =3D <0>, <0>, <786432000>, <49152000>,=
+ <12288000>,
+> > > > +                                <722534400>, <45158400>, <11289600=
+>,
+> > > > +                               <49152000>;
+> > > >         status =3D "okay";
+> > > >  };
+> > >
+> > > Sorry I didn't communicate that properly. Yes I was trying with these
+> > > settings but they do not work. The problem does not seem to be that t=
+he
+> > > driver can not adjust the rate for the audio (so e.g. 44kHz or 48kHz)
+> > > but that snd_soc_dai_set_sysclk in imx-hdmi.c fails with EINVAL. This
+> > > results in a call to fsl_sai_set_mclk_rate in fsl_sai.c with clk_id 1
+> > > (mclk_clk[1]) and a freq of 11289600 which causes the fail.
+> > > Interestingly, in fsl_sai_set_bclk we then only use clk_get_rate on
+> > > mclk_clk[0] which is set to audio_ipg_clk (rate 175000000) and we do =
+not
+> > > use mclk_clk[1] anymore at all. This is why I'm not sure if this call=
+ to
+> > > snd_soc_dai_set_syclk is really necessary?
+> > >
+> >
+> > Could you please check if you have the below commit in your test tree?
+> > 35121e9def07 clk: imx: imx8: Use clk_hw pointer for self registered
+> > clock in clk_parent_data
+> >
+> > if not, please cherry-pick it.
+> >
+> > The audio_ipg_clk can be selected if there is no other choice.
+> > but the rate 175000000 is not accurate for 44kHz. what we got
+> > is 44102Hz. This is the reason I don't like to use this source.
+>
+> Thanks a lot for the hint, in my test setup I indeed have not applied
+> this commit. I tested it now with cherry-picking the commit and with
+> applying the change to the dts. This made it work. I will do some more
+> testing tomrrow and if I can't find any addtional issue I will use this
+> as a solution.
+>
+I am thinking that your change may still be needed.
 
-After encountering a colorspace change in the stream, the decoder
-sends a V4L2_EVENT_SOURCE_CHANGE event with changes set to
-V4L2_EVENT_SRC_CH_COLORSPACE.
+Your change plus the below change. then we can support more rate,
+not only 48k/44kHz.  SAI driver will select the parent by itself before
+the clk_set_rate().
 
-Then the client can handle the colorspace change without any buffer
-reallocation
++       assigned-clocks =3D <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
++                       <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
++                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
++                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
++                       <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
++                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
++                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
++                       <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
++                       <&sai5_lpcg 0>;
++       assigned-clock-parents =3D <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg =
+0>;
++       assigned-clock-rates =3D <0>, <0>, <786432000>, <49152000>, <122880=
+00>,
++                                <722534400>, <45158400>, <11289600>,
++                               <49152000>;
++       clocks =3D <&sai5_lpcg 1>,
++               <&clk_dummy>,
++               <&sai5_lpcg 0>,
++               <&clk_dummy>,
++               <&clk_dummy>,
++               <&aud_pll_div0_lpcg 0>,
++               <&aud_pll_div1_lpcg 0>;
++       clock-names =3D "bus", "mclk0", "mclk1", "mclk2", "mclk3",
+"pll8k", "pll11k";
 
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
----
- drivers/media/platform/amphion/vdec.c     | 89 +++++++++++++++--------
- drivers/media/platform/amphion/vpu.h      |  1 +
- drivers/media/platform/amphion/vpu_v4l2.c |  7 +-
- 3 files changed, 63 insertions(+), 34 deletions(-)
+> Should I add the change to our Apalis board dtsi file or directly to
+> imx8qm-ss-audio.dtsi? I think it fixes kind of a general issue or not?
 
-diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
-index 3b848ac2cd0c..868a96d29fac 100644
---- a/drivers/media/platform/amphion/vdec.c
-+++ b/drivers/media/platform/amphion/vdec.c
-@@ -369,12 +369,16 @@ static void vdec_handle_resolution_change(struct vpu_inst *inst)
- 	if (!vdec->source_change)
- 		return;
- 
-+	if (inst->changes) {
-+		vpu_notify_source_change(inst);
-+		inst->changes = 0;
-+	}
-+
- 	q = v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx);
- 	if (!list_empty(&q->done_list))
- 		return;
- 
- 	vdec->source_change--;
--	vpu_notify_source_change(inst);
- 	vpu_set_last_buffer_dequeued(inst, false);
- }
- 
-@@ -954,10 +958,11 @@ static void vdec_stop_done(struct vpu_inst *inst)
- 	vpu_inst_unlock(inst);
- }
- 
--static bool vdec_check_source_change(struct vpu_inst *inst)
-+static bool vdec_check_source_change(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
- {
- 	struct vdec_t *vdec = inst->priv;
- 	const struct vpu_format *sibling;
-+	u32 changes = 0;
- 
- 	if (!inst->fh.m2m_ctx)
- 		return false;
-@@ -966,27 +971,41 @@ static bool vdec_check_source_change(struct vpu_inst *inst)
- 		return false;
- 
- 	sibling = vpu_helper_find_sibling(inst, inst->cap_format.type, inst->cap_format.pixfmt);
--	if (sibling && vdec->codec_info.pixfmt == sibling->pixfmt)
--		vdec->codec_info.pixfmt = inst->cap_format.pixfmt;
-+	if (sibling && hdr->pixfmt == sibling->pixfmt)
-+		hdr->pixfmt = inst->cap_format.pixfmt;
- 
- 	if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx)))
--		return true;
--	if (inst->cap_format.pixfmt != vdec->codec_info.pixfmt)
--		return true;
--	if (inst->cap_format.width != vdec->codec_info.decoded_width)
--		return true;
--	if (inst->cap_format.height != vdec->codec_info.decoded_height)
--		return true;
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->cap_format.pixfmt != hdr->pixfmt)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->cap_format.width != hdr->decoded_width)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->cap_format.height != hdr->decoded_height)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
- 	if (vpu_get_num_buffers(inst, inst->cap_format.type) < inst->min_buffer_cap)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->crop.left != hdr->offset_x)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->crop.top != hdr->offset_y)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->crop.width != hdr->width)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (inst->crop.height != hdr->height)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+	if (!hdr->progressive)
-+		changes |= V4L2_EVENT_SRC_CH_RESOLUTION;
-+
-+	if (vdec->seq_hdr_found &&
-+	    (hdr->color_primaries != vdec->codec_info.color_primaries ||
-+	     hdr->transfer_chars != vdec->codec_info.transfer_chars ||
-+	     hdr->matrix_coeffs != vdec->codec_info.matrix_coeffs ||
-+	     hdr->full_range != vdec->codec_info.full_range))
-+		changes |= V4L2_EVENT_SRC_CH_COLORSPACE;
-+
-+	if (changes) {
-+		inst->changes |= changes;
- 		return true;
--	if (inst->crop.left != vdec->codec_info.offset_x)
--		return true;
--	if (inst->crop.top != vdec->codec_info.offset_y)
--		return true;
--	if (inst->crop.width != vdec->codec_info.width)
--		return true;
--	if (inst->crop.height != vdec->codec_info.height)
--		return true;
-+	}
- 
- 	return false;
- }
-@@ -1337,20 +1356,25 @@ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info
- 	struct vdec_t *vdec = inst->priv;
- 
- 	vpu_inst_lock(inst);
--	memcpy(&vdec->codec_info, hdr, sizeof(vdec->codec_info));
- 
--	vpu_trace(inst->dev, "[%d] %d x %d, crop : (%d, %d) %d x %d, %d, %d\n",
-+	vpu_trace(inst->dev,
-+		  "[%d] %d x %d, crop : (%d, %d) %d x %d, %d, %d, colorspace: %d, %d, %d, %d\n",
- 		  inst->id,
--		  vdec->codec_info.decoded_width,
--		  vdec->codec_info.decoded_height,
--		  vdec->codec_info.offset_x,
--		  vdec->codec_info.offset_y,
--		  vdec->codec_info.width,
--		  vdec->codec_info.height,
-+		  hdr->decoded_width,
-+		  hdr->decoded_height,
-+		  hdr->offset_x,
-+		  hdr->offset_y,
-+		  hdr->width,
-+		  hdr->height,
- 		  hdr->num_ref_frms,
--		  hdr->num_dpb_frms);
-+		  hdr->num_dpb_frms,
-+		  hdr->color_primaries,
-+		  hdr->transfer_chars,
-+		  hdr->matrix_coeffs,
-+		  hdr->full_range);
- 	inst->min_buffer_cap = hdr->num_ref_frms + hdr->num_dpb_frms;
--	vdec->is_source_changed = vdec_check_source_change(inst);
-+	vdec->is_source_changed = vdec_check_source_change(inst, hdr);
-+	memcpy(&vdec->codec_info, hdr, sizeof(vdec->codec_info));
- 	vdec_init_fmt(inst);
- 	vdec_init_crop(inst);
- 	vdec_init_mbi(inst);
-@@ -1379,7 +1403,12 @@ static void vdec_event_resolution_change(struct vpu_inst *inst)
- {
- 	struct vdec_t *vdec = inst->priv;
- 
--	vpu_trace(inst->dev, "[%d]\n", inst->id);
-+	vpu_trace(inst->dev, "[%d] input : %d, decoded : %d, display : %d, sequence : %d\n",
-+		  inst->id,
-+		  vdec->params.frame_count,
-+		  vdec->decoded_frame_count,
-+		  vdec->display_frame_count,
-+		  vdec->sequence);
- 	vpu_inst_lock(inst);
- 	vdec->seq_tag = vdec->codec_info.tag;
- 	vdec_clear_fs(&vdec->mbi);
-diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platform/amphion/vpu.h
-index 76bfd6b26170..d8100da160d1 100644
---- a/drivers/media/platform/amphion/vpu.h
-+++ b/drivers/media/platform/amphion/vpu.h
-@@ -272,6 +272,7 @@ struct vpu_inst {
- 	u8 xfer_func;
- 	u32 sequence;
- 	u32 extra_size;
-+	u32 changes;
- 
- 	u32 flows[16];
- 	u32 flow_idx;
-diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-index 74668fa362e2..37ef706c29dd 100644
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -96,13 +96,12 @@ int vpu_notify_eos(struct vpu_inst *inst)
- 
- int vpu_notify_source_change(struct vpu_inst *inst)
- {
--	static const struct v4l2_event ev = {
--		.id = 0,
-+	const struct v4l2_event ev = {
- 		.type = V4L2_EVENT_SOURCE_CHANGE,
--		.u.src_change.changes = V4L2_EVENT_SRC_CH_RESOLUTION
-+		.u.src_change.changes = inst->changes
- 	};
- 
--	vpu_trace(inst->dev, "[%d]\n", inst->id);
-+	vpu_trace(inst->dev, "[%d] source change 0x%x\n", inst->id, inst->changes);
- 	v4l2_event_queue_fh(&inst->fh, &ev);
- 	return 0;
- }
--- 
-2.43.0-rc1
+It is still board related, so I think it is better to add to the board dts =
+file.
 
+Best regards
+Shengjiu Wang
+
+>
+> Thanks for your support
+> Stefan
