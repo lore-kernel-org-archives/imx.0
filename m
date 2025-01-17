@@ -1,136 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2079.outbound.protection.outlook.com [40.107.241.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1685E252CA6;
-	Thu, 16 Jan 2025 23:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737070158; cv=none; b=pjRLqZeKtZpq4toSxZxslcbafIq3zs/Y8NCXSqV18suClP16qvRmeMK5qGcszGzWMUOPWW1K1bZJ4KLyDTtJfU9VGr/IYYlfqZaOk07TN8FhuCT6iEAzCs+U0v/AbzPOBKAkmxm6xNxvG3KtvYXFPnig2C25eUhAt7qIZbGky3E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737070158; c=relaxed/simple;
-	bh=dMwwqya1n7mouM0thH4tLEBVCAjWJzbR4JIYV6x+c8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=M7XGuc0I2z+f2JAEO6NM6UYQbA9vhqVFwZ+SALf+JTLUgOb1Bok2VPmJQAR3/EgMGtMYp105Rj51Krytj1LRLUDJIrEuF0QdRVK6cOg65K1jC7eSkE5lxOJZq1vZ/aAdekBliR6Gv+Im+BeiHPfqMP7eNAYRF22Y6Xda8vPA5g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cp95TFTo; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D15617084F
+	for <imx@lists.linux.dev>; Fri, 17 Jan 2025 02:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737082060; cv=fail; b=dhexRLogrEtsYdgwVkgnryqThfDSf00BQToQh8IRtPrPd9CRMeIYjN1c2UEIRSxm//A4OhLRtXx98XonWIhl+KTN6wp0v4P501kb0qFPNQHqwX4QaAPOzIEo6ZClao434WkwoVXmHwP9F3G76a5pepFTMzzfT750CkbwOt5HQEY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737082060; c=relaxed/simple;
+	bh=0wniKrhiqdvXAh8hDwMOzNRZ/13nophs1llAAizpK6g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gfT+Hwkmg4eE79zlkz7DwAozhBRIRjsTbxcLUBLWPfWDa83xH5IFnnXk/cAut8gTf0iqJYKPUOGBKF2rK2Ot5zKxmLeSTaSxY7YBo74UXiL6blehTgHtHjGLu9o7FDT8ZyAz44nz+cfsrmM4hreZx3CMDWoF3sLxrFefAnE6Yhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XKbrcTVy; arc=fail smtp.client-ip=40.107.241.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cp95TFTo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D40C4CED6;
-	Thu, 16 Jan 2025 23:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737070157;
-	bh=dMwwqya1n7mouM0thH4tLEBVCAjWJzbR4JIYV6x+c8k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=cp95TFTojT43ishZ8WQ4Mwsx3PoDWTZzdjzqZ2MTjofA4fLE8O8H2NZi0DrJToqfR
-	 EN9p7UiHkjHhzTnEX/Nnfw+Cdxgdj/equtDNoIPcUVHou6MH8M6OCgjFKCjv+HGZwp
-	 IC37Tez0mu7Tp2y+CJAlmCj4QkXPrCmdP4CEtIKKc0En35zUsz+1iuISun5r2YKuNS
-	 xmEpPjEcmg9u+Y25j6aMDWqbPqIC5nVLoe7a2/zMsu6AmzR2eZeTWLJ18iDQAeUt8s
-	 Qop6AaZZcCjRAJADxFbga5cNKEgIFrVBd0C5IEt1BxzWQFNGeeW+QfYjM6iTVNvmM0
-	 QoTEoKHRcE27A==
-Date: Thu, 16 Jan 2025 17:29:16 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v8 2/7] PCI: dwc: Use devicetree 'ranges' property to get
- rid of cpu_addr_fixup() callback
-Message-ID: <20250116232916.GA617353@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XKbrcTVy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A7xVHo6pvMpeDLbSUi6r9iC2NsjdrxA63G3RPamveZU3QNbwFugrwDSd6R1LPaCU6cW36xPx04YNhae6DY0rUAW0QQfqrn10fbHIDxhtmHMFc+3oJe7ZdyoZP7yblMqxIHeIu3CYWTLA4EuyIzYrZV9H0zdtJlw3CcaQ9sfO0NmWsTEXig5AzJdNO5BqGLvzdt/tCp6+mFwonpVOHjnMpIqdAJSxmYPpkw+soORDZaQpAGPcQ4+wKJWnWH1ATbHYdRQhgyEJWcWUlIFjm4xJ+J6ZQIJPBXxuAYGNarPTL2KosgnwyfllxO6MiUNu9RoBLZ7GU82e7hNKwBFNqFUbpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CWkZibYEgK+WvxNhLD6fIMFS9y3rR6raXhqZUu/LHbg=;
+ b=dhLOVfAT5AQ9iAwAvgeCFlSeCGaoMUpgXSQXkaYi5So8Eho0WQcWZAV7HNdnoKl+ReOF8YiIQe/A2vwQBZD/iQkqdfL/FT2AeV/DuM7uuS2XB4uE111H/BiNX7QycmiWyzKVlVA3mEJ4cuLFDeEB1dMU0aVbthr2PnxECeCssSsV09FUyQ9dz43rTs8869gbxfPMVtImQA2zUU8/Cbiz7BwGrTT1TeHJYCZVsZG9cakAGW/QWYs0z22NJH03qlLJMovUqbql0aji2uZUYRtBM1prqZ9Xdo8/COI+kDnW0ShkjiiKXgGhSsEMCJn/FmuNFGTIprgV8b/UzW4yGCy6Cg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CWkZibYEgK+WvxNhLD6fIMFS9y3rR6raXhqZUu/LHbg=;
+ b=XKbrcTVyXqrgGt4Pskcntc7U7DncJQdFk4dzirn4vJc1RJQjz+z3ReG/xbHtGWQ05AYSJ6yM9lSEkBHW79xXg27G/qA1y6RA0qXi62sD8Q3RENwC5RVrRWeLw2u0P5Dr8GioGj/qwfClumLtOny66iP/BzJGDdPf1qMJh+LjWC9xSD8qgFJtNSewLzc3Sl6vNnbxMoyFRrkxoBdmAbittjottjFGVb26IvCm774M3VbePc+lx4c0o5mfNL6zLlydUI/SYDMXzfa+cyFrVg4L8If+qCA+8LM2ExG+2BCK2PJh30L0isttbe+f9iPDu0utUDd9OEqEc/D2JzH3x7Vccg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB7521.eurprd04.prod.outlook.com (2603:10a6:20b:2df::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.16; Fri, 17 Jan
+ 2025 02:47:34 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8335.017; Fri, 17 Jan 2025
+ 02:47:33 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next] net: fec: implement TSO descriptor cleanup
+Thread-Topic: [PATCH net-next] net: fec: implement TSO descriptor cleanup
+Thread-Index: AQHbaBfkrNWnJ8Q/Q0Sh3+45MzkbSLMaPDTg
+Date: Fri, 17 Jan 2025 02:47:33 +0000
+Message-ID:
+ <PAXPR04MB8510E1BAD3FDB59268138682881B2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250116130920.30984-1-dheeraj.linuxdev@gmail.com>
+In-Reply-To: <20250116130920.30984-1-dheeraj.linuxdev@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB7521:EE_
+x-ms-office365-filtering-correlation-id: 91b543a3-2e6d-4903-5e6c-08dd36a14b65
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?0q1GOMX38moPa43t1u0WEaer/G7KVAXHM94iu9AmlkxSLlNf+eVkbpAw4LSz?=
+ =?us-ascii?Q?ie9ni0jPlKpruWdEIAkwT4zoc1SuRByxU+xcol2kYksmF9VXZxjbhiR2pJGU?=
+ =?us-ascii?Q?tWtkoJaHlrjG0+Nq153GfEQ4g5EfU0IgKqwGt8msu24L/M/jUwUcp0LFknFn?=
+ =?us-ascii?Q?S7Gech2YlEEYrJJ2eoF+CyralHUxjLbabXaC3zVBb8uN6lRS4LsYgS23EZYM?=
+ =?us-ascii?Q?oJSJ7w53ZCLQWfqhIpX1sTge3y6Zh98kg4ZOO8f8EU/kUaDK114ohwI8E1NZ?=
+ =?us-ascii?Q?Ox7F+wbjF3+dy5qgPDoc4Ssq+L86jmVsfVAKTyYgsaWqQ9aOs0YVOafqNz/s?=
+ =?us-ascii?Q?XvwdNFI+mH6HaoDVvl9DsZnFkYsXToIjDx/97SI73DP94a77maYQRvj1sL7h?=
+ =?us-ascii?Q?sXghdcnUw/pru9ODFRFCuNTVXPimcZKuXHTXqH+Xg/UvG1YA3XspSv5do8JI?=
+ =?us-ascii?Q?VInjbswxJksEYKLKmf2CSeZkA1+IJHFPwlB6LpzF405vdPupUAIUs1ZNHeQ9?=
+ =?us-ascii?Q?TcxJ3ch1wA6BOJkTQJ2kzeqXsQjE/rHoj4rStDNpEayHgBYmSZK8+U05IgNr?=
+ =?us-ascii?Q?ALM59xR9cUXMcxZkeK7tikWh1ORT9Oog/5V/KtT+DeJprJ2/0RMAQ3m4R+6a?=
+ =?us-ascii?Q?NtLbzdXxiEXPE/nowgrBZZl0sW4JNisfnK6ztSWBXM0iqmR8Kp9YY7/0S0Kh?=
+ =?us-ascii?Q?Frfj8NF03B1SYBifwh6gz2GUSTvIsHwRl453yy8s8yQraDOsfzUO5tnccoiO?=
+ =?us-ascii?Q?NEjiLnfYvZSmtuT/OvduKCuDj7k1455N35WkTc/UyVl/pixQ9USLHf42x7Jt?=
+ =?us-ascii?Q?35LUb7ci207gz9eVuM7KCoi8/Fi0JQxbX8YjRtBr+9lLcIaMUEV0VWLYRIMs?=
+ =?us-ascii?Q?RRSbKBOo9vh9dsp9dmlRRuUAljGhsniQMjfjAg2s63G8OSC94pzYab/9JlCE?=
+ =?us-ascii?Q?OcFGbvqArahgEgEvxbGKCu4j0GAwgaTEZ8cMD+WwQFRuGWptNU/hhd4qy0Ak?=
+ =?us-ascii?Q?GdoC61SJTHo6XNC9rsEort+WQLT/mgcESFbRCKV22rgwKwA20B+JKS9e6S/3?=
+ =?us-ascii?Q?1fmeBR+aDOi8jmonb0qQOQw9AOCH+bcMI6zDphdNK88+y67TYOTxFrsAXv2W?=
+ =?us-ascii?Q?5Po5zVw3pMvuX+sWD5stNAknzf4MK2WD/jKZ22T+UST4IHeTuW7lJ/wAIl7i?=
+ =?us-ascii?Q?B5TJnw+UJX5zy+dIKh/nJie/noXsEjRSw+6ibu9LUDGxR9PV0pmH3KFyJhXG?=
+ =?us-ascii?Q?JADdD1F1ymXrPA87vhzHkXZJcCzbF0jfWq3Ud0yZvsbvHR5ZA2FPlpofY8lF?=
+ =?us-ascii?Q?gEZOY3jPLnxOe40vvTRiuwrvySnKcJisdMy3/KiNmYmglZHcLROcUxtWlzqB?=
+ =?us-ascii?Q?81qGHMVnB/DM36bUJV2ZK6dlgcq+KlB41FQqpnw6X2v96T0EtsjsZyPzW07s?=
+ =?us-ascii?Q?tgTiDIUS7f7WtnxnAr8MibC3IiBCP2lt?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?jzIwhRCFeT+bZQHpQExpFR6WU+JwsZu0dkWCglHCgVSy9QuyqDbgI70ED/FI?=
+ =?us-ascii?Q?oY24PNuMS3udWC7+yMUAqUVXsyMWLuc47TP17U2MKF+xRzz6u/ZqBJ4ET6uK?=
+ =?us-ascii?Q?QpJn9YUlSsQ+fC9R0pOWurgL8VT/Sy49QII9hqyxNx1Hx6I+vFxTQZqd3m5r?=
+ =?us-ascii?Q?8j/5yJOzGUsf2l1JIhumrP4mE/BGqC/kfGD02G3YmRQMENahCbjjPBlzuoLg?=
+ =?us-ascii?Q?cByB5He/n/KPvWkjpOKIY73dBKnsXmT4yU8OZBpUOCGaLd75IGLjY3kLaCyz?=
+ =?us-ascii?Q?mml9UQF4InvIzyVrMPE+ExWnUuatmQ36YRmjga7SudiFRZ9aiDbhaUWaEnJE?=
+ =?us-ascii?Q?fh6gwVbqIgNYM9W7QnFP+c3Dld/4TUrs2Xg5PG7ybVR7aD1gk4csI6hK+Y/5?=
+ =?us-ascii?Q?BAq81OdAsgnzP3mYBRN7AS3HhM682Eccpo5uS9m1TEFLLqDUkIDxWV7BoU8D?=
+ =?us-ascii?Q?2n/+sdA+/KrLsPYfz9+7/OSne13rHzrriy9ykCNbEBR7W8TrM+dUy3ln/St7?=
+ =?us-ascii?Q?mRkY28TOe3BWLIp2K49IHdJgtde9uU8AYDKiL/Pfl4ZXyDdL+LWPHmbEj49k?=
+ =?us-ascii?Q?Z3Fi8h1/FZre+t+51O5Iv0OMz0r/9ensHAFsnml10U1Zk7TfGej+5rdFVEv0?=
+ =?us-ascii?Q?3w60IfF9BwSu9sePPziy/UbfRJN5lbfZZdvxB4sY4qK9pN6mexwQjuaRsve5?=
+ =?us-ascii?Q?oJs+zyMTWhSXPtnBI/W7UN78lPLn9Tpi2L1XCbc3+Sm+5w56Aj4WI02+YPxb?=
+ =?us-ascii?Q?ftiTg+UKrHHHYa/IU/EujinmGxCPabglSYTu63pJYbYD4Lxn+0K5TN4mmhvu?=
+ =?us-ascii?Q?PfBv93Dorq/7qDoKyAi5Uhp2GfgdRve/o2iXF5nusgOCz/nAlKCPauBcF1qy?=
+ =?us-ascii?Q?COQKrUevZf9LPmYOX/cmvJyS6P8c/T8iP+5iB8Fmub2xVu8OhTlw0uo2sDcB?=
+ =?us-ascii?Q?/Nl06fvxAvJrwgUZ2WJODt4pST08Wgpu22KYQt0VZwBpGoUaWPHzeNOZ6lf0?=
+ =?us-ascii?Q?Qe/WVPuynNFL1v5TSyYp6Qc3BMm3URANJe1wA0I7ehONUHPFFnqpDg3SI19l?=
+ =?us-ascii?Q?yCtXjlKJupPxfk6lKywsKT3g0IYmOPH3irFBmUBRkdPXnLiSa/y01fdGBOB/?=
+ =?us-ascii?Q?OnPZPDo4/J2iR9OLqnjyAgxFxCyNvn3ADrbwIloZWrslCrjB/ThL49rd50Bf?=
+ =?us-ascii?Q?wnG/Bm1x+yWm/WlZgIoMbSj3bumSG+rSfXp9GtWt/4fAmdSuLkDzx4rz0pKK?=
+ =?us-ascii?Q?RemwcduB2oTmyobFTDew1HEp0FE0G8W0/8JRa8AcF2qrKh1WH22NffozgKx8?=
+ =?us-ascii?Q?IAYZFYebK1B1sXIKDizOZ/lYJYeRQTPVkKoXXr35eCq0+SDW7qnXWQoMq8Da?=
+ =?us-ascii?Q?g+TPKmq0Gt4qJnyod5cCdrEXc7w4oGvPMEq4H+VeYrXat6/QDMJP9WYZXFM6?=
+ =?us-ascii?Q?wGX11t2fzSzcBqNzr38mj+7OVDbk3BvtMVzDPKXxWF/hXvulIDA/quFBOcsu?=
+ =?us-ascii?Q?qS4I9oPQCztu/ZfzbyY1h52GSv1W/E3S1423QqfoXUIDxoO/mINDi+7rgFgE?=
+ =?us-ascii?Q?68mKm+1xe2XPSin2OoI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250116231358.GA616783@bhelgaas>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91b543a3-2e6d-4903-5e6c-08dd36a14b65
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jan 2025 02:47:33.8483
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: P8Ub2v6caRjxiPumif9J9pVpNhh9pjVRSruT22nYes18ZAMZ5pfsO5o8DTnwIfv9GNEZgO2+fBVhr4fGQru9kw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7521
 
-On Thu, Jan 16, 2025 at 05:14:00PM -0600, Bjorn Helgaas wrote:
-> On Tue, Nov 19, 2024 at 02:44:20PM -0500, Frank Li wrote:
-> > parent_bus_addr in struct of_range can indicate address information just
-> > ahead of PCIe controller. Most system's bus fabric use 1:1 map between
-> > input and output address. but some hardware like i.MX8QXP doesn't use 1:1
-> > map. See below diagram:
-> > 
-> >             ┌─────────┐                    ┌────────────┐
-> >  ┌─────┐    │         │ IA: 0x8ff8_0000    │            │
-> >  │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
-> >  └─────┘    │   │     │ IA: 0x8ff0_0000 │  │            │
-> >   CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
-> > 0x7ff8_0000─┼───┘  │  │             │   │  │            │
-> >             │      │  │             │   │  │            │   PCI Addr
-> > 0x7ff0_0000─┼──────┘  │             │   └──► IOSpace   ─┼────────────►
-> >             │         │             │      │            │    0
-> > 0x7000_0000─┼────────►├─────────┐   │      │            │
-> >             └─────────┘         │   └──────► CfgSpace  ─┼────────────►
-> >              BUS Fabric         │          │            │    0
-> >                                 │          │            │
-> >                                 └──────────► MemSpace  ─┼────────────►
-> >                         IA: 0x8000_0000    │            │  0x8000_0000
-> >                                            └────────────┘
-> > 
-> > bus@5f000000 {
-> > 	compatible = "simple-bus";
-> > 	#address-cells = <1>;
-> > 	#size-cells = <1>;
-> > 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
-> > 
-> > 	pcie@5f010000 {
-> > 		compatible = "fsl,imx8q-pcie";
-> > 		reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
-> > 		reg-names = "dbi", "config";
-> > 		#address-cells = <3>;
-> > 		#size-cells = <2>;
-> > 		device_type = "pci";
-> > 		bus-range = <0x00 0xff>;
-> > 		ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> > 			 <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> > 	...
-> > 	};
-> > };
-> > 
-> > Term internal address (IA) here means the address just before PCIe
-> > controller. After ATU use this IA instead CPU address, cpu_addr_fixup() can
-> > be removed.
-> 
-> > @@ -730,9 +779,15 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
-> >  
-> >  		atu.index = i;
-> >  		atu.type = PCIE_ATU_TYPE_MEM;
-> > -		atu.cpu_addr = entry->res->start;
-> > +		parent_bus_addr = entry->res->start;
-> >  		atu.pci_addr = entry->res->start - entry->offset;
-> >  
-> > +		ret = dw_pcie_get_parent_addr(pci, entry->res->start, &parent_bus_addr);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		atu.cpu_addr = parent_bus_addr;
-> 
-> Here you set atu.cpu_addr to the intermediate bus address instead
-> of the CPU physical address before calling
-> dw_pcie_prog_outbound_atu().
-> 
-> But what about other callers of dw_pcie_prog_outbound_atu()?  Don't
-> all of them need to use the intermediate bus address?
+> Implement the TODO in fec_enet_txq_submit_tso() error path to properly
+> release buffer descriptors that were allocated during a failed TSO
+> operation. This prevents descriptor leaks when TSO operations fail
+> partway through.
+>=20
+> The cleanup iterates from the starting descriptor to where the error
+> occurred, resetting the status and buffer address fields of each
+> descriptor.
+>=20
+> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+> ---
+>  drivers/net/ethernet/freescale/fec_main.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index b2daed55bf6c..eff065010c9e 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -913,7 +913,18 @@ static int fec_enet_txq_submit_tso(struct
+> fec_enet_priv_tx_q *txq,
+>  	return 0;
+>=20
+>  err_release:
+> -	/* TODO: Release all used data descriptors for TSO */
+> +	/* Release all used data descriptors for TSO */
+> +	struct bufdesc *tmp_bdp =3D txq->bd.cur;
+> +
+> +	while (tmp_bdp !=3D bdp) {
+> +		tmp_bdp->cbd_sc =3D 0;
+> +		tmp_bdp->cbd_bufaddr =3D 0;
+> +		tmp_bdp->cbd_datlen =3D 0;
+> +		tmp_bdp =3D fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
+> +	}
 
-Somehow I expected the patch to skip calling ->cpu_addr_fixup() if the
-driver had set 'use_parent_dt_ranges'.  In fact, I think that's a
-requirement.
+There is still some cleanup to do.
+1. If bufdesc_ex is used, we also need to clear it, such as ebdp->cbd_esc.
+2. The data buffers have been mapped in fec_enet_txq_put_data_tso(),
+I think we need to unmap them in the error path. But do not unmap
+the TSO header buff, which is a DMA memory. Actually it is not necessary
+for fec_enet_txq_put_hdr_tso() to call dma_map_single(). If you are
+interested, you can add a separate patch to remove dma_map_single()
+in fec_enet_txq_put_hdr_tso().
 
-Since dw_pcie_prog_outbound_atu() is the only dwc caller, maybe the
-parent_bus_addr change should go *there* instead of in the callers?
+> +
+> +	dev_kfree_skb_any(skb);
+> +
+>  	return ret;
+>  }
+>=20
+> --
+> 2.34.1
 
-Bjorn
