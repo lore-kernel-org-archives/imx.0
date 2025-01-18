@@ -1,124 +1,210 @@
 Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413F7166F3D;
-	Sat, 18 Jan 2025 09:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE707CF16
+	for <imx@lists.linux.dev>; Sat, 18 Jan 2025 12:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737193886; cv=none; b=FT8x8IXaHSH7vmXlVqtI7v7oknVB2bSt0zIFzv6WoYUiAQ4sC45+9+0bulDac6j68or9NDQalSZSEQZ8bjyamJFxM4lbq1nusEQqYVwUzU3wKEq908eIuZMT+djeEjvRRqLUQs7Mhadupjh6icss7mZOnyVX4Sccud+QUAMIVYw=
+	t=1737204057; cv=none; b=k0v/g3EUpM6p9DyfWO9/Xz885aSX0Ij8hGfrTewKLpiuEJLk76WPz+4WDlENVJpzvmCVzXdt/9TaT6dtAqcLY3agLdnk5pfGOn+RC6cWyz6BpIf2pkm+QiRZfILjZXnQ+15P8VhaTdMQn/P6ZBcepqgdigJq/FCdXmp4wwUyqFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737193886; c=relaxed/simple;
-	bh=P5POeLB1HYM4r7q+jyyRBr+bveo3NgD/uLDfzg3k38Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V5o3tbEeE3bHeNroNPiCUZnB8GpaVKNiQYjAPJOZQTjMtlUqi0mYpkPNE2548A8pAIh4KdyUMNinOwf1/ETm45dAh7pSlRGPUSLrCOmSo8hPnFuXRuscKRWeRx13yW9RLLeEBtyC5bHgmyFbMPJfJW/mmheagdCvR0dYR5VdFu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N7yg3TqK; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737204057; c=relaxed/simple;
+	bh=kQs6p/sguiTt33aX9Ord2e8m/sWMlm4NTrB0su2Kzpc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3l2td4IVwHgM2nYJKvzZfhlhtmBAMufDv8TPMYy5He6nNGyXNh7+yuP37ji+rTpSkZdmTfy4tMkq4aytBKGJ+Ty9qHtsshU+YGzdAkIdlkZ1MTnPzlZoCs/wf8sWkTol29tts50xztS3BJ7Fip7O5SNzdueZ8wNvZ1ddCSso4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=j5AQljrG; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N7yg3TqK"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9e44654ae3so434635166b.1;
-        Sat, 18 Jan 2025 01:51:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="j5AQljrG"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aaecf50578eso605460666b.2
+        for <imx@lists.linux.dev>; Sat, 18 Jan 2025 04:40:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737193883; x=1737798683; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=db8wy+NAvFX7oWbNNZfkOxUsDhaAAm9ZkDqWuFl4MaM=;
-        b=N7yg3TqKupxVp3suIc8APqA1L0f6MT9oOqsT43M5UgevXmbnMWsSY929H0grYg+2BJ
-         m1sB/gL70IOFuyMiy12aAhCUGazIf8/YG+r8da2wiy3jR/xViJEB/VlM3fvyjhwdUd0D
-         ioIwWwoVoJe9Od67EZpWGFlynNgpLzYDvINOFcfjV00mPsKfKNuAjVN9/EhXBkpBLo1x
-         U48EhQELKI3tVL0LXbSIQJli7kCBJClNn/jUEoqzTU69s/s/7mNQnYiX2ZR6g008tK0C
-         q457xA6oglzmmPzYux+R0pOZGI4V3Ki7B9kWs5jX+gLVXrKabwUNLS6TV+cjFvpW0XMK
-         zTDw==
+        d=amarulasolutions.com; s=google; t=1737204054; x=1737808854; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5onGhGKKEfsf2k5TF9MlXDxHozXopiDzBdinAngTivM=;
+        b=j5AQljrGa4Q+3spPx7uK9Hhx79PC+GaR4n56TLsaeQA4HC/2oJLb8O6Up5r8PRxdMe
+         XW0QPb7K0nBVhyEdzLwZ6yvkRuHIEsgvvpgRupGzxJiXB9715Xyf5MOtk11EbfeJX6z0
+         SFftMADAZWysIgDerJi0nWYtCjK+OJ2NwMm0c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737193883; x=1737798683;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=db8wy+NAvFX7oWbNNZfkOxUsDhaAAm9ZkDqWuFl4MaM=;
-        b=busks1aOlBU0T/Yg5B/7VEzSMlyLGh9KMWWNC/9nTD1+gCFNHEc692EdTz1ahJlo+d
-         yn+zlNaTm1AUqwHYSS+pjNy0j/peseu4+8vnPNgzhpFmiHeQiwLZc+3bAIua1yS3TFzT
-         mLj7ZBQSJ7NPf+p2A2PJa4m/noYilhdi/BF9p80NXQOIb3BWZMl3steipLQ7l78PDd71
-         2SSWIpG96RiQChZQPK63i+gPy09emZMH2mLkBa0Ks4SrF/FMExn0/rAPxfLdW7XzukSM
-         xmuDL3zm7htmJEYNPru7JAOTKp4/FdfzUBWME9q4yrpUMfSf1VWMyFIxa3unRhDUQmGs
-         TSBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWALh/yuzVone9r7Dbz4eGN6c07Mf7hLrplom81vQZ3y02sy0LEzeJpib3nPp5SGcmQZ/h4JlTjjGOAWk=@lists.linux.dev, AJvYcCXoL2kUDkSdqKPiJPLFJckIHiqO1o38RC7ADIH3geA9fhCw6Evnr/uCZ+TMggaQENep+eo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YywTJM7+wgL2AYneQ2RgACerPmCedk+JU+Xah+9Q9PoZXm6kmux
-	k1Zc8JABdVwoHt/nOWfOZ81aaGrhWoWXe4cs8cGtfJZmIgcbILax
-X-Gm-Gg: ASbGncsLgGp9Vb/HXya67bl1TTP/UTANg2Qg9xZ2Zpyy7x5AFXbId45hMVCuYqA/Ksy
-	CYZD6x94RNa0QRoAr3TbnnIPzITq7xqZk4nEJ6Ylol+ImogDuPE/6xJoqYMPeaxzP8UMuB2jh27
-	IiSxmQwUm1kRzDQQvJc4Fr9GDspqDQazmTwkTpOTCNUHBmuKBv5g2JcFfAKd51tFnsgvTAbmq+g
-	kdBxbhXyw74g/8NZyfCP6HrEmShOXo44LebkDLJ+LGk8knu0/cXnGgyqRHA9oLQ7OU0YZWm5d2S
-	iP4KliRh7YZKS8HdHp5GPraCqg==
-X-Google-Smtp-Source: AGHT+IGSL4U5Xl+C2sAjU6wiHAWjkKHC+CgAd09MaHyOr2GDuAn9GsU+UuWVUF99+lnXmPsQs58C8g==
-X-Received: by 2002:a17:907:930b:b0:aa6:a9fe:46e5 with SMTP id a640c23a62f3a-ab38b3dae38mr578880566b.53.1737193883243;
-        Sat, 18 Jan 2025 01:51:23 -0800 (PST)
-Received: from jernej-laptop.localnet ([188.159.248.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384f86244sm307104766b.152.2025.01.18.01.51.22
+        d=1e100.net; s=20230601; t=1737204054; x=1737808854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5onGhGKKEfsf2k5TF9MlXDxHozXopiDzBdinAngTivM=;
+        b=oXYQG5jTqx/rxaM4tyRKIvhQKtaT1YdGFf66VbGBdMmtYV0lh8ZQnSkFy6nLELc6mt
+         rNLxbbw6z8L8YxMkY+cgHoGsNzF4Cbe/aWVsiMrqMsnMLSPOrvNaZFq6Wu+uGjiHSJ5/
+         eq29V3YYMQXx6Hm7pfL1h4azxzI0eREgpNvhoToaVNxGhav8sYdTC2vfxj+pCi3Z0+H6
+         +p8CYmyIw6Qx2R8fAGF1IRCw91dfGimti7qOBWLz5rgqZOPzl/yLjBCcSTAojol9/1PK
+         T6SaohPNmtftMRClGUnjhow3FVNRIfQJVTJKtn6VJ78HghSjBHGipMicOxRTGjqH0MPN
+         S+Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlw3G3f7KxkiBNMjHF33dEbtzrYkb/HX4mYF//W3JUtDsCBBExo2qgALUZ6uwecO4b7Vs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgeVJC/VsOEpVYR3ydgWpCYdPkzgxxUKotLASgbyQcZ12m1BaZ
+	bNt1LIGbnopdhmweLGqTYwdQVAvfzjuRrzt/Sq4UwLgwK+ecoRqdsh32Q13c9bQ=
+X-Gm-Gg: ASbGncsb3fEdnQszdq85KDbhuORQeOqTKAdy24gY+9ou1PJ3hEdyP7C9csNqgLsibpf
+	TpOsNrkHjAV4+mNgZOhtEPWDb1VfBUdbV5mQZ0QWEOPqZWz6hX53iLeQMXdwew03+deD46otnc4
+	4IwN0QxenytqBayLnC/OlQqx7YVByH39s8UO7md1RMujQ/9tuCdzZetBZhliXguCIw5SIF55g/x
+	Hfbnkc30ReAJAGLEGjzNgiMa5rDH3sB85dpq6lttOTbyccx/MBi7w2bBPW8VVsKIH9WGaIRLdPT
+	oMXD8FNTj2IdhaDu+ANoeyNzWvkvwXYyADuzbjYcX3pvJh/rLrmBe+8jnbm1/x62Py4Iw6x9U9x
+	bFkAPiyu6uUoq7hfbaPJONx4U9+JlFgmy8A0G
+X-Google-Smtp-Source: AGHT+IEjybvZ0WW6CYRPWu4SGI7kaRbjpSjgRz2MqsdM529mQnQ12ESTPBLo6wSjpHehJu8b/HKv+A==
+X-Received: by 2002:a17:907:3f97:b0:aa6:82e8:e89b with SMTP id a640c23a62f3a-ab38b166589mr512324966b.28.1737204054044;
+        Sat, 18 Jan 2025 04:40:54 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-30-28-209.retail.telecomitalia.it. [79.30.28.209])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384fcd73dsm332562366b.178.2025.01.18.04.40.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jan 2025 01:51:22 -0800 (PST)
-From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Vinod Koul <vkoul@kernel.org>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>,
- Peter Ujfalusi <peter.ujfalusi@gmail.com>,
- Michal Simek <michal.simek@amd.com>, dmaengine@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 1/2] dmaengine: Use str_enable_disable-like helpers
-Date: Sat, 18 Jan 2025 10:51:21 +0100
-Message-ID: <3794610.MHq7AAxBmi@jernej-laptop>
-In-Reply-To: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
-References: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
+        Sat, 18 Jan 2025 04:40:53 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH v9 00/23] Support spread spectrum clocking for i.MX8M PLLs
+Date: Sat, 18 Jan 2025 13:39:43 +0100
+Message-ID: <20250118124044.157308-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Dne torek, 14. januar 2025 ob 20:10:20 Srednjeevropski standardni =C4=8Das =
-je Krzysztof Kozlowski napisal(a):
-> Replace ternary (condition ? "enable" : "disable") syntax with helpers
-> from string_choices.h because:
-> 1. Simple function call with one argument is easier to read.  Ternary
->    operator has three arguments and with wrapping might lead to quite
->    long code.
-> 2. Is slightly shorter thus also easier to read.
-> 3. It brings uniformity in the text - same string.
-> 4. Allows deduping by the linker, which results in a smaller binary
->    file.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> ---
->=20
-> Changes in v2:
-> 1. Also drivers/dma/dw-edma/dw-edma-core.c and drivers/dma/sun6i-dma.c
-> ---
->  drivers/dma/dw-edma/dw-edma-core.c | 6 ++++--
->  drivers/dma/imx-dma.c              | 3 ++-
->  drivers/dma/pxa_dma.c              | 4 ++--
->  drivers/dma/sun6i-dma.c            | 3 ++-
+The series adds support for spread spectrum clocking for i.MX8M{M,N,P}
+PLLs (audio, video and DRAM). It has been tested for the video PLL on
+boards using i.MX8MN and i.MX8MP.
 
-=46or sun6i-dma:
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Changes in v9:
+- Add 'Reviewed-by' tag of Peng Fan for imx8mn platform patches
+- Fix building warning raised by the kernel test robot for patch
+  v8, 11/18 clk: imx: add support for i.MX8MN anatop clock driver
+- Add patches for imx8m{m,p} platforms:
+  - 23/23 clk: imx8mm: support spread spectrum clock generation
+  - 22/23 clk: imx: add support for i.MX8MM anatop clock driver
+  - 21/23 clk: imx8mp: support spread spectrum clock generation
+  - 20/23 clk: imx8mp: rename ccm_base to base
+  - 19/23 clk: imx: add support for i.MX8MP anatop clock driver
 
-Best regards,
-Jernej
+Changes in v8:
+- Drop the patches added in version 7:
+  - 10/23 dt-bindings: clock: imx8m-clock: add phandle to the anatop
+  - 11/23 arm64: dts: imx8mm: add phandle to anatop within CCM
+  - 12/23 arm64: dts: imx8mn: add phandle to anatop within CCM
+  - 13/23 arm64: dts: imx8mp: add phandle to anatop within CCM
+  - 14/23 arm64: dts: imx8mq: add phandle to anatop within CCM
 
->  drivers/dma/ti/edma.c              | 3 ++-
->  drivers/dma/xilinx/xilinx_dma.c    | 3 ++-
->  6 files changed, 14 insertions(+), 8 deletions(-)
+Changes in v7:
+- Add and manage fsl,anatop property as phandle to the anatop node with
+  the new patches:
+  - 10/23 dt-bindings: clock: imx8m-clock: add phandle to the anatop
+  - 11/23 arm64: dts: imx8mm: add phandle to anatop within CCM
+  - 12/23 arm64: dts: imx8mn: add phandle to anatop within CCM
+  - 13/23 arm64: dts: imx8mp: add phandle to anatop within CCM
+  - 14/23 arm64: dts: imx8mq: add phandle to anatop within CCM
 
+Changes in v6:
+- Merge patches:
+  10/20 dt-bindings: clock: imx8mm: add binding definitions for anatop
+  11/20 dt-bindings: clock: imx8mn: add binding definitions for anatop
+  12/20 dt-bindings: clock: imx8mp: add binding definitions for anatop
+  to
+  05/20 dt-bindings: clock: imx8m-anatop: define clocks/clock-names
+  now renamed
+  05/18 dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+- Split the patch
+  15/20 dt-bindings-clock-imx8m-clock-support-spread-spectru.patch
+  into
+  12/18 dt-bindings: clock: imx8m-clock: add PLLs
+  16/18 dt-bindings: clock: imx8m-clock: support spread spectrum clocking
 
+Changes in v5:
+- Fix compilation errors.
+- Separate driver code from dt-bindings
+
+Changes in v4:
+- Add dt-bindings for anatop
+- Add anatop driver
+- Drop fsl,ssc-clocks from spread spectrum dt-bindings
+
+Changes in v3:
+- Patches 1/8 has been added in version 3. The dt-bindings have
+  been moved from fsl,imx8m-anatop.yaml to imx8m-clock.yaml. The
+  anatop device (fsl,imx8m-anatop.yaml) is indeed more or less a
+  syscon, so it represents a memory area accessible by ccm
+  (imx8m-clock.yaml) to setup the PLLs.
+- Patches {3,5}/8 have been added in version 3.
+- Patches {4,6,8}/8 use ccm device node instead of the anatop one.
+
+Changes in v2:
+- Add "allOf:" and place it after "required:" block, like in the
+  example schema.
+- Move the properties definition to the top-level.
+- Drop unit types as requested by the "make dt_binding_check" command.
+
+Dario Binacchi (23):
+  dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
+  clk: imx8mm: rename video_pll1 to video_pll
+  dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
+  clk: imx8mp: rename video_pll1 to video_pll
+  dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+  arm64: dts: imx8mm: add anatop clocks
+  arm64: dts: imx8mn: add anatop clocks
+  arm64: dts: imx8mp: add anatop clocks
+  arm64: dts: imx8mq: add anatop clocks
+  clk: imx: add hw API imx_anatop_get_clk_hw
+  clk: imx: add support for i.MX8MN anatop clock driver
+  dt-bindings: clock: imx8m-clock: add PLLs
+  arm64: dts: imx8mm: add PLLs to clock controller module (CCM)
+  arm64: dts: imx8mn: add PLLs to clock controller module (CCM)
+  arm64: dts: imx8mp: add PLLs to clock controller module (CCM)
+  dt-bindings: clock: imx8m-clock: support spread spectrum clocking
+  clk: imx: pll14xx: support spread spectrum clock generation
+  clk: imx8mn: support spread spectrum clock generation
+  clk: imx: add support for i.MX8MP anatop clock driver
+  clk: imx8mp: rename ccm_base to base
+  clk: imx8mp: support spread spectrum clock generation
+  clk: imx: add support for i.MX8MM anatop clock driver
+  clk: imx8mm: support spread spectrum clock generation
+
+ .../bindings/clock/fsl,imx8m-anatop.yaml      |  53 +-
+ .../bindings/clock/imx8m-clock.yaml           |  74 +-
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi     |  11 +-
+ arch/arm64/boot/dts/freescale/imx8mn.dtsi     |  11 +-
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  11 +-
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi     |   2 +
+ drivers/clk/imx/Makefile                      |   6 +-
+ drivers/clk/imx/clk-imx8mm-anatop.c           | 287 ++++++++
+ drivers/clk/imx/clk-imx8mm.c                  | 275 ++++---
+ drivers/clk/imx/clk-imx8mn-anatop.c           | 283 ++++++++
+ drivers/clk/imx/clk-imx8mn.c                  | 196 +++--
+ drivers/clk/imx/clk-imx8mp-anatop.c           | 305 ++++++++
+ drivers/clk/imx/clk-imx8mp.c                  | 684 +++++++++---------
+ drivers/clk/imx/clk-pll14xx.c                 | 134 ++++
+ drivers/clk/imx/clk.c                         |  15 +
+ drivers/clk/imx/clk.h                         |  18 +
+ include/dt-bindings/clock/imx8mm-clock.h      |  76 +-
+ include/dt-bindings/clock/imx8mn-clock.h      |  64 ++
+ include/dt-bindings/clock/imx8mp-clock.h      |  80 +-
+ 19 files changed, 1975 insertions(+), 610 deletions(-)
+ create mode 100644 drivers/clk/imx/clk-imx8mm-anatop.c
+ create mode 100644 drivers/clk/imx/clk-imx8mn-anatop.c
+ create mode 100644 drivers/clk/imx/clk-imx8mp-anatop.c
+
+-- 
+2.43.0
 
