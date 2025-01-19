@@ -1,150 +1,157 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDDF194A6C
-	for <imx@lists.linux.dev>; Sat, 18 Jan 2025 12:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A0278F5F
+	for <imx@lists.linux.dev>; Sun, 19 Jan 2025 07:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737205200; cv=none; b=ftZ4IDJj7f5blwnZhdmx7ydEkr8oU5oUeu86z4txkqLZ3nT94Fcq5BrH6Ab458zyAZ5r2KnHr+a+KWBtynj8uiHy3tVqjQY1BP2/cFVO8q+lTaYwcTMT7ml8McjRGHBOcXsMO2YdyosMX+5xHg26mOZ/1l8hBrd59KPp1wqLM7k=
+	t=1737270176; cv=none; b=bTA8Pknp9QJbuOsFMm1LGXqsk7ySixU6phNo7Fa0HrjN8qhmwE+BS85EY8fCXz8zPZpSNL3xq0KEK+GAcLTseDBx1u4Wbw9h5a/fDbARu669oSORuKqgRYjeF5W7puWfxTtTvM17sCut7CpeaPwHN7GG6O6paLVgBLEKfqZBxow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737205200; c=relaxed/simple;
-	bh=7Ds/AB65ztB9QuAavFN79YiSgvPDbfRibJI5Zw5XaJU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oW2a9SPveFfcCwOxMbciQaDZfFTyUgLtcbgpXvTVsfqnk9krLQvUuzTlRKwBxhQptI4ZXTnpKn6sC0QRqf1AKSyt95b2HcE5O/AnmP8JsN5U54OFrDxWKN1pDehQBNLmTlb+fmoQm+HA0NOfJvxU2q86DEMhr/YC9DEReBxyBNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k4EHv2lh; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737270176; c=relaxed/simple;
+	bh=9Uyh20Bo/JCrzKWgQJoe3V6rjzekT4NllWMa1CNe8Dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mx6ICw15kz+QfwzM3mnXEKa/ZCavY7CtXDKCoeUZjnUhn8YGDFg+tlmD5a7Rs/zrgKFod9jtPXuG73DHX4nhJUgT9usGaNH451tRl0JzExBls4khU5acWshjr27vPJCO/rjRoKBop3suga949Hu9CFOQlRQwBQxhXS9eokyJmwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vu4873eh; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k4EHv2lh"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2163dc5155fso56909105ad.0
-        for <imx@lists.linux.dev>; Sat, 18 Jan 2025 04:59:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vu4873eh"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-21628b3fe7dso61671765ad.3
+        for <imx@lists.linux.dev>; Sat, 18 Jan 2025 23:02:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737205198; x=1737809998; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wkHM0UCI1WBkqufXXmJcj9rLCEup3Pv0OZjQv5gTB/0=;
-        b=k4EHv2lhHKXUZB5Y4Yho/7OHffnsSK3yU7fanVbf6bYeGZFeDSTCF7Xlw5LjuyrG7E
-         jrsJOxe4TmgJCGTp95KGQmSJkFQRWNuKcTb5D56c6CUxTyN9pmzgTHPW1d4mAQ+hJpW1
-         gj2wxjsND5026aeVfhGb7zzVXIFvvR3UMsoW7U8dAy4a7NBljtjDgIz3Izm/rD2FQVN7
-         6M411YjY1rmK51PFRUosf1AZq76PZJsVyp5F0aggCYSHdKpeVL4S6cxnQMyiqvO/kfpb
-         Msikth/O9Rq8LOlCRiDSp3TK4FAeg6avcMCoCzqANuN673Ybcey6wT4WnQuJM5RdgiNo
-         HohQ==
+        d=linaro.org; s=google; t=1737270174; x=1737874974; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vMJ3GX6dkOYZdUXVc1wm3huqORVLg1qLuaKka3o+Bqk=;
+        b=vu4873ehM8ztNfhwa9AP7B6gMtD5oFes0YowtNz5QdiyeGKmQqXMGsFkBWLzurO/mQ
+         CpzaqE6l4Y51J+gSYZReKrzmlIJsWPAVCiiOp8pF4ySHWISlDRv3UNHfnPkEKRHLOtny
+         ztTZynJQXmW/2YwLUjc0Njx0JM9ZGkO9Wol6n6Z5UcW1ms8fU29UaN+bUoV3TL3Et7gT
+         XOPBDP0ntGr524uSJcmaUFYo5Dz/tGqN9tnJ+7/8tU1gbXLonBZbXiQz/3XbNM6Ez7cJ
+         aoula6+44s1I6oZZQIpHZfuDCeea8nb2M6864iSPGWD2iHXad3ylb4ceBVNYHWs4StWq
+         EKsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737205198; x=1737809998;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wkHM0UCI1WBkqufXXmJcj9rLCEup3Pv0OZjQv5gTB/0=;
-        b=v1HeR1tcjzumnk2Uzb7DXLJz9qdkVk7mdcmEF3VxJkPfZ4RtDkvHFhftcKgbt08m71
-         9c0MRGwuvRoIahIsAo1+NzeEDIRtTyiIQ/GnzXZPxpkcuWDzicdbs546m/JSsgQcU4eb
-         fFcuiZtvCHn6/+/lqfxde6s1IEY4jwkjHbAp1NB/jh7LdNNXFN7NxZIBDoCCQHu6yhF3
-         38+STd9s0LuQR7n7Zb8XOCN1tDwERnCXzoYtYeAnpzNUqoNSj7cTGELCiAFbyNd2rILn
-         qn2Mv3u+NnCGZtyU40MrHFFKkAROttbDQiiFpa41caBdUKQWKbFjtyAglHy32j01yV5f
-         /l7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXSh2w5U8AGERxcXfRcvkyL3QszC+x5lbnuwBi7K0KCYmqlCr1iZ9zYSwjha8CPBJYzZ1Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwKjBNOE9NhLk8qZrBp6C0xt+Kvq0kobJA1lzBs22PwtGII2Rhl
-	ZSsWHOeUwWMqHxQSrdU0pwFu6O5SF6i4FxJatHpbe23dRoLYHHbS
-X-Gm-Gg: ASbGnctDks0XlzMleiFeBN8qxXr21i5CtejyKf9F1+ctJfm/arcmzKiuhmSMXEgPzFj
-	dJedcLg2u0CxYBGzqhZtjs2B5voivlKAPUYw8lwtUwIkCYKO153h7cwumihD9qTCa9DSKZXNMdK
-	3yGWChOst05/92+32jvOdaFurOxhwNUFydj2jwDLz9IZWvG6mLoFs6wHIjssc7qHbskHiZVJMFF
-	a8HgkbAyCba3SNoVbUA+PZ2q8SrWJQHvY94LdruR3UCWaLG+YKtZhGY4w44HQfUTO0HrwFHyA==
-X-Google-Smtp-Source: AGHT+IFIGARkaMBlFuzV4VNvag2krQYyWbVBGYYyK7DMvxVgbCKL1dMuvkos15ubTl8+3FBFOuVLbg==
-X-Received: by 2002:a17:903:320e:b0:217:9172:2ce1 with SMTP id d9443c01a7336-21c35544407mr96895095ad.22.1737205197864;
-        Sat, 18 Jan 2025 04:59:57 -0800 (PST)
-Received: from HOME-PC ([223.185.135.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d43252bsm31067135ad.258.2025.01.18.04.59.56
+        d=1e100.net; s=20230601; t=1737270174; x=1737874974;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vMJ3GX6dkOYZdUXVc1wm3huqORVLg1qLuaKka3o+Bqk=;
+        b=gIEqdnWGXt2HSJTiISTUmZene3F/ogGHBHxDkjTlJ7qaVApSXG5sZfgL9cngySADOu
+         dfX05e7xaZylwI5tpzoZ6kyqzpmQglhizuspOaeyEpVcqRGDNlVaguqzCg06+yx3fxTy
+         SgbldPqXfTc0UTIMhOEA8o8P4f3/ODTVZGighKlu4G2QYT2EjHRaDNG3upz9YsDS5zqj
+         hDmqHJcEwt1ZW/ZRc2nLcIf4QB5CwGRJIRwJtf1rLCi46GwOefjH1qK5UgeIak46oDD3
+         Nutl1Ia6F8P7gM18TZZM3vprF7Ds3Fn7P25QLaAS43Pw3wldHjTUW+pmiMN2Da9OEuDp
+         6G5A==
+X-Forwarded-Encrypted: i=1; AJvYcCV0zhM3x5APADOMvL6Ex7A4N6KpMsahDeqEzzaXKnu+2LZLOoCtbQWksGENiEah+8kXfJE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxCeil8jA2fK4/WvUCtxd0LavgmbAofic8Rny20g4jV2PT/IB7a
+	MDRzFH74xUi/U7MCGwXgajdbnYc4ts+74tGSvO2huldjGldZ8vqGJrTs1qvUAg==
+X-Gm-Gg: ASbGncuPucOFpofGlrnVyN7Hh9imqmgG96SSco42TVWu4IPjdeED/k4pPddJAjrJJnp
+	b6pMPbAvWJ4OpQdOxXrem1aIrf3LckoCklWO9nAlQ3JWbQK0Ir2udFuH6QUabOT60chXlKC6EbD
+	Q+2ONalg8fw6wrfMOxfg6ylYyGkSsWRL1klojmsHXqRTvfnox2ODLWMN+de6a7bKCc/OLZCrtvs
+	e8NErh+qS1gM7FC0rxw3d+vYlJtuxfHkeUwFD0YtMs1AYgsc6qE57xM2uEgMtgo3hR/srFGe8eT
+	E5mHsA==
+X-Google-Smtp-Source: AGHT+IEeTs48whwEN7rNg39TN9hpGQKSWq0W/VdR6tyAMeUyYliEEBAyt6ics9gbcWZ/8208wLwfuw==
+X-Received: by 2002:a17:903:22cb:b0:21b:d105:26a5 with SMTP id d9443c01a7336-21c355becd3mr125597245ad.38.1737270173884;
+        Sat, 18 Jan 2025 23:02:53 -0800 (PST)
+Received: from thinkpad ([120.56.195.253])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3dd93esm40763455ad.164.2025.01.18.23.02.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jan 2025 04:59:57 -0800 (PST)
-From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-To: wei.fang@nxp.com,
-	shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Subject: [PATCH v2 net-next] net: fec: implement TSO descriptor cleanup
-Date: Sat, 18 Jan 2025 18:29:52 +0530
-Message-Id: <20250118125952.57616-1-dheeraj.linuxdev@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sat, 18 Jan 2025 23:02:53 -0800 (PST)
+Date: Sun, 19 Jan 2025 12:32:46 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
+	kw@linux.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, frank.li@nxp.com,
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	kernel@pengutronix.de, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 02/10] PCI: imx6: Add ref clock for i.MX95 PCIe
+Message-ID: <20250119070246.yfxogn4vv3jqfvzb@thinkpad>
+References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
+ <20241126075702.4099164-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241126075702.4099164-3-hongxing.zhu@nxp.com>
 
-Implement cleanup of descriptors in the TSO error path of
-fec_enet_txq_submit_tso(). The cleanup
+On Tue, Nov 26, 2024 at 03:56:54PM +0800, Richard Zhu wrote:
+> Add "ref" clock to enable reference clock. To avoid breaking DT
+> backwards compatibility, i.MX95 REF clock might be optional. Use
+> devm_clk_get_optional() to fetch i.MX95 PCIe optional clocks in driver.
+> 
+> If use external clock, ref clock should point to external reference.
+> 
+> If use internal clock, CREF_EN in LAST_TO_REG controls reference output,
+> which implement in drivers/clk/imx/clk-imx95-blk-ctl.c.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 385f6323e3ca..f7e928e0a018 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -103,6 +103,7 @@ struct imx_pcie_drvdata {
+>  	const char *gpr;
+>  	const char * const *clk_names;
+>  	const u32 clks_cnt;
+> +	const u32 clks_optional_cnt;
+>  	const u32 ltssm_off;
+>  	const u32 ltssm_mask;
+>  	const u32 mode_off[IMX_PCIE_MAX_INSTANCES];
+> @@ -1306,9 +1307,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	struct device_node *np;
+>  	struct resource *dbi_base;
+>  	struct device_node *node = dev->of_node;
+> -	int ret;
+> +	int i, ret, req_cnt;
+>  	u16 val;
+> -	int i;
+>  
+>  	imx_pcie = devm_kzalloc(dev, sizeof(*imx_pcie), GFP_KERNEL);
+>  	if (!imx_pcie)
+> @@ -1358,9 +1358,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  		imx_pcie->clks[i].id = imx_pcie->drvdata->clk_names[i];
+>  
+>  	/* Fetch clocks */
+> -	ret = devm_clk_bulk_get(dev, imx_pcie->drvdata->clks_cnt, imx_pcie->clks);
+> +	req_cnt = imx_pcie->drvdata->clks_cnt - imx_pcie->drvdata->clks_optional_cnt;
+> +	ret = devm_clk_bulk_get(dev, req_cnt, imx_pcie->clks);
+>  	if (ret)
+>  		return ret;
+> +	imx_pcie->clks[req_cnt].clk = devm_clk_get_optional(dev, "ref");
+> +	if (IS_ERR(imx_pcie->clks[req_cnt].clk))
+> +		return PTR_ERR(imx_pcie->clks[req_cnt].clk);
 
-- Unmaps DMA buffers for data descriptors skipping TSO header
-- Clears all buffer descriptors
-- Handles extended descriptors by clearing cbd_esc when enabled
+I think you should just switch to devm_clk_bulk_get_all() instead of getting the
+clks separately. As I told previously, the DT binding should ensure that correct
+clocks for the platforms are defined in DT and the driver has no business in
+validating it. Driver should trust the DT instead (unless there is a valid
+reason to not do so).
 
-Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
----
-Changelog:
+>  
+>  	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_PHYDRV)) {
+>  		imx_pcie->phy = devm_phy_get(dev, "pcie-phy");
+> @@ -1509,6 +1513,7 @@ static const char * const imx8mm_clks[] = {"pcie_bus", "pcie", "pcie_aux"};
+>  static const char * const imx8mq_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"};
+>  static const char * const imx6sx_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
+>  static const char * const imx8q_clks[] = {"mstr", "slv", "dbi"};
+> +static const char * const imx95_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux", "ref"};
 
-v2
-	- Add DMA unmapping for data descriptors
-	- Handle extended descriptor (bufdesc_ex) cleanup
-	- Move variable declarations to function scope
+And these static clock defines will go away too.
 
- drivers/net/ethernet/freescale/fec_main.c | 29 ++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+- Mani
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 68725506a095..acd381710f87 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -840,6 +840,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	int hdr_len, total_len, data_left;
- 	struct bufdesc *bdp = txq->bd.cur;
-+	struct bufdesc *tmp_bdp;
-+	struct bufdesc_ex *ebdp;
- 	struct tso_t tso;
- 	unsigned int index = 0;
- 	int ret;
-@@ -913,7 +915,32 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	return 0;
- 
- err_release:
--	/* TODO: Release all used data descriptors for TSO */
-+	/* Release all used data descriptors for TSO */
-+	tmp_bdp = txq->bd.cur;
-+
-+	while (tmp_bdp != bdp) {
-+		/* Unmap data buffers */
-+		if (tmp_bdp->cbd_bufaddr && tmp_bdp != txq->bd.cur)
-+			dma_unmap_single(&fep->pdev->dev,
-+					 tmp_bdp->cbd_bufaddr,
-+					 tmp_bdp->cbd_datlen,
-+					 DMA_TO_DEVICE);
-+
-+		/* Clear standard buffer descriptor fields */
-+		tmp_bdp->cbd_sc = 0;
-+		tmp_bdp->cbd_datlen = 0;
-+		tmp_bdp->cbd_bufaddr = 0;
-+
-+		/* Handle extended descriptor if enabled */
-+		if (fep->bufdesc_ex) {
-+			ebdp = (struct bufdesc_ex *)tmp_bdp;
-+			ebdp->cbd_esc = 0;
-+		}
-+
-+		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
-+	}
-+
-+	dev_kfree_skb_any(skb);
- 	return ret;
- }
- 
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
