@@ -1,157 +1,201 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A0278F5F
-	for <imx@lists.linux.dev>; Sun, 19 Jan 2025 07:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B0419DF6A
+	for <imx@lists.linux.dev>; Sun, 19 Jan 2025 11:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737270176; cv=none; b=bTA8Pknp9QJbuOsFMm1LGXqsk7ySixU6phNo7Fa0HrjN8qhmwE+BS85EY8fCXz8zPZpSNL3xq0KEK+GAcLTseDBx1u4Wbw9h5a/fDbARu669oSORuKqgRYjeF5W7puWfxTtTvM17sCut7CpeaPwHN7GG6O6paLVgBLEKfqZBxow=
+	t=1737286178; cv=none; b=HG09ORUctxAyruYa3qLeBfkaSgd7nnAigyE20jpzFUccZ0HL+e318Azo8pweHTXqwjjEF85KA3L90NQwVSMRSM7OBpUAQZejuIWjjgam6Nq51D0jKB6oFgZY7PcLq8VzEpJ1j4euCLCS+P3w+CsvXsWQrwhlh8KbxAXPT1SRHTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737270176; c=relaxed/simple;
-	bh=9Uyh20Bo/JCrzKWgQJoe3V6rjzekT4NllWMa1CNe8Dc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mx6ICw15kz+QfwzM3mnXEKa/ZCavY7CtXDKCoeUZjnUhn8YGDFg+tlmD5a7Rs/zrgKFod9jtPXuG73DHX4nhJUgT9usGaNH451tRl0JzExBls4khU5acWshjr27vPJCO/rjRoKBop3suga949Hu9CFOQlRQwBQxhXS9eokyJmwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vu4873eh; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1737286178; c=relaxed/simple;
+	bh=7RerRqZdue3bMzgOBsuTBAAh+prW4dbvWF7BYRiX6tQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fdExz+dbF6MVVB5WsLjWtsNVvBOZzsb9lpeKfc3jQdI0pu2fA1sPDw1vwd7BNcZGnFs1jH6V8i2WUaJ+T5wIkM+EA6K2qs3Vf2YQVBiVlP9Qa1Pv1skE4/Lhy/dXrsogTHC3RH7169+Lk2xWN867MypVxN/fFcMU+7WaSkLSrO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xMqoqpXw; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vu4873eh"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-21628b3fe7dso61671765ad.3
-        for <imx@lists.linux.dev>; Sat, 18 Jan 2025 23:02:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737270174; x=1737874974; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vMJ3GX6dkOYZdUXVc1wm3huqORVLg1qLuaKka3o+Bqk=;
-        b=vu4873ehM8ztNfhwa9AP7B6gMtD5oFes0YowtNz5QdiyeGKmQqXMGsFkBWLzurO/mQ
-         CpzaqE6l4Y51J+gSYZReKrzmlIJsWPAVCiiOp8pF4ySHWISlDRv3UNHfnPkEKRHLOtny
-         ztTZynJQXmW/2YwLUjc0Njx0JM9ZGkO9Wol6n6Z5UcW1ms8fU29UaN+bUoV3TL3Et7gT
-         XOPBDP0ntGr524uSJcmaUFYo5Dz/tGqN9tnJ+7/8tU1gbXLonBZbXiQz/3XbNM6Ez7cJ
-         aoula6+44s1I6oZZQIpHZfuDCeea8nb2M6864iSPGWD2iHXad3ylb4ceBVNYHWs4StWq
-         EKsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737270174; x=1737874974;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vMJ3GX6dkOYZdUXVc1wm3huqORVLg1qLuaKka3o+Bqk=;
-        b=gIEqdnWGXt2HSJTiISTUmZene3F/ogGHBHxDkjTlJ7qaVApSXG5sZfgL9cngySADOu
-         dfX05e7xaZylwI5tpzoZ6kyqzpmQglhizuspOaeyEpVcqRGDNlVaguqzCg06+yx3fxTy
-         SgbldPqXfTc0UTIMhOEA8o8P4f3/ODTVZGighKlu4G2QYT2EjHRaDNG3upz9YsDS5zqj
-         hDmqHJcEwt1ZW/ZRc2nLcIf4QB5CwGRJIRwJtf1rLCi46GwOefjH1qK5UgeIak46oDD3
-         Nutl1Ia6F8P7gM18TZZM3vprF7Ds3Fn7P25QLaAS43Pw3wldHjTUW+pmiMN2Da9OEuDp
-         6G5A==
-X-Forwarded-Encrypted: i=1; AJvYcCV0zhM3x5APADOMvL6Ex7A4N6KpMsahDeqEzzaXKnu+2LZLOoCtbQWksGENiEah+8kXfJE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCeil8jA2fK4/WvUCtxd0LavgmbAofic8Rny20g4jV2PT/IB7a
-	MDRzFH74xUi/U7MCGwXgajdbnYc4ts+74tGSvO2huldjGldZ8vqGJrTs1qvUAg==
-X-Gm-Gg: ASbGncuPucOFpofGlrnVyN7Hh9imqmgG96SSco42TVWu4IPjdeED/k4pPddJAjrJJnp
-	b6pMPbAvWJ4OpQdOxXrem1aIrf3LckoCklWO9nAlQ3JWbQK0Ir2udFuH6QUabOT60chXlKC6EbD
-	Q+2ONalg8fw6wrfMOxfg6ylYyGkSsWRL1klojmsHXqRTvfnox2ODLWMN+de6a7bKCc/OLZCrtvs
-	e8NErh+qS1gM7FC0rxw3d+vYlJtuxfHkeUwFD0YtMs1AYgsc6qE57xM2uEgMtgo3hR/srFGe8eT
-	E5mHsA==
-X-Google-Smtp-Source: AGHT+IEeTs48whwEN7rNg39TN9hpGQKSWq0W/VdR6tyAMeUyYliEEBAyt6ics9gbcWZ/8208wLwfuw==
-X-Received: by 2002:a17:903:22cb:b0:21b:d105:26a5 with SMTP id d9443c01a7336-21c355becd3mr125597245ad.38.1737270173884;
-        Sat, 18 Jan 2025 23:02:53 -0800 (PST)
-Received: from thinkpad ([120.56.195.253])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3dd93esm40763455ad.164.2025.01.18.23.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jan 2025 23:02:53 -0800 (PST)
-Date: Sun, 19 Jan 2025 12:32:46 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
-	kw@linux.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, frank.li@nxp.com,
-	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
-	kernel@pengutronix.de, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 02/10] PCI: imx6: Add ref clock for i.MX95 PCIe
-Message-ID: <20250119070246.yfxogn4vv3jqfvzb@thinkpad>
-References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
- <20241126075702.4099164-3-hongxing.zhu@nxp.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xMqoqpXw"
+Message-ID: <b97fcd2f-516a-4172-aef3-631418564cfa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1737286164;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uuK0LkbEgQqPgK0yPnR5LzoggyynezSlKlKR/CKdeTY=;
+	b=xMqoqpXwM+10B3buteMukau9UQmlGuAXyj0ur9aXSA7WbWzwRnMniPiQaxTWp6qqTY2fRw
+	kdeVaGsloeyKfqel8VbZAIHcFFD77zLC4uiMyod2/pw8443jMEAy0AngMSBb8Lp3KLn9lX
+	baphMPg1zk5Qs828ODB8iVWTCpuol5w=
+Date: Sun, 19 Jan 2025 19:29:14 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH v2 25/25] drm/xlnx: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Andy Yan <andyshrk@163.com>, Daniel Stone <daniel@fooishbar.org>
+References: <f3ba05c7-6e49-4641-a3f9-ba418ebdb7c3@ideasonboard.com>
+ <c6735280-7c32-4319-8ca9-a7305d8117c3@suse.de>
+ <d67adb03-5cd0-4ac9-af58-cf4446dacee3@ideasonboard.com>
+ <0ea6be58-0e04-4172-87cd-064a3e4a43bc@suse.de>
+ <f35cb350-6be9-48ca-ad7e-e9dd418281d5@ideasonboard.com>
+ <4af0b6a7-c16a-4187-bbf5-365a9c86de21@suse.de>
+ <e327ad84-b5c9-4480-b873-dc3aca605538@ideasonboard.com>
+ <a2bbeb47-2569-4ee0-9265-92bab139bdc6@suse.de>
+ <f3833771-fcd7-45dc-9019-1525fef34429@ideasonboard.com>
+ <CAMuHMdXxYa+Na3XxpLTy=-eUL_zQ9kAiUKYu-E04u3KWApusSA@mail.gmail.com>
+ <xz5ncq67bgmdase2jg3cfvyaxpiwhol2eqpfzow6dqpauvslo5@2w3rw27lhnxo>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+In-Reply-To: <xz5ncq67bgmdase2jg3cfvyaxpiwhol2eqpfzow6dqpauvslo5@2w3rw27lhnxo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241126075702.4099164-3-hongxing.zhu@nxp.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Nov 26, 2024 at 03:56:54PM +0800, Richard Zhu wrote:
-> Add "ref" clock to enable reference clock. To avoid breaking DT
-> backwards compatibility, i.MX95 REF clock might be optional. Use
-> devm_clk_get_optional() to fetch i.MX95 PCIe optional clocks in driver.
-> 
-> If use external clock, ref clock should point to external reference.
-> 
-> If use internal clock, CREF_EN in LAST_TO_REG controls reference output,
-> which implement in drivers/clk/imx/clk-imx95-blk-ctl.c.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 385f6323e3ca..f7e928e0a018 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -103,6 +103,7 @@ struct imx_pcie_drvdata {
->  	const char *gpr;
->  	const char * const *clk_names;
->  	const u32 clks_cnt;
-> +	const u32 clks_optional_cnt;
->  	const u32 ltssm_off;
->  	const u32 ltssm_mask;
->  	const u32 mode_off[IMX_PCIE_MAX_INSTANCES];
-> @@ -1306,9 +1307,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	struct device_node *np;
->  	struct resource *dbi_base;
->  	struct device_node *node = dev->of_node;
-> -	int ret;
-> +	int i, ret, req_cnt;
->  	u16 val;
-> -	int i;
->  
->  	imx_pcie = devm_kzalloc(dev, sizeof(*imx_pcie), GFP_KERNEL);
->  	if (!imx_pcie)
-> @@ -1358,9 +1358,13 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		imx_pcie->clks[i].id = imx_pcie->drvdata->clk_names[i];
->  
->  	/* Fetch clocks */
-> -	ret = devm_clk_bulk_get(dev, imx_pcie->drvdata->clks_cnt, imx_pcie->clks);
-> +	req_cnt = imx_pcie->drvdata->clks_cnt - imx_pcie->drvdata->clks_optional_cnt;
-> +	ret = devm_clk_bulk_get(dev, req_cnt, imx_pcie->clks);
->  	if (ret)
->  		return ret;
-> +	imx_pcie->clks[req_cnt].clk = devm_clk_get_optional(dev, "ref");
-> +	if (IS_ERR(imx_pcie->clks[req_cnt].clk))
-> +		return PTR_ERR(imx_pcie->clks[req_cnt].clk);
+Hi,
 
-I think you should just switch to devm_clk_bulk_get_all() instead of getting the
-clks separately. As I told previously, the DT binding should ensure that correct
-clocks for the platforms are defined in DT and the driver has no business in
-validating it. Driver should trust the DT instead (unless there is a valid
-reason to not do so).
+On 2025/1/16 18:35, Dmitry Baryshkov wrote:
+> On Thu, Jan 16, 2025 at 11:17:50AM +0100, Geert Uytterhoeven wrote:
+>> On Thu, Jan 16, 2025 at 11:03 AM Tomi Valkeinen
+>> <tomi.valkeinen@ideasonboard.com> wrote:
+>>> On 16/01/2025 10:09, Thomas Zimmermann wrote:
+>>>> Am 15.01.25 um 15:20 schrieb Tomi Valkeinen:
+>>>> [...]
+>>>>> My point is that we have the current UAPI, and we have userspace using
+>>>>> it, but we don't have clear rules what the ioctl does with specific
+>>>>> parameters, and we don't document how it has to be used.
+>>>>>
+>>>>> Perhaps the situation is bad, and all we can really say is that
+>>>>> CREATE_DUMB only works for use with simple RGB formats, and the
+>>>>> behavior for all other formats is platform specific. But I think even
+>>>>> that would be valuable in the UAPI docs.
+>>>> To be honest, I would not want to specify behavior for anything but the
+>>>> linear RGB formats. If anything, I'd take Daniel's reply mail for
+>>>> documentation as-is. Anyone stretching the UAPI beyond RGB is on their own.
+>>>>
+>>>>> Thinking about this, I wonder if this change is good for omapdrm or
+>>>>> xilinx (probably other platforms too that support non-simple non-RGB
+>>>>> formats via dumb buffers): without this patch, in both drivers, the
+>>>>> pitch calculations just take the bpp as bit-per-pixels, align it up,
+>>>>> and that's it.
+>>>>>
+>>>>> With this patch we end up using drm_driver_color_mode_format(), and
+>>>>> aligning buffers according to RGB formats figured out via heuristics.
+>>>>> It does happen to work, for the formats I tested, but it sounds like
+>>>>> something that might easily not work, as it's doing adjustments based
+>>>>> on wrong format.
+>>>>>
+>>>>> Should we have another version of drm_mode_size_dumb() which just
+>>>>> calculates using the bpp, without the drm_driver_color_mode_format()
+>>>>> path? Or does the drm_driver_color_mode_format() path provide some
+>>>>> value for the drivers that do not currently do anything similar?
+>>>> With the RGB-only rule, using drm_driver_color_mode_format() makes
+>>>> sense. It aligns dumb buffers and video=, provides error checking, and
+>>>> overall harmonizes code. The fallback is only required because of the
+>>>> existing odd cases that already bend the UAPI's rules.
+>>> I have to disagree here.
+>>>
+>>> On the platforms I have been using (omap, tidss, xilinx, rcar) the dumb
+>>> buffers are the only buffers you can get from the DRM driver. The dumb
+>>> buffers have been used to allocate linear and multiplanar YUV buffers
+>>> for a very long time on those platforms.
+>>>
+>>> I tried to look around, but I did not find any mentions that CREATE_DUMB
+>>> should only be used for RGB buffers. Is anyone outside the core
+>>> developers even aware of it?
+>>>
+>>> If we don't use dumb buffers there, where do we get the buffers? Maybe
+>>> from a v4l2 device or from a gpu device, but often you don't have those.
+>>> DMA_HEAP is there, of course.
+>> Why can't there be a variant that takes a proper fourcc format instead of
+>> an imprecise bpp value?
+> Backwards compatibility. We can add an IOCTL for YUV / etc.
 
->  
->  	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_PHYDRV)) {
->  		imx_pcie->phy = devm_phy_get(dev, "pcie-phy");
-> @@ -1509,6 +1513,7 @@ static const char * const imx8mm_clks[] = {"pcie_bus", "pcie", "pcie_aux"};
->  static const char * const imx8mq_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux"};
->  static const char * const imx6sx_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
->  static const char * const imx8q_clks[] = {"mstr", "slv", "dbi"};
-> +static const char * const imx95_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_aux", "ref"};
+[...]
 
-And these static clock defines will go away too.
+> But userspace must be able to continue allocating YUV buffers through
+> CREATE_DUMB.
 
-- Mani
+I think, allocating YUV buffers through CREATE_DUMB interface is just
+an *abuse* and *misuse* of this API for now.
+
+Take the NV12 format as an example, NV12 is YUV420 planar format, have
+two planar: the Y-planar and the UV-planar. The Y-planar appear first
+in memory as an array of unsigned char values. The Y-planar is followed
+immediately by the UV-planar, which is also an array of unsigned char
+values that contains packed U (Cb) and V (Cr) samples.
+
+But the 'drm_mode_create_dumb' structure is only intend to provide
+descriptions for *one* planar.
+
+struct drm_mode_create_dumb {
+     __u32 height;
+     __u32 width;
+     __u32 bpp;
+     __u32 flags;
+     __u32 handle;
+     __u32 pitch;
+     __u64 size;
+};
+
+An width x height NV12 image takes up width*height*(1 + 1/4 + 1/4) bytes.
+
+So we can allocate an *equivalent* sized buffer to store the NV12 raw data.
+
+Either 'width * (height * 3/2)' where each pixel take up 8 bits,
+or just 'with * height' where each pixels take up 12 bits.
+
+However, all those math are just equivalents description to the original
+NV12 format, neither are concrete correct physical description.
+
+Therefore, allocating YUV buffers through the dumb interface is just an
+abuse for that API. We certainly can abuse more by allocating two dumb
+buffers, one for Y-planer, another one for the UV-planer. But again,dumb buffers can be (and must be) used for *scanout* directly. What will yield if I commit the YUV buffers you allocated to the CRTC directly?
+
+In other words, You can allocated buffers via the dumb APIs to store anything,
+but the key point is that how can we interpret it.
+
+As Daniel puts it, the semantics of that API is well defined for simple RGB
+formats. Usages on non linear RGB dumb buffers are considered as undefined
+behavior.
+
+Peoples can still abusing it at the user-space though, but the kernel don't
+have to guarantee that the user-space *must* to be able to continue doing
+balabala..., That's it.
+
+
+Best regards,
+Sui
+
+>> Gr{oetje,eeting}s,
+>>
+>>                          Geert
+>>
+>> -- 
+>> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>>
+>> In personal conversations with technical people, I call myself a hacker. But
+>> when I'm talking to journalists I just say "programmer" or something like that.
+>>                                  -- Linus Torvalds
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Best regards,
+Sui
+
