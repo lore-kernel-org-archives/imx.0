@@ -1,216 +1,229 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7B463CB;
-	Sun, 19 Jan 2025 20:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737317693; cv=none; b=ma1OMiPABaOMbW9ff61W4uCkEuOt39jkx3DYEJkHC2uDhNoD719NYD/u4e/deEBCbO5k/phyzP7AX1RwZ07hSBt0Yx7cXo6Tx9qVEyK8dyNPMLBukhOiVaDApf2hj0gFuiwvWy+sQ4uGVvAyUfYjEjco3hd0zeM8Dc1QKmX85II=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737317693; c=relaxed/simple;
-	bh=Ur5TiuDT0KV1E3ES7k+/3Zr4hEwwAAPuNmpmijHxcE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NVjmHumvIgxD7H9NEqBb5B4HzCW2alfRrByajWOEyiEimxc6sOu9lxXnezJLj30GVutjRtoNhb7HGHTodDKev5g7ynLdrFq3a850HlsL9z+xFPRR1fVvb/Vg49T4F6ZmgImSfX6SdDmZdtbStCU4TqWF6Jo9cg40obvFj73kywM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=SS+99s7t; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9587E9
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 01:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737337641; cv=fail; b=U1Sh1gpm3Q0naPqBQz+zqXENyLiXLlurd0BaNKEGCQB4vhkDdFiFsmQOyNKkxB9xIEjovAAwP29bIPtr9dULsMDOisd/2AGi/b5e1leRFfgvgSh1thTbjw0IkYg/m+g3boUTU/SRRgwoamdrC02hRgr3LI7vrezzUFOaQNC4gGM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737337641; c=relaxed/simple;
+	bh=/wJtgy2nFxVzYdnerFMCRsoTqT5SbWB63w7yfTo9EQY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iGAh28zIblCB3t5Tq4AHRLDOSdiiSKYQOUjOtCok9wgcKGlSi08Y9SpWFTGSPza6xVZv7WekCd6988+o3uTVy/nPdWBv87GeYrAIVd6vZP+1ZpF44JfmRqGqkl/faGABZDW/Oqn4AQtF3qG/yTOQCwyNUJOhWtvG+o5hAzI7orw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RdgnSrNF; arc=fail smtp.client-ip=40.107.22.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="SS+99s7t"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 85456928;
-	Sun, 19 Jan 2025 21:13:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1737317628;
-	bh=Ur5TiuDT0KV1E3ES7k+/3Zr4hEwwAAPuNmpmijHxcE0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SS+99s7tpuo+gPcxMER5jdDaof5TicjCpzG4c3b8L9QjuYGIwEIGNxOpvhm9TbJ1K
-	 WDQ8UU3Os41Ewzy+4kV7y7CeQXv55XGw/jZbTqWOQI9B6aQfo6jbIU+WwUmbNEjidS
-	 k9ILi43LKurT0oL3MNbHe4TD8sUVaA21oTrP0eCY=
-Date: Sun, 19 Jan 2025 22:14:43 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sui Jingfeng <sui.jingfeng@linux.dev>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
-	Andy Yan <andyshrk@163.com>, Daniel Stone <daniel@fooishbar.org>
-Subject: Re: [PATCH v2 25/25] drm/xlnx: Compute dumb-buffer sizes with
- drm_mode_size_dumb()
-Message-ID: <20250119201443.GB2467@pendragon.ideasonboard.com>
-References: <e327ad84-b5c9-4480-b873-dc3aca605538@ideasonboard.com>
- <a2bbeb47-2569-4ee0-9265-92bab139bdc6@suse.de>
- <f3833771-fcd7-45dc-9019-1525fef34429@ideasonboard.com>
- <CAMuHMdXxYa+Na3XxpLTy=-eUL_zQ9kAiUKYu-E04u3KWApusSA@mail.gmail.com>
- <xz5ncq67bgmdase2jg3cfvyaxpiwhol2eqpfzow6dqpauvslo5@2w3rw27lhnxo>
- <b97fcd2f-516a-4172-aef3-631418564cfa@linux.dev>
- <ef52dab0-058f-408f-a298-c4b2453a3d2f@ideasonboard.com>
- <f4562dbf-b132-4cfd-8f7e-43cd69f2673f@linux.dev>
- <cf34be39-ce92-4ea5-b548-03008c163d31@ideasonboard.com>
- <8234927e-0d12-4655-813d-8ec94179b737@linux.dev>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RdgnSrNF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LNc2NBvODKPsUIF3nDrZ07SGb8pf3jUo5y0jPcZo8l5hNTQzZDoVt1HRqQJO8QEaLanQigrzvm3EbJz2QVmek81CvfMQLuuvjsYgwtGEb35KHryc/MArNSSixSP3MbRDYdVqRYs/U0mJ7X5bQwJfgr2qn/wRWRx8IsZuSnZepYI9acsuGrjgftjdWwKqRGLwbitgjnJFKt1fKZID8Hjt8Vq4X9pm6iiuO5K5D96ijwcUo6VS9XvWfk+LcPrHdCtWDGQhZiqO6UjzQOyNf3a+M7Xsp8dqdoaZkqoLxzBkgQXuteya7cGHXgwZctdLgcKpcxo2O3+C2NXY9Giw4aO8zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BbA0TkEtyJFPHEtxENloM30FBhgt2w2qkYa0oEhh2xs=;
+ b=OGw8E4ItK/CjtHHdPjTZwzQ7ppBDq/fNdw1hsZrE5uQ2HVHTUsHe9cgyw7Pd/DxUb5k6R+Mqm1EDQM3hApkawr6ON2KBYQJHcsdh/CnaSF3mu2JGpFe6fje7TZWb9loDcW3ftaZpY5rTBgq1UqEZnx8+Fkg1a0RGwAQlSPgZXV3/gGQw+M84vXdd3gIjjkQRZwY1hgrvgqNKTnENbzceoYsU2dSxuSM0CQbVxUfvVFuG6a5VL29UK2knjB0wMu1P5w2j4Phf/7tWxLxBND48fGm0qSFgeyyYEAID+XLbIM/EH6/bwVALJXROlwt7Oqij59Qultdp/j93tQ3tboCqNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BbA0TkEtyJFPHEtxENloM30FBhgt2w2qkYa0oEhh2xs=;
+ b=RdgnSrNFpUSpEZOTer6NLI3YPAvNuJN1Mc+ULLMOyppPt3lN0sTJl+2grVavZp4kzXpyQUb763k8OMlIDVknAOOPcw1zHfGpr0yIPQa2tl1Z8S0TUlfasgrFOZTxRqexAx5LMWs/tjwb9KHDCy5y1k8viJHFEPtWbqMAxfZ/OeTQhd7qGw7Xt5jIB803RMtY9Ka7VXR75AvGXYoi5NuNSzCvKZ9ntsGEPiaWf5AOelaZJALR4jq3i3qAzeHKbUf5xPaoyNPq1hLltlAx/+EZ0mqnvka5CDyEnyBmDW57hzqSQa+SJiLn4udAk/1mT+zTKlF9OUJHwMQUN3Z/R8QPCA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GV1PR04MB9150.eurprd04.prod.outlook.com (2603:10a6:150:25::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
+ 2025 01:47:16 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
+ 01:47:15 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 net-next] net: fec: implement TSO descriptor cleanup
+Thread-Topic: [PATCH v2 net-next] net: fec: implement TSO descriptor cleanup
+Thread-Index: AQHbaajjrdR5M5nnZUiB1SJW4i6ta7Me5GpQ
+Date: Mon, 20 Jan 2025 01:47:15 +0000
+Message-ID:
+ <PAXPR04MB8510E6F1318202CD7F0A833288E72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250118125952.57616-1-dheeraj.linuxdev@gmail.com>
+In-Reply-To: <20250118125952.57616-1-dheeraj.linuxdev@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV1PR04MB9150:EE_
+x-ms-office365-filtering-correlation-id: c83cdeb6-5e25-44fc-dfae-08dd38f45de6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?N48JkSckmM74U/KjAdgRYf5mBvdCBfnF4suaLvZiHUpTTkyBSlVOUIwyHeJk?=
+ =?us-ascii?Q?1VS00wAw3NbHTlCDHClwxU3b/MXlfIk6IbzVxzHcRB/SLO/Dt1sOsi6miaUB?=
+ =?us-ascii?Q?G7Bgbjt/gUZpZzhrf80HXjHaoVRT0Dj0/48QpZNAMjn4sY9NQxZTIQS0E2MM?=
+ =?us-ascii?Q?79cEVnIdYMuagxcGTK7m2nSZD8mkfVROkISl3O3gdK/0BCogEL30KWR1bxmI?=
+ =?us-ascii?Q?CtdXSbjpS0i+xJxiHspHhVkQQ1INnQBbienfs39dnY/D+jZA9o3b/J0GIcJm?=
+ =?us-ascii?Q?SZWQSPdUUj1PwV9dcwS4a6mqm23F54Rtdv/75TyFRsRLJtj0lO/nhbZQ5iGY?=
+ =?us-ascii?Q?zH36ZduuaG3iKnzCEee2bPMtS1oF0NqnShzUTDHtYVzYLu727FzL1fjbiwQk?=
+ =?us-ascii?Q?SVkNKTSEAbI9bX6puOdB1dHGGQr2ufQPaNxQJSjoNSqiHcft6rwlnBZHbVVq?=
+ =?us-ascii?Q?PmEzND0GsC+BzJ3SX3CktP5pW6K6wAx1+8+WPO36ISEwqQIQz/z2PaW0ZrVJ?=
+ =?us-ascii?Q?Z9v+wn1+86GSCLcc4WtZGaoCoBq72UAZrlZy1rU9x/5mbyHEH2le2+zHfYug?=
+ =?us-ascii?Q?h9NvTYtLg139HTFvGx5oQRWIJzG2N2O2XIa0Zn7DxQaChkGbeqSofUz42RDc?=
+ =?us-ascii?Q?AtEYFOL2rHNARZHyVvn6pnGjjHVC/SeGyguRzLgMeO5E0bCgKVnMPmCY42P5?=
+ =?us-ascii?Q?MAirs8w1ZBWPMt6lWS6ZedNTkGOVQbGnMtcZI6yg1GNgYiIZDBv02GvmAJD8?=
+ =?us-ascii?Q?pQqG8EnPA3GnWGvgNVPjlmvw9rXPRn4vSztT2qeoi4DnaL1HtCI0YEGtT50n?=
+ =?us-ascii?Q?bPnzwfqwaP90w4KZLtAi7dUe+2gj6LsSJwsMlKRCjEjkABtxzMRS3bwXVHR6?=
+ =?us-ascii?Q?Wz3YZJd0iUl2Wilhu4hnnaAfNC3mEwmQhSQFCzjIJSsarifSASUKH6rDagT6?=
+ =?us-ascii?Q?BqQhg3yAC91OfxxzFy/45OawdLykj38FCW5CEbnCWJQMqwaxDQLD5tvZ8eda?=
+ =?us-ascii?Q?13uT6zKA03eZP9ffxngdo9uV4xfxOJ45mYAxj3jgVp13PECR54QWFKL/7yg5?=
+ =?us-ascii?Q?yQs5SeHO6IvX+oJmN15HKvwY3YAIiV9G0ydoJ6kzes5UbPaJOxdx3q7oE07n?=
+ =?us-ascii?Q?fWKzdz2hL8gtI0ryk3TWv8EE0ReWUv+nwtEC6xZrKv/lCGs6bvcXztfh5IPA?=
+ =?us-ascii?Q?SYTpZQ2rQsWkDhxrSVstnvHbCC+/6xRRY47EuM9BYx9vkIXv7vkDo6potEiZ?=
+ =?us-ascii?Q?wk9kKjglUaLYIezhv0wj1dGd2JnRyVWkuCvOcjirWwLO/wkbKeiNoM1D0H6X?=
+ =?us-ascii?Q?JRrerF9LRqD4Ph5P5+3lQvA0+Q7+i+UbNDpy6UbwfEOjd2h5LU2XEIGyrY06?=
+ =?us-ascii?Q?nhtM20UpHYS4pqqG8sVLiZpfLQiKWlqA50Fv91qqryVIn1gTb/+dquzhzOIB?=
+ =?us-ascii?Q?Px5kBBBWdyk=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XkmcLcsc7FHdKpwkMNpqe/9AHbsq0Xm4zyUJCbMb9UXLwW+rZg82MqZB/NWF?=
+ =?us-ascii?Q?Ib7Vzh77DEw0cfVBRHy/z8e3xs6To7rEDrVddA/ijZKoKW8bkdr0oyu3YufW?=
+ =?us-ascii?Q?LPEuBABVnDzMjEAvL9GtC80rmaanFCuZP90Ezdh4JyyMKO0c/5e3eWjvEfaq?=
+ =?us-ascii?Q?6YMfsgEV+Gokd38zN1KGZYXYG85/2IO8xx0sot3x9wFVbJszSLKv9SOE0+kv?=
+ =?us-ascii?Q?wytT3ue1kBZUxQ9nCEv62IdEtsZNAvXcXJfOcL/lGMEMF5kUEqC8JVSSHqpA?=
+ =?us-ascii?Q?D8g1d7nNYnkQzH+++sv8UZ1IG/klwMupa2e3vh+GgUPaqpI8hy/8d41T6xgb?=
+ =?us-ascii?Q?SCxUUVsayNhjsrc9WjzOEWTqmV6Rqe/pnobwsWln2AFDlxomSR2iJ6Dl+LVo?=
+ =?us-ascii?Q?7htixxG3GdpYT1gWYt0Mz5YANfAq6poH5DDXTxZ+jJDqNx0v3v8a9Tk/TF4a?=
+ =?us-ascii?Q?EwnZNiWLFZv8g00B1+Arhw8waxThyfGm1icDkzlRyX1b4L+v1VztYdB0G2BH?=
+ =?us-ascii?Q?/yziI34AhnTJ2uR6Os62CgFsVx8yW4Lxwys4E2S1BLkaNmaXTUVVIttyb22B?=
+ =?us-ascii?Q?F61P03+okbcOhoWUCPXVjqTKzcilfYNbws8IjU91qxBAvtH9WiCMBidDiuRL?=
+ =?us-ascii?Q?Bq1h5U0xzskA/pxlP6CpNlWW0VnLMvcytKDTga8PLt7oAVS4n4uORWj8YhwD?=
+ =?us-ascii?Q?jzVJ8uRwp9K5Gp/TJPByrYO0wycs+tAe9ouiaLwIIoEmyiGFFHnUPyntcM+s?=
+ =?us-ascii?Q?wpfEcRC62ygNBm5katx7o2pFaGNizQghqCGK7OHFxmZgXyUyyJ404Qa+ERqh?=
+ =?us-ascii?Q?GsS+gVwN4t6bzqTjTDR44tDVYtQ8RTq+G42N0SUZuoXtnQ4PKVgiWOXu+QZl?=
+ =?us-ascii?Q?HIa67fUSRkS0mUgfGikQVIPqTJJ+5vFhrqelyTSSDWosagojgx0BNsqPNJiA?=
+ =?us-ascii?Q?vouzRDC71+l7WPd5+kJDVTFXrj2NVXygrWOxbxMLOcc+yafNQV9qmaIsgl2H?=
+ =?us-ascii?Q?kef/J6comqRBDcPX0/W6NL/yrHep9w7OMo6FgmmGNJWNAOKazWaYGozkx8oc?=
+ =?us-ascii?Q?po981R/yGuYNtLWqKwRDFWZkacDY0HiGZtT7SPq2Q380ERtFf6F4yE35fTp4?=
+ =?us-ascii?Q?7hBchJ7kKC4/IjAkm1hnFLtKmDmjthkP/eKws6xVh6TtzZzCTYR8kThvofR2?=
+ =?us-ascii?Q?39pu8D09LNNFVWdZ87geSiB5balUt0of9bILA88T9+uZVMIAX5YAt5HZlF00?=
+ =?us-ascii?Q?Ih3+bwJC/khAF2r9XITLI4Ro6R2lmtTdu0p/SwTL16cZaErFUr/RnSiqV2Lz?=
+ =?us-ascii?Q?A5+7wvKdxuHtB6oU7HvN5EJUyMQ7qPRbDyXL3v/+BAJ5trUAiGdKsRelFTE1?=
+ =?us-ascii?Q?tCDM4hFdIBkLh1fV2GFvXaLsgifaiYWAOhqSn6Z/SLbkWG0YxnCIRhXQDC+6?=
+ =?us-ascii?Q?7TTNbWP7/xKGm2QKkO2oXAM2bw71Or9xN23CvBojVatUWb4wSyldzlbOUioI?=
+ =?us-ascii?Q?au86moAPUxJyjKK/nGQmYxDW5wN75spLLk6PZDgB5rUtGb6aguQOmY3LKPDU?=
+ =?us-ascii?Q?BR642hOZpBE5CA/+a6c=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8234927e-0d12-4655-813d-8ec94179b737@linux.dev>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c83cdeb6-5e25-44fc-dfae-08dd38f45de6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 01:47:15.4818
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: e8TAhiwKRvv5/aE8Gg+Vqb5qUIQVETGNzqXToTTtCHBcObqRcPqQn4Tjz3jtKeAnV/N/mJRITCqu9j5jhuF09A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9150
 
-On Mon, Jan 20, 2025 at 12:26:30AM +0800, Sui Jingfeng wrote:
-> On 2025/1/19 23:22, Tomi Valkeinen wrote:
-> > On 19/01/2025 16:59, Sui Jingfeng wrote:
-> >
-> >>>>> But userspace must be able to continue allocating YUV buffers through
-> >>>>> CREATE_DUMB.
-> >>>>
-> >>>> I think, allocating YUV buffers through CREATE_DUMB interface is just
-> >>>> an *abuse* and *misuse* of this API for now.
-> >>>>
-> >>>> Take the NV12 format as an example, NV12 is YUV420 planar format, have
-> >>>> two planar: the Y-planar and the UV-planar. The Y-planar appear first
-> >>>> in memory as an array of unsigned char values. The Y-planar is followed
-> >>>> immediately by the UV-planar, which is also an array of unsigned char
-> >>>> values that contains packed U (Cb) and V (Cr) samples.
-> >>>>
-> >>>> But the 'drm_mode_create_dumb' structure is only intend to provide
-> >>>> descriptions for *one* planar.
-> >>>>
-> >>>> struct drm_mode_create_dumb {
-> >>>>      __u32 height;
-> >>>>      __u32 width;
-> >>>>      __u32 bpp;
-> >>>>      __u32 flags;
-> >>>>      __u32 handle;
-> >>>>      __u32 pitch;
-> >>>>      __u64 size;
-> >>>> };
-> >>>>
-> >>>> An width x height NV12 image takes up width*height*(1 + 1/4 + 1/4) 
-> >>>> bytes.
-> >>>>
-> >>>> So we can allocate an *equivalent* sized buffer to store the NV12 
-> >>>> raw data.
-> >>>>
-> >>>> Either 'width * (height * 3/2)' where each pixel take up 8 bits,
-> >>>> or just 'with * height' where each pixels take up 12 bits.
-> >>>>
-> >>>> However, all those math are just equivalents description to the original
-> >>>> NV12 format, neither are concrete correct physical description.
-> >>>
-> >>> I don't see the problem. Allocating dumb buffers, if we don't have 
-> >>> any heuristics related to RGB behind it, is essentially just 
-> >>> allocating a specific amount of memory, defined by width, height and 
-> >>> bitsperpixel.
-> >>>
-> >> I think, the problem will be that the 'width', 'height' and 'bpp'
-> >> are originally used to describe one plane. Those three parameters
-> >> has perfectly defined physical semantics.
-> >>
-> >> But with multi planar formats, take NV12 image as an example,
-> >> for a 2×2 square of pixels, there are 4 Y samples but only 1 U
-> >> sample and 1 V sample. This format requires 4x8+1x8+1x8=48 bits
-> >> to store the 2x2 square.
-> >>
-> >> So its depth is 12 bits per pixel (48 / (2 * 2)).
-> >>
-> >> so my problem is that the mentioned 12bpp in this example only
-> >> make sense in mathematics, it doesn't has a good physical
-> >> interpret. Do you agree with me on this technique point?
-> >>
-> >>> If I want to create an NV12 framebuffer, I allocate two dumb 
-> >>> buffers, one for Y and one for UV planes, and size them accordingly. 
-> >>> And then create the DRM framebuffer with those.
-> >>>
-> >> Then how you fill the value of the 'width', 'height' and 'bpp' of 
-> >> each dumb buffers?
-> >
-> > For 640x480-NV12:
-> > plane 0: width = 640, height = 480, bpp = 8
-> > plane 1: width = 640 / 2, height = 480 / 2, bpp = 16
->
-> But i think this should be hardware dependent. The hardware I'm using
-> load NV12  raw data as a whole. I only need to feed gpuva of the backing
-> memory to the hardware register once.
-> 
-> Not familiar with your hardware, so I can't talk more on this software
-> design. Perhaps someone know more could have a comment on this.
+> Implement cleanup of descriptors in the TSO error path of
+> fec_enet_txq_submit_tso(). The cleanup
+>=20
+> - Unmaps DMA buffers for data descriptors skipping TSO header
+> - Clears all buffer descriptors
+> - Handles extended descriptors by clearing cbd_esc when enabled
+>=20
+> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+> ---
+> Changelog:
+>=20
+> v2
+> 	- Add DMA unmapping for data descriptors
+> 	- Handle extended descriptor (bufdesc_ex) cleanup
+> 	- Move variable declarations to function scope
+>=20
+>  drivers/net/ethernet/freescale/fec_main.c | 29 ++++++++++++++++++++++-
+>  1 file changed, 28 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index 68725506a095..acd381710f87 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -840,6 +840,8 @@ static int fec_enet_txq_submit_tso(struct
+> fec_enet_priv_tx_q *txq,
+>  	struct fec_enet_private *fep =3D netdev_priv(ndev);
+>  	int hdr_len, total_len, data_left;
+>  	struct bufdesc *bdp =3D txq->bd.cur;
+> +	struct bufdesc *tmp_bdp;
+> +	struct bufdesc_ex *ebdp;
+>  	struct tso_t tso;
+>  	unsigned int index =3D 0;
+>  	int ret;
+> @@ -913,7 +915,32 @@ static int fec_enet_txq_submit_tso(struct
+> fec_enet_priv_tx_q *txq,
+>  	return 0;
+>=20
+>  err_release:
+> -	/* TODO: Release all used data descriptors for TSO */
+> +	/* Release all used data descriptors for TSO */
+> +	tmp_bdp =3D txq->bd.cur;
+> +
+> +	while (tmp_bdp !=3D bdp) {
+> +		/* Unmap data buffers */
+> +		if (tmp_bdp->cbd_bufaddr && tmp_bdp !=3D txq->bd.cur)
 
-Layout of planes in memory is just one hardware constraint, the same way
-we have constraints on alignment and strides. Some devices require the
-planes to be contiguous (likely with some alignment constraints), some
-can work with planes being in discontiguous pieces of memory, and even
-require them to be discontiguous and located in separate DRAM banks.
+All the TSO headers will be unmapped except the first one. So please
+use the following check condition.
 
-> >> Why not allocate storage for the whole on one shoot?
-> >
-> > You can, if you adjust the parameters accordingly. However, if the 
-> > strides of the planes are not equal, I guess it might cause problems 
-> > on some platforms.
-> >
-> > But I think it's usually simpler to allocate one buffer per plane, and 
-> > perhaps even better as it doesn't require as large contiguous memory 
-> > area.
-> >
-> >> The modetest in libdrm can be an good example, send it[1] to you as 
-> >> an reference.
-> >
-> > Right, so modetest already does it successfully. So... What is the issue?
->
-> But then, the problem will become that it override the 'height' parameter.
-> What's the physical interpretation of the 'height' parameter when creating
-> an NV12 image with the dump API then?
+if (!IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
 
-I wouldn't be too concerned about physical interpretations. Yes, the
-height, width and bpp parameters were likely designed with RGB formats
-in mind. Yes, using DUMB_CREATE for YUV formats is probably something
-that the original authors didn't envision. And yes, from that point of
-view, it could be seen by the original authors as an abuse of the API.
-But I don't think that's a problem as such.
+BTW, the net-next is closed until Feb 3rd. And I think this is a
+bug fix not a new feature, so you can change the target to net
+tree and a Fixes tag, thanks.
 
-An API is just an API. True, it would be nicer if the usage of the ioctl
-parameters was more intuitive for YUV formats, but I believe we could
-still standardize how the existing parameters map to linear scanout YUV
-formats without causing the world to end. As has been said before, lots
-of drivers are using DUMB_CREATE for this purpose, and we can't change
-that.
+> +			dma_unmap_single(&fep->pdev->dev,
+> +					 tmp_bdp->cbd_bufaddr,
+> +					 tmp_bdp->cbd_datlen,
+> +					 DMA_TO_DEVICE);
+> +
+> +		/* Clear standard buffer descriptor fields */
+> +		tmp_bdp->cbd_sc =3D 0;
+> +		tmp_bdp->cbd_datlen =3D 0;
+> +		tmp_bdp->cbd_bufaddr =3D 0;
+> +
+> +		/* Handle extended descriptor if enabled */
+> +		if (fep->bufdesc_ex) {
+> +			ebdp =3D (struct bufdesc_ex *)tmp_bdp;
+> +			ebdp->cbd_esc =3D 0;
+> +		}
+> +
+> +		tmp_bdp =3D fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
+> +	}
+> +
+> +	dev_kfree_skb_any(skb);
+>  	return ret;
+>  }
+>=20
+> --
+> 2.34.1
 
-This doesn't mean we shouldn't work on improving memory allocation, but
-I see that as a separate issue.
-
-> I guess, solving complex problems with simple APIs may see the limitation,
-> sooner or later. But I not very sure and might be wrong. So other peoples
-> can override me words.
-> 
-> > Everyone agrees that CREATE_DUMB is not the best ioctl to allocate 
-> > buffers, and one can't consider it to work identically across the 
-> > platforms. But it's what we have and what has been used for ages.
->
-> Yeah, your request are not unreasonable. It can be seen as a kind of rigid demand.
-> Since GEM DMA helpers doesn't export an more advanced interface to userspace so far.
-> As a result, drivers that employing GEM DMA has no other choice, but to abuse the
-> dumb buffer API to do allocation for the more complex format buffers.
-> 
-> The dumb buffer API doesn't support to specify buffer format, tile status and
-> placement etc. The more advance drivers has been exposed the xxx_create_gem()
-> to user-space. It seems that a few more experienced programmers hint us to
-> create an new ioctl at above thread, so that we can keep employing simple API
-> to do simple things and to suit complex needs with the more advanced APIs.
-
-I'd really like to explore adding new ioctls to exposure memory
-allocation constraints, and allocating the memory itself from DMA heaps.
-
--- 
-Regards,
-
-Laurent Pinchart
