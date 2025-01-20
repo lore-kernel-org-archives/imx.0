@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEC21DF252;
-	Mon, 20 Jan 2025 12:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9881917F9;
+	Mon, 20 Jan 2025 12:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737375397; cv=none; b=rxx81wvjoJ2eYVXiZO6G1vlLjwcoOiHbCBuWKrSpQ95CbkJNJWyKd1F5HhfZr33Pr2ww6aEU5lI5zcKXqNRG8ygutnFzBFChNjtrOU7UtSjdWPN+sW1sxD2uxEX0msqayftrdbV/OSvSvErF9+gQlmwHd8coTQZivZNniSCuSU8=
+	t=1737375821; cv=none; b=LElsL7+GorNX8JuBMJh38h2Ru5a7eXHoCk/cPfslLzGC3ojTrd1z4GjaMIwg0LHEfy/PbZs5QeuGiJI1N+VCbkW2EURFJ7SHKy2QP+Q/PgDHbv/uU4nebN0gbUyWTEQNsscnARZSZGndsaMDvLqJlctt/mqqsG2ZW62k+O/3pzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737375397; c=relaxed/simple;
-	bh=gO4ldAVOW/sVFmZkbzx708ib8vYFhu8keryGUWXVycU=;
+	s=arc-20240116; t=1737375821; c=relaxed/simple;
+	bh=zu9vsVvhED70f/LPHYWIlfe+I4fG057OYGUfoVCiomk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j0rhx4jZYrm0tj7/ekLxcs4rfGu6LmFb72aFMoxFPy7cVB8hWOdig6mJhmncLNQm9hLemAKnP86Ea/AgSXPHXVZmflEanrwVOREA2+JwQjUZkfInIDq+UIlge5eeNAU7mhXsgf7iEgdrfMTnufvHZe7lCEF7om7AV6UDJsJCLC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZ1Dh+i4; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=sE78vIdcfpk7Ww9i/oz9B75yXWieY246MlYqrtc4P2e4xzM8QmxWIBbHJlcov5z2zBrb48h3XdRJKd4PDyXKtYChPcmIv+xx9AnShdxWn86Ha0+pBoR0IftsHS9jr/uVRc+NDdg2odRg2Fks/S1YgUlm79YiH0/hp2hMMTQJ10k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWSbIlvT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZ1Dh+i4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8087FC4CEDD;
-	Mon, 20 Jan 2025 12:16:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWSbIlvT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66AEC4CEDD;
+	Mon, 20 Jan 2025 12:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737375396;
-	bh=gO4ldAVOW/sVFmZkbzx708ib8vYFhu8keryGUWXVycU=;
+	s=k20201202; t=1737375820;
+	bh=zu9vsVvhED70f/LPHYWIlfe+I4fG057OYGUfoVCiomk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CZ1Dh+i4/kZbFs9R+Qxlpc22tiOhiwENSDEnOswAQ65PGnDi/AVVOTFpr+V3rcOje
-	 KRMlinTwayZIzNyAYiLNb6wNjd61qqMV2hQY+SWClT+K+9KYsI7txqAumviIpHie8x
-	 H0WbCQHEUPTL9ZlapTrtIxXUc6JRN6w+/UfHGsbp4v+gCyALn0WDM1qsLzJhnFJV94
-	 /z6gk4gMgDquAF0Lp3wssUYTUwVnpN7AiE0TQ8BcLfpKflcRzvIVlijdPJVCSmZx1G
-	 j5vJS2crj2uCDNytK/HAhqVgrXrP0WT9H20IZfEGjDLzrvHtnWtCCnca4LA4cz1Z3T
-	 MrjuRLzTgTlrA==
-Message-ID: <6110fd00-c050-4bcf-8971-674bc8c0bfc7@kernel.org>
-Date: Mon, 20 Jan 2025 13:16:30 +0100
+	b=pWSbIlvTyL8kNVCT1Lkho4J9zn/bcsSpN4rMT9NYfAaccbGPwBoCSA5Cd7vqNCxHN
+	 f6ANrFOPYEkgRkMw+LPmrAP2pO5MSK0NsRPyJ/K+y2+alum2mrqivcQGFw9UVTy0XO
+	 dTlyGnQI2UTp8hE4e+xxCqDxYqDevJk206NVERAZv2m6LqurqgSkv92wGBS926Gm6U
+	 He8vD5I4SrW9qZWdQEK/81446UOQeNRb3ZPuXLn4q7tMqyi66gKTwiaIxHfNHaTiEd
+	 xHbFAfiqFaAWgEJf1wiUHwm6DsADc+dS7L59YQCBCQTXH158u66drooQcv5o5HI3K9
+	 dRV5VwJ8YgSdQ==
+Message-ID: <2fb2db33-9d45-442a-bfb9-55173751f20f@kernel.org>
+Date: Mon, 20 Jan 2025 13:23:33 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/5] dt-bindings: arm: fsl: add imx-se-fw binding doc
+Subject: Re: [PATCH v12 4/5] firmware: imx: add driver for NXP EdgeLock
+ Enclave
 To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -44,9 +45,9 @@ To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
  Fabio Estevam <festevam@gmail.com>
 Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Conor Dooley <conor@kernel.org>
+ linux-arm-kernel@lists.infradead.org
 References: <20250120-imx-se-if-v12-0-c5ec9754570c@nxp.com>
- <20250120-imx-se-if-v12-2-c5ec9754570c@nxp.com>
+ <20250120-imx-se-if-v12-4-c5ec9754570c@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,35 +93,300 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250120-imx-se-if-v12-2-c5ec9754570c@nxp.com>
+In-Reply-To: <20250120-imx-se-if-v12-4-c5ec9754570c@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 20/01/2025 17:52, Pankaj Gupta wrote:
-> The NXP security hardware IP(s) like: i.MX EdgeLock Enclave, V2X etc.,
-> creates an embedded secure enclave within the SoC boundary to enable
-> features like:
-> - HSM
-> - SHE
-> - V2X
+> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE),
+> are embedded in the SoC to support the features like HSM, SHE & V2X,
+> using message based communication interface.
+
+Fix your machine so this is not a "future" work.
+
 > 
-> Secure-Enclave(s) communication interface are typically via message
-> unit, i.e., based on mailbox linux kernel driver. This driver enables
-> communication ensuring well defined message sequence protocol between
-> Application Core and enclave's firmware.
+> The secure enclave FW communicates on a dedicated messaging unit(MU)
+> based interface(s) with application core, where kernel is running.
+> It exists on specific i.MX processors. e.g. i.MX8ULP, i.MX93.
 > 
-> Driver configures multiple misc-device on the MU, for multiple
-> user-space applications, to be able to communicate over single MU.
-> 
-> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
+> This patch adds the driver for communication interface to secure-enclave,
+
+Please do not use "This commit/patch/change", but imperative mood. See
+longer explanation here:
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+
+
+> for exchanging messages with NXP secure enclave HW IP(s) like EdgeLock
+> Enclave (ELE) from Kernel-space, used by kernel management layers like
+> - DM-Crypt.
 > 
 > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Reviewed-by: Conor Dooley <conor@kernel.org>
+> ---
 
-Where Conor's review tag was actually given?
 
-I don't see any hints in the changelog.
+
+> +int ele_fetch_soc_info(struct se_if_priv *priv, void *data)
+> +{
+> +	int err;
+> +
+> +	err = ele_get_info(priv, data);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	return err;
+> +}
+> +
+> +int ele_ping(struct se_if_priv *priv)
+> +{
+> +	struct se_api_msg *tx_msg __free(kfree) = NULL;
+> +	struct se_api_msg *rx_msg __free(kfree) = NULL;
+> +	int ret = 0;
+> +
+> +	if (!priv) {
+> +		ret = -EINVAL;
+> +		goto exit;
+
+This does not make sense. return.... but is this even possible?
+
+
+> +	}
+> +
+> +	tx_msg = kzalloc(ELE_PING_REQ_SZ, GFP_KERNEL);
+> +	if (!tx_msg) {
+> +		ret = -ENOMEM;
+
+return -ENOMEM.
+
+> +		goto exit;
+
+Please read in coding style how gotos are supposed to be used.
+
+> +	}
+> +
+> +	rx_msg = kzalloc(ELE_PING_RSP_SZ, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		ret = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	ret = se_fill_cmd_msg_hdr(priv,
+> +				      (struct se_msg_hdr *)&tx_msg->header,
+> +				      ELE_PING_REQ, ELE_PING_REQ_SZ, true);
+
+
+Fix your coding style - run checkpatch strict on this.
+
+> +	if (ret) {
+> +		dev_err(priv->dev, "Error: se_fill_cmd_msg_hdr failed.\n");
+> +		goto exit;
+> +	}
+> +
+
+
+...
+
+> +int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info);
+> +int ele_fetch_soc_info(struct se_if_priv *priv, void *data);
+> +int ele_ping(struct se_if_priv *priv);
+> +int ele_service_swap(struct se_if_priv *priv,
+> +		     phys_addr_t addr,
+> +		     u32 addr_size, u16 flag);
+> +int ele_fw_authenticate(struct se_if_priv *priv, phys_addr_t addr);
+> +#endif
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
+> new file mode 100644
+> index 000000000000..67d1fa761172
+> --- /dev/null
+> +++ b/drivers/firmware/imx/ele_common.c
+> @@ -0,0 +1,324 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2024 NXP
+> + */
+> +
+> +#include "ele_base_msg.h"
+> +#include "ele_common.h"
+> +
+> +u32 se_add_msg_crc(u32 *msg, u32 msg_len)
+> +{
+> +	u32 nb_words = msg_len / (u32)sizeof(u32);
+> +	u32 crc = 0;
+> +	u32 i;
+> +
+> +	for (i = 0; i < nb_words - 1; i++)
+> +		crc ^= *(msg + i);
+> +
+> +	return crc;
+> +}
+> +
+> +int ele_msg_rcv(struct se_if_priv *priv,
+> +		struct se_clbk_handle *se_clbk_hdl)
+> +{
+> +	int err = 0;
+> +
+> +	do {
+> +		/* If callback is executed before entrying to wait state,
+
+It is not a networking device. Use Linux coding style.
+
+You already got such comment long time ago and not much improved.
+
+
+> +
+> +static int se_if_probe(struct platform_device *pdev)
+> +{
+> +	const struct se_if_node_info_list *info_list;
+> +	const struct se_if_node_info *info;
+> +	struct device *dev = &pdev->dev;
+> +	struct se_fw_load_info *load_fw;
+> +	struct se_if_priv *priv;
+> +	u32 idx;
+> +	int ret;
+> +
+> +	idx = GET_IDX_FROM_DEV_NODE_NAME(dev->of_node);
+
+
+NAK. Node can be called firmware and your entire driver collapes.
+
+> +	info_list = device_get_match_data(dev);
+> +	if (idx >= info_list->num_mu) {
+> +		dev_err(dev,
+> +			"Incorrect node name :%s\n",
+> +			dev->of_node->full_name);
+
+Nope. "firmware" or "secure" are correct node names. Where did you
+document this ABI?
+
+> +		dev_err(dev,
+> +			"%s-<index>, acceptable index range is 0..%d\n",
+> +			dev->of_node->name,
+> +			info_list->num_mu - 1);
+> +		ret = -EINVAL;
+> +		return ret;
+> +	}
+> +
+> +	info = &info_list->info[idx];
+> +	if (!info) {
+> +		ret = -EINVAL;
+> +		goto exit;
+> +	}
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv) {
+> +		ret = -ENOMEM;
+> +		goto exit;
+
+Nope, You don't get how common exit works. You are supposed to clean up
+in comon exit paths, not print error paths, especially ones which are
+not welcomed - like here.
+
+> +	}
+> +
+> +	priv->dev = dev;
+> +	priv->if_defs = &info->if_defs;
+> +	dev_set_drvdata(dev, priv);
+> +
+> +	ret = devm_add_action(dev, se_if_probe_cleanup, pdev);
+> +	if (ret)
+> +		goto exit;
+> +
+> +
+> +	/* Mailbox client configuration */
+> +	priv->se_mb_cl.dev		= dev;
+> +	priv->se_mb_cl.tx_block		= false;
+> +	priv->se_mb_cl.knows_txdone	= true;
+> +	priv->se_mb_cl.rx_callback	= se_if_rx_callback;
+> +
+> +	ret = se_if_request_channel(dev, &priv->tx_chan,
+> +			&priv->se_mb_cl, MBOX_TX_NAME);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	ret = se_if_request_channel(dev, &priv->rx_chan,
+> +			&priv->se_mb_cl, MBOX_RX_NAME);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	mutex_init(&priv->se_if_cmd_lock);
+> +
+> +	init_completion(&priv->waiting_rsp_clbk_hdl.done);
+> +	init_completion(&priv->cmd_receiver_clbk_hdl.done);
+> +
+> +	if (info->pool_name) {
+> +		priv->mem_pool = of_gen_pool_get(dev->of_node,
+> +							 info->pool_name, 0);
+> +		if (!priv->mem_pool) {
+> +			dev_err(dev,
+> +				"Unable to get sram pool = %s\n",
+> +				info->pool_name);
+> +			goto exit;
+
+Why do you print erros twice?
+
+> +		}
+> +	}
+> +
+> +	if (info->reserved_dma_ranges) {
+> +		ret = of_reserved_mem_device_init(dev);
+> +		if (ret) {
+> +			dev_err(dev,
+> +				"failed to init reserved memory region %d\n",
+> +				ret);
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +	if (info->if_defs.se_if_type == SE_TYPE_ID_HSM) {
+> +		ret = se_soc_info(priv);
+> +		if (ret) {
+> +			dev_err(dev,
+> +				"failed[%pe] to fetch SoC Info\n", ERR_PTR(ret));
+> +			goto exit;
+> +		}
+> +	}
+> +
+> +	/* By default, there is no pending FW to be loaded.*/
+> +	if (info_list->se_fw_img_nm.prim_fw_nm_in_rfs ||
+> +			info_list->se_fw_img_nm.seco_fw_nm_in_rfs) {
+> +		load_fw = get_load_fw_instance(priv);
+> +		load_fw->se_fw_img_nm = &info_list->se_fw_img_nm;
+> +		load_fw->is_fw_loaded = false;
+> +
+> +		if (info_list->se_fw_img_nm.prim_fw_nm_in_rfs) {
+> +			/* allocate buffer where SE store encrypted IMEM */
+> +			load_fw->imem.buf = dmam_alloc_coherent(priv->dev, ELE_IMEM_SIZE,
+> +								&load_fw->imem.phyaddr,
+> +								GFP_KERNEL);
+> +			if (!load_fw->imem.buf) {
+> +				dev_err(priv->dev,
+> +					"dmam-alloc-failed: To store encr-IMEM.\n");
+> +				ret = -ENOMEM;
+> +				goto exit;
+> +			}
+> +			load_fw->imem_mgmt = true;
+> +		}
+> +	}
+> +	dev_info(dev, "i.MX secure-enclave: %s%d interface to firmware, configured.\n",
+> +			SE_TYPE_STR_HSM,
+> +			priv->if_defs->se_instance_id);
+
+Drop probe success. Useless.
+
+> +	return ret;
+> +
+> +exit:
+> +	/* if execution control reaches here, if probe fails.
+> +	 */
+
+Obvious comment.
+
+> +	return dev_err_probe(dev, ret, "%s: Probe failed.", __func__);
+
+Drop. I think I asked already long time - like 10 revisiosn ago - to
+drop simple function debug messages. Look at other drivers how exit
+paths are handled.
+
+
 
 Best regards,
 Krzysztof
