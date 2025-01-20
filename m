@@ -1,268 +1,718 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011025.outbound.protection.outlook.com [52.101.65.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150241922D3
-	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 08:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737360005; cv=none; b=QqqNOVJ6T52YY9rTiXImQMhJauGtnahFlwgSDnvxDFylOW1iyybiK5i+QE9Knbq+EwPlRXMFoqrv+x5rJGA/eGbeZnV6yGuRluYO9NpMsqzXfVN0B++XdgKJdFpri75+csZtnvB+DP1lR6WXQqKiF9YHDk9z3N+boBMAbUD8f9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737360005; c=relaxed/simple;
-	bh=FOXOsUjR7gvwdK8ldDgZaWaiaUUbUav8J6+aq+oYVe0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Ad2iY7O4oqRd5045217rvBMzTPDTt/t020fc+FOCAnVblWFmMXPGHI3Rm1Bgb2VhYh6kZ189yb1uT0kfsggqcbLoWyG1XJp9YJYaEWTb4hNyolBJqhcXPI4oO7TVpZ8xO4lzHhpKWZFRWyUEWL99GYB98QBDsZk1U3S8/Po4jrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=UUKnneBu; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3798D18FDAA
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 08:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737361313; cv=fail; b=b0hjUFzO67Hb3kYiV5RBL7GvIPLOUnXYq9QrD/CsYci6xRB+RrsM4a3ws4MC65gnC/RrI9trqGoHxd5RN2sUqc0zmzRPVCAlyE+P1yqYCGnSSSplpy8UXV8BgtOZ2lxqKyPVVsjSPmMLdsPQi72EyU/llXbYhrIteuyjHVreP6c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737361313; c=relaxed/simple;
+	bh=x3kT/Ic01/dsphW6eEzRxVAr7JXrJttA/iQECpL/Rjc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UnKFwJ68vN7q9vxnwC8gckmYvdMCJhUT0s03UcmPyJmc80J5ycweQJ9ih7NCxxkGF3q55doYWRcukzOSm2XopcIq1VyyHW+ibbUgUzH10cYW9ZKSNyMuFRkmWutcQSFLr75lhNte7o5A5ao61LRiXobAJIC+W1PNgZDM9LMoB5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=DU3iK+QD; arc=fail smtp.client-ip=52.101.65.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="UUKnneBu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc
-	:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=opwsPCXQn2dl1A894h/TzouZKT6y1266fbtoD7Nmf0I=; b=UUKnneBuOGLaVE4DE9jKD5m7Ep
-	BzPBy4eDSFnCTRkIdgejrkLmxhRG3rNAKEi0TJG+Agulcu469iERSdDcmSPYq+VczU9cChkosXiAE
-	1zzVq8e2Gx9L36zJyf16bu9hCL54jNxXU/ccvO36cN3ia2oRqwRNPZvq7FeP3QaY/2jawh+b7Oo+6
-	5aye7q8TqDt/bhjCjENmlWM1AeivWtrkA85QN4ZqKcAjMtcntk4yDbBSVO/AnoMU6UB73aeI2mz8C
-	w3ANFFk738Leu+QlN2GmLJtG0qrnQHjKcLrWLp7hfRbCNSFBUffwbg6XwjE4qnle1GUFFiNy+y2PO
-	ZIGH2gEg==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:33680 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tZlmy-00DgMu-1L;
-	Mon, 20 Jan 2025 08:01:35 +0100
-Message-ID: <80d6e493-dd79-42e3-b064-d1feeabd7180@norik.com>
-Date: Mon, 20 Jan 2025 08:01:33 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="DU3iK+QD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aKvP/K5MqITFFI5m5Q555ZYVbr5Jcc1e3r7YkSQ1A3n8S3DoapNVwIyz474OYvgk45w4HQot63SkeBB/hvVW0iKMfUel0h7XQDcSCtHGXW2GTUE5rv5ralsYMyDLYL0fgf08dpshdt7ZNHW9P30D2JzXinWNU9xTbY1jsUZzy/pmeTmiiWJCGVFzRr8bsRVgqBtaeIUVJL0udshhlBIC2GLt5YeaL/SNzUpzOwOqdfYGLrU4Horbf12xyZBci1uJxLNg/OQaF8hZoeGeR4KsgknpdIM9Cl60JEsXYB6rxSzPIkCStr+p6OUPQQGOAPX9pOXL/i9CRNqzAgLvWgWMDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Fanto7b+gsAkzuz0a770mweImSSdpNlpn4l6fve5dM=;
+ b=mAYpcBn+ER8Ye0mY1NXPJOujWU39ShUGYjdNHAlpoyO6+fUrbfZf2MQcIKvxq1PAKtiMcjcQ348ozUkDUhiFHPrpSyTZpOTNH10UZFB99AfQcgHzoIygd48FewwlkQpg0U+fhU8AnZag7z5y3fHUHANuiyiet7akDl3NJIp6yjdBSx5UXAbUdp6t1h23c6ao3qXVvYBmhwr6cBGQiQKWvsGq0ArS+2IohlfryFsIVQIsJ21xodpZ2jrgS6OjYa91wU3uxbpwxxIBG4Pe5rRH1sfJ6NbvO0J7o1S4XzuJTbb7h8c+rU+fNPkPGpWbbqX8MQvJz3jdClLjH9GKq0e7ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Fanto7b+gsAkzuz0a770mweImSSdpNlpn4l6fve5dM=;
+ b=DU3iK+QDtU20Zn0UDIA1tgge5P3FlLTjhMAAI66BHpzy3Owb1UJCNqi+/V4NOeGRfR0WM/cGCVuVHpRWPAAwzo2DTdW53ubk1BSw2F2OoZwg+q9vJpGyeEMrufmNtfIN5KnnL32za65F87QHCFPZpg4It7yAN9NGiMEd9VjyTdrpW/T5Qc6rSeowCsBag/ayFxx1QVTFMyb/a/Q5iQ2RxQHF/xW8CR1z//cokwYVCAbLagp49pnC5nUm/srKclpBRxWZVa4KAYFWHZVBiLa6PDNmgR2JsV7077VIGI2XT9mHlkfEHA3d6qOMEUPwAo38zGc+ZRTMFEgQFAK6JhmgkQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by VI1PR04MB7182.eurprd04.prod.outlook.com (2603:10a6:800:121::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
+ 2025 08:21:42 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
+ 08:21:42 +0000
+From: Ming Qian <ming.qian@oss.nxp.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl
+Cc: nicolas@ndufresne.ca,
+	shawnguo@kernel.org,
+	robh+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	tao.jiang_2@nxp.com,
+	ming.qian@oss.nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v5] media: amphion: Support dmabuf and v4l2 buffer without binding
+Date: Mon, 20 Jan 2025 17:21:05 +0900
+Message-ID: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0-rc1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0225.apcprd06.prod.outlook.com
+ (2603:1096:4:68::33) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] Re: [PATCH v2 13/15] arm64: dts: imx8mm-phycore-som:
- Add overlay for rproc
-From: Andrej Picej <andrej.picej@norik.com>
-To: Shawn Guo <shawnguo2@yeah.net>, shawnguo@kernel.org
-Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de
-References: <20241202072052.2195283-1-andrej.picej@norik.com>
- <20241202072052.2195283-14-andrej.picej@norik.com> <Z3Ie8GO/GtoSkIr3@dragon>
- <221c8216-ce71-4ba2-9981-8612ff33ec2a@norik.com>
-Content-Language: en-US
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <221c8216-ce71-4ba2-9981-8612ff33ec2a@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|VI1PR04MB7182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 029f145f-47b9-49e5-b3a3-08dd392b7856
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wK2ztQeIGOB/84HbeISUtNPIcFiAc+pFaLl0imiXeWgpSMOQ+vIwnvq+VZR3?=
+ =?us-ascii?Q?xILw+PYftlj01NSSW4l05r9tdQ6ztum4/EZ4dt1lCD5XXiznKlB2YyG3KoK4?=
+ =?us-ascii?Q?P572sLUGcSkx9M4WPHkhBauFLJJKNswXDjaeu4HnNBw08ze/+Axlw5NHczfC?=
+ =?us-ascii?Q?dgmj7+Yqr9dGGmRtFKIIm9AhhyQp5G12N/t9hJR0LkRYRkkVmwW8JWtwg62s?=
+ =?us-ascii?Q?NG0JqElcfGPM+IbyAz9HPC0xNRNqt0RscvrfGQnMLmo5hfMcOXDQLQWpd3Pr?=
+ =?us-ascii?Q?VdIXm9nR5BO2/ECWsRthJU1OiWYng1YzH/DROdNPpe+a3k6lJeYYST1Y6Rqu?=
+ =?us-ascii?Q?VIojiXwJ78OjmCi6T3jEa7eOM8LUqwGicwuUViKLsHIAjeY+HHpKN4j42Fpb?=
+ =?us-ascii?Q?zthOue70atEcRkorIYpWvD0Nay8f0Ks5YaOK7tbzmmbjaA8zVA8mvosBQesQ?=
+ =?us-ascii?Q?qGfMw4RDpoUjaIJ6YJVzLIGBjcXbsSXYnhZYvNfm2V3uN8TmVqOylKOD7oBn?=
+ =?us-ascii?Q?WseXJ9aLSWU4enYOKQcKHXusLOAIp1xfOe5zaCYPWfTck6lTeHn2mGLvb61a?=
+ =?us-ascii?Q?J8mWMro5EltuuQvWr3wBF4XGmo46c+F4jnG//pQfbdL1MWzZVXYh0b+A6OuE?=
+ =?us-ascii?Q?5jmu0/ZM61HEEy1iIjKUgNFok9d+GhHQQKYOkN1hSLKvo2grYU0N36+45ZjT?=
+ =?us-ascii?Q?FF9bn4I5RZ2PjQXagXBTEbAEWe6G/ZtVQWhZHe/AOw64rcgSTA7lj00H1jAL?=
+ =?us-ascii?Q?FLyXALn6FSO6xvP5jcCaAdJaBdeck8FgYCD/MNTkNTT+b/+seMXvTHPWnKab?=
+ =?us-ascii?Q?DPe0rhUPGwueZRePjKh8Tx8e5irM1cgX/ZsRIOqSi4iTo7nbLTAbvVBzVkEp?=
+ =?us-ascii?Q?Pm+smE+DqxwY5G8PH05xPmwFGJE5eSFjSEkgPv0QCtKxWU46aJEOaEsF/4Qa?=
+ =?us-ascii?Q?KIknjkbCiuHgBqM9pJnDP6ujugrX2GnmCPvrgjXeXtwuiAZPURM4ruaVbMQZ?=
+ =?us-ascii?Q?3mXRYfNLKTuEbC5OuBKGrUdjLJqHzgrNHwdiowyiDrrfNHAKRLUaVBFX5OMh?=
+ =?us-ascii?Q?QOL9/1Aa+vWL8N5Ig31WLWAK8K4fx5lv7JvYtK0Oyx3lOdC3bFu2gFqFBRuZ?=
+ =?us-ascii?Q?gZFTr7f49xP8lWkr/YDw1UH7dSg6JI317m99KM1HOwQI/kQWvLjtFJMhWRBH?=
+ =?us-ascii?Q?iCZXlf6ukOP/s0xjsmnqHxrgZQaDuzMiojiz96tNcuLezvrYXN5d8iuEUQym?=
+ =?us-ascii?Q?F6fwYwvpQ57dxF0hLGI6RTgehEE+WFk22XsRrQDd21JvHQcY1I9ue/47qIiL?=
+ =?us-ascii?Q?g3ORtMQx9Wu+5tiODyNXjAhBJ3qilrKgbhzwYVCw/TNlA4eZkIXhV+Ho910+?=
+ =?us-ascii?Q?VVhHeUoM7cAsYl5H06eGAogYb3K+l/NtVDgkA0T+Ty/RnKoyuuu51U4guuek?=
+ =?us-ascii?Q?h63suj/kqj1e9d1hM1JLXBAaYJ/lzqbI?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RJlWnX0WEcphZhkeGqVyoavphoGyshdd/7s4VrcHrJcexXm/eS0BtiBxRbGx?=
+ =?us-ascii?Q?zdULpVKw7JE9HbLI8X9y7lRmNrQXqrIl2R9SqqGN+qvbNOzlIWa+xL/C8kbT?=
+ =?us-ascii?Q?+aK6w7y8IcPz+6wXwzQsCUAg7zzmGjeLCL1EzqrPUdxVwWtri6CoHNWv36QL?=
+ =?us-ascii?Q?SiArltiQeSFW9sIT/36829AK9liGASEREtuufRrm0wNqfIm/v3np2/onCkza?=
+ =?us-ascii?Q?46jMeZT4LQMbrEvkZicuXtnlsOGCntOACqYpSYmZZkD4QoViV6JXBVrpdgOy?=
+ =?us-ascii?Q?O82eSnGcX9I0PxarxXJEbusgvxkMcWpaOCSW17Ess1M0kRpfI+F1eTBMpeu3?=
+ =?us-ascii?Q?QFWrXE6z3gSj4/UI/Xy5vJtlJMgTvLG375GdK+96Nhd7c7frcDp76XADuwKQ?=
+ =?us-ascii?Q?OuqFh62HgooEMRG2uJRnStRWHukGiPiDDe+CurgaO1vLPaKC8xQt3VlFqHcQ?=
+ =?us-ascii?Q?Tcnh1snfkovVv8XaYcd4OsEBMxiqyip7QKxAml5G0qnba2wiHwKOeA16klim?=
+ =?us-ascii?Q?TIWvr1z2hs+M8Pr9AEkYC0O+xB4sVgaz1vRd5iG4K3l0PMRtUICr42RzHaCv?=
+ =?us-ascii?Q?145bW/oE8QiVz7cV/UD4SNyq8VQIJtDMrG3WczK8ntHIkH65c0QA+lbl/gq/?=
+ =?us-ascii?Q?fMpxviOuJVEk+vci85VvQbJs9prDZOZAW1W8qOfHyQD6t2iSY7eseskyMMua?=
+ =?us-ascii?Q?dQVx64aUFmwCv9FVyM6RnpWNB4T3DzoJcMQpEyzksJEe212miiw8aF6+o5YE?=
+ =?us-ascii?Q?YDrvxyW+BeKdl56H+4v3GdWaIamH7cRyZlottkd4RYfZ/HV+ogP2fZLEF5VW?=
+ =?us-ascii?Q?RmVdi5OP+ZJOSjehX1MeUg7ASbH50QE8+zBIlZGn2Hsr+EtXlhZPLe0HZ3WA?=
+ =?us-ascii?Q?UQ7dDqGx+W6nJRwtEqMiAn4mX0Ctz6Noh5VpaTlDhUfAJ8pSK3CKydkXV1ea?=
+ =?us-ascii?Q?5Rx732XWnXNRGsZxmbuWs7ad1WUIVegOSQ0EEtDDSDi445mP6/XUFcztlTqY?=
+ =?us-ascii?Q?7X7G554KfQagaKykhFbImw/oSHZX3KEZMDOE9eYhbYt+bF/qDnP99WZuRf4Q?=
+ =?us-ascii?Q?AunGFwiNDz8U+6bSkKEgbyYKNGn+TTenvtqBR5n4LoB/ZCAtdZHFurmVTcHW?=
+ =?us-ascii?Q?NgC+l1V/onnX5KjXAxhfNDOqBHQB1XrwA8ihWnuV+sbkEmKPFHIh06/Fy37E?=
+ =?us-ascii?Q?KzDB/SZKQ06I47LMJ61p9N65c9wfq1r1FjpbiJYLVe9kxWdqVedRwyhwdQID?=
+ =?us-ascii?Q?C/NyTP+GDwYjD8vvU201rQ/KdqOcg8iHNWsfzMS1QcB9uZbGSNEAYXVDJ4Ji?=
+ =?us-ascii?Q?+eIgkAWDgN16DTRJCwf580CorgsRjf8gtabHz1YsbfMBcDUhU62kWSJrBh/9?=
+ =?us-ascii?Q?iPeoiW9IF7Ev66J+0E/uvoOakoSB1njTchsZvXMiN4pLQGmGSiod1h97sXiW?=
+ =?us-ascii?Q?4c1PLFuDTE2RG9pontcn32S3SiK9575XIdK+yGo7+nQpuE6g2FweVOI2VpD8?=
+ =?us-ascii?Q?Jj57RvoB24UjGxmGDsvbca4OYioLGpTcLYUWSeaP8n/3h6mmbg5FtNZF+g9f?=
+ =?us-ascii?Q?uJMaU5q9uf/HOkhAzVdxyhpFtMywJ+EOBBF/xjkO?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 029f145f-47b9-49e5-b3a3-08dd392b7856
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2025 08:21:42.4081
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k66tJ462yeqVc+D5FFLJAwChsO5wBFOJ4BJrEfisrhkZW6hKUXgyKTRRb5IzEVDBkgDnz+J3vX7UzYBjtdlw8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7182
 
-Gentle ping.
+When using VB2_DMABUF, the relationship between dma-buf and v4l2 buffer
+may not one-to-one, a single dma-buf may be queued via different
+v4l2 buffers, and different dma-bufs may be queued via the same
+v4l2 buffer, so it's not appropriate to use the v4l2 buffer index
+as the frame store id.
 
-Best regards,
-Andrej
+We can generate a frame store id according to the dma address.
+Then for a given dma-buf, the id is fixed.
 
-On 31. 12. 24 08:34, Andrej Picej wrote:
-> Hi Shawn,
-> 
-> On 30. 12. 24 05:17, Shawn Guo wrote:
->> On Mon, Dec 02, 2024 at 08:20:50AM +0100, Andrej Picej wrote:
->>> From: Dominik Haller <d.haller@phytec.de>
->>>
->>> Adds a devicetree overlay containing reserved memory regions used
->>> for intercore communication between A53 and M4 cores.
->>>
->>> Signed-off-by: Dominik Haller <d.haller@phytec.de>
->>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>> ---
->>> Changes in v2:
->>>   - no change.
->>> ---
->>>   arch/arm64/boot/dts/freescale/Makefile        |  2 +
->>>   .../dts/freescale/imx8mm-phycore-rpmsg.dtso   | 55 +++++++++++++++++++
->>>   2 files changed, 57 insertions(+)
->>>   create mode 100644 
->>> arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso
->>>
->>> diff --git a/arch/arm64/boot/dts/freescale/Makefile 
->>> b/arch/arm64/boot/dts/freescale/Makefile
->>> index 99be36a04db9..5bc083a7b778 100644
->>> --- a/arch/arm64/boot/dts/freescale/Makefile
->>> +++ b/arch/arm64/boot/dts/freescale/Makefile
->>> @@ -125,9 +125,11 @@ dtb-$(CONFIG_ARCH_MXC) += 
->>> imx8mm-phyboard-polis-rdk.dtb
->>>   imx8mm-phyboard-polis-peb-av-10-dtbs += 
->>> imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
->>>   imx8mm-phyboard-polis-peb-eval-01-dtbs += 
->>> imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
->>> +imx8mm-phycore-rpmsg-dtbs += imx8mm-phyboard-polis-rdk.dtb 
->>> imx8mm-phycore-rpmsg.dtbo
->>>   dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-av-10.dtb
->>>   dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-eval-01.dtb
->>> +dtb-$(CONFIG_ARCH_MXC) += imx8mm-phycore-rpmsg.dtb
->>>   dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l.dtb
->>>   dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
->>> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso 
->>> b/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso
->>> new file mode 100644
->>> index 000000000000..0c61946f0cf8
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso
->>> @@ -0,0 +1,55 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +/*
->>> + * Copyright (C) 2024 PHYTEC Messtechnik GmbH
->>> + * Author: Dominik Haller <d.haller@phytec.de>
->>> + */
->>> +
->>> +/dts-v1/;
->>> +/plugin/;
->>> +
->>> +#include <dt-bindings/clock/imx8mm-clock.h>
->>> +
->>> +&{/} {
->>> +    reserved-memory {
->>> +        #address-cells = <2>;
->>> +        #size-cells = <2>;
->>> +        ranges;
->>
->> I'm getting this:
->>
->> arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:16.3-10: 
->> Warning (ranges_format): 
->> /fragment@0/__overlay__/reserved-memory:ranges: empty "ranges" 
->> property but its #size-cells (2) differs from /fragment@0/__overlay__ (1)
->> arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:13.18-43.4: 
->> Warning (avoid_default_addr_size): 
->> /fragment@0/__overlay__/reserved-memory: Relying on default 
->> #address-cells value
->> arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:13.18-43.4: 
->> Warning (avoid_default_addr_size): 
->> /fragment@0/__overlay__/reserved-memory: Relying on default 
->> #size-cells value
->>
-> 
-> I see, missed this before, sorry. But I have some problems fixing it.
-> I think the problem is that this is overlay, the same node put in the 
-> imx8mm-phycore-som.dtsi doesn't trigger a warning.
-> The only solution that I found is that I specify the default 
-> address-cells and size-cells in root node:
-> 
-> 
-> &{/} {
->      #address-cells = <2>;
->      #size-cells = <2>;
-> 
->      reserved-memory {
->          #address-cells = <2>;
->          #size-cells = <2>;
->          ranges;
->      ...
->      };
-> };
-> 
-> The same values are used in imx8mm.dtsi, but the checker fails to find 
-> these default values.
-> Not sure if this is the right solution, though. Your input would be 
-> helpful, thanks.
-> 
-> Best regards,
-> Andrej
-> 
-> 
->> Shawn
->>
->>> +
->>> +        m4_reserved: m4@80000000 {
->>> +            reg = <0 0x80000000 0 0x1000000>;
->>> +            no-map;
->>> +        };
->>> +
->>> +        vdev0vring0: vdev0vring0@b8000000 {
->>> +            reg = <0 0xb8000000 0 0x8000>;
->>> +            no-map;
->>> +        };
->>> +
->>> +        vdev0vring1: vdev0vring1@b8008000 {
->>> +            reg = <0 0xb8008000 0 0x8000>;
->>> +            no-map;
->>> +        };
->>> +
->>> +        rsc_table: rsc_table@b80ff000 {
->>> +            reg = <0 0xb80ff000 0 0x1000>;
->>> +            no-map;
->>> +        };
->>> +
->>> +        vdevbuffer: vdevbuffer@b8400000 {
->>> +            compatible = "shared-dma-pool";
->>> +            reg = <0 0xb8400000 0 0x100000>;
->>> +            no-map;
->>> +        };
->>> +    };
->>> +
->>> +    core-m4 {
->>> +        compatible = "fsl,imx8mm-cm4";
->>> +        clocks = <&clk IMX8MM_CLK_M4_DIV>;
->>> +        mboxes = <&mu 0 1
->>> +            &mu 1 1
->>> +            &mu 3 1>;
->>> +        mbox-names = "tx", "rx", "rxdb";
->>> +        memory-region = <&vdevbuffer>, <&vdev0vring0>, 
->>> <&vdev0vring1>, <&rsc_table>;
->>> +        syscon = <&src>;
->>> +    };
->>> +};
->>> -- 
->>> 2.34.1
->>>
->>
-> _______________________________________________
-> upstream mailing list -- upstream@lists.phytec.de
-> To unsubscribe send an email to upstream-leave@lists.phytec.de
+Driver now manages the frame store and vb2-buffer states independently.
+
+When a dmabuf is queued via another v4l2 buffer before the buffer is
+released by firmware, need to pend it until firmware release it.
+
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+---
+v5
+- Avoid dynamic size calculation in memory allocation, use kmalloc_array
+  instead
+v4
+- remove unnecessary 'out of memory' message
+v3
+-- fix a typo in NULL pointer check
+v2
+-- fix an uninitialized issue reported by media-ci
+
+ drivers/media/platform/amphion/vdec.c     | 235 +++++++++++++++++-----
+ drivers/media/platform/amphion/vpu.h      |   7 +-
+ drivers/media/platform/amphion/vpu_dbg.c  |  15 +-
+ drivers/media/platform/amphion/vpu_v4l2.c |  11 +
+ 4 files changed, 220 insertions(+), 48 deletions(-)
+
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index b3bc9eb16d6a..f4979d537b97 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -26,6 +26,7 @@
+ #include "vpu_cmds.h"
+ #include "vpu_rpc.h"
+ 
++#define VDEC_SLOT_CNT_DFT		32
+ #define VDEC_MIN_BUFFER_CAP		8
+ #define VDEC_MIN_BUFFER_OUT		8
+ 
+@@ -41,6 +42,14 @@ struct vdec_fs_info {
+ 	u32 tag;
+ };
+ 
++struct vdec_frame_store_t {
++	struct vpu_vb2_buffer *curr;
++	struct vpu_vb2_buffer *pend;
++	dma_addr_t addr;
++	unsigned int state;
++	u32 tag;
++};
++
+ struct vdec_t {
+ 	u32 seq_hdr_found;
+ 	struct vpu_buffer udata;
+@@ -48,7 +57,8 @@ struct vdec_t {
+ 	struct vpu_dec_codec_info codec_info;
+ 	enum vpu_codec_state state;
+ 
+-	struct vpu_vb2_buffer *slots[VB2_MAX_FRAME];
++	struct vdec_frame_store_t *slots;
++	u32 slot_count;
+ 	u32 req_frame_count;
+ 	struct vdec_fs_info mbi;
+ 	struct vdec_fs_info dcp;
+@@ -289,6 +299,63 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+ 	return 0;
+ }
+ 
++static void vdec_attach_frame_store(struct vpu_inst *inst, struct vb2_buffer *vb)
++{
++	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
++	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++	struct vdec_t *vdec = inst->priv;
++	struct vdec_frame_store_t *new_slots = NULL;
++	dma_addr_t addr;
++	int i;
++
++	addr = vpu_get_vb_phy_addr(vb, 0);
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (addr == vdec->slots[i].addr) {
++			if (vdec->slots[i].curr && vdec->slots[i].curr != vpu_buf) {
++				vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
++				vdec->slots[i].pend = vpu_buf;
++			} else {
++				vpu_set_buffer_state(vbuf, vdec->slots[i].state);
++			}
++			vpu_buf->fs_id = i;
++			return;
++		}
++	}
++
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].addr) {
++			vdec->slots[i].addr = addr;
++			vpu_buf->fs_id = i;
++			return;
++		}
++	}
++
++	new_slots = krealloc_array(vdec->slots, vdec->slot_count * 2,
++				   sizeof(*vdec->slots),
++				   GFP_KERNEL | __GFP_ZERO);
++	if (!new_slots) {
++		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_ERROR);
++		return;
++	}
++
++	vdec->slots = new_slots;
++	vdec->slot_count *= 2;
++
++	vdec->slots[i].addr = addr;
++	vpu_buf->fs_id = i;
++}
++
++static void vdec_reset_frame_store(struct vpu_inst *inst)
++{
++	struct vdec_t *vdec = inst->priv;
++
++	if (!vdec->slots || !vdec->slot_count)
++		return;
++
++	vpu_trace(inst->dev, "inst[%d] reset slots\n", inst->id);
++	memset(vdec->slots, 0, sizeof(*vdec->slots) * vdec->slot_count);
++}
++
+ static void vdec_handle_resolution_change(struct vpu_inst *inst)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+@@ -750,11 +817,11 @@ static int vdec_frame_decoded(struct vpu_inst *inst, void *arg)
+ 	struct vb2_v4l2_buffer *src_buf;
+ 	int ret = 0;
+ 
+-	if (!info || info->id >= ARRAY_SIZE(vdec->slots))
++	if (!info || info->id >= vdec->slot_count)
+ 		return -EINVAL;
+ 
+ 	vpu_inst_lock(inst);
+-	vpu_buf = vdec->slots[info->id];
++	vpu_buf = vdec->slots[info->id].curr;
+ 	if (!vpu_buf) {
+ 		dev_err(inst->dev, "[%d] decoded invalid frame[%d]\n", inst->id, info->id);
+ 		ret = -EINVAL;
+@@ -775,11 +842,13 @@ static int vdec_frame_decoded(struct vpu_inst *inst, void *arg)
+ 	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_DECODED)
+ 		dev_info(inst->dev, "[%d] buf[%d] has been decoded\n", inst->id, info->id);
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_DECODED);
++	vdec->slots[info->id].state = VPU_BUF_STATE_DECODED;
+ 	vdec->decoded_frame_count++;
+ 	if (vdec->params.display_delay_enable) {
+ 		struct vpu_format *cur_fmt;
+ 
+ 		cur_fmt = vpu_get_format(inst, inst->cap_format.type);
++		vdec->slots[info->id].state = VPU_BUF_STATE_READY;
+ 		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_READY);
+ 		for (int i = 0; i < vbuf->vb2_buf.num_planes; i++)
+ 			vb2_set_plane_payload(&vbuf->vb2_buf,
+@@ -802,11 +871,11 @@ static struct vpu_vb2_buffer *vdec_find_buffer(struct vpu_inst *inst, u32 luma)
+ 	struct vdec_t *vdec = inst->priv;
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(vdec->slots); i++) {
+-		if (!vdec->slots[i])
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].curr)
+ 			continue;
+-		if (luma == vdec->slots[i]->luma)
+-			return vdec->slots[i];
++		if (luma == vdec->slots[i].addr)
++			return vdec->slots[i].curr;
+ 	}
+ 
+ 	return NULL;
+@@ -840,11 +909,11 @@ static void vdec_buf_done(struct vpu_inst *inst, struct vpu_frame_info *frame)
+ 
+ 	cur_fmt = vpu_get_format(inst, inst->cap_format.type);
+ 	vbuf = &vpu_buf->m2m_buf.vb;
+-	if (vbuf->vb2_buf.index != frame->id)
+-		dev_err(inst->dev, "[%d] buffer id(%d, %d) dismatch\n",
+-			inst->id, vbuf->vb2_buf.index, frame->id);
++	if (vpu_buf->fs_id != frame->id)
++		dev_err(inst->dev, "[%d] buffer id(%d(%d), %d) dismatch\n",
++			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index, frame->id);
+ 
+-	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_READY && vdec->params.display_delay_enable)
++	if (vdec->params.display_delay_enable)
+ 		return;
+ 
+ 	if (vpu_get_buffer_state(vbuf) != VPU_BUF_STATE_DECODED)
+@@ -857,10 +926,11 @@ static void vdec_buf_done(struct vpu_inst *inst, struct vpu_frame_info *frame)
+ 	vbuf->sequence = vdec->sequence;
+ 	dev_dbg(inst->dev, "[%d][OUTPUT TS]%32lld\n", inst->id, vbuf->vb2_buf.timestamp);
+ 
+-	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+ 	vpu_inst_lock(inst);
++	vdec->slots[vpu_buf->fs_id].state = VPU_BUF_STATE_READY;
+ 	vdec->display_frame_count++;
+ 	vpu_inst_unlock(inst);
++	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+ 	dev_dbg(inst->dev, "[%d] decoded : %d, display : %d, sequence : %d\n",
+ 		inst->id, vdec->decoded_frame_count, vdec->display_frame_count, vdec->sequence);
+ }
+@@ -1103,18 +1173,30 @@ static int vdec_response_frame(struct vpu_inst *inst, struct vb2_v4l2_buffer *vb
+ 	if (!vbuf)
+ 		return -EINVAL;
+ 
+-	if (vdec->slots[vbuf->vb2_buf.index]) {
+-		dev_err(inst->dev, "[%d] repeat alloc fs %d\n",
+-			inst->id, vbuf->vb2_buf.index);
++	vpu_buf = to_vpu_vb2_buffer(vbuf);
++	if (vpu_buf->fs_id < 0 || vpu_buf->fs_id >= vdec->slot_count) {
++		dev_err(inst->dev, "invalid fs %d for v4l2 buffer %d\n",
++			vpu_buf->fs_id, vbuf->vb2_buf.index);
+ 		return -EINVAL;
+ 	}
+ 
++	if (vdec->slots[vpu_buf->fs_id].curr) {
++		if (vdec->slots[vpu_buf->fs_id].curr != vpu_buf) {
++			vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
++			vdec->slots[vpu_buf->fs_id].pend = vpu_buf;
++		} else {
++			vpu_set_buffer_state(vbuf, vdec->slots[vpu_buf->fs_id].state);
++		}
++		dev_err(inst->dev, "[%d] repeat alloc fs %d (v4l2 index %d)\n",
++			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index);
++		return -EAGAIN;
++	}
++
+ 	dev_dbg(inst->dev, "[%d] state = %s, alloc fs %d, tag = 0x%x\n",
+ 		inst->id, vpu_codec_state_name(inst->state), vbuf->vb2_buf.index, vdec->seq_tag);
+-	vpu_buf = to_vpu_vb2_buffer(vbuf);
+ 
+ 	memset(&info, 0, sizeof(info));
+-	info.id = vbuf->vb2_buf.index;
++	info.id = vpu_buf->fs_id;
+ 	info.type = MEM_RES_FRAME;
+ 	info.tag = vdec->seq_tag;
+ 	info.luma_addr = vpu_get_vb_phy_addr(&vbuf->vb2_buf, 0);
+@@ -1129,12 +1211,13 @@ static int vdec_response_frame(struct vpu_inst *inst, struct vb2_v4l2_buffer *vb
+ 	if (ret)
+ 		return ret;
+ 
+-	vpu_buf->tag = info.tag;
+ 	vpu_buf->luma = info.luma_addr;
+ 	vpu_buf->chroma_u = info.chroma_addr;
+ 	vpu_buf->chroma_v = 0;
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_INUSE);
+-	vdec->slots[info.id] = vpu_buf;
++	vdec->slots[info.id].tag = info.tag;
++	vdec->slots[info.id].curr = vpu_buf;
++	vdec->slots[info.id].state = VPU_BUF_STATE_INUSE;
+ 	vdec->req_frame_count--;
+ 
+ 	return 0;
+@@ -1195,25 +1278,47 @@ static void vdec_recycle_buffer(struct vpu_inst *inst, struct vb2_v4l2_buffer *v
+ 	v4l2_m2m_buf_queue(inst->fh.m2m_ctx, vbuf);
+ }
+ 
+-static void vdec_clear_slots(struct vpu_inst *inst)
++static void vdec_release_curr_frame_store(struct vpu_inst *inst, u32 id)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+ 	struct vpu_vb2_buffer *vpu_buf;
+ 	struct vb2_v4l2_buffer *vbuf;
++
++	if (id >= vdec->slot_count)
++		return;
++	if (!vdec->slots[id].curr)
++		return;
++
++	vpu_buf = vdec->slots[id].curr;
++	vbuf = &vpu_buf->m2m_buf.vb;
++
++	vdec_response_fs_release(inst, id, vdec->slots[id].tag);
++	if (vpu_buf->fs_id == id) {
++		if (vpu_buf->state != VPU_BUF_STATE_READY)
++			vdec_recycle_buffer(inst, vbuf);
++		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++	}
++
++	vdec->slots[id].curr = NULL;
++	vdec->slots[id].state = VPU_BUF_STATE_IDLE;
++
++	if (vdec->slots[id].pend) {
++		vpu_set_buffer_state(&vdec->slots[id].pend->m2m_buf.vb, VPU_BUF_STATE_IDLE);
++		vdec->slots[id].pend = NULL;
++	}
++}
++
++static void vdec_clear_slots(struct vpu_inst *inst)
++{
++	struct vdec_t *vdec = inst->priv;
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(vdec->slots); i++) {
+-		if (!vdec->slots[i])
++	for (i = 0; i < vdec->slot_count; i++) {
++		if (!vdec->slots[i].curr)
+ 			continue;
+ 
+-		vpu_buf = vdec->slots[i];
+-		vbuf = &vpu_buf->m2m_buf.vb;
+-
+ 		vpu_trace(inst->dev, "clear slot %d\n", i);
+-		vdec_response_fs_release(inst, i, vpu_buf->tag);
+-		vdec_recycle_buffer(inst, vbuf);
+-		vdec->slots[i]->state = VPU_BUF_STATE_IDLE;
+-		vdec->slots[i] = NULL;
++		vdec_release_curr_frame_store(inst, i);
+ 	}
+ }
+ 
+@@ -1354,39 +1459,29 @@ static void vdec_event_req_fs(struct vpu_inst *inst, struct vpu_fs_info *fs)
+ static void vdec_evnet_rel_fs(struct vpu_inst *inst, struct vpu_fs_info *fs)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+-	struct vpu_vb2_buffer *vpu_buf;
+-	struct vb2_v4l2_buffer *vbuf;
+ 
+-	if (!fs || fs->id >= ARRAY_SIZE(vdec->slots))
++	if (!fs || fs->id >= vdec->slot_count)
+ 		return;
+ 	if (fs->type != MEM_RES_FRAME)
+ 		return;
+ 
+-	if (fs->id >= vpu_get_num_buffers(inst, inst->cap_format.type)) {
++	if (fs->id >= vdec->slot_count) {
+ 		dev_err(inst->dev, "[%d] invalid fs(%d) to release\n", inst->id, fs->id);
+ 		return;
+ 	}
+ 
+ 	vpu_inst_lock(inst);
+-	vpu_buf = vdec->slots[fs->id];
+-	vdec->slots[fs->id] = NULL;
+-
+-	if (!vpu_buf) {
++	if (!vdec->slots[fs->id].curr) {
+ 		dev_dbg(inst->dev, "[%d] fs[%d] has bee released\n", inst->id, fs->id);
+ 		goto exit;
+ 	}
+ 
+-	vbuf = &vpu_buf->m2m_buf.vb;
+-	if (vpu_get_buffer_state(vbuf) == VPU_BUF_STATE_DECODED) {
++	if (vdec->slots[fs->id].state == VPU_BUF_STATE_DECODED) {
+ 		dev_dbg(inst->dev, "[%d] frame skip\n", inst->id);
+ 		vdec->sequence++;
+ 	}
+ 
+-	vdec_response_fs_release(inst, fs->id, vpu_buf->tag);
+-	if (vpu_get_buffer_state(vbuf) != VPU_BUF_STATE_READY)
+-		vdec_recycle_buffer(inst, vbuf);
+-
+-	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++	vdec_release_curr_frame_store(inst, fs->id);
+ 	vpu_process_capture_buffer(inst);
+ 
+ exit:
+@@ -1582,6 +1677,11 @@ static void vdec_cleanup(struct vpu_inst *inst)
+ 		return;
+ 
+ 	vdec = inst->priv;
++	if (vdec) {
++		kfree(vdec->slots);
++		vdec->slots = NULL;
++		vdec->slot_count = 0;
++	}
+ 	vfree(vdec);
+ 	inst->priv = NULL;
+ 	vfree(inst);
+@@ -1713,11 +1813,43 @@ static int vdec_stop_session(struct vpu_inst *inst, u32 type)
+ 	return 0;
+ }
+ 
+-static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
++static int vdec_get_slot_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
+ {
+ 	struct vdec_t *vdec = inst->priv;
++	struct vpu_vb2_buffer *vpu_buf;
+ 	int num = -1;
+ 
++	vpu_inst_lock(inst);
++	if (i >= vdec->slot_count || !vdec->slots[i].addr)
++		goto exit;
++
++	vpu_buf = vdec->slots[i].curr;
++
++	num = scnprintf(str, size, "slot[%2d] :", i);
++	if (vpu_buf) {
++		num += scnprintf(str + num, size - num, " %2d",
++				 vpu_buf->m2m_buf.vb.vb2_buf.index);
++		num += scnprintf(str + num, size - num, "; state = %d", vdec->slots[i].state);
++	} else {
++		num += scnprintf(str + num, size - num, " -1");
++	}
++
++	if (vdec->slots[i].pend)
++		num += scnprintf(str + num, size - num, "; %d",
++				 vdec->slots[i].pend->m2m_buf.vb.vb2_buf.index);
++
++	num += scnprintf(str + num, size - num, "\n");
++exit:
++	vpu_inst_unlock(inst);
++
++	return num;
++}
++
++static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i)
++{
++	struct vdec_t *vdec = inst->priv;
++	int num;
++
+ 	switch (i) {
+ 	case 0:
+ 		num = scnprintf(str, size,
+@@ -1771,6 +1903,7 @@ static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 size, u32 i
+ 				vdec->codec_info.vui_present);
+ 		break;
+ 	default:
++		num = vdec_get_slot_debug_info(inst, str, size, i - 10);
+ 		break;
+ 	}
+ 
+@@ -1794,6 +1927,8 @@ static struct vpu_inst_ops vdec_inst_ops = {
+ 	.get_debug_info = vdec_get_debug_info,
+ 	.wait_prepare = vpu_inst_unlock,
+ 	.wait_finish = vpu_inst_lock,
++	.attach_frame_store = vdec_attach_frame_store,
++	.reset_frame_store = vdec_reset_frame_store,
+ };
+ 
+ static void vdec_init(struct file *file)
+@@ -1834,6 +1969,16 @@ static int vdec_open(struct file *file)
+ 		return -ENOMEM;
+ 	}
+ 
++	vdec->slots = kmalloc_array(VDEC_SLOT_CNT_DFT,
++				    sizeof(*vdec->slots),
++				    GFP_KERNEL | __GFP_ZERO);
++	if (!vdec->slots) {
++		vfree(vdec);
++		vfree(inst);
++		return -ENOMEM;
++	}
++	vdec->slot_count = VDEC_SLOT_CNT_DFT;
++
+ 	inst->ops = &vdec_inst_ops;
+ 	inst->formats = vdec_formats;
+ 	inst->type = VPU_CORE_TYPE_DEC;
+diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platform/amphion/vpu.h
+index 978971712742..d8100da160d1 100644
+--- a/drivers/media/platform/amphion/vpu.h
++++ b/drivers/media/platform/amphion/vpu.h
+@@ -223,6 +223,8 @@ struct vpu_inst_ops {
+ 	int (*get_debug_info)(struct vpu_inst *inst, char *str, u32 size, u32 i);
+ 	void (*wait_prepare)(struct vpu_inst *inst);
+ 	void (*wait_finish)(struct vpu_inst *inst);
++	void (*attach_frame_store)(struct vpu_inst *inst, struct vb2_buffer *vb);
++	void (*reset_frame_store)(struct vpu_inst *inst);
+ };
+ 
+ struct vpu_inst {
+@@ -297,7 +299,8 @@ enum {
+ 	VPU_BUF_STATE_DECODED,
+ 	VPU_BUF_STATE_READY,
+ 	VPU_BUF_STATE_SKIP,
+-	VPU_BUF_STATE_ERROR
++	VPU_BUF_STATE_ERROR,
++	VPU_BUF_STATE_CHANGED
+ };
+ 
+ struct vpu_vb2_buffer {
+@@ -306,8 +309,8 @@ struct vpu_vb2_buffer {
+ 	dma_addr_t chroma_u;
+ 	dma_addr_t chroma_v;
+ 	unsigned int state;
+-	u32 tag;
+ 	u32 average_qp;
++	s32 fs_id;
+ };
+ 
+ void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);
+diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/platform/amphion/vpu_dbg.c
+index 940e5bda5fa3..497ae4e8a229 100644
+--- a/drivers/media/platform/amphion/vpu_dbg.c
++++ b/drivers/media/platform/amphion/vpu_dbg.c
+@@ -48,6 +48,7 @@ static char *vpu_stat_name[] = {
+ 	[VPU_BUF_STATE_READY] = "ready",
+ 	[VPU_BUF_STATE_SKIP] = "skip",
+ 	[VPU_BUF_STATE_ERROR] = "error",
++	[VPU_BUF_STATE_CHANGED] = "changed",
+ };
+ 
+ static inline const char *to_vpu_stat_name(int state)
+@@ -164,6 +165,7 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 	for (i = 0; i < vb2_get_num_buffers(vq); i++) {
+ 		struct vb2_buffer *vb;
+ 		struct vb2_v4l2_buffer *vbuf;
++		struct vpu_vb2_buffer *vpu_buf;
+ 
+ 		vb = vb2_get_buffer(vq, i);
+ 		if (!vb)
+@@ -173,13 +175,24 @@ static int vpu_dbg_instance(struct seq_file *s, void *data)
+ 			continue;
+ 
+ 		vbuf = to_vb2_v4l2_buffer(vb);
++		vpu_buf = to_vpu_vb2_buffer(vbuf);
+ 
+ 		num = scnprintf(str, sizeof(str),
+-				"capture[%2d] state = %10s, %8s\n",
++				"capture[%2d] state = %10s, %8s",
+ 				i, vb2_stat_name[vb->state],
+ 				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
+ 		if (seq_write(s, str, num))
+ 			return 0;
++
++		if (vpu_buf->fs_id >= 0) {
++			num = scnprintf(str, sizeof(str), "; fs %d", vpu_buf->fs_id);
++			if (seq_write(s, str, num))
++				return 0;
++		}
++
++		num = scnprintf(str, sizeof(str), "\n");
++		if (seq_write(s, str, num))
++			return 0;
+ 	}
+ 
+ 	num = scnprintf(str, sizeof(str), "sequence = %d\n", inst->sequence);
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index 50aeb69d2c66..37ef706c29dd 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -500,14 +500,25 @@ static int vpu_vb2_queue_setup(struct vb2_queue *vq,
+ 		call_void_vop(inst, release);
+ 	}
+ 
++	if (V4L2_TYPE_IS_CAPTURE(vq->type))
++		call_void_vop(inst, reset_frame_store);
++
+ 	return 0;
+ }
+ 
+ static int vpu_vb2_buf_init(struct vb2_buffer *vb)
+ {
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
++	struct vpu_vb2_buffer *vpu_buf = to_vpu_vb2_buffer(vbuf);
++	struct vpu_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
+ 
++	vpu_buf->fs_id = -1;
+ 	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
++
++	if (!inst->ops->attach_frame_store || V4L2_TYPE_IS_OUTPUT(vb->type))
++		return 0;
++
++	call_void_vop(inst, attach_frame_store, vb);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0-rc1
+
