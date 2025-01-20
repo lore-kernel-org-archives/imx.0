@@ -1,121 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4135C1B982E;
-	Mon, 20 Jan 2025 15:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B8E1EF080;
+	Mon, 20 Jan 2025 19:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737385307; cv=none; b=oEZtHL7ipt3IivutduQur0BsEUhifLxY12iDvCNZDb4i9uUt4jLoAd32PlripvzdAGXlGrFobWcp+dodGk+W6FnnokT80Ty5jOgTxTxQtjsLxRflPyMGm5bg2DDwP6rggHglbE1Q+T65G0Sxy9nQjtdgDByoaJ1Qmae6hOF3uVk=
+	t=1737402239; cv=none; b=CVdoCuCwDu6qVX328/m0pOEWQCPVDYQrystTTPtTFmjaQg8fLEPqX7hVSESlxxzlDZro7ZNPwyHsVNcVPOusSZPl8APdyB2s99ZDMf1A0q+W3rFL8b1v/wkCMsm1xyBEYp4QmpezEnY56j26bu2eiAmEKCld6fbtNeXDw3VPtIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737385307; c=relaxed/simple;
-	bh=t9cJzzM752GAraX+bd6RMMK5H5I0NUGxSd1HtsC0j9o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KDBWbVdJ1rzCnkwylefmWopNZO7q/w88iNVB6Or20eLlV2sjy7LMYxe4/Myrnje/qbxLZzyt2wYUD3palUelkjbuslrlflL0d8gKyeOWRbt0CIdtQru7QS3O5O3W8vYOp8ejn45aa1ce76mquBdh7ObTtC+zowKNr50uCyGG0V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMjpF11i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737402239; c=relaxed/simple;
+	bh=KIwQ96tcbKsNvtTiJ7Sp5Kac727a4bUVsOQMTqS4RJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UQN4G7KOr+a/jKa2ADdkxMbovmJZhV1ld43V7IohPjhXTlIdqaRjEbDjil99U/nZiN6ymSCC/cj0iObcv6dZmsQO5f3BsDzcYRS6rQcQ5eXt98+jggcakyspO30RdUjY0WMvbjpVcBYCEGBJd9t1lJQQ54uL3DXdy4PBB+1I5/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KkIDy/mE; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMjpF11i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B81C4CEE1;
-	Mon, 20 Jan 2025 15:01:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737385306;
-	bh=t9cJzzM752GAraX+bd6RMMK5H5I0NUGxSd1HtsC0j9o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gMjpF11i/xZToGsyanYZs/X4nF2TcRC8xBtQPFaJJGx/IKfwLLWMJQiIkIhUh5Hwk
-	 V56zuiuYsNDKSCQtWwDOppyM3u9mYgWojhlCXLrgqwklTMAlHC8ent/pxquZf6ahQZ
-	 TSuhCOgtagkuahppizse3RV6jY/ZzXaBfkrCOgRPCUx6FgVBwyR3jXZn7dscI2I3u8
-	 5ljmjiEkRH8V7PpP5l2Q/dIHIcy23T2BJK7vQN45OkIMNgE/IaK3x9383gVpN2cYuE
-	 LmSwucPTEmIRjB0JGkpNZHW04hJaPJ8ewObFLa7vFB14egXUcXc08RylfPKp7DQFPG
-	 RAXI4E+0OrVEQ==
-Message-ID: <000e44f1-839e-4f43-9bb1-ae53d6826ff7@kernel.org>
-Date: Mon, 20 Jan 2025 16:01:40 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KkIDy/mE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737402238; x=1768938238;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KIwQ96tcbKsNvtTiJ7Sp5Kac727a4bUVsOQMTqS4RJg=;
+  b=KkIDy/mEqlsA/s5AP5l3MwAqc80Ixp04bTbTyVPkcV15J5kstDJivrED
+   PelqBEczZDZEwto0ff32PTFQiWbqpfhaCVnzVzY+sa4ROvuenH+ru4LZG
+   Nj+XQaudKmUT80ZWajJ9ueR90xvuGNrwkII/BH2xTrNSIR4Ta2WVc+IoW
+   q9ba1v9iy0oUowG+x4IieUjcUsv0c6sr/bWoUrRFQ7BMCNy16YPl4FBGP
+   zVn2pqueJMbc6p1R+tmK+D3O9BAuCYbOd1lJiGTaE2wIWF4PMKExch1a+
+   ZB5bbYGnLTVy3os+h3oQKggbzhMlrXtyh/991cmYEpFRDGJo1zIWgLU2X
+   w==;
+X-CSE-ConnectionGUID: 9QgIs4ypTgml+M2hnFHX8w==
+X-CSE-MsgGUID: CybPZVwkSmK2pwt1clH55Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37681902"
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
+   d="scan'208";a="37681902"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2025 11:43:57 -0800
+X-CSE-ConnectionGUID: zmRDdNRTRJ6GTy6M+h+jzQ==
+X-CSE-MsgGUID: kPy9akuURPWUJQvFuXE8rQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,220,1732608000"; 
+   d="scan'208";a="106419830"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 20 Jan 2025 11:43:53 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tZxgd-000Wvf-2W;
+	Mon, 20 Jan 2025 19:43:51 +0000
+Date: Tue, 21 Jan 2025 03:43:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v12 4/5] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Message-ID: <202501210346.wYxcOI66-lkp@intel.com>
+References: <20250120-imx-se-if-v12-4-c5ec9754570c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] Re: [PATCH v12 2/5] dt-bindings: arm: fsl: add imx-se-fw
- binding doc
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Conor Dooley <conor@kernel.org>
-References: <20250120-imx-se-if-v12-0-c5ec9754570c@nxp.com>
- <20250120-imx-se-if-v12-2-c5ec9754570c@nxp.com>
- <6110fd00-c050-4bcf-8971-674bc8c0bfc7@kernel.org>
- <AM9PR04MB86049239156AC82F0AA4BCCA95E72@AM9PR04MB8604.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <AM9PR04MB86049239156AC82F0AA4BCCA95E72@AM9PR04MB8604.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120-imx-se-if-v12-4-c5ec9754570c@nxp.com>
 
-On 20/01/2025 14:07, Pankaj Gupta wrote:
->> Driver configures multiple misc-device on the MU, for multiple
->> user-space applications, to be able to communicate over single MU.
->>
->> It exists on some i.MX processors. e.g. i.MX8ULP, i.MX93 etc.
->>
->> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
->> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
->> Reviewed-by: Conor Dooley <conor@kernel.org>
-> 
->> Where Conor's review tag was actually given?
-> On v6.
+Hi Pankaj,
 
-I already looked there. No trace for tag. Please point to the message.
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Krzysztof
+[auto build test WARNING on ffd294d346d185b70e28b1a28abe367bbfe53c04]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20250120-193050
+base:   ffd294d346d185b70e28b1a28abe367bbfe53c04
+patch link:    https://lore.kernel.org/r/20250120-imx-se-if-v12-4-c5ec9754570c%40nxp.com
+patch subject: [PATCH v12 4/5] firmware: imx: add driver for NXP EdgeLock Enclave
+config: arm64-randconfig-002-20250121 (https://download.01.org/0day-ci/archive/20250121/202501210346.wYxcOI66-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250121/202501210346.wYxcOI66-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501210346.wYxcOI66-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/firmware/imx/se_ctrl.c:505:12: warning: 'se_resume' defined but not used [-Wunused-function]
+     505 | static int se_resume(struct device *dev)
+         |            ^~~~~~~~~
+>> drivers/firmware/imx/se_ctrl.c:491:12: warning: 'se_suspend' defined but not used [-Wunused-function]
+     491 | static int se_suspend(struct device *dev)
+         |            ^~~~~~~~~~
+   drivers/firmware/imx/se_ctrl.c:228:12: warning: 'se_load_firmware' defined but not used [-Wunused-function]
+     228 | static int se_load_firmware(struct se_if_priv *priv)
+         |            ^~~~~~~~~~~~~~~~
+
+
+vim +/se_resume +505 drivers/firmware/imx/se_ctrl.c
+
+   490	
+ > 491	static int se_suspend(struct device *dev)
+   492	{
+   493		struct se_if_priv *priv = dev_get_drvdata(dev);
+   494		struct se_fw_load_info *load_fw;
+   495		int ret = 0;
+   496	
+   497		load_fw = get_load_fw_instance(priv);
+   498	
+   499		if (load_fw->imem_mgmt)
+   500			ret = se_save_imem_state(priv, &load_fw->imem);
+   501	
+   502		return ret;
+   503	}
+   504	
+ > 505	static int se_resume(struct device *dev)
+   506	{
+   507		struct se_if_priv *priv = dev_get_drvdata(dev);
+   508		struct se_fw_load_info *load_fw;
+   509	
+   510		load_fw = get_load_fw_instance(priv);
+   511	
+   512		if (load_fw->imem_mgmt)
+   513			se_restore_imem_state(priv, &load_fw->imem);
+   514	
+   515		return 0;
+   516	}
+   517	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
