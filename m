@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F21E2317
-	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2AB1E32B9
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 13:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737379529; cv=none; b=BTrhhrPU69qdEbnzM7wgq2HoIP+6gu/HznkFnuOdd0UP96j38i9UkEsgvVOAQYh40YioP0yGtzyZrkoUAJdpuPOPmuM4vS96U54NLF3wfTzfcCGS0UGkC5mZ+C9yAAm0AVbpG6/aFH4tg9rrKvBRNnSYFJoXP4wTJ3kozJnm8rQ=
+	t=1737379534; cv=none; b=XfrNgD5/h33dN1EAPX80rkTafBntlogtpU9tUfzcAOT3MSVc4JrgqqvkatzXAA0KCGFHi+9SSi7/aj7w12S1dV8xVdSHqXCDFutFYW5jC1k9sRCdzpwoXkIQAr56DYIyWmsqjuPn0jRNR3L0nLwt1fGdr8H7P2nAK0NbmZ4XNKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737379529; c=relaxed/simple;
-	bh=msJQYV4v6b18Hab2aHU0fsywuVQKlzT13JQnyHzjeLU=;
+	s=arc-20240116; t=1737379534; c=relaxed/simple;
+	bh=CDoJCZYfXtvsOYlJjgOQo3X29b6AM6JhGYKu2siHjsY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oljT2K6MnIL82GN6sivb21/aTsEb5pi9jwbl5h6IA7G0V2mnVOEW8i6IhcyZ1zSZ+KUcXmEYH93ZdC4CHU3LjIv9mr0YVwaD/86EfwjVWAROjuAIFANCBVjPcBmHJ2ydrrMQ4/xJPNY7Zoi765fJsTcbXzzTnk4k18Lok5GUwXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=NvCHlncO; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Z4qQ7i2I reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=g1am7FF5frgiLo7/Y0rhA33GUkocKVdh+SSi5C5vuRh/BxeDSdplICqyVN2kMO3Ap8lnMzUzmuR/F4k0ZL+305VaMhwpdHJKAkvOQwmNwyS4HksuZb/HCqg1/Fh7A6bTJgmh43Oxwj40IXaIZmIZvazNgqy1KhoXTCEV3RfmKSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=W/4ver2D; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lrDuZYiG reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="NvCHlncO";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Z4qQ7i2I"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="W/4ver2D";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lrDuZYiG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1737379527; x=1768915527;
+  t=1737379533; x=1768915533;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2c29wNKlu5vUAR2wt/xuZ3JMluICUzbKrNycz1Ea4Sc=;
-  b=NvCHlncOVaeovH+BUn71w/4iDnMhGZmNgeTbqZ8mAiRXTHJ3hoic/iTR
-   ayQGo/24T0DwPw3Bop0reEH1v288fImdjdPWdB1uDSIRXgIa+jAn6jfFa
-   p647L9fNec4Mo1AYB/im3d/AYf5Nh8AjNsr7SzZSPOaBHCP+Im6qHkxWh
-   0gtxE3aix+bQlScxOm6ybGopAldJNVShyGp2XfUK1KCZCXe7wOgUU3/ns
-   sFlwEHdKuAjay0lad2EY3nXJRadNSt9bpwQcp6M8y5y3luFL9pKUOG+0l
-   nt7o2ozfMi8mKYbC+Y3BNbY6JSQL7awQedzzsIXQvYjsYDAGzuBC6x113
-   A==;
-X-CSE-ConnectionGUID: SHd0UahgQCS/DT/OJBNsyQ==
-X-CSE-MsgGUID: 9EpY86SrTx2BP9VLjF0PTw==
+  bh=mRcssIy0D3wBhtQcXILEIWDG0AtdDcnDWd1hDsno3wA=;
+  b=W/4ver2DcFh3+G1s1ZsuvQw0pt9b5SrlJZ604AD2sVfJ58bc8SAPA+6Z
+   B5wFZzRNHU7SveO+OlS0l0x6jbhh5+Uj3XjgaQ2XDEF0M4RnmLycAQaw8
+   FuCN7e8bIKC344YKJ5b8HsJbSanCh9Mhd/SEbfxcAufiL5KQnVrmAuRZo
+   b65lQjYqmXR7Ishxy+e3/J2uCZtdsWy6uHUMEBqtCJWhYA9EPxQacOb39
+   Uvi/PaSr1JYjG4Ejl8Oe7CbhHezc9sF/GgSG6h4f3M5xWEkMSgDy1X/mX
+   bryzRNy3zGCBY+q2Uo+78DfzX0zjeOSrZA2V6oOeGq5bDU+Ljy3KqQrEt
+   w==;
+X-CSE-ConnectionGUID: iTqurQXYSkyRWVle7byU4w==
+X-CSE-MsgGUID: WwKgWIhZTQu0ioHIIgfXMw==
 X-IronPort-AV: E=Sophos;i="6.13,219,1732575600"; 
-   d="scan'208";a="41177845"
+   d="scan'208";a="41177850"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 20 Jan 2025 14:25:26 +0100
-X-CheckPoint: {678E4EC6-21-1CE016C0-E589DA3E}
-X-MAIL-CPID: 162C60AF69C19AE50821BCABEA4B7DB4_1
-X-Control-Analysis: str=0001.0A682F1F.678E4EC7.0009,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D4F9416F862;
-	Mon, 20 Jan 2025 14:25:21 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 20 Jan 2025 14:25:32 +0100
+X-CheckPoint: {678E4ECC-11-9B2B6168-EB6F31C5}
+X-MAIL-CPID: DC5E2AAD34FE55F2E840A13270981609_5
+X-Control-Analysis: str=0001.0A682F15.678E4ECC.003B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4FAAC16F538;
+	Mon, 20 Jan 2025 14:25:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1737379522;
+	s=dkim; t=1737379527;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2c29wNKlu5vUAR2wt/xuZ3JMluICUzbKrNycz1Ea4Sc=;
-	b=Z4qQ7i2IAh1jVarZ9dc+WnQjE6Xp0fAq5H1CYkZvAXoYn+2Tg/ujaK8S3vOucK6HbREoVg
-	uRGjaLX/ia78gHUII2Sar2PbK5OGErFemQxZbp4/6J26tChRAUQHRn4u0Jr7SnBuDCxXgZ
-	PzXhY8TYnDzB6STV99DuF0BP/58h08Fo4b50qGxbYTt1oqiNnDtJj1PHUI3Z8tSJlN7xDE
-	qXvKqmpXJyuDXz02cNJPL1TKVCArvwrYWI+/Ma3TxX/MjaSM7n2d+K3h24KDGqZDHy4jhO
-	D2OjOW4yuFMxKoVTSvC/ijM4NdLLLy8wlxIrrJyvAzKKP3jjGRuVxZmow24x/g==
+	bh=mRcssIy0D3wBhtQcXILEIWDG0AtdDcnDWd1hDsno3wA=;
+	b=lrDuZYiGY7PNHdU/Y0+ppDaxqp3+Z0x36gCZF1AOMNwkxQfeMqTJSLnCxSgnYYPCI3trWq
+	kU3phdcTfxZPsVLczcKpWcpJ/nf7eCgGdxhHKXzAzS8vV9cmZpveD7UscTD9zgxogGf0Rm
+	camcUTANG6OynMqUbtsYHNBBR/4M9Z1c1soSilnxM7uav1WVcYREVreKKT4CA0OF/jYG2I
+	qyDtXfEkSznvGSrDms8Y6gvOdZvkAf9rQLKrzGuQcsKjLU4oJYvzBI3/eU6UYhX6S8LHhG
+	G5oLQ/pJ4hK+xGB42yflhx8NQbPao5jQQERE0zMzXC0tgL8Bf0ToMAyWPCJ1iA==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 4/5] arm64: dts: imx8mp-tqma8mpql-mba8mpxl: change sound card model name
-Date: Mon, 20 Jan 2025 14:25:01 +0100
-Message-Id: <20250120132503.556547-4-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 5/5] arm64: dts: mba8mx: change sound card model name
+Date: Mon, 20 Jan 2025 14:25:02 +0100
+Message-Id: <20250120132503.556547-5-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250120132503.556547-1-alexander.stein@ew.tq-group.com>
 References: <20250120132503.556547-1-alexander.stein@ew.tq-group.com>
@@ -97,22 +97,22 @@ asound.conf in BSP over all the kits.
 Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 2 +-
+ arch/arm64/boot/dts/freescale/mba8mx.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 730fdd85d731f..f20e022937567 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -241,7 +241,7 @@ linux,cma {
+diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+index 124a2544826c9..0931f680e6875 100644
+--- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
++++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+@@ -158,7 +158,7 @@ reg_vcc_5v0: regulator-5v0 {
  
- 	sound {
+ 	sound: sound {
  		compatible = "fsl,imx-audio-tlv320aic32x4";
--		model = "tq-tlv320aic32x";
+-		model = "imx-audio-tlv320aic32x4";
 +		model = "tqm-tlv320aic32";
- 		audio-asrc = <&easrc>;
- 		audio-cpu = <&sai3>;
+ 		ssi-controller = <&sai3>;
  		audio-codec = <&tlv320aic3x04>;
+ 	};
 -- 
 2.34.1
 
