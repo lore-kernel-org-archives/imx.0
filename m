@@ -1,132 +1,106 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ED9188938
-	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 09:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1D18FDC8
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 10:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737366403; cv=none; b=t8WOkXL2/t4fsPyrRLL3fePX4N2tNZkJlFPifM6+Zg+YtXqFVo0kzrsDM48xCR8TuKWGPObWYlCG0TH9wQi6hvHY1wNkkfWCYoArPrNmhUvmO4BTs87U10Il1cpR+efhbUItEEI0O/8531+rBNs7RqoRhZmuXy2iEv59VwIDgzY=
+	t=1737368483; cv=none; b=TgoSpxDDXPAfUDhCRDZkcUoFITihrn5DwP3AdYjPYG4FBNL6mp4SzFQHgci9eIMob76F+oPvwzfWuqe1lvRcQtA8o4pb2qXhV4mBZrPFwMi4rcDzxWDpK/b74lBbjvgvOKVy3S5FPKlVYXJRm3OmavPC0mgcnEbZOSqg/6aeJi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737366403; c=relaxed/simple;
-	bh=RpSR9aKkbWRgfacKOSdvE1hTVEa5uy8lYd+oEjn5u0g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LEbeJFjfyjXRlciV3fdOq2lKnZR3n0cM5wbmpkujXAa1tFNT87X6jCv3v2UiJ3ry9ERak7c8HfxyoTQieNlZEe3Nm2tWEbjyvrkNXFoKANJZUPGuPU15U1VeHE39ljLovK25IUsQQ7zPlZIbsgJEOIFXJFRz3CGr181ej9SiMbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3LTxuQB; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737368483; c=relaxed/simple;
+	bh=Xqs8/c2crgNvrXPRWU9PaaEgrFF7yD7OP3+3a61m01A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oEE2uE6kJIxp6KV7Rtoq+Z5CKYNtqWLmXIdoZvomLRhuq0UIWpg84ZsQ90q8jJYaRbY7jwLIwIEq8jzafezSu1z2fYd6q0uw10M7RDF44kBufCoCC83E1g5vCCMQ14auHxNd2K2GQoRTTJd9rAKIQyVgWNDAFgNmkQ21Q0V1kKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CpvkaGTX; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3LTxuQB"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4361815b96cso28686665e9.1
-        for <imx@lists.linux.dev>; Mon, 20 Jan 2025 01:46:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737366400; x=1737971200; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KS/16UvSfEHeMPEs5zPlC9256JErSLdmqszpJR3Jvck=;
-        b=D3LTxuQBr6St14oQNclzVfiYiphJ+ZX7a2ApplCtLgUISZnuGZQUnMHN71uoPQvQKM
-         hi3+uZW1lEZU/0ErXU7E0C7b2uHqXxCYtKeK2M4pDT/Al/HqdEhH1tTDGs/acpnFq00e
-         SMkrfcEhqtFZwJD9HymTFN97kiWYPgQjWOXAh+9ZwTQ3f+jWFGvy9TG52oiX8cAKg4s4
-         e2HGgRQAL0PXcxCZXuLLm437Kgx+IQeR+YyXjhB/Vl7T3Re+gySot4A9vzOHQHvOf+/E
-         pgRcIZWXBmEC+gbQMoz1qd4WbQOboxGOM93t1ggrUKtxg6MZEYQgNWuu566f9Nz5Lxni
-         1m5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737366400; x=1737971200;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KS/16UvSfEHeMPEs5zPlC9256JErSLdmqszpJR3Jvck=;
-        b=ulp5tHQhnRoY47M5dR+x3fPCaua7jU99kT5poCLoTqvSvjr9Ce+hkT02+ClwYZT3uA
-         uKVa2iaSfa2rro9RdKNPQPUR2/KBD1CIRHtzJem4P/2VzXVHRo3+uyYsSpW6t7OjSSr/
-         hUqdfcsitUGb4p5+SoRkDzBtHUiQE11HbammWDzfk7AI5DT+xHOWf6NnQtddMHInb1P+
-         EBZzPsNe0H01tEUq/Ery6o1hqM79j6D07zzLSURYthOenGrn998dUX+EpQskt2kkry3h
-         K/EUSO09k5C0rmyG6+VCUe7ke8Id7+b9qmcpWmLXlpSP8uDH8lia1MiBAcMlhyCpwBHW
-         HGyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfvlebrbzZyawFM6nIKKGTvHXYSn5WmfulbqSjbKj9LhG4uHaUZ64NzaJcqeS+Cp1WNTA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxMYN5vd8DYnZP+ELVl1JGUHxUUZBKlD/RwxUfbbuoKQYU0hpAy
-	1t9m7sNZ09e1Lu2N8ReGIDkr2Z9qa4+Ac+AnzaAcZjon23RpnC/W
-X-Gm-Gg: ASbGnctfB2ux7lxMzazJ8Mg8IAV0oiPhf3c3lvYVONxj/YXAT22iNfHyeYn5jT64uWx
-	g7JuEbvGIC5w2a1EmIL9MGrQY7RZIOGJDoTwv1gPKWDUZEv2dimxh4wJ6pENj/Uo8CybOiNEaMR
-	jzaTEdw49qZpQTFe4pInlbYbOykyfzFsmar1DF80wJHrS1JBnaYxcfnDsr3hLMo2S6sJ/FoPgq0
-	+9+ecbxDp9A7vtOTgJ/u674ciXGjfReu4orHeCEfWf3QB5mB38tJQyUJQxzhX9h7b5DT2VmAhBj
-	vM2fLRojjA==
-X-Google-Smtp-Source: AGHT+IE/e8Y0UzEMao6atgZUbcfEv/3tvajzHUJl3OU3gm5cGx1+LX4SFiUZ76g9wAqK/F4I8/8cRw==
-X-Received: by 2002:a05:600c:4894:b0:434:a7e7:a1ca with SMTP id 5b1f17b1804b1-43891427762mr99548035e9.20.1737366398007;
-        Mon, 20 Jan 2025 01:46:38 -0800 (PST)
-Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:cc96:d269:5cab:960d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74c4e38sm191197065e9.21.2025.01.20.01.46.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 01:46:37 -0800 (PST)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	francesco.dolcini@toradex.com,
-	shengjiu.wang@gmail.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH v1] arm64: dts: imx8-apalis: add clock configuration for 44.1 kHz hdmi audio
-Date: Mon, 20 Jan 2025 10:45:22 +0100
-Message-ID: <20250120094632.13894-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CpvkaGTX"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4DC916000C;
+	Mon, 20 Jan 2025 10:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737368479;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zkzZNKW8eL7DBqP7Z2NDJ6Qfzrf1J+jLV5t9JUsOcrc=;
+	b=CpvkaGTXv9QdI+B4g/m2HOTohSbLJ2NKlZPezKb46S9Rvvse2jHEFCOlfIVfSWNvPr37yy
+	9jZCkNcmVGS+yETVPjub0NDcGqK9HAdOYJGFHRKmN1NllEsZaCis71mTRBQywG32rvefpq
+	bGwYaZjHO3lTdeftSB2AXHDzj+bwBvXoDfwG1vF9XaZXxwfxzHl2YzQCMCuvQ5jPnhGbn1
+	gh4SGIei5u7rua7NR6ArWuOOmg6voBPWFKtmzXBu+SCf7Bcn87SrEYQUxHGsVxOc7+cLfE
+	kDbSZjmL5XiN8NBm/ho57/23I4dhYPTLXM4BW6Nh0ND549sArIse7As4aI49cQ==
+Date: Mon, 20 Jan 2025 11:21:17 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-rtc@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 0/4] rtc/scmi: Support multiple RTCs
+Message-ID: <20250120102117538ef59b@mail.local>
+References: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Hello,
 
-Currently, HDMI audio cannot play sound at a 44.1 kHz sample rate due to
-a clock frequency mismatch. This update resolves the issue by allowing
-the sai driver to change the clock parent to AUDIO_PLL_1 when the sample
-rate is 44.1 kHz. It also ensures that AUDIO_PLL_1 operates at the
-correct frequency for this configuration.
+On 20/01/2025 10:25:32+0800, Peng Fan (OSS) wrote:
+> i.MX95 System Manager(SM) BBM protocol exports two RTCs for EVK board.
+> one RTC is SoC internal RTC, the other is board RTC.
+> 
+> The current driver only use the 1st RTC. With this patchset, both RTCs
+> could be used in Linux. To achieve this:
+> 
+> 1. Support more event sources for BBM protocol
+> 2. Add bbm_info hook to let users could query the number of RTCs
+> 3. Introduce devm_rtc_allocate_device_priv to support setting rtc device
+>    private information
+> 4. Update rtc-imx-sm-bbm.c to register both RTCs
+> 
 
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
-This patch is based on the following discussion:
-https://lore.kernel.org/all/20250113094654.12998-1-eichest@gmail.com/
-We use the existing mechanisms and just add the missing clock
-configuration to our device tree.
+I'm sorry but no, you have to register two RTCs like any other system
+would do.
 
- .../boot/dts/freescale/imx8-apalis-v1.1.dtsi     | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Peng Fan (4):
+>       firmware: arm_scmi: imx: Support more event sources
+>       firmware: arm_scmi: imx: Introduce bbm_info hook
+>       rtc: Introduce devm_rtc_allocate_device_priv
+>       rtc: imx-sm-bbm: Support multiple RTCs
+> 
+>  drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c | 33 ++++++++++-
+>  drivers/rtc/class.c                                |  9 ++-
+>  drivers/rtc/dev.c                                  |  8 ++-
+>  drivers/rtc/interface.c                            | 16 ++---
+>  drivers/rtc/proc.c                                 |  2 +-
+>  drivers/rtc/rtc-imx-sm-bbm.c                       | 69 ++++++++++++++--------
+>  include/linux/rtc.h                                |  2 +
+>  include/linux/scmi_imx_protocol.h                  |  2 +
+>  8 files changed, 100 insertions(+), 41 deletions(-)
+> ---
+> base-commit: e7bb221a638962d487231ac45a6699fb9bb8f9fa
+> change-id: 20250116-rtc-3834e01786a8
+> 
+> Best regards,
+> -- 
+> Peng Fan <peng.fan@nxp.com>
+> 
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index a3fc945aea16..dbea1eefdeec 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -790,6 +790,22 @@ &sai1 {
- 	status = "okay";
- };
- 
-+/* Apalis HDMI Audio */
-+&sai5 {
-+	assigned-clocks = <&acm IMX_ADMA_ACM_SAI5_MCLK_SEL>,
-+			  <&acm IMX_ADMA_ACM_AUD_CLK1_SEL>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_MST_BUS>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_PLL>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_SLV_BUS>,
-+			  <&clk IMX_SC_R_AUDIO_PLL_1 IMX_SC_PM_CLK_MST_BUS>,
-+			  <&sai5_lpcg 0>;
-+	assigned-clock-parents = <&aud_pll_div0_lpcg 0>, <&aud_rec1_lpcg 0>;
-+	assigned-clock-rates = <0>, <0>, <786432000>, <49152000>, <12288000>,
-+			       <722534400>, <45158400>, <11289600>, <49152000>;
-+};
-+
- /* TODO: Apalis SATA1 */
- 
- /* Apalis SPDIF1 */
 -- 
-2.45.2
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
