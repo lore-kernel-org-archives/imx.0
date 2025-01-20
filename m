@@ -1,140 +1,156 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3424F191F6A;
-	Mon, 20 Jan 2025 08:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A356194C92
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 08:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737363090; cv=none; b=EPMzj+Fkgd8cXvnAc4WSUSK53sX2SRUwYaNOBTll2wUS6QYles9kTbIOABnHlzham4Hj1xlXkQbKpSySen5DNW2as2WA0IK/wkrEwaI5+Yj9+G6vSooCi5hImTu9elfInNdF+br9/9hQAY0wKub4uUyG9vRVz6L7lZvBZUB7arE=
+	t=1737363277; cv=none; b=qS3/Gjt5E5+/dNB6+EH7O1XEixHludxqf0KY6g2WpThXWHFYcW9e6RoVZmuuxy9UkiafRhsj7e62SSHxXvOif4vZvPrAJz4ka+KbnpoSLhu+OJ/MYsFyo2Mm+hR/uqt7A99Sj4TgkSMuuTq9dzNGFqN+2mjGzj9VugL1E6WviU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737363090; c=relaxed/simple;
-	bh=XGVXA8RFEid3r1QRColBlQttrSeJN5LcMuwzsp8evGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b7E0SImY2Hs2u74XoWvayt72XiyyhaE97G6a14DhcZE52FK8ax8WzWMBM9zL5bDFyi//dN6OsFaoEAR5kUEV3d2a8IOgYC44TIGCp0+1OjjZzL6oMZz1HnJCucs2kXAqEWSh+mTrSWcs4/Gb16JOBfdkP3pRrPPHo7e4nsfbo8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ORoPGZ87; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1737363277; c=relaxed/simple;
+	bh=ITRStiQHXvmZSkeU6QkY+Un384bN2CWEtLkFd5X62jM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R2CvfLZLaSqP8ZlBUCvfY8HOcV0nKoaefpHOVuz6ZwLFBurElBwYhNQW7FDxAE+maAE8VIHcnW0whkfJnUBzD8xAmYgkIiZD2KK9Q3ohoOCpQudb/r8aNLlL/m4uqX233e+w9UEAcN9g/w+DDRXugG6FmJ9IGB7U8NtiiEhc2zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3AeLPO2; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ORoPGZ87"
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9AED3735;
-	Mon, 20 Jan 2025 09:50:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1737363025;
-	bh=XGVXA8RFEid3r1QRColBlQttrSeJN5LcMuwzsp8evGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ORoPGZ873bLFpXc4xj0ZeN/6Lx5dqB9w0e97Rm1RwzB6B3smvYvJOGaAS4AdO2FdK
-	 uv1FmShTizPOz7DlEX13/kmFLevZy83ajoSYNtGKPOSQRWTZfN0EY8Cf3sW8dOQTLV
-	 iLeaw24LF8z2yQ15B8wAEXOEhqialqWrnRg2dKzA=
-Message-ID: <469daa7f-123b-41cb-a99c-4441436d82dc@ideasonboard.com>
-Date: Mon, 20 Jan 2025 10:51:23 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3AeLPO2"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21649a7bcdcso71962895ad.1
+        for <imx@lists.linux.dev>; Mon, 20 Jan 2025 00:54:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737363275; x=1737968075; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6gzGw0TGSeLlBT+PXh+TmInRomUcMmT6P6MAXrdk0NE=;
+        b=M3AeLPO22ZGRPkXpyOihfIFAIOyppg5EDvxhfygdWSuuOcuA4XRD6/mMhYcgQvn7HR
+         2CmgPeVE0SGjIDvWuR+sLrlF2ZB5VnitWmPMPp0cY/5QlI3ZUc3c7IAO6aOE/J14Zylu
+         cQcsDiEClvT5ZRGDsxpEyBEQMfmPS/nYc2FYMugWN9hZ8J5YjFZK17aGL9hxrjPi9LnG
+         TwWGV/ciEp5eC/C5hD+ODxERxlVFApDKcYtjjwCTR1V4V3SIeOsN0dcn80MiqsvmZ5oq
+         WZw6/7YHDNMUSf4A+N28dY/7ypAL7YZDvtldI+/kB3DbRd4jt9Tn/FRhOfY+PUidNU0j
+         /bNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737363275; x=1737968075;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6gzGw0TGSeLlBT+PXh+TmInRomUcMmT6P6MAXrdk0NE=;
+        b=X0Xj7De2CZOqyYx6FiENmtJP+vj7B4wIPPHAErVkEoqoFOJ9q9MZDfrNbKb5CZ2G6r
+         Ctv/3R+gdYGtBw9nCxWH7ElvWi7YlwLtoaeYrd3krXmdwAW+XdtluEcEAp3datDYZkYn
+         wsGUd+fxv6L+420/JlRBsLh7vAMc8LOxSF0/+NFSIu5Q5hivmA+ucktp4hhkfTjLZFd6
+         HruuFTbbik2uzgg1HfrWbI/zaUm0TYh3/RF5DkWR+0aZQjApFRJLDUZy9dTHc3pkI1w3
+         UAT4XpgoZvcOezZs52ss7+IhSZjlvIeB7eCE/c3faHXG48+aBvE8e+nd7owqA+adsI4b
+         TsMA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNgpdrh0yCjz3Gh0AK0j03qKUpP2f7fsMwrxQbVBL6OwtOp/nsMTOHKEtSTkcoFrllkPc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMXdvFBt7fmb99/DkwX/N1PpX4+dGyur4Am2nYuojGYGNKyxNT
+	53znBHC/PvaSNs7l7nJ2ubP+9yQN10NCZ4nzv2VXKggkjPW/f9cF
+X-Gm-Gg: ASbGnctYcD3w+U66DHbkFjN91idRf6F7vWfw+ksZ0mWEnj5pkyPL+2vODU+ylJMxMQg
+	YhW5ZXJs11SGvajxSgUbr+1f5o6YdadQWQcbJY082PXKIgesWGAzmzCrkAe0FyRzwexqo/QS+/x
+	s9NAgYG7E0+7avF6IQov+jJ/C5rJFk5eKqV9CbYwkZW+LG1RVRb0tM7u75bwpohpzc4VRw8hpZi
+	T+mqG3Eexh6S0e8XmHZYLZbLpGm3MjDOWrRCVPbhkXVYSD6eokovG/Ai1HLnz1zhcVyAbaA5w==
+X-Google-Smtp-Source: AGHT+IG1Ikwlf8hT9+rwA9+g+Ks4MwShL+e4FuTQhDR/yhQyIgu0oKyJOv++HVvQBmKvMMVognNZew==
+X-Received: by 2002:a17:902:d2cd:b0:216:5556:8b46 with SMTP id d9443c01a7336-21c3562998bmr173720355ad.49.1737363274809;
+        Mon, 20 Jan 2025 00:54:34 -0800 (PST)
+Received: from HOME-PC ([223.185.135.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3ac64csm57075545ad.149.2025.01.20.00.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2025 00:54:34 -0800 (PST)
+From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+To: wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Subject: [PATCH v4 net] net: fec: implement TSO descriptor cleanup
+Date: Mon, 20 Jan 2025 14:24:30 +0530
+Message-Id: <20250120085430.99318-1-dheeraj.linuxdev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 25/25] drm/xlnx: Compute dumb-buffer sizes with
- drm_mode_size_dumb()
-To: Thomas Zimmermann <tzimmermann@suse.de>,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Andy Yan <andyshrk@163.com>, Daniel Stone <daniel@fooishbar.org>
-References: <20250109150310.219442-1-tzimmermann@suse.de>
- <20250109150310.219442-26-tzimmermann@suse.de>
- <cdbe483d-0895-47aa-8c83-1c28220f4a02@ideasonboard.com>
- <bc97b92e-7f8a-4b92-af8a-20fa165ead55@suse.de>
- <f3ba05c7-6e49-4641-a3f9-ba418ebdb7c3@ideasonboard.com>
- <c6735280-7c32-4319-8ca9-a7305d8117c3@suse.de>
- <d67adb03-5cd0-4ac9-af58-cf4446dacee3@ideasonboard.com>
- <0ea6be58-0e04-4172-87cd-064a3e4a43bc@suse.de>
- <f35cb350-6be9-48ca-ad7e-e9dd418281d5@ideasonboard.com>
- <4af0b6a7-c16a-4187-bbf5-365a9c86de21@suse.de>
- <e327ad84-b5c9-4480-b873-dc3aca605538@ideasonboard.com>
- <a2bbeb47-2569-4ee0-9265-92bab139bdc6@suse.de>
- <f3833771-fcd7-45dc-9019-1525fef34429@ideasonboard.com>
- <156804a9-3095-4c93-888f-d9041f523da6@suse.de>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <156804a9-3095-4c93-888f-d9041f523da6@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Implement cleanup of descriptors in the TSO error path of
+fec_enet_txq_submit_tso(). The cleanup
 
-On 20/01/2025 09:49, Thomas Zimmermann wrote:
-> Hi
-> 
-> 
-> Am 16.01.25 um 11:03 schrieb Tomi Valkeinen:
-> [...]
->> Aligning video= and dumb buffers almost sounds like going backwards. 
->> video= parameter is bad,
-> 
-> Who told you that? Video= is still the way to specify an initial display 
-> mode to the kernel and it will remain so.
+- Unmaps DMA buffers for data descriptors skipping TSO header
+- Clears all buffer descriptors
+- Handles extended descriptors by clearing cbd_esc when enabled
 
-You did =). "It aligns dumb buffers and video=". I understand the need 
-for drm_driver_color_mode_format() for video=. But I think it's bad for 
-CREATE_DUMB, at least for the platforms which have never aimed for 
-"RGB-only".
+Fixes: 79f339125ea3 ("net: fec: Add software TSO support")
+Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+---
+Changelog:
+v4
+	- Add a blank line before return
+v3
+        - Update DMA unmapping logic to skip all TSO headers
+        - Use proper endianness conversion for DMA unmapping
+v2
+        - Add DMA unmapping for data descriptors
+        - Handle extended descriptor (bufdesc_ex) cleanup
+        - Move variable declarations to function scope
+ drivers/net/ethernet/freescale/fec_main.c | 31 ++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-So you're not in favor of a drm_mode_size_dumb() version that does not 
-use drm_driver_color_mode_format(), for these platforms? I'm still at 
-loss as to why we would want to change the behavior of CREATE_DUMB. I 
-see no upside, but I see the chance of regressions.
-
-  Tomi
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 68725506a095..f7c4ce8e9a26 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -840,6 +840,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+ 	int hdr_len, total_len, data_left;
+ 	struct bufdesc *bdp = txq->bd.cur;
++	struct bufdesc *tmp_bdp;
++	struct bufdesc_ex *ebdp;
+ 	struct tso_t tso;
+ 	unsigned int index = 0;
+ 	int ret;
+@@ -913,7 +915,34 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	return 0;
+ 
+ err_release:
+-	/* TODO: Release all used data descriptors for TSO */
++	/* Release all used data descriptors for TSO */
++	tmp_bdp = txq->bd.cur;
++
++	while (tmp_bdp != bdp) {
++		/* Unmap data buffers */
++		if (tmp_bdp->cbd_bufaddr &&
++		    !IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
++			dma_unmap_single(&fep->pdev->dev,
++					 fec32_to_cpu(tmp_bdp->cbd_bufaddr),
++					 fec16_to_cpu(tmp_bdp->cbd_datlen),
++					 DMA_TO_DEVICE);
++
++		/* Clear standard buffer descriptor fields */
++		tmp_bdp->cbd_sc = 0;
++		tmp_bdp->cbd_datlen = 0;
++		tmp_bdp->cbd_bufaddr = 0;
++
++		/* Handle extended descriptor if enabled */
++		if (fep->bufdesc_ex) {
++			ebdp = (struct bufdesc_ex *)tmp_bdp;
++			ebdp->cbd_esc = 0;
++		}
++
++		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
++	}
++
++	dev_kfree_skb_any(skb);
++
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
