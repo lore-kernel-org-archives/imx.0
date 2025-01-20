@@ -1,44 +1,44 @@
 Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C51B4143
-	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 09:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5181B4143
+	for <imx@lists.linux.dev>; Mon, 20 Jan 2025 09:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737364693; cv=fail; b=bXPaV7ixf/9q/mpW52j0KRjHfkrWGBLdayyHPbX8RkOqoKeIDMh78IZWs7JK1hlwDkIARHQT4AFOG14nPAl+H+FrfcifLC9cWywFPVGhbSMVsvndLcncIK3mKSkU+OaFOP+Bp7M1Z3aMO26+FXOB3uqEPwzVuX0/DBpd8rtRrvY=
+	t=1737364696; cv=fail; b=K/1R5EMJQBKeNLpoWmTpdn+ZuZI7dIP7kRq6NG6ZMah+2hY47P8QOU/x9v8aB10mzhMjTQlgjei3QzqclWE0JW4Z20MkuWPxI+BwTTO+Jz/EZGVx2BitGBMDGPCu58flur9x+rwVgLZfkRf0LV/Peks+dsK/xFGyluQLqFwI86M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737364693; c=relaxed/simple;
-	bh=vBQVQ2KcX4Gn+6VBUNnBbKVBLNR4H+jLY4Ui1UfI5pM=;
+	s=arc-20240116; t=1737364696; c=relaxed/simple;
+	bh=mjvACmW9M/gYjBcRxK7Belg2kf63njAPmgdHs8BTqAU=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZHSz5Yvo9WkHvyNVmlIQ7ObHUL9Xyx4Znm4c1cmGinTAq9V0GY8KuLKnLO270uIg90T31htGyPZhfd2Z9cZGjgFR02H4VooyGsqqu3aQIp0M81hQhTFs2Fby+J3gQkNJ/VgmnPW0j0WKY9Zykn9nKvNJoqim6PauN/g2l1Uf7bk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hcot0Q9/; arc=fail smtp.client-ip=40.107.20.71
+	 Content-Type:MIME-Version; b=Hrzn5rXUTrl6blG/ycD+Tuto3JA1BsIGIJyhKT/+4mCNvlIPJ5uWHXG1DyqTDBeDoHI6uQyG7FTh7HQ+iiEXO3VypvS7SjoWc0FvvVaJImNcujFO3LOUzTb54BmjLdesqJ9l7UVa7GVi7zqEE1pNFcAtTaYT2P7q4VWtTp6kfVg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SSM1WFjl; arc=fail smtp.client-ip=40.107.20.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hcot0Q9/"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SSM1WFjl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a/1Dji1mGyxgW/nZR/nk8TJ/YM7pkDDZlFmCcGCFvQqekMp/58quM3EeR5mYwYd225uiYulOYfzaFnw+tsfh5BmNbFqzx4jXyowkswp7qyeo9VOt0Ozb40valJCt54L816c39rxXrTCwWXryoldMWu1fgn4Du36nbOJRy6n/aYHW2ei5V6+Sd6emPzz5k4ZZZWQQTWYOrjsR9K0ok+2ws5MEGmIUydReubrH2NNjqHh59IuOEa7p3jha/Wi8q+nqRsWb9c8dp+yBMSnsAx0+GnTOxbjWUQ9qMxxyHijyS/MOhRTHkct8PFWPz8UjMYz6BSHoVV0LKWE2NSWcHxLqvA==
+ b=oOrOmCkD0jEVy0Vb/reCN5w5DtmMgP2JS7oelnTd0Na5h6zzUb4NNaZSpYOI4Z64dIbtAKKlkzu9udnqgqB0FTh8ME8ibaygtNmlQVAzdYHO1sYqe3fMwUxzR/8VG/7e5iaDumZ6eLitRDwGSB2q871sHecGqPU1pB0J57bp4jJ4t7R0sLciafFTn9rF0z6ot1Ei+qPunvRA3cI7oeBgUHBVEcjmoEvL4rfWbwr26mIMxG1eK4iuRnJZL+LKmWJ5RU/mpWDZDwr/CPbkYX7C4GR+40KborHEnv6F6P7HE6AKZDd1Y5P3SBEydRYMnSRk+DK4RmFYwi8T2HarqNjsoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D/zWdDiFzZfhl+QVWSyvj9bScH8acO+lrpAny/Eag4Q=;
- b=c1lKLTxLguEWTBg5K72I/ODLSsavVvjaAFqsMWYugX7FYr2OGGOL+7Qq9Ve+8tJKGQQ2iuW9AO3ZvCZtW13wjNIoEkOipERkiuMQZ54zA4/8ehuM2/gZeg/2gNXio0jbITVgFeHbrYjNMc7OqCKjppzp+v4BFJrPi1P3n/K9EDxN3DlcKbio+Gq8ThK+C1ML58G9bOvBVVRx0Zd3uzd+Z9Oliydh2d0lfT/hZS6SAr39mrEPj+9i00U9fXYwY90qZDTKFIJgY9Kx7ctBLYQd7mDqYR58hULg8Xfz0BWZvQhbD9CZ9ol9P4zcbMDyvEu4dd4whucqukImUFCtQAQ1CA==
+ bh=d1bMiODkVT+2uwM+V5ZldC4r2Reb6tZOUNgko/mpdi4=;
+ b=oqOKd7hI+vgfmGDEA5DzJmGgt3tWAndDBnXGGViV8YnuTJdV20vX7AK/jvW4wg5iUkPa+iVQq0300tRnpm0JxkrphkAalc+USNI6URHNb4cvP3Stg4JXXw2jittEmRk66Iva+W2FU8cv+NPXpPk+Vrb5suKV5FJj7c1S91AFnlr/PfSrZ8OP+s6s9eddux92sUqg2PNv0dK9/4VHRdZ4YRy/SOW2lyQpcmlkJl8MYD9GqxxrO42Up27mH3fvz0okW7zM8LLsyftRKbPDbUDNmS1LCT6By59Ty5+vvWbRcAi+dWiimU+rOmrsCVGNV97+jn36kw5FdD46Ps4N9n6msA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D/zWdDiFzZfhl+QVWSyvj9bScH8acO+lrpAny/Eag4Q=;
- b=hcot0Q9/Ej5tEznRF09zGn6yEDO5fnQOD/hJjziIZf0LZ7jN+2noQjBy4hneq+cVCoJ+SRzWplacKQbmuea5k3YJqXqLWoCgIjQfRhwITASQI5eOVbOSSDsFCNDp9+LNmbL3aTCen6IHYrxrLB9tEJ69xVt7HcDMliE6bh3LbB+sVA2lsI3oedewfTX5o73nQJlrNtlDoM6c/XzT6K7pmE9gzLv/Z3Ch8dliKcqNxt37dJyoNya7Ex+eTMqA1fOfq9YQNNnfNjIFDxrnj1PKVuGZMx4l+hUDGCqoP+4jDcXB644J0P969lvsPnDbct0D+6dX2ny27KuLgi7+h/KUWg==
+ bh=d1bMiODkVT+2uwM+V5ZldC4r2Reb6tZOUNgko/mpdi4=;
+ b=SSM1WFjloyNNRd55SEK4LxG3ve1KOLxzxPXWnzwyVIFwhHiy+678Txs7t/OeEiTCN0zG0wfjg/h7caiZd9rLQ7cUohlAK4VvQgC5st595pFWmkifPweDe427HbyZsHiBlP9D3H4J4tOEbPccwf8Q2hzDGicypx20xmJwcG3E7eCqiwtL6pwyYH2qrpk8al8oxaXnFeOdsCxDQlYimTVsDQAbvc81xTbnGu9z/XmOadkZYcddBBtbfhK3Q+CUe4wVl1Sr8T4gaAEILyzKMKYB0k36AcG/wGuYPXiniC8hBKZWICgVuh1k61gGsJkskDraF+BHRQwFjyOFW0pzZ5UB6Q==
 Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
  by AM9PR04MB8809.eurprd04.prod.outlook.com (2603:10a6:20b:408::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Mon, 20 Jan
- 2025 09:18:06 +0000
+ 2025 09:18:11 +0000
 Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
  ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
  ([fe80::e751:223e:aa3d:5827%5]) with mapi id 15.20.8356.020; Mon, 20 Jan 2025
- 09:18:06 +0000
+ 09:18:11 +0000
 From: Pankaj Gupta <pankaj.gupta@nxp.com>
 To: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
  Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
@@ -48,18 +48,17 @@ CC: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v11 1/7] Documentation/firmware: add imx/se to
- other_interfaces
-Thread-Topic: [PATCH v11 1/7] Documentation/firmware: add imx/se to
- other_interfaces
-Thread-Index: AQHbaxvvG5C+3Z5tiEGBNT1+MvjZvLMfYjHA
-Date: Mon, 20 Jan 2025 09:18:06 +0000
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Conor Dooley <conor@kernel.org>
+Subject: RE: [PATCH v11 0/7] v12: firmware: imx: driver for NXP secure-enclave
+Thread-Topic: [PATCH v11 0/7] v12: firmware: imx: driver for NXP
+ secure-enclave
+Thread-Index: AQHbaxvud9MzSKjlh0OtzlcnCh8w3bMfYjZg
+Date: Mon, 20 Jan 2025 09:18:11 +0000
 Message-ID:
- <AM9PR04MB860430282FFB1D4DF19E074595E72@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <AM9PR04MB8604228D1E99ECB45F8E0BAB95E72@AM9PR04MB8604.eurprd04.prod.outlook.com>
 References: <20250120-imx-se-if-v11-0-4d7d8f7f4b56@nxp.com>
- <20250120-imx-se-if-v11-1-4d7d8f7f4b56@nxp.com>
-In-Reply-To: <20250120-imx-se-if-v11-1-4d7d8f7f4b56@nxp.com>
+In-Reply-To: <20250120-imx-se-if-v11-0-4d7d8f7f4b56@nxp.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: yes
@@ -68,89 +67,89 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|AM9PR04MB8809:EE_
-x-ms-office365-filtering-correlation-id: 3a91c14d-9fa5-4ee0-1b2e-08dd393359c4
+x-ms-office365-filtering-correlation-id: 0e2cc157-2e3a-44c4-3ca2-08dd39335c69
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
  BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
 x-microsoft-antispam-message-info:
- =?utf-8?B?dFR0WmNQVjdGb0pScS9BOVUwSHVBSDhBR2xUZWpSeUZPQmdEUnJiVGwrU1JL?=
- =?utf-8?B?UmlaYzRDSS84VzI0S01QRmVKK1R2czZhbGNnbnovMVFVTmhjY3h4MGF0b3RC?=
- =?utf-8?B?QkI3aEJ6aHVUb3Y4UmdRSFNZOTg0OEIyV21TUUVJcjk5YlUybkpiU3Y2S1Vr?=
- =?utf-8?B?MENNbzlmN0RHUmVQelQxYVIwZEJwN29lbUpDQ1M1R1phNkU1MUM2M1N2Mnc4?=
- =?utf-8?B?dWJiOGVLbGE1TEVjWDZPZ2NIT2NuTUtrS0c3a2pzWFo0MnNYRzdOTE5vVkJY?=
- =?utf-8?B?M3BYNEx2Z0NoaUpoVzhrN1d6ZHpKd0F1WXV3K2x6N1l0cVdOMHN6bWtLMU5E?=
- =?utf-8?B?YzVZQXNETkdVK1U1WE5GRlpXTms1KzMrWVBCNEd2ZGdQTGRucE5VQ2lkUFNT?=
- =?utf-8?B?anhnblRBaE9WYWpGKzFJdFRqb2VVTWtaeUhQcjBtRFFhUWlWZzR6NmU2NnFo?=
- =?utf-8?B?TFRDdGVmd0RoczBYRkNKZHB0UXRpRjBvNGplaTZLTE5KQUNVdFNkRWVwVUxX?=
- =?utf-8?B?V2V4K2c3VktoRXphV0lPUDZlSVd0d294RlVNdi9ERlhXZ2RISEJXU3l3bFpm?=
- =?utf-8?B?M2ZZbFdYaCtaMmlHQ08wNStpSDNIYnNTemVUQnpMNVd1Ti92Uk5JMU1iYVFI?=
- =?utf-8?B?RzdjUVdHSjVlZ0lSRit2RzBTczFEYUdGVFN6Ti9iWDYyNlFoOHo3azNUdlFK?=
- =?utf-8?B?Y3VwNkIxbnhHZVZjOUtacnh5akVCWHpRREdOYlFOSFRLZGJGOWV6S3pkd01h?=
- =?utf-8?B?a2ZIUDRWVWhyUUh5a01qYnhTdFZvQWdYUktRZm13U090amhud2NnVHZyTFJt?=
- =?utf-8?B?NVgzT3Vyc3l3aEllbi9zcEFlTDNncTBjZy9IcXZ0UEE4NUwxSnU4T09UN0Qv?=
- =?utf-8?B?YkZmQ21FY2swcUJBOC9UaEtjbDYxS1YxSCtySGlEYm1PbXlreHIrQmNFOFNw?=
- =?utf-8?B?b0NscCtidmV3TmVJc1VQM2QvTlN3Um5ITlBwZmZGckMyd0hpTnF5WTNuZ3pV?=
- =?utf-8?B?R2JUcCtQUlBqT0diWFpla3VOaXpPOW5FY0VUbThscHBpU0FvRkM2bjk2ZzVZ?=
- =?utf-8?B?MVJCaEQvdXFJNS9VQmZYTlFHMkxhbm5zUnkvdkM1alo4VFRISWxiY0praGFK?=
- =?utf-8?B?UmxxMk9KY2ZOYW1NaEtMcEZ2TlpldnBDM2hVSVBMUzVZZFNGL1o4VmRaOCtK?=
- =?utf-8?B?dEJLWUpOQldkdUR6TEpKNGQ4N3lnQVB6dVV3eTdQQXpxMFMxczkxb3dvT1BS?=
- =?utf-8?B?enp0c0wyWHFmVWNzME55YnBuTVlhOWJVNWpsSmpBb1l5MFVLai9PL3hTTjBW?=
- =?utf-8?B?QXVGTnh4M3B0Y05lK0grN0paUCtCQWgvV1NtYk1HMnRqcS9YMHRwT2ZLbzYv?=
- =?utf-8?B?TzFLRmsyT0V6NEliMUNsZ3Jnd2kvcHMyc1AyQlkxa2xHVklhUG1CeUk1K2d1?=
- =?utf-8?B?aEZZT05NZWFGVmYxV3Yyb3gza1UzV3ExWTZRMnN0TGkzUWVTZUZUaTk4emRp?=
- =?utf-8?B?TnpEaTFldGZUUld1RDNvM1lLMWppbk40bUZzQ3o3NTViUlFRNDdRd2FCU3p4?=
- =?utf-8?B?bUp1ai9lVXlqZ0ZUN3prRlNJK2w1NlJoNjg2ckoxajliZ1Y4LzhhbXRvcDhj?=
- =?utf-8?B?bWRmdFVyMzFpUnJmVVpDK1UraENjZ3I3L3Q5dCtlTWxOWnpiSXZ0T1NtWkt6?=
- =?utf-8?B?YXpZVG5GeUhobk1iRTVYQk4rUTRPbGVnWTBlV1U0di9uajFDSjZuSkoxWGRI?=
- =?utf-8?B?KzZrcWNpblVJdDJPTnlMQkxsWW1LYzFUMHdRUGx6YUpYRVQ0cCtFS3lPVm40?=
- =?utf-8?B?S0QwMXgxRTlnRDQ4aGIzUXZvd3JiRFljeS9PVVVRUXh4NFcyRU82Qkh6WnJT?=
- =?utf-8?B?NXhGQ2ZIRms5RkRlTU91RGd4RHhMclBIMXdSZkkyN2hIL2J2bzVLVHlQOTN1?=
- =?utf-8?Q?kKnOUREY3Ta/zl0nufkijnktRQDGQD6H?=
+ =?utf-8?B?d0FydTdEUWRBbDM0MEFxOFVJdFR5M0NDNzQ5dktEcWh3MWZuOXlJOVJvM0xB?=
+ =?utf-8?B?K01SdGNKUjhwY2JxLzVOaVhMd1RDMy8ybFg1VGY2QVh0MEZraXVQTml3THZX?=
+ =?utf-8?B?emNZYnlETkNDY1VQUkFodHRwNGNxaGxhRnpUKzB2Y0FFOURxNmZGb2tOZ1Rh?=
+ =?utf-8?B?SjhvK1FlZCs0ZjNKdUJycEVURG5SNEpZS2pYN0xvT25rSlBBQjUwdmMycDRL?=
+ =?utf-8?B?UEthc04vN090Vy9EdFZ4dG8xdXNzUUkyZENCcHhzNmREUllBdWZ6YWdBVTRn?=
+ =?utf-8?B?ZjF2cG1LUVdJQ0xvREJUMlVHeXpuSDhPSWtVSmpyekp2TU9nK2lJdHdLQUJF?=
+ =?utf-8?B?dHVKeFl0SHBXR2prQnprNHJVa1NCeW9NMlBqeE1WSjVaL2NHN3JLNkhoN3RQ?=
+ =?utf-8?B?eWhsNG80NDdoMmtKTU12UW9BY1Z0Y1N5dGdjeS9QUmJNOWNldkJaYU5QcXAy?=
+ =?utf-8?B?Rnh4QUhxdFNUKzdFYzFqcCtSVE5zbHhqRFFoTFJrNXlMaXBBQlNsalRCWHp2?=
+ =?utf-8?B?dCtsNEI5bDRLbDNBYVJubXpuakdGM29uQ1A5bGdFcHlUb1htdkdqQ05JSFB4?=
+ =?utf-8?B?K3dPcmtjanFSK1gxNVE3cHR2ZnI2QTlUVWpKSnNtT1hjMmtlUUNrVmhiSFNw?=
+ =?utf-8?B?RWRWN1hvME5za2x3YXBZbnBvQUYwRzNGNDBJMTJIb1liQVlKT1djeGlnK0ZF?=
+ =?utf-8?B?WlFpQ0ExTExUOFVBditCbmMvMlNaL3p3a3ZEb2NocmpLQlR1TXFTQ093WjNa?=
+ =?utf-8?B?MlExWDZ2OVZOOTlqWHY5VDFya210bWVYb1gvbTV2TURVOXE1ZGFNZ3hzRlor?=
+ =?utf-8?B?TnhLME9BTzdoRlN6Q2NVS0dXTnVtVTcvamozZEFVcGdjamdzZUNOTkZHdXI4?=
+ =?utf-8?B?M0NlTWgyeVhWTTMwSm0vOTVZRDJodys5RUl6T0hFVWZYQVMwTGw0UjQ2Nm5L?=
+ =?utf-8?B?MlJyMDFoZ0tGQ3c2NWlkaFh6dndybjh2NUFYemRuSjNWNERHeUVTYlkyNjRj?=
+ =?utf-8?B?VlhrWGxVZWwvVkRVa0g2bDNTMW5xOTlvbGp5MmhXaXFrMFRiYms0bnRrK3VT?=
+ =?utf-8?B?RUVRM2wyWE53bmh2VXk1QnZUWHBKcWhjeUlDVDhIdEZ6Y3Bka1pDV1NMMHZ2?=
+ =?utf-8?B?blNLQ2xwR0RhWllMdUM4ejkxZjVTam9vcjBLdFJZQmt0NEJaY2l0dGdlZDRa?=
+ =?utf-8?B?YmZUakJnZGdURk9yVGFVZW9McEJqZGFicUpkMU5DWnpTOHd6ODVoV3hhUHRl?=
+ =?utf-8?B?YlRHM2hYQTNuNHFyQVp2Nnh4TjdlOUJHbXhDdFVhQmdySlREK3dvWlFVWEhQ?=
+ =?utf-8?B?UzhkOWtTVlBXbEtzOFEvMHR5QTZsTmRjZ1VCQTlnbkt3NDlhcVV4MHF0R2RD?=
+ =?utf-8?B?Y2VQVFBiNGJweUVHakF3R2ZrTHhmbUNyUFVMay9KbE43UGREdWxNUStxaFhC?=
+ =?utf-8?B?dG44SzR2RzNVRk9QczdsNUpZeGdtRHA2cTBZSy9RTWpvdU9EUVRPdTZZdCta?=
+ =?utf-8?B?YjNRcHk3UEVMOHU3U3JoRkwxd0RnQU9ONDkweXJjRG1kdy9iM2NUTWZqa21h?=
+ =?utf-8?B?cnRHZnZqT3FFV3R5RWRBUVlSTDNwc1l3djlFNUJEVnFBWG5vMjlYekh1MXkx?=
+ =?utf-8?B?b3RQQWZkbVJ1UGZQbUxVaVMrQ0dXZWxZc0thNXZYbkx0NTJSUVNoRHVoejc4?=
+ =?utf-8?B?OXBtYnMzMVFmS2o4SC85T1hTWEY5SGgzdDRrLzhRM3p1QjdDWmJXNkpGSkZj?=
+ =?utf-8?B?WXY4ZzFuR2YxdWpxNjVpOENSMzRmaDhHYjRsSVlPRU5pYnBJZ1JwVkUxb0Rq?=
+ =?utf-8?B?WFF0VmdwQ0dOeVFrSXFRZGI4TzJBa21lNFZ3YUhtWlZIUFNEVjBUNXljY0Nm?=
+ =?utf-8?B?MTRsSVdQU0E2bWh6WkZxTUVaMllIdFF4ZlcyZVhuelJZWWFpd2ExK1ZCZits?=
+ =?utf-8?Q?RSKFENkX1GONAf+ADI/9Cnfzj5+/6JHE?=
 x-forefront-antispam-report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NVl4aTlhaThOYVBvanlnS0NRSnVubkt2L251S3NEVGFNTWpzWmFIT3EvTGt3?=
- =?utf-8?B?T1FCdGErN3AxRGhxQnNHaGlWeWNrajJFdmNUUkpPeVh4WE1GTi90aGFKbVhk?=
- =?utf-8?B?OFBlZ3hET25KTitURWRvZ0VNWDV5WDFLbE9CQkNWNG5sV3pWZ0sxUFFLUmdR?=
- =?utf-8?B?WHo0RVhyb3d3OTRialFUdzNJZU11NWh3OEJ0M2hhd1RWb2F3SVJhd25pd2lK?=
- =?utf-8?B?K0VKRFUwYTJJTnV0ZGgzSi9iYkZZcE5kTWxFV3prNnZxUk03cTEyK2VtdVVM?=
- =?utf-8?B?T1lxZmRoZGNtYWZELzhSM2tTSExDaVlRYmtCSjZKbUJMQWs1dWdmalRFWXVN?=
- =?utf-8?B?OE9ibHl3bHJ1SnduckNub01sd1VmVDhrZWcxT3Y3VmIwL2Qzbmh0ckJlTFZK?=
- =?utf-8?B?bVh6b3VubGRFdWNHWUx3TEliQ2FjZXFNR2t5eERaRS9HTlVITzVreWJINGRi?=
- =?utf-8?B?R3A4cDZTNktkRmhlNmtScjBBaThqdUNyTS9YNzNtN290VmRTLzVLWGNmUVA5?=
- =?utf-8?B?WFd5QmJSdXFVSFVoTmRUQWQwck94SDV0dFlwN204TDZ5ZnJPbU1WNTV4RXlP?=
- =?utf-8?B?VXJFM2Jja1I5NzJGZFR5aFlGblVOcHdMYXdJQnZxSWJKN0tiUzZ3aHZQeFZ0?=
- =?utf-8?B?R1ZFcEV4bFNjRy9zMkt6aXY2dHBYeno2bElKaUNtWld1V0N6cEVLY1czM0hV?=
- =?utf-8?B?U0xPczFBd2Nsa242cVNYbWtpcm4wY1NwRFgrQ3Ivdk5rYndUOGdtVnpWUFFL?=
- =?utf-8?B?YmNWSWpqdW54d0IvMGxGZjdub1lsN1FUNFNlUzdHbndDWWE4ZC91bGd3Tm9o?=
- =?utf-8?B?YkdQZ1JmZC9oanA4c3AyL0lnek1KdUEvcmZJRDc2N3QvRC9YMjJCQ2F1U1Jw?=
- =?utf-8?B?N213bSsvMHBIM1NSUnVNMFNncXRBVmRsYjUwNW1ZQ2tQMzAxSTEvdVR0cDBu?=
- =?utf-8?B?Rk1CU2Yra2NkeTFYZTI4d1JtTnRJdzJlaytQeVJmWjg2S2pGKzJMKzdGVDQ1?=
- =?utf-8?B?dzhrdjRMY0FxVnhoUkRVOEFDbDZSeWRMS2VTbEszbWYrZjV2UlJJVk1BN3gw?=
- =?utf-8?B?c2dCSWorY0VIa1hBbHB6SS9KZ0xxVlNlZFBLNFB1Wm8zWVEraVRXa0Vtbkt1?=
- =?utf-8?B?SXdTTFIxTVNQK2FwM1ovOE4wQk5maXhvUmZaZFNpQzBLa0F6L1oxNGtEbmtp?=
- =?utf-8?B?SU1hOWdoNGhHZDJkaXhKL1A1SWdTekFIckJQWlFXNmpOanNaK0E3VVJqd2FZ?=
- =?utf-8?B?SUJBVG9NOUlSQjJ3U0VIbW5OcHJ0WDRML1gvZE05ZUlXN2IwOENyeTZjRnJZ?=
- =?utf-8?B?YUJvanVON0JXNmxyRDV0dlVsTDUzb3dncGtva0VBM2lCekRSOCtYbW10SzZr?=
- =?utf-8?B?Um8rbWNtQ09wZUdkTklUbTUwVHZwNTJzd3Mxc0RFbEhlSWhkK0NWNFNmZmVT?=
- =?utf-8?B?NmZJZ1MvR3RmaHZQMmUyeXNZUkk1OHMxTUNuSUdmU3NUQXZNbEZYTmFqdmd6?=
- =?utf-8?B?T3dJOTRVelpLWXU2NWg2Z1Ryci9zTm9jWmZLN0FUOWZXaUE5ZHdET3lrajg4?=
- =?utf-8?B?Vk9UblRpVDhDOG9SOHhnbXBBSC9qeDdrOHpLTCs3OUxMQnJXb04yMXlsbXNE?=
- =?utf-8?B?MEtTTFV3Y2tWdGtNT2NWRzRicXg5SHVSWEF4Nmh0VGZFSlpKSjJKaGdFSi9z?=
- =?utf-8?B?emlBdlNJSFZXSGFtSlFkbmhEd1dKcFd3SlZZQ0dsS2xhdFQ0QkdLWjR3T3Qw?=
- =?utf-8?B?YWF0dkVoU0ppNU05NHRxSmZOYjBSY0xxR25JRDBGalVleWlkWmptWTlHS09M?=
- =?utf-8?B?VktKMngwazR2WTFIckx0VHQ5Y2E1VkR4NENBTEN4SUJaM2FKWjNlNlYzanlm?=
- =?utf-8?B?SjlkTXRrYzE4ZnJ3aHZyNWtWdVpEamM2Vko2WUMyQ3l2R3JmQVEzMGpGdjRk?=
- =?utf-8?B?a1JWS2dpTzRGck5kRFhoSlo0SzBCM0FLN05VVm9QVS8rU0pjVUhiaTYvRWRF?=
- =?utf-8?B?WnF4ZGF6NWt3OVBkYWpSNHgvd1FPVENkZTc5SEkxOHhKcU5BRzJoY2s0Rzgz?=
- =?utf-8?B?ZnV3VEZFT0xEazJibWQ5bzNOYUpJNmcwNURaSE5ZK1JlTHR2dUVuWEdRZWQy?=
- =?utf-8?Q?HaaXPynudxQrrQGmHx28IQPRh?=
+ =?utf-8?B?L2FMT3VWeHFZWjRxMWw1MDM3MnpwVDRMbEU1Q3MzaGl4SGJDeUFONGFNWVZB?=
+ =?utf-8?B?TmRwNUVzYWJpZHNOc211d0NQN3U1d0xOZTlCMFl2MG5MWm9yeHNnUmE1d2hz?=
+ =?utf-8?B?Mk5sOENveFBKcTFoU1ozZFpKWnYxNWphblVvS2s0ZG5DcmNBeGVyN3hKckJo?=
+ =?utf-8?B?V1BTWm14dkRvYlpaODRnNGVrNFpYWG1Edk9oN25mL2dOd2ZDbVFRMVQwdlRW?=
+ =?utf-8?B?NUdnZ0U5OFNXZnJJK2ZkYnR1U1Y4RGVwS2JmWkdoK0t6VHk0bWtuR2N3RzhW?=
+ =?utf-8?B?MnBReElzZ3pWT3VEcy9HS1RTUC9RNlY2S0N2NHh6TXpHZmtna1Q4dHhlNm9m?=
+ =?utf-8?B?R0VYSjlVdjI5bnJFT1UycjMwNmxRZjltK2VDTHFhaXVkSmx2cG5oZ0VBZkFF?=
+ =?utf-8?B?eUVieC9ybHdOWWpJQmNGWjZ1TUZhN01LelIrSkxBYmdEZVFzdm12VW1kMmNC?=
+ =?utf-8?B?ZTh6VWd1ZjY5MGNQOWlyVmNIdnFCaVdIb05FUE9Xd1NTL1g3eVg2TEFoWkRQ?=
+ =?utf-8?B?KzZrZ09XRE1WYzVWalBhUEJtWFRYTXhwNnBlYVJWSWUxSWdzbFFSTVZ2b2lJ?=
+ =?utf-8?B?RFJ0c1ROejZEelU4aTh3a2N0Vm40TzQ3VjVTNEtEQzM2a3VrYmpvcGRsbVZW?=
+ =?utf-8?B?VWUwUGxzZ2xVWHRmbU5iN05aalZncXNCQ0g1OTRQMVFWb09VamUweVVJTlI2?=
+ =?utf-8?B?SkhZdTdnZlpmcGtnMTloSE93bG14NGJKc3VId0pBMUwwcTlzTXh1SHRqZmZt?=
+ =?utf-8?B?NXpMbXB4b29TY0lMSGZWZ2dvalBzb3J5TzhIaWEvaUs1SFJZSU1MM3FkMjlj?=
+ =?utf-8?B?VXIwVjRleFJqREszVng3L0pzTi9vSHBLOUdTYlUvTDUxdXdvNldYS1FMUTV3?=
+ =?utf-8?B?dXZKcWZodUZWOG1ObTVOWERUc25vY0RGNFFnUkJ5ZFJiY3kwUVhLdlNLQ2J2?=
+ =?utf-8?B?K2NTY3VMTXM3a0ZBYVdYemdubHdFQ3pDQWpzZzBTY0JHNjczMFlqK09YSzBx?=
+ =?utf-8?B?aWFUVEpFNW01TVBtRU5DMU1GdUNOZCtrc1lVdzZMay92aWc0a3VLZ2NQRktJ?=
+ =?utf-8?B?ZWROOU5QZmgxQytZZm5YS25IZEY1Vkk3ZUg2VzBrb1JkTENkblY0cU1uc0Zx?=
+ =?utf-8?B?MkhJSGtuTkdwMUxGR0hCQXBKMmNKdGhoQVI0UW4yN3ZFNHZlRUp3NW9Fb0hk?=
+ =?utf-8?B?dWhPTjQybWJGTEpjYm0vbnRFQTFVdlVQSzdXZWs1MTFsUFpYbkxVVjczay9O?=
+ =?utf-8?B?OHYxSm1YWTYyaWRIR1ptdXJYVDM5QmdkaDRKLzZCOEJzN1pOMGpEM0wwa1FS?=
+ =?utf-8?B?Q1BwdHd6bHBLSk4zc01HR0c5VWNvYmZ0TEp2VHFNVGprYSs3NUpaQzBIQTNa?=
+ =?utf-8?B?RDVoWDNVU0ZkMEIrTERpRU1UR0I2dVBmVzlkTzFrcWpHbGRzZDVVOXMwOHRv?=
+ =?utf-8?B?MEVTWk1BMWVldFR5M3NzQjk0bGx3YU1lckdpYkc4VUlSMnZBZyt2dGNxOEJs?=
+ =?utf-8?B?WTJEckt3aFlxaUtrOVlsdEQrUVkvSnVHQ1dTTXViam5xM0ZVbFBlTjhza0ZS?=
+ =?utf-8?B?WlVFZWY2Mkoya1pmV3U2WjlwS0dvTDhlMDRmMlZSN3JIYmZId1EyRExqRkEw?=
+ =?utf-8?B?YjN0TFNFdEJZcWZmVzcyZkE5Z3FuSzkwR1ZtNWZrL3Q5dnYyaFBXRkVZdnAz?=
+ =?utf-8?B?dkV6cjM0SmY4OC9pYlRGaytXcS9DTUJQaCs0VTZuK1FBdmpmRDUrYXhHeUVG?=
+ =?utf-8?B?RndoRzUzeTB0ckNENlhjd2NXUWk0UHZXcEgydFZjWFNsaU1adG9VV2tmR1pj?=
+ =?utf-8?B?aXcvdHAyMWFDT25sZnpDdkttUExCRGVvNHBkK2o1R3JEbUZXMFNHRzJjdVRB?=
+ =?utf-8?B?Mnh6Q1RaTWxGT2dxUVFRM0pMenkzZERGdW9wOUFISjFJMnJkbndpRjQ3RWs4?=
+ =?utf-8?B?MXYzRFUzcHFMK2ZSWWVIZ0krTEt3REV2Zy9IZnJLMTJJbVRuT00wR0tySUlK?=
+ =?utf-8?B?aWhielh1UGNMZXd1N1dGUUQxZlVXRHZHTDhCVkhuQlYzclVheW9CWTRkSVBp?=
+ =?utf-8?B?b29XSlBDeDhONHI2RnVvNnFINmVkc2ZpaHd1UU9OaEtDbnlnVlhWVUxGdTFh?=
+ =?utf-8?Q?6JGA0YV1nubLudc7EJ0zM4oHu?=
 Content-Type: multipart/signed;
 	protocol="application/x-pkcs7-signature";
 	micalg=SHA1;
-	boundary="----=_NextPart_000_0461_01DB6B4A.4FAAB0E0"
+	boundary="----=_NextPart_000_046D_01DB6B4A.521C4D20"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -160,16 +159,16 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a91c14d-9fa5-4ee0-1b2e-08dd393359c4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 09:18:06.8299
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e2cc157-2e3a-44c4-3ca2-08dd39335c69
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2025 09:18:11.2633
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: F9SU3r75096Com2qG+f4gTrNyX3K4BlfDNSyenXUE2wAMxfrXs+OSFPCZq54uqoD3EKMEkN4lllBOfhD8DTtuA==
+X-MS-Exchange-CrossTenant-userprincipalname: FPY97O7FtbD3lGQ58vIxTDOZv9HcOZUVTFNEVZWKt3agm0yI8ViLLRq7XMB0aJl8Uw9UlDi1TmnADSb8XFcvHg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8809
 
-------=_NextPart_000_0461_01DB6B4A.4FAAB0E0
+------=_NextPart_000_046D_01DB6B4A.521C4D20
 Content-Type: text/plain;
 	charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -188,163 +187,595 @@ Kernel Team <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
 Pankaj Gupta <pankaj.gupta@nxp.com>
 Cc: linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; 
 devicetree@vger.kernel.org; imx@lists.linux.dev; 
-linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v11 1/7] Documentation/firmware: add imx/se to 
-other_interfaces
+linux-arm-kernel@lists.infradead.org; Conor Dooley <conor@kernel.org>
+Subject: [PATCH v11 0/7] v12: firmware: imx: driver for NXP secure-enclave
 
-Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s) that 
-contains the NXP hardware IP(s) for Secure Enclaves(se) like:
-- NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
+5/5:
+- increase the wait-timeout.
 
-Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
----
- .../driver-api/firmware/other_interfaces.rst       | 121 
-+++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+4/5
+- moved imem buffer allocation to driver-probe.
 
-diff --git a/Documentation/driver-api/firmware/other_interfaces.rst 
-b/Documentation/driver-api/firmware/other_interfaces.rst
-index 06ac89adaafb..a3a95b54a174 100644
---- a/Documentation/driver-api/firmware/other_interfaces.rst
-+++ b/Documentation/driver-api/firmware/other_interfaces.rst
-@@ -49,3 +49,124 @@ of the requests on to a secure monitor (EL3).
+3/5
+- No change
 
- .. kernel-doc:: drivers/firmware/stratix10-svc.c
-    :export:
-+
-+NXP Secure Enclave Firmware Interface
-+=====================================
-+
-+Introduction
-+------------
-+The NXP's i.MX HW IP like EdgeLock Enclave, V2X etc., creates an
-+embedded secure enclave within the SoC boundary to enable features like
-+ - Hardware Security Module (HSM)
-+ - Security Hardware Extension (SHE)
-+ - Vehicular to Anything (V2X)
-+
-+Each of the above feature is enabled through dedicated NXP H/W IP on the SoC.
-+On a single SoC, multiple hardware IP (or can say more than one secure
-+enclave) can exist.
-+
-+NXP SoCs enabled with the such secure enclaves(SEs) IPs are:
-+i.MX93, i.MX8ULP
-+
-+To communicate with one or more co-existing SE(s) on SoC, there is/are
-+dedicated messaging units(MU) per SE. Each co-existing SE can have one
-+or multiple exclusive MUs, dedicated to itself. None of the MU is shared 
-between two SEs.
-+Communication of the MU is realized using the Linux mailbox driver.
-+
-+NXP Secure Enclave(SE) Interface
-+--------------------------------
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v11: 
+https://lore.kernel.org/r/20241220-imx-se-if-v11-0-0c7e65d7ae7b@nxp.com
+
+v11:
+
+5/5
+- devname is constructed by concatinating get_se_if_name(se_if_id) & 
+se_if_instance_id.
+- ele_rcv_msg(), is updated to add the wait_interruptible_timeout for the 
+non-NVM-Daemon message exchanges, such that in case of no response from FW,
+  Linux donot hangs.
+- added a new helper function get_se_if_name(), to return the secure-enclave 
+interface owner's name string.
+- added a new helper function get_se_soc_id(), to return the secure-enclave's 
+SoC id.
+
+4/5
+- moved the se_if_node_info member "soc_register", to the struct 
+"se_if_node_info_list"; as soc registration done once, not per interface.
+- moved the se_if_node_info member "se_fetch_soc_info", to the struct 
+"se_if_node_info_list"; as soc info fetching is done once, not per interface.
+- Added two member variable se_if_id and se_if_instance_id to struct 
+se_if_defines.
+- removed the member "se_name" from struct "se_if_node_info". Rather, it will 
+constructed by concatinating get_se_if_name(se_if_id) & se_if_instance_id.
+- moved the static global variable "se_version", to the newly created 
+structure "struct se_var_info".
+- moved the member "struct se_fw_load_info load_fw" of "se_if_node_info_list", 
+to the newly created structure "struct se_var_info".
+- Replaced RUNTIME_PM_OPS with SET_SYSTEM_SLEEP_PM_OPS, in power-managment 
+ops.
+
+3/5
+- No change
+
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v10: 
+https://lore.kernel.org/r/20241104-imx-se-if-v10-0-bf06083cc97f@nxp.com
+
+v10: firmware: imx: driver for NXP secure-enclave
+
+Changes in v10:
+5/5
+- replaced the u8, u16, u32, u64, with __u8, __u16, __u32, __u64 in
+  'include/uapi/linux/se_ioctl.h'.
+
+4/5
+- No change
+
+3/5
+- No change
+
+2/5
+- No change
+
+1/5
+- No change
+
+Reference:
+- Link to v9: 
+https://lore.kernel.org/r/20241016-imx-se-if-v9-0-fd8fa0c04eab@nxp.com
+
+Changes in v9:
+
+4/5
+- change se_if_remove function signature, required after rebase to v6.12-rc1.
+- move the info->macros to a structure "struct se_if_defines if_defs".
+- Removed "info" from "struct se_if_defines if_defs".
+- Moved "mem_pool" from "struct se_if_defines if_defs" to "priv".
+- Fetching "info" using container-of.
+
+5/5
+- Fetching "info" using container-of.
+- Fixed issue reported by sparse.
+
+Reference:
+- Link to v8: 
+https://lore.kernel.org/r/20241015-imx-se-if-v8-0-915438e267d3@nxp.com
+
+Changes in v8:
+
+5/5
+- Remove the check for SE_IF_CTX_OPENED.
+- replaced dev_ctx->priv-dev, priv->dev, whereever possible.
+- func "if_misc_deregister" moved before func "init_device_context".
+- func "init_device_context" before func "se_ioctl_cmd_snd_rcv_rsp_handler".
+- func "se_if_fops_write" and "se_if_fops_read", are moved after func 
+"se_ioctl_get_mu_info".
+- non static functions "se_dev_ctx_cpy_out_data, se_dev_ctx_shared_mem_cleanup 
+& init_device_context" are moved static and local scope.
+- Removed back & forth between the two structs "struct se_if_device_ctx 
+*dev_ctx" and "struct se_shared_mem_mgmt_info *se_shared_mem_mgmt"
+- removed the NULL check for bdesc.
+- fops_open, is corrected for acquiring the fops_lock.
+- Fops_close, mutex unlock is removed. Infact check for 
+waiting_rsp_clbk_hdl.dev_ctx, is removed.
+- sema_init(&dev_ctx->fops_lock, 1);, replaced with Mutex.
+- structure member se_notify, is removed.
+
+4/5
+- removed initializing err to zero in func ele_fetch_soc_info(),
+- replaced 'return 0', with 'goto exit', if the condition (!priv->mem_pool) is 
+true.
+- replaced "struct *dev" with "struct se_if_priv *priv", in base_message 
+API(s) and others.
+- Created a separate structure "struct se_if_defines" to maintain interface's 
+fixed values like cmd_tag, rsp_tag, success_tag etc.
+- removed the macros "WORD_SZ", "SOC_VER_MASK", "DEFAULT_IMX_SOC_VER", 
+"RESERVED_DMA_POOL".
+- Added handling for "ctrl+c", by postponing the interrupt, till the response 
+to the "command in flight" is received.
+- Removed the mutext lock "se_if_lock".
+- furnction prototype for "se_save_imem_state" and "se_restore_imem_state", is 
+changed to pass "imem" by reference.
+- Added a new structure "struct se_fw_load_info", dedicated to contain FW 
+loading relevant info. It is a member of struct info_list.
+- split "imem_mgmt_file_in_rfs" into two "prim_fw_nm_in_rfs" and 
+"seco_fw_nm_in_rfs", to be part of "struct se_fw_load_info".
+- moved the function "se_load_firmware" prior to func "if_mbox_free_channel".
+- function "se_load_firmware" is updated to use "request_firmware", instead of 
+"request_firmware_no_wait".
+- function "se_load_firmware" is updated to load "primary" fw image, if the 
+imem_state is not BAD. Then load the "secondary FW" image.
+- Added a new mutex_lock in the function "se_load_firmware", for ensuring FW 
+loading done once, when there are multiple application are in play.
+- instead of "wait_queue_head_t wq", used "sruct completion".
+- add devm_add_action with action as se_if_probe_cleanup.
+
+Reference:
+- Link to v7: 
+https://lore.kernel.org/r/20240904-imx-se-if-v7-0-5afd2ab74264@nxp.com
+
+Changes in v7:
+
+5/5
+- struct se_clbk_handle, is added with a member struct se_if_device_ctx 
+*dev_ctx.
+- func call to ele_miscdev_msg_rcv() & ele_miscdev_msg_send(), are removed.
+- func se_ioctl_cmd_snd_rcv_rsp_handler(), is modified to remove the func call 
+to ele_miscdev_msg_rcv() & ele_miscdev_msg_send()
+- func se_ioctl_cmd_snd_rcv_rsp_handler is callig func ele_msg_send_rcv(), 
+instead.
+- Mutext "se_cmd_if_lock", handling is removed from this patch.
+- func ele_miscdev_msg_send() is replaced with func ele_msg_send(), in 
+fops_write.
+- func ele_miscdev_msg_rcv() is replaced with func ele_msg_rcv(), in 
+fops_read.
+- fops_open is modified to create the new dev_ctx instance (using func 
+init_device_context()), which is not registered as miscdev.
+- Only one dev_ctx is registered as miscdev and its reference is stored in the 
+struct se_if_priv, as priv_dev_ctx.
+- Separate func cleanup_se_shared_mem() & func init_se_shared_mem(), for 
+shared memory handling part of struct dev_ctx.
+- Input param for func(s) ele_msg_rcv(), ele_msg_send() & ele_msg_send_rcv(), 
+is replaced from struct se_if_priv to struct se_if_device_ctx.
+
+4/5
+- A new structure is defined name struct "se_clbk_handle", to contain members 
+processed in mailbox call-back function.
+- "struct se_if_priv" is modified to contain the two structures of 
+"se_clbk_handle" - waiting_rsp_clbk_hdl & cmd_receiver_clbk_hdl.
+- func ele_msg_rcv() is modified to take a new additional input reference 
+param "struct se_clbk_handle *se_clbk_hdl".
+- func ele_msg_send() is modified to take a new additional input tx_msg_sz.
+- func ele_msg_send_rcv(), is modified to take 2 more inputs - tx_msg_sz & 
+exp_rx_msg_sz.
+- func se_val_rsp_hdr_n_status(), is modified to take input of rx_msg buffer, 
+instead of header value, as input param.
+- each caller of the func ele_msg_send_rcv(), is sending these two additional 
+input params.
+- func se_if_callback(), is modified to work on two structures of 
+"se_clbk_handle" - waiting_rsp_clbk_hdl & cmd_receiver_clbk_hdl.
+- Variable "max_dev_ctx", is removed from info & priv struture, as well its 
+usage.
+- New member variable "se_img_file_to_load", is added to structure "priv".
+- Other member variables - rx_msg(ptr), rx_msg_sz, completion done & list of 
+dev_ctxs, is removed from priv struture, along with their usage.
+- func se_resume(), updated to wakeup the two "wq", part of "struct 
+se_clbk_handle": priv->waiting_rsp_clbk_hdl & priv->cmd_receiver_clbk_hdl.
+
+3/5
+- Node name is changed from senclave-firmware@0 to "secure-enclave"
+
+2/5
+- Node name is changed to "secure-enclave".
+
+Reference:
+- Link to v6: 
+https://lore.kernel.org/r/20240722-imx-se-if-v6-0-ee26a87b824a@nxp.com
+
+Changes in v6:
+
+5/5
+- replaced scope_gaurd with gaurd.
+
+4/5
+- replaced scope_gaurd with gaurd.
+- remove reading the regs property from dtb.
+- Added NULL check for priv data fetched from device, as a sanity check, for 
+ele_base_msg apis)
+
+3/5
+- replace firmware with senclave-firmware.
+
+2/5
+- replace firmware with senclave-firmware.
+- drop description for mbox
+- Replaced "items:" with maxItems:1 for "memory-region"
+- Replaced "items:" with maxItems:1 for "sram"
+- remove regs property.
+- remove "$nodename"
+
+Reference:
+- Link to v5: 
+https://lore.kernel.org/r/20240712-imx-se-if-v5-0-66a79903a872@nxp.com
+
+Changes in v5:
+
+2/5
+- updated the description of mboxes
+- updated the description & items for mbox-names.
+- updated the description of memory-region
+- move "additional properties: false" after allOf block.
+- removed other example except one.
+
+4/5
+- Corrected the indentation in Kconfig.
+- info members:mbox_tx_name & mbox_rx_name, are replaced with macros.
+
+5/5
+- Replaced "for  secure enclaves", with "for secure enclaves"
+- Replaced "user space" with "userspace".
+- End the line "[include]<linux/firmware/imx/ele_mu_ioctl.h>" with a period.
+
+Reference:
+- Link to v4: 
+https://lore.kernel.org/r/20240705-imx-se-if-v4-0-52d000e18a1d@nxp.com
+
+Changes in v4:
+
+1/5
+a. Removed - from EdgeLock Enclave.
+
+b. Removed , after "Each of the above feature,"
+
+c. replace "can exists" with "can exist".
+
+d.
+-messaging units(MU) per SE. Each co-existing 'se' can have one or multiple 
+exclusive -MU(s), dedicated to itself. None of the MU is shared between two 
+SEs.
++messaging units(MU) per SE. Each co-existing SE can have one or
++multiple exclusive MUs, dedicated to itself. None of the MU is shared between 
+two SEs.
+ Communication of the MU is realized using the Linux mailbox driver.
+
+e.
+-All those SE interfaces 'se-if' that is/are dedicated to a particular SE, 
+will be -enumerated and provisioned under the very single 'SE' node.
 +Although MU(s) is/are not shared between SE(s). But for SoC like i.MX95
 +which has multiple SE(s) like HSM, V2X-HSM, V2X-SHE; all the SE(s) and their 
 interfaces 'se-if'
 +that is/are dedicated to a particular SE will be enumerated and
 +provisioned using the single compatible node("fsl,imx95-se").
-+
-+Each 'se-if' comprise of twp layers:
-+- (C_DEV Layer) User-Space software-access interface.
-+- (Service Layer) OS-level software-access interface.
-+
-+   +--------------------------------------------+
-+   |            Character Device(C_DEV)         |
-+   |                                            |
-+   |   +---------+ +---------+     +---------+  |
-+   |   | misc #1 | | misc #2 | ... | misc #n |  |
-+   |   |  dev    | |  dev    |     | dev     |  |
-+   |   +---------+ +---------+     +---------+  |
-+   |        +-------------------------+         |
-+   |        | Misc. Dev Synchr. Logic |         |
-+   |        +-------------------------+         |
-+   |                                            |
-+   +--------------------------------------------+
-+
-+   +--------------------------------------------+
-+   |               Service Layer                |
-+   |                                            |
-+   |      +-----------------------------+       |
-+   |      | Message Serialization Logic |       |
-+   |      +-----------------------------+       |
-+   |          +---------------+                 |
-+   |          |  imx-mailbox  |                 |
-+   |          |   mailbox.c   |                 |
-+   |          +---------------+                 |
-+   |                                            |
-+   +--------------------------------------------+
-+
-+- service layer:
+
+f. Removed ",". Replaced for "Each 'se-if'," with "Each se-if'.
+
+g. removed ","
+-  This layer is responsible for ensuring the communication protocol, that is 
+defined
 +  This layer is responsible for ensuring the communication protocol
-+that is defined
-+  for communication with firmware.
-+
-+  FW Communication protocol ensures two things:
-+  - Serializing the messages to be sent over an MU.
-+
++ that is defined
+
+h. removed "-"
+-  - FW can handle one command-message at a time.
 +  - FW can handle one command message at a time.
-+
-+- c_dev:
-+  This layer offers character device contexts, created as 
-'/dev/<se>_mux_chx'.
+
+i.
+-  Using these multiple device contexts, that are getting multiplexed over a 
+single MU,
+-  user-space application(s) can call fops like write/read to send the 
+command-message,
+-  and read back the command-response-message to/from Firmware.
+-  fops like read & write uses the above defined service layer API(s) to 
+communicate with
 +  Using these multiple device contexts that are getting multiplexed
-+over a single MU,
-+  userspace application(s) can call fops like write/read to send the
-+command message,
-+  and read back the command response message to/from Firmware.
++ over a single MU,  userspace application(s) can call fops like
++ write/read to send the command message,  and read back the command response 
+message to/from Firmware.
 +  fops like read & write use the above defined service layer API(s) to
-+communicate with
-+  Firmware.
-+
-+  Misc-device(/dev/<se>_mux_chn) synchronization protocol:
-+
-+                                Non-Secure               +   Secure
-+                                                         |
-+                                                         |
-+                  +---------+      +-------------+       |
-+                  | se_fw.c +<---->+imx-mailbox.c|       |
-+                  |         |      |  mailbox.c  +<-->+------+    +------+
-+                  +---+-----+      +-------------+    | MU X +<-->+ ELE |
-+                      |                               +------+    +------+
-+                      +----------------+                 |
-+                      |                |                 |
-+                      v                v                 |
-+                  logical           logical              |
-+                  receiver          waiter               |
-+                     +                 +                 |
-+                     |                 |                 |
-+                     |                 |                 |
-+                     |            +----+------+          |
-+                     |            |           |          |
-+                     |            |           |          |
-+              device_ctx     device_ctx     device_ctx   |
-+                                                         |
-+                User 0        User 1       User Y        |
-+                +------+      +------+     +------+      |
-+                |misc.c|      |misc.c|     |misc.c|      |
-+ kernel space   +------+      +------+     +------+      |
-+                                                         |
-+ +------------------------------------------------------ |
-+                    |             |           |          |
-+ userspace     /dev/ele_muXch0    |           |          |
-+                          /dev/ele_muXch1     |          |
-+                                        /dev/ele_muXchY  |
-+                                                         |
-+
-+When a user sends a command to the firmware, it registers its
-+device_ctx as waiter of a response from firmware.
-+
-+Enclave's Firmware owns the storage management, over Linux filesystem.
-+For this c_dev provisions a dedicated slave device called "receiver".
-+
-+.. kernel-doc:: drivers/firmware/imx/se_fw.c
-+   :export:
++ communicate with
+   Firmware.
 
+j. Uppercase for word "Linux".
+
+2/5
+a. Rephrased the description to remove list of phandles.
+
+b. Moved required before allOf:
++required:
++  - compatible
++  - reg
++  - mboxes
++  - mbox-names
++
++additionalProperties: false
++
+ allOf:
+
+c. replaced not: required: with properties: <property-name>: false.
+   # memory-region
+-      not:
+-        required:
+-          - memory-region
++      properties:
++        memory-region: false
+
+   # sram
+-    else:
+-      not:
+-        required:
+-          - sram
+
+d. Reduced examples. keeping example of i.MX95.
+e. node-name is changed to "firmware@<hex>"
+
+3/5
+- node name changed to "firmware@<hex>".
+
+4/5
+- used sizeof(*s_info)
+- return early, rather than doing goto exit, in ele_get_info().
+- Use upper_32_bits() and lower_32_bits()
+- use rx_msg here instead of priv->rx_msg
+- Moved the status check to validate_rsp_hdr. Rename the function to 
+"se_val_rsp_hdr_n_status"
+- typecasting removed header = (struct se_msg_hdr *) msg;
+- Converted the API name with prefix imx_ele_* or imx_se_*, to ele_* and se_*, 
+respectively.
+- Removed the functions definition & declaration for: free_phybuf_mem_pool() & 
+get_phybuf_mem_pool()
+- removed the mbox_free_channel() calls from clean-up.
+- Flag "priv->flags" is removed.
+- Converted the int se_if_probe_cleanup() to void se_if_probe_cleanup().
+- Replaced NULL initialization of structure members: priv->cmd_receiver_dev & 
+priv->waiting_rsp_dev , with comments.
+- Removed the function's declaration get_phy_buf_mem_pool1
+
+5/5
+Changes to Documentation/ABI/testing/se-cdev.
+a. Removed "-" from "secure-enclave" and "file-descriptor".
+
+b. Removed "-" from "shared-library"
+
+c. Replaced "get" with "getting".
+
+d. Added description for the new IOCTL "send command and receive command 
+response"
+
+e. Replaced "wakeup_intruptible" with "wait_event_interruptible"
+
+f. Removed ";"
+
+g. Removd "," from "mailbox_lock,"
+
+h. Replaced "free" with "frees"
+
+i. In mailbox callback function, checking the buffer size before copying.
+
+Reference:
+- Link to v3: 
+https://lore.kernel.org/r/20240617-imx-se-if-v3-0-a7d28dea5c4a@nxp.com
+
+Changes in v3:
+5/5:
+- Initialize tx_msg with NULL.
+- memdup_user() returns an error pointer, not NULL. correct it by adding check 
+for err_ptr.
+- new IOCTL is added to send & recieve the message.
+- replaced the while loop till list is empty, with list_for_each_entry.
+- replaced __list_del_entry, with list_del.
+- Removed the dev_err message from copy to user.
+- Removed the casting of void *.
+- corrected the typcasting in copy to user.
+- removed un-necessary goto statement.
+- Removed dead code for clean-up of memory.
+- Removed un-mapping of secured memory
+- Passing se_if_priv structure to init_device_context.
+- Updated the below check to replace io.length with round_up(io.length).
+	if (shared_mem->size < shared_mem->pos|| io.length >= shared_mem->size - 
+shared_mem->pos)
+- Created a function to cleanup the list of shared memory buffers.
+- Used list_for_each_entry_safe(). created a separate functions: 
+se_dev_ctx_cpy_out_data() & se_dev_ctx_shared_mem_cleanup()
+
+4/5
+- Changed the compatible string to replace "-ele", to "-se".
+- Declaration of imx_se_node_info, is done as const in the whole file
+- Remove the unused macros from ele_base_msg.h
+- Remove the function declaration get_phy_buf_mem_pool1, from the header file.
+- Replace the use of dmam_alloc_coherent to dma_alloc_coherent
+- Check for function pointer, before calling the fucntion pointer in 
+imx_fetch_se_soc_info
+- Removed the unused flag for SE_MU_IO_FLAGS_USE_SEC_MEM.
+-  Removed the unused macros WORD_SZ
+- instead of struct device *dev, struct se_if_priv *priv, is used as argument 
+to the funtions:se_save_imem_state, se_restore_imem_state, 
+imx_fetch_se_soc_info
+- Removed ret from validate_rsp_hdr.
+- changed the prefix of the funtion: plat_add_msg_crc and 
+plat_fill_cmd_msg_hdr.
+- indentation correction for info structures.
+- remove the check for priv not null from se_if_probe_cleanup
+- Removed the casting of void *.
+- se_load_firmware function is corrected for not freeing the buffer when 
+allocation fails.
+- Checking if get_imx_se_node_info() can return NULL, in se_if_probe()
+- imem.size has type u32. return value from se_save_imem_state() will be 
+assigned to imem.size in case of success only.
+- removed the flag un-setting in case of failure. priv->flags &= 
+(~RESERVED_DMA_POOL);
+- removed the function call for devm_of_platform_populate(dev);
+- Checking for not-NULL,  before calling the funtion pointer 
+se_fetch_soc_info.
+- Removed the checking for reserved memory flag, before freeing up the 
+reserved memory, in se_probe_if_cleanup.
+
+3/5
+- Changed the compatible string to replace "-ele", to "-se".
+
+2/5
+- to fix the warning error, replaced the "-ele" & "-v2x" in compatible string, 
+to "-se".
+- Added an example for ele@0 for compatible string "fsl,imx95-se"
+
+Reference
+- Link to v2: 
+https://lore.kernel.org/r/20240523-imx-se-if-v2-0-5a6fd189a539@nxp.com
+
+Changes in v2:
+
+4/4
+- Split this patch into two: 1. base driver & 2. Miscdev
+- Initialize the return variable "err" as 0, before calling 'return err', in 
+the file ele_common.c
+- Fix the usage of un-iniitialized pointer variable, by initializing them with 
+NULL, in ele_base_msg.c.
+- Fix initializing the ret variable, to return the correct error code in case 
+of issue.
+- replaced dmam_alloc_coherent with dma_alloc_coherent.
+- Replace the use of ELE_GET_INFO_READ_SZ, with sizeof(soc_info).
+- Replaced -1 with -EPERM
+- Removed the safety check on func-input param, in ele_get_info().
+- fix the assigning data[1] with lower 32 address, rather than zero, for 
+ele_fw_authenticate API.
+- Correctly initializing the function's return error code, for file 
+ele_base_msg.c.
+- replaced 'return' with 'goto'.
+- Use length in bytes.
+- Corrected the structure se_msg_hdr.
+- Moved setting of rx_msg  to priv, into the function imx_ele_msg_send_rcv
+- Will add lockdep_assert_held, to receive path, in v2.
+- corrected the spacing at "ret  = validate_rsp_hdr"
+- FIELD_GET() used for RES_STATUS
+- Re-write the structure soc_info, matching the information provided in 
+response to this api.
+- The "|" goes to the end of the previous line.
+- Moved the locking and unlocking of the command lock to the caller of the 
+function.
+- removed the safety check for device private data.
+- Structure memory reference, used to read message header.
+- In the interrupt call back function, remove assigning waiting_rsp_dev to 
+NULL, in case of response message rcv from FW.
+- do while removed.
+- replaced BIT(1) for RESERVED_DMA_POOL, to BIT(0)
+- The backslash is removed while assigning the file name with absolute path to 
+structure variable.fw_name_in_rfs =.
+- Update the 'if' condition by removing "idx < 0".
+- mbox_request_channel_byname() uses a "char" for the name not a u8. 
+Corrected.
+- devm managed resources, are not cleaned now, in function se_probe_if_cleanup
+- Used dev_err_probe().
+- Used %pe to print error string.
+- remove "__maybe_unused" for "struct platform_device *enum_plat_dev 
+__maybe_unused;"
+- used FIELD_GET(), for  RES_STATUS. Removed the use of MSG_TAG, MSG_COMMAND, 
+MSG_SIZE, MSG_VER.
+- Depricated the used of member of struct se_if_priv, bool no_dev_ctx_used;
+- Moved the text explaing the synchronization logic via mutexes, from patch 
+1/4 to se_ctrl.h.
+- removed the type casting of info_list = (struct imx_se_node_info_list *) 
+device_get_match_data(dev->parent);
+- Used static variable priv->soc_rev in the se_ctrl.c, replaced the following 
+condition: if (info_list->soc_rev) to if (priv->soc_rev) for checking if this 
+flow is already executed or not.
+- imx_fetch_soc_info will return failure if the get_info function fails.
+- Removed devm_free from imx_fetch_soc_info too.
+
+3/3
+- Made changes to move all the properties to parent node, without any child 
+node.
+
+2/4
+- Use Hex pattern string.
+- Move the properties to parent node, with no child node.
+- Add i.MX95-ele to compatible nodes to fix the warning "/example-2/v2x: 
+failed to match any schema with compatible: ['fsl,imx95-v2x']"
+
+1/1
+- Corrected the spelling from creats to creates.
+- drop the braces around the plural 's' for interfaces
+- written se in upper case SE.
+- Replace "multiple message(s)" with messages.
+- Removed too much details about locks.
+
+Testing
+- make CHECK_DTBS=y freescale/imx8ulp-evk.dtb;
+- make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j8  dt_binding_check 
+DT_SCHEMA_FILES=fsl,imx-se.yaml
+- make C=1 CHECK=scripts/coccicheck drivers/firmware/imx/*.* W=1 > r.txt
+- ./scripts/checkpatch.pl --git <>..HEAD
+- Tested the Image and .dtb, on the i.MX8ULP.
+
+Reference
+- Link to v1: 
+https://lore.kernel.org/r/20240510-imx-se-if-v1-0-27c5a674916d@nxp.com
+
+---
+Pankaj Gupta (7):
+      Documentation/firmware: add imx/se to other_interfaces
+      dt-bindings: arm: fsl: add imx-se-fw binding doc
+      arm64: dts: imx8ulp-evk: add nxp secure enclave firmware
+      firmware: imx: add driver for NXP EdgeLock Enclave
+      se_ctrl.c
+      firmware: imx: adds miscdev
+      ele_common.c
+
+ Documentation/ABI/testing/se-cdev                  |   43 +
+ .../devicetree/bindings/firmware/fsl,imx-se.yaml   |   91 ++
+ .../driver-api/firmware/other_interfaces.rst       |  121 ++
+ arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |   17 +-
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi         |   13 +-
+ drivers/firmware/imx/Kconfig                       |   13 +
+ drivers/firmware/imx/Makefile                      |    2 +
+ drivers/firmware/imx/ele_base_msg.c                |  273 ++++
+ drivers/firmware/imx/ele_base_msg.h                |   94 ++
+ drivers/firmware/imx/ele_common.c                  |  361 ++++++
+ drivers/firmware/imx/ele_common.h                  |   51 +
+ drivers/firmware/imx/se_ctrl.c                     | 1320 
+++++++++++++++++++++
+ drivers/firmware/imx/se_ctrl.h                     |  136 ++
+ include/linux/firmware/imx/se_api.h                |   14 +
+ include/uapi/linux/se_ioctl.h                      |  101 ++
+ 15 files changed, 2647 insertions(+), 3 deletions(-)
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20240507-imx-se-if-a40055093dc6
+
+Best regards,
 --
-2.34.1
+Pankaj Gupta <pankaj.gupta@nxp.com>
 
 
-------=_NextPart_000_0461_01DB6B4A.4FAAB0E0
+------=_NextPart_000_046D_01DB6B4A.521C4D20
 Content-Type: application/pkcs7-signature;
 	name="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -529,8 +960,8 @@ cHJpc2UgQ0EgNDELMAkGA1UECwwCSVQxETAPBgNVBAoMCE5YUCBCLlYuMRIwEAYDVQQHDAlFaW5k
 aG92ZW4xFjAUBgNVBAgMDU5vb3JkLUJyYWJhbnQxEzARBgoJkiaJk/IsZAEZFgN3YmkxEzARBgoJ
 kiaJk/IsZAEZFgNueHAxEzARBgoJkiaJk/IsZAEZFgNjb20xCzAJBgNVBAYTAk5MAhM/AAV1goSs
 wyqoLYNbAAUABXWCMAkGBSsOAwIaBQCgggK5MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
-KoZIhvcNAQkFMQ8XDTI1MDEyMDA5MTgwNFowIwYJKoZIhvcNAQkEMRYEFGbzMKXi5fjBn7Jv4oUt
-xXnF44HhMIGTBgkqhkiG9w0BCQ8xgYUwgYIwCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjAKBggq
+KoZIhvcNAQkFMQ8XDTI1MDEyMDA5MTgwOFowIwYJKoZIhvcNAQkEMRYEFMln9Kay22kLHxsFNwhm
+pLZKQdOHMIGTBgkqhkiG9w0BCQ8xgYUwgYIwCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjAKBggq
 hkiG9w0DBzALBglghkgBZQMEAQIwDgYIKoZIhvcNAwICAgCAMA0GCCqGSIb3DQMCAgFAMAcGBSsO
 AwIaMAsGCWCGSAFlAwQCAzALBglghkgBZQMEAgIwCwYJYIZIAWUDBAIBMIHfBgkrBgEEAYI3EAQx
 gdEwgc4wgbYxHDAaBgNVBAMME05YUCBFbnRlcnByaXNlIENBIDUxCzAJBgNVBAsMAklUMREwDwYD
@@ -541,10 +972,10 @@ gdGggc4wgbYxHDAaBgNVBAMME05YUCBFbnRlcnByaXNlIENBIDUxCzAJBgNVBAsMAklUMREwDwYD
 VQQKDAhOWFAgQi5WLjESMBAGA1UEBwwJRWluZGhvdmVuMRYwFAYDVQQIDA1Ob29yZC1CcmFiYW50
 MRMwEQYKCZImiZPyLGQBGRYDd2JpMRMwEQYKCZImiZPyLGQBGRYDbnhwMRMwEQYKCZImiZPyLGQB
 GRYDY29tMQswCQYDVQQGEwJOTAITLQALBG4lg6jMf7JC5gABAAsEbjANBgkqhkiG9w0BAQEFAASC
-AQBxhOVylVAkfc4hdjug/a78fyCTMByJ/kbQKRuKXrMPNp3ny7oyK53xloGzp4dHV/Qhrs8w8W7c
-t+6hg1Z57rtarBioH4pB1KuhEAaC+t21wEcWbgCeq1qNfeovbxi2jFirCproP2u65pudZUtnqEhf
-bYkwe1q0Hpc98ZyKALZ2akAyC3KGpyrHFqJxJNVS8pmOih677BWVnCbQHywpGMlXKgJpXzABXR5x
-TpBSEuyF5tNEVOfmmnrxTaOSND3uqhA/YDD53X7E5CMp/ahXgHnNBUYv01dzoqCf0vb1fswXUKtU
-jqlpxlFzgLt5uN0bKR2nJdmtXiRdN63PPZCc74rJAAAAAAAA
+AQAgrEtZWJ6dnELHLVgxQBlFiGrayO82364QFCPwAgsIISF0I3KubzZjZzyN6xCR9g/rQXvQABF3
+2JtjkwP2uKJGzQ2LiORc+Pimr8SARZMeKznLAr4oPwkALMsRSvyu5v3xQJO8E+sqLxYaQPjYaMIY
+AGuidKq8kM0pGGeoG+xVfEYkvOAbAjrqtlUG+fIL1qMLtHNAJV7DzW9w1l9ydiSRJ6FkVGxBEcc7
+OhJAyh4FrNtGDZxERyVrO9+lPU+EHUQOj4sKhPR0uBjlOm/qG656imVVaAXQPH6dn2WLUSDecHnP
+raC/UjgEONwVcM0dq8ok8IU7aY2lUTKAsSV4FKyPAAAAAAAA
 
-------=_NextPart_000_0461_01DB6B4A.4FAAB0E0--
+------=_NextPart_000_046D_01DB6B4A.521C4D20--
