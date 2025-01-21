@@ -1,138 +1,124 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2929F1F426A
-	for <imx@lists.linux.dev>; Tue, 21 Jan 2025 15:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A831F3FF5;
+	Tue, 21 Jan 2025 15:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737472550; cv=none; b=N9UYUFoPxKBqwc8QdSy+bBU+HgILdRu4jd7nqYKEpep+pIvLzmqfzlgT6INqy2tgltOZaENAZzbaDZgAYfsPG4+Tdnn7xo9isK1nfrebkBmmC9wKzMxWqo7yk2Y7W+OtUoVv5CC+X3UjhwDXVOY1RsB7RN9aapvaIRgdXkrAr5k=
+	t=1737472782; cv=none; b=lhRdeXzigaaq4bQuBjs4qaCxgDq0tJtNxeDxPtZgW96RJ7B6bBPqsPLiLATyNb/3WBOTGq6taS++TxmuYiwiiynZ5n0HNvlyzWPrOT/UWlYKRz48ipkdenbk4BGXsNGDHiEXaqcgQzLbRpjC0mCj/4pZXxCHaxNQcisFhMTzt1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737472550; c=relaxed/simple;
-	bh=VAOxaKNqT9HIaNEdqkFqK0wD2sSNhVsUuyIHNh+V45k=;
+	s=arc-20240116; t=1737472782; c=relaxed/simple;
+	bh=XQqPkOmvTtbIgS6tviompcyqsrq7q7NclvQbzZBT9HU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBRGEsNISYylaRVmIT8LkpikX+lxOolV5TmLzRGgqNg5UUyyAsVGcAF+VbP5OT+bkh933ui1z+wMK/T4Km0sSLIueF2k7YFK4VvENx7ayn2wrcd4QAZ1W7gdRtFcGTFhuYeJMHVJNLNtUh8T+F//nuK86KPiKWD4KCsm+i26IxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZCf0opEi; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=euhFii5dC4iR1x4Q3VI6Hu3azpDqrMSfK7MxSgSkJ370o6YUf3nX6U2VYffbiRt8jAqYMfsqaJkT+E/kJaJljI/UagQyqSgZ0gcuHsVopmujOIJJGXGunM5FcFr9pude+14kCsD1Rdv8v8CACBnn2GVQGH5nme6AZ8f4x9hZuh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFxw5/xi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZCf0opEi"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43634b570c1so42191175e9.0
-        for <imx@lists.linux.dev>; Tue, 21 Jan 2025 07:15:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737472546; x=1738077346; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SvugShSkE19vxPC4Zwoh2Wo9A7je9UiUf85WI3sjd/U=;
-        b=ZCf0opEibGaQOexBqaHLcWzS7sszydgFWMXb1C8GAD0js36wn+289OVIGsgUMoH6k9
-         +mqWwrglwsMLd5iRbXbCcCAbdk8/IivQeboWW/dXmJdx/tKRRDEOwghXJUctE6yC+DbM
-         czpI2mGs9qrn+Gmm4HXzlSMf6TmRY+u7eomyKfRyPsnJQfMNYgWEGLzKi8KjOdUDfun+
-         BltEaFS98yn3IoFVfQOo07dlUrw6yC0Az95bWZQnSVVg4Wq+hO7k2Aaja9EDW6PxfZ6+
-         k00NwhGStiikS8qve9riJS83e5wmSn388EugZIRIY4H0lXENIVsu/ohVcZgU9THnE2sh
-         Nhfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737472546; x=1738077346;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SvugShSkE19vxPC4Zwoh2Wo9A7je9UiUf85WI3sjd/U=;
-        b=CH2IP2Lwjz6OXxof6ykrTLDP04W1OxEvwi+0FVeOyxoY+LnjaDv4cXHWFaYAY84RJB
-         7tPJEcJo2Pi9JAGPF9IAV5eMEkHiB9e4+Cw54Nw+HqmlBgQ9iiHYRXiEH4AcW/7TKcty
-         AsMiBPPuitvnyH/d3/gasWOr6Q5c6TizdRxULW2HJFQEuT50WP43wJtsod549lEQqO9O
-         3R9Sg00jjk6rLuYGP40TVT0bjyWsTC+AntBERhq3X/4eZmQ9al3z3CxyAeaCvkYj8VeG
-         XmBmQKnEoqz6TMgo9e1zzPP5lyqI/SQ5S0FBjbYonmwRsWfoOKXMpdEPvsOcfUBvzwVK
-         vopg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8swMVGvcfIo1SP48TJGxHOkYGAUQkyVuZEyh5whaS10aKPgw0YBSGbh28YvHlqyIX2Ik=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yynkb6Al83g8hOyaVxB9WGXlrd8/LFhGmetUy8DoPVXFrosSzvF
-	i4IZjzcIFvN5c7VomPI72YcDIQLYi9YmUgRZ7Wn4n1bWypT1kdRQLHrCLryQknw=
-X-Gm-Gg: ASbGncvRkjz1ajNW7y9/KkiULkiAyuN+lGTxP4UKl90ozdazrhVZXeQk8TYzOQF3TyP
-	xtpUMwHUV/EpgX4l/FIIzU+gEt8DX9buGArFLKKyhMbxv4lHZTdnThL3mlk40YeTG/0bDPxo7Qi
-	yLUwRAYAltX/IjGwB1ajIgZboivryEePJQmppfy98mUgtRUb6RnNk5XWHqDLgvdIf87V8Z3Nfh8
-	CDwd8nHMnJXgE8jcDDSQdIAsbaJhjpgTgcsFVc82Xo+e5KuWozkwNIlXK7LqfBJkokPMwUn9gw=
-X-Google-Smtp-Source: AGHT+IGmWQgLP0oShFNos3lRgIKGS81KPZyyyfYAl5Ap+K5h/aBJR8EY+XcHucmV4GzqhIiM28AjlQ==
-X-Received: by 2002:a05:600c:524c:b0:435:306:e5dd with SMTP id 5b1f17b1804b1-4389143a66dmr152559035e9.22.1737472546502;
-        Tue, 21 Jan 2025 07:15:46 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890367b48sm182318395e9.0.2025.01.21.07.15.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 07:15:46 -0800 (PST)
-Date: Tue, 21 Jan 2025 18:15:43 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
-Subject: Re: [PATCH 3/4] rtc: Introduce devm_rtc_allocate_device_priv
-Message-ID: <bf81200d-4a08-4ed3-b67b-d2cb1c1df2dd@stanley.mountain>
-References: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
- <20250120-rtc-v1-3-08c50830bac9@nxp.com>
- <a0403834-1c2f-42b4-81f3-ca4123fd2a4e@stanley.mountain>
- <PAXPR04MB8459FB98E6C52DCF3BE76DC088E62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFxw5/xi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA63C4CEDF;
+	Tue, 21 Jan 2025 15:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737472781;
+	bh=XQqPkOmvTtbIgS6tviompcyqsrq7q7NclvQbzZBT9HU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SFxw5/xima06xxBKWjLdTsB64SdjXSGTbez1Lz40pHcHIzsfqNFIuZ/bt3unTFi+Y
+	 pEE2z1WCF4KcaFB4Zz2ejxAD++bWOu7c2IZ0FDZTuctDDkR1bq8+V/WQ6s/x/l9h8n
+	 hxGlWhQYrl3cxhah2BNUfwG7jo3r9+mcS6D7/j+Rlu6PhOGnFp+++mSTZZmEs7xmXc
+	 4InuZ5uryFMN7R8YSyktzPpQv4i5/2RO8iXc6bzMolkxQrxl6CDg3JNcZL55+8tkcr
+	 rzAl1LqudKBHrPluuuJ7Affa4mDdFvJL6wc1coBJuH/mhaxG5JT2xhzTgLR/x7R5QW
+	 HhC01qK30aAzA==
+Date: Tue, 21 Jan 2025 15:19:36 +0000
+From: Simon Horman <horms@kernel.org>
+To: =?utf-8?B?Q3PDs2vDoXMs?= Bence <csokas.bence@prolan.hu>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Laurent Badel <laurentbadel@eaton.com>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH] net: fec: Refactor MAC reset to function
+Message-ID: <20250121151936.GF324367@kernel.org>
+References: <20250121103857.12007-3-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8459FB98E6C52DCF3BE76DC088E62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250121103857.12007-3-csokas.bence@prolan.hu>
 
-On Tue, Jan 21, 2025 at 02:35:59PM +0000, Peng Fan wrote:
-> Hi Dan,
+On Tue, Jan 21, 2025 at 11:38:58AM +0100, Csókás, Bence wrote:
+> The core is reset both in `fec_restart()`
+> (called on link-up) and `fec_stop()`
+> (going to sleep, driver remove etc.).
+> These two functions had their separate
+> implementations, which was at first only
+> a register write and a `udelay()` (and
+> the accompanying block comment).
+> However, since then we got soft-reset
+> (MAC disable) and Wake-on-LAN support,
+> which meant that these implementations
+> diverged, often causing bugs. For instance,
+> as of now, `fec_stop()` does not check for
+> `FEC_QUIRK_NO_HARD_RESET`. To eliminate
+> this bug-source, refactor implementation
+> to a common function.
 > 
-> > Subject: Re: [PATCH 3/4] rtc: Introduce devm_rtc_allocate_device_priv
-> > 
-> > On Mon, Jan 20, 2025 at 10:25:35AM +0800, Peng Fan (OSS) wrote:
-> > >  int __devm_rtc_register_device(struct module *owner, struct
-> > > rtc_device *rtc) diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
-> > > index
-> > >
-> > c4a3ab53dcd4b7280a3a2981fe842729603a1feb..e0e1a488b795645d
-> > 7c9453490d6c
-> > > dba510cc5db5 100644
-> > > --- a/drivers/rtc/dev.c
-> > > +++ b/drivers/rtc/dev.c
-> > > @@ -410,7 +410,8 @@ static long rtc_dev_ioctl(struct file *file,
-> > >  		}
-> > >  		default:
-> > >  			if (rtc->ops->param_get)
-> > > -				err = rtc->ops->param_get(rtc-
-> > >dev.parent, &param);
-> > > +				err = rtc->ops->param_get(rtc->priv ?
-> > > +							  &rtc->dev :
-> > rtc->dev.parent, &param);
-> > 
-> > This seems kind of horrible...  I can't think of anywhere else which does
-> > something like this.
-> > 
-> > It would almost be better to do something like:
-> > 
-> > 	err = rtc->ops->param_get(rtc->priv ? (void *)rtc : rtc-
-> > >dev.parent, &param);
-> > 
-> > The advatange of this is that it looks totally horrible from the get go
-> > instead of only subtly wrong.  And it would immediately crash if you
-> > got it wrong implementing the ->param_get() function pointer.
+> Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> ---
 > 
-> Thanks for help improving the code. I will include this in V2 and post
-> out after we reach a goal on how to support the 2nd RTC on i.MX95.
+> Notes:
+>     Recommended options for this patch:
+>     `--color-moved --color-moved-ws=allow-indentation-change`
+> 
+>  drivers/net/ethernet/freescale/fec_main.c | 50 +++++++++++------------
+>  1 file changed, 23 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 68725506a095..850ef3de74ec 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1064,6 +1064,27 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+>  	}
+>  }
+>  
+> +/* Whack a reset.  We should wait for this.
+> + * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+> + * instead of reset MAC itself.
+> + */
+> +static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
+> +{
+> +	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+> +		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+> +			writel(0, fep->hwp + FEC_ECNTRL);
+> +		} else {
+> +			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+> +			udelay(10);
+> +		}
+> +	} else {
+> +		val = readl(fep->hwp + FEC_ECNTRL);
+> +		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+> +		writel(val, fep->hwp + FEC_ECNTRL);
 
-Don't do what I said actually...  Let's find a better way.  I don't
-know why rtc_class_ops function pointers take a device pointer instead
-of an rtc_device pointer.  Or if they did take a device pointer why
-not the &rtc->dev like you suggested?  But let's not do both like this.
+Hi Bence,
 
-Migrating all the function pointers is a lot of work but not impossible.
+It seems that this does not compile because val is not declared in this scope.
 
-regards,
-dan carpenter
+> +	}
+> +}
+> +
+>  /*
+>   * This function is called to start or restart the FEC during a link
+>   * change, transmit timeout, or to reconfigure the FEC.  The network
+
+Please observe the rule regarding not posting updated patches within 24h
+when preparing v2.
+
+-- 
+pw-bot: changes-requested
