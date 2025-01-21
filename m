@@ -1,136 +1,167 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2221F12E2
-	for <imx@lists.linux.dev>; Tue, 21 Jan 2025 10:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E441C07F1
+	for <imx@lists.linux.dev>; Tue, 21 Jan 2025 10:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737455853; cv=none; b=r8z3C+Ny5wfh3H5r3GOHdJ0OoHc1bZ5v4Y0z9/yCW4WqdErSeHj0vyLu5XIwIsObgewafRn5NWFNHmq6hQJw4oy1IWFYFFabrP9SSLIBm5sMpObS/5oBe87r+F+mjfgInkjhwini5Dlro54MiiWDkAklyZmE55yrlNH/INy1zVU=
+	t=1737456018; cv=none; b=ZMOwDYSZyKLf2EJIaCUevOCfjodHutU1iXrXii2EOT/qzMNyqBEfSJidYsHYo9O3Jshu2/fEVdkFsbFuTu3y7pdswmSgXNHWvkSufOKmBwpKUzBW5uxAWSQdrR5pApghhR8RTD/dSO8uuernkY8MwCbszG6YEe+LoLp+LptyqCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737455853; c=relaxed/simple;
-	bh=fqyXwICWjYHIfxpEIj9YTGdsmPTGZBm2nD8wy6ZMLPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KCzyE/+Sa90sqZZD5/36IqGNpvux80DwCHHAPEQeOY+qzeuxRDWriQDD4BkCAk5rwEuM8DN74es0FT+8+/Wr1G2QhhyIPRRIV8dLLrBPBVrN8+27TxR8dxP0bxFzGBcEGOctnOidyNXTbG6z4nZWvyTpMBeUbeSvvdL7gNP6QAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1taBdH-0001OQ-Rz; Tue, 21 Jan 2025 11:37:19 +0100
-Message-ID: <3f21523b-816e-488c-bf0a-c6677c375a18@pengutronix.de>
-Date: Tue, 21 Jan 2025 11:37:18 +0100
+	s=arc-20240116; t=1737456018; c=relaxed/simple;
+	bh=/RFiy4KtEw5Ld7rO4MkJaBpq1+J6T2aRdGYD70o1fXk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aVjaQkXWndCQDEm1hWCGLPJeREULOj+mXqLK6abgqGYDLf1Flk/ufHKGq9rXeTbMjz1Gqht6VNr3Ei1cf/k/N0vMYCXeVmg2cKfk0OBXd0/7PDqXOOXvCyU5z5seBHZYT3pDkIyTcMbJQJLK6m1/Cvq0Yhvcv5RN039/iIlQkh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=F6syjK2V; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="F6syjK2V"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id A0A0CA03A7;
+	Tue, 21 Jan 2025 11:40:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=64Jisw5Z95VY9Aga6b+rI9eNqwppYLgNfZ35UeF2PNs=; b=
+	F6syjK2VoHGpQWXERUmfUB1AGH6A+6LwFcM/V6pS0PReVdZmPY3T7Ic55i1fKc3P
+	KaLU6OooxdhWnj5O0YOkI2+Gx0uld9GMf/NAjqYszEhZydGHEBeknTKlCHBqJKx/
+	5iMykh2mSBEBvpkoGvK5t75KlBop3MbS2SuHwiBqA7CmVZ9VBh3SiwkUcnTRBZ11
+	RpjR9CZcEoZWcsITosvF28HiTQPnmOlRkrpQku8Z1hlOrYBkEmzKHSbK0RNotIHH
+	3SK7UnMnd6FioXs6HZLJoav8LGYExLhBG4LMU8g8lXelPpKoaI9UQzsQUXysq6+O
+	+hREwmfcVlWZSijN5da5V3olw97BhIdtnoaYwMegM7zcOJGqJq9Y7lcbm/xxbvVn
+	K7U2HEpuYD97yYbuAPz0ep+zIo8F9euHLciifqEP3MbgJkW0uQT/r0qNrf92YrxE
+	5J4B9rTrclwg0AD3a5h/RiaqkhSjA9F+P0lOdTyGEEkdJwzpxOIFJYJtcWEEhHEB
+	A/biMararsd3i49S3D5w5kbUM81838uhG2Z+or20XMMFWzRzAtLokpumEdIWXvMJ
+	2pplw5FUauuCHvM0op4++UvchjzzvmfztPH2f9UWWktbE8kV0PlxuMbBTkkG9nh6
+	zzkcQLzx4NglWacF3n0uJBRzloTZ4AKsokOqOyNq+W4=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: Jakub Kicinski <kuba@kernel.org>, Laurent Badel <laurentbadel@eaton.com>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
+ Abeni" <pabeni@redhat.com>
+Subject: [PATCH] net: fec: Refactor MAC reset to function
+Date: Tue, 21 Jan 2025 11:38:58 +0100
+Message-ID: <20250121103857.12007-3-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] gpio: mxc: silence warning about GPIO base being
- statically allocated
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Linus Walleij <linus.walleij@linaro.org>, Andy Whitcroft
- <apw@canonical.com>, Joe Perches <joe@perches.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- Haibo Chen <haibo.chen@nxp.com>,
- Catalin Popescu <catalin.popescu@leica-geosystems.com>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de>
- <CAHp75Ve8d96Uw1obJVwRPyRE5E0eC8qU7uXe-UKuZeB-3XLPcA@mail.gmail.com>
- <528b6695-387e-436d-98fc-6f576636d16f@pengutronix.de>
- <CAMRc=MdYB_XHCaurs1mO+KGX7rB5zFT3zCi=UbNY0rSbMEJdWw@mail.gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CAMRc=MdYB_XHCaurs1mO+KGX7rB5zFT3zCi=UbNY0rSbMEJdWw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1737456004;VERSION=7983;MC=537548373;ID=63783;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94852677467
 
-Hello Bartosz,
+The core is reset both in `fec_restart()`
+(called on link-up) and `fec_stop()`
+(going to sleep, driver remove etc.).
+These two functions had their separate
+implementations, which was at first only
+a register write and a `udelay()` (and
+the accompanying block comment).
+However, since then we got soft-reset
+(MAC disable) and Wake-on-LAN support,
+which meant that these implementations
+diverged, often causing bugs. For instance,
+as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`. To eliminate
+this bug-source, refactor implementation
+to a common function.
 
-On 15.01.25 17:52, Bartosz Golaszewski wrote:
-> On Tue, Jan 14, 2025 at 10:55 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>
->> Hi Andy,
->>
->> On 14.01.25 10:46, Andy Shevchenko wrote:
->>> On Tue, Jan 14, 2025 at 12:19 AM Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>>>
->>>> The i.MX GPIO driver has had deterministic numbering for the GPIOs
->>>> for more than 12 years.
->>>>
->>>> Reverting this to dynamically numbered will break existing setups in the
->>>> worst manner possible: The build will succeed, the kernel will not print
->>>> warnings, but users will find their devices essentially toggling GPIOs
->>>> at random with the potential of permanent damage. We thus want to keep
->>>> the numbering as-is until the SysFS API is removed and script fail
->>>> instead of toggling GPIOs dependent on probe order.
->>>
->>> While I understand the issue this tends to get never fixed until the
->>> entire support of iMX boards will be dropped.
->>
->> i.MX is an actively developed and widely used platform. Why should support
->> be dropped?
->>
->>> Personally I do not like
->>> this series at all. Rather let's try to go the hard way and understand
->>> what's going on to fix the current issues.
->>
->> /sys/class/gpio is deprecated and when it is finally removed, this series can
->> be reverted again. The alternatives are either do nothing and live with 6 kernel
->> warnings cluttering every boot or show users the finger as described in
->> the cover letter.
->>
->> Do you see a different path forward?
->>
-> 
-> I recently wrote a user-space compatibility layer for sysfs[1]. While
-> right now it doesn't support static base numbers, I'm very open to
-> adding it except that I wasn't sure how to approach it.
-> 
-> Is this of any use to you and could it help you switch to libgpiod
-> without changing your user-space set-up (given the support for static
-> GPIO numbering)?
+Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
 
-If the goal is to have a drop-in replacement for sysfs outside
-of the kernel, I think it needs to maintain the same numbering.
+Notes:
+    Recommended options for this patch:
+    `--color-moved --color-moved-ws=allow-indentation-change`
 
-I am not sure I see myself using it, because the new projects are using
-libgpiod from the get-go. My issue is not with removal of sysfs, but with
-user hostile deprecation approaches.
+ drivers/net/ethernet/freescale/fec_main.c | 50 +++++++++++------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
-> If so, how would you like to see this implemented? A
-> config file at /etc that would list chip labels and their desired GPIO
-> base?
-
-Many GPIOs tend to not have labels. I think the mapping config file
-should rather map GPIO controllers to a base address. The same thing the
-kernel is currently doing. This assumes the numbering of the built-in
-GPIO controllers is deterministic, e.g. by consulting /aliases. I haven't
-checked, but I hope this is already the case.
-
-Cheers,
-Ahmad
-
-> 
-> Bartosz
-> 
-> [1] https://github.com/brgl/gpiod-sysfs-proxy
-> 
-
-
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 68725506a095..850ef3de74ec 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1064,6 +1064,27 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 	}
+ }
+ 
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
++{
++	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1080,17 +1101,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
+-	}
++	fec_ctrl_reset(fep, false);
+ 
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1344,22 +1355,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.48.1
+
+
