@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706DB1AC884;
-	Tue, 21 Jan 2025 07:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676A613D297;
+	Tue, 21 Jan 2025 07:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737445800; cv=none; b=LYcrftAxi+HG9NqHlFGWDSYpbrvP2JCtgH5ataVHJNK0MrC3NN1kXkm+UljRCbnuCYqyT7HE5Ol19HTHW5A3SvwknBrbsAaDyfTZPlqIZVUBN/jgI5pUEoNnU90NpHKR7HhqfTXsATiIf4ayivr0F8MQh0QtpYd5WwZbRdmNUZs=
+	t=1737445848; cv=none; b=eHYZncY7sBuZd9zomxqzWqCYiB8ha3OFmV255oboPbfdktMMKpUXiaViVmN0h0GZFJC6aghilyzdOJ2Se+mSobeW9zobDO+rz7+Yi+FJ9cSbkVGy4BO1FAObzemGobtMXkRwtZaxT2p4B8fg9HheVFz6VxG3wkPX1uWJun2yh0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737445800; c=relaxed/simple;
-	bh=W9MvNZNB/WPuvLlt0HRcWe+Q/odOJq42KRM3eF+V1dY=;
+	s=arc-20240116; t=1737445848; c=relaxed/simple;
+	bh=kvzx1OYy0trEjDMaN7ETgM11OjenSjm4JBSEkY4PYFU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k2ACc1NHZuQsu0l/q1xPMAmcKYYjqBsInBYAvZ8eH+4r82VU26uWYME2+7jQGp+A5WpQ2Bw/uCjJShSnQDJ/boM+XnGNZ0XklaMTwBlKv7TiYroP+AndpTSpsg0P8kk3W6z7hHW93DFvUYorFoVJEGPpxktsBxBSmmJwoL0Y91Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5MRCH0B; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=mXh1RctYQo2AEZTtgNDLj0DyaOViSlz78Al6IYPZMRteiXpZulxbGj2UR87cjKtGSFERpp4ftKZmiFtvBIMDytoMK2A0jFHMP/sjkBoP2z1cQZ17cBwpQEET8GUbfgWuwAukSKpTWDE0U8g2tlvJ1DeYnbDDhWeJJcyhycteXhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NejB85dL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5MRCH0B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CE8C4CEDF;
-	Tue, 21 Jan 2025 07:49:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NejB85dL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E09C4CEDF;
+	Tue, 21 Jan 2025 07:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737445799;
-	bh=W9MvNZNB/WPuvLlt0HRcWe+Q/odOJq42KRM3eF+V1dY=;
+	s=k20201202; t=1737445847;
+	bh=kvzx1OYy0trEjDMaN7ETgM11OjenSjm4JBSEkY4PYFU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O5MRCH0Bs03mY2+nP+XtN7RdpkpznvRlDQx+qATOFkBT/Jr89HheQmJgoqokHnvnj
-	 j5byNUV3SoonvweGFJEQPQcyuzyEmfX//8zIkO0YZ1B485/c2d5NO3Zk0U9dV64trb
-	 4ALS57pkkUjxySMgH/JfWVfgG9LS6TYAA3bunOye7PoAMQ3GI7pHqmUfJot/wc2DWi
-	 GbyW29NkHGCw3J/U9vCGoqto4mnSIHt6xKrHarfysP47MeB4QUiyhrKBDy5rRmp4bX
-	 XFlKX+WiCcmldsz3XCSV/zmFeV5aX7yf6YoXd3zYQfB65hlhnPkyaY5MetEd7hjlR5
-	 +Tz4iHz/BS2uQ==
-Message-ID: <8c8ef847-0d6a-4859-9e26-dfea993f9d7f@kernel.org>
-Date: Tue, 21 Jan 2025 08:49:48 +0100
+	b=NejB85dL7SWConl9SSEUyEHx0i+ypoXohskLkjLFkftNjK2wA33827Ew5aLNRhVMU
+	 aayMzTSze4VrkyDne/o3+568v2g/NvwuphVt5N5mWPngfp11wHF8FVNdjrJx/ZaEL/
+	 zNsbgiFA4tjJUIb6aBD79sKBp5Mp109wkAaulcsYpsq50s+y7ZN5GF0Sbq3ECseUVJ
+	 Ze5vKyxq6ORlHLGjSI2OHykDPvNKnxd29FIOSG0q4PPXZrAXBpzgsLGGSHC0M3worF
+	 dO/RbUbQikmJCcO8iIMeMSEwGnOfOUcNOiFUrmsPlZD+ECTdtF5c+VIhNbpyAONFXx
+	 EmG7kEEq0kqxg==
+Message-ID: <7344eda0-a217-46d9-9006-5be1e50c98f0@kernel.org>
+Date: Tue, 21 Jan 2025 08:50:36 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] Add i.MX91 platform support
+Subject: Re: [PATCH v4 4/5] arm64: defconfig: enable i.MX91 pinctrl
 To: Joy Zou <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
  catalin.marinas@arm.com, will@kernel.org, kernel@pengutronix.de,
@@ -50,6 +50,7 @@ Cc: joao.goncalves@toradex.com, marex@denx.de, hvilleneuve@dimonoff.com,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, ping.bai@nxp.com,
  ye.li@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com, carlos.song@nxp.com
 References: <20250121074017.2819285-1-joy.zou@nxp.com>
+ <20250121074017.2819285-5-joy.zou@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,31 +96,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250121074017.2819285-1-joy.zou@nxp.com>
+In-Reply-To: <20250121074017.2819285-5-joy.zou@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/01/2025 08:40, Joy Zou wrote:
+> From: Pengfei Li <pengfei.li_1@nxp.com>
 > 
-> Change for v2:
-> - change ddr node pmu comaptible
-> - remove mu1 and mu2
-> - change iomux node compatible and enable 91 pinctrl
-> - refine commit message for patch #2
-> - change hex to lowercase in pinfunc.h
-> - ordering nodes with the dt-format tool
-> 
-> Joy Zou (1):
->   arm64: dts: imx93: Add labels for the references easier
-> 
-> Pengfei Li (4):
->   dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
->   arm64: dts: freescale: Add i.MX91 dtsi support
->   arm64: dts: freescale: Add i.MX91 11x11 EVK basic support
+> Enable i.MX91 pinctrl driver for booting the system
 
-
-Why do you use entierly different prefixes?
-
+That's really poor commit msg. You are changing common defconfig, not
+your own. Booting system of what soc? What product? Why would we like to
+have it, if there is no board with it?
 
 Best regards,
 Krzysztof
