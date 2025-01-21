@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676A613D297;
-	Tue, 21 Jan 2025 07:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571C413D297;
+	Tue, 21 Jan 2025 07:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737445848; cv=none; b=eHYZncY7sBuZd9zomxqzWqCYiB8ha3OFmV255oboPbfdktMMKpUXiaViVmN0h0GZFJC6aghilyzdOJ2Se+mSobeW9zobDO+rz7+Yi+FJ9cSbkVGy4BO1FAObzemGobtMXkRwtZaxT2p4B8fg9HheVFz6VxG3wkPX1uWJun2yh0g=
+	t=1737445981; cv=none; b=IkzG97omUkAoZ3CabB6cRx8nj3qXU8seVTqdsxjUDEDO4SlrS5MGHatCt3necYt2yY0Gn7S072FL2fFQUFD8q6Rq69ObRJWzS41ApQx+o07g8zz0RNHBAE9w9fYrAOYlYyvcnZwAcPVLKmhxXxlVPZRg3+tLbC2BGu/HISwi9Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737445848; c=relaxed/simple;
-	bh=kvzx1OYy0trEjDMaN7ETgM11OjenSjm4JBSEkY4PYFU=;
+	s=arc-20240116; t=1737445981; c=relaxed/simple;
+	bh=OR60GDFsJmX7NZZXwjKx5reJNHS9hO16+KvL0F7UjOE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mXh1RctYQo2AEZTtgNDLj0DyaOViSlz78Al6IYPZMRteiXpZulxbGj2UR87cjKtGSFERpp4ftKZmiFtvBIMDytoMK2A0jFHMP/sjkBoP2z1cQZ17cBwpQEET8GUbfgWuwAukSKpTWDE0U8g2tlvJ1DeYnbDDhWeJJcyhycteXhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NejB85dL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=L47R/W2k8vfwOXxxqVIAdrQSgydMeJ4GEb4AkScqU2sicjhQb5/juqa/R2FdhW6Q4Lo6MHtJAjdw3NF02sYxVyFQQ133BWGQvrz3k90UpOjlWWinDNMalzsR8PNU2VfjA3getFINYANJJqtVluubaS5iLmHL3o7iTACIBAvNFyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrE/oJ9B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NejB85dL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E09C4CEDF;
-	Tue, 21 Jan 2025 07:50:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrE/oJ9B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B4DC4CEDF;
+	Tue, 21 Jan 2025 07:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737445847;
-	bh=kvzx1OYy0trEjDMaN7ETgM11OjenSjm4JBSEkY4PYFU=;
+	s=k20201202; t=1737445980;
+	bh=OR60GDFsJmX7NZZXwjKx5reJNHS9hO16+KvL0F7UjOE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NejB85dL7SWConl9SSEUyEHx0i+ypoXohskLkjLFkftNjK2wA33827Ew5aLNRhVMU
-	 aayMzTSze4VrkyDne/o3+568v2g/NvwuphVt5N5mWPngfp11wHF8FVNdjrJx/ZaEL/
-	 zNsbgiFA4tjJUIb6aBD79sKBp5Mp109wkAaulcsYpsq50s+y7ZN5GF0Sbq3ECseUVJ
-	 Ze5vKyxq6ORlHLGjSI2OHykDPvNKnxd29FIOSG0q4PPXZrAXBpzgsLGGSHC0M3worF
-	 dO/RbUbQikmJCcO8iIMeMSEwGnOfOUcNOiFUrmsPlZD+ECTdtF5c+VIhNbpyAONFXx
-	 EmG7kEEq0kqxg==
-Message-ID: <7344eda0-a217-46d9-9006-5be1e50c98f0@kernel.org>
-Date: Tue, 21 Jan 2025 08:50:36 +0100
+	b=WrE/oJ9Ba6EKK+inyK498we2WxqRvPncz/r/ZxSW7RTdGHLluabt9nXdZmGm0umRj
+	 wGEuyXWwb2DI3QEX4Z6MARbz/zMC8GJ3OXM59/9/X6TX01IRdL5elWypcnvjvk30Dt
+	 50hixgKqEo/jEybKPYk9UkDAHsXi/ro62XxhCTYblcZvSXWJVcPl1atFNa5f+2u4Bh
+	 NFj4lmHTYhVCmu7Uv1ggjv4u5EQFUTbsQLDqvImEaGs9h/axittoru0FIlyFSauWhg
+	 9P7aOcwd2zMhKD2G8BcPUejQFmVGh7BS1JfjIqb/vfD87sYIcJSLn7XTI3XSccbwzc
+	 /h0ZW3CioyWnQ==
+Message-ID: <6693f1ac-6390-4e87-a0db-6fcb60242230@kernel.org>
+Date: Tue, 21 Jan 2025 08:52:48 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] arm64: defconfig: enable i.MX91 pinctrl
+Subject: Re: [PATCH v4 1/5] dt-bindings: arm: fsl: Add i.MX91 11x11 evk board
 To: Joy Zou <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
  catalin.marinas@arm.com, will@kernel.org, kernel@pengutronix.de,
@@ -50,7 +50,7 @@ Cc: joao.goncalves@toradex.com, marex@denx.de, hvilleneuve@dimonoff.com,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, ping.bai@nxp.com,
  ye.li@nxp.com, aisheng.dong@nxp.com, frank.li@nxp.com, carlos.song@nxp.com
 References: <20250121074017.2819285-1-joy.zou@nxp.com>
- <20250121074017.2819285-5-joy.zou@nxp.com>
+ <20250121074017.2819285-2-joy.zou@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -96,18 +96,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250121074017.2819285-5-joy.zou@nxp.com>
+In-Reply-To: <20250121074017.2819285-2-joy.zou@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/01/2025 08:40, Joy Zou wrote:
 > From: Pengfei Li <pengfei.li_1@nxp.com>
 > 
-> Enable i.MX91 pinctrl driver for booting the system
+> Add the board imx91-11x11-evk in the binding docuemnt.
+> 
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-That's really poor commit msg. You are changing common defconfig, not
-your own. Booting system of what soc? What product? Why would we like to
-have it, if there is no board with it?
+Your SoB is missing. Carefully read submitting patches before posting
+other people's work.
 
 Best regards,
 Krzysztof
