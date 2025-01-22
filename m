@@ -1,198 +1,231 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2080.outbound.protection.outlook.com [40.107.249.80])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCA0653
-	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 05:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737523884; cv=fail; b=Z3qvh0/fH8udiDNgt9uLgp262dns7yyVYzQcMzLmNNG4JEvS9zcyEfFFiIM6dLj4rF3Zg5L+rv7Dogt1bwXscCuuk+3QQvaKbugpWkmWPDLyTqMCwtDJ+ovjbKyQMpKkR9Jea92Yb2RSTIod02gWV0oWrscVp4p/R+kLjtu5G6U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737523884; c=relaxed/simple;
-	bh=xnf2MA0PoU/+7eSPMMJnfz1gY195XMrNyb/gkZp3gVA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Fk4fs0E4dJatCk0PGCDliJT4umh5p85VIEGy0DEDnqUAxWre5TjOX5W/QetpvAdbVUoAnJ1Zs0ARzduxp7n2xdo5ckZrAmmyZDYB+40dPO2b3b6B2FuSlQ+mh0iHDgdDKsXwUp6D4pIaQ3OCGdYedxrMkA9cXVX8IhKiO7ij+3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cCGCT9Dp; arc=fail smtp.client-ip=40.107.249.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55AB16F271
+	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 06:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737526856; cv=none; b=IrO4fBybcmUlA0g1ZnjFGaWJ5eouI1vfYhd1rPp7GtRXGE6xkgtAGvFmAD/B8T1mUpFok+1+636heN5P9TB1YfB/oa0SLBC6N7bG7QLjSl0YgbjL3CqGvXbEyky5n6NRu+xmA8P/0rFvC+nabwu4WIx8bSB1i9180gqfkMMrR+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737526856; c=relaxed/simple;
+	bh=fx3kFBBj9OXLtrrl5gWfNBVFE3vjnHmiFu9nlQBZKp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rwiot6KOMA3/KtFFNWHHf1d6ynJmy1yl4zKrCYfYeqhydA9vDaOAaUfiFrUK93dhRtSuPUiMlsNhhbYx24E7M+HFL7qWCv/lyld4qBrHS9EK+yWYIq/x/geUovxPmyPonjbjdA/wbKCF51/g55vWiWVKvFtromKLWkx4VZEqab4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=E5YVtvuD; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=t0DQRdK+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cCGCT9Dp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O0e6yaISQvHSPxHTh5LhAkumjZ+RkuYEcHESnVrn4sA2j1wGPmw4xN849Q80BvmLN9MTlm98ASae87vytd+5wRoOmG9eBqkVhaQsKJzuzXCAVRUteqfNR+urClF8ZWU3RnRgNUm30/OZ1zyvfaifOm3CQrBuJVLlqAwkZnvp2/lLXP1WxgPdDEmAGCqqFykJj4Fn4dIl5LflIEIdyhIjgQt11GRgAH7nHOiJ92ZXqW1GXQSs5Pol6Kj9Meg9Nu2QL/X6h+ouRiaMuElBCLz7mXRgMdjtBk+xvTQHndQ2MppHIqnhWdY+yf7TNdwScibYOPwXQ3qKUmgfH1Gq2ueDlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mJ8VyTEdnsQJT9Vd2q2u5thSzgoYgSxfGogG769vinQ=;
- b=chX/YHS/QzxOHOmP6Qvh+PfnsMjhfOHQtMb1zt0PfL8M3lOcxtDlNWwuYxjmgpqVXAamfXOb2MxqJlEqVb+yNNjXHO7sSeal0bLKxWUzmvG6SiGmri5NJTdiTglqhkdN8oVeNUHkOdpOlHHyOEDSW0rHKrmTanYkg3TFDOJGCbeDHLTNvLvvgRDb4DlI2lwVJazjQIeWDy57G+K9iC4ZDGkDuTbqcfU4KeC1MRT8/cMJOu/el8JjlnboT3BgPH4YFUmFQegNu5tP43UVcQ6VB201qnbuOlMoW/cvlcohlAp25ZrFtgROCsh2r8mIaynXRs9E7ZDMZ4cqprRW2exYpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mJ8VyTEdnsQJT9Vd2q2u5thSzgoYgSxfGogG769vinQ=;
- b=cCGCT9DpLLj784FqpmSy8F0Gi8BVaxg0isYKvQXYs+SED7yHwcIfxs66MaeMDiMc9jMrR/VEKbmOWyOFO6oHveqcpsty7W+8lEcqOLGH51hGQaFuwOZKjRs0FvUivh8vrle82cWVUkt2k/VwivcZOAMId1Y54RYID7oOisdb7Ybf7t1OGktSNrr2ku/GZRs/burIjZl0zuxyWUeWoSPXZScu2aFY9VBQ0nQgIJN5p6SWen+PanxdiaCl6BFO14P3BrUWBqITac9QTpYxs4UgpfDZzdsPcbcsr6zTJ90c4Hb5tzeBwyb5BXBvSjdFzkRTmum5FrKcxpI49p9SHvdvig==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA1PR04MB10415.eurprd04.prod.outlook.com (2603:10a6:102:444::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.21; Wed, 22 Jan
- 2025 05:31:20 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8377.009; Wed, 22 Jan 2025
- 05:31:20 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Cristian Marussi <cristian.marussi@arm.com>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>
-CC: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH 0/5] firmware: scmi/imx: Add i.MX95 LMM/CPU Protocol
-Thread-Topic: [PATCH 0/5] firmware: scmi/imx: Add i.MX95 LMM/CPU Protocol
-Thread-Index: AQHbbBZjcHLLf8FX10So5eTusHGTcbMhWsoAgADownA=
-Date: Wed, 22 Jan 2025 05:31:20 +0000
-Message-ID:
- <PAXPR04MB84591FF19A3CA8D37F2D97CD88E12@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20250121-imx-lmm-cpu-v1-0-0eab7e073e4e@nxp.com>
- <Z4-9rSwR3L9t7bHp@pluto>
-In-Reply-To: <Z4-9rSwR3L9t7bHp@pluto>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PA1PR04MB10415:EE_
-x-ms-office365-filtering-correlation-id: 4393e92b-15ef-48ca-4663-08dd3aa6007e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?LnDH4xCUZv4MMvF6PaDm7SmnnK0+79vkTGloJDycbUSDGFD02OpYd9x7fsWO?=
- =?us-ascii?Q?asN3oH3GtvEr2cG5/QB0h3OUhfF/yoy3xArFi5ksqjTUfc3a8rfe63At66tB?=
- =?us-ascii?Q?B8WBRDutKxLOKTB09O613CL6J+vB3i5LfJInberAsDBzkYD29igWm7tUAZWB?=
- =?us-ascii?Q?fI3A4Z+fOYwyJO5pb5S//D0WQXARFkF2Xw7DPUZEIfC0PnpTPnkjWELWg28u?=
- =?us-ascii?Q?IGwwiuADWjjLaRI1j/xp6WcFrkr3EOuIgzniAYm9iwbCe2xs/PxPRp6kZ70T?=
- =?us-ascii?Q?qvQD8MGF5PQUc8lro/kfuv0920aRUcUMPbDsYX/ACBxUUhHqA9c1V5q/WgSQ?=
- =?us-ascii?Q?07jbf0JWPfV74UhTT4db6MKCDgbvwipXaAGnFaGoh2TrQUxXo9m6nv3IcUPG?=
- =?us-ascii?Q?mop+AiHfeB7Dy3wqFtWSriQa2ifrI8AVuIwYruJ4IxzNHi9GnpIMKcM9+Cgu?=
- =?us-ascii?Q?nIQTvCCd8eGzUVjbyXEfPjezY7u2OhOyiKKI23OMa7ahnZC127/zS6NlzziP?=
- =?us-ascii?Q?rZ+eAXFxtyxUgCO/jwFj5iJN09anh833f4bdWQ20rrnlphiHAHrnnBfiSupD?=
- =?us-ascii?Q?ozYtf8vogkr0r1VDQuqmmEkMltaQTFZzxnLASElg8IBn1joao3/xYGuqcH1g?=
- =?us-ascii?Q?WGopGOg2f4KoyBpnukpyFauEkY4ZCwTs/9TSenImsQU9+UOyg6oyjPQk1bA7?=
- =?us-ascii?Q?H92L2/wwfj8UtZx2uSUumO1zMTfLAQRuRCusq1ZjdZe1w52FmFyAWd98ygfg?=
- =?us-ascii?Q?kn07lryR+/90rQhrMXGLnpe3owx3Y+aFx+4WFap9HmMdFj1oOqI35Js1LriN?=
- =?us-ascii?Q?UG2CT2Se0yDeCIvUhGKBnPJXy/lJRA6kuR8YFisY1+PNBNCPMs2VFjhteZuS?=
- =?us-ascii?Q?K+XcuIkhM56FqCke44/gKwNTErZfOQsTyWMPWYXpHRg2n90nXbebXTtzXhqC?=
- =?us-ascii?Q?jbNqlhBnQf2At+i5T4wdk3DC+w25Ul/Sp6HN5hvOI3QIbTzTTbasxaPUhAam?=
- =?us-ascii?Q?jWyAR0re9jvSjee9Toz5Gmyx4RXTpHrS5ZwYbDPBF/1CTY87iuzytJfbY4hW?=
- =?us-ascii?Q?Lqnsqpfj9PoGwrUoI93zWq/oM4EUfKYmZLN9s4KkqwLgJojhVT4KdB/KD9Nu?=
- =?us-ascii?Q?d4SDLHEL50czbiIXyzV0XFnj0Pjea0fwfjzlq6t39aec8YGVJPxvqnmHykwt?=
- =?us-ascii?Q?a8AYiQEoc3fY1cr2HMOmyEMl5wljQaJzF81hMTj4uk9ShJOtz2fEz+9hTK9M?=
- =?us-ascii?Q?+MwjoBxuhNDETdQxur55t3yY/srMAPKTwj5Jc+Ldlk6PUoCFCQIjN2O0WUDo?=
- =?us-ascii?Q?IJLM3r4UFhljPoWTt7T2dwE8Qz6FTUH2XfEdyWcTi+WZiFt8RsX3EhlO8Pwb?=
- =?us-ascii?Q?iT8lVBUJX1PQT09v8UhGH9mm/pnlDQB5DoJVY3cgmbsMbCbviGvyXmgNv8Tz?=
- =?us-ascii?Q?iBQuoCChA0GLFnzmQ02vWNhjoNt5FK8L?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?RJZaDwRsyuKcE4jcUyZ18LCxC4lor0/Fz10Gi2K9uhfvvPsNRbyNof3GMbyY?=
- =?us-ascii?Q?dvDMceB0FYMBr9ZV9iVeXdN7fR2mexDvF91bAwKw8wIliIcSVSgK2xgxDnPO?=
- =?us-ascii?Q?fQj2Vl+ltLXpoxURqHwlL4/HBcf8j0iPu40ePfaguw/6RSwIk+1spvxLPPBD?=
- =?us-ascii?Q?7qlc5VRdZgjmFe9NHExyk+5vy4Y8cFWmXZv79Qvgmglp8wJ0Ll4kshxVKnaz?=
- =?us-ascii?Q?dJf2i2PDqjP3Tn1PAUxwYgKhMVk3j5L0d5qJAzYN8q/WodGDSZsl562PnVJO?=
- =?us-ascii?Q?nEn8za+MjuJ/5LePlctvzrrPTtxlvo2+jRqh5F+ZocWu3CpOJ9c3Ul0ii+9c?=
- =?us-ascii?Q?Eu7F9f9Op3U24+fGxchbTT5ooLh786Jj8NTBDfk5Tijw9auzZUDl/5Jv5CTw?=
- =?us-ascii?Q?sJaFI3FdbU/iJq87bxBukLFIMnoGejtD4tlNtwJuBmOoBlfweUZ6bcIX+CE/?=
- =?us-ascii?Q?kkvFVNtLZgZRqn5DvadDKkB3YueCk2WhTNCkBjK9KzWiCIFATOcsQIjQqWwl?=
- =?us-ascii?Q?vUr9FGyyQZIAg4luDnLMkeutBwcSG21s1xA5qYZ1niXdtlyaB22OReoYTffS?=
- =?us-ascii?Q?b+68v4SBWIH61ytZS0jKff0z4yKTR+2Ou3tuEhzXQ/NSzpFv8GkyaqWwFoyS?=
- =?us-ascii?Q?FnoIhcMHQVVxEO8UgR2I6270/0ucoQ/DQ3aYHWV1BGFXrV97ofcTOAU2WUc0?=
- =?us-ascii?Q?+Ym57EqbyK8qSPEiPyh5KNpc6Az/hpo2E1ibuzDP7AN0ELBhykrwybqNND/M?=
- =?us-ascii?Q?5fc0Go/LzW4fpYYK7OJzX9gVcB6VicF+jB7jtYF4AkWNSPV9N7/7+W46MNoa?=
- =?us-ascii?Q?O5IpYcxHBWtPvV4Dx12+75fP4m1H4NSYCnESDHlaX/QgWxDFzd+X+9pmx2tj?=
- =?us-ascii?Q?N2G1U4QuIvolCbDJpPTitaxMIJZsE7iIJgQCHU/y1gfGK5BdwS/wA8W+Q0E9?=
- =?us-ascii?Q?YcHa46k3AR+cr2VTs8MNCDG+s4EnwIiCUebc0Nl8dHESi+Z4niPiin9Zwx/5?=
- =?us-ascii?Q?sV8TNdG4SZin4R8ZWsqzcUVuxNMVvthJhnCZ7lZvJ/suXK4PEhdjWUYEfZig?=
- =?us-ascii?Q?Yc1ZHTzXVOKCNemVzfCWUdMkWOTGv7lo37GNed8efR3Q2HvbBbBLcUgICyk+?=
- =?us-ascii?Q?WPCsSOlj0O1CDlub18/U3Rjq/lR4Genwxc7CS2NaHGbE/DPpYVq7oiLN7E1T?=
- =?us-ascii?Q?BJYxTHZhwlZZaxPptoj3n1xuheSooHHjRAxpBjY3oWXsDKiSTHjBXQwnsxH6?=
- =?us-ascii?Q?4FfFL7dW+IiWnV9hqRoIhQIOcduhUdYWNsEtT/1mnrEPWvuNMi58Rk98OmhV?=
- =?us-ascii?Q?nGi5dyFKeYHYwXGPZJp+zO3JIq2LDBCDhJ6+A6jsOTHmZqW+KWUzqdQdMVyv?=
- =?us-ascii?Q?OsRCITWMjPRmmb0ZZ9In0tEutudBq3xOt/QonCwT4P2TTuTNmz1UiP0/JhYY?=
- =?us-ascii?Q?XQ9H/t6/FiQ5yzhJOyw4LFcUtfNXHudvkKJ8rlJb3gjhHcNHvwVRsgz2bgB4?=
- =?us-ascii?Q?bMMObylTfawboTGBGSbDO9NExVscUkw9Xmf57It6b7eh/Q0FByGOM563TnKf?=
- =?us-ascii?Q?ilnMHNoK7Vehk/8GnBs=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="E5YVtvuD";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="t0DQRdK+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1737526853; x=1769062853;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1JIdelAuih2HFL0bNBiryJqlPO4l3NH1L27ee0LJ7xw=;
+  b=E5YVtvuDyv82vLLUOyddaqSPjljwSC8BHmFzODcO2FChjHxgGk4lLD1a
+   5dAkdvPee6EaMpqryoBc61mlxkHwT6s+N/t3CyNNnwutWbOqMvR1b2KxJ
+   SXFhsxFcbxIT4zwkooE/tCY6FSO1QKHz/sfI2NLlX0rMNVP33hR/e9AAV
+   I+6iYQidDvfvP2pHAuAWbYlZttkVeEcjzM7ZYQ9W264MZBtExwUrIP/LH
+   Z7qBNfs6+mqLuFKSREdkzxLpIFm/VlsXzBEuFdKTFm//uSezIeB4NPbYl
+   XXyuKRAqZTuAekgTnaJzKOnmGrlfJ3oLeDxSYUC6t1Yatrfrx/6ySPNDk
+   w==;
+X-CSE-ConnectionGUID: krjMx7RsQgevLUCukYamLw==
+X-CSE-MsgGUID: YVzpN4OsS9C32ZMS6XYsJg==
+X-IronPort-AV: E=Sophos;i="6.13,224,1732575600"; 
+   d="scan'208";a="41212453"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 22 Jan 2025 07:20:50 +0100
+X-CheckPoint: {67908E42-3-C6D8D88D-F91F9E6B}
+X-MAIL-CPID: 0E34C57D96A89EF21D9F0C286CF182F2_2
+X-Control-Analysis: str=0001.0A682F20.67908E42.0053,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2CDA0164481;
+	Wed, 22 Jan 2025 07:20:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1737526845;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1JIdelAuih2HFL0bNBiryJqlPO4l3NH1L27ee0LJ7xw=;
+	b=t0DQRdK+ZlgASvsqou7A/6s1Ejx+q0pxyC9Jew8/peSkZxrMpHAtZwJkf6e7mxRTGxfWY9
+	+HQXrx+Qf+//kXOctGqmEor51uvp1rwkghSpIgsQqlE5UPMwGkeXmaRKA3FgV/Ub1bU6ZX
+	l3SQnvoDVbJmDiSfC5xYA0ZsFx6GbMrVc4d2rLGJTSzOgIQH7CmLOIXhOCe51jbTFn1JJj
+	j+tL1walKBLasKAqCYJC+CcajIo8pZZGTjl5K41TQQQJCf0rDLJNSi0IFKNDG11Bks7SvI
+	YIxG1zQ4EOTzOgtAj6jMEwpXZvPgoT30iPs/IuRK+uu9U5lNa2MTiwOEJ4fJvA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, Joy Zou <joy.zou@nxp.com>
+Cc: "joao.goncalves@toradex.com" <joao.goncalves@toradex.com>, "marex@denx.de" <marex@denx.de>, "hvilleneuve@dimonoff.com" <hvilleneuve@dimonoff.com>, "hiago.franco@toradex.com" <hiago.franco@toradex.com>, Peng Fan <peng.fan@nxp.com>, "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>, "m.othacehe@gmail.com" <m.othacehe@gmail.com>, "mwalle@kernel.org" <mwalle@kernel.org>, "Max.Merchel@ew.tq-group.com" <Max.Merchel@ew.tq-group.com>, "quic_bjorande@quicinc.com" <quic_bjorande@quicinc.com>, "geert+renesas@glider.be" <geert+renesas@glider.be>, "dmitry.baryshkov@linaro.org" <dmitry.baryshkov@linaro.org>, "neil.armstrong@linaro.org" <neil.armstrong@linaro.org>, "arnd@arndb.de" <arnd@arndb.de>, "nfraprado@collabora.com" <nfraprado@collabora.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead
+ .org>, Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>, Aisheng Dong <aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>, Carlos Song <carlos.song@nxp.com>
+Subject: Re: [PATCH v4 2/5] arm64: dts: freescale: Add i.MX91 dtsi support
+Date: Wed, 22 Jan 2025 07:20:39 +0100
+Message-ID: <2026092.PYKUYFuaPT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <AS4PR04MB9386E5D011F3559A19E05941E1E12@AS4PR04MB9386.eurprd04.prod.outlook.com>
+References: <20250121074017.2819285-1-joy.zou@nxp.com> <1945264.tdWV9SEqCh@steina-w> <AS4PR04MB9386E5D011F3559A19E05941E1E12@AS4PR04MB9386.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4393e92b-15ef-48ca-4663-08dd3aa6007e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jan 2025 05:31:20.3587
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SgWIPgpaSbSGs4nf7UmKtmyho4SH56k2QNMbykv0b727FYNK43HHqD01SG+cgFewEfD76Fov46gzo9yXzvD+gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10415
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Cristian,
+Am Mittwoch, 22. Januar 2025, 06:25:50 CET schrieb Joy Zou:
+> > -----Original Message-----
+> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > Sent: 2025=E5=B9=B41=E6=9C=8821=E6=97=A5 16:34
+> > To: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; catalin.marinas@arm.com;
+> > will@kernel.org; kernel@pengutronix.de; festevam@gmail.com; Joy Zou
+> > <joy.zou@nxp.com>
+> > Cc: joao.goncalves@toradex.com; marex@denx.de;
+> > hvilleneuve@dimonoff.com; hiago.franco@toradex.com; Peng Fan
+> > <peng.fan@nxp.com>; frieder.schrempf@kontron.de; m.othacehe@gmail.com;
+> > mwalle@kernel.org; Max.Merchel@ew.tq-group.com;
+> > quic_bjorande@quicinc.com; geert+renesas@glider.be;
+> > dmitry.baryshkov@linaro.org; neil.armstrong@linaro.org; arnd@arndb.de;
+> > nfraprado@collabora.com; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; imx@lists.linux.dev;
+> > linux-arm-kernel@lists.infradead.org; Jacky Bai <ping.bai@nxp.com>; Ye =
+Li
+> > <ye.li@nxp.com>; Aisheng Dong <aisheng.dong@nxp.com>; Frank Li
+> > <frank.li@nxp.com>; Carlos Song <carlos.song@nxp.com>
+> > Subject: [EXT] Re: [PATCH v4 2/5] arm64: dts: freescale: Add i.MX91 dtsi
+> > support
+> >=20
+> > Am Dienstag, 21. Januar 2025, 08:40:14 CET schrieb Joy Zou:
+> > > From: Pengfei Li <pengfei.li_1@nxp.com>
+> > >
+> > > The i.MX 91 family features an Arm Cortex-A55 running at up to 1.4GHz,
+> > > support for modern LPDDR4 memory to enable platform longevity, along
+> > > with a rich set of peripherals targeting medical, industrial and
+> > > consumer IoT market segments.
+> > >
+> > > The design of the i.MX91 platform is very similar to i.MX93.
+> > > The mainly difference between i.MX91 and i.MX93 is as follows:
+> > > - i.MX91 removed some clocks and modified the names of some clocks.
+> > > - i.MX91 only has one A core
+> > > - i.MX91 has different pinmux
+> > >
+> > > Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> > > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx91-pinfunc.h | 770
+> > ++++++++++++++++++
+> > >  arch/arm64/boot/dts/freescale/imx91.dtsi      |  70 ++
+> > >  2 files changed, 840 insertions(+)
+> > >  create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
+> > >  create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
+> > >
+> > > [snip]
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx91.dtsi
+> > > b/arch/arm64/boot/dts/freescale/imx91.dtsi
+> > > new file mode 100644
+> > > index 000000000000..67a5a487ab57
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/freescale/imx91.dtsi
+> > > @@ -0,0 +1,70 @@
+> > > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> > > +/*
+> > > + * Copyright 2024 NXP
+> > > + */
+> > > +
+> > > +#include "imx91-pinfunc.h"
+> > > +#include "imx93.dtsi"
+> > > +
+> > > +/delete-node/ &A55_1;
+> > > +/delete-node/ &cm33;
+> > > +/delete-node/ &mlmix;
+> > > +/delete-node/ &mu1;
+> > > +/delete-node/ &mu2;
+> > > +
+> > > +&clk {
+> > > +     compatible =3D "fsl,imx91-ccm";
+> > > +};
+> > > +
+> > > +&eqos {
+> > > +     clocks =3D <&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
+> > > +              <&clk IMX91_CLK_ENET1_QOS_TSN_GATE>,
+> > > +              <&clk IMX91_CLK_ENET_TIMER>,
+> > > +              <&clk IMX91_CLK_ENET1_QOS_TSN>,
+> > > +              <&clk IMX91_CLK_ENET1_QOS_TSN_GATE>;
+> > > +     assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
+> > > +                       <&clk IMX91_CLK_ENET1_QOS_TSN>;
+> > > +     assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
+> > > +                              <&clk
+> > IMX93_CLK_SYS_PLL_PFD0_DIV2>; };
+> > > +
+> > > +&fec {
+> > > +     clocks =3D <&clk IMX91_CLK_ENET2_REGULAR_GATE>,
+> > > +              <&clk IMX91_CLK_ENET2_REGULAR_GATE>,
+> > > +              <&clk IMX91_CLK_ENET_TIMER>,
+> > > +              <&clk IMX91_CLK_ENET2_REGULAR>,
+> > > +              <&clk IMX93_CLK_DUMMY>;
+> > > +     assigned-clocks =3D <&clk IMX91_CLK_ENET_TIMER>,
+> > > +                       <&clk IMX91_CLK_ENET2_REGULAR>;
+> > > +     assigned-clock-parents =3D <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
+> > > +                              <&clk
+> > IMX93_CLK_SYS_PLL_PFD0_DIV2>;
+> > > +     assigned-clock-rates =3D <100000000>, <250000000>; };
+> > > +
+> > > +&i3c1 {
+> > > +     clocks =3D <&clk IMX93_CLK_BUS_AON>,
+> > > +              <&clk IMX93_CLK_I3C1_GATE>,
+> > > +              <&clk IMX93_CLK_DUMMY>; };
+> > > +
+> > > +&i3c2 {
+> > > +     clocks =3D <&clk IMX93_CLK_BUS_WAKEUP>,
+> > > +              <&clk IMX93_CLK_I3C2_GATE>,
+> > > +              <&clk IMX93_CLK_DUMMY>; };
+> > > +
+> > > +&iomuxc {
+> > > +     compatible =3D "fsl,imx91-iomuxc"; };
+> > > +
+> > > +&tmu {
+> > > +     status =3D "disabled";
+> > > +};
+> > > +
+> > > +&ddr_pmu {
+> > > +     compatible =3D "fsl,imx91-ddr-pmu", "fsl,imx93-ddr-pmu"; };
+> > > +
+> > > +&map0 {
+> > > +     cooling-device =3D <&A55_0 THERMAL_NO_LIMIT
+> > THERMAL_NO_LIMIT>; };
+> > >
+> >=20
+> > Somehow I don't like it that much. Instead of removing nodes from imx93=
+=2Edtsi
+> > wouldn't it make more sense to include from imx91.dtsi into imx93.dtsi =
+and
+> > _add_ nodes with are unique to i.MX93? Otherwise each add to imx93.dtsi
+> > requires an remove in imx91.dtsi for this unique to i.MX93, e.g. NPU.
+> >=20
+> Thanks for your comments!
+> The imx91 isn't the imx93 subset, so if the imx93.dtsi include the imx91.=
+dtsi,
+> the same problem will occur.=20
+> If add common.dtsi for imx91 and imx93, then the imx93 and imx91 will inc=
+lude=20
+> the common.dtsi. What do you think of this approach?=20
 
-> Subject: Re: [PATCH 0/5] firmware: scmi/imx: Add i.MX95 LMM/CPU
-> Protocol
->=20
-> On Tue, Jan 21, 2025 at 11:08:10PM +0800, Peng Fan (OSS) wrote:
-> > i.MX95 System Manager(SM) implements Logical Machine
-> Management(LMM)
-> > and CPU protocol to manage Logical Machine(LM) and CPUs(eg, M7).
-> >
-> > To manage M7 in a separate LM or in same LM as Linux itself. LMM
-> APIs
-> > and CPU APIs are needed.
-> >
->=20
-> Hi Peng,
->=20
-> I see that you are really starting to like vendor extensions
-> capabilities :P ... jokes apart
+Yes, it's not a 100% subset, number of CPUs and some clocks are different.
+In general adding stuff in DT is easier than removing, especially
+in DT overlays.
+What you are removing or changing in imx91.dtsi would need to be added to
+imx93.dtsi. A common .dtsi is also an option. I hope you can up with a
+good name to not be associated with imx95.dtsi
 
-I not like vendor extensions (:
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
 
- I'll have a deeper look at this in the next
-> days (togetehr with your other pending patches...),
-
-Thanks for helping reviewing patches.
-
- BUT in the
-> meantime a quick one...where are the bindings for these additional
-> vendor protocols...seems like a patch is missing to add those in
->=20
->  Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
->=20
-> ...even if bare simple protocol numbers (like existing protocol@81)
-> currently these are needed for the protocol to be initialized by the core=
-.
-
-I missed that. Thanks for pointing out. I will include the binding in V2.
-V2 will be post out later after collecting some comments on V1.
-
-Thanks,
-Peng.
-
->=20
-> Thanks,
-> Cristian
 
