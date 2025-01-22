@@ -1,191 +1,173 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2041.outbound.protection.outlook.com [40.107.22.41])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704DB2153C9
-	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 16:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737563708; cv=fail; b=Wvf4S0PIaCZuanaqwcs1r0tYRjYcQmWkW/WF67CSkB2W+fNwkhdcb8NnB3Uk91TIB1DmZpHJbVbtk5fRzuj9P4ZNxUkFskukn0wAzEgET401zTtES2m+9SSn4Bu15HNaR+FoayMzzsQ/d3+7Wgn3aBiPP41gNr6JxGj+LzBpXe0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737563708; c=relaxed/simple;
-	bh=OC/sqr9nS75Gl0cSg+7a9kWZKClAxbyPNDeoSHjp2fE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PnvfzVCgRiq3t0kxaXjeNBjvclmHn3mWMVb56kQoPNHmGIh/xhZpgCyChpB+/DDBXjr7bsxDrU+wa+wXzBFtcj25VaWFGZ8DKI/9aoQy3JHDDMIDJTU3sqDa8x+iwGJqW9Z5HIvTztluanBL1OsYAeg+TkkuB2OXvxjIHSOt+DE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hkLWFKG+; arc=fail smtp.client-ip=40.107.22.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96E71F78E8
+	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 16:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737564102; cv=none; b=LAgUfpH2gU05K8mIseiMxrFlcVKf4SMjHI7wyZ3UcviZ+2OoLjsg6AXV9cOO66SSkMKBwYmBeNF5lPcmUbtG1kwNt1ITwYl7LNJBWN3Fjd8Zf4IdLSu1HdYgTd0IFRMkDR5xgDXaQbI6xl2mYm9FGZWpObW5Xud+H6tnYaXxaq4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737564102; c=relaxed/simple;
+	bh=f0tAfTbWDW2FkQbgi3d758Uem0n6fzGbFvsTA1ngvxY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GbUfYWT95CgWO230oyV/GLbxRbM/5tWB08XnZFhjZyzbrcKYPW/rdBwCP7Vn6FboVIyPLlNxDXcVf/A7fy9gZ3T4p8ALN1z11tb3DnIl/ZktG8V+jFJ2+TAT1m/dxhcXsikHx/tgxRr/oyuwWzDx/Xk0gYKqmGLfwCBjU3eLCwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=tiiDVHAl; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hkLWFKG+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sQuiq8irUeczQlAGdRuun91VaJ1miwEfJa73tPcGBLA7GRDNosMbty3XcABnWqbqVBMHOuK2wJz6ChDmNUFZBRCKvwXsU1LOjl+U5rstBri+4WsRFPfBLOvWhlMDkYSWsXDqQzGJk7nQetCurYPgPX3P0iYsn2GxQ/ILYf2tA2JGHQo5nQPWPFD3fzLfxPpn57KcqwCzdd0Pkp0TrJmBActqQhyZc0nxNl3Ti1tp8G1VRPJdcWgcsqpYAVmdKzUbPSr+/50CNtkO16fJLlQry2jn0sZ+U25RTRQdpQVuOlLmOA4sJowbyZm/VRlt5WDUX1XnJXaK2HDzGGnqvbIf2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b3sZzJqIiIx9ABxyuiIIOy9RvdlfRFtvvMyVAnWNyqA=;
- b=ryyzWxuaDFoM7SobnqAzeCQB8mukoI211W6RZCJv+zgS6z3I2PJ+fX7ONsgOtkip3J3+crx6udQKBNvu2zLhRUTRv+0bT8iG+JlkEtV3ZneCjxPAjG1JkwJ1QqWe3uOty5NsfzEUWzgxcLeN82ZQgWjzyx21Au892QuGjzJvvttO3c4NLA+YlwQkeGJnBUJybbBqeuCVFo3gAbt/qwzKDMqcsSGzNGy1UOeV3kDN7dkI2ylDuKnwCxq0iC68l2+BKkcowQC07wPUCuHIjBpBzHhcLlau7sRP8skROfA1aYoLMvSAgMvU7V5m4niE2Q4Qb3SOFls63yYP4gwhl+hBQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b3sZzJqIiIx9ABxyuiIIOy9RvdlfRFtvvMyVAnWNyqA=;
- b=hkLWFKG+it6ceJJLpcLPD8mLpscGRVDvNbHxh1rgIfGQoBMXtu9Vud1GVtSMFfvHViiVs2pGZ8YfvQD2Ix5fYe4VGw3qI0MBRcekLlxbb+mBRnlAlk2fKSyOgbwPiNzQRfB6t2kP4Cw+ZXBRAItc2kumsb4WJcdFC+K/0hHJE/TqlCMhaxrUUjj0fRsravdvvQzivhCM1/yfNlIKcoZVDXcicwtOd6gyQfylRq+bbXH8a42HWV7EHTRd1fVR2P9/u34jdqifeWcd+3903tydKEI7RBkfhK5URMZb8bitjhjb9lB4gZgzYIji3+0yasG7hCIDNnoBui9luCSyAcd+Gw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by AS8PR04MB8403.eurprd04.prod.outlook.com (2603:10a6:20b:3f7::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.22; Wed, 22 Jan
- 2025 16:35:03 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6%4]) with mapi id 15.20.8377.009; Wed, 22 Jan 2025
- 16:35:03 +0000
-From: Daniel Baluta <daniel.baluta@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	broonie@kernel.org
-Cc: shawnguo@kernel.org,
-	conor+dt@kernel.org,
-	peng.fan@nxp.com,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	lgirdwood@gmail.com,
-	peter.ujfalusi@linux.intel.com,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Subject: [PATCH 4/4] ASoC: SOF: imx8m: Add entry for new 8M Plus revision
-Date: Wed, 22 Jan 2025 18:35:44 +0200
-Message-ID: <20250122163544.1392869-5-daniel.baluta@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250122163544.1392869-1-daniel.baluta@nxp.com>
-References: <20250122163544.1392869-1-daniel.baluta@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM4PR0302CA0005.eurprd03.prod.outlook.com
- (2603:10a6:205:2::18) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="tiiDVHAl"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 9B90EA09D7;
+	Wed, 22 Jan 2025 17:41:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=ek8VNfP6wDJAkf+F3SKTcqMo2qWsHK+cLHwLll5Idb0=; b=
+	tiiDVHAlloVomCLPy3gPu+/fuJQMrnFxtyZ5oWU8YzEJmr89GPxLLb2qw4hZMHF0
+	6G6HFrsX+zCgDxBlaDtWTmPDeViGYBacUysQ8t22KwpV6HQMfZ2Eg4yyGBdymCqH
+	D+reuTBcFC66Gb9jP+Dcy6CgfNDoDbeJyv+JhCpIXn/aqcCF3B/zKFqzW5CbzJ0X
+	ceYv4xMGj0lAYiQf1AoYUiS47YLEYuZIb/VYKqM/0h49hByotTdr3kPjcllEBYYJ
+	Q6HWoh8XMTDIMwJocQOyZG4chC4e2IpSy3to8iKTmUf0MZVjal0p7nb11fmIaZy7
+	N4XOkGz+LLzNSTjiN9IQ5P5sXAknrxjyxlLEcMBo3Qi1MoFXBbBQZaNDDx5DUDRG
+	xhvVvBHuEIBBHlRvqF/FPemq+oq+rZQXAgZhA6KMbWG45mkBN8VkySuYlpbsruJX
+	YdKfxySHrJQon1DJIP7vkQs90WU9HrQnH/UF4hflu30YZLFYBs99xit5353G8gtT
+	eT7kJ05vcPma6fuIqng0FAe+zC8xlNRhNyYOoQtuZRwxw4gUHpM5r13RjQHDiHKU
+	ePakK/5ttM+s4YMl2Q5Dra3uzbO+PqNX04LiIU3AePqDVYy4Cv4PiTfA1drDQudx
+	dT7rV57hahNMGsEMtcOkPeoSTmVrLriRcHkDUiLO4z4=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: Laurent Badel <laurentbadel@eaton.com>, Jakub Kicinski <kuba@kernel.org>,
+	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Ahmad
+ Fatoum" <a.fatoum@pengutronix.de>, Simon Horman <horms@kernel.org>, "Michal
+ Swiatkowski" <michal.swiatkowski@linux.intel.com>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
+ Abeni" <pabeni@redhat.com>
+Subject: [PATCH] net: fec: Refactor MAC reset to function
+Date: Wed, 22 Jan 2025 17:39:33 +0100
+Message-ID: <20250122163935.213313-2-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|AS8PR04MB8403:EE_
-X-MS-Office365-Filtering-Correlation-Id: 191427a9-f0d3-49db-aafa-08dd3b02b8ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xEgIy7bmWtUMv/+uS0pttUOsTKfd1bpmi7+Uq75GPdc3Y7kEGy9uN5CNI/FX?=
- =?us-ascii?Q?x/r3BqU1EPsOp3fUns0ipudWBNugHkFveXsYZWVMxkZh11li7m4Z/emk5TOH?=
- =?us-ascii?Q?YpOTF4ise4YIsouEhKB5IyHhcEmxowjRjzvPjBdvxvxG4jMQMwMwk4hjtrSA?=
- =?us-ascii?Q?Q45w/QA1Y2dc/kHNUHlxTF26s+4kj+bOTLQv5gm9LF5INLLvKMnhnIBQydLk?=
- =?us-ascii?Q?DbNZjhD6z3wYnGUBgajVdxZ91y6uv2prDE8d6mNlAOr4WAg+arHA2mYOm/ce?=
- =?us-ascii?Q?F3824pBCbCCU+f2SfNnoX0JuDEZJKgiUNm/DjIm6FcBvF+1g0ji4CefRGY/o?=
- =?us-ascii?Q?BD+QJd6bLXErvbgkJkz3JmDzP23/2mmm3KlZm1QqdKvHNzh9sFgqOHTNLu2i?=
- =?us-ascii?Q?/9PJVuKydYfH9J5rMamdI4cTW9X4L6tIn/ASUqo/tXM5L/76UKMwcLrcoRu2?=
- =?us-ascii?Q?ZthwZS7MgDeCmELXh3thWqWSMD/d7iHMt8s6KKfLWBK44VyPwP2ot0DuRcho?=
- =?us-ascii?Q?dhTQAUVZMofs06QedB3oS4c9/MmvNvUd97e3CKAWQ0f0z26t1x2IhFNqBGh7?=
- =?us-ascii?Q?fnrAlP7TB+sICxzRGmvPNVYrRrmAIXsGSiNl45qDuL+Jf7pLWni9/bVnW5g9?=
- =?us-ascii?Q?s5fDW2t+fTR2HSESmZ0vDM8G4zViJgfJm+WYp28aXoXNZW6pK2JKcOwKEExx?=
- =?us-ascii?Q?R8afkbmf/cYdNMZhT0En4WHR6rwNLCiJgM5vuIgCLck+I3jj19NLcGpC3Qhg?=
- =?us-ascii?Q?bFOxv5ks4Dwy8MUL+w+249O12i6uQ4feT64PdUNdcP1xCwE6me0pkJyaXwVn?=
- =?us-ascii?Q?G1sM+3va1Q+GaB23h6g9thou0lHigGswph8vImhVg/FdFMjpAdOdAZVedOkN?=
- =?us-ascii?Q?K3eQlPkUZOFDgdeAOSh1OiodCCE/8ZlNHdwFO3GAr+iR+Eu0MqsDUi2oyCUx?=
- =?us-ascii?Q?zoJziteB4kz7tCMPQY2LLK20xzdddMbb3JjP83ZiQiEAwkiG1x2ifjPFtKD/?=
- =?us-ascii?Q?X13OjUzFELqL6f5V1dGKhP85e0sPZtpsgQkpn61fJ4rU/Y0/I7Z0o1R9D2Fm?=
- =?us-ascii?Q?NpLWXlb+Oscv4a7w7pidcQ+yFtcqlKZwsYRCy9IPdGvGjoZ1LHHlpo5B0915?=
- =?us-ascii?Q?Wt5EvSlgrxFsWoJlEJyYnQXNQN7gvVpfcPI7sbZxHMofZEOEnuMMu1jCfF23?=
- =?us-ascii?Q?iEr10UYGWbb9EsNZSC4qa9g4JmBFM2xtmlN2X5GWeA6Woy1niIiNPvK8eBP+?=
- =?us-ascii?Q?jO1isxsuCanItiBsD8AP1gb5f7nqYYipPC58p9nhYnICdNY5ZVNg6VLvcgbB?=
- =?us-ascii?Q?Xt05bd85Z9ynVxap4r48aUdjUEL+JI8zvKr2XfP7rn9gVxMtJejbZwUv8mG0?=
- =?us-ascii?Q?Rh7KrTeFZg6Nts1Oj3y7iTFk/RQv/817O27i8/ZKtHRazfeIEKMWGPh8SI8C?=
- =?us-ascii?Q?U5X2h4/0PCApRQifhEIvbLM/NrrBru4X?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?veYmYxEakGhqyyqLq6y9buLm4rrERAUr5wLcau/Uw/wQ5LzKXM4Pahf4hE+j?=
- =?us-ascii?Q?VyZn1pM5icwgkYvUEWeu0MlCrRxaOpsoFMm8kXm3aKMoByEnhmvjEaDFweqm?=
- =?us-ascii?Q?Ky8m2Zq4rUP03kGR17CmfyBc4Fr90g1/7xFzXjCPADzGtiBOsdPZmH9SYV5r?=
- =?us-ascii?Q?8YmVT8GtwlMPZEze3YEYTr5GLjApa+L5T6sNBvxnPvk5ziQC4BCgpZdUzqF7?=
- =?us-ascii?Q?o/FAtbigYoF6iSZroivApdKXCrBLAPAnm9Fxx8qphoRl2iNiIvjHgHT3ZXqD?=
- =?us-ascii?Q?EMWVueR5Wq/Zf3xoxXKDwV2kAvHqpmd/LqSuTpZzH5wxdB7I/QIiAOJ3lNz4?=
- =?us-ascii?Q?uLKLJeeFFY6Cm8TyDMrlCi6TWsLL+TwcJDa1HO1ySY8IdML9IEaIVH/ixcbT?=
- =?us-ascii?Q?X6X2xNINSwupoySPWbCPZseK8Hqs5YC0uF/wNGk+AueJZ2+davqzfLIy8Tpe?=
- =?us-ascii?Q?XWvM1+h8Z8oW57CUZsUeKS3c4eFo7YuQLCgwAL8lqa/MpmvS/JX5CGlYDayf?=
- =?us-ascii?Q?JUTo92ME9iuc7BoXtTEhgClBN+hfNjymdtGu8FaHo8CXb8+4/P5ewW66NX2Q?=
- =?us-ascii?Q?740VcSi2fb0auaGXxLPz8QccqcPJvuflHcBD3VT73BFR6Mdp6PUCxzctPhBZ?=
- =?us-ascii?Q?TYxgD+L1C+V3/w115B1xAPkE7k+YouVZ5eWiP931VbJYNwtg/Edr3BfJXzgC?=
- =?us-ascii?Q?wd7Y/7IYRzFhzkGz4U4dVorDW+vY6SxnuLd2R4zUkFoMGHn6saGwQiSzMbTf?=
- =?us-ascii?Q?3/8TJ7xrIwqwdg748auiQkFBCuLOhPjbYf4Ljel4UDBMUmNL+51Xv4iSc4Ym?=
- =?us-ascii?Q?ARFoxzSa1oqloLBOMkPPpUKeXffpt99wAs81z81NDAkruIDNXLViLeM5uYxE?=
- =?us-ascii?Q?VrXOfyWkR4Bpdxmly/YPfreBba8QRykBMuNyM1Eixz1Ie56PFSN2//2TslaH?=
- =?us-ascii?Q?n5Twcy3DUby+4TU+dpF+XA3CbkZ21gmkeOF6AagoRwhaNJwRJLvkAN7BrQSx?=
- =?us-ascii?Q?JOWm2N9pMQVBSyzl2JjoOW28YlyvTVdPj6t241ZDRCEXKRUs9zfdNU/PiV9V?=
- =?us-ascii?Q?hD+mvUTHptQbXxd79/tylfKwPb8RLJaseC6VwQAokcSyuk/Phcm5vaClW/bv?=
- =?us-ascii?Q?TLYg+8yZ94583KLYdbg8lmFNwFCa7tzjD49ILvDMPTBNgRoCkciWwm7S0+Sg?=
- =?us-ascii?Q?FB5ziOWXCTp7nAeXivCpFWVYRSNTmHv3MS8NQJ3oKQ8XJBTzJkeEXaF9GtH9?=
- =?us-ascii?Q?TApUympqOOnyt+NubD4L4N7jlPpmYU4cWMZiR0bVth7jU8i7nMuuAL2s5eAB?=
- =?us-ascii?Q?5pJR19nCZKrO8L370coXNDHxSEHNfRRDU6WuvPUoK6MMop4U74Wxi7P6Z9t0?=
- =?us-ascii?Q?g8EiBI0LJS6+6lGqxJ3ZXoabySWGxfuB96F/iEYkjkkxDjx/vguqDzEg17Mr?=
- =?us-ascii?Q?1ABz26f6A+qQEzaPqrbCuDZm8DiK+q7Sjev0x81fC9rAy96uL0ENqE4I+7It?=
- =?us-ascii?Q?d+32phTqT2oChv+kdKV5Ps5T8cUr8TKHUDdHRhuyNHNyecB+tt2TzrnK4WSY?=
- =?us-ascii?Q?CqM9/y/xwt/mhD593x3RFNtqdlOqDiDyBSU1Dod1?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 191427a9-f0d3-49db-aafa-08dd3b02b8ae
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2025 16:35:03.5596
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /OJpykCFmEsNqO/NoCmO/NbsS/CZDidia0sfgedsqtn8gzITxSBEKQZjyw7dHdRCwZZoHYBdJlJ4TcrALDVD8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8403
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1737564089;VERSION=7983;MC=2169678724;ID=57136;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD9485267776B
 
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
+The core is reset both in `fec_restart()` (called on link-up) and
+`fec_stop()` (going to sleep, driver remove etc.). These two functions
+had their separate implementations, which was at first only a register
+write and a `udelay()` (and the accompanying block comment). However,
+since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+meant that these implementations diverged, often causing bugs. For
+instance, as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`, and `fec_restart()` missed the refactor in
+commit ff049886671c ("net: fec: Refactor: #define magic constants")
+renaming the "magic" constant `1` to `FEC_ECR_RESET`.
 
-The new revision for 8M Plus has wm8962 codec instead of wm8960.
-Therefore add new entry in sof_imx8mp_machs, an array of snd_sof_of_mach,
-where we describe topology name and driver name.
-For the new revision we have new compatible value and based on this,
-we select the new topology file, for wm8962 codec.
+To eliminate this bug-source, refactor implementation to a common function.
 
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 ---
- sound/soc/sof/imx/imx8m.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
-index 4ab5814e9117..c63d64164e4b 100644
---- a/sound/soc/sof/imx/imx8m.c
-+++ b/sound/soc/sof/imx/imx8m.c
-@@ -515,6 +515,11 @@ static const struct snd_sof_dsp_ops sof_imx8m_ops = {
- };
+Notes:
+    Recommended options for this patch:
+    `--color-moved --color-moved-ws=allow-indentation-change`
+    Changes in v2:
+    * collect Michal's tag
+    * reformat message to 75 cols
+    * fix missing `u32 val`
+
+ drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 68725506a095..520fe638ea00 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1064,6 +1064,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 	}
+ }
  
- static struct snd_sof_of_mach sof_imx8mp_machs[] = {
-+	{
-+		.compatible = "fsl,imx8mp-evk-revb4",
-+		.sof_tplg_filename = "sof-imx8mp-wm8962.tplg",
-+		.drv_name = "asoc-audio-graph-card2",
-+	},
- 	{
- 		.compatible = "fsl,imx8mp-evk",
- 		.sof_tplg_filename = "sof-imx8mp-wm8960.tplg",
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
++{
++	u32 val;
++
++	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1080,17 +1103,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
+-	}
++	fec_ctrl_reset(fep, false);
+ 
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1344,22 +1357,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 
 -- 
-2.43.0
+2.48.1
+
 
