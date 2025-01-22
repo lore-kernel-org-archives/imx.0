@@ -1,173 +1,100 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96E71F78E8
-	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 16:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC821519B
+	for <imx@lists.linux.dev>; Wed, 22 Jan 2025 17:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737564102; cv=none; b=LAgUfpH2gU05K8mIseiMxrFlcVKf4SMjHI7wyZ3UcviZ+2OoLjsg6AXV9cOO66SSkMKBwYmBeNF5lPcmUbtG1kwNt1ITwYl7LNJBWN3Fjd8Zf4IdLSu1HdYgTd0IFRMkDR5xgDXaQbI6xl2mYm9FGZWpObW5Xud+H6tnYaXxaq4=
+	t=1737567689; cv=none; b=S6lgYSOGt6PrMd2aHp60yezW7y7d/3tx6FYJhI+WnHI4tjflzm7LwKLUxBetEm5NZ9GysJ/lD2SaEfXCspafF8N0TRsfe/jCvZVVNfNAAWGOIOWByVyQgKCXgETPWIZHLrVFLcdUyvjNWf9u7375FuVPs4iBX1fEDK/IiBUK+bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737564102; c=relaxed/simple;
-	bh=f0tAfTbWDW2FkQbgi3d758Uem0n6fzGbFvsTA1ngvxY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GbUfYWT95CgWO230oyV/GLbxRbM/5tWB08XnZFhjZyzbrcKYPW/rdBwCP7Vn6FboVIyPLlNxDXcVf/A7fy9gZ3T4p8ALN1z11tb3DnIl/ZktG8V+jFJ2+TAT1m/dxhcXsikHx/tgxRr/oyuwWzDx/Xk0gYKqmGLfwCBjU3eLCwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=tiiDVHAl; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1737567689; c=relaxed/simple;
+	bh=N2CZWraLu3rKKT314RvxJgkSvmsJbpLZz+Zmygz4zkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fLbxOlEBITRhS/5Se4/M0nYTS6Pd9gIbJ96XXqeoREgjlzEuQrFz8XFk2aDqATZnvvuGPRGLRGy7DkS30cscDtdfRH74/Qc4iQrns/ZNWIo7tLbyqvNufwP3qF1sU7l3Fr4sNZbJA/krhyNVYmr6jzylRmRCX1+Sxqv7GK4SYZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JN2fYJ6q; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="tiiDVHAl"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 9B90EA09D7;
-	Wed, 22 Jan 2025 17:41:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=ek8VNfP6wDJAkf+F3SKTcqMo2qWsHK+cLHwLll5Idb0=; b=
-	tiiDVHAlloVomCLPy3gPu+/fuJQMrnFxtyZ5oWU8YzEJmr89GPxLLb2qw4hZMHF0
-	6G6HFrsX+zCgDxBlaDtWTmPDeViGYBacUysQ8t22KwpV6HQMfZ2Eg4yyGBdymCqH
-	D+reuTBcFC66Gb9jP+Dcy6CgfNDoDbeJyv+JhCpIXn/aqcCF3B/zKFqzW5CbzJ0X
-	ceYv4xMGj0lAYiQf1AoYUiS47YLEYuZIb/VYKqM/0h49hByotTdr3kPjcllEBYYJ
-	Q6HWoh8XMTDIMwJocQOyZG4chC4e2IpSy3to8iKTmUf0MZVjal0p7nb11fmIaZy7
-	N4XOkGz+LLzNSTjiN9IQ5P5sXAknrxjyxlLEcMBo3Qi1MoFXBbBQZaNDDx5DUDRG
-	xhvVvBHuEIBBHlRvqF/FPemq+oq+rZQXAgZhA6KMbWG45mkBN8VkySuYlpbsruJX
-	YdKfxySHrJQon1DJIP7vkQs90WU9HrQnH/UF4hflu30YZLFYBs99xit5353G8gtT
-	eT7kJ05vcPma6fuIqng0FAe+zC8xlNRhNyYOoQtuZRwxw4gUHpM5r13RjQHDiHKU
-	ePakK/5ttM+s4YMl2Q5Dra3uzbO+PqNX04LiIU3AePqDVYy4Cv4PiTfA1drDQudx
-	dT7rV57hahNMGsEMtcOkPeoSTmVrLriRcHkDUiLO4z4=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: Laurent Badel <laurentbadel@eaton.com>, Jakub Kicinski <kuba@kernel.org>,
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Ahmad
- Fatoum" <a.fatoum@pengutronix.de>, Simon Horman <horms@kernel.org>, "Michal
- Swiatkowski" <michal.swiatkowski@linux.intel.com>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
- Abeni" <pabeni@redhat.com>
-Subject: [PATCH] net: fec: Refactor MAC reset to function
-Date: Wed, 22 Jan 2025 17:39:33 +0100
-Message-ID: <20250122163935.213313-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JN2fYJ6q"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43618283d48so19815e9.1
+        for <imx@lists.linux.dev>; Wed, 22 Jan 2025 09:41:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737567685; x=1738172485; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P3xfQ6HsRwZfSocl+h/g5AkAwP96buHXsNBwC1dywZs=;
+        b=JN2fYJ6q7xynXJ8wdopPnYtU+9TFbEYrJYSo9Bfy5JZu2UZltUFxW2fGqzlpAaHlGq
+         Ue8NU9AOdEuigO2cxMcVB+s4QQbAf71x/mbOdu3lJz6JrkYcif4x+gZbYuapB37PWCHx
+         Nhq6LHepFTakxlWFS5SY2yvhMES+HQAHMvCupv7v16Z68pwYCgJWBA5awOhTMtzgy94i
+         T1HEUQBSm6twKyG+5navJukFA7iNC8kAnClEd+PlMhcqYa2PLvV1guGVtC9nlksyW8JC
+         LWd04JksK2csWjIjYL44yjRg6esXEmFVpcL/+ajZ5+wqA0rb7tJS0kTe+NdK3QfDuWOf
+         R8Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737567685; x=1738172485;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P3xfQ6HsRwZfSocl+h/g5AkAwP96buHXsNBwC1dywZs=;
+        b=XPPurOXa9r7Exu9v69EkRfYxq7anYY+7lxgn7G2TH04ilyNso/JoaEkGCNeQqje2wf
+         a6e7RLbWMddC0V4x8f8IMCFcnHB+1h4jFiR472E/CNqBRNm5BN2BOtX+mXm5zc4TEAQj
+         1Pt59YnAa4T31RJJOaU6MQmi7cEQ2IJJpbau7n97TzcKvaQG29Ea9x/vahCnYxpDhNk+
+         sOJ2+5zNo3O88ylnZB0xqVxQyAhVKnRnrebqCKw3s1qjxbzD9n30U/nsm4TLbS0E2wfB
+         Y1TPMFOaC7YBrzwb4mAkT8+QBlf9vi1l8tiR9YmJKlPdSqA4Gl55mIEe6UhdroL7OgLa
+         ZVqA==
+X-Gm-Message-State: AOJu0YyGBwUVtwZ91ewgHbzHf4w2iCiJ1wP31YEbHJsZ5aPpREp5z1OU
+	HSxD6NNUWlHAldcGB2a6GWUNbFxHgU7rIcYjVSuAdyQw4S9bA/MYg9fLSD9cp5E=
+X-Gm-Gg: ASbGncuqSnSrSK82Mw4yBp2mSLFd7vfFbtKVQl9MqC3mzwpLXTTyIyf8aRNtTWRmW74
+	v6j4tY8CvZD/lUrXJlaC1kEMYIIDetVWB3bh240ZVULngFKGDTiYrkEeyM4QZvrxN+3Ys5UKcxn
+	SVpIkaEWgEdWT/tTPeS182YM2M1euQaUo3PrAVopddTUWRhUQOM4HagyH7VVqAZAVICMxrLITSC
+	C0iymDCI3gxk0DIYCPivTfN2BAzzafdFgMEMx8wjdcp7coqRzQ0sQFzXGnbFz+Oc2J+3Mv4gO+L
+	tTl2DSaiiBqVMI8oN5wLqk6fvhSgdgZndg==
+X-Google-Smtp-Source: AGHT+IESAU8rkg/qlaPKVu84CybcOG1aDw4TcSQv1t/w3ZJI/axU8cqUp0BHHY9Y43ilPZTapRvMJw==
+X-Received: by 2002:a05:600c:4c24:b0:434:f3a1:b214 with SMTP id 5b1f17b1804b1-4389da1e6c7mr189187235e9.28.1737567683952;
+        Wed, 22 Jan 2025 09:41:23 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-438b31aefcbsm32095365e9.17.2025.01.22.09.41.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jan 2025 09:41:23 -0800 (PST)
+Message-ID: <8693bf83-9878-404e-b609-dcaf758d485c@linaro.org>
+Date: Wed, 22 Jan 2025 18:41:22 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] thermal/drivers/qoriq: Use dev_err_probe()
+ simplify the code
+To: Frank Li <Frank.li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+ "open list:THERMAL" <linux-pm@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20241209164859.3758906-1-Frank.Li@nxp.com>
+ <Z5EULLr7hsk1RIZy@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <Z5EULLr7hsk1RIZy@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1737564089;VERSION=7983;MC=2169678724;ID=57136;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD9485267776B
 
-The core is reset both in `fec_restart()` (called on link-up) and
-`fec_stop()` (going to sleep, driver remove etc.). These two functions
-had their separate implementations, which was at first only a register
-write and a `udelay()` (and the accompanying block comment). However,
-since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-meant that these implementations diverged, often causing bugs. For
-instance, as of now, `fec_stop()` does not check for
-`FEC_QUIRK_NO_HARD_RESET`, and `fec_restart()` missed the refactor in
-commit ff049886671c ("net: fec: Refactor: #define magic constants")
-renaming the "magic" constant `1` to `FEC_ECR_RESET`.
+Hi Frank,
 
-To eliminate this bug-source, refactor implementation to a common function.
+On 22/01/2025 16:52, Frank Li wrote:
+> On Mon, Dec 09, 2024 at 11:48:58AM -0500, Frank Li wrote:
+>> Use dev_err_probe() and devm_clk_get_optional_enabled() to simplify the
+>> code.
+>>
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
+I applied the patches, thanks
 
-Notes:
-    Recommended options for this patch:
-    `--color-moved --color-moved-ws=allow-indentation-change`
-    Changes in v2:
-    * collect Michal's tag
-    * reformat message to 75 cols
-    * fix missing `u32 val`
 
- drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 68725506a095..520fe638ea00 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1064,6 +1064,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 	}
- }
- 
-+/* Whack a reset.  We should wait for this.
-+ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-+ * instead of reset MAC itself.
-+ */
-+static void fec_ctrl_reset(struct fec_enet_private *fep, bool wol)
-+{
-+	u32 val;
-+
-+	if (!wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-+			writel(0, fep->hwp + FEC_ECNTRL);
-+		} else {
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			udelay(10);
-+		}
-+	} else {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
-+}
-+
- /*
-  * This function is called to start or restart the FEC during a link
-  * change, transmit timeout, or to reconfigure the FEC.  The network
-@@ -1080,17 +1103,7 @@ fec_restart(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
--	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--		writel(0, fep->hwp + FEC_ECNTRL);
--	} else {
--		writel(1, fep->hwp + FEC_ECNTRL);
--		udelay(10);
--	}
-+	fec_ctrl_reset(fep, false);
- 
- 	/*
- 	 * enet-mac reset will reset mac address registers too,
-@@ -1344,22 +1357,7 @@ fec_stop(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--			writel(0, fep->hwp + FEC_ECNTRL);
--		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
--			udelay(10);
--		}
--	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
--		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
--	}
-+	fec_ctrl_reset(fep, true);
- 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 
 -- 
-2.48.1
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
