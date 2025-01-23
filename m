@@ -1,191 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E21153BF8;
-	Thu, 23 Jan 2025 19:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DF23DBB6;
+	Thu, 23 Jan 2025 21:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737661268; cv=none; b=CPyl1xjhZ8cmjQm08UUuT8atB2puCqPvlY7KgHwDLkBQAWrlOnDU5SYf+wUPU2GRzJAfEAEbKuZ+gFAIdlWAWsjXttd2mNgUVg5pd3ktSD6X4FLSF3HIBsOkVm2IeIaKWXYxAuqqSxQ4MmmSzoI6u8H0Bzew3CZqU9ThYPvUo54=
+	t=1737667263; cv=none; b=hRwPQwN3EAKsT0nttpaO/71Vllpg3hP83AdT2EAkcWPksStjeBngRc/uukvofXhDb4HSwun/IGMm6ALfRsz+Bkxhj5aqeUA14a4NEbZfy6TTaDwVSf0hgS63ANUJ1fmKrSTISPXcY0M2SJKuq5JL/8tXcv2zslabrTxXZPB+khY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737661268; c=relaxed/simple;
-	bh=FzgMlZoMTVJxW0DtNfnaS6A9Ohe9wUCQbfRzCAOE11Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d5yJkdbMzFBUwiURHwk7H15e7CcavO9ccgEtONlvHTpgX5OF+wmkTKw3jbhpUdf31yie+grKV4kqZrDeVtRlDBmAa7Oo60UNBt/4vdX1DDs4R65hHvCDOLL4YuyVuZE1yZO3BIbodlV/9xy1Eijn+HI5LoOEoU1Cr8wB5FG4nMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GE9Gsa7i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737667263; c=relaxed/simple;
+	bh=tuOw4Ciq0xOtOTUjc7Zy0bF2QdZE47PH3/38Axm4biY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EsC/R/ORWRHkIbqhQrNWgK9T8+zz4BqRC7OcgQ2DnZ4bHQsBYFJ+XNxHiBgTt8iqj1FvsKb3LWr0W7f/GPTwzz3ABXAGZvrr8L18JWhfiFxgFZ57hDOMsWAL7Mkc4HSgQw3XQpTvOB3k0vqe5fvUxScAbbbb7nw/RngbW0UNT/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDCqlbBp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GE9Gsa7i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30591C4CEE7;
-	Thu, 23 Jan 2025 19:41:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDCqlbBp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CA1C4CED3;
+	Thu, 23 Jan 2025 21:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737661268;
-	bh=FzgMlZoMTVJxW0DtNfnaS6A9Ohe9wUCQbfRzCAOE11Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GE9Gsa7iiU444KpkYxrogoBdZowGSjkyO0k7laPoPcoq6g3XxCe0poALteq4R4Zph
-	 tZ3ytakM0acv90IqA3t/Tq+HIhgvttRHrxIMc4+ftcYx59CQekJex95lkIBya9MuSj
-	 e8hgK78Mvi+bBQYrsrlD41mZ7vaA3+PkczkIp5mOMTvpFuEkiNLQOfTC7I53w3Jpp9
-	 jdf7sxICX3pGKHys55ON+N8sg3msEwZ1hAbYoGP7MqRskWyhGBaMTolzt8pF6nm7po
-	 ccEaxXFbs1MchzhtSnnv0PMPk6yc1GTQLhaCumG8Mkicq84A+N5GxqwlpPfo2bFwbT
-	 FHvlAO5Y9gebg==
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eb790888c6so345990b6e.2;
-        Thu, 23 Jan 2025 11:41:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUws7qk+gamYDrkHinoGNl4FEgJGvtL6PA5C53PZacimftrk3GKzoux014Ma52rRpPxxeq8ta2yyd5Z@lists.linux.dev, AJvYcCWw6yDRGEsAtgeUG3GcYdkUeiXgLAkdUhcxBDWkM0LDShd2thrYQdjLQgoFBInd3dNi2hMS@lists.linux.dev, AJvYcCXYkBQ3Hu49kknZJqOH2EBsqLz2Mx7T93zuZGa6MkBuD3/vv/XEENuMRixLTuliCXgqMjO0eA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHY3jYxhPbGi/6qciOc1Y/+R5t0ZPuojUWDI3HskNVFRb+1R3Q
-	2Lwi2S98eQjpNuFMHzuI/Qvuc9dpMRFxbuhBD8NgbeAlhYq/1CdjTIJ9Vsi/eLzRyeC071OnM9s
-	p5w7yGDos9chggPflqDvFqRaAxHI=
-X-Google-Smtp-Source: AGHT+IFEZLpokzQrSZWtE1aUlhzheSpv16W1XbXdM7wOE5P8c+MPFR4VPEp6oVT06Ebj/5DfcgalM7sIG87OhMAknWU=
-X-Received: by 2002:a05:6808:309c:b0:3ea:519e:cc71 with SMTP id
- 5614622812f47-3f19fd7beb4mr15987065b6e.39.1737661267410; Thu, 23 Jan 2025
- 11:41:07 -0800 (PST)
+	s=k20201202; t=1737667262;
+	bh=tuOw4Ciq0xOtOTUjc7Zy0bF2QdZE47PH3/38Axm4biY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=LDCqlbBpMywyho8D7bVAM3BuKtdRQ9aZKRnL07ogUXrKZ/fFZx/HeuK6vYOvkXNHo
+	 gj1e8sLvbyjah0IIo632PPoJ/Sww5Od0JKOGdH/fnEBByh6qcYUfVHdFjE1ix20x3T
+	 k7t+1sG7atIu+D24kwIN0GQmMqGpJ2ZfWos3YZRgkFAw5m31+uHPV2Gv3kujbd+fDR
+	 UV6CLignNxnwx1C7p+Av3dX8ATJSbTU6hwz6cqstmWgGR/4kZtgavE2r56QPMpN25M
+	 58XsWrlMVvDk5zuIt6IJxqFxo0ceIC/sBN9cInPbX47Sfc9rqwtEkUYfprM29tZiLP
+	 5UKGKgSdSZkDw==
+From: Mark Brown <broonie@kernel.org>
+To: robh@kernel.org, krzk+dt@kernel.org, 
+ Daniel Baluta <daniel.baluta@nxp.com>
+Cc: shawnguo@kernel.org, conor+dt@kernel.org, peng.fan@nxp.com, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com, 
+ linux-sound@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20250122163544.1392869-1-daniel.baluta@nxp.com>
+References: <20250122163544.1392869-1-daniel.baluta@nxp.com>
+Subject: Re: [PATCH 0/4] Add SOF support for new board revisions
+Message-Id: <173766726032.133083.14869968684527769407.b4-ty@kernel.org>
+Date: Thu, 23 Jan 2025 21:21:00 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1737631669.git.viresh.kumar@linaro.org>
-In-Reply-To: <cover.1737631669.git.viresh.kumar@linaro.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 23 Jan 2025 20:40:56 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
-X-Gm-Features: AWEUYZmJBrMCqL-riW-i0DlJyFI1cRh2mxShaIBztS2B8ipvq-I9aavy-zqQjVc
-Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
-Subject: Re: [PATCH 00/33] cpufreq: manage common sysfs attributes from core
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Cristian Marussi <cristian.marussi@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Hector Martin <marcan@marcan.st>, Huacai Chen <chenhuacai@kernel.org>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Kevin Hilman <khilman@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Markus Mayer <mmayer@broadcom.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Sven Peter <sven@svenpeter.dev>, 
-	Thierry Reding <thierry.reding@gmail.com>, WANG Xuerui <kernel@xen0n.name>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, arm-scmi@vger.kernel.org, 
-	asahi@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-tegra@vger.kernel.org, 
-	loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
-On Thu, Jan 23, 2025 at 12:38=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
-org> wrote:
->
-> Hello,
->
-> Most of the drivers add available and boost frequencies related attribute=
-s. This
-> patch series tries to avoid duplication and simplify driver's code by man=
-aging
-> these from core code.
->
-> A quick search revealed that only the drivers that set the
-> policy->freq_table field, enable these attributes. Which makes sense as
-> well, since the show_available_freqs() helper works only if the
-> freq_table is present.
->
-> In order to simplify drivers, create the relevant sysfs files forcefully
-> from cpufreq core.
->
-> Pushed here:
->
-> git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git cpufreq/core=
--attr
+On Wed, 22 Jan 2025 18:35:40 +0200, Daniel Baluta wrote:
+> We introduce SOF support for new board revisions for i.MX8MP/QM/QXP
+> which wrt audio they replace wm8960 codec with wm8962.
+> 
+> Also add support for cs42888 codec on i.MX8QM/8QXP baseboard.
+> 
+> Patches 1-3 are already merged in linux SOF tree and they can be merged
+> via asoc tree.
+> 
+> [...]
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Applied to
 
-for the series.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
 Thanks!
 
-> --
-> Viresh
->
-> Viresh Kumar (33):
->   cpufreq: Always create freq-table related sysfs file
->   cpufreq: dt: Stop setting cpufreq_driver->attr field
->   cpufreq: acpi: Stop setting common freq attributes
->   cpufreq: apple: Stop setting cpufreq_driver->attr field
->   cpufreq: bmips: Stop setting cpufreq_driver->attr field
->   cpufreq: brcmstb: Stop setting common freq attributes
->   cpufreq: davinci: Stop setting cpufreq_driver->attr field
->   cpufreq: e_powersaver: Stop setting cpufreq_driver->attr field
->   cpufreq: elanfreq: Stop setting cpufreq_driver->attr field
->   cpufreq: imx6q: Stop setting cpufreq_driver->attr field
->   cpufreq: kirkwood: Stop setting cpufreq_driver->attr field
->   cpufreq: longhaul: Stop setting cpufreq_driver->attr field
->   cpufreq: loongson: Stop setting cpufreq_driver->attr field
->   cpufreq: mediatek: Stop setting cpufreq_driver->attr field
->   cpufreq: omap: Stop setting cpufreq_driver->attr field
->   cpufreq: p4: Stop setting cpufreq_driver->attr field
->   cpufreq: pasemi: Stop setting cpufreq_driver->attr field
->   cpufreq: pmac: Stop setting cpufreq_driver->attr field
->   cpufreq: powernow: Stop setting cpufreq_driver->attr field
->   cpufreq: powernv: Stop setting common freq attributes
->   cpufreq: qcom: Stop setting cpufreq_driver->attr field
->   cpufreq: qoriq: Stop setting cpufreq_driver->attr field
->   cpufreq: sc520_freq: Stop setting cpufreq_driver->attr field
->   cpufreq: scmi: Stop setting cpufreq_driver->attr field
->   cpufreq: scpi: Stop setting cpufreq_driver->attr field
->   cpufreq: sh: Stop setting cpufreq_driver->attr field
->   cpufreq: spear: Stop setting cpufreq_driver->attr field
->   cpufreq: speedstep: Stop setting cpufreq_driver->attr field
->   cpufreq: tegra: Stop setting cpufreq_driver->attr field
->   cpufreq: vexpress: Stop setting cpufreq_driver->attr field
->   cpufreq: virtual: Stop setting cpufreq_driver->attr field
->   cpufreq: Remove cpufreq_generic_attrs
->   cpufreq: Stop checking for duplicate available/boost freq attributes
->
->  drivers/cpufreq/acpi-cpufreq.c         |  1 -
->  drivers/cpufreq/apple-soc-cpufreq.c    |  8 --------
->  drivers/cpufreq/bmips-cpufreq.c        |  1 -
->  drivers/cpufreq/brcmstb-avs-cpufreq.c  |  1 -
->  drivers/cpufreq/cpufreq-dt.c           |  8 --------
->  drivers/cpufreq/cpufreq.c              | 15 +++++++++++++++
->  drivers/cpufreq/davinci-cpufreq.c      |  1 -
->  drivers/cpufreq/e_powersaver.c         |  1 -
->  drivers/cpufreq/elanfreq.c             |  1 -
->  drivers/cpufreq/freq_table.c           |  8 --------
->  drivers/cpufreq/imx6q-cpufreq.c        |  1 -
->  drivers/cpufreq/kirkwood-cpufreq.c     |  1 -
->  drivers/cpufreq/longhaul.c             |  1 -
->  drivers/cpufreq/loongson2_cpufreq.c    |  1 -
->  drivers/cpufreq/loongson3_cpufreq.c    |  1 -
->  drivers/cpufreq/mediatek-cpufreq-hw.c  |  1 -
->  drivers/cpufreq/mediatek-cpufreq.c     |  1 -
->  drivers/cpufreq/omap-cpufreq.c         |  1 -
->  drivers/cpufreq/p4-clockmod.c          |  1 -
->  drivers/cpufreq/pasemi-cpufreq.c       |  1 -
->  drivers/cpufreq/pmac32-cpufreq.c       |  1 -
->  drivers/cpufreq/pmac64-cpufreq.c       |  1 -
->  drivers/cpufreq/powernow-k6.c          |  1 -
->  drivers/cpufreq/powernow-k7.c          |  1 -
->  drivers/cpufreq/powernow-k8.c          |  1 -
->  drivers/cpufreq/powernv-cpufreq.c      |  2 --
->  drivers/cpufreq/qcom-cpufreq-hw.c      |  7 -------
->  drivers/cpufreq/qoriq-cpufreq.c        |  1 -
->  drivers/cpufreq/sc520_freq.c           |  1 -
->  drivers/cpufreq/scmi-cpufreq.c         |  8 --------
->  drivers/cpufreq/scpi-cpufreq.c         |  1 -
->  drivers/cpufreq/sh-cpufreq.c           |  1 -
->  drivers/cpufreq/spear-cpufreq.c        |  1 -
->  drivers/cpufreq/speedstep-centrino.c   |  1 -
->  drivers/cpufreq/speedstep-ich.c        |  1 -
->  drivers/cpufreq/speedstep-smi.c        |  1 -
->  drivers/cpufreq/tegra186-cpufreq.c     |  1 -
->  drivers/cpufreq/tegra194-cpufreq.c     |  1 -
->  drivers/cpufreq/vexpress-spc-cpufreq.c |  1 -
->  drivers/cpufreq/virtual-cpufreq.c      |  1 -
->  include/linux/cpufreq.h                |  1 -
->  41 files changed, 15 insertions(+), 75 deletions(-)
->
-> --
-> 2.31.1.272.g89b43f80a514
->
+[1/4] dt-bindings: arm: imx: Add board revisions for i.MX8MP, i.MX8QM and i.MX8QXP
+      commit: 4b24c69af9cd5bd8fe98ab2ddd822d73f5e20a00
+[2/4] ASoC: SOF: imx: Add mach entry to select cs42888 topology
+      commit: 66084793fac9c8b841f65da1809ad0ad398f9f2f
+[3/4] ASoC: SOF: imx8: Add entries for new 8QM and 8QXP revisions
+      commit: a9f54c7fbd2edb28c8d4d812be3d0129167f92d4
+[4/4] ASoC: SOF: imx8m: Add entry for new 8M Plus revision
+      commit: af65d7d041d486cc55530e14d806e16143037962
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
