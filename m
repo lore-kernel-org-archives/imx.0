@@ -1,111 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E9D2144A6;
-	Thu, 23 Jan 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96DC13D882;
+	Thu, 23 Jan 2025 19:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737647870; cv=none; b=u47h4V3DyPMrSvYCGSvpGwrZOPN/MosP7KLUlN/tqfxmiFm9QT9ZWyhAoLXQd2QUhUyCgi2yLCADqwLLmrdXLTyMjlhYaycT2j9gv3XAU+duwQ0t0ePkKdcwlCbs+s1sFiNblOd7tBn4E1mnjb871FF5/hyr408Xpof4CqXlJFU=
+	t=1737659065; cv=none; b=P5w6Hov6W1mP5fwT05dTC6uU1wp2hji7L1HBofzBhwNf1A55laLElrHKgsVBO3aXFF9k6R4MAQp5SKW4lDNhI70GYoUF2F26HNka5XWshvhqczFgOFexfwcLca4/GDzDJYnfxZVpfwJSJzfGUIBubMQ4AEQ0xeodXGpRmkWjAv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737647870; c=relaxed/simple;
-	bh=ft8Jievp9zLCcxslQvNCpMJJr771yq6XaBBtLD9kMvU=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=a/ctS/gc61nxXV5odYrIXQAGV1xYySjD6yG4P3d8H1pT4QtTCuoc8k4fkqEd/OQZAz8o78o9IMUeZgj7q9EONknrDMHG4Cws54zGLLWNqqPAWddEi10CwMuW87Vf2clLWH8ZOHO9VvnYP/MRfBeHxPl1hncZkWPvKGzMVqAMWMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmlWiEJk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737659065; c=relaxed/simple;
+	bh=hHJYIYvVQNSFfUvSqBc7Seoz8vNYl2K6sccCJXZy6JQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=sDfetzd5QgPyTF6MI5P+AnILw9RU6Y8v4zGQ619fcw8fhGcn03O0TUmijiMqfFpmpIPPNs985BXZ7Ewf+z0rj/VCjWIkYYBnmFdVlMI+m8jM1K4G5OXPceCNpVeObwbBnHvT5/IosAXP6DUaqynRtAaIL94j2Xhy9f82nigzmGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRehpicm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmlWiEJk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448B5C4CED3;
-	Thu, 23 Jan 2025 15:57:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRehpicm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4261C4CED3;
+	Thu, 23 Jan 2025 19:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737647869;
-	bh=ft8Jievp9zLCcxslQvNCpMJJr771yq6XaBBtLD9kMvU=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=SmlWiEJkChX33WESinpqu8F9rIKOPOsZrPOKeRT8AI3FAIwHcs/Cq9WEwL+8OFWPP
-	 QJJ8ME5QD7b3+2zJ8OgtZyxnEDMRW2tmBoBPTuLGAOJkj2P7IQ90YClw78IuOfVzYc
-	 gWfgDx59pmvU4wTwDirmvNXVPy707RS/T+wj+w89+ej44ABbKEaWPC3YYqFaF2OhNB
-	 36aLbERTs2BlZ9H+hBvKIEYPowS0w/eb7KQRMfKKvdtLB7O17ophpFsK63ra8icoy5
-	 8fukKhT+59r0qYfsp6SiEF60Yt66KhSkV6R6TPyNdPRb0N+1pRRrWUoYz0jVlIvVFk
-	 fVIPSVDfjKLZg==
-Date: Thu, 23 Jan 2025 09:57:48 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1737659065;
+	bh=hHJYIYvVQNSFfUvSqBc7Seoz8vNYl2K6sccCJXZy6JQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FRehpicmepTuqm1yVXqleYwTJcp3Foa7lJjXlbM96PUuG7tuSxK7gS56iCJdPvjDq
+	 0C2/gPczTRzQ7sDBeT31rwsxA81T514+5sHXrfmJF5pYsubFNAc+6+rmJyIBEQMW8i
+	 GPRAtWtVQRcRFlfI8GkXNJOf2SSLrGh55++SiGERF2ZXDqjufdoxG9bSFp8d/H9WwS
+	 jzIav7GA5XgptD9oTH2rAoSFqZ3vCQLJ75sX6Hxsxa69Wq4f1eBT3GnjAMOrJOU0Gk
+	 2msFwHVBh0YgBlh1i569k8vrz9FvHHJtdhHgh/BvmH3Wg+QSoIgzk67idaYNsS6Ldc
+	 FcwCl7bJ7UnPg==
+Date: Thu, 23 Jan 2025 13:04:22 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH v8 2/7] PCI: dwc: Use devicetree 'ranges' property to get
+ rid of cpu_addr_fixup() callback
+Message-ID: <20250123190422.GA1215672@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
- devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- linux-arm-kernel@lists.infradead.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, imx@lists.linux.dev
-To: Antonin Godard <antonin.godard@bootlin.com>
-In-Reply-To: <20250121-varsom6ul-concerto-dts-v1-0-eb349acf0ac6@bootlin.com>
-References: <20250121-varsom6ul-concerto-dts-v1-0-eb349acf0ac6@bootlin.com>
-Message-Id: <173764775251.3793618.182783828690702678.robh@kernel.org>
-Subject: Re: [PATCH 0/3] Add Variscite i.MX6UL SoM and Concerto board
- support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z5JegF7i3Ig2pLYB@lizhi-Precision-Tower-5810>
 
+On Thu, Jan 23, 2025 at 10:21:36AM -0500, Frank Li wrote:
+> On Fri, Jan 17, 2025 at 10:42:37AM -0500, Frank Li wrote:
+> > On Thu, Jan 16, 2025 at 05:29:16PM -0600, Bjorn Helgaas wrote:
+> > > On Thu, Jan 16, 2025 at 05:14:00PM -0600, Bjorn Helgaas wrote:
+> > > > On Tue, Nov 19, 2024 at 02:44:20PM -0500, Frank Li wrote:
+> > > > > parent_bus_addr in struct of_range can indicate address information just
+> > > > > ahead of PCIe controller. Most system's bus fabric use 1:1 map between
+> > > > > input and output address. but some hardware like i.MX8QXP doesn't use 1:1
+> > > > > map.
+> ...
 
-On Tue, 21 Jan 2025 10:33:26 +0100, Antonin Godard wrote:
-> This patch series adds support for the i.MX6UL Variscite SoM
-> (VAR-SOM-6UL) and the Variscite Concerto Carrier Board.
+> 	I saw you have not picked all of these patches during you rework
+> pci git branches.
 > 
-> I tested this with a VAR-SOM-6UL_G2_700C_512R_8N_IT_REV1.3A (one variant
-> of this SoM), meaning I couldn't test all of the possible options of the
-> SoM - so this device tree includes partial support for it.
-> 
-> These are based on the 5.15 Variscite kernel fork but adapted for
-> mainline.
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
-> Antonin Godard (3):
->       dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and Concerto board
->       ARM: dts: imx6ul: Add Variscite VAR-SOM-MX6UL SoM support
->       ARM: dts: imx6ul: Add Variscite Concerto board support
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |   6 +
->  arch/arm/boot/dts/nxp/imx/Makefile                 |   1 +
->  .../boot/dts/nxp/imx/imx6ul-var-som-concerto.dts   | 331 +++++++++++++++++++++
->  arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi      | 232 +++++++++++++++
->  4 files changed, 570 insertions(+)
-> ---
-> base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
-> change-id: 20250120-varsom6ul-concerto-dts-a08be2a6219b
-> 
-> Best regards,
-> --
-> Antonin Godard <antonin.godard@bootlin.com>
-> 
-> 
-> 
+> 	I know you are busy, do you have chance to pick left patch for 6.14.
 
+This series had a mix of things: several patches related to
+.cpu_addr_fixup(), plus several unrelated ones for PHY mode and i.MX8Q
+support.  I think I picked up all the unrelated ones.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+.cpu_addr_fixup() is a generic problem that affects dwc (dra7xx, imx6,
+artpec6, intel-gw, visconti), cadence (cadence-plat), and now
+apparently microchip.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+I deferred these because I'm hoping we can come up with a more generic
+solution that's easier to apply across all these cases.  I don't
+really want to merge something that immediately needs to be reworked
+for other drivers.
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+A few of the things I wonder about:
 
-  pip3 install dtschema --upgrade
+  - dw_pcie_get_parent_addr() has no DWC dependencies, so it doesn't
+    make sense to me to have it be DWC-specific and copy and pasted
+    to other places that need something similar.
 
+  - It doesn't seem elegant to iterate through for_each_pci_range() in
+    devm_of_pci_get_host_bridge_resources(), then again in
+    dw_pcie_host_init() for io_bus_addr, then again in
+    dw_pcie_iatu_setup() for each window.  Maybe that's the best we
+    can do, but maybe there's a way to capture what we need on the
+    first time through.
 
-New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/nxp/' for 20250121-varsom6ul-concerto-dts-v1-0-eb349acf0ac6@bootlin.com:
+  - The connection between .cpu_addr_fixup() and use_parent_dt_ranges
+    is clear in the patches remove a .cpu_addr_fixup(), but not in the
+    DWC patches on the other end.
 
-arch/arm/boot/dts/nxp/imx/imx6dl-b125v2.dtb: clock-controller@20c4000: clocks: [[23]] is too short
-	from schema $id: http://devicetree.org/schemas/clock/imx6q-clock.yaml#
+  - Ideally, "use_parent_dt_ranges" would be the default and we
+    wouldn't have a flag to indicate that, and drivers would have to
+    opt out instead of opt in.  They basically already do that by
+    implementing .cpu_addr_fixup(), so maybe we can take advantage of
+    that fact.
 
-
-
-
-
+Bjorn
