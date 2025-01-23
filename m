@@ -1,211 +1,191 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2089.outbound.protection.outlook.com [40.107.247.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2141ADC9C
-	for <imx@lists.linux.dev>; Thu, 23 Jan 2025 19:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737659725; cv=fail; b=XZfCpyg6vjvc4eSL+2M4sifnWKFVDtBDLWA1z48XgW7CV2O6r0+kK/l5uW4u5EEo9kzvyzk/l8XhI+Lf41K1Uh3BITgvSvYH55Uo2QABMKVVso3eCcPjqugi9Kn0h0Xn1u/6M7WuUy0/wnRcuyw593bnvUzv7PCzLpOGOAxeHBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737659725; c=relaxed/simple;
-	bh=S1yr678ezWPo3ClMIVmgcrU1oiryCdYSL8KG3XN9h04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EP3GC2guuKHv+smLetLuw53Dajp0oFqKq9ef6I778cNKj2ZnaGxJ8Iy97DCcbb0wSOM0861cenxtCyVJwAJv2ohVWXyPRwZz0fvTFs0OjPnx5W6NMk6GpPhR83YzNiUqPrsW/u0QB2t6FgZJYIixX5abp7ArJb8XLv9LNnRYG28=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=edTmdIEQ; arc=fail smtp.client-ip=40.107.247.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E21153BF8;
+	Thu, 23 Jan 2025 19:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737661268; cv=none; b=CPyl1xjhZ8cmjQm08UUuT8atB2puCqPvlY7KgHwDLkBQAWrlOnDU5SYf+wUPU2GRzJAfEAEbKuZ+gFAIdlWAWsjXttd2mNgUVg5pd3ktSD6X4FLSF3HIBsOkVm2IeIaKWXYxAuqqSxQ4MmmSzoI6u8H0Bzew3CZqU9ThYPvUo54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737661268; c=relaxed/simple;
+	bh=FzgMlZoMTVJxW0DtNfnaS6A9Ohe9wUCQbfRzCAOE11Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d5yJkdbMzFBUwiURHwk7H15e7CcavO9ccgEtONlvHTpgX5OF+wmkTKw3jbhpUdf31yie+grKV4kqZrDeVtRlDBmAa7Oo60UNBt/4vdX1DDs4R65hHvCDOLL4YuyVuZE1yZO3BIbodlV/9xy1Eijn+HI5LoOEoU1Cr8wB5FG4nMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GE9Gsa7i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="edTmdIEQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uOoLkoiLVFdwljJ+ytyI1K8QohB95A3TAANFPxwNThDunKMWgan1kgxef73N5QnpFIgb0uZLVkc8AngqausJ8v/9iI6Qp1CkXuk0UCXK7TAOsu9Ag7ur9tbeGGV6xrd+5k5Tj1ua6j+LXGdJxcdZ9y8QBMRoWq5c8Pc6fxGKPD/KdQV7JdWlUCcNDaBlE7rCrJoch07UEtcj2s0mp2Bqv4ecjnrkgZ4twz/tN1Z5BNkgypoVHALSArlBWkRjx6U/xF2hs52AL5y9ncmV/T/I+D7unFKkfLQEkjN8kxdNmgiW4wCBv6WzcJtBJmOuh2yPwQBQ2tBkGyCJbO5wW/tqrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oEChO8CfT9er1OzC+iE2ALg9AVGN8eE8N6fJbM5jCWM=;
- b=vD0nKZ3+Cx9RA+HTnAG37lRrDhdhxTw7wDWNzOP8Urod+1yB//cPW3EwqKuDNUFLrremHcqJYKpdUIgWaJr1GUDT9Hms4AfpFRlRzCtB/jUPpUoGSdYxxsw2mmrqiGME32AWblARmfiFuGCb6Tqk8Rx9tF3G4YDGcl63uV8VZwHNVfuzyEaSVky+oqHA2otND8BYctrEyAFe0BSDJX/3APZMDpA1TOkOm+phiDho/LCCfLfLsz5FKLHLWW1Da+iuPr1jwCpesoAbqyERDUgceTSrTPFlUJMApu2MpIsBmD/dPPbOo9yRR1X0BR8+bFtpXEEQwa3O5ThdhaxCyFhoLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oEChO8CfT9er1OzC+iE2ALg9AVGN8eE8N6fJbM5jCWM=;
- b=edTmdIEQXrXzbTfAbBuHYFPiKRVZ/AHDMNW/XogGN0MXeTed4+G0ah89gT3l1avkRBde5jGhQgVb1NSRDoEyMw97tswjIAlVjeoiPLGNuzfqQaxQrNoV9Z1v5e7swrVHADfLOGiY8RzNehr6q5I7wVsAGzsXD8Ex23HLurwv5UR5HGZXtxhTkL//NGXj5efSvPM5XUOx5i7HgXWEvgisAma26xuZqGJ4r3DRWE+LUvQjfkqdJ40l/kb7WmJuDy//Lh16HvQr0lOmLnRYaxTAi7STCEIKf5d/EKrzf/8oGexxjJjtxhMQtLYU0bvHQFDfkQPMiuVQeVm9n9MpS4yfmg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10870.eurprd04.prod.outlook.com (2603:10a6:150:20a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.16; Thu, 23 Jan
- 2025 19:15:20 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8377.009; Thu, 23 Jan 2025
- 19:15:20 +0000
-Date: Thu, 23 Jan 2025 14:15:10 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v8 2/7] PCI: dwc: Use devicetree 'ranges' property to get
- rid of cpu_addr_fixup() callback
-Message-ID: <Z5KVPg/DuJHci/77@lizhi-Precision-Tower-5810>
-References: <Z5JegF7i3Ig2pLYB@lizhi-Precision-Tower-5810>
- <20250123190422.GA1215672@bhelgaas>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250123190422.GA1215672@bhelgaas>
-X-ClientProxiedBy: BY3PR04CA0023.namprd04.prod.outlook.com
- (2603:10b6:a03:217::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GE9Gsa7i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30591C4CEE7;
+	Thu, 23 Jan 2025 19:41:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737661268;
+	bh=FzgMlZoMTVJxW0DtNfnaS6A9Ohe9wUCQbfRzCAOE11Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GE9Gsa7iiU444KpkYxrogoBdZowGSjkyO0k7laPoPcoq6g3XxCe0poALteq4R4Zph
+	 tZ3ytakM0acv90IqA3t/Tq+HIhgvttRHrxIMc4+ftcYx59CQekJex95lkIBya9MuSj
+	 e8hgK78Mvi+bBQYrsrlD41mZ7vaA3+PkczkIp5mOMTvpFuEkiNLQOfTC7I53w3Jpp9
+	 jdf7sxICX3pGKHys55ON+N8sg3msEwZ1hAbYoGP7MqRskWyhGBaMTolzt8pF6nm7po
+	 ccEaxXFbs1MchzhtSnnv0PMPk6yc1GTQLhaCumG8Mkicq84A+N5GxqwlpPfo2bFwbT
+	 FHvlAO5Y9gebg==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eb790888c6so345990b6e.2;
+        Thu, 23 Jan 2025 11:41:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUws7qk+gamYDrkHinoGNl4FEgJGvtL6PA5C53PZacimftrk3GKzoux014Ma52rRpPxxeq8ta2yyd5Z@lists.linux.dev, AJvYcCWw6yDRGEsAtgeUG3GcYdkUeiXgLAkdUhcxBDWkM0LDShd2thrYQdjLQgoFBInd3dNi2hMS@lists.linux.dev, AJvYcCXYkBQ3Hu49kknZJqOH2EBsqLz2Mx7T93zuZGa6MkBuD3/vv/XEENuMRixLTuliCXgqMjO0eA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxHY3jYxhPbGi/6qciOc1Y/+R5t0ZPuojUWDI3HskNVFRb+1R3Q
+	2Lwi2S98eQjpNuFMHzuI/Qvuc9dpMRFxbuhBD8NgbeAlhYq/1CdjTIJ9Vsi/eLzRyeC071OnM9s
+	p5w7yGDos9chggPflqDvFqRaAxHI=
+X-Google-Smtp-Source: AGHT+IFEZLpokzQrSZWtE1aUlhzheSpv16W1XbXdM7wOE5P8c+MPFR4VPEp6oVT06Ebj/5DfcgalM7sIG87OhMAknWU=
+X-Received: by 2002:a05:6808:309c:b0:3ea:519e:cc71 with SMTP id
+ 5614622812f47-3f19fd7beb4mr15987065b6e.39.1737661267410; Thu, 23 Jan 2025
+ 11:41:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10870:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0fafe5fa-f8a3-4e55-1039-08dd3be24735
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NTECq5qcZIrYqKsh+v4XHFHGwSKGgU2PQRkR4Y21vPjSnCHPYhtNiuMXLOpw?=
- =?us-ascii?Q?MqdgiZz6kRI8AH5hK9onATdw45+eXUtJydwOlfThM3A3IxW8KnPsvDR9Wfj/?=
- =?us-ascii?Q?vFQehDh4V423ZVmfPu3Ro9CSI9HmH1rn00qj21FzZAshmtL5dub+wOzCcCQn?=
- =?us-ascii?Q?ACBNf1Hsy2GPevnFTiYX9wG+ptZePjvTCmJHnJJFvKppgqlihBFXw9otyT9M?=
- =?us-ascii?Q?7A/cj5EAwCAdMrkU4L0kM78UR2zuG2scwhOTTVgAH/1qy491Xb1ZUvZ09C9Y?=
- =?us-ascii?Q?xwtw/VL2GBT6Ma/YPD0dKTqKWAUNYrgWXf8QdcQRCc3VJUd8J02IiJUE4Txm?=
- =?us-ascii?Q?f2J5kLH+IgmiHCGNzQSoN7D2sqgQiZuvUH9BBemv3FifXpAsW+ErDFGANs9V?=
- =?us-ascii?Q?PIeE4Q2VSddZfO1n0wyqv86aXcwfhEy9fV61BPBPxgT6UXUR+mnEpRwK0sm4?=
- =?us-ascii?Q?667qdej+bi+9gamKuj/biQGKZJ7uZJU9c8hG7GQnYjk/3gfz7L7Jn1jS5CET?=
- =?us-ascii?Q?NdU3LbvSGMmfM7j1OGsBZclgifUXe442ykeljWal6Gz1rBG3Kol+IoijevJq?=
- =?us-ascii?Q?8NRVyf8MB69nbMHalzycz+mAv6VbO+3rMARMEhQpPn8XX9maz8JlpER9Evor?=
- =?us-ascii?Q?mfE4JZRoaBzb8TI8MaVlG1iotytRwz58b8KLmci5l7GtKzwp0pxsiLRQof+7?=
- =?us-ascii?Q?xFCJ4CURlHV/dDzHm03sTgJGrkgznXXR1Ucb4y28Dc1ffksmjRhJpIG0l8e+?=
- =?us-ascii?Q?4Owo1WQMccuDjciyVNsM93iyDR0cYYoCvp4cUtuMCO3xVP3mSTIKYCPmE/SH?=
- =?us-ascii?Q?eDrodJjW1gvvF7x+D8YbIxvvGTXKj0Yh8/6wwLiTyQy3cRWI7jLnuvjJdsE1?=
- =?us-ascii?Q?V6NsF3C+NxJEQoVIYuGT+euxgEpjEVN/mrz3Jfp2equ1U5vR6JKLeHBpXalx?=
- =?us-ascii?Q?MUPj0T6hPkzsbPuZGc+kLcHScB7Q4DcwkmviQ9ITMH6kgbvSMXJ73d7W1p3m?=
- =?us-ascii?Q?lDclAL9O9FJudTgK7KgCNTZxlKnOPT1HSRBuXkPYDxjIlD3x6cgk0KX+8u17?=
- =?us-ascii?Q?OwFlrmYrGw7YRzg5RWWHn4GPV2GZLP3FjGNhbxi89ook5uaHX6C9ao9c1/JL?=
- =?us-ascii?Q?r+N9LjPDWCihwjB92HbplwpX265/z2uu03wQFtEVQ3qUbbcyHjvgDQQNb4K7?=
- =?us-ascii?Q?HASyISrm3iWxY9f6MLeUjxRwnyiw8PrPFiSxkzwzWX1A5k663KU+OwDb8XEH?=
- =?us-ascii?Q?XeRk1Gv3zTBit7yFCOotha76TOtenYTQohAHoZ+PprmKPzq2tONyLkgqTFII?=
- =?us-ascii?Q?G4aA2rNG2d1AUtmzTYzBBS0SvMO0UExoV23yRFeSWMPf66XrFmpX6vrSEXDj?=
- =?us-ascii?Q?G+mM2elUSxvDI1d1V13TL+ZuAwr8pPycfuZLM39YTsHq+6vA/nihPuvcmB+H?=
- =?us-ascii?Q?9ke4X2vqjnJe/9dNWVKSjk626Bf324IW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HrtsvTZPGXcPrgR5x8F0Hw6GIaPTCqpYgt//U9uv6p1IJfejWzNWdJ1cd1R4?=
- =?us-ascii?Q?CQxixHYFOzA712qiv26ZRvUXL+w1uDZ7TvGNBVz4+5XWGiMXemhD3A7+sGRG?=
- =?us-ascii?Q?wvNMQnccvoyL7DUoXZr0ZIsCp3V7rQmVjDP+CVFKVpNIk6dS11sUndROOuBO?=
- =?us-ascii?Q?TuMyxdh5phARQ+FY7+DjPn7BXhxXrf0+Bga6bJyHnXkSAIFBpZ5xLvLbfKC5?=
- =?us-ascii?Q?ofmAO1KTqcmWqOmeNL3KIeDmIvfegxxeT0PmpjkH4SilVi8/ZqZYcI9B9wqT?=
- =?us-ascii?Q?VYZKo/OLfT/G9ldvPYUEfy9BwARpMLFf+D9rmWIBD3JWg5pXpVCzT5KCvhvT?=
- =?us-ascii?Q?pzgTSbGEPFHAcNKfcFDYitqtc8Aenp5mjU+0aUkvPk5M9RID7SBm8mTMCHGv?=
- =?us-ascii?Q?xpJYOd/4DBNecHmW31rYNsLVdaddfwlsWKJmvGwBOYo3CvZpPWfxl/0tfHv/?=
- =?us-ascii?Q?6BQk9Lz2GobavIruahbi4BmcYOvrbK7I9CI1XRLx0rqM0PzmMbLtAsmwjUF0?=
- =?us-ascii?Q?+PV0zkKRcgY0SLog5mvAzewbqflz26Ul6pRKMscmSs3ruS/fqfoBX+7N6fcy?=
- =?us-ascii?Q?YBnyhMCZkApMx8UyYmV7e94iSIEJOjNnQXV7On2d+d7D50Ri7lq38fzMiBa8?=
- =?us-ascii?Q?nFxP01ZKaBTWo3b6oLfuyqH47YD/Lo3ZVS5IMhXMT5V+ZiJMbr3Er4tTApBB?=
- =?us-ascii?Q?a/Ya/3cw8DnmX1i2GV+PG4NOg0K8I0fU5hzWqHqePhhTUGZCQ7D3I6/VQGib?=
- =?us-ascii?Q?DpCmLZtmtzyeH6qYsyFexZBw5whRczD3DiC/55MmzWhMk6HE2k/QIKH4qLhs?=
- =?us-ascii?Q?7q17aEuGHPjLFfcVW+eksl3SgFU5pkUBMKrOnIk7nSV5o0qGfVYeeYfYUD2V?=
- =?us-ascii?Q?S6xneAbUNt6ZIHHUqUbfAnNfJ7BgWxkIM2ZWR9AQJvhPEDGfnXbBsR2wDyqy?=
- =?us-ascii?Q?F6DOyagPGGxhhSlNLUscBHBfnQh+2aNJFdmlMORlgRQ7ABl6axxp2FQlsgG8?=
- =?us-ascii?Q?RKctND+ghGOQdFl+H3ifBgZ0I5qOooQIiNuE4lth7BzzSpD6VWZ+w9atBgYv?=
- =?us-ascii?Q?7l+1K48vbt/smqjQorMNpI1qQ6yNc/NPti+J/4COkrnCx0lSv7JyQYejEkjt?=
- =?us-ascii?Q?bCzywRYp3c2AVLYjnUgFgqUqFkfDJnDG3czDSSBPut/XAM+EyCK1LUwn/vDo?=
- =?us-ascii?Q?pMr01SySl5nsfCHVUGtzTIFxsp6A3iLFRNCKGX8EWKvAcyRvhig5pILQ0dUi?=
- =?us-ascii?Q?ivP/AYCIzmDVWJ6L2mslrW5um/Hnd5oMH63AowftT+ysHyYCUKFDaFghYg27?=
- =?us-ascii?Q?ZvZncrlpKjWimLZz1lkmtlw06YihB/HKr9bV7sLnl6XK5LrPJhDYlEzxAN+J?=
- =?us-ascii?Q?Idmt4ATg16jOvRmdJ5LBnL1WEp05k36cnScu3Y5J9dwrGM0777JAYo2qXLAI?=
- =?us-ascii?Q?Jg3a3zAZQ6M4MCGxpWHhS6UEZLgsY7J6g6HmiM8gi6GS0ihMvW9zNU37LKcx?=
- =?us-ascii?Q?V3pjZGJc2YzdrpGlJqxwZ3ckYfUqPCkBNY8SXWkntchxmz0D/el34w3GEHFJ?=
- =?us-ascii?Q?m71e2YhaRk7aEcclMQ0=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fafe5fa-f8a3-4e55-1039-08dd3be24735
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 19:15:20.0853
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /bIE/DD0s2RyIuw6lsVlyt+EQFdJNpBxE1z9ZRMRxWBpp5XNZG0yuXOsXjEYR/ykIgGjFcMFnqYY/Khi5Pdgow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10870
+References: <cover.1737631669.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1737631669.git.viresh.kumar@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Jan 2025 20:40:56 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
+X-Gm-Features: AWEUYZmJBrMCqL-riW-i0DlJyFI1cRh2mxShaIBztS2B8ipvq-I9aavy-zqQjVc
+Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
+Subject: Re: [PATCH 00/33] cpufreq: manage common sysfs attributes from core
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Hector Martin <marcan@marcan.st>, Huacai Chen <chenhuacai@kernel.org>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Kevin Hilman <khilman@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Markus Mayer <mmayer@broadcom.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Sven Peter <sven@svenpeter.dev>, 
+	Thierry Reding <thierry.reding@gmail.com>, WANG Xuerui <kernel@xen0n.name>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, arm-scmi@vger.kernel.org, 
+	asahi@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-tegra@vger.kernel.org, 
+	loongarch@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 23, 2025 at 01:04:22PM -0600, Bjorn Helgaas wrote:
-> On Thu, Jan 23, 2025 at 10:21:36AM -0500, Frank Li wrote:
-> > On Fri, Jan 17, 2025 at 10:42:37AM -0500, Frank Li wrote:
-> > > On Thu, Jan 16, 2025 at 05:29:16PM -0600, Bjorn Helgaas wrote:
-> > > > On Thu, Jan 16, 2025 at 05:14:00PM -0600, Bjorn Helgaas wrote:
-> > > > > On Tue, Nov 19, 2024 at 02:44:20PM -0500, Frank Li wrote:
-> > > > > > parent_bus_addr in struct of_range can indicate address information just
-> > > > > > ahead of PCIe controller. Most system's bus fabric use 1:1 map between
-> > > > > > input and output address. but some hardware like i.MX8QXP doesn't use 1:1
-> > > > > > map.
-> > ...
+On Thu, Jan 23, 2025 at 12:38=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
+org> wrote:
 >
-> > 	I saw you have not picked all of these patches during you rework
-> > pci git branches.
-> >
-> > 	I know you are busy, do you have chance to pick left patch for 6.14.
+> Hello,
 >
-> This series had a mix of things: several patches related to
-> .cpu_addr_fixup(), plus several unrelated ones for PHY mode and i.MX8Q
-> support.  I think I picked up all the unrelated ones.
+> Most of the drivers add available and boost frequencies related attribute=
+s. This
+> patch series tries to avoid duplication and simplify driver's code by man=
+aging
+> these from core code.
 >
-> .cpu_addr_fixup() is a generic problem that affects dwc (dra7xx, imx6,
-> artpec6, intel-gw, visconti), cadence (cadence-plat), and now
-> apparently microchip.
+> A quick search revealed that only the drivers that set the
+> policy->freq_table field, enable these attributes. Which makes sense as
+> well, since the show_available_freqs() helper works only if the
+> freq_table is present.
 >
-> I deferred these because I'm hoping we can come up with a more generic
-> solution that's easier to apply across all these cases.  I don't
-> really want to merge something that immediately needs to be reworked
-> for other drivers.
+> In order to simplify drivers, create the relevant sysfs files forcefully
+> from cpufreq core.
 >
-> A few of the things I wonder about:
+> Pushed here:
 >
->   - dw_pcie_get_parent_addr() has no DWC dependencies, so it doesn't
->     make sense to me to have it be DWC-specific and copy and pasted
->     to other places that need something similar.
->
->   - It doesn't seem elegant to iterate through for_each_pci_range() in
->     devm_of_pci_get_host_bridge_resources(), then again in
->     dw_pcie_host_init() for io_bus_addr, then again in
->     dw_pcie_iatu_setup() for each window.  Maybe that's the best we
->     can do, but maybe there's a way to capture what we need on the
->     first time through.
->
->   - The connection between .cpu_addr_fixup() and use_parent_dt_ranges
->     is clear in the patches remove a .cpu_addr_fixup(), but not in the
->     DWC patches on the other end.
->
->   - Ideally, "use_parent_dt_ranges" would be the default and we
->     wouldn't have a flag to indicate that, and drivers would have to
->     opt out instead of opt in.  They basically already do that by
->     implementing .cpu_addr_fixup(), so maybe we can take advantage of
->     that fact.
+> git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git cpufreq/core=
+-attr
 
-Okay, thanks. let me think how to improve it after 6.14.
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-Frank
+for the series.
+
+Thanks!
+
+> --
+> Viresh
 >
-> Bjorn
+> Viresh Kumar (33):
+>   cpufreq: Always create freq-table related sysfs file
+>   cpufreq: dt: Stop setting cpufreq_driver->attr field
+>   cpufreq: acpi: Stop setting common freq attributes
+>   cpufreq: apple: Stop setting cpufreq_driver->attr field
+>   cpufreq: bmips: Stop setting cpufreq_driver->attr field
+>   cpufreq: brcmstb: Stop setting common freq attributes
+>   cpufreq: davinci: Stop setting cpufreq_driver->attr field
+>   cpufreq: e_powersaver: Stop setting cpufreq_driver->attr field
+>   cpufreq: elanfreq: Stop setting cpufreq_driver->attr field
+>   cpufreq: imx6q: Stop setting cpufreq_driver->attr field
+>   cpufreq: kirkwood: Stop setting cpufreq_driver->attr field
+>   cpufreq: longhaul: Stop setting cpufreq_driver->attr field
+>   cpufreq: loongson: Stop setting cpufreq_driver->attr field
+>   cpufreq: mediatek: Stop setting cpufreq_driver->attr field
+>   cpufreq: omap: Stop setting cpufreq_driver->attr field
+>   cpufreq: p4: Stop setting cpufreq_driver->attr field
+>   cpufreq: pasemi: Stop setting cpufreq_driver->attr field
+>   cpufreq: pmac: Stop setting cpufreq_driver->attr field
+>   cpufreq: powernow: Stop setting cpufreq_driver->attr field
+>   cpufreq: powernv: Stop setting common freq attributes
+>   cpufreq: qcom: Stop setting cpufreq_driver->attr field
+>   cpufreq: qoriq: Stop setting cpufreq_driver->attr field
+>   cpufreq: sc520_freq: Stop setting cpufreq_driver->attr field
+>   cpufreq: scmi: Stop setting cpufreq_driver->attr field
+>   cpufreq: scpi: Stop setting cpufreq_driver->attr field
+>   cpufreq: sh: Stop setting cpufreq_driver->attr field
+>   cpufreq: spear: Stop setting cpufreq_driver->attr field
+>   cpufreq: speedstep: Stop setting cpufreq_driver->attr field
+>   cpufreq: tegra: Stop setting cpufreq_driver->attr field
+>   cpufreq: vexpress: Stop setting cpufreq_driver->attr field
+>   cpufreq: virtual: Stop setting cpufreq_driver->attr field
+>   cpufreq: Remove cpufreq_generic_attrs
+>   cpufreq: Stop checking for duplicate available/boost freq attributes
+>
+>  drivers/cpufreq/acpi-cpufreq.c         |  1 -
+>  drivers/cpufreq/apple-soc-cpufreq.c    |  8 --------
+>  drivers/cpufreq/bmips-cpufreq.c        |  1 -
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c  |  1 -
+>  drivers/cpufreq/cpufreq-dt.c           |  8 --------
+>  drivers/cpufreq/cpufreq.c              | 15 +++++++++++++++
+>  drivers/cpufreq/davinci-cpufreq.c      |  1 -
+>  drivers/cpufreq/e_powersaver.c         |  1 -
+>  drivers/cpufreq/elanfreq.c             |  1 -
+>  drivers/cpufreq/freq_table.c           |  8 --------
+>  drivers/cpufreq/imx6q-cpufreq.c        |  1 -
+>  drivers/cpufreq/kirkwood-cpufreq.c     |  1 -
+>  drivers/cpufreq/longhaul.c             |  1 -
+>  drivers/cpufreq/loongson2_cpufreq.c    |  1 -
+>  drivers/cpufreq/loongson3_cpufreq.c    |  1 -
+>  drivers/cpufreq/mediatek-cpufreq-hw.c  |  1 -
+>  drivers/cpufreq/mediatek-cpufreq.c     |  1 -
+>  drivers/cpufreq/omap-cpufreq.c         |  1 -
+>  drivers/cpufreq/p4-clockmod.c          |  1 -
+>  drivers/cpufreq/pasemi-cpufreq.c       |  1 -
+>  drivers/cpufreq/pmac32-cpufreq.c       |  1 -
+>  drivers/cpufreq/pmac64-cpufreq.c       |  1 -
+>  drivers/cpufreq/powernow-k6.c          |  1 -
+>  drivers/cpufreq/powernow-k7.c          |  1 -
+>  drivers/cpufreq/powernow-k8.c          |  1 -
+>  drivers/cpufreq/powernv-cpufreq.c      |  2 --
+>  drivers/cpufreq/qcom-cpufreq-hw.c      |  7 -------
+>  drivers/cpufreq/qoriq-cpufreq.c        |  1 -
+>  drivers/cpufreq/sc520_freq.c           |  1 -
+>  drivers/cpufreq/scmi-cpufreq.c         |  8 --------
+>  drivers/cpufreq/scpi-cpufreq.c         |  1 -
+>  drivers/cpufreq/sh-cpufreq.c           |  1 -
+>  drivers/cpufreq/spear-cpufreq.c        |  1 -
+>  drivers/cpufreq/speedstep-centrino.c   |  1 -
+>  drivers/cpufreq/speedstep-ich.c        |  1 -
+>  drivers/cpufreq/speedstep-smi.c        |  1 -
+>  drivers/cpufreq/tegra186-cpufreq.c     |  1 -
+>  drivers/cpufreq/tegra194-cpufreq.c     |  1 -
+>  drivers/cpufreq/vexpress-spc-cpufreq.c |  1 -
+>  drivers/cpufreq/virtual-cpufreq.c      |  1 -
+>  include/linux/cpufreq.h                |  1 -
+>  41 files changed, 15 insertions(+), 75 deletions(-)
+>
+> --
+> 2.31.1.272.g89b43f80a514
+>
