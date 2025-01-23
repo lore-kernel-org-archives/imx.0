@@ -1,127 +1,279 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BD820C481
-	for <imx@lists.linux.dev>; Thu, 23 Jan 2025 09:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698EC20C028
+	for <imx@lists.linux.dev>; Thu, 23 Jan 2025 09:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737625032; cv=none; b=stNI5fazz0fVJAeQOXrmIeaHOKDqhcErdJ5KDKkirwcJ7KNqJLzAKto3TESZ0tR8h9Dl74Yq/xeD916BXwzbfb05JfPvwXU5CoO0eC1pCXs0cxQx1aTPxZy1OhIbv0/UKsX7rvbCLCzFtBycYAZMkEWzE9TpwI2DWb4XlPMy9ig=
+	t=1737625323; cv=none; b=G38yFnHW9eLdH6XBqNYAedjRWWoPDuuFE4/5IX3MgPHiTcvxJNR/5SQ1iyAty7So1jNoTYaxKGwHwfIW4mrVq3HsMIelyfbSLPZi+7W6nvsp2K1MEHQPTW2jDP7MyeoNlbbQt5BwtoP1XNCi1ZeOpV3IvgM2zrutYVkFR8URLIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737625032; c=relaxed/simple;
-	bh=ORES4doKXC6OgsgwMH6RHCDGLKFDrfrIs5G5ttL2Zzs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C6w8S4x81EHvnCOAttdh1iAakoZGShkRtlSaLrwuTHaY6sgZyiDNEkuOSoBc7o4L8EqTD5/o4zvPQo+kSlwonHkkJOfa/QtOFNYdvhj88+34qZIk8YRhabKfapIh7N9l3RQ+aCU9zrSRqFYP2FZEI79MCoXUY+LLi7GdaB+26Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bXko7kwu; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737625323; c=relaxed/simple;
+	bh=R8734WZE9YzXSuKpzfSaWJTn5B895MHzZ38V+/QD+Mg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:Cc:
+	 References:In-Reply-To; b=k/KnKOXc8F7gZ8Xb02kuAZ8PQzPmPnUZHXwrRomFUpMnMLDp2AhDfF1hXDZZAPPMbxvANiyiV28Y/rCC1Vx6k7e6KZZQLRg0uQrWmRfGoSpr8RVuUJF0hShzm/IpdoRhleH1XuGUTBvgiLnO+S55pxe5mbwlV+zfctoJA0lKHoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UJ4zshe3; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bXko7kwu"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f78a4ca5deso1004682a91.0
-        for <imx@lists.linux.dev>; Thu, 23 Jan 2025 01:37:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737625031; x=1738229831; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tGdtcyOuxt2RT9+lwZ49StADKtuaRGfqxJOX+UkuwVA=;
-        b=bXko7kwuhI8bdIRQ80x2h+CpCz6taxqFUDQNYQXhpilC4Baf9ofGW+HJpxw/3Z2qMo
-         vWhEeXJ5kHhjSsDedb54YvgzNCFysrfRWU9zUKYFl4cGqbCahESzMouI98bEhnNNia+h
-         nz2ZZpTlFgiTQaXP3FhiVvXCLqSozr0PYSUUzCC6zVzRes5acIqPMKv2sz+h+bkjwR7a
-         8NHZyJaXp0w92HJAVw0D6B5bEZYFu9JXvRM4IZUJ8KNT33w6/XxanXBQe2EJEegYizTk
-         2JtGS+KUh/qsYFY4GGIJklbwJIdNd9osxwSHVNCTvbnYfCkjiX0DcPt0WYjbsznaeM8V
-         TB4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737625031; x=1738229831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tGdtcyOuxt2RT9+lwZ49StADKtuaRGfqxJOX+UkuwVA=;
-        b=hWZxFatqIZQ6LTiV8qlPByBV3VeHkIT5aHN+FBnYQUuK7N2oAw5G9XmfU2aQJWCBCp
-         M1e75RapLEP4fgJm7iephG//LKun7v97EtM6AYldPpJsPALFGTz4bJQhQhjExLGKr8Dj
-         jgYyILq3+Gb0VJvqebz36vimZ3XGyKRy1gKnA9xFRp6yIaJpEwqLjmeE+kRIbBhxR3Za
-         ZgBr1AKzJwn5ZzokCb3HcnG/ZOUPaudu+y3LQ9sQKSMG84EpTkxIXqnmSCn4iPp4BZr6
-         4em3ZsCgnkCjgguydkVmOmKI3RC5SnV/ERW3witAZ+Zuvxx64I73jQ/fFhWzFzMLLjey
-         eaLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVmY9P7Du6CktYw7atxlYAHkNEDyIV95yXhYQJEcYEpmJJPV7bdQ85hXGtY53+eXTNvL30=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwHqswK8R1miFkwJZ3w0+vnevNeLHBbCpvZkatJvKxSMMnzXh+8
-	r/lSdwVQipmVPlmGKH4dv8SrdqeOX2vlA85LR7UGw7fFvBaQ4qRXsdGXG9jYNHR7mE7WUw+CaCE
-	EN+I+VR+1kwTFtwV2veyuhn+VqRw=
-X-Gm-Gg: ASbGncstz2Hv4GoB2CXD0vB9a7o8iY0vB3liA8KOqX5irKB6+aQxbgAk8mzwhBEBT1n
-	HKeV/T94zQjQWRuAr+WARubQyJcoQLT/rwS58IcbNvNeCkIe2qdu2mBqweuTs7vc4LuDy
-X-Google-Smtp-Source: AGHT+IEnMgFwe2uphGhaoA/OBA129gWwd+aCRTnCgaLxT5Yp1e4QddEuW/hTHVRtS543vNaOnT6OHl9roo9y4uSZvco=
-X-Received: by 2002:a17:90b:1f8b:b0:2f6:539:3cd8 with SMTP id
- 98e67ed59e1d1-2f782ca2291mr40437766a91.18.1737625030669; Thu, 23 Jan 2025
- 01:37:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UJ4zshe3"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DBBE31C0003;
+	Thu, 23 Jan 2025 09:41:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737625318;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=igDCe1x3xTNsIM45RXmz5PFqCPI/aYPG1aPW/HcNGd4=;
+	b=UJ4zshe3EB8DFHjQ7p569pU14BPcj+YE2VPlKO9cqBCjMF07HiQG4iFVbG6osBFUxlUct6
+	MlMsS2Vfbucho97qjn61wEt+MWThhmloPXdlpnyZmcqzIA9K50ZrIvNBciPetNC/SEY8P2
+	Q1qjI/BSXLHFSesPWU+FxBbs59+QsOedCVGY9pEqwtpMsBSJGSvvL3mNAb5Fdy9hzibJlJ
+	FIkmwF8IwIkKT8ZjODVYy0g2ES6FC9o8I9WEwKEV67R5cGp3GIh4SSwt49SRacU87xGI6E
+	5gfXuca16Mv2dxBAgIr53X2OqYToKT46mzPHsmRbdyl6MJX5RpiHJfKSi3hLag==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20250122163544.1392869-1-daniel.baluta@nxp.com>
- <20250122163544.1392869-3-daniel.baluta@nxp.com> <Z5FNHnwvN+KeUrFY@lizhi-Precision-Tower-5810>
-In-Reply-To: <Z5FNHnwvN+KeUrFY@lizhi-Precision-Tower-5810>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 23 Jan 2025 11:38:33 +0200
-X-Gm-Features: AbW1kvb34GC_SCM7VSYzvFkZxRTCBRs29V4lQG1E1goV8dBrP-L8T9eLKeGMl2A
-Message-ID: <CAEnQRZDcjwK39Ed00+mJw-epcUw2BV3snXsOBQ6-Mk-DXaxCdQ@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ASoC: SOF: imx: Add mach entry to select cs42888 topology
-To: Frank Li <Frank.li@nxp.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
-	broonie@kernel.org, shawnguo@kernel.org, conor+dt@kernel.org, 
-	peng.fan@nxp.com, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com, 
-	linux-sound@vger.kernel.org, imx@lists.linux.dev, 
-	Liam Girdwood <liam.r.girdwood@intel.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, 
-	Iuliana Prodan <iuliana.prodan@nxp.com>, Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jan 2025 10:41:57 +0100
+Message-Id: <D79CRMSWU0F1.30RZ853AES515@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Krzysztof Kozlowski" <krzk@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
+Subject: Re: [PATCH 3/3] ARM: dts: imx6ul: Add Variscite Concerto board
+ support
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20250121-varsom6ul-concerto-dts-v1-0-eb349acf0ac6@bootlin.com>
+ <20250121-varsom6ul-concerto-dts-v1-3-eb349acf0ac6@bootlin.com>
+ <56e74e80-8e90-4784-b284-bee1af35e37e@kernel.org>
+In-Reply-To: <56e74e80-8e90-4784-b284-bee1af35e37e@kernel.org>
+X-GND-Sasl: antonin.godard@bootlin.com
 
-On Wed, Jan 22, 2025 at 9:55=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+Hi Krzysztof,
+
+On Tue Jan 21, 2025 at 5:03 PM CET, Krzysztof Kozlowski wrote:
+> On 21/01/2025 10:33, Antonin Godard wrote:
+>> This patch adds support for the Variscite Concerto Carrier Board.
 >
-> On Wed, Jan 22, 2025 at 06:35:42PM +0200, Daniel Baluta wrote:
-> > After commit 2b9cdef13648 ("ASoC: SOF: imx: Add devicetree support
-> > to select topologies") we select topology to be used by the board
-> > compatible string in the dts.
+> Please do not use "This commit/patch/change", but imperative mood. See
+> longer explanation here:
+> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/sub=
+mitting-patches.rst#L95
+
+Will do in v2.
+
+>>
+>> This Carrier-Board has the following:
+>> - LVDS interface for the VLCD-CAP-GLD-LVDS 7" LCD 800 x 480 touch
+>>   display (not configured)
+>> - USB Host + USB OTG Connector
+>> - 10/100 Mbps Ethernet
+>> - miniPCI-Express slot
+>> - SD Card connector
+>> - Audio Headphone/Line In jack connectors
+>> - S-ATA
+>> - On-board DMIC
+>>=20
+>> Product Page: https://www.variscite.com/product/single-board-computers/c=
+oncerto-board
+>>=20
+>> This file is based on the one provided by Variscite on their own kernel,
+>> but adapted for mainline.
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>>  arch/arm/boot/dts/nxp/imx/Makefile                 |   1 +
+>>  .../boot/dts/nxp/imx/imx6ul-var-som-concerto.dts   | 331 ++++++++++++++=
++++++++
+>>  2 files changed, 332 insertions(+)
+>>=20
+>> diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/=
+imx/Makefile
+>> index 39a153536d2a2b8f75b5fbe4332660f89442064a..94c9bc94cc8e2daa1fb3b568=
+6b0b58db1f6678b6 100644
+>> --- a/arch/arm/boot/dts/nxp/imx/Makefile
+>> +++ b/arch/arm/boot/dts/nxp/imx/Makefile
+>> @@ -329,6 +329,7 @@ dtb-$(CONFIG_SOC_IMX6UL) +=3D \
+>>  	imx6ul-tx6ul-0010.dtb \
+>>  	imx6ul-tx6ul-0011.dtb \
+>>  	imx6ul-tx6ul-mainboard.dtb \
+>> +	imx6ul-var-som-concerto.dtb \
+>>  	imx6ull-14x14-evk.dtb \
+>>  	imx6ull-colibri-aster.dtb \
+>>  	imx6ull-colibri-emmc-aster.dtb \
+>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts b/arc=
+h/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..4289641d94c5a72ba985f339=
+652039dbf13da40c
+>> --- /dev/null
+>> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto.dts
+>> @@ -0,0 +1,331 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * Support for Variscite MX6 Concerto Carrier board with the VAR-SOM-MX=
+6UL
+>> + * Variscite SoM mounted on it
+>> + *
+>> + * Copyright 2019 Variscite Ltd.
+>> + * Copyright 2025 Bootlin
+>> + */
+>> +
+>> +#include "imx6ul-var-som.dtsi"
+>> +
+>> +/ {
+>> +	model =3D "Variscite VAR-SOM-MX6UL Concerto Board";
+>> +	compatible =3D "variscite,mx6concerto", "variscite,var-som-imx6ul", "f=
+sl,imx6ul";
+>> +
+>> +	backlight {
+>> +		compatible =3D "pwm-backlight";
+>> +		pwms =3D <&pwm4 0 20000 0>;
+>> +		brightness-levels =3D <0 4 8 16 32 64 128 255>;
+>> +		default-brightness-level =3D <6>;
+>> +		status =3D "okay";
 >
-> I am confused. why not use "sof-imx8-cs42888.tplg" in imx8's dts instead
-> use board's compatible string "fsl,imx8qxp-mek-bb".
+> Which file disables it?
+
+This is a mistake, I forgot to remove this when removing the parts I couldn=
+'t
+test. Will remove this node in v2.
+
+>> +	};
+>> +
+>> +	chosen {
+>> +		stdout-path =3D &uart1;
+>> +	};
+>> +
+>> +	gpio-keys {
+>> +		compatible =3D "gpio-keys";
+>> +		pinctrl-names =3D "default";
+>> +		pinctrl-0 =3D <&pinctrl_gpio_key_back>, <&pinctrl_gpio_key_wakeup>;
+>> +
+>> +		key-back {
+>> +			gpios =3D <&gpio4 14 GPIO_ACTIVE_LOW>;
+>> +			linux,code =3D <KEY_BACK>;
+>> +		};
+>> +
+>> +		key-wakeup {
+>> +			gpios =3D <&gpio5 8 GPIO_ACTIVE_LOW>;
+>> +			linux,code =3D <KEY_WAKEUP>;
+>> +			wakeup-source;
+>> +		};
+>> +	};
+>> +
+>> +	leds {
+>> +		compatible =3D "gpio-leds";
+>> +		pinctrl-names =3D "default";
+>> +		pinctrl-0 =3D <&pinctrl_gpio_leds>;
+>> +
+>> +		gpled2 {
 >
-> More and more boards will be added in future. This file will become bigge=
-r
-> and bigger!
+> led-0
+> led-1
+> led-2
 
-Hi Frank,
+Will rename this node to led-0, and set the label to "gpled2" (this is how =
+it's
+named on the schematic/datasheet).
 
-So you mean create a dts property named e.g sof-tplg-name and read the
-topology name from dts?
+> Are there other leds here?
 
-dsp {
-       firmware-name=3D"sof-imx8.ri";
-       tplg-name =3D "sof-imx8-cs428888.tplg";
-};
+Nothing else is obvious to me on the schematic. There is no gpled0 or gpled=
+1.
 
+>> +			gpios =3D <&gpio1 25 GPIO_ACTIVE_HIGH>;
+>> +			linux,default-trigger =3D "heartbeat";
+>
+> Missing function and color
 
-This was our first approach but then we aligned with the community on
-using compatible to match
-for properties like default fw path, default tplg path, fw name, tplg name.
+Will set the function to STATUS, color green. This is a general purpose led=
+ that
+can be used for debugging purposes or as a status indicator, I think.
 
-Now dts should somehow describe the hardware not the software (e.g
-tplg binary) used on that platform.
-The growing number of boards will not be a problem, each one will have
-a compatible in the dts.
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&can1 {
+>> +	pinctrl-names =3D "default";
+>> +	pinctrl-0 =3D <&pinctrl_flexcan1>;
+>> +	status =3D "okay";
+>> +};
+>> +
+>> +&fec1 {
+>> +	status =3D "disabled";
+>> +};
+>> +
+>> +&fec2 {
+>> +	pinctrl-names =3D "default";
+>> +	pinctrl-0 =3D <&pinctrl_enet2>, <&pinctrl_enet2_gpio>, <&pinctrl_enet2=
+_mdio>;
+>> +	phy-mode =3D "rmii";
+>> +	phy-handle =3D <&ethphy1>;
+>> +	phy-reset-gpios =3D <&gpio5 5 GPIO_ACTIVE_LOW>;
+>> +	phy-reset-duration =3D <100>;
+>> +	status =3D "okay";
+>> +
+>> +	mdio {
+>> +		#address-cells =3D <1>;
+>> +		#size-cells =3D <0>;
+>> +
+>> +		ethphy1: ethernet-phy@3 {
+>> +			compatible =3D "ethernet-phy-ieee802.3-c22";
+>> +			micrel,rmii-reference-clock-select-25-mhz =3D <1>;
+>> +			micrel,led-mode =3D <0>;
+>> +			clocks =3D <&rmii_ref_clk>;
+>> +			clock-names =3D "rmii-ref";
+>> +			reg =3D <3>;
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&i2c1 {
+>> +	clock-frequency =3D <100000>;
+>> +	pinctrl-names =3D "default";
+>> +	pinctrl-0 =3D <&pinctrl_i2c1>;
+>> +	status =3D "okay";
+>> +
+>> +	/* DS1337 RTC module */
+>
+> Drop comment, obvious. This cannot be anything else, because node name
+> and compatible told that.
 
-But the concern here is how we describe a hardware setup where we have
-a CPU board + a baseboard
-like it is the case for cs42888 codec?
+Will do in v2.
 
-Our approach was that in our dts or overlay dts that describes SOF
-with cs428888 codec to put the exact
-compatible "fsl,imx8qxp-mek-bb" and match it with static vector in SOF
-driver that you see in this patch.
+>> +	rtc@68 {
+>> +		/*
+>> +		 * To actually use this interrupt
+>> +		 * connect pins J14.8 & J14.10 on the Concerto-Board.
+>> +		 */
+>> +		compatible =3D "dallas,ds1337";
+>> +		reg =3D <0x68>;
+>> +		pinctrl-names =3D "default";
+>> +		pinctrl-0 =3D <&pinctrl_rtc>;
+>> +		interrupt-parent =3D <&gpio1>;
+>> +		interrupts =3D <10 IRQ_TYPE_EDGE_FALLING>;
+>> +	};
+>> +};
+>
+>
+> Best regards,
+> Krzysztof
 
-SOF core relies on the compatible string in order to identify the
-correct tplg_filename for example.
+Thanks for the review,
+Antonin
 
-thanks,
-Daniel.
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
