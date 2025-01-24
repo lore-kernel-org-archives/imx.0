@@ -1,175 +1,234 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C6A1D63FB;
-	Fri, 24 Jan 2025 04:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8A513AC1;
+	Fri, 24 Jan 2025 07:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737691907; cv=none; b=RMupTxSmQX4Kzo/E2Wo4SR/lmMUCf7MZGp9Y7sQgxefEHYpkrSqoSkTY/kpt0C18I5Nsr9EOknoJJFKJ1B2mE04qZtQoxlXCAU86Nt164u93OW868C3peNNbJcUrdsMZrsAg90MC/JYXxbTtRfiJUy+9ysr9DIPMjPn0moatON4=
+	t=1737704514; cv=none; b=BVSbB+8WTvnF4jPHW1ogSjyWx/oWNiJhwgLfUOutm6stEqYLfQUcEJrNgcE/eB/j3RYggRFNZ8KZpteXVCrlB080fDK2uJlHZ82IetfrI6HyDxy+V7xkxkCx4mGQ5oxt4WvT2JIbgun5tm+C+rRRjUYJUj59jLZOUjeIfhpUAc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737691907; c=relaxed/simple;
-	bh=jCliCqH9ud0GLTM7b/xWwloQkS4OyN5sqqdPDtXblVo=;
+	s=arc-20240116; t=1737704514; c=relaxed/simple;
+	bh=LtGQ9GcNCChAuCNN8eFZIdvn5KWY2sYQU1DJBy1zg8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BRnj5SgyZikskRLK1ZsXQ2VL+dajoOGJ3FVhP3jdbjhTur4qyZ5BTdmmXaEst6qZOPHLOEcZfe78LgaoTG0EEduJ045u/7o6Rsthhfsma6otOkUGrV5CvnR7Mzt99sqwkTEQ6OZlKLtLHgZV4n8qjd8ptO18huYWrdzSKw9h3II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K/x/aSS2; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oq9O5SUtALxNG4aRMLj2TNxYvXDCHF8dCGSexsZpqwlfexJ/scRCyCbOBdK9nQ6nVd3AayTfhtBhVibSel/T9Xab0UbfT2VA+fREYBwUEBuzTERGFfDu6hVNo08fdAwZiKk+9fMuYgoZzBAbkISVyaRl1nd4y4xosroYhdeDMU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IobD++/k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K/x/aSS2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737691905; x=1769227905;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jCliCqH9ud0GLTM7b/xWwloQkS4OyN5sqqdPDtXblVo=;
-  b=K/x/aSS212UbTbCAaYVYRGEZy+2MLZXgS2FvDedPEe/hFQ7OUsk5t7af
-   Miri0F0kX7s+Cnz4OOVFhB05Wto/oVp1Pbq030jSqO76ihLdcdziZcOP8
-   P938cYnXVKmbky5MyZte7mLKP0AvMRTuGu+vwZU3ktUJ15DkJ/pc7TLGb
-   euTk9OTqhgAbLxbKKHh7vIbOe5sFnoVR8KvCgrOp9rPEOJyM2KkshTIBh
-   n56ulAosxGy4WC8NA26r2H4X2/HFOeXxirQl8xJNFj+kqU5lhYAxOfDD/
-   Vvf1lr3r/9s4DpSkaLkZr8O0OD64gbMUeJcquhAM1y+xxsLdar3ZgmAsZ
-   g==;
-X-CSE-ConnectionGUID: Ih9SrMWQQ+CIquSTY4Ayuw==
-X-CSE-MsgGUID: KY4EkdSXTj+ocORYiBEZfw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="37475494"
-X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; 
-   d="scan'208";a="37475494"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 20:11:44 -0800
-X-CSE-ConnectionGUID: NOpEyIMyQP2jMN0VJml8TQ==
-X-CSE-MsgGUID: QoqUchVYRu+8UvM4RR+nfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="112623071"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 23 Jan 2025 20:11:41 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tbB2g-000c8B-1f;
-	Fri, 24 Jan 2025 04:11:38 +0000
-Date: Fri, 24 Jan 2025 12:11:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IobD++/k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A40C4CED2;
+	Fri, 24 Jan 2025 07:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737704514;
+	bh=LtGQ9GcNCChAuCNN8eFZIdvn5KWY2sYQU1DJBy1zg8o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IobD++/kJMHhE4BEWOcV0oTBgxhJE9JMVGJHCK+3qARoBDFr3qSYJORtpGSeql49g
+	 peGjHQsJ7el/raIFAAcJzggnye8Nc65BIT7bRQT1O/dqSmS3cmiudzmRmmXPQ6h+HE
+	 x5DLaD13QlPAWgbpNI0gNI2+cpinWM6Fr1rNXl/0YWfRH5TTSwMArj/bCdjFbrOtVP
+	 SqM7JCcdkps27loG94kMnokBOh6acXhFla7jA6CnoLPF7gDMfakKXfU0uMHrBP/4Q+
+	 UuPf+fmo3CaNgbulAlZLGjEcK4jyxaWerl8jgXLJ+EFy9h1VCMuVcyJV32KrhXdfyR
+	 gyxT+ZCttLfsw==
+Date: Fri, 24 Jan 2025 13:11:39 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/5] firmware: arm_scmi: imx: Add i.MX95 CPU Protocol
-Message-ID: <202501241148.0CI9mBP5-lkp@intel.com>
-References: <20250121-imx-lmm-cpu-v1-2-0eab7e073e4e@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Michal Simek <michal.simek@amd.com>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] dmaengine: Use str_enable_disable-like helpers
+Message-ID: <20250124074139.oa3zvdehgi5366nn@thinkpad>
+References: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250121-imx-lmm-cpu-v1-2-0eab7e073e4e@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
 
-Hi Peng,
+On Tue, Jan 14, 2025 at 08:10:20PM +0100, Krzysztof Kozlowski wrote:
+> Replace ternary (condition ? "enable" : "disable") syntax with helpers
+> from string_choices.h because:
+> 1. Simple function call with one argument is easier to read.  Ternary
+>    operator has three arguments and with wrapping might lead to quite
+>    long code.
+> 2. Is slightly shorter thus also easier to read.
+> 3. It brings uniformity in the text - same string.
+> 4. Allows deduping by the linker, which results in a smaller binary
+>    file.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> #dw-edma
 
-[auto build test WARNING on 0907e7fb35756464aa34c35d6abb02998418164b]
+- Mani
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/firmware-arm_scmi-imx-Add-i-MX95-LMM-protocol/20250121-231254
-base:   0907e7fb35756464aa34c35d6abb02998418164b
-patch link:    https://lore.kernel.org/r/20250121-imx-lmm-cpu-v1-2-0eab7e073e4e%40nxp.com
-patch subject: [PATCH 2/5] firmware: arm_scmi: imx: Add i.MX95 CPU Protocol
-config: arm64-randconfig-r122-20250124 (https://download.01.org/0day-ci/archive/20250124/202501241148.0CI9mBP5-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 14.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20250124/202501241148.0CI9mBP5-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501241148.0CI9mBP5-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:139:19: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le32 [usertype] flags @@     got unsigned long @@
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:139:19: sparse:     expected restricted __le32 [usertype] flags
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:139:19: sparse:     got unsigned long
->> drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:140:19: sparse: sparse: invalid assignment: |=
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:140:19: sparse:    left side has type restricted __le32
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:140:19: sparse:    right side has type unsigned long
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:141:19: sparse: sparse: invalid assignment: |=
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:141:19: sparse:    left side has type restricted __le32
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:141:19: sparse:    right side has type unsigned long
->> drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:173:25: sparse: sparse: restricted __le32 degrades to integer
-   drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c:205:32: sparse: sparse: restricted __le32 degrades to integer
-
-vim +139 drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c
-
-   119	
-   120	static int scmi_imx_cpu_reset_vector_set(const struct scmi_protocol_handle *ph,
-   121						 u32 cpuid, u64 vector, bool start,
-   122						 bool boot, bool resume)
-   123	{
-   124		struct scmi_imx_cpu_reset_vector_set_in *in;
-   125		struct scmi_xfer *t;
-   126		int ret;
-   127	
-   128		ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
-   129		if (ret)
-   130			return ret;
-   131	
-   132		ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_RESET_VECTOR_SET, sizeof(*in),
-   133					      0, &t);
-   134		if (ret)
-   135			return ret;
-   136	
-   137		in = t->tx.buf;
-   138		in->cpuid = cpu_to_le32(cpuid);
- > 139		in->flags = start ? CPU_VEC_FLAGS_START : 0;
- > 140		in->flags |= boot ? CPU_VEC_FLAGS_BOOT : 0;
-   141		in->flags |= resume ? CPU_VEC_FLAGS_BOOT : 0;
-   142		in->resetvectorlow = cpu_to_le32(lower_32_bits(vector));
-   143		in->resetvectorhigh = cpu_to_le32(upper_32_bits(vector));
-   144		ret = ph->xops->do_xfer(ph, t);
-   145	
-   146		ph->xops->xfer_put(ph, t);
-   147	
-   148		return ret;
-   149	}
-   150	
-   151	static int scmi_imx_cpu_started(const struct scmi_protocol_handle *ph, u32 cpuid,
-   152					bool *started)
-   153	{
-   154		struct scmi_imx_cpu_info_get_out *out;
-   155		struct scmi_xfer *t;
-   156		int ret;
-   157	
-   158		*started = false;
-   159		ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
-   160		if (ret)
-   161			return ret;
-   162	
-   163		ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_INFO_GET, sizeof(u32),
-   164					      0, &t);
-   165		if (ret)
-   166			return ret;
-   167	
-   168		put_unaligned_le32(cpuid, t->tx.buf);
-   169		ret = ph->xops->do_xfer(ph, t);
-   170		if (!ret) {
-   171			out = t->rx.buf;
-   172			if ((out->runmode == CPU_RUN_MODE_START) ||
- > 173			    (out->runmode == CPU_RUN_MODE_SLEEP))
-   174				*started = true;
-   175		}
-   176	
-   177		ph->xops->xfer_put(ph, t);
-   178	
-   179		return ret;
-   180	}
-   181	
+> 
+> ---
+> 
+> Changes in v2:
+> 1. Also drivers/dma/dw-edma/dw-edma-core.c and drivers/dma/sun6i-dma.c
+> ---
+>  drivers/dma/dw-edma/dw-edma-core.c | 6 ++++--
+>  drivers/dma/imx-dma.c              | 3 ++-
+>  drivers/dma/pxa_dma.c              | 4 ++--
+>  drivers/dma/sun6i-dma.c            | 3 ++-
+>  drivers/dma/ti/edma.c              | 3 ++-
+>  drivers/dma/xilinx/xilinx_dma.c    | 3 ++-
+>  6 files changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
+> index 68236247059d..c2b88cc99e5d 100644
+> --- a/drivers/dma/dw-edma/dw-edma-core.c
+> +++ b/drivers/dma/dw-edma/dw-edma-core.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/irq.h>
+>  #include <linux/dma/edma.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/string_choices.h>
+>  
+>  #include "dw-edma-core.h"
+>  #include "dw-edma-v0-core.h"
+> @@ -746,7 +747,7 @@ static int dw_edma_channel_setup(struct dw_edma *dw, u32 wr_alloc, u32 rd_alloc)
+>  		chan->ll_max -= 1;
+>  
+>  		dev_vdbg(dev, "L. List:\tChannel %s[%u] max_cnt=%u\n",
+> -			 chan->dir == EDMA_DIR_WRITE ? "write" : "read",
+> +			 str_write_read(chan->dir == EDMA_DIR_WRITE),
+>  			 chan->id, chan->ll_max);
+>  
+>  		if (dw->nr_irqs == 1)
+> @@ -767,7 +768,8 @@ static int dw_edma_channel_setup(struct dw_edma *dw, u32 wr_alloc, u32 rd_alloc)
+>  		memcpy(&chan->msi, &irq->msi, sizeof(chan->msi));
+>  
+>  		dev_vdbg(dev, "MSI:\t\tChannel %s[%u] addr=0x%.8x%.8x, data=0x%.8x\n",
+> -			 chan->dir == EDMA_DIR_WRITE  ? "write" : "read", chan->id,
+> +			 str_write_read(chan->dir == EDMA_DIR_WRITE),
+> +			 chan->id,
+>  			 chan->msi.address_hi, chan->msi.address_lo,
+>  			 chan->msi.data);
+>  
+> diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
+> index a651e0995ce8..de8d7070904e 100644
+> --- a/drivers/dma/imx-dma.c
+> +++ b/drivers/dma/imx-dma.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/device.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/slab.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/clk.h>
+>  #include <linux/dmaengine.h>
+> @@ -942,7 +943,7 @@ static struct dma_async_tx_descriptor *imxdma_prep_dma_interleaved(
+>  		"   src_sgl=%s dst_sgl=%s numf=%zu frame_size=%zu\n", __func__,
+>  		imxdmac->channel, (unsigned long long)xt->src_start,
+>  		(unsigned long long) xt->dst_start,
+> -		xt->src_sgl ? "true" : "false", xt->dst_sgl ? "true" : "false",
+> +		str_true_false(xt->src_sgl), str_true_false(xt->dst_sgl),
+>  		xt->numf, xt->frame_size);
+>  
+>  	if (list_empty(&imxdmac->ld_free) ||
+> diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+> index e50cf3357e5e..249296389771 100644
+> --- a/drivers/dma/pxa_dma.c
+> +++ b/drivers/dma/pxa_dma.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/slab.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/dmaengine.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/device.h>
+> @@ -277,8 +278,7 @@ static int chan_state_show(struct seq_file *s, void *p)
+>  	seq_printf(s, "\tPriority : %s\n",
+>  			  str_prio[(phy->idx & 0xf) / 4]);
+>  	seq_printf(s, "\tUnaligned transfer bit: %s\n",
+> -			  _phy_readl_relaxed(phy, DALGN) & BIT(phy->idx) ?
+> -			  "yes" : "no");
+> +			  str_yes_no(_phy_readl_relaxed(phy, DALGN) & BIT(phy->idx)));
+>  	seq_printf(s, "\tDCSR  = %08x (%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s)\n",
+>  		   dcsr, PXA_DCSR_STR(RUN), PXA_DCSR_STR(NODESC),
+>  		   PXA_DCSR_STR(STOPIRQEN), PXA_DCSR_STR(EORIRQEN),
+> diff --git a/drivers/dma/sun6i-dma.c b/drivers/dma/sun6i-dma.c
+> index 95ecb12caaa5..2215ff877bf7 100644
+> --- a/drivers/dma/sun6i-dma.c
+> +++ b/drivers/dma/sun6i-dma.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/reset.h>
+>  #include <linux/slab.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/types.h>
+>  
+>  #include "virt-dma.h"
+> @@ -553,7 +554,7 @@ static irqreturn_t sun6i_dma_interrupt(int irq, void *dev_id)
+>  			continue;
+>  
+>  		dev_dbg(sdev->slave.dev, "DMA irq status %s: 0x%x\n",
+> -			i ? "high" : "low", status);
+> +			str_high_low(i), status);
+>  
+>  		writel(status, sdev->base + DMA_IRQ_STAT(i));
+>  
+> diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+> index 4ece125b2ae7..b1a54655e6ce 100644
+> --- a/drivers/dma/ti/edma.c
+> +++ b/drivers/dma/ti/edma.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/of.h>
+>  #include <linux/of_dma.h>
+>  #include <linux/of_irq.h>
+> @@ -2047,7 +2048,7 @@ static int edma_setup_from_hw(struct device *dev, struct edma_soc_info *pdata,
+>  	dev_dbg(dev, "num_qchannels: %u\n", ecc->num_qchannels);
+>  	dev_dbg(dev, "num_slots: %u\n", ecc->num_slots);
+>  	dev_dbg(dev, "num_tc: %u\n", ecc->num_tc);
+> -	dev_dbg(dev, "chmap_exist: %s\n", ecc->chmap_exist ? "yes" : "no");
+> +	dev_dbg(dev, "chmap_exist: %s\n", str_yes_no(ecc->chmap_exist));
+>  
+>  	/* Nothing need to be done if queue priority is provided */
+>  	if (pdata->queue_priority_mapping)
+> diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
+> index 108a7287f4cd..3ad44afd0e74 100644
+> --- a/drivers/dma/xilinx/xilinx_dma.c
+> +++ b/drivers/dma/xilinx/xilinx_dma.c
+> @@ -46,6 +46,7 @@
+>  #include <linux/of_irq.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+> +#include <linux/string_choices.h>
+>  #include <linux/clk.h>
+>  #include <linux/io-64-nonatomic-lo-hi.h>
+>  
+> @@ -2940,7 +2941,7 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
+>  			    XILINX_DMA_DMASR_SG_MASK)
+>  			chan->has_sg = true;
+>  		dev_dbg(chan->dev, "ch %d: SG %s\n", chan->id,
+> -			chan->has_sg ? "enabled" : "disabled");
+> +			str_enabled_disabled(chan->has_sg));
+>  	}
+>  
+>  	/* Initialize the tasklet */
+> -- 
+> 2.43.0
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+மணிவண்ணன் சதாசிவம்
