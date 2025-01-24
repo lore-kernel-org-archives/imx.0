@@ -1,194 +1,129 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2069.outbound.protection.outlook.com [40.107.104.69])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3CC3C00
-	for <imx@lists.linux.dev>; Fri, 24 Jan 2025 01:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737682791; cv=fail; b=Q5pXviNz3NL5sSpqsOSV1jrh1KbiettUiqlqVSoHWhz8kNK1/llbpDBmN65I6WIUbGO70vle3p9fu/pjGNETkVg6mRKBvDdpWtgT68EwDfsXAY+WoayJDp8IjdnTGD7CsxZ+lR0RTS7rRtgNImBYIFsuSYf4bXJ6kr6x+rijnC0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737682791; c=relaxed/simple;
-	bh=69UmwL4RyzFWzEWryvyPyyUZbCBiBimCu6sxD2qmflU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=hAVgWg/AWGFB1xjiuDsIMkG18THSe+cQCwa+YB6MjzShGXyzvbpNWdhNeKA2DoE3dPkjkPLvY4gLmOu0Ry+jyod0l4xSNQ4mqMw4Ai8zrMRiIFsqv6yZEEn0azbD67u8gSuR+A7iivNESBFyQkvj92C8Y3Da321swKXUXKN1vK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jyg6gGl5; arc=fail smtp.client-ip=40.107.104.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A620F1D54FE;
+	Fri, 24 Jan 2025 02:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737686615; cv=none; b=o47HXTJRpPjR6CZ02jCrYHbiFq5+tI009wkNoqLzRVm07Q8zviwi3So8i0b5+moQNgBVgngX0Pc1YnltTikkutzKptBkxs7QpOVkKS1sgt8M8hPTeiwQs6AyKkUVlSeg3M+m8GZ0ZAnmaB2qUXUQZAQRpxcFYg6iyI3wcmxVEf8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737686615; c=relaxed/simple;
+	bh=5Jxf1MIkAme+I3DGHNaJEUWbgACy1KWQtq6VUX4R9y8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kI1lNxVZMVlwVhXc90k8V+e7QEPqWpMXLL7/jGaa317ZPwbeAJhxqOOTq5xs0xd2x3KcmMq4C5q5CT1k457J3UndsdJPH9OzKOm6Qkn8kNSTpgcZG18GF+5oqrbDbMCHAuXEfNZKlgL7NAjGHGUPy7ONECASsO0H3j83GnnbMtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2IJKebG; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jyg6gGl5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YKyiyLyvgyi3WpZ2gd/009gXlh3l7WmW4DByxFBI7C2vYcB2/x1pGKe9TitmBDN9pkNRe6d/RRNlr70Kz3+Ozjv8WhViRHouF0HMU5ow+Y2emD3/2WFVU/YHwjg+VDJD4R6LbFI8Pg13Y/TSUTqlvvO+up0xXA02GEds8lx+j3qTSwyiJxQ3ZEjT7yz3mkjfcR406qIVtzT+ERHdKLhAFgOrSkNt1VTUYSf+goQOGjCdZRGxYlwGY+ObSOGrgzpvfxTiR5M7xAd4lul6+P09Xw1Au2tKWaB4yHhEUEygca7jujrqYNz3z5sptbfp2En+b96sSw65wx/pvrimAE/0CA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PIWwMxbnfZdhOHrmWLQ8+uNEhXJO5UXZqRp4scCKuU0=;
- b=SHaxJTXz0aqxmtqtc+pT7cO2IYPTcYoHeRu2/YR1aOfiEre32p9DYgyyeKgiCZAd/qOsax3DM8OL/ioailGEjdvKS9yDkmpOiwSR9xvakWH53iDmlu6jnWEXxWwz0jdf4oqiI9evoWFm2Kr5nRXQsUeRGyjOwev1mjSUabisREY6EfqNPNEZBS7vO8D2EtRUrCRruAw+rdL/IyLIdIzJWorQaNQ+7d+uOPtT8JBD/XlfDuWMJy0N0/dix8FVqzicqmYqSYtXhVVYjgwEUqmGfT6OHmcUQIW5SkYXXb93BQ3WGZ1gkRYsgWp4rj/0GHHQlKtIm/XM6zNQqYJRY02Yng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PIWwMxbnfZdhOHrmWLQ8+uNEhXJO5UXZqRp4scCKuU0=;
- b=jyg6gGl5nfpqk6yqTxoXx5gctxTyuD9bJh1JW67CpoDZPUb4w4HM3ssfJsGQxLDFEtxqUMLDNQnqFL0OencPAnCBabBdE34JFGVpeTQ3Evtp0RWgAEKF4v6u/UtgXU4djZgTEmnoCB1KYUbGiHd+MFc9j5reOAfheLAjzM2GyVaG/dgoaqUJ8zb+fnpkHfvOlCS4Hlr9X5563RGUtZ45J0reEhZlup3hC/ELyp0/k7Ve1dAsZitoC4dtaDBNggoYjV/iuNub0p6RXXN2/MC6eEIJ1JBSuUhJf/xzDBMs4qh5ZGu1aIPcEqop51psElaiOCdnTN4iAIn3BHpaY1MBAQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS5PR04MB9854.eurprd04.prod.outlook.com (2603:10a6:20b:673::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.18; Fri, 24 Jan
- 2025 01:39:47 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8356.020; Fri, 24 Jan 2025
- 01:39:46 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Simon Horman <horms@kernel.org>
-Subject: RE: [PATCH net] net: fec: remove unnecessary DMA mapping of TSO
- header
-Thread-Topic: [PATCH net] net: fec: remove unnecessary DMA mapping of TSO
- header
-Thread-Index: AQHbbLqLupyHdAm0+EG/wIJk3lnmObMjn2OAgACL04CAAPgZQA==
-Date: Fri, 24 Jan 2025 01:39:46 +0000
-Message-ID:
- <PAXPR04MB8510FA96CB9A5DE5288902A088E32@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250122104307.138659-1-dheeraj.linuxdev@gmail.com>
- <PAXPR04MB85106CE97288D52A04EB685388E02@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <Z5IbIeOxrkMoASdJ@HOME-PC>
-In-Reply-To: <Z5IbIeOxrkMoASdJ@HOME-PC>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS5PR04MB9854:EE_
-x-ms-office365-filtering-correlation-id: 028c3e71-ac84-42c2-6127-08dd3c17fc26
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|7416014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?y/hrxx8Zvlo2vHqEJCTE4Yu9BesDcz+PSV58YTv1UEeMpbFdrInDn1VtIFjc?=
- =?us-ascii?Q?qlDQjnt+sbKo0gPnjMMIaigLd1/lfhtgJKgsZLCFIvs5CETB31rY4QYC+b8s?=
- =?us-ascii?Q?ED3RR6GlK00sXhqXhqTSuNOPFEvEQnoiRPh3Q5sd5FEEyErcjfWjgHRcInC3?=
- =?us-ascii?Q?s0SYDU2/p9cahZENzJFSS8I/D+YOOCSFioEzssFghpAIJqO6HCD3Ymt9T8uk?=
- =?us-ascii?Q?H7o7O1gvPXd3HQ756+Zki1ju0ZZcqrLiPyn4Y5wCWTbgjaHWCb/8KnSDsBb4?=
- =?us-ascii?Q?AQolNnZGi4GL9NT7J39IV7tMuP3PRjpftlgXDc3B+YUG9zNUekRFWFURj5AU?=
- =?us-ascii?Q?MInGy1ZNTQQf0mhqWeSuklRbonjqgB8LptEEOsalGd/7Yi702ZmE92ObmRNQ?=
- =?us-ascii?Q?ZB+s5xZf7l8+sFVnimffcAlZ9hXY46yIV/5HZKfj4y8dhXKUjqPkZHTlfDLc?=
- =?us-ascii?Q?FeItnRXhe0X7X9tmmknjw4FVtNZm5twEM8WAlI9nZY/j93zMEBs7ZZi++YUM?=
- =?us-ascii?Q?5EYZlemDsvKsFFhn1QWtBwFlTqagARXtzBCF+Y/GEZb0VOf7xPqzZy27qLi9?=
- =?us-ascii?Q?C2EPIfO09niPgtQM8iPiXMYZ5GoStfohUp9fcgs3mQDgguPoTcnpN0dj9xnl?=
- =?us-ascii?Q?qZEMQp4mm5IJxkNmzgPTyxVSWWFtMFf0/3yLLqJZPQm2WYUkkTa2LZUgZeHs?=
- =?us-ascii?Q?/uUIwjcXcLLIizCeIcCooCtq5YQa12AbA4LRixRZIgPl/1mQza+rd2iteGyn?=
- =?us-ascii?Q?pYBMrU6HnT+98mLqjknLIxBeCxhG1WVLh3IIQXhLpysB7a2cqsXlJv+PCh87?=
- =?us-ascii?Q?9vQj5zs0sTMXjKBnuZOwGiTZofeY1KqiWDCcClzeJ1lybYDSwBr99l675M+B?=
- =?us-ascii?Q?2jUboyzqFEhYut0wajGAy/6BqyV+BFHu6xPALXxb4peR6bXH2pbjTCDGldv6?=
- =?us-ascii?Q?DtyE7llBmaKaQjhGCWy3Mz+rQbhvTsBN2Gs12Gbi4wXfEamVrNFmriFpl5Ob?=
- =?us-ascii?Q?P9Ez+Uqx+3NZohXYw1X7psUrDJR8u5TlaGDR+7gNH+F+zjZygryW8zBRPMGa?=
- =?us-ascii?Q?dHbMZL0oeU9i8ByTXUOJ4quBGd96qPy4bA1meJsZXvIQmTnveVUlML5t7EHx?=
- =?us-ascii?Q?tJ15L0nL/+az6KyMhfWLnle9RCbwBP3z68zWzK7syvC9OrcxEv4wW00L/6Wq?=
- =?us-ascii?Q?tcfGG3R98OJ9GftxLJxq/QsPesCR/19RycsyaS3NV8+awpZ89Mft1M1IGHpe?=
- =?us-ascii?Q?MQ6bam66AJbREqtiFCz0tTu233r5qiJBXEz+Oa/KKDA5cBESm+odfNymd3VU?=
- =?us-ascii?Q?M9n53M9BUajDpUzCV7QiS0tI67+24lb3nSlneQuiaQBrcwLGtf09ohOcH4Ur?=
- =?us-ascii?Q?HUXMTp4D22ko65p5Nuljbslb/Y57XJbII1GrEgFqEPgTwEuj76esWDAvjRPJ?=
- =?us-ascii?Q?RD2OcUh7MUO6zFkPSsM1Y+9+Mz/pGbP/?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?eFZxog32wHqFq6AkeraJb7P+T7WETj9x42pEEmr6mGQQ12KfPOau0yRB6SE8?=
- =?us-ascii?Q?WX29pAl456cLoaINCAeXyDh98qEmnZUPWkRJEByDGmlcMlVGC+gkGKm+NaOR?=
- =?us-ascii?Q?Zq2hcRPb/eYV90BiNhu+3FU2dv5QtvmosCzMxi2JjeV24lNN5C9WDyDJGSpy?=
- =?us-ascii?Q?Zsir2rRgtSSTNUE6ziv+jUS4hMQ9KVYynbF+EPMeRINg/fB9VfzsZxEW7Lkf?=
- =?us-ascii?Q?ZOekIRlxosE0E4suPkcdALaPn2RJC38rDM9DUFmkqtA0BtOUjJ9c8UCcUGTz?=
- =?us-ascii?Q?bcOLf/NxF/b5RBxLAbEVo7CFeDhzTFUMxDjB6kkySnfy1MHMOf3kNvp1samQ?=
- =?us-ascii?Q?vRpkBHH1iZDzpqcJSptDE0s8kw0iQC3GEbeT3BlvsH3mdI8nITgAkXkZ6ufZ?=
- =?us-ascii?Q?PxlYqQVn9PfoMR8WMI8tSXp5LPxlSSq9LZCv0OqPfMy5elrz4P9dULULYrY+?=
- =?us-ascii?Q?TkihHpvHCJY8fMfrX8ml1jKC1DVzn/Pn/BtECcvycexJ0RM2nBWqBwVy7J0k?=
- =?us-ascii?Q?GVnli008x0aJXZ9zNB2vS+RQ9Z+FzO19BZN8WZpatMvpe+PylfJduYx6khhP?=
- =?us-ascii?Q?mpytRb8mVR4CuYn+pKe/I1mCmdozPrsVl4krD5F8yRKH25a/hquSaLRrR93K?=
- =?us-ascii?Q?zjT9cmulBz+kGdXXB7k96G9gnRUrZbvhqQCFT0iQ+VpJYSQfkJ3vdtp9zfSf?=
- =?us-ascii?Q?0nFXF3+NlmkC3ipzuVS7CeJMbBLNl+pv1dK2zg9T4aDpO2lc4CX+jANFzC+G?=
- =?us-ascii?Q?CK/N0b9aazz/VNFHHINr1VyGdU7dmIPlnqfbyM3RA7jwTdexVgDNPrXv0+H+?=
- =?us-ascii?Q?sJwNJIxXNxc+KCWKL8U7sSgCLpwAddTQ4s02XxCooNn0GQM1kwuQu2zIFVGE?=
- =?us-ascii?Q?z7994Oo8IMG7NcbYCaOQPNQ1BWmKzdTmS2gktQCUCV+u6htwVwLqkToHOeL+?=
- =?us-ascii?Q?0zbnmSSMk2I3Iz/geZBYj2EqmNjGuoyg8MXKlTclZuoPCygGYOyl+CaPtCiu?=
- =?us-ascii?Q?n2fMQ8rbh+bd2JF0U3XM4HAMPq5qe+3QPAg5TbTBn11RBkdCi0i1hj4Kh6li?=
- =?us-ascii?Q?sqzHYPWMXg+uK4v4M+SaJ/Kh195VlWAtFPhwzO2hfDMM8YYz1dZEj2Ludvxl?=
- =?us-ascii?Q?eDypC+DF0E0N0Vs7XJ6J9Ugb8ZVu2sgTHMr/dSVZEUSqeKCDAVqoh+E1leBd?=
- =?us-ascii?Q?6OtmvUSEoSd6BprfSL5J6p/eJXxJ7wChB7bDh/mBDxJgyIXr0mMaxanmLrON?=
- =?us-ascii?Q?riiKhpV213a4a7uaOTW99uPNWNfXSicnobDJ/nfsrGPmoM8kpJMXR2CKfkDV?=
- =?us-ascii?Q?fRtEmvEvbK1d1RXytXPuJ5loGnEb4ZK1k2fALFxKhGW1EuL2ZvhH0oEwjP5p?=
- =?us-ascii?Q?Xd9cL4LQYFUQXsnYoYSm6JCzA+7qSIBjaw9dZL6mBLeahBCIkyMQppZnNmt9?=
- =?us-ascii?Q?5KtyYtUCgJ1exnUhRwhpHi3kO4AVSvHGs+0OjjPL+jCM2Y0oNxsbHLBYP4je?=
- =?us-ascii?Q?ELUCXQ33Tzym5qAhRt+8tBW9i1gDFUAZ2cpNuuQKHnrWYkQaoL6wjpYlkSb5?=
- =?us-ascii?Q?02YkpxpAnFiUOsv7wcY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2IJKebG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737686614; x=1769222614;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5Jxf1MIkAme+I3DGHNaJEUWbgACy1KWQtq6VUX4R9y8=;
+  b=J2IJKebGGD9P5n36muycBUS3Zws9X0ccqbJsAEKBw3QrnD5vz4cq94zg
+   9lK6WTbgzC0qprXLf+YfZWLF5taZ2YIpCNga2XPiZ5XAP/JdV1vTsnpBa
+   PFXGeyl0MH15RunqZVF4Bc7I1xApXdFOR4KhgKHaEr+DKnB+xljumEmlJ
+   AimaEbIBdAPT360sBZ+SHqyqhQuF4onlD+a4653/XZ7g2vCo4h53ZE30F
+   i0+abGAs9toGx7tBL7yYksG/dkQgKJnujmuLPgoGL0g1Gw7ZC7mRmQHIO
+   YfYQw6ZOt8XDr4Gey8htAzsJVSdS6wJ1Z6jB8uHPQUVkSxhffJNtkcxjH
+   Q==;
+X-CSE-ConnectionGUID: 1msB36wgRL6WxBEaUsnw5g==
+X-CSE-MsgGUID: IlBRQ8giQ/GbXaJgNb6q6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="38469250"
+X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; 
+   d="scan'208";a="38469250"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2025 18:43:33 -0800
+X-CSE-ConnectionGUID: 8pdSFtXJRIKb07fDND+IjQ==
+X-CSE-MsgGUID: C4DkUGYDQ9OFFE7AKWijjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; 
+   d="scan'208";a="138519430"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 23 Jan 2025 18:43:30 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tb9fL-000c2x-1X;
+	Fri, 24 Jan 2025 02:43:27 +0000
+Date: Fri, 24 Jan 2025 10:43:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 1/5] firmware: arm_scmi: imx: Add i.MX95 LMM protocol
+Message-ID: <202501241025.6reKesXZ-lkp@intel.com>
+References: <20250121-imx-lmm-cpu-v1-1-0eab7e073e4e@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 028c3e71-ac84-42c2-6127-08dd3c17fc26
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jan 2025 01:39:46.8363
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NanT2oKKYCZnf6osiwbCxXlHOCKgcr6xYxDWEvBes4vl5mGtAIv4v1yvSg5fVfzMv3NdymUDJsI8CBLIWIha1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9854
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250121-imx-lmm-cpu-v1-1-0eab7e073e4e@nxp.com>
 
-> > Hi Dheeraj,
-> >
-> > I must admit that I misread it too. There is another case in the TSO
-> > header where txq->tx_bounce may be used in some cases. I think
-> > the most correct fix is to make txq->tso_hdrs aligned to 32/64 bytes
-> > when allocating tso_hdrs, then we do not need to use txq->tx_bounce
-> > in fec_enet_txq_put_hdr_tso(), because (bufaddr) & fep->tx_align)
-> > will not be true. This way we can safely remove dma_map_single()
-> > from fec_enet_txq_put_hdr_tso().
->=20
-> Hi Fang, Simon,
->=20
-> Thank you for the feedback. I have a clarification question regarding
-> the alignment of txq->tso_hdrs.
->=20
-> In the current code, txq->tso_hdrs is allocated using fec_dma_alloc(),
-> which internally calls dma_alloc_coherent(). As I understand it,
-> dma_alloc_coherent() guarantees that the allocated buffer is properly ali=
-gned.
->=20
-> Given this, should we remove the alignment check
-> ((unsigned long)bufaddr) & fep->tx_align and the associated dma_map_singl=
-e()
-> logic entirely from fec_enet_txq_put_hdr_tso() as you have suggested?
->=20
+Hi Peng,
 
-The maximum of fep->tx_align is 0xf, so we need to ensure the buffer
-allocated by dma_alloc_coherent() is at least 16-byte aligned, but I'm
-not sure whether dma_alloc_coherent() guarantees this alignment.
-A safe approach is to apply for a memory block longer than expected,
-for example, if we want the alignment is 32-byte, we can apply for a
-memory block that is 32 bytes longer than the expected length. Then
-use ALGIN and PTR_ALIGN to get the aligned addr.
+kernel test robot noticed the following build warnings:
 
-txq->tso_hdrs_base =3D fec_dma_alloc(&fep->pdev->dev,
-					     	  txq->bd.ring_size * TSO_HEADER_SIZE + 32,
-					     	  &txq->tso_hdrs_dma_base, GFP_KERNEL);
-txq->tso_hdrs =3D PTR_ALIGN(txq->tso_hdrs_base, 32);
-txq->tso_hdrs_dma =3D ALIGN(txq->tso_hdrs_dma_base, 32);
+[auto build test WARNING on 0907e7fb35756464aa34c35d6abb02998418164b]
 
-This is just my personal experience, if you have a better way that would
-be great.
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/firmware-arm_scmi-imx-Add-i-MX95-LMM-protocol/20250121-231254
+base:   0907e7fb35756464aa34c35d6abb02998418164b
+patch link:    https://lore.kernel.org/r/20250121-imx-lmm-cpu-v1-1-0eab7e073e4e%40nxp.com
+patch subject: [PATCH 1/5] firmware: arm_scmi: imx: Add i.MX95 LMM protocol
+config: arm64-randconfig-r122-20250124 (https://download.01.org/0day-ci/archive/20250124/202501241025.6reKesXZ-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20250124/202501241025.6reKesXZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501241025.6reKesXZ-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c:189:32: sparse: sparse: restricted __le32 degrades to integer
+
+vim +189 drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
+
+   172	
+   173	static int scmi_imx_lmm_protocol_attributes_get(const struct scmi_protocol_handle *ph,
+   174							struct scmi_imx_lmm_priv *priv)
+   175	{
+   176		struct scmi_msg_imx_lmm_protocol_attributes *attr;
+   177		struct scmi_xfer *t;
+   178		int ret;
+   179	
+   180		ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
+   181					      sizeof(*attr), &t);
+   182		if (ret)
+   183			return ret;
+   184	
+   185		attr = t->rx.buf;
+   186	
+   187		ret = ph->xops->do_xfer(ph, t);
+   188		if (!ret) {
+ > 189			priv->nr_lmm = SCMI_IMX_LMM_PROTO_ATTR_NUM_LM(attr->attributes);
+   190			dev_info(ph->dev, "i.MX LMM: %d Logical Machines\n",
+   191				 priv->nr_lmm);
+   192		}
+   193	
+   194		ph->xops->xfer_put(ph, t);
+   195	
+   196		return ret;
+   197	}
+   198	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
