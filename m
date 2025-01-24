@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10393200CB;
-	Fri, 24 Jan 2025 13:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5C84A0C;
+	Fri, 24 Jan 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737726234; cv=none; b=L6Ki6rcOeKZnxKYwKzSTCy2P/rGMtilJ3na5UjQjKQhnjEqT+ufAJsXSL0Hn0PSKzTpJz7mR8vGjk/TQLEaT7dNddgGlMW0+PtkoGefXNrpX0oVIcf2qCkq/dasrr9DM+7njEXpnk6rp8VgKw2gOeQBr9vAKc4FqvzIv7WDM/mw=
+	t=1737726380; cv=none; b=AjYkGOSF+yaxjfRw/z+1/KQoV4tkE4B9xVVPVo2/TFeRP0QNFX7VJ0rvVzF+kpcnZ0Pb7S5c8HJNiHuNDOhRjxE20pHGMA7Kenv+xAtAvuv+hHb8mJ8bzaf2KzSMOwAfBEtzuYWhiHiMxRvcoYhxgjFRRIYtLLBDasEoVzW44ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737726234; c=relaxed/simple;
-	bh=3o/TQidiRAARby5ybO/YLDTX2rIS9VbKTeMIyiZNP4k=;
+	s=arc-20240116; t=1737726380; c=relaxed/simple;
+	bh=rqJ7MtkN0NJ3IbpIzJE6dNQ3uQUgLR2K4PX33hFwLaA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejoX5It9mSdZbtPtJ8um64WiTgSuAm2BSpQV8aiiT/zTPoNMtZjSHWHfIRJ3WNNTLX8fIGOsTOh/pR+d0LGgoya7rymjBVK64w7iG1mrZm5i8A4axg3YDd2pA8X43iZ5VTaDj5FAgPAyi33tgnXG9QRE28f8Fb91HgMPQMXlRKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzXUWi/T; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=rYdoWWLYDI2uwemP8FR2+eELVEaJ3FdWxJo4099trR0j07285NzlCepw3BEDoUonkrqaOwsWGR6JACe1YfOTG/nUFWYtcCeDlXdxIYjrcYxi/LVYjKeiPgwjP/XXxos81PkKo4+MASXx/F1Qt7NULwuSA6q/2QlYU7ysOGVb77Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pHQn7lS+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzXUWi/T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02ECCC4CED2;
-	Fri, 24 Jan 2025 13:43:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pHQn7lS+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051E2C4CED2;
+	Fri, 24 Jan 2025 13:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737726233;
-	bh=3o/TQidiRAARby5ybO/YLDTX2rIS9VbKTeMIyiZNP4k=;
+	s=k20201202; t=1737726379;
+	bh=rqJ7MtkN0NJ3IbpIzJE6dNQ3uQUgLR2K4PX33hFwLaA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AzXUWi/TkjmYUDEGO+SaviEdKCobZReokaR5iIwCL6zjtvGGvBaPXkcrHKIc8u4vW
-	 35LY6d0FqiNnbhj13nGZcVvAlPLWWvATn6hAyb8X/iXQYLYlbMh/VI3NCZILEYoPto
-	 6cI8ljp7ZUBzbgyw4A7L0/YVWJ6smLUNMzj38mAD4nn1BBQTcoDln1FPoy1QA8FzvK
-	 WmnHkzCPywB8FWfTk2olvLa9strRb+ZqnJwuQR6POXeteiZdhQSc4+ExG9LyoOoJPR
-	 xeu1J2goeGl8OglRjiYFgQdkwrXu8HkkdfTlcPLZRap1Yl66QPMH6OmgiWIMh+8DWJ
-	 h9ONWGuZme1/w==
-Message-ID: <1d4b7179-754c-4297-a847-798b96d2b82f@kernel.org>
-Date: Fri, 24 Jan 2025 14:43:45 +0100
+	b=pHQn7lS+JjZY+tLwMNWXyi3KDutDewUONgA+GFXHRLrQu2FbCnGlkz6B/QkwIVxvx
+	 F7n0XzFL5tLtM5EYDph6/TEa/3id/nD2eZ/t74PU3v7BaDeDca264KZvrwbmueXk6C
+	 AiYbtLFsXoMcYBbFkQ7fsgs8r1dTjDDMWOaFvhh1fMs0MSp0/AfCGQdW7xEChIicB4
+	 AM2BRER72YcFqMuRUksOExhOqP4ExaCH+KPt/TrVqANRP0sPkuX/hBc5DEHn/qDctC
+	 aigphh2ofeowfIPytro9MckJojnP94B4hZG+s4wfl0LbEINP3zePjl0tZurfJSABCc
+	 Q2fTZxSKrpvNg==
+Message-ID: <e2de94ab-82ea-4d36-a9dc-75f6891d8927@kernel.org>
+Date: Fri, 24 Jan 2025 14:46:11 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,23 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 16/23] dt-bindings: clock: imx8m-clock: support spread
- spectrum clocking
+Subject: Re: [PATCH v9 00/23] Support spread spectrum clocking for i.MX8M PLLs
 To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
  linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
- Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com, Abel Vesa <abelvesa@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
 References: <20250118124044.157308-1-dario.binacchi@amarulasolutions.com>
- <20250118124044.157308-17-dario.binacchi@amarulasolutions.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -97,93 +94,29 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250118124044.157308-17-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20250118124044.157308-1-dario.binacchi@amarulasolutions.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 18/01/2025 13:39, Dario Binacchi wrote:
-> The addition of DT bindings for enabling and tuning spread spectrum
-> clocking generation can be applied specifically to the PLLs.
+> The series adds support for spread spectrum clocking for i.MX8M{M,N,P}
+> PLLs (audio, video and DRAM). It has been tested for the video PLL on
+> boards using i.MX8MN and i.MX8MP.
 > 
-> The "" value for the fsl,ssc-method property is specifically intended to
-> specify a "no SSC" case, as in the example, when you don't want to
-> configure spread spectrum for one of the PLLs, thus avoiding the use of
-> a method that would only make sense if SSC were being set.
-> 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> (no changes since v7)
-> 
-> Changes in v7:
-> - List the PLLs to strictly define the setup order for each of the
->   added properties
-> - Drop maxItems from "fsl,ssc-modfreq-hz" and "fsl,ssc-modrate-percent"
->   properties
-> - Add 'Reviewed-by' tag of Krzysztof Kozlowski
-> 
-> Changes in v6:
-> - Improve the commit message
-> - change minItems from 7 to 1 for all the ssc properties added
-> - change maxItems from 10 to 4 for alle the ssc properties added
-> - update the DTS example
-> 
-> Changes in v4:
-> - Drop "fsl,ssc-clocks" property. The other added properties now refer
->   to the clock list.
-> - Updated minItems and maxItems of
->   - clocks
->   - clock-names
->   - fsl,ssc-modfreq-hz
->   - fsl,ssc-modrate-percent
->   - fsl,ssc-modmethod
-> - Updated the dts examples
-> 
-> Changes in v3:
-> - Added in v3
-> - The dt-bindings have been moved from fsl,imx8m-anatop.yaml to
->   imx8m-clock.yaml. The anatop device (fsl,imx8m-anatop.yaml) is
->   indeed more or less a syscon, so it represents a memory area
->   accessible by ccm (imx8m-clock.yaml) to setup the PLLs.
-> 
-> Changes in v2:
-> - Add "allOf:" and place it after "required:" block, like in the
->   example schema.
-> - Move the properties definition to the top-level.
-> - Drop unit types as requested by the "make dt_binding_check" command.
-> 
->  .../bindings/clock/imx8m-clock.yaml           | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> index d96570bf60dc..d347d630764a 100644
-> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> @@ -43,6 +43,46 @@ properties:
->        ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
->        for the full list of i.MX8M clock IDs.
->  
-> +  fsl,ssc-modfreq-hz:
-> +    description:
-> +      The values of modulation frequency (Hz unit) for each clock
-> +      supporting spread spectrum.
-> +    minItems: 1
-> +    items:
-> +      - description: audio_pll1
-> +      - description: audio_pll2
-> +      - description: dram_pll
-> +      - description: video_pll
+> Changes in v9:
+> - Add 'Reviewed-by' tag of Peng Fan for imx8mn platform patches
+> - Fix building warning raised by the kernel test robot for patch
+>   v8, 11/18 clk: imx: add support for i.MX8MN anatop clock driver
+> - Add patches for imx8m{m,p} platforms:
+>   - 23/23 clk: imx8mm: support spread spectrum clock generation
+>   - 22/23 clk: imx: add support for i.MX8MM anatop clock driver
+>   - 21/23 clk: imx8mp: support spread spectrum clock generation
+>   - 20/23 clk: imx8mp: rename ccm_base to base
+>   - 19/23 clk: imx: add support for i.MX8MP anatop clock driver
+I responded in particular patch, but let's respond for formality to
+cover letter as well.
 
-Ehh, so it looks that nine versions of this patches for iMX8 and NXP
-comes with generic bindings for iMX9.
-
-Better late than never, but a pity that they did not share the
-intention, which would spare you effort.
-
-Please work with Peng and unify approach for entire iMX and use common
-bindings.
+The bindings here might get obsolete already with work:
 
 https://github.com/devicetree-org/dt-schema/pull/154
 
