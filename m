@@ -1,57 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1E21D47D9;
-	Fri, 24 Jan 2025 08:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F167218E85;
+	Fri, 24 Jan 2025 08:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737705698; cv=none; b=KSf96ybGSAESsdrq/4J2qtuHDjO/ueh4JqFMtQ8JPjcDYX/jVxyD8portW1jAWG3Cb6YJX3KgyAAOk2NKIJCbBxVL+nttz6Nes2qAVuTeN1F2XTzXAzespCAFMCBXN439ZAFIv+7MKi+Zh9Umqh+RAFDus6Nrj8SR9QLtaUroPE=
+	t=1737707121; cv=none; b=ZMW153NFDnn5uKqiGt7zDM3JgaLzXcO98IagKc8/e9nx6uc8WT25r44y8Yf4kURUd3N62L+t9K6K+N74kUH6a5CySEVAHi8W6jcOCPHBzXtSZ7mnd/gjU/BuL8E3hkkRT1yZUB010/Q1556g0b7X9om3LsIqUYt30e8iOR6Cul8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737705698; c=relaxed/simple;
-	bh=joUEBABW0jh1/uqANjFESSNnUumv3QKlUTXLI8vc1qE=;
+	s=arc-20240116; t=1737707121; c=relaxed/simple;
+	bh=avPkR0WZvpgTxvx1IutqBvspKK1NkA3OyHUlutbIs1o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiysaUC/NogMyPkm20nQ4ZyzQPbr8uOWvRB6UUVeI2kuN7uO8SJjnxVVVBwd4ECLL8Ja5XDNojTnjjzdjJ64Gc0DHD4YB4fyvrH6AwjSFIOANKZwH1defA25HCrHM7H/Zvj+MrOtzJ5epKl75ijDu56xFRowUnu+GfHnY2euaMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uN59NOOX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFcldmsxBR7ahmHybvSWKrrvy+/cD9JCj9BOz1VdM96XjW36SRqWoCuOZDy2j/PobJHAu2iyyCMof34/Mi11uGV9BfqgdQLwhDIGNd7I/gqtBQXVzUzsw7lP6fasPklPx1pDKuXqJ22OYroLNdCkV8kqSgvZPluILe3tN+mwqQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azExpTcO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uN59NOOX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DD8C4CED2;
-	Fri, 24 Jan 2025 08:01:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azExpTcO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD7EC4CED2;
+	Fri, 24 Jan 2025 08:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737705697;
-	bh=joUEBABW0jh1/uqANjFESSNnUumv3QKlUTXLI8vc1qE=;
+	s=k20201202; t=1737707121;
+	bh=avPkR0WZvpgTxvx1IutqBvspKK1NkA3OyHUlutbIs1o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uN59NOOXciYhfWmlc/4PrRP4MSd7jkI6ZwMVgyEWmmI0TI7Eyc84/kVEV8ct2QZ6V
-	 qgcD+xHSXg/yuWYjAoSiQQVVeHHErHyNqLcLhEQ8Yy2E5qlU5WJ0LIAY8v0Mu8xrQP
-	 1zm/nIRwIUmTcMTb9T30WvTHS8lCyltaB8B06CmH1elnhMGtF6kGQqcKyXggO7ke+8
-	 2X47Z+rQ6CB2K1PjIIOzqAB59Ko75lEK24eGheptJAZyRaWIiApVGTOW1+vET7jQkp
-	 uViBdS3hNs5RhtDcyKKyXKCa/XZ3LMjRpCweR+/hUrFN5uU/pOZki4Xi7rZt9ZXQkr
-	 QBf7DJ/cS4UVQ==
-Date: Fri, 24 Jan 2025 13:31:26 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 02/10] PCI: imx6: Add ref clock for i.MX95 PCIe
-Message-ID: <20250124080126.itc6qoutn65isnej@thinkpad>
-References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
- <20241126075702.4099164-3-hongxing.zhu@nxp.com>
- <20250119070246.yfxogn4vv3jqfvzb@thinkpad>
- <AS8PR04MB86762EA8219F8FE76CB48F358CE72@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	b=azExpTcOnITnBTMVmrHIeeLyPJDcBA+wpDCwpVFDweJTFjKumRPGtdhq/DxH/cnYp
+	 X/Lm5mC7ppddhZOfMUO7nqa8oewpZrsxPArKRHQXQy6Rd3Aot4DMbq2MVSYMZifzG6
+	 jqfkWoYF4reefhmttytvukO1uSwVcXLmmQbs6RwYlTr6kJXHcbDzj7J6qWhoqGDrnE
+	 B9UiPzBTfWL2e3ALvgxacnM4JMO2aZqS6oWG6cgyB2+Bkp0XT5ToX1CgEv+D3Kabp5
+	 xJ+J9F2/ThSturDL2QDo0XtxU51gU50y/qLk7CUXxhq+hx7FopjOpZj5dOQ1awarSG
+	 wPOgGsyJq3Yyw==
+Date: Fri, 24 Jan 2025 09:25:17 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, broonie@kernel.org, 
+	shawnguo@kernel.org, conor+dt@kernel.org, peng.fan@nxp.com, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, lgirdwood@gmail.com, 
+	peter.ujfalusi@linux.intel.com, linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+	Iuliana Prodan <iuliana.prodan@nxp.com>
+Subject: Re: [PATCH 1/4] dt-bindings: arm: imx: Add board revisions for
+ i.MX8MP, i.MX8QM and i.MX8QXP
+Message-ID: <20250124-meaty-tunneling-raven-eabb6a@krzk-bin>
+References: <20250122163544.1392869-1-daniel.baluta@nxp.com>
+ <20250122163544.1392869-2-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,110 +47,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB86762EA8219F8FE76CB48F358CE72@AS8PR04MB8676.eurprd04.prod.outlook.com>
+In-Reply-To: <20250122163544.1392869-2-daniel.baluta@nxp.com>
 
-On Mon, Jan 20, 2025 at 02:49:09AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Sent: 2025年1月19日 15:03
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: l.stach@pengutronix.de; bhelgaas@google.com; lpieralisi@kernel.org;
-> > kw@linux.com; robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > shawnguo@kernel.org; Frank Li <frank.li@nxp.com>; s.hauer@pengutronix.de;
-> > festevam@gmail.com; imx@lists.linux.dev; kernel@pengutronix.de;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v7 02/10] PCI: imx6: Add ref clock for i.MX95 PCIe
-> > 
-> > On Tue, Nov 26, 2024 at 03:56:54PM +0800, Richard Zhu wrote:
-> > > Add "ref" clock to enable reference clock. To avoid breaking DT
-> > > backwards compatibility, i.MX95 REF clock might be optional. Use
-> > > devm_clk_get_optional() to fetch i.MX95 PCIe optional clocks in driver.
-> > >
-> > > If use external clock, ref clock should point to external reference.
-> > >
-> > > If use internal clock, CREF_EN in LAST_TO_REG controls reference
-> > > output, which implement in drivers/clk/imx/clk-imx95-blk-ctl.c.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 16 +++++++++++-----
-> > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 385f6323e3ca..f7e928e0a018 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -103,6 +103,7 @@ struct imx_pcie_drvdata {
-> > >  	const char *gpr;
-> > >  	const char * const *clk_names;
-> > >  	const u32 clks_cnt;
-> > > +	const u32 clks_optional_cnt;
-> > >  	const u32 ltssm_off;
-> > >  	const u32 ltssm_mask;
-> > >  	const u32 mode_off[IMX_PCIE_MAX_INSTANCES]; @@ -1306,9 +1307,8
-> > @@
-> > > static int imx_pcie_probe(struct platform_device *pdev)
-> > >  	struct device_node *np;
-> > >  	struct resource *dbi_base;
-> > >  	struct device_node *node = dev->of_node;
-> > > -	int ret;
-> > > +	int i, ret, req_cnt;
-> > >  	u16 val;
-> > > -	int i;
-> > >
-> > >  	imx_pcie = devm_kzalloc(dev, sizeof(*imx_pcie), GFP_KERNEL);
-> > >  	if (!imx_pcie)
-> > > @@ -1358,9 +1358,13 @@ static int imx_pcie_probe(struct platform_device
-> > *pdev)
-> > >  		imx_pcie->clks[i].id = imx_pcie->drvdata->clk_names[i];
-> > >
-> > >  	/* Fetch clocks */
-> > > -	ret = devm_clk_bulk_get(dev, imx_pcie->drvdata->clks_cnt, imx_pcie->clks);
-> > > +	req_cnt = imx_pcie->drvdata->clks_cnt -
-> > imx_pcie->drvdata->clks_optional_cnt;
-> > > +	ret = devm_clk_bulk_get(dev, req_cnt, imx_pcie->clks);
-> > >  	if (ret)
-> > >  		return ret;
-> > > +	imx_pcie->clks[req_cnt].clk = devm_clk_get_optional(dev, "ref");
-> > > +	if (IS_ERR(imx_pcie->clks[req_cnt].clk))
-> > > +		return PTR_ERR(imx_pcie->clks[req_cnt].clk);
-> > 
-> > I think you should just switch to devm_clk_bulk_get_all() instead of getting the
-> > clks separately. As I told previously, the DT binding should ensure that correct
-> > clocks for the platforms are defined in DT and the driver has no business in
-> > validating it. Driver should trust the DT instead (unless there is a valid reason to not
-> > do so).
-> > 
-> > >
-> > >  	if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_PHYDRV)) {
-> > >  		imx_pcie->phy = devm_phy_get(dev, "pcie-phy"); @@ -1509,6 +1513,7
-> > > @@ static const char * const imx8mm_clks[] = {"pcie_bus", "pcie",
-> > > "pcie_aux"};  static const char * const imx8mq_clks[] = {"pcie_bus",
-> > > "pcie", "pcie_phy", "pcie_aux"};  static const char * const
-> > > imx6sx_clks[] = {"pcie_bus", "pcie", "pcie_phy", "pcie_inbound_axi"};
-> > > static const char * const imx8q_clks[] = {"mstr", "slv", "dbi"};
-> > > +static const char * const imx95_clks[] = {"pcie_bus", "pcie",
-> > > +"pcie_phy", "pcie_aux", "ref"};
-> > 
-> > And these static clock defines will go away too.
-> > 
-> Hi Mani:
-> Thanks for your comments.
-> The suggestions are very nice. How about kick off further optimization later?
+On Wed, Jan 22, 2025 at 06:35:41PM +0200, Daniel Baluta wrote:
+> From: Iuliana Prodan <iuliana.prodan@nxp.com>
+> 
+> wm8960 codec is EOL so we have i.MX8MP EVK Rev B4,
+> i.MX8QM MEK Rev D and i.MX8QXP MEK WCPU boards with
+> wm8962 codec.
+> Therefore, add compatibles for them.
 
-Sure. This series got merged already.
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
->  Since the changes would impact all i.MX PCIes.
-> Meanwhile, I'm a little worry about that there is no consensus yet on relying
->  entirely on the dt binding check.
+> 
+> Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Consensus between whom?
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-- Mani
+Best regards,
+Krzysztof
 
--- 
-மணிவண்ணன் சதாசிவம்
