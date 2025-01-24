@@ -1,69 +1,61 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80ED4085D
-	for <imx@lists.linux.dev>; Fri, 24 Jan 2025 13:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF41DC991;
+	Fri, 24 Jan 2025 21:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737726689; cv=none; b=qITGu3927xUS3BY5L4KA7THbna6+DuDNtuBfCf4idPFni6SN4A2hLonX2fXtGdG5khlR1TmP9f2LTJmTmbnIP59VSPXZC60s3xYJPPbKtNeQF9W85ZYTE1PcUZEXWG+dFchCmejzdtCJMAAMnyCbzHdl2LV/bTHfZ/FBKALFi/0=
+	t=1737754419; cv=none; b=jxQtLf6mbGLD8wPhIVMleXKMPZ3CYZ7OmSOZgqaXGCa8dyqZzI2xjj0ZQUNQQlL8k8gHVUCLIAGBlBzlKl7kMJsuAiS7Ags49A+8yoNT+2vvgIIinJ6UOFvJv95kHSeqHva6x/BGZGjCF9XsR5Bg5EQuAdplTKpYr6W1G3yX3pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737726689; c=relaxed/simple;
-	bh=pJFaFR/cdHX84EYRD0FIV+VAe/KBfCM9byCxxPK0kf8=;
+	s=arc-20240116; t=1737754419; c=relaxed/simple;
+	bh=ZV+CoJSZ+wVV/344CBzff1eeJ9Hjk9q/8p3TD4Hsxtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIschylNyr81MOeGutaaVh8QZxeyg6zmx/xYxJFXPSn8SBFjKZAZ4u1b425he6U3FLJMnzVMLLEjXQnJb2TDPV2ZMWcj7FPlQtb0WI77A1gtOxrTW4gEP6Er8LF0+aWproNLsdWO/6Doe8lYIh2kGtCQeLQuMX9HU04zSdgCI0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yVftCtM4; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=JNZm0KVUCARxneYHxKo2/CAWKINBMMobEko1/GwnRX6yML0HTtdYDrXXwSZcnFYwnisCxEocEoTLni4x1Km/2FOTI/todgL66tq0AnXKSQjKJmoxzKU0H+8F14ItjQg9mDQR4vdsxuoV4rjZluBlE8j7xuXLAPPc6tX1MEAYwhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gB3lCqBi; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yVftCtM4"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43621d27adeso14340235e9.2
-        for <imx@lists.linux.dev>; Fri, 24 Jan 2025 05:51:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737726686; x=1738331486; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zKRrbe6gGWiSaBV4mplOTEhtmjTYcRZx77kHNzgfO9s=;
-        b=yVftCtM4TogzmS4AxTfTft7WkCB6xDIj31IDMfMJaSGi7YmI6s9TPW8RHkTTiw869p
-         Mi3u9YTIq1/7kJ9DXchne6MOlAFhEgV57R99D4eJnY8RtfbVtaSFPEMyQ72GbwkhGu3/
-         CRIv3KJfM56dt8yzftSe/ShpZE0HyrDuqMduhrDAEkl8ztvq1RkNS6LqobRMNFlqtJAN
-         cWtwwvsO6GoRNdr/TqNFSZ1fB1sELEmmeXlR8X9LwDrcU2cRcFH3OUhnOrLesoO2ERRX
-         2fIO3+g5aKsElIyHmd4F3UA/s70VgWCzO9Zis+kY59nf1sF6ZADqv6A0qlxeBaerjftP
-         RWhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737726686; x=1738331486;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zKRrbe6gGWiSaBV4mplOTEhtmjTYcRZx77kHNzgfO9s=;
-        b=f2gTUns+LcnIoOVc1QutYGbub4U7Z01TdOmmmxms57xZ4Wj0q0NvwL751e9/qRxw9f
-         ILMTclSuG7hWf0VLlijMiA7vniuAkH3fWDhCFWUg4l/zBP9luUgr86FuKuDJaLjY80wI
-         ILGdQcpkmbCGV0JnqGWSTsg7q/HC3CI/Pz1wQWSp1twpq5ClN1eg6rD+CNorjJ3Nup44
-         OcxdNZsmOUvUN9OOTjSaDoksIPmPjuFleYwHHPjAaGMNB2rgiiW1QUK4U9bGjj1E3gc+
-         56S8hy1iKtcr5cWy7iKKIrpSvACzQsXnqBnbWARwwM69RIZJ4TKX/RHHfawxNi3x3q+/
-         EBIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVilONxk7vhjamUCvzGFtlZwZm/OkDxg5HanoRf3YiCnS987OsYGUNVuJlMjqltlsjEisw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxecbY7aGxY5raTA0l4Gzfpbm0qaq7ICapOWuPeskmyWWjZGL+d
-	4Ca67PsjoD9kEaZIYySluSeeraQhmigyxULXBBp1Hasekza/B3ecSDk/aEEED1U=
-X-Gm-Gg: ASbGncsVnDMacz+nayCqFEfzzB2fdObUgOQOKhrjfSrg3mE0sjb9Sf+t0C8z//z1jiA
-	Hg/IUvZdQz6JWQCZLIC/pNlv7zC4rDJcCXtUuYsiJkZnueyaAai4VJ1Jk+lS5KLKuwd1NYyXCCG
-	eIx0XBBmXON464wvYUQvE8+jm8mhaRucl5SrN26Tlmegi3Eyj8nzWFXObtkVHtAuRGvXXmfL7fR
-	uQIs080stGvG4m3+pWbUxNlmGvmmm32zMrMdz/9dHLfVCgU17F4kd1NMZXRmtgi6YpwNxCWH4Rz
-	NEn7F8pD3g==
-X-Google-Smtp-Source: AGHT+IETFMJJrZWr/EDBakUelIAVIlOvrzgYZmGp+ZA18dqs2i5tih8sUMHw8uH4sD7esRtqKjCpXw==
-X-Received: by 2002:a05:600c:3585:b0:434:f297:8e85 with SMTP id 5b1f17b1804b1-438913d5da1mr323417065e9.10.1737726686177;
-        Fri, 24 Jan 2025 05:51:26 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd485007sm27717805e9.12.2025.01.24.05.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 05:51:25 -0800 (PST)
-Date: Fri, 24 Jan 2025 16:51:22 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gB3lCqBi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737754418; x=1769290418;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZV+CoJSZ+wVV/344CBzff1eeJ9Hjk9q/8p3TD4Hsxtw=;
+  b=gB3lCqBinbT/6DedKJFMqqWC4OaVE/+FBZwdsFbSvnHvYJOta/nvdp/S
+   IbU9G79JaUUObSY9K3AlK8ykfHp+wq575u/rmloQ31PF5Sri5et03quO+
+   TbGhHwSLCSqd0wb6XuebXgcC6qs6ES3NuVeE0oczsnUT9ce2OSPMcxslR
+   G9qX2x62ENRZigbnzCJa8Ku9+65EGOKHiPQxa7NOfGQ78kO0N31SLuCnO
+   b+EQK+z6Ql1dRDWy71u0Y6YA+9fpumxs2UbtYLu/BpTobqERjHuBDgUDu
+   jC559vArQBpMvky7rKaQBceSbyCWLfnE747RmBBwv4UDfa5+t4cPGawpT
+   A==;
+X-CSE-ConnectionGUID: 9mCbja4JQJaGkOkSbWHY/Q==
+X-CSE-MsgGUID: bfNzEMMkRuaxFiDOJI8aYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="49718511"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="49718511"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 13:33:37 -0800
+X-CSE-ConnectionGUID: g4+/9ZLtQsOQaUV3ZgoZ4w==
+X-CSE-MsgGUID: CHXgLetET/Spk4p+CUHLlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
+   d="scan'208";a="107782823"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 24 Jan 2025 13:33:33 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tbRIw-000d9T-2h;
+	Fri, 24 Jan 2025 21:33:30 +0000
+Date: Sat, 25 Jan 2025 05:33:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Russell King <linux@armlinux.org.uk>,
 	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
 	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Rob Herring <robh@kernel.org>,
@@ -74,10 +66,9 @@ Cc: Michael Turquette <mturquette@baylibre.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
 	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/3] clk: Introduce clk_set_spread_spectrum
-Message-ID: <f83759b4-8e8a-4497-b032-341c8538c293@stanley.mountain>
-References: <20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com>
- <20250124-clk-ssc-v1-1-2d39f6baf2af@nxp.com>
+Subject: Re: [PATCH 3/3] clk: scmi: Support spread spectrum
+Message-ID: <202501250520.evxxfDdY-lkp@intel.com>
+References: <20250124-clk-ssc-v1-3-2d39f6baf2af@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,61 +77,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250124-clk-ssc-v1-1-2d39f6baf2af@nxp.com>
+In-Reply-To: <20250124-clk-ssc-v1-3-2d39f6baf2af@nxp.com>
 
-On Fri, Jan 24, 2025 at 10:25:17PM +0800, Peng Fan (OSS) wrote:
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index cf7720b9172ff223d86227aad144e15375ddfd86..a4fe4a60f839244b736e3c2751eeb38dc4577b1f 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -2790,6 +2790,45 @@ int clk_set_max_rate(struct clk *clk, unsigned long rate)
->  }
->  EXPORT_SYMBOL_GPL(clk_set_max_rate);
->  
-> +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-> +			    unsigned int spreadpercent, unsigned int method,
-> +			    bool enable)
-> +{
-> +	struct clk_spread_spectrum clk_ss;
-> +	struct clk_core *core;
-> +	int ret = 0;
-> +
-> +	if (!clk || !clk->core)
-> +		return 0;
-> +
-> +	clk_ss.modfreq = modfreq;
-> +	clk_ss.spreadpercent = spreadpercent;
-> +	clk_ss.method = method;
-> +	clk_ss.enable = enable;
-> +
-> +	clk_prepare_lock();
-> +
-> +	core = clk->core;
-> +
-> +	if (core->prepare_count) {
-> +		ret = -EBUSY;
-> +		goto fail;
+Hi Peng,
 
-fail is too vague to be useful as a name.  Also this should be
-goto unlock;
+kernel test robot noticed the following build warnings:
 
-> +	}
-> +
-> +	ret = clk_pm_runtime_get(core);
-> +	if (ret)
-> +		goto fail;
-> +
-> +	if (core->ops->set_spread_spectrum)
-> +		ret = core->ops->set_spread_spectrum(core->hw, &clk_ss);
-> +
-> +	clk_pm_runtime_put(core);
-unlock:
+[auto build test WARNING on 5ffa57f6eecefababb8cbe327222ef171943b183]
 
-> +	clk_prepare_unlock();
-> +fail:
-> +	return ret;
-> +}
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan-OSS/clk-Introduce-clk_set_spread_spectrum/20250124-212050
+base:   5ffa57f6eecefababb8cbe327222ef171943b183
+patch link:    https://lore.kernel.org/r/20250124-clk-ssc-v1-3-2d39f6baf2af%40nxp.com
+patch subject: [PATCH 3/3] clk: scmi: Support spread spectrum
+config: i386-buildonly-randconfig-005-20250125 (https://download.01.org/0day-ci/archive/20250125/202501250520.evxxfDdY-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250125/202501250520.evxxfDdY-lkp@intel.com/reproduce)
 
-regards,
-dan carpenter
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501250520.evxxfDdY-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+>> drivers/clk/clk-scmi.c:298: warning: cannot understand function prototype: 'const char * const scmi_clk_ssc_allowlist[] = '
+
+
+vim +298 drivers/clk/clk-scmi.c
+
+   286	
+   287	/**
+   288	 * scmi_clk_ops_alloc() - Alloc and configure clock operations
+   289	 * @dev: A device reference for devres
+   290	 * @feats_key: A bitmap representing the desired clk_ops capabilities
+   291	 *
+   292	 * Allocate and configure a proper set of clock operations depending on the
+   293	 * specifically required SCMI clock features.
+   294	 *
+   295	 * Return: A pointer to the allocated and configured clk_ops on success,
+   296	 *	   or NULL on allocation failure.
+   297	 */
+ > 298	static const char * const scmi_clk_ssc_allowlist[] = {
+   299		"fsl,imx95",
+   300		NULL
+   301	};
+   302	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
