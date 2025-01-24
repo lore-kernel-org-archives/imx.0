@@ -1,95 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2069.outbound.protection.outlook.com [40.107.104.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DF23DBB6;
-	Thu, 23 Jan 2025 21:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737667263; cv=none; b=hRwPQwN3EAKsT0nttpaO/71Vllpg3hP83AdT2EAkcWPksStjeBngRc/uukvofXhDb4HSwun/IGMm6ALfRsz+Bkxhj5aqeUA14a4NEbZfy6TTaDwVSf0hgS63ANUJ1fmKrSTISPXcY0M2SJKuq5JL/8tXcv2zslabrTxXZPB+khY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737667263; c=relaxed/simple;
-	bh=tuOw4Ciq0xOtOTUjc7Zy0bF2QdZE47PH3/38Axm4biY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EsC/R/ORWRHkIbqhQrNWgK9T8+zz4BqRC7OcgQ2DnZ4bHQsBYFJ+XNxHiBgTt8iqj1FvsKb3LWr0W7f/GPTwzz3ABXAGZvrr8L18JWhfiFxgFZ57hDOMsWAL7Mkc4HSgQw3XQpTvOB3k0vqe5fvUxScAbbbb7nw/RngbW0UNT/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDCqlbBp; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3CC3C00
+	for <imx@lists.linux.dev>; Fri, 24 Jan 2025 01:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737682791; cv=fail; b=Q5pXviNz3NL5sSpqsOSV1jrh1KbiettUiqlqVSoHWhz8kNK1/llbpDBmN65I6WIUbGO70vle3p9fu/pjGNETkVg6mRKBvDdpWtgT68EwDfsXAY+WoayJDp8IjdnTGD7CsxZ+lR0RTS7rRtgNImBYIFsuSYf4bXJ6kr6x+rijnC0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737682791; c=relaxed/simple;
+	bh=69UmwL4RyzFWzEWryvyPyyUZbCBiBimCu6sxD2qmflU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hAVgWg/AWGFB1xjiuDsIMkG18THSe+cQCwa+YB6MjzShGXyzvbpNWdhNeKA2DoE3dPkjkPLvY4gLmOu0Ry+jyod0l4xSNQ4mqMw4Ai8zrMRiIFsqv6yZEEn0azbD67u8gSuR+A7iivNESBFyQkvj92C8Y3Da321swKXUXKN1vK0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jyg6gGl5; arc=fail smtp.client-ip=40.107.104.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDCqlbBp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CA1C4CED3;
-	Thu, 23 Jan 2025 21:21:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737667262;
-	bh=tuOw4Ciq0xOtOTUjc7Zy0bF2QdZE47PH3/38Axm4biY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=LDCqlbBpMywyho8D7bVAM3BuKtdRQ9aZKRnL07ogUXrKZ/fFZx/HeuK6vYOvkXNHo
-	 gj1e8sLvbyjah0IIo632PPoJ/Sww5Od0JKOGdH/fnEBByh6qcYUfVHdFjE1ix20x3T
-	 k7t+1sG7atIu+D24kwIN0GQmMqGpJ2ZfWos3YZRgkFAw5m31+uHPV2Gv3kujbd+fDR
-	 UV6CLignNxnwx1C7p+Av3dX8ATJSbTU6hwz6cqstmWgGR/4kZtgavE2r56QPMpN25M
-	 58XsWrlMVvDk5zuIt6IJxqFxo0ceIC/sBN9cInPbX47Sfc9rqwtEkUYfprM29tZiLP
-	 5UKGKgSdSZkDw==
-From: Mark Brown <broonie@kernel.org>
-To: robh@kernel.org, krzk+dt@kernel.org, 
- Daniel Baluta <daniel.baluta@nxp.com>
-Cc: shawnguo@kernel.org, conor+dt@kernel.org, peng.fan@nxp.com, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev
-In-Reply-To: <20250122163544.1392869-1-daniel.baluta@nxp.com>
-References: <20250122163544.1392869-1-daniel.baluta@nxp.com>
-Subject: Re: [PATCH 0/4] Add SOF support for new board revisions
-Message-Id: <173766726032.133083.14869968684527769407.b4-ty@kernel.org>
-Date: Thu, 23 Jan 2025 21:21:00 +0000
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jyg6gGl5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YKyiyLyvgyi3WpZ2gd/009gXlh3l7WmW4DByxFBI7C2vYcB2/x1pGKe9TitmBDN9pkNRe6d/RRNlr70Kz3+Ozjv8WhViRHouF0HMU5ow+Y2emD3/2WFVU/YHwjg+VDJD4R6LbFI8Pg13Y/TSUTqlvvO+up0xXA02GEds8lx+j3qTSwyiJxQ3ZEjT7yz3mkjfcR406qIVtzT+ERHdKLhAFgOrSkNt1VTUYSf+goQOGjCdZRGxYlwGY+ObSOGrgzpvfxTiR5M7xAd4lul6+P09Xw1Au2tKWaB4yHhEUEygca7jujrqYNz3z5sptbfp2En+b96sSw65wx/pvrimAE/0CA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PIWwMxbnfZdhOHrmWLQ8+uNEhXJO5UXZqRp4scCKuU0=;
+ b=SHaxJTXz0aqxmtqtc+pT7cO2IYPTcYoHeRu2/YR1aOfiEre32p9DYgyyeKgiCZAd/qOsax3DM8OL/ioailGEjdvKS9yDkmpOiwSR9xvakWH53iDmlu6jnWEXxWwz0jdf4oqiI9evoWFm2Kr5nRXQsUeRGyjOwev1mjSUabisREY6EfqNPNEZBS7vO8D2EtRUrCRruAw+rdL/IyLIdIzJWorQaNQ+7d+uOPtT8JBD/XlfDuWMJy0N0/dix8FVqzicqmYqSYtXhVVYjgwEUqmGfT6OHmcUQIW5SkYXXb93BQ3WGZ1gkRYsgWp4rj/0GHHQlKtIm/XM6zNQqYJRY02Yng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PIWwMxbnfZdhOHrmWLQ8+uNEhXJO5UXZqRp4scCKuU0=;
+ b=jyg6gGl5nfpqk6yqTxoXx5gctxTyuD9bJh1JW67CpoDZPUb4w4HM3ssfJsGQxLDFEtxqUMLDNQnqFL0OencPAnCBabBdE34JFGVpeTQ3Evtp0RWgAEKF4v6u/UtgXU4djZgTEmnoCB1KYUbGiHd+MFc9j5reOAfheLAjzM2GyVaG/dgoaqUJ8zb+fnpkHfvOlCS4Hlr9X5563RGUtZ45J0reEhZlup3hC/ELyp0/k7Ve1dAsZitoC4dtaDBNggoYjV/iuNub0p6RXXN2/MC6eEIJ1JBSuUhJf/xzDBMs4qh5ZGu1aIPcEqop51psElaiOCdnTN4iAIn3BHpaY1MBAQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS5PR04MB9854.eurprd04.prod.outlook.com (2603:10a6:20b:673::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.18; Fri, 24 Jan
+ 2025 01:39:47 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8356.020; Fri, 24 Jan 2025
+ 01:39:46 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Simon Horman <horms@kernel.org>
+Subject: RE: [PATCH net] net: fec: remove unnecessary DMA mapping of TSO
+ header
+Thread-Topic: [PATCH net] net: fec: remove unnecessary DMA mapping of TSO
+ header
+Thread-Index: AQHbbLqLupyHdAm0+EG/wIJk3lnmObMjn2OAgACL04CAAPgZQA==
+Date: Fri, 24 Jan 2025 01:39:46 +0000
+Message-ID:
+ <PAXPR04MB8510FA96CB9A5DE5288902A088E32@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250122104307.138659-1-dheeraj.linuxdev@gmail.com>
+ <PAXPR04MB85106CE97288D52A04EB685388E02@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <Z5IbIeOxrkMoASdJ@HOME-PC>
+In-Reply-To: <Z5IbIeOxrkMoASdJ@HOME-PC>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS5PR04MB9854:EE_
+x-ms-office365-filtering-correlation-id: 028c3e71-ac84-42c2-6127-08dd3c17fc26
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|7416014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?y/hrxx8Zvlo2vHqEJCTE4Yu9BesDcz+PSV58YTv1UEeMpbFdrInDn1VtIFjc?=
+ =?us-ascii?Q?qlDQjnt+sbKo0gPnjMMIaigLd1/lfhtgJKgsZLCFIvs5CETB31rY4QYC+b8s?=
+ =?us-ascii?Q?ED3RR6GlK00sXhqXhqTSuNOPFEvEQnoiRPh3Q5sd5FEEyErcjfWjgHRcInC3?=
+ =?us-ascii?Q?s0SYDU2/p9cahZENzJFSS8I/D+YOOCSFioEzssFghpAIJqO6HCD3Ymt9T8uk?=
+ =?us-ascii?Q?H7o7O1gvPXd3HQ756+Zki1ju0ZZcqrLiPyn4Y5wCWTbgjaHWCb/8KnSDsBb4?=
+ =?us-ascii?Q?AQolNnZGi4GL9NT7J39IV7tMuP3PRjpftlgXDc3B+YUG9zNUekRFWFURj5AU?=
+ =?us-ascii?Q?MInGy1ZNTQQf0mhqWeSuklRbonjqgB8LptEEOsalGd/7Yi702ZmE92ObmRNQ?=
+ =?us-ascii?Q?ZB+s5xZf7l8+sFVnimffcAlZ9hXY46yIV/5HZKfj4y8dhXKUjqPkZHTlfDLc?=
+ =?us-ascii?Q?FeItnRXhe0X7X9tmmknjw4FVtNZm5twEM8WAlI9nZY/j93zMEBs7ZZi++YUM?=
+ =?us-ascii?Q?5EYZlemDsvKsFFhn1QWtBwFlTqagARXtzBCF+Y/GEZb0VOf7xPqzZy27qLi9?=
+ =?us-ascii?Q?C2EPIfO09niPgtQM8iPiXMYZ5GoStfohUp9fcgs3mQDgguPoTcnpN0dj9xnl?=
+ =?us-ascii?Q?qZEMQp4mm5IJxkNmzgPTyxVSWWFtMFf0/3yLLqJZPQm2WYUkkTa2LZUgZeHs?=
+ =?us-ascii?Q?/uUIwjcXcLLIizCeIcCooCtq5YQa12AbA4LRixRZIgPl/1mQza+rd2iteGyn?=
+ =?us-ascii?Q?pYBMrU6HnT+98mLqjknLIxBeCxhG1WVLh3IIQXhLpysB7a2cqsXlJv+PCh87?=
+ =?us-ascii?Q?9vQj5zs0sTMXjKBnuZOwGiTZofeY1KqiWDCcClzeJ1lybYDSwBr99l675M+B?=
+ =?us-ascii?Q?2jUboyzqFEhYut0wajGAy/6BqyV+BFHu6xPALXxb4peR6bXH2pbjTCDGldv6?=
+ =?us-ascii?Q?DtyE7llBmaKaQjhGCWy3Mz+rQbhvTsBN2Gs12Gbi4wXfEamVrNFmriFpl5Ob?=
+ =?us-ascii?Q?P9Ez+Uqx+3NZohXYw1X7psUrDJR8u5TlaGDR+7gNH+F+zjZygryW8zBRPMGa?=
+ =?us-ascii?Q?dHbMZL0oeU9i8ByTXUOJ4quBGd96qPy4bA1meJsZXvIQmTnveVUlML5t7EHx?=
+ =?us-ascii?Q?tJ15L0nL/+az6KyMhfWLnle9RCbwBP3z68zWzK7syvC9OrcxEv4wW00L/6Wq?=
+ =?us-ascii?Q?tcfGG3R98OJ9GftxLJxq/QsPesCR/19RycsyaS3NV8+awpZ89Mft1M1IGHpe?=
+ =?us-ascii?Q?MQ6bam66AJbREqtiFCz0tTu233r5qiJBXEz+Oa/KKDA5cBESm+odfNymd3VU?=
+ =?us-ascii?Q?M9n53M9BUajDpUzCV7QiS0tI67+24lb3nSlneQuiaQBrcwLGtf09ohOcH4Ur?=
+ =?us-ascii?Q?HUXMTp4D22ko65p5Nuljbslb/Y57XJbII1GrEgFqEPgTwEuj76esWDAvjRPJ?=
+ =?us-ascii?Q?RD2OcUh7MUO6zFkPSsM1Y+9+Mz/pGbP/?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?eFZxog32wHqFq6AkeraJb7P+T7WETj9x42pEEmr6mGQQ12KfPOau0yRB6SE8?=
+ =?us-ascii?Q?WX29pAl456cLoaINCAeXyDh98qEmnZUPWkRJEByDGmlcMlVGC+gkGKm+NaOR?=
+ =?us-ascii?Q?Zq2hcRPb/eYV90BiNhu+3FU2dv5QtvmosCzMxi2JjeV24lNN5C9WDyDJGSpy?=
+ =?us-ascii?Q?Zsir2rRgtSSTNUE6ziv+jUS4hMQ9KVYynbF+EPMeRINg/fB9VfzsZxEW7Lkf?=
+ =?us-ascii?Q?ZOekIRlxosE0E4suPkcdALaPn2RJC38rDM9DUFmkqtA0BtOUjJ9c8UCcUGTz?=
+ =?us-ascii?Q?bcOLf/NxF/b5RBxLAbEVo7CFeDhzTFUMxDjB6kkySnfy1MHMOf3kNvp1samQ?=
+ =?us-ascii?Q?vRpkBHH1iZDzpqcJSptDE0s8kw0iQC3GEbeT3BlvsH3mdI8nITgAkXkZ6ufZ?=
+ =?us-ascii?Q?PxlYqQVn9PfoMR8WMI8tSXp5LPxlSSq9LZCv0OqPfMy5elrz4P9dULULYrY+?=
+ =?us-ascii?Q?TkihHpvHCJY8fMfrX8ml1jKC1DVzn/Pn/BtECcvycexJ0RM2nBWqBwVy7J0k?=
+ =?us-ascii?Q?GVnli008x0aJXZ9zNB2vS+RQ9Z+FzO19BZN8WZpatMvpe+PylfJduYx6khhP?=
+ =?us-ascii?Q?mpytRb8mVR4CuYn+pKe/I1mCmdozPrsVl4krD5F8yRKH25a/hquSaLRrR93K?=
+ =?us-ascii?Q?zjT9cmulBz+kGdXXB7k96G9gnRUrZbvhqQCFT0iQ+VpJYSQfkJ3vdtp9zfSf?=
+ =?us-ascii?Q?0nFXF3+NlmkC3ipzuVS7CeJMbBLNl+pv1dK2zg9T4aDpO2lc4CX+jANFzC+G?=
+ =?us-ascii?Q?CK/N0b9aazz/VNFHHINr1VyGdU7dmIPlnqfbyM3RA7jwTdexVgDNPrXv0+H+?=
+ =?us-ascii?Q?sJwNJIxXNxc+KCWKL8U7sSgCLpwAddTQ4s02XxCooNn0GQM1kwuQu2zIFVGE?=
+ =?us-ascii?Q?z7994Oo8IMG7NcbYCaOQPNQ1BWmKzdTmS2gktQCUCV+u6htwVwLqkToHOeL+?=
+ =?us-ascii?Q?0zbnmSSMk2I3Iz/geZBYj2EqmNjGuoyg8MXKlTclZuoPCygGYOyl+CaPtCiu?=
+ =?us-ascii?Q?n2fMQ8rbh+bd2JF0U3XM4HAMPq5qe+3QPAg5TbTBn11RBkdCi0i1hj4Kh6li?=
+ =?us-ascii?Q?sqzHYPWMXg+uK4v4M+SaJ/Kh195VlWAtFPhwzO2hfDMM8YYz1dZEj2Ludvxl?=
+ =?us-ascii?Q?eDypC+DF0E0N0Vs7XJ6J9Ugb8ZVu2sgTHMr/dSVZEUSqeKCDAVqoh+E1leBd?=
+ =?us-ascii?Q?6OtmvUSEoSd6BprfSL5J6p/eJXxJ7wChB7bDh/mBDxJgyIXr0mMaxanmLrON?=
+ =?us-ascii?Q?riiKhpV213a4a7uaOTW99uPNWNfXSicnobDJ/nfsrGPmoM8kpJMXR2CKfkDV?=
+ =?us-ascii?Q?fRtEmvEvbK1d1RXytXPuJ5loGnEb4ZK1k2fALFxKhGW1EuL2ZvhH0oEwjP5p?=
+ =?us-ascii?Q?Xd9cL4LQYFUQXsnYoYSm6JCzA+7qSIBjaw9dZL6mBLeahBCIkyMQppZnNmt9?=
+ =?us-ascii?Q?5KtyYtUCgJ1exnUhRwhpHi3kO4AVSvHGs+0OjjPL+jCM2Y0oNxsbHLBYP4je?=
+ =?us-ascii?Q?ELUCXQ33Tzym5qAhRt+8tBW9i1gDFUAZ2cpNuuQKHnrWYkQaoL6wjpYlkSb5?=
+ =?us-ascii?Q?02YkpxpAnFiUOsv7wcY=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 028c3e71-ac84-42c2-6127-08dd3c17fc26
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jan 2025 01:39:46.8363
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NanT2oKKYCZnf6osiwbCxXlHOCKgcr6xYxDWEvBes4vl5mGtAIv4v1yvSg5fVfzMv3NdymUDJsI8CBLIWIha1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9854
 
-On Wed, 22 Jan 2025 18:35:40 +0200, Daniel Baluta wrote:
-> We introduce SOF support for new board revisions for i.MX8MP/QM/QXP
-> which wrt audio they replace wm8960 codec with wm8962.
-> 
-> Also add support for cs42888 codec on i.MX8QM/8QXP baseboard.
-> 
-> Patches 1-3 are already merged in linux SOF tree and they can be merged
-> via asoc tree.
-> 
-> [...]
+> > Hi Dheeraj,
+> >
+> > I must admit that I misread it too. There is another case in the TSO
+> > header where txq->tx_bounce may be used in some cases. I think
+> > the most correct fix is to make txq->tso_hdrs aligned to 32/64 bytes
+> > when allocating tso_hdrs, then we do not need to use txq->tx_bounce
+> > in fec_enet_txq_put_hdr_tso(), because (bufaddr) & fep->tx_align)
+> > will not be true. This way we can safely remove dma_map_single()
+> > from fec_enet_txq_put_hdr_tso().
+>=20
+> Hi Fang, Simon,
+>=20
+> Thank you for the feedback. I have a clarification question regarding
+> the alignment of txq->tso_hdrs.
+>=20
+> In the current code, txq->tso_hdrs is allocated using fec_dma_alloc(),
+> which internally calls dma_alloc_coherent(). As I understand it,
+> dma_alloc_coherent() guarantees that the allocated buffer is properly ali=
+gned.
+>=20
+> Given this, should we remove the alignment check
+> ((unsigned long)bufaddr) & fep->tx_align and the associated dma_map_singl=
+e()
+> logic entirely from fec_enet_txq_put_hdr_tso() as you have suggested?
+>=20
 
-Applied to
+The maximum of fep->tx_align is 0xf, so we need to ensure the buffer
+allocated by dma_alloc_coherent() is at least 16-byte aligned, but I'm
+not sure whether dma_alloc_coherent() guarantees this alignment.
+A safe approach is to apply for a memory block longer than expected,
+for example, if we want the alignment is 32-byte, we can apply for a
+memory block that is 32 bytes longer than the expected length. Then
+use ALGIN and PTR_ALIGN to get the aligned addr.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+txq->tso_hdrs_base =3D fec_dma_alloc(&fep->pdev->dev,
+					     	  txq->bd.ring_size * TSO_HEADER_SIZE + 32,
+					     	  &txq->tso_hdrs_dma_base, GFP_KERNEL);
+txq->tso_hdrs =3D PTR_ALIGN(txq->tso_hdrs_base, 32);
+txq->tso_hdrs_dma =3D ALIGN(txq->tso_hdrs_dma_base, 32);
 
-Thanks!
-
-[1/4] dt-bindings: arm: imx: Add board revisions for i.MX8MP, i.MX8QM and i.MX8QXP
-      commit: 4b24c69af9cd5bd8fe98ab2ddd822d73f5e20a00
-[2/4] ASoC: SOF: imx: Add mach entry to select cs42888 topology
-      commit: 66084793fac9c8b841f65da1809ad0ad398f9f2f
-[3/4] ASoC: SOF: imx8: Add entries for new 8QM and 8QXP revisions
-      commit: a9f54c7fbd2edb28c8d4d812be3d0129167f92d4
-[4/4] ASoC: SOF: imx8m: Add entry for new 8M Plus revision
-      commit: af65d7d041d486cc55530e14d806e16143037962
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+This is just my personal experience, if you have a better way that would
+be great.
