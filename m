@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B848B1DC9BE;
-	Sun, 26 Jan 2025 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DD3209F3B;
+	Sun, 26 Jan 2025 15:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903641; cv=none; b=ktOrjHyh1rCyFUn/mcB+9FQeY23UgdyxBvgqdwZepfcSZABxUmCIQe5BPdrGQZjCGlcatDrp/m4CaYz/LUNPKTqdV8lorDc3bSzz6ndzEspJ5cdEHFdbj7tvxijQdVaKOqgdJLWGHx5B/J+YlS9QxA1SHMKR6Y80w7HTsPTFJLY=
+	t=1737903739; cv=none; b=nNGT+dqVwakCyV8XgnwL5fB1HgyaSOLzBMGDDl1EBBNEfVOlbxubE740UPNcrRK9VNLxRXpwdIl+gdIJEvoFPH2H6JG1JnPtBTSgqNQK5a6TZDPuBLfdQDo6+7o+d7qc8iwk5JaoY6rVAuIA0Op+g+vYUW9ix0WAm437CQZQsvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903641; c=relaxed/simple;
-	bh=c8exVOBjJ1zKy1TuOi7YVMJaavVriuMSFje+Synkb7c=;
+	s=arc-20240116; t=1737903739; c=relaxed/simple;
+	bh=WUU5DtfN0aE3KW7oIl1FfUVR1fU5tIs7Hrz0gwxCS5g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ud5cNuLeChH/09BSstu6wVs4/b5vWziHQNeX2wIq3fJCtJ+KvlYq3AQYKiPy7JXlQCFEVbxYMeU4lcqfLQBxoegXOpnFHrBAMQJeExEf0YjH2ao4Pl0h1JuRq1nP17+n+U8VcA29iJs10yhGbBfwsDb/D7cWVsJCp70+qHGjq+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3LrJawZ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=oE+6QdTTn/V3C7yavCI8u1i4/jnBxcHbiW01VcCv5ucgM3T3g0vZX5S2iF4GkpLCQmIsH6VkXqoUfBhz09tMufjkaRR5F8oSb6AguVYppAqZjXb+K0A5xI4WwbCx3kSawiitowtP1LCfakQktqc3i+Rar3xIyJIYbhERqzIYWRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ce1MNI1P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3LrJawZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFACDC4CEE2;
-	Sun, 26 Jan 2025 15:00:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ce1MNI1P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A86C4CEE2;
+	Sun, 26 Jan 2025 15:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903641;
-	bh=c8exVOBjJ1zKy1TuOi7YVMJaavVriuMSFje+Synkb7c=;
+	s=k20201202; t=1737903739;
+	bh=WUU5DtfN0aE3KW7oIl1FfUVR1fU5tIs7Hrz0gwxCS5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3LrJawZGPOYjjwVfbIKkujqMa/03zDzmF/vl54QajncbLlXymOUBSuZmJGwIcwVh
-	 h9U18eGCH23K/55VxyRoVHAYFu8Exq5XT7ddJFd9zSRRklwTZSMboYWm70Pu3U04EH
-	 avO/q8+m4G8hmvnE9aV0UelAigvNxlTWzbK/TIysOJfrSmgJMDZvVSSx8AbTFv4fEL
-	 2tiVhnyJsUVdm3hh3MjHFPXfp42hMlRX3MKFHx5/6ahQRlfsjj7PxXy+YQE4F13XxY
-	 x+zfXQsiV/UXAMEnidF4MKcoef8HQTr50w31XPtDhsUiQYGBwTB6Uo400gou2mTxVu
-	 Hd6umhRI7IAJQ==
+	b=ce1MNI1PLYVyNKJ0go8W451GqVE9rAdc3z2sWS4h85qoOLaPiU0xrcdU5VMPAg1/N
+	 6ju4IzmuUvc4yjE/ziEgO1Cqw4Icfzb74cEImxWA8Q7YbdY+LEG0hv7t5Qa1CDsSOC
+	 YsOSl4NABTTHLR3lucjnm7TzCrOUiBu9mLjWanqAk47/YKEHPl+DN6MaCLs4XboZZ9
+	 OKKw4zSwNm3Cj/wGA9YM46VRzmv4fYqHzsBCzIWY0Sl9ocNfjDPzuX23nPujAeLQ07
+	 VdD4B6JJSfZsd8ztedQYFkC94fhQt+lsAak7bsig3O1vq2W+6dD8yrL5oreYG0PWmv
+	 bjWX2Iw1Hg09w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,16 +36,16 @@ Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
 	shawnguo@kernel.org,
-	linux-mmc@vger.kernel.org,
 	imx@lists.linux.dev,
+	linux-mmc@vger.kernel.org,
 	s32@nxp.com,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.13 06/35] mmc: sdhci-esdhc-imx: enable 'SDHCI_QUIRK_NO_LED' quirk for S32G
-Date: Sun, 26 Jan 2025 10:00:00 -0500
-Message-Id: <20250126150029.953021-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 04/29] mmc: sdhci-esdhc-imx: enable 'SDHCI_QUIRK_NO_LED' quirk for S32G
+Date: Sun, 26 Jan 2025 10:01:45 -0500
+Message-Id: <20250126150210.955385-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
-References: <20250126150029.953021-1-sashal@kernel.org>
+In-Reply-To: <20250126150210.955385-1-sashal@kernel.org>
+References: <20250126150210.955385-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13
+X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
 From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index d55d045ef2363..e23177ea9d916 100644
+index ef3a44f2dff16..d84aa20f03589 100644
 --- a/drivers/mmc/host/sdhci-esdhc-imx.c
 +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -304,6 +304,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
+@@ -303,6 +303,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
  			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
  			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
  			| ESDHC_FLAG_SKIP_ERR004536 | ESDHC_FLAG_SKIP_CD_WAKE,
