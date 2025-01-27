@@ -1,160 +1,226 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66500155751
-	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 08:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C61A15747C
+	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 08:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737964802; cv=none; b=dD09eE7oGDSQDlaDkZoHU74kbwI1R9Erlh+fGLEvXTm/vftW/OCnOuZ7rH5/jqvOW9XAJ+HeDaTd1m5z0YbzQQfreOv8xBk4DVLK/bg+Z/ogOfZcfYhdMdJcoEonVGi0vgc2WZAm+co8cFDGqQp3hxwFGQCpdgziGqPNIzWF3D8=
+	t=1737965967; cv=none; b=hJtiRTcKLlVXfzuxQeOg/OwYqgpDkYH3Men/btxxC5ABYJpeSj/Lktdj1XbERW3SuYPC5HxdI/s+2DFc0uuMwDIX1fgpy7B+7vPwyJ3DG3KjP7j9VXXhUJpMCiv63+jmnq37qF3xJK1Ad5dI9ohllJ5WCx7UhzPfrgUg6j4rri4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737964802; c=relaxed/simple;
-	bh=6aTZPcmNRSRdG6+MBREFDTzHWHDe6eeVH0Nu/xDqPBA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SOHwTLoxizpnRr4voQvjZyV+hstTtzwH6Eetymdz4vz4uadYqoPhW7YxbXJFmtTA2ekWfFkURUmFd8zkH9J0Tx9k6yIfg6Of5AY0Bdq+Nu+L3tDcj4yxK/cVI0LKg4QPTAZvPrKMqwCJCJuDUJD4qDSe9S4pTCpLOrVWvHHEtfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=afuL4jMq; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1737965967; c=relaxed/simple;
+	bh=mFFIkyWYyZc3Hyi4Y0oYt1N2uuuB3kb8hUGM5QpIHJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BwX2nwhCgGPWG/BwNiTfMAqDl9Z3PGNAw0OZgyEiYZ2H4h0yNCgfRWwfDP6TpGnKH7uBHg5q0DgiD2GwQiPAjT5RNh1e/8lqEWPzriIDQf274rRzhQeATrMHIVIf7a00aN0mq0Xi34FTtUU0fKjd9XlKvqanvE9IjoKGPAWxmy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=DhXpTVdz; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="afuL4jMq"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e545c1e8a15so6281027276.1
-        for <imx@lists.linux.dev>; Mon, 27 Jan 2025 00:00:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1737964799; x=1738569599; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x+VoyYfMUG+4N9u1dObDfYsaafMFTRcdAzbPiYZN20k=;
-        b=afuL4jMqPniZfOg2NrnQhifVaJ8U+Xg5ttMMTnXPvHA/8Sk01cGHwWYzHlT3iE0wCD
-         y/Bv+NRRjDLO0UKMWVhEQG8hpNX7dGIgsmuMR7J2kv7UMtVjDZMEkkWPHjH2Apw7ZWs6
-         6e+/9zC7BDYi7EqXvb0CmkP6IJtR3sMUq9raU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737964799; x=1738569599;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x+VoyYfMUG+4N9u1dObDfYsaafMFTRcdAzbPiYZN20k=;
-        b=CcpqFkWbs9xfk6QWxji5kzzgYk8oxO1M9MUm8LIGzpFfXukhZPc8PT3JUp06QsANse
-         SdeEILUTXLpT62PcsV0v1sfQerKLAQUnxfKphr3WfueFu+mjvYryeuXeCNdc1Cpz2Nmj
-         klLq4fJLtcJWzodTU+gVhUIHnB0CBq/7u5zcv6S9/+XdXiDlebQXYNpy+J79Qwea9q9o
-         maU+HV0KlQYhIog33WCLOuPj2bW27bkO1ossx0/dnebmcT5lPPo5so2u4TqP4DCjrEkz
-         NTprsMTq4T/hYE40nngjtgXB6ivHn5KGfUc7MpbUJOwcGJliZ/GaW9EDqvjp2IhkL/+y
-         bhzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGvdoHZ2kbsvqMTpYbYvwmTxUEOvlIHx0pT7y+xrAXqCdSsgrehZB55QbGCF45e2A7lS0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx7oBCqyULcYvT/geBALPRudw81fgfAjzwkVpiGrW0PuN08F3Pn
-	YLzqqH/rk0QZ3WLrcmI1z8DQv8SyHy6kGqffvU2Wawr4FpkDAARrjE17bAALZYYAjou6nB9AdS8
-	nyXXWOY9T4ItzAHBLsI9SM0t/KPkyxs3qDlxi3g==
-X-Gm-Gg: ASbGncvB2P/LTUwPfDtP3UDCld8yQ8mLiFWG0Dm84lMv0XRZK4AFNjk3WZr5U8QGFPM
-	8OBlqyM1Oh/OjJyKxke+gRVd1WKm3AkMscHGyUpaMldhaHyLD8ps6jhHOxcPZ
-X-Google-Smtp-Source: AGHT+IFX3AyS24bKYvvxXCujrzZUbEJvGk+kAmVE1IyqOCZgAHd9qOkJvg0QvUvcRnKZzmt22xUGs+LmO83I6nmj5A0=
-X-Received: by 2002:a05:690c:b99:b0:6ef:761e:cfc with SMTP id
- 00721157ae682-6f6eb90b207mr296554447b3.25.1737964799325; Sun, 26 Jan 2025
- 23:59:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="DhXpTVdz"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7E18E103802C0;
+	Mon, 27 Jan 2025 09:19:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1737965956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NCT04anDgidrJ2Slnl+cm4sx6kYglMx4fCsjq9WGLMo=;
+	b=DhXpTVdzLbOQnFmcfSZxeBVJ4V6wrjZbNqNNNPIbYqQNoRDYV94fTRRPvFrcdOdhtj/xvb
+	hR3dyNjSbZeahkvkWLQ4qZLhZUehJVl+GO8riGhK5j7k9lzdbhvtkxGp7kwlWcq7cBCZZb
+	RYnmOtAx2ripiCDX5rKLqoD0dKJAAfzUItnSSUvj+LHjdFfAQNj3tmbIwvv34M5UDtxfmc
+	YEudAYXbr6W1EsDLvgSIoU71As2RUpMV+9xS92G5HPu6jXN/FtA3J/x2ZYRaRQSnVbSnUg
+	dKrDDl5S2kbYS1pCtJ/IZz4zyPQGSH2duBXRsKoKfQhzZ7UjNgIfOAQSdbP+4Q==
+Date: Mon, 27 Jan 2025 09:19:10 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
+ Wahren <wahrenst@gmx.net>
+Subject: Re: [RESEND PATCH v11 1/3] dt-bindings: display: Add
+ powertip,{st7272|hx8238a} as DT Schema description
+Message-ID: <20250127091910.4184d9a0@wsk>
+In-Reply-To: <20250120085724.5caf80af@wsk>
+References: <20250109154149.1212631-1-lukma@denx.de>
+	<20250120085724.5caf80af@wsk>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com> <CABGWkvpj2bYyqiOp4D9Ss2aWOnoR7BxqDOGpXdRusq=aWu9BEA@mail.gmail.com>
- <74663d9d-364e-4db3-b18a-1068e2845215@kernel.org>
-In-Reply-To: <74663d9d-364e-4db3-b18a-1068e2845215@kernel.org>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Mon, 27 Jan 2025 08:59:48 +0100
-X-Gm-Features: AWEUYZkHJy82sfoPRSJ6UWwyoDs8ApP5Odlncth0pfXUuoFeCY-aQph_yq9FoZI
-Message-ID: <CABGWkvo+HXF4hu-TG314HSb2omSmTE57hbHQt5V2zoc2_SkxvQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] clk: Support spread spectrum and use it in clk-scmi
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, 
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/G/PBo.Dr_jQ5dzJPnc_toSO";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
+
+--Sig_/G/PBo.Dr_jQ5dzJPnc_toSO
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 27, 2025 at 8:42=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 25/01/2025 13:58, Dario Binacchi wrote:
-> > On Fri, Jan 24, 2025 at 2:19=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nx=
-p.com> wrote:
-> >>
-> >> - Introduce clk_set_spread_spectrum to set the parameters for enabling
-> >>   spread spectrum of a clock.
-> >> - Parse 'assigned-clock-sscs' and configure it by default before using=
- the
-> >>   clock. The pull request for this property is at [1]
-> >>   This property is parsed before parsing clock rate.
-> >>
-> >> - Enable this feature for clk-scmi on i.MX95.
-> >>   This may not the best, since checking machine compatibles.
-> >>   I am thinking to provide an API scmi_get_vendor_info, then driver
-> >>   could use it for OEM stuff, such as
-> >>   if (scmi_get_vendor_info returns NXP_IMX)
-> >>       ops->set_spread_spectrum =3D scmi_clk_set_spread_spectrum_imx;
-> >>
-> >
-> > I wonder if your solution is truly generic or merely a generalization
-> > of your use case, which seems significantly simpler compared to what
->
-> Please come with specific arguments why this is not generic enough, not
-> just FUD. Does it fit your case? If not, what would had to be changed?
-> These are the comments needed to actually work on generic solution.
->
-> > happens on the i.MX8M platform, as discussed in thread
-> > https://lore.kernel.org/lkml/PAXPR04MB8459537D7D2A49221D0E890D88E32@PAX=
-PR04MB8459.eurprd04.prod.outlook.com/,
-> > or on the STM32F platform, where parameters are not written directly
-> > to registers but are instead used in calculations involving the
-> > parent_rate and the PLL divider, for example.
-> >
-> > I am the author of the patches that introduced spread spectrum
-> > management for the AM33x and STM32Fx platforms, as well as the
-> > series, still pending acceptance, for the i.MX8M.
-> > From my perspective, this functionality varies significantly
-> > from platform to platform, with key differences that must be
-> > considered.
->
-> So what exactly varies? Come with specifics.
+Dear Community,
 
-In all the cases I implemented, I enabled spread spectrum within
-the set_rate of the clock/PLL in question, as information such as
-the parent rate or the divisor used was necessary to perform the
-calculations needed to extract the data for setting the SSCG
-register bitfields.
+> Dear Community,
+>=20
+> > This patch provides the DT Schema description of:
+> > - powertip,st7272  320 x 240 LCD display
+> > - powertip,hx8238a 320 x 240 LCD display
+> >=20
+> > Used with the different HW revisions of btt3 devices.
+> >  =20
+>=20
+> Gentle ping on this patch...
+>=20
 
-If I'm not mistaken, I think this is not the case implemented by this
-series.
+Gentle ping on this patch...
 
-Thanks and regards,
-Dario
+This patch is blocking adding DTS description for BTT3 device - as
+Shawn shared that he will pull other patches from this patch set when
+this one is in.
 
-> To me look addressing exactly the same.
->
+Thanks in advance for help.
+
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > Reviewed-by: Rob Herring <robh@kernel.org>
+> > ---
+> >=20
+> > Changes for v9:
+> > - New patch
+> >=20
+> > Changes for v10:
+> > - None
+> >=20
+> > Changes for v11:
+> > - Combine both separate dt-bindings patches for powertip,st7272 and
+> >   powertip,hx8238a into one
+> > - Drop the quotes for in "title" entry of powertip*.yaml files
+> > ---
+> >  .../display/panel/powertip,hx8238a.yaml       | 29
+> > +++++++++++++++++++ .../display/panel/powertip,st7272.yaml        |
+> > 29 +++++++++++++++++++ 2 files changed, 58 insertions(+)
+> >  create mode 100644
+> > Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> > create mode 100644
+> > Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> > b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> > new file mode 100644 index 000000000000..b7d74faeb5d5 --- /dev/null
+> > +++
+> > b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> > @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> > BSD-2-Clause +%YAML 1.2
+> > +---
+> > +$id:
+> > http://devicetree.org/schemas/display/panel/powertip,hx8238a.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> > +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> > +
+> > +maintainers:
+> > +  - Lukasz Majewski <lukma@denx.de>
+> > +
+> > +allOf:
+> > +  - $ref: panel-dpi.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - const: powertip,hx8238a
+> > +      - {} # panel-dpi, but not listed here to avoid false select
+> > +
+> > +  height-mm: true
+> > +  panel-timing: true
+> > +  port: true
+> > +  power-supply: true
+> > +  width-mm: true
+> > +
+> > +additionalProperties: false
+> > +
+> > +...
+> > diff --git
+> > a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> > b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> > new file mode 100644 index 000000000000..f3622800f13f --- /dev/null
+> > +++
+> > b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> > @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> > BSD-2-Clause +%YAML 1.2
+> > +---
+> > +$id:
+> > http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> > +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> > +
+> > +maintainers:
+> > +  - Lukasz Majewski <lukma@denx.de>
+> > +
+> > +allOf:
+> > +  - $ref: panel-dpi.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    items:
+> > +      - const: powertip,st7272
+> > +      - {} # panel-dpi, but not listed here to avoid false select
+> > +
+> > +  height-mm: true
+> > +  panel-timing: true
+> > +  port: true
+> > +  power-supply: true
+> > +  width-mm: true
+> > +
+> > +additionalProperties: false
+> > +
+> > +... =20
+>=20
+>=20
+>=20
+>=20
 > Best regards,
-> Krzysztof
+>=20
+> Lukasz Majewski
+>=20
+> --
+>=20
+> DENX Software Engineering GmbH,      Managing Director: Erika Unter
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
+> lukma@denx.de
 
 
 
---=20
 
-Dario Binacchi
+Best regards,
 
-Senior Embedded Linux Developer
+Lukasz Majewski
 
-dario.binacchi@amarulasolutions.com
+--
 
-__________________________________
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
+--Sig_/G/PBo.Dr_jQ5dzJPnc_toSO
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Amarula Solutions SRL
+-----BEGIN PGP SIGNATURE-----
 
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmeXQX4ACgkQAR8vZIA0
+zr0WlAgA5K+fcR4Y0Nfs8bwh6939Z6/8F7YVza2aKhKiBdnn2Ii07rvD6bYxpOXt
+HWyUIX9MazNNEaQFhK1fwXSOprsRJYN2+ihv3I9dGIK4qR9qLV9Z0RTb7JexykUJ
+sfxqgQ3IVQRV4iEI6R/HE9zV56MFkBUa4km7BKTmp5ejkCwABl+1cNsBcHnzOQiM
+pjiIUB7otxcE6KVJuXJHyVHQlNJdqrtPjprPcSOEXBQq1E41XDGiwHcQUAO9duT6
+kiLSIvawGq2EkJwl+MwLIuf5IXSRedNRI/y9VIc6QHJfjzjZ450jCEamZL8S7Bh1
+vA/aM5vQHS/9guw2v9ckYnUoYvsYtw==
+=usBX
+-----END PGP SIGNATURE-----
 
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
+--Sig_/G/PBo.Dr_jQ5dzJPnc_toSO--
