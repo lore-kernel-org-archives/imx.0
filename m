@@ -1,164 +1,148 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38451FDA84;
-	Mon, 27 Jan 2025 13:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774B66AAD
+	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 14:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737985538; cv=none; b=pDbjfWSZzV6THMJX0kOLnPWJFZ028GsZKemMBO2lewm7WrJYt1Birec71WIhYiz0KebRX3iDoVlBjTCqd+UZSvvH7oPjwWwKgaTLSN0ncO2ImmQMP+FgXae2OiTUD7/UJ7xNfbryIuMtZZobZnbmnDek8DGtoRvp/GnH22tnhOk=
+	t=1737989585; cv=none; b=bhNqro7Aozea5am8sHjjKy52VunDGSlR8AAufjEkzvQtmYTDwADxVRC3uJ+lNUs9+Nw9jr2j6xML9FuTxutXZDHGu6To/5tPflcn3eEO7x9F7o3lRQNW6GWkZ92/TSsyUXBTzLa+HjzJcTL+SlcuLwhQvaKlQyU7E5i5XP8vS9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737985538; c=relaxed/simple;
-	bh=Vori4fip27Sc4/LH5rLLdMAGOebUrJz0cFz2ndYAD/A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ceI8gyIJLRi88OcKm2T1TlaE+6VbjMvK6i/9AUqgWdwXcGjiudBCNyknWPt1O9F8vMhLcGv1ZBNigxYVTvq/mPjCEjdfMj+h7zD8sch8XmLkeHasCv6sCV0Yp7n8sXI31j7npmIKqXcTvIU12c7J8qSvcszRNxbLiMVChBIl7/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-51cee9d5013so2812455e0c.3;
-        Mon, 27 Jan 2025 05:45:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737985533; x=1738590333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ezeJexvLdIAOyqaTRkV2GqCEVD2bATElU5AWxdy7c60=;
-        b=Hc0UV1x6ImeSHeLWZww0dk7L26spmlBw10YcrmmEnR1f60aOvPpDsGFYUbHi404tg5
-         yN30G8G96Q7Zt18iFF7vtRkVOJ9vafLWN6+8OkZD1HnRLZr6HhN5al8yas1zMABICsDp
-         GYUDq+UVO+wcNgpszz2T5QtMxb/AjLeOKzLfLuQRaT7WwYxe5bzcHtt+DzjxamHsGdkr
-         w3I657WqamnkLJSFHC5AxhcoITCVwXFIyDApS0kpAFermgXjFXpy6ySJZBKRXeilRUZ8
-         FnEuHz60bp911jdUa5uFPjsWDKzHi3yGGDx05xxVe3CfaMX6WPI5AX/pzpT6GALc2DBZ
-         TCAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlDFdLOusLuH1hpJFj31+Avp8PlJLstAhd8ZhduKdm9PEK+BBX81l+RI4CTbU28XLjijekEJ5L7s4Rcus=@lists.linux.dev, AJvYcCX1cm1g3YUgZZI2w98pZXIFN3aJErZuIDzvNuGS5RspXqJS1hCr8Bt718+59vA5Zj+x80o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzKHmGhu/VU/6O/Fwnm5RswMOWUp5NDqJ7cd6NPIMm38MY9jtDT
-	nR6UlXxKmkfkdHDeDXN5/0qU6rv7hH6ywjYyB/4G+dnrwh8m/6kXzdI9GgCU8j4=
-X-Gm-Gg: ASbGnct/Oi9whCMHUFQOWpwZYP/hTxgC0mivi9qdZm5hclReLNIybS9AOVnWWfThUZn
-	wZYivHCltcBZZw+ETf8oLxR52p9yOKULC8SLu2JZTK9nnGPCtllnFuzLotDumveResXzVcmSkn2
-	q4tFv9KrUz725prbpu6kj5zBMx4XEkm7X3RVF3PhLKH8B5BPgiN1nK4HoOrHpJ3g9mEyuQMWo85
-	TUlTlz3jkHeM5VsoWUgSOwTINp2mvka5uMUsf7bHWSExcnzJtrclu34XCigAcD6nscsI2ohWKH3
-	VNVWOpqE1mMQenbmPBLAPCLZO3xLEbFzhQjb7n8VSvI=
-X-Google-Smtp-Source: AGHT+IEAqDoDue/OWPgb43aMMB7YwFQBeUQ3IwmpBcgIbUnOxmGrczjO5Tj01b7i75MeYMNb/zBqWw==
-X-Received: by 2002:a05:6122:885:b0:515:f586:5298 with SMTP id 71dfb90a1353d-51d5b2cbc82mr35203996e0c.7.1737985533029;
-        Mon, 27 Jan 2025 05:45:33 -0800 (PST)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51e4ebbde5asm1415457e0c.31.2025.01.27.05.45.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 05:45:32 -0800 (PST)
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4affbb7ef2dso3734981137.0;
-        Mon, 27 Jan 2025 05:45:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVdOCZvJJ1w0qLpLJ2ld3e5DgDxDwmEsVP+XDW2WcDpP/Z+nkNbnRX7BugF86fxtRgcRjg=@lists.linux.dev, AJvYcCVkaUiaUwTswDDObrBOqL7vVRgS7qbRDCzKCJjwiJRr2SYfErTx0ktHZw31UJ98NgxjW/+ONAaHFcEL0ho=@lists.linux.dev
-X-Received: by 2002:a05:6102:a4a:b0:4b1:1b07:f7c3 with SMTP id
- ada2fe7eead31-4b690c77e0dmr34279786137.20.1737985531453; Mon, 27 Jan 2025
- 05:45:31 -0800 (PST)
+	s=arc-20240116; t=1737989585; c=relaxed/simple;
+	bh=JXIqoskXtxrkv2wUzb2QizyfvVbz4svASpayt5b6hjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M60NTLi85a88R6Yn9VW+8Q779mbUpyrWFAazPYMVNQWckfnhMu0skg0FjKRXOUJBZ3ZPRSwweOP1nshBEVcCNv+ADC3UcggwA/D5TuRqv9McGd7Vbb/TiDH/WKwyDDEnfedld7Fi9OG88S5CO/sbWqbpdutLLdhSZCM6hdFKuGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=acxnt8HH; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="acxnt8HH"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80AD6103802C0;
+	Mon, 27 Jan 2025 15:52:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1737989580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CdF28R0lwLtzzeK4zWjgs0IHh1lVP07gYZEhtv8/W2w=;
+	b=acxnt8HHx9qxDj4qWZ9eqLBAB9Cod/FYJYF7OYV7gALS4SJ29uquaXrbvJ3VyDVPeQUSGH
+	NrBFhpWV5vnbCFV7WXQ3cZre5PA5bBUoQZG41kS95rmUW8ae1aWKaLCIRrTm9SVAUN/sCH
+	/UsBye8DcK3JO8ajd6BOgdigawIUp1Ss7go6/kSmdhu2o5B3xw7fGxpYpPDK4+VxdNCRYK
+	cqa3zNw4bqG/rpTvO2HbT03HTB/atu5SZoIsFf4vKpwGelgRYDX/0tXkjvVZktYBEYZ5rK
+	t3sjZ/xW3SiKa9793jMHO87kamhBsHYeRIC+S3jOJg9nmDvEGcJMh82GqcZb+A==
+Date: Mon, 27 Jan 2025 15:52:53 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
+ Wahren <wahrenst@gmx.net>
+Subject: Re: [RESEND PATCH v11 1/3] dt-bindings: display: Add
+ powertip,{st7272|hx8238a} as DT Schema description
+Message-ID: <20250127155253.06937c28@wsk>
+In-Reply-To: <ebd9f9e2-3d8c-4deb-9962-5694cadec090@kernel.org>
+References: <20250109154149.1212631-1-lukma@denx.de>
+	<20250120085724.5caf80af@wsk>
+	<20250127091910.4184d9a0@wsk>
+	<1cde6d04-6fe9-4d09-a11e-26cef6bcf2af@kernel.org>
+	<20250127094612.27f8fca3@wsk>
+	<ebd9f9e2-3d8c-4deb-9962-5694cadec090@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com> <20250127-pm_ata-v1-14-f8f50c821a2a@gmail.com>
-In-Reply-To: <20250127-pm_ata-v1-14-f8f50c821a2a@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 27 Jan 2025 14:45:19 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWdXNB=ijpWHWY5HgwJw8yw4jk9Bnmez-8MLzGRCQrXdg@mail.gmail.com>
-X-Gm-Features: AWEUYZlEDDkC64B3GghXYxN7ZaYz24mUqfziFlSmlvrKqtJLvKHGpws7NZJvNqU
-Message-ID: <CAMuHMdWdXNB=ijpWHWY5HgwJw8yw4jk9Bnmez-8MLzGRCQrXdg@mail.gmail.com>
-Subject: Re: [PATCH RFC 14/14] ahci: sata_rcar: Switch from CONFIG_PM_SLEEP
- guards to pm_sleep_ptr()
-To: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Viresh Kumar <vireshk@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-ide@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/h/ql_liqhaaB_oe78.1H=Ly";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
+
+--Sig_/h/ql_liqhaaB_oe78.1H=Ly
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Hi Raphael,
+Hi Krzysztof,
 
-On Mon, 27 Jan 2025 at 13:46, Raphael Gallais-Pou <rgallaispou@gmail.com> w=
-rote:
-> Letting the compiler remove these functions when the kernel is built
-> without CONFIG_PM_SLEEP support is simpler and less error prone than the
-> use of #ifdef based kernel configuration guards.
->
-> Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+> On 27/01/2025 09:46, Lukasz Majewski wrote:
+> > Hi Krzysztof,
+> >  =20
+> >> On 27/01/2025 09:19, Lukasz Majewski wrote: =20
+> >>> Dear Community,
+> >>>    =20
+> >>>> Dear Community,
+> >>>>   =20
+> >>>>> This patch provides the DT Schema description of:
+> >>>>> - powertip,st7272  320 x 240 LCD display
+> >>>>> - powertip,hx8238a 320 x 240 LCD display
+> >>>>>
+> >>>>> Used with the different HW revisions of btt3 devices.
+> >>>>>      =20
+> >>>>
+> >>>> Gentle ping on this patch...   =20
+> >>
+> >>
+> >> Merge window, not need to ping anyone, unless these are fixes. Are
+> >> these? Do not look like. =20
+> >=20
+> > Please correct me if I'm wring (or something has changed recently),
+> > but wasn't there a policy that DTS bindings are allowed to be
+> > pulled no matter if merge window is open or not? =20
+>=20
+>=20
+> Bindings? No such rule, no difference between bindings and any other
+> thing. No non-fix patches are taken by maintainers during merge
+> window, with some exceptions. There is a difference in DRM, though,
+> because it follows a bit different cycle schedule, but you pinged us
+> all, not only DRM folks.
 
-Thanks for your patch!
+Thanks for explanation - I've been mistaken...
 
-The subsystem prefix is "ata", not "ahci" (not all ATA-drivers are
-AHCI-drivers).
+>=20
+> So was the ping towards DRM? Is their tree now open?
+>=20
 
-> --- a/drivers/ata/sata_rcar.c
-> +++ b/drivers/ata/sata_rcar.c
-> @@ -927,7 +927,6 @@ static void sata_rcar_remove(struct platform_device *=
-pdev)
->         pm_runtime_disable(&pdev->dev);
->  }
->
-> -#ifdef CONFIG_PM_SLEEP
->  static int sata_rcar_suspend(struct device *dev)
->  {
->         struct ata_host *host =3D dev_get_drvdata(dev);
-> @@ -1005,7 +1004,6 @@ static const struct dev_pm_ops sata_rcar_pm_ops =3D=
- {
->         .poweroff       =3D sata_rcar_suspend,
->         .restore        =3D sata_rcar_restore,
->  };
-> -#endif
+You mean https://cgit.freedesktop.org/drm/drm ?
 
-If CONFIG_PM_SLEEP is disabled (e.g. m68k allyesconfig):
+Some work (i.e. code is pull) is done there.
 
-    drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_suspend=E2=80=
-=99:
-    drivers/ata/sata_rcar.c:936:9: error: implicit declaration of
-function =E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98sata_rca=
-r_suspend=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-      936 |         ata_host_suspend(host, PMSG_SUSPEND);
-          |         ^~~~~~~~~~~~~~~~
-          |         sata_rcar_suspend
-    drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_resume=E2=80=99=
-:
-    drivers/ata/sata_rcar.c:973:9: error: implicit declaration of
-function =E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98sata_rcar=
-_resume=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-      973 |         ata_host_resume(host);
-          |         ^~~~~~~~~~~~~~~
-          |         sata_rcar_resume
+> Best regards,
+> Krzysztof
 
->
->  static struct platform_driver sata_rcar_driver =3D {
->         .probe          =3D sata_rcar_probe,
-> @@ -1013,9 +1011,7 @@ static struct platform_driver sata_rcar_driver =3D =
-{
->         .driver =3D {
->                 .name           =3D DRV_NAME,
->                 .of_match_table =3D sata_rcar_match,
-> -#ifdef CONFIG_PM_SLEEP
-> -               .pm             =3D &sata_rcar_pm_ops,
-> -#endif
-> +               .pm             =3D pm_sleep_ptr(&sata_rcar_pm_ops),
->         },
->  };
 
-Gr{oetje,eeting}s,
 
-                        Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Best regards,
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/h/ql_liqhaaB_oe78.1H=Ly
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmeXncUACgkQAR8vZIA0
+zr1jeggAn52s3WruRvdZ2n6gQj3Z4b2iDp63vBcu9ur9KYn4Zw3VWPuKH09ktc71
+2zr0fZMg/Tp3ssOMjYknbeJok9X2pFMVnZMWnmfm/wEaHGfZOppJlA5vk1Eprq7M
+yGsRTrwA9EMu+WophtwKDIkNJ68/Nr5t646H4EAYhybvBCMeQkEDSJu1K4tEDM0C
+ZTG8aRsdZV/F4h+9O4hfRU4c8hew05PSySw+ZLIjAd0wp7OK6VPOtjqLCaqeJmUz
+MsnnBqqM4WfHMZDkFN58p57A8ZJYzl29UVjiQ1eXsJjLxxskXNOneXJx+mMt0J6Q
+yDP5qf3i0uzYIll0yNnkFXh4n0pz0w==
+=bWIG
+-----END PGP SIGNATURE-----
+
+--Sig_/h/ql_liqhaaB_oe78.1H=Ly--
