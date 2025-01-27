@@ -1,109 +1,150 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732721CD3F
-	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 15:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6E614A62A;
+	Mon, 27 Jan 2025 16:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737991881; cv=none; b=JwDFBDiFMmTYmf0NP+deOc6axKg2THhxb2IyBMr23kl6KoEGkLQ+/zSkCu1eaSygR18X2TaAaBxMAGeW5Lfmh5SiTrfIGQuK/F53og81u9vOCfjrMPMLAzx2n/82c6mbKS5T8s0ggU577BOku6KSMcRQ63uIykagayd4yFcWeGU=
+	t=1737995421; cv=none; b=RXhQhi8HjwoK+W0j97oogzDVsoX4VyaJC8tbnec8YtK3jWyoiTJjiRRTRv8wOiQqsdce507SNWke2Pq7xyVk1yzYqAa8gGiT/3wuX4EYVAemQt8mQr9GIjG683xfWpOAmhyAHjaXoo34pZ/0879fihxJApM4J5EbbuRqK/IQLvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737991881; c=relaxed/simple;
-	bh=kgJQKIwXeuIiFHUIgynm2SK+9xP+PtmmawP4ZBc9Mlc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=A+QTJKS/c2kMmFo30wxqrOCV4PXfwkIkdE3eTKTzjS8L0StcDXhAbeow+6di0yILC9CJshu5TM5F+T+MeynOa/4zI74B0y7yQRW1awU4YMimo75t8En5jT9qwXWTjRjxXKV81587xVeWxEh+LtrE34xJeGZDMzPhd7Pgnee9kek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CqL+tAKw; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CqL+tAKw"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C79F044307;
-	Mon, 27 Jan 2025 15:31:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1737991870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4X739XGYENPyH7eKazNs980sUXKrePD1lY80Wn6mxsc=;
-	b=CqL+tAKwM0nZ9UtDkFRmku5cGz9WFsQFCYj3weMvu8NDd/9ZOIy+cl8SlpZ7IQ6eWi2n18
-	9Cf3gSACjGgTHbC7ZGQ4SRgMo8UBildXPImPEDM3GwWC7kTHfxNHv/sg9W4Bawu2+/pYaT
-	3LjpdY8oIEAsTmd557If/qwptQ9T+KMMEnNDxPMHLbg7M+H1LGhqTiBxw1Uo5wi3rvRPFa
-	+ZeRZlZr7zxnUMGhdDBB99oymJpmX6JYdaPIRr9Lcf5KtwuUikac8vEoWpivB6wA8xlT5O
-	D6O0o/4q4+S6gUmEbyoWIsXDVD7EZ/JXiryM4INdX1VgPBfGtFuh63fd8HzyLQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 27 Jan 2025 16:31:00 +0100
-Subject: [PATCH v2 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
- Concerto board
+	s=arc-20240116; t=1737995421; c=relaxed/simple;
+	bh=ZNKSmArHq89j7IClvTYDareVhIHdk3mFzoaiZMHUsD8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CVmZydBNPIsSdOyBr7+q/rsebiT7TUBNsu2+ohy0xVpVL3B0jvHfdZLBLirKrVvtvotyKz6JmJdXL3lceopt+MrDB7bWxFNMN7OP0kme3u+mOBr+CVWHS/n55QAmJoXb//ziyasyeumlJ8CEHWidMYo9yigiyjoGT/wwZ7zRR6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4aff04f17c7so3614229137.0;
+        Mon, 27 Jan 2025 08:30:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737995417; x=1738600217;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WlQ0Imi4TI1g2HJ/WhDlE3//wGfnD+n5Npq7eYW5xxc=;
+        b=ktBImqQNAiq6+gw6Dq7qWgEd0ZZkilIS6PEG/rnw7+3/V+WsMCNFYzCy5x49JW9lIF
+         WVhRe7VFNnUJqFPHP5tGoMgIW/fzTiLRitANxjvrR8P+LL+jIpA1CXZ9Vxq0kX1Ch77x
+         /VFCrIo7ggqT4BBTbtSKZFyHIzKiGn4eBf52x4VIH8fnP3UL1Dl2DkFzWdu6aG/hgeWD
+         wQ9TnxbXosL8Ays0UjVq0wvrmh0hrqHNib764l6/Tu2qe0NEK2Em7fVjgxm6gofxSAuB
+         aplHtvyo3mCd6o1KudMMEcZ56s1ys6nZZzI6Uz9ex+vbyFM7QFGvc61baP86DHwn34aw
+         JGVw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcmct8CLgQkydkrhS5eJhlwBuxxd7QPR8kHxPR7Ry5yeKxpMMc40M+QJeuFwQql7Tjq+wX/ys4kaeYpo4=@lists.linux.dev, AJvYcCXgrYGuzEGd4CcCdX5Y9Oh+d/MCLXzKrbV8IeZ+9Umx7+pGLwn+CbY7194stIHL6OVbXGU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxw/wuCU8p0RCdvT/S3/jIqwdUwGMKUmO+ermaQ1ZInGWXlxgaq
+	mgcsCy27j+w6PCj3rgsGiInCr6fh89Ep3+LyUniZjyGWAqBCOtfsCwpZn4Q0x1E=
+X-Gm-Gg: ASbGncuaNOucWtaWhnUXkFxOUTPWjJwTqMi/XvgNGxN2GkE2Mwe3cnE56Vbc2Hm0Wzv
+	t4juS2bmb9zaOvOF4ktoi4qCFtYofxVBALbrks3LpHiwpUJWHcy/bHhvopOp0ZctBnmddl7frab
+	HazTstSVU7jnkI376j3+kGlolE2iDjOwL3m/FwyQ5Kqds7sUzxnkXZ9WcnZNR8+Xc5hTQqncHZZ
+	i0pbBWuxuMtgG7PavmCZKmHhx0c3Kkpbo97LfrmWb3aX7biNhKQrSBlwXucvZCAdeGsidXmtMVz
+	qbTbuEkQCvdXAYu9z5AgXHDNt8pAEjIUikYAmG5RlIY=
+X-Google-Smtp-Source: AGHT+IHQqh8ZpgnGqmw8Y0Gfs0rWOvi3lgJJXcPB3FwANWYf6VdAlOHRWeu8C9qpI5icX+qplbaHlQ==
+X-Received: by 2002:a67:e2ca:0:b0:4af:57df:8697 with SMTP id ada2fe7eead31-4b709d0b4f6mr11310062137.10.1737995416851;
+        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-864a9c98e0esm1972574241.34.2025.01.27.08.30.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-860f0e91121so3089181241.0;
+        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVecpaNoZSpjFc+UK85czIYowJhcVVS+CQvWM0KJL1qTExICobPbF3pqanRYGGFLthS/Kw=@lists.linux.dev, AJvYcCWyq2EkCajlTC2e51BY6muFSDBZZLrPT47Ee6VQTZ2LbhzGklC0NbAoXMwxSfaomNI6nEe2/8MPjMeekPw=@lists.linux.dev
+X-Received: by 2002:a05:6122:2028:b0:515:20e6:7861 with SMTP id
+ 71dfb90a1353d-51e4fb68a06mr12748400e0c.2.1737995415897; Mon, 27 Jan 2025
+ 08:30:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250127-varsom6ul-concerto-dts-v2-1-4dac29256989@bootlin.com>
-References: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
-In-Reply-To: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1050;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=kgJQKIwXeuIiFHUIgynm2SK+9xP+PtmmawP4ZBc9Mlc=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnl6a8eX0fJ1piwCuJPV9T7FOfKSTFfoKmGSZzO
- jmLQp0upy+JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5emvAAKCRDRgEFAKaOo
- NsEyEAC8ZsLZA0TPxVU/E9BEYiMbIa6BLVHbc0kicCqMbx/CxVryTHVCRlu1OF5o7Uh+aSKdRKM
- XQ6h3xHKMX1XsUArZEYowe/iiJf0smTH2yuKP+b27HirWi7nAP0TXab5hOgC5S8bO+icDnb/0r8
- CYG/sh82o4hUqnIj2rJlKZ/dgzcl4EO/5AEDWXVpZIEvHeBraywGE4GN36693Di3OlXmyg0L3bm
- W483sl/MXplAkFD7Xv4K2TUy9xqr1pjxBexuziAkdHros1c89uOSBU4HR+BlUexOYfEU44XliNK
- ZUxvmhCLi4JffhIPs3xbLpAAJVjKmULdk6W6P995o4Ry0hbdKcKBcd7iiVb2OKe+UvJZrMkaDhT
- /vFIo8pl0kPWiFgUY/dMI4DmIYp8rw4OX44TRwD+YXM8k4thNppg8ynJuyXN25UCrDigrshkI/2
- 0+h2TPCZpUM5UvIU44iKlCK4VCkKeHLoWDr/TdtgRRlMxLsY/8XWFdzYymu1jLIakmpvr76h+xP
- Mu94X16Ej+tQ/wngMTk8A1Z0TmzBz6uYRIro+/WEkHhy1cyyEQ0aYB/Wb3Bb6tx6PyyUGfbkruw
- IW2O9eO61xigwHFJZ9OUvCUcS6ViV/ZJ77BjO06oFnr3KW4laXCFv4dl4TOuNQYt3xox93keOAx
- KvkG3vCW3SVEzHg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudefheegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvrhhnvghls
- ehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
+In-Reply-To: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 27 Jan 2025 17:30:04 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdV7GwMNm5tYvWugehstM07W9JkLdKrE9hwPhxcEab8ajA@mail.gmail.com>
+X-Gm-Features: AWEUYZmGy-5V1Zbo64bUIwl2HUW8rq3_GydwTJUAoMljjyEePEDEnt0EQDD7GTM
+Message-ID: <CAMuHMdV7GwMNm5tYvWugehstM07W9JkLdKrE9hwPhxcEab8ajA@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/14] AHCI power management cleanup
+To: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Hans de Goede <hdegoede@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Viresh Kumar <vireshk@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, linux-ide@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for the Variscite i.MX6UL VAR-SOM-MX6UL and the Variscite
-Concerto carrier board.
+Hi Raphael,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Mon, 27 Jan 2025 at 13:46, Raphael Gallais-Pou <rgallaispou@gmail.com> w=
+rote:
+> Several AHCI drivers expose suspend/resume functions in a way that can
+> be simplified.  Using pre-processor operation can lead to errors, while
+> relying on automatic kernel configuration is safer.  It also shrinks the
+> kernel size when CONFIG_PM_SLEEP is not used[1].
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 6e0dcf4307f1..4da575b31061 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -688,6 +688,12 @@ properties:
-           - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
-           - const: fsl,imx6ul
- 
-+      - description: i.MX6UL Variscite VAR-SOM-MX6 Boards
-+        items:
-+          - const: variscite,mx6ulconcerto
-+          - const: variscite,var-som-imx6ul
-+          - const: fsl,imx6ul
-+
-       - description: Kontron BL i.MX6UL (N631X S) Board
-         items:
-           - const: kontron,bl-imx6ul       # Kontron BL i.MX6UL Carrier Board
+m68k/allyesconfig:
 
--- 
-2.47.0.2.g7caf9f4c55.dirty
+drivers/ata/sata_highbank.c: In function =E2=80=98ahci_highbank_suspend=E2=
+=80=99:
+drivers/ata/sata_highbank.c:590:9: error: implicit declaration of
+function =E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98ata_sas_=
+port_suspend=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/sata_highbank.c: In function =E2=80=98ahci_highbank_resume=E2=
+=80=99:
+drivers/ata/sata_highbank.c:607:9: error: implicit declaration of
+function =E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98ahci_port=
+_resume=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/pata_arasan_cf.c: In function =E2=80=98arasan_cf_suspend=E2=80=
+=99:
+drivers/ata/pata_arasan_cf.c:938:9: error: implicit declaration of
+function =E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98ata_sas_=
+port_suspend=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/pata_arasan_cf.c: In function =E2=80=98arasan_cf_resume=E2=80=
+=99:
+drivers/ata/pata_arasan_cf.c:948:9: error: implicit declaration of
+function =E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98sata_link=
+_resume=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_suspend=E2=80=99:
+drivers/ata/sata_rcar.c:936:9: error: implicit declaration of function
+=E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98sata_rcar_suspend=
+=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_resume=E2=80=99:
+drivers/ata/sata_rcar.c:973:9: error: implicit declaration of function
+=E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98sata_rcar_resume=
+=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/pata_imx.c: In function =E2=80=98pata_imx_suspend=E2=80=99:
+drivers/ata/pata_imx.c:209:9: error: implicit declaration of function
+=E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98pata_imx_suspend=
+=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+drivers/ata/pata_imx.c: In function =E2=80=98pata_imx_resume=E2=80=99:
+drivers/ata/pata_imx.c:232:9: error: implicit declaration of function
+=E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98pata_imx_resume=E2=
+=80=99?
+[-Werror=3Dimplicit-function-declaration]
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
