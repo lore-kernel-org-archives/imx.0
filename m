@@ -1,66 +1,66 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9A1FF1D9;
-	Mon, 27 Jan 2025 12:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288C200BA9;
+	Mon, 27 Jan 2025 12:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737982010; cv=none; b=cUKWJXWAR6j7f4odUiTjXgoRTsmR6O44JmcvtEU/0mlWeCyCNI86su4UyflEnOXzrBiOombT27Uzf6bxL4i4knfDg9sdSkemhWaZyDSApoXhOdXJcbNA1764gnf+Zd+iE/az99ZqVn0pQSsGkaEtCWe+cW5DpsKgeB3YJnb6Kro=
+	t=1737982011; cv=none; b=fZZTAhp1PWY0MVZazuavDr42sniBj5LCHZK+djJ/ZD0rh9bObnfc+cmRPLurSzEmv7C3OSnd5nvmdL8KWRf6XpYTRUDfoZBtJ1ZBgbYs06D1gMGYSylv6qF44Ax0QrLsomXiu21MwHY0A1IxYbg07Xstds6TCVLWTdO4lEQ3avk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737982010; c=relaxed/simple;
-	bh=3GK2SPKfq0gy3cNILmQ5ZsytwY/PBIweFrsBnfiLWdw=;
+	s=arc-20240116; t=1737982011; c=relaxed/simple;
+	bh=W9yVEdw4qSI4n7OCj5u/OGHoNGxhi+e4Ou6sa0uyD7U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dQXNSa9CGDplKS5NBL22e5zbrbZRuFzekY2DGZ4hPS2Cr17EhdqDQLfJwg1KUx11pcsT9JJC6YFiKymnFZ4h23KmxxoKf6T0utP2gsoIKepzszBDeJjCtyIUW2I9y7v/rz2yr+5aRWi0Iyhs0nRYK76Ih4MSUcMxzAm/QPnH2lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AenV9bOp; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:To:Cc; b=Xz6OiCV2FqYmzqYsUW4FHluKZj5G/nZL73HvikWTx31qrd3y58qV4Zd7EHHG4TIbdZXbfb1OYfJ0hLyzBsaOSVbA4FKOCUM5iWs8c5zqJb+V3uVUEIsXVKt/HjjAMiY8V58JdA3NlVqYMSze9rfBZrztwazowLoTrPDICBtUxTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BVqYJG3Y; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AenV9bOp"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43625c4a50dso28431405e9.0;
-        Mon, 27 Jan 2025 04:46:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BVqYJG3Y"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436281c8a38so30596265e9.3;
+        Mon, 27 Jan 2025 04:46:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737982007; x=1738586807; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1737982008; x=1738586808; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=szGjXo1hYYSzRkz6HQhU4uZSzD6xW5bFqhnvJ2ebtpA=;
-        b=AenV9bOpU+Q80jM8uHQCXlGdI0fV6h925Te/q2WW4l9MfGt37lMws9dZ2Y3KnrEZT2
-         6KLZdv8VE0xYme/Nb9XOOwHF8MoOkmv/ZPQq3870qyjiKr2oh/O8rArlt6XDk9Jt0xMr
-         KrD6MItH8r7gLAS0viOPrY65O1qRR4PMrtRF4RFijh85YKdH0WIJTQnUvkx6s1A57Piq
-         oG/ukTdCE7WRf1PzO4L02gyoUZm8/RQxPiuro6bYv4jKq3z+qab29co+QJrVah9zKIGW
-         /VLGntlJPP4uWo9RqAnkQDdEbszd309L1aje+nFH+91bByEiWajdalq7HMiQ0oceU4p5
-         pkVg==
+        bh=KyTcZ2hwVqzXcvZadTxLwsKyE/CzZeUWttlSS9sOM8o=;
+        b=BVqYJG3YTFbkwsD9S94FBgND/fBOPuE9o69Q6sxTheKJyBd8cpVUu4Laia6I3R4DEw
+         vUnUPdqszy1cLu2bb9wHiMNPqco6ZDBadN5jZFbSnjKYPEN7y7Z/A5wtOc/Q0oq+sGy0
+         GPERK40266v992tGZmudVhM3AppVhNHiEOpi9ppF7I5nM3RuTVzADpWqbjSLPSQ1SeBl
+         /q5ln9tpPV3ZFG5groIMpIvd522/4wNe5nQCXWd3eFH3cG1Po5wRkda38wvrKmnAnrQ1
+         WdAuD+pD5W0tXyV7XJcn+ksOF9jOEohsMiKh283wLP88SBSnGwvoHyjkWLTtRQXqk8+T
+         tNUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737982007; x=1738586807;
+        d=1e100.net; s=20230601; t=1737982008; x=1738586808;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=szGjXo1hYYSzRkz6HQhU4uZSzD6xW5bFqhnvJ2ebtpA=;
-        b=O4KXHLI6bn3/OIM8ephcAxIA+KfdJOK8OKTfxlSrD1RE3foUpBt9Mml/em6/1CviRk
-         biowO4n123LUKGCrSrjIGhfy01nn7SzKxsCoqk+4BE6m22KbzjKPQaoZKOD6xBJxEHjJ
-         XsdN1JDIRL3OJpiySaILNqXjdN31g0MyJFpj7MwfX+7Vj3Z5l22NJEe5qF1pP4VD3WlR
-         f+Uo03RFzNHPJVNV1FRORkHNieL1jkdgAfgc8rkFa9WgyHthq1LCtXM4ul6DljOK9Oo3
-         cto3cIWJSbzSUEKSPtDAIT/6FAZUOgdmCYE/Zxtz2OlzWyB32LYbeLJp4vMKV8fr4SLr
-         uitw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3HfJ/gKWp22njo0oBYcLkeENDDMCmKMT9R5OJcOSPKZRfSSU6wxlXxV7vg8ADA4Eed1EZ/jB9tVSznAU=@lists.linux.dev, AJvYcCWMG0cZayyPkNw0SJ5I9QO6oHHaCN0x06Uk3vR26SPfkHt2wzCoxrREiEvHgDYRY3ttP5c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydqkvQTenPKw+juUB1gw3JVbYSViWjjkjFL6HUNQsZRfQusLWo
-	De9iO/XrxcqiuSUTOYxtk0PrIEGQJBsLa1/LOuxA0O5TDssIJtE1
-X-Gm-Gg: ASbGncubvWqQ5/D4zmVkLyr5VciyTd4jZ84AHFSJTxBQtTg8dwZXyBZ2O8MzUIowpxs
-	8F1QLjeOdgUxhs2Wv1EGvRCChcTrBw5iyooe3lIw1FC3/fnIon35SHpdil7mU5lUAWWWFBT6mH6
-	0l+Me932Lrf+/Cywkjkccy3ksCmLvyq+ANI8qdzt0p4gCupqZDPt0Z9w0VY5MZeW5rMY2mGVlhS
-	22373SlyyfBmgA3JTvoXVsGS916yyeUutTWw9flo/Mow6AJwJNvAcGzLgzJLlgEiK55Xh6xQVz7
-	KDtT
-X-Google-Smtp-Source: AGHT+IECyknYFtGMyIOfytVXp9Xpt7MbeLa3f0kkvjGmlt26TzZXV3Ltntm5/VpvvPJ392VzgHnZnw==
-X-Received: by 2002:a05:600c:34d0:b0:434:fbda:1f44 with SMTP id 5b1f17b1804b1-4389142e805mr342800575e9.19.1737982006564;
-        Mon, 27 Jan 2025 04:46:46 -0800 (PST)
+        bh=KyTcZ2hwVqzXcvZadTxLwsKyE/CzZeUWttlSS9sOM8o=;
+        b=sPhmzEx6jDwMU/H0Xr9mHJ+dG0aKBUnAA+rGcS1bv6EcETwoH8g5fLK/XIwr00zIVY
+         OH9ayQ8kIM/4uCLPhoDnsh0PEmeZteIAg+sKv/pkjJ0k9mNtT0Ma4o1pGQPgmG4zxY0m
+         gZEUjlUarEG+EXGuASZtlQHR0V59TL/YLB8agOrsGbCJi3+DbR2gEXuuWY3NjcyiO5Ih
+         +Wo7Q2wiRZd5wRL7GbRZMqr2sCThR6UFTuaZW8JMxe5wscKyATsrA9HPUGHHNjnwiH17
+         S8S4YVGCZeY+WWEdBORnwGCOsk5xpsLBPWSbXKmZGDqIlVoKlXyH1s7Bw4zKaFUhKvSo
+         FNpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVM3V6uLxKO7+oRsEarWOCVApjK1Za0tKeNmwLlvIYlgv+InuV+GzyqG8SD9JmlOVUdrnM=@lists.linux.dev, AJvYcCVueGH9KmEmCUlt3FjbshwIz7pEKfEAwBG2IlT2KZo/sj3S1wTS2nNPRsT0d/mMHh/aTezW/++fXLIBn5k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyyWSr5dJe23b+Uq93B/4s6srifIsoTAcY00PcDz/Zseev3sQzI
+	ADmQMcdj/2E9z6oj/sZE11sOIOtacViQ7n9XQe1r5lAvp85J/WjT
+X-Gm-Gg: ASbGnctrmJ4UmsXHiYY2u8i7UiOtzDZ3B1NdI6sbP5v9shxxLf6FM4Vzibyp45SKhDs
+	ygyW//FdKXgM10gG5lbeN5VpB52qWB1iR1SxfiEqBkiBCTu6n7sknzKOL+d5YXwCFOzgyrd5Gbo
+	JYT8ePEPw4/9cCK+43Z8ox7+z3pLZaZ5mPT6d8pNErUgD/Se27J/s2nY1IL6WO/9Nw3+igJ3z9T
+	yToK/Mkivn4qT++yEnSwFAVZJ35aF7yMR08bb+uxY3NXvVCi8oGcjcxM7VAsWggu/tasvLkgZCk
+	H2Zv
+X-Google-Smtp-Source: AGHT+IFg//5LwYfTEQFnuSRS+BvJlK0U1CIpZoSn+yBRmJA85z19Z9oAChFCXf49dqnRysAazQ+L1g==
+X-Received: by 2002:a5d:4f8f:0:b0:386:4a24:18f2 with SMTP id ffacd0b85a97d-38bf566f3d7mr31426711f8f.25.1737982007652;
+        Mon, 27 Jan 2025 04:46:47 -0800 (PST)
 Received: from localhost ([2001:861:3385:e20:6384:4cf:52c5:3194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd501c2dsm129180725e9.13.2025.01.27.04.46.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1764d3sm11150284f8f.19.2025.01.27.04.46.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 04:46:46 -0800 (PST)
+        Mon, 27 Jan 2025 04:46:47 -0800 (PST)
 From: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Date: Mon, 27 Jan 2025 13:46:05 +0100
-Subject: [PATCH RFC 10/14] ahci: sunxi: Switch from CONFIG_PM_SLEEP guards
- to pm_sleep_ptr()
+Date: Mon, 27 Jan 2025 13:46:06 +0100
+Subject: [PATCH RFC 11/14] ahci: pata_arasan_cf: Switch from
+ CONFIG_PM_SLEEP guards to pm_sleep_ptr()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250127-pm_ata-v1-10-f8f50c821a2a@gmail.com>
+Message-Id: <20250127-pm_ata-v1-11-f8f50c821a2a@gmail.com>
 References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
 In-Reply-To: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
 To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
@@ -88,20 +88,20 @@ Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mediatek@lists.infradead.org, linux-sunxi@lists.linux.dev, 
  linux-renesas-soc@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1570; i=rgallaispou@gmail.com;
- h=from:subject:message-id; bh=3GK2SPKfq0gy3cNILmQ5ZsytwY/PBIweFrsBnfiLWdw=;
- b=owEBbQKS/ZANAwAIAechimjUEsK1AcsmYgBnl4AsWF329QNvB9AQN3sovNUKToG4hfpVVUhqI
- R8eXTifdn6JAjMEAAEIAB0WIQQgmXv2E+fvbV/9ui/nIYpo1BLCtQUCZ5eALAAKCRDnIYpo1BLC
- tSFmD/4tt85mOkwMLGX8cjbjVQfnqOnIgtb1Q2GzEesQ9yxpXI88g4suta0w+UhJqmL3ItTeU1n
- mnbBJgomCc09suTGM53hvjh3KcJfiJa67PyOst0jpmBJ5vxiFLSxQRlnoSKy/R2IwZ8/SpPOVod
- WhvficTrwmPfNlOEAMkbaa/3zdLSkZlYsMfRf2Ociw0zcIKLyvlfWWp0fmx3BjmxKmJIGKOL5lY
- bpU/tz3HDN7BFVy2KKTbpF/I8bOlnD8ZDknqqsSACntMBhStldQI7soe7PfP4dO/BvcYuy1nsXH
- VgGEHYoiZ9i7HFcP7rWJXIe4CXSjPX5Xxl1R2fvT1328vP+dXS3xfkW850n1XvZpYLdZe/43d6a
- PnrMCMRbvxYzpXmNWYsQMDT72C4URY2EBSKf+8huJrX61vLD2SlDOsPC4W8P3z75oYR+3VW6e9y
- L9OElLjmtRdv/4z6x+QN3Xo5KYnaj7NuFs7B3TWjTtrCzA7SmEEwCjlY3BtSSdsDDSGiHfNpFWB
- BqHw7DRbx+ANuEbZvr76T1jgLWfdW5054V/UfJEm12/qGHlE5Mt0FIOLGx2h+rQUktRQn7zlTIg
- im7n/LUh3BM3zBhUVD+w4dSO/PrVycnDTeHnXQfXKYImu4SMzda4AOHhw3KZGew7PY/cYjhJMFZ
- /+uizNvy2xVE0xw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1488; i=rgallaispou@gmail.com;
+ h=from:subject:message-id; bh=W9yVEdw4qSI4n7OCj5u/OGHoNGxhi+e4Ou6sa0uyD7U=;
+ b=owEBbQKS/ZANAwAIAechimjUEsK1AcsmYgBnl4AsXHhQC6f7LA3oB6K4p2SmmbhUaUWGrqpy+
+ 0C1WwXAqe2JAjMEAAEIAB0WIQQgmXv2E+fvbV/9ui/nIYpo1BLCtQUCZ5eALAAKCRDnIYpo1BLC
+ tefCD/9fpGNoUqDi51K2tB2D9CFl8CeeHTF4pr8xRoOQ4wHxFq1j34zFjU0zF3FMPafOKzx2ZpU
+ M0H+96OFbAZFRVUbx4TMhBAUFbWDJmYEZaD37c+ZiNhwe04QMF5xjCOdcOzfOxq20XK75ysaLym
+ SaEYxQu2bvz+1luQsRFAMDy9qgE3lU/RwHZX4Fnoi+LNBgCnzFobqD6AcCGplQY5GczK23KyIy/
+ Qnsf/uNpvh0qhLhkT9z8qojEvpxvy0B4Gjbrg/7C+/W16wnfh6q4tPxknNPELUPgowGCKyPBXMF
+ N2H3TS21r18cdyWUIRFdZQyKfD1OV7qvTeVtnZKZKJx8S0YDBEOafcZmRlXuFLUlOOikIvDDfmy
+ 60XDP8DfgiBRt8SNQMvttfg5JDwQ06nB2k5WmpKgJKIaH2Isb79axwMaocq7jKHGJ5zU3EM2LKt
+ P1CSwU1T2RyRAP2moyDlxIQWHKwt7l6spquHZS/azAm9qYKh7V/NjXg9ojMSyKAsxzSieNlYfi9
+ RrD8Ciy49bQb8tFtcEPD+4NAYZxTqA+rQL0enjR0VFqy1U24bMwVr3zTYFYzUNtPBruiDyS6Ihl
+ ZS8SJ3BU1M8Kn7kD1mDYNNod/D6qYBF9ziEv26ZHOM3Irpk2//In81xjJi8n2RRxWRWc32SzYmY
+ kSDFGSf9UT/2Vqw==
 X-Developer-Key: i=rgallaispou@gmail.com; a=openpgp;
  fpr=20997BF613E7EF6D5FFDBA2FE7218A68D412C2B5
 
@@ -111,44 +111,41 @@ use of #ifdef based kernel configuration guards.
 
 Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
 ---
- drivers/ata/ahci_sunxi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/ata/pata_arasan_cf.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/ahci_sunxi.c b/drivers/ata/ahci_sunxi.c
-index 5d4584570ae013a4e44ca69557cc2c5aa61d32b1..2e86d4c97b822b6a52513dbe55e21851a58385d9 100644
---- a/drivers/ata/ahci_sunxi.c
-+++ b/drivers/ata/ahci_sunxi.c
-@@ -253,7 +253,6 @@ static int ahci_sunxi_probe(struct platform_device *pdev)
- 	return rc;
+diff --git a/drivers/ata/pata_arasan_cf.c b/drivers/ata/pata_arasan_cf.c
+index 514d549286b56eabe07dfc2b3a961ef0f7c983f2..3ec03147a8fbe30e9f82c184d7a9c32cabcfdb92 100644
+--- a/drivers/ata/pata_arasan_cf.c
++++ b/drivers/ata/pata_arasan_cf.c
+@@ -926,7 +926,6 @@ static void arasan_cf_remove(struct platform_device *pdev)
+ 	cf_exit(acdev);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int ahci_sunxi_resume(struct device *dev)
+ static int arasan_cf_suspend(struct device *dev)
  {
  	struct ata_host *host = dev_get_drvdata(dev);
-@@ -278,10 +277,10 @@ static int ahci_sunxi_resume(struct device *dev)
- 	ahci_platform_disable_resources(hpriv);
- 	return rc;
+@@ -950,9 +949,8 @@ static int arasan_cf_resume(struct device *dev)
+ 
+ 	return 0;
  }
 -#endif
  
--static SIMPLE_DEV_PM_OPS(ahci_sunxi_pm_ops, ahci_platform_suspend,
--			 ahci_sunxi_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(ahci_sunxi_pm_ops,
-+				ahci_platform_suspend,
-+				ahci_sunxi_resume);
+-static SIMPLE_DEV_PM_OPS(arasan_cf_pm_ops, arasan_cf_suspend, arasan_cf_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(arasan_cf_pm_ops, arasan_cf_suspend, arasan_cf_resume);
  
- static const struct of_device_id ahci_sunxi_of_match[] = {
- 	{ .compatible = "allwinner,sun4i-a10-ahci", },
-@@ -296,7 +295,7 @@ static struct platform_driver ahci_sunxi_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = ahci_sunxi_of_match,
--		.pm = &ahci_sunxi_pm_ops,
-+		.pm = pm_sleep_ptr(&ahci_sunxi_pm_ops),
+ #ifdef CONFIG_OF
+ static const struct of_device_id arasan_cf_id_table[] = {
+@@ -967,7 +965,7 @@ static struct platform_driver arasan_cf_driver = {
+ 	.remove		= arasan_cf_remove,
+ 	.driver		= {
+ 		.name	= DRIVER_NAME,
+-		.pm	= &arasan_cf_pm_ops,
++		.pm	= pm_sleep_ptr(&arasan_cf_pm_ops),
+ 		.of_match_table = of_match_ptr(arasan_cf_id_table),
  	},
  };
- module_platform_driver(ahci_sunxi_driver);
 
 -- 
 2.48.0
