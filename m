@@ -1,148 +1,206 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012031.outbound.protection.outlook.com [52.101.66.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774B66AAD
-	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 14:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737989585; cv=none; b=bhNqro7Aozea5am8sHjjKy52VunDGSlR8AAufjEkzvQtmYTDwADxVRC3uJ+lNUs9+Nw9jr2j6xML9FuTxutXZDHGu6To/5tPflcn3eEO7x9F7o3lRQNW6GWkZ92/TSsyUXBTzLa+HjzJcTL+SlcuLwhQvaKlQyU7E5i5XP8vS9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737989585; c=relaxed/simple;
-	bh=JXIqoskXtxrkv2wUzb2QizyfvVbz4svASpayt5b6hjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M60NTLi85a88R6Yn9VW+8Q779mbUpyrWFAazPYMVNQWckfnhMu0skg0FjKRXOUJBZ3ZPRSwweOP1nshBEVcCNv+ADC3UcggwA/D5TuRqv9McGd7Vbb/TiDH/WKwyDDEnfedld7Fi9OG88S5CO/sbWqbpdutLLdhSZCM6hdFKuGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=acxnt8HH; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619081459F6;
+	Mon, 27 Jan 2025 15:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737990844; cv=fail; b=bfFqwMk9Q/x3FrjaJfeUu7X1xJVMTWaOIvgcorK4YSDHzZhd66QSdb2IcXcg3b8zUfExHnZKcBv9RoaxSKFD+92A2suN1Dwh4dsQ+p4WH119T+jbTab5j1id32LRg5tVLThGD13hCmcoi8IcIruRL/H3ESkozkiqwT3ZQma+xzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737990844; c=relaxed/simple;
+	bh=zwGW6dcrFS/KlCNBA7jGELsbUTiZJbtdfIA6+O5CIy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eraEKj95h6iewoGbKRxoH+beY75w3Us+apwuNhwdCFPBenoGzGumAIz9ZEEW0+b1DShVnkDMq0jGjNopfTaHeWUOsa9NhUHadqFmWvXHjpyu+IZndSZnJGC71W4OA+pyhMcRRWLwdPQBQLxlteG6TbvGQHbru7hThG+ujqyhFbU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UgVl/dtE; arc=fail smtp.client-ip=52.101.66.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="acxnt8HH"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80AD6103802C0;
-	Mon, 27 Jan 2025 15:52:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1737989580;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CdF28R0lwLtzzeK4zWjgs0IHh1lVP07gYZEhtv8/W2w=;
-	b=acxnt8HHx9qxDj4qWZ9eqLBAB9Cod/FYJYF7OYV7gALS4SJ29uquaXrbvJ3VyDVPeQUSGH
-	NrBFhpWV5vnbCFV7WXQ3cZre5PA5bBUoQZG41kS95rmUW8ae1aWKaLCIRrTm9SVAUN/sCH
-	/UsBye8DcK3JO8ajd6BOgdigawIUp1Ss7go6/kSmdhu2o5B3xw7fGxpYpPDK4+VxdNCRYK
-	cqa3zNw4bqG/rpTvO2HbT03HTB/atu5SZoIsFf4vKpwGelgRYDX/0tXkjvVZktYBEYZ5rK
-	t3sjZ/xW3SiKa9793jMHO87kamhBsHYeRIC+S3jOJg9nmDvEGcJMh82GqcZb+A==
-Date: Mon, 27 Jan 2025 15:52:53 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
- Wahren <wahrenst@gmx.net>
-Subject: Re: [RESEND PATCH v11 1/3] dt-bindings: display: Add
- powertip,{st7272|hx8238a} as DT Schema description
-Message-ID: <20250127155253.06937c28@wsk>
-In-Reply-To: <ebd9f9e2-3d8c-4deb-9962-5694cadec090@kernel.org>
-References: <20250109154149.1212631-1-lukma@denx.de>
-	<20250120085724.5caf80af@wsk>
-	<20250127091910.4184d9a0@wsk>
-	<1cde6d04-6fe9-4d09-a11e-26cef6bcf2af@kernel.org>
-	<20250127094612.27f8fca3@wsk>
-	<ebd9f9e2-3d8c-4deb-9962-5694cadec090@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UgVl/dtE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=otXS7c5CToQq5FCn1vInV6S1VTFHd18fne14+Ndi7apemmN3BnZkeCfYtSzdWB3PQDuysXsRMHyeyQfi/GJSnOs2k5N2y27JnvT8gNROT2TSu1/phhAiwHPj01kxY+Rt36cABBEmpB1m06TkCpuFTSWnyUtchtZRiz2C2RdWHoKHyg05vL23G3/+elqz1GFM15n2zA9nAcMTgIDLItr2WQ0JiET4xVwbEzQXlhOkKFpzEVb452b5aqOAskqei+6AqrOoWHbWgkM0YTxr8za04ZS39w5y0/rkJI0LL12dNSiAY6cSBuou3Iobf6XGay06nb7mVNlSBMM0vLWqihc3Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sxTW+xwMEAjoJCn+AqoDP2wdj9gNCIQw9qxueOCKko4=;
+ b=ByBbgipp94ZlY8SojmO/hFSRtN06+8dRIaPPUyYfG94ibO8Dx8C2P72o3dPvrqqZtncmhcYu/9z39opNbD02Hdw204+NKsb3RluyG4W/KHVlq+tBBFqvdjX0L17I8+wPuC8LUvJ8mkRQ+mNiHMT1tRvQBmTycpGpGvYoWQ3asWTyokqYUM8VYusgRjI0I3eJQUjAc75YauYbMgq+0jKWc7v9RBWjLn5umn3Eq29hbHJ2Go6maxWMq229utnfnNZNkoc+FJB3NDfUsaMDUUJIgsz8zoqV4IW9OnJiOlyje4/Wh/NZQKoJpFkSdCy53H0MtVREqAof44K572IcOfFBxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sxTW+xwMEAjoJCn+AqoDP2wdj9gNCIQw9qxueOCKko4=;
+ b=UgVl/dtEKaDwxQdNiTYGnM1KGNI/dypYMoRUigzSuj/ZAElXEr3w2n0HpqlUxmBjurLKoqG5+24cRCy9MpmLDwsnd3+z57PTjqrh3nH9sFYcrw31atP92vRPoTdRNcsnhCR1MtaaEX0wjSKVibPuaS34RKf70EDjdQqh3j7pNvRNpnaei5XX486ZlZ+8aE3GJqpL4q0nHnwOIUDrwT+SZDhW26BoeQyXuwCjkxIVi5eqGiW2/goXyeAma9BnyUOak8bO6NEa1mkBWlDnfUB1uE6bpFamvfWQLqsRapiWPjezzr/fhQKKdL/2dOP1175Cn1jxNh7CJdYfVFQg9/Qaxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10964.eurprd04.prod.outlook.com (2603:10a6:102:490::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.22; Mon, 27 Jan
+ 2025 15:14:00 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8377.021; Mon, 27 Jan 2025
+ 15:13:59 +0000
+Date: Mon, 27 Jan 2025 10:13:48 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH RFC 05/14] ahci: imx: Switch from CONFIG_PM_SLEEP guards
+ to pm_sleep_ptr()
+Message-ID: <Z5eirJJp/cZzzGPd@lizhi-Precision-Tower-5810>
+References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
+ <20250127-pm_ata-v1-5-f8f50c821a2a@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250127-pm_ata-v1-5-f8f50c821a2a@gmail.com>
+X-ClientProxiedBy: SJ0PR03CA0135.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/h/ql_liqhaaB_oe78.1H=Ly";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10964:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9fa18fbe-5223-4af1-ff96-08dd3ee539cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/DqJdBz99OoILT4dXHNjAWbVQxl4bJ0CnpSwBzdaseAvTZs+MMbJ3YTl2Sus?=
+ =?us-ascii?Q?F7zo/gMhZSPzFUv6VEnwwADcuOANKaxqVnT4ZfVnDlD9GG/i/SvaTA8m96RF?=
+ =?us-ascii?Q?IynqrXcKxJpEZZswEWuEJP3E+1wdK7ITiyE9KKFu04WXbv4o8Oq6exZpqxbL?=
+ =?us-ascii?Q?kh5vXvl6WGgZ0wCaVBsCSFhFszHzQzGrW01tEfngOzxKs976L11dGhHXWhE6?=
+ =?us-ascii?Q?4ScqhSAwXmSAqnNncjlByNiIruTrWvS+2YvHmzGUhqik61p9AZhRzk2VOZFu?=
+ =?us-ascii?Q?sA6XOuWvziaCnKlQUaqS1eFzOsBe5agOKwac/QIp2tp7Hdf3ZoIMqeXqZEHz?=
+ =?us-ascii?Q?HJtTSLdzhoGK4klv8TbaeGvHGKJwbiZjI0QxSMqwnQog3QZtbujX+G8yFn7U?=
+ =?us-ascii?Q?4XdoUQkJ4BNE4022UvrECKgvEBX4iSocizCE5h/LGr3j8GxjFai+/2lolXKK?=
+ =?us-ascii?Q?N9ueHFbXcpSjLHSXFlmSfF/nY/IfNTqvwlmLRehrEI6wzELe16lDpKWmm6M0?=
+ =?us-ascii?Q?hPil55MsquoLOfykYWxpMu3WWFgTvvBr+0CD4hARJ4gYc1bekCTMOGe4Jwgc?=
+ =?us-ascii?Q?Bs4QLtBeHBF1w1DcRPZWZGlbqLtEcZaELxDOQP9BOphfys1N807bpbzEB/Qt?=
+ =?us-ascii?Q?8uy6d7ZCcndJkRJP/whiQGMLR21Rn7ucGejOBOn8Oetr5N+9P8viTHMxgtyw?=
+ =?us-ascii?Q?Bui173dO1f1ahSu3tx0JAXyl8FvGeT9FEpIVhoREZuSdd1sCpws2uzBOXN5b?=
+ =?us-ascii?Q?qk7iMyPiTgRsSercUQxP6Bp4xr3bf5FfrfVQwW/ddu/gzKqsKKNlulTWY+HK?=
+ =?us-ascii?Q?yDL4B6I9U7mv0Rz2ap4AWGBtIpOfufZoQBvvD/Vj+HQ5ieSbRD9HSV2mGto4?=
+ =?us-ascii?Q?CNlowDrDosTFbsyLmQ+jg3Lo8WpHd/md6weu5sg1zIxs6azp5QYP+pZJgJo7?=
+ =?us-ascii?Q?TYkNLRoI5fWpZvUe6i+G4y4z+TWVIRX4KGpYBNYkOKdusq4VLzCCoxIc6+g+?=
+ =?us-ascii?Q?0LyiYl9me62Jj7yLO1z/QTV4nEC0GQZ0evzvIHElbgdfVjODDvW43yDGzghf?=
+ =?us-ascii?Q?5k0uCv8KV7ig42cg5kFnO8+lLs6lYZ+WQdpsxssHjTA1cRgSyI+ZnmkBkCAy?=
+ =?us-ascii?Q?EM3zUsvFXYws0pBj8Bl2vdEnSKEKg2/ApiKdc9r/qZmlP1Yty+vV0CRLefAu?=
+ =?us-ascii?Q?WSR1pZxLzZ1ERx+lx9dyxF+qKnPu95+bbQdJ6+LbDok0kUFnkoar7zATceN6?=
+ =?us-ascii?Q?sZfS112INmUj2tLf1py5lFYG1cm+UDdifchjrkjgdDdwUpfHio6lmyWHQMEv?=
+ =?us-ascii?Q?ztzJjP1jhX/5GYkUZcfrtV9t+u6+uQ4Q3H+kBKTbBL0KYA3CLdvJ9ow/Iinm?=
+ =?us-ascii?Q?6x1HwUrA50i1FqWvEJgDKPkdTrtp3HJk7oGovyB5JGfuBEdoXP2QFI17qN8j?=
+ =?us-ascii?Q?hp8IJFNi7wZr/pcRLptFb8bqTFSejFw6?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xr7Seitt3qfrLNIoiC2VquU994WyfMw3dLF5nzVavNyWjYkRv2/29IzS7/+x?=
+ =?us-ascii?Q?NeJyZcaALmJ5mZKjGFBl71pYCj40hxrpA/enQTDkKL/CJAUmSkdaFpt+SJXz?=
+ =?us-ascii?Q?veS3g4hKZouD6zA4oScQppnq0N/wLlKNrOG/OO6JYvIkaK72Z1wYrY1gROxT?=
+ =?us-ascii?Q?1OaCphvK3XvsDe3h/Ll0O7B+cLEYvwdrkpo2juaEDL3ISL44C1Ia6ndnQWv8?=
+ =?us-ascii?Q?egMgLDYyaCS6NZTMLuC34sk/WFzyYAomflHvH+SrLl9UtZ7+ovsTHZMf3zf2?=
+ =?us-ascii?Q?9a/q5Dn7+1ovy0OEqRY+Hgg0/UzE0FgMyIGtPb8/2ANy8BMfQVml2rLeuMI0?=
+ =?us-ascii?Q?0q3HoNKmhHY5I9VnYtHovq80ETxPu/DXQWkkp7RYypNVpnMpKyxBRGK0W+qe?=
+ =?us-ascii?Q?S/p4KAviBppe8calHXfLP0o/7pJFxcIMGFzwdaTVTZwFrz2ND6t6B48LjnaU?=
+ =?us-ascii?Q?stjgSAJIubnphPLU++9Gjl/4ctUW26drkc1ILsF/3bzewwQlHJDH09WU4cvd?=
+ =?us-ascii?Q?J4t5soAOvjOHlCiK3Xh+uxKJ810MMiU9+RfAz2sdGP6xwxv/V26GsG3jiPzJ?=
+ =?us-ascii?Q?IQ6RMb8MLtSua5WyrnLbzGZPlkW2dSHv0ZZzpiu47eacKXjzj9rAcJ+CJMfU?=
+ =?us-ascii?Q?uPIP2eKZC1q/VP4TwzpU2l8xXzxmg3MVf3PnzRBw4XaGQ0Fs+cVqnA8XzcrK?=
+ =?us-ascii?Q?ckc6z8E6z2Lz3mran4j5CK6ZoCc1uI6olTn/v0de8vrF6zGLLPT7QRmLp1Z1?=
+ =?us-ascii?Q?HkCp4FsuQgM9ndPGjv+wI4JVAoySJaesNKT9WmlX3Q75tH6i8osL7Xn4sBKj?=
+ =?us-ascii?Q?BZaUQfENzG8JjjK2jfL0Fi4eWLIIGEyq+nQBWg2j5zz5ugWzztrbW9vKSdVX?=
+ =?us-ascii?Q?Gz3mPfb0Jzjy95OAr7fXQJDdurc3ty5Y1BUr9Vy5R9EKbcJNmL79Ub/52D8R?=
+ =?us-ascii?Q?+a0b7WpdliBUGj6mMj/rUKJRx3PE4m0pUn64/pLaYP6MoOPNdhs4TZWWtnkd?=
+ =?us-ascii?Q?3jwIVElm+/AjFjdDMIvD1x5n238hDxTnRv3VynUslL3Qpir+d8qVqsLeV1WJ?=
+ =?us-ascii?Q?dXh5WXbVJuFhACeYnS9JlUk8+ONa1vjayvdv4bZwkvm6NBwVLAJmQ41ith2X?=
+ =?us-ascii?Q?Fv+2r8Ey+7MkyNsHp0T/jN+gD0qMx7k0FRvPhNsofH8eQMKmZCjqI5cUY8nv?=
+ =?us-ascii?Q?PnWWlV3cfzKhcb8qSrviBKRzhE0eQH16Vq+86ikMvD720sDaq1aGSxXmVDAM?=
+ =?us-ascii?Q?TgmmgqMwFVh5D8+RnWGumHo4PYDPsSTVUhtILqcU5riWe3szmH1TkLioo+lB?=
+ =?us-ascii?Q?rqQywCT3LGrideJW6/KaV3G5qXyxas1h9uzgVbuRPXvt/lI4JR4NlYdvLfUP?=
+ =?us-ascii?Q?ohI2aazGV7rU91QQM7DOmWoUBFQh+m41qBzUyz4QYBzwSAWjROsGYFVUB5Qp?=
+ =?us-ascii?Q?mrQLjVOL/x9EtjOuH/AOkXz80is4L19KhXySfzhL+sOFDie/f6MF0vhpBr91?=
+ =?us-ascii?Q?mvtWSA09YU144CunFe4XaQrIaQK6nbSgMWoQIHKnK82ko01Td5EWZlROYiB0?=
+ =?us-ascii?Q?AUW/yiroT0Sf08dLqbZEUNGGTgynETf8F0GiuPiG?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9fa18fbe-5223-4af1-ff96-08dd3ee539cc
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2025 15:13:59.7753
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jvZDDAtQwKe4v9Vmx3bP+kpSlMaeWbS5dXEcEQ+jRSjrBVSpZZtgVsnwbJE+98hQBXNJfntTjX1gJ9taI4nt0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10964
 
---Sig_/h/ql_liqhaaB_oe78.1H=Ly
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jan 27, 2025 at 01:46:00PM +0100, Raphael Gallais-Pou wrote:
+> Letting the compiler remove these functions when the kernel is built
+> without CONFIG_PM_SLEEP support is simpler and less error prone than the
+> use of #ifdef based kernel configuration guards.
+>
+> Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
 
-Hi Krzysztof,
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> On 27/01/2025 09:46, Lukasz Majewski wrote:
-> > Hi Krzysztof,
-> >  =20
-> >> On 27/01/2025 09:19, Lukasz Majewski wrote: =20
-> >>> Dear Community,
-> >>>    =20
-> >>>> Dear Community,
-> >>>>   =20
-> >>>>> This patch provides the DT Schema description of:
-> >>>>> - powertip,st7272  320 x 240 LCD display
-> >>>>> - powertip,hx8238a 320 x 240 LCD display
-> >>>>>
-> >>>>> Used with the different HW revisions of btt3 devices.
-> >>>>>      =20
-> >>>>
-> >>>> Gentle ping on this patch...   =20
-> >>
-> >>
-> >> Merge window, not need to ping anyone, unless these are fixes. Are
-> >> these? Do not look like. =20
-> >=20
-> > Please correct me if I'm wring (or something has changed recently),
-> > but wasn't there a policy that DTS bindings are allowed to be
-> > pulled no matter if merge window is open or not? =20
->=20
->=20
-> Bindings? No such rule, no difference between bindings and any other
-> thing. No non-fix patches are taken by maintainers during merge
-> window, with some exceptions. There is a difference in DRM, though,
-> because it follows a bit different cycle schedule, but you pinged us
-> all, not only DRM folks.
-
-Thanks for explanation - I've been mistaken...
-
->=20
-> So was the ping towards DRM? Is their tree now open?
->=20
-
-You mean https://cgit.freedesktop.org/drm/drm ?
-
-Some work (i.e. code is pull) is done there.
-
-> Best regards,
-> Krzysztof
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/h/ql_liqhaaB_oe78.1H=Ly
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmeXncUACgkQAR8vZIA0
-zr1jeggAn52s3WruRvdZ2n6gQj3Z4b2iDp63vBcu9ur9KYn4Zw3VWPuKH09ktc71
-2zr0fZMg/Tp3ssOMjYknbeJok9X2pFMVnZMWnmfm/wEaHGfZOppJlA5vk1Eprq7M
-yGsRTrwA9EMu+WophtwKDIkNJ68/Nr5t646H4EAYhybvBCMeQkEDSJu1K4tEDM0C
-ZTG8aRsdZV/F4h+9O4hfRU4c8hew05PSySw+ZLIjAd0wp7OK6VPOtjqLCaqeJmUz
-MsnnBqqM4WfHMZDkFN58p57A8ZJYzl29UVjiQ1eXsJjLxxskXNOneXJx+mMt0J6Q
-yDP5qf3i0uzYIll0yNnkFXh4n0pz0w==
-=bWIG
------END PGP SIGNATURE-----
-
---Sig_/h/ql_liqhaaB_oe78.1H=Ly--
+> ---
+>  drivers/ata/ahci_imx.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
+> index f01f08048f97aa230877e413ba6e416d79779c1b..ec75a16c630a79ce10ea98b16c44c9a3908f869f 100644
+> --- a/drivers/ata/ahci_imx.c
+> +++ b/drivers/ata/ahci_imx.c
+> @@ -993,7 +993,6 @@ static void ahci_imx_host_stop(struct ata_host *host)
+>  	clk_disable_unprepare(imxpriv->sata_clk);
+>  }
+>
+> -#ifdef CONFIG_PM_SLEEP
+>  static int imx_ahci_suspend(struct device *dev)
+>  {
+>  	struct ata_host *host = dev_get_drvdata(dev);
+> @@ -1021,9 +1020,8 @@ static int imx_ahci_resume(struct device *dev)
+>
+>  	return ahci_platform_resume_host(dev);
+>  }
+> -#endif
+>
+> -static SIMPLE_DEV_PM_OPS(ahci_imx_pm_ops, imx_ahci_suspend, imx_ahci_resume);
+> +static DEFINE_SIMPLE_DEV_PM_OPS(ahci_imx_pm_ops, imx_ahci_suspend, imx_ahci_resume);
+>
+>  static struct platform_driver imx_ahci_driver = {
+>  	.probe = imx_ahci_probe,
+> @@ -1031,7 +1029,7 @@ static struct platform_driver imx_ahci_driver = {
+>  	.driver = {
+>  		.name = DRV_NAME,
+>  		.of_match_table = imx_ahci_of_match,
+> -		.pm = &ahci_imx_pm_ops,
+> +		.pm = pm_sleep_ptr(&ahci_imx_pm_ops),
+>  	},
+>  };
+>  module_platform_driver(imx_ahci_driver);
+>
+> --
+> 2.48.0
+>
