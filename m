@@ -1,127 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8A178F4B;
-	Mon, 27 Jan 2025 15:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7337413B5B6
+	for <imx@lists.linux.dev>; Mon, 27 Jan 2025 15:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737991461; cv=none; b=co7j2lGg4cmKW5UofB7QFOIQI+v904VbPUn9SweBNcFy3Huv2GaRSlPuJBC+7rj5NcNcQMBH5+JjWongOtUmoz1HQ7lnO4EzjMKXDAxrMFixRmre4o81ROnwtA03dA+l3SX6gaQOVgsYGR37i1otEVuNZDYjIVFBGd5K5AXLVFc=
+	t=1737991880; cv=none; b=ZqfyNJ6EuRSHiNekPa/J7UpciN5PeEJB6iUhpQgixZKR5u2zVQ9wwSMTkQBGQsvwSomUha1Put8k1ceaiM3WCRpsixEbkgIRetJWealN70Fk2qWUIROKM92i89cS+myprTj+Fow10Dxr+Nh/zx5osWBNGODUM+7slQFPtunWf/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737991461; c=relaxed/simple;
-	bh=YoAm4JPhD8dFPYpVnGR9aiVF0AEg16NOp4W2vcliKEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=POApRux/FUU5UN31XMOlmgNQj9N7UdIfEMeqJ2nV18cOHU95M4fUjwU+Oke63LyQkSh3D+WTc4yli8hCr7Pv9q/gwYT8OTdSA1fczQUWhIJULS19IRxiEO0ubDDcptv3oDIt4R9QbaZWPjqlKoR3Cv5oETXB6rMc446ABBSFnSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jvj4pS/4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737991880; c=relaxed/simple;
+	bh=ggL3H3b9vvHvowBBgmP5EefUOlcgFfWrzdQSXsK8ttc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Rwu8FDQqKzC/x2NjpWHscSRNNyzfUwbgBqFKgN6HufKkjRPw0o3bQULcLJiIaghNZtbKVFqeEAl8TCMH1xyOxUUWJsAn9/cL55wYtwWrSzxrKihUGzOgK/MfEYrxVZTokbGK/rElVCmsovndMfdGxP6wi6l+9qBGYKvuk800D+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TuXSEwTT; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jvj4pS/4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31535C4CED2;
-	Mon, 27 Jan 2025 15:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737991460;
-	bh=YoAm4JPhD8dFPYpVnGR9aiVF0AEg16NOp4W2vcliKEk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jvj4pS/42GidXlLA+MtCgSSGCul+6CS1caorwNM+fHkJhqouzEMNucNugidGv2Vdl
-	 8TZMsdAf67KdW/xXqAWXYoA4AaP8+6I73TN64GZTSdDzo58qkuZ0Vb6rnX4oT4g8+C
-	 o9Qw8nquBEm27Pvm/JKyWKBU8qRdpDZWAjg3fT7cVte9wMYmo2v/eSzAEbrxAOt0Ey
-	 1G3uVtmATWhiW/KUOYvhF0pTWxeXd3I36OY6AllofgLsffSpV/Vm3EB8/a14Ck9/aq
-	 99/EQuefyP3i65YI7/8cIZUG333/sQWBpYcDsoNTpnPghVr2Vea5UIsWsVdVZhwS5g
-	 VmJNya8lsyrVg==
-Date: Mon, 27 Jan 2025 16:24:13 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v8 2/7] PCI: dwc: Use devicetree 'ranges' property to get
- rid of cpu_addr_fixup() callback
-Message-ID: <Z5elHSnnFaDDD8Cc@ryzen>
-References: <Z5JegF7i3Ig2pLYB@lizhi-Precision-Tower-5810>
- <20250123190422.GA1215672@bhelgaas>
- <Z5KVPg/DuJHci/77@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TuXSEwTT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 10BD944281;
+	Mon, 27 Jan 2025 15:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737991869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Eaw+jdW66520u78eBxhftj2cqoETidDXk6bpHg3NYGc=;
+	b=TuXSEwTT4vYouXdmLy4C5FMojjMqin618yHzBWrQPiaCoUEJeD86qGTaBcAAJ3N6fyBbsB
+	p3lXmEg0BufQdAj/GWZXNFKNcThQrFl02MW9Og9LTSqVAafZ0AZ14um5xnMG8/YKok5+O2
+	pw16nsLlgg21LDidY/UCekNMETFfSPua7LJyr3rQ0ygZDmGH8S2xEVmxZfngQWphOt2fhH
+	Ft7L5azQ0wkz3l5eLbeakzwRp4CG0n4Pu+FTem0niQIBnXAD5xnaOwRseFkXyNXlr5yZ68
+	321L3hPywzS+TDWD4Ip9cgKylLbBcVoMoaNbVLIOe4/2pQzF9BCin1TV8bgAZw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v2 0/3] Add Variscite i.MX6UL SoM and Concerto board
+ support
+Date: Mon, 27 Jan 2025 16:30:59 +0100
+Message-Id: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5KVPg/DuJHci/77@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALOml2cC/3WOQQ7CIBBFr9LMWgygNtaV9zBdAJ1akpZRoETTc
+ Hex6tLl+8m8NwsE9BYDnKoFPCYbLLkCclOBGZS7IrNdYZBcHriQnCXlA031PDJDzqCPxLoYmOJ
+ HjVLVUjQayvHNY28fq/jSFh5siOSfayeJ9/pTin/KJBhnqHf7RpmeK1OfNVEcrdsamqDNn4rH+
+ 1y+jt9Uzi+AAv7h0wAAAA==
+X-Change-ID: 20250120-varsom6ul-concerto-dts-a08be2a6219b
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1754;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=ggL3H3b9vvHvowBBgmP5EefUOlcgFfWrzdQSXsK8ttc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnl6a8INZvPu3ofY4jOsB3ewgQLwYqHjop/IqZN
+ a1CE3lu5SSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5emvAAKCRDRgEFAKaOo
+ NsFAD/9F9301v+VRTuoHHeVmv7P8Z2o/QiWbdWwvUArYcWQrsm5eIzlAL+Szpuy666JZ1qYTsNQ
+ 3As7sUUoojg9cjbnkDC72Zb7xwKoRRBoBmsi8aSYWbP9JBWAmERt3OD3k2SyChEUH8ROc6rosLI
+ MKZ5UxXENrX/W7u7sNUPj1p63We7Wp+8nPJEHJGe/KGl/gg5mElmKDoXW6lam92hCOIjakOBVuK
+ B0wMUf2abTzc8/xKEM6alwHhVcmggv6ySoR/9fRLjxMET20eA45mY7n0uCe0kyGbgg9eBWYTa2P
+ lnwlTlLGtsG60M6ciWklxMFDeDeQRMqURkeXozkXFAIezUBxr2eSX2UUNghl+jd5PozwxslsqJR
+ DzCoY+ZAhcXuWDJ4YnqAyITndC7VBZxGMo7LjdXUNBXDqRdfncCzFGGWbocjCbjT09vidr+iO2z
+ MxosCou6KbzbcCyxYuc/2/M/FBWXTvHTkEcU5sbHHnakTKhacvFmaDBAjeX8HfDWKZctH44RLDL
+ fdqulBlVSct/OWJMg4OnXAXFBtwftUqtnpzPwu838a5H4NYkJI+Uc/W6zw5aDp7ZZj4JL6vzyak
+ akl77dIJYyLN3x1yRWQQjQusUhnqFlLpzHNjM2dHRnrW5gvTvKtjCq8Ea4ZgNCCy7PA3d2N2CxK
+ yV9hZ2LrG1BE3IA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudefheegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtudeuhfelveehueevudefgedvtdfffeevleefuedtjeeuteelgeelvefftdejteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdro
+ hhrghdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: antonin.godard@bootlin.com
 
-On Thu, Jan 23, 2025 at 02:15:10PM -0500, Frank Li wrote:
-> On Thu, Jan 23, 2025 at 01:04:22PM -0600, Bjorn Helgaas wrote:
-> > On Thu, Jan 23, 2025 at 10:21:36AM -0500, Frank Li wrote:
-> > > On Fri, Jan 17, 2025 at 10:42:37AM -0500, Frank Li wrote:
-> > > > On Thu, Jan 16, 2025 at 05:29:16PM -0600, Bjorn Helgaas wrote:
-> > > > > On Thu, Jan 16, 2025 at 05:14:00PM -0600, Bjorn Helgaas wrote:
-> > > > > > On Tue, Nov 19, 2024 at 02:44:20PM -0500, Frank Li wrote:
-> > > > > > > parent_bus_addr in struct of_range can indicate address information just
-> > > > > > > ahead of PCIe controller. Most system's bus fabric use 1:1 map between
-> > > > > > > input and output address. but some hardware like i.MX8QXP doesn't use 1:1
-> > > > > > > map.
-> > > ...
-> >
-> > > 	I saw you have not picked all of these patches during you rework
-> > > pci git branches.
-> > >
-> > > 	I know you are busy, do you have chance to pick left patch for 6.14.
-> >
-> > This series had a mix of things: several patches related to
-> > .cpu_addr_fixup(), plus several unrelated ones for PHY mode and i.MX8Q
-> > support.  I think I picked up all the unrelated ones.
-> >
-> > .cpu_addr_fixup() is a generic problem that affects dwc (dra7xx, imx6,
-> > artpec6, intel-gw, visconti), cadence (cadence-plat), and now
-> > apparently microchip.
-> >
-> > I deferred these because I'm hoping we can come up with a more generic
-> > solution that's easier to apply across all these cases.  I don't
-> > really want to merge something that immediately needs to be reworked
-> > for other drivers.
-> >
-> > A few of the things I wonder about:
-> >
-> >   - dw_pcie_get_parent_addr() has no DWC dependencies, so it doesn't
-> >     make sense to me to have it be DWC-specific and copy and pasted
-> >     to other places that need something similar.
-> >
-> >   - It doesn't seem elegant to iterate through for_each_pci_range() in
-> >     devm_of_pci_get_host_bridge_resources(), then again in
-> >     dw_pcie_host_init() for io_bus_addr, then again in
-> >     dw_pcie_iatu_setup() for each window.  Maybe that's the best we
-> >     can do, but maybe there's a way to capture what we need on the
-> >     first time through.
-> >
-> >   - The connection between .cpu_addr_fixup() and use_parent_dt_ranges
-> >     is clear in the patches remove a .cpu_addr_fixup(), but not in the
-> >     DWC patches on the other end.
-> >
-> >   - Ideally, "use_parent_dt_ranges" would be the default and we
-> >     wouldn't have a flag to indicate that, and drivers would have to
-> >     opt out instead of opt in.  They basically already do that by
-> >     implementing .cpu_addr_fixup(), so maybe we can take advantage of
-> >     that fact.
-> 
-> Okay, thanks. let me think how to improve it after 6.14.
+Add support for the i.MX6UL Variscite SoM (VAR-SOM-6UL) and the
+Variscite Concerto Carrier Board.
 
+I tested this with a VAR-SOM-6UL_G2_700C_512R_8N_IT_REV1.3A (one variant
+of this SoM), meaning I couldn't test all of the possible options of the
+SoM - so this device tree includes partial support for it.
 
-Small nit that I saw when looking at this series.
+These are based on the 5.15 Variscite kernel fork but adapted for
+mainline.
 
-Some patches use "Internal Address (IA)", but other patches use
-"Intermediate Address (IA)". For the re-spin, use one term consistently.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- Reviews from Krzysztof:
+  - Use imperative mood in commit descriptions.
+  - Remove backlight node as I am unable to test it.
+  - Rename gpled2 node to led-0, and set function, color and label for
+    it.
+  - Remove unnecessary comment "DS1337 RTC module".
+- Rename binding "variscite,mx6concerto" to "variscite,mx6ulconcerto"
+  since this is for the VAR-SOM-6UL mounted on the Concerto.
+- Remove pinctrl_ft5x06_ts_gpio iomuxc node, unused.
+- Link to v1: https://lore.kernel.org/r/20250121-varsom6ul-concerto-dts-v1-0-eb349acf0ac6@bootlin.com
 
+---
+Antonin Godard (3):
+      dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and Concerto board
+      ARM: dts: imx6ul: Add Variscite VAR-SOM-MX6UL SoM support
+      ARM: dts: imx6ul: Add Variscite Concerto board support
 
-Kind regards,
-Niklas
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   6 +
+ arch/arm/boot/dts/nxp/imx/Makefile                 |   1 +
+ .../boot/dts/nxp/imx/imx6ul-var-som-concerto.dts   | 320 +++++++++++++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi      | 232 +++++++++++++++
+ 4 files changed, 559 insertions(+)
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20250120-varsom6ul-concerto-dts-a08be2a6219b
+
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
+
