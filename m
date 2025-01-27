@@ -1,150 +1,81 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6E614A62A;
-	Mon, 27 Jan 2025 16:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D55418BC26;
+	Mon, 27 Jan 2025 17:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737995421; cv=none; b=RXhQhi8HjwoK+W0j97oogzDVsoX4VyaJC8tbnec8YtK3jWyoiTJjiRRTRv8wOiQqsdce507SNWke2Pq7xyVk1yzYqAa8gGiT/3wuX4EYVAemQt8mQr9GIjG683xfWpOAmhyAHjaXoo34pZ/0879fihxJApM4J5EbbuRqK/IQLvw=
+	t=1738000300; cv=none; b=rennMRf5kjTRp47cyyr0FD4gPf8NyTpakK5MlzF7xB3Wpu4buhyH2ZFraUPppkMNkZg1Zc0n8nv3W4136YJbkUIDbax66l/dDu4RhB7tt1+fFMLJM9y7LuYQpTpfnK6N09mB71peozsDoxEBRS/dugp7h4GPAw8AxtCdIeSXvPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737995421; c=relaxed/simple;
-	bh=ZNKSmArHq89j7IClvTYDareVhIHdk3mFzoaiZMHUsD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CVmZydBNPIsSdOyBr7+q/rsebiT7TUBNsu2+ohy0xVpVL3B0jvHfdZLBLirKrVvtvotyKz6JmJdXL3lceopt+MrDB7bWxFNMN7OP0kme3u+mOBr+CVWHS/n55QAmJoXb//ziyasyeumlJ8CEHWidMYo9yigiyjoGT/wwZ7zRR6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4aff04f17c7so3614229137.0;
-        Mon, 27 Jan 2025 08:30:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737995417; x=1738600217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WlQ0Imi4TI1g2HJ/WhDlE3//wGfnD+n5Npq7eYW5xxc=;
-        b=ktBImqQNAiq6+gw6Dq7qWgEd0ZZkilIS6PEG/rnw7+3/V+WsMCNFYzCy5x49JW9lIF
-         WVhRe7VFNnUJqFPHP5tGoMgIW/fzTiLRitANxjvrR8P+LL+jIpA1CXZ9Vxq0kX1Ch77x
-         /VFCrIo7ggqT4BBTbtSKZFyHIzKiGn4eBf52x4VIH8fnP3UL1Dl2DkFzWdu6aG/hgeWD
-         wQ9TnxbXosL8Ays0UjVq0wvrmh0hrqHNib764l6/Tu2qe0NEK2Em7fVjgxm6gofxSAuB
-         aplHtvyo3mCd6o1KudMMEcZ56s1ys6nZZzI6Uz9ex+vbyFM7QFGvc61baP86DHwn34aw
-         JGVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcmct8CLgQkydkrhS5eJhlwBuxxd7QPR8kHxPR7Ry5yeKxpMMc40M+QJeuFwQql7Tjq+wX/ys4kaeYpo4=@lists.linux.dev, AJvYcCXgrYGuzEGd4CcCdX5Y9Oh+d/MCLXzKrbV8IeZ+9Umx7+pGLwn+CbY7194stIHL6OVbXGU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxw/wuCU8p0RCdvT/S3/jIqwdUwGMKUmO+ermaQ1ZInGWXlxgaq
-	mgcsCy27j+w6PCj3rgsGiInCr6fh89Ep3+LyUniZjyGWAqBCOtfsCwpZn4Q0x1E=
-X-Gm-Gg: ASbGncuaNOucWtaWhnUXkFxOUTPWjJwTqMi/XvgNGxN2GkE2Mwe3cnE56Vbc2Hm0Wzv
-	t4juS2bmb9zaOvOF4ktoi4qCFtYofxVBALbrks3LpHiwpUJWHcy/bHhvopOp0ZctBnmddl7frab
-	HazTstSVU7jnkI376j3+kGlolE2iDjOwL3m/FwyQ5Kqds7sUzxnkXZ9WcnZNR8+Xc5hTQqncHZZ
-	i0pbBWuxuMtgG7PavmCZKmHhx0c3Kkpbo97LfrmWb3aX7biNhKQrSBlwXucvZCAdeGsidXmtMVz
-	qbTbuEkQCvdXAYu9z5AgXHDNt8pAEjIUikYAmG5RlIY=
-X-Google-Smtp-Source: AGHT+IHQqh8ZpgnGqmw8Y0Gfs0rWOvi3lgJJXcPB3FwANWYf6VdAlOHRWeu8C9qpI5icX+qplbaHlQ==
-X-Received: by 2002:a67:e2ca:0:b0:4af:57df:8697 with SMTP id ada2fe7eead31-4b709d0b4f6mr11310062137.10.1737995416851;
-        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-864a9c98e0esm1972574241.34.2025.01.27.08.30.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-860f0e91121so3089181241.0;
-        Mon, 27 Jan 2025 08:30:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVecpaNoZSpjFc+UK85czIYowJhcVVS+CQvWM0KJL1qTExICobPbF3pqanRYGGFLthS/Kw=@lists.linux.dev, AJvYcCWyq2EkCajlTC2e51BY6muFSDBZZLrPT47Ee6VQTZ2LbhzGklC0NbAoXMwxSfaomNI6nEe2/8MPjMeekPw=@lists.linux.dev
-X-Received: by 2002:a05:6122:2028:b0:515:20e6:7861 with SMTP id
- 71dfb90a1353d-51e4fb68a06mr12748400e0c.2.1737995415897; Mon, 27 Jan 2025
- 08:30:15 -0800 (PST)
+	s=arc-20240116; t=1738000300; c=relaxed/simple;
+	bh=IWnhynaYs9UhLgD4QSl3asorXOnxX63sXit4/2adtOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0FpWLqyiJHIYjeTpOOjJ5qBSQcSMcHcu+4cxout0KCV6fMBvSl4Md/ltVQpMT4dxMTBfz++Yn7k+0C0Pw3DUoMt2XDwZZKRp+CnbVXD5WmS4K1Bw3CsloeOJiztREPUYebiys7/rGbSNj9xgsD8wIHMzgxJgNNkK9prLz8kpXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZihJJ26E; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZihJJ26E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C73EC4CEE3;
+	Mon, 27 Jan 2025 17:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738000299;
+	bh=IWnhynaYs9UhLgD4QSl3asorXOnxX63sXit4/2adtOk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZihJJ26EhTE4kO3fmKWFGPAmlRrEkkMbw02V7USCY6o1gzHgUjbp0yAbIdKntb69M
+	 BtLHFqyb5dV9E7jcbIMuell5x/Vem5WXvk8yeQRVDJebxVPYSGEsY3fe9hM7BKQA8Y
+	 uYKUCgAl69IK1kJBnuE6mcon5LKH1lm+qsSIYx2S7+GuPYhygxRWt5LUOVnzXxPxcd
+	 2AOMKTN17x6j11f1HS7EcbQWF2/9EjZv8FIIpAUM6mvOhrZUSLjARQrL6zhGoPiEX4
+	 FnfKywpDpWQ5mP6YBQzvNZgblESRHr3fdCTHCgsqqDMroSzl/Lw/sE48YEH0XIZmt6
+	 DhPP5xVOFoNVw==
+Date: Mon, 27 Jan 2025 17:51:35 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
+ Concerto board
+Message-ID: <20250127-antiquity-spelling-fd54076afe66@spud>
+References: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
+ <20250127-varsom6ul-concerto-dts-v2-1-4dac29256989@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
-In-Reply-To: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 27 Jan 2025 17:30:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV7GwMNm5tYvWugehstM07W9JkLdKrE9hwPhxcEab8ajA@mail.gmail.com>
-X-Gm-Features: AWEUYZmGy-5V1Zbo64bUIwl2HUW8rq3_GydwTJUAoMljjyEePEDEnt0EQDD7GTM
-Message-ID: <CAMuHMdV7GwMNm5tYvWugehstM07W9JkLdKrE9hwPhxcEab8ajA@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/14] AHCI power management cleanup
-To: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Viresh Kumar <vireshk@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-ide@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="cReqDgVidX28TjYo"
+Content-Disposition: inline
+In-Reply-To: <20250127-varsom6ul-concerto-dts-v2-1-4dac29256989@bootlin.com>
+
+
+--cReqDgVidX28TjYo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Raphael,
+On Mon, Jan 27, 2025 at 04:31:00PM +0100, Antonin Godard wrote:
+> Add support for the Variscite i.MX6UL VAR-SOM-MX6UL and the Variscite
+> Concerto carrier board.
+>=20
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 
-On Mon, 27 Jan 2025 at 13:46, Raphael Gallais-Pou <rgallaispou@gmail.com> w=
-rote:
-> Several AHCI drivers expose suspend/resume functions in a way that can
-> be simplified.  Using pre-processor operation can lead to errors, while
-> relying on automatic kernel configuration is safer.  It also shrinks the
-> kernel size when CONFIG_PM_SLEEP is not used[1].
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-m68k/allyesconfig:
+--cReqDgVidX28TjYo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-drivers/ata/sata_highbank.c: In function =E2=80=98ahci_highbank_suspend=E2=
-=80=99:
-drivers/ata/sata_highbank.c:590:9: error: implicit declaration of
-function =E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98ata_sas_=
-port_suspend=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/sata_highbank.c: In function =E2=80=98ahci_highbank_resume=E2=
-=80=99:
-drivers/ata/sata_highbank.c:607:9: error: implicit declaration of
-function =E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98ahci_port=
-_resume=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/pata_arasan_cf.c: In function =E2=80=98arasan_cf_suspend=E2=80=
-=99:
-drivers/ata/pata_arasan_cf.c:938:9: error: implicit declaration of
-function =E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98ata_sas_=
-port_suspend=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/pata_arasan_cf.c: In function =E2=80=98arasan_cf_resume=E2=80=
-=99:
-drivers/ata/pata_arasan_cf.c:948:9: error: implicit declaration of
-function =E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98sata_link=
-_resume=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_suspend=E2=80=99:
-drivers/ata/sata_rcar.c:936:9: error: implicit declaration of function
-=E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98sata_rcar_suspend=
-=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/sata_rcar.c: In function =E2=80=98sata_rcar_resume=E2=80=99:
-drivers/ata/sata_rcar.c:973:9: error: implicit declaration of function
-=E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98sata_rcar_resume=
-=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/pata_imx.c: In function =E2=80=98pata_imx_suspend=E2=80=99:
-drivers/ata/pata_imx.c:209:9: error: implicit declaration of function
-=E2=80=98ata_host_suspend=E2=80=99; did you mean =E2=80=98pata_imx_suspend=
-=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-drivers/ata/pata_imx.c: In function =E2=80=98pata_imx_resume=E2=80=99:
-drivers/ata/pata_imx.c:232:9: error: implicit declaration of function
-=E2=80=98ata_host_resume=E2=80=99; did you mean =E2=80=98pata_imx_resume=E2=
-=80=99?
-[-Werror=3Dimplicit-function-declaration]
+-----BEGIN PGP SIGNATURE-----
 
-Gr{oetje,eeting}s,
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ5fHpgAKCRB4tDGHoIJi
+0saFAQDHIIOY1ZLLliCFzyxW+U5lKPDJYiKB5mzQ8E2yHA7J2gD+OYMYk3bw/t4w
+NWrIqwr7PCXzAQUakE//RoKJNUvNSg4=
+=Xs+l
+-----END PGP SIGNATURE-----
 
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+--cReqDgVidX28TjYo--
