@@ -1,33 +1,34 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6DD1E1C1F
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 18:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66BF1F3D45
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 18:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738088523; cv=none; b=MuOq9E3c+cU7ySqa7XM166jzEgvAqIKEqn10nnfx6LnbgRNytYt8/WcNbv6a9EhhrAwlMf6X52hgNWf/cmM763BS0TczHsDJiEyNZ3RUVVQQogl2PzIsEBwvHOOUKL/+6eOk+2ctNZx3i3VvqvEqTU5R4cM/wWUbvfVemeH1l2s=
+	t=1738088524; cv=none; b=KapF/PqITv5g4lx6nqO7+lw7vDuNmjgc4ADf+wTv+sx21R1VoPCIB7/A+TYzh673BAglBw5ypFiguyaUe6ddFzA8kyVc79/+e32xwu5kpVT9zNkiVHdia6C8ZweWR40NnCNhttL4kIlzzY8IfFCI4+jrZiQ3wrplH0fZQOOEf4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738088523; c=relaxed/simple;
-	bh=kN1DmhU9yrjNZu0QSYW1NiN/kroOX9bjf+LNgqzAZhQ=;
+	s=arc-20240116; t=1738088524; c=relaxed/simple;
+	bh=OsYTfsOCztno0rw4bH8H93fzXxdgLqs3edOsOwLU26w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U5wZvJM9jUB3xiXdEnYiHA1Vjmw2qTvwVPfJ5tANYM2Zq02/A2kEPTvHzUfuc+itgmWByqdLKR7n96rgvs/xi02s31A+AGzokDNMYIPr/QAY1QmWKxAY21xJb4bVwZoMk0Urc/FYRj3wfN1yJ1clXDptvTToFvbKGfPEVBrAlmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Y6ylpiLi; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:To:Cc; b=cyFKetNO0CIluwYw5acIyHKC0ScraxvZAc2ybNV28g3hPqCi2ow0bCWCDr0G6t68Km3kYk8J+ErmcdooqAT8PbwJp+mIUOBe5FgAuptee5rucP4r8VIuWQQNqkH9ne1t5k/CXHB7Ge3Zqd2Vtx5rzNkipNl+gRIp6qIcfkSBQG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=nOvIreoP; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Y6ylpiLi"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nOvIreoP"
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 91DF1203717E;
+	by linux.microsoft.com (Postfix) with ESMTPSA id DB2792037180;
 	Tue, 28 Jan 2025 10:21:58 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 91DF1203717E
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DB2792037180
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1738088518;
-	bh=DdLbmsRzgWLdzC2fj6O2CIX1t5gGJspI8Pgb54drLsE=;
+	bh=++CcFDhMGmgcKwzaiNwx3lMiN5jr5twzkm9Lzfmspqc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Y6ylpiLi1KVZ08WiTao/OJYzlh6hCYH9M4Lti7xtSLDcF9isW5mseElvLmHpIZ8qP
-	 x/5hoAPvzc6Kc/w4ySGEyIVQMvEw8hunjl0cSDD/bAeaa2sgqpNFi8a/A/eDwTMxh5
-	 TRAFAiqE6+9cKOciP+b85ff4KZYaPvXJLO+fVtn0=
+	b=nOvIreoPo3EtPXnqT78hdGSPjS+BJfm76bfob6LjYY8fpAzAx+SSWBMemjjxO+8RL
+	 gtA/N4PvBwCgX5MwsErpmvFLEJEFEicnjVAtYs/DImfDKgiY3inNNwt6TIW4w8Mj2E
+	 eLHR2MK1+CS1Dd52E6DvRE+gXgt4inmHotPghBSw=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 28 Jan 2025 18:21:53 +0000
-Subject: [PATCH 08/16] libata: zpodd: convert timeouts to secs_to_jiffies()
+Date: Tue, 28 Jan 2025 18:21:55 +0000
+Subject: [PATCH 10/16] power: supply: da9030: convert timeouts to
+ secs_to_jiffies()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-8-9a6ecf0b2308@linux.microsoft.com>
+Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-10-9a6ecf0b2308@linux.microsoft.com>
 References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -97,23 +98,23 @@ expression E;
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/ata/libata-zpodd.c | 3 +--
+ drivers/power/supply/da9030_battery.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-zpodd.c b/drivers/ata/libata-zpodd.c
-index 4b83b517caec66c82b126666f6dffd09729bf845..799531218ea2d5cc1b7e693a2b2aff7f376f7d76 100644
---- a/drivers/ata/libata-zpodd.c
-+++ b/drivers/ata/libata-zpodd.c
-@@ -160,8 +160,7 @@ void zpodd_on_suspend(struct ata_device *dev)
- 		return;
- 	}
+diff --git a/drivers/power/supply/da9030_battery.c b/drivers/power/supply/da9030_battery.c
+index ac2e319e95179039279dacaed1744136f679fbac..d25279c260308b6c82acb2aabf44f3749f71b703 100644
+--- a/drivers/power/supply/da9030_battery.c
++++ b/drivers/power/supply/da9030_battery.c
+@@ -502,8 +502,7 @@ static int da9030_battery_probe(struct platform_device *pdev)
  
--	expires = zpodd->last_ready +
--		  msecs_to_jiffies(zpodd_poweroff_delay * 1000);
-+	expires = zpodd->last_ready + secs_to_jiffies(zpodd_poweroff_delay);
- 	if (time_before(jiffies, expires))
- 		return;
+ 	/* 10 seconds between monitor runs unless platform defines other
+ 	   interval */
+-	charger->interval = msecs_to_jiffies(
+-		(pdata->batmon_interval ? : 10) * 1000);
++	charger->interval = secs_to_jiffies(pdata->batmon_interval ? : 10);
  
+ 	charger->charge_milliamp = pdata->charge_milliamp;
+ 	charger->charge_millivolt = pdata->charge_millivolt;
 
 -- 
 2.43.0
