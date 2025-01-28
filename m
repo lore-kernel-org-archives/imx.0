@@ -1,244 +1,236 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010038.outbound.protection.outlook.com [52.101.69.38])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FEC1F63E0
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738102142; cv=fail; b=HapYs6qaWoe+5dA7zYmq5jFXAUCKwvFEvjchYU+9zBZVAJrHqgrfybxeC+a3GqTZdRY/EeF6GpxAc9vQaWmXmaL/pxBUF4qwC92/UT1UOK+8rPds+4RwChmCue9gN9tDAEQtpKDpdZjLEP6XEkJg39Yq/KU/Bphz+0pd/RDCXkY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738102142; c=relaxed/simple;
-	bh=82i+ZNN//yWfCS+EdpjUgo+KbP9Mi5MxOEllPA4oVrY=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=iP02qOamBNQpxv5Ys0CyPzWIr19r28nHK6gCVi6oH8EDxh2aR9o29EvLKgBjVxwz+8HABojWcMUoZB1ScuPyPUs3ekQusLGeg8ffHubhKV6ixgkSxvhOShj47GSopE5O3tKGDvGHfEVbXQQS81rCsKP13cM7zaOnhrhM7YhFnDc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Axiskoeq; arc=fail smtp.client-ip=52.101.69.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B219C1E0B74
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738103442; cv=none; b=Ce3S/mIWy9Qggh45K5CtM4uOpFoCqiJvAraxUjyXcsgS6EwLAkcgQY3FbsV9tjYPhUWRFU45n8bMOD9HKmM++aLUwTqaoxkgmPnh4yZjJI6iIuvVOAuRtsaydD53PgmjYxVlOpdD/shIVwB6TZ7/z6u75g3J6K5X97BFUxtI/zQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738103442; c=relaxed/simple;
+	bh=t1B4jwyIADVA6S8X7DXOmIb01Pyst5f0UX1jMRzVBZA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=iqZSlAqGUNOW9GXxKVK6OD8oSswVDqxXTsljFlvfRThl6M8Nzdk+uLuARHWVC5SQjE5CX/axgPaOM9QUnVtesF40V+A3kjLT8LWEo1tZU9GrEZvgpccXMRHF5NuEYIQRzsXPaWUVTzVGDg/Y+lJC2dkTnzkXDLh7qvjqrY1BuZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HLWlv/+L; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Axiskoeq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aMpqn7BkZcTE21npsfJVTqSfsmr+iohkzsgxiF7Z2FVCHzvplczElqEiAOYTsO+3Y91TwcDtVsPG1fCqgxQvACc0TL8Ld2IJ/4r/E+2VjrTlxmOhe+ZQt1x49ItNWpqjHENqWbTSu+un250UEraAdy+2QhBIViio6hyYL73mMg52Bn6jzxwkPDWQWLVeJRxkfKGhCZjkT4OpUJssocy6eDptAifJCetFBV4OeBzEisgnTpOBlkeYi6uK7Fh3MScj9Pb/JvgXePY2v9qnFgs6HmuFQzT+Xfj8HbvzE+7i8c2JkAF3a1n8mSTJDskft3aZiwWKaa44vwTChvyguhYG1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wJxChZP0aR0iCOpx4zJhPrHwj+xKeWc1Pssf1AAz6bQ=;
- b=AQ13e9UEqHhfdm2wHNiWle+wL1YlnnUV4X5xgaVugPMchGnunnOX1zWJ2PigRomgwSPNPD9ygghAqhsuUXAkw7coDsrRbLxDBmIfavCJfDDmG9IIh/JuTqzslFR7FVskuwGf40SAdzgVGgTJ3E5QLJ6m8c83JnnUQ6vg9UZdY6SIe+koN2jk0ItWecMpDtkBXc2lGgKyAY7Mx80udn4giL0pvSRjbAPB+I8mEFLl8BCl+jlkNNRpWm+FypxKj/FYcxc4jspB5jvU/vVxrydwBl0xP/A1FlIaYuww8I2RUvylbfkZnLXR1M943SJNAWvDY5KFgfNliWmrAy4recb1oQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wJxChZP0aR0iCOpx4zJhPrHwj+xKeWc1Pssf1AAz6bQ=;
- b=AxiskoeqDB97aktKh6nD3CJ4FlxjCwoc6VvgzSPnwKIsQbydcWE9z+XJA44tzk1BFUyHiUuzLSKbKnFMKm1Yg+otaG+evIJiMdIEKQuUSnB7T9H6O4ysAOci5ciDtUdg9hqp4NRT82pldMay3HSmCB1T6JtZBdZ6QUHTVQimkuxV/LcU+mrNwgpKVvvcmnJ/QyPsoHM9ugd7qzDkAq6r2CEeZLbwMrAhOp0JL/jTjw6uKdTSvsKRW0rZ/UGB6sxUS6tBjhBJ6AXftQfgN2OTJgrxW+KAga/+Ev5knn0wGTQU2iIJMv8a22D2ZEb3zBvgNbxk1Ou5xK82TOR0c1crGQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8555.eurprd04.prod.outlook.com (2603:10a6:20b:436::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.18; Tue, 28 Jan
- 2025 22:08:58 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8377.021; Tue, 28 Jan 2025
- 22:08:58 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Tue, 28 Jan 2025 17:07:40 -0500
-Subject: [PATCH v9 7/7] PCI: imx6: Remove cpu_addr_fixup()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-pci_fixup_addr-v9-7-3c4bb506f665@nxp.com>
-References: <20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com>
-In-Reply-To: <20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Jingoo Han <jingoohan1@gmail.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738102099; l=2187;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=82i+ZNN//yWfCS+EdpjUgo+KbP9Mi5MxOEllPA4oVrY=;
- b=jKJZ1FU69RghE7E2Y6Mg+P7Z+iK7AD42u2G9MBdt+1uL9MlogqwTnSfIaN0OhtJtZ+XLNgYdk
- eU1OWZGSxQ8B69FI0yYwhxT+y4v0+rvQjnMqSY3Xcg3mibWPpph1lcL
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR03CA0130.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HLWlv/+L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738103439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Bbih3RuEKQlUkWbTQ/PFCmKMuLjifWffxPwT42Mo1uc=;
+	b=HLWlv/+LcBlT+rFD2e1pDL9gRaiKztQ3wrEFBKQPwPJME4ecwKYttMp+vFweq2eBlEL0LQ
+	GmN/wzOhBd/+HclALh929SZClwHD33/icXvX13juNuiLaYdoHAWsq7aO1Mn7TRgt/gf803
+	J9wzDMXA+Cfeez04n4M26XRJCmfxopI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-LtV_82jsOVW9ot0uekBm9Q-1; Tue,
+ 28 Jan 2025 17:30:37 -0500
+X-MC-Unique: LtV_82jsOVW9ot0uekBm9Q-1
+X-Mimecast-MFC-AGG-ID: LtV_82jsOVW9ot0uekBm9Q
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5EE851800360;
+	Tue, 28 Jan 2025 22:30:27 +0000 (UTC)
+Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.231])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 83018180035E;
+	Tue, 28 Jan 2025 22:30:10 +0000 (UTC)
+From: Anusha Srivatsa <asrivats@redhat.com>
+Subject: [PATCH 00/14] drm: Move to using devm_platform_ioremap_resource
+Date: Tue, 28 Jan 2025 17:29:24 -0500
+Message-Id: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8555:EE_
-X-MS-Office365-Filtering-Correlation-Id: de8aa5f3-d534-488f-0cf2-08dd3fe85cd6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?b1pJcnRQTmpHK2g4U2FzMVRLOVRkUXZFLzBUWTJibTdTUFN3a3pJdmh0a1Bj?=
- =?utf-8?B?WjRlcWtWc3kvZ3lDMGdtMXZyZlRvOVBwc0F4ZTZkdDRqS09ISE5ncHVrZHA3?=
- =?utf-8?B?Uko5SzNYYm5FeGppdElpd0pLeTNVZkFQSVp6TTNMZk11ZmhKOTJMQUY4UkVE?=
- =?utf-8?B?TTkxSk91a1BpMk40SlFEZUg0a0xOczNJKzF3VTJubVlCdzc2OXdiSWl5VVg3?=
- =?utf-8?B?U1NrMHVMMVRKVDVXNG84dm5zZE82bTBTeHQwWnE3eldzV1RoblQ4RTBEclRv?=
- =?utf-8?B?c3FxUzlkQVZ5dTdER0JqZ1Ixd2Z5YXpzRzlwamxzV1M0TkhLYVZFRkdMUG9B?=
- =?utf-8?B?Q1pPY1dyV0FtWGpkdHU0cmpNc0VGZ1VSUmZPcWRnYXF6MFNrRnREck5MODhW?=
- =?utf-8?B?ajJvdTBoMWVuY2piU0pCcmd5NENVUEF0dXRNeisrcTNsanVMRG1TZWFpN0Ry?=
- =?utf-8?B?M1lVSDdEWGdKOWk0Q3o2RXQwUU1iYkxJTlFFUmhmd1lnMnlrckVPT1FYdEhl?=
- =?utf-8?B?R0gxd04xbDNpZjJlUXdzNHlzV2Vrc2RnK3dBamgvMzJXa0ZmT1luazVqSXFi?=
- =?utf-8?B?YW53U2picWJPb08zM1pKUWlHNVJyckV5OExrVUpWalh4L1h2cXBlL3MyR0JW?=
- =?utf-8?B?K0xpblZCNmt3WkFhMEhDUndLL29oL2EyMEVuNGlwU0tnRlU5dHRkVnR6MVla?=
- =?utf-8?B?Qk1GR2dsZUQvVzZjS2pGU29JZEg5STBZWWQ0ZEUrZjdKa2VFMVZIdVh5N1J2?=
- =?utf-8?B?YVhMamxaVjlHTXlUQmc2YVROeVFvQm90cTBmM1FCZHgwZlk5KzErd3FsOFpj?=
- =?utf-8?B?d3FGSWo2dG5jVEV6cE5SZVZjeXZOWk5SRTZ2ZXN3S3JqbGpUZmJjY3RJV3RR?=
- =?utf-8?B?QUxMKy8vNzUwOG1vOW1DUE02cjhMcVFQd0txZERacHFzbEg0UHNJZUNGYjJO?=
- =?utf-8?B?NWp5TVhDSzEybS9TQTJEdFZyaFF0dzJSMmpsUlJBdE1UTnFvS21lNXFnT2Jr?=
- =?utf-8?B?aHpyQ0RZUkRGb2FzdHgzRXhLSjczYU92Tm9lTHRHNzdzSEVMODJyakV1OGZF?=
- =?utf-8?B?V3ZjQ1Y3YVhCWHg3UHJZQlM2TzJ6dW5CT2ZMZkVCckRzUkMyOEtnWmpTMGtQ?=
- =?utf-8?B?aFQ0SnIyU2lRc1ducjNFaHNGM3AwWUtJdTBpay8yM21DUHlQWnQ3N2FVQlE2?=
- =?utf-8?B?bzQzSmcxUFE4bjY0ZXo5ZTdSUnlKK1hxVXlncW5Hc09pS3h1V3daN3JwSTdI?=
- =?utf-8?B?am93Vm15aWJSWUxKdG5jVjIxZkNucFZZazluUVlhSHhvUlluSmpKN01ZWWYy?=
- =?utf-8?B?Y1RlaFNrb3VIaDIzRDVyZHJMb0d6QkVkL3cwNGpNOG5vczd3T0s4bUlUcHFN?=
- =?utf-8?B?RXdkZWJVbWRWQmVRZW9lSzVhOXl4UGl3dEpvRnRtMXY0dHlzNzhSd2JzdGcw?=
- =?utf-8?B?THNPUXdES2VMZDFrbVJ1K0ZlZmE5WHhVTlNlTXhlZk83SU9wLzlMdGE1Yisr?=
- =?utf-8?B?eGRSZ2tzeHZjczArTSt5TW5abmxSeUgvODlyLytJMmN6bHhmbXAxWGhkNnZm?=
- =?utf-8?B?UU9vTFBsZEN4MWlHVUVnWFhPUUVMc3ZxKzJGbzE2RW9RMU9wSlo4Ymo1U2tY?=
- =?utf-8?B?b2RLa2YrVTcvYVRSQmV6aTNTYTBCVnMrc0RlaVM5a1JYV1h3VU0wMzZXeGd4?=
- =?utf-8?B?d3RyMDcxVUYzZnRQWDRTR1NaT3VUakszalY2TjZJSWhXMnRHamJlZXR1ZUtS?=
- =?utf-8?B?MFhDc0M1aGtzWXpQY2lSZ3dkaHBmaHR6T0hURDV2dHA2Uk9GeUJzVm9FM0h2?=
- =?utf-8?B?aEIrSjRJUi80UGdsb0pncEFUTVptZElHRTdoaTZvRStNRUZHOGtKWGJJWnBV?=
- =?utf-8?B?OVpjb3RJYmRvN20wUHdJZVVzcUxTQ1YvUC9FM1MwOEJYMjNqeEJTdmw4bExx?=
- =?utf-8?Q?wqucxZc4DNR3nDubsa1yrY8j6QESEybZ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzZYZmp3UHBKRzlMcm5HbUZ5UENtZER0YUNQZ1M4QzhhSldZeUxBSkhYNS8x?=
- =?utf-8?B?d3hFZThwdmVzU1Q4bFhQUEd3b3JCZjZqSDlndnlRd3ZuMzFGaHZwaHlYcktJ?=
- =?utf-8?B?c2JSRXBySXZXMGtlTjlOSnVJYmlXVEl1RDdDNG54RVg2a1grV29zYmpqWEJG?=
- =?utf-8?B?enJ4eDl5enJrYXFualY0NWt2SllUb0VLRUZyR1A4b212NkUyZVhjWE5OMnhZ?=
- =?utf-8?B?ZFBNelJrdDVDdTR3Z0lCaWZUZ3dSTEZ4cHo1ZGxFbEs0cFdXSW00UG90aXdx?=
- =?utf-8?B?MHJnVVdaNko1YzBUT0ppTEhSZTRrVHpMT1BNUlRoOFFCYnYydHJ4cTV0U0NH?=
- =?utf-8?B?UmRMd295RFJ0b1BYaXU5UzdYTXh4TEtqSGhySWtnR0FKRUNZbHI4Z2FycXhH?=
- =?utf-8?B?Qk5ZSHNwZEtWT0hHdzh5czJaNE9OTFdhNDVxYkhQOHlkZlc0Ri9Kb2J5R2dH?=
- =?utf-8?B?THdaVkI0TS9UeGg3aFFyMC9JckFHSVU0ZXJTeERRZmUvRTZINDlISDBXQXBB?=
- =?utf-8?B?TysvaVJPSlk3c2hWQStwN1h4SXZ0YmR6RXBpaVpDQ0tYa0FCT1BIL0FyVm5Q?=
- =?utf-8?B?VDR2SkF4Q0wvdU56TjVva3h2ZkZUL0VlWUNuemNTSW53ZXE3eWdxK1Q0WU9L?=
- =?utf-8?B?SlU4R2Mvd3FFc1VpUFJBTXBHRDI5alBFMFdWUmV4RlhDbDRUd2I0OWpIaWg5?=
- =?utf-8?B?cGo3ZEs1V1BlNnA5SWxjcWNvV3NaRzBialcxZzNCQkpNVXdzNkg5VWUra0dB?=
- =?utf-8?B?UGVTSmllc0d6U3FJR09IRUxudy9VS1F0am9DMnBWNVI2R21lTitzTEtsQ2M0?=
- =?utf-8?B?Mm5oZWtJbDcyeXlMNW5SZ0FqK0ZOS3plV1RUTFZTbWM4a09YUjIzR2F5bEVy?=
- =?utf-8?B?djZFZWZuWHZud3FwYjJRU3hWY2hVUGhENXY3VCtRaURFaDJhWU51RGlmcm0z?=
- =?utf-8?B?UTJSSE04M3IxRWpjdWxGbmRFM3BzckZYY0tPSGhLVVFGQjA4dzRtdlVSbjBV?=
- =?utf-8?B?aDROem9qTnBNYjhlQlVQRVZrQVhJZkp1ajBxbEtBQUc1cHQzTmtOVVpHM2p2?=
- =?utf-8?B?Q3VrZng4VGxsWDVCVnI4b0l2QzZSVGxVY28zVFRZS3pUbXo3WVVLNFE4a2Jl?=
- =?utf-8?B?Vk55SXREbmpSWGY0SkV0U29sUW8zSlIvMTY0cmY0VzZQTzJnZWtMK2NzTDZu?=
- =?utf-8?B?c0tFSVlVOWNyR2lmdDdCZ3JGc21XSXFlR1lyMytFTHZ5ckdZUmltNTNrUEhs?=
- =?utf-8?B?MFdTcEw1dUVlRCtqN1BLOEFYOVV6dXpHR0xhdmQ2Y2NNRVE4OUE0UVE4bGkw?=
- =?utf-8?B?bHBIRitXNitSdzZLcENxQ3c5Tk80M3k5ZFRsTnpXeVd1S1B4cEJIYWovVFk0?=
- =?utf-8?B?eEpEMVl4NGlURjh1aGljaE1QcWFGYUtLVjN2VjNYK3IwR2xnUDRvNXJzMktp?=
- =?utf-8?B?SEUxaW5LR1lORDV4Z2p1SXgyS2hFZVJmUjdsN2JxWXUwYm04bmkwWWloZHNs?=
- =?utf-8?B?VFBwUHNPTjJESVpJeHd1NnVpMUpDWjhWUWtNZ2c2T0N3QUVLVjF5UmdMZG9t?=
- =?utf-8?B?K2E4UGJ1Vkx4Q1NyNlhtdUVuRnNVSE1mbW9kTU1HZ01KUjN4YWZvVUhGbWpE?=
- =?utf-8?B?bzl0K1dIaUVjU28ra2hqUVJCWEpSMzkzZk15OGFLdThTaU5XRUNnLzVpejJm?=
- =?utf-8?B?U1JHSU9VL3hNL001UVV2UFJjREZxZm1zdWJyMkF3dXB6dWF2V0VBUGRRVktp?=
- =?utf-8?B?Zy9VaE5QVXlMekJIWmZVTEdwaWkvcXNpUzkzR29SNm4xR2kxd2MvYkRTWDZy?=
- =?utf-8?B?cVJnRzFqQ1kvYmRRNjNRWGMvYXpEMUMveFBTWUcxN0lNRTJnbTlOOWZOb3FT?=
- =?utf-8?B?b1BVbFRlTEpIelgrT1BLdW9VYXVmdzZsMkgxV1NYSUJCQ015WTR4cmpwbjJK?=
- =?utf-8?B?ZXFDUkJjTTlCci9YOEV5VUxRVkZDbUMvTGFudHpGa3NsRmFVZS9sRmFjZy91?=
- =?utf-8?B?dHhwbmdWSEJYMzFyTmpwdFJZL2tCbGE1WWdqSkxRYjRrVkFNdXZvS3NNeVI1?=
- =?utf-8?B?MXpaaTFkUkl3Zkl6VzlqeURJQlJWZGhQQmNza05yOVFKeHBwOWRENEdEemJw?=
- =?utf-8?Q?aKc7qcBBnbXMCMdtPo11xHEra?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de8aa5f3-d534-488f-0cf2-08dd3fe85cd6
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2025 22:08:57.9884
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WNO/bMXQFSN5Uc364JWnaC2psUsS3lraKRk4gHXfqqjJ5xTi0g+GqLOQ5RBBRzOsCAC3QXzF+k1pgusLiGkw0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8555
+X-B4-Tracking: v=1; b=H4sIAERamWcC/x3MTQqAIBBA4avErBtQI42uEi3EppqFPyhEEd49a
+ fkt3nuhUGYqMHcvZLq4cAwNsu/AnTYchLw1gxJqFFJN6KJzjJ58zA/axKi0JjlYMRoy0LKUaef
+ 7Xy5rrR8zCerIYgAAAA==
+X-Change-ID: 20250128-cocci-memory-api-266e13a057e7
+To: Joel Stanley <joel@jms.id.au>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+ Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Alexey Brodkin <abrodkin@synopsys.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738103409; l=4607;
+ i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
+ bh=t1B4jwyIADVA6S8X7DXOmIb01Pyst5f0UX1jMRzVBZA=;
+ b=TKPB6evzfjTeNzV82GgFaRIEt8PBIygsoHwoHMJY6JP3p+kHHMkgJH10gfKAjIAyEApxibsX1
+ CFZ8Xj5+QaQDJehni2woQbUyEUZMq2rh8dkQ+4RKwUZp27t3QE5BRgr
+X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
+ pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: T0HzNro7e1_OMpwDukh8mcpxBNWwVFSBEkY0cTclAgY_1738103431
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Remove cpu_addr_fixup() because dwc common driver already handle address
-translate.
+Start replacing the below occurences with the newer API:
+- (devm_)platform_get_resource + devm_ioremap_resource
+- (devm_)platform_get_resource + (devm_)ioremap
+- platform_get_resource_byname + devm_ioremap
+Move all these occurences to uses devm_platform_ioremap_resource
+instead.
 
-Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v8 to v9
-- rebase latest linux-next (close enough to v6.14-rc1)
+Address a TODO item in the GPU section.
 
-Change from v7 to v8
-- add mani and richard's review/ack tag
-- use varible 'use_parent_dt_ranges'
+Used Coccinelle to make the code changes.Semantic patch:
 
-Change from v2 to v7
-- none
-Change from v1 to v2
-- set using_dtbus_info true
----
- drivers/pci/controller/dwc/pci-imx6.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+//First Case
+//rule s/platform_get_resource + devm_ioremap_resource/devm_platform_ioremap_resource
+@rule_1@
+identifier res;
+expression ioremap_res;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+-ioremap_res = devm_ioremap_resource(...);
++ioremap_res = devm_platform_ioremap_resource(pdev,0);
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 90ace941090f9..d1eb535df73e1 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1217,22 +1217,6 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
- 		regulator_disable(imx_pcie->vpcie);
- }
- 
--static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
--{
--	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
--	struct dw_pcie_rp *pp = &pcie->pp;
--	struct resource_entry *entry;
--
--	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
--		return cpu_addr;
--
--	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
--	if (!entry)
--		return cpu_addr;
--
--	return cpu_addr - entry->offset;
+//Second case
+//rule s/(devm_)platform_get_resource + (devm_)ioremap/devm_platform_ioremap_resource.
+@rule_2@
+identifier res;
+expression ioremap;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+<...
+-if (!res) {
+-...
 -}
--
- /*
-  * In old DWC implementations, PCIE_ATU_INHIBIT_PAYLOAD in iATU Ctrl2
-  * register is reserved, so the generic DWC implementation of sending the
-@@ -1263,7 +1247,6 @@ static const struct dw_pcie_host_ops imx_pcie_host_dw_pme_ops = {
- static const struct dw_pcie_ops dw_pcie_ops = {
- 	.start_link = imx_pcie_start_link,
- 	.stop_link = imx_pcie_stop_link,
--	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
- };
- 
- static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
-@@ -1645,6 +1628,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	pci->use_parent_dt_ranges = true;
- 	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
- 		ret = imx_add_pcie_ep(imx_pcie, pdev);
- 		if (ret < 0)
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource(pdev,0);
 
+//Third case
+//rule s/(devm_)platform_get_resource_byname + (devm_)ioremap/devm_platform_ioremap_resource_byname.
+@rule_3@
+identifier res;
+expression ioremap;
+identifier pdev;
+constant mem;
+expression name;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource_byname(pdev,mem,name);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource_byname(pdev,name);
+
+Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+---
+Anusha Srivatsa (14):
+      drm/aspeed: move to devm_platform_ioremap_resource() usage
+      drm/fsl-dcu: move to devm_platform_ioremap_resource() usage
+      drm/hisilicon: move to devm_platform_ioremap_resource() usage
+      drm/mediatek: move to devm_platform_ioremap_resource() usage
+      drm/meson: move to devm_platform_ioremap_resource() usage
+      drm/mxsfb: move to devm_platform_ioremap_resource() usage
+      drm/rockchip: move to devm_platform_ioremap_resource() usage
+      drm/sprd: move to devm_platform_ioremap_resource() usage
+      drm/sti: move to devm_platform_ioremap_resource() usage
+      drm/stm: move to devm_platform_ioremap_resource() usage
+      drm/tegra: move to devm_platform_ioremap_resource() usage
+      drm/tiny: move to devm_platform_ioremap_resource() usage
+      drm/vc4: move to devm_platform_ioremap_resource() usage
+      Documentation: Update the todo
+
+ Documentation/gpu/todo.rst                      | 15 ---------------
+ drivers/gpu/drm/aspeed/aspeed_gfx_drv.c         |  4 +---
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c       |  4 +---
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c    |  4 +---
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c |  4 +---
+ drivers/gpu/drm/mediatek/mtk_disp_color.c       |  4 +---
+ drivers/gpu/drm/mediatek/mtk_disp_gamma.c       |  4 +---
+ drivers/gpu/drm/mediatek/mtk_disp_merge.c       |  4 +---
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c         |  4 +---
+ drivers/gpu/drm/mediatek/mtk_disp_rdma.c        |  4 +---
+ drivers/gpu/drm/mediatek/mtk_dsi.c              |  4 +---
+ drivers/gpu/drm/mediatek/mtk_hdmi.c             |  4 +---
+ drivers/gpu/drm/mediatek/mtk_mdp_rdma.c         |  4 +---
+ drivers/gpu/drm/meson/meson_drv.c               |  9 +--------
+ drivers/gpu/drm/mxsfb/lcdif_drv.c               |  4 +---
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c               |  4 +---
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c     |  4 +---
+ drivers/gpu/drm/sprd/sprd_dpu.c                 |  9 +--------
+ drivers/gpu/drm/sprd/sprd_dsi.c                 |  9 +--------
+ drivers/gpu/drm/sti/sti_compositor.c            | 10 +---------
+ drivers/gpu/drm/sti/sti_dvo.c                   | 10 +---------
+ drivers/gpu/drm/sti/sti_hda.c                   | 10 +---------
+ drivers/gpu/drm/sti/sti_hdmi.c                  | 11 +----------
+ drivers/gpu/drm/sti/sti_hqvdp.c                 | 10 +---------
+ drivers/gpu/drm/sti/sti_tvout.c                 | 10 +---------
+ drivers/gpu/drm/sti/sti_vtg.c                   | 10 +---------
+ drivers/gpu/drm/stm/ltdc.c                      |  4 +---
+ drivers/gpu/drm/tegra/dsi.c                     |  4 +---
+ drivers/gpu/drm/tiny/arcpgu.c                   |  4 +---
+ drivers/gpu/drm/vc4/vc4_hdmi.c                  |  9 ++-------
+ 30 files changed, 30 insertions(+), 164 deletions(-)
+---
+base-commit: c4b9570cfb63501638db720f3bee9f6dfd044b82
+change-id: 20250128-cocci-memory-api-266e13a057e7
+
+Best regards,
 -- 
-2.34.1
+Anusha Srivatsa <asrivats@redhat.com>
 
