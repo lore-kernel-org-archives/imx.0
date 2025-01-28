@@ -1,58 +1,57 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F4C1E6DC5
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE5E1E6DC5
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738103593; cv=none; b=I/MnC8A8TPL/UXEjlQ/ikAOlfSaRiYDS3TSz3BNm6VTugv8SoUX60x6EkzozO6R5HRNzoTegWs4E0QdnWxZ7yhk/ikcGj7gwDNewMX5DnSOlkPHMDPhzePpZMZvG6w6DljLtPsHgEHnPtY7oojHcXYVGNET58j8krUH3Nwr5fxg=
+	t=1738103604; cv=none; b=uz5rcGuojqraiBknyBOMfn48D50PcO1Ip66iqCjdm6c7xKdrR1VChv3+hpma9Aqpt87+mQQKG4ueFBGe9EQ2/K3ookcTIlN3Kiz1EiLRI7yyfvnnRfeROVl7VjJ5yR5bphSFrz8WBTkG8iMa4n12R9U+EoZtLRnJmOHE6d4Q8ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738103593; c=relaxed/simple;
-	bh=4vxmIMCntNkLYWUXI5TlhVdnqmm2AsRbVZgcmO441nM=;
+	s=arc-20240116; t=1738103604; c=relaxed/simple;
+	bh=1uza9zHT5KB2vg0jmKcDXlF6fg11a6R907qgLnhqIds=;
 	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=CKJUuH1Ohi8yYnn+tUvzQEJ36j2fVReB6ObgcbzrEXVljhTtOBRyG/YLhJP64VBETfqQfhS6bBvdkx58sEzujX+6rzya1uj26TMIb7VIPbKi3SyCxoUV/SOEhpY2C+A2LlkD7ntX808d1V9EBkZEzGQxYTc10afMPDwFr5tFQjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LFsLAf3+; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=gRRd8mPnxvtVTDUIRSYGvO0fOb0aIs6z/KP55J9WzGx1iYTrMI9/yOdG1eq0j+9w1zGws/0AbeA1IsvhoIer0BIRTW3CFpj/xuXk8K9DBZvSyJGK/GxCQjiHexCD9hQ0AkxHeouDRT2juVnkk532P10L7hR0c7FmMnku8ljSz4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FzjVrwFm; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LFsLAf3+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FzjVrwFm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738103590;
+	s=mimecast20190719; t=1738103601;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4eOh+r5POEBIZHTbq+nHznMj04j4TeTNMfqN9ncpUe8=;
-	b=LFsLAf3+RSy/McjcjBj3KBZMgbdXjP9t0lGRBYsQ/boZlOUSCbqsjQ7H31/PLWjL6YQyuI
-	pPcx8VbICkILcINOCy7QNm2UqI//fee6inH2cNt/VmRHPgCBkFWs+QoivSq4vWEue6+ScF
-	xm5tH+OtuPhIKPYqbBux4iW7i9/JOX4=
+	bh=LBt0xhKg/k6By/AvzZb28FkpDdmTA/WjeTTyuRHg9tA=;
+	b=FzjVrwFmFz7MEdY8Vm1/rlPjeQdmO+/MT5tZi9aGUOC/+TbCSnqrxaYMSHe8+NEHcJqUmn
+	T2hLzCP4Z6WqwG03drXouwl7j3n5a6ZL7yBpADXgY12kBauyGFnstNhY9s7y2JmLhu4nzX
+	XuPbtdK+goNPALPpujC1H9MZpQY5eu4=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-JJiTDf_rMPiltZe2Gtxs5w-1; Tue,
- 28 Jan 2025 17:33:07 -0500
-X-MC-Unique: JJiTDf_rMPiltZe2Gtxs5w-1
-X-Mimecast-MFC-AGG-ID: JJiTDf_rMPiltZe2Gtxs5w
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-yq4hKjUZNIiv1YzmZBLdbA-1; Tue,
+ 28 Jan 2025 17:33:18 -0500
+X-MC-Unique: yq4hKjUZNIiv1YzmZBLdbA-1
+X-Mimecast-MFC-AGG-ID: yq4hKjUZNIiv1YzmZBLdbA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C65151800268;
-	Tue, 28 Jan 2025 22:33:01 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 654161800360;
+	Tue, 28 Jan 2025 22:33:13 +0000 (UTC)
 Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.231])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6E29418008C0;
-	Tue, 28 Jan 2025 22:32:50 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1E61618008D4;
+	Tue, 28 Jan 2025 22:33:01 +0000 (UTC)
 From: Anusha Srivatsa <asrivats@redhat.com>
-Date: Tue, 28 Jan 2025 17:29:37 -0500
-Subject: [PATCH 13/14] drm/vc4: move to devm_platform_ioremap_resource()
- usage
+Date: Tue, 28 Jan 2025 17:29:38 -0500
+Subject: [PATCH 14/14] Documentation: Update the todo
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20250128-cocci-memory-api-v1-13-0d1609a29587@redhat.com>
+Message-Id: <20250128-cocci-memory-api-v1-14-0d1609a29587@redhat.com>
 References: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
 In-Reply-To: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
 To: Joel Stanley <joel@jms.id.au>, 
@@ -101,73 +100,54 @@ Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
  linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
  linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738103410; l=1689;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738103410; l=1237;
  i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
- bh=4vxmIMCntNkLYWUXI5TlhVdnqmm2AsRbVZgcmO441nM=;
- b=5O8Ivj3HJZboc/7qkLN9ieN1tdgZ+256U7GLYJr170ZR/+aEj1nNMDOzAkFeg5anubD5oaxWF
- sGYOK3IPQARAgRjIsuLaaVG0kGOTrTsEWSIShMKxlngxbxGfGebRp+0
+ bh=1uza9zHT5KB2vg0jmKcDXlF6fg11a6R907qgLnhqIds=;
+ b=s5MVeYZLBGOWUc20PuIIuL9SunjfVvp7SriFVQzP3zS3xF7J9noCxYaIm5Y8I3dDRoMe/Vp1q
+ iFtY+RhL+bwCkiRRg25tfa75tUVeP5EtP7QOvWyFI7spHEbLcbYZPRL
 X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
  pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: gtgnzGBJ0NAlmtPAPHIDVVLw3GmB0W-sHneVWz1zE2Y_1738103582
+X-Mimecast-MFC-PROC-ID: bLt5XwO6yVcA-lnItVO9OgqBUwraAaL_NQECLlYotGY_1738103593
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Replace platform_get_resource_byname + devm_ioremap_resource
-with just devm_platform_ioremap_resource()
+Remove the TODO now that this series addresses
+the changes needed.
 
-Used Coccinelle to do this change. SmPl patch:
-//rule s/(devm_)platform_get_resource_byname +
-//(devm_)ioremap/devm_platform_ioremap_resource.
-@rule_3@
-identifier res;
-expression ioremap;
-identifier pdev;
-constant mem;
-expression name;
-@@
--struct resource *res;
-...
--res = platform_get_resource_byname(pdev,mem,name);
-<...
--if (!res) {
--...
--}
-...>
--ioremap = devm_ioremap(...);
-+ioremap = devm_platform_ioremap_resource_byname(pdev,name);
-
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: "Maíra Canal" <mcanal@igalia.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
 Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ Documentation/gpu/todo.rst | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 47d9ada98430634cfd8c1e21c2a4d00d501bab7e..e22733f8159aa4b247a915e24a236f620bae932c 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2951,15 +2951,10 @@ static int vc5_hdmi_init_resources(struct drm_device *drm,
- {
- 	struct platform_device *pdev = vc4_hdmi->pdev;
- 	struct device *dev = &pdev->dev;
--	struct resource *res;
- 	int ret;
+diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
+index 256d0d1cb2164bd94f9b610a751b907834d96a21..b5aa5f776cfe0916b98bddf791c65abe974834cf 100644
+--- a/Documentation/gpu/todo.rst
++++ b/Documentation/gpu/todo.rst
+@@ -441,21 +441,6 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
  
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hdmi");
--	if (!res)
--		return -ENODEV;
+ Level: Intermediate
+ 
+-Request memory regions in all drivers
+--------------------------------------
 -
--	vc4_hdmi->hdmicore_regs = devm_ioremap(dev, res->start,
--					       resource_size(res));
-+	vc4_hdmi->hdmicore_regs = devm_platform_ioremap_resource_byname(pdev,
-+									"hdmi");
- 	if (!vc4_hdmi->hdmicore_regs)
- 		return -ENOMEM;
+-Go through all drivers and add code to request the memory regions that the
+-driver uses. This requires adding calls to request_mem_region(),
+-pci_request_region() or similar functions. Use helpers for managed cleanup
+-where possible.
+-
+-Drivers are pretty bad at doing this and there used to be conflicts among
+-DRM and fbdev drivers. Still, it's the correct thing to do.
+-
+-Contact: Thomas Zimmermann <tzimmermann@suse.de>
+-
+-Level: Starter
+-
+ Remove driver dependencies on FB_DEVICE
+ ---------------------------------------
  
 
 -- 
