@@ -1,101 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885EE78C91;
-	Tue, 28 Jan 2025 11:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A932F1A2389
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 12:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738062392; cv=none; b=EfUHyhLVvGThpMf+Hy9gBJ7n85fI+t+quOCUg7ZYt20sL68SfrirCP/NoBE/PSAaY1os8tDARNDzFkqozY2i2Fylmp7E5runRbKTtnyvSc6UHAS78MBEze39lpUHgQe6IuUFEAcAqAOiyMu7m3CQXmEuhHJblgc8W3QWs+m5L0c=
+	t=1738066073; cv=none; b=Q8TXrIclLRGjdDjoZ6n8A9IUqCD8BtV1Y3Xst77gEWaFljG/k82YDXSXQLiIBNvlwu1Cux8yi4E1fcfD1fiu7HeIz5nZHHYzUlOouN2nj73eCuuM+lnMhixR+BQhfZwaHe7Jm7o928hWKk4FWSVNmkrEKWxy8CKVADJRTNLaw4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738062392; c=relaxed/simple;
-	bh=gv76C6wO6xMSzCbvBBvWgdOv3lE3r87BRuayIE6KiXI=;
+	s=arc-20240116; t=1738066073; c=relaxed/simple;
+	bh=6SL7MDBmqpnkWJJ1wgrJsDWjBrNbvE0BumoAvatK9R8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HTplVHU+gtJ5lYIv0KR0B4ywLM0OYS5dOrZbnd6hy6f2ZX+J+Ul9xNEBX3i0FDJlZemyCKtmoobFYsZht9hFUGEMWThmdg0FBT3VJuKkoOyNfMOhnroVqoeOhMvLvc7tESXTQBhF31cl3RzJFktGd5jzXePYhoONbQRQaLEPUxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcQcWjNV; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcQcWjNV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE901C4CED3;
-	Tue, 28 Jan 2025 11:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738062392;
-	bh=gv76C6wO6xMSzCbvBBvWgdOv3lE3r87BRuayIE6KiXI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XcQcWjNV+M54DU8459RWEa5PzPrw7zxbkleDhYV9iQAmDaK4meu+eLCoc1DTqGguo
-	 Wesux7TJh0K2V0U4vpXK5RXzqxCBEYdcevhSPJWDFSdcuE6VfmFtmXcRt8Je+u0egA
-	 zaG6oHZg3RoLriyomnEd8AYlf+J8q4AcDPZ22vn+7qZOERK9HEKiFGqW2Wx/7ScGdf
-	 nBbkFWLx21ose6DN6Dv7FXKbc6JjpkQb2Z5aawSjltVAjro66uaGQwk/ZolHLirx1l
-	 4tVCThK1r8RMDP8ftEza3BWkcz8qGD/K/VoSbleSZ/Skq+sXFPOyGdn6sCMEfkBU6r
-	 ePo501YS3WSxw==
-Date: Tue, 28 Jan 2025 11:06:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: Frieder Schrempf <frieder@fris.de>,
-	linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>,
-	Conor Dooley <conor@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-	Rob Herring <robh@kernel.org>, Robin Gong <yibin.gong@nxp.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=cYCe7Dr/NPbWFn30PlHMvR/ul2ML2YuMJwEdIHkEA7YHBWxnHoOnOhSkQ0Py65wzyCt1a41HPXul5dpyk23Ui69OCa8hOfjTLXEXsoRfiLTDVXFT4XmxOdoSUgK9OQcSe3rMAZlKktiidwU9zUnNkJfTzoNDu/MZQ05+TYPMh0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84D7D497;
+	Tue, 28 Jan 2025 04:08:12 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AD9A3F694;
+	Tue, 28 Jan 2025 04:07:43 -0800 (PST)
+Date: Tue, 28 Jan 2025 12:07:35 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Bo Liu <liubo03@inspur.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Joy Zou <joy.zou@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 0/9] Use correct LDO5 control registers for PCA9450
-Message-ID: <bce1bafa-aa90-4a1c-a2d3-cabbeb69e3f0@sirena.org.uk>
-References: <20241218152842.97483-1-frieder@fris.de>
- <15348147-8806-47b7-85c0-2850c7296ed0@kontron.de>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Souvik Chakravarty <souvik.chakravarty@arm.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 3/3] clk: scmi: Support spread spectrum
+Message-ID: <Z5jIh6cLEqRKRdCd@pluto>
+References: <20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com>
+ <20250124-clk-ssc-v1-3-2d39f6baf2af@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IvZLa3vdj9aLxx+U"
-Content-Disposition: inline
-In-Reply-To: <15348147-8806-47b7-85c0-2850c7296ed0@kontron.de>
-X-Cookie: I never did it that way before.
-
-
---IvZLa3vdj9aLxx+U
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250124-clk-ssc-v1-3-2d39f6baf2af@nxp.com>
 
-On Tue, Jan 28, 2025 at 08:44:28AM +0100, Frieder Schrempf wrote:
+On Fri, Jan 24, 2025 at 10:25:19PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Support Spread Spectrum for i.MX95 with adding
+> scmi_clk_set_spread_spectrum_imx
+> 
 
-> I just want to ask kindly if there is any feedback for the driver and
-> devicetree changes in this set?
+[CC: Souvik from ATG]
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
+Hi Peng,
 
-Sending content free pings adds to the mail volume (if they are seen at
-all) which is often the problem and since they can't be reviewed
-directly if something has gone wrong you'll have to resend the patches
-anyway, so sending again is generally a better approach though there are
-some other maintainers who like them - if in doubt look at how patches
-for the subsystem are normally handled.
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/clk/clk-scmi.c        | 37 +++++++++++++++++++++++++++++++++++++
+>  include/linux/scmi_protocol.h |  5 +++++
+>  2 files changed, 42 insertions(+)
+> 
+> diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+> index 15510c2ff21c0335f5cb30677343bd4ef59c0738..e43902aea6bee3633f8328acddcf54eef907b640 100644
+> --- a/drivers/clk/clk-scmi.c
+> +++ b/drivers/clk/clk-scmi.c
+> @@ -98,6 +98,35 @@ static int scmi_clk_set_parent(struct clk_hw *hw, u8 parent_index)
+>  	return scmi_proto_clk_ops->parent_set(clk->ph, clk->id, parent_index);
+>  }
+>  
+> +static int scmi_clk_set_spread_spectrum_imx(struct clk_hw *hw,
+> +					    struct clk_spread_spectrum *clk_ss)
+> +{
+> +	struct scmi_clk *clk = to_scmi_clk(hw);
+> +	int ret;
+> +	u32 val;
+> +
+> +	/* SCMI OEM Duty Cycle is expressed as a percentage */
+> +	/*
+> +	 * extConfigValue[7:0]   - spread percentage (%)
+> +	 * extConfigValue[23:8]  - Modulation Frequency (KHz)
+> +	 * extConfigValue[24]    - Enable/Disable
+> +	 * extConfigValue[31:25] - Reserved
+> +	 */
+> +	val = FIELD_PREP(IMX_CLOCK_EXT_SS_PERCENTAGE_MASK, clk_ss->spreadpercent);
+> +	val |= FIELD_PREP(IMX_CLOCK_EXT_SS_MOD_FREQ_MASK, clk_ss->modfreq);
+> +	val |= IMX_CLOCK_EXT_SS_ENABLE_MASK;
+> +	ret = scmi_proto_clk_ops->config_oem_set(clk->ph, clk->id,
+> +						 SCMI_CLOCK_CFG_NXP_IMX_SSC,
 
---IvZLa3vdj9aLxx+U
-Content-Type: application/pgp-signature; name="signature.asc"
+If this is determined to be general enough (as per other mail in this
+thread), since it effectively provides a new general clock framework
+callback, I wonder if we should not try to make this straight away one
+of the standard SCMI Clock Extended config types by adding it as a new
+0x3 Extended config type value in the SCMI v3.2 Table 16 (with the above
+extConfigValue synatx too)...
 
------BEGIN PGP SIGNATURE-----
+...that would mean having 0x3 reserved already for this in the upcoming
+v3.3....but of course ATG has to agree on this so I copied Souvik.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeYujAACgkQJNaLcl1U
-h9DpOggAhX9BLy687yuZnM+F3nUkkbj07gR84dcQcicE5ja/aM4ckgi/aDAgvHsC
-34rd94+v7TO8cmQ/SPT4CBd9L4CEKv/JjAFKAKXXH1ya/Jc4SzMi5oFAhf8c/MMF
-tC/b/6NyIOcVioXf15AuAoNQ4NFFTrumHaBiI1kau5bps8k1Gsg2y4Wv2+pXZDlm
-3WMG+8B1eZJaMAwIa0P5XfzpPHEHya91HC/19XObNMzeJB2TMXBad1aflEZTimZY
-lDDIfbIZhndkR5XbCf9V32CCPH8E9Sqs+tggHY+X4PDGTuahfa+U9JCRqvpPNYL4
-40RSbzMWSYG148fvbylknQXQwAn5Tw==
-=P70F
------END PGP SIGNATURE-----
+In this way we could just get rid of the Vendor customization...if NOT I
+would certainly base this Vendor OEM type extension on the SCMI FW-provided
+vendor_info as you mentioned in the cover-letter, instead of compatibles.
 
---IvZLa3vdj9aLxx+U--
+Either way, it would also be wise to check if the specific Extended
+config type is supported by the specific FW version (despite the version)
+before registering a callback that could then always fail due to a missing
+feature; currently, in fact, we do NOT take this precaution for for Duty
+cycle callbacks and just assume that if SCMI Clocks extended configs are
+suppported, all the standard ones are supported: this seems NOT right
+BUT the only way to assure that an Extended config type is supported, as
+of now, would be to query the current extended_config with CLOCK_CONFIG_GET
+and see what the FW replies...this would allow us to avoid registering
+unsupported features (like DutyCycle or SSC) with the core Clock framework
+if NOT really supported by the running SCMI server...which in turn would
+mean,potentially, 1 more SCMI message exchange per-clock at initialization
+time, and I know this overhead is not always welcomed :D
+
+> +						 val, false);
+> +	if (ret)
+> +		dev_warn(clk->dev,
+> +			 "Failed to set spread spectrum(%u,%u,%u) for clock ID %d\n",
+> +			 clk_ss->modfreq, clk_ss->spreadpercent, clk_ss->method,
+> +			 clk->id);
+> +
+> +	return ret;
+> +}
+> +
+>  static u8 scmi_clk_get_parent(struct clk_hw *hw)
+>  {
+>  	struct scmi_clk *clk = to_scmi_clk(hw);
+> @@ -266,6 +295,11 @@ static int scmi_clk_ops_init(struct device *dev, struct scmi_clk *sclk,
+>   * Return: A pointer to the allocated and configured clk_ops on success,
+>   *	   or NULL on allocation failure.
+>   */
+> +static const char * const scmi_clk_ssc_allowlist[] = {
+> +	"fsl,imx95",
+> +	NULL
+> +};
+
+Fw vednor info would be better as you said, if we stick to a Vendor
+implementation...
+
+> +
+>  static const struct clk_ops *
+>  scmi_clk_ops_alloc(struct device *dev, unsigned long feats_key)
+>  {
+> @@ -316,6 +350,9 @@ scmi_clk_ops_alloc(struct device *dev, unsigned long feats_key)
+>  		ops->set_duty_cycle = scmi_clk_set_duty_cycle;
+>  	}
+>  
+> +	if (of_machine_compatible_match(scmi_clk_ssc_allowlist))
+> +		ops->set_spread_spectrum = scmi_clk_set_spread_spectrum_imx;
+> +
+>  	return ops;
+>  }
+>  
+> diff --git a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
+> index 688466a0e816247d24704f7ba109667a14226b67..7012d5efef00eb7b52f17d0f3d8d69f3d0063557 100644
+> --- a/include/linux/scmi_protocol.h
+> +++ b/include/linux/scmi_protocol.h
+> @@ -80,9 +80,14 @@ enum scmi_clock_oem_config {
+>  	SCMI_CLOCK_CFG_DUTY_CYCLE = 0x1,
+>  	SCMI_CLOCK_CFG_PHASE,
+>  	SCMI_CLOCK_CFG_OEM_START = 0x80,
+> +	SCMI_CLOCK_CFG_NXP_IMX_SSC = 0x80,
+
+If using a Vendor OEM type, I feel this should be somehow defined
+per-vendor....you cannot just grab 0x80 Extended config type for NXP
+because you arrived first :P
+
+>  	SCMI_CLOCK_CFG_OEM_END = 0xFF,
+>  };
+>  
+> +#define IMX_CLOCK_EXT_SS_PERCENTAGE_MASK	GENMASK(7, 0)
+> +#define IMX_CLOCK_EXT_SS_MOD_FREQ_MASK		GENMASK(23, 8)
+> +#define IMX_CLOCK_EXT_SS_ENABLE_MASK		BIT(24)
+> +
+
+Same...I feel the best would be to just add a standard 0x3 SSC Extended
+type as said...lets see what Souvik says and if we can assume such 0x3
+AND the above extConfigValue syntax to be reserved for this usage BEFORE
+v3.3 is out...
+
+Thans,
+Cristian
