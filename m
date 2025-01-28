@@ -1,159 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3882113632B;
-	Tue, 28 Jan 2025 20:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44791DF733
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 21:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738095931; cv=none; b=CEpJgBLF/4O05SeY0orMM4xEitz+42R5m2OdkgYNQoV366OCfdfKkvivN9kwcdTWia1I+N85lWX9T40rojiwZyKnLVj8/Jga0t97r6hxEB00GlYTaUNcNZxbT39yBQ+N8z9HOOjF9acZ9wHY/7mKCgkEOqSbPHsJFS05/oKA3Xk=
+	t=1738098211; cv=none; b=Nz8l/dpt70VF8eyTu5ToL8m631J1hxn9H7wApklj/fP3SKYRYb4b27IA7lfdxgHxLDNJLpmy/b7etgaEav18yv/DycwEJLvTwUojbtbBFJPsqJlyhro8fpKcsm4x1Z+CbALPTDoQ3vnZzRv5CwkEmvkvnx3sqhm2fcQRbWbC3FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738095931; c=relaxed/simple;
-	bh=vsE8IFVrzUvktukSA+TorUfPU/BVdbA/l2O5s9pg3UQ=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=iqd3mvfXVMnzvCZ2Nbuvfcbb2l6bubKKkVQBTyLG9qNaw6o42swG+fyv9csPIUKTIFMRbxHLdHsadjAHD9QDychVHVplupbLrgdjohO8eB/MLfHMym1OcKi7YDobg2GN9vfUrccfuMipuWjohGSQNOgA/zDeCmi3hi8ZGsf0dY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfeGp7x7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738098211; c=relaxed/simple;
+	bh=mfMB/kOJwWCWBi7AtFus1i5A8KKc2SzYD9VfPPB6/Bk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Hwln11jV3KVbGTa6F6bo5aMb17eVTFPI5A7xQlRGCWLwOW5r1G5GHxjHkD3EZtKzgvlv1n4+xKTZ9ljaROuXzEY62O1qvcmgQqZsfEjp0UFnysKAa3XO0KGHxGka/klZ4bVZefHgFsp06ifbKGj2THN0W9KEoyEDntyEl+Ul7/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=lugd+JEl; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfeGp7x7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD4BC4CED3;
-	Tue, 28 Jan 2025 20:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738095930;
-	bh=vsE8IFVrzUvktukSA+TorUfPU/BVdbA/l2O5s9pg3UQ=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=WfeGp7x7LRpK0MQbXzwGZNO+zX9Z2ydtAlj60oBAqLR6E6fHVLnmXpMKevOBWJ9cq
-	 UnPvWNvMo/e+cu/PWf9rYx+UhMQFWknRd43z0stLEqYt9sxT1idroeB9f2wJp25dai
-	 CHOWfedXslPW+L70bOJDBV5r9afQNlDBvFwXuMFAJyKzfOH7YzAUPAP271XJiDC8gb
-	 4RTPupnAsqpxoerFDjlPA1B+WULohj4NS0NB7AdCHt2MJBV97AsP6DgcluJEEQg6qw
-	 b5rO++8Y/bzk9BqbpgJEIF2TF/r8+CV6y65dJKvlw0cmLItjYAN3oXb+QvsVxw471A
-	 KS47V0T+5GAkA==
-Message-ID: <ff801714249c492abc3781da55675a38.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="lugd+JEl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1738098159; x=1738702959; i=markus.elfring@web.de;
+	bh=3umHLMGrcLo5C0gV5DfFSpcRm6HAQK73Bd3Y1mC2uB4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=lugd+JElfIBEVWJEly/xpiC37xATW6N6QL/mFXzaImqmdRiGu9El4suaNDc5SBIJ
+	 f7yuPAtB4XVuylj3u7G5BczelJ5/emDxHQ30PDVNcC9rtRKBhqRseJy6OASoL+Iq9
+	 ArcQ3FyUW9yd6zl6HvZ2Xlf0WV4HKCmnClbV719vvUnC+rm0ypbfdtPwsGGbVAZnj
+	 WkCAfzZcvm0TYZkxsVNFrodDO6tQZu6OcvhdWzOTgMDymVvgzqDR+mTdyiZV8tA4+
+	 QU/te2bbCzVTLcIj2amNj5TwWzdApX4spmArstqfs3lmriJ7U+3XkJ3feVPqxmnLX
+	 mxBXcCqystTm/wZ5ww==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.40]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mi4z5-1szA8E0tNZ-00bwwr; Tue, 28
+ Jan 2025 22:02:39 +0100
+Message-ID: <565fb1db-3618-4636-8820-1ca77dad07a2@web.de>
+Date: Tue, 28 Jan 2025 22:02:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Easwar Hariharan <eahariha@linux.microsoft.com>, cocci@inria.fr
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-xfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
+ imx@lists.linux.dev, kernel@pengutronix.de,
+ linux-arm-kernel@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, Carlos Maiolino <cem@kernel.org>,
+ Chris Mason <clm@fb.com>, Christoph Hellwig <hch@lst.de>,
+ Damien Le Moal <dlemoal@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>,
+ David Sterba <dsterba@suse.com>, Dick Kennedy <dick.kennedy@broadcom.com>,
+ Dongsheng Yang <dongsheng.yang@easystack.cn>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ James Smart <james.smart@broadcom.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+ Josef Bacik <josef@toxicpanda.com>, Julia Lawall <Julia.Lawall@inria.fr>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Ilya Dryomov <idryomov@gmail.com>,
+ Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
+ Keith Busch <kbusch@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ Mark Brown <broonie@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Niklas Cassel <cassel@kernel.org>,
+ Oded Gabbay <ogabbay@kernel.org>, Ricardo Ribalda <ribalda@google.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Sebastian Reichel <sre@kernel.org>,
+ Selvin Xavier <selvin.xavier@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Takashi Iwai <tiwai@suse.com>,
+ Victor Gambier <victor.gambier@inria.fr>, Xiubo Li <xiubli@redhat.com>,
+ Yaron Avizrat <yaron.avizrat@intel.com>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
+Subject: Re: [PATCH 01/16] coccinelle: misc: secs_to_jiffies: Patch
+ expressions too
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250124-clk-ssc-v1-1-2d39f6baf2af@nxp.com>
-References: <20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com> <20250124-clk-ssc-v1-1-2d39f6baf2af@nxp.com>
-Subject: Re: [PATCH 1/3] clk: Introduce clk_set_spread_spectrum
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Dario Binacchi <dario.binacchi@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
-To: Cristian Marussi <cristian.marussi@arm.com>, Michael Turquette <mturquette@baylibre.com>, Peng Fan (OSS) <peng.fan@oss.nxp.com>, Russell King <linux@armlinux.org.uk>, Sudeep Holla <sudeep.holla@arm.com>
-Date: Tue, 28 Jan 2025 12:25:28 -0800
-User-Agent: alot/0.12.dev1+gaa8c22fdeedb
+X-Provags-ID: V03:K1:iHXXXI1GgZe21qv8LaB36WZ2Vsbh+30ctHdeuhjL58pow7ObI/n
+ WkL1BRfcGc3xPTE7WTH/8blOzYTn9sr9kmiu0JlwbK+4b714M1NEuSxTjO0wec15e2/vSDy
+ uDaoXgXEnc15+k7LwhSrDlieAakHXlujaBdoTKMERuZeGqcF/lr7wB/BevoNLo+FU7wzIqQ
+ aOajvgo+YHQHBAbcH9fBg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:rl1+EWWMtaU=;EqS9WTtqlVexMZSa5Jv6osEpxMn
+ hvF5ExxFi69MshCqN0iCQJ9CsPgR4dRizBjf15Nun4PB2G1xVTkt8gPKouGwCsVTv8Wm+WqU2
+ TfM0O0GAReZpmFXq82LdrG2sTl+5GS7MW/XeczWoOvfmlQZGUTxAeiabHe982tQ5sjQ7pvBjj
+ b6JYk30LAwHaptKVJlAyYDTQrNqQmKm1fInHh1R0BqLWD7yAbmIhzOgsGDyapCyRzZ/6L58Kd
+ qMLJCmj8kp6OcGrtC6qyfn6vENJ3sKXUzDCjeFjZsblLj6AZqVFqPaGkr3WDBvgVlzknwCsuL
+ dTDBwwDzhXWZDpsnaBHnS8iI6b9y60B0/WwOzfqaZ2vol6lFD69SHUFtYn0ZgHvwiCZm9xktA
+ JWX2pS3My9yJ+hVoYQ8Roh/du8QDa/Pm1AN3y4siXvV4Vd2p4r7avPuVYF89xPfhqeOiCUyim
+ 74txrmxIhNJtDI2TJ2SHQYS2r1gUY8+ioCwT2SsVmzxEdV795ccbiiKzw3KT1teQ1CRIhkeZF
+ k+me759e21qqFhzCA+W+kKa3oNrQvnrx3MFGbr/WoIwLxlyqLG25aVhqwuWvn7yyDaFQ60QKw
+ tMPxLX6+iV8IWzhIUyb4CtEkcgWiVVNm59osGitJw6HZJgsmDNDR4zs4DWL+Q5VGOpmwSVC0x
+ Q+nvkt0/jEV6wgWG8uEad4c+rNAUrw9rtdYU5HViYfJzdE2v/knRfZBUzOkgi6O5iMZtJ3Lxi
+ rKMYnBh+OfDHRaOKzTHuD/jxsBh2wri3J7QnuWvzCczLpsppJHq+CGdZvNevnxIcUGmYGqYZs
+ K5WU8xokNX6ip+Z6iQRZjHliRbfF3LPa1bz58C8lLJ8UJMr2uicwiVhyCmJXfhfnTsF1UEjV3
+ 2Bjsxn/TOrbOtdszIeVMV7ChLFk0OwufgZxaGxw/3gOyHaPOUZ3Mz/eBUr3BiSQtFPFl4bvd4
+ GwFqEoazTKVX6f87q5CL/ThpkFTHi+muon/dhBj6NFEXz0Vk7JlO2YBAbv+PnanDfW0BCvaKH
+ DuZIBZebVIcC++l0MdC0iSdO+kNr3TXnRpRd2Pyhqn0qD+C8W+jzV6x520UF9whVDkCQlAjr8
+ R1OTygelS4A8CdLcvmF1P6DSPVs1dfnOMm4gzJp4/NcmbxhgSRgtg23Df90/CTB3FnVaeTOWC
+ m6owGzbKvieq3OLAkE+SPXE4/jRQF+NmzzaRCayhBpQ==
 
-Quoting Peng Fan (OSS) (2025-01-24 06:25:17)
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index cf7720b9172ff223d86227aad144e15375ddfd86..a4fe4a60f839244b736e3c275=
-1eeb38dc4577b1f 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -2790,6 +2790,45 @@ int clk_set_max_rate(struct clk *clk, unsigned lon=
-g rate)
->  }
->  EXPORT_SYMBOL_GPL(clk_set_max_rate);
-> =20
-> +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-> +                           unsigned int spreadpercent, unsigned int meth=
-od,
-> +                           bool enable)
-> +{
-> +       struct clk_spread_spectrum clk_ss;
-> +       struct clk_core *core;
-> +       int ret =3D 0;
+> Teach the script to suggest conversions for timeout patterns where the
+> arguments to msecs_to_jiffies() are expressions as well.
 
-The assignment looks unnecessary.
+I propose to take another look at implementation details for such a script=
+ variant
+according to the semantic patch language.
 
-> +
-> +       if (!clk || !clk->core)
 
-How do you not have clk->core?
+=E2=80=A6
+> +++ b/scripts/coccinelle/misc/secs_to_jiffies.cocci
+> @@ -11,12 +11,22 @@
+>
+>  virtual patch
+=E2=80=A6
+> -@depends on patch@ constant C; @@
+> +@depends on patch@
+> +expression E;
+> +@@
+>
+> -- msecs_to_jiffies(C * MSEC_PER_SEC)
+> -+ secs_to_jiffies(C)
+> +-msecs_to_jiffies
+> ++secs_to_jiffies
+> + (E
+> +- * \( 1000 \| MSEC_PER_SEC \)
+> + )
 
-> +               return 0;
-> +
-> +       clk_ss.modfreq =3D modfreq;
-> +       clk_ss.spreadpercent =3D spreadpercent;
-> +       clk_ss.method =3D method;
-> +       clk_ss.enable =3D enable;
-> +
-> +       clk_prepare_lock();
-> +
-> +       core =3D clk->core;
+1. I do not see a need to keep an SmPL rule for the handling of constants
+   (or literals) after the suggested extension for expressions.
 
-Why do we need to get the core under the lock?
+2. I find it nice that you indicate an attempt to make the shown SmPL code
+   a bit more succinct.
+   Unfortunately, further constraints should be taken better into account
+   for the current handling of isomorphisms (and corresponding SmPL disjun=
+ctions).
+   Thus I would find an SmPL rule (like the following) more appropriate.
 
-> +
-> +       if (core->prepare_count) {
+@adjustment@
+expression e;
+@@
+-msecs_to_jiffies
++secs_to_jiffies
+ (
+(
+-e * 1000
+|
+-e * MSEC_PER_SEC
+)
++e
+ )
 
-Why does prepare count matter?
 
-> +               ret =3D -EBUSY;
-> +               goto fail;
+3. It seems that you would like to support only a single operation mode so=
+ far.
+   This system aspect can trigger further software development challenges.
 
-We just left without releasing the lock.
 
-> +       }
-> +
-> +       ret =3D clk_pm_runtime_get(core);
-> +       if (ret)
-> +               goto fail;
-
-We just left without releasing the lock.
-
-> +
-> +       if (core->ops->set_spread_spectrum)
-> +               ret =3D core->ops->set_spread_spectrum(core->hw, &clk_ss);
-> +
-> +       clk_pm_runtime_put(core);
-> +       clk_prepare_unlock();
-> +fail:
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(clk_set_spread_spectrum);
-> +
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index b607482ca77e987b9344c38f25ebb5c8d35c1d39..49a7f7eb8b03233e11cd3b927=
-68896c4e45c4e7c 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -858,6 +858,21 @@ int clk_set_rate(struct clk *clk, unsigned long rate=
-);
->   */
->  int clk_set_rate_exclusive(struct clk *clk, unsigned long rate);
-> =20
-> +/**
-> + * clk_set_spread_spectrum - set the spread spectrum for a clock
-> + * @clk: clock source
-> + * @modfreq: modulation freq
-> + * @spreadpercent: modulation percentage
-> + * @method: down spread, up spread, center spread or else
-
-Did we get cut off?
-
-> + * @enable: enable or disable
-
-Isn't 'disable' equal to spread_percent of zero?
-
-> + *
-> + * Configure the spread spectrum parameters for a clock.
-> + *
-> + * Returns success (0) or negative errno.
-> + */
-> +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-
-Does this need to be a consumer API at all? Usually SSC is figured out
-when making a board and you have to pass some certification testing
-because some harmonics are interfering. Is the DT property sufficient
-for now and then we can do it when the driver probes in the framework?
-
-> +                           unsigned int spreadpercent, unsigned int meth=
-od,
-
-I'd assume 'method' would be some sort of enum?
-
-> +                           bool enable);
->  /**
->   * clk_has_parent - check if a clock is a possible parent for another
->   * @clk: clock source
+Regards,
+Markus
