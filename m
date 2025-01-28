@@ -1,33 +1,33 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE2F1E04A9
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70D51F790D
 	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738088525; cv=none; b=M/V0K2G/CzuBPX562Dy2oQZ9IgFR15Hm50gF95dYQfS07wYO2cVjjt/11iGTcY89LxZGnYcVUyPaavumGgfYazAQkwFyWePrNhl2FpTdnZ4nsI8yewzG+nllS9Pjs2kMa4POptKTGvsUhZRcXUI5tGyhqDuqAfr3DfYI8SqEHq4=
+	t=1738088526; cv=none; b=qi4FJa3hh8djGcJOfoTbVa+3vQsPLOM9MPSNlZNyf5AVCNYtouWshQEpXKKmerVcMxsf5WyfeWB8T2BJfHjVTtYI7YhwV1Fr/qKt1/TmEPvaNGY9IHmsAbGKkjPH86rC67Urq8HFOtTgO9f0Y+AT0RwV3M0qgvNLFKns+lmJ5qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738088525; c=relaxed/simple;
-	bh=CLfhMWMTls81fldJlgdOHYuSb53h9V9zAXCK22tn3uE=;
+	s=arc-20240116; t=1738088526; c=relaxed/simple;
+	bh=NLKLSdK0FDvLRV6/WQ6AEOph8/GppwC6VzlI+eh0e9Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qw5qi+PUrl0dAaAy6zySAr2fIKHK6Y2Bg7NM/QNke3GbJeNK+8LWmqJTm40s2g1k0HK0v9TQamlk5iRcRTeEA6wjFEUulQpJStPcz5mvA2Y3AoMBrS8jDVKW4qJp9RE0wTOIJ/maM17KICONdOFrqF3SVXGXQq4DuBx6qwMScww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZOuwdqaZ; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:To:Cc; b=a5fYiPhLjqRkqj8HbhRigIiYW6uOmn2hIw6ldWjan50bqdcBi5IK62V/Qi2wBp3F2HZg7+CYeM9VhgT8noMRXbHL9mS3zT69mZlV6f75h2/MFo3SdFkYPt3yUTZoIl/PpwjR5FcqCrIoga6YbFKrelA9uS+KEezRJK3az+xtmjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=VDOJ0UVc; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZOuwdqaZ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VDOJ0UVc"
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7B8912037183;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9DEDF2037186;
 	Tue, 28 Jan 2025 10:21:59 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7B8912037183
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9DEDF2037186
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1738088519;
-	bh=VqcHpB+vyGTp1RMX3+WFTH5f5bCj+Q9J8OolxUskrKo=;
+	bh=MrRoSF+FOHzMLN/F6LhKtUoOtRK4Dvpw4z2TjFgN7VQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZOuwdqaZhug0KNQQ21Ohb30BhgvBJyo55qHRaa7MGqCb8wONCvj3jN/bLp9sKWWM6
-	 8bC+bT63Hpx0+HHlZCeQeaR75fGVzJRRwDfMPixaFz8dfRqI1843e4U/m+evk1P+Me
-	 /+O0qMwZndCMTYuy618bWJRmYRUItE1KI26PeEM4=
+	b=VDOJ0UVcB3tdWtv0kEPgju6P8XjLVhI9v/FwUwQueJEftvBCu5K7f+pdk59MpNfkK
+	 ZNizZYJyPBz3Enx9ehl7deE8rXReMEi7MKIck08fnn53suV4apwJE6v0a75dbsKot1
+	 FOlMM/x/cVOz5FAhrxA1C4ODo0Fz3V/+H2e0Wt4U=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 28 Jan 2025 18:21:59 +0000
-Subject: [PATCH 14/16] platform/x86/amd/pmf: convert timeouts to
+Date: Tue, 28 Jan 2025 18:22:00 +0000
+Subject: [PATCH 15/16] platform/x86: thinkpad_acpi: convert timeouts to
  secs_to_jiffies()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-14-9a6ecf0b2308@linux.microsoft.com>
+Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-15-9a6ecf0b2308@linux.microsoft.com>
 References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -98,23 +98,22 @@ expression E;
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/platform/x86/amd/pmf/acpi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/acpi.c b/drivers/platform/x86/amd/pmf/acpi.c
-index dd5780a1d06e1dc979fcff5bafd6729bc4937eab..6b7effe80b78b7389b320ee65fa5d2373f782a2f 100644
---- a/drivers/platform/x86/amd/pmf/acpi.c
-+++ b/drivers/platform/x86/amd/pmf/acpi.c
-@@ -220,7 +220,8 @@ static void apmf_sbios_heartbeat_notify(struct work_struct *work)
- 	if (!info)
- 		return;
- 
--	schedule_delayed_work(&dev->heart_beat, msecs_to_jiffies(dev->hb_interval * 1000));
-+	schedule_delayed_work(&dev->heart_beat,
-+			      secs_to_jiffies(dev->hb_interval));
- 	kfree(info);
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 1fcb0f99695a78d392ed000b0831eb4d45eff55f..500b497c3f375f463f014ed3f3361afc9d6f3329 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -8505,7 +8505,7 @@ static void fan_watchdog_reset(void)
+ 	if (fan_watchdog_maxinterval > 0 &&
+ 	    tpacpi_lifecycle != TPACPI_LIFE_EXITING)
+ 		mod_delayed_work(tpacpi_wq, &fan_watchdog_task,
+-			msecs_to_jiffies(fan_watchdog_maxinterval * 1000));
++			secs_to_jiffies(fan_watchdog_maxinterval));
+ 	else
+ 		cancel_delayed_work(&fan_watchdog_task);
  }
- 
 
 -- 
 2.43.0
