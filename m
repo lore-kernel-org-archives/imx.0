@@ -1,50 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058561F4282
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AACA199249
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 22:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738103568; cv=none; b=uRcszccF0Wi9I8P6iXlIvNhf4HuXcNUCdnw4CS1KRYeYyfwlFoHdXxiDJEiYxWCYahu/wxu/YkhoSe3iLLycI8kt2dHyaSAj6xfJMAP1ovifBeLrqci0vIqnlUYN+heh9lCQz1WZLgj3yb1pyOfw7fkvIL9iY2dY2nbQQKb24F0=
+	t=1738103583; cv=none; b=MS5ocTKgrmiUd/k8W+kdL1wrtszWtAxNs1AWTZMo/YjGyJe9qw174TfYINTp62mVqNHuMgJ4K1n7TeXkKTyHZ5UdCAWphTn1J54cQQEwCoPOeCsLhrrvRq7JilWGuFJeC0gsn7QzksaBVQMAfyjGn22oT9rayX+EjdXkrhsxJ9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738103568; c=relaxed/simple;
-	bh=B7MXxbnjHwFTZC+SrazJe/OLt24FsrMH9PsVVy2fVYg=;
+	s=arc-20240116; t=1738103583; c=relaxed/simple;
+	bh=9d7uBMuelma+LMbh6GD+LA0ZympzdWZofR4S17vucE8=;
 	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=abpYJqStY1CChxV4y0i7lyYorYYY1q2wDsYniOV1f1P2dVV7AWPflYdpBDZmiad5DtITOyNS1+/nZWSfyuOUP/XWhB6Wl8G13KFYEB1uoY57TI3kaFL/BbDri1Bk45Rn0wzupjXdFRaP9cQYInuPzocsdqyXZB3WvY0pw/O8VXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ON/VqAMJ; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=btI/7lSwBG8lXy6ZO2Nyb9XmRl18ekzd+vs44lNvnlVj+oVcSpfIyy3iQtb6rRvqxZ7NYrb4vM1mKxrtdT+2LNHbydbdjU6+n63MBLN2VRC6HubuI6+qDwRPPiOanPQQH7np2Y5gWd2PAUwQ5Bm2UPLUcha7iHEQ4HIOqCkEgDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QxCpPq4W; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ON/VqAMJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QxCpPq4W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738103565;
+	s=mimecast20190719; t=1738103581;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wVqNI1/TrfETM/W6VLhpkYz7Ok2MvNQq7ZAk5O1kADQ=;
-	b=ON/VqAMJU3Z0cgEylE2J+fQcWQUv02H3XJW9MLkhP8dAhHeStDC18U0tqpoeHQhbXCt6TG
-	VPfakkMTKKCZ1yWgkFfEqjXKRyNtb3oDlA7pOCp0WFbUW2Ese4sj4G0QyNNrwsOS1rWNfu
-	Ty7tj9Ffby5iBYUgfhH7tvntlyNwviA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=Pb2HbxFi1UkzTHzB0D6b6QSgY8vGSn5FQjAxJAUQsW0=;
+	b=QxCpPq4WEfa+Senpq9x8kxcZnSRn+5LsAbFOtMLdKjIjlGDzpohg8V00GZMdjvIQ6CseRJ
+	0YC8EdaLvDvWV+KT1J+6YP37eEGyJYGa3UUruabp+G56UYmDMA1ev5FXO3MqQ/xXrr0Eq/
+	KLjjinBd6RTqeb2j+/x/f/Nucygtrhk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-ltBlB9-0MweETrq6s_WCrw-1; Tue,
- 28 Jan 2025 17:32:44 -0500
-X-MC-Unique: ltBlB9-0MweETrq6s_WCrw-1
-X-Mimecast-MFC-AGG-ID: ltBlB9-0MweETrq6s_WCrw
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-BSixol-_M6e7wUG4frDlRA-1; Tue,
+ 28 Jan 2025 17:32:55 -0500
+X-MC-Unique: BSixol-_M6e7wUG4frDlRA-1
+X-Mimecast-MFC-AGG-ID: BSixol-_M6e7wUG4frDlRA
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26D96195608A;
-	Tue, 28 Jan 2025 22:32:39 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F81C19560BB;
+	Tue, 28 Jan 2025 22:32:50 +0000 (UTC)
 Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.231])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0E499180035E;
-	Tue, 28 Jan 2025 22:32:27 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 725E218008C0;
+	Tue, 28 Jan 2025 22:32:39 +0000 (UTC)
 From: Anusha Srivatsa <asrivats@redhat.com>
-Date: Tue, 28 Jan 2025 17:29:35 -0500
-Subject: [PATCH 11/14] drm/tegra: move to devm_platform_ioremap_resource()
+Date: Tue, 28 Jan 2025 17:29:36 -0500
+Subject: [PATCH 12/14] drm/tiny: move to devm_platform_ioremap_resource()
  usage
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -52,7 +52,7 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20250128-cocci-memory-api-v1-11-0d1609a29587@redhat.com>
+Message-Id: <20250128-cocci-memory-api-v1-12-0d1609a29587@redhat.com>
 References: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
 In-Reply-To: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
 To: Joel Stanley <joel@jms.id.au>, 
@@ -101,16 +101,16 @@ Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
  linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
  linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738103410; l=1511;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738103410; l=1645;
  i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
- bh=B7MXxbnjHwFTZC+SrazJe/OLt24FsrMH9PsVVy2fVYg=;
- b=tDq/Jv9ERfnUVEZ6UKQIrh99AKDKTQ5fLAXgu7e8Xt56bSa2J0FGl8W2z3oJnUnw4HcjNk5zW
- gy6GdLcIvfLA2DTS9nqYX5KKpY3+i+k57mAfQT+oZclprV4hq7nOzFl
+ bh=9d7uBMuelma+LMbh6GD+LA0ZympzdWZofR4S17vucE8=;
+ b=4YHmYZetO87f+jmmI59PKLUPwI2FTUfKjf5rifnY3lkAv6f1Lt0cnon/OlUrlnrU3uF+WfGtr
+ M0NOu1ABUYpD8l6AljaqkdkdQZuOjon5ueK8ryJ3rXX6sNlHc+eriFf
 X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
  pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qQkZiguXBbfq4mix-9WucGBmsE5vXSnwqedHG2Oeu08_1738103559
+X-Mimecast-MFC-PROC-ID: fYw-A2DOXUUrx2YdVplUe_nBemgNk7MPFnQmZvpRcFk_1738103570
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -130,35 +130,35 @@ identifier pdev;
 -ioremap_res = devm_ioremap_resource(...);
 +ioremap_res = devm_platform_ioremap_resource(pdev,0);
 
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Mikko Perttunen <mperttunen@nvidia.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
 ---
- drivers/gpu/drm/tegra/dsi.c | 4 +---
+ drivers/gpu/drm/tiny/arcpgu.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
-index 4a8cd9ed0a9414b2f40b716fa8c02aff038a53e0..51f1ed897f8e473f45f89ff3e2d99f66d2c80f21 100644
---- a/drivers/gpu/drm/tegra/dsi.c
-+++ b/drivers/gpu/drm/tegra/dsi.c
-@@ -1564,7 +1564,6 @@ static int tegra_dsi_ganged_probe(struct tegra_dsi *dsi)
- static int tegra_dsi_probe(struct platform_device *pdev)
- {
- 	struct tegra_dsi *dsi;
--	struct resource *regs;
- 	int err;
+diff --git a/drivers/gpu/drm/tiny/arcpgu.c b/drivers/gpu/drm/tiny/arcpgu.c
+index 2748d1f21d8697275047886865a5518792a4dd7c..7cf0f0ea1bfe4fa82234a120b52837e26a8ee5b0 100644
+--- a/drivers/gpu/drm/tiny/arcpgu.c
++++ b/drivers/gpu/drm/tiny/arcpgu.c
+@@ -253,7 +253,6 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 	struct device_node *encoder_node = NULL, *endpoint_node = NULL;
+ 	struct drm_connector *connector = NULL;
+ 	struct drm_device *drm = &arcpgu->drm;
+-	struct resource *res;
+ 	int ret;
  
- 	dsi = devm_kzalloc(&pdev->dev, sizeof(*dsi), GFP_KERNEL);
-@@ -1636,8 +1635,7 @@ static int tegra_dsi_probe(struct platform_device *pdev)
- 		goto remove;
- 	}
+ 	arcpgu->clk = devm_clk_get(drm->dev, "pxlclk");
+@@ -270,8 +269,7 @@ static int arcpgu_load(struct arcpgu_drm_private *arcpgu)
+ 	drm->mode_config.max_height = 1080;
+ 	drm->mode_config.funcs = &arcpgu_drm_modecfg_funcs;
  
--	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	dsi->regs = devm_ioremap_resource(&pdev->dev, regs);
-+	dsi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(dsi->regs)) {
- 		err = PTR_ERR(dsi->regs);
- 		goto remove;
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	arcpgu->regs = devm_ioremap_resource(&pdev->dev, res);
++	arcpgu->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(arcpgu->regs))
+ 		return PTR_ERR(arcpgu->regs);
+ 
 
 -- 
 2.47.0
