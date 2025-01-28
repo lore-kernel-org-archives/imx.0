@@ -1,33 +1,34 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541F71F8693
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D02F1F7077
+	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 18:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738088526; cv=none; b=bQSxsHSmgpH9W4QhFDV6wJZECauGLU1LmwwUoYS9jcfruJs8/ybNQwCHtxTJm/wLmlZPKIFiXyF8erJCfM+EDNayv4+u9te9i6VC0VKcfMm16S1CVpU3UOZQAGx8Ft79Wmj3EPNoqKyYzBHnGQdwTSfG3v62GKPSbQPgbXg+uIY=
+	t=1738088526; cv=none; b=qGGowiT+bRvN03l3rCWwMoINu9KVSFrSuRSCGPqEC8m9HXdl+BTzgowOPvFMYp7N04+YHmsTW6rVYfUqXDoVNgjWNa+EuQMXur4SpyPJ1fU+nlX4TMf+7wa2tMTvdkVXdv0qZUR32XyBgcZemOvj3fBhCQDPLe2gP7OPvnpr91I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738088526; c=relaxed/simple;
-	bh=KJMzKtLgUjkdiRLa5HitUr7Wx/UXOJQ27K9oYkXSQt8=;
+	bh=/FXWK0n3siVRo/xV5fNEKJe6vhBZrxP7iSjz3SuPHsM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QKLO50ePNnmGE1Ed3XJSH8CeT2Hu5pBdqr3LVS3Vxgovyx4N2SnNllayTLIL5UCBj8TRSfyePbgIlSmobS+Tlwf9VeGf/3RfBhGdkJlasEZpQ7mfG9IeSkYo2/WeEsIL/j6F+rsqWKv50rmEJWriBCh5OEFzol8hC4gMzHdA0MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=q+xwP6Cl; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:To:Cc; b=ssOYrQ3sQGxvPGlV0zbGhcDD36FAe1OV4xVCUmC6oIPxb2sxwTKAmpw3vO1Y/XHQnRR5h3MmlkQ9YnhlpCpyE1r1U38dDYJE3+zqfiretSAzIhVMFWcZsChFxMDPfZCIU0iga3aFKpNsQNJxqI5inLEeooDk7lUM+/n3+FBo2iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=i1P5CteI; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="q+xwP6Cl"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="i1P5CteI"
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C24F42037187;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 367E92037182;
 	Tue, 28 Jan 2025 10:21:59 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C24F42037187
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 367E92037182
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1738088519;
-	bh=kdMVzzkgTOOmufQV39efQmOyjkxwKqjsv6zrS4rXQDA=;
+	bh=cIG2dfkqcecUU0JqZpchlOURAaCdxgZkNT0UTt4bvLA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=q+xwP6ClPU9Ft8nUZaAm0N07V7hTj7HoQgpntSqU7xz/FSC1uyq8yI9vSrWHQTVoJ
-	 PSX32EpAjhCmTdNfYRkq0EvtpfRW1IfUg+fLiSx95EzydAGIAXQme2d6mFML8NbA9f
-	 CPhNataDz2TgSPTNZMYPFDRtUHD77vCxTnf0vsIo=
+	b=i1P5CteIH6opQQHIehVjxxbMtebMN7rXuNwBXMSI0asiaK5CTudtXAgtKgnK6I75c
+	 1ngX/e4Oyj1B1vWMI4mQPUPmJ8cuPN3FTRVbcAp1DyhUYo8gGu4rDV59iA6QKrL9uC
+	 BkxdKeiMaFW1YdRdBrMCMMVni2EQgoLc5InCNfZg=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 28 Jan 2025 18:22:01 +0000
-Subject: [PATCH 16/16] RDMA/bnxt_re: convert timeouts to secs_to_jiffies()
+Date: Tue, 28 Jan 2025 18:21:57 +0000
+Subject: [PATCH 12/16] spi: spi-fsl-lpspi: convert timeouts to
+ secs_to_jiffies()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,7 +37,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-16-9a6ecf0b2308@linux.microsoft.com>
+Message-Id: <20250128-converge-secs-to-jiffies-part-two-v1-12-9a6ecf0b2308@linux.microsoft.com>
 References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -97,22 +98,22 @@ expression E;
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 17e62f22683b14a3571188e25fe0df3cbf1d8360..b1a18c9cb7f6c248548bc38fcb98781a3030a1b6 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -160,7 +160,7 @@ static int __wait_for_resp(struct bnxt_qplib_rcfw *rcfw, u16 cookie)
- 		wait_event_timeout(cmdq->waitq,
- 				   !crsqe->is_in_used ||
- 				   test_bit(ERR_DEVICE_DETACHED, &cmdq->flags),
--				   msecs_to_jiffies(rcfw->max_timeout * 1000));
-+				   secs_to_jiffies(rcfw->max_timeout));
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 40f5c8fdba765a1334710a696966232a459316e6..5e381844523440c03b1d0bbe4a044f28fbfbc738 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -572,7 +572,7 @@ static int fsl_lpspi_calculate_timeout(struct fsl_lpspi_data *fsl_lpspi,
+ 	timeout += 1;
  
- 		if (!crsqe->is_in_used)
- 			return 0;
+ 	/* Double calculated timeout */
+-	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
++	return secs_to_jiffies(2 * timeout);
+ }
+ 
+ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
 
 -- 
 2.43.0
