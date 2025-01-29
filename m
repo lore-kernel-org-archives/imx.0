@@ -1,122 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC7D16C854;
-	Wed, 29 Jan 2025 10:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97445186615;
+	Wed, 29 Jan 2025 11:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738145629; cv=none; b=jUpBUmzoE+E9T3/ZK3fuMT9OfZItHRbasjzT8lR1nPuV/plj8G651LlgOYA9zGc4OxAVbHhwHpLGtqKX6/AOFTJL4Tv9MnZya0IqsQyGfV9E09fkp/8oS9As06jvZ9oq9pZ7aFDeDJl69AY8dS9cPuDF0lijdXKQSE+gSOQokMM=
+	t=1738150112; cv=none; b=Y0h8wZHDL1MCuyUiWLwgHFoTKxBFPsUDEdGTSqXlWZlwyqC97o/uikFqiYb9xMyH+kOx5WZeEaNNtEIuEUa7gqMzpXrEjk89txBrNc+U9pzDNgVp6hELKbpflC9Svkx9ezk8vgB6SZ11ypBPNNYy1EivMZjKGTCymYT9nuHU+9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738145629; c=relaxed/simple;
-	bh=h+J5mA+WmvhsE8mIU9p7eCMpAO/Myt/o9nAE8zizNZ4=;
+	s=arc-20240116; t=1738150112; c=relaxed/simple;
+	bh=0afCP9tpAob285d2+c3DFTpCZwuw1x7xRMd+0cAY7dw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GOESfpW9ezTfSkOhCOix7vBDjnQDbkYNjTlswhu/NYAbVfvTixNLCgFS3a7d6odXj6bAuz6AWaZkRN97fmem/HLAFWZRKYDDGxDHm9lOX8CwjvBXIwob/exsN8YhoBWFuqybe742tMozQVKB9qCZc0q0QJCmtk9L3ZFIQRa1R1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OaQKGXun; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vd37aQo1UBdgorPaJmGwbIXFCr+7xJN9f2H2AzK/EDG5Fyw0ljARzmuKjFBCoH33NIxYgRk3Yvek5+IdQEuTgwBk+gORbR6zQf6Mm5ezOhqTNaG+V7j+yYNXsIrFS6U7D4OPU0VgMzp9kX8N9gRV7OOpcmf/nNz3/wPEIGCt1bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=keXqYgpB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OaQKGXun"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D92FC4CEE4;
-	Wed, 29 Jan 2025 10:13:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="keXqYgpB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4990C4CED3;
+	Wed, 29 Jan 2025 11:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738145629;
-	bh=h+J5mA+WmvhsE8mIU9p7eCMpAO/Myt/o9nAE8zizNZ4=;
+	s=k20201202; t=1738150112;
+	bh=0afCP9tpAob285d2+c3DFTpCZwuw1x7xRMd+0cAY7dw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OaQKGXuncS+9M95nztFSZNUpOV/3xkX1UIn8ndUKBemW5eEaO9TD1i0DV60imXHOv
-	 /RD5qK8IbnevUYj2u2/clYCmOF20OBp8XC57IjvKh6nCMqMIRlPBEaSSwKcMQV3ld4
-	 +yeEwdtCsJ/zWz3naxUTsCivcDuAFXJ6bcgg5Z2+aiXH/eguM2bl9tiwiQNuFpvPOl
-	 dO4kBbiljuDVaak1TvmjTwsZmALIu4yRpGMaWhFqK1o497PpG+O654aT3oRGduWm4v
-	 UGJyOScDxBfu/lW67/i8zfOOK3NUfqGIbrJVgo7bDGH7kSxgzmXTR7FFZ5GHDu8Fic
-	 oP6HHKeTWuaCQ==
-Date: Wed, 29 Jan 2025 11:13:42 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	b=keXqYgpBqSxQiFVgp6ssrhizY4Du1eWNsvvQf4/NWW+oCjoyMXSVpfZ5Bn1PdB/ED
+	 9wv1wBuRchQxQ0CuW4u8FMVzwJ8rB0L5vRFiLUUNtPD9wj9Bn+/Va+Q9Z6mxgIymwQ
+	 JLqQeOEbqULVQhG02Pj+7zzB2MlkL8R3oKJEeNxyMF67Vwg78zTFJsO4OZ7KbIbgaP
+	 YP9spZdl67qiwH0u1r8P2FYAPgdnGwinuVWEYrFRtCSPzqRNfIEkTTNBeG18dRI+F6
+	 TAaVqoYmML/+XRYt7G2+YbCO7gYobpmwRSUYyDEsvRA3IA3F3pdig8YUD/h8psjWYU
+	 PeniPeunBQVTw==
+Date: Wed, 29 Jan 2025 11:28:19 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Yaron Avizrat <yaron.avizrat@intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>,
+	Jens Axboe <axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>, Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Frank Li <Frank.Li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v9 0/7] PCI: dwc: opitimaze RC Host/EP pci_fixup_addr()
-Message-ID: <Z5n_VrN8HUmdVPUq@ryzen>
-References: <20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	cocci@inria.fr, linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 12/16] spi: spi-fsl-lpspi: convert timeouts to
+ secs_to_jiffies()
+Message-ID: <61d507a3-ca37-4eb9-b2cd-100298ffeeb6@sirena.org.uk>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
+ <20250128-converge-secs-to-jiffies-part-two-v1-12-9a6ecf0b2308@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wxS6hvAU6Vp1PxGO"
+Content-Disposition: inline
+In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-12-9a6ecf0b2308@linux.microsoft.com>
+X-Cookie: The world is not octal despite DEC.
+
+
+--wxS6hvAU6Vp1PxGO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com>
 
-Hello Frank,
+On Tue, Jan 28, 2025 at 06:21:57PM +0000, Easwar Hariharan wrote:
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies().  As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
-Typo in subject:
-s/opitimaze/optimize/
+Acked-by: Mark Brown <broonie@kernel.org>
 
+--wxS6hvAU6Vp1PxGO
+Content-Type: application/pgp-signature; name="signature.asc"
 
-On Tue, Jan 28, 2025 at 05:07:33PM -0500, Frank Li wrote:
-> 
-> Bjorn's comments in https://lore.kernel.org/imx/20250123190900.GA650360@bhelgaas/
-> 
-> > After all cpu_address_fixup() removed, we can remove use_parent_dt_ranges
-> > in one clean up patches.
-> >
-> >
->   ...
-> >  dw_pcie_rd_other_conf
-> >  dw_pcie_wr_other_conf
-> >    dw_pcie_prog_outbound_atu() only called if pp->cfg0_io_shared,
-> >    after an ECAM map via dw_pcie_other_conf_map_bus() and subsequent
-> >    successful access; atu.cpu_addr came from pp->io_base, set by
-> >    dw_pcie_host_init() from pci_pio_to_address(), which I'm pretty
-> >    sure returns a CPU address.
-> 
-> io_base is parent_bus_address
-> 
-> >    So this still looks wrong to me.  In addition, I think doing the
-> >    ATU setup in *_map() and restore in *rd/wr_other_conf() is ugly
-> >    and looks unreliable.
-> 
-> ....
-> 
-> >  dw_pcie_pme_turn_off
-> >    atu.cpu_addr came from pp.msg_res, set by
-> >    dw_pcie_host_request_msg_tlp_res() to a CPU address at the end of
-> >    the first MMIO bridge window.  This one also looks wrong to me.
-> 
-> Fixed at this version.
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeaENIACgkQJNaLcl1U
+h9Dwlwf/b75reI0uh7UpxNuw1Dgg2fl7hJn3m8DCJwfdhTb1pyNP6o2VB7PJ1FPR
+zu8lccVGi/iZRranIOtvGjKtg5SrDhrF9CChAbwxk2f26lvF27Srdn7mHycwzkEm
+h579H3K/1ri3X0oWXziH3KBnzKNBR3TB6h7Rp5na27mnWR9gKqZncog+7Qvr1aP1
+3ufuZYWQ3RTFLp/IcPgBRYYjA/Ev1i7qKuqRS8qugS1d1vtZ7Js396WlV3r1KtgJ
+qKDie5bMyU16q7C+SJERETYIrFvtYKXn3bERyeN2wpSjyOtEYM2awuQ3XRDFvz05
+lMz/vFonoSs3p3TPlosZHyaOSE/Vdg==
+=JJPM
+-----END PGP SIGNATURE-----
 
-I feel like it would have been easier if you replied to Bjorn's comments
-directly in the thread instead of pasting them here (to a cover letter).
-
-
-Please don't shoot the messenger, but I don't see any reply to (what I
-assume is the biggest reason why Bjorn did not merge this series):
-
-""
-.cpu_addr_fixup() is a generic problem that affects dwc (dra7xx, imx6,
-artpec6, intel-gw, visconti), cadence (cadence-plat), and now
-apparently microchip.
-
-I deferred these because I'm hoping we can come up with a more generic
-solution that's easier to apply across all these cases.  I don't
-really want to merge something that immediately needs to be reworked
-for other drivers.
-""
-
-It should probably state in the cover letter how v9 addresses Bjorn's
-concern when it comes to other PCI controller drivers, especially those
-that are not DWC based.
-
-
-Kind regards,
-Niklas
+--wxS6hvAU6Vp1PxGO--
