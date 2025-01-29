@@ -1,248 +1,144 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F40D299
-	for <imx@lists.linux.dev>; Wed, 29 Jan 2025 13:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8148172A
+	for <imx@lists.linux.dev>; Wed, 29 Jan 2025 13:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738155982; cv=none; b=RezAOeFDg2Ip5Lbz2rncYTogHnXs+FVrfwjhayuNfKZsa1YdcwNE62CgqCzxlkJRBcrMM/arqvYf8Nr30AL59/33WPGRo3mNKPOOZaI3IhyGdosbyx5iaNq9kjKsU3hhJAtNHK595GhWvLEUgSdz9Ns6e+odU94QrIAi9MbCCkA=
+	t=1738156389; cv=none; b=ZK9irYBIA4BjyEMtn/X9BsiCmqze7WykM3W/bETgCLmwUvAmdmu58adN5uvtrx7Z4hKxMgxHOfE3ALP0jjKw4P2Son8jspaydgxs+QoEQAJ3wpzem3gVY6SHRaiPi6ETt3l045wbjY9Pz3Vs8tDjy3jHzQW4EhJq6XXcYXDwDRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738155982; c=relaxed/simple;
-	bh=lIa06qsMr7CkT0IQFQ4ZA/bM+jcloYEj278f3O9/VR0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IxVqiyc5OK7/bnYeLbME7jNDpAmwJCYIkuLlVMN6XZBEcBkc8aEuRBCczdKp96dycEwde6hpdl5tQezb/0Rvhgqf9S9ahT2MbiBQXd1pstN2igZAGlMYCTsbqSWWwrOB8NmmdCOmk9lz7DYsYfnVehjUd/pSgx3xiwHUsNULA9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lxB30Iwl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=A8l/stjn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ityW5a7L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P4p+Lmzy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1738156389; c=relaxed/simple;
+	bh=uWLMAkjiPxmd0IZ1cdFsHKZZFguDfleylm6v197BRzQ=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ARMhNx1n9bES05kDWAepJ5y3q8rZYyi8p/4J8ZHrvQvT0EdpWvQfAQH1xqZo/87qDwRYT59eiSHTwVf7gcz2QxCNsu5Z7DxUThGsGNhsbMgLX+mswDSCUesSq1KyMaBY1fxIWD4dnZ7o/k0De5FAp3xhlzu4Ob1ycJU+VBKCveY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhAfJdmV; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lxB30Iwl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="A8l/stjn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ityW5a7L";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P4p+Lmzy"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 96509210FB;
-	Wed, 29 Jan 2025 13:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738155978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KgMt9h7J0H43iUVXYnhfa+j8boQTbM4QOt22lRjM4fY=;
-	b=lxB30IwliiI6nGY1jFqDkVcWijUkn2K7SdrcklSiEjJHV6sv3cFrrnVJjMgxqjuECqt1XK
-	hXvlbG9A9l/MG5NBHpJ5ljhQ5K90w5X4iUzXIeXyHe9uk1bWqYEszVquywMMMRDUir+5V0
-	xtCQvVg6QM4h4qC/H6ZBjIIcnGoaPkU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738155978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KgMt9h7J0H43iUVXYnhfa+j8boQTbM4QOt22lRjM4fY=;
-	b=A8l/stjnboEKh1mSFgmtZlcb6QBtndkHAzGMSNZ97IDK15iJNhKOrCS5cCjQ1Gwruagvbi
-	0/yOIF8LNkhln5Cg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738155977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KgMt9h7J0H43iUVXYnhfa+j8boQTbM4QOt22lRjM4fY=;
-	b=ityW5a7LbXysn0Ph2jgnUD1exsXAjRkvrv0NKRyBnuqdAT8+Jl0Mx7T/LTq1LFFL32t8jP
-	0FcfFLmZIO5aCBJMBrXwdqa9kjkSt6AU1WZn4lyLEmjVbtTbA82eJDS4L/lgw/cEVM7PQc
-	o4tv62aZV7a6AVS97ppUYFcS/bMEvhg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738155977;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KgMt9h7J0H43iUVXYnhfa+j8boQTbM4QOt22lRjM4fY=;
-	b=P4p+LmzyxWnVs5iUHiztKwzhaPDNQtOIUJRcEdMHYE0BvvfTH8KoxPK/B+yBNHp6ziifAR
-	s0oAa+W+hloVPSAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2AD9C137D2;
-	Wed, 29 Jan 2025 13:06:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pfgfCcgnmmfTWAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 29 Jan 2025 13:06:16 +0000
-Message-ID: <a389f799-442e-45f3-8609-2eb2f0b7a825@suse.de>
-Date: Wed, 29 Jan 2025 14:06:15 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhAfJdmV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738156387; x=1769692387;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=uWLMAkjiPxmd0IZ1cdFsHKZZFguDfleylm6v197BRzQ=;
+  b=PhAfJdmV6kOP7mNpcs2TuSphmT884HccaJXxPU0VgdZ7V6PYLLmIY7/S
+   B7fVrIIr/PPGDmRuGFA4lsiO3U7n0LmWOQm+8wr1649x/lhjy1RvqfYVi
+   8/LVzo1xbRNOiqzg7vYP0q3kV9vN5m8FmWsFAWYJ5hKY5Q/qKx5TrtOD4
+   U7iYL45Z8snPTPD4p8rv83beMPvoV5zn/vhp30lguoCwnSBmKmnJLTQMY
+   IabcQTMNo3/RbXvZmIZ7NPkSNu0KZ2PtaaMroIzO4wChOYFerEeiiuYhr
+   7c6tILpKkhY81PHVdFnskj0OmxTL353vlgo3Dh5rIL9jbvhPpmLdH8nG7
+   g==;
+X-CSE-ConnectionGUID: sLrw+HSsQsSfLy69QtDIeA==
+X-CSE-MsgGUID: J9xxIAbQQtelXaCL1Zv/IQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="56203306"
+X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
+   d="scan'208";a="56203306"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 05:13:06 -0800
+X-CSE-ConnectionGUID: VQdEsMXqR8qBKjmeEKbOAw==
+X-CSE-MsgGUID: O+KtZNkvRJq7JgLfGnW4VQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113646751"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.222])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 05:12:52 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 29 Jan 2025 15:12:49 +0200 (EET)
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+    Julia Lawall <Julia.Lawall@inria.fr>, 
+    Nicolas Palix <nicolas.palix@imag.fr>, 
+    James Smart <james.smart@broadcom.com>, 
+    Dick Kennedy <dick.kennedy@broadcom.com>, 
+    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+    "Martin K. Petersen" <martin.petersen@oracle.com>, 
+    Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+    Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+    David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>, 
+    Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens Axboe <axboe@kernel.dk>, 
+    Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, 
+    Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+    "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+    Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+    Sagi Grimberg <sagi@grimberg.me>, Frank Li <Frank.Li@nxp.com>, 
+    Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+    Sascha Hauer <s.hauer@pengutronix.de>, 
+    Pengutronix Kernel Team <kernel@pengutronix.de>, 
+    Fabio Estevam <festevam@gmail.com>, 
+    Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+    Hans de Goede <hdegoede@redhat.com>, 
+    Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+    Selvin Xavier <selvin.xavier@broadcom.com>, 
+    Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+    cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>, 
+    linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+    linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+    ceph-devel@vger.kernel.org, linux-block@vger.kernel.org, 
+    linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org, 
+    linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org, 
+    linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+    linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+    ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 14/16] platform/x86/amd/pmf: convert timeouts to
+ secs_to_jiffies()
+In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-14-9a6ecf0b2308@linux.microsoft.com>
+Message-ID: <e8207616-6079-be0d-d482-6577616a4cc7@linux.intel.com>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com> <20250128-converge-secs-to-jiffies-part-two-v1-14-9a6ecf0b2308@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/14] Documentation: Update the todo
-To: Anusha Srivatsa <asrivats@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Stefan Agner <stefan@agner.ch>,
- Alison Wang <alison.wang@nxp.com>, Xinliang Liu <xinliang.liu@linaro.org>,
- Tian Tao <tiantao6@hisilicon.com>,
- Xinwei Kong <kong.kongxinwei@hisilicon.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu
- <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- Andy Yan <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Alain Volmat
- <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
- Yannick Fertre <yannick.fertre@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
- <20250128-cocci-memory-api-v1-14-0d1609a29587@redhat.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250128-cocci-memory-api-v1-14-0d1609a29587@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,jms.id.au,linux.intel.com,kernel.org,gmail.com,ffwll.ch,codeconstruct.com.au,agner.ch,nxp.com,linaro.org,hisilicon.com,google.com,pengutronix.de,collabora.com,baylibre.com,googlemail.com,denx.de,rock-chips.com,sntech.de,linux.alibaba.com,foss.st.com,nvidia.com,synopsys.com,raspberrypi.com,igalia.com,lwn.net];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL6e75e7xiqh135443e1d3zo16)];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[60];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=US-ASCII
 
-Hi
+On Tue, 28 Jan 2025, Easwar Hariharan wrote:
 
-
-Am 28.01.25 um 23:29 schrieb Anusha Srivatsa:
-> Remove the TODO now that this series addresses
-> the changes needed.
-
-While your series is fine, this TODO item is unrelated. It's about 
-various ancient fbdev drivers that do not reserve their memory regions 
-correctly. So please drop patch 14 form the series.
-
-Best regards
-Thomas
-
->
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies().  As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
+> 
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
+> 
+> @depends on patch@
+> expression E;
+> @@
+> 
+> -msecs_to_jiffies
+> +secs_to_jiffies
+> (E
+> - * \( 1000 \| MSEC_PER_SEC \)
+> )
+> 
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 > ---
->   Documentation/gpu/todo.rst | 15 ---------------
->   1 file changed, 15 deletions(-)
->
-> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-> index 256d0d1cb2164bd94f9b610a751b907834d96a21..b5aa5f776cfe0916b98bddf791c65abe974834cf 100644
-> --- a/Documentation/gpu/todo.rst
-> +++ b/Documentation/gpu/todo.rst
-> @@ -441,21 +441,6 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
->   
->   Level: Intermediate
->   
-> -Request memory regions in all drivers
-> --------------------------------------
-> -
-> -Go through all drivers and add code to request the memory regions that the
-> -driver uses. This requires adding calls to request_mem_region(),
-> -pci_request_region() or similar functions. Use helpers for managed cleanup
-> -where possible.
-> -
-> -Drivers are pretty bad at doing this and there used to be conflicts among
-> -DRM and fbdev drivers. Still, it's the correct thing to do.
-> -
-> -Contact: Thomas Zimmermann <tzimmermann@suse.de>
-> -
-> -Level: Starter
-> -
->   Remove driver dependencies on FB_DEVICE
->   ---------------------------------------
->   
->
+>  drivers/platform/x86/amd/pmf/acpi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/amd/pmf/acpi.c b/drivers/platform/x86/amd/pmf/acpi.c
+> index dd5780a1d06e1dc979fcff5bafd6729bc4937eab..6b7effe80b78b7389b320ee65fa5d2373f782a2f 100644
+> --- a/drivers/platform/x86/amd/pmf/acpi.c
+> +++ b/drivers/platform/x86/amd/pmf/acpi.c
+> @@ -220,7 +220,8 @@ static void apmf_sbios_heartbeat_notify(struct work_struct *work)
+>  	if (!info)
+>  		return;
+>  
+> -	schedule_delayed_work(&dev->heart_beat, msecs_to_jiffies(dev->hb_interval * 1000));
+> +	schedule_delayed_work(&dev->heart_beat,
+> +			      secs_to_jiffies(dev->hb_interval));
+>  	kfree(info);
+>  }
+
+Hi,
+
+So you made the line shorter but still added the newline char for some 
+reason even if the original didn't have one?? Please don't enforce 80 
+chars limit with patches like this.
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+ i.
 
