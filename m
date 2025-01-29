@@ -1,206 +1,134 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2058.outbound.protection.outlook.com [40.107.105.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B5E1E0DED
-	for <imx@lists.linux.dev>; Wed, 29 Jan 2025 17:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738170262; cv=fail; b=cY0sfdXB+pbgZoT2Lcyv2hIk8DRrQ+4RqljLc+jDys4zltYNK6+sAjV7Uogd30p35cgizMG2EsIt3sKZ8t4PYpqTp/w4T48zGp1DiVTiECo7SqUKTlefZYH8fcmAZAK5g4ApTGu+LX3n0IuV5dILGnPdbLL8YaPUhpW2PLGGfkc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738170262; c=relaxed/simple;
-	bh=iKoZGELovdoL43edvJsI0gb5UadaoVNHmnSh3Y+eKT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jGHbmglerc8Bjr9szYIlZIHcZ0vGfMWWm51BN2hU4Y/TDvaTRIoIzR+lPYw7t39IvFxldGTaWlBt4P7Mv4he3VAN3I5jwvhWwJRGIIWqCJ41rOQdmIgHtkDU/Pr5wB1+uyjUihfb61XmeOFpKG0r8lPF9WlvgMp3B1qf8Ngiqck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kjep2I9q; arc=fail smtp.client-ip=40.107.105.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7DE2E40B
+	for <imx@lists.linux.dev>; Wed, 29 Jan 2025 17:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738170744; cv=none; b=mEZWOGTAyj7lLdqfjQsyNwYsvBWFVGuuadLWvd7pqMtQeR8z1b/a41++2w6N4P3gfK7wyJgbWPMcO6d1Ote31LobFFLgmHBKsjZmeAPjxsSM/xPZj3ZUxeoaQdhvx+OK5/QDTb+ndqOxhO6ZvN5GwcSijcSwbJZOj8HA90STGKQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738170744; c=relaxed/simple;
+	bh=oKInIs80fHAFlAQ60VYFUV3zyOcN3MDJrxPHxOZnX7U=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=eS6yPgc/lKnZxjbSO/d8pm9Qhs5dGvoSts7VM5CZH6YUfE5f99nt9zPpe3ORI1xdr6XhJ7MNh15/1jmNi5nfuNqiTSHpkEAeBFhSfH5CH7xXZNSRrA1rCSeTj8rReBHSYFCV7egQJdx/2Ce2b8PfgwF3HTVp10T4CmCSmbEniP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KF5CYJEM; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kjep2I9q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RwpFu5QeJlQMg2r5pkIRRag7lAu2A03LpLxMZ+HJHhN8Dl1PE6WIl5ZdNFHOu3iZKXwbq5txmuybZscFwsEWtuZWzHbNmoWl4PhrwxBrOCw8IO24DgbphTF311KmCQT6RlgVM2ZFGAlTbURnXtqEjQTb3RvYAMgrlOt7HjsR0kDXwbWqw5SkYm053NHGik/wS3tWF5O6QSXH6yhdHwGsr2vcAX7257mqEztXfSmhEXrwHximfjUlDdNRh6do9MfUwDlE396Z5e9DGLpXMfUFwH7PE/gYdEQmLfm9JimY4YUkHBSAEoRsHu3824aysJ6sI6/lEU/f0YLKHYZMS4ACpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZfbmqNBDqrWOukxWZuC7AHUAnY9glJGXGa6b6YiMHZU=;
- b=n9b2qjWIm+RkdNsqQndPQcPk6oWi5IwNYWf0DO1gMQXfR08YMhDfkfA/wtw8UN1ntr/Gz180XDpNzwCK2J+D/ZrVUZ2WYrIHj+ICX4r9ccnwcxc9qFTrT3nJNphSlN9HM5z9C4esZ10Pf1ciAUgEeeYbUEyoEfYma3QJ574CfnnlkwOCG8sHVyJU9iAxqNNHwCB+mw6M08MOCRw1VivvLwlq3qDhMLpZ+hKvjGS8ZcuraOFWS1hHLG9ZIqC/kLysbGYgHe3DxKDYi1/AII7G7Myqjlv85tPOV5LD+/Nk00Fzkz0hWsClYCRgAD70DduSaRgunufnY6/KwVMzuM3+MQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZfbmqNBDqrWOukxWZuC7AHUAnY9glJGXGa6b6YiMHZU=;
- b=Kjep2I9qjXVyC9eshQ+zd6fR8RGVnVLIjwXCARJimYT1gxJ6Zd023dqQgA2TWyy0VZ5puW/qd3BQoCr8Y1MyCtJnU/cizU/KDBN7/2p4tKDV8l2knPjSYYEP8y9KRiLwmFge0Jag7afm0dOIpTFuUovBf1HkeBFTFruukhKHbraH29qiQZLxv32ItCZvqzmXBexd68EHzHL18B+1qgos49+sbyZASC0eVEFb3qodaQzBwWGpIX5lOaQmND1paWx/94Z5oJDlPIyrNxpdYojO+vP5hOdOgw3jc8Qbc1lxlTmEOmev1vDca8a8p2g2oqvG/mcQGIkFXa9QlC+bIuJ1cQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS8PR04MB8371.eurprd04.prod.outlook.com (2603:10a6:20b:3b2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.18; Wed, 29 Jan
- 2025 17:04:18 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8377.021; Wed, 29 Jan 2025
- 17:04:18 +0000
-Date: Wed, 29 Jan 2025 12:04:08 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH v9 0/7] PCI: dwc: opitimaze RC Host/EP pci_fixup_addr()
-Message-ID: <Z5pfiJyXB3NtGSfe@lizhi-Precision-Tower-5810>
-References: <20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com>
- <Z5n_VrN8HUmdVPUq@ryzen>
- <Z5pJF9MGENNDqq/O@lizhi-Precision-Tower-5810>
- <Z5pZtsa4FFKq0AZD@ryzen>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5pZtsa4FFKq0AZD@ryzen>
-X-ClientProxiedBy: SJ0PR03CA0286.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KF5CYJEM"
+Received: from [100.65.130.94] (unknown [20.236.10.163])
+	by linux.microsoft.com (Postfix) with ESMTPSA id B361C203F2DF;
+	Wed, 29 Jan 2025 09:12:15 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B361C203F2DF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1738170737;
+	bh=dNRZE1wRPI3+cVzpq2MiJyQrXak+KjxySL05qBZwi3I=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=KF5CYJEMAg7wD96ahKvWhkAFA05d2EUsKiRjXm+SrhlcieyjVvtYaExuKNZLJq+g2
+	 aBFGl/Q/OmH+pg7BhR5kfVvugzt2v4vFfmJ8RuG1opp/VMgS23ja3qFHYzfub/yGXl
+	 hPpNsGrrOx1WOoNEIOcsOUJA+IETCxANclm3bUSY=
+Message-ID: <fae29f46-2971-4cab-a54a-f1780abbadda@linux.microsoft.com>
+Date: Wed, 29 Jan 2025 09:12:18 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8371:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56210716-a4ad-4ad7-fc1c-08dd4086f75d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wu4n626ckwyl5lEoq5cizLh8sj8xNt8PRlTvRIgvPtSylBPZQ1PJwJZYt7sw?=
- =?us-ascii?Q?v4zX5GAmQihQ4o97OGTn1yKJc6Rw1V2dZw4ti+YyVo4eIzxVBK7JthWPA+iy?=
- =?us-ascii?Q?IzUlDa7/nVy3MXUB2IQ1qLguJM2JxxYJKyFHISCN05UMbpVoQCCFsQGCayOU?=
- =?us-ascii?Q?HH3xBRqXC8fVr/PJvs4onHokgrNAQEkXfssA513P9sicVCM8ZXxHQ0cCNiYI?=
- =?us-ascii?Q?8mRoCKppieHkd7aqEg5yyh6QMl+KZwhcz/bYFCTB/hrFqOvFsLOV4YjwvTvq?=
- =?us-ascii?Q?l8YcCv2APQFNT9AZ6xDfI3GhU4SOvjbgJFa6dNtqcHTAySl/azovE8hRq/ru?=
- =?us-ascii?Q?PAucTgGnL/97OP5wiqDmeidDghG5Sl9lvNJaBAhQJ15IeVX2WYcVmLZ7O088?=
- =?us-ascii?Q?gIvrZ//3y7AwgmrtSTo+JeAuCoPxh6vVQGaUITI8bUl2FieEqJ6KBVLGvMyd?=
- =?us-ascii?Q?KB12J+/yiL1DTqpviQbe2qIm5XXRgxVs+/Qq2K8tkZqs8PF45aOKf7QlzOjn?=
- =?us-ascii?Q?y07i8oaRZAr+huACj8xGhjKpVoh6kcQr6zKbnTXxNM0greHvPxkmkRlNlv49?=
- =?us-ascii?Q?Jz88Ck5axy61jrNYOKy+4Ldx9/tbROBi/CHx7l7Fokeda4QuccP56D7D8tzR?=
- =?us-ascii?Q?XOzNOL8QcUHzsg2WoRcC8O64r/6k8jPuhBI+3VtuJ2eUW8tpHDtDFe0gnsL9?=
- =?us-ascii?Q?cAe/UUy/XWnPcDoKgfQR39pAltZTynOd1USRSB1WnbXXuofQj7XwSI+O/1Bi?=
- =?us-ascii?Q?EQ+hCTisyla7XbNXt1S4320bfRVv3FJUnQrJp5dycOda7e9DmkiqnV42JU/c?=
- =?us-ascii?Q?35IV60gtC8MFaGJsdhLYcjWyebupdvg2iqilkzrk+BkFsPBmD24bGO9ovQiU?=
- =?us-ascii?Q?j4tRqT7PZ32FRBNT+wNo6OjX52n3t5St99Gf2NX4xs81c+p6fCpPe1rDCpW6?=
- =?us-ascii?Q?FRhg1r0YbG/R08djG/sJQgsR+onI2o114ffF9nhGxflTQCpxj6Zp3o423tCU?=
- =?us-ascii?Q?4dcV0XqP0DgbayghBnzeGe1ZOO1ez4g+q6RFSfCA4s/rH6yiUyoIOdy9miz4?=
- =?us-ascii?Q?5X3fLGPtvpsbxw4REVB7YxXQ6fi8Z1K1gLtstlg7yobYkiAITbqPl5SV/rKG?=
- =?us-ascii?Q?quZS4YkeVRdNeTa39zXAbnaN2Im4r9Ud+Q0K0HrrjlVG7yHjjvJ9M9TnIUmQ?=
- =?us-ascii?Q?7UHQ5NZiRNq/xJrOeOCXsTLeIF3MWK4TO85vvoQ/YCdqkXZowyY2s5UEFX4Z?=
- =?us-ascii?Q?zkZy4D2L19H5+0gKvgG7SuOw1UAGZJTWbOIyJK+RN60sFJYSymBtAKF8ajAY?=
- =?us-ascii?Q?n2yhFtH1jKvU1lG2B4FUvPhnpWW0aX5XVt8E4PgUzsexYRCgRC6JLEo+7yXx?=
- =?us-ascii?Q?2Z8GWb8pSc9u5IHq9WXjpHzvofx8?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FTlrC4KHyKe1ppSdKp3kmwptVHPItySeVYhzy8R1ADN6NSI9RsGy08+9Wlnz?=
- =?us-ascii?Q?gqcyHRcRUsnJckt8SQgDvks3SWgfikJtCINhuGgOjLhtYyG/SU80xgwpEohQ?=
- =?us-ascii?Q?bmmHBvP8+CHj/Od9rFBYd6OZ3tue3M4+jy8XL4RtYukbjWhYDbE9czGZiDxP?=
- =?us-ascii?Q?RJdAkHezD32YlXUehmFE8PibSWb01BUNNYhn2UYVRF4K2YMzmzyZKX483qKe?=
- =?us-ascii?Q?G9m5LTeECuIGLRRm04X48xQqyOLpnSIk8mfDbT/v5ggXvXZ2es2rXPom894h?=
- =?us-ascii?Q?IMnb5egyMQJdzNSkOB6iAoJZem8aHwAE+Z/v/rtaP3DC93C0G+cfE6mPjSlM?=
- =?us-ascii?Q?F4vJqsStIlBBF+I1o/CzuArm2XFp03eSjisMqIsq1KOgVWY2AxvnKmCxnitp?=
- =?us-ascii?Q?1ecFWJlvFFkDvaNn5ZF3kD3FzAXcA6ahj0F4h0NtzcMeFb/sLBEzY1ZoXjEZ?=
- =?us-ascii?Q?jOHZ4DR78dQ/ylH0SWAXdMfd55wEEXruTDjQcZjFH4Jxf41DkazuMqItmBKk?=
- =?us-ascii?Q?nsHWQlV3KBeDaK8vOY2yF1+iXyw5AwDvVtjd56LB64j54dlEivA9rFBuw3ES?=
- =?us-ascii?Q?hpzk9O9ERKV/xpnx5LvR+YTAQ3z/PBh2sLQZ8x4yDOKdCqpXm3soZSi9t7Ml?=
- =?us-ascii?Q?2Jcu3STCz39gs3iRmjgg9sey4EcyKQ7uTpSATOkL171Vemtaoj9/9lFUKNK/?=
- =?us-ascii?Q?CrkyYiR/rB2U8MP3v6E2MA7lwWC+7Z+nDcBE+6IBdJsbNIjYc08j+TzTlp+a?=
- =?us-ascii?Q?8/KXk0HF/GO0d7dZwwxAaZQDxW/N/6Ww5Lj36AOngkMVFuOF6NHAx42qoMO2?=
- =?us-ascii?Q?chuC5L4usRKta3Bk6mchuCumWlsg4+0l+kn480hFmCHdYrMDXppSFL/fMY1E?=
- =?us-ascii?Q?Sfclole0gEy82wxEljXrsIr25Edx4RjlExznBP7wO7YVP0irsEgv8vNUNY29?=
- =?us-ascii?Q?npWV9AFtU1De0d5uXQBRCNID8IvW95Fkigk8Cu9z8MHGVSmW3ZO8kB37J+22?=
- =?us-ascii?Q?Zf8+ySqnOv/gZgTVuNRjohc1SjhmHlbUVZOH3KX6zovXAypOuD8CHaNNCzXd?=
- =?us-ascii?Q?jUQfMvxCOGoM0fcyQO9wsKMBuM2tLaXMu5/TWFcQVeXjVzWHLJeUd+83jOrO?=
- =?us-ascii?Q?EuVme0JeqghWeqewffDm9kFhr+qMwKU78vqhg7Nqcp6CJ14U+F5vWOzN9Yf7?=
- =?us-ascii?Q?hrr5P01injxNo/df5iIgfY7Vr10ajwTB8KjknEWv349ZK+CmD2TDrxnbrCq+?=
- =?us-ascii?Q?70SDFrvghD+/2rLNLwrDiq/RJaj9Cr5z6u0Jlk1A8lDnjPJKzQvCxRt8q1Al?=
- =?us-ascii?Q?NAXK6tUS5E1y4wbu0MSm5vR1B33/8WpJPcFausgco8eTYsU9PZ4YLWZQApUY?=
- =?us-ascii?Q?jhR8NhltraJG4IRqXLwvWSRL/bhzBBWbkFD13P/lzPb9Rx6srbSH5+rqiMZF?=
- =?us-ascii?Q?lpR5726q1wlqmgpkP9wl1AzOe5KcAfPuYBMsg9vj3IaoGPI47lhNYfyjuAl6?=
- =?us-ascii?Q?wokBI8HcB9vuUjoEailRDmMwQibUeFXn8Es29jRZxGHbjmelLycMeYZLNK+t?=
- =?us-ascii?Q?r6C2vF0Tgwqd+jqU+q7JGmLWdZhXROCuTmaJTR91?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56210716-a4ad-4ad7-fc1c-08dd4086f75d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2025 17:04:17.9463
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KtODRuoQtkViVPPqAbzA8JAMkzlZGn4zqyyPf0Gli9QkhvTpO64x1ZzZMZj2ONSUdpNn4j0bKJlBGBurVtVYJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8371
+User-Agent: Mozilla Thunderbird
+Cc: eahariha@linux.microsoft.com, Andrew Morton <akpm@linux-foundation.org>,
+ Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+ David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>,
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens Axboe <axboe@kernel.dk>,
+ Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+ "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel <sre@kernel.org>,
+ Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Frank Li <Frank.Li@nxp.com>,
+ Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ Selvin Xavier <selvin.xavier@broadcom.com>,
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>,
+ linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+ ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 14/16] platform/x86/amd/pmf: convert timeouts to
+ secs_to_jiffies()
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
+ <20250128-converge-secs-to-jiffies-part-two-v1-14-9a6ecf0b2308@linux.microsoft.com>
+ <e8207616-6079-be0d-d482-6577616a4cc7@linux.intel.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Content-Language: en-US
+In-Reply-To: <e8207616-6079-be0d-d482-6577616a4cc7@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 29, 2025 at 05:39:18PM +0100, Niklas Cassel wrote:
-> Hello Frank,
->
-> On Wed, Jan 29, 2025 at 10:28:23AM -0500, Frank Li wrote:
-> > On Wed, Jan 29, 2025 at 11:13:42AM +0100, Niklas Cassel wrote:
-> > >
-> > > Please don't shoot the messenger, but I don't see any reply to (what I
-> > > assume is the biggest reason why Bjorn did not merge this series):
-> > >
-> > > ""
-> > > .cpu_addr_fixup() is a generic problem that affects dwc (dra7xx, imx6,
-> > > artpec6, intel-gw, visconti), cadence (cadence-plat), and now
-> > > apparently microchip.
-> > >
-> > > I deferred these because I'm hoping we can come up with a more generic
-> > > solution that's easier to apply across all these cases.  I don't
-> > > really want to merge something that immediately needs to be reworked
-> > > for other drivers.
-> > > ""
-> > >
-> > > It should probably state in the cover letter how v9 addresses Bjorn's
-> > > concern when it comes to other PCI controller drivers, especially those
-> > > that are not DWC based.
-> >
-> > Thank you for your reminder, I forget mentions this in cover letter. I
-> > create new patch to figure out this Bjorn's problem.
-> >
-> > PCI: Add parent_bus_offset to resource_entry
->
-> I see.
->
-> If you are solving this problem in a generic way, then it would make sense
-> if the generic patch comes first in the series, and then the driver (DWC)
-> specific patches come after that.
->
-> Your cover letter, including the subject is also written in a DWC specific
-> manner.
->
-> If you are solving a generic problem, then describe first how you solve
-> the generic problem, followed by DWC specific details.
->
-> See e.g. my cover letter here:
-> https://lore.kernel.org/linux-pci/20250119050850.2kogtpl5hatpp2tv@thinkpad/T/#t
+On 1/29/2025 5:12 AM, Ilpo Järvinen wrote:
+> On Tue, 28 Jan 2025, Easwar Hariharan wrote:
+> 
+>> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+>> secs_to_jiffies().  As the value here is a multiple of 1000, use
+>> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
+>>
+>> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+>> the following Coccinelle rules:
+>>
+>> @depends on patch@
+>> expression E;
+>> @@
+>>
+>> -msecs_to_jiffies
+>> +secs_to_jiffies
+>> (E
+>> - * \( 1000 \| MSEC_PER_SEC \)
+>> )
+>>
+>> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+>> ---
+>>  drivers/platform/x86/amd/pmf/acpi.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/platform/x86/amd/pmf/acpi.c b/drivers/platform/x86/amd/pmf/acpi.c
+>> index dd5780a1d06e1dc979fcff5bafd6729bc4937eab..6b7effe80b78b7389b320ee65fa5d2373f782a2f 100644
+>> --- a/drivers/platform/x86/amd/pmf/acpi.c
+>> +++ b/drivers/platform/x86/amd/pmf/acpi.c
+>> @@ -220,7 +220,8 @@ static void apmf_sbios_heartbeat_notify(struct work_struct *work)
+>>  	if (!info)
+>>  		return;
+>>  
+>> -	schedule_delayed_work(&dev->heart_beat, msecs_to_jiffies(dev->hb_interval * 1000));
+>> +	schedule_delayed_work(&dev->heart_beat,
+>> +			      secs_to_jiffies(dev->hb_interval));
+>>  	kfree(info);
+>>  }
+> 
+> Hi,
+> 
+> So you made the line shorter but still added the newline char for some 
+> reason even if the original didn't have one?? Please don't enforce 80 
+> chars limit with patches like this.
+> 
 
-Thanks, let's wait for Bjorn's comments about new method. I will do that
-next time if need respin.
+Sorry about that, I can fix that in v2.
 
-Frank
+Thanks for the review!
 
->
->
-> Kind regards,
-> Niklas
+- Easwar (he/him)
