@@ -1,105 +1,92 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EDBBE40
-	for <imx@lists.linux.dev>; Tue, 28 Jan 2025 23:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFC543166;
+	Wed, 29 Jan 2025 00:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738108528; cv=none; b=dSbC7JS5GIJGCf5NT1aGYRETmENkEc4buJQTUcZxWibsey87VXEdP9fGnhbKCbWte1Fdob1jHngKh1WC3cDs1Phsomke+7zs7j8zs2iLPnX3ppx6WiCXOLHQP6NKYEcjXUDxjuYbUg5RimnwKaA0WXDOdmtTuCeRfTwUdh6Lg2o=
+	t=1738109807; cv=none; b=ofv9nweN/Unhza8ODLA/fSuHdda1p+DXhE523b/yp/k7zUNza6/CTuCcCaA7ZxUikgEn7PryvTLKZIwlc4xnbvCjWfnar6+D9GeT9shVnok7hIdjjguYjMJda68R6Bd/BJvgW1hkrY+545Nwx0mnOMBoUJR/oExBqV60GY6zX80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738108528; c=relaxed/simple;
-	bh=roLSlasG/q41dscrlB7eO6FGDf3F4zgrpr5LEf+aI/Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kl2aYquPF87e6b0ibxeye+dZv89zREFe+n4scYxUHTd+Ao+NgeeasstTXLnQsucEPFYXLzPRH0vv5aiVZPBtkIeJIcX4RrIhmOuvS1P69zDCg9ezvAero0YCYSSbdBYRG1bFuE6fxMN/mpcqwl3RmUU0gpnBe+n/kHv2I/NQvvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=d27kyn86; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1738109807; c=relaxed/simple;
+	bh=zZU6hynWCHp+6F/RCQmfqyOYkRbiqQZ0uQFQk367ytg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=AeI2jjTOyzblWUgseBqsS4twqul6hxxLOzsNmtxWsBmQfrO132FEEf19nWxg/xk4CjJ/TQmWHqPc2unJvqvj4Ly0V13xd4XbehliYvkN3jUxIBz4PeI0EvXrNSJd9RcfmJ+KEFr7kgg0Ed2USPBCVjAFOEqXe6IuOGeoHCTyj9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AS2j4JP5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="d27kyn86"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1738108152;
-	bh=roLSlasG/q41dscrlB7eO6FGDf3F4zgrpr5LEf+aI/Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=d27kyn86OW9fKb37uxAAjYTxIMGhniYZF6utj0d0lxP83K5OlLXIQGc3mwfwR+qjt
-	 lXqOymLQrDX/9BLUoaBptalqeGGhBCGvev5Y5KFsn9hbt7sc2Gsqe2gvTK1BqX2av7
-	 mqh0HN0lBLqtvidZC5BXZC/UwBxCS6aqMrwbm+Ewg1AG/SQ+VUj6WK9TlhnIibrnsd
-	 ZLstgk7mr4Fnq/pX2qwnssCN+qKFpGOKxHSVnRAc10ZBaRYk0ioU9v63xfJvpzJcbR
-	 BpaqVLh43vIi78A+Gztr8p/PRCBc/TQqZrVOgFBSlCW0+ERJYYiTavaKlbeJHiHqKG
-	 ZvfGucQWj7yAQ==
-Received: from [192.168.68.112] (58-7-145-34.dyn.iinet.net.au [58.7.145.34])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id B175F700F5;
-	Wed, 29 Jan 2025 07:48:56 +0800 (AWST)
-Message-ID: <0589b4c2a6cf4e946e927081c4ed5a4b488010aa.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 01/14] drm/aspeed: move to
- devm_platform_ioremap_resource() usage
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: Anusha Srivatsa <asrivats@redhat.com>, Joel Stanley <joel@jms.id.au>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Stefan Agner
- <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, Xinliang Liu
- <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, Xinwei Kong
- <kong.kongxinwei@hisilicon.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel
- <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Neil
- Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Marek Vasut <marex@denx.de>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>,  Heiko
- =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>, Andy Yan
- <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou
- <rgallaispou@gmail.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Philippe Cornu
- <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,  Thierry Reding
- <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Alexey Brodkin
- <abrodkin@synopsys.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Raspberry Pi Kernel
- Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Date: Wed, 29 Jan 2025 10:18:56 +1030
-In-Reply-To: <20250128-cocci-memory-api-v1-1-0d1609a29587@redhat.com>
-References: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
-	 <20250128-cocci-memory-api-v1-1-0d1609a29587@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AS2j4JP5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994C4C4CED3;
+	Wed, 29 Jan 2025 00:16:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1738109806;
+	bh=zZU6hynWCHp+6F/RCQmfqyOYkRbiqQZ0uQFQk367ytg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AS2j4JP5RIAisJwaJPGo5rdD+WQkiOVOSd2qjWS7o62PB/KfGo+AtIeEIRlVi8ca4
+	 DcFpL5pMszZR4AoEDS94lZdMmpR+YhI7fvUGwBGQGj85DpwI7Ag5fgschNnRNtAEJ5
+	 EXSOU+Vpu5p468XbHO3vy3GdYQe6R4CubgmVMLqk=
+Date: Tue, 28 Jan 2025 16:16:43 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay
+ <ogabbay@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix
+ <nicolas.palix@imag.fr>, James Smart <james.smart@broadcom.com>, Dick
+ Kennedy <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chris Mason <clm@fb.com>, Josef Bacik
+ <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Ilya Dryomov
+ <idryomov@gmail.com>, Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens
+ Axboe <axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Carlos Maiolino
+ <cem@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel
+ <sre@kernel.org>, Keith Busch <kbusch@kernel.org>, Christoph Hellwig
+ <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Frank Li
+ <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Hans de Goede
+ <hdegoede@redhat.com>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>, Henrique de Moraes Holschuh
+ <hmh@hmh.eng.br>, Selvin Xavier <selvin.xavier@broadcom.com>, Kalesh AP
+ <kalesh-anakkur.purayil@broadcom.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
+ Romanovsky <leon@kernel.org>, cocci@inria.fr, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+ ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 00/16] Converge on using secs_to_jiffies() part two
+Message-Id: <20250128161643.289d9fe705ef2fdba0b82a52@linux-foundation.org>
+In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2025-01-28 at 17:29 -0500, Anusha Srivatsa wrote:
-> Replace platform_get_resource + devm_ioremap_resource
-> with just devm_platform_ioremap_resource()
->=20
-> Used Coccinelle to do this change. SmPl patch:
-> @rule_1@
-> identifier res;
-> expression ioremap_res;
-> identifier pdev;
-> @@
-> -struct resource *res;
-> ...
-> -res =3D platform_get_resource(pdev,...);
-> -ioremap_res =3D devm_ioremap_resource(...);
-> +ioremap_res =3D devm_platform_ioremap_resource(pdev,0);
->=20
-> Cc: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+On Tue, 28 Jan 2025 18:21:45 +0000 Easwar Hariharan <eahariha@linux.microsoft.com> wrote:
 
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> This is the second series (part 1*) that converts users of msecs_to_jiffies() that
+> either use the multiply pattern of either of:
+> - msecs_to_jiffies(N*1000) or
+> - msecs_to_jiffies(N*MSEC_PER_SEC)
+> 
+> where N is a constant or an expression, to avoid the multiplication.
+> 
+> The conversion is made with Coccinelle with the secs_to_jiffies() script
+> in scripts/coccinelle/misc. Attention is paid to what the best change
+> can be rather than restricting to what the tool provides.
+> 
+> Andrew has kindly agreed to take the series through mm.git modulo the
+> patches maintainers want to pick through their own trees.
+
+I added patches 2-16 to mm.git.  If any of these later get merged into
+a subsystem tree, Stephen will tell us and I'll drop the mm.git copy.
+
