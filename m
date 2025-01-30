@@ -1,178 +1,121 @@
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B031A7046
-	for <imx@lists.linux.dev>; Thu, 30 Jan 2025 11:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8921BC07A
+	for <imx@lists.linux.dev>; Thu, 30 Jan 2025 13:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738234925; cv=none; b=qbtanof7bxHrdT+twHMSnKC6QMBr5eZpgzXFuLuGK2hVblspq1EqfY+U7KI0vFt9rm66hRNW5tzk/GnBStkYGtfJwBXWZkfkRIQwa+t/lKTUZOjfo4PQ5F+0A0h2yx2GgAuLwUo1i2k4YfETUXGqKTLkrEx5soZgyV3TCJKZCgU=
+	t=1738242074; cv=none; b=tQwzPXF02/1ov2ZJf4UrSXJCOaf+uKs67kn1bsUW+rY1NXVbAej8gLN7o3CZ7SFS8JRiVCNoRPy4gSCBaCRNEHA1XDXv6lvjjAobdqG2PDv+I2xTUMHaihyVDS21tiCqlvV9VIL3PV43/S+gvO49F0BQv28mIqQR5aBnYXRwTHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738234925; c=relaxed/simple;
-	bh=+t4JrvrPiLsj7bfb840h38pFA44a5hm5mtWmRSYdCpU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=GIshLoWQRGn764lc02rwC8/J8NFo0bkTgsz6KNTuW2foloTRUBKPYhAcSVMyOjyqfpcZ0liadFL/C/IaqlCa/J6mGAU5RTTC1uGH6KADQfRny/B8h2WMKqzvsPvw4Euvp9L2wx+x6pXtTFOVpgM4MrkdVSsweX+rimM4P8QHryQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=EbrlbQSA; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1738242074; c=relaxed/simple;
+	bh=VxRkETfKHmTAhNRv4hdfVEutIx+9IVlNgDyAqsRrGpw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uDxoWoWXaGAJgcpIXFEu/4m6eDeq2KNOZV11qmWtUNoD7qvP8ezYrN4iwBl3KGhqD+JiwARUkjdxpWM3b5V8qms6hd1YjO2sIzHxhhQjiS6nxY723wsSi5GIcMkAJR28uSOhgl4hGPsUACU+KuiR49T67WjgpL4G6J23gz+S8W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=VyzKl7hS; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mbcFpJJx reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="EbrlbQSA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1738234870; x=1738839670; i=markus.elfring@web.de;
-	bh=+t4JrvrPiLsj7bfb840h38pFA44a5hm5mtWmRSYdCpU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=EbrlbQSAj+f38PA8703tTZaMiR4ayuD9Qrvyd9QGYqJH7YthbOq//pBZda9lk8L/
-	 8Z/bzqm9AcXAMhwbS7RdUkARLZ8bEvd0EdUhD+FRE9AbkWXJxoHLcoT2yUZDnoAru
-	 AEpVtrhhTX6gwbMUeKZ3owYdgRazmCSF+8S1sKEY3QoZ9646CKqHg5lS86sDrdRD4
-	 GAbkiHBdMvF1FSVgBio0MksJCA2Iu2Q6DHWn+Yg3/3vqeK/pNqvYcFMKTRC3o8uWh
-	 KgSWCXjJhP+JBxslKqGd0a2lz6i0DAbUIk83mJ6VEQvNIYUmrFpRTTuGrXGp53KWW
-	 cqA7/eN/08snJD7Q9w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.70.40]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MIya8-1tsDzY10Di-00Lbns; Thu, 30
- Jan 2025 12:01:10 +0100
-Message-ID: <e06cb7f5-7aa3-464c-a8a1-2c7b9b6a29eb@web.de>
-Date: Thu, 30 Jan 2025 12:01:03 +0100
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="VyzKl7hS";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mbcFpJJx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1738242071; x=1769778071;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wj58s5CoC7A+ZuNeV/ZGyINoKzUF6v+v74SipQCF2NQ=;
+  b=VyzKl7hSpaCYcHiLFtHeADZENyqpKopQClvKvO845GSzUz+Q0nssNe6q
+   m+1DPXTKetO+rjqvAv+/EyBfS3XqdOO6vb1DQ4sgBNP+OQdMt5PIy+wmQ
+   em832LOpikDdKQ+Md8hlG6BHLWhZV85q65DG4UNSSYM4Aw2im+cHK5D45
+   CiA1MsPkTFGZlNsqcNMlCL792+6RolZeOlIDyvw+KLw4v1Nxt1EDi5PxE
+   MSRAG7Xc4J0YJU/0+xQ5HXKj+NVyKflOC1s6lGFXszpuLYs/7Nk72+d+F
+   OWDl6PE+109HUdZHNdu4v9JDoreefk39MaNxUThPi8cfe45ePM9TAXrgm
+   w==;
+X-CSE-ConnectionGUID: F346eup2RHyq5Mx9HZjn4Q==
+X-CSE-MsgGUID: gyO9Yn/jRTGuTzpjVybASA==
+X-IronPort-AV: E=Sophos;i="6.13,245,1732575600"; 
+   d="scan'208";a="41374596"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Jan 2025 14:01:08 +0100
+X-CheckPoint: {679B7814-32-1CE016C0-E589DA3E}
+X-MAIL-CPID: 96EE492516499171CB9FDB906F9A685E_1
+X-Control-Analysis: str=0001.0A682F1C.679B7814.00B1,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54FB41675B4;
+	Thu, 30 Jan 2025 14:01:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1738242064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wj58s5CoC7A+ZuNeV/ZGyINoKzUF6v+v74SipQCF2NQ=;
+	b=mbcFpJJxFpOyy8kUEWQbTB4M3Gyw3lSYbYE2ZwwM71ysmoV3w6Ji6wTZTN2JStwPupDawb
+	8oJm98ESPJuBxIw39klfQBSnrNZW2mpTHF63+7yl6yuDP73OPy8YXaqMgEcFhPvNpUFVGy
+	ZpLcDLLIxq99QSzbia1Jq3B3cuVRRsnBx2T+i69+06Z3pVH4LX/noYMF+xa0/G8AUHqNUR
+	b5lrSwd6ZPo3I0k+9/9kBk8IwCoZ3KJ0MoMs+qzRWY7N1xZMrffxRfyBBpVMnPTelOeY/v
+	MYo3ID28tMD4RHvQ4lKzDIL3/iSBu6gkLjZxn3aHjD5PbLsK3sse3Ip7dn1+Jg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] Make i.MX8M Nano OCOTP work as accessing controller
+Date: Thu, 30 Jan 2025 14:00:57 +0100
+Message-Id: <20250130130101.1040824-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: cocci@inria.fr, kernel-janitors@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ibm-acpi-devel@lists.sourceforge.net, imx@lists.linux.dev,
- kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>, Carlos Maiolino <cem@kernel.org>,
- Chris Mason <clm@fb.com>, Christoph Hellwig <hch@lst.de>,
- Damien Le Moal <dlemoal@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>,
- David Sterba <dsterba@suse.com>, Dick Kennedy <dick.kennedy@broadcom.com>,
- Dongsheng Yang <dongsheng.yang@easystack.cn>,
- Easwar Hariharan <eahariha@linux.microsoft.com>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Hans de Goede <hdegoede@redhat.com>,
- Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- James Smart <james.smart@broadcom.com>, Jaroslav Kysela <perex@perex.cz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
- Josef Bacik <josef@toxicpanda.com>, Julia Lawall <Julia.Lawall@inria.fr>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Ilya Dryomov <idryomov@gmail.com>,
- Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
- Keith Busch <kbusch@kernel.org>, Leon Romanovsky <leon@kernel.org>,
- Mark Brown <broonie@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Nicolas Palix <nicolas.palix@imag.fr>, Niklas Cassel <cassel@kernel.org>,
- Oded Gabbay <ogabbay@kernel.org>, Ricardo Ribalda <ribalda@google.com>,
- Sagi Grimberg <sagi@grimberg.me>, Sascha Hauer <s.hauer@pengutronix.de>,
- Sebastian Reichel <sre@kernel.org>,
- Selvin Xavier <selvin.xavier@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Takashi Iwai <tiwai@suse.com>,
- Victor Gambier <victor.gambier@inria.fr>, Xiubo Li <xiubli@redhat.com>,
- Yaron Avizrat <yaron.avizrat@intel.com>
-References: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
-Subject: Re: [PATCH 01/16] coccinelle: misc: secs_to_jiffies: Patch
- expressions too
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:MEBO0GsSQ1SMY/zsPX1U6svBkJN6BjoZlGAGaEjdoAIc7rC0MTJ
- jMCDSnzW+JUiBx0jWaw4axa0ASi7RKu+znCfMa+5DA/GZz89brkDkAWXkPNY1Ii+WKoCg2M
- 6p6JIXEbQugmQdBp3V5wVA0hm/aJde6kKUDnCeJpidqtVh0kGmNtl+sNaqnuL+ZhzFG6g5Z
- yt9wjcSDL8KRKPEOFFBUw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PCsLlrQ8lfw=;SoOTgoPi1u3ddphFfFnJ4K80Ey1
- LhQV5NN3S1upZ+kQWRf5X13xSqfZszqJAWQG1OpVuCmo6tpVtGTWgh7ad8U9WwKa6cxbghVrt
- NekQpjR/Dsev5s67AnEX8ThdDcbbfKvRw5T8fgaGslTYv3XceDxH2g+ZINh1g5Zl1a5Kb7tUy
- iHsXRJsmGMh72moAwMl2T0JX0Ldu9mm36L7zjNeIOX0Xh1EcbDwPTnBvWT5Jmf/TZjjTD915z
- wkMwvyKEhqv+ILIT2NmQNRENiOP1N2A5cNBwL7S6RvzS4B2b6TETCM6HSXEgzk4eBq/cjFYJ7
- Ta/beBAeX/x1vlhieJ7zCgVJ/DjpXSnLIakxsKLFsTqznw+ifPF4fJli2HnMVo9sGRnRMWTrl
- qkRACaZwBVl2ReKWA6Ylw6VqlTKMT2hF2oCiSA6SNHSwnqWCdtkKT3MwrASEpsgRd1t3m2qrg
- dzBxkwY3Iqvyla51ZhZ4KeRRsMYftkVOD06V/LWAUsGh3adVyfNfo1rFkiXbs8oaQXw9Ja6tZ
- RzPDki+nrGeKxCzQaenUyiA48SLrGJ61YEiLCyUiil3FCYQCPBx6oGNf2hTXlPwkPSrMnvfyk
- yvQjlFy7DS+9l6YMcPoT4oJhRV5HGFbKwznZ3oL4+T60BN/ekmSzbtefb+GOhIG+4+ywk54uP
- mTXT8J21gH5qaPIaPiannqZ/nmjWeakTcPkk/rVwdP3tmwDxSgnRKkzPj2UadACH+VKlM8JrQ
- lfxiv25g7Br2uvZqXG/3Mkq5j8BPnzef0ZEvV00FZ4lN2l35qROKiS4KNw+Oa2MExwmkZF8N0
- Me4UosI1FbMOonU2tpnvT5R9FbJv2h1tIMF/XYUdA7G6V3mY01f2O3g0W60Gd1Z/onfWiWTsC
- vsuTuJ7TZfE6AwrUs1WQ/Wi8E1So2MZdkmeUagRZY0DoLytG1bmL84SvJIdb8h4sdAVK3EONn
- 3chVYtWWI+cM+cz3Whj1giWzBTzyQOpKjx+HZcaRA80KQWJ5iUExiJkz11n/ptAWXabZtwVr1
- IIfHoUKeT2WT8pACVlj4x3gvqIClbPKbcGWhs4epE3uD2mR9gqFM8fCUfkHNngYTCZq6z5Did
- d50IILddgQEvH7rjWs9K2n3wFTct4+ajCi45dnopg2wTz/Oma2Lt3tO8Qenl6l70EogpyLyCN
- iMoxPpi5Wclpw/Kc+5YCXrWUIzzUatEenh+mkeiB0/g==
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> Teach the script to suggest conversions for timeout patterns where the
-> arguments to msecs_to_jiffies() are expressions as well.
+Hi,
 
-Does anything hinder to benefit any more from a source code analysis approach
-(like the following by the extended means of the semantic patch language)?
+inspired by [1] this adds the accessing controller feature to i.MX8M Nano.
+The OCOTP eFuse has bits which can disable particular peripherals, such as
+GPU, MIPI-DSI oder USB.
 
+In OCOTP driver, the nodes under "/" will be iterated, and checked
+if property "#access-controllers" exsits. If not allow access, detach
+the node.
 
-// SPDX-License-Identifier: GPL-2.0
-/// Simplify statements by using a known wrapper macro.
-/// Replace selected msecs_to_jiffies() calls by secs_to_jiffies().
-//
-// Keywords: wrapper macro conversion secs seconds jiffies
-// Confidence: High
-// Options: --no-includes --include-headers
+I successfully used this on a i.MX8M Nano DualLite which has GPU disabled.
+Without this patchset the default DT completly freezes the SoC if GPU
+is accessed.
+Using this patchset the GPU is disabled without any DT modification from
+bootloader:
+> imx_ocotp 30350000.efuse: /soc@0/gpu@38000000: disabled by fuse, device driver will not be probed
 
-virtual context, patch, report, org
+Adding the other i.MX8M SoCs is straight forward.
 
-@depends on context@
-expression e;
-@@
-*msecs_to_jiffies
- (
-(e * 1000
-|e * MSEC_PER_SEC
-)
- )
+Best regards,
+Alexander
 
-@depends on patch@
-expression e;
-@@
--msecs_to_jiffies
-+secs_to_jiffies
- (
-(
--e * 1000
-|
--e * MSEC_PER_SEC
-)
-+e
- )
+[1] https://lore.kernel.org/all/20250121-imx-ocotp-v6-0-76dab40e13db@nxp.com/
 
-@x depends on org || report@
-expression e;
-position p;
-@@
- msecs_to_jiffies@p
- (
-(e * 1000
-|e * MSEC_PER_SEC
-)
- )
+Alexander Stein (4):
+  dt-bindings: nvmem: imx-ocotp: Add i.MX8M Nano access controller
+    definitions
+  nvmem: imx-ocotp: Sort header alphabetically
+  nvmem: imx-ocotp: Support accessing controller for i.MX8M Nano
+  arm64: dts: imx8mn: Add access-controller references
 
-@script:python depends on org@
-p << x.p;
-@@
-coccilib.org.print_todo(p[0], "WARNING: opportunity for secs_to_jiffies()")
+ arch/arm64/boot/dts/freescale/imx8mn.dtsi    |   8 ++
+ drivers/nvmem/Kconfig                        |   3 +
+ drivers/nvmem/imx-ocotp.c                    | 107 ++++++++++++++++++-
+ include/dt-bindings/nvmem/fsl,imx8mn-ocotp.h |  16 +++
+ 4 files changed, 132 insertions(+), 2 deletions(-)
+ create mode 100644 include/dt-bindings/nvmem/fsl,imx8mn-ocotp.h
 
-@script:python depends on report@
-p << x.p;
-@@
-coccilib.report.print_report(p[0], "WARNING: opportunity for secs_to_jiffies()")
+-- 
+2.34.1
 
-
-Regards,
-Markus
