@@ -1,216 +1,178 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46315C0
-	for <imx@lists.linux.dev>; Thu, 30 Jan 2025 09:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B031A7046
+	for <imx@lists.linux.dev>; Thu, 30 Jan 2025 11:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738230658; cv=none; b=rKzfmOwIO1oLlsOWaAC9Bey6CC48f+HnDgLms9dIhGjaGV/W2SdKhb5ZkBsV5lyVEGuybhiMjvajbRYGqALP7l3+FEPLW2f6M8Lp2lBkt1SqeYIwwW3G2PzkqMAK9maI8x1MmqwjZ22hKZFBcaSJQyIMmEqMeXofaIUgr7Wjv5I=
+	t=1738234925; cv=none; b=qbtanof7bxHrdT+twHMSnKC6QMBr5eZpgzXFuLuGK2hVblspq1EqfY+U7KI0vFt9rm66hRNW5tzk/GnBStkYGtfJwBXWZkfkRIQwa+t/lKTUZOjfo4PQ5F+0A0h2yx2GgAuLwUo1i2k4YfETUXGqKTLkrEx5soZgyV3TCJKZCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738230658; c=relaxed/simple;
-	bh=gvQtqSkM2Azzl9eW+61Gix8wW/h+Xv8INjrnMwEE8SM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VQtl5j0t3rz5pziM/UEutMuTjJiMtVduLGJKYn50AJL3vR+ffVR8uxNLN+y34eSJr9GRty584ZRS+nPVqRN6UmCPygAMjWpBEcy6X9TOoCZ19H/zqUp6j6l4llfcZiqo8+mcUv8gcQH3X/5vIVAKr/XJh+Tyu4vkQHBIU6/8K9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=APUY0V3y; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=A3i5T7FW reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1738234925; c=relaxed/simple;
+	bh=+t4JrvrPiLsj7bfb840h38pFA44a5hm5mtWmRSYdCpU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=GIshLoWQRGn764lc02rwC8/J8NFo0bkTgsz6KNTuW2foloTRUBKPYhAcSVMyOjyqfpcZ0liadFL/C/IaqlCa/J6mGAU5RTTC1uGH6KADQfRny/B8h2WMKqzvsPvw4Euvp9L2wx+x6pXtTFOVpgM4MrkdVSsweX+rimM4P8QHryQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=EbrlbQSA; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="APUY0V3y";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="A3i5T7FW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1738230655; x=1769766655;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rd2a38AIvhmJF+sIIntn3sECyoZlnToSJTC1vvQgGpU=;
-  b=APUY0V3yDmBNFYrSxpahi2Y15X0KNuXtg+M2jLa5TfHZP0+fZD5uesyx
-   Q/yaVh5NtzB6VwW2kzP17U2/IlVXcwfUSpwRWZweNO6EtHbTpwV4klFJi
-   4RbrbzYw6PFUgohFCqicNznOgl6/eDRyKQOwglVuKemYpqQOoyEkQnsVQ
-   VgPyqgzGpqYrlVTXAty5qx6wX+CT9KSVfwaxSlzPzgEmJ2Oc1cqC9iLMP
-   fxL+BHaYfmZb4vdskIZ2OouCb2xlpWb81c7JDaCvRCMZNLdzEZy+YBTlh
-   lGiWoEhjRMxd31jztgFB/a5qjYKHFR3Ntf9w4t7k7v35hfinC2nk86dD5
-   Q==;
-X-CSE-ConnectionGUID: yJZjX8XqQE24M0r03Fnbdg==
-X-CSE-MsgGUID: bNrVFvibQqGR23uGzNF9Fw==
-X-IronPort-AV: E=Sophos;i="6.13,245,1732575600"; 
-   d="scan'208";a="41370002"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 30 Jan 2025 10:49:43 +0100
-X-CheckPoint: {679B4B37-18-1CE016C0-E589DA3E}
-X-MAIL-CPID: DD08E384A724ED70B11DF9CE815C91BE_1
-X-Control-Analysis: str=0001.0A682F27.679B4B37.00B9,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13D53167A0C;
-	Thu, 30 Jan 2025 10:49:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1738230579;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rd2a38AIvhmJF+sIIntn3sECyoZlnToSJTC1vvQgGpU=;
-	b=A3i5T7FWTQyr0aYYLUVJR4wNh6PNlonbj/S8+XBd3QZqrMwR+vGsSwIvojS4R3cgU/OMLN
-	p9Pjody1PtAvH+UMO+dbKEqVe7trjFcXhyEn3iwNJWo3NHdhBF9RPpBjB7zLCwpKaYWXEV
-	ICiB9ceIlgzNe2T7pbWQ8XTS9TaHEo8qziWro20NYknF0NYcJFB50W0oH9XiXODbpuC9M+
-	/0GVIlz9GvnXV6N/Lz+lCp7pYWn0IUHN1Bi+ZHNn5pYOZljPehu+D+jpE/GuGyzENCqDb6
-	CVMMKX1nxi+2ytByDrctmB3v31E1dfGnREvIZZkFJshWW+YSWDuQuQdpHAVSBg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v6 1/2] dt-bindings: nvmem: imx-ocotp: Introduce #access-controller-cells
-Date: Thu, 30 Jan 2025 10:49:37 +0100
-Message-ID: <2771977.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250121-imx-ocotp-v6-1-76dab40e13db@nxp.com>
-References: <20250121-imx-ocotp-v6-0-76dab40e13db@nxp.com> <20250121-imx-ocotp-v6-1-76dab40e13db@nxp.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="EbrlbQSA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1738234870; x=1738839670; i=markus.elfring@web.de;
+	bh=+t4JrvrPiLsj7bfb840h38pFA44a5hm5mtWmRSYdCpU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=EbrlbQSAj+f38PA8703tTZaMiR4ayuD9Qrvyd9QGYqJH7YthbOq//pBZda9lk8L/
+	 8Z/bzqm9AcXAMhwbS7RdUkARLZ8bEvd0EdUhD+FRE9AbkWXJxoHLcoT2yUZDnoAru
+	 AEpVtrhhTX6gwbMUeKZ3owYdgRazmCSF+8S1sKEY3QoZ9646CKqHg5lS86sDrdRD4
+	 GAbkiHBdMvF1FSVgBio0MksJCA2Iu2Q6DHWn+Yg3/3vqeK/pNqvYcFMKTRC3o8uWh
+	 KgSWCXjJhP+JBxslKqGd0a2lz6i0DAbUIk83mJ6VEQvNIYUmrFpRTTuGrXGp53KWW
+	 cqA7/eN/08snJD7Q9w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.40]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MIya8-1tsDzY10Di-00Lbns; Thu, 30
+ Jan 2025 12:01:10 +0100
+Message-ID: <e06cb7f5-7aa3-464c-a8a1-2c7b9b6a29eb@web.de>
+Date: Thu, 30 Jan 2025 12:01:03 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+To: cocci@inria.fr, kernel-janitors@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-xfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ibm-acpi-devel@lists.sourceforge.net, imx@lists.linux.dev,
+ kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, Carlos Maiolino <cem@kernel.org>,
+ Chris Mason <clm@fb.com>, Christoph Hellwig <hch@lst.de>,
+ Damien Le Moal <dlemoal@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>,
+ David Sterba <dsterba@suse.com>, Dick Kennedy <dick.kennedy@broadcom.com>,
+ Dongsheng Yang <dongsheng.yang@easystack.cn>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ James Smart <james.smart@broadcom.com>, Jaroslav Kysela <perex@perex.cz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+ Josef Bacik <josef@toxicpanda.com>, Julia Lawall <Julia.Lawall@inria.fr>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Ilya Dryomov <idryomov@gmail.com>,
+ Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
+ Keith Busch <kbusch@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ Mark Brown <broonie@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Niklas Cassel <cassel@kernel.org>,
+ Oded Gabbay <ogabbay@kernel.org>, Ricardo Ribalda <ribalda@google.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Sebastian Reichel <sre@kernel.org>,
+ Selvin Xavier <selvin.xavier@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Takashi Iwai <tiwai@suse.com>,
+ Victor Gambier <victor.gambier@inria.fr>, Xiubo Li <xiubli@redhat.com>,
+ Yaron Avizrat <yaron.avizrat@intel.com>
+References: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
+Subject: Re: [PATCH 01/16] coccinelle: misc: secs_to_jiffies: Patch
+ expressions too
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250128-converge-secs-to-jiffies-part-two-v1-1-9a6ecf0b2308@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:MEBO0GsSQ1SMY/zsPX1U6svBkJN6BjoZlGAGaEjdoAIc7rC0MTJ
+ jMCDSnzW+JUiBx0jWaw4axa0ASi7RKu+znCfMa+5DA/GZz89brkDkAWXkPNY1Ii+WKoCg2M
+ 6p6JIXEbQugmQdBp3V5wVA0hm/aJde6kKUDnCeJpidqtVh0kGmNtl+sNaqnuL+ZhzFG6g5Z
+ yt9wjcSDL8KRKPEOFFBUw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PCsLlrQ8lfw=;SoOTgoPi1u3ddphFfFnJ4K80Ey1
+ LhQV5NN3S1upZ+kQWRf5X13xSqfZszqJAWQG1OpVuCmo6tpVtGTWgh7ad8U9WwKa6cxbghVrt
+ NekQpjR/Dsev5s67AnEX8ThdDcbbfKvRw5T8fgaGslTYv3XceDxH2g+ZINh1g5Zl1a5Kb7tUy
+ iHsXRJsmGMh72moAwMl2T0JX0Ldu9mm36L7zjNeIOX0Xh1EcbDwPTnBvWT5Jmf/TZjjTD915z
+ wkMwvyKEhqv+ILIT2NmQNRENiOP1N2A5cNBwL7S6RvzS4B2b6TETCM6HSXEgzk4eBq/cjFYJ7
+ Ta/beBAeX/x1vlhieJ7zCgVJ/DjpXSnLIakxsKLFsTqznw+ifPF4fJli2HnMVo9sGRnRMWTrl
+ qkRACaZwBVl2ReKWA6Ylw6VqlTKMT2hF2oCiSA6SNHSwnqWCdtkKT3MwrASEpsgRd1t3m2qrg
+ dzBxkwY3Iqvyla51ZhZ4KeRRsMYftkVOD06V/LWAUsGh3adVyfNfo1rFkiXbs8oaQXw9Ja6tZ
+ RzPDki+nrGeKxCzQaenUyiA48SLrGJ61YEiLCyUiil3FCYQCPBx6oGNf2hTXlPwkPSrMnvfyk
+ yvQjlFy7DS+9l6YMcPoT4oJhRV5HGFbKwznZ3oL4+T60BN/ekmSzbtefb+GOhIG+4+ywk54uP
+ mTXT8J21gH5qaPIaPiannqZ/nmjWeakTcPkk/rVwdP3tmwDxSgnRKkzPj2UadACH+VKlM8JrQ
+ lfxiv25g7Br2uvZqXG/3Mkq5j8BPnzef0ZEvV00FZ4lN2l35qROKiS4KNw+Oa2MExwmkZF8N0
+ Me4UosI1FbMOonU2tpnvT5R9FbJv2h1tIMF/XYUdA7G6V3mY01f2O3g0W60Gd1Z/onfWiWTsC
+ vsuTuJ7TZfE6AwrUs1WQ/Wi8E1So2MZdkmeUagRZY0DoLytG1bmL84SvJIdb8h4sdAVK3EONn
+ 3chVYtWWI+cM+cz3Whj1giWzBTzyQOpKjx+HZcaRA80KQWJ5iUExiJkz11n/ptAWXabZtwVr1
+ IIfHoUKeT2WT8pACVlj4x3gvqIClbPKbcGWhs4epE3uD2mR9gqFM8fCUfkHNngYTCZq6z5Did
+ d50IILddgQEvH7rjWs9K2n3wFTct4+ajCi45dnopg2wTz/Oma2Lt3tO8Qenl6l70EogpyLyCN
+ iMoxPpi5Wclpw/Kc+5YCXrWUIzzUatEenh+mkeiB0/g==
 
-Hi,
+> Teach the script to suggest conversions for timeout patterns where the
+> arguments to msecs_to_jiffies() are expressions as well.
 
-Am Dienstag, 21. Januar 2025, 16:05:31 CET schrieb Peng Fan (OSS):
-> From: Peng Fan <peng.fan@nxp.com>
->=20
-> Introduce "#access-controller-cells" to make OCOTP be an accessing
-> controller, because i.MX Family OCOTP supports a specific peripheral
-> or function being fused which means being disabled.
->=20
-> Add the i.MX[95,93] OCOTP gate index.
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/nvmem/imx-ocotp.yaml       |  5 +++
->  include/dt-bindings/nvmem/fsl,imx93-ocotp.h        | 24 ++++++++++++
->  include/dt-bindings/nvmem/fsl,imx95-ocotp.h        | 43 ++++++++++++++++=
-++++++
->  3 files changed, 72 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml b/Doc=
-umentation/devicetree/bindings/nvmem/imx-ocotp.yaml
-> index b2cb76cf9053a883a158acaf5eaa108895818afc..c78e202ced22f1c278f7be827=
-b71ba434832d2a7 100644
-> --- a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
-> +++ b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
-> @@ -54,6 +54,11 @@ properties:
->    clocks:
->      maxItems: 1
-> =20
-> +  "#access-controller-cells":
-> +    const: 1
-> +    description:
-> +      Contains the gate ID associated to the peripheral.
-> +
->  required:
->    - "#address-cells"
->    - "#size-cells"
-> diff --git a/include/dt-bindings/nvmem/fsl,imx93-ocotp.h b/include/dt-bin=
-dings/nvmem/fsl,imx93-ocotp.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..6ef525173845fd4ee0e847cf5=
-a17e53a14f71362
-> --- /dev/null
-> +++ b/include/dt-bindings/nvmem/fsl,imx93-ocotp.h
-> @@ -0,0 +1,24 @@
-> +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
-> +
-> +#ifndef _DT_BINDINGS_NVMEM_IMX93_OTPC_H
-> +#define _DT_BINDINGS_NVMEM_IMX93_OTPC_H
-
-This doesn't match the filename.
-
-> +
-> +#define IMX93_OCOTP_NPU_GATE		0
-> +#define IMX93_OCOTP_A550_GATE		1
-> +#define IMX93_OCOTP_A551_GATE		2
-> +#define IMX93_OCOTP_M33_GATE		3
-> +#define IMX93_OCOTP_CAN1_FD_GATE	4
-> +#define IMX93_OCOTP_CAN2_FD_GATE	5
-> +#define IMX93_OCOTP_CAN1_GATE		6
-> +#define IMX93_OCOTP_CAN2_GATE		7
-> +#define IMX93_OCOTP_USB1_GATE		8
-> +#define IMX93_OCOTP_USB2_GATE		9
-> +#define IMX93_OCOTP_ENET1_GATE		10
-> +#define IMX93_OCOTP_ENET2_GATE		11
-> +#define IMX93_OCOTP_PXP_GATE		12
-> +#define IMX93_OCOTP_MIPI_CSI1_GATE	13
-> +#define IMX93_OCOTP_MIPI_DSI1_GATE	14
-> +#define IMX93_OCOTP_LVDS1_GATE		15
-> +#define IMX93_OCOTP_ADC1_GATE		16
-> +
-> +#endif
-> diff --git a/include/dt-bindings/nvmem/fsl,imx95-ocotp.h b/include/dt-bin=
-dings/nvmem/fsl,imx95-ocotp.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..2d21d1f690974d0215c713521=
-68378a150f489af
-> --- /dev/null
-> +++ b/include/dt-bindings/nvmem/fsl,imx95-ocotp.h
-> @@ -0,0 +1,43 @@
-> +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
-> +
-> +#ifndef _DT_BINDINGS_NVMEM_IMX95_OTPC_H
-> +#define _DT_BINDINGS_NVMEM_IMX95_OTPC_H
-
-This doesn't match the filename.
-
-Best regards,
-Alexander
-
-> +
-> +#define IMX95_OCOTP_CANFD1_GATE		0
-> +#define IMX95_OCOTP_CANFD2_GATE		1
-> +#define IMX95_OCOTP_CANFD3_GATE		2
-> +#define IMX95_OCOTP_CANFD4_GATE		3
-> +#define IMX95_OCOTP_CANFD5_GATE		4
-> +#define IMX95_OCOTP_CAN1_GATE		5
-> +#define IMX95_OCOTP_CAN2_GATE		6
-> +#define IMX95_OCOTP_CAN3_GATE		7
-> +#define IMX95_OCOTP_CAN4_GATE		8
-> +#define IMX95_OCOTP_CAN5_GATE		9
-> +#define IMX95_OCOTP_NPU_GATE		10
-> +#define IMX95_OCOTP_A550_GATE		11
-> +#define IMX95_OCOTP_A551_GATE		12
-> +#define IMX95_OCOTP_A552_GATE		13
-> +#define IMX95_OCOTP_A553_GATE		14
-> +#define IMX95_OCOTP_A554_GATE		15
-> +#define IMX95_OCOTP_A555_GATE		16
-> +#define IMX95_OCOTP_M7_GATE		17
-> +#define IMX95_OCOTP_DCSS_GATE		18
-> +#define IMX95_OCOTP_LVDS1_GATE		19
-> +#define IMX95_OCOTP_ISP_GATE		20
-> +#define IMX95_OCOTP_USB1_GATE		21
-> +#define IMX95_OCOTP_USB2_GATE		22
-> +#define IMX95_OCOTP_NETC_GATE		23
-> +#define IMX95_OCOTP_PCIE1_GATE		24
-> +#define IMX95_OCOTP_PCIE2_GATE		25
-> +#define IMX95_OCOTP_ADC1_GATE		26
-> +#define IMX95_OCOTP_EARC_RX_GATE	27
-> +#define IMX95_OCOTP_GPU3D_GATE		28
-> +#define IMX95_OCOTP_VPU_GATE		29
-> +#define IMX95_OCOTP_JPEG_ENC_GATE	30
-> +#define IMX95_OCOTP_JPEG_DEC_GATE	31
-> +#define IMX95_OCOTP_MIPI_CSI1_GATE	32
-> +#define IMX95_OCOTP_MIPI_CSI2_GATE	33
-> +#define IMX95_OCOTP_MIPI_DSI1_GATE	34
-> +#define IMX95_OCOTP_V2X_GATE		35
-> +
-> +#endif
->=20
->=20
+Does anything hinder to benefit any more from a source code analysis approach
+(like the following by the extended means of the semantic patch language)?
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+// SPDX-License-Identifier: GPL-2.0
+/// Simplify statements by using a known wrapper macro.
+/// Replace selected msecs_to_jiffies() calls by secs_to_jiffies().
+//
+// Keywords: wrapper macro conversion secs seconds jiffies
+// Confidence: High
+// Options: --no-includes --include-headers
+
+virtual context, patch, report, org
+
+@depends on context@
+expression e;
+@@
+*msecs_to_jiffies
+ (
+(e * 1000
+|e * MSEC_PER_SEC
+)
+ )
+
+@depends on patch@
+expression e;
+@@
+-msecs_to_jiffies
++secs_to_jiffies
+ (
+(
+-e * 1000
+|
+-e * MSEC_PER_SEC
+)
++e
+ )
+
+@x depends on org || report@
+expression e;
+position p;
+@@
+ msecs_to_jiffies@p
+ (
+(e * 1000
+|e * MSEC_PER_SEC
+)
+ )
+
+@script:python depends on org@
+p << x.p;
+@@
+coccilib.org.print_todo(p[0], "WARNING: opportunity for secs_to_jiffies()")
+
+@script:python depends on report@
+p << x.p;
+@@
+coccilib.report.print_report(p[0], "WARNING: opportunity for secs_to_jiffies()")
 
 
+Regards,
+Markus
