@@ -1,165 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5EF1A8F71;
-	Thu, 30 Jan 2025 08:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46315C0
+	for <imx@lists.linux.dev>; Thu, 30 Jan 2025 09:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738226894; cv=none; b=RzVSJ8Soz6Fz8afL2qKFfZp6xXyTiF03o2XpciEg46cj7shuSW0I3QGZCcVfAUfz7oNpTIVZBnao63q/dyLAz6ywq/2POFj4W9mnjRQ4xcnWgh1vPI2FJ5nLdx9gjBFCmiEKbIE89Mk/ZNhWeXim7wNnMsHaWpcG+aXYEpueSrQ=
+	t=1738230658; cv=none; b=rKzfmOwIO1oLlsOWaAC9Bey6CC48f+HnDgLms9dIhGjaGV/W2SdKhb5ZkBsV5lyVEGuybhiMjvajbRYGqALP7l3+FEPLW2f6M8Lp2lBkt1SqeYIwwW3G2PzkqMAK9maI8x1MmqwjZ22hKZFBcaSJQyIMmEqMeXofaIUgr7Wjv5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738226894; c=relaxed/simple;
-	bh=FWJwQiogQ+hxCJVsbSYT68kgHA+GtG0m8mRQyC9+PGs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tOvnlMlIEakrNXSmZonY/nqIUkWD95at3KnlNf7OGjgmhspGAkHtt16mppNbWqVsF/689oibhwk99os1NQdDo1zMdCbbsXOQYTD8Dv2oa3isMSmHZHdmUR6OAnKkMo8PlRUISxwfJdzomy5ux+Tn6tXbD9keFaGz5vhWPkW4P/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8nqdkgk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738230658; c=relaxed/simple;
+	bh=gvQtqSkM2Azzl9eW+61Gix8wW/h+Xv8INjrnMwEE8SM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VQtl5j0t3rz5pziM/UEutMuTjJiMtVduLGJKYn50AJL3vR+ffVR8uxNLN+y34eSJr9GRty584ZRS+nPVqRN6UmCPygAMjWpBEcy6X9TOoCZ19H/zqUp6j6l4llfcZiqo8+mcUv8gcQH3X/5vIVAKr/XJh+Tyu4vkQHBIU6/8K9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=APUY0V3y; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=A3i5T7FW reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8nqdkgk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6E7C4CED2;
-	Thu, 30 Jan 2025 08:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738226893;
-	bh=FWJwQiogQ+hxCJVsbSYT68kgHA+GtG0m8mRQyC9+PGs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n8nqdkgk1zoGYhcUzBBCkhmcFB0QYcJE3pH2NeziUqcUn1RF/jZiCMFKZQT2vZo9S
-	 IMa2HHiLn/ZM63yHUFgndiQy6I0wbsu1KIeFHYvlB+vLYnvzkhig2OBLFY8pGVwXFh
-	 0ncqLYFtA+d9FAA+JFOsfJg7xrpOHvq0MiYHclxnER3LweTOWY5LD4KWG6RdboXp8B
-	 SLYz/qI9RMD5nxZCYvEYRUfjOKdUiqUcCT+e9pstAuHyyJtRgymrniKyF/NFQ+4bgi
-	 AfysMqz2FdXWbWxRAXL+llPYgzucRD+rsCnFJKdw2e8chGd/m/7itZXwfBUB3WekyU
-	 MerEow4OpYnyg==
-Message-ID: <ac1ea985-15cd-4001-9700-a185ceb338d7@kernel.org>
-Date: Thu, 30 Jan 2025 09:48:07 +0100
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="APUY0V3y";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="A3i5T7FW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1738230655; x=1769766655;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rd2a38AIvhmJF+sIIntn3sECyoZlnToSJTC1vvQgGpU=;
+  b=APUY0V3yDmBNFYrSxpahi2Y15X0KNuXtg+M2jLa5TfHZP0+fZD5uesyx
+   Q/yaVh5NtzB6VwW2kzP17U2/IlVXcwfUSpwRWZweNO6EtHbTpwV4klFJi
+   4RbrbzYw6PFUgohFCqicNznOgl6/eDRyKQOwglVuKemYpqQOoyEkQnsVQ
+   VgPyqgzGpqYrlVTXAty5qx6wX+CT9KSVfwaxSlzPzgEmJ2Oc1cqC9iLMP
+   fxL+BHaYfmZb4vdskIZ2OouCb2xlpWb81c7JDaCvRCMZNLdzEZy+YBTlh
+   lGiWoEhjRMxd31jztgFB/a5qjYKHFR3Ntf9w4t7k7v35hfinC2nk86dD5
+   Q==;
+X-CSE-ConnectionGUID: yJZjX8XqQE24M0r03Fnbdg==
+X-CSE-MsgGUID: bNrVFvibQqGR23uGzNF9Fw==
+X-IronPort-AV: E=Sophos;i="6.13,245,1732575600"; 
+   d="scan'208";a="41370002"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Jan 2025 10:49:43 +0100
+X-CheckPoint: {679B4B37-18-1CE016C0-E589DA3E}
+X-MAIL-CPID: DD08E384A724ED70B11DF9CE815C91BE_1
+X-Control-Analysis: str=0001.0A682F27.679B4B37.00B9,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13D53167A0C;
+	Thu, 30 Jan 2025 10:49:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1738230579;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rd2a38AIvhmJF+sIIntn3sECyoZlnToSJTC1vvQgGpU=;
+	b=A3i5T7FWTQyr0aYYLUVJR4wNh6PNlonbj/S8+XBd3QZqrMwR+vGsSwIvojS4R3cgU/OMLN
+	p9Pjody1PtAvH+UMO+dbKEqVe7trjFcXhyEn3iwNJWo3NHdhBF9RPpBjB7zLCwpKaYWXEV
+	ICiB9ceIlgzNe2T7pbWQ8XTS9TaHEo8qziWro20NYknF0NYcJFB50W0oH9XiXODbpuC9M+
+	/0GVIlz9GvnXV6N/Lz+lCp7pYWn0IUHN1Bi+ZHNn5pYOZljPehu+D+jpE/GuGyzENCqDb6
+	CVMMKX1nxi+2ytByDrctmB3v31E1dfGnREvIZZkFJshWW+YSWDuQuQdpHAVSBg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v6 1/2] dt-bindings: nvmem: imx-ocotp: Introduce #access-controller-cells
+Date: Thu, 30 Jan 2025 10:49:37 +0100
+Message-ID: <2771977.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250121-imx-ocotp-v6-1-76dab40e13db@nxp.com>
+References: <20250121-imx-ocotp-v6-0-76dab40e13db@nxp.com> <20250121-imx-ocotp-v6-1-76dab40e13db@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: s32g: add the eDMA nodes
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20250130072951.373027-1-larisa.grigore@oss.nxp.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250130072951.373027-1-larisa.grigore@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 30/01/2025 08:29, Larisa Grigore wrote:
-> Add the two eDMA nodes in the device tree in order to enable the probing
-> of the S32G2/S32G3 eDMA driver.
-> 
-> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Hi,
+
+Am Dienstag, 21. Januar 2025, 16:05:31 CET schrieb Peng Fan (OSS):
+> From: Peng Fan <peng.fan@nxp.com>
+>=20
+> Introduce "#access-controller-cells" to make OCOTP be an accessing
+> controller, because i.MX Family OCOTP supports a specific peripheral
+> or function being fused which means being disabled.
+>=20
+> Add the i.MX[95,93] OCOTP gate index.
+>=20
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi | 34 ++++++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/s32g3.dtsi | 34 ++++++++++++++++++++++++
->  2 files changed, 68 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> index 7be430b78c83..f73cd5a0906d 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -317,6 +317,23 @@ usdhc0-200mhz-grp4 {
->  			};
->  		};
->  
-> +		edma0: dma-controller@40144000 {
-> +			#dma-cells = <2>;
-
-Any reason for not following DTS coding style in order of properties?
-This is odd style.
-
-> +			compatible = "nxp,s32g2-edma";
-> +			reg = <0x40144000 0x24000>,
-> +			      <0x4012c000 0x3000>,
-> +			      <0x40130000 0x3000>;
-> +			dma-channels = <32>;
-> +			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "tx-0-15",
-> +					  "tx-16-31",
-> +					  "err";
-> +			clock-names = "dmamux0", "dmamux1";
-> +			clocks = <&clks 63>, <&clks 64>;
-> +		};
+>  .../devicetree/bindings/nvmem/imx-ocotp.yaml       |  5 +++
+>  include/dt-bindings/nvmem/fsl,imx93-ocotp.h        | 24 ++++++++++++
+>  include/dt-bindings/nvmem/fsl,imx95-ocotp.h        | 43 ++++++++++++++++=
+++++++
+>  3 files changed, 72 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml b/Doc=
+umentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+> index b2cb76cf9053a883a158acaf5eaa108895818afc..c78e202ced22f1c278f7be827=
+b71ba434832d2a7 100644
+> --- a/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+> +++ b/Documentation/devicetree/bindings/nvmem/imx-ocotp.yaml
+> @@ -54,6 +54,11 @@ properties:
+>    clocks:
+>      maxItems: 1
+> =20
+> +  "#access-controller-cells":
+> +    const: 1
+> +    description:
+> +      Contains the gate ID associated to the peripheral.
 > +
->  		uart0: serial@401c8000 {
->  			compatible = "nxp,s32g2-linflexuart",
->  				     "fsl,s32v234-linflexuart";
-> @@ -333,6 +350,23 @@ uart1: serial@401cc000 {
->  			status = "disabled";
->  		};
->  
-> +		edma1: dma-controller@40244000 {
-> +			#dma-cells = <2>;
-> +			compatible = "nxp,s32g2-edma";
-> +			reg = <0x40244000 0x24000>,
-> +			      <0x4022c000 0x3000>,
-> +			      <0x40230000 0x3000>;
-> +			dma-channels = <32>;
-> +			interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "tx-0-15",
-> +					  "tx-16-31",
-> +					  "err";
+>  required:
+>    - "#address-cells"
+>    - "#size-cells"
+> diff --git a/include/dt-bindings/nvmem/fsl,imx93-ocotp.h b/include/dt-bin=
+dings/nvmem/fsl,imx93-ocotp.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..6ef525173845fd4ee0e847cf5=
+a17e53a14f71362
+> --- /dev/null
+> +++ b/include/dt-bindings/nvmem/fsl,imx93-ocotp.h
+> @@ -0,0 +1,24 @@
+> +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
+> +
+> +#ifndef _DT_BINDINGS_NVMEM_IMX93_OTPC_H
+> +#define _DT_BINDINGS_NVMEM_IMX93_OTPC_H
 
-interrupts, then interrupt-names but:
+This doesn't match the filename.
 
-> +			clock-names = "dmamux0", "dmamux1";
-> +			clocks = <&clks 63>, <&clks 64>;
+> +
+> +#define IMX93_OCOTP_NPU_GATE		0
+> +#define IMX93_OCOTP_A550_GATE		1
+> +#define IMX93_OCOTP_A551_GATE		2
+> +#define IMX93_OCOTP_M33_GATE		3
+> +#define IMX93_OCOTP_CAN1_FD_GATE	4
+> +#define IMX93_OCOTP_CAN2_FD_GATE	5
+> +#define IMX93_OCOTP_CAN1_GATE		6
+> +#define IMX93_OCOTP_CAN2_GATE		7
+> +#define IMX93_OCOTP_USB1_GATE		8
+> +#define IMX93_OCOTP_USB2_GATE		9
+> +#define IMX93_OCOTP_ENET1_GATE		10
+> +#define IMX93_OCOTP_ENET2_GATE		11
+> +#define IMX93_OCOTP_PXP_GATE		12
+> +#define IMX93_OCOTP_MIPI_CSI1_GATE	13
+> +#define IMX93_OCOTP_MIPI_DSI1_GATE	14
+> +#define IMX93_OCOTP_LVDS1_GATE		15
+> +#define IMX93_OCOTP_ADC1_GATE		16
+> +
+> +#endif
+> diff --git a/include/dt-bindings/nvmem/fsl,imx95-ocotp.h b/include/dt-bin=
+dings/nvmem/fsl,imx95-ocotp.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..2d21d1f690974d0215c713521=
+68378a150f489af
+> --- /dev/null
+> +++ b/include/dt-bindings/nvmem/fsl,imx95-ocotp.h
+> @@ -0,0 +1,43 @@
+> +/* SPDX-License-Identifier: GPL-2.0 OR MIT */
+> +
+> +#ifndef _DT_BINDINGS_NVMEM_IMX95_OTPC_H
+> +#define _DT_BINDINGS_NVMEM_IMX95_OTPC_H
 
-here reversed.
+This doesn't match the filename.
 
 Best regards,
-Krzysztof
+Alexander
+
+> +
+> +#define IMX95_OCOTP_CANFD1_GATE		0
+> +#define IMX95_OCOTP_CANFD2_GATE		1
+> +#define IMX95_OCOTP_CANFD3_GATE		2
+> +#define IMX95_OCOTP_CANFD4_GATE		3
+> +#define IMX95_OCOTP_CANFD5_GATE		4
+> +#define IMX95_OCOTP_CAN1_GATE		5
+> +#define IMX95_OCOTP_CAN2_GATE		6
+> +#define IMX95_OCOTP_CAN3_GATE		7
+> +#define IMX95_OCOTP_CAN4_GATE		8
+> +#define IMX95_OCOTP_CAN5_GATE		9
+> +#define IMX95_OCOTP_NPU_GATE		10
+> +#define IMX95_OCOTP_A550_GATE		11
+> +#define IMX95_OCOTP_A551_GATE		12
+> +#define IMX95_OCOTP_A552_GATE		13
+> +#define IMX95_OCOTP_A553_GATE		14
+> +#define IMX95_OCOTP_A554_GATE		15
+> +#define IMX95_OCOTP_A555_GATE		16
+> +#define IMX95_OCOTP_M7_GATE		17
+> +#define IMX95_OCOTP_DCSS_GATE		18
+> +#define IMX95_OCOTP_LVDS1_GATE		19
+> +#define IMX95_OCOTP_ISP_GATE		20
+> +#define IMX95_OCOTP_USB1_GATE		21
+> +#define IMX95_OCOTP_USB2_GATE		22
+> +#define IMX95_OCOTP_NETC_GATE		23
+> +#define IMX95_OCOTP_PCIE1_GATE		24
+> +#define IMX95_OCOTP_PCIE2_GATE		25
+> +#define IMX95_OCOTP_ADC1_GATE		26
+> +#define IMX95_OCOTP_EARC_RX_GATE	27
+> +#define IMX95_OCOTP_GPU3D_GATE		28
+> +#define IMX95_OCOTP_VPU_GATE		29
+> +#define IMX95_OCOTP_JPEG_ENC_GATE	30
+> +#define IMX95_OCOTP_JPEG_DEC_GATE	31
+> +#define IMX95_OCOTP_MIPI_CSI1_GATE	32
+> +#define IMX95_OCOTP_MIPI_CSI2_GATE	33
+> +#define IMX95_OCOTP_MIPI_DSI1_GATE	34
+> +#define IMX95_OCOTP_V2X_GATE		35
+> +
+> +#endif
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
