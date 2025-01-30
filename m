@@ -1,81 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADD442A92;
-	Wed, 29 Jan 2025 23:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318111854;
+	Thu, 30 Jan 2025 02:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738193032; cv=none; b=WrpWyFKEQ1rb3K4INTchzisrP48kgpc2pb2RI15ETa4eU8BeETBr91ZyINPxrD5TmfZ/2nKG4Wa9kld2pbN5gtYZsn6Kf1DBwnK2E6pKCZp7e9n1wI7VNtZ07wIq3A+AxWMtLIprYupKXTTOu3CN0DoNBDAeKwRnJRbn5NLpFsI=
+	t=1738204248; cv=none; b=FaLvZth9sRCmzj1hqzrYzhYIOWgZnnKBLkHcdSe/9IToXuIQ2H4NtEE94d8OAq/6OnF5tvT5ryVYamOHN9Ny7kMV2vM1Ni85JyxCGxb31EE1SLSndXgIYgX+TO0JTPCVPX3WyyaJpr9VZHRG2LwDRl+4/fwWXrpzOTYVK5yK2d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738193032; c=relaxed/simple;
-	bh=7V2/4xR4xd3iiCg+7a6U3WGS/XW+gb5GEdujfPwyMsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=AWQ0Zsw+S6V0ENXToq0tGM19tQ0VthrQQnHPGy5BeKznKKIqNdRQQbE74zhBUHPIKYPpAI2nAKQW4BPqVQ+8sYNql3Jv41KfgxnH8yLU719/DtQtBFBTj+oz2GKGQVNlUjpqMFO887jksFevnUWGvtloJAH6D41BKyXzlzpMfn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHwWQvo0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738204248; c=relaxed/simple;
+	bh=e4jbTg/JY2I7eJPj0aXC/9HSq2Ljb5HCCsZGm12Jwr0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OHMkmg6wp4hyiZLWA7Nstryu/ODyUC7W84Zw5EHZUEQvqzRL9Pkosod4i2b/dALtJLFW8QM/bF5Fqz5qPJCClI/JqnLwmt39cvcXFds61P8Z6kMg7OtM7CoVlcIihpITE8mY0OOplubIC+pu5oMmmGiJsf2/d26be+REL5nAkxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2nGbi0T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHwWQvo0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FAEC4CED1;
-	Wed, 29 Jan 2025 23:23:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2nGbi0T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50C2C4CED1;
+	Thu, 30 Jan 2025 02:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738193032;
-	bh=7V2/4xR4xd3iiCg+7a6U3WGS/XW+gb5GEdujfPwyMsE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=OHwWQvo0L1AayY0hDP0TCxcnrhzQgoo4lUcakGOUtk7HSj8GcTReW/DXtmbtiyZ+x
-	 g/LimFopBaPAJukTFOzKJ+S2RpGZQcCvhKzrqQyzP59grcJ0z/+LbpNslG4/aobG7w
-	 nMSqbnZIlVb9Yv0VmiUKUYXhJZds3rXoku7vDqfmqNpHQYIko4IpdBdPKKd6ZSJH3i
-	 Pu5G32ejaTjVWIYrx9A7yAQNhYVCKoyOYf8ovcjFfdfPsNZq68+YXw7RX9L/4UW0+s
-	 eshqKZxfNutl6yIy+86UkbRw0GoHslBUoDhg8dOFs4EiOfawNvSZPs1zlo1WmPMEww
-	 FS1fRYPlwQ5Pw==
-Date: Wed, 29 Jan 2025 17:23:50 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v9 2/7] PCI: dwc: Rename cpu_addr to parent_bus_addr for
- ATU configuration
-Message-ID: <20250129232350.GA527937@bhelgaas>
+	s=k20201202; t=1738204247;
+	bh=e4jbTg/JY2I7eJPj0aXC/9HSq2Ljb5HCCsZGm12Jwr0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y2nGbi0T6W0Oi8KOuLylVn2xAg2yXpQ2n5IISfJfVxbHKfSqWlxGXS5zVm7Do/Gio
+	 7bp8aPT5RgM3Wo4MacJLJlpnGqbmB6ttpLNLme1jLj2+I20HUBQECEvrVz6Pd36Yu3
+	 L9yEuGCVz/cJPl3Fr/tvqGhi2vq9UIH7kgzlEodzDg06ftpHLiVS3qbBkS2D6mZI1/
+	 OUAdyzBIDYiI6eKfFnpbmuI2UKzoPdbzDqDmvvdqOa6Sfub4EVNYBdlVElNLKqtVgw
+	 cYRSYqP15TSYZsp6oSQQvYJgRCOMV9ByiCElgbFd4927X3VAag+HRpkxQ+4Mz2i0D9
+	 esvKqqdHF/IlA==
+Message-ID: <5d8d4fa6-66ef-48c1-b13a-607a70e476f4@kernel.org>
+Date: Thu, 30 Jan 2025 11:30:43 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250128-pci_fixup_addr-v9-2-3c4bb506f665@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 14/14] ahci: sata_rcar: Switch from CONFIG_PM_SLEEP
+ guards to pm_sleep_ptr()
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Raphael Gallais-Pou <rgallaispou@gmail.com>
+Cc: Niklas Cassel <cassel@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Patrice Chotard <patrice.chotard@foss.st.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Viresh Kumar <vireshk@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-renesas-soc@vger.kernel.org
+References: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
+ <20250127-pm_ata-v1-14-f8f50c821a2a@gmail.com>
+ <CAMuHMdWdXNB=ijpWHWY5HgwJw8yw4jk9Bnmez-8MLzGRCQrXdg@mail.gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <CAMuHMdWdXNB=ijpWHWY5HgwJw8yw4jk9Bnmez-8MLzGRCQrXdg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 28, 2025 at 05:07:35PM -0500, Frank Li wrote:
-> Rename `cpu_addr` to `parent_bus_addr` in the DesignWare ATU configuration.
-> The ATU translates parent bus addresses to PCI addresses, which are often
-> the same as CPU addresses but can differ in systems where the bus fabric
-> translates addresses before passing them to the PCIe controller. This
-> renaming clarifies the purpose and avoids confusion.
+On 1/27/25 22:45, Geert Uytterhoeven wrote:
+> Hi Raphael,
+> 
+> On Mon, 27 Jan 2025 at 13:46, Raphael Gallais-Pou <rgallaispou@gmail.com> wrote:
+>> Letting the compiler remove these functions when the kernel is built
+>> without CONFIG_PM_SLEEP support is simpler and less error prone than the
+>> use of #ifdef based kernel configuration guards.
+>>
+>> Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+> 
+> Thanks for your patch!
+> 
+> The subsystem prefix is "ata", not "ahci" (not all ATA-drivers are
+> AHCI-drivers).
 
-Based on dw_pcie_ep_inbound_atu() below, I guess the ATU can also
-translate PCI addresses from incoming DMA to parent bus addresses?
+Yep. The convention is:
 
-It's worth noting here that this patch only renames the member, and
-IIUC, parent_bus_addr still incorrectly contains CPU physical
-addresses.
+ata: driver_name: xxx
 
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -128,7 +128,7 @@ static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  }
->  
->  static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
-> -				  dma_addr_t cpu_addr, enum pci_barno bar,
-> +				  dma_addr_t parent_bus_addr, enum pci_barno bar,
->  				  size_t size)
+So it would be:
+
+ata: sata_rcar: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+
+for this patch. And the same comment applies to all your other patches in the
+series.
+
+> 
+>> --- a/drivers/ata/sata_rcar.c
+>> +++ b/drivers/ata/sata_rcar.c
+>> @@ -927,7 +927,6 @@ static void sata_rcar_remove(struct platform_device *pdev)
+>>         pm_runtime_disable(&pdev->dev);
+>>  }
+>>
+>> -#ifdef CONFIG_PM_SLEEP
+>>  static int sata_rcar_suspend(struct device *dev)
+>>  {
+>>         struct ata_host *host = dev_get_drvdata(dev);
+>> @@ -1005,7 +1004,6 @@ static const struct dev_pm_ops sata_rcar_pm_ops = {
+>>         .poweroff       = sata_rcar_suspend,
+>>         .restore        = sata_rcar_restore,
+>>  };
+>> -#endif
+> 
+> If CONFIG_PM_SLEEP is disabled (e.g. m68k allyesconfig):
+> 
+>     drivers/ata/sata_rcar.c: In function ‘sata_rcar_suspend’:
+>     drivers/ata/sata_rcar.c:936:9: error: implicit declaration of
+> function ‘ata_host_suspend’; did you mean ‘sata_rcar_suspend’?
+> [-Werror=implicit-function-declaration]
+>       936 |         ata_host_suspend(host, PMSG_SUSPEND);
+>           |         ^~~~~~~~~~~~~~~~
+>           |         sata_rcar_suspend
+>     drivers/ata/sata_rcar.c: In function ‘sata_rcar_resume’:
+>     drivers/ata/sata_rcar.c:973:9: error: implicit declaration of
+> function ‘ata_host_resume’; did you mean ‘sata_rcar_resume’?
+> [-Werror=implicit-function-declaration]
+>       973 |         ata_host_resume(host);
+>           |         ^~~~~~~~~~~~~~~
+>           |         sata_rcar_resume
+> 
+>>
+>>  static struct platform_driver sata_rcar_driver = {
+>>         .probe          = sata_rcar_probe,
+>> @@ -1013,9 +1011,7 @@ static struct platform_driver sata_rcar_driver = {
+>>         .driver = {
+>>                 .name           = DRV_NAME,
+>>                 .of_match_table = sata_rcar_match,
+>> -#ifdef CONFIG_PM_SLEEP
+>> -               .pm             = &sata_rcar_pm_ops,
+>> -#endif
+>> +               .pm             = pm_sleep_ptr(&sata_rcar_pm_ops),
+>>         },
+>>  };
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+
+
+-- 
+Damien Le Moal
+Western Digital Research
