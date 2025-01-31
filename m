@@ -1,129 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49284683;
-	Fri, 31 Jan 2025 07:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049EC154BE3
+	for <imx@lists.linux.dev>; Fri, 31 Jan 2025 08:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738308046; cv=none; b=uQOmXShaAMSBZ6D3U2aLwgpkEEOb2nipfD9UUi8ote7MdDzk6y0lrfHvgp9ilKPCTaVtqtC2xBp88LGSLupBFp0HMbTVlzjNcxY5OdLv+5a/OpbQ2YUPwQd3otKRTvnJU0zQRD4UllWas3DCqHWTxVTxO9j5ZGC4iQhMBCDv7aA=
+	t=1738313575; cv=none; b=f+IjRY0W0tVXFoEvpXevUq3gSmo/aCme6rKvrG6bX4b+NvjnICexiAZdDGzqyDcTNn3XHsUeen8KXkK5YER0MCeAc91Ye8KHtyLotYBccoQbi9pYzUB8/NYUVWN/Wra2lbst/YK8lY24zpyPs5TQlIUGqu+B9PGMFAI0wii6QxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738308046; c=relaxed/simple;
-	bh=T3LERifbHz41jcQeAfmYdIhO9AWtPypjY6kagxa/IuE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mTwJ85t4ZH4mEN2A3aEKSqHwM4MrFDo4+5HSVd7IfAhGcSmKZNqMeWF2bzhJGP/ox07eGa2/vvcRersbqj4ydLYs/nFPLQ6SG3agUviRPGesqct25ydU74w5aOF1TkFaCxuc4hSahiyJXOebI6s4c+eDQSWBJRPKvmtagMf/lPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmscNsAT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738313575; c=relaxed/simple;
+	bh=vpmSDx46TO6i4J+NUBpfArqU26FaAW0U8OYqGK/1HO0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Cb7v5kdgHvIbR/c54F8+GcWWbQ5F1lhDiiCvdu0zS0W5pwcrNnOvi1dYZfVlex7YGj37CfXdf8o77DIjUHylNeABptMsTz6Ju+1JLLkNgN/CubSsyBjWJzcChcypNF5aW4H5p6EMpj3SKcCqIdFX2sIikOp1bbnn37qj/5nhNSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EXOQMQXa; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmscNsAT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C654C4CED1;
-	Fri, 31 Jan 2025 07:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738308046;
-	bh=T3LERifbHz41jcQeAfmYdIhO9AWtPypjY6kagxa/IuE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HmscNsATcABNUAO/htu8KdUb+RgopedfxYTL3nRQlvDkv2Ma5U+rW+ddUh7nLrR23
-	 Hr7EtxeHexDWcEZ/nEA8ORIbzc7d0Mk0pW8U20uVH8kEDnlevcNFnUzlBF8Z+aVy88
-	 /fJWhHokrJSh/7trQT7wFO6OzsrmpDLnJc+O9xlT6v1T2Or4fvZCGpyoStryB6f2TP
-	 RlTbthiMnE9sTovKOHQuAz91QtETnrBH1KfVIugYsOm01g9aDKgYzx7IEWMLPfd2Px
-	 EZV8hcm/rC+CFbCHsU/nJLHZCELU/zNkzasfHbPaLdxWKGrdvviYNmtYEI7EUu2zVi
-	 y52ZanYynoxJA==
-Message-ID: <deef6dcd-27a0-4109-9788-a755fd390f55@kernel.org>
-Date: Fri, 31 Jan 2025 08:20:40 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EXOQMQXa"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C52DF4418E;
+	Fri, 31 Jan 2025 08:52:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738313571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vpmSDx46TO6i4J+NUBpfArqU26FaAW0U8OYqGK/1HO0=;
+	b=EXOQMQXae6ICAEwyb/yK+nmSUWhnq5mQddMqTblPgTT4pxe2FqWBPJl5JpOXPcMePGYJyD
+	UyTmHHyNuRTCpRsl2VRpX178AjbmVsDiPXwl/p6QBj55g7rfYlge7aSuh1hOwRCWuEavHo
+	S7zi7mnD7RjS7qo2J39VSw6RNmiBzH+pm0uQt2sl4ZdVTo3Ipgx9f+1UVFUWAk1ds7rk+b
+	ooDHVG1l77Qj/fzpwUc7plPsjrqyYHBEUbDvheEeMj1RBWX3P07vTR/RsLA4zQ3voN9Owa
+	C40S5Pt8nIaaFYYTUMhuFFCRs5aPDVOAJoKehmBrYZCmXyxe6A0SPuKuj+TbYQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Conor Culhane <conor.culhane@silvaco.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>,  linux-i3c@lists.infradead.org (moderated
+ list:SILVACO I3C DUAL-ROLE MASTER),  linux-kernel@vger.kernel.org (open
+ list),  imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] i3c: master: svc: Flush FIFO before sending Dynamic
+ Address Assignment(DAA)
+In-Reply-To: <20250129162250.3629189-1-Frank.Li@nxp.com> (Frank Li's message
+	of "Wed, 29 Jan 2025 11:22:50 -0500")
+References: <20250129162250.3629189-1-Frank.Li@nxp.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 31 Jan 2025 09:52:48 +0100
+Message-ID: <87bjvnz7of.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] nvmem: imx-ocotp: Support accessing controller for
- i.MX8M Nano
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250130130101.1040824-1-alexander.stein@ew.tq-group.com>
- <20250130130101.1040824-4-alexander.stein@ew.tq-group.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250130130101.1040824-4-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekfedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledvrddukeegrdduuddtrdeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedruddutddrfeefpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeipdhrtghpthhtohephfhrrghnkhdrnfhisehngihprdgtohhmpdhrtghpthhtoheptghonhhorhdrtghulhhhrghnvgesshhilhhvrggtohdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhugidqiheftgeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesv
+ hhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghv
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 30/01/2025 14:01, Alexander Stein wrote:
-> +
-> +static int imx_ocotp_grant_access(struct ocotp_priv *priv, struct device_node *parent)
-> +{
-> +	struct device *dev = priv->dev;
-> +
-> +	for_each_available_child_of_node_scoped(parent, child) {
-> +		struct of_phandle_args args;
-> +		u32 id, idx = 0;
-> +
-> +		while (!of_parse_phandle_with_args(child, "access-controllers",
-> +						   "#access-controller-cells",
-> +						   idx++, &args)) {
-> +			of_node_put(args.np);
-> +			if (args.np != dev->of_node)
+On 29/01/2025 at 11:22:50 -05, Frank Li <Frank.Li@nxp.com> wrote:
 
-You are using args.np after dropping the reference.
+> Ensure the FIFO is empty before issuing the DAA command to prevent
+> incorrect command data from being sent. Align with other data transfers,
+> such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
+> sending a command.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Hotplug stress test find a wrong byte send out, this patch can resolve
+> this issue although have not identify which operation cause a byte left in
+> FIFO.
 
-> +				continue;
-> +
-> +			/* Only support one cell */
-> +			if (args.args_count != 1) {
-> +				dev_err(dev, "wrong args count\n");
-> +				continue;
-> +			}
-> +
+That's exactly what I understood from your commit log, I have mixed
+feelings about the patch because it probably hides something bigger. Not
+that I want to break users, but there is likely something else to do to
+avoid it. Is there any chance you can check the content of the FIFO and
+warn before flushing (at least while debugging)?
 
+Anyway,
 
-Best regards,
-Krzysztof
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
