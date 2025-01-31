@@ -1,238 +1,133 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EFB19D06E
-	for <imx@lists.linux.dev>; Fri, 31 Jan 2025 12:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D71C3BF9
+	for <imx@lists.linux.dev>; Fri, 31 Jan 2025 13:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738327978; cv=none; b=GEY6XrpZKuu7YcUOE1ZpRnWENRE4macyy/8v3p4AHwTVk1vq/6c5yRTj5GOtvfAbB30+S9wEpFKKTmhSrGj8V0NA5LzpbKcLHratjSw8zjC9xK2TsueUsCjGlHOewRadckN1/CRvBRzE/Ja45MJF3h2h7GREa+nOi0bqHetC3Fg=
+	t=1738331464; cv=none; b=Eq/8v+BfV0lY+aWjceQGPPPA87q3aCXuphk4NsQKGrU2OYmP5/8fegcx4YiIrmpAcFVyEdxvWKjOw8R9jlfOn7DncLkoiOUOwtTt1xAgf6ZIcVjsD28Kn8iBkNBCTxqW8dYnjJ7vzB7xwHsldDk4TYCpcf0DR84yHooEZY9b88M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738327978; c=relaxed/simple;
-	bh=4hnVsGyJM9ME4Zw5jB9EhJjbRNPv25j9PTQGs2+SXWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pja+xCvthhoTC6fS6JbWaZJTvSZktYof/BDpA9u5g6WXi2vBIfnFxCaR6+w5YXnLt/9El07T5NJSpBjC8LoahDqXtV+DytgyaXcU+8gjTRDEF7VZZcRk2bm33tXD69DXloWSuLOFKnkROzHM0Vy2nJh2mITPC1ytkMibAHZhApY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OJXvJekh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=q/Rg3t+c; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OJXvJekh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=q/Rg3t+c; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1738331464; c=relaxed/simple;
+	bh=i5/PxM6BpFp735zXjwSxAuyz/3OjYTl5AW4EX03icco=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hjksGvak49wGUzQlOajjBWWTevzI6soQNB4q21w7QofcMYWJ217MKV3hNxvXBvbGwPUKpAB57wFGTc43JIxiOrx3mQpRiaBng1A6eT9DmiTlo/1EVP6BTEp39is6OoHOzL8AuT20GddR9R+DxEId8b/xdx3cBtgM6AwBTc2duDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=PpKh1Iy4; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EVsc4krd reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OJXvJekh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="q/Rg3t+c";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OJXvJekh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="q/Rg3t+c"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6102221164;
-	Fri, 31 Jan 2025 12:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738327974; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="PpKh1Iy4";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EVsc4krd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1738331461; x=1769867461;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=pGPC/hW5rIZq2gK7yDJbioksTlO1e7DjzYy5/dkDYdU=;
+  b=PpKh1Iy4IQN4VknncQulU2msWHaUxjqfg6n/2eg/MUJfPlLrKNOGdCT6
+   w5jeCRKGhJ/I4IX/GDSPbjwoi1pwsVNVzBKWXKs6Zjmc1fQMjbMsm6PfY
+   Wx9KtAk2gQPoaehZ1AmEwA+A8hgV9p2U7SBRpZ2MgjRjZs2sebvkqvqdF
+   eXrt7nQA9vOOywanF19wqxslDLVRb72eb/UKacVnMVtNXZ6iiiPbaqaky
+   RCIpAh5UvC7jce8z9mqoMxKEVX/X4lT3N4shGEBv2JZ+oc5Rxq3kKWVZl
+   2waMpn6fxRiFk/yRWq+6ODaN8tSH1WSS+A2OWZSJixGXd5s86h0qZQCjn
+   A==;
+X-CSE-ConnectionGUID: VPJl4Oi8QxuRrbOgBPYfKw==
+X-CSE-MsgGUID: OkSFhy6DTdGm4UslsPUvag==
+X-IronPort-AV: E=Sophos;i="6.13,248,1732575600"; 
+   d="scan'208";a="41406883"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 31 Jan 2025 14:50:52 +0100
+X-CheckPoint: {679CD53C-1A-9B2B6168-EB6F31C5}
+X-MAIL-CPID: 34B68224B8FC38765AC27969C122FFD7_5
+X-Control-Analysis: str=0001.0A682F21.679CD53C.0098,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6628516B72B;
+	Fri, 31 Jan 2025 14:50:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1738331448;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xuqPM8bGj5U9tmFRVmkdxRxXX6iIQR3TQtKKGW1chJo=;
-	b=OJXvJekhlynoZ9rIvLIfn2YimoIgOmxTS9oa5YNuExw/xCVhowm8nWPWf3G8sJXzsAUnuI
-	s/epMH7Z9y7ITOOQZNt5wsAH7Sad0Phs4mZQXO1spnUTWEWvph+XD4deyPYgfLtE/wflwt
-	n1K2bt6j5IJVe/wONIp9bcpFcEWEXQc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738327974;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xuqPM8bGj5U9tmFRVmkdxRxXX6iIQR3TQtKKGW1chJo=;
-	b=q/Rg3t+ctg2xwN/ynQC3w7uf5PXG8JsZOsy9hahuVbde7ewDLZD/zGOE2X9/vXC8gW2mgU
-	Dt9cfhleBehZDGAw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OJXvJekh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="q/Rg3t+c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738327974; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xuqPM8bGj5U9tmFRVmkdxRxXX6iIQR3TQtKKGW1chJo=;
-	b=OJXvJekhlynoZ9rIvLIfn2YimoIgOmxTS9oa5YNuExw/xCVhowm8nWPWf3G8sJXzsAUnuI
-	s/epMH7Z9y7ITOOQZNt5wsAH7Sad0Phs4mZQXO1spnUTWEWvph+XD4deyPYgfLtE/wflwt
-	n1K2bt6j5IJVe/wONIp9bcpFcEWEXQc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738327974;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xuqPM8bGj5U9tmFRVmkdxRxXX6iIQR3TQtKKGW1chJo=;
-	b=q/Rg3t+ctg2xwN/ynQC3w7uf5PXG8JsZOsy9hahuVbde7ewDLZD/zGOE2X9/vXC8gW2mgU
-	Dt9cfhleBehZDGAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0180F1364B;
-	Fri, 31 Jan 2025 12:52:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lkNHOqTHnGf9WwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 31 Jan 2025 12:52:52 +0000
-Message-ID: <0ae17de1-c6dc-48eb-aed2-b099b2abbea5@suse.de>
-Date: Fri, 31 Jan 2025 13:52:52 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=pGPC/hW5rIZq2gK7yDJbioksTlO1e7DjzYy5/dkDYdU=;
+	b=EVsc4krdjIMtoDa0hRHx1mKilyp25g9YTglPKr9VfffkrxA40Ccm8NQuxhWl30vKnRXuoP
+	ab3NHzUAB0LkHuMtwjOlh1Sxg+tDPDoJ4gjOkXA7LGRilx59MNf59ropLqwcI4VRR+qvll
+	Cjj7llTIJrf7cwoz5FX3+Ca9fmeqGT0IuUoZAPi0o/nbeoAJbhNYgl0mnStE2vA/FGSl4x
+	sDrURZAkbblN0ctVutb8j+wUsHWjDQw0c3zxLSk0GIXFwxZ0hylHWxN3Ou36bQg4f5w1Hf
+	jH5ZfcYh4HBqw52MAFH4UN2vh6qxs3R46gzXyQH6d6BxvgYtQ/C/vNJS3WtHpQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] nvmem: imx-ocotp: Support accessing controller for i.MX8M Nano
+Date: Fri, 31 Jan 2025 14:50:46 +0100
+Message-ID: <4989387.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <deef6dcd-27a0-4109-9788-a755fd390f55@kernel.org>
+References: <20250130130101.1040824-1-alexander.stein@ew.tq-group.com> <20250130130101.1040824-4-alexander.stein@ew.tq-group.com> <deef6dcd-27a0-4109-9788-a755fd390f55@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/14] Documentation: Update the todo
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Anusha Srivatsa <asrivats@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Stefan Agner
- <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>,
- Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>,
- Xinwei Kong <kong.kongxinwei@hisilicon.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu
- <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- Andy Yan <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Alain Volmat
- <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
- Yannick Fertre <yannick.fertre@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-aspeed@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20250128-cocci-memory-api-v1-0-0d1609a29587@redhat.com>
- <20250128-cocci-memory-api-v1-14-0d1609a29587@redhat.com>
- <a389f799-442e-45f3-8609-2eb2f0b7a825@suse.de>
- <li2awsqmdoye3u7n3gi2mrhbfxs77e3edjmsg5zclnyjinsnul@2bjkc5agyu5u>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <li2awsqmdoye3u7n3gi2mrhbfxs77e3edjmsg5zclnyjinsnul@2bjkc5agyu5u>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6102221164
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,jms.id.au,linux.intel.com,gmail.com,ffwll.ch,codeconstruct.com.au,agner.ch,nxp.com,linaro.org,hisilicon.com,google.com,kernel.org,pengutronix.de,collabora.com,baylibre.com,googlemail.com,denx.de,rock-chips.com,sntech.de,linux.alibaba.com,foss.st.com,nvidia.com,synopsys.com,raspberrypi.com,igalia.com,lwn.net,lists.ozlabs.org,lists.freedesktop.org,lists.infradead.org,vger.kernel.org,lists.linux.dev,st-md-mailman.stormreply.com];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL5qdohruh175rhiw1bqi96ifb)];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[60];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Maxime
+Hi,
+
+Am Freitag, 31. Januar 2025, 08:20:40 CET schrieb Krzysztof Kozlowski:
+> On 30/01/2025 14:01, Alexander Stein wrote:
+> > +
+> > +static int imx_ocotp_grant_access(struct ocotp_priv *priv, struct devi=
+ce_node *parent)
+> > +{
+> > +	struct device *dev =3D priv->dev;
+> > +
+> > +	for_each_available_child_of_node_scoped(parent, child) {
+> > +		struct of_phandle_args args;
+> > +		u32 id, idx =3D 0;
+> > +
+> > +		while (!of_parse_phandle_with_args(child, "access-controllers",
+> > +						   "#access-controller-cells",
+> > +						   idx++, &args)) {
+> > +			of_node_put(args.np);
+> > +			if (args.np !=3D dev->of_node)
+>=20
+> You are using args.np after dropping the reference.
+
+Indeed, but is it really a problem? The args.np pointer is still the same.
+So the comparison is unaffected.
+
+Both branches need to drop the reference, no?
+But the following looks awefull as well.
+> if (args.np !=3D dev->of_node) {
+> 	of_node_put(args.np);
+> 	continue;
+> }
+> of_node_put(args.np);
+
+Best regards,
+Alexander
+
+>=20
+> > +				continue;
+> > +
+> > +			/* Only support one cell */
+> > +			if (args.args_count !=3D 1) {
+> > +				dev_err(dev, "wrong args count\n");
+> > +				continue;
+> > +			}
+> > +
+>=20
+>=20
+> Best regards,
+> Krzysztof
+>=20
 
 
-Am 29.01.25 um 15:31 schrieb Maxime Ripard:
-> Hi Thomas,
->
-> On Wed, Jan 29, 2025 at 02:06:15PM +0100, Thomas Zimmermann wrote:
->> Am 28.01.25 um 23:29 schrieb Anusha Srivatsa:
->>> Remove the TODO now that this series addresses
->>> the changes needed.
->> While your series is fine, this TODO item is unrelated. It's about various
->> ancient fbdev drivers that do not reserve their memory regions correctly. So
->> please drop patch 14 form the series.
-> Is it? Could we rephrase the entry then? I'm the one that suggested
-> Anusha to work on this, and it's still not clear to me what it means
-> exactly if it's not what she worked on :)
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-I guess, we could make this more precise.
-
-Some old graphics drivers don't request their memory ranges correctly. 
-It's usually a problem with hardware that has exclusive ranges, such as 
-the VGA. Vga16fb doesn't request the range as it should. Someone needs 
-to audit all those old drivers and fix them.
-
-Best regards
-Thomas
-
-
->
-> Maxime
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
 
