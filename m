@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654264683
-	for <imx@lists.linux.dev>; Fri, 31 Jan 2025 07:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49284683;
+	Fri, 31 Jan 2025 07:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738307883; cv=none; b=fJO9Wodro+xWeQHuxvtmC00YTHIu3vMLKxB8SNs3WUp17tdW/5tWrcy0w97eMlQSeMEfeCl+QWkuj/yqG0c1pNZ/v2gjdnbFPWeHzJGgcAyHmJcu+YUZLWoNkDMf93wvJVoO5S5120FWuoxQr0anE0eAR4Yr+79TYVp1EhcXp/Y=
+	t=1738308046; cv=none; b=uQOmXShaAMSBZ6D3U2aLwgpkEEOb2nipfD9UUi8ote7MdDzk6y0lrfHvgp9ilKPCTaVtqtC2xBp88LGSLupBFp0HMbTVlzjNcxY5OdLv+5a/OpbQ2YUPwQd3otKRTvnJU0zQRD4UllWas3DCqHWTxVTxO9j5ZGC4iQhMBCDv7aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738307883; c=relaxed/simple;
-	bh=/IQt9+vWizm8EPvXQSgkn1Iw+V/IqBg/ycGllj3xkTs=;
+	s=arc-20240116; t=1738308046; c=relaxed/simple;
+	bh=T3LERifbHz41jcQeAfmYdIhO9AWtPypjY6kagxa/IuE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qxVHEs3k/Bt9P60N31QxhhqwHj1SD3KDONxUGZKqDLQ7CvSIglGghz7s48zSu9eyX/LUOtBKnpJ3zrgUbpFD5NMcVL1v8VSXGE4f9vHebA5CyNNUqZTnJnnjZKPDLPk4u8xxOg6pvuWdrkXBzGtidI/tUT31EckgtujolVkEjQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiXeLyx3; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=mTwJ85t4ZH4mEN2A3aEKSqHwM4MrFDo4+5HSVd7IfAhGcSmKZNqMeWF2bzhJGP/ox07eGa2/vvcRersbqj4ydLYs/nFPLQ6SG3agUviRPGesqct25ydU74w5aOF1TkFaCxuc4hSahiyJXOebI6s4c+eDQSWBJRPKvmtagMf/lPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmscNsAT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiXeLyx3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD63C4CED1;
-	Fri, 31 Jan 2025 07:18:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmscNsAT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C654C4CED1;
+	Fri, 31 Jan 2025 07:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738307882;
-	bh=/IQt9+vWizm8EPvXQSgkn1Iw+V/IqBg/ycGllj3xkTs=;
+	s=k20201202; t=1738308046;
+	bh=T3LERifbHz41jcQeAfmYdIhO9AWtPypjY6kagxa/IuE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CiXeLyx3bEL7hjfAOkOxhDjgNTmXODSIbBo1ZEJWBPMEpdxgj0SinBTTI1XsWcKVG
-	 GyrYir+zbUPOcoqGr9kQL9spl37qKTETHvXV/rsOSc0+au+9nqMeWslyOhlEEVkzgw
-	 ILtuXJpAB32yI6aorTPkPCQ5/u8t+K/SApSA6Qqdn6XfYp2BHpWP3hsX8zAUHVSxdd
-	 n24icryA8VyUYxGgWzFp/fIvez//tHB/6R2jdIbalMKaQhe1CPaSFWtbFRca4uTBo6
-	 t+hU9YymnUgDwimQk/i8nawoH8EhqLLkypC4x4ZtL5ebQ54FMX4T5XUpL+7MtwZE6p
-	 SuLE7rdaHD5IQ==
-Message-ID: <dca86a09-b763-4a0a-bb46-9cf6043cffe2@kernel.org>
-Date: Fri, 31 Jan 2025 08:17:58 +0100
+	b=HmscNsATcABNUAO/htu8KdUb+RgopedfxYTL3nRQlvDkv2Ma5U+rW+ddUh7nLrR23
+	 Hr7EtxeHexDWcEZ/nEA8ORIbzc7d0Mk0pW8U20uVH8kEDnlevcNFnUzlBF8Z+aVy88
+	 /fJWhHokrJSh/7trQT7wFO6OzsrmpDLnJc+O9xlT6v1T2Or4fvZCGpyoStryB6f2TP
+	 RlTbthiMnE9sTovKOHQuAz91QtETnrBH1KfVIugYsOm01g9aDKgYzx7IEWMLPfd2Px
+	 EZV8hcm/rC+CFbCHsU/nJLHZCELU/zNkzasfHbPaLdxWKGrdvviYNmtYEI7EUu2zVi
+	 y52ZanYynoxJA==
+Message-ID: <deef6dcd-27a0-4109-9788-a755fd390f55@kernel.org>
+Date: Fri, 31 Jan 2025 08:20:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,11 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] reset: gpio: Add self-deasserting reset callback
-To: Shenwei Wang <shenwei.wang@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>
-Cc: imx@lists.linux.dev, linux-imx@nxp.com
-References: <20250130215306.60589-1-shenwei.wang@nxp.com>
+Subject: Re: [PATCH 3/4] nvmem: imx-ocotp: Support accessing controller for
+ i.MX8M Nano
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250130130101.1040824-1-alexander.stein@ew.tq-group.com>
+ <20250130130101.1040824-4-alexander.stein@ew.tq-group.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -85,56 +93,36 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250130215306.60589-1-shenwei.wang@nxp.com>
+In-Reply-To: <20250130130101.1040824-4-alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/01/2025 22:53, Shenwei Wang wrote:
-> During the driver probe phase, many drivers leverage convenience
-> wrapper APIs such as device_reset and device_reset_optional provided
-> by the reset core driver. However, both of these APIs depend on the
-> presence of a .reset callback within the reset controller's operations
-> structure.
-> 
-> Introducing the self-deasserting reset callback enhances flexibility for
-> users and enables a more simple reset process during device initialization.
-
-
-The reset callback was not added on purpose and you totally ignored the
-reasons here. See below.
-
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  drivers/reset/reset-gpio.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/reset/reset-gpio.c b/drivers/reset/reset-gpio.c
-> index 2290b25b6703..614f9e261a13 100644
-> --- a/drivers/reset/reset-gpio.c
-> +++ b/drivers/reset/reset-gpio.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
-> +#include <linux/delay.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> @@ -37,6 +38,17 @@ static int reset_gpio_deassert(struct reset_controller_dev *rc,
->  	return 0;
->  }
->  
-> +static int reset_gpio_reset(struct reset_controller_dev *rc, unsigned long id)
-> +{
-> +	struct reset_gpio_priv *priv = rc_to_reset_gpio(rc);
+On 30/01/2025 14:01, Alexander Stein wrote:
 > +
-> +	gpiod_set_value_cansleep(priv->reset, 1);
-> +	usleep_range(10, 20);
+> +static int imx_ocotp_grant_access(struct ocotp_priv *priv, struct device_node *parent)
+> +{
+> +	struct device *dev = priv->dev;
+> +
+> +	for_each_available_child_of_node_scoped(parent, child) {
+> +		struct of_phandle_args args;
+> +		u32 id, idx = 0;
+> +
+> +		while (!of_parse_phandle_with_args(child, "access-controllers",
+> +						   "#access-controller-cells",
+> +						   idx++, &args)) {
+> +			of_node_put(args.np);
+> +			if (args.np != dev->of_node)
 
+You are using args.np after dropping the reference.
 
-No, because this is some arbitrary value which might or might not work.
-If this gets accepted, next person will change it to their own need.
-Then next person will revert previous change... and so on.
+> +				continue;
+> +
+> +			/* Only support one cell */
+> +			if (args.args_count != 1) {
+> +				dev_err(dev, "wrong args count\n");
+> +				continue;
+> +			}
+> +
 
 
 Best regards,
