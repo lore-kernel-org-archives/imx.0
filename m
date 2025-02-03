@@ -1,40 +1,40 @@
-Received: from smtp.smtpout.orange.fr (smtp-17.smtpout.orange.fr [80.12.242.17])
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D564742A9B
-	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 06:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D402E1DB356
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 06:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738563665; cv=none; b=DXCyAXpPjovWhl4j1JKzCcpHDGDBLElAB/PIiFUGP6oNDk66+qTXW6OreoTx6wM6JgYJ2I/4OHhjwrazuAp1wR3KLB22ph0gDBjqlT+kq9qSCGlpXdREq7kx2uQ4sN8FmTQXw0ePl4LR2dQ6oM2dqprczyT7QTHV4FIeCqinKPI=
+	t=1738563883; cv=none; b=llrO+bKtx1bK3hRHjzQBYdLsOBpx4Yitw3GsZcHD3h4Z5WaD8UQTh6qBCXtcO2BimSSs6dOFhtX5Sx5My1iaHS7tDTDCEnxdaGuoc31IlAFCxCpfKC41EA+G9Gl35VKyBpB4PhoB4oOVyQ7oHiETCJcxzC1MeAI3DkOH1HE9hLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738563665; c=relaxed/simple;
-	bh=BeBtFlcGY3sQnZX6dZyO4QJGjOq0kx5Sy7U1U5vftjg=;
+	s=arc-20240116; t=1738563883; c=relaxed/simple;
+	bh=Lkg1l3v4kR9ktLqPTDKuXB6V13rhEjLutqoXDAQk1p4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WLQr26LZkOtUn5mYy2OiyoFx2il/dHAOv0p4F6WufIf0Ueoolnh67NJ3JMR/2HOin/x+OXXqGS388XRROBcxa4tTPA0SiOxd0EXJooytWrpY4u5obvVbTASwgQulIyY1OW8BfAfH/R1TReefTXqIJtLZ8+2t9otFCpCvez3vEOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=N4rSMGAn; arc=none smtp.client-ip=80.12.242.17
+	 In-Reply-To:Content-Type; b=TV020TarJv+BVivjXUtCtNSmHCcZmuYxngb0HTvKpjWpnER+CiMyJ6w4xx5gKOgwyejTHHIO1xhOS3ahtUcA1hj7TAHCBORMN/335+vxUWOTLc7C86hi08g4yLBfMYeSHZcLzWBJiq90YFw+ibDWrxmKn7zrVPGlNePrOi7rFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dNmYDMfn; arc=none smtp.client-ip=80.12.242.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="N4rSMGAn"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dNmYDMfn"
 Received: from [192.168.1.37] ([90.11.132.44])
 	by smtp.orange.fr with ESMTPA
-	id epoBtmWefA83BepoEt3aNX; Mon, 03 Feb 2025 07:19:53 +0100
+	id eprhtUetmeIWleprlt7iQ8; Mon, 03 Feb 2025 07:23:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1738563593;
-	bh=UsOhWfOpgc+uO6vqHSI1XSOwHG5IdNprxkyzTXcs2k4=;
+	s=t20230301; t=1738563810;
+	bh=sOdCzSN2/f05dA92HAVY6g+EQoOjt0cmreIvV2RaoMA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=N4rSMGAnK5LbeaOLWEhO3/iVpJCArVQF1WC/bgG4mPyLovuDKAD7lcx5zypq0ZWmZ
-	 qG9tRC2cA8ZXDGRgrZUS7Py+iqF4hPBVwk0Frjrd3+MB+OQuOJsRWCHON/WLB2kKBp
-	 QLSTQPkttxtA29w2Kjbw5vev/XVvPYsgM+3YStZKzcM6gBnLih0F08KvhZiNs5HxRq
-	 axtNrJFjqw/OU9TNayvY6II67Om5rkZiGJiOqufMRq2hZ/cA/UJsed/1X4WIyOLyns
-	 GxjDTMxXJ6SD5jRZI719TOI0xz6ZIb1dsGASME8LIqxUjBQdEWzY0u7AKOa4fkn7pz
-	 8ZJ8F6Fsb3t1A==
+	b=dNmYDMfnf8tZJagS0X3VZxyCxLgFqi7JvsDqSUFFRQGfW7sQHbwA+PnjRuDb8SZ7W
+	 w6mkCF/i0ofE17RJBh2pnOiHVzL2C2Jsei+LFTiQuff575QWFrzxAgOno0N5oLGHAq
+	 bvL5KckhWEOLVKqLUfYoBHE2IJL6Wce9APdHHzkxNTqcQbBB0+xjj5NhKHBjWeBsbj
+	 rVCumjLL7bn44gH1L4JM6PXvvk3zdpaC+0OZ2gJRuNHrhH7nBsPgONyZ1M4+EVc5hW
+	 BYe3H+RUcWj0tFzeoMM/fnFxvkgLUuLSfuTGWmAMLt766gu6YrudfIUs6l6W6WhwXv
+	 i9E45wqKmlzZA==
 X-ME-Helo: [192.168.1.37]
 X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Mon, 03 Feb 2025 07:19:53 +0100
+X-ME-Date: Mon, 03 Feb 2025 07:23:30 +0100
 X-ME-IP: 90.11.132.44
-Message-ID: <3a0f8cd9-fe3e-4f07-bf9e-e1b877ffda0a@wanadoo.fr>
-Date: Mon, 3 Feb 2025 07:19:47 +0100
+Message-ID: <150812a1-31f7-43b1-8d85-fd097fc26c43@wanadoo.fr>
+Date: Mon, 3 Feb 2025 07:23:25 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] usb: phy: mxs: silence EPROBE_DEFER error on boot
-To: dominique.martinet@atmark-techno.com
+To: Dominique Martinet <dominique.martinet@atmark-techno.com>
 Cc: festevam@gmail.com, gregkh@linuxfoundation.org, imx@lists.linux.dev,
  kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
@@ -75,17 +75,13 @@ Le 03/02/2025 à 07:09, Dominique Martinet a écrit :
 > -		dev_err(&pdev->dev,
 > +		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
 >   			"can't get the clock, err=%ld", PTR_ERR(clk));
+> -		return PTR_ERR(clk);
+>   	}
 
-, err=%ld", PTR_ERR(clk) should be removed now.
-
-The error code will already be added in the message in a human readable way.
-
-Alignment could also be adjusted so that "can't... is still under the (.
+extra { } can also be removed now that there is only 1 line left.
 
 CJ
 
-> -		return PTR_ERR(clk);
->   	}
 >   
 >   	mxs_phy = devm_kzalloc(&pdev->dev, sizeof(*mxs_phy), GFP_KERNEL);
 > 
