@@ -1,132 +1,170 @@
 Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECEB78F5D
-	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 06:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2736178F5D
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 06:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738565851; cv=none; b=QPuML6oNMNuUkqcU7BxIZp5PVuTYVlGQYqA/4Hi52A98zmXHeSZmwlASJOBUslE1yFGvDYBAIv+ZDdaoT88cIdFXPtMbhSnwSwPEfvTBrOVUP5mQqhok8obKuYPQLp8goQ9VUujsAfk/u9dUVgfqu07lBKmVuQCnlDvr7JKotG4=
+	t=1738565930; cv=none; b=r3X7t75me/DxLY9uXhLyKAV+w5VIyA4mSVoC5ZPwq+gtPjNRF3sBnSDjkdt4eWoT/X0UFBJdvCfyipYWsjmmYBuVCtxw3rSjjKpBiAwJ7KhiSLtB2ELM8ZGiiCQX3LDZzLjCLRzI12wZkh2PBq5+8E9ns7TZarnpzjG5mv7qoSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738565851; c=relaxed/simple;
-	bh=Dnm7Dq1UIHp6/LaIVBzQmOcnhfi7C5T3vPn99EjoNL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NS4P5Pk/qZyB+L4mr/EGh4eLlRLHQafaY/VT5xr0YO08rKtz3tfncQBg95OMQ+/zwh+ssTvJ3+EmFzmMETsgXKqfYIRcpVmJcp85muer8eQGlhW9uvY55mB27pjw25r1TlUGySkA+wCtQus8CrRUWoLtzLZzVHYxKY9XEV2H4q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=JH42Up5Z; arc=none smtp.client-ip=35.74.137.57
+	s=arc-20240116; t=1738565930; c=relaxed/simple;
+	bh=HpKfWals6gvV6hSueqjY8CYDxxN+av46LngYDKJxyFM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ez8V0lbboKjOmC8FmW653HEvovESYEKqqaF6/5KYFjCe7pJUPI1AFsnXYT4LgZnQoiVDgVWOvy4zu7+yoiDp9V+Youe6p7j/+4ED2cRhagD//RxEwpOCUxKvI2JXJJY76IQz4VoSROOKguULOPcXAzxcNsuV4DTiDzTeRfuZYQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=JqvgvcTq; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=Y250JoYH; arc=none smtp.client-ip=35.74.137.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="JH42Up5Z"
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="JqvgvcTq";
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="Y250JoYH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1738565928;
+	bh=HpKfWals6gvV6hSueqjY8CYDxxN+av46LngYDKJxyFM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JqvgvcTqyjnznVPI3nFIUiflcI3AyPupx8QgYBlAjNm0Yq8i2uzAICE8yaEewujX8
+	 rcQ5obx/iGFJuAjpWF3EGoW1IEPh8c/l5P6e8K3fDboeILCJNYGLoz57W36MJGc+lM
+	 cp/oI6NHj3yrdc1roasWP4nXmX+gQxMRDE+kklHuhCrv52PXdrsXvP7bv7V6220eoZ
+	 ybtKg6Zj94kbiNnO0VwbfwPb450+tFUOMcM/YRfWWB/tQDo90ydf162t3qFv8W5WQO
+	 j5u23qd1j+Ca8xHhsI4NlCJ5uRMdfZt24GIN/7exbThWp2US45FNtNMPT37ogB5qTU
+	 hACzQuv/W5lSw==
+Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
+	by gw2.atmark-techno.com (Postfix) with ESMTP id 027384A6
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 15:58:48 +0900 (JST)
 Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=JH42Up5Z;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=Y250JoYH;
 	dkim-atps=neutral
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 986F292C
-	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 15:57:28 +0900 (JST)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ef728e36d5so7822650a91.3
-        for <imx@lists.linux.dev>; Sun, 02 Feb 2025 22:57:28 -0800 (PST)
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id C37814CA
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 15:58:46 +0900 (JST)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-21655569152so88879225ad.2
+        for <imx@lists.linux.dev>; Sun, 02 Feb 2025 22:58:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1738565847; x=1739170647; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KBpu38zoJhnbBuVt7xq5HkK4w7WkM2eVS3E6Ag+EQIY=;
-        b=JH42Up5ZBWvfVL1fwGBHDtXTA5gFdhV9lVJc/kP2hIpAoIhBg5HoX8QwRmQroR8wsA
-         IkdG1OHYX0WWJIe26FvgBkvHGoLCL8xwgiCa8Xl8118+ZTz+Mec/4PPUvpGw5fcLDWnK
-         999lnuZ0a5bjDcUGHMzDxjtQfwqg/OZ+LgtfWBJ1AzjxqnI6Zmdn5K4RsUIZbM7uMhPY
-         rSjcd//poWgNvVm8JB1ZeAs5DXm1IuIylyqLbN0MS1rgw/PVH07voRo1CiEUZuYJsXc8
-         VTmfVSI1Up1bL0XD2pWmuwmdW2YWzjphA71vzDIgUlKj4Wsj0BuHAnJs1urrjPrDyH1m
-         hQ8w==
+        d=atmark-techno.com; s=google; t=1738565926; x=1739170726; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=11ZT4H9fbLzjQvrQILyhKp3+cau0oLWEvJGvUrDp0l4=;
+        b=Y250JoYH30YFXw4Ct1Lq/r2pCw2Guu0St1MTT7/FlA3aQBDgegIf3T2ayHvbit1kqe
+         QeptHZBvFY6DBDdR3rnZqWEUuqez/PBoC6fAVs3Any/MS13Q4Ve7D8UN+45jdtj/TM3k
+         oBzYTLZs3INRz2MraxDg0BA5vKQf9VSnePoDtsIgkH4otw03FDPNYdYUE9OeHZ/MBEZ9
+         5Zjcl39f45GJqPAxmrfXrX8Qu8GA+bKibf7MZZ5p5Pn/r9KltvfVUiQWmerYjSIwTAqy
+         G3StgoBqywFxoya35xwHCxMam8qols8HB6wKBZL+lorr4cu7p83/Vm2uAJncDEGP+kRd
+         6zTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738565847; x=1739170647;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KBpu38zoJhnbBuVt7xq5HkK4w7WkM2eVS3E6Ag+EQIY=;
-        b=n9vaZDyw5ZiaQzm1QHbWlWkQBBuYnnOgiNJuIRKt6YugnscWF3GMAAK7xxOIwRl7ww
-         w0AKT41hNe0Uz2PgkEH93jSiIOukHjGeuXwQnlh6qcYnCWXcf9CC1JLctl789jSNTLHM
-         YLo12E5A1fx8m6518XDOJ+3Ki+qRI1GkIczaDw5ed9efGAd2hDc7MiZC54xFFiqyo43T
-         1E2WvqXU2fEuJE71ND0Yd44IVRPAQollg0v1s9O5Hw6A2dHaPuD2cTtDS/+mUBJqNV4c
-         Iyjq0ECQhlJP7WuPzgzwG+rYr+j/s1Ynh7yPAjcXIEn5o7T+RLGlzqay+hmE5xBZuyJc
-         toBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzAJIYsXb8yQVXqIlFKEVQ+Zks+mlvItgp4rrSPRf5TGimjR+6FCBOIHsA6c7Hgsh8B/I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBOEBj9t31HlOgF7qYSDumx3wPOtZN0PFf9e1IWcjilMxap1Vg
-	N/xLm05oH42a6QuSN7cxCzdLQwEsGcH6mTfuI0xbBF2j0WFTEG/+K8hwX++2zgBvqCXBoYZrLQM
-	CyaM864DQoQoPKC8S0RQ8yH+n2NdxT+dOgxiOJNIGyzZ6wCS2tmA=
-X-Gm-Gg: ASbGncs3NlT3q1vULh/eEHYUkhtBvYR/HYj9uQHnu8Sv4zkKZBv4qzbuG/WPKstbr3L
-	XTaa8FCkFW8L9n5yNDUP9YNA4q0Qec1m/TrtyiCyZLqWirjssqBsujlHuZ0IE1OWjB6mcGBxJXR
-	pDb9yygOMy4jCQ39J5DM9msSF+3HgvGMd7VTaMIlLtV/hYUfxZVkIrBIY/HCCTakjfQhV+N4Fmi
-	2qym/f+8SJtt0JY3LjtQ7Okdba19UHe2LRPtR1hT0YcwRTM+VrZrZYAr28Nf8CKRgIar1xy/TG5
-	OAHUTiKbO9aFzQZY6uolw88oZb+JDiv4D+ExsrhsMOeponyba8T1KN9O+dhG8Gji
-X-Received: by 2002:a17:90b:2c84:b0:2ee:b2e6:4275 with SMTP id 98e67ed59e1d1-2f83ac65958mr26047449a91.26.1738565847617;
-        Sun, 02 Feb 2025 22:57:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGeQG0nwmZr51/0vcXCzKKQK+KfHdJ43jCCy1lp4o7bkMpfm/h39HEEtpxsyBUKAvfYNo9pgA==
-X-Received: by 2002:a17:90b:2c84:b0:2ee:b2e6:4275 with SMTP id 98e67ed59e1d1-2f83ac65958mr26047432a91.26.1738565847216;
-        Sun, 02 Feb 2025 22:57:27 -0800 (PST)
-Received: from localhost (162.198.187.35.bc.googleusercontent.com. [35.187.198.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31efbcbsm68878385ad.30.2025.02.02.22.57.26
+        d=1e100.net; s=20230601; t=1738565926; x=1739170726;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=11ZT4H9fbLzjQvrQILyhKp3+cau0oLWEvJGvUrDp0l4=;
+        b=Phv+lTgWTVjBtXdDliU4M8KU9+BUDP7RPEbMckWBjjZ2yphWJVAMMzu3xBTDjEgsRN
+         y1XuklscWQZhAefENu8glkVsiJRwZuz8PK8rZV8WjwEDPzzWlljm+7zlHGY+xhI+ZtvP
+         Y92oBB2Fx7KemDluCy705mIXb+SvYSw0l0EmTIdVW+xGMmK2xYZ24O2s052OJ2jtz5c/
+         spQ8oMfO3e3eAi0b8+FJrVkphim7aOlxPAOIT/wsQfI/UiAbnbx2hHtex5GeIwQ5yZHU
+         qjbaExvTgw1dHdBFKccwvIfi4ZyXaXXC0LewQPhMkLR6WeclYfrFcdiy5XsgsFXFSi0E
+         vhsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnZ48buFcPf6YoC3E2o/fgwA2THc4YoZ3vaD9WC7AWUwmU2w4NW6xsrDn/rXvxNchUPR4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxtgEx2lwqJnOx/5lxtF3PyC54MLMjja3tEDzbo1NIub/G18cmI
+	XUt4ihPK9aGXWQuCtAaOr9ySXoaqOZbg/GB12hBY7+/X0akRJV4Vw5JN49CwZmPnQn3vaZzvFvL
+	jEL66YNrMPrphS500wrnl6duJGTVIwJKJh8kNZDVFxBEi/ODttqk=
+X-Gm-Gg: ASbGncvWuOwOBPbei++GKBVzbrKHBPE2lFxd82T7iHaI97CFblCConG5ZQHYRyPLepF
+	0YqXlEJJdvEozk4PyRbTp59IW7+zGLeEwllNuclglC10aeaXBV9vOFjn9e//lVVWoFOKq5UYybr
+	skGZGYxAUB90wdBp17h5mP47MdYwC6Gvdh5JnbT7kMsMvMinfdpguf6U3pnZLk6OP8Bl9ppBmRh
+	kCJ5n/QXXajMrIA7+1qUVTtkovS0NF4iI3WziltCQpxoCsaXiRYZGQptdB+ip+ho0Q38xMGNzkI
+	22V/vkXJhnV+gNgQCtebTNwzA6czdcuynBPsVpBhpT6PT98yC7jOxXp5fAjJmaec
+X-Received: by 2002:a17:902:f54a:b0:216:282d:c67b with SMTP id d9443c01a7336-21dd7ddfd33mr363334395ad.35.1738565925807;
+        Sun, 02 Feb 2025 22:58:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtPhFFH++bFRKPkUR0RSviTIbqX4KaViWw6lqaxHu4nVbbFwJqQuzm9j1D4TH/k0qb9akCSw==
+X-Received: by 2002:a17:902:f54a:b0:216:282d:c67b with SMTP id d9443c01a7336-21dd7ddfd33mr363333345ad.35.1738565924336;
+        Sun, 02 Feb 2025 22:58:44 -0800 (PST)
+Received: from localhost (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31ee774sm68121615ad.41.2025.02.02.22.58.43
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 02 Feb 2025 22:57:26 -0800 (PST)
-Date: Mon, 3 Feb 2025 15:57:15 +0900
+        Sun, 02 Feb 2025 22:58:43 -0800 (PST)
 From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] usb: phy: mxs: silence EPROBE_DEFER error on boot
-Message-ID: <Z6BoyybpbaLet6jf@atmark-techno.com>
-References: <20250203-defer_usb2-v2-1-69b3a941371a@atmark-techno.com>
+Date: Mon, 03 Feb 2025 15:58:41 +0900
+Subject: [PATCH v3] usb: phy: mxs: silence EPROBE_DEFER error on boot
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250203-defer_usb2-v2-1-69b3a941371a@atmark-techno.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250203-defer_usb2-v3-1-428182286ce3@atmark-techno.com>
+X-B4-Tracking: v=1; b=H4sIACFpoGcC/3XMQQ6CMBCF4auQWVvTTnEMrryHMabAVBoDJS02G
+ sLdLaxx+b/kfTNEDo4jXIoZAicXnR9y6EMBTWeGJwvX5gaUeJIotWjZcni8Y42CGckSGalMC/k
+ wBrbus2G3e+7OxcmH72Ynta67TFJCCdREFqkkZHk1U2/CS0zcdIM/Nr6HlUv4n8BMUFVrU5VKn
+ 5XZI5Zl+QGqRpKf7wAAAA==
+X-Change-ID: 20250203-defer_usb2-ee26f66a01ad
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Dominique Martinet <dominique.martinet@atmark-techno.com>
+X-Mailer: b4 0.15-dev-7be4f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1657;
+ i=dominique.martinet@atmark-techno.com; h=from:subject:message-id;
+ bh=HpKfWals6gvV6hSueqjY8CYDxxN+av46LngYDKJxyFM=;
+ b=owEBbQKS/ZANAwAKAfKKYH/WjHEHAcsmYgBnoGkiGAgewFMK0YZ3yZfvnyEBWvr/Xmg4ikJng
+ 7cJqrs3tbOJAjMEAAEKAB0WIQQoFSiLMD+txr0veJbyimB/1oxxBwUCZ6BpIgAKCRDyimB/1oxx
+ B+L+D/44ciLQ9mN59Ny7bJdaq49k967IpOp18rI0KfriGa69NjMQEO/K5y3wjcY0TPuzMKilRvD
+ zyBNlA8L166gDqfeFgLcQU8HXTM/3SpBBDhobiqwlPa90oz2i3q4aloqI342t1FoVHDufKB+cbk
+ +3WP1FRNWHoueXQl1Uw/nehPEXdQB0gT/9FlYPNxg18gSy2M+eCXUqF2iPbYnTK4wrNgH/JUMDs
+ I54fYL1X6T+oBi8frOQoWMpfXOWJ5smH8VKsw2QNOQw3LhgvB22N9fiiHjBOHiAE08D4rV9PhxA
+ mNAygFkK1hI/ZU848NdtLKZU13IvB59c7iLgZG4IxaOE9oyTs2umM/TPftO/GgbLFgieD1SC+ff
+ vdXd1bO5AYiRxryP4gQ1yJr/gxOjogvm+YmbHxiqjyaucTcJ7pedbig2xcwG7QQ+vzL/+oNRa19
+ BLjCHARSk5d7zL2C+v+n2LpoUxmHy2hujw+HWsTmiA9Da+RVkPwDnhsCkfF+wsM6Wc3P6qmF7UG
+ mgWiw25TJRPAezrkB4ymMPDGhTwhdvZmBxuOGw54Thh3GZ8FwDDSfwQsRPIemF/0bq6PMRDa0ED
+ ScFwDUH2Bj70a2eFTFOMnxobUmPYM12xwMb6b2K1Cffl9DKRcqpK0aaxRsJW06tsFmNq2uhs3va
+ E0LB7IbIEf+G3Rg==
+X-Developer-Key: i=dominique.martinet@atmark-techno.com; a=openpgp;
+ fpr=2815288B303FADC6BD2F7896F28A607FD68C7107
 
-Dominique Martinet wrote on Mon, Feb 03, 2025 at 03:32:05PM +0900:
-> Use dev_err_probe to silence EPROBE_DEFER error on boot on i.MX8ULP:
-> [    0.127301] mxs_phy 29910000.usb-phy: can't get the clock, err=-517
-> 
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-> ---
-> Changes in v2:
-> - removed redundant error message and now useless braces, thank you for
->   the quick feedback!
-> - adjusted message alignment (that was also bugging me...)
-> - Link to v1: https://lore.kernel.org/r/20250203-defer_usb2-v1-1-2366f26462e0@atmark-techno.com
-> ---
->  drivers/usb/phy/phy-mxs-usb.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-> index 7490f1798b461c39c29bb74e1e57e0a4adce2bd7..39b75199d11c6f9ec21174c20d0465cb79c133fb 100644
-> --- a/drivers/usb/phy/phy-mxs-usb.c
-> +++ b/drivers/usb/phy/phy-mxs-usb.c
-> @@ -769,11 +769,9 @@ static int mxs_phy_probe(struct platform_device *pdev)
->  		return PTR_ERR(base);
->  
->  	clk = devm_clk_get(&pdev->dev, NULL);
-> -	if (IS_ERR(clk)) {
-> -		dev_err(&pdev->dev,
-> -			"can't get the clock, err=%ld", PTR_ERR(clk));
-> -		return PTR_ERR(clk);
-> -	}
-> +	if (IS_ERR(clk))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
-> +				     "can't get the clock");
+Use dev_err_probe to silence EPROBE_DEFER error on boot on i.MX8ULP:
+[    0.127301] mxs_phy 29910000.usb-phy: can't get the clock, err=-517
 
-Looking at the usb251xb patch also made me notice this is missing a
-trailing newline, but I'm surprised because it "worked fine" (I don't
-see garbage at the end of the line in my dmesg with the old 517 error)
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+---
+Changes in v3:
+- add trailing newline to format string
+- Link to v2: https://lore.kernel.org/r/20250203-defer_usb2-v2-1-69b3a941371a@atmark-techno.com
 
-There's no other missing \n in this file though so I guess I'll just
-send a v3 in doubt, but I'm now curious if it really is needed and
-couldn't find anything about that.
+Changes in v2:
+- removed redundant error message and now useless braces, thank you for
+  the quick feedback!
+- adjusted message alignment (that was also bugging me...)
+- Link to v1: https://lore.kernel.org/r/20250203-defer_usb2-v1-1-2366f26462e0@atmark-techno.com
+---
+ drivers/usb/phy/phy-mxs-usb.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Anyway, sorry for the spam, and thanks for the quick review earlier!
+diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
+index 7490f1798b461c39c29bb74e1e57e0a4adce2bd7..7069dd3f4d0d9433d62d3c3b494c2f99858e1899 100644
+--- a/drivers/usb/phy/phy-mxs-usb.c
++++ b/drivers/usb/phy/phy-mxs-usb.c
+@@ -769,11 +769,9 @@ static int mxs_phy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
+ 
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev,
+-			"can't get the clock, err=%ld", PTR_ERR(clk));
+-		return PTR_ERR(clk);
+-	}
++	if (IS_ERR(clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
++				     "can't get the clock\n");
+ 
+ 	mxs_phy = devm_kzalloc(&pdev->dev, sizeof(*mxs_phy), GFP_KERNEL);
+ 	if (!mxs_phy)
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250203-defer_usb2-ee26f66a01ad
+
+Best regards,
 -- 
-Dominique
+Dominique Martinet <dominique.martinet@atmark-techno.com>
+
+
