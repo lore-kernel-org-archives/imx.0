@@ -1,281 +1,155 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD26179BD
-	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 05:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8945C158DD8
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 06:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738560190; cv=none; b=bDdnLEeXfwI/Gzjgwd1L0En0soSRZhzxzAcY8Dc5ez3FNHFmzUh8JxePJG2AdyCYQkAkR0E1FrhaoRd28GL6KYyhLutc7UBW10xxwmFUgG3pyap9jW2dVuvz7yLIWzF/Nzir2eLYxPTruAaef2Q+tgad1ljFC5S4qyB9FlTyOxc=
+	t=1738562966; cv=none; b=lcxI2/086WkTR8ldu1qPAsOUOSWcVP9kx0ICeIlxSBLbmjCdJjw0cs7kCHOLRAUBTHcdVztDkrl2JeHo8IPJ2+i2vUMAJE8jrxR+hclONebL7/+mPZDxaAnLPZ14VOGq7fd5ucpTW3+57IJ9VE+zfjuQissr8rPHyqP+qI5A2HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738560190; c=relaxed/simple;
-	bh=Er41J1XuqLXwSVEESFKTGuK04Mz2hClr0ZKxJ9hcaOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DbzkkYOTfuxNcBypSf5IIZHO78faXIoqQy3UrBVapxQtjGTaDFoxV6uQdgIezufwQdbsdYZbWqHop9p+U8ASnJIqWmv/Bo+UESuAkehv/+ECseG39P9q6UNN5suMcYL3yoDy+rEErEa4lky9prgORMZJm6iky+mWo+Z/XITbCWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ILvikukA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1738562966; c=relaxed/simple;
+	bh=rLWgZ6eUauYiCONMe295ObHlUI97EXwV/4fS4BXwZ0I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pdnxii4Hk+8xugv+bLWJjFUguAYM5uh+bBjVGMfl3rEX44visVQUibfPQ+ccNJFK55VUvW94zHAG8Ak+WnNVymON8YBIAeYcDh05osmKXyrRDB64MEmAvJwJlyVOLBf7sCGnk69uD7Yn1unoozkWKLHDAUlPHYfX6muMmO7NcHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=wGB0swZB; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=BlxkhBYY; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ILvikukA"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 512MKKaG006815;
-	Mon, 3 Feb 2025 05:23:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	IltoWlN0FidB/hU4nhAgHeI3oXkmMrby1MF2wWVjzyg=; b=ILvikukAnxakoyE8
-	TlfAZD6q7xdpdrYkX8gZZxomP5UwmShNLfI4ANTfe10nQGWO15WAM51t/rAn7AXb
-	55mXLhlQTBj6hFj95wk425Q7K/Y6Vc1IvNBRKy6jDYmtrA1CZCn/gV57hqqzLLjy
-	HZY4NcETZBrY1oVh8u0DgzugA7RQi+iHEiZUHadjHA7Ke/hLac6DJWdsg+VmbQNi
-	OmQ3XO4kG7vdVD2+XvFLOnNOw66KanKoBS+BKBw4KBkoUFAvQZaGO3/oHD2g6cFb
-	PPX3diePfAPTBphfZoHeY8TU2lmsfB+iVQQ2sMsCqCRbQ6oShDJKtMA/2314UnN3
-	qiMbmw==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44jd428qa9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 05:23:01 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5135N01W006630
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 3 Feb 2025 05:23:00 GMT
-Received: from [10.216.35.42] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 2 Feb 2025
- 21:22:57 -0800
-Message-ID: <11695367-f9cb-46be-9f83-b6f6ec5e42f4@quicinc.com>
-Date: Mon, 3 Feb 2025 10:52:53 +0530
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="wGB0swZB";
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="BlxkhBYY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1738562963;
+	bh=rLWgZ6eUauYiCONMe295ObHlUI97EXwV/4fS4BXwZ0I=;
+	h=From:Date:Subject:To:Cc:From;
+	b=wGB0swZBkJNLieSdlrHaNVeqgtIWV8zIq7SuLSXnixGkA/pijRyc2cQ/IgmKPPpRd
+	 3piLoAx026+UeD8RMhJU2jPHBqnLFGNGM2SFXJgV0g9SqspAcUgfhpo6ftSAYC5qVD
+	 Vwoe4uBC3cmvI64J5fV2gl2vBC2GWOWK31Z9cUaclikhQkVMF0jU4O3n8bnZ9o3Si/
+	 qMAaDozhG1tskkCYA9aXdP2J9+S2oGpIl6Dc2jAMYHdcecbyHZuZnYz94YeKCR9kuK
+	 x4MD5otOK/5j1oJewE89feN/PkyfvSYMa4e5t4ocOuCaW8NzCEox+K7uFHy4dOvmr8
+	 RWqZB8Iago/yg==
+Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
+	by gw2.atmark-techno.com (Postfix) with ESMTP id 758844CB
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 15:09:23 +0900 (JST)
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=BlxkhBYY;
+	dkim-atps=neutral
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id 58A8E4CB
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 15:09:22 +0900 (JST)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2ef9b9981f1so11459825a91.3
+        for <imx@lists.linux.dev>; Sun, 02 Feb 2025 22:09:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1738562961; x=1739167761; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d0sM4/RmXwuU/ijuwtLBjbi8cvcOWTlQXElR9KepwmM=;
+        b=BlxkhBYYWyrheiMzel56ArrntoFukRmtpCn81b91Jlcq6eLQLmH8PSLzudpG4Yherd
+         XvCgolH8z050sXiEPkyI5QLFJR6vJAhtp1h5petn+FsKFCxDre+p25pVoULaT3ImsChw
+         o0+G2esTQ/Qhj9PQD++qMlYH3OQZvybQi7lRScHQS7oCz8LsIfJbQdjVFPbr+cT2JAp0
+         u8t06nwqGGNHr1p2CfKNUkWZr89JFQmznyxc4YyG0xhktFC25Mrdj/022CYLNJqiFsgD
+         2N6vLXyBkDpfcd+yYqW42e1DALjyyzMCNd1Hlwiemx1CSoG5s6Li8YtfJtrl30TiLkcg
+         bhyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738562961; x=1739167761;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d0sM4/RmXwuU/ijuwtLBjbi8cvcOWTlQXElR9KepwmM=;
+        b=GUv9o9iDD7alTuuS8M2LCKLBCXRt4u41QCLvYvz6W9QsTdIIWRNz/WlUTS1qoEPGRi
+         fBazrSZ5vRxL2Kvl67b2gMtW8IrMZnfBTYCjdgMn3s5hi3YcWbbTFURKv27yufrdJP24
+         KORn3j29h0+3JKetISDaQrCf6Y5IN+Ojos71TIwwGPDiZfdx4VAcmc4virJOiJtzSGah
+         iJ5lsaq8eoe5qM9/L6lZ0mlbX/e56xgDo8dt40UQCmI9WCpHVY9sbPQDeDyEiwbI5V/S
+         eE/8Hijj5oz2z8tOz5HJxFHWlK84RbGmZWyl83MLhPvJt4+qKUuye5N2oU4oupyYm3Jn
+         hZNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVo+aHUmT+Oqu5u1a3K7BcDI5RETPMZP/nJAekRQ96pdB/ptGLDXcuNTiKPOqt/8jLAN9U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGZoFqNXK2fWDnrAOO/yQRvAMgVpj5+ZyFyQOZIizKWh/CGfrJ
+	jCE14k4TadWKfF1KK2S6QrSW9xYo7gBQyrtMHoEf5phsAuHt9zSEHEOINK5CRScrflokqjlFH5H
+	8alCf24STIszjeq4ItJ9CIuX4oLykW908/i8z3H9euTd3xUoit/Q=
+X-Gm-Gg: ASbGncvtQ1H6N+jKy4Yk0NNUsOlla2O3D1kW7Tl1GaFirXXPNqOiGThWgQvgzbnCaG6
+	Oz80wLU97DszthJfzV0DjI6NvweteheL16LTt0jW5+Qu5tsbNBdmm0xHxRQyuRKvUQiUSY38zy9
+	9es68Mna9+jb31eYn2qJn/AHMMmpsm1ZPrSJKa+4Oz1lF27Q5sh62+vBlLtGZkQ/8zUrRDQ7ZOy
+	KZn0EqbUSgGpjIXE7PPPfw7tSXGneubVUIMeiUgR/+nJDatFDm6RAU7Lde3SWiN3w1oJfkruCYq
+	EIBsJcWBLwF+TjOomAoCkTuHhzEQb7Lic2BBbOYt7u6mWuXLoc+s7HWjhUF/Unv+
+X-Received: by 2002:a17:90b:5485:b0:2ea:b564:4b31 with SMTP id 98e67ed59e1d1-2f83abff361mr29356011a91.19.1738562961380;
+        Sun, 02 Feb 2025 22:09:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPlyVzISCSESRGQK82l9QvxGtfTDK4CsmACY7TnxikBjBA5eBNIk3T/ibndka6W854Lw5+ew==
+X-Received: by 2002:a17:90b:5485:b0:2ea:b564:4b31 with SMTP id 98e67ed59e1d1-2f83abff361mr29355986a91.19.1738562961075;
+        Sun, 02 Feb 2025 22:09:21 -0800 (PST)
+Received: from localhost (162.198.187.35.bc.googleusercontent.com. [35.187.198.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31f7927sm68024175ad.99.2025.02.02.22.09.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 02 Feb 2025 22:09:20 -0800 (PST)
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Date: Mon, 03 Feb 2025 15:09:11 +0900
+Subject: [PATCH] usb: phy: mxs: silence EPROBE_DEFER error on boot
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] i3c: Add basic HDR support
-To: Joshua Yeong <joshua.yeong@starfivetech.com>, Frank Li <Frank.Li@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Miquel Raynal
-	<miquel.raynal@bootlin.com>,
-        Conor Culhane <conor.culhane@silvaco.com>
-CC: "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>
-References: <20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com>
- <20250129-i3c_ddr-v1-1-028a7a5d4324@nxp.com>
- <e09b50b8-dd65-4636-aa35-42efc86bba16@quicinc.com>
- <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
-Content-Language: en-US
-From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-In-Reply-To: <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Tg07ncqeKrrJuH2sCOkrdRaxTSEz1r_S
-X-Proofpoint-ORIG-GUID: Tg07ncqeKrrJuH2sCOkrdRaxTSEz1r_S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-03_02,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 malwarescore=0
- spamscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502030044
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250203-defer_usb2-v1-1-2366f26462e0@atmark-techno.com>
+X-B4-Tracking: v=1; b=H4sIAIddoGcC/x3MQQqAIBBG4avErBN0IhddJSIsf2s2FkoRhHdPW
+ n6L917KSIJMQ/NSwi1Zjlhh2obW3cUNSnw1seZes+6UR0Car7ywAtgGa502zlMNzoQgzz8bp1I
+ +rfM3lVwAAAA=
+X-Change-ID: 20250203-defer_usb2-ee26f66a01ad
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-usb@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Dominique Martinet <dominique.martinet@atmark-techno.com>
+X-Mailer: b4 0.15-dev-7be4f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1120;
+ i=dominique.martinet@atmark-techno.com; h=from:subject:message-id;
+ bh=rLWgZ6eUauYiCONMe295ObHlUI97EXwV/4fS4BXwZ0I=;
+ b=owEBbQKS/ZANAwAKAfKKYH/WjHEHAcsmYgBnoF2O3a0jWTHdw/jtTOd3PohMx324/DljYO7n+
+ O+T2jfpKJmJAjMEAAEKAB0WIQQoFSiLMD+txr0veJbyimB/1oxxBwUCZ6BdjgAKCRDyimB/1oxx
+ B4wlEACYkp3ePrAVerdSG7mZHg/um8PiPAEYvgNbS91eBPyCxdpaY3hktUcwRhuUXSUHcYuj4Ez
+ el5W0YN4Gsf8q2k7SiEEZGxsUSSr47WfH6DMcKOUBmEhca6vxGze1iXa8Gs7LeSyHnzkHL4X2Lx
+ QqtWr3AHrLbhhJy1DpFoaWl0Yw3agCI2z0PKp+7JGfuQ50UdC5LKq83mlhAYUccuEnMeUMRYAeX
+ DodnrZpGIxbZUv1JlX6AoOYDx0qfUof2+m8yPq7LFuZbnbE3vlPRubDHJEeDjp+qWteTYZVujfQ
+ kUkIkeH7xpPoDjs7DYfWsYozwCazQDhv8nFPaKfyDE2igikxm1StjAO5T4bluWKBzH/oaJTq1+h
+ sdMBH2m73jBMxEfot4JOgAolJifbHi/bavXfLzhDJQDl2P1augT38S+XV0VBRpN9ssU3YV7sj/p
+ PQNoOUw0eHcr85NPjb+LqI1s9SIctiFwTirX7On5U5oDOyL3OZ0/bOZ/q4BHEuoZ0B3IcuV794e
+ 8KlEntd5ZgzfNMQWJZnYsAFBFOQ7UChqTsRPlplU+uwmtOYwNmpWP+S8P6TtHFEpqz79AfjY8yn
+ 4kH7dH+ppIusR28uUAf+Q0dZYmzsNYDwIjuoQdwSstKKDyYTkH0+7gArO82kNEXdMi/4T2QwTmx
+ TQVYet7/9LUejLQ==
+X-Developer-Key: i=dominique.martinet@atmark-techno.com; a=openpgp;
+ fpr=2815288B303FADC6BD2F7896F28A607FD68C7107
 
-Hi Joshua,
+Use dev_err_probe to silence EPROBE_DEFER error on boot on i.MX8ULP:
+[    0.127301] mxs_phy 29910000.usb-phy: can't get the clock, err=-517
 
-On 2/3/2025 8:02 AM, Joshua Yeong wrote:
-> Hi Mukesh and Frank,
-> 
-> On 02-Feb-2025 1:54 AM, Mukesh Kumar Savaliya wrote:
->> Hi Frank,
->>
->> On 1/30/2025 1:35 AM, Frank Li wrote:
->>> I3C HDR requires enter/exit patterns during each I3C transfer. Add a new
->>> API i3c_device_do_priv_xfers_mode(). The existing
->>> i3c_device_do_priv_xfers() now calls i3c_device_do_priv_xfers_mode(I3C_SDR)
->>> to maintain backward compatibility.
->>>
->>> Introduce a 'cmd' field in 'struct i3c_priv_xfer', using an anonymous union
->>> with 'rnw' since HDR mode relies on read/write commands instead of the
->>> 'rnw' bit in the address as in SDR mode.
->>>
->>> Add a priv_xfers_mode callback for I3C master drivers. If priv_xfers_mode
->>> is not implemented, fallback to SDR mode using the existing priv_xfers
->>> callback.
->>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>> Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
->>> one i3c transfer. for example, can't send a HDR follow one SDR between
->>> START and STOP.
->>>
->> Is it wise to add two function inside main funcion and separate SDR vs HDR ? so we don't need to change current function arguments.
-> 
-> I think the 'private transfers' are limited to SDR communications,
-> would it be better if we have a different interface/naming for hdr transfers?
-> 
->>> i3c_priv_xfer should be treat as whole i3c transactions. If user want send
->>> HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
->>> instead put into a big i3c_priv_xfer[n].
->>> ---
->>>    drivers/i3c/device.c       | 19 +++++++++++++------
->>>    drivers/i3c/internals.h    |  2 +-
->>>    drivers/i3c/master.c       |  8 +++++++-
->>>    include/linux/i3c/device.h | 12 +++++++++++-
->>>    include/linux/i3c/master.h |  3 +++
->>>    5 files changed, 35 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
->>> index e80e487569146..e3db3a6a9e4f6 100644
->>> --- a/drivers/i3c/device.c
->>> +++ b/drivers/i3c/device.c
->>> @@ -15,12 +15,13 @@
->>>    #include "internals.h"
->>>      /**
->>> - * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
->>> - *                specific device
->>> + * i3c_device_do_priv_xfers_mode() - do I3C SDR private transfers directed to a
->>> + *                     specific device
->>>     *
->>>     * @dev: device with which the transfers should be done
->>>     * @xfers: array of transfers
->>>     * @nxfers: number of transfers
->>> + * @mode: transfer mode
->>>     *
->>>     * Initiate one or several private SDR transfers with @dev.
->>>     *
->>> @@ -32,9 +33,9 @@
->>>     *            driver needs to resend the 'xfers' some time later.
->>>     *            See I3C spec ver 1.1.1 09-Jun-2021. Section: 5.1.2.2.3.
->>>     */
->>> -int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>> -                 struct i3c_priv_xfer *xfers,
->>> -                 int nxfers)
->>> +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
->>> +                  struct i3c_priv_xfer *xfers,
->>> +                  int nxfers, enum i3c_hdr_mode mode)
->> why can't we pass mode as another structure member inside struct i3c_priv_xfer ? Adding function agrument parameter impacts existing drivers.
-Yes, that would be fine too as we can clearly differentiate by 
-inteface/hook up name.
->>>    {
->>>        int ret, i;
->>>    @@ -47,11 +48,17 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>>        }
->>>          i3c_bus_normaluse_lock(dev->bus);
->>> -    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
->>> +    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers, mode);
->>>        i3c_bus_normaluse_unlock(dev->bus);
->>>          return ret;
->>>    }
->>> +EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers_mode);
->>> +
->>> +int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers, int nxfers)
->>> +{
->>> +    return i3c_device_do_priv_xfers_mode(dev, xfers, nxfers, I3C_SDR);
->>> +}
->>>    EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
->>>      /**
->>> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
->>> index 433f6088b7cec..553edc9846ac0 100644
->>> --- a/drivers/i3c/internals.h
->>> +++ b/drivers/i3c/internals.h
->>> @@ -16,7 +16,7 @@ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
->>>    int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
->>>    int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>                     struct i3c_priv_xfer *xfers,
->>> -                 int nxfers);
->>> +                 int nxfers, enum i3c_hdr_mode mode);
->>>    int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
->>>    int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
->>>    int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
->>> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
->>> index d5dc4180afbcf..67aaba0a38db2 100644
->>> --- a/drivers/i3c/master.c
->>> +++ b/drivers/i3c/master.c
->>> @@ -2945,7 +2945,7 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
->>>      int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>                     struct i3c_priv_xfer *xfers,
->>> -                 int nxfers)
->>> +                 int nxfers, enum i3c_hdr_mode mode)
->>>    {
->>>        struct i3c_master_controller *master;
->>>    @@ -2956,9 +2956,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>        if (!master || !xfers)
->>>            return -EINVAL;
->>>    +    if (master->ops->priv_xfers_mode)
->>> +        return master->ops->priv_xfers_mode(dev, xfers, nxfers, mode);
->>> +
->>>        if (!master->ops->priv_xfers)
->>>            return -ENOTSUPP;
->>>    +    if (mode != I3C_SDR)
->>> +        return -EINVAL;
->>> +
->>>        return master->ops->priv_xfers(dev, xfers, nxfers);
->>>    }
->>>    diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
->>> index b674f64d0822e..7ce70d0967e27 100644
->>> --- a/include/linux/i3c/device.h
->>> +++ b/include/linux/i3c/device.h
->>> @@ -40,11 +40,13 @@ enum i3c_error_code {
->>>      /**
->>>     * enum i3c_hdr_mode - HDR mode ids
->>> + * @I3C_SDR: SDR mode (NOT HDR mode)
->>>     * @I3C_HDR_DDR: DDR mode
->>>     * @I3C_HDR_TSP: TSP mode
->>>     * @I3C_HDR_TSL: TSL mode
->>>     */
->>>    enum i3c_hdr_mode {
->>> +    I3C_SDR,
->>>        I3C_HDR_DDR,
->>>        I3C_HDR_TSP,
->>>        I3C_HDR_TSL,
->>> @@ -53,6 +55,7 @@ enum i3c_hdr_mode {
->>>    /**
->>>     * struct i3c_priv_xfer - I3C SDR private transfer
->>>     * @rnw: encodes the transfer direction. true for a read, false for a write
->>> + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
->>>     * @len: transfer length in bytes of the transfer
->>>     * @actual_len: actual length in bytes are transferred by the controller
->>>     * @data: input/output buffer
->>> @@ -61,7 +64,10 @@ enum i3c_hdr_mode {
->>>     * @err: I3C error code
->>>     */
->>>    struct i3c_priv_xfer {
->>> -    u8 rnw;
->>> +    union {
->>> +        u8 rnw;
->>> +        u8 cmd;
->>> +    };
->>>        u16 len;
->>>        u16 actual_len;
->>>        union {
->>> @@ -301,6 +307,10 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>>                     struct i3c_priv_xfer *xfers,
->>>                     int nxfers);
->>>    +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
->>> +                  struct i3c_priv_xfer *xfers,
->>> +                  int nxfers, enum i3c_hdr_mode mode);
->>> +
->>>    int i3c_device_do_setdasa(struct i3c_device *dev);
->>>      void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
->>> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
->>> index 12d532b012c5a..352bd41139569 100644
->>> --- a/include/linux/i3c/master.h
->>> +++ b/include/linux/i3c/master.h
->>> @@ -472,6 +472,9 @@ struct i3c_master_controller_ops {
->>>        int (*priv_xfers)(struct i3c_dev_desc *dev,
->>>                  struct i3c_priv_xfer *xfers,
->>>                  int nxfers);
->>> +    int (*priv_xfers_mode)(struct i3c_dev_desc *dev,
->>> +                   struct i3c_priv_xfer *xfers,
->>> +                   int nxfers, enum i3c_hdr_mode mode);
->>>        int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
->>>        void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
->>>        int (*i2c_xfers)(struct i2c_dev_desc *dev,
->>>
->>
->>
-> 
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+---
+ drivers/usb/phy/phy-mxs-usb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
+index 7490f1798b461c39c29bb74e1e57e0a4adce2bd7..dd2b4a5633934e257e792bbd61d6748304b5e679 100644
+--- a/drivers/usb/phy/phy-mxs-usb.c
++++ b/drivers/usb/phy/phy-mxs-usb.c
+@@ -770,9 +770,8 @@ static int mxs_phy_probe(struct platform_device *pdev)
+ 
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev,
++		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
+ 			"can't get the clock, err=%ld", PTR_ERR(clk));
+-		return PTR_ERR(clk);
+ 	}
+ 
+ 	mxs_phy = devm_kzalloc(&pdev->dev, sizeof(*mxs_phy), GFP_KERNEL);
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250203-defer_usb2-ee26f66a01ad
+
+Best regards,
+-- 
+Dominique Martinet <dominique.martinet@atmark-techno.com>
+
 
