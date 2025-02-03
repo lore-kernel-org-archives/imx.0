@@ -1,166 +1,203 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ECA200BA9
-	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 11:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB77201009
+	for <imx@lists.linux.dev>; Mon,  3 Feb 2025 12:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738581774; cv=none; b=lJ0FTatC2Qk+ap4aVtF0kDjS+TDX5UfrMy8+IK4yd4fr7vqsg8lvzw7zJ/krx6epGDKM4Ax69lKefnEgu5YAcibKwfi5/CvynhA2TbUAJY+ePiyFHz14e9pngappzKu7cgfl3RxKy0Hy754fjBFh9U9HUB/oVHZBmZHsqissx10=
+	t=1738585284; cv=none; b=MdkoIzyUTO5G+3pFazB6Aq93XOhYGYhZiVctvkypiRoSp1N1p36pcKquERFRhlwIhzS3VolbQjoSFm0Rc+KxzvaRvI+FTVEBo1ynOpFManJIHWuNEyHIePHscBeeJa+JsVTYhQDlKpBftHlC85NorZ/7G5TiCDZCESDBFdehtlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738581774; c=relaxed/simple;
-	bh=bP+k/yEALRPqznw0w8sMfyGGysSbuqLUknmkBK9Hmhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U5b9inaSI+6ayNqMCVQKdj7O6Bpj7dOgW8V7yX3JqUfvBV00BS7CdlOJhZ45QhZdWk/WU6O5rscFN7ebfB7TuRcbsEhGMYnok0rx7D+j3HKOq6Y0TLbZVWaitDD3t7jOLedt8R3TiuVfkn/yERFZqdtRC98cJNqpKq8FevgZsH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0823F11FB;
-	Mon,  3 Feb 2025 03:23:16 -0800 (PST)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 321D83F58B;
-	Mon,  3 Feb 2025 03:22:49 -0800 (PST)
-Date: Mon, 3 Feb 2025 11:22:39 +0000
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Sudeep Holla <sudeep.holla@arm.com>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/3] clk: Introduce clk_set_spread_spectrum
-Message-ID: <Z6Cm_4XTRHdDluhh@pluto>
-References: <20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com>
- <20250124-clk-ssc-v1-1-2d39f6baf2af@nxp.com>
- <ff801714249c492abc3781da55675a38.sboyd@kernel.org>
- <20250202104256.GA13402@localhost.localdomain>
- <Z6CPy89TVxV1jaDn@pluto>
- <20250203114722.GA20298@localhost.localdomain>
+	s=arc-20240116; t=1738585284; c=relaxed/simple;
+	bh=moRLVFGGvAIxc7wPNXSwTZBbEzvB96l29mB8eniQUnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nlrVv8KWXoM/WfNZE2v4e2TjRTRiivavjExn2uBVbXW3uGZEKdNejwodhA6tAHPOzzntT3MIEGObNyvSPuWCisMUqoPGFWqhIB0nLV4iMDBADI5sfYI0RI62emLNnrDFUFzwetF+1nR5NDM7Hqp7qBgp5R1IE6DV+RN6BFMDtRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=HSvV8GV6; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="HSvV8GV6"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A2E110382D08;
+	Mon,  3 Feb 2025 13:21:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1738585274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5wGP23uLKCH/qsaLv6lGVdPZGjuGcZ3kQJcyUXbtnu8=;
+	b=HSvV8GV6RNx05Fx4KSIToKe9Eh1SX3/8n+PUZ6ZTaE8YA2fKR7zFeUPkXj9l+JARUCaMnw
+	Kz9aboI4x/LIBzw0KUiPBt2CgkXr3B17OQIwtF1dgzHEHoL8vumPT9o6mfm3vp9OS/X3EN
+	RIGoCckjnju4G4Fnugvb7MQvWF+guiK0enhqVXQEWCj+oqjRzWatqrPAMYhPIwl0TJOYxZ
+	F1jrXM9SWC7l0krXZ4aqPumHgcefw8x6SvlhxSKa/cB7d8uGkQLJLnJgb3/s2bBapWd/OO
+	uP4a6e/xC1Owzvgri7yeE0NUySReGHq5JLK/0BMwBf12CpPnN6XTdcoe3xA7ZA==
+Date: Mon, 3 Feb 2025 13:21:08 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
+ Wahren <wahrenst@gmx.net>
+Subject: Re: [RESEND PATCH v11 1/3] dt-bindings: display: Add
+ powertip,{st7272|hx8238a} as DT Schema description
+Message-ID: <20250203132108.77f2123c@wsk>
+In-Reply-To: <20250109154149.1212631-1-lukma@denx.de>
+References: <20250109154149.1212631-1-lukma@denx.de>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203114722.GA20298@localhost.localdomain>
+Content-Type: multipart/signed; boundary="Sig_/0lKE=K3DWzv4OhoJ61L=DCV";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Feb 03, 2025 at 07:47:22PM +0800, Peng Fan wrote:
-> On Mon, Feb 03, 2025 at 09:43:39AM +0000, Cristian Marussi wrote:
-> >On Sun, Feb 02, 2025 at 06:42:56PM +0800, Peng Fan wrote:
-> >> On Tue, Jan 28, 2025 at 12:25:28PM -0800, Stephen Boyd wrote:
-> >> >Quoting Peng Fan (OSS) (2025-01-24 06:25:17)
-> >> >> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> >> >> index cf7720b9172ff223d86227aad144e15375ddfd86..a4fe4a60f839244b736e3c2751eeb38dc4577b1f 100644
-> >> >> --- a/drivers/clk/clk.c
-> >> >> +++ b/drivers/clk/clk.c
+--Sig_/0lKE=K3DWzv4OhoJ61L=DCV
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hi Peng,
+Dear Community,
 
-> >> >> @@ -2790,6 +2790,45 @@ int clk_set_max_rate(struct clk *clk, unsigned long rate)
-> >> >>  }
-> >> >>  EXPORT_SYMBOL_GPL(clk_set_max_rate);
+> This patch provides the DT Schema description of:
+> - powertip,st7272  320 x 240 LCD display
+> - powertip,hx8238a 320 x 240 LCD display
+>=20
+> Used with the different HW revisions of btt3 devices.
+>=20
 
-[snip]
+Gentle ping on this window... I hope that it will make it into upstream
+during this merge window.
 
-> >> >
-> >> >> + *
-> >> >> + * Configure the spread spectrum parameters for a clock.
-> >> >> + *
-> >> >> + * Returns success (0) or negative errno.
-> >> >> + */
-> >> >> +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-> >> >
-> >> >Does this need to be a consumer API at all? Usually SSC is figured out
-> >> >when making a board and you have to pass some certification testing
-> >> >because some harmonics are interfering. Is the DT property sufficient
-> >> >for now and then we can do it when the driver probes in the framework?
-> >> 
-> >> I suppose 'DT property' you are refering the stm32 and i.MX8M SSC patchsets.
-> >> I am proposing a generic interface for drivers to enable SSC.
-> >> Otherwise we need to introduce vendor properties for each vendor.
-> >> And looking at clk-scmi.c, we need a generic way to enable SSC, I think SCMI
-> >> maintainers not agree to add vendor properties for it.
-> >> 
-> >
-> >To clarify, from the SCMI point of view, I expressed the idea that it
-> >would make sense to have a common SSC interface on the SCMI backend too
-> >instead of a custom NXP since you are adding a common CLK framework feature,
-> >BUT only if it turns out, from this discussion, that a common general way of
-> >configuring SSC can be found...and I dont know that, so I am waiting to see
-> >what this discussion with CLK framework and iMX maintainers goes before
-> >excluding the SCMI CLK vendor OEM types scenario...it would be ideal and
-> >easier NOT to use SCMI vendor extensions BUT ONLY if this NXP SSC/config generic
-> >solution is deemed to be really generic and usable by any other vendor.
-> 
-> You may misunderstand. Using DT properties for clk-scmi.c to configure SSC
-> of a single clock means to add properties under clk scmi node, such
-> as:
-> "arm,modfreq = <x>, <y>, <z>;
->  arm,moddepth = <a>, <b>, <c>;
->  arm,modmethod = <j>, <l>, <m>;"
-> 
-> And during probe in clk-scmi.c, the properties needs to be parsed and when
-> clk is configured, the ssc settings need to be passed to scmi platform.
-> 
-> But per the i.MX8M SSC patchset that DT maintainers raised, 
-> the properties(fsl,modfreq and etc) needs to in consumer side,
-> not provider side.
-> 
-> So it is not feasible to add properties here.
-> 
+Thanks in advance.
 
-Thanks for the clarification.
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>=20
+> Changes for v9:
+> - New patch
+>=20
+> Changes for v10:
+> - None
+>=20
+> Changes for v11:
+> - Combine both separate dt-bindings patches for powertip,st7272 and
+>   powertip,hx8238a into one
+> - Drop the quotes for in "title" entry of powertip*.yaml files
+> ---
+>  .../display/panel/powertip,hx8238a.yaml       | 29
+> +++++++++++++++++++ .../display/panel/powertip,st7272.yaml        |
+> 29 +++++++++++++++++++ 2 files changed, 58 insertions(+)
+>  create mode 100644
+> Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> create mode 100644
+> Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+>=20
+> diff --git
+> a/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> new file mode 100644 index 000000000000..b7d74faeb5d5 --- /dev/null
+> +++
+> b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
+> @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> BSD-2-Clause +%YAML 1.2
+> +---
+> +$id:
+> http://devicetree.org/schemas/display/panel/powertip,hx8238a.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +allOf:
+> +  - $ref: panel-dpi.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: powertip,hx8238a
+> +      - {} # panel-dpi, but not listed here to avoid false select
+> +
+> +  height-mm: true
+> +  panel-timing: true
+> +  port: true
+> +  power-supply: true
+> +  width-mm: true
+> +
+> +additionalProperties: false
+> +
+> +...
+> diff --git
+> a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> new file mode 100644 index 000000000000..f3622800f13f --- /dev/null
+> +++
+> b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
+> @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
+> BSD-2-Clause +%YAML 1.2
+> +---
+> +$id:
+> http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml# +
+> +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +allOf:
+> +  - $ref: panel-dpi.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: powertip,st7272
+> +      - {} # panel-dpi, but not listed here to avoid false select
+> +
+> +  height-mm: true
+> +  panel-timing: true
+> +  port: true
+> +  power-supply: true
+> +  width-mm: true
+> +
+> +additionalProperties: false
+> +
+> +...
 
-> "assigned-clock-sscs" could be put under consumer node and clocks
-> could be configured with SSC when needed. This is a generic property.
-> 
-
-Yes I understood this, the property that describes SSC that you are
-adding is generic BUT are also the related params needed to describe
-effectively the SSC
-
-IOW, if we add, as desirable, a generic new SSC type in extended configs
-instead of using a vendor oem, will these info down below passed to the SCMI:
-
-+       /*
-+        * extConfigValue[7:0]   - spread percentage (%)
-+        * extConfigValue[23:8]  - Modulation Frequency (KHz)
-+        * extConfigValue[24]    - Enable/Disable
-+        * extConfigValue[31:25] - Reserved
-+        */
 
 
-... be enough to describe the required SSC config to any generic SCMI server
-from any vendor using any HW ?
 
-... or is it plausible and maybe frequent/usual that other vendors could
-need additional specific params to be fed to the server, so that we
-will end up using the new standard SSC only for NXP ?
+Best regards,
 
-IOW the property is generic, agreed, but are the described params above
-generic enough too ? ... that was my concern from an UN-educated point
-of view...of course, I am talking about the most common scenarios, if
-some other vendor ends up needing some arcane/magic specific param that
-cannot fit the above, they will be relegated to the OEM custom spaces
-even if this common SSC is available.
+Lukasz Majewski
 
-> Back to NXP SCMI vendor extension, if SCMI spec could include SSC, NXP
-> SCMI could move to align with spec and not use vendor extension.
-> 
+--
 
-Agreed, conditional to the above doubts.
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
-Apologies if I have asked dumb/obvious questions, but I am not familiar
-with the subject matter enough...
+--Sig_/0lKE=K3DWzv4OhoJ61L=DCV
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Thanks,
-Cristian
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmegtLQACgkQAR8vZIA0
+zr3s/AgAsZRhre2AjUbQF1ZgE+i8QpeTzPB6g3pNsj+V1XF6oMRioCLaHRDyi1n/
+p4G74vciOYh5RNmT7Fr9l3y9lvG4GBts66JxlD2M8sLel5Snmnao8/pFQvgjT3Ji
+wvicXyxoJDQNI/ttN+KsnQg/HQEy91QLnTLYg/CXwV25dK51biuz4dF1aOuEBVpv
+1IQgQbKEzmvpuGM+1IfPqHuK3yLD4GIySMbhnJGcQrQUyttyMl2d6N67SwvftEn5
+b0DOY/Tvn7ltPCCgkeuAloE8bO9jvnsDdvqIvQs00sX8D/zneM8TToPBg71gxn8x
+y1+VyZPXHA5efwdY1gjocprF7PI+8A==
+=lFvO
+-----END PGP SIGNATURE-----
+
+--Sig_/0lKE=K3DWzv4OhoJ61L=DCV--
