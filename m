@@ -1,66 +1,65 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8B421ADB4
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 22:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CEF21ADAB
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 22:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738706498; cv=none; b=hJggsTbxeLC4zphLeVWwkgk1zaYwFLM1DkNtpZT1qWytMo9Ts2JC/97GxF1kRp+xoXehFyHailFt74ILclmaWuOsZ57lpmCYmpBlGntENoZGSHU4cg/pWUxi2ofC2pusPkMLqHbZGzMENc3q99rg0FKdxIUXyyFxpIJoSHx+Hhc=
+	t=1738706510; cv=none; b=VAGC6/whARnZ3mlIzYPzbymLgd2DKISs85ft0cJPfVKFOtlO91CFN1pr4hS5Vw0swP8bNN/7Dp9FHlkOp2Jng7NKJ72qtVD5HkBxv1yoqWOojvWlUgraG/DkVLVi5OODOvCCGSPbEK8RPU9brjaoPZ+y9WbRZLVaCxcWazMreo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738706498; c=relaxed/simple;
-	bh=VumaS6+u6M0OolCzB2cqtdillivtTE2G3U+YmDamoM8=;
+	s=arc-20240116; t=1738706510; c=relaxed/simple;
+	bh=R6NQemqcM3NqXPAQSUUfjhjmNUwVN2uMax3o5Jo/Xwo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tdd1JBQn4M1WdRaS4PfaZaXt6jEZHPWlPkvCdnzjuqFcG94JRtdQSh4PlxJ3z1xJAMH9ZGgcjw+OF2+GWQKRIL5YLOvt3mLSYHJ8gfm02xYrKPVIB5CdjxKf81bPCvsyxMZCSCLXDertXwhqK3oxgAHg3DpaZ/ZKSwk8sZkoniQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=boQBJZW+; arc=none smtp.client-ip=209.85.221.41
+	 In-Reply-To:Content-Type; b=UPD6mgwhB7d5NE9m76R93kxfWnfzv9Xa1BKhJRKx+YS5/hlNf6B06Lpkxev11Q7NF9OAvKoYehqNF8kdhy8LecARE6He3qFUXix+UEv36bm0g3a50PIIBnYfgeOeyQFNKcQ1JMwTEChP5nUbT3rEQJdjK6TFcehTE/vwwg9pPR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=JBnDRmxT; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="boQBJZW+"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38db52ccc0fso6215f8f.3
-        for <imx@lists.linux.dev>; Tue, 04 Feb 2025 14:01:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="JBnDRmxT"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-438a39e659cso42176365e9.2
+        for <imx@lists.linux.dev>; Tue, 04 Feb 2025 14:01:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1738706494; x=1739311294; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1738706507; x=1739311307; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=HdJX5Dk0u5IkMDKkGsrySXzYQnEq2R9WPeDo1sH8yAI=;
-        b=boQBJZW+fioXrzP/YkKKp3HkVs6d3kNsE4SHc2AkPbFcHx4iD03TAyOlKnjmRPowcc
-         kswuYw4Cw93lfaPs50LQJ/tWXRmKLRTc5t2K/rl2Xin/bt8ttn+tfxj/TbitHZdBQGU3
-         PxFVvXq4eS8NosDM+bP36KqLFzCe+xzpxkMtm/JEeGJrWZ67AFySH6hQHCw5jd1v+GW/
-         VKoZfJe01VbpLntOcOGnzT7HGZnqA7Ez0nyI+XnQEHfL6eYoC706rl3MIsVFoxj872s5
-         uizUbwhHO3hy9V6OmGV7UwPlLTHabYvopap+xp7VxboZ1gdVk34cNimTcDFthUoVQp9X
-         950Q==
+        bh=RwIsfd/OtVZWLJT6WB9dwos5ZOiOppzZY+Mt6fv0DyY=;
+        b=JBnDRmxT03bVDwiMv34I8wQP55kFCBPtyNPvDx4P9FfOu9txYgZ3ZbMV4NXqxE4sjD
+         WcCdIyloPC5zhbQmDo2wYL3FL2MZ+p5qz3zDwpQs8/lw8eFfIvHhLGvu4Lqzn4Z5rk5+
+         a+SAUJ4l9Mc+dCyKs0/ckGe9In4hX2w0gusEM0ZzvgWFJscbAIynyftF7gXrMo01xEDd
+         3xcuehvdq0U+W6UyfE9wgHzoZ1C1wCeWG9IuqeGof+OhPG99AwUSn0LXg55Vhbev+6xC
+         mZ/MgH3fvA2HNC7YC2n+TjbaRTQkUMreulldhLFe2InobjgB35B2rYMcPQ36WTp3GC4p
+         Nslw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738706494; x=1739311294;
+        d=1e100.net; s=20230601; t=1738706507; x=1739311307;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HdJX5Dk0u5IkMDKkGsrySXzYQnEq2R9WPeDo1sH8yAI=;
-        b=hSSKeXF0d1221X6PjTBJfwDLes+Qn5IGvvLi+43WiGMXNoZWkmhKGV/4wB53OXvScD
-         QF5aH7UI/33iJuY6BpwnyWdW64nEnWmEDtHUHKvL2CnUNLXnFCuYY7N8lSOwgPsRLZTn
-         oQ2IOCdeP6lx/vclQBUYQO1rEp5SpwzygMGtm/g7XTfPz27FiCvLU9/07c1w1wIskh31
-         xocaZhBf2BmmrTBZj4uhMej8km8+7vXSgYadX760aUzd166ZQYnliD++jZHC9Z82w8Lb
-         AoI7coqdSkUvMnzvwzq2qJYZRpAxIKoMvD13C/slANBKE89rUrw+QnRt8tftLFFlweRT
-         IARg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu4zNrS0g8dnCIOP/W3GMyeAvFbExLJNIxhhSg3vPh7hfWkp9LGz2DjhufDhze0hNeQBg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxf/csLez1ydFh4GWbk3SdA+Su2aTNQkGFHCyQvZUzlKaVyjxvL
-	eP4Cbk/E9TKIvC+d2xHR7CaDHesL85cg6rhXbbZoPp7lbv6Cb+78IEt0tLjlTnVWt0E8epiwzD9
-	nKm3MeA==
-X-Gm-Gg: ASbGncuuRiCKNOR6BLeq3u/03YkaDj4saGPScnwj4GVe9/DE/SKcgZmp2RaIPld5p8U
-	1gtvipDVBQ4X3aupSGEL9ZLgmtBvTcud4WWgxfp1zpPgAydADw3fYm1NBGtBZFIajNhev9TvFiP
-	sS1CNcUcm51rSgPB/79Hd+GwVkTuprvg+D7kAki8JddQEIkcyt5IJHOPiRDEUK/OXYRxSKObWBh
-	RJqYBS7bnbfMCQlxOnS2vTf4TMBHy69dNHR0P4ZpRaKUHlgt3lZvh45xV5SEcbS6riihMJ9+/50
-	QDipTJoJq42e
-X-Google-Smtp-Source: AGHT+IHaBfj4OnhLVJLYcuReHXCtY1ha8owiTGbmB8NervJbzXxCEzSgEeeBBm4w/U4CkOCA0/9Alw==
-X-Received: by 2002:a05:6000:10c1:b0:38a:88b8:99af with SMTP id ffacd0b85a97d-38db48808ffmr242039f8f.22.1738706494491;
-        Tue, 04 Feb 2025 14:01:34 -0800 (PST)
+        bh=RwIsfd/OtVZWLJT6WB9dwos5ZOiOppzZY+Mt6fv0DyY=;
+        b=vDRmKdkM8gcnwZE0xGFH5gyTd0ie4TaHbUKo/GGJUcfPfJrabbi3qyYDtCdyy5eaQ7
+         ftBKOfuH5mqCdfyq+SDqf+3DzC3wCPiAGzflGHGF0ZDa7qJ9Hj1AYK2ZC8xXmfVqoNhw
+         G12X0EH3Rh1Fv8ZMQ76QY7LmvGl8JwQ0XGmD50ZipWb9Ke7UD5/PVDgWENzrRw/tGU5A
+         sf/SXd96SSSvtzmkV19UF7pOxm1Y2vprTUmpWilnbqLRZcrXc0jBvFmEWplCfNyQMZqt
+         +7a+Pot0YFuSGFKz0up4YFdSKmg8yspIIJ3hHAeLRqC2tymVoYlDnasDQvw5tz5Z/TWh
+         CpmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVrATp+z6K/74/NekVRV1AJUD7cEYO3aV+3Bq4m3hHRnhCgw/urvShVHgbX4pc4J2f9ARs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxrZoWviWAPrfKS19OvIhZQ8p/8+rcWEwg80SK1izxQoxtdSAQW
+	1cRlwGjukB5+g83/ZJNlbVuyLxvUoPp+DFP71uX5GXSKm32X8sQ5a37cYFDoE4Y=
+X-Gm-Gg: ASbGncsAriMb5MRKU63D4sZm8xJYkLBIRa8ABABSLRIQAlfi84ntHQ9GgpBgLZ3yoSK
+	5FeAz6vaqRjYoWNursyNwYFsIDx11A+Xoq8+GQ9Ai7yG7k3PQBTx2gaUqbY2ngDJtqeWcM2YdTK
+	gt3ZWDt7ggsi/kEW/qnajYmI5pCRSLXiczBsLBplLaVF+OaVg0j/wMQv6oDjgvbY9pW8v7NPC9U
+	V5TeausJH71C55qVjLMQJuHgJUQY1xotQvk8aeo5xyPnIlxHD1lApoyLsVYufJ/0eXCnVxoDajs
+	01gfe0p+ldVY
+X-Google-Smtp-Source: AGHT+IH2eC8QjzxubMrfwju/J92XZERQpRmtsPLz6Ay5DOV8VGM1F9TQnHss3+rgoHiESfKlqDj3WA==
+X-Received: by 2002:a05:600c:1d0f:b0:431:60ec:7a96 with SMTP id 5b1f17b1804b1-4390d56e5a6mr1234275e9.25.1738706506951;
+        Tue, 04 Feb 2025 14:01:46 -0800 (PST)
 Received: from [192.168.2.177] ([81.0.8.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390d94db6asm1048485e9.15.2025.02.04.14.01.33
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c0ec369sm16729579f8f.8.2025.02.04.14.01.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 14:01:34 -0800 (PST)
-Message-ID: <68d642bf-89e1-4cee-b0bc-86314ea10bbc@suse.com>
-Date: Tue, 4 Feb 2025 23:01:32 +0100
+        Tue, 04 Feb 2025 14:01:46 -0800 (PST)
+Message-ID: <d2f87ea5-fe54-4334-ad68-9b169b2f3774@suse.com>
+Date: Tue, 4 Feb 2025 23:01:45 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,8 +67,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] arm64: dts: s32g: add common 'S32G-EVB' and
- 'S32G-RDB' board support
+Subject: Re: [PATCH v5 3/3] arm64: dts: s32g399a-rdb3: Add INA231 sensor entry
+ over I2C4
 To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
  Chester Lin <chester62515@gmail.com>,
  Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
@@ -82,7 +81,7 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
  NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
  Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>
 References: <20250113110512.506007-1-ciprianmarian.costea@oss.nxp.com>
- <20250113110512.506007-3-ciprianmarian.costea@oss.nxp.com>
+ <20250113110512.506007-4-ciprianmarian.costea@oss.nxp.com>
 Content-Language: en-US, ca-ES, es-ES
 From: Matthias Brugger <mbrugger@suse.com>
 Autocrypt: addr=mbrugger@suse.com; keydata=
@@ -128,7 +127,7 @@ Autocrypt: addr=mbrugger@suse.com; keydata=
  LV6nybxdRG/jp8ZQdQQixPA9azZDzuTu+NjKtzIA5qtfZfmm8xC+kAwAMZ/ZnfCsKwN0bbnD
  YfO3B5Q131ASmu0kbwY03Mw4PhxDzZNrt4a89Y95dq5YkMtVH2Me1ZP063cFCCYCkvEAK/C8
  PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20250113110512.506007-3-ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20250113110512.506007-4-ciprianmarian.costea@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -137,343 +136,33 @@ Content-Transfer-Encoding: 7bit
 On 13/01/2025 12:05, Ciprian Costea wrote:
 > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> Create common part, s32gxxa-evb.dtsi and s32gxxa-rdb.dtsi, for S32G2/S32G3
-> RDB2\3 and EVB G2/G3 boards to avoid copy duplicate part in boards dts
-> file. Prepare to add other modules such as FlexCAN, DSPI easily in the
-> future.
+> Add INA231 current sensor for S32G399A-RDB3 boards.
 > 
 > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
 Reviewed-by: Matthias Brugger <mbrugger@suse.com>
 
 > ---
->   .../arm64/boot/dts/freescale/s32g274a-evb.dts |   1 +
->   .../boot/dts/freescale/s32g274a-rdb2.dts      |   1 +
->   .../boot/dts/freescale/s32g399a-rdb3.dts      |   1 +
->   .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 150 ++++++++++++++++++
->   .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 122 ++++++++++++++
->   5 files changed, 275 insertions(+)
->   create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
->   create mode 100644 arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+>   arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 8 ++++++++
+>   1 file changed, 8 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> index b9a119eea2b7..c4a195dd67bf 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> @@ -7,6 +7,7 @@
->   /dts-v1/;
->   
->   #include "s32g2.dtsi"
-> +#include "s32gxxxa-evb.dtsi"
->   
->   / {
->   	model = "NXP S32G2 Evaluation Board (S32G-VNP-EVB)";
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> index aaa61a8ad0da..b5ba51696f43 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> @@ -7,6 +7,7 @@
->   /dts-v1/;
->   
->   #include "s32g2.dtsi"
-> +#include "s32gxxxa-rdb.dtsi"
->   
->   / {
->   	model = "NXP S32G2 Reference Design Board 2 (S32G-VNP-RDB2)";
 > diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> index 828e353455b5..94f531be4017 100644
+> index 94f531be4017..802f543cae4a 100644
 > --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
 > +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> @@ -8,6 +8,7 @@
->   /dts-v1/;
+> @@ -40,6 +40,14 @@ &uart1 {
+>   	status = "okay";
+>   };
 >   
->   #include "s32g3.dtsi"
-> +#include "s32gxxxa-rdb.dtsi"
->   
->   / {
->   	model = "NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)";
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> new file mode 100644
-> index 000000000000..a44eff28073a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-> @@ -0,0 +1,150 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright 2024 NXP
-> + *
-> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> + *          Larisa Grigore <larisa.grigore@nxp.com>
-> + */
-> +
-> +&pinctrl {
-> +	i2c0_pins: i2c0-pins {
-> +		i2c0-grp0 {
-> +			pinmux = <0x101>, <0x111>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-grp1 {
-> +			pinmux = <0x2352>, <0x2362>;
-> +		};
-> +	};
-> +
-> +	i2c0_gpio_pins: i2c0-gpio-pins {
-> +		i2c0-gpio-grp0 {
-> +			pinmux = <0x100>, <0x110>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-gpio-grp1 {
-> +			pinmux = <0x2350>, <0x2360>;
-> +		};
-> +	};
-> +
-> +	i2c1_pins: i2c1-pins {
-> +		i2c1-grp0 {
-> +			pinmux = <0x131>, <0x141>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c1-grp1 {
-> +			pinmux = <0x2cd2>, <0x2ce2>;
-> +		};
-> +	};
-> +
-> +	i2c1_gpio_pins: i2c1-gpio-pins {
-> +		i2c1-gpio-grp0 {
-> +			pinmux = <0x130>, <0x140>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c1-gpio-grp1 {
-> +			pinmux = <0x2cd0>, <0x2ce0>;
-> +		};
-> +	};
-> +
-> +	i2c2_pins: i2c2-pins {
-> +		i2c2-grp0 {
-> +			pinmux = <0x151>, <0x161>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-grp1 {
-> +			pinmux = <0x2cf2>, <0x2d02>;
-> +		};
-> +	};
-> +
-> +	i2c2_gpio_pins: i2c2-gpio-pins {
-> +		i2c2-gpio-grp0 {
-> +			pinmux = <0x150>, <0x160>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-gpio-grp1 {
-> +			pinmux = <0x2cf0>, <0x2d00>;
-> +		};
-> +	};
-> +
-> +	i2c4_pins: i2c4-pins {
-> +		i2c4-grp0 {
-> +			pinmux = <0x211>, <0x222>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-grp1 {
-> +			pinmux = <0x2d43>, <0x2d33>;
-> +		};
-> +	};
-> +
-> +	i2c4_gpio_pins: i2c4-gpio-pins {
-> +		i2c4-gpio-grp0 {
-> +			pinmux = <0x210>, <0x220>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-gpio-grp1 {
-> +			pinmux = <0x2d40>, <0x2d30>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c0 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c0_pins>;
-> +	pinctrl-1 = <&i2c0_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c1 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c1_pins>;
-> +	pinctrl-1 = <&i2c1_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c2 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c2_pins>;
-> +	pinctrl-1 = <&i2c2_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
 > +&i2c4 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c4_pins>;
-> +	pinctrl-1 = <&i2c4_gpio_pins>;
-> +	status = "okay";
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> new file mode 100644
-> index 000000000000..91fd8dbf2224
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> @@ -0,0 +1,122 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright 2024 NXP
-> + *
-> + * Authors: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> + *          Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> + *          Larisa Grigore <larisa.grigore@nxp.com>
-> + */
-> +
-> +&pinctrl {
-> +	i2c0_pins: i2c0-pins {
-> +		i2c0-grp0 {
-> +			pinmux = <0x1f2>, <0x201>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-grp1 {
-> +			pinmux = <0x2353>, <0x2363>;
-> +		};
-> +	};
-> +
-> +	i2c0_gpio_pins: i2c0-gpio-pins {
-> +		i2c0-gpio-grp0 {
-> +			pinmux = <0x1f0>, <0x200>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c0-gpio-grp1 {
-> +			pinmux = <0x2350>, <0x2360>;
-> +		};
-> +	};
-> +
-> +	i2c2_pins: i2c2-pins {
-> +		i2c2-grp0 {
-> +			pinmux = <0x151>, <0x161>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c2-grp1 {
-> +			pinmux = <0x2cf2>, <0x2d02>;
-> +		};
-> +	};
-> +
-> +	i2c2_gpio_pins: i2c2-gpio-pins {
-> +		i2c2-gpio-grp0 {
-> +			pinmux = <0x2cf0>, <0x2d00>;
-> +		};
-> +
-> +		i2c2-gpio-grp1 {
-> +			pinmux = <0x150>, <0x160>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +	};
-> +
-> +	i2c4_pins: i2c4-pins {
-> +		i2c4-grp0 {
-> +			pinmux = <0x211>, <0x222>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-grp1 {
-> +			pinmux = <0x2d43>, <0x2d33>;
-> +		};
-> +	};
-> +
-> +	i2c4_gpio_pins: i2c4-gpio-pins {
-> +		i2c4-gpio-grp0 {
-> +			pinmux = <0x210>, <0x220>;
-> +			drive-open-drain;
-> +			output-enable;
-> +			input-enable;
-> +			slew-rate = <133>;
-> +		};
-> +
-> +		i2c4-gpio-grp1 {
-> +			pinmux = <0x2d40>, <0x2d30>;
-> +		};
+> +	current-sensor@40 {
+> +		compatible = "ti,ina231";
+> +		reg = <0x40>;
+> +		shunt-resistor = <1000>;
 > +	};
 > +};
 > +
-> +&i2c0 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c0_pins>;
-> +	pinctrl-1 = <&i2c0_gpio_pins>;
-> +	status = "okay";
-> +
-> +	pcal6524: gpio-expander@22 {
-> +		compatible = "nxp,pcal6524";
-> +		reg = <0x22>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +	};
-> +};
-> +
-> +&i2c2 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c2_pins>;
-> +	pinctrl-1 = <&i2c2_gpio_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c4 {
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&i2c4_pins>;
-> +	pinctrl-1 = <&i2c4_gpio_pins>;
-> +	status = "okay";
-> +};
+>   &usdhc0 {
+>   	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+>   	pinctrl-0 = <&pinctrl_usdhc0>;
 
