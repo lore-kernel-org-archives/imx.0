@@ -1,72 +1,70 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013030.outbound.protection.outlook.com [40.107.162.30])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2066.outbound.protection.outlook.com [40.107.22.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D432139B5
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 15:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E7214804
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 15:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738682470; cv=fail; b=SArVdia2oO332qG9sAHTaIY7r6RqzQigVA/7irAmAZYi/Yh1mCsqywvUHQf7WAVq8CGwN7eRVeyyUqwMNb/uvxYhfMYq78oxgp1CZ7/GrAa+2gFQTIy+UOH+KjDyPCQV48EU2qCLelDnASu0IHCktDdT5Sxk4xD83GALOmgmy04=
+	t=1738683549; cv=fail; b=BFtDrX5KucFPvMCcncPSFCfmfbZchHbrvsAx5TdUK0TFpWrBz90rX50VvE+LtCtWcq0gAzkAd2p7WOe692PPzGpcc8BHtuuApi11t2miZIGR9xs79W5X47a0z8bVz/1Gj4UNscH+lIsw0FjxfKIiSoCriJw3R7Y5Fa0v/91tGaI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738682470; c=relaxed/simple;
-	bh=4Gic9XBtI/IIVKjQDVeWU+omOYj/XV1i7/Xo7yfQUGc=;
+	s=arc-20240116; t=1738683549; c=relaxed/simple;
+	bh=1alygUoqLtpKAj3aMDb5PCxhQGz2Z3+7aMExB7Mszg8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CiivL0npbNhqWTQfJS3OCFlSP/j/XIrxTVR1bKb/Gj6vcva94Uq23PTOp0jhD0m6y83XvWU7iZ7nz9IxTfdMLiYaEiA53A4a5G0TONWHw0MtgSRV4aLRIYx0vouuCcioRdk+0IXUiS6SACJGF75gcTbU1v+a+EsCuLRihyUBXPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jxpU1tKg; arc=fail smtp.client-ip=40.107.162.30
+	 Content-Disposition:In-Reply-To:MIME-Version; b=m5AQKcCRolzPipo6VdD8Mb5pExH72DIhf+He25in8slgGbqJDyEM9isrt9FsEbvlB4ngqLG1lyWxXcC1RlLOE7VlAg9IPsdc0FC5eOiCfPPLKcThkzGNFWGXxgpAfV2QCHQG4EipT+ceK/a89bfNybsrTRZy+xqKfZdW2Pd2t90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mWAYivb2 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.22.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jxpU1tKg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mWAYivb2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FYWcCfGWNLRfd7INTH0nbHt00EEvUuhFvECFWPmLDBlOjdqUxHFN8m1WT/puGGbARUbfGQqTkW/dm7tH1s5G3nql+19qZuI2PfrADnZmHA7b1PzoDhrpgJCuYaxj0R5vlHYrSuR+ngDOBXBQ6lRev8kIp+hMADrLeLoBjcvEMBW0hGMbK4SecIEXWrAuoWxH7wUKFrjuux6FcKYU5V/hbnxNCX52iv56LNGeBffHcbRMBTHNKfq4CefjtFeiCOEISkF2zXoUx+Biuqbqyp+4tnpoLV5uqpgRV0fZdu9/8LRNzT0m8kipXDQk78nvUppo1DDt+CWORPz4/+QAL9lR2Q==
+ b=lNh1WfAEw7QlfrBqmsCAWc8SmRzef3X+1OeFDZnRcJ5STiaY6WZt+N+yi9LsljOoei+DOF+lDjQCxREiiAhJBgekJiL1FbSc7uKQ9ga90Dmx6w8PXmL0VOWmV7cNYcfJ+9i2p21UGxbAfs8L37qSC9na0JM38GUtFWYeA9mSmAnR/36m9WDOZC5uu4lzZ4zVm6HktIRtcYo7f+O93WygIiRHxUpoqRmkV/D0fajehHZ1Wva+UT5Y73TK9XkMvmcayd2HE6bzXQnpVHc1MFkirg8jVI9PDFaR/q96jsd9kOlcq7PbaxXisLXrkhvaTxwvHsJu8nxpHt0LzjBJrHh+5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4Gic9XBtI/IIVKjQDVeWU+omOYj/XV1i7/Xo7yfQUGc=;
- b=gFH/pxUyIk/CnHOEi/dWOSZPSPCaQqu5G7chEA8mtF7BqqgMicIBhqzm81u1y37UfN2Vx7bCn6n/6N7FpfdSyH4rOGr660F3vy6H7MQMo/3iZbv/Jf5cWCiiVZvRGG5yayWYAMvKUf0LH+j0guQMKZ0Fi2R4AamtJYVVGUnyNHQpHbZFfD7VD1T1Tk2zj5sbJ1ygpikVktAaWfskM8PXMI6ES7VkaMIkcs6tMtgP5MtNpCpOoCFWl3ZHrhWEls/HoygKy4KrqcvyDVdBsrrC7bwNZGGgYWFBa8GneNTYXcy0ArRUjIjltutO5X5UURCalvImmG0UhwE6A8ZbhkrwQg==
+ bh=23gBdr8WA5TSFJwAXR6g2TEFQzsVB6y/pPiCMiC/4so=;
+ b=eIezQHtQEpsRAmGOIYWp1XZycYibAqowXcj0LjOI3L6E5JeNU/PEqTEzxlg9IhUB/k20QxNQ795rlDRkVLb1aI3eFyJ7sY1t07YXRsnoXge49ZKQRS3jCXrrPyWvGs4PN5EVkJhPHqgwMJodZKf48ZZ4TOMzIt0TuBQS6IhspSkoIT08VOfgn8W8rRc66+qDHCkkkPnz3NDY8mVzHTe2Zgc3mhQpHX86lPAdI7/Ca8+h9VfnbjAYwV9Q0z2npH6FZSQfmgdfKG/Dy08Bphv2Jg4bLgDgFaIdHhWhcQwQOJoY5gEzMjd5Yq/Z+HZmQXBQVeJ2oLHRG1b0NXS2OsJjpw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4Gic9XBtI/IIVKjQDVeWU+omOYj/XV1i7/Xo7yfQUGc=;
- b=jxpU1tKgdT5ICSExkw9sdsxJqDIsEjClqhd7jEo4T1MoS0NuVRFkZ11FdkLKKr9IjnkGP8MWGFwtdD4cSdYy5cZ6XIzVzwCdfkJjK4zq72eQbbxIhGjB2BXZwxrT9NEtRBSJTVTm1FZrQoO6hy0DsYZn1+4bP8tvbv4W0s9yAr9Oolv/f1wRPgujGvCSrIR9+eykkyGFCC3li1knPzdP/aZfdg8zFtbeiy6y3NJwid8Heslu5QoujY3EVhCrijAJvEqJao6RoueaWlond/FfWZuC61imI2Qr2hhZ/ZkqWdaSKegFFRJ8rxhpNf17tSEiqmXhwBJhSFCakE2qMfpg7A==
+ bh=23gBdr8WA5TSFJwAXR6g2TEFQzsVB6y/pPiCMiC/4so=;
+ b=mWAYivb2NDU3tU00iwEA4GctHI72dMPvqfdodH/B8IRcU3CDFy/m5xGLJsUe1ti2+02HFkGr26fwmntatdggyT7ZD+Q7UbCncnWmCvekW9lSlIoLy8j2IiYiblqSkHW71LVmZEmDFUh/yRmarYw/ROhSXAdrXTfA/1q28XPCfsz2LRq+ESaL8ppCMXcYzj5Cs58TQwaupS6OYJIXV/LHUDzhMLw9gnUSL6ERSi0VoCeLWVZiV41arR2tKqfPuxdAOaxNic+PeVtDyZDyOhKXAa4TDGfse4KHT1/9luVH6/W2OK74d0EZ3ak5/yhD4ssx6NYmLauLI/H3KP4ixYQ7Vg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7554.eurprd04.prod.outlook.com (2603:10a6:20b:2da::23) with
+ by PA2PR04MB10239.eurprd04.prod.outlook.com (2603:10a6:102:409::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.26; Tue, 4 Feb
- 2025 15:21:05 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Tue, 4 Feb
+ 2025 15:39:04 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8398.021; Tue, 4 Feb 2025
- 15:21:05 +0000
-Date: Tue, 4 Feb 2025 10:20:55 -0500
+ 15:39:04 +0000
+Date: Tue, 4 Feb 2025 10:38:57 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>
-Subject: Re: [PATCH v5 0/3] add I2C DTS support for S32G2/S32G3 SoCs
-Message-ID: <Z6IwV5zYqGgiqFcj@lizhi-Precision-Tower-5810>
-References: <20250113110512.506007-1-ciprianmarian.costea@oss.nxp.com>
- <afde74d0-b4d4-4907-bfd0-59f68861245a@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
+To: Joshua Yeong <joshua.yeong@starfivetech.com>
+Cc: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Conor Culhane <conor.culhane@silvaco.com>,
+	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/2] i3c: Add basic HDR support
+Message-ID: <Z6I0kSaNIHvRh60Y@lizhi-Precision-Tower-5810>
+References: <20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com>
+ <20250129-i3c_ddr-v1-1-028a7a5d4324@nxp.com>
+ <e09b50b8-dd65-4636-aa35-42efc86bba16@quicinc.com>
+ <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
+ <Z6DmUIKn5usytjl3@lizhi-Precision-Tower-5810>
+ <928b69ef-e5fa-46ea-9075-2b12d7fd9372@starfivetech.com>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <afde74d0-b4d4-4907-bfd0-59f68861245a@oss.nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0152.namprd03.prod.outlook.com
- (2603:10b6:a03:338::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <928b69ef-e5fa-46ea-9075-2b12d7fd9372@starfivetech.com>
+X-ClientProxiedBy: SJ0PR03CA0153.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,103 +73,333 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7554:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bd4576c-4e62-4aef-c569-08dd452f8aee
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10239:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7733e030-aaa0-4b94-661c-08dd45320db7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|1800799024|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aBOPlyp/dywFTvEmiKLP44/mGkNIePL+HCT2+7GqK2jAHBcyP6iEpeVXTnJi?=
- =?us-ascii?Q?x7kXkR+KtCrA2J/xIu88pDZww9WVOUpWwSjKvmHzlS2D06XfkWgzoHB5Xkan?=
- =?us-ascii?Q?NAx2UnGGC8+pSMUNXFUkYrR2rJFTvb88jevedyNMSZY+j8+eZ4r5U1s/CN8+?=
- =?us-ascii?Q?cSX1vHngfJNd83IpRXk1ZzMuVM4y0x4UT13GQP6L2FGtYPLQ4RoOj9qTDOG9?=
- =?us-ascii?Q?h7bU7JSuc8Y8a7nXqGazieaUuZ84pPm0raI6VjTk8wYkeZiXcO7y8bRQ3YBX?=
- =?us-ascii?Q?6bXzBSONO2N6EDf2gonlhgMP3bMpcX0dAP+4YuGdFy5biUz53awytEXiweUa?=
- =?us-ascii?Q?4gbYN9h6/XDJUb9eCTO4zGXQp9gwPuhJHBsjHqbN/lvWPNPAeopG7p2F3G2x?=
- =?us-ascii?Q?sDqJes3+l8pyKxA4uAh11RoO4ohxwlG1VGN/nT7Wm0vU4KKnfr2k8ePJ3Uoc?=
- =?us-ascii?Q?EYH3KMyp7l/byXcphP8YLG3g0V7PZjXesariyoL+6VcSliQHerW4DK79fA/d?=
- =?us-ascii?Q?EJOS43CnI6k2qxVpffSbEzztSpcDTjddBZc/fyxzT1FkKsx6/pIClWajIcfG?=
- =?us-ascii?Q?xlNPlKh6V8TXRZDCc+cSOYO2oNJmFbIw2AivLYLbXAAjbSlotkXHqs7gLrtW?=
- =?us-ascii?Q?j+46o993oDCkaC7b3h1YIQRCcY9exV04QbjJqTBAPSpclqwEgbBG12PPv+fe?=
- =?us-ascii?Q?lcCC0hPb9+YavEOtFMOwN73duiIEAbQ2MrpTJLsy78zVa1g5ZrOx+k0ZSrNM?=
- =?us-ascii?Q?/W8ONusiQy2BotrCDy18v5aUe+ops/Eve0x5uRfjsjZB0umGi1p9UwHVitvb?=
- =?us-ascii?Q?cvGv5OKCK8la4NMkAOx18D48aOM3zpDl9qoU9pMGWZJHPdTjCf5UP2JzIZA9?=
- =?us-ascii?Q?3OQoZlm5dgSUqA0r7iBRps7UL3hd1NyKEWu/ePxcj3VQpSlf0q+eZP9wt7i3?=
- =?us-ascii?Q?u17nDjbnq3IegQnkhkEoqe2KUAs0LFBIc+Yw42t7YqzNU/wweBuV2v+yxlSX?=
- =?us-ascii?Q?KLBpXUQ5TK8ssu24Yp4sI1QF/opJF9ONjaHgC65NbkWnCTbOGQHEWdlnIsiS?=
- =?us-ascii?Q?DU3bnVsXg3EKBd3UPZ9OipIauInqz0Uh6tGfz7nbIAA1+uhJ9dgrg4+ERymR?=
- =?us-ascii?Q?22dIqxLSVOAtfySFA5ooeNFlHb0RzoSektHfvvIINc6j9Y9oXMQO41vxyzyX?=
- =?us-ascii?Q?WNt0q4gEc9pCdCAwFy/7Hn++KJw4FJtHB6Rdi4iqVj2cAvNouEp59hp4ESvQ?=
- =?us-ascii?Q?s+ZqJR0mhIii3CS9MNAY7E1WZMYS3SBZAzI40iPU9tRfhD6M2yjSpBDbDgGG?=
- =?us-ascii?Q?orurVFOUBI4ClxXNtQYrk9sGY1s6dpgRoVR/AZ8eo6JUWNuRvnz1VwSZayln?=
- =?us-ascii?Q?q/iLiLAzmngOzlnoICKeLIXxBHpZqtqarueYcen115Q75e81m15RRKBi8oOW?=
- =?us-ascii?Q?2RsMIXwJMtwGRe0xClVv/vPaa/xswJH3?=
+	=?iso-8859-1?Q?X8jK2DHLtR9vruqGGz9eY0hyAZABHHxp0w1zzMXjdCLfWMO/khpAvwz1CE?=
+ =?iso-8859-1?Q?q7MgwsWNmfRC6UYDgjqU4JB8ANM4xcVZ5Eh0yFU+fe44WTfR5gyiEcO42H?=
+ =?iso-8859-1?Q?0uEIhh2qjMScS9UH4eLmOYh0wbWwx8kT0pv8nKSU77pie1x16wspyMpAi1?=
+ =?iso-8859-1?Q?9pdKsvMC46rCMIFtys3tznI6XZ+ZcUWAdFU8+NvkDvX7yuJajV5Goj82+7?=
+ =?iso-8859-1?Q?VjMjXd2LRbIuGMyGb4ncQBhb4pidnFYRgAcnsyv1k/RAoLG28aa+4cKCiw?=
+ =?iso-8859-1?Q?Pe73vjEwJWkSWrpfQe87SnCjq0HMm1llzeNAAjAXspenafZlgWew0FNkbU?=
+ =?iso-8859-1?Q?suuOsU95rdYcISEZ78CG7/h6Ij/w7Ute/9Za+7sMHcRbxP5UDGwAttZQCB?=
+ =?iso-8859-1?Q?YzUBMA8M5OpKJLSnjoQpeJytQyr2BChGAHoQTOfdXZvX4y0gs6EVJL3UN2?=
+ =?iso-8859-1?Q?Fn1KZMuZe+nKrfVSEpjnfZIL6QUcAGwT8WikcpU808GQpBQCjB/pjdBMoU?=
+ =?iso-8859-1?Q?LiOc6Kuf4tIkhq1RSKPMhMmsRDR/jm1kfiE6Lgqi97V+7Nd4ojGz8I+ISB?=
+ =?iso-8859-1?Q?MqI8/FHAU0HJTp2Tu6L+MlxOI7HCDAYzy3yfke2iW+Eg9OkV+g0rucHNNF?=
+ =?iso-8859-1?Q?dt+P7HiLqsPcG5ZzVz3GEDc5GaskSYcrxHYOTEPsi6XPapofzpe+QABuz4?=
+ =?iso-8859-1?Q?ChPVu/8NwvhOpMW8C3ggCVKPRcwIwUQQyZ9eQpSuNc1LfvK/0WBvj0IhUl?=
+ =?iso-8859-1?Q?pzS7VR8or6/K0whtKlfXBW++SzjeXvGxuZeUUC0TIeMk7UP/FKtDOXqs/7?=
+ =?iso-8859-1?Q?ZWGD1bMeuEOKlnIzJXyDE7ypkUB9uokVpI8rLP36Yle0JNtfV+gpUX4SIh?=
+ =?iso-8859-1?Q?6olB5AMDm1bJxjy5AbbgYyW+uFxArpHiVOR3CpeFaNJzctHaMMlNxXTjIp?=
+ =?iso-8859-1?Q?w2QJOCLxpkzhzGCJ23+YiJRnRBaCwXq6zBeLjkTMXyCvBs2Ey92o+tXjg8?=
+ =?iso-8859-1?Q?uVccb+z8DasXsFJz0yUeAQJ2bzG8OzdLiRZJTPvC7TgFDWKKspNMY8xqxU?=
+ =?iso-8859-1?Q?krQbXLAb67l+QWsy9h0Fm806w+2INjbz1jV2qFH94QgEvZo/i7bq4MtTyT?=
+ =?iso-8859-1?Q?GBu+QUe2yRyTPcv8l3AVANWjtHzZUyDa9dMV38o+gTj2jPlN/Va/rU4SPI?=
+ =?iso-8859-1?Q?TdrpACfS2laz4iMT9fTBrNBunxkr66GfAUcrW3TDHa3i/wKsEk5uz3dR8J?=
+ =?iso-8859-1?Q?foT+ZpY6NltsLuYNWIFRdkMcRRre3olwOwp/CE7oW42DSk32thxCc3m1Lm?=
+ =?iso-8859-1?Q?zqp/ZsoCmqyTt4NRifbbErppZh0VGH1znTc2AU0EPiqYglM7JUx17M1hKi?=
+ =?iso-8859-1?Q?rVB5w0KMVIE/Gn8gn+a/6l31OLILQ6T/HJzpzebd/sD07ZghIU5FxkMgvJ?=
+ =?iso-8859-1?Q?Q4d+7TgA01kSENL1HibHBK6/TZuR1uBAmoU5DTqXp2o4L6fKBWY1/nU1Gx?=
+ =?iso-8859-1?Q?8kzq89JdxJJKnHIGT82gFj?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NkhDkWq9GTi36jEhT0j4p2hE3Wv5fAggFLRg41Wni1ZfFiCeOgla3IcjNArM?=
- =?us-ascii?Q?N8ni5t7bTGTYqOOzx28fmoYL6ZqTulji29g607Ke71fgIX+0sBgcFBk6REhi?=
- =?us-ascii?Q?fUdh/a7VsF70ytZDyVQccNrkIyxBHT6XdzxUs73hjdz6SFDQXeHUN7VRWxdH?=
- =?us-ascii?Q?MMlDcqAwJVaM42+QOqnrDQU/aN2t5JUOsTovBs41tUUN2xpgzzI3p+sTmkGD?=
- =?us-ascii?Q?EhypUoIYxazJlC7KcGwY6hGBCf6+i5CX/arS11h7qFzHAsBTTn1dwKGBQ8fL?=
- =?us-ascii?Q?QVpcCfTG7TLfiW/sWZ3F3Z7PBguqSEu3rHNC9FP0Vp1sVPlfbwgqsSsGCTdS?=
- =?us-ascii?Q?ntTXaV2vikNCLnE34FAVUniZ4qIhf4DIAvVibR3364zDI3u0EO7zjBFFmZpQ?=
- =?us-ascii?Q?NtD6ZscIV/Sh4PLY1y7n4Iji43YjSSxSDIEqMARJori3QxbLcxPiGkFiOaVT?=
- =?us-ascii?Q?0lbrcREQ/+eB/K7/IpNVq+FSRU4Mj1LJvIqIBsFOhgEfe4XKicvnLUNEMOEW?=
- =?us-ascii?Q?Q1bF41CAYra6RmPe+L8sWTEGSCs28gRZxus318Bl4Y2d0D7xP4iXNJM/IAaR?=
- =?us-ascii?Q?TbtITMSlvaPomhp9h9Hpa/hcS39tUlPKxbidmP5so3/pENAVoPwbNxMtluqP?=
- =?us-ascii?Q?NUzShOKRo9OrPsIvq7Sk7Iuw0gK7ipBTEAp1FFnikwo5xzYfEZlooIRjc3G+?=
- =?us-ascii?Q?B6PGwyj6xJVE97zEoXcUbZYmND11oK4Afk5f17JRrr9f2LoHM6AVtZr1gkon?=
- =?us-ascii?Q?+Id6XFEIFAojiBktcazmWzh8zsePrrrnUDTEOVi99n+jACg7Hm0uzeEZWvxH?=
- =?us-ascii?Q?QkwMJAIfr2RsR/45T61/yxpvK58AWgOzpyFP9QWEmVY3xydfwZ+RwRpUgY+1?=
- =?us-ascii?Q?otS/5xsosXzBjge0PqAitBBorI80W5vsUF5G27crAtfFz5y07TTgqxDYvmTS?=
- =?us-ascii?Q?Ta4IznhS4IsVq9GcOgJxdultYFIDXvdACZKqU4v52jZQ6MGSvhO7YajrPkpV?=
- =?us-ascii?Q?NJD6OONdLUGJkmBx/5EEiIuyaypyPDef/B7cNlfx9VE6Xx0tUtyiCKgu1Urf?=
- =?us-ascii?Q?C8Z6AaTs7/MhAnTaRRny0uJsRaYKWplw/2s0Npr8Dqci/rwm/inu/MOWf49I?=
- =?us-ascii?Q?HkmYo4X9hNoaJwRf9px+149QPSGxpQ6ccYfs23WZC7aOaP6EeJUTIDJD5fAK?=
- =?us-ascii?Q?6G1QK6kvAJIpzA8BzKG1v/Lpgjediics9V+prYa44dcJbqEGuDyk3TVHwDJe?=
- =?us-ascii?Q?1mYpml4SOMwFryvJauE6cG8sIEmq2UKONaocai2tKQQCMfbofAryXXYm0g3D?=
- =?us-ascii?Q?BRpkt+T2dLePUhsJf8A1WFnvspUGrlqHLeMCCLtHZVSpzcmfN5zTjZ0BPgAk?=
- =?us-ascii?Q?bXs8xiu6Fr2V1LlC8o4VZOEb1eHyhysbYe7JiPdUjp+/ZNnLyQlJQdGQSKR/?=
- =?us-ascii?Q?2671yqWTSp8oMJpUvt/EV808rU82RIfNoiK34s4SglvhQtPwZhNSDWOe3ktr?=
- =?us-ascii?Q?rgIov9PTANL3Lhhdss6k8JfiHr/+A4eHXVdOJd4dLgW9/gx1BhYSrMZwe3g6?=
- =?us-ascii?Q?UZQMJrYHuxlyMIbftt8=3D?=
+	=?iso-8859-1?Q?1tzrxHOYX6WJoTbJksLhOq9OW4h+72tO2/CtbIZhoJ0DPJoUVs6JJo4bWX?=
+ =?iso-8859-1?Q?5PT83eycY+pok///J/lbOKZkN66XSV6BXDVEnzJOa0OvFCWCbrBQH0/lrK?=
+ =?iso-8859-1?Q?QfWazs+CLaoKXqHv7vG9kVVpWOdf60VTYfZoJqtu7ss7HmeV18OP1vNJJE?=
+ =?iso-8859-1?Q?4BDChLNRNIufcSE54aAG+st8uI1+bTiyHeyCk9GyD5OBopbvXBcwcCbb2i?=
+ =?iso-8859-1?Q?t1HVjaEQNEMcVDXALn8K6BZHF84Xx0hLBjjmF4VnF0RFM3As9noQuTKkrm?=
+ =?iso-8859-1?Q?vBoUXRF6k0BnGyjpZfxp9I1pmggCr4l9j8N5nvnUHZr+zdyd32aOUlJ92E?=
+ =?iso-8859-1?Q?4SPs8W+Km5g0k8p1z1tESqjlMbmpmoVEyvaFbzgLxjYMtvRGt+6uC6T5BX?=
+ =?iso-8859-1?Q?taTcm5C02TOtsIYRQNETUAAAJuJ0TRa/h4v21yjeAdimbYfR9HUewVQZSs?=
+ =?iso-8859-1?Q?ZwlgLNvuh1Ho5Ihm4h19LNLtOVJXNttgm53wiIX8g3dz1Ge+kwQSdNUKc3?=
+ =?iso-8859-1?Q?tZlPd1xtumG18sxu6ypsSGv+f2MAxwMa+zvQ8BLohL1YkJqe+Huqi9nrow?=
+ =?iso-8859-1?Q?dTHcxD2c/mW4i6/O42GxBdUtmxSBcT0o8OKE7GJVRSwqPTJfloXAaYYzMB?=
+ =?iso-8859-1?Q?Hmxw9gAFXkH3PSjckD4Ey4CcxenjXvPQVOoVHiTfpuM+n0dTTij/Yigbp9?=
+ =?iso-8859-1?Q?QzJz41zDCGir7m+nhFB5ElJee9StPWpYHAIKaIDZeXmSGRNqxfudDF3TFI?=
+ =?iso-8859-1?Q?KrU9WIOsCkCf0gSwkjaLl/uJs1vzIJ5Ex2foq+/ShT85RwDV9rI9MjeL1q?=
+ =?iso-8859-1?Q?M9oPDdf2fbFc3R3gDLqS2AWOCnfxPKkXEZP2RIF9P2bVysq8Rrr/91c/pP?=
+ =?iso-8859-1?Q?Vo4USc5JsxjsGDlkLIeGSWqgGa+IPSHBgWgt+gcrIz+UyfnHQyggmQp/Sq?=
+ =?iso-8859-1?Q?87kT+zlCuNiV5Yvloe6cL+l5f1rJvFUyts7N3bbXwdu3V2YVOKdcdlSkBa?=
+ =?iso-8859-1?Q?TUX5loDK8qFdJqtACYGS2PQoi6u37t3aAWx/PDnxCbM8uiL+t4/6DujeGq?=
+ =?iso-8859-1?Q?G34kvNf47AGKA3p/SaKfkbXOjGFgmEC+PLkxs71+LGVE/iVzHk6aAPT80B?=
+ =?iso-8859-1?Q?l6mcWlNJqNk54QBZ1BLUh+veb1uktFycql9zzunyY8QG4zJVOavMlf10Db?=
+ =?iso-8859-1?Q?0zPgZwYvfvnZWujwnuuBOWK50XghVPbICiyNK7S+eu2z4F4e2iVXxU7Atm?=
+ =?iso-8859-1?Q?hD7fq5RPT3HvvcizaaLkFprtcIgKhXQfeqtz2S1gwvjI7JqhBwce140dlh?=
+ =?iso-8859-1?Q?nAJwUn5pgKx12cZeqkGlHCWpmoNSypIuCMcS2P+iEkpVk+ybLJBQxjauFE?=
+ =?iso-8859-1?Q?agd5/s8JxeaEYpvAnoUvOW+yx/x9REDKWYVwF6LdgyDEo4eAcE2QJJ/vQR?=
+ =?iso-8859-1?Q?rjvl0bfI/5nOE/FtDAJnD4AbI1idrsgGlOHxxycCMWIpwrZ2C4VsaDB6yw?=
+ =?iso-8859-1?Q?dl1dFW40k4rzBbCYI34Z5r8R7twtiJR1E47f4Kfz1LbI6US/2ONzqTGaxO?=
+ =?iso-8859-1?Q?GzlTWyByv2YWVDqD0AAXMGn1Z+Yq6j63IOJ/Q80hoqjI6mdwWxu9B9xsWH?=
+ =?iso-8859-1?Q?SEu135ZnvInVk=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bd4576c-4e62-4aef-c569-08dd452f8aee
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7733e030-aaa0-4b94-661c-08dd45320db7
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 15:21:05.5004
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2025 15:39:04.0045
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: icHYN1uy/2SGWuNsUePuZShhW9Ivd1Md4RUODeCv6QMWv7Qd9uagZa/vurQRmVoOJRRvjd80e6pk1I2GgnDZ4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7554
+X-MS-Exchange-CrossTenant-UserPrincipalName: VlYJMJQOHGjcrwxxCyqnQApZRXiYPQjKWP3IjMqiMGT47gDS+iu42Ehq0D9IobkdVqTTW612psy9hmuMv2LaxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10239
 
-On Tue, Feb 04, 2025 at 12:12:34PM +0200, Ciprian Marian Costea wrote:
-> On 1/13/2025 1:05 PM, Ciprian Costea wrote:
-> > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> >
-> > This patchset aims to add two changes to the S32G2/S32G3 dtsi support:
-> > - Adding I2C dts support for S32G SoC based boards
-> > - Centralize the common part of 'S32G-EVB' and 'S32G-RDB' board revisions
-> > into dtsi files. This refactor will serve I2C in this patchset, but in the
-> > future it will also be used for other modules such as : FlexCAN and DSPI.
-> >
-...
-> >
+On Tue, Feb 04, 2025 at 03:17:36AM +0000, Joshua Yeong wrote:
+> Hi Frank,
 >
-> Hello,
+> On 03-Feb-2025 11:52 PM, Frank Li wrote:
+> > On Mon, Feb 03, 2025 at 02:32:51AM +0000, Joshua Yeong wrote:
+> >> Hi Mukesh and Frank,
+> >>
+> >> On 02-Feb-2025 1:54 AM, Mukesh Kumar Savaliya wrote:
+> >>> Hi Frank,
+> >>>
+> >>> On 1/30/2025 1:35 AM, Frank Li wrote:
+> >>>> I3C HDR requires enter/exit patterns during each I3C transfer. Add a new
+> >>>> API i3c_device_do_priv_xfers_mode(). The existing
+> >>>> i3c_device_do_priv_xfers() now calls i3c_device_do_priv_xfers_mode(I3C_SDR)
+> >>>> to maintain backward compatibility.
+> >>>>
+> >>>> Introduce a 'cmd' field in 'struct i3c_priv_xfer', using an anonymous union
+> >>>> with 'rnw' since HDR mode relies on read/write commands instead of the
+> >>>> 'rnw' bit in the address as in SDR mode.
+> >>>>
+> >>>> Add a priv_xfers_mode callback for I3C master drivers. If priv_xfers_mode
+> >>>> is not implemented, fallback to SDR mode using the existing priv_xfers
+> >>>> callback.
+> >>>>
+> >>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> >>>> ---
+> >>>> Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
+> >>>> one i3c transfer. for example, can't send a HDR follow one SDR between
+> >>>> START and STOP.
+> >>>>
+> >>> Is it wise to add two function inside main funcion and separate SDR vs HDR ? so we don't need to change current function arguments.
+> >
+> > I am not sure if understand your means. HDR have difference mode, anyway
+> > need add new argument.
+> >
+> >>
+> >> I think the 'private transfers' are limited to SDR communications,
+> >> would it be better if we have a different interface/naming for hdr transfers?
+> >
+> > The key is what's difference between hdr and private transfers. So far only
+> > command vs rnw, any other differences I missed?
 >
-> Is there any more feedback on this patchset ? I see that it is hanging for a
-> while. Just want to check.
+> I guess mainly the terminology. The specification differentiate HDR from private transfer.
+> We can have the hdr interface to have length indicating for u16 rather than u8 in private trasnfer.
 
-After linus create v6.14-rc1 tag, shawn will take care.
+It should be equivalence with check length is even.
+
+The key is how client driver will easy to use HDR if they already have SDR
+support.
+
+suppose client:
+
+struct i3c_priv_xfer xfer[2] = {{ .rnw = 0, buf=p1, size = 4, addr=0xb },
+				{ .rnw = 1, buf=p2, size = 4, addr=0xb }}
+
+priv_xfer(..., xfer, 2};
+
+if support HDR
+
+if (hdr) {
+	xfer[0].cmd = 0x80;
+	xfer[1].cmd = 0x;
+	priv_xfer(..., xfer, 2, HDR);
+} else {
+	priv_xfer(..., xfer, 2, SDR);
+}
+
+client driver needn't distingiush if buff is u8* or u16*.
+
+> I think the framework should check if device whether it supports HDR command before sending it.
+> I have code here that do some handling on that.
+
+Yes, I can add such check. The key point is API design.
 
 Frank
-
 >
-> Best Regards,
-> Ciprian
+> >
+> >>
+> >>>> i3c_priv_xfer should be treat as whole i3c transactions. If user want send
+> >>>> HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
+> >>>> instead put into a big i3c_priv_xfer[n].
+> >>>> ---
+> >>>>   drivers/i3c/device.c       | 19 +++++++++++++------
+> >>>>   drivers/i3c/internals.h    |  2 +-
+> >>>>   drivers/i3c/master.c       |  8 +++++++-
+> >>>>   include/linux/i3c/device.h | 12 +++++++++++-
+> >>>>   include/linux/i3c/master.h |  3 +++
+> >>>>   5 files changed, 35 insertions(+), 9 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
+> >>>> index e80e487569146..e3db3a6a9e4f6 100644
+> >>>> --- a/drivers/i3c/device.c
+> >>>> +++ b/drivers/i3c/device.c
+> >>>> @@ -15,12 +15,13 @@
+> >>>>   #include "internals.h"
+> >>>>     /**
+> >>>> - * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
+> >>>> - *                specific device
+> >>>> + * i3c_device_do_priv_xfers_mode() - do I3C SDR private transfers directed to a
+> >>>> + *                     specific device
+> >>>>    *
+> >>>>    * @dev: device with which the transfers should be done
+> >>>>    * @xfers: array of transfers
+> >>>>    * @nxfers: number of transfers
+> >>>> + * @mode: transfer mode
+> >>>>    *
+> >>>>    * Initiate one or several private SDR transfers with @dev.
+> >>>>    *
+> >>>> @@ -32,9 +33,9 @@
+> >>>>    *            driver needs to resend the 'xfers' some time later.
+> >>>>    *            See I3C spec ver 1.1.1 09-Jun-2021. Section: 5.1.2.2.3.
+> >>>>    */
+> >>>> -int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> >>>> -                 struct i3c_priv_xfer *xfers,
+> >>>> -                 int nxfers)
+> >>>> +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+> >>>> +                  struct i3c_priv_xfer *xfers,
+> >>>> +                  int nxfers, enum i3c_hdr_mode mode)
+> >>> why can't we pass mode as another structure member inside struct i3c_priv_xfer ? Adding function agrument parameter impacts existing drivers.
+> >
+> > If that, it will be possible, xfers[0] is sdr, xfers[1] is hdr. Actually,
+> > I3C can't do that.  we assume finish whole xfers between one whole traction
+> > (between START and STOP).
+> >
+> > Frank
+>
+> Yes, I think it is better if we split xfer transfer interface for SDR and HDR.
+> The interface should assume respective driver to decide how to handle ENTHDR CCC + Exit Pattern.
+> Else we will need additional 2 interface for start and stop for HDR.
+>
+> Joshua
+>
+>
+> >>>>   {
+> >>>>       int ret, i;
+> >>>>   @@ -47,11 +48,17 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> >>>>       }
+> >>>>         i3c_bus_normaluse_lock(dev->bus);
+> >>>> -    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
+> >>>> +    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers, mode);
+> >>>>       i3c_bus_normaluse_unlock(dev->bus);
+> >>>>         return ret;
+> >>>>   }
+> >>>> +EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers_mode);
+> >>>> +
+> >>>> +int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers, int nxfers)
+> >>>> +{
+> >>>> +    return i3c_device_do_priv_xfers_mode(dev, xfers, nxfers, I3C_SDR);
+> >>>> +}
+> >>>>   EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
+> >>>>     /**
+> >>>> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+> >>>> index 433f6088b7cec..553edc9846ac0 100644
+> >>>> --- a/drivers/i3c/internals.h
+> >>>> +++ b/drivers/i3c/internals.h
+> >>>> @@ -16,7 +16,7 @@ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+> >>>>   int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
+> >>>>   int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> >>>>                    struct i3c_priv_xfer *xfers,
+> >>>> -                 int nxfers);
+> >>>> +                 int nxfers, enum i3c_hdr_mode mode);
+> >>>>   int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
+> >>>>   int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
+> >>>>   int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
+> >>>> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> >>>> index d5dc4180afbcf..67aaba0a38db2 100644
+> >>>> --- a/drivers/i3c/master.c
+> >>>> +++ b/drivers/i3c/master.c
+> >>>> @@ -2945,7 +2945,7 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
+> >>>>     int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> >>>>                    struct i3c_priv_xfer *xfers,
+> >>>> -                 int nxfers)
+> >>>> +                 int nxfers, enum i3c_hdr_mode mode)
+> >>>>   {
+> >>>>       struct i3c_master_controller *master;
+> >>>>   @@ -2956,9 +2956,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> >>>>       if (!master || !xfers)
+> >>>>           return -EINVAL;
+> >>>>   +    if (master->ops->priv_xfers_mode)
+> >>>> +        return master->ops->priv_xfers_mode(dev, xfers, nxfers, mode);
+> >>>> +
+> >>>>       if (!master->ops->priv_xfers)
+> >>>>           return -ENOTSUPP;
+> >>>>   +    if (mode != I3C_SDR)
+> >>>> +        return -EINVAL;
+> >>>> +
+> >>>>       return master->ops->priv_xfers(dev, xfers, nxfers);
+> >>>>   }
+> >>>>   diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+> >>>> index b674f64d0822e..7ce70d0967e27 100644
+> >>>> --- a/include/linux/i3c/device.h
+> >>>> +++ b/include/linux/i3c/device.h
+> >>>> @@ -40,11 +40,13 @@ enum i3c_error_code {
+> >>>>     /**
+> >>>>    * enum i3c_hdr_mode - HDR mode ids
+> >>>> + * @I3C_SDR: SDR mode (NOT HDR mode)
+> >>>>    * @I3C_HDR_DDR: DDR mode
+> >>>>    * @I3C_HDR_TSP: TSP mode
+> >>>>    * @I3C_HDR_TSL: TSL mode
+> >>>>    */
+> >>>>   enum i3c_hdr_mode {
+> >>>> +    I3C_SDR,
+> >>>>       I3C_HDR_DDR,
+> >>>>       I3C_HDR_TSP,
+> >>>>       I3C_HDR_TSL,
+> >>>> @@ -53,6 +55,7 @@ enum i3c_hdr_mode {
+> >>>>   /**
+> >>>>    * struct i3c_priv_xfer - I3C SDR private transfer
+> >>>>    * @rnw: encodes the transfer direction. true for a read, false for a write
+> >>>> + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
+> >>>>    * @len: transfer length in bytes of the transfer
+> >>>>    * @actual_len: actual length in bytes are transferred by the controller
+> >>>>    * @data: input/output buffer
+> >>>> @@ -61,7 +64,10 @@ enum i3c_hdr_mode {
+> >>>>    * @err: I3C error code
+> >>>>    */
+> >>>>   struct i3c_priv_xfer {
+> >>>> -    u8 rnw;
+> >>>> +    union {
+> >>>> +        u8 rnw;
+> >>>> +        u8 cmd;
+> >>>> +    };
+> >>>>       u16 len;
+> >>>>       u16 actual_len;
+> >>>>       union {
+> >>>> @@ -301,6 +307,10 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> >>>>                    struct i3c_priv_xfer *xfers,
+> >>>>                    int nxfers);
+> >>>>   +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+> >>>> +                  struct i3c_priv_xfer *xfers,
+> >>>> +                  int nxfers, enum i3c_hdr_mode mode);
+> >>>> +
+> >>>>   int i3c_device_do_setdasa(struct i3c_device *dev);
+> >>>>     void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
+> >>>> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> >>>> index 12d532b012c5a..352bd41139569 100644
+> >>>> --- a/include/linux/i3c/master.h
+> >>>> +++ b/include/linux/i3c/master.h
+> >>>> @@ -472,6 +472,9 @@ struct i3c_master_controller_ops {
+> >>>>       int (*priv_xfers)(struct i3c_dev_desc *dev,
+> >>>>                 struct i3c_priv_xfer *xfers,
+> >>>>                 int nxfers);
+> >>>> +    int (*priv_xfers_mode)(struct i3c_dev_desc *dev,
+> >>>> +                   struct i3c_priv_xfer *xfers,
+> >>>> +                   int nxfers, enum i3c_hdr_mode mode);
+> >>>>       int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
+> >>>>       void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
+> >>>>       int (*i2c_xfers)(struct i2c_dev_desc *dev,
+> >>>>
+> >>>
+> >>>
+> >>
+>
