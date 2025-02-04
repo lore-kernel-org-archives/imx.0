@@ -1,98 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD6D1547D8;
-	Tue,  4 Feb 2025 17:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B269778F4A
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 18:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738689344; cv=none; b=W/PCpBc2G4claKHJW996d/1/tyleeAf/Tan44iFfjQIWIjbwh2mmdgKp9D+k1jgZRwW9/6NbjBvpmLDuPRCFJjx/NNIsvbKvvrHxkUZmnDDBQR6D4Cyk8A14eeab+YeuiCBrI6dRqe43tE5snml4Ezwn2Gc27myDrJmWDRE7bNs=
+	t=1738693669; cv=none; b=TCyFHF5fsckBTur/9HHvQtgYJO7r+SONMb8vmSZ7cWE9q7mhBDjNzHgZVcPciEFwqk7Ohw9zn+Ja0yjyn+rqTxd/WM35f0xTnjzD+tHO4uqQKheTdGev7fq+onSdpbgj+jkeCdwYMZofMmLXAWmCyuqHZ6DT0O2rD9Xf6VnWDMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738689344; c=relaxed/simple;
-	bh=3utSJ411NngUd6k8m6seQSFeNuwpsSuyhkYl5TQtGws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZEafQAmTW2gLN0t2VDtqfQFbKSCg8NSjWBci5c7rqGxlYUOk3CKXA78IxGQKj2xipK6BnRXtmprDu4q2ZGFCyOLxWMI9KoFJ6svhIs+ncMQuKCV+Lf3h1koqfvRKQloS7KLj5yynPY2EMrgio57TFzANae394UTOiStbCX4i5TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VaNh998B; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VaNh998B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A643DC4CEDF;
-	Tue,  4 Feb 2025 17:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738689343;
-	bh=3utSJ411NngUd6k8m6seQSFeNuwpsSuyhkYl5TQtGws=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VaNh998BpgDbyWeyaak5lKi2kdVzVRXcmyGbLVpJonZ87KnMyAxu9w7aK8kUK/g8H
-	 dsI/kYKnyOU6CMOzEN12UKtsixiv2WbXa2d6GN90JSTqSvh5r2xRC2xhhl3ooSGPJJ
-	 nDc6Q+n3cLVPR7usEFuRERhz6fNLRTJNO2NV/WE/Hx7zxiXwrhLbwBCkh2dgKMfERB
-	 +RCjyYxK/TtU7e3GTJBN4FFnQ+xgFGbgZvRxrXiUbVo2yqxcv/X52jH3M5iEdLYtna
-	 fzIfrIbvPb5o9Rdg/kGlZvSi+jDjSrpDAsJqqgKntL5KIjNejF9YGDUalqeEZG8I8s
-	 2pykyrOE61Iyg==
-Date: Tue, 4 Feb 2025 17:15:38 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/9] ASoC: SOF: imx: introduce more common structures and
- functions
-Message-ID: <fbb837ba-d4e4-4e34-8554-fbb878716289@sirena.org.uk>
-References: <20250203171808.4108-1-laurentiumihalcea111@gmail.com>
- <20250203171808.4108-2-laurentiumihalcea111@gmail.com>
- <Z6EeZ4lgKVHCee3e@lizhi-Precision-Tower-5810>
- <db81aa4e-dc1f-4c6d-b58f-82883622b0dc@gmail.com>
+	s=arc-20240116; t=1738693669; c=relaxed/simple;
+	bh=pPIp+z2bPeEdOqjOS3BHIjyuTfgWa0eb8p6WRSsgM3g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hI5+b4vsgoTalA3e9GteVLQ8/oEdVlLb74iH2iiv3/1OPppXtNEmExaqV9RsLM1iOICqJn9ajbLS49mHa6XyzDqS4IPyzvLcHQ0qEqYuQ/lyDeuqWM+WIhTEZHuctHH9aQIcaUH7UclDd/f6EUUYJwyVVn90Mg5GJ0tEFBL8b9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tfNe6-0005cn-7j; Tue, 04 Feb 2025 19:27:38 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tfNe5-003Vb6-1p;
+	Tue, 04 Feb 2025 19:27:37 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	patchwork-lst@pengutronix.de
+Subject: [PATCH] arm64: dts: imx8mp: configure GPU and NPU clocks to overdrive rate
+Date: Tue,  4 Feb 2025 19:27:37 +0100
+Message-Id: <20250204182737.3361431-1-l.stach@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+1RK/W50sxFm0I0k"
-Content-Disposition: inline
-In-Reply-To: <db81aa4e-dc1f-4c6d-b58f-82883622b0dc@gmail.com>
-X-Cookie: Spelling is a lossed art.
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
+A lot of other clocks on the i.MX8MP, including the DRAM set up by the
+bootloader are already running at overdrive clock rates. While this is a
+deviation from the configuration of other i.MX8M* family SoCs, overdrive
+is the default for most i.MX8MP boards and only some special purpose
+boards will choose to run the SoC at nominal drive rates. Up the GPU and
+NPU clock rates to their overdrive level to be consistent with other
+clocks set up in the dtsi.
 
---+1RK/W50sxFm0I0k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-On Tue, Feb 04, 2025 at 06:59:53PM +0200, Laurentiu Mihalcea wrote:
-> On 2/3/2025 9:52 PM, Frank Li wrote:
-> > On Mon, Feb 03, 2025 at 12:18:00PM -0500, Laurentiu Mihalcea wrote:
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index e0d3b8cba221..aeaa6a5c2f56 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -816,12 +816,12 @@ pgc_mlmix: power-domain@4 {
+ 						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
+ 								  <&clk IMX8MP_CLK_ML_AXI>,
+ 								  <&clk IMX8MP_CLK_ML_AHB>;
+-						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++						assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+ 									 <&clk IMX8MP_SYS_PLL1_800M>,
+ 									 <&clk IMX8MP_SYS_PLL1_800M>;
+-						assigned-clock-rates = <800000000>,
++						assigned-clock-rates = <1000000000>,
+ 								       <800000000>,
+-								       <300000000>;
++								       <400000000>;
+ 					};
+ 
+ 					pgc_audio: power-domain@5 {
+@@ -2232,9 +2232,9 @@ gpu3d: gpu@38000000 {
+ 			clock-names = "core", "shader", "bus", "reg";
+ 			assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
+ 					  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>;
+-			assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-						 <&clk IMX8MP_SYS_PLL1_800M>;
+-			assigned-clock-rates = <800000000>, <800000000>;
++			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
++						 <&clk IMX8MP_SYS_PLL2_1000M>;
++			assigned-clock-rates = <1000000000>, <1000000000>;
+ 			power-domains = <&pgc_gpu3d>;
+ 		};
+ 
+@@ -2247,8 +2247,8 @@ gpu2d: gpu@38008000 {
+ 				 <&clk IMX8MP_CLK_GPU_AHB>;
+ 			clock-names = "core", "bus", "reg";
+ 			assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>;
+-			assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
+-			assigned-clock-rates = <800000000>;
++			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>;
++			assigned-clock-rates = <1000000000>;
+ 			power-domains = <&pgc_gpu2d>;
+ 		};
+ 
 
-> >> +static void imx_handle_reply(struct imx_dsp_ipc *ipc)
-> >> +{
-> >> +	unsigned long flags;
-> >> +	struct snd_sof_dev *sdev = imx_dsp_get_data(ipc);
-> >> +
-> >> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
-> >> +	snd_sof_ipc_process_reply(sdev, 0);
-> >> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
-> > Are you sure have to use spin_lock?
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+-- 
+2.39.5
 
-> not sure, this definition was taken from previous drivers. I'd say keep it for now
-> as removing it would require some more testing which will take some time.
-
-If it's just factoring out common code it does make sense to do the
-factoring out then incrementally change the locking as a separate change.
-
---+1RK/W50sxFm0I0k
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeiSzoACgkQJNaLcl1U
-h9BJWAf/UbrWOukEmUUeKubtRgSRUj4YCBANoW4tBEilmL6coROl4kWq25DGtWOv
-HtvaCU9g9HWskNS7qXD2SHsZMeD3u37VOGK3aRbndiK91nWzRl6I7fJuRO3IFobC
-/iyjJFInxxD8inhtkGeYH4aop/buuClugsMFnlFHFCq8bJonuxtQxNcHYXvg1DB9
-791k+XklGiJT0ERCIDAO3vNz22LKE9dFqMSgPDkTMUvZtg2jhYcLSKJZ7lF5Kt8y
-/rES3rjNnQa41vnYvUAvw+AZMMOime27hwyIZQkdn3pboIo/dhTJPBf+3Ang/052
-lC+2A/ohN2fwOR6bjzRatTvqvR+z6g==
-=gqnK
------END PGP SIGNATURE-----
-
---+1RK/W50sxFm0I0k--
