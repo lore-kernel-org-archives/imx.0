@@ -1,136 +1,182 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB15207641
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 08:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C6206F18
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 09:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738659366; cv=none; b=F+mabRtCr14JjFLPjZ6M0rGz4dV6ZWoRICrN+i8i6dwJcgDoS/kQVFTLJ7GCv5VQhSDkcWIQy/luXQIUW8CQJDVTSw4Cqg4wpb0g79MbbtAsxjGR5FT6wBhneyCIej65awOZzK1TRUfCkLdYQl0RI2RlUeX3qwa8OPLJ36W8SJ4=
+	t=1738661820; cv=none; b=DFm2h2inqGwBoh3hRjt04KN2RmdsyzGg3/GTQOVbMNCUKAa+JirqEylf7K6KwE5MvIm4DHUAw+fqwGSqskuxrMIMcvNRyrfrQS2AzgFvNE2THR2O1RyEouenkrRiVWH9xQ78aUpoz0sieFpueKTQBYGDxs+HMFvMUWj1OFivqCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738659366; c=relaxed/simple;
-	bh=bUUUaQN5QUZLJm8PvVi1ettkEXGs+/n1vlbO2MJsNW4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Vl9kHMapjEtysOE86VQzgARr4hO393oUB1lK/9xCdpePvtXmMX3VvYVSMwaU3RPFccndjUP2uAyYm/5ojxbTQLFlDYGMgVBD4d3urJ9nZodIT7Y1ZySWCAe8egvRIxjpH6EegkJ/gxa7M+I2LwFixaAlqGaga2wvRM8dE6pCBXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mKD5KRkl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D3oWoJ8C; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1738661820; c=relaxed/simple;
+	bh=wDHC1KEHF8DQWAcUfnfxCywjfzzoTefVOSXvL3BKXuI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ydqks1GzxR+clEmug/4Ljo4nDwLUH3Z67nnRotDM+ln+p7W7TCD7bnwfNOfvFPyNCZluaLJD+5YZniU2pkfFev7JiySQZEvmMpOHZYnvnJcLz/QKiOYLrqcVtt3QLa2WmsHLW/R6g0T9Y0EwXhlB9JKKWovKVWc+wNP1Y0oCJ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=NpAAPG6/; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mKD5KRkl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D3oWoJ8C"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738659363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LSqgMFS4aDbQD1Za39QBUfMLlRyO1p8mWDLUklEpzZI=;
-	b=mKD5KRklKrqXuveUDqTQ1L1HpTnd13HHNJ3z6qOmdFhn77mOErYPVsTtVodroOBX6waOm2
-	yCjHaCcNEfo8cp4ZQxslB6hkHbqNgQJd02o17NfDTekgRph/VHEx6J/8kqeKsC5h/NplWh
-	wLS6nIsOleHi16tu0WRI2yjtYig3qPX/PMkrBNZBVtooF3VUAL0eZbH7zPb8rEj5mSoJ7a
-	o3if5Xzv2sVE/85ympiNuUyJWB3uDkl8ZH3mDXhVnJKdT1NuKR74r1iJzFxHsWzYPhGD24
-	7V6G/clKUKMw6CLs5OaqYfw9w6CXHLGg1tFbeZ0NcmiLoYIiH+h2i9ztBuzTrg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738659363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LSqgMFS4aDbQD1Za39QBUfMLlRyO1p8mWDLUklEpzZI=;
-	b=D3oWoJ8CAX418qVeH86CLIWCx4KbgcDAbTmVaPpd13BHVb64PoVUaGz3iQha4kI8/XnyAn
-	JjZ3XY/2fYFaxkAw==
-To: Anup Patel <apatel@ventanamicro.com>
-Cc: Marc Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>, Gregory Clement
- <gregory.clement@bootlin.com>, Sebastian Hesselbarth
- <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra
- <atishp@atishpatra.org>, Andrew Jones <ajones@ventanamicro.com>, Sunil V L
- <sunilvl@ventanamicro.com>, Anup Patel <anup@brainfault.org>,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, Anup Patel
- <apatel@ventanamicro.com>
-Subject: Re: [PATCH v3 10/10] irqchip/riscv-imsic: Use IRQCHIP_MOVE_DEFERRED
- flag for PCI devices
-In-Reply-To: <20250204075405.824721-11-apatel@ventanamicro.com>
-References: <20250204075405.824721-1-apatel@ventanamicro.com>
- <20250204075405.824721-11-apatel@ventanamicro.com>
-Date: Tue, 04 Feb 2025 09:56:03 +0100
-Message-ID: <87o6zinl5o.ffs@tglx>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="NpAAPG6/"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 586E0A0E19;
+	Tue,  4 Feb 2025 10:36:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=Arq9TziV6dw9WdFzvtYFlrk4miTqYDr7Y/tlevZbNFA=; b=
+	NpAAPG6/A1MwPIp4sAVU5yW9PoZph/3FOiSqqBT2Vs3AZ7ih9z3Q7X1GJzlLXqwG
+	cdO4wghQqQqgt91WkPSE2YyDewZse+SF4E2VzHbBpaeg0V3dMTt4ZUfBKl2+MnwI
+	6ihhmquOIXXc01wyrs9ULwXnvYI7C92FxeKB5spUxWqcdfUg22OB4FMq5rFlcvY6
+	q+6Atc3F5PMeQTxpBSiru67IfkfTR+vfwHjkq7HKrYI5nZ9rl2BKy+AWOvGz64/o
+	HPsY9cFzgTt9Bf2+IN6kHPth5VMFwyxdzBmKDy3PUSZtwyT6YTWFfKMRdbyEcYfO
+	ZwRwSBFrxo82TKHlQ2aG/3us/Bz8YnoGXLC6Cge8VXRBU70O6ktomMUaDJookx2A
+	cj+a9L4VVNWPww05TCrK6XWibb1LP9/WLHRCTtCPrAYN0bVRiH/tdAveWZ48i6vx
+	hiQJ+H0jEXAcrgQnEqpm4d8k2mVr5yuuULwilop3lY6nnns2zFfT5Zg/BloYJ4yG
+	BFPmaO3hnhNyNSAr5xXD/NaEI7bfM6lCCvabXHmNbocNl7gnniOJmuF1vqvtZ3k2
+	PYMk+TZwFHWTNj6KMmoWVpHBvWYozwiVOLiku7KYpnmwQktkPSGgTLnXHogyyHTl
+	5/fuOEEs7e5iw8+geWk9VgfsIGQsjn5U0Sh51QjDqlM=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: Laurent Badel <laurentbadel@eaton.com>, Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?=
+	<csokas.bence@prolan.hu>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Jacob Keller
+	<jacob.e.keller@intel.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] net: fec: Refactor MAC reset to function
+Date: Tue, 4 Feb 2025 10:36:03 +0100
+Message-ID: <20250204093604.253436-2-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738661813;VERSION=7985;MC=3118175526;ID=197840;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD94852667366
 
-On Tue, Feb 04 2025 at 13:24, Anup Patel wrote:
-> Devices (such as PCI) which have non-atomic MSI update should
-> migrate irq in the interrupt-context so use IRQCHIP_MOVE_DEFERRED
-> flag for corresponding irqchips.
->
-> The use of IRQCHIP_MOVE_DEFERRED further simplifies IMSIC vector
-> movement as follows:
->
-> 1) No need to handle the intermediate state seen by devices with
->    non-atomic MSI update because imsic_irq_set_affinity() is called
->    in the interrupt-context with interrupt masked.
-> 2) No need to check temporary vector when completing vector movement
->    on the old CPU in __imsic_local_sync().
-> 3) No need to call imsic_local_sync_all() from imsic_handle_irq()
+The core is reset both in `fec_restart()` (called on link-up) and
+`fec_stop()` (going to sleep, driver remove etc.). These two functions
+had their separate implementations, which was at first only a register
+write and a `udelay()` (and the accompanying block comment). However,
+since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+meant that these implementations diverged, often causing bugs.
 
-I have no idea how you came to that delusion.
+For instance, as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+a PM power-down event; and `fec_restart()` missed the refactor renaming
+the "magic" constant `1` to `FEC_ECR_RESET`.
 
-IRQCHIP_MOVE_DEFERRED is part of the mechanism to handle this insanity
-correctly. It does not prevent the device from observing and actually
-using the intermediate state. All it does is to ensure that the kernel
-can observe this case and act on it.
+To harmonize current implementations, and eliminate this source of
+potential future bugs, refactor implementation to a common function.
 
-The fact that the kernel executes the interrupt handler on the original
-target CPU does not prevent the device from firing another interrupt.
-PCI/MSI interrupts are strictly edge. i.e. fire and forget.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+Fixes: ff049886671c ("net: fec: Refactor: #define magic constants")
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
 
-IRQCHIP_MOVE_DEFERRED solely ensures that the racy affinity update in
-the PCI device happens in the context of the original target CPU, which
-is required to handle all possible cases correctly.
+Notes:
+    Recommended options for this patch:
+    `--color-moved --color-moved-ws=allow-indentation-change`
+    Changes in v2:
+    * collect Michal's tag
+    * reformat message to 75 cols
+    * fix missing `u32 val`
+    Changes in v3:
+    * rename parameter to `allow_wol`
+    Changes in v3:
+    * clarify message
+    * collect Jacob's tag
+    * rebased onto c2933b2befe2
 
-Let's assume the interrupt is affine to CPU0, vector A and a move to
-CPU1, vector B is pending. So we have three possible scenarios:
+ drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-CPU0                            Device                                
-interrupt
-                                1) Raises interrupt on CPU0, vector A
-  ...
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f7c4ce8e9a26..a86cfebedaa8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 	}
+ }
+ 
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
++{
++	u32 val;
++
++	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
+-	}
++	fec_ctrl_reset(fep, false);
+ 
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 
+-- 
+2.48.1
 
-    write_msg()
-        write_address(CPU1)
-                                2) Raises interrupt on CPU1, vector A
-        write_data(vector B)
-                                3) Raises interrupt on CPU1, vector B
 
-#1 is handled correctly because the interrupt is retriggered on CPU0,
-   vector A, which still has the interrupt associated (it's cleaned up
-   _after_ the first interrupt arrives on CPU1, vector B).
-
-#2 cannot be handled because CPU1, vector A is either not in use or
-   associated to a completely unrelated interrupt, which means if that
-   happens the interrupt is lost and the device might become stale.
-
-#3 is handled correctly for obvious reasons.
-
-The only way to handle #2 properly is to do the intermediate update to
-CPU0, vector B and checking for a pending interrupt on that. The
-important role IRQCHIP_MOVE_DEFERRED plays here is that it guarantees
-that the update happens on CPU0 (original target). Which in turn is
-required to observe that CPU0, vector B has been raised.
-
-The same could be achieved by executing that intermediate transition on
-CPU0 with interrupts disabled by affining the calling context (thread)
-to CPU0 or by issuing an IPI on CPU0 and doing it in that context. I
-looked into that, but that has it's own pile of issues. So at the end
-moving it in the context of the interrupt on the original CPU/vector
-turned out to be the simplest way to achieve it.
-
-Thanks,
-
-        tglx
