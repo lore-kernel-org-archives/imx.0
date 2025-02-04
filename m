@@ -1,52 +1,57 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C6206F18
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 09:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE0519C54B
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 09:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738661820; cv=none; b=DFm2h2inqGwBoh3hRjt04KN2RmdsyzGg3/GTQOVbMNCUKAa+JirqEylf7K6KwE5MvIm4DHUAw+fqwGSqskuxrMIMcvNRyrfrQS2AzgFvNE2THR2O1RyEouenkrRiVWH9xQ78aUpoz0sieFpueKTQBYGDxs+HMFvMUWj1OFivqCQ=
+	t=1738662245; cv=none; b=WiVnxqv5XOZmJZIwHv6Rl55QUdKdG/R+1FYC94PIVY/7BU/YdmzFSkw0NTtKFjfB+uLlBdqXktxqfNWJ1XWjpOUk80llhdbUklKymU0YTS3HB18JkZH46sk/phGtmt2OzJVpBsrLJnhIndWuQFR+Tzti3CfXSNKyrK1blS28l34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738661820; c=relaxed/simple;
+	s=arc-20240116; t=1738662245; c=relaxed/simple;
 	bh=wDHC1KEHF8DQWAcUfnfxCywjfzzoTefVOSXvL3BKXuI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ydqks1GzxR+clEmug/4Ljo4nDwLUH3Z67nnRotDM+ln+p7W7TCD7bnwfNOfvFPyNCZluaLJD+5YZniU2pkfFev7JiySQZEvmMpOHZYnvnJcLz/QKiOYLrqcVtt3QLa2WmsHLW/R6g0T9Y0EwXhlB9JKKWovKVWc+wNP1Y0oCJ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=NpAAPG6/; arc=none smtp.client-ip=193.68.50.107
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sefGm9Gyrkzo6aQQ95XgZsMBW2zWV1DXAhHIcNyCBbLfRnef959UvJmqYlQgVGvwpjZJ3yAA0bTb8Mregjfa2WviFBZWFq9Sy+8RgWl05hnKoly4vSSB8yLx3D3NflFFlZigGRkhIwIJfHVZZrh8TkVLMgloFTYMfc+sj/NKGtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=GKZMqyk1; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="NpAAPG6/"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="GKZMqyk1"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 586E0A0E19;
-	Tue,  4 Feb 2025 10:36:54 +0100 (CET)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5CC10A0031;
+	Tue,  4 Feb 2025 10:44:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=Arq9TziV6dw9WdFzvtYFlrk4miTqYDr7Y/tlevZbNFA=; b=
-	NpAAPG6/A1MwPIp4sAVU5yW9PoZph/3FOiSqqBT2Vs3AZ7ih9z3Q7X1GJzlLXqwG
-	cdO4wghQqQqgt91WkPSE2YyDewZse+SF4E2VzHbBpaeg0V3dMTt4ZUfBKl2+MnwI
-	6ihhmquOIXXc01wyrs9ULwXnvYI7C92FxeKB5spUxWqcdfUg22OB4FMq5rFlcvY6
-	q+6Atc3F5PMeQTxpBSiru67IfkfTR+vfwHjkq7HKrYI5nZ9rl2BKy+AWOvGz64/o
-	HPsY9cFzgTt9Bf2+IN6kHPth5VMFwyxdzBmKDy3PUSZtwyT6YTWFfKMRdbyEcYfO
-	ZwRwSBFrxo82TKHlQ2aG/3us/Bz8YnoGXLC6Cge8VXRBU70O6ktomMUaDJookx2A
-	cj+a9L4VVNWPww05TCrK6XWibb1LP9/WLHRCTtCPrAYN0bVRiH/tdAveWZ48i6vx
-	hiQJ+H0jEXAcrgQnEqpm4d8k2mVr5yuuULwilop3lY6nnns2zFfT5Zg/BloYJ4yG
-	BFPmaO3hnhNyNSAr5xXD/NaEI7bfM6lCCvabXHmNbocNl7gnniOJmuF1vqvtZ3k2
-	PYMk+TZwFHWTNj6KMmoWVpHBvWYozwiVOLiku7KYpnmwQktkPSGgTLnXHogyyHTl
-	5/fuOEEs7e5iw8+geWk9VgfsIGQsjn5U0Sh51QjDqlM=
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=Arq9TziV6dw9WdFzvtYF
+	lrk4miTqYDr7Y/tlevZbNFA=; b=GKZMqyk1lK5CbdOtG5i53YSr5Rzx7xoiaK6R
+	HqIUkDuZPd9Co2B7sdhdUCWAaNFkHKbe8mYDRBc81hLBtHuLm6JG7LVLcoU/XUIO
+	dibOt40w0B2CL7O3QHutDawmPcgHBRaF21KEUe1T5I7nf7mQ/Af0MpQRfPpWBY2L
+	Pn9BCSfPPSjpaI/DG69uhR+20wiicbjE8oIDSfFCD4/fLrta1tXuzoc9EPN8YVai
+	7HZO9++OzNKhzBwcCdF4RqKZTVmnDuInpXW37GOkXWW5n1QqqM0mP+TvFvDvrICe
+	t77IgdbAE0zlmTe+uMRVvE9a95nOTS0TaZi1ELTub5UuqAd1ja93a7KDXhfUvKeQ
+	dYP1kKFOFN/VBSUKI6pFLCrxhdClBxBNUcfTOSJ0DZCC2huBozBy1DDus+8oUqzV
+	Nk0SBQcuuh86TdMCB9CJBvv28emZ+9jVFZNn1Y2rI2O5F/oJN9QxCxKeF2YyJxaA
+	5cJYiFCGdrKpXyeWxclxrGIL9MgK4foHp+ODd6llFCfO3CA4L/3TFAIiPro9wpEL
+	3imD/xXUxVxhVtVIH1srmw9iCjxOXygB5jDdOb6e/qvV1EOKOyWVI9Q5hhrCKQ0T
+	AMsIwrpSJtGlE/ObmflV1Sy6tYqykDCGb/XB8s8uT0pSLaGNarElal8OuJjlFztu
+	Cj7TkUE=
 From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
 To: Laurent Badel <laurentbadel@eaton.com>, Jakub Kicinski <kuba@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?=
 	<csokas.bence@prolan.hu>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-CC: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Jacob Keller
+CC: Ahmad Fatoum <a.fatoum@pengutronix.de>, Simon Horman <horms@kernel.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Jacob Keller
 	<jacob.e.keller@intel.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
 	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
  Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH] net: fec: Refactor MAC reset to function
-Date: Tue, 4 Feb 2025 10:36:03 +0100
-Message-ID: <20250204093604.253436-2-csokas.bence@prolan.hu>
+Subject: [PATCH net v3] net: fec: Refactor MAC reset to function
+Date: Tue, 4 Feb 2025 10:37:54 +0100
+Message-ID: <20250204093756.253642-2-csokas.bence@prolan.hu>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250122163935.213313-2-csokas.bence@prolan.hu>
+References:
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,7 +60,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738661813;VERSION=7985;MC=3118175526;ID=197840;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738662239;VERSION=7985;MC=507896856;ID=198007;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
 X-EsetId: 37303A29ACD94852667366
