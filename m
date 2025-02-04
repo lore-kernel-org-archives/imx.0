@@ -1,300 +1,149 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D6814659A
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 05:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3BE2063DC
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 07:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738648461; cv=none; b=TXMSg7K/gXfwwKTYpgPk8x1Yg8hpENTDobon4J8qkn58RLOo3f6SFEREPHwmC0c2IXHWeEWvNXY4w76bAljcK5Pe4TADzP5TkPqts6M6mafOPnjVvl8dBnyNJ2ArYpQy4v/DXmnBs+o0V4OAtF1G0u3wnspeEKhj1B6X806d1FY=
+	t=1738655666; cv=none; b=lA8bkGtYFjU6ubV1Ac4W7F4ZeA4sz+7BJUAn46KxK2q4hxi7+/MIacJRbEdSHbXOhFVNz9oJYUMyHPmnvlCpQyRpcjwXlbn2ELsh7fhjOfEzQBcBCNVk0XQJSRWQV7gSpkQ80RwqXlx0BvfBffz0Vg1gxXG5MccV65NLPAV9s2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738648461; c=relaxed/simple;
-	bh=rus1LJfu0bga1OLgWnDYMRR7QzWcR0kHQ5pxQ4OsBIM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=quf3WDu6v+03hhl2xxXMOsB3ARsJfCMjT4iK/UinajemB1vKhSnmCRLVFEixgzeZuhd5o64H5IAPLl9uh3GX5egl7zqugtgY1C4WWQrHn1pcmDHVkuJCTdDzKNAOHTbqzSMA0Ye7kEaJ3L5BjbdxtBqYqp+sMSK/wRU4FzxQnXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mJz4GpN6; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1738655666; c=relaxed/simple;
+	bh=1xcyd4xbQQnsJ0VVxdhkgbe++71P2EFh7Yknlb+8V9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eXafxKNP1A5LkixTWmJSUl6pcCuN2uPPu/WJaSOTiBJZOQXzmuAUJvnzrQDkStiuOXRugn/NID0OD5G5qYlw78eor9CGkCvXStgUe4/41LP2zWLE0F93rJ9yyUcmFgYmtGyOwdFV+kx2Pojz1XoR8LnjK826JidkDUc7gTme40g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=l19LlfDq; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mJz4GpN6"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5141SBPR025174;
-	Tue, 4 Feb 2025 05:54:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	lpbhvx7zU5m+oZ2NwVqgaiQaf4Tw5Sj+1HVJVVCjahU=; b=mJz4GpN6UdqWdjkO
-	d/VVDXl3Y7YoqERa7mOd1GlGmnAosKeAfR9aoDxVIwM0BN8obqtLsCUrYYNHvqp4
-	FvwEvipPjgUj1gVbon9cgYz0arZoNaHacZeg/N9AI6mn8ogJ/D+dU9IWVokimWwM
-	ZHkaIEnJKCMEzK3BcIbNEjbOgTSW6v/MyYR0Ssy/KLNn5pB73C3V+mdDGwCxA5H5
-	JLKx38Kzulxl9FSbGbPN/UiNxUHJFnBjgxBqZQCykYht7f3VRJRu46ppcekXpLDE
-	tWc3Aw7vMLeq40bURcg2MXkwH7786uIM6eU6d6szIpJ2zYBnwaxTRWi8hTcuoEAO
-	9FRY0A==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44k98jgedr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 05:54:12 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5145sBNS015639
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Feb 2025 05:54:12 GMT
-Received: from [10.216.35.42] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Feb 2025
- 21:54:08 -0800
-Message-ID: <08098961-ab40-4bdf-af56-c77a24c55959@quicinc.com>
-Date: Tue, 4 Feb 2025 11:24:03 +0530
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="l19LlfDq"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b6eeff1fdfso479464485a.2
+        for <imx@lists.linux.dev>; Mon, 03 Feb 2025 23:54:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1738655664; x=1739260464; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9z54JtaeX5gSz2dbf+6FdDKOtIHT059atUvBQkTIU4=;
+        b=l19LlfDq9yfWhj1b3yd9yiu0SBnFdxzvP4CM4Br4fgFC3VDxy7BAwrzOJD0m+0bAiG
+         qdZRRJhr3USMllFQABdzjby3BmORotEx4Pq5H0qCw/mRYN3mvZPJTy0e5ikTKrO7iFhr
+         mWIJc0GV8agNWZzvJFmAOeS/Zc52FcLaSkhN8Z5nyHOufOH0ZssPqOi1/FbFVchK37wV
+         9th8AC+OIdM4MZsxQHBFFjI9aLVdV+1zWkdnIMAQMozjaB6NrVYY4zvP/G1v6i1XrMAt
+         vBnTfILI5bEyA+koS/jWmuTYMbWzoL3fDaH5e0rvm6VvTO2pkS3kgsYcImGmnBk8zPM0
+         3N/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738655664; x=1739260464;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q9z54JtaeX5gSz2dbf+6FdDKOtIHT059atUvBQkTIU4=;
+        b=VvUCcBKiHWQdyjuwLiwSf1icV8hmvpudYopuOFtwYMB8eT1I7eb4FrqhYB7XQE88pk
+         KBRLdEW/MCEkBBaixrhEFDUR8pziyHG/otgu4+IwZxrbHNNSRNfD0mTdgg2C4grG9Dge
+         2HYQiXX9U45I4t2HGUMPq94uJuhcwnS3myaw52xqUHIAJi3ArFFj4GRBpgdYdlCJU4wi
+         l8YQ8I/rxg9D+rkGMabQkQjMuAOVyh5JVj4L57/jLIlP2MwMzlDgH6dxW+qIKzMKIIWH
+         nQiwOIAkLG040j54h8hIn6L4+FVM3RNOvo488URsDOKev/zqqpSNvEq+9khqR4UCuXmP
+         CItw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSbtJEQ4epuCV4i5/LWw93P6FIofhYD1J7k8piBNE5jj0GJtVSNBjL0LpbbpW8JrQGLyk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxrb7WutbloUwgO7f7jXHZw5cSCuJ93xWWK4jGJCt2eOwMQpfqf
+	mBPXWSyXPYoEAuonZx02U7EgkC0xVmFXDHeo9U+IDYU94gdpFRq7mEjSsRekkMg=
+X-Gm-Gg: ASbGncutnt03EhEE6jAdv5dFihR+2uY5qxkbJxHVQogjgbKd4cvs0XT4b5mhW7drD64
+	1ClefcMcZh9cEZE1NXNwDmM31zG4bcy92MIGK/emWeiELKVPcKruVuLs+v0N+mfIn4KZXbCnejX
+	2hL3eozj6mIWVsggC4sUcE369KiStYcA9wL6HG2MFyuUc/YcK13qsn3oho03HQsyivcjIF2Kocc
+	mgjkaCAcrjqLIbTTa9ORyeD5nS08oHn4RYwGke8DAFLeWoAkAJnDh3UapgeOEu8862wpnogs/4o
+	yS/EK0NDq+bzgWjyX1pMliLF6tGQy844hD3ra6Ub96t+4/hEoDAzm6s=
+X-Google-Smtp-Source: AGHT+IHnQYtrMWCiX8smMX+KNobk2NbP0fzLkqVqwBS3IWCPax1EIsVPqU/PPsh/vQevjqw+kgDNzg==
+X-Received: by 2002:a05:620a:688d:b0:7b6:da92:fcdd with SMTP id af79cd13be357-7bffcce1d45mr3575797185a.15.1738655663645;
+        Mon, 03 Feb 2025 23:54:23 -0800 (PST)
+Received: from anup-ubuntu-vm.localdomain ([103.97.166.196])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8d05ddsm613373185a.39.2025.02.03.23.54.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 23:54:22 -0800 (PST)
+From: Anup Patel <apatel@ventanamicro.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Atish Patra <atishp@atishpatra.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Anup Patel <apatel@ventanamicro.com>
+Subject: [PATCH v3 00/10] RISC-V IMSIC driver improvements
+Date: Tue,  4 Feb 2025 13:23:55 +0530
+Message-ID: <20250204075405.824721-1-apatel@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] i3c: Add basic HDR support
-To: Frank Li <Frank.li@nxp.com>, Joshua Yeong <joshua.yeong@starfivetech.com>
-CC: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Miquel Raynal
-	<miquel.raynal@bootlin.com>,
-        Conor Culhane <conor.culhane@silvaco.com>,
-        "linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>
-References: <20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com>
- <20250129-i3c_ddr-v1-1-028a7a5d4324@nxp.com>
- <e09b50b8-dd65-4636-aa35-42efc86bba16@quicinc.com>
- <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
- <Z6DmUIKn5usytjl3@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-In-Reply-To: <Z6DmUIKn5usytjl3@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0j7RuO5a9OTOaceq1Ps8ZKVKBL7tRb1w
-X-Proofpoint-GUID: 0j7RuO5a9OTOaceq1Ps8ZKVKBL7tRb1w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_02,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
- adultscore=0 priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502040045
 
+This series is based on recent discussion on LKML:
+https://lore.kernel.org/lkml/20241114161845.502027-18-ajones@ventanamicro.com/
 
+It primarily focuses on moving to RISC-V IMSIC driver use common MSI
+lib and GENERIC_PENDING_IRQ.
 
-On 2/3/2025 9:22 PM, Frank Li wrote:
-> On Mon, Feb 03, 2025 at 02:32:51AM +0000, Joshua Yeong wrote:
->> Hi Mukesh and Frank,
->>
->> On 02-Feb-2025 1:54 AM, Mukesh Kumar Savaliya wrote:
->>> Hi Frank,
->>>
->>> On 1/30/2025 1:35 AM, Frank Li wrote:
->>>> I3C HDR requires enter/exit patterns during each I3C transfer. Add a new
->>>> API i3c_device_do_priv_xfers_mode(). The existing
->>>> i3c_device_do_priv_xfers() now calls i3c_device_do_priv_xfers_mode(I3C_SDR)
->>>> to maintain backward compatibility.
->>>>
->>>> Introduce a 'cmd' field in 'struct i3c_priv_xfer', using an anonymous union
->>>> with 'rnw' since HDR mode relies on read/write commands instead of the
->>>> 'rnw' bit in the address as in SDR mode.
->>>>
->>>> Add a priv_xfers_mode callback for I3C master drivers. If priv_xfers_mode
->>>> is not implemented, fallback to SDR mode using the existing priv_xfers
->>>> callback.
->>>>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>> ---
->>>> Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
->>>> one i3c transfer. for example, can't send a HDR follow one SDR between
->>>> START and STOP.
->>>>
->>> Is it wise to add two function inside main funcion and separate SDR vs HDR ? so we don't need to change current function arguments.
-> 
-> I am not sure if understand your means. HDR have difference mode, anyway
-> need add new argument.
-> 
-let me clarify, We can have main entry/hookup function as it is.
- From priv_xfer , we can call sdr_priv_xfer and hdr_priv_xfer ? based on 
-the structure information if its enum SDR or enum HDR.
+PATCH1: Fix for handling non-atomic MSI updates
+PATCH2 & PATCH3: Preparatory patches
+PATCH4: Main patch which updates IMSIC driver to use MSI lib
+PATCH5: Preparatory patch for moving to GENERIC_PENDING_IRQ
+PATCH6 to PATCH10: Patches use GENERIC_PENDING_IRQ in IMSIC driver
 
->>
->> I think the 'private transfers' are limited to SDR communications,
->> would it be better if we have a different interface/naming for hdr transfers?
-> 
-> The key is what's difference between hdr and private transfers. So far only
-> command vs rnw, any other differences I missed?
-> 
-yes, but can we make it priv_xfer() = sdr_priv_xfer() + hdr_priv_xfer() ?
->>
->>>> i3c_priv_xfer should be treat as whole i3c transactions. If user want send
->>>> HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
->>>> instead put into a big i3c_priv_xfer[n].
->>>> ---
->>>>    drivers/i3c/device.c       | 19 +++++++++++++------
->>>>    drivers/i3c/internals.h    |  2 +-
->>>>    drivers/i3c/master.c       |  8 +++++++-
->>>>    include/linux/i3c/device.h | 12 +++++++++++-
->>>>    include/linux/i3c/master.h |  3 +++
->>>>    5 files changed, 35 insertions(+), 9 deletions(-)
->>>>
->>>> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
->>>> index e80e487569146..e3db3a6a9e4f6 100644
->>>> --- a/drivers/i3c/device.c
->>>> +++ b/drivers/i3c/device.c
->>>> @@ -15,12 +15,13 @@
->>>>    #include "internals.h"
->>>>      /**
->>>> - * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
->>>> - *                specific device
->>>> + * i3c_device_do_priv_xfers_mode() - do I3C SDR private transfers directed to a
->>>> + *                     specific device
->>>>     *
->>>>     * @dev: device with which the transfers should be done
->>>>     * @xfers: array of transfers
->>>>     * @nxfers: number of transfers
->>>> + * @mode: transfer mode
->>>>     *
->>>>     * Initiate one or several private SDR transfers with @dev.
->>>>     *
->>>> @@ -32,9 +33,9 @@
->>>>     *            driver needs to resend the 'xfers' some time later.
->>>>     *            See I3C spec ver 1.1.1 09-Jun-2021. Section: 5.1.2.2.3.
->>>>     */
->>>> -int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>>> -                 struct i3c_priv_xfer *xfers,
->>>> -                 int nxfers)
->>>> +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
->>>> +                  struct i3c_priv_xfer *xfers,
->>>> +                  int nxfers, enum i3c_hdr_mode mode)
->>> why can't we pass mode as another structure member inside struct i3c_priv_xfer ? Adding function agrument parameter impacts existing drivers.
-> 
-> If that, it will be possible, xfers[0] is sdr, xfers[1] is hdr. Actually,
-> I3C can't do that.  we assume finish whole xfers between one whole traction
-> (between START and STOP).
-> 
-> Frank
->>>>    {
->>>>        int ret, i;
->>>>    @@ -47,11 +48,17 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>>>        }
->>>>          i3c_bus_normaluse_lock(dev->bus);
->>>> -    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
->>>> +    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers, mode);
->>>>        i3c_bus_normaluse_unlock(dev->bus);
->>>>          return ret;
->>>>    }
->>>> +EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers_mode);
->>>> +
->>>> +int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers, int nxfers)
->>>> +{
->>>> +    return i3c_device_do_priv_xfers_mode(dev, xfers, nxfers, I3C_SDR);
->>>> +}
->>>>    EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
->>>>      /**
->>>> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
->>>> index 433f6088b7cec..553edc9846ac0 100644
->>>> --- a/drivers/i3c/internals.h
->>>> +++ b/drivers/i3c/internals.h
->>>> @@ -16,7 +16,7 @@ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
->>>>    int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
->>>>    int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>>                     struct i3c_priv_xfer *xfers,
->>>> -                 int nxfers);
->>>> +                 int nxfers, enum i3c_hdr_mode mode);
->>>>    int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
->>>>    int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
->>>>    int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
->>>> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
->>>> index d5dc4180afbcf..67aaba0a38db2 100644
->>>> --- a/drivers/i3c/master.c
->>>> +++ b/drivers/i3c/master.c
->>>> @@ -2945,7 +2945,7 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
->>>>      int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>>                     struct i3c_priv_xfer *xfers,
->>>> -                 int nxfers)
->>>> +                 int nxfers, enum i3c_hdr_mode mode)
->>>>    {
->>>>        struct i3c_master_controller *master;
->>>>    @@ -2956,9 +2956,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
->>>>        if (!master || !xfers)
->>>>            return -EINVAL;
->>>>    +    if (master->ops->priv_xfers_mode)
->>>> +        return master->ops->priv_xfers_mode(dev, xfers, nxfers, mode);
->>>> +
->>>>        if (!master->ops->priv_xfers)
->>>>            return -ENOTSUPP;
->>>>    +    if (mode != I3C_SDR)
->>>> +        return -EINVAL;
->>>> +
->>>>        return master->ops->priv_xfers(dev, xfers, nxfers);
->>>>    }
->>>>    diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
->>>> index b674f64d0822e..7ce70d0967e27 100644
->>>> --- a/include/linux/i3c/device.h
->>>> +++ b/include/linux/i3c/device.h
->>>> @@ -40,11 +40,13 @@ enum i3c_error_code {
->>>>      /**
->>>>     * enum i3c_hdr_mode - HDR mode ids
->>>> + * @I3C_SDR: SDR mode (NOT HDR mode)
->>>>     * @I3C_HDR_DDR: DDR mode
->>>>     * @I3C_HDR_TSP: TSP mode
->>>>     * @I3C_HDR_TSL: TSL mode
->>>>     */
->>>>    enum i3c_hdr_mode {
->>>> +    I3C_SDR,
->>>>        I3C_HDR_DDR,
->>>>        I3C_HDR_TSP,
->>>>        I3C_HDR_TSL,
->>>> @@ -53,6 +55,7 @@ enum i3c_hdr_mode {
->>>>    /**
->>>>     * struct i3c_priv_xfer - I3C SDR private transfer
->>>>     * @rnw: encodes the transfer direction. true for a read, false for a write
->>>> + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
->>>>     * @len: transfer length in bytes of the transfer
->>>>     * @actual_len: actual length in bytes are transferred by the controller
->>>>     * @data: input/output buffer
->>>> @@ -61,7 +64,10 @@ enum i3c_hdr_mode {
->>>>     * @err: I3C error code
->>>>     */
->>>>    struct i3c_priv_xfer {
->>>> -    u8 rnw;
->>>> +    union {
->>>> +        u8 rnw;
->>>> +        u8 cmd;
->>>> +    };
->>>>        u16 len;
->>>>        u16 actual_len;
->>>>        union {
->>>> @@ -301,6 +307,10 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
->>>>                     struct i3c_priv_xfer *xfers,
->>>>                     int nxfers);
->>>>    +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
->>>> +                  struct i3c_priv_xfer *xfers,
->>>> +                  int nxfers, enum i3c_hdr_mode mode);
->>>> +
->>>>    int i3c_device_do_setdasa(struct i3c_device *dev);
->>>>      void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
->>>> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
->>>> index 12d532b012c5a..352bd41139569 100644
->>>> --- a/include/linux/i3c/master.h
->>>> +++ b/include/linux/i3c/master.h
->>>> @@ -472,6 +472,9 @@ struct i3c_master_controller_ops {
->>>>        int (*priv_xfers)(struct i3c_dev_desc *dev,
->>>>                  struct i3c_priv_xfer *xfers,
->>>>                  int nxfers);
->>>> +    int (*priv_xfers_mode)(struct i3c_dev_desc *dev,
->>>> +                   struct i3c_priv_xfer *xfers,
->>>> +                   int nxfers, enum i3c_hdr_mode mode);
->>>>        int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
->>>>        void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
->>>>        int (*i2c_xfers)(struct i2c_dev_desc *dev,
->>>>
->>>
->>>
->>
+These patches can also be found in the riscv_imsic_imp_v3 branch at:
+https://github.com/avpatel/linux.git
+
+Changes since v2:
+ - Rebased upon Linux-6.14-rc1
+ - Dropped PATCH5 of v2 series since that patch is already merged
+
+Changes since v1:
+ - Changed series subject
+ - Expand this series to use GENERIC_PENDING_IRQ in IMSIC driver
+
+Andrew Jones (1):
+  irqchip/riscv-imsic: Set irq_set_affinity for IMSIC base
+
+Anup Patel (7):
+  irqchip/riscv-imsic: Handle non-atomic MSI updates for device
+  genirq: Introduce common irq_force_complete_move() implementation
+  RISC-V: Enable GENERIC_PENDING_IRQ and GENERIC_PENDING_IRQ_CHIPFLAGS
+  irqchip/riscv-imsic: Separate next and previous pointers in IMSIC
+    vector
+  irqchip/riscv-imsic: Implement irq_force_complete_move() for IMSIC
+  irqchip/riscv-imsic: Replace hwirq with irq in the IMSIC vector
+  irqchip/riscv-imsic: Use IRQCHIP_MOVE_DEFERRED flag for PCI devices
+
+Thomas Gleixner (2):
+  irqchip/irq-msi-lib: Optionally set default irq_eoi/irq_ack
+  irqchip/riscv-imsic: Move to common MSI lib
+
+ arch/riscv/Kconfig                         |   2 +
+ drivers/irqchip/Kconfig                    |   8 +-
+ drivers/irqchip/irq-gic-v2m.c              |   1 +
+ drivers/irqchip/irq-imx-mu-msi.c           |   1 +
+ drivers/irqchip/irq-msi-lib.c              |  11 +-
+ drivers/irqchip/irq-mvebu-gicp.c           |   1 +
+ drivers/irqchip/irq-mvebu-odmi.c           |   1 +
+ drivers/irqchip/irq-mvebu-sei.c            |   1 +
+ drivers/irqchip/irq-riscv-imsic-early.c    |  14 +-
+ drivers/irqchip/irq-riscv-imsic-platform.c | 177 +++++++++------------
+ drivers/irqchip/irq-riscv-imsic-state.c    | 127 ++++++++++-----
+ drivers/irqchip/irq-riscv-imsic-state.h    |  12 +-
+ include/linux/irq.h                        |   5 +
+ include/linux/msi.h                        |  11 ++
+ kernel/irq/migration.c                     |   9 ++
+ 15 files changed, 224 insertions(+), 157 deletions(-)
+
+-- 
+2.43.0
 
