@@ -1,60 +1,62 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3BE2063DC
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 07:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B9F2063DC
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 07:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738655666; cv=none; b=lA8bkGtYFjU6ubV1Ac4W7F4ZeA4sz+7BJUAn46KxK2q4hxi7+/MIacJRbEdSHbXOhFVNz9oJYUMyHPmnvlCpQyRpcjwXlbn2ELsh7fhjOfEzQBcBCNVk0XQJSRWQV7gSpkQ80RwqXlx0BvfBffz0Vg1gxXG5MccV65NLPAV9s2A=
+	t=1738655676; cv=none; b=HaQd5qLYErXMonvWlOILvzL8caMFx+RKQPpoB6TV4pU3X+XAQk4X5PF/Ymmo5fxn9ykFk9bSmm8WRJpAqZMTXL+ba6Xz5GnsC2mPxd6JbxWCwlcG6NuvPC0rTzW7q0vF4UO/bmP55Krr3BGA5lCyifuhzoxqbOrQVW6sbcCQNC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738655666; c=relaxed/simple;
-	bh=1xcyd4xbQQnsJ0VVxdhkgbe++71P2EFh7Yknlb+8V9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eXafxKNP1A5LkixTWmJSUl6pcCuN2uPPu/WJaSOTiBJZOQXzmuAUJvnzrQDkStiuOXRugn/NID0OD5G5qYlw78eor9CGkCvXStgUe4/41LP2zWLE0F93rJ9yyUcmFgYmtGyOwdFV+kx2Pojz1XoR8LnjK826JidkDUc7gTme40g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=l19LlfDq; arc=none smtp.client-ip=209.85.222.180
+	s=arc-20240116; t=1738655676; c=relaxed/simple;
+	bh=AjbhMTp1aGsIYrzh3IEvyIDO76drMFMoCVTh2CxsqAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z14WVw0Hc8+f3XzSJV78t8dRIW50mnzhyWKdOK8UBvC65MeXTVouRMraq6T9rfZeJLZLRxLui1daKrlptudJm2LwhmB1Gs4ecnRYVXwH+MEGBs/aV44MGUWbslWboWzwMmOkRQs6POLhm2jp2fXKCJVjw/coXZ445OL7HnIqORE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=XbGEyMcN; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="l19LlfDq"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b6eeff1fdfso479464485a.2
-        for <imx@lists.linux.dev>; Mon, 03 Feb 2025 23:54:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="XbGEyMcN"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7b6f95d2eafso554449585a.3
+        for <imx@lists.linux.dev>; Mon, 03 Feb 2025 23:54:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1738655664; x=1739260464; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q9z54JtaeX5gSz2dbf+6FdDKOtIHT059atUvBQkTIU4=;
-        b=l19LlfDq9yfWhj1b3yd9yiu0SBnFdxzvP4CM4Br4fgFC3VDxy7BAwrzOJD0m+0bAiG
-         qdZRRJhr3USMllFQABdzjby3BmORotEx4Pq5H0qCw/mRYN3mvZPJTy0e5ikTKrO7iFhr
-         mWIJc0GV8agNWZzvJFmAOeS/Zc52FcLaSkhN8Z5nyHOufOH0ZssPqOi1/FbFVchK37wV
-         9th8AC+OIdM4MZsxQHBFFjI9aLVdV+1zWkdnIMAQMozjaB6NrVYY4zvP/G1v6i1XrMAt
-         vBnTfILI5bEyA+koS/jWmuTYMbWzoL3fDaH5e0rvm6VvTO2pkS3kgsYcImGmnBk8zPM0
-         3N/A==
+        d=ventanamicro.com; s=google; t=1738655673; x=1739260473; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CBfvQ3kWrJIo4ZX2fO574K2xNLHLI8xt5fD3UcZCgGE=;
+        b=XbGEyMcNICqIU0KEo4m6b85Ng7gnSnR8L/vNQf6bofptzg0mbAqNAWpXDiZTdnN9YW
+         lkpXUS7j8lGv1NtDo4cOE8TvYaeq6G1R2AvesliqixO+iQRrnMTWoEv4L0s2nu7A8to8
+         FjG+NfYoct2aVZUiIFsdUXPjHzrCrsx1LbRN/ud33B34Se6fgyN+Jd80ROBRnIPqo63/
+         8cG72m+rFisIJPRcPXfrlEvJWw7w8BuhQyLe9Sw4vEa0TbnKEfLvyw1yEUsCn+1J8wR9
+         bnJFcYFFV43ny76AqBDaYEnk1lmXq7orncnfBjZumHJTGYOZlInBoonPlr9pM2fkpKD6
+         PhHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738655664; x=1739260464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q9z54JtaeX5gSz2dbf+6FdDKOtIHT059atUvBQkTIU4=;
-        b=VvUCcBKiHWQdyjuwLiwSf1icV8hmvpudYopuOFtwYMB8eT1I7eb4FrqhYB7XQE88pk
-         KBRLdEW/MCEkBBaixrhEFDUR8pziyHG/otgu4+IwZxrbHNNSRNfD0mTdgg2C4grG9Dge
-         2HYQiXX9U45I4t2HGUMPq94uJuhcwnS3myaw52xqUHIAJi3ArFFj4GRBpgdYdlCJU4wi
-         l8YQ8I/rxg9D+rkGMabQkQjMuAOVyh5JVj4L57/jLIlP2MwMzlDgH6dxW+qIKzMKIIWH
-         nQiwOIAkLG040j54h8hIn6L4+FVM3RNOvo488URsDOKev/zqqpSNvEq+9khqR4UCuXmP
-         CItw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSbtJEQ4epuCV4i5/LWw93P6FIofhYD1J7k8piBNE5jj0GJtVSNBjL0LpbbpW8JrQGLyk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxrb7WutbloUwgO7f7jXHZw5cSCuJ93xWWK4jGJCt2eOwMQpfqf
-	mBPXWSyXPYoEAuonZx02U7EgkC0xVmFXDHeo9U+IDYU94gdpFRq7mEjSsRekkMg=
-X-Gm-Gg: ASbGncutnt03EhEE6jAdv5dFihR+2uY5qxkbJxHVQogjgbKd4cvs0XT4b5mhW7drD64
-	1ClefcMcZh9cEZE1NXNwDmM31zG4bcy92MIGK/emWeiELKVPcKruVuLs+v0N+mfIn4KZXbCnejX
-	2hL3eozj6mIWVsggC4sUcE369KiStYcA9wL6HG2MFyuUc/YcK13qsn3oho03HQsyivcjIF2Kocc
-	mgjkaCAcrjqLIbTTa9ORyeD5nS08oHn4RYwGke8DAFLeWoAkAJnDh3UapgeOEu8862wpnogs/4o
-	yS/EK0NDq+bzgWjyX1pMliLF6tGQy844hD3ra6Ub96t+4/hEoDAzm6s=
-X-Google-Smtp-Source: AGHT+IHnQYtrMWCiX8smMX+KNobk2NbP0fzLkqVqwBS3IWCPax1EIsVPqU/PPsh/vQevjqw+kgDNzg==
-X-Received: by 2002:a05:620a:688d:b0:7b6:da92:fcdd with SMTP id af79cd13be357-7bffcce1d45mr3575797185a.15.1738655663645;
-        Mon, 03 Feb 2025 23:54:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738655673; x=1739260473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CBfvQ3kWrJIo4ZX2fO574K2xNLHLI8xt5fD3UcZCgGE=;
+        b=F/G3nU36tC1jfjntfKnsryl7mQQHTOm3dqWCSM62Qx6mzb0bTjYdwHs3wehLAkO+Ct
+         dIfLr/tHsNdOuE9eGCQfXetu4Yv0jo+g5mcp0TywK1g3yBybCEwyv+V70vxQRMuNjfOM
+         T55xzQGERl9TwGc+DUQqyFJPca3oKvBINgVoRle8XdSgWRd4nPkvOaif42sdEgqOv4iY
+         ZFIlDDwJ5stvi3ljWwaqo4PkRwJFER6U3CcLo076T6U5CZVnixXvsuSX1ui+VkOAm2Yi
+         3V2jNur3J4bYiiIyLEG6ibiWV6M4GQkZUxKgBqV5vL6v91u/RvWPbgqlKQGheiqIr71g
+         /Cwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqsjZejje6GPWROH85E31frg4pvNQE3XMwfpwZsGlsuZkZmYDBay/+y71pFaWfJXPncDY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwOgXT4ce8y+esfGOHC5QcWYXp5G65pkS13vm0YBT/YLlDJUBxF
+	8MX4hWbziUoI0vuc+LfDO/31gFSVvZtNxRoxqshnHOQFFI1v+C/VMU4ikO9o0t8=
+X-Gm-Gg: ASbGncubfnhXVBMASg3qb0E+ELQivH/yMpRevd7+vb8f1TdYMZuRcSyVdnwOoH/rRgj
+	B2GfPzENtPhUagVlRcKx3tLVtK0vy2jwFLwhAc6X15BytEh6gjXaOwh30YmNTRqMb4ox1JNqMvr
+	tkSsTtSeXdqGd192RMhpycS4nfbuDYh9PAhs6jGyhdiQk7M6YsrqsIM4zag86mtf29CT6t1HYC/
+	w5jcWman952bz4AY4wFBnBUDrEmrPodfm92zP77rIKQtgRQKNZ9J9ys+b54jd1BWD5F62ZL5hW6
+	2IgumPQJjk6h0WJqmCBgquuKx2V8IIdOfR52RL49qthfmX4em0SqZNE=
+X-Google-Smtp-Source: AGHT+IE1kHVojceFVzcf2jbW9XOHhUZiDggCrSxIzTiwYNG5RUoAlilnWj5uEbIRStQ4m23HHT45hg==
+X-Received: by 2002:a05:620a:4093:b0:7b6:d1e1:a22e with SMTP id af79cd13be357-7bffcd43a1cmr3525668485a.29.1738655673185;
+        Mon, 03 Feb 2025 23:54:33 -0800 (PST)
 Received: from anup-ubuntu-vm.localdomain ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8d05ddsm613373185a.39.2025.02.03.23.54.13
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8d05ddsm613373185a.39.2025.02.03.23.54.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 23:54:22 -0800 (PST)
+        Mon, 03 Feb 2025 23:54:32 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Thomas Gleixner <tglx@linutronix.de>
 Cc: Marc Zyngier <maz@kernel.org>,
@@ -75,10 +77,12 @@ Cc: Marc Zyngier <maz@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v3 00/10] RISC-V IMSIC driver improvements
-Date: Tue,  4 Feb 2025 13:23:55 +0530
-Message-ID: <20250204075405.824721-1-apatel@ventanamicro.com>
+Subject: [PATCH v3 01/10] irqchip/riscv-imsic: Handle non-atomic MSI updates for device
+Date: Tue,  4 Feb 2025 13:23:56 +0530
+Message-ID: <20250204075405.824721-2-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250204075405.824721-1-apatel@ventanamicro.com>
+References: <20250204075405.824721-1-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,63 +91,205 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series is based on recent discussion on LKML:
-https://lore.kernel.org/lkml/20241114161845.502027-18-ajones@ventanamicro.com/
+Device having non-atomic MSI update might see an intermediate
+state when changing target IMSIC vector from one CPU to another.
 
-It primarily focuses on moving to RISC-V IMSIC driver use common MSI
-lib and GENERIC_PENDING_IRQ.
+To handle such intermediate device state, update MSI address
+and MSI data through separate MSI writes to the device.
 
-PATCH1: Fix for handling non-atomic MSI updates
-PATCH2 & PATCH3: Preparatory patches
-PATCH4: Main patch which updates IMSIC driver to use MSI lib
-PATCH5: Preparatory patch for moving to GENERIC_PENDING_IRQ
-PATCH6 to PATCH10: Patches use GENERIC_PENDING_IRQ in IMSIC driver
+Fixes: 027e125acdba ("irqchip/riscv-imsic: Add device MSI domain support for platform devices")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+---
+ drivers/irqchip/irq-riscv-imsic-early.c    |  8 +++-
+ drivers/irqchip/irq-riscv-imsic-platform.c | 27 ++++++++++++
+ drivers/irqchip/irq-riscv-imsic-state.c    | 50 ++++++++++++++--------
+ drivers/irqchip/irq-riscv-imsic-state.h    |  2 +-
+ 4 files changed, 68 insertions(+), 19 deletions(-)
 
-These patches can also be found in the riscv_imsic_imp_v3 branch at:
-https://github.com/avpatel/linux.git
-
-Changes since v2:
- - Rebased upon Linux-6.14-rc1
- - Dropped PATCH5 of v2 series since that patch is already merged
-
-Changes since v1:
- - Changed series subject
- - Expand this series to use GENERIC_PENDING_IRQ in IMSIC driver
-
-Andrew Jones (1):
-  irqchip/riscv-imsic: Set irq_set_affinity for IMSIC base
-
-Anup Patel (7):
-  irqchip/riscv-imsic: Handle non-atomic MSI updates for device
-  genirq: Introduce common irq_force_complete_move() implementation
-  RISC-V: Enable GENERIC_PENDING_IRQ and GENERIC_PENDING_IRQ_CHIPFLAGS
-  irqchip/riscv-imsic: Separate next and previous pointers in IMSIC
-    vector
-  irqchip/riscv-imsic: Implement irq_force_complete_move() for IMSIC
-  irqchip/riscv-imsic: Replace hwirq with irq in the IMSIC vector
-  irqchip/riscv-imsic: Use IRQCHIP_MOVE_DEFERRED flag for PCI devices
-
-Thomas Gleixner (2):
-  irqchip/irq-msi-lib: Optionally set default irq_eoi/irq_ack
-  irqchip/riscv-imsic: Move to common MSI lib
-
- arch/riscv/Kconfig                         |   2 +
- drivers/irqchip/Kconfig                    |   8 +-
- drivers/irqchip/irq-gic-v2m.c              |   1 +
- drivers/irqchip/irq-imx-mu-msi.c           |   1 +
- drivers/irqchip/irq-msi-lib.c              |  11 +-
- drivers/irqchip/irq-mvebu-gicp.c           |   1 +
- drivers/irqchip/irq-mvebu-odmi.c           |   1 +
- drivers/irqchip/irq-mvebu-sei.c            |   1 +
- drivers/irqchip/irq-riscv-imsic-early.c    |  14 +-
- drivers/irqchip/irq-riscv-imsic-platform.c | 177 +++++++++------------
- drivers/irqchip/irq-riscv-imsic-state.c    | 127 ++++++++++-----
- drivers/irqchip/irq-riscv-imsic-state.h    |  12 +-
- include/linux/irq.h                        |   5 +
- include/linux/msi.h                        |  11 ++
- kernel/irq/migration.c                     |   9 ++
- 15 files changed, 224 insertions(+), 157 deletions(-)
-
+diff --git a/drivers/irqchip/irq-riscv-imsic-early.c b/drivers/irqchip/irq-riscv-imsic-early.c
+index c5c2e6929a2f..73a93ce8668f 100644
+--- a/drivers/irqchip/irq-riscv-imsic-early.c
++++ b/drivers/irqchip/irq-riscv-imsic-early.c
+@@ -77,6 +77,12 @@ static void imsic_handle_irq(struct irq_desc *desc)
+ 	struct imsic_vector *vec;
+ 	unsigned long local_id;
+ 
++	/*
++	 * First process pending IMSIC vector enable, disable and movement
++	 * on the current CPU.
++	 */
++	imsic_local_sync_all(false);
++
+ 	chained_irq_enter(chip, desc);
+ 
+ 	while ((local_id = csr_swap(CSR_TOPEI, 0))) {
+@@ -120,7 +126,7 @@ static int imsic_starting_cpu(unsigned int cpu)
+ 	 * Interrupts identities might have been enabled/disabled while
+ 	 * this CPU was not running so sync-up local enable/disable state.
+ 	 */
+-	imsic_local_sync_all();
++	imsic_local_sync_all(true);
+ 
+ 	/* Enable local interrupt delivery */
+ 	imsic_local_delivery(true);
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index c708780e8760..b44eb0b3990b 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -97,6 +97,7 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ {
+ 	struct imsic_vector *old_vec, *new_vec;
+ 	struct irq_data *pd = d->parent_data;
++	struct imsic_vector tmp_vec;
+ 
+ 	old_vec = irq_data_get_irq_chip_data(pd);
+ 	if (WARN_ON(!old_vec))
+@@ -115,6 +116,32 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 	if (!new_vec)
+ 		return -ENOSPC;
+ 
++	/*
++	 * Device having non-atomic MSI update might see an intermediate
++	 * state when changing target IMSIC vector from one CPU to another.
++	 *
++	 * To avoid losing interrupt to some intermediate state, do the
++	 * following (just like x86 APIC):
++	 *
++	 * 1) First write a temporary IMSIC vector to the device which
++	 * has MSI address same as the old IMSIC vector but MSI data
++	 * matches the new IMSIC vector.
++	 *
++	 * 2) Next write the new IMSIC vector to the device.
++	 *
++	 * Based on the above, the __imsic_local_sync() must check both
++	 * old MSI data and new MSI data on the old CPU for pending
++	 */
++
++	if (new_vec->local_id != old_vec->local_id) {
++		/* Setup temporary vector */
++		tmp_vec.cpu = old_vec->cpu;
++		tmp_vec.local_id = new_vec->local_id;
++
++		/* Point device to the temporary vector */
++		imsic_msi_update_msg(d, &tmp_vec);
++	}
++
+ 	/* Point device to the new vector */
+ 	imsic_msi_update_msg(d, new_vec);
+ 
+diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
+index b97e6cd89ed7..a8645084bd8f 100644
+--- a/drivers/irqchip/irq-riscv-imsic-state.c
++++ b/drivers/irqchip/irq-riscv-imsic-state.c
+@@ -126,21 +126,21 @@ void __imsic_eix_update(unsigned long base_id, unsigned long num_id, bool pend,
+ 
+ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
+ {
+-	struct imsic_local_config *mlocal;
+-	struct imsic_vector *vec, *mvec;
++	struct imsic_local_config *tlocal, *mlocal;
++	struct imsic_vector *vec, *tvec, *mvec;
+ 	int i;
+ 
+ 	lockdep_assert_held(&lpriv->lock);
+ 
+ 	for_each_set_bit(i, lpriv->dirty_bitmap, imsic->global.nr_ids + 1) {
+ 		if (!i || i == IMSIC_IPI_ID)
+-			goto skip;
++			continue;
+ 		vec = &lpriv->vectors[i];
+ 
+ 		if (READ_ONCE(vec->enable))
+-			__imsic_id_set_enable(i);
++			__imsic_id_set_enable(vec->local_id);
+ 		else
+-			__imsic_id_clear_enable(i);
++			__imsic_id_clear_enable(vec->local_id);
+ 
+ 		/*
+ 		 * If the ID was being moved to a new ID on some other CPU
+@@ -151,26 +151,47 @@ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
+ 		mvec = READ_ONCE(vec->move);
+ 		WRITE_ONCE(vec->move, NULL);
+ 		if (mvec && mvec != vec) {
+-			if (__imsic_id_read_clear_pending(i)) {
++			/*
++			 * Device having non-atomic MSI update might see an
++			 * intermediate state so check both old ID and new ID
++			 * for pending interrupts.
++			 *
++			 * For details, refer imsic_irq_set_affinity().
++			 */
++
++			tvec = vec->local_id == mvec->local_id ?
++			       NULL : &lpriv->vectors[mvec->local_id];
++			if (tvec && __imsic_id_read_clear_pending(tvec->local_id)) {
++				/* Retrigger temporary vector if it was already in-use */
++				if (READ_ONCE(tvec->enable)) {
++					tlocal = per_cpu_ptr(imsic->global.local, tvec->cpu);
++					writel_relaxed(tvec->local_id, tlocal->msi_va);
++				}
++
+ 				mlocal = per_cpu_ptr(imsic->global.local, mvec->cpu);
+ 				writel_relaxed(mvec->local_id, mlocal->msi_va);
+ 			}
+ 
+-			imsic_vector_free(&lpriv->vectors[i]);
++			if (__imsic_id_read_clear_pending(vec->local_id)) {
++				mlocal = per_cpu_ptr(imsic->global.local, mvec->cpu);
++				writel_relaxed(mvec->local_id, mlocal->msi_va);
++			}
++
++			imsic_vector_free(vec);
+ 		}
+ 
+-skip:
+-		bitmap_clear(lpriv->dirty_bitmap, i, 1);
++		bitmap_clear(lpriv->dirty_bitmap, vec->local_id, 1);
+ 	}
+ }
+ 
+-void imsic_local_sync_all(void)
++void imsic_local_sync_all(bool force_all)
+ {
+ 	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&lpriv->lock, flags);
+-	bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
++	if (force_all)
++		bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
+ 	__imsic_local_sync(lpriv);
+ 	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
+ }
+@@ -190,12 +211,7 @@ void imsic_local_delivery(bool enable)
+ #ifdef CONFIG_SMP
+ static void imsic_local_timer_callback(struct timer_list *timer)
+ {
+-	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&lpriv->lock, flags);
+-	__imsic_local_sync(lpriv);
+-	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
++	imsic_local_sync_all(false);
+ }
+ 
+ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu)
+diff --git a/drivers/irqchip/irq-riscv-imsic-state.h b/drivers/irqchip/irq-riscv-imsic-state.h
+index 391e44280827..8fae6c99b019 100644
+--- a/drivers/irqchip/irq-riscv-imsic-state.h
++++ b/drivers/irqchip/irq-riscv-imsic-state.h
+@@ -74,7 +74,7 @@ static inline void __imsic_id_clear_enable(unsigned long id)
+ 	__imsic_eix_update(id, 1, false, false);
+ }
+ 
+-void imsic_local_sync_all(void);
++void imsic_local_sync_all(bool force_all);
+ void imsic_local_delivery(bool enable);
+ 
+ void imsic_vector_mask(struct imsic_vector *vec);
 -- 
 2.43.0
 
