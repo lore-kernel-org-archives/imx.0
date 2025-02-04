@@ -1,187 +1,253 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE0519C54B
-	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 09:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5C32080C1
+	for <imx@lists.linux.dev>; Tue,  4 Feb 2025 09:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738662245; cv=none; b=WiVnxqv5XOZmJZIwHv6Rl55QUdKdG/R+1FYC94PIVY/7BU/YdmzFSkw0NTtKFjfB+uLlBdqXktxqfNWJ1XWjpOUk80llhdbUklKymU0YTS3HB18JkZH46sk/phGtmt2OzJVpBsrLJnhIndWuQFR+Tzti3CfXSNKyrK1blS28l34=
+	t=1738663123; cv=none; b=hy5KaUgyz+f3pv2KyAK+JNUNsJKIYj5p515AUjWMOcR4ePkQtPccWB9X5Vb9RYvw2L0JWnPvdb3Qc8QKXSMRvbcUYRg064CQbe3jawOUP56RzfToGPjjwhYSZ2elIMmj5jS/O71Jf0IZtcpIlVqkuHunhJwZlCVfWBpgab9urtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738662245; c=relaxed/simple;
-	bh=wDHC1KEHF8DQWAcUfnfxCywjfzzoTefVOSXvL3BKXuI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sefGm9Gyrkzo6aQQ95XgZsMBW2zWV1DXAhHIcNyCBbLfRnef959UvJmqYlQgVGvwpjZJ3yAA0bTb8Mregjfa2WviFBZWFq9Sy+8RgWl05hnKoly4vSSB8yLx3D3NflFFlZigGRkhIwIJfHVZZrh8TkVLMgloFTYMfc+sj/NKGtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=GKZMqyk1; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1738663123; c=relaxed/simple;
+	bh=RmazLy+8VHltKrrVyJ/8S8SbJB8nDkoUkCXRWeHQA1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bHZtrWm3E5eiFl096Ow/5bdJ13Wi3nkYDgWVpBp+XnmM2sXaz1cq+pWquFtkiBQzElYrQy/EcZZffZ9gzfzkA+3TNaLF2X27GCT+vjUr1Yj3z79WJatwDy1h8gG1gX2c1vnVZB46HlNrnWlx6T2rk4uRH+x59CgFgYeAUQrv/7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=f/dz3xfK; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="GKZMqyk1"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5CC10A0031;
-	Tue,  4 Feb 2025 10:44:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=Arq9TziV6dw9WdFzvtYF
-	lrk4miTqYDr7Y/tlevZbNFA=; b=GKZMqyk1lK5CbdOtG5i53YSr5Rzx7xoiaK6R
-	HqIUkDuZPd9Co2B7sdhdUCWAaNFkHKbe8mYDRBc81hLBtHuLm6JG7LVLcoU/XUIO
-	dibOt40w0B2CL7O3QHutDawmPcgHBRaF21KEUe1T5I7nf7mQ/Af0MpQRfPpWBY2L
-	Pn9BCSfPPSjpaI/DG69uhR+20wiicbjE8oIDSfFCD4/fLrta1tXuzoc9EPN8YVai
-	7HZO9++OzNKhzBwcCdF4RqKZTVmnDuInpXW37GOkXWW5n1QqqM0mP+TvFvDvrICe
-	t77IgdbAE0zlmTe+uMRVvE9a95nOTS0TaZi1ELTub5UuqAd1ja93a7KDXhfUvKeQ
-	dYP1kKFOFN/VBSUKI6pFLCrxhdClBxBNUcfTOSJ0DZCC2huBozBy1DDus+8oUqzV
-	Nk0SBQcuuh86TdMCB9CJBvv28emZ+9jVFZNn1Y2rI2O5F/oJN9QxCxKeF2YyJxaA
-	5cJYiFCGdrKpXyeWxclxrGIL9MgK4foHp+ODd6llFCfO3CA4L/3TFAIiPro9wpEL
-	3imD/xXUxVxhVtVIH1srmw9iCjxOXygB5jDdOb6e/qvV1EOKOyWVI9Q5hhrCKQ0T
-	AMsIwrpSJtGlE/ObmflV1Sy6tYqykDCGb/XB8s8uT0pSLaGNarElal8OuJjlFztu
-	Cj7TkUE=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: Laurent Badel <laurentbadel@eaton.com>, Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?=
-	<csokas.bence@prolan.hu>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Ahmad Fatoum <a.fatoum@pengutronix.de>, Simon Horman <horms@kernel.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Jacob Keller
-	<jacob.e.keller@intel.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net v3] net: fec: Refactor MAC reset to function
-Date: Tue, 4 Feb 2025 10:37:54 +0100
-Message-ID: <20250204093756.253642-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250122163935.213313-2-csokas.bence@prolan.hu>
-References:
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="f/dz3xfK"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so53573665e9.1
+        for <imx@lists.linux.dev>; Tue, 04 Feb 2025 01:58:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1738663118; x=1739267918; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=REr3JojQsOy+vlvyz0onFg9+R7wkRagQJ4eKviyK6zY=;
+        b=f/dz3xfKMdcbdTJYfP2xaqYkEljscD3DK7//fcWcUrwm/SxTI/Uwh1HZeFfEOOcr5c
+         jG6I5MFWSkqFKFSLYW8d4Im6lsKEd7+nwO/WRKb//BPi13emlblyt9epgUfAh2CItnHf
+         bwEf0aZxXkfF9Kn/xFWXJUy7xnz1fAudTTpkcQe7iveAWMtpH+n/Y8/jWn/NJ/n/0xgG
+         JPMdJ5haotljgnBIWv1LebqRPuNK3PiRkYaTtTW3cB2N1/4EqKzrWLLNShEac3qvVziv
+         W/bYUok1KbOUGXNe8aTgnm73SgFyAGjaY6koviHp3m4BM6a+hb06mUzFPJp9k/vQmAHo
+         SOBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738663118; x=1739267918;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=REr3JojQsOy+vlvyz0onFg9+R7wkRagQJ4eKviyK6zY=;
+        b=przIhcdnvZL6eKqUCnrrqaCOg+ZLKg1DC+khLzBBrXKJgKit/GHM/Q5So7cb48RNb3
+         VaVd5AZI7tMU1FK+RLlEQpB7qMwN+FPFghfMU92OFgiByeBNh5alwDFUI7yIbwMHlMOX
+         HlK497gTMiIE6bx9ttKeuwzKl8QVT9J68zB5F20nhc6Q7vDIeERTcgHQDAhY1UUCcNkX
+         khyXujF7XwqeQCGzDCb3PHWoVkiBT7OiFec/7khk2lxKQfm62IZjVFcDm+srdaEfPHhG
+         YyIUJgzkNLDDJoAHa6gAoOmJ3QLiOT0T+kOO/Uuu03NU3aDl+V+OtQaLoboECPUQdU3e
+         NXJg==
+X-Forwarded-Encrypted: i=1; AJvYcCU55ZVndXQQVifqaC478LbFObXIk9pzqw61HGqlc0xnpIGHy80qXsR5/sM/uIvIXssBnEs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwTvnXLCZ4GhgGqSuX2AWxD63cFMR6h5niKU7XOAraJ8yywK6sA
+	9UYAgdRIiDGpQ3yrgQbG7MjGIY5bQyWN73HnUda9dqLoXNrzWyQ/iTiDG4P91MM=
+X-Gm-Gg: ASbGncuRQ6B1JYdQdcjDxrcbdeNUUy4XHFke4ZXxZ9cSno0jWwimCyMOspeCTh2A9ix
+	dyAZsKyktFCO8CL8diOxt4fp1CP1G/H+IIe0BhMe86ixqRkN29aIc0JM3bQykm6B3c9HIU84d49
+	fZxlo18j6AbXqnLkGGhZbmKmCqsnuGjp3FaNjA/7RHNs1E534G5sAikRS0gKqWlqgIqbBqUL1/4
+	nbvU/s7Vw1YYLzjKowjnUVqTqKivJ0JzWUuyIxOfVrpROWC9x/S9WiC4N4neN1UXLa/xUjachWS
+	BGBjk25B8A9O
+X-Google-Smtp-Source: AGHT+IGghMc4BxN9O+Qe0aM7/qh0cf8oUGD0gp1CkfwZSZ2sexK7/dNOyrn8xIzebmIsfIq0H1OvOg==
+X-Received: by 2002:a05:600c:5119:b0:438:a432:7c44 with SMTP id 5b1f17b1804b1-438dc40b281mr195073545e9.21.1738663118009;
+        Tue, 04 Feb 2025 01:58:38 -0800 (PST)
+Received: from [192.168.2.177] ([81.0.8.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43907f6741esm8565945e9.3.2025.02.04.01.58.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Feb 2025 01:58:37 -0800 (PST)
+Message-ID: <62589d83-f816-40f2-9eef-3f08fc9157ff@suse.com>
+Date: Tue, 4 Feb 2025 10:58:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738662239;VERSION=7985;MC=507896856;ID=198007;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD94852667366
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] arm64: dts: s32g: add the eDMA nodes
+To: Larisa Grigore <larisa.grigore@oss.nxp.com>,
+ Chester Lin <chester62515@gmail.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, s32@nxp.com,
+ clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com
+References: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
+Content-Language: en-US, ca-ES, es-ES
+From: Matthias Brugger <mbrugger@suse.com>
+Autocrypt: addr=mbrugger@suse.com; keydata=
+ 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
+ PVrr2NoUqi/bxI8fFQJD1jVj8K0=
+In-Reply-To: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The core is reset both in `fec_restart()` (called on link-up) and
-`fec_stop()` (going to sleep, driver remove etc.). These two functions
-had their separate implementations, which was at first only a register
-write and a `udelay()` (and the accompanying block comment). However,
-since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-meant that these implementations diverged, often causing bugs.
 
-For instance, as of now, `fec_stop()` does not check for
-`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-a PM power-down event; and `fec_restart()` missed the refactor renaming
-the "magic" constant `1` to `FEC_ECR_RESET`.
 
-To harmonize current implementations, and eliminate this source of
-potential future bugs, refactor implementation to a common function.
+On 03/02/2025 09:09, Larisa Grigore wrote:
+> Add the two eDMA nodes in the device tree in order to enable the probing
+> of the S32G2/S32G3 eDMA driver.
+> 
+> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
-Fixes: ff049886671c ("net: fec: Refactor: #define magic constants")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
 
-Notes:
-    Recommended options for this patch:
-    `--color-moved --color-moved-ws=allow-indentation-change`
-    Changes in v2:
-    * collect Michal's tag
-    * reformat message to 75 cols
-    * fix missing `u32 val`
-    Changes in v3:
-    * rename parameter to `allow_wol`
-    Changes in v3:
-    * clarify message
-    * collect Jacob's tag
-    * rebased onto c2933b2befe2
-
- drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f7c4ce8e9a26..a86cfebedaa8 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 	}
- }
- 
-+/* Whack a reset.  We should wait for this.
-+ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-+ * instead of reset MAC itself.
-+ */
-+static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
-+{
-+	u32 val;
-+
-+	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-+			writel(0, fep->hwp + FEC_ECNTRL);
-+		} else {
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			udelay(10);
-+		}
-+	} else {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
-+}
-+
- /*
-  * This function is called to start or restart the FEC during a link
-  * change, transmit timeout, or to reconfigure the FEC.  The network
-@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
--	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--		writel(0, fep->hwp + FEC_ECNTRL);
--	} else {
--		writel(1, fep->hwp + FEC_ECNTRL);
--		udelay(10);
--	}
-+	fec_ctrl_reset(fep, false);
- 
- 	/*
- 	 * enet-mac reset will reset mac address registers too,
-@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--			writel(0, fep->hwp + FEC_ECNTRL);
--		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
--			udelay(10);
--		}
--	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
--		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
--	}
-+	fec_ctrl_reset(fep, true);
- 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 
--- 
-2.48.1
-
+> ---
+> 
+> v2: Moved #dma-cells before dma-channels and clock-names after clocks.
+> 
+>   arch/arm64/boot/dts/freescale/s32g2.dtsi | 34 ++++++++++++++++++++++++
+>   arch/arm64/boot/dts/freescale/s32g3.dtsi | 34 ++++++++++++++++++++++++
+>   2 files changed, 68 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> index 7be430b78c83..64eac1dde05b 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> @@ -317,6 +317,23 @@ usdhc0-200mhz-grp4 {
+>   			};
+>   		};
+>   
+> +		edma0: dma-controller@40144000 {
+> +			compatible = "nxp,s32g2-edma";
+> +			reg = <0x40144000 0x24000>,
+> +			      <0x4012c000 0x3000>,
+> +			      <0x40130000 0x3000>;
+> +			#dma-cells = <2>;
+> +			dma-channels = <32>;
+> +			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "tx-0-15",
+> +					  "tx-16-31",
+> +					  "err";
+> +			clocks = <&clks 63>, <&clks 64>;
+> +			clock-names = "dmamux0", "dmamux1";
+> +		};
+> +
+>   		uart0: serial@401c8000 {
+>   			compatible = "nxp,s32g2-linflexuart",
+>   				     "fsl,s32v234-linflexuart";
+> @@ -333,6 +350,23 @@ uart1: serial@401cc000 {
+>   			status = "disabled";
+>   		};
+>   
+> +		edma1: dma-controller@40244000 {
+> +			compatible = "nxp,s32g2-edma";
+> +			reg = <0x40244000 0x24000>,
+> +			      <0x4022c000 0x3000>,
+> +			      <0x40230000 0x3000>;
+> +			#dma-cells = <2>;
+> +			dma-channels = <32>;
+> +			interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "tx-0-15",
+> +					  "tx-16-31",
+> +					  "err";
+> +			clocks = <&clks 63>, <&clks 64>;
+> +			clock-names = "dmamux0", "dmamux1";
+> +		};
+> +
+>   		uart2: serial@402bc000 {
+>   			compatible = "nxp,s32g2-linflexuart",
+>   				     "fsl,s32v234-linflexuart";
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> index 6c572ffe37ca..4f6201d6c08a 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> @@ -374,6 +374,23 @@ usdhc0-200mhz-grp4 {
+>   			};
+>   		};
+>   
+> +		edma0: dma-controller@40144000 {
+> +			compatible = "nxp,s32g3-edma", "nxp,s32g2-edma";
+> +			reg = <0x40144000 0x24000>,
+> +			      <0x4012c000 0x3000>,
+> +			      <0x40130000 0x3000>;
+> +			#dma-cells = <2>;
+> +			dma-channels = <32>;
+> +			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "tx-0-15",
+> +					  "tx-16-31",
+> +					  "err";
+> +			clocks = <&clks 63>, <&clks 64>;
+> +			clock-names = "dmamux0", "dmamux1";
+> +		};
+> +
+>   		uart0: serial@401c8000 {
+>   			compatible = "nxp,s32g3-linflexuart",
+>   				     "fsl,s32v234-linflexuart";
+> @@ -390,6 +407,23 @@ uart1: serial@401cc000 {
+>   			status = "disabled";
+>   		};
+>   
+> +		edma1: dma-controller@40244000 {
+> +			compatible = "nxp,s32g3-edma", "nxp,s32g2-edma";
+> +			reg = <0x40244000 0x24000>,
+> +			      <0x4022c000 0x3000>,
+> +			      <0x40230000 0x3000>;
+> +			#dma-cells = <2>;
+> +			dma-channels = <32>;
+> +			interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "tx-0-15",
+> +					  "tx-16-31",
+> +					  "err";
+> +			clocks = <&clks 63>, <&clks 64>;
+> +			clock-names = "dmamux0", "dmamux1";
+> +		};
+> +
+>   		uart2: serial@402bc000 {
+>   			compatible = "nxp,s32g3-linflexuart",
+>   				     "fsl,s32v234-linflexuart";
 
