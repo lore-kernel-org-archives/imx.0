@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231937FBA2;
-	Wed,  5 Feb 2025 13:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5084E13C9C4;
+	Wed,  5 Feb 2025 13:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738762118; cv=none; b=HxDobiNlyFOeFj685F7BLg2CCCQ5g+/marakfhuCeM7d/qWYyKEPxsawSfUmxmtnuQJTsm1zGPTVm2nY5gO9zH3VJFqkN8OKwJyvDyM+8bIexC9RICtah3ZVpmcN2U4dnL6gE2k0ShP/NjmG4F/SEEe534Pi62ZysqjAhoGVmPM=
+	t=1738763310; cv=none; b=dD9cNBIygyX63Ie8PKLfL6mMGe32UKCeB8bG/uC55nQFQHsrJxYyW25aCuCqeElK6h7pmO0KjxC3a61bDqxRsZtkzvPQ98EywEAcCw3qF1j774fA5tspUlTOxLvz/tsq+jSqPAkAvT9wzs1iuPniUILXlm7zNniJcWNFelfUdYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738762118; c=relaxed/simple;
-	bh=EJfYr9VPPROrpKyvvsXKomKL0zPZ75XOGiybaCRJ5J0=;
+	s=arc-20240116; t=1738763310; c=relaxed/simple;
+	bh=KJBytwIPJFAahEOcJ20tY1yTFejn1o0rqevE84nSVPo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS+INZi5dtsIKtemdPcBO6FQa9a83MdbiCgXgkFrLSApwxph6w4CfEB3VDYkjYpPCJrGAout6nx+5rZX54GYK9qXlm/ivKs+Q9lcqdbamp212E26xgKHmSV8/boLu8qqaaINT4dci3QmhEieDLQLDNc140N1EYxluE5mnoneB8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqZqVUj1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=A72M58W87RyUt17JKDh0kPg3ZDNSV17TDZTTZ0F72HDcXx6P1+aMEVYa2mPhXY75cp8XKeumlp+w+Hlsa+N46j3/hy3nhZ9OiklnfYYulQv352KJC1xu28bdx0UZjhBtTcTbG5vps4dk+AAVtA0vWba4lqrJ6uIF6IM1tmpKvbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIHbyfCN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqZqVUj1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CB4C4CED1;
-	Wed,  5 Feb 2025 13:28:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIHbyfCN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11405C4CED1;
+	Wed,  5 Feb 2025 13:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738762118;
-	bh=EJfYr9VPPROrpKyvvsXKomKL0zPZ75XOGiybaCRJ5J0=;
+	s=k20201202; t=1738763310;
+	bh=KJBytwIPJFAahEOcJ20tY1yTFejn1o0rqevE84nSVPo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HqZqVUj1urhFmxfS7BZaGcVlHiD+B3a8phvTlc3h6SuZUgQ9q6lCSZCVRhzmm0fIN
-	 IG3BXFEDM4SFyqfvIMNZjaScWgkMDWyjY3ao51GKPnNtOtYOUqEPwLSItUyvQB258H
-	 Ni8jznOsiG6eSi14La95ih4q1Dh0Ndc2BNfedS+BnJc+4idYaR4g9iVTvAPO0IqJ1u
-	 2jLPxfqez+qNon6F81IgxWQRQKMTameMFSHqbV38ma3b4lJB0AjVixKqb9xACw2phL
-	 5E9h539vI0Mhwq+BZgmkHpJyxuMAI/LMlrYWIz+XxeuqZ8PW8stQhTHeONAYCJI2Zm
-	 rxOSjOG7HVA6Q==
-Date: Wed, 5 Feb 2025 13:28:32 +0000
+	b=tIHbyfCNTR7ePdAi/9DhRFtH+kpYwytBniwChEvC9MRW7ixGrYznNKQiP1yYYf9hh
+	 yQVQofUVvJ0qmmNvKis16Q/gM9z5HhWxW/XvSi8t7Wnt9amaxLjaUqwyyfCmS7srlW
+	 ySavdZY6YrKQVlzOYGjIqvtPE6krjLT4EPIA3O79RqkHFr/y5I+sI3aYPzlQ4o6ScD
+	 sBXQs3clHlLpWaImQxCbZ+5x/Sb8IBge/bqm4u2iVZ55oGWomyNS5ySkMCbQW3GKbf
+	 r9fdPWHmRJ3At2rhMaq8C4eLbT8LBZcPC3HL7ZZJUCPnVg52L0Po76hNv3+jF1YUA2
+	 /aR+krBiH1GNg==
+Date: Wed, 5 Feb 2025 13:48:24 +0000
 From: Simon Horman <horms@kernel.org>
 To: =?utf-8?B?Q3PDs2vDoXMs?= Bence <csokas.bence@prolan.hu>
 Cc: Laurent Badel <laurentbadel@eaton.com>,
@@ -41,8 +41,9 @@ Cc: Laurent Badel <laurentbadel@eaton.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
 Subject: Re: [PATCH] net: fec: Refactor MAC reset to function
-Message-ID: <20250205132832.GC554665@kernel.org>
+Message-ID: <20250205134824.GF554665@kernel.org>
 References: <20250204093604.253436-2-csokas.bence@prolan.hu>
+ <20250205132832.GC554665@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,29 +53,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250204093604.253436-2-csokas.bence@prolan.hu>
+In-Reply-To: <20250205132832.GC554665@kernel.org>
 
-On Tue, Feb 04, 2025 at 10:36:03AM +0100, Csókás, Bence wrote:
-> The core is reset both in `fec_restart()` (called on link-up) and
-> `fec_stop()` (going to sleep, driver remove etc.). These two functions
-> had their separate implementations, which was at first only a register
-> write and a `udelay()` (and the accompanying block comment). However,
-> since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-> meant that these implementations diverged, often causing bugs.
+On Wed, Feb 05, 2025 at 01:28:32PM +0000, Simon Horman wrote:
+> On Tue, Feb 04, 2025 at 10:36:03AM +0100, Csókás, Bence wrote:
+> > The core is reset both in `fec_restart()` (called on link-up) and
+> > `fec_stop()` (going to sleep, driver remove etc.). These two functions
+> > had their separate implementations, which was at first only a register
+> > write and a `udelay()` (and the accompanying block comment). However,
+> > since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+> > meant that these implementations diverged, often causing bugs.
+> > 
+> > For instance, as of now, `fec_stop()` does not check for
+> > `FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+> > a PM power-down event; and `fec_restart()` missed the refactor renaming
+> > the "magic" constant `1` to `FEC_ECR_RESET`.
+> > 
+> > To harmonize current implementations, and eliminate this source of
+> > potential future bugs, refactor implementation to a common function.
+> > 
+> > Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> > Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> > Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
+> > Fixes: ff049886671c ("net: fec: Refactor: #define magic constants")
+> > Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 > 
-> For instance, as of now, `fec_stop()` does not check for
-> `FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-> a PM power-down event; and `fec_restart()` missed the refactor renaming
-> the "magic" constant `1` to `FEC_ECR_RESET`.
-> 
-> To harmonize current implementations, and eliminate this source of
-> potential future bugs, refactor implementation to a common function.
-> 
-> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> Fixes: c730ab423bfa ("net: fec: Fix temporary RMII clock reset on link up")
-> Fixes: ff049886671c ("net: fec: Refactor: #define magic constants")
-> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Sorry, I think I have to take that back for now.
+
+Unfortunately when I was looking over this I failed to notice: that there
+is a newer version of this patch (v3); the following response from Jakub to
+v3; and, the response from Laurent that he is referring to.
+
+  "Laurent responded to v1 saying this was intentional. Please give more
+   details on how problem you're seeing and on what platforms. Otherwise
+   this is not a fix but refactoring.
+
+  "Please don't post new versions in-reply-to, and add lore links to
+   the previous version in the changelog.
+
+  Link: https://lore.kernel.org/netdev/20250204074504.523c794c@kernel.org/
 
