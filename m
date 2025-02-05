@@ -1,152 +1,242 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6481FDA8A
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 18:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D3220D4E5
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 20:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738781898; cv=none; b=IhTtuuYM9kBrJ9L2coMgp6HllQJvmx94Z3MuVYqUuk+uYg7+dtKnsKOrsBDx3a6IK4WJQhtN5zTNZyNUmJFxV97lItVuMdom0G84pmB+K2MScD7r7XMEL0mFMrIFBdwkZsfMxt44Ssdoi4c/HsQSQegDDxioEKJ1ZI8tqeEiFbg=
+	t=1738786168; cv=none; b=tR+vFTNHvaNBwR3G92nnFvLSWtJyDjGyWnjnitUkdK8wRaPdttm0mFvANQgP17EtTqgnT9YzLJTSaMMP1jVTGMm8FHb5YeM+d0WI9KdSGOd/AyTGs/twaEPeS/L7aKWpCC9YkQWFg2trPnB62xPpBj2rZIrKbtGn9zbB7HIQFu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738781898; c=relaxed/simple;
-	bh=gdy5cd3h4bVtyCWAkwap7NHW9h+FdHvkFYNDHTmIIPI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TtGRIqY9RW1y/858x0GxEbe2DzYNDTjXRzRWpcB7zZICr4UVpxn9ZLeqAuncXWHtX7B51p8w52Jwhdtw97ysoEAc0NFQadHdDTqvSvKWjs2lDyhJltCnWyLMJ9/gX1pzzMM+k3VnkNEGNL9x4M2qWIZZo6gHQl8BKWVARS4P6xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MEI0AqCU; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738786168; c=relaxed/simple;
+	bh=JBXfstQaIVwQ4CElA5zFAPJmVat5vbPS8gLTRdPLuUI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=R+3BBHSWXA3qyTQunRL2ZcHc+TnLbgQmthfjen+zAaRmt56SipmjLKJgBHHFDOB0cXvfhAHinLfNnIPXwLKYLC6wSgucQchS5Yky/jDglhcbC0sVUlqXS9OK9L753mFdURBsITfm0fZrzKumIf+rYK5Mq1wtCU5nBuWCHiPhs+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A+F1Gzkx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MEI0AqCU"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab6fb1851d4so18656766b.0
-        for <imx@lists.linux.dev>; Wed, 05 Feb 2025 10:58:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738781895; x=1739386695; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a71A1t5rNrXw7gtQyGfuALjF7vqK5gL26+h1A6qZoco=;
-        b=MEI0AqCUQVVR26zFgbvZ0myYZA+YePe1Cwh0vozwSXnH9aFNvodm2qNPM27uUb8sEm
-         fzSIxXiHxQdbpW7fzahEPj4+4xf51+ynW9D5VqmZ+IEwx53GZN9+zEisp095r6VW1Jx6
-         FmipEIU/d2C/z3BXTODl9GKCN1Q9XRNa8+hZ0N375K+eMCQxmLWzPNVfMk4UzxMaAwCQ
-         Z2/eQqRIS1luJDlL517gWzWnSoMbv4kCGrIATY7PMwGkd+E1BIjUBmf2pVhh+Gh8l8t4
-         T6G7aTGpvVdyg2qPvTOKwLMiDbr4ONCNYuxCnoI/VckT0PN30DoobNwk3usNJo0qyqUf
-         sduA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738781895; x=1739386695;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a71A1t5rNrXw7gtQyGfuALjF7vqK5gL26+h1A6qZoco=;
-        b=jg3Cjvm5H776WhMROFOtuLwOS8CHANyiPxAiYrDflozZwtxIAdTTWGoUh8pjIXyz5U
-         Z5GqGUC4xm6ENw2VvbRQdNBcDalZKtu1MUCnrByw/jxconLWCqjHuCMi0x/ZN64lFDIY
-         zZ2msHH22IFIglNYM9zCV2WSxcgZ1ZZUVp1F1KPu1pPu2pWUmfDCZPKOa4F4ONmBE/5c
-         Wn7aOHG0Vo604uSxHZT6/LJOK9nRWj+hLZPOlaaJIPNiP9epBMhTqRtWKB18jhAyoWbm
-         L2Tu+dp47Oo5sORf8TdY2ceyewuIJ4d3pjWcutzzqIBWNWWjNPcOaDKOvHqR0bYmxNye
-         pp/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUm1rpfSYS03JUCXeXYiDJ5wqhGrFfNvpC31dBRauydKEHvno+UNvOv2H8RCTiU5qri7hI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1seIZQ6pZ7mIzeytwf7Wfxz7DpumFgJJEmmRSuMJgENwCK4jJ
-	BJ4W4g1lE62FZ9bCfcWh1ngLxzihQcuZOR/wtT7RNjhWrL4daUdy
-X-Gm-Gg: ASbGncshSvERRX/HSn4s4UhzYn9tT7tI/XFugKy3Cv8wv5UzIB4BNwxXCGbKGT8/BDY
-	qIYD9VmDSl0XNXE4DZ1xzcb6T5tH9wIbAHOcK7WUHON+rq/kftX7rER3o/kNKMBH7m8/WC606dw
-	rxy/YnlAPZc+kl9/7T0N1o1phzsCNw94u2Vbfu7W0XFWfcipwY3nk12C24E4CYQPBt5Nn0MjiN4
-	z+IPLBnHb9OxvUiKfyz9lPTxK51vr7P0Vme0MB2VsxVSjJFIHTNu6t6RvFfF0lQOMlg72AZlOgV
-	fqqRiiB3IxJyhkXiwQJZ4qeVN4QioyyGzehCeXI+U1lc
-X-Google-Smtp-Source: AGHT+IGHOcq2bEGp2OnqU9INvLV5JVgfAV06LBKYqVqWEMm9zU6Sr+3w2aBLE7MIY2wLnbC3eeLt0g==
-X-Received: by 2002:a17:906:6a29:b0:ab6:d4ce:5674 with SMTP id a640c23a62f3a-ab76e9dc14amr34325066b.26.1738781894675;
-        Wed, 05 Feb 2025 10:58:14 -0800 (PST)
-Received: from [192.168.1.130] ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47ceadfsm1152656466b.51.2025.02.05.10.58.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 10:58:14 -0800 (PST)
-Message-ID: <2226a3d0-37b1-4018-83d1-8f5e9853169b@gmail.com>
-Date: Wed, 5 Feb 2025 20:58:12 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A+F1Gzkx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738786165;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FtyHp14quoZKfSwCwvs1IfBWioeKvvPDS6kPB6/O+SI=;
+	b=A+F1GzkxYerLem2+8Ov9rw3ufNVf7m2PzDu/2RHX/ake8YY6KJ8EwSqpa264FXkkTly4i/
+	GK+dAGlo6xMh0Avt+MqWA0Iui6cFrJhIfkgw14BFDAvlVgHEPmhPKsbrMagkSBQqXi6CEC
+	ghNjgkatDi6SIBlf7T9LNXVptSXBUlw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-225-CF1M26uSNJmCSR8ep_ZkTQ-1; Wed,
+ 05 Feb 2025 15:09:22 -0500
+X-MC-Unique: CF1M26uSNJmCSR8ep_ZkTQ-1
+X-Mimecast-MFC-AGG-ID: CF1M26uSNJmCSR8ep_ZkTQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 409D419560B6;
+	Wed,  5 Feb 2025 20:09:13 +0000 (UTC)
+Received: from asrivats-na.rmtustx.csb (unknown [10.2.17.21])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 957B919560A3;
+	Wed,  5 Feb 2025 20:08:57 +0000 (UTC)
+From: Anusha Srivatsa <asrivats@redhat.com>
+Subject: [PATCH 00/12] drm: Move to using devm_platform_ioremap_resource
+Date: Wed, 05 Feb 2025 15:07:56 -0500
+Message-Id: <20250205-mem-cocci-newapi-v1-0-aebf2b0e2300@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] ASoC: SOF: imx: introduce more common structures and
- functions
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bard Liao <yung-chuan.liao@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Iuliana Prodan <iuliana.prodan@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
- imx@lists.linux.dev
-References: <20250203171808.4108-1-laurentiumihalcea111@gmail.com>
- <20250203171808.4108-2-laurentiumihalcea111@gmail.com>
- <Z6EeZ4lgKVHCee3e@lizhi-Precision-Tower-5810>
- <db81aa4e-dc1f-4c6d-b58f-82883622b0dc@gmail.com>
- <Z6ONWfIycA0oHEB6@lizhi-Precision-Tower-5810>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <Z6ONWfIycA0oHEB6@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+X-B4-Tracking: v=1; b=H4sIABzFo2cC/x3MQQqAIBBA0avErBtQSYmuEi1Sp5pFKgoVSHdPW
+ r7F/xUKZaYCU1ch08WFY2iQfQfuWMNOyL4ZlFBaKKHxpBNddI4x0L0mRuPtYEcpjTcELUuZNn7
+ +5by87we0aAeTYgAAAA==
+X-Change-ID: 20250205-mem-cocci-newapi-6db4b8116d6e
+To: Joel Stanley <joel@jms.id.au>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+ Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Alexey Brodkin <abrodkin@synopsys.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+ linux-rockchip@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738786137; l=4887;
+ i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
+ bh=JBXfstQaIVwQ4CElA5zFAPJmVat5vbPS8gLTRdPLuUI=;
+ b=kB2Ax15EIn2x59280nG+iYRJh3A8F3lI/vAFp/1S4keeM/8lC4ZnJc86pKPdqRuC7++JEqhWK
+ fKEzwCmQXKIDNwrIxS+ebvDgJC/rzBnDe6p36Nc05otkT/OeNyXMGX2
+X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
+ pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: eJu5sZS6ZIJ58VZi8rNfAC0CzElBNCBhDFh4HoY9lRU_1738786157
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
+Start replacing the below occurences with the newer API:
+- (devm_)platform_get_resource + devm_ioremap_resource
+- (devm_)platform_get_resource + (devm_)ioremap
+- platform_get_resource_byname + devm_ioremap
+Move all these occurences to uses devm_platform_ioremap_resource
+instead.
 
-(snip)
+This is v2 of the series. Changes from v1 [1]:
+- Mostly fix the compilation errors :( What had passed locally
+happened to be the wrong config with most drivers not enabled.
+- Clarify the TODO item in the GPU section of Documentation
+for anyone who wants to do it in future.
+- Drop meson patch from discussion in v1
+- Drop rockchip patch as well. Offline discussion with
+Maxime led to the conclusion that using
+devm_platform_get_and_ioremap_resource() would be a better
+approach in that source file. Not adding that change as part of
+this series, can be addressed separately.
 
->>>> +#include <linux/pm_domain.h>
->>>>  #include <sound/sof/xtensa.h>
->>>> +
->>>>  #include "../ops.h"
->>>>
->>>>  #include "imx-common.h"
->>>> @@ -74,5 +79,417 @@ void imx8_dump(struct snd_sof_dev *sdev, u32 flags)
->>>>  }
->>>>  EXPORT_SYMBOL(imx8_dump);
->>>>
->>>> +static void imx_handle_reply(struct imx_dsp_ipc *ipc)
->>>> +{
->>>> +	unsigned long flags;
->>>> +	struct snd_sof_dev *sdev = imx_dsp_get_data(ipc);
->>>> +
->>>> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
->>>> +	snd_sof_ipc_process_reply(sdev, 0);
->>>> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
->>> Are you sure have to use spin_lock?
->> not sure, this definition was taken from previous drivers. I'd say keep it for now
->> as removing it would require some more testing which will take some time.
->>
-> Change lock type need seperate patch. analyze is more important then test.
-> It is really hard to hit race condition at normal user case.
->
-> You can check if any irq handle use ipc_lock? If irq handle already defer
-> to thread irq, mutex most likely is enough.
->
-> Frank
+[1] - https://patchwork.freedesktop.org/series/144073/
 
-ACK
+Used Coccinelle to make the code changes.Semantic patch:
 
->
->> (snip)
->>
->>>> +static int imx_suspend(struct snd_sof_dev *sdev, unsigned int target_state)
->>>> +{
->>>> +	int ret;
->>>> +	const struct sof_dsp_power_state target_power_state = {
->>>> +		.state = target_state,
->>>> +	};
->>>> +
->>>> +	if (!pm_runtime_suspended(sdev->dev)) {
->>>> +		ret = imx_common_suspend(sdev);
->>>> +		if (ret < 0) {
->>>> +			dev_err(sdev->dev, "failed to common suspend: %d\n", ret);
->>>> +			return ret;
->>>> +		}
->>>> +	}
->>>> +
->>>> +	return snd_sof_dsp_set_power_state(sdev, &target_power_state);
->>> does pm_runtime_force_suspend()/pm_runtime_force_resume() work?
->> no, these functions are not called directly by the PM core, but rather by the SOF core.
->> Using the proposed functions would result in the SOF core PM functions (i.e: sof_resume/sof_suspend)
->> being called twice in the case of system suspend/resume, which is wrong.
-> Does SOC core should check it? I don't reject this change, but check
-> run time pm status in suspend often cause some bugs.
->
-> Frank
+//First Case
+//rule s/platform_get_resource + devm_ioremap_resource/devm_platform_ioremap_resource
+@rule_1@
+identifier res;
+expression ioremap_res;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+-ioremap_res = devm_ioremap_resource(...);
++ioremap_res = devm_platform_ioremap_resource(pdev,0);
 
-No, IMO this sequence is chip-specific so it shouldn't be handled by the core.
+//Second case
+//rule s/(devm_)platform_get_resource + (devm_)ioremap/devm_platform_ioremap_resource.
+@rule_2@
+identifier res;
+expression ioremap;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource(pdev,0);
+
+//Third case
+//rule s/(devm_)platform_get_resource_byname + (devm_)ioremap/devm_platform_ioremap_resource_byname.
+@rule_3@
+identifier res;
+expression ioremap;
+identifier pdev;
+constant mem;
+expression name;
+@@
+-struct resource *res;
+<+...
+-res = platform_get_resource_byname(pdev,mem,name);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource_byname(pdev,name);
+...+>
+
+Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+---
+Anusha Srivatsa (12):
+      drm/aspeed: move to devm_platform_ioremap_resource() usage
+      drm/fsl-dcu: move to devm_platform_ioremap_resource() usage
+      drm/hisilicon: move to devm_platform_ioremap_resource() usage
+      drm/mediatek: move to devm_platform_ioremap_resource() usage
+      drm/mxsfb: move to devm_platform_ioremap_resource() usage
+      drm/sprd: move to devm_platform_ioremap_resource() usage
+      drm/sti: move to devm_platform_ioremap_resource() usage
+      drm/stm: move to devm_platform_ioremap_resource() usage
+      drm/tegra: move to devm_platform_ioremap_resource() usage
+      drm/tiny: move to devm_platform_ioremap_resource() usage
+      drm/vc4: move to devm_platform_ioremap_resource() usage
+      Documentation: Update the todo
+
+ Documentation/gpu/todo.rst                      | 12 +++---
+ drivers/gpu/drm/aspeed/aspeed_gfx_drv.c         |  4 +-
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c       |  4 +-
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c    |  4 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_color.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_gamma.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_merge.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c         |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_rdma.c        |  4 +-
+ drivers/gpu/drm/mediatek/mtk_dsi.c              |  4 +-
+ drivers/gpu/drm/mediatek/mtk_hdmi.c             |  4 +-
+ drivers/gpu/drm/mediatek/mtk_mdp_rdma.c         |  4 +-
+ drivers/gpu/drm/mxsfb/lcdif_drv.c               |  4 +-
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c               |  4 +-
+ drivers/gpu/drm/sprd/sprd_dpu.c                 |  9 +---
+ drivers/gpu/drm/sprd/sprd_dsi.c                 |  9 +---
+ drivers/gpu/drm/sti/sti_compositor.c            | 10 +----
+ drivers/gpu/drm/sti/sti_dvo.c                   | 10 +----
+ drivers/gpu/drm/sti/sti_hda.c                   |  9 +---
+ drivers/gpu/drm/sti/sti_hdmi.c                  | 11 +----
+ drivers/gpu/drm/sti/sti_hqvdp.c                 | 10 +----
+ drivers/gpu/drm/sti/sti_tvout.c                 | 10 +----
+ drivers/gpu/drm/sti/sti_vtg.c                   | 10 +----
+ drivers/gpu/drm/stm/ltdc.c                      |  4 +-
+ drivers/gpu/drm/tegra/dsi.c                     |  4 +-
+ drivers/gpu/drm/tiny/arcpgu.c                   |  4 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c                  | 55 +++++++------------------
+ 28 files changed, 46 insertions(+), 177 deletions(-)
+---
+base-commit: 92514ef226f511f2ca1fb1b8752966097518edc0
+change-id: 20250205-mem-cocci-newapi-6db4b8116d6e
+
+Best regards,
+-- 
+Anusha Srivatsa <asrivats@redhat.com>
+
