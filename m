@@ -1,47 +1,71 @@
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB118FC9F
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 14:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7912218C039
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 14:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766534; cv=none; b=og9HQ0JVRm8DV6VFqDR5rqFVepD9QasHnKgfJbdsuhoUimEITfvAvDsu3Zmuav3iggbyCFCHNiKyrO+236H9w3bIUW7Ne4a/rp/TeIFt+8vMJF+atkB/um+Jm60cJS111aEcHOZW4ziAqViVXCZFwiGkeYO4rTId3R6kh5QwIhU=
+	t=1738767485; cv=none; b=AUoeXnEFFRO7BV1BQz2Q8xkU7hyUr2bc81GFUMwonTlzVZz3W+DexfYD2xs9UyBdubL8CzpYx+dmQvgqxqOMeYcr67YaLxMfqv/PtmS3zd+WUi9GIVt46QxggnNKosxuYmo0n+Lb9YLwMrrUKn4m99L9pTaLgaWKac7KW1gAKXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766534; c=relaxed/simple;
-	bh=LIAew11mhguTF2BX4IO3e9boWaQIZ0S/uz3h7V4gidE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lZpXtvpFEHNwbGgkYZif049CN0aSVvMRcLHKVOM1X/z0LaebWR3gN120nAW9vvDuK9jnLRjE9gxRopVG4RNIYYqDnypKNuuUI+VPoccleWj2VIVg7SRKiRZb/8ydgT59cesyQ7HpNwPYvEgZGTJChw235ky1i04P/6wZiqBWd/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:fa11:c14e:2df5:5273])
-	by michel.telenet-ops.be with cmsmtp
-	id 9qi72E00h3f221S06qi7MH; Wed, 05 Feb 2025 15:42:10 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tfgbD-0000000FwWi-36dR;
-	Wed, 05 Feb 2025 15:42:07 +0100
-Received: from geert by rox.of.borg with local (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tfgbP-00000006bUL-3Iq0;
-	Wed, 05 Feb 2025 15:42:07 +0100
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1738767485; c=relaxed/simple;
+	bh=3EDPzq+QRjtF8ntIcn0E9PwMJhWnjlNrTN7MIeR80jo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gEgontPymk0LYhuQV2ch1uBLoWbLUMT391kgo650+oFbokP9TWkLPeLOUEWzEUtRQjEv0jMT7b3oAWG1TGlIi6jfQLTpbAQPzs7bO6ZXhNRPfNPub6LmoxxdQTFEIoVAaySg3nPggPSm/AFikDY4Ussy/b0X7AT65ItsMtKPLQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DVIpvhbd; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DVIpvhbd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738767483; x=1770303483;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3EDPzq+QRjtF8ntIcn0E9PwMJhWnjlNrTN7MIeR80jo=;
+  b=DVIpvhbdr3MW7PfK2OQac0w/T/qBI2z2AjBkXlDONxLx9hw7Dj+GVUnv
+   2ytElc0fTiBJuxuUF45ubQ2xkLaSYqSXfl+Ci2wn7V/K50lRndDbkRgeB
+   7wBQgwzqa1US1izKjcZrhnazl8S8XKcaT+n+4kXYAB3Fh4qIf5cqVFpW2
+   s5IF1uuSyyYGNnGx3ddlyYySr7ja/LCf6febK4xgL4Cv1+Tp4jmu+ff1y
+   AVLbh7xvZqojkjRoU5Oe+mUPzPqoTYUkzLGFxxausL6ZvDd0YSRNhSG/u
+   IGpmEdgfsZdvHyajPzWsSgjjzOUCCvxoBQ4kueOgVkWqjevOEf6MRngvx
+   A==;
+X-CSE-ConnectionGUID: vLU6EOxtSZuhM45IhEmEAg==
+X-CSE-MsgGUID: e/DaZptoROuq5q69Wy4PHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39599702"
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="39599702"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 06:58:03 -0800
+X-CSE-ConnectionGUID: LMxD6/3vSq6Xcb2+iczw9g==
+X-CSE-MsgGUID: TDg2oATYSdCw/H5cHCpDSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
+   d="scan'208";a="115968400"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 05 Feb 2025 06:58:00 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id B93DE13E; Wed, 05 Feb 2025 16:57:58 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vinod Koul <vkoul@kernel.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: soc@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH resend] firmware: imx: IMX_SCMI_MISC_DRV should depend on ARCH_MXC
-Date: Wed,  5 Feb 2025 15:41:43 +0100
-Message-ID: <9638976432d8dfcb0c4df9d454b661f9022a2d7b.1738766259.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 2/4] dmaengine: Use dma_request_channel() instead of __dma_request_channel()
+Date: Wed,  5 Feb 2025 16:57:10 +0200
+Message-ID: <20250205145757.889247-3-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
+References: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,29 +74,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The i.MX System Controller Management Interface firmware is only present
-on Freescale i.MX SoCs.  Hence add a dependency on ARCH_MXC, to prevent
-asking the user about this driver when configuring a kernel without
-Freescale i.MX platform support.
+Reduce use of internal __dma_request_channel() function in public
+dmaengine.h.
 
-Fixes: 514b2262ade48a05 ("firmware: arm_scmi: Fix i.MX build dependency")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/firmware/imx/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/dmaengine.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
-index 907cd149c40a8b5f..c964f4924359fcd3 100644
---- a/drivers/firmware/imx/Kconfig
-+++ b/drivers/firmware/imx/Kconfig
-@@ -25,6 +25,7 @@ config IMX_SCU
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index 83cbf7197a76..a360e0330436 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -1646,7 +1646,7 @@ static inline struct dma_chan
+ 	if (!fn || !fn_param)
+ 		return NULL;
  
- config IMX_SCMI_MISC_DRV
- 	tristate "IMX SCMI MISC Protocol driver"
-+	depends on ARCH_MXC || COMPILE_TEST
- 	default y if ARCH_MXC
- 	help
- 	  The System Controller Management Interface firmware (SCMI FW) is
+-	return __dma_request_channel(&mask, fn, fn_param, NULL);
++	return dma_request_channel(mask, fn, fn_param);
+ }
+ 
+ static inline char *
 -- 
-2.43.0
+2.43.0.rc1.1336.g36b5255a03ac
 
