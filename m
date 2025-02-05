@@ -1,223 +1,78 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [195.130.137.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D1155A30
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 14:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBB118FC9F
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 14:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766456; cv=none; b=CGIE0PkRhbLuDCXhyraEhklV9cnkv40Z5hzti7L4Ozkz1v9lgHGnGv03/NPZiBiXibx5F1ORVTXA+esOwEF/BdwQPdKNfTsJWTL18ZvlKYwUT7RVOaTj9KsVJwMIbTZsEQNgYDDS4+p3PLEhDnjwrhSsW6vCKTJ78QND4og4nms=
+	t=1738766534; cv=none; b=og9HQ0JVRm8DV6VFqDR5rqFVepD9QasHnKgfJbdsuhoUimEITfvAvDsu3Zmuav3iggbyCFCHNiKyrO+236H9w3bIUW7Ne4a/rp/TeIFt+8vMJF+atkB/um+Jm60cJS111aEcHOZW4ziAqViVXCZFwiGkeYO4rTId3R6kh5QwIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766456; c=relaxed/simple;
-	bh=PKEwQJtMppnnCrd/A7LT0nMscPJpOdf1mwdXkQb97J8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+SDmyPbKsh8sG4HEXAaxEBtRlphGOB50uKqgwf8uoc+z6jaN4WuA9EYqhB9MMW1bwPQMV+SK/NhHP44PGLo/ZNl8IzqlQUz4B2YPCkF7Iec3d2AP5p+36XZ1QSaL2wLzBqGQWUl8gDaWGlR5R6Qj8ziucOn5FC0TlVYIOSenH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cLgXJWLA; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cLgXJWLA"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FF991038193F;
-	Wed,  5 Feb 2025 15:40:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1738766451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cEiBKmEICWctotPHCUAWGTwbH/Iy+hrCjjP5QKi/9Lo=;
-	b=cLgXJWLAdAMZvNv+TCbu3Fl/9FxjBS8zH7YHTKts/CjAxxH5YGIV4eGxb6BU2yIjt7+yb+
-	8r/EGuxZtRCFA3dYOFw6yk1NU56YSKX6LfoV5/780QCG0fKpirmzFbkP8DbsZe6jBsySVU
-	AJFeXmosGVZHKGIpRNa9CVZp0b4ibN8O6DoL7nV7+BCCs9gBRwXyoi5WLcYQ5JA84kmyJc
-	A+3cCN08MaudaM2OTRcqq2aN1oP4Bqfr2dusv+piah0EYAPetkqzo2L8arhp0CL0a68szQ
-	8DIlW9B5/EY+xjYxFvBYC5IQPGrV6Ap58bCHAgvnnZgt0zXWui0SYxrKdhu1sQ==
-Date: Wed, 5 Feb 2025 15:40:44 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
- Wahren <wahrenst@gmx.net>
-Subject: Re: [RESEND PATCH v11 1/3] dt-bindings: display: Add
- powertip,{st7272|hx8238a} as DT Schema description
-Message-ID: <20250205154044.7b1fd2c5@wsk>
-In-Reply-To: <20250203132108.77f2123c@wsk>
-References: <20250109154149.1212631-1-lukma@denx.de>
-	<20250203132108.77f2123c@wsk>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738766534; c=relaxed/simple;
+	bh=LIAew11mhguTF2BX4IO3e9boWaQIZ0S/uz3h7V4gidE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lZpXtvpFEHNwbGgkYZif049CN0aSVvMRcLHKVOM1X/z0LaebWR3gN120nAW9vvDuK9jnLRjE9gxRopVG4RNIYYqDnypKNuuUI+VPoccleWj2VIVg7SRKiRZb/8ydgT59cesyQ7HpNwPYvEgZGTJChw235ky1i04P/6wZiqBWd/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:fa11:c14e:2df5:5273])
+	by michel.telenet-ops.be with cmsmtp
+	id 9qi72E00h3f221S06qi7MH; Wed, 05 Feb 2025 15:42:10 +0100
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.97)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tfgbD-0000000FwWi-36dR;
+	Wed, 05 Feb 2025 15:42:07 +0100
+Received: from geert by rox.of.borg with local (Exim 4.97)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tfgbP-00000006bUL-3Iq0;
+	Wed, 05 Feb 2025 15:42:07 +0100
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: soc@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH resend] firmware: imx: IMX_SCMI_MISC_DRV should depend on ARCH_MXC
+Date: Wed,  5 Feb 2025 15:41:43 +0100
+Message-ID: <9638976432d8dfcb0c4df9d454b661f9022a2d7b.1738766259.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/NX.kk_nUKqVaGcqUC8c2=oO";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
---Sig_/NX.kk_nUKqVaGcqUC8c2=oO
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+The i.MX System Controller Management Interface firmware is only present
+on Freescale i.MX SoCs.  Hence add a dependency on ARCH_MXC, to prevent
+asking the user about this driver when configuring a kernel without
+Freescale i.MX platform support.
 
-Dear Community,
+Fixes: 514b2262ade48a05 ("firmware: arm_scmi: Fix i.MX build dependency")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/firmware/imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Dear Community,
->=20
-> > This patch provides the DT Schema description of:
-> > - powertip,st7272  320 x 240 LCD display
-> > - powertip,hx8238a 320 x 240 LCD display
-> >=20
-> > Used with the different HW revisions of btt3 devices.
-> >  =20
->=20
-> Gentle ping on this window... I hope that it will make it into
+diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
+index 907cd149c40a8b5f..c964f4924359fcd3 100644
+--- a/drivers/firmware/imx/Kconfig
++++ b/drivers/firmware/imx/Kconfig
+@@ -25,6 +25,7 @@ config IMX_SCU
+ 
+ config IMX_SCMI_MISC_DRV
+ 	tristate "IMX SCMI MISC Protocol driver"
++	depends on ARCH_MXC || COMPILE_TEST
+ 	default y if ARCH_MXC
+ 	help
+ 	  The System Controller Management Interface firmware (SCMI FW) is
+-- 
+2.43.0
 
-Not "ping on this window" :-) but on this patch :-)
-
-> upstream during this merge window.
->=20
-> Thanks in advance.
->=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > Reviewed-by: Rob Herring <robh@kernel.org>
-> > ---
-> >=20
-> > Changes for v9:
-> > - New patch
-> >=20
-> > Changes for v10:
-> > - None
-> >=20
-> > Changes for v11:
-> > - Combine both separate dt-bindings patches for powertip,st7272 and
-> >   powertip,hx8238a into one
-> > - Drop the quotes for in "title" entry of powertip*.yaml files
-> > ---
-> >  .../display/panel/powertip,hx8238a.yaml       | 29
-> > +++++++++++++++++++ .../display/panel/powertip,st7272.yaml        |
-> > 29 +++++++++++++++++++ 2 files changed, 58 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-> > create mode 100644
-> > Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-> >=20
-> > diff --git
-> > a/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-> > b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-> > new file mode 100644 index 000000000000..b7d74faeb5d5 --- /dev/null
-> > +++
-> > b/Documentation/devicetree/bindings/display/panel/powertip,hx8238a.yaml
-> > @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
-> > BSD-2-Clause +%YAML 1.2
-> > +---
-> > +$id:
-> > http://devicetree.org/schemas/display/panel/powertip,hx8238a.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
-> > +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
-> > +
-> > +maintainers:
-> > +  - Lukasz Majewski <lukma@denx.de>
-> > +
-> > +allOf:
-> > +  - $ref: panel-dpi.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - const: powertip,hx8238a
-> > +      - {} # panel-dpi, but not listed here to avoid false select
-> > +
-> > +  height-mm: true
-> > +  panel-timing: true
-> > +  port: true
-> > +  power-supply: true
-> > +  width-mm: true
-> > +
-> > +additionalProperties: false
-> > +
-> > +...
-> > diff --git
-> > a/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-> > b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-> > new file mode 100644 index 000000000000..f3622800f13f --- /dev/null
-> > +++
-> > b/Documentation/devicetree/bindings/display/panel/powertip,st7272.yaml
-> > @@ -0,0 +1,29 @@ +# SPDX-License-Identifier: GPL-2.0-only OR
-> > BSD-2-Clause +%YAML 1.2
-> > +---
-> > +$id:
-> > http://devicetree.org/schemas/display/panel/powertip,st7272.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
-> > +title: Powertip Electronic Technology Co. 320 x 240 LCD panel
-> > +
-> > +maintainers:
-> > +  - Lukasz Majewski <lukma@denx.de>
-> > +
-> > +allOf:
-> > +  - $ref: panel-dpi.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - const: powertip,st7272
-> > +      - {} # panel-dpi, but not listed here to avoid false select
-> > +
-> > +  height-mm: true
-> > +  panel-timing: true
-> > +  port: true
-> > +  power-supply: true
-> > +  width-mm: true
-> > +
-> > +additionalProperties: false
-> > +
-> > +... =20
->=20
->=20
->=20
->=20
-> Best regards,
->=20
-> Lukasz Majewski
->=20
-> --
->=20
-> DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
-> lukma@denx.de
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/NX.kk_nUKqVaGcqUC8c2=oO
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmejeGwACgkQAR8vZIA0
-zr26xggAneqSbPpy5mv8Ai9RLDSjNCc66Zdwn6xEQ1QHl2zwo2neclEt7RRCRXC1
-k8e5eu/5fagPSCCrZLJbMSYLENWkdYfx/RG5WMjaAeypsLKTpbHHfp3R1RWihe+f
-TppC0mjbvF+a3Yu1y80L2myhIaWFPZtgjW0cx50h5CRtSFeopgrpUB7aXNGanyGR
-JrL4/OiQ65yKiyewwjRVPSHsqfvq7RnhKFR9znVSiUgnhgv81QgGRybI8GtrwLST
-NvSbxfelBlFeBQ1G8cqhXbfX3efIo/wy/P1C/ILRU0fVgBiUIz1Y68s3CuySnA52
-3/EsVzfwOo3PpqQQpY0xecKeZtHlhg==
-=Z4og
------END PGP SIGNATURE-----
-
---Sig_/NX.kk_nUKqVaGcqUC8c2=oO--
