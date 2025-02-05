@@ -1,111 +1,230 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011055.outbound.protection.outlook.com [52.101.70.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE7122A4EF
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 09:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738746904; cv=none; b=Kk3J/SBECTTJm6bFMKNIoVPzpyFok4lUvJF4RJB7iysrPp8baGqWPblDC+XoN3RK0jKQJwBRtEinkr3n0GlTxeVyE7XGkmwgHCFCouJTp66dIWoyPEila+zujyrht8c8krEARAHiqZnZ46NzFSnAirXwAbGaqHJnv8gWU+naDtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738746904; c=relaxed/simple;
-	bh=+HTs+0+wmjplmTlF1MsIF+Gs8Lm+3JvuR67gIzEXMyg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y65uXMcrNQUQDKAFcc8gsfnnrqU7yDtmNNK9pptKnjLMZxZmwEP5LqACwaKLUrTBX76+IbzEFkzKEZlPgHN4Smdf/3Bs21Lk/YcI0xb8yLt779RGf+rh9LW4qdH2qCfBkQ697wkgmpfmxznXyJ1qrF7G3ykaVKu+2CGcxEGWQxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=gdSdf5Uo; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4162B22A4DF
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 09:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738749057; cv=fail; b=TUkYxYLcgwFOegcOYkliSSNui5E1uQ5tNK0dbUiENOLiNxecxDxVQDvcRrw6ghOuN7wTdKG9cUhmmkWLsEMuR8xUNlEauSJUJtNO+6T7bv2quKyzS98rbib9wZ2RKz5UW3oMJBFMUf1K7af156rOd8JDE8Wg0HKGRlmpX9Ooz+I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738749057; c=relaxed/simple;
+	bh=Q5aAO/aFRXnA+bNNUE42LVO06SmEixTYOTpSLPYKgbM=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=dDq7NcO+K6oR4Yfw9bWBRGvNenZMGH4Lk1JH0AC+rLfZMpK/qewS0RLDUD0il1C/TszKIHiklHMZZcOen144LWrAFA90g2urowhirzNLCSrc/9Rde9RyDeKU0kIH+wQPnz1o4cfn+VIL5HAPQL8sFVmrU1hadyQY64o9mVM+SEs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KW54EgKJ; arc=fail smtp.client-ip=52.101.70.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="gdSdf5Uo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1738746900; x=1739351700; i=wahrenst@gmx.net;
-	bh=2A918m5WblqdxZRwWXCpCtnsbfQzvD3ezaQRiGQ0OZk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=gdSdf5UoAex+CJyqTA1htr1kIKSUec38Yru9csOJ3LEjgWqXI2Q+TgZLnNBQBScV
-	 T6XNP3rSXzWobECz0/jaBzfKRaUXm28TPhq18I6CF2IWta0B9TdhD+zaodsF7SVYx
-	 DaTh/OlhG8ngGbBNtrtLgjwLPk2w40n7HDAgcJIjRQgmMIOWzb9LM9Wl/fTclTeKa
-	 WmfaRWxbJF0eE6BxwlPVYebRbZ9c+NAEGXwpNeHA4Mz2dwpiK8Y6ac8pcrPN4uA8E
-	 ptp9DRYx+OIU3xLyI/Mn9+uf7mRQdx+EkotsF8XPIJH0ZWeJLnmh42MPCXVqKjsMA
-	 QoxNFs94/Zw1BEtlZg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.251.153]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1teTRQ06bk-0043G3; Wed, 05
- Feb 2025 10:15:00 +0100
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Cc: imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH] dmaengine: fsl-edma: Add missing newlines to log messages
-Date: Wed,  5 Feb 2025 10:14:55 +0100
-Message-Id: <20250205091455.4593-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KW54EgKJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oT4a6oW2u+r3B46sD35jSComOHSsHJEi8O1spV+dc45ouM0FYAJHTECZ6wJQDNwojsbaVu/YFWKMi7rTLeuQ/o/YeA+NhgjQwrjfJd0D5Trx8W1zTf7z+SFEeY0XWdvezgQC3rDm2NqiEKYvSbQpfvGfZlg73bYoK/bHL0l52wDHX9LXp2670RjdAsQqCPG2dF6sj7XpfNeWJOJMVMmDhbqWuhNuE/tYNU0liTTFAiRC62xuHVT9Jljd59Aa/QdE18adBJgapNPmtYApg4LeJCD9ZtdhM7bMEOvS4q2R4m8E7aG8LlHFaysmRVXgWbehKZ1IfdB8b3aA6tV5bzLI2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YiEF3b+Hm6mR2+vAyfVcDozw07BkM+qFb4qqBxDOyPw=;
+ b=wiEfe6yzx8Tqz5MQOtv74dPjuipXWakqfTgREXDLMDoKvegEGjNasIdYE/fhUVrPoQwcdLSKA0RWvkI1GeBVG+Out1J6X0p91H4U3D4CT0a8v99YhyXJ6LHNwOfeUYokhN6kG8k5MJ1DjJ4lMgWv5ZZ2CPtXOqRF1uP8kgRBSc/IjdW+HomvDfdrO9gsoBQCK4tUKdvqsnizD82ep65vpHg6JP5x0lLO+NTrL0ulXPuJqsfVuNVkvTczN5xazHceVZ1/AitkM8AMjhZ13vSMuEvK7u876lIUssDaa4ZtKFDBJMK/XtpNXakG/R9YDT2ATghS3txW++bvkW0EFBxTMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YiEF3b+Hm6mR2+vAyfVcDozw07BkM+qFb4qqBxDOyPw=;
+ b=KW54EgKJv+QmShyjyiUbzH0KfN3eUN3b7YSeqK3ksxJi7dKmKvIH6v9wcfLQBk0Ioro98D5BL7iCOR5d1QJSg+wOq0OM6R0rIryPcJrQYAUho6RW3CBmLaM7/JUlztnNULaKDrzi8r8gaNc/uIRlnAka9C2ldGWaQ7WfGlYGTaSO2ax7wr6b7ug3VffS4BN2sJk0tytXurKPJvQLpUiDNeKLez/eKdWIRAnIopfFxs+U3MxRXn7nY+vcmMFv7TPAKaLNdPP85t8RmJTa6NaZ3W3m+nX8EPTjvHygOIEIlE4LS8rOxqprJu6SMIYg4V4gMEG99oZZyrFdh+wHVAEXFg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS8PR04MB7783.eurprd04.prod.outlook.com (2603:10a6:20b:2a4::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Wed, 5 Feb
+ 2025 09:50:47 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8398.025; Wed, 5 Feb 2025
+ 09:50:47 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Subject: [PATCH v2 0/4] clk: Support spread spectrum and use it in
+ clk-pll144x and clk-scmi
+Date: Wed, 05 Feb 2025 17:49:50 +0800
+Message-Id: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD80o2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDQyMT3eScbN3i4mTdNOMUc4O0JLPkFMNkJaDqgqLUtMwKsEnRsbW1AAG
+ 1OzlZAAAA
+X-Change-ID: 20250124-clk-ssc-f3d70fb6cd1c
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>, 
+ Abel Vesa <abelvesa@kernel.org>
+Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738749007; l=2396;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=Q5aAO/aFRXnA+bNNUE42LVO06SmEixTYOTpSLPYKgbM=;
+ b=3LcL4h5b/hBsVE3K59nQ7IlyFAK/ikytNafqhMN8/jTC4VKFoeh6e1MA3wtMPKDiVR4jy08XN
+ mYb0gPGxDPmCExupbIH84dXhKw71obK8cX9Va/L2Li00ne9uh8TA47u
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SI2PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:196::8) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Xy0ceuF3uei+bfXg4V8RdPMeoKjKXB/vEhBig3rLeh5f5WZs7pJ
- I3pMEPo7WKAQFPtbImKgdeTjBTcClaVakXlohXKRPaDFRML7/JgR5PNsW6u43GJRjDFAzG+
- xwnBDyJFSG9Yu8hR9+Zm4x5nIjgegoiu73uduzGp3ULZTxsqzlSCjlJ4Q6rJyuQ8YnS2Yf1
- UMRDCuNTSrYjwS5fs6QRA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wk+OwyKKNM0=;MKX+Q8tjGBKVKymSD6Rdq+e+m3D
- IPVdPN+hPILXt4m3LqGwmlmifbMB5+TkqBWq7mzqpx+bxY57f0SCXg5nWtTT0EVnZ1UAM/p3z
- Wq3d//gU0c8Lwl/NGPqbJ3KEJAzWeRdfbxpbXLnlzqoLaqDUrkfw2YePotjHecmHnghbp7Vqv
- P3K670/0NkCuRXL9BNHBf+ycBBLvI1PLxuUHuaa7XCOjx3rd8yV7iscqCC+nSpG/6dXrOUE4c
- o55YhtR6mmql1rZsWHf9KGQWs+i39UvpIIEJzdNTjVuoVJGRplj0cgVcV2O7NpvT3BBPMFt6H
- j/ZcS469YZhmTbQmG40/vTW8CsXJaN0r+wodbT/ta+TA+2Uqgho4yJ84r1vOv9d7eTINocoXG
- iK6z3zMcgrVYfgNtfFRBkvDnN6L7NCssbcynDrLvql6buUbl6czLpyy4PZNHm4l9jyzZTPHPh
- Euy8jfFbVcqN4qmd8zUoRq7xwGa3YW8B9p/gXr1uiPPEEHi2UCsO80tmeusc0WSuX+RlUI2Uw
- vl0OcSLMyIi4cfZdtQSOHnxTwSEtfm9LAxZPOl0xxHMOzwZ9Yy5el2VusOr3vLzJvb99/4uwd
- hSIGVzeqtdzOFbQdrnZcR6tWlk/JaSLPmkSp9BgEyN/SoRxUYmMVMsHorZSJ5NNxRV4AbYorT
- yV8ifbeU/2Swku+WlCJHy/6nu1F8EYnpm4wYXVN9q6CiLwYMfKmWkPM/2fGOT/mrrTfGXBRFQ
- /cuNu3LnyeWmEpjH6hsGPfhO+A4IhgGBbEDkWc2h3AMPrPaZtHOhiFo6KeNIaTTUM5hKnLf6q
- acG0qLJZnNob2z+PA8vgXK5CBsyma66Oby0UtYWYgKOrhFCMZjhZcTJWmT4MR2JTo3MploIoW
- 83eF4loKy8McdXa/14/ynbwU52eGQiNRtSU7Im+4hZwRPDshJTDcZ1dRtzS7h/Oh8xKpeZC/r
- TwQ7D0sghAflnOHr83OeHovESUe/T0KowlA8NlQmiWVilDYpt7RgwelndT8cPvxA65VCvNS4U
- 38+IWsz7WSKk72EN5pXp4R3BfUiCvLLHmthnNofHm/q+BSOO171hrXVANOqQ+Hsp2lbh8BYZn
- dIo42lSypPSj2Tqk6xIHTXBORk9gisgLa9apNM3wCaPqFv61bjK1DAr/ZjUeysYSD7fN/BO9p
- tKTechWZ/GGwevi4c/Q/nrEvSQd34j2pY62HsjUKZPYsj8kxLNGuw963neAH+NJllqWkjaIBk
- 5WdiC1JVAazJXJrJpL6+TFG26Gw3SqOcdP2P4tKNUTKbRUtXqXoKvhfzabA/VOGiL1kCob7PY
- kgjwx8GFQweKnmWnydS2XM1JtLvft6V+24vhgU4+6Zmvb4=
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB7783:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8c37670-d483-4de0-617d-08dd45ca90cf
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjFiM082N1dKaHNzTUNnc0UxNzdSOUM5dHN1UDVKSWFiOGlicmF1WDBxRjhS?=
+ =?utf-8?B?NzVab2w2U1BWVWNaNGNuc0xwQmlJL29xdWQxUHhsSTF4TUE4c2ppcGNiekRs?=
+ =?utf-8?B?amoyOTRzMVZmYjErMExFVXY5S1gzSUpnYXc4cWxTUlp6UW9BNzBxd3diblI4?=
+ =?utf-8?B?OEJuSFMxQmxBeEFSN3pabVpMRzQwcWNDOHkxM3FuamMxQ3AwZURSZ0ZBdzJs?=
+ =?utf-8?B?TGpaOFcxczlIUjgrU0dzZHFwR3JFRmlzejJINWpOL1IwZjVRZ1c2aVZZZ241?=
+ =?utf-8?B?VHFWWnZaL3pPb05Qb0Npd0RzeGI4Wm1kNnVDZ2hLSFd3QUJJemlDcHFML3po?=
+ =?utf-8?B?N0htUmpDV1loVEh0K21sa3BjRGN2aFZJeWVhZHF3WEJqNHBzcmgvWjFOU0hn?=
+ =?utf-8?B?K1NyVEljdFZORlZiYTkzbk5KTHFZRDhuL0VxUGVnbmJYMjlCSVJ2S1dpTXhN?=
+ =?utf-8?B?VFlOV2xOSVh0ellSaTBxZGU1ZHpFM0huM0M3cU5teTUzZnNoYjM2Q01LM01G?=
+ =?utf-8?B?dVFCaklQZXcyV0ZiUmtHVEk5aytlMWVNa1Rkemx3SG1CNXREM2JQS0tsQUo3?=
+ =?utf-8?B?Uk4zT0RZZjVLdzMyUm5uTE5ZZ3RnMUVyTmdOd3VvODd2NmZQUTg4SlMrSWw2?=
+ =?utf-8?B?dHRZRGNNSUVTOFQxUm1KWHhsd2hRMXNPSXc3ZkpaT1gycGl0bnJCMGxCM2VF?=
+ =?utf-8?B?OWtYVXoyUlE5T2JuRzdYaFJQelhuTjRuZzFKL3FnYWRYOEVNU0tPL3R2elI0?=
+ =?utf-8?B?ejVWRUYrYktINXZlWDlRbGJHSnY3a20xKzdIM1JVZG9vVTJqa3htQmFWOVla?=
+ =?utf-8?B?ZC9iUkRjOG02bHFRWTJCeDhFV1JZWC9ZUHF6RHVEWmdmbEFlUzFXQ21JT1dC?=
+ =?utf-8?B?V2phSGhONjc5QXhOSUVwUFZaZFNRTXN2RStEVHRZbXk2ZFNFQUYvdU5hT2RT?=
+ =?utf-8?B?RkdhTW9UVnd4eHNRUnA1WHVYV0xhQ2JBUmtnUnZlRlQ1Z0VXODZnbDJPV2VS?=
+ =?utf-8?B?QzRRdTFxMFRxMWkxUU8xbU5BN0ZHcGZtVm5vcmdOSCtHb1FQMkplcytNUW9j?=
+ =?utf-8?B?dGluSEVSVkllem9STFl4MG5zZ3pYMVdZN3Bxa2laK2ROSXJTS2lyeTdXOGdo?=
+ =?utf-8?B?ODhYY1dtelpxY21NU0JUQlV6RDJjRWxPV1NVWHRLTHBvZnhFbkh3dWVhOGU1?=
+ =?utf-8?B?dFpUck5YZTAzeTFrMzRHdHhTbUplbi9rQ1ZXN2Noa251ODNJaXVjWWtrRWFP?=
+ =?utf-8?B?NXdYY0VPUUV6MFFuWHh3UTZENk0zWHlxNTZldjRwL24rdDI1SVdpZThmRDZF?=
+ =?utf-8?B?akZJWXo1NnZBK1pIbGpFWEVOYk1ZWkpIZGVYcVFxOHlFd0hmN1hvZHM0RmdO?=
+ =?utf-8?B?K1IvNEVSbjVyazlCWkVlRGpDQnRWamtnSGRKSitXVUlGdWJtYUl4QUdIRC9l?=
+ =?utf-8?B?ZEtXUkNBb3lEQXhGYzNjRlJOSkk2c1hpOUlvTDBsTVZTUTdRb1NpSVRVVDVx?=
+ =?utf-8?B?NHYvQ1A3T2NQQWRmMHg3OHhlTi9ibkVJRi9CNlRNU2l3cFpxZjJsbmhNSVFY?=
+ =?utf-8?B?MjdGeFIyR1gxNjNUbDJZTGo1blFiYWE2bzdtaGFWZCtVemY3UG5EdmU2dkNI?=
+ =?utf-8?B?aFVlT1FoNmxLRDdlS0dtU2tYNFVPUERMMWxNSDVWR2k3YTJoVmN3M1BNQ2VH?=
+ =?utf-8?B?SGlhY1huNXlWM3pHUnJhalZGU3g5YmNoemZBREJ5eXR5ekZMRS9LUEdaVnVO?=
+ =?utf-8?B?LzRUWE8vNDU0TEdSUUZrblRpdm9CREVQVS9ZN0wrSDVYTU1UL3M3MVhQcVg4?=
+ =?utf-8?B?TktGVzdpL1lYbUM1QXFuVlp2dk9HNEY2SStCQmdsMnRxdkxXNzM4eTdLcS96?=
+ =?utf-8?B?WlpvOXUzNUl0UVRiWTNFSzFTL1hMdXcyQnNNR2IyeXNmSFE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aHh3cUx0SXBFMWYwVFFDVzd0dXFsZWdIcndjSkUxSHNSTHBqTkpFQ3lCNkdY?=
+ =?utf-8?B?UTJZdHZqOUJQQjdKK3pzaEU0c2VlVVpWQXZXdlZzSjhpQjlFK2Y5N1NwU0lw?=
+ =?utf-8?B?VXYraVpmeEJzQno1WjZ3QW8vZTIyNndNN1piVmVWV0lldG5VdHZXT1BISCsw?=
+ =?utf-8?B?MUFGSWR2dWQwT2dPYmxLZ09vY0hBTXlpOW1MWFlJSlpuaStwQ1pEeXp0QU5J?=
+ =?utf-8?B?U3gzRWZLN3ZMdUQ3ZU9lRU5tSG1VUGtqd2E3bUt4ak9uRHZoaFA4dkNxR290?=
+ =?utf-8?B?WFhJdUxoejZMd2RtUXowWUc2VmdYNGRQRVJqUWFLY0RQYnRRT3dGaVNoeUdB?=
+ =?utf-8?B?R2hpQnJqZFNYSjF3VXhSRHBsRThFNGhBZklpMTBPbTJMcEM1dDNWajdQK2N3?=
+ =?utf-8?B?YnZrMkNZSlZyQTg5SE00aEM3alE1RXBYV1VqdnlETDNhOFl0cnRzV0dnOUc1?=
+ =?utf-8?B?OStRU2hGWElvcGZBZ1VVTTVsdC9lVWdTNVhpQ09BZ2w4QjdqYVA4WWN1Rm9B?=
+ =?utf-8?B?aTZ5b0sxbnZRQkgydGJFSlYyM0Z2TEs5TVRTbWc5OHJCTFRVTzNiRnRLNjNV?=
+ =?utf-8?B?SExRNTR5a0c4SlovLzNOd1M2cStKd2RPVVlxNWxRNmhLRUg2WU0zUm1YR2pj?=
+ =?utf-8?B?Z2Z2dytlZG5HNHdVZERCM1h2RmEzQVVuNjA0bUErd0dnL0JuUWdrWlZacWNn?=
+ =?utf-8?B?czlJeWNFRXByZEN4ZENFa2xTY3RvWGc3RExJTEovODlLVnR3NEFNQktMR0Nl?=
+ =?utf-8?B?aU5iWnZVOGllNWFxOVluVGdSdEl6TUs0SG9PNXFUUFBKNnZaZUNuemE0VTVO?=
+ =?utf-8?B?cnBKdHpLaytHYUlaOFE0bGQxbnJFazJDUm5NRkpvVzZOajc4SkFCSjFoZW1i?=
+ =?utf-8?B?TXJ1WjZVOGxDSi9hMzdoMk8wY20vMk83WVo1OUNFSmZKMGxCQTdoWTF6bGNJ?=
+ =?utf-8?B?bythUEhjM2cwSXhCaEQ3L0V0T0VKWHA4UzA3UGUzV2pGSmdUZzEyWW8rYis2?=
+ =?utf-8?B?UFNVTnFRN2M1TEFaalA3RUVETGhiYmlETnlkTUdZOE1WSWFiRnZYZVo5dE50?=
+ =?utf-8?B?QWNaSXdzTlJibEVDaUxVMkdteDNyTWdzeFk5Y0VBcFZiRWE4QUhsb1pFYWgz?=
+ =?utf-8?B?TGt2b3ZhRXI5Sy93WldDRSt3RkcrbDJwUUt1bk5iT1NtcWJBaHprMURKNExs?=
+ =?utf-8?B?bmtvRkRCUURvR0JqNUtIelhwREdpOUJtSUZqSnhrQm5MYW9idjBsN0tScDRT?=
+ =?utf-8?B?YXhmM0ltMzEweWxFMWVSblRVVnJwcE1UWXBYQmtEZWtWbFFYeHlDWTViNjJC?=
+ =?utf-8?B?dFR0WjAvMExGeEZKajV1TjlvVW1PRjJIcVljQzhCaytFOEN3dHdtVTlGRkxP?=
+ =?utf-8?B?aHQxdkRPZ3kwSXRPRUlUQUx6cEc0R0ZrZlQ3d1hicjRhaEJpejZCUS9HRFdD?=
+ =?utf-8?B?M3YyS2N5a3Jva2hoL0RjdHBHU24vKzIwTFlMVEc2bDFlQzRZOGJwZ3lvVVh6?=
+ =?utf-8?B?cEx0eDI3SGRoYkw0c3g1NUdJTkNIYlR4LzRlSkFoY0h1SnFVV2YwTC9uRzlx?=
+ =?utf-8?B?QWpTTE5Fb1VWVlFaNEdPcVFZMld6eWJKM0w1R1M2RWF3ZzhsNlJ1MnlIVXVw?=
+ =?utf-8?B?aW8vS2RyTHlnUDdqd2d4NCtUQ1pkcXBwZUlmWlFMbE9abTNuay9SQnF6T0tv?=
+ =?utf-8?B?V3ExZFdXdHVYTHl1empYM21reDNQTU91eWVYSy9hc3h1TW9yZnhZTEM0MjIy?=
+ =?utf-8?B?ZjF5eU94czVpSHdkVnhObnZoSGpZamlKeDVlM3cxVnYxWENQdk1ab0V3QkRN?=
+ =?utf-8?B?RE1YRjFSUkx5MjFVVGUvR2JYeis2ZHlYWktRUHNMYU5FUDN3Q3dQYW1XS1B2?=
+ =?utf-8?B?RFh0QUdhTVBxaWRVdWY0SGpuQnVINmVnakdZdTR4dFNMVFpDYkVxUndyd0ln?=
+ =?utf-8?B?MDh2dFgrTWZUQ1h2ZmFKcmJFUVJSOGNvb01WSVZYV2NHbXJDazV6STQ2NDRq?=
+ =?utf-8?B?bnhGSURhTHY3eE1uZW9tczNRRDQyV1YxV2kveWkzZXg3NEQwWUZKUkxDQ20r?=
+ =?utf-8?B?VlJmV0JPaWoyaS9UZWdmUlVsbE5vSWFBODhPdkZLUXJpYmVjckgzQkRxOTF6?=
+ =?utf-8?Q?9U4rCToTp/2hTPHdw3Tl1NSWZ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8c37670-d483-4de0-617d-08dd45ca90cf
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 09:50:47.4957
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bOg+t3Uumr8jRgz2iMctzFK6NMyMnNnHvtCk0v3M7zDSf0Lx6xT1grEfvChs7fRrQmMdj7tFf7qG60uc7i+Y0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7783
 
-Not all log messages have a newline at the end. So fix it.
+- Introduce clk_set_spread_spectrum to set the parameters for enabling
+  spread spectrum of a clock.
+- Parse 'assigned-clock-sscs' and configure it by default before using the
+  clock. The pull request for this property is at [1]
+  This property is parsed before parsing clock rate.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/dma/fsl-edma-main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+- Enable this feature for clk-scmi on i.MX95.
+  This may not the best, since checking machine compatibles.
+  I am thinking to provide an API scmi_get_vendor_info, then driver
+  could use it for OEM stuff, such as
+  if (scmi_get_vendor_info returns NXP_IMX)
+      ops->set_spread_spectrum = scmi_clk_set_spread_spectrum;
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index f989b6c9c0a9..760c9e3e374c 100644
-=2D-- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -164,7 +164,7 @@ static bool fsl_edma_srcid_in_use(struct fsl_edma_engi=
-ne *fsl_edma, u32 srcid)
- 		fsl_chan =3D &fsl_edma->chans[i];
+[1] https://github.com/devicetree-org/dt-schema/pull/154
 
- 		if (fsl_chan->srcid && srcid =3D=3D fsl_chan->srcid) {
--			dev_err(&fsl_chan->pdev->dev, "The srcid is in use, can't use!");
-+			dev_err(&fsl_chan->pdev->dev, "The srcid is in use, can't use!\n");
- 			return true;
- 		}
- 	}
-@@ -822,7 +822,7 @@ static int fsl_edma_suspend_late(struct device *dev)
- 		spin_lock_irqsave(&fsl_chan->vchan.lock, flags);
- 		/* Make sure chan is idle or will force disable. */
- 		if (unlikely(fsl_chan->status =3D=3D DMA_IN_PROGRESS)) {
--			dev_warn(dev, "WARN: There is non-idle channel.");
-+			dev_warn(dev, "WARN: There is non-idle channel.\n");
- 			fsl_edma_disable_request(fsl_chan);
- 			fsl_edma_chan_mux(fsl_chan, 0, false);
- 		}
-=2D-
-2.34.1
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v2:
+- Rename to clk_hw_set_spread_spectrum and not export it as consumer API.
+- Fix error handling
+- The enable parameter is still kept, because 0% is valid per
+  https://www.ti.com/lit/an/scaa103/scaa103.pdf?ts=1738667308903
+  https://www.synopsys.com/blogs/chip-design/understanding-pcie-spread-spectrum-clocking.html
+- Include the i.MX clk pll14xx which was an effort to enable SSC on
+i.MX8MN from https://lore.kernel.org/all/20250118124044.157308-1-dario.binacchi@amarulasolutions.com/
+  With this patchset, things could be simplied a lot.
+- Update the clk-scmi extconfig, marked as not apply, because spec not settle down.
+- Link to v1: https://lore.kernel.org/linux-clk/20250124-clk-ssc-v1-0-2d39f6baf2af@nxp.com/T/#mce926ef10d3d9c1c960c21867c2f1509f1f87cb9
+
+---
+Peng Fan (4):
+      clk: Introduce clk_hw_set_spread_spectrum
+      clk: conf: Support assigned-clock-sscs
+      clk: imx: pll14xx: support spread spectrum clock generation
+      [NOT APPLY] clk: scmi: Support spread spectrum
+
+ drivers/clk/clk-conf.c        | 70 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/clk-scmi.c        | 47 +++++++++++++++++++++++++++--
+ drivers/clk/clk.c             | 34 +++++++++++++++++++++
+ drivers/clk/imx/clk-pll14xx.c | 66 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/clk-provider.h  | 32 ++++++++++++++++++++
+ include/linux/clk.h           | 22 ++++++++++++++
+ include/linux/scmi_protocol.h |  6 ++++
+ 7 files changed, 275 insertions(+), 2 deletions(-)
+---
+base-commit: 40b8e93e17bff4a4e0cc129e04f9fdf5daa5397e
+change-id: 20250124-clk-ssc-f3d70fb6cd1c
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
 
