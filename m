@@ -1,67 +1,48 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA68D81ACA
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 06:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE7122A4EF
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 09:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738738306; cv=none; b=dNBhUdA8zPGtCtZR+Caf9cTmouPhXki4XDP2NRXa2wXdWLDnzKKu4gitUpGIcOeijhV8vYAccDIHZQNN5NnOiTAp4EXX4PtqjS3o00+LMlAQwpRFIIxcBR3Rx1jpock3qNC9cJW0n2TFymmDBWf24HYfgYEYb7bg0Du4/08ov5I=
+	t=1738746904; cv=none; b=Kk3J/SBECTTJm6bFMKNIoVPzpyFok4lUvJF4RJB7iysrPp8baGqWPblDC+XoN3RK0jKQJwBRtEinkr3n0GlTxeVyE7XGkmwgHCFCouJTp66dIWoyPEila+zujyrht8c8krEARAHiqZnZ46NzFSnAirXwAbGaqHJnv8gWU+naDtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738738306; c=relaxed/simple;
-	bh=9L3ouej3/FjEPM8eSSsN0/ylTSUIsq7lgz1T2WQyOwk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MTTwva4pUpZYTZz8IZ2et4eBcePqo9/aaotziD9GXUfysTSsRyVqsyU1nIVuDiUAyi1AhIJQ1OjT13aJ5wY1YixA/sA2n/2G7GK7qyAX7cxwYKe86ARAG8W/OMqkekGF87R2VWBttx1fDnWKWx9p19Q04WGkYfxd6ZC0ngF6XEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=AW5F2akE; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KQF44lI1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1738746904; c=relaxed/simple;
+	bh=+HTs+0+wmjplmTlF1MsIF+Gs8Lm+3JvuR67gIzEXMyg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y65uXMcrNQUQDKAFcc8gsfnnrqU7yDtmNNK9pptKnjLMZxZmwEP5LqACwaKLUrTBX76+IbzEFkzKEZlPgHN4Smdf/3Bs21Lk/YcI0xb8yLt779RGf+rh9LW4qdH2qCfBkQ697wkgmpfmxznXyJ1qrF7G3ykaVKu+2CGcxEGWQxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=gdSdf5Uo; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="AW5F2akE";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KQF44lI1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1738738302; x=1770274302;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KeHFLkjfWtRxfDUQFOy9gyg8C+i7BEnpkwJhjjc+Qik=;
-  b=AW5F2akEocufIygiU5p3Htb0ezvdb4mOqHk4i7fhHlTKdKABxFv3l8T6
-   gYn4ppMuKm9Vktr+Wrg11IKgUoJxmJwJXRkcZCbscM0I7uSlvJBBCg1gZ
-   ReQoZPbVoKv+5Yrm/9bF52ioosfJZhV5BMjpJhxQdYzmmsIXZE89ylj45
-   0ZMj0mwLhqcWjjzBLFJbrUqIh6eSPU7ktvK5bdjoTefaQMWxVWWljNCBs
-   ALWeawHytmSYW3mEIolJpqPhWBcIQsIerABN1hWzkL7Jc2D8JniTnQN3Q
-   mQNvWY54xldqEwlmobgq2PYkuF297kx84Pv7ONuw9KpiBQ1b7+e2h+UAR
-   Q==;
-X-CSE-ConnectionGUID: qXX3ANZUTFGznOjv2F6fwQ==
-X-CSE-MsgGUID: CvaGeVioTTKTcoJs2PiBKg==
-X-IronPort-AV: E=Sophos;i="6.13,260,1732575600"; 
-   d="scan'208";a="41557887"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 05 Feb 2025 07:51:32 +0100
-X-CheckPoint: {67A30A74-1-C6D8D88D-F91F9E6B}
-X-MAIL-CPID: 97E800B69666A87223C2F728F94B1646_2
-X-Control-Analysis: str=0001.0A682F29.67A30A76.0429,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C89E0160ABA;
-	Wed,  5 Feb 2025 07:51:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1738738287;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KeHFLkjfWtRxfDUQFOy9gyg8C+i7BEnpkwJhjjc+Qik=;
-	b=KQF44lI123mj3JI+bf1eNCEaDG/8mACwABZMZTbulko216vyebIMHv/cs1YCtv9nquxibY
-	pCX2ncwQbFbh1gKAYpIOhwy9+2QJMXch0x0twjmFmKD9a/T5W5w0pLxC7x0xJ8UTJ+Jwrs
-	zpkg9dv0FWNO4wEnGX1TZfh0fch/Wacc0HD2s1pMFy+o8J+QfDtCVujLIICSK8XX1PMy10
-	v44b6FbQtSK2ZJwAl2DFMlqhEPtfCAi7zrMSLxrvzeDWso1pZNLygVQdD1twcbIxy5CH6U
-	+JcjuC7fds99m02Uqwi2WGePQfZecM6qRukJYTCZ9hSBM7uzYb58gdDNUG56vQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] nvmem: imx-ocotp: Support accessing controller for i.MX8M Nano
-Date: Wed, 05 Feb 2025 07:51:23 +0100
-Message-ID: <6396921.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <Z5z0/382k8MkcZpP@lizhi-Precision-Tower-5810>
-References: <20250130130101.1040824-1-alexander.stein@ew.tq-group.com> <4961006.GXAFRqVoOG@steina-w> <Z5z0/382k8MkcZpP@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="gdSdf5Uo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1738746900; x=1739351700; i=wahrenst@gmx.net;
+	bh=2A918m5WblqdxZRwWXCpCtnsbfQzvD3ezaQRiGQ0OZk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=gdSdf5UoAex+CJyqTA1htr1kIKSUec38Yru9csOJ3LEjgWqXI2Q+TgZLnNBQBScV
+	 T6XNP3rSXzWobECz0/jaBzfKRaUXm28TPhq18I6CF2IWta0B9TdhD+zaodsF7SVYx
+	 DaTh/OlhG8ngGbBNtrtLgjwLPk2w40n7HDAgcJIjRQgmMIOWzb9LM9Wl/fTclTeKa
+	 WmfaRWxbJF0eE6BxwlPVYebRbZ9c+NAEGXwpNeHA4Mz2dwpiK8Y6ac8pcrPN4uA8E
+	 ptp9DRYx+OIU3xLyI/Mn9+uf7mRQdx+EkotsF8XPIJH0ZWeJLnmh42MPCXVqKjsMA
+	 QoxNFs94/Zw1BEtlZg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([37.4.251.153]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MG9kM-1teTRQ06bk-0043G3; Wed, 05
+ Feb 2025 10:15:00 +0100
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Cc: imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH] dmaengine: fsl-edma: Add missing newlines to log messages
+Date: Wed,  5 Feb 2025 10:14:55 +0100
+Message-Id: <20250205091455.4593-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,150 +50,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-Provags-ID: V03:K1:Xy0ceuF3uei+bfXg4V8RdPMeoKjKXB/vEhBig3rLeh5f5WZs7pJ
+ I3pMEPo7WKAQFPtbImKgdeTjBTcClaVakXlohXKRPaDFRML7/JgR5PNsW6u43GJRjDFAzG+
+ xwnBDyJFSG9Yu8hR9+Zm4x5nIjgegoiu73uduzGp3ULZTxsqzlSCjlJ4Q6rJyuQ8YnS2Yf1
+ UMRDCuNTSrYjwS5fs6QRA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wk+OwyKKNM0=;MKX+Q8tjGBKVKymSD6Rdq+e+m3D
+ IPVdPN+hPILXt4m3LqGwmlmifbMB5+TkqBWq7mzqpx+bxY57f0SCXg5nWtTT0EVnZ1UAM/p3z
+ Wq3d//gU0c8Lwl/NGPqbJ3KEJAzWeRdfbxpbXLnlzqoLaqDUrkfw2YePotjHecmHnghbp7Vqv
+ P3K670/0NkCuRXL9BNHBf+ycBBLvI1PLxuUHuaa7XCOjx3rd8yV7iscqCC+nSpG/6dXrOUE4c
+ o55YhtR6mmql1rZsWHf9KGQWs+i39UvpIIEJzdNTjVuoVJGRplj0cgVcV2O7NpvT3BBPMFt6H
+ j/ZcS469YZhmTbQmG40/vTW8CsXJaN0r+wodbT/ta+TA+2Uqgho4yJ84r1vOv9d7eTINocoXG
+ iK6z3zMcgrVYfgNtfFRBkvDnN6L7NCssbcynDrLvql6buUbl6czLpyy4PZNHm4l9jyzZTPHPh
+ Euy8jfFbVcqN4qmd8zUoRq7xwGa3YW8B9p/gXr1uiPPEEHi2UCsO80tmeusc0WSuX+RlUI2Uw
+ vl0OcSLMyIi4cfZdtQSOHnxTwSEtfm9LAxZPOl0xxHMOzwZ9Yy5el2VusOr3vLzJvb99/4uwd
+ hSIGVzeqtdzOFbQdrnZcR6tWlk/JaSLPmkSp9BgEyN/SoRxUYmMVMsHorZSJ5NNxRV4AbYorT
+ yV8ifbeU/2Swku+WlCJHy/6nu1F8EYnpm4wYXVN9q6CiLwYMfKmWkPM/2fGOT/mrrTfGXBRFQ
+ /cuNu3LnyeWmEpjH6hsGPfhO+A4IhgGBbEDkWc2h3AMPrPaZtHOhiFo6KeNIaTTUM5hKnLf6q
+ acG0qLJZnNob2z+PA8vgXK5CBsyma66Oby0UtYWYgKOrhFCMZjhZcTJWmT4MR2JTo3MploIoW
+ 83eF4loKy8McdXa/14/ynbwU52eGQiNRtSU7Im+4hZwRPDshJTDcZ1dRtzS7h/Oh8xKpeZC/r
+ TwQ7D0sghAflnOHr83OeHovESUe/T0KowlA8NlQmiWVilDYpt7RgwelndT8cPvxA65VCvNS4U
+ 38+IWsz7WSKk72EN5pXp4R3BfUiCvLLHmthnNofHm/q+BSOO171hrXVANOqQ+Hsp2lbh8BYZn
+ dIo42lSypPSj2Tqk6xIHTXBORk9gisgLa9apNM3wCaPqFv61bjK1DAr/ZjUeysYSD7fN/BO9p
+ tKTechWZ/GGwevi4c/Q/nrEvSQd34j2pY62HsjUKZPYsj8kxLNGuw963neAH+NJllqWkjaIBk
+ 5WdiC1JVAazJXJrJpL6+TFG26Gw3SqOcdP2P4tKNUTKbRUtXqXoKvhfzabA/VOGiL1kCob7PY
+ kgjwx8GFQweKnmWnydS2XM1JtLvft6V+24vhgU4+6Zmvb4=
 
-Am Freitag, 31. Januar 2025, 17:06:23 CET schrieb Frank Li:
-> On Fri, Jan 31, 2025 at 02:54:06PM +0100, Alexander Stein wrote:
-> > Hi,
-> >
-> > Am Donnerstag, 30. Januar 2025, 17:42:32 CET schrieb Frank Li:
-> > > On Thu, Jan 30, 2025 at 02:01:00PM +0100, Alexander Stein wrote:
-> > > > i.MX8M OCOTP supports a specific peripheral or function being fused
-> > > > which means disabled, so
-> > > >  - Introduce disable_fuse for a list of possible fused peripherals.
-> > > >  - Iterate all nodes to check accessing permission. If not
-> > > >    allowed to be accessed, detach the node
-> > > >
-> > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > ---
-> > > >  drivers/nvmem/Kconfig     |   3 ++
-> > > >  drivers/nvmem/imx-ocotp.c | 105 ++++++++++++++++++++++++++++++++++=
-+++-
-> > > >  2 files changed, 107 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-> > > > index 8671b7c974b93..ba5c928cab520 100644
-> > > > --- a/drivers/nvmem/Kconfig
-> > > > +++ b/drivers/nvmem/Kconfig
-> > > > @@ -84,6 +84,9 @@ config NVMEM_IMX_OCOTP
-> > > >  	  This driver can also be built as a module. If so, the module
-> > > >  	  will be called nvmem-imx-ocotp.
-> > > >
-> > > > +	  If built as modules, any other driver relying on this working
-> > > > +	  as access controller also needs to be a module as well.
-> > > > +
-> > > >  config NVMEM_IMX_OCOTP_ELE
-> > > >  	tristate "i.MX On-Chip OTP Controller support"
-> > > >  	depends on ARCH_MXC || COMPILE_TEST
-> > > > diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-> > > > index c5086a16450ac..e3ea026a37d0d 100644
-> > > > --- a/drivers/nvmem/imx-ocotp.c
-> > > > +++ b/drivers/nvmem/imx-ocotp.c
-> > > > @@ -23,6 +23,7 @@
-> > > >  #include <linux/of.h>
-> > > >  #include <linux/platform_device.h>
-> > > >  #include <linux/slab.h>
-> > > > +#include <dt-bindings/nvmem/fsl,imx8mn-ocotp.h>
-> > > >
-> > > >  #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address o=
-f the
-> > > >  					       * OTP Bank0 Word0
-> > > > @@ -91,11 +92,20 @@ struct ocotp_ctrl_reg {
-> > > >  	u32 bm_rel_shadows;
-> > > >  };
-> > > >
-> > > > +#define OCOTP_MAX_NUM_GATE_WORDS 4
-> > > > +
-> > > > +struct disable_fuse {
-> > > > +	u32 fuse_addr;
-> > > > +	u32 mask;
-> > > > +};
-> > > > +
-> > > >  struct ocotp_params {
-> > > >  	unsigned int nregs;
-> > > >  	unsigned int bank_address_words;
-> > > >  	void (*set_timing)(struct ocotp_priv *priv);
-> > > >  	struct ocotp_ctrl_reg ctrl;
-> > > > +	u32 num_disables;
-> > > > +	struct disable_fuse *disables;
-> > > >  };
-> > > >
-> > > >  static int imx_ocotp_wait_for_busy(struct ocotp_priv *priv, u32 fl=
-ags)
-> > > > @@ -552,11 +562,25 @@ static const struct ocotp_params imx8mm_param=
-s =3D {
-> > > >  	.ctrl =3D IMX_OCOTP_BM_CTRL_DEFAULT,
-> > > >  };
-> > > >
-> > > > +struct disable_fuse imx8mn_disable_fuse[] =3D {
-> > > > +		[IMX8MN_OCOTP_M7_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D BIT=
-(8) },
-> > > > +		[IMX8MN_OCOTP_M7_MPU_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D=
- BIT(9) },
-> > > > +		[IMX8MN_OCOTP_M7_FPU_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D=
- BIT(10) },
-> > > > +		[IMX8MN_OCOTP_USB_OTG1_DISABLE]	=3D { .fuse_addr =3D 20, .mask =
-=3D BIT(11) },
-> > > > +		[IMX8MN_OCOTP_GPU3D_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D =
-BIT(24) },
-> > > > +		[IMX8MN_OCOTP_MIPI_DSI_DISABLE]	=3D { .fuse_addr =3D 20, .mask =
-=3D BIT(28) },
-> > > > +		[IMX8MN_OCOTP_ENET_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D B=
-IT(29) },
-> > > > +		[IMX8MN_OCOTP_MIPI_CSI_DISABLE]	=3D { .fuse_addr =3D 20, .mask =
-=3D BIT(30) },
-> > > > +		[IMX8MN_OCOTP_ASRC_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D B=
-IT(31) },
-> > > > +};
-> > >
-> > > Can we direct define IMX8MN_OCOTP_M7_DISABLE as BIT(8), so avoid this
-> > > map data?
-> >
-> > This would be possible for imx8mn, but not for imx8mp which uses
-> > multiples fuses for disables. This is an excerpt from imx8mp WIP
-> > > struct disable_fuse imx8mp_disable_fuse[] =3D {
-> > > 	[IMX8MP_OCOTP_CAN_DISABLE]		=3D { .fuse_addr =3D 16, .mask =3D BIT(2=
-8) },
-> > > 	[IMX8MP_OCOTP_CAN_FD_DISABLE]		=3D { .fuse_addr =3D 16, .mask =3D BI=
-T(29) },
-> > > 	[IMX8MP_OCOTP_VPU_VC8000E_DISABLE]	=3D { .fuse_addr =3D 16, .mask =
-=3D BIT(30) },
-> > > 	[IMX8MP_OCOTP_IMG_ISP1_DISABLE]		=3D { .fuse_addr =3D 20, .mask =3D =
-BIT(0) },
-> > > 	[IMX8MP_OCOTP_IMG_ISP2_DISABLE]		=3D { .fuse_addr =3D 20, .mask =3D =
-BIT(1) },
-> > > 	[IMX8MP_OCOTP_IMG_DEWARP_DISABLE]	=3D { .fuse_addr =3D 20, .mask =3D=
- BIT(2) },
-> > > };
-> >
-> > Notice the fuse_addr of 16 and 20.
->=20
-> Yes, I am not sure if it good idea to encode fuse_addr to IMX8MP_OCOTP_CA=
-N_DISABLE
->=20
-> like
->=20
-> #define IMX8MP_OCOTP_CAN_DISABLE  16 << 16 | BIT(28)
->=20
-> So dt-bindings/nvmem/fsl,imx8mn-ocotp.h can be moved to dts directory.
+Not all log messages have a newline at the end. So fix it.
 
-Mh, I personally don't like encoding offsets into bits. How about using
-> '#access-controller-cells =3D <2>'
-and using the defines like this
-> #define IMX8MP_OCOTP_CAN_DISABLE  16 0x10000000
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/dma/fsl-edma-main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-DT stays the same:
-> access-controllers =3D <&ocotp IMX8MP_OCOTP_CAN_DISABLE>;
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index f989b6c9c0a9..760c9e3e374c 100644
+=2D-- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -164,7 +164,7 @@ static bool fsl_edma_srcid_in_use(struct fsl_edma_engi=
+ne *fsl_edma, u32 srcid)
+ 		fsl_chan =3D &fsl_edma->chans[i];
 
-Note: It seems BIT(x) is not usable in DT.
-
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+ 		if (fsl_chan->srcid && srcid =3D=3D fsl_chan->srcid) {
+-			dev_err(&fsl_chan->pdev->dev, "The srcid is in use, can't use!");
++			dev_err(&fsl_chan->pdev->dev, "The srcid is in use, can't use!\n");
+ 			return true;
+ 		}
+ 	}
+@@ -822,7 +822,7 @@ static int fsl_edma_suspend_late(struct device *dev)
+ 		spin_lock_irqsave(&fsl_chan->vchan.lock, flags);
+ 		/* Make sure chan is idle or will force disable. */
+ 		if (unlikely(fsl_chan->status =3D=3D DMA_IN_PROGRESS)) {
+-			dev_warn(dev, "WARN: There is non-idle channel.");
++			dev_warn(dev, "WARN: There is non-idle channel.\n");
+ 			fsl_edma_disable_request(fsl_chan);
+ 			fsl_edma_chan_mux(fsl_chan, 0, false);
+ 		}
+=2D-
+2.34.1
 
