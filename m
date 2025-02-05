@@ -1,71 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15A1DF993
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 14:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9011615854F
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 15:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767488; cv=none; b=Nq77JhM2eFUa3ENBlOdm+0vKijVjyjwLn88FxWm898dWDoMFnRpeHDrJ3K2wT1H7w/lKTghYFwuqtDrpkiXLIGAB7njNE0tpdhWpcQNMxgpQsxr0gD1Hv6LxEoCr6869bQ0chpWSrY96zHYspQgWPB8yaxbtWSjx4FhU/RtpPlk=
+	t=1738769391; cv=none; b=HYqeWxXHJGBoVZMYypw1Ik4vrM9cgBBlb1r85qwUB6sswW/RNtwEb3hU23l+Od0/Px/RxB+n0Maa2TPDtsmQt+9VEzZOiH5G0oL/u5X6kZ4pd/AmYG/nVjhjI3fzXvJDlOv2H1jG/Lkw4JBN3fS+4dx+tZyvE2Dc3sEi/gpRbA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767488; c=relaxed/simple;
-	bh=M41KJpPTgtZC1kvfB0ok8XtGl6qr+rtNSYSFho5CTIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5ojyiSEnGHFY97dGgUSWSbDnjvV3LVggFNHF/LRuTio5aaufceHy+VupmhpDzNsJ6CBK07TkTPN0Sw86tdi0U5Hs9Zh2IEs15MMt4PA040U9eXMdsmzfTdSQYFFFmFEf3Ijx70uIwOj7NUUTI2g7P3tV1srJRXVkFMSNj4br8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kk6Pckv6; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1738769391; c=relaxed/simple;
+	bh=FvXY0J6HFmz+F4kGGhdiUtByaCV/93S7mXHV8f989j8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MC4V8Xoyi7BAj1+YdI86AvDMgf4xcPS2vJuPz+djJRpChMqCzwu4gbQ21CJXIHMYcsDZaYRhwdJlfpxdu/It2u/DiEqULVcvilCzTAxeDjc+3gHd/km3DWYxvrwziEtWLL3dGMh+T4Ln7T3AwkKaC7spsatPwmjzFA4o/BvcLjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=iHqZJuPz; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kk6Pckv6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738767488; x=1770303488;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=M41KJpPTgtZC1kvfB0ok8XtGl6qr+rtNSYSFho5CTIc=;
-  b=kk6Pckv6b3RqAkWvwZ6m1bhjBY65OCQIXDkhumiC4L9FZRuUVpFr0dBu
-   sjrCA8j9LvtJdugxjZeb9q/Ewp8Hr1JH2vBCF2KB2uO77U+QjvXxx1LYQ
-   xIh8hQQHesMZaKH54n0YrGAJOah0ryPumwFCisGjvSMiy+6TR9+bZsS4H
-   PemQtn6kzehwFACz11ib5TzVZzcfLpz4hnUqC0n4PwCv/UObJeo9lOxiQ
-   mm3utZVMCVvbe7MI1c3+rKSPjohdjEoWxNLjtblUNTSydczV7ZbelTno9
-   X14z8NWWVl891k0O9yWXzcn1cMc0bJ7tnR6IoejAGZMbNzDU8WAh+eOK2
-   Q==;
-X-CSE-ConnectionGUID: xZR4ipiuTny0onyMM5mqLA==
-X-CSE-MsgGUID: 2by5TVa6T3eLrQjCkA7axQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39232358"
-X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
-   d="scan'208";a="39232358"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 06:58:04 -0800
-X-CSE-ConnectionGUID: +/C1jtaVQV+6by6EwWF+9w==
-X-CSE-MsgGUID: hG1snVx5SUO/cR2QZ8CmNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="111806975"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 05 Feb 2025 06:58:00 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id C7EE5164; Wed, 05 Feb 2025 16:57:58 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vinod Koul <vkoul@kernel.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="iHqZJuPz"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38dae70f5d9so1079326f8f.1
+        for <imx@lists.linux.dev>; Wed, 05 Feb 2025 07:29:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1738769387; x=1739374187; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jC9QV0bJcgZgqHHH3SUMbf/vptPD4PQ0vRL1kkv5HIw=;
+        b=iHqZJuPzakrIGrXZvh0NhtT3xQClZgTsjltI0L2Y3hRHjkZnw3PreFl4t26TM+27qn
+         aE0GS5lFgVV0hOkdZFWqcFW6ZoZObwEab6f4s4flMcqGoGNm0Mmpr1UAGsG0ocs1dS0j
+         vAjGsFlCGkm+ejGJAk3XHnMYVrW6DVbxdcZBw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738769387; x=1739374187;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jC9QV0bJcgZgqHHH3SUMbf/vptPD4PQ0vRL1kkv5HIw=;
+        b=hsX3FuU0cImQf1pfjdggAAYj61WdhQjGd6W81No1H+NUNSGzpHT3bDxg9/FbN8Ogn5
+         G7UyuEddAFxaSBK1+6VALehIFisnnCKbmKwqAvgVxMLcZnPeh0HX6dEbecvnL3C5K3tv
+         gDOyW01J1OkOPg9kAdq4S1evWneggqCqJ85qr94x3AVC08aYCvkhacDy9529wY9JP+9M
+         hzhT9M+nrrutpBatkKthCbTJ3eicujrDHRSzsVAO2+VSjVmcyJ9mO6LtCpPDXOnJgCJ6
+         cbnu2Pm38faY3Ka5ZsiU6S/HS9kB5LYS1xNPDrpv48BSlQpoI5acnHFq2RR1ivjGd6fH
+         9ITQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVee+29lmHLfccsTkNuZhqszBz1hkkcqfCEmvuvWVA74HrlUlvEGgmCbNYdv3fcMY/uvt4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkoHy31qSUaSguTR3+TvyoradK2xPX2I1j8rq+DO7+G1tDsjKj
+	GkA50BfHmTFLyxH65k5gER+qwP+Sk/c4T8zfU7JOJ8GuheqH5htvDrHKZiTEE1g=
+X-Gm-Gg: ASbGncvxWZC9ovUCV9enY9tXq1z1Wc0rXnHV9exFXO+8apXvjYm7mbQ+uJ+NOKDRtW7
+	FAdIMzaz16+Di5Z7Mc/xLb40N/S+xVMPQsa9qqVvZmwMC8Ew4gtI1qUi5EttK+B89ITTKpxF61j
+	2kKubFN1nM1EVZJES951dmR0zSjHh0d2uFFt3JXnTbbWrOa0I1CGppUd0ep2m4OTmwKEP3JHkKH
+	tOADAW8lXYsbNaCeKI2d67yyljwbtV/D1Tio3FBN/gMYXXqTZNq+ETIutWxVJ4Xwl0U8/EDH3iY
+	RJnPh6+fMDBUlWLPKER/wQiXPmHdUfeZu75SEI9rYzUgYu1VHiIRZ4e4
+X-Google-Smtp-Source: AGHT+IHUegMKoF3Uu+JDrnonpKTLGgAqfUbpAC5vcQvzwsUpc+CNMtcSoxp8JpOvJyhpCCI3zm2NQA==
+X-Received: by 2002:a05:6000:1868:b0:38a:4184:151a with SMTP id ffacd0b85a97d-38db48fdf85mr2428469f8f.37.1738769386468;
+        Wed, 05 Feb 2025 07:29:46 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.42.151])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38daf999747sm4475386f8f.19.2025.02.05.07.29.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 07:29:46 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Maxime Ripard <mripard@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Cc: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 3/4] dmaengine: Add a comment on why it's okay when kasprintf() fails
-Date: Wed,  5 Feb 2025 16:57:11 +0200
-Message-ID: <20250205145757.889247-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
-References: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3] drm/mxsfb: Remove generic DRM drivers in probe function
+Date: Wed,  5 Feb 2025 16:29:36 +0100
+Message-ID: <20250205152942.954381-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,29 +83,54 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a comment in dma_request_chan() to clarify kasprintf() missing return
-value check and it is correct functionality.
+Use aperture helpers to remove all generic graphics drivers before
+loading mxsfb. Makes mxsfb compatible with simpledrm.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
 ---
- drivers/dma/dmaengine.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index c1357d7f3dc6..dd4224d90f07 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -854,8 +854,8 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+Changes in v3:
+- Add 'Reviewed-by' of  Thomas Zimmermann
+
+Changes in v2:
+- Use aperture_remove_all_conflicting_devices() instead of
+  drm_aperture_remove_framebuffers().
+
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 59020862cf65..e5eb644b54ae 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -8,6 +8,7 @@
+  * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+  */
  
- found:
- #ifdef CONFIG_DEBUG_FS
--	chan->dbg_client_name = kasprintf(GFP_KERNEL, "%s:%s", dev_name(dev),
--					  name);
-+	chan->dbg_client_name = kasprintf(GFP_KERNEL, "%s:%s", dev_name(dev), name);
-+	/* No functional issue if it fails, users are supposed to test before use */
- #endif
++#include <linux/aperture.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/io.h>
+@@ -361,6 +362,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free;
  
- 	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
++	/*
++	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
++	 * located anywhere in RAM
++	 */
++	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "can't kick out existing framebuffers\n");
++
+ 	ret = drm_dev_register(drm, 0);
+ 	if (ret)
+ 		goto err_unload;
 -- 
-2.43.0.rc1.1336.g36b5255a03ac
+2.43.0
 
