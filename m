@@ -1,55 +1,81 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913702288C3
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 12:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6415D3234
+	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 12:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738756946; cv=none; b=cN2gkVH8BiMqoqzYgb2E/1JorFq86+PX6lTC1MtfWBHa2HwTBpG8ay77p6hqu2Hc+Y0dY8CgjOoi0M/+c3MvXhkSQf9KIhGg9MW1+BXAfQqclIioWNzc6l8ORzWULPsNUUrMMDxFiiKZssKoBhX7y1LRwAZryOfO2yWLJzGPECk=
+	t=1738759509; cv=none; b=BtywfaQaFzXt45CsL3JL9gyGmxXGs33H49PMlaLew3U/M5eyiq8v3KObbx+JFkQPVa0wg9GypN//Oiuy2HaFKHJFFIFRNluGQtVLNCE3YbhY5ujCw3T744Y7k0GFfMhS00eq8Zqc4oT7rehPBdlzJIVTcnhe89rrjXLsZ61EudI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738756946; c=relaxed/simple;
-	bh=agqfF/moWRFKv9gbK1sBe2qFqcKmhT34Jw/CPToM4sU=;
+	s=arc-20240116; t=1738759509; c=relaxed/simple;
+	bh=hdLNvV4ZDefdMJiuno9fjpOjHFosu7nQkZ7UaWvn1cA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QyvFiLzvoCGC4kaF2ADI77am7dvV2GEKV/906EhnrwPiNV3QcekoX90YKAVVKcKzNxWJzJKwZnyiuj6CSalsI+ethVyYeV/GpId4Ag9WzBp8hcsVlhyfVAsKvh4K6hQ8TqwYO2pfuKqROEDDUAmSNYFAZmmUy5Kbi5hCwzDvLmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tfe6j-0006Bx-19; Wed, 05 Feb 2025 13:02:17 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tfe6i-003d20-0M;
-	Wed, 05 Feb 2025 13:02:16 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tfe6h-00FWfW-39;
-	Wed, 05 Feb 2025 13:02:15 +0100
-Date: Wed, 5 Feb 2025 13:02:15 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zs5gC1RRkVghP5Wt6J4/Wfo99EneYBEbfmYeCFai5MEO0aRxjbCR9Y3z/vBELn6wkCJhd1BaATlskWNBnJhjmGudMCzwDVKm5rt9G31Rtx5om6+Qac1p0XbEW4raBCW1h2ZuCHUEbolUvuANYLlQ+CczyEyd3ZUHorpq2N2+mKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b6KAXnEF; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b6KAXnEF"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436202dd7f6so76996435e9.0
+        for <imx@lists.linux.dev>; Wed, 05 Feb 2025 04:45:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738759504; x=1739364304; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TsGJ3UalQzSxFZb2gU0XPD2QXXPZcrt6eLZRxDHYdww=;
+        b=b6KAXnEFtTD66FZ20SRirxsPiUJV4OjUhI+sd5IZ+e/VnSQTErnAgbZABHLL1mSJlF
+         6R5gpnXEjCABma1r7Y0tq1UXb9mMiFiaX3RQtoxrdkaEYgTtbp0PYzBSv0siY96mk8mI
+         OB9mO3kWWiQMTpoVkG+4ck0pqKAVPCXJJa1Qt/92h0BItW7GuN+1/WJoQb54fO17fMIY
+         HuYJVsV7CIYdeyL+PUg38CS1Os5UIwkkhRTmTfM+oKhNwCowG4R/GdO1cqKfoOMscmlk
+         hT63vid9UUpET1s6YIBk7iU6ZG4htJRh61oPOPwrtbh3QyWfKqbOTsw4dJa3Q1x94QVg
+         sIOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738759504; x=1739364304;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TsGJ3UalQzSxFZb2gU0XPD2QXXPZcrt6eLZRxDHYdww=;
+        b=qKsDX9qCeea3N6UxfXRk8W713SJyVYE/m7C5Nl0QL7ygUnlGcDKAP9OdlL8UyN1BY3
+         wFzxEwGf/OUijrtK251GC/mI7QoKyGelmSpAHWx1k8n+MsSaa5oUiVc1yUFe3ModgEFJ
+         zUSfTCdfyrZLL7uFYiVPsL5tCeLQjAQ+zhiJUHjxru0hOAmpMrWENUK/jGdhRHbYepcb
+         4kAmPGHKJ2qIV6X546qiCchzTjD07vvng5nGJLHJJUcDDCiVxPqnr5oWnz55baKRxSlx
+         LES/iQS9sz49ehlMkreyi3SPZSpE7SjZDlfRmEWpQbkO5sWUuPIC0TnxP8lvxrOs+4HO
+         oOaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTyOpYfrXVb9kA1fFCDhejo1W5dsD88GTW0hT6PE0RRu5ARgkPSBJWcdJWUhOkSxYSb3g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxPKxFxkqJt0zcNVa6st1BOl0G+E0mBGSuY6KwVnW1DsiTaK/s3
+	PNPGPfl2aCFhOH9KnGNjbQFjM5YoIa5VLK7fYR5EQCnnJ+LZIRxIPOpPGy/BuYU=
+X-Gm-Gg: ASbGncv8OecjjyPL+Vjxm6Ai8DzrMjwsjdujq3pPPqtx6z0S8xCaLOtjSoWqVSH6AqN
+	T+ePo47zJosBtku1S6oDLPcCkIkwLpKfm1hwf7VdZ7F4HPixxEQKLZgiY5sLAzMbimxxBvVudwe
+	x1/NJ3H1TnUtBr460c6jXz25HEuFa1rHWwU0Sw+FIGAbdJRtblfvceI4B9uTrZPPYcJYAh3l0r8
+	w8jkvV6BpzfLs7eguvNwcIgSk9Mv4V/tw5yJ22xyJ3npo9VYYAPU3sObnZ94uBii6zZ+RQdOXX/
+	4ww1d8GET9ZVyYa+F02E
+X-Google-Smtp-Source: AGHT+IFCvzDOHTxQpe1wyNcbveuClBOWo7xzohLO9c/UKcth1SBw5nvlvVBDYrxutdBTH8HCumBZ9g==
+X-Received: by 2002:a05:600c:3511:b0:434:a202:7a0d with SMTP id 5b1f17b1804b1-4390d569890mr18220445e9.22.1738759504528;
+        Wed, 05 Feb 2025 04:45:04 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38db0e2f479sm3524769f8f.57.2025.02.05.04.45.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 04:45:04 -0800 (PST)
+Date: Wed, 5 Feb 2025 15:45:00 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
 	Cristian Marussi <cristian.marussi@arm.com>,
-	Abel Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, arm-scmi@vger.kernel.org,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Shawn Guo <shawnguo@kernel.org>, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] clk: Introduce clk_hw_set_spread_spectrum
-Message-ID: <20250205120215.if3egfj6vbnynwl3@pengutronix.de>
-References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
- <20250205-clk-ssc-v2-1-fa73083caa92@nxp.com>
+	Sascha Hauer <s.hauer@pengutronix.de>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/4] firmware: arm_scmi: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <7a29ec8f-fef8-4f1c-a2eb-16a63f2b820c@stanley.mountain>
+References: <20250120-scmi-fwdevlink-v2-0-3af2fa37dbac@nxp.com>
+ <20250120-scmi-fwdevlink-v2-1-3af2fa37dbac@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,188 +84,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250205-clk-ssc-v2-1-fa73083caa92@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20250120-scmi-fwdevlink-v2-1-3af2fa37dbac@nxp.com>
 
-Hi Peng,
-
-On 25-02-05, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Add clk_hw_set_spread_spectrum to configure a clock to enable spread
-> spectrum feature. set_spread_spectrum ops is added for clk drivers to
-> have their own hardware specific implementation.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/clk/clk.c            | 34 ++++++++++++++++++++++++++++++++++
->  include/linux/clk-provider.h | 32 ++++++++++++++++++++++++++++++++
->  include/linux/clk.h          | 22 ++++++++++++++++++++++
->  3 files changed, 88 insertions(+)
-> 
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index cf7720b9172ff223d86227aad144e15375ddfd86..e11f9615e683af52c719d4c8419bd30f369f301b 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -2790,6 +2790,40 @@ int clk_set_max_rate(struct clk *clk, unsigned long rate)
->  }
->  EXPORT_SYMBOL_GPL(clk_set_max_rate);
->  
-> +int clk_hw_set_spread_spectrum(struct clk_hw *hw, unsigned int modfreq,
-> +			       unsigned int spreaddepth, enum clk_ssc_method method,
-> +			       bool enable)
-> +{
-> +	struct clk_spread_spectrum clk_ss;
-> +	struct clk_core *core;
-> +	int ret;
-> +
-> +	if (!hw)
-> +		return 0;
-> +
-> +	core = hw->core;
-> +
-> +	clk_ss.modfreq = modfreq;
-> +	clk_ss.spreaddepth = spreaddepth;
-> +	clk_ss.method = method;
-> +	clk_ss.enable = enable;
-> +
-> +	clk_prepare_lock();
-> +
-> +	ret = clk_pm_runtime_get(core);
-> +	if (ret)
-> +		goto fail;
-> +
-> +	if (core->ops->set_spread_spectrum)
-> +		ret = core->ops->set_spread_spectrum(hw, &clk_ss);
-> +
-> +	clk_pm_runtime_put(core);
-> +
-> +fail:
-> +	clk_prepare_unlock();
-> +	return ret;
-> +}
-> +
->  /**
->   * clk_get_parent - return the parent of a clk
->   * @clk: the clk whose parent gets returned
-> diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-> index 2e6e603b749342931c0d0693c3e72b62c000791b..ac0270cc9ec133954b1f8dcffed015723bd1ff5d 100644
-> --- a/include/linux/clk-provider.h
-> +++ b/include/linux/clk-provider.h
-> @@ -84,6 +84,28 @@ struct clk_duty {
->  	unsigned int den;
->  };
->  
-> +/* Aligned with dtschema/schemas/clock/clock.yaml */
-> +enum clk_ssc_method {
-> +	CLK_SSC_CENTER_SPREAD,
-> +	CLK_SSC_UP_SPREAD,
-> +	CLK_SSC_DOWN_SPREAD,
-> +};
-> +
-> +/**
-> + * struct clk_spread_spectrum - Structure encoding spread spectrum of a clock
-> + *
-> + * @modfreq:		Modulation frequency
-> + * @spreadpercent:	Modulation percent
-> + * @method:		Modulation method
-> + * @enable:		Modulation enable or disable
-> + */
-> +struct clk_spread_spectrum {
-> +	unsigned int modfreq;
-> +	unsigned int spreaddepth;
-
-Please use per mil as unit since I noticed that 0.x% is a common value
-too.
-
-Regards,
-  Marco
-
-
-> +	enum clk_ssc_method method;
-> +	bool enable;
-> +};
-> +
->  /**
->   * struct clk_ops -  Callback operations for hardware clocks; these are to
->   * be provided by the clock implementation, and will be called by drivers
-> @@ -178,6 +200,11 @@ struct clk_duty {
->   *		separately via calls to .set_parent and .set_rate.
->   *		Returns 0 on success, -EERROR otherwise.
->   *
-> + * @set_spread_spectrum: Configure the modulation frequency, modulation percentage
-> + *		and method. This callback is optional for clocks that does not
-> + *		support spread spectrum feature or no need to enable this feature.
-> + *		Returns 0 on success, -EERROR otherwise.
-> + *
->   * @recalc_accuracy: Recalculate the accuracy of this clock. The clock accuracy
->   *		is expressed in ppb (parts per billion). The parent accuracy is
->   *		an input parameter.
-> @@ -255,6 +282,8 @@ struct clk_ops {
->  	int		(*set_rate_and_parent)(struct clk_hw *hw,
->  				    unsigned long rate,
->  				    unsigned long parent_rate, u8 index);
-> +	int		(*set_spread_spectrum)(struct clk_hw *hw,
-> +					       struct clk_spread_spectrum *clk_ss);
->  	unsigned long	(*recalc_accuracy)(struct clk_hw *hw,
->  					   unsigned long parent_accuracy);
->  	int		(*get_phase)(struct clk_hw *hw);
-> @@ -1404,6 +1433,9 @@ void clk_hw_get_rate_range(struct clk_hw *hw, unsigned long *min_rate,
->  			   unsigned long *max_rate);
->  void clk_hw_set_rate_range(struct clk_hw *hw, unsigned long min_rate,
->  			   unsigned long max_rate);
-> +int clk_hw_set_spread_spectrum(struct clk_hw *hw, unsigned int modfreq,
-> +			       unsigned int spreaddepth, enum clk_ssc_method method,
-> +			       bool enable);
->  
->  static inline void __clk_hw_set_clk(struct clk_hw *dst, struct clk_hw *src)
->  {
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index b607482ca77e987b9344c38f25ebb5c8d35c1d39..49a7f7eb8b03233e11cd3b92768896c4e45c4e7c 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -858,6 +858,21 @@ int clk_set_rate(struct clk *clk, unsigned long rate);
->   */
->  int clk_set_rate_exclusive(struct clk *clk, unsigned long rate);
->  
-> +/**
-> + * clk_set_spread_spectrum - set the spread spectrum for a clock
-> + * @clk: clock source
-> + * @modfreq: modulation freq
-> + * @spreadpercent: modulation percentage
-> + * @method: down spread, up spread, center spread or else
-> + * @enable: enable or disable
-> + *
-> + * Configure the spread spectrum parameters for a clock.
-> + *
-> + * Returns success (0) or negative errno.
-> + */
-> +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-> +			    unsigned int spreadpercent, unsigned int method,
-> +			    bool enable);
->  /**
->   * clk_has_parent - check if a clock is a possible parent for another
->   * @clk: clock source
-> @@ -1088,6 +1103,13 @@ static inline int clk_set_rate_exclusive(struct clk *clk, unsigned long rate)
->  	return 0;
+On Mon, Jan 20, 2025 at 03:13:29PM +0800, Peng Fan (OSS) wrote:
+> diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+> index 2c853c84b58f530898057e4ab274ba76070de05e..7850eb7710f499888d32aebf5d99df63db8bfa26 100644
+> --- a/drivers/firmware/arm_scmi/bus.c
+> +++ b/drivers/firmware/arm_scmi/bus.c
+> @@ -344,6 +344,21 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
+>  	device_unregister(&scmi_dev->dev);
 >  }
 >  
-> +static inline int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
-> +					  unsigned int spreadpercent,
-> +					  unsigned int method, bool enable)
+> +static int
+> +__scmi_device_set_node(struct scmi_device *scmi_dev, struct device_node *np,
+> +		       int protocol, const char *name)
 > +{
-> +	return 0;
-> +}
-> +
->  static inline long clk_round_rate(struct clk *clk, unsigned long rate)
->  {
->  	return 0;
-> 
-> -- 
-> 2.37.1
-> 
-> 
-> 
+> +	/* cpufreq device does not need to be supplier from devlink perspective */
+> +	if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq")) {
+
+I don't love this...  It seems like an hack.  Could we put a flag
+somewhere instead?  Perhaps in scmi_device?  (I'm just saying that
+because that's what we're passing to this function).
+
+regards,
+dan carpenter
+
