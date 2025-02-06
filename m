@@ -1,279 +1,379 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2069.outbound.protection.outlook.com [40.107.21.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A16163
-	for <imx@lists.linux.dev>; Wed,  5 Feb 2025 20:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738787475; cv=none; b=h+h0AHZuBVOOELyhD2Yog63SqVCjxxcj8xvw/VNHuxXcX2AsU1wXRQUsTOFLQbSWJlWM0fF1t47l8sov93Q9WEFJPJTEwUn7zvWgm+GHK5AKso3fuM4PdpoMk3eESBQG4uZOJfuM5UL/CQBdIbx7eWlRPrgtoCeUvARJJFnwG3M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738787475; c=relaxed/simple;
-	bh=qe7ttvq64awcUf1Bh/SZBEiW9DFFzWDMMy2H1g5I4qA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pUtg4IA2/sR7tZXsPysDThUy3R3TCNRV//p79aLLpGifnzwc97BYtJxQ2LnJlAYrWLVapyEvEJAp/PDzIpyWwakXLpI1wiTp0Cv42m+9mSRoArP+2UCIpIczORoffYC0Y2yyEEPI2gqwHmiJ7OYX2TqrRPPLwglARnSG6zCVn+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gt+z551T; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE81B59A
+	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 00:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738802329; cv=fail; b=S/E1aGNb8YejydM538GlV0nLlcIwYX155yjhLzuzAMPv4FZw4VwL83KGErybT3UVNMYOMxqIug2GYPe/EsKqnVHbYRuNurZ7QXELHClKbNSsn/6A6hiYc9d4dCSEa85C7ZyuUK5/xOKeR/lp99qLp1y0zB79SOf3OjvxnXaapJ8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738802329; c=relaxed/simple;
+	bh=cxcGY51yGECloJBUMLu4p12PXKDjbyFT0+4IJHvskCE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZyYioaoKCSUwyGhLwlqIJTB2OFiMsgR/bia/VsHB+1xWV+qk1V0o4TB8W6Y/7onLlTgX0ALesZL11U2wiYd/ETVJr9LhyU61BkQp+CCZjLE+qQB6F0fMaw6HExfE5GklZocTomTQBM1GlXlLUV7Tr3xR7NVQq0Lf3k5sEcilfeA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=M6e2j1xX; arc=fail smtp.client-ip=40.107.21.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gt+z551T"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5dcdfa7df68so344491a12.3
-        for <imx@lists.linux.dev>; Wed, 05 Feb 2025 12:31:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738787471; x=1739392271; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I4cK51CNRTbi5HsJy6wyPaHqt26s9ymp8U2/6x/uKuM=;
-        b=gt+z551TV9ukfycS/MR3XGET91mG1PPUEGI6meUghZoZbRpAcBSxrhMel03kP0WFJs
-         X6hmSAYYsKItok9bUch65GSV1VJtLK/BCkhgfvghoUkgJ6gfe4/ZWDMOFBeZHGHzVZfb
-         N/dRgJrT3RO6ifLHUqzfetcsOPmePg/2Rblu7lA8fgpJKH5INJCzMeGnviWP6KIlj+8O
-         pEJ/v8/q5pZydrrQqYrBnl9dr+OXELO9JrT7iCrdqW1NtPc+YUoWIdqE+/Du64jmjS7m
-         GtXHxjXrBQYEGLRQeM9DOc+q5yON7Y90G/8N4FNRdhNkbAA80jrKBZaGaE36DfrYhRAT
-         xeBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738787471; x=1739392271;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I4cK51CNRTbi5HsJy6wyPaHqt26s9ymp8U2/6x/uKuM=;
-        b=t2sw2re6CDJEle7WUhZ+ZW4n96NvdW+lX8YTmcJWsko5Kr9UqhlXrhBVL42mdXkXnD
-         fctSPVINsKTXjDr7y0A+Fj3GqmzVcH11jxZaksIrd9DIaBRaMo6O1X6ev+0KNVgYY7HN
-         d9XVmRM6Hm08uo1tTCXPxxN8dqQvaRrifJ/hRrRFXEwJxtkEin4fs6Hf2W7Hsn8928Jb
-         gZkO2rqpoVi1sincdFYTAO1Aj60EPHFCiYK+EONa7YZ9PGDJvz9ZgAd7ZlmHFt5QKLeH
-         ARa5fkqSg9LZHbuKBMF5qcq7wBrnAqKtd2c9Ru8Ioo59XDyRQ//XagwiTFF+ddjU4eim
-         67LA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4iuC8iXxIWt6bTl5JQKlpn/sA30bX7ZHmJLt1s/MNsg9GwDtZmCKiYsPZMx28ebxFKb4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6Dk/9uKS7ZL0ZPbiz/j59l7lgOM9P7amz4pVlh82G7ml3rgfQ
-	xE7XZ70rAtdB1/QvA6RXlV1AAFipoAMTDPeBQs9HdjVO2JRZKE7/
-X-Gm-Gg: ASbGnctjQD+aQMHkV0lxf7unaIbJPwxkLLY1UAGYj0y0sYdrgiRRqYeD7N4BKdddPmb
-	EvSxar0IOZg05eEzaPBVdQD3QO5U8ze3pm6JMgCMnN1PG7gR4Dd5tQ9pOdL//3KJv22M5AS/2BB
-	7mkjblS299t3UCCXSbIixxgKj+iTQ4ulJmP5w3G+tTPcpI+9e8Ne0c3dctw+D+Gh65KXjhDy4gs
-	VSxWUWJuIO5C+B2LNU/icIHP7EhZqpqQVPNhRDbnhTfvU1HF+8MtWV4bWS30j4GT0a3oYAHZynS
-	kGvyltQJ2ObKajpxnnO7WwOT+VSu6nBTGjU2sS/RX6yPgwVsVlHEsA==
-X-Google-Smtp-Source: AGHT+IFKrFcqprX+GZtzDqejxj4Rz+XCBLHaHMwVVpFMT/hD6N4fQTevoJA/0HFE/zJ2spS2DeDAJw==
-X-Received: by 2002:a05:6402:400f:b0:5dc:c9ce:b01b with SMTP id 4fb4d7f45d1cf-5dcdb7179e2mr4562356a12.8.1738787471045;
-        Wed, 05 Feb 2025 12:31:11 -0800 (PST)
-Received: from playground.localdomain ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dcd309f127sm2848014a12.40.2025.02.05.12.31.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 12:31:10 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 8/8] ASoC: SOF: imx: add driver for the imx95 chip
-Date: Wed,  5 Feb 2025 15:30:22 -0500
-Message-Id: <20250205203022.2754-9-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250205203022.2754-1-laurentiumihalcea111@gmail.com>
-References: <20250205203022.2754-1-laurentiumihalcea111@gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="M6e2j1xX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uRMPKeXoV3icxHsRft7G7UNArPN1fcOowimip9Lt311AzO46IkPl/Ydjuvrl5zPaTDptFvEKhTT7n1LHScB0IxwVg0s7YjF+BPJ2Z8tnIYi/N8c+c5vbGKQskQ+Y6KwQnAng9Sva0z3bVeOf/+YW97A8u1Hz/538rdwItMoLdTkcH+ZT8bvymabV+bzyqOq9UMJex0rHyODkxxVYK9k4QZhRjUu0wICc2RkGJsZAj96tFo8rvIq91fF9Z9+BVbFrxUGqSq6Ijti+pdBCZXEY0VrtUFyrKspJz/KKh8Lbz+H37IIt90gIvO5yNo8MkX2XOeQ3+oe/fRgoXK7hUT2Wmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oI2kfgxuN7HioO65MIUQgFYFRBOyBB2R1bl2JgUa5GA=;
+ b=rEVBZkw2id13dW8Za7jDM8ZbTdf1qoaurzbEsgKkQiYKN6XitazDFWXNNvUx8cM0xevSCmcHZqYWcCmPi3niGgbIpdvXzQC7JJNfCSWlrmF47Ugb81y8ZevoPjiGK/YtZU59vEkNsxFcrRyBiXFYcBuBljdOxHp29M5s440Y4YjRNlrKIeRcfPBpGOSZU8nLjRx592WqNY2itQnlfkNu/0I0D17eIXzIV4a+QWz/MRGj4PId0GDONpRWAEYq3j2Aqt5Ob2NvS1iV0PbQ3D+h3n76U1amzi016qxldYyycnRW6BTB+CEn52Zco/Re+leoCwOZjSkiCXId3J5qZSlwSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oI2kfgxuN7HioO65MIUQgFYFRBOyBB2R1bl2JgUa5GA=;
+ b=M6e2j1xXCa3jKwSRQ3w4NE3iW4Xxcsjxh9rsnbzaEHXaau343vmftG/8MPqEDk21Om3kRUr38y5HMTkZzUzjtolHpdSJAgGC9TOnj3ZuhNHBNhZFalPrJwOvRWGwp2sGucYccOjmqG7jbzNLvRtUBH+PTxCtqqwFXeXVF7y9OqoP8VAqI1gEvqgzSklrMgtBJD93bnZPI/fT771qsG6z/TGIPVKNrDhhAgVW5DgWk0tDaX56mfQ0r0yOz4SPCzrYmXiYP4iA9fB8SDHlAUdL48zmJpuVnJt7TswKEGv5buhTYmgSG7f84I60qJSme4uH9NAzt24FXN5q49xOL0NYyQ==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by PAXPR04MB8784.eurprd04.prod.outlook.com (2603:10a6:102:20f::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Thu, 6 Feb
+ 2025 00:38:43 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8422.010; Thu, 6 Feb 2025
+ 00:38:42 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Marco Felsch <m.felsch@pengutronix.de>, "Peng Fan (OSS)"
+	<peng.fan@oss.nxp.com>
+CC: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+	<sboyd@kernel.org>, Russell King <linux@armlinux.org.uk>, Sudeep Holla
+	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, Abel
+ Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>, Pengutronix Kernel
+ Team <kernel@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, "arm-scmi@vger.kernel.org"
+	<arm-scmi@vger.kernel.org>, Dario Binacchi
+	<dario.binacchi@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>,
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v2 1/4] clk: Introduce clk_hw_set_spread_spectrum
+Thread-Topic: [PATCH v2 1/4] clk: Introduce clk_hw_set_spread_spectrum
+Thread-Index: AQHbd7NxpkaGxm6rAU+fLs8XnwVMJ7M4nDCAgADQBZA=
+Date: Thu, 6 Feb 2025 00:38:42 +0000
+Message-ID:
+ <PAXPR04MB8459CDBB65AE57CDE780339A88F62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
+ <20250205-clk-ssc-v2-1-fa73083caa92@nxp.com>
+ <20250205120215.if3egfj6vbnynwl3@pengutronix.de>
+In-Reply-To: <20250205120215.if3egfj6vbnynwl3@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PAXPR04MB8784:EE_
+x-ms-office365-filtering-correlation-id: e52c1567-b414-431f-9a10-08dd46469ba0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?OH3l8fGWIdNwibkx8Waqe5h+kqG//bysstEwmkbl6xdJuIU86lFimg+UozbW?=
+ =?us-ascii?Q?leJZtrgftLY1YKAGdI0HJG8tJvzC5U69hxCuAmDw1aTZOYz1WEW99eQpvMIe?=
+ =?us-ascii?Q?9fYJH6zqrDMD7e/bUexvpxhOlDTzwA2Zy32FsdJwTWxuxkZd2fyBs/CJZutv?=
+ =?us-ascii?Q?YN8DWhDz5mGvm4070obqBQ8S2jSrJhKxR9edHAT7PNVhKp1bepJMp38Ou8Cq?=
+ =?us-ascii?Q?MThwgEQbF8gL2Kyvzuj1i3jln/yUhOZ3zYlMsAu8VTz1ferrLbCOgGxHRiCV?=
+ =?us-ascii?Q?3h5JH/MgAUDh81LTgHFOc+oujGsmUPr0ol3MkXXuoOnZTU6/be9fCCpzp8H5?=
+ =?us-ascii?Q?RQ0qVVLPV1okHYv4kSCW7679QAruiQemV3fiJZZJjZVSy9xVPBStqSBFEYaK?=
+ =?us-ascii?Q?EYpFiu2rNjYFHz6EGyZFEq2bZnEIYWknyK3pXc0Zb7pGCgwQMZFVQojfa7zd?=
+ =?us-ascii?Q?cS/XDGBbjL12b+jzDU9D9oZ/ou1QM4PVB9l/nUUwkYb9QdfeR2wDBHPsfHp1?=
+ =?us-ascii?Q?4Pu26FCzEEw55vvDmG6vH0z70lE3QpYFPTDSvm01m765WeAjTAA8DkypMdgE?=
+ =?us-ascii?Q?3ejhNyPmKH7SBllqhJOQMlhI9Ki8sgbocSVzZpcWDjkw08jPUidwHmZdjsZ0?=
+ =?us-ascii?Q?eFo0DZonbMub3c2nV6O+YUux5ATWonZBp6PdvAPCoMrb90Y75prVI3pXUuGz?=
+ =?us-ascii?Q?5IRM2WonBQHLgM9RQYlDW2k2QQ0WTzMgN5zB09WgcTXUQJSQuQQGkg6bhOeb?=
+ =?us-ascii?Q?NLkN0P8Hc/BTVplacLekkepaWJo9JlduhYErPwj6dAfnoDFqM6DrQ/Mi/4bH?=
+ =?us-ascii?Q?e8En1LbS1xDSrRtyQ6Q9+BkQ6k+r2uAWKB1oQ3SKXv/DsPkX2JnyCnaGX/Dn?=
+ =?us-ascii?Q?ZY6ROX9ajj6QbJBRdeUUqDbXlJo4lpKZvYynUCkT/MeNQaMUs0wBsbKgzV65?=
+ =?us-ascii?Q?r8E5h6l5Q2sfRiyeu7WOdHZ+v/+AsI+oaSGlpDISdSN56eXHL40Kx0cmDHIX?=
+ =?us-ascii?Q?ex0QFQknd6lX5ONH8OHJ5ebWhyEoOdrbyAWoPovcbJvOMDQxMLjpqY/CDrBT?=
+ =?us-ascii?Q?zPD0L+6SN4H3MKGm8Wb91v/P+XV2+kFBtnywtZOO+lzFmDzVXXkiYdMOAob/?=
+ =?us-ascii?Q?fSF/BhO5rhL1ojK/YS4v4Ijf4eGTgQT+QBM7bfbiCAlFjQ1QCWPxPH/AOBDQ?=
+ =?us-ascii?Q?AJLfyrhTn0JLhAHJRXivvC0XbnV/teXprg/AjcttptfvjlCZyoJ/MDBl516y?=
+ =?us-ascii?Q?0Vhq0DLOlfiW5u9RULgqRVfUQKfXGjV965o8Ud5H3GcrQWu/NVy6WbHeE8h1?=
+ =?us-ascii?Q?Vf6krkyytde2PWNbDdTNPO3cFPghRRcdhON36T2HFhiMtvNQOcUstg0hVeKD?=
+ =?us-ascii?Q?Me+FaQaCy/CojGmWU95h4X9dSp3UDDdu1PBFhgd4PHJnWgh5mO5Uidr3nntC?=
+ =?us-ascii?Q?/bRmnEH9EkuafJ1UG4Q8RnzOuiMOw9v1?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?w1MaJusOvMn5IDBwrxPM8SNJNPInJ9oJ0qZ6s/Q1voJPU3s5J2tmoXymBe6E?=
+ =?us-ascii?Q?6+4eS4kx02rstX1vRGHuii1U7IJN/W9S3kBbiYr9vp+qjyibozWMd/UGkdwr?=
+ =?us-ascii?Q?5edWDnnr1gGu/JCWUDOIhdj76/fLcKh1+sr4c5ECHND1UAGd+H6HemfQDC5l?=
+ =?us-ascii?Q?/7fx3gmL99AfXHsDtdJeogO/4aMzFKIktWfepa2gotuBDoObDqAqlMvyTfee?=
+ =?us-ascii?Q?I9WbzqGAEIeMs8TIfLTaemIsF1r+dXA+pKApEWvY/FQ/IW11S8dB3lXIhY47?=
+ =?us-ascii?Q?PQadVVMKya5A/KmFe08ksTixuf9kOTEvSfQoApQCrsc8WagbWg2DzdXW/ixb?=
+ =?us-ascii?Q?KfblbEPyaFdx6pT9AoF4lU4g9xcPG111bB6HAnOtv2IZ3eCs3fsdiF2ibddw?=
+ =?us-ascii?Q?reGy2xPeRiLy1n10/at3o28hf29411/xX0PFrKSKr5Zci/EzXfLjNoqVzdpP?=
+ =?us-ascii?Q?PXmhKz6PjDziuKCNO9eLUqYHwB8OXXjMevibVMQ0GhCCK8J1eO0fiBIYezyN?=
+ =?us-ascii?Q?Bov3oVu1a2jDx35eUhJ4F8RWrvhg5AyzGBV3yeXqoVZdvHQ9ikHofxuWFJrR?=
+ =?us-ascii?Q?YxDGQ6LMjO4dN5gxGc4Xls2bcCL54LmzLkOObyB/f20tda33QQo5yq/LCbEA?=
+ =?us-ascii?Q?sxdi+8BUKHQM0Ks/06sR3ZP95ex+woqe+eeot/JPTmzldzTSdhp/JnXgXjo9?=
+ =?us-ascii?Q?z3SMAN5ieuLYTwjP6f/GRqdupQM4OK5Qt2RJsffBCAdCJ0aqzdsA0wTRXyef?=
+ =?us-ascii?Q?AfQuSewl6mbFf304G8sTdZjDRGmOFaliN6ObhEgzJbR826s/jSh4rdWX6M1Z?=
+ =?us-ascii?Q?Ir15mZnJEcFLZeZq117XXEX206U+nxc9h333MMDx+frouSUI8dBY2xluZ+Fg?=
+ =?us-ascii?Q?qeHXtF7NQoXs9mRzxtzUbQOoxqGSxJXQXYIzoWMLvOsG1cC8gBY5ERit+LWQ?=
+ =?us-ascii?Q?ZFZ26Snl6KwUcxM11nCT7nUwGYgdDWjJ4aVZ08UKAgn+Jl0+6jnC4B69AaHJ?=
+ =?us-ascii?Q?prY08kQLrekQ3yniVt8wwqDB+rBmnNTGSHDSqNjFS8bpFAOvc6hx4RGrPMcK?=
+ =?us-ascii?Q?qcEVz4TnvR0NCgSd03L0QHvKXltswbDIvrttXVQdUNuIFker6FvGr13e5FYp?=
+ =?us-ascii?Q?ORLV3EhoRM066oPDDaiza2AB8BOaMjZ+IPB/DkK6Mau1fwnxF4NJesBrxh6w?=
+ =?us-ascii?Q?/XthXqhnR7OmA11ys23McBEG7DSOmwuaWfwLH6xfq/vePk7oYGrCOIVlpms2?=
+ =?us-ascii?Q?t2/AvkAmE/UGkxvCJ5r+kCShfCh+isYr4pd38uXuENaMouutZem2HkpycW1n?=
+ =?us-ascii?Q?qKQ/VSGphWjAG7VbQc8uSaSJnRt2lXDqX/pWddI5ZanU7GIAt7reu05hY94K?=
+ =?us-ascii?Q?SbDiMWCLrT5ebWJExTv1AnwtpniQzuSBXI98gSUoe9IvDvbBNDeZcrYuPFts?=
+ =?us-ascii?Q?6FLiHXz/ATkzRmrS1a9u/hAL6i77JVjwutPiXdGl3+4C1XjtozOEsJB9FdxW?=
+ =?us-ascii?Q?03JSeHoKOrqE3c5YGz34uGe42TQqZK/+vgvURPIOWE6wo7gdcFwa4S2o7V8z?=
+ =?us-ascii?Q?7BYLk/mLAQDx1cN7p8I=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e52c1567-b414-431f-9a10-08dd46469ba0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Feb 2025 00:38:42.8973
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: V2AakKGqPmKN5RtSF+RnBudKmA+SNscNR81CpzTSLuml8ajblK73cwztVjOE9C6AiOyeg0StXhjQEJcTLWqNSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8784
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> Subject: Re: [PATCH v2 1/4] clk: Introduce
+> clk_hw_set_spread_spectrum
+>=20
+> Hi Peng,
+>=20
+> On 25-02-05, Peng Fan (OSS) wrote:
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > Add clk_hw_set_spread_spectrum to configure a clock to enable
+> spread
+> > spectrum feature. set_spread_spectrum ops is added for clk drivers to
+> > have their own hardware specific implementation.
+> >
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  drivers/clk/clk.c            | 34 ++++++++++++++++++++++++++++++++++
+> >  include/linux/clk-provider.h | 32
+> ++++++++++++++++++++++++++++++++
+> >  include/linux/clk.h          | 22 ++++++++++++++++++++++
+> >  3 files changed, 88 insertions(+)
+> >
+> > diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c index
+> >
+> cf7720b9172ff223d86227aad144e15375ddfd86..e11f9615e683af52c7
+> 19d4c8419b
+> > d30f369f301b 100644
+> > --- a/drivers/clk/clk.c
+> > +++ b/drivers/clk/clk.c
+> > @@ -2790,6 +2790,40 @@ int clk_set_max_rate(struct clk *clk,
+> unsigned
+> > long rate)  }  EXPORT_SYMBOL_GPL(clk_set_max_rate);
+> >
+> > +int clk_hw_set_spread_spectrum(struct clk_hw *hw, unsigned int
+> modfreq,
+> > +			       unsigned int spreaddepth, enum
+> clk_ssc_method method,
+> > +			       bool enable)
+> > +{
+> > +	struct clk_spread_spectrum clk_ss;
+> > +	struct clk_core *core;
+> > +	int ret;
+> > +
+> > +	if (!hw)
+> > +		return 0;
+> > +
+> > +	core =3D hw->core;
+> > +
+> > +	clk_ss.modfreq =3D modfreq;
+> > +	clk_ss.spreaddepth =3D spreaddepth;
+> > +	clk_ss.method =3D method;
+> > +	clk_ss.enable =3D enable;
+> > +
+> > +	clk_prepare_lock();
+> > +
+> > +	ret =3D clk_pm_runtime_get(core);
+> > +	if (ret)
+> > +		goto fail;
+> > +
+> > +	if (core->ops->set_spread_spectrum)
+> > +		ret =3D core->ops->set_spread_spectrum(hw, &clk_ss);
+> > +
+> > +	clk_pm_runtime_put(core);
+> > +
+> > +fail:
+> > +	clk_prepare_unlock();
+> > +	return ret;
+> > +}
+> > +
+> >  /**
+> >   * clk_get_parent - return the parent of a clk
+> >   * @clk: the clk whose parent gets returned diff --git
+> > a/include/linux/clk-provider.h b/include/linux/clk-provider.h index
+> >
+> 2e6e603b749342931c0d0693c3e72b62c000791b..ac0270cc9ec13395
+> 4b1f8dcffed0
+> > 15723bd1ff5d 100644
+> > --- a/include/linux/clk-provider.h
+> > +++ b/include/linux/clk-provider.h
+> > @@ -84,6 +84,28 @@ struct clk_duty {
+> >  	unsigned int den;
+> >  };
+> >
+> > +/* Aligned with dtschema/schemas/clock/clock.yaml */ enum
+> > +clk_ssc_method {
+> > +	CLK_SSC_CENTER_SPREAD,
+> > +	CLK_SSC_UP_SPREAD,
+> > +	CLK_SSC_DOWN_SPREAD,
+> > +};
+> > +
+> > +/**
+> > + * struct clk_spread_spectrum - Structure encoding spread spectrum
+> of
+> > +a clock
+> > + *
+> > + * @modfreq:		Modulation frequency
+> > + * @spreadpercent:	Modulation percent
+> > + * @method:		Modulation method
+> > + * @enable:		Modulation enable or disable
+> > + */
+> > +struct clk_spread_spectrum {
+> > +	unsigned int modfreq;
+> > +	unsigned int spreaddepth;
+>=20
+> Please use per mil as unit since I noticed that 0.x% is a common value
+> too.
 
-Add SOF support for the imx95 chip. Although the support is just
-for the imx95 chip, the driver is intended for all chips in the imx9
-family.
+I use " The modulation depth in permyriad " in dt-schema, since
+Dario said ST chips has permyriad.
 
-Note that the imx95 support could have just as easily been added
-to the imx8 platform driver but a new platform driver was created
-because the intention is to keep the families in separate drivers.
+So change it to moddepth_per_myriad?
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- sound/soc/sof/imx/Kconfig  |   9 +++
- sound/soc/sof/imx/Makefile |   2 +
- sound/soc/sof/imx/imx9.c   | 137 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 148 insertions(+)
- create mode 100644 sound/soc/sof/imx/imx9.c
+Thanks,
+Peng.
 
-diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
-index 2edf9de2c886..327e2df94a58 100644
---- a/sound/soc/sof/imx/Kconfig
-+++ b/sound/soc/sof/imx/Kconfig
-@@ -32,4 +32,13 @@ config SND_SOC_SOF_IMX8
- 	  Say Y if you have such a device.
- 	  If unsure select "N".
- 
-+config SND_SOC_SOF_IMX9
-+	tristate "SOF support for i.MX9"
-+	depends on IMX_DSP
-+	select SND_SOC_SOF_IMX_COMMON
-+	help
-+	  This adds support for Sound Open Firmware for NXP i.MX9 platforms.
-+	  Say Y if you need such a device.
-+	  If unsure select "N".
-+
- endif ## SND_SOC_SOF_IMX_TOPLEVEL
-diff --git a/sound/soc/sof/imx/Makefile b/sound/soc/sof/imx/Makefile
-index 36a3a67c6efb..74b5ecad8fe8 100644
---- a/sound/soc/sof/imx/Makefile
-+++ b/sound/soc/sof/imx/Makefile
-@@ -1,7 +1,9 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
- snd-sof-imx8-y := imx8.o
-+snd-sof-imx9-y := imx9.o
- 
- snd-sof-imx-common-y := imx-common.o
- 
- obj-$(CONFIG_SND_SOC_SOF_IMX8) += snd-sof-imx8.o
-+obj-$(CONFIG_SND_SOC_SOF_IMX9) += snd-sof-imx9.o
- obj-$(CONFIG_SND_SOC_SOF_IMX_COMMON) += imx-common.o
-diff --git a/sound/soc/sof/imx/imx9.c b/sound/soc/sof/imx/imx9.c
-new file mode 100644
-index 000000000000..598675d4350a
---- /dev/null
-+++ b/sound/soc/sof/imx/imx9.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
-+/*
-+ * Copyright 2025 NXP
-+ */
-+
-+#include <linux/arm-smccc.h>
-+
-+#include "imx-common.h"
-+
-+#define IMX_SIP_SRC 0xC2000005
-+#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
-+
-+#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
-+
-+#define IMX_SIP_LMM 0xC200000F
-+#define IMX_SIP_LMM_BOOT 0x0
-+#define IMX_SIP_LMM_SHUTDOWN 0x1
-+
-+#define IMX95_M7_LM_ID 0x1
-+
-+static struct snd_soc_dai_driver imx95_dai[] = {
-+	IMX_SOF_DAI_DRV_ENTRY_BIDIR("sai3", 1, 32),
-+};
-+
-+static struct snd_sof_dsp_ops sof_imx9_ops;
-+
-+static int imx95_ops_init(struct snd_sof_dev *sdev)
-+{
-+	/* first copy from template */
-+	memcpy(&sof_imx9_ops, &sof_imx_ops, sizeof(sof_imx_ops));
-+
-+	/* ... and finally set DAI driver */
-+	sof_imx9_ops.drv = get_chip_info(sdev)->drv;
-+	sof_imx9_ops.num_drv = get_chip_info(sdev)->num_drv;
-+
-+	return 0;
-+}
-+
-+static int imx95_chip_probe(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+	struct platform_device *pdev;
-+	struct resource *res;
-+
-+	pdev = to_platform_device(sdev->dev);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "sram");
-+	if (!res)
-+		return dev_err_probe(sdev->dev, -ENODEV,
-+				     "failed to fetch SRAM region\n");
-+
-+	/* set core boot reset address */
-+	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, res->start,
-+		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static int imx95_core_kick(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+
-+	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT,
-+		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static int imx95_core_shutdown(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+
-+	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN,
-+		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static const struct imx_chip_ops imx95_chip_ops = {
-+	.probe = imx95_chip_probe,
-+	.core_kick = imx95_core_kick,
-+	.core_shutdown = imx95_core_shutdown,
-+};
-+
-+static struct imx_memory_info imx95_memory_regions[] = {
-+	{ .name = "sram", .reserved = false },
-+	{ }
-+};
-+
-+static const struct imx_chip_info imx95_chip_info = {
-+	.ipc_info = {
-+		.boot_mbox_offset = 0x6001000,
-+		.window_offset = 0x6000000,
-+	},
-+	.has_dma_reserved = true,
-+	.memory = imx95_memory_regions,
-+	.drv = imx95_dai,
-+	.num_drv = ARRAY_SIZE(imx95_dai),
-+	.ops = &imx95_chip_ops,
-+};
-+
-+static struct snd_sof_of_mach sof_imx9_machs[] = {
-+	{
-+		.compatible = "fsl,imx95-19x19-evk",
-+		.sof_tplg_filename = "sof-imx95-wm8962.tplg",
-+		.drv_name = "asoc-audio-graph-card2",
-+	},
-+	{
-+	}
-+};
-+
-+IMX_SOF_DEV_DESC(imx95, sof_imx9_machs, &imx95_chip_info, &sof_imx9_ops, imx95_ops_init);
-+
-+static const struct of_device_id sof_of_imx9_ids[] = {
-+	{
-+		.compatible = "fsl,imx95-cm7-sof",
-+		.data = &IMX_SOF_DEV_DESC_NAME(imx95),
-+	},
-+	{
-+	},
-+};
-+MODULE_DEVICE_TABLE(of, sof_of_imx9_ids);
-+
-+static struct platform_driver snd_sof_of_imx9_driver = {
-+	.probe = sof_of_probe,
-+	.remove = sof_of_remove,
-+	.driver = {
-+		.name = "sof-audio-of-imx9",
-+		.pm = &sof_of_pm,
-+		.of_match_table = sof_of_imx9_ids,
-+	},
-+};
-+module_platform_driver(snd_sof_of_imx9_driver);
-+
-+MODULE_LICENSE("Dual BSD/GPL");
-+MODULE_DESCRIPTION("SOF driver for imx9 platforms");
-+MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
--- 
-2.34.1
-
+>=20
+> Regards,
+>   Marco
+>=20
+>=20
+> > +	enum clk_ssc_method method;
+> > +	bool enable;
+> > +};
+> > +
+> >  /**
+> >   * struct clk_ops -  Callback operations for hardware clocks; these ar=
+e
+> to
+> >   * be provided by the clock implementation, and will be called by
+> > drivers @@ -178,6 +200,11 @@ struct clk_duty {
+> >   *		separately via calls to .set_parent and .set_rate.
+> >   *		Returns 0 on success, -EERROR otherwise.
+> >   *
+> > + * @set_spread_spectrum: Configure the modulation frequency,
+> modulation percentage
+> > + *		and method. This callback is optional for clocks that
+> does not
+> > + *		support spread spectrum feature or no need to enable
+> this feature.
+> > + *		Returns 0 on success, -EERROR otherwise.
+> > + *
+> >   * @recalc_accuracy: Recalculate the accuracy of this clock. The
+> clock accuracy
+> >   *		is expressed in ppb (parts per billion). The parent
+> accuracy is
+> >   *		an input parameter.
+> > @@ -255,6 +282,8 @@ struct clk_ops {
+> >  	int		(*set_rate_and_parent)(struct clk_hw *hw,
+> >  				    unsigned long rate,
+> >  				    unsigned long parent_rate, u8
+> index);
+> > +	int		(*set_spread_spectrum)(struct clk_hw *hw,
+> > +					       struct
+> clk_spread_spectrum *clk_ss);
+> >  	unsigned long	(*recalc_accuracy)(struct clk_hw *hw,
+> >  					   unsigned long
+> parent_accuracy);
+> >  	int		(*get_phase)(struct clk_hw *hw);
+> > @@ -1404,6 +1433,9 @@ void clk_hw_get_rate_range(struct clk_hw
+> *hw, unsigned long *min_rate,
+> >  			   unsigned long *max_rate);
+> >  void clk_hw_set_rate_range(struct clk_hw *hw, unsigned long
+> min_rate,
+> >  			   unsigned long max_rate);
+> > +int clk_hw_set_spread_spectrum(struct clk_hw *hw, unsigned int
+> modfreq,
+> > +			       unsigned int spreaddepth, enum
+> clk_ssc_method method,
+> > +			       bool enable);
+> >
+> >  static inline void __clk_hw_set_clk(struct clk_hw *dst, struct clk_hw
+> > *src)  { diff --git a/include/linux/clk.h b/include/linux/clk.h index
+> >
+> b607482ca77e987b9344c38f25ebb5c8d35c1d39..49a7f7eb8b03233e
+> 11cd3b927688
+> > 96c4e45c4e7c 100644
+> > --- a/include/linux/clk.h
+> > +++ b/include/linux/clk.h
+> > @@ -858,6 +858,21 @@ int clk_set_rate(struct clk *clk, unsigned
+> long rate);
+> >   */
+> >  int clk_set_rate_exclusive(struct clk *clk, unsigned long rate);
+> >
+> > +/**
+> > + * clk_set_spread_spectrum - set the spread spectrum for a clock
+> > + * @clk: clock source
+> > + * @modfreq: modulation freq
+> > + * @spreadpercent: modulation percentage
+> > + * @method: down spread, up spread, center spread or else
+> > + * @enable: enable or disable
+> > + *
+> > + * Configure the spread spectrum parameters for a clock.
+> > + *
+> > + * Returns success (0) or negative errno.
+> > + */
+> > +int clk_set_spread_spectrum(struct clk *clk, unsigned int modfreq,
+> > +			    unsigned int spreadpercent, unsigned int
+> method,
+> > +			    bool enable);
+> >  /**
+> >   * clk_has_parent - check if a clock is a possible parent for another
+> >   * @clk: clock source
+> > @@ -1088,6 +1103,13 @@ static inline int
+> clk_set_rate_exclusive(struct clk *clk, unsigned long rate)
+> >  	return 0;
+> >  }
+> >
+> > +static inline int clk_set_spread_spectrum(struct clk *clk, unsigned
+> int modfreq,
+> > +					  unsigned int spreadpercent,
+> > +					  unsigned int method, bool
+> enable) {
+> > +	return 0;
+> > +}
+> > +
+> >  static inline long clk_round_rate(struct clk *clk, unsigned long
+> > rate)  {
+> >  	return 0;
+> >
+> > --
+> > 2.37.1
+> >
+> >
+> >
