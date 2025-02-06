@@ -1,155 +1,209 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6D522DF81
-	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 12:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6F820B208
+	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 12:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738844799; cv=none; b=nbb7wfHM6Pu+2qBOvYd+vHSZGmthxLC5YzOF5hx1T10+yAGI80cvnLTa4h1He3mWZTMrmGLlGMx1SoVufPwzwkFT/RZhnWL3xbxqJZOtdlEF33mqkok+aNNKk9I4XvEgsrJrVKY91hFyiXWLMqTnP0G3EOjEIr/iGAivKjM4RgM=
+	t=1738846062; cv=none; b=pfvG9dW/e1HHwtpIQSXfdgCGFdpvw05rU13wAT4dt2ycRgjBUdIjrtpQtcWB11V7KD/jEeB88C+E5CZJme4l0f3EPcDvALQ+oXCH3Otk7r46FmgtrUKnXkH3LIUlZZ3FTZTmyuXEn9Xfncjtf/MfX5+pmNMrMYCFlqm2byz53Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738844799; c=relaxed/simple;
-	bh=RQyg43+Uu2hbupDUSgH3bbfuehTuytBTZhP+/VpdDjI=;
+	s=arc-20240116; t=1738846062; c=relaxed/simple;
+	bh=XVRhnXvtvTxseMVq6Tt74IEfVFr5ZN9/eDfbJZNGxRM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtN8sdxYtKIFIQmwTT6L62g2hOw3H0MT9u3DfgVnFN6ZTRf2b7Ge/bed1TmTD76HSVIu6ed2EUvRfnsVmzssdNovv2v+AXVuF8KQgrUSmVNp2RWc3o6aTesknzUWUvsQx5LjpDDDW/6WRbg0gC5IQUCo+nzOtEhitY/SMlLwAmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FFE812FC;
-	Thu,  6 Feb 2025 04:27:00 -0800 (PST)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FD453F63F;
-	Thu,  6 Feb 2025 04:26:34 -0800 (PST)
-Date: Thu, 6 Feb 2025 12:26:32 +0000
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH NOT APPLY v2 4/4] clk: scmi: Support spread spectrum
-Message-ID: <Z6SqeNsAqbZM8nr1@pluto>
-References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
- <20250205-clk-ssc-v2-4-fa73083caa92@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=oOup+k1uv0yAFKLOYmeujVSyo4wvFEBnLCYqZBrewRL0FKJclx5Obmn456/186QDThkezSvqV8PhwASvdgqBmFNzoz+QuLZQUa7WmHJNvvApgt1AUdfViIA/o5QpgOK0+nNpjCdfi3JMpg6/GVlD928gMqEf1jnx4XgOydje81c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tg1I6-0004gN-MG; Thu, 06 Feb 2025 13:47:34 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tg1I6-003oDk-0V;
+	Thu, 06 Feb 2025 13:47:34 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id BF4CC3BB4C9;
+	Thu, 06 Feb 2025 12:47:33 +0000 (UTC)
+Date: Thu, 6 Feb 2025 13:47:33 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev, 
+	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3
+ SoC support
+Message-ID: <20250206-tough-seagull-of-diversity-1b8ba7-mkl@pengutronix.de>
+References: <20241204074916.880466-1-ciprianmarian.costea@oss.nxp.com>
+ <20241204074916.880466-2-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qz65ro3fcu6xw73r"
 Content-Disposition: inline
-In-Reply-To: <20250205-clk-ssc-v2-4-fa73083caa92@nxp.com>
+In-Reply-To: <20241204074916.880466-2-ciprianmarian.costea@oss.nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Feb 05, 2025 at 05:49:54PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Support Spread Spectrum with adding scmi_clk_set_spread_spectrum
-> 
 
-Hi,
+--qz65ro3fcu6xw73r
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 1/3] dt-bindings: can: fsl,flexcan: add S32G2/S32G3
+ SoC support
+MIME-Version: 1.0
 
-I forwarded ATG with our latest exchange on the possibility of using a
-standard OEM type instead of Vendor one if it is general enough....
+Hello Krzysztof,
 
-...waiting for their feedback on this before reviewing further...BUT
-just one comment down below
-
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/clk/clk-scmi.c        | 47 +++++++++++++++++++++++++++++++++++++++++--
->  include/linux/scmi_protocol.h |  6 ++++++
->  2 files changed, 51 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
-> index 15510c2ff21c0335f5cb30677343bd4ef59c0738..56b9d0166b0170807c1a83fff391033fecee2159 100644
-> --- a/drivers/clk/clk-scmi.c
-> +++ b/drivers/clk/clk-scmi.c
-> @@ -23,6 +23,7 @@ enum scmi_clk_feats {
->  	SCMI_CLK_RATE_CTRL_SUPPORTED,
->  	SCMI_CLK_PARENT_CTRL_SUPPORTED,
->  	SCMI_CLK_DUTY_CYCLE_SUPPORTED,
-> +	SCMI_CLK_SSC_SUPPORTED,
->  	SCMI_CLK_FEATS_COUNT
->  };
->  
-> @@ -98,6 +99,36 @@ static int scmi_clk_set_parent(struct clk_hw *hw, u8 parent_index)
->  	return scmi_proto_clk_ops->parent_set(clk->ph, clk->id, parent_index);
->  }
->  
-> +static int scmi_clk_set_spread_spectrum(struct clk_hw *hw,
-> +					struct clk_spread_spectrum *clk_ss)
-> +{
-> +	struct scmi_clk *clk = to_scmi_clk(hw);
-> +	int ret;
-> +	u32 val;
-> +
-> +	/*
-> +	 * extConfigValue[7:0]   - spread percentage (%)
-> +	 * extConfigValue[23:8]  - Modulation Frequency (KHz)
-> +	 * extConfigValue[24]    - Enable/Disable
-> +	 * extConfigValue[31:25] - Modulation method
-> +	 */
-> +	val = FIELD_PREP(SCMI_CLOCK_EXT_SS_PERCENTAGE_MASK, clk_ss->spreaddepth);
-> +	val |= FIELD_PREP(SCMI_CLOCK_EXT_SS_MOD_FREQ_MASK, clk_ss->modfreq);
-> +	val |= FIELD_PREP(SCMI_CLOCK_EXT_SS_METHOD_MASK, clk_ss->method);
-> +	if (clk_ss->enable)
-> +		val |= SCMI_CLOCK_EXT_SS_ENABLE_MASK;
-> +	ret = scmi_proto_clk_ops->config_oem_set(clk->ph, clk->id,
-> +						 SCMI_CLOCK_CFG_SSC,
-> +						 val, false);
-> +	if (ret)
-> +		dev_warn(clk->dev,
-> +			 "Failed to set spread spectrum(%u,%u,%u) for clock ID %d\n",
-> +			 clk_ss->modfreq, clk_ss->spreaddepth, clk_ss->method,
-> +			 clk->id);
-> +
-> +	return ret;
-> +}
-> +
->  static u8 scmi_clk_get_parent(struct clk_hw *hw)
->  {
->  	struct scmi_clk *clk = to_scmi_clk(hw);
-> @@ -316,9 +347,17 @@ scmi_clk_ops_alloc(struct device *dev, unsigned long feats_key)
->  		ops->set_duty_cycle = scmi_clk_set_duty_cycle;
->  	}
->  
-> +	if (feats_key & BIT(SCMI_CLK_SSC_SUPPORTED))
-> +		ops->set_spread_spectrum = scmi_clk_set_spread_spectrum;
-> +
->  	return ops;
->  }
->  
-> +static const char * const scmi_clk_imxlist[] = {
-> +	"fsl,imx95",
-> +	NULL
-> +};
-> +
->  /**
->   * scmi_clk_ops_select() - Select a proper set of clock operations
->   * @sclk: A reference to an SCMI clock descriptor
-> @@ -370,8 +409,12 @@ scmi_clk_ops_select(struct scmi_clk *sclk, bool atomic_capable,
->  	if (!ci->parent_ctrl_forbidden)
->  		feats_key |= BIT(SCMI_CLK_PARENT_CTRL_SUPPORTED);
->  
-> -	if (ci->extended_config)
-> -		feats_key |= BIT(SCMI_CLK_DUTY_CYCLE_SUPPORTED);
-> +	if (ci->extended_config) {
-> +		if (of_machine_compatible_match(scmi_clk_imxlist))
-
-... please NOT this also here if we use a standard OEM type :D..if it
-won't be a vendor thing anymore, you should query with CONFIG_GET, OR we
-should think also about adding some way in the spec to query the support
-for extended configs like we do for other clock features...
+can you (and you bot) take a look at this patch?
 
 Thanks,
-Cristian
+Marc
+
+On 04.12.2024 09:49:13, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>=20
+> Add S32G2/S32G3 SoCs compatible strings.
+>=20
+> A particularity for these SoCs is the presence of separate interrupts for
+> state change, bus errors, MBs 0-7 and MBs 8-127 respectively.
+>=20
+> Increase maxItems of 'interrupts' to 4 for S32G based SoCs and keep the
+> same restriction for other SoCs.
+>=20
+> Also, as part of this commit, move the 'allOf' after the required
+> properties to make the documentation easier to read.
+>=20
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
+>  .../bindings/net/can/fsl,flexcan.yaml         | 44 +++++++++++++++++--
+>  1 file changed, 40 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b=
+/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> index 97dd1a7c5ed2..73252fe56fe6 100644
+> --- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> @@ -10,9 +10,6 @@ title:
+>  maintainers:
+>    - Marc Kleine-Budde <mkl@pengutronix.de>
+> =20
+> -allOf:
+> -  - $ref: can-controller.yaml#
+> -
+>  properties:
+>    compatible:
+>      oneOf:
+> @@ -28,6 +25,7 @@ properties:
+>            - fsl,vf610-flexcan
+>            - fsl,ls1021ar2-flexcan
+>            - fsl,lx2160ar1-flexcan
+> +          - nxp,s32g2-flexcan
+>        - items:
+>            - enum:
+>                - fsl,imx53-flexcan
+> @@ -43,12 +41,21 @@ properties:
+>            - enum:
+>                - fsl,ls1028ar1-flexcan
+>            - const: fsl,lx2160ar1-flexcan
+> +      - items:
+> +          - enum:
+> +              - nxp,s32g3-flexcan
+> +          - const: nxp,s32g2-flexcan
+> =20
+>    reg:
+>      maxItems: 1
+> =20
+>    interrupts:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 4
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 4
+> =20
+>    clocks:
+>      maxItems: 2
+> @@ -136,6 +143,35 @@ required:
+>    - reg
+>    - interrupts
+> =20
+> +allOf:
+> +  - $ref: can-controller.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: nxp,s32g2-flexcan
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          items:
+> +            - description: Message Buffer interrupt for mailboxes 0-7 an=
+d Enhanced RX FIFO
+> +            - description: Device state change
+> +            - description: Bus Error detection
+> +            - description: Message Buffer interrupt for mailboxes 8-127
+> +        interrupt-names:
+> +          items:
+> +            - const: mb-0
+> +            - const: state
+> +            - const: berr
+> +            - const: mb-1
+> +      required:
+> +        - interrupt-names
+> +    else:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 1
+> +        interrupt-names: false
+> +
+>  additionalProperties: false
+> =20
+>  examples:
+> --=20
+> 2.45.2
+>=20
+>=20
+>=20
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--qz65ro3fcu6xw73r
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmekr2IACgkQDHRl3/mQ
+kZxOdwf8C8MMmL+EnFDiiqoAtTokYJHzXNrc4kVC7YtoWzn7tsrnTq4Tkx7r09My
+LZrMvfryFAOwlFD9zaj7dwGqnaFvaOJ9f0REHEztFUe4BEV03qeK2enFG9eNunek
+A9/FxSArFYMDybn8V0loiX3+Apchf45k/c6k4u4GA2WOTVmPmpLgKOIkpJQmqXT6
+S6nV5w/xbJv2X0ujX40D/QV+LNvyEH1UVrGrNgumwggPXr4eaEWYNthIkoD1nZLL
+yoWMCYdYRh9+elqgCGpdYgfgLr8Cv1+tYa2jKmouc0oj8mQzsa+PJXkB+leO0mXB
+MUduyAUNzZDGDesuKB9QJUeLfW7FkQ==
+=pngP
+-----END PGP SIGNATURE-----
+
+--qz65ro3fcu6xw73r--
