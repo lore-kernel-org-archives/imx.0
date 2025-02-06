@@ -1,374 +1,499 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2067.outbound.protection.outlook.com [40.107.249.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5679B1EDA38
-	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 15:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738855922; cv=none; b=MzSXoe8zsijAYFEpY0Ct4iq5l415TdlXFt9R05mXe/7vseg25adnhyRZVBIyU+TjVgADqvL7PWA0y1XPWaLIEtDils9W6x6WCZtnP2EUAaYee6YRCC+6Vvy1owfx02lmyj/JCMu8mHFgMJcqQxPW3GCx674+0whdbV/RsPmAOHw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738855922; c=relaxed/simple;
-	bh=ncAPF7rrerkEjN9nNIYfemcUfjRmvB1hGOhegNOaz7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P/Mq2KXbIw9/h20qtoYVgnJdg3Lo8UMVf+9oN1m+R37ng2lhyTQyT3HZv7jn9S5Wq/hb14T7aGkAxUH6HOSvCs/w3RffY9syiTxCZHCgiLHcQzLzvcXwwFlJ/w0mDqFPVII7zjRb1SfR3fikiSoVDJQFFKZBfelc8TMboZkP/y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=ETKZs10M; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14171EDA1B
+	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 15:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738855977; cv=fail; b=MY+nvrY4x0yVNJetL0qNkHqD6bwl3eSeT9E14PEi3mTxaT51JyhuiD+8XWvf3eyH71gosNvO7PW8ERr155Ftvd1uWmf3G3OPj6lUAiUKnH3/LtaPUNMTSm4M9NTNGEXBT9TeGvB3hS9lMbira0msqNP+7LVOYMkliU8VEqKhn28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738855977; c=relaxed/simple;
+	bh=l4UTZB5rTqFQVJSNnflSvCareluDmggwkAnfcMXlGUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=k8o7AASVAUwlUn+bsMpKeTW68l4naxfdlv4L5en5T8WPYQqV1ejIBcBBIPSQm1ujfuSeu+BWRk+7sIp8E64r38yUamU9cGFd5MEyh5i+C2tk0IQLl69qEnOMWXMLmKCgUt9Vu+xsj+3ugHlfrli/kypZUDoLcpCcmqYd1C2aK7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E9+MfyHD reason="signature verification failed"; arc=fail smtp.client-ip=40.107.249.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="ETKZs10M"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6f974a5e5e3so7628327b3.0
-        for <imx@lists.linux.dev>; Thu, 06 Feb 2025 07:31:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1738855919; x=1739460719; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kSEjI0/PhbFe1xLIAMNstyhshP1bNC0F9pZ0DzpzpJE=;
-        b=ETKZs10MeLTH8i+ruAJNJnawiRvy+WjbQhuRavd1NUUcmJiBGp2Tno5wRmVUxaamrz
-         NvIZd7YqI/L8X6TpFI/SCwvE7DDG+hJf0YtFase2pAe6UTM8n+H+ejn/3d6/tuwN3QWF
-         pOd8/HlOk7yqlfKo/J7Jbl9VpvxMZx444Eja0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738855919; x=1739460719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kSEjI0/PhbFe1xLIAMNstyhshP1bNC0F9pZ0DzpzpJE=;
-        b=LNq+aCdJr9nTy7UKpW2nSMnozEV2UaZdGCMeOzteBext8v/M89HdWVUkhS6n1IQliM
-         GFwTieqGie9SKfMuiWA35gGKttkVgEnKhaXjRG0WzEYislMrYFA9mKOYr41CczsjBxUU
-         3wkGxo2tS+j+zIPFfXx5nK0zg8R3rf22JZme5v8ZKtYKUyjxIPLE0nGoG6CVIQ7bClEr
-         Ywc2Qd2XGGzB0S17cRrD3MzYpTmrSQSLSRvdabvsGO3kibkgIpXo0No/PM4D/bV48IMU
-         JYghrYXitVsygXv8xotU9558iZT+MmRv7vkTqhdcS/bnmZipnQ5mIw8rZ24SERC3tlBr
-         ttQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGRfycXOB9Rzji7SGaVTkrEljZuAZ2M2Tg+ZkxHuPBwMphIFXWXRkAne2ua8JsyYnqHHI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5WGsPvvW68uMahMyXYY1d2IF9WWlqO7x1Qg2Fhl9AEvjxY51Q
-	kYdc65DC32NM8TALsxOVZWL+xa6OHVl3MY0mOIJ3PF3LBmYqy8zLxZJ/nFxaSLz2Miw/j9SDUM2
-	/9LQcYusyJ1VhOAdkGQGCaqdALkiE10uyRxIsfg==
-X-Gm-Gg: ASbGncuyw18nvtdiM7GrOILWy0MVNDzHCQ/v17VrL2HITzRfMOldthXMHFs2S4RvacN
-	MzJFkusIBXWujrd3Obz9CkbXekXj4fWKm7ke6IkZRKbZlmORsTnZ1k7H1lpbqYW/Nxx/zpH0=
-X-Google-Smtp-Source: AGHT+IFBR4yKWi12OxeMKiZJ7mNefCRGP6DMSE17bw0bh1mSFoEoNgEKrlLuvfsnGxNrudo9/TnSwafSOEZjwfBjbM8=
-X-Received: by 2002:a05:690c:691:b0:6f9:87da:b763 with SMTP id
- 00721157ae682-6f989e2f6a4mr64301617b3.12.1738855919056; Thu, 06 Feb 2025
- 07:31:59 -0800 (PST)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E9+MfyHD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nbii+HrmDHfuQ2ksPIHNtO0cBmHEylYSsDy5fQ5Sf+Ay88ch3exBbi4BNKHIWa20UA/v6banXnzj42ilzwDL+oKgDJHJvM68zNoTayr4vYMjGU5QmCNPXmAEH84lTnd86j5ulwwoIv09MgJViNTAwCHDse/RJSnsC5/fUe90i5XEUFE8FPJfm7+kSJgrnotGZf72YcGpHsBTw37i7PgF9gdAfr/vzvPLedoKTNZ2Cg5rlhjQFnU/EEJP8NCVzC22Pn3a9UR51+rho+YOLZvYyfSNa3t7/oTJtvO6COJJH46cUxIa9tOImhM/Jv4b0iu2dxAuAdfAW+csRZDRm/4AVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZxwDQmfYj6RBu9CaqCyv03GOFq2onRd0E6iu0pBnRFQ=;
+ b=TfoRyWEveTjOQ6PqYMReLW54S8m0Zdunc9P5bn0aqrkodILBflrYGLCwTsKJEfEIrdpKcSaqgOk3ppb5ldB0jPj17Dezu6lEl1u8qovbf2kmn/3Ltj1nhmEw1F8HvrqDgmiOKzlNQyl42kLFEaxokf/2+GUZjkvoDsHmI9MrTf6EzGy98kx0GYtI4NOiscM4Lt8jEcy1OBqfba/Pdqru/KI23BveFW3Qg+pN5rbicD55xFgqlFxT4Vz44PkS5de1VP1JSX5bx4KAHuGTIj8de3+6Wxwr7h6nfy/9MG3TofRjluvEwCNWk0xb/VURjcVDCL5m2Nb4dBOVQX8icIylMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZxwDQmfYj6RBu9CaqCyv03GOFq2onRd0E6iu0pBnRFQ=;
+ b=E9+MfyHDIpyZf9fKiX4FIHuiVG2Dpp7zN55TDYEeXmYUD0ocS9R8QubkbVsaSBRO/O/YyW5jNuSsUGUpagM5Dj9nwRtpJw0etH9qKS+I7FkU/tn9u1dNNavYRrDd3LeNexsFQV4Z0QUfGpmYgpvxKJo6GJJJPoI07Pktvv3AVtwLNeOv9nP5/qQ1a7SCY53/5DvucNm5Mj91kffg8ygAYJqbOxstlHXRq540MDajZue5zGOVYLMdkaTYt8XfgtCvivw3VOYXDTYCnV2I7s6ltNchk7S/ZlgM0enB0q1NUlSfozfIqyna2HDTHKRmAgBH3Zm81bA/gGaVIIY3OKdt9Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AS1PR04MB9477.eurprd04.prod.outlook.com (2603:10a6:20b:4d9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Thu, 6 Feb
+ 2025 15:32:49 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%7]) with mapi id 15.20.8422.010; Thu, 6 Feb 2025
+ 15:32:49 +0000
+Date: Thu, 6 Feb 2025 10:32:40 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Cc: Joshua Yeong <joshua.yeong@starfivetech.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Conor Culhane <conor.culhane@silvaco.com>,
+	"linux-i3c@lists.infradead.org" <linux-i3c@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/2] i3c: Add basic HDR support
+Message-ID: <Z6TWGOrZULdNpsah@lizhi-Precision-Tower-5810>
+References: <20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com>
+ <20250129-i3c_ddr-v1-1-028a7a5d4324@nxp.com>
+ <e09b50b8-dd65-4636-aa35-42efc86bba16@quicinc.com>
+ <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
+ <Z6DmUIKn5usytjl3@lizhi-Precision-Tower-5810>
+ <08098961-ab40-4bdf-af56-c77a24c55959@quicinc.com>
+ <Z6I1jBx273o5GE5w@lizhi-Precision-Tower-5810>
+ <0435e96d-6786-4adc-83eb-a6aa3766c2d5@quicinc.com>
+ <Z6OHSsISZPClbRxw@lizhi-Precision-Tower-5810>
+ <7ba5acb0-be7d-492f-9f86-bb76c927437c@quicinc.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7ba5acb0-be7d-492f-9f86-bb76c927437c@quicinc.com>
+X-ClientProxiedBy: BYAPR03CA0018.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::31) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com> <20250205-clk-ssc-v2-3-fa73083caa92@nxp.com>
- <CABGWkvqXf0ZmJKofrbahB5N5uer6ye6Q4s_PXz_Z61vG2pMu=g@mail.gmail.com> <PAXPR04MB8459F1CE0E8049355ADC9F3C88F62@PAXPR04MB8459.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB8459F1CE0E8049355ADC9F3C88F62@PAXPR04MB8459.eurprd04.prod.outlook.com>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Thu, 6 Feb 2025 16:31:46 +0100
-X-Gm-Features: AWEUYZnQk9hBdobcOkaoMUgqLWtL6CPT5MwibT2ZdKB14CAL3v3eIVCfdwwIt1Y
-Message-ID: <CABGWkvrKe6az5XR=MvdMwBOfeXqd5yPoF4Yf4pqyyGPD4Kpvpg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] clk: imx: pll14xx: support spread spectrum clock generation
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, 
-	Abel Vesa <abelvesa@kernel.org>, 
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AS1PR04MB9477:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e9ee281-2558-4783-b66d-08dd46c382d5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?Fzfot2q2JggUQZQepkeaE/pPKo3xGHmA6K6D/LyS0faol45GOGMtffj4SX?=
+ =?iso-8859-1?Q?UP5fSm6wtBbA11v9IPCEJ4k4kMnjBYr1mvUJJuG4Q2wYLJ3OZ9pE2oZ0OI?=
+ =?iso-8859-1?Q?I4/fQwIK5SsllxKoplrs8KOAih3Z45YEHc6iejEWS2bJA8KmVsxJeBnaIX?=
+ =?iso-8859-1?Q?B9HffMabjQPkrKQHnj4KEb/HrPAG8OqwhelqGkwaBJsVlPOUVvVNIQ5Ljn?=
+ =?iso-8859-1?Q?e/hfqWsfJ1mjyHzPQSgu1TdQFsOGI8gv6867OmAEr1ULKXloIjw4ktWftG?=
+ =?iso-8859-1?Q?YqR57UrHqvgC1XTORLpiYFNZAscYoQGx+O+zsRZ8h3Zf63+WlTgXotwHMT?=
+ =?iso-8859-1?Q?HQwNZgF2ER4uASroKvnXk1GEho0bqD6GHbShU5wV6u+gGqByESIeULCpjt?=
+ =?iso-8859-1?Q?itUMS9fblLknVx4HRYn0mgnvf6LG8lMaYZThpPgg5uWDCzY4O0iXZ+2sCP?=
+ =?iso-8859-1?Q?iuvwCL8GRku5TYxEIp6x4T4SfNiUaQ6AXq44ayG6ge/K2fhSgV+L0HPEou?=
+ =?iso-8859-1?Q?+McbaQBlzfV4pB68Ht9+qp8DEFrd+wcFuK00d6SEDeVxrr4ettwRcHqJES?=
+ =?iso-8859-1?Q?aag1+zljHThRIS8kY1oMxr7Eqvwgbu68zS1Yjl6HYTyfvtHClOzry7EOMs?=
+ =?iso-8859-1?Q?TXJKinJapExog49WNJbgPofWwo2t6+QJX1aFBd8y0hFyz0kB9TLTlnrSv5?=
+ =?iso-8859-1?Q?T0kMpxVcuaHBelyDR9r3EuxxX/Ly7I72zDHwQ7WP+lFtZnsQnZW9KRHBXQ?=
+ =?iso-8859-1?Q?tq13Y3B7BTtMF+cRO/jr/5jMPEMQgAW/rNnW6Wp+kW3U0zaVrLjfZc/9hy?=
+ =?iso-8859-1?Q?fGRv4vXtHSW9M9uC6O42xobq3pE99XwzJqaRLo0i4nwkGhyV8pFlruC1n/?=
+ =?iso-8859-1?Q?4bsfneP9qMBumSFV0fTrnmDIYw4FZ0NPJLP1n1k4H+UKQTgmUfXd/hFYVQ?=
+ =?iso-8859-1?Q?zTvknbclLfbgBWViOtD6xyrS7aGGYhb881uIBLF8fMRlw4DyMGjqPzwhdm?=
+ =?iso-8859-1?Q?pgwqpBs3SyzJ3Tw/evSwjyvKQ7KriYXusKWTnHZIcTJ2YcITHEUeVroALk?=
+ =?iso-8859-1?Q?zZMPWUXHJ9rp36F33uMPqZF0O2fIOF4oJnlO5jkXuUU9wcDTGntzUEtutg?=
+ =?iso-8859-1?Q?zxe4ht+YPokbBBbAsEVBhs7YHfkexPvPXTvo2rvj0VreOHZbMSUNd4W3qj?=
+ =?iso-8859-1?Q?k3TyM+tqjipyAY7XhZ1wZH+Us5GVmV6/0632wVNH8SrGWU1fYyZ+e1qKov?=
+ =?iso-8859-1?Q?/9I9l6yobNA4StW2FtD1EiW/znAfI7xvvqRRiryu2r/KJrJSwGr0TNTLy0?=
+ =?iso-8859-1?Q?8hjCOKSVTL8dN4QVJpe1LRSO0RAMXdPCkOO9l57+XQ+oliG1OTSo8zYJVa?=
+ =?iso-8859-1?Q?gk3lJuVgUWqejhoplR1pJe3V8sV4CsAeIgRMdwHrl2wRJ9hcf63esexsCn?=
+ =?iso-8859-1?Q?gc8ewyyygRcYN38wgqA0+v7x7PHwZQZJOsYHfGcDZ0jL8EScZIQ4GeADSl?=
+ =?iso-8859-1?Q?HxDy9j7JBe5ioFzIR0sKNk?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?dG0ctawcz7/1BL7NAFlVmVasseh+6njj5P24lnNjeffmx6SPjcYJiKA7+n?=
+ =?iso-8859-1?Q?e2EKoIBovdLr4KR0AtLA4aLvQlslhppTdkBDAh33dn1OjpGcTjqrmgrLqJ?=
+ =?iso-8859-1?Q?LtSPXAHJnYooWdoqUONCx6gHIPSL3Ca2fSLoMXMeiHboIf4U+v7buF3zo9?=
+ =?iso-8859-1?Q?39fLvMB1cLmhpdpcdhxZ0FNPFLzlfZp4I/Z7KGIdBed1J45ExvCKY56o4v?=
+ =?iso-8859-1?Q?bQGXYAA65bm2+Vx5KEkuxL9hvfxVkRQaxkDglbehnNo4q/kng90cAe5dhh?=
+ =?iso-8859-1?Q?Yw4+dH5N/6n+OluAikZdusAK9bhGtl1EEI7CkzKzqmRvr2N4kVRP7NC8o4?=
+ =?iso-8859-1?Q?EtlGCo4NdhMTQOaXbnxCxA7nA6SH0h6oMqNPQvwM4naZjvQMQyu1sCBKaH?=
+ =?iso-8859-1?Q?QFH+X/qC4Yi67Msz98pJiBediUdzos+mkeegfM52IK6T5UTG+BfT6QTmaF?=
+ =?iso-8859-1?Q?8FBKZmd3jwnen5ftMwaji6pQgCsmCNRTJI4INartZxO+Duod6ktbVIDgP2?=
+ =?iso-8859-1?Q?WZkMPu8jMD3nKPaEjgIyspMJNWfVKT2ROuVpz8+ZAtKUVU5n6SD8eY19/y?=
+ =?iso-8859-1?Q?IV/LT+O0M02XQ/YwF/jcaayG1QlBGc818q8HRWkQ8pOFI4Iqhv0F/GmHfe?=
+ =?iso-8859-1?Q?BeFCH8uRgRERx2yUpHNvv0rsgo6O3DnQnqRBexUJ2VUjO6M3GJZGu7Dzrc?=
+ =?iso-8859-1?Q?Re2yOXKRyjm13ulZuxYNE8zYkDCijftlW+Ec1k+AO3lSnbM4fALeVCo5Ge?=
+ =?iso-8859-1?Q?8QQH8wCaARNVlsFimDmc7oROyImA9ftmN/nVrJvKWja2HgarRpbARGqKQU?=
+ =?iso-8859-1?Q?C+0Lx18bjk733N1oSEiSbI5KoFUK3ZkEWG6UTKm1o6i87cv/rKQchCo172?=
+ =?iso-8859-1?Q?pcsZoib73+D68xXCEbXs/PuYrBzdheSveEl9lPrkwdqhTDii0FuUMYyGeJ?=
+ =?iso-8859-1?Q?ILK821O1kzIuIQ8N5ehGdRkVoUIhkQhqMrubIJ/Z1aki2vk3jvJTgL8IWZ?=
+ =?iso-8859-1?Q?zRBLNit8eRBqhfHrD4MEeuuPHd2C6qjAeDN2WdXqQDkkNDTkDtHlyLJtJG?=
+ =?iso-8859-1?Q?tUxo4ZvSfIhnUFJWpcEulsHE2+N7Q06tdZy2u3wWuoxlD/NETTAdkPozr7?=
+ =?iso-8859-1?Q?EfFxnYmxs4dvJBBSOyaArR2Ez2N0c8q2jxjkIsqiWsbm/Lc6imsYEv3/fU?=
+ =?iso-8859-1?Q?6nnCBsmm3CG4G5wSmzqA4ERkdNbf6jfQaO840a6wsqda3w7mNX//Fr+K6V?=
+ =?iso-8859-1?Q?4GLeAuQQC6l4x6maB3qYqL+RVnumELrHubipmzRxcoH9WtUbpqTQfe6Xck?=
+ =?iso-8859-1?Q?qhL6m2r545at3Ih59fzvMcTNOGAEtriJYvxxQXfDi9fUNS7y6CfKqYr5It?=
+ =?iso-8859-1?Q?08GzFHvirVf0RXg8plY175Hh5t6poG+3fnq7Br+zipQXSDBcpGmUEiG6LN?=
+ =?iso-8859-1?Q?/aVyMLRsTD642GqoU+ErqXIWKnsZrzi0X7imrHhf9k/yZIxasQJDBFYJ0A?=
+ =?iso-8859-1?Q?IzjJsWyfe5JrZWezYFQfB2C6GqsEcCaTjdeDjd++yO2olZMREBjuf1Yy14?=
+ =?iso-8859-1?Q?pmrreqn8Rz2hjH9ALiJFf4j68yZ0oVOUVoq6mq+ydE/Wd0JavyekgtGfhp?=
+ =?iso-8859-1?Q?QxMnhsHAmPKKyoUTkKOn3EfFJsO9s8Kiyk?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e9ee281-2558-4783-b66d-08dd46c382d5
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2025 15:32:49.2671
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l9Vd1jUM+srS/4L5fitwt0gme5dIae7dCylcGRBjxdpsse0aTJkIjQ1Q7jvapw6BfoEq72UH40foQ3KVrFp9Wg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9477
 
-Hi Peng,
-
-On Thu, Feb 6, 2025 at 1:53=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
+On Thu, Feb 06, 2025 at 03:14:20PM +0530, Mukesh Kumar Savaliya wrote:
+> Hi Frank,
 >
-> > Subject: Re: [PATCH v2 3/4] clk: imx: pll14xx: support spread spectrum
-> > clock generation
-> >
-> > Hi Peng,
-> >
-> > On Wed, Feb 5, 2025 at 10:51=E2=80=AFAM Peng Fan (OSS)
-> > <peng.fan@oss.nxp.com> wrote:
+> On 2/5/2025 9:14 PM, Frank Li wrote:
+> > On Wed, Feb 05, 2025 at 07:49:20PM +0530, Mukesh Kumar Savaliya wrote:
+> > > Thanks Frank ! please review below.
 > > >
-> > > From: Peng Fan <peng.fan@nxp.com>
+> > > On 2/4/2025 9:13 PM, Frank Li wrote:
+> > > > On Tue, Feb 04, 2025 at 11:24:03AM +0530, Mukesh Kumar Savaliya wrote:
+> > > > >
+> > > > >
+> > > > > On 2/3/2025 9:22 PM, Frank Li wrote:
+> > > > > > On Mon, Feb 03, 2025 at 02:32:51AM +0000, Joshua Yeong wrote:
+> > > > > > > Hi Mukesh and Frank,
+> > > > > > >
+> > > > > > > On 02-Feb-2025 1:54 AM, Mukesh Kumar Savaliya wrote:
+> > > > > > > > Hi Frank,
+> > > > > > > >
+> > > > > > > > On 1/30/2025 1:35 AM, Frank Li wrote:
+> > > > > > > > > I3C HDR requires enter/exit patterns during each I3C transfer. Add a new
+> > > > > > > > > API i3c_device_do_priv_xfers_mode(). The existing
+> > > > > > > > > i3c_device_do_priv_xfers() now calls i3c_device_do_priv_xfers_mode(I3C_SDR)
+> > > > > > > > > to maintain backward compatibility.
+> > > > > > > > >
+> > > > > > > > > Introduce a 'cmd' field in 'struct i3c_priv_xfer', using an anonymous union
+> > > > > > > > > with 'rnw' since HDR mode relies on read/write commands instead of the
+> > > > > > > > > 'rnw' bit in the address as in SDR mode.
+> > > > > > > > >
+> > > > > > > > > Add a priv_xfers_mode callback for I3C master drivers. If priv_xfers_mode
+> > > > > > > > > is not implemented, fallback to SDR mode using the existing priv_xfers
+> > > > > > > > > callback.
+> > > > > > > > >
+> > > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > > > ---
+> > > > > > > > > Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
+> > > > > > > > > one i3c transfer. for example, can't send a HDR follow one SDR between
+> > > > > > > > > START and STOP.
+> > > > > > > > >
+> > > > > > > > Is it wise to add two function inside main funcion and separate SDR vs HDR ? so we don't need to change current function arguments.
+> > > > > >
+> > > > > > I am not sure if understand your means. HDR have difference mode, anyway
+> > > > > > need add new argument.
+> > > > > >
+> > > > > let me clarify, We can have main entry/hookup function as it is.
+> > > > >   From priv_xfer , we can call sdr_priv_xfer and hdr_priv_xfer ? based on the
+> > > > > structure information if its enum SDR or enum HDR.
+> > > > >
+> > > > > > >
+> > > > > > > I think the 'private transfers' are limited to SDR communications,
+> > > > > > > would it be better if we have a different interface/naming for hdr transfers?
+> > > > > >
+> > > > > > The key is what's difference between hdr and private transfers. So far only
+> > > > > > command vs rnw, any other differences I missed?
+> > > > > >
+> > > > > yes, but can we make it priv_xfer() = sdr_priv_xfer() + hdr_priv_xfer() ?
+> > > >
+> > > > struct i3c_priv_xfer is array, each i3c_priv_xfer item is indepent. Can you
+> > > > write a simple code to demostrate your idea.
+> > > >
+> > > > Frank
 > > >
-> > > Add support for spread spectrum clock (SSC) generation to the
-> > pll14xxx
-> > > driver.
+> > > ======
+> > > Please see below. My only intention is to add hdr/sdr decision inside
+> > > i3c_priv_xfer and rest of the functions should remain as it is.
 > > >
-> > > Co-developed-by: Dario Binacchi
-> > <dario.binacchi@amarulasolutions.com>
-> > > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > If you still need, may be we can add local function but no need to change
+> > > prototype of function being explosed to many vendors.
+> > >
+> > > I hope i am not missing any major thing.
+> > >
+> > > struct i3c_priv_xfer {
+> > > 	u8 rnw;
+> > > 	u16 len;
+> > > 	union {
+> > > 		void *in;
+> > > 		const void *out;
+> > > 	} data;
+> > >   	enum i3c_error_code err;
+> > > // Just Add below two members and rest can be passed till end point/function
+> > > and can process as required.
+> > > 	enum i3c_hdr_mode mode;
+> > > 	union {
+> > > 		u8 rnw;
+> > > 		u8 cmd;
+> > > 	};
+> > >   };
+> > >
+> > >
+> > > device.c :
+> > > i3c_device_do_priv_xfers => i3c_dev_do_priv_xfers_locked
+> > >
+> > > int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer
+> > > *xfers, int nxfers) {
+> > >
+> > > ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, xfers);
+> > >
+> > > }
+> > >
+> > >
+> > > master.c :
+> > > int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev, struct
+> > > i3c_priv_xfer *xfers, int nxfers) {
+> > >
+> > > 	if (master->ops->priv_xfers_mode)
+> > > 		return master->ops->priv_xfers_mode(dev, xfers, nxfers);
+> > >
+> > > 	if (xfers->mode != I3C_SDR)
+> > > 		return -EINVAL;
+> > > }
+> > >
 > >
-> > It doesn=E2=80=99t seem right to me.
-> > You can=E2=80=99t take 90% of my patch, where the SSC management was
-> > actually implemented, add 10%, and consider yourself the author of
-> > the patch.
-> > Please correct it in version 3.
+> > The problem is
+> >
+> > struct i3c_priv_xfer xfer[3] = {
+> > 	{ .mode = SDR ...},
+> > 	{ .mode = HDR ...},
+> > 	{ .mode = SDR ...},
+> > }
+> >
+> > i3c_device_do_priv_xfers(dev, xfer, 3);
+> >
+> > How to handle this case?
+> >
+> > I think i3c_device_do_priv_xfers() means one whole i3c transcation:
+> > START, xfer[0], xfer[1], xfer[2], STOP.
+> >
+> > Frank
+> >
+> I think they are separate transfers, it means one call but multiple buffer
+> to send with separate start/stop.
 >
-> Ah. But if you look into the patches, 10% is not accurate
-> per lines I change.
-> you could see more changes compared with your patch
-> https://lore.kernel.org/all/20250118124044.157308-18-dario.binacchi@amaru=
-lasolutions.com/.
+> Two options :
+> 1. When multiple transfers in a single call, driver internally itrerates and
+> should take care of start-xfer-stop. I think HW should be taking care unless
+> using the restart intentionally.
 >
-> 1. Use set_spread_spectrm ops
-> 2. Use clk_spread_spectrum to replace imx_pll14xx_ssc
-> 3. Drop imx_clk_pll14xx_ssc_parse_dt and clk_pll14xx_ssc_mod_type. This o=
-ne would
->  count over 50% changes.
->
-> The logic that I only did minor update is the function
-> clk_pll1443x_enable_ssc with switching to use clk_spread_sectrum
+> 2. if any xfer[i]  has HDR mode, internally it can call local function OR
+> should diverge based on mode wherever it suits better to do.
 
-Sorry if I miscounted the lines, but here we are not considering who
-actually implemented
-the algorithmic part of the SSC management and all the time spent
-testing the code on more
-than one platform/board with each submission of the series for all 9 versio=
-ns.
+We should define such behavior at API to avoid cleint driver guess master
+controller driver's implemtation.
 
-[1] https://lore.kernel.org/all/20250118124044.157308-18-dario.binacchi@ama=
-rulasolutions.com/
+It think xfer[n] by one API call, should be one whole transfer.
 
-Your changes, which are unnecessary for the clk-scmi.c changes, only
-serve to support the
-DT binding `assigned-clock-sscs`, which, as Krzysztof also reiterated:
+START xfer[0], REPEAT START, xfer[1], REPEAT START xfer[2], ... STOP.
 
-https://github.com/devicetree-org/dt-schema/pull/154
+If xfer[0]'s buffer is uncontinue, it should be use sg list. But i3c data
+len is related small now, so one buf point should be enough now.
 
-you should have proposed during the review of series [1]. You are the
-NXP reviewer.
+If client want to multi START...STOP, START...STOP, it should be call API
+mulit times.  One API call only support one START...STOP.
+
+REPEAT START != START.
+
+About HDR, according to spec line 5522
+
+START SDR_CMD_ENTER_DDR xfer[0], DDR_RESTART xfer[1], ..., DDR_EXIT.
+
+So seperate/extended API is needed to keep API behavior simple and
+consistent.
+
+Frank
 
 >
-> If you think it is not fair, I could drop this patch in V3 and leave it t=
-o you to handle.
-> I take this patch in the patchset, mainly to ease your work and make
-
-Sorry for quoting Krzysztof again, but:
-"Three months iMX8 patchsets, multiple reviews and no single comment
-from you till January!"
-
-So please, if you really want to ease my work, then remove this patch
-from this series and resume
-reviewing series [1].
-
-Thanks and regards,
-Dario
-
-> assigned-clock-sscs moving forward, considering SCMI spec needs update
-> (clk-scmi.c changes will not land soon).
+> > >
+> > > svc-i3c-master.c
+> > > //process everything using xfers.mode  and xfer.cmd.
+> > >
+> > > I hope you can add all rest of the changes inside this function itself.
+> > > static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev, struct
+> > > i3c_priv_xfer *xfers, int nxfers)
+> > > ==========
+> > > >
+> > > > > > >
+> > > > > > > > > i3c_priv_xfer should be treat as whole i3c transactions. If user want send
+> > > > > > > > > HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
+> > > > > > > > > instead put into a big i3c_priv_xfer[n].
+> > > > > > > > > ---
+> > > > > > > > >      drivers/i3c/device.c       | 19 +++++++++++++------
+> > > > > > > > >      drivers/i3c/internals.h    |  2 +-
+> > > > > > > > >      drivers/i3c/master.c       |  8 +++++++-
+> > > > > > > > >      include/linux/i3c/device.h | 12 +++++++++++-
+> > > > > > > > >      include/linux/i3c/master.h |  3 +++
+> > > > > > > > >      5 files changed, 35 insertions(+), 9 deletions(-)
+> > > > > > > > >
+> > > > > > > > > diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
+> > > > > > > > > index e80e487569146..e3db3a6a9e4f6 100644
+> > > > > > > > > --- a/drivers/i3c/device.c
+> > > > > > > > > +++ b/drivers/i3c/device.c
+> > > > > > > > > @@ -15,12 +15,13 @@
+> > > > > > > > >      #include "internals.h"
+> > > > > > > > >        /**
+> > > > > > > > > - * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
+> > > > > > > > > - *                specific device
+> > > > > > > > > + * i3c_device_do_priv_xfers_mode() - do I3C SDR private transfers directed to a
+> > > > > > > > > + *                     specific device
+> > > > > > > > >       *
+> > > > > > > > >       * @dev: device with which the transfers should be done
+> > > > > > > > >       * @xfers: array of transfers
+> > > > > > > > >       * @nxfers: number of transfers
+> > > > > > > > > + * @mode: transfer mode
+> > > > > > > > >       *
+> > > > > > > > >       * Initiate one or several private SDR transfers with @dev.
+> > > > > > > > >       *
+> > > > > > > > > @@ -32,9 +33,9 @@
+> > > > > > > > >       *            driver needs to resend the 'xfers' some time later.
+> > > > > > > > >       *            See I3C spec ver 1.1.1 09-Jun-2021. Section: 5.1.2.2.3.
+> > > > > > > > >       */
+> > > > > > > > > -int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> > > > > > > > > -                 struct i3c_priv_xfer *xfers,
+> > > > > > > > > -                 int nxfers)
+> > > > > > > > > +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+> > > > > > > > > +                  struct i3c_priv_xfer *xfers,
+> > > > > > > > > +                  int nxfers, enum i3c_hdr_mode mode)
+> > > > > > > > why can't we pass mode as another structure member inside struct i3c_priv_xfer ? Adding function agrument parameter impacts existing drivers.
+> > > > > >
+> > > > > > If that, it will be possible, xfers[0] is sdr, xfers[1] is hdr. Actually,
+> > > > > > I3C can't do that.  we assume finish whole xfers between one whole traction
+> > > > > > (between START and STOP).
+> > > > > >
+> > > > > > Frank
+> > > > > > > > >      {
+> > > > > > > > >          int ret, i;
+> > > > > > > > >      @@ -47,11 +48,17 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> > > > > > > > >          }
+> > > > > > > > >            i3c_bus_normaluse_lock(dev->bus);
+> > > > > > > > > -    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
+> > > > > > > > > +    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers, mode);
+> > > > > > > > >          i3c_bus_normaluse_unlock(dev->bus);
+> > > > > > > > >            return ret;
+> > > > > > > > >      }
+> > > > > > > > > +EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers_mode);
+> > > > > > > > > +
+> > > > > > > > > +int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers, int nxfers)
+> > > > > > > > > +{
+> > > > > > > > > +    return i3c_device_do_priv_xfers_mode(dev, xfers, nxfers, I3C_SDR);
+> > > > > > > > > +}
+> > > > > > > > >      EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
+> > > > > > > > >        /**
+> > > > > > > > > diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+> > > > > > > > > index 433f6088b7cec..553edc9846ac0 100644
+> > > > > > > > > --- a/drivers/i3c/internals.h
+> > > > > > > > > +++ b/drivers/i3c/internals.h
+> > > > > > > > > @@ -16,7 +16,7 @@ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+> > > > > > > > >      int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
+> > > > > > > > >      int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> > > > > > > > >                       struct i3c_priv_xfer *xfers,
+> > > > > > > > > -                 int nxfers);
+> > > > > > > > > +                 int nxfers, enum i3c_hdr_mode mode);
+> > > > > > > > >      int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
+> > > > > > > > >      int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
+> > > > > > > > >      int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
+> > > > > > > > > diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> > > > > > > > > index d5dc4180afbcf..67aaba0a38db2 100644
+> > > > > > > > > --- a/drivers/i3c/master.c
+> > > > > > > > > +++ b/drivers/i3c/master.c
+> > > > > > > > > @@ -2945,7 +2945,7 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
+> > > > > > > > >        int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> > > > > > > > >                       struct i3c_priv_xfer *xfers,
+> > > > > > > > > -                 int nxfers)
+> > > > > > > > > +                 int nxfers, enum i3c_hdr_mode mode)
+> > > > > > > > >      {
+> > > > > > > > >          struct i3c_master_controller *master;
+> > > > > > > > >      @@ -2956,9 +2956,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> > > > > > > > >          if (!master || !xfers)
+> > > > > > > > >              return -EINVAL;
+> > > > > > > > >      +    if (master->ops->priv_xfers_mode)
+> > > > > > > > > +        return master->ops->priv_xfers_mode(dev, xfers, nxfers, mode);
+> > > > > > > > > +
+> > > > > > > > >          if (!master->ops->priv_xfers)
+> > > > > > > > >              return -ENOTSUPP;
+> > > > > > > > >      +    if (mode != I3C_SDR)
+> > > > > > > > > +        return -EINVAL;
+> > > > > > > > > +
+> > > > > > > > >          return master->ops->priv_xfers(dev, xfers, nxfers);
+> > > > > > > > >      }
+> > > > > > > > >      diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+> > > > > > > > > index b674f64d0822e..7ce70d0967e27 100644
+> > > > > > > > > --- a/include/linux/i3c/device.h
+> > > > > > > > > +++ b/include/linux/i3c/device.h
+> > > > > > > > > @@ -40,11 +40,13 @@ enum i3c_error_code {
+> > > > > > > > >        /**
+> > > > > > > > >       * enum i3c_hdr_mode - HDR mode ids
+> > > > > > > > > + * @I3C_SDR: SDR mode (NOT HDR mode)
+> > > > > > > > >       * @I3C_HDR_DDR: DDR mode
+> > > > > > > > >       * @I3C_HDR_TSP: TSP mode
+> > > > > > > > >       * @I3C_HDR_TSL: TSL mode
+> > > > > > > > >       */
+> > > > > > > > >      enum i3c_hdr_mode {
+> > > > > > > > > +    I3C_SDR,
+> > > > > > > > >          I3C_HDR_DDR,
+> > > > > > > > >          I3C_HDR_TSP,
+> > > > > > > > >          I3C_HDR_TSL,
+> > > > > > > > > @@ -53,6 +55,7 @@ enum i3c_hdr_mode {
+> > > > > > > > >      /**
+> > > > > > > > >       * struct i3c_priv_xfer - I3C SDR private transfer
+> > > > > > > > >       * @rnw: encodes the transfer direction. true for a read, false for a write
+> > > > > > > > > + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
+> > > > > > > > >       * @len: transfer length in bytes of the transfer
+> > > > > > > > >       * @actual_len: actual length in bytes are transferred by the controller
+> > > > > > > > >       * @data: input/output buffer
+> > > > > > > > > @@ -61,7 +64,10 @@ enum i3c_hdr_mode {
+> > > > > > > > >       * @err: I3C error code
+> > > > > > > > >       */
+> > > > > > > > >      struct i3c_priv_xfer {
+> > > > > > > > > -    u8 rnw;
+> > > > > > > > > +    union {
+> > > > > > > > > +        u8 rnw;
+> > > > > > > > > +        u8 cmd;
+> > > > > > > > > +    };
+> > > > > > > > >          u16 len;
+> > > > > > > > >          u16 actual_len;
+> > > > > > > > >          union {
+> > > > > > > > > @@ -301,6 +307,10 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+> > > > > > > > >                       struct i3c_priv_xfer *xfers,
+> > > > > > > > >                       int nxfers);
+> > > > > > > > >      +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+> > > > > > > > > +                  struct i3c_priv_xfer *xfers,
+> > > > > > > > > +                  int nxfers, enum i3c_hdr_mode mode);
+> > > > > > > > > +
+> > > > > > > > >      int i3c_device_do_setdasa(struct i3c_device *dev);
+> > > > > > > > >        void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
+> > > > > > > > > diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> > > > > > > > > index 12d532b012c5a..352bd41139569 100644
+> > > > > > > > > --- a/include/linux/i3c/master.h
+> > > > > > > > > +++ b/include/linux/i3c/master.h
+> > > > > > > > > @@ -472,6 +472,9 @@ struct i3c_master_controller_ops {
+> > > > > > > > >          int (*priv_xfers)(struct i3c_dev_desc *dev,
+> > > > > > > > >                    struct i3c_priv_xfer *xfers,
+> > > > > > > > >                    int nxfers);
+> > > > > > > > > +    int (*priv_xfers_mode)(struct i3c_dev_desc *dev,
+> > > > > > > > > +                   struct i3c_priv_xfer *xfers,
+> > > > > > > > > +                   int nxfers, enum i3c_hdr_mode mode);
+> > > > > > > > >          int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
+> > > > > > > > >          void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
+> > > > > > > > >          int (*i2c_xfers)(struct i2c_dev_desc *dev,
+> > > > > > > > >
+> > > > > > > >
+> > > > > > > >
+> > > > > > >
+> > > > >
+> > >
 >
-> Regards
-> Peng.
->
-> >
-> > Thanks and regards,
-> > Dario
-> >
-> > > ---
-> > >  drivers/clk/imx/clk-pll14xx.c | 66
-> > > +++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 66 insertions(+)
-> > >
-> > > diff --git a/drivers/clk/imx/clk-pll14xx.c
-> > > b/drivers/clk/imx/clk-pll14xx.c index
-> > >
-> > f290981ea13bdba3602af7aa44aaadfe0b78dcf9..3bdce762a9d651a6fb
-> > 048dcbf58d
-> > > b396af9d3aaf 100644
-> > > --- a/drivers/clk/imx/clk-pll14xx.c
-> > > +++ b/drivers/clk/imx/clk-pll14xx.c
-> > > @@ -20,6 +20,8 @@
-> > >  #define GNRL_CTL       0x0
-> > >  #define DIV_CTL0       0x4
-> > >  #define DIV_CTL1       0x8
-> > > +#define SSCG_CTRL      0xc
-> > > +
-> > >  #define LOCK_STATUS    BIT(31)
-> > >  #define LOCK_SEL_MASK  BIT(29)
-> > >  #define CLKE_MASK      BIT(11)
-> > > @@ -31,15 +33,26 @@
-> > >  #define KDIV_MASK      GENMASK(15, 0)
-> > >  #define KDIV_MIN       SHRT_MIN
-> > >  #define KDIV_MAX       SHRT_MAX
-> > > +#define SSCG_ENABLE    BIT(31)
-> > > +#define MFREQ_CTL_MASK GENMASK(19, 12) #define
-> > MRAT_CTL_MASK
-> > > +GENMASK(9, 4)
-> > > +#define SEL_PF_MASK    GENMASK(1, 0)
-> > >
-> > >  #define LOCK_TIMEOUT_US                10000
-> > >
-> > > +enum imx_pll14xx_ssc_mod_type {
-> > > +       IMX_PLL14XX_SSC_DOWN_SPREAD,
-> > > +       IMX_PLL14XX_SSC_UP_SPREAD,
-> > > +       IMX_PLL14XX_SSC_CENTER_SPREAD, };
-> > > +
-> > >  struct clk_pll14xx {
-> > >         struct clk_hw                   hw;
-> > >         void __iomem                    *base;
-> > >         enum imx_pll14xx_type           type;
-> > >         const struct imx_pll14xx_rate_table *rate_table;
-> > >         int rate_count;
-> > > +       struct clk_spread_spectrum      ssc_conf;
-> > >  };
-> > >
-> > >  #define to_clk_pll14xx(_hw) container_of(_hw, struct clk_pll14xx, hw=
-)
-> > > @@ -349,6 +362,42 @@ static int clk_pll1416x_set_rate(struct
-> > clk_hw *hw, unsigned long drate,
-> > >         return 0;
-> > >  }
-> > >
-> > > +static void clk_pll1443x_enable_ssc(struct clk_hw *hw, unsigned
-> > long parent_rate,
-> > > +                                   unsigned int pdiv, unsigned int
-> > > +mdiv) {
-> > > +       struct clk_pll14xx *pll =3D to_clk_pll14xx(hw);
-> > > +       struct clk_spread_spectrum *conf =3D &pll->ssc_conf;
-> > > +       u32 sscg_ctrl, mfr, mrr, mod_type;
-> > > +
-> > > +       sscg_ctrl =3D readl_relaxed(pll->base + SSCG_CTRL);
-> > > +       sscg_ctrl &=3D
-> > > +               ~(SSCG_ENABLE | MFREQ_CTL_MASK | MRAT_CTL_MASK |
-> > > + SEL_PF_MASK);
-> > > +
-> > > +       mfr =3D parent_rate / (conf->modfreq * pdiv * (1 << 5));
-> > > +       mrr =3D ((conf->spreaddepth / 100) * mdiv * (1 << 6)) / (100 =
-*
-> > > + mfr);
-> > > +
-> > > +       switch (conf->method) {
-> > > +       case CLK_SSC_CENTER_SPREAD:
-> > > +               mod_type =3D IMX_PLL14XX_SSC_CENTER_SPREAD;
-> > > +               break;
-> > > +       case CLK_SSC_UP_SPREAD:
-> > > +               mod_type =3D IMX_PLL14XX_SSC_UP_SPREAD;
-> > > +               break;
-> > > +       case CLK_SSC_DOWN_SPREAD:
-> > > +               mod_type =3D IMX_PLL14XX_SSC_DOWN_SPREAD;
-> > > +               break;
-> > > +       default:
-> > > +               mod_type =3D IMX_PLL14XX_SSC_DOWN_SPREAD;
-> > > +               break;
-> > > +       }
-> > > +
-> > > +       sscg_ctrl |=3D SSCG_ENABLE | FIELD_PREP(MFREQ_CTL_MASK,
-> > mfr) |
-> > > +               FIELD_PREP(MRAT_CTL_MASK, mrr) |
-> > > +               FIELD_PREP(SEL_PF_MASK, mod_type);
-> > > +
-> > > +       writel_relaxed(sscg_ctrl, pll->base + SSCG_CTRL); }
-> > > +
-> > >  static int clk_pll1443x_set_rate(struct clk_hw *hw, unsigned long
-> > drate,
-> > >                                  unsigned long prate)  { @@ -370,6
-> > > +419,9 @@ static int clk_pll1443x_set_rate(struct clk_hw *hw,
-> > unsigned long drate,
-> > >                 writel_relaxed(FIELD_PREP(KDIV_MASK, rate.kdiv),
-> > >                                pll->base + DIV_CTL1);
-> > >
-> > > +               if (pll->ssc_conf.enable)
-> > > +                       clk_pll1443x_enable_ssc(hw, prate, rate.pdiv,
-> > > + rate.mdiv);
-> > > +
-> > >                 return 0;
-> > >         }
-> > >
-> > > @@ -410,6 +462,9 @@ static int clk_pll1443x_set_rate(struct
-> > clk_hw *hw, unsigned long drate,
-> > >         gnrl_ctl &=3D ~BYPASS_MASK;
-> > >         writel_relaxed(gnrl_ctl, pll->base + GNRL_CTL);
-> > >
-> > > +       if (pll->ssc_conf.enable)
-> > > +               clk_pll1443x_enable_ssc(hw, prate, rate.pdiv,
-> > > + rate.mdiv);
-> > > +
-> > >         return 0;
-> > >  }
-> > >
-> > > @@ -465,6 +520,16 @@ static void clk_pll14xx_unprepare(struct
-> > clk_hw *hw)
-> > >         writel_relaxed(val, pll->base + GNRL_CTL);  }
-> > >
-> > > +static int clk_pll1443x_set_spread_spectrum(struct clk_hw *hw,
-> > > +                                           struct clk_spread_spectru=
-m
-> > > +*clk_ss) {
-> > > +       struct clk_pll14xx *pll =3D to_clk_pll14xx(hw);
-> > > +
-> > > +       memcpy(&pll->ssc_conf, clk_ss, sizeof(pll->ssc_conf));
-> > > +
-> > > +       return 0;
-> > > +}
-> > > +
-> > >  static const struct clk_ops clk_pll1416x_ops =3D {
-> > >         .prepare        =3D clk_pll14xx_prepare,
-> > >         .unprepare      =3D clk_pll14xx_unprepare,
-> > > @@ -485,6 +550,7 @@ static const struct clk_ops clk_pll1443x_ops
-> > =3D {
-> > >         .recalc_rate    =3D clk_pll14xx_recalc_rate,
-> > >         .round_rate     =3D clk_pll1443x_round_rate,
-> > >         .set_rate       =3D clk_pll1443x_set_rate,
-> > > +       .set_spread_spectrum =3D clk_pll1443x_set_spread_spectrum,
-> > >  };
-> > >
-> > >  struct clk_hw *imx_dev_clk_hw_pll14xx(struct device *dev, const
-> > char
-> > > *name,
-> > >
-> > > --
-> > > 2.37.1
-> > >
-> >
-> >
-> > --
-> >
-> > Dario Binacchi
-> >
-> > Senior Embedded Linux Developer
-> >
-> > dario.binacchi@amarulasolutions.com
-> >
-> > __________________________________
-> >
-> >
-> > Amarula Solutions SRL
-> >
-> > Via Le Canevare 30, 31100 Treviso, Veneto, IT
-> >
-> > T. +39 042 243 5310
-> > info@amarulasolutions.com
-> >
-> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2F
-> > www.amarulasolutions.com%2F&data=3D05%7C02%7Cpeng.fan%40nxp.
-> > com%7Cbeaf5bdcc6694a5a1a1708dd45d701db%7C686ea1d3bc2b4c6
-> > fa92cd99c5c301635%7C0%7C0%7C638743511953067272%7CUnkno
-> > wn%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDA
-> > wMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C
-> > %7C%7C&sdata=3DUFgy1bS7QJ7qenzKFTkPBNfOGn0V89CGR9NLOBka0U
-> > 8%3D&reserved=3D0
-
-
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
