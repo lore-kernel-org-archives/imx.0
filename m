@@ -1,249 +1,151 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8358225415
-	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 07:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368D3155744
+	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 08:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738828653; cv=none; b=Sfu+NigL7i06S8Nw8Xix9SCaJjeePhK4xnuWXEWTQaumzmhfK85VNWUxTQBrsQN3OCmypkT1yQNboTdxKf5f4eY4HZavge7uMeB6+pkTsaZGb8FCEnT/A1WVMbWBvuaX3X1wQ9xCuXTYorvWRiQH3KQtB578TWYT8fsrzw23IMs=
+	t=1738828932; cv=none; b=PDqUCqICnngSq7Ned9oKA81T+l6/J5gT2y7ssnAXM4dR0q2OyAx0rYNOCSPSihSComktLhr2pzLtn8RjS87ua8dFxcDds326NyTOy1rpHD8WGpV2+OdK6B5maRLxBPppQuPMDnvhj09fRBkQR4r+G8tTSq07GkAH3b0r94Nb1ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738828653; c=relaxed/simple;
-	bh=39lJj/rYaa6b4DYxpGmi+0oPY1rIW/US0+1a1DLMoSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Emx4SJXpxhLRyW4OVzZ+g5Gk7HZyw6NLEteSIDYvVaBgtdhnSokYOe7Vhg3BJQKXPxoO+Gwx+Sob4J45O5Qgew3eop+LqIqvGgwEOUaM3oHCpWgT+VUoMfG6KDAe/Ri+padnD9G+EFuHi5ACMHV0Xld4rpC0PucfCQDTTRNnG6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1txTOlkC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=86WS+XUc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1txTOlkC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=86WS+XUc; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1738828932; c=relaxed/simple;
+	bh=Z4nnfybTEaNZ5Db2rmvJ9oxd3OSrK7LFETmYdjxSSAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljzFB9Yfm7uJQAXn2V+BNWlJWXSwEtxJwoB+nhTR/nRcQ7lTHaKZ+OopIt0RtwQMWGLaJYPLwfSti5qGqsN93CmL/2kdjbSZsIf88iQTX6s2ovt/v11HcReZ3tnVqsafN9aHIFupv6Z1z+4MkQ8GbPVnxCgMXr14Od6NZ8hTMAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T9u95CD5; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1txTOlkC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="86WS+XUc";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1txTOlkC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="86WS+XUc"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id ADAA81F397;
-	Thu,  6 Feb 2025 07:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738828649; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KDYCmBOGb4xTAklwCidsim6czDQYd5zcQdD1tQKuGyU=;
-	b=1txTOlkCv21S2vTjLJ68cZxl4jsQ9ELFo/3lM7aE8z9MUmN/ZfUvuFHosGpCWUYqa3ZfYZ
-	9OAk/1R5sB6jCPKj4lheu+LybPTLxbeOLNccjYC19a9Jg3HcywlKiOKoGbz+Ws77xJqFWl
-	JgtWjDEzXQc3tBDjKMZjxUeug3yIoQM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738828649;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KDYCmBOGb4xTAklwCidsim6czDQYd5zcQdD1tQKuGyU=;
-	b=86WS+XUcHnvTFYUQUcShqzKdwDJyOWE7MEKQ9TG8amX86ECJ8RUpO/X14DKvP0q3yTgmqA
-	CkcRsjz1W4Fxd9Bw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1txTOlkC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=86WS+XUc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738828649; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KDYCmBOGb4xTAklwCidsim6czDQYd5zcQdD1tQKuGyU=;
-	b=1txTOlkCv21S2vTjLJ68cZxl4jsQ9ELFo/3lM7aE8z9MUmN/ZfUvuFHosGpCWUYqa3ZfYZ
-	9OAk/1R5sB6jCPKj4lheu+LybPTLxbeOLNccjYC19a9Jg3HcywlKiOKoGbz+Ws77xJqFWl
-	JgtWjDEzXQc3tBDjKMZjxUeug3yIoQM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738828649;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KDYCmBOGb4xTAklwCidsim6czDQYd5zcQdD1tQKuGyU=;
-	b=86WS+XUcHnvTFYUQUcShqzKdwDJyOWE7MEKQ9TG8amX86ECJ8RUpO/X14DKvP0q3yTgmqA
-	CkcRsjz1W4Fxd9Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 63B8513697;
-	Thu,  6 Feb 2025 07:57:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oE1eFmhrpGcBKgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 06 Feb 2025 07:57:28 +0000
-Message-ID: <73bad044-f5fc-40ea-9e32-571912573a5f@suse.de>
-Date: Thu, 6 Feb 2025 08:57:10 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T9u95CD5"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361e89b6daso3269175e9.3
+        for <imx@lists.linux.dev>; Thu, 06 Feb 2025 00:02:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738828928; x=1739433728; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nPXgxL3/vPlBnnI2Yfl6MiqQiCTLYqV9DTTBZ0YDUTk=;
+        b=T9u95CD5UuDyxLjvKs+0hBQjaCuYul1GnSs+mPwBLJ2CvrYQT1r/cC0R75NVXQ2/Z5
+         UVVAuaBYYJz6x51p34Cvptv57s9rvksGajO21I2xRyezhm97b1FwOtdY1bjtHNWOFYj9
+         TT6V0bWtjlmppwp5t6yBGPF1dPpGaLSCyy3IaP+YHwwyO8wN0vWsmpi73oOoSndfF2SG
+         rlienebKV9Xiu0deeWe8FULcgdGdC7krRJhUdxe06yNPR5eqnQaxGnznxr+vr03yTrwY
+         pzlWrfRN4sTjLwn5E5y4C5N1oHBoE+gnyA7RCSAO5d3aJBcNY6jnO3EKvHqqbrbtZk/+
+         N45A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738828928; x=1739433728;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nPXgxL3/vPlBnnI2Yfl6MiqQiCTLYqV9DTTBZ0YDUTk=;
+        b=OdRUX+A+x/9CEHwXwIN7FF8As/UQVpJPQJAX8PwT/1aSy3uQ86BgRMUq5RNCrk03b8
+         9f9I+B1NuIBw9e7Bh+70S1BfDqyAzH9vr/099ALPhIYvDLv6svn7KsTVzn1tmh+I0QXj
+         32JOYjoXPXbMf84+HZ7R0ovk0jWGhE8axnnYET1ODQY4kiIVLHWlRVCeC+xzmNwaTEpr
+         P1xe8Y1+5xXiHgonN82sqMRsWSv7DcKEcUAxAGtwaQjxShj1nyLiuQDinSjJrrqCz2EH
+         z5nQIOcDYFvp3zOtjCOSF4/yXcWKnj9PHoNAtBMI5pAog1YE0kR8rc2LsnXALG7PsmVl
+         13Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKiqNZlfUaXRfKKkw6+xJbDFabZTKoLsIgUsiRaelh3/WBCUgGVKSawfdM72M+sGaxQa4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyVERaiHPhvYgpLS1Fku3gp4eQuM60pGwL9cuEFvIkF+WJL++bA
+	DFsG0JabqHXatAiwQm0bOk1SkhjjzUxYgWVXUfDvLu0K1mokmSk3n4meCb8RHd4=
+X-Gm-Gg: ASbGncv0au+EE1nuRPMiW9Y1knr0TsddTnfAn7LO0FFxGcjqRpY/mvfSnLut7RzZmgY
+	hKDaYvh7Im3L0U+l7hf6YY9YoySipQPh4zduwImvi0la+J6bvqB07Msu1rXYnsOk9z2MUm911R2
+	JzrnKIbrgZvT5s6wZMSY18HuAEaMsSE7BE/O+yBjdAoGM8K32xhZ1C3NEWioUGqFSKELeVZ6Jbg
+	DCbhUG2yxQ0OKo8ZTmhqPwZld2/ExMVgQEAE/b2jAWGHhBGUcYoXvfZKyCMlGPge+7ISZ/rvs4c
+	CI6MiooZ/BZTZBVrnIeh
+X-Google-Smtp-Source: AGHT+IEWof4zjE60RbTVNnoMwQe4mseAM8axdA44ewFLN78LsrMf1OHW5JZiuHAT9VHpIyLKYwWl9g==
+X-Received: by 2002:a05:6000:1a8b:b0:38c:5b9e:ab83 with SMTP id ffacd0b85a97d-38db48caa3bmr5083926f8f.40.1738828928370;
+        Thu, 06 Feb 2025 00:02:08 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4391dfd7d7asm10502945e9.36.2025.02.06.00.02.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 00:02:07 -0800 (PST)
+Date: Thu, 6 Feb 2025 11:02:04 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 2/4] firmware: arm_scmi: Add machine_allowlist and
+ machine_blocklist
+Message-ID: <230612a4-92ee-4acc-85bf-f1c47dc3c35b@stanley.mountain>
+References: <20250120-scmi-fwdevlink-v2-0-3af2fa37dbac@nxp.com>
+ <20250120-scmi-fwdevlink-v2-2-3af2fa37dbac@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/12] Documentation: Update the todo
-To: Anusha Srivatsa <asrivats@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Stefan Agner <stefan@agner.ch>,
- Alison Wang <alison.wang@nxp.com>, Xinliang Liu <xinliang.liu@linaro.org>,
- Tian Tao <tiantao6@hisilicon.com>,
- Xinwei Kong <kong.kongxinwei@hisilicon.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu
- <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- Andy Yan <andy.yan@rock-chips.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Alain Volmat
- <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
- Yannick Fertre <yannick.fertre@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
- Philippe Cornu <philippe.cornu@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Alexey Brodkin <abrodkin@synopsys.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20250205-mem-cocci-newapi-v1-0-aebf2b0e2300@redhat.com>
- <20250205-mem-cocci-newapi-v1-12-aebf2b0e2300@redhat.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250205-mem-cocci-newapi-v1-12-aebf2b0e2300@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: ADAA81F397
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,jms.id.au,linux.intel.com,kernel.org,gmail.com,ffwll.ch,codeconstruct.com.au,agner.ch,nxp.com,linaro.org,hisilicon.com,google.com,pengutronix.de,collabora.com,denx.de,rock-chips.com,sntech.de,linux.alibaba.com,foss.st.com,nvidia.com,synopsys.com,raspberrypi.com,igalia.com,lwn.net];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	R_RATELIMIT(0.00)[to_ip_from(RL5qdohruh175rhiw1bqi96ifb)];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[55];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120-scmi-fwdevlink-v2-2-3af2fa37dbac@nxp.com>
 
-Hi
+On Mon, Jan 20, 2025 at 03:13:30PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> There are two cases:
+> pinctrl-scmi.c and pinctrl-imx-scmi.c, both use SCMI_PROTOCOL_PINCTRL.
+> If both drivers are built in, and the scmi device with name "pinctrl-imx"
+> is created earlier, and the fwnode device points to the scmi device,
+> non-i.MX platforms will never have the pinctrl supplier ready.
+> 
+> Vendor A use 0x80 for feature X, Vendor B use 0x80 for feature Y.
+> With both drivers built in, two scmi devices will be created, and both
+> drivers will be probed. On A's patform, feature Y probe may fail, vice
+> verus.
+> 
+> Introduce machine_allowlist and machine_blocklist to allow or block
+> the creation of scmi devices to address above issues.
+> 
+> machine_blocklist is non-vendor protocols, but vendor has its own
+> implementation. Saying need to block pinctrl-scmi.c on i.MX95.
+> machine_allowlist is for vendor protocols. Saying vendor A drivers only
+> allow vendor A machine, vendor B machines only allow vendor B machine.
+> 
 
+I think patches 2-4 should be combined into one patch.  This commit
+message is a bit confusing.  I don't really understand how the
+"fwnode device points to the scmi device".  I understand vaguely
+what that means but in terms of code, I couldn't point to it.
 
-Am 05.02.25 um 21:08 schrieb Anusha Srivatsa:
-> Update the Documentation to be more precise.
->
-> v2: Update for clarity
->
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
-> ---
->   Documentation/gpu/todo.rst | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-> index 256d0d1cb2164bd94f9b610a751b907834d96a21..03fcd086889acbd1294669b260292ffc79e97e2f 100644
-> --- a/Documentation/gpu/todo.rst
-> +++ b/Documentation/gpu/todo.rst
-> @@ -441,13 +441,13 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
->   
->   Level: Intermediate
->   
-> -Request memory regions in all drivers
-> --------------------------------------
-> +Request memory regions in all fbdev drivers
-> +--------------------------------------------
->   
-> -Go through all drivers and add code to request the memory regions that the
-> -driver uses. This requires adding calls to request_mem_region(),
-> -pci_request_region() or similar functions. Use helpers for managed cleanup
-> -where possible.
-> +Old/ancient fbdev drivers do not request their memory properly.
-> +Go through these drivers and add code to request the memory regions that the
-> +driver uses. Problematic areas include hardware that has exclusive ranges like
-> +VGA. VGA16fb does not request the range as it is expected.
+> Vendor A use 0x80 for feature X, Vendor B use 0x80 for feature Y.
+> With both drivers built in, two scmi devices will be created, and both
+> drivers will be probed. On A's patform, feature Y probe may fail, vice
+> verus.
 
-I'd keep both, old and new text, and turn them into a single paragraph. 
-The old text explains what to do and the new text gives examples.
+You're describing the code before.  Is it a problem that only one driver
+is probed successfully?  I thought that would be fine.  What's the
+problem?
 
-Best regards
-Thomas
+It should have a Fixes tag.
+Fixes: b755521fd6eb ("pinctrl: imx: support SCMI pinctrl protocol for i.MX95")
 
->   
->   Drivers are pretty bad at doing this and there used to be conflicts among
->   DRM and fbdev drivers. Still, it's the correct thing to do.
->
+Here is my suggestion for a commit message:
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+  We have two drivers, pinctrl-scmi.c which is generic and
+  pinctrl-imx-scmi.c which is for IMX hardware.  They do the same
+  thing.  Both provide support for the SCMI_PROTOCOL_PINCTRL protocol.
+
+  If you have a kernel with both modules built in then they way it
+  was designed to work is that the probe() functions would only
+  allow the appropriate driver to probe.  Unfortunately, what happens
+  is that <vague>there is an issue earlier in the process so the
+  fwnode device points to the wrong driver.</vague>  This means that
+  even though the correct driver is probed it still wants to use
+  whichever driver was loaded first so if the driver you want came
+  second then it won't work.
+
+  To fix this, move the checking for which driver to use into the
+  scmi_protocol_device_request() function.
+
+  Now both drivers will be probed but only one will be used?
+
+regards,
+dan carpenter
 
