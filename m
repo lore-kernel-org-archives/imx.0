@@ -1,65 +1,28 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A822ACF1
-	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 11:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539418B477
+	for <imx@lists.linux.dev>; Thu,  6 Feb 2025 12:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738842573; cv=none; b=txD04rtmK0oJpdrWJVjYqHPCc/px4zfQXK6IZ1rK+xmQIH907CadIJT1Vp2SStZw9JCSBKmDo0OaEfwXteWNOS3MfLWDeZQvFBMRdTKVqmN7cLDT8q+ir1ScYD5GHWfC+9fsg7fgDH1He3k4J7AXjVktriHRzco3rxgTHI9nzDc=
+	t=1738843575; cv=none; b=mX/zoY/D1LHP9mLKwfN8dADhUf5BXzUxKx+bIGL02C441gLIXYkcm0E7UxHtJbNksiEUZ+zCqlpk/YP8YaL/36qG+TizRTi1dF7SciY3mAMKa8SmjRnXeLnyffsfq1gRJ77EFLrDT3skHZN/EVLJ40KiSfJM6Z1DmCw0tBeDgGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738842573; c=relaxed/simple;
-	bh=E8+d7rzKIQYxvCPsaoYc55cIInzpgJbkEM+e7bop0Aw=;
+	s=arc-20240116; t=1738843575; c=relaxed/simple;
+	bh=U6gbIFqnWs8jLbyQIrKy4MQNtRukxtTcp/pPESXgDf8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDp7VGp6zUsjTbl7S2q6E8X3J2LtiKhmQHneberhGXRPTi3ZktpSIMU0oruyx3Z6ko0WUO1Z/InZbHcdTqkOmTnGxkSFHYTp5cFBnZe4lvIwsGGX3yJcyw9xBh92MAZy+aggun/SnT0rDVXMs0DRPtjVy6fQnAcVDtGT/r8k7/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rmufASzP; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rmufASzP"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-436345cc17bso5603075e9.0
-        for <imx@lists.linux.dev>; Thu, 06 Feb 2025 03:49:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738842568; x=1739447368; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NX9ms/4I8NC6zrc1aMCv7TAeR5qd6HJ58Z3muKUA91A=;
-        b=rmufASzPD+TFw7t2TFtm88++qt0Wt+gwViLWo1QD41BMlyrj7qVGA84WEvHTh81TI9
-         jCe4cXUWgDL2yCszTwk9EVRSNfyoWcuyPYD496GmtEimSTTx6iB+FOtffYSUuC4GJJwE
-         VFaINtJo6XAzXPjjsMJ/GNhA4yFf/Ie5+IskaTLTpllZmZzNoAQCfQPwXD2iAMcTHaA6
-         5b9InwtMo2keC5ENwGi4ra7KKYWN+hAar3Lv+fGi+Rt5uTziqqx2w9vHe3kuE9Ux5cUh
-         CmzQYWE/ja+iV4dj9h0kugipbSninD930NN9ZJxx2HwpzjL/WZU+hWgPOo4lJabJa+B3
-         RBSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738842568; x=1739447368;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NX9ms/4I8NC6zrc1aMCv7TAeR5qd6HJ58Z3muKUA91A=;
-        b=F4UP3/qQDRseeX5W1Q6AFr3CVYSDXiXz9cg3Ofu9e9icDyxFzWEiyVYbJJFrApPiCs
-         8IraSHBuJIJV2SJgOjXSf6g5NlZz8mXcVodFlDoRfojdwnldHzUjnL6Yvq/Irj3zkuqJ
-         WF/IT+vr8u/6rOSsLhN2n1RlveYlZvDb13+rFjLwFF7AtAppvQVKqxrL/5Deg+jTo7Yr
-         GRQYQHyJqVAIdO/4T6MJBNlWSIenGJmGEFsVNxLE7MtxnFtmleOdJPWUp5iMhuJvAjGk
-         38iGexbDLCp4gRTVKdqhTpTRL5j5beBEE+TkqwBu79nLOa+9QngsUaW1F7FqV30KncL/
-         ZfVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeSZ0Cx10GDupYWpZslGJEMfuwsp/uIp2pTaIJm9hYa+JJinEm/Qwf+NB+HDYtqkHNNs4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjrKA0EFqDBC73OW1bc5VXnRvraZkK5NLRWQnymKud0/IYBCaI
-	cLiIdcn9+agGAbHa1leIpzseXSfttvUTXnzqzBrKbQH9l2C1xOf27Z/dCbqJJsg=
-X-Gm-Gg: ASbGncuN0Hex0WRWrQ9Fe/Zla7hIFeIEo14sXs1oIo9W2Npgn79WVKZsK/JcMzeqc+q
-	rwxqRKUW3oEg3TzR45sSfg8hZPEJyAUAIspWtHpYFl9+Q/7PZqyOXmhUMy3IaCtg6LiZYyp9PA7
-	3N9Foe8MeG8VP2DUQgKMKsN67D5/pv3dX/Yfkk9N+gi73I6pOML+O5weKh5seOw4PLfMJSkmQ1n
-	lx7OH3AF3u45elEbCm3UjGged/qjta4C+xMR53OPjUBsEUIFGktVuqdM7yte8fUABciyiNcWkhP
-	RkliZCJ9kxxJeuyOfk9C
-X-Google-Smtp-Source: AGHT+IGBjV9LowhqFquW+OEjP5fmaVEQ40WZqgqqY5aomaJpQL2ZwcJcaosKDFlLLto2p8sEGWzZkQ==
-X-Received: by 2002:a05:600c:46d4:b0:434:f767:68ea with SMTP id 5b1f17b1804b1-4390d42ccb9mr56959955e9.5.1738842568525;
-        Thu, 06 Feb 2025 03:49:28 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4390d94d685sm52793145e9.13.2025.02.06.03.49.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 03:49:28 -0800 (PST)
-Date: Thu, 6 Feb 2025 14:49:25 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Cristian Marussi <cristian.marussi@arm.com>
-Cc: Peng Fan <peng.fan@oss.nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z08t76QIGx8HOX4gx8ZthAM692uDs9KsdILzI1lo7e++U603/kl6mwiTSQYhowGkE/yREFVAIYLAav8oWH6VMxtqk2vN849JFWujlNRFvgcnvnTZjFD5CT7GxvFVISThRX8ydPGUBuYy3BmuVSRGh0Wq7uRrkDp+KzQ4E5b78+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D11B212FC;
+	Thu,  6 Feb 2025 04:06:35 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D2013F63F;
+	Thu,  6 Feb 2025 04:06:10 -0800 (PST)
+Date: Thu, 6 Feb 2025 12:06:03 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
 	Saravana Kannan <saravanak@google.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Dong Aisheng <aisheng.dong@nxp.com>,
@@ -70,15 +33,11 @@ Cc: Peng Fan <peng.fan@oss.nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
 	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 1/4] firmware: arm_scmi: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <1a420172-de2f-4602-a181-be79bff0bb2b@stanley.mountain>
+Subject: Re: [PATCH v2 2/4] firmware: arm_scmi: Add machine_allowlist and
+ machine_blocklist
+Message-ID: <Z6Slq4KjS_RJ3ItB@pluto>
 References: <20250120-scmi-fwdevlink-v2-0-3af2fa37dbac@nxp.com>
- <20250120-scmi-fwdevlink-v2-1-3af2fa37dbac@nxp.com>
- <7a29ec8f-fef8-4f1c-a2eb-16a63f2b820c@stanley.mountain>
- <20250206105218.GA22527@localhost.localdomain>
- <e20415aa-517c-4e72-a1c3-9c02769c1149@stanley.mountain>
- <Z6SgFGb4Z88v783c@pluto>
+ <20250120-scmi-fwdevlink-v2-2-3af2fa37dbac@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,51 +46,75 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z6SgFGb4Z88v783c@pluto>
+In-Reply-To: <20250120-scmi-fwdevlink-v2-2-3af2fa37dbac@nxp.com>
 
-On Thu, Feb 06, 2025 at 11:42:12AM +0000, Cristian Marussi wrote:
-> On Thu, Feb 06, 2025 at 02:31:19PM +0300, Dan Carpenter wrote:
-> > On Thu, Feb 06, 2025 at 06:52:20PM +0800, Peng Fan wrote:
-> > > On Wed, Feb 05, 2025 at 03:45:00PM +0300, Dan Carpenter wrote:
-> > > >On Mon, Jan 20, 2025 at 03:13:29PM +0800, Peng Fan (OSS) wrote:
-> > > >> diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
-> > > >> index 2c853c84b58f530898057e4ab274ba76070de05e..7850eb7710f499888d32aebf5d99df63db8bfa26 100644
-> > > >> --- a/drivers/firmware/arm_scmi/bus.c
-> > > >> +++ b/drivers/firmware/arm_scmi/bus.c
-> > > >> @@ -344,6 +344,21 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
-> > > >>  	device_unregister(&scmi_dev->dev);
-> > > >>  }
-> > > >>  
-> > > >> +static int
-> > > >> +__scmi_device_set_node(struct scmi_device *scmi_dev, struct device_node *np,
-> > > >> +		       int protocol, const char *name)
-> > > >> +{
-> > > >> +	/* cpufreq device does not need to be supplier from devlink perspective */
-> > > >> +	if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq")) {
-> > > >
-> > > >I don't love this...  It seems like an hack.  Could we put a flag
-> > > >somewhere instead?  Perhaps in scmi_device?  (I'm just saying that
-> > > >because that's what we're passing to this function).
-> > > 
-> > > This means when creating scmi_device, a flag needs to be set which requires
-> > > to extend scmi_device_id to include a flag entry or else.
-> > > 
-> > > As below in scmi-cpufreq.c
-> > > { SCMI_PROTOCOL_PERF, "cpufreq", SCMI_FWNODE_NO }
-> > > 
-> > 
-> > Yeah, I like that.
-> > 
-> > -	if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq")) {
-> > +	if (scmi_dev->flags & SCMI_FWNODE_NO) {
-> > 
-> > Or we could do something like "if (scmi_dev->no_fwnode) {"
+On Mon, Jan 20, 2025 at 03:13:30PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> I proposed a flag a few review ago about this, it shoule come somehow
-> from the device_table above like Peng was proposing, so that a driver
-> can just declare that does NOT need fw_devlink.
 
-Great.  I think we're on the same page then.
+Hi,
 
-regards,
-dan carpenter
+> There are two cases:
+> pinctrl-scmi.c and pinctrl-imx-scmi.c, both use SCMI_PROTOCOL_PINCTRL.
+> If both drivers are built in, and the scmi device with name "pinctrl-imx"
+> is created earlier, and the fwnode device points to the scmi device,
+> non-i.MX platforms will never have the pinctrl supplier ready.
+> 
+
+The pinctrl-imx case is an unfortunate exception because you have a
+custom Vendor SCMI driver using a STANDARD protocol: this was never
+meant to be an allowed normal practice: the idea of SCMI Vendor extensions
+is to allow Vendors to write their own Vendor protocols (>0x80) and their
+own SCMI drivers on top of their custom vendor protocols.
+
+This list-based generalization seems to me dangerous because allows the
+spreading of such bad practice of loading custom Vendor drivers on top of
+standard protocols using the same protocol to do the same thing in a
+slightly different manner, with all the rfelated issues of fragmentation
+
+...also I feel it could lead to an umaintainable mess of tables of
+compatibles....what happens if I write a 3rd pinctrl-cristian driver on
+top of it...both the new allowlist and the general pinctrl blocklist
+will need to be updated.
+
+The issue as we know is the interaction with devlink given that all of
+these same-protocol devices are created with the same device_node, since
+there is only one of them per-protocol in the DT....
+
+...not sure what Sudeep thinks..just my opinion...
+
+> Vendor A use 0x80 for feature X, Vendor B use 0x80 for feature Y.
+> With both drivers built in, two scmi devices will be created, and both
+> drivers will be probed. On A's patform, feature Y probe may fail, vice
+> verus.
+>
+
+That's definitely an issue much worse than fw_devlink above....we indeed take
+care to pick the right vendor-protocol at runtime BUT no check is peformed
+against the SCMI drivers so you could end up picking up a completely unrelated
+protocol operations...damn...
+
+I think this is more esily solvable though....by adding a Vendor tag in
+the device_table (like the protocols do) you could skip device creation
+based on a mismatching Vendor, instead of using compatibles that are
+doomed to grow indefinitely as a list....
+
+So at this point you would have an optional Vendor and an optional flags
+(as mentioned in the other thread) in the device_table...
+
+I wonder if we can use the same logic for the above pinctrl case,
+without using compatibles ?
+I have not really thougth this through properly....
+
+In general, most of these issues are somehow Vendor-dependent, so I was
+also wondering if it was not the case to frame all of this in some sort
+of general vendor-quirks framework that could be used also when there
+are evident and NOT fixable issues on deployed FW SCMI server, so that
+we will have to flex a bit the kernel tolerance to cope with existing
+deployed HW that cannot be fixed fw-wise....
+
+...BUT I thought about this even less thoroughly :P...so it could be just a
+bad idea of mine...
+
+Thanks,
+Cristian
