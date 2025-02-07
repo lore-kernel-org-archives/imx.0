@@ -1,62 +1,62 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D121891A9
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 16:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC92C18FDC9
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 16:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738945407; cv=none; b=UUJagbyBU9V3TWG94JfwB1zBgBhK7a9HAyez9DTzFmemi3m+9lyBn8leSlYpOrt+kdc0sV7vRLgtMQXdI++NtPpsH0z5XIfjaeLj6UTEWeE3XWzaXojmgQ94BwfIcJ7D93mdtZoh1gxrXVBr6OO6NVv4TU8DYSe0LI5MvaAtwhs=
+	t=1738945408; cv=none; b=mBXeU3dZYzVnEVvCgAOOnFX93kRdxQeK/4IsvtH3zDjwQsqVdPhngzLwmcGq7msJZDTTCskBiCsbUIiD4poYBB4FE8QWQRRGmxdBlkMgBp2FNjM6rPWz8le+99I/dRI+33s4HtM0VnWpAbrpWlr3dDoOlAQXsTRrpBAFvTIm1NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738945407; c=relaxed/simple;
-	bh=9HLV7IHXzWJGSyHLuaXFna5AZqzxlSasoXzKVVS0Edc=;
+	s=arc-20240116; t=1738945408; c=relaxed/simple;
+	bh=XI8DYyfiLKvub4PmXw7TuJ1urUXl+IC9ImTSN0/1LcY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mb42kS1nZG/m6v2Nyzlxxx5/RYg0nAta7mIzh8dWCrxdpapnQO60CTorF+DZzGIeQsRioD9LLP0sl8Ymz2MsVpb+hFN5hRty6iHojK5om9d1Y5l3vpWxZpFQ73aq3VS0I42qMSploVfPEUGDLy8qlRVVVill8mGCwmI/jGz2DOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHnTvkY7; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=jFYQRpEC+eeVs98v9QfNVlAbbyeJQ1OJDGRJkqnH9U29yTQ4cSxPm3hWEQ2e5VOSuRi/PQ4ouVmR0BhU4sJGsnyTg51bVpRV+Dr/c9wU0ayPGwt2XJzebt7aUoeiQZCSp9wkXaBHmabljOpOeHfgF1N6uimQthCvQ92LOScxnVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dz+3QKC6; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHnTvkY7"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43618283dedso22351245e9.3
-        for <imx@lists.linux.dev>; Fri, 07 Feb 2025 08:23:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dz+3QKC6"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38dc0cd94a6so920524f8f.0
+        for <imx@lists.linux.dev>; Fri, 07 Feb 2025 08:23:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738945403; x=1739550203; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1738945405; x=1739550205; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V7yCL33ZE5Gfcs3hwx/9kFUK5S1ClXcHksGZsjVXJpo=;
-        b=AHnTvkY7413LWgakmKmbRA35hSrL2luMREN2Xh2BIkQ1qHH/rq5LZYmuvbu8jt1AuH
-         e0j1bMiaO04oGca7s+4GnCUWko34kiZrR2vI7oK2cmNFCWkkoa/AEhgj2FmTi2EvilYq
-         WQ50NY3EBcTlkmQifS7MRYB3a82jKDCEJOBU2qDaDyDX+zCxOQ7zOVeJO8BPlM7iGeQD
-         gn/Sq6bTf3jbgVObFXlv3Os17FMu5C4KoCFxYK0y3lZnvyrM3ABQCcSwuFo+mvQEFSQP
-         07jcRRkcf+REHgLJoht2jkOL0/BMyVmyx0fZdnFFpU90gXuDBgNPZ5SSComVpgNaODsq
-         Y9Bg==
+        bh=5S2pc95h+xNAGYglrEbD/pDwanj3CMP4mZo1fmZSwIE=;
+        b=dz+3QKC6x0pWyjRCWJaxA7PLiGpNxTIDVoeJ+BVGkPOCotqvuPGXG8COh/U6G6ddqw
+         hGWXgDDnTa3fdqGGld+cZyGMxu4f1TSdwU/jO50BmLFxN5kgxidMze+ILVLuITNCVxQq
+         22z6N2n13MhpsbrkJeQ3zmzy8HOPC17/AlCT+t6jqJgEAByjxvfBKIwUgw7l2qTPhs0w
+         tqPBzZ+C036f7D4EQlrm329QXctIQV0DOGgNr2Gu91+xfZLL84/+DZmE2jUZm0Q0xxu8
+         SKnmkrqkwl6dWFLcQaytvVC/lZeyht00KdMQuDx1f3m27dz4Fjvm5tT28ZTPbastT/X4
+         ulTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738945403; x=1739550203;
+        d=1e100.net; s=20230601; t=1738945405; x=1739550205;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V7yCL33ZE5Gfcs3hwx/9kFUK5S1ClXcHksGZsjVXJpo=;
-        b=Jsr4N9kFYNA+RBUTB44l8ztGWzx1aUoNXAoiFaXqoO5QtXHLU5/eRDKybRz4S2weNt
-         t+Fvy6RsHBpnCS0axA8EmLG0QrNuFgQyiV8w+TjPNJw2+QQ/1QZKuLGYVO4Bv3wMtsZ6
-         r3ZsgsR6HSyP7WnFiVQrcPNAEwEJauOwdJ4/HVfEH3ShJm00wxYodsFPweC4RNVl3XOu
-         FDEEq3iXplGv8y2X5YaF/hv/4l05jdKKKhN4IAS0Gbi02CRzAZesVn2/QnXBSSz13vqq
-         sj2sLNJYjGNwB1xz6JCTIurgtsl4TvnSFPjIj5rFZACbYvvdnsPjqWSQGMo5rQtiTqpR
-         jDIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJHcuE3pn8LIEn7iZobuyO5DEu3aPLvx1Ujm+IcWtCzx+Pf5CLNUT83pFqiNGz/FKHelc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3SZCjpqL6rDIHkEgjbL18Pjv60detfyyZhlgUJN/KICgeklfn
-	e16WvflGRG1hzXM6haNLfRhtaUcp1v47fhfUSf1ytX81iJkbrpMfVycZSA==
-X-Gm-Gg: ASbGncs88Y2Fb7cqECteNdjs8lp0/4YhRCG1EbqYnuQNgwaEJST5XymGgHTnPJTN9Zc
-	Vn2OmdQ7OjdTiVvGl+IAr60z+iJqVVYJFLaRduSON64twwM82I9Ag1PzyIr/JsThxSRObj3Q9Bt
-	sKJijg31phP0IikUZT86wZoMnVOXKCh1tHTqxwcbdRHPPRkZQYbm2SwXIN6YvT3u9Cx7H/3kx6f
-	BhtKVLnV7+3c/Ib93DUwv8f1ZGvxpzVum7nL1vWb9OuWHXdjZpA1TBmVG1tlDw7LqoKoUxQairb
-	okt15dwbF/4KYQfrqA185iqTpGzkoYKBPxg3w853vGc9KE74rE6bqA==
-X-Google-Smtp-Source: AGHT+IFWyr3cHKYblm3lpyiF0iZHIoOnWPUrt1EneB1gaznh3yX7ZDQqPgyCGjWw8Eg0n/CxoMmeWg==
-X-Received: by 2002:a05:600c:4e44:b0:436:9227:915 with SMTP id 5b1f17b1804b1-4392498796dmr30243755e9.9.1738945402982;
-        Fri, 07 Feb 2025 08:23:22 -0800 (PST)
+        bh=5S2pc95h+xNAGYglrEbD/pDwanj3CMP4mZo1fmZSwIE=;
+        b=Og0sS1QvF/qUW/IE5CnnJBhhfO4Z5AGzX2sornKcrehGAkhh2Kkh0Yjv0a1JAoi6md
+         Fsrm2i+naJYUvlT4UHgGvYxXym4SPk32kARKDt0pcl5ubttTITIVQbesHrMjhjLipb9q
+         OgBJN0MnihKr5ZRgD1/8+ud0cUVCZBTTtiyMi0+uekw5bN923FEhFoX9E+g29CiCcotY
+         oJWpSqKF7d4T8hL44ZJGN8OducFBjOjFRQ/sA2bpHwFLVYpQO8eMTT04MiPUHUsoORB1
+         ojS7vTZ2UKUPZMgT3vTHwpu0h21K6jUf1jHS2JK0nLASJZWvC4c+DbZWQtyFklh6wLQo
+         jjXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZuS982imzLHjnqSQ9GDpxzk8tohsXAFaTfltm0g5CyuTzbbUiCDOXGPKx7d42FTrNUkw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxPJVLtKBI8sbfCvlDMr/61kK+k5ODbDz25ulxQbE2pQ44EzZfd
+	IY05PxG9T3HzGgeANYV4bb1tlGPHZel0F3J6B67Hf5BJP+zYHYq+
+X-Gm-Gg: ASbGnctGpiilvIGhfI8MqxUJmJ0opiYMCgsTkuReARtfAtjiy0otI+bKj0lxIpiS7z2
+	0tZt+A9Cx3eMQaWAE+irtyvKMovkS5aMrUNTJDKz9KI/8rLv4wvrEkfGpUGTFHgV7xkGxeV0v4+
+	bCF36bQyB5n4uBJgGpKKOf0mm1JZpjVhsDpg4hhpG07/iO2g+c2ALWS9GJWTEmjGrer4AAwVTbD
+	kkxnjd1o+EWKkBGWwuycYIQycfOBDyuQJz+VIQ45EKqFIy3gSIJ7ei/1zDO7iPf1biNwlUcvTIu
+	Ww570hj8ylMC/jXgZrfRcRUCZyX40QDOSpX6u52RKBxlcCMqEZ2BKA==
+X-Google-Smtp-Source: AGHT+IHiwxYpJj114HuQLOINoNybbMY4FCCGqCLIK1FJir5YzqppK45hdCKArgkX2E2fc52bD6UWaw==
+X-Received: by 2002:a5d:6d0c:0:b0:38d:b7b0:7087 with SMTP id ffacd0b85a97d-38dc90e5b9bmr2407211f8f.1.1738945404614;
+        Fri, 07 Feb 2025 08:23:24 -0800 (PST)
 Received: from playground.localdomain ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391da9652bsm61260825e9.2.2025.02.07.08.23.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391da9652bsm61260825e9.2.2025.02.07.08.23.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 08:23:22 -0800 (PST)
+        Fri, 07 Feb 2025 08:23:24 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Daniel Baluta <daniel.baluta@nxp.com>,
@@ -67,9 +67,9 @@ To: Bard Liao <yung-chuan.liao@linux.intel.com>,
 Cc: linux-kernel@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: [PATCH v3 2/7] ASoC: SOF: imx8: use common imx chip interface
-Date: Fri,  7 Feb 2025 11:22:41 -0500
-Message-Id: <20250207162246.3104-3-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 3/7] ASoC: SOF: imx8: use IMX_SOF_* macros
+Date: Fri,  7 Feb 2025 11:22:42 -0500
+Message-Id: <20250207162246.3104-4-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250207162246.3104-1-laurentiumihalcea111@gmail.com>
 References: <20250207162246.3104-1-laurentiumihalcea111@gmail.com>
@@ -83,674 +83,128 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The common interface for imx chips (defined in imx-common.c) contains the
-definitions for a lot of functions required by the SOF core. As such, the
-platform driver can just use the common definitions instead of duplicating
-code by re-defining aforementioned functions.
+The definition of 'struct sof_dev_desc' has the following properties
+for imx chips:
 
-Make the transition to the new common interface. This consists of:
+  1) FW path is the same for all chips.
+  2) Topology path is the same for all chips.
+  3) FW name can be written as: "sof-${machine_name}.ri"
+  4) IPC3 is the only supported protocol
 
-  1) Removing unneeded functions, which are already defined in the
-  common interface.
+The structure takes quite a few lines of code. Since the intention
+is to add support for more imx8 chips in the same driver, we need
+to try and reduce the number of lines taken by information that's
+not particularly useful. As such, we can use 'IMX_SOF_DEV_DESC()'
+to reduce the declaration of the structure to just one line. The
+only information that's particularly useful can be seen from the
+parameters of the macro.
 
-  2) Defining some chip-specific operations/structures required by the
-  interface to work.
+Of course, if any of the assumptions don't apply anymore, driver
+writers can simply declare the 'struct sof_dev_desc' the "old
+fashioned way". No reason to make the macro suit multiple needs.
 
-  3) Dropping structure definitions that are no longer needed.
-
-  4) Adapting some existing functions to the new interface.
+The same logic applies to the array of 'struct snd_soc_dai_driver'.
 
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- sound/soc/sof/imx/imx8.c | 522 +++++----------------------------------
- 1 file changed, 65 insertions(+), 457 deletions(-)
+ sound/soc/sof/imx/imx8.c | 71 +++++++---------------------------------
+ 1 file changed, 11 insertions(+), 60 deletions(-)
 
 diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
-index 1e7bf00d7c46..25e3296a1e5e 100644
+index 25e3296a1e5e..52dff369d9cf 100644
 --- a/sound/soc/sof/imx/imx8.c
 +++ b/sound/soc/sof/imx/imx8.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
- //
--// Copyright 2019 NXP
-+// Copyright 2019-2025 NXP
- //
- // Author: Daniel Baluta <daniel.baluta@nxp.com>
- //
-@@ -41,100 +41,28 @@
- #define MBOX_OFFSET	0x800000
- #define MBOX_SIZE	0x1000
- 
--struct imx8_priv {
--	struct device *dev;
--	struct snd_sof_dev *sdev;
--
--	/* DSP IPC handler */
--	struct imx_dsp_ipc *dsp_ipc;
--	struct platform_device *ipc_dev;
--
--	/* System Controller IPC handler */
--	struct imx_sc_ipc *sc_ipc;
--
--	/* Power domain handling */
--	int num_domains;
--	struct device **pd_dev;
--	struct device_link **link;
--
--	struct clk_bulk_data *clks;
--	int clk_num;
--};
--
--static int imx8_get_mailbox_offset(struct snd_sof_dev *sdev)
--{
--	return MBOX_OFFSET;
--}
--
--static int imx8_get_window_offset(struct snd_sof_dev *sdev, u32 id)
--{
--	return MBOX_OFFSET;
--}
--
--static void imx8_dsp_handle_reply(struct imx_dsp_ipc *ipc)
--{
--	struct imx8_priv *priv = imx_dsp_get_data(ipc);
--	unsigned long flags;
--
--	spin_lock_irqsave(&priv->sdev->ipc_lock, flags);
--	snd_sof_ipc_process_reply(priv->sdev, 0);
--	spin_unlock_irqrestore(&priv->sdev->ipc_lock, flags);
--}
--
--static void imx8_dsp_handle_request(struct imx_dsp_ipc *ipc)
--{
--	struct imx8_priv *priv = imx_dsp_get_data(ipc);
--	u32 p; /* panic code */
--
--	/* Read the message from the debug box. */
--	sof_mailbox_read(priv->sdev, priv->sdev->debug_box.offset + 4, &p, sizeof(p));
--
--	/* Check to see if the message is a panic code (0x0dead***) */
--	if ((p & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC)
--		snd_sof_dsp_panic(priv->sdev, p, true);
--	else
--		snd_sof_ipc_msgs_rx(priv->sdev);
--}
--
--static struct imx_dsp_ops dsp_ops = {
--	.handle_reply		= imx8_dsp_handle_reply,
--	.handle_request		= imx8_dsp_handle_request,
--};
--
--static int imx8_send_msg(struct snd_sof_dev *sdev, struct snd_sof_ipc_msg *msg)
--{
--	struct imx8_priv *priv = sdev->pdata->hw_pdata;
--
--	sof_mailbox_write(sdev, sdev->host_box.offset, msg->msg_data,
--			  msg->msg_size);
--	imx_dsp_ring_doorbell(priv->dsp_ipc, 0);
--
--	return 0;
--}
--
- /*
-  * DSP control.
-  */
- static int imx8x_run(struct snd_sof_dev *sdev)
- {
--	struct imx8_priv *dsp_priv = sdev->pdata->hw_pdata;
- 	int ret;
- 
--	ret = imx_sc_misc_set_control(dsp_priv->sc_ipc, IMX_SC_R_DSP,
-+	ret = imx_sc_misc_set_control(get_chip_pdata(sdev), IMX_SC_R_DSP,
- 				      IMX_SC_C_OFS_SEL, 1);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "Error system address offset source select\n");
- 		return ret;
- 	}
- 
--	ret = imx_sc_misc_set_control(dsp_priv->sc_ipc, IMX_SC_R_DSP,
-+	ret = imx_sc_misc_set_control(get_chip_pdata(sdev), IMX_SC_R_DSP,
- 				      IMX_SC_C_OFS_AUDIO, 0x80);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "Error system address offset of AUDIO\n");
- 		return ret;
- 	}
- 
--	ret = imx_sc_misc_set_control(dsp_priv->sc_ipc, IMX_SC_R_DSP,
-+	ret = imx_sc_misc_set_control(get_chip_pdata(sdev), IMX_SC_R_DSP,
- 				      IMX_SC_C_OFS_PERIPH, 0x5A);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "Error system address offset of PERIPH %d\n",
-@@ -142,14 +70,14 @@ static int imx8x_run(struct snd_sof_dev *sdev)
- 		return ret;
- 	}
- 
--	ret = imx_sc_misc_set_control(dsp_priv->sc_ipc, IMX_SC_R_DSP,
-+	ret = imx_sc_misc_set_control(get_chip_pdata(sdev), IMX_SC_R_DSP,
- 				      IMX_SC_C_OFS_IRQ, 0x51);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "Error system address offset of IRQ\n");
- 		return ret;
- 	}
- 
--	imx_sc_pm_cpu_start(dsp_priv->sc_ipc, IMX_SC_R_DSP, true,
-+	imx_sc_pm_cpu_start(get_chip_pdata(sdev), IMX_SC_R_DSP, true,
- 			    RESET_VECTOR_VADDR);
- 
- 	return 0;
-@@ -157,17 +85,16 @@ static int imx8x_run(struct snd_sof_dev *sdev)
- 
- static int imx8_run(struct snd_sof_dev *sdev)
- {
--	struct imx8_priv *dsp_priv = sdev->pdata->hw_pdata;
- 	int ret;
- 
--	ret = imx_sc_misc_set_control(dsp_priv->sc_ipc, IMX_SC_R_DSP,
-+	ret = imx_sc_misc_set_control(get_chip_pdata(sdev), IMX_SC_R_DSP,
- 				      IMX_SC_C_OFS_SEL, 0);
- 	if (ret < 0) {
- 		dev_err(sdev->dev, "Error system address offset source select\n");
- 		return ret;
- 	}
- 
--	imx_sc_pm_cpu_start(dsp_priv->sc_ipc, IMX_SC_R_DSP, true,
-+	imx_sc_pm_cpu_start(get_chip_pdata(sdev), IMX_SC_R_DSP, true,
- 			    RESET_VECTOR_VADDR);
- 
- 	return 0;
-@@ -175,272 +102,20 @@ static int imx8_run(struct snd_sof_dev *sdev)
- 
- static int imx8_probe(struct snd_sof_dev *sdev)
- {
--	struct platform_device *pdev = to_platform_device(sdev->dev);
--	struct device_node *np = pdev->dev.of_node;
--	struct device_node *res_node;
--	struct resource *mmio;
--	struct imx8_priv *priv;
--	struct resource res;
--	u32 base, size;
--	int ret = 0;
--	int i;
--
--	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
--
--	sdev->num_cores = 1;
--	sdev->pdata->hw_pdata = priv;
--	priv->dev = sdev->dev;
--	priv->sdev = sdev;
--
--	/* power up device associated power domains */
--	priv->num_domains = of_count_phandle_with_args(np, "power-domains",
--						       "#power-domain-cells");
--	if (priv->num_domains < 0) {
--		dev_err(sdev->dev, "no power-domains property in %pOF\n", np);
--		return priv->num_domains;
--	}
--
--	priv->pd_dev = devm_kmalloc_array(&pdev->dev, priv->num_domains,
--					  sizeof(*priv->pd_dev), GFP_KERNEL);
--	if (!priv->pd_dev)
--		return -ENOMEM;
--
--	priv->link = devm_kmalloc_array(&pdev->dev, priv->num_domains,
--					sizeof(*priv->link), GFP_KERNEL);
--	if (!priv->link)
--		return -ENOMEM;
--
--	for (i = 0; i < priv->num_domains; i++) {
--		priv->pd_dev[i] = dev_pm_domain_attach_by_id(&pdev->dev, i);
--		if (IS_ERR(priv->pd_dev[i])) {
--			ret = PTR_ERR(priv->pd_dev[i]);
--			goto exit_unroll_pm;
--		}
--		priv->link[i] = device_link_add(&pdev->dev, priv->pd_dev[i],
--						DL_FLAG_STATELESS |
--						DL_FLAG_PM_RUNTIME |
--						DL_FLAG_RPM_ACTIVE);
--		if (!priv->link[i]) {
--			ret = -ENOMEM;
--			dev_pm_domain_detach(priv->pd_dev[i], false);
--			goto exit_unroll_pm;
--		}
--	}
--
--	ret = imx_scu_get_handle(&priv->sc_ipc);
--	if (ret) {
--		dev_err(sdev->dev, "Cannot obtain SCU handle (err = %d)\n",
--			ret);
--		goto exit_unroll_pm;
--	}
--
--	priv->ipc_dev = platform_device_register_data(sdev->dev, "imx-dsp",
--						      PLATFORM_DEVID_NONE,
--						      pdev, sizeof(*pdev));
--	if (IS_ERR(priv->ipc_dev)) {
--		ret = PTR_ERR(priv->ipc_dev);
--		goto exit_unroll_pm;
--	}
--
--	priv->dsp_ipc = dev_get_drvdata(&priv->ipc_dev->dev);
--	if (!priv->dsp_ipc) {
--		/* DSP IPC driver not probed yet, try later */
--		ret = -EPROBE_DEFER;
--		dev_err(sdev->dev, "Failed to get drvdata\n");
--		goto exit_pdev_unregister;
--	}
--
--	imx_dsp_set_data(priv->dsp_ipc, priv);
--	priv->dsp_ipc->ops = &dsp_ops;
--
--	/* DSP base */
--	mmio = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (mmio) {
--		base = mmio->start;
--		size = resource_size(mmio);
--	} else {
--		dev_err(sdev->dev, "error: failed to get DSP base at idx 0\n");
--		ret = -EINVAL;
--		goto exit_pdev_unregister;
--	}
--
--	sdev->bar[SOF_FW_BLK_TYPE_IRAM] = devm_ioremap(sdev->dev, base, size);
--	if (!sdev->bar[SOF_FW_BLK_TYPE_IRAM]) {
--		dev_err(sdev->dev, "failed to ioremap base 0x%x size 0x%x\n",
--			base, size);
--		ret = -ENODEV;
--		goto exit_pdev_unregister;
--	}
--	sdev->mmio_bar = SOF_FW_BLK_TYPE_IRAM;
--
--	res_node = of_parse_phandle(np, "memory-region", 0);
--	if (!res_node) {
--		dev_err(&pdev->dev, "failed to get memory region node\n");
--		ret = -ENODEV;
--		goto exit_pdev_unregister;
--	}
--
--	ret = of_address_to_resource(res_node, 0, &res);
--	of_node_put(res_node);
--	if (ret) {
--		dev_err(&pdev->dev, "failed to get reserved region address\n");
--		goto exit_pdev_unregister;
--	}
--
--	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap_wc(sdev->dev, res.start,
--							  resource_size(&res));
--	if (!sdev->bar[SOF_FW_BLK_TYPE_SRAM]) {
--		dev_err(sdev->dev, "failed to ioremap mem 0x%x size 0x%x\n",
--			base, size);
--		ret = -ENOMEM;
--		goto exit_pdev_unregister;
--	}
--	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
--
--	/* set default mailbox offset for FW ready message */
--	sdev->dsp_box.offset = MBOX_OFFSET;
--
--	ret = devm_clk_bulk_get_all(sdev->dev, &priv->clks);
--	if (ret < 0) {
--		dev_err(sdev->dev, "failed to fetch clocks: %d\n", ret);
--		goto exit_pdev_unregister;
--	}
--	priv->clk_num = ret;
--
--	ret = clk_bulk_prepare_enable(priv->clk_num, priv->clks);
--	if (ret < 0) {
--		dev_err(sdev->dev, "failed to enable clocks: %d\n", ret);
--		goto exit_pdev_unregister;
--	}
--
--	return 0;
--
--exit_pdev_unregister:
--	platform_device_unregister(priv->ipc_dev);
--exit_unroll_pm:
--	while (--i >= 0) {
--		device_link_del(priv->link[i]);
--		dev_pm_domain_detach(priv->pd_dev[i], false);
--	}
--
--	return ret;
--}
--
--static void imx8_remove(struct snd_sof_dev *sdev)
--{
--	struct imx8_priv *priv = sdev->pdata->hw_pdata;
--	int i;
--
--	clk_bulk_disable_unprepare(priv->clk_num, priv->clks);
--	platform_device_unregister(priv->ipc_dev);
--
--	for (i = 0; i < priv->num_domains; i++) {
--		device_link_del(priv->link[i]);
--		dev_pm_domain_detach(priv->pd_dev[i], false);
--	}
--}
--
--/* on i.MX8 there is 1 to 1 match between type and BAR idx */
--static int imx8_get_bar_index(struct snd_sof_dev *sdev, u32 type)
--{
--	/* Only IRAM and SRAM bars are valid */
--	switch (type) {
--	case SOF_FW_BLK_TYPE_IRAM:
--	case SOF_FW_BLK_TYPE_SRAM:
--		return type;
--	default:
--		return -EINVAL;
--	}
--}
--
--static void imx8_suspend(struct snd_sof_dev *sdev)
--{
--	int i;
--	struct imx8_priv *priv = (struct imx8_priv *)sdev->pdata->hw_pdata;
--
--	for (i = 0; i < DSP_MU_CHAN_NUM; i++)
--		imx_dsp_free_channel(priv->dsp_ipc, i);
--
--	clk_bulk_disable_unprepare(priv->clk_num, priv->clks);
--}
--
--static int imx8_resume(struct snd_sof_dev *sdev)
--{
--	struct imx8_priv *priv = (struct imx8_priv *)sdev->pdata->hw_pdata;
--	int ret;
--	int i;
--
--	ret = clk_bulk_prepare_enable(priv->clk_num, priv->clks);
--	if (ret < 0) {
--		dev_err(sdev->dev, "failed to enable clocks: %d\n", ret);
--		return ret;
--	}
--
--	for (i = 0; i < DSP_MU_CHAN_NUM; i++)
--		imx_dsp_request_channel(priv->dsp_ipc, i);
--
--	return 0;
--}
--
--static int imx8_dsp_runtime_resume(struct snd_sof_dev *sdev)
--{
-+	struct imx_sc_ipc *sc_ipc_handle;
-+	struct imx_common_data *common;
- 	int ret;
--	const struct sof_dsp_power_state target_dsp_state = {
--		.state = SOF_DSP_PM_D0,
--	};
--
--	ret = imx8_resume(sdev);
--	if (ret < 0)
--		return ret;
--
--	return snd_sof_dsp_set_power_state(sdev, &target_dsp_state);
--}
--
--static int imx8_dsp_runtime_suspend(struct snd_sof_dev *sdev)
--{
--	const struct sof_dsp_power_state target_dsp_state = {
--		.state = SOF_DSP_PM_D3,
--	};
--
--	imx8_suspend(sdev);
--
--	return snd_sof_dsp_set_power_state(sdev, &target_dsp_state);
--}
- 
--static int imx8_dsp_suspend(struct snd_sof_dev *sdev, unsigned int target_state)
--{
--	const struct sof_dsp_power_state target_dsp_state = {
--		.state = target_state,
--	};
--
--	if (!pm_runtime_suspended(sdev->dev))
--		imx8_suspend(sdev);
-+	common = sdev->pdata->hw_pdata;
- 
--	return snd_sof_dsp_set_power_state(sdev, &target_dsp_state);
--}
--
--static int imx8_dsp_resume(struct snd_sof_dev *sdev)
--{
--	int ret;
--	const struct sof_dsp_power_state target_dsp_state = {
--		.state = SOF_DSP_PM_D0,
--	};
--
--	ret = imx8_resume(sdev);
-+	ret = imx_scu_get_handle(&sc_ipc_handle);
- 	if (ret < 0)
--		return ret;
-+		return dev_err_probe(sdev->dev, ret,
-+				     "failed to fetch SC IPC handle\n");
- 
--	if (pm_runtime_suspended(sdev->dev)) {
--		pm_runtime_disable(sdev->dev);
--		pm_runtime_set_active(sdev->dev);
--		pm_runtime_mark_last_busy(sdev->dev);
--		pm_runtime_enable(sdev->dev);
--		pm_runtime_idle(sdev->dev);
--	}
-+	common->chip_pdata = sc_ipc_handle;
- 
--	return snd_sof_dsp_set_power_state(sdev, &target_dsp_state);
-+	return 0;
+@@ -119,28 +119,8 @@ static int imx8_probe(struct snd_sof_dev *sdev)
  }
  
  static struct snd_soc_dai_driver imx8_dai[] = {
-@@ -468,135 +143,64 @@ static struct snd_soc_dai_driver imx8_dai[] = {
- },
- };
- 
--static int imx8_dsp_set_power_state(struct snd_sof_dev *sdev,
--				    const struct sof_dsp_power_state *target_state)
 -{
--	sdev->dsp_power_state = *target_state;
--
--	return 0;
--}
-+static struct snd_sof_dsp_ops sof_imx8_ops;
- 
--/* i.MX8 ops */
--static const struct snd_sof_dsp_ops sof_imx8_ops = {
--	/* probe and remove */
--	.probe		= imx8_probe,
--	.remove		= imx8_remove,
--	/* DSP core boot */
--	.run		= imx8_run,
--
--	/* Block IO */
--	.block_read	= sof_block_read,
--	.block_write	= sof_block_write,
--
--	/* Mailbox IO */
--	.mailbox_read	= sof_mailbox_read,
--	.mailbox_write	= sof_mailbox_write,
--
--	/* ipc */
--	.send_msg	= imx8_send_msg,
--	.get_mailbox_offset	= imx8_get_mailbox_offset,
--	.get_window_offset	= imx8_get_window_offset,
-+static int imx8_ops_init(struct snd_sof_dev *sdev)
-+{
-+	/* first copy from template */
-+	memcpy(&sof_imx8_ops, &sof_imx_ops, sizeof(sof_imx_ops));
- 
--	.ipc_msg_data	= sof_ipc_msg_data,
--	.set_stream_data_offset = sof_set_stream_data_offset,
-+	/* then set common imx8 ops */
-+	sof_imx8_ops.dbg_dump = imx8_dump;
-+	sof_imx8_ops.dsp_arch_ops = &sof_xtensa_arch_ops;
-+	sof_imx8_ops.debugfs_add_region_item =
-+		snd_sof_debugfs_add_region_item_iomem;
- 
--	.get_bar_index	= imx8_get_bar_index,
-+	/* ... and finally set DAI driver */
-+	sof_imx8_ops.drv = get_chip_info(sdev)->drv;
-+	sof_imx8_ops.num_drv = get_chip_info(sdev)->num_drv;
- 
--	/* firmware loading */
--	.load_firmware	= snd_sof_load_firmware_memcpy,
-+	return 0;
-+}
- 
--	/* Debug information */
--	.dbg_dump = imx8_dump,
--	.debugfs_add_region_item = snd_sof_debugfs_add_region_item_iomem,
-+static const struct imx_chip_ops imx8_chip_ops = {
-+	.probe = imx8_probe,
-+	.core_kick = imx8_run,
-+};
- 
--	/* stream callbacks */
--	.pcm_open = sof_stream_pcm_open,
--	.pcm_close = sof_stream_pcm_close,
-+static const struct imx_chip_ops imx8x_chip_ops = {
-+	.probe = imx8_probe,
-+	.core_kick = imx8x_run,
-+};
- 
--	/* Firmware ops */
--	.dsp_arch_ops = &sof_xtensa_arch_ops,
-+static struct imx_memory_info imx8_memory_regions[] = {
-+	{ .name = "iram", .reserved = false },
-+	{ .name = "sram", .reserved = true },
-+	{ }
-+};
- 
--	/* DAI drivers */
-+static const struct imx_chip_info imx8_chip_info = {
-+	.ipc_info = {
-+		.has_panic_code = true,
-+		.boot_mbox_offset = 0x800000,
-+		.window_offset = 0x800000,
-+	},
-+	.memory = imx8_memory_regions,
- 	.drv = imx8_dai,
- 	.num_drv = ARRAY_SIZE(imx8_dai),
--
--	/* ALSA HW info flags */
--	.hw_info =	SNDRV_PCM_INFO_MMAP |
--			SNDRV_PCM_INFO_MMAP_VALID |
--			SNDRV_PCM_INFO_INTERLEAVED |
--			SNDRV_PCM_INFO_PAUSE |
--			SNDRV_PCM_INFO_NO_PERIOD_WAKEUP,
--
--	/* PM */
--	.runtime_suspend	= imx8_dsp_runtime_suspend,
--	.runtime_resume		= imx8_dsp_runtime_resume,
--
--	.suspend	= imx8_dsp_suspend,
--	.resume		= imx8_dsp_resume,
--
--	.set_power_state	= imx8_dsp_set_power_state,
-+	.ops = &imx8_chip_ops,
+-	.name = "esai0",
+-	.playback = {
+-		.channels_min = 1,
+-		.channels_max = 8,
+-	},
+-	.capture = {
+-		.channels_min = 1,
+-		.channels_max = 8,
+-	},
+-},
+-{
+-	.name = "sai1",
+-	.playback = {
+-		.channels_min = 1,
+-		.channels_max = 32,
+-	},
+-	.capture = {
+-		.channels_min = 1,
+-		.channels_max = 32,
+-	},
+-},
++	IMX_SOF_DAI_DRV_ENTRY_BIDIR("esai0", 1, 8),
++	IMX_SOF_DAI_DRV_ENTRY_BIDIR("sai1", 1, 32),
  };
  
--/* i.MX8X ops */
--static const struct snd_sof_dsp_ops sof_imx8x_ops = {
--	/* probe and remove */
--	.probe		= imx8_probe,
--	.remove		= imx8_remove,
--	/* DSP core boot */
--	.run		= imx8x_run,
--
--	/* Block IO */
--	.block_read	= sof_block_read,
--	.block_write	= sof_block_write,
--
--	/* Mailbox IO */
--	.mailbox_read	= sof_mailbox_read,
--	.mailbox_write	= sof_mailbox_write,
--
--	/* ipc */
--	.send_msg	= imx8_send_msg,
--	.get_mailbox_offset	= imx8_get_mailbox_offset,
--	.get_window_offset	= imx8_get_window_offset,
--
--	.ipc_msg_data	= sof_ipc_msg_data,
--	.set_stream_data_offset = sof_set_stream_data_offset,
--
--	.get_bar_index	= imx8_get_bar_index,
--
--	/* firmware loading */
--	.load_firmware	= snd_sof_load_firmware_memcpy,
--
--	/* Debug information */
--	.dbg_dump = imx8_dump,
--	.debugfs_add_region_item = snd_sof_debugfs_add_region_item_iomem,
--
--	/* stream callbacks */
--	.pcm_open = sof_stream_pcm_open,
--	.pcm_close = sof_stream_pcm_close,
--
--	/* Firmware ops */
--	.dsp_arch_ops = &sof_xtensa_arch_ops,
--
--	/* DAI drivers */
-+static const struct imx_chip_info imx8x_chip_info = {
-+	.ipc_info = {
-+		.has_panic_code = true,
-+		.boot_mbox_offset = 0x800000,
-+		.window_offset = 0x800000,
-+	},
-+	.memory = imx8_memory_regions,
- 	.drv = imx8_dai,
- 	.num_drv = ARRAY_SIZE(imx8_dai),
--
--	/* PM */
--	.runtime_suspend	= imx8_dsp_runtime_suspend,
--	.runtime_resume		= imx8_dsp_runtime_resume,
--
--	.suspend	= imx8_dsp_suspend,
--	.resume		= imx8_dsp_resume,
--
--	.set_power_state	= imx8_dsp_set_power_state,
--
--	/* ALSA HW info flags */
--	.hw_info =	SNDRV_PCM_INFO_MMAP |
--			SNDRV_PCM_INFO_MMAP_VALID |
--			SNDRV_PCM_INFO_INTERLEAVED |
--			SNDRV_PCM_INFO_PAUSE |
--			SNDRV_PCM_INFO_BATCH |
--			SNDRV_PCM_INFO_NO_PERIOD_WAKEUP
-+	.ops = &imx8x_chip_ops,
+ static struct snd_sof_dsp_ops sof_imx8_ops;
+@@ -238,47 +218,18 @@ static struct snd_sof_of_mach sof_imx8_machs[] = {
+ 	{}
  };
  
- static struct snd_sof_of_mach sof_imx8_machs[] = {
-@@ -636,6 +240,7 @@ static struct snd_sof_of_mach sof_imx8_machs[] = {
+-static struct sof_dev_desc sof_of_imx8qxp_desc = {
+-	.of_machines	= sof_imx8_machs,
+-	.chip_info	= &imx8x_chip_info,
+-	.ipc_supported_mask	= BIT(SOF_IPC_TYPE_3),
+-	.ipc_default		= SOF_IPC_TYPE_3,
+-	.default_fw_path = {
+-		[SOF_IPC_TYPE_3] = "imx/sof",
+-	},
+-	.default_tplg_path = {
+-		[SOF_IPC_TYPE_3] = "imx/sof-tplg",
+-	},
+-	.default_fw_filename = {
+-		[SOF_IPC_TYPE_3] = "sof-imx8x.ri",
+-	},
+-	.nocodec_tplg_filename = "sof-imx8-nocodec.tplg",
+-	.ops = &sof_imx8_ops,
+-	.ops_init = imx8_ops_init,
+-};
++IMX_SOF_DEV_DESC(imx8, sof_imx8_machs, &imx8_chip_info, &sof_imx8_ops, imx8_ops_init);
++IMX_SOF_DEV_DESC(imx8x, sof_imx8_machs, &imx8x_chip_info, &sof_imx8_ops, imx8_ops_init);
  
- static struct sof_dev_desc sof_of_imx8qxp_desc = {
- 	.of_machines	= sof_imx8_machs,
-+	.chip_info	= &imx8x_chip_info,
- 	.ipc_supported_mask	= BIT(SOF_IPC_TYPE_3),
- 	.ipc_default		= SOF_IPC_TYPE_3,
- 	.default_fw_path = {
-@@ -648,11 +253,13 @@ static struct sof_dev_desc sof_of_imx8qxp_desc = {
- 		[SOF_IPC_TYPE_3] = "sof-imx8x.ri",
+-static struct sof_dev_desc sof_of_imx8qm_desc = {
+-	.of_machines	= sof_imx8_machs,
+-	.chip_info	= &imx8_chip_info,
+-	.ipc_supported_mask	= BIT(SOF_IPC_TYPE_3),
+-	.ipc_default		= SOF_IPC_TYPE_3,
+-	.default_fw_path = {
+-		[SOF_IPC_TYPE_3] = "imx/sof",
+-	},
+-	.default_tplg_path = {
+-		[SOF_IPC_TYPE_3] = "imx/sof-tplg",
++static const struct of_device_id sof_of_imx8_ids[] = {
++	{
++		.compatible = "fsl,imx8qxp-dsp",
++		.data = &IMX_SOF_DEV_DESC_NAME(imx8x),
  	},
- 	.nocodec_tplg_filename = "sof-imx8-nocodec.tplg",
--	.ops = &sof_imx8x_ops,
-+	.ops = &sof_imx8_ops,
-+	.ops_init = imx8_ops_init,
- };
- 
- static struct sof_dev_desc sof_of_imx8qm_desc = {
- 	.of_machines	= sof_imx8_machs,
-+	.chip_info	= &imx8_chip_info,
- 	.ipc_supported_mask	= BIT(SOF_IPC_TYPE_3),
- 	.ipc_default		= SOF_IPC_TYPE_3,
- 	.default_fw_path = {
-@@ -666,6 +273,7 @@ static struct sof_dev_desc sof_of_imx8qm_desc = {
+-	.default_fw_filename = {
+-		[SOF_IPC_TYPE_3] = "sof-imx8.ri",
++	{
++		.compatible = "fsl,imx8qm-dsp",
++		.data = &IMX_SOF_DEV_DESC_NAME(imx8),
  	},
- 	.nocodec_tplg_filename = "sof-imx8-nocodec.tplg",
- 	.ops = &sof_imx8_ops,
-+	.ops_init = imx8_ops_init,
+-	.nocodec_tplg_filename = "sof-imx8-nocodec.tplg",
+-	.ops = &sof_imx8_ops,
+-	.ops_init = imx8_ops_init,
+-};
+-
+-static const struct of_device_id sof_of_imx8_ids[] = {
+-	{ .compatible = "fsl,imx8qxp-dsp", .data = &sof_of_imx8qxp_desc},
+-	{ .compatible = "fsl,imx8qm-dsp", .data = &sof_of_imx8qm_desc},
+ 	{ }
  };
- 
- static const struct of_device_id sof_of_imx8_ids[] = {
+ MODULE_DEVICE_TABLE(of, sof_of_imx8_ids);
 -- 
 2.34.1
 
