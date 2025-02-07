@@ -1,224 +1,452 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866DF1CDA2D
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 09:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54511B21AA
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 09:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738919063; cv=none; b=GsEHGD/V44wX7zSqrYDbZYK70QXwCoDEbJHlQN1xlgc2exz1Bz1PtE+cjvG/A7v8kjQUwCqFPUOr8f4vYyIdytsp9p7LiwKgLxTAKypkLG41ZcgI+lsNAiLMGorQdKsf+XxdRpk3xc/2kI2KtgDo1XSYWxhNwfWeLbknuZrjvd8=
+	t=1738919314; cv=none; b=VPNwGK4z48VcvYFsFo5egH0X+IiD75M8/Z5IJiC0f2derB1Sp7ZQYLuTTc/rSkNFAuj5Ma6uJJ3dLFvGLJ/fNXqNcrL6MyWhH9kJLjAQjExLcej2dzDqfYYYr9sznoN3Z8adFoSLoNbOtL81ujA+cxTxCj+Ho2FszdzobBXJQyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738919063; c=relaxed/simple;
-	bh=3dRjkGHiqCFJ8gaSi26v3o8D8Ct0u2v99KNMcksrZNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JFDsBoEJvF9RBBn4G12QmwuP+z7eYa1D4mlEHWnxEbFmHE8Okh3UH3qZSDQQzjDN5gD0pdPCqG62nf4OE3+amrZs6Tb9gjW+d8AA79pXH7aX7u9+PUZWYluz5WZ2HK5T/3VSc5gG1jHk2g4GdSGUJjXNLOzLhKYJy/hqf2+ON38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=g5d19kez; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=rlBQXGe+ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1738919314; c=relaxed/simple;
+	bh=9Oo6oz5KOQDgzhYSeHGcsUZaOp8w6gGWXboJFdm3WZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JAwjhakNOqTPKcc0XF2GqK/fjUypz+SXGPJcNWgFaylghHLUjoUsyt5nXRgUux94z1BgMAva10DG25bBOuLbIYZ7hmrcJyCu6Pd8l2SrpDoGVRh3Ww7KdGl4TLdKSlAAUorcv1AAms9Zg2a4kMwBVV6dzp1ateUQJo+6ivfJQn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dvpH4x1R; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="g5d19kez";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="rlBQXGe+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1738919058; x=1770455058;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zBX8ExALcmiDF+/qEtJjMkDw2zlW64wywf43Ky2a6Ug=;
-  b=g5d19kezNp7T/NMdXrp9CoZY7yvFvWhMKwQjb+H2/8i9uiLGA2iDPshv
-   HJk/FM2R72kCCQIvS3y4q5fuIuNnQ0nQHrCXOKbeQYPEK2hDsRDBfHDij
-   k0Wr1/fUlL33rqk3UjQipHAhvLETYCoM++VAgTEpIaDl3PgYdTBbs7VUm
-   tToFwvRK2vBxoyy9LNKNZVBBnGYaDdWDQzLjs4ntovTSBlHeSSB94O2jp
-   MF1y8ClyTAE1eopfF7Pb6nNlexwRkumJev8L+pGuPCHipraIJ5qb8PCkK
-   ZMyKwN0h2xSd2JrOD9t31iUXhAwyRr09KvUJiyjLCveE7m8xwaxrhap0l
-   Q==;
-X-CSE-ConnectionGUID: Xhk74j5JQbWAra0Mv6t0Pw==
-X-CSE-MsgGUID: 3Lct4PK2QXKQuQADTfdvpQ==
-X-IronPort-AV: E=Sophos;i="6.13,266,1732575600"; 
-   d="scan'208";a="41637080"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Feb 2025 10:03:29 +0100
-X-CheckPoint: {67A5CC61-19-727D2C21-EE1B71AA}
-X-MAIL-CPID: 6157D79B86A1E4CE120E29C0B85C15C2_5
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 587D1166639;
-	Fri,  7 Feb 2025 10:03:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1738919005;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBX8ExALcmiDF+/qEtJjMkDw2zlW64wywf43Ky2a6Ug=;
-	b=rlBQXGe+M/MvgnHi6cUhxMQ9Q35+XqdAYZ6WPwI+6SH+/1yaI5UzRqvNEufnNtPdreYPIy
-	cYC4s+MO36XQfo5ojoJ19NB53Wqn3A/K9SFJDJBWOC9SNwpkit5PAuL4DYj7RZqMRCnoB9
-	T6tbtpOpiMhLKmsPmD8QZDkHPvn4Ta5THB+5R6RYAFPjt50xX4za4NG7Vx4kZqqJ8HeKzz
-	Ci5R7i91781egwuqpkaGZP7IDRWkgerCmAyEb8FlsMTQBO/nLX/Y2bWWUmR7GAgvcgKSR/
-	Z5fyew18JBVWiLlT6qJ5G7DEI8Ybi5MNEXoTnSIesR2DNmOUo5cNBH0w2y4tdg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 10/10] arm64: dts: imx8mq: Add access-controller references
-Date: Fri, 07 Feb 2025 10:03:23 +0100
-Message-ID: <2568692.iZASKD2KPV@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250207083616.1442887-11-alexander.stein@ew.tq-group.com>
-References: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com> <20250207083616.1442887-11-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dvpH4x1R"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51770Y2F010508;
+	Fri, 7 Feb 2025 09:08:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ci2zINXjzq9swxzeUOqn4fvbnZQxrqf1RkGJRIB1RXo=; b=dvpH4x1RwgJdVVjm
+	CH+vNxHXrWHjMUBg2YYSy8Ci0pf2NlTCStz3NxAN8JDnTiFjCKQFIarUQVWiyJq5
+	Qa9srZYtfn7kiuOHPC6Ae/v6yVcOiMgJZe0VK8A/p+nACLm/pRb6eoQ/WLzGPX5w
+	+qYWue3hd38Mch32eBFO6lpWydjDWyL2UbWzr+BSGrErIJs/GqCK9cSkwKbD/hV6
+	t8XFxFPHc8CIhqHeHJD+36v/M65/3PI/xYDsRd/7T+l7GBjeUiKgO9gG8RDcLRqn
+	Je1f/p28s6uLN0jQwpbFYiHcsxKOov2KFdX0ZpS9C3tT9AvyGlUHu041lrOcamyN
+	3l3QbQ==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44nddkgaj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Feb 2025 09:08:27 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51798Qjr020016
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Feb 2025 09:08:26 GMT
+Received: from [10.216.49.103] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 7 Feb 2025
+ 01:08:23 -0800
+Message-ID: <eea82ab3-5288-4192-8018-3378766535e4@quicinc.com>
+Date: Fri, 7 Feb 2025 14:38:18 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] i3c: Add basic HDR support
+To: Frank Li <Frank.li@nxp.com>
+CC: Joshua Yeong <joshua.yeong@starfivetech.com>,
+        Alexandre Belloni
+	<alexandre.belloni@bootlin.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Conor Culhane <conor.culhane@silvaco.com>,
+        "linux-i3c@lists.infradead.org"
+	<linux-i3c@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>
+References: <20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com>
+ <20250129-i3c_ddr-v1-1-028a7a5d4324@nxp.com>
+ <e09b50b8-dd65-4636-aa35-42efc86bba16@quicinc.com>
+ <e28bda63-bd6f-41db-8c24-43f21cccb386@starfivetech.com>
+ <Z6DmUIKn5usytjl3@lizhi-Precision-Tower-5810>
+ <08098961-ab40-4bdf-af56-c77a24c55959@quicinc.com>
+ <Z6I1jBx273o5GE5w@lizhi-Precision-Tower-5810>
+ <0435e96d-6786-4adc-83eb-a6aa3766c2d5@quicinc.com>
+ <Z6OHSsISZPClbRxw@lizhi-Precision-Tower-5810>
+ <7ba5acb0-be7d-492f-9f86-bb76c927437c@quicinc.com>
+ <Z6TWGOrZULdNpsah@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+In-Reply-To: <Z6TWGOrZULdNpsah@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: r8zSpY4b69VWpoap-LW0HpFQc6Xkl6Or
+X-Proofpoint-ORIG-GUID: r8zSpY4b69VWpoap-LW0HpFQc6Xkl6Or
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_04,2025-02-07_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
+ suspectscore=0 clxscore=1015 malwarescore=0 mlxscore=0 spamscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502070069
 
-Am Freitag, 7. Februar 2025, 09:36:15 CET schrieb Alexander Stein:
-> Mark ocotp as a access-controller and add references on peripherals
-> which can be disabled (fused).
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mq.dtsi | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mq.dtsi
-> index df8ba1d5391ae..95a40cccd46b9 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+Thanks Frank for reverting with clarity and details.
 
-I just noticed, I missed #access-controller-cells =3D <2>; for ocotp node.
-Will add in next version.
+On 2/6/2025 9:02 PM, Frank Li wrote:
+> On Thu, Feb 06, 2025 at 03:14:20PM +0530, Mukesh Kumar Savaliya wrote:
+>> Hi Frank,
+>>
+>> On 2/5/2025 9:14 PM, Frank Li wrote:
+>>> On Wed, Feb 05, 2025 at 07:49:20PM +0530, Mukesh Kumar Savaliya wrote:
+>>>> Thanks Frank ! please review below.
+>>>>
+>>>> On 2/4/2025 9:13 PM, Frank Li wrote:
+>>>>> On Tue, Feb 04, 2025 at 11:24:03AM +0530, Mukesh Kumar Savaliya wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 2/3/2025 9:22 PM, Frank Li wrote:
+>>>>>>> On Mon, Feb 03, 2025 at 02:32:51AM +0000, Joshua Yeong wrote:
+>>>>>>>> Hi Mukesh and Frank,
+>>>>>>>>
+>>>>>>>> On 02-Feb-2025 1:54 AM, Mukesh Kumar Savaliya wrote:
+>>>>>>>>> Hi Frank,
+>>>>>>>>>
+>>>>>>>>> On 1/30/2025 1:35 AM, Frank Li wrote:
+>>>>>>>>>> I3C HDR requires enter/exit patterns during each I3C transfer. Add a new
+>>>>>>>>>> API i3c_device_do_priv_xfers_mode(). The existing
+>>>>>>>>>> i3c_device_do_priv_xfers() now calls i3c_device_do_priv_xfers_mode(I3C_SDR)
+>>>>>>>>>> to maintain backward compatibility.
+>>>>>>>>>>
+>>>>>>>>>> Introduce a 'cmd' field in 'struct i3c_priv_xfer', using an anonymous union
+>>>>>>>>>> with 'rnw' since HDR mode relies on read/write commands instead of the
+>>>>>>>>>> 'rnw' bit in the address as in SDR mode.
+>>>>>>>>>>
+>>>>>>>>>> Add a priv_xfers_mode callback for I3C master drivers. If priv_xfers_mode
+>>>>>>>>>> is not implemented, fallback to SDR mode using the existing priv_xfers
+>>>>>>>>>> callback.
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>>>>>>>>> ---
+>>>>>>>>>> Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
+>>>>>>>>>> one i3c transfer. for example, can't send a HDR follow one SDR between
+>>>>>>>>>> START and STOP.
+>>>>>>>>>>
+>>>>>>>>> Is it wise to add two function inside main funcion and separate SDR vs HDR ? so we don't need to change current function arguments.
+>>>>>>>
+>>>>>>> I am not sure if understand your means. HDR have difference mode, anyway
+>>>>>>> need add new argument.
+>>>>>>>
+>>>>>> let me clarify, We can have main entry/hookup function as it is.
+>>>>>>    From priv_xfer , we can call sdr_priv_xfer and hdr_priv_xfer ? based on the
+>>>>>> structure information if its enum SDR or enum HDR.
+>>>>>>
+>>>>>>>>
+>>>>>>>> I think the 'private transfers' are limited to SDR communications,
+>>>>>>>> would it be better if we have a different interface/naming for hdr transfers?
+>>>>>>>
+>>>>>>> The key is what's difference between hdr and private transfers. So far only
+>>>>>>> command vs rnw, any other differences I missed?
+>>>>>>>
+>>>>>> yes, but can we make it priv_xfer() = sdr_priv_xfer() + hdr_priv_xfer() ?
+>>>>>
+>>>>> struct i3c_priv_xfer is array, each i3c_priv_xfer item is indepent. Can you
+>>>>> write a simple code to demostrate your idea.
+>>>>>
+>>>>> Frank
+>>>>
+>>>> ======
+>>>> Please see below. My only intention is to add hdr/sdr decision inside
+>>>> i3c_priv_xfer and rest of the functions should remain as it is.
+>>>>
+>>>> If you still need, may be we can add local function but no need to change
+>>>> prototype of function being explosed to many vendors.
+>>>>
+>>>> I hope i am not missing any major thing.
+>>>>
+>>>> struct i3c_priv_xfer {
+>>>> 	u8 rnw;
+>>>> 	u16 len;
+>>>> 	union {
+>>>> 		void *in;
+>>>> 		const void *out;
+>>>> 	} data;
+>>>>    	enum i3c_error_code err;
+>>>> // Just Add below two members and rest can be passed till end point/function
+>>>> and can process as required.
+>>>> 	enum i3c_hdr_mode mode;
+>>>> 	union {
+>>>> 		u8 rnw;
+>>>> 		u8 cmd;
+>>>> 	};
+>>>>    };
+>>>>
+>>>>
+>>>> device.c :
+>>>> i3c_device_do_priv_xfers => i3c_dev_do_priv_xfers_locked
+>>>>
+>>>> int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer
+>>>> *xfers, int nxfers) {
+>>>>
+>>>> ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, xfers);
+>>>>
+>>>> }
+>>>>
+>>>>
+>>>> master.c :
+>>>> int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev, struct
+>>>> i3c_priv_xfer *xfers, int nxfers) {
+>>>>
+>>>> 	if (master->ops->priv_xfers_mode)
+>>>> 		return master->ops->priv_xfers_mode(dev, xfers, nxfers);
+>>>>
+>>>> 	if (xfers->mode != I3C_SDR)
+>>>> 		return -EINVAL;
+>>>> }
+>>>>
+>>>
+>>> The problem is
+>>>
+>>> struct i3c_priv_xfer xfer[3] = {
+>>> 	{ .mode = SDR ...},
+>>> 	{ .mode = HDR ...},
+>>> 	{ .mode = SDR ...},
+>>> }
+>>>
+>>> i3c_device_do_priv_xfers(dev, xfer, 3);
+>>>
+>>> How to handle this case?
+>>>
+>>> I think i3c_device_do_priv_xfers() means one whole i3c transcation:
+>>> START, xfer[0], xfer[1], xfer[2], STOP.
+>>>
+>>> Frank
+>>>
+>> I think they are separate transfers, it means one call but multiple buffer
+>> to send with separate start/stop.
+>>
+>> Two options :
+>> 1. When multiple transfers in a single call, driver internally itrerates and
+>> should take care of start-xfer-stop. I think HW should be taking care unless
+>> using the restart intentionally.
+>>
+>> 2. if any xfer[i]  has HDR mode, internally it can call local function OR
+>> should diverge based on mode wherever it suits better to do.
+> 
+> We should define such behavior at API to avoid cleint driver guess master
+> controller driver's implemtation.
+> 
+What's the criteria to be used to decide at mater controller driver ?
+I think target device and it's client should also be supporting and 
+hence should instruct master driver.
 
-Best regards,
-Alexander
-
-> @@ -12,6 +12,7 @@
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
->  #include <dt-bindings/thermal/thermal.h>
->  #include <dt-bindings/interconnect/imx8mq.h>
-> +#include "imx8mq-ocotp.h"
->  #include "imx8mq-pinfunc.h"
-> =20
->  / {
-> @@ -1275,6 +1276,7 @@ mipi_dsi: dsi@30a00000 {
->  					 <&src IMX8MQ_RESET_MIPI_DSI_ESC_RESET_N>,
->  					 <&src IMX8MQ_RESET_MIPI_DSI_PCLK_RESET_N>;
->  				reset-names =3D "byte", "dpi", "esc", "pclk";
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_MIPI_DSI_DISABLE>;
->  				status =3D "disabled";
-> =20
->  				ports {
-> @@ -1392,6 +1394,7 @@ mipi_csi1: csi@30a70000 {
->  				fsl,mipi-phy-gpr =3D <&iomuxc_gpr 0x88>;
->  				interconnects =3D <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
->  				interconnect-names =3D "dram";
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_MIPI_CSI1_DISABLE>;
->  				status =3D "disabled";
-> =20
->  				ports {
-> @@ -1414,6 +1417,7 @@ csi1: csi@30a90000 {
->  				interrupts =3D <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
->  				clocks =3D <&clk IMX8MQ_CLK_CSI1_ROOT>;
->  				clock-names =3D "mclk";
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_MIPI_CSI1_DISABLE>;
->  				status =3D "disabled";
-> =20
->  				port {
-> @@ -1444,6 +1448,7 @@ mipi_csi2: csi@30b60000 {
->  				fsl,mipi-phy-gpr =3D <&iomuxc_gpr 0xa4>;
->  				interconnects =3D <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
->  				interconnect-names =3D "dram";
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_MIPI_CSI2_DISABLE>;
->  				status =3D "disabled";
-> =20
->  				ports {
-> @@ -1466,6 +1471,7 @@ csi2: csi@30b80000 {
->  				interrupts =3D <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
->  				clocks =3D <&clk IMX8MQ_CLK_CSI2_ROOT>;
->  				clock-names =3D "mclk";
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_MIPI_CSI2_DISABLE>;
->  				status =3D "disabled";
-> =20
->  				port {
-> @@ -1566,6 +1572,7 @@ fec1: ethernet@30be0000 {
->  				nvmem-cells =3D <&fec_mac_address>;
->  				nvmem-cell-names =3D "mac-address";
->  				fsl,stop-mode =3D <&iomuxc_gpr 0x10 3>;
-> +				access-controllers =3D <&ocotp IMX8MQ_OCOTP_ENET_DISABLE>;
->  				status =3D "disabled";
->  			};
->  		};
-> @@ -1705,6 +1712,7 @@ gpu: gpu@38000000 {
->  			                         <&clk IMX8MQ_GPU_PLL>;
->  			assigned-clock-rates =3D <800000000>, <800000000>,
->  			                       <800000000>, <800000000>, <0>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_GPU_DISABLE>;
->  			power-domains =3D <&pgc_gpu>;
->  		};
-> =20
-> @@ -1725,6 +1733,7 @@ usb_dwc3_0: usb@38100000 {
->  			phy-names =3D "usb2-phy", "usb3-phy";
->  			power-domains =3D <&pgc_otg1>;
->  			snps,parkmode-disable-ss-quirk;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_USB_OTG1_DISABLE>;
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1757,6 +1766,7 @@ usb_dwc3_1: usb@38200000 {
->  			phy-names =3D "usb2-phy", "usb3-phy";
->  			power-domains =3D <&pgc_otg2>;
->  			snps,parkmode-disable-ss-quirk;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_USB_OTG2_DISABLE>;
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1778,6 +1788,7 @@ vpu_g1: video-codec@38300000 {
->  			interrupts =3D <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&clk IMX8MQ_CLK_VPU_G1_ROOT>;
->  			power-domains =3D <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G1>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_VPU_DISABLE>;
->  		};
-> =20
->  		vpu_g2: video-codec@38310000 {
-> @@ -1786,6 +1797,7 @@ vpu_g2: video-codec@38310000 {
->  			interrupts =3D <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&clk IMX8MQ_CLK_VPU_G2_ROOT>;
->  			power-domains =3D <&vpu_blk_ctrl IMX8MQ_VPUBLK_PD_G2>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_VPU_DISABLE>;
->  		};
-> =20
->  		vpu_blk_ctrl: blk-ctrl@38320000 {
-> @@ -1839,6 +1851,7 @@ pcie0: pcie@33800000 {
->  			                         <&clk IMX8MQ_SYS1_PLL_80M>;
->  			assigned-clock-rates =3D <250000000>, <100000000>,
->  			                       <10000000>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_PCIE1_DISABLE>;
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1882,6 +1895,7 @@ pcie1: pcie@33c00000 {
->  			                         <&clk IMX8MQ_SYS1_PLL_80M>;
->  			assigned-clock-rates =3D <250000000>, <100000000>,
->  			                       <10000000>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_PCIE2_DISABLE>;
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1916,6 +1930,7 @@ pcie1_ep: pcie-ep@33c00000 {
->  					       <10000000>;
->  			num-ib-windows =3D <4>;
->  			num-ob-windows =3D <4>;
-> +			access-controllers =3D <&ocotp IMX8MQ_OCOTP_PCIE2_DISABLE>;
->  			status =3D "disabled";
->  		};
-> =20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+May be i can keep this open for suggestions from other experts.
+> It think xfer[n] by one API call, should be one whole transfer.
+> 
+I agree. with this if no other option, then do we still provide 
+different mode of transfers in a single function call ?
+if not then can think of separate transfer passing the mode, the way you 
+do right now.
+> START xfer[0], REPEAT START, xfer[1], REPEAT START xfer[2], ... STOP.
+> 
+> If xfer[0]'s buffer is uncontinue, it should be use sg list. But i3c data
+> len is related small now, so one buf point should be enough now.
+> 
+> If client want to multi START...STOP, START...STOP, it should be call API
+> mulit times.  One API call only support one START...STOP.
+> 
+> REPEAT START != START.
+> 
+> About HDR, according to spec line 5522
+> 
+> START SDR_CMD_ENTER_DDR xfer[0], DDR_RESTART xfer[1], ..., DDR_EXIT.
+> 
+> So seperate/extended API is needed to keep API behavior simple and
+> consistent.
+> 
+sure. if we can't enforce multimode transfers in a single call.
+> Frank
+> 
+>>
+>>>>
+>>>> svc-i3c-master.c
+>>>> //process everything using xfers.mode  and xfer.cmd.
+>>>>
+>>>> I hope you can add all rest of the changes inside this function itself.
+>>>> static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev, struct
+>>>> i3c_priv_xfer *xfers, int nxfers)
+>>>> ==========
+>>>>>
+>>>>>>>>
+>>>>>>>>>> i3c_priv_xfer should be treat as whole i3c transactions. If user want send
+>>>>>>>>>> HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
+>>>>>>>>>> instead put into a big i3c_priv_xfer[n].
+>>>>>>>>>> ---
+>>>>>>>>>>       drivers/i3c/device.c       | 19 +++++++++++++------
+>>>>>>>>>>       drivers/i3c/internals.h    |  2 +-
+>>>>>>>>>>       drivers/i3c/master.c       |  8 +++++++-
+>>>>>>>>>>       include/linux/i3c/device.h | 12 +++++++++++-
+>>>>>>>>>>       include/linux/i3c/master.h |  3 +++
+>>>>>>>>>>       5 files changed, 35 insertions(+), 9 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
+>>>>>>>>>> index e80e487569146..e3db3a6a9e4f6 100644
+>>>>>>>>>> --- a/drivers/i3c/device.c
+>>>>>>>>>> +++ b/drivers/i3c/device.c
+>>>>>>>>>> @@ -15,12 +15,13 @@
+>>>>>>>>>>       #include "internals.h"
+>>>>>>>>>>         /**
+>>>>>>>>>> - * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
+>>>>>>>>>> - *                specific device
+>>>>>>>>>> + * i3c_device_do_priv_xfers_mode() - do I3C SDR private transfers directed to a
+>>>>>>>>>> + *                     specific device
+>>>>>>>>>>        *
+>>>>>>>>>>        * @dev: device with which the transfers should be done
+>>>>>>>>>>        * @xfers: array of transfers
+>>>>>>>>>>        * @nxfers: number of transfers
+>>>>>>>>>> + * @mode: transfer mode
+>>>>>>>>>>        *
+>>>>>>>>>>        * Initiate one or several private SDR transfers with @dev.
+>>>>>>>>>>        *
+>>>>>>>>>> @@ -32,9 +33,9 @@
+>>>>>>>>>>        *            driver needs to resend the 'xfers' some time later.
+>>>>>>>>>>        *            See I3C spec ver 1.1.1 09-Jun-2021. Section: 5.1.2.2.3.
+>>>>>>>>>>        */
+>>>>>>>>>> -int i3c_device_do_priv_xfers(struct i3c_device *dev,
+>>>>>>>>>> -                 struct i3c_priv_xfer *xfers,
+>>>>>>>>>> -                 int nxfers)
+>>>>>>>>>> +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+>>>>>>>>>> +                  struct i3c_priv_xfer *xfers,
+>>>>>>>>>> +                  int nxfers, enum i3c_hdr_mode mode)
+>>>>>>>>> why can't we pass mode as another structure member inside struct i3c_priv_xfer ? Adding function agrument parameter impacts existing drivers.
+>>>>>>>
+>>>>>>> If that, it will be possible, xfers[0] is sdr, xfers[1] is hdr. Actually,
+>>>>>>> I3C can't do that.  we assume finish whole xfers between one whole traction
+>>>>>>> (between START and STOP).
+>>>>>>>
+>>>>>>> Frank
+>>>>>>>>>>       {
+>>>>>>>>>>           int ret, i;
+>>>>>>>>>>       @@ -47,11 +48,17 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+>>>>>>>>>>           }
+>>>>>>>>>>             i3c_bus_normaluse_lock(dev->bus);
+>>>>>>>>>> -    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
+>>>>>>>>>> +    ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers, mode);
+>>>>>>>>>>           i3c_bus_normaluse_unlock(dev->bus);
+>>>>>>>>>>             return ret;
+>>>>>>>>>>       }
+>>>>>>>>>> +EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers_mode);
+>>>>>>>>>> +
+>>>>>>>>>> +int i3c_device_do_priv_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers, int nxfers)
+>>>>>>>>>> +{
+>>>>>>>>>> +    return i3c_device_do_priv_xfers_mode(dev, xfers, nxfers, I3C_SDR);
+>>>>>>>>>> +}
+>>>>>>>>>>       EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
+>>>>>>>>>>         /**
+>>>>>>>>>> diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+>>>>>>>>>> index 433f6088b7cec..553edc9846ac0 100644
+>>>>>>>>>> --- a/drivers/i3c/internals.h
+>>>>>>>>>> +++ b/drivers/i3c/internals.h
+>>>>>>>>>> @@ -16,7 +16,7 @@ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+>>>>>>>>>>       int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
+>>>>>>>>>>       int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+>>>>>>>>>>                        struct i3c_priv_xfer *xfers,
+>>>>>>>>>> -                 int nxfers);
+>>>>>>>>>> +                 int nxfers, enum i3c_hdr_mode mode);
+>>>>>>>>>>       int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
+>>>>>>>>>>       int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
+>>>>>>>>>>       int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
+>>>>>>>>>> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+>>>>>>>>>> index d5dc4180afbcf..67aaba0a38db2 100644
+>>>>>>>>>> --- a/drivers/i3c/master.c
+>>>>>>>>>> +++ b/drivers/i3c/master.c
+>>>>>>>>>> @@ -2945,7 +2945,7 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
+>>>>>>>>>>         int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+>>>>>>>>>>                        struct i3c_priv_xfer *xfers,
+>>>>>>>>>> -                 int nxfers)
+>>>>>>>>>> +                 int nxfers, enum i3c_hdr_mode mode)
+>>>>>>>>>>       {
+>>>>>>>>>>           struct i3c_master_controller *master;
+>>>>>>>>>>       @@ -2956,9 +2956,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+>>>>>>>>>>           if (!master || !xfers)
+>>>>>>>>>>               return -EINVAL;
+>>>>>>>>>>       +    if (master->ops->priv_xfers_mode)
+>>>>>>>>>> +        return master->ops->priv_xfers_mode(dev, xfers, nxfers, mode);
+>>>>>>>>>> +
+>>>>>>>>>>           if (!master->ops->priv_xfers)
+>>>>>>>>>>               return -ENOTSUPP;
+>>>>>>>>>>       +    if (mode != I3C_SDR)
+>>>>>>>>>> +        return -EINVAL;
+>>>>>>>>>> +
+>>>>>>>>>>           return master->ops->priv_xfers(dev, xfers, nxfers);
+>>>>>>>>>>       }
+>>>>>>>>>>       diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+>>>>>>>>>> index b674f64d0822e..7ce70d0967e27 100644
+>>>>>>>>>> --- a/include/linux/i3c/device.h
+>>>>>>>>>> +++ b/include/linux/i3c/device.h
+>>>>>>>>>> @@ -40,11 +40,13 @@ enum i3c_error_code {
+>>>>>>>>>>         /**
+>>>>>>>>>>        * enum i3c_hdr_mode - HDR mode ids
+>>>>>>>>>> + * @I3C_SDR: SDR mode (NOT HDR mode)
+>>>>>>>>>>        * @I3C_HDR_DDR: DDR mode
+>>>>>>>>>>        * @I3C_HDR_TSP: TSP mode
+>>>>>>>>>>        * @I3C_HDR_TSL: TSL mode
+>>>>>>>>>>        */
+>>>>>>>>>>       enum i3c_hdr_mode {
+>>>>>>>>>> +    I3C_SDR,
+>>>>>>>>>>           I3C_HDR_DDR,
+>>>>>>>>>>           I3C_HDR_TSP,
+>>>>>>>>>>           I3C_HDR_TSL,
+>>>>>>>>>> @@ -53,6 +55,7 @@ enum i3c_hdr_mode {
+>>>>>>>>>>       /**
+>>>>>>>>>>        * struct i3c_priv_xfer - I3C SDR private transfer
+>>>>>>>>>>        * @rnw: encodes the transfer direction. true for a read, false for a write
+>>>>>>>>>> + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
+>>>>>>>>>>        * @len: transfer length in bytes of the transfer
+>>>>>>>>>>        * @actual_len: actual length in bytes are transferred by the controller
+>>>>>>>>>>        * @data: input/output buffer
+>>>>>>>>>> @@ -61,7 +64,10 @@ enum i3c_hdr_mode {
+>>>>>>>>>>        * @err: I3C error code
+>>>>>>>>>>        */
+>>>>>>>>>>       struct i3c_priv_xfer {
+>>>>>>>>>> -    u8 rnw;
+>>>>>>>>>> +    union {
+>>>>>>>>>> +        u8 rnw;
+>>>>>>>>>> +        u8 cmd;
+>>>>>>>>>> +    };
+>>>>>>>>>>           u16 len;
+>>>>>>>>>>           u16 actual_len;
+>>>>>>>>>>           union {
+>>>>>>>>>> @@ -301,6 +307,10 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+>>>>>>>>>>                        struct i3c_priv_xfer *xfers,
+>>>>>>>>>>                        int nxfers);
+>>>>>>>>>>       +int i3c_device_do_priv_xfers_mode(struct i3c_device *dev,
+>>>>>>>>>> +                  struct i3c_priv_xfer *xfers,
+>>>>>>>>>> +                  int nxfers, enum i3c_hdr_mode mode);
+>>>>>>>>>> +
+>>>>>>>>>>       int i3c_device_do_setdasa(struct i3c_device *dev);
+>>>>>>>>>>         void i3c_device_get_info(const struct i3c_device *dev, struct i3c_device_info *info);
+>>>>>>>>>> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+>>>>>>>>>> index 12d532b012c5a..352bd41139569 100644
+>>>>>>>>>> --- a/include/linux/i3c/master.h
+>>>>>>>>>> +++ b/include/linux/i3c/master.h
+>>>>>>>>>> @@ -472,6 +472,9 @@ struct i3c_master_controller_ops {
+>>>>>>>>>>           int (*priv_xfers)(struct i3c_dev_desc *dev,
+>>>>>>>>>>                     struct i3c_priv_xfer *xfers,
+>>>>>>>>>>                     int nxfers);
+>>>>>>>>>> +    int (*priv_xfers_mode)(struct i3c_dev_desc *dev,
+>>>>>>>>>> +                   struct i3c_priv_xfer *xfers,
+>>>>>>>>>> +                   int nxfers, enum i3c_hdr_mode mode);
+>>>>>>>>>>           int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
+>>>>>>>>>>           void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
+>>>>>>>>>>           int (*i2c_xfers)(struct i2c_dev_desc *dev,
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>
+>>>>>>
+>>>>
+>>
 
