@@ -1,118 +1,103 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CC31DED70
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 13:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E62E64A
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 13:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738934095; cv=none; b=XzQtAyGTotTVvDlI9jyNM0L/0Dook+pI9C70mxOyVHdwhi7Idt/i45hCvYvQmwGnLOYNTzIudPjw2r5mh1hrvgc/9Kgyzrn8KAq1lVdkm4yFwne2mj+H2kp5wjzNLut2BKC8R0QYwn7qlVPxoSMoegT6CXF1HiDNztPyjxBs/5M=
+	t=1738936471; cv=none; b=DaBaoL3bjM+Cc4WKpzOwSMw+V90A9xlPb0POJJu30t2rAz+Ku32Q/Roq9G5C7u48OdkzR3+dvR+TDB8Q20MFvGtdzQ2q8qBy2Yaefte5vHvVp733fIZQxcnvnef1WNmvdzPrfQ88NX40795SbVKd0n0/8SJIdQuLWL5d36d2r9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738934095; c=relaxed/simple;
-	bh=OW7OP/NQ49fQv/lKJd6pSJwjF7WpKW61USJQD2CXCbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fU0rzIEQMzjKA/liA8WBmureVKtkXo7cGXnK2nFcB/oY+H4BlWPeLZ7xdbonGSlmfLujWQyeCFYMvksfY4g2XkKv/l9air5I0b0s14w3I/Huj5i+kX8q51XB0/ZlrUhsIHKu575OyUSwj6kKyoD4mjYoELDY46exyiMckWJzrZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3F50113E;
-	Fri,  7 Feb 2025 05:15:15 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FE453F63F;
-	Fri,  7 Feb 2025 05:14:49 -0800 (PST)
-Date: Fri, 7 Feb 2025 13:14:46 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v2 3/4] clk: imx: pll14xx: support spread spectrum clock
- generation
-Message-ID: <Z6YHRlxJG4V56wrZ@bogus>
-References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
- <20250205-clk-ssc-v2-3-fa73083caa92@nxp.com>
- <CABGWkvqXf0ZmJKofrbahB5N5uer6ye6Q4s_PXz_Z61vG2pMu=g@mail.gmail.com>
- <PAXPR04MB8459F1CE0E8049355ADC9F3C88F62@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <CABGWkvrKe6az5XR=MvdMwBOfeXqd5yPoF4Yf4pqyyGPD4Kpvpg@mail.gmail.com>
- <Z6TgesTZklGvmI56@bogus>
- <20250207112622.GB14860@localhost.localdomain>
+	s=arc-20240116; t=1738936471; c=relaxed/simple;
+	bh=Hpf80LgbTQN2vdnXpc+7IlbSWs0fEJnOvnGxfOERoYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tEtBFQ9QbcHzJGRClRXV553YaUkLetn7ftsFQKhHxLtXLl9TYYiVbf8sefp09a6/weyGU85IaCjUvVChGNZY1qt5v0dFO1aA784FOQY/tVzbKEwbk6MQeBpI2dvqyrkAE8ptUz863ugDsvEJYhK9DHUSApC23v5k9vhvlDyk3b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=McjOa39a; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cexhNhoe reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="McjOa39a";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cexhNhoe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1738936468; x=1770472468;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nTIUisbXh4QjJS+LI8f+3ax5wyozSgfahYNeRHOmjd8=;
+  b=McjOa39aQadaQ7JHLisnurl9xlRky8rK31PuIYU1dNe+bkJBuOoQEKiC
+   dW6n0aGPT2gW/a9a7of0X5zY/O3r/W1d+IqiHXc4s+39IUg+4ivbojW2N
+   hZOH3HVQhHLt5BNMJMDanKQfcQ8SDqXOEum4GqP3RSJn11P76gXF5aZrg
+   Z9a9SYc3HR6uxHvj7AmRmyUDxDyu0rI7a2lcGLfDWu3gYhLO2PTHB0wYB
+   Tb4mLV0GjNjAFa0cxC6mPpYFFPg/k7uyDZKifuHZKSHEwrlTkg8c/WEBF
+   25p1/NZrQ+Ow2b1gAxQd8DvbNA9JRiPX0C0NDZzmg+fLuH5HA6R7T4fXD
+   w==;
+X-CSE-ConnectionGUID: SkqYzeS5Rt+3j4CFbpj6KA==
+X-CSE-MsgGUID: MgMByEkoQciFcPo1UoKVkg==
+X-IronPort-AV: E=Sophos;i="6.13,267,1732575600"; 
+   d="scan'208";a="41645049"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 07 Feb 2025 14:54:03 +0100
+X-CheckPoint: {67A6107B-3-8F72533B-EF5B5974}
+X-MAIL-CPID: 3037226F90E1CD7D000B19975831E324_1
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E727E166061;
+	Fri,  7 Feb 2025 14:53:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1738936438;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nTIUisbXh4QjJS+LI8f+3ax5wyozSgfahYNeRHOmjd8=;
+	b=cexhNhoejlZHe3odS8rdMig4FKDNX8jkHE+AAJeDbCmBDLy8YuQUlbzP6fWBZiP1rC0QLT
+	yWXEmulgysfbhX1aRVaZBJ6BwTCj6qIjGrR9UudolHbudaVgdUeNc0Io0215+DKf9tfVGG
+	vNwvY/VrGhBJkn1DLwIbnRJZcWZCQGC6a60dPEeMRnMy66gwEKJnLEUUThGGgKvNzdw3+f
+	I6OS76LGXJaMrOq83RL6pGv+iA0fJE6DcjitJujqnj6saXLOuA59dtnBIiXUCdn85yCMrn
+	DPRFLnpKm7FBwq2E3x0fg47691IDkpNncOOJKTr6cUiG/r+63vrBrTRZcSQhsg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] TQMa93xx fixes
+Date: Fri, 07 Feb 2025 14:53:56 +0100
+Message-ID: <3882355.iIbC2pHGDl@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250107141117.984652-1-alexander.stein@ew.tq-group.com>
+References: <20250107141117.984652-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207112622.GB14860@localhost.localdomain>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Feb 07, 2025 at 07:26:22PM +0800, Peng Fan wrote:
-> Hi Sudeep,
->
-> V2 is actually 2 weeks after V1. So after addressing the comments
-> from Stephen and Dan, also updated clk-scmi.c to use a non-vendor
-> changes, I posted out V2.
->
+Hello,
 
-Sure, but as I said you posted on the very first day of the merge window.
-So 2 weeks just cover the end of merge window.
+Am Dienstag, 7. Januar 2025, 15:11:14 CET schrieb Alexander Stein:
+> Hi,
+>=20
+> this series includes small fixes to TQMa93xx DT:
+> * Sorting DT nodes alphabetically
+> * Invert default for Powerdown/Disables on Mini-PCIe slot
+> * Swap order of ethernet devices
+>=20
+> Alexander Stein (3):
+>   arm64: dts: freescale: imx93-tqma9352-mba93xxca: sort pinctrl nodes
+>   arm64: dts: mba93xxca: Do not assert power-down pins
+>   arm64: dts: tqma9352-mba93xx[cl]a: swap ethernet aliases
+>=20
+>  .../freescale/imx93-tqma9352-mba93xxca.dts    | 54 +++++++++----------
+>  .../freescale/imx93-tqma9352-mba93xxla.dts    |  6 +--
+>  2 files changed, 30 insertions(+), 30 deletions(-)
 
-> 2 days, this is just after got Cristian's comments. Then I posted V2.
-> I try to follow your working style on handling scmi patches, but seems you are
-> not active, so I mainly count on Cristian's comments and update patches.
->
+Any comment on this series? Thanks
 
-Yes, his comments were for more discussions internally and externally.
-Not to churn up another patch set.
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-> The i.MX pll patches in V2 is orthogonal to clk scmi, I did not expect
-> complains. But ...
->
 
-Sorry if I overlooked, but with not all the platform specific
-knowledge it is just too much info to consume at once. Again it is
-fine if you don't make it hard but churning newer versions. So please
-give time.
-
-> In my view, maintainers have patchwork to maintain patches. patches send
-> out in merge window will not be reviewed in short time or surely not
-> picked up, I understand this. patches could just be marked new in patchwork.
-> If new version is out, old version just marked as not apply.
-
-Though I don't use patchwork(probably I should not your problem).
-However, sometimes I see all versions to understand the changes and
-evolution sometimes. And it just gets hard if there are too many
-versions in short duration.
-
-> And I use b4 to manage patchset, and each revision has changelog.
->
-
-Good.
-
-> Indeed I not track merge window since I am not maintainer role. I was
-> not aware this would introduce complain (: I will track the cycle
-> in following days.
->
-
-I don't say it is a must. But good if you manage to.
-
-I will look at all the pending patches from you soon, give me until
-middle of next week.
-
---
-Regards,
-Sudeep
