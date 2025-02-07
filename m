@@ -1,280 +1,106 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F99195980
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 16:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E76123C8DE
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 16:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738945416; cv=none; b=oDj7OI2CxBvRIS6vjd+w+xp9HXCXSGBEMTrJOeIZY0ycJOlSSqiYVh/627NoUpTAmxHR0drENlXKv/c04YQGTD2gz23TyD/+LpGBw6GTUPYhnu3HBY4BWg+moA6bNCaCEiV6mXRC5u0qN32kOOQDc5Z0KL62lykHP+wEi3JQGvU=
+	t=1738946161; cv=none; b=jw8atzrBDwWldRtnBkn8OBx5djhN1UyMyvGYf6jnG2a80kbw7Ti6wy1ROyrc7ul1IxcvkLmBMIWs6xqtQO74Cye25uHNWsf+791MTbfaF0m2+AB1d4/WSND/xVAsOqEwbdiTgWY5UzzHc6Ivx5BIAeZZSWbp5Pl/OmB+RCiYHZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738945416; c=relaxed/simple;
-	bh=zZASAU4sdBBq785nmA4kIBRJ49R4E94H2J/yq9hQJmw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PHTyXkLFtYMzl7hf7wFa54PfA+M3RiYCmwua4E8ME5st+1HeFW+tA9BaOb/WsMMdkRir+RsaGtMOxhwmaiFLtbIxIHmGXzysC9FTIlD9EP9NYGYOKD+6Eie09w7MdK3wSa63JlU5YPK5Q7JzZnX6eTm+3jlxQn+FoTYGbGVdcxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ePIO2KiL; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738946161; c=relaxed/simple;
+	bh=xsyUA2Qan0ANfv/i9DvHs2mxeJq+KyeixSzoPtL4hbE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=L1gSVqlqHO3bYJOanJqNWyT7kj/DXfyU6UjdH5Rem2OeW7TJXKtQjy/brsvJW9WIxlwyR1pHkOJO55yMnGqn8lx1dFnR2R75+oCAApvps1jU5tlYj3g/XBKzpBg50rrn217XDPVaoe5JiZe+rKgQ6OYpVQf9d5XwsFFiTyZhUzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hDuRYc1T; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ePIO2KiL"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso1193087f8f.3
-        for <imx@lists.linux.dev>; Fri, 07 Feb 2025 08:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738945413; x=1739550213; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WMCPFhDyZYkrbJvic77bbS2Bo/r1oG3Os1Kys3I7qps=;
-        b=ePIO2KiLmZpyj/QqIH4hKtwlp6RaFeAzrCWp2Dg6kSV+DTAXsC9+Dqfve2FKJgSqZ7
-         otXYYSaVYZx+wJX3P+jLUGBAwGvb4rrarXs7i5wI2mVDySAmLrUMPRVGZkcJLFs3I6s7
-         F9xlGMFsofuRhHNIx/2YXh2CU4UAc27X1A16OqQg0v2JDnLuD3BjbmIDP7ohdNgyko1O
-         GTOW29KdbYtMVzXCdJgzqE+7uExumuQdXYwiyGSSujRaK+CzazP/T2HQiPf9vYgx3tpT
-         nmovCDApDKWgAh4Wb1mAElDeZN6uZI2nVftNfyq4wf2xCbb/X5rHnHb6yEATLjFr1u+z
-         uFTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738945413; x=1739550213;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WMCPFhDyZYkrbJvic77bbS2Bo/r1oG3Os1Kys3I7qps=;
-        b=MIZsKoO4ZGDVpB9zlo3bID9D7ZLh/i9GPoCHCmeryTiEgxlKBr5OJ6wiQ6BbYqJgap
-         F5XkLnTQf2ByDZYmG9T3ShcQKAjcdXuCEB6qg+6hZBXkLbd3adaIJcDYK3IlV1Fp1Ka3
-         tEpX98ADR5EJyVIwv6zf3iCQ1bDixG3tbLTzpvGAqeGNcnwdmeja87c/HYE4VU3khcRZ
-         VBdCkcRBqw5rI7D7r/WBr0Gkaj3e+WnUqTzDleFIDJJktQUkuQTiTVTxaKjj/DHSJw7s
-         uPaQaPUWqkn74ETABHaLmQ3BugSz3I02EUu2lB+Rl6+lD2KOQTdtDva97K/uNVPdVJWA
-         ByDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVa7Fc8/yYnolZvNirrk7D1sN2h4174VBMCaDVCr5zehjzFiCGBkquJNcr1tOm7B6BBhNY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzy6vu8Wj7AGQilGBYPi7rgMZ5kA2dgV0g/Pk6IxHU6CqUg7uiq
-	l0HzswBQehxDI+0CyVluWp6t6/r5T1BkXnvyxdrLpgLUwPYuVlAE
-X-Gm-Gg: ASbGncuOIyDSTiNVEaeFXoGduYUHdNNpF2g4vQgeh8pkAKQYXvgnIz1E4P5J8a8zpkw
-	1G2sbtszdQXOxn5IA2xXQ0dBIAkOAirnkh7dW8lC9RwdDKL+MO0N0b0R3BSjeyWTEdgjv3lj/mJ
-	AARFNZDM9GkIxyfoLGRW/f3EwcUrSek0t8Wx5Kdhn8RMAegmr2Ctqj/MhyCGauVDeVh5WVSeHoP
-	68gGT9aT0h4b3426KkWEyRY42i9i49c0ltUNQTf/yZsEboR3eyYiGSIhtjwo0Cp/tdKgaZPEeXm
-	vVy8XWreuY87mZL6WhT3Rl6Z6KFaZ+4EydWiz6IepKETMVGUy4JcvA==
-X-Google-Smtp-Source: AGHT+IHswa39pRzzIapV73OP7tXt1uLC8Jw3/bOqBxZifaNYc159cr5+c5VMnjMPfJEEtBu9/S52vg==
-X-Received: by 2002:a05:6000:1ac5:b0:38d:b57e:71e0 with SMTP id ffacd0b85a97d-38dc8da7a56mr2231522f8f.4.1738945412616;
-        Fri, 07 Feb 2025 08:23:32 -0800 (PST)
-Received: from playground.localdomain ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391da9652bsm61260825e9.2.2025.02.07.08.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 08:23:32 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 7/7] ASoC: SOF: imx: add driver for the imx95 chip
-Date: Fri,  7 Feb 2025 11:22:46 -0500
-Message-Id: <20250207162246.3104-8-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250207162246.3104-1-laurentiumihalcea111@gmail.com>
-References: <20250207162246.3104-1-laurentiumihalcea111@gmail.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hDuRYc1T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1738946152; x=1739550952; i=markus.elfring@web.de;
+	bh=jL7iJ8uPcgTS3dFFh+s1ceSfKiJXV07ny4qcZNTr6L4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=hDuRYc1Tf8BBdIcmUUa8EkJoQRCi1G4McdH9zaYoo4X0ccFI26xVpxviWNZn6Y0v
+	 FekabawLSgnLeedvUQQWIjjF6lYKKv6kO8DLLbv1sIdENgv14DXez16X1YhLctG9Z
+	 rbwhTgZA86iiWACku2uKDp06h7b7sNYTk6zK4+N3RFHMkvRe2THBlD3L4NcnQnW9X
+	 NHHJHJktH4i95K5vEynitw89H9UWvHT6/sKMReYJHfHa9pRtEzAoHSpWolA7KZ//q
+	 mYw9RLLl4PLi2GRgi+mxcjHYUeQ2u2ekr0sTs+LrKjTS3k4ZOgpstCxNxwZDB7zbp
+	 9qcZvpQPnm4Ak3h8Lg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.29]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mkmvj-1szNGq4BJ9-00ZHZX; Fri, 07
+ Feb 2025 17:35:52 +0100
+Message-ID: <8b96ad7e-5a47-458f-bb42-7b7c9efb82e1@web.de>
+Date: Fri, 7 Feb 2025 17:35:49 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>, imx@lists.linux.dev,
+ linux-sound@vger.kernel.org, Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>,
+ Iuliana Prodan <iuliana.prodan@nxp.com>, Jaroslav Kysela <perex@perex.cz>,
+ Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>
+Cc: LKML <linux-kernel@vger.kernel.org>
+References: <20250207162246.3104-2-laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH v3 1/7] ASoC: SOF: imx: introduce more common structures
+ and functions
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250207162246.3104-2-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Pc5O0Xl52kPNkTwaOGQwjb94NaD4v7MoUwKVirSLN/rAEXijVrh
+ cJQqpOakUzJsG60gPj1A+7aywQ3cMVMFaPDitt/nfVLYeRdDIqu06gB30YD9rRTeq9EVJCs
+ IVJ+uHy5jqggGOhJpDoVAc2wSzXYrEc1woNz4yYYHaxkch1VU0GMocTChPpodtS/tgOofgm
+ vhDA1XJSCjQYa0w7JWB1g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:RgQ1Ql5ggb4=;sCjLbkEs7cShRsezOhsV4DufP5P
+ O8Af7VJtkDrZ4gJEdvFC6ttcbFC96fMkAsM3EIqiMajTGQCTP1rwos+yswh/EV+h/dvFaNT0f
+ Y4FmGLc9V3uMiPBfiR+xcS70N7XZC1RBjNFp5wyHe8wxZrbj2cRPQ9LYK0saaWlY5nu89xVd+
+ oraUMvGSK/tHrgbFuM+f1IDcwD65dVHDs5x30IRxMRktebjH2WgFWLdgg343ULHwPGTt0OhUw
+ 9VAT2qwKIDxTdwTtqfQquz4GsMKDcV1E4p5ZQgTnUpI3uZl5kaplKRLPtzgpnF9AvuZOBqZTA
+ Lg34c25VeSI8bY9d4pY6Uh6YGmJ8Mkq8dvou75xqJ38kq9MTnLAxVJhq93gLFIK7SA5Egdtx3
+ 6yHVgSaMM634X0imyqUg8y5yfeeDk38CjY6gmyt7Yim6QWc5cl8h6187Ywdh4dY5zab+7v4qV
+ /418B+2VQYDXjitHDkP6/IbVVXvJZwbXXdU13I1dSr5mQTJ9bZrBI5kNSA1E60m5mTM1dH8ju
+ brwS+SI4eWykBLLn0PtVMCNDELk2wjkH/BeeTjh8GNaoIAnPSSUxdco5sv+VyfZF3YMt39OtY
+ 3ZtTFmnGqcvK3+CAH8tDj2m6F7TLnNxxJ2lMb2HCYl21bF1UiXKuQrFfsK4EEmPeF5XggeCkm
+ 4/aGojlLoWOZvIzwAGFTMDH3pHCwt7l2lFHFpHrbvPrBUNtA4g0Ju6W4MHbnaCTPMgjgnT8EM
+ FFKhcmcVUTMFvFtfO+wmiPyQGuBrdd4KHqKowU1Wfm7AFJWLok2ct3CyJ490o9IeyLS+pJcMP
+ 9+crdWUaTMR3KQGhT0NAPKlugyiIa3psMiaphuwhoQYgK2Z3C7lH4jCqTJ1eLl6d0d8Yl32je
+ fE42YtxnLlNi/t2LICIzxeJ5JfAkkyt8bg3sFEk3rL8w9vTzIh5bTy6iahzujYHD0aSQLHjwB
+ /DNk6WVMsxoCNiYkshqXvWvvkUrDBGrFRDyBj8rt7+XroX4Yzk9mu5gQ6ljXV2zwmCPyznCW8
+ Wv1rzS0uQ97TD6S828NDxL6BCdXDrdTb2L5n895V+3BdROAndNY6qB5lCYKcSPm9VJ5mElD4C
+ nDKLkTzOrLeValMRdvf/sIrdWPdxCRNXSfwhZ/NcY+4pdUSNHyjMuPof2KVNrGNGEVPvIJDa6
+ HaQj4+H3D7kKiMtEzNThy3kTvpMg6bnE+74mZOaSVPlcQFDTUfx2w5dIQoG/SPqUrCaG9qYms
+ Smgpdoq+9n0dmnwoRMR6sU4mDJppwwcfYl9rCdtAD3LBJtHK5GYx8JctOOdDmPN5haKc4YNab
+ f22dYXuprxonQGjXHfDp95+UGd4snx73MTn7UFWpuKEVIR5OyVJ0D1PE0Uc5jrAiXTlzTrEmu
+ 1ZEDX3hbf+n5w1HwLWqqM55NO8MO/1YomxAx04WLAoTkSmPq0t3ort4oeObrQgLvuH3RlX7YH
+ FFf4E2g==
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+=E2=80=A6
+> +++ b/sound/soc/sof/imx/imx-common.c
+> @@ -1,11 +1,16 @@
+=E2=80=A6
+> +static void imx_handle_reply(struct imx_dsp_ipc *ipc)
+> +{
+=E2=80=A6
+> +	spin_lock_irqsave(&sdev->ipc_lock, flags);
+> +	snd_sof_ipc_process_reply(sdev, 0);
+> +	spin_unlock_irqrestore(&sdev->ipc_lock, flags);
+> +}
+=E2=80=A6
 
-Add SOF support for the imx95 chip. Although the support is just
-for the imx95 chip, the driver is intended for all chips in the imx9
-family.
+Under which circumstances would you become interested to apply a statement
+like =E2=80=9Cguard(spinlock_irqsave)(&sdev->ipc_lock);=E2=80=9D?
+https://elixir.bootlin.com/linux/v6.13.1/source/include/linux/spinlock.h#L=
+572
 
-Note that the imx95 support could have just as easily been added
-to the imx8 platform driver but a new platform driver was created
-because the intention is to keep the families in separate drivers.
-
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- sound/soc/sof/imx/Kconfig  |   9 +++
- sound/soc/sof/imx/Makefile |   2 +
- sound/soc/sof/imx/imx9.c   | 137 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 148 insertions(+)
- create mode 100644 sound/soc/sof/imx/imx9.c
-
-diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
-index 2edf9de2c886..327e2df94a58 100644
---- a/sound/soc/sof/imx/Kconfig
-+++ b/sound/soc/sof/imx/Kconfig
-@@ -32,4 +32,13 @@ config SND_SOC_SOF_IMX8
- 	  Say Y if you have such a device.
- 	  If unsure select "N".
- 
-+config SND_SOC_SOF_IMX9
-+	tristate "SOF support for i.MX9"
-+	depends on IMX_DSP
-+	select SND_SOC_SOF_IMX_COMMON
-+	help
-+	  This adds support for Sound Open Firmware for NXP i.MX9 platforms.
-+	  Say Y if you need such a device.
-+	  If unsure select "N".
-+
- endif ## SND_SOC_SOF_IMX_TOPLEVEL
-diff --git a/sound/soc/sof/imx/Makefile b/sound/soc/sof/imx/Makefile
-index 36a3a67c6efb..74b5ecad8fe8 100644
---- a/sound/soc/sof/imx/Makefile
-+++ b/sound/soc/sof/imx/Makefile
-@@ -1,7 +1,9 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
- snd-sof-imx8-y := imx8.o
-+snd-sof-imx9-y := imx9.o
- 
- snd-sof-imx-common-y := imx-common.o
- 
- obj-$(CONFIG_SND_SOC_SOF_IMX8) += snd-sof-imx8.o
-+obj-$(CONFIG_SND_SOC_SOF_IMX9) += snd-sof-imx9.o
- obj-$(CONFIG_SND_SOC_SOF_IMX_COMMON) += imx-common.o
-diff --git a/sound/soc/sof/imx/imx9.c b/sound/soc/sof/imx/imx9.c
-new file mode 100644
-index 000000000000..598675d4350a
---- /dev/null
-+++ b/sound/soc/sof/imx/imx9.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
-+/*
-+ * Copyright 2025 NXP
-+ */
-+
-+#include <linux/arm-smccc.h>
-+
-+#include "imx-common.h"
-+
-+#define IMX_SIP_SRC 0xC2000005
-+#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
-+
-+#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
-+
-+#define IMX_SIP_LMM 0xC200000F
-+#define IMX_SIP_LMM_BOOT 0x0
-+#define IMX_SIP_LMM_SHUTDOWN 0x1
-+
-+#define IMX95_M7_LM_ID 0x1
-+
-+static struct snd_soc_dai_driver imx95_dai[] = {
-+	IMX_SOF_DAI_DRV_ENTRY_BIDIR("sai3", 1, 32),
-+};
-+
-+static struct snd_sof_dsp_ops sof_imx9_ops;
-+
-+static int imx95_ops_init(struct snd_sof_dev *sdev)
-+{
-+	/* first copy from template */
-+	memcpy(&sof_imx9_ops, &sof_imx_ops, sizeof(sof_imx_ops));
-+
-+	/* ... and finally set DAI driver */
-+	sof_imx9_ops.drv = get_chip_info(sdev)->drv;
-+	sof_imx9_ops.num_drv = get_chip_info(sdev)->num_drv;
-+
-+	return 0;
-+}
-+
-+static int imx95_chip_probe(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+	struct platform_device *pdev;
-+	struct resource *res;
-+
-+	pdev = to_platform_device(sdev->dev);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "sram");
-+	if (!res)
-+		return dev_err_probe(sdev->dev, -ENODEV,
-+				     "failed to fetch SRAM region\n");
-+
-+	/* set core boot reset address */
-+	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, res->start,
-+		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static int imx95_core_kick(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+
-+	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT,
-+		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static int imx95_core_shutdown(struct snd_sof_dev *sdev)
-+{
-+	struct arm_smccc_res smc_res;
-+
-+	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN,
-+		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
-+
-+	return smc_res.a0;
-+}
-+
-+static const struct imx_chip_ops imx95_chip_ops = {
-+	.probe = imx95_chip_probe,
-+	.core_kick = imx95_core_kick,
-+	.core_shutdown = imx95_core_shutdown,
-+};
-+
-+static struct imx_memory_info imx95_memory_regions[] = {
-+	{ .name = "sram", .reserved = false },
-+	{ }
-+};
-+
-+static const struct imx_chip_info imx95_chip_info = {
-+	.ipc_info = {
-+		.boot_mbox_offset = 0x6001000,
-+		.window_offset = 0x6000000,
-+	},
-+	.has_dma_reserved = true,
-+	.memory = imx95_memory_regions,
-+	.drv = imx95_dai,
-+	.num_drv = ARRAY_SIZE(imx95_dai),
-+	.ops = &imx95_chip_ops,
-+};
-+
-+static struct snd_sof_of_mach sof_imx9_machs[] = {
-+	{
-+		.compatible = "fsl,imx95-19x19-evk",
-+		.sof_tplg_filename = "sof-imx95-wm8962.tplg",
-+		.drv_name = "asoc-audio-graph-card2",
-+	},
-+	{
-+	}
-+};
-+
-+IMX_SOF_DEV_DESC(imx95, sof_imx9_machs, &imx95_chip_info, &sof_imx9_ops, imx95_ops_init);
-+
-+static const struct of_device_id sof_of_imx9_ids[] = {
-+	{
-+		.compatible = "fsl,imx95-cm7-sof",
-+		.data = &IMX_SOF_DEV_DESC_NAME(imx95),
-+	},
-+	{
-+	},
-+};
-+MODULE_DEVICE_TABLE(of, sof_of_imx9_ids);
-+
-+static struct platform_driver snd_sof_of_imx9_driver = {
-+	.probe = sof_of_probe,
-+	.remove = sof_of_remove,
-+	.driver = {
-+		.name = "sof-audio-of-imx9",
-+		.pm = &sof_of_pm,
-+		.of_match_table = sof_of_imx9_ids,
-+	},
-+};
-+module_platform_driver(snd_sof_of_imx9_driver);
-+
-+MODULE_LICENSE("Dual BSD/GPL");
-+MODULE_DESCRIPTION("SOF driver for imx9 platforms");
-+MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
--- 
-2.34.1
-
+Regards,
+Markus
