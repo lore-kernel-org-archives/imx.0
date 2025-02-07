@@ -1,106 +1,118 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135161448E0
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 12:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CC31DED70
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 13:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738931880; cv=none; b=XQhFmWjAzKcwVL9w0lrijn7HZ45dPDLr37xsQDF4fCnhlDNNNzU91+D1uQgT/9Dar+6diNwzsE+Z8Zqgcjl7Hcd37/3QWiewCOHHOxfvcHO8om2r7+7T3fcRUum6Nf36AYG5kXYGf+Vp5It6aa3aJtpX36oSoBsHd6WdfNSOdYs=
+	t=1738934095; cv=none; b=XzQtAyGTotTVvDlI9jyNM0L/0Dook+pI9C70mxOyVHdwhi7Idt/i45hCvYvQmwGnLOYNTzIudPjw2r5mh1hrvgc/9Kgyzrn8KAq1lVdkm4yFwne2mj+H2kp5wjzNLut2BKC8R0QYwn7qlVPxoSMoegT6CXF1HiDNztPyjxBs/5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738931880; c=relaxed/simple;
-	bh=Hb1BL9HTKTtLH1zeyF/ibnMzCyaoavTXsXdsLMI6yWg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZboMefRkA+2xThPa21NQDBAfdqEosuVccLj71l2HQ6Qq+iqpF0vxMSJW2xhL6icH4v2eNP2Wfo1CpXcehaIhfa5BfPe6p8Zr3nEQqE3Dle9oQu5QGDWn/FW6IkAUjbL0smKprXjfXwHKTuFp4z24OW520CHeSrEf7cnwSMsgQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=VxKT+Rdn; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=I1/z7SKq reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="VxKT+Rdn";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="I1/z7SKq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1738931878; x=1770467878;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Hb1BL9HTKTtLH1zeyF/ibnMzCyaoavTXsXdsLMI6yWg=;
-  b=VxKT+RdnIvXE1OAQD5x0wlRcIMsE3HhKXI427gBPkdYDcEDyCpPYWncT
-   cMGFZsYLAV237mViai/7Nats//RZRtDnpX16JoYSb4yYMiOw1KR+l0pcu
-   czAZiN+5ENCkc4rFNQncW2lWqqTB8j2cVsKEUSQoK/D+CT7qwOG+hZD27
-   ncpc/r6/BV4RBbGt2+cPawcq2kl7YyaOoWO3iM+37lFzS2lLLDiosErkN
-   PLE14fT9XdHXun17YICkScCGUI4/5x+P6oFopnqN8rVyuY+5x0eJQcizc
-   1nxZCmX+OQlgx3sDjyMGQTrYNSatVSNoxb6+uDpxoqfv9hcmHq+3Y9d8v
-   Q==;
-X-CSE-ConnectionGUID: Sg42n2ozS4C4fhhAH4VPGg==
-X-CSE-MsgGUID: jQSFvGScTA6Nn+RVtwt9Gg==
-X-IronPort-AV: E=Sophos;i="6.13,267,1732575600"; 
-   d="scan'208";a="41643350"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Feb 2025 13:37:34 +0100
-X-CheckPoint: {67A5FE8C-43-727D2C21-EE1B71AA}
-X-MAIL-CPID: 1E6721796D650DEE10A7DEEE738D12C6_5
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9884B167399;
-	Fri,  7 Feb 2025 13:37:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1738931848;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hb1BL9HTKTtLH1zeyF/ibnMzCyaoavTXsXdsLMI6yWg=;
-	b=I1/z7SKqrPX2qN6C5RiE/udQgARQgIi1j+FAtEhyXMgksxFGgHeGeoA+rs+40fd9orRLWg
-	evVtGx5cAHqAkcNInDsomMTCCSaEiG6Oxcih+ogR+ni/+g/QOHub8Nrj+F+rvEs8Wj9W+J
-	g2cyhZnxfSmghza5625asIvgAD6EV6okFThIaAbuX/fRCsCE8ntJCPm6XvQsTxJFJWay4d
-	4wcLWC2lES23ablBxxCOzSKEnc1TbQxvJucOOcDLZJFsJjSt+6HBI2x0UJ4a37YOKwRfTw
-	xXNhKI+GBnWHQJucW7BXfW/7i+VmtB6OyUM7YHaA0t68UJuAR7VvAiskgA4mhQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+	s=arc-20240116; t=1738934095; c=relaxed/simple;
+	bh=OW7OP/NQ49fQv/lKJd6pSJwjF7WpKW61USJQD2CXCbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fU0rzIEQMzjKA/liA8WBmureVKtkXo7cGXnK2nFcB/oY+H4BlWPeLZ7xdbonGSlmfLujWQyeCFYMvksfY4g2XkKv/l9air5I0b0s14w3I/Huj5i+kX8q51XB0/ZlrUhsIHKu575OyUSwj6kKyoD4mjYoELDY46exyiMckWJzrZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3F50113E;
+	Fri,  7 Feb 2025 05:15:15 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FE453F63F;
+	Fri,  7 Feb 2025 05:14:49 -0800 (PST)
+Date: Fri, 7 Feb 2025 13:14:46 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
 To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 04/10] arm64: dts: imx8mn: Add access-controller references
-Date: Fri, 07 Feb 2025 13:37:27 +0100
-Message-ID: <8037692.EvYhyI6sBW@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250207120213.GD14860@localhost.localdomain>
-References: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com> <20250207083616.1442887-5-alexander.stein@ew.tq-group.com> <20250207120213.GD14860@localhost.localdomain>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 3/4] clk: imx: pll14xx: support spread spectrum clock
+ generation
+Message-ID: <Z6YHRlxJG4V56wrZ@bogus>
+References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
+ <20250205-clk-ssc-v2-3-fa73083caa92@nxp.com>
+ <CABGWkvqXf0ZmJKofrbahB5N5uer6ye6Q4s_PXz_Z61vG2pMu=g@mail.gmail.com>
+ <PAXPR04MB8459F1CE0E8049355ADC9F3C88F62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <CABGWkvrKe6az5XR=MvdMwBOfeXqd5yPoF4Yf4pqyyGPD4Kpvpg@mail.gmail.com>
+ <Z6TgesTZklGvmI56@bogus>
+ <20250207112622.GB14860@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207112622.GB14860@localhost.localdomain>
 
-Hi Peng,
+On Fri, Feb 07, 2025 at 07:26:22PM +0800, Peng Fan wrote:
+> Hi Sudeep,
+>
+> V2 is actually 2 weeks after V1. So after addressing the comments
+> from Stephen and Dan, also updated clk-scmi.c to use a non-vendor
+> changes, I posted out V2.
+>
 
-Am Freitag, 7. Februar 2025, 13:02:13 CET schrieb Peng Fan:
-> On Fri, Feb 07, 2025 at 09:36:09AM +0100, Alexander Stein wrote:
-> >Mark ocotp as a access-controller and add references on peripherals
-> >which can be disabled (fused).
->=20
-> I am not sure whether gpcv2 changes should be included in this patchset
-> or not. Just add access-controller for fused IP will not work.
+Sure, but as I said you posted on the very first day of the merge window.
+So 2 weeks just cover the end of merge window.
 
-Well, I was able to successfully boot a i.MX8M Nano DualLite.
+> 2 days, this is just after got Cristian's comments. Then I posted V2.
+> I try to follow your working style on handling scmi patches, but seems you are
+> not active, so I mainly count on Cristian's comments and update patches.
+>
 
-> i.MX8M BLK-CTRL/GPC will hang if the related power domain is still touched
-> by kernel. The pgc can't power up/down because clock is gated.=20
+Yes, his comments were for more discussions internally and externally.
+Not to churn up another patch set.
 
-Well, with GPU node disabled, no one should enable the power domain.
-But to be on the safe side I would also add access-controllers to the
-corresponding power domains as well.
+> The i.MX pll patches in V2 is orthogonal to clk scmi, I did not expect
+> complains. But ...
+>
 
-> This comment also apply to i.MX8MM/P.
+Sorry if I overlooked, but with not all the platform specific
+knowledge it is just too much info to consume at once. Again it is
+fine if you don't make it hard but churning newer versions. So please
+give time.
 
-Sure. Do you have any information what is actually disabled by those fused?
-It seems it's the IP and their power domains. Anything else?
+> In my view, maintainers have patchwork to maintain patches. patches send
+> out in merge window will not be reviewed in short time or surely not
+> picked up, I understand this. patches could just be marked new in patchwork.
+> If new version is out, old version just marked as not apply.
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Though I don't use patchwork(probably I should not your problem).
+However, sometimes I see all versions to understand the changes and
+evolution sometimes. And it just gets hard if there are too many
+versions in short duration.
 
+> And I use b4 to manage patchset, and each revision has changelog.
+>
 
+Good.
+
+> Indeed I not track merge window since I am not maintainer role. I was
+> not aware this would introduce complain (: I will track the cycle
+> in following days.
+>
+
+I don't say it is a must. But good if you manage to.
+
+I will look at all the pending patches from you soon, give me until
+middle of next week.
+
+--
+Regards,
+Sudeep
