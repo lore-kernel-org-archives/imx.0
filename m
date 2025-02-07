@@ -1,57 +1,57 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594BF1C5F3A
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 08:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0B3233D69
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 08:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738917451; cv=none; b=RGy3Va8CXhWsYlGIcePDuckmsWzG+GA2OLIXhGgNJsg2glpMiIHRBWTnNqQjRVLQimCSrmVDnUJ+mxQSnDh98ZyphdPY8fZnlI1NnNDwNgRu+379yqd4TeAuRePt0NLbuB0sJUD/cWOOXj6uYuzkMu8ueAVW2MfmWpRp5iNVFbE=
+	t=1738917457; cv=none; b=l4jLX4bpUGIbdIqlLyyzb3halifa3JNVHRzZpg1UG+JYcuN7uJj+bjw3hX9moycQ5+flAFyw9dVccFYIRsmpZbpy6z6DDzGt24oveh78cQgsW5xS3h+Swlke2LVF1WDHHLqiqFEVPglvyQLR3tjOrLSBV7apb3v4x0KkVD8yfu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738917451; c=relaxed/simple;
-	bh=epKjLi69BVTeU228sYLbDxc9Gb/CXKXnDmdzd8h1hXA=;
+	s=arc-20240116; t=1738917457; c=relaxed/simple;
+	bh=lFm+OYVBcdpKMX7LuQ/XlNAlu/G+6NKDdDeR8TozVT0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lN8Vw++cidZH3nqyZvmBHL7qhQlVZ1I+z1jOI68eOY7s1M4gXaTHhAs2Od5Y4+aMVAWE1/4zksw5KCs4E+s0QZUZWF1VM0NxNsq6ilzTdbDc1ZL4yk/wyruiBtW8SVp9LtrsJ1R5gCjSQHBtFquV1a3a9h21QC6Hj+IieTpxxJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=eS0rfjRz; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=B6UFfvxg reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=pNXHbLxEiM1BqrB2ulGgbGOca0EQj6dvxWD1sMtg0LL5iPkwzlyx7Y3k8IVaAKVnuF5r/ctooHVvSPMY3AMykp7SB/WnZcQCqh01QsHEDgqzVEEsTZBPk5YTF/xxNGjsMZJ+LHxfOr0Gix3a5KJzDY93TpDQapy+ACdJR/8ocEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=iIWcbI3n; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Ev4KZjp9 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="eS0rfjRz";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="B6UFfvxg"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="iIWcbI3n";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Ev4KZjp9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1738917450; x=1770453450;
+  t=1738917456; x=1770453456;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VU2LURvpuWlLE+ZwmrPv4Em3qMpL5cubt9yeIQOASOs=;
-  b=eS0rfjRzSfmHPnjjcR4/auoZTArVAy5pwiM3lwwVxmlfCvJH0finZusy
-   jVex8cG5H4pAJGIIENV8Z5CXXNjKlTJrrLDQo5fyJIlDEFr/bFn97kco+
-   dVSJ8F30gm0WzXl77hzcBsXPWiTrDLdkVntOtxeGrn7C7ViQXOHMaBG8g
-   Ztpykgz5yZq0bPVr7kPdUpeswa6MloW8L++1c1Mm/gaF1LWrZICvyLBYr
-   gHEhepYME4sOv+W74Mk90104efrK9e+qd42FZCqFOe2HBPm+sfrU3MUHV
-   u3ghfwkRtry1GSvDGCtvba6NiJ2Vjxey6DAgpkBNxl1q+jt4QcGHRmzwk
-   Q==;
-X-CSE-ConnectionGUID: zhYXy1pMQMaw6xj8EE0t+w==
-X-CSE-MsgGUID: qpsPfg0xSFC1EqN34PCUPQ==
+  bh=t+/k+qJKT8Tun/0VQisjpzHTf5jDj05SlOoD6w7l060=;
+  b=iIWcbI3ncN2b35+SA74HhsCjt+HTX2fvc+MPfv6tTIiZyLWE2PkS0oVq
+   fJbc4yGd5sLJM1E1K93qy0i0gmid9EEEq0nUX1lvg9ECR9TlqkOsmJzbT
+   TYYh/kRtna34IJeLRxkR69RcxrP0MCrVzVjSPQdQ3DqYUJ8af3eP4S+DK
+   j12WAUIJUoF8nEcBgyc9uE6orEE9QqeCY/wO1dom8XVVArdcYKGtxEYDZ
+   9/TNc86QeSp2iEfdYwxq8C1y1swG7bn9lXSVkztHofbJCe9IX86e/N9f8
+   bVZA1fxUaNTaBxSRgRxAilrp3dkEOzt4wgr0bp9eshzPerfT8Fw8sQamQ
+   A==;
+X-CSE-ConnectionGUID: iqiMZF4gQCCDS611uhH//Q==
+X-CSE-MsgGUID: oNkf5ptPSuOAMRgq+i9RWg==
 X-IronPort-AV: E=Sophos;i="6.13,266,1732575600"; 
-   d="scan'208";a="41636110"
+   d="scan'208";a="41636116"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Feb 2025 09:37:07 +0100
-X-CheckPoint: {67A5C632-1F-727D2C21-EE1B71AA}
-X-MAIL-CPID: 085FFC876C4E2B2C688DB0CCF2FD4F60_5
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B26AE168340;
-	Fri,  7 Feb 2025 09:37:01 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 07 Feb 2025 09:37:13 +0100
+X-CheckPoint: {67A5C620-11-8F72533B-EF5B5974}
+X-MAIL-CPID: 6C932CBD313A6B9B526F29620C8032C8_1
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 36E9A168342;
+	Fri,  7 Feb 2025 09:37:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1738917422;
+	s=dkim; t=1738917427;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VU2LURvpuWlLE+ZwmrPv4Em3qMpL5cubt9yeIQOASOs=;
-	b=B6UFfvxgpjxaOWt4ibeMzpDJYTFrDEZsULVwacDBAc+fxFfOab2dnCHxhGdfzHF869KLmd
-	dKM7OOIrGcC5QTip0wbtBWy6hmW2d2/oJebTigXEC5Js5P/SvTCXywbi/7+6Bs/O6ykUXU
-	1noXifBhWs4nAvMvd8eIase8vIZ6VWBSosCmpzhHEjEWZb/9+ICO67vyEcqBKwML0++K5Z
-	Swi8J4kvjAkfK92x5F6Qav057rTkqqVQVmTxQ0th18JUk4S8t7lY148MbW3xxLOPoS82PV
-	8oS5CdHuJG+/iej8ofv6qf+z5udSJi8/HnFoBFRa2zrsRQvOUUl21j4zcQY4HA==
+	bh=t+/k+qJKT8Tun/0VQisjpzHTf5jDj05SlOoD6w7l060=;
+	b=Ev4KZjp9LOWOFeR5iPYKl3FERBXXi6yz9tdjO+eWcIihPF/FyDt8jZE47kecaQXpFvjgNC
+	AiA7RnaJ+9sUA7p49qY71d2zTlywA8K1CXqS8H3jt3hvFT3u8O4g+89xmJCJ3e9voH6VAW
+	cGgc3YHrBoc+1ltjUHbHzy6TBfVA2nobdDU5rnL0PgnmpcNoAYKewXRFSd5NoYx6JLbLpa
+	LWr0md1QFzcUZIM10tzKMFw/Lf1XGME71Xy2kAmpmSCC95uL13zZjAeLfN2hpeF1XiJ+Ie
+	rsixR54nSKApHbQQ4XgUUQraQbHOEmdTrmKL5av/hf+oWB39n6xeuktDJLvcXA==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -66,9 +66,9 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/10] arm64: dts: imx8mm: Add i.MX8M Mini OCOTP disable fuse definitions
-Date: Fri,  7 Feb 2025 09:36:12 +0100
-Message-Id: <20250207083616.1442887-8-alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 08/10] arm64: dts: imx8mm: Add access-controller references
+Date: Fri,  7 Feb 2025 09:36:13 +0100
+Message-Id: <20250207083616.1442887-9-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com>
 References: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com>
@@ -81,52 +81,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-These definitions define the location of corresponding disable bits
-in OCOTP peripheral.
+Mark ocotp as a access-controller and add references on peripherals
+which can be disabled (fused).
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-ocotp.h | 31 ++++++++++++++++++++
- 1 file changed, 31 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-ocotp.h
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-ocotp.h b/arch/arm64/boot/dts/freescale/imx8mm-ocotp.h
-new file mode 100644
-index 0000000000000..87698e7619262
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-ocotp.h
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-+ */
-+
-+#ifndef __DTS_IMX8MM_OCOTP_H
-+#define __DTS_IMX8MM_OCOTP_H
-+
-+/*
-+ * The OCOTP is a tuple of
-+ * <fuse_addr fuse_bit_offset>
-+ */
-+
-+#define IMX8MM_OCOTP_M4_DISABLE		20 8
-+#define IMX8MM_OCOTP_M4_MPU_DISABLE	20 9
-+#define IMX8MM_OCOTP_M4_FPU_DISABLE	20 10
-+#define IMX8MM_OCOTP_USB_OTG1_DISABLE	20 11
-+#define IMX8MM_OCOTP_USB_OTG2_DISABLE	20 12
-+#define IMX8MM_OCOTP_G1_DISABLE		20 18
-+#define IMX8MM_OCOTP_G2_DISABLE		20 19
-+#define IMX8MM_OCOTP_H1_DISABLE		20 20
-+#define IMX8MM_OCOTP_GPU2D_DISABLE	20 21
-+#define IMX8MM_OCOTP_PCIE1_DISABLE	20 22
-+#define IMX8MM_OCOTP_GPU3D_DISABLE	20 24
-+#define IMX8MM_OCOTP_MIPI_DSI_DISABLE	20 28
-+#define IMX8MM_OCOTP_ENET_DISABLE	20 29
-+#define IMX8MM_OCOTP_MIPI_CSI_DISABLE	20 30
-+
-+#endif /* __DTS_IMX8MM_OCOTP_H */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 1b147a09f6fe8..51472313b8294 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -11,6 +11,7 @@
+ #include <dt-bindings/reset/imx8mq-reset.h>
+ #include <dt-bindings/thermal/thermal.h>
+ 
++#include "imx8mm-ocotp.h"
+ #include "imx8mm-pinfunc.h"
+ 
+ / {
+@@ -565,6 +566,7 @@ ocotp: efuse@30350000 {
+ 				/* For nvmem subnodes */
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
++				#access-controller-cells = <2>;
+ 
+ 				/*
+ 				 * The register address below maps to the MX8M
+@@ -1108,6 +1110,7 @@ fec1: ethernet@30be0000 {
+ 				nvmem-cells = <&fec_mac_address>;
+ 				nvmem-cell-names = "mac-address";
+ 				fsl,stop-mode = <&gpr 0x10 3>;
++				access-controllers = <&ocotp IMX8MM_OCOTP_ENET_DISABLE>;
+ 				status = "disabled";
+ 			};
+ 
+@@ -1157,6 +1160,7 @@ mipi_dsi: dsi@32e10000 {
+ 							 <&clk IMX8MM_CLK_24M>;
+ 				interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
+ 				power-domains = <&disp_blk_ctrl IMX8MM_DISPBLK_PD_MIPI_DSI>;
++				access-controllers = <&ocotp IMX8MM_OCOTP_MIPI_DSI_DISABLE>;
+ 				status = "disabled";
+ 
+ 				ports {
+@@ -1187,6 +1191,7 @@ csi: csi@32e20000 {
+ 				clocks = <&clk IMX8MM_CLK_CSI1_ROOT>;
+ 				clock-names = "mclk";
+ 				power-domains = <&disp_blk_ctrl IMX8MM_DISPBLK_PD_CSI_BRIDGE>;
++				access-controllers = <&ocotp IMX8MM_OCOTP_MIPI_CSI_DISABLE>;
+ 				status = "disabled";
+ 
+ 				port {
+@@ -1270,6 +1275,7 @@ usbotg1: usb@32e40000 {
+ 				phys = <&usbphynop1>;
+ 				fsl,usbmisc = <&usbmisc1 0>;
+ 				power-domains = <&pgc_hsiomix>;
++				access-controllers = <&ocotp IMX8MM_OCOTP_USB_OTG1_DISABLE>;
+ 				status = "disabled";
+ 			};
+ 
+@@ -1290,6 +1296,7 @@ usbotg2: usb@32e50000 {
+ 				phys = <&usbphynop2>;
+ 				fsl,usbmisc = <&usbmisc2 0>;
+ 				power-domains = <&pgc_hsiomix>;
++				access-controllers = <&ocotp IMX8MM_OCOTP_USB_OTG2_DISABLE>;
+ 				status = "disabled";
+ 			};
+ 
+@@ -1375,6 +1382,7 @@ pcie0: pcie@33800000 {
+ 			reset-names = "apps", "turnoff";
+ 			phys = <&pcie_phy>;
+ 			phy-names = "pcie-phy";
++			access-controllers = <&ocotp IMX8MM_OCOTP_PCIE1_DISABLE>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -1401,6 +1409,7 @@ pcie0_ep: pcie-ep@33800000 {
+ 			phy-names = "pcie-phy";
+ 			num-ib-windows = <4>;
+ 			num-ob-windows = <4>;
++			access-controllers = <&ocotp IMX8MM_OCOTP_PCIE1_DISABLE>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -1418,6 +1427,7 @@ gpu_3d: gpu@38000000 {
+ 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
+ 			assigned-clock-rates = <0>, <800000000>;
+ 			power-domains = <&pgc_gpu>;
++			access-controllers = <&ocotp IMX8MM_OCOTP_GPU3D_DISABLE>;
+ 		};
+ 
+ 		gpu_2d: gpu@38008000 {
+@@ -1433,6 +1443,7 @@ gpu_2d: gpu@38008000 {
+ 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
+ 			assigned-clock-rates = <0>, <800000000>;
+ 			power-domains = <&pgc_gpu>;
++			access-controllers = <&ocotp IMX8MM_OCOTP_GPU2D_DISABLE>;
+ 		};
+ 
+ 		vpu_g1: video-codec@38300000 {
+@@ -1441,6 +1452,7 @@ vpu_g1: video-codec@38300000 {
+ 			interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&clk IMX8MM_CLK_VPU_G1_ROOT>;
+ 			power-domains = <&vpu_blk_ctrl IMX8MM_VPUBLK_PD_G1>;
++			access-controllers = <&ocotp IMX8MM_OCOTP_G1_DISABLE>;
+ 		};
+ 
+ 		vpu_g2: video-codec@38310000 {
+@@ -1449,6 +1461,7 @@ vpu_g2: video-codec@38310000 {
+ 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&clk IMX8MM_CLK_VPU_G2_ROOT>;
+ 			power-domains = <&vpu_blk_ctrl IMX8MM_VPUBLK_PD_G2>;
++			access-controllers = <&ocotp IMX8MM_OCOTP_G2_DISABLE>;
+ 		};
+ 
+ 		vpu_blk_ctrl: blk-ctrl@38330000 {
 -- 
 2.34.1
 
