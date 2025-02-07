@@ -1,208 +1,187 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2059.outbound.protection.outlook.com [40.107.22.59])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F017154C05
-	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 11:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738926360; cv=fail; b=qdDnfcLclQVUD+wHH6EqMrEu/EdbwPKdDdl5StTL5KCbXWYDhfAv679u/+TONCdp74fN56/6RdMeSo8v70j/Ukc5yfJ2fcezauaJXg2MGdUnQ2Sgm3PpMb9FLNcXSF7BeWXxUPLL/s7otXOSfTRVjPBYVYVRKVq6DR7I9+VqqfQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738926360; c=relaxed/simple;
-	bh=dTSDHHc50J50ES4GV7GEVDwtufJM7xhUS5TpdFpy4Rc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nihyn153PU56hiYV1bufJNDEclBVnERknsP4ZVPHAzpC0KM93WsFNmA4cTEo3hjD/ii75vrUeC3BAbIfr/QQB9AHrRmbn7bN1jEfMQDmk1rQKMf4MeHmbVGd/LwdF7y0jqCttL0ht5LQ94lghsTpRPjWerQglGa0qwm9FxGDDjE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bG3zShBL; arc=fail smtp.client-ip=40.107.22.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE61DE2C5
+	for <imx@lists.linux.dev>; Fri,  7 Feb 2025 12:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738930415; cv=none; b=iMNAYJqNxWw85zQcNl1FJ9uzjpMp8Wjlkqk/VRuPXIRn4C/DiGFeErq+elh+Y8VxOygeDb5XQ6lFRfKpLrXpAsc4T3ln9sKHjDES+kRbdlyBYk6O0YzkjjR9IHnc2hEZx+BzsnkzpBnVs7ryBMCV1OHx2u7k4GpbMLzjFkEhrC4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738930415; c=relaxed/simple;
+	bh=UgGDfz4QxlxB7uGN8UyOKQSTzMDA+3Otn6I41VTV8cA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OhhmySnewPfxyS73tEKreswy4ZAXn1NkrHP7D6QV+jsjH854BUsrdueEuWQMTzFG4owz/eLMTSBTMqZ4ooPr9ppVQ+eh/pJdjgVgE7+VDhIXUKKyKm1wLKTTM6s7/WclZKC+3jkZRpw+U1bNgG3OUaHYanWr2vYZSxo9fxL0Pvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=hbmmYScl; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bG3zShBL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MmGifN3SD/p55JK5Khfler5r4AsIQEqotufphCptBRAHkW9u2tsZPW/qKcxMnOV4krTZQP+NGm6WlW+fLQrHQ5RjAtqciyx+evgmLq/zD6BU6v7AwRS3SOPFPE8jIcmSCBqLQ5361yaM4drEROvOl3T6nVbB45zopwYMwsvedOuHgHgSYfUvYdnphRb7ZvRXBezNKr9taMvwCsAd6uVUgMnzEJ6SSClR5cE/Ns23lWLPFW/gYPY1DZeTD9RhGQeuyyIYctZ+/8xKbWrFNmxl8oNB6KXjhSywtxQ4MvSaTKIkRg4GK9TCG2c52RSViHp1jl+NCNQ3TOn4kINa21BGyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oN7CLY2IRs6RHhWb2vk1b1Kw+kW3FgypPlkSvMQUQhY=;
- b=dVFz4ad3ax6oh6xAM7tLhISdW8BujEAFKCW5tHcJb/CjWa9Tlfls5zofL5yo436YYcmltJoAG6gcJ+m8M7EjRWTkSAjHd/6Fxmm7xLHCeHF5KCxn647xv5EoxLF1rvsu7Re8hkwJMFlrcrPKG1TlPVQP5yiAE/+A5BA0DlknlC+RZ8HC4atgeku8c6UU2WstA7cx6h2pR/bU+KzX0HCIYEGUe3RJgQLDHGL8MgXt7p9p7cR3Y0wzeelfq/HuEnjNzEKdKXw600YBU7S16QKXGd+BxvJi+Yls6362yDXgb0haDptdx/SAgJIR2B0I3URVLHxbb8iWcdbzJcf4XfIjVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oN7CLY2IRs6RHhWb2vk1b1Kw+kW3FgypPlkSvMQUQhY=;
- b=bG3zShBL2cEd65shDbkA3VTwONmVqBJV5KRuHrxeE0eDlgk6Ns4N2D/ee6M6zMaX8EGJkNR3Dk/HYILEKBZtkKD8dcUkcYmC+fM0IHy/Je7zaDX7PJgmn8Y8GoLecI8tBUVjKrmHreht8V/PQ9SJEOrW7y7j/B6yX1TnFTx+FfovEdfu8HIjh11KLWOXU/1gZZp0gh93UmVztZFm5IjmAap18mTulQnfhid1ob3OZ54WdkPsIfaxskBdPYwOGMliqs4i/p5xIOwfmnpvkD2Od4A8eHt26XlpvndHpaPBPbHayT6FWy6slPb2XeDS5X9BgOPn9VywFLYLVqaD6ly2TQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB9PR04MB8445.eurprd04.prod.outlook.com (2603:10a6:10:2cf::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.14; Fri, 7 Feb
- 2025 11:05:53 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8422.012; Fri, 7 Feb 2025
- 11:05:53 +0000
-Date: Fri, 7 Feb 2025 20:12:37 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v8 2/2] nvmem: imx-ocotp-ele: Support accessing
- controller for i.MX9
-Message-ID: <20250207121237.GE14860@localhost.localdomain>
-References: <20250204-imx-ocotp-v8-0-01be4a4bb045@nxp.com>
- <20250204-imx-ocotp-v8-2-01be4a4bb045@nxp.com>
- <Z6OWOfTKIi0EBdZy@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6OWOfTKIi0EBdZy@lizhi-Precision-Tower-5810>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR01CA0196.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::23) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="hbmmYScl"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id BB49AA0155;
+	Fri,  7 Feb 2025 13:13:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=9OWJCfb9mBLeS+qmNVaUT+6UZW8yr/J2AZVV36sD2ZM=; b=
+	hbmmYSclNOifu72HvKJxj6Y5pZNFpH6l4kkirtkjOaoTZiSI7K3JJAUx8Pa3SXq+
+	mdf8oDbbSLODUF38fKCw0nGjT/imQ/ZCqHImbjtST5Av33AEF2xuSnMRQVnJEaVV
+	7yBq17zEmanhUQdwMksLjcRS6CAQTLnTM6VpiNQPdzd7xuyayyMTpwZyMJTNAKso
+	bxR2R2EZyLfukKSKdvGy9BfIQiXk0E+0pNT644TuNfEa4jS+4+batQACg9oXVLeH
+	00FXDQk41hra3YYyEi3QMXIHacJqmEI3H9Ta8JFpToX05GGly/uyXWUo01MBiQR8
+	ktIS65aCK+9sJUnVuVGn7rcq65TWPOCXAoXMZt1As9uVHV1vxd5f/GQHdTvMshN5
+	fElzM0reZ1kyBJ2vGSMG/KRCaBfuUa86hfYri9Sf+mkb4YjolUlbbftrg6NvGL8b
+	4m/dsJyeK492Ix9v9RnaoM+7yZit0YD4PPzwBmzTZnWpR13Jq+mJrz3YtYXMrOlc
+	gFruXYe7sMO19gdVizP/2P8joDU51Lr9JNcYrmSrWK+ctVgGhl+kQ5514aYWa6gv
+	mn6sYR8uiBV4oxnmSXhoC3PnZO0ZE6EDAhC/jR7QQp6oB6HYqq8kJKOTPdqQU2cG
+	5I62Vbc/hrgsci1ULrMGQblwR116tSu2GaIvWIFI3P4=
+From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
+To: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Michal
+ Swiatkowski" <michal.swiatkowski@linux.intel.com>, Jacob Keller
+	<jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v4] net: fec: Refactor MAC reset to function
+Date: Fri, 7 Feb 2025 13:12:55 +0100
+Message-ID: <20250207121255.161146-2-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8445:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9093198-2fb5-46d4-0e58-08dd4767638a
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0sP713uH147kPHTlaxv41Xi7viH4AIuAMd0qiMUuFmMefJNaYKOx6I5pBx89?=
- =?us-ascii?Q?ynEQPBKp2aC4jm1XLODZ3NW4Tl9cuL3045Lp5MclYkfmBVMz5POktZYrhjtR?=
- =?us-ascii?Q?ac2gaiN32rovV9IkVq2tdMShAT/AmElEI3h7jbneiWLy/N8aF2S+2RY4UnEo?=
- =?us-ascii?Q?hRQSfl3+/M43PeabB/a17FuAj59sSAHVU+IovWFAXvS+0Is6MIcLOKVp3K+K?=
- =?us-ascii?Q?HhPitzOC9FckPUEuNmEt/xB41iw/qZSepiEMzwAF3foi826ocolY5QDVTIon?=
- =?us-ascii?Q?w8XDxya6veHqW8m1cCFCUfHQ5TmKejRLnupaW92RL9Z0wI/8y/Dra7syS2CX?=
- =?us-ascii?Q?cRP75inxnF0naxldgHEu5n63q4yTAamrm25DaOXPjhhduaxyJJfbEHwE+Z6I?=
- =?us-ascii?Q?Q0Zb1BBl3mh1e6+hZ1Q6mG8Jmo36+Y3LGHbGmJ8qTkUpx/j/3Dy+ODWHwSvO?=
- =?us-ascii?Q?RuTYEMBlxLakrq0+s9icc3qlB4x4ePyljryY1Vr3c0cq8TiVhIqVgxOyXXcg?=
- =?us-ascii?Q?lPwrU31j3wXxDGdIMvK3JjpYqTzO+QfDiKwxUEOhx5mpBOtm5ZQv4og+l6/U?=
- =?us-ascii?Q?L7w34UoKsdXEgnJcBRBX9zX6sf4WmCoD+wWM1BQmVHvbY/hWa+XNSJqk0cvB?=
- =?us-ascii?Q?rJO510PCZj7xvWnJkCvh3h+COrrEoU7qmQz/6Uq3+APNcilYiee2li1sPxrg?=
- =?us-ascii?Q?nDHRqckDFjYD1haKdRJECnA3j9ltawGGG/h7EGCAGPqskmdsoGoklnqqtHMP?=
- =?us-ascii?Q?VIXiGCkeRHyZixn3tFeRwIOYPvbGJS89kAuSbOlzGmhCjU/XJXXk5F0ZUu8q?=
- =?us-ascii?Q?1U0xr071ZF5qhX6j6NfWQdHgzStLSScFaroTU1MTXlaGHkucpv0gWSmlknSc?=
- =?us-ascii?Q?2PA/cd21BU2D2ZO4oipSJ9zr4AH2NfPhjxrqUDEg8jPEvf+9eaQYoLsgHxJZ?=
- =?us-ascii?Q?/aiUWwMdrSMyjKi0iQ+xzundOlp4KBqefXifwi1CphWpN6LVCxAewQrtWTs8?=
- =?us-ascii?Q?p2DqskkA7VQZUC/tnVhCOFcnqox2HzxqHKMbemnUlrxxpinbs7EpFtI8B+Zm?=
- =?us-ascii?Q?YvPJ+PWmGwqV+v33sJtU5Ap0VXhXFkZuE5Pq4SreVhrC8gX06UGbC1o1ovaz?=
- =?us-ascii?Q?kza0OLhsCKg2P33SHK4W4Kid3O34P6yInuLJl2IaB3EHRx4zx5H4xCEf5wUt?=
- =?us-ascii?Q?Qwpjn09gbNFNzULo+/uSQ1vKM7DdvaVjz7zi8tPColIxv48cp0ksiblXteJS?=
- =?us-ascii?Q?JlHwmKQr+8tQVQEkDgXNdqMSRwFj5HjZtRsmEdcKj2KmzI+zF9UwTGVCLsyK?=
- =?us-ascii?Q?NaXqpRYBUL+Z8wZoBvqfCMxnsOQxWlH9qoin83kkFIfLQm+hbsW+gs5GV1y/?=
- =?us-ascii?Q?swOD9fSBYOVIkC6tvVd5vrPLikEi?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XsBIjc+awuOxhQJpxRqgZam33K588ySr7ICUB5cCvIqOMhHAIR8v7cdODRbL?=
- =?us-ascii?Q?X0w2Unh1hSb9pviPeDYMvLaogPe8WiJHK89fieniKbVe2+lbo899rioTjHgc?=
- =?us-ascii?Q?nD/f1FZD8MvAUMlU5Fg7d3xVNfXX8U4JN/GLzwLl++uXlSHOj450UhkSu+FN?=
- =?us-ascii?Q?0um/+LmRF3w+xALz08vCiqE0Om/7GEJ2SyQfsoR+VbT8kOwaih1nFNxThIrt?=
- =?us-ascii?Q?oADv1pP+/rF2yBd6oyuUL4TwYWLyOzDls3vDH7fSPGHVgfYNlpGy6rKSonJL?=
- =?us-ascii?Q?BtiYxVLGJuqFRvqQokuKW+tl3j990DGLoQmubNkfQtGFiEXSeMHu6OxbKYXU?=
- =?us-ascii?Q?FwwnCDEGixE+wSFEb1hH8QZM7AbdVDLGISXeHDidbwpHxwjyQmFPBt2rzC0p?=
- =?us-ascii?Q?sXU3sIqziPhZ/oxjjO8Tnpy/P/Aiiti6j9R+SQasZsfn6zcW/9ks+h5m33K0?=
- =?us-ascii?Q?9KHWc6btIrWyYt9fp8oRyIEwwKECk6q9Oh1bSYlSIaMveS6INg8eMl0hHsJ6?=
- =?us-ascii?Q?6zRwYyKtuPAa9PmZnbNwL2Fn2jwLCF2OF78mNO7nMtIXxtkgYrNmcTEQeSFC?=
- =?us-ascii?Q?UxJYOYfg9idJPoOJqrN6ZcG34Ox0OIGbZ/13ge1YYZqwfIpZ4EEaxKNw5BL9?=
- =?us-ascii?Q?8R23N3S4f38vhalbEa5j+KR4mzRGu958zdezLxww90lEdHPaLwNArhOTZYbz?=
- =?us-ascii?Q?ppLdAuvf4wk3Pje9WfUGrS+9Lx/0jdul6nJL97w7o5yp9x7RTxsl8sUvkNi8?=
- =?us-ascii?Q?5WeFEmypgqEtbJ0okHPLzgHMK8/3W3U914Hk/WF8KqYiUAboPBWvXIKdzS/O?=
- =?us-ascii?Q?Cg6wBEKZDi4ZuRwowHtg4R/Znu3tlEEz5o418LXLWFf86uhemheuiW7ljanO?=
- =?us-ascii?Q?B6vC3fA/c3BRHdxpYaQra/VUscmfiEuy9B15gI/aGljZoih7GSXeCl02Ytuu?=
- =?us-ascii?Q?RZ1gVZChp6HLdGMp6QuB7lvk2TOSUuvrLk6h2S9j8RMPy1Z79qNqgVAR27+H?=
- =?us-ascii?Q?fPAts4umGwW7y2M/TaiCbHp2htvchX1vlzLg1LLn1RxZ/fuVWkdkNZbPWJYC?=
- =?us-ascii?Q?ZdFiiibMZm4HvHRU5dBg+RRudo3CM59hCkas6BXmo/VK8Q8mAznHDXEO+FCN?=
- =?us-ascii?Q?J5GUSL4SkiBRXLQHR3n4ajOHYrcRFNmwzZBFDbZuo87YkrDHD6a1He1OheBa?=
- =?us-ascii?Q?wzFx22hcqf390idzH8/IIAwG/uFcoCeN0BAB70vkM0QfUkar7VcgQWtKmpPg?=
- =?us-ascii?Q?l4n9bMQkaYdufV+X8ps5mC1MkDtKq8xgz+gjeDWsyuXo2JznVtjh5jX7rOTB?=
- =?us-ascii?Q?BSUb90AR2653RK8WT2cQ3+KrOtQ/2OZt9DyFC9DjvzuA+t1qx6eHyh6JGycR?=
- =?us-ascii?Q?4MW5DiX2GllHJMNlS7+1AaAHlHQJp+hdFLs2Rn53rI2sxpL9vvEw6SA/PV8H?=
- =?us-ascii?Q?ir3FJcjasG/JSX9KIoQ32wFNZ8JnrwLltVqiwCWo/JXx10IAZjET91Xf2cp+?=
- =?us-ascii?Q?0UiAaghMu2eKxOIi22amQid/HRIbNjX0srWelHSx6exIDsFMYIN6cJteRipT?=
- =?us-ascii?Q?7lJLpvGt62U5bMFMQ6akYqNaD5WKEZWXyWodJp0O?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9093198-2fb5-46d4-0e58-08dd4767638a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 11:05:53.6065
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IePgGNMpeTRIqtdGrc9UzHYUIVjh1SsYaxykmkYTNEEmg4Qgab9/iopAUUm+KGaI/0nh8bzYHyfCs6VRWF/qPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8445
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738930407;VERSION=7985;MC=1996129542;ID=399764;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A29ACD94852617560
 
-On Wed, Feb 05, 2025 at 11:47:53AM -0500, Frank Li wrote:
->On Tue, Feb 04, 2025 at 08:41:14PM +0800, Peng Fan (OSS) wrote:
->> From: Peng Fan <peng.fan@nxp.com>
->>
->> i.MX9 OCOTP supports a specific peripheral or function being fused
->> which means disabled, so
->>  - Introduce ocotp_access_gates to be container of efuse gate info
->>  - Iterate all nodes to check accessing permission. If not
->>    allowed to be accessed, detach the node
->>
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->
-[...]
->In another thread
->https://lore.kernel.org/imx/173828013202.1872493.8212881147597194221.robh@kernel.org/T/#mce7b8226138d0523b602b69de679f3857fd86706
->
->Suggest #define IMX95_OCOTP_CANFD1_GATE 17 0x100000
->
->#access-controller-cells = <2>
->
->So we can remove these static data in driver. If want validate input data,
->we just define low..high region and a validate mask to check it.
+The core is reset both in `fec_restart()` (called on link-up) and
+`fec_stop()` (going to sleep, driver remove etc.). These two functions
+had their separate implementations, which was at first only a register
+write and a `udelay()` (and the accompanying block comment). However,
+since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+meant that these implementations diverged, often causing bugs.
 
-Ah. fine. It would be better if this idea could be earlier.
+For instance, as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+a PM power-down event; and `fec_restart()` missed the refactor renaming
+the "magic" constant `1` to `FEC_ECR_RESET`.
 
-I gave a look on the thread you mentioned, seems duplicated check
-code.
+To harmonize current implementations, and eliminate this source of
+potential future bugs, refactor implementation to a common function.
 
-I am thinking now to drop my patchset and provide a common framework saying
-nvmem-access-controller.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+---
 
-Thanks,
-Peng.
+Notes:
+    Recommended options for this patch:
+    `--color-moved --color-moved-ws=allow-indentation-change`
+    Changes in v2:
+    * collect Michal's tag
+    * reformat message to 75 cols
+    * fix missing `u32 val`
+    Changes in v3:
+    * rename parameter to `allow_wol`
+    Changes in v3:
+    * clarify message
+    * collect Jacob's tag
+    * rebased onto c2933b2befe2
+    Changes in v4:
+    * collect Simon's tag
+    * rebased again
+    * drop Fixes:, target net-next
 
->
->Frank
->
->> +
->> +static const struct ocotp_access_gates imx95_access_gates_info = {
->> +	.num_words = 3,
->> +	.words = {17, 18, 19},
->> +	.num_gates = ARRAY_SIZE(imx95_access_gate),
->> +	.gates = imx95_access_gate,
->> +};
->> +
->>  static const struct ocotp_devtype_data imx95_ocotp_data = {
->> +	.access_gates = &imx95_access_gates_info,
->>  	.reg_off = 0x8000,
->>  	.reg_read = imx_ocotp_reg_read,
->>  	.size = 2048,
->>
->> --
->> 2.37.1
->>
+ drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f7c4ce8e9a26..a86cfebedaa8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 	}
+ }
+ 
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
++{
++	u32 val;
++
++	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
+-	}
++	fec_ctrl_reset(fep, false);
+ 
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 
+
+base-commit: 26db4dbb747813b5946aff31485873f071a10332
+-- 
+2.48.1
+
+
