@@ -1,107 +1,176 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571454673
-	for <imx@lists.linux.dev>; Sat,  8 Feb 2025 02:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A6423F292;
+	Sat,  8 Feb 2025 14:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738981257; cv=none; b=g2pwlHZNU4rM4VgHQ5v8DRIs8DGRlnMLBHo7PLTSw3qx0S9xFQ7g4Fdxx+4Hp4SAG3ImMG4ZrXuefRCV1JG7g3PHYYbm3mapecjTjOSKgSf3TH46conlZ88B0DzAGzvzpgjaE8nJdoJzCRlHXWTHnLDcvLnkHBb6qtzUN06jRTI=
+	t=1739024292; cv=none; b=MpBh2kvssmlR3wBXNbIqa4tB+p47SDefftSTAskPvKt8eI+eYdUx7GXeV6Lsi9h+MnR9yLdNV2ggSews5yU55/4wytDujEqOBTRDTS75iD5edUFFeoU74AwqVBoj5cQoXLDp4z0ULv5/x7ExuJVOeEF2SmFyqM+ph2ZD5MORx8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738981257; c=relaxed/simple;
-	bh=X/9UQWBS5m7Ib3mDDNhFlWLQ3zPrVaQFBwT1jLZLH3k=;
+	s=arc-20240116; t=1739024292; c=relaxed/simple;
+	bh=VPpd2YYWjZluEJs9Qvp1Y2nnNlnf0rQUcWOQWnGi/4E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mhcHFxfTNqScIOEsHaA/STlKUt9tO3aDUQ/aW2yK7H9r6ngYj9mHZOKIoH+Z5XxPQBc9bHvysusH98OIWAAHYRMjzy/bGpKUyKdnLrNae83DItdQt5QoB7Xf9Be6TAV5ifRnyqhbhSz1YAGJcd6KRWrxE66NaTsB9QOK4Xa4DKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=RETv0pi8; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y1DKPc8tydiDMdFF+aDsA2bJXeD+0udWQJJlPlz7pJx7/UtGXgSq043t5IECwGBkGAtAEWpF77nhGD/yTRtloEK3mEstlJA/cN7qQXRoeUyIGt7JWjsL2np8Us/CBY1M5ioOyFCywNDV7COnvss19SQ2RKaM3IIlEaUE2MaHAec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nbUq05oo; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="RETv0pi8"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id A3C9D240101
-	for <imx@lists.linux.dev>; Sat,  8 Feb 2025 03:20:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738981253; bh=X/9UQWBS5m7Ib3mDDNhFlWLQ3zPrVaQFBwT1jLZLH3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=RETv0pi8P373DiegxSUvi4C2fJev+HyWTRyNykg7oIgWn47X65NNvVgCsCbdWDAQP
-	 DMPA93xS+LXRfM/pNswr8q1Lv7jueqqTAaY6kl3zaQ3VQ6BVmyzau/3NjwVPv4x0pa
-	 DyRmTi86qoq2bQLzc/9fvmo0N+Y1eqLuyep9+vlpbT8B2at6F1Vx/ZEQ8QKMzSjGww
-	 1jnOpdg43i8qcuBMG9zpmrhFU1fjx68aD33m56Tv1/WyL22Pca//Bc0TkaL7owECs9
-	 ymKH6bYxsVIiQqiGoOvl+CE/ynq28UQJdSo/80Iw0zp4Bue42SfjvS9yUGrJOzKE2z
-	 WiW/Swc0Ab07w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YqZM431Sgz9rxL;
-	Sat,  8 Feb 2025 03:20:48 +0100 (CET)
-Date: Sat,  8 Feb 2025 02:20:47 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Mark Brown <broonie@kernel.org>
-Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nbUq05oo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739024290; x=1770560290;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VPpd2YYWjZluEJs9Qvp1Y2nnNlnf0rQUcWOQWnGi/4E=;
+  b=nbUq05oojgR1cH6uSddvh9ZyyMCKHie15sZ2GCfGEI2YVksj3CQGGbhu
+   7ZDBThtyfUoXmYYzfAFF9ZO0Wz7ZdvFCyu7eOfwsS5WwwkSirATBWqAAN
+   ABTC0rshmo89U/owjU9pnfT7qvDb7SNU4qm+TJQ+ix4kC2Lhqixaw5Ckn
+   cEOPXOAIiGnSusTeZw4yFlZOvpzfb86woGCBPSmNvn6fQ7YP1DceIUqQQ
+   kEXtJ+S4JYYVflUi5mJmDWapudmBvDogP8ZaPMXOUNeqPE2iQ+s7GQeqN
+   K27yV70aoEOWbtbmt8xBzgCBFKSAGbF9+XQLo1UhKLoc9GfGfEfHmkXmb
+   Q==;
+X-CSE-ConnectionGUID: ErfCaWSeQYObeyTsZJXszg==
+X-CSE-MsgGUID: qJVsEUK3TL+WDOxbOM874A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11339"; a="51044190"
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
+   d="scan'208";a="51044190"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2025 06:18:10 -0800
+X-CSE-ConnectionGUID: 5SCY/wYtTf2L5TycPuB0vA==
+X-CSE-MsgGUID: 0P956+EpRVirLOVEYoefGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,270,1732608000"; 
+   d="scan'208";a="116788686"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 08 Feb 2025 06:18:03 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tglei-00103D-12;
+	Sat, 08 Feb 2025 14:18:00 +0000
+Date: Sat, 8 Feb 2025 22:17:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
- bindings
-Message-ID: <Z6a_f03Ct9aB7Bbn@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Niklas Cassel <cassel@kernel.org>,
+	dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v14 06/15] PCI: endpoint: Add RC-to-EP doorbell support
+ using platform MSI controller
+Message-ID: <202502082204.6PRR3cfG-lkp@intel.com>
+References: <20250207-ep-msi-v14-6-9671b136f2b8@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
+In-Reply-To: <20250207-ep-msi-v14-6-9671b136f2b8@nxp.com>
 
-On Fri, Feb 07, 2025 at 09:38:05PM +0000, Mark Brown wrote:
-> On Fri, Feb 07, 2025 at 10:30:17PM +0100, J. Neuschäfer via B4 Relay wrote:
-> 
-> > This is a spin-off of the series titled
-> > "powerpc: MPC83xx cleanup and LANCOM NWAPP2 board".
-> 
-> > During the development of that series, it became clear that many
-> > devicetree bindings for Freescale MPC8xxx platforms are still in the old
-> > plain-text format, or don't exist at all, and in any case don't mention
-> > all valid compatible strings.
-> 
-> What's the story with dependencies here - why is all this stuff in one
-> series?
+Hi Frank,
 
-The patches are independent of each other, except for the four elbc/nand
-patches. They are in the same series because they came up during the
-same project and achieve similar goals, but it isn't necessary.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 00f3246adeeacbda0bd0b303604e46eb59c32e6e]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/platform-msi-Add-msi_remove_device_irq_domain-in-platform_device_msi_free_irqs_all/20250208-034445
+base:   00f3246adeeacbda0bd0b303604e46eb59c32e6e
+patch link:    https://lore.kernel.org/r/20250207-ep-msi-v14-6-9671b136f2b8%40nxp.com
+patch subject: [PATCH v14 06/15] PCI: endpoint: Add RC-to-EP doorbell support using platform MSI controller
+config: i386-buildonly-randconfig-003-20250208 (https://download.01.org/0day-ci/archive/20250208/202502082204.6PRR3cfG-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250208/202502082204.6PRR3cfG-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502082204.6PRR3cfG-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/pci/endpoint/pci-ep-msi.c: In function 'pci_epf_alloc_doorbell':
+>> drivers/pci/endpoint/pci-ep-msi.c:53:15: error: implicit declaration of function 'platform_device_msi_init_and_alloc_irqs' [-Werror=implicit-function-declaration]
+      53 |         ret = platform_device_msi_init_and_alloc_irqs(&epf->dev, num_db, pci_epf_write_msi_msg);
+         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/pci/endpoint/pci-ep-msi.c: In function 'pci_epf_free_doorbell':
+>> drivers/pci/endpoint/pci-ep-msi.c:75:9: error: implicit declaration of function 'platform_device_msi_free_irqs_all' [-Werror=implicit-function-declaration]
+      75 |         platform_device_msi_free_irqs_all(&epf->dev);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-> Normally I'd expect bindings conversions to be standalone.
+vim +/platform_device_msi_init_and_alloc_irqs +53 drivers/pci/endpoint/pci-ep-msi.c
 
-Noted.
+    26	
+    27	int pci_epf_alloc_doorbell(struct pci_epf *epf, u16 num_db)
+    28	{
+    29		struct pci_epc *epc = epf->epc;
+    30		struct device *dev = &epf->dev;
+    31		struct irq_domain *dom;
+    32		void *msg;
+    33		u32 rid;
+    34		int ret;
+    35		int i;
+    36	
+    37		rid = PCI_EPF_DEVID(epf->func_no, epf->vfunc_no);
+    38		dom = of_msi_map_get_device_domain(epc->dev.parent, rid, DOMAIN_BUS_PLATFORM_MSI);
+    39		if (!dom) {
+    40			dev_err(dev, "Can't find msi domain\n");
+    41			return -EINVAL;
+    42		}
+    43	
+    44		dev_set_msi_domain(dev, dom);
+    45	
+    46		msg = kcalloc(num_db, sizeof(struct pci_epf_doorbell_msg), GFP_KERNEL);
+    47		if (!msg)
+    48			return -ENOMEM;
+    49	
+    50		epf->num_db = num_db;
+    51		epf->db_msg = msg;
+    52	
+  > 53		ret = platform_device_msi_init_and_alloc_irqs(&epf->dev, num_db, pci_epf_write_msi_msg);
+    54		if (ret) {
+    55			/*
+    56			 * The pcie_ep DT node has to specify 'msi-parent' for EP
+    57			 * doorbell support to work. Right now only GIC ITS is
+    58			 * supported. If you have GIC ITS and reached this print,
+    59			 * perhaps you are missing 'msi-map' in DT.
+    60			 */
+    61			dev_err(dev, "Failed to allocate MSI\n");
+    62			kfree(msg);
+    63			return -ENOMEM;
+    64		}
+    65	
+    66		for (i = 0; i < num_db; i++)
+    67			epf->db_msg[i].virq = msi_get_virq(dev, i);
+    68	
+    69		return ret;
+    70	}
+    71	EXPORT_SYMBOL_GPL(pci_epf_alloc_doorbell);
+    72	
+    73	void pci_epf_free_doorbell(struct pci_epf *epf)
+    74	{
+  > 75		platform_device_msi_free_irqs_all(&epf->dev);
 
-
-J. Neuschäfer
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
