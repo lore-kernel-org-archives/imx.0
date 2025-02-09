@@ -1,62 +1,62 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B79761FF2
-	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 04:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD51B2EAE6
+	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 04:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739074678; cv=none; b=Q7ihsiYUlH4gHOdbm3wWct6XirG4u/xVtI97tJtYCiG/VTZXNRrvgZ37n2O7Ns0Hi/Jaori+Yg13x/YKz4pMbsUQ2GdvUjEiAAbM4gzaN/0fqjAFw9rqWqKsuXjODzPV6gqhJCxjLY+GoRKZdkeITYYmLrRdQ7XOD8VXgxNoaDc=
+	t=1739074687; cv=none; b=OsnbRkCFWWKGPxdVKaMLcukL3rLWVAenznvAr0sDM8O6gfQ+H5+6H76KxBPtXUQEEYa6hKdC8+oWJ77oN1fPBq//Z9OkTRNUgo2CMaAeKvmkmOGDEvH4pld3UlvQ+wFyqRtH0yHAZYrqd5a5NgSR8IW3KvdqEWZEUmzOgS95dZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739074678; c=relaxed/simple;
-	bh=PxpxF0dUlwKn44FGhlpT2SXXiblCpU8cCNLnLI9M4ac=;
+	s=arc-20240116; t=1739074687; c=relaxed/simple;
+	bh=rPuSUodznHcDcnkXovmaVlnFXIC34eH0em4djJco3jU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgPg2hWG7plYOBRKegYoMgr3jfvkBL0mMGuDQC3OFh7pmhbMQM/ePBMlBKB8RUmxxwduwrptnO1fwsC6UjDdLeRc+3o90NumSf3C47uSyw7YCpe6ByQBKOuFwY9wZQpNM31Pw/r4gGHxe1+7i9ochh6pNElHvVopLRZR7EYH0II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=HtZ8+zyz; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=OG5wD8CrAs/Xh874cYByIFumjywX5dmHuVPKOo67Vpt6ih0EP1LWiuBFeWahr8uO7emry2uPk+G//8eblUB63aJXQ81p29cXCAfmcSvKF0cdSpqQMDKZHbj1HNXaUUVP/c3cAEKMxV0IJcZ75RFyoSmQvhIT01grQ8YBmFo2C34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=GJSzJhbV; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="HtZ8+zyz"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fa19e1d027so3768087a91.0
-        for <imx@lists.linux.dev>; Sat, 08 Feb 2025 20:17:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="GJSzJhbV"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa40c0bab2so2049282a91.0
+        for <imx@lists.linux.dev>; Sat, 08 Feb 2025 20:18:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1739074676; x=1739679476; darn=lists.linux.dev;
+        d=ventanamicro.com; s=google; t=1739074685; x=1739679485; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3sE/PXdSSokJ0Zgm0Fk4Pk1jUj6qdWvd3FyfD/aEiAI=;
-        b=HtZ8+zyzL3TM0S3J2RqRdlvGXvXyXapxrexuv1tUoTgtLgHQj4brwbbvM01l9SxOeU
-         0v1Bnt7tziwUex8KIZL/+Vs8gzdCqRWlp7POvvA5p4hJcQrRW3Kby3165vpC1HBGsv9i
-         E1POtvI5EcNQ7Y5+FWuTs1lUVTTYXHbhqrCFzFfkSYlX6ibzjvIPsJ747PtcwHBAlugF
-         4iCQUAStgu0/EuwvfjQ8lcnyE2dPjmrgBD1oA04QW2OEUB23N+w/PIeaCtDaLvEFLu6B
-         oYzDfX/xNkqtBng829WPx9WSzPMSD+JiyBrcrx0y4OpIuSAOMmQBihya52gIV4p6mkfT
-         xp7g==
+        bh=+su7Pdf8Wu86Zcml4faTN2UwZ+oipeVYumq+PsYwErw=;
+        b=GJSzJhbV2fg1aALcMiRHJvPYI4tDnGxblL1SAbSy1W0yEjH57LiW+3f9UP/i3N6M5w
+         iN7zwl0q4TvYbykXVRLXU89hWDo85kvUwlG6hrzAP8IoASNOsolDW6Rm5o/BGDOG0uEn
+         OtYJrS72622GHx55tRo1y5kMwYjbNcZpUcKnkcwursvmo5c1hzUvGOYOqVmqG2GpopU7
+         r35vi61GyVWSA00+c6rrvzx14EIWB2oMCALZMp0PY1raE3E/iSujkuV6CvS4tbUH6w51
+         nfKnRUhpgn9O9l0kfp4vlPqZo4l8JXXU5svwnHn36dv4HTkkHwDgQeT2xTuILTpiz+CT
+         YW8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739074676; x=1739679476;
+        d=1e100.net; s=20230601; t=1739074685; x=1739679485;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3sE/PXdSSokJ0Zgm0Fk4Pk1jUj6qdWvd3FyfD/aEiAI=;
-        b=ZG9l9qj51PBxdZSDjikY1OKW/faTnYdyBKD/8ike/w9blE0vtoiUReMDL5OLbedvV3
-         UT3go90JdMfdzCMXXatJypJzPEaXzCulInnoTjDNz4bfi3g8pdXDiFEz96OAlBoitq/a
-         D4eskbYCUauWxM4OvT20F+5LLALF4eIiHPxU+Ko5t2dzZJWcNESQczS49ZykTXarhPH9
-         2whrwvc7eDz5yQ5XF8tGp8ZekQOPKU41WGvteM1yv8WDNbAPLgYlW/jKJpKFYJ2p5hWb
-         bm14dOA6Sz75w/KCnKorfsQc61PexFGOcK6eTocOuBBIXs5sFs2z1s499eFCxUYHp7CN
-         Ml7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWS+zcVuM4IjnOF7R7FSwfYk+GZ09dJmE2ZKhWDO8xii9rcJGZnpoZfK4rnKOjDV/sP6EA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwAKnLLfd+zmKWxmWwJBUbD4QQcO5epVcpCcAfKOC0h/f00hjFr
-	fsHRUOqrTlvjC8zHFBrSlO5BDc5v0viFI1xL4mngm0/kx8euK3eaKE5yMBFX37Y=
-X-Gm-Gg: ASbGncsISc26SfX7IKKBO4DTu8mIymw7MmXD6RVoVaeIoJGPPSrgJfZj26L6zi3esLl
-	MHAx4j9QyxYIOBM+EQXh+1BoRBtcbaMi+NHpli1ywzKEaN5U4+tzYVvoi4MYmWjE6Fqw+hv2zcY
-	h2novET4GXp6d2rbSZ+3aF1Rrs9Of+R0K/IB+q9eB6HSS4sk17PPbx8OJqhIkrwTMKCFRPBu7mC
-	V2sUKd5iBYfeQlYKJZsmwokwt8dEaBJ7PhQyN6g7OxftDTWpgyO0w/i/CEXmhqUZzTkbs3irODb
-	3Nfthh+EwVJCPcrA3C/o2vmxNt9DJNjB2vLWADlcGAqbUU3gnjs7KBw=
-X-Google-Smtp-Source: AGHT+IHDq8j70VgdWYD0/5rZSoa9FGuz2H9SOfW3ipfEG4foQkrNVKZyKea9+xF989Gz8oAitxsVGw==
-X-Received: by 2002:a05:6a00:a15:b0:727:d55e:4be3 with SMTP id d2e1a72fcca58-7305d463732mr13313591b3a.7.1739074676324;
-        Sat, 08 Feb 2025 20:17:56 -0800 (PST)
+        bh=+su7Pdf8Wu86Zcml4faTN2UwZ+oipeVYumq+PsYwErw=;
+        b=pfxHRIXuYrX+PA9ueaPyg98TV0hNlOnGc/baoW6/KGmqXhD0AlxUKVRmlf9vPp0JCQ
+         ci4dDiEWbw+SO+jBH74Ng6HgiaBCfFRA2KDDLlM9s9psosD9Kt4wMGXLyT8jhwW0aMDn
+         x4zsO8qRZf7mbX3CallG7wIYhKL9uHyJfwWCCUIG19rORqqswIlAmpIkzh3S6IUz8cLS
+         m83l6jWRAL4MpNJeJP5wZ9lTGRqavKzdYyqiJNpGWfvldw81ZKpzFDGkYImU66eRiGkW
+         ZfPzJRRlugWuoEQQtyjpmD2Prkn55JyLqn3ls3yHWyeisT0FP2KrFgxLMmXXVTiFnS6c
+         XG1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU2D/p2nRedbSiDntlIcM/lS9uxzCE7D/C5hgsKyAPzs3zN731PGU/YAspjZ8ve5IgRpko=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyD/73A86wzkgQ997WuTwXOroxdUEFyGnmdktlv/u2FJ7U8xP5/
+	wjsyXBcVSd8+NxszOPLULNctfBtwMuYHjGgMWWceuEDLEgN2KYt+OfNTQd8CZ+A=
+X-Gm-Gg: ASbGncsujZ1vSrDHij9K0+Fag1NPPKKmU0I96WRdZxXXV9/sdX9ybnIFul2DlebWrzy
+	apizzc8QksWlriLILDdErRW6cOqyy3WgM7h367jgd1meJJKud55ttRUBzIkD9/ec5P/SeELgP35
+	4qumsnufCYH+Pz1HX/8Hg7T4vcEQ/ZCd21g7dh/Z5AqVDS1+sDw6QukleC3Vshq7/jXck/FuIbk
+	UgAXcjku0DX9K0O80RuV5wWmvz5HNIizRlkTrEJwNiG23emIU38yBqZLHucJmtVbFfOQXnq63Oa
+	Ela1tKfEGnvQsw8SoQ/TVMWX2FIPlTpZ3X76yjNy9P4E3/IyAWVjE5M=
+X-Google-Smtp-Source: AGHT+IHplK1Odn1krUBJui9aJ3bXui5w4fG7ychKlkG3JoJ8qZ1jCX3WfSDt+grELpA1vaZRwG2+1g==
+X-Received: by 2002:a05:6a00:178c:b0:730:8a5b:6e61 with SMTP id d2e1a72fcca58-7308a5b7c17mr217952b3a.2.1739074684846;
+        Sat, 08 Feb 2025 20:18:04 -0800 (PST)
 Received: from anup-ubuntu-vm.localdomain ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73073eba116sm1898410b3a.124.2025.02.08.20.17.48
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73073eba116sm1898410b3a.124.2025.02.08.20.17.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Feb 2025 20:17:55 -0800 (PST)
+        Sat, 08 Feb 2025 20:18:04 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -82,9 +82,9 @@ Cc: hpa@zytor.com,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v5 05/11] genirq: Introduce irq_can_move_in_process_context()
-Date: Sun,  9 Feb 2025 09:46:49 +0530
-Message-ID: <20250209041655.331470-6-apatel@ventanamicro.com>
+Subject: [PATCH v5 06/11] genirq: Remove unused GENERIC_PENDING_IRQ_CHIPFLAGS kconfig option
+Date: Sun,  9 Feb 2025 09:46:50 +0530
+Message-ID: <20250209041655.331470-7-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250209041655.331470-1-apatel@ventanamicro.com>
 References: <20250209041655.331470-1-apatel@ventanamicro.com>
@@ -96,59 +96,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The interrupt controller drivers which use GENERIC_PENDING_IRQ
-can move interrupts in process context for downstrean devices
-which support atomic MSI configuration.
+The GENERIC_PENDING_IRQ_CHIPFLAGS kconfig option is no used anywhere
+hence remove it.
 
-Introduce irq_can_move_in_process_context() which allows interrupt
-controller drivers to test whether a particular interrupt can be
-moved process context.
-
+Fixes: f94a18249b7f ("genirq: Remove IRQ_MOVE_PCNTXT and related code")
 Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 ---
- include/linux/irq.h    |  2 ++
- kernel/irq/migration.c | 11 +++++++++++
- 2 files changed, 13 insertions(+)
+ kernel/irq/Kconfig | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 56f6583093d2..dd5df1e2d032 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -615,6 +615,7 @@ extern int irq_affinity_online_cpu(unsigned int cpu);
- #endif
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 5432418c0fea..875f25ed6f71 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -31,10 +31,6 @@ config GENERIC_IRQ_EFFECTIVE_AFF_MASK
+ config GENERIC_PENDING_IRQ
+ 	bool
  
- #if defined(CONFIG_SMP) && defined(CONFIG_GENERIC_PENDING_IRQ)
-+bool irq_can_move_in_process_context(struct irq_data *data);
- void __irq_move_irq(struct irq_data *data);
- static inline void irq_move_irq(struct irq_data *data)
- {
-@@ -623,6 +624,7 @@ static inline void irq_move_irq(struct irq_data *data)
- }
- void irq_move_masked_irq(struct irq_data *data);
- #else
-+static inline bool irq_can_move_in_process_context(struct irq_data *data) { return true; }
- static inline void irq_move_irq(struct irq_data *data) { }
- static inline void irq_move_masked_irq(struct irq_data *data) { }
- #endif
-diff --git a/kernel/irq/migration.c b/kernel/irq/migration.c
-index e110300ad650..5acea2ac57be 100644
---- a/kernel/irq/migration.c
-+++ b/kernel/irq/migration.c
-@@ -127,3 +127,14 @@ void __irq_move_irq(struct irq_data *idata)
- 	if (!masked)
- 		idata->chip->irq_unmask(idata);
- }
-+
-+bool irq_can_move_in_process_context(struct irq_data *data)
-+{
-+	/*
-+	 * Get top level irq_data when CONFIG_IRQ_DOMAIN_HIERARCHY is enabled,
-+	 * and it should be optimized away when CONFIG_IRQ_DOMAIN_HIERARCHY is
-+	 * disabled. So we avoid an "#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY" here.
-+	 */
-+	data = irq_desc_get_irq_data(irq_data_to_desc(data));
-+	return irq_can_move_pcntxt(data);
-+}
+-# Deduce delayed migration from top-level interrupt chip flags
+-config GENERIC_PENDING_IRQ_CHIPFLAGS
+-	bool
+-
+ # Support for generic irq migrating off cpu before the cpu is offline.
+ config GENERIC_IRQ_MIGRATION
+ 	bool
 -- 
 2.43.0
 
