@@ -1,60 +1,62 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F7310F4
-	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 04:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B810F4
+	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 04:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739074636; cv=none; b=P0OfFQS/FmYUIL8PSsPPwyk7eCppQxq4WFLoBe8ubU+oXXVeGYG+DIhk/e3lonPvRwLdMi4HJrwq5AFolcFdpwO8iAkanKG7cs/ki4u3FexCpL8hnxim1BRSUJjcWI2OPmD1OCiidjgXQYp+XL4BG2F8TimpG0uKuOjexM7Y2Tg=
+	t=1739074644; cv=none; b=XUUY4BMpe/nsGEmWrAMuo+jT+1w5qlR9AUD/9TyllSLnZBWdNdJtFdFiQJcBGOij1/QycMYLcSCEUv8TKj7jW5hNQe8KhPG6CmReGpqQ6Pmoyk6wSClS1ZAJV/W6x5DBUI1sNllM09USFsNqiOPThJF+6LykuRIVp49ed+vmmpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739074636; c=relaxed/simple;
-	bh=Xr4B6bIxHxwEzNHMZ1RA4gxJ39rt8BYamWe+C5twFvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u4PYg1ojf3nvUTurV6pEhAzR8wxmcqtrT9jO3ZMT8ekQaMSvn6GCqXl+RWMGRbVlDD5iGnw5NKJ2f85QuJ0h2D6M6LGk7nje/fif92qEoN+bIICVEo8XI1Qg9Dah8fPrPVMvjGtF3ai9mtq+aoX7h0G0y/NDNJOw2+n+C13ZW8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=YHdO5x5G; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1739074644; c=relaxed/simple;
+	bh=gGGEYK7VGgFWWdh/qLZbuuJY+xZwb2aTgVHnwmrr23c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MX/kmdxdY2P9idjfQOnpCfIvqWoR/MGr3oSBsT2iGpjQw3T42iC53fmOA8I0NdZauhsOKqNXXcw2jWi588byxmPizycK9ZDp7o9OwNqnpXj7y9ixaybpYYGRsX2e96kQvy0Nmy09iU229Vg8WtaFGpkJo1nSO55ZfmWw2jQu1Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=iOQh6ZYv; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="YHdO5x5G"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2fa286ea7e8so2780105a91.2
-        for <imx@lists.linux.dev>; Sat, 08 Feb 2025 20:17:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="iOQh6ZYv"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2f9ba87f5d4so4708273a91.3
+        for <imx@lists.linux.dev>; Sat, 08 Feb 2025 20:17:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1739074634; x=1739679434; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ffChoDiFR+PyqcOvwXXG+VNE/Bmtc2ogucfc93fQxUk=;
-        b=YHdO5x5G1BdUU1sAslW2shHkepcbi4VdyHP0XYKU2tRCt+jwRxaIN9yKNHWQZNQY9s
-         8KbnzaO9dp10cEroV7fCqkzS2y7VGjkOvik7ngvy6AoFL9awRM0W1MT3PuqAoofKGTIn
-         Orb8AIEfqP0jCyB+gBpQlfpue90LRJmPQKElUEn0xFRImbBTy9CkZor8pAlnNeh8Z5RK
-         dtd4oA5KBBEp4IzbbFccerJW472uJpzwOnymCSE+ERRBWwVcG/Aep/Q5T4a6l555pRd6
-         Z8BDQvcbysyoUTg1jh/5wnLBWQFw0BLTF4P46GXhsuML99liDq8t6y/d9fV1wyylQ1Xw
-         BnPQ==
+        d=ventanamicro.com; s=google; t=1739074642; x=1739679442; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DvFsqgBHoepkWBjGC1yP+KOn/8qryanxa+3zb4U83Ao=;
+        b=iOQh6ZYvfvltfLBCyjFPeIN7Xx6TxUAlVbErP1QVhKjF/wo/etgr5DEc9FEYNcf+Zr
+         KQqLwMli44XGDNz2cyG1VYmHteDA97QpFNJOUseuirMe1NrpC3mNFmt8TEQd2ptE9TuV
+         lKVgrqdUiOO9abe8i62rzgTtsCNyuXjJm5BBZ4CCLU/WMGsXrpViIhUEnxrPigMcbSj+
+         9IiQ9X9w/I+ExvqUrs2Xq5e06M+yq4MNDB2fWq1CFUB44rjBs30iYWqz0GO7fYvvSxmr
+         0kmyHy40qShSwaXMcDS1nEVn5KG5dCo4THIL6tRWJE4BSiZK+VrlxU2AVAJo+Yg93rMF
+         htyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739074634; x=1739679434;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ffChoDiFR+PyqcOvwXXG+VNE/Bmtc2ogucfc93fQxUk=;
-        b=moJ+JGR5My41VP39mhNoC2GQZ03F5xYrUIKXvwd8XTVD1qBv+B7gPzS4HjMPywcot/
-         nsDfAgoh2a9l52wcUcyhVlIyoM4WEPyRBn0J7B0W1R3jeKWt1w4amQ6Shc6PnFN3doG/
-         /TjyyF+kwEkq1ZT1VL9cJeWcs7N6FHABX/5tfcV3cjMeDwuBqFsX2gPtNLnwCpWkOVyx
-         oyAMgFN/3Ha5X/BiRQ7TGWG/RIeUd2eyFbJve0hR2ZMUOvMj/JUG5Ut0iRKjFe2dLMQ0
-         4cN0ur2Zt/jCvJcoVIgY3JeD29+K4OyWO0mEnm5oCLgNNToQSHvOdheMfCfObKJFf2TE
-         eOOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPvjxu3IVczzJm3sqnpTUDaFZEk3L2KJ04DMNkAg9a8F/9WfyTyRIQGbGGasHzW6kyMTw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw9IGYIU4rZYdM9n0fgNZDko9Pb94R7EqL6PDoAHtQUlOrsXth8
-	BFHdOToyYfYCiQ3UK5IWnzp7fpxor3ir3LHPhnD5u7JB+MhB95m44nhXA959BGc=
-X-Gm-Gg: ASbGncuGFkHDEgoCJujYceG9NgoXVCPK9NLgzpUtViVRVR/9Oy0Ngi1xvRW3Cwi68SL
-	c5JIKDaIaKsMiewSr3ipaW9VVXBiD9LF6S5HvecOgAh67hlN4SPWdhxw4EKvfwM10JVKAQ+NIgC
-	ODd+6iydr13Vt3D9AGp4MAYvoBlyPRHg0Kty7/kGKcvXTl9sT5aOAPS6B7YWJw5shxbC1629EmZ
-	sosmSeZfVzHIHtQmYU09HcM97AcmIyyXJrJ26IxE6PViIWCCkhosHRGYGrT6hQezZE9bM6WIVu/
-	BZp6DEjpf9jDHKf33QSmwbGm2dJ7P15IzHuTAEK2mrO/HvT73hsfoGw=
-X-Google-Smtp-Source: AGHT+IHWyivxqea4vrX5Vzo7+S2VcgVE1uEfRrP93aVaeTeSGQZ/oELVi9DGSUIrYGP8OYhXJU+GpQ==
-X-Received: by 2002:a05:6a00:2289:b0:725:460e:6bc0 with SMTP id d2e1a72fcca58-7305d2ac0admr15893367b3a.0.1739074633666;
-        Sat, 08 Feb 2025 20:17:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739074642; x=1739679442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DvFsqgBHoepkWBjGC1yP+KOn/8qryanxa+3zb4U83Ao=;
+        b=kPx8iehIfY3Xm+8Bq1Cvqq1AQ7JcE/HJkqCGQbOnWG+U47TXie+Tv0KLy9Rn8abGjO
+         R+w2Oh0wiPCFxGcv0PskMzQjR88Moes11f78ZqMUJPrvrpvv2WInYUzsBEwqsCtyUtrB
+         C/1NzhObNoAZg2pYet7OYHt8pRoYNRTt98mugzAzLRX3h7E0lxAB5g7nbsfRPhn2VXW0
+         5CpzfzO2iBwAcBLEwMkqniTN2/Z/SpUTx4gAcs5WKYi8xVza07Puww3ABn09xOUibnmG
+         PAaF11x70jZEr7epXxAd5Ewa4Qyp7NCFqJKf1LcimIJig93FZrvQqLrBG+MRnuROa4AT
+         arLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXZNpTUy8uLXosa8YzwqnT30hwVlI2wUIqqli/vhH615khXy+FLv+2BnIYGX0k/7kAu20=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwISqIhissNqKsnc6EkkFUPtn6yIBTIJj1ilTGD0D6k3YN9hC8f
+	eoOsxN3XiBCqtf0xDx3WHIV/W60kP767DsxrQwl/wML0/G8Y6o3OL+youR20JnI=
+X-Gm-Gg: ASbGncuyYxbBu0ODGz44Fo4+HoUzfy2T8gjPcIJYlOG5eCBLPRSLgoZe/1y3Oybiwgw
+	5+PDXDqeKKlfQURDSxxqeBfdOBwu6jza64ceaC2vjw5/dAdDpVhDRowDFX8GBfk2G6TcwX9fudp
+	ZlwKl7KIIamn8BZQ3TwoR8TpnsPlgDihF8l0TkNOIbM7L5VN6eCoy+PL8m6ztkJepXPymxTzC4M
+	vIpKmV/a62tMzne1aAUN+80MgwKUi2AxkV39+75y0CeWO4x7pSLMMpMCYWat7TWKQHmTdrQnWu5
+	kvX8cSZK+t9QDKez1y94+eOg9+nPRXJmoKtqNa+CnXElfjy6Chxv4PE=
+X-Google-Smtp-Source: AGHT+IHRXdIPs1mvVVeCpBykzAl+ifFcG5qlvMFYrTkFKgREylWnQV7fAuN/+eShJoWgxmV452gK/Q==
+X-Received: by 2002:a05:6a00:b41:b0:730:8a0a:9f06 with SMTP id d2e1a72fcca58-7308a0aad32mr287596b3a.16.1739074642169;
+        Sat, 08 Feb 2025 20:17:22 -0800 (PST)
 Received: from anup-ubuntu-vm.localdomain ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73073eba116sm1898410b3a.124.2025.02.08.20.17.05
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73073eba116sm1898410b3a.124.2025.02.08.20.17.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Feb 2025 20:17:13 -0800 (PST)
+        Sat, 08 Feb 2025 20:17:21 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -80,10 +82,12 @@ Cc: hpa@zytor.com,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v5 00/11] RISC-V IMSIC driver improvements
-Date: Sun,  9 Feb 2025 09:46:44 +0530
-Message-ID: <20250209041655.331470-1-apatel@ventanamicro.com>
+Subject: [PATCH v5 01/11] irqchip/riscv-imsic: Set irq_set_affinity for IMSIC base
+Date: Sun,  9 Feb 2025 09:46:45 +0530
+Message-ID: <20250209041655.331470-2-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250209041655.331470-1-apatel@ventanamicro.com>
+References: <20250209041655.331470-1-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -92,76 +96,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series is based on recent discussion on LKML:
-https://lore.kernel.org/lkml/20241114161845.502027-18-ajones@ventanamicro.com/
+From: Andrew Jones <ajones@ventanamicro.com>
 
-It primarily focuses on moving to RISC-V IMSIC driver use common MSI
-lib and GENERIC_PENDING_IRQ.
+Instead of using imsic_irq_set_affinity() for leaf MSI domains,
+use imsic_irq_set_affinity() for the non-leaf IMSIC base domain
+and use irq_chip_set_affinity_parent() for leaf MSI domains.
 
-PATCH1 & PATCH2: Preparatory patches
-PATCH3: Main patch which updates IMSIC driver to use MSI lib
-PATCH4 to PATCH6: Preparatory patch for moving to GENERIC_PENDING_IRQ
-PATCH7 to PATCH11: Patches use GENERIC_PENDING_IRQ in IMSIC driver
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+---
+ drivers/irqchip/irq-riscv-imsic-platform.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-These patches can also be found in the riscv_imsic_imp_v5 branch at:
-https://github.com/avpatel/linux.git
-
-Changes since v4:
- - Updated PATCH4 with better irq_force_complete_move() implementation
-   provided by Thomas.
-
-Changes since v3:
- - Dropped PATCH1 of v3 series and updated last patch of this series
-   to handle the intermediate state for non-atomic MSI update.
- - Added new PATCH6 in this series to remove stale kconfig option
-   GENERIC_PENDING_IRQ_CHIPFLAGS.
-
-Changes since v2:
- - Rebased upon Linux-6.14-rc1
- - Dropped PATCH5 of v2 series since that patch is already merged
-
-Changes since v1:
- - Changed series subject
- - Expand this series to use GENERIC_PENDING_IRQ in IMSIC driver
-
-Andrew Jones (1):
-  irqchip/riscv-imsic: Set irq_set_affinity for IMSIC base
-
-Anup Patel (7):
-  genirq: Introduce irq_can_move_in_process_context()
-  genirq: Remove unused GENERIC_PENDING_IRQ_CHIPFLAGS kconfig option
-  RISC-V: Select GENERIC_PENDING_IRQ
-  irqchip/riscv-imsic: Separate next and previous pointers in IMSIC
-    vector
-  irqchip/riscv-imsic: Implement irq_force_complete_move() for IMSIC
-  irqchip/riscv-imsic: Replace hwirq with irq in the IMSIC vector
-  irqchip/riscv-imsic: Special handling for non-atomic device MSI update
-
-Thomas Gleixner (3):
-  irqchip/irq-msi-lib: Optionally set default irq_eoi/irq_ack
-  irqchip/riscv-imsic: Move to common MSI lib
-  genirq: Introduce common irq_force_complete_move() implementation
-
- arch/riscv/Kconfig                         |   1 +
- arch/x86/kernel/apic/vector.c              | 231 ++++++++++-----------
- drivers/irqchip/Kconfig                    |   8 +-
- drivers/irqchip/irq-gic-v2m.c              |   1 +
- drivers/irqchip/irq-imx-mu-msi.c           |   1 +
- drivers/irqchip/irq-msi-lib.c              |  11 +-
- drivers/irqchip/irq-mvebu-gicp.c           |   1 +
- drivers/irqchip/irq-mvebu-odmi.c           |   1 +
- drivers/irqchip/irq-mvebu-sei.c            |   1 +
- drivers/irqchip/irq-riscv-imsic-early.c    |  14 +-
- drivers/irqchip/irq-riscv-imsic-platform.c | 197 +++++++++---------
- drivers/irqchip/irq-riscv-imsic-state.c    | 152 ++++++++++----
- drivers/irqchip/irq-riscv-imsic-state.h    |  12 +-
- include/linux/irq.h                        |   7 +-
- include/linux/msi.h                        |  11 +
- kernel/irq/Kconfig                         |   4 -
- kernel/irq/internals.h                     |   2 +
- kernel/irq/migration.c                     |  21 ++
- 18 files changed, 389 insertions(+), 287 deletions(-)
-
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index c708780e8760..5d7c30ad8855 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -96,9 +96,8 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 				  bool force)
+ {
+ 	struct imsic_vector *old_vec, *new_vec;
+-	struct irq_data *pd = d->parent_data;
+ 
+-	old_vec = irq_data_get_irq_chip_data(pd);
++	old_vec = irq_data_get_irq_chip_data(d);
+ 	if (WARN_ON(!old_vec))
+ 		return -ENOENT;
+ 
+@@ -116,13 +115,13 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 		return -ENOSPC;
+ 
+ 	/* Point device to the new vector */
+-	imsic_msi_update_msg(d, new_vec);
++	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
+ 
+ 	/* Update irq descriptors with the new vector */
+-	pd->chip_data = new_vec;
++	d->chip_data = new_vec;
+ 
+-	/* Update effective affinity of parent irq data */
+-	irq_data_update_effective_affinity(pd, cpumask_of(new_vec->cpu));
++	/* Update effective affinity */
++	irq_data_update_effective_affinity(d, cpumask_of(new_vec->cpu));
+ 
+ 	/* Move state of the old vector to the new vector */
+ 	imsic_vector_move(old_vec, new_vec);
+@@ -135,6 +134,9 @@ static struct irq_chip imsic_irq_base_chip = {
+ 	.name			= "IMSIC",
+ 	.irq_mask		= imsic_irq_mask,
+ 	.irq_unmask		= imsic_irq_unmask,
++#ifdef CONFIG_SMP
++	.irq_set_affinity	= imsic_irq_set_affinity,
++#endif
+ 	.irq_retrigger		= imsic_irq_retrigger,
+ 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
+ 	.flags			= IRQCHIP_SKIP_SET_WAKE |
+@@ -245,7 +247,7 @@ static bool imsic_init_dev_msi_info(struct device *dev,
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ #ifdef CONFIG_SMP
+-		info->chip->irq_set_affinity = imsic_irq_set_affinity;
++		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
+ #endif
+ 		break;
+ 	default:
 -- 
 2.43.0
 
