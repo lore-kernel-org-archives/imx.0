@@ -1,134 +1,154 @@
-Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5281D47C7
-	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 19:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDA61DF255
+	for <imx@lists.linux.dev>; Sun,  9 Feb 2025 20:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739131043; cv=none; b=Ie2X4OrdbKU/1tG6dV0Tz+XgKy4UeKd09gAXSYruflBKtDIo6PaKNsCBLdLcrfP1dL+Y4l7BtbjCWzxQnmOlZS416CjIN2MNoDwhsKBj4QGPmxN6s+kK7sgqUbXfyS7NSYKS+jGqhNrz0FFoLWhoQt2kwdeAvrQl3BU9XCZ9KYo=
+	t=1739132014; cv=none; b=hsvCnM8D7XJ3UXPirJHngyeCvhHNpKdI8EaH/i91mfUUr+KXq9nC67Ci436yXrlhv3QJHfYYm/eJPhqAcNKNFJ0j3rv7fe5kJGa9VloOuuwjxC2DQa9RrCzMqrZqmTORf4q6iDMdUtjgfitfJO5cX6HuwLoIy0kyge+xxbDkF14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739131043; c=relaxed/simple;
-	bh=7T644jRLvWkERpn3Ga7YAdWY5Xvk+JGdwM8qBhXx6Yg=;
+	s=arc-20240116; t=1739132014; c=relaxed/simple;
+	bh=3vZjtalIidErWwf5waJaHKi1qXeikMixMz6ezxv4Ls4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YRMXGnO4olLRd7KRL6qO+sA20KAEfQH21U1oYYguXDRuA5Qpbs4wOEkO6bufRzp8TwsEKWnQbqigqpmHsxB9njW2y0xLw2xcJYfOhiE1CMtNAQ9kOrVKVi6pLPnBp6daOs0DuIvL/h0dT6+UVWY+iuCqJOrS6TvjCafddWsZLno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=IdqbLMqX; arc=none smtp.client-ip=89.177.23.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=QTOoqu4INvXkVdweouLZj3I6YAMwv8D66Kcnw4nQINCqkjdGDWO86FUUPi7PM38PPKo0ICvrU0itRB3b+ns23rw/WXweFyWwQCeCYI7+yLv5QS4HUr0PC5Jm/DdMLmVOTD+3hAltJoeBz3TkBUuo+Z2Irqpiqn2/OJkxhK3cl1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qcd2SAPj; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="IdqbLMqX"
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 538811665EF;
-	Sun,  9 Feb 2025 20:57:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1739131040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n1wZCagye5h3kJ2wyjhN/cA6M8igqHHxiNXpizL4J7I=;
-	b=IdqbLMqX+LbuIILcou3VuXb64skIlTbhuWGJnIS5YPGabaZEkbRrdkwDoeh5wijmUof9Xr
-	09s79zonf+loCFf/pOApnBbqSUwrtQIhzrcNGnYx0j+LXkIeWA9n1wvI0ZxVrhHbRc5F/8
-	biOquMbHW2sAPiD3htOGKjDH+5l0H28=
-Message-ID: <986151e9-ffce-4c47-a4de-01a2cfd57b36@ixit.cz>
-Date: Sun, 9 Feb 2025 20:57:20 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qcd2SAPj"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab7bc75e0a1so11858166b.3
+        for <imx@lists.linux.dev>; Sun, 09 Feb 2025 12:13:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739132011; x=1739736811; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZiYTsuTuzgzPQyFWR4jKg3oel1E5dq+3B8E5LOdMdt8=;
+        b=qcd2SAPjwA6epZbmUrngwFGpejXSzmY6gPDo2hMFqUiejhgMpvmdJm6GcIRzEx+Zve
+         Onee+ldj+C1/CzmMqD2oV4Fh1sKsZ8FpNSOs/z23dx0vHecCUFxF1diqETxRHdT7EAeY
+         7gpSY4CkjMbLNNLzqX5i3F4CZyPI7abxervrGyIF7KdYhGNUXSmtAFwbuua206ujuHPJ
+         Eu6CIsTT7tqo/aakDgIhg6bPIUR8ssaXXoqGd/GYcaqAsr5HZt+/1w5ZrkUIPNYOBA1j
+         aC2aPmFihkPuM+FyX2oYp2wiMQgLHYqxLhD6coxSFdRmprEeiD/QVQvRtF1RCcJotS/X
+         bSIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739132011; x=1739736811;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZiYTsuTuzgzPQyFWR4jKg3oel1E5dq+3B8E5LOdMdt8=;
+        b=f1OEv5JtWDpRuDcwbqx0edTZfJ+ZRep2eb6moNi3GABELy/gjQx4YT8pLz3H4ahNxP
+         wcX7VqcNJG+JvyWiRiUoY67ItrXSBlbPdbG8DDenUCeRZD6A78jitpyfwu+SubM+o0eW
+         /kF3n7kz5UbFm9bFKPUpB4qgKwS8Zm/9LN1U0sVI1Vn8oGGK7A0d8jqamm18bvIK1aBt
+         ux7pJpTNtHWP7+vYdN8JRNL92xHNlWk+OTl5GXEUxTUSouvnptYYR78aK0kq7VYZdjTW
+         FPN0A6Wk4y3/sqhe0jWBwL/jgxJwMeb4JAeYkI+hPY8D7h+z0sJ6pz0l/MjHvmL4TRVv
+         M4gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbY6HcNHDtIUYim/ppIsRPiQSj66iXlmfRqLZzHLaAzdjRU8s/6AhW0V5zfjsgc2eLiHM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdHUJyT/5YAMyg9MuSnafG1hJEMu2TlPxdSX0V43rsli3wmEYH
+	63vRRWssVfU4XdbqNl7OXExUCz3N6KPONL6NkX6cJF31Y5TnhDEV9zX/Xa2T74c=
+X-Gm-Gg: ASbGncsoJ4lv2Fdj08IoCqf5yWXyNJwqH7qea2PyAzR3iPbFUPnZ/KP0bqUFtQS3H+8
+	2O5GcaFvkYqj43xHuVz7Ar5BCp71NHn3ihEWhfXnTEnfVHSiJOx/1JjUlm5oAMCEpu9kf20LzPi
+	Zq5l/8dfpVb9QI52XGNUMc4QPDo04SFz1SfWd5CGqt9ZmzVTQpPyt0e16fbgR+LMvKwMentNPZ3
+	PJWcpxcJ5FJiF4+MTNSnGS5/n1+joZeMfs0qkbr4RVh2vMh35vCJ0ek1VZmNt6XHSgMG/LuPgWy
+	NlR66bMdjibNkcm8CMkr7wIb5/erIn/4UXg=
+X-Google-Smtp-Source: AGHT+IH6LtV6zI+A8y6zJKDx9SBfmOVuWXB20wFH30OGC9aYkEMnkPpyjSJ6uBw2QamPaMtQP9zP3g==
+X-Received: by 2002:a17:907:9484:b0:aa5:a60:ad6a with SMTP id a640c23a62f3a-ab789bfaef4mr423937766b.8.1739132010736;
+        Sun, 09 Feb 2025 12:13:30 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.218.144])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7736464c8sm725842966b.166.2025.02.09.12.13.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Feb 2025 12:13:30 -0800 (PST)
+Message-ID: <dfd05a5c-60ab-4fb1-bde1-d04e3a108496@linaro.org>
+Date: Sun, 9 Feb 2025 21:13:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] media: dt-bindings: media: i2c: align IMX219 filename
- format with others
-To: Krzysztof Kozlowski <krzk@kernel.org>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: dt-bindings: media: i2c: align filenames format
+ with standard
+To: David Heidelberg <david@ixit.cz>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+ <conor+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Hans Verkuil <hverkuil@xs4all.nl>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>
+ Ramesh Shanmugasundaram <rashanmu@gmail.com>,
+ Tim Harvey <tharvey@gateworks.com>,
+ "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
+ Akinobu Mita <akinobu.mita@gmail.com>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
 Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250209180718.126462-1-david@ixit.cz>
- <5973f4b7-568a-4ff4-9893-29a150efdd54@kernel.org>
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250209195517.148700-1-david@ixit.cz>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <5973f4b7-568a-4ff4-9893-29a150efdd54@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20250209195517.148700-1-david@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Sent
-
-'media: dt-bindings: media: i2c: align filenames format with standard'
-
-for whole Documentation/devicetree/bindings/media/i2c which contains 
-also this change.
-
-Thanks!
-
-On 09/02/2025 20:09, Krzysztof Kozlowski wrote:
-> On 09/02/2025 19:07, David Heidelberg wrote:
->> Append missing vendor and align with other sony definitions.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../bindings/media/i2c/{imx219.yaml => sony,imx219.yaml}        | 2 +-
+On 09/02/2025 20:53, David Heidelberg wrote:
+> Append missing vendor and align with other sony definitions.
 > 
-> 
-> Something like this was already sent some time ago. Do it for entire
-> subsystem - so all cameras there, not file by file.
-> 
-> Best regards,
-> Krzysztof
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
 
--- 
-David Heidelberg
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+Best regards,
+Krzysztof
