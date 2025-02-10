@@ -1,142 +1,109 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54FA1DE2C4
-	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 15:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F12244196
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 15:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739202550; cv=none; b=hOo0dtdC7Hr2fbmj5J/X2oFr+c4vHVwBf/tZqWJI+y3Zr7yAYkcGzid4OHFN16+vPOrGWv9i+LhwuW2h3A6UqVGwKmsij6X6TBLbNwKQu+WVykZmBqUh3IOmb+qfBkMpHu+WGfOo2xhqwSLOTVFvECRl3r9KHOR/bahgNJg9UL0=
+	t=1739203073; cv=none; b=m9JXl76TW4dBu18cLqlaRY2j5406pOD0wQp9wXtErWN2UkQI9Tf28l872gWnUzjPKDK5Pz9IqdNnkNsAUqIMA9e7whNV2epJKFu0Osk7mim+5uC2rR0jUWdWlyRe7/CisgA5PytVbq1vF9JDZImQExOGpqvKtLZ0VVr7gfm87sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739202550; c=relaxed/simple;
-	bh=MfuMNL4ma4tuOTtb73c+SttAf3oWKFO53E2ZV9Y7vvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XKsEMa6W0y7EjYISjsYUdpGOJMhXOUrTqHV142Kl14HI9a/FAn6zdEYzX1sP/wDcVA7Da97NPLjJPq6iOIsfSYuZcmL77BdHm0QTQG+QXex+AAu5+V+PRxn0WT5Syk535Frp9aN5omTdfMImCjSuk/EOHkw5PRhpwoZkHa9gaJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Xj9ziNzW; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W6jP25cU reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1739203073; c=relaxed/simple;
+	bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=scg2WBLWJ4/i6apE/2x/SpOqnn+NoJfNQBc7GpG+6EIGyCoiEIRoAuvHCmU8ltzxP6/5pptEx20gR0DYPCA5lrpAuELJDzcMj0HmXxl9r6a0+3Axybi9IwyTCVxVjpAcBWO560STHPfm7mSl2n6k3p2qiWtO3iBZiJPXC3IBiqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=XJ32rxft; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Xj9ziNzW";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W6jP25cU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1739202547; x=1770738547;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pVDvbwIvnOZ4humPqCqO2awtBoUSnhumXMCo453Cge4=;
-  b=Xj9ziNzWKVEvpUtyzXciYJqndY+2xffHSnciVwx5n24F6brlez5lOOE1
-   jq4xFXIF3lKIkwcCr4TCFrA3TcarJdAGlQNzyUxHCPinzI+1JD5CGqcbc
-   WfcwdahnHZ9+TYUjj0MzWtz0cdzLLaHstaIXrNFIGFOao0WpmJpYRaRBm
-   jcs3OwmCF8cntCPKr6YwEJ74XRo5yYBrjaICYp3FdBsP1T1O+M7JhPSHc
-   yhajPNR4761xewXMvLr5tpW59RpoVnTC+dHUI1aS2Qrkbkk+GTTcouSnS
-   cXlRc09U91766RICAw+TmyvUi//sOibt/BlNMadF1b49yuD1JP45SB3Ae
-   A==;
-X-CSE-ConnectionGUID: H1xBE4XyRwqDrcXHSdTukA==
-X-CSE-MsgGUID: THM2mKF7RlequMHpcGeCOg==
-X-IronPort-AV: E=Sophos;i="6.13,274,1732575600"; 
-   d="scan'208";a="41723421"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 10 Feb 2025 16:49:02 +0100
-X-CheckPoint: {67AA1FEE-1B-B8541F8F-E50F9B0E}
-X-MAIL-CPID: 3596EAA376F14855D334F1E93CC1918F_2
-X-Control-Analysis: str=0001.0A00636F.67AA1FF1.0017,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 40786160ABD;
-	Mon, 10 Feb 2025 16:48:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1739202538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pVDvbwIvnOZ4humPqCqO2awtBoUSnhumXMCo453Cge4=;
-	b=W6jP25cUKKQKO4dVA5Xu2nJmNQ5pXA8eVc1xaW2ifgRB1N51ZD9eXM8rz2bf4oOObaxU/m
-	D4U2/6Z98BNU5DLVe272MVsorHmmyJ775GgfWtTKHieZRiyqqBi7L63YIDYQgGIj1wJxHl
-	VX9HVC+/TdJqd8VRg+euR4jMk5F3ARbUtGWsu3QN5L3Zw+pUtKBk1nqpR/cnxHDmhkCNkb
-	3l3AsF+bJ93WMY1QFPTEMTYppCIZPfJvEtbkm0ygDUPuaL4sIchVLSy9HQnefyIrdz6ugh
-	DhaQ4/8oxxEGk+Vn/EJWvX1xINnXJ0Z1bz5xGWITg2p5t/3uK+jzigYck/1uxw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 04/10] arm64: dts: imx8mn: Add access-controller references
-Date: Mon, 10 Feb 2025 16:48:56 +0100
-Message-ID: <2222299.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <PAXPR04MB845912F48DC37B6BC599313888F22@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com> <8037692.EvYhyI6sBW@steina-w> <PAXPR04MB845912F48DC37B6BC599313888F22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="XJ32rxft"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id A1850240105
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 16:57:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739203069; bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=XJ32rxft95edBr+EDeVQZGHUeecj5jwxAYiaY0fmQiw2umt38i4PSHy9Xqg3hFJiG
+	 /zwvz+V5oKOw72WAw2xrq8hAP8wB+Yc79C5RKXPI+nT84dGnO8FJJe6BgjV+2KCv1K
+	 1a/Sv9v6+tUMPu1OxatgL5s/rO/RkvTTXucwVQkuLC0FQKgeXGmOlzDLtEJL/rvaCK
+	 3aSKa8WrXTNh5x1YiXZFYpqIAEdpStyegfE2z3NDSW+zSkvotggBkO6XagnhOYe+Gy
+	 f22mnkpYg4Jfa392j6ToQbc6mTrz2xOh4/2lLIwaI1sSOLm6xfkPKEKVOGeJI1JRD3
+	 asuBpZK0jhXeA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Ys8Nl2HW4z9rxD;
+	Mon, 10 Feb 2025 16:57:42 +0100 (CET)
+Date: Mon, 10 Feb 2025 15:57:42 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Mark Brown <broonie@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
+ bindings
+Message-ID: <Z6oh9t2QQzz17Yt6@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
+ <Z6a_f03Ct9aB7Bbn@probook>
+ <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
 
-Am Montag, 10. Februar 2025, 03:36:48 CET schrieb Peng Fan:
-> ********************
-> Achtung externe E-Mail: =D6ffnen Sie Anh=E4nge und Links nur, wenn Sie wi=
-ssen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten =
-Sie die E-Mail im Zweifelsfall zur Pr=FCfung an den IT-Helpdesk weiter.
-> Attention external email: Open attachments and links only if you know tha=
-t they are from a secure source and are safe. In doubt forward the email to=
- the IT-Helpdesk to check it.
-> ********************
+On Mon, Feb 10, 2025 at 12:59:35PM +0000, Mark Brown wrote:
+> On Sat, Feb 08, 2025 at 02:20:47AM +0000, J. Neusch=C3=A4fer wrote:
+> > On Fri, Feb 07, 2025 at 09:38:05PM +0000, Mark Brown wrote:
 >=20
-> > Subject: Re: [PATCH v2 04/10] arm64: dts: imx8mn: Add access-
-> > controller references
-> >=20
-> > Hi Peng,
-> >=20
-> > Am Freitag, 7. Februar 2025, 13:02:13 CET schrieb Peng Fan:
-> > > On Fri, Feb 07, 2025 at 09:36:09AM +0100, Alexander Stein wrote:
-> > > >Mark ocotp as a access-controller and add references on peripherals
-> > > >which can be disabled (fused).
-> > >
-> > > I am not sure whether gpcv2 changes should be included in this
-> > > patchset or not. Just add access-controller for fused IP will not wor=
-k.
-> >=20
-> > Well, I was able to successfully boot a i.MX8M Nano DualLite.
-> >=20
-> > > i.MX8M BLK-CTRL/GPC will hang if the related power domain is still
-> > > touched by kernel. The pgc can't power up/down because clock is
-> > gated.
-> >=20
-> > Well, with GPU node disabled, no one should enable the power domain.
-> > But to be on the safe side I would also add access-controllers to the
-> > corresponding power domains as well.
-> >=20
-> > > This comment also apply to i.MX8MM/P.
-> >=20
-> > Sure. Do you have any information what is actually disabled by those
-> > fused?
-> > It seems it's the IP and their power domains. Anything else?
+> > > What's the story with dependencies here - why is all this stuff in one
+> > > series?
 >=20
-> In NXP downstream there is a patch for  drivers/pmdomain/imx/imx8m-blk-ct=
-rl.c
+> > The patches are independent of each other, except for the four elbc/nand
+> > patches. They are in the same series because they came up during the
+> > same project and achieve similar goals, but it isn't necessary.
 >=20
-> soc: imx8m-blk-ctrl: Support fused modules
->    =20
->     For fused module, its pgc can't power up/down and clock is gated.
->     Because imx8m-blk-ctrl driver will pm_runtime_get_sync/pm_runtime_put
->     all power domains during suspend/resume. So we have to remove the
->     pgc and clock of fused module from blk-ctrl DTS node.
->     Update the driver to support such case.
->=20
-> But this patch also needs U-Boot to update device tree nodes,
-> I recalled that U-Boot will remove gpc nodes, but not update blk-ctrl nod=
-es.
+> Please don't do this, it just makes it harder to merge things since it
+> makes it look like there's cross tree merges needed when that's not the
+> case, complicating merging, and puts the entire series in everyone's
+> inbox which makes things more noisy.
 
-Does it work, if we add the access-controller as well for pgc_gpu3d
-on imx8mp? There is nothing in blk-ctrl AFAICS. But for VPU there is.
-Which clock needs to be removed there in case g1 is disabled?
+How should I proceed with this series, in your opinion?
+I see potential advantages (less of the issues you describe) and
+disadvantages (somewhat harder to track patches) of splitting it up
+before sending v3.
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+(Outside of this series, the conclusion is clear and simple)
 
 
+J. Neusch=C3=A4fer
