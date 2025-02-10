@@ -1,109 +1,128 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F12244196
-	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 15:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6D624BCFA
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 16:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739203073; cv=none; b=m9JXl76TW4dBu18cLqlaRY2j5406pOD0wQp9wXtErWN2UkQI9Tf28l872gWnUzjPKDK5Pz9IqdNnkNsAUqIMA9e7whNV2epJKFu0Osk7mim+5uC2rR0jUWdWlyRe7/CisgA5PytVbq1vF9JDZImQExOGpqvKtLZ0VVr7gfm87sc=
+	t=1739203229; cv=none; b=Ld+ePK4G9bQdn/mBSMfy+e93Hl1T0U1mLI6KveDFufeqPFBGuq6OXXnlS/jIxZ8AZ0t7nf/cvQ46MXcqR32ScqyZTfvIvlbSKlmCtHXlS+aclxqdFcEh2YWq0jpuZzlUIiGGGOhiOLtizujGX3217J3D4xJ2RMeecmBPOo5UEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739203073; c=relaxed/simple;
-	bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=scg2WBLWJ4/i6apE/2x/SpOqnn+NoJfNQBc7GpG+6EIGyCoiEIRoAuvHCmU8ltzxP6/5pptEx20gR0DYPCA5lrpAuELJDzcMj0HmXxl9r6a0+3Axybi9IwyTCVxVjpAcBWO560STHPfm7mSl2n6k3p2qiWtO3iBZiJPXC3IBiqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=XJ32rxft; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1739203229; c=relaxed/simple;
+	bh=tQwnWjXakU4FhLJZxL5UozDh6cXB5o8GNeuPhlrPqIQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LL/oAZaiBk4yP06gh3d9rC6SWhlK9eptYYco8dCTVFZVKdPPc4sKPSIsa3bMJpI3ytyuTRmGpXoFmlF2s4pfN0t/s96DeOQszIRPixM9ejQGoIWL96kIGNaVG/xkJeVuxYOJLFIhFJu6dFGLcM/ia4IYWHVgB3KK50rZT33t5qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Lka6XTnC; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qEnx/Gh/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="XJ32rxft"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id A1850240105
-	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 16:57:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739203069; bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=XJ32rxft95edBr+EDeVQZGHUeecj5jwxAYiaY0fmQiw2umt38i4PSHy9Xqg3hFJiG
-	 /zwvz+V5oKOw72WAw2xrq8hAP8wB+Yc79C5RKXPI+nT84dGnO8FJJe6BgjV+2KCv1K
-	 1a/Sv9v6+tUMPu1OxatgL5s/rO/RkvTTXucwVQkuLC0FQKgeXGmOlzDLtEJL/rvaCK
-	 3aSKa8WrXTNh5x1YiXZFYpqIAEdpStyegfE2z3NDSW+zSkvotggBkO6XagnhOYe+Gy
-	 f22mnkpYg4Jfa392j6ToQbc6mTrz2xOh4/2lLIwaI1sSOLm6xfkPKEKVOGeJI1JRD3
-	 asuBpZK0jhXeA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ys8Nl2HW4z9rxD;
-	Mon, 10 Feb 2025 16:57:42 +0100 (CET)
-Date: Mon, 10 Feb 2025 15:57:42 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Mark Brown <broonie@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
- bindings
-Message-ID: <Z6oh9t2QQzz17Yt6@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
- <Z6a_f03Ct9aB7Bbn@probook>
- <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Lka6XTnC";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qEnx/Gh/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1739203226; x=1770739226;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bOMbba0A1eJVbzvPVV/zSeVjS+2bYN5BuJsAKJgZbqQ=;
+  b=Lka6XTnCmQeHFf2BlpNZmKYRXr47EL5tuapb9MrCrTxNSBGdMwfLRYnv
+   1h9KIzpGM2wlhst4leD80FS4XsacUPEs5vXqwUUr4JzgK0sLMTXDi3M6W
+   agdgAI9p62X5ScWoPtnz7xTSMDmogGyZBArGDcRDDsky3MxHFpigv1jHb
+   IrSYaPGJFec7SJoH2aekpMoAsX9XJ2Adw69ByUHqeKoYeN0zsnVSa6rt4
+   VOJxXv4vXGcwtvIn6tO7TYvOAnlLDF2B7a7a2PIZYFQ9k0y67xbZWb2J5
+   4/Ei+Vy9lwRw3PDRhy0GMmUSZucs/VSXDS4BSjpvY9PNsvHzguDr/DDnU
+   w==;
+X-CSE-ConnectionGUID: 3yDWKte7RaiwtEJDQl2RIw==
+X-CSE-MsgGUID: 2qOTWrZIQbygIG189aMiXA==
+X-IronPort-AV: E=Sophos;i="6.13,274,1732575600"; 
+   d="scan'208";a="41723662"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 10 Feb 2025 17:00:20 +0100
+X-CheckPoint: {67AA2294-B-6E0A4539-DBC44C3A}
+X-MAIL-CPID: 6A27F41018F237B18955565C9E442D6C_1
+X-Control-Analysis: str=0001.0A006366.67AA2298.0035,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16F441615E5;
+	Mon, 10 Feb 2025 17:00:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1739203216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bOMbba0A1eJVbzvPVV/zSeVjS+2bYN5BuJsAKJgZbqQ=;
+	b=qEnx/Gh/VTeWQNQT5jNkge6mW56hxuqyWi90pTqAu2L+2k0WZuqRoraM4Xqd13ckuUnFcE
+	yrS5gm6sT3Y9HViD6HDMUXKqH0hgOC7Zt4aBWgLXtZjSH5P8InGYdWe/PtO86hWyscLs6+
+	aHa60xhRFBZW0z5gFSj9YOecjP6Utb1Zfk8+Nk5r2G2Ak6M5xz6blbFvM3ihrrb5gbhiZo
+	alLfxRtrsvBUjWRgaT0MaGjArx0SbT9w+IEJMIfNDuvxmMoyx2bcbPQuLc7uc95X27lwWS
+	B4EJ8mgxeizhB2AcQoUp1wqnTfonFEuKZXdPcXo+N3b/PgPOTjwxm0G6CAyYwA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 1/3] clk: imx: clk-fracn-gppll: Do not access num/denom register for integer PLL
+Date: Mon, 10 Feb 2025 17:00:09 +0100
+Message-Id: <20250210160012.783446-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Feb 10, 2025 at 12:59:35PM +0000, Mark Brown wrote:
-> On Sat, Feb 08, 2025 at 02:20:47AM +0000, J. Neusch=C3=A4fer wrote:
-> > On Fri, Feb 07, 2025 at 09:38:05PM +0000, Mark Brown wrote:
->=20
-> > > What's the story with dependencies here - why is all this stuff in one
-> > > series?
->=20
-> > The patches are independent of each other, except for the four elbc/nand
-> > patches. They are in the same series because they came up during the
-> > same project and achieve similar goals, but it isn't necessary.
->=20
-> Please don't do this, it just makes it harder to merge things since it
-> makes it look like there's cross tree merges needed when that's not the
-> case, complicating merging, and puts the entire series in everyone's
-> inbox which makes things more noisy.
+Similar to clk_fracn_gppll_set_rate(), do not access the numerator and
+denominator register for integer PLL. Set MFD/MFN to 0 instead, so the
+table lookup will match.
+See i.MX93 RM section 74.5.2.1 (PLL memory map) for ARMPLL, addresses
+0x40 and 0x50 are not listed/reserved.
 
-How should I proceed with this series, in your opinion?
-I see potential advantages (less of the issues you describe) and
-disadvantages (somewhat harder to track patches) of splitting it up
-before sending v3.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ drivers/clk/imx/clk-fracn-gppll.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-(Outside of this series, the conclusion is clear and simple)
+diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
+index 85771afd4698a..3aef548110e25 100644
+--- a/drivers/clk/imx/clk-fracn-gppll.c
++++ b/drivers/clk/imx/clk-fracn-gppll.c
+@@ -154,17 +154,24 @@ static unsigned long clk_fracn_gppll_recalc_rate(struct clk_hw *hw, unsigned lon
+ {
+ 	struct clk_fracn_gppll *pll = to_clk_fracn_gppll(hw);
+ 	const struct imx_fracn_gppll_rate_table *rate_table = pll->rate_table;
+-	u32 pll_numerator, pll_denominator, pll_div;
++	u32 pll_div;
+ 	u32 mfi, mfn, mfd, rdiv, odiv;
+ 	u64 fvco = parent_rate;
+ 	long rate = 0;
+ 	int i;
+ 
+-	pll_numerator = readl_relaxed(pll->base + PLL_NUMERATOR);
+-	mfn = FIELD_GET(PLL_MFN_MASK, pll_numerator);
++	if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
++		u32 pll_numerator, pll_denominator;
++
++		pll_numerator = readl_relaxed(pll->base + PLL_NUMERATOR);
++		mfn = FIELD_GET(PLL_MFN_MASK, pll_numerator);
+ 
+-	pll_denominator = readl_relaxed(pll->base + PLL_DENOMINATOR);
+-	mfd = FIELD_GET(PLL_MFD_MASK, pll_denominator);
++		pll_denominator = readl_relaxed(pll->base + PLL_DENOMINATOR);
++		mfd = FIELD_GET(PLL_MFD_MASK, pll_denominator);
++	} else {
++		mfd = 0;
++		mfn = 0;
++	}
+ 
+ 	pll_div = readl_relaxed(pll->base + PLL_DIV);
+ 	mfi = FIELD_GET(PLL_MFI_MASK, pll_div);
+-- 
+2.34.1
 
-
-J. Neusch=C3=A4fer
