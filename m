@@ -1,232 +1,265 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2069.outbound.protection.outlook.com [40.107.105.69])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8CD1C3C0F
-	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 09:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739180141; cv=fail; b=kTQGGdO+ExbLV6NuDAfcZer7oFSLr951MdWk4vO+NRpXNics8P9PIt9blKyaHNMLqLBAfn3ClPzLk2mjLZBc5GRinNUBlhGhglTAmtIe/hsKziV8+U3gvquZNoB/cZQzA/yRKNNyDO+Z/5dPu0BHRAVN7ikWMUeCcdxZeM3zxbY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739180141; c=relaxed/simple;
-	bh=GHISYoeIkN5sLsT23i6ENxODBAVIWJbOIclZC3aM304=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LNLP8pl6dia6WjP/coZALyndZXG6ufNCNcq53syyi2pJHs3HsTeDomWE08lCgB+vj1i+2ZEM1inBM3gnU4gDuunZShSt1/tu9Py5y2ej3Vabgn4dzI3+oPbE6R1vyOYms4TdPBSGb4RihZEUmZTV77RdGndJU4Nfqv82NDYtfmU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GMVlIxpk; arc=fail smtp.client-ip=40.107.105.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E12E1DF735
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 11:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739187095; cv=none; b=i6wJkf5JHcLKwb6UZ6OPFsMx0W8+rnHfBoaSXhnxRuFtE2fRxuCMv/nvplevQDvnCFmww9S1F4Wqe5MprPryvshvTHlT6iiUiPL9Z4Kuccx3aBeV7r5MLBXaHfF5dyTzGuxcji8L+SymRIH+tTXFMhS3luALwJQRzLz2u3l8GZ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739187095; c=relaxed/simple;
+	bh=JF/n15lnAm7NZMFbEUTi4J8f8m2TQ7lxj7+v1eHdIuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rWvdNOJQTfb/qms6DRYkvy87j6+hn3ceCexrTmhpfJQIbRd/8Cl+6sk+4aqZeqGl9tU65VAC7xZOWqcoWMzjcH3yeFlMCHroTdaf+Gk9Amy3f7/2I9o9eKz+q8cgeZMv1tAD+v7tdRwAKvZxjudfo2cpgoh3ppormj4qIrWE2ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=JpmWN1g6; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GMVlIxpk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XWAQfPlUfckgkBBFqveD3oRGG1MVsyAV2vegAgXDZijpMhcj9afa/WtyA4JmJzvjFpY+Hu6WeZZr9F1yYFt3nMrdcFvhCgms0YQmC5ZePsE9O/pnW7wKKi6hLNmGa5+DRZfsvJHkFZlLO7SROnuhSFWva47WjGuKJwViM3f2YxYcyGDCqhMPpNIHwQ8cgrqGcSeCVaOto/Bo7lF98aJi6NLsN7R7bq1RdNufG1JUTCe9Vih+oFTqftmN4igMf4Iq7N1kCMHjoCms+ufRcwNgtPik0cf8BSTwNmqhdqdz21x4zq7zeGGUvnYWT44GllLDqRBAFWTMyYF1upeZRzD7Lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GHISYoeIkN5sLsT23i6ENxODBAVIWJbOIclZC3aM304=;
- b=mZrf+aYo89vsd2sQ3+Wza2Ur9t51MwezctFB7sg9HYyOb3d+LClkXj6w0zC3wtvVZcVrlvjklDQMci1u7RkWHmmelsrEi8Bcxk3ItGxIIY6dnE5+h8BguuPFM+DnZJrRFqTVAYspUdwsJfCac1rapGqH2+pkVOXTELVPiF2HhKtzhA9mJgdkFR6C9DDei9RqI/TJeiP10xooYzkAbpF0spO7RFjBGjuFdwvxkWrkoV+OFFy8E7OW3U80hveYGphT42GUtfgpobri/MK3Lk54oGitfAVCott2M4/FyTeG1UwVZYZMMecK1MDCWJmdo4utZLqI4E2HxM7j7TSKC9ogdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GHISYoeIkN5sLsT23i6ENxODBAVIWJbOIclZC3aM304=;
- b=GMVlIxpkpqRjg/xdmaWAVvAsoED9ETS5/iMbtrELm1z6l0haftI7OqiOWndsamoIYJ8nqUx0D4XsIXkYoVFR/oHGaafA1bV52h8C5LJvYdaAmwv3wZdimDHtOonEpx10X4gglQtopNsaFn2ZTQ8l0LKXM+X5SeJQSO40vaiRYiaCbTXvX31fvbXDc9VQEGoUhGkAT4Loy4MbM8C72K8QLQHDkj28uV3P51WAsGADIllUS3S+fcXvwxB9C/u7sflWkzKpuvz+tMmuUib3uk7ZfMIjASYzhqdZEwbn7F/IBpKt+h2bf3Ers0SUq+uv40+t3nwIrfmNzfoGzljC7BN7cA==
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AM9PR04MB8619.eurprd04.prod.outlook.com (2603:10a6:20b:43a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Mon, 10 Feb
- 2025 09:35:35 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334%7]) with mapi id 15.20.8422.012; Mon, 10 Feb 2025
- 09:35:34 +0000
-From: Bough Chen <haibo.chen@nxp.com>
-To: Johan Korsnes <johan.korsnes@remarkable.no>, Linus Walleij
-	<linus.walleij@linaro.org>
-CC: "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, Bartosz
- Golaszewski <bartosz.golaszewski@linaro.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH] gpio: vf610: add locking to gpio direction functions
-Thread-Topic: [PATCH] gpio: vf610: add locking to gpio direction functions
-Thread-Index: AQHbeMNtV5WxXSj9skyddrTaKpnL5rM6mI4AgADC/gCABOU9gIAABMiQ
-Date: Mon, 10 Feb 2025 09:35:34 +0000
-Message-ID:
- <DU0PR04MB94964AA34ADC1564E685E13590F22@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20250206181714.417433-1-johan.korsnes@remarkable.no>
- <CACRpkdaNDJrGZ4Y2PPUWQfm6BprfNACYWD7srs3sYHMEsdX1Ew@mail.gmail.com>
- <DU0PR04MB94963632094E71ABE730631990F12@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <cb75162b-de5a-475b-aeb6-9a3c39de108e@remarkable.no>
-In-Reply-To: <cb75162b-de5a-475b-aeb6-9a3c39de108e@remarkable.no>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9496:EE_|AM9PR04MB8619:EE_
-x-ms-office365-filtering-correlation-id: 02279b06-878f-432b-8e9a-08dd49b644fb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|38070700018|7053199007;
-x-microsoft-antispam-message-info:
- =?utf-8?B?OXB2c0RvR1BOay9WZVpCOWNMT3lGN2l1UzlDRERwQW9ESk04eHJ1YkNRVjFJ?=
- =?utf-8?B?Y29JbmZXQ2ppRDZTSHRJV2pYU09lWWhPaUlZMHJWalR6cEtjSm5HZy9KNDBu?=
- =?utf-8?B?b1ZDaGcvSjRKSkVEUWNFdTBWMjU5eTJUZjdrcUVNN3lwNTZ0cWdzNG1kWU9Z?=
- =?utf-8?B?ZERNYkNFdW1GU05RV0pQSjJsVDRnVlFXdjNXUlBSNkI5UzJxSjI4dzBvdURz?=
- =?utf-8?B?eE5KeThMZm1JdmxFakRORTRxdHY0KzFYUDZMMHRhUm43VFFKc2o4NkpHRDJZ?=
- =?utf-8?B?cFBMUjNucExyN2IyUDZSMjNOcDNJVG1TbW85WCt3aTdyT2FsYjhtZ1VJWG91?=
- =?utf-8?B?VnFJTkpwTlBleUFDL2NMemxOZXhvNnNZWDd4ZzNET1NmTXo0UnVhdFdpcngr?=
- =?utf-8?B?RkJhcW9lMFR0azRmNWRaeDBrNlhiY1kyZ3pFL1A3aS9IWHBxckp3TlBBS2NS?=
- =?utf-8?B?c3hUQlh6YUk4Z2dxcVQ4VGcvdTNLNDMrRlFmUG5WU2R5NERDNlRQd3dNbVI4?=
- =?utf-8?B?cXk5b1Ywd1N2NC92S3lOT3RlcGVtQm9sbkwwNmhNeFIxaEJBY2FwWUZ1WTFS?=
- =?utf-8?B?bXVYYUhJNE1OOFdQMklwT1preUJJa0oycUJpNzBSQmlBeDFnMzh1Q0tWS2V6?=
- =?utf-8?B?Zk1DNTlyZGdud3dPTjc2a3lhMVNua0I1QUlmb05LZnNwTk1pOTJsK1hxUlEz?=
- =?utf-8?B?aFVCTlJ0ekFVL2xkZkVDRkRSODEweStVQzFnUTRUSVBSR21rL05ZcSt4Q3hY?=
- =?utf-8?B?UndPbnk4azdDN3U2Q3lzdjFmdzlpZU9zLzVLR2tWWkdDbElINFViOE9DZ1Js?=
- =?utf-8?B?QTh6eHBEaUpXMFlQRGFtZXl4ZjErdURNT2lvYWtTc1dJTXdzNkFNajBpcC9V?=
- =?utf-8?B?WHgvd1ZrN0V4UUZ6MVBONnErOHBCVXN5ekU2cTQwblZoUmdPWG5lSUdNcHdK?=
- =?utf-8?B?aEtxRWxwYjZqQmFzMkNZTnFWd1I2UTdNREVaZSttSEd4MnYxbTlvMzVmSmNF?=
- =?utf-8?B?ektRd2hlT1o2dTZYTWN2VGdkZzU5WXhnOExnRzhLdkZnR3orVHBhVUxDeHEy?=
- =?utf-8?B?QUc2My9kZFhWNGRUMzU5M0FMNWJzVkZwcGExQUUraThnZTl6R0k3ZE13Zyt5?=
- =?utf-8?B?VHRwOHVVUHlpU0N2SVZxc044K3VDSGlNSzM1ZzJMbGV5MVk0YzdyWXIzR0I1?=
- =?utf-8?B?YjFmL1dSbWhvSmlEbXB0dmd5Y3hYVnBvaGVnMUw2SUlQVmJJOXBTZlY5bzlP?=
- =?utf-8?B?Qi82VzV6NWJaUFFDVnRrVEphMTA0Qm5pajA3ajBZK09OTUpzNjR3elNNN1o2?=
- =?utf-8?B?aXlmL0pSV2oyekpFSGo0VmlELy9xdDRUYkt6QTRya1IxS0lBZ0xQclF3bE8r?=
- =?utf-8?B?QmJvbUNVSjBiTXVSSE5ibnNkNWtoeEVkWHM1akdWS2hLTmZWVVFJemRPd0FH?=
- =?utf-8?B?b1lTQlZaaFhhQVNTR3hsZGc3Uno3bFkweEozNGl5MVVwQUxlK1BnQjhzbysy?=
- =?utf-8?B?K3RkKzg5dXJ6aStyRnNUM2hGSlljaTdNd1ppdHdyQjVvTXdPa0QzdElOY2gx?=
- =?utf-8?B?ZFlYcjVNcEt1OU4xQ3d4bnNPUUZaWEM3TFFncSt0TjlDczRWMytvN0J5Q1Zk?=
- =?utf-8?B?ZXVUaEFpQ1BZQ3NIMVNHeWNtTnhYMWczSGZQQUJTOUh6Z3JRcjZNVFpEVnBa?=
- =?utf-8?B?MnpXNkYwRjk5RVBWdDFCMERibzhub2VVUGdmeVNRT1RodXVUUndtMmpHcnpC?=
- =?utf-8?B?eUVuMjgyYmFHS0h6QWc5ZVZSNnR0d3o5aXJ3SmE1b0xuZUxOL3RRYXJmM0V4?=
- =?utf-8?B?a2wvbi9TeUNaSGp0TDhXK0YvZUF2a1Q3cWpraHdGS1JyaVNWenp3U010NHd0?=
- =?utf-8?B?VE9pNmkrdGg3WlZ2NGlQcG5HT0pUV0RNZ1EwQllTZUpsc3pTWXhWVkt0ZTRB?=
- =?utf-8?Q?BTFoekJ02qf31obV7A7S4KiHmB5269OZ?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VWZmb3BiTWlRYlprOWhTNFcvcTU4RHdSLzJuV2pqWXZ0cW1TWmdxa01IRUt3?=
- =?utf-8?B?akxISE9nWTd3VWtLSWduMmE4RzFWR0ZzOE01b1ZkUmx1V3pqZWMwU1l6N2Nv?=
- =?utf-8?B?RVN6MEJtT3llSFJxaDNsSGFCOFU5a1l1WFh5TEdZN05JSm1QZkhIb1RMRk10?=
- =?utf-8?B?YkJKOGZDZGhyZFFpRjVybm9sYlNrcG1lTXRZTm9wZWw0eFJIS3lWdVJ5dEFI?=
- =?utf-8?B?Q0FFWVNzM0ppZTBBMVNJRXlLNTljcHFndHd1Q202WWVxT3RjSkJEMURhaDJ2?=
- =?utf-8?B?RlFJSWpQMWE5VFQweEtRVzdQZXZOa3VZeWxxT1hwbU96RTdNNmhldkJnVDVv?=
- =?utf-8?B?aURCUG5NSWxFYXBySWxWNUlnSzU5UjZHYnVKMlNORmFiZVlnQlFQRlJaMUZY?=
- =?utf-8?B?aHdMUFlmUVBwU1NQL2ZUYXBZR1BZOVQ2NlhGcGN0M1JNYllmc1VFOVZuUmZX?=
- =?utf-8?B?VHArYThHNWNOc2d0OEVZSDAxUk1kb3ZVZnBMd0ZJcDlBcGhkYmZkaG1wa2k4?=
- =?utf-8?B?dFRvZ1YzdGsxZkQzUmt2TkVpcDZSeXlQb2lGZ2FrYy9ML1cwOUVHQVd5eEh0?=
- =?utf-8?B?SENXUVcvREJXTVRsSlJoOFV6djErWXNtejR3V0ZGMUM2Y0ptY21JSUhtWkts?=
- =?utf-8?B?eGxnSUg4Tm1NMXE1M0dHamNzakxqcHV2S250ekVCTHprdTVGV2tuZHZOZWpq?=
- =?utf-8?B?RmxlWkFYZ2ZVK2JZaVBJR2JSVmNRZDJGeC9wQUg0WWdhQk5qWUxabkZGNmx3?=
- =?utf-8?B?emQ4K09nc01nQ3dZZmpmQTdLbkZZNFFkTVEzVjRLTklMcDllZ0d0WmZVMk1F?=
- =?utf-8?B?ZXlPODFuQTlyeU5BMWRrL0F2aVhPejVRM0YyQm1tMmJPZXFzSjhaaFBhdG9y?=
- =?utf-8?B?YTRrb2JsL2tSdEZ4SCtXdmQ2Y1NsTVgwZHE2T3dqZXVXU1l3aEE3UVc5VjZE?=
- =?utf-8?B?UnhpN3NlVFRiTmQxcE5JSy9ucWkrVUxjaGdQQm4zOFhlUlVJQmZLQUVMb2tF?=
- =?utf-8?B?Q0picWtVTW1RUVJxWE5jenp6RUVLbUxHaUliOTJPa09qTWJnR0NqSTNSaHd5?=
- =?utf-8?B?TTZkNjVBNDZmZHphSlM4SGdmZ1hOeVIzYUp5dG1sNTh1R0JDYkV3ZVFpYlRn?=
- =?utf-8?B?VGNRWlVKNkdpM1NUVlA0bWZFeFZTUERiRmtZWGZrV3ZVWGluRUM2OW5MZ085?=
- =?utf-8?B?Z25HMzYvS1o0WHBLYnUzWGROUDA0ZTZQNXptS2dlNTl6WWhqNnVhY1AzdGpJ?=
- =?utf-8?B?REJOdWJmS0VjVEtRbnoyK2tCYnFFaUtuVDZNWjZJR09VM21ZR2pPR2U3V0Yw?=
- =?utf-8?B?VzMxNEVLQ3BoT3MyOUIwSHFKZW01cmxsNGFrNEF1dk1PMDU4WE9sSmNHSHVY?=
- =?utf-8?B?UHgrNk1VbUpyMzdta2xYRi9PckdmMU9BcldueXo2MDJvbGxoL1NRbXFabVVR?=
- =?utf-8?B?aHpBKzJZL1Y1Nkx3VTIxdlhVd1daNUpkM1Y1cmlQVVJZczhjU2JzbVo5WVVs?=
- =?utf-8?B?K2YrTm9mbktzSWQ1OG5Kbm1rSStNVE5CTjlBbFFjR0VsQWNDYUNoYkZlYmNF?=
- =?utf-8?B?TDdoeWZVTGdKRGFHSFgxME03TWlMV1laU250aEsvTHlhV3E3MXBXM2F4ZHk3?=
- =?utf-8?B?VTJlV2NUc3hmZG1KbmplU284UTU5bm1Cbzc3MldKV25jVVZod2wzYVN1c3pK?=
- =?utf-8?B?VEt5K1BKQWhzbS90MzU5dDg1NmFod0ZneUpRQk5QUEhZUU80d2lMN280dGda?=
- =?utf-8?B?dUpQRDBKYmRvWmsrWUxZRlJEcnRucXdGamJubnpzbnpJTGNtSW9YdDcrSmgr?=
- =?utf-8?B?N1BTNndVZk45WVNuUHdFVWlrSVkxb05jdUdaaVMxTlJaNU9ZOTNkaUJZNXVi?=
- =?utf-8?B?bUZJQ3g5VXJqQU9zcUpVQTRNcld1MjV3bVR3MGZCRmtLaWQxeXRMNWcvVldI?=
- =?utf-8?B?bW95eGFGR2VVYnRBczN6ZVM2eUFRRDNUSktnem5neVhaS2EyS3RjeDh5OEZx?=
- =?utf-8?B?UUwzMmNsZUYvTDlqam1JTHpiQU5TbjdIdGZXeTVpUkM5N1pxdEJRVjhpTEZr?=
- =?utf-8?B?M2JBK0dPcW1vVlF4YzVVWWY0aHhSQWszVWg2Yk5VeGNuRzM4UHJvdkR0OVA5?=
- =?utf-8?Q?u8Ew=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="JpmWN1g6"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 2B335240029
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 12:31:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739187085; bh=JF/n15lnAm7NZMFbEUTi4J8f8m2TQ7lxj7+v1eHdIuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=JpmWN1g6e9WQyrXQ7YqKa6Kz7YaEDYolPFawuJollCAzXyAykqbJGoZ+zalrhTLl8
+	 0f20eLO/gb+kGMQG2fH5TKmJEFrqGaN6UwBOAyyTSCiSuA57Gfh1FfJR75F2BTuW7Y
+	 /y2wCp2bUoNfwe8q67lwJI2tleg3YW+PS4g+S57IUQyxrG6AeC8sx71dc9aXf0Q5rE
+	 ikLvW6yzzw4cRkk6JOrSz2ttcOw/XLuzsx6rsHe0z0p6E3OCWI5L8kDFa14iqPeDcP
+	 /xijkoq/1z1YJJwTE3M4e6n7DlQEG+y3BB99cR2HqY4pCUnD30XDSw+fWIzzAOuBpH
+	 CY8rACCyyxnAw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Ys2TK4ysMz6tw3;
+	Mon, 10 Feb 2025 12:31:17 +0100 (CET)
+Date: Mon, 10 Feb 2025 11:31:01 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Crystal Wood <oss@buserror.net>
+Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org, Li Yang <leoyang.li@nxp.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert
+ fsl,elbc to YAML
+Message-ID: <Z6njdeo8kHw6RtYH@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
+ <Z6kQpuQf5m-bXTyt@buserror.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02279b06-878f-432b-8e9a-08dd49b644fb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2025 09:35:34.6309
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +BbLCUupCIrZrhpMp07Bm+vuGZDPMVrYbV4VaaDSCDy1bd5XZ2fdjDrGHNb5ADDYpyZmL8CsAm9vepZR1pv2pA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8619
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z6kQpuQf5m-bXTyt@buserror.net>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKb2hhbiBLb3JzbmVzIDxqb2hh
-bi5rb3JzbmVzQHJlbWFya2FibGUubm8+DQo+IFNlbnQ6IDIwMjXlubQy5pyIMTDml6UgMTY6NTMN
-Cj4gVG86IEJvdWdoIENoZW4gPGhhaWJvLmNoZW5AbnhwLmNvbT47IExpbnVzIFdhbGxlaWogPGxp
-bnVzLndhbGxlaWpAbGluYXJvLm9yZz4NCj4gQ2M6IGxpbnV4LWdwaW9Admdlci5rZXJuZWwub3Jn
-OyBCYXJ0b3N6IEdvbGFzemV3c2tpDQo+IDxiYXJ0b3N6LmdvbGFzemV3c2tpQGxpbmFyby5vcmc+
-OyBpbXhAbGlzdHMubGludXguZGV2DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIGdwaW86IHZmNjEw
-OiBhZGQgbG9ja2luZyB0byBncGlvIGRpcmVjdGlvbiBmdW5jdGlvbnMNCj4gDQo+IFtZb3UgZG9u
-J3Qgb2Z0ZW4gZ2V0IGVtYWlsIGZyb20gam9oYW4ua29yc25lc0ByZW1hcmthYmxlLm5vLiBMZWFy
-biB3aHkgdGhpcyBpcw0KPiBpbXBvcnRhbnQgYXQgaHR0cHM6Ly9ha2EubXMvTGVhcm5BYm91dFNl
-bmRlcklkZW50aWZpY2F0aW9uIF0NCj4gDQo+IE9uIDIvNy8yNSA3OjIxIEFNLCBCb3VnaCBDaGVu
-IHdyb3RlOg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBMaW51
-cyBXYWxsZWlqIDxsaW51cy53YWxsZWlqQGxpbmFyby5vcmc+DQo+ID4+IFNlbnQ6IDIwMjXlubQy
-5pyIN+aXpSAyOjI5DQo+ID4+IFRvOiBKb2hhbiBLb3JzbmVzIDxqb2hhbi5rb3JzbmVzQHJlbWFy
-a2FibGUubm8+DQo+ID4+IENjOiBsaW51eC1ncGlvQHZnZXIua2VybmVsLm9yZzsgQmFydG9zeiBH
-b2xhc3pld3NraQ0KPiA+PiA8YmFydG9zei5nb2xhc3pld3NraUBsaW5hcm8ub3JnPjsgQm91Z2gg
-Q2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiA+PiBTdWJqZWN0OiBSZTogW1BBVENIXSBncGlv
-OiB2ZjYxMDogYWRkIGxvY2tpbmcgdG8gZ3BpbyBkaXJlY3Rpb24NCj4gPj4gZnVuY3Rpb25zDQo+
-ID4+DQo+ID4+IEhpIEpvaGFuLA0KPiA+Pg0KPiA+PiB0aGFua3MgZm9yIHlvdXIgcGF0Y2ghDQo+
-ID4+DQo+ID4+IE9uIFRodSwgRmViIDYsIDIwMjUgYXQgNzoxN+KAr1BNIEpvaGFuIEtvcnNuZXMN
-Cj4gPj4gPGpvaGFuLmtvcnNuZXNAcmVtYXJrYWJsZS5ubz4NCj4gPj4gd3JvdGU6DQo+ID4+DQo+
-ID4+PiBBZGQgbG9ja2luZyB0byBgdmY2MTBfZ3Bpb19kaXJlY3Rpb25faW5wdXR8b3V0cHV0KClg
-IGZ1bmN0aW9ucy4NCj4gPj4+IFdpdGhvdXQgdGhpcyBsb2NraW5nLCBhIHJhY2UgY29uZGl0aW9u
-IGV4aXN0cyBiZXR3ZWVuIGNvbmN1cnJlbnQNCj4gPj4+IGNhbGxzIHRvIHRoZXNlIGZ1bmN0aW9u
-cywgcG90ZW50aWFsbHkgbGVhZGluZyB0byBpbmNvcnJlY3QgR1BJTyBkaXJlY3Rpb24NCj4gc2V0
-dGluZ3MuDQo+ID4+Pg0KPiA+Pj4gQ2M6IExpbnVzIFdhbGxlaWogPGxpbnVzLndhbGxlaWpAbGlu
-YXJvLm9yZz4NCj4gPj4+IENjOiBCYXJ0b3N6IEdvbGFzemV3c2tpIDxiYXJ0b3N6LmdvbGFzemV3
-c2tpQGxpbmFyby5vcmc+DQo+ID4+PiBDYzogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29t
-Pg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogSm9oYW4gS29yc25lcyA8am9oYW4ua29yc25lc0ByZW1h
-cmthYmxlLm5vPg0KPiA+Pg0KPiA+PiBMb29rcyBjb3JyZWN0IHRvIG1lLCB2ZXJpZmllZCBieSBs
-b29raW5nIGF0IHRoZSBtb3N0IHRlc3RlZCBkcml2ZXINCj4gPj4gZ3Bpby1tbWlvLmMgYW5kIHNl
-ZWluZyB0aGVyZSBpcyBhIGxvY2sgdGhlcmUgaW5kZWVkLg0KPiA+PiBSZXZpZXdlZC1ieTogTGlu
-dXMgV2FsbGVpaiA8bGludXMud2FsbGVpakBsaW5hcm8ub3JnPg0KPiA+Pg0KPiA+Pj4gd2hlcmUg
-YWZ0ZXIgYSBjb3VwbGUgb2YgcmVib290cyB0aGUgcmFjZSB3YXMgY29uZmlybWVkLiBJLmUuLCBv
-bmUNCj4gPj4+IHVzZXIgaGFkIHRvIHdhaXQgYmVmb3JlIGFjcXVpcmluZyB0aGUgbG9jay4gV2l0
-aCB0aGlzIHBhdGNoIHRoZSByYWNlDQo+ID4+PiBoYXMgbm90IGJlZW4gZW5jb3VudGVyZWQuIEl0
-J3Mgd29ydGggbWVudGlvbmluZyB0aGF0IGFueSB0eXBlIG9mDQo+ID4+PiBkZWJ1Z2dpbmcgKHBy
-aW50aW5nLCB0cmFjaW5nLCBldGMuKSB3b3VsZCAicmVzb2x2ZSIgdGhlIGlzc3VlLg0KPiA+Pg0K
-PiA+PiBUeXBpY2FsLiBJIHdvdWxkIGluY2x1ZGUgdGhpcyBpbiB0aGUgY29tbWl0IG1lc3NhZ2Us
-IHBlb3BsZSBjYXJlLg0KPiA+Pg0KPiANCj4gSGkgTGludXMgYW5kIEhhaWJvLA0KPiANCj4gVGhh
-bmtzIGZvciB0aGUgcmV2aWV3ISBJJ2xsIGluY2x1ZGUgdGhpcyBpbiB2Mi4NCj4gDQo+ID4+IExv
-b2tpbmcgYXQgdGhlIGRyaXZlciBpdCBzZWVtcw0KPiA+PiB2ZjYxMF9ncGlvX2lycV9tYXNrKCkv
-dmY2MTBfZ3Bpb19pcnFfdW5tYXNrKCkNCj4gPj4gY291bGQgaGF2ZSBhIHNpbWlsYXIgaXNzdWUs
-IGJvdGggd3JpdGUgdGhlIHNhbWUgcmVnaXN0ZXIuDQo+ID4NCj4gPiBJbmRlZWQsIGFuZCBhbHNv
-IHRoZSB2ZjYxMF9ncGlvX3NldCgpIC8gdmY2MTBfZ3Bpb19pcnFfYWNrKCkuDQo+ID4NCj4gDQo+
-IENvdWxkIHlvdSBwbGVhc2UgZXhwbGFpbiB0aGUgcmFjZSBjb25kaXRpb24gd2UgZml4IGJ5IGFk
-ZGluZyBsb2NraW5nIHRvIHRoZXNlDQo+IG90aGVyIGZ1bmN0aW9ucz8gRi5leC4gdGhlIHZmNjEw
-X2dwaW9fc2V0KCksIGluIHdoaWNoIHNjZW5hcmlvIHdvdWxkIHRoZSBsYWNrIG9mDQo+IGxvY2tp
-bmcgY2F1c2UgYW4gaXNzdWU/IEl0J3MgYSBzaW5nbGUgd3JpdGUgdG8gZWl0aGVyIHRoZSBzZXQg
-b3IgY2xlYXIgcmVnaXN0ZXIuIElzIHRoaXMNCj4gcmVsYXRlZCB0byBob3cgdGhlIHdyaXRlbF9y
-ZWxheGVkKCkgd29ya3Mgb24gZGlmZmVyZW50IGFyY2hpdGVjdHVyZXM/DQo+IA0KDQpTb3JyeSwg
-SSB0aGluayB0d2ljZSBvZiB0aGlzIGNvbmRpdGlvbiwgc2VlbXMgbm8gbmVlZCB0byBhZGQgbG9j
-ayBmb3IgdGhlc2UgZnVuY3Rpb25zLg0KDQpSZWdhcmRzDQpIYWlibyBDaGVuDQoNCj4gS2luZCBy
-ZWdhcmRzLA0KPiBKb2hhbg0KPiANCj4gPj4NCj4gPj4gQm90aCBpc3N1ZXMgY291bGQgYmUgZml4
-ZWQgYnkgY29udmVydGluZyB0aGUgZHJpdmVyIHRvIHVzZQ0KPiA+PiBncGlvLW1taW8oKSB3aXRo
-IGJncGlvX2luaXQoKSB3aGljaCB3b3VsZCBhbHNvIGltcGxlbWVudA0KPiA+PiBnZXQvc2V0X211
-bHRpcGxlIHN1cHBvcnQgZm9yIGZyZWUuDQo+ID4+DQo+ID4+IEkgaGF2ZSBubyBpZGVhIHdoeSB0
-aGlzIGRyaXZlciBpc24ndCB1c2luZyBncGlvLW1taW8uDQo+ID4+IE5vdCB5b3VyIGZhdWx0IHRo
-b3VnaCwganVzdCBwb2ludGluZyBvdXQgb2J2aW91cyBpbXByb3ZlbWVudCBvcHBvcnR1bml0aWVz
-Lg0KPiA+DQo+ID4gSSBjaGVjayB0aGUgY29kZSwgZm9yDQo+IHZmNjEwX2dwaW9fZGlyZWN0aW9u
-X2lucHV0KCkvdmY2MTBfZ3Bpb19kaXJlY3Rpb25fb3V0cHV0KCksIHRvIGxldCB0aGUNCj4gaW5w
-dXQvb3V0cHV0IHJlYWxseSB3b3JrcywgbmVlZCB0byBjYWxsIHBpbmN0cmxfZ3Bpb19kaXJlY3Rp
-b25faW5wdXQoKSBmb3INCj4gdmY2MTAvaW14N3VscC9pbXg4dWxwIFNvQy4NCj4gPiBSZWZlciB0
-byBkcml2ZXJzL3BpbmN0cmwvZnJlZXNjYWxlL3BpbmN0cmwtdmY2MTAuYywgaXQgaW1wbGVtZW50
-DQo+IGdwaW9fc2V0X2RpcmVjdGlvbiBjYWxsYmFjay4gQWxzbyBmb3IgaW14N3VscC9pbXg4dWxw
-IHBpbmN0cmwgZHJpdmVycy4NCj4gPiBUaGlzIHNob3VsZCBiZSB0aGUgcmVhc29uIHdoeSBub3Qg
-dXNpbmcgZ3Bpby1tbWlvLg0KPiA+DQo+ID4gUmVnYXJkcw0KPiA+IEhhaWJvIENoZW4NCj4gPj4N
-Cj4gPj4gWW91cnMsDQo+ID4+IExpbnVzIFdhbGxlaWoNCg0K
+On Sun, Feb 09, 2025 at 02:31:34PM -0600, Crystal Wood wrote:
+> On Fri, Feb 07, 2025 at 10:30:26PM +0100, J. Neuschäfer via B4 Relay wrote:
+> > From: "J. Neuschäfer" <j.ne@posteo.net>
+> > 
+> > Convert the Freescale localbus controller bindings from text form to
+> > YAML. The updated list of compatible strings reflects current usage
+> > in arch/powerpc/boot/dts/, except that many existing device trees
+> > erroneously specify "simple-bus" in addition to fsl,*elbc.
+> > 
+> > Changes compared to the txt version:
+> >  - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
+> >    appears in this example and nowhere else
+> >  - added a new example with NAND flash
+> >  - updated list of compatible strings
+> > 
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+> > 
+> > V2:
+> > - fix order of properties in examples, according to dts coding style
+> > - move to Documentation/devicetree/bindings/memory-controllers
+> > - clarify the commit message a tiny bit
+> > - remove unnecessary multiline markers (|)
+> > - define address format in patternProperties
+> > - trim subject line (remove "binding")
+> > - remove use of "simple-bus", because it's technically incorrect
+> 
+> While I admit I haven't been following recent developments in this area,
+> as someone who was involved when "simple-bus" was created (and was on the
+> ePAPR committee that standardized it) I'm surprised to hear simple-bus
+> being called "erroneous" or "technically incorrect" here.
+
+It is quite possible that my understanding of it is incomplete or wrong.
+
+> 
+> For non-NAND devices this bus generally meets the definition of "an
+> internal I/O bus that cannot be probed for devices" where "devices on the
+> bus can be accessed directly without additional configuration
+> required".  NAND flash is an exception, but those devices have
+> compatibles that are specific to the bus controller.
+> 
+> The fact that the address encoding is non-linear is irrelevant; the
+> addresses can still be translated using the standard "ranges" mechanism. 
+> This seems to be a disconnect between the schema verification and the way
+> the compatible has previously been defined and used.
+
+This is what led me to my assumptions: The simple-bus validation logic
+in dtc complains about unit addresses such as nand@1,0 which are quite
+appropriate for the eLBC.
+
+> 
+> And as a practical matter, unless I'm missing something (which I might be
+> since I haven't been in devicetree-land for nearly a decade), Linux is
+> relying on simple-bus to probe these devices.  There is a driver that
+> binds to the bus itself but that is just for error interrupts and NAND.
+
+As of now, yes, that's correct. Without simple-bus, a current Linux
+kernel doesn't find the device nodes inside such a localbus.
+
+> 
+> You'd probably need something like commit 3e25f800afb82bd9e5f8 ("memory:
+> fsl_ifc: populate child devices without relying on simple-bus") and the 
+> subsequent fix in dd8adc713b1656 ("memory: fsl_ifc: populate child
+> nodes of buses and mfd devices")...
+
+I have prepared such a patch, based on the same assumptions:
+
+  [PATCH] powerpc/fsl_lbc: Explicitly populate bus
+  https://lore.kernel.org/lkml/20250209-localbus-v1-1-efcd780153a0@posteo.net/
+
+> 
+> I'm curious what the reasoning was for removing simple-bus from IFC.  It
+> seems that the schema verification also played a role in that:
+> https://www.spinics.net/lists/devicetree/msg220418.html
+
+Yes, that's the same as my reasoning.
+
+> 
+> ...but there's also the comment in 985ede63a045eabf3f9d ("dt-bindings:
+> memory: fsl: convert ifc binding to yaml schema") that "this will help to
+> enforce the correct probe order between parent device and child devices",
+> but was that really not already guaranteed by the parent/child
+> relationship (and again, it should only really matter for NAND except for
+> the possibility of missing error reports during early boot)?
+
+I'm inclined to agree with you, but it's somewhat beyond my skill level.
+
+I'll let Li Yang or Rob Herring comment on that.
+
+> 
+> > +  compatible:
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,mpc8313-elbc
+> > +              - fsl,mpc8315-elbc
+> > +              - fsl,mpc8377-elbc
+> > +              - fsl,mpc8378-elbc
+> > +              - fsl,mpc8379-elbc
+> > +              - fsl,mpc8536-elbc
+> > +              - fsl,mpc8569-elbc
+> > +              - fsl,mpc8572-elbc
+> > +              - fsl,p1020-elbc
+> > +              - fsl,p1021-elbc
+> > +              - fsl,p1023-elbc
+> > +              - fsl,p2020-elbc
+> > +              - fsl,p2041-elbc
+> > +              - fsl,p3041-elbc
+> > +              - fsl,p4080-elbc
+> > +              - fsl,p5020-elbc
+> > +              - fsl,p5040-elbc
+> > +          - const: fsl,elbc
+> 
+> Is it really necessary to list every single chip?
+> 
+> And then it would need to be updated when new ones came out?  I know this
+> particular line of chips is not going to see any new members at this
+> point, but as far as the general approach goes...
+
+As far as I'm aware, this reflects common practice today.
+
+> 
+> Does the schema validation complain if it sees an extra compatible it
+> doesn't recognize?  If so that's obnoxious.
+
+Yes.
+
+> 
+> > +examples:
+> > +  - |
+> > +    localbus@f0010100 {
+> > +        compatible = "fsl,mpc8272-localbus",
+> > +                     "fsl,pq2-localbus";
+> > +        reg = <0xf0010100 0x40>;
+> > +        ranges = <0x0 0x0 0xfe000000 0x02000000
+> > +                  0x1 0x0 0xf4500000 0x00008000
+> > +                  0x2 0x0 0xfd810000 0x00010000>;
+> > +        #address-cells = <2>;
+> > +        #size-cells = <1>;
+> > +
+> > +        flash@0,0 {
+> > +            compatible = "jedec-flash";
+> > +            reg = <0x0 0x0 0x2000000>;
+> > +            bank-width = <4>;
+> > +            device-width = <1>;
+> > +        };
+> > +
+> > +        simple-periph@2,0 {
+> > +            compatible = "fsl,elbc-gpcm-uio";
+> > +            reg = <0x2 0x0 0x10000>;
+> > +            elbc-gpcm-br = <0xfd810800>;
+> > +            elbc-gpcm-or = <0xffff09f7>;
+> > +        };
+> 
+> I know this isn't new, but... since we're using this as an example,
+> where is the documentation for this fsl,elbc-gpcm-uio and
+> elbc-gpcm-br/or?  What exactly is a simple-periph?
+
+fsl,elbc-gpcm-uio is handled in the following patch
+(dt-bindings: memory-controllers: Add fsl,elbc-gpcm-uio).
+
+simple-periph is something I haven't thought about, because this whole
+example comes from the old txt-format binding. The whole purpose of
+fsl,elbc-gpcm-uio is to allow userspace drivers to interact with
+localbus devices, so that doesn't make the intention any clearer, either.
+
+> 
+> There are no in-tree device trees that use this either.  The bcsr
+> node was actually a much more normal example, despite that particular
+> platform having been removed.  There are other bcsr nodes that still
+> exist that could be used instead.
+
+Ah, fsl,mpc8568mds-bcsr for example, good point. I'll add it back.
+
+> 
+> -Crystal
+
+Thank you for reaching out!
+
+Best regards,
+J. Neuschäfer
