@@ -1,46 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E8B221DBF;
-	Mon, 10 Feb 2025 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3740E2309BA;
+	Mon, 10 Feb 2025 14:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739198111; cv=none; b=JhBj5O1bUDSDm4iZqOafbJiLBn6nrjKVSy/TWno5ZcvL5VMcm5gGWgOBAb8Cnj+VaF5pjYPn8IEqp7RCBKWEU7Xp2rMJKm7hHKbnMbpUu8YmCx4+F7904R1bETaLShz0EGLIp4pYvvui/rWE4CIcC5PRwDBiZJubAR/xG35KJhM=
+	t=1739198118; cv=none; b=FbTPK3PjokztYbyBxwOXEWFOX6gDAnHkFJ0yLhHINJnssiSPI4dvPc0tFNFKsCL7SmseU4riaokZyo/V7L5oyt3Ex/BFSKsBFCfqNQxbE0Iy6ZWRfU4x/Fr094m4DOQtY5As6XNDKK9h/YE1rs3i+wDkhSmr9QJLWYHfg51dG7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739198111; c=relaxed/simple;
-	bh=4MQF+duV3Z6GyqMReLLQ/7muGG1r298coZ8wUK0yw+o=;
+	s=arc-20240116; t=1739198118; c=relaxed/simple;
+	bh=XcHJif2FfnwAjAbH7baaX4yilC2v5vnNJYy1PFC2dr8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AgiC4itDGw3j0/NCs7EGX1Ad4ntcIPBUI7Zb5GFhSlETsvf3ACbIkRNO1eVE9DNycIETe6Je3nI5zU2dT58OnbBhVCQGeg/q6C2NFJVTBGrNCUf/bxxGZ51aljN+5/TgM4GgC9/vXDl3ZUrAlzdLq/qXG5gwE5N4roPlBecBo5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3MYC9rS; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=erXmhK+gxKX3bMHtl6t3f2zs39vP4r6wq07HFVA+vTzX+iGnegaKSUPOWM5q4ja3PKBfnmlIIdWN0ukbtM4ktZFrgJ+6IwfxB0rT9z7ieQknrnLhItfgp/liBBGD5QANWUepte8pHLafxjEwL1xbPpveO3gssBzAz1SzgVX951Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqXSf3jx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3MYC9rS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074B0C4CED1;
-	Mon, 10 Feb 2025 14:35:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqXSf3jx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B93C4CED1;
+	Mon, 10 Feb 2025 14:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739198111;
-	bh=4MQF+duV3Z6GyqMReLLQ/7muGG1r298coZ8wUK0yw+o=;
+	s=k20201202; t=1739198115;
+	bh=XcHJif2FfnwAjAbH7baaX4yilC2v5vnNJYy1PFC2dr8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=s3MYC9rSDnFSp7lkxZJlHWDHcSbdcADd94W13WlhfeHkOjSmAkOAptF0CneJIDnG3
-	 MvSIf6oWqquQcXqmf92AxfO1Ds8MNPE8V9lgQTMx6K52GX3q2ZbiN2Tq3Nfwgjulh3
-	 9ma1c5gd6uKvPlVxdIdu5DHeFryGi4cp39GWNw3cgsm6ltJ0IHCqsEtl3DZTebiCO9
-	 G3PNZ3/JxZFISL2/vvuvXB9A9wUEQRhKcKx4bdw+J7VVdviC7q75MRRS4EjM4SMET6
-	 soBI2DwLdZBL9u/C7lUMsgXiKIvz4MQDOry3NnVGv41laXoGRsIbSpSojTACHYvp4j
-	 7zZQvslkOXJlQ==
+	b=KqXSf3jxdv1BjMeENVN1I84vhH53dlRaeGCEoz3u4I+4L8YlFqZo+NfubU5dr1pRz
+	 yw5tBwiU7NzeOEounrDA6MqfRsmXv8vpuw3O2smhmCWxjuXiNBuwghioUnHu3aZJb6
+	 WbD5M7QghXYbVsoWDDtrWw6cRCd3eq4Z6ljpiugcR5zwLH6Zpg280oQnzefC2poblC
+	 zr9ER9OT/yerqrg6MUw/sKSFTEmvzV+Fx6rG2ZStTJN1hRd1kOUTE5XEqsJVmaxQ61
+	 CXX8DgwfjfvwYowbxAAI1yogJoiCtkIxNYk05vQvUDjyCsmwnVJuEUtAg2sUQYunMq
+	 C3NCU3q+mfwKQ==
 From: Vinod Koul <vkoul@kernel.org>
-To: Amelie Delaunay <amelie.delaunay@foss.st.com>, 
- Frank Li <Frank.Li@nxp.com>, Paul Cercueil <paul@crapouillou.net>, 
- Randy Dunlap <rdunlap@infradead.org>, dmaengine@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-In-Reply-To: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
-References: <20250205145757.889247-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 0/4] dmaengine: dma_request_chan*() amendments
-Message-Id: <173919810764.71959.6637536991455894544.b4-ty@kernel.org>
-Date: Mon, 10 Feb 2025 20:05:07 +0530
+To: Frank Li <Frank.Li@nxp.com>, Stefan Wahren <wahrenst@gmx.net>
+Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20250205091455.4593-1-wahrenst@gmx.net>
+References: <20250205091455.4593-1-wahrenst@gmx.net>
+Subject: Re: [PATCH] dmaengine: fsl-edma: Add missing newlines to log
+ messages
+Message-Id: <173919811383.71959.2258535246777923144.b4-ty@kernel.org>
+Date: Mon, 10 Feb 2025 20:05:13 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,26 +47,15 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 
 
-On Wed, 05 Feb 2025 16:57:08 +0200, Andy Shevchenko wrote:
-> Reduce the scope of the use of some rarely used DMA request channel APIs
-> in order to make the step of their removal or making static in the
-> future. No functional changes intended.
+On Wed, 05 Feb 2025 10:14:55 +0100, Stefan Wahren wrote:
+> Not all log messages have a newline at the end. So fix it.
 > 
-> In v3:
-> - rebased on top of v6.14-rc1
 > 
-> [...]
 
 Applied, thanks!
 
-[1/4] dmaengine: Replace dma_request_slave_channel() by dma_request_chan()
-      commit: 31d43141d13aa63587f140884b1f667800ce4e1d
-[2/4] dmaengine: Use dma_request_channel() instead of __dma_request_channel()
-      commit: 1c83d3dfa0905590408595560629627cba4f9261
-[3/4] dmaengine: Add a comment on why it's okay when kasprintf() fails
-      commit: 1722fb4a1307748f983c1345c4c24178d8e0be47
-[4/4] dmaengine: Unify checks in dma_request_chan()
-      commit: 91d8560c15918c7d44e4f665fac829ba8057a2f3
+[1/1] dmaengine: fsl-edma: Add missing newlines to log messages
+      commit: 1c4c8609d498173382913b8ef6a105f3e6ff3472
 
 Best regards,
 -- 
