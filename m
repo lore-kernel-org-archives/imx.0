@@ -1,41 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3740E2309BA;
-	Mon, 10 Feb 2025 14:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F097E204840;
+	Mon, 10 Feb 2025 14:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739198118; cv=none; b=FbTPK3PjokztYbyBxwOXEWFOX6gDAnHkFJ0yLhHINJnssiSPI4dvPc0tFNFKsCL7SmseU4riaokZyo/V7L5oyt3Ex/BFSKsBFCfqNQxbE0Iy6ZWRfU4x/Fr094m4DOQtY5As6XNDKK9h/YE1rs3i+wDkhSmr9QJLWYHfg51dG7g=
+	t=1739198128; cv=none; b=mdOrcZXYz8d70zCAU5qoYl1wnBuFqT/q/x5Qn0Lfa7eH3GIo/dj5B2LozAiRt1NJ8YYlrX+Ra19IvFGSJus3RRzcMyIkUF+EHNOCj6WvgijUeJGRveIGI9IUmBi6Xi32nnMj9bXrsZgWp1reE+d02xjQjdtlFKVgZKtHjOp/7yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739198118; c=relaxed/simple;
-	bh=XcHJif2FfnwAjAbH7baaX4yilC2v5vnNJYy1PFC2dr8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=erXmhK+gxKX3bMHtl6t3f2zs39vP4r6wq07HFVA+vTzX+iGnegaKSUPOWM5q4ja3PKBfnmlIIdWN0ukbtM4ktZFrgJ+6IwfxB0rT9z7ieQknrnLhItfgp/liBBGD5QANWUepte8pHLafxjEwL1xbPpveO3gssBzAz1SzgVX951Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqXSf3jx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739198128; c=relaxed/simple;
+	bh=YOnLsQVFLMH2bFUH18nK2RMlrkj9YbYtO1geEZmMl4Y=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SawJORXzwVqxHCin322mZ4Uxu3JU+lALcibhqhJRz6JihXBrSe/eM5LhXHzs991MvkRVEp03oWgJJZ+6gnUG5B10AQdUYWyTKO1pphUR1WiOoXn3NCcuENfnlxzvbaRdrDSOPrX9iEP+yUJiEdk0/2FHLoympwcKqIvIZ1U19U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2Fsb1tv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqXSf3jx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B93C4CED1;
-	Mon, 10 Feb 2025 14:35:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2Fsb1tv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A72C4CEE7;
+	Mon, 10 Feb 2025 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739198115;
-	bh=XcHJif2FfnwAjAbH7baaX4yilC2v5vnNJYy1PFC2dr8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=KqXSf3jxdv1BjMeENVN1I84vhH53dlRaeGCEoz3u4I+4L8YlFqZo+NfubU5dr1pRz
-	 yw5tBwiU7NzeOEounrDA6MqfRsmXv8vpuw3O2smhmCWxjuXiNBuwghioUnHu3aZJb6
-	 WbD5M7QghXYbVsoWDDtrWw6cRCd3eq4Z6ljpiugcR5zwLH6Zpg280oQnzefC2poblC
-	 zr9ER9OT/yerqrg6MUw/sKSFTEmvzV+Fx6rG2ZStTJN1hRd1kOUTE5XEqsJVmaxQ61
-	 CXX8DgwfjfvwYowbxAAI1yogJoiCtkIxNYk05vQvUDjyCsmwnVJuEUtAg2sUQYunMq
-	 C3NCU3q+mfwKQ==
+	s=k20201202; t=1739198127;
+	bh=YOnLsQVFLMH2bFUH18nK2RMlrkj9YbYtO1geEZmMl4Y=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=C2Fsb1tvvXRR3kJMMeaWrn2+i2Yby3dftAZyFsBmQ79eEk/mph2/3yo61l1MrcQfL
+	 hA8JlslLwXOMqyMYlC3HKWHLl7IDfKlzsHgbmCtWDiVxBSFPUt4iKSGQgRuutGisuy
+	 GGDBhjmbk5WsGCBARlZDja+rBNlRP7bEWSseAZHa+TohVCR8cdiGAf21VJf025VZHV
+	 Qz+S6jJYotb/FeSbMBpyATEJ2o+0INTMj9h8zOEgr4C0PUi7+weAkF7Hd3OS3+4e27
+	 1wdDwKcz3I+Ly0Qg15Imii/gq0FC+RpS8sC8NfLJ/xneoVLMmByzW6woZexM8Vtr10
+	 Cu3s5F0tLGWKw==
 From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, Stefan Wahren <wahrenst@gmx.net>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20250205091455.4593-1-wahrenst@gmx.net>
-References: <20250205091455.4593-1-wahrenst@gmx.net>
-Subject: Re: [PATCH] dmaengine: fsl-edma: Add missing newlines to log
- messages
-Message-Id: <173919811383.71959.2258535246777923144.b4-ty@kernel.org>
-Date: Mon, 10 Feb 2025 20:05:13 +0530
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Daniel Mack <daniel@zonque.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+ Michal Simek <michal.simek@amd.com>, dmaengine@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
+References: <20250114191021.854080-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2 1/2] dmaengine: Use str_enable_disable-like helpers
+Message-Id: <173919812243.71959.2545724653806590968.b4-ty@kernel.org>
+Date: Mon, 10 Feb 2025 20:05:22 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,15 +56,25 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 
 
-On Wed, 05 Feb 2025 10:14:55 +0100, Stefan Wahren wrote:
-> Not all log messages have a newline at the end. So fix it.
+On Tue, 14 Jan 2025 20:10:20 +0100, Krzysztof Kozlowski wrote:
+> Replace ternary (condition ? "enable" : "disable") syntax with helpers
+> from string_choices.h because:
+> 1. Simple function call with one argument is easier to read.  Ternary
+>    operator has three arguments and with wrapping might lead to quite
+>    long code.
+> 2. Is slightly shorter thus also easier to read.
+> 3. It brings uniformity in the text - same string.
+> 4. Allows deduping by the linker, which results in a smaller binary
+>    file.
 > 
-> 
+> [...]
 
 Applied, thanks!
 
-[1/1] dmaengine: fsl-edma: Add missing newlines to log messages
-      commit: 1c4c8609d498173382913b8ef6a105f3e6ff3472
+[1/2] dmaengine: Use str_enable_disable-like helpers
+      commit: 8e63891831f3904047d7ad8078ff52dd454b6975
+[2/2] dmaengine: pxa: Enable compile test
+      commit: 9fc2f03e85952ee52558ab844473a8284d924a56
 
 Best regards,
 -- 
