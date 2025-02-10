@@ -1,368 +1,435 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801632451EA
-	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 16:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646EF244E89
+	for <imx@lists.linux.dev>; Mon, 10 Feb 2025 16:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739203235; cv=none; b=TrGjTmnAPNA5eAADa63dyPDtt1X0f1ZKkoe2yCDwdahh97hsl3flljkxOxCh1+26/1hm05yExWti+iyUpQqTTxpxqQh0O5DjH/3z7UpUPLSp1u0AVFpl/Dun0nXd/HQDJCZ8h6gXdG3TtRr8q35XAnCu/VCBZdMhrBUKt/cXlqY=
+	t=1739203500; cv=none; b=P85LwMbuI9kqtRD/SpUAgKdHU19/QUr4LWQsDBXNMYFE+Xw1kWjLjlNtMnus9MBuJJavSVTv+yyvVY2eliZPS43WvMxvik0ctk0FLJ1JAivjJBXvIeyVRwSz8KkA8/Itu+CzFUou17pG9q9vY0bR/to9YguJTKtRJPfTjn6dMkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739203235; c=relaxed/simple;
-	bh=WmOyrQx2zbGj4iXjDTQFGQY/rayYa5Dxker5hffvQBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LX+/4O6htOHuSUfPQQ2q8XhnGSkxtGu4GvKGDPJkiewdz0a7P3bCA0H3AD+Q/+AWxWSBVimD9ifml0FSqDqvj+0dt3frMNOOBD+sTYPniouon7p4lIARpgkwG/dAkslqGexfBzzDwNhYR8/HLEqPaf5WNDiE9COsykZmheCE7Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=e8VbRvn7; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jPnJdWRY reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1739203500; c=relaxed/simple;
+	bh=cK3odLC0MCztbkfIE1C1AYvnC4RLplpka+AsEEoIFoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eJopKa7cWsloqGwKmal4dGxI2xMjYBKnpPRwvTRErhWOVvyFmLruwCYZqwT0x1O/Vir4UsGoYldpHsLXwcqnyILNmywdPe20hLS00j3CBJeCzzixvLNy2/bxnMVmTkiPpKiE3r2BrUb/0K+GPbJ3OaOZxghryt+bYrvxsvijyyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=GXIIXz5c; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m9tBeQXb; arc=none smtp.client-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="e8VbRvn7";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jPnJdWRY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1739203233; x=1770739233;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eQ7wsV90ZTZbBq8whAYKYY3CfgfedQ5rrh/FaK6/OBI=;
-  b=e8VbRvn7HVAHKYpCJ2B1KpOgxr4wm41V1kRTJ3gQYG5qbAZt8PHcIRMo
-   twH6xcbrH7Tlo3qKmq39fm2XRB3B+D9Gpl44BkqwZmB8aDKZd+1Vt2qiq
-   v1X9xHAEemlFI0GNPYAS1PBPQZPF0aHc62m+6C/68SaMrYuVy+h7zJ2ES
-   HCAss2KVfve5KpSFmBBiaZ4wo+95XxOmnlaxokqhqmJAM+N/kxumxM1W7
-   HqSOtZjl8GAfjTaj7axr1hk11E/jyIYcdGWxa6CLqL82e70D71TqbVhJa
-   shqlSPS9u1vaQBAszINtAiJiwCOOgaPotlH49ByVWxAlVZ2jnKvX2YEP7
-   A==;
-X-CSE-ConnectionGUID: wUPPNZwMTgKS+CfX2ikgcg==
-X-CSE-MsgGUID: ksmEptQWQkaRFisJ/Nm68Q==
-X-IronPort-AV: E=Sophos;i="6.13,274,1732575600"; 
-   d="scan'208";a="41723666"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 10 Feb 2025 17:00:31 +0100
-X-CheckPoint: {67AA229F-B-EBA888C4-C1AC8B84}
-X-MAIL-CPID: E8F7D8D262BF096E5F9B3401FCF79116_0
-X-Control-Analysis: str=0001.0A006368.67AA229F.00BA,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6467616737F;
-	Mon, 10 Feb 2025 17:00:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1739203226;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eQ7wsV90ZTZbBq8whAYKYY3CfgfedQ5rrh/FaK6/OBI=;
-	b=jPnJdWRYowhIESTjwwMIX2UEWcpNhtWais5YdLTfi9Xcq6++VxN0lYB9H99XfDYqxOQ8hj
-	UWCM30w6gFMBA+abvKrlYNFBXZWFUmeDvqzxZdggIJ7DT1Bra9iT0IsDFrPA1doyYTS2Cv
-	J1e3+XuTZyAQ/cFs1jC1YYreikkooBgAbxM5sn9YLnzMHZ8FuqmADw76cTnHSaQ2NCFnji
-	KUl9eDtlmyPmRvLyWs6aA6Hw1I9TLR9Ev6xt+CV2Ps4F7AnN1TdiH6y309Jstd98R2QjQA
-	IMUHIF17oiFoerGdXADXNr5iyHwZN2C0XAC/5sI+HFjKopTBQqo8grdDKWPPfA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="GXIIXz5c";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m9tBeQXb"
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailflow.phl.internal (Postfix) with ESMTP id 38054200E27;
+	Mon, 10 Feb 2025 11:04:56 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Mon, 10 Feb 2025 11:04:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1739203496;
+	 x=1739210696; bh=YNeJadkWRVGgukUkuDzsFJCjGYV/G32zn9RD7X0nWNg=; b=
+	GXIIXz5ciV/micb486OBxpB5U+4fRAKFrC+RgoOp/gxz0BmkccL1ePls3x39Y0fU
+	OADiY5Br7e7YA+Cu4wt8d6lNBzRSMyKv1+sPpRsX9cml7PlKzFVlhhBXNV0XOl91
+	dMs6Hj0e4iULgNkvw8SxJw05PtY/dDAwbWVU6VCe//He60487ODyZIbMkUmpp2kJ
+	cfdDodE0nEvWs6dB1s93RhWGc89kUcDPztb78+xdgF4f5OSjapCCB1j0E64bNpWJ
+	7mfJUeRgMBh7nEqwmDZHCxtCg/GnWWmMkl/qny+ewrxK9oMDDXAHOflJvivqOgtX
+	NETJybsowFnbjqhiPoKjDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739203496; x=
+	1739210696; bh=YNeJadkWRVGgukUkuDzsFJCjGYV/G32zn9RD7X0nWNg=; b=m
+	9tBeQXbGcP8ipu0IcWYGvDXlHxB/2pNM2cTWhIt/KOteJ75QVYYH6XrhaJQzd+W9
+	QI5Z7JkidVvNEnZk3/oV3TG/29nW3b7jfoblCQ64PcXzHpQ1stJevsXjWE+HvOEd
+	h9rZEkJuDJIw9hMviFGmqIa3WVP9pisoyh5I7/A04SiH1fjP+A+/3gZPP+5NInUe
+	il1dL6NqjWB1lkPzQKsm6lhHfSYz02kHvRw8xbW+0ml57M9z7ZxXAbF8ubXdId+k
+	5wZbef4NolPQEkqaKU+l26cg4ANROMP6+edvnK0inixxaPiJO+tuPEc0eYkC20Qe
+	ldQNiHVafvSUCzawqhNjA==
+X-ME-Sender: <xms:pSOqZ_Pa0itnI6kG321XQ0BfIamcX6bQtT-rfgQ6mH2ItXIb1Q-1kQ>
+    <xme:pSOqZ5-nd_MTqh3bPmxq_QYd2dqPVnl-fkKB0_BeY4RriV5dCn5uqIUQFoR6JaN0x
+    XqxxOLNf7blYkRtEMk>
+X-ME-Received: <xmr:pSOqZ-SQf4pGdvAPsuoCKuJmlbqBe9Ik91Hi_vJQ2MwgqzwVbtkQNYWKOGhjxLSLMbz7K2uvGXzwmIX--G6Y5eL3Iak4dxrhag>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefkeehtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomheppfhikhhlrghsucfunpguvghrlhhunhguuceonhhikhhlrghsrdhsoh
+    guvghrlhhunhgusehrrghgnhgrthgvtghhrdhsvgeqnecuggftrfgrthhtvghrnhepgeei
+    hfegveekteelteeugedtgfelveejtdekjeejteejleekkeekiefhjeetfeffnecuffhomh
+    grihhnpeguvghvihgtvghtrhgvvgdrohhrghdprghnrghlohhgrdgtohhmpdhlihhnuhig
+    thhvrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepnhhikhhlrghsrdhsohguvghrlhhunhgusehrrghgnhgrthgvtghhrdhsvgdpnhgs
+    pghrtghpthhtohepvdejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvih
+    gusehigihithdrtgiipdhrtghpthhtohepmhgthhgvhhgrsgeskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikh
+    doughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepphgrvhgvlhesuhgtfidrtgiipdhrtghpthhtohepsh
+    grkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
+    lhgrrhhssehmvghtrghfohhordguvgdprhgtphhtthhopehkihgvrhgrnhdrsghinhhghh
+    grmhesihguvggrshhonhgsohgrrhgurdgtohhm
+X-ME-Proxy: <xmx:pSOqZzv1kCNjJ3kmdf4XuZtptXhCPmTOmhJz-tjkGGT5m-0r8y_7hw>
+    <xmx:pSOqZ3cws9k7qirlXcPzQLfDuYU9k85MpktwqBatpO8iVf5yPUyjuA>
+    <xmx:pSOqZ_0ocQ8lk20M2n6lug_nYU5p1vKtve6UKTu2CWDkEtaJJJid7Q>
+    <xmx:pSOqZz9T29-tp7luvlLuGQwfQ_5Pcn4PfPXaIBGC2WskHnF9ox6Eeg>
+    <xmx:qCOqZwu1lBQOBfNs8aWdpqnHKz4_ryIEIak8ALsDIADb-oDHxn1SVLbo>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Feb 2025 11:04:52 -0500 (EST)
+Date: Mon, 10 Feb 2025 17:04:50 +0100
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: David Heidelberg <david@ixit.cz>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Shawn Guo <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 3/3] clk: imx: clk-fracn-gppll: Support dynamic rates
-Date: Mon, 10 Feb 2025 17:00:11 +0100
-Message-Id: <20250210160012.783446-3-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250210160012.783446-1-alexander.stein@ew.tq-group.com>
-References: <20250210160012.783446-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Ramesh Shanmugasundaram <rashanmu@gmail.com>,
+	Tim Harvey <tharvey@gateworks.com>,	"Lad,
+ Prabhakar" <prabhakar.csengg@gmail.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] media: dt-bindings: media: i2c: align filenames format
+ with standard
+Message-ID: <20250210160450.GA1658528@ragnatech.se>
+References: <20250209195517.148700-1-david@ixit.cz>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20250209195517.148700-1-david@ixit.cz>
 
-The fracn gppll PLL so far only supports rates from a rate table passed
-during initialization. Calculating PLL settings dynamically helps audio
-applications to get their desired rates, so support for this is added
-in this patch.
+Hi David,
 
-The strategy to get to the PLL setting for a rate is:
+Thanks for your work.
 
-- The rate table is searched for suitable rates, so for standard rates the
-  same settings are used as without this patch
-- Then try to only adjust mfn, on fractional PLLs only, which specifies
-  the fractional part of the PLL. This setting can be changed without
-  glitches on the output and is therefore preferred
-- As a last resort the best settings are calculated dynamically
+On 2025-02-09 20:53:43 +0100, David Heidelberg wrote:
+> Append missing vendor and align with other sony definitions.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-Implementation is inspired by commit b09c68dc57c9d ("clk: imx: pll14xx:
-Support dynamic rates")
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-This is the first time I'm touching PLL code, I might be missing things
-or not being aware of important aspects when it comes to PLL.
-Thus this is a RFC
+> ---
+>  .../media/i2c/{ad5820.txt => adi,ad5820.txt}  |  0
+>  .../i2c/{adp1653.txt => adi,adp1653.txt}      |  0
+>  .../i2c/{adv7180.yaml => adi,adv7180.yaml}    |  2 +-
+>  .../i2c/{adv7343.txt => adi,adv7343.txt}      |  0
+>  .../i2c/{adv748x.yaml => adi,adv748x.yaml}    |  2 +-
+>  .../i2c/{adv7604.yaml => adi,adv7604.yaml}    |  2 +-
+>  .../i2c/{mt9v032.txt => aptina,mt9v032.txt}   |  0
+>  .../i2c/{max2175.txt => maxim,max2175.txt}    |  0
+>  .../i2c/{mt9m111.txt => micron,mt9m111.txt}   |  0
+>  .../i2c/{tda1997x.txt => nxp,tda1997x.txt}    |  0
+>  .../i2c/{mt9m001.txt => onnn,mt9m001.txt}     |  0
+>  .../media/i2c/{ov2640.txt => ovti,ov2640.txt} |  0
+>  .../media/i2c/{ov2659.txt => ovti,ov2659.txt} |  0
+>  .../media/i2c/{ov7670.txt => ovti,ov7670.txt} |  0
+>  .../media/i2c/{ov7740.txt => ovti,ov7740.txt} |  0
+>  .../media/i2c/{ov9650.txt => ovti,ov9650.txt} |  0
+>  .../i2c/{imx219.yaml => sony,imx219.yaml}     |  2 +-
+>  .../media/i2c/{ths8200.txt => ti,ths8200.txt} |  0
+>  .../media/i2c/{tvp514x.txt => ti,tvp514x.txt} |  0
+>  .../media/i2c/{tvp5150.txt => ti,tvp5150.txt} |  0
+>  .../media/i2c/{tvp7002.txt => ti,tvp7002.txt} |  0
+>  .../{tc358743.txt => toshiba,tc358743.txt}    |  0
+>  MAINTAINERS                                   | 22 +++++++++++--------
+>  23 files changed, 17 insertions(+), 13 deletions(-)
+>  rename Documentation/devicetree/bindings/media/i2c/{ad5820.txt => adi,ad5820.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{adp1653.txt => adi,adp1653.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{adv7180.yaml => adi,adv7180.yaml} (98%)
+>  rename Documentation/devicetree/bindings/media/i2c/{adv7343.txt => adi,adv7343.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{adv748x.yaml => adi,adv748x.yaml} (98%)
+>  rename Documentation/devicetree/bindings/media/i2c/{adv7604.yaml => adi,adv7604.yaml} (98%)
+>  rename Documentation/devicetree/bindings/media/i2c/{mt9v032.txt => aptina,mt9v032.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{max2175.txt => maxim,max2175.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{mt9m111.txt => micron,mt9m111.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{tda1997x.txt => nxp,tda1997x.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{mt9m001.txt => onnn,mt9m001.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ov2640.txt => ovti,ov2640.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ov2659.txt => ovti,ov2659.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ov7670.txt => ovti,ov7670.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ov7740.txt => ovti,ov7740.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ov9650.txt => ovti,ov9650.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{imx219.yaml => sony,imx219.yaml} (97%)
+>  rename Documentation/devicetree/bindings/media/i2c/{ths8200.txt => ti,ths8200.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{tvp514x.txt => ti,tvp514x.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{tvp5150.txt => ti,tvp5150.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{tvp7002.txt => ti,tvp7002.txt} (100%)
+>  rename Documentation/devicetree/bindings/media/i2c/{tc358743.txt => toshiba,tc358743.txt} (100%)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ad5820.txt b/Documentation/devicetree/bindings/media/i2c/adi,ad5820.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ad5820.txt
+> rename to Documentation/devicetree/bindings/media/i2c/adi,ad5820.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/adp1653.txt b/Documentation/devicetree/bindings/media/i2c/adi,adp1653.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/adp1653.txt
+> rename to Documentation/devicetree/bindings/media/i2c/adi,adp1653.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/adv7180.yaml b/Documentation/devicetree/bindings/media/i2c/adi,adv7180.yaml
+> similarity index 98%
+> rename from Documentation/devicetree/bindings/media/i2c/adv7180.yaml
+> rename to Documentation/devicetree/bindings/media/i2c/adi,adv7180.yaml
+> index 4371a0ef27617..4636ad601c3ee 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/adv7180.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/adi,adv7180.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/media/i2c/adv7180.yaml#
+> +$id: http://devicetree.org/schemas/media/i2c/adi,adv7180.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Analog Devices ADV7180 analog video decoder family
+> diff --git a/Documentation/devicetree/bindings/media/i2c/adv7343.txt b/Documentation/devicetree/bindings/media/i2c/adi,adv7343.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/adv7343.txt
+> rename to Documentation/devicetree/bindings/media/i2c/adi,adv7343.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/adv748x.yaml b/Documentation/devicetree/bindings/media/i2c/adi,adv748x.yaml
+> similarity index 98%
+> rename from Documentation/devicetree/bindings/media/i2c/adv748x.yaml
+> rename to Documentation/devicetree/bindings/media/i2c/adi,adv748x.yaml
+> index d6353081402be..254987350321b 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/adv748x.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/adi,adv748x.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/media/i2c/adv748x.yaml#
+> +$id: http://devicetree.org/schemas/media/i2c/adi,adv748x.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Analog Devices ADV748X video decoder with HDMI receiver
+> diff --git a/Documentation/devicetree/bindings/media/i2c/adv7604.yaml b/Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml
+> similarity index 98%
+> rename from Documentation/devicetree/bindings/media/i2c/adv7604.yaml
+> rename to Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml
+> index 7589d377c6864..6c403003cdda1 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/adv7604.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/media/i2c/adv7604.yaml#
+> +$id: http://devicetree.org/schemas/media/i2c/adi,adv7604.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Analog Devices ADV7604/10/11/12 video decoder with HDMI receiver
+> diff --git a/Documentation/devicetree/bindings/media/i2c/mt9v032.txt b/Documentation/devicetree/bindings/media/i2c/aptina,mt9v032.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/mt9v032.txt
+> rename to Documentation/devicetree/bindings/media/i2c/aptina,mt9v032.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/max2175.txt b/Documentation/devicetree/bindings/media/i2c/maxim,max2175.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/max2175.txt
+> rename to Documentation/devicetree/bindings/media/i2c/maxim,max2175.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/mt9m111.txt b/Documentation/devicetree/bindings/media/i2c/micron,mt9m111.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/mt9m111.txt
+> rename to Documentation/devicetree/bindings/media/i2c/micron,mt9m111.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/tda1997x.txt b/Documentation/devicetree/bindings/media/i2c/nxp,tda1997x.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/tda1997x.txt
+> rename to Documentation/devicetree/bindings/media/i2c/nxp,tda1997x.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/mt9m001.txt b/Documentation/devicetree/bindings/media/i2c/onnn,mt9m001.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/mt9m001.txt
+> rename to Documentation/devicetree/bindings/media/i2c/onnn,mt9m001.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov2640.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov2640.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ov2640.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ovti,ov2640.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov2659.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ov2659.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov7670.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov7670.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ov7670.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ovti,ov7670.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov7740.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov7740.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ov7740.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ovti,ov7740.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov9650.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov9650.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ov9650.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ovti,ov9650.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/imx219.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
+> similarity index 97%
+> rename from Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> rename to Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
+> index 07d088cf66e0b..8b23e5fc6a24f 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  %YAML 1.2
+>  ---
+> -$id: http://devicetree.org/schemas/media/i2c/imx219.yaml#
+> +$id: http://devicetree.org/schemas/media/i2c/sony,imx219.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Sony 1/4.0-Inch 8Mpixel CMOS Digital Image Sensor
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ths8200.txt b/Documentation/devicetree/bindings/media/i2c/ti,ths8200.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/ths8200.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ti,ths8200.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/tvp514x.txt b/Documentation/devicetree/bindings/media/i2c/ti,tvp514x.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/tvp514x.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ti,tvp514x.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/tvp5150.txt b/Documentation/devicetree/bindings/media/i2c/ti,tvp5150.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/tvp5150.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ti,tvp5150.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/tvp7002.txt b/Documentation/devicetree/bindings/media/i2c/ti,tvp7002.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/tvp7002.txt
+> rename to Documentation/devicetree/bindings/media/i2c/ti,tvp7002.txt
+> diff --git a/Documentation/devicetree/bindings/media/i2c/tc358743.txt b/Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
+> similarity index 100%
+> rename from Documentation/devicetree/bindings/media/i2c/tc358743.txt
+> rename to Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index df1ecd2c7c3d3..9951eddae74b2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -527,6 +527,7 @@ ADP1653 FLASH CONTROLLER DRIVER
+>  M:	Sakari Ailus <sakari.ailus@iki.fi>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/media/i2c/adi,adp1653.txt
+>  F:	drivers/media/i2c/adp1653.c
+>  F:	include/media/i2c/adp1653.h
+>  
+> @@ -1545,14 +1546,14 @@ M:	Lars-Peter Clausen <lars@metafoo.de>
+>  L:	linux-media@vger.kernel.org
+>  S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+> -F:	Documentation/devicetree/bindings/media/i2c/adv7180.yaml
+> +F:	Documentation/devicetree/bindings/media/i2c/adi,adv7180.yaml
+>  F:	drivers/media/i2c/adv7180.c
+>  
+>  ANALOG DEVICES INC ADV748X DRIVER
+>  M:	Kieran Bingham <kieran.bingham@ideasonboard.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/media/i2c/adv748x.yaml
+> +F:	Documentation/devicetree/bindings/media/i2c/adi,adv748x.yaml
+>  F:	drivers/media/i2c/adv748x/*
+>  
+>  ANALOG DEVICES INC ADV7511 DRIVER
+> @@ -1565,7 +1566,7 @@ ANALOG DEVICES INC ADV7604 DRIVER
+>  M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/media/i2c/adv7604.yaml
+> +F:	Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml
+>  F:	drivers/media/i2c/adv7604*
+>  
+>  ANALOG DEVICES INC ADV7842 DRIVER
+> @@ -14158,7 +14159,7 @@ M:	Ramesh Shanmugasundaram <rashanmu@gmail.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
+> -F:	Documentation/devicetree/bindings/media/i2c/max2175.txt
+> +F:	Documentation/devicetree/bindings/media/i2c/maxim,max2175.txt
+>  F:	Documentation/userspace-api/media/drivers/max2175.rst
+>  F:	drivers/media/i2c/max2175*
+>  F:	include/uapi/linux/max2175.h
+> @@ -16160,7 +16161,7 @@ M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
+> -F:	Documentation/devicetree/bindings/media/i2c/mt9v032.txt
+> +F:	Documentation/devicetree/bindings/media/i2c/aptina,mt9v032.txt
+>  F:	drivers/media/i2c/mt9v032.c
+>  F:	include/media/i2c/mt9v032.h
+>  
+> @@ -16790,6 +16791,7 @@ M:	Pavel Machek <pavel@ucw.cz>
+>  M:	Sakari Ailus <sakari.ailus@iki.fi>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/media/i2c/adi,ad5820.txt
+>  F:	drivers/media/i2c/ad5820.c
+>  F:	drivers/media/i2c/et8ek8
+>  
+> @@ -17525,7 +17527,7 @@ OMNIVISION OV7740 SENSOR DRIVER
+>  L:	linux-media@vger.kernel.org
+>  S:	Orphan
+>  T:	git git://linuxtv.org/media.git
+> -F:	Documentation/devicetree/bindings/media/i2c/ov7740.txt
+> +F:	Documentation/devicetree/bindings/media/i2c/ovti,ov7740.txt
+>  F:	drivers/media/i2c/ov7740.c
+>  
+>  OMNIVISION OV8856 SENSOR DRIVER
+> @@ -17566,7 +17568,7 @@ R:	Sylwester Nawrocki <s.nawrocki@samsung.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
+> -F:	Documentation/devicetree/bindings/media/i2c/ov9650.txt
+> +F:	Documentation/devicetree/bindings/media/i2c/ovti,ov9650.txt
+>  F:	drivers/media/i2c/ov9650.c
+>  
+>  OMNIVISION OV9734 SENSOR DRIVER
+> @@ -17768,6 +17770,7 @@ S:	Maintained
+>  W:	https://linuxtv.org
+>  Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+>  T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_devices.git
+> +F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+>  F:	drivers/media/i2c/ov2659.c
+>  F:	include/media/i2c/ov2659.h
+>  
+> @@ -21992,7 +21995,7 @@ M:	Dave Stevenson <dave.stevenson@raspberrypi.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
+> -F:	Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> +F:	Documentation/devicetree/bindings/media/i2c/sony,imx219.yaml
+>  F:	drivers/media/i2c/imx219.c
+>  
+>  SONY IMX258 SENSOR DRIVER
+> @@ -23131,6 +23134,7 @@ L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  W:	https://linuxtv.org
+>  Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+> +F:	Documentation/devicetree/bindings/media/i2c/nxp,tda1997x.txt
+>  F:	drivers/media/i2c/tda1997x.*
+>  
+>  TDA827x MEDIA DRIVER
+> @@ -23967,7 +23971,7 @@ TOSHIBA TC358743 DRIVER
+>  M:	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/media/i2c/tc358743.txt
+> +F:	Documentation/devicetree/bindings/media/i2c/toshiba,tc358743.txt
+>  F:	drivers/media/i2c/tc358743*
+>  F:	include/media/i2c/tc358743.h
+>  
+> -- 
+> 2.47.2
+> 
 
- drivers/clk/imx/clk-fracn-gppll.c | 203 ++++++++++++++++++++++++++----
- 1 file changed, 181 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
-index a7d57fbe93196..68c5b4a95efbe 100644
---- a/drivers/clk/imx/clk-fracn-gppll.c
-+++ b/drivers/clk/imx/clk-fracn-gppll.c
-@@ -25,6 +25,12 @@
- 
- #define PLL_NUMERATOR		0x40
- #define PLL_MFN_MASK		GENMASK(31, 2)
-+#define PLL_MFI_MIN		0x2
-+#define PLL_MFI_MAX		0x1ff
-+#define PLL_MFN_MIN		0x0
-+#define PLL_MFN_MAX		0x3fffffff
-+#define PLL_MFD_MIN		0x1
-+#define PLL_MFD_MAX		0x3fffffff
- 
- #define PLL_DENOMINATOR		0x50
- #define PLL_MFD_MASK		GENMASK(29, 0)
-@@ -134,21 +140,6 @@ imx_get_pll_settings(struct clk_fracn_gppll *pll, unsigned long rate)
- 	return NULL;
- }
- 
--static long clk_fracn_gppll_round_rate(struct clk_hw *hw, unsigned long rate,
--				       unsigned long *prate)
--{
--	struct clk_fracn_gppll *pll = to_clk_fracn_gppll(hw);
--	const struct imx_fracn_gppll_rate_table *rate_table = pll->rate_table;
--	int i;
--
--	/* Assuming rate_table is in descending order */
--	for (i = 0; i < pll->rate_count; i++)
--		if (rate >= rate_table[i].rate)
--			return rate_table[i].rate;
--
--	/* return minimum supported value */
--	return rate_table[pll->rate_count - 1].rate;
--}
- 
- static long clk_fracn_gppll_calc_rate(struct clk_fracn_gppll *pll, u32 mfn,
- 				      u32 mfd, u32 mfi, u32 rdiv, u32 odiv,
-@@ -202,6 +193,174 @@ static long clk_fracn_gppll_calc_rate(struct clk_fracn_gppll *pll, u32 mfn,
- 	return (unsigned long)fvco;
- }
- 
-+static u32 clk_fracn_gppll_calc_mfi(int rdiv, unsigned long fvco,
-+				    unsigned long fref)
-+{
-+	u32 mfi;
-+
-+	/* fvco = fref / rdiv * mfi */
-+	mfi = DIV_ROUND_CLOSEST(fvco * rdiv, fref);
-+	return clamp_t(u32, mfi, PLL_MFI_MIN, PLL_MFI_MAX);
-+}
-+
-+static long clk_fracn_gppll_calc_mfn(int mfd, int mfi, int odiv, int rdiv,
-+				     unsigned long rate, unsigned long prate)
-+{
-+	unsigned long tmp;
-+	long mfn;
-+
-+	/* calc mfn = ((rate * odiv * rdiv / prate) - mfi) * mfd */
-+	tmp = rate * odiv * rdiv - (mfi * prate);
-+	mfn = DIV_ROUND_CLOSEST(tmp * mfd, prate);
-+	return clamp_t(long, mfn, PLL_MFN_MIN, PLL_MFN_MAX);
-+}
-+
-+static void clk_fracn_gppll_calc_settings(struct clk_fracn_gppll *pll, unsigned long rate,
-+					  unsigned long prate, struct imx_fracn_gppll_rate_table *t)
-+{
-+	u32 pll_denominator, pll_numerator, pll_div;
-+	u32 mfi, mfn, mfd, rdiv, odiv;
-+	long fout, rate_min, rate_max, dist, best = LONG_MAX;
-+	const struct imx_fracn_gppll_rate_table *tt;
-+
-+	/*
-+	 * PLL constrains:
-+	 *
-+	 * a) 1 <= MFN <= 0x3fffffff (fractional only)
-+	 * b) 1 <= MFD <= 0x3fffffff (fractional only)
-+	 * c) 2 <= MFI <= 0x1ff
-+	 * d) 1 <= RDIV <= 7
-+	 * e) 2 <= ODIV <= 255
-+	 * f) -2 <= MFN/MFD <= 2
-+	 * g) 20MHz <= (Fref / rdiv) <= 40MHz
-+	 * h) 2.5GHz <= Fvco <= 5Ghz
-+	 *
-+	 * Fvco = (Fref / rdiv) * (MFI + MFN / MFD)
-+	 * Fout = Fvco / odiv
-+	 */
-+
-+	/* First try if we can get the desired rate from one of the static entries */
-+	tt = imx_get_pll_settings(pll, rate);
-+	if (tt) {
-+		pr_debug("%s: in=%ld, want=%ld, Using PLL setting from table\n",
-+			 clk_hw_get_name(&pll->hw), prate, rate);
-+		t->rate = tt->rate;
-+		t->mfi = tt->mfi;
-+		t->mfn = tt->mfn;
-+		t->mfd = tt->mfd;
-+		t->rdiv = tt->rdiv;
-+		t->odiv = tt->odiv;
-+		return;
-+	}
-+
-+	/* glitch free MFN adjustment only for fractional PLL */
-+	if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
-+		pll_numerator = readl_relaxed(pll->base + PLL_NUMERATOR);
-+
-+		pll_denominator = readl_relaxed(pll->base + PLL_DENOMINATOR);
-+		mfd = FIELD_GET(PLL_MFD_MASK, pll_denominator);
-+
-+		pll_div = readl_relaxed(pll->base + PLL_DIV);
-+		mfi = FIELD_GET(PLL_MFI_MASK, pll_div);
-+		rdiv = FIELD_GET(PLL_RDIV_MASK, pll_div);
-+		odiv = FIELD_GET(PLL_ODIV_MASK, pll_div);
-+
-+		/* Then see if we can get the desired rate by only adjusting MFN (glitch free) */
-+		rate_min = clk_fracn_gppll_calc_rate(pll, PLL_MFN_MIN, mfd, mfi, rdiv, odiv, prate);
-+		rate_max = clk_fracn_gppll_calc_rate(pll, PLL_MFN_MAX, mfd, mfi, rdiv, odiv, prate);
-+
-+		if (rate >= rate_min && rate <= rate_max) {
-+			mfn = clk_fracn_gppll_calc_mfn(mfd, mfi, odiv, rdiv, rate, prate);
-+			pr_debug("%s: in=%ld, want=%ld Only adjust mfn %ld -> %d\n",
-+				 clk_hw_get_name(&pll->hw), prate, rate,
-+				 FIELD_GET(PLL_MFN_MASK, pll_numerator), mfn);
-+			fout = clk_fracn_gppll_calc_rate(pll, mfn, mfd, mfi, rdiv, odiv, prate);
-+			t->rate = (unsigned int)fout;
-+			t->mfi = mfi;
-+			t->mfn = mfn;
-+			t->mfd = mfd;
-+			t->rdiv = rdiv;
-+			t->odiv = odiv;
-+			return;
-+		}
-+	}
-+
-+	/* Finally calculate best values */
-+	for (rdiv = 1; rdiv <= 7; rdiv++) {
-+		if ((prate / rdiv) < 20000000)
-+			continue;
-+		if ((prate / rdiv) > 40000000)
-+			continue;
-+
-+		for (odiv = 2; odiv <= 255; odiv++) {
-+			mfi = clk_fracn_gppll_calc_mfi(rdiv, rate * odiv, prate);
-+			mfd = 1;
-+			mfn = 0;
-+
-+			/* Try integer PLL part only first */
-+			fout = clk_fracn_gppll_calc_rate(pll, mfn, mfd, mfi, rdiv, odiv, prate);
-+			if (fout * odiv < 2500000000UL)
-+				continue;
-+			if (fout * odiv > 5000000000UL)
-+				continue;
-+
-+			if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
-+				if (!dist) {
-+					/* Disable fractional part upon exact match */
-+					mfd = 1;
-+					mfn = 0;
-+				} else {
-+					mfd = 100;
-+					mfd = clamp(mfd, PLL_MFD_MIN, PLL_MFN_MAX);
-+
-+					mfn = clk_fracn_gppll_calc_mfn(mfd, mfi, odiv, rdiv, rate, prate);
-+					if ((mfn / mfd) > 2)
-+						continue;
-+
-+					fout = clk_fracn_gppll_calc_rate(pll, mfn, mfd, mfi, rdiv, odiv, prate);
-+					if (fout * odiv < 2500000000)
-+						continue;
-+					if (fout * odiv > 5000000000)
-+						continue;
-+				}
-+			} else {
-+				mfd = 0;
-+				mfn = 0;
-+			}
-+
-+			/* best match */
-+			dist = abs((long)rate - (long)fout);
-+			if (dist < best) {
-+				best = dist;
-+				t->rate = (unsigned int)fout;
-+				t->mfi = mfi;
-+				t->mfn = mfn;
-+				t->mfd = mfd;
-+				t->rdiv = rdiv;
-+				t->odiv = odiv;
-+
-+				if (!dist)
-+					goto found;
-+			}
-+		}
-+	}
-+found:
-+	pr_debug("%s: in=%lu, want=%lu got=%u (mfi=%u mfn=%u mfd=%u rdiv=%u odiv=%u)\n",
-+		 clk_hw_get_name(&pll->hw), prate, rate, t->rate, t->mfi, t->mfn, t->mfd,
-+		 t->rdiv, t->odiv);
-+}
-+
-+static long clk_fracn_gppll_round_rate(struct clk_hw *hw, unsigned long rate,
-+				       unsigned long *prate)
-+{
-+	struct clk_fracn_gppll *pll = to_clk_fracn_gppll(hw);
-+	struct imx_fracn_gppll_rate_table t;
-+
-+	clk_fracn_gppll_calc_settings(pll, rate, *prate, &t);
-+
-+	return t.rate;
-+}
-+
- static unsigned long clk_fracn_gppll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- {
- 	struct clk_fracn_gppll *pll = to_clk_fracn_gppll(hw);
-@@ -242,11 +401,11 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
- 				    unsigned long prate)
- {
- 	struct clk_fracn_gppll *pll = to_clk_fracn_gppll(hw);
--	const struct imx_fracn_gppll_rate_table *rate;
-+	struct imx_fracn_gppll_rate_table rate;
- 	u32 tmp, pll_div, ana_mfn;
- 	int ret;
- 
--	rate = imx_get_pll_settings(pll, drate);
-+	clk_fracn_gppll_calc_settings(pll, drate, prate, &rate);
- 
- 	/* Hardware control select disable. PLL is control by register */
- 	tmp = readl_relaxed(pll->base + PLL_CTRL);
-@@ -266,13 +425,13 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
- 	tmp &= ~CLKMUX_BYPASS;
- 	writel_relaxed(tmp, pll->base + PLL_CTRL);
- 
--	pll_div = FIELD_PREP(PLL_RDIV_MASK, rate->rdiv) | rate->odiv |
--		FIELD_PREP(PLL_MFI_MASK, rate->mfi);
-+	pll_div = FIELD_PREP(PLL_RDIV_MASK, rate.rdiv) | rate.odiv |
-+		FIELD_PREP(PLL_MFI_MASK, rate.mfi);
- 	writel_relaxed(pll_div, pll->base + PLL_DIV);
- 	readl(pll->base + PLL_DIV);
- 	if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
--		writel_relaxed(rate->mfd, pll->base + PLL_DENOMINATOR);
--		writel_relaxed(FIELD_PREP(PLL_MFN_MASK, rate->mfn), pll->base + PLL_NUMERATOR);
-+		writel_relaxed(rate.mfd, pll->base + PLL_DENOMINATOR);
-+		writel_relaxed(FIELD_PREP(PLL_MFN_MASK, rate.mfn), pll->base + PLL_NUMERATOR);
- 		readl(pll->base + PLL_NUMERATOR);
- 	}
- 
-@@ -296,7 +455,7 @@ static int clk_fracn_gppll_set_rate(struct clk_hw *hw, unsigned long drate,
- 	ana_mfn = readl_relaxed(pll->base + PLL_STATUS);
- 	ana_mfn = FIELD_GET(PLL_MFN_MASK, ana_mfn);
- 
--	WARN(ana_mfn != rate->mfn, "ana_mfn != rate->mfn\n");
-+	WARN(ana_mfn != rate.mfn, "ana_mfn != rate->mfn\n");
- 
- 	return 0;
- }
 -- 
-2.34.1
-
+Kind Regards,
+Niklas Söderlund
