@@ -1,118 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B022580C8;
-	Mon, 10 Feb 2025 16:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30B41F460A;
+	Mon, 10 Feb 2025 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739204407; cv=none; b=iV64aRtO/wcuMhYRDqVX1qrDa3odZhAhBFj1KdAtuuGLJwiQOaKx7Wl79s0oIGd7bd5Sm5E+Q4CG4API6rMQFnqa7/s5qt349ksd9sPO/oWp2YdFlcyabo0xql5XMJljdtAtfk+cXUULTUCAgU8RLPJ3yc7x2AVjyzg4S50FCMk=
+	t=1739205001; cv=none; b=uO4EoLjTbakH8pr+IWmBUnU+44uw/bj2AgKC3l6UvOEKAs1ojVrsfgukpK5f01q7CHfL3ekk/w+B2t1WElX/OUFcWBDqBNloWPLXqYDb9TZAbyvzKdXgTFmZWEfmqiQI4sp+gAEKt97MbQMYwHpf5VTfRtSFq9y9WzMtVwGrL1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739204407; c=relaxed/simple;
-	bh=NWngG/kFcyT8WtXP/QQ25Wit1MvMYs4YLqlxYuAuRm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DSOdNIl7mE6U9IIIlPyn0s47K2PxshHJ2OvASIOr5pF8r692UZD5d3UjUS/y3tRF2R9JEUTVO80OvCkNFgHH3HGIe6MmQ1x0b+Cxd1Rba9aBz2xu/1M/FZ2YEWnny4ZpLMAR/kVqXxK5zS2C7ODhfU6CDizINcfgmsS1fxWeCcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9PX+r4/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739205001; c=relaxed/simple;
+	bh=SnAIGyFpSth2g3LxsKnoq7TeR8aC9lOiVHFRi1o/ejI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=DPokGAsiLpFQNjM1qDtFj/Bw9S/eIKhH4gKGriBuhh8MZkh2+S3/Tn9ZloKi8AK0nhOsgjSCBdD/Mtr6qwgUdOs5wlFmelbtk54Uy1RrIdwKAdE2snDrz8IvDYgWAj20d2qpS6WmWv7tvONl7rc9Px44QVQE6O2b3Q0pEBtRb3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TepEXDMR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9PX+r4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E92C4CED1;
-	Mon, 10 Feb 2025 16:19:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TepEXDMR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B27C4CEDF;
+	Mon, 10 Feb 2025 16:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739204406;
-	bh=NWngG/kFcyT8WtXP/QQ25Wit1MvMYs4YLqlxYuAuRm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O9PX+r4//9gugSEWU7m1K8ZM3qhMdimRiJbSiYe86/w+9bR4X4/MhCjFvOn6jCtWl
-	 vB28xXU/PEd8OdGhiVaNzDs/FBXWoLFRH4kptOE8xbXpq2qGI6a1OOZVnXI0ym83jq
-	 LnGs4AcqzboBOb0532JVxtDrX12IZ6wn//naY2MVFJBPlNYsR41f8I13OeonC84QCk
-	 69CbLAibibKHMCZuy3S8PjUceMx28EdXjIP8T0trrzPnKbKuzKWElzT2zR5LGP78Nt
-	 r0Zexk9OTbCG39S9//bUNzD+y+hVdVaV0KhwIcQGWehOvV4XsKy2wNZZpg0KLnYd2E
-	 5bjdCF+rvXDcw==
-Date: Mon, 10 Feb 2025 16:19:56 +0000
+	s=k20201202; t=1739205001;
+	bh=SnAIGyFpSth2g3LxsKnoq7TeR8aC9lOiVHFRi1o/ejI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=TepEXDMRy98Rxzh7LyWtp/ADJbv7kE5Slqz4AqPOIcohrImCJGmTiKyywyr963lGT
+	 TsbpKFKmT55L7HddOWm0W/pGXe6jshRAaqC2dgrcM0dGBeutaS17WQQK1qOLgADDL0
+	 VxAZmZjQ/zKHmjWgT/OSj4YC4UoFQm3v2q4icnpYfox2DErvQ2OrX6TLD15CsPU9i6
+	 NmdHHiQhVcr6L0+bM11R4rZJu5XjeRSgTQZ3X/kdeYNnGCQRn10g8ml8CYInkfUyc/
+	 uR1SoFhseT9mLWPWYh0qtYePXNSNi7Me96t4ONpqiE9auAh2TCD0Rwv4zrvm6+w316
+	 ssuhkcNSWJ29A==
 From: Mark Brown <broonie@kernel.org>
-To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
- bindings
-Message-ID: <8087f0dc-8c79-48a2-abf4-f78636c23be6@sirena.org.uk>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
- <Z6a_f03Ct9aB7Bbn@probook>
- <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
- <Z6oh9t2QQzz17Yt6@probook>
+To: Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Iuliana Prodan <iuliana.prodan@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
+ imx@lists.linux.dev
+In-Reply-To: <20250203171808.4108-1-laurentiumihalcea111@gmail.com>
+References: <20250203171808.4108-1-laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH 0/9] Refactor imx drivers and introduce support for
+ imx95
+Message-Id: <173920499941.65690.12050706337593664456.b4-ty@kernel.org>
+Date: Mon, 10 Feb 2025 16:29:59 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dFkCMkVIcP+mIwAz"
-Content-Disposition: inline
-In-Reply-To: <Z6oh9t2QQzz17Yt6@probook>
-X-Cookie: A beer delayed is a beer denied.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
+On Mon, 03 Feb 2025 12:17:59 -0500, Laurentiu Mihalcea wrote:
+> A rather aggressive but arguably much needed refactorization of the SOF
+> imx drivers. The refactorization is meant to address the code duplication
+> in the imx drivers and decrease the coding effort required for introducing
+> a new imx platform.
+> 
+> After refactorization and imx95 introduction, only two drivers remain:
+> imx8 (meant for the imx8 series: imx8 (imx8qm), imx8x (imx8x), imx8m, and
+> imx8ulp) and imx9 (meant for the imx9 series: imx95 (for now)).
+> 
+> [...]
 
---dFkCMkVIcP+mIwAz
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Mon, Feb 10, 2025 at 03:57:42PM +0000, J. Neusch=E4fer wrote:
-> On Mon, Feb 10, 2025 at 12:59:35PM +0000, Mark Brown wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> > Please don't do this, it just makes it harder to merge things since it
-> > makes it look like there's cross tree merges needed when that's not the
-> > case, complicating merging, and puts the entire series in everyone's
-> > inbox which makes things more noisy.
+Thanks!
 
-> How should I proceed with this series, in your opinion?
-> I see potential advantages (less of the issues you describe) and
-> disadvantages (somewhat harder to track patches) of splitting it up
-> before sending v3.
+[1/9] ASoC: SOF: imx: introduce more common structures and functions
+      commit: 651e0ed391b148f83afba0bfbd8a56e38e58c34d
+[2/9] ASoC: SOF: imx8: use common imx chip interface
+      commit: 645753d01356ff1a756812f1c69c53eb5c9081cd
+[3/9] ASoC: SOF: imx8: use IMX_SOF_* macros
+      commit: 563e40153a56cbfae8721f9591022df5d930f939
+[4/9] ASoC: SOF: imx8: shuffle structure and function definitions
+      (no commit info)
+[5/9] ASoC: SOF: imx8: drop unneeded/unused macros/header includes
+      commit: 45e02edd8422b6c4a511f38403dbd805cd139733
+[6/9] ASoC: SOF: imx8: make imx8_ops_init() an util function
+      (no commit info)
+[7/9] ASoC: SOF: imx: merge imx8 and imx8m drivers
+      commit: 896530b7b0c08ee8b3296d5f012bfe1b0a979b86
+[8/9] ASoC: SOF: imx: merge imx8 and imx8ulp drivers
+      commit: 07e3e514dd385300bd08da4a8df09240d272821e
+[9/9] ASoC: SOF: imx: add driver for the imx95 chip
+      commit: 6cf5df1040ba0694aea6a5edc6f31811a442ea36
 
-I'd rather that at least the SPI stuff were sent separately (well,
-ideally what you've done already is fine and it doesn't need a resend at
-all).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---dFkCMkVIcP+mIwAz
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeqJysACgkQJNaLcl1U
-h9DNKQf/fZPJSroWubfTO8FLkUiOu5OAUNqM92OSlaM82yLjpcppqTwDH2c/TMS7
-uzik6Kqwe9iL95z0VpO/SEQh2gEiVVotP2LwUfc0VHm6Mj0CYUhJVu5CFspP2PTu
-H7A2qsXCPw2ASwOg8ZA+oH0PpNAI2mBdDeb7Dii4r186WNPit5Xunpx8I+9DoEyr
-Zr6lOUeCFVfJVy6oNc7ZCQUhRljOVtlyRzPVMTpsyaMzgT22K+F+CHvQR/XatQQF
-/2ywiEFKi5u2DSNtEgro0CF6bJ4U/ZtRMGcnEq9r6RmhpAINqFJhS0dysaqOIJfS
-37TAqV/OvijdnS0RGY+GC+jyvnaoJA==
-=DC91
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---dFkCMkVIcP+mIwAz--
+Thanks,
+Mark
+
