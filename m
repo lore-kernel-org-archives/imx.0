@@ -1,70 +1,76 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EAE272908
-	for <imx@lists.linux.dev>; Tue, 11 Feb 2025 22:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9BB272905
+	for <imx@lists.linux.dev>; Tue, 11 Feb 2025 22:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739314245; cv=none; b=PrKaTbexceBFk//bsNtlgt4TGDomVnQqEIjoFXV1/nZ63Vw8Y8s3AESpOUHCFLUPPsfUAMKLVl4kkV9EStjpZKmNqhYE328DVuiashg1CJ3qcGmvKDjULvDm82SwLMcOEZP/8wwDzn4TeMBe2TfCwIRSWgADSXkhSIoo6FoYlRQ=
+	t=1739314721; cv=none; b=Rp1rptqOGOt9L2LTwdLUBeuw6xaMh4TRzmUL8M/qWGd/IV3aOiVAiqRgsUwOhL+gdzo8o/kvFq0fTobeaR6jkjMRAhTEAuf2xepsTOj2WDl1kKO9U5R4Xnx1r1zNvyakjndtPOYGLoTYtPJIbcyF3klKmLi4Q9kr/xc01jqbl9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739314245; c=relaxed/simple;
-	bh=vd7etzFURvjt2qMQWdTlc/0nsCmROUouFpAkB6TyhSA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=giokgzDz8mikonExINRlcfUwHRzDxrKv/yulEomAPG8duKEWMagSZZiJPGS6jX0zTL29WYKCmISGqPQzZklvJj2ZqWc4hLhFD+OdzL8eSI6lUPKzAbKHTM38uXf57cxmNck2/SndTEKVbWDW5XhR2dy5o+D91BO5fsSdPLDQQQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YYOzLfOU; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1739314721; c=relaxed/simple;
+	bh=z17XEyYa6XmOl6iA3JgMuK6paNd3sVdubTKxNieH85w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A59WQbvudzOq2V0vh9hI0XHYQ3+8mtNagRGCo1VdNhmDF7GR2bwsgIU5O1/tWf3ACEryKQwzmZLxH7ma9p3Fzwsu2K4Ujzm/LN8TUqMI2Wad6E1824JIvJlNuqFJp08RzBRJTH9UkWmRnZeU0sQFIHmx/ZjQaNzWuNXGDF/DmNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKZpjk9s; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YYOzLfOU"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab7b80cc3d2so404366966b.3
-        for <imx@lists.linux.dev>; Tue, 11 Feb 2025 14:50:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKZpjk9s"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab7d7f0a2cfso259499066b.3
+        for <imx@lists.linux.dev>; Tue, 11 Feb 2025 14:58:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739314242; x=1739919042; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1739314718; x=1739919518; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RkJ255Nz05hMzwYP0ZFP3cQKnCDIXbUqK4zohkcWmek=;
-        b=YYOzLfOUoQpf010Ar5xaot1HxHPEu+WuxZuGjp1H+iaxoPRwPijAW2IDjpXYigKpuL
-         5IXKVXm2QMp3QZt4wMtz0cH+oAs2EggXibJB2cn6sOC0K0ELU8pNPrZGvdu6nkwAOJiL
-         2+3DT+g/aTUY8vN95DUjRXGKKQWPUM1nlE3hSCiK4moH2U62/AW4rXrDl3UA2Rb1Fv0f
-         buXeuGarThJA87yMZ86hlUyu9YfY3Z0hjPxfbKKxcqe90VSNACEDFF63EqDDivEXFMIY
-         8XlVSh92O/MEubLDxlXFHzyRId02tkBG7owCEACgXQdu9JKbrHK8HFENmUYyq8RTsFRG
-         Va/A==
+        bh=IS1Aa/IQ/IUlV5JxAaBTn62cmT2MDAhS4oWaHSnRKrY=;
+        b=TKZpjk9snBMfpfp6fHU8mc1L6m4S9XxTNESaQQzaLEz2z/ggIPVPkNfyVQuElWbuIi
+         sqdUw8Bxp2iOJhl1oGxBEPUKrIE4KloUtVKWpK8e4OUIZ2L2RsxsfVhbEBcnVc5H9Lfc
+         stmx6+649KY/9WaapIiX26d1GcHWCKEhNFRR4AdieEfG2IIpHm6vDt/jR+29rMXIUh5t
+         IrdMSnaj1xhB7mCl8jCZ/1/etk4X24ckGQZmQemHuqBMNIgT4PGxf3comAD/I7Z7pXrb
+         UVdUm7fl52vrEeF1yWfCujnWEB6JT1NUL5xzYnQhOzDvoavIUA8+Jf7aViTAgWIzmnDn
+         VraQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739314242; x=1739919042;
+        d=1e100.net; s=20230601; t=1739314718; x=1739919518;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RkJ255Nz05hMzwYP0ZFP3cQKnCDIXbUqK4zohkcWmek=;
-        b=RyziixsUAzUasdqrKAyE/rF/Gza9DXwlm7zdL+eqw0X2i8DUdaYYusuFoSLT3wzAWE
-         BLw/M2FQ7/b+4iEfKpzk2/RRoyntWPicyD1PySAyKvWGkv/OoRv5euy/fK4DcFZ0Xc7K
-         LU040shbwKyaNCAqcAyFBIR7ifj5qDLiG1m00qvof028cxBjd2aiNBoUN1WobmR1HLAA
-         AVMeRpjsa0Lkuwcx2hINJfpeJPHs1gqvQYERcbEGEBXeFhuJp3i9EMkm+l74sX129/wV
-         iQ0SfV5ykAceV1lnFetNkJwP6uSLXSi0JqmSB6MwLJ8cYDqlwSKg+f9roFrTdYgT1r6q
-         dexg==
-X-Gm-Message-State: AOJu0YzMZes/9BGJQqv0i/y7eclm8+KtX0yZ0cSkv5SHNkEjKbZdOP8j
-	TtR3z6wtkS9BwFLSTcFhLSTkx6+cNTcmfVerjXJhv0zp4a9frcUN
-X-Gm-Gg: ASbGncvHv/kMo7Yr4d1k7YC39n5ahyT7UVdEwr/Lo7OMWGv7+i/5lpY8G/zJGLxgQfv
-	kNcLAyyn6DWpLrfTLxHPi6vCpOjicOuyYQga7J/g0GFrG+YemNHaH23aoaS99xccCrpj/bQ0+ZW
-	PUBq3hPemg4kLD8Fnkyxll/CFoTSE8HD9WELdcPmX+E+/s6Xt0YOjrfQZSLpzoUYAMYT4gFrqeW
-	DOsfUN51rxk4ySzrU/Bn/XblSusPnKCg4fy5yR6pCPO4BYZVVmKxpujz1Fw1yRQ55y/pK41/Cye
-	NyauqCFFvUIG5onnYSxzB/83IVv6m3w8JI/2ghcFQa+/wkt7KR2YLA==
-X-Google-Smtp-Source: AGHT+IFxHR7XFUlEo4fGWSQRitORCTM5qncC4QGfswuOZDj8v2uEOoaqSeMx1wpe0vdO9SFp/CqWwg==
-X-Received: by 2002:a05:6402:27cc:b0:5d0:d818:559d with SMTP id 4fb4d7f45d1cf-5deadd7d39emr2174378a12.11.1739314241317;
-        Tue, 11 Feb 2025 14:50:41 -0800 (PST)
+        bh=IS1Aa/IQ/IUlV5JxAaBTn62cmT2MDAhS4oWaHSnRKrY=;
+        b=WXy6UG87uuRZRqVtKwXNljBOr+SiYTwfTq1m6e71ItkoC6vxwU1CUybqJhvqlLJb1J
+         7riDe6naBgcX0i+sY0jk4HAbbuXMD3TsgD+scSOp9miFBZILpof538nceNtD3+UYo+mL
+         oQCTDgRR84nFPKO7er9bdGeFYRBa7QbKNp+kR/uVIDE7Rdogkzbf1RfD7e53WPZpRJTP
+         k8iLS4MIqMBmVKYi/qAsbWRz4mzUbXmH+69JwlSEmaBDkfjGNpWnfhP+aYR9H3Q6F1kq
+         Z1+ZWW+KmC+k62tUGR80Ar3SWxexJwm78A0ltkm/ildH4fNTrZrrBwbP690F6cbGFyG0
+         2wiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWc2i+25bLOsqaDuK7gt+mXbzyrHpZUaxlrJf+XJ4pFOYCU2huYyKUKyv3a7tVdG589Wlk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZgFejb7jq4mXjT/XLnJFtEXyIq8XrsXpLK7C78ORtKWdXUvih
+	9ndBCRewh5WBNz7Qy2zfnfYMayUIga1KI94wAD7R16OHrtoSzFv47Gx+FMjG
+X-Gm-Gg: ASbGncuCcoHBwcBBfwyjjpmnHJbDvLKhKUYp8912TN3S+xA1lp4mKRbUkK3ujd/WT8P
+	FP0LS7x+DQIp32BD/u9N7e7K/XFTTdPCdYygLY6aTOYa4UsdToAXsP9OhOkkq7Frl5BJhB7LOOQ
+	oy0RTWJ+jKadloDSauCg3LdTnknOLiUEWVC1aCH9IqfrRWlxyG4ehiXTfnN/+QkQDYu0ggJ9bU3
+	By2YnEABAOH2EanoDwGG27uo6LDd/PpqIVmQ2/DtvGVfnYnCtxwj4WkVcgIfh3vNQoENlXVTwgD
+	c11aqfaBBK4A8gng5Am/SOGo98K6YJ8mcz3Zdx6i5AiODh6lMnmYOA==
+X-Google-Smtp-Source: AGHT+IFfDhnh48nyjrqJLvEAPlFmJ3fjs7mcyr23zd4vcVw6KZQK2okNE3vXrPxb5oT0oY2PyNoYLw==
+X-Received: by 2002:a17:907:971c:b0:ab7:851d:4718 with SMTP id a640c23a62f3a-ab7f34aec59mr67103766b.36.1739314717302;
+        Tue, 11 Feb 2025 14:58:37 -0800 (PST)
 Received: from playground.localdomain ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7c4316deasm468338866b.10.2025.02.11.14.50.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7e9fcd99csm131525166b.89.2025.02.11.14.58.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 14:50:40 -0800 (PST)
+        Tue, 11 Feb 2025 14:58:36 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Mark Brown <broonie@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Cc: imx@lists.linux.dev,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: SOF: imx-common: set sdev->pdata->hw_pdata after common is alloc'd
-Date: Tue, 11 Feb 2025 17:50:18 -0500
-Message-Id: <20250211225018.2642-1-laurentiumihalcea111@gmail.com>
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/3] add sof support on imx95
+Date: Tue, 11 Feb 2025 17:58:05 -0500
+Message-Id: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,40 +82,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-'imx_unregister_action' uses 'sdev->pdata->hw_pdata' to fetch the pointer
-to the common data structure. As such, if 'sdev->pdata->hw_pdata' is not
-set before adding 'imx_unregister_action' to the devres list, we risk
-derefrencing a NULL pointer if any of the calls between
-'devm_add_action_or_reset' and 'sdev->pdata->hw_pdata = common' fails.
+Add sof support on imx95. This series also includes some changes to
+the audio-graph-card2 binding required for the support.
 
-Set 'sdev->pdata->hw_pdata' to point to 'common' as soon as 'common' is
-allocated.
-
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- sound/soc/sof/imx/imx-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v4:
+- addressed Frank's comments regarding the DTS.
+- squashed commits for common and imx95 bindings.
+- dropped patch introducing driver. This was already handled via
+https://lore.kernel.org/all/20250207162246.3104-1-laurentiumihalcea111@gmail.com/
+- introduced two new properties: 'reg-names' and 'memory-region-names',
+which are now needed by the driver to work properly. Because of this, 'reg'
+and 'memory-region' properties had to be moved from the common binding as
+'reg-names' and 'memory-region-names' depend on them (you'd get a failure
+when running the binding check otherwise).
+- added missing 'bitclock-master' and 'frame-master' properties to codec EP.
+- addressed Krzysztof's comments regarding the imx95 binding
+- added Krzysztof's Acked-by
+- Link to v3: https://lore.kernel.org/lkml/20241216145039.3074-1-laurentiumihalcea111@gmail.com/
 
-diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
-index 82057af1436c..c3594815e60e 100644
---- a/sound/soc/sof/imx/imx-common.c
-+++ b/sound/soc/sof/imx/imx-common.c
-@@ -378,6 +378,7 @@ static int imx_probe(struct snd_sof_dev *sdev)
- 	if (!common)
- 		return dev_err_probe(sdev->dev, -ENOMEM,
- 				     "failed to allocate common data\n");
-+	sdev->pdata->hw_pdata = common;
- 
- 	common->ipc_dev = platform_device_register_data(sdev->dev, "imx-dsp",
- 							PLATFORM_DEVID_NONE,
-@@ -436,7 +437,6 @@ static int imx_probe(struct snd_sof_dev *sdev)
- 	imx_dsp_set_data(common->ipc_handle, sdev);
- 
- 	sdev->num_cores = 1;
--	sdev->pdata->hw_pdata = common;
- 	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
- 	sdev->dsp_box.offset = get_chip_info(sdev)->ipc_info.boot_mbox_offset;
- 
+Changes in v3:
+- Ordered DT nodes alphabetically
+- Removed 'cpu' and 'cpu_ep' labels from binding example
+- Some small changes to the binding commit messages/titles.
+- Link to v2: https://lore.kernel.org/lkml/20241113195240.3699-1-laurentiumihalcea111@gmail.com/
+
+Changes in v2:
+- Added new binding for 95's CM7 core with SOF. fsl,dsp.yaml is no longer used.
+- "hp-det-gpios" and "widgets" properties now reference the definitions from audio-graph.yaml
+- Removed extra empty spaces from DTS as suggested by Frank
+- Ordered 'edma2', 'sai3', 'wm8962' DT nodes alphabetically. The order of the nodes
+placed inside / is kept the same for readability
+- Ordered driver header files includes alphabetically as suggested by Frank
+- Removed "reg-names" and changed the maximum size of the "reg" property to 1 to align
+with the other NXP CPUs sharing the same programming model (i.e: audio processing with SOF).
+The region described in the DTS is the SRAM and the mailbox region is now hardcoded in the
+driver as an offset to the start of the SRAM region.
+- Added new binding with properties required by all NXP CPUs sharing the same programming
+model (i.e: audio processing with SOF).
+- Various driver adjustments made to accomodate the DT changes + some bug fixing related
+to the mboxes not being requested/free'd on resume/suspend.
+- Fixed value passed to "dma-channel-mask". A set bit means the channel is masked, not the
+other way around.
+- Link to v1: https://lore.kernel.org/lkml/20241023162114.3354-1-laurentiumihalcea111@gmail.com/
+---
+
+Laurentiu Mihalcea (3):
+  ASoC: dt-bindings: support imx95's CM7 core
+  ASoC: dt-bindings: audio-graph-card2: add widgets and hp-det-gpios
+    support
+  arm64: dts: imx: add imx95 dts for sof
+
+ .../bindings/sound/audio-graph-card2.yaml     |  4 +
+ .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 64 ++++++++++++++
+ .../bindings/sound/fsl,sof-cpu.yaml           | 27 ++++++
+ arch/arm64/boot/dts/freescale/Makefile        |  1 +
+ .../dts/freescale/imx95-19x19-evk-sof.dts     | 85 +++++++++++++++++++
+ 5 files changed, 181 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
+
 -- 
 2.34.1
 
