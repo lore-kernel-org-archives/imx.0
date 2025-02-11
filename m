@@ -1,48 +1,47 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213F1253341
-	for <imx@lists.linux.dev>; Tue, 11 Feb 2025 15:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C0C253B47;
+	Tue, 11 Feb 2025 16:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739288804; cv=none; b=Z+Chqv6VMFcbnohFU9JtlV6gnvFPENWHxuY3HPdYPiCyKltuQFpOQnwt70IcaXLilZ1PryR6qwU+OkV+Pccdk23oeFQxnslYFgHwC8M9HgbjDzvYRyIzMqdAPB7S4KtWOzKyiscIRZmq69LoL6ebDldgcM0+4io486bTW31ua44=
+	t=1739290062; cv=none; b=UzlXZB33I4azUO7Dv33Vx6eAMQcApppcr4bMIqh95IjhlmXY9vZN8Bk2168Q2vt72aq+x7VrNWUXAw4wP4DGoSa5KXjWJ7Yrda3kjlWI1NsjNYBKnZkuGZkioEyX+fQhDmquOUpFbByYdLI3NnyN9taRJCU/SuWRkwVxR5ocsD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739288804; c=relaxed/simple;
-	bh=A3C3yEPn57VgNhxf4oOl9XY80884wiJMvHRdZr8mLns=;
+	s=arc-20240116; t=1739290062; c=relaxed/simple;
+	bh=hmIgcJwcpukX+VwNpK4jLYcrMogwI4n2BOulAhzBeGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MZXryoGOf5VUmj+IPUGDufVycS9jJzkaRwOqC6zJJXHX8X+q5ulESBqhkuzNy7yC6Mw8CcfKid3MuN94WLEBmBk7YtSr9MI0WTEa+2sUs2SIHNaKkElJ0X6b9jPWWEIyOagXLrpsnvSLBeJiM5WZxnfpP0x6FpUGeLWMwfujfj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C80B013D5;
-	Tue, 11 Feb 2025 07:47:03 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A34153F5A1;
-	Tue, 11 Feb 2025 07:46:39 -0800 (PST)
-Date: Tue, 11 Feb 2025 15:46:36 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Aisheng Dong" <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=HEfux3ABD/GSW3RuSj/WmDgL3z/ZD22x602v3XPd6tuHQlP/f6AY3ieRW9u0YcqXJ8D04Q+uRW06uShKyabVx55Q7ktdIv/JMGnvVvsC687dLgCQz3uCiASis7hxPw2hjCiwe+ug5CH1wxNC94G7IVoR4yXLFcXjB4EIEnZ+Tmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mE1hqjdh; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mE1hqjdh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C712BC4CEDD;
+	Tue, 11 Feb 2025 16:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739290062;
+	bh=hmIgcJwcpukX+VwNpK4jLYcrMogwI4n2BOulAhzBeGc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mE1hqjdhNQCEbju7Xb3AS5F0bbrJ/CGYyxo+qNF4CarzfZ7FBJLp5EPpyF57UmtkG
+	 3xvbYQ9U8J0659+BB+P9SaEno8bSrAr2FGyGKwX8/gCQGX8vPX0SSJNncnfzmvSDLo
+	 uKhBpJrwg17hsTTvHBKuKtoLLyBQqe9l9H/+Npho3AphOhKek9TCyxINp4q+qggSnT
+	 ZpearuiH1hhvOiKoPM1QJbXFNFHJhOdDiOP1crwCxykV2MXGu07yhmOw48rsW99P35
+	 OC47BbRjhVTqUTOr692sjH3DZ1dTgvmSfdhVvq7jMmRZZNaX0kb0XEyhvWmn44G/1X
+	 XyBcZgeFm8F7g==
+Date: Tue, 11 Feb 2025 10:07:40 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v2 2/4] firmware: arm_scmi: Add machine_allowlist and
- machine_blocklist
-Message-ID: <Z6tw3HjhI8to4c-E@bogus>
-References: <20250120-scmi-fwdevlink-v2-0-3af2fa37dbac@nxp.com>
- <20250120-scmi-fwdevlink-v2-2-3af2fa37dbac@nxp.com>
- <Z6Slq4KjS_RJ3ItB@pluto>
- <PAXPR04MB8459A3750512708D2972687388F22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	Shawn Guo <shawnguo@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH] dt-bindings: imx: fsl,aips-bus: Ensure all properties
+ are defined
+Message-ID: <173929005644.349085.18272720642516386145.robh@kernel.org>
+References: <20250203213027.8284-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,18 +50,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8459A3750512708D2972687388F22@PAXPR04MB8459.eurprd04.prod.outlook.com>
+In-Reply-To: <20250203213027.8284-1-robh@kernel.org>
 
-On Mon, Feb 10, 2025 at 01:19:14PM +0000, Peng Fan wrote:
+
+On Mon, 03 Feb 2025 15:30:26 -0600, Rob Herring (Arm) wrote:
+> Device specific schemas should not allow undefined properties which is
+> what 'additionalProperties: true' allows. Add a reference to
+> simple-bus.yaml which has the additional properties used, and fix this
+> constraint.
 > 
-> I just have a prototype and tested on i.MX95.
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/soc/imx/fsl,aips-bus.yaml | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
 
-You didn't answer me @[1]. How can we disable it for perf/cpufreq if there
-are users already. I will look at the code once I am convince we can do that.
-For now, I am not. I am worried we may break some platform.
+Applied, thanks!
 
--- 
-Regards,
-Sudeep
-
-[1] https://lore.kernel.org/all/20241227151306.jh2oabc64xd54dms@bogus
