@@ -1,38 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F9926BD90;
-	Tue, 11 Feb 2025 06:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0A1D5178
+	for <imx@lists.linux.dev>; Tue, 11 Feb 2025 07:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739256287; cv=none; b=HjOeEuj5bO6294EkWgZGEp8HKkx53AEJ8ZlhMPLOFadjESCQDTDvr+ALq2lK8Fw1FW4xjMWYmdotVQfYgR/9h83V+NYlJor/GLN+hnpcNbWAKpX2azlF008snoJZGV3Kv4LZM6RspaSQuXIwOWzPxynRKoKNe90ijBhYBSvQAZI=
+	t=1739260060; cv=none; b=A3dzORZdxxt6SFb6Bx5gPlyVjhVsfzR+zO5Rm/c65ij9DmZghvMWy7g1HEgv4ngDcRQGoZZvVXnA43Hi62koysGd9iKEcr+S68ennk9HnQb9rgvkcbyY5+95uaPde3/Y8n7Jqb4JuiAIqSkGLL+FCc9hJWflmo8+uXZk+VOti3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739256287; c=relaxed/simple;
-	bh=NCyVfDIX0SRvprF8hupDS+zjKAdjMv9UmBS8H7XYoeU=;
+	s=arc-20240116; t=1739260060; c=relaxed/simple;
+	bh=bszsusd0ALXbiJ8cte6QhE6oJEsnWRz1Y0Gw+xAdlWI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YSAZZEFS6WhoHfPItGggPC6h6GWkk85q0lsNZMVsPQa4RQLNOX7hfumhAcJ5tYPyVZikNcm+RkNhZcpNR3Asf6/daOCIxoiytggVlqOU488clYlqzKStapNOyzWr2+g86CdSGk3FwdXUPN2KILqII4t+6AJYe1HuZJ5lwLzco6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQQngsmA; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQQngsmA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6F8C4CEDD;
-	Tue, 11 Feb 2025 06:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739256286;
-	bh=NCyVfDIX0SRvprF8hupDS+zjKAdjMv9UmBS8H7XYoeU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VQQngsmAAbS4lLB3FmvvAzOT+VP8iRabAq8ygVgtDGhRRPDNK+N1nfH51QWZCWz6f
-	 ri+KV1UcTN0ZKTei48OszF6wuL15E+uIv8ht5B4WLQttxBMC3GlVl1H5KzdXfaTFJe
-	 TDOG6tPmrotnodYJLIwT4ocVqnWQdVchm3+z5uxI=
-Date: Tue, 11 Feb 2025 07:43:43 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: rafael@kernel.org, len.brown@intel.com, pavel@kernel.org,
-	dakr@kernel.org, stern@rowland.harvard.edu,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] PM: sleep: core: Set is_prepared to false before
- checking direct_complete
-Message-ID: <2025021127-cofounder-spinning-ba7d@gregkh>
-References: <20250211034423.833783-1-xu.yang_2@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GGkwvFgLT4hI+4FeOhESskZRWPyBJq4IEKCFVORAu6UJg4sgK+xMoTr/hskv3GHEJsV/kgtinY72yvaSvX/c/ZDyqKhULGiO4dv8vX6Qquod1NtI3QMk312/Is6SAG808vcUdN4fBOEXk5mbxLmmllzu6wHIba5dEWlRZOtoHXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1thkzF-0007Hw-1Z; Tue, 11 Feb 2025 08:47:17 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1thkzE-000NbY-1A;
+	Tue, 11 Feb 2025 08:47:16 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1thkzE-0094Je-0o;
+	Tue, 11 Feb 2025 08:47:16 +0100
+Date: Tue, 11 Feb 2025 08:47:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 3/3] clk: imx: clk-fracn-gppll: Support dynamic rates
+Message-ID: <Z6sAhAM4mGZCDBU-@pengutronix.de>
+References: <20250210160012.783446-1-alexander.stein@ew.tq-group.com>
+ <20250210160012.783446-3-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,97 +51,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250211034423.833783-1-xu.yang_2@nxp.com>
+In-Reply-To: <20250210160012.783446-3-alexander.stein@ew.tq-group.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Feb 11, 2025 at 11:44:23AM +0800, Xu Yang wrote:
-> Currently, if power.no_callbacks is true for a device, device_prepare()
-> will also set power.direct_complete to true. When device_resume() check
-> power.direct_complete, setting power.is_prepared will be skipped if it
-> can directly complete. This will cause a warning when add new devices
-> during resume() stage.
+Hi Alexander,
+
+On Mon, Feb 10, 2025 at 05:00:11PM +0100, Alexander Stein wrote:
+> The fracn gppll PLL so far only supports rates from a rate table passed
+> during initialization. Calculating PLL settings dynamically helps audio
+> applications to get their desired rates, so support for this is added
+> in this patch.
 > 
-> Although power.is_prepared should be cleared in complete() state, commit
-> (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
-> clear it in earlier resume() stage. However, we need set is_prepared to
-> false before checking direct_complete after including direct complete
-> support.
+> The strategy to get to the PLL setting for a rate is:
 > 
-> Take USB as example:
-> The usb_interface is such a device which setting power.no_callbacks to
-> true. Then if the user call usb_set_interface() during resume() stage,
-> the kernel will print below warning since the system will create and
-> add ep devices.
+> - The rate table is searched for suitable rates, so for standard rates the
+>   same settings are used as without this patch
+> - Then try to only adjust mfn, on fractional PLLs only, which specifies
+>   the fractional part of the PLL. This setting can be changed without
+>   glitches on the output and is therefore preferred
+
+I wonder if this part is worth it. There might be cases in which a
+glitch free switch is required, but without being able to enforce
+a glitch free switch we can't rely on it.
+
+Also this makes the result depend on the current PLL settings, so the
+result is no longer reproducible. I.e. switching from a fari away
+frequency to the desired frequency might yield in different settings
+than switching from a nearby frequency to the desired frequency.
+
+Finally I think the glitch free switch doesn't work currently, because
+the PLL is fully disabled and re-enabled unconditionally in
+clk_fracn_gppll_set_rate().
+
+That said, glitch free switching would be great to have sometimes.
+
+> - As a last resort the best settings are calculated dynamically
 > 
-> [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdrc
-> [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
-> [  187.105010] PM: resume devices took 0.936 seconds
+> Implementation is inspired by commit b09c68dc57c9d ("clk: imx: pll14xx:
+> Support dynamic rates")
 > 
-> Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-suspended devices unnecessarily")
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > ---
->  drivers/base/power/main.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> index 40e1d8d8a589..69d0f9ca7051 100644
-> --- a/drivers/base/power/main.c
-> +++ b/drivers/base/power/main.c
-> @@ -929,6 +929,12 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
->  	if (dev->power.syscore)
->  		goto Complete;
->  
-> +	/*
-> +	 * This is a fib.  But we'll allow new children to be added below
-> +	 * a resumed device, even if the device hasn't been completed yet.
-> +	 */
-> +	dev->power.is_prepared = false;
-> +
->  	if (dev->power.direct_complete) {
->  		/* Match the pm_runtime_disable() in device_suspend(). */
->  		pm_runtime_enable(dev);
-> @@ -941,12 +947,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
->  	dpm_watchdog_set(&wd, dev);
->  	device_lock(dev);
->  
-> -	/*
-> -	 * This is a fib.  But we'll allow new children to be added below
-> -	 * a resumed device, even if the device hasn't been completed yet.
-> -	 */
-> -	dev->power.is_prepared = false;
-> -
->  	if (!dev->power.is_suspended)
->  		goto Unlock;
->  
-> -- 
-> 2.34.1
-> 
 
-Hi,
+...
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+> +			if (pll->flags & CLK_FRACN_GPPLL_FRACN) {
+> +				if (!dist) {
+> +					/* Disable fractional part upon exact match */
+> +					mfd = 1;
+> +					mfn = 0;
+> +				} else {
+> +					mfd = 100;
+> +					mfd = clamp(mfd, PLL_MFD_MIN, PLL_MFN_MAX);
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+With mfd = 100 this clamp looks like a no-op. Do we need this?
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+Sascha
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
