@@ -1,135 +1,94 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBFF2066C5
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 10:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACC2208973
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 10:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739355018; cv=none; b=IwjJBawiub2VdHL3hVgsWaOHWjHTF5IsxfELUfGZ42aYZ8cAUNAJLy2tATNRP8PpymRzGrAu0EKtXTYj/zAkfHVNhtr79vLPQagSXRF//x8z9PAJi8PpZREsvEMBQmSttXKIg0WUowy5QZLrD/g/3K6wcIFU621Znfm9T5DRvKY=
+	t=1739357013; cv=none; b=ZZSahnKUt3wzsvX6M+RRLKXg7KM/DXY7AYHAGL12CENspEHVhTGyldJAe9bYwyMZBPKpducepyjplkywtvwj7njk5rkm+hA0HruqjPvQMX54yio2YHZ6Gy8T1qMkEWspmFaO1QSExX9zR5U3llxTPSSLqSejOGUmMmRMY6PJL9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739355018; c=relaxed/simple;
-	bh=dksiq7Wu+Tr8U4ZmasPxlXsm3FDPqcOrzej22bOgA+Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T3Em0n57QbB94epd8JOztB0v1B05TaSNfrx+Q6827jWgxTd2b8atAvG/oaeohwPjXOrQEf9XoyHA4h0xzBdo03gIyekiMECctFFLJQp7DBLvn2tz8qlBkVFmtH0MqftSI/reBOpYxmLrVfxgr92gQkGfJC4IRX3dZP+z/r07Wv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5UArLRc; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5UArLRc"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2fbfa8c73a6so905261a91.2
-        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 02:10:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739355015; x=1739959815; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=88AwpE99PaoAeek/DCfv+c+a/zWXUaUFSdw15oFH2AA=;
-        b=h5UArLRctVlERz71sM2jJLG3SZqL6i+/xm7i3E06KCtNYAAl5KHp4AVYXOSKP2kecD
-         pic01FleynByQ2IH3+ly4XRoF8esxvAUAWF91Sei8uQOKKo9wGJeghvoiuTTu5/KwfYQ
-         jfxMDOjI95X9Q+LQcj4wLm90xjFq5UkNvO7ixeCV3lKLCyLkW02XSYOMV7fmGTNHqdSQ
-         1BvyYOk6gsGn0J2y18PxIGyPnHFmj5WkOCJyWoQYW+nDZLl02UNztNK1hFqkDL9hIufy
-         3U3zbgnBxFwzTveS6tXgwTcyjF8o/RFO6jVDJaTRH8c7WEjSPIQOnOD7IHc+VxX2V+Bg
-         1Puw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739355015; x=1739959815;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=88AwpE99PaoAeek/DCfv+c+a/zWXUaUFSdw15oFH2AA=;
-        b=tt7Fi0uBu9q9eXsBP/3A/DKw6Za2OOL4Oe4zGV7KlSaBObKWy1aGcINrA7RVRjQvzX
-         20F+QkD0gDhkxgYzFneivBRz5/DUKAeZXy5bEEj9h0AWkDSGNx6FOx3PwaySqSMPoyr7
-         Oj+GFNFx+Xr16zectNPk4SGlNulN6OYNkQwE1qG2hp+aGgCmmTHw06DDqFGk0lQKLMYV
-         LnUgsd3AhI/D1m1c2+W+tyQhV9jgD2pLNhUsq2AImQx/NfQ8oJvy3GozbdLSVaPwRgAy
-         SpQb6qAVrDcVapu18AwCi+eRRUdIIgBOettMz/Y56MdUecKw/gjK0trKmfziIXTbq5k5
-         Ab7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWqTeZgkrhOxG3d3mnEeQUkVwgmzC9tImC3VOgatfx0BL45E3VD2nwn8kfL8AZ4CXknWeU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjA4dG1n4aSFFOQQa+t4RR92S43pJJFZJ3EOt0VE3CbBiyYH+c
-	SWgtAz6UjCuPJztLQDStJlAqLyl52+WddP6B0fGvzJYfhXh8zOuVLQKo+IZpYOuWnAlDJyq9gAE
-	hOkCMJ1lp0YWp5P2CBRmdv40SuJI=
-X-Gm-Gg: ASbGncuJsGH1tLF0drQxC8aOSu0Ftco8SKJgLyOzwdidef8df0UvtdlrC6Dzc7xmV+J
-	SkC2vk4MmHlCNBTw09liJ2ctqPE/aUHbYohp9UleTC5LSeAFeZm+WMeFjSCzmob/UhnGifQ==
-X-Google-Smtp-Source: AGHT+IGmuZRdGl3j3qwqlGA+I6iMmpaYMwad+794x21O14HpgAdBUJZvPf+MREMoJEJJ7oo0IQ1nHPq82m46EvhwjX0=
-X-Received: by 2002:a17:90b:50c4:b0:2ee:ab29:1482 with SMTP id
- 98e67ed59e1d1-2fbf5c0f645mr4582577a91.16.1739355015327; Wed, 12 Feb 2025
- 02:10:15 -0800 (PST)
+	s=arc-20240116; t=1739357013; c=relaxed/simple;
+	bh=HCfswIkRUWqCkSlxznTAVF1bVVQxdphLqoiOwibUgSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUhn/b33NaB1SRYoCE3K8WI+M5TK+31IGEtDcIyRvRr3G5nFWK4sun/5d8r+NTa3ts0SuvNHu6jvK2XBR+/eq156Jp1g3xQeWizMYKsL6z92MfSrKm1SrV40l9zUEbKAFlf9VFUt6Hxii17sTRvf5rtG239ivCdUedAKs8n8CN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C94312FC;
+	Wed, 12 Feb 2025 02:43:51 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE7B23F6A8;
+	Wed, 12 Feb 2025 02:43:27 -0800 (PST)
+Date: Wed, 12 Feb 2025 10:43:24 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	"cristian.marussi@arm.com" <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
+Subject: Re: [PATCH 0/4] rtc/scmi: Support multiple RTCs
+Message-ID: <Z6x7TBSjBFBxGo77@bogus>
+References: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
+ <20250120102117538ef59b@mail.local>
+ <PAXPR04MB8459968DFDE5979802CC034A88E62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <Z6uCCeG2d395ZGDS@bogus>
+ <20250212063532.GB15796@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
- <20250211225808.3050-2-laurentiumihalcea111@gmail.com> <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
-In-Reply-To: <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 12 Feb 2025 12:11:49 +0200
-X-Gm-Features: AWEUYZmaBc7oKF6zAnQ7CZxr3zaURFYGkUGsn3Z_TJnj1f8vLuCQ0QWTQQTBMT4
-Message-ID: <CAEnQRZBeQdnC+K92+Udb5awTmom10YHHNt7Ld-pYK4A1i8sr3Q@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] ASoC: dt-bindings: support imx95's CM7 core
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-sound@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250212063532.GB15796@localhost.localdomain>
 
-On Wed, Feb 12, 2025 at 11:38=E2=80=AFAM Marco Felsch <m.felsch@pengutronix=
-.de> wrote:
+On Wed, Feb 12, 2025 at 02:35:32PM +0800, Peng Fan wrote:
+> On Tue, Feb 11, 2025 at 04:59:53PM +0000, Sudeep Holla wrote:
+> >On Tue, Jan 21, 2025 at 02:31:55PM +0000, Peng Fan wrote:
+> >> 
+> >> It is the i.MX SCMI Protocol exports two RTCs using one protocol.
+> >> 
+> >> Two RTC devices are created, but share one parent device.
+> >> 
+> >> Do you mean each RTC device should have a unique parent device?
+> >>
+> >
+> >Can you point where is this check for unique parent ? I am not so familiar
+> >with RTC but I couldn't find myself with quick search.
+> 
+> The RTC ops takes the rtc parent as input parameter
+> https://elixir.bootlin.com/linux/v6.13.2/source/drivers/rtc/interface.c#L94
+> "err = rtc->ops->read_time(rtc->dev.parent, tm);"
+> 
+> So in the rtc device driver, there is no way to know which rtc it is just
+> from the parent device.
 >
-> On 25-02-11, Laurentiu Mihalcea wrote:
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >
-> > Add binding for imx95's CM7 core, used for audio processing.
-> > Additionally, introduce a common binding for NXP audio processors with
-> > Sound Open Firmware (SOF) support.
-> >
-> > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > ---
-> >  .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 64 +++++++++++++++++++
-> >  .../bindings/sound/fsl,sof-cpu.yaml           | 27 ++++++++
-> >  2 files changed, 91 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-c=
-m7-sof.yaml
-> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu=
-.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.=
-yaml b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-> > new file mode 100644
-> > index 000000000000..f00ae3219e15
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-> > @@ -0,0 +1,64 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/sound/fsl,imx95-cm7-sof.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP imx95 CM7 core
-> > +
-> > +maintainers:
-> > +  - Daniel Baluta <daniel.baluta@nxp.com>
-> > +
-> > +description: NXP imx95 CM7 core used for audio processing
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: fsl,imx95-cm7-sof
+
+If that is the expectation, you could create a platform or normal device
+per instance of RTC on your platform and slap them as parent device.
+
+IIUC on any pure DT based system, a device node exists per RTC and hence
+platform device associated with it. And the RTC devices are created with
+parent pointing to unique platform device.
+
+> However i.MX SCMI BBM exports two RTCs(id: 0, id: 1), so to make it work for
+> current RTC framework, we could only pick one RTC and pass the id to BBM
+> server side.
 >
-> Albeit Krzysztof already add his Reviewed-by, can I ask why we need to
-> add the -sof suffix instead of -audio or so? SOF is a software project
-> but you can clearly run different software on the audio-copro as well.
+> I am not sure whether Alexandre wanna me to update the code following each
+> parent could only support one RTC or else.
+>
 
-Sure you can run a different software project on the audio DSP but
-you will need a way to distinguish between the different projects.
+I assume something like my suggestion above.
 
-There might be different mailbox, memory configurations. So you will  need
-to invent another suffix specific to the new project.
-
-We can make  const: fsl,imx95-cm7-audio as the one used with SOF
-and think about a different name later for when another project will
-want to use the DSP.
+--
+Regards,
+Sudeep
