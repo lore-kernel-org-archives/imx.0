@@ -1,57 +1,57 @@
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FCB1DE4D5
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 03:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9891E0B9C
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 03:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739332139; cv=none; b=nEEMPUK57qBv/fDXF/VyWvQP3yin5b4Yl2Ut6XR9lbsO+SQCNbbvH8uaP1HCAybwBL+Sozp3OAHkIx4lBxOXYy0pBiv7sFeDOmB+gkfVVhDEgPxixE2l/Z+sy+L1xoHIIjjlRnHwuxZTczIu05RYVP3+A3T5n/nUWvzFSgupEw8=
+	t=1739332307; cv=none; b=V5g+DiME2bXEXx9Nq7N7LQHq8qrN9UOsVJUfi2V/1n9qEEclo4HefSXETolkCC6aQRQn439+OaXamAoBxnFL6UustVpXz1qhAescM1soraLz/vip5Ts4j8OW9S2y1PImhWRy7Ep4tiZkiUhFO5Ni26OuuAAi51CYfc2gc/vDeYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739332139; c=relaxed/simple;
-	bh=Tu60nQ1Ayd/KSwNymWx/IJ/AfafrXcJ87nUpbCbFfjU=;
+	s=arc-20240116; t=1739332307; c=relaxed/simple;
+	bh=kozFMohFM7Fntd0TGvXH1XXN77KIL5Uk6EH9MHO1Jiw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kyQRZO4eXEw896YGtHm2CO3hNEJ4/Vc8HEf4535xxo4FM0N4n7JKxFfGsRS/mOZPL5Ui1NeAElGDinNNBpEywJgacvsagzlB4kYn6SoxjRv8Frlz785ecA+kDF0Y6meZgsEAF+yGp51xZ1c28yuPRzKHf9hemwT/JKodtaNIdiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbpaPZWw; arc=none smtp.client-ip=209.85.166.172
+	 To:Cc:Content-Type; b=qwqntHaMDspheA9XmCvBC+2J5PAW+yxiQ88EAsKRPtEs4+v/xQqnJBwmrrl9pXg9pvnN+6/JlobtyOhGmRwq+zb0Xwb7sQdSjI3rsANqAiPhz7QcbJBPBinnbhSguqiqCddxBcL8Q1P4ozOOJ+JaqiaheP8RNnBei+7pN5hUIqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kw1t4vb3; arc=none smtp.client-ip=209.85.166.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbpaPZWw"
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3d03d2bd7d2so61918595ab.0
-        for <imx@lists.linux.dev>; Tue, 11 Feb 2025 19:48:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kw1t4vb3"
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3d03d2bd7d2so61940865ab.0
+        for <imx@lists.linux.dev>; Tue, 11 Feb 2025 19:51:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739332136; x=1739936936; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1739332305; x=1739937105; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vcryBZKe0HwOZ15GXClthjY5efiSUbIeZQ+SYJvbj2k=;
-        b=IbpaPZWwhZUVm0m+3i6cRi4oUJp8DIESR3KaucDEYRIjf5GJOINl0bC0wqCohpK6OV
-         Xp0SFSUSDBOw5oKSUZZoDwbcNPMJ1wc4j709BOT41xUUgrD7axJRw7iOBqVH1bHq5PIs
-         YyWDIgBYLNiBL+UciIqNlCRLGP1XoRbLOa+UlDEeJC6IBH9iWnbM8xa6XUO2KjtYffRs
-         rXRu+iOjFYD9fF+t3HqbLG9LNrdWp+k7X4Vfo3ILYZdnPY96TiF/CHPCMDO6Xs4eUwlz
-         Lz899LUNMK8y91xDWOBMHj5kgwO7oT3k/HKd97vUzfgo70eHFBNf+LT7wqVJQahhWS43
-         jYaw==
+        bh=lOjNpQnzjVItcjZQzSaRVqafGTbidnsz64LyMqqRnyg=;
+        b=kw1t4vb3zgt/YnsEcr+2CqS4fje0pghH8nxgysWPNRNjRYR7BP4q+OW/3nUuh541cF
+         PMNbvoX/AtqO05fcAd91dNviZ+wy4vAqCzXC5ic0tixInc4tL7aK/rN34Gm3Y3jLj0oi
+         nKJcdZ+DwduDRasLzb9ONf0+Iszt61rUgXbR2uppb8lbAjA0eXN0ejfdJFPiagxnMpn0
+         EDLX/BnSbxBs5GfpOA4X6clpi5imp+CSVPB37SR/BUQQr8K8JHHil7QLTHpYB0pbcezg
+         Y1b033MJAV8hQcVrhxKm79zT4ZLvNSdgp0CraoBhGUnzBv9RcqOCtgNILvQoOr5TN2a4
+         zeSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739332136; x=1739936936;
+        d=1e100.net; s=20230601; t=1739332305; x=1739937105;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vcryBZKe0HwOZ15GXClthjY5efiSUbIeZQ+SYJvbj2k=;
-        b=GWqe4LNJI6NOZm44dN+hw4BEhQ31wh199oA8TyGZgq30YE7YfPwmP++mlUKy2Fz+eo
-         +DiLkQgQvGIPdzyjF3l0EQF/LB03mJkNctw6U1HI7Xw1YSU3NhkhsbQwVS+CU+kvqvKG
-         qqP28nTpV4qQMOXd6gdThTzQxpmRnDORDLtQUj6lKP7wp92GQxZIyQzFHWrwxD2zHayj
-         OtAcHowEeztfxLMCO8IAgIDGFO6RlNvB0iN6PboHMNFMIJ6wmw7ruzlOHOLiOFeWeubP
-         3gciDj9+0bmnTUI7Fhy+HrmxoXjTj1Q6Aauhkd6kZHdrGySD+nH5ZpL58W9/zKXlVzJ6
-         0+kw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+gYJPn6iWNIAmHUF0ifiDOr7UaRPXSQaZbvE9OFwoQfQJg22M6iKT/zM9a/wb0K3IVDY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwMdrucVu6rNs4vsByCj2f29Dx6dYLjrk3b1jFvvOZ5c8aLSh8
-	rakMPVZuhPRwi96pxfQmH6EZh5fJMxA5vOe+Abk4IdpxwF2ssuN2FmjjEj8PDP0rRxQyCWIX8Lw
-	SiTCkMUhSN6GaR48GQ9glE6CxrVQ=
-X-Gm-Gg: ASbGnctxM2yQ/uLqXMirh9FUp3B5caQhdOOfoI1TwA6fcJSBIhSK8kvPwy8wU4IulAM
-	Z9ZFwrB3I//wXz1Za1gNc9JGRjqAstTe8vnahnBX/i+l6wmtvibmdanx9tAQkaqGIW62JZOm8
-X-Google-Smtp-Source: AGHT+IFCnz4li/5IWRttFgFQdRpTdkwg/3j1LKC5VF8mycMo5avGb6iiANRdvRcmxPBkiquPSP6pJyx2R6uQlujKUaw=
-X-Received: by 2002:a92:c54e:0:b0:3cf:cd87:1bf9 with SMTP id
- e9e14a558f8ab-3d17c21cd04mr17637315ab.22.1739332135646; Tue, 11 Feb 2025
- 19:48:55 -0800 (PST)
+        bh=lOjNpQnzjVItcjZQzSaRVqafGTbidnsz64LyMqqRnyg=;
+        b=PsHhMiZjifBrBLqDUzlCdNgCduvqoOlPmhelzX5fqKD72XVQ+nuG9Q1vU0jbaPYEZp
+         85gdnI5R6ReXWchxZTsJDFDWG2MoWncr1gx+XdC0HvdyexYrScxR5kDyWn1Fhr19xc4+
+         wO1Q9slLQn+RSvqTED1Vbaw+gv06akWU5iDsq5odk7RWXzm5Q+ccxEPXEFComlQ1lhLJ
+         kWKacf/nFbmW0XWy1gigi6ZvB1b+7sxPkbaMlpgToR5Qih4kMYrcSCnopkMKqUVf0EjS
+         r6epHEX+p2+N7OHXjtmcejOChkQhZggZwE1SnFKS7RBOAeehrnFzROWNMyB7Ol45ZMXE
+         nExQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2FqJP42mLN09UFunYZB/q9JLTtLQ9vUQYRnDSZlRW2rkmMS0c/YRSGbWYJgoNk53YQwY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzasCtnwThW+AFIhWrjVy1pBW9qu0MF0D9cteoel+oAi4AsVWR6
+	u8EvQGftXfVw+R+uXZCMOGu+jRXdYZFiZy9n/TPFo7nldHT1E1CtVQwAk/NMnui+G2AqPlZG9WN
+	FctRLvITZSrvHd2pQJuXOKw9WZhY=
+X-Gm-Gg: ASbGncs7Kf6Cu2BGJaZpDstcneDX4buBALK/Rsu54plGJ9wiSeZTDn5jcgmQxDcRy4i
+	+JElSScKzbnM0NzRYqn7+kywM08OfaFcMIAl3Q1g+1S9NJyVCl0onNTQQXcxdL9gshOBY9ecn
+X-Google-Smtp-Source: AGHT+IELmMC+rEqMtc5H2YZuEE1iKouS45lV6N0hJ5Or/LuqIGNtJHv3ZlrPMODm1vA23GJ/GTBsAYKKjidNOlR17CI=
+X-Received: by 2002:a05:6e02:180b:b0:3cf:b365:dcf8 with SMTP id
+ e9e14a558f8ab-3d17c21ba5emr21495995ab.21.1739332305183; Tue, 11 Feb 2025
+ 19:51:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,13 +59,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250211035737.3886974-1-shengjiu.wang@nxp.com>
- <20250211035737.3886974-3-shengjiu.wang@nxp.com> <Z6tuFp9nZFMJMgDa@lizhi-Precision-Tower-5810>
-In-Reply-To: <Z6tuFp9nZFMJMgDa@lizhi-Precision-Tower-5810>
+ <20250211035737.3886974-2-shengjiu.wang@nxp.com> <Z6ttkyfUapRKGMsk@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z6ttkyfUapRKGMsk@lizhi-Precision-Tower-5810>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 12 Feb 2025 11:48:43 +0800
-X-Gm-Features: AWEUYZnXrLA9vESn8DWyjyXL304FuAyCkB66xQG7feWsbb8dSRpLkjhc6mEjDb8
-Message-ID: <CAA+D8AMyXVdAWOTGHtrOyXjSLiMioAhZ1awepX3nproom87azQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ASoC: imx-card: Add playback_only or capture_only support
+Date: Wed, 12 Feb 2025 11:51:32 +0800
+X-Gm-Features: AWEUYZl3szAb6kdvVRYt667G1aLNreWAtpJFe-4jAXLL0jVOJ3awo1RObh0k1-U
+Message-ID: <CAA+D8APFPKGGNHiiRYFgGVM-AL4LrE-q0zy9i0mErjeJU+KbuQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ASoC: dt-bindings: imx-card: Add playback-only and
+ capture-only property
 To: Frank Li <Frank.li@nxp.com>
 Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
 	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
@@ -78,75 +79,49 @@ Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.c
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2025 at 11:34=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+On Tue, Feb 11, 2025 at 11:32=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
 >
-> On Tue, Feb 11, 2025 at 11:57:37AM +0800, Shengjiu Wang wrote:
-> > With the DPCM case, the backend only support capture or
-> > playback, then the linked frontend can only support
-> > capture or playback, but frontend can't automatically
-> > enable only capture or playback, it needs the input
-> > from dt-binding.
->
-> wrap at 75 chars
-
-On my side, there are in 75 chars...
-
->
+> On Tue, Feb 11, 2025 at 11:57:36AM +0800, Shengjiu Wang wrote:
+> > Refer to audio graph card, add playback-only and capture-only property
+> > for imx-audio-card.yaml for the case that only playback or capture
+> > is supported.
 > >
 > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > > ---
-> >  sound/soc/fsl/imx-card.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
+> >  .../devicetree/bindings/sound/imx-audio-card.yaml         | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
 > >
-> > diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-> > index ac043ad367ac..905294682996 100644
-> > --- a/sound/soc/fsl/imx-card.c
-> > +++ b/sound/soc/fsl/imx-card.c
-> > @@ -518,6 +518,7 @@ static int imx_card_parse_of(struct imx_card_data *=
-data)
-> >       struct snd_soc_dai_link *link;
-> >       struct dai_link_data *link_data;
-> >       struct of_phandle_args args;
-> > +     bool playback_only, capture_only;
-> >       int ret, num_links;
-> >       u32 asrc_fmt =3D 0;
-> >       u32 width;
-> > @@ -679,6 +680,10 @@ static int imx_card_parse_of(struct imx_card_data =
-*data)
-> >                       link->ops =3D &imx_aif_ops;
-> >               }
+> > diff --git a/Documentation/devicetree/bindings/sound/imx-audio-card.yam=
+l b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
+> > index f7ad5ea2491e..86571fa930f6 100644
+> > --- a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
+> > @@ -46,6 +46,14 @@ patternProperties:
+> >          description: see tdm-slot.txt.
+> >          $ref: /schemas/types.yaml#/definitions/uint32
 > >
-> > +             graph_util_parse_link_direction(np, &playback_only, &capt=
-ure_only);
-> > +             link->playback_only =3D playback_only;
-> > +             link->capture_only =3D capture_only;
+> > +      playback-only:
+> > +        description: link is used only for playback
+> > +        $ref: /schemas/types.yaml#/definitions/flag
+> > +
+> > +      capture-only:
+> > +        description: link is used only for capture
+> > +        $ref: /schemas/types.yaml#/definitions/flag
 > > +
 >
-> if only use once, needn't local variable.
+> why not ref to audio-graph-port.yaml?
 >
-> graph_util_parse_link_direction(np, &link->playback_only, &link->capture_=
-only)
+audio-graph-port are based on 'port'. which is not used
+in imx-card.  imx-card can't directly refer to audio-graph-port.yaml.
 
-sound/soc/fsl/imx-card.c:683:53: error: cannot take address of
-bit-field =E2=80=98playback_only=E2=80=99
-  683 |                 graph_util_parse_link_direction(np,
-&link->playback_only, &link->capture_only);
-      |                                                     ^
-sound/soc/fsl/imx-card.c:683:75: error: cannot take address of
-bit-field =E2=80=98capture_only=E2=80=99
-  683 |                 graph_util_parse_link_direction(np,
-&link->playback_only, &link->capture_only);
-
-There are errors with it.
-
-best regards
+Best regards
 Shengjiu Wang
->
+
 > Frank
 >
-> >               /* Get dai fmt */
-> >               ret =3D simple_util_parse_daifmt(dev, np, codec,
-> >                                              NULL, &link->dai_fmt);
+> >        cpu:
+> >          description: Holds subnode which indicates cpu dai.
+> >          type: object
 > > --
 > > 2.34.1
 > >
