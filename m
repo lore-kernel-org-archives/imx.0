@@ -1,97 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1332066DB;
-	Wed, 12 Feb 2025 13:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84F6210192
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 14:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739366742; cv=none; b=TDvF7g0V+VlAibDLYPV1thnNTYOrmliCDVtV9NkWt3KtD2WXq3QHkKaAEfeH0fhgJYC+XRpzt8LOPyjsY0qtus3iwUSHGK+OSN7/zd7WzAkdAHSa0fGYtYW0VgDdl8FU7WpGGvSe7PrVqM4bSRm981LEVIqE1PpjACNtFjntbAA=
+	t=1739371308; cv=none; b=Jb0nqIdAVx43AzbXW2rn3BQlIv0sQk+0X72/c9TATCz75foH7lujikGthIssUYSDIQ2Z2lh6bZ0enCN7Cg7l8lgawgC4lLc154DdeOJTz0RO8Ka23Z2JPNw5JHQ7zbK7vPq9xDB/PPM/Eg1wv6kIsWVosJ7ql5SU+Q4413JGiZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739366742; c=relaxed/simple;
-	bh=nPPGAafinSZNRKnDUDj9vQmOe7TF7b6+a4emffRKAYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qeajW7PMHgJUB4zR8jW41BbKFi2hXkCcBQEyg+r+Pdv9PtoA4j0TE+FvV51gbgJDCUwnJi4wkWfouL2L7pqZs0CX4eZAK1fKc+kM+UPs/jtI6iusVbBKD75Iv+SF8FMYtDkIsm9ubnWSu474cxq/KdJahXo+McPC/613Njpok0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAhG2LpD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739371308; c=relaxed/simple;
+	bh=6VsvBgPqBd5Zqef3iWLEMJWJApBWl49CoJqvuwZAeiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NbzMgA6HDIsrUztWrvqnRq4YSPBCn86U3VjlsqhmYl2g5q0ZD2e1DvSfK5LpwM7QR86/RHgXCVGne9FBqOYdxHQEyVKtZYdM+/0V08V05NZTsr+H4Ob9f1vLn7MAF6Ei7pCqdlpgUbba7orFD1GKdr9ZNlXHKrgCrmUiQKryVdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GvBu9t56; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAhG2LpD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E593C4CEDF;
-	Wed, 12 Feb 2025 13:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739366740;
-	bh=nPPGAafinSZNRKnDUDj9vQmOe7TF7b6+a4emffRKAYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cAhG2LpDlvBgBq8FmGcFS6/4G9DTomVsJJBibWXyppxSQFKFNRnucrbef58FNnZNA
-	 s4to0gnLvkK7YbMCfJfA2l6RtV1rs2uopS3B8LYOLGfbgP6spH75+z8YWn0UvKBI/k
-	 2QpZcCzI64HaRF60cbMgQbktSb6ASPgq9UTHXrd9pEg3xtVk/9D5ruZ715CuBDG2Uo
-	 CvPPE19SwxFIJ8WAMLcQo+IKWIhnqHtKY8GVfoapFP5oI3/1rKZDLoSWT4quxTOurA
-	 9T98uazXT7lkTdEfeSiNMSpB0GHG26pBTyi1eNomcBD9pTmU6Hjntkd52nuRVGeXFH
-	 LJbf+0XrEYUjA==
-Date: Wed, 12 Feb 2025 13:25:33 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] ASoC: imx-card: Add playback_only or capture_only
- support
-Message-ID: <3883923c-f2b5-4b0e-b9ec-e9094849fb2b@sirena.org.uk>
-References: <20250211035737.3886974-1-shengjiu.wang@nxp.com>
- <20250211035737.3886974-3-shengjiu.wang@nxp.com>
- <Z6tuFp9nZFMJMgDa@lizhi-Precision-Tower-5810>
- <CAA+D8AMyXVdAWOTGHtrOyXjSLiMioAhZ1awepX3nproom87azQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GvBu9t56"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FDCF204A5;
+	Wed, 12 Feb 2025 14:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739371303;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hV58UJrNiafKUEEBYyT5622rc4906GKqOPPegyEjpJc=;
+	b=GvBu9t563kxnFl8vpKqJnl1NlFNwRhwgqpgwrV/WKHt+P/P2VyItdyvSR8e7YpylVkrJFh
+	ZambmdwrU19UQNsfxlqJs00qmG1mJgRSWTe8ObzqtbHpk8slTgRKlELpQzT2avGKq6lyJb
+	LL8HprxNBtH1BHLc61viq/yj9L1DFSAe2WWN2RQe9dFql+ICrfKfp8CUe3mO2pCCPgX8tS
+	TP6aR8s3Mrn/9Z42s8BUVceDzlUrOyyDuDl6gLHzqZEXHOkCL7Q/nrgv8UdwGzqRqtay8e
+	1kA/qjLYuimHcatcpaPr75L+A1gxNamRx4P/B6fzdeCUHAvX/o80W0TZ2LG1gg==
+From: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
+To: jbrunet@baylibre.com
+Cc: Laurent.pinchart@ideasonboard.com,
+	abelvesa@kernel.org,
+	airlied@gmail.com,
+	andrzej.hajda@intel.com,
+	arnd@arndb.de,
+	bryan.odonoghue@linaro.org,
+	conor.dooley@microchip.com,
+	daire.mcnamara@microchip.com,
+	dakr@kernel.org,
+	david.m.ertman@intel.com,
+	dianders@chromium.org,
+	dri-devel@lists.freedesktop.org,
+	festevam@gmail.com,
+	gregkh@linuxfoundation.org,
+	gregory.clement@bootlin.com,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	imx@lists.linux.dev,
+	ira.weiny@intel.com,
+	jernej.skrabec@gmail.com,
+	jonas@kwiboo.se,
+	kernel@pengutronix.de,
+	khilman@baylibre.com,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	maarten.lankhorst@linux.intel.com,
+	martin.blumenstingl@googlemail.com,
+	mripard@kernel.org,
+	mturquette@baylibre.com,
+	neil.armstrong@linaro.org,
+	p.zabel@pengutronix.de,
+	peng.fan@nxp.com,
+	platform-driver-x86@vger.kernel.org,
+	rafael@kernel.org,
+	rfoss@kernel.org,
+	s.hauer@pengutronix.de,
+	sboyd@kernel.org,
+	shawnguo@kernel.org,
+	simona@ffwll.ch,
+	theo.lebrun@bootlin.com,
+	tzimmermann@suse.de,
+	vladimir.kondratiev@mobileye.com
+Subject: [PATCH] reset: eyeq: drop device_set_of_node_from_dev() done by parent
+Date: Wed, 12 Feb 2025 15:41:26 +0100
+Message-ID: <20250212144126.120231-1-theo.lebrun@bootlin.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250211-aux-device-create-helper-v3-5-7edb50524909@baylibre.com>
+References: <20250211-aux-device-create-helper-v3-5-7edb50524909@baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eR5N2MBL3FgF7WFw"
-Content-Disposition: inline
-In-Reply-To: <CAA+D8AMyXVdAWOTGHtrOyXjSLiMioAhZ1awepX3nproom87azQ@mail.gmail.com>
-X-Cookie: Reality does not exist -- yet.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggeduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeghfejhfdviefftedvieetfedugeefvedtfedujefhhedvhefggfduhfefueektdenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgupdhhvghlohepthhlvggsqdgsohhothhlihhnqdhffidqtddvrddrpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeejpdhrtghpthhtohepjhgsrhhunhgvthessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohepnfgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopegrsggvlhhvvghsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghirhhlihgvugesghhmr
+ ghilhdrtghomhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegsrhihrghnrdhoughonhhoghhhuhgvsehlihhnrghrohdrohhrghdprhgtphhtthhopegtohhnohhrrdguohholhgvhiesmhhitghrohgthhhiphdrtghomh
+X-GND-Sasl: theo.lebrun@bootlin.com
 
+Our parent driver (clk-eyeq) now does the
+	device_set_of_node_from_dev(dev, dev->parent)
+call through the newly introduced devm_auxiliary_device_create() helper.
 
---eR5N2MBL3FgF7WFw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Doing it again in the reset-eyeq probe would be redundant.
+Drop both the WARN_ON() and the device_set_of_node_from_dev() call.
+Also fix the following comment that talks about "our newfound OF node".
 
-On Wed, Feb 12, 2025 at 11:48:43AM +0800, Shengjiu Wang wrote:
-> On Tue, Feb 11, 2025 at 11:34=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrot=
-e:
-> > On Tue, Feb 11, 2025 at 11:57:37AM +0800, Shengjiu Wang wrote:
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ drivers/reset/reset-eyeq.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-> > > With the DPCM case, the backend only support capture or
-> > > playback, then the linked frontend can only support
-> > > capture or playback, but frontend can't automatically
-> > > enable only capture or playback, it needs the input
-> > > from dt-binding.
+diff --git a/drivers/reset/reset-eyeq.c b/drivers/reset/reset-eyeq.c
+index 02d50041048b..8018fa895427 100644
+--- a/drivers/reset/reset-eyeq.c
++++ b/drivers/reset/reset-eyeq.c
+@@ -420,17 +420,8 @@ static int eqr_probe(struct auxiliary_device *adev,
+ 	int ret;
+ 
+ 	/*
+-	 * We are an auxiliary device of clk-eyeq. We do not have an OF node by
+-	 * default; let's reuse our parent's OF node.
+-	 */
+-	WARN_ON(dev->of_node);
+-	device_set_of_node_from_dev(dev, dev->parent);
+-	if (!dev->of_node)
+-		return -ENODEV;
+-
+-	/*
+-	 * Using our newfound OF node, we can get match data. We cannot use
+-	 * device_get_match_data() because it does not match reused OF nodes.
++	 * Get match data. We cannot use device_get_match_data() because it does
++	 * not accept reused OF nodes; see device_set_of_node_from_dev().
+ 	 */
+ 	match = of_match_node(dev->driver->of_match_table, dev->of_node);
+ 	if (!match || !match->data)
+-- 
+2.48.1
 
-> > wrap at 75 chars
-
-> On my side, there are in 75 chars...
-
-It's wrapped as above in the copy I got FWIW.
-
---eR5N2MBL3FgF7WFw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmesoUwACgkQJNaLcl1U
-h9BCCwf/cUpzpsoM/MopBAnPQFijzei9fc7PPZKC/ddtC1NxAx1aXwrBNA7dyqNr
-pIBX9Y8UaFzGZJx2HjxALElsYzRsvtc5nVOPoOboK/omzc5Ck3spzg/XIlRDDksO
-kX6s5nDUqPGDqhEq7Rjcp1hmTK5h0SV1PlNmzuMHJHrULtG0ukp1I281ASSu5Two
-dR0+y+0fdGHQspRQb1wKN07V+NVeLnDotZyVmVpVVTyeu+rbWt5K4jU2f0H17t/r
-5pyU4R/MLgfX1+TUHnsFLGDxcxj+vQFZtSoJoLD9+wL+KDavhDWuFq9T2ivJ9c5c
-apBK+i9RTJbJeidG8sQtRp3nR0RE6A==
-=Hkwf
------END PGP SIGNATURE-----
-
---eR5N2MBL3FgF7WFw--
