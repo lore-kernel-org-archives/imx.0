@@ -1,65 +1,66 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDFC20103A
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 20:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CDB201025
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 20:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739390887; cv=none; b=qlplw9Hkb1kX8KA+0vXUEIl+Xyx9w2Y+jFj6el+VNRXwxgYu9w1kk1gYCB9LSsuy/ef0Sj7tfFGT1pcLcMDtA8CUMzaJQDT6faCU791lYZfkVtv6PvC1PiIQO7out9pwmB2uqG2fw+xMoaIs+jrk+uqYcvAIeWqo2RS3PpSfJYU=
+	t=1739391126; cv=none; b=OybAgs6d7afoTFPt/8IsbVHqw8JdD8TT1cf+sMN91hIlG+ULz4Lzq+HGqkbdDPsY6sRxs5zLa1dd430OQIj53bRg/I3UBsScVHMm/zRRa2+DApRw41TQi/nCckwHGXU59xW39l0EG1UX35BHVo0JrAWmbfGnnPb3ulaaFu66DIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739390887; c=relaxed/simple;
-	bh=khSDGr/HZLTO+nneeIVjM+UO5LunJkeAXO6VcsfdNmc=;
+	s=arc-20240116; t=1739391126; c=relaxed/simple;
+	bh=efb/0y4ygJFKnTQ/RDAjQmojXap8ztAoDsZftmAaz4Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cxysd9qZyyFn8WxpVbvAKHwmZ0cVvBXnfFGo1i0VXjwhFVoX1+QKmjb+K6FFXe01U1uKPDli2ip3bQ4EvGku+15+u7ZEA+nMJ5qWL6VqseE+yNb24MCdj+3G73JmWztjz0Ze+Xqk8O+gLg/I097z/7jcT4QwLcGi0L4gqiJpZtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ze7X0S39; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:Content-Type; b=j2FEUu6m8oiEhu7GGSiBZDY/abtP8BaYHtQagISzSxDr3OkLUkbky06McxNZNBzUTyYT2WxfaKFI3a3S9TmYvdHHYwzGw7QmdFFM/fRKvsxB669QBhjKDwhO+gZFj7A7XLWYXCbvDRHjpmEEZ5Yf8rBhx51fmIXTcwmlz6qos3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dNpqNcwz; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ze7X0S39"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ab7ee6f5535so3071566b.1
-        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 12:08:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dNpqNcwz"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f20fc478dso15221f8f.0
+        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 12:12:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739390882; x=1739995682; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1739391123; x=1739995923; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iu/7BkGsGBE91wCLd243z0DyD6Dxurxs3l5CaDlz+Xg=;
-        b=Ze7X0S396BCTGp2RgwoIM535k8iGUJkedJLisPl+FTpeMZGGNP4I/GAVWNn7WqyhCw
-         koXQmwV4xOit50AodQwynSY514+5WHXesMWPxuYdE1MCmAhOmTQBz35rsZmnBFOuDj6b
-         UwUeks7qPDoDgNaxy4CyMqGpyMKisBN/Mc+d45ESnyui6Da/ueCi5SmX8CAP+pW9kHPs
-         fROHXsm/zRki3Cm/OLcRvb9sBYpuXawHSQaAnBu8Lu2ru8/VWMZblBOOo1RAtDP3B68b
-         lPZGmM7Vr7iqFiQVmC1BpX7qXIey0NYGIKMLnRLWBmEEBama8iKjWYBo0nPbCwa2raMj
-         xkzQ==
+        bh=cGuh2UpFaa2uhSTti4wLTQGn5xlWBin8bdkOwKV8rOc=;
+        b=dNpqNcwzaXiEdRYhrXaBrNTyQ5uXFiCJA/F8AkeTJkdvB6EFOKyqUVmLS9z679lMGH
+         kD/PCfIv5WRRemD0ehxJUoRn9zWhnqooDSR0y1eduKqPKmzEcYqNSF/bUcqdu6E2L1yF
+         VldkMJ7BuqpCtWW59Z9XG4j49aBISwANNZsmqMiAKnoNQgeVSDDQclo3XwaJXfWoFctm
+         iMP/go7QZGESCMvW8RpVu8WVw5quO6jBXd0e3r2IUm5HhRZjuOBo6fevAoRd0VdeW2EZ
+         hx7I5EmMosSUzbqYXqYrESBWhY6x/f8s/jb/mCma2nMQ8uy+WxS3H2OqgsUmWpGtHNdx
+         UQXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739390882; x=1739995682;
+        d=1e100.net; s=20230601; t=1739391123; x=1739995923;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iu/7BkGsGBE91wCLd243z0DyD6Dxurxs3l5CaDlz+Xg=;
-        b=qDkxOiMtWwwmrIJMqRgZ+LQGQjiNYgYblb0UG9y+GhzpEjoQzm8NVwZgUqB+EU8sA9
-         GG/67GZY/El4Qa6B+uYyZkPkNvMD6r+XQK0wnTdfvpnKrZdJpkxrZMXVkgGhwa2KagW4
-         mOTBkrSBZ3Y0hp+A0JucDiTlxzRZCdX9nrce8s/HqgLh4n/3WO1JOQRs1FhoB3Wcz3Fq
-         C+Nl06QxSbcwBpVxNSDv4v149LL6ep+oFXQF6hcmuLpE/tslvrGwNrPAppkVpeBhE3Q3
-         VuaVhQO8kyMuUhhMqsxLeWWgUHsf31J7CuUi8dYyX65naAd/lq5esxNQwuS9WrKd7x4L
-         Y2Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWF7LQJjjaU97m7OSCvirC9fyzyYmIfAJ7ZMW1mcLzMVILqvBCBHpb2TZdsEgrQzTm9kAo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCuuvnntiYypG7xbrH9Fba5iRHserfT5Mawk97FTzfLIm9twmT
-	PubO/8Bga+QbWfU6kUB756vjR3tFj+/qJZHLN82SFz5CEDnIZJFZe8+jNQ99UEY=
-X-Gm-Gg: ASbGnct0HTg8uIHTCFNZatRqmVIS1sjOIu6LWadtw+fO1uc+FKAwIaRNKt2O/v1ajZj
-	4sSrLgZ4n6+k2BeG0zD+74itgTJ7TLk0YVeU5STGWWXGxEiIB+4dRjQKWy9wI7SlSY3A/hFNg6b
-	iJLOX5bwXinUfyGof27cMxR9HPJkRidA4nd7qIalYrv5p8GMHF9+nV+yoZVXRcS68/qKMzR97mG
-	v75PvUHUfM9Q8zfcDIpRvPC9mSLN1LffpHHJ7gWirjecThQ5hJfVqRwugVQ4eCZxgPT/mjYoSZn
-	eRZZAfTe/2oUkwrqmwvq6n+D2dMQeD1V4hA=
-X-Google-Smtp-Source: AGHT+IGJXdMoTs2hWEXInTR+ltJbHmJj8H/ju9vPMe3A99qcrdj0eyslJQbPiSzl9wG+clAd5ieZpw==
-X-Received: by 2002:a17:907:3da5:b0:aae:b259:ef5c with SMTP id a640c23a62f3a-ab7f31906bdmr184163766b.0.1739390880917;
-        Wed, 12 Feb 2025 12:08:00 -0800 (PST)
+        bh=cGuh2UpFaa2uhSTti4wLTQGn5xlWBin8bdkOwKV8rOc=;
+        b=t4A9hiYjUDIpRrPZebVFOtiatU2UPUClDrMzfm2nq1gHJDVmWqTZ+x27xi97tesdha
+         IuN+t1Wx8VQaXSuh+w30JK2ewiTbgPGgLOYeyUeqxBNY0WL8uJccjsbSKfWzyEe6j63W
+         idTC1YAWm15Q8cm/hKvb/174U9DPLAPCYOGsV+AGzdEWu3NLHZ674a5I/Dy54vRTdXMC
+         B0YU3UyRO0CC5GkJI+TXCjgOZl7AJmyrMYSZmeCfMA8kRp7TJU5i1O72OwLoPJlSjAYD
+         l6w7hKrGgPMc+/pQXDOsWUkL1yFg8NzPx0QYb5DuEkchoy6wZN4juqszu4YJE553RJcj
+         yUEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ0vGY1sL1rhKxzjbuDfSIGvsCqK88urgc1DF6baIItPflJceFLiT4C3fxbIg1fvLzpf4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YydtnDO3io3IG+tDciTOd9VTwh5mxOU9QsEgykuO2HwR5hb7Bv4
+	pBcEvah3dR0caaBiuIQXgGxxPhss8XUlIn7FpG6m7xc3na/6UuQFg92NL8k4komktBBW1x3lgiM
+	V
+X-Gm-Gg: ASbGncur+FXAunEXAqdwn+54N7zUMbhwmIl6O7QvMuAE1QcvnAgOcWdQAaLZK2MAYQ6
+	AVNVN9j87h82WUflOwpFI0YoUrlxiLTSHo5OR4t2nGL8psnFdLtbrbmppZC4XlGdA0vfj3yE2nc
+	wEZDyaw3I9ltPc93z8ip2m6Miq74sGvqovAzp4G2m2+1c5vJ1snfKB7n5+TZ1QgkSWFQxgV2W0t
+	ziRpEsKdvFvrrkUr5wlwcOM1X+v4RFsVgJRQoB/puwvdhZqQmczL7TFK01dns6O7QHeG0K3oHT+
+	IlAV9UDrm5x0zVxgMydUXe99WOS62OypPYM=
+X-Google-Smtp-Source: AGHT+IEfGn9LtFHGk0U8Y+QHBiuO20iTGGl0VWaOwFT9tOI69q9FhNUAIo2hVt9dHR5dTGoa1omXSw==
+X-Received: by 2002:a5d:5f42:0:b0:38a:9118:c09c with SMTP id ffacd0b85a97d-38dea3314cfmr1510971f8f.11.1739391122959;
+        Wed, 12 Feb 2025 12:12:02 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.144])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7cf46bf57sm539299666b.165.2025.02.12.12.07.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a1aa6f7sm28927165e9.32.2025.02.12.12.11.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 12:08:00 -0800 (PST)
-Message-ID: <ab2394be-fe1c-46c1-9940-53b4ee1afc5b@linaro.org>
-Date: Wed, 12 Feb 2025 21:07:57 +0100
+        Wed, 12 Feb 2025 12:12:02 -0800 (PST)
+Message-ID: <416d75fd-40d0-45d7-9590-0322abb480ca@linaro.org>
+Date: Wed, 12 Feb 2025 21:11:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,7 +68,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] media: dt-bindings: Add Sony IMX728
+Subject: Re: [PATCH 2/4] media: i2c: Add driver for Sony IMX728
 To: Sebastian LaVine <slavine@d3embedded.com>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
@@ -101,7 +102,7 @@ Cc: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
  Vignesh Raghavendra <vigneshr@ti.com>, Will Deacon <will@kernel.org>,
  Zhi Mao <zhi.mao@mediatek.com>
 References: <20250212195656.69528-1-slavine@d3embedded.com>
- <20250212195656.69528-2-slavine@d3embedded.com>
+ <20250212195656.69528-3-slavine@d3embedded.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -148,115 +149,200 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20250212195656.69528-2-slavine@d3embedded.com>
+In-Reply-To: <20250212195656.69528-3-slavine@d3embedded.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/02/2025 20:56, Sebastian LaVine wrote:
+> +static int imx728_detect(struct imx728 *imx728)
+> +{
+> +       int ret = 0;
+> +       u64 minor, major;
 > +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description:
-> +      Specifier for the GPIO connected to the XCLR (System Reset) pin.
+> +       cci_read(imx728->regmap, IMX728_REG_VMAJOR, &major, &ret);
+> +       if (ret != 0) {
+> +               dev_err(imx728->dev, "Could not read PARAM_MAJOR_VER!");
+> +               return ret;
+> +       }
+> +       cci_read(imx728->regmap, IMX728_REG_VMINOR, &minor, &ret);
+> +       if (ret != 0) {
+> +               dev_err(imx728->dev, "Could not read PARAM_MINOR_VER!");
+> +               return ret;
+> +       }
+> +       dev_dbg(imx728->dev, "Got version: %lld.%lld", major, minor);
+> +
+> +       return 0;
+> +}
+> +
+> +static int imx728_reset(struct imx728 *imx728)
+> +{
+> +
+> +       int ret = 0;
+> +
+> +       // Prefer hardware reset if available.
+> +       if (!IS_ERR_OR_NULL(imx728->reset_gpio)) {
 
-s/Specifier for the GPIO connected to the//
-But you could say that it is active low, for example.
+Here can be ERR (although why?) but...
 
+> +               gpiod_set_value_cansleep(imx728->reset_gpio, 1);
+> +               usleep_range(1000, 10000);
+> +               gpiod_set_value_cansleep(imx728->reset_gpio, 0);
+> +               msleep(100);
+> +       } else {
+> +               // Software reset.
+> +               cci_write(imx728->regmap, IMX728_REG_RESET_0, 0xc3, &ret);
+> +               cci_update_bits(imx728->regmap, IMX728_REG_RESET_1, 0x1, 0x1, &ret);
+> +               msleep(100);
+> +       }
 > +
-> +  error0-gpios:
-> +    maxItems: 1
-> +    description:
-> +      Specifier for the GPIO connected to the XWRN pin.
+> +       return ret;
+> +}
+> +
+> +static int imx728_power_on(struct imx728 *imx728)
+> +{
+> +       int ret;
+> +
+> +       ret = clk_prepare_enable(imx728->clk);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       imx728_reset(imx728);
+> +       return 0;
+> +}
+> +
+> +static int imx728_power_off(struct imx728 *imx728)
+> +{
+> +
+> +       if (imx728->reset_gpio) {
 
-The same.
+Here cannot.
 
+> +               gpiod_set_value_cansleep(imx728->reset_gpio, 1);
 > +
-> +  error1-gpios:
-> +    maxItems: 1
-> +    description:
-> +      Specifier for the GPIO connected to the XERR pin.
+> +               usleep_range(1, 10);
+> +       }
+> +       clk_disable_unprepare(imx728->clk);
+> +       return 0;
+> +}
 > +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: ../video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    i2c {
-> +        clock-frequency = <400000>;
-
-Drop, not really relevant.
-
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        camera@1a {
-> +            compatible = "sony,imx728";
-> +            reg = <0x1a>;
-> +
-> +            clocks = <&fixed_clock>;
-> +            clock-names = "inck";
-> +
-> +            reset-gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
-> +            error0-gpios = <&sens_exp 1 GPIO_ACTIVE_HIGH>;
-> +            error1-gpios = <&sens_exp 2 GPIO_ACTIVE_HIGH>;
-> +
-> +            port {
-> +                camera1: endpoint {
-> +                    remote-endpoint = <&vin1a_ep>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 575f0e6f0532..50bff3558d7d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -21885,6 +21885,12 @@ T:     git git://linuxtv.org/media.git
->  F:     Documentation/devicetree/bindings/media/i2c/sony,imx415.yaml
->  F:     drivers/media/i2c/imx415.c
-> 
-> +SONY IMX728 SENSOR DRIVER
-> +M:     Stuart Burtner <sburtner@d3embedded.com>
-> +L:     linux-media@vger.kernel.org
-> +S:     Odd Fixes
 
 
-Hm, why only odd fixes? If you don't care about driver, we also kind of
-might not care and remove it soon.
+...
 
-
-> +F:     Documentation/devicetree/bindings/media/i2c/sony,imx728.yaml
 > +
->  SONY MEMORYSTICK SUBSYSTEM
->  M:     Maxim Levitsky <maximlevitsky@gmail.com>
->  M:     Alex Dubov <oakad@yahoo.com>
-> --
-> 2.34.1
-> 
-> Please be aware that this email includes email addresses outside of the organization.
+> +static int imx728_set_stream(struct v4l2_subdev *sd, int enable)
+> +{
+> +       struct imx728 *imx728 = to_imx728(sd);
+> +       int ret;
+> +
+> +       mutex_lock(&imx728->lock);
+
+Just use guard. That's actually perfect candidate.
 
 
-Obviously. Please drop it. You can use b4 relay if you need to escape
-corporate junk.
+> +       if (imx728->streaming == enable) {
+> +               mutex_unlock(&imx728->lock);
+> +               return 0;
+> +       }
+> +
+> +       if (enable) {
+> +               ret = pm_runtime_get_sync(imx728->dev);
+> +               if (ret < 0) {
+> +                       pm_runtime_put_noidle(imx728->dev);
+> +                       goto err_unlock;
+> +               }
+> +
+> +               ret = imx728_start_stream(imx728);
+> +               if (ret < 0)
+> +                       goto err_runtime_put;
+> +       } else {
+> +               ret = imx728_stop_stream(imx728);
+> +               if (ret < 0)
+> +                       goto err_runtime_put;
+> +               pm_runtime_mark_last_busy(imx728->dev);
+> +               pm_runtime_put_autosuspend(imx728->dev);
+> +       }
+> +
+> +       imx728->streaming = enable;
+> +
+> +       __v4l2_ctrl_grab(imx728->ctrl.h_flip, enable);
+> +       __v4l2_ctrl_grab(imx728->ctrl.v_flip, enable);
+> +
+> +       mutex_unlock(&imx728->lock);
+> +
+> +       return 0;
+> +
+> +err_runtime_put:
+> +       pm_runtime_put(imx728->dev);
+> +
+> +err_unlock:
+> +       mutex_unlock(&imx728->lock);
+> +       dev_err(imx728->dev,
+> +               "%s: failed to setup streaming %d\n", __func__, ret);
+> +       return ret;
+> +}
+> +
+> +static const struct v4l2_subdev_core_ops imx728_core_ops = {
+> +       .subscribe_event = v4l2_ctrl_subdev_subscribe_event,
+> +       .unsubscribe_event = v4l2_event_subdev_unsubscribe,
+> +};
+> +
+> +static const struct v4l2_subdev_video_ops imx728_subdev_video_ops = {
+> +       .s_stream = imx728_set_stream,
+> +};
+> +
+> +static const struct v4l2_subdev_pad_ops imx728_subdev_pad_ops = {
+> +       .enum_frame_size = imx728_enum_frame_sizes,
+> +       .enum_mbus_code = imx728_enum_mbus_code,
+> +       .get_fmt = v4l2_subdev_get_fmt,
+> +       .get_frame_desc = imx728_get_frame_desc,
+> +       .get_frame_interval = imx728_get_frame_interval,
+> +       .get_selection = imx728_get_selection,
+> +       .set_fmt = imx728_set_fmt,
+> +       .set_frame_interval = imx728_set_frame_interval,
+> +       .set_routing = imx728_set_routing,
+> +};
+> +
+> +static const struct v4l2_subdev_ops imx728_subdev_ops = {
+> +       .core  = &imx728_core_ops,
+> +       .video = &imx728_subdev_video_ops,
+> +       .pad   = &imx728_subdev_pad_ops,
+> +};
+> +
+> +static const struct v4l2_subdev_internal_ops imx728_internal_ops = {
+> +       .init_state = imx728_init_state,
+> +};
+> +
+> +
+> +static const struct v4l2_ctrl_ops imx728_ctrl_ops = {
+> +       .s_ctrl = imx728_set_ctrl,
+> +};
+> +
+> +static int imx728_probe(struct i2c_client *client)
+> +{
+> +       struct imx728 *imx728;
+> +       struct v4l2_subdev *sd;
+> +       struct v4l2_ctrl_handler *ctrl_hdr;
+> +       int ret;
+> +
+> +       imx728 = devm_kzalloc(&client->dev, sizeof(*imx728), GFP_KERNEL);
+> +       if (!imx728)
+> +               return -ENOMEM;
+> +
+> +       imx728->dev = &client->dev;
+> +
+> +       imx728->regmap = devm_cci_regmap_init_i2c(client, 16);
+> +       if (IS_ERR(imx728->regmap))
+> +               return PTR_ERR(imx728->regmap);
+> +
+> +       imx728->reset_gpio = devm_gpiod_get_optional(imx728->dev,
+> +                                            "reset", GPIOD_OUT_LOW);
+> +       if (IS_ERR(imx728->reset_gpio))
+> +               return PTR_ERR(imx728->reset_gpio);
+
+So can it be ERR after that point? Looks like not.
+
+
 
 Best regards,
 Krzysztof
