@@ -1,35 +1,35 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD7C21127B
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 14:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435CF209F35
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 14:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739371900; cv=none; b=h4+GiKcNi7UpOupYLwUyuUEzJzzyhirzgFNiyJt7u6BIBia6fpRblp8gHWS1xXZJlBS+Jdq0thfLP3GIGjQBhNrAErFd1Bo7Z71G4uanRhEstT0rg4EM6D4W0MJk+MyxdkLBjDRInRx6sax0hygNTaQGfIkN1MPjSB0GvCOAMLM=
+	t=1739372025; cv=none; b=jPrvsuFcDtqiUJGCRXs8l6gtnBIYG1t+OzyfUEfzhVXDwNfXzNhsMNsfN9lYgUZmS30+ikeB/N9PuLOmFFaj2x0dftErHRZoVH1/fYQwUMw2JUJmzzbDgUG3KkmDvOuDFFbx0WuJjbXHMVyvQfiQ8gME/u0tOfkkTVKRnhp2QQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739371900; c=relaxed/simple;
-	bh=3D5jTxu4ZxbcqJgUxTp0ZDvRAq7lWG2tJ7vUZuiqwlE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=okATiadaMZn3k+tk+3j4t2bqdsz72QoRMy+5jS+CoTK08R3Vc+j6nvvbRT4gnnvC1KfmDK42AjBKP+Kg8n/fmqIibkDTm7Sy6K89y+H9wuzbTnzlpKEpzGpYQsyaMwDMWPQbO+beyexum4pSXLXqP0lU2JwHgk/y4ojKLfrtIe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=U6fKO9ZN; arc=none smtp.client-ip=217.70.183.196
+	s=arc-20240116; t=1739372025; c=relaxed/simple;
+	bh=DeFVmcmMV8TIhbFG3yvXPkzeifltUvoyTDMlg9kM1Zc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=sMkQ1Gq1D37mjHFbxAzQtp6DIxhjJHc08FoPTHvg/NTeymS7E62JvLbRmeNMASFg4jP1C43PFHCi2QgItWRQDk4E/O8JqVEpfVZ/BYqIjU/KpOS1iSOVek2UZlYmVo1KjmwT5/bqdQ2MKg7e2lyOBPnhnJvQqKdi8A2lM/NSZUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jWsL2ikI; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="U6fKO9ZN"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id ED301443C0;
-	Wed, 12 Feb 2025 14:51:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jWsL2ikI"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 89EDE43429;
+	Wed, 12 Feb 2025 14:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739371896;
+	t=1739372021;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G/S4xKTURHeontyYyIzF3UhaW4swbeEI4cyVPn5z26I=;
-	b=U6fKO9ZNbkAvP9nETMzRxyvHoJnDJ7jaL/OauAXgoJPMATOp1FY+sVOfPlMNUxnUwPF6wg
-	ZlD1LL6+ruLQa/f/nipAbKXCBiyDhkoBKm2hg3F5q7eMNluI30OaarujKUXId0RW8W2poo
-	L15MihjxtV2AhfLqaM/Nye/6p/7KfLRJ/D9ueWjthDftoiak+mzn6bkQ3jbOXG+earg0Lq
-	WGBujDNU7bu/gcKYQ2Hxd4lTxNlnY6rDVTSn0P+pNXRyze2oUjfbPKHWCtplhtHE82U6rD
-	3PmD9mHPj6cZqFOqmcE0bWszE+WUhefQydOPqfYL4e1fb+XBR9TNAukWimuPvQ==
+	bh=DeFVmcmMV8TIhbFG3yvXPkzeifltUvoyTDMlg9kM1Zc=;
+	b=jWsL2ikI/GLRyfSa/ux98cBU7OIGPX3oNGOx0FwD2lLYgajCmqKI01mZqMZrzc7nw1XDWF
+	PSVBdOS8QY6Kb95ZIB3WBOkI0sF2ps3kP000hdQvSxLiSX7N0REEicPPfW3zykW8pv81Ns
+	G36yxlD5MzDg07qWDhDY8AMjHXVQl9pVFLd7bMWNRmO50Isrep5fzNnGqvjpUcYp7+PdC1
+	p1kclvHo8d5YWkRJwtFdvJ+2E+5KP3ZRFa/12xplNFKYPJ3fyqMACPO0M7HjmH1tqSKrnx
+	+S5lCWGSnB+rh5msbIHx1AZR8Bv5Wkg5HEIlxJ1IQ5nL91phRSmcjD9HiKHaqA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -38,16 +38,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 12 Feb 2025 15:51:32 +0100
-Message-Id: <D7QJVKCWO1C0.2GIZNZ9FUF96I@bootlin.com>
-Subject: Re: [PATCH v3 5/7] clk: eyeq: use the auxiliary device creation
- helper
+Date: Wed, 12 Feb 2025 15:53:38 +0100
+Message-Id: <D7QJX632CRCV.P0ZI0WWT083Z@bootlin.com>
 Cc: <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
  <dri-devel@lists.freedesktop.org>, <platform-driver-x86@vger.kernel.org>,
  <linux-mips@vger.kernel.org>, <linux-clk@vger.kernel.org>,
  <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-amlogic@lists.infradead.org>, "Philipp Zabel"
- <p.zabel@pengutronix.de>
+ <linux-amlogic@lists.infradead.org>
 To: "Jerome Brunet" <jbrunet@baylibre.com>, "Greg Kroah-Hartman"
  <gregkh@linuxfoundation.org>, "Dave Ertman" <david.m.ertman@intel.com>,
  "Ira Weiny" <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -74,39 +71,20 @@ To: "Jerome Brunet" <jbrunet@baylibre.com>, "Greg Kroah-Hartman"
  Hilman" <khilman@baylibre.com>, "Martin Blumenstingl"
  <martin.blumenstingl@googlemail.com>
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH v3 7/7] clk: amlogic: axg-audio: use the auxiliary reset
+ driver - take 2
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com> <20250211-aux-device-create-helper-v3-5-7edb50524909@baylibre.com>
-In-Reply-To: <20250211-aux-device-create-helper-v3-5-7edb50524909@baylibre.com>
+References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com> <20250211-aux-device-create-helper-v3-7-7edb50524909@baylibre.com>
+In-Reply-To: <20250211-aux-device-create-helper-v3-7-7edb50524909@baylibre.com>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefvhffofhgjsehtqhertdertdejnecuhfhrohhmpefvhhorohcunfgvsghruhhnuceothhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudetledtveejvdekleeujefhvdelieeutedvgfevffffkeeugefhhfeiudeljeevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeeipdhrtghpthhtohepjhgsrhhunhgvthessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugdrmhdrvghrthhmrghnsehin
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeggedujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevvffhuffofhgjsehtqhertdertdejnecuhfhrohhmpefvhhorohcunfgvsghruhhnuceothhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepiefgleffueffteetteduudffgfehhfduueetieegkeetveegieeljefgvdffleehnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeeipdhrtghpthhtohepjhgsrhhunhgvthessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugdrmhdrvghrthhmrghnsehin
  hhtvghlrdgtohhmpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgsohihugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhg
 X-GND-Sasl: theo.lebrun@bootlin.com
 
 Hello Jerome,
 
-On Tue Feb 11, 2025 at 6:28 PM CET, Jerome Brunet wrote:
-> The auxiliary device creation of this driver is simple enough to
-> use the available auxiliary device creation helper.
->
-> Use it and remove some boilerplate code.
->
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-
-Tested the series, it works. However:
- - The newly introduced helper does a
-   device_set_of_node_from_dev(child_device, parent_device) call which
-   used to be done by our reset-eyeq child.
- - reset-eyeq also did a WARN_ON(dev->of_node) to validate it didn't
-   have an OF node at probe (checking its assumptions).
- - We can remove both. See patch that got sent as a reply.
-
-With that additional patch:
-
-Tested-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>  # On Mobileye EyeQ5
-
-Note: Philipp Zabel has been CCed on the patch and this email as the
-reset maintainer.
+Why the " - take 2" in the commit first line?
 
 Thanks,
 
