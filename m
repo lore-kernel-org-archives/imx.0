@@ -1,98 +1,233 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45D22080E7
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 10:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739357304; cv=none; b=LlLXyddMUNuiFGbKTfDeJDpkY0lfkDIFQfsDLpechVXNNeOwPKClxQ8X3lZ8+Am/nxINIAWtLYiJwCBZFY+fEFhYFBxyRKfOkcxPt7LzHUp9qDkYqbPcK7Ow+AeitqOZgoWepE+W7HCKPn8VsCEpxnE9a/VxAs4n/uKmb0/IDH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739357304; c=relaxed/simple;
-	bh=9IF2oBk6bHBAt4J0R6POr79YolbpRn/EuqK+TJfK6W4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hIsivXhUKDGrhZzVhhAChcSRDqgPyQx8/99YfKnUwRtSDc3P9d4iUhSjnmLTpJINXJ825yb1StdO3vC3IcaKq2zJ/CDRcGOkq9WqaOeBEc6iHQOPhK2o9nun2oazDbjKXKivru9aodYUljChL7hGA+i40gR+9vzBV5jqCskBApY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DC6512FC;
-	Wed, 12 Feb 2025 02:48:43 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 714193F6A8;
-	Wed, 12 Feb 2025 02:48:19 -0800 (PST)
-Date: Wed, 12 Feb 2025 10:48:16 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, <arm-scmi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<imx@lists.linux.dev>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <Z6x8cNyDt8rJ73_B@bogus>
-References: <20241225-scmi-fwdevlink-v1-0-e9a3a5341362@nxp.com>
- <20241225-scmi-fwdevlink-v1-1-e9a3a5341362@nxp.com>
- <Z6uFMW94QNpFxQLK@bogus>
- <20250212070120.GD15796@localhost.localdomain>
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2070.outbound.protection.outlook.com [40.107.241.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6962080F4
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 11:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739360302; cv=fail; b=IOnstTtfY2P3a+VI1WZj1wSP4mhUAr+d6WS7g2v/JVD4tcrT/XVL6WPHAS+sUsQFOLZ4byNnEiiPZcNu0Fa2JtBwiGqXaCGwnbOZjxFTszSPYT0vVyKwYLPvlNEr0/stYOlV2oPE95LKdSIcF4zSZgAn74W1vWxBp0uGZEGHyxc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739360302; c=relaxed/simple;
+	bh=h2lVmBV/supNWIq36kxp13aZ5H094SCAf5NZ58AacOI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=SiS1rM4EVCiWAQQ2ruCJFSuvsNVLxJXiafS9Hic9uN0gIa/mJqg7pxkYzpALgoQR5DZZESyiuIxM+SR916P+tAORxeqfBnZ2fIZP+z/DWK8XmXnJLBSEHoJGf/3X2m7Bid+uyKpcxawTtItvuZ4Qp65/uYv0pC0Aa+yo7l5PGsA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=L+/f0VfB; arc=fail smtp.client-ip=40.107.241.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="L+/f0VfB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WyOjhlAerYG7rhKkJpGO3ZDP1EedpE7PpNfWbxJ2qvbLfOUSST9q1/5257hCbakuPqsp6nu8qlYsJWA79wr6KAcUyBLbyHjZO5nYgBJAU/5pmo6+Gy0xNpo1IAUhMFrCcGIwrxL4G1AqG9CZYECgNTT6tt7HjfblRpyUdwl79+1Jh9Fh6oydKPwr2+Y3OYiPxq9Q2oLA9wIY0INb+3SvjoQTWVaxAHWoovMEIjhnTndjT+31MDAjd81RUiKLirEpqFgg1Phka7w1e4Im17x5B5aO1BkWUKh/c1ltdS7GqmowtUYBskWJ+0fVjBDa2SS27as1n/tDyLKClWXLSRRbhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Ll5Ig1TdUUDqDmZbNuGZMueasdJsZ4VGWaFjht8Fws=;
+ b=Gv7Gpim5cwAt3e78Lpu4R/KBWBxl0YGKdWp0VJF61UlFzeDmoRD0iygZmZbQVAo9hyNOEVjX8pOKGN2znIIjzJ9/5gvDAmbwtHvWSeCi90eFKQsxyMe+tEx/hgOOTD44X9QbyPw/AWqICglGJZLDpxqgfUa77dVxGP70T+mRtlG0jVl05/nWYzo99OPgoCCtacFWdn7ew/1k87k5ZjiawuBiIPCdgQN4olWxDInwZQ+kg7kulioOlMXvEfViB4tBsfr0HJh48Q9mIr8O/0j9nseFLbcrWHrNpw0Su+rml6NAzUeVEbR89GEAArX5UbCXWfd50AylNBX0vTdW8LcwWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Ll5Ig1TdUUDqDmZbNuGZMueasdJsZ4VGWaFjht8Fws=;
+ b=L+/f0VfBfVy3KXjhdPHdeg4r+BniGNq+j2BXWgnmpCwCv4WGRi64pQiTrUAfpPysvU3vGSbNPT/P0B3YZNQ/A//UHifYFKMQlRIPwfuHsSRI9thZJ778L4KZXIvLxMG1xKkWqaMNcg8TSbtQ+0j2oS+E+/FwmiuofzaJdWY2orA62t9yQtofS564pB+f0j9rmthCw9Xc+nSROCK3t8hmp18qF3FIdze/6EErUlwI/jyjV1KFb8gT1VUihPBQKveWdpWCKalribzFjII35FmXgZA9DeuiYKSo8gwowAv+o1sqsBOnIHYXAAJDknrUhjWDgeD28LNiQe5wDA+g9IgiWQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
+ by PAXPR04MB9680.eurprd04.prod.outlook.com (2603:10a6:102:23e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Wed, 12 Feb
+ 2025 11:38:15 +0000
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1%7]) with mapi id 15.20.8445.011; Wed, 12 Feb 2025
+ 11:38:15 +0000
+Message-ID: <0bba6e5a-a073-688a-003a-dbbf89888886@nxp.com>
+Date: Wed, 12 Feb 2025 13:38:08 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 0/3] add sof support on imx95
+Content-Language: en-US
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
+In-Reply-To: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM8P189CA0030.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:218::35) To DU2PR04MB8774.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250212070120.GD15796@localhost.localdomain>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|PAXPR04MB9680:EE_
+X-MS-Office365-Filtering-Correlation-Id: e19b2bb5-1f41-4dba-3915-08dd4b59bcea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TGVZSGc1NzRLT3Q5QlpQdUY4THZpNjlaR0tuUEptSGI1L09CWTVNUEdscWZM?=
+ =?utf-8?B?dStaYm94cXRUdnNqb1RaK1VNL1F0REhGaXpKbzhYdW1xSEdCVWY1eW5DVXNG?=
+ =?utf-8?B?MDhscUZrUlRodkkrVVlJeHYyTzJ4TVV4VWVNRGliaEYrVWJKOEdpanRBL21a?=
+ =?utf-8?B?TmE2bmw5NnE0aEw0VnIzbmJNZHlYRmF0aDh0MmZyMloxb2JtdDRySEZuYnd3?=
+ =?utf-8?B?L1QwTE51bDZqRGtiQlp2azM3NXltMEErZ3Q4YjdaRlNBS0xEL3M3MFFmVytG?=
+ =?utf-8?B?R05wcTRpRW5GRTVaMjhSQ28xcG9tNHhRYnpqeW9Xb2tmSEowT3VUNmExNUQ1?=
+ =?utf-8?B?YjFMSHdRd21xYlg2TklURGRhRXZTVkI2S05EUUhodWhLLzZGY01ZS1c2cjJo?=
+ =?utf-8?B?M0JkV3lvTU5GVlZiMHgzcCtPV3dqNjZWNGJtZ00wWFVUcFMrck9wM014bFZm?=
+ =?utf-8?B?K0RycldPWlcvOWRHSGJCV1l6Z0FIdWxhQ0FYazFuUHlQakVSREZxczhvWWNC?=
+ =?utf-8?B?OFRDUERETSt3MHBCdk96eDBJQWFNNktxMWt5MFZXQzJuNWRVMVZDTnhVQldV?=
+ =?utf-8?B?cHdTWGdPSlJaeVFqakt0ZG9ScDlZVExva1RKdG9nMDRXSFVJVXBRb1RacGtm?=
+ =?utf-8?B?K1dFVk5qc1RCemptZmhzaVhDL1htMG85K2Rtd3lVM3JlQkpWRHFaeEdOSW16?=
+ =?utf-8?B?cnE5MkduVjhpbm8rMXNjaDdmQmlISHoyRm1KS2xKUURwUy9yN1lYQlV5ZzZL?=
+ =?utf-8?B?OHJsdUV0K2M3OXhjZmh3VEZ5RXdmbVFpSENnbXRDVjF6enFPZWFVRXdCTXh0?=
+ =?utf-8?B?Ulg0VmIyZzhmNEZJRkhTY0h1M3Q2cTQ4NUFtYW5qMVFHRU92cXVKYXFCWVRn?=
+ =?utf-8?B?VWJEalpmcElRaitOQkVJVEQ2NDdzb3pwSVBWL1VsamFwNDlRcW1KcEN2VDJE?=
+ =?utf-8?B?ZG9kVFZhanpjeGJoY3Z4VEhmWWRsTldnZjRvVjdsMjlaayt6ZVIvZGdwamsy?=
+ =?utf-8?B?ajlCM0dXRnNmb0tFN1kvOVdZNk5Cb0lqczRreUVPaFJtYW0yMTJkeHY3UEJN?=
+ =?utf-8?B?dFVBMXBzTzF2aUduUk9RSUUxbjJNOW9hY3pIUm9YelpjNmlJejA5b291T1gw?=
+ =?utf-8?B?RU5semZmY0daTnMyTzYzb2hJMXAvejF5UnRjUVZzcmROeDBuM3hMQ3VsQStw?=
+ =?utf-8?B?aTFTT0wyNDI3Z2dXNlFwbWJwcEp3bFZVS1A3anVoNmxYeEFGbmw3U0xjRmYw?=
+ =?utf-8?B?RklUWDRHVU5wVjc2Z2R1YzljL0NUYS9sU0V6V3RTTUxIcmVSY0t5NkxBNFU0?=
+ =?utf-8?B?M21YaVpLZGR3bXJ1eWFHWVJSVmQzTzBneVFyb2VTeEdELzM4UmdaNFpOVkJQ?=
+ =?utf-8?B?R3VXdzZUTnArNDFWOHBSLzkrTXRuZlQraSt6M1M0WjdQWjduMHlQa0JNeFBy?=
+ =?utf-8?B?T3VDTEJPUzF6dldIYzJlOHg2MTRaOVhtbGtSeHhwWGVCME9mNFY3VFpxQnNm?=
+ =?utf-8?B?cFdGMzNGNVc5N3hYZmNRRTlDaDAyNWxDUG4vMkczZ2JxdzlZOWpCOHB4b0Zw?=
+ =?utf-8?B?eFN4Zzhnc2FsMzB3Z1V3OGZ3aDVVRm1oMGFvZk94NGJmbkZLeUdhRVlFaU13?=
+ =?utf-8?B?ZFdyMkl1M3E4Z0FLM1gzdXpad0ZNbEJhSWlHbVdNektUbFRsT1hrT3ZRREt4?=
+ =?utf-8?B?VnoyUkREVzlvMVlydTZDd2xmMmtXemtadHl6UEdNZUJYWkNxNTdQYXBsdHky?=
+ =?utf-8?B?b240OFJqMndVWlhWV1I5ekNaa0R4SllnY2tBb1dyWm4zUlYzNGhHZEtyNmZD?=
+ =?utf-8?B?QzIzQXN1Z1RzZkRKN2xUOWRvb2lUUjl0RU9NbFRETzlucnZUYlJ4Qmx1c2tu?=
+ =?utf-8?Q?1NMjnZwBZQABy?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZnVPeFh1WTNOSWpoNU04SzZGK3MxTk1iTUR4dWtvWGJMU2Z1b1lnaU1FWTVD?=
+ =?utf-8?B?WjkwemR1eHdENnUxR0FUbmtLMlByYW1Sa0JNblZ3NWtiaFNJZ1hqY2ZXa0tJ?=
+ =?utf-8?B?c1d1WkQ2VlJVVmpmZXV5WUNUQm5XMmhpRGQ5UnJabFdtOHJwU010L0JXdEc5?=
+ =?utf-8?B?V1puSVNtd09obUpnekZPbkdCb3BQd28vMmdKeWJpck1FaUw3c3VOWHdrZEdy?=
+ =?utf-8?B?a2ZiU3dOcFBVcDNocWZKU3A1N2RvY3FFOXp4R0lXV1ZOMVN5WmxJTW82dEtL?=
+ =?utf-8?B?Y0pzemdjMjNqRlg0S1l6ZERhdlV4a1BXYTc0bW9PWW0yRnlITUFuc3JQNlh4?=
+ =?utf-8?B?SlFBc0N0dm5mZlJlUy9vUTFpZ3Q4RkdCZTFYUG5XTU51U1QvMmZrZEcyb3Zx?=
+ =?utf-8?B?QldRNm9zbTFNYUljOG1ZZU5yem9WU3lDNzA4WHphSmM1dEtLWVFscTR1ZGF6?=
+ =?utf-8?B?NjB2bjRPWkNnK0R4T0ZhdWtCQVhianMwTG9zR3MyaXFiMk50K08xNjZ2VGRh?=
+ =?utf-8?B?UUtqNTM3bVNna1lRanNpWUt0MGhYN0Z4cEJNN2hocFVoTHNtckNXb3l5cGhs?=
+ =?utf-8?B?Q1VaZnkxQlBRWDBHTGtRZDFDVGdPZ29mSGt6SDE1MW9kSkNac000dkRZRE80?=
+ =?utf-8?B?UlhLMVJack4zQ094L1lTZk50c3kxMzc3SFQ3Y2wzWVljRjcyQ0M5MUdYK0xM?=
+ =?utf-8?B?bXhoUTB0NnN1ODBzSVlqVXBnK29NU21vVkdvYitxQVpReURHeWRWZ1RIUUox?=
+ =?utf-8?B?Q0dHLzVJb1lJWGRXV1NYcXg0K0s1NGY1SEtQbStKeElJeVB3YXdqZU9WOTFt?=
+ =?utf-8?B?TzBISUF0cU1WMzhqVk1vSUQrOWZ0ZDlPaVA3ZE9xMDJITGFkQVI5UExDZUFZ?=
+ =?utf-8?B?ekJhSDVyaldZbm8zQjdiejMzRFdvRFc1U2JMakcyQVBHdWkxWWxPbWRGTFoz?=
+ =?utf-8?B?MDkrdGo5RWhlN09uTkJKR1JFZUJ5NWc4dXZRQi81OWhBOUNiUVNqMWNBN0RW?=
+ =?utf-8?B?c2RKaUN6dkgrZmVwd2EwNTdUWU56Z0diVytYMlJGUXZEakpEaGlLYVY5a3dX?=
+ =?utf-8?B?OEpSUmNaeDhDNE5uWDlQZnA4dEVKRzNkb2V1ODk4enFXQmk4SjhzdlJzekUy?=
+ =?utf-8?B?Q2Q5L3JVRTVhZlRuNHp6WkwzWFlhN0c0THlzYTREUVN6WkR1RU1rM3dxQStZ?=
+ =?utf-8?B?Z3B0MXppMHB3VWI5Qm5wQnRLMGhyUm1PdU5tcUJNMG1uN2VNajM2SmFkMWtv?=
+ =?utf-8?B?OFpXODZSWXdZTHBFVkwySVpUdjVzVFcyajB3MVFyRXlya1RYVTUzanh5bkNX?=
+ =?utf-8?B?ck1BVlkrblhCVU9JM3ZGU2svdk5mT1AwMUI0VWljVEFLdzFhd0ZBcnlaRUtz?=
+ =?utf-8?B?UDJmdjdDVUtBT3dOV3JrSEdxQWFRcmpvRzZuN0dmVk53V0dBSzhnaVlHZXJj?=
+ =?utf-8?B?b005dDI3cC9Hc0RWSFo4QWthYWNlZ1JtM0t6emhHKytPdHpZYXV5SWY1Y3BP?=
+ =?utf-8?B?d25CUy9odjZ2aEdwVE9uMlUvd3krU25rOVg1clFJM0FmamhxUWlneVgyaVRY?=
+ =?utf-8?B?VHlxTWxhN0N4R0xyRGErbFJ3aDRpOUxsRHltbUNIWEwycmt0N1RuVXFrZjJZ?=
+ =?utf-8?B?QWlKcjh6MmcxNFFNSHIzbjFaaUcyT2tvMW5XQ25ZcjhkUkloem9sMnFubnBl?=
+ =?utf-8?B?RkFBMEhVNzlQWUNKN0x6UExZTHZNZGFrczVzeDNKK1Y4NGs4OC8vVTlJQTJD?=
+ =?utf-8?B?LzVhazBGcGUxY0ROOGo3dmNIR1pFa0ROVStwT1RqZUFuSlJTeDB0aHZ1YXJz?=
+ =?utf-8?B?MlRPYW5Kd0RIcGRPanRSMVdGN2xwZUl0OHZXajdGa0tZYm12SnZEV3VhUEhV?=
+ =?utf-8?B?VktYM3NUWVU1YWpoR2ZZM0Y1b1k1aGs2YzFoL2NkditMOWI0d3oxWTRpMFdm?=
+ =?utf-8?B?ZG4zM3JCMlVuTWFQZW9Zc09BaFRnekVLajQyOWhGeDZ5Y0hrSVlEZWxJUS9r?=
+ =?utf-8?B?ZUh6ZWIxNmswK2dCTDZBWWtDQXVaVTdUK2V2UzB3dWZUaThQOXdBbEp6Mkcy?=
+ =?utf-8?B?Z0M5NFdtWE8xeXYreHc4MU5OOTRIeFFUN2tQMGt6Y285VmN0RzJMbmdLeUdU?=
+ =?utf-8?Q?FGTDlHAIy65jf8BrNoKMNc9Dl?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e19b2bb5-1f41-4dba-3915-08dd4b59bcea
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 11:38:15.2008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1NR5VkCP0is20R91QiPypuDPINQdORvrq99Z8IfV2M2yw9banSY/eBTj/8NUpOO9/OGm0r+b6kS5cnxsbLwznQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9680
 
-On Wed, Feb 12, 2025 at 03:01:20PM +0800, Peng Fan wrote:
-> On Tue, Feb 11, 2025 at 05:13:21PM +0000, Sudeep Holla wrote:
-> >On Wed, Dec 25, 2024 at 04:20:44PM +0800, Peng Fan (OSS) wrote:
-> >> From: Peng Fan <peng.fan@nxp.com>
-> >> 
-> >> Two drivers scmi_cpufreq.c and scmi_perf_domain.c both use
-> >> SCMI_PROTCOL_PERF protocol, but with different name, so two scmi devices
-> >> will be created. But the fwnode->dev could only point to one device.
-> >> 
-> >> If scmi cpufreq device created earlier, the fwnode->dev will point to
-> >> the scmi cpufreq device. Then the fw_devlink will link performance
-> >> domain user device(consumer) to the scmi cpufreq device(supplier).
-> >> But actually the performance domain user device, such as GPU, should use
-> >> the scmi perf device as supplier. Also if 'cpufreq.off=1' in bootargs,
-> >> the GPU driver will defer probe always, because of the scmi cpufreq
-> >> device not ready.
-> >> 
-> >> Because for cpufreq, no need use fw_devlink. So bypass setting fwnode
-> >> for scmi cpufreq device.
-> >>
-> >
-> >Not 100% sure if above is correct. See:
-> >
-> >Commit 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
-> >
-> >Am I missing something ?
-> 
-> Could we update juno-scmi.dtsi to use ?
-> 
->  &A53_0 {
-> -       clocks = <&scmi_dvfs 1>;
-> +       power-domains = <&scmi_perf x>;
-> +       power-domain-names = "perf";
->  };
+On 2/12/2025 12:58 AM, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
+> Add sof support on imx95. This series also includes some changes to
+> the audio-graph-card2 binding required for the support.
+For the series:
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 
-We can, but I retained it so that the clocks property support can be still
-validated until it is removed. I think there are few downstream users of
-it. It is not just the DTS files you need to look at when dealing with
-such things. It is the bindings that matter. Until bindings are not
-deprecated and made obsolete, support must exist even if you modify the
-only user in the upstream DT.
+Thanks,
+Iulia
 
---
-Regards,
-Sudeep
+> ---
+> Changes in v4:
+> - addressed Frank's comments regarding the DTS.
+> - squashed commits for common and imx95 bindings.
+> - dropped patch introducing driver. This was already handled via
+> https://lore.kernel.org/all/20250207162246.3104-1-laurentiumihalcea111@gmail.com/
+> - introduced two new properties: 'reg-names' and 'memory-region-names',
+> which are now needed by the driver to work properly. Because of this, 'reg'
+> and 'memory-region' properties had to be moved from the common binding as
+> 'reg-names' and 'memory-region-names' depend on them (you'd get a failure
+> when running the binding check otherwise).
+> - added missing 'bitclock-master' and 'frame-master' properties to codec EP.
+> - addressed Krzysztof's comments regarding the imx95 binding
+> - added Krzysztof's Acked-by
+> - Link to v3: https://lore.kernel.org/lkml/20241216145039.3074-1-laurentiumihalcea111@gmail.com/
+>
+> Changes in v3:
+> - Ordered DT nodes alphabetically
+> - Removed 'cpu' and 'cpu_ep' labels from binding example
+> - Some small changes to the binding commit messages/titles.
+> - Link to v2: https://lore.kernel.org/lkml/20241113195240.3699-1-laurentiumihalcea111@gmail.com/
+>
+> Changes in v2:
+> - Added new binding for 95's CM7 core with SOF. fsl,dsp.yaml is no longer used.
+> - "hp-det-gpios" and "widgets" properties now reference the definitions from audio-graph.yaml
+> - Removed extra empty spaces from DTS as suggested by Frank
+> - Ordered 'edma2', 'sai3', 'wm8962' DT nodes alphabetically. The order of the nodes
+> placed inside / is kept the same for readability
+> - Ordered driver header files includes alphabetically as suggested by Frank
+> - Removed "reg-names" and changed the maximum size of the "reg" property to 1 to align
+> with the other NXP CPUs sharing the same programming model (i.e: audio processing with SOF).
+> The region described in the DTS is the SRAM and the mailbox region is now hardcoded in the
+> driver as an offset to the start of the SRAM region.
+> - Added new binding with properties required by all NXP CPUs sharing the same programming
+> model (i.e: audio processing with SOF).
+> - Various driver adjustments made to accomodate the DT changes + some bug fixing related
+> to the mboxes not being requested/free'd on resume/suspend.
+> - Fixed value passed to "dma-channel-mask". A set bit means the channel is masked, not the
+> other way around.
+> - Link to v1: https://lore.kernel.org/lkml/20241023162114.3354-1-laurentiumihalcea111@gmail.com/
+> ---
+>
+> Laurentiu Mihalcea (3):
+>    ASoC: dt-bindings: support imx95's CM7 core
+>    ASoC: dt-bindings: audio-graph-card2: add widgets and hp-det-gpios
+>      support
+>    arm64: dts: imx: add imx95 dts for sof
+>
+>   .../bindings/sound/audio-graph-card2.yaml     |  4 +
+>   .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 64 ++++++++++++++
+>   .../bindings/sound/fsl,sof-cpu.yaml           | 27 ++++++
+>   arch/arm64/boot/dts/freescale/Makefile        |  1 +
+>   .../dts/freescale/imx95-19x19-evk-sof.dts     | 85 +++++++++++++++++++
+>   5 files changed, 181 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+>   create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
+>   create mode 100644 arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
+>
