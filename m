@@ -1,109 +1,96 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E5C205E1C
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 09:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B942046A1
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 09:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739351599; cv=none; b=NCjSlnOSYmwSByXwkSmM597FPCuYmuf1ANtwZxwO1BDuh1VcOCA2OBBkVT9XlQZBqf2mb7zntq+mWEeSMb0lw9+QjD+5IIkALvrwTQC86/YozqLlHvfhLQp5xa/eAvRGPKd9VA1kY+XKQJSLpwikOjINy2/8ObqQFckFBgvNPU0=
+	t=1739352072; cv=none; b=DZRv8PwGkzGAktDeKMXlergfbEAJDrRTaaK8Qu5bvAeitRAw3y+OSUYVB94vCoTozhEW/hyNr+E0aKmASIPrvo27BEiohO73iUlllzkJYItYexnGCNAAl72W+D9romaVLuS8m0JLuduSfIpz/zNt/aZFD9prgXAgJOz4XjvGwtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739351599; c=relaxed/simple;
-	bh=aPD5rYa5UTZEA5lzkKURim7OANCmr8pHXI0PnX7mAMw=;
+	s=arc-20240116; t=1739352072; c=relaxed/simple;
+	bh=ZdCk17au8xwp6xQabJ9SUU2OiCQghf6je+QyJ5T8xMY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E0Bj9YGCseDffP9iJWtqT8XLgI4IB8jM8n82wot4Idmov6b5T/RfcSVOYt/fdpby1mG7Jd8gv0Zbvs1VVQVMHB5q9L5r2br5Ft0kyScyk+M/7p3LF4eVn7FVCSYzIS7mPr9hzE04rbjjT76r0wD+Ftt2CHIJ47d1e6iXMAISrko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrvZX5el; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=Yf0wAm/z2WIyMCH7SqySVI75UcVZkjzb9spCvEo8OkXlYkTe9bkip3wSAHU+7hiNK4vJMtDxBZpWS1c2tm3qcZORDRoiwOeVfYbb+d1Ua8cASI+YlhjSoRgxUN+WQNSrZUPsD+szSE1G+zID38MiKYEdN6uQHZL6fiPhSVmBQCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=adAq4GQg; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrvZX5el"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa8ada6662so4962063a91.1
-        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 01:13:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="adAq4GQg"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-220c8f38febso387865ad.2
+        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 01:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739351597; x=1739956397; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1739352070; x=1739956870; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aPD5rYa5UTZEA5lzkKURim7OANCmr8pHXI0PnX7mAMw=;
-        b=IrvZX5elQ5uFEkj00FneMHk2jamGvDgrRCVe7KMAzp3fNyhsdJ9z8IrO40twY/BFk6
-         qcWSMIr4E3iW7DaCOoBUsbJyB21q5W3nuxcHfwE19rTSBhm9iKunaj0eaOCsebPEDtdM
-         8kVwkguo2n4ds8SEXqzp7byXYq0IuiMavACZMwMXqHwN1zGccQLx39DMnyM1y5h4vJ3m
-         6jT4UmbIYxFKsG9G4LQuQmeWQ3SgTxWPkoeFTwILiYueuIZliD6jnpBuSsoUGud8YfjN
-         CWPF0DXIhA/4YGaMQhgCqrJXnROIGOT58NHo0K5maGtRGNiH/cKcDbCEQoY5BnSOwzIQ
-         n+Aw==
+        bh=ZdCk17au8xwp6xQabJ9SUU2OiCQghf6je+QyJ5T8xMY=;
+        b=adAq4GQgVRWXolKBlujBumWMEAgqSnT4ZG7U4m/xAuviqZ8xlZa0vqFKwhHBXjz28y
+         +6xleqlwvAdmbReiERq2rTaOM5R6sOSnY6kMsQ/FXGIZkN8jNfu1LiRA+FXas9/f1dMw
+         weijse7Ctkbu+rfn2W4tX7Ehg+P9UjlxVV/IpPDvPtwNxWtBWGzUgJJMyOTZEm/Va2ix
+         9YvQS/j1BoaBLCRGKzWzBzpx5hy/rGP6h/qoSAjFsLnywFkN/gU5GnHzSevW0TrrnZ37
+         OLMjOtCKp7IEESeug6A/ItEdHI5LfLB1e99uSvilQ1u6cMeaFJkRFH3oxWVZa3UVOT66
+         JwOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739351597; x=1739956397;
+        d=1e100.net; s=20230601; t=1739352070; x=1739956870;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aPD5rYa5UTZEA5lzkKURim7OANCmr8pHXI0PnX7mAMw=;
-        b=Q2VG3m+Yio5iN5AKnD59BCIL5IzJOmnso0DkCZ80lVMs34zf1TjLuQSqBkSBVW7a6V
-         LcfhVcRFUinVnJHDOL8r/NiiRaC0yneUrbtXXd+vbiKX/qNpbECiHX1K6a3EWG/lKAUr
-         e5unJguYO3jzVpuSx6T/otpsO5Q9koig8iKUjwJ7ik7qR7RO9dkcOT5dsG9tcioEImmz
-         4XwudxzIomlzD2WrcVBDgHZ1K3Bt7f6Xny8SS0Cbkr4xDbGg1mpn5mftcmbers7Wbpuu
-         M0jTS+08xtWbCGBR34662x+Chck06g7rVrvqa7wCrHFPpIW3gTUenIT/HQYhPodTQ2D8
-         FGkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXl5fHwlFSL82QEzN36fvCwciSgQVEcl56yioAr7Pv1ILM7YCJfszA3toZ77yGtxI1DKRI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzU26U2rkA1A/B1x3itgbwzYJG9ftAhkbz1z8HztYoT0c3MqhMe
-	U3oLJkr24iqzSgPcTpgEwW4BT8r/9PFtFG/8OCFRxb4ujUq2LXeJR2c599JqrSSpe3ZqftDKkM4
-	oWHTUAxqRkClFerJmiTUxUjIx5Qs=
-X-Gm-Gg: ASbGncshzoDHr65mM0XopyXNaFVqVfNkbTuagfSKATS/vikX+aozn643J+womufnRsz
-	+bww2HJle7uzwyMmbyiLmR4Xc29VTkKyDdp8QQWt7f2pmwrzjkUZPMTlx8ynRtbX8EvTStQ==
-X-Google-Smtp-Source: AGHT+IHT+ZeidzgbuFPK1T7nat9jcZS+nvvNOTSUNTmWCKgY4f8d3bPZ9z+vTH8FvkV4Hugvz68ajXpWP20x9T9YFVQ=
-X-Received: by 2002:a17:90b:2c84:b0:2ea:7cd5:4ad6 with SMTP id
- 98e67ed59e1d1-2fbf5c71362mr3494611a91.32.1739351596956; Wed, 12 Feb 2025
- 01:13:16 -0800 (PST)
+        bh=ZdCk17au8xwp6xQabJ9SUU2OiCQghf6je+QyJ5T8xMY=;
+        b=K0/fChVSddgK+wMtEYT4STEXvY19W64Febr1lqjA7CQnEdpDDaHIUOOP2AhUnvdALm
+         Wrro64SpQN2e4IzWR4lo8cf35DJ3YfS1nd2+fvAuFE1jZToyk5MIVMNnNF7vMi+RJNez
+         aePGKYIpXnPavaP3wxsLm+197SVcX2gdTu2mirCfxjTrnd52+o5KRpDggZbMwnB9Z4Su
+         dKqc0Z8XlCknt8+G2nyzn6pKZmxlwZ7priIvnygwR5X0SAEoUNFB6Tuv0px/4YJJKk3A
+         IsGLW+HjIuJDct3BxeNz5MY+Cq5boKPxynmVGlZ/5rYHXHQQ1kb39Da9eVG3XDHH1fBN
+         eedg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJh8wi3LTIfyVD6+qr3oed8hj09BOJmAgGmBH/cb/ZRLOZbb5FNX31F2THvYIil1vYsy0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzrdANtMYjjbORDh+NoyqYemip3DlKEBlORmrfpFkioBex2vTR2
+	X4CK2bvryZXc1TgUoNmf0ArTPi91CzEu6R8daCmjcZom2IBmCl345Gyf1pULN3EDnjPrCMCGFCo
+	zfmgS6Sub2SKLJp2dP8DakP46RzM=
+X-Gm-Gg: ASbGncsCon/64eU9D49acQGERfSazsgctF6BL3stsSEwBbgJ5BuFCRwhONuM04qiUbF
+	7nQN4zT43IwC5rvmK+OOzor09RSn9JR15TA00qzyWv0dXcVS3uXQR9t8iURNvyPOsgy6AhA==
+X-Google-Smtp-Source: AGHT+IFIYrNXPCtCpXpuE+cUBbtKtexwn5rrPm2wY9NepWlkuErIAfcW8lAkQqMlLlKPI7uSLLuikxG2ZiJyOJDuxzY=
+X-Received: by 2002:a17:903:2289:b0:215:4d90:4caf with SMTP id
+ d9443c01a7336-220bdef0463mr36079195ad.14.1739352070395; Wed, 12 Feb 2025
+ 01:21:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241210125338.104959-1-daniel.baluta@nxp.com>
- <20241210125338.104959-6-daniel.baluta@nxp.com> <l3z3mu5inmfc23v4mymtcb4gnzic5zupqfpcuk7vqeweluy5jn@c2b5ex4lkdgc>
-In-Reply-To: <l3z3mu5inmfc23v4mymtcb4gnzic5zupqfpcuk7vqeweluy5jn@c2b5ex4lkdgc>
+References: <20250211225018.2642-1-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20250211225018.2642-1-laurentiumihalcea111@gmail.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 12 Feb 2025 11:14:50 +0200
-X-Gm-Features: AWEUYZlmAF9HL7F1Di0jk-WkuyiQ4SgROYkfG9zP3ZC-TaPsUodPXn0I9h7DQYQ
-Message-ID: <CAEnQRZDZSj2tkMzaqZfaO0e8drO3U2j_qxoZSNocAS1Qaq1Q-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] arm64: dts: imx8mp: Add fsl,dsp-ctrl property for dsp
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, festevam@gmail.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, frank.li@nxp.com, aisheng.dong@nxp.com, 
-	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, iuliana.prodan@nxp.com, 
-	a.fatoum@pengutronix.de
+Date: Wed, 12 Feb 2025 11:22:44 +0200
+X-Gm-Features: AWEUYZnMCWedaqcatxfni4tn_ELXHzMLDDkwLubYPADMeAbDeWbIHEv8qAemnDM
+Message-ID: <CAEnQRZBEKoXeuUXat+EGfGcYMGKpRW-2RgNQWnKLXSxfKe+oFw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: SOF: imx-common: set sdev->pdata->hw_pdata after
+ common is alloc'd
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	imx@lists.linux.dev, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 11:07=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
+On Wed, Feb 12, 2025 at 12:50=E2=80=AFAM Laurentiu Mihalcea
+<laurentiumihalcea111@gmail.com> wrote:
 >
-> On Tue, Dec 10, 2024 at 02:53:37PM +0200, Daniel Baluta wrote:
-> > Audio block control contains a set of registers some of them used for
-> > DSP configuration.
-> >
-> > Drivers (rproc, SOF) are using fsl,dsp-ctrl property to access those
-> > registers in order to control the operations of the DSP (e.g for
-> > start, reset, etc).
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> This should have been implemented as reset controller, not syscon. It's
-> really poor choice to call everything syscon. It does not scale, does
-> not provide you runtime PM or probe ordering (device links). Quick look
-> at your drivers suggest that you have exacvtly that problems.
+> 'imx_unregister_action' uses 'sdev->pdata->hw_pdata' to fetch the pointer
+> to the common data structure. As such, if 'sdev->pdata->hw_pdata' is not
+> set before adding 'imx_unregister_action' to the devres list, we risk
+> derefrencing a NULL pointer if any of the calls between
+> 'devm_add_action_or_reset' and 'sdev->pdata->hw_pdata =3D common' fails.
+>
+> Set 'sdev->pdata->hw_pdata' to point to 'common' as soon as 'common' is
+> allocated.
+>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Hi Krzysztof,
+Fixes: 651e0ed391b1 (" ASoC: SOF: imx: introduce more common
+structures and functions")
 
-The bits we are using from audio-blck-ctrl for controlling the DSP are
-not for reset!
-They are only for Run/Stall the DSP.
-
-The reset is done via DAP interface. I will sent a separate patch to abstra=
-ct
-the reset interaction using a reset controller. But for Run/Stall bits we n=
-eed
-to use a syscon.
-
-thanks,
-Daniel.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
