@@ -1,207 +1,168 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2068.outbound.protection.outlook.com [40.107.20.68])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165C7205AA8
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 07:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739346119; cv=fail; b=pbn7WfA/rfyE1DgzoZC3ps0jt/5+7D02EZQcpMHVzj8oMgUESS+Va3kfzG4r9KWCSd3DTMzVKzv8WjbuNBOS9oEQZqm6ZJkamLNeV53hgDFAHKF5f7Eiw7OgUd39sdWdwnhH6fEWc8N1QPT/Urgt6MD7bmI3OHg18Pt48+s8UKo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739346119; c=relaxed/simple;
-	bh=bYyb0ZqU/jVvoPkFjCrUUvRwrziPhK36/q8DkNsJRpc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=E6mCxTL2jckrQILSTHvb+UyCVOOsVI9ugVK/gx4T49GN9D+navdY1xDwv8z4Ur7s7EifsJ1gBQNz950igjDlKAPVTCx45CYzMOiJ+rxp1i982oLKkyzXrG8NQs9fol/wHEAjGQtytzazgnP2nDNEQ9k0sxY8H8HUc1dOaF/czvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ikXY0VVp; arc=fail smtp.client-ip=40.107.20.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE79204C1B
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 08:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739347872; cv=none; b=Yx31cDzVreStG3XepnZuRIk24YJ9B7kRPh3/9+MpzKsjOaVsku5dm6jFw1CyKfNxj8rcZiAuA7XPbxbpVimvvibCvAQ0Bk3TLpXJ80EnZe5zSu0Tv8bbzV0zAg4wCOFgeuRXKUmPDRX01dVqeVYMHD8TycURD7RtNZgDEbJg5Oo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739347872; c=relaxed/simple;
+	bh=KHu1LdPZoLMMLxxmSOmSC9NR1LGDoVJ+Fu6Ve5qXRFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cxDbA19j50p01/txKOVDpU0swL9Wfhcm5t91iSxpaea5p1mOinVhlZLIggB/qmrGONp0ZoyTtXs4p/SsPGAWgFC8cVvQRAHgitPgjnrFIkEPRP/xkraU/E36atns442gzgRAoiYlQtQ3huadiu47RZPfsgdnJO1g/pgB9CJcZHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=RbWHpu60; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=f8FcOgzt reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ikXY0VVp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EgfXTY4fkcEJ+IXD2KXBct4opT7t1xGpFyixLOvPEZ+9VYGTtmeYUgxBNLpmytqCSLPMg4VJFDjaTUjka3rwy0c8mYu+KyBaoMPiLY1ooESp6rTS5OeeQdacoedTtPiGN64HGgkmto2WMvgK4xAt//lFjUfgDIUn7Poe4FrKCUaoTSWzybVYtB94EPc6DEICb8d40/I0223AUbGEXnUVseqD+3WTxOWqGhOEPlgSdztLJMfNpxYMkEXNGs1VFpUalaiCHDe8Ax5d9b3y5s9Ob6kmH7FDNoiEVBF5WXPhEgDOO8c3OLmZpuOZj3nxiZUGvTCLqdACiskk/YUWlFr7Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I9H/UZrGNJ2uV2Kffx5loszWsQdrI+3pBlee1YOkCbI=;
- b=RAujjNsGYHXVyeYdzT/bk7QgK0nyaOuZPR9bVIh2cBDSzi4H2B5bHxch1FxXEeBjL2DvJwf51t7apeNgMSx3vlHH1H8n4JElfUdZtuz2/D0gLTQBbT+4s4PTqOOFQqiHK7TEtJ5bQLr6OWqqJMSAclGtMjWidmFvdf3pzWfXEyVIqt/+tPcMBcDxlr24qXewjzYYX7ILyBOJaRVTPcBK0cpQT/7kQ6fj+i37sVc6/ZJkVbua8Hx90w+Rt5/BNiG6oFnEGz/kG9qmzev7ONVkI0Et7pzvg95lvcCdTtO4miQ004ePuk5mWc9h7e8Uwf/qk1YNOYWxcXiDAXV27mzdEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I9H/UZrGNJ2uV2Kffx5loszWsQdrI+3pBlee1YOkCbI=;
- b=ikXY0VVpZOsbBz/B1i0ZuHXE0rKnhqJKv3g23wsZQKczxw9KCISSVDbIGpXyo/zgiLTIByWrnLV4KECAc3yYJVX6GTz/BFZ8D++X0jnrRy4UBijWJhlN6UnPF7of9FjoJZQYKwCWfuH3+oMXrGBJId5pvFyuURCCbD3pBsUeFqvLM2rsYMs/BRIdJ3ctGOQgpJqvlWSzfbSW12E+7HVGL0K1oOxrEOCgco/9BfvCESPjHygBS189vuhncUJAYmT1RPOaLujz3pMMfMwkHkXJRvQp78O0bH+9lqG0gNtHwohQlOX4Um8J7E4ZJV2rEBj2EJO1WvBLWuWnxxw+YAzh2w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA1PR04MB10865.eurprd04.prod.outlook.com (2603:10a6:102:48a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Wed, 12 Feb
- 2025 07:41:53 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8445.008; Wed, 12 Feb 2025
- 07:41:53 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Date: Wed, 12 Feb 2025 15:40:29 +0800
-Subject: [PATCH v2 7/7] MAINTAINERS: add entry for i.MX SCMI extensions
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250212-imx-lmm-cpu-v2-7-3aee005968c1@nxp.com>
-References: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
-In-Reply-To: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-kernel@vger.kernel.org, 
- arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739346036; l=977;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=BIymGkA7Nj8ryPe/v/aNAs5333irqosIJ33tNalCWTs=;
- b=szFeeck/SpY1sSS8wc/++V623KjdAVWKCB7vVybseLbTtowtBtaHJbAIH5M1sNjXxdNzR1PZg
- 8Tqq1NCsrP8DznNxyIK80+nDc6m4wXLmx7reb7h/Dwac9I+MmHzWzLh
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SI2P153CA0014.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::6)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="RbWHpu60";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="f8FcOgzt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1739347869; x=1770883869;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ebrh2pOj9a+WCHOfQy3AldxKt0RQJILfJP7w8ELhKWs=;
+  b=RbWHpu606HdXmJ61sRtYN50snFrkOys6KiHMu5tniiFHbV7J0hWnA8jT
+   HDOvQwGaycSkJes2Rr0+HSy2QUrPwpkKMFLrEGYtrCWiB7W1YnioNyoaD
+   SYrS2oN/EWNzB4G9xMp/NOl7IXz5Z2IGxI8YCcqceS1KLH3jDOpwc1RXy
+   JaEpzr/Eb6XsJq3oHdNgaNbupiQyplzcDlFwH140VPF+68axcwR6bh3XJ
+   Y3HitUQr9kcgdc+HCrGbLsIBzfnzXx2qImd9EEJ1mWAii/+FlloXWyw93
+   X7eHJlkajJsFGyqmk2dQQtot0RhIis4t8vftsMATiAmyuJS8vQmSFvKXc
+   Q==;
+X-CSE-ConnectionGUID: jp/xOS/UTUmFNhbEqlMSOg==
+X-CSE-MsgGUID: IFthUYPIQ0O5JgMafUVjGw==
+X-IronPort-AV: E=Sophos;i="6.13,279,1732575600"; 
+   d="scan'208";a="41778546"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 12 Feb 2025 09:11:00 +0100
+X-CheckPoint: {67AC5794-B-C21CC984-D1047F1F}
+X-MAIL-CPID: 70FDB8AC22B42A0ACE772440BDA64D6F_5
+X-Control-Analysis: str=0001.0A00636F.67AC5794.00CB,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 09E9016A031;
+	Wed, 12 Feb 2025 09:10:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1739347855;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ebrh2pOj9a+WCHOfQy3AldxKt0RQJILfJP7w8ELhKWs=;
+	b=f8FcOgztq6fes3vM/7CvY2rSKSKOMniJdix9XndFkfY8RpufORB/SLLs+nI2s41/ZQCu/X
+	yqni/qQKcZAo010dcy/NUnvTPHKNeam83NjIoojMkIVhNDGltYI/emrhg0ODzfsGML8Kh6
+	0BwTljpycstH0lQYYyp8bp/rUBd3SqaHkFN3t5CJrwpfw7/X1XDuD7RasNQWTuZvUNX8CS
+	MgNLRwSIOQZJ1iSHhPGZ/gLmcTdi/o7spHz8fvL/bQI0J5rwkiYczQMBkjewlYWoPJ/Gjv
+	84qK0gBDf7e8bS1+Omt288PbcPWN97XySBTm3NItO0vbkbFtwrHbCsX74vqwrQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 04/10] arm64: dts: imx8mn: Add access-controller references
+Date: Wed, 12 Feb 2025 09:10:53 +0100
+Message-ID: <10618164.nUPlyArG6x@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250211033340.GA13109@localhost.localdomain>
+References: <20250207083616.1442887-1-alexander.stein@ew.tq-group.com> <2222299.irdbgypaU6@steina-w> <20250211033340.GA13109@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA1PR04MB10865:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9968534-3cb4-4362-4ead-08dd4b38b7de
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cGlQVE5WUU90Wk4rTmsycGs5dUI4b2x5LzRoN1hQWWRoVGtiNDEyKzd3N244?=
- =?utf-8?B?TnhDSmhBOEZDUFpZajF5ZkZjL21uRmNYU0tCSDdsV0RMOWJ2TUVvUlIrOWx2?=
- =?utf-8?B?QW5ORG5JNnJOc2QrSFZ2dVJrK2lSQmtIOXM0WnZKR0lZQzRySFF4NzBiUVZD?=
- =?utf-8?B?aG5lSkpIZm45Q1JHbTY4UVMrNVJWRGREdFBRUzdNaitEdUorL1VPalBiQ1Vs?=
- =?utf-8?B?akhPMlZidnJxWGdFWnhsMnJDS2ROK3JHSGg0VnEzZFhRejkxREhXc0gxYUh5?=
- =?utf-8?B?aTVMZlpoeDYwSGUzTytzaG54NTBBcTNhNUhaNGJpdDhuYVQ3eEE2aTRkZXR4?=
- =?utf-8?B?QzZkdWxXcUJDQ2RobTVMSWd3NGNhaVoyaG1XRHlvcTJZUnMxZnVOZWJiYkJP?=
- =?utf-8?B?b2VHRTM1TDRiVHZPTjFoNDZ0bzFGdEV3b0hiZ09kNm9BZVE2aHF2bitEYXhw?=
- =?utf-8?B?MUVLQzg0SytwZk90VDF3T2RNVHMvbkJFTUZRblQ1cXFtSVhKdGRiQ1R3N1J2?=
- =?utf-8?B?WjJhY0pYQjczd1MrdDNUZmgwRFlUSXRBbTk1c2FpTmZ4TE0rdEovWjFLdER5?=
- =?utf-8?B?MW8zWFV0YUlTN1RxUGFxcVVtODlDUTd2eGZwUHBCNms2WjlNdm5mdzc5RHpG?=
- =?utf-8?B?R2Rva0VsSndPVlVmR1BoZERmZkVCTXEwMnZsbENNMllaLzVSbjhROFJLeTU5?=
- =?utf-8?B?SittMVZ1WmQ3U0J4TEg1bFJaeVdFUnhxL3BmbkxUQ2FGZ1lsK1hROUdiclFF?=
- =?utf-8?B?MGhOWmpzN0EvdVpxNjZpSFZlczg0WEpqemhIamFqeUVTTE5mSCtXRU94Q1J5?=
- =?utf-8?B?VFV1RDdGbUlVMUVNNG5sUktyRjdUaTkvRThidUIvaGtaSzNWRUkvNWwzSHky?=
- =?utf-8?B?WTAvZk9qNnMzRnNQYmp5Y3BwTGdTbG40OHhOVVBSSHpkS29sYjMwdjNFK05S?=
- =?utf-8?B?Q0MxODN3V1UxQTA1eDRBTWtRYWhqSHgyL3lCL0FhTjlWeUtYbFRnRGRwR0Zr?=
- =?utf-8?B?TmpncU1WTTYra1UzZjViRHZ0cDlNaWdreStWNHdMaTRGdjh4KzdXVVRvQkR4?=
- =?utf-8?B?bUVlVHBnOW5vUW4vUzhlVGo2dEFmREZnRStSSHRQbUdiRVJhSTAxdzR5a2xQ?=
- =?utf-8?B?QW9YNUdNT0pxUTZJUnpjRHVsdUVBQVJoYU1zZ3QwTWtMZUZoQURVajR6Mk5s?=
- =?utf-8?B?c1lrZ3BpTHdvVjE0cTBIUVQ2ZVM3Q0R0Y0NEV2xBYjg3a1NWRmhraDlESWpH?=
- =?utf-8?B?bnJjWUtjdC9RMTZpSHVOQWlmb0Jra3RqdmtBZWQ5ZStvTXNhRWVQbTFTMXdw?=
- =?utf-8?B?MTFaSkE2OHRKblRRY3hIS2dBSkxGWVd4N0hqRTRmTks5Z0ZoTFZIaEVVRTh5?=
- =?utf-8?B?SEVuSGhwbVI0eC9ydkR4d3NsN1o1ZnlnMXBRbWhHVjRjL1FEOFZwcEdkYXYx?=
- =?utf-8?B?NVE3dERSTGdVbVF1d0lKRysra21OeUdiTFI4b2JWQ0xTb3N6dzc2eS95YnhO?=
- =?utf-8?B?RTJHN0VtRExtM3RMdjkzeklaRjVwMVcwbThoY1VlclRmdDl1dUdyQVlRczN1?=
- =?utf-8?B?Rks3dUhNNWxnSUh4WTdCTkQ2R3B6NmNxQzA4eEdzZHZFelBIVll4RjYwWVJ0?=
- =?utf-8?B?cm1uV1pLaWdHSXFoeHBBREpONVdxTWRkRU51M2xFNzJVRFBMdHJwL0xWT0Z2?=
- =?utf-8?B?b2hkZ1lQZFRHTFRjK0pCVnNsY2FvL0VuckxJRXJaaVVsaHZkNXZnQTdEQy9D?=
- =?utf-8?B?OXZKUlFacy9PMVV4eFg1L25DVnZaRXdMbjZJdmtNK3RYM1NQK1dzUmEzTFRw?=
- =?utf-8?B?blo1TG9yUFVqZWQxT3BFLytLK0RUblVWRXhyYmloQ29XVFJ5OEs3a1VqUXRT?=
- =?utf-8?B?czNBQXlXZFBWd3FQeUFyVXBqRWczbTd3ZWRjMWk2dUEzQnB6RTJha3VGZjF3?=
- =?utf-8?Q?Xoeb1fKVzJ6415lbPGpsEf6ST2PesZQg?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UHlIT0R2TGtuM25EQ3l1dFVXcG9pTDB2U0tOYnFxQStQa0hmMDN2YVNteDVO?=
- =?utf-8?B?VlFzWDVPcXphbTRWTEc4anpnWWZCbENPRE9tR2V4cjRGWmJHM1lKRmE0eEFm?=
- =?utf-8?B?T1NTQm1VUWlQbTBHUzh1eTF2dEFVVDJBMUJpaG16S0JoMGowYVNEeVlsNnFW?=
- =?utf-8?B?Ymo5M1BFMzlVZnhKb3FFVXhpZWpxbFdVa1VMR0c4QXVUWTdkcWFGdnhrdGV5?=
- =?utf-8?B?Z0w5YU9HQXlSZjJiYWNQaU1NaUFiMW1VdWlsc29ra2dmYlN0RERQZmFjODUz?=
- =?utf-8?B?VmExNjhMSlNRdERFOHlXVkZoaDB6KzlTOFBKbTB5R0NLcE5VMmhuSy9LTkp2?=
- =?utf-8?B?Rmkya0Y0ZUZQYTZlZ2RWNlY2UzZIKytGV3pwVndmYUw2eERCdEFXTk9pekQz?=
- =?utf-8?B?djRmYitlUEdIRkdVMHRtYU02UTR6Vzk1cVRyazVGZFM2STlJcTZ4QjNUYXA2?=
- =?utf-8?B?QzZHR3J6bFJWZ0VkZFpObEU2WHJCcjh3bHBuK3JjMHlxVURxY2I4elhGQ1I0?=
- =?utf-8?B?U1NrdStZWVhrZjJsSkJXR01TNlhVQmIyZDFhYVhaV2ZwQ2lmQzFEdmtqdUhk?=
- =?utf-8?B?ZWI2VUJWS1hTcjBqQ24yM205OVBzQnJLS054SHlLMWZGM0huU1M2cGFiQjQ3?=
- =?utf-8?B?RXRXcS95by9hLzhEZTJuQXRIY285eDkyM3pDTHhqbDV4YzdaOTE0d3dCK3lC?=
- =?utf-8?B?bW01UW5VQXZGRmMzNFJKMVZiTFBPeXI2S1oyV1NEVEpGcS9Wb21UcXR0dldi?=
- =?utf-8?B?TENrK2NEMWNndUthRG5TTE1ObW5nTTBvbFRONitHWVdhUlhxOCtnTnZsZTNk?=
- =?utf-8?B?djhhNllGNnRJai95ZG80U1BzUWtPbkhmMU9HbHF0SE5PNmpOY2FwKzdhcTMy?=
- =?utf-8?B?aktoK2puckVndW5YaEZzR0Z4SVRtQ25PZFpUSlVUbXFsWW9uMzVWcGQ2Sjhr?=
- =?utf-8?B?V0V0a1FLd0tzbGx4a0xZZ0lFSXdSTDViZlM0eUJpakw3amxUY0JqU0RpYVQx?=
- =?utf-8?B?Q0IyRldkUkNBNDJhTW9vOWtXQUdscmdLRXowSkFjWkVpeVZVeGYvajBlOUxq?=
- =?utf-8?B?bzVjakxQZERFN3VNdVBzcUFJaWNnWTIxN3BTUGdNbktzc0NqdHlLVUlMTitw?=
- =?utf-8?B?Vnd1SVR3UTdzeDJmU2pWcEVwaXpwRFFuK0xtdU9HT05ZZ2NzRitTaDVlNitR?=
- =?utf-8?B?K2pBaDRTOExmeGZ6ZTJqSHBNSmZHSEhUWkZXNTZOU05ubTU3SFkvZnJGVkdK?=
- =?utf-8?B?THRBMWJqemc0a1dyL2xSbTFMWFlmWjd1RnhaMnZBR3F6YVFoMTBwYnpuTUlD?=
- =?utf-8?B?YitoejJTZktSeHBJaVNWanI1cUtRb0RZQ0RxNzZSSFJ1RGZCYjNLT1JEWDBs?=
- =?utf-8?B?bk9idVJQTG42M3lSb2Z2VHhPbjh4dWJhMlpmUHVwVVQvekhrcFpRaXhxT3RD?=
- =?utf-8?B?dnVKNXg2M2wycXN2eE8veU84aVRIcjYxbW9ZS1V1YW1PTWtqdGJDeEdCb0VV?=
- =?utf-8?B?R0N1YXI2ZXNmNnQrdzMxeDBlYis5UlZ5VG5aSVJ3REljWDl4cHN5a2srY0N5?=
- =?utf-8?B?Zy9tK3JjMnM4UTBLZkMvRWtma1pJbHd2Vi9tWnJyZ3Zad2x2U2xpa2Y1N3lp?=
- =?utf-8?B?S0xNcUNXdUNSMEJRaGN6ci9ZdjY3RDNvcWNEK3NSV2ZQeW5DNDF5bEttVy9T?=
- =?utf-8?B?bUxENm9CejBsK3ZHSWI5MkFIVVFPNnNOS3ptL3JyQkhLZzdHOXQyd1hscHlL?=
- =?utf-8?B?SUJRUHF5Lzl0eWxJazFmeDUzVkU2RThpb1JPQUdPTTh4c1lia2MrWGZiRm5L?=
- =?utf-8?B?VHA5N3lVbmwzUnhEWFMxNTEwWEVpKy8xOHVtRnNVeVhUOFdPWXBPcUVudVdv?=
- =?utf-8?B?MllLZHh2U0JFMEZkQ0QvYURKWk52MlhqR3ExK1g2WDc0WFR5VnQ1dHZCaW80?=
- =?utf-8?B?VmFZUERlNVlPY1crM3Q2S0ltSHBNVnpwZEZ1Y1RrbkJ2c3FWakNscnVjeTdG?=
- =?utf-8?B?SXVHQno1TjlIZHNyQk5SSzNoOUJwVk4yUWpHUkhGU3crNjVlVlBKQTNVVG03?=
- =?utf-8?B?b2J2cFRzS1cxNDRVbXAzNWZzdHArc0RBMWFXYy9QdHFGa2RIVHYwUW42aTBF?=
- =?utf-8?Q?EwyjjThk0mRj/Z9e9MtOb1ptI?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9968534-3cb4-4362-4ead-08dd4b38b7de
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 07:41:53.2979
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hWxPUg1sc1ALeBUGOsZwvJhXE2iU5yqodpQt/GkWoneTrIazbEFtv/6oZl0rcxdXMDcKoc8XDSuQCasiJ8/CIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10865
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Peng Fan <peng.fan@nxp.com>
+Am Dienstag, 11. Februar 2025, 04:33:41 CET schrieb Peng Fan:
+>=20
+> On Mon, Feb 10, 2025 at 04:48:56PM +0100, Alexander Stein wrote:
+> >Am Montag, 10. Februar 2025, 03:36:48 CET schrieb Peng Fan:
+> >> > Subject: Re: [PATCH v2 04/10] arm64: dts: imx8mn: Add access-
+> >> > controller references
+> >> >=20
+> >> > Hi Peng,
+> >> >=20
+> >> > Am Freitag, 7. Februar 2025, 13:02:13 CET schrieb Peng Fan:
+> >> > > On Fri, Feb 07, 2025 at 09:36:09AM +0100, Alexander Stein wrote:
+> >> > > >Mark ocotp as a access-controller and add references on periphera=
+ls
+> >> > > >which can be disabled (fused).
+> >> > >
+> >> > > I am not sure whether gpcv2 changes should be included in this
+> >> > > patchset or not. Just add access-controller for fused IP will not =
+work.
+> >> >=20
+> >> > Well, I was able to successfully boot a i.MX8M Nano DualLite.
+> >> >=20
+> >> > > i.MX8M BLK-CTRL/GPC will hang if the related power domain is still
+> >> > > touched by kernel. The pgc can't power up/down because clock is
+> >> > gated.
+> >> >=20
+> >> > Well, with GPU node disabled, no one should enable the power domain.
+> >> > But to be on the safe side I would also add access-controllers to the
+> >> > corresponding power domains as well.
+> >> >=20
+> >> > > This comment also apply to i.MX8MM/P.
+> >> >=20
+> >> > Sure. Do you have any information what is actually disabled by those
+> >> > fused?
+> >> > It seems it's the IP and their power domains. Anything else?
+> >>=20
+> >> In NXP downstream there is a patch for  drivers/pmdomain/imx/imx8m-blk=
+=2Dctrl.c
+> >>=20
+> >> soc: imx8m-blk-ctrl: Support fused modules
+> >>    =20
+> >>     For fused module, its pgc can't power up/down and clock is gated.
+> >>     Because imx8m-blk-ctrl driver will pm_runtime_get_sync/pm_runtime_=
+put
+> >>     all power domains during suspend/resume. So we have to remove the
+> >>     pgc and clock of fused module from blk-ctrl DTS node.
+> >>     Update the driver to support such case.
+> >>=20
+> >> But this patch also needs U-Boot to update device tree nodes,
+> >> I recalled that U-Boot will remove gpc nodes, but not update blk-ctrl =
+nodes.
+> >
+> >Does it work, if we add the access-controller as well for pgc_gpu3d
+> >on imx8mp? There is nothing in blk-ctrl AFAICS. But for VPU there is.
+>=20
+> Adding access-controller under pgc_gpu node will not make fwdevlink
+> work for the pgc_gpu nodes. It does not have compatible, and device
+> is created by gpcv2 driver using platform_device_alloc. Same to vpu.
+>=20
+> >Which clock needs to be removed there in case g1 is disabled?
+>=20
+> Take i.MX8MP VC8000E as example, the vpumix blk ctrl, the vc8000e
+> reference under vpumix blkctrl should be removed, including pd and clock.
 
-Add entry for i.MX SCMI extensions and myself as maintainer
+Wait, so you want to remove the last entry from these properties?
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> clocks =3D <&clk IMX8MP_CLK_VPU_G1_ROOT>,
+> 	 <&clk IMX8MP_CLK_VPU_G2_ROOT>,
+> 	 <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> clock-names =3D "g1", "g2", "vc8000e";
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3520ce6f98592f5057bb220da35eaaffa5dd33c4..4a704c98a04b4f17707573f6b7fc1fb4b89c3733 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23052,6 +23052,15 @@ F:	include/linux/sc[mp]i_protocol.h
- F:	include/trace/events/scmi.h
- F:	include/uapi/linux/virtio_scmi.h
- 
-+SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX Extension Message Protocol drivers
-+M:	Peng Fan <peng.fan@nxp.com>
-+L:	arm-scmi@vger.kernel.org
-+L:	imx@lists.linux.dev
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/firmware/nxp,*scmi.yaml
-+F:	drivers/firmware/arm_scmi/vendors/imx/
-+
- SYSTEM RESET/SHUTDOWN DRIVERS
- M:	Sebastian Reichel <sre@kernel.org>
- L:	linux-pm@vger.kernel.org
+This violates the DT binding.
 
--- 
-2.37.1
+> So for non-blkctrl nodes, it is fine to use access-controller and rely
+> on fwdelink to defer probe. But for blk ctrl nodes, it will not work.
+>=20
+> For pgc nodes, it may or may not matter, not very sure for now.
+>=20
+> For blk ctrl nodes, we need provide a generic API saying
+> access_control_check or directly using nvmem API.
+
+Reading access-controllers.yaml this should still be feasible for
+providing the necessary information.
+But I'm note sure where to implement this. In e.g. imx-ocotp would be a very
+SoC-specific API.
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
