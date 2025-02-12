@@ -1,75 +1,67 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2076.outbound.protection.outlook.com [40.107.241.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6CF20967D
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 15:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1B81E0DB3
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 16:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739375452; cv=fail; b=aHsqH2YxynspNy2wCApBSeF54r67+YChsWx90FRqLaV1Q5Yn7mImesE79fXQd8Vle4nmm0nJriCCKIu0YBCZHgitp1Iv1U107v4jcsZA6Bdj5CowyUbUBF/lw0DQrkNq55K01oMgyD69VqwKAGTa7qxkI365/Fu/z+yArNQxPr0=
+	t=1739376190; cv=fail; b=Rc0GOWDKZZ5W6S5ftoRTv7vH0QlYGm6vl0wODFZpc1doov2tFWE/POK9rq7m+5NOAPyJE1bjAUwMRvKxFvchNFCAb2c2qMLppcgX9qbcpspoq51OhlRSQ49KiD/yotiXFc6BNQlhbdEJdSnEi8d5FvVLa3hwvvGFkxOnNxPTHC4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739375452; c=relaxed/simple;
-	bh=oZ+lnoHj8G+pY3httJFV3v/sxwS0YG5uJi1PnRQyL2w=;
+	s=arc-20240116; t=1739376190; c=relaxed/simple;
+	bh=G/5Q5cuWnq5Hwwj3MNiNtSTC7xxLOc55ZKGLHWJJLTU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=K5at4yZ0miRFPN33xOGJ2+/0uRk5UwAwSkmixgV40d9ugyqWYjPSq3YLGbNZgCV7Dt7gBq6uuIA/a6UX8QDhcv/D2gxZXkXn3BzF1q96P5qfzz7QPDTfERG3X93Yv1wBBuBVCqW0xDmWMpGkg8z3QzWWBML/hIpzLfjmU6fEsXE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iz3CyGUz; arc=fail smtp.client-ip=52.101.70.2
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qNy6fvL1sbdqY5nqANHCzx/ZipR2xL4RlT0vDNChv6nbTIQ080APyAUryLu5UJY2qsyYVbl43swlfN+2NeMM578x1NyZubfoHe9mvCuvAtJ27hzkAiNi8pw+Y6gqEGIIUiNWEYOcSU4V+nRsTiD0lP/fiLe2KJIZO6T++aFsLr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=n9zYIluu; arc=fail smtp.client-ip=40.107.241.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iz3CyGUz"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="n9zYIluu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=monOL7vWE4YJDM7mY2bwuGa8DvTzoMXqAVxl35pSZTcrnl7cOvnBaBs9Se+hr3ZDzey+gyCwOWmhX8+w2NFhrFacZKdL82vMV9MDXVdLWUK6vMkW+uQ6Zipzv+60I5FbvZByKbt/hFSjHmH0mKDPPuW+yVNJVYk+/FqtvjBQVxI5SJc07dw8fLJQwSgBJLOBwnfpvD/hmunMD7+geSoKzD/R35vvwhFJxACWK8eAkiOEjawrpmrnqyvBb3UqdebrvCzmFWjjZKWooCEu6OkK9vhIE3GbiWfa3X6Ei8tIG+dLpbcT3Mv4Wg4bWa7BSueamExlRBeLRxdNn2JgbF/kyw==
+ b=Yukl52Q8T3bYlQTZu+7geQ4tynE3YlJGKR7JGray+n8pMs0BSEc78P7LWBzBd7SD/ZOWZMQlVY6GLle5MHuZuTYjYcZYV+0DXih864HIXnMchcXCl/AzTCAELxhKgh86c7nKPZNRGKpoWHiEOfLibeyPva9B29b6bYl9aI9w9L+3rVZ3St9j8LGPUQAeOVZ5JF8Ofbi2saNUNnTdkfRkTEgqoVi2PTiNxzn2vWnNwVt9X8oC7cDDb5G4TNHFOSWwKf+ecOx+cIRxdEweJudGlJxyFHb5pu7pFwREQvxgTVWRP6WEEAMEy1Vh5UcC/kZLzoYHllO7+S5ecyfBUIW0NQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=trGDWQMBvvGyBYaN5VemRhALbwvx0efksnjkYaJjf2I=;
- b=psZDXy4DW3HdQ91efeoDYvsHj6ZG8eep2hGL3p5iQnqKq3WquAlp3PyphXMzTAQohuq9sJSX8Fd+Xo9AqeerIbR/I3ZakJWxuiESlsLlJc6i34zIwkSdrZoNVdyQBJWft2t4ZjV2ORhBSwM9Jcg6tSxiV+6PicTfnUolHLEnWVdNvgpUyiYSH+3hNbz8tQC/pYDej3zN5sEPiwMr/lHHOXQTZoEwaciZO7QN0We4SdSJFOpTirPDyekaRPEhz7gp39tHrqglEubx6qycw3SCjIsCnz5HB0CWqUsn/fFHBygH4cVYsokZrVe6usOsQ/KdLM6sqOE2kHJaj6rG4LodzA==
+ bh=h01tBPiU2ygRwWSeLPL4wTT6oU1ghrAYDYjLDeQtDIY=;
+ b=BOz0hKRKLSvFAB1QHgUUHKNzvg0+mrStHsCNkvDmqbw4IW0cgbez8onR1e1KbZmJI06jYXTe4U34taYJCvxcivi7cufaKgxl5IcY8tJy8KRIJbvAZlY31zxa2kHRSewRbQ3DiUZbKSFPlqa6TAnvi8goFb1xZe+aqLqjmCJzWohIOwH7Wf4w0ZN3ygEGtf4D8LrFu6F2w4EUBOoT+rriSAOn12kKd84PCHQP6/Je98OpSR339HMv8jGNPnlzl3Ba4dfyTqxUqFe/ioJwycxgo2sLZATkVxTgmoh1KtWOnZcT1jyhZHjKlzl2Nns6Tk8j7jNWiJ22syz1kSMHn242WA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=trGDWQMBvvGyBYaN5VemRhALbwvx0efksnjkYaJjf2I=;
- b=iz3CyGUzC0xMT4MEzxiIZ64JMvV+p/ACJDFfaVfM/7XEXtIjir7vVajozFc5yXBu3iJIOdqbzQ9pOQv9d6Qd/ubQxFEI/4kcyCofovddMuAlFJPrsxYWjQTi33pRc39ZMWz96RPETf5K2gMVA+Mvu8LrmSeK0+J6dONmdA//FBfKE5092ZYnu8WxukbDQlXJ8xXBJrdW642LW5NzArJ9OhLnw4Fsnq57urowoQphM+l/KQnisbJ7ROmeli2yrbW43cjW+F4iLEsXWTtiDrRRJ3mZUk/TV/UNG7bPfyVS4AVySAb5IDrGm5laN29bu4IwfwTkImfiSGML0OeU48qn/g==
+ bh=h01tBPiU2ygRwWSeLPL4wTT6oU1ghrAYDYjLDeQtDIY=;
+ b=n9zYIluubKgc+CaF9hm/kNJRKn7+k9EiBpTxtETr4Tv13HQZaf6E5VUdCUgkQClitBH7asfXiXMlJV302G1T4B1hYcdEOxhXjILyCaUpLd2+eLETosYik4dwvUWG4yvZDAzaK8ElGzWNtgf5feK+lW/KynSCRrvVFOzKgdTPmCId4G4kZMIapFynnr94IApcEPIK+ci9prc4D4/CcvhMxKorKalAEmlD5XTfbCuL1HTN0zDZ9Qh7ggR+sDLchVSmxq67rwVRfRnuiY1h+6GxLm5ILKmuHBdehWNZaNYmVmXwcF7mQ5oDoEuMAU19Kya9dQkz0txcYPLdfppy7SKlUQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10535.eurprd04.prod.outlook.com (2603:10a6:150:204::10) with
+ by AS8PR04MB8071.eurprd04.prod.outlook.com (2603:10a6:20b:3f9::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.20; Wed, 12 Feb
- 2025 15:50:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Wed, 12 Feb
+ 2025 16:03:03 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8422.012; Wed, 12 Feb 2025
- 15:50:47 +0000
-Date: Wed, 12 Feb 2025 10:50:39 -0500
+ 16:03:03 +0000
+Date: Wed, 12 Feb 2025 11:02:54 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, linux-rtc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, NXP S32 Linux <s32@nxp.com>,
-	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
-	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-Subject: Re: [PATCH v7 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
-Message-ID: <Z6zDT/lbAeaJClV8@lizhi-Precision-Tower-5810>
-References: <20250207163808.1208552-1-ciprianmarian.costea@oss.nxp.com>
- <20250207163808.1208552-3-ciprianmarian.costea@oss.nxp.com>
- <Z6ZqGeswJDPTlzvo@lizhi-Precision-Tower-5810>
- <3cb2620c-46d0-4334-bd41-58b2720c2cca@oss.nxp.com>
- <Z6uDuL97EB9KqD4b@lizhi-Precision-Tower-5810>
- <2e633e46-ac59-495d-9ecd-46c34d2d3242@oss.nxp.com>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, krzk+dt@kernel.org, conor+dt@kernel.org,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	aisheng.dong@nxp.com, daniel.baluta@gmail.com,
+	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com,
+	iuliana.prodan@nxp.com, a.fatoum@pengutronix.de,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4 5/6] arm64: dts: imx8mp: Add fsl,dsp-ctrl property for
+ dsp
+Message-ID: <Z6zGLn3B6SVXhTV1@lizhi-Precision-Tower-5810>
+References: <20250212085222.107102-1-daniel.baluta@nxp.com>
+ <20250212085222.107102-6-daniel.baluta@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2e633e46-ac59-495d-9ecd-46c34d2d3242@oss.nxp.com>
-X-ClientProxiedBy: BYAPR07CA0020.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250212085222.107102-6-daniel.baluta@nxp.com>
+X-ClientProxiedBy: BY5PR03CA0015.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -78,235 +70,136 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10535:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38b17a48-827b-44c6-e7e4-08dd4b7d046e
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB8071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24a9231b-1e33-415d-990b-08dd4b7ebacc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|52116014|38350700014;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YczvyM3SCn3VCON4pH7K43JrLmxo1GvAPz/wQv6McmXNnTSjSYG/7i189Tmd?=
- =?us-ascii?Q?l9YbittdC5vrJ0AlspTzPuUChe2J1qaCmgPZWdcjHocbpW5NJMRImY9WLSJ0?=
- =?us-ascii?Q?fusu8dyle7nt8Ik27av2sJqv7H2d4Pm0B54MXs1lUJ/OrPO8bmfkZ/TP+W91?=
- =?us-ascii?Q?5e+f+Q0WAqE3+tlnvht1PRHLYBXsgPEFgOtOT7+NEcyT7qTiXSQASsXe7ZOw?=
- =?us-ascii?Q?wtrd63zdtDcHhhWuWUhklUmiLS7kwPxIOsnkDKHKTeYdsuvbGfitMQyyC/8v?=
- =?us-ascii?Q?DkuVP8W4ldKMBy444VCOcASJZ/m32Un5fVNhSGIX1wdq2ynXR15y/s/S9AUx?=
- =?us-ascii?Q?FnISEdVCHwY9ADcE+DFxkbTEAtPgt2oYJo2s5z9WmjWMwGEmMbzBC8wSJ7ve?=
- =?us-ascii?Q?QXDUqNh1sjXpU03vhnP1Ui0WaYBAQXKS2YjZj+mYOFKt0wgclZSFVPxVXTeV?=
- =?us-ascii?Q?gdgdhfoCTn06+RcMaWTeZWNdz8Pn6/Pku0w7PC5rGLOjkd1C+yM+NKXH/c8h?=
- =?us-ascii?Q?Fbmt4oXsk6winsIr0f44ojJblptF1CtqmOWTZdOA8w6LFXddJkoQZEWrOx3i?=
- =?us-ascii?Q?ajOUNbZ78XLRW1DDBXi43ufBhYJT359T0oHBw4kkTLo8kzwjaqr3t+eS2EyI?=
- =?us-ascii?Q?WdgBKPbQLpma6hMwHjgwAX6reYLvWiPgcYE0+rA47FxaLNDhWLMepG6fj6xa?=
- =?us-ascii?Q?rEsSVOheINWNasT7052s6c9aY5AiZwBG8gtlPbrJ+6p2oJ7hFnc3o/KLfK8T?=
- =?us-ascii?Q?TKx9nDZj4Y+6oquiTPa/PP+HSOxRu9o/RCOETSP2P+FdAuhagftBf5j4rGlQ?=
- =?us-ascii?Q?KnBZaylzuMloRXGOoNtBzU8l4BJIDFTvaRJ4422qD9JZEU/qCWXkn7LtXacO?=
- =?us-ascii?Q?H+tlJADl1EXwRoeKrN0fvl1y6ApfXgpPb4VAUjWTWOyEqDJuiWoLqYFEChHB?=
- =?us-ascii?Q?FL9XMPoa87WuWaPyItKeijn7XdPxON92sRYqgedGCdxkRwWqPLUhCgxLVXaZ?=
- =?us-ascii?Q?Hrd+g+bT2sSIkaA19eY2W/UG0vAk2fhNH1FprR1v42bVZVOaEfC0oqgJNqQK?=
- =?us-ascii?Q?c1Oh64iy3CP2l7fRShTBpgHINuLW0UKkZTvtaTqzg9JLLpT2/peokw6Vyfs+?=
- =?us-ascii?Q?jjeYyk8RyO22vXJJqreb4T537gZgNmRRHRcEHYUear0YkE4bLFdz6Yil34RE?=
- =?us-ascii?Q?rPH4Y9a4udeLTSkLg9i5RqER7Uc4X7PPx8Qeu5glpOVTCgl6STvm2VD3ENJf?=
- =?us-ascii?Q?ZcXI55AdtXEhgHlUQ2Lo80ZaVxopur+ZX7pphMk3MVwnwkS4L1xNJ4LaDmPL?=
- =?us-ascii?Q?tqh7/Zi5fm6cnDIqHfqr+R7BhCOhZQcRAMbQwNeJCZb3TKq2x67aisQgrunB?=
- =?us-ascii?Q?AY2oZ2iUc0Agm3DSQDULEvtR9mf2ZxNlgtWYBIeflwZse+naLLN2kQtwWVTZ?=
- =?us-ascii?Q?Ah8AUxEmZ+ruQtKrV+Jcvx2Uc0wdO7Nh?=
+	=?us-ascii?Q?lpXX6ycfcfwlqce7HB6Azjp7kw3SK6VaYq6+lfttprVpI9hMFfw0lW3Z8QqA?=
+ =?us-ascii?Q?HbxaGxb2D/my/UwA+nC3kAyWaAGbJ04XtaBNRY30lPcuXuxZskOM9ajueK95?=
+ =?us-ascii?Q?NKCmKmR8KfMZLWL5uKuV7log+yf/mH6vRFkjsx3Mng3kUp6qve63gRHyoSWc?=
+ =?us-ascii?Q?iVT4i5L45keiAPuqn7Op1ANiuiAit5PS9ntgxhm6EY2Z9m14hc40JKLJsUqP?=
+ =?us-ascii?Q?Ia/rDWQVrLGt8NgdE88YZS/fANsQvnfeYfZ23+lIHLSV+ISXnb5TFGh7PnED?=
+ =?us-ascii?Q?eQsObau2FqG3ggvs+9znMOJUbtjruK1AwBqq0HviJ5x6e8sEqZZhVjDhVdWs?=
+ =?us-ascii?Q?qoWe1vbysltMaLvlYrpXZVtW/oUTHn72mMMpyDkLQxTq3tUe135eq2g7Iztn?=
+ =?us-ascii?Q?M8r9u7dbiDtj4HdQqNyD+hWOAUnTEUgYa4++3OtX+bNhQCydFJo7vkJqrxEV?=
+ =?us-ascii?Q?NrxBB0c9CviPouXpDANPPV9D/G6L2GRywmv07CWzFq3XxVoWr4nmwx2UqN3Y?=
+ =?us-ascii?Q?ikIBMjKoBNrFpCQ8w2mtktIjgeZ2rhuw7UFJSKrmphJ3kmY4gSzvHNsYW4g/?=
+ =?us-ascii?Q?Stzk7UYYGYvZd5ej3FDoRFiwf6cN/ltCpQ7cPzyfPDVEWsQYDe3wur2uQzvS?=
+ =?us-ascii?Q?oHzOwQGqWZD0qJj9pndwR6ormvceioBqoDnT1cpnhsNg1KIT6GUDFpSnZZIx?=
+ =?us-ascii?Q?kgus7kAVZ5H0sG3c3+EFgSPVWRXw3x3WbnsfPQW7W4kPRUqfHN6n494Zx4U7?=
+ =?us-ascii?Q?zfJuhe0Vdrj/fEZJEpDyivgljHHoMYNwS/7TDNR+1w8lYoWmStBOJjQ11dtR?=
+ =?us-ascii?Q?9OwZqMzYl6XpNom1e1qNSf7Ctiq4QcjBJG5ZtuFyiKXO5PycGEGSpJEtJXf2?=
+ =?us-ascii?Q?hg72reIn+O1+kGuEsDVBM7ClJ0O/xmQRZ2GVzH3NaJNqAKgom5ljG0Jou97D?=
+ =?us-ascii?Q?ERuCNXpvCouSdsbhWGmYh8SrWKjiqlaEq0k0zxWqmN3gqq5U9cvRTVUZL0pT?=
+ =?us-ascii?Q?aUu1dRKJjOQz9kdN14lrnkVs+0botk1x8iLKfv7NBokiyNxkitOR5i+0YsRV?=
+ =?us-ascii?Q?J8UuNTTufTvRO61M3E107spNbi2owEn8H7yijA8kqibuPCgCogXPSYmNLj6d?=
+ =?us-ascii?Q?IPOa5LOiZxSkzb85ZvY2oraB9gO+WuAwlO6fqOpPap6Mf6SstX0NY6yK02Ex?=
+ =?us-ascii?Q?cQkyF16dET28iSjLhCCcLZrkTbZp4xG30S9gkYtau6Cy5MhZVYcZvyKC9U+7?=
+ =?us-ascii?Q?GKQp2FoM4GGcGPBHIygEtb3DVkpPTIhZHeLgjTlZBfWKkkOtMaGLisbsvUTN?=
+ =?us-ascii?Q?emvErNpwOJUklB1xmqno7hpemIqyyyodU4jTkYHpRjInbISJ2vKt1wb9Y5Xp?=
+ =?us-ascii?Q?3EKfJvJjyJFSCZHfupod2S49mXegHvWgfEDgWJPfZzefCQ83p2v6snZp8FSx?=
+ =?us-ascii?Q?bQq6LEy2VwDK1/cL4qTD1fnlvhqEUpbG?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8GKRoNRZzql1DVldHndEYnARrpbErbJ1M1P2cuSdNxVFDiWmIQFmEWm4OAEY?=
- =?us-ascii?Q?ytEsUotsKKBos9FQAicbep0PpX9Qn/L5w0Icz9UpEFrk4/DIAKszEnlbETHi?=
- =?us-ascii?Q?VQx1bNnXD020qlFwM9DXju6WvSeLhJTtDdhKFE8MuyfixUfXT27crhbtCgyi?=
- =?us-ascii?Q?VEHIesyBgu11Sn5TOH9unqBKivqpMyFTskl8Rr9YxeUiku4I8BF1Ugu9tBA0?=
- =?us-ascii?Q?6j0Qc5Cce1YC410hHOPrkUSdWczQyLWkio0P/KiQN3dcTTo2DZjgqU4iLnOR?=
- =?us-ascii?Q?HVW+BUtiyjZ/sku2RK4+HYn9YRgfxAfapNnyoqs720FQevA3bzRQeE/zjI75?=
- =?us-ascii?Q?9FQ2UNyy/h2aIAZj9SbDf55Ib9LJBZHmMMEz/hZdircFhX0FRdL5PWCV6/1L?=
- =?us-ascii?Q?BpCwtJALo8PsLrlCJvS7/xsLJpGN+e4q4W1y+6sLMht05aarcy3FVLtjSszv?=
- =?us-ascii?Q?EggsN8kLhKldzJ/DZCFO0fpPPhp8zrJukRU9ZtC0RLT6C1ZNCBmo0IxFWBo8?=
- =?us-ascii?Q?PLAAiFRyDZ2IOJkTvzOcVnzITN7Ogo/p445DtMKagq10V0ucnYNNu94iaILm?=
- =?us-ascii?Q?hHVy1duG2G2WEBPIBpPpgiRXi5j1uQUzz8sZapzdJlbCJP958zRfyfT2xoSn?=
- =?us-ascii?Q?kv7ek5EaPEcOh9JLclrCqzYlObBFe0wbDM9PM2K8abEql8qfBnSRdreOcmmK?=
- =?us-ascii?Q?c9Coiz0BYc0S+tzj7QaiEtdDrEzorm2VPC+XuMi9wIa3DNMBI4aUQjBCckq7?=
- =?us-ascii?Q?VOKWc2b7lIwUPJybeDLIsFGWTxPeayyfMcI/K0L2hNE8GDcvGdd9lHMgp3kH?=
- =?us-ascii?Q?wXNSJUFFx/p/xiR5I49Edv4a5kUDhSZcEIk6W2tZyraCDNa6Zc33xGt7sF18?=
- =?us-ascii?Q?R/ejdhokGc1Ktdc45d2zIS6++zQQFEDLvLuLFcBcJMiYdxGc5+gOhEBledjB?=
- =?us-ascii?Q?BbH1hKPPT9DG5XeHmlbfeauBhC3kd9bPxq9EtUus+g31m1Ci4ZRcsRHpyQIq?=
- =?us-ascii?Q?6eXJ1wgEi0TDCfgwGVgj3gP/juzwD5GCZzXvhdkxDTf7rfi1c72Bi4ools+t?=
- =?us-ascii?Q?PpKw7dUy8XFuY1iO0DYkAqrEr3moHmXGdYN2u38MxXFPHo7KEaoIXN8F8voJ?=
- =?us-ascii?Q?V0H+CCbhNVOL2PFVttPSHvsiXx3fJ9mPXqVsePK0zg2jJj+nq/nwrltEBNf7?=
- =?us-ascii?Q?S6KVLhHDD44IyxJx7NvP1J2qhQy03EnFGJzQYUFrj2fVjCG53bgWl1C4Y6hZ?=
- =?us-ascii?Q?aEY1ncm8KHeK3NZU93fdN73YOF6kQgOoowvUQ5VQ6lKyOmbOInIwUR1y4iDk?=
- =?us-ascii?Q?z78aBUyose6+pHiY90pSAbxw5iLkZ9RHpGKpNq0SvqpKvOmX9YbfRf1Nw97G?=
- =?us-ascii?Q?sHzH/vGPfambJLmFkSnr3bawmdH7NYBiAk/xlotO+h1o9xfeT/o18HpsVkku?=
- =?us-ascii?Q?GgF8TDx5c1p0eSzmF0LujWTdVQQEZ0F/MVnl9XjOH4h+cwToN2yi41HrO6qx?=
- =?us-ascii?Q?ASyxTmIfBZBq/6qYW8T3M7xksQSmxVQfOA4f4Bc0klnsi7UqbIXVgEQ4JuTB?=
- =?us-ascii?Q?h/2nyP5BBZWls7VFPgKAXNFEd4gQOkqxj5L0uqB3?=
+	=?us-ascii?Q?D/FTxexSJzURdZtE7cvRjDSW6f+zt3WIz56rO+GKdDSqbW26p1DUxWFUBJtL?=
+ =?us-ascii?Q?2MfKFQZBL9VBJZlalJqpidv7vkoLvg74VZ1eHOkBgl8yvjP/0mzAyMgTYE/B?=
+ =?us-ascii?Q?D8AAC8Com0Yd0IKxvlcfcf8KFznxNuSNn45upcIDGp1bShB1Bmewxik0wcie?=
+ =?us-ascii?Q?aUmOWfwoBEVLrDNR0fhxKFhhDaKyi5HtByFmi9v7O2C4Le+I/7fdGIgm3CGx?=
+ =?us-ascii?Q?CBiyYVehO8RxgD/wsU6euumOqtFZc6pvjiwJhw+v9mJ3PW6Wd2pDl4NJQezh?=
+ =?us-ascii?Q?kL4hvXi1BK7Ij4Zv5zSfhbQ5DWFb9F8ayOAetmJatJiBIFN3AOIwJHympZwc?=
+ =?us-ascii?Q?hwhQ6W3VkoXdOvmiD2lfnjvuV95J0YvUW+drG2IUeW01JIAlpcfTxZGKgkOd?=
+ =?us-ascii?Q?iLJrHgz2VuwhgNU8QLq6I848UT+yj8MmqAycrn2Fz2DUhuGXzybIpYsAKAbL?=
+ =?us-ascii?Q?bJAQfb0mTDnybmks67VzL5RkuF6Dnmk7Vh8KxjiYAHtzlLU6EM3IEYxN6MRm?=
+ =?us-ascii?Q?HiKS0uAREdziRh0qAf0zCnFuLqC+E1Y0UpyN2lteTP7Y7cpevQL8ntmNH3QO?=
+ =?us-ascii?Q?HO24OwlPJiNkrhLzLtzGHVZMkueQfAVNr/sOEjVV+qKo/zFcTO32E2KtjizV?=
+ =?us-ascii?Q?EVo5F8UNKt+1JVg3bxZ2r8h9ZyZ07QdA3GUv2nK0GCiQKtH/DaJ4RPkaXPcL?=
+ =?us-ascii?Q?18uS3Xkj7eEAd7x+mSLlRkx3PdeNDUC4MitEMwW5kGFCn/UuPZtPwDoDYlvL?=
+ =?us-ascii?Q?zL0LaOUGdBTHXGQjPgHpdoaJsSCtiXn1E1XAgQXDdVhNazE4Q3RYjT25Dyw0?=
+ =?us-ascii?Q?CSSXtsQkRO2fJGmAyQxbZ8HCXr/XhUnvkc8UJHayj4rIKtApYX15faXUMxQP?=
+ =?us-ascii?Q?e47mTqplm6wXKo/+ZDxT5HpIYPkrcGFCyTo2DDTdbJvlxjzoas5LU91+lx7E?=
+ =?us-ascii?Q?lGOmYsoKXPflzHu09VcD9BvsQA4Z5yRm6LwsrnzVr0rF8FnXrBYNjjb6mTqf?=
+ =?us-ascii?Q?7N47utYadD7MxHDs3xgEdb0BAjbXzWYSNAFh9m98AIlf4z0HOxLEwmApV7Sb?=
+ =?us-ascii?Q?wDKh5PUAJNr3Pbxa7hjCShPBBFOX3el7b7SQwH6jtlK0HTfZUJkcJGVtBo0i?=
+ =?us-ascii?Q?wORIWioP+lM7TYL24UhRAtLMrVzmQlZPDu9fV8TjY9eCyaJXXu0IrKxflyz2?=
+ =?us-ascii?Q?/VH/GMwZgSAJ2JzFAPGMikn3DhJFJFzx7qOzZfwby1qaO7lzAo+gAR3GRD8J?=
+ =?us-ascii?Q?38ASB9W0TgIArxSzZswl+pYPWCrNloZfGf4GJ9m+M7ZzZy2iF66dhxXgXzs3?=
+ =?us-ascii?Q?sIpMD58oJquHnmZXVv9NfpBDgbMdb+eNT72Zj+tUlKGcikeGRlaaxb1yFDb5?=
+ =?us-ascii?Q?JU4C06gSR/CWStUKxkJEyNm4O1YJDhVaKFBRdngCzbfr0z2bv1MPy00JSwlY?=
+ =?us-ascii?Q?Q6INduV7UTRSvyyGVAOHa8ZU70nPDYse/UuxMKUh2cnBRqIvgiO2bfvRr6Sn?=
+ =?us-ascii?Q?CInZMQVsrSuVaktINnbuEqnB1j+Xj6BXTqt8VCOhEua/9kM5RP62GvSCT3HL?=
+ =?us-ascii?Q?PGno3EIywU2mnPVL3wFA5mNOdr91hLU2henYHE95?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38b17a48-827b-44c6-e7e4-08dd4b7d046e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24a9231b-1e33-415d-990b-08dd4b7ebacc
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 15:50:47.5197
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 16:03:03.2078
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8gXKb8OhD2wAfbMr/3z3a0+T1tKvvqgLb4GY5EhWUtUIyjYsgGqXNokTf7Pg0tgBfuoyEQh9ctC7P7jfmuqZ+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10535
+X-MS-Exchange-CrossTenant-UserPrincipalName: GV8G33RnOsF+LoZsUwlcReSIa16stuPtuxXAbKdPGPciJ0ub8ERDymCKw6iQJ1om2oQ5jNb6nbbTl15s027BOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8071
 
-On Wed, Feb 12, 2025 at 10:11:35AM +0200, Ciprian Marian Costea wrote:
-> On 2/11/2025 7:07 PM, Frank Li wrote:
-> > On Tue, Feb 11, 2025 at 01:25:38PM +0200, Ciprian Marian Costea wrote:
-> > > On 2/7/2025 10:16 PM, Frank Li wrote:
-> > > > On Fri, Feb 07, 2025 at 06:38:06PM +0200, Ciprian Costea wrote:
-> > > > > From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> > > > >
-> > > > > Add a RTC driver for NXP S32G2/S32G3 SoCs.
-> > > > >
-> > > > > RTC tracks clock time during system suspend. It can be a wakeup source
-> > > > > for the S32G2/S32G3 SoC based boards.
-> > > > >
-> > > > > The RTC module from S32G2/S32G3 is not battery-powered and it is not kept
-> > > > > alive during system reset.
-> > > > >
-> > > > > Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> > > > > Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> > > > > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > > > > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > > > > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> > > > > ---
-> > > > >    drivers/rtc/Kconfig    |  11 ++
-> > > > >    drivers/rtc/Makefile   |   1 +
-> > > > >    drivers/rtc/rtc-s32g.c | 383 +++++++++++++++++++++++++++++++++++++++++
-> > > > >    3 files changed, 395 insertions(+)
-> > > > >    create mode 100644 drivers/rtc/rtc-s32g.c
-> > > > >
-> > > > > diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> > > > > index 0bbbf778ecfa..510dc2db745d 100644
-> > > > > --- a/drivers/rtc/Kconfig
-> > > > > +++ b/drivers/rtc/Kconfig
-> > > > > @@ -2103,4 +2103,15 @@ config RTC_DRV_AMLOGIC_A4
-> > > > >    	  This driver can also be built as a module. If so, the module
-> > > > >    	  will be called "rtc-amlogic-a4".
-> > > > >
-> > > > > +config RTC_DRV_S32G
-> > > > > +	tristate "RTC driver for S32G2/S32G3 SoCs"
-> > > > > +	depends on ARCH_S32 || COMPILE_TEST
-> > > > > +	depends on COMMON_CLK
-> > > > > +	help
-> > > > > +	  Say yes to enable RTC driver for platforms based on the
-> > > > > +	  S32G2/S32G3 SoC family.
-> > > > > +
-> > > > > +	  This RTC module can be used as a wakeup source.
-> > > > > +	  Please note that it is not battery-powered.
-> > > > > +
-> > > > >    endif # RTC_CLASS
-> > > > > diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-> > > > > index 489b4ab07068..e4b616ecd5ce 100644
-> > > > > --- a/drivers/rtc/Makefile
-> > > > > +++ b/drivers/rtc/Makefile
-> > > > > @@ -161,6 +161,7 @@ obj-$(CONFIG_RTC_DRV_RX8111)	+= rtc-rx8111.o
-> > > > >    obj-$(CONFIG_RTC_DRV_RX8581)	+= rtc-rx8581.o
-> > > > >    obj-$(CONFIG_RTC_DRV_RZN1)	+= rtc-rzn1.o
-> > > > >    obj-$(CONFIG_RTC_DRV_RENESAS_RTCA3)	+= rtc-renesas-rtca3.o
-> > > > > +obj-$(CONFIG_RTC_DRV_S32G)	+= rtc-s32g.o
-> > > > >    obj-$(CONFIG_RTC_DRV_S35390A)	+= rtc-s35390a.o
-> > > > >    obj-$(CONFIG_RTC_DRV_S3C)	+= rtc-s3c.o
-> > > > >    obj-$(CONFIG_RTC_DRV_S5M)	+= rtc-s5m.o
-> > > > > diff --git a/drivers/rtc/rtc-s32g.c b/drivers/rtc/rtc-s32g.c
-> > > > > new file mode 100644
-> > > > > index 000000000000..3244b23c533e
-> > > > > --- /dev/null
-> > > > > +++ b/drivers/rtc/rtc-s32g.c
-> > > >
-> > > > ...
-> > > >
-> > > > > +
-> > > > > +static int s32g_rtc_suspend(struct device *dev)
-> > > > > +{
-> > > > > +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> > > > > +	u32 apival = readl(priv->rtc_base + APIVAL_OFFSET);
-> > > > > +
-> > > > > +	/* RTC registers are being reset in suspend.
-> > > > > +	 * Thus store standby time.
-> > > > > +	 */
-> > > > > +	if (check_add_overflow(priv->sleep_sec, div64_u64(apival, priv->rtc_hz),
-> > > > > +			       &priv->sleep_sec)) {
-> > > > > +		dev_warn(dev, "Overflow on sleep cycles occurred. Resetting to 0.\n");
-> > > > > +		priv->sleep_sec = 0;
-> > > > > +	}
-> > > >
-> > > > Strange. If RTC register are reset in suspend. How do it wake up system?
-> > > >
-> > > > Frank
-> > > >
-> > >
-> > > Hello Frank,
-> > >
-> > > I believe the transition between resume to run is a reset event. This would
-> > > lead to the RTC registers being reset after resume from suspend (triggered
-> > > via Suspend to RAM).
-> >
-> > It is weird design. I suppose it should be design error. (any errata for
-> > it).
-> >
-> > Frank
-> >
+On Wed, Feb 12, 2025 at 10:52:21AM +0200, Daniel Baluta wrote:
+> Audio block control contains a set of registers and some of them used for
+> DSP configuration.
 >
-> Unfortunately I could not find any such errata. But this behaviour (RTC
-> registers being reset) is what I see when resuming from Suspend to RAM
-> operations.
+> Drivers (rproc, SOF) are using fsl,dsp-ctrl property in order to control
+> the DSP, particularly for Run/Stall bit.
+>
+> Note that audio block control doesn't offer the functionality to reset
+> thte DSP. Reset is done via DAP interface.
+>
+> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index 14cfbd228b45..46b33fbb9bd1 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1609,7 +1609,7 @@ sdma2: dma-controller@30e10000 {
+>  			};
+>
+>  			audio_blk_ctrl: clock-controller@30e20000 {
+> -				compatible = "fsl,imx8mp-audio-blk-ctrl";
+> +				compatible = "fsl,imx8mp-audio-blk-ctrl", "syscon";
+>  				reg = <0x30e20000 0x10000>;
+>  				#clock-cells = <1>;
+>  				#reset-cells = <1>;
+> @@ -2425,6 +2425,7 @@ dsp: dsp@3b6e8000 {
+>  			mboxes = <&mu2 0 0>, <&mu2 1 0>, <&mu2 3 0>;
+>  			firmware-name = "imx/dsp/hifi4.bin";
+>  			memory-region = <&dsp_reserved>;
+> +			fsl,dsp-ctrl = <&audio_blk_ctrl>;
 
-Okay, it worth add comment here to descript hardware behaviour, which is
-actually uncommon.
+I think kk's comments in v3
+
+"This should have been implemented as reset controller, not syscon. It's
+really poor choice to call everything syscon. It does not scale, does
+not provide you runtime PM or probe ordering (device links). Quick look
+at your drivers suggest that you have exacvtly that problems."
+
+The above is quite good suggestion.
+
+Your reply "But for Run/Stall bits we need to use a syscon.",
+
+Run/Stall actually is reset, Most system, release reset signal means dsp/core
+RUN.
 
 Frank
 
->
-> Regards,
-> Ciprian
->
-> > >
-> > > On the other hand, the RTC is kept on during suspend for as long as its been
-> > > set up (for example via rtcwake -s), thus waking up the sistem via an API
-> > > interrupt.
-> > >
-> > > Regards,
-> > > Ciprian
-> > >
-> > > > > +
-> > > > > +	return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int s32g_rtc_resume(struct device *dev)
-> > > > > +{
-> > > > > +	struct rtc_priv *priv = dev_get_drvdata(dev);
-> > > > > +
-> > > > > +	return rtc_clk_src_setup(priv);
-> > > > > +}
-> > > > > +
-> > > > > +static const struct of_device_id rtc_dt_ids[] = {
-> > > > > +	{ .compatible = "nxp,s32g2-rtc", .data = &rtc_s32g2_data},
-> > > > > +	{ /* sentinel */ },
-> > > > > +};
-> > > > > +
-> > > > > +static DEFINE_SIMPLE_DEV_PM_OPS(s32g_rtc_pm_ops,
-> > > > > +			 s32g_rtc_suspend, s32g_rtc_resume);
-> > > > > +
-> > > > > +static struct platform_driver s32g_rtc_driver = {
-> > > > > +	.driver		= {
-> > > > > +		.name			= "s32g-rtc",
-> > > > > +		.pm				= pm_sleep_ptr(&s32g_rtc_pm_ops),
-> > > > > +		.of_match_table = rtc_dt_ids,
-> > > > > +	},
-> > > > > +	.probe		= s32g_rtc_probe,
-> > > > > +};
-> > > > > +module_platform_driver(s32g_rtc_driver);
-> > > > > +
-> > > > > +MODULE_AUTHOR("NXP");
-> > > > > +MODULE_DESCRIPTION("NXP RTC driver for S32G2/S32G3");
-> > > > > +MODULE_LICENSE("GPL");
-> > > > > --
-> > > > > 2.45.2
-> > > > >
-> > >
+>  			status = "disabled";
+>  		};
+>  	};
+> --
+> 2.43.0
 >
