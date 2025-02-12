@@ -1,108 +1,136 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3875B202C32
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 20:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D96E202C32
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 20:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739393406; cv=none; b=FTaGweP1B2+/iI6b3PbgKl/FXlljbIF1F69z2V8Ktkr61l9NmecJulFyz+XIMNyFDNiZRkgACLloLVXQGNzgLw4M1z7kIMPgAut6SbPhtff517in+e4Svg8SfGeNj8q9o8EpF/RqCgpv3rJ8asvUoEwGozAzVKi1cedAEYPHvDo=
+	t=1739393712; cv=none; b=hj9TZ3Q0I5SCK+5+IWXHSHdxf1pDQw51XyVkrE1sPDcgua2XstGkASuA11As4RyhKT0BCi1XyKi5rlLGpR6OfA0fQMojJXG4muj71y43WhRNF8v+MOiIK4dgIwSW9bmUiNiT8vf5ilaHuEq5g0af4UTSftcLuo3Ka6OGDHvbxP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739393406; c=relaxed/simple;
-	bh=7QUo8lq0zOXvMRM2Kkw4Zo86apOpRGfWnw798xZKkyE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=gWhRO8An0V3Sv/dnizrDbPuwGW6kA2awQt6RiPujan/I4d7tpcvD23m5EeZ+e+hZGrPioHI6GwjYvp0Cqto4ILKIsJ7Pe49OZ3XPoKAWZ8/8kB6LTTyRqeJNWf8xFfZ2XAmaEflvTOJd4/TtCMe15qYGKmulHxgOFuI1XHCwdlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t3vrPcga; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1739393712; c=relaxed/simple;
+	bh=39gu3mTlYdf0v2Eq066/2+uqNCf3JJqMeORR/jt38mQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UC5LORwtPTHmQvp2RKG8yl23AZ9+8suFYn0y8ySrplmj649E6O4pyzdt+vygIUxZewhweqY0B2PBgOz26nkOu1/e25WAlXm1rHLbQv2movRxTpv9nFFFr31jxM91M2idRkoKpUUeIBBVCSryXNXp67q0z2+ju4O44MUfmOnPjEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbrgKPXm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t3vrPcga"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43938828d02so205675e9.1
-        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 12:50:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739393402; x=1739998202; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=05bFiLRqtjieBdQP28ZStS6jjJuxslhK7B+dgz1ufHY=;
-        b=t3vrPcga7Hq6M+Kd9RZXa+nh6naakLMlZeVP/lnNbuIanVzYAk1rquTf2s8NYO0NH9
-         1x7S7ROLqGefx9UqvTYs5NSt42Ndt3bgVn4KVEkYT8MLM/Vn+9A6iFkklyK0EJrRG7QW
-         q93L+NN7iLj1LjyidiQRLwl47T5tCoNAAols8+mSSjwi/zIAhOjb+RfhjzkwX98unJl5
-         /FQiaNhisckVZ1NAfVxyfa790infNX1ZSFrdR7u/uzIqia3ogUMVSGni0WarPK+XBPEp
-         5iYIhZPak3UQHLvZFNYsA9IgTLN0l2Vqry/NdPGdx7xpXS4D6VlIFH5gNlklFwiw6MkB
-         8ulQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739393402; x=1739998202;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=05bFiLRqtjieBdQP28ZStS6jjJuxslhK7B+dgz1ufHY=;
-        b=BOsmJSlyx7yHN+vS9qoFljDXDXTYVHM6eKvcOYqMTNMZnEFnmhyM1CAXEGUjK7WaxQ
-         dTF7F8QpfYwsJR00jEHVM5FrhoN9c3OZiMHqQOO4rNKmH+MJYw+rBwCl9gK/uHybmmaK
-         UG8iA3iqBgv7Leb2Hfem+b+Rw1JWV6GRJsyllKCOTbD+1eodpolh2yRSR9thq9no9Q2x
-         MMYjAm0vIh5WDlid8BE7j+xfqDh+P4hfUB72NW8212Ot/kKNCQIeR6A4NwEhNXELV4Ol
-         XZJSQeRQWZP7oVkmhyKms5OhcKtcixU01yY9ceRtuiflnsJK5KOAVhpJvtOguPZxw8fx
-         Zg3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXROO8nUlYx3TiAmfPr3DgVHyKFf7oeHbX3oLDwJpDYD+4oiaOYx676AmNVHgEeauBDQ7k=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3Kp62I/BTgFKiczd6HBDIog08WcKmBTz1IHDoNsXc5/5Mzyex
-	DSYFNzyZejJu45LDpFGnUapFc0DeSd8Zr43ue+QW4/A9hiw+Bk81o51M1z2152k=
-X-Gm-Gg: ASbGnct8bSlgL7YW4LGW4J3F2eUewWtgzYzwBx8yz2U1D3Xcc6fYLUT042M4bk6ygDU
-	jFGsQ/sm1ix43957A21grzULkAJApTSdgRNzaXfe1tZXXb828rXad9+xN11D64h/owp5Za7o2Sa
-	agWZ+v5HkfjVGp0neHguTrLWWgpB/BY/1TC+2JNKVNDvdYtqWDetQ+CE33+hKRrvHgkdi4aH5Gm
-	LUbGEw/j2rVUDDkJJ3vXt+snAUgE/DqXCDX0Sbf/5yx1gvRqkhLvaxfUb8TDuJYh5S9zuwaajIn
-	MCFF5a4UzCS7JpdHs/MUm8L2yNkCYK8=
-X-Google-Smtp-Source: AGHT+IEBtbJJPvZYtnqI1EcUYSzvnE3bHzpiZAK+Kj6ubquz7Vmwq6Ph8AWnkEWgLrniziBTqXUdZw==
-X-Received: by 2002:a05:600c:5103:b0:439:560f:e7cc with SMTP id 5b1f17b1804b1-439581bfdd8mr18910825e9.6.1739393402471;
-        Wed, 12 Feb 2025 12:50:02 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.218.144])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a056151sm30461495e9.16.2025.02.12.12.50.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Feb 2025 12:50:01 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>, 
- Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
- WANG Xuerui <kernel@xen0n.name>, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- imx@lists.linux.dev, loongarch@lists.linux.dev
-In-Reply-To: <20240717-anvil-ashy-544e80a1317c@spud>
-References: <20240717-anvil-ashy-544e80a1317c@spud>
-Subject: Re: (subset) [PATCH v1 0/4] Removal of non-existent DAC nodes
-Message-Id: <173939339997.59416.11108011581545463665.b4-ty@linaro.org>
-Date: Wed, 12 Feb 2025 21:49:59 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbrgKPXm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E776C4CEEA
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 20:55:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739393712;
+	bh=39gu3mTlYdf0v2Eq066/2+uqNCf3JJqMeORR/jt38mQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DbrgKPXmSMoPEWlkexKNvUmzO8UEitfnIsPBqglDwLiuxGEX8vqnXG9E2mUyWH6LR
+	 a4t3FHSM/Hy8pn/jARf9t9NCJLSbSApeSyMDkleqCmkhafXdN9vKe9zNiRMQ6JC/t9
+	 E8xNuOZuwMd340l7WAf24UBIsIPhoVDXF+fEsF/+UYP3hIhIkcz3TgSD17qhUt7YHS
+	 +ntQmhAXfogdLwzP7OnK9BJczAKMYmB18jjujlFU1oHOQKphmVkMv5G6gyV3nXmTtW
+	 kfDGHTSUdcdC4cT3gTdB2Cmb6Z9B+qcpVjbXvZ+T/grGxF0nuuY7ue5MlUz7Ukh4UY
+	 ftfVP+mQb0big==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3f3bac262f9so82201b6e.1
+        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 12:55:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVFzI0hAoCtHRpE0VgdgCHGrrZiV3t3bWr1bgOb0Xh8BerIK0MxZFsDcWoj99PaS8VE5+A=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwFuV3Yxram8F5ec+ZVinVJ1OYf/6qreq47/b528IkYReKwWZxa
+	uLf3S2nkJstkcOgegnUdV5efylunb/ye01qCsN1x/9QRLdTtM/mRRAlaOaRUKoZIYEXJAWG0yCe
+	7dL6ZwecpolPtIq0hy2s7mUMe4jA=
+X-Google-Smtp-Source: AGHT+IHAwD1ttfG0K94WAt0e4SFyzmvmei12b3tUpJVQpW2KdKZYMHE1MyIRBpyAa09QT9uoRUo9/N+Db/fvDbHPTzY=
+X-Received: by 2002:a05:6871:230c:b0:2a7:d856:94a with SMTP id
+ 586e51a60fabf-2b8d658f5a6mr2922009fac.22.1739393711449; Wed, 12 Feb 2025
+ 12:55:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+References: <20250211034423.833783-1-xu.yang_2@nxp.com>
+In-Reply-To: <20250211034423.833783-1-xu.yang_2@nxp.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 12 Feb 2025 21:55:00 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0idzf1QKf8UKp4ttepLbipZD6b1RFHX7QqgQCyJZL8dQg@mail.gmail.com>
+X-Gm-Features: AWEUYZmzXzKrtf4Vgah8gs2KBi2oAYO_8oD_R3sVAnvKrRxDR-fQrUwcdBcFTqI
+Message-ID: <CAJZ5v0idzf1QKf8UKp4ttepLbipZD6b1RFHX7QqgQCyJZL8dQg@mail.gmail.com>
+Subject: Re: [PATCH] PM: sleep: core: Set is_prepared to false before checking direct_complete
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: rafael@kernel.org, len.brown@intel.com, pavel@kernel.org, 
+	gregkh@linuxfoundation.org, dakr@kernel.org, stern@rowland.harvard.edu, 
+	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 11, 2025 at 4:43=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> Currently, if power.no_callbacks is true for a device, device_prepare()
+> will also set power.direct_complete to true. When device_resume() check
+> power.direct_complete, setting power.is_prepared will be skipped if it
+> can directly complete. This will cause a warning when add new devices
+> during resume() stage.
+>
+> Although power.is_prepared should be cleared in complete() state, commit
+> (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
+> clear it in earlier resume() stage. However, we need set is_prepared to
+> false before checking direct_complete after including direct complete
+> support.
+>
+> Take USB as example:
+> The usb_interface is such a device which setting power.no_callbacks to
+> true. Then if the user call usb_set_interface() during resume() stage,
+> the kernel will print below warning since the system will create and
+> add ep devices.
+>
+> [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdr=
+c
+> [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
+> [  187.105010] PM: resume devices took 0.936 seconds
+>
+> Fixes: aae4518b3124 ("PM / sleep: Mechanism to avoid resuming runtime-sus=
+pended devices unnecessarily")
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/base/power/main.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+> index 40e1d8d8a589..69d0f9ca7051 100644
+> --- a/drivers/base/power/main.c
+> +++ b/drivers/base/power/main.c
+> @@ -929,6 +929,12 @@ static void device_resume(struct device *dev, pm_mes=
+sage_t state, bool async)
+>         if (dev->power.syscore)
+>                 goto Complete;
+>
+> +       /*
+> +        * This is a fib.  But we'll allow new children to be added below
+> +        * a resumed device, even if the device hasn't been completed yet=
+.
+> +        */
+> +       dev->power.is_prepared =3D false;
 
-On Wed, 17 Jul 2024 10:37:52 +0100, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Recently I've been getting triggered by abuse of the Rohm dh2228fv
-> compatible to get the spidev driver probing in Linux on development
-> kits by employees of various silicon vendors (like NXP or my own
-> employer). I had a look around the kernel and all users other than the
-> original Clearfontz board added by Maxime appear to be similar abuse.
-> Drop the non-existent nodes from all of these devices :)
-> 
-> [...]
+Well, not really.
 
-Applied, thanks!
+This is to allow new children to be added from a resume callback, but
+direct_complete devices are still in suspend at this point.  You can't
+make this change for all of them.
 
-[3/4] loongarch: dts: remove non-existent DAC from 2k1000-ref
-      https://git.kernel.org/krzk/linux-dt/c/854a080f0b73ff966a813ec2dc53891831daa28d
+You can clear power.is_prepared for devices with power.no_pm_callbacks
+set before the dev->power.syscore check, though.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+> +
+>         if (dev->power.direct_complete) {
+>                 /* Match the pm_runtime_disable() in device_suspend(). */
+>                 pm_runtime_enable(dev);
+> @@ -941,12 +947,6 @@ static void device_resume(struct device *dev, pm_mes=
+sage_t state, bool async)
+>         dpm_watchdog_set(&wd, dev);
+>         device_lock(dev);
+>
+> -       /*
+> -        * This is a fib.  But we'll allow new children to be added below
+> -        * a resumed device, even if the device hasn't been completed yet=
+.
+> -        */
+> -       dev->power.is_prepared =3D false;
+> -
+>         if (!dev->power.is_suspended)
+>                 goto Unlock;
+>
+> --
