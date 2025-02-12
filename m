@@ -1,192 +1,135 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B3320ADC7
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 09:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBFF2066C5
+	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 10:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739352997; cv=none; b=Ons/Y6jcEofbozaDY1PBW0xHmJXn2zI4uhE3cZ4iCoxU56VRe9Cttc9cltk1RA33WfPWLw2N3rX84HdBTpox7dTr5uHaOV9J5LPPNX4Gemz9NM68kKt0bousOiebc14v7ht/gsdGHrL6q2xhQzB/qv7photC96zWYxEMtkc+p5M=
+	t=1739355018; cv=none; b=IwjJBawiub2VdHL3hVgsWaOHWjHTF5IsxfELUfGZ42aYZ8cAUNAJLy2tATNRP8PpymRzGrAu0EKtXTYj/zAkfHVNhtr79vLPQagSXRF//x8z9PAJi8PpZREsvEMBQmSttXKIg0WUowy5QZLrD/g/3K6wcIFU621Znfm9T5DRvKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739352997; c=relaxed/simple;
-	bh=fJ0oQVoe3v+GZGtKDqY/m+T+upxz/j86dCJyFecV9bQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IROQkzzHwNYc8BU9a55W1MufgNtCwOxQp8pzKhxkE+l8Gg3jhnifZp1qlYy40Ut9gJseW6Ly/ScAGAavVRZwikS9F9UinlfnKKOUlhA+b8HGNbfytNWBMFO6mVhqZzrpOR7Exnhod1WC2oQuTeL8TsSjSeyTg8r38SChpZ28iwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ti9AB-0003qj-6V; Wed, 12 Feb 2025 10:36:11 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ti9AA-000Z2U-1y;
-	Wed, 12 Feb 2025 10:36:10 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ti9AA-00AzSK-1c;
-	Wed, 12 Feb 2025 10:36:10 +0100
-Date: Wed, 12 Feb 2025 10:36:10 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/3] ASoC: dt-bindings: support imx95's CM7 core
-Message-ID: <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
-References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
- <20250211225808.3050-2-laurentiumihalcea111@gmail.com>
+	s=arc-20240116; t=1739355018; c=relaxed/simple;
+	bh=dksiq7Wu+Tr8U4ZmasPxlXsm3FDPqcOrzej22bOgA+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T3Em0n57QbB94epd8JOztB0v1B05TaSNfrx+Q6827jWgxTd2b8atAvG/oaeohwPjXOrQEf9XoyHA4h0xzBdo03gIyekiMECctFFLJQp7DBLvn2tz8qlBkVFmtH0MqftSI/reBOpYxmLrVfxgr92gQkGfJC4IRX3dZP+z/r07Wv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5UArLRc; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5UArLRc"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2fbfa8c73a6so905261a91.2
+        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 02:10:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739355015; x=1739959815; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=88AwpE99PaoAeek/DCfv+c+a/zWXUaUFSdw15oFH2AA=;
+        b=h5UArLRctVlERz71sM2jJLG3SZqL6i+/xm7i3E06KCtNYAAl5KHp4AVYXOSKP2kecD
+         pic01FleynByQ2IH3+ly4XRoF8esxvAUAWF91Sei8uQOKKo9wGJeghvoiuTTu5/KwfYQ
+         jfxMDOjI95X9Q+LQcj4wLm90xjFq5UkNvO7ixeCV3lKLCyLkW02XSYOMV7fmGTNHqdSQ
+         1BvyYOk6gsGn0J2y18PxIGyPnHFmj5WkOCJyWoQYW+nDZLl02UNztNK1hFqkDL9hIufy
+         3U3zbgnBxFwzTveS6tXgwTcyjF8o/RFO6jVDJaTRH8c7WEjSPIQOnOD7IHc+VxX2V+Bg
+         1Puw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739355015; x=1739959815;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=88AwpE99PaoAeek/DCfv+c+a/zWXUaUFSdw15oFH2AA=;
+        b=tt7Fi0uBu9q9eXsBP/3A/DKw6Za2OOL4Oe4zGV7KlSaBObKWy1aGcINrA7RVRjQvzX
+         20F+QkD0gDhkxgYzFneivBRz5/DUKAeZXy5bEEj9h0AWkDSGNx6FOx3PwaySqSMPoyr7
+         Oj+GFNFx+Xr16zectNPk4SGlNulN6OYNkQwE1qG2hp+aGgCmmTHw06DDqFGk0lQKLMYV
+         LnUgsd3AhI/D1m1c2+W+tyQhV9jgD2pLNhUsq2AImQx/NfQ8oJvy3GozbdLSVaPwRgAy
+         SpQb6qAVrDcVapu18AwCi+eRRUdIIgBOettMz/Y56MdUecKw/gjK0trKmfziIXTbq5k5
+         Ab7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWqTeZgkrhOxG3d3mnEeQUkVwgmzC9tImC3VOgatfx0BL45E3VD2nwn8kfL8AZ4CXknWeU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzjA4dG1n4aSFFOQQa+t4RR92S43pJJFZJ3EOt0VE3CbBiyYH+c
+	SWgtAz6UjCuPJztLQDStJlAqLyl52+WddP6B0fGvzJYfhXh8zOuVLQKo+IZpYOuWnAlDJyq9gAE
+	hOkCMJ1lp0YWp5P2CBRmdv40SuJI=
+X-Gm-Gg: ASbGncuJsGH1tLF0drQxC8aOSu0Ftco8SKJgLyOzwdidef8df0UvtdlrC6Dzc7xmV+J
+	SkC2vk4MmHlCNBTw09liJ2ctqPE/aUHbYohp9UleTC5LSeAFeZm+WMeFjSCzmob/UhnGifQ==
+X-Google-Smtp-Source: AGHT+IGmuZRdGl3j3qwqlGA+I6iMmpaYMwad+794x21O14HpgAdBUJZvPf+MREMoJEJJ7oo0IQ1nHPq82m46EvhwjX0=
+X-Received: by 2002:a17:90b:50c4:b0:2ee:ab29:1482 with SMTP id
+ 98e67ed59e1d1-2fbf5c0f645mr4582577a91.16.1739355015327; Wed, 12 Feb 2025
+ 02:10:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250211225808.3050-2-laurentiumihalcea111@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
+ <20250211225808.3050-2-laurentiumihalcea111@gmail.com> <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
+In-Reply-To: <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 12 Feb 2025 12:11:49 +0200
+X-Gm-Features: AWEUYZmaBc7oKF6zAnQ7CZxr3zaURFYGkUGsn3Z_TJnj1f8vLuCQ0QWTQQTBMT4
+Message-ID: <CAEnQRZBeQdnC+K92+Udb5awTmom10YHHNt7Ld-pYK4A1i8sr3Q@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] ASoC: dt-bindings: support imx95's CM7 core
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-sound@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25-02-11, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add binding for imx95's CM7 core, used for audio processing.
-> Additionally, introduce a common binding for NXP audio processors with
-> Sound Open Firmware (SOF) support.
-> 
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> ---
->  .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 64 +++++++++++++++++++
->  .../bindings/sound/fsl,sof-cpu.yaml           | 27 ++++++++
->  2 files changed, 91 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-> new file mode 100644
-> index 000000000000..f00ae3219e15
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,imx95-cm7-sof.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP imx95 CM7 core
-> +
-> +maintainers:
-> +  - Daniel Baluta <daniel.baluta@nxp.com>
-> +
-> +description: NXP imx95 CM7 core used for audio processing
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,imx95-cm7-sof
+On Wed, Feb 12, 2025 at 11:38=E2=80=AFAM Marco Felsch <m.felsch@pengutronix=
+.de> wrote:
+>
+> On 25-02-11, Laurentiu Mihalcea wrote:
+> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >
+> > Add binding for imx95's CM7 core, used for audio processing.
+> > Additionally, introduce a common binding for NXP audio processors with
+> > Sound Open Firmware (SOF) support.
+> >
+> > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > ---
+> >  .../bindings/sound/fsl,imx95-cm7-sof.yaml     | 64 +++++++++++++++++++
+> >  .../bindings/sound/fsl,sof-cpu.yaml           | 27 ++++++++
+> >  2 files changed, 91 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,imx95-c=
+m7-sof.yaml
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,sof-cpu=
+.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.=
+yaml b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+> > new file mode 100644
+> > index 000000000000..f00ae3219e15
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,imx95-cm7-sof.yaml
+> > @@ -0,0 +1,64 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/sound/fsl,imx95-cm7-sof.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP imx95 CM7 core
+> > +
+> > +maintainers:
+> > +  - Daniel Baluta <daniel.baluta@nxp.com>
+> > +
+> > +description: NXP imx95 CM7 core used for audio processing
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: fsl,imx95-cm7-sof
+>
+> Albeit Krzysztof already add his Reviewed-by, can I ask why we need to
+> add the -sof suffix instead of -audio or so? SOF is a software project
+> but you can clearly run different software on the audio-copro as well.
 
-Albeit Krzysztof already add his Reviewed-by, can I ask why we need to
-add the -sof suffix instead of -audio or so? SOF is a software project
-but you can clearly run different software on the audio-copro as well.
+Sure you can run a different software project on the audio DSP but
+you will need a way to distinguish between the different projects.
 
-Regards,
-  Marco
+There might be different mailbox, memory configurations. So you will  need
+to invent another suffix specific to the new project.
 
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reg-names:
-> +    const: sram
-> +
-> +  memory-region:
-> +    maxItems: 1
-> +
-> +  memory-region-names:
-> +    const: dma
-> +
-> +  port:
-> +    description: SAI3 port
-> +    $ref: audio-graph-port.yaml#
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - memory-region
-> +  - memory-region-names
-> +  - port
-> +
-> +allOf:
-> +  - $ref: fsl,sof-cpu.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    cm7-cpu@80000000 {
-> +        compatible = "fsl,imx95-cm7-sof";
-> +        reg = <0x80000000 0x6100000>;
-> +        reg-names = "sram";
-> +        mboxes = <&mu7 2 0>, <&mu7 2 1>, <&mu7 3 0>, <&mu7 3 1>;
-> +        mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
-> +        memory-region = <&adma_res>;
-> +        memory-region-names = "dma";
-> +        port {
-> +            /* SAI3-WM8962 link */
-> +            endpoint {
-> +                remote-endpoint = <&wm8962_ep>;
-> +            };
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml b/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> new file mode 100644
-> index 000000000000..31863932dbc3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,sof-cpu.yaml
-> @@ -0,0 +1,27 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/fsl,sof-cpu.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP audio processor common properties
-> +
-> +maintainers:
-> +  - Daniel Baluta <daniel.baluta@nxp.com>
-> +
-> +properties:
-> +  mboxes:
-> +    maxItems: 4
-> +
-> +  mbox-names:
-> +    items:
-> +      - const: txdb0
-> +      - const: txdb1
-> +      - const: rxdb0
-> +      - const: rxdb1
-> +
-> +required:
-> +  - mboxes
-> +  - mbox-names
-> +
-> +additionalProperties: true
-> -- 
-> 2.34.1
-> 
-> 
-> 
+We can make  const: fsl,imx95-cm7-audio as the one used with SOF
+and think about a different name later for when another project will
+want to use the DSP.
