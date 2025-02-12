@@ -1,151 +1,325 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4F4253B63
-	for <imx@lists.linux.dev>; Wed, 12 Feb 2025 19:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651411DC07D;
+	Wed, 12 Feb 2025 19:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739387095; cv=none; b=IehGIWfdqqAPOtLc2ac2Yr2RupJ7lKdghJknn2s7urReoMKdTWONF1D52Rso/qdJZq6EHpgBGE6ekMsPEr2HUsdbij3hAk782UT3xphppzY0Dshmz8DnLS9iUEuxQE+nYVa43DFyTYYnP6VhAFKuMEEGcXK7vr1Bo10AVhtSt08=
+	t=1739388797; cv=none; b=mhlcWa7TPHZpp2+M2c0SrXiMRbpeuoSPGH/STVtXwzxF/JHqCy5yI/MOOa/ab9/ze+7Y0tGAH7BAjc5U0gXSHB4cz8mqclQ8ZXszWI1KV+7aN2yS31QOWFSbZ2P98TkEzeGt7txektcdppVk8aA5oEF1A+iKHPChQ3xtrDgFBSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739387095; c=relaxed/simple;
-	bh=GByBzklmfX23pRSpc2MBYgFPIh6J9o3kWfHsq1LZtCs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=joBLW8ZKSjLCtkkiRhbDkmBz0a4DBCVndicUdN+01JUBUB5LQQXbGN3u+uzjtJtLSsJPTYtNWK91pKe222FKFtgMJ4mxir9VfHZ1K/IdeGLv6yylcjIF4lUXzcivhOrV92u5H3bYmnkBosjhARCug60qXHxJkKEeK7DERkgGUl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZiugiIh/; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739388797; c=relaxed/simple;
+	bh=DA8aW6TC91af7qZ599ujgZGfby8bu3yyXCCl/yeb3Fg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVHCvSPoyNfulxyQvLfOY+MI3DmXYzDJz3RCc9rL5gR0Azwi/jkwuAIiU15IxKPoxJvh2Xiev2RnsY8HXYXfAfgpmp+3npNN3sktCzHOkkfx0YE2t/rNf6G01QfTVxefMv8CeBaPEe5gGt3obQAa3UID3jTOZ8NgEuFeHpVf5po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4BnvrUb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZiugiIh/"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5deb0d6787cso24748a12.0
-        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 11:04:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739387092; x=1739991892; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5n7rB0wdq5vMXsxf8BJiZz2GQf3El+y7mHlJDy65vBI=;
-        b=ZiugiIh/Qkon8xy6FKWow5KHZer2lTDEscyw2I8ulBYfFR5rwlkjghnK5ahi7rtZcE
-         zF9w2Vw3AdgEiEfKVqPpQ0TCyXMRHPt7OdiJK1ZuTdRAUVeqGqP+LUCS0F/aZxIDYvXW
-         vWDNcX9DGbQ+rTXlbY8sGXqQAFlQCsG4T7z9F2oo1BqlSVAcFxuyraEjwdCcT5YLTpVx
-         Sl9V4Q9DLtv2YmKXLD7GTCjimA9sdSV2cZoz4VVyF9zXVTqBBIjTJQ/94SFIIGJLoTEG
-         i5w280KO6W5cyWyxqNIbtOV8MAEacWy+tKf5VvxlB0l/v8NFRiPUhQVExXZ13f7B9Ap6
-         yw0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739387092; x=1739991892;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5n7rB0wdq5vMXsxf8BJiZz2GQf3El+y7mHlJDy65vBI=;
-        b=ReLqDWow/NACy0LVXCYlv2yM+jB62p3SE+jDcOiz2geDT8fved1/ANydz8AykacI6C
-         kv7ir7Ej2pN2T+48CEqsavLQf4tPqftBMwgon6j4Ox1mArOxaueOiS4/aDLbjO7XW09Q
-         U6m075ipjZQ2+SSuNiGBanzAyQyvjl8HzXZs+UiL2OdKmV6B0q90/Am8K+PfS6KxJjWq
-         lsu77nfH0lClLuyrV6LUh/XaAoouPpbMNb/bVGcRF22N8mHVDPTikdHHt2KETxs6DFC7
-         3/i/XfqpRHpbWLyaYFoIuMVam5ROsfwuZAf3BuxmAZPa45BgpSPWj1ehuH0Yx50EtIrq
-         crNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTIjdHHgRg/l73IJe1Xf1hRJ1gN7+/uBor87ld9PXSsYa6u2T06we9eaeVCVKoQ+oObC4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx+B3WDV5lwfklDRDV/rtWWCxnpaJ2ZgKuMzuqRCEKYFDZOTDy3
-	ZeSla3WWbIHFwNym3kMIX7Kxxx5a0yCbHHUQWkMeugptqjJpUdGT
-X-Gm-Gg: ASbGncuqNU5Nza3SRlx8KeLbuHGCFyzbF9SbsXM+WyLl1cEpY2Zh/2ao7Yz+or3cBik
-	K2l2aEkIgn0aUlV/sWi8zPrJoXfIyzLzJc1vCQu8U6gEEkuV6WJAifPqjG+Zx0n69jVj1c0isy9
-	b18jnU3RZ+b4Pht8OTogTJKH4p/wvoyiRa8REFuaUco5tmcfqPeYWasW6P5InSkoE/tvT3fwo1k
-	ons2ve/ZcPM823XPOWc/v6oOAKtgZvHEYVW6OmXAqSW8ufhXodRhtEKJg76nJOnti98oX0bSNvu
-	j5yoOWkK5XPdIUphKtKpSr2ifK5XkxDyA/5Oxj0rb7eE
-X-Google-Smtp-Source: AGHT+IEZn0+ju/iW8MyZm8pcKU9jLpSB3rBPfVfpKrwdB6064zci1oEw5mVOcdEw7A8E0QsKoeQlTA==
-X-Received: by 2002:a05:6402:348d:b0:5dc:882f:74b7 with SMTP id 4fb4d7f45d1cf-5deade1c945mr4021549a12.30.1739387091464;
-        Wed, 12 Feb 2025 11:04:51 -0800 (PST)
-Received: from [192.168.1.130] ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5de59f893ebsm9343226a12.45.2025.02.12.11.04.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 11:04:50 -0800 (PST)
-Message-ID: <da63fc79-76f6-443f-b1fe-c4242cb45328@gmail.com>
-Date: Wed, 12 Feb 2025 21:04:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4BnvrUb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C5AC4CEDF;
+	Wed, 12 Feb 2025 19:33:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739388795;
+	bh=DA8aW6TC91af7qZ599ujgZGfby8bu3yyXCCl/yeb3Fg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o4BnvrUbuKt991EKanNsBOItVAGsM6PWGCh7sTdEonDfyh/BCF8oLxPYtgnnGAp4K
+	 B664GQwZwUzlCy0U3Igue+7lF0xzMIlbi2twjdxobGT5gDs5im3ir8lc5b5rAf1Ras
+	 IjJnEME07Et62oxLoX3sbhm6rgPQd6WPwoWwXSE0pryqmwJvOf+scUMY0sU4q7efnw
+	 eZ8OJDMTiGf8QTdZ7pVQAmXNtgQDT/NQqv1T6rFsLQQ+vV+TZIUtqswu6vJyUp40Uw
+	 ehxX5ZUz4uBREJmIvDdReeoT5QHtBo0HL5dqNz2mM2T8m7w/tQ+qycL2b+kJ1xaJCP
+	 lFZ9DHVjhcYJQ==
+Date: Wed, 12 Feb 2025 13:33:14 -0600
+From: Rob Herring <robh@kernel.org>
+To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 03/12] dt-bindings: crypto: Convert fsl,sec-2.0 to YAML
+Message-ID: <20250212193314.GA4134845-robh@kernel.org>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-3-8137b0c42526@posteo.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/6] arm64: dts: imx8mp: Add fsl,dsp-ctrl property for
- dsp
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>
-Cc: shawnguo@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, krzk+dt@kernel.org, conor+dt@kernel.org,
- festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- aisheng.dong@nxp.com, daniel.baluta@gmail.com, laurentiu.mihalcea@nxp.com,
- shengjiu.wang@nxp.com, iuliana.prodan@nxp.com, a.fatoum@pengutronix.de,
- Peng Fan <peng.fan@nxp.com>
-References: <20250212085222.107102-1-daniel.baluta@nxp.com>
- <20250212085222.107102-6-daniel.baluta@nxp.com>
- <Z6zGLn3B6SVXhTV1@lizhi-Precision-Tower-5810>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <Z6zGLn3B6SVXhTV1@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250207-ppcyaml-v2-3-8137b0c42526@posteo.net>
 
-On 2/12/2025 6:02 PM, Frank Li wrote:
-> On Wed, Feb 12, 2025 at 10:52:21AM +0200, Daniel Baluta wrote:
->> Audio block control contains a set of registers and some of them used for
->> DSP configuration.
->>
->> Drivers (rproc, SOF) are using fsl,dsp-ctrl property in order to control
->> the DSP, particularly for Run/Stall bit.
->>
->> Note that audio block control doesn't offer the functionality to reset
->> thte DSP. Reset is done via DAP interface.
->>
->> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
->> Reviewed-by: Peng Fan <peng.fan@nxp.com>
->> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
->> ---
->>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> index 14cfbd228b45..46b33fbb9bd1 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> @@ -1609,7 +1609,7 @@ sdma2: dma-controller@30e10000 {
->>  			};
->>
->>  			audio_blk_ctrl: clock-controller@30e20000 {
->> -				compatible = "fsl,imx8mp-audio-blk-ctrl";
->> +				compatible = "fsl,imx8mp-audio-blk-ctrl", "syscon";
->>  				reg = <0x30e20000 0x10000>;
->>  				#clock-cells = <1>;
->>  				#reset-cells = <1>;
->> @@ -2425,6 +2425,7 @@ dsp: dsp@3b6e8000 {
->>  			mboxes = <&mu2 0 0>, <&mu2 1 0>, <&mu2 3 0>;
->>  			firmware-name = "imx/dsp/hifi4.bin";
->>  			memory-region = <&dsp_reserved>;
->> +			fsl,dsp-ctrl = <&audio_blk_ctrl>;
-> I think kk's comments in v3
->
-> "This should have been implemented as reset controller, not syscon. It's
-> really poor choice to call everything syscon. It does not scale, does
-> not provide you runtime PM or probe ordering (device links). Quick look
-> at your drivers suggest that you have exacvtly that problems."
->
-> The above is quite good suggestion.
->
-> Your reply "But for Run/Stall bits we need to use a syscon.",
->
-> Run/Stall actually is reset, Most system, release reset signal means dsp/core
-> RUN.
->
-> Frank
+On Fri, Feb 07, 2025 at 10:30:20PM +0100, J. Neuschäfer wrote:
+> Convert the Freescale security engine (crypto accelerator) binding from
+> text form to YAML. The list of compatible strings reflects what was
+> previously described in prose; not all combinations occur in existing
+> devicetrees.
+> 
+> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> ---
+> 
+> V2:
+> - several improvements suggested by Rob Herring:
+>   - remove unnecessary multiline markers
+>   - constrain fsl,num-channels to enum: [1,4]
+>   - constrain fsl,channel-fifo-len to plausible limits
+>   - constrain fsl,exec-units-mask to maximum=0xfff
+> - trim subject line (remove "binding")
+> ---
+>  .../devicetree/bindings/crypto/fsl,sec2.0.yaml     | 142 +++++++++++++++++++++
+>  .../devicetree/bindings/crypto/fsl-sec2.txt        |  65 ----------
+>  2 files changed, 142 insertions(+), 65 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml b/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..0b82f3b68b5f82e7fb52d292a623d452c1cdb059
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml
+> @@ -0,0 +1,142 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/crypto/fsl,sec2.0.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale SoC SEC Security Engines versions 1.x-2.x-3.x
+> +
+> +maintainers:
+> +  - J. Neuschäfer <j.ne@posteo.net.
 
-RESET and STALL are quite different signals w/ different purposes so
-calling them both RESET is confusing and inaccurate.
+missing >
 
-The syscon is used here to control the STALL signal (name of the bit we're using is RunStall)
-and has nothing to do with the RESET signal, which is why it's implemented as a syscon rather
-than a reset controller.
+> +
+> +properties:
+> +  compatible:
+> +    description:
+> +      Should contain entries for this and backward compatible SEC versions,
+> +      high to low. Warning - SEC1 and SEC2 are mutually exclusive.
+> +    oneOf:
+> +      - items:
+> +          - const: fsl,sec3.3
+> +          - const: fsl,sec3.1
+> +          - const: fsl,sec3.0
+> +          - const: fsl,sec2.4
+> +          - const: fsl,sec2.2
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec3.1
+> +          - const: fsl,sec3.0
+> +          - const: fsl,sec2.4
+> +          - const: fsl,sec2.2
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec3.0
+> +          - const: fsl,sec2.4
+> +          - const: fsl,sec2.2
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec2.4
+> +          - const: fsl,sec2.2
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec2.2
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec2.1
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec2.0
+> +      - items:
+> +          - const: fsl,sec1.2
+> +          - const: fsl,sec1.0
+> +      - items:
+> +          - const: fsl,sec1.0
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  fsl,num-channels:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [ 1, 4 ]
+> +    description: An integer representing the number of channels available.
+> +
+> +  fsl,channel-fifo-len:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    maximum: 100
+> +    description:
+> +      An integer representing the number of descriptor pointers each channel
+> +      fetch fifo can hold.
+> +
+> +  fsl,exec-units-mask:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    maximum: 0xfff
+> +    description: |
+> +      The bitmask representing what execution units (EUs) are available.
+> +      EU information should be encoded following the SEC's Descriptor Header
+> +      Dword EU_SEL0 field documentation, i.e. as follows:
+> +
+> +        bit 0  = reserved - should be 0
+> +        bit 1  = set if SEC has the ARC4 EU (AFEU)
+> +        bit 2  = set if SEC has the DES/3DES EU (DEU)
+> +        bit 3  = set if SEC has the message digest EU (MDEU/MDEU-A)
+> +        bit 4  = set if SEC has the random number generator EU (RNG)
+> +        bit 5  = set if SEC has the public key EU (PKEU)
+> +        bit 6  = set if SEC has the AES EU (AESU)
+> +        bit 7  = set if SEC has the Kasumi EU (KEU)
+> +        bit 8  = set if SEC has the CRC EU (CRCU)
+> +        bit 11 = set if SEC has the message digest EU extended alg set (MDEU-B)
+> +
+> +      remaining bits are reserved for future SEC EUs.
+> +
+> +  fsl,descriptor-types-mask:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      The bitmask representing what descriptors are available. Descriptor type
+> +      information should be encoded following the SEC's Descriptor Header Dword
+> +      DESC_TYPE field documentation, i.e. as follows:
+> +
+> +        bit 0  = set if SEC supports the aesu_ctr_nonsnoop desc. type
+> +        bit 1  = set if SEC supports the ipsec_esp descriptor type
+> +        bit 2  = set if SEC supports the common_nonsnoop desc. type
+> +        bit 3  = set if SEC supports the 802.11i AES ccmp desc. type
+> +        bit 4  = set if SEC supports the hmac_snoop_no_afeu desc. type
+> +        bit 5  = set if SEC supports the srtp descriptor type
+> +        bit 6  = set if SEC supports the non_hmac_snoop_no_afeu desc.type
+> +        bit 7  = set if SEC supports the pkeu_assemble descriptor type
+> +        bit 8  = set if SEC supports the aesu_key_expand_output desc.type
+> +        bit 9  = set if SEC supports the pkeu_ptmul descriptor type
+> +        bit 10 = set if SEC supports the common_nonsnoop_afeu desc. type
+> +        bit 11 = set if SEC supports the pkeu_ptadd_dbl descriptor type
 
-While Krzysztof's comment does make sense, I still find it odd to have this implemented as a
-reset controller despite it not having anything to do with the RESET signal.
+Why 3 variations of 'descriptor type'?
 
-Also, do note that the two nodes are in clock provider-consumer relationship
-so unless I'm gravely mistaken this should at least guarantee the probe order.
+> +
+> +      ..and so on and so forth.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - fsl,num-channels
+> +  - fsl,channel-fifo-len
+> +  - fsl,exec-units-mask
+> +  - fsl,descriptor-types-mask
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    /* MPC8548E */
+> +    crypto@30000 {
+> +        compatible = "fsl,sec2.1", "fsl,sec2.0";
+> +        reg = <0x30000 0x10000>;
+> +        interrupts = <29 2>;
+> +        interrupt-parent = <&mpic>;
+> +        fsl,num-channels = <4>;
+> +        fsl,channel-fifo-len = <24>;
+> +        fsl,exec-units-mask = <0xfe>;
+> +        fsl,descriptor-types-mask = <0x12b0ebf>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/crypto/fsl-sec2.txt b/Documentation/devicetree/bindings/crypto/fsl-sec2.txt
+> deleted file mode 100644
+> index 125f155d00d052eec7d5093b5c5076cbe720417f..0000000000000000000000000000000000000000
+> --- a/Documentation/devicetree/bindings/crypto/fsl-sec2.txt
+> +++ /dev/null
+> @@ -1,65 +0,0 @@
+> -Freescale SoC SEC Security Engines versions 1.x-2.x-3.x
+> -
+> -Required properties:
+> -
+> -- compatible : Should contain entries for this and backward compatible
+> -  SEC versions, high to low, e.g., "fsl,sec2.1", "fsl,sec2.0" (SEC2/3)
+> -                             e.g., "fsl,sec1.2", "fsl,sec1.0" (SEC1)
+> -    warning: SEC1 and SEC2 are mutually exclusive
+> -- reg : Offset and length of the register set for the device
+> -- interrupts : the SEC's interrupt number
+> -- fsl,num-channels : An integer representing the number of channels
+> -  available.
+> -- fsl,channel-fifo-len : An integer representing the number of
+> -  descriptor pointers each channel fetch fifo can hold.
+> -- fsl,exec-units-mask : The bitmask representing what execution units
+> -  (EUs) are available. It's a single 32-bit cell. EU information
+> -  should be encoded following the SEC's Descriptor Header Dword
+> -  EU_SEL0 field documentation, i.e. as follows:
+> -
+> -	bit 0  = reserved - should be 0
+> -	bit 1  = set if SEC has the ARC4 EU (AFEU)
+> -	bit 2  = set if SEC has the DES/3DES EU (DEU)
+> -	bit 3  = set if SEC has the message digest EU (MDEU/MDEU-A)
+> -	bit 4  = set if SEC has the random number generator EU (RNG)
+> -	bit 5  = set if SEC has the public key EU (PKEU)
+> -	bit 6  = set if SEC has the AES EU (AESU)
+> -	bit 7  = set if SEC has the Kasumi EU (KEU)
+> -	bit 8  = set if SEC has the CRC EU (CRCU)
+> -	bit 11 = set if SEC has the message digest EU extended alg set (MDEU-B)
+> -
+> -remaining bits are reserved for future SEC EUs.
+> -
+> -- fsl,descriptor-types-mask : The bitmask representing what descriptors
+> -  are available. It's a single 32-bit cell. Descriptor type information
+> -  should be encoded following the SEC's Descriptor Header Dword DESC_TYPE
+> -  field documentation, i.e. as follows:
+> -
+> -	bit 0  = set if SEC supports the aesu_ctr_nonsnoop desc. type
+> -	bit 1  = set if SEC supports the ipsec_esp descriptor type
+> -	bit 2  = set if SEC supports the common_nonsnoop desc. type
+> -	bit 3  = set if SEC supports the 802.11i AES ccmp desc. type
+> -	bit 4  = set if SEC supports the hmac_snoop_no_afeu desc. type
+> -	bit 5  = set if SEC supports the srtp descriptor type
+> -	bit 6  = set if SEC supports the non_hmac_snoop_no_afeu desc.type
+> -	bit 7  = set if SEC supports the pkeu_assemble descriptor type
+> -	bit 8  = set if SEC supports the aesu_key_expand_output desc.type
+> -	bit 9  = set if SEC supports the pkeu_ptmul descriptor type
+> -	bit 10 = set if SEC supports the common_nonsnoop_afeu desc. type
+> -	bit 11 = set if SEC supports the pkeu_ptadd_dbl descriptor type
+> -
+> -  ..and so on and so forth.
+> -
+> -Example:
+> -
+> -	/* MPC8548E */
+> -	crypto@30000 {
+> -		compatible = "fsl,sec2.1", "fsl,sec2.0";
+> -		reg = <0x30000 0x10000>;
+> -		interrupts = <29 2>;
+> -		interrupt-parent = <&mpic>;
+> -		fsl,num-channels = <4>;
+> -		fsl,channel-fifo-len = <24>;
+> -		fsl,exec-units-mask = <0xfe>;
+> -		fsl,descriptor-types-mask = <0x12b0ebf>;
+> -	};
+> 
+> -- 
+> 2.48.0.rc1.219.gb6b6757d772
+> 
