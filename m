@@ -1,189 +1,133 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2041.outbound.protection.outlook.com [40.107.247.41])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BF02135C0
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 10:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739444302; cv=fail; b=lxJBHzfgMVWm+1fgE6u1tGqrLGav9oqta8Tq3LnEp1XPYIS7GsXzy3mbK1mzElXaisASy56BCclAkFYiqllqmFgFSYduYNjZRtxEKtEvyGa/Ts/OkJxmRz9Zu+burw7Up1CfWGpaNZHsMu/I9WkW7mTBN1sPM9Uwk5NtD6tfjl4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739444302; c=relaxed/simple;
-	bh=8pJymemrWfW8SjK6vC7XQ2J37R6hcDnHT3i+Eo8BxAE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Iz6fQLQrbZg6fGNqxlPIz3rqGFLPPAyIFNRdmbXpJYwLyMPfIuTIlplQf27AOImqUlgTSVs3JjFM6zm5AzF8Vt+KUDVwyIS766XF7Mt4+cuGPhK0BQi41Nbr7NXVabvqyUb/ycUkxSwcz/1v8bMGXGg261XsOZxJMKcUUXaBuso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=epejZP03; arc=fail smtp.client-ip=40.107.247.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C79227E8D
+	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 11:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739445977; cv=none; b=rM04/yEJGXuqd/kgdJfkgUVcfpQtgPw78AebFNCxW4I0rHiF3Yrmuc9kSfCQmXkiSQmddwl7ijmuSY7HhjfmwhIM8/94HD2SLJ4MKvKkeSSAjtrJV/iJ5/KkuKcb3VhxKw2RvdNqeOenI84uH7Qglt9PEHu9QnrOqd0w1FSBvWk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739445977; c=relaxed/simple;
+	bh=a76uEsEM5QEz1KJiDQYQrLivs/y81VdE+BXmBQrGiJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qStXQ6+jZ99muCH8m2VLZv6rWjVu4nccV1LEodU/LORQTOyYPBnK794HkxHbWgk1pJaj0X0Z2Gm6DXzjjVGDny8zkf7UyhjGXTrQjyEDyHrPu7DeQYobwObLgM5p/Uu8D/XnpRy6bR+XsmwW0M2AcevpcCs+/V34odPkEXVwbdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ClNjhBiU; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="epejZP03"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OyGiL4V7A3ItIeBvQcyH8fThg7vt9jzTs2jyHqJHC9OB8pRYUtwglrFlVrSBebVOIEPATczTirAab7+ibFReZLN/eXNeVaxCwBRh5qmRgrzNBbqWqhrvJsUjPYbAKnWoq89a6H8T1wXeXWm7lQcC5npB5jvRfs/E52NuG7qZtiN6I4VpYCEfj7mZt3mlX8Nk7OPGKDl+9z5/pcfud5Ki8oQZHGnCpUqCaczTvvFBjUmPDBpQyBfEhoS8FBOjOpxxYi119J21VOzeP8zWKRCU8ORZCD2LhgkFB4L39QStVGHsAvw8TxhqRYzA7W5px+KAoKe8MamozoxWcmx9VcNxog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lFiA2F1xHPi3tKar+v56zeNlO7+JzmwB9qQR2WEqGsY=;
- b=B5bYlXP2FQy3M2yLfY34NVHGqY+y6b+edVfm9X/y+OIHoBDmwMkA60wlSdFW8BVpDSjpwnYT0ytSjkUYNAJbmbQiGKLMUQZ3Cq+CghuGDnppauJejui9CMqH4y859JTByJ7aFBhAqhbA3UyEi6ucdqKXzgrsEL1xp/J5nHM4B8ffcz3jKkO/TXAMmeMqwouaN28j0/iJW2VsEr3c4DY6SoO7PUzsTouk+mQKh84xg9lNQcmOx33uV/f4bJmsXsFG9gpnp2SU2n8ZTQVUi57BusAa7FsSn9VkmBFW4/LoHWoT4ncFjPaOijAylGUR8LUx8uaWf9JJOZWm3WEeuFP4nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lFiA2F1xHPi3tKar+v56zeNlO7+JzmwB9qQR2WEqGsY=;
- b=epejZP03+N6t4w3UrR0QMxPu/s1TCn14b/NPhD9EcdDQrIzxq21XLGjH1ZAJmYZco3VZf2qlU7cvanvqWc99gV86LOobSmI81a4zEJpuv4hjDUmeKhQNOyoz6Ip4NGr6tfd1oS+/oPWXm4x+RK1Z9GzKHQMmGQoW6dEZXEwLxZoQuCru56d3gBjfJhf0kaCCN9zeJIVW0Ip3308ftY2KqdjFZWwdq4tTLukOlX+s552XxQA9kbrS0ndM419i1pUGpDxwbUHh4n6qc6ypfkfgKLF9quizYvcBRULuuOYEYYhlp1DgCYAXLW5NVZXjQzy1R/0NuCb1/09iuibWUMAUSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS4PR04MB9575.eurprd04.prod.outlook.com (2603:10a6:20b:4fd::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.15; Thu, 13 Feb
- 2025 10:58:16 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8445.015; Thu, 13 Feb 2025
- 10:58:16 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: rafael@kernel.org,
-	len.brown@intel.com,
-	pavel@kernel.org,
-	gregkh@linuxfoundation.org,
-	dakr@kernel.org,
-	stern@rowland.harvard.edu
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH v2] PM: sleep: core: Clear is_prepared if no_pm_callbacks is true before checking power.syscore
-Date: Thu, 13 Feb 2025 18:58:40 +0800
-Message-Id: <20250213105840.2864654-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0051.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ClNjhBiU"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3BB9B204A5;
+	Thu, 13 Feb 2025 11:26:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739445966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rUZkMEvJv2/Nc54eZXgalM3L01O0l7yfmrIgB7KhrLk=;
+	b=ClNjhBiU7bSJ2LVuVj3MhNmAjBfG5wdPHJR51Gst5UBx+tZo172PGsyFbW/ciciZ5Ih2te
+	bePvC1qsSkNduxfr6W2DMo1Dt4H+HMBdal9tgCTfPZYTl2b58SxaQirU3X3n6M4xtEQCD+
+	T+hsOlT+VbYJhcyn+1jF6QAkreHWn1IBAqbaTUQoclk1OT8TQEJppckzb5IrHgVzqrShBu
+	Jn+PgHEuATNkPCv84wny9UR0TyAaZbYr+hQVZEpEti6Rj4Qb7z6XDU2tjEiwPZci7Oo52p
+	alAUavb9fHcqfoqu0H/IITUwRgmvh4ftAnpzdYt83jle9DuCOCTbgP0pgl2VJQ==
+Date: Thu, 13 Feb 2025 12:26:05 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Peng Fan <peng.fan@nxp.com>,
+	"cristian.marussi@arm.com" <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
+Subject: Re: [PATCH 0/4] rtc/scmi: Support multiple RTCs
+Message-ID: <202502131126057bac6f7a@mail.local>
+References: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
+ <20250120102117538ef59b@mail.local>
+ <PAXPR04MB8459968DFDE5979802CC034A88E62@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <Z6uCCeG2d395ZGDS@bogus>
+ <20250212063532.GB15796@localhost.localdomain>
+ <Z6x7TBSjBFBxGo77@bogus>
+ <20250212170147ee6863dc@mail.local>
+ <20250213033033.GA21937@localhost.localdomain>
+ <20250213082032315c4327@mail.local>
+ <20250213105257.GA29804@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS4PR04MB9575:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56d98c22-5c8c-484e-0df0-08dd4c1d517e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6tkL6jHoM+LrRM6bgcPW1Qd/bOc1tci/HUxxDG6ee5LjrJf96CxMJqynLLCG?=
- =?us-ascii?Q?6WrivW8JK/UcfkuI7IaARnJPmNUGIrtIKWojm9tEEB7pncTQpa7JE59lishT?=
- =?us-ascii?Q?w8lRE3wlVrEmE3a6q47LEgtM5AGyfkx1RcK3zniktaSlx8afcgKsTS8Klwkg?=
- =?us-ascii?Q?KBb+JjHOcHxILW/xGYvCJ4U0lDcmciJKKvAuXFIFieW1n0WqvfaokwTOoBed?=
- =?us-ascii?Q?X8r/HC+ckndV5p9CoimPYBIv2W+Vi/R1GSSg9w5QItOoVwWLZap056x+JI0J?=
- =?us-ascii?Q?8TZ2rpj8MKyddnV/S7yOgwe9IqItfY6a1eYuIQSxEWYktlTLnaN19Bn5NlSh?=
- =?us-ascii?Q?rF6u9iUme03x/CJrC5Mv4kXoTGmNzWbpAfSAIDCRBd9deFxkMVEvdI2to6de?=
- =?us-ascii?Q?NeZvKxIKGc4t3T9fQCCRCqKWLhZPcLudF4VMcLP50GuLnXDTNVWZ+d/YV3WH?=
- =?us-ascii?Q?RIKYD01ph3n0kl+UuBfzupqgYAfC4jHw8GMDxANiHXIdzFw5Q2YBRfjY697a?=
- =?us-ascii?Q?h8l/wnSM9jTBT1SctA/8k3mRLde8RTvKnLAVV/o5Z/FNOqKoQYSHxE0AfIlY?=
- =?us-ascii?Q?CFMrLmtGyBoyoMn8cSNh8OGWZmTqfluSSOx9NXcG+eR10UWqJiUH54oTsizj?=
- =?us-ascii?Q?IWBLRfB8Hq/4+rEJW7W6JjGY+yspVrsUTy1kZbpzCIN6j7yMirm3QlcaR+16?=
- =?us-ascii?Q?eTZ0fjqsaoDxuXOeFK2qyWZul/MdCHOlRD9lo8TERk9aDwx0Y2RK5IdbfUl2?=
- =?us-ascii?Q?0l078phnMZCUGdvcsGgIFu/NeAYCx9Bk2uea7eQkWtny3Bmt3yI+0iAG3+Bt?=
- =?us-ascii?Q?4KQ1poV7N1wJGUEOecRT5bfhzRA81tqLNUc6uZqI50G+CGJZk6jNT35YmEHZ?=
- =?us-ascii?Q?16Jl2Poa9S09SCuYVtPHh8GvXP/z15OUbCaA6asNC1S/WV6Vw4+4jeZ6A0i2?=
- =?us-ascii?Q?bpjldlC5J/ku6VsdROTjN7LnANBnYMW/oUyyodokqwHz2Hq5ZtL63jbIIQMk?=
- =?us-ascii?Q?7kHT5axROU2E4chEcJFchUL6P8DsgmUWYW0VlC5CkRkpotUMdLlous1G/V5f?=
- =?us-ascii?Q?4xm0qSgSAy4iLxm/QgAZG+MypCrhZj/9IRifl/yVB4seRsxgiHr4EA5NsjiS?=
- =?us-ascii?Q?Eb7nt/1YeTyJk3ruwVRbHV880xi1Qz/FCEuQYJHd+4tXEZMQrli/CxQ176iV?=
- =?us-ascii?Q?DgQ2/irK3l4BVnIH2Qzgp/9OzjXQvTQimAsyK5qms+dR1bNdmtJ+5s7rihir?=
- =?us-ascii?Q?dTpE4yso++wYlSk+wbII1MMqhWqth/FbyLUXnY4zA3SD1oN9KXDnP5LqQ5Zo?=
- =?us-ascii?Q?C1WibrxpkPUrC34o2cViWMsoL+5f2EIgxg/8B0oWIJa0Hw8B4ov2Wy2KjCms?=
- =?us-ascii?Q?bLMd/MLHJibAE75vjBAPCiIPbPkN4uhNhVvLsTGWZz6/iNmNqbLXDi2uv20R?=
- =?us-ascii?Q?HIDKncgUK5JKpTS4lHcIzQFn8s3ojVyn?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dyzjnItY5lCa2EoiUhK6opsDLMH0Y/Az3QGUbAoEBnIBD1KYxzwhDBNyJouP?=
- =?us-ascii?Q?LhZwRc8SOGb8aVuIWVlNLetonK2ZlklwsRwr04RFNzE2QyOwSiQwY0IhvW1v?=
- =?us-ascii?Q?V9jGCqZKsoN/8EKRg6xnKM4kOr4Fm1dvoT3lbVe+UYlIAbr8bWG4mJ/1jnrr?=
- =?us-ascii?Q?d0bvFeqeljnBzP9CUtpO8y+driZZ45eDBuOPmVYV+DrWMHxMJinMvCpFhONs?=
- =?us-ascii?Q?j7FwPkNDf00D0Qfi68QQh14kYnPLS/292SR2tDLzm9Km873od81ww70MnzNe?=
- =?us-ascii?Q?Oym428JdDNJoHLIyYM+cvfeBONCK3CqFjA1CM5aNQU3nH8ffLRNJ5NZvcdZp?=
- =?us-ascii?Q?4Vf1AWx4vfiMTOyVAiQyLZVaznNxFDxHFqwdDU3Fc46ZM70SBT/8N0Q6fDbi?=
- =?us-ascii?Q?tBOmrvmvZ7zQTODCJ2R0x6bVWYK1xvE0kaHYplkQ2bxjaPSZQpuzVEL6Xviy?=
- =?us-ascii?Q?QsZXG9L9VTPr3H5MwBnQDv3IzyluYaqHDgG1mJo4maobsM92Ris94C3weQvF?=
- =?us-ascii?Q?W7OYhJA5zzw1vP/OpWhwaUWnRuNtsxc4R7ZQWftJcDI3FQXJmXTOQZWqpadG?=
- =?us-ascii?Q?8hF6tkzoKKC/DEHYGyVKJlpqPOAyEKeOHNTbqnZSxI2jqm1JB1KnRjZ08iwT?=
- =?us-ascii?Q?DebBxdpQgQSTnztqNePRvVtuBeXg0qAaezEDkRowx5wyoGnBYSku7NiVDmfo?=
- =?us-ascii?Q?OBjHA/IQRccyaFfehit0OhJrMqG4wSTJkT7vTz8vEtun7ZmIzsyZ/H5yKwZW?=
- =?us-ascii?Q?svXn4B8UnrPA+z9NzmY29GvXNGFt2Hxtw0tEAJiEWiCBfmPWUfRSENau0KSx?=
- =?us-ascii?Q?zEKL2pREmJPCjFducTMzzMKsTnMH3mn+0Y/N7n9kUiNRhdVtl23AhGigZoUY?=
- =?us-ascii?Q?YUhTYPfsYpxbPnayiXzGnPb6sd3ePQq5nnGQYUJez0jBExpUXyD5gzpk4mgq?=
- =?us-ascii?Q?KAVKa5mRQ715UfC7T6gqePhcwm6VXu4UMIKtGLrvGCszGcA4rzeJHICm2w6x?=
- =?us-ascii?Q?9hgWgIDVFL2/kUKsex2NObkKz84EecbFRNb1Wngsyvx2zoduZ56YOCXGvY1V?=
- =?us-ascii?Q?9La94t75aDyAIHTvCrBTMe+DWMzZvAaFDCAvbqzxzP5U6RPtQ+40ttUwuzNC?=
- =?us-ascii?Q?k5D+W2iM5R7tnRzF+jIPELm7wXjx3XA+VYzzYbnM7YoKmMu5E205HzwLsgRz?=
- =?us-ascii?Q?IyHNZy0M72/McVzCULUbFProqvt7DK0PBxYjUNEaYayXCx7EM40/7UTgwsVJ?=
- =?us-ascii?Q?WU1pFluwyb1jp1H1M4SvuLegGo/HMww2zGLBGYGkwQEgFk43YnnH4m3d0RKY?=
- =?us-ascii?Q?XawJIVDJ4dZ01x4+Jt3ctdon8zulgRv4Z4gaTfUhdX4+Wqe7Owp8ta3Z5g0V?=
- =?us-ascii?Q?y5EgvWT7hzPblnOnT0phU/+MmOFgfiH28BydbuoYTJ31xrQEYq29WxwFWPvj?=
- =?us-ascii?Q?fxrz2F85mZdaZ5HCtmLcdtzuCwgzgvfBhBLw8ky3CiYu+647JwyD5IrIjFi0?=
- =?us-ascii?Q?vxGdUSbC2aXAo1zt4FhLqkif/zkEGmmXWXrRJxs515kjAXRjHQby9wVm6gQU?=
- =?us-ascii?Q?uIRaMFFWyxKAGq5MxOvkwbQeVbsjBcwFPXzNxrci?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56d98c22-5c8c-484e-0df0-08dd4c1d517e
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 10:58:16.3347
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6m9LiP5PXrdrw+G6zlLa0EvJvx7K1kKOVWLdnxqOfR0jRtvjROb8lJi3ZOlC4Gqm4CyimqneGUbXTdFb4tymUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9575
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250213105257.GA29804@localhost.localdomain>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegieeihecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomheptehlvgigrghnughrvgcuuegvlhhlohhnihcuoegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegieduueethefhkeegjeevfefhiedujeeuhffgleejgfejgeekueejuefgheeggfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmegukeejvgemudgsudgsmeeltdekgeemtggtfhgtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmegukeejvgemudgsudgsmeeltdekgeemtggtfhgtpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehpvghnghdrfhgrnhesohhsshdrnhigphdrtghomhdprhgtphhtthhopehsuhguvggvphdrhhholhhlrgesrghrmhdrtghomhdprhgtphhtthhopehpvghnghdrf
+ hgrnhesnhigphdrtghomhdprhgtphhtthhopegtrhhishhtihgrnhdrmhgrrhhushhsihesrghrmhdrtghomhdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-Currently, if power.no_callbacks is true for a device, device_prepare()
-will also set power.direct_complete to true. When device_resume() check
-power.direct_complete, setting power.is_prepared will be skipped if it
-can directly complete. This will cause a warning when add new devices
-during resume() stage.
+On 13/02/2025 18:52:57+0800, Peng Fan wrote:
+> On Thu, Feb 13, 2025 at 09:20:32AM +0100, Alexandre Belloni wrote:
+> >On 13/02/2025 11:30:33+0800, Peng Fan wrote:
+> >> >> IIUC on any pure DT based system, a device node exists per RTC and hence
+> >> >> platform device associated with it. And the RTC devices are created with
+> >> >> parent pointing to unique platform device.
+> >> >> 
+> >> >> > However i.MX SCMI BBM exports two RTCs(id: 0, id: 1), so to make it work for
+> >> >> > current RTC framework, we could only pick one RTC and pass the id to BBM
+> >> >> > server side.
+> >> >> >
+> >> >> > I am not sure whether Alexandre wanna me to update the code following each
+> >> >> > parent could only support one RTC or else.
+> >> >> >
+> >> >
+> >> >I want you to keep your changes local to your driver. I already stated
+> >> >back in 2018 that you were on your own with the imx-sc driver and that I
+> >> >don't like seeing multiple abstractions for existing RTCs. What is the
+> >> >actual use case behind needing to access both RTCs using Linux?
+> >> >Shouldn't this be handled on your firmware side?
+> >> 
+> >> The firmware exports two RTCs, RTC0 could be handled by Linux, RTC1
+> >> could only be read by Linux and configuable by M7 per current i.MX95 EVK
+> >> firmware.
+> >
+> >This doesn't answer the main question, why is this useful? Where is the
+> >time of RTC1 coming from and why would linux set a different time on
+> >RTC0 ? Can't the firwmare just set the same time on both RTC0 and RTC1?
+> 
+> To current i.MX95 EVK SCMI firmware, RTC0 is SoC internal RTC, RTC1 is
+> board level RTC which is more acurrate.
+> 
+> There are safety island in i.MX95, M7 safety core is assigned owner of
+> RTC1. Linux non-safety is assigned owner of RTC0, but Linux could read RTC1
+> time, Linux not able to set alarm of RTC1.
+> 
+> I need ask firmware developer to see whether RTC1 time could be synced to
+> RTC0 from firmware level. But considering RTC1 is more accurate, should we
+> use RTC1?
+> 
+> The current firmware design is RTC0 is always there and exported, because
+> it is SoC internal RTC. RTC1 is board level one, it could be optional per
+> board design and firmware design.
+> 
+> The firmware could update to only export RTC1 if no safety need it,
+> but this needs big change to the firmware BBM part, I need check with
+> firmware developer. But things may not change.
+> 
+> >What would someone do if RTC0 and RTC1 don't agree on the time?
+> 
+> RTC1 is more accurate if it is there.
+> 
 
-Although power.is_prepared should be cleared in complete() state, commit
-(f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
-clear it in earlier resume() stage. However, we need also set is_prepared
-to false before checking syscore if the device has no pm callbacks.
+Well, yes, you have your answer here, if the firmware knows RTC1 is more
+accurate and will be your source of truth, then simply use this one.
 
-Take USB as example:
-The usb_interface is such a device which setting power.no_callbacks to
-true. Then if the user call usb_set_interface() during resume() stage,
-the kernel will print below warning since the system will create and
-add ep devices.
 
-[  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdrc
-[  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
-[  187.105010] PM: resume devices took 0.936 seconds
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-
----
-v2: clear is_prepared before check syscore as suggested by Rafael
----
- drivers/base/power/main.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 40e1d8d8a589..5e69cfaec661 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -926,6 +926,9 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 	TRACE_DEVICE(dev);
- 	TRACE_RESUME(0);
- 
-+	if (dev->power.no_pm_callbacks)
-+		dev->power.is_prepared = false;
-+
- 	if (dev->power.syscore)
- 		goto Complete;
- 
 -- 
-2.34.1
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
