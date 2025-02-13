@@ -1,171 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92122139C4
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 12:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E4923F40C
+	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 13:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739451423; cv=none; b=GpYAfRvQXlJ4Z+wmsvUTuXgwihOzLDU+Xxc2L7bsx2oaQutCaz7lpebFDILbpE7lQAS0cVKdeLjDm5c34DDsHpjq/yjuqoVeCloF3Ep7jPtvtzDgbvoT0sW2of0fsKpfV/X1K+Izib1dQh+9p+8FZ14nRvxradwqvjgx4M2q2i8=
+	t=1739452118; cv=none; b=oYyrsWuObCsKLiBmFbHrA8sQ7xMkHWa9Ddw6RNdk2Qudz9gJa7hTgcxlPNkiyl9IIO+iaCl1dFzRLqJhxidNZIXpe383XnjSjFhATNXE1KjBZYN10IPWdJQTH/nbEjQb1Vbcrc4T3hkbsyOQxSgByBuWgotCtId80lxoqLc7sPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739451423; c=relaxed/simple;
-	bh=4XOKJP5C9KasCvv9RRiGNI4Xj2vhZlzPXtPpNzDC/WM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=A37VYqE/N0Qwh1WlivNTOCzikrBODJBAVvwOZoQz1dGySCTKeFlVs70vUuUz4mIz0KjG/csuqvvovCJdV7B2b4ESUmO0ZzKGgXXsHzlqJmiiOddFra4us+vUolvot35xrKtCGVCFbjEN3IwgkhNWiPlRYWZQn3/bHkiozfb7WtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QU/FYJCz; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QU/FYJCz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739451422; x=1770987422;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=4XOKJP5C9KasCvv9RRiGNI4Xj2vhZlzPXtPpNzDC/WM=;
-  b=QU/FYJCzhIjzo341v5A/bg6Od6h6HOghiZjSzvMJwjLy7tkDdbaLDc3L
-   3FFQFlSzxPr4TiUjEqPJo7kUwGb+CJlX6fml6y+ARJxgKKWrInznl0O20
-   xoHWDA4AWpaj3ZbWNfyiZ77ENjnQXBj6naZu3bojquWjkZrNUtBGTRwYi
-   V4fHdJArHD7/nmaZ+9EtaZpcF/KyYixSoCfM8yjCCEU1l1ybslvNDMdN/
-   /A/DDm2dR4mLiZihRKt83z0lMXcLYFYgurfLko6Qo8tumBavM6NaZfmXH
-   PHqo44MoHM/oxaqq+dYLJBl6AzO4gUh3ZMHrx8FhCkqKMk867R0z/nORR
-   g==;
-X-CSE-ConnectionGUID: 8DMhTgXiSwu9bmAplZmgfw==
-X-CSE-MsgGUID: 3QSmrlE6T52cMnvsLptLDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="62619414"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="62619414"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 04:57:01 -0800
-X-CSE-ConnectionGUID: ThDS0Z6ISMGS8HTigpxZiA==
-X-CSE-MsgGUID: x6AFKZzsRDeJj1srwh0IiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="112973137"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.48])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 04:56:46 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 13 Feb 2025 14:56:44 +0200 (EET)
-To: Jerome Brunet <jbrunet@baylibre.com>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-    Arnd Bergmann <arnd@arndb.de>, Danilo Krummrich <dakr@kernel.org>, 
-    Conor Dooley <conor.dooley@microchip.com>, 
-    Daire McNamara <daire.mcnamara@microchip.com>, 
-    Philipp Zabel <p.zabel@pengutronix.de>, 
-    Douglas Anderson <dianders@chromium.org>, 
-    Andrzej Hajda <andrzej.hajda@intel.com>, 
-    Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-    Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-    Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-    Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-    Maxime Ripard <mripard@kernel.org>, 
-    Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-    Simona Vetter <simona@ffwll.ch>, Hans de Goede <hdegoede@redhat.com>, 
-    Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-    Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
-    Gregory CLEMENT <gregory.clement@bootlin.com>, 
-    =?ISO-8859-15?Q?Th=E9o_Lebrun?= <theo.lebrun@bootlin.com>, 
-    Michael Turquette <mturquette@baylibre.com>, 
-    Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-    Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-    Pengutronix Kernel Team <kernel@pengutronix.de>, 
-    Fabio Estevam <festevam@gmail.com>, Kevin Hilman <khilman@baylibre.com>, 
-    Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-    LKML <linux-kernel@vger.kernel.org>, linux-riscv@lists.infradead.org, 
-    dri-devel@lists.freedesktop.org, platform-driver-x86@vger.kernel.org, 
-    linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-    linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH v3 4/7] platform: arm64: lenovo-yoga-c630: use the
- auxiliary device creation helper
-In-Reply-To: <20250211-aux-device-create-helper-v3-4-7edb50524909@baylibre.com>
-Message-ID: <0e83224d-9517-48f4-f030-b622c5d39d48@linux.intel.com>
-References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com> <20250211-aux-device-create-helper-v3-4-7edb50524909@baylibre.com>
+	s=arc-20240116; t=1739452118; c=relaxed/simple;
+	bh=66HnS2WU7zn4HR8Ta71sxVZqxMt8cAFKsInmnCjPJwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdAer+fpdSuDSw8Yo5KR82moEnpsff6TPQqffVbpF5M+Fn1arD9LsqoKRiNWQuJDFrOQ7MBe7gUh/jXdbaxYlcABegOsYZ0Az6feMynSYiut8tZV8DPt14rswBNGrqnvKGc+xFTre6y8KkCC25qVw5KCl1XQzYalPLpTUeR7fcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3D1E16F3;
+	Thu, 13 Feb 2025 05:08:54 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18FD83F58B;
+	Thu, 13 Feb 2025 05:08:31 -0800 (PST)
+Date: Thu, 13 Feb 2025 13:08:19 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Peng Fan <peng.fan@oss.nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/4] firmware: arm_scmi: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <Z63uttFGqXx4kqNr@pluto>
+References: <20250120-scmi-fwdevlink-v2-0-3af2fa37dbac@nxp.com>
+ <20250120-scmi-fwdevlink-v2-1-3af2fa37dbac@nxp.com>
+ <7a29ec8f-fef8-4f1c-a2eb-16a63f2b820c@stanley.mountain>
+ <20250206105218.GA22527@localhost.localdomain>
+ <e20415aa-517c-4e72-a1c3-9c02769c1149@stanley.mountain>
+ <Z6SgFGb4Z88v783c@pluto>
+ <CAGETcx8MXpLntMu4=9qECdZJzJLJbWa8ziH8XcW=yJNDAgD=Vw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGETcx8MXpLntMu4=9qECdZJzJLJbWa8ziH8XcW=yJNDAgD=Vw@mail.gmail.com>
 
-On Tue, 11 Feb 2025, Jerome Brunet wrote:
-
-> The auxiliary device creation of this driver is simple enough to
-> use the available auxiliary device creation helper.
+On Thu, Feb 13, 2025 at 12:17:06AM -0800, Saravana Kannan wrote:
+> On Thu, Feb 6, 2025 at 3:42 AM Cristian Marussi
+> <cristian.marussi@arm.com> wrote:
+> >
+> > On Thu, Feb 06, 2025 at 02:31:19PM +0300, Dan Carpenter wrote:
+> > > On Thu, Feb 06, 2025 at 06:52:20PM +0800, Peng Fan wrote:
+> > > > On Wed, Feb 05, 2025 at 03:45:00PM +0300, Dan Carpenter wrote:
+> > > > >On Mon, Jan 20, 2025 at 03:13:29PM +0800, Peng Fan (OSS) wrote:
+> > > > >> diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+> > > > >> index 2c853c84b58f530898057e4ab274ba76070de05e..7850eb7710f499888d32aebf5d99df63db8bfa26 100644
+> > > > >> --- a/drivers/firmware/arm_scmi/bus.c
+> > > > >> +++ b/drivers/firmware/arm_scmi/bus.c
+> > > > >> @@ -344,6 +344,21 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
+> > > > >>          device_unregister(&scmi_dev->dev);
+> > > > >>  }
+> > > > >>
+> > > > >> +static int
+> > > > >> +__scmi_device_set_node(struct scmi_device *scmi_dev, struct device_node *np,
+> > > > >> +                       int protocol, const char *name)
+> > > > >> +{
+> > > > >> +        /* cpufreq device does not need to be supplier from devlink perspective */
+> > > > >> +        if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq")) {
+> > > > >
+> > > > >I don't love this...  It seems like an hack.  Could we put a flag
+> > > > >somewhere instead?  Perhaps in scmi_device?  (I'm just saying that
+> > > > >because that's what we're passing to this function).
+> > > >
+> > > > This means when creating scmi_device, a flag needs to be set which requires
+> > > > to extend scmi_device_id to include a flag entry or else.
+> > > >
+> > > > As below in scmi-cpufreq.c
+> > > > { SCMI_PROTOCOL_PERF, "cpufreq", SCMI_FWNODE_NO }
+> > > >
+> > >
+> > > Yeah, I like that.
+> > >
+> > > -     if ((protocol == SCMI_PROTOCOL_PERF) && !strcmp(name, "cpufreq")) {
+> > > +     if (scmi_dev->flags & SCMI_FWNODE_NO) {
+> > >
+> > > Or we could do something like "if (scmi_dev->no_fwnode) {"
+> >
+> > I proposed a flag a few review ago about this, it shoule come somehow
+> > from the device_table above like Peng was proposing, so that a driver
+> > can just declare that does NOT need fw_devlink.
 > 
-> Use it and remove some boilerplate code.
+> Sorry, looks I replied to v1 series. Can you take a look at that
+> response please?
+> https://lore.kernel.org/lkml/CAGETcx87Stfkru9gJrc1sf=PtFGLY7=jrfFaCzK5Z4hq+2TCzg@mail.gmail.com/
 > 
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-> ---
->  drivers/platform/arm64/lenovo-yoga-c630.c | 42 +++----------------------------
->  1 file changed, 4 insertions(+), 38 deletions(-)
-> 
-> diff --git a/drivers/platform/arm64/lenovo-yoga-c630.c b/drivers/platform/arm64/lenovo-yoga-c630.c
-> index 1f05c9a6a89d5ee146144062f5d2e36795c56639..921a93d4ea39ac54344cc964e2805e974cc7e808 100644
-> --- a/drivers/platform/arm64/lenovo-yoga-c630.c
-> +++ b/drivers/platform/arm64/lenovo-yoga-c630.c
-> @@ -191,50 +191,16 @@ void yoga_c630_ec_unregister_notify(struct yoga_c630_ec *ec, struct notifier_blo
->  }
->  EXPORT_SYMBOL_GPL(yoga_c630_ec_unregister_notify);
->  
-> -static void yoga_c630_aux_release(struct device *dev)
-> -{
-> -	struct auxiliary_device *adev = to_auxiliary_dev(dev);
-> -
-> -	kfree(adev);
-> -}
-> -
-> -static void yoga_c630_aux_remove(void *data)
-> -{
-> -	struct auxiliary_device *adev = data;
-> -
-> -	auxiliary_device_delete(adev);
-> -	auxiliary_device_uninit(adev);
-> -}
-> -
->  static int yoga_c630_aux_init(struct device *parent, const char *name,
->  			      struct yoga_c630_ec *ec)
->  {
->  	struct auxiliary_device *adev;
-> -	int ret;
-> -
-> -	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
-> -	if (!adev)
-> -		return -ENOMEM;
-> -
-> -	adev->name = name;
-> -	adev->id = 0;
-> -	adev->dev.parent = parent;
-> -	adev->dev.release = yoga_c630_aux_release;
-> -	adev->dev.platform_data = ec;
->  
-> -	ret = auxiliary_device_init(adev);
-> -	if (ret) {
-> -		kfree(adev);
-> -		return ret;
-> -	}
-> -
-> -	ret = auxiliary_device_add(adev);
-> -	if (ret) {
-> -		auxiliary_device_uninit(adev);
-> -		return ret;
-> -	}
-> +	adev = devm_auxiliary_device_create(parent, name, ec, 0);
-> +	if (IS_ERR(adev))
-> +		return PTR_ERR(adev);
->  
-> -	return devm_add_action_or_reset(parent, yoga_c630_aux_remove, adev);
-> +	return 0;
+> If that suggestion I gave there would work, then that's the cleanest
+> approach. This patch series is just kicking the can down the road (or
+> down an inch).
 
-return PTR_ERR_OR_ZERO()
-
->  }
->  
->  static int yoga_c630_ec_probe(struct i2c_client *client)
-> 
-> 
-
--- 
- i.
-
+Thanks for the reply, I will answer on that other thread.
+Cristian
