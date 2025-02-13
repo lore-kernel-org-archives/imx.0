@@ -1,114 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDAF28A2C1
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 21:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2D81714B7
+	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 21:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739482443; cv=none; b=mSBJ3Gfudr/+jW/I7prgum0QDz0dKsBVQD0y8268T7fF1E4sZRX0PfEvcNv7ZhmJ1/f+lNftEYklZF2tvOYijXenA6nWfpv53gSdubtSQOQP9H3UhqAXWvYP+TQMt/OsypZLzqelf86TBw4ogduO17CvVq9mBDkxtFF/705eycg=
+	t=1739483170; cv=none; b=TEJHp4pceMvEJxb0HNTcEWpjmY3uj1fpweYosSUT+fUy6PDJQ/Q+kjg1isWKlXd4tccAwDPSGg6jz2wDjLpiouRwu4yfOSdO1t5aFCBB+dPX8HgyJ0z539YYoQw/L9OSUz8YTQINLdM7eVAnHyVpnrY1ypZXBP+YWGD42gDpVQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739482443; c=relaxed/simple;
-	bh=BWZk2OIyG/4/rewn6TydvxjHKdlDWjJH8mWNKLHYe68=;
+	s=arc-20240116; t=1739483170; c=relaxed/simple;
+	bh=5BDKfPEQoQKNl37BH3w80oASYOsI475hq+Fhk3cevNM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OrnjaSswmsXhGyAWENJUM3T0vPV1kuoEbi/YFHZmAw7jC1j6trHKDQIrI2/R1T0OvnJB/zROMkbk1xe4I4ZeprCNDh5Hy5meWRUx8QgQNd/pOo3H3+YytmW28pbfF+PBTOSxVg1uXGrBiUitgyyWEuzRrROyXoIWb59EgfTwinM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXQeeq8u; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=VtjaTpAeMhI64N/VBXt5Qhscb6DuRPwl55WdGqIfxZCbfYA6ftfdPRfwmEWtwyPlE/emOFXMk6taXWhEHF9wOm8YduCzALSvtz5qdpwWUQVtG2eV+3hSQDUgQ6b2CTqMULD7rSWMHyKHYQ4WXW3nZ7SJEs9BZLoyIE5/1A2lS9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rPA3sFcv; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXQeeq8u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064E9C4CEE9
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 21:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739482443;
-	bh=BWZk2OIyG/4/rewn6TydvxjHKdlDWjJH8mWNKLHYe68=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HXQeeq8uVgyzpN4WtlwkHnS1Rkea49WV0QeQCWwkgBZkrflyTgzrOVhM3+i6jFf7a
-	 FHafiEDmmeaO9cVP2o65bdSt6ceR5RLIqWwOzJYq6h3dhY32SAZEkbXpbsetje9QPV
-	 cDa7WdHtpW32JTLoE+P2G2Mc82wwgPZ8F20OD04/+p1Dpec1UYmvqWLmxbHwJrA8bg
-	 PwCvA0yZX7sSdXJJIBPVP9Fr8m9lfAmv0Z6BwyTPqlGzxSRcqKJbHg7SqAh6cUuDoX
-	 rI5zL83uEtkh/V3uLY2ncDQQKsjTLkVGNEr/sVgeoNvEre0kRxST5gIyYSqR0TYp2r
-	 PN348dRM8nPzA==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2b8e2606a58so736510fac.0
-        for <imx@lists.linux.dev>; Thu, 13 Feb 2025 13:34:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW/hq7FA+qD1SZ1tCM6b63enhL23u9w1l4GXXx81sxTVrXeiILO2EoBhHehB7hZrpdIC7s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YywOiKgSs4ea6kuo3aTahHaFd2XW8jK+prDC9GfBGXpC2Q47vk4
-	KdkIhLqtpGpNoLAscUA5D0A7BdEPooeX1xBSpEX4mpB0xQftYradWglvMPVoFja2jSF15A65yry
-	CJKc0dnxfj2JWZqcuWloYq5bEMjs=
-X-Google-Smtp-Source: AGHT+IFGKkJZQjPfM6H19DLTjIpGZ8DjDY/HqQk5NYv2OvLZQG2pk7Foqcjvj/jZ7fGrB2Hx2JxrjMOFsRvB5jlIJs4=
-X-Received: by 2002:a05:6870:961c:b0:2ba:11dd:249d with SMTP id
- 586e51a60fabf-2ba11dd27bemr2221364fac.24.1739482442311; Thu, 13 Feb 2025
- 13:34:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rPA3sFcv"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3072f8dc069so14830601fa.3
+        for <imx@lists.linux.dev>; Thu, 13 Feb 2025 13:46:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739483166; x=1740087966; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kVfu1NW+vppBIbPYgYDsbWT6TbEthzVowdxgCrkUjA4=;
+        b=rPA3sFcvHdOgSECCzjdN5Zc2o9G5S1QPsQ46cpn+G6Ce9nYHs9xNCwyvGGp3pVflRH
+         reyZcdf2lEU7lNhBykv4LTrGRFgl1Tb5WVWSYacjD12tjEjcZ6AjiKqmnEEmAQZR59+O
+         zogdqs1QqD7IiJEecjBqDR5PMT+1pQS8QqyBxOo38JkfNyT0LR49KtC5RTJLz+MGRF9p
+         pjYHV8w0ocZkUIPDmt537gyGPSh0CaNjr6Htt2HmZ3sHYiM6fG5YltDDPfxQlQdcOzOR
+         shY22yLVbpCSio8Me2MUTrb9IsKSHlO7Mbphl1PmkIr89JB2S4cCwP1ZIkdhHKl3tusK
+         nCzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739483166; x=1740087966;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kVfu1NW+vppBIbPYgYDsbWT6TbEthzVowdxgCrkUjA4=;
+        b=Hu2CvGpmWNPer3rBRjq8pc1yhUH5YKxyYCGKsU0K6mevO9sH+Kqxz1D7EjKxL1SFAx
+         g7m9njXD82Nfvd9s1PIC9ROMQE9ZvQ0iQ4roEJm1ZNF73Cu+TRwLfp9HizvxyLODCSVo
+         LfGDBtaftt5SYK4oWhrgjERBqUlKuQgfWdT1aswUm1vtQ5ZkNvubp4br5ufq4DoYqd+e
+         SV1t6vSoGOilvucxkWrToSgApym1FWMD81fvpN0HkULrhZ9ICyXghryrzV5n/AR/D9xs
+         hcBAkEFYClXy+t1pQyLkP6xZmwSmxYNcWYlI6rQeJlhlYTxkR2smhmAmeBM6RUma4Wiu
+         WdBw==
+X-Forwarded-Encrypted: i=1; AJvYcCXG4OieNno880RdWwXxrn2zSfKvTGZx2jDsTs3IWnfzn8LZKIwernBmz/HP1BzZOogiN3A=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwWp73yySbABh1gT+J2OT3saqlGcespDvQmisFgPBD6cAco7vyB
+	4/De/7Hag2rhfjnzhwvzhYN6CH7MVCPdSniKX+waqIWAT6+jyQnUUGDXq8OCoPiLjiJ7nzR1Dh2
+	FG1axCm20yxKY7IatuVSZCC7woAa7g7uG+sM/mw==
+X-Gm-Gg: ASbGncs3fkefJ+ciIStELPQd/I+RAUB/aItOfrrUZTFHz/jX9RQeYmM4WL63t5DAQAu
+	H1DFA2hmaFIrgwgZvFOk/r92MCFPtIOUX7FI61ia/oZ1X2KxltDUeE2pjtwLR5L5dR6n0fuLH
+X-Google-Smtp-Source: AGHT+IF7cW4HbsRSE+zEEB418//pZVxCpudCIYRSWJ9fxNosPbB13IE7XmFd5Ph5xOjv8MH4ir+hgKvJhTH6zINBiSY=
+X-Received: by 2002:a2e:a912:0:b0:302:1fce:3938 with SMTP id
+ 38308e7fff4ca-30903643504mr40744881fa.11.1739483166542; Thu, 13 Feb 2025
+ 13:46:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250213105840.2864654-1-xu.yang_2@nxp.com>
-In-Reply-To: <20250213105840.2864654-1-xu.yang_2@nxp.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 13 Feb 2025 22:33:51 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
-X-Gm-Features: AWEUYZnD-ivCQUVM0FdYlS-XYLMJ_exTj_l0q9U2liHz2A94HkPIPUviOAaIHGE
-Message-ID: <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
-Subject: Re: [PATCH v2] PM: sleep: core: Clear is_prepared if no_pm_callbacks
- is true before checking power.syscore
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: rafael@kernel.org, len.brown@intel.com, pavel@kernel.org, 
-	gregkh@linuxfoundation.org, dakr@kernel.org, stern@rowland.harvard.edu, 
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+References: <20250206181714.417433-1-johan.korsnes@remarkable.no>
+ <CACRpkdaNDJrGZ4Y2PPUWQfm6BprfNACYWD7srs3sYHMEsdX1Ew@mail.gmail.com> <DU0PR04MB94963632094E71ABE730631990F12@DU0PR04MB9496.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB94963632094E71ABE730631990F12@DU0PR04MB9496.eurprd04.prod.outlook.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 13 Feb 2025 22:45:54 +0100
+X-Gm-Features: AWEUYZmEX0y8tQAlD3jIqTGLm7JPlOFvKpJHyNQQoYaTgfGwxSxp-eh-ybIRuPI
+Message-ID: <CACRpkda7ZRR+1_6bJN+qgrsb=GQyyujg81uie6n5rX_U3tAynA@mail.gmail.com>
+Subject: Re: [PATCH] gpio: vf610: add locking to gpio direction functions
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: Johan Korsnes <johan.korsnes@remarkable.no>, 
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 13, 2025 at 11:58=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+On Fri, Feb 7, 2025 at 7:21=E2=80=AFAM Bough Chen <haibo.chen@nxp.com> wrot=
+e:
+[Me]:
+> > I have no idea why this driver isn't using gpio-mmio.
+> > Not your fault though, just pointing out obvious improvement opportunit=
+ies.
 >
-> Currently, if power.no_callbacks is true for a device, device_prepare()
-> will also set power.direct_complete to true. When device_resume() check
-> power.direct_complete, setting power.is_prepared will be skipped if it
-> can directly complete. This will cause a warning when add new devices
-> during resume() stage.
->
-> Although power.is_prepared should be cleared in complete() state, commit
-> (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
-> clear it in earlier resume() stage. However, we need also set is_prepared
-> to false before checking syscore if the device has no pm callbacks.
->
-> Take USB as example:
-> The usb_interface is such a device which setting power.no_callbacks to
-> true. Then if the user call usb_set_interface() during resume() stage,
-> the kernel will print below warning since the system will create and
-> add ep devices.
->
-> [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdr=
-c
-> [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
-> [  187.105010] PM: resume devices took 0.936 seconds
->
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->
-> ---
-> v2: clear is_prepared before check syscore as suggested by Rafael
-> ---
->  drivers/base/power/main.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> index 40e1d8d8a589..5e69cfaec661 100644
-> --- a/drivers/base/power/main.c
-> +++ b/drivers/base/power/main.c
-> @@ -926,6 +926,9 @@ static void device_resume(struct device *dev, pm_mess=
-age_t state, bool async)
->         TRACE_DEVICE(dev);
->         TRACE_RESUME(0);
->
-> +       if (dev->power.no_pm_callbacks)
-> +               dev->power.is_prepared =3D false;
-> +
->         if (dev->power.syscore)
->                 goto Complete;
->
-> --
+> I check the code, for vf610_gpio_direction_input()/vf610_gpio_direction_o=
+utput(),
+> to let the input/output really works, need to call pinctrl_gpio_direction=
+_input()
+> for vf610/imx7ulp/imx8ulp SoC.
+> Refer to drivers/pinctrl/freescale/pinctrl-vf610.c, it implement gpio_set=
+_direction
+> callback. Also for imx7ulp/imx8ulp pinctrl drivers.
+> This should be the reason why not using gpio-mmio.
 
-As I've already said in the other thread, my initial feedback was
-based on an oversimplified view of this code, and the problem will
-need to be addressed differently.
+If this is the *only* thing you need additionally from gpio-mmio
+then what about just adding a new flag to bgpio_init() function
+in <linux/gpio/driver.h>:
 
-Sorry about that.
+#define BGPIOF_PINCTRL_BACKEND      BIT(7)
+
+That makes gpio-mmio call these callbacks when setting
+direction?
+
+Yours,
+Linus Walleij
