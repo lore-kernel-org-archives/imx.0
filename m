@@ -1,105 +1,76 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D02A2153F5
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 10:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1CD2139DF
+	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 10:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739441791; cv=none; b=oaMISJyxbhS5qmVY1lREBm0D2IvSQlnIDYLDYk6vBmxTpT8gRYft79JKbqdIPwhQIwQxjjsCNKqQcNcVTX36UOEn0byLoNXMteZgYhOhBCgAyEb9yMLExieewieCTf+no8+x64pYcfZlh3FQ464zG67LhHkeNF7redgbsEhNGlE=
+	t=1739441965; cv=none; b=mdEXIDaHloMoEwci4grjrU9bmgATSTnGNvU47tXCnZdZPqNdz0fFHvyB2pbmf0NJu4nrh2EZtRSO4fZYZaSdJpENNaOVU40UxDGTa+VkUGDEk/mA1BS6vQ9hH1/851cEZUXmJaX8jhlhzGIU5STK4Cv7ZQdq2YdWTR2o/sC8Xsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739441791; c=relaxed/simple;
-	bh=xmBDEx12/MlSpiH6V4WRagCuKEu5iUiwWGczemVxZ74=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XC+QFPDCicDcbHhGu/v6NVy46cTNyn9Zbphq1fgSf93cgKL+1Ns1xT98hIuCyIHszUoGVO8q96qL5b+DMp/GaQvoRer9eBnGTZFNkYIgsVeX88OxU5NIbVmi/n3GTwEkoOAd0ss7OLWih3euKfxsAkwoaQEp8lSp6oLIdwrYGv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iMG8Azpp; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1739441965; c=relaxed/simple;
+	bh=24IKPVvko7AYF/JdQjmDU6yGxxREmdCEYd1XuYo9HmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F1Dzz3t8kc1b4XlTuB6+j6lXO8OlnwK/1q4OYKzGvTJPIar+onf260UYzV4Vd/r9jI3O2+VT5eZbGrz/n+wl0kEkGLu0UH7gEG35AxiwXnRPLYMsbbhYaCiqeWkBJVcluzwr/mNM36FiZE3FMr0Iv2VgGfS4iOiXhbCoS88LwL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b4x4Wbeq; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iMG8Azpp"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f22fe8762so306633f8f.2
-        for <imx@lists.linux.dev>; Thu, 13 Feb 2025 02:16:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739441787; x=1740046587; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xmBDEx12/MlSpiH6V4WRagCuKEu5iUiwWGczemVxZ74=;
-        b=iMG8AzppUEHWfd7rTaDecKKT408+tS/Z1Crcw57lpVrpesJkx0wXMGU+6Rf0/OxFPt
-         VhYnHRriYWL87bBFag6MlylC76qqZ7dUDeM6+ZKBK0qgpNBWGsbiAal0BVI6DHvQpJAY
-         pRPJ27ZER6Ogf6+px0Gns+OiVNx6Hb6cCJ2iRBBkoHA1zVwh8LXH3wkHF5zgzebNknQr
-         yH+OuKGAbRdYHrtUzhEC/5M20wPopV/KLOF+5MQI0yaAze+hlvng82CHedMhsCenbBLH
-         YN8V4+CBa2nr421qQ9rU77CPCsTURe7JdUnMM+EalsydzlEVjQVQm0p+FsWOPbBHLiqK
-         wZdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739441787; x=1740046587;
-        h=content-transfer-encoding:mime-version:message-id:date:user-agent
-         :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xmBDEx12/MlSpiH6V4WRagCuKEu5iUiwWGczemVxZ74=;
-        b=SYZuEbSaoEloXU80LNcxvv9r8k9pXksWaoDD2B91s8ko7iKHtlB6nuZFrxqINbvc02
-         iaL6gcPm3VZEQjGj6ZQXWjAv8U/vTaarf9mOTxg9Vof1vuxQh4pHa1yQaTgb3I73ci4U
-         t2A41zcYSrgypaUezamBEg1grPXbnYkzkmKJEeBA2drAP/ZHxYTXAMNdIuUSLhipDTqA
-         +fVSRCjm33i0oxOozJqbWMcAhm8YKdiBL/4p9nwatrm1VpQbTQ5GmDuwDEsK1qOHTriE
-         cqJuOGbcbycHQ9Vgdhew8HSlw7D2DsKaYqxiAXxJt+J/QzF3upLm07rGrc9J6eET8ckD
-         hukw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2R1NGBEI5HIWFLMWatw7nzHf2+38rBmyMLCGogIIER/2txnOLdRPb4VeT6vS3pG/SrK0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy52M4QfpXOVEQtT7BjnuiYy0vZui60/4hyuR5WV7R404tHJFby
-	EQn3MFNuocJ7/gz1to64Dlpq1Cm/4+g7mdwVL3dy05QPiE0sBlcSll7E/YEXT8k=
-X-Gm-Gg: ASbGncugwlJBR6SrWzefOVQkAD/1ubNpC/Y8d+LIClO2YlxSlxlE0Y7BRhaICVxSCps
-	4HiF80Bqe1dQ3gbZxJa3qzJ4Majl1Rb5RAVAlv5bXOXpdmxuhMZQ22Z1lPDSqfdHPIW9+QQ/Zff
-	lnG0mcdvsUVxembqF2uCvmBnuSQTwZfXmeKMsi+bXLh7nqK1gmXQpLs/R9ZDEjb+Qj9ITtVMck/
-	ltnkf5C8w8RiG8h5yxqRP/5RMHW999qhi5yVTF1nt2qrSDpVjVeXrYXV4t3y2SGoknN/X85JMTH
-	McfzVcTJQuSPXQ==
-X-Google-Smtp-Source: AGHT+IEffmNN4Pb9+ARCo3GKUiuLAJbsEVpvuLGQpUwyPZc6Fg0ln2kIswpBpy9K/UypDXBJlkii1A==
-X-Received: by 2002:a05:6000:1884:b0:38d:d8d1:a4e1 with SMTP id ffacd0b85a97d-38dea3c42dcmr5386478f8f.4.1739441787185;
-        Thu, 13 Feb 2025 02:16:27 -0800 (PST)
-Received: from localhost ([2a01:e0a:3c5:5fb1:b617:2c1:fc8c:2705])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f8602sm1451341f8f.94.2025.02.13.02.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 02:16:26 -0800 (PST)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: =?utf-8?Q?Th=C3=A9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Dave Ertman"
- <david.m.ertman@intel.com>,  "Ira Weiny" <ira.weiny@intel.com>,  "Rafael
- J. Wysocki" <rafael@kernel.org>,  "Stephen Boyd" <sboyd@kernel.org>,
-  "Arnd Bergmann" <arnd@arndb.de>,  "Danilo Krummrich" <dakr@kernel.org>,
-  "Conor Dooley" <conor.dooley@microchip.com>,  "Daire McNamara"
- <daire.mcnamara@microchip.com>,  "Philipp Zabel" <p.zabel@pengutronix.de>,
-  "Douglas Anderson" <dianders@chromium.org>,  "Andrzej Hajda"
- <andrzej.hajda@intel.com>,  "Neil Armstrong" <neil.armstrong@linaro.org>,
-  "Robert Foss" <rfoss@kernel.org>,  "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>,  "Jonas Karlman" <jonas@kwiboo.se>,
-  "Jernej Skrabec" <jernej.skrabec@gmail.com>,  "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>,  "Maxime Ripard"
- <mripard@kernel.org>,  "Thomas Zimmermann" <tzimmermann@suse.de>,  "David
- Airlie" <airlied@gmail.com>,  "Simona Vetter" <simona@ffwll.ch>,  "Hans de
- Goede" <hdegoede@redhat.com>,  Ilpo =?utf-8?Q?J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,  "Bryan O'Donoghue"
- <bryan.odonoghue@linaro.org>,  "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>,  "Gregory CLEMENT"
- <gregory.clement@bootlin.com>,  "Michael Turquette"
- <mturquette@baylibre.com>,  "Abel Vesa" <abelvesa@kernel.org>,  "Peng Fan"
- <peng.fan@nxp.com>,  "Shawn Guo" <shawnguo@kernel.org>,  "Sascha Hauer"
- <s.hauer@pengutronix.de>,  "Pengutronix Kernel Team"
- <kernel@pengutronix.de>,  "Fabio Estevam" <festevam@gmail.com>,  "Kevin
- Hilman" <khilman@baylibre.com>,  "Martin Blumenstingl"
- <martin.blumenstingl@googlemail.com>,  <linux-kernel@vger.kernel.org>,
-  <linux-riscv@lists.infradead.org>,  <dri-devel@lists.freedesktop.org>,
-  <platform-driver-x86@vger.kernel.org>,  <linux-mips@vger.kernel.org>,
-  <linux-clk@vger.kernel.org>,  <imx@lists.linux.dev>,
-  <linux-arm-kernel@lists.infradead.org>,
-  <linux-amlogic@lists.infradead.org>
-Subject: Re: [PATCH v3 7/7] clk: amlogic: axg-audio: use the auxiliary reset
- driver - take 2
-In-Reply-To: <D7QJX632CRCV.P0ZI0WWT083Z@bootlin.com> (=?utf-8?Q?=22Th?=
- =?utf-8?Q?=C3=A9o?= Lebrun"'s message
-	of "Wed, 12 Feb 2025 15:53:38 +0100")
-References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com>
-	<20250211-aux-device-create-helper-v3-7-7edb50524909@baylibre.com>
-	<D7QJX632CRCV.P0ZI0WWT083Z@bootlin.com>
-User-Agent: mu4e 1.12.8; emacs 29.4
-Date: Thu, 13 Feb 2025 11:16:26 +0100
-Message-ID: <1ja5aq175x.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b4x4Wbeq"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3024B6AF;
+	Thu, 13 Feb 2025 11:17:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1739441876;
+	bh=24IKPVvko7AYF/JdQjmDU6yGxxREmdCEYd1XuYo9HmE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b4x4WbeqsNvXxNQyuRFhAU3Ed8ZwGP1OT+MWvlY7JpGqB4kloKWwzB07v7/KYld/M
+	 xhgJYJKvH5epfyl0iH9cIVSUPBxVmB2dn+7uBvY+GVu8/+400FhuklOcNVwR8sBwVh
+	 501sXqmw6+sS/O1SyCmfn3cavrs0GH0+UP06p6Ac=
+Date: Thu, 13 Feb 2025 12:19:03 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sebastian LaVine <slavine@d3embedded.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	=?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Achath Vaishnav <vaishnav.a@ti.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Javier Carrasco <javier.carrasco@wolfvision.net>,
+	Jianzhong Xu <xuj@ti.com>,
+	Julien Massot <julien.massot@collabora.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Nishanth Menon <nm@ti.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stuart Burtner <sburtner@d3embedded.com>,
+	Tero Kristo <kristo@kernel.org>, Thakkar Devarsh <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Will Deacon <will@kernel.org>, Zhi Mao <zhi.mao@mediatek.com>
+Subject: Re: [PATCH 2/4] media: i2c: Add driver for Sony IMX728
+Message-ID: <20250213101903.GH5888@pendragon.ideasonboard.com>
+References: <20250212195656.69528-1-slavine@d3embedded.com>
+ <20250212195656.69528-3-slavine@d3embedded.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -107,28 +78,110 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20250212195656.69528-3-slavine@d3embedded.com>
 
-On Wed 12 Feb 2025 at 15:53, Th=C3=A9o Lebrun <theo.lebrun@bootlin.com> wro=
-te:
+Hi Sebastian,
 
-> Hello Jerome,
->
-> Why the " - take 2" in the commit first line?
+Thank you for the patch.
 
-Because, at the origin of the dicussion for this patchet, there was
-another change doing the same thing [1]. The change was reverted do
-perform some rework and now it is back. It was another series entirely
-so v2, v3, etc ... did not really apply well.
+I'll start with a partial review.
 
-Just giving a change to people using google or lore to distinguish the
-two, that's all.
+On Wed, Feb 12, 2025 at 02:56:54PM -0500, Sebastian LaVine wrote:
+> Adds a driver for the Sony IMX728 image sensor.
+> 
+> Signed-off-by: Sebastian LaVine <slavine@d3embedded.com>
+> Mentored-by: Stuart Burtner <sburtner@d3embedded.com>
+> ---
+>  MAINTAINERS                  |    1 +
+>  arch/arm64/configs/defconfig |    1 +
+>  drivers/media/i2c/Kconfig    |   12 +
+>  drivers/media/i2c/Makefile   |    1 +
+>  drivers/media/i2c/imx728.c   | 9655 ++++++++++++++++++++++++++++++++++
+>  5 files changed, 9670 insertions(+)
+>  create mode 100644 drivers/media/i2c/imx728.c
 
-[1]: https://lore.kernel.org/lkml/f9fc8247-331e-4cdb-992e-bc2f196aa12c@lina=
-ro.org/T/#m9ab35b541a31b25bdd812082ed70f9dac087096e
+[snip]
 
->
-> Thanks,
+> diff --git a/drivers/media/i2c/imx728.c b/drivers/media/i2c/imx728.c
+> new file mode 100644
+> index 000000000000..75120ca01ce6
+> --- /dev/null
+> +++ b/drivers/media/i2c/imx728.c
+> @@ -0,0 +1,9655 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Sony IMX728 CMOS Image Sensor Driver
+> + *
+> + * Copyright (c) 2024-2025 Define Design Deploy Corp
+> + */
 
---=20
-Jerome
+[snip]
+
+> +static const struct cci_reg_sequence imx728_wdr_12bit_3856x2176[] = {
+
+This table is way too big, with over 8000 entries. Some are even
+duplicated, with identical or different values for the same register. It
+will take more than a second at 400kHz to program this.
+
+At the very least I would expect a way to compact the table and make use
+of I2C register address auto-increment. Default power-up values should
+also likely be just dropped.
+
+I haven't checked in details, but doesn't this table also contain tuning
+data for your specific camera ?
+
+[snip]
+
+> +};
+
+[snip]
+
+> +static int imx728_get_frame_interval(struct v4l2_subdev *sd,
+> +                                    struct v4l2_subdev_state *sd_state,
+> +                                    struct v4l2_subdev_frame_interval *fi)
+> +{
+> +       struct imx728 *imx728 = to_imx728(sd);
+> +
+> +       fi->interval.numerator = 1;
+> +       fi->interval.denominator = imx728->fps;
+> +       return 0;
+> +}
+> +
+> +static int imx728_set_frame_interval(struct v4l2_subdev *sd,
+> +                                    struct v4l2_subdev_state *sd_state,
+> +                                    struct v4l2_subdev_frame_interval *fi)
+> +{
+> +       struct imx728 *imx728 = to_imx728(sd);
+> +       u32 req_fps;
+> +
+> +       mutex_lock(&imx728->lock);
+> +
+> +       if (fi->interval.numerator == 0 || fi->interval.denominator == 0) {
+> +               fi->interval.denominator = IMX728_FRAMERATE_DEFAULT;
+> +               fi->interval.numerator = 1;
+> +       }
+> +
+> +       req_fps = clamp_val(DIV_ROUND_CLOSEST(fi->interval.denominator,
+> +                                             fi->interval.numerator),
+> +                           IMX728_FRAMERATE_MIN, IMX728_FRAMERATE_MAX);
+> +
+> +       fi->interval.numerator = 1;
+> +       fi->interval.denominator = req_fps;
+> +
+> +       imx728->fps = req_fps;
+> +
+> +       mutex_unlock(&imx728->lock);
+> +       dev_dbg(imx728->dev, "%s frame rate = %d\n", __func__, imx728->fps);
+> +
+> +       return 0;
+> +}
+
+The frame rate on raw sensors is controlled through h/v blanking. You
+can drop thse functions, especially given that imx728->fps isn't used
+anywhere else.
+
+-- 
+Regards,
+
+Laurent Pinchart
