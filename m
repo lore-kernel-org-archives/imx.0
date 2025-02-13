@@ -1,232 +1,193 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012066.outbound.protection.outlook.com [52.101.66.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9EE1FA15E
-	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 02:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739413461; cv=fail; b=cUQw1FiA3p0tJNAalsrU4w30lDFwaZ8+JxB5ZSmzt8jMfpCgWoI0UIgvUlw1rJPkB23iGV2uE0aEHU/4oB8Rk4wqrRG4l4Ymoaj2dok5ycrN8q2Swp7kRWcZrB9Pe4gurelpfY/UhyJ8s+w1izw+Y3Rw9MyHU/z3lrKkg6lfK4I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739413461; c=relaxed/simple;
-	bh=p/Rj6IdgvF6QPuDafIkWJfIKnQSXHKM64+Gms5uzPXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SE0cGpgJxvTG95CkrqNdnJgMserKjNs7SxI5BabN/ncqpEsFVM6pYRB9yITxCLVccHCgQ7PF/wXWGYKOXhRNKzPMLAXxNl8xQ03tLd/f3Q2twwaMAoF4Or75q36wAOsiD9rNm8zCFF2SDL9mXLnSp+rQ7d4Fal8vsTyoYT5rVuI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=JkEgpjRp; arc=fail smtp.client-ip=52.101.66.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A7E207646
+	for <imx@lists.linux.dev>; Thu, 13 Feb 2025 06:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739427168; cv=none; b=fGLnXzrLs12GcHplQ8jco/Q7lyuxS+zqCUjp2R2j+WQnVU/fUdGnvb8dlnTcvMYrrFF7HYAqUr3XHp+mxMV9QgMjhkellNHkos2ahStsHyDYC+s1yosRUivRYk/NYM+WDQMtvjLhxYDTOXv/xdzXumg9TTOfYtdQzgraUGBRbbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739427168; c=relaxed/simple;
+	bh=7C3/E7K4p+lE3lRlzJSt5GqsDZ487XK98lSEw0sndWo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oFejR0waMdqjp5bEJQrMBGdyB36kQpvXcJLP6h2DKMJlMsUFkpfm8l7PvI+f/TwFmNMo7t4sA3azagqAC+hAgyGT059F7ZMTDyUtTfMJ0pl+mcWYFjOuaIp1YeF6LBMbQTVZ6nY7ixlHhbxWl/ji40/G+GJXwyOJyh+iQi13mG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no; spf=pass smtp.mailfrom=remarkable.no; dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b=d4ceIJtk; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remarkable.no
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="JkEgpjRp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CbfE4of/JKrxPWoZu/3gecX9REGin8/vXwgkT0SFEXN/ATz+K66SLExPhmRSNh41zrS3f4TtMBqeLtW9HFo7q8d/JtTuwuHxnhbY7tGrDya6MWNMsJ8Uww7coFPyfbkNpPdMmooL3CGU/HLSFldesllZghzRZJ8K562Z1Wzs9rkixc6sR893PoZ/Zcw0bvGWZuW+yGEh+z4hTIOlohtZF7JWfOlfnbncRp4qRHDH8pbH779gndU1jBrQdt0WvLvkq3sGsyN5yccch4pMNI++j9GmOrPqp4Ro0UEi1oKh6kiO/2BtFN45c17iRPHXBn4zZRSQNUhgnKyUNTcwaKuscg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZAwP6Xb0l5JsF/9QVjiIi2+DCiG65XZXDwLGoGDyRjw=;
- b=xdmf9/TKhdJ91AhgF1oggL/VGN2wT9+VnbC0manpuWLNG+BYpoSD9sLKtJY0tor6GhFeVjCt6Q5zIx9C21LgJwlzufnUSFs2rlT80cCZjyKjEa1DBzDpV82RHHShDxyl5uFCLi/P6QyHA/d7SSsBrBuY7K17YeKX18KSMTZy20HeSpR7nNn7YHmTKsppxUmE0lQEEeoYsPXoDF/mcxtGYYRSqcoJjrDJXRI0qU2p6qq9D1pvLCBuIB6VXSelrWUgzU0QlxGJEe+CH4ca+Vos3kDVFTnWNH5Co22xnxYWTUneQoWZm9A9xdKwIW/NLRyyZ+s+K/o87AMle0JyFsFzhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZAwP6Xb0l5JsF/9QVjiIi2+DCiG65XZXDwLGoGDyRjw=;
- b=JkEgpjRpbytDFjccPQNRNaoACU4WFI2MS1ho/zwJKkDkQjjMtxOx9UIPjbqXQyX8TxV1p9h0Hsx06/FPi9Cvte30PB2B+cumqJF6GIeRnPHcBHPvaMrEKnjDH6d7PJJUTGa2aE0NhQzzlufZHMI9H4Uj8ODziH5vDBh0QRs3AiUfm7KbDvZRbkNzEmzxI0qqaIcCqIJD66lmCO1GWhqZApYfi6FoB+oRY74OWCwYoChrisiIIS6vq/C8n9i+kj4rGdgzYAm5uhCDNCR8IqWd3eXC+EnCVLwTWxbsErY9waqkGZm1yYvGZ4/I9TVEAqa51r0Gj72qTPdN2qunYFvf8w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AS8PR04MB9094.eurprd04.prod.outlook.com (2603:10a6:20b:445::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Thu, 13 Feb
- 2025 02:24:13 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8445.008; Thu, 13 Feb 2025
- 02:24:13 +0000
-Date: Thu, 13 Feb 2025 11:30:33 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>, Peng Fan <peng.fan@nxp.com>,
-	"cristian.marussi@arm.com" <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
-Subject: Re: [PATCH 0/4] rtc/scmi: Support multiple RTCs
-Message-ID: <20250213033033.GA21937@localhost.localdomain>
-References: <20250120-rtc-v1-0-08c50830bac9@nxp.com>
- <20250120102117538ef59b@mail.local>
- <PAXPR04MB8459968DFDE5979802CC034A88E62@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Z6uCCeG2d395ZGDS@bogus>
- <20250212063532.GB15796@localhost.localdomain>
- <Z6x7TBSjBFBxGo77@bogus>
- <20250212170147ee6863dc@mail.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250212170147ee6863dc@mail.local>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR06CA0208.apcprd06.prod.outlook.com
- (2603:1096:4:68::16) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b="d4ceIJtk"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aaecf50578eso110036566b.2
+        for <imx@lists.linux.dev>; Wed, 12 Feb 2025 22:12:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=remarkable.no; s=google; t=1739427165; x=1740031965; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BWTCEpW4ZKwSUbhFip1v+YkWAMK+zwwmcEHsy52JujU=;
+        b=d4ceIJtkXwrMeriMSKkqugHGNRuCJpnqkOgUrl4sDeMs9NmD1QZUC8IRcLv3HXAuQE
+         dxfHEZnyP22DLcgc1pPpWgECqEH9XOHaqsOpy03lIuZ4+k5hBmoumtkur9oBxMD6T00Y
+         MkWqUrvtbJErzp4fN/m/HwswSGusqQNHlSQ+1q17yWLVF/INqlk7oAOECNUlk5VCw50o
+         9SxZwzwCsk6VD6uf1DJZN1pB0KLzn1xbVvP5ooO+t9afzfE+Lqo5V2hSfARiEkIJ6cPQ
+         4NQcYLEHkyxP38HMF3Z7G2Kwj96RVWUo26EqEeQ957j46HnN1MdAPRMWUUp99h4FATym
+         xRvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739427165; x=1740031965;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BWTCEpW4ZKwSUbhFip1v+YkWAMK+zwwmcEHsy52JujU=;
+        b=WILqd3eyf4SlnkGKgE9R1I+nlzzJ1HOvbEcowgKRUpI6EvvnHY3QqQ0T5FkPun8GQW
+         isDtt/hnq+GkJRMdZ/rDW5xGSlxEWQIA9wWVk4OlkJ+CPUfN6UHXvmTja9cosCXbW1ht
+         yatERvfD5FUJzt1l4Vzz5u6JY3HDP6UpZ6/w4DYQD1MAb6ZxCSOtQTM/hcSmDnIEM7oT
+         qvdB4DeBS6/7+A9IMgNVvj5vwo9d8Dv6u8aF97YE/DPIKh8Ek/iTW2DWDuvkOMC0G2sF
+         Itbz/5+QNUmyzpA624RonUvVlGuSkvCPNmunc3Z1xtcYrBiiDTG7dmnaY5rgwkrTg7vn
+         yygQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTRFGDRgtPkhhu3yj7lEDGplwWBmIHptqPyc76CjHuA2fqfMycLuXDV7H6MI1fACuyNq0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwVVUdkpD+Qw/sdQDqWT+6MKP6rspSszKRfC0kwD6wv0Qdwl9Nz
+	BMtLfSqROyJoT1V6vkL7f/8YZDfdzWW9OfxtCeG26qDWwUd+6N/BQBw1JzJM04SiH+RMexzzWSM
+	=
+X-Gm-Gg: ASbGncvEgzPVgKLgkZh8ZZSPhmbTpjYzRwHGMDl7FOVb2r1zVeBqbivLOvpmpwva2NV
+	xorDR+uuBqd8XHL1Sg/BDqB3rJ5A5dmK+mLOYumHnAHauEzJFklp3FeGtZdRCdBnRd0J889qILU
+	X9hyNhLgRnHo0wRh4ooLD+TBA9MvWSXhGifTOLMIIdCCelOsk9so3/KPTQwDmIV9GMAcPo/48L/
+	+iPK/CNOtl9e4WZaZd5+75z+Rt74xVe7Frtf1PdAuwPG/MPG1kcbwH5kQx1wa6DlIcSmbUXOZ/p
+	ez/YrWng4guu3JqYkAspfLkY0Q==
+X-Google-Smtp-Source: AGHT+IGat6ZjbMuioQKBQXOqTHYElW/luqM/opPulIQKdKaydLsYSALBxKDrmlk/19b2RqF3Lb9tsg==
+X-Received: by 2002:a17:907:7288:b0:ab7:b928:1e05 with SMTP id a640c23a62f3a-ab7f334a9e5mr548728666b.4.1739427164707;
+        Wed, 12 Feb 2025 22:12:44 -0800 (PST)
+Received: from [10.0.72.158] ([213.52.63.204])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5337697fsm60116666b.105.2025.02.12.22.12.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 22:12:44 -0800 (PST)
+Message-ID: <7df4608e-8016-4b16-a837-4cd7c3dd8c82@remarkable.no>
+Date: Thu, 13 Feb 2025 07:12:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB9094:EE_
-X-MS-Office365-Filtering-Correlation-Id: c39ab9fe-e8e0-489a-ae77-08dd4bd581a1
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Bc5g9eShzBa3okscf5rVFPkAX9/ahdvViTFxpr53hvUidaFugd4fN/XCP3X+?=
- =?us-ascii?Q?b+yVlvF0bru2a5KDCwo1ybBo1M0ouVNKX7iwQ+nvArP1v+d8Um3mO2rgwjlO?=
- =?us-ascii?Q?eXTiJTpRWUArfYth5ndkL0W0J6gEtmyiz3eZbyOT8rvRnEU90URYQ1n7aRCA?=
- =?us-ascii?Q?Q70OlldZ5PaGB6UN8wMKqOPZRzRxfzo7nIu76dq5HHG2+pLwySpb3WeohUDK?=
- =?us-ascii?Q?0zSYy5dGrL++mts+I5vhmaP0eVcjev3vyQlFAQDKswwLQ8+SWBZO7lJr68/O?=
- =?us-ascii?Q?j/NNw6o4omxAdonLDmgwDVdQiz7arkmmg3onOH2YI/oPPK1218bUPj3dP4m7?=
- =?us-ascii?Q?v5TbmqeyiQth0V2EPXsFIQ8QQ0iUMGjbFZUR0EFXtu+OT0dltsvxpTn0aXQR?=
- =?us-ascii?Q?NnPsOdhpON7OG6Q3qSaAHPsMdx0o5RDv5KiqT4Lm5rNGHKBvJCE1fYN2CXYh?=
- =?us-ascii?Q?a7e1z+S0mGLKN85MBNu2FtAN0B34kHUZz0PmQkH8H8hQBJcQr/iFOGbMPi5P?=
- =?us-ascii?Q?ONVB8f+x1DPzki0pFsOA6TsTrAwriSDZodun0tb5BrJDwmS1iJYtzvqEO8rt?=
- =?us-ascii?Q?MG9KYRVB6cq6oMt89a2hs9ahOYSu3mgdfmaWxgg3THYaQNeEndx4p2gJfiP9?=
- =?us-ascii?Q?Jfv/3+vOHC4p6kZvH6bh+rgjVaHPojDpJp4rlUJ9hft8dZz78svc+XaEZPGI?=
- =?us-ascii?Q?dewYu+WHLGnAc7i42TOZ7cMyqLZwqhCHJGqlZyz4w6Cv27UpIOR6x+BQ0PPO?=
- =?us-ascii?Q?GCvHuWkfbqYLzqWThazwpRPyGKc0+dAoldsyczTujn7wxOqpZm3NfwaUghfL?=
- =?us-ascii?Q?/XX8XMzyowg3nVnuGprhmRNZLkkVX3FZgYu/TyiRQpyS+WEhuru3kcUplMgX?=
- =?us-ascii?Q?1eo2PJGC2vsyD3DmuXq2rpnr3pCT2Ln4hcN0vFjl05/yyqvO3dhuCmcH2b90?=
- =?us-ascii?Q?aXEyTbPV5GwVtsukQHf0Ja5e++HDmGXhDrvIHCRXNq8uO2cxuEljsaOVsGIE?=
- =?us-ascii?Q?vwle4PTEHDMjZcWOJg4dydRnAUpMnr/Ac3c2GdlC3zwy4QLhvkz/PSYK5wlt?=
- =?us-ascii?Q?zZNLuTeUwJNPS6i27S53Cs0x7X5BeT9X1D0SMGDHHW8l6x3/PdpYgBoTSorq?=
- =?us-ascii?Q?ND1L76dAI/hhyZLG47mdcXXbGNk7jUAsJq0htg4AH3tiyujqDg5C2CXTOfP+?=
- =?us-ascii?Q?KM7W/3UjCnZ0GDW2s5wRKbbAXv7v4aNw4J3NATPVijFpUpGWVS9FOrN9CKov?=
- =?us-ascii?Q?QF/pI6lpwrQlqvigudRYGAatWe9DTvR9VzOcX2HEUCvj4kTa4ev2iy7HQ66o?=
- =?us-ascii?Q?8YMyG5LY0c5mjJkuuQCcIC0ouXEn7jUmbJqCNAnJlLQh0ey9qKBzdvOYfe/y?=
- =?us-ascii?Q?6xQ8Rg6hc0mATg6ll+i/PS3bR3Vi?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hHgTjS64/EddcRzpEbyGjB4r2oBTJJhA2MCpoTZLyWZFYyEuVYlJDjHwly6D?=
- =?us-ascii?Q?8zHoIZBlnYjaMFh6IXTYlzDpc6NX1R7MaWwZCh2dKGZYo2y+Xmsal/oEcfhC?=
- =?us-ascii?Q?t6onpzB9WB5MbIi4wC/SaLtibu7XGBfwfKjJGq/3FxtT4TyZtQNk6WTP+zWA?=
- =?us-ascii?Q?QKo5GBombq7vQhvSGzK/TUSEbXffPSi9x17ER4/W54vvejZMIYPv+SuoK4zy?=
- =?us-ascii?Q?NUv0TRRG/GXJEJGCuO/ylgfpAIqjvUb3AoRbhMM9BULvfHrwaAKhfg9G5jqN?=
- =?us-ascii?Q?PBi1LfX8QCJpjXPw85Dy8qIMqGgReS2U7JGSxtcRaxVGwzhKJjdk64mcrcGv?=
- =?us-ascii?Q?7Q4dQRkwuLc/962VBPKgJrv1P+oExLtLeYkDenOjJlnITfD8PJFVTJq+9/vx?=
- =?us-ascii?Q?GcoJBqbM5A6rkTX30/11uBdIhnnOVJrTgyZKlMnp38CeC2ZMz4ehsyBkyHjX?=
- =?us-ascii?Q?kJlV8Svbe/Ezb2E9LgQ9XzImUxl8iwyxcjcR3u/ne5TnUwJvrZ2U/UzVyXe2?=
- =?us-ascii?Q?tjGaq/OLyCLhjcxu7ohrUuY3F+ZVIY/dm8tu7psMszll3Jv5UXwNocT2Ttwk?=
- =?us-ascii?Q?OZrxaeSXDF958gDOj/fvYszs0Tujj5Vc0LlDKGYKQ3J27OrvnhZtYah8YLGY?=
- =?us-ascii?Q?LFbJ+Z+145qCsULyuVcBj7RUIfaNjXSei8GyhizmVclDm7z2zeQJlJhuawzl?=
- =?us-ascii?Q?hS5OqxFKB3MA8P/k5jqi7TfxcjAyoutDOnoZTc4XKE2TJScQJeuJE6+iUPyf?=
- =?us-ascii?Q?3i9YfOWPfx0m2epttDAOdox+qYtZaGXA+BP5NJlz5YkS1b8asR5S1KjUOsBv?=
- =?us-ascii?Q?SKpd7Rxth6yi9q9KyiNJPd9gM3Z0F3teUip5pm1Duk2pQYGnzjonXrDxU7+w?=
- =?us-ascii?Q?zMwHDrp7RvOn4CFUCA8ehzWchiBPJA5hurZ7IwMAx2xVNqpn9hlLfbTAbw6e?=
- =?us-ascii?Q?Rt54j5SCcGO1D98G9TeMAwM23hi5ei+BYBz6a4Q3zSfxNejRY9L2ixGhZwLH?=
- =?us-ascii?Q?vKUbQ/8OrrSjCQ8xpFt1ML+cam/+8w61Tm9+9f2c/zqGp5WoAl/3z6FNCmJt?=
- =?us-ascii?Q?9QVXmfnVlFaKTmwPdORZA1A04YDMajUkE4A4eoFWWSqNhLQ3LfMU5LUakl6m?=
- =?us-ascii?Q?ZJypxPhhdJPb3sX4oAkO43mmd0/epJRrN1iefGte60Io5SP/x8EdYEs7a+Lu?=
- =?us-ascii?Q?i2XOXHfiXePHLr8ddG/5GZwJUv2tcs2VUAwqEOucCv1YwBmuub9Y90BEoe6p?=
- =?us-ascii?Q?WUTsT95GtbgoMyCjuJXL80ri41icGmKlEoyPftbPyvzYFav719KcOVELzDKg?=
- =?us-ascii?Q?u3ovF1vmpHdOiuDBch9KfjKe+QtG/oDvBX0F7uduttejPxxbeb/L3zRwKpKQ?=
- =?us-ascii?Q?vHiCoefQe1EgA6FKwiFKzhmcteX4Qu4818ySdFtASX3okcYIqpgA5RMUD9T9?=
- =?us-ascii?Q?q856HOSpMMZWOMEleOfpBrx6i7Wunv1OwBoA4IRObL8co2oV5giH6dzuXi1U?=
- =?us-ascii?Q?gworR6jPEehfoTl14K6DM+l7c67wSc/HK67cH13gvQyDIqea5JGJN4soMpTi?=
- =?us-ascii?Q?paE0HeWQsBJoL6rf44aphbHe+w03Ifjt6rjNxhlG?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c39ab9fe-e8e0-489a-ae77-08dd4bd581a1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 02:24:13.4206
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m7x9b/GKMEwwIzFozaD0IRKiD/Bt+aJ1qNb+0lcZivoYGjV5cd/BaymJQuLFYbYhvy0HiyqZHL8CoAfAgK6lXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9094
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpio: vf610: add locking to gpio direction functions
+To: Bough Chen <haibo.chen@nxp.com>, Linus Walleij <linus.walleij@linaro.org>
+Cc: "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+References: <20250206181714.417433-1-johan.korsnes@remarkable.no>
+ <CACRpkdaNDJrGZ4Y2PPUWQfm6BprfNACYWD7srs3sYHMEsdX1Ew@mail.gmail.com>
+ <DU0PR04MB94963632094E71ABE730631990F12@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <cb75162b-de5a-475b-aeb6-9a3c39de108e@remarkable.no>
+ <DU0PR04MB94964AA34ADC1564E685E13590F22@DU0PR04MB9496.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Johan Korsnes <johan.korsnes@remarkable.no>
+In-Reply-To: <DU0PR04MB94964AA34ADC1564E685E13590F22@DU0PR04MB9496.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 12, 2025 at 06:01:47PM +0100, Alexandre Belloni wrote:
->On 12/02/2025 10:43:24+0000, Sudeep Holla wrote:
->> On Wed, Feb 12, 2025 at 02:35:32PM +0800, Peng Fan wrote:
->> > On Tue, Feb 11, 2025 at 04:59:53PM +0000, Sudeep Holla wrote:
->> > >On Tue, Jan 21, 2025 at 02:31:55PM +0000, Peng Fan wrote:
->> > >> 
->> > >> It is the i.MX SCMI Protocol exports two RTCs using one protocol.
->> > >> 
->> > >> Two RTC devices are created, but share one parent device.
->> > >> 
->> > >> Do you mean each RTC device should have a unique parent device?
->> > >>
->> > >
->> > >Can you point where is this check for unique parent ? I am not so familiar
->> > >with RTC but I couldn't find myself with quick search.
->> > 
->> > The RTC ops takes the rtc parent as input parameter
->> > https://elixir.bootlin.com/linux/v6.13.2/source/drivers/rtc/interface.c#L94
->> > "err = rtc->ops->read_time(rtc->dev.parent, tm);"
->> > 
->> > So in the rtc device driver, there is no way to know which rtc it is just
->> > from the parent device.
->> >
->> 
->> If that is the expectation, you could create a platform or normal device
->> per instance of RTC on your platform and slap them as parent device.
+On 2/10/25 10:35 AM, Bough Chen wrote:
+>> -----Original Message-----
+>> From: Johan Korsnes <johan.korsnes@remarkable.no>
+>> Sent: 2025年2月10日 16:53
+>> To: Bough Chen <haibo.chen@nxp.com>; Linus Walleij <linus.walleij@linaro.org>
+>> Cc: linux-gpio@vger.kernel.org; Bartosz Golaszewski
+>> <bartosz.golaszewski@linaro.org>; imx@lists.linux.dev
+>> Subject: Re: [PATCH] gpio: vf610: add locking to gpio direction functions
+>>
+>> [You don't often get email from johan.korsnes@remarkable.no. Learn why this is
+>> important at https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> On 2/7/25 7:21 AM, Bough Chen wrote:
+>>>> -----Original Message-----
+>>>> From: Linus Walleij <linus.walleij@linaro.org>
+>>>> Sent: 2025年2月7日 2:29
+>>>> To: Johan Korsnes <johan.korsnes@remarkable.no>
+>>>> Cc: linux-gpio@vger.kernel.org; Bartosz Golaszewski
+>>>> <bartosz.golaszewski@linaro.org>; Bough Chen <haibo.chen@nxp.com>
+>>>> Subject: Re: [PATCH] gpio: vf610: add locking to gpio direction
+>>>> functions
+>>>>
+>>>> Hi Johan,
+>>>>
+>>>> thanks for your patch!
+>>>>
+>>>> On Thu, Feb 6, 2025 at 7:17 PM Johan Korsnes
+>>>> <johan.korsnes@remarkable.no>
+>>>> wrote:
+>>>>
+>>>>> Add locking to `vf610_gpio_direction_input|output()` functions.
+>>>>> Without this locking, a race condition exists between concurrent
+>>>>> calls to these functions, potentially leading to incorrect GPIO direction
+>> settings.
+>>>>>
+>>>>> Cc: Linus Walleij <linus.walleij@linaro.org>
+>>>>> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>> Cc: Haibo Chen <haibo.chen@nxp.com>
+>>>>> Signed-off-by: Johan Korsnes <johan.korsnes@remarkable.no>
+>>>>
+>>>> Looks correct to me, verified by looking at the most tested driver
+>>>> gpio-mmio.c and seeing there is a lock there indeed.
+>>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>>>
+>>>>> where after a couple of reboots the race was confirmed. I.e., one
+>>>>> user had to wait before acquiring the lock. With this patch the race
+>>>>> has not been encountered. It's worth mentioning that any type of
+>>>>> debugging (printing, tracing, etc.) would "resolve" the issue.
+>>>>
+>>>> Typical. I would include this in the commit message, people care.
+>>>>
+>>
+>> Hi Linus and Haibo,
+>>
+>> Thanks for the review! I'll include this in v2.
+>>
+>>>> Looking at the driver it seems
+>>>> vf610_gpio_irq_mask()/vf610_gpio_irq_unmask()
+>>>> could have a similar issue, both write the same register.
+>>>
+>>> Indeed, and also the vf610_gpio_set() / vf610_gpio_irq_ack().
+>>>
+>>
+>> Could you please explain the race condition we fix by adding locking to these
+>> other functions? F.ex. the vf610_gpio_set(), in which scenario would the lack of
+>> locking cause an issue? It's a single write to either the set or clear register. Is this
+>> related to how the writel_relaxed() works on different architectures?
+>>
+> 
+> Sorry, I think twice of this condition, seems no need to add lock for these functions.
+> 
 
-thanks for the proposal, Sudeep.
+Hi Haibo,
 
->
->This would seem like the proper solution, why not using an MFD or
->auxiliary bus ?
+May I add your Reviewed-by or Acked-by in v2?
 
-Not sure which is better. I need give a look which is simpiler
-for current BBM RTC.
+Kind regards,
+Johan
 
->
->> 
->> IIUC on any pure DT based system, a device node exists per RTC and hence
->> platform device associated with it. And the RTC devices are created with
->> parent pointing to unique platform device.
->> 
->> > However i.MX SCMI BBM exports two RTCs(id: 0, id: 1), so to make it work for
->> > current RTC framework, we could only pick one RTC and pass the id to BBM
->> > server side.
->> >
->> > I am not sure whether Alexandre wanna me to update the code following each
->> > parent could only support one RTC or else.
->> >
->
->I want you to keep your changes local to your driver. I already stated
->back in 2018 that you were on your own with the imx-sc driver and that I
->don't like seeing multiple abstractions for existing RTCs. What is the
->actual use case behind needing to access both RTCs using Linux?
->Shouldn't this be handled on your firmware side?
+> Regards
+> Haibo Chen
+> 
+>> Kind regards,
+>> Johan
+>>
+>>>>
+>>>> Both issues could be fixed by converting the driver to use
+>>>> gpio-mmio() with bgpio_init() which would also implement
+>>>> get/set_multiple support for free.
+>>>>
+>>>> I have no idea why this driver isn't using gpio-mmio.
+>>>> Not your fault though, just pointing out obvious improvement opportunities.
+>>>
+>>> I check the code, for
+>> vf610_gpio_direction_input()/vf610_gpio_direction_output(), to let the
+>> input/output really works, need to call pinctrl_gpio_direction_input() for
+>> vf610/imx7ulp/imx8ulp SoC.
+>>> Refer to drivers/pinctrl/freescale/pinctrl-vf610.c, it implement
+>> gpio_set_direction callback. Also for imx7ulp/imx8ulp pinctrl drivers.
+>>> This should be the reason why not using gpio-mmio.
+>>>
+>>> Regards
+>>> Haibo Chen
+>>>>
+>>>> Yours,
+>>>> Linus Walleij
+> 
 
-The firmware exports two RTCs, RTC0 could be handled by Linux, RTC1
-could only be read by Linux and configuable by M7 per current i.MX95 EVK
-firmware.
-
-The firmware itself does not serve Linux. And we not know others
-how to use the protocol. So the firmware will not be updated for only
-Linux.
-
-I got your point to keep changes local to the rtc bbm driver, I will
-give a look on how to achieve this.
-
-Thanks,
-Peng
->
->
->-- 
->Alexandre Belloni, co-owner and COO, Bootlin
->Embedded Linux and Kernel engineering
->https://bootlin.com
