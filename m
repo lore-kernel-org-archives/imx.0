@@ -1,51 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8517C2AE97
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 00:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2708B134AC
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 00:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739492497; cv=none; b=boB1/SqCFB8njC3YUwcvuV7h6bqcCc02P/SywW1rdrMw/FGwM/mk9aV0gzLmftqPDLvuV8pnNT9/uEbc/2+apGmYAh9M7Xcs0baF0wfJsL1ALbl5o6MNwphBLJ2AY9IUAqPRAQMJUMmAdMI31s1lDgzAmh8wiW6/0ap5wXnQ/Z8=
+	t=1739492503; cv=none; b=cGfTYhTpRFF1+ZbDubd2bKvhh9HUZUIMZNwMPvlFKRWat70tFi1lQYjbUTBtxydbYyF7P+PHbWus9NTV1Y0tS/aq+uMEcrmOjGkb/Fmh3gM0BSpKCxCZHfA9sDRoxaVqjspeVrEri6BqNWOmkgpaGAgRQ/9g1on5+hNTrm//sv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739492497; c=relaxed/simple;
-	bh=qNRQxkfMur7BPqwRSoUD0Y1xSb+mBLR8VcBDJdlCxGw=;
+	s=arc-20240116; t=1739492503; c=relaxed/simple;
+	bh=bYxgFN867I+WeRXfo+Hqrkj7dpTr9KOQQ6gXwIiRKW0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=raffOZo8xkz6mR+Y67hOYfUPVIBNs0UMllZlAn7kknxEWNVWUkpq409+51kSGa0/wRi+ZP9i/SjCLNMkWTuP5vPJCNRevVNsd+swPTLgDMZs+pK5dOlX4VzAlLDx+leqDTXFnpIKzsEyVyKhVkRs/qhGAoMXVqpLx/izPQ9wQes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HeglPmpc; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:To:Cc; b=mckrj8CLFhbADfMt4h4dCGwoYeJ4rdiBVZyUA1fRIJJYUnUQ55IepdkAKnJT9bLUs1ETyjJE8shr/Yf5TVLgcH3w0wW3jt6U7fwjv14NyrOIM1s5wLz8i4QIl6/kUkqruM2u+9J6lv/XzbeMEoigkueuTuQmsp6Y+jPj5JbYO44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NhPCtwVV; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HeglPmpc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NhPCtwVV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739492494;
+	s=mimecast20190719; t=1739492501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zMrchSDjVXlMnzWa5wmPToNTzllJYTex21+BPUGzEBM=;
-	b=HeglPmpc5kyNWuPipNhNjQJ/xi4W4tyh5qY91S9sFBu2hTU+llMDUxcM3K8+E2dYeJqUyo
-	9/7hpTZ6CqUw2ZFOxzMUj/tKAa20yHS6ZCC2FXspeWRIQuH06+5kjuXpzQRCK0OuphVWEt
-	x9qsmJ52sLJorCFd6C8kzg7HSFnMKmI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=YekiFLZYEOC7oNklCnqy2v4cDXBgQn3tW82+Hlneiv0=;
+	b=NhPCtwVVUpsOnBLWgJk4EBx7RkCRj0TQOIsbXF4tMf40pHzfnMCc+ZjWyR7pytDkh4VfWh
+	hBF8ePivRb6zr2XgfLQHFGCbsJanpYCE4s6Ty+VZO4ySdB9iXsAnITBg5j0oCcMpAVRq+s
+	lAqpETpAH7ert+Zk3q3Z7w4lfZtWevg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-bCj-zEa8MpmrH9j3CmeMMA-1; Thu,
- 13 Feb 2025 19:21:29 -0500
-X-MC-Unique: bCj-zEa8MpmrH9j3CmeMMA-1
-X-Mimecast-MFC-AGG-ID: bCj-zEa8MpmrH9j3CmeMMA_1739492483
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-GREkPZofPRqAGTMWmiWrUg-1; Thu,
+ 13 Feb 2025 19:21:37 -0500
+X-MC-Unique: GREkPZofPRqAGTMWmiWrUg-1
+X-Mimecast-MFC-AGG-ID: GREkPZofPRqAGTMWmiWrUg
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A42618E6952;
-	Fri, 14 Feb 2025 00:21:23 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE9361800879;
+	Fri, 14 Feb 2025 00:21:32 +0000 (UTC)
 Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.199])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D02619373C4;
-	Fri, 14 Feb 2025 00:21:14 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B66FE19373C4;
+	Fri, 14 Feb 2025 00:21:23 +0000 (UTC)
 From: Anusha Srivatsa <asrivats@redhat.com>
-Date: Thu, 13 Feb 2025 19:19:24 -0500
-Subject: [PATCH 11/12] drm/vc4: move to devm_platform_ioremap_resource()
- usage
+Date: Thu, 13 Feb 2025 19:19:25 -0500
+Subject: [PATCH 12/12] Documentation: Update the todo
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,8 +52,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250213-mem-cocci-v3-v1-11-93466d165349@redhat.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250213-mem-cocci-v3-v1-12-93466d165349@redhat.com>
 References: <20250213-mem-cocci-v3-v1-0-93466d165349@redhat.com>
 In-Reply-To: <20250213-mem-cocci-v3-v1-0-93466d165349@redhat.com>
 To: Joel Stanley <joel@jms.id.au>, 
@@ -97,146 +96,51 @@ Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
  linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
  linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
  linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739492356; l=4256;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739492356; l=1573;
  i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
- bh=qNRQxkfMur7BPqwRSoUD0Y1xSb+mBLR8VcBDJdlCxGw=;
- b=ijXOEGX0OJP9agRtmiVCHuzM1ADlEbiLLq8nwfqtGrIMhF6NnUgGf9xdYkRygezmigyj/NY28
- dpk6p9JnRIbCdyD82YA5mRuUqWeRxMu9++9Uw5H3KYi2vCPipmO/YvS
+ bh=bYxgFN867I+WeRXfo+Hqrkj7dpTr9KOQQ6gXwIiRKW0=;
+ b=cHX+5YoNVZJTRemhs4SucNAn3ucLSNF85bfH//R9r2aykA56GpMQQQSLXVA7X7foeQRwKWecs
+ +OKDBIRplsKChc5XegZo+yGbuHDto2wbs/C+rOhVmPq3dgGic16khxR
 X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
  pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Replace platform_get_resource_byname + devm_ioremap_resource
-with just devm_platform_ioremap_resource()
+Update the Documentation to be more precise.
 
-Used Coccinelle to do this change. SmPl patch:
-//rule s/(devm_)platform_get_resource_byname +
-//(devm_)ioremap/devm_platform_ioremap_resource.
-@rule_3@
-identifier res;
-expression ioremap;
-identifier pdev;
-constant mem;
-expression name;
-@@
--struct resource *res;
-<+...
--res = platform_get_resource_byname(pdev,mem,name);
-<...
--if (!res) {
--...
--}
-...>
--ioremap = devm_ioremap(...);
-+ioremap = devm_platform_ioremap_resource_byname(pdev,name);
-...+>
+v2: Update for clarity
+v3: Further details in Todo
 
-v2: Change the SmPl patch to work on multiple occurences of
-the pattern. This also fixes the compilation error.
-
-v3: Do not convert "hd" resource to follow the rest of the
-refactor. (Maxime)
-
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Maíra Canal <mcanal@igalia.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
 Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 54 ++++++++++++++----------------------------
- 1 file changed, 18 insertions(+), 36 deletions(-)
+ Documentation/gpu/todo.rst | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 47d9ada98430634cfd8c1e21c2a4d00d501bab7e..aacc7a3aa007a66c22f68158377f025adcbb4df1 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2951,18 +2951,18 @@ static int vc5_hdmi_init_resources(struct drm_device *drm,
- {
- 	struct platform_device *pdev = vc4_hdmi->pdev;
- 	struct device *dev = &pdev->dev;
--	struct resource *res;
- 	int ret;
+diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
+index 256d0d1cb2164bd94f9b610a751b907834d96a21..c57777a24e03d91b1ffe04365f7356f2d938befd 100644
+--- a/Documentation/gpu/todo.rst
++++ b/Documentation/gpu/todo.rst
+@@ -441,14 +441,15 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
  
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hdmi");
--	if (!res)
--		return -ENODEV;
+ Level: Intermediate
+ 
+-Request memory regions in all drivers
+--------------------------------------
++Request memory regions in all fbdev drivers
++--------------------------------------------
+ 
+-Go through all drivers and add code to request the memory regions that the
+-driver uses. This requires adding calls to request_mem_region(),
++Old/ancient fbdev drivers do not request their memory properly.
++Go through these drivers and add code to request the memory regions
++that the driver uses. This requires adding calls to request_mem_region(),
+ pci_request_region() or similar functions. Use helpers for managed cleanup
+-where possible.
 -
--	vc4_hdmi->hdmicore_regs = devm_ioremap(dev, res->start,
--					       resource_size(res));
-+	vc4_hdmi->hdmicore_regs = devm_platform_ioremap_resource_byname(pdev,
-+									"hdmi");
- 	if (!vc4_hdmi->hdmicore_regs)
- 		return -ENOMEM;
- 
-+	/* This is shared between both HDMI controllers. Cannot
-+	 * claim for both instances. Lets not convert to using
-+	 * devm_platform_ioremap_resource_byname() like
-+	 * the rest
-+	 */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hd");
- 	if (!res)
- 		return -ENODEV;
-@@ -2971,51 +2971,33 @@ static int vc5_hdmi_init_resources(struct drm_device *drm,
- 	if (!vc4_hdmi->hd_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cec");
--	if (!res)
--		return -ENODEV;
--
--	vc4_hdmi->cec_regs = devm_ioremap(dev, res->start, resource_size(res));
-+	vc4_hdmi->cec_regs = devm_platform_ioremap_resource_byname(pdev,
-+								   "cec");
- 	if (!vc4_hdmi->cec_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "csc");
--	if (!res)
--		return -ENODEV;
--
--	vc4_hdmi->csc_regs = devm_ioremap(dev, res->start, resource_size(res));
-+	vc4_hdmi->csc_regs = devm_platform_ioremap_resource_byname(pdev,
-+								   "csc");
- 	if (!vc4_hdmi->csc_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dvp");
--	if (!res)
--		return -ENODEV;
--
--	vc4_hdmi->dvp_regs = devm_ioremap(dev, res->start, resource_size(res));
-+	vc4_hdmi->dvp_regs = devm_platform_ioremap_resource_byname(pdev,
-+								   "dvp");
- 	if (!vc4_hdmi->dvp_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
--	if (!res)
--		return -ENODEV;
-+	vc4_hdmi->phy_regs = devm_platform_ioremap_resource_byname(pdev,
-+								   "phy");
- 
--	vc4_hdmi->phy_regs = devm_ioremap(dev, res->start, resource_size(res));
- 	if (!vc4_hdmi->phy_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "packet");
--	if (!res)
--		return -ENODEV;
--
--	vc4_hdmi->ram_regs = devm_ioremap(dev, res->start, resource_size(res));
-+	vc4_hdmi->ram_regs = devm_platform_ioremap_resource_byname(pdev,
-+								   "packet");
- 	if (!vc4_hdmi->ram_regs)
- 		return -ENOMEM;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rm");
--	if (!res)
--		return -ENODEV;
--
--	vc4_hdmi->rm_regs = devm_ioremap(dev, res->start, resource_size(res));
-+	vc4_hdmi->rm_regs = devm_platform_ioremap_resource_byname(pdev, "rm");
- 	if (!vc4_hdmi->rm_regs)
- 		return -ENOMEM;
++where possible. Problematic areas include hardware that has exclusive ranges
++like VGA. VGA16fb does not request the range as it is expected.
+ Drivers are pretty bad at doing this and there used to be conflicts among
+ DRM and fbdev drivers. Still, it's the correct thing to do.
  
 
 -- 
