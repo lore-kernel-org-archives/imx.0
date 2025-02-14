@@ -1,77 +1,110 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B60253B51
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 09:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF88250BF5
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 09:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739524149; cv=none; b=bLkS+Y8rZG+YnaBYcqfhQWHA/sdtB+WRTVZ5lZ1IebvDvha6/aNsyir/BMsxIt14KLSS7FFLLXjSasdB2jAETokWHcsODaWETUKfJLHFW7MCyckKo/D9zyVHkGw9COLj+DoloCMhlGl4xnHWnl6tbW1LRejxeSr+BV3ATCNhooQ=
+	t=1739525212; cv=none; b=S8O3BExIdJIG/MIgoq6SV7kjzGB5Y3IbmrJlrtqwaXjJQAI4gRODlR4vslmqkcp6a90mowr86dziN0nQpJE7F1kXggp4tXLK4RkXcZ/cijMZHXK8UrKhqbd2cVTuRhQg+YJljvcc2gNXCqRrYsogZX3SFYjmOWC/EkZqNOt/BF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739524149; c=relaxed/simple;
-	bh=zSXL9VavN96hCcGl7o2PD1XEiCklnDkRNAAJzvQiyrI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
-	 References:In-Reply-To; b=FPS4N4Ftk2yh537Ic7az+jw26PMQOHCvrqVx5umSBd7oOb7VrvwEirk78OMe6uQSgfjf0pN49/lsmk/OjIIRO4954CQOdLSV0qAmzenK8cS+3Bd68ZLs0pmSkllIWp2LG4UllHdlgPD4Kkt3K54/rsjtrlTy7YE6nw05MWzrv4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lTG7WkdZ; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1739525212; c=relaxed/simple;
+	bh=mZEb4O/8MxgRPHsOLUCLNOkrcRFguNnDZADJYJu30Gs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jEOWKbKcKZyj3NAij2SYvw4n28OqDk4XbFTMq99j1uMljbGBmi9BHn/w6iXxcNfZ4LLg+Xu1ftV4gMmqQeQzZ7ZclcpM0i6oqYZoei1z6w0WyfZBMSQveSwf3Sibvns1jqctyPxV41OxjRV3wTTLSprlS66AvRj1hFslP5Y076A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=AmukW2CB; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lTG7WkdZ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 621C54330A;
-	Fri, 14 Feb 2025 09:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739524145;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zSXL9VavN96hCcGl7o2PD1XEiCklnDkRNAAJzvQiyrI=;
-	b=lTG7WkdZpod3DrN3h495gm9vyE38azAW/vRQVzjl+Q92cWbImYHQY3tgqxcpJpej2hLqyo
-	WRpIZzWPFqRW9bBHGn8d8IvEnTuoppZsBMwrOI/PIfcvorI3nF+FslZltEH2NAk300hYf5
-	03g8j4swULodty03nQtJCZTuhK/LIgyuQWPK/Cmw6zmBBCbfApYTHU5lc11n3Q7i/BPbtr
-	TQS98JIX6qY7hySr0cJNzgMEgJ5Gd2cKBVs6OiWb40yBYH7TGVlTNoeZzfHAVQ7weg17OS
-	E/1/zHhF+8tY7Y5anLz0kuva054ygWSEF1CkrysOddwTxvuD2oKcRUffNYmR1w==
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="AmukW2CB"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8BA3320065;
+	Fri, 14 Feb 2025 10:26:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1739525200;
+	bh=G+g0OfrAh01X9LwRyhzYOGvgNaAers3h/+McghiIB40=; h=From:To:Subject;
+	b=AmukW2CBRrfj8omVeMRErQo3AsjpN00p0iN162Kslp9UgCnOyfrZToWCNE4Q7CS/q
+	 kCqd32ORmH8GRQIl3JZL2tJglARTb6ZFQlfdVIIyLIphSBchRg73JhWO7hNoovOzQO
+	 5YvOk0dlOeqj3iieFS5HPycsJsq0bLg7MgmGn9EimnaRQ2JUYHFHlYOi2uQ5OTjP0Y
+	 4r1AfwBzfRxhwHArtp7rYgibENZ3OlO2IQMlQLwjh7KvOGGWo7dL1VUIAQUUIqNCcG
+	 veBVzRxfM0iM/HPHsBsbSG69atBVe3vGOeprVMdPsuSP/XyzkV7jepGkYaOTYvJapN
+	 UDgOCe51FjM0w==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: Remove LVDS panel and backlight
+Date: Fri, 14 Feb 2025 10:26:34 +0100
+Message-Id: <20250214092634.12414-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Feb 2025 10:09:01 +0100
-Message-Id: <D7S1UERD0S47.12JDXAO96967F@bootlin.com>
-Subject: Re: [PATCH v2 0/3] Add Variscite i.MX6UL SoM and Concerto board
- support
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Shawn Guo"
- <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
-In-Reply-To: <20250127-varsom6ul-concerto-dts-v2-0-4dac29256989@bootlin.com>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegledvhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefhvffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdehtdetteehfefgjeelieelvdeiveeludffjeegueefudejueeffeejfeevgedunecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrg
- hdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Mon Jan 27, 2025 at 4:30 PM CET, Antonin Godard wrote:
-> Add support for the i.MX6UL Variscite SoM (VAR-SOM-6UL) and the
-> Variscite Concerto Carrier Board.
+Remove LVDS panel and backlight nodes from the Verdin iMX8M Mini SoM
+dtsi file, those two hardware components are not part of the SoM,
+therefore they should not be present in this file.
 
-Have you got any updates for this series?
+This is solving a dtb checker warning about panel-lvds compatible.
 
-Thanks,
-Antonin
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ .../boot/dts/freescale/imx8mm-verdin.dtsi     | 21 -------------------
+ 1 file changed, 21 deletions(-)
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index c528594ac442..7251ad3a0017 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -18,20 +18,6 @@ aliases {
+ 		rtc1 = &snvs_rtc;
+ 	};
+ 
+-	backlight: backlight {
+-		compatible = "pwm-backlight";
+-		brightness-levels = <0 45 63 88 119 158 203 255>;
+-		default-brightness-level = <4>;
+-		/* Verdin I2S_2_D_OUT (DSI_1_BKL_EN/DSI_1_BKL_EN_LVDS, SODIMM 46) */
+-		enable-gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_i2s_2_d_out_dsi_1_bkl_en>;
+-		power-supply = <&reg_3p3v>;
+-		/* Verdin PWM_3_DSI/PWM_3_DSI_LVDS (SODIMM 19) */
+-		pwms = <&pwm1 0 6666667 PWM_POLARITY_INVERTED>;
+-		status = "disabled";
+-	};
+-
+ 	/* Fixed clock dedicated to SPI CAN controller */
+ 	clk40m: oscillator {
+ 		compatible = "fixed-clock";
+@@ -66,13 +52,6 @@ hdmi_connector: hdmi-connector {
+ 		status = "disabled";
+ 	};
+ 
+-	panel_lvds: panel-lvds {
+-		compatible = "panel-lvds";
+-		backlight = <&backlight>;
+-		data-mapping = "vesa-24";
+-		status = "disabled";
+-	};
+-
+ 	/* Carrier Board Supplies */
+ 	reg_1p8v: regulator-1p8v {
+ 		compatible = "regulator-fixed";
+-- 
+2.39.5
+
