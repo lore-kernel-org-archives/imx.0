@@ -1,89 +1,226 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65225227BBF
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 08:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB7F2163A5
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 08:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739523036; cv=none; b=lbjM7gm/wqNWnARxm/PePG7wz7I4zIcquHSnGPe49qzIbzpm5bp65xRJeCdSex8WzY5R7fGS9eVkfFLomPm7x2Vkvvj3Vv/vu45jM7KAJPMEZgwpThD2mYJJhmBiNdT+/emF0bpaLRUO9jTODpJt/PiVNEe935trTLKXi49obsM=
+	t=1739523582; cv=none; b=AdbtWeDqQJ3ohZ02jh0jFSdFX1f/QJH+7qWiCJT8YLfDd4VHxHT/8aDsl0iB9RNTBeXXZG6vuBGan+wWIDfDdSauY8a+amYZ/hEPQu7uP0Czb2UvfvRep+p52/KE6Mpg8gyvnoKxFRF0Y/P3I/65baphBEXrPK/dDOP66B2CZUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739523036; c=relaxed/simple;
-	bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YKvWFJRdUfB9sREXAQr1WCdKaX/oiaIDtpkVhWwKxHTve8afqtSJ0L2d6ySzYcdEL49cUbA/zkvEOXGenVRawx6pMXRQ5uGwxkOgK2fu56LvmFwVdqe0keKOVMm6f20O4dHRgid0N6f/Jf0o/gh/ulRqJA3a8V3SlnotSf9EyWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=STTOwRlV; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739523582; c=relaxed/simple;
+	bh=lIqag3A/X2pmc4BRaks73YT6X86Cppexn1l2jgDjt0Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=T16lDYOeyJUWZJ3nVKEnvZGJbpHPuxbf7s69jOq6/BF5N4f3D6Bi1SFb9kw36D2Kl66ZprM+O7mPwKCb+qB9BcwZLRjZQOdRvn5lb0/2/GAF60zzjcu5JgmoXXGl5tM75NaWdnDDQnrkJxFprj2PllEfSG4PZXzY355Kg3Z+gso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kzx5J5PF; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="STTOwRlV"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fbf5c2f72dso2904983a91.1
-        for <imx@lists.linux.dev>; Fri, 14 Feb 2025 00:50:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kzx5J5PF"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4396a24118dso1986485e9.0
+        for <imx@lists.linux.dev>; Fri, 14 Feb 2025 00:59:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739523034; x=1740127834; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
-        b=STTOwRlVd58yWAWjuwT+fshL4T6NXBe4682wfSCNoIm5RspS7WFu3UKYTJIxH4lVr8
-         aBTYTXYs60+ecVkzw08PDzzc5C9DbENBcUdN7U5O7FX2VmRagWgaJ8edFb4rJQfdfzC/
-         3R6+muBJ609y6guv1uf8h5dIhJHEEeiFnhvvO9PafRCuxChxP8hoYgsH1En5NVk18fgp
-         Cwj4b9fjnaWy4+mcEb2cOg4LZrkep/kr0ysA8Ivq1LuAK6F4/tCYrw7Y783HeicTdyCH
-         HVO3EF/Qppz/mP/H3jLkg1cZc0Po10ij1SWwO3vdv9Mu1tGSQDGd6a2UX3n80cp5oTV+
-         8K8A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739523577; x=1740128377; darn=lists.linux.dev;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zoda2EDe08w9D7LB4RKFhW/A5U1oY6oOY5HMe4wfwNc=;
+        b=kzx5J5PFdyw/5I00iG9Hg3+YIfiyoBc7MqiE9vlipiULjdkpR22wgQmETDbU3C0sWG
+         OqLyzoNcTMeWLgJFDzXN+hoCVKCzX3swocDkzpohPi6WuKpKocj8pkGe3uEaVOAhyzII
+         1P7z08pLXadcdSwGtB3wYsUPFrBmOjsrtbvzGocJzwmQuXAMO0d/tICkBMufOmGQ5gd4
+         SxGUHC53oY6f73auaeNTm5qjoFdxJ8vjcWrCoyDUz00mAsMsvhJBnkWD2PSzDHuDSgNq
+         GNxqLrmUOq9UIYCTG8r6s6xPN2w3YAxqrl/NrEYoNVkbc2UsPg+b0njzJQZWUKAAeUUi
+         9vIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739523034; x=1740127834;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
-        b=SC3mcyNFdoVfjVIQ24jP8AZYvcbwRr4qZSbh3Xn2gIzLhNwXKQIRPlEMtk2S/Hwu7O
-         06bFf/p8b4dzHBxxQJHZIpJiFF9ezTikPgjZFRxFhDqfxhxCRnEoMuGg0t27D0W6F9UD
-         CqGCu+tfRpghobjhKheM4ptf/5CdTOl19grqBGnH+JvE0dZCnQ1ZCScdCO8rbmuCFevU
-         N4kf4o+c6rYmTi3XZYDPk4h9OE3xCnekVjwP8M3waY0/dpIr8JGsDD0jnaceVHCrLGh/
-         er4W5patWO6gItHu/L3FRW2PPbiT5IrishP/SAbrgn1qYFoKXZUX6VO236zHCvHqCFbc
-         UuVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWba97bgofd2kGPkpy4KIM5epSqtLUXc9AdPRGEhterYj9aQJrwzfQgaqDTbhCVWR+Q+74=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy5h0oYFLcDjk2pCbgxODxsDbG98x/v1CkXTwrWfB0G6Fwe2ufF
-	5WNnhaLcEYrPzIqPMbACsKL7xvyWaiCTQmP+mZzfsyK/Azf7n11SGgJ62ztc8o1inU9cweHgxRd
-	rn1tRThod34wis689F5mEPGc6lEY=
-X-Gm-Gg: ASbGnctg4VtGrYEo+rTUVO/l0pMueVeKwytHGmPrljs6wdchGSzHlcR/tuP8W1huP/v
-	eOuGmNN80s79ulkbx2mUG7QfuSpY+F8fCYMMW2SyVd+xKgwlef8RMdUwCE4LNuCOQ+CnjWQ==
-X-Google-Smtp-Source: AGHT+IHiUFULatLaYVTG50OelwewoeambCvXM1mTQ31PiJAH6oiIxTBI5F18bPDN/bN5hq3LikyhjtSIbsUPOxZ5ITU=
-X-Received: by 2002:a17:90b:518d:b0:2f4:43ce:dcea with SMTP id
- 98e67ed59e1d1-2fbf5c580c0mr16296822a91.25.1739523034540; Fri, 14 Feb 2025
- 00:50:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739523577; x=1740128377;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zoda2EDe08w9D7LB4RKFhW/A5U1oY6oOY5HMe4wfwNc=;
+        b=ImZvYoHE7UzaRk8ECEmTiPqg0xjUPQkuksvmQjImbrl+ltkS8NpdwPhuBhMUHXlZCo
+         P5uvEnFRE3kMZFsA+LHNzKyt/c23fEVNZb0xuAntFjkaqcj0UMli5W76mQFTNOAT4Hx/
+         hktp7eJRugtFe6IC3n/rzxSvc91kZ+HCbTwe4hRJ++tffB83AF9FHI6cdrco+3fEcg4s
+         qbldn3gm1Px+xGTOHU37CkE06J0aW7vFQaYlbjmJhto/UvUWGjjEYi6NebJ66rplP4wp
+         1qJ6BH3FIy8j3SDriNK3g7wz1c2O6BoDGYfrDhaR+P219VGFZVCg/tHNlt1HXCBOA9vm
+         WhAw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2dg+xb2eNsWzldLVuSfZMiUballSjuu5UrJt1VmxHXp5MHC8GETxSsN6J/za4L3ZWtDE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwE9LhlO6xanwKq4WrC17pmk07WsbG0FqMsWUSvJhBZ+18p39sd
+	aKYxZ3ILJyAnh8z+78yaHNb/jGRrkTVxIuUu4lYY4zvUj1rtmWjvvyHNndINYP0=
+X-Gm-Gg: ASbGnctt74rWPOD6MzlJoqOm8ZW6DSvRxnqm2/t/nDnRdQDmLL9faa9flImNXWyVbDk
+	+ChRQYmK6nddXwyGvE/iVdNJJuCxC3uNssPXeuSN90sXGpBf1p+5cC4yZ9lv73G2a+RMoM1nYII
+	DgkRrHyoyYHTP9wrimGo1zS44xtO3MJf3tERtpYhj8zwtAfh0lZqY1aF09gT8QF91mSGa4g+pLG
+	ttlM+VN+4+hyBBmcX0JLjNrQB6otWBtw/4NCHTHaaZ7erBJPfy8kqhTZhmiyXnGIyCOfxYvVtiy
+	GriowuPr2qdwDQY=
+X-Google-Smtp-Source: AGHT+IHr8NGbRnNCNsasOEgGwEH9hogJeR/Q2q11CcGnTNY+PAq+96jRXtyg1EfxGENX3t8ZZduxZg==
+X-Received: by 2002:a5d:5250:0:b0:38f:3141:8912 with SMTP id ffacd0b85a97d-38f31418a8cmr220671f8f.24.1739523576712;
+        Fri, 14 Feb 2025 00:59:36 -0800 (PST)
+Received: from localhost ([2a01:e0a:3c5:5fb1:baa6:bc65:b9db:3759])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38f258ccda0sm4052204f8f.27.2025.02.14.00.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 00:59:36 -0800 (PST)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Dave Ertman
+ <david.m.ertman@intel.com>,  Ira Weiny <ira.weiny@intel.com>,  "Rafael J.
+ Wysocki" <rafael@kernel.org>,  Stephen Boyd <sboyd@kernel.org>,  Arnd
+ Bergmann <arnd@arndb.de>,  Danilo Krummrich <dakr@kernel.org>,  Conor
+ Dooley <conor.dooley@microchip.com>,  Daire McNamara
+ <daire.mcnamara@microchip.com>,  Philipp Zabel <p.zabel@pengutronix.de>,
+  Douglas Anderson <dianders@chromium.org>,  Andrzej Hajda
+ <andrzej.hajda@intel.com>,  Neil Armstrong <neil.armstrong@linaro.org>,
+  Robert Foss <rfoss@kernel.org>,  Laurent Pinchart
+ <Laurent.pinchart@ideasonboard.com>,  Jonas Karlman <jonas@kwiboo.se>,
+  Jernej Skrabec <jernej.skrabec@gmail.com>,  Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+  Thomas Zimmermann <tzimmermann@suse.de>,  David Airlie
+ <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Hans de Goede
+ <hdegoede@redhat.com>,  Ilpo =?utf-8?Q?J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>,
+  Bryan O'Donoghue <bryan.odonoghue@linaro.org>,  Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>,  Gregory CLEMENT
+ <gregory.clement@bootlin.com>,  =?utf-8?Q?Th=C3=A9o?= Lebrun
+ <theo.lebrun@bootlin.com>,
+  Michael Turquette <mturquette@baylibre.com>,  Abel Vesa
+ <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Shawn Guo
+ <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  Kevin Hilman <khilman@baylibre.com>,  Martin
+ Blumenstingl <martin.blumenstingl@googlemail.com>,
+  linux-kernel@vger.kernel.org,  linux-riscv@lists.infradead.org,
+  dri-devel@lists.freedesktop.org,  platform-driver-x86@vger.kernel.org,
+  linux-mips@vger.kernel.org,  linux-clk@vger.kernel.org,
+  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
+  linux-amlogic@lists.infradead.org
+Subject: Re: [PATCH v3 2/7] reset: mpfs: use the auxiliary device creation
+ helper
+In-Reply-To: <20250213-crown-clustered-81c6434c892b@spud> (Conor Dooley's
+	message of "Thu, 13 Feb 2025 17:59:07 +0000")
+References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com>
+	<20250211-aux-device-create-helper-v3-2-7edb50524909@baylibre.com>
+	<20250213-crown-clustered-81c6434c892b@spud>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Fri, 14 Feb 2025 09:59:35 +0100
+Message-ID: <1jv7tczytk.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241206084817.3799312-1-peng.fan@oss.nxp.com> <20250214040457.GC20275@localhost.localdomain>
-In-Reply-To: <20250214040457.GC20275@localhost.localdomain>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 14 Feb 2025 10:52:08 +0200
-X-Gm-Features: AWEUYZmgsC6Etzl4Yr65LGIQ5Av4XAoNXRv7HFJ-K1y_EhMdzGRHl7TymfpRoOo
-Message-ID: <CAEnQRZD25RrtAzAy4B9WX3+1iUuLdt1cgZ36kCTr4poawP1htA@mail.gmail.com>
-Subject: Re: [PATCH V4 1/2] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
-	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>, 
-	"open list:FREESCALE eDMA DRIVER" <dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Feb 14, 2025 at 4:58=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
-te:
+On Thu 13 Feb 2025 at 17:59, Conor Dooley <conor@kernel.org> wrote:
+
+> On Tue, Feb 11, 2025 at 06:27:59PM +0100, Jerome Brunet wrote:
+>> The auxiliary device creation of this driver is simple enough to
+>> use the available auxiliary device creation helper.
+>> 
+>> Use it and remove some boilerplate code.
+>> 
+>> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+>> ---
+>>  drivers/reset/reset-mpfs.c | 52 +++-------------------------------------------
+>>  1 file changed, 3 insertions(+), 49 deletions(-)
+>> 
+>> diff --git a/drivers/reset/reset-mpfs.c b/drivers/reset/reset-mpfs.c
+>> index 574e59db83a4fcf30b60cb5f638607a2ec7b0580..bbea64862181877eb7ae51fdaa9e50ffac17c908 100644
+>> --- a/drivers/reset/reset-mpfs.c
+>> +++ b/drivers/reset/reset-mpfs.c
+>> @@ -155,62 +155,16 @@ static int mpfs_reset_probe(struct auxiliary_device *adev,
+>>  	return devm_reset_controller_register(dev, rcdev);
+>>  }
+>>  
+>> -static void mpfs_reset_unregister_adev(void *_adev)
+>> -{
+>> -	struct auxiliary_device *adev = _adev;
+>> -
+>> -	auxiliary_device_delete(adev);
+>> -	auxiliary_device_uninit(adev);
+>> -}
+>> -
+>> -static void mpfs_reset_adev_release(struct device *dev)
+>> -{
+>> -	struct auxiliary_device *adev = to_auxiliary_dev(dev);
+>> -
+>> -	kfree(adev);
+>> -}
+>> -
+>> -static struct auxiliary_device *mpfs_reset_adev_alloc(struct device *clk_dev)
+>> -{
+>> -	struct auxiliary_device *adev;
+>> -	int ret;
+>> -
+>> -	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+>> -	if (!adev)
+>> -		return ERR_PTR(-ENOMEM);
+>> -
+>> -	adev->name = "reset-mpfs";
+>> -	adev->dev.parent = clk_dev;
+>> -	adev->dev.release = mpfs_reset_adev_release;
+>> -	adev->id = 666u;
+>> -
+>> -	ret = auxiliary_device_init(adev);
+>> -	if (ret) {
+>> -		kfree(adev);
+>> -		return ERR_PTR(ret);
+>> -	}
+>> -
+>> -	return adev;
+>> -}
+>> -
+>>  int mpfs_reset_controller_register(struct device *clk_dev, void __iomem *base)
+>>  {
+>>  	struct auxiliary_device *adev;
+>> -	int ret;
+>>  
+>> -	adev = mpfs_reset_adev_alloc(clk_dev);
+>> +	adev = devm_auxiliary_device_create(clk_dev, "reset-mpfs",
+>> +					    (__force void *)base, 666u);
 >
-> Hi Vinod,
+> Moving the boilerplate into a helper makes sense:
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 >
-> Any comments?
+> One think that's always felt a bit meh to me is this id number stuff,
+> I just threw in 666 for meme value.
 
-Hi Peng,
+:)
 
-Do not send empty pings.
+> The whole thing seems super
+> arbitrary, do any of the users of this helper actually put meaningful
+> values into the id parameter?
 
-Just resend the patches marking them as [RESEND PATCH...
+In example changes I've sent, no.
 
-Daniel.
+In other simple usages (those using container_of()) of the auxiliary
+bus, I think there are a few that uses 0 and 1 for 2 instances.
+
+I guess your question is "do we really need this parameter here ?"
+
+We could remove it and still address 90% of the original target.
+
+Keeping it leaves the door open in case the figure above does not hold
+and it is pretty cheap to do. It could also enable drivers requiring an
+IDA to use the helper, possibly.
+
+>
+>>  	if (IS_ERR(adev))
+>>  		return PTR_ERR(adev);
+>>  
+>> -	ret = auxiliary_device_add(adev);
+>> -	if (ret) {
+>> -		auxiliary_device_uninit(adev);
+>> -		return ret;
+>> -	}
+>> -
+>> -	adev->dev.platform_data = (__force void *)base;
+>> -
+>> -	return devm_add_action_or_reset(clk_dev, mpfs_reset_unregister_adev, adev);
+>> +	return 0;
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(mpfs_reset_controller_register, "MCHP_CLK_MPFS");
+>>  
+>> 
+>> -- 
+>> 2.45.2
+>> 
+
+-- 
+Jerome
