@@ -1,194 +1,314 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2047.outbound.protection.outlook.com [40.107.105.47])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446CE20C038
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 07:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739516819; cv=fail; b=QorfB9x7OrQlVvRW/Ot6SWUpmb3LSxITDu7CJGoIxQdndiNp3J/AXQOq8S9L4gM9LgE3ry3gQU5fDgyLBIU5GVCEMOqFq1W0RC1qxBP7P/QrMSxm8I+XtlWtFZKKuGw12AXg2hOt5ypm5nfNtx38kxMxNSZ/MqURvWbY+3oO/1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739516819; c=relaxed/simple;
-	bh=3NH/LGtPudzdFi51mG28iRcq7u2gPormA5h7KWifMGw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ef5Yjo8/Oid2FkdDZf2zytzzGDIao68Bh8I5er5xtrme5b8M6eSztA0NuXw0QpUFLYsgwejPfp/5as4l2jB1OM1IqB/Qop1j4epl+B1AkCrCIkEwAcZKcM538IGpyZiBDWWpFuJi+LOhQlOHCh+IOD8L7HBxz1W31itcKsjdFuQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=a5EUAAxA; arc=fail smtp.client-ip=40.107.105.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC94158D96
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 08:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739522295; cv=none; b=X6Bn5Ho+7tH7HICXlhMTfb4ejBjNbKIYwOWqC1IJtZUSBJftrXgtRKgR09G94MquJ/ceLUCdpGUjZShUxF+h8itISZFzSQhSKcAJYrqKpyuWMLG7zkOn0Kc0FH+B4Ok5/9au9FaDMhkKU1eW38YDMBBiLlcivbFdZu39raqp2FM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739522295; c=relaxed/simple;
+	bh=Uon8qEGH5SAL+tYfQO8BOWt1CW8CSbYRLo16Ya3AJP4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=g5Txydm6V5CbxPMigZIR51tNJShbEavKc9cCppjjXuStYgiS0RDlYRh4ieHtJURXK7dYnosHQh7XcpLkEBUlDc42BQwVA2xzVx2uuYVnlifcjWyt72g/G4fZio067XqySXlbJo31G4gKqiOFsPRRTV0fv3ozw6CM/Jz9xEDznTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ex59S/KN; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="a5EUAAxA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L1NB+n2rEWO1zUcFF6RqYR16tKPSE7oHtnN24g0ckYkAUzfUwtTgGu8oWzXc+n+ramaECqVvRv6Dpa07NJ7nzDvR69Akx+GldOK/INNyQ/8Jix/KAAHswTBUG7Vi3uSTn/smUAu7ITSKGryi7yaZOUW2w14erc1wYK0CpD4GGUBIZCKnzSj9MfFYGc+QIpJqRN1hZ+5+1KHloJpCvUAjOBzadF151GBHCSPcT/6z0iWVUunQOFYpWQxu9jWyBdvnF1SUptx7lKIr4atLRlVVZAF4z49/DCVAjAZh27v2vmIPMKR4Obv4xDlSv3yvJvqQKdBuHF4cl91Vjb7VFy4kuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DQYqKmcbQEBrrUGIVYdQ8vQILJsed5xr4MV4SR3txZ8=;
- b=Q9hPfaOkxFh4SjJ5htT/0e69oOHUzu1mQ2mmGJKEhLIhMSXNvIU9jfGODEoYzdTTJ4NfwRgS9v2gjnjBftwBLeEplrY+kCZs0hg/ZBhoIzanTHVrXqRg/FYippMTFaJnfmSgPZ2PiqNm73mi6W1k4ftEtOuzkfGqXeTAADy/kpV1rqBfXLKur/MG9ztjfgABTBH4QbszWN8lZeHGqYbEE5cFNJpTlI8BIg3ShmxiKdqWMxwrvg4q+kXVTm4wsdqPCTLw2ol8strz8ePv3h5WkIcQJhy8YNtPP/mq2jkcPYrJiEOPUwo8+LnbB2PsMlRMkAIwyClK6pdNdGw/vqx0rA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DQYqKmcbQEBrrUGIVYdQ8vQILJsed5xr4MV4SR3txZ8=;
- b=a5EUAAxA6xFAVBhTJGnigqvQG7OY45ARLcj1KUUoR57/NiPWPeewtITwQzj1AB3LtOQ2ogs2j/el7jbIOI3WuP1VUVec6ofcCvz0kGByTffFJnQNz9zDsYs6YU8VSBHRnqA53zzuGrx6WCxX58eZMVnym1p+LFUeMgWF2G2FMJMJwUUxIA1SDmMB6MJHUqhnstraN+xK9aOAiXO2etIeTqc8SWYF4cZ12GX/j0lqEM2iP87hK+HH7Up5LxDt0PC8ALvwZLLdSwk+QNBxwOjKTB++/qMEIuigHxAf57Wio5dx+ctfFfKA7tskkSmcJ+pudR+gW2pp+vqxBUv3tYVomQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by AM0PR04MB7121.eurprd04.prod.outlook.com (2603:10a6:208:19a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Fri, 14 Feb
- 2025 07:06:55 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8445.011; Fri, 14 Feb 2025
- 07:06:55 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 2/2] ASoC: imx-card: Add playback_only or capture_only support
-Date: Fri, 14 Feb 2025 15:05:33 +0800
-Message-Id: <20250214070533.2808496-3-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250214070533.2808496-1-shengjiu.wang@nxp.com>
-References: <20250214070533.2808496-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0034.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::9) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ex59S/KN"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8DAD3441DB;
+	Fri, 14 Feb 2025 08:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739522290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tBXtQKspl/tQc262TteMj1K5AZZrIiuUgh3p3e1Bj8A=;
+	b=Ex59S/KNwROOk1PwwvtxM9GKHtgky3sFkhbU7jy5wYAL/i+5/1UYcClvUg5n9f9iDuGiQ/
+	6Rh14vi3u+X+/Gn8IqhkT8iWWyYJh4Y5owvjM8tyuDSsC2Ls4ZERdMYqRH0LzV1+XnTbN6
+	3ZXHJSfJMP5e9cMdP8N+DqZipPsZ+bAwUGVnxEXBZInCsCrqfYpkhfVJZs+rI3pDN76SPA
+	WGG06i9NneGrFVq4OLt248K7gfn62GNdKj6VMzjhnlXigWFjoJdSYK4gphYPefK61xWORM
+	uBPDPC6n6nws7ALKsHvfvwCGn4PPZVy+IEOGMJc2MsISUq6PvvDaTsbNmNPieQ==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Date: Fri, 14 Feb 2025 09:38:01 +0100
+Subject: [PATCH v2] serial: mctrl_gpio: add parameter to skip sync
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AM0PR04MB7121:EE_
-X-MS-Office365-Filtering-Correlation-Id: 215114cb-3e85-427b-2608-08dd4cc629e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OgXWeawLrv7fslponWNGAUtfPFm2gS01XKBA620hv8U7CiTAmBpUrGfcrZNm?=
- =?us-ascii?Q?6oFLGs85tL/lU4TCNVhbrbQ1suy88tWejIXAPVgdEFLSePltiFer4RYk076A?=
- =?us-ascii?Q?cv0/3da9uAxOOzLfi8kLqNpUMlReZ2esbysvbIxiLDsQGQLT27Bc2X86I5v9?=
- =?us-ascii?Q?ieL02X6voxF/JnGsHx8uUKqCjC16Jj836iIbcGegZtJxpCScWjPzJ4qfEb64?=
- =?us-ascii?Q?4/LR1vkqCpQouVK2XTz1zAb+A/KR/L4PHnpjeDGFki1LLz15a64Xo2x9mPYO?=
- =?us-ascii?Q?cmi/Js12KYMmOtA/cOslVTzeyo6w7/ACdWMflNKWXlr09KxiH6jWV718wm1z?=
- =?us-ascii?Q?EPctBPQiVu/zh/70m86vrNgK+B14EuyPIZXKgcQGJSNBP9ifs7OuNToeSK9b?=
- =?us-ascii?Q?+SZZMLGOrAG1ahP91TKIfEqsPYxCI47yLiFQ0tjjsW1Se+kDdxcQhRpR9hrD?=
- =?us-ascii?Q?3wjMQsDZzu9vXcJaK6L5MUhU04OsdU/Mh5hK2hTDwkhJXvh8cstUtFtnCCd4?=
- =?us-ascii?Q?+6JNzVA2e9CrZlYwP4DcquHMQ/aZ1FUYeLUFRoVdLjEKIz6mEJi0oijhph7p?=
- =?us-ascii?Q?+X5Y17g5yTz/MX0blIU9wiVJy4eBl/OufD9GxIPzqTkBea2YyWoA6BvSqK1P?=
- =?us-ascii?Q?YCAWRwUKwkGSiJ+QZA7MTV1QYqKpAmzvZ64fzaLNGiIoneIPGx/EVxRDJxol?=
- =?us-ascii?Q?pvAjHo/sKhPPl2H18FZwZrVJKVHyKIgVGYxIEEZSYXUvnkDWK8DdpJlnadM5?=
- =?us-ascii?Q?A5fKhvZcVtrS9dGop8qVPN1wvYqkOTnajd3OU+PcVRkjk3azdB2uVPTGXvg0?=
- =?us-ascii?Q?r4ldz0AwikYKbZF2pyOMojL0Hy0J1y7LalQvM1dRvpgkWLa96XhfGrAKtE8V?=
- =?us-ascii?Q?tVVlsm95FAkcm7oBaWzACFSIZ2MfmFltEOafXcWOrw/uo5+bEQ2wF8V/jaFo?=
- =?us-ascii?Q?l5IIP1AnwxJrgBpP35tkos9wOCWKcQS26Cch17DRiwcI02R2xl53pG3iWoGD?=
- =?us-ascii?Q?2fUdNDFZStoxaUFIzMw97c5Ph+snrsmr5ucozzXdGoLVJUHmU9l0YiwE7Zth?=
- =?us-ascii?Q?xiSZVwDzAm7iEKa+o4ktsAT1jX48pKWJ/JtIPf8VpBTd4kC5nCtjfzHjcP7n?=
- =?us-ascii?Q?ma8G0tAIy4sBIrwZT0VHTAsKJO0PExJ0SxRJCLzcV79FosZ2a1xeddYxdwIu?=
- =?us-ascii?Q?ye0vGLTHT8xswSKb3DPQYJVGmPuXGXtuQBRRvPGCO8/rTMgn4KZnTUesNy/X?=
- =?us-ascii?Q?vd/L4Ee3U9wbAcQiIaKD3FbllzM3cCQgYDn+EQGoCTdiAQm/W3C9j0QjE1Aq?=
- =?us-ascii?Q?bh+CyclqHEygrKFpjpt7imeF3J0D/T99/90Dw4bmB0G1F9G9v9lDZO8ipreI?=
- =?us-ascii?Q?yPa0m4eQapR3zvjfPuVdSj1NWTvoQSivx8mSFJUfKK6d222gAPQVLujzPwh8?=
- =?us-ascii?Q?oqCDsMooAwv4zsJlDInd7VjNV155OMeKTHEqFzfMxX1+0Iuu+9hUJQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?X+L0R+DeNLCAw1xEgtVTqamNjO3YaDq9nb7G42qnxbBNjQcKPTnZ6HH7cYE/?=
- =?us-ascii?Q?61V+oN+v0fMnxxG+nv+O+mF0wqCwtXX6SAEvthfUjolQkKQAKmL7jkKePskI?=
- =?us-ascii?Q?H7MICVyB49LIqMDLIsktj2JbJNpNYrONFnJ16H5nRd8S1qBvQGDT+XmkUa84?=
- =?us-ascii?Q?ucZjZjWm3Gj8qjYhKdFDrVQlmGcRM5nXMjwiV5KQBTGLNx++E53Vcgb7i9tp?=
- =?us-ascii?Q?p5h6YOa9Q9lQKZbYwdIP58NtygPtX0woh3f5tmuuwzdgnjHilPcTs9Ioo1vg?=
- =?us-ascii?Q?ELDhyWqO4DIsIJ2oJ/JubUci+6G9slHk8qWoRTq8/lF0ZAHPvQTyWe5ZmIrq?=
- =?us-ascii?Q?Snb8QBK2BvIAMLSACz9AYRD+qh9SwnY9ClORkPQeorolwY6veu7e0/tgtSjp?=
- =?us-ascii?Q?jGW4enYsb52QH+bgn8a3yCy3zVxuAJQXRYrpypP8v/2e5iEsOIabfn0R7LSe?=
- =?us-ascii?Q?mQjJ7Z6KUje9F9lUjGg9uLj/glayi5ITo9MnFkyNrOGngSbJBg4Ft7Ni7zLl?=
- =?us-ascii?Q?d1ptuhcx0ruiez4EqsR2YskKhOaxB7c7GiyrB/EYLoZn4oYXLeHKo9Jqw1AF?=
- =?us-ascii?Q?KNTkj1mIi2ZlrJrDVYhVw3JreMwHcwNVxQfPJWEbK3SOgdbLxmT6r7d5xn77?=
- =?us-ascii?Q?hilFOYT3DmCKBH111xgRZ80JTW79F69HXHAikxYJ1reZpWPJHMIyphHio7iO?=
- =?us-ascii?Q?w9YRlDadkhygKbmAKzmnoOZy16Zip2kF5f06C7hpCx0ody6jUn6Gf6HvbPa/?=
- =?us-ascii?Q?fI04JngZvHqAWepNmhsqZ1jjcXpxpArih9ZpIgkWKYT/nanwE0WKfkMGoyfc?=
- =?us-ascii?Q?QwZlMPCAH6hKfEs/XPeZEN3VV9KTy7ortxO8dzaKWu5RylE8TgKe2DczFgv7?=
- =?us-ascii?Q?+mabdK5kyXpponFTC+zyUw3CiDWbV9UaRzzl1vV6HgadBC0p/bciSVw9R+g6?=
- =?us-ascii?Q?EDHcBski/L+6bkYz+sSE0n9KTzRQNU/OdKu+NYVeEmEK02oN8VProSUAxF0i?=
- =?us-ascii?Q?vqQwPiPzvftm3rpxr1MUgLiprVMLl30YO54KzLEfS4jOuDDco3P38VStyjoh?=
- =?us-ascii?Q?hJ2v8jehM6CHId5tEpbgZsgY/y8Tq010M32jplZbarCnhympauyB1cWrut0m?=
- =?us-ascii?Q?cUewyhWs/3vG5E3LdoqIBrduHV/lLLhWuAu2goSR89emgwppuh+r4Q58n7zU?=
- =?us-ascii?Q?GVtjLqesOYrBkwY2MazDPEH0c2FPj722yI2wSjGARBuivIDbfhy5swKsjykC?=
- =?us-ascii?Q?HHWSuH2JNsN/ztAVHSKTF1K4L7x1yYDtYKr15uMAKp4eUjiK2Yic0310Ho3C?=
- =?us-ascii?Q?si4/u4cIGvkSa+PwuOpzU29fUR9gzsKypbdwUcjVisoX05+EaS7WYYNsmsb5?=
- =?us-ascii?Q?qFh6rO6aekGBDBdAQxgWeE9xkHFsqkF0GlKOIa6GIWTEbbPwLEBPUpoE/T3G?=
- =?us-ascii?Q?Nou83/iZvN8CdWl7DuJyMtfPpSStw5ebVF1jCZaLijNsIDCVV9sRm7hpmf9a?=
- =?us-ascii?Q?vlBktGt66Ixtq3Bbq6JfcZyMmCuM71kPbXoZD7XlxsD1fsShAzOqw60fCgdb?=
- =?us-ascii?Q?ng7vjlkkVZ0Msxtbiw5rSjAHVta7S/A6xZ9BrgWw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 215114cb-3e85-427b-2608-08dd4cc629e5
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 07:06:54.9713
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IinHUtyYHCDOA1ZmlgQFvp2ewtu9Z3fXvmtnlESRasH5oLXds1BxUP3gGxCrkIMIY/okTAD/hv2YWrGd83/S5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7121
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250214-atomic_sleep_mctrl_serial_gpio-v2-1-1e60c732fd90@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAOgAr2cC/42NQQqDMBAAv1L23BSTNhJ66j+KhBhXXYiuJEFax
+ L83+oIeZw4zGySMhAmelw0irpSI5wLqegE/unlAQV1hUJXSlZJ34TJP5G0KiIudfI7BHgkX7LA
+ QC2N0X/fYaqNbKJElYk+fc/BuCo+UMsfv+VvlYf9Or1JIoSqJWDv5MK57tcw50HzzPEGz7/sPk
+ DTZtM4AAAA=
+X-Change-ID: 20250213-atomic_sleep_mctrl_serial_gpio-885f6feb585b
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, 
+ Richard Genoud <richard.genoud@bootlin.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-doc@vger.kernel.org, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegledulecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtkeertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekveeftdeifedvfefgvdfgjeduieevudeltdeulefhhefgiedvhfethffgffegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgdujedvrddujedrtddrudgnpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvuddprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvhdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghorhgsv
+ ghtsehlfihnrdhnvghtpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehjihhrihhslhgrsgihsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehnihgtohhlrghsrdhfvghrrhgvsehmihgtrhhotghhihhprdgtohhm
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-With the DPCM case, the backend only support capture or playback, then
-the linked frontend can only support capture or playback, but frontend
-can't automatically enable only capture or playback, it needs the input
-from dt-binding.
+The following splat has been observed on a SAMA5D27 platform using
+atmel_serial:
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
+in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
+preempt_count: 1, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 0
+hardirqs last  enabled at (0): [<00000000>] 0x0
+hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
+softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
+softirqs last disabled at (0): [<00000000>] 0x0
+CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
+Hardware name: Atmel SAMA5
+Workqueue: hci0 hci_power_on [bluetooth]
+Call trace:
+  unwind_backtrace from show_stack+0x18/0x1c
+  show_stack from dump_stack_lvl+0x44/0x70
+  dump_stack_lvl from __might_resched+0x38c/0x598
+  __might_resched from disable_irq+0x1c/0x48
+  disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
+  mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
+  atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
+  atmel_set_termios from uart_change_line_settings+0x15c/0x994
+  uart_change_line_settings from uart_set_termios+0x2b0/0x668
+  uart_set_termios from tty_set_termios+0x600/0x8ec
+  tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
+  ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
+  wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
+  hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
+  hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
+  hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
+  process_one_work from worker_thread+0x6e0/0xfb4
+  worker_thread from kthread+0x3d4/0x484
+  kthread from ret_from_fork+0x14/0x28
+
+This warning is emitted when trying to toggle, at the highest level,
+some flow control (with serdev_device_set_flow_control) in a device
+driver. At the lowest level, the atmel_serial driver is using
+serial_mctrl_gpio lib to enable/disable the corresponding IRQs
+accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
+disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
+some atomic context (some tty drivers perform modem lines configuration
+in regions protected by port lock).
+
+Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
+and a blocking one. Replace mctrl_gpio_disable_ms calls with the
+relevant version depending on whether the call is protected by some port
+lock.
+
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 ---
- sound/soc/fsl/imx-card.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v2:
+- create dedicated APIs instead of using custom flag
+- Link to v1: https://lore.kernel.org/r/20250213-atomic_sleep_mctrl_serial_gpio-v1-1-201ee6a148ad@bootlin.com
+---
+ Documentation/driver-api/serial/driver.rst |  2 +-
+ drivers/tty/serial/8250/8250_port.c        |  2 +-
+ drivers/tty/serial/atmel_serial.c          |  2 +-
+ drivers/tty/serial/imx.c                   |  2 +-
+ drivers/tty/serial/serial_mctrl_gpio.c     | 34 ++++++++++++++++++++++++------
+ drivers/tty/serial/serial_mctrl_gpio.h     | 17 ++++++++++++---
+ drivers/tty/serial/sh-sci.c                |  2 +-
+ drivers/tty/serial/stm32-usart.c           |  2 +-
+ 8 files changed, 47 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index ac043ad367ac..905294682996 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -518,6 +518,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 	struct snd_soc_dai_link *link;
- 	struct dai_link_data *link_data;
- 	struct of_phandle_args args;
-+	bool playback_only, capture_only;
- 	int ret, num_links;
- 	u32 asrc_fmt = 0;
- 	u32 width;
-@@ -679,6 +680,10 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 			link->ops = &imx_aif_ops;
- 		}
+diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
+index 84b43061c11be2d6b4e3cd29fb8e6ecbdebe646d..60434f2b0286373d64b7aa8ae309454d7bd8859e 100644
+--- a/Documentation/driver-api/serial/driver.rst
++++ b/Documentation/driver-api/serial/driver.rst
+@@ -103,4 +103,4 @@ Some helpers are provided in order to set/get modem control lines via GPIO.
+ .. kernel-doc:: drivers/tty/serial/serial_mctrl_gpio.c
+    :identifiers: mctrl_gpio_init mctrl_gpio_free mctrl_gpio_to_gpiod
+            mctrl_gpio_set mctrl_gpio_get mctrl_gpio_enable_ms
+-           mctrl_gpio_disable_ms
++           mctrl_gpio_disable_ms_sync mctrl_gpio_disable_ms_no_sync
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index d7976a21cca9ce50557ca5f13bb01448ced0728b..218a1d98f1ed3e2697624444be33243050df3a85 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1680,7 +1680,7 @@ static void serial8250_disable_ms(struct uart_port *port)
+ 	if (up->bugs & UART_BUG_NOMSR)
+ 		return;
  
-+		graph_util_parse_link_direction(np, &playback_only, &capture_only);
-+		link->playback_only = playback_only;
-+		link->capture_only = capture_only;
+-	mctrl_gpio_disable_ms(up->gpios);
++	mctrl_gpio_disable_ms_no_sync(up->gpios);
+ 
+ 	up->ier &= ~UART_IER_MSI;
+ 	serial_port_out(port, UART_IER, up->ier);
+diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
+index f44f9d20a97440c9aea41e9ebe34c34d4dfa0a1c..8918fbd4bddd5dfe7705a75d4132dda59fe9e5e6 100644
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -700,7 +700,7 @@ static void atmel_disable_ms(struct uart_port *port)
+ 
+ 	atmel_port->ms_irq_enabled = false;
+ 
+-	mctrl_gpio_disable_ms(atmel_port->gpios);
++	mctrl_gpio_disable_ms_no_sync(atmel_port->gpios);
+ 
+ 	if (!mctrl_gpio_to_gpiod(atmel_port->gpios, UART_GPIO_CTS))
+ 		idr |= ATMEL_US_CTSIC;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 9c59ec128bb4fc0ff54cb9a1a66eabbc9e391a9a..cfeb3f8cf45eaeea8afaa767a4ad849bb8d19f69 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1608,7 +1608,7 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 		imx_uart_dma_exit(sport);
+ 	}
+ 
+-	mctrl_gpio_disable_ms(sport->gpios);
++	mctrl_gpio_disable_ms_sync(sport->gpios);
+ 
+ 	uart_port_lock_irqsave(&sport->port, &flags);
+ 	ucr2 = imx_uart_readl(sport, UCR2);
+diff --git a/drivers/tty/serial/serial_mctrl_gpio.c b/drivers/tty/serial/serial_mctrl_gpio.c
+index 8855688a5b6c09f073349bd144586f54331d891f..ca55bcc0b61119d0b76e6943e0f223a4a9e25c02 100644
+--- a/drivers/tty/serial/serial_mctrl_gpio.c
++++ b/drivers/tty/serial/serial_mctrl_gpio.c
+@@ -322,11 +322,7 @@ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
+ }
+ EXPORT_SYMBOL_GPL(mctrl_gpio_enable_ms);
+ 
+-/**
+- * mctrl_gpio_disable_ms - disable irqs and handling of changes to the ms lines
+- * @gpios: gpios to disable
+- */
+-void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
++static void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios, bool sync)
+ {
+ 	enum mctrl_gpio_idx i;
+ 
+@@ -342,10 +338,34 @@ void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
+ 		if (!gpios->irq[i])
+ 			continue;
+ 
+-		disable_irq(gpios->irq[i]);
++		if (sync)
++			disable_irq(gpios->irq[i]);
++		else
++			disable_irq_nosync(gpios->irq[i]);
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms);
 +
- 		/* Get dai fmt */
- 		ret = simple_util_parse_daifmt(dev, np, codec,
- 					       NULL, &link->dai_fmt);
++/**
++ * mctrl_gpio_disable_ms_sync - disable irqs and handling of changes to the ms
++ * lines, and wait for any pending IRQ to be processed
++ * @gpios: gpios to disable
++ */
++void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
++{
++	mctrl_gpio_disable_ms(gpios, true);
++}
++EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_sync);
++
++/**
++ * mctrl_gpio_disable_ms_no_sync - disable irqs and handling of changes to the
++ * ms lines, and return immediately
++ * @gpios: gpios to disable
++ */
++void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
++{
++	mctrl_gpio_disable_ms(gpios, false);
++}
++EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_no_sync);
+ 
+ void mctrl_gpio_enable_irq_wake(struct mctrl_gpios *gpios)
+ {
+diff --git a/drivers/tty/serial/serial_mctrl_gpio.h b/drivers/tty/serial/serial_mctrl_gpio.h
+index fc76910fb105a3d560e824baa43e9515576e895a..79e97838ebe5672a1b00ef848dcda1e8c1b9568e 100644
+--- a/drivers/tty/serial/serial_mctrl_gpio.h
++++ b/drivers/tty/serial/serial_mctrl_gpio.h
+@@ -87,9 +87,16 @@ void mctrl_gpio_free(struct device *dev, struct mctrl_gpios *gpios);
+ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios);
+ 
+ /*
+- * Disable gpio interrupts to report status line changes.
++ * Disable gpio interrupts to report status line changes, and block until
++ * any corresponding IRQ is processed
+  */
+-void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios);
++void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios);
++
++/*
++ * Disable gpio interrupts to report status line changes, and return
++ * immediately
++ */
++void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios);
+ 
+ /*
+  * Enable gpio wakeup interrupts to enable wake up source.
+@@ -148,7 +155,11 @@ static inline void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
+ {
+ }
+ 
+-static inline void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
++static inline void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
++{
++}
++
++static inline void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
+ {
+ }
+ 
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index b1ea48f38248eb42d98353daa289bbe67191d201..41f987632bce82c9d041d9ab1f5162d2af1a78e4 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -2298,7 +2298,7 @@ static void sci_shutdown(struct uart_port *port)
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
+ 
+ 	s->autorts = false;
+-	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
++	mctrl_gpio_disable_ms_sync(to_sci_port(port)->gpios);
+ 
+ 	uart_port_lock_irqsave(port, &flags);
+ 	sci_stop_rx(port);
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 1ec5d8c3aef8ddbca615a149c2fe81c90c83a22b..4c97965ec43b30113a255661e6a64a6b476d7a9c 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -944,7 +944,7 @@ static void stm32_usart_enable_ms(struct uart_port *port)
+ 
+ static void stm32_usart_disable_ms(struct uart_port *port)
+ {
+-	mctrl_gpio_disable_ms(to_stm32_port(port)->gpios);
++	mctrl_gpio_disable_ms_sync(to_stm32_port(port)->gpios);
+ }
+ 
+ /* Transmit stop */
+
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250213-atomic_sleep_mctrl_serial_gpio-885f6feb585b
+
+Best regards,
 -- 
-2.34.1
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
