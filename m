@@ -1,77 +1,242 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DA4263F25;
-	Fri, 14 Feb 2025 12:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8372627E7
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 12:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739535681; cv=none; b=sVngt0D/sYe0I+l+KoTnDB75SuB/lHmJm6zVTwx08zKBmwwodxrHBx7eaRdmlSqucvQ7CIZMLgFtUUq9NB4bj7+hFXQudnqAGK1eX/YzJXfQZoygIe5xYNXWP5aHS2yDEE8DAWbpDpQcq5RxCm1pDOvuIO49ws2MDUG86G0OD8Q=
+	t=1739536555; cv=none; b=m/m41IFVh5HEQjdxrct61+vQ2SGM9y1D2VBzzeZjGmOMQ3zpV8eA8ctRxpxFdoQ9q8LgjZoA2HoRod1mEtUtX+XT42c+Mj9zfVc5CSO+sNpCx7Qq6fU/6tDatELArctz4zjyCoNGAI2Hx4tBe09nxPvEC2hkALP+6DwJY3Q/ZhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739535681; c=relaxed/simple;
-	bh=QVeyAHjLchA7WqNCbOqpcUiyNoAjfJYd0+puryVp7pk=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=DabkQMa+PO8RHs672Th4oE4CZT45zSpRPWXXhUsp9Rpgiva89OyfaYvBc4+JrFsnCERYyY/tO632IAaiKhX+6Qe+r68h21GvWSH+vZviSifDTu5Z2Qxq8jZf5/v3/qv9BEDfCNhXi4yD0+imz7ST1KEWxDqdsA02ii7syXlN96o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUjk/HNS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739536555; c=relaxed/simple;
+	bh=DhdTMX1B/VBmrfjg4gCD28dH1z0ZeJtuCVVqdYJtLzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bno18IJd8ADvnS9tyDl7gY0s45PObh7swJ2+uK8NB/seLv7Liu2JxopCOK6CHgtalSTTOoCjbKUJyX5VdtbGeiDsS8rLQeoQidFjZ9kk2rnIQum0px+paoVNbRIg9wFuy6P7OrhZZrpjuczK08CRsKaRWBxSTWm1F0PWidLZF0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=D5Xod9Nn; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUjk/HNS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DDCC4CEDF;
-	Fri, 14 Feb 2025 12:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739535680;
-	bh=QVeyAHjLchA7WqNCbOqpcUiyNoAjfJYd0+puryVp7pk=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=AUjk/HNSoYoQ/6J7hjZcAlA15HEnPLWX8YfTGndmLW2hjnNec5mewKqHd3o4W7hn1
-	 BRejwhFBtkt0Ou/hhrCr7MBj8foKiGnTV43qoiKEdocEbiKnBmgLreJK/YOTEVKPN3
-	 +A143cv0JRt5IesiDDjXgNTavFgIBYxDBRUaN00DB7p+FrFY2uJyHYz5UplrnP2F5q
-	 g7zwJDQKL+1a6+P0N8QeTIIB/O1r8Ld7StCoKkmZ3d4Ixq2ekTm3LtkRLs1vDw8dNS
-	 GehvDSkL6cE4lZUY9EYrRGBPRnZC6rukHydjIItJvaaudbv3dquLg/8mujJzlMYbNH
-	 RxXBM5LjvADdw==
-Message-ID: <c045b5b46c8daf79b124e6da9f951fe8@kernel.org>
-Date: Fri, 14 Feb 2025 12:21:18 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Anusha Srivatsa" <asrivats@redhat.com>
-Subject: Re: [PATCH 11/12] drm/vc4: move to devm_platform_ioremap_resource()
- usage
-In-Reply-To: <20250213-mem-cocci-v3-v1-11-93466d165349@redhat.com>
-References: <20250213-mem-cocci-v3-v1-11-93466d165349@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, "Alain
- Volmat" <alain.volmat@foss.st.com>, "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Alexey
- Brodkin" <abrodkin@synopsys.com>, "Alison Wang" <alison.wang@nxp.com>, "Andrew
- Jeffery" <andrew@codeconstruct.com.au>, "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Chun-Kuang Hu" <chunkuang.hu@kernel.org>, "Chunyan
- Zhang" <zhang.lyra@gmail.com>, "Dave Stevenson" <dave.stevenson@raspberrypi.com>, "David
- Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Joel
- Stanley" <joel@jms.id.au>, "John Stultz" <jstultz@google.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Jonathan Hunter" <jonathanh@nvidia.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Vasut" <marex@denx.de>, "Matthias
- Brugger" <matthias.bgg@gmail.com>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>, "Maxime
- Ripard" <mripard@kernel.org>, =?utf-8?b?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, "Mikko
- Perttunen" <mperttunen@nvidia.com>, "Orson Zhai" <orsonzhai@gmail.com>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Philippe
- Cornu" <philippe.cornu@foss.st.com>, "Raphael Gallais-Pou" <raphael.gallais-pou@foss.st.com>, "Raphael
- Gallais-Pou" <rgallaispou@gmail.com>, "Raspberry Pi Kernel Maintenance" <kernel-list@raspberrypi.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
- Vetter" <simona@ffwll.ch>, "Stefan Agner" <stefan@agner.ch>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Thierry
- Reding" <thierry.reding@gmail.com>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Tian
- Tao" <tiantao6@hisilicon.com>, "Xinliang Liu" <xinliang.liu@linaro.org>, "Xinwei
- Kong" <kong.kongxinwei@hisilicon.com>, "Yannick Fertre" <yannick.fertre@foss.st.com>, "Yongqin
- Liu" <yongqin.liu@linaro.org>
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="D5Xod9Nn"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id F3830240027
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 13:35:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739536549; bh=DhdTMX1B/VBmrfjg4gCD28dH1z0ZeJtuCVVqdYJtLzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=D5Xod9Nnl1WE6g1L7y5neIscsjHlzP9MY5Mw6Agu8uZD51CniEAu5nc1a/M7uOuay
+	 FnPzKuG+5DhX1AR2By4JLt2+6SePYX9dxTPP26BbYZz5yslylfLJ5HeYXeZKigJTD8
+	 wXckP4BTVk0rpmFwPrtSM3F5JmFkYBbJwcZ9ILZoY9XREALy+R8PMLWVfRJJIqegGR
+	 ip0tDQNNZvhC+Ac7P9yckRRncsRnZpwesWfImxAkK3WxgCwLbe+EOgHyElpxRWrYjw
+	 JI/8foXkGFM8JegiqDKfVrOw0juWrGF0P67jAcRLWyShcX0FBJqPObf2fUnzLcM0WW
+	 OMX71QAVAqbKw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YvWjq1cxCz9rxG;
+	Fri, 14 Feb 2025 13:35:41 +0100 (CET)
+Date: Fri, 14 Feb 2025 12:35:41 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Frank Li <Frank.li@nxp.com>
+Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 05/12] dt-bindings: dma: Convert fsl,elo*-dma to YAML
+Message-ID: <Z684nUnDX4Sb98rQ@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-5-8137b0c42526@posteo.net>
+ <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
 
-On Thu, 13 Feb 2025 19:19:24 -0500, Anusha Srivatsa wrote:
-> Replace platform_get_resource_byname + devm_ioremap_resource
-> with just devm_platform_ioremap_resource()
+On Mon, Feb 10, 2025 at 02:39:13PM -0500, Frank Li wrote:
+> On Fri, Feb 07, 2025 at 10:30:22PM +0100, J. Neuschäfer via B4 Relay wrote:
+> > From: "J. Neuschäfer" <j.ne@posteo.net>
+> >
+> > The devicetree bindings for Freescale DMA engines have so far existed as
+> > a text file. This patch converts them to YAML, and specifies all the
+> > compatible strings currently in use in arch/powerpc/boot/dts.
+> >
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+> >
+> > V2:
+> > - remove unnecessary multiline markers
+> > - fix additionalProperties to always be false
+> > - add description/maxItems to interrupts
+> > - add missing #address-cells/#size-cells properties
+> > - convert "Note on DMA channel compatible properties" to YAML by listing
+> >   fsl,ssi-dma-channel as a valid compatible value
+> > - fix property ordering in examples: compatible and reg come first
+> > - add missing newlines in examples
+> > - trim subject line (remove "bindings")
+> > ---
+> >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 140 ++++++++++++++
+> >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 123 +++++++++++++
+> >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 134 ++++++++++++++
+> >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
+> >  4 files changed, 397 insertions(+), 204 deletions(-)
+[...]
+> > +  reg:
+> > +    maxItems: 1
+> > +    description:
+> > +      DMA General Status Register, i.e. DGSR which contains status for
+> > +      all the 4 DMA channels.
 > 
-> Used Coccinelle to do this change. SmPl patch:
-> //rule s/(devm_)platform_get_resource_byname +
+> needn't maxItems
+> items:
+>   - description: DMA ...
+
+Good point, I'll do that.
+
 > 
-> [ ... ]
+> > +
+> > +  cell-index:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: Controller index. 0 for controller @ 0x8100.
+> > +
+> > +  ranges: true
+> > +
+> > +  "#address-cells":
+> > +    const: 1
+> > +
+> > +  "#size-cells":
+> > +    const: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +    description: Controller interrupt.
+> 
+> Needn't description because no any additional informaiton.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+True.
 
-Thanks!
-Maxime
+> 
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+[...]
+> > +additionalProperties: false
+> 
+> Need ref to dma-common.yaml?
+
+Sounds good, but I'm not sure what to do about the #dma-cells property,
+which is required by dma-common.yaml.
+
+There aren't many examples of DMA channels being explicitly declared in
+device trees. One example that I could find is the the xilinx_dma.txt
+binding:
+
+
+	axi_vdma_0: axivdma@40030000 {
+		compatible = "xlnx,axi-vdma-1.00.a";
+		#dma_cells = <1>;
+		reg = < 0x40030000 0x10000 >;
+		dma-ranges = <0x00000000 0x00000000 0x40000000>;
+		xlnx,num-fstores = <0x8>;
+		xlnx,flush-fsync = <0x1>;
+		xlnx,addrwidth = <0x20>;
+		clocks = <&clk 0>, <&clk 1>, <&clk 2>, <&clk 3>, <&clk 4>;
+		clock-names = "s_axi_lite_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk",
+			      "m_axis_mm2s_aclk", "s_axis_s2mm_aclk";
+		dma-channel@40030000 {
+			compatible = "xlnx,axi-vdma-mm2s-channel";
+			interrupts = < 0 54 4 >;
+			xlnx,datawidth = <0x40>;
+		};
+		dma-channel@40030030 {
+			compatible = "xlnx,axi-vdma-s2mm-channel";
+			interrupts = < 0 53 4 >;
+			xlnx,datawidth = <0x40>;
+		};
+	};
+
+	...
+
+	vdmatest_0: vdmatest@0 {
+		compatible ="xlnx,axi-vdma-test-1.00.a";
+		dmas = <&axi_vdma_0 0
+			&axi_vdma_0 1>;
+		dma-names = "vdma0", "vdma1";
+	};
+
+It has #dma_cells (I'm sure #dma-cells was intended) on the controller.
+
+
+Another example is in arch/powerpc/boot/dts/fsl/p1022si-post.dtsi:
+
+	dma@c300 {
+		dma00: dma-channel@0 {
+			compatible = "fsl,ssi-dma-channel";
+		};
+		dma01: dma-channel@80 {
+			compatible = "fsl,ssi-dma-channel";
+		};
+	};
+
+	...
+
+	ssi@15000 {
+		compatible = "fsl,mpc8610-ssi";
+		cell-index = <0>;
+		reg = <0x15000 0x100>;
+		interrupts = <75 2 0 0>;
+		fsl,playback-dma = <&dma00>;
+		fsl,capture-dma = <&dma01>;
+		fsl,fifo-depth = <15>;
+	};
+
+
+There, the DMA channels are used directly and without additional
+information (i.e. #dma-cells = <0>, althought it isn't specified).
+
+
+> > +        dma-channel@0 {
+> > +            compatible = "fsl,mpc8349-dma-channel", "fsl,elo-dma-channel";
+> > +            reg = <0 0x80>;
+> > +            cell-index = <0>;
+> > +            interrupt-parent = <&ipic>;
+> > +            interrupts = <71 8>;
+> 
+> '8',  use predefine MACRO for irq type.
+
+Good catch, will do
+
+> 
+> Frank
+
+Thanks for your review!
+J. Neuschäfer
