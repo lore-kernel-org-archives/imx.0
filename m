@@ -1,142 +1,195 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013024.outbound.protection.outlook.com [52.101.67.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6023B149C64
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 02:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739498658; cv=none; b=jnoPlyjuLSCjdgtTobpuuN0MwFFQcYPuRdrWXBMks6VkdJz9qOuLeA9ArGMSL2J2jSzce6Hd6x01yaufe3w2FNqJHLraO55/fGs+deCu60Tf6ShO6BSB4FyhzKxt6gKqOJcueoVTQQKKFL5yP48xin/euDJrfE4BR98uqg6Mguo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739498658; c=relaxed/simple;
-	bh=WhJmekLyQeapuWa9J6WUco9/aFXXshTQJPKudksd1Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G6i/YS4is8vwbG46dfbb7eVF/VjUGzZx6XqzH1s5uNWfKs6hFWbv2DfB+5ZBAryfA1e4H59NRqbeaM3UNZsW23KioOmXSRt7vYChkJelojo4UjUC8eOj8CvkPSx5IWr10G6OjrO93rhkQtDDAT4cHWmFHInWwssS62KKwqx5NE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=Nm3LODJX; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC4A77F11
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 02:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739501341; cv=fail; b=KP2u5+ZHV5bKyAAiT2DELmueF5z9W6s3W0HzIIYeXoNQ1k7cyW44abtaMfGeFRVI42sixAmw8+wDv/LuTCWEZVLdq5bP9hyZYuvRQLAKjSzmh05r19B7Ch9uVIclrSF5eO9rknCXWNVDUtwiw99GoLoVdTMddAniM7mOM98I3zo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739501341; c=relaxed/simple;
+	bh=qYdID3KVAHMTJkWRtBsWDGXgBtjdPREvkBTwDFZN+II=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iq8CycO9YQ1tI9xVFANHFtrFkwI8AUTSNEDhDg0HxSThvAPNBMrIljWzqIr6HJZrjraFKFAK/UUgl/qMcdz/rbOvQVL/603lAMMkfb67DDtwyQbwFTkb01Q02KRECZB61of65MXIF6Y7N6gDXY1PItRTEEkjyyIO3EjnF6fry5Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ESBUzxJu; arc=fail smtp.client-ip=52.101.67.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="Nm3LODJX"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 9EBE8240103
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 03:04:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739498648; bh=WhJmekLyQeapuWa9J6WUco9/aFXXshTQJPKudksd1Lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=Nm3LODJXhqQCCv69Zz1N9FqongFoJT3V0NUa6zSUc6NA8FVuLeDXb1gY6jUNVQHk0
-	 za741AL0WLueAGlA/BFA+QKYt3CF9TzSKV5uIWL7ZRmYG65M75ziCewHvxV5bFjNvF
-	 iazMruPIDK5iKbKAZ/b3L7MbUm8urNpdqjf+7oZ+ilPu+gH9g8Qi0ILU6wPJ9jr/f2
-	 88Oy6Dd1u/V7CrpE27zO9e3Rst0yJX5xnoQo7GnAyMla0eUpw+1+/KNjIMvlu9JPTk
-	 Vkmt2BtBE48By8yPb8A9xA3GJCSUKi5lFDCACraCv2ZCkP4OvojLM4EmP/9XViOo53
-	 4Xmtf91bi8dMw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YvFhy67kgz9rxF;
-	Fri, 14 Feb 2025 03:04:02 +0100 (CET)
-Date: Fri, 14 Feb 2025 02:04:02 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Rob Herring <robh@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 03/12] dt-bindings: crypto: Convert fsl,sec-2.0 to YAML
-Message-ID: <Z66kksKzsknmOy5Q@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-3-8137b0c42526@posteo.net>
- <20250212193314.GA4134845-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ESBUzxJu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zSgKxNVVrafZN16/e25afxY6ZSGsefBEVGXw6LfmyB8LwW30H9gSVu4C/IzWbp1SnRnj2NC4Wvr7vCDT28+foajW1thqD3yUmv76zadSBWmBxMt5fULFwqu+McncJJ5IxMO162Wo3se3scBhLAtv8oxO8C+BfxBFLy5d9yvq8qODwYceLaAQIa/X1EFwVOay+p6Q3YlSNS5ld0VKe+PEPQd2NqD1OhPgj4VO2ixdgK8TqVR3cXGpJxUmuhuI6bWGjIFm8yERfEjoyg7TqAMM5XI+QXqYTUERowT82QHilub5t8k1u7dvILMqyrcIrLqsVMaMOTy0qfkD3l9RWVDFZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Yy5Bx8Bm0Zrc0809orWlPE/ml6oNgbIIIVaiCr79EzE=;
+ b=YQHWUqHQUB6LtxtjHvFUhwt+wrtEWf0kjitRJr67M2fJ+52+x++69aoeGDWOXfYZQFjVpyahJK0PV/S1wWU5wLP7lqyXX8A1JdDcJ6Eo7cB8dPbgeme6/khFqz988J+i9ClUuyQrV/feiv9tntuRfZ2IvhEf35qQpzI4p4TBM18cVvELpjueacGySKf/yA/v3K1y7V6w3fvhWUl7SuY8N0Ej2QV/JVHtGsLsEt7TElQGxGDsbiFswW8cneVgv3SIHsnHWTtFfj44py9l/kp/hSMnq1s+8UffGgvg4hMs3ftWJkHX7rHsIj1R86YrY2b4idHMkcjsJt6XL3eQXlSIfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Yy5Bx8Bm0Zrc0809orWlPE/ml6oNgbIIIVaiCr79EzE=;
+ b=ESBUzxJuNqf6YUgdlhXsN8JVD23IAWgOxu0vcrztLEmTZnMih4d4SheiuxF0irRhn7GwgItjmVZOXflGDVm0wVQKC/YdY9Mg4JL1Uj/c1+M88XgEjHLcyLGMLdmJGRcjy5DBzsnU7MTBvvkdBKvSeoknGmApYzACNwMItpxC5bHLxpyEwnzP8VWcLxfuP1m5r/tCJGYOXB3yGAe2MS+VmJingBegRP9/9uFqlaUOzlmScZgX2+Jui847empTXx7BPdKP8IiCbxHcFljiYbyCjgoet0sY3z4REnL2nZoHqlP2c5U9BwFz/q41NDOBxKJagtD/AVU5MPQBjLCkGKWwaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GV1PR04MB10242.eurprd04.prod.outlook.com (2603:10a6:150:1a8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.13; Fri, 14 Feb
+ 2025 02:48:56 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%3]) with mapi id 15.20.8445.008; Fri, 14 Feb 2025
+ 02:48:55 +0000
+Date: Fri, 14 Feb 2025 11:55:51 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Peng Fan <peng.fan@nxp.com>,
+	"cristian.marussi@arm.com" <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>
+Subject: Re: [PATCH 0/4] rtc/scmi: Support multiple RTCs
+Message-ID: <20250214035551.GB20275@localhost.localdomain>
+References: <Z6uCCeG2d395ZGDS@bogus>
+ <20250212063532.GB15796@localhost.localdomain>
+ <Z6x7TBSjBFBxGo77@bogus>
+ <20250212170147ee6863dc@mail.local>
+ <20250213033033.GA21937@localhost.localdomain>
+ <20250213082032315c4327@mail.local>
+ <20250213105257.GA29804@localhost.localdomain>
+ <202502131126057bac6f7a@mail.local>
+ <20250213133550.GA1208@localhost.localdomain>
+ <2025021312544202e175b4@mail.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025021312544202e175b4@mail.local>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: SG2PR02CA0025.apcprd02.prod.outlook.com
+ (2603:1096:3:18::13) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250212193314.GA4134845-robh@kernel.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV1PR04MB10242:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95bfb8c9-6434-4b53-149a-08dd4ca21fb7
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|1800799024|376014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2ikXhb8J0WoWDiUHp+ZkVK8X8fDxH6XfUbvZoQ51ybRloJwJJhvK7CbsamEe?=
+ =?us-ascii?Q?qk0hUc/cfCSkhFke8IRS79rxEMb7aD+bMgjBeBQu8VI5gn4u7XaePPpSekfp?=
+ =?us-ascii?Q?++1QIrUNbHRfiydjAD5GQC51PXKKiGAUc0emrdm5SwrQ8tkFTmOTxXBgY8Bj?=
+ =?us-ascii?Q?TTvw7pQNkLpchy17+CNAXxLdoqIYGC5U5DUXFLc/N6dMpv/ZcuvO1m67y7la?=
+ =?us-ascii?Q?CyOY/TsW2XUfoQcU/+sro1N8Ic8pQn7UQ5YRtYwYetqcFg/J+J0srxdhWgku?=
+ =?us-ascii?Q?z8LQYDYfofJAAUyGf8qJNzg5SfEwGCJqQUV59HaI0I+PWTcYgwZwZwP2AXvz?=
+ =?us-ascii?Q?r9i/3N0+86FieH3QVBskion2LnDEFd1GeF1InikMw2KnpV3Liq7ho4S6y6T9?=
+ =?us-ascii?Q?hw1hZKK2iJJrOgCgFKJVC0kTXY0NSv/4467UQmV6ilAZ6SfVeAvdIaLC+nEf?=
+ =?us-ascii?Q?dfXjyS8BFiM+H+S/1kjeNJwYp8PhYsSuU/dBaRL3P4yuJicoOgFj/Zgl3i1a?=
+ =?us-ascii?Q?Hu4mESe32DW/Vt2bbv4ftyCg2MQ+3IbGX+e3tTToLH5IYZJgstzTA08gABhB?=
+ =?us-ascii?Q?RFCFWhiQTQjKOWs7kixCcif/JZ6hX079zGaAZBr7mqDh6yCBFg078pkrjUmB?=
+ =?us-ascii?Q?kXWpOiTRTs1sgxSLor6NX/zkcsyP3iiKPtSed48Kv+/hLgbvDW5co62g9Bs0?=
+ =?us-ascii?Q?TIS/wRNqogF8c/2iInoOtaEMVd0zjNX326jAbXGzcXg2uYvdqDyG3v+AGayd?=
+ =?us-ascii?Q?Uy8wmLcBwQ0l/srGdxLBvb9SkRLMmIBIQJrK0QFrjs8YDkXU9mHqfuvwzflC?=
+ =?us-ascii?Q?QvFCBIFXfXsgmNvhtGf02ZsxYbV23+BS6k/792fh94X4R2C4lSfB8VsriGJA?=
+ =?us-ascii?Q?R7v09fHDSVnABJe9i7LY8AO4GBCSHnCzZ5peFO2kuXOhIpuzR55DKLwQBC+Q?=
+ =?us-ascii?Q?ygxj/r8Cv08tOCxEBy5Y7RAAAFS8C0Ls7CGkT939Src6WWjapia4/KUUhwsO?=
+ =?us-ascii?Q?lYDKkKBVLgJj5hlqPVy4GXAkW8WEthFzFSQ2XjGLqb06/kJxYVJrEntgugb1?=
+ =?us-ascii?Q?PMzifoQ0xqeto+wJV18v5VWHxkpQt5Vu+YOIsRwljoB1GociLspu2idBXytk?=
+ =?us-ascii?Q?fAYEUnFDhw3guVO+I9Nsq5sRQR6wRO030fHZGx2ennUrA0rgl3fYHA870YCR?=
+ =?us-ascii?Q?+rdRNJQ49h/Wge2CM86y6xw7gdMz4EXSBM7WWb7CwyQQAvHTqpy1X69Av6hh?=
+ =?us-ascii?Q?VB7+cdiIz97Y7Ph3G6Pvc57SDByFEUcQQZ7OnsB/Muxs+sECmU5dZztvy76a?=
+ =?us-ascii?Q?b5koBq6eV+s3vENb6kgjsN8GMdoIxJ3aOC38UKfF4lwDIGfWdbLmqvZ/um6Q?=
+ =?us-ascii?Q?MGi8rpJsWG/kU/wqw6LH3DzaSdDA?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qCTg5/WA3If4xZbCf3S93xE6kY2HfaptvhZwtJBA2CCYI9fjnv5IVoyRRFhf?=
+ =?us-ascii?Q?bdDRdGpKWSURywcdBNHkcIYGvwEJEHFEcLFieRUt1A8D2QaP0sopKNFBcUHD?=
+ =?us-ascii?Q?E7lbLBAN9AYUI8Z9pb1LIKrmYLREME5hKmpDNJvat0QMqwOTuIK4jBU2Fwg0?=
+ =?us-ascii?Q?1Xob8WYgJOyDnCPH5GaAfTEugQouwa1KOMF0NROxc+E1+Cp9ZU9qsz5GN8GN?=
+ =?us-ascii?Q?jk3MGhIQ83lbApuhf5+15o+hM1BPr172tAQEcKGi3yKAx/tUToElpMGLlBrh?=
+ =?us-ascii?Q?noKJEs2JsGiZKqK3OU8z+lorUavzaoNUNERBQfYifVy8zT3xd6MFcmh0Gx0Z?=
+ =?us-ascii?Q?fKbKStzOlsVDolBL81CEQN78THPrS9J/VfQfAOH1zmKduLqEuXTUpA7iJ3a/?=
+ =?us-ascii?Q?E5o8akCAasQ4b/x59ANTA9LRasG/t0K7jBU7YZSTmVoU+uJftTkGTQueb+eg?=
+ =?us-ascii?Q?ph5IGsL1xv3qwfQ5n47p1TqSgG/qTI9+RMmgbj14Dm1jBQ/P3S8Kfami6fNo?=
+ =?us-ascii?Q?oW5/S136rn9KvYYa9MRur5BcwCvvwAqeOLB2ubPs9xklIWVhk1iyfYIC2Ex1?=
+ =?us-ascii?Q?cBQlLvpHAcwkUhNXehf0LJFQDyZvzwYahxGGJLuDcWwoV8LJdP0IDyrU8HXB?=
+ =?us-ascii?Q?QRsqUPIrL6M8RzsgPYNY4EOuV9Skej3MZ7jNi7QH9cPJDKysLKi3YJd6GODD?=
+ =?us-ascii?Q?ThOa41ASHiffs4uJLcikSB046LicRPFOcsuU/kW2B+M6IlNWyODtlwPKLi3h?=
+ =?us-ascii?Q?ih+iu/C+Q4xZ/RtKJd65MVK+354zlS+mniuGB2247JNcZLCHIy2nW+VuSPt4?=
+ =?us-ascii?Q?sJoi40QfZjy+fOfbSmWkgbMK6H7FtvrAoce3f4XqOvOKwszJafymuk4AaZD9?=
+ =?us-ascii?Q?iWliuO/q6g78xGf474Hh+UzC5rDrTUWy7f96jye3GMFWfWDhbCR5m8ugy7fj?=
+ =?us-ascii?Q?eQszPmaGFW86H0ZzKJHxYGvhf85mNa9YCDiKwLqLBIP/cOqUBt0qGnmpKzd3?=
+ =?us-ascii?Q?oE9PrFQ9e/bwDC+aUJ1OZwhHNz45yDBHOFBHvBZHJSqoi75MV3KeIDAk82Z5?=
+ =?us-ascii?Q?HVARHAVfOEJzNMkLOZrwTg1oGCWFVU7N1SfsdGCqxsG5cvcIcwACdLXPSx+M?=
+ =?us-ascii?Q?h6Njj9qh0bqGCyrFUMQsmX+14YtpTW6BuPdBIB7xptO99rZ1F9O1Mxbs2o/5?=
+ =?us-ascii?Q?1KbVIlrTbj2Scilo5dtap4YHJkq9efvW+iXE05oOEIlWhjUcIsw1NoXwWMIs?=
+ =?us-ascii?Q?P3FGmejblVh7UMlzd4QqLtGyFAADYpij6NLCXLroJmnFOU2nbf2LjLV6mIOI?=
+ =?us-ascii?Q?Sa05RHUfLsr9qA0Sj3yg1ezCXxa+E2AfV041TgEPaz//ECu95b/S5Wy6huXz?=
+ =?us-ascii?Q?BoqqCFwudFQ9belNJe2+6s/gPqggZUuL5o9AIi4gfXTD0nR8b5uSPtxiXmR6?=
+ =?us-ascii?Q?VLNA3SY+n6xWssWGujvfHN8541fDT4hf+P0Z4nsxaQmE8e603j/Tu2hcvW1s?=
+ =?us-ascii?Q?a8CIbL5jU27E+Vm1IxVZKn1g8i3lCiML1gOO07oa9VvN07I8althCjj5OW8Z?=
+ =?us-ascii?Q?CeTIINH9fWAiwqLr4tKlXr9z6naL/+N9NaWuaayp?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95bfb8c9-6434-4b53-149a-08dd4ca21fb7
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 02:48:55.9303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9iFro3wasCt/Nv0J/doj0BNCPobjjacN98zIGrylPATsEGpSHL3GJUonp3g8m2bDguhXXq1G6AVdle7GxwfMNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10242
 
-On Wed, Feb 12, 2025 at 01:33:14PM -0600, Rob Herring wrote:
-> On Fri, Feb 07, 2025 at 10:30:20PM +0100, J. Neuschäfer wrote:
-> > Convert the Freescale security engine (crypto accelerator) binding from
-> > text form to YAML. The list of compatible strings reflects what was
-> > previously described in prose; not all combinations occur in existing
-> > devicetrees.
-> > 
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-> > 
-> > V2:
-> > - several improvements suggested by Rob Herring:
-> >   - remove unnecessary multiline markers
-> >   - constrain fsl,num-channels to enum: [1,4]
-> >   - constrain fsl,channel-fifo-len to plausible limits
-> >   - constrain fsl,exec-units-mask to maximum=0xfff
-> > - trim subject line (remove "binding")
-> > ---
-> >  .../devicetree/bindings/crypto/fsl,sec2.0.yaml     | 142 +++++++++++++++++++++
-> >  .../devicetree/bindings/crypto/fsl-sec2.txt        |  65 ----------
-> >  2 files changed, 142 insertions(+), 65 deletions(-)
-[...]
-> > +title: Freescale SoC SEC Security Engines versions 1.x-2.x-3.x
-> > +
-> > +maintainers:
-> > +  - J. Neuschäfer <j.ne@posteo.net.
-> 
-> missing >
+On Thu, Feb 13, 2025 at 01:54:42PM +0100, Alexandre Belloni wrote:
+>On 13/02/2025 21:35:50+0800, Peng Fan wrote:
+>> >Well, yes, you have your answer here, if the firmware knows RTC1 is more
+>> >accurate and will be your source of truth, then simply use this one.
+>> 
+>> But issue is RTC1 is only readable to Linux non-safety, Linux not able
+>> to set alarm. Linux could only use RTC0 for alarm with current i.MX95 EVK
+>> firmware.
+>> 
+>> If RTC1 could be exported to linux for control, we could for sure
+>> switch to using RTC1 without caring about RTC0. But this is not true.
+>> 
+>> RTC0 is free for linux to control, RTC1 not. Switching to RTC1 will make
+>> us lose RTC alarm to wake up linux feature.
+>> 
+>
+>This doesn't make any sense, this limitation is on your firmware side,
+>either RTC1 has alarm support and the firmware can set the alarm for
+>linux or it doesn't and then, the firmware must set the time and alarm
+>on RTC0.
 
-Good catch, will fix.
+ok. I thought to export both RTCs to Linux if both are configured for linux
+usage. From the discussion, I suppose you prefer linux only use one RTC.
 
+Let me try to update the rtc bbm driver to use RTC1 when RTC1 is exposed
+to Linux for usage. If RTC1 is not exposed for Linux, use RTC0.
 
-> > +  fsl,descriptor-types-mask:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description: |
-> > +      The bitmask representing what descriptors are available. Descriptor type
-> > +      information should be encoded following the SEC's Descriptor Header Dword
-> > +      DESC_TYPE field documentation, i.e. as follows:
-> > +
-> > +        bit 0  = set if SEC supports the aesu_ctr_nonsnoop desc. type
-> > +        bit 1  = set if SEC supports the ipsec_esp descriptor type
-> > +        bit 2  = set if SEC supports the common_nonsnoop desc. type
-> > +        bit 3  = set if SEC supports the 802.11i AES ccmp desc. type
-> > +        bit 4  = set if SEC supports the hmac_snoop_no_afeu desc. type
-> > +        bit 5  = set if SEC supports the srtp descriptor type
-> > +        bit 6  = set if SEC supports the non_hmac_snoop_no_afeu desc.type
-> > +        bit 7  = set if SEC supports the pkeu_assemble descriptor type
-> > +        bit 8  = set if SEC supports the aesu_key_expand_output desc.type
-> > +        bit 9  = set if SEC supports the pkeu_ptmul descriptor type
-> > +        bit 10 = set if SEC supports the common_nonsnoop_afeu desc. type
-> > +        bit 11 = set if SEC supports the pkeu_ptadd_dbl descriptor type
-> 
-> Why 3 variations of 'descriptor type'?
+Regards
+Peng.
 
-The reasons have been lost in time, I suppose. I'll normalize the spelling.
-
-
-Thanks,
-J. Neuschäfer
+>
+>-- 
+>Alexandre Belloni, co-owner and COO, Bootlin
+>Embedded Linux and Kernel engineering
+>https://bootlin.com
