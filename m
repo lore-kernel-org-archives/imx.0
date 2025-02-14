@@ -1,110 +1,195 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF88250BF5
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 09:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE2F24291F;
+	Fri, 14 Feb 2025 09:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739525212; cv=none; b=S8O3BExIdJIG/MIgoq6SV7kjzGB5Y3IbmrJlrtqwaXjJQAI4gRODlR4vslmqkcp6a90mowr86dziN0nQpJE7F1kXggp4tXLK4RkXcZ/cijMZHXK8UrKhqbd2cVTuRhQg+YJljvcc2gNXCqRrYsogZX3SFYjmOWC/EkZqNOt/BF8=
+	t=1739526247; cv=none; b=FNZEKDXrtJml8xQFLqaYXG193Ravv7S/W94vesIaInGaJwQVMHcZIToif6Rd2EreAt8g/YN0lIYWftE3yeyv5wCz8VU8dHcSbx5MCgfoEghubtBm1pbshUTsDocL5KEGd1mzhd8t07pA9TPM7fTEQpi1kM1H2vfXFgE0Ov/u86U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739525212; c=relaxed/simple;
-	bh=mZEb4O/8MxgRPHsOLUCLNOkrcRFguNnDZADJYJu30Gs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jEOWKbKcKZyj3NAij2SYvw4n28OqDk4XbFTMq99j1uMljbGBmi9BHn/w6iXxcNfZ4LLg+Xu1ftV4gMmqQeQzZ7ZclcpM0i6oqYZoei1z6w0WyfZBMSQveSwf3Sibvns1jqctyPxV41OxjRV3wTTLSprlS66AvRj1hFslP5Y076A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=AmukW2CB; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1739526247; c=relaxed/simple;
+	bh=euxH5xTB3npndNEOhGf9KR+p/1GlHm5dq8S6R5vtFvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sz/EC3fnPRtTCTZqo5LDh3yqwLqR5b49uxwhG/15Cotg+TrmuQ9yrqu0fraoQZ+6o/1+C1UDLKNDYmtK72L2cMBH55iGzezcLr9AJX9kZYY7OoY9c9qYae9TUZI5S6lP+R7JYqS1zcrkgQmBTfd8ioXota8ARr5M+I8Mtbwg1qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKgThIZQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="AmukW2CB"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 8BA3320065;
-	Fri, 14 Feb 2025 10:26:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1739525200;
-	bh=G+g0OfrAh01X9LwRyhzYOGvgNaAers3h/+McghiIB40=; h=From:To:Subject;
-	b=AmukW2CBRrfj8omVeMRErQo3AsjpN00p0iN162Kslp9UgCnOyfrZToWCNE4Q7CS/q
-	 kCqd32ORmH8GRQIl3JZL2tJglARTb6ZFQlfdVIIyLIphSBchRg73JhWO7hNoovOzQO
-	 5YvOk0dlOeqj3iieFS5HPycsJsq0bLg7MgmGn9EimnaRQ2JUYHFHlYOi2uQ5OTjP0Y
-	 4r1AfwBzfRxhwHArtp7rYgibENZ3OlO2IQMlQLwjh7KvOGGWo7dL1VUIAQUUIqNCcG
-	 veBVzRxfM0iM/HPHsBsbSG69atBVe3vGOeprVMdPsuSP/XyzkV7jepGkYaOTYvJapN
-	 UDgOCe51FjM0w==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.li@nxp.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: Remove LVDS panel and backlight
-Date: Fri, 14 Feb 2025 10:26:34 +0100
-Message-Id: <20250214092634.12414-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKgThIZQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C057C4CED1;
+	Fri, 14 Feb 2025 09:44:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739526247;
+	bh=euxH5xTB3npndNEOhGf9KR+p/1GlHm5dq8S6R5vtFvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QKgThIZQsDXvHi250nXVACftNulY+hDA56lG4gV0mWDqpQmEI/IeByxEkZ30VumCF
+	 L+r2W1g/8OTElc/khx4mIaSFrKtauo7k7wzOS5jT9SBbtUlYjgOkI86coP9+s3NYwT
+	 y3Pkf0q3FPGmXw9gDN2jBCwdfFjlwHIM6NMKxRNfAHvOj6MfdWa4J64sZrCZ+2mWp8
+	 rvLAPOGA4lz6JczHmcz0aTOHczOZk73pBCHAN90DCEiXiuHnMIe8lrWw5JBzcFdPvS
+	 NBKHdwztH01NncybK/yA9xE55/oALEeW+VtQObpTVt07tlkncpFvbP/wa1DsJj+6au
+	 giWDWVolgoUpA==
+Date: Fri, 14 Feb 2025 10:44:04 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Joel Stanley <joel@jms.id.au>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Stefan Agner <stefan@agner.ch>, 
+	Alison Wang <alison.wang@nxp.com>, Xinliang Liu <xinliang.liu@linaro.org>, 
+	Tian Tao <tiantao6@hisilicon.com>, Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu <yongqin.liu@linaro.org>, 
+	John Stultz <jstultz@google.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Sandy Huang <hjc@rock-chips.com>, 
+	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Raphael Gallais-Pou <rgallaispou@gmail.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Alexey Brodkin <abrodkin@synopsys.com>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>, linux-aspeed@lists.ozlabs.org, 
+	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 11/12] drm/vc4: move to devm_platform_ioremap_resource()
+ usage
+Message-ID: <20250214-quixotic-fossa-of-art-b8bb9f@houat>
+References: <20250205-mem-cocci-newapi-v1-0-aebf2b0e2300@redhat.com>
+ <20250205-mem-cocci-newapi-v1-11-aebf2b0e2300@redhat.com>
+ <20250206-hallowed-ultra-tiger-cfec8e@houat>
+ <CAN9Xe3SpTG7r2UkN7_pH0uMXhU5u+dkWhaM9+w5VyOQZp9byNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="tmymxs4x7znmvcxa"
+Content-Disposition: inline
+In-Reply-To: <CAN9Xe3SpTG7r2UkN7_pH0uMXhU5u+dkWhaM9+w5VyOQZp9byNg@mail.gmail.com>
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Remove LVDS panel and backlight nodes from the Verdin iMX8M Mini SoM
-dtsi file, those two hardware components are not part of the SoM,
-therefore they should not be present in this file.
+--tmymxs4x7znmvcxa
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 11/12] drm/vc4: move to devm_platform_ioremap_resource()
+ usage
+MIME-Version: 1.0
 
-This is solving a dtb checker warning about panel-lvds compatible.
+On Tue, Feb 11, 2025 at 12:08:57PM -0500, Anusha Srivatsa wrote:
+> On Thu, Feb 6, 2025 at 11:13=E2=80=AFAM Maxime Ripard <mripard@kernel.org=
+> wrote:
+>=20
+> > On Wed, Feb 05, 2025 at 03:08:07PM -0500, Anusha Srivatsa wrote:
+> > > Replace platform_get_resource_byname + devm_ioremap_resource
+> > > with just devm_platform_ioremap_resource()
+> > >
+> > > Used Coccinelle to do this change. SmPl patch:
+> > > //rule s/(devm_)platform_get_resource_byname +
+> > > //(devm_)ioremap/devm_platform_ioremap_resource.
+> > > @rule_3@
+> > > identifier res;
+> > > expression ioremap;
+> > > identifier pdev;
+> > > constant mem;
+> > > expression name;
+> > > @@
+> > > -struct resource *res;
+> > > <+...
+> > > -res =3D platform_get_resource_byname(pdev,mem,name);
+> > > <...
+> > > -if (!res) {
+> > > -...
+> > > -}
+> > > ...>
+> > > -ioremap =3D devm_ioremap(...);
+> > > +ioremap =3D devm_platform_ioremap_resource_byname(pdev,name);
+> > > ...+>
+> > >
+> > > v2: Change the SmPl patch to work on multiple occurences of
+> > > the pattern. This also fixes the compilation error.
+> > >
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> > > Cc: Ma=C3=ADra Canal <mcanal@igalia.com>
+> > > Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+> > > ---
+> > >  drivers/gpu/drm/vc4/vc4_hdmi.c | 55
+> > +++++++++++-------------------------------
+> > >  1 file changed, 14 insertions(+), 41 deletions(-)
+> > >
+> > > diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c
+> > b/drivers/gpu/drm/vc4/vc4_hdmi.c
+> > > index
+> > 47d9ada98430634cfd8c1e21c2a4d00d501bab7e..066f1246dab420ee889845b0c573d=
+80ce7c88595
+> > 100644
+> > > --- a/drivers/gpu/drm/vc4/vc4_hdmi.c
+> > > +++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+> > > @@ -2951,71 +2951,44 @@ static int vc5_hdmi_init_resources(struct
+> > drm_device *drm,
+> > >  {
+> > >       struct platform_device *pdev =3D vc4_hdmi->pdev;
+> > >       struct device *dev =3D &pdev->dev;
+> > > -     struct resource *res;
+> > >       int ret;
+> > >
+> > > -     res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "hdm=
+i");
+> > > -     if (!res)
+> > > -             return -ENODEV;
+> > > -
+> > > -     vc4_hdmi->hdmicore_regs =3D devm_ioremap(dev, res->start,
+> > > -                                            resource_size(res));
+> > > +     vc4_hdmi->hdmicore_regs =3D
+> > devm_platform_ioremap_resource_byname(pdev,
+> > > +
+> >  "hdmi");
+> > >       if (!vc4_hdmi->hdmicore_regs)
+> > >               return -ENOMEM;
+> > >
+> > > -     res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "hd"=
+);
+> > > -     if (!res)
+> > > -             return -ENODEV;
+> > > -
+> > > -     vc4_hdmi->hd_regs =3D devm_ioremap(dev, res->start,
+> > resource_size(res));
+> > > +     vc4_hdmi->hd_regs =3D devm_platform_ioremap_resource_byname(pde=
+v,
+> > "hd");
+> > >       if (!vc4_hdmi->hd_regs)
+> > >               return -ENOMEM;
+> >
+> > I *think* that one is shared between both HDMI controllers on the
+> > RaspberryPi4, so we can't claim them from both instances. We should add
+> > a comment there to document that it's on purpose.
+>
+> How about vc4_hdmi->hdmicore_regs? It also has another instance
+> vc4_hdmi_init_resources(). Looks like that also doesnt need any converting
+> and shold be left as is.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- .../boot/dts/freescale/imx8mm-verdin.dtsi     | 21 -------------------
- 1 file changed, 21 deletions(-)
+No, each controller will have its own set of registers there, so it can
+be converted.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-index c528594ac442..7251ad3a0017 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -18,20 +18,6 @@ aliases {
- 		rtc1 = &snvs_rtc;
- 	};
- 
--	backlight: backlight {
--		compatible = "pwm-backlight";
--		brightness-levels = <0 45 63 88 119 158 203 255>;
--		default-brightness-level = <4>;
--		/* Verdin I2S_2_D_OUT (DSI_1_BKL_EN/DSI_1_BKL_EN_LVDS, SODIMM 46) */
--		enable-gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_i2s_2_d_out_dsi_1_bkl_en>;
--		power-supply = <&reg_3p3v>;
--		/* Verdin PWM_3_DSI/PWM_3_DSI_LVDS (SODIMM 19) */
--		pwms = <&pwm1 0 6666667 PWM_POLARITY_INVERTED>;
--		status = "disabled";
--	};
--
- 	/* Fixed clock dedicated to SPI CAN controller */
- 	clk40m: oscillator {
- 		compatible = "fixed-clock";
-@@ -66,13 +52,6 @@ hdmi_connector: hdmi-connector {
- 		status = "disabled";
- 	};
- 
--	panel_lvds: panel-lvds {
--		compatible = "panel-lvds";
--		backlight = <&backlight>;
--		data-mapping = "vesa-24";
--		status = "disabled";
--	};
--
- 	/* Carrier Board Supplies */
- 	reg_1p8v: regulator-1p8v {
- 		compatible = "regulator-fixed";
--- 
-2.39.5
+Maxime
 
+--tmymxs4x7znmvcxa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ68QXwAKCRAnX84Zoj2+
+dnJFAX44qxSqH4/9r1lPWe6YsBKR9clH1sZQRZaWBdRICp0iE+/MJiNA/tJghQgy
+Xb2262kBgMGvJFpuBmHvz9HJegWf00i39I2+ctkME/qrOcHQhoIwF07ezVrQyZOZ
+z9Q+kadHOg==
+=d/Gf
+-----END PGP SIGNATURE-----
+
+--tmymxs4x7znmvcxa--
