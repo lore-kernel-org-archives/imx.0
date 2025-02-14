@@ -1,135 +1,89 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA932227B83
-	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 08:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65225227BBF
+	for <imx@lists.linux.dev>; Fri, 14 Feb 2025 08:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739522646; cv=none; b=lHZUov6clgXn5Xg15lWdmI/fedsSUWEvV+3SRNQGxRU7Mj6A9fs58S1BM62JDqxMhQzi5zTBLYFLUsu5g9FVBSzwKz5iT/WgNwcpRb8fCx4Qmmi7kvPwXXffd4V4KAcF+g01yNAWBXdukjFgUCfp8hwSjMBF2T5VN86t1SpVDJk=
+	t=1739523036; cv=none; b=lbjM7gm/wqNWnARxm/PePG7wz7I4zIcquHSnGPe49qzIbzpm5bp65xRJeCdSex8WzY5R7fGS9eVkfFLomPm7x2Vkvvj3Vv/vu45jM7KAJPMEZgwpThD2mYJJhmBiNdT+/emF0bpaLRUO9jTODpJt/PiVNEe935trTLKXi49obsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739522646; c=relaxed/simple;
-	bh=ykvEShYNLVtLUN8WbhFUSrKQ/Ai8VO/e+8edobeJJcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JZDCJY39lbPwoIGJyqxPXpCVeax9AIw1IIVJeFqECgGFTZzT03KFrd/XB1+zAxeZeauYSCkuSDXlyDCc0zqzNL+rLw3u0tAyYM86OMkn4AVu2BvR+rL0N6E3dcLeKzj5IjBa9xaH/mICh7wUK+HZixERT9xr+N1YWcAiS4swVxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iF611NiJ; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1739523036; c=relaxed/simple;
+	bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YKvWFJRdUfB9sREXAQr1WCdKaX/oiaIDtpkVhWwKxHTve8afqtSJ0L2d6ySzYcdEL49cUbA/zkvEOXGenVRawx6pMXRQ5uGwxkOgK2fu56LvmFwVdqe0keKOVMm6f20O4dHRgid0N6f/Jf0o/gh/ulRqJA3a8V3SlnotSf9EyWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=STTOwRlV; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iF611NiJ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3D198441E5;
-	Fri, 14 Feb 2025 08:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739522643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WSaeyfo8DQwqJGKUIUvYkkgVgRZAUJU2hAJTGaurvSE=;
-	b=iF611NiJf5UmWwAeRJ9fSRHPIr3slCUYg5J6GAy0IdyLMF/8cuZA6Vlvrdk9KqZZpGEpG8
-	kLtnvTavAgWOoMu/olJ9i0hTVWQZKGjyvLFuGt9ENeeuW2gHQeRM3dozeIy233+ZMMhS5l
-	4cDs+4mGEpzgEf4vKDvoq+1MDohQXLjW1DGeXMvZ8xsXfUVsOcYUKMMVf6067nFcAb05mB
-	cfewLHnFQN1PM5oKIbQVBVnPsEDPGm/PFVLg9W1dFGD/POGdAICBc/mMRZ+80qIVM1vKux
-	lBikh5Q99/eDpUU7L0gR4sCdqdJ80nrXpDpQzlbTGaohs3kqxrCBjUkk1PI9qQ==
-Message-ID: <1274bae7-e473-4711-9235-de0aeeadb02f@bootlin.com>
-Date: Fri, 14 Feb 2025 09:44:01 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="STTOwRlV"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fbf5c2f72dso2904983a91.1
+        for <imx@lists.linux.dev>; Fri, 14 Feb 2025 00:50:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739523034; x=1740127834; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
+        b=STTOwRlVd58yWAWjuwT+fshL4T6NXBe4682wfSCNoIm5RspS7WFu3UKYTJIxH4lVr8
+         aBTYTXYs60+ecVkzw08PDzzc5C9DbENBcUdN7U5O7FX2VmRagWgaJ8edFb4rJQfdfzC/
+         3R6+muBJ609y6guv1uf8h5dIhJHEEeiFnhvvO9PafRCuxChxP8hoYgsH1En5NVk18fgp
+         Cwj4b9fjnaWy4+mcEb2cOg4LZrkep/kr0ysA8Ivq1LuAK6F4/tCYrw7Y783HeicTdyCH
+         HVO3EF/Qppz/mP/H3jLkg1cZc0Po10ij1SWwO3vdv9Mu1tGSQDGd6a2UX3n80cp5oTV+
+         8K8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739523034; x=1740127834;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FIiFh48SRloeLYrhX70YWBVGVz+5pKIaMXokOTKVowQ=;
+        b=SC3mcyNFdoVfjVIQ24jP8AZYvcbwRr4qZSbh3Xn2gIzLhNwXKQIRPlEMtk2S/Hwu7O
+         06bFf/p8b4dzHBxxQJHZIpJiFF9ezTikPgjZFRxFhDqfxhxCRnEoMuGg0t27D0W6F9UD
+         CqGCu+tfRpghobjhKheM4ptf/5CdTOl19grqBGnH+JvE0dZCnQ1ZCScdCO8rbmuCFevU
+         N4kf4o+c6rYmTi3XZYDPk4h9OE3xCnekVjwP8M3waY0/dpIr8JGsDD0jnaceVHCrLGh/
+         er4W5patWO6gItHu/L3FRW2PPbiT5IrishP/SAbrgn1qYFoKXZUX6VO236zHCvHqCFbc
+         UuVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWba97bgofd2kGPkpy4KIM5epSqtLUXc9AdPRGEhterYj9aQJrwzfQgaqDTbhCVWR+Q+74=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy5h0oYFLcDjk2pCbgxODxsDbG98x/v1CkXTwrWfB0G6Fwe2ufF
+	5WNnhaLcEYrPzIqPMbACsKL7xvyWaiCTQmP+mZzfsyK/Azf7n11SGgJ62ztc8o1inU9cweHgxRd
+	rn1tRThod34wis689F5mEPGc6lEY=
+X-Gm-Gg: ASbGnctg4VtGrYEo+rTUVO/l0pMueVeKwytHGmPrljs6wdchGSzHlcR/tuP8W1huP/v
+	eOuGmNN80s79ulkbx2mUG7QfuSpY+F8fCYMMW2SyVd+xKgwlef8RMdUwCE4LNuCOQ+CnjWQ==
+X-Google-Smtp-Source: AGHT+IHiUFULatLaYVTG50OelwewoeambCvXM1mTQ31PiJAH6oiIxTBI5F18bPDN/bN5hq3LikyhjtSIbsUPOxZ5ITU=
+X-Received: by 2002:a17:90b:518d:b0:2f4:43ce:dcea with SMTP id
+ 98e67ed59e1d1-2fbf5c580c0mr16296822a91.25.1739523034540; Fri, 14 Feb 2025
+ 00:50:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] serial: mctrl_gpio: add parameter to skip sync
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Richard Genoud <richard.genoud@bootlin.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-doc@vger.kernel.org
-References: <20250214-atomic_sleep_mctrl_serial_gpio-v2-1-1e60c732fd90@bootlin.com>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20250214-atomic_sleep_mctrl_serial_gpio-v2-1-1e60c732fd90@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegledvtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdetteektdehudelheehkeeggfejgfelveevgeevtdejudfgveetgefhtdduuedtnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddungdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepjhhirhhishhlrggshieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhitghhrghrugdrghgvnhhouhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghro
- hgthhhiphdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrsggviihnvggrsehtuhigohhnrdguvghvpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: alexis.lothore@bootlin.com
+References: <20241206084817.3799312-1-peng.fan@oss.nxp.com> <20250214040457.GC20275@localhost.localdomain>
+In-Reply-To: <20250214040457.GC20275@localhost.localdomain>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 14 Feb 2025 10:52:08 +0200
+X-Gm-Features: AWEUYZmgsC6Etzl4Yr65LGIQ5Av4XAoNXRv7HFJ-K1y_EhMdzGRHl7TymfpRoOo
+Message-ID: <CAEnQRZD25RrtAzAy4B9WX3+1iUuLdt1cgZ36kCTr4poawP1htA@mail.gmail.com>
+Subject: Re: [PATCH V4 1/2] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, 
+	"open list:FREESCALE eDMA DRIVER" <imx@lists.linux.dev>, 
+	"open list:FREESCALE eDMA DRIVER" <dmaengine@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/14/25 09:38, Alexis Lothoré wrote:
-> The following splat has been observed on a SAMA5D27 platform using
-> atmel_serial:
-> 
-> BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
-> in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
-> preempt_count: 1, expected: 0
-> INFO: lockdep is turned off.
-> irq event stamp: 0
-> hardirqs last  enabled at (0): [<00000000>] 0x0
-> hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
-> softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
-> softirqs last disabled at (0): [<00000000>] 0x0
-> CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
-> Hardware name: Atmel SAMA5
-> Workqueue: hci0 hci_power_on [bluetooth]
-> Call trace:
->   unwind_backtrace from show_stack+0x18/0x1c
->   show_stack from dump_stack_lvl+0x44/0x70
->   dump_stack_lvl from __might_resched+0x38c/0x598
->   __might_resched from disable_irq+0x1c/0x48
->   disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
->   mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
->   atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
->   atmel_set_termios from uart_change_line_settings+0x15c/0x994
->   uart_change_line_settings from uart_set_termios+0x2b0/0x668
->   uart_set_termios from tty_set_termios+0x600/0x8ec
->   tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
->   ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
->   wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
->   hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
->   hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
->   hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
->   process_one_work from worker_thread+0x6e0/0xfb4
->   worker_thread from kthread+0x3d4/0x484
->   kthread from ret_from_fork+0x14/0x28
-> 
-> This warning is emitted when trying to toggle, at the highest level,
-> some flow control (with serdev_device_set_flow_control) in a device
-> driver. At the lowest level, the atmel_serial driver is using
-> serial_mctrl_gpio lib to enable/disable the corresponding IRQs
-> accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
-> disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
-> some atomic context (some tty drivers perform modem lines configuration
-> in regions protected by port lock).
-> 
-> Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
-> and a blocking one. Replace mctrl_gpio_disable_ms calls with the
-> relevant version depending on whether the call is protected by some port
-> lock.
-> 
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+On Fri, Feb 14, 2025 at 4:58=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
+>
+> Hi Vinod,
+>
+> Any comments?
 
-So despite changing the commit description, I forgot to update the actual commit
-message, which is eventually not adding a flag anymore but new APIs. v3 will
-follow, sorry for the noise.
+Hi Peng,
 
-Alexis
+Do not send empty pings.
 
+Just resend the patches marking them as [RESEND PATCH...
 
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Daniel.
