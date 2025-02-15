@@ -1,199 +1,153 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2132.outbound.protection.outlook.com [40.107.105.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B429D2FF
-	for <imx@lists.linux.dev>; Sat, 15 Feb 2025 10:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739613729; cv=fail; b=XrTZ/51be+pKrMfPXbqiemDPGG9IEDVAne3fAkoZ+JkHzBJNIq1mfbwZSoD5M4uVCgoxTxdxflDIaENwtx11LhlT7qUAbUkqsmSqO3UsdV6iFs9W8N+y5qVUlClpNnh+Pb3UHfSL10V/8fVaMOLZi25XIMOW5TlVhYzXLK34wWQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739613729; c=relaxed/simple;
-	bh=OKpjhai9vysKqS6D3tgQsrmQT0JtdHsG+fRqg4pfnH0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=eGlhORFdBVbLadZBuSA2WySAviMiTGxc1ktAEwUpjhXG8gK0GMAIzENWwNAsrRSS95PUKVhYus0f7p49RDLEegE4+y0J3wUOoapnEw+YXJaSXyR4Him+/eJyDCQgbg/0E+4S/qUtRKGDoYseLTBd9UQNhoFIOGqPd+ERfiEvdXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=4i5zegAR; arc=fail smtp.client-ip=40.107.105.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F84223BB;
+	Sat, 15 Feb 2025 12:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739623823; cv=none; b=l7EWvJoe6yHG+c0nkQpdjNf4oToZuTtIO0XnzlUfk4VJX8g1+XZb6WV8NqYvIMUBhC5TSkR5p1HA1LP4sh+8mAuiDLd2l3QBkpo2Qol6LASxjom6MOMH1e6nK7C+YrtVxwPVY342xcUwNbXK/yevOroyWNQnfDkHX3S8sZhAPQo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739623823; c=relaxed/simple;
+	bh=drN/Xok8UudjMurUXacPKQ2++MI+GHNgJsb1gQKHxmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SxQI287W/cQwb9q0j2vOZFWxeh//FeHDG+Tm0GWlVrUlm2+97RWiKpTBLcuhyaV13x0oKE6F0A/JIehUfcj8CRZi44ztiYLu8uKMnld0ctTpNyZ1t0QYXieZcBA7t6N5bD8oIbPYzTIyOyES5tmCS4dXMk/STuCPYoVBv11DggA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TI7OwbBe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="4i5zegAR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q4ZZXblr0/YJBBUwR8pKin0RG+ikrSaS4XMl19fL/UvOscEG7zfYG2+lROkYlQ/x2fOjmakhgqBcYAEFgkS6mkWjqWmQemeBF53besgoytxuD+9C4vPLlGudljujJbDp7pXXFd2xWtxDOua+uZoBR6qeIWMGPgxhdX5B7djyUxEuldovPMFzJUm46grbpjutGxKjrUkypbherOtEsRo1iP79XeFFzlZzMe8sBbysht8pzQrEqwZLL6lqKgB+5g2KCUs1AVd+MPD4RgFyJHgzqsPdpNJIygfV5RUAOEIXiUvoeUsQeT8cWT18oK5bxxDqbMIFJni40drls0kc5AkJmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OKpjhai9vysKqS6D3tgQsrmQT0JtdHsG+fRqg4pfnH0=;
- b=tmNHiMsxk3tNcADiRF11A2LabTVCquFvwrczo4e3ljux1frHjQtlaXU0BMQw+iPpy344Z0Zn9GCAvbqDDXazknEgmR21z/syW5ntItkGH0KU0Bk0KX1OzsUXiwd38CwZBI7JJwRBkkcMy+oN8xZZvz/YRK8gIhgEzFhWI+BchX7kyxREptkPVQmraql+AFaEKqjFLlgCCQNGGmsCNaLQ00qMpFuWteFcj9UQKEtvlQX2SslJJmAf0RARQhOWUQbZKGwvSA7/WKJYasvxoauhQP4qneb1rgY1Xa80tiqIUbl+HNXr0IvvsrRoCSJfZE9K3RWcS//rSwtJtJHH2QoNww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OKpjhai9vysKqS6D3tgQsrmQT0JtdHsG+fRqg4pfnH0=;
- b=4i5zegARm5qhGI7BIiOG2jgr0NrpMrKzMbDRXbYRdDxo6RVRNy9SgpuIkYJrVilgDIKUqr4eFECxlCY3/GnHRq3bCNHFwcqCXJtQVMEadcI/S/oZa+wZa3W9YwnADbFGJZ/NMhtRThEV5lUz29MNLSHzEjt/yN8uDCvXy9bBqCi+tP/hAXqIE1rJUlCzYcy/gyZu7TX4WOkJJwwjXJFJznXR5iaoo+wcEe1kt3NJ0nT78timnAK6DOXK62Czpk0HxdMrifctsjHIN/+gWiS//evnwJ+BqEpJFmOqImFnr7F2VLRdWYO1LLGjCxHTAAMQ/R4eo99XtgeialREB1ojUw==
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com (2603:10a6:102:ec::16)
- by PA1PR04MB10602.eurprd04.prod.outlook.com (2603:10a6:102:490::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Sat, 15 Feb
- 2025 10:02:03 +0000
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f]) by PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f%6]) with mapi id 15.20.8445.016; Sat, 15 Feb 2025
- 10:02:03 +0000
-From: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
-To: Lucas Stach <l.stach@pengutronix.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>
-CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: Re: [PATCH 0/2] arm64: dts: imx8m: Add pinctrl config definitions
-Thread-Topic: [PATCH 0/2] arm64: dts: imx8m: Add pinctrl config definitions
-Thread-Index: AQHbfvkzLhlPpPKrFEuvLnbvL9E25LNG/SSAgAEjOYQ=
-Date: Sat, 15 Feb 2025 10:02:03 +0000
-Message-ID:
- <PA4PR04MB76308879CAA0764BB293C4C3C5F92@PA4PR04MB7630.eurprd04.prod.outlook.com>
-References: <20250214-pinctrl_defines-v1-0-fbc86a42ef3c@gocontroll.com>
- <d0dd61ea558ef8b18978301ef710925b83ef4037.camel@pengutronix.de>
-In-Reply-To: <d0dd61ea558ef8b18978301ef710925b83ef4037.camel@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB7630:EE_|PA1PR04MB10602:EE_
-x-ms-office365-filtering-correlation-id: 53817128-3c1b-4c5e-4cc5-08dd4da7cc28
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?QgS5xuY9w/EI91ZJyY71AXD1xQTM5+xdD0t30X5MFU9cccQBPBWKsCj4th?=
- =?iso-8859-1?Q?PMHv8YpXAtyL/alozEWxUfJTrh4DCgoxQomLso0S2TXRXQghpwsxiCWtIq?=
- =?iso-8859-1?Q?i9PwQVKjRs1XOUr08Wb6A+qGmaEBEoLGMpJRW20fobHysY9vtrKJzdko2I?=
- =?iso-8859-1?Q?p4LxDQjqOmqPAuP82Uc0hyXsXrlVYVSOzqssKNsQ4nx2+a8+qxUoLineEl?=
- =?iso-8859-1?Q?8KvuidZjcMeYyew/CwwYhRnpoSS2+a+IiPMj9bQNiPrZ4YVz+USpQ0uWO0?=
- =?iso-8859-1?Q?TYJ0XGnKmoGWrMcSd0l18nNRoprLI5aHqRi30zkSDeZOkZx9WCn3yYU4ge?=
- =?iso-8859-1?Q?yAso+82vJVo3r4maCfFOuB4Mc3T46IkgSJPH1+wiUpRRa0sgr7Y0OnXbbg?=
- =?iso-8859-1?Q?EtOIkxQ/gzJQZ7renZZIlDaxxDTJp7LyO8JNOoUiF69+eE+r1kKZ+wiB0x?=
- =?iso-8859-1?Q?NZeuCUX9WbObWccDE3N+7oZerkmIAg3wdFUTJC3RDUaAlqcpTC5dqP9yt0?=
- =?iso-8859-1?Q?UFA5dZgY6rB8DW226JdOfYW981nmp8lNOkByrMw7cLbB9P6vorzJcf6he2?=
- =?iso-8859-1?Q?gUusPidmY+DlAJwLhyfehuG0me4WzktzM+6jL+nyp0g5ttjn+Vb5fh5fBT?=
- =?iso-8859-1?Q?4TfyGCRxi268T+dGIC4Iqd/LtDuts3CDb83Q4JlUBQvDRVqWdJ6qD5KQaE?=
- =?iso-8859-1?Q?FkMWCLZiICmHKol6zYt0Bh9AedWapHLnn/oWmLdfOnWOCef/kOk/sQBJYS?=
- =?iso-8859-1?Q?wa/mwWAiDOiLoB2D9cdvT6tbDSKsGqeYW06qvRXSizISP/9nrhGWqckYWW?=
- =?iso-8859-1?Q?+dboa9hTac2AxVLojq8w9SvTFJFkepznGJvDX18RQB3ps/shni8soT8YBn?=
- =?iso-8859-1?Q?/V2A/dZGuFQXkFr7bUSMf29qSIruDbIKYeTLovwPQKo5BaGEGuUwyRcnPE?=
- =?iso-8859-1?Q?Zbb5klYIfONFSXMTLg9vnSZQGNID9daCWSANpSO5/oLmDGyL+FUGwt5iOu?=
- =?iso-8859-1?Q?zH4V3Bv++E+fGi4KZQ7eb0HJmBFuFXDdXG/O0p4MLZvR4xzRC7o8vZtjnb?=
- =?iso-8859-1?Q?g8Sq4aQpceYqQAsGRI/k9P2hcIx2j+al7tGyeePvymAXHxie/l97zKb7mC?=
- =?iso-8859-1?Q?IIGDdg6s4UvwqDDjP3QxqQRW4SyVyZ5MZa1QDG3yrygK6l7BDbCfOkk9D2?=
- =?iso-8859-1?Q?7vLSBqT8eVhI8nYxWSc0c/25gpY1E5pO2OyggW/My5KzRanfVCBkWjfe9j?=
- =?iso-8859-1?Q?+08HaNpuv3ykPj3lz4pE4Gvmh6wT2i6e7FC6Ml6+BuF0HIT1pFoG/y03wB?=
- =?iso-8859-1?Q?Ps6O7ndP3OhApYJyjKNPeahfbzEA1oz2xtm80d847z7CFfHGHfWsOxvSKp?=
- =?iso-8859-1?Q?5SLkM+Gx9oxyEER7Go/e5/HlzDPO1iK+Uq+0MypADFUIX/BBUxiyyp9tu3?=
- =?iso-8859-1?Q?jwqOKcCSFekTJqSuiBm253YRZ7BBSMhfxpDycaJ95+cZA9rxDWt+kXMd+u?=
- =?iso-8859-1?Q?4niW7OelAU5Ummve4aqGuI?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?APeFvONFj2hu6l5x5v13VkTyyZ+X5PA93+d4NDifc7yIWEu8cvuD9S0MsY?=
- =?iso-8859-1?Q?zCSg8aluV2qDe2YEVlN2Ko+0Qf8gIFqunvPd3v4J7yjnON4wiP31nMPxkD?=
- =?iso-8859-1?Q?WqSacIPYqqherWFFYItD/FHcjkKtdYOjWwv4zo4jrGr7SXX6Lv4/j2LZOu?=
- =?iso-8859-1?Q?AiKQTFoRv93e3fPJkwi7ae9QjPor1LidoGjhxt8nl6z4xK/FT4vp56VY5P?=
- =?iso-8859-1?Q?p6AZxyROuOtysrBhm6BU9vC5Kkldqpi0hMu/VZNpTxvqNdB9EtREwPn7q3?=
- =?iso-8859-1?Q?3/Nz5diBNwKNEfjUp6K5D+RjJdcpgFiEvvxkLr4Lxf5IdpP0V8G4MbXb6f?=
- =?iso-8859-1?Q?wvZOkt1V2C7f3quyqXnRo256/r+mBhpQPy6COQgtW/w18pWxBeDM5Cw726?=
- =?iso-8859-1?Q?D8VzIyTU4RF9yHHo9Sq2GXQ4hqPVum5lbILgJ98+ZqPirgf5pVrIWPFO44?=
- =?iso-8859-1?Q?/XO5mQ/L3O19gAvdlce5yTn7VE2HFlzB9cF+vHERj/g0+OUmLL4VdlAezs?=
- =?iso-8859-1?Q?OKyBMWBzGCYQT0psU4czkCG5qNTZnm991A2mS4F4YRK1DgStchBjkp1bMA?=
- =?iso-8859-1?Q?TeXirZwL+L1wCsAU5bNJ7h8eD4j9IEwhwe7czcgQDwc8Uyfs+HLdURAY1O?=
- =?iso-8859-1?Q?BRwsrSZrNIKCVzsWuY+eD8MQ37FYA279IwmuzG3GvOjRGElfLY0AhoNsVK?=
- =?iso-8859-1?Q?JynGzOM1RE4TvMGyForuB/cj2ZEKArjhu94Wj/XasjgG+qeS2EFBSZNz6d?=
- =?iso-8859-1?Q?Y3QIQnYO8flXUTHn4Tco746F6sn/6MsNFWB8W9EL2z4ENkx5v2IFHeA8p3?=
- =?iso-8859-1?Q?a+4bzJvsD+r0JzarRrSiH1rIBtMWfkVLNNlC97CYAo1Z+esz9QLdiXU6dv?=
- =?iso-8859-1?Q?husx3fECw1tE3PY0qwnWNwnxBhkDM0Ge83xhcoW9CdaDQ+Bz2f89Qb0a5K?=
- =?iso-8859-1?Q?n3V31mlhRI8g7VCDSme8lXokooDFl43X+SeMu5JY0TcmSeYWHHjYlRHX+K?=
- =?iso-8859-1?Q?EkzV1bn4pB/V58VU0Duxchm8NgvYMY7y+phDHaFkBTMz7bniNDGfSqZVAP?=
- =?iso-8859-1?Q?RyhXmplX8tVCy3hxtZy5Dywt1EHWiTKU97eYobpkv47uFxzdCq8BsZRRRo?=
- =?iso-8859-1?Q?C1NNPfvzb0qVOkthGFsSBVQVWfFmdWmRKoXDvFzR+HANVoZYV80YvgMA2J?=
- =?iso-8859-1?Q?RFRfXrnAEEBNKoS6kZvHa/7/3aleAyGnbvXsN7md2A4kuYjZ5B7Der4rn2?=
- =?iso-8859-1?Q?l/cjRjV039EnNVSomlIQmymaJXMYpZ4S283LMFft0Tr/sEZcXtwSUpAd00?=
- =?iso-8859-1?Q?ztd+E1pLLUzPgSVgKqOzJjuVJFGk5H2lMyLpoZrM8MGfWhtgeIIivOmPN4?=
- =?iso-8859-1?Q?8Y33YW9C4sepoDJvgp3mYChUaCqJPNLiPO4PHKu0IKFjkjB2gFcAaEm4y1?=
- =?iso-8859-1?Q?E7cRFk5GigESlpz19mDZr9CVpERljzBKDc3uk2/e6CXMTnYrl23bAi4G7b?=
- =?iso-8859-1?Q?+WRfXA/J0aTR0/aChumwDoYurWnWCirOqFtL1UObRucuo5TBGfqXfgLKgw?=
- =?iso-8859-1?Q?NCUKTx2oFLS2KoRgUHNdyWDbwstzBK3vlbvMyiHplPij4DSkSXGuJgFjU2?=
- =?iso-8859-1?Q?QkTY0uSKrawBl4QuSufiuLzR4bc0x0fVIy4PIOotN1gkmgGNXhaMONDxmu?=
- =?iso-8859-1?Q?/7T2ulWbFulCJxd9gLwUxPDxz2uV4Me2EfXK0Q3n?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TI7OwbBe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BD0C4CEE9;
+	Sat, 15 Feb 2025 12:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739623822;
+	bh=drN/Xok8UudjMurUXacPKQ2++MI+GHNgJsb1gQKHxmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TI7OwbBejVq+s0MNcjVR0OO68WWGeU3nLMSFjv/iooPZQkFgekvtYlJVZMHL4yhGu
+	 X+NvMH38mriKk1PDUcyHjwbzECOAXrRCBNn9U36VXx/c8m+LhK9r+9CyTE6RYI4i18
+	 r1pLW7R4TInPKnEeFX9WUG5PqtfWIPuLmmuUoi3E8A0A0/4ZupRtFx5ykSkJfxoWU1
+	 JSSIsK/AtdQvdtCF3n/UYl3JTA4Hs4cA70QyCuK0IzY+i8/ZvMd1HSVZ2fGkRVyFmc
+	 3KBpadsxw7ag6TDN+7Q0Rn0JRDwxVXa6Ic4DnHHR5HSm4OAwa2yr2Q1DySe1dJlh9Y
+	 F8vI+B2Os2Bpg==
+Date: Sat, 15 Feb 2025 12:50:12 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Jerome Brunet <jbrunet@baylibre.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	dri-devel@lists.freedesktop.org,
+	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org
+Subject: Re: [PATCH v3 2/7] reset: mpfs: use the auxiliary device creation
+ helper
+Message-ID: <20250215-scared-clothing-942f9bf3d039@spud>
+References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com>
+ <20250211-aux-device-create-helper-v3-2-7edb50524909@baylibre.com>
+ <20250213-crown-clustered-81c6434c892b@spud>
+ <1jv7tczytk.fsf@starbuckisacylon.baylibre.com>
+ <CAD=FV=VeSrZktEbxNXXTgD80QGTpW5b-WiXUFko+a8FUzmN+fQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7630.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53817128-3c1b-4c5e-4cc5-08dd4da7cc28
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2025 10:02:03.6053
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dNLrwyDuledGm9VgWigJM6hnoQYL/YTr4BwgydZrqWbPO+wv3/prbLLOiyXcIWoFwkY+95yZHoDNvGv+ike76X/ubhYtCdTvv8bBXFkkCFY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10602
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2DqldZNjQ+dLYWFk"
+Content-Disposition: inline
+In-Reply-To: <CAD=FV=VeSrZktEbxNXXTgD80QGTpW5b-WiXUFko+a8FUzmN+fQ@mail.gmail.com>
 
-From:=A0Lucas Stach <l.stach@pengutronix.de>=0A=
-Sent:=A0Friday, February 14, 2025 5:28 PM=0A=
-=A0=0A=
->Hi Maud,=0A=
-=0A=
->Am Freitag, dem 14.02.2025 um 16:57 +0100 schrieb Maud Spierings via B4=0A=
->Relay:=0A=
->> Up untill now the extra function mux (pull resistor, etc) has been=0A=
->> defined as a raw hex value, this is difficult to interpret. Add=0A=
->> definitions for these parts of the pinctrl registers to allow for more=
-=0A=
->> readable pinctrl definitions in devictree files.=0A=
-=0A=
->I certainly prefer the short form with the hex value, I find that quite=0A=
->a bit more readable than very verbose swathes of defines ORed together.=0A=
->But each to their own.=0A=
-=0A=
-I personally prefer it, but it would be accepted if I write a dts using thi=
-s if it=0A=
-gets accepted? I am currently working on devicetrees for all of our devices=
-=0A=
-preferably they would use this.=0A=
-=0A=
->> At this point the patch is not complete, some pinctrl definitions set=0A=
->> bit 30 (0x40000000) but according to the reference manual this is a=0A=
->> reserved field, I currently have no way to identify what the meaning of=
-=0A=
->> this bit is, I hope someone in this CC may be able to provide an answer=
-=0A=
->> to this. It will then be fixed in the v2 of this patch.=0A=
-=0A=
->This is not a mystery bit, it's used by the pinctrl driver to force=0A=
->enable the input path of the pad (SION). This is defined in the generic=0A=
->i.MX pinctrl binding, see=0A=
->Documentation/devicetree/bindings/pinctrl/fsl,imx-pinctrl.txt=0A=
-=0A=
-I had a suspicion that it was that but got confused because that is a diffe=
-rent=0A=
-register. Will change it to that in v2 somewhere next week.=0A=
-=0A=
-Kind regards,=0A=
-Maud Spierings=0A=
-=0A=
+
+--2DqldZNjQ+dLYWFk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Feb 14, 2025 at 07:25:59AM -0800, Doug Anderson wrote:
+> Hi,
+>=20
+> On Fri, Feb 14, 2025 at 12:59=E2=80=AFAM Jerome Brunet <jbrunet@baylibre.=
+com> wrote:
+> >
+> > > One think that's always felt a bit meh to me is this id number stuff,
+> > > I just threw in 666 for meme value.
+> >
+> > :)
+> >
+> > > The whole thing seems super
+> > > arbitrary, do any of the users of this helper actually put meaningful
+> > > values into the id parameter?
+> >
+> > In example changes I've sent, no.
+> >
+> > In other simple usages (those using container_of()) of the auxiliary
+> > bus, I think there are a few that uses 0 and 1 for 2 instances.
+> >
+> > I guess your question is "do we really need this parameter here ?"
+> >
+> > We could remove it and still address 90% of the original target.
+> >
+> > Keeping it leaves the door open in case the figure above does not hold
+> > and it is pretty cheap to do. It could also enable drivers requiring an
+> > IDA to use the helper, possibly.
+>=20
+> FWIW, once you resolve the conflicts in drm-misc with ti-sn65dsi86
+> you'll need the ID value. ;-)
+>=20
+> There was a big-ol' discussion here:
+>=20
+> https://lore.kernel.org/r/8c2df6a903f87d4932586b25f1d3bd548fe8e6d1.172918=
+0470.git.geert+renesas@glider.be
+>=20
+> I eventually pushed v2 of the patch:
+>=20
+> https://lore.kernel.org/r/7a68a0e3f927e26edca6040067fb653eb06efb79.173384=
+0089.git.geert+renesas@glider.be
+
+Think it makes sense to have a "simplified" wrapper for the cases where
+the id has no meaning then? Not really a fan of the drivers coming up with
+magic numbers.
+
+--2DqldZNjQ+dLYWFk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ7CNhAAKCRB4tDGHoIJi
+0tAUAQCqnRPkOySGXu//3wT8OcQkfE+e51feUW6fi3X49on2qQD9FeMpjQKlnQ9Q
+UjJ/Rxce6BMBO5o9ndbm21Ie8SKdSAY=
+=owAZ
+-----END PGP SIGNATURE-----
+
+--2DqldZNjQ+dLYWFk--
