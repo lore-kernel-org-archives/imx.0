@@ -1,153 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F84223BB;
-	Sat, 15 Feb 2025 12:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C51922E0
+	for <imx@lists.linux.dev>; Sun, 16 Feb 2025 16:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739623823; cv=none; b=l7EWvJoe6yHG+c0nkQpdjNf4oToZuTtIO0XnzlUfk4VJX8g1+XZb6WV8NqYvIMUBhC5TSkR5p1HA1LP4sh+8mAuiDLd2l3QBkpo2Qol6LASxjom6MOMH1e6nK7C+YrtVxwPVY342xcUwNbXK/yevOroyWNQnfDkHX3S8sZhAPQo=
+	t=1739721608; cv=none; b=FO4uY88hpGNzuqLm2IZXuqOGX0E2h9adzSdKDxYmH4rqK+DVD2AXeUnDshRe3xdSNCjV4iwkqoYBKtMadG2U8I9+bzGXYD4mwtggUFHB+oheSnwF3bmgV5VAPLOfgary1syehYye7d8oziaiU3N6sAx52YZdPr9YXCQa7+/7C/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739623823; c=relaxed/simple;
-	bh=drN/Xok8UudjMurUXacPKQ2++MI+GHNgJsb1gQKHxmw=;
+	s=arc-20240116; t=1739721608; c=relaxed/simple;
+	bh=EF26j1suwLuBzziUeMgwWp0X8x4RpIgeD8Jxuuo4ULs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SxQI287W/cQwb9q0j2vOZFWxeh//FeHDG+Tm0GWlVrUlm2+97RWiKpTBLcuhyaV13x0oKE6F0A/JIehUfcj8CRZi44ztiYLu8uKMnld0ctTpNyZ1t0QYXieZcBA7t6N5bD8oIbPYzTIyOyES5tmCS4dXMk/STuCPYoVBv11DggA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TI7OwbBe; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=S56An9R2NJIw8MulwsPtOJDkyUV1PaQM0dAE4PtRf2etqtfrY3sWQBBMNEsaKMnhNUSu9U5HDzOBSItj6zadcC7ohcACjl/t3+UFZNBUNsnXvSrA08gGp+f2LcDbDEcVjtSax+IzDliCcfNwSFmG4owLuhbVadC/Y85Vz9RrlAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=pTgJM2RV; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TI7OwbBe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BD0C4CEE9;
-	Sat, 15 Feb 2025 12:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739623822;
-	bh=drN/Xok8UudjMurUXacPKQ2++MI+GHNgJsb1gQKHxmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TI7OwbBejVq+s0MNcjVR0OO68WWGeU3nLMSFjv/iooPZQkFgekvtYlJVZMHL4yhGu
-	 X+NvMH38mriKk1PDUcyHjwbzECOAXrRCBNn9U36VXx/c8m+LhK9r+9CyTE6RYI4i18
-	 r1pLW7R4TInPKnEeFX9WUG5PqtfWIPuLmmuUoi3E8A0A0/4ZupRtFx5ykSkJfxoWU1
-	 JSSIsK/AtdQvdtCF3n/UYl3JTA4Hs4cA70QyCuK0IzY+i8/ZvMd1HSVZ2fGkRVyFmc
-	 3KBpadsxw7ag6TDN+7Q0Rn0JRDwxVXa6Ic4DnHHR5HSm4OAwa2yr2Q1DySe1dJlh9Y
-	 F8vI+B2Os2Bpg==
-Date: Sat, 15 Feb 2025 12:50:12 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Jerome Brunet <jbrunet@baylibre.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	dri-devel@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH v3 2/7] reset: mpfs: use the auxiliary device creation
- helper
-Message-ID: <20250215-scared-clothing-942f9bf3d039@spud>
-References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com>
- <20250211-aux-device-create-helper-v3-2-7edb50524909@baylibre.com>
- <20250213-crown-clustered-81c6434c892b@spud>
- <1jv7tczytk.fsf@starbuckisacylon.baylibre.com>
- <CAD=FV=VeSrZktEbxNXXTgD80QGTpW5b-WiXUFko+a8FUzmN+fQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="pTgJM2RV"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 65A9F24002B
+	for <imx@lists.linux.dev>; Sun, 16 Feb 2025 17:00:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739721604; bh=EF26j1suwLuBzziUeMgwWp0X8x4RpIgeD8Jxuuo4ULs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=pTgJM2RVrLprfYbMXybmlG4KLOjVo9E5qpqmA+ccmW85RElh5VpLIRz1jG+WN+S/n
+	 /1a+/Z7pYIDe5dnKfrSx017pXnXOnaK0Z4oSx9JPbq5XY211pMBp1oBmcel4YGxq52
+	 F3RFdjVJ+IRnPS7aXKXN0RW4qOCHxnRfvy1KzqoSH8ARmyd2EiaZD4HdzFGgnbeGt1
+	 EF0887xrzs+xoKfuvZWrJfWF4lUIF/f4kWYDcBTen21LugjWTYJ/6EFcuL+Jof8s8x
+	 Rz6Ymj2KIeS3xT0Ke1YT8gFrFa0zSQbesigmbblCfD+ohW23aPetTyHEH8BbIFFnzO
+	 aesaOV6qAm6Dw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Ywr8V6Vlfz9rxW;
+	Sun, 16 Feb 2025 16:59:54 +0100 (CET)
+Date: Sun, 16 Feb 2025 15:59:54 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Rob Herring <robh@kernel.org>
+Cc: Crystal Wood <oss@buserror.net>, j.ne@posteo.net,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org, Li Yang <leoyang.li@nxp.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert
+ fsl,elbc to YAML
+Message-ID: <Z7ILej_AJYot_wKP@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
+ <Z6kQpuQf5m-bXTyt@buserror.net>
+ <20250210215324.GA1040564-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2DqldZNjQ+dLYWFk"
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=VeSrZktEbxNXXTgD80QGTpW5b-WiXUFko+a8FUzmN+fQ@mail.gmail.com>
-
-
---2DqldZNjQ+dLYWFk
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250210215324.GA1040564-robh@kernel.org>
 
-On Fri, Feb 14, 2025 at 07:25:59AM -0800, Doug Anderson wrote:
-> Hi,
->=20
-> On Fri, Feb 14, 2025 at 12:59=E2=80=AFAM Jerome Brunet <jbrunet@baylibre.=
-com> wrote:
-> >
-> > > One think that's always felt a bit meh to me is this id number stuff,
-> > > I just threw in 666 for meme value.
-> >
-> > :)
-> >
-> > > The whole thing seems super
-> > > arbitrary, do any of the users of this helper actually put meaningful
-> > > values into the id parameter?
-> >
-> > In example changes I've sent, no.
-> >
-> > In other simple usages (those using container_of()) of the auxiliary
-> > bus, I think there are a few that uses 0 and 1 for 2 instances.
-> >
-> > I guess your question is "do we really need this parameter here ?"
-> >
-> > We could remove it and still address 90% of the original target.
-> >
-> > Keeping it leaves the door open in case the figure above does not hold
-> > and it is pretty cheap to do. It could also enable drivers requiring an
-> > IDA to use the helper, possibly.
->=20
-> FWIW, once you resolve the conflicts in drm-misc with ti-sn65dsi86
-> you'll need the ID value. ;-)
->=20
-> There was a big-ol' discussion here:
->=20
-> https://lore.kernel.org/r/8c2df6a903f87d4932586b25f1d3bd548fe8e6d1.172918=
-0470.git.geert+renesas@glider.be
->=20
-> I eventually pushed v2 of the patch:
->=20
-> https://lore.kernel.org/r/7a68a0e3f927e26edca6040067fb653eb06efb79.173384=
-0089.git.geert+renesas@glider.be
+On Mon, Feb 10, 2025 at 03:53:24PM -0600, Rob Herring wrote:
+> On Sun, Feb 09, 2025 at 02:31:34PM -0600, Crystal Wood wrote:
+> > On Fri, Feb 07, 2025 at 10:30:26PM +0100, J. Neuschäfer via B4 Relay wrote:
+> > > From: "J. Neuschäfer" <j.ne@posteo.net>
+> > > 
+> > > Convert the Freescale localbus controller bindings from text form to
+> > > YAML. The updated list of compatible strings reflects current usage
+> > > in arch/powerpc/boot/dts/, except that many existing device trees
+> > > erroneously specify "simple-bus" in addition to fsl,*elbc.
+> > > 
+> > > Changes compared to the txt version:
+> > >  - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
+> > >    appears in this example and nowhere else
+> > >  - added a new example with NAND flash
+> > >  - updated list of compatible strings
+> > > 
+> > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > > ---
+> > > 
+> > > V2:
+> > > - fix order of properties in examples, according to dts coding style
+> > > - move to Documentation/devicetree/bindings/memory-controllers
+> > > - clarify the commit message a tiny bit
+> > > - remove unnecessary multiline markers (|)
+> > > - define address format in patternProperties
+> > > - trim subject line (remove "binding")
+> > > - remove use of "simple-bus", because it's technically incorrect
+> > 
+> > While I admit I haven't been following recent developments in this area,
+> > as someone who was involved when "simple-bus" was created (and was on the
+> > ePAPR committee that standardized it) I'm surprised to hear simple-bus
+> > being called "erroneous" or "technically incorrect" here.
+> 
+> Erroneous because the binding did not say "simple-bus" was used. Not 
+> uncommon with the old .txt bindings.
+> 
+> Generally, if a bus has control registers or resources like clocks, then 
+> we tend not to call them 'simple-bus'. And '"specific-bus", 
+> "simple-bus"' gives some problems around what driver if any do you 
+> bind to. 
+[...]
+> > You'd probably need something like commit 3e25f800afb82bd9e5f8 ("memory:
+> > fsl_ifc: populate child devices without relying on simple-bus") and the 
+> > subsequent fix in dd8adc713b1656 ("memory: fsl_ifc: populate child
+> > nodes of buses and mfd devices")...
+> > 
+> > I'm curious what the reasoning was for removing simple-bus from IFC.  It
+> > seems that the schema verification also played a role in that:
+> > https://www.spinics.net/lists/devicetree/msg220418.html
+> 
+> If a kernel change is needed to support changed .dts files, then we 
+> shouldn't be doing that here (being mature platforms). That would mean 
+> new DTB will not work with existing kernels.
 
-Think it makes sense to have a "simplified" wrapper for the cases where
-the id has no meaning then? Not really a fan of the drivers coming up with
-magic numbers.
+Alright, I'll keep simple-bus in the eLBC binding for historical
+compatibility.
 
---2DqldZNjQ+dLYWFk
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Thank you both for your discussion.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ7CNhAAKCRB4tDGHoIJi
-0tAUAQCqnRPkOySGXu//3wT8OcQkfE+e51feUW6fi3X49on2qQD9FeMpjQKlnQ9Q
-UjJ/Rxce6BMBO5o9ndbm21Ie8SKdSAY=
-=owAZ
------END PGP SIGNATURE-----
 
---2DqldZNjQ+dLYWFk--
+J. Neuschäfer
