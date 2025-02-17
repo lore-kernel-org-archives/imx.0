@@ -1,89 +1,130 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A6B1A4F21
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 09:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C9A21519D
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 09:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739784098; cv=none; b=mDh5ET9xDDIInXc6zZJDgS5T9P8bbWAFPrOOzA3CpuKiS1/hR77eYjwf/lmysxvkoThWXVZufFqTWMI2oMIjTtC+VFMCewVlMVFSNmC8uF7LPX1Nctr2IPgCIHBpSXTGH+YYMrNCh4zbJLPFduo9bLHL2Re9nY2v24T9IvTCVXE=
+	t=1739784676; cv=none; b=OwmrEuHi7vziptQYEMOkmoI2lbTi1GwAqkHQtGc//kBnvTSeh5SJKSznbMCtieBgzeiOdFejO7XQisl/+4oyypvZiy9udUjWeVuHIxbTQJjXpUFtiTSbtYAs7PiuEc4p83CJQ42Dw+J4nJqrsNypLPu07KMe1/8y/kPw80WphlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739784098; c=relaxed/simple;
-	bh=/fHyTKMsoevoSMKCVyG7YFlSq3TWqO0gq0A7jnn6kts=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KyNS3iUXEmN1spX9i3A5TnPAt5f7iYGVYzQt4NiGAj/UO2OTZHSPg0K/mgFeEWgdsaf6eBmMSc5mBimwhnL4LyYemJ4rLWYy2pL4etcSP3b+5YBuLiOum1isKLxGVVoFGjN8Vj4haCt7cI86ONA1L5e06Ed7KMgKTpZZNrizTcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1tjxJc-0000cm-6B; Mon, 17 Feb 2025 10:21:24 +0100
-Message-ID: <0e233b5210e3245266fd1954e0fd198bc6864c24.camel@pengutronix.de>
-Subject: Re: [PATCH 0/2] arm64: dts: imx8m: Add pinctrl config definitions
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	 <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	 <imx@lists.linux.dev>
-Date: Mon, 17 Feb 2025 10:21:23 +0100
-In-Reply-To: <PA4PR04MB76308879CAA0764BB293C4C3C5F92@PA4PR04MB7630.eurprd04.prod.outlook.com>
-References: <20250214-pinctrl_defines-v1-0-fbc86a42ef3c@gocontroll.com>
-	 <d0dd61ea558ef8b18978301ef710925b83ef4037.camel@pengutronix.de>
-	 <PA4PR04MB76308879CAA0764BB293C4C3C5F92@PA4PR04MB7630.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1739784676; c=relaxed/simple;
+	bh=BF3BWMnRAgV+XVc7QLQRap/ja+b/weSZ+YkZOb083OM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VMfRcb31H/IfxA9lXWUgyAdbETOf3M4XP7IiU+lxXRWRohXDHUpYZIWGGEczR7xEg4Iw3V9qRU6kFk4IqmiwYgfAB0EIGBMMqJoAz7t37xBTNQhMZnKLGBBzj6PugTxcdrN/+3l/5MqIWjMYAlNml/8EhERVOfxdNz3YQGiGWT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fK/H46QJ; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fK/H46QJ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D2C04328A;
+	Mon, 17 Feb 2025 09:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739784672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gzSgtFsogf3LvL+ai4nE5Lt4B+3+Fu9VUwcYPOuEIZQ=;
+	b=fK/H46QJFMLPMcRVkjjcBvXz3suQapWq9E5PCchE4muxik4Ug0FIztPKlE1SGb5DuDwz5a
+	Uoo/64V/Eik/EAM40u63rxPdOzMTUc5FKFGxbkaMwRtBN5QXugz6xEKYFf59C2CPI3qGmh
+	u2dWyZ6LCPd2sA0i6Nm2l6QZWCbNwHDiaPP9GOa9zcetatAYq2HNqRYOpUPYEdK/9SEZcv
+	QBSU/EiTcIELPURB8EgJ9MV8wakky8b0GJorTq/QHU9O5rUi5u4wERdnNw3OTb4gL4kLQh
+	1ripd4J1y7IWjqrj7Anhj4dIEqUdf7WF3Tl1AosWjOQZfn//HL8/QDLv01yDpA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: J. =?utf-8?Q?Neusch=C3=A4fer?= <j.ne@posteo.net>
+Cc: J. =?utf-8?Q?Neusch=C3=A4fer?= via B4 Relay
+ <devnull+j.ne.posteo.net@kernel.org>,
+  devicetree@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,  Krzysztof
+ Kozlowski <krzk@kernel.org>,  imx@lists.linux.dev,  Scott Wood
+ <oss@buserror.net>,  Madhavan Srinivasan <maddy@linux.ibm.com>,  Michael
+ Ellerman <mpe@ellerman.id.au>,  Nicholas Piggin <npiggin@gmail.com>,
+  Christophe Leroy <christophe.leroy@csgroup.eu>,  Naveen N Rao
+ <naveen@kernel.org>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Damien Le Moal
+ <dlemoal@kernel.org>,  Niklas Cassel <cassel@kernel.org>,  Herbert Xu
+ <herbert@gondor.apana.org.au>,  "David S. Miller" <davem@davemloft.net>,
+  Lee Jones <lee@kernel.org>,  Vinod Koul <vkoul@kernel.org>,  Lorenzo
+ Pieralisi <lpieralisi@kernel.org>,  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kw@linux.com>,
+  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,  Bjorn Helgaas
+ <bhelgaas@google.com>,  J. =?utf-8?Q?Neusch=C3=A4fer?=
+ <j.neuschaefer@gmx.net>,  Wim Van
+ Sebroeck <wim@linux-watchdog.org>,  Guenter Roeck <linux@roeck-us.net>,
+  Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  linux-kernel@vger.kernel.org,
+  linux-ide@vger.kernel.org,  linux-crypto@vger.kernel.org,
+  dmaengine@vger.kernel.org,  linux-pci@vger.kernel.org,
+  linux-watchdog@vger.kernel.org,  linux-spi@vger.kernel.org,
+  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 12/12] dt-bindings: mtd: raw-nand-chip: Relax node
+ name pattern
+In-Reply-To: <Z7Iqir-qaZDt6tsx@probook> ("J. =?utf-8?Q?Neusch=C3=A4fer=22'?=
+ =?utf-8?Q?s?= message of "Sun, 16
+	Feb 2025 18:12:26 +0000")
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+	<20250207-ppcyaml-v2-12-8137b0c42526@posteo.net>
+	<87o6zaurv9.fsf@bootlin.com> <Z7Iqir-qaZDt6tsx@probook>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 17 Feb 2025 10:31:08 +0100
+Message-ID: <87tt8svrxf.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehkedtgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdevhffgtdfhhefggeeftdeiffduiedtgffftddutdehteejhfevieelveegveetnecuffhomhgrihhnpeguvghvihgtvghtrhgvvgdrohhrghenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefledprhgtphhtthhopehjrdhnvgesphhoshhtvghordhnvghtpdhrtghpthhtohepuggvvhhnuhhllhdojhdrnhgvrdhpohhsthgvohdrnhgvtheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoi
+ ihlrggsshdrohhrghdprhgtphhtthhopehkrhiikheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehoshhssegsuhhsvghrrhhorhdrnhgvthdprhgtphhtthhopehmrgguugihsehlihhnuhigrdhisghmrdgtohhm
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-Am Samstag, dem 15.02.2025 um 10:02 +0000 schrieb Maud Spierings |
-GOcontroll:
-> From:=C2=A0Lucas Stach <l.stach@pengutronix.de>
-> Sent:=C2=A0Friday, February 14, 2025 5:28 PM
-> =C2=A0
-> > Hi Maud,
->=20
-> > Am Freitag, dem 14.02.2025 um 16:57 +0100 schrieb Maud Spierings via B4
-> > Relay:
-> > > Up untill now the extra function mux (pull resistor, etc) has been
-> > > defined as a raw hex value, this is difficult to interpret. Add
-> > > definitions for these parts of the pinctrl registers to allow for mor=
-e
-> > > readable pinctrl definitions in devictree files.
->=20
-> > I certainly prefer the short form with the hex value, I find that quite
-> > a bit more readable than very verbose swathes of defines ORed together.
-> > But each to their own.
->=20
-> I personally prefer it, but it would be accepted if I write a dts using t=
-his if it
-> gets accepted? I am currently working on devicetrees for all of our devic=
-es
-> preferably they would use this.
->=20
-I'm not the ultimate authority on this, as I'm not the official
-maintainer of the i.MX DTs. That would be Shawn, so he has to agree to
-this. However, my gut feeling is that it would be accepted if you as
-the author of the board DT prefer this style.
+Hello,
 
-Just don't go around and convert other board DTs maintained by other
-people to the verbose define style.
+>> > In some scenarios, such as under the Freescale eLBC bus, there are raw
+>> > NAND chips with a unit address that has a comma in it (cs,offset).
+>> > Relax the $nodename pattern in raw-nand-chip.yaml to allow such unit
+>> > addresses.
+>>=20
+>> This is super specific to this controller, I'd rather avoid that in the
+>> main (shared) files. I believe you can force another node name in the
+>> controller's binding instead?
+>
+> It's a bit tricky. AFAICS, when I declare a node name pattern in my
+> specific binding in addition to the generic binding, the result is that
+> both of them apply, so I can't relax stricter requirements:
+>
+> # raw-nand-chip.yaml
+> properties:
+>   $nodename:
+>     pattern: "^nand@[a-f0-9]$"
+>
+> # fsl,elbc-fcm-nand.yaml
+> properties:
+>   $nodename:
+>     pattern: "^nand@[a-f0-9](,[0-9a-f]*)?$"
 
-Regards,
-Lucas
+Well, I guess this is creating a second possible node name.
 
+> # dtc
+> /.../fsl,elbc-fcm-nand.example.dtb:
+> nand@1,0: $nodename:0: 'nand@1,0' does not match '^nand@[a-f0-9]$'
+>         from schema $id:
+> 	http://devicetree.org/schemas/mtd/fsl,elbc-fcm-nand.yaml#
+
+What about fixing the DT instead?
+
+> (I changed the second pattern to nand-fail@... and dtc warned about it
+>  mismatching too.)
+>
+> Perhaps I'm missing a DT-schema trick to override a value/pattern.
+>
+> Alternatively (pending discussion on patch 11/12), I might end up not
+> referencing raw-nand-chip.yaml.
+
+Ok.
+
+Thanks,
+Miqu=C3=A8l
