@@ -1,71 +1,113 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9E02135AF
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 12:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF9C218821
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 13:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739793732; cv=none; b=C765Z9b1eQ27cTPYy0NWCIbTp2vaIlX8X84C1/Et8rk6cZ8WVpASiBwxuIoVNEuUrGVzoAPDZYsIwhHio2pQvPY9qCRoWkPjE3Scm2atI2x1NIYXTf+9DmykfJ+MTGLrmr9liKBbORKWx/Zk/kITo+kNWjpfGfSzwuLhIEeIy3I=
+	t=1739798118; cv=none; b=jAppIedOYtCHiIlAm6pDgQzaxeOTv2UbH+MAPrK7ynz7MtwUP9bfu5kX96rgJlQ32XICF6n7WXdBwzUxyYVgv6St120eK88JRlY6X6UY3KwuvhD38AzvCry9u9veNdRmITs6jJgPO01wTLPTOc+VPpvfSj4qqWbDZpZQf5SC3Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739793732; c=relaxed/simple;
-	bh=3wNmsiQetCfVtGLShZAaVYcM3oxhWvUxulLeuyilSto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SYPbRUu9NuF1N3oH62SHt3EOV9FW68up+7g8oLuS6OluSyegD9SdgIBfb+Ek2fy9Vqw/klpkx0lLwmxEVyAI2R2sfEsZ6PzgDOcTE8kYGKO0wznl6K9lLEDtWRP8/uEn3Hha8fwYBNmVdlWNHyKu1a773ruNeScDHcq7lmNZLjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 534711692;
-	Mon, 17 Feb 2025 04:02:28 -0800 (PST)
-Received: from [10.1.35.42] (e127648.arm.com [10.1.35.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DE173F5A1;
-	Mon, 17 Feb 2025 04:02:06 -0800 (PST)
-Message-ID: <3e79d92a-6ec9-4c7a-a836-1306678c2bef@arm.com>
-Date: Mon, 17 Feb 2025 12:02:04 +0000
+	s=arc-20240116; t=1739798118; c=relaxed/simple;
+	bh=RXP5X417yTlCiBf+xrfyXIDd3TLnHV3EUYKREgUrLKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RH5JNqad42h027Ksx/ALbpEG9RaJwe8rc8EWa7o92BmTOI5JTOUDxaCmVmlc1z6P3Bg+M3Ar+23KIYYkRr7Rra6t13bT/OXokL80pzp5eyetOinQ2x7VtN76h7Z5DEd78c2Iz2oGRGSBHmHAnalSdLIxRUxwutqHFxZYzP8pVtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e4rMo0xK; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e4rMo0xK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739798117; x=1771334117;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RXP5X417yTlCiBf+xrfyXIDd3TLnHV3EUYKREgUrLKU=;
+  b=e4rMo0xKSOuDWVDHEwTsGHm1UkEhJsDWxpGj7alFPnpduashFErkdCW3
+   gR9RZPtRFMQc7uYfef6QjS0kvXSKsQDoHN/HsYFnE/q/nuyfNEBWcOR31
+   EDm9U2EYDZDhJdFY1R95elaRlRYxUZmeJyKR4YPN5T/AoqrmtubnjiFW8
+   ckqGc0QBcld9ujDiHFW+9id4/X1mx+T3Fee02cCbc15fcNYqpUir4fIRq
+   JKbFlLXQnx2Yy3YMsKZCcIgOMGCrTORG3ghwCavUTYwLBck1doM7nIDLm
+   GdJzA0yXj3TqIzknJCRSYP++fh05gvgmtM1zSPpOOJeHAI1XDSo2N0ydV
+   Q==;
+X-CSE-ConnectionGUID: bwrO6luzRsebSDcmfLNNgw==
+X-CSE-MsgGUID: hAz334xJQlioo5ZdNLnYeg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="40344739"
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="40344739"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 05:15:16 -0800
+X-CSE-ConnectionGUID: qYKS6OdJS+2s7cDaSWruOg==
+X-CSE-MsgGUID: vOK7AQiKSFimzZKPW3N2kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,292,1732608000"; 
+   d="scan'208";a="114041454"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 05:15:13 -0800
+Date: Mon, 17 Feb 2025 14:11:33 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 1/8] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_buffs()
+Message-ID: <Z7M1hQIYZGWAZsOT@mev-dev.igk.intel.com>
+References: <20250217093906.506214-1-wei.fang@nxp.com>
+ <20250217093906.506214-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: improve imx8mq emmc/sd read
- performance
-To: Lucas Stach <l.stach@pengutronix.de>, ziniu.wang_1@nxp.com,
- adrian.hunter@intel.com, ulf.hansson@linaro.org
-Cc: imx@lists.linux.dev, s32@nxp.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, linux-mmc@vger.kernel.org,
- linux-kernel@vger.kernel.org, haibo.chen@nxp.com, kernel@pengutronix.de,
- festevam@gmail.com, linux-arm-kernel@lists.infradead.org
-References: <20250217110623.2383142-1-ziniu.wang_1@nxp.com>
- <ab721b4a96495516f5149e91f3e4764014e39ba6.camel@pengutronix.de>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <ab721b4a96495516f5149e91f3e4764014e39ba6.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250217093906.506214-2-wei.fang@nxp.com>
 
-On 2/17/25 11:58, Lucas Stach wrote:
-> Hi Luke,
+On Mon, Feb 17, 2025 at 05:38:59PM +0800, Wei Fang wrote:
+> When the DMA mapping error occurs, it will attempt to free 'count + 1'
+> tx_swbd instead of 'count', so fix this off-by-one issue.
 > 
-> Am Montag, dem 17.02.2025 um 19:06 +0800 schrieb ziniu.wang_1@nxp.com:
->> From: Luke Wang <ziniu.wang_1@nxp.com>
->>
->> Compared with kernel 6.1, imx8mq eMMC/SD read performance drops by about
->> 30% with kernel 6.6.
->>
->> The eMMC/SD read thread will be put to sleep until the hardware completes
->> data transfer. Normally, the read thread will be woken up immediately
->> when the data transfer is completed. However, due to a known ic bug, if
->> imx8mq is in cpuidle, it will take a long time (about 500us) to exit
->> cpuidle. As a result, the read thread cannot immediately read the next
->> data block, affecting the read performance.
->>
-> Is this really a problem with the upstream kernel? i.MX8MQ upstream
-> does not use the deeper PSCI idle states, but only uses WFI, so I doubt
-> that upstream is affected by this issue.
+> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Regards,
-> Lucas
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 6a6fc819dfde..f7bc2fc33a76 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -372,13 +372,13 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  dma_err:
+>  	dev_err(tx_ring->dev, "DMA map error");
+>  
+> -	do {
+> +	while (count--) {
+>  		tx_swbd = &tx_ring->tx_swbd[i];
+>  		enetc_free_tx_frame(tx_ring, tx_swbd);
+>  		if (i == 0)
+>  			i = tx_ring->bd_count;
+>  		i--;
+> -	} while (count--);
+> +	};
 
-Furthermore if that were to be the case the correct solution would probably
-to have that reflected in the dts, too?
+In enetc_lso_hw_offload() this is fixed by --count instead of changing
+to while and count--, maybe follow this scheme, or event better call
+helper function to fix in one place.
 
+The same problem is probably in enetc_map_tx_tso_buffs().
+
+Thanks
+Michal
+
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.34.1
+> 
