@@ -1,319 +1,100 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE24B17D346
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 06:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8953F154BFE
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 07:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739773335; cv=none; b=eUbglmiyDOz932yS08FsbNFJm+XtEnTCMRWR6pZruoEpvl1uQbpVOsbff2xdMbtuBBITgVIdxzDz+XoMvRFXzjVnEbXQcf0K2FUm6Q/+GYYL4hMQreezw+p+X2UDNn6LLhpVrZWrjCDGcAvkiKDfEpZ1/MKaHfnPZwv/NpoJO1g=
+	t=1739777560; cv=none; b=a/2W+gHVHzznLYMS/6CqcP2auYNaQADsgrP0LOkiaek5okWsfXZ62PrHnhGiSVxwCuIRcsJ9vMRTkBcyfxVjs0BDVNmebpN3SDl0sNKPcrdcULSScu8ofZbi5yA1PtEV75xIHJ9EtCGAYf1+miQdmSsS5eI/uX/HNUPSJUH1Mgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739773335; c=relaxed/simple;
-	bh=F45dYoyahVCvXQ6cDZ3N9UOSOH7ET76tSleR2VT2DnE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cKTYDo8rCMB4QpE19QdfEEFOv11qcUAFQ+uaqeH54yPElBofsPDmVMc+j4My68PRz67NYfsJqyoBrobklFzgOb4ZA99mispJdjpRbUR4YcU6mgolgWAFB43e20lvh0J8QqQjV5IZ/8oJybpV7dQXeD1eecyFdOH45t4zfft1Fww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OZnssWDw; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1739777560; c=relaxed/simple;
+	bh=iOSp9K3fulh0VbLRdj1Bcq7Vd9vXiDQNcOEL0h9MGOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hNn5DRj0Mq176i6Nh+KsFYRpdcvLbRQLcC5Nm7MLOAV8wkdgDdT6qzLyD291pn+LlU4Lv8z3lh2UU5Ms6JuvQK0i0fNVrhFdgeImxxN40rKp4ksYBVhSbtA+vdnmSWMEPtaTZHlZ4ndgOgb/Wz5edYDfU3jbW92ZcNenkZpXIsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R3w7HctE; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OZnssWDw"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB343442C1;
-	Mon, 17 Feb 2025 06:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739773323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QRbBTXSP9/cv98UB/EMjgylwqIzJpyL5vp0HJjcaCgI=;
-	b=OZnssWDw6582kM8YSUrz1hVubVno88dvt5iw5K38NeQ0P2goVCrY9i41/PnjUSBlSEoAEi
-	GoziZPqfmy/S3yvb8c4iFQg8Q2Myxr/pBEKE65lsaB1+oY4oYYmGgxJqeqoE/IThaPYJFA
-	mSKMNHOh44zsfhUd4z3I/IspMDZtLz4BSolQQz/xIVu9ZwDE1G2l5L+8T/C3flBvyc43KF
-	bC/AXNc+m4G0qtQEDOiuSqGCsCZz2Cwmu4DOIKKEHSUvXnk2Ph74/Jt4kAfVFBw1mKeSVN
-	cJBpRBDzEK1R75Fqc63+muDCqA5K8XRJqWFiEcorFfG9I+2Ii0C6uleckvbtSg==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Mon, 17 Feb 2025 07:21:53 +0100
-Subject: [PATCH v3] serial: mctrl_gpio: split disable_ms into sync and
- no_sync APIs
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R3w7HctE"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5dca468c5e4so7330124a12.1
+        for <imx@lists.linux.dev>; Sun, 16 Feb 2025 23:32:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739777557; x=1740382357; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Iuq9jtDgHZUGKQlgExINfZtY7T0OwXIUJbx8KDqcL2g=;
+        b=R3w7HctEbXhKRD0Xq/yCFeSjoPx6o9dTW3j1IebcMXIg3QZaR2jCgCggz8BbWtxBKN
+         8rDcgDC0rPk097QANz5Mn5X230oD1jJVqO55IbAo+zcWxYq7D4447ImPHLHSrKT/xV7m
+         eMgj0TaQ/AjXiQ4RWdnbWiKPh3NiBzCwaAXIx/hQfzMZhl1FSyD77JMHBDzKKA9yJoIe
+         yc1Er9QiFqCKB4pNo+BsE5+Focg9z1DDuNPkPREHENbxOCWffUZrjJLUzpZU44vOFUf9
+         tTCGQTGsP0h0KPxuaCS0tvR4FcOImDSM4OYAwjwbTWMhe5r/JOoD0q/g0icZlRC6TG/8
+         VhJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739777557; x=1740382357;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iuq9jtDgHZUGKQlgExINfZtY7T0OwXIUJbx8KDqcL2g=;
+        b=XtamfyxkPlxX45LUVf456u/I57jwbSpHc4xbhQL4kIVrfnBSiCgHAi9tyrDmLy3GFp
+         8WgRjsP0KXT4Xw0hT3RKcN+WH8pVsygtFwJX/+LznsBwOUkA7UZjkw4/Ud/CVCYB9gD7
+         UeS6hNIwWy7s9yWvjRRoltIUbX8hn3PxUL+xrpCAWHFFeUtpj/b0SkWWlIMu8+DVthJ/
+         +ehK6U/58MRj7QiPey/1Zh2nu4dt07sfaCzzvzeKkngbQJOWXYOTgRazdbMw85ejJBHW
+         +neEDUdAnd1bo686Xr7q/wwatb8EY1w2ZNPu12LjqdtR3td2Ur5LwMxyfpW42f4j/nVH
+         4YbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXk4HtJ9wRtjvHJLTQGiOXDkywL1n4j331SRxvaMgNAe+tvB83onJvHPzJRLcJ7Cfu1kC0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyApgJx0UX+oR/1j6yASLRmuG4flRgJhCPdwWSRX2nZBIjFS3ql
+	BkdWAdVnZPHY7WpcAYE7N+bT0RFrHpWMO32N5VSB9umZ57cNL9OR0LrNBU6oUVc=
+X-Gm-Gg: ASbGncvkoLrv3EUXz2wXjuVPK7l0qVorx+vJsdGYy8akXjTLf7ZTODxltfNGI+zzOek
+	JEQ3zEw9rkengRtLW0eTp8SyZFavZMmWqObJK9ennp5Koa/Q6/3op6rrdfhwrAGVAAUc19jGjZb
+	JNj7yGNwS7+PKSPA2lUWjhkOOH55mHxZhzx+JkyDrhv+FkgtpeJO+p1ojCX6vUIX0AIJO+VMIKC
+	zVHVl92T8xl5zgEnkPPz3gtFN9mzHjOExfH1ORFhBkc1inkZFevOJuyhcABbuVnAEW9+LG81Voj
+	T8ZgsR8Jwbw7NZssxAea
+X-Google-Smtp-Source: AGHT+IEcdCzKmfW6zdCdnOroccwgNmmDLOlJUJcE91OJUWqcSxVf6IhB+cxML7fRc8rv7wfAKU/7HA==
+X-Received: by 2002:a17:907:1b23:b0:aab:c35e:509b with SMTP id a640c23a62f3a-abb70e435abmr973427866b.55.1739777556866;
+        Sun, 16 Feb 2025 23:32:36 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abb916db37bsm238238266b.165.2025.02.16.23.32.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 23:32:36 -0800 (PST)
+Date: Mon, 17 Feb 2025 10:32:32 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Cc: Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, Jaroslav Kysela <perex@perex.cz>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	sound-open-firmware@alsa-project.org, Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH 0/2] ASoC: SOF: imx: fix a couple Smatch bugs
+Message-ID: <fffa1613-72e8-4cd0-a4db-b6b13a5222e9@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250217-atomic_sleep_mctrl_serial_gpio-v3-1-59324b313eef@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAIDVsmcC/43NQQ+CIBjG8a/SOEcDFLNOfY/WGOKLvpuKA8Zqz
- u8eeqpTHf/P4fcsJIBHCOR6WIiHhAHdlKM4Hojp9dQBxTY3EUxIJnhBdXQjGhUGgFmNJvpBbYQ
- eVDejo3UtbWWhkbVsSEZmDxaf+8H9kbvHEJ1/7X+Jb+vfdOKUU8E4QKV5Wev21jgXB5xOxo1kw
- 5P4BMufoMggh4qZcyFse2Hf4Lqub7zRqbUfAQAA
-X-Change-ID: 20250213-atomic_sleep_mctrl_serial_gpio-885f6feb585b
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, 
- Richard Genoud <richard.genoud@bootlin.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, linux-doc@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehjeeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtkeertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekveeftdeifedvfefgvdfgjeduieevudeltdeulefhhefgiedvhfethffgffegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekheenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehpdhhvghloheplgduledvrdduieekrddurdduleejngdpmhgrihhlfhhrohhmpegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddupdhrtghpthhtohepmhgtohhquhgvlhhinhdrshhtmhefvdesghhmrghilhdrtghomhdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhts
- hdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehnihgtohhlrghsrdhfvghrrhgvsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhsthhmfedvsehsthdqmhguqdhmrghilhhmrghnrdhsthhorhhmrhgvphhlhidrtghomhdprhgtphhtthhopehjihhrihhslhgrsgihsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvh
-X-GND-Sasl: alexis.lothore@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The following splat has been observed on a SAMA5D27 platform using
-atmel_serial:
+Fix a couple of bugs which were detected using Smatch.
+(https://github.com/error27/smatch)
 
-BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
-in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
-preempt_count: 1, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 0
-hardirqs last  enabled at (0): [<00000000>] 0x0
-hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
-softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
-softirqs last disabled at (0): [<00000000>] 0x0
-CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
-Hardware name: Atmel SAMA5
-Workqueue: hci0 hci_power_on [bluetooth]
-Call trace:
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x44/0x70
-  dump_stack_lvl from __might_resched+0x38c/0x598
-  __might_resched from disable_irq+0x1c/0x48
-  disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
-  mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
-  atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
-  atmel_set_termios from uart_change_line_settings+0x15c/0x994
-  uart_change_line_settings from uart_set_termios+0x2b0/0x668
-  uart_set_termios from tty_set_termios+0x600/0x8ec
-  tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
-  ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
-  wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
-  hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
-  hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
-  hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
-  process_one_work from worker_thread+0x6e0/0xfb4
-  worker_thread from kthread+0x3d4/0x484
-  kthread from ret_from_fork+0x14/0x28
+Dan Carpenter (2):
+  ASoC: SOF: imx: Fix an IS_ERR() vs NULL bug in
+    imx_parse_ioremap_memory()
+  ASoC: SOF: imx: Fix error code in probe()
 
-This warning is emitted when trying to toggle, at the highest level,
-some flow control (with serdev_device_set_flow_control) in a device
-driver. At the lowest level, the atmel_serial driver is using
-serial_mctrl_gpio lib to enable/disable the corresponding IRQs
-accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
-disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
-some atomic context (some tty drivers perform modem lines configuration
-in regions protected by port lock).
+ sound/soc/sof/imx/imx-common.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
-and a blocking one. Replace mctrl_gpio_disable_ms calls with the
-relevant version depending on whether the call is protected by some port
-lock.
-
-Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
----
-Changes in v3:
-- Fix commit message
-- Link to v2: https://lore.kernel.org/r/20250214-atomic_sleep_mctrl_serial_gpio-v2-1-1e60c732fd90@bootlin.com
-
-Changes in v2:
-- create dedicated APIs instead of using custom flag
-- Link to v1: https://lore.kernel.org/r/20250213-atomic_sleep_mctrl_serial_gpio-v1-1-201ee6a148ad@bootlin.com
----
- Documentation/driver-api/serial/driver.rst |  2 +-
- drivers/tty/serial/8250/8250_port.c        |  2 +-
- drivers/tty/serial/atmel_serial.c          |  2 +-
- drivers/tty/serial/imx.c                   |  2 +-
- drivers/tty/serial/serial_mctrl_gpio.c     | 34 ++++++++++++++++++++++++------
- drivers/tty/serial/serial_mctrl_gpio.h     | 17 ++++++++++++---
- drivers/tty/serial/sh-sci.c                |  2 +-
- drivers/tty/serial/stm32-usart.c           |  2 +-
- 8 files changed, 47 insertions(+), 16 deletions(-)
-
-diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
-index 84b43061c11be2d6b4e3cd29fb8e6ecbdebe646d..60434f2b0286373d64b7aa8ae309454d7bd8859e 100644
---- a/Documentation/driver-api/serial/driver.rst
-+++ b/Documentation/driver-api/serial/driver.rst
-@@ -103,4 +103,4 @@ Some helpers are provided in order to set/get modem control lines via GPIO.
- .. kernel-doc:: drivers/tty/serial/serial_mctrl_gpio.c
-    :identifiers: mctrl_gpio_init mctrl_gpio_free mctrl_gpio_to_gpiod
-            mctrl_gpio_set mctrl_gpio_get mctrl_gpio_enable_ms
--           mctrl_gpio_disable_ms
-+           mctrl_gpio_disable_ms_sync mctrl_gpio_disable_ms_no_sync
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index d7976a21cca9ce50557ca5f13bb01448ced0728b..218a1d98f1ed3e2697624444be33243050df3a85 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1680,7 +1680,7 @@ static void serial8250_disable_ms(struct uart_port *port)
- 	if (up->bugs & UART_BUG_NOMSR)
- 		return;
- 
--	mctrl_gpio_disable_ms(up->gpios);
-+	mctrl_gpio_disable_ms_no_sync(up->gpios);
- 
- 	up->ier &= ~UART_IER_MSI;
- 	serial_port_out(port, UART_IER, up->ier);
-diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-index f44f9d20a97440c9aea41e9ebe34c34d4dfa0a1c..8918fbd4bddd5dfe7705a75d4132dda59fe9e5e6 100644
---- a/drivers/tty/serial/atmel_serial.c
-+++ b/drivers/tty/serial/atmel_serial.c
-@@ -700,7 +700,7 @@ static void atmel_disable_ms(struct uart_port *port)
- 
- 	atmel_port->ms_irq_enabled = false;
- 
--	mctrl_gpio_disable_ms(atmel_port->gpios);
-+	mctrl_gpio_disable_ms_no_sync(atmel_port->gpios);
- 
- 	if (!mctrl_gpio_to_gpiod(atmel_port->gpios, UART_GPIO_CTS))
- 		idr |= ATMEL_US_CTSIC;
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 9c59ec128bb4fc0ff54cb9a1a66eabbc9e391a9a..cfeb3f8cf45eaeea8afaa767a4ad849bb8d19f69 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1608,7 +1608,7 @@ static void imx_uart_shutdown(struct uart_port *port)
- 		imx_uart_dma_exit(sport);
- 	}
- 
--	mctrl_gpio_disable_ms(sport->gpios);
-+	mctrl_gpio_disable_ms_sync(sport->gpios);
- 
- 	uart_port_lock_irqsave(&sport->port, &flags);
- 	ucr2 = imx_uart_readl(sport, UCR2);
-diff --git a/drivers/tty/serial/serial_mctrl_gpio.c b/drivers/tty/serial/serial_mctrl_gpio.c
-index 8855688a5b6c09f073349bd144586f54331d891f..ca55bcc0b61119d0b76e6943e0f223a4a9e25c02 100644
---- a/drivers/tty/serial/serial_mctrl_gpio.c
-+++ b/drivers/tty/serial/serial_mctrl_gpio.c
-@@ -322,11 +322,7 @@ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
- }
- EXPORT_SYMBOL_GPL(mctrl_gpio_enable_ms);
- 
--/**
-- * mctrl_gpio_disable_ms - disable irqs and handling of changes to the ms lines
-- * @gpios: gpios to disable
-- */
--void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-+static void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios, bool sync)
- {
- 	enum mctrl_gpio_idx i;
- 
-@@ -342,10 +338,34 @@ void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
- 		if (!gpios->irq[i])
- 			continue;
- 
--		disable_irq(gpios->irq[i]);
-+		if (sync)
-+			disable_irq(gpios->irq[i]);
-+		else
-+			disable_irq_nosync(gpios->irq[i]);
- 	}
- }
--EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms);
-+
-+/**
-+ * mctrl_gpio_disable_ms_sync - disable irqs and handling of changes to the ms
-+ * lines, and wait for any pending IRQ to be processed
-+ * @gpios: gpios to disable
-+ */
-+void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-+{
-+	mctrl_gpio_disable_ms(gpios, true);
-+}
-+EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_sync);
-+
-+/**
-+ * mctrl_gpio_disable_ms_no_sync - disable irqs and handling of changes to the
-+ * ms lines, and return immediately
-+ * @gpios: gpios to disable
-+ */
-+void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
-+{
-+	mctrl_gpio_disable_ms(gpios, false);
-+}
-+EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_no_sync);
- 
- void mctrl_gpio_enable_irq_wake(struct mctrl_gpios *gpios)
- {
-diff --git a/drivers/tty/serial/serial_mctrl_gpio.h b/drivers/tty/serial/serial_mctrl_gpio.h
-index fc76910fb105a3d560e824baa43e9515576e895a..79e97838ebe5672a1b00ef848dcda1e8c1b9568e 100644
---- a/drivers/tty/serial/serial_mctrl_gpio.h
-+++ b/drivers/tty/serial/serial_mctrl_gpio.h
-@@ -87,9 +87,16 @@ void mctrl_gpio_free(struct device *dev, struct mctrl_gpios *gpios);
- void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios);
- 
- /*
-- * Disable gpio interrupts to report status line changes.
-+ * Disable gpio interrupts to report status line changes, and block until
-+ * any corresponding IRQ is processed
-  */
--void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios);
-+void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios);
-+
-+/*
-+ * Disable gpio interrupts to report status line changes, and return
-+ * immediately
-+ */
-+void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios);
- 
- /*
-  * Enable gpio wakeup interrupts to enable wake up source.
-@@ -148,7 +155,11 @@ static inline void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
- {
- }
- 
--static inline void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-+static inline void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-+{
-+}
-+
-+static inline void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
- {
- }
- 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index b1ea48f38248eb42d98353daa289bbe67191d201..41f987632bce82c9d041d9ab1f5162d2af1a78e4 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -2298,7 +2298,7 @@ static void sci_shutdown(struct uart_port *port)
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
- 	s->autorts = false;
--	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
-+	mctrl_gpio_disable_ms_sync(to_sci_port(port)->gpios);
- 
- 	uart_port_lock_irqsave(port, &flags);
- 	sci_stop_rx(port);
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 1ec5d8c3aef8ddbca615a149c2fe81c90c83a22b..4c97965ec43b30113a255661e6a64a6b476d7a9c 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -944,7 +944,7 @@ static void stm32_usart_enable_ms(struct uart_port *port)
- 
- static void stm32_usart_disable_ms(struct uart_port *port)
- {
--	mctrl_gpio_disable_ms(to_stm32_port(port)->gpios);
-+	mctrl_gpio_disable_ms_sync(to_stm32_port(port)->gpios);
- }
- 
- /* Transmit stop */
-
----
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-change-id: 20250213-atomic_sleep_mctrl_serial_gpio-885f6feb585b
-
-Best regards,
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.47.2
 
