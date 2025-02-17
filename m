@@ -1,62 +1,62 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBFA15382E
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 07:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E4C194C8B
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 07:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739777573; cv=none; b=RAwAzJLwmcrIfg1XC5UU26IwizW6N4ofKSXaUaotsL8boDXotn+tFdabJ4IUcnPxRCbBW5t2CxumfjnwcWv4AWnLrwId25Cm+hiJt7ZVh+coCAsuc86npFd5boCXql51GMSg3F8XRgAEsqtWeY/759buD3s4pu/NYRr+V9Gcs0g=
+	t=1739777584; cv=none; b=iQIIVGA6byUcSk7othXzd8bxbrfXyKrTd3d0aY52fYPSckGUBt5a+xr4dLWsjC1aN/Tj6AU7V0TmeNw30Dztuz/Ds/BapmipHH3Qel00/ku02Ugji0erTQNTzZIRZK1ES4AKDLIqIvl7+PloqGj1pOVZYARglbRFl3IQaFLpRMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739777573; c=relaxed/simple;
-	bh=r6aBwQGIKHihW7+Ag844yt6fSqk0SJomx7ZY5GraGU8=;
+	s=arc-20240116; t=1739777584; c=relaxed/simple;
+	bh=FfWHZuQZXypGn0iKgdsEA81WCv53fdyk91H2fpR73eo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hJIsyqkNrYpQ8+CxSnCg+4UUGjylP7CBEuUYsrIbLtAb5MF5UJJit0yZOfyqkyPEBIIL63y+dhKRQOr9qBs6EkNymo6oD8MDCOhyYhZ2j18G0mbn38FsM0awtNkSQN/tPwFj/FmPHPaNGOlozblb2EoM0gxf6Dude0QlpQcuKGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j/O6A9D7; arc=none smtp.client-ip=209.85.218.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=gxw/cc+lNesgZzn55wre51+CP5HCohQKcMNkUsdR+FR2tseOveOQexrMS7xBUSBE9A5txuUxKJ4WpdlBjc0foSulpCkTskYj3/Lv7MfA/PrczD2jn8N3187e71WBEGsW+ATp44v6zdgk9GZn0h/1yidc1mdGCF58e0LHoAlpePM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IXQQ7YGD; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j/O6A9D7"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abb7f539c35so301421666b.1
-        for <imx@lists.linux.dev>; Sun, 16 Feb 2025 23:32:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IXQQ7YGD"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e04861e7a6so2036430a12.1
+        for <imx@lists.linux.dev>; Sun, 16 Feb 2025 23:33:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739777569; x=1740382369; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1739777581; x=1740382381; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMllDSNz6y9GDkrgwRaQVDA/pIhA4eMkvxsotewnFzc=;
-        b=j/O6A9D73WHzNJweBZ8RffKgtX6bo4ZP87r5Gr5J2ROEMVMfEm0a9wLPiVXPhNozsZ
-         fXJreaNpzpXD8UeG56Uv+35gHr8TAx1Z22lPFwcK66KNrlxceWiWZ0me3YQX+H2dCSgY
-         dI5cf6suPqJakw4wD7E880ms8lnqbEFPbSrYv4XQN02cWgKPgPzQxgn77BRR+re/xoCs
-         j+2pMTEIcdCVEw9Q9EjnCdhKYVw4iYIuaz47qtrGcYAs8h06CPxMdPdGB8TzyMShHpth
-         RFKOXziKuMO3z1pjr/w3lPsmULrsNBObAIb7fEFnSdt0YsvpFsDngnGUyJ50frn38wgv
-         m4JA==
+        bh=rEayik6VOEEEPJcIMY5xwgGCKxgBYCRm7JNtr3cWVws=;
+        b=IXQQ7YGDrwdF6AQpGz6PclB/SX/1jefnYSfhY3NYG+4HZ5xBrI7WtdhpyKfRqyaqo7
+         iOim452kqY0+t26ePxFVj0fJtNr2MRZHHFTWcQ6AcVrMbapTPopSDpbKk5r+D68rxe3I
+         i0itwLtU/ZnNiLETkQf9IMgpE20gu4mr4fMRx+Y+7AQmwcLefJBSC9S6B2afs83ELnNr
+         uTNrD/g94mfCxHLI6+cqn7WTodREOP6HpKT30NV47TtASWlhep4c8okUaAJSaE9WUaaO
+         uUUWz2vb09SOl75sVo8fTF+wRQjrYiAiIBDHCeoKRSmqcqZjMa15GU77JwTOzqlzUfLQ
+         Evlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739777569; x=1740382369;
+        d=1e100.net; s=20230601; t=1739777581; x=1740382381;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wMllDSNz6y9GDkrgwRaQVDA/pIhA4eMkvxsotewnFzc=;
-        b=Xc2ZFmoBNmGR7ewtoJtLqkQAI+qxgL7zRAIushZPrmRUjE691vrJ018aeoMM8YMtHN
-         r5FkrVoH+DjVcqkwx74a/9YXk3P4biaJs3ESWdO/N9fmWnx4OzzRT/35IpVEhy03JsyX
-         H32tB8HkeYKXFgJFEsQGOMTlN9o1yoz1hvt39f55gMAZJvYct9uqeFbjtlKF2dps7tqK
-         3xqxT4j5kb5+J6t6pl+Yp/wcjAVuXtScpQqQYKzxlimnKzMFotoKCbvM8NX8/vizG/ml
-         TP5e5VAqQaJ4oGqT8AENH0aSJesYEk7H0nf25T0wQ9ygBZf7anf+lNhU2GNWFGqvMyS9
-         NSfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkgcDyCnlMtrYbBSrpID0BuVkbtXKodZhr4seNjARnHWogKOSh1W7gXcWd+I6kCNVU79o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRWE1+6sGHUj7lMI6ujyjdJUBnw8Drvt5liE9hG8Ls7GR16xve
-	tptK+ebT7ySo9aX1leIL+1LzTYtLiAgfZYxgx5XpZt4VbM74GWrgeCBxrFTgqqk=
-X-Gm-Gg: ASbGncvAxJLVLAUMlDK3LE1AUUyMb2EMJvikLS+CcYQP6xLKmcqAwN+2VGo5Z/R4ADk
-	lUymJcVCx0tlgpXhFc2+ppT3wyl00LoEWVRR4ejvb9ft4WBfQPr8p4vSdLfYN/wv37tV6Ry40PT
-	fKC1F9/HW/gyw5Mp7VpBPu6ak4N4ncvoQhj7riQIVRSY+QEyVMtT7BGhxh3Ax+JfASf3TjZjGRk
-	XIuwq7lLImNH0tL2p+LW1Q9RszeNC4L6NSh/1fcjCoZcy5uqp/Ow7HXvH23RJpewMam2lV3ZJ6B
-	zo6QyyLtIhXGw2AQ/0Ps
-X-Google-Smtp-Source: AGHT+IHJ6d8K2hnOLwZegjEVoeae7Dajjoxiun/dSlgu+G3MOV8fyQIllsHLSF3ttg4CQNHc/VyvvA==
-X-Received: by 2002:a17:906:2454:b0:abb:9c8a:fbcd with SMTP id a640c23a62f3a-abb9c8afde3mr235343866b.53.1739777569229;
-        Sun, 16 Feb 2025 23:32:49 -0800 (PST)
+        bh=rEayik6VOEEEPJcIMY5xwgGCKxgBYCRm7JNtr3cWVws=;
+        b=H3FiblxwsE8LxBds7ybdZdC4IKVn+T8Pp7lykK4IqKje3cLUmLkFH0XWYzoI9HbWz/
+         xuq2FbyhRicMEM8uczIF8E+EqiAKfTfPm2zktdcQ8heyfrECNB0ll/HJiM4Ok5tioaof
+         q0jX4SnZJUQjEQ+Y+MKrFoiutUjIrBEKYCciryFgukyWio65OOgiIcdzUq7MoZBI1lG4
+         Kl7zm09TaCJjXlovYlAu1nLTnkcoyDGQG3c0S1hPxdZ4gJlZmmigEYKYLASkpUxr+8l0
+         y7dBaThnS8wxQUA0do/FMVAVoZN+BLPcA+exv/eCDiyfgjwXFQz93MBsbALtjWObj838
+         y5fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNoZv4cbOI2JrZIj7NV+8k/qvsvJufO7QQILY3IlezQlf7cHtJtY0nBI090mFezWMO10Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdWTJLtpMuN4rGCBqPpeCea+Jz3fwQJRvLXz/mAcmZf1MrOGvu
+	vPv87/bVPE/NmsccJI1gxKXW3mzwyzZDzSeEiqQocCEmNfAZwDh3kNVm/Ef3zz0=
+X-Gm-Gg: ASbGnctXi7c2kq7j01txOS2bGg0scLifN5vOU61ExzL+AG4FY+p9W1PPT9wzbvmu2Ep
+	vPhPlNeEhw+0XKrxGZtIfKuIU5FXxtVaLEQC5g6nDThqyeeXIFm7AMmrKFAbzwBfreL6Zl5RCJD
+	3e8HTamYKRVHGc4v/jwnXvcKj/HRfD/d687P9Dlsl3tw7Vslfp/YvRHgVUuY37xaGMtl2oMz5BD
+	VZNhBY9kYw1pvdsK+xjTdEU6eae4Ykxzm094qDZo1cruQ8UyvOQN8Xogg3k4Vk8C/cR3oaqPAE0
+	fSRXiEK+mrdBK6/wWLll
+X-Google-Smtp-Source: AGHT+IH5auVQWVVUALzd7Oc0j1nTT3hXLvhxHDF3eAMDVv+bnSi3aCKfLrXYNuutS90Ras7QTpnZRg==
+X-Received: by 2002:a05:6402:2384:b0:5e0:36c0:7b00 with SMTP id 4fb4d7f45d1cf-5e036c07d5fmr7098145a12.31.1739777581089;
+        Sun, 16 Feb 2025 23:33:01 -0800 (PST)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abbac867bbfsm7724566b.137.2025.02.16.23.32.48
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5dece2867a1sm6812015a12.66.2025.02.16.23.33.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Feb 2025 23:32:48 -0800 (PST)
-Date: Mon, 17 Feb 2025 10:32:44 +0300
+        Sun, 16 Feb 2025 23:33:00 -0800 (PST)
+Date: Mon, 17 Feb 2025 10:32:51 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>,
@@ -74,9 +74,8 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>,
 	sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] ASoC: SOF: imx: Fix an IS_ERR() vs NULL bug in
- imx_parse_ioremap_memory()
-Message-ID: <68973636-eab8-4d82-8359-ae2c8f60f261@stanley.mountain>
+Subject: [PATCH 2/2] ASoC: SOF: imx: Fix error code in probe()
+Message-ID: <b30ffe7f-21fd-45f9-9528-d6d689e04003@stanley.mountain>
 References: <cover.1739435600.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -88,31 +87,28 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1739435600.git.dan.carpenter@linaro.org>
 
-The devm_ioremap() function doesn't return error pointers, it returns
-NULL on error.  Update the checking to match.
+This accidentally returns "common->clk_num" instead of "ret".
 
 Fixes: 651e0ed391b1 ("ASoC: SOF: imx: introduce more common structures and functions")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- sound/soc/sof/imx/imx-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/imx/imx-common.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
-index 82057af1436c..5a385d140bc7 100644
+index 5a385d140bc7..b8df8bbacad5 100644
 --- a/sound/soc/sof/imx/imx-common.c
 +++ b/sound/soc/sof/imx/imx-common.c
-@@ -338,9 +338,9 @@ static int imx_parse_ioremap_memory(struct snd_sof_dev *sdev)
- 		}
+@@ -424,8 +424,7 @@ static int imx_probe(struct snd_sof_dev *sdev)
  
- 		sdev->bar[blk_type] = devm_ioremap(sdev->dev, base, size);
--		if (IS_ERR(sdev->bar[blk_type]))
-+		if (!sdev->bar[blk_type])
- 			return dev_err_probe(sdev->dev,
--					     PTR_ERR(sdev->bar[blk_type]),
-+					     -ENOMEM,
- 					     "failed to ioremap %s region\n",
- 					     chip_info->memory[i].name);
- 	}
+ 	ret = devm_clk_bulk_get_all(sdev->dev, &common->clks);
+ 	if (ret < 0)
+-		return dev_err_probe(sdev->dev, common->clk_num,
+-				     "failed to fetch clocks\n");
++		return dev_err_probe(sdev->dev, ret, "failed to fetch clocks\n");
+ 	common->clk_num = ret;
+ 
+ 	ret = clk_bulk_prepare_enable(common->clk_num, common->clks);
 -- 
 2.47.2
 
