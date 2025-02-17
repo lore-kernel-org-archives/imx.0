@@ -1,130 +1,179 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013020.outbound.protection.outlook.com [52.101.67.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A63319CC28
-	for <imx@lists.linux.dev>; Sun, 16 Feb 2025 18:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739729555; cv=none; b=Plrutg2k80c8lu6oMnpM6dxq0R59yAW9WLlu5yBleIyySLcW96kpDZKnwpYNHbMnkYIIWGj312Igb54lueQ/6nyXAlbhkvAjyiIo+SVBv5euxUCTjtCInTr7K+NBkDVQsOixxSGhjuP8QVOiNyHRiQoGK7Cdg43CX80NcD7UumM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739729555; c=relaxed/simple;
-	bh=YUqph/b4fBwdoaZ+voCpRWWS6XtVpDBsEp5ssxllxE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gu7+3hU8Gdk9JvR5W9RVmTKM1VxyAOELxsy5fOKmfwlXRI/QfrlWZFAueM+SEhaTkjzALiNI9+cesFo7fB/kcxjgd2aICnOcG7xPWoh/Ld5fFWxJ0wairG0rzFldO6aujGnA65Iq0VlfVS3XOZBFrBDFwR2qlPKPWBbB9WNjqhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=CPkQAEjP; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0433D168B1
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 02:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739758711; cv=fail; b=LqfNrYybj7WRSsW12wI3jxb7DlAt+rpyjVUOpLaVPvFPUwj6HVbNI7tXDs5t44d/5YH+rUixtyWu+FslIgUJ4RHYN7HYb4ZccAT/nKKrMkVU3A/r2GlBItAhIXi3bo/QCzSj49DV+gR1PQ1MrJJPsyVtQothjX1t9KjCUecRFQk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739758711; c=relaxed/simple;
+	bh=vn1/1wtYMKhV14gqKzupWEL7WXwAFIPpI/TeQxCkmR0=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QzYHqnJvNDKJyAdm0ZaaYu1M44bf9mSm3rbfbHSOZRy8zszQQrBljo1yH3lFaazUX4IQwcM1MiqO2Y0k3ato14wHG/7LZh/m51P7c3TPr7pALBrhtshZt1rl4gsBfkZ2Rkl055q4WgW7U+3Abu0w5hK/6m3moVGTn9O/dy6KH5E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aZzw8bzr; arc=fail smtp.client-ip=52.101.67.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="CPkQAEjP"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id EB2BD240103
-	for <imx@lists.linux.dev>; Sun, 16 Feb 2025 19:12:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739729551; bh=YUqph/b4fBwdoaZ+voCpRWWS6XtVpDBsEp5ssxllxE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=CPkQAEjPnBa5MR3hFiCTLoGm5WOgjljdYK8CgJLa9RhfkOxGtmGnJpUCOws6VCps6
-	 gZWmKg1JvrZu7Q0f8AF6enjkwHUknzXZwebdPDf8lwvDKik2SNp33FJUr60PeNxdLV
-	 TttXSjSntKwQYUNFJcHGI3LXWQvb5DurSBV4gR6kEjTRnjNlqmah+xHEZhgCm0RxZk
-	 OhhMv729+QolRa9B6XZY3PvithW9NTuSKSPCn4VCLQSybQvr1BUGiQI8SSAu2yKMyC
-	 9xwmRC9Y5i1rEqfwFK0qlYyHf2Pu6S+AWeu2eA4caSgAfcKYdzmNUEoatoQeGKHW8x
-	 vFfPvGACC7hUw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ywv5R2d3Hz9rxK;
-	Sun, 16 Feb 2025 19:12:27 +0100 (CET)
-Date: Sun, 16 Feb 2025 18:12:26 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= via B4 Relay <devnull+j.ne.posteo.net@kernel.org>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, j.ne@posteo.net,
-	imx@lists.linux.dev, Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 12/12] dt-bindings: mtd: raw-nand-chip: Relax node
- name pattern
-Message-ID: <Z7Iqir-qaZDt6tsx@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-12-8137b0c42526@posteo.net>
- <87o6zaurv9.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aZzw8bzr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b20tYbCnXS0jbLJ0DV59uIRBFK3Yh7oe1Qr78hZ4EVTp3+nsLMLrDZ4FmgPM9+gUdmx1XG6q+echv1gbUYVwKYhwlJyqK9Sgw4syQureLSROoVpLCBhrawYGN8BBUtIOuE2DAGRrnrAhCVY9RH5YU4EzthTyU3tpSg4D5sH7OBRwviLwh+CZH/DeHHd0zHzTew3MpsuK5oH0bvmTYto65H1/0tC4f1q2XHlnR/BjIBCUjd8Ytxpx8Qt6gbltXG1osrvIUbk9dWU6geRt5SzvTriivBCcjkahks/aQgBq4qKdDAhWle+agg8719N7xcESQbfy2aEYblnwMbPwlLHlJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3cz9kwKRS++UQKst6A6+3R7KQGyt7TUxPHjEH87CLm0=;
+ b=c/Bbx4M/9HROlIL8QkZ69WZsSc6M74ox6HQ8fjc9eLr1zdKU8G0KOUiCCSMmeya0+gJM9NHWZop/uCEtnyC4faCjnmhVI44MEjNBtNBI8XPzNDxlVeB99EPwqUEFcz3nz8JKItiisxQdhWcxdC33NZn/EQPm6mWUjjomlbY/laJFBYFlmsVMOJwccdT4mHn8dmcnCcL0GLZhD2/uy8cOCNpxf28BYjbMYfzqTN56sNj9pCj3BVCdJOcyYuvhvZhkuS9LEKgZPNPAJ1ZngZC3g+Vkgd4coeUcPsutMBjVuUy08YnSqOFmSyJ946mKXVS8xv7vEiMM52zoSJtk9HTJSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3cz9kwKRS++UQKst6A6+3R7KQGyt7TUxPHjEH87CLm0=;
+ b=aZzw8bzr8qXdspszpL/vUzU8C52DwqscZY/ws9dmrSGmTGs4/Jp6NMOGB9vldqGi+L3yG8WR6+gu4Pg6VLytMd3jH0PrwA2ZAB3u7je7UnCoB7x0P6E605z/JGSwJufw4F+/TodDpA3yiqX0Ojpg72/fP9aXS32RJdzTfGMcYxOOM0ikX4OOuUljisLV0lQK5Xtu9Hv2/D9UO/yjoPiMg4L33tO3OTyW2rJxK3UawouvYu19xWHbKdsSwXuprI0BaL7KQV9ig4sg0ZIQ3kTHHG6VqlWRJzrR7SByqyk8puaL2VprHSz/hRtAdNHkBKN39B2T9rtMr/HkcwuA8JoMkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by DBBPR04MB7865.eurprd04.prod.outlook.com (2603:10a6:10:1e2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Mon, 17 Feb
+ 2025 02:18:25 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8445.017; Mon, 17 Feb 2025
+ 02:18:25 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v3 0/2] ASoC: imx-card: support playback or capture only
+Date: Mon, 17 Feb 2025 10:17:13 +0800
+Message-Id: <20250217021715.284951-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0103.apcprd02.prod.outlook.com
+ (2603:1096:4:92::19) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87o6zaurv9.fsf@bootlin.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DBBPR04MB7865:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0d5107c-fde3-45f4-56eb-08dd4ef95b2e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|52116014|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?G8MT9BKGj4o0V8W5y1DLBGElX9kMxcXrVxJsI9Jg0mAa1eBWTWUSi95OnVAq?=
+ =?us-ascii?Q?zfIyjtAFVsMSY78qkcz7p0IOUKkqoVf8Uh2M6/BBOuEXXK6Rn+5ia+Gz8nPE?=
+ =?us-ascii?Q?CTJlnjErL6Jrj9VGtbn9H8ZDbk1MBfuHxZfeQBsUCE47T/nJDuOxcaxCjO/j?=
+ =?us-ascii?Q?AqQIahxTwbsHtwue+i2kAbzmB4DatnAb6DfUYaaFTsTqbjkZv0Mj9hQdAYJE?=
+ =?us-ascii?Q?L205IQyyGegqnVHANELualhG5dL5lZJjn6Wn18iz6cpNiQgZNKcgM6LrF+6z?=
+ =?us-ascii?Q?n/po4eBZiuXEEHlYFVMavYUBjfaiOTg6/FNHykPudxAk7QzxAFlMOov24QU8?=
+ =?us-ascii?Q?G0PNjNpzT2WzpPN8T/q8oe7GGmyXsiOz6uAfOMdW4sacBX7Kwt+YHflYJ5vQ?=
+ =?us-ascii?Q?H5PinBDPZFFypv6tGXeiZegdWYn0MT26piD9hlwv/E09WEWmSA0rkXqlnOAv?=
+ =?us-ascii?Q?HQeCm3HQD9obA4nw+tmy6IdMvl7yZlwFlxoX3woT2CnuZKQpDA8m4lTjhg8n?=
+ =?us-ascii?Q?iHTJ6fwowvi6fM1Ul3N1A9wKdBs3tyRZ+cYh5/y7tFa7RftKnbscyAJtbsCk?=
+ =?us-ascii?Q?uMxjMyA/lP8V09RoCyzlMwzcon5dqNzkebxDwaKHEVDvCzUi3LTGpXTk9tp4?=
+ =?us-ascii?Q?YyME7u5AhTgTw1jUUNzJ34hyw8v7ZEJIr6HlpYHcCu/9f+4WioyXmOgUSA5a?=
+ =?us-ascii?Q?rF8zB+7wVwtFyhCZpPLje8YU6zbSBsEQjUsKDmecq+A7UjSNvTU0Iq1F7JyG?=
+ =?us-ascii?Q?aisLaIR+u378vB/DCtqmMynkofKxVXJnE8unowpx+MEUXWiCPJbpLQWZuvrj?=
+ =?us-ascii?Q?t9LcRo3qXSYsOZwOV7fUZiqcPYSUhrmV+yvxVkb/hMMTVGMC7wQj7T7WHXFV?=
+ =?us-ascii?Q?iRh9sjDlKEe1FK3YxFIBBIv5lx7SR3D+i96/utcBHiEv+wWQrozsgygMXeOq?=
+ =?us-ascii?Q?/l0JDRkNNxebp3YmvKQjD2xs8Ne2fBOGdT7mCCbSmqY54JfDgMRBBz/OAjQc?=
+ =?us-ascii?Q?H74hxR6bU+Ks7kLvgJEzHzLcZq1Rfk7PtxfaLwwk93SxzJ57WNlOgtddhDK4?=
+ =?us-ascii?Q?jTQkfm9xV0z/Mpzu1KbZtfzlCz7PLLj39v42qNUyoftvH3q5cJKnnUVqpxnW?=
+ =?us-ascii?Q?ciatDmpKyUG1BE6tyAy88Qw+tYTHOiQ5sEp/w7EiInRiyo2rqyo+rptYUqgf?=
+ =?us-ascii?Q?M8KxHkXEBfuWkkjokWRpQi0gIzy7S+e6waCu0g6IOrJcBsuWt8HYFIka7PbK?=
+ =?us-ascii?Q?94/dbncdChpqxoDE/EPs3Jq5mArJo86seZr06YzqMUeOlMgJhZwMiK+A2ICv?=
+ =?us-ascii?Q?tx07TGVgImeCY7EQx+OCUxzJs9e3pYKF7JuaAaX/HYi2yjQ3NbbCdaw8BFWo?=
+ =?us-ascii?Q?rcGcoEPIA7xGAP4S1SQ2d3Ws50clWT33ZrrA/WqZKaQv5qv8nNJ6vvuhwGAx?=
+ =?us-ascii?Q?5aisSHZAZ9FeAsF1wchy7sMpsgnlJ+hoIYB0mIOddSbMHUoRYdIb6Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(52116014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fAiGg/kwoZa9qrOeC0hqPB4/PlLbuxdvAOEXnvipCo5g/2vR7UM6pwD8BCRN?=
+ =?us-ascii?Q?Ov14//OWQWQOt2RwX6LkZyLCc+OsllMqRZlGvoF9hEqxNgis1Yt/xqRaG09J?=
+ =?us-ascii?Q?PfJ5svSA0W+77AS2qyjkh+sVEICEg6nKCv+NlqRc7NzAbkg2zH8hMZQRhyUP?=
+ =?us-ascii?Q?Z9VuFQTpyjl73e8AdA1UTEjRfdyqzjaf+i5xLbkFEnub0MX0rim6nAtW2BgU?=
+ =?us-ascii?Q?M1fSIYP1558TR4VLXGIXVtBtPuEWm3kBWFFroGZkrzQ0j6z0OXV5uy9dLqN8?=
+ =?us-ascii?Q?W5uVj60ecqf48a3bO15b20woufOoCBM9XbLwji4Q7d9MoFeJ1JFM6TtR6+Pu?=
+ =?us-ascii?Q?7MpVgssJPQRmjZv/zYkWrZXtFz1N4xzC7UpPaXe7HFNgT9Tdb81Lgs68RcBk?=
+ =?us-ascii?Q?mhPQ+5AP4hsDhvSshUCgvGf/Eet5G5x2dmm2xxOE5yBFySiuL2WW+pyTUwqv?=
+ =?us-ascii?Q?50mlJgGL9Jp+lm14gt2ebqNJ0inFeuILBLo8AF2gpboARgKABv2plP/cuOqb?=
+ =?us-ascii?Q?8kTAwmfPftv9WeGHiXSmYKGKjc/urnJI/giQSnnVl3YyD3jS9LjhT+VkshGw?=
+ =?us-ascii?Q?U7XXbW/mFp/V173YlUfOgFjckyQfE57HUk/dyaLl2MOcH36g4tY+qcB0IQPd?=
+ =?us-ascii?Q?eJ2XK0oknJFj4b+ei2/9rUX3pmwfstW/bNypk/+Rj41/x+AKEuRfhZLtk2qu?=
+ =?us-ascii?Q?wSUd/ou59/OUMt6BxFuI+7jbkVkwae1Sqw2W7Wpz/wVXbgINzdz13x2yB6xn?=
+ =?us-ascii?Q?WwDDEB+ID66lPH8EesRjFP0G/avCuvk430yRBvNUgVYO5ulU7uxX8nBmNFsH?=
+ =?us-ascii?Q?fuBSCZGLo3vUnaQd7/8LJTWDLamBH87MlzRnSW7I/R+RT0bxuPzXcY4VcqUq?=
+ =?us-ascii?Q?Lm2ljyRPX5+LiMOBdu0yc1OguXGk0iOJohWTE4i8wKAbl6KO9/T/W6wvRTPi?=
+ =?us-ascii?Q?uyBeViq4qGm04AyKalAiEc4fbSbF5f2f35zo/kT8myWkWXkV8dqAuhmnirpA?=
+ =?us-ascii?Q?wwKof/reAD92iLJAwGNMBIa+OmpXRvoL/r07Lk0V3V1vwPCd8vcoLXMgyWQG?=
+ =?us-ascii?Q?MGbH5C/2+57oD+K8prb1SxhoSXym3HCp+ZC9N0PbLXIidsio/69cq4KzCttW?=
+ =?us-ascii?Q?G6DUxqxvtyv/0k9isgt0esjKDdaAUkkULnTzbM/oalcomdu9o8YqY6ns8XfX?=
+ =?us-ascii?Q?FuZChqs6Vo1BOKPbI/C+Adj13JpObkdVk/xb+I6nEUTQL963EjB7LcB/xYb1?=
+ =?us-ascii?Q?L5SNgoKy8e/zIrbn8ph72fHo3rkgNQFu4Z+D45dvwaPXuo9TM/qKveBs5fBk?=
+ =?us-ascii?Q?bz3GkhOhuL1YVaNgmUa6FYRI26x1zsBKhBpI+nn2BD3jdPXK4tqxwOZW6kqn?=
+ =?us-ascii?Q?L+O/IH/Rc45YAOVybcgP43UtrwrFmTW1adogiauAAWFJ4xXSzJiEOv++A2no?=
+ =?us-ascii?Q?EwOCTm0Wue0ZZuXnX9U8m/G1/RZgyrapGRQVqYZYzKprWKFWfNBgzPQkdlp5?=
+ =?us-ascii?Q?CF/MS/czPTVnXEHGB4N+n31vKrViMxa2aTuAlebOLHkMpd9eQmsogRMO6Msv?=
+ =?us-ascii?Q?7WJ7RrSE0k2dPROUNY3yJY+FekTGhMezSpKgATkQ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0d5107c-fde3-45f4-56eb-08dd4ef95b2e
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 02:18:24.9390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fgm2iGA4e8ECHtec44S5Pp5ncTpw8GLdU6f0mnpUbcSBxdKZQeQ9CNIYD6t7sM2vVN6CnvtQRi2U13vPklWKNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7865
 
-On Mon, Feb 10, 2025 at 09:27:22AM +0100, Miquel Raynal wrote:
-> Hello,
-> 
-> On 07/02/2025 at 22:30:29 +01, J. Neuschäfer via B4 Relay <devnull+j.ne.posteo.net@kernel.org> wrote:
-> 
-> > From: "J. Neuschäfer" <j.ne@posteo.net>
-> >
-> > In some scenarios, such as under the Freescale eLBC bus, there are raw
-> > NAND chips with a unit address that has a comma in it (cs,offset).
-> > Relax the $nodename pattern in raw-nand-chip.yaml to allow such unit
-> > addresses.
-> 
-> This is super specific to this controller, I'd rather avoid that in the
-> main (shared) files. I believe you can force another node name in the
-> controller's binding instead?
+Be similar to audio graph card, support playback or capture only for
+imx-audio-card.
 
-It's a bit tricky. AFAICS, when I declare a node name pattern in my
-specific binding in addition to the generic binding, the result is that
-both of them apply, so I can't relax stricter requirements:
+imx-card can't directly refer to audio-graph-port.yaml, because it is
+not based on 'ports'. Add playback-only and capture-only property
+directly
 
-# raw-nand-chip.yaml
-properties:
-  $nodename:
-    pattern: "^nand@[a-f0-9]$"
+changes in v3:
+- add mutually exclusive expression
 
-# fsl,elbc-fcm-nand.yaml
-properties:
-  $nodename:
-    pattern: "^nand@[a-f0-9](,[0-9a-f]*)?$"
+changes in v2:
+- wrap at 75 chars for commit messages
 
-# dtc
-/.../fsl,elbc-fcm-nand.example.dtb:
-nand@1,0: $nodename:0: 'nand@1,0' does not match '^nand@[a-f0-9]$'
-        from schema $id:
-	http://devicetree.org/schemas/mtd/fsl,elbc-fcm-nand.yaml#
+Shengjiu Wang (2):
+  ASoC: dt-bindings: imx-card: Add playback-only and capture-only
+    property
+  ASoC: imx-card: Add playback_only or capture_only support
 
-(I changed the second pattern to nand-fail@... and dtc warned about it
- mismatching too.)
+ .../devicetree/bindings/sound/imx-audio-card.yaml  | 14 ++++++++++++++
+ sound/soc/fsl/imx-card.c                           |  5 +++++
+ 2 files changed, 19 insertions(+)
 
-Perhaps I'm missing a DT-schema trick to override a value/pattern.
+-- 
+2.34.1
 
-Alternatively (pending discussion on patch 11/12), I might end up not
-referencing raw-nand-chip.yaml.
-
-
-Best regards,
-J. Neuschäfer
