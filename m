@@ -1,85 +1,120 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5A4217727
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 11:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51DA19F128
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 11:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739793393; cv=none; b=IxOklGfP/sbvdE6CkgbnBpnrTHmkrDR7hOdJq8VT+Pa4zSzzaaf4A75RKKGTyzbeoo7CfqFWBkHJIzibpAwfM0iqilh2i0NxGLP0JJ4tRBhI1NHB0DHOFi4aQH24tqKdUVqHl/uAmX53T4w0Mut5qXmhE+qy3hJvIzzP1DP7LOw=
+	t=1739793491; cv=none; b=SabnsPeZK+ua5ziEtvH14/VS865XhDB9fnAkWte6ki0FHiSk3QQHFGvWtkpsEZOaaQN/IzFVzm986aUTDEaUZvatkSwjCD1ubDUAVbM6jF2Ai9CwJJEjcFwiUZrcdKKulITq15wC6vzQbSSymrh/+GSPehtnhGVg/oqVvvaOzzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739793393; c=relaxed/simple;
-	bh=RWb9c12CAhxULoD0dTGRwfEz9mcz+7D1z6r/WQDA7rc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gsJwmLBrlKoyTnSgDUhX6HBNDwK9en4gSzmH5QeVh4bauYtEIiyXu5i+sucH2IuqbpivytIRZF8AiTSTR+XLoSilBiif6cfv2ktjXfsQswSA/kORIGXaJAGokSbrqY9JF8dLUcITipIMhsbiB6vyRO3Eyfr/gUw9LzGwsQ5AUU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LPZMEsTo; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LPZMEsTo"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3072f8dc069so43449191fa.3
-        for <imx@lists.linux.dev>; Mon, 17 Feb 2025 03:56:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739793390; x=1740398190; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RWb9c12CAhxULoD0dTGRwfEz9mcz+7D1z6r/WQDA7rc=;
-        b=LPZMEsToHDhIQCjs268JZG0wWLzq/INFvbmM0MMKqCpW8neZ1XJpok7+H07p1D9+T+
-         qZVqKVJmHH/n7v+Th+suB+3jKMA57uSlieOxQEEKjRwGaMxyPPd+dlHyFT/p8ghyt8rG
-         XhKgLEYJ1YqZTV/vFbsWE3P5DKjY43LE+Dkr8XL6Nq6LFP2gq4kqtalDFIMyd13EAgIY
-         Inwo2ltC4MovUj2a4Y4JAwFiad+lYKEKLIuVkUUvNojrq9fSYrcM154T2V+oWAhTzZxJ
-         PVM7xo6ArPm/3lxT2tCOMr12UJ44JkIdWyfUx08ALKYshjF5zL8a8m/hm93I4xqw6Jzq
-         8luw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739793390; x=1740398190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RWb9c12CAhxULoD0dTGRwfEz9mcz+7D1z6r/WQDA7rc=;
-        b=EcxdZ9MsZAKVL7PByYhXLa6FX8n6EGloBAhX6VhTyZEMPiQoSijL9URloF500TFg15
-         rW7aRQ5LyI5ZDp4bfhL6k+qIcI9uRMCx7JMqTzNQiA3Ag7tuW4LdIuVncVeOJVcNsTQu
-         UYYxbAKpTR8DWOSi/ewYyB6G9TMG5hf8tbjxkX0RhBmAvsUfGV9vbOAs3i+1+mVaVsec
-         bSipYy3guV4CV/uq5fCszA5r9UjrkTNs4vaJ9S5j4R/SlrxDHje/LgKvDAc7pV38sZwc
-         AARkYu6g6itt4XpJk4K82znmK/N23qvzRFQW5ERx6Apt7zuYx/sNcFRdX2kvtiEeGNR5
-         DoOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVT5Ttj02i4qDJCnLLtu275mh/gILhlKqRnwhsYlLSt4L06PJTaH5M73jcahn+iVoVV8cY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxfE/g64YQZ3/ocMJqgpbwTHW9b01i5HfvA8/xdYilERPTJJoc
-	lrPupHAcxt/C4hqkmx03yyOCOKrmq87IIgIIln0sCNYQyxhMSonCbVnu/1eznXnqyzeYTfYpB5Y
-	gmIAjlHb+PwFrw9MXtp4EFOwQwdY=
-X-Gm-Gg: ASbGncsLojqxhy1FPu7CsxCMb0dKegYclONCxPvhjqzaelKnlXcMBzvUQwsBUG5ysY5
-	O5ClvdAEDMad3oiAAZmydJvEpI0ew3/DWI39gKPcpFamZTCeZziYW0hIwmIJcm8r9MqAuXmbBH5
-	KMOApH8IHjVA==
-X-Google-Smtp-Source: AGHT+IHtj/ZdhxXotccy9rIWf5rf13ssM1qX/siRW2ohOQo19dHThB2bEMb7IsViEOJydxxoEPlta3cBjBRhxTyDCxM=
-X-Received: by 2002:a2e:9e11:0:b0:309:20b4:b6d5 with SMTP id
- 38308e7fff4ca-30927ad53aamr22443111fa.28.1739793390003; Mon, 17 Feb 2025
- 03:56:30 -0800 (PST)
+	s=arc-20240116; t=1739793491; c=relaxed/simple;
+	bh=4K6gXcxJjr+/ELA0VBoOf+wv2Xuouq4wr3eDs5ggyJ4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PXFvKzi5EoLCFzEoPVc4ib5Ue+1iwMPlkYx0m4B6no79Ypp2DgzpM4Ti6VxPGzSmrnlKqhsKWuVzQ1UxQQHlPHdhlVDuMc56/sLs8gFrlUTUkeQb+eeXf/dG1gYgZB5MesZp4aW134Z0AhZZqaZNWX+2SuC5wIYIwlZOMaLbWO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tjzlC-0003zP-JD; Mon, 17 Feb 2025 12:58:02 +0100
+Message-ID: <ab721b4a96495516f5149e91f3e4764014e39ba6.camel@pengutronix.de>
+Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: improve imx8mq emmc/sd read
+ performance
+From: Lucas Stach <l.stach@pengutronix.de>
+To: ziniu.wang_1@nxp.com, adrian.hunter@intel.com, ulf.hansson@linaro.org
+Cc: imx@lists.linux.dev, s32@nxp.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de,  linux-mmc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, haibo.chen@nxp.com,  kernel@pengutronix.de,
+ festevam@gmail.com, linux-arm-kernel@lists.infradead.org
+Date: Mon, 17 Feb 2025 12:58:01 +0100
+In-Reply-To: <20250217110623.2383142-1-ziniu.wang_1@nxp.com>
+References: <20250217110623.2383142-1-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250217110623.2383142-1-ziniu.wang_1@nxp.com>
-In-Reply-To: <20250217110623.2383142-1-ziniu.wang_1@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 17 Feb 2025 08:56:18 -0300
-X-Gm-Features: AWEUYZmHvY_1XI6VdOUomFMuvpcQrKJqSxvERooJApcoU_Ugmh026Kvs_8J2YQo
-Message-ID: <CAOMZO5AaLxmaz+c2z5W2M1SV+55pMmhKC2-oqt7_vh1TM6jr3w@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: improve imx8mq emmc/sd read performance
-To: ziniu.wang_1@nxp.com
-Cc: adrian.hunter@intel.com, ulf.hansson@linaro.org, haibo.chen@nxp.com, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	imx@lists.linux.dev, linux-mmc@vger.kernel.org, s32@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Feb 17, 2025 at 8:05=E2=80=AFAM <ziniu.wang_1@nxp.com> wrote:
->
+Hi Luke,
+
+Am Montag, dem 17.02.2025 um 19:06 +0800 schrieb ziniu.wang_1@nxp.com:
 > From: Luke Wang <ziniu.wang_1@nxp.com>
->
+>=20
 > Compared with kernel 6.1, imx8mq eMMC/SD read performance drops by about
 > 30% with kernel 6.6.
+>=20
+> The eMMC/SD read thread will be put to sleep until the hardware completes
+> data transfer. Normally, the read thread will be woken up immediately
+> when the data transfer is completed. However, due to a known ic bug, if
+> imx8mq is in cpuidle, it will take a long time (about 500us) to exit
+> cpuidle. As a result, the read thread cannot immediately read the next
+> data block, affecting the read performance.
+>=20
+Is this really a problem with the upstream kernel? i.MX8MQ upstream
+does not use the deeper PSCI idle states, but only uses WFI, so I doubt
+that upstream is affected by this issue.
 
-Since this fixes a significant performance regression, what about
-adding a Fixes tag?
+Regards,
+Lucas
+
+> Kernel 6.6 uses EEVDF as the new scheduler, which affects cpu scheduling
+> and cpuidle behavior. With kernel 6.6, the cpu which the read thread
+> resides has a greater probability in cpuidle (about 80%), while with
+> kernel 6.1, the probability is only about 20-30%. For other platforms,
+> this does not have a significant impact on read performance because the
+> cpuidle exit time is very short (for example, imx93 is about 60us). But
+> for imx8mq, this results in longer waits for the thread to be woken up
+> while reading eMMC/SD, which drops performance.
+>=20
+> So for imx8mq, use the ESDHC_FLAG_PMQOS flag to request the cpu latency
+> QoS constraint. This can prevent entering cpuidle during data transfer.
+>=20
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>=20
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-=
+esdhc-imx.c
+> index ff78a7c6a04c..b3bf9c171d46 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -337,6 +337,15 @@ static struct esdhc_soc_data usdhc_imx8mm_data =3D {
+>  	.quirks =3D SDHCI_QUIRK_NO_LED,
+>  };
+> =20
+> +static struct esdhc_soc_data usdhc_imx8mq_data =3D {
+> +	.flags =3D ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+> +			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+> +			| ESDHC_FLAG_HS400 | ESDHC_FLAG_PMQOS
+> +			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
+> +			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
+> +	.quirks =3D SDHCI_QUIRK_NO_LED,
+> +};
+> +
+>  struct pltfm_imx_data {
+>  	u32 scratchpad;
+>  	struct pinctrl *pinctrl;
+> @@ -381,6 +390,7 @@ static const struct of_device_id imx_esdhc_dt_ids[] =
+=3D {
+>  	{ .compatible =3D "fsl,imx7ulp-usdhc", .data =3D &usdhc_imx7ulp_data, }=
+,
+>  	{ .compatible =3D "fsl,imx8qxp-usdhc", .data =3D &usdhc_imx8qxp_data, }=
+,
+>  	{ .compatible =3D "fsl,imx8mm-usdhc", .data =3D &usdhc_imx8mm_data, },
+> +	{ .compatible =3D "fsl,imx8mq-usdhc", .data =3D &usdhc_imx8mq_data, },
+>  	{ .compatible =3D "fsl,imxrt1050-usdhc", .data =3D &usdhc_imxrt1050_dat=
+a, },
+>  	{ .compatible =3D "nxp,s32g2-usdhc", .data =3D &usdhc_s32g2_data, },
+>  	{ /* sentinel */ }
+
