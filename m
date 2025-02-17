@@ -1,44 +1,43 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94883215F70
-	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 10:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6C819994F
+	for <imx@lists.linux.dev>; Mon, 17 Feb 2025 10:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739786803; cv=none; b=NJoZQOdB8hfw/KehMSm4PAx3BcHuhB4CzBPCa4btTihDWVQMs+B7hxBzNcudGV4A3Wx/ICy3KALm1f8H8/GrIrjons5WRdDhp0hCf4CBW7L4fCAnW/DjGn/FoyfJWxfVUTqTmfUGkF/IX49oftVuQfTb+8FLPGFTCRIzd24K330=
+	t=1739787123; cv=none; b=Q//DP80iFPLEdrYhPGUJO8VRgH6LiVSFJtYztWuYolUTNPspV7UN73VsbIHk5uj57am93pZYRCZxsjd1bt2VmRJzG3x3QqpcSowPEUYkh/XgD7T+27rBWSbuoYBm7Xh+ODU73cLAoFZGqCkvTbQVBJAz0Gmju6nghKmKlq7JLgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739786803; c=relaxed/simple;
-	bh=DORebK+rJAkcdpfoUg2yLd6mXT11QhnNS8Ys58jtV1Y=;
+	s=arc-20240116; t=1739787123; c=relaxed/simple;
+	bh=Dz/mc4M7A7lcIj44Btvtc/c5kfNMPa3gssZu8LopwoE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aMK4pzfB0tdfrUigZodRY9ryVljnag3bYOxMuvV+auGydYv7t53VZg8lNXuocOmO4ek7Vk3nWkdqnarj8B1Zxq+OQ78HOa1wsaU9s/+dGwntI8eHbCebNworGG5pmHHRh+JZSm1Y2/frgCSiTrlaEMTzPI+uAKzvkVr+mYC+oT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hORx4vwo; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=jdnTM+SAm8u+hpb/GCLVH+Yo82hNwD+4OuD1qZZuo7gRqNSy1L03jFtdz9RJ4y2Aennq5qcCmtBWgePrScbckBkruNr4XRB+fCMEheCEHxLjbgb/rHtOX+HLirqIIE19/DoaP8pYZCE91QIfSNhvO6adMNyxqSYwSSMi3XzdhGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qCELh/cv; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hORx4vwo"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qCELh/cv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=jLolwAPvGVxT6aAEjL3uBdU5olsoXzQXTlC8GliVIF4=;
-	b=hORx4vwoIpdqKgJlUC3/ma9uoQDd0rMVBbSndCHQr2X9D+MakWX6BD+LBIbW8G
-	P4qnO8OdzRgydsARR56PTkD5kxBOVFq5mGG/cgs1UwQSkxXxYmCopfxETjCOX4ye
-	2w4He0t2ffaNutgVbo7wr8qS/S5RsouKfSUv5uOX9mu/M=
+	Content-Type; bh=FKkPX8SSsZZubXRSv3O7mjjd5d5lK8W3Iit7i4K0x3U=;
+	b=qCELh/cvx9nCT6quI4lzHZYumKBpmnKj2xFQCw9dSGHy9efbOzhPpiAbQHnUqx
+	Xp1/oOA20xiMTDk6COOjQNUMgfDUx+54jnB7YCT4qZWi7VbVfvryrk4m1KOqhmHK
+	1fvAzsweWtsOzRMKtaFZmUO4YUXy8qQWYrpUn1j47Z7lk=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAHTzUQCrNn4KomCQ--.17144S3;
-	Mon, 17 Feb 2025 18:06:10 +0800 (CST)
-Date: Mon, 17 Feb 2025 18:06:08 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgCXW7BcC7NnpRIUCQ--.16375S3;
+	Mon, 17 Feb 2025 18:11:42 +0800 (CST)
+Date: Mon, 17 Feb 2025 18:11:40 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v11 2/3] dt-bindings: arm: Document the btt3 i.MX28 based
- board
-Message-ID: <Z7MKEBkiBatFl54o@dragon>
-References: <20241107085705.490940-1-lukma@denx.de>
- <20241107085705.490940-2-lukma@denx.de>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v2 13/15] arm64: dts: imx8mm-phycore-som: Add overlay for
+ rproc
+Message-ID: <Z7MLXJkmcTuq3ZHn@dragon>
+References: <20241202072052.2195283-1-andrej.picej@norik.com>
+ <20241202072052.2195283-14-andrej.picej@norik.com>
+ <Z3Ie8GO/GtoSkIr3@dragon>
+ <221c8216-ce71-4ba2-9981-8612ff33ec2a@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,18 +46,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241107085705.490940-2-lukma@denx.de>
-X-CM-TRANSID:Mc8vCgAHTzUQCrNn4KomCQ--.17144S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4Xo2UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERn2ZWey2VbYUgAAsL
+In-Reply-To: <221c8216-ce71-4ba2-9981-8612ff33ec2a@norik.com>
+X-CM-TRANSID:M88vCgCXW7BcC7NnpRIUCQ--.16375S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CryDKw4xZF43ZrWDZry5urg_yoW8uw48pr
+	y7uayUKrs2gF4xCrZIqw4DWryqy3W3XF43u34DZr1vgr4avF9FyF409ryfuryjqF4kZw4F
+	vF4fZFZF9wn8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFdgAUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwL2ZWey6E2ehQAAsx
 
-On Thu, Nov 07, 2024 at 09:57:04AM +0100, Lukasz Majewski wrote:
-> The imx287 based btt3 board is very similar to xea in terms of used SOM
-> module.
+On Tue, Dec 31, 2024 at 08:34:32AM +0100, Andrej Picej wrote:
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso
+> > > new file mode 100644
+> > > index 000000000000..0c61946f0cf8
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso
+> > > @@ -0,0 +1,55 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +/*
+> > > + * Copyright (C) 2024 PHYTEC Messtechnik GmbH
+> > > + * Author: Dominik Haller <d.haller@phytec.de>
+> > > + */
+> > > +
+> > > +/dts-v1/;
+> > > +/plugin/;
+> > > +
+> > > +#include <dt-bindings/clock/imx8mm-clock.h>
+> > > +
+> > > +&{/} {
+> > > +	reserved-memory {
+> > > +		#address-cells = <2>;
+> > > +		#size-cells = <2>;
+> > > +		ranges;
+> > 
+> > I'm getting this:
+> > 
+> > arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:16.3-10: Warning (ranges_format): /fragment@0/__overlay__/reserved-memory:ranges: empty "ranges" property but its #size-cells (2) differs from /fragment@0/__overlay__ (1)
+> > arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:13.18-43.4: Warning (avoid_default_addr_size): /fragment@0/__overlay__/reserved-memory: Relying on default #address-cells value
+> > arch/arm64/boot/dts/freescale/imx8mm-phycore-rpmsg.dtso:13.18-43.4: Warning (avoid_default_addr_size): /fragment@0/__overlay__/reserved-memory: Relying on default #size-cells value
+> > 
 > 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> I see, missed this before, sorry. But I have some problems fixing it.
+> I think the problem is that this is overlay, the same node put in the
+> imx8mm-phycore-som.dtsi doesn't trigger a warning.
+> The only solution that I found is that I specify the default address-cells
+> and size-cells in root node:
+> 
+> 
+> &{/} {
+> 	#address-cells = <2>;
+> 	#size-cells = <2>;
+> 
+> 	reserved-memory {
+> 		#address-cells = <2>;
+> 		#size-cells = <2>;
+> 		ranges;
+> 	...
+> 	};
+> };
+> 
+> The same values are used in imx8mm.dtsi, but the checker fails to find these
+> default values.
+> Not sure if this is the right solution, though. Your input would be helpful,
+> thanks.
 
-Applied 2/3 and 3/3, thanks!
+Unless DT folks have better suggestion, I'm fine with this.
+
+Shawn
 
