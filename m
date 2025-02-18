@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB122FAF4
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 09:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D381A22FF22
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 09:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739870818; cv=none; b=RmBaaUmOkpIx5/D5uPG9RNn46S54Ucd0hBx3vj2vB+IjH7ZiqRBaZSv4A34w2ew+0dwsbgoeh3PmAjdHKxRVX6V8WVXjRoKEjlX6/M2flHrlSnHdJuW+7K7l8G5jg0c995dAVPy0HzhibaSfBmKTbqNiqaUifoepgo0phckThi8=
+	t=1739871030; cv=none; b=sMzQv5Rg5+yEFACPXboI1WVfYP+bJqn4+tWhR2toPEtGTWpeuLNhJfU8rWBpFUo2fcRKhO3jqbxN8pkvwIuXh18/xrk0ttftnhgtRAsVkQ/3c8JIWxkmLcL3msNEkCXswN8KTAoE1gFdL8OPGHY21+Lo3Y3Vp1CEJNer5U4uPBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739870818; c=relaxed/simple;
-	bh=6kdZz7JEVszrBQdOmYo2rkSsPnrkn5e23YCMl5/kSac=;
+	s=arc-20240116; t=1739871030; c=relaxed/simple;
+	bh=cg5O2OkrwSnA+FumOYLYWoy2fd0/MOD8QVua1Iy+75w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uQKWeszfKOBDLJKYZIapoI+BA8ZULv/IGUs2e+Yzssl7UQXyB6qOFaVrywCikz7kscGGlBpN6P+jq7IFAjdDHOFl4Y2f6lXYGo/kiiXJzw/TlFQdaHQ5RdWMsyFOq0ukREarHQur3TxyWbyRjwJShdumHbNPCnChvT/6piBm+sE=
+	 Content-Type:MIME-Version; b=BxZZxD2XtH06eYoxjXzKQcJHE9qjSD84KaMw8TQJsa7yWmwYaGAq0b84+TUUJW3PJIXzWd3N7u57cDHcbA4GmxkQ2TgqmPV/Ec7ucXJTv4yunKMbwNfwI0QGE9pn+fpuM4JVB/FcPri1+F32W6R6ZGkn+7uvsl0JZ0x4LbRIUhM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJsU-0001Pv-W7; Tue, 18 Feb 2025 10:26:55 +0100
+	id 1tkJvu-00028g-Id; Tue, 18 Feb 2025 10:30:26 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJsU-001Yuf-1d;
-	Tue, 18 Feb 2025 10:26:54 +0100
+	id 1tkJvu-001Yva-0p;
+	Tue, 18 Feb 2025 10:30:26 +0100
 Received: from pza by lupine with local (Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJsU-0003Kt-1P;
-	Tue, 18 Feb 2025 10:26:54 +0100
-Message-ID: <86ba9d0c48441a5cb725fb31a7d43dc0d97ee7ea.camel@pengutronix.de>
-Subject: Re: [PATCH 2/5] reset: imx8mp-audiomix: Prepare the code for more
- reset bits
+	id 1tkJvp-0003Ot-0Y;
+	Tue, 18 Feb 2025 10:30:21 +0100
+Message-ID: <be4e8fe598f8a56210154c40d8a6d973a3fbeee1.camel@pengutronix.de>
+Subject: Re: [PATCH 3/5] reset: imx8mp-audiomix: Introduce active_low
+ configuration option
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Daniel Baluta <daniel.baluta@nxp.com>, shawnguo@kernel.org, 
 	mathieu.poirier@linaro.org
@@ -41,10 +41,10 @@ Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
 	linux-remoteproc@vger.kernel.org, iuliana.prodan@nxp.com, 
 	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, Frank.Li@nxp.com, 
 	krzk@kernel.org
-Date: Tue, 18 Feb 2025 10:26:54 +0100
-In-Reply-To: <20250218085712.66690-3-daniel.baluta@nxp.com>
+Date: Tue, 18 Feb 2025 10:30:21 +0100
+In-Reply-To: <20250218085712.66690-4-daniel.baluta@nxp.com>
 References: <20250218085712.66690-1-daniel.baluta@nxp.com>
-	 <20250218085712.66690-3-daniel.baluta@nxp.com>
+	 <20250218085712.66690-4-daniel.baluta@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -59,136 +59,66 @@ X-SA-Exim-Mail-From: p.zabel@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Daniel,
-
 On Di, 2025-02-18 at 10:57 +0200, Daniel Baluta wrote:
-> Current code supports EARC PHY Software Reset and EARC 	Software
-> Reset but it is not easily extensible to more reset bits.
->=20
-> So, refactor the code in order to easily allow more reset bits
-> in the future.
+> For EARC and EARC PHY the reset happens when clearing the reset bits.
+> Refactor assert/deassert function in order to take into account
+> the active_low configuratin option.
+                            ^
+                            missing 'o'.
+
 >=20
 > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > ---
->  drivers/reset/reset-imx8mp-audiomix.c | 53 ++++++++++++++++++++++-----
->  1 file changed, 43 insertions(+), 10 deletions(-)
+>  drivers/reset/reset-imx8mp-audiomix.c | 45 ++++++++++++++-------------
+>  1 file changed, 23 insertions(+), 22 deletions(-)
 >=20
 > diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
 imx8mp-audiomix.c
-> index 1fe21980a66c..6b1666c4e069 100644
+> index 6b1666c4e069..8cc0a6b58cbc 100644
 > --- a/drivers/reset/reset-imx8mp-audiomix.c
 > +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -12,7 +12,30 @@
->  #include <linux/reset-controller.h>
+> @@ -23,16 +23,19 @@
+>  struct imx8mp_reset_map {
+>  	unsigned int offset;
+>  	unsigned int mask;
+> +	bool active_low;
+>  };
 > =20
->  #define IMX8MP_AUDIOMIX_EARC_OFFSET		0x200
-> -#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		0x3
-> +#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		0x1
-> +#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	0x2
-
-Will any of the reset controls manipulate multiple bits at once?
-I'd use BIT(0) and BIT(1) here.
-
-> +
-> +#define IMX8MP_AUDIOMIX_EARC		0
-> +#define IMX8MP_AUDIOMIX_EARC_PHY	1
-> +
-> +#define IMX8MP_AUDIOMIX_RESET_NUM	2
-> +
-> +struct imx8mp_reset_map {
-> +	unsigned int offset;
-> +	unsigned int mask;
-> +};
-> +
-> +static const struct imx8mp_reset_map reset_map[IMX8MP_AUDIOMIX_RESET_NUM=
+>  static const struct imx8mp_reset_map reset_map[IMX8MP_AUDIOMIX_RESET_NUM=
 ] =3D {
-
-If you make this reset_map[], drop IMX8MP_AUDIOMIX_RESET_NUM, and use
-.nr_resets =3D ARRAY_SIZE(reset_map) below, followup patches that add new
-bits will be simplified.
-
-> +	[IMX8MP_AUDIOMIX_EARC] =3D {
-> +		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
-> +		.mask	=3D IMX8MP_AUDIOMIX_EARC_RESET_MASK,
-> +	},
-> +	[IMX8MP_AUDIOMIX_EARC_PHY] =3D {
-> +		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
-> +		.mask	=3D IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK,
-> +	},
-> +
-
-Please drop this empty line.
-
-> +};
+>  	[IMX8MP_AUDIOMIX_EARC] =3D {
+>  		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
+>  		.mask	=3D IMX8MP_AUDIOMIX_EARC_RESET_MASK,
+> +		.active_low =3D true,
+>  	},
+>  	[IMX8MP_AUDIOMIX_EARC_PHY] =3D {
+>  		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
+>  		.mask	=3D IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK,
+> +		.active_low =3D true,
+>  	},
 > =20
->  struct imx8mp_audiomix_reset {
->  	struct reset_controller_dev rcdev;
-> @@ -30,13 +53,18 @@ static int imx8mp_audiomix_reset_assert(struct reset_=
-controller_dev *rcdev,
+>  };
+> @@ -48,48 +51,46 @@ static struct imx8mp_audiomix_reset *to_imx8mp_audiom=
+ix_reset(struct reset_contr
+>  	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
+>  }
+> =20
+> -static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcd=
+ev,
+> -					unsigned long id)
+> +static int imx8mp_audiomix_update(struct reset_controller_dev *rcdev,
+> +				  unsigned long id, bool assert)
 >  {
 >  	struct imx8mp_audiomix_reset *priv =3D to_imx8mp_audiomix_reset(rcdev);
 >  	void __iomem *reg_addr =3D priv->base;
-> -	unsigned int mask, reg;
-> +	unsigned int mask, offset, reg;
->  	unsigned long flags;
-> =20
-> -	mask =3D BIT(id);
-> +	if (id >=3D  IMX8MP_AUDIOMIX_RESET_NUM)
+> -	unsigned int mask, offset, reg;
+> -	unsigned long flags;
+> +	unsigned int mask, offset, active_low;
+> +	unsigned long reg, flags;
 
-Whitespace error. But also, this check is not necessary.
-The reset core will not return reset controls that fail the same check
-in of_reset_simple_xlate(), so we can never get here with the wrong id
-if rcdev.nr_resets correctly is set to ARRAY_SIZE(reset_map).
+Nitpick, I would make active_low bool, like assert. Otherwise,
 
-> +		return -EINVAL;
-> +
-> +	mask =3D reset_map[id].mask;
-> +	offset =3D reset_map[id].offset;
-> +
->  	spin_lock_irqsave(&priv->lock, flags);
-> -	reg =3D readl(reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
-> -	writel(reg & ~mask, reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
-> +	reg =3D readl(reg_addr + offset);
-> +	writel(reg & ~mask, reg_addr + offset);
->  	spin_unlock_irqrestore(&priv->lock, flags);
-> =20
->  	return 0;
-> @@ -47,13 +75,18 @@ static int imx8mp_audiomix_reset_deassert(struct rese=
-t_controller_dev *rcdev,
->  {
->  	struct imx8mp_audiomix_reset *priv =3D to_imx8mp_audiomix_reset(rcdev);
->  	void __iomem *reg_addr =3D priv->base;
-> -	unsigned int mask, reg;
-> +	unsigned int mask, offset, reg;
->  	unsigned long flags;
-> =20
-> -	mask =3D BIT(id);
-> +	if (id >=3D  IMX8MP_AUDIOMIX_RESET_NUM)
-> +		return -EINVAL;
-
-Same as above.
-
-> +
-> +	mask =3D reset_map[id].mask;
-> +	offset =3D reset_map[id].offset;
-> +
->  	spin_lock_irqsave(&priv->lock, flags);
-> -	reg =3D readl(reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
-> -	writel(reg | mask, reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
-> +	reg =3D readl(reg_addr + offset);
-> +	writel(reg | mask, reg_addr + offset);
->  	spin_unlock_irqrestore(&priv->lock, flags);
-> =20
->  	return 0;
-> @@ -78,7 +111,7 @@ static int imx8mp_audiomix_reset_probe(struct auxiliar=
-y_device *adev,
->  	spin_lock_init(&priv->lock);
-> =20
->  	priv->rcdev.owner     =3D THIS_MODULE;
-> -	priv->rcdev.nr_resets =3D fls(IMX8MP_AUDIOMIX_EARC_RESET_MASK);
-> +	priv->rcdev.nr_resets =3D IMX8MP_AUDIOMIX_RESET_NUM;
-
-Could use ARRAY_SIZE(reset_map) here.
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
 regards
 Philipp
