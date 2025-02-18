@@ -1,56 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F30A1922D4
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 05:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0681B042A
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 05:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739856159; cv=none; b=PGEajEMSx6u1i7Teo7c5IW0uqn8X47uPyDK03171On3xgUyDNwAihFgZLkVan7NCdus+RGjDO7mKZZMG3HEGfy3Tezn2LhTHc5tWHU1d4D7ytSgQGk73l0NWRo8WBwUFBczsTbBlUpuL1vGsridNa13E/0qP7qzvcyx2dRDlBx8=
+	t=1739856419; cv=none; b=YgRi7kQhDJhpNl0aMq9YkHkUmxk0r68Rf4Yh0UFwRQ0aOdCqH0DQY+P/aqZS9lH+bWOSgk7NWNRI85ACYTQTkDyuLgAc0QZ8EbsL89zCp2FHCEo/noAqo7Gs1ROThduibfmoLuAAtZuZAwJMbh58LlpG4D5TOXFVyBzIZgVFP74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739856159; c=relaxed/simple;
-	bh=T8PVdYksfkxO0Hi9XMjpVKBRQ2ODeZOv5MST3CpXS7Q=;
+	s=arc-20240116; t=1739856419; c=relaxed/simple;
+	bh=tZ0HpU3MZgiWbBVKSa853kjFuS+3oWsTAEhBNwlQ3YE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=umkxVsx2ubVnnIrCQ7jV+4c6PcujMx1JIWN1SPYes0cdoqaVwFV9IDVNwSOF2pnyXIt4Rt5D3zQFUFghEo3UFOa0m3J3IzK6sqhimOWlWZtwOJ2FVYkjbn4h+3vHMXsArSCp3Urx7EVvkHNeK2Uet32mNrAJ1ajNqECbBHFf464=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lV7pAGuf; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=q8h6T6zKneHpMS5p+Bm8ENzOoHlqsnz7wyOR4Cq93mBSw2XfZzeaAAWFUqzRSkuVHSznllTAuQZZsaMSUqNlWrnpytgS7mrG5sqlcr1+KoaUfsMxTf3snlWiGjFA4hTh/YSNWRR+L3MeGbdN3g8mAoul0Bm/iXy0PGKOvIWLKZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=a7+hdU1D; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lV7pAGuf"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="a7+hdU1D"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=t1Q2ZAACDmm9BgC/Dl9QUXwfEDfb/wUplzyKr9XTzT0=;
-	b=lV7pAGufsEqDS4Wn8koleP35rEJndfog8Xn+PJZWwqbwLn8mmxBt5KLkqPwpY0
-	QWVjEaP5m2RjihT+NiJX0rlr413fXo7NWYDrVHR379fH09z8J8qYZD873RsSHdIH
-	BHoHjvayNME3q/Qsmz+YXRTae5z28ngjgkdxCjB1rsJDY=
+	Content-Type; bh=5Z/rv6kgbqoEOS86d4A1Y0Ox+de8Jp1ZNiq3e/n2Z+0=;
+	b=a7+hdU1DqXwpOZMxiVczG6MxPp7lyP9gTrPGKiYsFe6vyVLv6puTFoIxIja/Sy
+	Laq+l91Au5+e6XtMLnv8steg8BnrNC27fF9OShYZvPVakLzXCLzcyWcfpIyN+476
+	VX0/hc0rO0snjY/aXe3/kOAFzD0cnMv/LWEmplhkNfWfc=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3XsnnGLRnBT02CQ--.18551S3;
-	Tue, 18 Feb 2025 13:21:45 +0800 (CST)
-Date: Tue, 18 Feb 2025 13:21:42 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgC3WloFGrRnlE02CQ--.18058S3;
+	Tue, 18 Feb 2025 13:26:31 +0800 (CST)
+Date: Tue, 18 Feb 2025 13:26:29 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Inki Dae <inki.dae@samsung.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: imx7s: Move csi-mux to below root
-Message-ID: <Z7QY5sLOoKFLm6Z1@dragon>
-References: <20250107094943.518474-1-alexander.stein@ew.tq-group.com>
- <20250107094943.518474-2-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 0/5] TQMa8Xx update
+Message-ID: <Z7QaBZ4kWTBrVOEo@dragon>
+References: <20250107140110.982215-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,20 +44,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107094943.518474-2-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:Mc8vCgD3XsnnGLRnBT02CQ--.18551S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwNtIUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhj3ZWe0E1YVmgAAsB
+In-Reply-To: <20250107140110.982215-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:Mc8vCgC3WloFGrRnlE02CQ--.18058S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsmFCUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhj3ZWe0E1YVmgABsA
 
-On Tue, Jan 07, 2025 at 10:49:41AM +0100, Alexander Stein wrote:
-> fsl,imx-iomuxc-gpr.yaml only contains the mux-controller but the actual
-> video-mux is not part of it. So move it below root node.
-> Fixes the dtbs_check warning:
-> arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: iomuxc-gpr@30340000: 'csi-mux' does not match any of the regexes: 'pinctrl-[0-9]+'
->   from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
-> 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On Tue, Jan 07, 2025 at 03:01:05PM +0100, Alexander Stein wrote:
+> Alexander Stein (5):
+>   arm64: dts: imx8-ss-hsio: Wire up DMA IRQ for PCIe
+>   arm64: dts: tqma8xx: Add vcc-supply for spi-nor
+>   arm64: dts: tqma8xx: enable jpeg encode and decode
+>   arm64: dts: tqma8xx: Remove GPU TODO
+>   arm64: dts: mba8xx: Add PCIe support
 
-Applied, thanks!
+Applied all, thanks!
 
