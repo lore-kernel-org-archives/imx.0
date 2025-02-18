@@ -1,16 +1,16 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807CF1CEAC8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF371CEE90
 	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 07:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739864569; cv=none; b=QerN3YW1+G0rpjdJQNMcG/XIy5muFeEQigFSSvK9k0hx/WAOQj5WbuxNUWsQvZlFnSv/3FUqLi80YNpB5XwvOm/JaCF5hDQKzwfZchBPftGpYub1bXVwS9AyT4I+/qAo76oXtB1DYv6A5S3zpwLbnTYDxx31ahsUZwZX0pvA424=
+	t=1739864569; cv=none; b=AuW59Kog1H9oQLhl70czx7JMPEZ4qn24Mks0xA3ZN4bOSCQNxxlSl/p7xXNkqd2m3suqGthxE1a8IKh5tzi8k00O3HPFe83/5mvsNppjbgT1uqoevPQ4MEPsk0wp/U5mQG3aotmYrJI6n+VhG3KIT1WqrKmGu93tw2D3HEvBqA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739864569; c=relaxed/simple;
-	bh=0DXTL1IPm6qXY4ykIm4VAQ4Aa8K1rUuptSLtaYfs968=;
+	bh=wF3XcZN0N8B6Bmo+fJDDW0S8dzD/8xbmetOGyWQI5T8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pEGzVLyEPmZ9UOac3xLYHvLF2heBFBRsrcfVYS4YU3gcWvmZJcdGFxsV6cUBXddRTl4tnBcbN9EHPl4VPi3i7hG3nTmusH84arKxxlpDtZ7B0kU7gU/2cYhwtRPHdZY/q2V46lry2O1hOzTDDzcCQrCcQh1nAVf+NBnhlSsvNMY=
+	 MIME-Version; b=qYhMce87JLkuvdVG81V07WLzOElnpvNrkxTIy+ToTDfN9uPG5vtDSM5EIWfvPMOlTc7ereJRilW4sXsDumrM3s+ERj0N13veH3ZByB1xrIom+Mk7jBRXvngXgul2FpQhp0iHzz9ATp2Bq4c/SWca2IWCwH4UxcVaBqo7S5y+Nds=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
@@ -18,7 +18,7 @@ Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:52604 helo=and-HP-Z
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tkIFi-00G0MD-1a;
+	id 1tkIFi-00G0MD-1t;
 	Tue, 18 Feb 2025 08:42:46 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
@@ -33,9 +33,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v3 05/15] arm64: dts: imx8mm-phycore-som: add descriptions to nodes
-Date: Tue, 18 Feb 2025 08:41:46 +0100
-Message-Id: <20250218074156.807214-6-andrej.picej@norik.com>
+Subject: [PATCH v3 06/15] arm64: dts: imx8mm-phyboard-polis: add RTC description
+Date: Tue, 18 Feb 2025 08:41:47 +0100
+Message-Id: <20250218074156.807214-7-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250218074156.807214-1-andrej.picej@norik.com>
 References: <20250218074156.807214-1-andrej.picej@norik.com>
@@ -59,8 +59,7 @@ X-Source-Dir:
 
 From: Yannic Moog <y.moog@phytec.de>
 
-Add missing EEPROM and RTC descriptions. Also use eMMC with
-lower-case "e".
+Add RTC description.
 
 Signed-off-by: Yannic Moog <y.moog@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
@@ -68,38 +67,21 @@ Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 Changes in v3:
 - no change
 ---
- arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-index 7e859c65317a..cced82226c6d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-@@ -290,6 +290,7 @@ sn65dsi83: bridge@2d {
- 		status = "disabled";
- 	};
- 
-+	/* EEPROM */
- 	eeprom@51 {
- 		compatible = "atmel,24c32";
- 		pagesize = <32>;
-@@ -297,6 +298,7 @@ eeprom@51 {
- 		vcc-supply = <&reg_vdd_3v3_s>;
- 	};
- 
-+	/* RTC */
- 	rv3028: rtc@52 {
- 		compatible = "microcrystal,rv3028";
- 		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-@@ -307,7 +309,7 @@ rv3028: rtc@52 {
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
+index 31d5c57d3c24..6c95257119d6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
+@@ -219,6 +219,7 @@ &pcie_phy {
+ 	status = "okay";
  };
  
--/* EMMC */
-+/* eMMC */
- &usdhc3 {
- 	assigned-clocks = <&clk IMX8MM_CLK_USDHC3_ROOT>;
- 	assigned-clock-rates = <400000000>;
++/* RTC */
+ &rv3028 {
+ 	aux-voltage-chargeable = <1>;
+ 	trickle-resistor-ohms = <3000>;
 -- 
 2.34.1
 
