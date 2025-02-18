@@ -1,321 +1,210 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023078.outbound.protection.outlook.com [40.107.159.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD0A1EB1AE
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 07:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739864912; cv=none; b=V8+G5R1Wd7iKRYdOimA2D25qlCZVUyImwQYjtHnZMXOuVBvncEvxJizySf4QwlB0SaT21JfGTgYjmBapkM3oPwZlBsj9D5aoNlKjxR+TsWA3vmZ0Ua9Ua7rPBgD2AQcg26tNgYyjLOfIYvoEKQzjDK+1v1kwJpJeTZFo7H4SEDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739864912; c=relaxed/simple;
-	bh=cHfAJgIoCgOtNEd/GF4Hm8IkxlgsMyvSUGdzZZTXZyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fwHZ8+9I+pK3Xp6MaLM25CxwuJpp2eOt5RKhGWbbhYSxxeUt4X5NJu8kK/G6V6wGbf+MUGFxtGYFmjHJxWTjCrIxtmq7qftCPfN8woSLzcA2oV/7uoE1ind1J799gUKLwKeP7htgORCWbdXkKFdsIdQLx3YPzgme6tTDVGUpDNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lARXc0qC; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E721FF7CD
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 08:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739865750; cv=fail; b=bpiM8SQVfypE3Y8Z8Aj3JzQA/YV/yEER7x+Lk91xEtNTeddsehIcmVsxcOkSlFGLLNa2BOpvcZtOr1d8Jm9GReqnyASHCLnyYmzhZr5cxZo4Oi6NuMi4zc6yQwHrwqnxDwfYOteT4qBX1bqaETkC4N3/TPQNi6F9o9AkhuScyOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739865750; c=relaxed/simple;
+	bh=whRPazCScWRDXiPxjgXvwkv9wS9tYp0RaxkwtoB4pcM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tOcFA08qNReuZnId1BlUkuA5vivRtTjGTxjY19gOdOfr/v+zwJPZzKVrv5kbG57fuWlG9evkY6o/MF+5hlsSF0s+VW77aVXGG6GoNR9+GkNBvJGecQ9Cbs5094c4l3sSI9e0w2LorsD+YgRc/+RSk2CmAT38rIvyrBzZb28zB2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b=P7DqhOCw; arc=fail smtp.client-ip=40.107.159.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lARXc0qC"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5175E4441A;
-	Tue, 18 Feb 2025 07:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739864907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zMTDEK1y+pxUYj5R5auZ/e91gpoZMVBM46QtwX9nJ9E=;
-	b=lARXc0qCpvrroQhnCTJ8OxG4O43O7gpj4+QCC7usIaFQbMycmawh08KhjMk/Ul9JFYiOb1
-	pg4lVyqpEqDCK5rHbuRXlprC7udnYf5Sknc4wPYR6sERHLne9XwSr61VMQ6SZnZuiZGRh0
-	x2v6WEIVpKGZvuUGHTy1qJYd1Q+1/bjck+nXcg7pHZFNjVb2mLPlUjj055u9sCPBFv/RXC
-	beMEY1TOauuulEpCP77f9COm3DAgIoyxsbMr2064amztMlRKXRnjLo+s5vVr+SYJ6djvuB
-	5hQwLRooXmRUWKa2G87TQ9HDkJiJb8bW4MYsN2kCuw+7lMnphjCgVC/K2PTXeQ==
-Message-ID: <b963c2ea-ae5e-4928-997a-879f6415a638@bootlin.com>
-Date: Tue, 18 Feb 2025 08:48:25 +0100
+	dkim=pass (1024-bit key) header.d=mysnt.onmicrosoft.com header.i=@mysnt.onmicrosoft.com header.b="P7DqhOCw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E15IvaRgYrKtsC3W4VGJKcngl+rXVef8RcBz3peLaYqdF/HG3lGRVQPL9FEziQ1/EwgK4iVvCMKNDlyFgdQahcJReNvVH4LQjwbhCUB5yFoJEATa7Q+hVzCDIpLysjM2eDSoinUPvdYTcex23FOVAUrYvSssUVLBsoxmDasYy06ltS1HDhqpWMkQWEb65eH7XFHfzE7BQDV4z6n9c6GnbUIluWs/UvQq6HRj62jik+9ewPCfBaB2GDgwFqyXDCOtHxJ69CA4gR9IVpNllnZXvxVYMosWhYAkFU3Ca8Xx7Zp3GGzzZfo89U0mD8x7d/wcBmrhBP6dM9G52r9RWeUEFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QL1h5W2sLB265QtvOv+TicgtNS59fK7YjeDfBspbdW4=;
+ b=GYo/7+VIzjj4y8MLxAYHgMfWFs4C9L6Un9+eMYPkk7x2+le4rgknJCdbrTZBSIxE341cGULebben+rnSY8GJivUptfddDlsENVLmdMYIwLqHQachSoOmXa3vAqsugxJsD8h1j6yKHIU6Vd/3yYRHL5mHvyZouSag30r97fyj1AwLFL067IkGWcDlFQuwevU8bre8RZj8pXNS3hlP+Xw0g1dCiAcxdezTRUlYvHvb+IF33GPTOMDXvaUn83RBEfXl7j7JZguug7rfY/nrTj9ukr5jpSVgEbNCF59PEmHkTkyjBQh3R+WH0WaZDBBqWC6Cdk94SjGoG4H2drrra4YX/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mysnt.onmicrosoft.com;
+ s=selector2-mysnt-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QL1h5W2sLB265QtvOv+TicgtNS59fK7YjeDfBspbdW4=;
+ b=P7DqhOCwnLyEprsh4v3rGGR4rRyx8pvFWNkIVI3C8wTxkpSOFkDzOBtQIhsU1VpYqeo+fxPNPhwBcSrduXnfH/inRRbsbQBS+z6PigH7RsuUNVolGqgwFgRluMFp4DtETs/D0GA1f1v0bKy7zB/dt5Jz9tsMNnRE3u2IvPsTgN0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:263::10)
+ by GV1PR10MB8735.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1d4::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.12; Tue, 18 Feb
+ 2025 08:02:21 +0000
+Received: from PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19]) by PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::b854:7611:1533:2a19%4]) with mapi id 15.20.8466.009; Tue, 18 Feb 2025
+ 08:02:20 +0000
+Message-ID: <bb1810fb-aa27-42d8-8aa1-c9ae7782d900@kontron.de>
+Date: Tue, 18 Feb 2025 09:02:19 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v3 0/9] Use correct LDO5 control registers for
+ PCA9450
+To: Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ Marek Vasut <marex@denx.de>, Conor Dooley <conor@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+ Rob Herring <robh@kernel.org>, Robin Gong <yibin.gong@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Frieder Schrempf <frieder@fris.de>
+Cc: Bo Liu <liubo03@inspur.com>, Conor Dooley <conor.dooley@microchip.com>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+ Joy Zou <joy.zou@nxp.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20241218152842.97483-1-frieder@fris.de>
+ <173861266637.674751.16665389874730608623.b4-ty@kernel.org>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <173861266637.674751.16665389874730608623.b4-ty@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: FR2P281CA0130.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9e::11) To PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:102:263::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] serial: mctrl_gpio: split disable_ms into sync and
- no_sync APIs
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-doc@vger.kernel.org
-References: <20250217-atomic_sleep_mctrl_serial_gpio-v3-1-59324b313eef@bootlin.com>
-From: Richard GENOUD <richard.genoud@bootlin.com>
-Content-Language: en-US, fr
-Organization: Bootlin
-In-Reply-To: <20250217-atomic_sleep_mctrl_serial_gpio-v3-1-59324b313eef@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeitdejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfhojggtgfesthekredttddvjeenucfhrhhomheptfhitghhrghrugcuiffgpffqfgffuceorhhitghhrghrugdrghgvnhhouhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekjeetgeeggfefjeetfedtfeeukeetuedukeehheffvefhueejleejjeehgfeffeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemvgdtrgemudekudemledtugdtmegvtdejieemgegshegrmeefrgekjeemfeeiheehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedukedumeeltdgutdemvgdtjeeimeegsgehrgemfegrkeejmeefieehhedphhgvlhhopeglkffrggeimedvrgdtudemvgdtrgemudekudemledtugdtmegvtdejieemgegshegrmeefrgekjeemfeeiheehngdpmhgrihhlfhhrohhmpehrihgthhgrrhgurdhgvghnohhuugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtoheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepghhrv
- ghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepjhhirhhishhlrggshieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghrohgthhhiphdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrsggviihnvggrsehtuhigohhnrdguvghvpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: richard.genoud@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR10MB5681:EE_|GV1PR10MB8735:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc96dc1a-7692-4e09-553c-08dd4ff291c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WWhVS0dZeHBxaWFtQTRxUTlIY1V6VG1CSU9VcGxlVTN2eGdGMitnUmx1Uk8r?=
+ =?utf-8?B?VkdORGFSaGYrckFDYVluYVNFRTcwWSszNTJrZ0pJdFhGSHgwY1Q1aUUvZjVF?=
+ =?utf-8?B?UEpVZUVtdWU2YjNYbUxQanR1blhMZWRJQ0ZCaGN4bjg5aUpFWFBnMVRpbnZU?=
+ =?utf-8?B?ZU56NHQ1UmVKemE3c09hS041QmY5ZHVVdVVXeStYMUZYTGdycUlnNWdUUTBu?=
+ =?utf-8?B?SlRXdXZnRkwwRnl4KzZuODZPeTRXTkxsWTJiWEFVaVFQMmxqc2NuZktqUFc1?=
+ =?utf-8?B?aHFsNlJDa0dsNklmSGdkbUpHTHEzYzVnZkdDUEQyMzBiZndWdENTT3BEUkFx?=
+ =?utf-8?B?SGJrams5Wi9BYm95ZFBwWHlkTjZEWUxhUUlVMzNzMlZJQUJKR0VRb2tjRENj?=
+ =?utf-8?B?Vmp4ZlV0YW8yek9aWTNDT3JabnorSWZuV3RaYmgvQ2tZYjR0ZlRRZ0txcHZE?=
+ =?utf-8?B?UUcrdDltcWM4ZU5JZXlHY25WaHQ5M2pnZjdCMC90cS9TeWV4YVdFNE93RXYv?=
+ =?utf-8?B?MjViU0VMcVp3RVVtcGRDYlo0Q25abFZHOVl0eHJ6ZXhyZUVmMkJTMkVXRzY1?=
+ =?utf-8?B?LzI0UldUcE1JTzlkWkNoYXk4K1VnamMybWw5K2NFcTJybDVURndEMFk4YXpT?=
+ =?utf-8?B?SmEvY3VHNnRHOTVvbWR4Zi9JZHlqcnZueVROZVM2OTVjb2RDRnNsWGdjWkhW?=
+ =?utf-8?B?VWpnaVh1Wm92ZXY3Vk5aaytvZzh5L0pCV0Y2R3FDYndzZkt3SU5qbGRMNzAx?=
+ =?utf-8?B?eTVCMGlqTG00VmFYREhsbHdLTXRTOE1ySWtFa1BtbU1wUUhXeklieUZIUGNU?=
+ =?utf-8?B?amo4SGlOYm9aakR5RElHQkk5T3dLb1FCQjhLMGE2dk12Q2g3cm91eVQycGI2?=
+ =?utf-8?B?ZnhjZGYwbmpFL0RpWFRxbE5NOWpSekJ6OUE3SW83MWhRRFlNbm9JYmJDRE02?=
+ =?utf-8?B?TTJpY01wcTFCbHlSQUpLUE1WTUhaUzJTeTE0dlFLUE45RUQxVkV2d0Q0Mmk3?=
+ =?utf-8?B?QVZYOGIyMzVoRW43N2s2WDFoZCtDSGhNSE9rVHE0UjByWVgyb2Mzcm9hQURW?=
+ =?utf-8?B?Y1RwTS8xaGxOeDlGdnFKY3VDVkV1YlRsVS9kanRFQWhlaHdSbEZkMmxTcVpZ?=
+ =?utf-8?B?R2NnY0xXMmhQbFBLYm14WWhNRmJLalZkQzVEdFpzalYvWVNMMWZ6RFQ4SmxD?=
+ =?utf-8?B?YVI2SDZXay9ndUVVRmZIVGJReFpJY2s3RWtSWkJIYUdaM2sweVF2SmNqbXlk?=
+ =?utf-8?B?aXhCS3pJdDZHcGIxSi9UeUJ0SEhaSHY3K2g3dUZqdUx4Y1h0WGRnWGRCSEFN?=
+ =?utf-8?B?RWJiS09BcWhGREVOY29XeUFWQXVPU0pRN0FmVmhwemlnSEIyZlBaSzY3cWZU?=
+ =?utf-8?B?bW5BM2gwRk1nQjdEK3hqbG0wZWY0NExwc01NZ1Z5c3kwVWlDQjVqMXNPVFJQ?=
+ =?utf-8?B?cmZhaFgvc1lHQS9zT1M5MUlRQUVmY2hkRjdrNE11T2xDOTJ2allWS0ZkbEM0?=
+ =?utf-8?B?TGs4UVNKb2JIZHUzN1I0UUk0aWI3dlBBVkI0YlVla1ZxUGMzMmpTdGpzRGNw?=
+ =?utf-8?B?NTdCNnUzRUNoTWxBWE1sRDl0Rm50MkRrd2VwKzlQZzd1bDgvUWlZNE9Cb3Zo?=
+ =?utf-8?B?ZzdaT1R2alhjNGRNL2tJR0hHZks2RXdScHl0UzEwOWVVeHFhRHJoMVl4bGNV?=
+ =?utf-8?B?bUlIUnJCQXpQSUdWRTdQZHBWb3Zwd0IvZHRpVVNEMGdiWThQam1JMmt0R0Vs?=
+ =?utf-8?B?YVAzMXBzUWpSN1ZGV2t0TDY5MWdxZU5RczVXUmIydWF1WEpjQ1FQTnREc0dM?=
+ =?utf-8?B?dTZKQ0N2bUQwUGRVRXNlMVBMdXpYSGF4UU52VFJEK28wcjFLWTZZN0lIZEFI?=
+ =?utf-8?B?ZWJsd3Y5SHZwbjNEaUp5Z3JoZnBrci9yS1FNNUlvSWJ2ckxZVXhWdk1RK0Ey?=
+ =?utf-8?Q?emsMufomZuU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VCtXM2UwNklidnN0RVlJZzdSQUM5WW9FZFl3ZEoyVUJZU05hZ01vRHphdjdo?=
+ =?utf-8?B?M1NZYTdaYXFHS3hHSnk2NkZZY01YZWc4WGJCNUNDRDdLSzBabG9wL0xHd3Fs?=
+ =?utf-8?B?VUJVQS9rVEVDWW5vdDZlcUduMSs3a0tpV2hreXZmUk4yVXJqNk15YjJ1alhq?=
+ =?utf-8?B?UlpvVzM0RGdzUWJFMWR6Z1B0Z1VDK1o5TWJDYStrQnRFQXFQSm5UR2RRd2Ro?=
+ =?utf-8?B?YmVNN0JydlZuU2dtSVdhelJYV0VHaU5NVlM3a0p5dFlycGo3UDVDQm93K2Vn?=
+ =?utf-8?B?dFN0M0VLbHBsK0tHTlpncHkyeGtmbjRwcGRjT2htNTNkdTdmbVZJTDRNWEFT?=
+ =?utf-8?B?cTVsR0s5VUpXRWJLWVIwcHdDYlpuZ29tVDlSV3Zya1hyd2xCTUdFUXlMQzB2?=
+ =?utf-8?B?dzkwVWRTZGx0ZjJCZCtuSTRzQW1OUW1LTDFZY0dNcjJJcWV5a2xRUTVCcUN0?=
+ =?utf-8?B?MWtMSkxPOTAzbmpPU1NkbnJOVDVpeFVQaGorTFEveHNnWDJZRmdEczBTa1Vh?=
+ =?utf-8?B?REM1d2RUb3ViUGJiaU92SWxKeWUyYjl0YmNGUHFZWWIvU0RpWVdXYjI4MDFD?=
+ =?utf-8?B?ZkNoS3pWQVZmNE0xbitLWUpZczEwVUp0Q25ETkl0Sy92Z3R0YXhDZWJPeVVl?=
+ =?utf-8?B?R2ViU2hOYVBzbmpEd0kvQUFiSVpLMVNpWm1Ub05QTmZJOTV2WDVRSUhwRmlC?=
+ =?utf-8?B?VTUrckNtZ0lCd01oVUlvOUdoaW5IakJFdURxanNqc1FjNWRyRmZ5STNtUm16?=
+ =?utf-8?B?dzRqejFOT2YwWTBnQUd5bTlITDYzS1pPNmpzZEUzQUVJYzVBMGliY1FTVDV3?=
+ =?utf-8?B?OVd4b0NXK0Jub3ozdTJWNmpzY3lxTit6WjNUa09oQ2pDK1F6S1VFWCtLZXRS?=
+ =?utf-8?B?TWIwdWdIdFNOT3JKUDhTaVM1anRMR3I3ZlJsQ2dwVHpMeXRLbzgwUzN4djRa?=
+ =?utf-8?B?R1JlTTB5QjZURi9MVmdOaVlXSnM4ZXUycHV0Z1V0VHI1ZXd0RDNTSXpScGVZ?=
+ =?utf-8?B?RzNOMGtjNU4rV0JIMXZjdFZoMlZmY015WFlId2NyVzNWbGZVUHFwdlphclM1?=
+ =?utf-8?B?U2FYL0tJKzlZQlZISGtyY1lxQ3V0UnhrekZwY0phYVlLdDU4eXVNZ3VPRzNI?=
+ =?utf-8?B?SkhJWkVLNGNNNTlLWWUweWJiM1RybXRUMXJNVkoyeTJoQjlDcjhvQWtTeUJU?=
+ =?utf-8?B?KzdMUG5DRktYR0hadGJHUnVJczBrTTA2aXkwb1VxS01mZDY5VzkzZ1E2aTV5?=
+ =?utf-8?B?K3RUZFJpSEtCYzZxVkZSaklwbkgrM2RZc1FKUkNmdGVLYTVObXVQcU9UdHZl?=
+ =?utf-8?B?dTBmYmxkWTJhU1NFQ3RINld6Yis2NkRMMit1UGdoOUs5SjBhS0VoY3IwOHZ5?=
+ =?utf-8?B?N2ZvTkNIeTQ1WkVncEdBbjBINFhNbGk2bjl6c2t3SkFpV1VSRnJFanQ1ZUQv?=
+ =?utf-8?B?U3dnWlRBUk1vMmVNL0Njb2dZOTVhc0NlM2VVNVJoUTJKNEMyQVhKZ0xCMkh0?=
+ =?utf-8?B?K1VacFB5RjNFbzBFZERubU0yd25kUndweHZod1dhMVpwdlBJdi9lOXRPcmxh?=
+ =?utf-8?B?Y25NSjU5VllkMUtzWXh2QlVDTjFFSE52bWpEQUxrTFRLeWxRd0t6NlNISTNN?=
+ =?utf-8?B?c1hTVmlUOHNaTHh4WE41ZXFTOUcxK0xVQlNMUGZkV3pvQmtLZEppWWxhVVcz?=
+ =?utf-8?B?cFJFZHBXV21ITmtkczVuemJxczBJSVhuRkxNT3FKMTZLZDhjN0lMb1dlY2dO?=
+ =?utf-8?B?cm9zd1FTUWV3UVhrVVVRZjJ5S1E5UlU3Z3hrNkhBNjFsZkFHTnBhSC9vTWdS?=
+ =?utf-8?B?U01kalpTbUdKYWx0YUNqU2JQcXhTejMzWVZrODV5OFBDT0pURGVFQmpjeGdO?=
+ =?utf-8?B?ZEt4S0dMa1RHR2M5NkNSN2NtQUwzSlVKQzVxUWgyU3RUdEtEZUNINGFWdFZr?=
+ =?utf-8?B?UjVPc05mWUhEV0tsRXZ5RExzMVZsb1VMeTVITnJXb2c2YW9XOVVzY2tEc05K?=
+ =?utf-8?B?anJoQnZPMSs4aXF3WTVmMnJ0N0F1bWVVMUkybnEveFFPdkVuK2ZVRThDWUQv?=
+ =?utf-8?B?enZJK1RPazRKOUNkU0tJajR6SFdaQUJoQy9VSEtsci9lVFRodUpFSkpOTXJo?=
+ =?utf-8?B?TjVGRVNXQyt6bDNXZXRIR3RPUWdtWkc2R2pKTFFBbTc2Vjg4Y0grQXNvdlAr?=
+ =?utf-8?B?N1E9PQ==?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc96dc1a-7692-4e09-553c-08dd4ff291c8
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR10MB5681.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 08:02:20.7362
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9dzRJiFbzRiPrRN++KDbnFFslwNArn8/WLXfIIhZ52IL5W9DyzMGhmbYg3k4uNtC+KL+sh8ajvrwvCV56RYwQXGc6/4+dQJTk3lQPYSASgA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB8735
 
-Le 17/02/2025 à 07:21, Alexis Lothoré a écrit :
-> The following splat has been observed on a SAMA5D27 platform using
-> atmel_serial:
-> 
-> BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
-> in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
-> preempt_count: 1, expected: 0
-> INFO: lockdep is turned off.
-> irq event stamp: 0
-> hardirqs last  enabled at (0): [<00000000>] 0x0
-> hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
-> softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
-> softirqs last disabled at (0): [<00000000>] 0x0
-> CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
-> Hardware name: Atmel SAMA5
-> Workqueue: hci0 hci_power_on [bluetooth]
-> Call trace:
->    unwind_backtrace from show_stack+0x18/0x1c
->    show_stack from dump_stack_lvl+0x44/0x70
->    dump_stack_lvl from __might_resched+0x38c/0x598
->    __might_resched from disable_irq+0x1c/0x48
->    disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
->    mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
->    atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
->    atmel_set_termios from uart_change_line_settings+0x15c/0x994
->    uart_change_line_settings from uart_set_termios+0x2b0/0x668
->    uart_set_termios from tty_set_termios+0x600/0x8ec
->    tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
->    ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
->    wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
->    hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
->    hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
->    hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
->    process_one_work from worker_thread+0x6e0/0xfb4
->    worker_thread from kthread+0x3d4/0x484
->    kthread from ret_from_fork+0x14/0x28
-> 
-> This warning is emitted when trying to toggle, at the highest level,
-> some flow control (with serdev_device_set_flow_control) in a device
-> driver. At the lowest level, the atmel_serial driver is using
-> serial_mctrl_gpio lib to enable/disable the corresponding IRQs
-> accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
-> disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
-> some atomic context (some tty drivers perform modem lines configuration
-> in regions protected by port lock).
-> 
-> Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
-> and a blocking one. Replace mctrl_gpio_disable_ms calls with the
-> relevant version depending on whether the call is protected by some port
-> lock.
-> 
-> Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Richard Genoud <richard.genoud@bootlin.com>
+Hi Mark,
 
-> ---
-> Changes in v3:
-> - Fix commit message
-> - Link to v2: https://lore.kernel.org/r/20250214-atomic_sleep_mctrl_serial_gpio-v2-1-1e60c732fd90@bootlin.com
+On 03.02.25 8:57 PM, Mark Brown wrote:
+> On Wed, 18 Dec 2024 16:27:23 +0100, Frieder Schrempf wrote:
+>> This is a follow-up of [1].
+>>
+>> The main objective of this is to fix the PCA9450 driver to
+>> use the correct control register for the LDO5 regulator.
+>>
+>> Currently the control register to use for LDO5 is hardcoded to
+>> LDO5CTRL_H. This is wrong for two reasons:
+>>
+>> [...]
 > 
-> Changes in v2:
-> - create dedicated APIs instead of using custom flag
-> - Link to v1: https://lore.kernel.org/r/20250213-atomic_sleep_mctrl_serial_gpio-v1-1-201ee6a148ad@bootlin.com
-> ---
->   Documentation/driver-api/serial/driver.rst |  2 +-
->   drivers/tty/serial/8250/8250_port.c        |  2 +-
->   drivers/tty/serial/atmel_serial.c          |  2 +-
->   drivers/tty/serial/imx.c                   |  2 +-
->   drivers/tty/serial/serial_mctrl_gpio.c     | 34 ++++++++++++++++++++++++------
->   drivers/tty/serial/serial_mctrl_gpio.h     | 17 ++++++++++++---
->   drivers/tty/serial/sh-sci.c                |  2 +-
->   drivers/tty/serial/stm32-usart.c           |  2 +-
->   8 files changed, 47 insertions(+), 16 deletions(-)
+> Applied to
 > 
-> diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
-> index 84b43061c11be2d6b4e3cd29fb8e6ecbdebe646d..60434f2b0286373d64b7aa8ae309454d7bd8859e 100644
-> --- a/Documentation/driver-api/serial/driver.rst
-> +++ b/Documentation/driver-api/serial/driver.rst
-> @@ -103,4 +103,4 @@ Some helpers are provided in order to set/get modem control lines via GPIO.
->   .. kernel-doc:: drivers/tty/serial/serial_mctrl_gpio.c
->      :identifiers: mctrl_gpio_init mctrl_gpio_free mctrl_gpio_to_gpiod
->              mctrl_gpio_set mctrl_gpio_get mctrl_gpio_enable_ms
-> -           mctrl_gpio_disable_ms
-> +           mctrl_gpio_disable_ms_sync mctrl_gpio_disable_ms_no_sync
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> index d7976a21cca9ce50557ca5f13bb01448ced0728b..218a1d98f1ed3e2697624444be33243050df3a85 100644
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1680,7 +1680,7 @@ static void serial8250_disable_ms(struct uart_port *port)
->   	if (up->bugs & UART_BUG_NOMSR)
->   		return;
->   
-> -	mctrl_gpio_disable_ms(up->gpios);
-> +	mctrl_gpio_disable_ms_no_sync(up->gpios);
->   
->   	up->ier &= ~UART_IER_MSI;
->   	serial_port_out(port, UART_IER, up->ier);
-> diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-> index f44f9d20a97440c9aea41e9ebe34c34d4dfa0a1c..8918fbd4bddd5dfe7705a75d4132dda59fe9e5e6 100644
-> --- a/drivers/tty/serial/atmel_serial.c
-> +++ b/drivers/tty/serial/atmel_serial.c
-> @@ -700,7 +700,7 @@ static void atmel_disable_ms(struct uart_port *port)
->   
->   	atmel_port->ms_irq_enabled = false;
->   
-> -	mctrl_gpio_disable_ms(atmel_port->gpios);
-> +	mctrl_gpio_disable_ms_no_sync(atmel_port->gpios);
->   
->   	if (!mctrl_gpio_to_gpiod(atmel_port->gpios, UART_GPIO_CTS))
->   		idr |= ATMEL_US_CTSIC;
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 9c59ec128bb4fc0ff54cb9a1a66eabbc9e391a9a..cfeb3f8cf45eaeea8afaa767a4ad849bb8d19f69 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -1608,7 +1608,7 @@ static void imx_uart_shutdown(struct uart_port *port)
->   		imx_uart_dma_exit(sport);
->   	}
->   
-> -	mctrl_gpio_disable_ms(sport->gpios);
-> +	mctrl_gpio_disable_ms_sync(sport->gpios);
->   
->   	uart_port_lock_irqsave(&sport->port, &flags);
->   	ucr2 = imx_uart_readl(sport, UCR2);
-> diff --git a/drivers/tty/serial/serial_mctrl_gpio.c b/drivers/tty/serial/serial_mctrl_gpio.c
-> index 8855688a5b6c09f073349bd144586f54331d891f..ca55bcc0b61119d0b76e6943e0f223a4a9e25c02 100644
-> --- a/drivers/tty/serial/serial_mctrl_gpio.c
-> +++ b/drivers/tty/serial/serial_mctrl_gpio.c
-> @@ -322,11 +322,7 @@ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
->   }
->   EXPORT_SYMBOL_GPL(mctrl_gpio_enable_ms);
->   
-> -/**
-> - * mctrl_gpio_disable_ms - disable irqs and handling of changes to the ms lines
-> - * @gpios: gpios to disable
-> - */
-> -void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-> +static void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios, bool sync)
->   {
->   	enum mctrl_gpio_idx i;
->   
-> @@ -342,10 +338,34 @@ void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
->   		if (!gpios->irq[i])
->   			continue;
->   
-> -		disable_irq(gpios->irq[i]);
-> +		if (sync)
-> +			disable_irq(gpios->irq[i]);
-> +		else
-> +			disable_irq_nosync(gpios->irq[i]);
->   	}
->   }
-> -EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms);
-> +
-> +/**
-> + * mctrl_gpio_disable_ms_sync - disable irqs and handling of changes to the ms
-> + * lines, and wait for any pending IRQ to be processed
-> + * @gpios: gpios to disable
-> + */
-> +void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-> +{
-> +	mctrl_gpio_disable_ms(gpios, true);
-> +}
-> +EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_sync);
-> +
-> +/**
-> + * mctrl_gpio_disable_ms_no_sync - disable irqs and handling of changes to the
-> + * ms lines, and return immediately
-> + * @gpios: gpios to disable
-> + */
-> +void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
-> +{
-> +	mctrl_gpio_disable_ms(gpios, false);
-> +}
-> +EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_no_sync);
->   
->   void mctrl_gpio_enable_irq_wake(struct mctrl_gpios *gpios)
->   {
-> diff --git a/drivers/tty/serial/serial_mctrl_gpio.h b/drivers/tty/serial/serial_mctrl_gpio.h
-> index fc76910fb105a3d560e824baa43e9515576e895a..79e97838ebe5672a1b00ef848dcda1e8c1b9568e 100644
-> --- a/drivers/tty/serial/serial_mctrl_gpio.h
-> +++ b/drivers/tty/serial/serial_mctrl_gpio.h
-> @@ -87,9 +87,16 @@ void mctrl_gpio_free(struct device *dev, struct mctrl_gpios *gpios);
->   void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios);
->   
->   /*
-> - * Disable gpio interrupts to report status line changes.
-> + * Disable gpio interrupts to report status line changes, and block until
-> + * any corresponding IRQ is processed
->    */
-> -void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios);
-> +void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios);
-> +
-> +/*
-> + * Disable gpio interrupts to report status line changes, and return
-> + * immediately
-> + */
-> +void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios);
->   
->   /*
->    * Enable gpio wakeup interrupts to enable wake up source.
-> @@ -148,7 +155,11 @@ static inline void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
->   {
->   }
->   
-> -static inline void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-> +static inline void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-> +{
-> +}
-> +
-> +static inline void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
->   {
->   }
->   
-> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-> index b1ea48f38248eb42d98353daa289bbe67191d201..41f987632bce82c9d041d9ab1f5162d2af1a78e4 100644
-> --- a/drivers/tty/serial/sh-sci.c
-> +++ b/drivers/tty/serial/sh-sci.c
-> @@ -2298,7 +2298,7 @@ static void sci_shutdown(struct uart_port *port)
->   	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
->   
->   	s->autorts = false;
-> -	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
-> +	mctrl_gpio_disable_ms_sync(to_sci_port(port)->gpios);
->   
->   	uart_port_lock_irqsave(port, &flags);
->   	sci_stop_rx(port);
-> diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-> index 1ec5d8c3aef8ddbca615a149c2fe81c90c83a22b..4c97965ec43b30113a255661e6a64a6b476d7a9c 100644
-> --- a/drivers/tty/serial/stm32-usart.c
-> +++ b/drivers/tty/serial/stm32-usart.c
-> @@ -944,7 +944,7 @@ static void stm32_usart_enable_ms(struct uart_port *port)
->   
->   static void stm32_usart_disable_ms(struct uart_port *port)
->   {
-> -	mctrl_gpio_disable_ms(to_stm32_port(port)->gpios);
-> +	mctrl_gpio_disable_ms_sync(to_stm32_port(port)->gpios);
->   }
->   
->   /* Transmit stop */
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 > 
-> ---
-> base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-> change-id: 20250213-atomic_sleep_mctrl_serial_gpio-885f6feb585b
+> Thanks!
 > 
-> Best regards,
+> [1/9] dt-bindings: regulator: pca9450: Add properties for handling LDO5
+>       commit: f9cbf56b0a1966d977df87d15a5bdbff2c342062
+> [2/9] arm64: dts: imx8mp-skov-reva: Use hardware signal for SD card VSELECT
+>       commit: b5ec74c2aec76fbdff9bc16951455602e11902bf
+> [3/9] Revert "regulator: pca9450: Add SD_VSEL GPIO for LDO5"
+>       commit: c73be62caabbec6629689c705aea65e5ce364d5d
+> [4/9] regulator: pca9450: Fix control register for LDO5
+>       commit: 3ce6f4f943ddd9edc03e450a2a0d89cb025b165b
+> [5/9] regulator: pca9450: Fix enable register for LDO5
+>       commit: f5aab0438ef17f01c5ecd25e61ae6a03f82a4586
+> 
 
-Thanks !
+Thanks for picking up these patches. Meanwhile Shawn has applied patch 2
+and 7-9 on his side. What about patch 6? Is there a specific reason why
+this was left out?
 
+Thanks
+Frieder
 
