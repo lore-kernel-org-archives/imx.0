@@ -1,39 +1,48 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080372343C5
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002A8653
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739872961; cv=none; b=DZkLJlOjfqB4IkvzveJ3IH9DhSb4vW074DQY5ApqNbsq8Wbr2OB53rUOUvNN2pU+AWUvhzw/Xxbf+r6tOv1cETRrUikQFZpMSpa1ugiknYCRtv2ryKBGULKGYqJCkWLm143GgmFFGeJPQAreiVxwr6VJMqvSGTBuQAFDHL8uo/Q=
+	t=1739873110; cv=none; b=K/64UdBXLb1FMPEdE3UyVUiKRxzi24N6fDmNmoi/LywseZ/Wc3o3GTTGc6A1MU/izTCdsB1DHhVaU0A9JKBQjINDKXXAoQ6OAGeRgi8vgTFNl179Ghjz8UTJt6NW5R5HC++A1BMP0L1gzXtdqiuxONTOxq3fMA8vSU++QaiXYjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739872961; c=relaxed/simple;
-	bh=yGAS9BJDuUiHX5bsVDV2uJP5vXig9Fk2mk29K2nc028=;
+	s=arc-20240116; t=1739873110; c=relaxed/simple;
+	bh=nrKMktRPvU5Z3hqIzD/ZWShh2l5SdtIhGZTIzKRhd0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UyzdMBfvMGDuHxkom1s3Bdyr8yGKCqHTCOWMCkUp2uD3v4vEeKbTWU0oQhO/YB9VOmVzIhoHckz+CpZ72FD0QW17kgog1AKQ9JQXrzrMXY06TvHaDZmyPsVRD+oA+gqRdMbpd3eZwyFQt7yLmyVi4g9K5rJdv/3FVkcdprKeDJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=O7Woy1Y6; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=KYeHC+erKpG0HNUKXHz78Z2enSSvGK2wWyI1qznVmc30RBpoXvcPP0DaZzgqInkzcB2SwwPn4ZpyY/EzHrayVYe9ndKYp9Gk3HMNEqqlyxJ4SQNiN4rs4kQ7VNFuhgh6JueZ2FuTaBBTFT4HcNCmgI6UwDOPBRFpIjUvS7/CCjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=d6aJvRm4; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="O7Woy1Y6"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="d6aJvRm4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=zaXVPd8t0VO67w3iZYFtfLXnSe8QC8xmMPBwsH0TuvQ=;
-	b=O7Woy1Y6fI1cNidy2k135tVAb7Fp/6WiaMGPD6RhQWIyc8/2aUF9eKC637+Yxe
-	QujN/GV3PqtH9pZrbXJ68ReIFmVa2hklGpGRthsKVFuSpON9tejdk9PsXlVrVXPy
-	Oyg+Hfrv5TMBKcoAeIAfxwP2P25lB1J9a60aJdmD4FzEw=
+	Content-Type; bh=NnMwhEnzZlDnNZbKeqVTyqH7UMhTN8QyA0rAjVzJafc=;
+	b=d6aJvRm4llb3gOD6zts96Oakj9u2LBColm3KDmfsYfTOQMe9qeOv3HB5ibEtDh
+	OAYDxeaAM3nSSNL86qafeA39uqxR6SfIy2salA/w5hDcYJriQt/wBtIFNj+0/tt1
+	buHNCmBLC0t1f/Alhyl1HF512pgdN5/P4w60+RUbW8hbk=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCX3MqnWrRnpNZhCQ--.20227S3;
-	Tue, 18 Feb 2025 18:02:17 +0800 (CST)
-Date: Tue, 18 Feb 2025 18:02:15 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgCH28hCW7RnZJAnCQ--.17115S3;
+	Tue, 18 Feb 2025 18:04:52 +0800 (CST)
+Date: Tue, 18 Feb 2025 18:04:50 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, kernel@pengutronix.de,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@denx.de>
-Subject: Re: [PATCH v2 1/2] ARM: dts: imx5: Fix the CCM interrupts description
-Message-ID: <Z7Rap8/l2/V5scVU@dragon>
-References: <20250112152745.1079880-1-festevam@gmail.com>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	NXP S32 Linux <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH v5 0/3] add I2C DTS support for S32G2/S32G3 SoCs
+Message-ID: <Z7RbQqBfKtM+AtsM@dragon>
+References: <20250113110512.506007-1-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,28 +51,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250112152745.1079880-1-festevam@gmail.com>
-X-CM-TRANSID:Ms8vCgCX3MqnWrRnpNZhCQ--.20227S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUcGYpUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRn3ZWe0TrUtvAAAs7
+In-Reply-To: <20250113110512.506007-1-ciprianmarian.costea@oss.nxp.com>
+X-CM-TRANSID:M88vCgCH28hCW7RnZJAnCQ--.17115S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVdgAUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxn3ZWe0TnUxPgAAsn
 
-On Sun, Jan 12, 2025 at 12:27:44PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> On the i.MX5 chips the peripheral interrupts are represented directly only
-> by their interrupt numbers.
-> 
-> The CCM nodes are not following this format and cause the following
-> dt-schema warnings:
-> 
-> ccm@73fd4000: interrupts: [[0], [71], [4], [0], [72], [4]] is too long
-> 
-> Fix it by passing only the two interrupt numbers.
-> 
-> Run-time tested in on an imx53-qsb board.
-> 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
+On Mon, Jan 13, 2025 at 01:05:09PM +0200, Ciprian Costea wrote:
+> Ciprian Marian Costea (3):
+>   arm64: dts: s32g: add I2C[0..2] support for s32g2 and s32g3
+>   arm64: dts: s32g: add common 'S32G-EVB' and 'S32G-RDB' board support
+>   arm64: dts: s32g399a-rdb3: Add INA231 sensor entry over I2C4
 
-Applied, thanks!
+Applied all, thanks!
 
