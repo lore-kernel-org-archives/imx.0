@@ -1,91 +1,219 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A67230D0A
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0D3233157
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739874302; cv=none; b=fplKvlAJdBdIVawAdzv0N6zTpUCM0hbBRQjFBiOUlAQ+VNCRqf7HZuf666h9rmG0N6nj1t7refOxueQ9NHdlpF7FrkbdjUf5mLGji5oG+UedLCPAfcAShdrGDnVdBiBaVzrLTxFE2UJhv+5qv7OP8NUvbogOTWb12xpjldG9Xs0=
+	t=1739874309; cv=none; b=kuw42l2sbRxkGS1Gj7n8rE+SPx4nM3fwyC/MwkaBktKA0CcflpwZVoVXSDv0r8erkm9lAmgoIu4gSzUwCvZeXXyTfQenyKQfY+40dTY02meyKjXhuq/zojzZLWWKRUx0pJPZXcNG9WMQQCnOXuhGT0xZh60M7TyHLY1kahqnULM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739874302; c=relaxed/simple;
-	bh=m8OhKUntbc2SaOGNpmwf8cIjYThX9QnKGC7Wo5pVxvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aaJPJkLqLnrgF6mSuJNPzsotnAFfF1TOJLc0Plt17ZN6p88TByuY4oEZb45Mx8ESXGmRgcu8yr1utZYJNd2Jsn1QLmtmXRzdjBdffiD8w12kdbf9FGmO15ruqNflo6fcLP+xJ5kZugavj0PSaoGrm4knAhQxLR3g44YYTdMp8UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8451D13D5;
-	Tue, 18 Feb 2025 02:25:17 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 811B93F6A8;
-	Tue, 18 Feb 2025 02:24:55 -0800 (PST)
-Date: Tue, 18 Feb 2025 10:24:52 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
+	s=arc-20240116; t=1739874309; c=relaxed/simple;
+	bh=0AX5dmrcLpU0G61dfE972P55GrzbQ3b67AviZWDfA24=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=U+U8rLXwq7urHq443axpGvZyR/RZosHhbhxFxEq+Dk3J1Hr4+GJxKmOEYnPYKsGbEagua/PfrQ28Nqso7FKo1TwIUhulqyO1edKsSbfqgj/bCZJbUqG2GuMgVkSPuos7kjEyVtGA/8Sxz7X76b2l71xCsMBQ+szqM2MkQ6L3v+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TpYpwGRY; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TpYpwGRY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7how95sR+gejTcHdrd3ySFnJth5O0WF603NX9k38viI=; b=TpYpwGRYd9RcZk5pO4XCnUbyb4
+	jx+fTvsH7VAlnGe5qejPL7xF4X6TAzmYM0jWJiT7at/qoCoOEeNyvfyhnyTg2II5sYJrTd0ZOEwY3
+	5aDv5xJUo8ddQir0MJMVkedQOx3PP0jNgFbHMErmCQQefsaBBiTbhi+LJApEwzyzCWTfIvEbw+lJ2
+	FhfXmrIjxZkudhspXK/PtD3kdMmQ2WPktPJGcJS441uu9OjKNgRc5O91NrR40ObWLE1ap3dLGwfW7
+	2AgDlHy48CT5uIuf85waG9eO73i09TIk0BDapdgDfp++dw8Quf7OXT+RYwLiKTPK+6drD2jyHB5Wt
+	qcMkYyUg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50306 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1tkKmc-0001VP-21;
+	Tue, 18 Feb 2025 10:24:54 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1tkKmI-004ObG-DL; Tue, 18 Feb 2025 10:24:34 +0000
+In-Reply-To: <Z7Rf2daOaf778TOg@shell.armlinux.org.uk>
+References: <Z7Rf2daOaf778TOg@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: netdev@vger.kernel.org
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chen-Yu Tsai <wens@csie.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Drew Fustini <drew@pdp7.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Fu Wei <wefu@redhat.com>,
+	Guo Ren <guoren@kernel.org>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, <arm-scmi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<imx@lists.linux.dev>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <Z7Rf9GPdO2atP89Z@bogus>
-References: <20241225-scmi-fwdevlink-v1-0-e9a3a5341362@nxp.com>
- <20241225-scmi-fwdevlink-v1-1-e9a3a5341362@nxp.com>
- <Z6uFMW94QNpFxQLK@bogus>
- <20250212070120.GD15796@localhost.localdomain>
- <Z6x8cNyDt8rJ73_B@bogus>
- <CAGETcx87Stfkru9gJrc1sf=PtFGLY7=jrfFaCzK5Z4hq+2TCzg@mail.gmail.com>
- <Z65U2SMwSiOFYC0v@pluto>
- <20250218010949.GB22580@nxa18884-linux>
+	Samuel Holland <samuel@sholland.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH net-next 2/3] net: stmmac: remove useless priv->flow_ctrl
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250218010949.GB22580@nxa18884-linux>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1tkKmI-004ObG-DL@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Tue, 18 Feb 2025 10:24:34 +0000
 
-On Tue, Feb 18, 2025 at 09:09:49AM +0800, Peng Fan wrote:
-> A potential solution is not using reg in the protocol nodes. Define nodes
-> as below:
-> devperf {
-> 	compatible ="arm,scmi-devperf";
-> }
-> 
-> cpuperf {
-> 	compatible ="arm,scmi-cpuperf";
-> }
-> 
-> pinctrl {
-> 	compatible ="arm,scmi-pinctrl";
-> }
-> 
-> The reg is coded in driver.
-> 
-> But the upper requires restruction of scmi framework.
-> 
-> Put the above away, could we first purse a simple way first to address
-> the current bug in kernel? Just as I prototyped here:
-> https://github.com/MrVan/linux/tree/b4/scmi-fwdevlink-v2
-> 
+priv->flow_ctrl is only accessed by stmmac_main.c, and the only place
+that it is read is in stmmac_mac_flow_ctrl(). This function is only
+called from stmmac_mac_link_up() which always sets priv->flow_ctrl
+immediately before calling this function.
 
-Good luck getting these bindings merged. I don't like it as it is pushing
-software policy or issues into to the devicetree. What we have as SCMI
-binding is more than required for a firmware interface IMO. So, you are
-on your own to get these bindings approved as I am not on board with
-these but if you convince DT maintainers, I will have a look at it then
-to see if we can make that work really.
+Therefore, initialising this at probe time is ineffectual because it
+will always be overwritten before it's read. As such, the "flow_ctrl"
+module parameter has been useless for some time. Rather than remove
+the module parameter, which would risk module load failure, change the
+description to indicate that it is obsolete, and warn if it is set by
+userspace.
 
+Moreover, storing the value in the stmmac_priv has no benefit as it's
+set and then immediately read stmmac_mac_flow_ctrl(). Instead, pass it
+as a parameter to this function..
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  1 -
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 33 +++++++++----------
+ 2 files changed, 16 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index c602ace572b2..3395188c198a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -282,7 +282,6 @@ struct stmmac_priv {
+ 	struct stmmac_channel channel[STMMAC_CH_MAX];
+ 
+ 	int speed;
+-	unsigned int flow_ctrl;
+ 	unsigned int pause_time;
+ 	struct mii_bus *mii;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index c3a13bd8c9b3..4d542f482ecb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -88,9 +88,9 @@ MODULE_PARM_DESC(phyaddr, "Physical device address");
+ #define STMMAC_XDP_TX		BIT(1)
+ #define STMMAC_XDP_REDIRECT	BIT(2)
+ 
+-static int flow_ctrl = FLOW_AUTO;
++static int flow_ctrl = 0xdead;
+ module_param(flow_ctrl, int, 0644);
+-MODULE_PARM_DESC(flow_ctrl, "Flow control ability [on/off]");
++MODULE_PARM_DESC(flow_ctrl, "Flow control ability [on/off] (obsolete)");
+ 
+ static int pause = PAUSE_TIME;
+ module_param(pause, int, 0644);
+@@ -188,12 +188,11 @@ static void stmmac_verify_args(void)
+ 		watchdog = TX_TIMEO;
+ 	if (unlikely((buf_sz < DEFAULT_BUFSIZE) || (buf_sz > BUF_SIZE_16KiB)))
+ 		buf_sz = DEFAULT_BUFSIZE;
+-	if (unlikely(flow_ctrl > 1))
+-		flow_ctrl = FLOW_AUTO;
+-	else if (likely(flow_ctrl < 0))
+-		flow_ctrl = FLOW_OFF;
+ 	if (unlikely((pause < 0) || (pause > 0xffff)))
+ 		pause = PAUSE_TIME;
++
++	if (flow_ctrl != 0xdead)
++		pr_warn("stmmac: module parameter 'flow_ctrl' is obsolete - please remove from your module configuration\n");
+ }
+ 
+ static void __stmmac_disable_all_queues(struct stmmac_priv *priv)
+@@ -858,14 +857,16 @@ static void stmmac_release_ptp(struct stmmac_priv *priv)
+  *  stmmac_mac_flow_ctrl - Configure flow control in all queues
+  *  @priv: driver private structure
+  *  @duplex: duplex passed to the next function
++ *  @flow_ctrl: desired flow control modes
+  *  Description: It is used for configuring the flow control in all queues
+  */
+-static void stmmac_mac_flow_ctrl(struct stmmac_priv *priv, u32 duplex)
++static void stmmac_mac_flow_ctrl(struct stmmac_priv *priv, u32 duplex,
++				 unsigned int flow_ctrl)
+ {
+ 	u32 tx_cnt = priv->plat->tx_queues_to_use;
+ 
+-	stmmac_flow_ctrl(priv, priv->hw, duplex, priv->flow_ctrl,
+-			 priv->pause_time, tx_cnt);
++	stmmac_flow_ctrl(priv, priv->hw, duplex, flow_ctrl, priv->pause_time,
++			 tx_cnt);
+ }
+ 
+ static unsigned long stmmac_mac_get_caps(struct phylink_config *config,
+@@ -925,6 +926,7 @@ static void stmmac_mac_link_up(struct phylink_config *config,
+ 			       bool tx_pause, bool rx_pause)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(to_net_dev(config->dev));
++	unsigned int flow_ctrl;
+ 	u32 old_ctrl, ctrl;
+ 
+ 	if ((priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP) &&
+@@ -1005,15 +1007,15 @@ static void stmmac_mac_link_up(struct phylink_config *config,
+ 
+ 	/* Flow Control operation */
+ 	if (rx_pause && tx_pause)
+-		priv->flow_ctrl = FLOW_AUTO;
++		flow_ctrl = FLOW_AUTO;
+ 	else if (rx_pause && !tx_pause)
+-		priv->flow_ctrl = FLOW_RX;
++		flow_ctrl = FLOW_RX;
+ 	else if (!rx_pause && tx_pause)
+-		priv->flow_ctrl = FLOW_TX;
++		flow_ctrl = FLOW_TX;
+ 	else
+-		priv->flow_ctrl = FLOW_OFF;
++		flow_ctrl = FLOW_OFF;
+ 
+-	stmmac_mac_flow_ctrl(priv, duplex);
++	stmmac_mac_flow_ctrl(priv, duplex, flow_ctrl);
+ 
+ 	if (ctrl != old_ctrl)
+ 		writel(ctrl, priv->ioaddr + MAC_CTRL_REG);
+@@ -7600,9 +7602,6 @@ int stmmac_dvr_probe(struct device *device,
+ 			 "%s: warning: maxmtu having invalid value (%d)\n",
+ 			 __func__, priv->plat->maxmtu);
+ 
+-	if (flow_ctrl)
+-		priv->flow_ctrl = FLOW_AUTO;	/* RX/TX pause on */
+-
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 
+ 	/* Setup channels NAPI */
 -- 
-Regards,
-Sudeep
+2.30.2
+
