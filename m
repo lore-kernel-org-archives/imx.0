@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D381A22FF22
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 09:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A457B22E40A
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 09:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739871030; cv=none; b=sMzQv5Rg5+yEFACPXboI1WVfYP+bJqn4+tWhR2toPEtGTWpeuLNhJfU8rWBpFUo2fcRKhO3jqbxN8pkvwIuXh18/xrk0ttftnhgtRAsVkQ/3c8JIWxkmLcL3msNEkCXswN8KTAoE1gFdL8OPGHY21+Lo3Y3Vp1CEJNer5U4uPBc=
+	t=1739871086; cv=none; b=qDDIYOMcYdn9ATNmtm/6hfZM9FNgdbVCAL4QOaRrwHmvWyn9zcZrLVAfcUaKQGcFYgyiS5Pp7vRrPZ3XYXC4gSXfAdcXvd2ucFx6Kcp7tu5AZCv6Ry3GVyGx0V/pZqv4pOyPnOonAn44bOEyNzs6ooofSeMTjredy3/1W0TkmZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739871030; c=relaxed/simple;
-	bh=cg5O2OkrwSnA+FumOYLYWoy2fd0/MOD8QVua1Iy+75w=;
+	s=arc-20240116; t=1739871086; c=relaxed/simple;
+	bh=2c32N+oKvlS1GlBHzku3NDRUiFaZZFKMS1VaZ7MOy8Y=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BxZZxD2XtH06eYoxjXzKQcJHE9qjSD84KaMw8TQJsa7yWmwYaGAq0b84+TUUJW3PJIXzWd3N7u57cDHcbA4GmxkQ2TgqmPV/Ec7ucXJTv4yunKMbwNfwI0QGE9pn+fpuM4JVB/FcPri1+F32W6R6ZGkn+7uvsl0JZ0x4LbRIUhM=
+	 Content-Type:MIME-Version; b=X4ZF+t2QH/pTBSD8xVffQnyJltT0Ab0NZNJSvT6Kh3sIGy5hwikHXw/AGLAy0JZWm5HiLIXycGm3bJvPu3GHkyLuNEEmsGrOXmzjBY0i0xFhGv6D7J9rUtXK5zaYio+0cQpE49RHuV4FqOuUCOoMYRRSE9QBzAx9Pxf8kYDENYs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJvu-00028g-Id; Tue, 18 Feb 2025 10:30:26 +0100
+	id 1tkJwo-0002Ll-Ee; Tue, 18 Feb 2025 10:31:22 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJvu-001Yva-0p;
-	Tue, 18 Feb 2025 10:30:26 +0100
+	id 1tkJwo-001YwO-0V;
+	Tue, 18 Feb 2025 10:31:22 +0100
 Received: from pza by lupine with local (Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkJvp-0003Ot-0Y;
-	Tue, 18 Feb 2025 10:30:21 +0100
-Message-ID: <be4e8fe598f8a56210154c40d8a6d973a3fbeee1.camel@pengutronix.de>
-Subject: Re: [PATCH 3/5] reset: imx8mp-audiomix: Introduce active_low
- configuration option
+	id 1tkJwo-0003RV-0F;
+	Tue, 18 Feb 2025 10:31:22 +0100
+Message-ID: <f8201731e9c5f590e0f60751a6bb31083b77a372.camel@pengutronix.de>
+Subject: Re: [PATCH 4/5] reset: imx8mp-audiomix: Add support for DSP
+ run/stall
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Daniel Baluta <daniel.baluta@nxp.com>, shawnguo@kernel.org, 
 	mathieu.poirier@linaro.org
@@ -41,10 +41,10 @@ Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
 	linux-remoteproc@vger.kernel.org, iuliana.prodan@nxp.com, 
 	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, Frank.Li@nxp.com, 
 	krzk@kernel.org
-Date: Tue, 18 Feb 2025 10:30:21 +0100
-In-Reply-To: <20250218085712.66690-4-daniel.baluta@nxp.com>
+Date: Tue, 18 Feb 2025 10:31:21 +0100
+In-Reply-To: <20250218085712.66690-5-daniel.baluta@nxp.com>
 References: <20250218085712.66690-1-daniel.baluta@nxp.com>
-	 <20250218085712.66690-4-daniel.baluta@nxp.com>
+	 <20250218085712.66690-5-daniel.baluta@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -60,64 +60,58 @@ X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expand
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On Di, 2025-02-18 at 10:57 +0200, Daniel Baluta wrote:
-> For EARC and EARC PHY the reset happens when clearing the reset bits.
-> Refactor assert/deassert function in order to take into account
-> the active_low configuratin option.
-                            ^
-                            missing 'o'.
-
+> We can Run/Stall the DSP via audio block control bits found in audiomix.
+> Implement this functionality using the reset controller and use assert
+> for Stall and deassert for Run.
 >=20
 > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > ---
->  drivers/reset/reset-imx8mp-audiomix.c | 45 ++++++++++++++-------------
->  1 file changed, 23 insertions(+), 22 deletions(-)
+>  drivers/reset/reset-imx8mp-audiomix.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
 imx8mp-audiomix.c
-> index 6b1666c4e069..8cc0a6b58cbc 100644
+> index 8cc0a6b58cbc..ee56d52a7278 100644
 > --- a/drivers/reset/reset-imx8mp-audiomix.c
 > +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -23,16 +23,19 @@
+> @@ -15,10 +15,14 @@
+>  #define IMX8MP_AUDIOMIX_EARC_RESET_MASK		0x1
+>  #define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	0x2
+> =20
+> +#define IMX8MP_AUDIOMIX_DSP_OFFSET		0x108
+> +#define IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK	0x20
+> +
+>  #define IMX8MP_AUDIOMIX_EARC		0
+>  #define IMX8MP_AUDIOMIX_EARC_PHY	1
+> +#define IMX8MP_AUDIOMIX_DSP		2
+> =20
+> -#define IMX8MP_AUDIOMIX_RESET_NUM	2
+> +#define IMX8MP_AUDIOMIX_RESET_NUM	3
+
+See patch 2, this could be removed.
+
+> =20
 >  struct imx8mp_reset_map {
 >  	unsigned int offset;
->  	unsigned int mask;
-> +	bool active_low;
->  };
-> =20
->  static const struct imx8mp_reset_map reset_map[IMX8MP_AUDIOMIX_RESET_NUM=
-] =3D {
->  	[IMX8MP_AUDIOMIX_EARC] =3D {
->  		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
->  		.mask	=3D IMX8MP_AUDIOMIX_EARC_RESET_MASK,
-> +		.active_low =3D true,
->  	},
->  	[IMX8MP_AUDIOMIX_EARC_PHY] =3D {
->  		.offset	=3D IMX8MP_AUDIOMIX_EARC_OFFSET,
+> @@ -37,7 +41,11 @@ static const struct imx8mp_reset_map reset_map[IMX8MP_=
+AUDIOMIX_RESET_NUM] =3D {
 >  		.mask	=3D IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK,
-> +		.active_low =3D true,
+>  		.active_low =3D true,
 >  	},
-> =20
+> -
+
+This belongs in patch 2.
+
+> +	[IMX8MP_AUDIOMIX_DSP] =3D {
+> +		.offset	=3D IMX8MP_AUDIOMIX_DSP_OFFSET,
+> +		.mask	=3D IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK,
+> +		.active_low =3D false,
+> +	},
 >  };
-> @@ -48,48 +51,46 @@ static struct imx8mp_audiomix_reset *to_imx8mp_audiom=
-ix_reset(struct reset_contr
->  	return container_of(rcdev, struct imx8mp_audiomix_reset, rcdev);
->  }
 > =20
-> -static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcd=
-ev,
-> -					unsigned long id)
-> +static int imx8mp_audiomix_update(struct reset_controller_dev *rcdev,
-> +				  unsigned long id, bool assert)
->  {
->  	struct imx8mp_audiomix_reset *priv =3D to_imx8mp_audiomix_reset(rcdev);
->  	void __iomem *reg_addr =3D priv->base;
-> -	unsigned int mask, offset, reg;
-> -	unsigned long flags;
-> +	unsigned int mask, offset, active_low;
-> +	unsigned long reg, flags;
+>  struct imx8mp_audiomix_reset {
 
-Nitpick, I would make active_low bool, like assert. Otherwise,
-
+Otherwise,
 Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
 regards
