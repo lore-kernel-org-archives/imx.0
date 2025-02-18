@@ -1,61 +1,97 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110982753FC
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 06:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9301BAEDC
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 07:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739859689; cv=none; b=amF1lk3mivKgQk7QBVrzPBEHb6KaIrz2Em6nkzvWVXE4JusBoBWm8FMjCFaxcBJ0NOiKRIaYB50Xt0qtKXyP1zwoNKwnVZXTBezBPTsq+fB7w0xkmWS8z1hFcIWVUC0sEyhKgc32pJ6sLbtnHW3g0LZ4XVJlmNauhwxOg1qKwKg=
+	t=1739864564; cv=none; b=HXD/m+3tSl1HEMzPYhb0PHPyatPUcPIgSJ/cqbx+lsi0GNqrqa8m4xZE1cCAZJCunT0ySEsu64/jjtFWu+HvjdYl4hqguV2IYBpwTaW1tBVCCu75ORoZJUwT+zjV9pjVPnQorEjb86CJcMTm7ljQRFHYNgKehSFXPiVlKgEj4O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739859689; c=relaxed/simple;
-	bh=q158+Z5Icwl7GdjtXoRJILiV8zKFdnDo/ECKGMP0O3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z3e/Al30svOLfCCfHexYVRWj4A7Yp+eZbUrG5byWbhkDcPZ54yiHWD6jReBXfU7l9tr5nX8FZ77nE5R+c/EWbR33ek3QiWvvHrJqWC9sSEOnpVD+3mRDZcUDeIVYmHHLguE3Nq/YKejT6V4Ftk85GMa92IzVb4LrztFrSYvUAuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=XrHC4xvq; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="XrHC4xvq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=r51NZJyM932DUUX3KUZoKs91XCO6S2lEq75YZIvO/ug=;
-	b=XrHC4xvq1nhQsM6JiwiQ6eiZVYe6wh9M1+/GhpkdU705ElP6eQIApCwPG09TBT
-	lUsDAd4R4DLFgC+HUSIfNaarwEXmuks5cNgnXMQ5+rLQ9fpJaaP6EbeBRkoz/45+
-	u5W0lCGFQC0bu/lK/jVlMYcF3Au5OIox4BP4G3w5fHFdg=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDXOVXEJrRnVhA3CQ--.18612S3;
-	Tue, 18 Feb 2025 14:20:53 +0800 (CST)
-Date: Tue, 18 Feb 2025 14:20:51 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
-Message-ID: <Z7Qmw51J0Dc3a88d@dragon>
-References: <20250107150310.996683-1-alexander.stein@ew.tq-group.com>
+	s=arc-20240116; t=1739864564; c=relaxed/simple;
+	bh=z6rTma/8fWIygAwCGXpCNQU/r5/brk0vEhIJ6E9K3OE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=P7hGqGSBcXYxVL8S3A762CCp4JfoCNlgMP1iXym8wnX3h8Bdah5w20KCi8nNRoc8gLi2EE5IkIPD+flAXmdFTw3+hRdBMn5ssUInYU+KEEJS5CH9Pa5Rctvi6PdUZ+9kOO9Yna/SLy7Nauk2ZDnziW9n0aSU8rtWTxM7H1TwKOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:52604 helo=and-HP-Z4..)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1tkIFd-00G0MD-0L;
+	Tue, 18 Feb 2025 08:42:40 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v3 02/15] arm64: dts: imx8mm-phycore-som: Fix bluetooth wakeup source
+Date: Tue, 18 Feb 2025 08:41:43 +0100
+Message-Id: <20250218074156.807214-3-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250218074156.807214-1-andrej.picej@norik.com>
+References: <20250218074156.807214-1-andrej.picej@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250107150310.996683-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:Mc8vCgDXOVXEJrRnVhA3CQ--.18612S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3oGQUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhj3ZWe0E1YVmgADsC
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Tue, Jan 07, 2025 at 04:03:09PM +0100, Alexander Stein wrote:
-> eMMC is supplied by BUCK5 rail. Use the actual regulator instead of
-> a virtual fixed regulator.
-> 
-> Fixes: 418d1d840e421 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Not using pull-up on the host wake-up line triggers the wake up
+immediately after device enters suspend. Fix this by enabling internal
+pull-up and setting interrupt triggering on the falling edge.
 
-Applied, thanks!
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Reviewed-by: Teresa Remmet <t.remmet@phytec.de>
+---
+Changes in v3:
+- no change
+---
+ arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
+index 5eacbd9611ee..31d5c57d3c24 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
+@@ -255,7 +255,7 @@ bluetooth {
+ 		device-wakeup-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
+ 		interrupt-names = "host-wakeup";
+ 		interrupt-parent = <&gpio2>;
+-		interrupts = <9 IRQ_TYPE_EDGE_BOTH>;
++		interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
+ 		max-speed = <2000000>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_bt>;
+@@ -332,7 +332,7 @@ pinctrl_bt: btgrp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6	0x00
+ 			MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8	0x00
+-			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9	0x00
++			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9	0x140
+ 		>;
+ 	};
+ 
+-- 
+2.34.1
 
