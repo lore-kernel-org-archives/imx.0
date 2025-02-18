@@ -1,156 +1,110 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A70217A314
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 18:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78544280A34
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 18:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739904449; cv=none; b=slyW/rFzdOJbWBhBvY8c1pfZ1Qr/fd8KmJoKwQmq5VT6GfLib/FUeChTAaFAhrTcDxeFNFG6xioMsIEY5RXL3mwBFn0qcBT8lQndvpzIN5JUGoX/cWYuC+ddL3x22k8SbH7+q8b7CbDa/ukDIhzfeAb7CmuD1mAI1n0l5aPUHNA=
+	t=1739904671; cv=none; b=mebiScETWOKMVSHEhVzrsoDtXS5eryxhxsySwQ2hJ9sR7tUr+gxjETO4/QuTFhQ7TpMxoYqpbkwShQrdPPZaDMkeLjFTGoPJIyOOyTe8xGz+aZkhQv1LvygEwIHY3c9/1AO350TceJ0pwJHbKxv7WEcn0ThkRzpG4lTyjQeeY1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739904449; c=relaxed/simple;
-	bh=yw5Yt4kfnWERkfl4Lpwd2pjTeIDCOFTVFKwXTHQRVwY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEypxnRr7k8DZu3agQCqkXENI/1EA4iZolsivqJYdrySPPHJbXONwBfG9NOIZIo3EggSoGDDLlyd6zEr/HhDii/M+HXD78tH/4ml+QJBKbA4Fh/BYLIhscdJkruN9RmsbC+2JoAMnViYBjctWhaPaHA+MCUqCNkPN0D3w+RmMFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sOsCCaBE; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1739904671; c=relaxed/simple;
+	bh=MoO/m337yGrtN/rDuUa+yPCfHoVc7loFFqayxFZslPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s7S900X1PyY8oXy92QpyFgZzuftlGXa+jDPXjOTpvZhQY1QyilpCNDULF18ofDz7Girl7AcYDETMVspCUD1PkyhEJFQy3LW1dk0F4SwTI0etFkOXlJWJiRkrLKeQ5YIgcoFLAGkUTeLxUXGU5zc0ZP8pLYS6dzjsCtHDun3u/GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z9QDM8BC; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sOsCCaBE"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51IIkxib1730394
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 12:46:59 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1739904419;
-	bh=VaGTcSN1wD5Urnyf0YoZkBhWlJQc2yOqVlder5VljG4=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=sOsCCaBENHWTqHe1BgBE9MgQbPYGYDmRraShvvUgyIbXKunywcEi1FN28QD2/dCXZ
-	 8OmRn+3ExhwDBlnS8+jN32fV67Meb3xUaksUfA+zO0rFQDb88GFHH+qC6cnVeKx0u6
-	 Rmn0BpWzQeN8m3mbomvXXwoliFGN81j0WUsKWhRQ=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51IIkxcI057016
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Feb 2025 12:46:59 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
- Feb 2025 12:46:58 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 18 Feb 2025 12:46:58 -0600
-Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51IIkw9t116037;
-	Tue, 18 Feb 2025 12:46:58 -0600
-Date: Tue, 18 Feb 2025 12:46:58 -0600
-From: Nishanth Menon <nm@ti.com>
-To: Sebastian LaVine <slavine@d3embedded.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-media@vger.kernel.org>,
-        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado
-	<nfraprado@collabora.com>,
-        Abel Vesa <abel.vesa@linaro.org>, Achath Vaishnav
-	<vaishnav.a@ti.com>,
-        AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Biju Das
-	<biju.das.jz@bp.renesas.com>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Elinor
- Montmasson <elinor.montmasson@savoirfairelinux.com>,
-        Fabio Estevam
-	<festevam@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Hans
- Verkuil <hverkuil@xs4all.nl>,
-        Javier Carrasco
-	<javier.carrasco@wolfvision.net>,
-        Jianzhong Xu <xuj@ti.com>,
-        Julien Massot
-	<julien.massot@collabora.com>,
-        Kieran Bingham
-	<kieran.bingham@ideasonboard.com>,
-        Kory Maincent <kory.maincent@bootlin.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Mikhail Rudenko <mike.rudenko@gmail.com>,
-        Pengutronix
- Kernel Team <kernel@pengutronix.de>,
-        Rob Herring <robh@kernel.org>,
-        Sakari
- Ailus <sakari.ailus@linux.intel.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-        Stuart Burtner <sburtner@d3embedded.com>,
-        Tero Kristo <kristo@kernel.org>, Thakkar Devarsh <devarsht@ti.com>,
-        Tomi
- Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Umang Jain
-	<umang.jain@ideasonboard.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>, Will
- Deacon <will@kernel.org>,
-        Zhi Mao <zhi.mao@mediatek.com>
-Subject: Re: [PATCH 4/4] arm64: dts: ti: Add overlays for IMX728 RCM
-Message-ID: <20250218184658.sgtrrwpltgrcnlr4@smugness>
-References: <20250212195656.69528-1-slavine@d3embedded.com>
- <20250212195656.69528-5-slavine@d3embedded.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z9QDM8BC"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38de1a5f039so5780191f8f.2
+        for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:51:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739904667; x=1740509467; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J2kLFupIIGJ1/RHSRRNvz/y3ILtkw1UuLgcN/irDm3o=;
+        b=Z9QDM8BCERNUSGvCz9Ul5/fvnP6I+nIq8NvbcslxdqHkwOE1quvRuFvWz0Znyt9yK5
+         VwMK+QZ3TDYJUijfWmTilchuGpTacIAvV3yYduYmqa4TpSFKsP8WtncC6XnZtf9QhsKL
+         yr5aPRJIFEAz5Zc4Qj5r6ngEtT8ckIrER8lRKnJtzHKgtf6GfrRLobh/0wUh0MYS8SyG
+         9YUNl5NhPV4R5EE3EFmFTOc02MDu6GNw8DlP3wnDAH5mbJvI72GFZQ4gAQIDjQv+3Lbj
+         88N18KWeE5t/GX+uSrR6g3eLCjncmZiQZLS+NIKEmDzxGdjVD6v1xC1TUp9BccJAFSCM
+         t+sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739904667; x=1740509467;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J2kLFupIIGJ1/RHSRRNvz/y3ILtkw1UuLgcN/irDm3o=;
+        b=h3wNOP5AMDMDFozO+v22zEdqgyjwVZc/tlggRLSv38vbiP2aNgRV67WSnDMo8bo4RC
+         indeCJM59gjM3abVTkBTLC1AJo/KrIDP/3p46EwRH8rH5BmqzZ2cvTlcGD3lmpAPl4xH
+         aDyOiMzI2blzVzkFElAQWC5LJAGohic2t7ZVUwj2QLFA3Gbd3gZYSkMKfm/1F/F5VXeU
+         PmClDqHHf5mYSo68k5pOJIc6LQ7186d6lWevd0PLi5Ny0vNSc4C/9vihpBjICsKQVAmU
+         dbwl9tjyJR+O9BS+2ncJcN8B7O91IkCwSKA2L+gFbkQIR4o8iF3DYcM6cw25GkJ3tL3y
+         QOIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWlidTqZK4g5CVmjFsugIqorjBbgVuqBBD2coU5QcSjrF7CeU8/MXJynBGOWg/ynTHDqAg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvOpOktGFJwoKDniWS5LNv8mUoJDDvCHtLFg0I4jd7x40t6wGi
+	Tuxl3Z9ZYAvyc3JufcRekDmRfxx4aR/CvFmZC390DYYb/y4hgKehNeNEmOpBlug=
+X-Gm-Gg: ASbGncsrMPt6yuo2D8ui4WQHRPtf5NuAkeNtP/JBAfcCIMsX+EVRzzcpN3hRCH0TvZu
+	vZf3EkawecjFOPGSC3GHf84jQ/BZ3QyVD4AYIsyAp+1MPB3XsXLKJd1ug+ykDqYZUTYuCfrq5gJ
+	s7Q7Mh4BUY5ufSMlPpVmdE94pwZy0B9vta7z6HXDybuEbgiS3rP1OLcS6SXyNrAd/3/YUhH+rOh
+	I1Qbe0AVNY3mGE4nu0OUDOHuONQjglo5mtymedU2/rlLW28RfR+pE6u5TA9LR4p2pbTfV+z7g6c
+	VDWYR8IloDRIHtWalznw0UUTtYlZDj/va6CVkWu6RsEBLmU3smmb93o=
+X-Google-Smtp-Source: AGHT+IGWiGnjxl9amPWMtpBg/TTVGWv0w0/3DeUvonXPRwth4gPx2Sx4xPYck/WL22fVGRawD9RD9A==
+X-Received: by 2002:a5d:6d01:0:b0:38f:4e30:6bbb with SMTP id ffacd0b85a97d-38f4e30bc4amr8481365f8f.25.1739904666800;
+        Tue, 18 Feb 2025 10:51:06 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38f259d5e92sm15924221f8f.66.2025.02.18.10.51.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Feb 2025 10:51:06 -0800 (PST)
+Message-ID: <5f7f39b9-5cf8-4ebe-816f-d56e52bc7408@linaro.org>
+Date: Tue, 18 Feb 2025 19:51:05 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250212195656.69528-5-slavine@d3embedded.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] thermal/drivers/qoriq: Use dev_err_probe()
+ simplify the code
+To: Frank Li <Frank.li@nxp.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ "open list:THERMAL" <linux-pm@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+References: <20241209164859.3758906-1-Frank.Li@nxp.com>
+ <Z5EULLr7hsk1RIZy@lizhi-Precision-Tower-5810>
+ <8693bf83-9878-404e-b609-dcaf758d485c@linaro.org>
+ <Z7TEGQQ/JM/q454F@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <Z7TEGQQ/JM/q454F@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 14:56-20250212, Sebastian LaVine wrote:
-> Adds overlays for the D3 IMX728 RCM.
+On 18/02/2025 18:32, Frank Li wrote:
+> On Wed, Jan 22, 2025 at 06:41:22PM +0100, Daniel Lezcano wrote:
+>> Hi Frank,
+>>
+>> On 22/01/2025 16:52, Frank Li wrote:
+>>> On Mon, Dec 09, 2024 at 11:48:58AM -0500, Frank Li wrote:
+>>>> Use dev_err_probe() and devm_clk_get_optional_enabled() to simplify the
+>>>> code.
+>>>>
+>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>
+>> I applied the patches, thanks
+>>
 > 
-> Only a connection on port 0 is currently supported.
-> 
-> Signed-off-by: Sebastian LaVine <slavine@d3embedded.com>
-> Mentored-by: Stuart Burtner <sburtner@d3embedded.com>
-> ---
->  MAINTAINERS                                   |   1 +
->  arch/arm64/boot/dts/ti/Makefile               |   3 +
->  .../dts/ti/k3-fpdlink-imx728-rcm-0-0.dtso     | 108 ++++++++++++++++++
->  3 files changed, 112 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/ti/k3-fpdlink-imx728-rcm-0-0.dtso
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index bf6a48da0887..f109b5dc8fa5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -21891,6 +21891,7 @@ L:      linux-media@vger.kernel.org
->  S:     Odd Fixes
->  F:     Documentation/devicetree/bindings/media/i2c/sony,imx728.yaml
->  F:     arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso
-> +F:     arch/arm64/boot/dts/ti/k3-fpdlink-imx728-rcm-0-0.dtso
+> Thanks, I have not seen at linux-next/master. Anything missed?
 
-Please route dts via SoC tree.
-
->  F:     drivers/media/i2c/imx728.c
-> 
->  SONY MEMORYSTICK SUBSYSTEM
-> diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-> index fcd8d11e5678..6c8bbea246f1 100644
-> --- a/arch/arm64/boot/dts/ti/Makefile
-> +++ b/arch/arm64/boot/dts/ti/Makefile
-> @@ -240,6 +240,9 @@ dtb- += k3-am625-beagleplay-csi2-ov5640.dtb \
-[...]
+No, it is in the thermal/bleeding-edge ATM and will go through 
+thermal/linux-next tomorrow.
 
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
