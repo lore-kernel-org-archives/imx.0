@@ -1,16 +1,16 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F63E1D9329
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 07:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C961DE2C3
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 07:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739864575; cv=none; b=qDQWjH7ivT3IOrIOZ6WsRlqosYdmbhJUTC0ijouLoKOsrdLHqzeX69YyFd288wdH1c24QUwVB+3r4DZd17em5LWHfkIiYyRZ487yf3Imt41mtH4SVFtumiXuN34JCnmmz7BzX2U0F4pvPHuLh2jKz+OXqNIxBdFHhBQjHyQEx9c=
+	t=1739864580; cv=none; b=aXZX8X2z7Iv7eAxwwpjTMd7+9D3RMimJAiVzo5wWZ6oY+XVJlmslekrFC9eSe9LdRavhf1tUOR0YBu3ViOEKnT40ekrL+c8D6V3zAPb15itatjoh8xH6NYcINzKWnD1k63ZnHzRsQbmjE7xVb7c1AkdKuzZnacottvegvTYmTDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739864575; c=relaxed/simple;
-	bh=TPGTTLkcub9h6nbI5oMCya7a39ohOYekNqtcJTkkLHs=;
+	s=arc-20240116; t=1739864580; c=relaxed/simple;
+	bh=+NtV1evqRNY34w5TNYE7JLoHe/HHPg0wxT2oNwoXRjg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eFOGVJJJsniLCtSsOMsbhP0/DlHGhysV3ohAfMxFh7J4RN5chUGVgjYr3/NBa0QqnUk8RIO/2s0dwKmKuFvT88Oj7vHaQXJ6SUylgZRv+dPm1WfViMYW+bkfWFsjdVQjiM2iSPbJqDQQF88UxrzRkLWTNZ7IwJLVuvfKHHcsWmQ=
+	 MIME-Version; b=SntkreDIfjOiYENN+CcypQFc5TVeR/GBvm+145arwHG2jZzmyg3BjcAd3dmTyRRseFo5nanbthT+A10CCo6N8bEFb+m/UxYSd3mAwDJlUZAoh/XCSMmBXkpJ3fvi2syb5K6hyctMo7IukX1+Gmrl8DajnXoZKyEGQ1xpyhTTPNQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
@@ -18,8 +18,8 @@ Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:52604 helo=and-HP-Z
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <andrej.picej@norik.com>)
-	id 1tkIFo-00G0MD-0a;
-	Tue, 18 Feb 2025 08:42:51 +0100
+	id 1tkIFt-00G0MD-19;
+	Tue, 18 Feb 2025 08:42:56 +0100
 From: Andrej Picej <andrej.picej@norik.com>
 To: shawnguo@kernel.org,
 	s.hauer@pengutronix.de,
@@ -33,9 +33,9 @@ Cc: imx@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v3 12/15] arm64: dts: imx8mm-phyboard-polis: Add overlay for PEB-EVAL-01
-Date: Tue, 18 Feb 2025 08:41:53 +0100
-Message-Id: <20250218074156.807214-13-andrej.picej@norik.com>
+Subject: [PATCH v3 14/15] arm64: dts: imx8mm-phycore-som: Add no-eth phy overlay
+Date: Tue, 18 Feb 2025 08:41:55 +0100
+Message-Id: <20250218074156.807214-15-andrej.picej@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250218074156.807214-1-andrej.picej@norik.com>
 References: <20250218074156.807214-1-andrej.picej@norik.com>
@@ -57,114 +57,56 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Janine Hagemann <j.hagemann@phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
 
-Add support for the PEB-EVAL-01 expansion board for
-phyBOARD-Polis-i.MX8MM.
+There are SoM variants with no eth phy populated. Add overlay to be
+able to support this.
 
-Signed-off-by: Janine Hagemann <j.hagemann@phytec.de>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 Signed-off-by: Andrej Picej <andrej.picej@norik.com>
 ---
 Changes in v3:
 - updated copyright year.
 ---
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../imx8mm-phyboard-polis-peb-eval-01.dtso    | 72 +++++++++++++++++++
- 2 files changed, 74 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
+ arch/arm64/boot/dts/freescale/Makefile               |  2 ++
+ .../boot/dts/freescale/imx8mm-phycore-no-eth.dtso    | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 69b1ab8cd6f6..7e0fef7ed9de 100644
+index a10c8b5c2c4a..7f3d8fb8123b 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
 +++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -124,8 +124,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phg.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-rdk.dtb
+@@ -125,10 +125,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-rdk.dtb
  
  imx8mm-phyboard-polis-peb-av-10-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-av-10.dtbo
-+imx8mm-phyboard-polis-peb-eval-01-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
+ imx8mm-phyboard-polis-peb-eval-01-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phyboard-polis-peb-eval-01.dtbo
++imx8mm-phycore-no-eth-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phycore-no-eth.dtbo
+ imx8mm-phycore-rpmsg-dtbs += imx8mm-phyboard-polis-rdk.dtb imx8mm-phycore-rpmsg.dtbo
  
  dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-av-10.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-eval-01.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phyboard-polis-peb-eval-01.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mm-phycore-no-eth.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mm-phycore-rpmsg.dtb
  
  dtb-$(CONFIG_ARCH_MXC) += imx8mm-phygate-tauri-l.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-prt8mm.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
 new file mode 100644
-index 000000000000..a28f51ece93b
+index 000000000000..0fb4b6da6c10
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-eval-01.dtso
-@@ -0,0 +1,72 @@
++++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-no-eth.dtso
+@@ -0,0 +1,12 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
-+ * Author: Janine Hagemann <j.hagemann@phytec.de>
++ * Author: Teresa Remmet <t.remmet@phytec.de>
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+#include "imx8mm-pinfunc.h"
-+
-+&{/} {
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_keys>;
-+
-+		button-0 {
-+			label = "home";
-+			linux,code = <KEY_HOME>;
-+			gpios = <&gpio4 17 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+
-+		button-1 {
-+			label = "menu";
-+			linux,code = <KEY_MENU>;
-+			gpios = <&gpio5 29 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+		};
-+	};
-+
-+	user-leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_user_leds>;
-+
-+		user-led1 {
-+			gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+
-+		user-led2 {
-+			gpios = <&gpio4 15 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+
-+		user-led3 {
-+			gpios = <&gpio5 28 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_gpio_keys: gpio_keysgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI1_TXD5_GPIO4_IO17	0x16
-+			MX8MM_IOMUXC_UART4_TXD_GPIO5_IO29	0x16
-+		>;
-+	};
-+
-+	pinctrl_user_leds: user_ledsgrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI1_TXD3_GPIO4_IO15	0x16
-+			MX8MM_IOMUXC_UART4_RXD_GPIO5_IO28	0x16
-+			MX8MM_IOMUXC_SAI1_TXD2_GPIO4_IO14	0x16
-+		>;
-+	};
++&ethphy0 {
++	status = "disabled";
 +};
 -- 
 2.34.1
