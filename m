@@ -1,120 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB57749A;
-	Tue, 18 Feb 2025 08:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C5123C8D3;
+	Tue, 18 Feb 2025 08:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739866503; cv=none; b=F9ycMRELl+Rsb7jZfDH79A0+JXBMmfXoPxPZejS2OFi1ft+yoTFhCi2P5yymo8zoEonFrvCyyXTf7If8+4PbEf1a699N8gdIGD4lWpmNtXK/J7O9pz7HaEXjOdRhvWw2FT32J+TAQSgTXV4OTDyn2SQEvbCPmZOdwTji4GfLqVk=
+	t=1739867962; cv=none; b=P7ZIiv4hGbGVNN/rXyPkL/4elFEW/W0Lx6dStItjX5L7lSfDXYO3t1RWStNLtsGiI2vI9tiF7LBVcNHHgZ3Rv8J9f6SpfHKqOAbNt3uWZLwn/LcR7HCyfvUYZEcVCLLniYhvasR43kE8hmHjizk4IvfORzCdd+QDzHh3bIG1fhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739866503; c=relaxed/simple;
-	bh=UFdR7IbguGl7iKpceVwoQo+fFJc+Ocd7Dgzg0nOOeAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QR0TTmQpVg9VULZAspdn3kAXaCZJChPkVIgXhsTYTZbzZVqgBBNZoz0wAp3d7nmjlQNxnAR0aYXJhD8IWKBH+ur1iKiUOBz2XASSXQVyfPO1LB6oe+AwzwMqPB4q2W9x1nJZa+Az6/z5rPiZqgOKYUn2m6kp347tvTIBHSeLW6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4mC4+xj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739867962; c=relaxed/simple;
+	bh=SPcl/UOhW/cy7ZS6G7DShHFIAuQPHxxo6CaqutmigeY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MMgOQogKg7JM5CpXS95D/2KLowOgoiuZc/RlzwWxQvYleJSOjVJzOpbThxh1tfidhPUEPktVyXQXoIwtEnJ7cgt6LDgFrc5dW2hMXgSoysq3BV7Y7G3p/9owNZG33GesGjBpHGa3/6r/TFRnx2lNCMoFfqiWAT0kh5nDfu9N4qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eshHsXGD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4mC4+xj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303D0C4CEE2;
-	Tue, 18 Feb 2025 08:15:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739866502;
-	bh=UFdR7IbguGl7iKpceVwoQo+fFJc+Ocd7Dgzg0nOOeAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f4mC4+xjy8+3Ap3+zmCq4f4juZVPx3MmLXCA2pN+OuMHab5gaVtMq0RgIb/vmcIt4
-	 5pomyFm6UrsvIjuGwEbtdC0Cnn6HgTkNdbLBGtu/S6H3634IT4Qh8f1TMWeYpsxTMx
-	 HEiie4JkezV19OJAsaovd47Bq7gU0JDqjGhlceHw=
-Date: Tue, 18 Feb 2025 09:14:59 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Douglas Anderson <dianders@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	dri-devel@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH v3 1/7] driver core: auxiliary bus: add device creation
- helpers
-Message-ID: <2025021826-smile-batting-e52f@gregkh>
-References: <20250211-aux-device-create-helper-v3-0-7edb50524909@baylibre.com>
- <20250211-aux-device-create-helper-v3-1-7edb50524909@baylibre.com>
- <2025021437-washout-stonewall-d13e@gregkh>
- <1jwmdsxugx.fsf@starbuckisacylon.baylibre.com>
- <2025021501-tamer-sank-142a@gregkh>
- <1jikp8xx01.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eshHsXGD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6DA3EC4CEE2;
+	Tue, 18 Feb 2025 08:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739867961;
+	bh=SPcl/UOhW/cy7ZS6G7DShHFIAuQPHxxo6CaqutmigeY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=eshHsXGDvwxrSHeRVtLo5ST1o2VIA+LPzeg+O23XxmbRPQaCqxz+dECGnfzd10GoT
+	 VrGLz6yhKsbKKDyUO1toIM6l0sAMP2BuNkSRjXs1chd8KHT3OV1tj+Yd2ltVeX1vJk
+	 agB8ZtSlxSseQLdPtOjWI+/V63wBOAFiu78ezmFP+AtEtRtFSC1hjlKMXptdzUZvYZ
+	 fjXcdY9keTg2m6neiFESrVSGChyx6yBnsfBRLLJ4fbchv87RN//LvLLNej1AWaUnmb
+	 9CzAGitAygkWr9qqHaA2U2dGtJz1o3XjtvS/1pErLvatCZ/zO+0qqmIFizhB2tFexn
+	 ihbTCIOqHnhzw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62117C021AA;
+	Tue, 18 Feb 2025 08:39:21 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH v2 0/2] arm64: dts: imx8m: Add pinctrl config definitions
+Date: Tue, 18 Feb 2025 09:39:15 +0100
+Message-Id: <20250218-pinctrl_defines-v2-0-c554cad0e1d2@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1jikp8xx01.fsf@starbuckisacylon.baylibre.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADNHtGcC/3WNwQqDMBBEf0X23BQTbSw99T+KlLhudMEmkgRpk
+ fx7U+89vhnmzQ6RAlOEW7VDoI0je1dAnSrA2biJBI+FQdXqUivZipUdprA8R7LsKArVdNSNg5a
+ oDZTVGkrxPoyPvvDMMfnwOQ42+Uv/uzYpamEHvGrTKrIN3ieP3qXgl+WM/gV9zvkLPCtAqLMAA
+ AA=
+X-Change-ID: 20250214-pinctrl_defines-237e7db61c6a
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739867960; l=1173;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=SPcl/UOhW/cy7ZS6G7DShHFIAuQPHxxo6CaqutmigeY=;
+ b=WjUzSixqXZo3HZ5py+rVjBFU2osjMWLtfUUHAw7i8UoIHjvmiDZBG7dchTMK6tDDJuAFt7mBp
+ bdZCkawsCreCnrG+Jeq20itLp9IenEbjYO9c1fOUCt/qGdErcDKwJjs
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On Mon, Feb 17, 2025 at 07:10:54PM +0100, Jerome Brunet wrote:
-> On Sat 15 Feb 2025 at 07:53, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> [...]
-> 
-> >> 
-> >> >
-> >> >> +							int id)
-> >> >> +{
-> >> >> +	struct auxiliary_device *auxdev;
-> >> >> +	int ret;
-> >> >> +
-> >> >> +	auxdev = kzalloc(sizeof(*auxdev), GFP_KERNEL);
-> >> >> +	if (!auxdev)
-> >> >> +		return ERR_PTR(-ENOMEM);
-> >> >
-> >> > Ick, who cares what the error value really is?  Why not just do NULL or
-> >> > a valid pointer?  That makes the caller much simpler to handle, right?
-> >> >
-> >> 
-> >> Sure why not
-> 
-> I have tried the 'NULL or valid' approach. In the consumers,
-> which mostly return an integer from their various init function, I got
-> this weird to come up with one from NULL. EINVAL, ENOMEM, etc ... can't
-> really pick one.
-> 
-> It is actually easier to pass something along.
+Up untill now the extra function mux (pull resistor, etc) has been
+defined as a raw hex value, this is difficult to interpret. Add
+definitions for these parts of the pinctrl registers to allow for more
+readable pinctrl definitions in devictree files.
 
-Ok, fair enough, thanks for trying.  But I would have returned just
--ENODEV in all cases, as that's what the end result was :)
+It should also be done for the mn/mq but I currently do not have the
+reference manuals for these to verify these fields, though I can only
+assume that they would be the same.
 
-thanks,
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+Changes in v2:
+- Changed mystery bit to SION
+- Link to v1: https://lore.kernel.org/r/20250214-pinctrl_defines-v1-0-fbc86a42ef3c@gocontroll.com
 
-greg k-h
+---
+Maud Spierings (2):
+      arm64: dts: imx8mm: Add pinctrl config definitions
+      arm64: dts: imx8mp: Add pinctrl config definitions
+
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h | 27 ++++++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h | 27 ++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+---
+base-commit: 0ae0fa3bf0b44c8611d114a9f69985bf451010c3
+change-id: 20250214-pinctrl_defines-237e7db61c6a
+
+Best regards,
+-- 
+Maud Spierings <maudspierings@gocontroll.com>
+
+
