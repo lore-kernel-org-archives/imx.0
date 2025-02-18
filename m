@@ -1,70 +1,47 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47C423ED6A
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 11:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3D82417FB
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 12:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739878897; cv=none; b=cuBz/2xHrJLakJXRBiPegU79TzFWA5AdYG/GyqrFU4yu6kcgzyNsgBSN+uFmywGAjrLWNRskl29KUpiujZUkv+7KPmVkrjSf23SiOUz48D8mGPC2HV5wjK3kgfK3yiEubr7t8An85I/IEcsshSOvNE+cbNZ/cFg7Fuf6Iukp5Zc=
+	t=1739880012; cv=none; b=oEbY9avofqw4sk9pgortV94rEN+LEcnDvai7uFXO/IGB1NbjTuDIDjLieZBSidKLeNTBYCk1gUbWuxXNOL2dkUPOsBvZUD/qnO4NkIp2bAqU5tzrYdYOwNJRXvy20MeAYbLusi4y13jVqIwveMnYUxjbnUz+rD6A8PTygsoxwQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739878897; c=relaxed/simple;
-	bh=+JeMf5aBl8g73fc/4axTATaYsguneyWjHXDFDThI3B4=;
+	s=arc-20240116; t=1739880012; c=relaxed/simple;
+	bh=9lsqb3KzQdXtJP11Em4GvATQ9hJVRCwBkO2a5mLLxC0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CcSzMnZEN88kSRznBqKM45XHjhhShyad78kV2AiQE+X15xHzBRR4BHoSgQS02X+dewllfJIQc2p5UfEeuZPKhrbl7Uki+AFMxqKSnGH3uCsHCuoX9Ow0nbaZe3thIAkaPyNIJHmNfZRqt6/X/oKQ5U+EPDV2K5giJZ5uwxrEfYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wvk9irEd; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=AVPtr3KBbrvCrXeYDiDuRPbfIN0VlbKNMEuER3KhJIOLG+8ygNmlN0NlMKyqUloolWO9sxTPXDRgKgCwLhOgDOY9+/IJcMJl6JoZdW/QgfsufFnOndk9oh5IgXBjGYkGMf2nbiIfVu8R8S3MsErEosiapFTMV/HAk63KXH6fKeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=0vIasmSy; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wvk9irEd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=6ujQvCQNZoKNKilbwyxTloll25o1U/0BsukcebFRRwI=; b=wvk9irEdCnJm5zqVAKZmmW2efu
-	pI4Sn8Kbz4KTGPa1eHSg2k5UZfEz62IQGZSIyYYo1mem2aq7wWLfY6EFrp75rZ4xuMpY2GFYzB/Od
-	BWh3C0W+iFSexNDkGJPGWaWh97Xv+3T3Z6n69D9uQmN7hXK29Yq0bj3C00NplKf0UjojfsdUCSOnp
-	57Y3w0Okgb+/W15fnImNuNOWDIWbs5H6eCcdVshxfR5oqvNJfjqC0hBZrB5Auorvbvdn/OCO836sn
-	smKbwMrklIhGU8Wbccc8O6zxWbMM3E+mjigJJ483hexREyl/dKN/+hFx9Gkj4CxEsft4DTuwYsYDD
-	UqYyJUNw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54998)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tkLyf-0001qH-25;
-	Tue, 18 Feb 2025 11:41:25 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tkLyZ-0007Ek-2X;
-	Tue, 18 Feb 2025 11:41:19 +0000
-Date: Tue, 18 Feb 2025 11:41:19 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 7/7] net: stmmac: imx: use generic
- stmmac_set_clk_tx_rate()
-Message-ID: <Z7Rx36FDAJk_yMQl@shell.armlinux.org.uk>
-References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLZG-004RZb-8Y@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="0vIasmSy"
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id 611F11F8BD;
+	Tue, 18 Feb 2025 13:00:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1739880007;
+	bh=Mj3PztAnvD9vDz6xP2L4dDXDamq37tJkkDcB9UoW23A=; h=From:To:Subject;
+	b=0vIasmSyAYoHCecFVq8qfDEAKDf5y8zcgzKEgmSf4SnjZUhpdWkZy9p3GuieOjyRD
+	 iDV89X9ERnCVMIZRnHABwQQOGCkPs8AG+tpupDCqLnV0qj+xsF9jwzTiZvWafig1SK
+	 usqZmaBUTHQVPknMUVysdLDgSU/PylBZFlYh0GK92wWbJbM9M1qeny8DsiuRRjPtUC
+	 e9+kCupqf02xuhszS1x6QARjQXfmlBwP49yQSoHj4FSJEAr5jXM9rPdu+U+gYbkvXR
+	 oBT7KCh11h9tz2B4YIEmpkgxB0y5mTW6zaxFvbp1eEzJgeWx8NKh8cVVCBreoZ/lMX
+	 Ztyk/MSWmcV2A==
+Date: Tue, 18 Feb 2025 13:00:02 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v1 1/2] arm64: dts: freescale: imx8mp-verdin-dahlia: add
+ Microphone Jack to sound card
+Message-ID: <20250218120002.GA15270@francesco-nb>
+References: <20250217145744.179213-1-eichest@gmail.com>
+ <20250217145744.179213-2-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,18 +50,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1tkLZG-004RZb-8Y@rmk-PC.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20250217145744.179213-2-eichest@gmail.com>
 
-On Tue, Feb 18, 2025 at 11:15:10AM +0000, Russell King (Oracle) wrote:
-> Convert non-i.MX93 users to use the generic stmmac_set_clk_tx_rate() to
-> configure the MAC transmit clock rate.
+On Mon, Feb 17, 2025 at 03:56:40PM +0100, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> The simple-audio-card's microphone widget currently connects to the
+> headphone jack. Routing the microphone input to the microphone jack
+> allows for independent operation of the microphone and headphones.
+> 
+> This resolves the following boot-time kernel log message, which
+> indicated a conflict when the microphone and headphone functions were
+> not separated:
+>   debugfs: File 'Headphone Jack' in directory 'dapm' already present!
+> 
+> Fixes: 874958916844 ("arm64: dts: freescale: verdin-imx8mp: dahlia: add sound card")
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Looking at this again, this patch is not correct - imx does a few
-checks before changing the "tx" clock.
+Cc:stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
