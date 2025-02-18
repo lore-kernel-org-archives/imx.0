@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAAF2356C5
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 18:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514001B87C9
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 18:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739903251; cv=none; b=AU4R3PFNEWGKAicDGugEiMnqvT+uX3ZqbQPwQJZdng15GlVzk0ZMIb0fqpfiFbqWnb5OhtuwAC9+JY3l0CVnTuS6hUh8by0UiERTWv84vkY7CsQs9EZM7nXcu4SvFtZ5AyjSpzWIHLlIYwJPGQZdqiUpIWA3Nl4RYXoC7JKe8QA=
+	t=1739903901; cv=none; b=LTq0MMFvALo+JUoRfkNOhS7ypd7aHP7OFKBXpXEHoMlKt2PjVaIIhPfleEMh94UAnqGhRVbdSi4Bi60iBg8fo+AB8J+Z3o8h2H6qfumQ4Zb3R32ONyo7g/CIYwDs8OKo+lbgmf2rPsSfV0JqiBZr15x+Dp/8O4uCm5Th2Avwcek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739903251; c=relaxed/simple;
-	bh=zNE/DNv8Rppeo9YS/X0VZcm7JvRezuQoHrQ8Y+6T7r0=;
+	s=arc-20240116; t=1739903901; c=relaxed/simple;
+	bh=cpweuWgxiS61FjEy/a/e/EZroYgZJXsoVlHjLj5oLeM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Idf3pqj0/LNlLjbg8ooiayLY/DfXxLuWvwIjVoQruCk7EBI8kFhAn4bB/DhjZFi8jN0A9AmkTdOXrrJalIJwzdWPhdKtJkn/UElekjQ0ZRBEw5+TAv9UzlLrs13pe/+fpnkuz7CR0olVt91CW6wy8TfT/D6QXdFpDswPqbMFlzc=
+	 In-Reply-To:To:Cc; b=hpraI46XmktSLW1TQ6Dj2IVZubAMO1wbj4kSlF1zHP/r1WZ+cmZS8HXzvPZQ8iGL8sbFJtkBTs2dRl2V7eyuKLJnIFOGo6cmuBQ+i34m14DidfcZt1rt8YFZPgTau4+dB+EAm82Dm5BEyfBdqO+8JgPojB0v17Ip/anzqWJ83rk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,22 +18,22 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkSIy-0006Bf-13; Tue, 18 Feb 2025 19:26:48 +0100
+	id 1tkSU2-0000Gy-P7; Tue, 18 Feb 2025 19:38:14 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkSIx-001dVA-1V;
-	Tue, 18 Feb 2025 19:26:47 +0100
+	id 1tkSU2-001dak-1M;
+	Tue, 18 Feb 2025 19:38:14 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tkSIx-00A9Hm-1B;
-	Tue, 18 Feb 2025 19:26:47 +0100
+	id 1tkSU2-00AL9G-12;
+	Tue, 18 Feb 2025 19:38:14 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 18 Feb 2025 19:26:41 +0100
-Subject: [PATCH v4 1/6] dt-bindings: clock: imx8m: document
- nominal/overdrive properties
+Date: Tue, 18 Feb 2025 19:38:14 +0100
+Subject: [PATCH v2 2/6] arm64: dts: imx8mp-skov: add basic board as
+ fallback
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,22 +42,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250218-imx8m-clk-v4-1-b7697dc2dcd0@pengutronix.de>
-References: <20250218-imx8m-clk-v4-0-b7697dc2dcd0@pengutronix.de>
-In-Reply-To: <20250218-imx8m-clk-v4-0-b7697dc2dcd0@pengutronix.de>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.li@nxp.com>, 
+Message-Id: <20250218-skov-imx8mp-new-boards-v2-2-4040379742ea@pengutronix.de>
+References: <20250218-skov-imx8mp-new-boards-v2-0-4040379742ea@pengutronix.de>
+In-Reply-To: <20250218-skov-imx8mp-new-boards-v2-0-4040379742ea@pengutronix.de>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abel.vesa@linaro.org>, 
- Marek Vasut <marex@denx.de>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, 
  Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -65,64 +59,52 @@ X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The imx8m-clock.yaml binding covers the clock controller inside all
-of the i.MX8M Q/M/N/P SoCs. All of them have in common that they
-support two operating modes: nominal and overdrive mode.
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-While the overdrive mode allows for higher frequencies for many IPs,
-the nominal mode needs a lower SoC voltage, thereby reducing
-heat generation and power usage.
+All Skov i.MX8MP boards share the same baseboard (modulo revisions)
+and are booted with the same bootloader image, which samples some
+strapping pins at startup and determines which kernel device tree
+to use.
 
-As increasing clock rates beyond the maximum permitted by the supplied
-SoC voltage can lead to difficult to debug issues, device tree consumers
-would benefit from knowing what mode is active to enforce the clock rate
-limits that come with it.
+For use as bootloader device tree and as fallback, when no matching
+device tree has been found, add a basic variant that doesn't configure
+any variant-specific peripherals like displays.
 
-To facilitate this, extend the clock controller bindings with an
-optional fsl,operating-mode property. This intentionally allows the
-absence of the property, because there is no default suitable for all
-boards:
-
-For i.MX8M Mini and Nano, the kernel SoC DTSIs has assigned-clock-rates
-that are all achievable in nominal mode. For i.MX8MP, there are some
-rates only validated for overdrive mode.
-
-But even for the i.MX8M Mini/Nano boards, we don't know what rates they
-may configure at runtime, so it has not been possible so far to infer from
-just the device tree what the mode is.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/devicetree/bindings/clock/imx8m-clock.yaml | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/freescale/Makefile              |  1 +
+ arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dts | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-index c643d4a814786a1fc7e559140fe58911990f71bb..4fec558327027faa0a8d2a15699c03713da2deae 100644
---- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-+++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-@@ -43,6 +43,13 @@ properties:
-       ID in its "clocks" phandle cell. See include/dt-bindings/clock/imx8m-clock.h
-       for the full list of i.MX8M clock IDs.
- 
-+  fsl,operating-mode:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum: [nominal, overdrive]
-+    description:
-+      The operating mode of the SoC. This affects the maximum clock rates that
-+      can safely be configured by the clock controller.
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 839432153cc7ae15d3c1e668c0cb192d5563b996..ea4da899b44be0aaac745f6a0503bed3bb8ba20c 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -193,6 +193,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-nitrogen-smarc-universal-board.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
+ imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-basic.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..5a2629f3567c6ce664ddad9a49f51829b3f54bd5
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dts
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +
- required:
-   - compatible
-   - reg
-@@ -109,6 +116,7 @@ examples:
-                  <&clk_ext3>, <&clk_ext4>;
-         clock-names = "osc_32k", "osc_24m", "clk_ext1", "clk_ext2",
-                       "clk_ext3", "clk_ext4";
-+        fsl,operating-mode = "nominal";
-     };
- 
-   - |
++/dts-v1/;
++
++#include "imx8mp-skov-reva.dtsi"
++
++/ {
++	model = "SKOV IMX8MP CPU basic/fallback";
++	compatible = "skov,imx8mp-skov-basic", "fsl,imx8mp";
++};
 
 -- 
 2.39.5
