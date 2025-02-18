@@ -1,173 +1,207 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2089.outbound.protection.outlook.com [40.107.249.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08FB26B977
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 14:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739888826; cv=none; b=iPx7E1VhnQ0s0m0QltuuFkVfs0kodEtMagA/VXKnOmDDAAcgD2xUwGF+cYJXjnUtpscjmyBekm8OLSP2hkmwUB8CuhdUOi5dPt9Ghn/0asHOr1CLHYjpJWHQV0wqBL5fzvPr7DbDUmqneLKD36mNbObYpd4bpg7h2F3WjvwQCcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739888826; c=relaxed/simple;
-	bh=+wkO4ylEQw3m6UriT4tf8JdVK9ESjllOE18AKynb3bY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IC8KfVF3aY/Gnhv93crT6WKcnpuLeE7pd7m46IHij8vL3mTfglRSuGm+HAFbnZslEAMulACajhOPLkMOg7Jw82PVp71U6XP896f3TIDw+AqSnlwnZTV3thF1HaymOtiH6aA9x9XBKlUTW005hLSn9MNtS38CBpteSMK+Z9p7jxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=fail smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=P0DzMUOk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y/8NzS9w; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CzYD2cIk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/Vd7FgY6; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A71243379
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 15:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739893913; cv=fail; b=Hz1bHmCJV8L9G87g8zwzZI948ldVzKg9ud8Wb2Xff3n55y315UuUhdHNItl7pgG9YabvYFeIyunXT/ZvI4zyofKAEXC/9OoLUisFhNq+lieXhigfNcWRA5mHMZeb40XWDA9tLY002b0/immFxv6gK0ggfyfo18veFmTWXW0MyBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739893913; c=relaxed/simple;
+	bh=OHQO6LkkZ1CZEysoB0u5VBcJKY5uyx79+EcrD6x9fsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jjHqwuiwL5bIjgaIKaM9Y+sZV/M9nzjjYGx6f7gP05bLrHQ8xq3mioNo3ezsUW0lx3pq/37FKfnV4GQqig7QQbXWffhdLy+ZL8LqFi6qWm+38aO3Ag8s/16NyUz216yiqCjgrSOrnn7UrjcIjAYQjcyIsqwTgRbfVs2V0vWSz1g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IvkAXLt1; arc=fail smtp.client-ip=40.107.249.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="P0DzMUOk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y/8NzS9w";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CzYD2cIk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/Vd7FgY6"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id ED0FC1F74B;
-	Tue, 18 Feb 2025 14:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1739888761; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ShM7QkYxOUzYuiM1Xi5REKpzUXaj1yvUsfwZ2Eb5boc=;
-	b=P0DzMUOkzhNee5YMvxt+TptgMRyrR0naEmKseEk0+yoS+uNXa8gqBr3CcGgJCPJ6UDytVB
-	nULuORCwAUmJUQKFCTevDc4rbYUy+jnXDkshKkycqYNioq17bLUzfWmZNAh32UUIeHwMrc
-	5ZwIaEuYD2KpYBIrNRbkT7u/6WF/l70=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1739888761;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ShM7QkYxOUzYuiM1Xi5REKpzUXaj1yvUsfwZ2Eb5boc=;
-	b=Y/8NzS9wPXF88gq8uhM7kXPdT04bUcroDr/olCIEIy4hI89cpF2XZ4jGIJQRwmhkS2RWIx
-	PRbqBTxpxwGL6ADQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1739888760; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ShM7QkYxOUzYuiM1Xi5REKpzUXaj1yvUsfwZ2Eb5boc=;
-	b=CzYD2cIkX2JeGUzpQfsWLX9uDcFJyf72/IDfLy7vTscWhNoMwERu9cEkalomkDK0hEE9XV
-	khalFLgD9VOfK9wc+JTM3Np4U1icuJPWHgqDVlrkO7Yp/MXB8hKgLGmP1xzEZ6rpnHis26
-	sviqU+A1/uTw5tPfXup5141NVcvSzXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1739888760;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ShM7QkYxOUzYuiM1Xi5REKpzUXaj1yvUsfwZ2Eb5boc=;
-	b=/Vd7FgY6APVWwhDXgEq7svE5tTcQ4a7vRk9ABBhbYidnUfFH6agMaJaI+JSgErZs4/9e0l
-	9gtQNqLTgI+A/wAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6C80D132C7;
-	Tue, 18 Feb 2025 14:26:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CLopGXiYtGdXYQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 18 Feb 2025 14:26:00 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	xen-devel@lists.xenproject.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
-Subject: [PATCH v3 24/25] drm/xen: Compute dumb-buffer sizes with drm_mode_size_dumb()
-Date: Tue, 18 Feb 2025 15:23:47 +0100
-Message-ID: <20250218142542.438557-25-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250218142542.438557-1-tzimmermann@suse.de>
-References: <20250218142542.438557-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IvkAXLt1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zNpHuDQylhxsrYljHMRIspNNwVgE571b9YR+3ky6W+FXt9TrRdmAmnOIamdxv1d+IFgAD0cOP3mQ5wlm4PO9YCNHRdNNZoksceBUHbJEcJK0JQVWfCcDlVBpJEZQ/79Vt9mjghyOawRffX+9TTv6rQL10Pm+vrXYQSBv0CDRyBn1IvcfsfH1b3a+6Ker2S8PdSS117LloJ4CyOn3dDuKTTUUsvhBXpt5vWO5YLf8d/86ZyzcN7XxDnfsTZuNLiQr79AM546TjqXcXrTj6JjfRwA8yFFk89wGqLoFdqSUzWiKDvmq3W2bXtsC3UPNAt4bEgdNZqcIqeKy3f2xOCyHCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bzzC2IDTc4ZdWjb35NrsWZ5bIpkDlbDmqIDWmIrp1Ic=;
+ b=jN4VVYZpeUZbQOblngvaGEeqoHUG6useX9LYV2ePvvBDNiTC/LDSRMzKz5/A+ZsJh8VVXeGZk1BkUDRwckr1A5LmCHVmKxdy/3jx+j9QhJvCCtkXdZjqP52rZhwxoWrJHh5I5BgJfPzNy/zBvfRpIkK4lpOihpgdCLakIoWFuNBOHWJyvC0q7DMZ+s7nxXTmxar/6W+ncFc98f9xLsHw1wQXK18jfEJK06O+K0HljM49ziDe66Pd6l1QOdnp10CpAESMVb1dh0yaThIC4FTN29ds0whF9zP0OQP8IaYfhipfn5TVBWB1zeSuOyjYu14Ma53QeQncfzAemL/xSGRQOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bzzC2IDTc4ZdWjb35NrsWZ5bIpkDlbDmqIDWmIrp1Ic=;
+ b=IvkAXLt1uvWdOlDjhMllzf6Y8ZW38yZ+/Qx1rwP2/6eiH0bdauxNaUovLkPP9wxAZ6EplMF90OghoqPS43Tb0zO/BTJ7Z73yyYwUIXkJgxRKZcdbvzPBjvp4/rD6A+jRS1bn77Z0HcJPA1f+W6B2ls4fSn1bLqJj/I9ucf8QuSRsNDOGJ5Vx93PEEjcVYQxYMOHmaeFxruyhW966Qsc5gGQh/NDMCySSngR4JybnNku4ObfLfFKjRgPNk/fOHnl8R7DhnFlQ2rWxGEL9ot2Tz8yMdC4lYwPu7j39iI3fsecrXERLco/OHagf9GzoupG275jPz5yNd+1vXjAZRuP+3A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8809.eurprd04.prod.outlook.com (2603:10a6:20b:408::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Tue, 18 Feb
+ 2025 15:51:48 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
+ 15:51:48 +0000
+Date: Tue, 18 Feb 2025 10:51:38 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: p.zabel@pengutronix.de, shawnguo@kernel.org, mathieu.poirier@linaro.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, andersson@kernel.org,
+	linux-remoteproc@vger.kernel.org, iuliana.prodan@nxp.com,
+	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, krzk@kernel.org
+Subject: Re: [PATCH 1/5] reset: imx8mp-audiomix: Add prefix for internal macro
+Message-ID: <Z7Ssik/uGKz0nmXz@lizhi-Precision-Tower-5810>
+References: <20250218085712.66690-1-daniel.baluta@nxp.com>
+ <20250218085712.66690-2-daniel.baluta@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218085712.66690-2-daniel.baluta@nxp.com>
+X-ClientProxiedBy: BYAPR08CA0026.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: -1.30
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90e6bdc8-b1a6-4e91-c364-08dd50342727
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vb5HkmAUwBVzo83ffPgrGmOJFoAnI8lEwWKJblzzaXrsHqmQtczwgjwmA6ZR?=
+ =?us-ascii?Q?pQ9SCBSj0iptBIg0+PZzC4fGAfUG7OoVRLYGzVeWNmWGqsDsSQiFJ7guU0tO?=
+ =?us-ascii?Q?K2ekz3rBILsLcOBpSXkubPdUBfifWEWBFofqnqP/aStPBv064ko7yMt+181w?=
+ =?us-ascii?Q?KlNa3cYVAfDtLe17KkRx9zrAzi0Cc2ztmWYv/UQ9yF51+gLrIu5gO/otXBUc?=
+ =?us-ascii?Q?87cYD795aBsgNEPQsdhRq1FfExVgqmlBRaLIXZQgK4HdMIfVlS+EwGTjZR7q?=
+ =?us-ascii?Q?MF6oRRdl42kVk0kiznx7M2ieAt0YFfxgrzo6vW5rRUdgNHyctnxgJGI4Vxgx?=
+ =?us-ascii?Q?tsN3Amg22y4PrfcwnSOX//sAyHr3P392NTsoQyt3pnzOScveMCpfSgvl6coK?=
+ =?us-ascii?Q?ohfCw76YPJgIrSTVXW+zpcFcyVzCu/6CE43E6hsekVNW1g/Fo1gppXB3HRws?=
+ =?us-ascii?Q?2/1SGAa2LCLnoJCfYVrNbQ0bvwon2bQ699he281D9NjIMSCt/OJNIcKe6pXW?=
+ =?us-ascii?Q?ACQrcqqaHAwUv5QvF2RX/PfdI8kr1VpGkt5tNZO3+PjR6iB6Z6AX8qfcb3bP?=
+ =?us-ascii?Q?dMPvsgSvAoFey45SbBzl86zqUOhsKryvfLcYmXot82ehPrvGTdilo+Gds6Pa?=
+ =?us-ascii?Q?5raSaAJMej/OFtKMLRmO7YxYK/OeTlg2xIScmWkZPRNNiGPZ3X1tgOhLH0Ht?=
+ =?us-ascii?Q?Gu07JcNrQbdFB80Cxo/ZpDuKMQYSfDGrZv10ii8IWypaYlF1G+DqsefxSI1B?=
+ =?us-ascii?Q?g2inAFB9tQLPR2uiwJjfoMVwRvkhN9mHf7bzX3i59vqd9eZpC5wyXiMOKn8P?=
+ =?us-ascii?Q?csDGEVzTMdIGSI7eyre9D74X1GBY8NtQ7hGbo2/pV7cQU19Ao3R1p9wlcZqv?=
+ =?us-ascii?Q?b52CqwvAQMKG7dRf3BzFLm4lNpA847F6baXW3JOtqqlOTiBmQ+n8c4HCYwy7?=
+ =?us-ascii?Q?xklfeI0frRPML062pRDM89Scgaq93DWIFPSPECfNZv5FMaqy3HBqTckblTyA?=
+ =?us-ascii?Q?8lXOVq8AGAWycudeWQXfHImY4JnTTV+5T+eXQPt/dzQuM3F9K4UfuKgXewqh?=
+ =?us-ascii?Q?H4VHiLezTuX106ajyjwvk/CET0zxLuLwxzZk6Auyd1z39mOz3NqCafWHyyiS?=
+ =?us-ascii?Q?7OZLV51lT2+ifcrxDc4XcBrcdVP6KZCOkaVFVrbJvQNJ/81/m++i1jDH68nm?=
+ =?us-ascii?Q?k0SjHZGFpoPw/ycXKJnO4NbnW1LdrReL5h3Kf02SKIl3xaY+C3yMBK0KWeYn?=
+ =?us-ascii?Q?Wk1JzRMoP9mVA8CeRL33QA4UdvlAPnPenZjcf/3L6KNPA6NJOa96Of0vSgM+?=
+ =?us-ascii?Q?+JatbHudeJpniGcIFgXb+RPd0C9IicNlONmiPDQZLGyPVAupIS5P35kgk6UZ?=
+ =?us-ascii?Q?BpAU5DT7ZqR8KTh4N7XcNCVOhr39c1e5ygLw3pQbrv7ifF4P2Mp35jZQiBMq?=
+ =?us-ascii?Q?27j2wybJazrTzuDy0UytJcT3jeMOv9vu?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZWiD94k8twGz3lvp8T4rCR+OSqxD2s3LssJcg8LUqEc83bFxem5l0aIIJerR?=
+ =?us-ascii?Q?feI4MR57nYNFHK67gyt+yeCxcx40J5aYRLN6ZOOtLatpyNFybZ3xDNngRhwt?=
+ =?us-ascii?Q?6a6qyBn5Y6TblE8k5eAf933GDSgh0QdJv4WQIE8Irn4/l5qgGlCJeKTphpYM?=
+ =?us-ascii?Q?8G+Zso4kLUYL667feZfxqoN/aC0ZaXMkIQRrevc5Ss6150lVm0nmll8lq0ZO?=
+ =?us-ascii?Q?RbYfIiC9YOfPAdNeQaUxOnaCazxnL79uIy6xg14hBGN1zQhXpu0y+qfEkfyQ?=
+ =?us-ascii?Q?V7P6ZyAQafAYUE9ymBLZ7hAJM5uFlkyTSNqu6dzlrjUuLxLLlfD2L3gov0i9?=
+ =?us-ascii?Q?1ykHBZS6oFhAE60f2fJ581es3jQKmD1dskaZ2om96vWDuUswTn/TOKywAxkv?=
+ =?us-ascii?Q?ePj3rrSTridqfeCiRnvKAeTKQFKlqcijAAwgo+qK9+9DB8NBxXbUVTutvuHi?=
+ =?us-ascii?Q?CxEbywsrpcXFy5rRKb/lhwdhO8Wy4yn5bLDmH+Y27+C5TpWAb9wz00rh7mN5?=
+ =?us-ascii?Q?uRfVAkXGdYslz4Ql5tdKZuIfBy5QzDkZbRz6QwQSde9exKzI2t5yTLTffXYl?=
+ =?us-ascii?Q?1OzbqxrTrtNaVIDPWJafUFbnd2BAWXhaREcVQjXOSTMTZEc/xOeD4Kimdkns?=
+ =?us-ascii?Q?9/S2P3sNGZXrbmbwheEzWry3PUEr1QS7NHo0IqeOc5bBEIJVliEeQc8S6xAP?=
+ =?us-ascii?Q?KKZb6fY8K6PGctbwbZZCLUFk6/MEcL0OgPMmWKyYvso8JuBWNXi6DFI45sOr?=
+ =?us-ascii?Q?hlLBZumLB+1tkN4unxDXrXBwLV7h6AMnWjPEqZK3N/xXiie3G/jeoi8Xythb?=
+ =?us-ascii?Q?jRL+PdBT5N67kF3QqP8S0C84B6o3jyNTtd1BcJZbxAn/CbDpNumQDCjDImds?=
+ =?us-ascii?Q?AmksI65SuSgFEq3O0c7qHPL0t1FNswcbq8DePvU6m4rCMf3AVeONnUZHjit1?=
+ =?us-ascii?Q?eu1aKP/tP5Gx3dgKXjvAT9QuiNTejDsyEQQVULguqe2t26UZJBHECyKaEyEQ?=
+ =?us-ascii?Q?tpET4oSr26yzSIG0oeILxdjCc1hNUc7+OfLHYCkTyX8D13jut2oAIowQcmCX?=
+ =?us-ascii?Q?1GZJMLnJ0p1cEuGLtDLvoCE32CnWJGJ+IWhzCfJIsOVSRas3lvzay7Mebb38?=
+ =?us-ascii?Q?JTcryaszsSY7WzNWQocCIXkJ3ODM2IVd98/oIUfyAa72FTRTJYCDR+blqMD8?=
+ =?us-ascii?Q?Ki/7NflkRBll/WLZJ9mvghk19Rw3ZK4Qk+iN4vWSuqqT/xbR0oLTJu03Ptb1?=
+ =?us-ascii?Q?4t7lEZlSpH2Wz3rloX5KvGCiD3n3tbRpGuGAVMQNSFZxtz+ZoWoxi/211pci?=
+ =?us-ascii?Q?v8yiUY/wKkP4vApCVCzrvWwd1mPfiIqOFjGoQcxq+x9PJSCZaWJp1Hqz8Vu2?=
+ =?us-ascii?Q?zmvtfPklneLUFgyts/kxHqK0u73U4PF7MtyS5m8oRIwdQ5Gn6dGYx0NaDIrd?=
+ =?us-ascii?Q?ZQ8gb9ae1J59xSgCsYztHYmHl2NondNslc8V6pzNFITnnr9TlDn8PdgNUsvX?=
+ =?us-ascii?Q?4S/QKo7im9iXK8Ic2SwPyIU5oCG5G8Rymoys2BSa4q1ZEQkOl7yybr7nOUOB?=
+ =?us-ascii?Q?KjoE6UTuLs9Hr5vb5+4=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90e6bdc8-b1a6-4e91-c364-08dd50342727
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 15:51:48.3735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: o4WFj+iI8qUOUCKYUgUlkZlsFuqVHvOEwNMZtuDnU+gV8vKgzV3TczYXtAKgjD2ppFs0nsSd4I576WzHras2rA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8809
 
-Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch
-and buffer size. Align the pitch to a multiple of 8.
+On Tue, Feb 18, 2025 at 10:57:08AM +0200, Daniel Baluta wrote:
+> This adds IMX8MP_AUDIOMIX_ prefix to internal macros
+> in order to show that specific macros are related to
+> audiomix.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
----
- drivers/gpu/drm/xen/xen_drm_front.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+nit: warp at 75 chars
 
-diff --git a/drivers/gpu/drm/xen/xen_drm_front.c b/drivers/gpu/drm/xen/xen_drm_front.c
-index 1bda7ef606cc..fd2f250fbc33 100644
---- a/drivers/gpu/drm/xen/xen_drm_front.c
-+++ b/drivers/gpu/drm/xen/xen_drm_front.c
-@@ -14,6 +14,7 @@
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_drv.h>
-+#include <drm/drm_dumb_buffers.h>
- #include <drm/drm_ioctl.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_file.h>
-@@ -414,8 +415,10 @@ static int xen_drm_drv_dumb_create(struct drm_file *filp,
- 	 * object without pages etc.
- 	 * For details also see drm_gem_handle_create
- 	 */
--	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
--	args->size = args->pitch * args->height;
-+
-+	ret = drm_mode_size_dumb(dev, args, SZ_8, 0);
-+	if (ret)
-+		return ret;
- 
- 	obj = xen_drm_front_gem_create(dev, args->size);
- 	if (IS_ERR(obj)) {
--- 
-2.48.1
-
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  drivers/reset/reset-imx8mp-audiomix.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
+> index 6e3f3069f727..1fe21980a66c 100644
+> --- a/drivers/reset/reset-imx8mp-audiomix.c
+> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> @@ -11,8 +11,8 @@
+>  #include <linux/of_address.h>
+>  #include <linux/reset-controller.h>
+>
+> -#define EARC			0x200
+> -#define EARC_RESET_MASK		0x3
+> +#define IMX8MP_AUDIOMIX_EARC_OFFSET		0x200
+> +#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		0x3
+>
+>  struct imx8mp_audiomix_reset {
+>  	struct reset_controller_dev rcdev;
+> @@ -35,8 +35,8 @@ static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
+>
+>  	mask = BIT(id);
+>  	spin_lock_irqsave(&priv->lock, flags);
+> -	reg = readl(reg_addr + EARC);
+> -	writel(reg & ~mask, reg_addr + EARC);
+> +	reg = readl(reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
+> +	writel(reg & ~mask, reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
+>  	spin_unlock_irqrestore(&priv->lock, flags);
+>
+>  	return 0;
+> @@ -52,8 +52,8 @@ static int imx8mp_audiomix_reset_deassert(struct reset_controller_dev *rcdev,
+>
+>  	mask = BIT(id);
+>  	spin_lock_irqsave(&priv->lock, flags);
+> -	reg = readl(reg_addr + EARC);
+> -	writel(reg | mask, reg_addr + EARC);
+> +	reg = readl(reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
+> +	writel(reg | mask, reg_addr + IMX8MP_AUDIOMIX_EARC_OFFSET);
+>  	spin_unlock_irqrestore(&priv->lock, flags);
+>
+>  	return 0;
+> @@ -78,7 +78,7 @@ static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+>  	spin_lock_init(&priv->lock);
+>
+>  	priv->rcdev.owner     = THIS_MODULE;
+> -	priv->rcdev.nr_resets = fls(EARC_RESET_MASK);
+> +	priv->rcdev.nr_resets = fls(IMX8MP_AUDIOMIX_EARC_RESET_MASK);
+>  	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
+>  	priv->rcdev.of_node   = dev->parent->of_node;
+>  	priv->rcdev.dev	      = dev;
+> --
+> 2.25.1
+>
