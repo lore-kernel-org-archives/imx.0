@@ -1,64 +1,49 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78544280A34
-	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 18:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF7F1E51ED
+	for <imx@lists.linux.dev>; Tue, 18 Feb 2025 19:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739904671; cv=none; b=mebiScETWOKMVSHEhVzrsoDtXS5eryxhxsySwQ2hJ9sR7tUr+gxjETO4/QuTFhQ7TpMxoYqpbkwShQrdPPZaDMkeLjFTGoPJIyOOyTe8xGz+aZkhQv1LvygEwIHY3c9/1AO350TceJ0pwJHbKxv7WEcn0ThkRzpG4lTyjQeeY1Q=
+	t=1739905713; cv=none; b=TFJPbIvSlBULdzB+zvMCgeghkns0b/rdQiuaK2nvR6khq2NJin+dfab0BWPs3HWmf1jcTfeUXbHJDsNbTOiyJNpctYhzPZXCTqivtQDaNk9DFsE6hNo5hJNyxIVXCdxew4ccCKRVu82rCmI3DJeFS1SxFFE5J03+P6sQTx1E5mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739904671; c=relaxed/simple;
-	bh=MoO/m337yGrtN/rDuUa+yPCfHoVc7loFFqayxFZslPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s7S900X1PyY8oXy92QpyFgZzuftlGXa+jDPXjOTpvZhQY1QyilpCNDULF18ofDz7Girl7AcYDETMVspCUD1PkyhEJFQy3LW1dk0F4SwTI0etFkOXlJWJiRkrLKeQ5YIgcoFLAGkUTeLxUXGU5zc0ZP8pLYS6dzjsCtHDun3u/GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z9QDM8BC; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1739905713; c=relaxed/simple;
+	bh=MVgm1pbDd++KWvHhJeM8PPkZ/kguBWYm8oGMkmiK2I4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eaDKfNQAsbeGOLQ5E6t4lATBB05OaXWcfpI3IE99F9WsxEhVGDO0rXEbjCCu/HKmkx2xMTdh6iGzbb53sjmd07XkHBY1d7GrJPT3Hta+5GHBpQ5sBqAg67PmLWOSqf2lwct15vldzAMZj31JhmqFRVqbNxoP9BTxtiQ8f6VcKaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IsA/eJ/g; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z9QDM8BC"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38de1a5f039so5780191f8f.2
-        for <imx@lists.linux.dev>; Tue, 18 Feb 2025 10:51:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739904667; x=1740509467; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J2kLFupIIGJ1/RHSRRNvz/y3ILtkw1UuLgcN/irDm3o=;
-        b=Z9QDM8BCERNUSGvCz9Ul5/fvnP6I+nIq8NvbcslxdqHkwOE1quvRuFvWz0Znyt9yK5
-         VwMK+QZ3TDYJUijfWmTilchuGpTacIAvV3yYduYmqa4TpSFKsP8WtncC6XnZtf9QhsKL
-         yr5aPRJIFEAz5Zc4Qj5r6ngEtT8ckIrER8lRKnJtzHKgtf6GfrRLobh/0wUh0MYS8SyG
-         9YUNl5NhPV4R5EE3EFmFTOc02MDu6GNw8DlP3wnDAH5mbJvI72GFZQ4gAQIDjQv+3Lbj
-         88N18KWeE5t/GX+uSrR6g3eLCjncmZiQZLS+NIKEmDzxGdjVD6v1xC1TUp9BccJAFSCM
-         t+sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739904667; x=1740509467;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J2kLFupIIGJ1/RHSRRNvz/y3ILtkw1UuLgcN/irDm3o=;
-        b=h3wNOP5AMDMDFozO+v22zEdqgyjwVZc/tlggRLSv38vbiP2aNgRV67WSnDMo8bo4RC
-         indeCJM59gjM3abVTkBTLC1AJo/KrIDP/3p46EwRH8rH5BmqzZ2cvTlcGD3lmpAPl4xH
-         aDyOiMzI2blzVzkFElAQWC5LJAGohic2t7ZVUwj2QLFA3Gbd3gZYSkMKfm/1F/F5VXeU
-         PmClDqHHf5mYSo68k5pOJIc6LQ7186d6lWevd0PLi5Ny0vNSc4C/9vihpBjICsKQVAmU
-         dbwl9tjyJR+O9BS+2ncJcN8B7O91IkCwSKA2L+gFbkQIR4o8iF3DYcM6cw25GkJ3tL3y
-         QOIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlidTqZK4g5CVmjFsugIqorjBbgVuqBBD2coU5QcSjrF7CeU8/MXJynBGOWg/ynTHDqAg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxvOpOktGFJwoKDniWS5LNv8mUoJDDvCHtLFg0I4jd7x40t6wGi
-	Tuxl3Z9ZYAvyc3JufcRekDmRfxx4aR/CvFmZC390DYYb/y4hgKehNeNEmOpBlug=
-X-Gm-Gg: ASbGncsrMPt6yuo2D8ui4WQHRPtf5NuAkeNtP/JBAfcCIMsX+EVRzzcpN3hRCH0TvZu
-	vZf3EkawecjFOPGSC3GHf84jQ/BZ3QyVD4AYIsyAp+1MPB3XsXLKJd1ug+ykDqYZUTYuCfrq5gJ
-	s7Q7Mh4BUY5ufSMlPpVmdE94pwZy0B9vta7z6HXDybuEbgiS3rP1OLcS6SXyNrAd/3/YUhH+rOh
-	I1Qbe0AVNY3mGE4nu0OUDOHuONQjglo5mtymedU2/rlLW28RfR+pE6u5TA9LR4p2pbTfV+z7g6c
-	VDWYR8IloDRIHtWalznw0UUTtYlZDj/va6CVkWu6RsEBLmU3smmb93o=
-X-Google-Smtp-Source: AGHT+IGWiGnjxl9amPWMtpBg/TTVGWv0w0/3DeUvonXPRwth4gPx2Sx4xPYck/WL22fVGRawD9RD9A==
-X-Received: by 2002:a5d:6d01:0:b0:38f:4e30:6bbb with SMTP id ffacd0b85a97d-38f4e30bc4amr8481365f8f.25.1739904666800;
-        Tue, 18 Feb 2025 10:51:06 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38f259d5e92sm15924221f8f.66.2025.02.18.10.51.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Feb 2025 10:51:06 -0800 (PST)
-Message-ID: <5f7f39b9-5cf8-4ebe-816f-d56e52bc7408@linaro.org>
-Date: Tue, 18 Feb 2025 19:51:05 +0100
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IsA/eJ/g"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51IJ83hA062175
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Feb 2025 13:08:04 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739905684;
+	bh=fe9G2MZAHcd6fZNYH50IhEjcWk7Zck1M5VKNFAJhbe0=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=IsA/eJ/gKw7Ot15bGtKazVgprX8P7jUClfkkzImaYlfEicqHFZAPZTk5nJDuIFKhf
+	 YeuIiZ9igzbgiz/V+aKBO7ZxolJxTUlQ1XLvCYxYUZllHjMuwVsKHGps2FpjY1ylKW
+	 /XOjMn1L2V0eKD8pAa1xTFoh3hbXc9IHWkoQHb4k=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51IJ83oA010965
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 18 Feb 2025 13:08:03 -0600
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
+ Feb 2025 13:08:02 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 18 Feb 2025 13:08:02 -0600
+Received: from [10.24.69.142] ([10.24.69.142])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51IJ7o1V046671;
+	Tue, 18 Feb 2025 13:07:50 -0600
+Message-ID: <bbf4f6db-cac1-4558-b345-8b4d6b36a8fa@ti.com>
+Date: Wed, 19 Feb 2025 00:37:49 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,45 +51,242 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] thermal/drivers/qoriq: Use dev_err_probe()
- simplify the code
-To: Frank Li <Frank.li@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- "open list:THERMAL" <linux-pm@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-References: <20241209164859.3758906-1-Frank.Li@nxp.com>
- <Z5EULLr7hsk1RIZy@lizhi-Precision-Tower-5810>
- <8693bf83-9878-404e-b609-dcaf758d485c@linaro.org>
- <Z7TEGQQ/JM/q454F@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH 3/4] arm64: dts: ti: k3-am62a7-sk: Add overlay for fusion
+ 2 board
+To: Sebastian LaVine <slavine@d3embedded.com>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>
+CC: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+        Biju Das
+	<biju.das.jz@bp.renesas.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Elinor
+ Montmasson <elinor.montmasson@savoirfairelinux.com>,
+        Fabio Estevam
+	<festevam@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Hans
+ Verkuil <hverkuil@xs4all.nl>,
+        Javier Carrasco
+	<javier.carrasco@wolfvision.net>,
+        Jianzhong Xu <xuj@ti.com>,
+        Julien Massot
+	<julien.massot@collabora.com>,
+        Kieran Bingham
+	<kieran.bingham@ideasonboard.com>,
+        Kory Maincent <kory.maincent@bootlin.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Laurent Pinchart
+	<laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        Mikhail Rudenko <mike.rudenko@gmail.com>, Nishanth
+ Menon <nm@ti.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Rob
+ Herring <robh@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+        Stuart Burtner <sburtner@d3embedded.com>,
+        Tero Kristo <kristo@kernel.org>, Thakkar Devarsh <devarsht@ti.com>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ideasonboard.com>,
+        Umang Jain <umang.jain@ideasonboard.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>, Will Deacon <will@kernel.org>,
+        Zhi Mao
+	<zhi.mao@mediatek.com>
+References: <20250212195656.69528-1-slavine@d3embedded.com>
+ <20250212195656.69528-4-slavine@d3embedded.com>
 Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <Z7TEGQQ/JM/q454F@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Vaishnav Achath <vaishnav.a@ti.com>
+In-Reply-To: <20250212195656.69528-4-slavine@d3embedded.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 18/02/2025 18:32, Frank Li wrote:
-> On Wed, Jan 22, 2025 at 06:41:22PM +0100, Daniel Lezcano wrote:
->> Hi Frank,
->>
->> On 22/01/2025 16:52, Frank Li wrote:
->>> On Mon, Dec 09, 2024 at 11:48:58AM -0500, Frank Li wrote:
->>>> Use dev_err_probe() and devm_clk_get_optional_enabled() to simplify the
->>>> code.
->>>>
->>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>
->> I applied the patches, thanks
->>
+Hi Sebastian,
+
+On 13/02/25 01:26, Sebastian LaVine wrote:
+> Adds an overlay for the Fusion 2 (FPD-Link IV) board on SK-AM62A.
 > 
-> Thanks, I have not seen at linux-next/master. Anything missed?
 
-No, it is in the thermal/bleeding-edge ATM and will go through 
-thermal/linux-next tomorrow.
+Were you able to test and get this working without additional patches on 
+linux-next?
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+The multi-steam support for J721E-CSI2RX and CDNS-CSI2RX drivers are 
+still WIP [1] and as per my understanding you will need those to get 
+this overlay functional.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+1 - 
+https://lore.kernel.org/all/20240627-multistream-v2-0-6ae96c54c1c3@ti.com/
+
+Thanks and Regards,
+Vaishnav
+
+> Signed-off-by: Sebastian LaVine <slavine@d3embedded.com>
+> Mentored-by: Stuart Burtner <sburtner@d3embedded.com>
+> ---
+>   MAINTAINERS                                   |   1 +
+>   arch/arm64/boot/dts/ti/Makefile               |   1 +
+>   .../boot/dts/ti/k3-am62a7-sk-fusion-2.dtso    | 115 ++++++++++++++++++
+>   3 files changed, 117 insertions(+)
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 27fb3c1be732..bf6a48da0887 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21890,6 +21890,7 @@ M:      Stuart Burtner <sburtner@d3embedded.com>
+>   L:     linux-media@vger.kernel.org
+>   S:     Odd Fixes
+>   F:     Documentation/devicetree/bindings/media/i2c/sony,imx728.yaml
+> +F:     arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso
+>   F:     drivers/media/i2c/imx728.c
+> 
+>   SONY MEMORYSTICK SUBSYSTEM
+> diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
+> index f71360f14f23..fcd8d11e5678 100644
+> --- a/arch/arm64/boot/dts/ti/Makefile
+> +++ b/arch/arm64/boot/dts/ti/Makefile
+> @@ -31,6 +31,7 @@ dtb-$(CONFIG_ARCH_K3) += k3-am62-lp-sk-nand.dtbo
+>   # Boards with AM62Ax SoC
+>   dtb-$(CONFIG_ARCH_K3) += k3-am62a7-sk.dtb
+>   dtb-$(CONFIG_ARCH_K3) += k3-am62a7-phyboard-lyra-rdk.dtb
+> +dtb-$(CONFIG_ARCH_K3) += k3-am62a7-sk-fusion-2.dtbo
+> 
+>   # Boards with AM62Px SoC
+>   dtb-$(CONFIG_ARCH_K3) += k3-am62p5-sk.dtb
+> diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso b/arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso
+> new file mode 100644
+> index 000000000000..68e06d643bfd
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk-fusion-2.dtso
+> @@ -0,0 +1,115 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * DT Overlay for Fusion 2 (FPD-Link IV) board on SK-AM62A
+> + * https://www.ti.com/tool/J7EXPAXEVM/
+> + *
+> + * Copyright (C) 2024 D3 Embedded - https://www.d3embedded.com
+> + */
+> +
+> + /dts-v1/;
+> + /plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +
+> +&{/} {
+> +       clk_fusion2_25M_fixed: fixed-clock-25M {
+> +               compatible = "fixed-clock";
+> +               #clock-cells = <0>;
+> +               clock-frequency = <25000000>;
+> +       };
+> +};
+> +
+> +&exp2 {
+> +       p9-hog {
+> +               /* P9 - CSI_RSTz */
+> +               gpio-hog;
+> +               gpios = <9 GPIO_ACTIVE_HIGH>;
+> +               output-high;
+> +               line-name = "CSI_RSTz";
+> +       };
+> +
+> +       p19-hog {
+> +               /* P19 -CSI_SEL2 */
+> +               gpio-hog;
+> +               gpios = <19 GPIO_ACTIVE_HIGH>;
+> +               output-low;
+> +               line-name = "CSI_SEL2";
+> +       };
+> +};
+> +
+> +&main_i2c2 {
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +       status = "okay";
+> +
+> +       i2c-switch@71 {
+> +               compatible = "nxp,pca9543";
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +               reg = <0x71>;
+> +
+> +               i2c@1 {
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+> +                       reg = <1>;
+> +
+> +                       deser@3d {
+> +                               compatible = "ti,ds90ub9702-q1";
+> +                               reg = <0x3d>;
+> +
+> +                               clock-names = "refclk";
+> +                               clocks = <&clk_fusion2_25M_fixed>;
+> +
+> +                               i2c-alias-pool = <0x4a 0x4b 0x4c 0x4d 0x4e 0x4f>;
+> +
+> +                               ds90ub9702_0_ports: ports {
+> +                                       #address-cells = <1>;
+> +                                       #size-cells = <0>;
+> +
+> +                                       /* CSI-2 TX */
+> +                                       port@4 {
+> +                                               reg = <4>;
+> +                                               ds90ub9702_0_csi_out: endpoint {
+> +                                                       data-lanes = <1 2 3 4>;
+> +                                                       clock-lanes = <0>;
+> +                                                       link-frequencies = /bits/ 64 <800000000>;
+> +                                                       remote-endpoint = <&csi2_phy0>;
+> +                                               };
+> +                                       };
+> +                               };
+> +
+> +                               ds90ub9702_0_links: links {
+> +                                       #address-cells = <1>;
+> +                                       #size-cells = <0>;
+> +                               };
+> +                       };
+> +               };
+> +       };
+> +};
+> +
+> +&cdns_csi2rx0 {
+> +       ports {
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +
+> +               csi0_port0: port@0 {
+> +                       reg = <0>;
+> +                       status = "okay";
+> +
+> +                       csi2_phy0: endpoint {
+> +                               remote-endpoint = <&ds90ub9702_0_csi_out>;
+> +                               data-lanes = <1 2 3 4>;
+> +                               clock-lanes = <0>;
+> +                               link-frequencies = /bits/ 64 <800000000>;
+> +                       };
+> +               };
+> +       };
+> +};
+> +
+> +&ti_csi2rx0 {
+> +       status = "okay";
+> +};
+> +
+> +&dphy0 {
+> +       status = "okay";
+> +};
+> --
+> 2.34.1
+> 
+> Please be aware that this email includes email addresses outside of the organization.
