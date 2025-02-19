@@ -1,92 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFDE1E5B65;
-	Wed, 19 Feb 2025 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851681F2BA7;
+	Wed, 19 Feb 2025 14:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739974852; cv=none; b=jGVAvEPkANxJZ8mxH3UoC3Nzd/vzhjn1NobQrnr0QBHxZ4v43tgPVCXmzHJqCbhmQfGaOOGGNz/QXaDsBSRbFTQXyJRr9IYUuLESOB+m2BURrv04X+nYWVnIoYO+6nWbNFURj8aT/ko18TwCkxpnVx0vC36eP/lcWJvnYYZ1hlI=
+	t=1739975418; cv=none; b=XGD5WrOAhnhQnWvnH4eVmWkC86XLgA7+OhUHX9rCYa3x91UhuncSMoQxhD1L5+9EP57ukNm7oQ4RTc3I/QQ6g7FODmcyyEgJYXhrX1MkBqxnwMo7Euiu6EGwuzf649wy+AFrNx1cUt/EjWkT8NemR+n5Fxj10RQtgSfNepqf4B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739974852; c=relaxed/simple;
-	bh=jOlrkiD0YDVnxiss19yqwIELdl/2yHZAb820zbK7+Y4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NP0HukTbwe3YeQfR+1hbqTSrG7QzGPXRrOh8n+D/9+qq8CouyLZ14iMsTf68kb/p9dABhWYOOYsnvNRN9OK1C7vYB7Pp0/rslzdAKDia4ebWw5LcXCbLrbVLauVlUylmO1NKNYWhtyL6lwItNFQM8GAUANE5HSEnvrekLPwnboI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIwtcQJF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739975418; c=relaxed/simple;
+	bh=k4kfLM6UULYbT+Hl+/0hs1RZVm2znRy0PpE0Nf0I2eM=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=jte89bzonH4e+cP04DquGhQTJPRRqNSIPE2SCs+2DR4zUlmxlVsOZlxbwCCcXHsIP1OR3IRVrMsLrkMpLKTdLIIIsHtn4tfU4/zTdi+PZ6ZTrqwK3bFQM07/Vq1JvENYUCSe70GY8Rt8VvcNny1LJqP7gMwncqxZ0wbNjnWUqyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gutt2v/U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIwtcQJF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A12C4CED1;
-	Wed, 19 Feb 2025 14:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739974851;
-	bh=jOlrkiD0YDVnxiss19yqwIELdl/2yHZAb820zbK7+Y4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eIwtcQJFf0s+4hIHMz0Xth5Km8xhl2Lj7ZaQuf7QLCMOqOAThRQfWtj3OOU8+Ik2C
-	 CytUQ7xJ4zfZOAOJvCrqBSZxlDw0azh39huA2Zuu5ZtJlOIL5m02V31EfAhhq1xWd3
-	 QyVWZb0x+NzZ+cKpwIfGziYdpiVNagt0okrwp+Cw=
-Date: Wed, 19 Feb 2025 15:20:48 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Douglas Anderson <dianders@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	dri-devel@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH v4 1/8] driver core: auxiliary bus: add device creation
- helpers
-Message-ID: <2025021938-swan-facedown-e96a@gregkh>
-References: <20250218-aux-device-create-helper-v4-0-c3d7dfdea2e6@baylibre.com>
- <20250218-aux-device-create-helper-v4-1-c3d7dfdea2e6@baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gutt2v/U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E47C4CEDD;
+	Wed, 19 Feb 2025 14:30:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739975415;
+	bh=k4kfLM6UULYbT+Hl+/0hs1RZVm2znRy0PpE0Nf0I2eM=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=Gutt2v/UySArgzAiJKzZJu4KjpWJFaPBR9mE2R1u+cZ6pY1gWcPFS1tqzDqCuRITU
+	 zk7n0N/SQBQCiHy7zo8cld8pardfpUrU1WOGKZQJBU/7x5C27T0N6MuMiYdhaSxzFr
+	 9Se9ynf1zT7C9Tg+tSNrJa0zw6yW0lotDRiqII14amvsH4tpQnxLBfDUi+NmY69CCx
+	 qmYHizwXdokMEEshV2e250pQpd6zGfv6UKPbmjVtTfb7RtsB5u4g0JShNPiLKhLB4b
+	 kjeEVgaGvgRYd9GEY1QTn1B4zdpGxqVKfRWmv5l75Vn5y38TrXjWZhgCUKwc32dPCD
+	 7C9yn8Fx63VTw==
+Date: Wed, 19 Feb 2025 08:30:13 -0600
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218-aux-device-create-helper-v4-1-c3d7dfdea2e6@baylibre.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, viorel.suman@nxp.com, 
+ Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org, 
+ Florin Leotescu <florin.leotescu@nxp.com>, 
+ Michael Shych <michaelsh@nvidia.com>, carlos.song@nxp.com, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>
+To: florin.leotescu@oss.nxp.com
+In-Reply-To: <20250219133221.2641041-4-florin.leotescu@oss.nxp.com>
+References: <20250219133221.2641041-1-florin.leotescu@oss.nxp.com>
+ <20250219133221.2641041-4-florin.leotescu@oss.nxp.com>
+Message-Id: <173997541394.2537392.7597733714820078670.robh@kernel.org>
+Subject: Re: [PATCH v2 3/3] dt-bindings: hwmon: emc2305: Add YAML binding
+ documentation for emc2305 driver
 
-On Tue, Feb 18, 2025 at 08:29:46PM +0100, Jerome Brunet wrote:
-> Add helper functions to create a device on the auxiliary bus.
-> 
-> This is meant for fairly simple usage of the auxiliary bus, to avoid having
-> the same code repeated in the different drivers.
-> 
-> Suggested-by: Stephen Boyd <sboyd@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Wed, 19 Feb 2025 15:32:21 +0200, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+> 
+> Add yaml-based Device Tree bindings documentation for emc2305 driver
+> The file provides the necessary structure, configuration
+> and other parameters for Device Tree definition.
+> 
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> ---
+>  .../devicetree/bindings/hwmon/emc2305.yaml    | 95 +++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/emc2305.yaml
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/hwmon/emc2305.yaml:30:18: [error] string value is redundantly quoted with any quotes (quoted-strings)
+./Documentation/devicetree/bindings/hwmon/emc2305.yaml:34:18: [error] string value is redundantly quoted with any quotes (quoted-strings)
+./Documentation/devicetree/bindings/hwmon/emc2305.yaml:38:18: [error] string value is redundantly quoted with any quotes (quoted-strings)
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/hwmon/emc2305.yaml: pwm_output: missing type definition
+Error: Documentation/devicetree/bindings/hwmon/emc2305.example.dts:59.9-17 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/hwmon/emc2305.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1511: dt_binding_check] Error 2
+make: *** [Makefile:251: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250219133221.2641041-4-florin.leotescu@oss.nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
