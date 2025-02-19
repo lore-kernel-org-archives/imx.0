@@ -1,194 +1,130 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503491DF75C
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8FD1C1F29
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739966909; cv=none; b=oUby24l/dovzcEVVxZSGMZJKkPEyKMzcDIDya1j4DMap4bLHtInnwxwuc3TI4rAZHarMn+UfuMSFqoCXUdVGfUPOpnoU7nR3uTNd9yG1jP820giLcr3HsQEkRPMRDH5p79IUdBHvxXrYUZ+GXfe+0ZIWt26dhKDcxucAPIeIF7w=
+	t=1739967496; cv=none; b=si6Y/qtNvuMcS0HN0/zsX55sN5J6kYf+a5gLh5zFgH/rGj0QOKjeMxuII/HGDs/P+PI7ODYSSkMJQZvMc8mNIIYMmmF9iR0SZ1H6LL9rWeS0HP4QUBQ3dqP5QK/BlluuuMkKRL9DewKevMHVAm60kTNuPZEKulJ3hjM/E01ywqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739966909; c=relaxed/simple;
-	bh=uE8CUjR58RLwuzsqmPJ2Twtd7ZBgQ7uMjtufoLK9fYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bX9r7+FA6+NQmoYa5UvcHc2ZgYkmaXUYjTbj+AR4yqKGoI4dfFhI697cFBkJaZAaB7TQhnoErCBBWFL998/0t6CUaOpZz3HofjMB91cR7d4JE1xn/wpKyINOMtyKlLxkMEQE+Nh30WJMVITPitZ4yjeCts3dvSNLClnkfHRDRt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rXRUMuW9; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1739967496; c=relaxed/simple;
+	bh=CkJjV4pYyBmnvMr8dXnwe++5yWa/O/7CmfltUEorV3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oTb2mUIJTJLXOWCwpCTUDCJ9VDA0FvlkWoKZkmKMeg8cNkyJ6a4FZUFtg6pe2DB2ghKJVwTJnh7mMnVS31It1IvIVak0Oghs8AEQ2xPUPYAbA9CDFwI5Q3FMYbDOVq1WiglAbF6ZyaBmhMe0V8lTwWiU6ZyLXx/Njb2QJwJ/IlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMjPqQ/z; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rXRUMuW9"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5452ca02bdbso4886790e87.1
-        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:08:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMjPqQ/z"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5439e331cceso7618920e87.1
+        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:18:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739966905; x=1740571705; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kfNES95aCHrH5DW7HOssGE1cf0vTi0kl2N0MBpHNSOY=;
-        b=rXRUMuW9mKRhROIRbHkOBKnXR/KCOsD1khdZy3mbs+zRGZZj4etj9dFdryooNAKbMW
-         dCWxDSU4VNCwqYOnFsf7fG5ScLyU1ZyPQ1UU1xUcFqrykq6nOKWu7ewLdJ8UmPyzrdtu
-         v1fGNjMwC8/LwJihlbDJ19m2KRVt4rP7syYh8lpShYmOhzZ7SluZF4rePqmeMKyTayGo
-         ij5GnDPdcMGzmmMcu8vm9BDM1h0yst1fkIHq7wMJshRigmUeIqvpY2d0+alU0gBXrJCv
-         DKdMZ1x7TCx5yfErDfcL0s9grzTuFyJ+LFEWS7HTJuotlMtKPP0B3x33fGfwqpAwqrZC
-         t8oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739966905; x=1740571705;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1739967492; x=1740572292; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kfNES95aCHrH5DW7HOssGE1cf0vTi0kl2N0MBpHNSOY=;
-        b=KlnTEaX5wPNW+757Z3ToQRWItSWLQT9ccBAoBA0xQzs/Tqnmdu5NZ7r8hPbdkgfhuC
-         mhmNX+KPXkfXhPS3tIEdJMz8s5MeaJUmok2dNvPl5BcGrYlTnW2533m5Zkzb1z30YpHE
-         80TRbXWf20BV/o6apMP5Raq2EYxU+Gy8+w6p6F/K3BStNbDRsR4EAMS5w3YtRDtsePCB
-         bLtSqbxVROWl2OIRzCfM8K3A8XoBHImNVDC8snnVkt0hZu1/UzfpHJPYpuymVxOpEgyk
-         8OInUQZ+nUAMoFtKwzXovCZRg8g5RReV26HEJxFbGkpS4J38uSTK+s6LZnRIv1CTLYpq
-         pqKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCFxkfkvTZUQ+AgiB9hQ9KHhOrSrQT6kLH30L0AoJyafA1GZx4gbiPyj+GJao4l76UGcA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyolCutpLXnaOlIg3785vV+HzCpebPwK1sY7aV9XsxpEIZ4UoIB
-	wi2zO6BvOsb56pn6+WNGoFJqRfFwkHnuOrVgtAx4Cfs0+fFVFx9ZH6As5xqDMfY=
-X-Gm-Gg: ASbGncsHVhUxY6n+ewK/0sfxRlqc6AoP6AbL7dLUt+AepmiA2DdOS/Z3H/6CmPqtXN4
-	AigpkfNV5xyQjdsFE9SbEnn+WqdN1Jw4eQ6d3cFdExCyXZHkc/e2A32x8mofAJCvuWBEOw4Dp7E
-	f8MV0wDQLkiJCWzz3EP0ZPNxZQLfXFcix1QWG/A5Privrdiv6KRV9n+D28M2/Nit5KWnesixE6N
-	XHwoVTTYO8aSTQXKKlzlssZtu6H1SzSPLn42z4UA8Bk3Yc7urcYAjsjGrhV2IzAZvv0jfNMoP9q
-	MkXb86RehjFeDjmrFHj5ZzREzcYpmTNUDxe/RECyhteHNmP832K7bX1cbDJyxRyABmSTu0E=
-X-Google-Smtp-Source: AGHT+IFMLOpDHMHA4h3/Gxx2zV0fjSL0lgJbRphbGzyITSKOMSUgTcKxT5mQ7K/tT3lwL8tk5JoMMA==
-X-Received: by 2002:ac2:4e05:0:b0:545:62c:4b29 with SMTP id 2adb3069b0e04-5452fe5bedcmr6706804e87.22.1739966905285;
-        Wed, 19 Feb 2025 04:08:25 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5461cfdd5a2sm1148260e87.39.2025.02.19.04.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 04:08:24 -0800 (PST)
-Date: Wed, 19 Feb 2025 14:08:22 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jerome Brunet <jbrunet@baylibre.com>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Danilo Krummrich <dakr@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, 
-	Daire McNamara <daire.mcnamara@microchip.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Douglas Anderson <dianders@chromium.org>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Hans de Goede <hdegoede@redhat.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
-	Gregory CLEMENT <gregory.clement@bootlin.com>, =?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Kevin Hilman <khilman@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, dri-devel@lists.freedesktop.org, 
-	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH v4 1/8] driver core: auxiliary bus: add device creation
- helpers
-Message-ID: <eskvhtljnrkhm6vmqy52gkweexj3tcethejeywcoib4la72jcl@ojuqcazpvht4>
-References: <20250218-aux-device-create-helper-v4-0-c3d7dfdea2e6@baylibre.com>
- <20250218-aux-device-create-helper-v4-1-c3d7dfdea2e6@baylibre.com>
- <crtrciitrlqkxh5mxvnbdjy6zoxny5onse7xgbw7biozg6myux@grp3ketgl2uh>
- <2025021922-spongy-swirl-0746@gregkh>
+        bh=VTPWbSgjrTLpPmlX3MdNrwi/24I03HDG8gfadoLFfKo=;
+        b=ZMjPqQ/zIkfAtjYsmj+t8eIro3zq/zUjHMXuH+5uIBIti0WNqsf3P+1Lo6tqiIsz+9
+         KqjCkMA2bKZ+dg0k2ggFOi+GOPJB5QSPJPs+aR/HXxy0SpZHR9WkcHbKrKrOvHLNgAcE
+         NlX/eqSrF3Jh6qPLWovw52GGe4jaZl9YSl7VY8rIppxmhu5BNRPwOPNkdMMYzG8Dxaxe
+         U5Q8LZjwGS6pm4NGBhMEJZ3sP1ML5Gs5/9RpHu0CwaMKaDySSHJmCu1cMZJwytEeOesW
+         WcEM8lVfDPlxGUFVq+6u+BJcTl+LB1w4L6yTbgiUqZhNzXKzi48zey9iHD/zQ+q5kQdA
+         D/nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739967492; x=1740572292;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VTPWbSgjrTLpPmlX3MdNrwi/24I03HDG8gfadoLFfKo=;
+        b=sMf2WbN37MY85ZHdO0B6srh9BCvKEH6Gt9jt+dSvMXMh1XfW0Y+U56comj8dytV7Hr
+         Pdu+8yjnXUPTzurzsAPcW1r5oUcKGEA1aC8lBi26XWRsu464ox3ZVhdvDFs1o/HnsMwO
+         uZxiDjUAOMf06uLj0s7rad7YxNaPoW4w+fChw6zj5of+O4CMzVdX31P1NSN9VmwICyqK
+         lA5V1dxP7JqhqZopuRO/d8knLVxYhZBY1xicrp3bysdz6wCsau8r2NqUcjNkbY/4hDF6
+         cVPZvzwOHYuEhVGiLYFhJwXf9Djy85HpggZF/UrQ+kq6B+B7rsPdr+IqnXrPs3XOtDTX
+         56RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTi/HLDL5PdCfcmqiz90e9ZsVLJ2WLgFwjxe2GZKKhjSaY0sMIFQMZB0bAM1uBJDIt2Dc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzX+z6N4iyV1GiZ3ed4psNPggMY4wTVb8oSV+DRmL5XQCL5hj4F
+	Rx1jQ3eZ7oJY+gSw1edbckXFooRJ+VQiC5QbIG+Ncl57EWOeA+O0dwr8cyLZzzMDvjaCn0lLbYA
+	ORsj7fw9/ppGLX5grSnzeSJS3NwE=
+X-Gm-Gg: ASbGncsMsIrMj7Q2/QmC9jcUyXpnNRCdtSTbR7ddEpxzlv/ssLtee1pKvCp8YEXnhAk
+	kRp41PhCd8/N0kim8NgWYH83rXJ6Iz1/KT8a0xGsvTCvZjyNVb+7/oDq7waz9Qaf3rw36z9WXdU
+	HLczD71jXP3py8OTLdlP+OB87zn6I=
+X-Google-Smtp-Source: AGHT+IGjNIoen8ULKXTmUUOdA8vnMJhMrh0uHRpn94zwbfBEqhRrLoruJpWGVHqyNRMVU7htjBuXJmu/uj1ajZZO9rM=
+X-Received: by 2002:a05:6512:3d28:b0:545:2eca:856 with SMTP id
+ 2adb3069b0e04-5462eed85c8mr1170113e87.9.1739967491394; Wed, 19 Feb 2025
+ 04:18:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025021922-spongy-swirl-0746@gregkh>
+References: <20250219114936.3546530-1-lukma@denx.de> <56e56623-9cef-48b9-8a57-ef7840f0a8f3@kernel.org>
+In-Reply-To: <56e56623-9cef-48b9-8a57-ef7840f0a8f3@kernel.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 19 Feb 2025 09:18:00 -0300
+X-Gm-Features: AWEUYZl9H3BRYlwGymanzXLFA6lr62seClEuWhg-mC8ltYhyVYgZA4_v-XW8gpM
+Message-ID: <CAOMZO5Cf3JpKBjQXdjWNeSgOCOLmcNuSvQpR_ewiFtH-p3KwfQ@mail.gmail.com>
+Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Lukasz Majewski <lukma@denx.de>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 19, 2025 at 11:13:14AM +0100, Greg Kroah-Hartman wrote:
-> On Wed, Feb 19, 2025 at 11:06:02AM +0200, Dmitry Baryshkov wrote:
-> > On Tue, Feb 18, 2025 at 08:29:46PM +0100, Jerome Brunet wrote:
-> > > Add helper functions to create a device on the auxiliary bus.
-> > > 
-> > > This is meant for fairly simple usage of the auxiliary bus, to avoid having
-> > > the same code repeated in the different drivers.
-> > > 
-> > > Suggested-by: Stephen Boyd <sboyd@kernel.org>
-> > > Cc: Arnd Bergmann <arnd@arndb.de>
-> > > Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-> > > ---
-> > >  drivers/base/auxiliary.c      | 108 ++++++++++++++++++++++++++++++++++++++++++
-> > >  include/linux/auxiliary_bus.h |  17 +++++++
-> > >  2 files changed, 125 insertions(+)
-> > > 
-> > > diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
-> > > index afa4df4c5a3f371b91d8dd8c4325495d32ad1291..a6d46c2759be81a0739f07528d5959c2a76eb8a8 100644
-> > > --- a/drivers/base/auxiliary.c
-> > > +++ b/drivers/base/auxiliary.c
-> > > @@ -385,6 +385,114 @@ void auxiliary_driver_unregister(struct auxiliary_driver *auxdrv)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(auxiliary_driver_unregister);
-> > >  
-> > > +static void auxiliary_device_release(struct device *dev)
-> > > +{
-> > > +	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
-> > > +
-> > > +	kfree(auxdev);
-> > > +}
-> > > +
-> > > +/**
-> > > + * auxiliary_device_create - create a device on the auxiliary bus
-> > > + * @dev: parent device
-> > > + * @modname: module name used to create the auxiliary driver name.
-> > > + * @devname: auxiliary bus device name
-> > > + * @platform_data: auxiliary bus device platform data
-> > > + * @id: auxiliary bus device id
-> > > + *
-> > > + * Helper to create an auxiliary bus device.
-> > > + * The device created matches driver 'modname.devname' on the auxiliary bus.
-> > > + */
-> > > +struct auxiliary_device *auxiliary_device_create(struct device *dev,
-> > > +						 const char *modname,
-> > > +						 const char *devname,
-> > > +						 void *platform_data,
-> > > +						 int id)
-> > > +{
-> > > +	struct auxiliary_device *auxdev;
-> > > +	int ret;
-> > > +
-> > > +	auxdev = kzalloc(sizeof(*auxdev), GFP_KERNEL);
-> > > +	if (!auxdev)
-> > > +		return NULL;
-> > > +
-> > > +	auxdev->id = id;
-> > > +	auxdev->name = devname;
-> > > +	auxdev->dev.parent = dev;
-> > > +	auxdev->dev.platform_data = platform_data;
-> > > +	auxdev->dev.release = auxiliary_device_release;
-> > > +	device_set_of_node_from_dev(&auxdev->dev, dev);
-> > > +
-> > > +	ret = auxiliary_device_init(auxdev);
-> > > +	if (ret) {
-> > > +		kfree(auxdev);
-> > > +		return NULL;
-> > > +	}
-> > > +
-> > > +	ret = __auxiliary_device_add(auxdev, modname);
-> > > +	if (ret) {
-> > 
-> > This loses possible error return values from __auxiliary_device_add().
-> 
-> Why does that really matter?
+Hi Lukasz,
 
-At the very least the caller (or caller of a caller) can call
-dev_err_probe() or dev_err("%pe"). With the current implementation as
-everybody maps NULL to -ENOMEM the error message will be cryptic.
+On Wed, Feb 19, 2025 at 9:06=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
 
-Or just having a cryptic value in the logs.
+> This defiine should not change. If you need to change it, means it is
+> not an ABI. Just like for other cases, I suggest to drop the define in
+> preparatory patch.
 
-> > I'd suggest to return ERR_PTR(ret) here and in the
-> > auxiliary_device_init() chunks and ERR_PTR(-ENOMEM) in case of kzalloc()
-> > failure.
-> 
-> Will the caller do something different based on the error value here?
-> All we care is that this worked or not, the specific error isn't going
-> to matter for device creation like this.
+You can follow the same approach that was done for i.MX93.
 
-The caller might not, the developer might.
+Please check the two commits below:
 
--- 
-With best wishes
-Dmitry
+commit c0813ce2e5b0d1174782aff30d366509377abc7b
+Author: Pengfei Li <pengfei.li_1@nxp.com>
+Date:   Wed Oct 23 11:46:48 2024 -0700
+
+    dt-bindings: clock: imx93: Drop IMX93_CLK_END macro definition
+
+    IMX93_CLK_END should be dropped as it is not part of the ABI.
+
+    Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+    Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+    Acked-by: Peng Fan <peng.fan@nxp.com>
+    Acked-by: Conor Dooley <conor.dooley@microchip.com>
+    Link: https://lore.kernel.org/r/20241023184651.381265-3-pengfei.li_1@nx=
+p.com
+    Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+
+
+commit 0af18ba60752e8a4ba34404c1d9a4a799da690f5
+Author: Pengfei Li <pengfei.li_1@nxp.com>
+Date:   Wed Oct 23 11:46:47 2024 -0700
+
+    clk: imx93: Move IMX93_CLK_END macro to clk driver
+
+    IMX93_CLK_END was previously defined in imx93-clock.h to indicate
+    the number of clocks. However, it is not part of the ABI. For starters
+    it does no really appear in DTS. But what's more important - new clocks
+    are described later, which contradicts this define in binding header.
+    So move this macro to clock driver.
+
+    Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+    Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+    Link: https://lore.kernel.org/r/20241023184651.381265-2-pengfei.li_1@nx=
+p.com
+    Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+
+Also, the Subject should not contain 'arm'. You could use:
+
+clk: vf610: Add support for the Ethernet switch clock
