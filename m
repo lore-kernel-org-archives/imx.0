@@ -1,130 +1,88 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8FD1C1F29
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18801C6FE3
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739967496; cv=none; b=si6Y/qtNvuMcS0HN0/zsX55sN5J6kYf+a5gLh5zFgH/rGj0QOKjeMxuII/HGDs/P+PI7ODYSSkMJQZvMc8mNIIYMmmF9iR0SZ1H6LL9rWeS0HP4QUBQ3dqP5QK/BlluuuMkKRL9DewKevMHVAm60kTNuPZEKulJ3hjM/E01ywqI=
+	t=1739968817; cv=none; b=QZ79ssNr4YTR4RfE36KdpI/o0GP81efwzlZ5RaUE8I5G6bVlZG7eu4KdGvStgYYTc9Qgyjj57zrUe95QOchAiCK4DjTkjhBiDOA5MGd9K162aDS4/F1wzsKUK3pAJ0BnhgDqQ6uyVqyrxcg9Hr49TBrIEiehLkSUorNd4sle4kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739967496; c=relaxed/simple;
-	bh=CkJjV4pYyBmnvMr8dXnwe++5yWa/O/7CmfltUEorV3c=;
+	s=arc-20240116; t=1739968817; c=relaxed/simple;
+	bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oTb2mUIJTJLXOWCwpCTUDCJ9VDA0FvlkWoKZkmKMeg8cNkyJ6a4FZUFtg6pe2DB2ghKJVwTJnh7mMnVS31It1IvIVak0Oghs8AEQ2xPUPYAbA9CDFwI5Q3FMYbDOVq1WiglAbF6ZyaBmhMe0V8lTwWiU6ZyLXx/Njb2QJwJ/IlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMjPqQ/z; arc=none smtp.client-ip=209.85.167.51
+	 To:Cc:Content-Type; b=SaP57/IliojWm0Bj+eN/OoaR7sWlYAmF1pdu4N4VbPZPTFvHosxpk8781tOs+MljlOp8Vm5YJn+ZtLoXm/Wh1vKu2YyWgXUGxx6bSupvhgs9bBsGhmvFREjiZHa0tjhofGN0/cbfQDH0MLTrkKzbZJuUlF20sXh1PsWiKh/u6kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IN6YKBA7; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMjPqQ/z"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5439e331cceso7618920e87.1
-        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:18:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IN6YKBA7"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30737db1aa9so62862221fa.1
+        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:40:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739967492; x=1740572292; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1739968814; x=1740573614; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VTPWbSgjrTLpPmlX3MdNrwi/24I03HDG8gfadoLFfKo=;
-        b=ZMjPqQ/zIkfAtjYsmj+t8eIro3zq/zUjHMXuH+5uIBIti0WNqsf3P+1Lo6tqiIsz+9
-         KqjCkMA2bKZ+dg0k2ggFOi+GOPJB5QSPJPs+aR/HXxy0SpZHR9WkcHbKrKrOvHLNgAcE
-         NlX/eqSrF3Jh6qPLWovw52GGe4jaZl9YSl7VY8rIppxmhu5BNRPwOPNkdMMYzG8Dxaxe
-         U5Q8LZjwGS6pm4NGBhMEJZ3sP1ML5Gs5/9RpHu0CwaMKaDySSHJmCu1cMZJwytEeOesW
-         WcEM8lVfDPlxGUFVq+6u+BJcTl+LB1w4L6yTbgiUqZhNzXKzi48zey9iHD/zQ+q5kQdA
-         D/nw==
+        bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
+        b=IN6YKBA7YKbFSdVSFpY30sZtDqSfVg9mvKpOePcJ1+UQbHrCfUtS2/oRqwBTUD5MCw
+         HzebihlN8skykTKYqeficn6pYvyBSLUjztd5mZEOVGUwC7BCH5lm3JETk0IKbEnFxm87
+         Pbq6DAXZ3K6SPcDmna4Rmp6dfqhGOVDvPsFbiGMJ0Gri1t7rxDVpa0vBtH2Nc5wPb9sc
+         TXriCZUYQ+PoP71TwBGIN4ve8yI//pRkTHvmH1IQ5vnRl7sFmNSpvjCOPrTwxM4v3kg5
+         C9Ysi3fGz8FbMxH88DeUQf3ZQBvYLyTxesPT3Uc/4zrfhc2D0T5IvlzfU56R1jRZjzqU
+         eCnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739967492; x=1740572292;
+        d=1e100.net; s=20230601; t=1739968814; x=1740573614;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VTPWbSgjrTLpPmlX3MdNrwi/24I03HDG8gfadoLFfKo=;
-        b=sMf2WbN37MY85ZHdO0B6srh9BCvKEH6Gt9jt+dSvMXMh1XfW0Y+U56comj8dytV7Hr
-         Pdu+8yjnXUPTzurzsAPcW1r5oUcKGEA1aC8lBi26XWRsu464ox3ZVhdvDFs1o/HnsMwO
-         uZxiDjUAOMf06uLj0s7rad7YxNaPoW4w+fChw6zj5of+O4CMzVdX31P1NSN9VmwICyqK
-         lA5V1dxP7JqhqZopuRO/d8knLVxYhZBY1xicrp3bysdz6wCsau8r2NqUcjNkbY/4hDF6
-         cVPZvzwOHYuEhVGiLYFhJwXf9Djy85HpggZF/UrQ+kq6B+B7rsPdr+IqnXrPs3XOtDTX
-         56RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTi/HLDL5PdCfcmqiz90e9ZsVLJ2WLgFwjxe2GZKKhjSaY0sMIFQMZB0bAM1uBJDIt2Dc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzX+z6N4iyV1GiZ3ed4psNPggMY4wTVb8oSV+DRmL5XQCL5hj4F
-	Rx1jQ3eZ7oJY+gSw1edbckXFooRJ+VQiC5QbIG+Ncl57EWOeA+O0dwr8cyLZzzMDvjaCn0lLbYA
-	ORsj7fw9/ppGLX5grSnzeSJS3NwE=
-X-Gm-Gg: ASbGncsMsIrMj7Q2/QmC9jcUyXpnNRCdtSTbR7ddEpxzlv/ssLtee1pKvCp8YEXnhAk
-	kRp41PhCd8/N0kim8NgWYH83rXJ6Iz1/KT8a0xGsvTCvZjyNVb+7/oDq7waz9Qaf3rw36z9WXdU
-	HLczD71jXP3py8OTLdlP+OB87zn6I=
-X-Google-Smtp-Source: AGHT+IGjNIoen8ULKXTmUUOdA8vnMJhMrh0uHRpn94zwbfBEqhRrLoruJpWGVHqyNRMVU7htjBuXJmu/uj1ajZZO9rM=
-X-Received: by 2002:a05:6512:3d28:b0:545:2eca:856 with SMTP id
- 2adb3069b0e04-5462eed85c8mr1170113e87.9.1739967491394; Wed, 19 Feb 2025
- 04:18:11 -0800 (PST)
+        bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
+        b=IkYQeSQXlagPfI61JvjNyLbtut3sSIdG7zY8UdlI9/xq6MmiCTMb9yAvZ6O9yrFEHp
+         Sjh3cnuuAFQDfxMRT3+pNvvzsQ+p3hgGFzPxAEmM9OLh2yFcDtP8J846zTpg+TdzMiXj
+         tJQdd8ph3K8L+Rn0+CxLLrOf2inCMd5WxgVFLojVbeUDip3qm4O2tKfmZPFBkH5mKtBL
+         jxTMB3WM/v3YG8H49M0hNgikDDEwH+fbeA8/jWIQUaPIcWLszJurKJHFkRBadfD/ZWZ5
+         G6sRFyC53zf6flI7i7FEnsXZx1lnps4LUi2OMZWaNSgxwhN0mvxZ6NfcAYkUwmE3FPVJ
+         y9GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcp2EVkZh9niaTarz6aGmf51bDwidtZN3viBBFQKACLxmPFYO6nU0GHtDtrIvFNsp4Ilo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwZP2VezeZCPnRRUDL3bxgL6/uwkn7Xe7X6ctHk73bS2ycVf6qZ
+	FFJ+FSSmid/YYvH1MiaCFSGfSVBn6FrYXlxUmx3XRG7b5QB8u/yRXpQpbcsQ0xXZ7I/GdxCoDeJ
+	/JNwWMbc8Et4JdOjZdzFl2Ey5M/WCog==
+X-Gm-Gg: ASbGnct1k4d5SG9ZdSGxyiCp9Kp1CToIUxKXODx15z1Hs9Uk9ss+cANKYCDlt5zqXDv
+	eZcaWZpLwXH8c7pKMUSN8uO2f3wE9PqKK+IKuo2tlvJ53zEJmZsBj1+FGJWKhx52vy20913a35F
+	dyLv9KRYol8BN/H2/p/arfloT+ZTY=
+X-Google-Smtp-Source: AGHT+IFiEAAmOQeNiwKM9pYHoGOeRxDwt6aWpRp0aHFkiqJ/scb58wtITAVUYzMW7vzAfCPPDIj0kMB/lDvHjfDXQ/E=
+X-Received: by 2002:a2e:8810:0:b0:308:e8d3:756d with SMTP id
+ 38308e7fff4ca-30a44ed1da9mr12054681fa.19.1739968813787; Wed, 19 Feb 2025
+ 04:40:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250219114936.3546530-1-lukma@denx.de> <56e56623-9cef-48b9-8a57-ef7840f0a8f3@kernel.org>
-In-Reply-To: <56e56623-9cef-48b9-8a57-ef7840f0a8f3@kernel.org>
+References: <20241101135406.47836-1-festevam@gmail.com> <173073495749.210192.9138587910771237679.robh@kernel.org>
+ <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
+In-Reply-To: <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 19 Feb 2025 09:18:00 -0300
-X-Gm-Features: AWEUYZl9H3BRYlwGymanzXLFA6lr62seClEuWhg-mC8ltYhyVYgZA4_v-XW8gpM
-Message-ID: <CAOMZO5Cf3JpKBjQXdjWNeSgOCOLmcNuSvQpR_ewiFtH-p3KwfQ@mail.gmail.com>
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lukasz Majewski <lukma@denx.de>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Date: Wed, 19 Feb 2025 09:40:01 -0300
+X-Gm-Features: AWEUYZkvUCi3PRNaZjpqQ7zkYqcKxcjgv_RBbFS6LFh_ywtWOQiG9QgEhk9Prp0
+Message-ID: <CAOMZO5BJy2B0Jy-ehz44ZkrzUpGqrAs_GjE-Nh1P9K8uDXVmyw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif fallback
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, shawnguo@kernel.org, imx@lists.linux.dev, 
+	conor+dt@kernel.org, Fabio Estevam <festevam@denx.de>, 
+	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de, 
+	krzk+dt@kernel.org, a.fatoum@pengutronix.de, dri-devel@lists.freedesktop.org, 
+	andreas@kemnade.info, marex@denx.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Lukasz,
+Rob,
 
-On Wed, Feb 19, 2025 at 9:06=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
+On Tue, Dec 17, 2024 at 10:20=E2=80=AFAM Fabio Estevam <festevam@gmail.com>=
+ wrote:
 
-> This defiine should not change. If you need to change it, means it is
-> not an ABI. Just like for other cases, I suggest to drop the define in
-> preparatory patch.
+> > Acked-by: Rob Herring (Arm) <robh@kernel.org>
+>
+> Can you apply 1/3 and 2/3?
 
-You can follow the same approach that was done for i.MX93.
-
-Please check the two commits below:
-
-commit c0813ce2e5b0d1174782aff30d366509377abc7b
-Author: Pengfei Li <pengfei.li_1@nxp.com>
-Date:   Wed Oct 23 11:46:48 2024 -0700
-
-    dt-bindings: clock: imx93: Drop IMX93_CLK_END macro definition
-
-    IMX93_CLK_END should be dropped as it is not part of the ABI.
-
-    Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-    Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    Acked-by: Peng Fan <peng.fan@nxp.com>
-    Acked-by: Conor Dooley <conor.dooley@microchip.com>
-    Link: https://lore.kernel.org/r/20241023184651.381265-3-pengfei.li_1@nx=
-p.com
-    Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-
-
-commit 0af18ba60752e8a4ba34404c1d9a4a799da690f5
-Author: Pengfei Li <pengfei.li_1@nxp.com>
-Date:   Wed Oct 23 11:46:47 2024 -0700
-
-    clk: imx93: Move IMX93_CLK_END macro to clk driver
-
-    IMX93_CLK_END was previously defined in imx93-clock.h to indicate
-    the number of clocks. However, it is not part of the ABI. For starters
-    it does no really appear in DTS. But what's more important - new clocks
-    are described later, which contradicts this define in binding header.
-    So move this macro to clock driver.
-
-    Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-    Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-    Link: https://lore.kernel.org/r/20241023184651.381265-2-pengfei.li_1@nx=
-p.com
-    Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-
-Also, the Subject should not contain 'arm'. You could use:
-
-clk: vf610: Add support for the Ethernet switch clock
+Gentle ping.
