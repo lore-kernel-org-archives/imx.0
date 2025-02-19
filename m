@@ -1,221 +1,117 @@
-Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E4C2862AB;
-	Wed, 19 Feb 2025 11:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19991D9587
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739966262; cv=none; b=M8zIOGHX90uouIIZOWgmFEBpFvRvOpVYUivtdod9LScqnCXXAYRK3lIuanZytEwnexy/8uXIVuEejwya045/DOGIa7j8m20EYTbzQ7owmgYCha2As2AErbJn5qg2pg7Nh22VwQayiONlR7HW4IUAlBSiCAr5QkD2VifyF/8i6bc=
+	t=1739966502; cv=none; b=Xl6OjbfDPqW8jAah/ymhLnc/Dr5Vr127XtuJGo9NxCbXm8RknGoSWbanUaKyqIWYp5WVR1q095V8oGGTyvhesFHdoME4Rlqug6hZyHOuiXFL4lxwVV0o8XFCiAefg3kM32Dwh2tX+OE1Dsq1dIQQ+yFWEgXmw7IKso9pb08cvzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739966262; c=relaxed/simple;
-	bh=4k1po3JFC/xg27AWImd+emnF0oRfoeOXjB0dtgrtVAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XiJewbfEZxMMlilkAJvk8Tmx1w06Nv607H7+1pZKuwWUz514NTgIPb+Py30akw4Dxxoqz21u/eCsVkUgzuOek3Zaw+NLt5A7ivgXjmkzBqbMx3r3lMLnSbnoMUAPPJLDjnLFPeNlqvsP5Ghtpkaq9KcTavcDOiJUmzTkcgwYMAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=ZnGEtjMO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IzobVLZJ; arc=none smtp.client-ip=103.168.172.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+	s=arc-20240116; t=1739966502; c=relaxed/simple;
+	bh=wcsXtdgQQL4VCUgznJrOnipwQmYIc9S+M6D4qteZ+tw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=itLAB+KxMf4tHk2ntXTS18hBMO7p4Pp5UB6hSkIniLS6O9eSUsZpWL0UkezijJdPublpqJ6xC43kSHcRe4mH9I6VMGO0DQ4nzRSQmnIYFbLZGEYnGbn2VXSkyS6GgKxxx4vck2rdckTgZzAFMRYC0aytmi8hw4OyX/bOtCEAc+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DqnDhmVC; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="ZnGEtjMO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IzobVLZJ"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 16F85201789;
-	Wed, 19 Feb 2025 06:57:40 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 19 Feb 2025 06:57:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1739966260; x=1739973460; bh=I0Vr7zjYe+
-	LzROidf2KdAM0FeJYDrHAhTGLGwi7YtgU=; b=ZnGEtjMO7AINmHlgXsViick38g
-	sED8BBGIc4vzI41aYcZkvTv7tMmAl2CYypqi/XpBgIOnw4FeODoyNg6k/Nwozko6
-	FG1C9nOXlX0m7D/o+o+W5E7qYe8GZUiThYWscNV56K5BEsjhrgg4vLd1bafjQacS
-	HyFLGOCBOnCPUVRs/3YHXR1CmSfZCNHiSswIzMN+kl9ksfrq6QVL3nRi5UUztm4N
-	vf4nTRNkGlb4c46UEZShn+nUkeTKRR1ZL3bagN91houWTDWm6pF5AVBvqYV2BvYA
-	EH+B2ru4qHb9l1SjjB8fPHes6nJdDEp5P6v/uLHQdQKMiCshRC6JA4MIR2NA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1739966260; x=1739973460; bh=I0Vr7zjYe+LzROidf2KdAM0FeJYDrHAhTGL
-	Gwi7YtgU=; b=IzobVLZJfukFykt4i6eVYyGagYUSdLzrJ+kKgK1Myd6dRmFXfUE
-	YA+IeAxWbmpKjDFOihiqLar4F+Be478YgB9W8Wn9sGt3nSNpuQXAiDk35OuntrbP
-	WJqmHKBbx2YNN96srbSNwih0n02nvIs8oho4ZOOFwfh5/ot4ZVEc6BPygetHlkfV
-	5UaKeDhUeaSkXBKcs2mpXUynscIBmhwnCmXy6LlECjHYN9qoPd+VzeQTRy1FG4JO
-	0jSeggenWwrBLkldkYL5Hg+9Gu31FG4kMOAFrMhw/d3y+x36QV+2UO6ckEGf4PmW
-	N8m1RdbNcjl95Tp0/FTxBXNQemWNZYwMYGA==
-X-ME-Sender: <xms:M8e1Zxc4nEkIU6aRDFmOLJEnMwle1yw3vBQokwHqBww3xJX-FLtoiQ>
-    <xme:M8e1Z_OnEqGXRTGc7gJV2j_IKi5pFbtScK2_pHqmtWbprCq_rz9LYJndYi1PWTQPl
-    sMlBM-8LXj90ANfRqc>
-X-ME-Received: <xmr:M8e1Z6gsOt17SienMM3DX3KO-YnyORDYQlR6NaUsKnVEWjNAKA6aAjvroxOA-vLR6Bap90M129j1yS7EvkdVM61jb56rNs71--0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeigedujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdej
-    necuhfhrohhmpeflrghnnhgvucfirhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqne
-    cuggftrfgrthhtvghrnhepgfdvffevleegudejfeefheehkeehleehfefgjefffeetudeg
-    tefhuedufeehfeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggprhgtphhtthhopedvvddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtoheplhgruhhrvghnthdrphhinhgthhgrrhhtsehiug
-    gvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehfnhhklhdrkhgvrhhnvghlsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehsvhgvnhesshhvvghnphgvthgvrhdruggvvhdprhgtphhtthhopegrlhihshhs
-    rgesrhhoshgvnhiifigvihhgrdhiohdprhgtphhtthhopehrohgshheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrtggrnh
-    esmhgrrhgtrghnrdhsth
-X-ME-Proxy: <xmx:M8e1Z69fp5UtCDSgtdHbRJOaO6ofWHA2pUkPtu7-mXVd_uPZq9m01g>
-    <xmx:M8e1Z9u70kv0LcFER15ThwwD-6Leqc-OUjgUeztpCvcFeRjPRXN89A>
-    <xmx:M8e1Z5FaSzYMQq6TOOLDR414dl66AOYDTbo4t-79vgvVpzp10ilNBw>
-    <xmx:M8e1Z0NnvX9Z8_L15P1RSf9-_AVkLw7jf1ETZNCsoqK7vgkwZhbNvw>
-    <xmx:NMe1ZxSGnD2ua2i_owXFtXWucBE25DO8kebyhgs0H0RDLv74zlzz5HC2>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Feb 2025 06:57:38 -0500 (EST)
-Date: Wed, 19 Feb 2025 12:57:37 +0100
-From: Janne Grunau <j@jannau.net>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sasha Finkelstein <fnkl.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sven Peter <sven@svenpeter.dev>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Hector Martin <marcan@marcan.st>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-media@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 3/5] media: dt-bindings: Add Apple ISP
-Message-ID: <20250219115737.GB26386@robin.jannau.net>
-References: <20250219-isp-v1-0-6d3e89b67c31@gmail.com>
- <20250219-isp-v1-3-6d3e89b67c31@gmail.com>
- <16f6d4a2-2102-48b9-a0ae-b8c6595975b8@kernel.org>
- <CAMT+MTR7dhtt3SOMg0K3UakJQftqnc2S-rV41HdHtA+o9aSPug@mail.gmail.com>
- <20250219105326.GA31383@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DqnDhmVC"
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e5dab3f372aso705454276.1
+        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:01:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739966500; x=1740571300; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5xe0n90tbsq5x/xPm1Llh+2RuD6r7msq/tuY+Ym3TsA=;
+        b=DqnDhmVCauwY5DL8Ldco324qUI5AZo3ckn/QI7Fy3q9/S45QbY77XyA2O3an4amART
+         9kxXmEpGzyNVZoDDirA00Z5JgEQhyq6YuGPs/8IhyyZ4jsNWwE0HUQ5qf10aHewDN/DL
+         CCehugFpveFyN39ssB603CWaJww/llJWByweP4+P3rNRegukHo+NsxnwqJU8I0V7HVnK
+         gr9Oi5gFuWm0V54IHQeqkMrLK8v94G5Il0KKsnmQVH6eutXawvnOtoUwZYQg4eu/FcqD
+         dAwV0fhWUZhOYcPNmuaiy9nYR94kLkeYAxwBYTxfhiYACh39/HqSjswGlfjBfhyKJuhe
+         bINA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739966500; x=1740571300;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5xe0n90tbsq5x/xPm1Llh+2RuD6r7msq/tuY+Ym3TsA=;
+        b=CSG4ZtebfgNW6gM1sZwuQZ6up5NYIHMsJXDkSrpDDlfsS5aweG8N0CDHBpzV0GeB15
+         ILSKGPsp3gDfb/DmeKacwG1BHQCZl75fnEoFHF3BV4Rs9wiNBa2Qmuz1xzkH4b+15v8a
+         5MLRTRxPfXL5tUcONw2pRO+xzFKgHoz7qCVWTkG6F9+UN9V0bvkCFL0psb5bFdEUnOss
+         QG2nGmrcZ699RfYWDKm3EB+LTcs+Xz2vyJxOE9A6LCG6VGA0wijWaYB/Rs6PUDZICJ3O
+         PVpQPVdkgSyRyjv3pxXDqYsv+X6ueX1i1XrSUFYsK3C7IcQIGTqITg/Xf47IfzLO+Nj2
+         xohA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2YavufuH7l28FOalfBXsGaGMeV6vNeonUGRCic7FmdDYQhTIcpBVK3yzEry5Paa9O03Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyK85Vhx7Sg06nTCuOcDEnonsdMpZJd6lr05W1i9gNbvDYpoaUm
+	FcD3/dZy+dYCgGBVa/zYuOLW8ldCNmElFmNkCQ+rl5ikUACOEMVXmPTmRM32yp3Lx7PFn85kPRV
+	qOE4ovt/PEeVov7y+8wZZvLPIdr6phmNLj7zLPQ==
+X-Gm-Gg: ASbGnctUoR/VHGAYpeYWAKnLswII0yB683oWDjimCo1mTRXkw1jSvcWAl3Lyn4x+q5I
+	VKPX/gqyMspGEyquZj7bM/NDE67qkvXc8q9JRrMcHMySy9G0NmzDzggYWGS00tw8fZmcc/le31Q
+	==
+X-Google-Smtp-Source: AGHT+IGZ/+8xQ6gwL9boFRNAF7KVM22iCnqEax+j9Sk0drg1U/1wYEwbpzOiKk0ZPA6neRnIXD7xoQxd3GTjDpsqxfA=
+X-Received: by 2002:a05:6902:1027:b0:e5d:f98f:6f33 with SMTP id
+ 3f1490d57ef6-e5e09a34021mr2671796276.10.1739966496117; Wed, 19 Feb 2025
+ 04:01:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250219105326.GA31383@pendragon.ideasonboard.com>
+References: <20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de>
+In-Reply-To: <20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 19 Feb 2025 13:01:00 +0100
+X-Gm-Features: AWEUYZkq7YJtxfAEssq6nuztkZ1WzoS_qm-UMarQYj6y8mBUO7XjlBb-t9JXEpQ
+Message-ID: <CAPDyKFrEHXhb42rnpjv0KqaUtRzKhX11w70ZoTM8+u9rYDJyuA@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: imx: gpcv2: use proper helper for property detection
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 19, 2025 at 12:53:26PM +0200, Laurent Pinchart wrote:
-> On Wed, Feb 19, 2025 at 10:54:31AM +0100, Sasha Finkelstein wrote:
-> > On Wed, 19 Feb 2025 at 10:37, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> > > > +
-> > > > +  apple,platform-id:
-> > > > +    description: Platform id for firmware
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > >
-> > >
-> > > No, use firmware-name.
-> > 
-> > Not sure how is firmware-name an appropriate field, fw-name is a string
-> > that references a firmware file, while this field is an id that is sent to the
-> > coprocessor firmware in order to identify the platform.
-> > 
-> > > > +  apple,temporal-filter:
-> > > > +    description: Whether temporal filter should be enabled in firmware
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > >
-> > > And why is this not enabled always? Why this is board specific?
-> > 
-> > Not every board has support for this feature.
-> > 
-> > > You miss here ports or port. ISP usually gets signal from some camera or
-> > > other block.
-> > 
-> > For complex cameras - yes, but this is closer to a UVC camera connected
-> > via a bespoke protocol. We do not need to deal with the sensor access,
-> > all of it is managed by the coprocessor firmware.
-> > 
-> > > > +        properties:
-> > > > +          apple,config-index:
-> > > > +            description: Firmware config index
-> > > > +            $ref: /schemas/types.yaml#/definitions/uint32
-> > >
-> > >
-> > > No duplicated indices. You have reg for this, assuming this is index.
-> > 
-> > There are duplicated indices, see isp-imx248.dtsi in patch 5 for an example.
-> > 
-> > > All these do not look like hardware properties but rather configuration
-> > > of sensor which should be done runtime by OS, not by DT.
-> > 
-> > Those are board-specific and not discoverable via the ISP protocol.
-> 
-> But they are settable through the ISP protocol, aren't they ? For
-> instance, looking at isp-imx248.dtsi, the first four entries are
-> 
-> 	/* 1280x720 */
-> 	preset0 {
-> 		apple,config-index = <0>;
-> 		apple,input-size = <1296 736>;
-> 		apple,output-size = <1280 720>;
-> 		apple,crop = <8 8 1280 720>;
-> 	};
-> 
-> 	/* 960x720 (4:3) */
-> 	preset1 {
-> 		apple,config-index = <0>;
-> 		apple,input-size = <1296 736>;
-> 		apple,output-size = <960 720>;
-> 		apple,crop = <168 8 960 720>;
-> 	};
-> 
-> 	/* 960x540 (16:9) */
-> 	preset2 {
-> 		apple,config-index = <0>;
-> 		apple,input-size = <1296 736>;
-> 		apple,output-size = <960 540>;
-> 		apple,crop = <8 8 1280 720>;
-> 	};
-> 
-> 	/* 640x480 (4:3) */
-> 	preset3 {
-> 		apple,config-index = <0>;
-> 		apple,input-size = <1296 736>;
-> 		apple,output-size = <640 480>;
-> 		apple,crop = <168 8 960 720>;
-> 	};
-> 
-> But I may be interested in capturing a 640x480 frame with cropping only
-> and without scaling, with
-> 
-> input-size = 1296x736
-> output-size = 640x480
-> crop = (328,128)/640x480
-> 
-> Or I may want my cropped frame to be located in the upper-left corner:
-> 
-> input-size = 1296x736
-> output-size = 640x480
-> crop = (8,8)/640x480
-> 
-> If I set those parameters through the ISP protocol, won't it work ?
+On Tue, 18 Feb 2025 at 20:18, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
+> is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
+> SoCs leads to warnings when LOCKDEP is enabled.
+>
+> Fix this by checking property presence with of_property_present as
+> intended.
+>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-If my memory serves me right the presets wre added as workaround for
-userspace not handling V4L2_FRMSIZE_TYPE_STEPWISE well (or at all) and
-the added complexity of handling the qadratic sensor with partially
-occluded or outside of the usable lens diameter corners.
+Applied for next, thanks!
 
-It is a simplified description of the hardware to make it useable for
-most software which is expected simple uvc cameras.
+Kind regards
+Uffe
 
-There are still two common issues in user space software related to this
-driver:
-- software expects width == linesize
-- resolution selection is based frame height, i.e. it prefers 1080x1920
-  over 1920x1080 on devices with quadratic sensor.
 
-ciao Janne
+> ---
+>  drivers/pmdomain/imx/gpcv2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+> index 958d34d4821b1be68d730ad345037b8f0a56c45a..105fcaf13a34c787b2d568bc64e7fee9bfc23393 100644
+> --- a/drivers/pmdomain/imx/gpcv2.c
+> +++ b/drivers/pmdomain/imx/gpcv2.c
+> @@ -1361,7 +1361,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
+>         }
+>
+>         if (IS_ENABLED(CONFIG_LOCKDEP) &&
+> -           of_property_read_bool(domain->dev->of_node, "power-domains"))
+> +           of_property_present(domain->dev->of_node, "power-domains"))
+>                 lockdep_set_subclass(&domain->genpd.mlock, 1);
+>
+>         ret = of_genpd_add_provider_simple(domain->dev->of_node,
+>
+> ---
+> base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
+> change-id: 20250218-gpcv2-of-property-present-158f8dbfe2dc
+>
+> Best regards,
+> --
+> Ahmad Fatoum <a.fatoum@pengutronix.de>
+>
