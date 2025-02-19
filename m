@@ -1,120 +1,142 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D11E1CCB4B
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 22:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB15E1CAA65
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 22:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740003768; cv=none; b=UMK8dZ2jcqNv7Vkf1kb+/IIFY1gm5tuzsCCjOGWAcVnknhD6R5FioxfMPX/Aj3SxhiAiM/lbRhQ6gMe5YTQR6WX2zKpkiaEOc8Fius3Wv9u4s+Z50+xZhzHVCutmhmjjv+wS1pcmAx2MF87IY4xHdrYiiYUFDXBLXMRNHY9vO54=
+	t=1740004692; cv=none; b=NIPaI1DMakYO6ito2rkSsmStOXZT6G/M3jzJhrZbr5mmMrcUd//d79cp3WI2vFJvm+IW2PV6wg5EyXHH4aBxFsmTWDTHPIwiDb4j+7tCrlVn7X+SXGqhNtFtdEIQdBr5NcI32xUT13SHOI05Jc8vtc7n7nA6EMKfhNSDsr8it48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740003768; c=relaxed/simple;
-	bh=SHiBAOh0/DlDL8hUB3T6+LtKrV85BGIXTOwOLa6mnT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZFVBiAs76nfQR99DKIll8HKovz7xyj+RsG+fUyJ0miXZzWr2bMu4ZD6yTM5rQZkLYurTqVTV0QCU6HMUsP3y+y4ox7SAgit3e4SVA+WeOTSmSrWOWvzaRGfSgBERyRNprmADb+M/LNZK0nYLxULjC7/AjvLWiKyGpEfyy9Jjrgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QC66WUwt; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740004692; c=relaxed/simple;
+	bh=3n0Geo1g1jnDSHEKNDbBxRrW0MqCJbEfVtvyC8SrjB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C463KlwNHprcxyW18WxFJ9MyNR/LfOc6iH7jGOLv2m21Afy281cjtuvZE0XTtVrmwOP4hythXioqICJ3XV3Ra5T3zrmYkaeAaJlfFIPEeYeKv2dLW6T+9PlxMbbJ1ynZodP1isZSgngyeUL8106MvqdnAg6OWa76ZgsKnwH/x5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=cbs6+BBZ; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QC66WUwt"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5dee1626093so2655478a12.1
-        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 14:22:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740003765; x=1740608565; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0Ut+HC9eKHgdin8LIIS2Fjeny6qwex+kr1lgIMYN8w=;
-        b=QC66WUwtE9jjhPJxCyb68eFnvTPboqC7lf5omrQH06ZmTi8T1DdrH0WDGUpvNqGCxr
-         mj5cxC66wlRamMj7PjzGorbbienxpO9/tbG4R94IEZQJ4WiBtz6MT/Z8LXl69GpMq3jk
-         ra0K5QZSOHZDdtWjYv2ofIjdMaQm/2P3nRX6ctyQc/gkRdtVt8zXqmJXoHGQ49DjgonN
-         57W/ghVLGpdvjT6Daogu+3dQWyR/8IJ+ntpXzCxH1rl/zrxj6PcBlYht7UqCtNv7ofg1
-         WoMhikAD4PJNUzqlEWXfu4LiIW37p428G9hDG5+xmPNEumy53dNwze5lqleLz4nLKmrX
-         KrmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740003765; x=1740608565;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0Ut+HC9eKHgdin8LIIS2Fjeny6qwex+kr1lgIMYN8w=;
-        b=VP5T+FvUYdpWI4p+cOX8SxolVck6a2MY7OJLx2Fwzr++Rs9Ls6NMD2VH30n1xOyJRE
-         sWic+qauAq+0uDth8WNqjn/6OcJ5j0OqUjtTtCQQfDjNuuMYXbdaeWrY187g4tF4DK2b
-         wWjCPi91ngpZMp4HhXYa1Z7bffRO8QrnTeVJXLSzijG9emYTNW/q7Ku48ooJT5Lw2l6K
-         y07w/rYXXTrke8+I+WLYjbK4dF2PbLd+TITQ5oNH5eLu2iUmbk0z2wtAQWy6za3lWBvy
-         3JNnr4nPiSpefVNC6fPfI8Wxm1N3a5njPI7B1Bvz99WDGeNA5do4hktdAhMratyT0Q9w
-         AtVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWl8I35jvDOtK7oD87bfPxSCvts5DJBtVQCUiJy3mwV/ec0GZel/B6eERG7C+WFeZIOEjE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwaAerJsiNXt+42+2XzA/g5C7rHl4N+pOmpm0bJ15VtB7qunIyt
-	vIol5gJSiQ0nWYL3bZ/z9JNaPS8Vr+HMXpLQq3QBEFZZVO8tUB8JK2JFd7crANw=
-X-Gm-Gg: ASbGnctSjYJFCfXGFNHGJCC37U6Bb1m7dQQPpKSdMHx2+/qJu2h6vF/EuH+dXpz52ov
-	+dvVXKopcZEuulRFVRFyJL7fx71eXsMEJkHwSblSiFq1f3NQiCOui+d7h6npw4pZIQNV/UKxFqz
-	I5Nm/RkHh9E/RLZh9Uj9fhC4l+i9xLNp6GT3RzCBce3iaZPo5vsWyhFEX9zaNPQccGbUqav7Emd
-	OdON7hOv9oAQoplsBENY9PFwBj3WB+RppMw0mirmsyX207X/ry0/9pBFELXa6NwLDLJ1kRm8UyH
-	/8k/mWv5RaFBZi9bVGOWXBY73nOzf9M3F1ihdAh8EtzN
-X-Google-Smtp-Source: AGHT+IHgZ/9o+/TaQRZkw3ZCR/vfHz3eRXJzfUy3azBJWNM0TELKM477HK5xLn7uBryQfbFCimYo+g==
-X-Received: by 2002:a17:907:890a:b0:ab9:76d7:574c with SMTP id a640c23a62f3a-abbeda27f98mr82689866b.1.1740003764658;
-        Wed, 19 Feb 2025 14:22:44 -0800 (PST)
-Received: from [192.168.1.130] ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbdf076360sm165470566b.110.2025.02.19.14.22.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 14:22:44 -0800 (PST)
-Message-ID: <c52e6c5c-f49e-4727-b669-086ae7cb0e1e@gmail.com>
-Date: Thu, 20 Feb 2025 00:22:41 +0200
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="cbs6+BBZ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47E9D10382D3C;
+	Wed, 19 Feb 2025 23:38:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1740004687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3CFR1KvYqGJu5XHi3W+uo1kT/GLaG+YUtUrdXZ244hc=;
+	b=cbs6+BBZgqDbJeBfk1zMSTh4bT5RYpQTKivyzc9qbOKAFLxWGjL3TWBCA9D7S4EudNO6QO
+	1qK8+7uCSQIWKZsVeyTsNk1h4GWp0mi7RaTlWEuz/9zFjBT3AbKPsucqmCVq8iOYpbdWeK
+	QhwSpUpOBMHGiLsLsU7mewNM8gqvkIe/ANVNoqDfSM+HyT3+WeA1K/OythlTpGSph/XPQU
+	0MdJa0bsI6eXgWUAGKhfQHWSW6DZRJE2pLBedfhstcUc3kej22U0ClvICtL7w98kjvd2dK
+	1uPh963Uoa5yWHVz9/02d+K3LySFYKySUs4L455EUDrna3RQImLLRhS/kVZaUA==
+Date: Wed, 19 Feb 2025 23:38:02 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610
+ SoC
+Message-ID: <20250219233802.20ec53e5@wsk>
+In-Reply-To: <3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
+References: <20250219114936.3546530-1-lukma@denx.de>
+	<3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] imx_dsp_rproc: Use reset controller API to control
- the DSP
-Content-Language: en-US
-To: Daniel Baluta <daniel.baluta@nxp.com>, p.zabel@pengutronix.de,
- robh@kernel.org, shawnguo@kernel.org
-Cc: krzk+dt@kernel.org, conor+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, mathieu.poirier@linaro.org,
- shengjiu.wang@nxp.com, Frank.Li@nxp.com, peng.fan@nxp.com,
- laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com
-References: <20250219192102.423850-1-daniel.baluta@nxp.com>
- <20250219192102.423850-9-daniel.baluta@nxp.com>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20250219192102.423850-9-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/yVJIrYnQ4O8OFO2hSM.94j5";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
+
+--Sig_/yVJIrYnQ4O8OFO2hSM.94j5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andrew,
+
+> On Wed, Feb 19, 2025 at 12:49:36PM +0100, Lukasz Majewski wrote:
+> > The NXP's vf610 soc is equipped with L2 switch IP block from More
+> > Than IP (MTIP) vendor.
+> >=20
+> > It requires special clock (VF610_CLK_ESW) to be operational. =20
+>=20
+> So you have a driver for this switch? It has been talked about in the
+> past, but nobody made any progress with it. Ah, it was you in 2020.
+
+Yes, I'm going to try another time to upstream it.... :-)
+
+> It
+> will be interesting to see what you came up with in the end, pure
+> switchdev or a DSA driver.
+
+I think it would be:
+
+1. Standalone driver, which would configure the L2 switch from the very
+beginning to work (this is different from FEC on imx28/vf610 where
+switch is bypassed)
+
+2. It will use the in-switch registers to have two network interfaces
+separated. As a result - it may be slower than the fec_main.c in this
+use case.
+
+3. When somebody call "bridge ..." on it - then the in-switch
+separation would be disabled. This is the "normal" state of operation
+for L2 switch, which would be a HW accelerator for bridging.
+
+4. The switchdev would be used to manage it
+
+5. This would be just a very simple driver - just bridging and startup
+of the L2 switch.
+
+After we would have a consensus (i.e. it would be pulled to mainline) -
+I would proceed further.
+
+I will try to not touch fec_main.c driver - just write standalone, new
+for MoreThanIP L2 switch driver.
+
+If somebody would like to use FEC, then he will insert the proper
+module. If switch, another one can be inserted, depending o the target
+use case.
+
+>=20
+> 	Andrew
 
 
+Best regards,
 
-On 2/19/2025 9:21 PM, Daniel Baluta wrote:
-> Use the reset controller API to control the DSP on i.MX8MP. This way
-> we can have a better control of the resources and avoid using a syscon
-> to access the audiomix bits.
->
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c | 25 +++++++++++++++++--------
->  drivers/remoteproc/imx_rproc.h     |  2 ++
->  2 files changed, 19 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index ea5024919c2f..631563e4f86d 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -19,6 +19,7 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/regmap.h>
->  #include <linux/remoteproc.h>
-> +#include <linux/reset.h>
->  #include <linux/slab.h>
->  
->  #include "imx_rproc.h"
-> @@ -111,6 +112,7 @@ enum imx_dsp_rp_mbox_messages {
->   */
->  struct imx_dsp_rproc {
->  	struct regmap				*regmap;
-> +	struct reset_control			*reset;
+Lukasz Majewski
 
-Maybe rename this to "stall"? There's also the DAP stuff that's actually used
-to reset the core so this might be a bit confusing?
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/yVJIrYnQ4O8OFO2hSM.94j5
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAme2XUoACgkQAR8vZIA0
+zr0H2wf+LDKQ2icJROSHbE6zYeCAmI0xkhWHqIw6W8DD1l7o1QJMYLJEsgSp9yP/
+UUWsmIh15IoamLIx3zCnhaiXns42Df+DUH7qsiAF8lLW0C11h9WAuVdJWSLNRLW7
+GQAuXwPM58hOymK71Cu9Eo1eacZ7vkd3SgZLpUa+7xIPd6Pei10g2VCpFJiv3ICw
+KM+lVEpZ93Orq35IGPAwAzTlhi4gGJPIsFez2+NtiW9vJ+KiodIfSb9mWw+bLqUn
+u9OY2vKtfVnuX8fYkd+ERBljmSeyR0fzU2ZB1+CbElSwI61y09f+CFBoSNwK4DhA
+Zoudj/6ZH6oCoKT6MoAO1nxGaCV49g==
+=xb9S
+-----END PGP SIGNATURE-----
+
+--Sig_/yVJIrYnQ4O8OFO2hSM.94j5--
