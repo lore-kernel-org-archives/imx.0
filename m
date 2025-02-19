@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AC01C5F30
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9C1C5F30
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953116; cv=none; b=OfM0VHbSn89g0YzKBqkhPEbHzaSqf//+U3qXzXeEzzkqlRiswxa3wjRiGX1rexOwtVQlMFQO5aDhUETo95WZjLLkjgVZO9CzYCJ+/PDzY9vuPSfw4UL43jEd44rLzhUlZtnV/9JRAFB10W+YMid949qeyjjVLfTtIpHlHP4Gins=
+	t=1739953123; cv=none; b=KPPEuLHDzRrPC6aaMQeT76kZziJDYCMxIayrQc8J98zdioG5l2/g8JAc+H291DLuS3Lyy0I0C7QTstuYDPkzLt8/8Q14qcYoQiA1HZ5e1AZSN/soDOTECEUkovNxgsVqkk/jPsUEphjHba3AbAf0v9R/34rkyVtIy9kAdRacoUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953116; c=relaxed/simple;
-	bh=pqCObTB0d6iXdWSzZwXqOx4nMVfxTJ4SKGt0D7Prxss=;
+	s=arc-20240116; t=1739953123; c=relaxed/simple;
+	bh=WnDWirbLSxiR3Erofiq5GXOiKd6VTErbh01iHm+nBC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPA7LUgTNR6oJpqupMptDDd7E7oYUprfbBrVVWo65+txbto6/8vRPPB+jP+N1FhSD7qbGhiw58rgcFB+avcMHdKhSWWCr2xIoxBV5TsP5zCiGow2sLI/Vd/i/UuuMSiYTj8jVjF0eZ8efHbAs/bfMA8WIsd5c78+wTNW4rzyjz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qcBVPXZx; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CJ3Wviff reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=FKMe59AnahStS1xSkXM9ZW+kwRbX+dmc5GArd6Jjd2rat9Cjr287RnAm51JPhkkKCD+AGI8HyXkJjRWmxtMVZ3St8JnRGVJCWQzDJuhGHed7hkaXzhXTvrSJbVTZ1xG5apnt5G4unYzmKe0Drl5Zg1rE+kg3cXSaBZNhJgyOjvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=X9bM2el4; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jsa6/6hH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qcBVPXZx";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CJ3Wviff"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="X9bM2el4";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jsa6/6hH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1739953111; x=1771489111;
+  t=1739953117; x=1771489117;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HwSj9P7cDT8V91YvPThqayUco/hLI2W6VmhoMN33x4g=;
-  b=qcBVPXZxvaZcKFqtsiABOLoYtXoRvxAEpIeQ2L0KAcxGJsvfX5UcEwMv
-   K++Lq0C76szzkso8SwJjS4oq27JClfUbcLHXJKEzAs132L6Qj6EoQfMNv
-   1DLLXvGrC+p1mzw7kMKCE9oMLSqbxa/AhKu2GKWjPX8h7yTihE9vNUzOw
-   ribMmggfD+i+xpJJGTb7HfB5b0bTjnfTx4LhhiQf178YyKoP6nJ1cc66F
-   4db4M9pqSVq/hsZJBcCnaqECyJ2f2IVfSS8AVrbkXo2vOHPVuL66RvCCh
-   HO612Rj3QhIhQ84Vrbihyp64zAwG1VRxj4TeVsVoHaL9uqocfsuJs6pz0
-   Q==;
-X-CSE-ConnectionGUID: u9wh4AVUSNKgRYHGd8qtoQ==
-X-CSE-MsgGUID: p8R2SHBVQVWnVZ2D+Oa6tQ==
+  bh=XWJSQqgv/BGAC3SGvS9AWPMU0gfUh9CUB1ZZemk53vs=;
+  b=X9bM2el4cvv8xrBgCSVwAM9J41+CY1flSfEJYOaq0OG3W/4H+xti5tEv
+   N1nU7CKSvrdzRSFBr+TwAQOttCwEZUj8edntCpbEEpdEki54f1tvfgNuv
+   A1FvN5b4g4+GhINYCuO/qRYvLkELqn9KgGZZd2Nquxpy/5ejcPJy/B8qd
+   0nhUkjHs4J97ZV11+zM05sPQtOgDuDzavGpkwJ4GLyJ44cKm9LX2AWulM
+   xg16U3kyOYPBqvXh7mSmBjt97e0BBz6hUz9Qtghf5sj1fYLo77yRYxOiH
+   j62yTE6YnTfdY5PpZR60vwJi1yf/aEf/zi/DeTQdgLFmkenhHN6bnjz6O
+   w==;
+X-CSE-ConnectionGUID: VTYo9hwBThqxhEcVqZeMkA==
+X-CSE-MsgGUID: SgnDI1rARWGeU6KlAJvA+Q==
 X-IronPort-AV: E=Sophos;i="6.13,298,1732575600"; 
-   d="scan'208";a="41945151"
+   d="scan'208";a="41945164"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Feb 2025 09:18:30 +0100
-X-CheckPoint: {67B593D6-1-B8541F8F-E50F9B0E}
-X-MAIL-CPID: 254D9EE434293371C7B2BB799D6CDE2E_2
-X-Control-Analysis: str=0001.0A002118.67B593D6.005F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44D3B16D339;
-	Wed, 19 Feb 2025 09:18:25 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 19 Feb 2025 09:18:35 +0100
+X-CheckPoint: {67B593DB-38-B8541F8F-E50F9B0E}
+X-MAIL-CPID: F34EA9B9402CADC0B0AD7EE8166E3D9D_2
+X-Control-Analysis: str=0001.0A002119.67B593DB.00B8,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96C6D16D476;
+	Wed, 19 Feb 2025 09:18:30 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1739953105;
+	s=dkim; t=1739953111;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HwSj9P7cDT8V91YvPThqayUco/hLI2W6VmhoMN33x4g=;
-	b=CJ3Wviff/oZvSgazQ7MBrBkZ9WyTdPq9Pe6hV7kJKuBTBzVLf8eJ53v6MiE/OfiuB0G2Ca
-	k0FJxRGRN25klspCERIFR7oe6486I0qGoKhVkxN2qWQJy9LTe5Dg9KbCmQjyNL9TbLTcRJ
-	5FQF90HcsIE77HiwZcCN3lQJ40OjMBv0Gi8Qo9Udt2p25KDFiUKUOk+PN3QkPE3d7DNCx6
-	RAOMhn7lo0eHR/0KtKbsajSnnapabhkFXsyicYFraNsL1uG02psP3rbs4CF8R7V3TQ8u5D
-	um2BczN6H6gvlDArAN+HORF2SeNS2Q+e2Gku8gXiuodax712Ntma9ECgVKosDA==
+	bh=XWJSQqgv/BGAC3SGvS9AWPMU0gfUh9CUB1ZZemk53vs=;
+	b=jsa6/6hHFrprwlcOf7gLmRiCrWeRSmzcx0FTcKH7bLLb3nzGiamIBcPjbyojXm6dtYa1ga
+	O5ugPZelYw0e0a5lBNMhPzC2Riegrm1eCP22ZqvcIxDLEV6KJfMs6l85N1YTOVDIoRO25w
+	vsCuqfcjtXY8MMvwuGvxGWqoaq84uvMZcgTl0Z+8vyjVegSd2q8vltPa47DkJi+FDb4f/p
+	yPKiiArohfsmnywPC3t/KZyK1IV/Am0Wk7A8blobZS0UgGdK+GztQmKUml6bnwJGGMkoxy
+	WpCRUNWq/gOr4/8zRj0GIb40iXmbHKl5BjQNh2qDYZlJJWgB0aNcjYOFlhGK6w==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -61,15 +61,16 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
 	linux@ew.tq-group.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/9] ARM: dts: imx6ul-tqma6ul: Add vcc-supply for spi-nor
-Date: Wed, 19 Feb 2025 09:17:41 +0100
-Message-ID: <20250219081748.1181507-7-alexander.stein@ew.tq-group.com>
+	linux-kernel@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 7/9] ARM: dts: tqma6ul: Add partitions subnode to spi-nor
+Date: Wed, 19 Feb 2025 09:17:42 +0100
+Message-ID: <20250219081748.1181507-8-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
 References: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
@@ -82,22 +83,41 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-(Q)SPI NOR flash is supplied by 1.8V. Add the corresponding supply.
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
+The bootloader adds MTD partitions in this subnode if present, or in the
+spi-nor node itself otherwise.
+Setting #size-cells in MTD nodes itself is deprecated by mtd.yaml.
+Fix all this by adding an empty partitions node which the bootloader will
+fill with configured MTD partitions. Remove the deprecated properties
+as well.
+
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-index d63229d8b4655..1e4022cba3cc5 100644
+index 1e4022cba3cc5..2dd635a615cb8 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-@@ -169,6 +169,7 @@ flash0: flash@0 {
+@@ -164,12 +164,16 @@ &qspi {
+ 	flash0: flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
  		spi-max-frequency = <33000000>;
  		spi-rx-bus-width = <4>;
  		spi-tx-bus-width = <1>;
-+		vcc-supply = <&reg_vldo4>;
+ 		vcc-supply = <&reg_vldo4>;
++
++		partitions {
++			compatible = "fixed-partitions";
++			#address-cells = <1>;
++			#size-cells = <1>;
++		};
  	};
  };
  
