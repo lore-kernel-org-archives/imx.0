@@ -1,88 +1,133 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18801C6FE3
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503F81E2312
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739968817; cv=none; b=QZ79ssNr4YTR4RfE36KdpI/o0GP81efwzlZ5RaUE8I5G6bVlZG7eu4KdGvStgYYTc9Qgyjj57zrUe95QOchAiCK4DjTkjhBiDOA5MGd9K162aDS4/F1wzsKUK3pAJ0BnhgDqQ6uyVqyrxcg9Hr49TBrIEiehLkSUorNd4sle4kI=
+	t=1739969856; cv=none; b=Y/Y27BMaBtsAGmJDziQ3htucwyhkLnmyBkCM7ZYZSe33kG46/XQaTiz5Hc8yuay1WNoOINylBrHVDyl6oSbGodZvgctI55VoHvlQUgxTCta1mGnXR8di5clduPH2Qinu5oT5eWBvQC22mbJj+hPyQhdcliX6LhyewO0VpWW75Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739968817; c=relaxed/simple;
-	bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SaP57/IliojWm0Bj+eN/OoaR7sWlYAmF1pdu4N4VbPZPTFvHosxpk8781tOs+MljlOp8Vm5YJn+ZtLoXm/Wh1vKu2YyWgXUGxx6bSupvhgs9bBsGhmvFREjiZHa0tjhofGN0/cbfQDH0MLTrkKzbZJuUlF20sXh1PsWiKh/u6kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IN6YKBA7; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IN6YKBA7"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30737db1aa9so62862221fa.1
-        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:40:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739968814; x=1740573614; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
-        b=IN6YKBA7YKbFSdVSFpY30sZtDqSfVg9mvKpOePcJ1+UQbHrCfUtS2/oRqwBTUD5MCw
-         HzebihlN8skykTKYqeficn6pYvyBSLUjztd5mZEOVGUwC7BCH5lm3JETk0IKbEnFxm87
-         Pbq6DAXZ3K6SPcDmna4Rmp6dfqhGOVDvPsFbiGMJ0Gri1t7rxDVpa0vBtH2Nc5wPb9sc
-         TXriCZUYQ+PoP71TwBGIN4ve8yI//pRkTHvmH1IQ5vnRl7sFmNSpvjCOPrTwxM4v3kg5
-         C9Ysi3fGz8FbMxH88DeUQf3ZQBvYLyTxesPT3Uc/4zrfhc2D0T5IvlzfU56R1jRZjzqU
-         eCnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739968814; x=1740573614;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NhQhj1c3gRWwOUJHeLmg2V70Y2oTFaMlvauJibjC3uU=;
-        b=IkYQeSQXlagPfI61JvjNyLbtut3sSIdG7zY8UdlI9/xq6MmiCTMb9yAvZ6O9yrFEHp
-         Sjh3cnuuAFQDfxMRT3+pNvvzsQ+p3hgGFzPxAEmM9OLh2yFcDtP8J846zTpg+TdzMiXj
-         tJQdd8ph3K8L+Rn0+CxLLrOf2inCMd5WxgVFLojVbeUDip3qm4O2tKfmZPFBkH5mKtBL
-         jxTMB3WM/v3YG8H49M0hNgikDDEwH+fbeA8/jWIQUaPIcWLszJurKJHFkRBadfD/ZWZ5
-         G6sRFyC53zf6flI7i7FEnsXZx1lnps4LUi2OMZWaNSgxwhN0mvxZ6NfcAYkUwmE3FPVJ
-         y9GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcp2EVkZh9niaTarz6aGmf51bDwidtZN3viBBFQKACLxmPFYO6nU0GHtDtrIvFNsp4Ilo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwZP2VezeZCPnRRUDL3bxgL6/uwkn7Xe7X6ctHk73bS2ycVf6qZ
-	FFJ+FSSmid/YYvH1MiaCFSGfSVBn6FrYXlxUmx3XRG7b5QB8u/yRXpQpbcsQ0xXZ7I/GdxCoDeJ
-	/JNwWMbc8Et4JdOjZdzFl2Ey5M/WCog==
-X-Gm-Gg: ASbGnct1k4d5SG9ZdSGxyiCp9Kp1CToIUxKXODx15z1Hs9Uk9ss+cANKYCDlt5zqXDv
-	eZcaWZpLwXH8c7pKMUSN8uO2f3wE9PqKK+IKuo2tlvJ53zEJmZsBj1+FGJWKhx52vy20913a35F
-	dyLv9KRYol8BN/H2/p/arfloT+ZTY=
-X-Google-Smtp-Source: AGHT+IFiEAAmOQeNiwKM9pYHoGOeRxDwt6aWpRp0aHFkiqJ/scb58wtITAVUYzMW7vzAfCPPDIj0kMB/lDvHjfDXQ/E=
-X-Received: by 2002:a2e:8810:0:b0:308:e8d3:756d with SMTP id
- 38308e7fff4ca-30a44ed1da9mr12054681fa.19.1739968813787; Wed, 19 Feb 2025
- 04:40:13 -0800 (PST)
+	s=arc-20240116; t=1739969856; c=relaxed/simple;
+	bh=LsHm5DFOAzJVrE/IsotrdHQDGxc68/y9hgt7yhREGTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tq0gXNzyvU5z0lOeukuGoeE/7bjxQJabszebvqyr+qZI0oiiZJ4N9koWfxfrNJSzYzkVK8q+RZXEwKIIfwVygmms3uBjXd9ZOykHNmt5quI7frLoeSMzbqg9v3hApIINvjSDVltD89bIJW6pP1COVBxdF7wrrOJebfBxBU9GbC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tkjdd-0006Hn-38; Wed, 19 Feb 2025 13:57:17 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tkjdc-001lmY-0U;
+	Wed, 19 Feb 2025 13:57:16 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tkjdc-006G9p-02;
+	Wed, 19 Feb 2025 13:57:16 +0100
+Date: Wed, 19 Feb 2025 13:57:15 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengfei Li <pengfei.li_1@nxp.com>, linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	ye.li@nxp.com, joy.zou@nxp.com,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v5 1/2] dt-bindings: thermal: fsl,imx91-tmu: add bindings
+ for NXP i.MX91 thermal module
+Message-ID: <20250219125715.octrfw47q2rxy7ai@pengutronix.de>
+References: <20250218-imx91tmu-v5-0-76c0b27673e6@nxp.com>
+ <20250218-imx91tmu-v5-1-76c0b27673e6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241101135406.47836-1-festevam@gmail.com> <173073495749.210192.9138587910771237679.robh@kernel.org>
- <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
-In-Reply-To: <CAOMZO5BVLpQecZH4vvmRi=KfZ=MvCgUQ_tUKjvUzMGO=wTU-MA@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 19 Feb 2025 09:40:01 -0300
-X-Gm-Features: AWEUYZkvUCi3PRNaZjpqQ7zkYqcKxcjgv_RBbFS6LFh_ywtWOQiG9QgEhk9Prp0
-Message-ID: <CAOMZO5BJy2B0Jy-ehz44ZkrzUpGqrAs_GjE-Nh1P9K8uDXVmyw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif fallback
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, shawnguo@kernel.org, imx@lists.linux.dev, 
-	conor+dt@kernel.org, Fabio Estevam <festevam@denx.de>, 
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de, 
-	krzk+dt@kernel.org, a.fatoum@pengutronix.de, dri-devel@lists.freedesktop.org, 
-	andreas@kemnade.info, marex@denx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218-imx91tmu-v5-1-76c0b27673e6@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Rob,
+On 25-02-18, Frank Li wrote:
+> From: Pengfei Li <pengfei.li_1@nxp.com>
+> 
+> Add bindings documentation for i.MX91 thermal modules.
+> 
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change from v3 to v4
+> - add interrupts propperty
+> 
+> Change from v2 to v3
+> - add ref thermal-sensor
+> - restrict #thermal-sensor-cells to 0 only
+> - Change to unevaluatedProperties
+> ---
+>  .../devicetree/bindings/thermal/fsl,imx91-tmu.yaml | 79 ++++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/thermal/fsl,imx91-tmu.yaml b/Documentation/devicetree/bindings/thermal/fsl,imx91-tmu.yaml
+> new file mode 100644
+> index 0000000000000..2dafec8b37024
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/thermal/fsl,imx91-tmu.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/thermal/fsl,imx91-tmu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX91 Thermal
+> +
+> +maintainers:
+> +  - Pengfei Li <pengfei.li_1@nxp.com>
+> +
+> +description:
+> +  i.MX91 features a new temperature sensor. It includes programmable
+> +  temperature threshold comparators for both normal and privileged
+> +  accesses and allows a programmable measurement frequency for the
+> +  Periodic One-Shot Measurement mode. Additionally, it provides
+> +  status registers for indicating the end of measurement and threshold
+> +  violation events.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: fsl,imx91-tmu
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Comparator 1 irq
+> +      - description: Comparator 2 irq
+> +      - description: Data ready irq
 
-On Tue, Dec 17, 2024 at 10:20=E2=80=AFAM Fabio Estevam <festevam@gmail.com>=
- wrote:
+missing "interrupt-names" property.
 
-> > Acked-by: Rob Herring (Arm) <robh@kernel.org>
->
-> Can you apply 1/3 and 2/3?
-
-Gentle ping.
+Regards,
+  Marco
