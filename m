@@ -1,94 +1,108 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844DD1DCB0E
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 09:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0971CAA6C;
+	Wed, 19 Feb 2025 09:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739956634; cv=none; b=soHA3QhghidMDPqbhOSbGwBufSQJjxptgKOP4sjZaIZEHyvp49Qp5XdqvSjJe+1izEyG57p7FV+Ci0+jsXuErpeS9rRnzhf4dGcKWSAnBsdZX0T6LPhyqyslCTRDfRL3NS0xw0kqyVncMOPPDYBzP3q2WpOn8BOMzh7WYN2qTB0=
+	t=1739957225; cv=none; b=tKQs0jSHB7z96EdF4gKp35yYJ+3koO07kQXZ7WQApXS6aFTjkdn6AwtJp7PnhD49ShGdBPm/ZX1+yQzU9v3peHkB5GS/DXwfwZA0eqctXV3l/l5vsKA5Pn5kNMXcT1XyMghaIxH4PbLUNdolvNuIx7jyBL+31iRpVq18VodoHfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739956634; c=relaxed/simple;
-	bh=4ke9dKLnrrvkEyZZL+qEaE56MEYHQE4XPBp/l49zfQM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hu6vUIJNwgTjw1vjqE6p/51Vur7cifHDsio9Que4cDUn82lPObg285jMZqctzeNoD9/BTcJPKGXr+64Ityg8kcK+gwsxX+gIcKsInVlo2wxUS6hfvGYcaGeyaDibOS6bsAlvHFIfiv/r1+f9DUbLHPsx5cpfdFRSY4YQDI9nT1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkgBq-00054L-0R; Wed, 19 Feb 2025 10:16:22 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkgBo-001jq4-02;
-	Wed, 19 Feb 2025 10:16:20 +0100
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tkgBn-0002pp-2m;
-	Wed, 19 Feb 2025 10:16:19 +0100
-Message-ID: <983b40e8b1996ccd0c98a76e65f77ed0bc5b50fb.camel@pengutronix.de>
-Subject: Re: [PATCH v4 2/8] reset: mpfs: use the auxiliary device creation
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Jerome Brunet <jbrunet@baylibre.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Danilo
- Krummrich <dakr@kernel.org>, Conor Dooley <conor.dooley@microchip.com>,
- Daire McNamara <daire.mcnamara@microchip.com>, Douglas Anderson
- <dianders@chromium.org>,  Andrzej Hajda <andrzej.hajda@intel.com>, Neil
- Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,  Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>,  Thomas Zimmermann <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Hans de Goede
- <hdegoede@redhat.com>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,  Bryan O'Donoghue
- <bryan.odonoghue@linaro.org>, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?ISO-8859-1?Q?Th=E9o?= Lebrun
- <theo.lebrun@bootlin.com>,  Michael Turquette <mturquette@baylibre.com>,
- Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Kevin Hilman <khilman@baylibre.com>,  Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>
-Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- dri-devel@lists.freedesktop.org, platform-driver-x86@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org
-Date: Wed, 19 Feb 2025 10:16:19 +0100
-In-Reply-To: <20250218-aux-device-create-helper-v4-2-c3d7dfdea2e6@baylibre.com>
-References: 
-	<20250218-aux-device-create-helper-v4-0-c3d7dfdea2e6@baylibre.com>
-	 <20250218-aux-device-create-helper-v4-2-c3d7dfdea2e6@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1739957225; c=relaxed/simple;
+	bh=/8BENyPma1E57fsseTa1ytYOdy6D1/EypBQxBbUeYB0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=hUS5jCGhu+RnzSUKwxDaEw655WPUVQTIbW68CazKNZWNxIAqKOZ/YUh2dcsOqxTqCEs4e6FnkiY8POTaWaK8bJD8B6gU1ISDY0uHI1GUQVfcK0BMZ/QzKEQ+7n2r8te+8D5fc3o97Sn5duXUf7ES+e/zrg3+esK7BWxnLorF0Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7oZp1GP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7oZp1GP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 923A9C4CED1;
+	Wed, 19 Feb 2025 09:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739957225;
+	bh=/8BENyPma1E57fsseTa1ytYOdy6D1/EypBQxBbUeYB0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=m7oZp1GPHV4yDMeriWYC05zFcs6bEymz+i3F8bjTa232EVq3UgDWTBepdWBMyGSsS
+	 hJLkXPgT7j/3x4jdFZ5wCGsNKbT/6R6h9mbj9BaLX/9TZWguk8oKpgZ3F+I7irUDcU
+	 mkmst4mCs4ieJlidpXPsrcI1LVZtHzjTBS8uft3bDkb7EORbmUDwGjf3bsawGQ6E2d
+	 w7oB6iu/qM3XjxMVXYlwYIUuf6rSis39tZgHxwoYnUyinrixg0qeHmd2C0wP0OB66q
+	 YGE1vlD7r7DitV0yHB6JiAYDwi6Qk931CxnzMuhH5+ctnh1CBD3skzzQ1BwEa4HDhg
+	 aOtzWIP2JOrzQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83CBDC021B1;
+	Wed, 19 Feb 2025 09:27:05 +0000 (UTC)
+From: Sasha Finkelstein via B4 Relay <devnull+fnkl.kernel.gmail.com@kernel.org>
+Date: Wed, 19 Feb 2025 10:26:57 +0100
+Subject: [PATCH 1/5] dt-bindings: power: apple,pmgr-pwrstate: Add
+ force-{disable,reset} properties
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250219-isp-v1-1-6d3e89b67c31@gmail.com>
+References: <20250219-isp-v1-0-6d3e89b67c31@gmail.com>
+In-Reply-To: <20250219-isp-v1-0-6d3e89b67c31@gmail.com>
+To: Sven Peter <sven@svenpeter.dev>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Hector Martin <marcan@marcan.st>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ Sasha Finkelstein <fnkl.kernel@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739957223; l=1111;
+ i=fnkl.kernel@gmail.com; s=20241124; h=from:subject:message-id;
+ bh=q1+AY+SX/HidyXOKL452yUY1CfrAy107+rMUbBBYmrY=;
+ b=tIUgSAQ20H8Sh73LCctDDWcqZ8+098KXHQs/GdR+9F+SgFTynX3VPt5fV3fDgjtWC9w3AB7LA
+ 21v8x5BdfKECnc6GVZLlsALOJuRzMvKveogRObUVqDQNDLNsBpm9mC+
+X-Developer-Key: i=fnkl.kernel@gmail.com; a=ed25519;
+ pk=aSkp1PdZ+eF4jpMO6oLvz/YfT5XkBUneWwyhQrOgmsU=
+X-Endpoint-Received: by B4 Relay for fnkl.kernel@gmail.com/20241124 with
+ auth_id=283
+X-Original-From: Sasha Finkelstein <fnkl.kernel@gmail.com>
+Reply-To: fnkl.kernel@gmail.com
 
-On Di, 2025-02-18 at 20:29 +0100, Jerome Brunet wrote:
-> The auxiliary device creation of this driver is simple enough to
-> use the available auxiliary device creation helper.
->=20
-> Use it and remove some boilerplate code.
->=20
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+From: Sasha Finkelstein <fnkl.kernel@gmail.com>
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Add properties to set disable/reset bits when powering down
+certain domains
 
-regards
-Philipp
+Signed-off-by: Sasha Finkelstein <fnkl.kernel@gmail.com>
+---
+ .../devicetree/bindings/power/apple,pmgr-pwrstate.yaml         | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/power/apple,pmgr-pwrstate.yaml b/Documentation/devicetree/bindings/power/apple,pmgr-pwrstate.yaml
+index 59a6af735a2167b7edd9e0491da238f21effe316..9c8f5385bee5aa1bac8c3e44963713299160521e 100644
+--- a/Documentation/devicetree/bindings/power/apple,pmgr-pwrstate.yaml
++++ b/Documentation/devicetree/bindings/power/apple,pmgr-pwrstate.yaml
+@@ -62,6 +62,16 @@ properties:
+       Forces this power domain to always be powered up.
+     type: boolean
+ 
++  apple,force-disable:
++    description:
++      Use the disable bit when turning the power off
++    type: boolean
++
++  apple,force-reset:
++    description:
++      Use the reset bit when turning the power off
++    type: boolean
++
+   apple,min-state:
+     description:
+       Specifies the minimum power state for auto-PM.
+
+-- 
+2.48.1
+
+
