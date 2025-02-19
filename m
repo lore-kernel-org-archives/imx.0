@@ -1,146 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF701CF5E2;
-	Wed, 19 Feb 2025 12:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503491DF75C
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 12:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739966799; cv=none; b=mdrFKjbbu8uVzeRrIXYdZ52mEfS2npy6pGV9mUKrwRHIHKvWd22jfharFGCV6pvVuJImrkmWEctZqrKlFgKRykDS0RveUeuQnynsPaqL5PRsVur+thyySTBnFu/gcJijP5Z8qQL7ck8fTDWch896cpFLGmd8hWLk58eP2YS0P3I=
+	t=1739966909; cv=none; b=oUby24l/dovzcEVVxZSGMZJKkPEyKMzcDIDya1j4DMap4bLHtInnwxwuc3TI4rAZHarMn+UfuMSFqoCXUdVGfUPOpnoU7nR3uTNd9yG1jP820giLcr3HsQEkRPMRDH5p79IUdBHvxXrYUZ+GXfe+0ZIWt26dhKDcxucAPIeIF7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739966799; c=relaxed/simple;
-	bh=l5MR+J2ZG/jDwhC3KAMELQZM2LJbnY4ck6sKdNuSfug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aH7l94+sOJNbPJk2j1+DwrEqJQoePwlyt2547RHGChEy8OlgPUAVplZvYB84B+RsBH/KSYFqaHeYryuHGktjQKTuoh0ZTtcII9MzdS7Ty6ks+dAAsBbFJG71JWzi72/m9EPAoUCULlR5dlCuSFuohqIm3n6OEo/zUF64TE2rs3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUJ8OugU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739966909; c=relaxed/simple;
+	bh=uE8CUjR58RLwuzsqmPJ2Twtd7ZBgQ7uMjtufoLK9fYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bX9r7+FA6+NQmoYa5UvcHc2ZgYkmaXUYjTbj+AR4yqKGoI4dfFhI697cFBkJaZAaB7TQhnoErCBBWFL998/0t6CUaOpZz3HofjMB91cR7d4JE1xn/wpKyINOMtyKlLxkMEQE+Nh30WJMVITPitZ4yjeCts3dvSNLClnkfHRDRt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rXRUMuW9; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUJ8OugU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC23C4CED1;
-	Wed, 19 Feb 2025 12:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739966798;
-	bh=l5MR+J2ZG/jDwhC3KAMELQZM2LJbnY4ck6sKdNuSfug=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gUJ8OugU1aSnFNqaMh4N2p+SiNyqwZepOoaUhr+LGQmUCeVZ9EQ2z1iDpNzfK9Pjs
-	 ynZLtbmfBbJEGrKKgniG8l3a4Rj9epUDPl5OVXM9IJ2fuvD7GlsV94DjOqXpGRvoDR
-	 kBEHiH3KWmEA6Q0f9vsGiggg4TOqZuX5U74IBSIFoxO+qfVSTBt/xbDm5WDnehdj7t
-	 gtJnI1IfsvuY6jiesB3PuaVgwcRoc1HLW+7hYpQ/Dp7s2xBrhdJRX1yA8w7rqt2xTY
-	 f/1aDafMQCBu8mbYWjdXeiK8YrTV911igHyTHfrvdYS8s8hRWzWQnK3XC+Oh6W3bPj
-	 6Ak2PESU2zYFQ==
-Message-ID: <56e56623-9cef-48b9-8a57-ef7840f0a8f3@kernel.org>
-Date: Wed, 19 Feb 2025 13:06:33 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rXRUMuW9"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5452ca02bdbso4886790e87.1
+        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 04:08:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739966905; x=1740571705; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kfNES95aCHrH5DW7HOssGE1cf0vTi0kl2N0MBpHNSOY=;
+        b=rXRUMuW9mKRhROIRbHkOBKnXR/KCOsD1khdZy3mbs+zRGZZj4etj9dFdryooNAKbMW
+         dCWxDSU4VNCwqYOnFsf7fG5ScLyU1ZyPQ1UU1xUcFqrykq6nOKWu7ewLdJ8UmPyzrdtu
+         v1fGNjMwC8/LwJihlbDJ19m2KRVt4rP7syYh8lpShYmOhzZ7SluZF4rePqmeMKyTayGo
+         ij5GnDPdcMGzmmMcu8vm9BDM1h0yst1fkIHq7wMJshRigmUeIqvpY2d0+alU0gBXrJCv
+         DKdMZ1x7TCx5yfErDfcL0s9grzTuFyJ+LFEWS7HTJuotlMtKPP0B3x33fGfwqpAwqrZC
+         t8oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739966905; x=1740571705;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kfNES95aCHrH5DW7HOssGE1cf0vTi0kl2N0MBpHNSOY=;
+        b=KlnTEaX5wPNW+757Z3ToQRWItSWLQT9ccBAoBA0xQzs/Tqnmdu5NZ7r8hPbdkgfhuC
+         mhmNX+KPXkfXhPS3tIEdJMz8s5MeaJUmok2dNvPl5BcGrYlTnW2533m5Zkzb1z30YpHE
+         80TRbXWf20BV/o6apMP5Raq2EYxU+Gy8+w6p6F/K3BStNbDRsR4EAMS5w3YtRDtsePCB
+         bLtSqbxVROWl2OIRzCfM8K3A8XoBHImNVDC8snnVkt0hZu1/UzfpHJPYpuymVxOpEgyk
+         8OInUQZ+nUAMoFtKwzXovCZRg8g5RReV26HEJxFbGkpS4J38uSTK+s6LZnRIv1CTLYpq
+         pqKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWCFxkfkvTZUQ+AgiB9hQ9KHhOrSrQT6kLH30L0AoJyafA1GZx4gbiPyj+GJao4l76UGcA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyolCutpLXnaOlIg3785vV+HzCpebPwK1sY7aV9XsxpEIZ4UoIB
+	wi2zO6BvOsb56pn6+WNGoFJqRfFwkHnuOrVgtAx4Cfs0+fFVFx9ZH6As5xqDMfY=
+X-Gm-Gg: ASbGncsHVhUxY6n+ewK/0sfxRlqc6AoP6AbL7dLUt+AepmiA2DdOS/Z3H/6CmPqtXN4
+	AigpkfNV5xyQjdsFE9SbEnn+WqdN1Jw4eQ6d3cFdExCyXZHkc/e2A32x8mofAJCvuWBEOw4Dp7E
+	f8MV0wDQLkiJCWzz3EP0ZPNxZQLfXFcix1QWG/A5Privrdiv6KRV9n+D28M2/Nit5KWnesixE6N
+	XHwoVTTYO8aSTQXKKlzlssZtu6H1SzSPLn42z4UA8Bk3Yc7urcYAjsjGrhV2IzAZvv0jfNMoP9q
+	MkXb86RehjFeDjmrFHj5ZzREzcYpmTNUDxe/RECyhteHNmP832K7bX1cbDJyxRyABmSTu0E=
+X-Google-Smtp-Source: AGHT+IFMLOpDHMHA4h3/Gxx2zV0fjSL0lgJbRphbGzyITSKOMSUgTcKxT5mQ7K/tT3lwL8tk5JoMMA==
+X-Received: by 2002:ac2:4e05:0:b0:545:62c:4b29 with SMTP id 2adb3069b0e04-5452fe5bedcmr6706804e87.22.1739966905285;
+        Wed, 19 Feb 2025 04:08:25 -0800 (PST)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5461cfdd5a2sm1148260e87.39.2025.02.19.04.08.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2025 04:08:24 -0800 (PST)
+Date: Wed, 19 Feb 2025 14:08:22 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jerome Brunet <jbrunet@baylibre.com>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Danilo Krummrich <dakr@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Douglas Anderson <dianders@chromium.org>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Hans de Goede <hdegoede@redhat.com>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, =?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Kevin Hilman <khilman@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, dri-devel@lists.freedesktop.org, 
+	platform-driver-x86@vger.kernel.org, linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org
+Subject: Re: [PATCH v4 1/8] driver core: auxiliary bus: add device creation
+ helpers
+Message-ID: <eskvhtljnrkhm6vmqy52gkweexj3tcethejeywcoib4la72jcl@ojuqcazpvht4>
+References: <20250218-aux-device-create-helper-v4-0-c3d7dfdea2e6@baylibre.com>
+ <20250218-aux-device-create-helper-v4-1-c3d7dfdea2e6@baylibre.com>
+ <crtrciitrlqkxh5mxvnbdjy6zoxny5onse7xgbw7biozg6myux@grp3ketgl2uh>
+ <2025021922-spongy-swirl-0746@gregkh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
-To: Lukasz Majewski <lukma@denx.de>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-clk@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250219114936.3546530-1-lukma@denx.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250219114936.3546530-1-lukma@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025021922-spongy-swirl-0746@gregkh>
 
-On 19/02/2025 12:49, Lukasz Majewski wrote:
-> The NXP's vf610 soc is equipped with L2 switch IP block from More
-> Than IP (MTIP) vendor.
+On Wed, Feb 19, 2025 at 11:13:14AM +0100, Greg Kroah-Hartman wrote:
+> On Wed, Feb 19, 2025 at 11:06:02AM +0200, Dmitry Baryshkov wrote:
+> > On Tue, Feb 18, 2025 at 08:29:46PM +0100, Jerome Brunet wrote:
+> > > Add helper functions to create a device on the auxiliary bus.
+> > > 
+> > > This is meant for fairly simple usage of the auxiliary bus, to avoid having
+> > > the same code repeated in the different drivers.
+> > > 
+> > > Suggested-by: Stephen Boyd <sboyd@kernel.org>
+> > > Cc: Arnd Bergmann <arnd@arndb.de>
+> > > Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+> > > ---
+> > >  drivers/base/auxiliary.c      | 108 ++++++++++++++++++++++++++++++++++++++++++
+> > >  include/linux/auxiliary_bus.h |  17 +++++++
+> > >  2 files changed, 125 insertions(+)
+> > > 
+> > > diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
+> > > index afa4df4c5a3f371b91d8dd8c4325495d32ad1291..a6d46c2759be81a0739f07528d5959c2a76eb8a8 100644
+> > > --- a/drivers/base/auxiliary.c
+> > > +++ b/drivers/base/auxiliary.c
+> > > @@ -385,6 +385,114 @@ void auxiliary_driver_unregister(struct auxiliary_driver *auxdrv)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(auxiliary_driver_unregister);
+> > >  
+> > > +static void auxiliary_device_release(struct device *dev)
+> > > +{
+> > > +	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
+> > > +
+> > > +	kfree(auxdev);
+> > > +}
+> > > +
+> > > +/**
+> > > + * auxiliary_device_create - create a device on the auxiliary bus
+> > > + * @dev: parent device
+> > > + * @modname: module name used to create the auxiliary driver name.
+> > > + * @devname: auxiliary bus device name
+> > > + * @platform_data: auxiliary bus device platform data
+> > > + * @id: auxiliary bus device id
+> > > + *
+> > > + * Helper to create an auxiliary bus device.
+> > > + * The device created matches driver 'modname.devname' on the auxiliary bus.
+> > > + */
+> > > +struct auxiliary_device *auxiliary_device_create(struct device *dev,
+> > > +						 const char *modname,
+> > > +						 const char *devname,
+> > > +						 void *platform_data,
+> > > +						 int id)
+> > > +{
+> > > +	struct auxiliary_device *auxdev;
+> > > +	int ret;
+> > > +
+> > > +	auxdev = kzalloc(sizeof(*auxdev), GFP_KERNEL);
+> > > +	if (!auxdev)
+> > > +		return NULL;
+> > > +
+> > > +	auxdev->id = id;
+> > > +	auxdev->name = devname;
+> > > +	auxdev->dev.parent = dev;
+> > > +	auxdev->dev.platform_data = platform_data;
+> > > +	auxdev->dev.release = auxiliary_device_release;
+> > > +	device_set_of_node_from_dev(&auxdev->dev, dev);
+> > > +
+> > > +	ret = auxiliary_device_init(auxdev);
+> > > +	if (ret) {
+> > > +		kfree(auxdev);
+> > > +		return NULL;
+> > > +	}
+> > > +
+> > > +	ret = __auxiliary_device_add(auxdev, modname);
+> > > +	if (ret) {
+> > 
+> > This loses possible error return values from __auxiliary_device_add().
 > 
-> It requires special clock (VF610_CLK_ESW) to be operational.
+> Why does that really matter?
+
+At the very least the caller (or caller of a caller) can call
+dev_err_probe() or dev_err("%pe"). With the current implementation as
+everybody maps NULL to -ENOMEM the error message will be cryptic.
+
+Or just having a cryptic value in the logs.
+
+> > I'd suggest to return ERR_PTR(ret) here and in the
+> > auxiliary_device_init() chunks and ERR_PTR(-ENOMEM) in case of kzalloc()
+> > failure.
 > 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> ---
->  drivers/clk/imx/clk-vf610.c             | 1 +
->  include/dt-bindings/clock/vf610-clock.h | 3 ++-
+> Will the caller do something different based on the error value here?
+> All we care is that this worked or not, the specific error isn't going
+> to matter for device creation like this.
 
+The caller might not, the developer might.
 
-Bindings are a separate patch.
-
->  2 files changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
-> index 9e11f1c7c397..405bf48a1d28 100644
-> --- a/drivers/clk/imx/clk-vf610.c
-> +++ b/drivers/clk/imx/clk-vf610.c
-> @@ -309,6 +309,7 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
->  	clk[VF610_CLK_ENET_TS] = imx_clk_gate("enet_ts", "enet_ts_sel", CCM_CSCDR1, 23);
->  	clk[VF610_CLK_ENET0] = imx_clk_gate2("enet0", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(0));
->  	clk[VF610_CLK_ENET1] = imx_clk_gate2("enet1", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(1));
-> +	clk[VF610_CLK_ESW] = imx_clk_gate2("esw", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(8));
->  
->  	clk[VF610_CLK_PIT] = imx_clk_gate2("pit", "ipg_bus", CCM_CCGR1, CCM_CCGRx_CGn(7));
->  
-> diff --git a/include/dt-bindings/clock/vf610-clock.h b/include/dt-bindings/clock/vf610-clock.h
-> index 373644e46747..95446f1bee16 100644
-> --- a/include/dt-bindings/clock/vf610-clock.h
-> +++ b/include/dt-bindings/clock/vf610-clock.h
-> @@ -197,6 +197,7 @@
->  #define VF610_CLK_TCON1			188
->  #define VF610_CLK_CAAM			189
->  #define VF610_CLK_CRC			190
-> -#define VF610_CLK_END			191
-> +#define VF610_CLK_ESW			191
-> +#define VF610_CLK_END			192
-
-
-This defiine should not change. If you need to change it, means it is
-not an ABI. Just like for other cases, I suggest to drop the define in
-preparatory patch.
-
-
-Best regards,
-Krzysztof
+-- 
+With best wishes
+Dmitry
