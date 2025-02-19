@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C541BD9C7
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF71BAEDC
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953093; cv=none; b=t1fBk9e7nK1c+NUngjtSai3RrSIghJ7OZAmGeV2qBfp1cZlj+8vAO1nPvEYL44ZAU+gNfc7Uwq3G0/Kt6IN5jTtSFFxjyloRay3fnbfqzCso1vr1IXRRYzM/ewDqloZcLou89u6bhMr1VESt6uL+lYnHGjW0gMdVmi3lPY4H92c=
+	t=1739953094; cv=none; b=aQZp6wl++UXaUMABDqA1O5N+aOXUCmTKlCX9xfXP5jAvS4fQibtrnBRLQmf4VBql69cxNd1O9MAdVszKUYkzSQnmWdr/N9TYaYQr13MdFIVqPfsgvMvilE8KtYhQMAmqWEF7O1WpTaMhbZkp2alAYl6BHLv1ELz7Qi3T2gwxlpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953093; c=relaxed/simple;
-	bh=Gsb70OLJ7VZEyejWwpV7S8Mp5w0l1y5sKFYBV2uvDvQ=;
+	s=arc-20240116; t=1739953094; c=relaxed/simple;
+	bh=FgK32og4F4FLany8zADsAth/vrk/6UqyRqg/3jnEALk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WluropHrQI0uPa66h2rEc/UvIr7iOh6W90TCtYo0jFm6akdWRvRqbE1LpRxsMiIiVeI7F3kBrL7v9O8wIiLVazQGFd5e1VckOjG8EZNTR7Imx9H4G0OupvuobkkGRVERs3DXlpOTC0dZdbzT2bGYrTeRgo2pPLJETRdskw6Qvn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=D9W1QP4q; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Kf3hXjJd reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=M1aDmAQog0NmxISgJI3AE0F/dQqifmPGH1tcNgBp1j++pbsd5Ml/Wsmgwd20Es13fOAeoFWTZj+FlZ7C/V8+2+x8bExsuNA8HPSumUrl3cVyv2L3NTFIS9jOt+c/Ln5cIihxlLcSTQQiSERsawvz93YLA1LXByeFWOzhbMQzZsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=TyOGTT9I; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=B4WuRgD1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="D9W1QP4q";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Kf3hXjJd"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="TyOGTT9I";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="B4WuRgD1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
   t=1739953091; x=1771489091;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AlDaEXwA98E5yip/4WkX62llBCpH4fE7hTiQtGBXBKQ=;
-  b=D9W1QP4qOYJn6Dfr4/z8W4YTlGPFjj41hdwxuiTlYccQsyCgYlX4PgOy
-   tIw4b0UUMOZnQqAJAst+7xXu6wF7OV5YGcO0qBbji7+dCD5vNxy8jQ9G5
-   vq06Q/9zZ6inw8UBA03EHAzNg8GxsnqOUyTJzZ+ucEQ23eVS6oCZXON4/
-   s4wiBn4cxZwaNEM79TYKK9O4g+U26WEGpLyI9WJljmIZwCAukm903uXiR
-   r3Au3BlX7xMJiss0sMa0zq7i3zW7ZCeRvsvNxmMkz3Pmo4jjNTt77Wjc0
-   AyTaCrmVVuHoTuSyD5kCcOrU8sD9EKcu0r+5Lb20vLULQZyEOoj+pasFJ
+  bh=5J2XktkVZupz+grzl0L3lVM8YCbDvKpOyQ/u9CNoYZs=;
+  b=TyOGTT9IIFLBxuUN5xrpof3ffI+03ShizTTzCN5SkNC4inz7IHYeYi6J
+   gTL8dMd2uPXewiewT/7xrqeaj4emY7PA06JLLScFoJ595uE5rKHd2GZFL
+   Qj5f35AnJISaWpYbuMTFBJ5ElHNElFeBmpyxptiyRckALW0NpLwapGunI
+   +EJ+wwy260z+mZ0CtJcLcNpGoUHvoHfOdd0zd/d6L8wVwaORlrK0XEsV6
+   98DxyF2ZxRNnRgp0Q8MUCdzSNIv8Ef98XVYO+8wo3EyoMoAPd60/gZe5v
+   3PEenbVXmFgL49wgBwiN3LvsD40FCpFQ7fudnsCAK93dvuXhopCR0MjII
    A==;
-X-CSE-ConnectionGUID: YaF0d2HXQdCoCojK7HXmsg==
-X-CSE-MsgGUID: nqNTARlOTnmT2NCFhaYhsQ==
+X-CSE-ConnectionGUID: /IX5oq6pRaGVwxOo+5u4vA==
+X-CSE-MsgGUID: x7HDVl4ESXacCfgnsd69jQ==
 X-IronPort-AV: E=Sophos;i="6.13,298,1732575600"; 
-   d="scan'208";a="41945127"
+   d="scan'208";a="41945131"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Feb 2025 09:18:03 +0100
-X-CheckPoint: {67B593BB-2D-28232521-C0C2250B}
-X-MAIL-CPID: C0229471A839A1E2B4E661868D99E2AD_4
-X-Control-Analysis: str=0001.0A002116.67B593BC.0024,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ECDAC164350;
-	Wed, 19 Feb 2025 09:17:58 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 19 Feb 2025 09:18:09 +0100
+X-CheckPoint: {67B593C0-30-F75C4246-F0BD6D90}
+X-MAIL-CPID: 11E601656B77042673F6C9590D4249A0_3
+X-Control-Analysis: str=0001.0A00212D.67B593C1.0074,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2D33B16D33A;
+	Wed, 19 Feb 2025 09:18:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1739953079;
+	s=dkim; t=1739953084;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AlDaEXwA98E5yip/4WkX62llBCpH4fE7hTiQtGBXBKQ=;
-	b=Kf3hXjJdxtM2+VfLohPbeMmt5afm2Y3D+1wBSHvLioVi0f1affUmzKtXNne7IxVVDKUCT1
-	J31v2a1RPrthYDMrfNrja4w44a+pW7U6faPMZyTxPewTtdTmZeQ2kfcmXB8kUfzB3Aa5lk
-	43ZE4BAHUxubxvHIZwUHi+7ygQz6bHcIwKk2G8IfvKNFdelJH4iewtzSaSicJprJYbCm5c
-	pKhF6SbC5zVez+AxSScg7QjKg9XNI9La2MBx1TsdjoFDpbei7UUHDg3x45Pu/GDPq/1MFu
-	5QB8402KuF27Sjq3xBoI76dofV0cRYRGJVynfwscZb4SPfl8KRmF+Er4Ch4s3Q==
+	bh=5J2XktkVZupz+grzl0L3lVM8YCbDvKpOyQ/u9CNoYZs=;
+	b=B4WuRgD1onDLsR8yVDsSyD7ZUquLG274RIqM9VpHZOc8AN2KkgKxbl6zgqMy8zhQj0TRYp
+	StTqkH8kBHSKRzknLcvOwrtq3/4nnqjRWfK3HII5yVYeO30gsckK1igPUnyTbnzXKNFWqp
+	oBOko5Ni8Ua32w2I/quw9N55KgiaRy8bPErS6SouRsk1yh0NWJmCp5OI+zsxDz7RNKXEdp
+	hqUqrcjszganWqJJ0HtU9i14c90l9A8/NBbWSL+vH2V8gmJqKOQyTjuBhDcDjm7rpl0FwV
+	roBXzr4wOkjrdClv98+nBaaxL6BGNcj9dbwnyEESpzdc4le7DwQHoiGC3XdqBQ==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -61,15 +61,16 @@ To: Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
 	linux@ew.tq-group.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/9] ARM: dts: imx6qdl-tqma6: Order DT properties
-Date: Wed, 19 Feb 2025 09:17:36 +0100
-Message-ID: <20250219081748.1181507-2-alexander.stein@ew.tq-group.com>
+	linux-kernel@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 2/9] ARM: dts: imx6qdl-tqma6: limit PMIC SW4 to 3.3V
+Date: Wed, 19 Feb 2025 09:17:37 +0100
+Message-ID: <20250219081748.1181507-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
 References: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
@@ -82,27 +83,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-'compatible' and 'reg' are put first.
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
+This is a fixed 3.3V rail supplying several hardware on SOM.
+
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
  arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
-index 6152a9ed47682..303def00cdfa9 100644
+index 303def00cdfa9..68986fb3b8df3 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
-@@ -25,8 +25,8 @@ &ecspi1 {
+@@ -119,7 +119,7 @@ reg_ddr_1v5b: sw3b {
+ 		};
  
- 	m25p80: flash@0 {
- 		compatible = "jedec,spi-nor";
--		spi-max-frequency = <50000000>;
- 		reg = <0>;
-+		spi-max-frequency = <50000000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		m25p,fast-read;
+ 		sw4_reg: sw4 {
+-			regulator-min-microvolt = <800000>;
++			regulator-min-microvolt = <3300000>;
+ 			regulator-max-microvolt = <3300000>;
+ 			regulator-always-on;
+ 		};
 -- 
 2.43.0
 
