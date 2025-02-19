@@ -1,90 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8F024E4C4;
-	Wed, 19 Feb 2025 21:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1892566CE;
+	Wed, 19 Feb 2025 21:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739999535; cv=none; b=kH9OOdUMaUFXlN56U9+Wy8ByGvS+d9G/dYq/hIzwVtc579i96XWutLeiWgBVE15iDGb8TgD5755rV+Eejp2MEX1jCX2OYJfGr/ekTvQSkCSq1Tvx9A/AhvCzdial4Hx/kBOdHOjy0ZjaGnWzkPamsClN0BfA3ReKeEtPIg6lZKc=
+	t=1739999907; cv=none; b=O4vFXjCSt5KqhVg8Dd5ekCuVMJVoYz3rIVynm0icriOPYY4nDHqBl5Vh8OSi30edKq500JQQckPT1jtmx3i/QcgRGM1VgMehmjSYbMkAwZVoI4fpRV4JkkQBDkjYTzm7chZLird6sfgIfGaTUjpbbl4y6qIV+DD/YvljjREDgPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739999535; c=relaxed/simple;
-	bh=RH2S874a9p3OcwC5UMWnwGLvCd8mOlpI7+gBBPGe02k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PkwiPKMKspobKPegH+WtqoHWdFXM8PzsV9dnv5zhC6wkOE3flu7mI8dbo5hYMY11avrMwcuFoNEA2bUUye+PDVW04FqNSqHgy667kmA5RuOQ4JfUSKJxVGJKGAqXFOTaRewu6JsULHsHGJa0g+m1cAdZZ4ZokwMkKO6Pz3yxVhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTAWZnXg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739999907; c=relaxed/simple;
+	bh=zgChJNf/jNRQQ4Q+zy63+Z2ebjGkQIejxO8cpu9ja64=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=FZ/C2KQx1SV2Yh5GR+mvMnJf0X/2ZejYBfu4D+6kRyySnDHypqtYiAyd7+hxq27b89akdvGugpXzYLUCXEzfK4fJ5WoV+dvV6OoQcO6wz9Lz/V3iMATn9Knkjd/zDsFjL6xYCkJrOYMEf34Wk2I94Onp7K/m5ix8a13EY2BRc1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ytk9ZN4N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTAWZnXg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56649C4CED1;
-	Wed, 19 Feb 2025 21:12:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ytk9ZN4N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8BEC4CED1;
+	Wed, 19 Feb 2025 21:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739999534;
-	bh=RH2S874a9p3OcwC5UMWnwGLvCd8mOlpI7+gBBPGe02k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eTAWZnXgtZ8AVs9p1jhneACdx3Wj7FIOWsubcJNQ8Uq3Lhy/j0COgROUsFS7UeCqV
-	 1FIYWON4Zjvnv4HKULOq1JfQREuNZVA94ZvZSwyHaJ0tu5hGKEy8VS2fFQU+CgJJQ6
-	 rBbGTIrJTEI4SV03yNjTGiKoVHVs5OAog/OsHyAnzZFmK5KjTD30A/GBDVEIfFLnYc
-	 pYdkUTUoTjaJjkJHOuFIc7Ror+Du0xs2yoztCTnTqbDbKiqPa+2KDg4TdpcbcDHzJ/
-	 SCpZanryjZLF0LiAVm4rLeDe5tekQ9LsZUPMFxxJBM75sJ4RomBYfciicrYYsAL1Bl
-	 wQtSdsIMjXwfg==
-Date: Wed, 19 Feb 2025 15:12:13 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Robert Chiras <robert.chiras@nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	"Guoniu.zhou" <guoniu.zhou@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 06/12] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
- i.MX8QM(QXP) compatible strings
-Message-ID: <173999953304.2962619.18320580606066581337.robh@kernel.org>
-References: <20250210-8qxp_camera-v3-0-324f5105accc@nxp.com>
- <20250210-8qxp_camera-v3-6-324f5105accc@nxp.com>
+	s=k20201202; t=1739999906;
+	bh=zgChJNf/jNRQQ4Q+zy63+Z2ebjGkQIejxO8cpu9ja64=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=Ytk9ZN4Nfwb5KfE2wIsscLA2w9BYrtqzRHgMJ7YrVBMdg601+cXGaRNDkSMNiZif/
+	 oLzBHncVEM/pt8X9yon0xPE3uAehMpIHrdoED3dL7z83FhwwIThYLQkwWclQcMbF7/
+	 8LaFWH/dpMIZgKCOcN1pXi5LTFGHZE8M4OF8O6ghfuGQQEKmSfc/BYEiN8Cr2A8sYB
+	 u01BAtD/dQXwvityHrENihfWdCUNeVEuvXp5wRqL/Bzk026J+J6E7b5g2rSyMv4cGu
+	 2VRSRFWYVs9PrIRUpVvxGkD4WAAZ7sk6xRBVMLZxE/o0/xkw9V/4vzSABDGoIpPuvt
+	 jYMBGdY6sIv3g==
+Date: Wed, 19 Feb 2025 15:18:25 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210-8qxp_camera-v3-6-324f5105accc@nxp.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, p.zabel@pengutronix.de, 
+ mathieu.poirier@linaro.org, krzk+dt@kernel.org, peng.fan@nxp.com, 
+ laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com, conor+dt@kernel.org, 
+ festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, 
+ shengjiu.wang@nxp.com, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, shawnguo@kernel.org, 
+ linux-kernel@vger.kernel.org
+To: Daniel Baluta <daniel.baluta@nxp.com>
+In-Reply-To: <20250219192102.423850-3-daniel.baluta@nxp.com>
+References: <20250219192102.423850-1-daniel.baluta@nxp.com>
+ <20250219192102.423850-3-daniel.baluta@nxp.com>
+Message-Id: <173999990554.2971484.2354660652098932942.robh@kernel.org>
+Subject: Re: [PATCH v2 2/8] dt-bindings: dsp: fsl,dsp: Add resets property
 
 
-On Mon, 10 Feb 2025 15:59:25 -0500, Frank Li wrote:
-> From: Robert Chiras <robert.chiras@nxp.com>
+On Wed, 19 Feb 2025 21:20:56 +0200, Daniel Baluta wrote:
+> On i.MX8MP we introduced support for using a reset controller
+> to control DSP operation.
 > 
-> Add compatible strings for i.MX8QM/i.MX8QXP platform. Remove
-> fsl,mipi-phy-gpr from required properties and add new reg space, since
-> i.MX8QM and i.MX8QXP use dedicate control and status register(csr) space.
+> This patch adds reset property which is required for i.MX8MP.
 > 
-> Keep the same restriction for other compatible strings.
-> 
-> Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > ---
-> change from v2 to v3
-> - use dedicate csr register space
-> change from v1 to v2
-> - remove internal review tags
-> - remove reg maxitems:1
-> - remove 8ulp part
-> - add 8qxp compatible string and make 8qm failback to 8qxp
-> - limit reset and power domain number to 1 for 8qxp and 8qm
-> - remove power-domains change because 8qm/8qxp only need 1 power domain
-> ---
->  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 38 +++++++++++++++++++---
->  1 file changed, 34 insertions(+), 4 deletions(-)
+>  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/dsp/fsl,dsp.yaml:183:11: [error] string value is redundantly quoted with any quotes (quoted-strings)
+
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/dsp/fsl,dsp.example.dts:85.37-38 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/dsp/fsl,dsp.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1511: dt_binding_check] Error 2
+make: *** [Makefile:251: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250219192102.423850-3-daniel.baluta@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
