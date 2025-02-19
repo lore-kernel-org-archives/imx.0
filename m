@@ -1,56 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622241C1F21;
-	Wed, 19 Feb 2025 21:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8F024E4C4;
+	Wed, 19 Feb 2025 21:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739999466; cv=none; b=eyJBn5u2x4wDpOBJEaNFp9ew3I8IVRzLW6OGe3Fp1HRiDYBf9bk76MJEuxdYItLhXSMKia95VC9TbBTC6XKFv1eqmA5XYIJbQRKHPE0eSY+YrtRKI9Xdth6wQQDAFtvx+T+ZuQpC9L6xiIZ0/Puf13iSoYz7A0Kj+fRCqWwk/qg=
+	t=1739999535; cv=none; b=kH9OOdUMaUFXlN56U9+Wy8ByGvS+d9G/dYq/hIzwVtc579i96XWutLeiWgBVE15iDGb8TgD5755rV+Eejp2MEX1jCX2OYJfGr/ekTvQSkCSq1Tvx9A/AhvCzdial4Hx/kBOdHOjy0ZjaGnWzkPamsClN0BfA3ReKeEtPIg6lZKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739999466; c=relaxed/simple;
-	bh=Pmh6rAEMacy/e/5HPBume8GH8tnPNRsNtj0pphZEwDw=;
+	s=arc-20240116; t=1739999535; c=relaxed/simple;
+	bh=RH2S874a9p3OcwC5UMWnwGLvCd8mOlpI7+gBBPGe02k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDRAHVwY2HGExXqbvYav6HEpqb9csfv0VJx9R3zS9209g8GlQnlliGNzGPh4u8LhfjYqwDZOTofN2f6gwcu5pUds0n7MFbcl2dIOE+8oJ703i0LZYLiEe1ioCiDFT6afr82vY7r/E5VxljMXn/p+IfqOpWlkQeY+axso+gIIVJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmfpLdYY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=PkwiPKMKspobKPegH+WtqoHWdFXM8PzsV9dnv5zhC6wkOE3flu7mI8dbo5hYMY11avrMwcuFoNEA2bUUye+PDVW04FqNSqHgy667kmA5RuOQ4JfUSKJxVGJKGAqXFOTaRewu6JsULHsHGJa0g+m1cAdZZ4ZokwMkKO6Pz3yxVhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTAWZnXg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmfpLdYY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A187EC4CED1;
-	Wed, 19 Feb 2025 21:11:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTAWZnXg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56649C4CED1;
+	Wed, 19 Feb 2025 21:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739999465;
-	bh=Pmh6rAEMacy/e/5HPBume8GH8tnPNRsNtj0pphZEwDw=;
+	s=k20201202; t=1739999534;
+	bh=RH2S874a9p3OcwC5UMWnwGLvCd8mOlpI7+gBBPGe02k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gmfpLdYYq+id4TUJRlfAgvMSVQ8iHCPMw99Cf5DU8MidCN+n7n9TAtAIgydd1rx1w
-	 NauNcXWJZDsfAzQYlK7jVE4rJBpVtpHUrjoStYUqsdpgcwUSxRS/RKCkLJ+3Eb+oio
-	 gsI8WSLOadOSdKdJT54ylvhyfhZhss7t/knHDqkk0FJR8/nCDBz8o8kly3WDn6zpl1
-	 sMif8Yktg2FuQC3CMnq01dCDq61uqKEr7GV1s8DUyiLx2HvJR3U3gI+QSuUcX5/lZk
-	 YVqRwBUZ9JN0WXrhFQp79VmlPfKWN2yK/3RgiXpkeOdDXhFfcIQNSzCq2LroCrHa4F
-	 npkObABfEoxlA==
-Date: Wed, 19 Feb 2025 15:11:04 -0600
+	b=eTAWZnXgtZ8AVs9p1jhneACdx3Wj7FIOWsubcJNQ8Uq3Lhy/j0COgROUsFS7UeCqV
+	 1FIYWON4Zjvnv4HKULOq1JfQREuNZVA94ZvZSwyHaJ0tu5hGKEy8VS2fFQU+CgJJQ6
+	 rBbGTIrJTEI4SV03yNjTGiKoVHVs5OAog/OsHyAnzZFmK5KjTD30A/GBDVEIfFLnYc
+	 pYdkUTUoTjaJjkJHOuFIc7Ror+Du0xs2yoztCTnTqbDbKiqPa+2KDg4TdpcbcDHzJ/
+	 SCpZanryjZLF0LiAVm4rLeDe5tekQ9LsZUPMFxxJBM75sJ4RomBYfciicrYYsAL1Bl
+	 wQtSdsIMjXwfg==
+Date: Wed, 19 Feb 2025 15:12:13 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	"Guoniu.zhou" <guoniu.zhou@nxp.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Robert Chiras <robert.chiras@nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
 	Martin Kepplinger <martink@posteo.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v3 03/12] media: dt-bindings: Add binding doc for
- i.MX8QXP and i.MX8QM ISI
-Message-ID: <173999946401.2961008.13720471519384232924.robh@kernel.org>
+	Mauro Carvalho Chehab <mchehab@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Robert Chiras <robert.chiras@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	"Guoniu.zhou" <guoniu.zhou@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 06/12] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
+ i.MX8QM(QXP) compatible strings
+Message-ID: <173999953304.2962619.18320580606066581337.robh@kernel.org>
 References: <20250210-8qxp_camera-v3-0-324f5105accc@nxp.com>
- <20250210-8qxp_camera-v3-3-324f5105accc@nxp.com>
+ <20250210-8qxp_camera-v3-6-324f5105accc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,27 +57,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250210-8qxp_camera-v3-3-324f5105accc@nxp.com>
+In-Reply-To: <20250210-8qxp_camera-v3-6-324f5105accc@nxp.com>
 
 
-On Mon, 10 Feb 2025 15:59:22 -0500, Frank Li wrote:
-> Add binding documentation for i.MX8QXP and i.MX8QM ISI. The clock-names,
-> power-domains, and ports differ significantly from the existing
-> nxp,imx8-isi.yaml. Create a new file to avoid complex if-else branches.
+On Mon, 10 Feb 2025 15:59:25 -0500, Frank Li wrote:
+> From: Robert Chiras <robert.chiras@nxp.com>
 > 
-> Add new file to MAINTAINERS.
+> Add compatible strings for i.MX8QM/i.MX8QXP platform. Remove
+> fsl,mipi-phy-gpr from required properties and add new reg space, since
+> i.MX8QM and i.MX8QXP use dedicate control and status register(csr) space.
 > 
+> Keep the same restriction for other compatible strings.
+> 
+> Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > change from v2 to v3
-> - none
+> - use dedicate csr register space
 > change from v1 to v2
-> - create new file for 8qm and 8qxp accroding rob's suggestion.
+> - remove internal review tags
+> - remove reg maxitems:1
+> - remove 8ulp part
+> - add 8qxp compatible string and make 8qm failback to 8qxp
+> - limit reset and power domain number to 1 for 8qxp and 8qm
+> - remove power-domains change because 8qm/8qxp only need 1 power domain
 > ---
->  .../devicetree/bindings/media/fsl,imx8qm-isi.yaml  | 117 +++++++++++++++++++++
->  .../devicetree/bindings/media/fsl,imx8qxp-isi.yaml | 103 ++++++++++++++++++
->  MAINTAINERS                                        |   1 +
->  3 files changed, 221 insertions(+)
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 38 +++++++++++++++++++---
+>  1 file changed, 34 insertions(+), 4 deletions(-)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
