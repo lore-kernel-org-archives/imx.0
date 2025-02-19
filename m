@@ -1,147 +1,126 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9781D0F5A;
-	Wed, 19 Feb 2025 11:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0E41DA11B
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 11:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739963144; cv=none; b=V/hJhW+Y4EV5lSbWUDrUNRqB7k8O10wOFpoP7CWmmCswmTrEXPmOExVmWD3J58fdwnrBooS2uWYoZcllX5PATnCkvvLxv8hi/aVCXz01G7X4zGVkYaGRtN9mjiny6aX/vqSgjJmaWnM9lS4ncZ3oCbytM85m6G2Kydevi9m9AQc=
+	t=1739963277; cv=none; b=oBVnq34prMnurjp6aVX6XYWXSex4NRsQPaUXIfDgj5fqdUsoVIJyhVN/1Gp8ewl53rz04mUheNlBB+KLZzUBrn5z8VR0JuE+W3d+KfBB79F2kHNJTo9x/WI6ANfdAtnCXogArAziasFs98MJ/vt0UMQ4NxvguyumBhjH8KcG2EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739963144; c=relaxed/simple;
-	bh=3cp//M/sV12YOFZI+shyC4DjWt4VB+LwS/H5wzGNXB0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bQyOd5XVbks51L4F26O6YvMMES9vZwUlyIuwdwWwKouUl5cW29Kf5mzM8XeUDn1BzHCc+jCKdoF/3vuOAkKoFi+eHbetOY9+2/GkHxuLhliDKKzZR47iyx8W/G/eFAVt8AYtRQaPcwZ7M54m0qY3BhnPl8fIBj1ueavgKPQBhNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMn1Mhd8; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739963277; c=relaxed/simple;
+	bh=tl5pzB5lQ0dT/Bi0R1NrudW2rHGEeLRrxww72qbAKnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DZ7MTQFI0HngE0YNZ9ByrCxrDSn77QMKOyGImdl1GAjH4VVpkermgDFWekM7Nm8VAXASvnSPZCqYmAMkQ4+B0HkMPSYtDozkRctfNA63hzTU8ziFdNANOOXJIc2ywMUQdasnkKhX0wHUr0VlET8A1AmG76lV4eT0WvorrtjcsgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bhEoV8Z+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMn1Mhd8"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e5ddd781316so2713479276.2;
-        Wed, 19 Feb 2025 03:05:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739963141; x=1740567941; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/KCPDNMeea6cvXpnHeNMu1dpiWDklh2TuU8J67WkP9o=;
-        b=PMn1Mhd8owUjnsPCyNeb187+ZOQMq+oWaA8NQBBjEPvvWkzFuP2tn6/0Q+oB39KF3J
-         scTKPkw97B04KUmQFXUC62D4gkjCFoCTr2TgxC1X6oIPggHBRGkb73LwSfJBUxf/jPJ/
-         SEgxVLCuA5i1kRqC3XuNosVUSoQX8xb+oFHIg+0qkGLGh9Fu0CxOaJnsPgiXx9oFJoe9
-         8lnrxvz0q3jmwtqlrPc4TC4T5walPHsfc51FYOXvkG2YJa/ft0Xb2MgLVeoGkB4Er/TI
-         uim4HdKlabY3otb+7ckf0DWczKt5l3i2lNP4dcdm0XlDVDU/QBPFAh+MncGIg1/kz1fP
-         KKQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739963141; x=1740567941;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/KCPDNMeea6cvXpnHeNMu1dpiWDklh2TuU8J67WkP9o=;
-        b=mAQWmVQBO/f3bTlyATpsdj6GgeRYiXr80pVMHa4cX/jnxz7s6S0TAvBI2fmjUVf+wN
-         IdCdR1NZ9dWKSpUOENkuu06eBrscsU5hRuapHKsGfLPHHqUbaonQpryHybwNnPXk6MsU
-         uZBmKL13+ju2oqexhHacaveat2X9FpNdPOwEHcOn9kw6rk/mJlMKPkqGnXu7yWHXBTdY
-         +TRxvno6UgL//IW1mNQTDGHMTVvIX7S9dx0j6C9RKTuhJSTLEwyWmporcz9zQlxYDVCQ
-         np5NiyGg3JM6SF0NM1ly+60xkkUaCpRcTu+6fbdVSV1KlCq23fwm+7SciSberJQXocD5
-         /HRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXM5iIqpnLgVmpP0N4cW9edz1h7zHOeWVpu9eeAxOZylHUHO3YzdrcewZ4zkWCdB3SX88Ty@lists.linux.dev, AJvYcCXr+QZRLXIb6y1OncQl8PfhHgVrhsHFP3I5TdKaB/bXfTYjEFvi/Qm8w27sUaQVzH9DythFAg==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yye7eo+x+7acuP6RVlzYQp4odrjPuKXjvyVdmBIRJZw9jfz30Pp
-	3pYbRsCH/SRWaN9vXy853XFieHu0/LSV0KXr3vgMviRZJRHUTHBbmXwaxbTvDijpoKf6msM8xb6
-	pfHqLJbnqPZX7kTvxaNejDlFu5VY=
-X-Gm-Gg: ASbGncu6a32S+e+dXjF2t7BLEZoBLeGwtrP8TagAC2cJKPpA0937iZW4TUPcLGnLSDZ
-	XeyXIuu3gI5wHvKrgVs6PZ9xSEGWIsM0OmkzNntrT6gzlLTKFBgF+1EL0qrtN1fRgAQ9i4jyQmg
-	==
-X-Google-Smtp-Source: AGHT+IFM7nPZ8tuQFLbd7DWBYfyE8wXlNRxQ8AMioKm2MbbUJCJH0PC+2gSNRcWOH4HRbsy98lSWob4Xz3NoErPmn1M=
-X-Received: by 2002:a05:6902:2501:b0:e5b:1540:6c7d with SMTP id
- 3f1490d57ef6-e5dc9536dbamr15187340276.49.1739963140849; Wed, 19 Feb 2025
- 03:05:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bhEoV8Z+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739963275; x=1771499275;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tl5pzB5lQ0dT/Bi0R1NrudW2rHGEeLRrxww72qbAKnA=;
+  b=bhEoV8Z++qY8EYGnL0+f2HGbnbffexorbXWF13Cr9PasIqoEPR8YUjlt
+   4uWL8OulLxb33pqmk1xtruKuRkaJ/WVBPYSlRVBzWGK06md2N4wyUGf3H
+   C4qvC7kNN7EQwq7BB5O9crbu4BTCORhuFutvxLN0JVSOSJZU2j8AaAFdC
+   aOuf+aBEGsnCuJPLi4Q/UXsNetG+UV23Iin7bsNKY8WufhmP48aK//wIN
+   XU5sse2CeYyRtLK1w2BAlP++lQv+IJOCGl283z7Bvht5sa/OfASDNFVKg
+   2uF4oDAQx46PMpeSNax1nAljXpnb7A4LCJqGrBuRhZnTzN7ZVi60xFG2h
+   w==;
+X-CSE-ConnectionGUID: c5TBoUafT1uLj4N52ULhXg==
+X-CSE-MsgGUID: zwnNe0O2RYS/JkD8oGBWbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="58101237"
+X-IronPort-AV: E=Sophos;i="6.13,298,1732608000"; 
+   d="scan'208";a="58101237"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 03:07:55 -0800
+X-CSE-ConnectionGUID: wXhrJnbqR0q5d0rDK0cZnA==
+X-CSE-MsgGUID: CbAA0e9KS9OZe1ScliBf1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="115580794"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 03:07:50 -0800
+Date: Wed, 19 Feb 2025 12:04:14 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com, michal.swiatkowski@linux.intel.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_tso_buffs()
+Message-ID: <Z7W6rtLwpHGlox3T@mev-dev.igk.intel.com>
+References: <20250219054247.733243-1-wei.fang@nxp.com>
+ <20250219054247.733243-10-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250219-isp-v1-0-6d3e89b67c31@gmail.com> <20250219-isp-v1-3-6d3e89b67c31@gmail.com>
- <16f6d4a2-2102-48b9-a0ae-b8c6595975b8@kernel.org> <CAMT+MTR7dhtt3SOMg0K3UakJQftqnc2S-rV41HdHtA+o9aSPug@mail.gmail.com>
- <20250219105326.GA31383@pendragon.ideasonboard.com>
-In-Reply-To: <20250219105326.GA31383@pendragon.ideasonboard.com>
-From: Sasha Finkelstein <fnkl.kernel@gmail.com>
-Date: Wed, 19 Feb 2025 12:05:29 +0100
-X-Gm-Features: AWEUYZlUG9hH5el_Nj1wiDJlMQpA-IjzAT88JqmhR0NRl4eaH_UzxL_62EaFLEs
-Message-ID: <CAMT+MTToVdm72ovNZ8ySySYe5fT99a0Y6bv02NKxADCBCe+pMQ@mail.gmail.com>
-Subject: Re: [PATCH 3/5] media: dt-bindings: Add Apple ISP
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Sven Peter <sven@svenpeter.dev>, 
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Hector Martin <marcan@marcan.st>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-media@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219054247.733243-10-wei.fang@nxp.com>
 
-On Wed, 19 Feb 2025 at 11:53, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> >
-> > Those are board-specific and not discoverable via the ISP protocol.
->
-> But they are settable through the ISP protocol, aren't they ? For
-> instance, looking at isp-imx248.dtsi, the first four entries are
->
->         /* 1280x720 */
->         preset0 {
->                 apple,config-index = <0>;
->                 apple,input-size = <1296 736>;
->                 apple,output-size = <1280 720>;
->                 apple,crop = <8 8 1280 720>;
->         };
->
->         /* 960x720 (4:3) */
->         preset1 {
->                 apple,config-index = <0>;
->                 apple,input-size = <1296 736>;
->                 apple,output-size = <960 720>;
->                 apple,crop = <168 8 960 720>;
->         };
->
->         /* 960x540 (16:9) */
->         preset2 {
->                 apple,config-index = <0>;
->                 apple,input-size = <1296 736>;
->                 apple,output-size = <960 540>;
->                 apple,crop = <8 8 1280 720>;
->         };
->
->         /* 640x480 (4:3) */
->         preset3 {
->                 apple,config-index = <0>;
->                 apple,input-size = <1296 736>;
->                 apple,output-size = <640 480>;
->                 apple,crop = <168 8 960 720>;
->         };
->
-> But I may be interested in capturing a 640x480 frame with cropping only
-> and without scaling, with
->
-> input-size = 1296x736
-> output-size = 640x480
-> crop = (328,128)/640x480
->
-> Or I may want my cropped frame to be located in the upper-left corner:
->
-> input-size = 1296x736
-> output-size = 640x480
-> crop = (8,8)/640x480
->
-> If I set those parameters through the ISP protocol, won't it work ?
->
-> --
-> Regards,
->
-> Laurent Pinchart
+On Wed, Feb 19, 2025 at 01:42:47PM +0800, Wei Fang wrote:
+> There is an off-by-one issue for the err_chained_bd path, it will free
+> one more tx_swbd than expected. But there is no such issue for the
+> err_map_data path. To fix this off-by-one issue and make the two error
+> handling consistent, the loop condition of error handling is modified
+> and the 'count++' operation is moved before enetc_map_tx_tso_data().
+> 
+> Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index 9a24d1176479..fe3967268a19 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -832,6 +832,7 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+>  			txbd = ENETC_TXBD(*tx_ring, i);
+>  			tx_swbd = &tx_ring->tx_swbd[i];
+>  			prefetchw(txbd);
+> +			count++;
+>  
+>  			/* Compute the checksum over this segment of data and
+>  			 * add it to the csum already computed (over the L4
+> @@ -848,7 +849,6 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+>  				goto err_map_data;
+>  
+>  			data_len -= size;
+> -			count++;
+>  			bd_data_num++;
+>  			tso_build_data(skb, &tso, size);
+>  
+> @@ -874,13 +874,13 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+>  	dev_err(tx_ring->dev, "DMA map error");
+>  
+>  err_chained_bd:
+> -	do {
+> +	while (count--) {
+>  		tx_swbd = &tx_ring->tx_swbd[i];
+>  		enetc_free_tx_frame(tx_ring, tx_swbd);
+>  		if (i == 0)
+>  			i = tx_ring->bd_count;
+>  		i--;
+> -	} while (count--);
+> +	}
+>  
+>  	return 0;
+>  }
 
-For cropping - you do not want to change those parameters, the sensor
-is partially occluded, and the crop area is specified in such a way
-to not expose those pixels. As for scaling - we can expose only the 1:1
-scale and let userspace deal with it, but it appears that it expects
-the other common output sizes to exist.
+Thanks for fixing it.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+
+> -- 
+> 2.34.1
+> 
