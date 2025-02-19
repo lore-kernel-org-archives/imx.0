@@ -1,106 +1,122 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A881DE4C9
-	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28891BD9C7
+	for <imx@lists.linux.dev>; Wed, 19 Feb 2025 08:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739953128; cv=none; b=CdcEWJkYa1B5UM25sgF9Ww0dC0+nUtfSlH1jDhHgwJJg9e8AEY0j8HcRrRBPSFotoGWtndq8AsfwmuZA7FgeyN27NBxpOPhDbRYl2qHwEwjVytqjOYGDLBfjZgiIxKxgLNSBYi4ymGCZkcsPi0jD9CsRyfBZoIoeo43LUPpzKDc=
+	t=1739953307; cv=none; b=KA6F6on/810Pqx3IbhOg5MjbuPgheyAaj1p6m2K7yWNoCJlNde7e8L0WC6gWnDOn2OC/qgTiFt05VF7p8XylwH/Xn2aHbFz06PsoxSMiAxsu0AyteyZi0ZyIWOxDPXVKO6nnEcyZ3BAT3zy+Iedt2GmlrDKM5zz7dH5HwvJVcyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739953128; c=relaxed/simple;
-	bh=SXlKeyatYd6ebA4XAf4Taul/4a54oHG5ZtJlcQBGsbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vd7OssR9nXz+7TBw9i3cbAC2lT+LGKcsG5LMvRM3zKrWlQDb4gcQcAhRJOIl1J7u33aCwp1ItVLdmDoDV0U2fZ+oZcR9fQJRjLRp5AfBAlnUgG6G3AaH5Y6vHXOwwfSmZoleXyNu3r6JQs0gh6Urqsw8EoyF89AyzA6kjguHHWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=eUEfaZ39; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=BBMFsjuK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1739953307; c=relaxed/simple;
+	bh=zvTczUtf8Y1eEofJZO2thlt6exdwrKA425Rp62SQESg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JbhRltRxy31kUcdfu4lxSzH1MYo/SwqgaDe4YkyTtIQ/2Y5Ofju1xB3uI+aiW8egtgBIxIyW2XSDg1DFdG8n+BUc3OefN1TFp1HQUn3Fg4cdg+KbCOHeAEJAcEBj/sOgsOntsPPu7xhrvum6pwkoXk7rJfoXqHMq49F2k+gZ/jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=luVsEkbe; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="eUEfaZ39";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="BBMFsjuK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="luVsEkbe"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fa7465baceso12893425a91.0
+        for <imx@lists.linux.dev>; Wed, 19 Feb 2025 00:21:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1739953123; x=1771489123;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=AENnf3CgBOghgCPCO6AUYPMH/oVpMZNd906YezBjWG8=;
-  b=eUEfaZ39w0aqs45u05o4X5jv5JXBdeD0yfUbHWYIzdGVS64Hg1v7sK2a
-   h4mhJ4jqMes3IQZs/KRzKifCArJQ0zMt3UVY3RE2976EO8YtjS/XGBohN
-   YPw+Iq0U56cfneS/WrWiMlfhxCSa6MHK9TL3yGhZ338pR/tqETPOC3Tmi
-   A6+zjTX6sI8pMvTuMvkLk9RDC1J+8lM6OtH4JDBQWpx9vYGLvYLB8f9om
-   fToB+c9a6GSsUNy1b8iHvXpvwcOiJOTUnx8mOdQN/SS0FtdjRQI2C9c1L
-   4EvoRteqXsdJ9krTckhJ+BgINxeLXBeYFjf06Mg+m1fwkz1+u35Ls+7Di
-   A==;
-X-CSE-ConnectionGUID: ePkEWgcZSWmPLQ96I4NdvQ==
-X-CSE-MsgGUID: ifjATzQ3RmyROuGkezU3hg==
-X-IronPort-AV: E=Sophos;i="6.13,298,1732575600"; 
-   d="scan'208";a="41945176"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Feb 2025 09:18:40 +0100
-X-CheckPoint: {67B593E0-23-EBA888C4-C1AC8B84}
-X-MAIL-CPID: 228EAB8CE74423764938FA9A084C0A86_0
-X-Control-Analysis: str=0001.0A002119.67B593E0.00D2,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B70FF16D460;
-	Wed, 19 Feb 2025 09:18:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1739953116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AENnf3CgBOghgCPCO6AUYPMH/oVpMZNd906YezBjWG8=;
-	b=BBMFsjuKVv7H2WEZzDsfIOuutjd2xtCvQWGB29tj625HnZJlmmbEPVw8+UFMPzcA+BFQuA
-	Ra+Nrm9VWi4Ih1C6wbcy5MVtVNVSL1UF3BkROUgVS3tSHhcSxCwWIc2MuCZWy2l/XRfbrM
-	wKP1POTxQNVzZ1yWdVj+rAL8x9H9FgOM7bDDmUz8yz8AcRDESRRKIb/sjXMK8E29sB/Hkm
-	dbG4jl2MYduDehK/AWrVX2r0gJJnHAzvBsdA7gattAT2/HqEE2Bb14szcOH8oi/t7ZJsMi
-	7y6YopzzGXKzU5U+kgr94Hg0ysKF6+XZkzT+lztmMEVZjMpg9pYiEK/6LX4ouA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 8/9] ARM: dts: imx7-tqma7: Add vcc-supply for spi-nor
-Date: Wed, 19 Feb 2025 09:17:43 +0100
-Message-ID: <20250219081748.1181507-9-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
-References: <20250219081748.1181507-1-alexander.stein@ew.tq-group.com>
+        d=gmail.com; s=20230601; t=1739953304; x=1740558104; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5CCUQvs7skbbtsR/YI3q9DDNHuUZH7nkoZeezReFSZA=;
+        b=luVsEkbeUlccpWTnKAinDg00R7+dawPmOD7GjO+6pU4/AMajUqOGyih1920aSkskbn
+         8bQ6bLXUJ+cIOh8wA9T37k9lScHp+oK64RtMuvTNEcV9R3r1LNw1udPufRSPjqpHh8ro
+         nLQ205Yt7PQvF8CDEncs0USvlvDDsrs35eYV1kod19S5+RCEjVo8h1GrJ8QZRAIIztmc
+         IKYFVY0X91kngr6r6gQWx80CIzEceSnmVNAdJDaaHlfUj8+z6q3Twd+K/3hdKjVHTIsM
+         wZWOSsmt0ydVOV8QFmvO+K00bKSgdMBMhbMygTQuNa5/LYQ9LWxmit+VuV5DPOc/Hrq6
+         KbJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739953304; x=1740558104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5CCUQvs7skbbtsR/YI3q9DDNHuUZH7nkoZeezReFSZA=;
+        b=j+cDOIGPShg4AXVSluCvkGqYgYpm6FwgWzytg0yRBYeMRDNVBNQTLxTOKFP0h44hqp
+         uHOodsCGyVq/1qn5BgZMHX0oov4+fWqn3EnOI+uAWKYjcBuc4MCvkdsRFHdj0a3YTQI7
+         kaO4yVNmC73iCFsjDKoAGpWItLVIDcRZ8+q6skOa4oBTXULIclTd2+wIvv6ESz8/Psld
+         4//oFd+qoQzosFD15IsYOLEAxEqO9b/RrJ6EadluOw+I95pm2p2PA/HgrllTpS41EWuO
+         bFOFE3QbIp2UOlsFfpJ0byAnf0m3S0LIYjWj6N99WTS9YaDkL+t2mNlyTx9kFzMVkzeF
+         pSUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWP17nS8O04d1z83Hvc+IjbaYuqgnEerIXEyVIl+Hoh4xJukUGshAF4Mx9ziCXR+QeFRuE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVwFlvH6VTxfl/LHExByymd9B/go6lURpU1AyDSrz/YlMeXq+t
+	VWTzGfc3J1hvvNcndQqwNYAtQl6SrmIJLBNt7Weiv0mutm/0OvYJp7bC9l9DCpLzZP1xbZzzJPC
+	hS75Eo7sYNImJBlQHZPL9ONLD8yM=
+X-Gm-Gg: ASbGncsGgJ+YL9z1NL9ppmIWDWsKpl2UOjsz40FEji9gcWt/29Q4c4Qa3jNLZFLuDKC
+	2Ofjog7iqKl/1mIOjOgacJO2U0wCJ1tNkRq8+vPywWealzG4+KbA2khbuCG0FGb8z047CRR3DDR
+	NrRkesnhrSyjd5yclf2WE1m+eYfq+mEsg=
+X-Google-Smtp-Source: AGHT+IFzIRpiLIjtv2iSzEdqta8V6rWObrEAdpRX7gMmj7WIN0aL5o3A9z+K6dA+admg76L3qNrsQ9fIjfYQvQGGYPo=
+X-Received: by 2002:a17:90b:3b92:b0:2ee:f687:6acb with SMTP id
+ 98e67ed59e1d1-2fc40f0f07fmr26433153a91.13.1739953304594; Wed, 19 Feb 2025
+ 00:21:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20250218085712.66690-1-daniel.baluta@nxp.com> <20250218085712.66690-3-daniel.baluta@nxp.com>
+ <Z7Stjh08+/RlUtek@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z7Stjh08+/RlUtek@lizhi-Precision-Tower-5810>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 19 Feb 2025 10:21:32 +0200
+X-Gm-Features: AWEUYZn3t8RO4hNneBNPP3WTziJtjhP1rlkqNpTqV_tfmebhGCfYSHFlLx1Yy64
+Message-ID: <CAEnQRZAL1npc3-Z_O_7_-SWi=fvWkSv_fv2dcmVf5owVYsi0NQ@mail.gmail.com>
+Subject: Re: [PATCH 2/5] reset: imx8mp-audiomix: Prepare the code for more
+ reset bits
+To: Frank Li <Frank.li@nxp.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, p.zabel@pengutronix.de, shawnguo@kernel.org, 
+	mathieu.poirier@linaro.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, andersson@kernel.org, 
+	linux-remoteproc@vger.kernel.org, iuliana.prodan@nxp.com, 
+	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, krzk@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-(Q)SPI NOR flash is supplied by 3.3V. Add the corresponding supply.
+On Tue, Feb 18, 2025 at 5:56=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Tue, Feb 18, 2025 at 10:57:09AM +0200, Daniel Baluta wrote:
+> > Current code supports EARC PHY Software Reset and EARC        Software
+> > Reset but it is not easily extensible to more reset bits.
+> >
+> > So, refactor the code in order to easily allow more reset bits
+> > in the future.
+>
+> Nit: wrap at 75 chars
+>
+> >
+> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > ---
+> >  drivers/reset/reset-imx8mp-audiomix.c | 53 ++++++++++++++++++++++-----
+> >  1 file changed, 43 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/rese=
+t-imx8mp-audiomix.c
+> > index 1fe21980a66c..6b1666c4e069 100644
+> > --- a/drivers/reset/reset-imx8mp-audiomix.c
+> > +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> > @@ -12,7 +12,30 @@
+> >  #include <linux/reset-controller.h>
+> >
+> >  #define IMX8MP_AUDIOMIX_EARC_OFFSET          0x200
+> > -#define IMX8MP_AUDIOMIX_EARC_RESET_MASK              0x3
+> > +#define IMX8MP_AUDIOMIX_EARC_RESET_MASK              0x1
+> > +#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK  0x2
+> > +
+> > +#define IMX8MP_AUDIOMIX_EARC         0
+> > +#define IMX8MP_AUDIOMIX_EARC_PHY     1
+>
+>
+> Does dt binding need such macro?
+>
+> If not, you can use enum.
+> If yes, create binding header file for it.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Thanks Philipp, Peng and Frank for your comments. All are valid.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-index aa8f65cd4adf7..618c3f68fbe25 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-@@ -265,6 +265,7 @@ flash0: flash@0 {
- 		spi-max-frequency = <29000000>;
- 		spi-rx-bus-width = <4>;
- 		spi-tx-bus-width = <4>;
-+		vcc-supply = <&vgen4_reg>;
- 	};
- };
- 
--- 
-2.43.0
-
+Will fix them in v2.
