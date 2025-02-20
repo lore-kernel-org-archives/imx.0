@@ -1,118 +1,132 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A628E1F460D;
-	Thu, 20 Feb 2025 13:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB391F9AB1
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 13:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740058778; cv=none; b=p3KjyZtUhIe//ARDegUteP6KNcIhSQrjSmKnctyqc6wqJLYeLpYf9YHmLW9Gmj/ApHmaD7J3r5owGOFz41CnysMc9mQRwOjyMizd6xXRn3Je50NE/spdmkFoG/WJGLrYn1I0ttjKp/hk/Nhq6VyNX/t71f3R/+dk0RG2n/4Sflg=
+	t=1740059690; cv=none; b=Gm+FtRf1MvLxi2+jWddYuysV29Y6J9ad9n46jOtbzJq63fy0IFr4j+9joCYZ5zvFfeRvI9iVImvUtIxtpioGvvAH3W1ppT0qKtGJpReEf1ydEsURocd0+Ywjin24pN8kglrA80YcldQ+lO08p52O4pJ59bCJQ5wI62URqIHWPEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740058778; c=relaxed/simple;
-	bh=2y5wrvPA3QtP637YQRd8Romn+Qri1JD1V/ToFZNDnFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVlJJB5n7vSGb67B17JOhFHohAaIe0tI9SV6+lAuoSApQdZwqQh73PLfXgLC1U/alzmdmw/8zZjUO9svQgvdg6JJsxrdxjkctwcpzWwNh4Nmzt7Vo2I+clxC652luSmG3marRzV7ghehoaoFlrQ8kPmeJ7JNpthtbVycKMznIwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CYXwOHmy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1740059690; c=relaxed/simple;
+	bh=njYQI0JkqSG9nmZdfTM+SiQqXdo0ZB/2scswfcxNOq0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jXwV+TVYMbrhbU8arBrkEn6pTJhdAOhUGourxU7fzjHqiGOiffbFNkjYP4YGRFkwr2npa63+Hsjs6pmUYFirwesRxv304p6NKYpVYUF6VkDF3aMETLaP9vodWOUxJCs4mQDNzQaf56tPdoe3UDw4gE8PlQa5b/+nnhnhnnHLmxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZXyZZiu6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JOlYIair; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CYXwOHmy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GQ45r65/eICG0K3oXWSgWL9Ap6Foqy+lEFou18SI24A=; b=CYXwOHmy+1GP64C83m4rlns27N
-	pEq8rW4Z/fLtOI8sMzqMjILB5WKu33wuRMYsFEBhwZfet4mFi/4IKt3DyQ/QE0LVwFp3IjaOTrsUw
-	doit/kIEHYq1LufuNCHrQevICeHbk6Eoz8AptY65evxvg9+uDhC2Fqofdw2F+VREn0Nc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tl6lw-00FyQq-Nk; Thu, 20 Feb 2025 14:39:24 +0100
-Date: Thu, 20 Feb 2025 14:39:24 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
-Message-ID: <5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
-References: <20250219114936.3546530-1-lukma@denx.de>
- <3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
- <20250219233802.20ec53e5@wsk>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZXyZZiu6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JOlYIair"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740059685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QD11Ne9DcKnhelWjnLTjIo907OByVtQIcZFYttKj9Mo=;
+	b=ZXyZZiu6fQzbxCFJQqDVVgundVzHGnEXcdeIqL8ClGR3W4b1Ey4eB+bTwF/enWU27f8iqb
+	6KyA7/MQ5+4mod88342BBvtXI+vCoBPYpCYRijL9dHXlnwtvDBBjL0UlnDDdTX10nwEXmW
+	jsYAhyvt6xLy9RlDs67Ql11fUBmelfip+FdZsakH1fprNWVgYX6++nHjJaPYloPBm4VA0v
+	IFuty6l3DyATYYOFxtg2zcjAW9Ds2GEw9k7nBYAhVx3ERa6N3DIbq2pGTCTvipVDRjp0gL
+	4kJQa5/yTN+Sfg7lfSZUTM6HSWCZzUaCTAp5bmp5CUkg6T9zSKhyM/B5zR7lhw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740059685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QD11Ne9DcKnhelWjnLTjIo907OByVtQIcZFYttKj9Mo=;
+	b=JOlYIairSeSWXDphePdqMGRdnMIe0izKqy7x+haK/irgiQkE4fPAmmUH2rnIn+wrOo4/nr
+	pM3+j/mvSiuJWVCA==
+To: Mark Brown <broonie@kernel.org>, Anup Patel <apatel@ventanamicro.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, hpa@zytor.com, Marc
+ Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra
+ <atishp@atishpatra.org>, Andrew Jones <ajones@ventanamicro.com>, Sunil V L
+ <sunilvl@ventanamicro.com>, Anup Patel <anup@brainfault.org>,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v6 02/10] irqchip/irq-msi-lib: Optionally set default
+ irq_eoi/irq_ack
+In-Reply-To: <Z7Xto0WZ-Crxunik@finisterre.sirena.org.uk>
+References: <20250217085657.789309-1-apatel@ventanamicro.com>
+ <20250217085657.789309-3-apatel@ventanamicro.com>
+ <Z7Xto0WZ-Crxunik@finisterre.sirena.org.uk>
+Date: Thu, 20 Feb 2025 14:54:45 +0100
+Message-ID: <87jz9kiuvu.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250219233802.20ec53e5@wsk>
+Content-Type: text/plain
 
-On Wed, Feb 19, 2025 at 11:38:02PM +0100, Lukasz Majewski wrote:
-> Hi Andrew,
-> 
-> > On Wed, Feb 19, 2025 at 12:49:36PM +0100, Lukasz Majewski wrote:
-> > > The NXP's vf610 soc is equipped with L2 switch IP block from More
-> > > Than IP (MTIP) vendor.
-> > > 
-> > > It requires special clock (VF610_CLK_ESW) to be operational.  
-> > 
-> > So you have a driver for this switch? It has been talked about in the
-> > past, but nobody made any progress with it. Ah, it was you in 2020.
-> 
-> Yes, I'm going to try another time to upstream it.... :-)
-> 
-> > It
-> > will be interesting to see what you came up with in the end, pure
-> > switchdev or a DSA driver.
-> 
-> I think it would be:
-> 
-> 1. Standalone driver, which would configure the L2 switch from the very
-> beginning to work (this is different from FEC on imx28/vf610 where
-> switch is bypassed)
-> 
-> 2. It will use the in-switch registers to have two network interfaces
-> separated. As a result - it may be slower than the fec_main.c in this
-> use case.
+On Wed, Feb 19 2025 at 14:41, Mark Brown wrote:
+> On Mon, Feb 17, 2025 at 02:26:48PM +0530, Anup Patel wrote:
+> I'm seeing boot regressions with qemu on arm64 in -next which bisect
+> down to this patch.  We hit a NULL pointer dereference:
+>
+> <6>[    0.898900] virtio_blk virtio1: 1/0/0 default/read/poll queues
+> <5>[    0.910197] virtio_blk virtio1: [vda] 3906250 512-byte logical blocks (2.00 GB/1.86 GiB)
+> <1>[    0.924459] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> <1>[    0.924508] Mem abort info:
+> <1>[    0.924521]   ESR = 0x000000008600002b
+> <1>[    0.924559]   EC = 0x21: IABT (current EL), IL = 32 bits
+> <1>[    0.924580]   SET = 0, FnV = 0
+> <1>[    0.924597]   EA = 0, S1PTW = 0
+> <1>[    0.924616]   FSC = 0x2b: level -1 translation fault
+> <1>[    0.924667] [0000000000000000] user address but active_mm is swapper
+> <0>[    0.924833] Internal error: Oops: 000000008600002b [#1] PREEMPT
+> SMP
 
-Seems like a reasonable compromise. You would only load this driver if
-you intend to make use of the switch...
+Uuurg. I wish I had double checked that the final submitted patch covers
+_ALL_ incarnations of this. The below delta patch should address it.
 
-> 3. When somebody call "bridge ..." on it - then the in-switch
-> separation would be disabled. This is the "normal" state of operation
-> for L2 switch, which would be a HW accelerator for bridging.
-> 
-> 4. The switchdev would be used to manage it
-> 
-> 5. This would be just a very simple driver - just bridging and startup
-> of the L2 switch.
-> 
-> After we would have a consensus (i.e. it would be pulled to mainline) -
-> I would proceed further.
-> 
-> I will try to not touch fec_main.c driver - just write standalone, new
-> for MoreThanIP L2 switch driver.
+Thanks,
 
-It might make sense to refactor the MDIO code into a helper which both
-can share? No point duplicating that.
+        tglx
+---
+diff --git a/drivers/irqchip/irq-gic-v3-its-msi-parent.c b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+index e150365fbe89..bdb04c808148 100644
+--- a/drivers/irqchip/irq-gic-v3-its-msi-parent.c
++++ b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
+@@ -203,6 +203,7 @@ static bool its_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ const struct msi_parent_ops gic_v3_its_msi_parent_ops = {
+ 	.supported_flags	= ITS_MSI_FLAGS_SUPPORTED,
+ 	.required_flags		= ITS_MSI_FLAGS_REQUIRED,
++	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
+ 	.bus_select_token	= DOMAIN_BUS_NEXUS,
+ 	.bus_select_mask	= MATCH_PCI_MSI | MATCH_PLATFORM_MSI,
+ 	.prefix			= "ITS-",
+diff --git a/drivers/irqchip/irq-gic-v3-mbi.c b/drivers/irqchip/irq-gic-v3-mbi.c
+index 3fe870f8ee17..3e1d8a1cda5e 100644
+--- a/drivers/irqchip/irq-gic-v3-mbi.c
++++ b/drivers/irqchip/irq-gic-v3-mbi.c
+@@ -201,6 +201,7 @@ static bool mbi_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ static const struct msi_parent_ops gic_v3_mbi_msi_parent_ops = {
+ 	.supported_flags	= MBI_MSI_FLAGS_SUPPORTED,
+ 	.required_flags		= MBI_MSI_FLAGS_REQUIRED,
++	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
+ 	.bus_select_token	= DOMAIN_BUS_NEXUS,
+ 	.bus_select_mask	= MATCH_PCI_MSI | MATCH_PLATFORM_MSI,
+ 	.prefix			= "MBI-",
+diff --git a/drivers/irqchip/irq-loongson-pch-msi.c b/drivers/irqchip/irq-loongson-pch-msi.c
+index bd337ecddb40..9c62108b3ad5 100644
+--- a/drivers/irqchip/irq-loongson-pch-msi.c
++++ b/drivers/irqchip/irq-loongson-pch-msi.c
+@@ -146,6 +146,7 @@ static const struct irq_domain_ops pch_msi_middle_domain_ops = {
+ static struct msi_parent_ops pch_msi_parent_ops = {
+ 	.required_flags		= PCH_MSI_FLAGS_REQUIRED,
+ 	.supported_flags	= PCH_MSI_FLAGS_SUPPORTED,
++	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
+ 	.bus_select_mask	= MATCH_PCI_MSI,
+ 	.bus_select_token	= DOMAIN_BUS_NEXUS,
+ 	.prefix			= "PCH-",
 
-> If somebody would like to use FEC, then he will insert the proper
-> module. If switch, another one can be inserted, depending o the target
-> use case.
 
-This all seems like a reasonable way forward.
 
-MoreThanIP is now part of Synopsys. I wounder if this IP now exists in
-other SoCs? The press release however suggests Synopsys was
-interesting in the high speed interfaces, not a two ports Fast
-Ethernet switch.
-
-	Andrew
