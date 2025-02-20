@@ -1,227 +1,381 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2078.outbound.protection.outlook.com [40.107.105.78])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B70C1EB189
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 08:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740040775; cv=fail; b=rulE42MIRYd77AqENbVgCh/RpJUci3rrpzQoco/zWPSYIgvKwtjBnMVpUC9ptLtQftu4TMRa3YlEA3dpcw8sZdWLIsRdrAdkyB84IcuS2GzMYuQ3s2c84ycEFLK9N6MXrKPqFVIwd13rdhEseOb9fznDUuxMS/jEXtiBqjX1YAk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740040775; c=relaxed/simple;
-	bh=o1dMalkON8CjNu4+U+ZmyJPuMG8wMPz7Ct8Jx1y0LNw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mgtDHeiEa506x1Pg0HBSGxYhWYNQ9DpYZzCvPzHkb1H1waomjZp94nIIn2uFfWMWuaeI+TxNFGnQTw0zsDJS+Bl6x+/QQ8bgvXo6qcH3fzJSQfgJJADB5xiAZgS/NXiCME7dXY7dW/zrwhmt6ePGN8w1HArnzxVPj1p2WJZykrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JdI1VtE4; arc=fail smtp.client-ip=40.107.105.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33B1ADC86;
+	Thu, 20 Feb 2025 09:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740043124; cv=none; b=uxdKElgXr3W9yb/9bDWa+EF+Nk0n9DrusVxogabqNgy2te2qmK2sHb1JtS2Y04AfGHJPSamhc4cmtVrc1VrcmSkkyOmiGLJpb+nKWjz0kmohI5Ekf0UUqZ1aIARUFCSRxrt740nwcAmOPW3Li98dUq/PK9wZISUM8fweDJD2bh4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740043124; c=relaxed/simple;
+	bh=rDMfEBktHvp+szTvl/bHoN4+LBUAdzQGlxLMdvMPTnc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XsdR428vxkBXjNplMfBkT4atUCI0wzvErjfXAgdApcoRP2TsTeC+D02q0zu0AmcHWOGdHYbWYg2W0nKx/N1a9Au0W+NbOoGizkCGIA3mLolb2LmOdr2RQkXOIRTX+ntAchgFB6eVo0hEnDHEqiph3hw/7rbb0TW7p05MR/Xop2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=MCflKzMR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JdI1VtE4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qKUY/dYvPxfsyUD3AzjgrZuHsKLJ27Hcvt6dwIKf716BUindHuEvXd/D2RiteCw96WX4L/hQj3+7pUeotnLTPDNVaOgpEToYpqEoAGqpafN6boTkbuvTJb4gkdFiK6FaLDyG58ZCxXm/e/u+GqmTvdfdV3/Q9Qkq4MLEz71JLeEMaPJc/UMR8zIC/Hk+aj72+iy16qpvF1kCIP/T0SeI1lVl2ERgQsQrm+Nist7Wfb1iaSUHjCC0ijjUh2MhlthP7EL/3YcWL4VBpxbfV0KRkdmQX4Jtr9EuwIyBQp9VChoIezc+o5yFTD5mrTybX67MJWy+57KxHiu9qrecD5gTlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6UKsuzgoc7p6vKdTvHqMpDTPbCpAAVnwCGVBtjUcKRg=;
- b=IXGlSn2B4CrOWRgSKv4yKIqZVx7MsJ+4TS4g7FtBTMF/U4jmbWPMvWFJ1whpE7zMh2BuJO1KZadVVe2ZUi/aExBe/zoyzxH2CXPKD5jpRNvwr2ca4/vvP8BHiEduDEFQhrhlO0HsDabpU0J6mQNNH3e7g7eazb24eBo5EQXWj/SwZKotWOlmKHoUZ/t6acHhS8geowpugV/20fbrBYaVG1qEspIBs5DjX/x449pXhHyCVF6GKo3IkXlGwWfglxDTo5KScglxI9YnvR5yN7GCfDqg1r4mCUZ4JMofw8lTpvgWlsmLnsKhj0gW2hSFzx3kBNdiFtZ+aA8hWLlLlE5Jww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6UKsuzgoc7p6vKdTvHqMpDTPbCpAAVnwCGVBtjUcKRg=;
- b=JdI1VtE4q3StlUKDAEkZMuL17Z3G/Aczogwi8z4PaMD9las/MSxk76q8fBGmjrRX2Vld6s5VA0j36o1zY7iNwUGl4f7WyA9skeDJ9FzS86JQp3mfKQhsDzUz/4+664dH72ARadImwiv7NjPzqoJA1lpyNrVhuGZCElARVzhAk8j3zxTTSkRpcMTCDuxZ0MAVdvUgBixb8vSFZz/EQwAtwk4jLMPHKrxwOdTpFymWXOD//bk74ja1s594NxKZaC17A8FNceuAHd9tQVoXnVQHLXbP50Cn+vVmVe3jFDYDSrSOp0MfhBmPTJgAx9B1uueZ0b2tMp3n1n4DLv3OsN2UdQ==
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
- by AM0PR04MB7057.eurprd04.prod.outlook.com (2603:10a6:208:1a0::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Thu, 20 Feb
- 2025 08:39:30 +0000
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Thu, 20 Feb 2025
- 08:39:30 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Index: AQHbgpOU4gMYnZt/c0WSS3pD+9mhubNO3ySwgADGLwCAADs0UA==
-Date: Thu, 20 Feb 2025 08:39:30 +0000
-Message-ID:
- <AS8PR04MB88496522FC12613739B3AD1C96C42@AS8PR04MB8849.eurprd04.prod.outlook.com>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <AS8PR04MB8849C3544A63C75E37D2079896C52@AS8PR04MB8849.eurprd04.prod.outlook.com>
- <PAXPR04MB85106BF748386C843FE28C6488C42@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To:
- <PAXPR04MB85106BF748386C843FE28C6488C42@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|AM0PR04MB7057:EE_
-x-ms-office365-filtering-correlation-id: 430c9918-c452-4de8-2d97-08dd518a1809
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?T7EQEzz3RdEl8k4wJYoSH7zVw5irfTiRqwV5F0zy508MUGLN/biXHlw/1F1o?=
- =?us-ascii?Q?/cGwF1F+UzzbjhIkefYHef/cEoQeJZNr2o27ljKuDNMlD9l/+c2aNO4U5Ce4?=
- =?us-ascii?Q?mxOyDurwfBaLmfBiPvd//2SbTQRPEUS+fjwvsCGJnKWZf90l1L4t4E6nPOB5?=
- =?us-ascii?Q?daL/UAaFoNQO6HhKD3NYkWlgmbB7EUbPSH6Dzqmb9LWiGvH9+XY+zrYMzGj6?=
- =?us-ascii?Q?hPOcgBSD34vYr2JiEU+hFxLU/PnEyUVOGDuZcZ7Re/LguwpcvIyF2Qbm/rkE?=
- =?us-ascii?Q?XxxuLuwb271SEP8fnkJM6kINfypXoleBj3nyzNZcWi2Vo9FG7CeClA6ZLUZl?=
- =?us-ascii?Q?9/j8Rp6DuI+8jM3XWvGJ4mW3caWrKb4nCAlUBaz/GhbyU3Od2myNulXXRMUK?=
- =?us-ascii?Q?v5uZWmY0dj51fea0qJdw0rpl0zS4ikGM3uWamZbLt/SM1nGvG44BoR1Vl2Tq?=
- =?us-ascii?Q?ZKOT218S0DWUQ1qS+QWrXcliYV78YDdSzShNwQyVix666EH46I8xOBRgWSUq?=
- =?us-ascii?Q?ydKFqWFjlMvVeypBYr//7K46TPJXx5vNS+Wmk3Zsh6HUptq4DmnFOZ7MVISk?=
- =?us-ascii?Q?L9tkb9w8CBsq9iR263bAOhrXCg90ZJFnQFNA2vAXzw3ISAHxsGr5g0eNWHsI?=
- =?us-ascii?Q?PxyMqGtcfxJtfjTxl3Z3n05lyj5rBJbOTwFf/cd9ceexBwWMlmBc8q25wWiU?=
- =?us-ascii?Q?o7drD0KEXpKM1QHhECjyaP2thAU+G0orwNFnkVjODpw/R1kiQXr/WE5Gpzyj?=
- =?us-ascii?Q?FZ9YoGse/XmyNlwptzGeM39bNd3KFCiMFtdfu5UkdJmvdy8Ex+g54VqrjqBV?=
- =?us-ascii?Q?9J1ZhDkaZXLQwOkkDb0uGbJLupYrwKhP3q5VfNUR/WQ8Y34ZRgbl41RIMcPY?=
- =?us-ascii?Q?42lHD9UEq2FR9dMb+AmNQI707cjiTeAnJvIvXhnLtWr0NdBka/gQhOgmLDLL?=
- =?us-ascii?Q?wmaP4YGo9IsEQRb8R+mKIkic2AypOKYOSmVIIMhkajh5nBCSj0d0SP8Kh7rb?=
- =?us-ascii?Q?3jczvN/PEOf2C49NxguYMlihLqEhRdZ+KJGoW8d9tpCrUU74AlNCR39GuilH?=
- =?us-ascii?Q?htphLOnd7IlaT+zK8u33y9PZDXt4U4XbrKsXv6bAJZqzdvHjNfg0Re6m4OLQ?=
- =?us-ascii?Q?uQ2FnmPNibgdOIrPHX699umF+5kwqSmhSooadt2EHRFDVMec6BuNnIQGtdEX?=
- =?us-ascii?Q?+0mIxe5A1Uh0LPPzNp1bChTSSJ7/tvUQBYXzFZf9LdpH1302nFoTyHGMEGwx?=
- =?us-ascii?Q?fCRY5iA/5aOvibx9Xo7gbK8udMi59HBwJwHUJ6hxmnuBqi1D1n8tkM3vz00J?=
- =?us-ascii?Q?kNF+sLeIQLITCa/c0lQQhXtmq1J3z8Q5e5Su7b+gZqSm+0VKrO5VKNjW+rhx?=
- =?us-ascii?Q?OUVZSpbDiug+9t98XjytQbzX6g0eoB1H9QgLv3UpgWXH65X7K7xF0r/zWUow?=
- =?us-ascii?Q?Vr9RtaXHh32GE9hoiCLsVqxPZ5Tt2coc?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?KNMk7BkEjieKWkKE8xWVFLstV5cBLUHNfUoEUSZbI15YfUgC6NtHgAjf2GTY?=
- =?us-ascii?Q?lNhvK9R1LPVApUbRtlbF1wUtJwohXZOP6FnRCv8ZpSBOh4c1e0OK+z0zhelU?=
- =?us-ascii?Q?ZIa74HuyhSv64v/vdyAqMdbnfp4WNK42kE6fZReNFcOf6Hw9+XPkjDOmf+PQ?=
- =?us-ascii?Q?ngIdkTH+XsV7G0PD1o/tytBgqvBP+1poEJLR4PzQ/99Zlefq10/c3BMoyEHD?=
- =?us-ascii?Q?t4iodLVOu7sICBot8f+mmJuCKca3yBBvI/ZZmeIKWRrFHK63L8TokKwe7F7k?=
- =?us-ascii?Q?y66z9ysl7QhFYXhk6JDv9L7K4tq+9ElFaqiGE0GMOI9xehxYkUlX/jHmA0Ul?=
- =?us-ascii?Q?BceD64/eESJFKcqzAixRQ8LHP9zk2haGEsF5Qd+54a2Y3fx0CdQS6hYhznv6?=
- =?us-ascii?Q?25htNxh98hpmLJpRVzkXq81cuKoO1SYbmzuA8pUPhzCMEMaz+M/JVbHuLeaB?=
- =?us-ascii?Q?yzwihjEyQna9esMLArotFUdqlbbS0DG/EIU6DullnHWmZA89OL4BeP+pNpD8?=
- =?us-ascii?Q?Ad7jUH+8MaG1evhcSk8d/w1pzdY4rVhjv7mm/xvoQrcVjIm0F2kVMGuTXi/P?=
- =?us-ascii?Q?LXxUcTC+XlV8B3eWDFDj/cNQVo5J30Ca/SjSFw5POWeHfs2nThQULOU8cl4L?=
- =?us-ascii?Q?7t/XevJ/YoQIOyZeRqfBPuZj7YowHhY/hQCzS4DVpIMFY8jSxs79hTA42/Ps?=
- =?us-ascii?Q?MA69juvN2alhr/J5Ktte1jwclQp5/Uj1ONikrsBgWJxUuiM6jlfNm1T+1pib?=
- =?us-ascii?Q?kg9irxSd4Hvmm1PvHS6/IjnHW/g6jF85l0LvuaMUD6RdKoxNaIRQhbAsa8mf?=
- =?us-ascii?Q?yZ1552XNVNaFn4oLh5KMFEmvZYwmUM6XJRwmcoYHRo7vZuyKXIrjVzIMzTHz?=
- =?us-ascii?Q?GfDh5DhWozT2K/lXE8NKtIoGqODm/LP8GHhnx1StVEUS67r0kCaDOwZB+cO7?=
- =?us-ascii?Q?qvAvx/YwtMczXnUOqE9JtLKFSJkttt75npWaZ/G7n0/UMq/TP8lfxBveUaFp?=
- =?us-ascii?Q?471LCR4lOtJBuObNvtfuxlcGjLALlu1atmyhVRMlTA+0xuakAKgYPUqbLfe/?=
- =?us-ascii?Q?S5duYF8sgxBkQMAbuQRRedHKJrThLJDghazterydV4lAROzRhpi1GNEB1+fo?=
- =?us-ascii?Q?TW+nF/2ISHDpw857nnWrbWzVzgUE4BYYlhfdDJG6XQS92AXq0oXiV3yjGw/y?=
- =?us-ascii?Q?Dd6VDM9/+j0PmnI6/R1oXfDQH/rJqfM8yMZBdqS1T4686v4KTF6powVXJJF6?=
- =?us-ascii?Q?vv3Yjq1C9VOZXRd6etv1RIeODOrqjLcHLywsK4IKt7rbv3md84pB8h4Scfwf?=
- =?us-ascii?Q?BLo3Z7Q+h59T3Z2qfPUM9SWAm7oxT+2+Ey+F9ZUwZGmrB5LJRMF/dIR00/qo?=
- =?us-ascii?Q?452xptK9X4MP2qSD+okcUNzXMeNRRkodWn0VkyzkJHaimIsZlXJh0oXdal1a?=
- =?us-ascii?Q?gt4BR6V0+kbjEYitVO140gMuExRivYYJI4+5rXnDmax62PIB+EAp1c4RbaCi?=
- =?us-ascii?Q?rA9xMQ+c2g6UEhhPuL0SWve1e5QuvgNxKixkvXkFXTojeM+XmGypYT1tDsWs?=
- =?us-ascii?Q?vgrLHt7QmHLnUWxpEfukrUUZWYYN4dRcLt56TSbE?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="MCflKzMR"
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0C8209FC;
+	Thu, 20 Feb 2025 10:17:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1740043037;
+	bh=rDMfEBktHvp+szTvl/bHoN4+LBUAdzQGlxLMdvMPTnc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MCflKzMRvgTy2hfuI5a2ljwZDJzOf2C3Hv2y/t4qNlc8VfTh+yDzr+EMyW0xhr4hg
+	 5MM+vikZ8SONezzNfXItYOYZ4iMb0FQ7iYGn6DlESItj6oaF5/MPrTeCrbTRC8QAiD
+	 oibrIxDY2haC1/0/tPOnvT8uwPYLf2YQS7VqqbJg=
+Message-ID: <dcd59a75-7945-4a2e-99f9-3abbb3e9de14@ideasonboard.com>
+Date: Thu, 20 Feb 2025 11:18:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 430c9918-c452-4de8-2d97-08dd518a1809
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2025 08:39:30.6594
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hCYQJbfjvM7IitITT7O9xsUz06Lq2Gp8H04RGI9t+Hs24EOHO9cop4icUS6pYljT7WpRPhhtGEleVQGVLhPhxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7057
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/25] drm/dumb-buffers: Provide helper to set pitch
+ and size
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20250218142542.438557-1-tzimmermann@suse.de>
+ <20250218142542.438557-3-tzimmermann@suse.de>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20250218142542.438557-3-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
+On 18/02/2025 16:23, Thomas Zimmermann wrote:
+> Add drm_modes_size_dumb(), a helper to calculate the dumb-buffer
+> scanline pitch and allocation size. Implementations of struct
+> drm_driver.dumb_create can call the new helper for their size
+> computations.
+> 
+> There is currently quite a bit of code duplication among DRM's
+> memory managers. Each calculates scanline pitch and buffer size
+> from the given arguments, but the implementations are inconsistent
+> in how they treat alignment and format support. Later patches will
+> unify this code on top of drm_mode_size_dumb() as much as possible.
+> 
+> drm_mode_size_dumb() uses existing 4CC format helpers to interpret
+> the given color mode. This makes the dumb-buffer interface behave
+> similar the kernel's video= parameter. Current per-driver implementations
+> again likely have subtle differences or bugs in how they support color
+> modes.
+> 
+> The dumb-buffer UAPI is only specified for known color modes. These
+> values describe linear, single-plane RGB color formats or legacy index
+> formats. Other values should not be specified. But some user space
+> still does. So for unknown color modes, there are a number of known
+> exceptions for which drm_mode_size_dumb() calculates the pitch from
+> the bpp value, as before. All other values work the same but print
+> an error.
+> 
+> v3:
+> - document the UAPI semantics
+> - compute scanline pitch from for unknown color modes (Andy, Tomi)
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>   drivers/gpu/drm/drm_dumb_buffers.c | 116 +++++++++++++++++++++++++++++
+>   include/drm/drm_dumb_buffers.h     |  14 ++++
+>   include/uapi/drm/drm_mode.h        |  46 +++++++++++-
+>   3 files changed, 175 insertions(+), 1 deletion(-)
+>   create mode 100644 include/drm/drm_dumb_buffers.h
+> 
+> diff --git a/drivers/gpu/drm/drm_dumb_buffers.c b/drivers/gpu/drm/drm_dumb_buffers.c
+> index 9916aaf5b3f2..600ab281712b 100644
+> --- a/drivers/gpu/drm/drm_dumb_buffers.c
+> +++ b/drivers/gpu/drm/drm_dumb_buffers.c
+> @@ -25,6 +25,8 @@
+>   
+>   #include <drm/drm_device.h>
+>   #include <drm/drm_drv.h>
+> +#include <drm/drm_dumb_buffers.h>
+> +#include <drm/drm_fourcc.h>
+>   #include <drm/drm_gem.h>
+>   #include <drm/drm_mode.h>
+>   
+> @@ -57,6 +59,120 @@
+>    * a hardware-specific ioctl to allocate suitable buffer objects.
+>    */
+>   
+> +static int drm_mode_align_dumb(struct drm_mode_create_dumb *args,
+> +			       unsigned long pitch_align,
+> +			       unsigned long size_align)
+> +{
+> +	u32 pitch = args->pitch;
+> +	u32 size;
+> +
+> +	if (!pitch)
+> +		return -EINVAL;
+> +
+> +	if (pitch_align)
+> +		pitch = roundup(pitch, pitch_align);
+> +
+> +	/* overflow checks for 32bit size calculations */
+> +	if (args->height > U32_MAX / pitch)
+> +		return -EINVAL;
+> +
+> +	if (!size_align)
+> +		size_align = PAGE_SIZE;
+> +	else if (!IS_ALIGNED(size_align, PAGE_SIZE))
+> +		return -EINVAL;
+> +
+> +	size = ALIGN(args->height * pitch, size_align);
+> +	if (!size)
+> +		return -EINVAL;
+> +
+> +	args->pitch = pitch;
+> +	args->size = size;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * drm_mode_size_dumb - Calculates the scanline and buffer sizes for dumb buffers
+> + * @dev: DRM device
+> + * @args: Parameters for the dumb buffer
+> + * @pitch_align: Scanline alignment in bytes
+> + * @size_align: Buffer-size alignment in bytes
+> + *
+> + * The helper drm_mode_size_dumb() calculates the size of the buffer
+> + * allocation and the scanline size for a dumb buffer. Callers have to
+> + * set the buffers width, height and color mode in the argument @arg.
+> + * The helper validates the correctness of the input and tests for
+> + * possible overflows. If successful, it returns the dumb buffer's
+> + * required scanline pitch and size in &args.
+> + *
+> + * The parameter @pitch_align allows the driver to specifies an
+> + * alignment for the scanline pitch, if the hardware requires any. The
+> + * calculated pitch will be a multiple of the alignment. The parameter
+> + * @size_align allows to specify an alignment for buffer sizes. The
+> + * returned size is always a multiple of PAGE_SIZE.
+> + *
+> + * Returns:
+> + * Zero on success, or a negative error code otherwise.
+> + */
+> +int drm_mode_size_dumb(struct drm_device *dev,
+> +		       struct drm_mode_create_dumb *args,
+> +		       unsigned long pitch_align,
+> +		       unsigned long size_align)
+> +{
+> +	u64 pitch = 0;
+> +	u32 fourcc;
+> +
+> +	/*
+> +	 * The scanline pitch depends on the buffer width and the color
+> +	 * format. The latter is specified as a color-mode constant for
+> +	 * which we first have to find the corresponding color format.
+> +	 *
+> +	 * Different color formats can have the same color-mode constant.
+> +	 * For example XRGB8888 and BGRX8888 both have a color mode of 32.
+> +	 * It is possible to use different formats for dumb-buffer allocation
+> +	 * and rendering as long as all involved formats share the same
+> +	 * color-mode constant.
+> +	 */
+> +	fourcc = drm_driver_color_mode_format(dev, args->bpp);
+> +	if (fourcc != DRM_FORMAT_INVALID) {
+> +		const struct drm_format_info *info = drm_format_info(fourcc);
+> +
+> +		if (!info)
+> +			return -EINVAL;
+> +		pitch = drm_format_info_min_pitch(info, 0, args->width);
+> +	} else if (args->bpp) {
+> +		/*
+> +		 * Some userspace throws in arbitrary values for bpp and
+> +		 * relies on the kernel to figure it out. In this case we
+> +		 * fall back to the old method of using bpp directly. The
+> +		 * over-commitment of memory from the rounding is acceptable
+> +		 * for compatibility with legacy userspace. We have a number
+> +		 * of deprecated legacy values that are explicitly supported.
+> +		 */
+> +		switch (args->bpp) {
+> +		default:
+> +			drm_warn(dev, "Unknown color mode %d; guessing buffer size.\n",
+> +				 args->bpp);
+> +			fallthrough;
+> +		case 12:
+> +		case 15:
+> +		case 30: /* see drm_gem_afbc_get_bpp() */
+> +		case 10:
+> +		case 64: /* used by Mesa */
+> +			pitch = args->width * DIV_ROUND_UP(args->bpp, SZ_8);
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (!pitch || pitch > U32_MAX)
+> +		return -EINVAL;
+> +
+> +	args->pitch = pitch;
+> +
+> +	return drm_mode_align_dumb(args, pitch_align, size_align);
+> +}
+> +EXPORT_SYMBOL(drm_mode_size_dumb);
+> +
+>   int drm_mode_create_dumb(struct drm_device *dev,
+>   			 struct drm_mode_create_dumb *args,
+>   			 struct drm_file *file_priv)
+> diff --git a/include/drm/drm_dumb_buffers.h b/include/drm/drm_dumb_buffers.h
+> new file mode 100644
+> index 000000000000..6fe36004b19d
+> --- /dev/null
+> +++ b/include/drm/drm_dumb_buffers.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: MIT */
+> +
+> +#ifndef __DRM_DUMB_BUFFERS_H__
+> +#define __DRM_DUMB_BUFFERS_H__
+> +
+> +struct drm_device;
+> +struct drm_mode_create_dumb;
+> +
+> +int drm_mode_size_dumb(struct drm_device *dev,
+> +		       struct drm_mode_create_dumb *args,
+> +		       unsigned long pitch_align,
+> +		       unsigned long size_align);
+> +
+> +#endif
+> diff --git a/include/uapi/drm/drm_mode.h b/include/uapi/drm/drm_mode.h
+> index c082810c08a8..eea09103b1a6 100644
+> --- a/include/uapi/drm/drm_mode.h
+> +++ b/include/uapi/drm/drm_mode.h
+> @@ -1058,7 +1058,7 @@ struct drm_mode_crtc_page_flip_target {
+>    * struct drm_mode_create_dumb - Create a KMS dumb buffer for scanout.
+>    * @height: buffer height in pixels
+>    * @width: buffer width in pixels
+> - * @bpp: bits per pixel
+> + * @bpp: color mode
+>    * @flags: must be zero
+>    * @handle: buffer object handle
+>    * @pitch: number of bytes between two consecutive lines
+> @@ -1066,6 +1066,50 @@ struct drm_mode_crtc_page_flip_target {
+>    *
+>    * User-space fills @height, @width, @bpp and @flags. If the IOCTL succeeds,
+>    * the kernel fills @handle, @pitch and @size.
+> + *
+> + * The value of @bpp is a color-mode number describing a specific format
+> + * or a variant thereof. The value often corresponds to the number of bits
+> + * per pixel for most modes, although there are exceptions. Each color mode
+> + * maps to a DRM format plus a number of modes with similar pixel layout.
+> + * Framebuffer layout is always linear.
+> + *
+> + * Support for all modes and formats is optional. Even if dumb-buffer
+> + * creation with a certain color mode succeeds, it is not guaranteed that
+> + * the DRM driver supports any of the related formats. Most drivers support
+> + * a color mode of 32 with a format of DRM_FORMAT_XRGB8888 on their primary
+> + * plane.
+> + *
+> + * +------------+------------------------+------------------------+
+> + * | Color mode | Framebuffer format     | Compatibles            |
+> + * +============+========================+========================+
+> + * |     32     |  * DRM_FORMAT_XRGB8888 |  * DRM_FORMAT_XBGR8888 |
+> + * |            |                        |  * DRM_FORMAT_RGBX8888 |
+> + * |            |                        |  * DRM_FORMAT_BGRX8888 |
+> + * +------------+------------------------+------------------------+
+> + * |     24     |  * DRM_FORMAT_RGB888   |  * DRM_FORMAT_BGR888   |
+> + * +------------+------------------------+------------------------+
+> + * |     16     |  * DRM_FORMAT_RGB565   |  * DRM_FORMAT_BGR565   |
+> + * +------------+------------------------+------------------------+
+> + * |     15     |  * DRM_FORMAT_XRGB1555 |  * DRM_FORMAT_XBGR1555 |
+> + * |            |                        |  * DRM_FORMAT_RGBX1555 |
+> + * |            |                        |  * DRM_FORMAT_BGRX1555 |
+> + * +------------+------------------------+------------------------+
+> + * |      8     |  * DRM_FORMAT_C8       |  * DRM_FORMAT_R8       |
+> + * +------------+------------------------+------------------------+
+> + * |      4     |  * DRM_FORMAT_C4       |  * DRM_FORMAT_R4       |
+> + * +------------+------------------------+------------------------+
+> + * |      2     |  * DRM_FORMAT_C2       |  * DRM_FORMAT_R2       |
+> + * +------------+------------------------+------------------------+
+> + * |      1     |  * DRM_FORMAT_C1       |  * DRM_FORMAT_R1       |
+> + * +------------+------------------------+------------------------+
+> + *
+> + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
+> + * legacy user space. Please don't use them in new code. Other modes
+> + * are not support.
+> + *
+> + * Do not attempt to allocate anything but linear framebuffer memory
+> + * with single-plane RGB data. Allocation of other framebuffer
+> + * layouts requires dedicated ioctls in the respective DRM driver.
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Thursday, February 20, 2025 7:07 AM
-[...]
-> Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
-> enetc_map_tx_tso_buffs()
->=20
-> > > -----Original Message-----
-> > > From: Wei Fang <wei.fang@nxp.com>
-> > > Sent: Wednesday, February 19, 2025 7:43 AM
-> > [...]
-> > > Subject: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
-> > > enetc_map_tx_tso_buffs()
-> > >
-> > > There is an off-by-one issue for the err_chained_bd path, it will
-> > > free one more tx_swbd than expected. But there is no such issue for
-> > > the err_map_data path. To fix this off-by-one issue and make the two
-> > > error handling consistent, the loop condition of error handling is
-> > > modified and the 'count++' operation is moved before
-> enetc_map_tx_tso_data().
-> > >
-> > > Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+According to this, every driver that supports, say, NV12, should 
+implement their own custom ioctl to do the exact same thing? And, of 
+course, every userspace app that uses, say, NV12, should then add code 
+for all these platforms to call the custom ioctls?
 
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+As libdrm's modetest currently supports YUV formats with dumb buffers, 
+should we remove that code, as it's not correct and I'm sure people use 
+libdrm code as a reference?
 
-> > > ---
-> > >  drivers/net/ethernet/freescale/enetc/enetc.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > index 9a24d1176479..fe3967268a19 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > @@ -832,6 +832,7 @@ static int enetc_map_tx_tso_buffs(struct
-> > > enetc_bdr *tx_ring, struct sk_buff *skb
-> > >  			txbd =3D ENETC_TXBD(*tx_ring, i);
-> > >  			tx_swbd =3D &tx_ring->tx_swbd[i];
-> > >  			prefetchw(txbd);
-> > > +			count++;
-> > >
-> > >  			/* Compute the checksum over this segment of data
-> and
-> > >  			 * add it to the csum already computed (over the L4
-> @@ -848,7
-> > > +849,6 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb
-> > >  				goto err_map_data;
-> > >
-> > >  			data_len -=3D size;
-> > > -			count++;
-> >
-> > Hi Wei,
-> >
-> > My issue is that:
-> > enetc_map_tx_tso_hdr() not only updates the current tx_swbd (so 1
-> > count++ needed), but in case of extension flag it advances 'tx_swbd'
-> > and 'i' with another position so and extra 'count++' would be needed
-> > in that case.
-> >
->=20
-> I think the patch 2 (net: enetc: correct the tx_swbd statistics) is to re=
-solve your
-> issue.
+Well, I'm not serious above, but I think all my points from the earlier 
+version are still valid. I don't like this. It changes the parameters of 
+the ioctl (bpp used to be bits-per-pixel, not it's "color mode"), and 
+the behavior of the ioctl, behavior that we've had for a very long time, 
+and we have no idea how many users there are that will break (could be 
+none, of course). And the documentation changes make the current 
+behavior and uses wrong or legacy.
 
-Ok, I missed that. Thanks.
+Clearly we need something new and better for the buffer allocation, but 
+for the time being, I'd be more comfortable just keep the current 
+behavior, at least for all the drivers I use or maintain: omapdrm, 
+tidss, renesas, xlnx, tilcdc.
+
+  Tomi
+
