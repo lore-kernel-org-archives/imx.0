@@ -1,132 +1,163 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB391F9AB1
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 13:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE811FF1AA
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059690; cv=none; b=Gm+FtRf1MvLxi2+jWddYuysV29Y6J9ad9n46jOtbzJq63fy0IFr4j+9joCYZ5zvFfeRvI9iVImvUtIxtpioGvvAH3W1ppT0qKtGJpReEf1ydEsURocd0+Ywjin24pN8kglrA80YcldQ+lO08p52O4pJ59bCJQ5wI62URqIHWPEg=
+	t=1740061020; cv=none; b=pTJxClVpOVlIU94NmW16q/0dDAee6V+Te1Kd07+OXJGkOrH8t6T/oZZcBTs1Rq3NkAaRmNMMkl3SCbzOD2gHxCP9iKtZSA2Kq+GLASaMI5Z0y9nOkAQRuz+8gO50BQUXsglEd9hoIZVqWpwpzizGc8/9MDQvULHMMTe3G+piMaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740059690; c=relaxed/simple;
-	bh=njYQI0JkqSG9nmZdfTM+SiQqXdo0ZB/2scswfcxNOq0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jXwV+TVYMbrhbU8arBrkEn6pTJhdAOhUGourxU7fzjHqiGOiffbFNkjYP4YGRFkwr2npa63+Hsjs6pmUYFirwesRxv304p6NKYpVYUF6VkDF3aMETLaP9vodWOUxJCs4mQDNzQaf56tPdoe3UDw4gE8PlQa5b/+nnhnhnnHLmxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZXyZZiu6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JOlYIair; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1740061020; c=relaxed/simple;
+	bh=90sGWHgBiFWC8WmFaCJEHLODTZgic+HaEiiKAov7w4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iwwNCoJtaq+HUNDGDNwYtjzQshTbjPPoZN256M8SMsuYoeJ92+QjTnOh4q+q6kXPqtk8H7qDDgV6wqbJN4MxgHwKl+wLsFDl28JtA1ffgLtvs6MeqymyurasOaQiCX7D8rwv7o4pCIsRsziMs4wK5FfrkrixYS46dggWHXPioYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ke62+k5i; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZXyZZiu6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JOlYIair"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740059685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QD11Ne9DcKnhelWjnLTjIo907OByVtQIcZFYttKj9Mo=;
-	b=ZXyZZiu6fQzbxCFJQqDVVgundVzHGnEXcdeIqL8ClGR3W4b1Ey4eB+bTwF/enWU27f8iqb
-	6KyA7/MQ5+4mod88342BBvtXI+vCoBPYpCYRijL9dHXlnwtvDBBjL0UlnDDdTX10nwEXmW
-	jsYAhyvt6xLy9RlDs67Ql11fUBmelfip+FdZsakH1fprNWVgYX6++nHjJaPYloPBm4VA0v
-	IFuty6l3DyATYYOFxtg2zcjAW9Ds2GEw9k7nBYAhVx3ERa6N3DIbq2pGTCTvipVDRjp0gL
-	4kJQa5/yTN+Sfg7lfSZUTM6HSWCZzUaCTAp5bmp5CUkg6T9zSKhyM/B5zR7lhw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740059685;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QD11Ne9DcKnhelWjnLTjIo907OByVtQIcZFYttKj9Mo=;
-	b=JOlYIairSeSWXDphePdqMGRdnMIe0izKqy7x+haK/irgiQkE4fPAmmUH2rnIn+wrOo4/nr
-	pM3+j/mvSiuJWVCA==
-To: Mark Brown <broonie@kernel.org>, Anup Patel <apatel@ventanamicro.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, hpa@zytor.com, Marc
- Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement
- <gregory.clement@bootlin.com>, Sebastian Hesselbarth
- <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra
- <atishp@atishpatra.org>, Andrew Jones <ajones@ventanamicro.com>, Sunil V L
- <sunilvl@ventanamicro.com>, Anup Patel <anup@brainfault.org>,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v6 02/10] irqchip/irq-msi-lib: Optionally set default
- irq_eoi/irq_ack
-In-Reply-To: <Z7Xto0WZ-Crxunik@finisterre.sirena.org.uk>
-References: <20250217085657.789309-1-apatel@ventanamicro.com>
- <20250217085657.789309-3-apatel@ventanamicro.com>
- <Z7Xto0WZ-Crxunik@finisterre.sirena.org.uk>
-Date: Thu, 20 Feb 2025 14:54:45 +0100
-Message-ID: <87jz9kiuvu.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ke62+k5i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740061019; x=1771597019;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=90sGWHgBiFWC8WmFaCJEHLODTZgic+HaEiiKAov7w4A=;
+  b=ke62+k5iT3nUABtyLj1Eu2JDOvcH/eVtsvx4+Rz+bC5UvNiWlnzenmU6
+   U0Xi+qxhc7ySX1QJwotH5qSDf0put+lS8XaW/+rCEKXY03F8rx5FiTsFo
+   Yg5U4F9gnJsOG+U2WkKquWhArjxBBChDtCzuxrXTtvjbioo1y+qyQkYg1
+   kQu8NpZggrUxw+4zJQ6thkTOtqu27KTKNnsOW2zQoApTF4s0TvdSaGNDr
+   bCpIdAAD4IxanoXTZ3I6C8fC66CBf7C/sNhX2179l1WBrdQtDUQgi+S7a
+   q367V8AHEA19BgXFXZg7T6RnwXljvVYAZSUKLnJKgE8zlEcQ1Yd3AvfK5
+   A==;
+X-CSE-ConnectionGUID: E0xNGxAhSl+7Z2kshgEzPQ==
+X-CSE-MsgGUID: YlGcPLSdTdqBPcpi3PL19g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="28438587"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="28438587"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 06:16:58 -0800
+X-CSE-ConnectionGUID: hq/WbzC4RBWGAxh3UZBwRw==
+X-CSE-MsgGUID: xVSkBMrZR/qIo+idZR+y5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="119672464"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 06:16:54 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 649C911F7F2;
+	Thu, 20 Feb 2025 16:16:51 +0200 (EET)
+Date: Thu, 20 Feb 2025 14:16:51 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Cosmin Tanislav <demonsingur@gmail.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Julien Massot <julien.massot@collabora.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	=?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/3] media: add v4l2_subdev_state_xlate_streams()
+Message-ID: <Z7c5U6u5rr0-X0aK@kekkonen.localdomain>
+References: <20250220092036.6757-1-demonsingur@gmail.com>
+ <tw6x663t5dmxsdarrxjtopza3mou3lnhwazu3dfv2k27fv47v2@bvftfepqqhss>
+ <c94580f0-3ab0-4a19-a996-9bb37e23dd39@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c94580f0-3ab0-4a19-a996-9bb37e23dd39@gmail.com>
 
-On Wed, Feb 19 2025 at 14:41, Mark Brown wrote:
-> On Mon, Feb 17, 2025 at 02:26:48PM +0530, Anup Patel wrote:
-> I'm seeing boot regressions with qemu on arm64 in -next which bisect
-> down to this patch.  We hit a NULL pointer dereference:
->
-> <6>[    0.898900] virtio_blk virtio1: 1/0/0 default/read/poll queues
-> <5>[    0.910197] virtio_blk virtio1: [vda] 3906250 512-byte logical blocks (2.00 GB/1.86 GiB)
-> <1>[    0.924459] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-> <1>[    0.924508] Mem abort info:
-> <1>[    0.924521]   ESR = 0x000000008600002b
-> <1>[    0.924559]   EC = 0x21: IABT (current EL), IL = 32 bits
-> <1>[    0.924580]   SET = 0, FnV = 0
-> <1>[    0.924597]   EA = 0, S1PTW = 0
-> <1>[    0.924616]   FSC = 0x2b: level -1 translation fault
-> <1>[    0.924667] [0000000000000000] user address but active_mm is swapper
-> <0>[    0.924833] Internal error: Oops: 000000008600002b [#1] PREEMPT
-> SMP
+Hi Cosmin,
 
-Uuurg. I wish I had double checked that the final submitted patch covers
-_ALL_ incarnations of this. The below delta patch should address it.
+On Thu, Feb 20, 2025 at 03:01:41PM +0200, Cosmin Tanislav wrote:
+> 
+> 
+> On 2/20/25 1:38 PM, Jacopo Mondi wrote:
+> > Hi Cosmin
+> > 
+> > On Thu, Feb 20, 2025 at 11:20:32AM +0200, Cosmin Tanislav wrote:
+> > > Currently, the v4l2_subdev_state_xlate_streams() function is used
+> > > to translate streams from one pad to another.
+> > > This function takes the entire subdev state as argument, but only makes
+> > > use of the routing.
+> > 
+> > Correct, but is this a problem ?
+> > 
+> 
+> No, it's not a problem.
 
-Thanks,
+I think I have a slight preference to keep the pattern of referring to the
+state as other functions do.
 
-        tglx
----
-diff --git a/drivers/irqchip/irq-gic-v3-its-msi-parent.c b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-index e150365fbe89..bdb04c808148 100644
---- a/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-+++ b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-@@ -203,6 +203,7 @@ static bool its_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- const struct msi_parent_ops gic_v3_its_msi_parent_ops = {
- 	.supported_flags	= ITS_MSI_FLAGS_SUPPORTED,
- 	.required_flags		= ITS_MSI_FLAGS_REQUIRED,
-+	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
- 	.bus_select_token	= DOMAIN_BUS_NEXUS,
- 	.bus_select_mask	= MATCH_PCI_MSI | MATCH_PLATFORM_MSI,
- 	.prefix			= "ITS-",
-diff --git a/drivers/irqchip/irq-gic-v3-mbi.c b/drivers/irqchip/irq-gic-v3-mbi.c
-index 3fe870f8ee17..3e1d8a1cda5e 100644
---- a/drivers/irqchip/irq-gic-v3-mbi.c
-+++ b/drivers/irqchip/irq-gic-v3-mbi.c
-@@ -201,6 +201,7 @@ static bool mbi_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- static const struct msi_parent_ops gic_v3_mbi_msi_parent_ops = {
- 	.supported_flags	= MBI_MSI_FLAGS_SUPPORTED,
- 	.required_flags		= MBI_MSI_FLAGS_REQUIRED,
-+	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
- 	.bus_select_token	= DOMAIN_BUS_NEXUS,
- 	.bus_select_mask	= MATCH_PCI_MSI | MATCH_PLATFORM_MSI,
- 	.prefix			= "MBI-",
-diff --git a/drivers/irqchip/irq-loongson-pch-msi.c b/drivers/irqchip/irq-loongson-pch-msi.c
-index bd337ecddb40..9c62108b3ad5 100644
---- a/drivers/irqchip/irq-loongson-pch-msi.c
-+++ b/drivers/irqchip/irq-loongson-pch-msi.c
-@@ -146,6 +146,7 @@ static const struct irq_domain_ops pch_msi_middle_domain_ops = {
- static struct msi_parent_ops pch_msi_parent_ops = {
- 	.required_flags		= PCH_MSI_FLAGS_REQUIRED,
- 	.supported_flags	= PCH_MSI_FLAGS_SUPPORTED,
-+	.chip_flags		= MSI_CHIP_FLAG_SET_EOI | MSI_CHIP_FLAG_SET_ACK,
- 	.bus_select_mask	= MATCH_PCI_MSI,
- 	.bus_select_token	= DOMAIN_BUS_NEXUS,
- 	.prefix			= "PCH-",
+I wonder what Laurent and Hans think, too.
 
+> 
+> > Is this the first step for a larger rework or is this a drive-by
+> > beautification ?
+> > 
+> 
+> Mostly a drive-by beautification to avoid passing the whole state around
+> where we only need the routing. I'm planning to submit drivers for more
+> GMSL2/3 chips and we're using this just to not pass the whole state
+> around. I think I can just use v4l2_subdev_state_xlate_streams(),
+> but I had these patches in my tree and it would have been good to get
+> them upstream, in preparations for submitting the GMSL2/3 drivers.
+> 
+> > I'm asking because (and I know it's hard to strike a balance) this
+> > kind of changes tend to make back-porting a more painful, and if
+> > only justified by "it looks better" I would be a bit hesitant in
+> > taking them.
+> > 
+> > 
+> > > 
+> > > Introduce a v4l2_subdev_routing_xlate_streams() function which can be
+> > > used without the entire subdev state, to avoid passing the entire state
+> > > around when not needed.
+> > > 
+> > > Convert all usages of v4l2_subdev_state_xlate_streams() to
+> > > v4l2_subdev_routing_xlate_streams().
+> > > 
+> > > Remove v4l2_subdev_state_xlate_streams().
+> > > 
+> > > V2:
+> > >    * Fix description of parameters
+> > > 
+> > > Cosmin Tanislav (3):
+> > >    media: v4l: subdev: add v4l2_subdev_routing_xlate_streams()
+> > >    media: use v4l2_subdev_routing_xlate_streams()
+> > >    media: v4l: subdev: remove v4l2_subdev_state_xlate_streams()
+> > > 
+> > >   drivers/media/i2c/ds90ub913.c                 | 14 ++++++-----
+> > >   drivers/media/i2c/ds90ub953.c                 | 14 ++++++-----
+> > >   drivers/media/i2c/max96714.c                  | 16 ++++++-------
+> > >   drivers/media/i2c/max96717.c                  | 23 ++++++++++---------
+> > >   drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++-----
+> > >   .../platform/nxp/imx8-isi/imx8-isi-crossbar.c |  2 +-
+> > >   drivers/media/v4l2-core/v4l2-subdev.c         |  7 +++---
+> > >   include/media/v4l2-subdev.h                   | 10 ++++----
+> > >   8 files changed, 53 insertions(+), 47 deletions(-)
+> > > 
+> > > --
+> > > 2.48.1
+> > > 
+> > > 
+> 
 
+-- 
+Regards,
 
+Sakari Ailus
