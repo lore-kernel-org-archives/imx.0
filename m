@@ -1,203 +1,170 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2060.outbound.protection.outlook.com [40.107.22.60])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E391F0E31
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 10:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740048132; cv=fail; b=X8EyXPtLgKaCGs+H1DtLZV0xAncfJ3VQs1ikAPDL3xP31bRXrdDH5qhxatLlICXXhtI7fPvwev56300Gw4bXiDABwi5zeEj0c/qiK1MQXXCGP7si5IdlD2sS41Avs/THQTxQo5RfEDuUgGyx9NWOmtwH6xeqAnLwIa9OELUsuAI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740048132; c=relaxed/simple;
-	bh=jV8Frpydj/P/MwN0f2l2BLWTEnmrcYy27SUrCGTc5LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dAtiKJ3f1jFEzJeCXDnGZN7+MpaeHQxFqO7LO9Q6bMUWiAroAzYBqE27hfcFCzLlV7GjqwcNeLobcDk+t8JYb7F8vDCXXYaOmk593zPjiOgul6EiFEqS/uAwvu/S9lGS06HdI6ioFVfkiGp/0Lc2aU8fc1cZN9WR5eBbttiRJS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BX0W7xOV; arc=fail smtp.client-ip=40.107.22.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722FE1F03D1;
+	Thu, 20 Feb 2025 10:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740048791; cv=none; b=iQodQLFujMWUyJwjmXUL3Yud6wk/6bwiOU689CnivogAgEY29RoMyn0jLveS8NL10azUNWHh6PbHIIM452PHXqal1gSlYNaYyKG4cxKMaw7I/pdtKGsdUx0TVK2qJhPN72Yof17jqPq6FkoE08Dm4fkmSXWB/Vphb8Rs2F6B+ZE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740048791; c=relaxed/simple;
+	bh=cGmqrMQrzQNKvOYoVbXWr6Lo7FskS49XuKpEvHODBjA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oHiiC9zSxCy8c/R73xPoIBegmHPk8y+CEpOMvzT9/vJlAbOYc5hgKUUni+9wxCSrKRS/X9R1QWc6KUiyrSCSSN7MFsCFty4Hl0sifOIK3Zl+sxM8QLhvNt2jyqAh1HEtU9erKy/UtMI765o1klOs96aWvLQpXVTsG+o/0Yldsa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wF6C4CGD; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BX0W7xOV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xA1yuLRjFYMW3JPwQADFdmryGAhurJy0vmbeRMl2i/E2wCLOb1BJdVUHazX2q7JQwcn02C8frjNIfN4/nyfcV5hFfHbYhsiHY+ewScDVCijOxWCuRpaIJa1npvIXyaV7Tz1/dI4oeNEU+8PwMig28h56O3QQ7DIDaI6kPuqO30X2UGHqOY4E8yqg50lhgxMz2LXxT8iuzHcV2LfHmmwNZmHtaduk1eTtdW9hjFod/yqgFHBjGRqJ1rLaIv3dcPkgJNrRmwiMJe8K/8WNuCy/VyNQu9HD/p4m22s5fWTAg0vRVLnIFLk8PGQ2i7z7xcCyYDMZXMZUZ1u5IXxwLLJBnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uT3t6uBmWyh7yf2ifrOiRV/I3NjB8X/2LcFjW6fCyWY=;
- b=o1GtZchCDpU1IWfWc7YilNfaKaL+69K3j7Tu37lS0ZXwXpDOYVoz0J3wli/ryomtISedokPdG04SNQjaxG/nTk/y8IpcqR/oN57KJm05OyFfZeneKFpglSXG4ovoKWuWLpoULY5RDNC5/bgod42VksZvMbf9sh06P1sFJJg1oROlkxDZBJPiLZF5OQiD5jOUjnBqW5ZHuRW6Rlj2dy8HK+k/odqmpkot5j4RD+Z/E0KEyO6a4W9sgUS6UQzAjFoi8iCgcKmCKQZUkXtArycymDrdylyLC8qN1zz/qDuactpg6WbmvfWsMN4n720RrUUA27s45/e3bqH4jNPEvGj2uQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uT3t6uBmWyh7yf2ifrOiRV/I3NjB8X/2LcFjW6fCyWY=;
- b=BX0W7xOVW+nEGUNbt5OvywHnbWjpwYCMgLlfHALh2IxodkFx2Z5Ik/zbXSGMtxffpaq4MeM4wsy390ge72JCGl/aAMcxSOSK1hm6goyU497t7Fzbymq/oUkFylyP6Vi3dHWJBbxsTNV8rfo1vIXlh9cj//FZJ1k2TYAJMRiKVmh7qkKAQZ74B0P+yLSxkkil339FikGa364u89TAEBB4DIEqr9n+YAvUrFMolD67dogVGaV6HPe8X4gUsFx695F7vlYxV8xa50gZRnaPDQqn+tAm5g3KNi+N7L5h5l/a7TUMxRsP3uR+e0eFOEqsW1ScAJoxXUKhskI5s4fbrVoi5g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
- by DB8PR04MB7180.eurprd04.prod.outlook.com (2603:10a6:10:12c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Thu, 20 Feb
- 2025 10:42:07 +0000
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::cdc5:713a:9592:f7ad]) by PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::cdc5:713a:9592:f7ad%7]) with mapi id 15.20.8445.016; Thu, 20 Feb 2025
- 10:42:07 +0000
-Date: Thu, 20 Feb 2025 18:38:45 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH 6/6] arm64: dts: imx95-19x19-evk: enable USB2.0 node
-Message-ID: <20250220103845.4jdfmmmffpiye46o@hippo>
-References: <20250219093104.2589449-1-xu.yang_2@nxp.com>
- <20250219093104.2589449-7-xu.yang_2@nxp.com>
- <Z7ZBbE3KdBJiWkyA@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7ZBbE3KdBJiWkyA@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SI2PR02CA0014.apcprd02.prod.outlook.com
- (2603:1096:4:194::19) To PAXPR04MB8829.eurprd04.prod.outlook.com
- (2603:10a6:102:20c::17)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wF6C4CGD"
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C69249FC;
+	Thu, 20 Feb 2025 11:51:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1740048703;
+	bh=cGmqrMQrzQNKvOYoVbXWr6Lo7FskS49XuKpEvHODBjA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=wF6C4CGDoP+/HkpCLJaEAJQ5SUDGi9n0fFlEojmHm56G4KxPszUsR/q+aXtSRtihR
+	 AQoXwkJ+zXwR8f+vg71cO6pL6HL787yGlQcQZD3c6z5sRdwltXCONK8mS2/SPW2eEM
+	 lzKYZgKG0aXbNUjO1esnvXLsAJsX44MVKluFgT40=
+Message-ID: <596b960e-71f8-4c2c-9abe-058206df1dfb@ideasonboard.com>
+Date: Thu, 20 Feb 2025 12:53:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|DB8PR04MB7180:EE_
-X-MS-Office365-Filtering-Correlation-Id: 231ee588-1eef-4ef8-f3f8-08dd519b3903
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gDUYdgfW2SCNaiXStHDljMQ8fxxDzvU1dUbaQcUNsl58HazTi44vNn7Ecd+b?=
- =?us-ascii?Q?RHW/EtixxtHXztQobtWm54tkqUuteF1O5bgK2FUZXq3QiEfYCOKMIUAamkL1?=
- =?us-ascii?Q?C8vVVR+nw3U0+XFE+WKH5J5Vq7ku0PftuBhFR01h/PU75RKfx6fLdG7j7225?=
- =?us-ascii?Q?1z5XqMixdnKaCrbuzIhZutxaDRP7qz1j+hngW/otFD3CFv7H8Nw98xwPm0uY?=
- =?us-ascii?Q?oYWIuhTu3i/tv9BTg1wpQqQN9uE5b0ohsHsYVy9e4foAldleg7atk6wRUzUV?=
- =?us-ascii?Q?EpFTQsj1JeD+KWyl8sBhAXqj8D2FSeaNFzpEpj0r72OsRB9wCetojatEOzJ0?=
- =?us-ascii?Q?ty92tDKgOw70sNbT9aTHXgNRSgvuvJqG2XEc4/O/bPIkM2cmf9HUCshaNniE?=
- =?us-ascii?Q?21NVtWHZPXA5I9sX6+1iJxk8DqMmp7D8ajGu3vucxtxUKrMuN/UCmKoFulB0?=
- =?us-ascii?Q?o7D7pF/mdDAOBHcizmHQ02y8KLNT9+xm68mf4Ozjn8UwaWK7nMf9b3J2/8xZ?=
- =?us-ascii?Q?+ajwHdv4Po/Ue1sFCzp4DRsGRFcvLoFVbvFVzE5mJeXJw5QDoMDCjPhtgphA?=
- =?us-ascii?Q?Wk2CKOPbtKvqu6zNBc6mKgtJYqPmjBEXRXeDfk5V+83Gbs/xtTsqjL+yXRKa?=
- =?us-ascii?Q?3It1hroomeNfDhj23FL6khIrZfEDYU+WEyY9ncp3AfJGmDGjdjZBw0Tfn5tE?=
- =?us-ascii?Q?Pn1W6L+t8AWh/M4CovAYJwXaWb5lvJHwQ1DvGDPlHKrv7p6wzacNyEh5+env?=
- =?us-ascii?Q?ksK/SH91Bg77qZp/jvOz9r2qm8MW6f7fJok85y8wB/MNh/Yx99RqaLnS0VDy?=
- =?us-ascii?Q?32F/dHZOkWltvLeSAuRJdcn5WItoGWweljJtSH8mmm6fzO/6HLkGS+uHCWja?=
- =?us-ascii?Q?iVEglSGGVZxmOrMqKO0K8oDCw7sCT8kJRLcALtOStv6xm5xpnedpMC7WvKnz?=
- =?us-ascii?Q?x87EMBo/4VTBtjALzQW97UwzhxL7vKajFiLNaf56C+PLv5IECzXoh8PgNDjF?=
- =?us-ascii?Q?0VMUoZFQODzMIURLRcTZ3sotsz6QfNilkQUwjbPkZNI001E5R5SSl5BuGzrz?=
- =?us-ascii?Q?vgG5xk4QFLHJe0gGl558XW4l84feNiKykumT7aNKEt7HJrAmau/IKIlXr0qO?=
- =?us-ascii?Q?rjcO5/EDsQ7vM0w0XAkcrfZu8S0VcsjlFawhnS9VKpy685i9g7FHeaNWx+cC?=
- =?us-ascii?Q?oq59dF3ou+hg11Qmy9qbZLSm9g5C6MhSEIxQPE3ULMENHleAf2afIFau8/cM?=
- =?us-ascii?Q?K0ia+HqD+lhUBbKaZE0W+0sPRgB2HDQNPbbW+D3SM9h3iF1hKzexzamgNCd+?=
- =?us-ascii?Q?95vDn8XVyx+GL4aOmKgP/WC/Hbv58ckxpx59M2QzvYXc+HSgcIss7ysgkE7u?=
- =?us-ascii?Q?WJECY0J+97pVk+TXKJaJu/iSej9cZJ3EnOdv4NTVfBtNkUEV4kckK8j66arS?=
- =?us-ascii?Q?p5T/ueRs50vXle0n4S4MApsgoN6w1n66?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?G+JZMC2YUUAnO1/Wbjrco6u/IpcFfYxHBb00n5aqjcEJJyhbTXz0mYQ+elUA?=
- =?us-ascii?Q?/PfqVAdw3iT7K42me+jGaVE2zTcdQCqNiAMB3I3itXOKbK1L1QvPYmdv+OE3?=
- =?us-ascii?Q?qIy+e8+fxtOWhDKDGd2Qt5xA91IbB5YfJk00HTCNMZ+vKABgZm1IVyP/fYj6?=
- =?us-ascii?Q?JNLmPdKCSv3lgKvYGHZacn+9gNcw32ffdOCuOV/2pN7fhSUJ/c9oyFOWTpsC?=
- =?us-ascii?Q?ZQHlgHsWSeuid4gJxZG+eJi4ef0gS6bU6IZI2J7XAIktEA1frCZVU6ioJ/cx?=
- =?us-ascii?Q?za7HKaqwoiKSUVzOfxbj/TjdR5mJONfoSGW5RGYjIOR96d6EwOkm+OpBMaMJ?=
- =?us-ascii?Q?SrqukHflJ7olrpGNWqLLdyqlGlrGP4dUzdGob0NSnxRYhMWhQ+6p+Xh+j7MP?=
- =?us-ascii?Q?A3vPV7TZMedlskzLIwidB6T4v7mI3dvQKFjl/5/wFp+D7c79VxBGnGRGR7Zv?=
- =?us-ascii?Q?63vvHPnjRuK3wRK86HfO9wHuVpWvob0IfqCKUmS0GfAHfey06OrcKl+zKfSi?=
- =?us-ascii?Q?2aROwJUqNnH5Q7zoFMAoe0D3XeewOyXFvel8xrFuRYqaiH9LAiBcJLLiYSoO?=
- =?us-ascii?Q?vzhyORQD3CvwOaJaMVSgASLvrbzhub2jRwgQwch+FnOfj5BCI5cc5pBaBa9U?=
- =?us-ascii?Q?0OOYEPU7dwo8ekHlCOHhAheXAXrWHCwVvOl7VxcefqGCnzH1H2OUymRZarhR?=
- =?us-ascii?Q?mV0Kk+X78HvWl660dmZrKonSkND2YmBya7Crbq98DIXiDF6hBcLgk0WeBAf9?=
- =?us-ascii?Q?pSvL7XpiP+G/Qr7itRVQoL+9wPcUWdwyZS7U6iI2+owdvRVGPXt7koSwcFdv?=
- =?us-ascii?Q?59cdRY5YJNeN6QSOUvZTbRYhGI/iwF42VL29SJFI1i2ErVrlvmJmKcDZd0Gl?=
- =?us-ascii?Q?nXC3vhR/feqMop5WbxUTFxhJSk96HaGnlUNWIveGjBW+mN7YKMQqwZEgzvAh?=
- =?us-ascii?Q?YphrNh1gckFm3Pa71YJS6I22eLsj1PdrBG5qq1ihAXUHG5hMQ+FwScv2IuKP?=
- =?us-ascii?Q?I6HOfwSyB/QI90OJ2M1TIR1SLqWAEdcRTfdF6pkkcimSaSwmaDNAkZkWzxzp?=
- =?us-ascii?Q?pKn/0ip+bC2zRlfl0tTlL7UDmxk9PocvKUAQY5c7UWJsTHuUjbradBVThru4?=
- =?us-ascii?Q?nX0g+JazB0Y54JPk1PcvIDN+3ijaGpCXCTbXx4r3n2Lc93bJPzFO1YC+kyzz?=
- =?us-ascii?Q?6Wco86KPI4TbaCTQMwu7VuiVtuXiobs/uzXwYpBiXjysjC6knlJMZFPeq2hi?=
- =?us-ascii?Q?1womv8MjoMxdn3mqSZCkkc00whhVpf1F6UBDMW2lDBwk0BhuL01qFnY/qUWd?=
- =?us-ascii?Q?2BiJ7WsEMORrFmmJSAHHFlPEBFmcpWYpSoacig98btdl1AewRtelrS8kjvHN?=
- =?us-ascii?Q?Uq7uWt+oQf1YTZdSdojMSftVtdQwQwnNqiW1x82AVSz0qeJ5b+VyqpSY9Z5b?=
- =?us-ascii?Q?96O/7ikeoJH8Wri+x3L8zGWiQYMKlQGpAMtsUPmGo83pw7klcQ8fmkepFcJp?=
- =?us-ascii?Q?xy+/3dqCtq+46wYXxXG3/DnS8TQcg6mYKsNPkjf8dhm3PKst1Ge9TfoFra8h?=
- =?us-ascii?Q?2j4+4tu/3CkABKnKAxhr3J8RwGB5Z9s2TAbsYC9c?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 231ee588-1eef-4ef8-f3f8-08dd519b3903
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 10:42:07.6652
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: da7M2AgmeHD/fzU6xAedXtXHnoW5jQKKNOJIYWAfn1rMPWRXKeY/PHyyV/FwAw4JSrFpVX75R4LTyfaGESdu6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7180
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/25] drm/dumb-buffers: Provide helper to set pitch
+ and size
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20250218142542.438557-1-tzimmermann@suse.de>
+ <20250218142542.438557-3-tzimmermann@suse.de>
+ <dcd59a75-7945-4a2e-99f9-3abbb3e9de14@ideasonboard.com>
+ <355ed315-61fa-4a9d-b72b-8d5bc7b5a16c@suse.de>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <355ed315-61fa-4a9d-b72b-8d5bc7b5a16c@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 19, 2025 at 03:39:08PM -0500, Frank Li wrote:
-> On Wed, Feb 19, 2025 at 05:31:04PM +0800, Xu Yang wrote:
-> > On this board, USB2.0 is a host-only port, add vbus regulator node
-> > and enable USB2.0 node.
-> >
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> >  .../arm64/boot/dts/freescale/imx95-19x19-evk.dts | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> > index 25ac331f0318..0505cfe2778f 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> > @@ -133,6 +133,15 @@ reg_slot_pwr: regulator-slot-pwr {
-> >  		enable-active-high;
-> >  	};
-> >
-> > +	reg_usb_vbus: regulator-vbus {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-name = "USB_VBUS";
-> > +		regulator-min-microvolt = <5000000>;
-> > +		regulator-max-microvolt = <5000000>;
-> > +		gpio = <&i2c7_pcal6524 3 GPIO_ACTIVE_HIGH>;
-> > +		enable-active-high;
-> > +	};
-> > +
-> 
-> try alphabet order, regulator-vbus should after regulator-usdhc2
+Hi,
 
-Okay, will do.
+On 20/02/2025 12:05, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 20.02.25 um 10:18 schrieb Tomi Valkeinen:
+> [...]
+>>> + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
+>>> + * legacy user space. Please don't use them in new code. Other modes
+>>> + * are not support.
+>>> + *
+>>> + * Do not attempt to allocate anything but linear framebuffer memory
+>>> + * with single-plane RGB data. Allocation of other framebuffer
+>>> + * layouts requires dedicated ioctls in the respective DRM driver.
+>>
+>> According to this, every driver that supports, say, NV12, should 
+>> implement their own custom ioctl to do the exact same thing? And, of 
+>> course, every userspace app that uses, say, NV12, should then add code 
+>> for all these platforms to call the custom ioctls?
+> 
+> Yes, that's exactly the current status.
+> 
+> There has been discussion about a new dumb-create ioctl that takes a DRM 
+> format as parameter. I'm all for it, but it's out of the scope for this 
+> series.
+> 
+>>
+>> As libdrm's modetest currently supports YUV formats with dumb buffers, 
+>> should we remove that code, as it's not correct and I'm sure people 
+>> use libdrm code as a reference?
+> 
+> Of course not.
+> 
+>>
+>> Well, I'm not serious above, but I think all my points from the 
+>> earlier version are still valid. I don't like this. It changes the 
+>> parameters of the ioctl (bpp used to be bits-per-pixel, not it's 
+>> "color mode"), and the behavior of the ioctl, behavior that we've had 
+>> for a very long time, and we have no idea how many users there are 
+>> that will break (could be none, of course). And the documentation 
+>> changes make the current behavior and uses wrong or legacy.
+> 
+> Before I go into details about this statement, what use case exactly are 
+> you referring to when you say that behavior changes?
 
-Thanks,
-Xu Yang
+For every dumb_buffer allocation with bpp that is not divisible by 8, 
+the result is different, i.e. instead of DIV_ROUND_UP(width * bpp, 8), 
+we now have width * DIV_ROUND_UP(bpp, 8). This, of course, depends on 
+the driver implementation. Some already do the latter.
 
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> 
-> >  	reg_usdhc2_vmmc: regulator-usdhc2 {
-> >  		compatible = "regulator-fixed";
-> >  		pinctrl-names = "default";
-> > @@ -461,6 +470,13 @@ &sai3 {
-> >  	status = "okay";
-> >  };
-> >
-> > +&usb2 {
-> > +	dr_mode = "host";
-> > +	disable-over-current;
-> > +	vbus-supply = <&reg_usb_vbus>;
-> > +	status = "okay";
-> > +};
-> > +
-> >  &usb3 {
-> >  	status = "okay";
-> >  };
-> > --
-> > 2.34.1
-> >
+This change also first calls the drm_driver_color_mode_format(), which 
+could change the behavior even more, but afaics at the moment does not. 
+Although, maybe some platform does width * DIV_ROUND_UP(bpp, 8) even for 
+bpp < 8, and then this series changes it for 1, 2 and 4 bpps (but not 
+for 3, 5, 6, 7, if I'm not mistaken).
+
+However, as the bpp is getting rounded up, this probably won't break any 
+user. But it _is_ a change in the behavior of a uapi, and every time we 
+change a uapi that's been out there for a long time, I'm getting 
+slightly uncomfortable.
+
+So, as a summary, I have a feeling that nothing will break, but I can't 
+say for sure. And as I'm having trouble seeing the benefit of this 
+change for the user, I get even more uncomfortable.
+
+  Tomi
+
