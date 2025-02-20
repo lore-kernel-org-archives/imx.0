@@ -1,60 +1,62 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151E2214210
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 23:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087FA264FAF
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 23:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740092907; cv=none; b=NS92UTPT8WTa1DQl3FwWr3HsWECw5hw+akTOFNtLvOfg+GbnvKlegpJ+XSCH9g0finbqdyO0pi5eWhBsNcHbCfOarHkPfuut+CTiiox56z5XEGPJGw91TJnaeVmkfErL+j5z4ONu78bEdKIJehGa6u0DEBlDpM6yI2Bw4VLgEsU=
+	t=1740092925; cv=none; b=FJ70GDJHAZwgL7ILGA3cF8hYj4cryIXBtufYFmUDAQQWrNHwkUbunR49TpqKaWlypv8iu/FJbOWmQeAttCMqVLJHSzLmj+wh4bGfq8qKp9osePZ9fy4aOt66bwYY4GHFShFabTGV7zY3OdkXXBaB2T4v6Js8DHClRoKDWiBH9n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740092907; c=relaxed/simple;
-	bh=pl+/7EWG3hPE+Epp1RScVgVLKto/qJ+PZdiT/igveD4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JE9nSvhCpKkluUeuVxHvd0NsCiDN22/II2gGIqwV2dAV0lQdIN279btj4OxNXDsKnHEpMROjkhq5xeedY0+IYkodAJY6LLSua+f/OHEGVWJM+q2XFDYFnCLfHujqrThaip24/8wBOPuneNPYNv2ZCIRCraf1Ovj3UFUkViTNqSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OswJnCCx; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1740092925; c=relaxed/simple;
+	bh=PZ1DnjTFl18o7jkWFg8lWtATbzYcZDhG5/KGRCkkiUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n8PiZi7xEE8bLyFmQTgbV98iylYGO2EVc9ZHmkGFMBmfVyrluDej9bRzrQsU27y7UNHSCw0+D2r5Ok6eEG2nTvT9GnB40oBf6KT8m2PSe+H1u9Xy9FD7uLScEW9dQVA4iVhQYV47BzCI87FkGs+fbC2tU4pBA5L29l29d7iAzcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FBD5wJqq; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OswJnCCx"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso266999266b.1
-        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 15:08:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FBD5wJqq"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e02eba02e8so2014779a12.0
+        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 15:08:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740092904; x=1740697704; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vgLCVi2eqi2umimuqd7r8m9jVOLKYJ0bYbbWZhjQWDg=;
-        b=OswJnCCxClzLptXNZJjaCVc4gFZselVWZlqBN3U2fHS49/n7/pnMMzu/ZYB/csKCtK
-         NJvJ4tRlrJFC1nY9HdKgnlWWVvC3iNurKuDYTuc3UC07D8wYOWuboZeoMdt8R77tW+iu
-         Vaz6SCLWuzRf2lPf+kqYsVvo1kzym2cAT5i3krXGbDBsPrEzC1DvMASJ2/s3twRTb5lA
-         nLKoV+eMNMnLFZDwRzTzz8QDJlf0de6blIrxG61qpp5Qrvg4vnanc89Idd5pAZdgEPBb
-         afN3eOIKnwBG398KZ05vprBMxQi3mx27ft+F6rOgn8CYNvFf7/g0747R7bQqxOnZ9u0n
-         IfIw==
+        d=gmail.com; s=20230601; t=1740092922; x=1740697722; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NFOJHCDRxWmWioNC6N/UlZoweJhdV9qdoQg8e0aFcrs=;
+        b=FBD5wJqqhk3OJxsiZDPIf7arj0mn/Tq/M/yC+d11iCgEp6RPjJsbTyHzPaxXjawlif
+         o76zfW5arDT5nJgPUlvDDGfn6A0rMZR1qAjH02N+Y4g0bytprdoQ4lpGiUKybbNyPKt+
+         bEP9PWgXqd2B4KhXDhkzznuVJTv9/mUyHw6SqdSyX8/r3jg3SdkDp+rsM6dq1YcKre7r
+         Xk3quZTypBCTGC6Ms++QAILG04JsBw/3AvPnsn6jIxiQBaSkufTsf2DuG9qJJwNat5N+
+         NLT26kQZAdwNavPfkrvJbgqbKViLSwztSCQLd7xlxdW/5ADwhDqpj9m8p0GmvWhOqiaA
+         +zrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740092904; x=1740697704;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vgLCVi2eqi2umimuqd7r8m9jVOLKYJ0bYbbWZhjQWDg=;
-        b=sqvI0QV2+xZscFIFt3XzdjiH3KneKrRlBXPOwP701TBueaixaDN6TvsSKxWD4QnXeb
-         sKH0Rdm1Z7/KTk/9KbW3zDufxO4SqYd/AD5Kl22AmAVZwSmijftTmGJk933IWNS4cN+V
-         /bFtITEAqZQDqi3KZuxFmlJ4wdfK7+fX59BFqwASA0eD+6KHort/44HzDBS1vUY1CL+T
-         2xO9JA99hRYq55XLibd6NvWRCtolGMtGMttV05OL/MKarBjPV1MJMEr66dCJKIly1QRu
-         ljRv1fLhgn/SWdoNS7M6boaDkqYHRogjTgQk2xX/I+nzpqqbZLCN7jl/9OqU7ikANEao
-         JnOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeLED0KUrIFTgjhiyOhVXcQmwu9TeiS4sE0zn7HSxEIiEG5fRYsZfJzjbjUDvDrjRrw1c=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzv3kRZta/mS1mOht7EIP6+62p7p9Kyb771lC7xL3pX3G82tz4/
-	oTkExkcpMOLQOZ8yMkxA2poTWYGgXGpJVC72XQhEcRGDBcJW3UlA
-X-Gm-Gg: ASbGncvPnrFQc0WPBkJa4fxBIeWv89wiMNpoFjY9k5Dhg/9Se1Kxfwtx/eT3IhVc7zG
-	pgiA73Z1NPtqgZ/MnTBzAHrfA9HoGCR+pZRHuUOwPXgbHPh2cqhxNuyoKwyqgglx518pSyjk0kh
-	7alLNnSE1hdam6Jb5qEEOcsuNg8zcSvgBgmC1Ca7a5+iw4r4LX9/6pt3TCkPybevR3vYMuPBjHg
-	lnnFb75+giuPSOGYS4Sx2i2J6HYDB2slwRiCwuRdf1bkfoMgxpw2yZdl9OOHTHYBR+z/g6tsY10
-	6xLm3Fz0O51tPJyIpsp/NTGmivKz
-X-Google-Smtp-Source: AGHT+IEDvxSma402XTJDmRJ/JuNvt76UQM64+7z10txDsXDLl3qf7Mk9kk+qny/wDvwm+o3bDkamYw==
-X-Received: by 2002:a17:906:3293:b0:abb:cdca:1c08 with SMTP id a640c23a62f3a-abc09a0bfcfmr94355266b.16.1740092904163;
-        Thu, 20 Feb 2025 15:08:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740092922; x=1740697722;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NFOJHCDRxWmWioNC6N/UlZoweJhdV9qdoQg8e0aFcrs=;
+        b=bAZ3W3BFnHZvNxK98wb5GCHNDPzhPRl0TtmPvlKLx7TaMCRzPidtu8ehhxHOjXPYkj
+         RmqetppzbJbgdPf/vsamknifD66dOVhiEqTRu8g3WodLS9E0KhmVdw43WF34+dnzMHMS
+         O7Mm1DfA0Qod6pJax2Smceek1m/eiv2uSKpkOSW4djoxuhaJBfT4cDu60uswVkBvgy4+
+         pMgRyDHDUZTu1RmqZUu5JaIOofB2r9eWug9aSn4hQTe7oiMEi+Hfu8jMAcEyrT14BCl+
+         wgs+wQWBbJ/6rFjIcF3w4RAl7gsXCBoHIA3VD0weoBIedVRDQXbXOnuXJksH0DlRtT3k
+         5HmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBhRhF3o2gfRBUmr7+9Lc0eG0iNtMbY/qxNsrKqG1IPGsfNbYjzp4uz7fuHv4eYLMwBLY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyd3aZKraOoEzQ67lFSIDFW+K2fCxMoGwWOYKytQapSM/NUOOI2
+	SpuO5rdMqt94QVwOBNxHznT9XKqBr+8KMEPdnARKOV3ffMzpiBpL
+X-Gm-Gg: ASbGncv8J5rXNvdbDcMNq1c6aBUq7Sc3a6GhhOdBp/oov7IRPz93ZqtbfZ0uI3j6xsW
+	XH2KrkrCIZt02XPyeGEAh6IbBBXr588ZjDzJrlmliE3U6nKktmBSinRdGK3e++oUVP+rFsOgE15
+	MBTAJF0PkVLZTU4g4owxKH0eKRTZSjLrZOL3cE3J7Fp5LCEI0MllkLnsuQu1Jy0j9vSp8sf9TGt
+	p0U6kHgS+Y786INFzOGLRdGwHFAArAzaWvKSuVXRsy6wtI9lZiHc/TyXE14jl60BKldDbDRFWiA
+	xxNBt5RHGWzy4NB9jx6oC8IFjmt1
+X-Google-Smtp-Source: AGHT+IG9EAhYRQtFAS88EjfSpO8anFUAbm7p/IUPqkE3ggwd0qucvdpByol+KZZelROudQA+nudZqQ==
+X-Received: by 2002:a17:907:c284:b0:aba:5f48:eda4 with SMTP id a640c23a62f3a-abc09ab9bcfmr86596366b.25.1740092921968;
+        Thu, 20 Feb 2025 15:08:41 -0800 (PST)
 Received: from demon-pc.localdomain ([188.27.130.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9654a6b2sm909107066b.135.2025.02.20.15.08.21
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9654a6b2sm909107066b.135.2025.02.20.15.08.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 15:08:23 -0800 (PST)
+        Thu, 20 Feb 2025 15:08:41 -0800 (PST)
 From: Cosmin Tanislav <demonsingur@gmail.com>
 To: 
 Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
@@ -74,10 +76,12 @@ Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Cosmin Tanislav <demonsingur@gmail.com>
-Subject: [PATCH v2 0/6] media: v4l: add support for Virtual Channel IDs
-Date: Fri, 21 Feb 2025 01:08:08 +0200
-Message-ID: <20250220230818.275262-1-demonsingur@gmail.com>
+Subject: [PATCH v2 1/6] dt-bindings: media: video-interfaces: add support for Virtual Channel IDs
+Date: Fri, 21 Feb 2025 01:08:09 +0200
+Message-ID: <20250220230818.275262-2-demonsingur@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250220230818.275262-1-demonsingur@gmail.com>
+References: <20250220230818.275262-1-demonsingur@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -103,44 +107,38 @@ cameras to have their VC IDs configured would allow multi-camera setups
 to use tunnel mode.
 
 Add support for specifying these Virtual Channel IDs in Video Interface
-Endpoints.
-
-Add support for parsing VC IDs in v4l2_fwnode_endpoint_parse().
-This allows us to retrieve the specified VC IDs in camera drivers and
-configure the hardware to use them.
-
-The supported values are 0 to 3, with a maximum of 4 values.
+Endpoints. The supported values are 0 to 3, with a maximum of 4 values.
 Although the CSI-2 specification allows for up to 32 virtual channels,
 most hardware doesn't support more than 4. This can be extended later
 if need be.
 
-The driver must validate the number of VC IDs and the VC IDs
-themselves.
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+---
+ .../devicetree/bindings/media/video-interfaces.yaml   | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Add an example implementation for IMX219.
-
-V2:
- * goto err_rpm_put on failure to configure VC ID in imx219, and print
-   error
-
-Cosmin Tanislav (5):
-  dt-bindings: media: video-interfaces: add support for Virtual Channel
-    IDs
-  media: v4l: fwnode: parse Virtual Channel IDs for CSI2 buses
-  dt-bindings: media: imx219: add support for Virtual Channel IDs
-  media: i2c: imx219: pass format's code to imx219_get_format_bpp()
-  media: i2c: imx219: implement configurable VC ID
-
-Laurent Pinchart (1):
-  media: i2c: imx219: Report streams using frame descriptors
-
- .../devicetree/bindings/media/i2c/imx219.yaml |  2 +
- .../bindings/media/video-interfaces.yaml      | 11 ++++
- drivers/media/i2c/imx219.c                    | 56 ++++++++++++++++++-
- drivers/media/v4l2-core/v4l2-fwnode.c         | 15 +++++
- include/media/v4l2-mediabus.h                 |  5 ++
- 5 files changed, 86 insertions(+), 3 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+index 038e85b45befa..414b5fa8f3472 100644
+--- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
++++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+@@ -231,6 +231,17 @@ properties:
+       shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
+       busses only.
+ 
++  vc-ids:
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 4
++    items:
++      maximum: 3
++    description:
++      An array of Virtual Channel IDs. These are unsigned integers that specify
++      the VC IDs used by the device for its data streams. This property is valid
++      for MIPI CSI-2 only.
++
+   strobe:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     enum: [ 0, 1 ]
 -- 
 2.48.1
 
