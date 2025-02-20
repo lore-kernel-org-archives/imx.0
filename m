@@ -1,95 +1,138 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACC41FCFE5
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498ED1FAC5E
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740061282; cv=none; b=MQ/df5JaK5RY/6xzWncaysQEG8U0NkxsvhiQsmGRU/oqrfO4/U3Krc+R0Yf0uN2U/81Omx0lSnFP+w7FqLfj5XdMfahJGYDy1B8okavxynFjK3x8wevoDmWHiacKepDCf9Ytxj6bCXXSvnCpTeRxi1L/Av9ywzd2tfgjPkdH4gs=
+	t=1740062361; cv=none; b=ifVTYEoAuqhDwD4amE+8bbWD+5vfw2zazb07SJm9klKHhaCaXm4GRTtrDrBRAdxf6r8cWozxxaFuO9F/Dx0rk5Ip0xtvPTyqh6iLil1iYqkgqXb0N31wj0S44+BLUQnwoOCAhd53cscq94ADIAeEEO4jnCZ6f9/jdpkTF63/x1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740061282; c=relaxed/simple;
-	bh=lJ1fuL6wK8CkBl8tMlUZAzn0eYU+XWFjZX7mmgbguCc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JNRvUYYnYoNXAWsjkNJ24zAgPtkMlC4gnfIeTirHSCHIIEgvRFQQNXTUSou0KDHcE6lvEoyAqYGynLgxTbiWlZGPnGlfBqZAFGIJYnvwDUveM0c06t1U7te8F/s8m6mk7nKEJ8iR+7LMrmpn7cH9215yz2w1cVpgwOcDL3hEgGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3oufnGd7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D9Knt0/Y; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1740062361; c=relaxed/simple;
+	bh=iLN8B9ksN1GWWVoWVQYBbBJYJyiBr+s/2FAxSdsnkwI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KsnetsOUbdZOLIxSFpzravihPfZM2+nrTaVKuT1/Yr/PIPENzcJ0r1vdEW6wCcMWNfjFocRJ5qLM5ZjthYpI0xIkKJ5aFQGDi1gnBjkFVevwjWRrQkgqa3KN6BtPu3Um2Ua3tu8nqGz5nJhNccbK4SjRVQNUW2kqX/H5aeXHMZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ix5yJ1MN; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3oufnGd7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D9Knt0/Y"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740061279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G/BmtFl2k81SUm/1VjrdU/jVgNub5nHsJ466sJIBSwU=;
-	b=3oufnGd79cXN4jTTMDZ7Z6srl8Ucj1sL35GTITM5ip/hhNfLdNEYBcfYEMW975QF6921cA
-	cciHlQX7+abbQrJT0TieGU8ctAA7wGO0cqj2/piqAaIcbrDv5L/4HeIGVwShaFC3Bq48YH
-	suiMDHR3vg34aEAzMe+BV0KSW9VSPNgdjwW63lvegZgL1TQ5UiPythFZ5KnPHQRHxJG2Xj
-	giFg2lDq21Vm2EoS1vuwvtqlttU4FdQYnquG8StF/7Qc2U1dMZXYRZ0FtVE75DzBMrzz/P
-	N3504pfJR4o/GLBBGIeWk5v9l0bJsYmm0QupTJ+nNCCVRtaoXf+P0gSK0HcClw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740061279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G/BmtFl2k81SUm/1VjrdU/jVgNub5nHsJ466sJIBSwU=;
-	b=D9Knt0/YpIddKDTVG7BDrv4vvrba0CkVNAk6jPl1IKKFJVU+mQyOoOkRYYlV8EljvtiK2B
-	sr28C0ab+/lVqCAQ==
-To: Mark Brown <broonie@kernel.org>, Anup Patel <apatel@ventanamicro.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, hpa@zytor.com, Marc
- Zyngier <maz@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement
- <gregory.clement@bootlin.com>, Sebastian Hesselbarth
- <sebastian.hesselbarth@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra
- <atishp@atishpatra.org>, Andrew Jones <ajones@ventanamicro.com>, Sunil V L
- <sunilvl@ventanamicro.com>, Anup Patel <anup@brainfault.org>,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v6 02/10] irqchip/irq-msi-lib: Optionally set default
- irq_eoi/irq_ack
-In-Reply-To: <87jz9kiuvu.ffs@tglx>
-References: <20250217085657.789309-1-apatel@ventanamicro.com>
- <20250217085657.789309-3-apatel@ventanamicro.com>
- <Z7Xto0WZ-Crxunik@finisterre.sirena.org.uk> <87jz9kiuvu.ffs@tglx>
-Date: Thu, 20 Feb 2025 15:21:18 +0100
-Message-ID: <878qq0itnl.ffs@tglx>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ix5yJ1MN"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 716881193;
+	Thu, 20 Feb 2025 15:37:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1740062274;
+	bh=iLN8B9ksN1GWWVoWVQYBbBJYJyiBr+s/2FAxSdsnkwI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ix5yJ1MNLbToTzjhWXv1kPGV+NribVBMxOfjCISY3kBKoor1qeqmue2KOaVn9Elun
+	 yAZX8xvnBq34+BFHbklcx77G6lqUeyCL8CqExMt9c4jWKJkpp8weUbzT0+S/9pMA3+
+	 iAhC+RUnOTS7ms8NZiaJSnCW2R9nxIGz2uGKgKfY=
+Date: Thu, 20 Feb 2025 16:39:02 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Cosmin Tanislav <demonsingur@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Julien Massot <julien.massot@collabora.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	=?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/3] media: add v4l2_subdev_state_xlate_streams()
+Message-ID: <20250220143902.GA17500@pendragon.ideasonboard.com>
+References: <20250220092036.6757-1-demonsingur@gmail.com>
+ <tw6x663t5dmxsdarrxjtopza3mou3lnhwazu3dfv2k27fv47v2@bvftfepqqhss>
+ <c94580f0-3ab0-4a19-a996-9bb37e23dd39@gmail.com>
+ <Z7c5U6u5rr0-X0aK@kekkonen.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z7c5U6u5rr0-X0aK@kekkonen.localdomain>
 
-On Thu, Feb 20 2025 at 14:54, Thomas Gleixner wrote:
-> On Wed, Feb 19 2025 at 14:41, Mark Brown wrote:
->> On Mon, Feb 17, 2025 at 02:26:48PM +0530, Anup Patel wrote:
->> I'm seeing boot regressions with qemu on arm64 in -next which bisect
->> down to this patch.  We hit a NULL pointer dereference:
->>
->> <6>[    0.898900] virtio_blk virtio1: 1/0/0 default/read/poll queues
->> <5>[    0.910197] virtio_blk virtio1: [vda] 3906250 512-byte logical blocks (2.00 GB/1.86 GiB)
->> <1>[    0.924459] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
->> <1>[    0.924508] Mem abort info:
->> <1>[    0.924521]   ESR = 0x000000008600002b
->> <1>[    0.924559]   EC = 0x21: IABT (current EL), IL = 32 bits
->> <1>[    0.924580]   SET = 0, FnV = 0
->> <1>[    0.924597]   EA = 0, S1PTW = 0
->> <1>[    0.924616]   FSC = 0x2b: level -1 translation fault
->> <1>[    0.924667] [0000000000000000] user address but active_mm is swapper
->> <0>[    0.924833] Internal error: Oops: 000000008600002b [#1] PREEMPT
->> SMP
->
-> Uuurg. I wish I had double checked that the final submitted patch covers
-> _ALL_ incarnations of this. The below delta patch should address it.
+On Thu, Feb 20, 2025 at 02:16:51PM +0000, Sakari Ailus wrote:
+> On Thu, Feb 20, 2025 at 03:01:41PM +0200, Cosmin Tanislav wrote:
+> > On 2/20/25 1:38 PM, Jacopo Mondi wrote:
+> > > On Thu, Feb 20, 2025 at 11:20:32AM +0200, Cosmin Tanislav wrote:
+> > > > Currently, the v4l2_subdev_state_xlate_streams() function is used
+> > > > to translate streams from one pad to another.
+> > > > This function takes the entire subdev state as argument, but only makes
+> > > > use of the routing.
+> > > 
+> > > Correct, but is this a problem ?
+> > > 
+> > 
+> > No, it's not a problem.
+> 
+> I think I have a slight preference to keep the pattern of referring to the
+> state as other functions do.
+> 
+> I wonder what Laurent and Hans think, too.
 
-I'll redo the branch accordingly.
+I agree, I think the state should be passed everywhere. This lowers the
+risk of subsystem-wide refactoring if a function that receives a pointer
+to part of a state (such as v4l2_subdev_routing_xlate_streams()) is
+later found to need more information from the state.
 
-Thanks,
+The situation would be different if the states were not monolithic, for
+instance if the routing table could be locked separatly from other parts
+of the state, but that's not the case and I don't foresee moving to
+finer-grained objects.
 
-         tglx
+> > > Is this the first step for a larger rework or is this a drive-by
+> > > beautification ?
+> > 
+> > Mostly a drive-by beautification to avoid passing the whole state around
+> > where we only need the routing. I'm planning to submit drivers for more
+> > GMSL2/3 chips and we're using this just to not pass the whole state
+> > around. I think I can just use v4l2_subdev_state_xlate_streams(),
+> > but I had these patches in my tree and it would have been good to get
+> > them upstream, in preparations for submitting the GMSL2/3 drivers.
+> > 
+> > > I'm asking because (and I know it's hard to strike a balance) this
+> > > kind of changes tend to make back-porting a more painful, and if
+> > > only justified by "it looks better" I would be a bit hesitant in
+> > > taking them.
+> > > 
+> > > > Introduce a v4l2_subdev_routing_xlate_streams() function which can be
+> > > > used without the entire subdev state, to avoid passing the entire state
+> > > > around when not needed.
+> > > > 
+> > > > Convert all usages of v4l2_subdev_state_xlate_streams() to
+> > > > v4l2_subdev_routing_xlate_streams().
+> > > > 
+> > > > Remove v4l2_subdev_state_xlate_streams().
+> > > > 
+> > > > V2:
+> > > >    * Fix description of parameters
+> > > > 
+> > > > Cosmin Tanislav (3):
+> > > >    media: v4l: subdev: add v4l2_subdev_routing_xlate_streams()
+> > > >    media: use v4l2_subdev_routing_xlate_streams()
+> > > >    media: v4l: subdev: remove v4l2_subdev_state_xlate_streams()
+> > > > 
+> > > >   drivers/media/i2c/ds90ub913.c                 | 14 ++++++-----
+> > > >   drivers/media/i2c/ds90ub953.c                 | 14 ++++++-----
+> > > >   drivers/media/i2c/max96714.c                  | 16 ++++++-------
+> > > >   drivers/media/i2c/max96717.c                  | 23 ++++++++++---------
+> > > >   drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++-----
+> > > >   .../platform/nxp/imx8-isi/imx8-isi-crossbar.c |  2 +-
+> > > >   drivers/media/v4l2-core/v4l2-subdev.c         |  7 +++---
+> > > >   include/media/v4l2-subdev.h                   | 10 ++++----
+> > > >   8 files changed, 53 insertions(+), 47 deletions(-)
+
+-- 
+Regards,
+
+Laurent Pinchart
