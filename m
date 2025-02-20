@@ -1,133 +1,134 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F129406
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 16:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740067520; cv=none; b=sWQFsilqi3yEf5a9137aGujuATWquQyUKFVWMjAmFwTHUb1n1g4v+F7vOxOX/Xoyjk9TUeFrLiHOGrFQ7oTMDNtUA5O0x4PEl6EgKaXvv1XhThWJMkzLbcdP5Sj6s5bab+aNTYlM7sFXy8D/1o8WoNFcNZF6+GGl4sgWD5pxULk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740067520; c=relaxed/simple;
-	bh=mb7aYcCG8Adpx+o3PB0V+PLcJxbA/KMq9DZ3PJrzvkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BO+39W9gPOz43oAmS9vbANaAefdMLIOd+24MpGtPjLrxChD6RxvNY5qENFPsEWSNnlhgSI7EE0krXgKJDw4xXynUIOBo10FKCsdVGFM98e72HD19MLnJpa0Y59onfunN9eFsYppSObIgu3N9JDH3VjKALRuLjosi49ckdoCM9VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=A4hGitDb; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD1635958;
+	Thu, 20 Feb 2025 16:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740067839; cv=pass; b=tHJhKf7roFm2SfcMR70qmsiY9owukuGz/AGQ/6hCWP2hRlSjuBJzuoL8+La3iEKVxb2BqxaP0BnM+bryggKDV+iFIT4wamtYBCwuaQn7xz2Jqut2Dox7WdpjPvJ+UMloZDfKD9X+m9wwTHFU7u6pY9DPX8b5BJ1CF58RBZB6iz8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740067839; c=relaxed/simple;
+	bh=nI4YvPODF0CSfU1Q8RwoW99HnVMb3lO3KpFjsvSqG3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WTyGwGkWmtuVchdirnDqJ5Xpi8LEh5acqCddOjuWoQi2rJAXgqZwusqSmEL1yWTxBVo+3z1DCEpcnFP+wGbT1WpZKtIhGn3Is8fRH/TBex76LXG9ppfC2IXkZM5EsdgvGVL3cXqpLZu3OQLTPnN6mSsa5fmSBAn+4cXh5mOt1xw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=EduweB5K; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="A4hGitDb"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A1C810382D3C;
-	Thu, 20 Feb 2025 17:05:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740067515;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DhrEMPazg4VWtR34qnd0rK9L+bUZ2MhCj/KoPwKqizc=;
-	b=A4hGitDbo72QAmhefQeUeZL3T3Rp2wKldnOpn/EQrjnDZScLwr/7Rd/j6nY9MKQ/KQtUiP
-	JG6759wwrIzoRhywmF9uAcVztzoO0PQMKccT4bfjss4i/bzvHo3e4QsMJ2ZFsmfKki2y0s
-	Acm5EEFFlh5RmmRGT0p4iYS3Da9UI9dAV27ZGIPW+JnIDvcDm/vLRZwAnuyp2SY9DGxbBN
-	WSS1HcMuR2u97P2HlCwVn4vftvNDGyHa/BA2d77O1avi3nCO/PcdfsCOuhwI7EudA97zsE
-	hReD8N+WY0jdzLWeauVDM1r5cp17mHQ9kRTZjsormprBNDTwtHdw6UDOts+SIQ==
-Date: Thu, 20 Feb 2025 17:05:11 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-clk@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610
- SoC
-Message-ID: <20250220170511.719a1cac@wsk>
-In-Reply-To: <f68ebe15-69ee-428a-8079-8bb05d7aa21b@lunn.ch>
-References: <20250219114936.3546530-1-lukma@denx.de>
-	<3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
-	<20250219233802.20ec53e5@wsk>
-	<5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
-	<20250220154826.3455b15e@wsk>
-	<f68ebe15-69ee-428a-8079-8bb05d7aa21b@lunn.ch>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="EduweB5K"
+ARC-Seal: i=1; a=rsa-sha256; t=1740067826; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fK0hgpnSc7wHdnScZwsvHvmbOkyWb03c01zpIeu3IanN4S/24IADwzwMmHCxMzZh69e0QFLKw+VJlDSQ5aln/0YB2RDSXVsVBcOmmHiTso9hMIalmUv2v2fkpsh2ReLVgNiLiHMfkoe1PZI015y2wn/sO3WfP5mg6mjLzsr/2s8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740067826; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZELLhyNrX/AMU/X/XLHluCd0loXd+7aqRfqJaYVGOoE=; 
+	b=ViwEYwSYLaplLiRRebA+EavTbgXaGFDif39tG9l0dYzvRf0ts/sv5Zr3fKIj0Tpa2mXGglvmOEcv8ZzesWzbD/NQRcb1JjyqPZqc3wMYU5+EunyG9GZcm9+M2YI1x2DBHIaTHIgSZWttgVwQS7+aK1fAp99vFS8yjuL3nyBC814=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740067826;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=ZELLhyNrX/AMU/X/XLHluCd0loXd+7aqRfqJaYVGOoE=;
+	b=EduweB5KBkR0ccyYBTaR71kHlB+Cm2C1+uOYpnAGhP8fsVCU4dd1oLWvb0mZNeiJ
+	5LPdG3Z1MweoTCjWRid30oQ6iHV9OeNchE42cx4IMeeJ1b4OBPQ5wC3b9rSZ5Fztbc0
+	7ra/K4+6kLD4/HJUfSiWtBOZSIxhWfXx8uvFMDg0=
+Received: by mx.zohomail.com with SMTPS id 1740067825336681.7729656180264;
+	Thu, 20 Feb 2025 08:10:25 -0800 (PST)
+Message-ID: <d2bd8baf-e1f7-4e8a-9e33-259051d6f97a@collabora.com>
+Date: Thu, 20 Feb 2025 19:10:18 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/LvcxCIoyiyxMRzVmv5VeRt=";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 21/25] drm/virtio: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+Content-Language: en-US
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>
+References: <20250109150310.219442-1-tzimmermann@suse.de>
+ <20250109150310.219442-22-tzimmermann@suse.de>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20250109150310.219442-22-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
---Sig_/LvcxCIoyiyxMRzVmv5VeRt=
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 1/9/25 17:57, Thomas Zimmermann wrote:
+> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
+> buffer size. Align the pitch to a multiple of 4.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@redhat.com>
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Gurchetan Singh <gurchetansingh@chromium.org>
+> Cc: Chia-I Wu <olvaffe@gmail.com>
+> ---
+>  drivers/gpu/drm/virtio/virtgpu_gem.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> index 5aab588fc400..22cf1cd2fdfd 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_gem.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> @@ -23,6 +23,7 @@
+>   * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>   */
+>  
+> +#include <drm/drm_dumb_buffers.h>
+>  #include <drm/drm_file.h>
+>  #include <drm/drm_fourcc.h>
+>  
+> @@ -66,15 +67,14 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
+>  	struct virtio_gpu_object_params params = { 0 };
+>  	struct virtio_gpu_device *vgdev = dev->dev_private;
+>  	int ret;
+> -	uint32_t pitch;
+> +
+> +	ret = drm_mode_size_dumb(dev, args, SZ_4, 0);
 
-Hi Andrew,
+Nit: I'd keep using PAGE_SIZE instead of 0 for more clarity, but that's
+an optional wish.
 
-> > > Seems like a reasonable compromise. You would only load this
-> > > driver if you intend to make use of the switch... =20
-> >=20
-> > Yes, the main use case would be the switch (after bridge ... command
-> > called).
-> >=20
-> > However, until then we shall? have port separation. =20
->=20
-> Yes. The model Linux uses is that the ports are individual interfaces
-> to start with. We should keep to that model.
+> +	if (ret)
+> +		return ret;
+>  
+>  	if (args->bpp != 32)
+>  		return -EINVAL;
+>  
+> -	pitch = args->width * 4;
+> -	args->size = pitch * args->height;
+> -	args->size = ALIGN(args->size, PAGE_SIZE);
+> -
+>  	params.format = virtio_gpu_translate_format(DRM_FORMAT_HOST_XRGB8888);
+>  	params.width = args->width;
+>  	params.height = args->height;
+> @@ -92,7 +92,6 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
+>  	if (ret)
+>  		goto fail;
+>  
+> -	args->pitch = pitch;
+>  	return ret;
+>  
+>  fail:
 
-+1
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
->=20
-> > > MoreThanIP is now part of Synopsys. I wounder if this IP now
-> > > exists in other SoCs? The press release however suggests Synopsys
-> > > was interesting in the high speed interfaces, not a two ports Fast
-> > > Ethernet switch. =20
-> >=20
-> > I would need some detailed documentation.... =20
->=20
-> Which is probably not available. You might be able to get some clues
-> from the Freescale datasheets, if they have kept the address spaces
-> separated. I don't see it as a strong requirement, given how old this
-> IP is, and the limited interest in supporting it over the years, My
-> guess is, nobody else uses it.
-
-:-)
-
->=20
-> 	Andrew
-
-
-
-
+-- 
 Best regards,
+Dmitry
 
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/LvcxCIoyiyxMRzVmv5VeRt=
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAme3UrcACgkQAR8vZIA0
-zr0WCQgAxyZwB9mNdVIeRsd8mJN2KEWBP3zwFWv3w1XX1glLh9Y/MFa9riYX2/XO
-P+so9vOKEXJUCHUxC3GIqJTIoHYB5Rk75zjTDoUs9K851v5SWlXwM2ZtMtbC3DpO
-xzh/XjXEoX63V/zJszTYRQKYpjBnep4z4+Qfyabs0TvNSakVz3qdIbSG5zbjiRUr
-mP3ZwG/37azFpwaqb2dYwt3IFLlpALBbNaJuSH+UlwqW+JPuiv9bjL6h+tSD7KTB
-CPrs16qxPsbOvnilSVURJZOjV9YsgFZBaRquJrlZwoJg9uvo5rUQWjX3x2HlUIX9
-uiqcEHdpcgkZDKIOXsnbvZSuE2d87w==
-=R4zZ
------END PGP SIGNATURE-----
-
---Sig_/LvcxCIoyiyxMRzVmv5VeRt=--
