@@ -1,84 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915521D5CFB;
-	Thu, 20 Feb 2025 15:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1153820C038
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 15:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740065010; cv=none; b=Ysnz+SrXwLQIDZ/7I2El8EXJ8gTE+KsIHvrXtzR+mH3KAFN3nFP8jCSYZPeMtB0i4D2NplDBGePgxKEmG8ph5HtDQFKRgZz6dCgtCi7MhcJj9dl4Xi01lGBVPtJF4JILvN58dZSQCqUultmCz2ckUpwrjYz/xnZSjQEI2DWreYs=
+	t=1740066355; cv=none; b=o0cQ+UYyZAL85p2tecIvAsAcSDJswN5gxCM666vZMf+ehGqZEd4F08Bk/N8KbqC28Q4KiKUMdqWIY+HlCyjVpjD4QysPXGqdwxAyTCZ9joYJkkhpad9LLVc90hUb0LReW1e3mVDgnbBc1csOsa0Qf3v97oUMfLvIhOeCbUIivcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740065010; c=relaxed/simple;
-	bh=857IyU52xW+51h1kUegUUYCv0nuT4T0ZRmSW+2m+clk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/Em49y9roaULMoWqX/3gxophG5m2EY1Duyrrj1lQAnlinjrMKxcVBJlx0Rs8YjEesMV5fod6ntz8UICC7vBbwtqLv/j4JEp904BmvrBdTv524//X1Hkbz/GlUXEurRN0r3FZmq/ftQwBJg+B/trAp4JednQ5zkMp97OJh4t6s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C+pbWdUp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C+pbWdUp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QHgJz38bfp6rGW5Vo/Ip3UFCsgToQN+AI1DehaCYgGw=; b=C+pbWdUpusHCcABHrf4mEFpvSl
-	Ct2Eo2ufrgz7aCjTc6iX/r9B/1CG2nwXezYc66eyQB+GOzsc+b3q6Sz9E6XyKRX/cJ3Rge6kYIpFx
-	ORFt+wE+Q6gzwREeHYpuWEY+sT9QexH1wioDE6+SJTuMZCoLlPrgc/xu0X8LpRDcMBUM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tl8OY-00G0Dd-RG; Thu, 20 Feb 2025 16:23:22 +0100
-Date: Thu, 20 Feb 2025 16:23:22 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
-Message-ID: <f68ebe15-69ee-428a-8079-8bb05d7aa21b@lunn.ch>
-References: <20250219114936.3546530-1-lukma@denx.de>
- <3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
- <20250219233802.20ec53e5@wsk>
- <5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
- <20250220154826.3455b15e@wsk>
+	s=arc-20240116; t=1740066355; c=relaxed/simple;
+	bh=Iq9T7pMioPdDOZz4aq2ZIvplirUsKKpBikVGevZ1iTU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ELrwROj4tQazqiDXWCMoYZXGlCNjLgIQLMrEFNG6U3Jm1VX/imhaPBcHpxEkJdNrMQcZCZmDv+Qo1OAbmz68j/x9/FW0NyaFxnjg3uhvg8u9SjC5j2BRFBZ0IPvsHTOdnXjXwHXVBf9vZs4w0x+gDzRCTVWbMswIbbuf9dSmRAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tl8k7-0003MS-Ml; Thu, 20 Feb 2025 16:45:39 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tl8k7-001xUd-18;
+	Thu, 20 Feb 2025 16:45:39 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tl8k7-000Clm-0p;
+	Thu, 20 Feb 2025 16:45:39 +0100
+Message-ID: <6e03b0c09c4e6d222670025c6540f73a0a0a819d.camel@pengutronix.de>
+Subject: Re: [PATCH v2 8/8] imx_dsp_rproc: Use reset controller API to
+ control the DSP
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Daniel Baluta
+	 <daniel.baluta@nxp.com>, robh@kernel.org, shawnguo@kernel.org
+Cc: krzk+dt@kernel.org, conor+dt@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, mathieu.poirier@linaro.org, 
+	shengjiu.wang@nxp.com, Frank.Li@nxp.com, peng.fan@nxp.com, 
+	laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com
+Date: Thu, 20 Feb 2025 16:45:39 +0100
+In-Reply-To: <c52e6c5c-f49e-4727-b669-086ae7cb0e1e@gmail.com>
+References: <20250219192102.423850-1-daniel.baluta@nxp.com>
+	 <20250219192102.423850-9-daniel.baluta@nxp.com>
+	 <c52e6c5c-f49e-4727-b669-086ae7cb0e1e@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220154826.3455b15e@wsk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-> > Seems like a reasonable compromise. You would only load this driver if
-> > you intend to make use of the switch...
-> 
-> Yes, the main use case would be the switch (after bridge ... command
-> called).
-> 
-> However, until then we shall? have port separation.
+On Do, 2025-02-20 at 00:22 +0200, Laurentiu Mihalcea wrote:
+>=20
+> On 2/19/2025 9:21 PM, Daniel Baluta wrote:
+> > Use the reset controller API to control the DSP on i.MX8MP. This way
+> > we can have a better control of the resources and avoid using a syscon
+> > to access the audiomix bits.
+> >=20
+> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> > ---
+> >  drivers/remoteproc/imx_dsp_rproc.c | 25 +++++++++++++++++--------
+> >  drivers/remoteproc/imx_rproc.h     |  2 ++
+> >  2 files changed, 19 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/im=
+x_dsp_rproc.c
+> > index ea5024919c2f..631563e4f86d 100644
+> > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > @@ -19,6 +19,7 @@
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/remoteproc.h>
+> > +#include <linux/reset.h>
+> >  #include <linux/slab.h>
+> > =20
+> >  #include "imx_rproc.h"
+> > @@ -111,6 +112,7 @@ enum imx_dsp_rp_mbox_messages {
+> >   */
+> >  struct imx_dsp_rproc {
+> >  	struct regmap				*regmap;
+> > +	struct reset_control			*reset;
+>=20
+> Maybe rename this to "stall"? There's also the DAP stuff that's actually =
+used
+> to reset the core so this might be a bit confusing?
 
-Yes. The model Linux uses is that the ports are individual interfaces
-to start with. We should keep to that model.
+So Run/Stall does not actually reset anything? Maybe then it should not
+be modeled as a reset control. It looks to me like the
+DAP_PWRCTL[CORERESET] bit in the Audio Processor Debug region would be
+a much better fit.
 
-> > MoreThanIP is now part of Synopsys. I wounder if this IP now exists in
-> > other SoCs? The press release however suggests Synopsys was
-> > interesting in the high speed interfaces, not a two ports Fast
-> > Ethernet switch.
-> 
-> I would need some detailed documentation....
-
-Which is probably not available. You might be able to get some clues
-from the Freescale datasheets, if they have kept the address spaces
-separated. I don't see it as a strong requirement, given how old this
-IP is, and the limited interest in supporting it over the years, My
-guess is, nobody else uses it.
-
-	Andrew
+regards
+Philipp
