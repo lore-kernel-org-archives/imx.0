@@ -1,157 +1,152 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903E922318
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 13:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9EB1F7910
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 13:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740056509; cv=none; b=meFhA4iz3kkZYiAr8kaJLkpXcD9d8AsW9lSUfTkMbDKjIfOBEreqeszlGDwvuwlFBA2HI/BU9h705DmOlKSQSssM4oYW+V6yZE6hO0yd2nneqpt9kv9Kcv5qeubBzX4XHMROmYiyKMH4bFuv73H1JIyisaU23ZhB+FdMZtoQ4GE=
+	t=1740057107; cv=none; b=TlKc1fittApTZq+TiCs7Iu6FS7Kur2Br2Rn0u+1ujqBbqZkCKj6ngGtwLTPIhEhVymSuhRUEypG8C3fE536Wo5Alcl+ooWASb9GoEYxgNrQAvQMcZX55TUOxiYrK4k6VeUpIA0Fhx/D/sns4PS7cNH/TPlG065yqSgoqQu5oQyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740056509; c=relaxed/simple;
-	bh=q4k6pLg6gFyqRkfKqGoGGD96uz6bTIidMfX2e2HpSNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hu9/B43UXYWuOuONxuUJDGb6ZkFGyapRHt3dkWYjU7p3mYjtP7vIn8SgZNNyY3EEW56889sWFXs4e3v2WFjNEWAzOtt6sNxuabpGwsvXnIV00w6gWV4f6j9OSQq5MTAMXGnGg7bmyPdxUmxoPoA6iJnInMyEMxonRqixRHWl8ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iff8p0YA; arc=none smtp.client-ip=209.85.218.49
+	s=arc-20240116; t=1740057107; c=relaxed/simple;
+	bh=1rFDlxPm9dOSxZVbvPEae5HPKIG7G0vod8A15RjRzcQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uKoUfpwWzubf1odb0yJJrPnrfb4gXfnoHSuk1zp+l2TR7bgidjakm+4M3R/T4/X7Dt1tXomEfDUKSCjVpZuN7Sb1j1pXIh1OGBjNWb6KpDHyRTcVKkIrSRYcKJiUPyNHPrssjlUkxNMltNAxTznxFxU8NDGpYMbT3iOkX/8UXXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZlwRDcv; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iff8p0YA"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-abb81285d33so188139666b.0
-        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 05:01:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZlwRDcv"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fbfa8c73a6so1789940a91.2
+        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 05:11:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740056506; x=1740661306; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vgmKYWvys2geNwIMlTB+AnD/uE/7UeYtcCFKBMM26oQ=;
-        b=Iff8p0YAPACcSbTR0MtbfL+9mMb83U7/owQhNSlLYUtLgQ0KIjThIFYczWoQPmGCtL
-         kn7LfAAqt8Hl10tL+uwmb6CTT1nmU+XyMZKFYElI6xsyRw9desw+KCyfwga0/HFhat65
-         yGBxY50Rp3jqWfuWCtR3gXfovfFHcaCOA/CpU0MRfe1Oa8klkiu2qc9+2fIwFpbElQIy
-         SGnC36HuWFNZwjlGe2UQcBCXJ5hcdxeDD3qrEI5IdXBt0cK1iw+6dBXQW/4mCnbvqI1l
-         d5pTiVxN3Ygbn7QYbDOEq6zIYDGl6OGyHg8MdgVOCT4b1MJ1hp2j6xjlf4K++R1XNtNS
-         17xg==
+        d=gmail.com; s=20230601; t=1740057104; x=1740661904; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JF5QN09m8wD/DAxZp57pL5p7sOu+zrVbutsLKLdh4Cc=;
+        b=HZlwRDcvJROEPjK3BzgyiXO+2qPwcHtoEGs0CUgEhbAEZQg1SAlzQOiGF+VhJr5Lql
+         keonaKsYzeYJlYicJoFbhLJX8fiA+13V9s7WvbXIMODmb7NYVzLzNW4OBWirGUSBhJdB
+         RCXKlg+RZ/lXwaD7FTfECLcgM3H6hWmegImjWt6ZffPI7pYg9CcBU3mUfCgg3imn1svG
+         cWgz5hbeDaJPtkHcZo5KpwfD2pZzPyHs0rXdQVmntMoveEGxGH5pQWVufhzOyaTHHQqZ
+         AvuZvdpW3XrAqBJ7dAWU+YEvI7W4SB0ZVnZA4nQVA9/pv4BLpI9AU6SmaWPGbRG1Kqea
+         UUWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740056506; x=1740661306;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vgmKYWvys2geNwIMlTB+AnD/uE/7UeYtcCFKBMM26oQ=;
-        b=pD6raXOSqS7Ct3BobUjX2rDMSTpRJCd+XJv201/89cEIlw+2yAlXSYq4ZZcK1Ssajv
-         X/xY2Jk5R3ziE3Rv7U5cxGEE7m/W+epsm59fUXfLTuB42dk3Vq6uwoy9GHrQcniCAyzS
-         Vz8g1JYHfeZ2sHqYPznkieoBj+1VA3HHPUF9sgHKXsOdgtj1EenvFF7RQFTBq2mQaMJy
-         hu5RMftbSqe7SHplyvd2x0ui4PCE/COZUM0axPb5DLq8oo4HhIBIxt/ZwbForVow9SLg
-         j7RqHSam27vDsOqT7zugxcl0Mz8haAcvrJdOoezbpPd6h480u+MgmygejwwJs1ZOU72V
-         h9rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwZYVXBCwjrrw1+a7ZOlR+gND15/FSalK2Uyxqre2Ek7FatV7PA0vpM2NvePkbr8nCSfE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJ6Fw1+qqSaibiKUh35dl3Z8AE8dSc6qV4exhVBI+9vt1AgI7O
-	De7LbT92qp7VQ2VRsv/JLcy1KJ029gSfLVBZuK0Ebf9txxyY6Wly
-X-Gm-Gg: ASbGncviscr88I7oJgnB0QW232yQb1Wbm95F9vxaeFCT0wiAxYlFWUBqOXcOKt7kZ9K
-	MxFyPSWutUyckRpz+i0w3ETlDFs5/z49qYhBTIP15o7HnlAXSJKnTlS+rEoJQl96ouqMqt6hvYX
-	bIdXt+jXh1PeWzrUc90UhdTrOL8l2LM1uzmxUJe/NVrqqeGv50hgks5872Z/1l1NDYVnq3vFB6s
-	H+kR3D5lXpfZbrie6P2R4ehljt+WDpKxLefWMA7Ti0MiU9hUKSmeQ62FdWnVmlzRZqM62/wwlAD
-	CYydlWqp53KTeT+zuvtGzQ==
-X-Google-Smtp-Source: AGHT+IEZIyZ80nx+CwGk+O93D4se/mLmew3Yfg4IU+0c2JK2d+v3wVGF39JlO4RSiqfD8//4VL8XHg==
-X-Received: by 2002:a17:906:4fcc:b0:abb:de17:4a30 with SMTP id a640c23a62f3a-abbf384a4dcmr201647466b.19.1740056505371;
-        Thu, 20 Feb 2025 05:01:45 -0800 (PST)
-Received: from [192.168.0.100] ([188.27.130.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbbde95957sm492331366b.138.2025.02.20.05.01.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 05:01:44 -0800 (PST)
-Message-ID: <c94580f0-3ab0-4a19-a996-9bb37e23dd39@gmail.com>
-Date: Thu, 20 Feb 2025 15:01:41 +0200
+        d=1e100.net; s=20230601; t=1740057104; x=1740661904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JF5QN09m8wD/DAxZp57pL5p7sOu+zrVbutsLKLdh4Cc=;
+        b=rIBsNHBS3gKjGIAOKdf7wUeyGtGQ4AQkyTDW8uyaI2qVbItRWKZdKhlefV1mkOZDln
+         Zf5+91oz9DZMLMRwDez+DJ+9+H3u7q8DQbNpqWVVMbW9N3qY9ZuFtfo9IGQghih22/NP
+         47XMjUY7BV/i9qtbKLeenEq+cuwpj2UwVXQMg6UXsYk4nE3BluvK5GIEqnOoxhi3Lqz6
+         tQdcXtEi94crNsn+UAy1tnrDG0DrsDnzYLpGWrQ1FUcDpDvqc4FXyTY/TshukgK67zNL
+         VTyy+W0kv3NXfGKtrDJadbF4Hwv4SHkcQOIRun7fGpqhrpzKRyKtOmDiaxpFPXH7pY1x
+         Xr0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXqlDeD2djiDeQeEKN2Y8ShX+sdfF76pFbbTn6fjDrsjyh+Tk5LLUdS/O+dL2WcnNfwT0g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQlga/pvUr0ApqvBXqWEwRP/1KKBsjAhgEDwuLcIDgJLoKcsq+
+	mUQrO8nmBCdmkmChNcVmnfxe59r8jEyofncz5uNvtvcWji/fslhwrDPZXPK72IhzW09kqyclf78
+	lSi5588m3t5LXaI474ABferDI6lw=
+X-Gm-Gg: ASbGncspJaStwhrpr2O1ZXprcoTLyjFOU+dSgabyBmJmLhrBRMFHkf768NV6I7IJjOB
+	PcnMvLHA+5qTVEt/pQd7Fl6SbGKxLPsE6XReNmnWE1OvrKJTZn59Blp8W1tLEmvS0kMo9sYtfGU
+	ja4y7f/Nyen/2YPDxh5L2inD0l/zQgQJY=
+X-Google-Smtp-Source: AGHT+IF6yx7qrSwJDRsToFTnlYa/h0A1YhshZSR5dL4PvWKAo3vckuyvm/Wyqi6jEyYBH3tHibJkW5A+JtSeL88Uo4M=
+X-Received: by 2002:a17:90b:2f86:b0:2ee:ee77:2263 with SMTP id
+ 98e67ed59e1d1-2fc40c1d548mr36337290a91.7.1740057102215; Thu, 20 Feb 2025
+ 05:11:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] media: add v4l2_subdev_state_xlate_streams()
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Julien Massot <julien.massot@collabora.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Hans Verkuil <hverkuil@xs4all.nl>,
- Umang Jain <umang.jain@ideasonboard.com>, =?UTF-8?Q?Pawe=C5=82_Anikiel?=
- <panikiel@google.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20250220092036.6757-1-demonsingur@gmail.com>
- <tw6x663t5dmxsdarrxjtopza3mou3lnhwazu3dfv2k27fv47v2@bvftfepqqhss>
-From: Cosmin Tanislav <demonsingur@gmail.com>
-Content-Language: en-US
-In-Reply-To: <tw6x663t5dmxsdarrxjtopza3mou3lnhwazu3dfv2k27fv47v2@bvftfepqqhss>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250219192102.423850-1-daniel.baluta@nxp.com>
+ <20250219192102.423850-3-daniel.baluta@nxp.com> <12614210.O9o76ZdvQC@steina-w>
+In-Reply-To: <12614210.O9o76ZdvQC@steina-w>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 20 Feb 2025 15:11:30 +0200
+X-Gm-Features: AWEUYZlFjxlk4pWxNFB2rtjCHWnzpKUBBv6ujaPIet0mutNPJ0j906GL3_pdrJk
+Message-ID: <CAEnQRZDU9HoiD9uBNi+inrZcn8KCRp3pUZQfRqaq5kauuxOi6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/8] dt-bindings: dsp: fsl,dsp: Add resets property
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: p.zabel@pengutronix.de, robh@kernel.org, shawnguo@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	mathieu.poirier@linaro.org, shengjiu.wang@nxp.com, Frank.Li@nxp.com, 
+	peng.fan@nxp.com, laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com, 
+	Daniel Baluta <daniel.baluta@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Feb 20, 2025 at 12:37=E2=80=AFPM Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi,
+>
+> Am Mittwoch, 19. Februar 2025, 20:20:56 CET schrieb Daniel Baluta:
+> > On i.MX8MP we introduced support for using a reset controller
+> > to control DSP operation.
+> >
+> > This patch adds reset property which is required for i.MX8MP.
+> >
+> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > ---
+> >  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 19 ++++++++++++++++++-
+> >  1 file changed, 18 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Docum=
+entation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > index ab93ffd3d2e5..923e7f079f1b 100644
+> > --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > @@ -82,6 +82,13 @@ properties:
+> >      description:
+> >        Phandle to syscon block which provide access for processor enabl=
+ement
+> >
+> > +  resets:
+> > +    description:
+> > +      A pair consisting of phandle to audio-blk-control and an index r=
+eferencing
+> > +      the DSP Run/Stall bit in audiomix registers.
+> > +      See include/dt-bindings/reset/imx8mp-reset-audiomix.h for each i=
+ndex meaning.
+> > +    maxItems: 1
+> > +
+> >  required:
+> >    - compatible
+> >    - reg
+> > @@ -164,6 +171,16 @@ allOf:
+> >              - const: txdb1
+> >              - const: rxdb0
+> >              - const: rxdb1
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - fsl,imx8mp-dsp
+> > +              - fsl,imx8mp-hifi4
+> > +    then:
+> > +      required:
+> > +        - "resets"
+> >
+> >  additionalProperties: false
+> >
+> > @@ -220,5 +237,5 @@ examples:
+> >                 <&mu2 3 0>;
+> >        memory-region =3D <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
+> >                        <&dsp_vdev0vring1>, <&dsp_reserved>;
+> > -      fsl,dsp-ctrl =3D <&audio_blk_ctrl>;
+> > +      resets =3D <&audio_blk_ctrl IMX8MP_AUDIOMIX_DSP>;
+>
+> Am I missing something here? fsl,dsp-ctrl is used to get the regmap from =
+syscon.
 
+fsl,dsp-ctrl was used to control the DSP. This functionality for
+imx8mp have been now replaced by
+using the reset controller.
 
-On 2/20/25 1:38 PM, Jacopo Mondi wrote:
-> Hi Cosmin
-> 
-> On Thu, Feb 20, 2025 at 11:20:32AM +0200, Cosmin Tanislav wrote:
->> Currently, the v4l2_subdev_state_xlate_streams() function is used
->> to translate streams from one pad to another.
->> This function takes the entire subdev state as argument, but only makes
->> use of the routing.
-> 
-> Correct, but is this a problem ?
-> 
-
-No, it's not a problem.
-
-> Is this the first step for a larger rework or is this a drive-by
-> beautification ?
-> 
-
-Mostly a drive-by beautification to avoid passing the whole state around
-where we only need the routing. I'm planning to submit drivers for more
-GMSL2/3 chips and we're using this just to not pass the whole state
-around. I think I can just use v4l2_subdev_state_xlate_streams(),
-but I had these patches in my tree and it would have been good to get
-them upstream, in preparations for submitting the GMSL2/3 drivers.
-
-> I'm asking because (and I know it's hard to strike a balance) this
-> kind of changes tend to make back-porting a more painful, and if
-> only justified by "it looks better" I would be a bit hesitant in
-> taking them.
-> 
-> 
->>
->> Introduce a v4l2_subdev_routing_xlate_streams() function which can be
->> used without the entire subdev state, to avoid passing the entire state
->> around when not needed.
->>
->> Convert all usages of v4l2_subdev_state_xlate_streams() to
->> v4l2_subdev_routing_xlate_streams().
->>
->> Remove v4l2_subdev_state_xlate_streams().
->>
->> V2:
->>    * Fix description of parameters
->>
->> Cosmin Tanislav (3):
->>    media: v4l: subdev: add v4l2_subdev_routing_xlate_streams()
->>    media: use v4l2_subdev_routing_xlate_streams()
->>    media: v4l: subdev: remove v4l2_subdev_state_xlate_streams()
->>
->>   drivers/media/i2c/ds90ub913.c                 | 14 ++++++-----
->>   drivers/media/i2c/ds90ub953.c                 | 14 ++++++-----
->>   drivers/media/i2c/max96714.c                  | 16 ++++++-------
->>   drivers/media/i2c/max96717.c                  | 23 ++++++++++---------
->>   drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++-----
->>   .../platform/nxp/imx8-isi/imx8-isi-crossbar.c |  2 +-
->>   drivers/media/v4l2-core/v4l2-subdev.c         |  7 +++---
->>   include/media/v4l2-subdev.h                   | 10 ++++----
->>   8 files changed, 53 insertions(+), 47 deletions(-)
->>
->> --
->> 2.48.1
->>
->>
-
+The example where the diff happens is for imx8mp so for this reason I
+changed it to use the
+new way of doing the rest.
