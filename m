@@ -1,120 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A73265624;
-	Thu, 20 Feb 2025 21:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AE61F03D3
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 22:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740086961; cv=none; b=rHUN1YkL7ybNAn1379dvyNxn827uTsnpuiE+4C47nDmWRkyyhzLRhno2L+TVlrMYjhgbscXp3RdP0XBWE/QGCbqkXeYX5xdnzwId8xnqr9UAkNNMv+3PlcgF8x4tMsI42/7UM3G8d/KqnktbUhiKDRit5oc0cgrisHfYxsBgqaE=
+	t=1740089365; cv=none; b=gUK23t5YkNPP7eGdJHLQMSaxeTtRDLDpO/m6b1GhviX2Nsm+FXQL6vX3ziRJbBCsikKZB71fzfliYDNcg4r5yqG6N87sgs+/u1r8oihSEsN2r0MVZidp0eV5ZQgJoVm7ptLgz/yhc+VWADmoVro7zuZ1Ya6EqeVh+DxEIWLpdec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740086961; c=relaxed/simple;
-	bh=kfvzeMKrGQuu+01M2Wgm2/ThWI4eKODKRyAcGfYZ6CQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=PPuIyM8Psjjg4Rvn7JKKjjqOyCsQY4tsqXdLnrBOM2wQyZbUh1V/BRUt4XefGbToTPSC3rXWSOWGJfr2IfDn3SZHi0WmFJRtfDudZ0cXNxPQv4x8pj6j/8Fs0fRsvfzAcv4V6sSvgxVizZYr0aNr6e4z/+pG60UeKkSdEATcKWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcuzNLQ5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740089365; c=relaxed/simple;
+	bh=Qk46eOwmfnB/fNW3txcLxyQ//kct9eJkKtX0ruYzmGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=msJZxOaN9o4+REKk+n9ZnTl/ED6rvsYtY4Oz/Gi6bTlr+E/Zc0aKtynai4QUzRZ84ntr/r3p5CbGpQqBfKoNCAPDu1BcQVP7Im5mHq1LFYYP2oQ3ijmmfPEh3HS7o1rn8Njckv6Yozs+4KzSQkIf0K8TWV3SVyCgCvk+pJ/wYDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L19XVOcB; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcuzNLQ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77EAC4CED1;
-	Thu, 20 Feb 2025 21:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740086961;
-	bh=kfvzeMKrGQuu+01M2Wgm2/ThWI4eKODKRyAcGfYZ6CQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=FcuzNLQ5WVZKv5WbLvImuWazV+d2CjJj4FpNf2RmqYN5Pbk75kP9Ya65yAVAbjKZa
-	 gxHuAWlMv74eZZ7ppU+Covz7UaFB8yPn9Ct56a2D/umtfcSGwW1Y9PNgmScip66FIi
-	 +Xnmq//rBAfzsMy34TuL8OjC7cXjSt9YEJMEElTBdzij3aWIpIRq7bwU31hjD44K0z
-	 f40deeAqSSHnw5oW/SfU1VLyrB6TFNNWN85Ui0atgu4Giap4uUN6uJdaPZ72v+Rdph
-	 +sYOCJVDNG5xNOGP9dd3/YUUbUWZzYVm0eKQgUgk1FOHI/4aauIuLvmDZDmep0eaGK
-	 WBLFoUJYHtXvQ==
-Date: Thu, 20 Feb 2025 15:29:19 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L19XVOcB"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E62F843137;
+	Thu, 20 Feb 2025 22:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1740089360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XR5kIZpUVnxd7NQva8Zt0gnaC0IasQ2WCr4TJ7Zil3U=;
+	b=L19XVOcBHKdvLxCS0Zx5UodskMhTSSsvc+dv4kDB9sXNQ6yMsGw9B4R9q31athnkEHjlpT
+	Ml+tFdPj3xrLyvHT3QYTMIhrFtfcMFnL4XwiSuTd3ZrqvUvQIEH5w5AhHHacdx35FMuCn5
+	t/sFUZbFYufljky9AHMGCnH5aZ4hTcXZDRSyf/GQtM9esLe/oLUzn+1ilqwdEKqNWggZBo
+	yvpfEmC0FXlfoxjJ7WF4VbvswDBzmOVQgF6DVwWKKhOG0U07Vubeb6XA35CyToB50lTEk+
+	/Nwk4PXYCvOBTcAAU6T2LcFlMAnDoRPNKqaaQI5TzWVVHcZNqIC4+fDg7AiMuw==
+Date: Thu, 20 Feb 2025 23:09:19 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: frank.li@nxp.com, miquel.raynal@bootlin.com
+Cc: conor.culhane@silvaco.com, imx@lists.linux.dev,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] MAINTAINERS: I3C: Remove Conor Culhane from Silvaco
+ driver maintainer
+Message-ID: <174008931864.597348.8655184807057605761.b4-ty@bootlin.com>
+References: <20250204161151.2179596-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com>
-References: <20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com>
-Message-Id: <174008661875.4046844.10682813158644154393.robh@kernel.org>
-Subject: Re: [PATCH v3 0/4] arm64: dts: add imx95_15x15_evk boards support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204161151.2179596-1-Frank.Li@nxp.com>
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeikedvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetlhgvgigrnhgurhgvuceuvghllhhonhhiuceorghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepieejfefhffekjeeuheevueevjedvleevjeetudffheeutdffudefjeduffeuvddtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegvtdgrmedvugemieefjedtmeejkegvtdemtgdtvgekmedvkedtieemkegrtgeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvugemieefjedtmeejkegvtdemtgdtvgekmedvkedtieemkegrtgeipdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeipdhrtghpthhtohepfhhrrghnkhdrlhhisehngihprdgtohhmpdhrtghpthhtohepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdprhgtphhtthhopegtohhnohhrrdgtuhhlhhgrnhgvsehsihhlv
+ hgrtghordgtohhmpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhifegtsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-
-On Thu, 20 Feb 2025 11:11:15 -0500, Frank Li wrote:
-> Add related binding doc.
+On Tue, 04 Feb 2025 11:11:51 -0500, Frank Li wrote:
+> Conor Culhane's email address (conor.culhane@silvaco.com) is no longer
+> accessible, and there has been no activity from him on
+> https://lore.kernel.org/linux-i3c/ in the past two years.
 > 
-> Add imx95_15x15_evk boards, which have big difference with imx95_19x19_evk
-> boards.
+> To avoid email delivery failure messages when sending patches to the I3C
+> mailing list, remove him from the Maintainers section and move him to the
+> credits.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Changes in v3:
-> - Add Rob and Conor's ack tags
-> - Remove undocument property (need doube check why dtb-check have not
-> report warning).
-> 
-> - Link to v2: https://lore.kernel.org/r/20250114-imx95_15x15-v2-0-2457483bc99d@nxp.com
-> 
-> Changes in v2:
-> - fixed typo 'inctrl-names'.
-> - Link to v1: https://lore.kernel.org/r/20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com
-> 
-> ---
-> Frank Li (4):
->       dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
->       arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
->       arm64: dts: imx95: Add i3c1 and i3c2
->       arm64: dts: imx95: Add imx95-15x15-evk support
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml    |    1 +
->  arch/arm64/boot/dts/freescale/Makefile            |    1 +
->  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1062 +++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx95.dtsi          |   27 +
->  4 files changed, 1091 insertions(+)
-> ---
-> base-commit: 50a0c754714aa3ea0b0e62f3765eb666a1579f24
-> change-id: 20250110-imx95_15x15-6a64db8c0187
-> 
-> Best regards,
-> ---
-> Frank Li <Frank.Li@nxp.com>
-> 
-> 
-> 
+> [...]
 
+Applied, thanks!
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+[1/1] MAINTAINERS: I3C: Remove Conor Culhane from Silvaco driver maintainer
+      https://git.kernel.org/abelloni/c/6f61e5dce268
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Best regards,
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c380000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-
-
-
-
-
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
