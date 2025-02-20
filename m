@@ -1,178 +1,173 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939B613BACC
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BC41CEAC3
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740062920; cv=none; b=aFl+9DwTa7ElR1Ta0jyKOchfHfTfJgxuVGjoG29sH5EpAtXR17IEUjMEmPST+59Wm7JyNIwsJU8Kr3FUsBKot/k7DEibpsPrcWOXU7oUQXtYFVMh/Glg4Q12VuCp+PAJAr9ey/6qNPf5zQ1ffPk8MAjAq6x0Caa2ozx1Q4qYj+8=
+	t=1740063388; cv=none; b=RZfx3mLw2gHA7KRlDosCPVyQWVSooeFTDnI6hTGUSJk6C2BfJMpRqr3nO3Wjld+ZQrdX85yzdDkOMzJMX7SRZiyNwkPxxU95/sxTj+1TTRJ2d7rtJIOfDILpUJWyGCG5Nft5Gb36UJubQ4bgXtVqn/ae6IV8lJSraF3mnUvJd1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740062920; c=relaxed/simple;
-	bh=PzEer1mTGvGb2m+KD/jgWxiPMBT75xyrk+ydbLeYI3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aVxv3SOy3mpiiJX2+KbuhTNOaZp3S4Bc/ayN7kfXzz99jH+5qd8ZDg3/I4GOBx9r1qO+E/e3leTP/KdE4MBKN/vmAO4kr4pLK1YdF2mLS5I/6AlwrjhtMKjVmyj2vQ8BzTAdYlJ/nT3MvoN1jto32wqykcEVqu8LIpfEuV8ehLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=iWtjEsLy; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1740063388; c=relaxed/simple;
+	bh=iC9yPQyquPxEEH+5Z/jirN5ZPVULrgomJdmlfPFo6Ys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GTY/ww+EguG5yPhBKNzjG6dErlHZnUERsMDP8XFZ7NKSsdLJ7d1oQvbBPqrrUVidOYyOtc+3dXcd1GEQp2S6L79acWrGWJwM78Dlvqq67AXRIRTeCjfXH92OrK0tcpJEVbVoZRFlkwEVfEKqHgu0yulXh2QNVS8EpSasMwHZP8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=chPxyl7W; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=tUX07zcQ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="iWtjEsLy"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F81210382D37;
-	Thu, 20 Feb 2025 15:48:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740062910;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="chPxyl7W";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="tUX07zcQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1740063385; x=1771599385;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=p+oE9ycbC0603bsKVd233oRRg0AuABTZ4kzML2kwZR8=;
+  b=chPxyl7WyR4/LyeOS3PJiRwZLK4gUiQk9n6sVOx1SiDgzcNeYU6cGF5k
+   nckZBxXABC0E8RlNgvqzaz+8t6ePf4qZ3JVeShzdpRqsgvJBwiBfUyBGN
+   cjrzOq40kQsTHIu6s8HTrdVXsMLiGehVKZg8RdoJQnNAMSqPOzGZAy1bw
+   TtWYz+v2Ou90O6i5q8fX9B9PY/o8TJOTYjshkwmhFB1sbVkOEi27QFAPq
+   ByyHr5zC57iWOg7Spg6tEe8fz482/q7CPQjYEFnhj1L2bLkGEx7rbD2La
+   8NNRldAw123+WtAnOghGbiiurZt4rGpE99lCPWB5Vn8x1uvxNpFOsI2Wv
+   w==;
+X-CSE-ConnectionGUID: W4HPKULnSKKA4nSjoEUZoA==
+X-CSE-MsgGUID: oTh/8wVLRz2R++zgJdaILA==
+X-IronPort-AV: E=Sophos;i="6.13,301,1732575600"; 
+   d="scan'208";a="41984277"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 20 Feb 2025 15:56:19 +0100
+X-CheckPoint: {67B74293-15-EBA888C4-C1AC8B84}
+X-MAIL-CPID: 7722C96904D91C2DA0956815BF213B70_0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B86101657D9;
+	Thu, 20 Feb 2025 15:56:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1740063375;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ldqI1Le+GNbE+uBRLkLvuLrordSQ/bU414re+PDqRgg=;
-	b=iWtjEsLylFgr2+ddtCwYOKZnorICgZLXMimUifa+okc9WQqYoo6+u6UKCRYO1RI10IL3Di
-	46+qHJXpjf3Z43lYHQM2qvPZ3Ivnu2Kq7LTgrbBFi2ZopTitbRaImYsWZL5dodu7p0JW0N
-	h9BjrlQElNSaPiQLSlfeCMOnzRYNURThGfezcLWolcaueVQzlMQ+ZvAAg2ZGESCmNC92x0
-	mbQIDRlR2lMHYQ4Ary2yPugSaa7wIOsVdwNNhZQ2Nij0WKSk2EaUlB1N6QK5RjCbiUyz6h
-	4UU3C+wlpwa22XeoR9XVKXNwpPsbdIZ4iCt5fP8kV7//a2Zil6r/dxf1LhqsAw==
-Date: Thu, 20 Feb 2025 15:48:26 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-clk@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610
- SoC
-Message-ID: <20250220154826.3455b15e@wsk>
-In-Reply-To: <5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
-References: <20250219114936.3546530-1-lukma@denx.de>
-	<3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
-	<20250219233802.20ec53e5@wsk>
-	<5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=p+oE9ycbC0603bsKVd233oRRg0AuABTZ4kzML2kwZR8=;
+	b=tUX07zcQfsKSY9PuQuU9pNewWK+34vb0xzSyr8Qt4p71UcWvC5mRGH50LmyoTdBaY8/GSu
+	zNgdjzdvVuzHu7t4JkEedcoAukN5ghE02JKporcRii18vzoY/pgExznFOfCS2I5sSFQZpu
+	s6LRHIlR4ClHIV3MYrbr6UMaLcg2X0jrRERyZ3VSoRPAaRqH/cU92QdI1RnhahcSEKs37o
+	oaOqy5Bg6YtRPPSsZyevfhwYr9j5kFa5XSrqf4NIhklNu9RG6e+VxI6AHkVGg5OmRsOGqv
+	WUKn7v43jWkUzxQgiHpCIQV/YyQOru6so0LklqqBBZSmGSTDSc/dXoPELiwQSw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: p.zabel@pengutronix.de, robh@kernel.org, shawnguo@kernel.org,
+ linux-arm-kernel@lists.infradead.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, mathieu.poirier@linaro.org, shengjiu.wang@nxp.com,
+ Frank.Li@nxp.com, peng.fan@nxp.com, laurentiu.mihalcea@nxp.com,
+ iuliana.prodan@nxp.com, Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v2 2/8] dt-bindings: dsp: fsl,dsp: Add resets property
+Date: Thu, 20 Feb 2025 15:56:13 +0100
+Message-ID: <2359786.ElGaqSPkdT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To:
+ <CAEnQRZDU9HoiD9uBNi+inrZcn8KCRp3pUZQfRqaq5kauuxOi6Q@mail.gmail.com>
+References:
+ <20250219192102.423850-1-daniel.baluta@nxp.com>
+ <12614210.O9o76ZdvQC@steina-w>
+ <CAEnQRZDU9HoiD9uBNi+inrZcn8KCRp3pUZQfRqaq5kauuxOi6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/EoF.xD3edO+ut3CeLCKvgE3";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/EoF.xD3edO+ut3CeLCKvgE3
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-Hi Andrew,
-
-> On Wed, Feb 19, 2025 at 11:38:02PM +0100, Lukasz Majewski wrote:
-> > Hi Andrew,
-> >  =20
-> > > On Wed, Feb 19, 2025 at 12:49:36PM +0100, Lukasz Majewski wrote: =20
-> > > > The NXP's vf610 soc is equipped with L2 switch IP block from
-> > > > More Than IP (MTIP) vendor.
-> > > >=20
-> > > > It requires special clock (VF610_CLK_ESW) to be operational.   =20
-> > >=20
-> > > So you have a driver for this switch? It has been talked about in
-> > > the past, but nobody made any progress with it. Ah, it was you in
-> > > 2020. =20
-> >=20
-> > Yes, I'm going to try another time to upstream it.... :-)
-> >  =20
-> > > It
-> > > will be interesting to see what you came up with in the end, pure
-> > > switchdev or a DSA driver. =20
-> >=20
-> > I think it would be:
-> >=20
-> > 1. Standalone driver, which would configure the L2 switch from the
-> > very beginning to work (this is different from FEC on imx28/vf610
-> > where switch is bypassed)
-> >=20
-> > 2. It will use the in-switch registers to have two network
-> > interfaces separated. As a result - it may be slower than the
-> > fec_main.c in this use case. =20
+Am Donnerstag, 20. Februar 2025, 14:11:30 CET schrieb Daniel Baluta:
+> On Thu, Feb 20, 2025 at 12:37=E2=80=AFPM Alexander Stein
+> <alexander.stein@ew.tq-group.com> wrote:
+> >
+> > Hi,
+> >
+> > Am Mittwoch, 19. Februar 2025, 20:20:56 CET schrieb Daniel Baluta:
+> > > On i.MX8MP we introduced support for using a reset controller
+> > > to control DSP operation.
+> > >
+> > > This patch adds reset property which is required for i.MX8MP.
+> > >
+> > > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 19 +++++++++++++++++=
++-
+> > >  1 file changed, 18 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Doc=
+umentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > > index ab93ffd3d2e5..923e7f079f1b 100644
+> > > --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > > +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
+> > > @@ -82,6 +82,13 @@ properties:
+> > >      description:
+> > >        Phandle to syscon block which provide access for processor ena=
+blement
+> > >
+> > > +  resets:
+> > > +    description:
+> > > +      A pair consisting of phandle to audio-blk-control and an index=
+ referencing
+> > > +      the DSP Run/Stall bit in audiomix registers.
+> > > +      See include/dt-bindings/reset/imx8mp-reset-audiomix.h for each=
+ index meaning.
+> > > +    maxItems: 1
+> > > +
+> > >  required:
+> > >    - compatible
+> > >    - reg
+> > > @@ -164,6 +171,16 @@ allOf:
+> > >              - const: txdb1
+> > >              - const: rxdb0
+> > >              - const: rxdb1
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            enum:
+> > > +              - fsl,imx8mp-dsp
+> > > +              - fsl,imx8mp-hifi4
+> > > +    then:
+> > > +      required:
+> > > +        - "resets"
+> > >
+> > >  additionalProperties: false
+> > >
+> > > @@ -220,5 +237,5 @@ examples:
+> > >                 <&mu2 3 0>;
+> > >        memory-region =3D <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
+> > >                        <&dsp_vdev0vring1>, <&dsp_reserved>;
+> > > -      fsl,dsp-ctrl =3D <&audio_blk_ctrl>;
+> > > +      resets =3D <&audio_blk_ctrl IMX8MP_AUDIOMIX_DSP>;
+> >
+> > Am I missing something here? fsl,dsp-ctrl is used to get the regmap fro=
+m syscon.
 >=20
-> Seems like a reasonable compromise. You would only load this driver if
-> you intend to make use of the switch...
-
-Yes, the main use case would be the switch (after bridge ... command
-called).
-
-However, until then we shall? have port separation.
-
+> fsl,dsp-ctrl was used to control the DSP. This functionality for
+> imx8mp have been now replaced by
+> using the reset controller.
 >=20
-> > 3. When somebody call "bridge ..." on it - then the in-switch
-> > separation would be disabled. This is the "normal" state of
-> > operation for L2 switch, which would be a HW accelerator for
-> > bridging.
-> >=20
-> > 4. The switchdev would be used to manage it
-> >=20
-> > 5. This would be just a very simple driver - just bridging and
-> > startup of the L2 switch.
-> >=20
-> > After we would have a consensus (i.e. it would be pulled to
-> > mainline) - I would proceed further.
-> >=20
-> > I will try to not touch fec_main.c driver - just write standalone,
-> > new for MoreThanIP L2 switch driver. =20
->=20
-> It might make sense to refactor the MDIO code into a helper which both
-> can share? No point duplicating that.
+> The example where the diff happens is for imx8mp so for this reason I
+> changed it to use the
+> new way of doing the rest.
 
-This is a latter step (common MDIO library code), IMHO.=20
-
->=20
-> > If somebody would like to use FEC, then he will insert the proper
-> > module. If switch, another one can be inserted, depending o the
-> > target use case. =20
->=20
-> This all seems like a reasonable way forward.
-
-+1
-
->=20
-> MoreThanIP is now part of Synopsys. I wounder if this IP now exists in
-> other SoCs? The press release however suggests Synopsys was
-> interesting in the high speed interfaces, not a two ports Fast
-> Ethernet switch.
-
-I would need some detailed documentation....
-
->=20
-> 	Andrew
-
-
-
+Okay, maybe add another example for 8ulp then.
 
 Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
 
-Lukasz Majewski
 
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/EoF.xD3edO+ut3CeLCKvgE3
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAme3QLoACgkQAR8vZIA0
-zr2Zzgf9HtLGK3Ux7Xf80L6yo2vvKfPiWZ/RuxE4tCAf9yjd5vk2Wfg9EizNIaaX
-ILs8pKZkCxVRQxUqQ7Cx2k02jDSZiHJ30GFYlE6EtUFGgk00siH1uUZA5ScSsHPj
-DZfO/gVB4MW+ofwapPvYEGyUdKQmyB2IOt5OfusD4f9p869BqoskJQpsESHDP16m
-qcDpAwgne46YXCHFpfzDFTEDmriOa0/iY04iTFAV/kbxGu+OwW23X7c5CJFE79KP
-AWxzzSzuu9iNAGcKEW1u9rH6H1iEb0GW9dVBDE/dX5VHwAqRct6S+tZonQGQzQab
-eNojXymqBTXSfY5w/1xzbDX5z4WPGw==
-=A4R8
------END PGP SIGNATURE-----
-
---Sig_/EoF.xD3edO+ut3CeLCKvgE3--
