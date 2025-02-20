@@ -1,85 +1,120 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409D82B9AA
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 20:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A73265624;
+	Thu, 20 Feb 2025 21:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740084181; cv=none; b=lYE55R/n0KAQF/tA3+SRNDF9RaeGNoSUamqb2jgnUF24SUImh0gRIkXPwjL31yYKp/Vja4YRWmvPUPvhlSPcURK05yER+5dgVegziSbXH3tkZZEJB2mJ28lZl9DsVeQZJyKVklALjZIAoDuR61D+rNvVtQwK68TD5sQwTCE7WkA=
+	t=1740086961; cv=none; b=rHUN1YkL7ybNAn1379dvyNxn827uTsnpuiE+4C47nDmWRkyyhzLRhno2L+TVlrMYjhgbscXp3RdP0XBWE/QGCbqkXeYX5xdnzwId8xnqr9UAkNNMv+3PlcgF8x4tMsI42/7UM3G8d/KqnktbUhiKDRit5oc0cgrisHfYxsBgqaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740084181; c=relaxed/simple;
-	bh=yyB4raD5FkLDm+6eE9B6NLj9Ve2fAT7IBWp7UlnhxWk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FYryC6U4ibQaa/dssCh4xlLpiD4O+0PNJ6UlI21EMjmRRtH8rZN/BNyhOsl8nOfvc9b1EEXlk3d4thRHWw9M43lT5s6L+ARsNG5Q2mMXZ5CtKvhyRVbFTCTpyeBg4NFhBKN6N1+p727HaFKCp8e0zCwh3FT3EJhsxJoSpFfAlwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Jz7UUagN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JaGBK3GN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1740086961; c=relaxed/simple;
+	bh=kfvzeMKrGQuu+01M2Wgm2/ThWI4eKODKRyAcGfYZ6CQ=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=PPuIyM8Psjjg4Rvn7JKKjjqOyCsQY4tsqXdLnrBOM2wQyZbUh1V/BRUt4XefGbToTPSC3rXWSOWGJfr2IfDn3SZHi0WmFJRtfDudZ0cXNxPQv4x8pj6j/8Fs0fRsvfzAcv4V6sSvgxVizZYr0aNr6e4z/+pG60UeKkSdEATcKWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcuzNLQ5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Jz7UUagN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JaGBK3GN"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740084178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RtHWekfr9PAPqze2jQ7chZG40e+mSXvS0nobf0sErKA=;
-	b=Jz7UUagNJTKbH56LgA1I1S2wceAMMcMLhEFTOQqAXc8zhpwat3W7Md4/GbVOSEl7Ja7f6t
-	BV49/BFemaZOqEOVn4yRHDyY/W9L1s4vwD20lQDSJmg7pHswUgvc2diuh1ACjW3B3wCCiR
-	nb9UU/+ChkaiD0TV7bOceMRn225UlaZst7NAec1BQ85bQBDgRNL+8nc8nkzBgAd2s0Ldh/
-	vM/2IuIdN5fmR1Y2kPmAfRRmoQlQGfb7sMGtdDLelpP4Yq5ze2z5X585jfLSk03FJ82HKI
-	RNpnzH9P6BEFX1OQE6VgcsfUgcxIC9y+u6chBR8e8pplO9v8gn2uX6V3HXw1dw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740084178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RtHWekfr9PAPqze2jQ7chZG40e+mSXvS0nobf0sErKA=;
-	b=JaGBK3GNvF9d/Xprp9sb0i3FtrYJ+tMeGHw68qv5QxzNEaV92P6GDoaIuTka6bxo7IX8wm
-	7Kwx8ZWXVTO9O3CQ==
-To: Frank Li <Frank.li@nxp.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Anup Patel
- <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich
- <dakr@kernel.org>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Shuah
- Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach
- <l.stach@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob
- Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, jdmason@kudzu.us,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v15 00/15] PCI: EP: Add RC-to-EP doorbell with platform
- MSI controller
-In-Reply-To: <Z7eKBsxrmthtElpz@lizhi-Precision-Tower-5810>
-References: <20250211-ep-msi-v15-0-bcacc1f2b1a9@nxp.com>
- <Z7eKBsxrmthtElpz@lizhi-Precision-Tower-5810>
-Date: Thu, 20 Feb 2025 21:42:57 +0100
-Message-ID: <87r03sgxf2.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcuzNLQ5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77EAC4CED1;
+	Thu, 20 Feb 2025 21:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740086961;
+	bh=kfvzeMKrGQuu+01M2Wgm2/ThWI4eKODKRyAcGfYZ6CQ=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=FcuzNLQ5WVZKv5WbLvImuWazV+d2CjJj4FpNf2RmqYN5Pbk75kP9Ya65yAVAbjKZa
+	 gxHuAWlMv74eZZ7ppU+Covz7UaFB8yPn9Ct56a2D/umtfcSGwW1Y9PNgmScip66FIi
+	 +Xnmq//rBAfzsMy34TuL8OjC7cXjSt9YEJMEElTBdzij3aWIpIRq7bwU31hjD44K0z
+	 f40deeAqSSHnw5oW/SfU1VLyrB6TFNNWN85Ui0atgu4Giap4uUN6uJdaPZ72v+Rdph
+	 +sYOCJVDNG5xNOGP9dd3/YUUbUWZzYVm0eKQgUgk1FOHI/4aauIuLvmDZDmep0eaGK
+	 WBLFoUJYHtXvQ==
+Date: Thu, 20 Feb 2025 15:29:19 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ Conor Dooley <conor.dooley@microchip.com>, imx@lists.linux.dev, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com>
+References: <20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com>
+Message-Id: <174008661875.4046844.10682813158644154393.robh@kernel.org>
+Subject: Re: [PATCH v3 0/4] arm64: dts: add imx95_15x15_evk boards support
 
-On Thu, Feb 20 2025 at 15:01, Frank Li wrote:
-> On Tue, Feb 11, 2025 at 02:21:53PM -0500, Frank Li wrote:
->
-> Thomas Gleixner and Marc Zyngier:
->
-> 	Do you have any comments about irq/msi part?
 
-I'm not having objections, but this needs to be acked by Marc as he had
-pretty strong opinions on the overall approach.
+On Thu, 20 Feb 2025 11:11:15 -0500, Frank Li wrote:
+> Add related binding doc.
+> 
+> Add imx95_15x15_evk boards, which have big difference with imx95_19x19_evk
+> boards.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v3:
+> - Add Rob and Conor's ack tags
+> - Remove undocument property (need doube check why dtb-check have not
+> report warning).
+> 
+> - Link to v2: https://lore.kernel.org/r/20250114-imx95_15x15-v2-0-2457483bc99d@nxp.com
+> 
+> Changes in v2:
+> - fixed typo 'inctrl-names'.
+> - Link to v1: https://lore.kernel.org/r/20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com
+> 
+> ---
+> Frank Li (4):
+>       dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
+>       arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
+>       arm64: dts: imx95: Add i3c1 and i3c2
+>       arm64: dts: imx95: Add imx95-15x15-evk support
+> 
+>  Documentation/devicetree/bindings/arm/fsl.yaml    |    1 +
+>  arch/arm64/boot/dts/freescale/Makefile            |    1 +
+>  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1062 +++++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx95.dtsi          |   27 +
+>  4 files changed, 1091 insertions(+)
+> ---
+> base-commit: 50a0c754714aa3ea0b0e62f3765eb666a1579f24
+> change-id: 20250110-imx95_15x15-6a64db8c0187
+> 
+> Best regards,
+> ---
+> Frank Li <Frank.Li@nxp.com>
+> 
+> 
+> 
 
-Thanks,
 
-        tglx
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
+arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c380000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
+	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
+
+
+
+
+
