@@ -1,62 +1,62 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC931FCFDF
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612D20D4E2
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740061078; cv=none; b=RLDKscZI6LaYyDm7s6mDinPzed5fLOyfG9rHyRJSUxetoxXo3aJ7OUiZJx/NUy6BCdTabqg/bKUATf9+tkM1o76Oz/9MhkrB75pXNw+4dD80P89EzYIqvMT2rKxOqFTks8CZ1ax38j9rhKr/s4hyByXsT1plNdM7AuswOKyyT74=
+	t=1740061081; cv=none; b=aI3J/9ivApnCsPF8n2jyEaqB6zwn9T1EbmhLzENuqhIcH759k55UXokbhGvEfpTKBLpS+NbnF7Ljh4t7pTBNtAFGAikF8c+l/Nhf09ayMf37u7TiUVMK2kW1W7GcdOTd8JB79/fMlCaAJ/cqV7B9xX2x+HDhwHoafDv0yrT4FTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740061078; c=relaxed/simple;
-	bh=zAx5h3CW9uhScVCOaEZGPbZKRppELpmuFuRjU0AzcDE=;
+	s=arc-20240116; t=1740061081; c=relaxed/simple;
+	bh=c2oJdhEAPkgZHieAm+Hz9dCi2VAJ3Im9nKjJmOfI5T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FraIscZ27YSi/7+AE/oyz5cqqvn8sfVmiQJwQN5oV+n156tp0JoBYBrkfUbfUsw5Or5V7OJKfnvDiCyBeI+YnOYOfYc+ohfWHGXQw0WHDW1Y/Rb09SE5NPQQWFXh2Odnz+Hid/VYewXy/DI7jVOJGyTq7SVFvwid9rXc1F58cEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XS1nXqGY; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version; b=edV0qIDmzxB9MfLfoQJkIsL5cnd78Lw7iYCagxg9BRnf4YUazn4vvMnZz96dBfGPwoMuDatLr0Zo3wkyao/sL00SEO/n716KH4xe6MjK9+v6tObjO812kLfW3yzs1TpA0jQu5Yn/hjE2yRP9rCNfMlmL8TU48YifH2R4pbdDq5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m4rVo0Fi; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XS1nXqGY"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e04f87584dso1546416a12.3
-        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 06:17:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m4rVo0Fi"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5df07041c24so1435912a12.0
+        for <imx@lists.linux.dev>; Thu, 20 Feb 2025 06:17:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740061075; x=1740665875; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740061078; x=1740665878; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1V5REDmi/qwmeZmzS61DPGBCJO64NPZWi8x4XF3HxB0=;
-        b=XS1nXqGYb+T4RjsuvpR/ogVbM9Js3phbHw/CJFikj209Vw/OfoC9J8qmAxDQo0lznz
-         Iov/+i2q2KiSi+ys1pkzvudkZIg8nmLAnxfbal6h6IfeqW8WFtJrs/tRXKJKG04VS0O3
-         aNdr8Dc7sqpVNLkWv7QgxSs3qb1SRrh46jHzNjLyS9SOh5GuJxZED5SQSqZVkiCNg3y2
-         uLYt5031CAHYuBVMHDU9DwcClEDrBXO4xU0Hz7oGcMV098c1SsByYU1SzLRnOq3mZYyH
-         2We6w8YD3uOJ+w3jsX83SwjOyz4GlSN1DNlpWytSaxxK5RoO1GPZernStg7MQ0kgT/p+
-         mONQ==
+        bh=th+517ZC0V4fbqH9CgBsf81RO0nRc/LViRgQwQPk9dM=;
+        b=m4rVo0Fiybd1wPFe5XR0cXLNtMSOJSkjpwlCSEw82VaOavz7lNbOIJaV3npNlSnIVI
+         DzP0usLPZcBsVX8iQhjU8wsBbz8SFRzAoXYWr5YDSV7a+hg0VVSqLfA9EhDFOAjYBGPe
+         sGMDH2T3aEAGLC2GjBrZCK1nw4OAxtRmAvAkCfUlX30sIBjpiO1t5enjmuJ4yZ/8QTMd
+         X8Asendgj2C/Sr3rc5mOs3x5xtdfKlkXYs5N/4ZL2KxDMFVP5WzEc4nV5i5vzxOA8oD9
+         sKuNWBy/o2gkCZZpSwBiHy7hwv1egw42RNckjq7U9awclIHZ0nbzgqQyeuts4CBv8u/S
+         vOlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740061075; x=1740665875;
+        d=1e100.net; s=20230601; t=1740061078; x=1740665878;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1V5REDmi/qwmeZmzS61DPGBCJO64NPZWi8x4XF3HxB0=;
-        b=jW/BGplykpBDooGOSQHezTY2DXTSh1idNyU+OTN/F/wLefmCy7iI4ua7ddZLNVOD+c
-         eUiDDpL3BOy++hg8SYC2pCoLbAFdjwKd01GC2Ke9+TsdXuRjb+4IVvKXhQdNt3GuE+5N
-         JlHIxER6pTWgfuTYiw1+27IG8R88Qh4q2mp4sBphxV0OnVhQZkSAecgQGfoP2+SjuTC7
-         nR9jpDF8b7Ah/TKKcY/mOCjS9rVpfSgE+3B6PF+yoO5Jbq3Kdf0Nrl/50xMJb/qejXFN
-         07v1KkT0kg6yiAnNzPP+9AhzeRJPGgfrm1elGz42nLFBRfntj+AITZhrlNNj4iPcp25q
-         1HgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmfFwM4KBDKR5XwxiCNY11nPlzF6hW9EIJlGoHMgPlFR06REK+ETB9XqwO806dKT/1fxo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBSSHkGw9qIE6Wy3OsvNRuWdi+hGmXpaXKCygzwNHNg0rxTrqZ
-	E1QjF7BJSU4mix+rgvTqXFtoE9ECS6aUenr1IGqvmGmi5JeKLa5R
-X-Gm-Gg: ASbGncsQV/iUonM+kYz/JEW9zF1JJvsgq1GwgTwWr2MJxk4cyhYtQcWxxX4DSSsXmba
-	bZqKQxLBAPXM0mFb9JNfLJisuF4YWuvAk1yyrHcXv781yB2ps/SHip+Vv7KYLzJIXD5TOaQg3zi
-	4MMnCsKXZZqWU41WcxTLn7CzzrQ2ydFyiETY7GTKZmz62zja6xp25ZkrxtuqfOxImb3PP7tvR6D
-	VB00oBzuVDicHlyFrY7rEp0xyzPlJHEkAkiJO/FuuRPAt/2INVp5cmonsMKEkx3Qh69yJ2aaEds
-	oYGjFXfQ3ge3wIJP+TCM8aJjECb1
-X-Google-Smtp-Source: AGHT+IFFJvKPRHucc1r4QGSkduMvmNCXiQ/0XGioq753EqOOggpo2+xqmAhfLNknWvVEGi+w56gFTw==
-X-Received: by 2002:a05:6402:a00e:b0:5dc:ebb8:fe64 with SMTP id 4fb4d7f45d1cf-5e089523080mr6461869a12.14.1740061074548;
-        Thu, 20 Feb 2025 06:17:54 -0800 (PST)
+        bh=th+517ZC0V4fbqH9CgBsf81RO0nRc/LViRgQwQPk9dM=;
+        b=Ie1wlWHxN8vWAwgOhMbHxOMT4858iWuhPg2XLsTQ/zx80HQzpgcbgpRq0z7xG819sq
+         ajKg69zEMJ1Qq3aBnGSAVV9RjyFqd4Kbca3QwRUhCMwcg3+YnekqJzFwfosKTCuV0r8o
+         SFqNkpOt8QeSc+/Om+cFPhnkn0x/GSRaGTbHv93HPYdoIXj/p/W7SkU3QmWNgMCizldG
+         QSjajGxdrxd8tMd/PHkvaBbeSD61Iow+EnpkNSBkStw24d9q0tZJ0BL7x/d5fUYkzZTt
+         1lZiA+vXNHh3QZE0ZbEkTYVgJ5HjeJm2EnYsfT0cF7084eFG1HqjquS1siCti9gOJd+N
+         H53w==
+X-Forwarded-Encrypted: i=1; AJvYcCWLsy9L8hlYwkFnwrrAwJQ7o33BbmZ9BJE370/LMQJgA+kCI/NO38mUjjM4oR5HmSgE1fU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyoOZJCWF99/nnEjEiQEZdjzVLGM8UFNM6ZNTEv3ArfEv7QGJeH
+	bF1OBOi8rM2zO+pTCKQeTjchRcSXD3RBSiUhrW6GdXjLfpnOtjkc
+X-Gm-Gg: ASbGnctqXKdrPSu+ZlJqQVglI9n8EVEdHKJziaLaBLNuvwUaiuc5mw/RREaW8jCrAY2
+	skJX0KJtjqvvc789O53FF+8LwF2KYjAVt55tXs7R6lbPOZ1DsO0Qccr8Xjtehl4v6r4G4m+dk2m
+	Yq6I5RkXN2Uy529CsXrfSBgv/cnp6WcOoNYFhPcX1bKKmtNUwCxBwnLyPfFSjT2CyI1sqrnp9dO
+	Hvx2iD/KP7+AN2MECVLuN7QW/MEsatHRM3U1brbHYmbfbtEThmdxLhQujU4cLS6lXqS4QoyH/Ho
+	nmLMz1GfVCf4UYNJ7dlxHXetcoV2
+X-Google-Smtp-Source: AGHT+IG+yJuG5x65qDSW6wpTU4i8GdeI5QaF0F4bU7rg7alr8iRr1hZM5jP7CSW2D5EyG71m2P93dg==
+X-Received: by 2002:a05:6402:2084:b0:5e0:8c55:52b with SMTP id 4fb4d7f45d1cf-5e08c5515cemr6215804a12.15.1740061077904;
+        Thu, 20 Feb 2025 06:17:57 -0800 (PST)
 Received: from demon-pc.localdomain ([188.27.130.21])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece1b4f59sm12124224a12.6.2025.02.20.06.17.53
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece1b4f59sm12124224a12.6.2025.02.20.06.17.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 06:17:54 -0800 (PST)
+        Thu, 20 Feb 2025 06:17:56 -0800 (PST)
 From: Cosmin Tanislav <demonsingur@gmail.com>
 To: 
 Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
@@ -74,11 +74,10 @@ Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Cosmin Tanislav <demonsingur@gmail.com>
-Subject: [PATCH 4/6] media: i2c: imx219: pass format's code to imx219_get_format_bpp()
-Date: Thu, 20 Feb 2025 16:17:26 +0200
-Message-ID: <20250220141739.228714-5-demonsingur@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5/6] media: i2c: imx219: Report streams using frame descriptors
+Date: Thu, 20 Feb 2025 16:17:27 +0200
+Message-ID: <20250220141739.228714-6-demonsingur@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250220141739.228714-1-demonsingur@gmail.com>
 References: <20250220141739.228714-1-demonsingur@gmail.com>
@@ -90,40 +89,67 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-imx219_get_format_bpp() only uses the code of the format, pass it
-instead of the whole format to allow usage when the whole format is not
-available.
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Implement the .get_frame_desc() subdev operation to report information
+about streams to the connected CSI-2 receiver. This is required to let
+the CSI-2 receiver driver know about virtual channels and data types for
+each stream.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- drivers/media/i2c/imx219.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/imx219.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-index fcd98ee54768e..ad1965a91ae3c 100644
+index ad1965a91ae3c..4c4ebe54f191b 100644
 --- a/drivers/media/i2c/imx219.c
 +++ b/drivers/media/i2c/imx219.c
-@@ -387,9 +387,9 @@ static u32 imx219_get_format_code(struct imx219 *imx219, u32 code)
- 	return imx219_mbus_formats[i];
+@@ -23,6 +23,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ 
++#include <media/mipi-csi2.h>
+ #include <media/v4l2-cci.h>
+ #include <media/v4l2-ctrls.h>
+ #include <media/v4l2-device.h>
+@@ -990,6 +991,28 @@ static int imx219_init_state(struct v4l2_subdev *sd,
+ 	return 0;
  }
  
--static u32 imx219_get_format_bpp(const struct v4l2_mbus_framefmt *format)
-+static u32 imx219_get_format_bpp(u32 code)
- {
--	switch (format->code) {
-+	switch (code) {
- 	case MEDIA_BUS_FMT_SRGGB8_1X8:
- 	case MEDIA_BUS_FMT_SGRBG8_1X8:
- 	case MEDIA_BUS_FMT_SGBRG8_1X8:
-@@ -680,7 +680,7 @@ static int imx219_set_framefmt(struct imx219 *imx219,
++static int imx219_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
++				 struct v4l2_mbus_frame_desc *fd)
++{
++	struct v4l2_subdev_state *state;
++	u32 code;
++
++	state = v4l2_subdev_lock_and_get_active_state(sd);
++	code = v4l2_subdev_state_get_format(state, 0)->code;
++	v4l2_subdev_unlock_state(state);
++
++	fd->type = V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
++	fd->num_entries = 1;
++
++	fd->entry[0].pixelcode = code;
++	fd->entry[0].stream = 0;
++	fd->entry[0].bus.csi2.vc = 0;
++	fd->entry[0].bus.csi2.dt = imx219_get_format_bpp(code) == 8
++				 ? MIPI_CSI2_DT_RAW8 : MIPI_CSI2_DT_RAW10;
++
++	return 0;
++}
++
+ static const struct v4l2_subdev_video_ops imx219_video_ops = {
+ 	.s_stream = imx219_set_stream,
+ };
+@@ -1000,6 +1023,7 @@ static const struct v4l2_subdev_pad_ops imx219_pad_ops = {
+ 	.set_fmt = imx219_set_pad_format,
+ 	.get_selection = imx219_get_selection,
+ 	.enum_frame_size = imx219_enum_frame_size,
++	.get_frame_desc = imx219_get_frame_desc,
+ };
  
- 	format = v4l2_subdev_state_get_format(state, 0);
- 	crop = v4l2_subdev_state_get_crop(state, 0);
--	bpp = imx219_get_format_bpp(format);
-+	bpp = imx219_get_format_bpp(format->code);
- 
- 	cci_write(imx219->regmap, IMX219_REG_X_ADD_STA_A,
- 		  crop->left - IMX219_PIXEL_ARRAY_LEFT, &ret);
+ static const struct v4l2_subdev_ops imx219_subdev_ops = {
 -- 
 2.48.1
 
