@@ -1,173 +1,84 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BC41CEAC3
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915521D5CFB;
+	Thu, 20 Feb 2025 15:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740063388; cv=none; b=RZfx3mLw2gHA7KRlDosCPVyQWVSooeFTDnI6hTGUSJk6C2BfJMpRqr3nO3Wjld+ZQrdX85yzdDkOMzJMX7SRZiyNwkPxxU95/sxTj+1TTRJ2d7rtJIOfDILpUJWyGCG5Nft5Gb36UJubQ4bgXtVqn/ae6IV8lJSraF3mnUvJd1A=
+	t=1740065010; cv=none; b=Ysnz+SrXwLQIDZ/7I2El8EXJ8gTE+KsIHvrXtzR+mH3KAFN3nFP8jCSYZPeMtB0i4D2NplDBGePgxKEmG8ph5HtDQFKRgZz6dCgtCi7MhcJj9dl4Xi01lGBVPtJF4JILvN58dZSQCqUultmCz2ckUpwrjYz/xnZSjQEI2DWreYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740063388; c=relaxed/simple;
-	bh=iC9yPQyquPxEEH+5Z/jirN5ZPVULrgomJdmlfPFo6Ys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTY/ww+EguG5yPhBKNzjG6dErlHZnUERsMDP8XFZ7NKSsdLJ7d1oQvbBPqrrUVidOYyOtc+3dXcd1GEQp2S6L79acWrGWJwM78Dlvqq67AXRIRTeCjfXH92OrK0tcpJEVbVoZRFlkwEVfEKqHgu0yulXh2QNVS8EpSasMwHZP8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=chPxyl7W; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=tUX07zcQ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1740065010; c=relaxed/simple;
+	bh=857IyU52xW+51h1kUegUUYCv0nuT4T0ZRmSW+2m+clk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/Em49y9roaULMoWqX/3gxophG5m2EY1Duyrrj1lQAnlinjrMKxcVBJlx0Rs8YjEesMV5fod6ntz8UICC7vBbwtqLv/j4JEp904BmvrBdTv524//X1Hkbz/GlUXEurRN0r3FZmq/ftQwBJg+B/trAp4JednQ5zkMp97OJh4t6s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C+pbWdUp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="chPxyl7W";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="tUX07zcQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740063385; x=1771599385;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=p+oE9ycbC0603bsKVd233oRRg0AuABTZ4kzML2kwZR8=;
-  b=chPxyl7WyR4/LyeOS3PJiRwZLK4gUiQk9n6sVOx1SiDgzcNeYU6cGF5k
-   nckZBxXABC0E8RlNgvqzaz+8t6ePf4qZ3JVeShzdpRqsgvJBwiBfUyBGN
-   cjrzOq40kQsTHIu6s8HTrdVXsMLiGehVKZg8RdoJQnNAMSqPOzGZAy1bw
-   TtWYz+v2Ou90O6i5q8fX9B9PY/o8TJOTYjshkwmhFB1sbVkOEi27QFAPq
-   ByyHr5zC57iWOg7Spg6tEe8fz482/q7CPQjYEFnhj1L2bLkGEx7rbD2La
-   8NNRldAw123+WtAnOghGbiiurZt4rGpE99lCPWB5Vn8x1uvxNpFOsI2Wv
-   w==;
-X-CSE-ConnectionGUID: W4HPKULnSKKA4nSjoEUZoA==
-X-CSE-MsgGUID: oTh/8wVLRz2R++zgJdaILA==
-X-IronPort-AV: E=Sophos;i="6.13,301,1732575600"; 
-   d="scan'208";a="41984277"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 20 Feb 2025 15:56:19 +0100
-X-CheckPoint: {67B74293-15-EBA888C4-C1AC8B84}
-X-MAIL-CPID: 7722C96904D91C2DA0956815BF213B70_0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B86101657D9;
-	Thu, 20 Feb 2025 15:56:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740063375;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p+oE9ycbC0603bsKVd233oRRg0AuABTZ4kzML2kwZR8=;
-	b=tUX07zcQfsKSY9PuQuU9pNewWK+34vb0xzSyr8Qt4p71UcWvC5mRGH50LmyoTdBaY8/GSu
-	zNgdjzdvVuzHu7t4JkEedcoAukN5ghE02JKporcRii18vzoY/pgExznFOfCS2I5sSFQZpu
-	s6LRHIlR4ClHIV3MYrbr6UMaLcg2X0jrRERyZ3VSoRPAaRqH/cU92QdI1RnhahcSEKs37o
-	oaOqy5Bg6YtRPPSsZyevfhwYr9j5kFa5XSrqf4NIhklNu9RG6e+VxI6AHkVGg5OmRsOGqv
-	WUKn7v43jWkUzxQgiHpCIQV/YyQOru6so0LklqqBBZSmGSTDSc/dXoPELiwQSw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: p.zabel@pengutronix.de, robh@kernel.org, shawnguo@kernel.org,
- linux-arm-kernel@lists.infradead.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, mathieu.poirier@linaro.org, shengjiu.wang@nxp.com,
- Frank.Li@nxp.com, peng.fan@nxp.com, laurentiu.mihalcea@nxp.com,
- iuliana.prodan@nxp.com, Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2 2/8] dt-bindings: dsp: fsl,dsp: Add resets property
-Date: Thu, 20 Feb 2025 15:56:13 +0100
-Message-ID: <2359786.ElGaqSPkdT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To:
- <CAEnQRZDU9HoiD9uBNi+inrZcn8KCRp3pUZQfRqaq5kauuxOi6Q@mail.gmail.com>
-References:
- <20250219192102.423850-1-daniel.baluta@nxp.com>
- <12614210.O9o76ZdvQC@steina-w>
- <CAEnQRZDU9HoiD9uBNi+inrZcn8KCRp3pUZQfRqaq5kauuxOi6Q@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C+pbWdUp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QHgJz38bfp6rGW5Vo/Ip3UFCsgToQN+AI1DehaCYgGw=; b=C+pbWdUpusHCcABHrf4mEFpvSl
+	Ct2Eo2ufrgz7aCjTc6iX/r9B/1CG2nwXezYc66eyQB+GOzsc+b3q6Sz9E6XyKRX/cJ3Rge6kYIpFx
+	ORFt+wE+Q6gzwREeHYpuWEY+sT9QexH1wioDE6+SJTuMZCoLlPrgc/xu0X8LpRDcMBUM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tl8OY-00G0Dd-RG; Thu, 20 Feb 2025 16:23:22 +0100
+Date: Thu, 20 Feb 2025 16:23:22 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610 SoC
+Message-ID: <f68ebe15-69ee-428a-8079-8bb05d7aa21b@lunn.ch>
+References: <20250219114936.3546530-1-lukma@denx.de>
+ <3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
+ <20250219233802.20ec53e5@wsk>
+ <5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
+ <20250220154826.3455b15e@wsk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250220154826.3455b15e@wsk>
 
-Hi,
+> > Seems like a reasonable compromise. You would only load this driver if
+> > you intend to make use of the switch...
+> 
+> Yes, the main use case would be the switch (after bridge ... command
+> called).
+> 
+> However, until then we shall? have port separation.
 
-Am Donnerstag, 20. Februar 2025, 14:11:30 CET schrieb Daniel Baluta:
-> On Thu, Feb 20, 2025 at 12:37=E2=80=AFPM Alexander Stein
-> <alexander.stein@ew.tq-group.com> wrote:
-> >
-> > Hi,
-> >
-> > Am Mittwoch, 19. Februar 2025, 20:20:56 CET schrieb Daniel Baluta:
-> > > On i.MX8MP we introduced support for using a reset controller
-> > > to control DSP operation.
-> > >
-> > > This patch adds reset property which is required for i.MX8MP.
-> > >
-> > > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> > > ---
-> > >  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 19 +++++++++++++++++=
-+-
-> > >  1 file changed, 18 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml b/Doc=
-umentation/devicetree/bindings/dsp/fsl,dsp.yaml
-> > > index ab93ffd3d2e5..923e7f079f1b 100644
-> > > --- a/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-> > > +++ b/Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-> > > @@ -82,6 +82,13 @@ properties:
-> > >      description:
-> > >        Phandle to syscon block which provide access for processor ena=
-blement
-> > >
-> > > +  resets:
-> > > +    description:
-> > > +      A pair consisting of phandle to audio-blk-control and an index=
- referencing
-> > > +      the DSP Run/Stall bit in audiomix registers.
-> > > +      See include/dt-bindings/reset/imx8mp-reset-audiomix.h for each=
- index meaning.
-> > > +    maxItems: 1
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > @@ -164,6 +171,16 @@ allOf:
-> > >              - const: txdb1
-> > >              - const: rxdb0
-> > >              - const: rxdb1
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            enum:
-> > > +              - fsl,imx8mp-dsp
-> > > +              - fsl,imx8mp-hifi4
-> > > +    then:
-> > > +      required:
-> > > +        - "resets"
-> > >
-> > >  additionalProperties: false
-> > >
-> > > @@ -220,5 +237,5 @@ examples:
-> > >                 <&mu2 3 0>;
-> > >        memory-region =3D <&dsp_vdev0buffer>, <&dsp_vdev0vring0>,
-> > >                        <&dsp_vdev0vring1>, <&dsp_reserved>;
-> > > -      fsl,dsp-ctrl =3D <&audio_blk_ctrl>;
-> > > +      resets =3D <&audio_blk_ctrl IMX8MP_AUDIOMIX_DSP>;
-> >
-> > Am I missing something here? fsl,dsp-ctrl is used to get the regmap fro=
-m syscon.
->=20
-> fsl,dsp-ctrl was used to control the DSP. This functionality for
-> imx8mp have been now replaced by
-> using the reset controller.
->=20
-> The example where the diff happens is for imx8mp so for this reason I
-> changed it to use the
-> new way of doing the rest.
+Yes. The model Linux uses is that the ports are individual interfaces
+to start with. We should keep to that model.
 
-Okay, maybe add another example for 8ulp then.
+> > MoreThanIP is now part of Synopsys. I wounder if this IP now exists in
+> > other SoCs? The press release however suggests Synopsys was
+> > interesting in the high speed interfaces, not a two ports Fast
+> > Ethernet switch.
+> 
+> I would need some detailed documentation....
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
+Which is probably not available. You might be able to get some clues
+from the Freescale datasheets, if they have kept the address spaces
+separated. I don't see it as a strong requirement, given how old this
+IP is, and the limited interest in supporting it over the years, My
+guess is, nobody else uses it.
 
-
+	Andrew
