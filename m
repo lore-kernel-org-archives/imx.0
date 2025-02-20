@@ -1,138 +1,178 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498ED1FAC5E
-	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939B613BACC
+	for <imx@lists.linux.dev>; Thu, 20 Feb 2025 14:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740062361; cv=none; b=ifVTYEoAuqhDwD4amE+8bbWD+5vfw2zazb07SJm9klKHhaCaXm4GRTtrDrBRAdxf6r8cWozxxaFuO9F/Dx0rk5Ip0xtvPTyqh6iLil1iYqkgqXb0N31wj0S44+BLUQnwoOCAhd53cscq94ADIAeEEO4jnCZ6f9/jdpkTF63/x1A=
+	t=1740062920; cv=none; b=aFl+9DwTa7ElR1Ta0jyKOchfHfTfJgxuVGjoG29sH5EpAtXR17IEUjMEmPST+59Wm7JyNIwsJU8Kr3FUsBKot/k7DEibpsPrcWOXU7oUQXtYFVMh/Glg4Q12VuCp+PAJAr9ey/6qNPf5zQ1ffPk8MAjAq6x0Caa2ozx1Q4qYj+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740062361; c=relaxed/simple;
-	bh=iLN8B9ksN1GWWVoWVQYBbBJYJyiBr+s/2FAxSdsnkwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KsnetsOUbdZOLIxSFpzravihPfZM2+nrTaVKuT1/Yr/PIPENzcJ0r1vdEW6wCcMWNfjFocRJ5qLM5ZjthYpI0xIkKJ5aFQGDi1gnBjkFVevwjWRrQkgqa3KN6BtPu3Um2Ua3tu8nqGz5nJhNccbK4SjRVQNUW2kqX/H5aeXHMZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ix5yJ1MN; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1740062920; c=relaxed/simple;
+	bh=PzEer1mTGvGb2m+KD/jgWxiPMBT75xyrk+ydbLeYI3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aVxv3SOy3mpiiJX2+KbuhTNOaZp3S4Bc/ayN7kfXzz99jH+5qd8ZDg3/I4GOBx9r1qO+E/e3leTP/KdE4MBKN/vmAO4kr4pLK1YdF2mLS5I/6AlwrjhtMKjVmyj2vQ8BzTAdYlJ/nT3MvoN1jto32wqykcEVqu8LIpfEuV8ehLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=iWtjEsLy; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ix5yJ1MN"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 716881193;
-	Thu, 20 Feb 2025 15:37:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1740062274;
-	bh=iLN8B9ksN1GWWVoWVQYBbBJYJyiBr+s/2FAxSdsnkwI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ix5yJ1MNLbToTzjhWXv1kPGV+NribVBMxOfjCISY3kBKoor1qeqmue2KOaVn9Elun
-	 yAZX8xvnBq34+BFHbklcx77G6lqUeyCL8CqExMt9c4jWKJkpp8weUbzT0+S/9pMA3+
-	 iAhC+RUnOTS7ms8NZiaJSnCW2R9nxIGz2uGKgKfY=
-Date: Thu, 20 Feb 2025 16:39:02 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Cosmin Tanislav <demonsingur@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Julien Massot <julien.massot@collabora.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	=?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 0/3] media: add v4l2_subdev_state_xlate_streams()
-Message-ID: <20250220143902.GA17500@pendragon.ideasonboard.com>
-References: <20250220092036.6757-1-demonsingur@gmail.com>
- <tw6x663t5dmxsdarrxjtopza3mou3lnhwazu3dfv2k27fv47v2@bvftfepqqhss>
- <c94580f0-3ab0-4a19-a996-9bb37e23dd39@gmail.com>
- <Z7c5U6u5rr0-X0aK@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="iWtjEsLy"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F81210382D37;
+	Thu, 20 Feb 2025 15:48:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1740062910;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ldqI1Le+GNbE+uBRLkLvuLrordSQ/bU414re+PDqRgg=;
+	b=iWtjEsLylFgr2+ddtCwYOKZnorICgZLXMimUifa+okc9WQqYoo6+u6UKCRYO1RI10IL3Di
+	46+qHJXpjf3Z43lYHQM2qvPZ3Ivnu2Kq7LTgrbBFi2ZopTitbRaImYsWZL5dodu7p0JW0N
+	h9BjrlQElNSaPiQLSlfeCMOnzRYNURThGfezcLWolcaueVQzlMQ+ZvAAg2ZGESCmNC92x0
+	mbQIDRlR2lMHYQ4Ary2yPugSaa7wIOsVdwNNhZQ2Nij0WKSk2EaUlB1N6QK5RjCbiUyz6h
+	4UU3C+wlpwa22XeoR9XVKXNwpPsbdIZ4iCt5fP8kV7//a2Zil6r/dxf1LhqsAw==
+Date: Thu, 20 Feb 2025 15:48:26 +0100
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm: clk: Add ETH switch clock description for vf610
+ SoC
+Message-ID: <20250220154826.3455b15e@wsk>
+In-Reply-To: <5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
+References: <20250219114936.3546530-1-lukma@denx.de>
+	<3cebe152-6326-454c-9da6-5cf5a64f71c9@lunn.ch>
+	<20250219233802.20ec53e5@wsk>
+	<5a9d9eef-f2ca-4168-aca4-4419dcfcacb6@lunn.ch>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z7c5U6u5rr0-X0aK@kekkonen.localdomain>
+Content-Type: multipart/signed; boundary="Sig_/EoF.xD3edO+ut3CeLCKvgE3";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Feb 20, 2025 at 02:16:51PM +0000, Sakari Ailus wrote:
-> On Thu, Feb 20, 2025 at 03:01:41PM +0200, Cosmin Tanislav wrote:
-> > On 2/20/25 1:38 PM, Jacopo Mondi wrote:
-> > > On Thu, Feb 20, 2025 at 11:20:32AM +0200, Cosmin Tanislav wrote:
-> > > > Currently, the v4l2_subdev_state_xlate_streams() function is used
-> > > > to translate streams from one pad to another.
-> > > > This function takes the entire subdev state as argument, but only makes
-> > > > use of the routing.
-> > > 
-> > > Correct, but is this a problem ?
-> > > 
-> > 
-> > No, it's not a problem.
-> 
-> I think I have a slight preference to keep the pattern of referring to the
-> state as other functions do.
-> 
-> I wonder what Laurent and Hans think, too.
+--Sig_/EoF.xD3edO+ut3CeLCKvgE3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I agree, I think the state should be passed everywhere. This lowers the
-risk of subsystem-wide refactoring if a function that receives a pointer
-to part of a state (such as v4l2_subdev_routing_xlate_streams()) is
-later found to need more information from the state.
+Hi Andrew,
 
-The situation would be different if the states were not monolithic, for
-instance if the routing table could be locked separatly from other parts
-of the state, but that's not the case and I don't foresee moving to
-finer-grained objects.
+> On Wed, Feb 19, 2025 at 11:38:02PM +0100, Lukasz Majewski wrote:
+> > Hi Andrew,
+> >  =20
+> > > On Wed, Feb 19, 2025 at 12:49:36PM +0100, Lukasz Majewski wrote: =20
+> > > > The NXP's vf610 soc is equipped with L2 switch IP block from
+> > > > More Than IP (MTIP) vendor.
+> > > >=20
+> > > > It requires special clock (VF610_CLK_ESW) to be operational.   =20
+> > >=20
+> > > So you have a driver for this switch? It has been talked about in
+> > > the past, but nobody made any progress with it. Ah, it was you in
+> > > 2020. =20
+> >=20
+> > Yes, I'm going to try another time to upstream it.... :-)
+> >  =20
+> > > It
+> > > will be interesting to see what you came up with in the end, pure
+> > > switchdev or a DSA driver. =20
+> >=20
+> > I think it would be:
+> >=20
+> > 1. Standalone driver, which would configure the L2 switch from the
+> > very beginning to work (this is different from FEC on imx28/vf610
+> > where switch is bypassed)
+> >=20
+> > 2. It will use the in-switch registers to have two network
+> > interfaces separated. As a result - it may be slower than the
+> > fec_main.c in this use case. =20
+>=20
+> Seems like a reasonable compromise. You would only load this driver if
+> you intend to make use of the switch...
 
-> > > Is this the first step for a larger rework or is this a drive-by
-> > > beautification ?
-> > 
-> > Mostly a drive-by beautification to avoid passing the whole state around
-> > where we only need the routing. I'm planning to submit drivers for more
-> > GMSL2/3 chips and we're using this just to not pass the whole state
-> > around. I think I can just use v4l2_subdev_state_xlate_streams(),
-> > but I had these patches in my tree and it would have been good to get
-> > them upstream, in preparations for submitting the GMSL2/3 drivers.
-> > 
-> > > I'm asking because (and I know it's hard to strike a balance) this
-> > > kind of changes tend to make back-porting a more painful, and if
-> > > only justified by "it looks better" I would be a bit hesitant in
-> > > taking them.
-> > > 
-> > > > Introduce a v4l2_subdev_routing_xlate_streams() function which can be
-> > > > used without the entire subdev state, to avoid passing the entire state
-> > > > around when not needed.
-> > > > 
-> > > > Convert all usages of v4l2_subdev_state_xlate_streams() to
-> > > > v4l2_subdev_routing_xlate_streams().
-> > > > 
-> > > > Remove v4l2_subdev_state_xlate_streams().
-> > > > 
-> > > > V2:
-> > > >    * Fix description of parameters
-> > > > 
-> > > > Cosmin Tanislav (3):
-> > > >    media: v4l: subdev: add v4l2_subdev_routing_xlate_streams()
-> > > >    media: use v4l2_subdev_routing_xlate_streams()
-> > > >    media: v4l: subdev: remove v4l2_subdev_state_xlate_streams()
-> > > > 
-> > > >   drivers/media/i2c/ds90ub913.c                 | 14 ++++++-----
-> > > >   drivers/media/i2c/ds90ub953.c                 | 14 ++++++-----
-> > > >   drivers/media/i2c/max96714.c                  | 16 ++++++-------
-> > > >   drivers/media/i2c/max96717.c                  | 23 ++++++++++---------
-> > > >   drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c | 14 ++++++-----
-> > > >   .../platform/nxp/imx8-isi/imx8-isi-crossbar.c |  2 +-
-> > > >   drivers/media/v4l2-core/v4l2-subdev.c         |  7 +++---
-> > > >   include/media/v4l2-subdev.h                   | 10 ++++----
-> > > >   8 files changed, 53 insertions(+), 47 deletions(-)
+Yes, the main use case would be the switch (after bridge ... command
+called).
 
--- 
-Regards,
+However, until then we shall? have port separation.
 
-Laurent Pinchart
+>=20
+> > 3. When somebody call "bridge ..." on it - then the in-switch
+> > separation would be disabled. This is the "normal" state of
+> > operation for L2 switch, which would be a HW accelerator for
+> > bridging.
+> >=20
+> > 4. The switchdev would be used to manage it
+> >=20
+> > 5. This would be just a very simple driver - just bridging and
+> > startup of the L2 switch.
+> >=20
+> > After we would have a consensus (i.e. it would be pulled to
+> > mainline) - I would proceed further.
+> >=20
+> > I will try to not touch fec_main.c driver - just write standalone,
+> > new for MoreThanIP L2 switch driver. =20
+>=20
+> It might make sense to refactor the MDIO code into a helper which both
+> can share? No point duplicating that.
+
+This is a latter step (common MDIO library code), IMHO.=20
+
+>=20
+> > If somebody would like to use FEC, then he will insert the proper
+> > module. If switch, another one can be inserted, depending o the
+> > target use case. =20
+>=20
+> This all seems like a reasonable way forward.
+
++1
+
+>=20
+> MoreThanIP is now part of Synopsys. I wounder if this IP now exists in
+> other SoCs? The press release however suggests Synopsys was
+> interesting in the high speed interfaces, not a two ports Fast
+> Ethernet switch.
+
+I would need some detailed documentation....
+
+>=20
+> 	Andrew
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/EoF.xD3edO+ut3CeLCKvgE3
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAme3QLoACgkQAR8vZIA0
+zr2Zzgf9HtLGK3Ux7Xf80L6yo2vvKfPiWZ/RuxE4tCAf9yjd5vk2Wfg9EizNIaaX
+ILs8pKZkCxVRQxUqQ7Cx2k02jDSZiHJ30GFYlE6EtUFGgk00siH1uUZA5ScSsHPj
+DZfO/gVB4MW+ofwapPvYEGyUdKQmyB2IOt5OfusD4f9p869BqoskJQpsESHDP16m
+qcDpAwgne46YXCHFpfzDFTEDmriOa0/iY04iTFAV/kbxGu+OwW23X7c5CJFE79KP
+AWxzzSzuu9iNAGcKEW1u9rH6H1iEb0GW9dVBDE/dX5VHwAqRct6S+tZonQGQzQab
+eNojXymqBTXSfY5w/1xzbDX5z4WPGw==
+=A4R8
+-----END PGP SIGNATURE-----
+
+--Sig_/EoF.xD3edO+ut3CeLCKvgE3--
