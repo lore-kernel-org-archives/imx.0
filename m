@@ -1,47 +1,47 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2089.outbound.protection.outlook.com [40.107.21.89])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2043.outbound.protection.outlook.com [40.107.104.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271522528EB
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF12025334D
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740167063; cv=fail; b=ow2iRHKw9rX8fPOKqELZjdqPLp67BU4ypwEgfMit5Wy2sTFV3RihfB0x4SydUwqeLitlYuD8EWOK8n3IK/k2+pKGwNnvUxDLYqTJRmtNig09bdsZWlqdiFTqeE8LDDxcbmZIjrV/Xpv9Rnpar24SPUfAMAT4A+g09ZapNyBnMbs=
+	t=1740167828; cv=fail; b=P7ZWAp1DOFFBzJ+P9qGkmCainHm+VewswAIE3os78uCoogeRL3z0g0V8BZfBXpQEmS4H4++U9B1w2eU46OYPsleH/nlKL0mj9RvBCnqKWXj25YIrUxVaHdhkFt6GUEoKSh5RxSw4hdkeXFXSmrS+pRyNjay6nZhIvcw8TN1jdKU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740167063; c=relaxed/simple;
-	bh=KIbHe5BDcOssTYzBv8KyiF/m+arbxXhmnDBLQumpSDc=;
+	s=arc-20240116; t=1740167828; c=relaxed/simple;
+	bh=910jJhLGYS9roWFqkXn55nHyC79ppWFlusAFUcrVhkM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fR7ZY5jJbqMjhGhUErVW3H70hVfaMnBaQfr09zPLhSrP21Kolrz4E5FY8QV4WMebCgrTdditEMxJujPNQDxDKm+qxNtINH3R3pu8xh77ms8mX82QHHlZgqY6KZM2IzqwpNquN3XyuHeEF7+h8m402Ctl/Y6HC7Q5w+95bO7JkhA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VXp4I+pF; arc=fail smtp.client-ip=40.107.21.89
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VcmBpHvwiyrKn3rxNSC6xzJUm+VkmDnl11BWBNbFYckinlU5ySFzqtLnJ+24PyrugUsv3jPDzXUZH/SGDqULSTlu+AiJfHfQwu2TWM7i6/L4NLm37kmfMq8xTrLWbnMy3chiPaP64VMNGx5PbGyjkmgdYV0itzrygq2Bz6LfDzs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VYeuaUA0; arc=fail smtp.client-ip=40.107.104.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VXp4I+pF"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VYeuaUA0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LhgDE+iOZsOQTJVLnZ5AAljqddhguVaNVqApv5W0EIiAqzza0d+HR4D0v+R3bebmRcwfGc44jckKiBMr1qj8cR2nxvC8O0SxLKX1yUYQzaHN18Q89kJ+9UA9yDbweGQpiUNkLqRZ4Bfgn0RvQWMkRX1LSDja0BLFwBShqLLvAHt1ORFB1tVsFbVaycQKhsHAF8MBn4aPJYkc7Puxdvy58GZLhA+fE0/ARnhCSRl3xMPvVeBR/nbGwPsWy/U1UXKAxJuApQ4nq1T9F8W+ruFq2gTezzvR/JTpBlDcfHIj/MjcFMFb72LAas6yOe0fCJ6nylY9Ssl2E7Q7xF06WUqySQ==
+ b=tSBaZc4QYX+TLHNy0I4lG1IRfpFpA4QO2SGZp2I6c79iwgpZPI0zpnf8Sw5HKJpJV5h0LynR75KkXfyGSB/qS7BkHpv1w/u/cdhrXobv7DA2onzQKVMh5q2/2B6+WTK463er1ZFRSkqGtAMBjKRv8s2IBRMw1pcLWDJmSICm1m0b1z5VnACfXiqlcbK/314Q+p3gUcl7oUu9W/hC+Ub9SjFVCm57UP7qdNWX8VXYiz+f41jFE6CIZjTsjtFTN4Gi0N2OXuKUC5BxU/8JiepdjnR2o+riODY6X5e37fVZPXwi/b5bjDRlWUcSchJT41NYCI+dvJ4P9zwTh6XoFQ9Drw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hK5nORSKpp+Q+yRq/n1QoAIyGdJGibF1L7VW7YqjKpg=;
- b=RWRjtxSuxQhBzEY3JQ/TY5N/d+/HbYaOerDpQjdZNf1FeB02tGdSeHj4t5AOqXbLak2jAM+OnRkCH51VJQ4NcwiEMdfupuAx8+x0Q/TL7sZZn2yIhVtHYkUb2yefQ/vkyF7KScT+6j4CRoJ6cSlxz5oglQNMtqIcNFt90mKPIhfRbruFiMlQO+LGYAaGQZ/ZlulE7Joy/kCEvniTVRryk/D7k13qZ4h2exyclnUpcEchlvCrImMHoox6wHt7ROVxbDpQdfsgRFVq6W2x5mbGN3rgzAHhtCMb2Suz4CVKmX9AOGSVf3XnGn9zalbH84lohIKCGFnvcaoq9AJIpLUf6g==
+ bh=MVFEAqP2ThtwTPS8HOFtHcpvdu573UEcy7UyuodHRIg=;
+ b=n5pfH8HSQh5oVQlqlLjMgAjlYxc/zRFCLkZX/HIvAJ7LwrWg3wXXHM9oWKxMUymRdc/wcd7EVPDmQCVIo/y1Pk800sOgVpItTG3faLcxncwRUM7rpVP9TcsFKWIwQDejy2UO640OhRaLkwY4RDwq2fKbG3714/qZcBl3599layPEgZa9FSYi3932HYGyXwab1aj5thHbGFxaIj1iCSP9/tiVWuKAArvkuhsAz0tYPz+p4lEL/5PgB+0kT/eXpb3MwNqG+INhtOf9SUBw2ZdYjkqRcmLo1V3WHdX3MSAQcfxogLCIewAQkzhaxZKmCqnkcDpoiXgHYS6K4ey3B6Up0Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hK5nORSKpp+Q+yRq/n1QoAIyGdJGibF1L7VW7YqjKpg=;
- b=VXp4I+pF7MQRM+e7BshYQ/zqhlgkGlMHuUxiYZGpimYsTiSGM37zTh87I7oexxML5fSKexz2Hrom9i+sRKQl9TI5pSZ+ON4M6zexbfw0YROfwWpyytOE675KfRmKopx4fyBi0UbK949M48byWxbAYTbRSmqgV3yLS1R4pD5iRuD6vVhckO2mmDgLP/OtpmDTlB04FC7Lc6pCE7i4sA5tcizSAVFiBNghfGwBfuvfEodFuDxnkzh/WT5iRD8zdy/uhKzmoFp1YPVXM33kevptky/Yb9oiX3A26d4rYdgqDnO9LVSDQTTRprp7B8VxXV31kYryeenOXVLiB0qEqBYIkg==
+ bh=MVFEAqP2ThtwTPS8HOFtHcpvdu573UEcy7UyuodHRIg=;
+ b=VYeuaUA0FmdQJ4EC0gbla8CGUxKTh83ojGrNzK+asIZVQ4nXzIFj2TAvINOYoWihYQXEEUht846TWlhL3d6b73bhYapJUo4yl1ftBefomXED09kRpml3j7iwBSIQqBt8n9QaGMCHwOyBpyvbPTMKoO0nLE0KSMHpRt38YvoF3wWU1SH3NYezar0ejh51fumO/YZbXhcoS8HpQOFngyi3PwB79UT8SlX4UI7QyWdTyRyMkUrwSGiu1cZFNmKdilzhxRiYsc9CDqU1bGWXezF6n5KzNBIkjM6ZdwunUY0Mo7golZAHKymgl4kSiKW7CQWjd5+m07Rs4jGTIC2nVTLYPQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI2PR04MB10905.eurprd04.prod.outlook.com (2603:10a6:800:272::18) with
+ by VI1PR04MB9833.eurprd04.prod.outlook.com (2603:10a6:800:1da::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.16; Fri, 21 Feb
- 2025 19:44:16 +0000
+ 2025 19:57:02 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
- 19:44:16 +0000
-Date: Fri, 21 Feb 2025 14:44:08 -0500
+ 19:57:02 +0000
+Date: Fri, 21 Feb 2025 14:56:54 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -53,15 +53,15 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/5] bus: add driver for IMX AIPSTZ bridge
-Message-ID: <Z7jXiCSicgBS5wsy@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Message-ID: <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
 References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
- <20250221191909.31874-4-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250221191909.31874-4-laurentiumihalcea111@gmail.com>
-X-ClientProxiedBy: SJ0PR05CA0185.namprd05.prod.outlook.com
- (2603:10b6:a03:330::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: SJ0PR13CA0237.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,248 +70,132 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10905:EE_
-X-MS-Office365-Filtering-Correlation-Id: e40cb35c-01f3-419d-b07e-08dd52b02046
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 695a03ac-b78e-4430-ebd1-08dd52b1e8ce
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EA5hB1WTakHeYru/4xeIy8Y0hdTwqMjQJbqFTKdk17hhIyww59WfJScjo5oO?=
- =?us-ascii?Q?fyQh9fAHfrZSoi29FNxD5A8GsGl20rJDMSvboPC0UbkGVSJtwnLQX9B1Jsz0?=
- =?us-ascii?Q?OQydiZPR4xR+apOHEV3V6WBKKqMa5MWWwsJ7EDd/3C16iUQx94TJ1tgEc+Se?=
- =?us-ascii?Q?mQcmfMTfwIUz3ztky37pvCJV6Kg8PEvIf311Gkf8YJpQ0Lov69Ezo2GD+ozr?=
- =?us-ascii?Q?UIA2ZWUcL4X+0TKLnOaadNNSy6FquIoVFcVjtfiwyv54zWCT5228DAtj3nU1?=
- =?us-ascii?Q?SySlkyb9eaQtjTnaGElRfxVb9EpT5K6ebzBuBix1Zn9V6Lclf3Iv9OEJSQfk?=
- =?us-ascii?Q?xzOurxjVtAJ/p4DiZp0DqpJVclda91FTLD1AcG20XvzDtZWnX444gVUQXBVp?=
- =?us-ascii?Q?n2PTQ3mEHQynbxsQ6ThF4OvAFXo7rq0eMY2N3RUSGY5/8Giec9HGbNZf+oU+?=
- =?us-ascii?Q?4poGGEA/2y3I1iQnfOPVRkrWZvHqMS4/vWN4N75KnOWYEyKkC2Zoa0tdOxiF?=
- =?us-ascii?Q?Dyk4pRryDBUP10UpvdFNgBdbGBl/8EhhO7eximYgc1ozS5TA+pzQ6jfDwWMG?=
- =?us-ascii?Q?plf6J9UaFtGCpxy7q8Ho8IDjA1Txy0WecFco2MQCyF8mlC61iGXQROVhunDl?=
- =?us-ascii?Q?H7tRCQr0dDbRWEvU+s7SXFrr+kKfMtjyGKpCDKjPNlT9B3Sa1TZwBvglvXu0?=
- =?us-ascii?Q?ShUkGKBtNcqVHYrzG4POTlADl30bUX+soarp+7QiqoSAXZk21Ic6uL3Cnmo5?=
- =?us-ascii?Q?BlKSzQwTa/ZKlzmyj+esYHlulvWu/p7RMzR12znT8QFM+3r12I1JaWMyZjvZ?=
- =?us-ascii?Q?gXMBTRPU87OPx/OrebUKTYZkj2SOzPxuKiy5Pq2DIww+42o88Eh25rNDePQn?=
- =?us-ascii?Q?QBAA499y0eDnMsh1aTrjgibOAD95r+N/+NEsnsBZWpb24YdyIp5HQ/VCpIWb?=
- =?us-ascii?Q?Km5a8oXlGlu7fuvoqLnNsmvWGtvWnwiEQb/96pn1nGTK+02coj5x9MA3XOK1?=
- =?us-ascii?Q?7Cl0Fiihr/7gHc+mII/ok+z5oe1neyJ85KtdIEdA1FFxLYsLO5pC4AlpMp+s?=
- =?us-ascii?Q?wAUNLu/YItv9X1X1ICob67iCnxjHyr3wlPKJLp9g0cWiSD10dr0pwoSMAbd1?=
- =?us-ascii?Q?Djg1mEB59JuezY/LlXrsoFXHBBKy0o0t1O7vxGZfqDDwNU8ZT8ArV8Kfpnr/?=
- =?us-ascii?Q?OSlHIyVB6s7dS4U7CrVMFlqAoxEyg8u+Pu/GouWG41eEB80xdmecGrHJH18K?=
- =?us-ascii?Q?Q4KwrT/2DRijOlmuT859Ox+y+Ha+pfHPsJh7W0dLVF7STEgdrOybCHnCgcVS?=
- =?us-ascii?Q?phqvPRWGWca6PP41ucQPrxfd22HtvUQ7lPzsUyVudmBf2XsTDGtQJ1uJ+Y21?=
- =?us-ascii?Q?BIfIeFzQnSCReP7hUIo0Tsg7+fehm19L14DiQI7Av67ynsnGtJpQs9SRgABI?=
- =?us-ascii?Q?BICDenrV1qIdVP0F5hVjR5c9TocV/RO1?=
+	=?us-ascii?Q?Yi3m3Wo1X9lgShfGn1khpwwMAJAwhlxqZ/0zMqMlkC5gB+8k6MXNhUaNJdu5?=
+ =?us-ascii?Q?jbfgfdsJ0DydEVCwx7YlWRtABheOfW/SHGMB5e1GIpTznNogl+ewsE5Y8xla?=
+ =?us-ascii?Q?MqReH9CiGOnyXjmpXZy5VYIQSQX39fcHPkWXbZH3lSuWoQk1M/GxS+YTLbB3?=
+ =?us-ascii?Q?b5oOpXd3VC1PKzNw9SYPk9u11NQEdS+z05b2uszULGcslpCFehDC6utzHuoJ?=
+ =?us-ascii?Q?y7j/OIfKgQxEuU0slRVQ4Nx6Tjn2tZvS3/Oxeduxnwc+7AHP2QzWs4/uei0y?=
+ =?us-ascii?Q?Jiw5t/p9sv6IexfSNOKSnfQYaK2zf/TOuzqKhsyNOTWC5JbstCmk4XYRoRzl?=
+ =?us-ascii?Q?D77Z/TW6QyDrbce+LIaca1sQXpUnEWa4XvD86D+9GYlREkrSBxwVTZH7onba?=
+ =?us-ascii?Q?NodVCYr2JH/cnLVlxwZkhrgx+GWXEvcgmV5/s+lfyM7M27iu84vAjUjv0ScI?=
+ =?us-ascii?Q?+JiPJoCKB37JzS6VuCCJKjbokS/tsuZGmBs5g2GL2o+oCRMmQMr+Fb1220cK?=
+ =?us-ascii?Q?+BdFk0OL9pcIU3uigN9v2y7jX1xgMhtVOCfp9p/gUX154MyySCYlMsmbItTT?=
+ =?us-ascii?Q?SeoX+u/XxUT2C6Er7o57K2Fit79Ow+NrknjDiZIG1scMoIE0IZhw8plLQDcf?=
+ =?us-ascii?Q?Q4Kh/j8NtL+b6VhfPjBM/PAiPohT6JMAPX9BHDyb6Ed34UB7BC392qoAw15Z?=
+ =?us-ascii?Q?aCOrkoi9LcQhJ6sMBepK6qON5wwRZw4RVkxOC5MnQNKwLw0dB0IY8ej5TwXy?=
+ =?us-ascii?Q?wYWChZ0cEfgVuWSEOlWlSjhFK38FyZP6ApB69zrGG36d/31i8/0xjGaRRpYT?=
+ =?us-ascii?Q?CCrf+MQfWZU3T5CwUJUzY0ixChkGQ5ilGbN/4P1o2XB3S3vzO+KgZ8peOPtj?=
+ =?us-ascii?Q?PgslgmDqzlRFrdDjsWYh/S5mb1929napOQiXXCe6360xXimadToAWEVHyuhq?=
+ =?us-ascii?Q?wnVX1ENuzqfoVOaece2uifEcEmOXMoawSx57JFRtY57R5RjdFgmkxROEo/Xj?=
+ =?us-ascii?Q?Gi+hq6kAwb2W8YohxxGZic6q1rW+hPUaGp94vnLq2W9T6Mfrt2rwRxdCN4/Q?=
+ =?us-ascii?Q?IFTEZfM4uWRYOL2PP6vS0EheID7qKcOiNjbgSnvMnclkFuqVPm+5L2BS9iTA?=
+ =?us-ascii?Q?35SNAgPeDnoEEF1IlLe/4x1cRQ/TEUyt4n/AxGB+kTptTxwXedh1vARRirnE?=
+ =?us-ascii?Q?7yOh84t5KOyHJ/ggNMxqEpaMV3n8HIYFdfqQ48GmxbN+huS6emSqDbmTQUZP?=
+ =?us-ascii?Q?QKgO2Vcu4RNcaBxptRS35RMRRNwiBvhtW9GXnlAxqamiPqccoIxKc5KoMK6d?=
+ =?us-ascii?Q?Xonu40s70+wOc34bvpRZoclA918eANCBl/yXbuDnry8tlu+NrXlFsgNTlv/h?=
+ =?us-ascii?Q?8NhPyiQ8a/fQlLnorw3oIBin1XgXj7iIBhW5CnLN8epsx7nVVXkzuJ04WLsH?=
+ =?us-ascii?Q?7PLfLyVEsikzg9yYEI2+BFKtevFYy3lx?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q79k2uI8QJB1Iyvju7b2G5FIQI/2zq72S2XBkZu0A/j3MGDUIctVtFGY8Ogb?=
- =?us-ascii?Q?0RPcBdE9vPjanpNx6cQq3T+2r3uglHhq7Bxd3kq9xqTVQv9MFT/pju9sF0zt?=
- =?us-ascii?Q?lDIzEAzR3X9Gfrh2YDzZNWfnaJunMtd6X2KgR5DjT0mT8/38IYRoEPjgJp9v?=
- =?us-ascii?Q?gyGVXhK+M8pAMpQUFLVC01msIJclfaTNjt1SsHo6GE9KhW3BCOlhHlEL9ZSN?=
- =?us-ascii?Q?OxtlaRN4QFtDDcxWUuH1BvAM0x+BXys22eTtrZk9hfpbtu3Rd5KHm1bfdoST?=
- =?us-ascii?Q?339E3dHQS+ET1yxFekmsWZPk2xFvqKl/t/at4erttzyqVmCFBbs2PEAimHPy?=
- =?us-ascii?Q?V+flbrnr7SmqaepLmXbhf1uVBjzjOMMjOhc25XGtUES9TnXXCiukHHk29gTf?=
- =?us-ascii?Q?YGgIEbSuwAgQT8BHHn4f8HapAQCT59D45EX0QWYeoxnuurzvPSeOFcfZt8+S?=
- =?us-ascii?Q?0hXyEhS7wU6Q17QdqlcCg2zptDDbuAWNfEaYAo3ca7ivNqVUdoS8yjmKzm/B?=
- =?us-ascii?Q?grHR4VCtk4D0XuQcpvleJQIEszmSprKkDKgQAunBv41LpApZcX2wAJEzwxrO?=
- =?us-ascii?Q?A2qXYiNWZ8zYeYzO5uYKF39ktEaHOO2Ph7q68HsZypBuBD8YK9+5CzaDflAL?=
- =?us-ascii?Q?DF2qOkn9QDuaFWzR26i6QcpMQDBDUAGG1Wrj2jyO54uL52xpMCQgTI01B9gP?=
- =?us-ascii?Q?EJo5wgN4nQT+JzKovZ44YG7Up2xBOChtxHgVI4UolLI4IIVFDSqwUUyxTIZ0?=
- =?us-ascii?Q?p6B7rcRbkCB9BmrxvQp0HNYTKEY7EAC1Y0ppB1irV6f80HjBHxiAuP6y3TcH?=
- =?us-ascii?Q?fgSdGTkyPs6R4MwsftdPBcZSAhrbQVr+HxHaQW6BMQ/p19RcCEDs05yWjEyA?=
- =?us-ascii?Q?l10/zwwfcawikgtvh5y6RB0SFbC6yVc7ZsIqlGWyqqmzJC2EB9V0TrJnG5Ml?=
- =?us-ascii?Q?JOeCVDc2r+nuKiAzL4TTA7Es6oCPbWq+feP3LXtG0ON/Yd7t+c7Wi5jtpxMG?=
- =?us-ascii?Q?Zw3IHmIQrgyNBIFXS0a5fhCql3faOeSUovyKdHbQ2UA7CKN4vDdF52VaL8Jd?=
- =?us-ascii?Q?HtbNEpOGShsKVlA9bt3BnmKW6qOS2Y2/RpSRcx4fN6mTSb+FSc+XxkL7aWw1?=
- =?us-ascii?Q?cuDdYUT4mJcq4uVfg5UrkbunJfqKSUSAzxBqb3u4Ss4hUdfEmYIGanurwq5m?=
- =?us-ascii?Q?kp4Xdqp2mUEPXdSqZ/r/vuZa+qWbYkrxJS2brW/tTuopucGRaPlaFlIH5my6?=
- =?us-ascii?Q?+HrNfRCAUVP8X/MhvaxvJalbSuxMaP6S0wxj10imReFG1IOa/Lv3aeGmjyFn?=
- =?us-ascii?Q?+KsQeRmYTzu6yMleiz0Dn6ngSn+P0Q3zNlfbzvgVDXkEcmSobctOTNJ3FL6M?=
- =?us-ascii?Q?AbAnotMwmvsHipjDgl1cu6TLcNBwuEHLyaOEWNsY+Iblz0bliFgYxRElthY3?=
- =?us-ascii?Q?Vyws7iqXJs8AIDRsS534me6Q9ho/Ag5hIJhv5FspdkWU+raW33CgBcWLido3?=
- =?us-ascii?Q?T5eWeiQ//KVW3rm43+/b8zsayceDyedEcFYAaZ5nJZk/+HrG4lLWGAdSsJa1?=
- =?us-ascii?Q?z1VHJBk1X6nKyRfxAcjNBNKe8JjGRdmV1cMqIMSL?=
+	=?us-ascii?Q?AFezlXfTDkKsQ3ycrIXdE3zwWfOQ5ESABQudrDbFQdx8rrA3vZ1QzoAZqoCg?=
+ =?us-ascii?Q?R1SCnKFMM+rKP6ipN7v/dVPsEE0qxquJuwW2MxbfWJJ9JK75IohNXDIJYgYd?=
+ =?us-ascii?Q?JZyKny+vgq2a8jm7srje4dt1g73hHZ5vZsCGFxbqmG322gLuLdJbPJMm42GV?=
+ =?us-ascii?Q?FgZyGRJmbWC5sc9gfk8e121tstVk8qriMvPlZdqW41TuV3Bbnb0SM4Z2FJka?=
+ =?us-ascii?Q?jbKB9Bl02MiSc4FSJMUaFjer5ck68AfuJm80hz7DOKOQw4Dmy5b7An6eClxe?=
+ =?us-ascii?Q?2Xilw/dTZsgmydEsBm3qQivZpA6jRCHg0vfdi4iy6dvQQCLahBsolG1jIWAZ?=
+ =?us-ascii?Q?PChXbFKPS9+WSy/voZ2ySrWtog8pGMheO893WyFnVu7D6zx7gtmJ30JCkOIg?=
+ =?us-ascii?Q?orr54lkvB2Dc+MFvd0w/kBL8xKFbYfKxr893El6DSs7gnMFXB7UIvny9qXty?=
+ =?us-ascii?Q?Q2wHnsT3VJ0886tQS+2gRBhwwV7NYvudCvV6nJQeenYetwGlFn4A9C9m/bmt?=
+ =?us-ascii?Q?6MjF7E7ZiCufv4Jsnhk3kA7rmvetsYfGPkFa0wUs+BOXUo3WsZI0BOnnIaOo?=
+ =?us-ascii?Q?LCeZwsgFXwCnTJF2JTLFJ8iJuzG0/rJ5uuXGba3pMSVta+tv5vBdi7Y6QgLG?=
+ =?us-ascii?Q?v5rUsTvGR8wI0VublUvtEnAnR2gqb79MATXrFUKSq2vXGhpN4YMn2VvjmWRN?=
+ =?us-ascii?Q?XowaoxpTDWDgGsIFYe3RY0sgYY4AHzk/6xCUW+73101bkKebLZXDMMYeyUbI?=
+ =?us-ascii?Q?k3o6Z7lIBUzqYWjIokw7aBL4pNP4PaDlie348rcOOaqtFSOUJ0LsCACqxZKD?=
+ =?us-ascii?Q?8NROP3fo66rEmTlcxdR4Vt2cw/U0N7jGIvCMDjp/YUi+5G4i2Ank8tL9SKS7?=
+ =?us-ascii?Q?apLC8R4h/agCULFBsBSi+E0cJwXdIap9dqIoxN6yCpoBrez4ROnwtSpkxgNt?=
+ =?us-ascii?Q?EMEa5wf1BwvFUCw61/enu92UimF4QavsJ98SDRKHAq97JqY0wEtOBQ3Si6Dj?=
+ =?us-ascii?Q?PFBXscB+aNaMPiSOSTTXGsOMKfdLABSoFbuS5PEqvCW5074iF6+xPmajeXg3?=
+ =?us-ascii?Q?NBai0/EpS8wGwEYTbqXwuD20QFg32esS2JD8sOUlsvW1LWIWypa86L5Vv6J0?=
+ =?us-ascii?Q?OIzAJEru4uOE405U6zSgjKs01LnJX7xAHV4wL7yXZQxj083W3KzH6UNisq0a?=
+ =?us-ascii?Q?FCq08G7zXVomFNoLG4/mSMLN3mgYpMTQ47jEH8BVgUW+pK7CsAYwwgYieVI5?=
+ =?us-ascii?Q?kiq7cgJhlgvCVobpda+WEqulDx54tGNIXquirgPbdvb6jAAa8Oqwtc1CyKNn?=
+ =?us-ascii?Q?0JcnToYM+aCVltoWMls9eT+QTGWCr0CNUISuVx7g9VtYQtt2DYkl+2gt0xSv?=
+ =?us-ascii?Q?1cnkXfpBI76QvhgkrMLI0bxoPNxRypvUR99akthsVsTz+O4VEWwJTex60pni?=
+ =?us-ascii?Q?vywECfGo/DulnbU+sQdlgqg7TK6nSwVlUqkXv0QbjzH47iUue9Ql7J2Olq26?=
+ =?us-ascii?Q?UqRPuSb12junJ6KZS3SBLWwgZa5jB5pKr8jBTzHZTmWV5nky8Dc6NhwomhTY?=
+ =?us-ascii?Q?geBk9z3XYuP3EJn1mOlC8pss1nnuDKIL1+7KaH06?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e40cb35c-01f3-419d-b07e-08dd52b02046
+X-MS-Exchange-CrossTenant-Network-Message-Id: 695a03ac-b78e-4430-ebd1-08dd52b1e8ce
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 19:44:16.8195
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 19:57:02.5949
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pwhRxVua7CK54wGVtUWJbHmxoBCY68D9XQZWhJ0bVjib+9L0IdzqVga205PidgAdaYHed+aiv35spjpnn6RTlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10905
+X-MS-Exchange-CrossTenant-UserPrincipalName: QkpOez33sVfDp+u2wcjdzXexKmXY0j7Jqj5rDMmT1MdZqN6MP0EjV6jFMdB4qWEspeyH53QbTtpzmKYonnaaPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9833
 
-On Fri, Feb 21, 2025 at 02:19:07PM -0500, Laurentiu Mihalcea wrote:
+On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> The secure AHB to IP Slave (AIPSTZ) bus bridge provides access control
-> configurations meant to restrict access to certain peripherals.
-> Some of the configurations include:
->
-> 	1) Marking masters as trusted for R/W. Based on this
-> 	(and the configuration of the accessed peripheral), the bridge
-> 	may choose to abort the R/W transactions issued by certain
-> 	masters.
->
-> 	2) Allowing/disallowing write accesses to peripherals.
->
-> Add driver for this IP. Since there's currently no framework for
-> access controllers (and since there's currently no need for having
-> flexibility w.r.t the configurations) all this driver does is it
-> applies a relaxed, "default" configuration, in which all masters
-> are trusted for R/W.
->
-> Note that some instances of this IP may be tied to a power domain and may
+> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> configurations. Since these configurations need to be applied before
+> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
+> be their parent instead of keeping AIPS5 and adding a child node for
+> AIPSTZ5. Also, because of the security configurations, the address space
+> of the bus has to be changed to that of the configuration registers.
 
-Can you talk about detail which instance will lost power?
+The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
+config address part in your drivers.
 
-> lose their configuration when the domain is powered off. This is why the
-> configuration has to be restored when the domain is powered on.
+Frank
+
+>
+> Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
+> missing 'power-domains' property. The domain needs to be powered on before
+> attempting to configure the security-related registers.
+>
+> The DT node name is not changed to avoid potential issues with DTs in
+> which this node is referenced.
 >
 > Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
 > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  drivers/bus/Kconfig      |  6 +++
->  drivers/bus/Makefile     |  1 +
->  drivers/bus/imx-aipstz.c | 92 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 99 insertions(+)
->  create mode 100644 drivers/bus/imx-aipstz.c
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-> index ff669a8ccad9..fe7600283e70 100644
-> --- a/drivers/bus/Kconfig
-> +++ b/drivers/bus/Kconfig
-> @@ -87,6 +87,12 @@ config HISILICON_LPC
->  	  Driver to enable I/O access to devices attached to the Low Pin
->  	  Count bus on the HiSilicon Hip06/7 SoC.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index e0d3b8cba221..a1d9b834d2da 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+>  			};
+>  		};
 >
-> +config IMX_AIPSTZ
-> +	tristate "Support for IMX Secure AHB to IP Slave bus (AIPSTZ) bridge"
-> +	depends on ARCH_MXC
-> +	help
-> +	  Enable support for IMX AIPSTZ bridge.
-> +
->  config IMX_WEIM
->  	bool "Freescale EIM DRIVER"
->  	depends on ARCH_MXC || COMPILE_TEST
-> diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-> index cddd4984d6af..8e693fe8a03a 100644
-> --- a/drivers/bus/Makefile
-> +++ b/drivers/bus/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_FSL_MC_BUS)	+= fsl-mc/
+> -		aips5: bus@30c00000 {
+> -			compatible = "fsl,aips-bus", "simple-bus";
+> -			reg = <0x30c00000 0x400000>;
+> +		aips5: bus@30df0000 {
+> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
+> +			reg = <0x30df0000 0x10000>;
+> +			power-domains = <&pgc_audio>;
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+> +			#access-controller-cells = <0>;
+>  			ranges;
 >
->  obj-$(CONFIG_BT1_APB)		+= bt1-apb.o
->  obj-$(CONFIG_BT1_AXI)		+= bt1-axi.o
-> +obj-$(CONFIG_IMX_AIPSTZ)	+= imx-aipstz.o
->  obj-$(CONFIG_IMX_WEIM)		+= imx-weim.o
->  obj-$(CONFIG_INTEL_IXP4XX_EB)	+= intel-ixp4xx-eb.o
->  obj-$(CONFIG_MIPS_CDMM)		+= mips_cdmm.o
-> diff --git a/drivers/bus/imx-aipstz.c b/drivers/bus/imx-aipstz.c
-> new file mode 100644
-> index 000000000000..75696eac8ba2
-> --- /dev/null
-> +++ b/drivers/bus/imx-aipstz.c
-> @@ -0,0 +1,92 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +
-> +#define IMX_AIPSTZ_MPR0 0x0
-> +
-> +struct imx_aipstz_config {
-> +	u32 mpr0;
-> +};
-> +
-> +static void imx_aipstz_apply_default(void __iomem *base,
-> +				     const struct imx_aipstz_config *default_cfg)
-> +{
-> +	writel(default_cfg->mpr0, base + IMX_AIPSTZ_MPR0);
-> +}
-> +
-> +static int imx_aipstz_probe(struct platform_device *pdev)
-> +{
-> +	void __iomem *base;
-> +	const struct imx_aipstz_config *default_cfg;
-
-try keep reverse christmas order.
-
-> +
-> +	base = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
-> +	if (IS_ERR(base))
-> +		return dev_err_probe(&pdev->dev, -ENOMEM,
-> +				     "failed to get/ioremap memory\n");
-> +
-> +	default_cfg = of_device_get_match_data(&pdev->dev);
-> +
-> +	imx_aipstz_apply_default(base, default_cfg);
-> +
-> +	dev_set_drvdata(&pdev->dev, base);
-> +
-> +	pm_runtime_set_active(&pdev->dev);
-> +	devm_pm_runtime_enable(&pdev->dev);
-> +
-> +	return devm_of_platform_populate(&pdev->dev);
-> +}
-> +
-> +static int imx_aipstz_runtime_resume(struct device *dev)
-> +{
-> +	void __iomem *base;
-> +	const struct imx_aipstz_config *default_cfg;
-> +
-> +	base = dev_get_drvdata(dev);
-> +	default_cfg = of_device_get_match_data(dev);
-> +
-> +	/* restore potentially lost configuration during domain power-off */
-> +	imx_aipstz_apply_default(base, default_cfg);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops imx_aipstz_pm_ops = {
-> +	RUNTIME_PM_OPS(NULL, imx_aipstz_runtime_resume, NULL)
-> +	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +};
-> +
-> +/*
-> + * following configuration is equivalent to:
-> + *	masters 0-7 => trusted for R/W + use AHB's HPROT[1] to det. privilege
-> + */
-> +static const struct imx_aipstz_config imx8mp_aipstz_default_cfg = {
-> +	.mpr0 = 0x77777777,
-> +};
-> +
-> +static const struct of_device_id imx_aipstz_of_ids[] = {
-> +	{ .compatible = "fsl,imx8mp-aipstz", .data = &imx8mp_aipstz_default_cfg },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, imx_aipstz_of_ids);
-> +
-> +static struct platform_driver imx_aipstz_of_driver = {
-> +	.probe = imx_aipstz_probe,
-> +	.driver = {
-> +		.name = "imx-aipstz",
-> +		.of_match_table = imx_aipstz_of_ids,
-> +		.pm = pm_ptr(&imx_aipstz_pm_ops),
-> +	},
-> +};
-> +module_platform_driver(imx_aipstz_of_driver);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_DESCRIPTION("IMX secure AHB to IP Slave bus (AIPSTZ) bridge driver");
-> +MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
+>  			spba-bus@30c00000 {
 > --
 > 2.34.1
 >
