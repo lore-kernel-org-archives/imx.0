@@ -1,347 +1,335 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2041.outbound.protection.outlook.com [40.107.249.41])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2070.outbound.protection.outlook.com [40.107.22.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDE478F3A
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 02:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CFC3594E
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 03:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740106569; cv=fail; b=chQqgjD1LTbqrwO0/IY3lckxLERmXVqRmisWGJGV6KSyN8Z5CaYQW+q1ntHz/JUPHaPgqoGOARq5R+hltfcm5d1Z1wv7G+QnWnt6mwM/hyA8X2NLc9BVPxkxEsTdHH5y38LkDcysex3dHQV+uHv+OifZePkT6PmfYFvyEb6MZ/I=
+	t=1740108435; cv=fail; b=HLldSZE/JPhJqzgJ+fH5wWtzoIc0FtvU3vF6aGzftHilPxm9im2i/NwWiV81UTQsDuwfwvm+Y+DOuLujW5dZXPDSq5+V8yhsCJE+AvEzn13vtF8HVNQMpOPWgOWT4hvmEbcZ0kAnFrz04W5UxShWWCU3f0pKzOsZeOMuilWevSg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740106569; c=relaxed/simple;
-	bh=dpB1wlxSs/CRaK2HnwPVc3IvJga8qSHPNXQMGdBD5HY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SSQVEd/J+hqQ8GATGLiAtm6LUwSrfP5gefy629ubP66VjrHaa25feV38B6w+jmXw3V6blb+715yrtFd8g8qswHVmOl/Io5aJOUD7ms4sN5xPBGy0/I90Fwf1jv8Lb0VaYhHTT8BipoTx1OhNR87uN6cZJlaxsZvapyktiBZ+jsg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GnY//pSJ; arc=fail smtp.client-ip=40.107.249.41
+	s=arc-20240116; t=1740108435; c=relaxed/simple;
+	bh=zCa+mxe8LV4EqQBhQgwXsNQY6K1iFQjex5Hy0t3Gj68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HRVdA9pwCrQbi7VAFhiAC3HncSgz7+aNX11LjYiqvQ4hQPN8sisS3aE1SEM5bwKBYiccBKXFuVHHuxrIygvQH+oEV1Ao4Q6yhWJl+jkID5pb4jbXzoZLLeUjK3BJOPEoY3zxl52490QYlitTsGM4l7XKkr5uIlCLWBLnqfBowyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mh6eo2QX; arc=fail smtp.client-ip=40.107.22.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GnY//pSJ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mh6eo2QX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lAEb7RB6VBwC8K2AjOGaWaUmlX68GCxPWHPY0u4Zj97zfB0po08vTPQzmG/aBGDrFnYwmF6gvqhi/xkCi+Mopd63UgnIEc4WXm9FH/qhsPNrJE7T6gfjYvS28oIIzmZkp+fn4M+Bsy2wg/m5sZaM1sUvi5Y85ZU7FBfU7wTmG8DtBlLh6AiGutY579nPhssgEDPsXvnZq2yUO375LTC3wg9NrTu1M3Qa5Agwj9yDDyGeV7q180+lv+fkntryYAdzU1zEM5fqi1ugUuRwkPzkrvlWSAa2pv5twau4Sbe2X61NoWNSNdBCuAHH79HRAvi+cqo4OFIvXZozKAy/W2TQdA==
+ b=VIs26MeEZdNL2QKewLR/SeNLJeGNjzNOnM5netP3DbGJyYPd0CdGAGkkLYa/MYV4UPcMkrVegcH+HOQunMnH3GWdTrs3eDBjmRfl0aRrJR9fniHV1aLHOkQshhXwXr4f49SW456kCHHVyblhQdM9RJPbq//1ISw0yUomTaUS10B0sYzUmJuPd1Cn3mxA5H0SVFGzzK3B84K1s69I5x4qZ+tZNttZUrgbGY7bRxpMoqXg9m6brSXB7S4uwjrfiTxlVXSyHiPDmRVDUSht7Ou6PYn8EFW/o8ol/uKEIRMYi9WV1zWL1CuSlEHoqac8KnweZPu4A9UmBEFzQCkRx+YVDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gkj1/7q3VCjNd4gT/zfnP7g/0xxnsgXlNckBMP5r1/E=;
- b=EBTa56wWbm05uxgnmfKhsqWFyq3/yWCTVuj+lrh9GpM44Qz7LmQbIY/sxfzXG8my2oRM/wRE8JCydYHTTAD6/e9F+Cn7vwIfEnnfDPnNDhDXyG4aHAFL04Jf9x37bf+1XVrET0WnRZCEyIX1Jgc9XrG07WnHcDHKcSDafIwLVwwVEKYBV6DWI97WmubDOkRx3k6gQovIbsT39tpp3NaLI47LDGG7ZJmQgnP40UgtZobcMnJx8vrrRWRN26/r5tJwGIT8UbnSX1yp1/EOTr1aUaXeiQ+8RPyumtzBi7J8eMlH/bUCdq2nZdFJOBn25/NFTChZHpmBSWxWL9T6u9T6eQ==
+ bh=pstuSwUjkhuZm+FlnV67vFxk9/Y3Oqdv4wEOt8HjrBU=;
+ b=dW80RWXbJFcbBUy5w6pLR/6wFwaZvZpiwJV5FBmlai2VPFfYVRmPGmUiQwwvYtdGhI7BX6+1JkA+EVdblyKdCh23JZE/lFmG2CMla6K41cml4HGcyVLa0I9dwBp9tTHsef3oc6NYvm6jJtnuuMAjA7skOboxFLz1G5qCG/d0IB9NQblV6l85j0+l2woD0ka+VaYjtcplaVU4rFmi5x811Mw7QF2gSoHYcmeSCaCGk2glPi0lwDFVGYiGLOVcU7y3FwvUqH4/izGsM2jojkdmyl6ZP8+4EXy7BLykmcqWMxJS5anLrOnH98yherh8Z3UvY0qlqxrP6mn4ZoY4vfoPCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gkj1/7q3VCjNd4gT/zfnP7g/0xxnsgXlNckBMP5r1/E=;
- b=GnY//pSJdpb2BKXJQXQ/K3TLOLuxCdj3XYQWn77kBknHY6OyqyERGepiiBjaAIOrAxKRMfBf256Bs8rm1MCeziWpKZXH4nHWyjKnBizfsT/C4Totj7SLf4IVFTyQ+s8g1w/SOP2uAcT8KrkHGxEG9s18RYnXv5Bll8hQ+zVh2AoHuHV4Tq+3Fq5kHEu0254QJoTqVWkTibz6s0tXhwZ0pAqBFyMVy6TOnA9bfF1uEMN2nct7R413Gd6yQP6lXz64QX8H/egycROrcaFUPZdr77nGVT5g0F7MF1Oh/BzVb9dF71mUQ1USyZpnaSvr0838hh2CJLCfxf+PR3mHJARW8A==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA4PR04MB9710.eurprd04.prod.outlook.com (2603:10a6:102:268::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Fri, 21 Feb
- 2025 02:56:03 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8445.011; Fri, 21 Feb 2025
- 02:56:03 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Index: AQHbgpOTkcGlUe2F8Uqdee5IlYnyh7NQZPOegACoNSA=
-Date: Fri, 21 Feb 2025 02:56:03 +0000
-Message-ID:
- <PAXPR04MB85108B76779CDD5C6F862A5B88C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250220163226.42wlaewgfueeezj3@skbuf>
-In-Reply-To: <20250220163226.42wlaewgfueeezj3@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=pstuSwUjkhuZm+FlnV67vFxk9/Y3Oqdv4wEOt8HjrBU=;
+ b=mh6eo2QXO+iSyA05OoxTcnbq5QN9t69KtHJxfZqA6ySh62a3JU9V0Jhy+X7JzkNtmGQMCgMqX9jlSBqQ33uhbzHCGjF9v3/MyUK7U2h/JvFLOpV0QMcND0i0iq+m1LdRW11T9ONdnntx4uu2Z7j6nne+bm5kvjR6aGUrqrtaK3h3QpstDeNJhNlvQ3A8q52Oo8nES3PFTwDrzi94aA42niHYk3N5CAtXFbkFfM28SjB6ivBnWhkEQIp7fmt1I2HmVDJq0MudoBpwdXMSMIf9j+Vl1QjT0r+i+Wzyhiam5JanV5HDBS9mtG8WAmx+ELhIEvGeV/Y8kDVwjMqBe2aQoA==
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA4PR04MB9710:EE_
-x-ms-office365-filtering-correlation-id: 0929a42c-2ff9-45b4-0fb3-08dd52234776
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?+40Rx6NHiNy1S0Y6j1qttkI6OmU2DrhBq8i14AYfHmlS5CUK3TaygV+9LuWM?=
- =?us-ascii?Q?wPTvLQEwG9v/yY0mTWP12Sx+w312eQAK5vRzcr0/RfEKEC4xoUtm1Dkw7rDI?=
- =?us-ascii?Q?4IXCjUppfX5EQLQHmuITj3Ii9clzajVUuI9MjNsknzHa/sAsEMRbeievxyFj?=
- =?us-ascii?Q?LZwft1SJcpYxVrmU6x2tp4j0+6ZJZvNoQXjrT2D3xFHSR6jiFmPGTYze9h5m?=
- =?us-ascii?Q?WY7LqNgzxNFJ/xyEzi+YpBxoDCdeuNfVhiyW1fnYW1LXk8FeyOGZWcvCzEqh?=
- =?us-ascii?Q?L87YJFkbLt6fZ4lkkjBfcrEXKOzorDSwYjqxqlJKm4dt1lzQIl37Mp3Rpq7/?=
- =?us-ascii?Q?R/EqnZTeoS4mQQN8X+kzMSdoGELVELl3gaiKtP7rTlNbmVRBMJGT1A2ZKLjt?=
- =?us-ascii?Q?5B3ZuwiIWSO4lI3bWN8eY5uj5F88Wtt79hhm+SzSo1+yg7s7TrFIOIPw+LOm?=
- =?us-ascii?Q?N9Bh9Mrc23p38tznzBS4ZLgS0o4ZwfJr31S2Wp4yDxWtH0pCCcvoEKntwe1g?=
- =?us-ascii?Q?YY8vkEyg1EjKrSOk2RI/1sw7WyJ5o+TNOdQMq7edS9frQjADNLyDrcG70Jmk?=
- =?us-ascii?Q?qcv2QJGqpNdInWQToo4OVGM1JJYDIQs8Cx8lzl/c0KiJ9Q3tnU7VnFo/jebk?=
- =?us-ascii?Q?JAPzEIWAxHFQdsxOjfWXxgrfelR5WWSgluG967A8xuTKFOmBxic9SSi5IohR?=
- =?us-ascii?Q?vrskYx8t2NUQJ5IJB+Yc2GQGLz6zGjlJuO9xpUifel0Ffn/0gE5AU8h9CbIH?=
- =?us-ascii?Q?JtoRAuSOvU2PLxB56XOZCTRbNcxWORc4QXzsVv5QxAhW6EVOrDZx4NABoqj4?=
- =?us-ascii?Q?n/hsciLbappxikxuMLsQaFwBvU8Ld3dN57R3nKtexd4VVbBn3h5/lFkY1fBW?=
- =?us-ascii?Q?NwTDKgioxmJSoEqoeFc6xnW4ebtN/7xIt2hH1RKOuTzxvYLbNaoUycYtAgqm?=
- =?us-ascii?Q?CyVP4QltGzTGT7soz5D3KbCfZu9/d//AhW9MtSg3qgpnC1bCESpOigd7veAN?=
- =?us-ascii?Q?GU+wDB4912Y8Rzjd4ZYNhkPu1zHTnwj8WZg8qJseDy5UeG/KjdK+mdKJq0L3?=
- =?us-ascii?Q?Xul9iayvpgoS/ijS25tI8Uj2aK9xarc3kiVC6s3evCDwRZxmzZh8dksS6S9t?=
- =?us-ascii?Q?kYwYSeihqMJXaA520FY9qGV0MP1HZnLwzDBAIDr7tuGqm9emGL0D+5SqRbUr?=
- =?us-ascii?Q?8p0QYZsX5p6Wx0aeHEaqiStFyNXhPs/gCV6V3v4yvDJlK64u2r7rd/gL/qOh?=
- =?us-ascii?Q?Jr22Ry1fhl+6HMbh9IbwvdK8dIV0bdt11A1eAN+i6LzMh2v68i4NVCayw6bS?=
- =?us-ascii?Q?bhRGMSViW7TiatO7yRHejZHzL+uB4C88E17CLd+9+N01knP/fPfLzC8twXMy?=
- =?us-ascii?Q?5JIYiqRzOKLxPLgUYQKBqKcA7iit/a2qhZo41IzrFNUK3SayktHkIL/2kFVq?=
- =?us-ascii?Q?Meb+MNtuO/dxfp/E8PCZlcw+MUD/9JST?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?F4lts+cdibUZXgTQRg0B87lYzxGuzIlqpfo7dv+V6BfiR7ERKy97I26/92jB?=
- =?us-ascii?Q?p4tjU43cSU+JVTmm5pr/npD4cSg8CL6+g7a9SMOnrOLKAlPABmgDqaJSKIiy?=
- =?us-ascii?Q?lbfbfRz1/g2BR3r0Br1mqRon/YDnMlwCV4rmc2gyTNo5nGJMUw8tgXVDOzmV?=
- =?us-ascii?Q?9EgeAyNYMLYQGe4rRUSl8C9iy5dDqwOAITSINQqMKvtwfHLtBY1oIos5O33r?=
- =?us-ascii?Q?efkxakRpjdnGzn6AFZ0zbgd6A6+AqNKJnUlx8Gd2ui18BzHJwsKp1NsEB3Cq?=
- =?us-ascii?Q?1nbKswhKKgZeiBwtm1v9a9WSJk29BHck7jaC2eB5lSilQ0OihJfAyfFwVpUc?=
- =?us-ascii?Q?J4+bJTf5pJu2vv/mfnfiM29y+EnC/PqMWDNTP86/3tAc9hSmZb5nEh2zGD8X?=
- =?us-ascii?Q?u7CcsIQRGpt8vI7YUyos6JU875+lAbvxMG/rpPqnOU6M7Cb5zRl4S1uCMooN?=
- =?us-ascii?Q?zEjdVZeZ6ATXmuABXxuo9QK7I4y5/6cy2tXNe7lG+OFAckBTpnJvTYVoJjqu?=
- =?us-ascii?Q?j5IheX2chGHfgBUx6y93ILkxizkTdK3ndPmSkt66P4MaqopO+jhbhVBf3es5?=
- =?us-ascii?Q?wxuNLKKhWXStcBdtLu44tbrSg0v9xY5bPernaSssm1dvZmJjOW+wYqjmwO5a?=
- =?us-ascii?Q?wNQ8+9wRPAq3jFp8PXUYm9iJiPOk3CFNcT+ta9yRp0t/zbTeUQqm5/Ilconr?=
- =?us-ascii?Q?tEgBG115pAWxRBJNd76v2HHnc0fBIFoaiDe2wuNS/1QKlDcTkdUqu0PkMv9P?=
- =?us-ascii?Q?6xRanfIM0qvvbhbSk3a0vCKtiE/GZSzaZqOdroDDWeEOoXcRhi/OPXll5IWE?=
- =?us-ascii?Q?ofUJlfyEX6Hl8vgFs96MlnLOpNVpMsvn1L9+VTWQogf7mbFNZnkSY+1+TtSs?=
- =?us-ascii?Q?6HmwSuDIAEqQ8GYWWMrtpEAWrguhb2f+et+8AFGbO1aDzP2cmYSqgpftCA2D?=
- =?us-ascii?Q?67bxqzBJcdRSNm1/I494HCOzPCY8ll3Q35fokO7t/cOzF9t/l3geo+CWEsDO?=
- =?us-ascii?Q?bgR8zUSACgsHU2jlqW/ODr3n8O8dXfWQY+WJLPpmSbim6gNAm4k2/9FSLM4r?=
- =?us-ascii?Q?++JJVAg5Lio7yQPIfOmacOBi7AlNTt2RC/hRFWoMge1oQ8kekKpBcWub+RLx?=
- =?us-ascii?Q?0EkJKtv+OFP2S/5GCDpm1SNTpH3o7hjEvrOcS9yX7KDOhqD/jP2/FwrdNaXn?=
- =?us-ascii?Q?w+qVt7oc5ZnwwuxqXt74YV5QUM4fpxWVbTq7uwPM5sPx1cv3t6R3IOQV/JVh?=
- =?us-ascii?Q?GWYnNCsL6hguNx23Cv73Rv7CGkdWoj9+JhfqcdnZwJLh1L9HAktkr8rplymP?=
- =?us-ascii?Q?CzW5zfKLiAtCxQX5jh7Db2ucBbf91/K9EZRPl159kH0Fja3sagZRP+2ddUvW?=
- =?us-ascii?Q?JZQXETkE9zWkrZlLc3/l0VjwEFr3k5indGD8ujJnZAcb+zgQRp2kRzgNn21y?=
- =?us-ascii?Q?w+YEOAG1CWPa+MEqnd8oflAnOGx6Xk8mYABkZSvgQC9d8/c0zaZWTMTiSvhr?=
- =?us-ascii?Q?JZ2wGG4Bac4/b5gS3ltpk/Hsu5ogn6cwRF8H7sVlUbwFA9++eDPlf7nmXb7V?=
- =?us-ascii?Q?1FR9hdRhXkJe245tNX4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AS8PR04MB9093.eurprd04.prod.outlook.com (2603:10a6:20b:444::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Fri, 21 Feb
+ 2025 03:27:11 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8445.017; Fri, 21 Feb 2025
+ 03:27:10 +0000
+Date: Fri, 21 Feb 2025 11:23:48 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 3/6] usb: chipidea: imx: add wakeup interrupt handling
+Message-ID: <20250221032348.sncjhnldj6ecgeou@hippo>
+References: <20250219093104.2589449-1-xu.yang_2@nxp.com>
+ <20250219093104.2589449-4-xu.yang_2@nxp.com>
+ <Z7Y+gqu75xJyjy6n@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7Y+gqu75xJyjy6n@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SI1PR02CA0026.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::11) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS8PR04MB9093:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e8fc7a1-5a97-4430-c9fe-08dd52279fe4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|7416014|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ts5yWUAKCVGFG7JxGgdPMidDp6MvzYOKTGS+0FUHCsUehwvCmcZvF9wyaQCt?=
+ =?us-ascii?Q?esIy0acT5f4ko4WBxkRC9Oi8C9wXV33/uj69xbLco7eK98vuvkGXibqhBrAU?=
+ =?us-ascii?Q?m6pnKFGESWQOSVZBJXmsgVxsQTnnWxqaw/oKrQM/oJueD729w7VoW0fnxeSI?=
+ =?us-ascii?Q?bsItGK3Vk2aFj3ZpudotlwJEDVNC7iyERe52CKZuPPsMvBWGtV30JElU2Jul?=
+ =?us-ascii?Q?4LExikBk8VlQlur3Mbys2ZCsgPzDpnC3q6dH6sQrTYzwAEpGh9XEUUXmmlPh?=
+ =?us-ascii?Q?9GwyiTaCY52+XetdQkMYoFSgIIqm3CkwCTuuubsRTDXkJAwt+brRCl8BdrzD?=
+ =?us-ascii?Q?Qijw+Jfpdzou9zropyL4CwiL0dPLNQoRyjg92/Revn/qOkF4YjWt7ujq0td7?=
+ =?us-ascii?Q?2cGB+QXYXvd+HTcEpmKAsGn69pNjh6TlveJGx84x1+BTlQ3izzin59CV15pF?=
+ =?us-ascii?Q?zCeGQ/3kuNyaKsR2fCkXfpOzmtlMt01BQcmgUR597+w+KhHNqo7YS3uuozL/?=
+ =?us-ascii?Q?CJLGnJuTWxmUE4bSGaKtyFYsuKivBXw8p6t/AZ4AUDhbI58HC4Dqyy9SmH1K?=
+ =?us-ascii?Q?0B+Fi7Gj5rV8XRIj1oIBwHHOVrRwmBe8E8l6b95Wfq+yoSiUVOOD/3Oh2dMx?=
+ =?us-ascii?Q?zRyHHhVX/WeURmhOwZuQid8KXmPfg6kWTQ8+8Cnf2fN+YGWzOcUgcJqvJfyC?=
+ =?us-ascii?Q?9xOxYQOSKeKnbQW1c+L9OlxXerirrhjX33VmYNDH5gSOXmB3LM4L47rR6/C4?=
+ =?us-ascii?Q?1NRYhh5+DrK9h8qveyvCnqp9aAZx0ye9pr2ca5U79g8peXlCJYNFTt1ac08x?=
+ =?us-ascii?Q?sgBY6hny5RTl0lAgg/mGW8pQDyVyQx5OHsZSbzadsGfmVOMQu6z3CGnIX+Hd?=
+ =?us-ascii?Q?fDpRh+8t9mOczxhHjIK4fIHPkj1nhHxY8+bKoJAk9bAvcAqSZFZobMJmtNHJ?=
+ =?us-ascii?Q?QDSVj2JIynkN1L8yorPBOSVCcL8t8rNNFXmWRS9Q7NApyx43Z49uX31sDAam?=
+ =?us-ascii?Q?Ywtz/m8zkxL5OjIorQXeFSsEQBPqJEmwCF0NXl4dG+4lnQ9HAvAOgCyMVQYw?=
+ =?us-ascii?Q?lIoYc7k5O1esfgyLW53c5DB+DbX48ZdpV7/3k08LDwOrOblyFLJ7PAheHUC2?=
+ =?us-ascii?Q?38z1GVV2ClPwNOJglPhvhrK8afUi0dzkq3Knkuv0jLbf9QxG0Cy5iqsyGQKe?=
+ =?us-ascii?Q?CEnYk0yDJAsWhLTwVsm7BHGzFEEbF4zrNeq4tvpQxbqagJV9to+QfSEzt65r?=
+ =?us-ascii?Q?0ofVXo6avDi95ELjG99sA4hdIcfICsC0tU3XZpsvk9v2oVCGnfDICJbfYZB4?=
+ =?us-ascii?Q?6Yuwz0IU+FdkgWPgtXA0+qKnqL/1rDavfrxavIZmRvimF35FDKmePBdyhVzD?=
+ =?us-ascii?Q?JUWnnRNbTpoc8gg5AyVNII4BjmFeEAL3lUJnmcm6cx6SkYiKBXoIJB6v9lbX?=
+ =?us-ascii?Q?ah4/XhVaNnGnEsej1l/oMyPQsS9nNgNL?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wR5pIBj70UMZEoYuDa6NERz/jcqSeF411fELJA1LYRSIL2Ky2rEyEyXQjfkQ?=
+ =?us-ascii?Q?DKGEIgIxYla7u+JAZithf5ehSmQnDwdAUMO2KEpv6XBwYTue2ke3IAPtuWPo?=
+ =?us-ascii?Q?cAa7YjTmxQ7wWi4Cfl3PZlmkMpZj6S5A6lzyhXJ8QbYxhG/2AK/NMtgumNB0?=
+ =?us-ascii?Q?sKJOLvMfMI0ifrMXvUcHluTOlrDE5wrATWvSjziH/02dLGrFWNqyQ1x8cefb?=
+ =?us-ascii?Q?APlPd594x7FQj1rKP7cQZpvf5ytNIrikBaI+ZkHQIFdrSoS6AYqckwXNHfx/?=
+ =?us-ascii?Q?7qmFTkDP/LsTwM8M1L+xHNcW0tahyxURo4lsXhdm7S25f1vvUHKykgiR4Ytk?=
+ =?us-ascii?Q?DZY0/+HBXeewh1+eKW7xvz3VHxQ3dfbBTOsdHY9ngafnrdvyZc/3HqdmFaIn?=
+ =?us-ascii?Q?6bR68OrKAFLEpod54OnDNo9Azlr/AhYj7oUltQHlkWLtJd2SP3L9pgio7+T7?=
+ =?us-ascii?Q?ynA38JEm7Y1g7jvM9vs8Z5xXsI174Lss7FMpfww/tv1ddG/HlYyllpNqZmvI?=
+ =?us-ascii?Q?bn3rBC0asBEAdW6CwkZKw3o1iYCWWTA6LNMU32aPcy2qFSK7luRa3g9rJyoY?=
+ =?us-ascii?Q?B5kyX9SvN+NCQHjtljUBcIWUWt/2ITfzbeGe71jyxvbDcfcmJdQYH2e6g8jN?=
+ =?us-ascii?Q?g1h0DQmxdC0rZFo6aBHJ1uJhjGmb6iguliLt584Wpf0vziMiPKupyLXdqLhD?=
+ =?us-ascii?Q?8C9qUZ0sSBJBi0BPSz6VMNq+p3fwsC7i/Xvx22IM8hb9KH1QGdXoo0rFxxM0?=
+ =?us-ascii?Q?95g30P1c7KZOWBDvgydxwEKJT+CAo4Yuuo74vYX3613bQt/BubkUL/cw8YwA?=
+ =?us-ascii?Q?wlOiWbOQ+/qOK3T/bR5P+J5ELS2MtTAg33QcnGN0Q53eloaxNQzdxpqIZA1a?=
+ =?us-ascii?Q?Sto/BqTLUCUlUVtfobELIXPjBHihPj5blyqeY+L6yue7LpAY/Rpo6QJ0iD+o?=
+ =?us-ascii?Q?1TywEVPQU1lZEE7P1ro5EjsfiywKDJimogVaCRlfA/9CtO12XhdWBB1TH6b1?=
+ =?us-ascii?Q?vX4kwEZrln7nVTr7J+UiC43EbRB2tQyesU8CSWlabcs9nZMJSU62i0yzsiss?=
+ =?us-ascii?Q?NCPZ4fAK0bck+fFwKw4WOdsg5ugs/voEmyrMxpWEdtlTe6mNxPXwI7qYTHxu?=
+ =?us-ascii?Q?yEYkA17uC0HOekpQJad9Q62z6NxRlWUU2Qv2A7bZvm+bWiO6rIK4FF/jb6mm?=
+ =?us-ascii?Q?zOcWJccPJt44r4abVevh/6dpaQPFDW0axcjiu3P7XzXwJkU9Jc5EW7A7283O?=
+ =?us-ascii?Q?2M/OfRFpV+TCbBQeACom76OCX0lIwX2JClT7omAljLuVWKesg1flIS+sY3Tt?=
+ =?us-ascii?Q?RcvAH6S3myhxmY75x1eFl6nTCBg+fB6OAMkj31aUeqJoRHfU+xcf8eRxOn1t?=
+ =?us-ascii?Q?PCin64tHd0tOYQZn6XXvag77ixo8QkSzSXmL68coVL5b2c5RlrWv8Vv8QSqE?=
+ =?us-ascii?Q?Yf1eQ+9K+iCmhboyOqa+kah2cFTIjeX7RFPOPRgRJw2MByfJdFYzIXs/XgVW?=
+ =?us-ascii?Q?jedUzyACuVBXZO2IvuBKftjCnxuvyxfXppQ8hd2g8zwfO4Asr2Yo1aU5YUps?=
+ =?us-ascii?Q?QoA7qzX9PMxPYBjV+pASk2u1v2XZmOvGlBxNJYxC?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e8fc7a1-5a97-4430-c9fe-08dd52279fe4
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0929a42c-2ff9-45b4-0fb3-08dd52234776
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 02:56:03.2215
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 03:27:10.6498
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DuKA6iS6s55aJVXKdrYXYhof7jqnHwN6QYYk/pD91eDkHgeT0FDrC+dcZr0qiENPWcMO9k4YXKT4O1TtDhGVag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9710
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AISWcZWK5SelGlX3HhFmiCVK1G0rOno6JpK93kJuf+bOp53ZDzi3p13a8FdyulFq4jNSnxmpYXV6R3bMmx3zaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9093
 
-> On Wed, Feb 19, 2025 at 01:42:47PM +0800, Wei Fang wrote:
-> > There is an off-by-one issue for the err_chained_bd path, it will free
-> > one more tx_swbd than expected. But there is no such issue for the
-> > err_map_data path.
->=20
-> It's clear that one of err_chained_bd or err_map_data is wrong, because
-> they operate with a different "count" but same "i". But how did you
-> determine which one is wrong? Is it based on static analysis? Because I
-> think the other one is wrong, more below.
->=20
-> > To fix this off-by-one issue and make the two error
-> > handling consistent, the loop condition of error handling is modified
-> > and the 'count++' operation is moved before enetc_map_tx_tso_data().
+On Wed, Feb 19, 2025 at 03:26:42PM -0500, Frank Li wrote:
+> On Wed, Feb 19, 2025 at 05:31:01PM +0800, Xu Yang wrote:
+> > In previous imx platform, normal USB controller interrupt and wakeup
+> > interrupt are bound to one irq line. However, it changes on latest
+> > i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
+> > This will add wakup interrupt handling for i.MX95 to support various
+> > wakeup events.
 > >
-> > Fixes: fb8629e2cbfc ("net: enetc: add support for software TSO")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > Reviewed-by: Jun Li <jun.li@nxp.com>
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > > ---
-> >  drivers/net/ethernet/freescale/enetc/enetc.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >  drivers/usb/chipidea/ci_hdrc_imx.c | 42 ++++++++++++++++++++++++++++++
+> >  1 file changed, 42 insertions(+)
 > >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > index 9a24d1176479..fe3967268a19 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > @@ -832,6 +832,7 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb
-> >  			txbd =3D ENETC_TXBD(*tx_ring, i);
-> >  			tx_swbd =3D &tx_ring->tx_swbd[i];
-> >  			prefetchw(txbd);
-> > +			count++;
-> >
-> >  			/* Compute the checksum over this segment of data and
-> >  			 * add it to the csum already computed (over the L4
-> > @@ -848,7 +849,6 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb
-> >  				goto err_map_data;
-> >
-> >  			data_len -=3D size;
-> > -			count++;
-> >  			bd_data_num++;
-> >  			tso_build_data(skb, &tso, size);
-> >
-> > @@ -874,13 +874,13 @@ static int enetc_map_tx_tso_buffs(struct
-> enetc_bdr *tx_ring, struct sk_buff *skb
-> >  	dev_err(tx_ring->dev, "DMA map error");
-> >
-> >  err_chained_bd:
-> > -	do {
-> > +	while (count--) {
-> >  		tx_swbd =3D &tx_ring->tx_swbd[i];
-> >  		enetc_free_tx_frame(tx_ring, tx_swbd);
-> >  		if (i =3D=3D 0)
-> >  			i =3D tx_ring->bd_count;
-> >  		i--;
-> > -	} while (count--);
-> > +	}
-> >
-> >  	return 0;
+> > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > index 1a7fc638213e..5779568ebcf6 100644
+> > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > @@ -98,9 +98,12 @@ struct ci_hdrc_imx_data {
+> >  	struct clk *clk;
+> >  	struct clk *clk_wakeup;
+> >  	struct imx_usbmisc_data *usbmisc_data;
+> > +	/* wakeup interrupt*/
+> > +	int irq;
+> 
+> use "wakeup_irq" to avoid confuse with normal controller irq?
+
+It doesn't matter. It can't be confused since the driver is different. The
+controller driver is core.c. This glue driver is ci_hdrc_imx.c.
+
+> 
+> >  	bool supports_runtime_pm;
+> >  	bool override_phy_control;
+> >  	bool in_lpm;
+> > +	bool wakeup_pending;
+> >  	struct pinctrl *pinctrl;
+> >  	struct pinctrl_state *pinctrl_hsic_active;
+> >  	struct regulator *hsic_pad_regulator;
+> > @@ -336,6 +339,24 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
+> >  	return ret;
 > >  }
->=20
-> ah, there you go, here's the 3rd instance of TX DMA buffer unmapping :-/
->=20
-> Forget what I said in reply to patch 1/9 about having common code later.
-> After going through the whole set and now seeing this, I now think it's
-> better that you create the helper now, and consolidate the 2 instances
-> you touch anyway. Later you can make enetc_lso_hw_offload() reuse this
-> helper in net-next.
->=20
-> It should be something like this in the end (sorry, just 1 squashed diff)=
-:
+> >
+> > +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
+> > +{
+> > +	struct ci_hdrc_imx_data *imx_data = data;
+> > +
+> > +	if (imx_data->in_lpm) {
+> > +		if (imx_data->wakeup_pending)
+> > +			return IRQ_HANDLED;
+> > +
+> > +		disable_irq_nosync(irq);
+> > +		imx_data->wakeup_pending = true;
+> > +		pm_runtime_resume(&imx_data->ci_pdev->dev);
+> 
+> Not sure why need pm_runtime_resume here? There are not access register
+> here.
 
-I agree with you that we finally need a helper function to replace all the
-same code blocks, but I'd like to do that for net-next tree, because as I
-replied in patch 2, we don't need the count variable. Currently I am more
-focused on solving the problem itself rather than optimizing it. Of course
-if you think this is necessary, I can add these changes in the next version=
-. :)
+It's needed for runtime resume case.
+When wakeup event happens, wakeup irq will be triggered. To let controller
+resume back, we need enable USB controller clock to trigger controller
+irq. So we call pm_runtime_resume() to resume controller's parent back
+and the parent device will enable clocks.
 
->=20
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 6178157611db..a70e92dcbe2c 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -106,6 +106,24 @@ static void enetc_free_tx_frame(struct enetc_bdr
-> *tx_ring,
->  	}
->  }
->=20
-> +/**
-> + * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer T=
-X
-> frame
-> + * @tx_ring: Pointer to the TX ring on which the buffer descriptors are =
-located
-> + * @count: Number of TX buffer descriptors which need to be unmapped
-> + * @i: Index of the last successfully mapped TX buffer descriptor
-> + */
-> +static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, =
-int i)
-> +{
-> +	while (count--) {
-> +		struct enetc_tx_swbd *tx_swbd =3D &tx_ring->tx_swbd[i];
-> +
-> +		enetc_free_tx_frame(tx_ring, tx_swbd);
-> +		if (i =3D=3D 0)
-> +			i =3D tx_ring->bd_count;
-> +		i--;
-> +	}
-> +}
-> +
->  /* Let H/W know BD ring has been updated */
->  static void enetc_update_tx_ring_tail(struct enetc_bdr *tx_ring)
->  {
-> @@ -399,13 +417,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb)
->  dma_err:
->  	dev_err(tx_ring->dev, "DMA map error");
->=20
-> -	while (count--) {
-> -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> -		if (i =3D=3D 0)
-> -			i =3D tx_ring->bd_count;
-> -		i--;
-> -	}
-> +	enetc_unwind_tx_frame(tx_ring, count, i);
->=20
->  	return 0;
->  }
-> @@ -752,7 +764,6 @@ static int enetc_lso_map_data(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb,
->=20
->  static int enetc_lso_hw_offload(struct enetc_bdr *tx_ring, struct sk_buf=
-f *skb)
->  {
-> -	struct enetc_tx_swbd *tx_swbd;
->  	struct enetc_lso_t lso =3D {0};
->  	int err, i, count =3D 0;
->=20
-> @@ -776,13 +787,7 @@ static int enetc_lso_hw_offload(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb)
->  	return count;
->=20
->  dma_err:
-> -	do {
-> -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> -		if (i =3D=3D 0)
-> -			i =3D tx_ring->bd_count;
-> -		i--;
-> -	} while (--count);
-> +	enetc_unwind_tx_frame(tx_ring, count, i);
->=20
->  	return 0;
->  }
-> @@ -877,13 +882,7 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb
->  	dev_err(tx_ring->dev, "DMA map error");
->=20
->  err_chained_bd:
-> -	while (count--) {
-> -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> -		if (i =3D=3D 0)
-> -			i =3D tx_ring->bd_count;
-> -		i--;
-> -	}
-> +	enetc_unwind_tx_frame(tx_ring, count, i);
->=20
->  	return 0;
->  }
->=20
-> With the definitions laid out explicitly in a kernel-doc, doesn't the
-> rest of the patch look a bit wrong? Why would you increment "count"
+> 
+> > +
+> > +		return IRQ_HANDLED;
+> > +	}
+> > +
+> > +	return IRQ_NONE;
+> > +}
+> > +
+> >  static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >  {
+> >  	struct ci_hdrc_imx_data *data;
+> > @@ -476,6 +497,15 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> >  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+> >  		data->supports_runtime_pm = true;
+> >
+> > +	data->irq = platform_get_irq_optional(pdev, 1);
+> > +	if (data->irq > 0) {
+> > +		ret = devm_request_threaded_irq(dev, data->irq,
+> > +				NULL, ci_wakeup_irq_handler,
+> > +				IRQF_ONESHOT, pdata.name, data);
+> > +		if (ret)
+> > +			goto err_clk;
+> > +	}
+> > +
+> >  	ret = imx_usbmisc_init(data->usbmisc_data);
+> >  	if (ret) {
+> >  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+> > @@ -621,6 +651,11 @@ static int imx_controller_resume(struct device *dev,
+> >  		goto clk_disable;
+> >  	}
+> >
+> > +	if (data->wakeup_pending) {
+> > +		data->wakeup_pending = false;
+> > +		enable_irq(data->irq);
+> > +	}
+> > +
+> >  	return 0;
+> >
+> >  clk_disable:
+> > @@ -643,6 +678,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
+> >  		return ret;
+> >
+> >  	pinctrl_pm_select_sleep_state(dev);
+> > +
+> > +	if (device_may_wakeup(dev))
+> > +		enable_irq_wake(data->irq);
+> > +
+> >  	return ret;
+> >  }
+> >
+> > @@ -651,6 +690,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
+> >  	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+> >  	int ret;
+> >
+> > +	if (device_may_wakeup(dev))
+> > +		disable_irq_wake(data->irq);
+> > +
+> 
+> Look like only want enable wakeup irq between suspend and resume. There are
+> some questions to understand hehavor.
+> 
+> 1 driver probe --> 2. hdrc suspend -->3 hdrc resume --> 4 controller resume
+> 
+> 1--2,  look like wakeup irq is enabled. maybe controller have some bit to
+> disable issue wakeup irq, otherwise flood irq will happen because you check
+> lpm in irq handler.
 
-Sorry, I don't understand what you mean " With the definitions laid ou
-explicitly in a kernel-doc", which kernel-doc?
+It's not true.
 
-> before enetc_map_tx_tso_data() succeeds? Why isn't the problem that "i"
-> needs to be rolled back on enetc_map_tx_tso_data() failure instead?
+We has a bit WAKE_ENABLE to enable/disable wakeup irq. This bit will only be
+enabled when do suspend() and disabled when do resume(). So before suspend()
+called, the wakeup irq can't be triggered. No flood irq too.
 
-The root cause of this issue as you said is that "I" and "count" are not
-synchronized. Either moving count++ before enetc_map_tx_tso_data()
-or rolling back 'i' after enetc_map_tx_tso_data() fails should solve the
-issue. There is no problem with the former, it just loops one more time,
-and actually the loop does nothing.
+> 
+> after 2. wakeup irq enable,  if wakeup irq happen, system resume.
+> ci_hdrc_imx_resume() only clear a flags, not any sync problem.
+> 
+> But sequence imx_controller_resume() and ci_wakeup_irq_handler() may not
+> guaranteed.
+> 
+> If ci_wakeup_irq_handler() call first, ci_wakeup_irq_handler() disable
+> itself. imx_controller_resume() will enable wakeup irq, which will be same
+> state 1--2. but if imx_controller_resume() run firstly,
+
+It's not true too. Because WAKE_ENABLE is disabled after resume().
+
+> ci_wakeup_irq_handler() will disable wakeup irq, which difference state
+> with 1--2.
+> 
+> If there are a bit(WAKEUP_EN) in controller can control wakeup irq
+> enable/disable,
+
+Yes, WAKE_ENABLE bit. It's already used:
+
+ci_hdrc_imx_suspend()
+  imx_controller_suspend() -> enable WAKE_ENABLE
+
+ci_hdrc_imx_resume()
+  imx_controller_resume() -> disable WAKE_ENABLE
+
+Thanks,
+Xu Yang
+
+> 
+> will below logic be simple?
+> 
+> ci_hdrc_imx_suspend()
+> {
+> 	writel(WAKEUP_EN, ...);
+> 	....
+> }
+> 
+> ci_wakeup_irq_handler()
+> {
+> 	...
+> 	pm_runtime_resume(&imx_data->ci_pdev->dev);
+> 	writel(~WAKEUP_EN, ...);
+> 	...
+> }
+> 
+> Frank
+> 
+> >  	pinctrl_pm_select_default_state(dev);
+> >  	ret = imx_controller_resume(dev, PMSG_RESUME);
+> >  	if (!ret && data->supports_runtime_pm) {
+> > --
+> > 2.34.1
+> >
