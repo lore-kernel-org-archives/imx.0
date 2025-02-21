@@ -1,190 +1,156 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2089.outbound.protection.outlook.com [40.107.20.89])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5D71FF1C8
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 08:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740126867; cv=fail; b=dBKml97pjeikitHish6xhiOs7PRO5e+xTDoLlfQtQ7j3y22/fEN35xeuip/vLaNDXfmzOfCBYFiH/HGukOR9k4yooX0dvY5X4K/82oyFQgw5AcE1Y/6lhBgzNuPD6hmEiA+8e6S7IAbaYsCE+kR47Avkso71JJd4JyzVjgEuaIY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740126867; c=relaxed/simple;
-	bh=Zuw1C0J00DwoGpDHdLZlzdoKkJROU4M/D/hHzL5n5AM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sRFfRPLx2uKHQxoOhSEznTAJnmAnfEv9jXtc2lj7Z7x/c9jh30lVVHJK5uU+RBzOsnW2ronL0Z9kvlUxq69ic5Q7AeJJR3P1jRXBg/LKPyQjaHVlE/QdkmjGAp75c5aiwWgatEKbzZ3/6PZDJyAUXAIYwLmFV1nG10uhVJbOoow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J1dLPTmW; arc=fail smtp.client-ip=40.107.20.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5491B0406
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 08:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740127122; cv=none; b=D9o9hPc8EaJgbna5QXQC2l623r9KI0Ej21e4qxK/QQRKuWFNepkZqOmKzBDV2o3eAxmjXMn4Trw8HIyAy4yeAIzrjAwvfaajpFdxIDfxjmDwi/KlniaphYE82U6g/lgRe8EtAu0p4i9zWKIPdjxQ61c6U1rjTRzywTxk6K1qfVQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740127122; c=relaxed/simple;
+	bh=nqodSYX9zfwa+wP+jRooDOmd19luEYIiS/x1QP3QuqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SvhNXg20Vh33BbcSz+poKv3lDy/d7qNX9E/EZTMFvaJeFhJjI1k8d2KGBLfT5gj/XLoMFiXDNg36fc9qTOO4N0QtLB+IFYJ1wmqXPCdHNkyYwOaMBf/tgXUVc4DcqpdeqazqKfkMcFLb6PH8XVRLPNvWNpoYs5esdc+wwymbCIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRNDj7Dy; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J1dLPTmW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uuyHdE0ZEBNIICCBDeGU0VMzC4d511BsusNw4vGA3qSrZCY6pLyUEexC0+QFHBly/C0y9FX1V90UYdsDiSqkVc6DpxYbNsvsBdW8fkosa3alw3ktcvzUeuCbSsyil9/vP+v+llIDuLfgFAXXDlxmiS9fI8PLgr/jAFwC7BqjvQ29SGUbFWlHNPVMGBvK6ke5rCOs3QaxXzUs3arJ1w3wlLgp1NnlQFYcHyFvscRVyVsxusz7r6ZllDijcWdCo/1pOJ4i+OPceHrXN3tEkO/xKoAyUFU1//TdRsROU/HAMPkp874ySrL+bxnuLFOyxW1A/u67TLgl0ypZnvYu17oZ/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zuw1C0J00DwoGpDHdLZlzdoKkJROU4M/D/hHzL5n5AM=;
- b=oZQh6pxLTxkL9LfVNFYUtUA+mNIl7QgCi4Wker4zuQl4p03SUPLaTypQ/DtGMNiTPlk0bHKrxvyTX74vnuwNFBMseODOilLnNGMtskf0UbtBuDCartXJY3Ns5pXVjYaCdt2Z8lP3EvtmyCfepT5PF+5hmmu7LfAoDJWuZsQwl7a0CGZdE/0wew0zdzBi19WUYEpvCIO4FnWElP9wAJvAhA4H78yAWuF90TM4UIbfGMjyusYzSC4akJDchrfGaKCtv+EQrB14Fc22lqHbH/cW9HIJiNQAywU/r5xvTsMsSJs6qmFG47dFvnigZNasVQYQKYdSTFCb7RX60E3jeqY4qA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zuw1C0J00DwoGpDHdLZlzdoKkJROU4M/D/hHzL5n5AM=;
- b=J1dLPTmWRLutg8uLzOZ+pc34NDcbD4KxJ0c/wesYtgLEZbtMF9rclzbpv7x20QOpq7I8adMQzA5jWkU46WjSLMfzKBx0B3NMvCRLE3WiQbuA42DyvUk+iGLX3Zhsx9O7dNEAX4Qm6FjFYJBz/kepTQtNLF2NB292BBS4B50JdXES0HoFOlNH9MI58U5Vm9WEKomUd1woKc8ncWwgNY8cwvaG+IvjeQ7+7NMhtFt5jFMkV24KFTS09tUsMSecApGHSpkuI2mu524aFLTXHLJdi6O+ccwALJuvU4HG0CQbJPqJVOp1eyg21ZfMw5Fmdj2LTFTZI7XRDz3I5Zg/lTukoQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB8654.eurprd04.prod.outlook.com (2603:10a6:102:21d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Fri, 21 Feb
- 2025 08:34:22 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.016; Fri, 21 Feb 2025
- 08:34:22 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
-Thread-Topic: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
-Thread-Index: AQHbgpN/Xw1oIgK130OBsitj8eB9+LNQXDmAgACfT2CAAG2WAIAABN7w
-Date: Fri, 21 Feb 2025 08:34:22 +0000
-Message-ID:
- <PAXPR04MB8510ECBBA69BD5E50DB1C03088C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-3-wei.fang@nxp.com>
- <20250220160123.5evmuxlbuzo7djgr@skbuf>
- <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <AS8PR04MB88497C415FE73CCA84843CAC96C72@AS8PR04MB8849.eurprd04.prod.outlook.com>
-In-Reply-To:
- <AS8PR04MB88497C415FE73CCA84843CAC96C72@AS8PR04MB8849.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAXPR04MB8654:EE_
-x-ms-office365-filtering-correlation-id: bab1eab8-5ba7-454b-2b16-08dd52528ac4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?SkRzJfiTo38ysOReFMKX8MPTDSfXhUVy2HXvKKDTDpZoyPiTIj4T/Ddq9MID?=
- =?us-ascii?Q?da9EBaXVxdYbcCSPmVnODD3jEhmHIVvHu4IodIhZ8vlYlQKxGL0axg2hD+Ra?=
- =?us-ascii?Q?8z3P6AnDx39IXDnFC9eCn2C0qe+uC/P5cL4Aw+DUEQh/KkwYmqgJ0I94lH79?=
- =?us-ascii?Q?uEgNrqWC16mVGIGaVBAxQ0a/up83fJdyc8/ZspZ5UqHsKPzN4BEWY8ceOb6f?=
- =?us-ascii?Q?0lmSYias0EqsMAu3r0NyZaeC7PK8mJqSxAhd7uJiWeX3p1ayoUVKG4N2M9TC?=
- =?us-ascii?Q?0gqSYKBIaF0hJv+DUatLEVlprG0D8317589856AbItbWIPW5BD3JaC+Tn096?=
- =?us-ascii?Q?gzHf9EhUq+XxR18cLx3uwXYOZRl121/L2frY3KCkZPHUmf3rAwm83+47phCv?=
- =?us-ascii?Q?jbifxchy9fFT80yRyce5Dt47oTSmXWbLGTxbYo7oJYv3ifrQkkO3hs2mzcD8?=
- =?us-ascii?Q?BhhT9oou6Fcant9HOu5A0Ejf2PKzaiX7NZ8qSu++LdO3eqhi9EqudxODItLx?=
- =?us-ascii?Q?Yrgu0enB3fbqhEHOHDJliWVNqq7yb6ZMBiIdoIJirRfXwFKr5dMLTVkd8nsL?=
- =?us-ascii?Q?qe4QHKB9C0GCKYItcj78doVxn8QrMe+uXs7cvyC5QrQM+BjrBg5cQY/wqH+e?=
- =?us-ascii?Q?ZWytOj+adgdjvRM1ikzFQNfhhRQPwo/w2BFczxpVgEYXBAmCEU3qsxQpUH0U?=
- =?us-ascii?Q?PiLcV7RkZjXNagp2mtA8kHstceoeE6cUHvfxfJFlQ71f4p33ranBz7fijgsq?=
- =?us-ascii?Q?3pVJiVt9Fs3eRCdjXICxyigp9ZmiLIA9vAs27c8UnOYK2CHJi/KYh+N0jZ95?=
- =?us-ascii?Q?vJBFF/2Ui0uM5Aa3RRV21ye+2JHgUfDUtqsgLOTnVie7pZeRmEtdIWu3Sh1L?=
- =?us-ascii?Q?LU9aZHEVg5bAkfpmD1rCj4otvH0JoV48wXpb1vCEsQIHYiJ4urPHyRhdlTty?=
- =?us-ascii?Q?xGlzDp2monUBswQnV0zgWxsq1AwhbY8SVW9NdNRL/MIJjyhOGxl2J3GWpzPn?=
- =?us-ascii?Q?qNWqx7yTEebqPlFMpWKySC6NWtkD/QlX77ZXITOZEokGVOH3+SNBGRJQLdo3?=
- =?us-ascii?Q?Lj7A6drjaITRD7sFTOoBWOYR/awLTgUZ3z7Zd42kWV+RMBncTKQZZ74+mOO2?=
- =?us-ascii?Q?Y5Wtuv73PPDVwHzqZXiIdNui7hE0wNWef33B/n/znUNvsC0o/AL5UZFG2gSN?=
- =?us-ascii?Q?/tHU9zZT2dWKb3y2686+xtpe/bfz1+12OIV3mLYkjo0YzAYXIpSq/Oa8C8DO?=
- =?us-ascii?Q?4AcWLNWHCoDziNwKqb8rpp2baPsBgfmn42PIx6U+ioOuIDfA46ontbb8PQjf?=
- =?us-ascii?Q?vjuhSIsjRm5CQEqdayMOyCxENU4DztEgzpE9RlYerB729NJifgVWLgpUfuHP?=
- =?us-ascii?Q?cWgVcUIznMvN4/1kyOgGNuicF8Q1iQVR3tw06HF74AJ6fdPBbg3imzYj8ONJ?=
- =?us-ascii?Q?2apk89enOSE2or/h/Gt6dXLnh/yumBmQ?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?bmFIBcrcMw9wSwzetRyKgQOjLA1/hFiJhGpdzncBfYUHZusga8BdOoAT0fSW?=
- =?us-ascii?Q?63QMUEDjRHGCbW1JJ+sLgT20XCrG7nbclo3YbjQEZIi5R7/NDUIea87xnhYR?=
- =?us-ascii?Q?hZqqvLfXnyjjK197iQvjRqAlavkmHfTqzojIDsM+A8HdoLPGDTskD949RgVe?=
- =?us-ascii?Q?Ra8VRCln1/nf2LQ0efo4c1lNJPiMlZK73ws23PBWCC56Hp/Ah18zrgTIwlK7?=
- =?us-ascii?Q?tvBS7ANGG8cFdW5+uBZ7KUWDutFwQKd/AD6ougAo8DCoPNJi8HC9z0y8laOm?=
- =?us-ascii?Q?y6i7N5N/8vyMDtgKzfxc3ExpdprFYXYlzAxaBAIyRv5bTdouJ2lCUqeUzYN6?=
- =?us-ascii?Q?XxFOYmvfLoaESY/Kkfuy1Yut9SlkwnmW2dqKNHEs4N0Vlk6cIYXetrxOeuDY?=
- =?us-ascii?Q?Jhjr5L1m4ubySD3tYv+rKfF4m1KJTjarI/mxOoKE6J3wwLDIBshzI5BQZCum?=
- =?us-ascii?Q?K41guu96oEEb51Ug5iuLGcK5wecs+xTPsVZTzpWbuJRnAHZFYo07SQjOQPL+?=
- =?us-ascii?Q?q+yEuLjVr4ucERwZY+n7/SVGHi1ecR8NFjvUBPclxgB2D/ya65MT0wm679iL?=
- =?us-ascii?Q?y/VRj/6MHA5VGWAzUqu91ODBYcitYdxERju8IQTFWmfj9/nx+sdkvjaRW6LH?=
- =?us-ascii?Q?zmZ0eXACdEyW7mSxHW4qOTqVK/muCJa7GGUTs8lyJ7LunpCepPBQ743o3EFl?=
- =?us-ascii?Q?h7jbNRo3Ifh0+NA1T8k6FgeaBB0QMyQqicPKdy7KAr4WZROTg/onJepqrMfV?=
- =?us-ascii?Q?5BlaVYVWPHLaLPtLXIon/V0hdkXyP6xaUcD3v4tdn/kg70CPUVeWvZUdcDRV?=
- =?us-ascii?Q?F8UJxAnegbshSFyYBOcSYGW4uAowOvlWapY7m94hd4ZP8wbxOzoPaZxyjTiy?=
- =?us-ascii?Q?gD4rSmleZgN3NTTrvBTTbVMd3MXwQ85OJN/npEVlXjOlKSxSXhI/K+VikJNg?=
- =?us-ascii?Q?5cMgFMY3IFdbPRqLNv71rPtJHpsHQiCcrgj8+3vxerWW+MCMoMT0mzDgIMyq?=
- =?us-ascii?Q?mkK/VHH7N5SOUKRcaYJCZm4fPYMLhjOYHTge1ZRIfE0FpjcP7MDAvOV6n2vm?=
- =?us-ascii?Q?pd9/1a/GmuQW4693p85iwYXnOMzjbn9HM8A1maw6vxNXqYuYCani4UEmjr/b?=
- =?us-ascii?Q?+uhrghFlIbNR8YHmS8JI+HzXnfTvpphO8kzhmpRWuLqKKVeHpH6+Wzp9ECil?=
- =?us-ascii?Q?cRFNyQ3wuFH6aU8RxPJCBHb3Ozvr91L2lQ1gMuQbxHeGh+XINhpVKzX6/RMR?=
- =?us-ascii?Q?7DZhYgibbIQAuNrL+6PYskS5Cd8cYARxlRhASeh6NHCnXpFCrihJc6lLOZ3l?=
- =?us-ascii?Q?uReOvZSdGHk/ehIBFILAM3tDqZjO6ae15aGL0OM0qyPREUuLa8oSVwlvzhTB?=
- =?us-ascii?Q?/7+6PJgDE8hs54fdsfgvmy4fUgdARz++7vFq+1TEKUCNUUWtETg9dHJWpIwE?=
- =?us-ascii?Q?dSECnCpLGiLfvDC282fKdrashp1pR+JBN+iX+obIbu5rHT9UwsoOc3E4P2Uj?=
- =?us-ascii?Q?tOJXdS6l0e87yHXzDISoHpYyBvS8nihZ8vw/BdGQZ5yZ3UIa3q7NurQVwOij?=
- =?us-ascii?Q?AlKCbUVoSX1QLPCM1R4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRNDj7Dy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740127120; x=1771663120;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nqodSYX9zfwa+wP+jRooDOmd19luEYIiS/x1QP3QuqQ=;
+  b=cRNDj7Dyy5ybFnbejEr3tuNkbavsqAPRmB92vlO9nit68D0zi74awByQ
+   GPJKTTsVYw/AtnWNOlWBhIRo/lN43rNTELpuUAZSU5TVZ945Wjuk6ptZo
+   Sni8uCdGcI0NAoxw45dhYLt+Q6bMTVOfSYaRczJF1y2hgEEWZ98LZ7vnX
+   wViGeUxKA+nyQRJB8UFV93DQ+HMl88m9qSc7ru4jM+OwIf+4hy/DSUWDP
+   U+TX+xvF27wV1FLk5iqIslULaj+eOSSreuHT3i85ITAPBsuPNiu17Zf0c
+   DoQ9Jr6zzvt1ORrG8r8XCNxcNtWwXJzkwpAv3KQl9CwedjxDI+eziLSHA
+   Q==;
+X-CSE-ConnectionGUID: 6Rqy8f0kTaqWAJx6MeaLIg==
+X-CSE-MsgGUID: NKeJen5PQVeZ+GCnSfaSFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="41058467"
+X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
+   d="scan'208";a="41058467"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 00:38:39 -0800
+X-CSE-ConnectionGUID: yBxMvSy1Rh+CXJ0lab4mqA==
+X-CSE-MsgGUID: 08+yRwERQR+OdaXElvcbxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
+   d="scan'208";a="115255765"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 00:38:35 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 81C82120289;
+	Fri, 21 Feb 2025 10:38:32 +0200 (EET)
+Date: Fri, 21 Feb 2025 08:38:32 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Cosmin Tanislav <demonsingur@gmail.com>
+Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: media: video-interfaces: add support
+ for Virtual Channel IDs
+Message-ID: <Z7g7iCUlsUN2LBIW@kekkonen.localdomain>
+References: <20250220230818.275262-1-demonsingur@gmail.com>
+ <20250220230818.275262-2-demonsingur@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bab1eab8-5ba7-454b-2b16-08dd52528ac4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 08:34:22.5002
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uepsqOEeBUwYGvqiM2mDr8MDTa7JgCQJO5tdTpjqMA00IAQPX/51U5eYjj+A9PBAP+KVMwYhehAhHPY4rUeaBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8654
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250220230818.275262-2-demonsingur@gmail.com>
 
-> > > I'm not sure "correct the statistics" is the best way to describe thi=
-s
-> > > change. Maybe "keep track of correct TXBD count in
-> > > enetc_map_tx_tso_buffs()"?
-> >
-> > Hi Vladimir,
-> >
-> > Inspired by Michal, I think we don't need to keep the count variable, b=
-ecause
-> > we already have index "i", we just need to record the value of the init=
-ial i at
-> the
-> > beginning. So I plan to do this optimization on the net-next tree in th=
-e future.
-> > So I don't think it is necessary to modify enetc_map_tx_tso_hdr().
-> >
->=20
-> And what if 'i' wraps around at least one time and becomes greater than t=
-he
-> initial 'i'? Instead of 'count' you would have to record the number of wr=
-aps.
+Hi Cosmin,
 
-I think this situation will not happen, because when calling
-enetc_map_tx_tso_buffs()/enetc_map_tx_buffs()/enetc_lso_hw_offload(),
-we always check whether the current free BDs are enough. The number of
-free BDs is always <=3D bdr->bd_count, in the case you mentioned, the frame
-will occupy more BDs than bdr->bd_count.
+Thanks for the patches.
 
-> Even if not possible now in specific cases, there should be no limitation=
- on
-> whether 'i' can wrap around in the loop or not (i.e. maybe some users wan=
-t to
-> try very small Tx rings etc.)
+On Fri, Feb 21, 2025 at 01:08:09AM +0200, Cosmin Tanislav wrote:
+> Multi-camera systems often have issues with receiving video streams
+> from multiple cameras at the same time because the cameras use the same
+> Virtual Channel IDs.
+> 
+> CSI bridges might not support remapping the Virtual Channel IDs, making
+> it impossible to receive the separate video streams at the same
+> time, while the CSI receiver is able to de-mux streams based on VC IDs.
+> 
+> Cameras sometimes have support for changing the VC IDs they output
+> themselves.
+> 
+> For a practical example, GMSL2 deserializer chips do not support VC ID
+> remapping in tunnel mode, and neither do the serializers. Allowing the
+> cameras to have their VC IDs configured would allow multi-camera setups
+> to use tunnel mode.
+
+We've tried to avoid having virtual channels in firmware and in UAPI,
+I'm not yet entirely convinced we need to depart from the established
+practices. Let's see. Apart from that, please see my comments below.
+
+> 
+> Add support for specifying these Virtual Channel IDs in Video Interface
+> Endpoints. The supported values are 0 to 3, with a maximum of 4 values.
+> Although the CSI-2 specification allows for up to 32 virtual channels,
+> most hardware doesn't support more than 4. This can be extended later
+> if need be.
+> 
+> Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+> ---
+>  .../devicetree/bindings/media/video-interfaces.yaml   | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> index 038e85b45befa..414b5fa8f3472 100644
+> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> @@ -231,6 +231,17 @@ properties:
+>        shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
+>        busses only.
+>  
+> +  vc-ids:
+
+Other properties aren't using abbreviations, at least most of them. How
+about "virtual-channels"?
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    minItems: 1
+> +    maxItems: 4
+
+Shouldn't this be 32?
+
+> +    items:
+> +      maximum: 3
+
+31 here, too.
+
+> +    description:
+> +      An array of Virtual Channel IDs. These are unsigned integers that specify
+
+I'd leave out the explanation on the data type. It's redundant.
+
+> +      the VC IDs used by the device for its data streams. This property is valid
+> +      for MIPI CSI-2 only.
+> +
+>    strobe:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>      enum: [ 0, 1 ]
+
+-- 
+Kind regards,
+
+Sakari Ailus
