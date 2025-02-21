@@ -1,62 +1,62 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B26A25335D
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0C253F0E
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740165599; cv=none; b=SQGM1fbC82Ee8Mw1vIgRoZ5VX58WOJLqHMi5BAKSknieiFPTqsC5COg9mQOq5wk9nBr7elzh0oj4YsYrONzP+xduDxYpo9MdnQRt9V8EWYM9XplVLUBhgXIGUlxbsqW12CI8egfoUygJKpamOedHZxlkspYmcjagytImTXNWDb8=
+	t=1740165601; cv=none; b=l1ONFeTNCPe8tC0n/SL6EDauuIxum+0n0ayqfGGHAkhcBKtpus1Pydfc1NFg0gzcjQ14HpzSiJcfobxBSHYFqFUb/q0+KwWb0ZivOrdcG8Stu9590V3y1hngke8rfrca3PtY5GTuYT8xcTWNhJFdB3m8RPwnQ+oOM+IM4vakgD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740165599; c=relaxed/simple;
-	bh=wMVxyLYxdUH+NfOdC4YAZCVPaLUE6SupMeq+EC0HtRk=;
+	s=arc-20240116; t=1740165601; c=relaxed/simple;
+	bh=kOraS8IqYhByuh3EYq/JHZv1tOR/Rwv4bGyv8G1S23I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BmtzUWbb1Vi2NyY8EeTPfpkaPQLAUVlw3DHe5TCj+4TLPLT/UjUDAmbSoIgaat1iymLbjqnsH5fBAUVZStj0fAGbMhjW1pJkfoj2vy66woiO88i7j6LhQgW7VxYIxba8JSYedpvmzUS9eIiKdFB7PhRPnGPcpEiTEa/vYWsMLSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLRyaS75; arc=none smtp.client-ip=209.85.218.45
+	 MIME-Version; b=u9eo7T2jAQmKOFIM8iaODKj3lUykmK1NSBIU7irM58f2aGIQVGYZQRb7OGnHDvArL/+AUvA5TcDolHT4jldhnbXycKawV/7YAk+skMN1j3e3xdPhoIDDcK52OtSM3iTixH9Od8JuMqBmuayJaM3nZMY26OiJ+zuf12vhwtxCpa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OrsIg5O6; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLRyaS75"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abb7a6ee2deso383506666b.0
-        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 11:19:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OrsIg5O6"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abb86beea8cso458480666b.1
+        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 11:19:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740165596; x=1740770396; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740165598; x=1740770398; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4TKxWTtkSqxwzx6dDc4iUz9ohfHIlpkY7Ca7ccTsz/A=;
-        b=VLRyaS75ArjC2obPBlV7t2/7/qW3mfZsDZpL3Yvn9g7EetfUm5z6mqR+dOKmfxF4eM
-         6mDm2UbMy2FiywPbtUsMbjjyQOVe/TCeD0Yx7dDbiZOy71LSSyJ87lvqCyAjTwE71GFG
-         n5rAKNxyvE5y+9wGER9pJ67zjCOn7yNrEOLWJnmr9fORa/7k3bBWPn1FWGQHDx16jDip
-         BnYAjS28XRB6qtkie04vv7sbO9hWbBz5ulfulXMasypoX9t2Bd1yNeZoFpW1OZEb4Wgx
-         /MyzUXShwTBjZCFMf7I5hiRTD5aSh3dzhNXGLzDNTGCzewwdcsDMxR3OauEI5dmhWXnf
-         BDyw==
+        bh=0PW85pz5cGLvJh0OtF1LDKynxXRX33ioDpLb0ZUqgao=;
+        b=OrsIg5O6GZ6DpGbUr1B+AXsNuugAhR+gC8/tOdHUbZHHSiLcVI8qPQ8DBgZfFcGp1+
+         D9spESRyuGytftzc55VER/oo55/pSNPx/8jjoq1rlo2VYKfnl+NR6W/Y7jscNbu0EVO1
+         tzHY8MRDFURgRec26rld5DQScsv2gZ+q0xNwZedxAe1rxgy95rF8J85c/3zLcXXEL7sJ
+         gEUba9IC1AUjD33siWUCssfCRVyQ4+GYwc9k2dFM1XDPXCeuzleEiWl3fJLrHQ5RUTDT
+         Rh1hx9jt5zJhFbDZG/As9S6Prm219/vWxr1etsKYOTPJxueoFO6+Q+ULrmxtMi9uItj1
+         cVIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740165596; x=1740770396;
+        d=1e100.net; s=20230601; t=1740165598; x=1740770398;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4TKxWTtkSqxwzx6dDc4iUz9ohfHIlpkY7Ca7ccTsz/A=;
-        b=cJrwRxtzUUgdVKVyqsq0zaI2KwrHOtEE0UFenJPbZ4feQ+lsoZ0rnWOKXfdGNzenhU
-         F8siUuQPc8Qgrh9PSiYqYtDDtPDv4e+GjXzgeuO34wH4KIXDYGQp15iTbI0Rx+dXkX0J
-         X9sNj1zy1r/U41sVB3B+m9mmPJO15YAKS8++sCbbvhNrN2BGCRtuRty+W0vr3yFJRZNF
-         ag1q03rI7UevE/e6TUsSGHByg3ZYr6HjDsQjAFcWh4Dd+1x8MKQbdf3FhMYwb/rTvDHJ
-         9AcdxEFjH1XgnHfKDVcBWHDHUqWZN+vtjGL30H9LrcLlPPdUec6buMGWj2/42mLuLfxt
-         y88g==
-X-Forwarded-Encrypted: i=1; AJvYcCXbvsBRiZzaCF6T2QlXn8hhDwZ4BT+W2lpBhMAEjT/JDSH6jr87iHjTyfVeVsq8oHdIJqM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7cUoM9DiWqaVK3y0N2D2H0TfnrNJo2//fjTs/tsxNo7j04NB0
-	q7vCnCS2Gv3pLdJXvxcB4AoR9FfkDmEJclO2PpaGSrEADr8wc3UW
-X-Gm-Gg: ASbGnctaifTvSmdqpRSA5Fa3PEKPBQW0HbTvCgODfqKKLozEB8tX3xOGrdw3SdgR+5D
-	ZFZdtS1E6uiQwTjKEUNH+XH08H8jH+Wyw2uJUKqWiPqUZ1T+EoHZ+F62AbKEc1Qu3+cMbU6LPq6
-	bEKijWUqcYE/LsyqCyrpc2TqEf4orB7i89JMUdWlaWDOU5OJSjFdvLlbnB6dYh1AezPGt9b6hG3
-	Dur/OXsx1erFhQOMHOTF8ClXarYzgjK8fKCSght/7kL3XJywooXknZIqoBGFQUW+webEfKH+Sag
-	G4szF6hvTtmP+T3soXyi6TrH0qz2pTWPyyUm+77XObpdX0Mp1KOkcLdA48Y=
-X-Google-Smtp-Source: AGHT+IFDfbIPVZIMARA0RdhZrJ6UuY0dVTRO1/KxreNJ+xkg/EYBzXyrYM3lqR01Fe4RA0v/JrznqQ==
-X-Received: by 2002:a17:907:2d08:b0:ab7:def3:ca1d with SMTP id a640c23a62f3a-abc09e44f67mr482288866b.49.1740165595692;
-        Fri, 21 Feb 2025 11:19:55 -0800 (PST)
+        bh=0PW85pz5cGLvJh0OtF1LDKynxXRX33ioDpLb0ZUqgao=;
+        b=I9WqbmlXkFJNzOGqvfjBrksvNzrfYRmrJq5GNMGI5TobDvUum86PBEZu53dLHlYVKo
+         6hq6ojH4I5MlMjrzNT6hOjs3S+5pHLYs8Qo8kVWKCJNNBq3TbiNrgUPbG4+LPC0Bs9hR
+         dwSnfh55Z/f4qlRrQtw5ojbND940t+DV6UpQ5ZHsIPdNDO9urL9cqgCERYPDEZtydBpp
+         TncrnXccqhDDcpr/Ht6x6ggLY/WgPHjfuxTgHQQd77g9tfamC1whDTLl2q2IdF1WV1ln
+         i26u7h2/FoZRpH5tF/SaAJZlfWai08te/nQvlI3U8QIAMjot6MjLPnko6E79PTydtJK9
+         WXIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBp5ZKvhIM56lX2Y+OJrIVH+5AT2O7gO8PfCRtzKtWQSEJ3vdoA8vCnk8jBCMjlYD991g=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy6J3sjvwGYi2vwFbiNL6f92oBvNsm8rNBrNrFTrnp5WmTCb9xe
+	CUlFm/43uu77dyi7Uv+WlNvVRgGThTz0+Rg6ASsoQGRfi3IIeMCA
+X-Gm-Gg: ASbGncv4SvBJPWscKnVLYoACQIjMNudlaqy2SyhVc3PuM+sDx2rDJFTDvpraPTmkr+g
+	tyw9OzrP7XLwJeUCIGAEWmu5wkX0xTp7siHFk6dcRs8x62QTyatYwqPKr1t0vzRjPEX0maDTES/
+	+bZFKzZE2TxTcl7foLGtLqvG9t+AsRwIcFoydopAbyN/fZ4A3GlMag8rP5uCLGsabKgQRrHmdAV
+	i7LcnS1KqJOyIp5rRnuBFF9bIyC4ZIq0MRl+XH+/lbVjmEPKqXb4yxzFlr4aGrRDTYBKiVCuKSw
+	PCaIuDPVX+GZwL0OXChZUWDlAs9JLqQP4PKydgVN+SZmYpfj/N85D4iTous=
+X-Google-Smtp-Source: AGHT+IHGNlBjv0prPEJON601/v7KmS0YwqUhGMf4lS65c24qSw6LwRCeA8Y99uRFtQLi0vwiyNDqXQ==
+X-Received: by 2002:a17:907:6e8a:b0:abb:e95e:f2c3 with SMTP id a640c23a62f3a-abc09d356f1mr472726066b.41.1740165597467;
+        Fri, 21 Feb 2025 11:19:57 -0800 (PST)
 Received: from playground.nxp.com ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9cee79fasm995276266b.129.2025.02.21.11.19.54
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9cee79fasm995276266b.129.2025.02.21.11.19.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 11:19:55 -0800 (PST)
+        Fri, 21 Feb 2025 11:19:57 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -71,9 +71,9 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-Date: Fri, 21 Feb 2025 14:19:08 -0500
-Message-Id: <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 5/5] arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
+Date: Fri, 21 Feb 2025 14:19:09 -0500
+Message-Id: <20250221191909.31874-6-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
 References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
@@ -87,48 +87,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-AIPS5 is actually AIPSTZ5 as it offers some security-related
-configurations. Since these configurations need to be applied before
-accessing any of the peripherals on the bus, it's better to make AIPSTZ5
-be their parent instead of keeping AIPS5 and adding a child node for
-AIPSTZ5. Also, because of the security configurations, the address space
-of the bus has to be changed to that of the configuration registers.
+The DSP may want to access peripherals on AIPSTZ5. To do so, the
+security-related registers of the bridge have to be configured before
+the DSP is started. Enforce a dependency on AIPSTZ5 by adding the
+'access-controllers' property to the 'dsp' node.
 
-Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
-missing 'power-domains' property. The domain needs to be powered on before
-attempting to configure the security-related registers.
-
-The DT node name is not changed to avoid potential issues with DTs in
-which this node is referenced.
-
-Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index e0d3b8cba221..a1d9b834d2da 100644
+index a1d9b834d2da..9ec51e7e6678 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
- 			};
+@@ -2423,6 +2423,7 @@ dsp: dsp@3b6e8000 {
+ 			mboxes = <&mu2 2 0>, <&mu2 2 1>,
+ 				<&mu2 3 0>, <&mu2 3 1>;
+ 			memory-region = <&dsp_reserved>;
++			access-controllers = <&aips5>;
+ 			status = "disabled";
  		};
- 
--		aips5: bus@30c00000 {
--			compatible = "fsl,aips-bus", "simple-bus";
--			reg = <0x30c00000 0x400000>;
-+		aips5: bus@30df0000 {
-+			compatible = "fsl,imx8mp-aipstz", "simple-bus";
-+			reg = <0x30df0000 0x10000>;
-+			power-domains = <&pgc_audio>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
-+			#access-controller-cells = <0>;
- 			ranges;
- 
- 			spba-bus@30c00000 {
+ 	};
 -- 
 2.34.1
 
