@@ -1,147 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2063.outbound.protection.outlook.com [40.107.103.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0655253331
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 20:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740170963; cv=none; b=HUeITzGb1vHM/BcGPAEoch6tG+hhgEVFfMppu6eRdZoxSK/4VNXS/n8xtIzHnmCm8GHlNAicjfdA/7LAE7HZc51Qq9zAsY5IidFlZoqFFSg0sCEw5+a+68QF/NcOrU15MUAjiIEXf9wR7h8FMjCD3Y71QTkrp4+fB4yt2ste+Pg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740170963; c=relaxed/simple;
-	bh=Wo8UvafsPfVP+70kddEcPXJfAnwRI01xbfxVoF4Jkg4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wp9YeWLLOIWq5MFjt1oVnYwt9s9SS+sFZqfcSSNEmFmh9vA8yqTUPXZy/x93fAIKMeBUNOYQZyUJdyMgG1bV7jJcYWhODcY7Cr29ayNRHJXf8ua+MxltHuI1hCaEWnwACSINl2Qi/SiRr1jl4YgmsWulsf6LwvK36ulTlAQhECw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AcC9U5jp; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03851FBC9F
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 21:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740172587; cv=fail; b=LUP7IoU58/yiKuJiwYeRo0bVub4NRhvLTFJefCGMGreZuCwmE9vWp0JjffKXmHlJB+/Ukd/UEkE+y5VavZI/hZiJOjjtgI2FCc2g/smy2pD5jo2Q1NR+jYBVH3ELHMERSTU2/uXAzifdOdmj1OzAot48Y67WOQyGK2hwTBqR8mE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740172587; c=relaxed/simple;
+	bh=rmTfSzfzpBsx35rM8xHzWf/F6zFcJjA+0UKTnZlLT/4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ME388h0Xr+b99wxpLPss8UPnIg7GaRbF4DX/JCD4/jEjBnOvAKpTFzp2jTfLZbVXTGcWCIH9HmEidUm3Ss7Ao2BYUBnIda62swqrQEbsmJ+VzIOupGfZebU469JoFMrSQYG36xzA6MuJLHJYaBnvwdX2lChwtzdB+13HMxQLN2g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GtJUwinD; arc=fail smtp.client-ip=40.107.103.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AcC9U5jp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B82C4CEE6
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 20:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740170963;
-	bh=Wo8UvafsPfVP+70kddEcPXJfAnwRI01xbfxVoF4Jkg4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AcC9U5jpJlZl051PUUS4U98OBkdobT00uIGlByrVmz9svucYxZrhxbnU2iuljsv+x
-	 ZwGPs3QPoWJJxO6KReROLOIiWR9fnVaQKhICj5oFIoNNIuBybfcY8gWfWS8s/V7MSv
-	 wW/CukIAJL2vLiBd7SGA0tw/Bg94BEVJOPQ2W/Cp6n320LaBBH+fA/n79TvA4/sEwh
-	 1Obs8N8zNoUlmymivYvLKU7+UFOo1/Bls0UP+HuvGCx/ap0eFCdkL72vdubJly6OXX
-	 aop9TdDoBcJOyY+lQ10GavR34PN+hAYSuP4B4d8LcPtsPhi7YQ3/S7oS5PlkByXeek
-	 Gr0bS0Ukgy/2g==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-29fe83208a4so1504278fac.0
-        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 12:49:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWb67IuET1KI2gkO1D3eMwwIIDK2EbrnFsvGYQVllEi4949uK7vTJ+D20snxJhuDYBs0pg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwOucvaDcmRF0IyOAdQAJJuYojQExtVUKrPmb7Brxa864mn3vkn
-	/ODy8yNxjxhQ6l1fI/Fo/cMaTi5z9ObD/CCiYe2pCZw5XNOJNvmGR0L7t8TWgNRChko5gfpJyoo
-	AedobmpDJdAymbYcT1FC/eX3piA8=
-X-Google-Smtp-Source: AGHT+IFnjJasbAZclX0MucvWHtKX5Dtik3kNXbM4sE7gRLe7jH3i4CLdz+s1l4RyT0hSZDY/D6TClLQDyS4wqnyM7n0=
-X-Received: by 2002:a05:6871:108:b0:2b8:eb06:57e2 with SMTP id
- 586e51a60fabf-2bd2faa67a0mr6713837fac.1.1740170962551; Fri, 21 Feb 2025
- 12:49:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GtJUwinD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kjbF2KcjZI1LZzlD3w6gZQdaM5mmOqbNy+A3VarXAbrPqO3rJ8vNMIIEj2d8ZR5CJkh1MygwWFvyw6DM+euGKIIQPqwFKNeaNXzt2zkKcpJpUwErKz/e032a3GPOdoKK7cwCIRDHJ8AZzE92WGFOMNfZmODAqE5e0b1xRtM2BENjPsO30yqG76lvj/+0ZgViQyVmTFNj2/GlSby9o4YajcJvPeAIkhWEH1YeLIAidWClhAqBZI9NyuObhSN8r+lq/ZsklY6BGgjH70PdN9VBcoie5bn1wcaHrbxOroOn6be8NxX5ejcgMpgZKdboketalXJ4V95H49ZyvaIqPhrwNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LCD1kCLVLSSKdgas8vORIJtb2YkR5i+UEBzob+IwRgo=;
+ b=jk7ObZz4nX3I22vI9zbVYcv1346mX+I0ijn9Lw6tUsTy6NXD4X7yyOx10gSLmzewnzdQNT+NnTIz/H+d2IxvRfx06Hn2fkG9Alro8p4cdHClj+mdaDNtBfcOQYMdI6vJXqfNUBPceIlu8bOQyblmQTnHGYLtDJ0RmaKNHyRnPkwR7fzFYVYAPJnzroUguFwBcWonPkfZdyvxmMFN5o0cVgUn/G4vfe42TXYPB3JcHJ4JTtjaSWzsYyYjb7nvOpm6CChvdF2DHxGhZRH0y6WZ/Xd7bkzG4LLvBRyQTN6MsVBchzXtezV8YzWTkqnMR5+iiFdZ7oDJ5T/dDgYsyjzn5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LCD1kCLVLSSKdgas8vORIJtb2YkR5i+UEBzob+IwRgo=;
+ b=GtJUwinDAPLygXb0CbYe5pAmL5MXaZb7c49xxg8WtpFr36S9jsLqaS9Za/y1N8lCMZe7QJ0d/4M6p6cd5mrP4JDmWEYckRiaEP4Bh8Wjo+T8eJXdqVGoy8dIGd8Ouz9SLSSCj57AzTEYowQOd/Ivfkcu/O6Qy2fKaCyvQYgQYaOMmcoZhOF31L5zdGMh+T5th71cGNDEXLGfRcYkB6CcDNacFoF+oTmDs5Ugw/Y5eGQnLG3SvXvURB1RHe2gEMnbeA2i6aJIFVeLgwCE4WK1q4c4BhQKq3nzeM9mlCnj6W+Pr5/SNcuVjNKVVAyIppsm+sJaxYUCt+PUNx4Xb6VTXQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB8925.eurprd04.prod.outlook.com (2603:10a6:102:20c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Fri, 21 Feb
+ 2025 21:16:21 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
+ 21:16:20 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 0/4] arm64: dts: add imx95_15x15_evk boards support
+Date: Fri, 21 Feb 2025 16:15:56 -0500
+Message-Id: <20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAztuGcC/13OSwrCMBSF4a2UjI3k5tE2jtyHiOSlzcC2JBIip
+ Xs3LUitmZ0L308mFF3wLqJTNaHgko9+6MvghwqZTvUPh70tG1FCBQEg2D+zFDcQGQSuVc2tbg2
+ BtkFFjMHdfV5rl2vZnY+vIbzXeILl+u2wXScBJrg1lBitlJbOnvs8Hs3wREsl0V/J95IWSbloe
+ Mu0kfJPsk1Suv97YqtsynNWguGbnOf5A/RxhtEYAQAA
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Frank Li <Frank.Li@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740172577; l=1360;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=rmTfSzfzpBsx35rM8xHzWf/F6zFcJjA+0UKTnZlLT/4=;
+ b=8Hlg9N67T1WxHvsfznuM+l63aTBBI440SZufizqNqO2A06x2v1IlmnYRmsTXXAsJoCOhFZ36x
+ 9F8Onb7sL8/CharsYcqchRk51f4oz5CvFdd08Lu3OaseumNPqsqfWxz
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR05CA0093.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250213105840.2864654-1-xu.yang_2@nxp.com> <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 21 Feb 2025 21:49:11 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
-X-Gm-Features: AWEUYZmZ8CDcKQcLF7_t7C30IP6GKl-bEOsa2TPy_Yc1E3nE4D-9gBtWPrcffrQ
-Message-ID: <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
-Subject: Re: [PATCH v2] PM: sleep: core: Clear is_prepared if no_pm_callbacks
- is true before checking power.syscore
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: len.brown@intel.com, pavel@kernel.org, gregkh@linuxfoundation.org, 
-	dakr@kernel.org, stern@rowland.harvard.edu, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, jun.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8925:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2207193e-1647-4f39-4f08-08dd52bcfcc4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bFhGSUxZV2wxaGlJTjg1bjRuT3l0bUNnNnA4OHE0TEw5Rmh1cVQ2T3dCNnRD?=
+ =?utf-8?B?RDNyRUYwMmhqbnpaK3d2VjVrYjJiUDhGQzJqZ3B3d1lSWkpjQUtjQjJsTmpv?=
+ =?utf-8?B?d1h2d1RncjJUZHlHVFVYbkIzcmhRMGQ1RUdrZTZGMExFV3didmtpS2s2NW9O?=
+ =?utf-8?B?ZDFHKzJHdFZycnFDRENWV0g5cnExeXNnaVUvUjdvQnFDMVJTc0UzWDY0ZnEx?=
+ =?utf-8?B?OFRCUnkwTTllMDlpK2hoMTJjN3JtaFJRRVU5NjdEdzV4dGNMMFlJdHhFZlVh?=
+ =?utf-8?B?bUtjdnMvMWhTMERoS0tFZ3drTjRYZDhIYnVaWDEvY3YrZnhVYWhlY3BsdDlO?=
+ =?utf-8?B?M0dkT05WeE5idExLYXFPTWE4TzltaHJqeTFPaEJ6ZUlWU1ZUQWZZZHdWdHpV?=
+ =?utf-8?B?MXlaeDBsT29TTVdpaWQzekJtV0hpN1BNQ1IvcWpSaWZMMjkybnBpTk9uQkJV?=
+ =?utf-8?B?Z1hrYXIwYldKQUdqcnBHOFBycThxaEV2TG0xdGIxNnZmcXVucXNPU3djQUJV?=
+ =?utf-8?B?RVFjZThRMkZja0lCZ2ZSbmc3dFpiMzVMK25Lei9JSXJHUDJQRTh0b3pGd1Ew?=
+ =?utf-8?B?TWIra1pSbi9pcUtwOTJrVklMZjhtb1RiMXhrQW13KzVpcGZNR3pleXlObW1q?=
+ =?utf-8?B?dUh4SnJrTWxSbmVKRUZGWGt0Y090eURTb1hPeDZvNHI3blJZNEZXSmI1eDVY?=
+ =?utf-8?B?Q3NTdmx3Ullqdk4zQ1FaWHdCeW4xZGVvWkd2YVRKRmZZS1dhQ1JFV1Zmd3ZX?=
+ =?utf-8?B?S3k1MVk2NkV4NXUzeGk4K0dqOUVuS2U1VDlmZ082Tkk5UnpKNWVBMC9hUnpW?=
+ =?utf-8?B?VkdiRzFiWTJKYXFaUXhJakF2a0JmZmNVWWdrNDROSmlGcHl0aTNENzB4M2pq?=
+ =?utf-8?B?VElmZFk0ejc4NS95bGEwajg5Rk1UaEx0MGd0ODlHM3o5c2ErMk0yOUxYVXVh?=
+ =?utf-8?B?cFhIUDkwVlVjZ2dvcDNHK0lGeDJaVUhnWW1wOEwzSlNoYlNTKzlrRkZuV3RH?=
+ =?utf-8?B?N0xjbVlGd1hPQXNLWnFtRTRWYmpkWk1WNTBOSXJWdHJqcDRDUTA4blhlSkpC?=
+ =?utf-8?B?cnRBelU5UDY2eXZxZi9naDdoUXpwbXBKajJ0aUFDZXJ0a1JMYndDQlVYMmxw?=
+ =?utf-8?B?WlJhUGlLNFRSdlBBUGNlNTNZbjJCRTUwazN4bjVzOCt1VXRiTzNvdDllSjVq?=
+ =?utf-8?B?V3p1ZW8vZG9JbGhGSnI4VTZETzdpWUdoZUZiU0Y0Zkt1cGNVcjZwMVhEd0dt?=
+ =?utf-8?B?dEd6Z1V3QW5rNFRQWmd0TmdVaFM3b0ZybnVzbTcwVGtxcUN0VDZFc2RMWGMr?=
+ =?utf-8?B?c3hjRURucU9VQ2tJeW5hcTFlYmNIS0I2RzROVmw5LzdHSWFkSHhHbi9hdXRn?=
+ =?utf-8?B?VmhHb25JUlY5VG9pVGRSVXY0WUs1a09XMnM5dDJWWGFrdWNnTFRKeG0wQ3JB?=
+ =?utf-8?B?ZUIvSStDMlJ1dXNqWVRRMkdORWNYVi9vQjlva2d5VmJJa2dMRlhiZTNaRVd3?=
+ =?utf-8?B?OVZiQmRtUml3V3hhSVBUaGJCTk9JQ1lvL0d1dGIvUTdydDhla2RuVW04VTR4?=
+ =?utf-8?B?KzdFQWZ3K243bjgxbVdvZ1d2QU5lcEhXWFJNZE0zUEs2VG4vb1puSjhJc0d4?=
+ =?utf-8?B?TmdPR2NNS2ZuazhKTDBCTlhwZGtsZnVFOXl5QzAwKzdNdlVVVjVTVmVhTzMy?=
+ =?utf-8?B?WWlkUXQ0RUhmaHRoeFIzTkxJSWtjVW1ZSTQ5bWZDVzJ1SHBYNks1N3lmcjlM?=
+ =?utf-8?B?d1Z5QURVbTk1ME1EcHZXM0g3bmlUeDBvK254N2ZzV1pSM3VDN3V4M1d6ODQv?=
+ =?utf-8?B?VHdFVE9sczNiM3c4dy9FNmhPRkFTOFB0ZGFVTHBmMHBrN3JjMnRYdVpCb0p0?=
+ =?utf-8?B?WUVXMUlObW5RdWsxVno1K21GaUhpc0FKT0tJeDNiT3BqWEJwYzlGQ25EaCt6?=
+ =?utf-8?B?d2tnZFUrQ0NKcEhoYnVnQ2pNOXBTRldSQzF0UnBpYmF1TGhYNnVRTUdMeFQ3?=
+ =?utf-8?B?b1FUTnd1Sk93PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWxidzBrZ1lZZXlFd0RGenkrcE1hQ016UTUyUnpiQ2ZUN2JzVHNrd3p6V09C?=
+ =?utf-8?B?eDVxcWtWNWlHL1p5NForQy9vMG50UnZ1SHRHZ3NWc1RpZVJBSU5rSEo5WXVI?=
+ =?utf-8?B?WHRmeWR2OE1mRDhWdkJjMk0yT0dSeWhtMDZnTHV6SE02VGhhdzdUSlFsMmdz?=
+ =?utf-8?B?TThucnF0cllrZVV1VFI2QTY5aWZxSmZuOTRON3FrR3ltTW9FOFh5eFFmMkZh?=
+ =?utf-8?B?UmRrQThRcnV4Z3UvZ2JMK2JsVDRzcTF6TXlxU1hTTENnOU5obHVpTk1tdTBI?=
+ =?utf-8?B?KzBrcC9ucjhrUGFVcnJ6dWxhd2xSSUMyK1dNdnBqdHRsZUExVUs0V05COFlt?=
+ =?utf-8?B?NkhZRU1Oc0ZtbjBsL3pVUDV6RHdHdWhyN2k3Nzh3R1l1cm9xeFY5dTdFS0xB?=
+ =?utf-8?B?MlphcHN3OVhZdmdlUjl5WkFDZUE2OEFGMmtTNHp0dmJMNGhNa3hRNm9QUWds?=
+ =?utf-8?B?TkpSemQ4SUlVdFlYTytyZjg2QlNnT3I3T0lkaGgxbUZrL2JteW1DeUltL2Fa?=
+ =?utf-8?B?c3c2bWF4UUl2dVBIT1JFOWI5bzdxeVRRNkswdDUvWWwrUzZyY0s5NXp4SnVq?=
+ =?utf-8?B?d3FzSHhaNVhNYXdEemwzM1o3eDA5SDVvL2JmTFYxcnY4UW5ja0Z1Y0RoR3Va?=
+ =?utf-8?B?czdGTGJNTXVDWFVzUnlvUDUwY0k3L0JkWVJ5elk3QTZvWUQwTmh1RzRrRlFF?=
+ =?utf-8?B?enlKbmF2ZFh6TUpGWURtMXdva2FRS01hMHRRYXhTZ01CNTc2bjJQQjRQelZl?=
+ =?utf-8?B?QXg5NlIyRS9OTGFpbGRKTFJtcjlpeXFpTkIyUG5nQ1lpZ3RUWXZNdDdVQ1lr?=
+ =?utf-8?B?aEhLK3hGNVVUUXJDcHErZkc5NVYxTEhGeDFGUzB0M0tKbWJGKy94SHFPSTBp?=
+ =?utf-8?B?L0NPbDhOc0Y3NllzNnE3cjYxcDZROWFZdHhYUkVSREEyYlRYS0pQV2xMOEtJ?=
+ =?utf-8?B?ZjJuL2tPL2krbEtQbkM2TkFTQVlhYm0rZ2cxdkc5c2RZRXZOUlhGdytWZThF?=
+ =?utf-8?B?N09leGZsZEg3RWRtbEszcGZEcVd1UUZnY2U4dlIyVFoxZUlUUnAxTllMN3pn?=
+ =?utf-8?B?cnN4cnRzcUR6TjRYeXlFNDlJbk95R2hHNHUzaTcxSzhJamZTd0VGQU9jNHNs?=
+ =?utf-8?B?NkNxcm9yWGZTN05lRWdCMHdvUVU1bS9PNSswWm4xS3d5N0hmWUErNzQxNUZQ?=
+ =?utf-8?B?UVlXeXlqZTB6OUlLV2tQZThvcDIxR2ZZaGhkdDZMSXpBQnp2VzZwNWtPaWhB?=
+ =?utf-8?B?YTVzVHlQUVpuZGc5bWVva3lpWmNQbnBuaUJkcTFwOFhrT3JhM3NNRU9manJB?=
+ =?utf-8?B?NXR1VS9wKzd5ZkxhRURvNnNhbmhrQmxhZlduWGFCblR1eFZOVmJkU1BNLy82?=
+ =?utf-8?B?UU5OR25WZDJWeVZDOUNxL1BZS0JNNkFQNGIzSUxYWldNTWVGcmdPdllvbXFs?=
+ =?utf-8?B?a3IrdCs3cWRnb1dxbWZrMTBqcVZ5VTBaeXB1NDBWVVlvWXY0RkIvUGRyV0FD?=
+ =?utf-8?B?VTNJZmFsZklqeGlqMFBVWDNUZHl5VGowYWF1bWZqclk0c1FIOEl5NnRUVjlF?=
+ =?utf-8?B?RFlOMDlaKzdWME5YVHJnNGZJaDVsOUE1Vk9saU1aSklkdnp6eWNncFVjM2RX?=
+ =?utf-8?B?UndjNUJCaDB3Y3JUYnBKOHM2RWJXN2ZsZHAvQ21YY2hXVzlUUE1xQ1lRY2Yz?=
+ =?utf-8?B?QWgrLzNJNS9JYTVpRWlFKy9kUnVVY3ZrN1piYjI2MG5xMHI3TE5WVzNIRW1L?=
+ =?utf-8?B?RjhzNFBzUDVSOFQwR1VMcXNteERuTDlCVlljVlVLQ2tlZ1F6aXFIdUpzTXBX?=
+ =?utf-8?B?SHJJUGh1OGlwdzFIOVVnT2RNYkZXc0hQYkVuL0dERWpsb1VTeGpjTnRLSmIz?=
+ =?utf-8?B?RTcxUkQyTVFkV2o4YWV1bXFYcFI4a0lIUFdDeXZqV01QcjY5RWNnMjJ1eEtx?=
+ =?utf-8?B?S2hqSzJqcTB3NFlZaDczQUZJYU9tM3djUS8vNFlobkFOR0VpOGc5UXpVMmZx?=
+ =?utf-8?B?MUZwbE1USENBczF3M3d4ZzU2TTlTMVUxeUZodU9BRnVvZkVYNVJZZnAzeVp2?=
+ =?utf-8?B?aDk4M3FiVlBTZDVGSWY3UndvVVJmQzJ4NXlYZUVYWTZrYzgvaCtIRjk0a2pO?=
+ =?utf-8?Q?s+nNG3r5mhl4nLSv9rAbALlLG?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2207193e-1647-4f39-4f08-08dd52bcfcc4
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 21:16:20.5794
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QPN0BeeuFoxSx+ZTkzsCdVa0ljiXK0IX2zF9Jlx4Z3H279TzX6TMbFAjhgt3Fy4yYGZeY/UTAv4WEqw3kSNhQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8925
 
-On Thu, Feb 13, 2025 at 10:33=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
-rg> wrote:
->
-> On Thu, Feb 13, 2025 at 11:58=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrot=
-e:
-> >
-> > Currently, if power.no_callbacks is true for a device, device_prepare()
-> > will also set power.direct_complete to true. When device_resume() check
-> > power.direct_complete, setting power.is_prepared will be skipped if it
-> > can directly complete. This will cause a warning when add new devices
-> > during resume() stage.
-> >
-> > Although power.is_prepared should be cleared in complete() state, commi=
-t
-> > (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
-> > clear it in earlier resume() stage. However, we need also set is_prepar=
-ed
-> > to false before checking syscore if the device has no pm callbacks.
-> >
-> > Take USB as example:
-> > The usb_interface is such a device which setting power.no_callbacks to
-> > true. Then if the user call usb_set_interface() during resume() stage,
-> > the kernel will print below warning since the system will create and
-> > add ep devices.
-> >
-> > [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_h=
-drc
-> > [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
-> > [  187.105010] PM: resume devices took 0.936 seconds
-> >
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> >
-> > ---
-> > v2: clear is_prepared before check syscore as suggested by Rafael
-> > ---
-> >  drivers/base/power/main.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> > index 40e1d8d8a589..5e69cfaec661 100644
-> > --- a/drivers/base/power/main.c
-> > +++ b/drivers/base/power/main.c
-> > @@ -926,6 +926,9 @@ static void device_resume(struct device *dev, pm_me=
-ssage_t state, bool async)
-> >         TRACE_DEVICE(dev);
-> >         TRACE_RESUME(0);
-> >
-> > +       if (dev->power.no_pm_callbacks)
-> > +               dev->power.is_prepared =3D false;
-> > +
-> >         if (dev->power.syscore)
-> >                 goto Complete;
-> >
-> > --
->
-> As I've already said in the other thread, my initial feedback was
-> based on an oversimplified view of this code, and the problem will
-> need to be addressed differently.
->
-> Sorry about that.
+Add related binding doc.
 
-Unfortunately, I don't think that this can cover all of the corner
-cases.  Something is going to escape, this way or another.
+Add imx95_15x15_evk boards, which have big difference with imx95_19x19_evk
+boards.
 
-To minimize the number of things that may escape, I would first treat
-direct_complete as a special case, so only clear power.is_prepared
-early if direct_complete is set.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v4:
+- Add usb typce part
+- Link to v3: https://lore.kernel.org/r/20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com
 
-Then, clear it only for devices with power.no_pm_callbacks set, that is
+Changes in v3:
+- Add Rob and Conor's ack tags
+- Remove undocument property (need doube check why dtb-check have not
+report warning).
 
-    if (dev->power.direct_complete) {
-        /* Add explanatory comment here */
-        if (dev->power.no_pm_callbacks)
-            dev->power.is_prepared =3D false;
+- Link to v2: https://lore.kernel.org/r/20250114-imx95_15x15-v2-0-2457483bc99d@nxp.com
 
-        /* Match the pm_runtime_disable() in device_suspend(). */
-        pm_runtime_enable(dev);
-        goto Complete;
-    }
+Changes in v2:
+- fixed typo 'inctrl-names'.
+- Link to v1: https://lore.kernel.org/r/20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com
 
-This is not perfect because ideally the device with no callbacks
-should wait for its parent and suppliers (if any) to resume before new
-children can be added under it safely (in case the children depend on
-the devices that it depends on) and is_prepared may be cleared before
-that happens, but those new children may be added by the parent's
-resume callback and they won't appear if the parent is not ready
-anyway.
+---
+Frank Li (4):
+      dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
+      arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
+      arm64: dts: imx95: Add i3c1 and i3c2
+      arm64: dts: imx95: Add imx95-15x15-evk support
+
+ Documentation/devicetree/bindings/arm/fsl.yaml    |    1 +
+ arch/arm64/boot/dts/freescale/Makefile            |    1 +
+ arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1130 +++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx95.dtsi          |   27 +
+ 4 files changed, 1159 insertions(+)
+---
+base-commit: 3d34d52fb62b250297279c3d95b2562180a44569
+change-id: 20250110-imx95_15x15-6a64db8c0187
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
