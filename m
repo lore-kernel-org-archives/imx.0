@@ -1,114 +1,234 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013001.outbound.protection.outlook.com [40.107.162.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0C253F0E
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740165601; cv=none; b=l1ONFeTNCPe8tC0n/SL6EDauuIxum+0n0ayqfGGHAkhcBKtpus1Pydfc1NFg0gzcjQ14HpzSiJcfobxBSHYFqFUb/q0+KwWb0ZivOrdcG8Stu9590V3y1hngke8rfrca3PtY5GTuYT8xcTWNhJFdB3m8RPwnQ+oOM+IM4vakgD8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740165601; c=relaxed/simple;
-	bh=kOraS8IqYhByuh3EYq/JHZv1tOR/Rwv4bGyv8G1S23I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u9eo7T2jAQmKOFIM8iaODKj3lUykmK1NSBIU7irM58f2aGIQVGYZQRb7OGnHDvArL/+AUvA5TcDolHT4jldhnbXycKawV/7YAk+skMN1j3e3xdPhoIDDcK52OtSM3iTixH9Od8JuMqBmuayJaM3nZMY26OiJ+zuf12vhwtxCpa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OrsIg5O6; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C56253333
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740166573; cv=fail; b=lQctNfRLY2E/5Rsth1hPWq2+I7xhY672Hyp2QwbMVX+/JOuBEY85LYkZWYy6KmNDHedv5S66vdndoP9saBbNz/dq7Yq6ZgmZ+Izbk3vuh2zfo88weAN/w6c3s/+U9NVp0ddqBbBClCZZVCPPf51T2EporPWfg12cVaHTI9w4Lls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740166573; c=relaxed/simple;
+	bh=1wYvjUKBb+9Gpj6WLj1haezbyvu07OsMpWGClJomKCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=u2NKIhRXQMf4ppMxwS3kv2Ses/YbiKEB4fgqSC5tKsWV7cwHXzzbT0hindZJ/7dbT+1SByvYDNJ+P7bGoCTGMJ2QbmKPDgZEGLorwyV4nQe73WmvAS5OonIEc2NACgzQzrxeOavNKKDLIfUXIDiStn0a8qIrIPfAdWQnzFrDMKs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V6MWqgRM; arc=fail smtp.client-ip=40.107.162.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OrsIg5O6"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abb86beea8cso458480666b.1
-        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 11:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740165598; x=1740770398; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0PW85pz5cGLvJh0OtF1LDKynxXRX33ioDpLb0ZUqgao=;
-        b=OrsIg5O6GZ6DpGbUr1B+AXsNuugAhR+gC8/tOdHUbZHHSiLcVI8qPQ8DBgZfFcGp1+
-         D9spESRyuGytftzc55VER/oo55/pSNPx/8jjoq1rlo2VYKfnl+NR6W/Y7jscNbu0EVO1
-         tzHY8MRDFURgRec26rld5DQScsv2gZ+q0xNwZedxAe1rxgy95rF8J85c/3zLcXXEL7sJ
-         gEUba9IC1AUjD33siWUCssfCRVyQ4+GYwc9k2dFM1XDPXCeuzleEiWl3fJLrHQ5RUTDT
-         Rh1hx9jt5zJhFbDZG/As9S6Prm219/vWxr1etsKYOTPJxueoFO6+Q+ULrmxtMi9uItj1
-         cVIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740165598; x=1740770398;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0PW85pz5cGLvJh0OtF1LDKynxXRX33ioDpLb0ZUqgao=;
-        b=I9WqbmlXkFJNzOGqvfjBrksvNzrfYRmrJq5GNMGI5TobDvUum86PBEZu53dLHlYVKo
-         6hq6ojH4I5MlMjrzNT6hOjs3S+5pHLYs8Qo8kVWKCJNNBq3TbiNrgUPbG4+LPC0Bs9hR
-         dwSnfh55Z/f4qlRrQtw5ojbND940t+DV6UpQ5ZHsIPdNDO9urL9cqgCERYPDEZtydBpp
-         TncrnXccqhDDcpr/Ht6x6ggLY/WgPHjfuxTgHQQd77g9tfamC1whDTLl2q2IdF1WV1ln
-         i26u7h2/FoZRpH5tF/SaAJZlfWai08te/nQvlI3U8QIAMjot6MjLPnko6E79PTydtJK9
-         WXIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBp5ZKvhIM56lX2Y+OJrIVH+5AT2O7gO8PfCRtzKtWQSEJ3vdoA8vCnk8jBCMjlYD991g=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6J3sjvwGYi2vwFbiNL6f92oBvNsm8rNBrNrFTrnp5WmTCb9xe
-	CUlFm/43uu77dyi7Uv+WlNvVRgGThTz0+Rg6ASsoQGRfi3IIeMCA
-X-Gm-Gg: ASbGncv4SvBJPWscKnVLYoACQIjMNudlaqy2SyhVc3PuM+sDx2rDJFTDvpraPTmkr+g
-	tyw9OzrP7XLwJeUCIGAEWmu5wkX0xTp7siHFk6dcRs8x62QTyatYwqPKr1t0vzRjPEX0maDTES/
-	+bZFKzZE2TxTcl7foLGtLqvG9t+AsRwIcFoydopAbyN/fZ4A3GlMag8rP5uCLGsabKgQRrHmdAV
-	i7LcnS1KqJOyIp5rRnuBFF9bIyC4ZIq0MRl+XH+/lbVjmEPKqXb4yxzFlr4aGrRDTYBKiVCuKSw
-	PCaIuDPVX+GZwL0OXChZUWDlAs9JLqQP4PKydgVN+SZmYpfj/N85D4iTous=
-X-Google-Smtp-Source: AGHT+IHGNlBjv0prPEJON601/v7KmS0YwqUhGMf4lS65c24qSw6LwRCeA8Y99uRFtQLi0vwiyNDqXQ==
-X-Received: by 2002:a17:907:6e8a:b0:abb:e95e:f2c3 with SMTP id a640c23a62f3a-abc09d356f1mr472726066b.41.1740165597467;
-        Fri, 21 Feb 2025 11:19:57 -0800 (PST)
-Received: from playground.nxp.com ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9cee79fasm995276266b.129.2025.02.21.11.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 11:19:57 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V6MWqgRM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Oma1Dr95aVh2/TH8fxhAbkKNR8aYKppsju8uJCJrz4dnN27eAzgSiWc5qxt+yULKuHDx1aRcNVIfMf2sbG/MSUkMntiRkbqwD9iOhI/87j8FJe3ZYMmmTyZMb7O+HUJEGhUTWdbiXyAYiSNIRlpICjjhyG8c4bg9xFoTaHDCAq3tBwixTlbu1l328349mV/lPO6+YxeqFp4zH+Rjx+ZuDDX1Xc/eDFz8ln66kAGT8JUERLfa5SaHT24G3kPC3+/lJUvxGZ9tNbL8ZR7k9PDaCDsnJoiWy0DU1koK1Jb6XmM1mhwpWew3czFtyDy+0WN93xN3zRY5pwyap8hh1XOAVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SkJlu9EeruZBRTKEyJVfROzZNZmzwXdnQPEfm2KYYMk=;
+ b=oA/cXkBNg22l1irNsJaYIfyXsTGPVMrngOi95+EjRH8fGuXP1rrfo+ygMKjsZBbfXu6UaKVEyQrkMzBTJ+PX5jvHazI+cA5+V9rY4G/D5MSoSiXoj/amoU0pmLRN5uRZKqJA6KNLmgWL++z0H2MYPlqIai9rDZ0/9GD6GaJvScyHlJcGEi2/V2qdcvDAlcC5OLNJl9H3JnPgdESk7EsUkeVhb9nNm7UF4wLf6v8ZUFazhvNHFEnF+iBVTO/hkVKPctG0Wjqftql/XdP/CphiVYluAZwPRhHTENoobVnUgTH+D55hOGezNyx1+JyMTDGZFwO9ixgrxUpzd5mImv1qrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SkJlu9EeruZBRTKEyJVfROzZNZmzwXdnQPEfm2KYYMk=;
+ b=V6MWqgRMpzat8x9tOoKDwZ/e+6qn2tTu0VsNCgajigrcez4CnTBaVlABF49RL47YY+VHu8dUgSFcJ2SLXs3iUO4c8uqHPTX06d/c4JlaaSEc9zkdxefmMBw8dC1smTB86kdtS1RiZCCYOZl/QW+nna3heNjXqP5xbb9srXUuQi29lfNztzVoRrVjsVcyJbS4o/v15JQGL4Drp1OfvmgrDX5qK96Z9a8p/4CBZOb61RSDjpLG8BR+y45c9UMa0oHVbeOW3hU5TBvi6i7L28RCa+jFfVVTXPC1FiY/JyNt/Aos9D97PYNvfZbuFt930w9HXBkdyiXnpLPvTD3AegR2Sw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA3PR04MB11202.eurprd04.prod.outlook.com (2603:10a6:102:4b0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.23; Fri, 21 Feb
+ 2025 19:36:08 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
+ 19:36:08 +0000
+Date: Fri, 21 Feb 2025 14:35:58 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-Date: Fri, 21 Feb 2025 14:19:09 -0500
-Message-Id: <20250221191909.31874-6-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: bus: add documentation for the IMX
+ AIPSTZ bridge
+Message-ID: <Z7jVnmWoXn4ow9NG@lizhi-Precision-Tower-5810>
 References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-2-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221191909.31874-2-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: BY3PR05CA0045.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA3PR04MB11202:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb66193f-e685-42aa-6fe7-08dd52aefd15
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?n1NDFYuJlgemqFUg7OWxW3e+GpufcpIoFdLw+4ia9p+y2oKrQjNk2Dk6Jx8i?=
+ =?us-ascii?Q?VAOJ7nRzxjRdi/9cVq4MHOjn0qfx+8AsuuBg6rIs+i3P6gy7pjrBNOxSCChn?=
+ =?us-ascii?Q?iioIRumCHPJG4DDtShPMsFEtMi6peBPZ1Vp5DNe1mXiDMCcE9rtbQqczcaPk?=
+ =?us-ascii?Q?VWKqQxwJSu0qSnXIy5sC3rana1KoL9MVC5MDcwGjrlawcflDMB41tCaLZuAX?=
+ =?us-ascii?Q?wJ7AUQMi2izhvfU43CM3S1hM8TKsqtEp2PXihSYqHLDBEWdKtIGCj/NMg30j?=
+ =?us-ascii?Q?eQERiFYd0MwNlTV1fWzft+Ds6JmAvgFtfJcYd6EOr5diUXpTDrECCDMW95Aa?=
+ =?us-ascii?Q?5K2tmGkOsrIu91yoYbNcdSxXr2WSSDK0yccab2IdZGSvnZkQWT+jDrWFYpqT?=
+ =?us-ascii?Q?itd7tDwKql6hNDqDAXUEaYipULaJu8J2zPM66IDBvducpebnpEokUCy6/Yol?=
+ =?us-ascii?Q?1qA1ldaOAtYURBtPWNfm5D61YFdtR5Ku+hkTjSJpPzCIOXccHn3TAEiwFwx4?=
+ =?us-ascii?Q?UtJszjlsOyJv9+XnlkmOw10g8pX3GamwAFtbf4SDbaFD26UcLsvfo/pR36XS?=
+ =?us-ascii?Q?iEJJZS4o44uhjGvPVnmuto2vwWtcyKIs1QueY6icqKlShYg3UA4Rz4mpaESH?=
+ =?us-ascii?Q?0AaWL/G6/A5ZuHL/SNlVsEtX7zu0RSRXxyMXuHlfyRnQ3RsMnURA5wNn/f8r?=
+ =?us-ascii?Q?MbdgQBW6tH/cD3CrF99ypLNCNvhIQI5TMsauBxZhZlDiGDACiUleGlniRqYU?=
+ =?us-ascii?Q?q/EM3NyL5teorvSiHxS4vyQ82kKCdY785oBWCFR1APcR8OwPodKpyFMHda3H?=
+ =?us-ascii?Q?c33ceKzx32/AQGy/hP8wem4JCeo0VXxTjWixNKvCT9UkG2mw3Zb12G1b3Qs2?=
+ =?us-ascii?Q?a3J1NbUKwk5jb1Gx77BEn9OPNy0Evgfi2j3GNtxZXjdE7sK7CKbRI6FP9fo6?=
+ =?us-ascii?Q?PemI6jZK71bxipKYkDLre0tq2hB+KNdSM4F6rPAb8cUveQx/sZ0Rax5joRBw?=
+ =?us-ascii?Q?C/MSTxe4JPwYz/Wrjj4AyJDca5bJeSrAKmuhGniUC8z578htt649qoIYnrIg?=
+ =?us-ascii?Q?rqvTJBtBr4PtdGAznAKXc87k0v4Rv1vIbhH/tDpk5mstSNZlHGUw4hthaw0i?=
+ =?us-ascii?Q?/dVHfKww67S4ts+aiGTTRj1uJn7hjI6odpalGg3DLl04xZrClzy2dwBmq2TG?=
+ =?us-ascii?Q?PFxGOSLFN4PK231R5NSAh0a6gOWSpp+DYXngiY7CAwjrofeTPOflj+g3u6Y8?=
+ =?us-ascii?Q?XGi7TDo4VAiVjcjn6dhbnj7bx8atu9CcXvEDSn0YXuobLrL7GteTHYQxnMNn?=
+ =?us-ascii?Q?X3kuy/idcXICurbsuU+sBZ2pwyYWCzg7WbCTZfL02BTpE5dsUnKuV6F5cEl0?=
+ =?us-ascii?Q?Wcxv00TwMz5m4X8fK35zcap2VVax?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Tvy7hJgsCDjQFgio5UDwvxeZmoHLwczcHiCQT1cdbkxdQ/uf+gj2pnRDjXiW?=
+ =?us-ascii?Q?lfPlsImKf39ktjj8jt9xZmKc2ZYorhJ95v15pzrdkEeMxhSUVyMI8Gb7lPZo?=
+ =?us-ascii?Q?AS/CaDf5ropGWT4PNecyvNB38SCE2F1c1g9S5oaYQ4sLhkPv+pgKe3FXAbHb?=
+ =?us-ascii?Q?yCBqCnXBhGAcUsrI4gSHe3Lc14b8j9n40jfwZhIBHgqg2nWmjmkeesaXnknj?=
+ =?us-ascii?Q?l6q79ouuDnrE5uRbqpfNDtv2StIf6lP5ncXUdfuMQqudmhQD+Cv3QcsbmetH?=
+ =?us-ascii?Q?8l6T0gPMWP9trsjYlD2cUBpMDZCcrpJWRLjouzGw2+yp6nhflzbsDzuQktq1?=
+ =?us-ascii?Q?1Yg3DEhdwOH3l1tbpoB2oFDBmD5gm5vKxdt/idSYkeX9hqef2BTNRDfTqR5c?=
+ =?us-ascii?Q?LcRYzYykmINWEdUrPqLkqoxRz+85FLJ9egZmFJfMdFq3eWumQb1X89wdgGWj?=
+ =?us-ascii?Q?LyaXWY4CzIBYLUgOEFLX9P1XHi3Aws+gyKJgy00CxT+mx3TY+O7It8BwUKxc?=
+ =?us-ascii?Q?AnKQ5t+GyYb//ORfHYOBLrd8+XuwViDLhmiz4ZP7oulMPpCHG/KNBo8fj3tZ?=
+ =?us-ascii?Q?hagHNoDUOiOm0bSc6oi5YwyjF7DcS6TLUWSZdtNYgkoazF6i5lJ0U6R4otL/?=
+ =?us-ascii?Q?80XvXM3s91btt1HvBRD0kozkhi14S/MES73MfbnFPnazJUG1jwWiOaLzCiLz?=
+ =?us-ascii?Q?JYR0RvH2968QsCY7XgfAz75hCePF7ziQ04hto8QGKhY0KTjO1LkSuCs/4Fb5?=
+ =?us-ascii?Q?5CKNaBb70JiplX3C3H6n1FxxxWM1cIbRapC0CwyUhCB1xkS4b4F0FOhYP6mV?=
+ =?us-ascii?Q?C23ql+h+881qLSSYWIYgLSi3S8FAhm1rN53OUzEBhPPkuQS/pSdb/SV5m0r+?=
+ =?us-ascii?Q?mpLLsCWGGijrphJeTd9rbljaCbTDnnTBKP6Wvp7d77sqSdAC7f6/0jmNYXPw?=
+ =?us-ascii?Q?cPHve1GzoUx9qDq7uM719xs1zX8vl/GC7bQqSTm0YV0Nu6mc9d82b/0xpKu4?=
+ =?us-ascii?Q?KCJWWE3hyM8P2P3Ekl1wEdAa+cdQnfIUJyCgZ3RAqZD9ODYQSPQsFyAk9Ybg?=
+ =?us-ascii?Q?6kXC8lLUJpNPjzHSiF9uwXhxt6N4rEvGkbPPDjpL2hhNWVRZlWqwlr5kpHn1?=
+ =?us-ascii?Q?utKPIxtp5Us/Vcqg6Uo3GP6+c8AZMmVIYYQyEDIEpvi2MoPvJm7ufVc3ACDw?=
+ =?us-ascii?Q?KwflOljfMXL8EwR5oqnHZNhVvB5qGvEx7kfrCICEpkA++9FlReROikPDY36O?=
+ =?us-ascii?Q?u85Mf9rWWsDlIvEKE5OswlHXphbMYqFySfigrQT6ddygyT0a15fwaSb4O0wO?=
+ =?us-ascii?Q?vi76TIA4nUfmD8zcWHZgiFRB3xT7EaqtaDIRLfTMpv6JY4qZCzrmLes4VupC?=
+ =?us-ascii?Q?LZwXNsmO2dQVxnQ4LmItZAv129M2/QSnKfMha2LIAMZJ5qQTTTAe+8fL/+Cx?=
+ =?us-ascii?Q?dpemPJuq7SEhsIOQq1C/OXrNeBNkgcPnYyF18pISRSSKmeRiWUgT+s7nFtF/?=
+ =?us-ascii?Q?EUdlhkn0HQvrs7tQqiVxCUZUPLoTJFrehOvha7oMteww4d9t+kB3Iuj7dF2M?=
+ =?us-ascii?Q?gzNqrKKjkg0duDEGKtc=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb66193f-e685-42aa-6fe7-08dd52aefd15
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 19:36:08.2420
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GlD23Tb5SsMwIJN/Z41AJ3Bfah7l0tz1Yfkm95DSrshk9ml+Vs9OBGq+p9Rq6CgcGV+ZhtQBPg3xqecyxl81iw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3PR04MB11202
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Fri, Feb 21, 2025 at 02:19:05PM -0500, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>
+> Add documentation for IMX AIPSTZ bridge.
+>
+> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The DSP may want to access peripherals on AIPSTZ5. To do so, the
-security-related registers of the bridge have to be configured before
-the DSP is started. Enforce a dependency on AIPSTZ5 by adding the
-'access-controllers' property to the 'dsp' node.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index a1d9b834d2da..9ec51e7e6678 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2423,6 +2423,7 @@ dsp: dsp@3b6e8000 {
- 			mboxes = <&mu2 2 0>, <&mu2 2 1>,
- 				<&mu2 3 0>, <&mu2 3 1>;
- 			memory-region = <&dsp_reserved>;
-+			access-controllers = <&aips5>;
- 			status = "disabled";
- 		};
- 	};
--- 
-2.34.1
-
+> ---
+>  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 62 +++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> new file mode 100644
+> index 000000000000..b0d6eaf70a84
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> @@ -0,0 +1,62 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Secure AHB to IP Slave bus (AIPSTZ) bridge
+> +
+> +description:
+> +  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
+> +  issuing transactions to IP Slave peripherals. Additionally, this module
+> +  offers access control configurations meant to restrict which peripherals
+> +  a master can access.
+> +
+> +maintainers:
+> +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> +
+> +select:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: fsl,imx8mp-aipstz
+> +  required:
+> +    - compatible
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: fsl,imx8mp-aipstz
+> +      - const: simple-bus
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  "#access-controller-cells":
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - power-domains
+> +  - "#access-controller-cells"
+> +
+> +allOf:
+> +  - $ref: /schemas/simple-bus.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    bus@30df0000 {
+> +      compatible = "fsl,imx8mp-aipstz", "simple-bus";
+> +      reg = <0x30df0000 0x10000>;
+> +      power-domains = <&pgc_audio>;
+> +      #address-cells = <1>;
+> +      #size-cells = <1>;
+> +      #access-controller-cells = <0>;
+> +      ranges;
+> +    };
+> --
+> 2.34.1
+>
