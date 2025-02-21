@@ -1,320 +1,196 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2065.outbound.protection.outlook.com [40.107.21.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6E6201004
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 09:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740129583; cv=none; b=c4kC9cniCBW2et57G1qspLipyvb02EEtJLG9+F9IyltmSbPn4QiOX0indhhjToOQ927kPDQLBiW18rNw4fFPQzXPKbVXOCIvn2EUURRRbtDBj40vEEvXcPpfvwfIOk3cBnf7UIKYzP01TGdY6jlKv3nk3QeF94OcpzsQu2JhUHA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740129583; c=relaxed/simple;
-	bh=ZOVk97NBF1UcENXzsdd8a56egVxmjA/4HaMb4vmh9Ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OiDA/2mK0AVM+dcg73M+hVY2p3JKKp4HdejDmPxkdyQG0jve2DS8ODDELO9EEZCdATXwS5gq3uKG3K1kkzuOI4jSr318guWSQMLJ8CR1VXM/LSiiSSlpOCU+F3a2PxWh9BPX6ZX4qsRkOq8t9COkTvDYAC/jgfTFEv+KWIEAK24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Y5OD0ODW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=apiGdSL5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ix9uY6zy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GXuVcphr; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CC3201017
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 09:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740129759; cv=fail; b=aGAsgarlXLVJvQ9zNCd3ltuHPAfaI165Sh5hhd0nLS3zaN6c6+4UtwXmoAwWmbc7f0cqe7kceUy6bvprFdRe5aWSz8PABhr57onDid9A7csXsXOHyIAwVl/tcbpBCeMh0plVWV7TNOm4HiFQ+IXA8qd2Tj1HI6M9se5xzco+VKI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740129759; c=relaxed/simple;
+	bh=0r/xeRBuHTF1/L8g1xGtBwZKfEvG28aCm6Q2Pgwgc3I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=msp0sUtFKN0YxsO7A/6dRtdOPs0nEuDWOIxrgvHRVgobvagaQAzvkxgnNw3Dm0Af6hpUpfMCV6mxDMX90/jh2LkgDLCQbZg7C1qASicVU9/KJZdnPIKoZic6zDBwoCJbg3+zKEcYDi7J4r7Dhqe/qlKjJVU0WG0wc2T/xyrycgg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W4vbagJx; arc=fail smtp.client-ip=40.107.21.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Y5OD0ODW";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="apiGdSL5";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ix9uY6zy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GXuVcphr"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 016201F38C;
-	Fri, 21 Feb 2025 09:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740129579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XEszpDYKL3MVEwZqleFHNbIiqH/hiHMJcxYVx498oDU=;
-	b=Y5OD0ODW05Ir6K44W9oHAHrgQsGFXLTe2qXLi/jaIBFZ8ei3bph+xdvoGyv2xycuuIUEmU
-	lfhDd0FD0MKqUsASX/kbFrYVayo06HxIfkIBglJZ5y6xJsUEh1UQO7cOjfhKiWv2u8LZKu
-	ovMgo9SssgX3HXtwBDBEB/mDQQQS6Mk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740129579;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XEszpDYKL3MVEwZqleFHNbIiqH/hiHMJcxYVx498oDU=;
-	b=apiGdSL53jreK8uUb7XtKwQfvrR9lvbOm4fC4bhVEsCnP7K54jIhH0RLvsx+aZh30OOeHO
-	abABtQE13t+7TJAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ix9uY6zy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GXuVcphr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740129578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XEszpDYKL3MVEwZqleFHNbIiqH/hiHMJcxYVx498oDU=;
-	b=Ix9uY6zyz6ad3maDw2OFPsPm2XBJ85n9s/O4q80iEfN1M4Sjj0LK+j1n5z0I0DOmlcCTU0
-	QX+/2L+jPArpkRRDyHTlwd8SaIdpzIX1XprnwUzKPIITRhTlNeFlUdbbne1BuTtAlKMruC
-	phhskGETcHdVTLH59sXknrkluxvm0jQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740129578;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XEszpDYKL3MVEwZqleFHNbIiqH/hiHMJcxYVx498oDU=;
-	b=GXuVcphrlbiIlthAB83vu/yp4aJDLPDw8m4egDsZDmriwuukeFiXh2qEeTFvm8HWr1Utjp
-	69K/s2r3yTN1o+Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7780C13806;
-	Fri, 21 Feb 2025 09:19:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hlHRGylFuGdGIwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 21 Feb 2025 09:19:37 +0000
-Message-ID: <87ca2b81-a67a-468b-ae2b-30d02a3a64bc@suse.de>
-Date: Fri, 21 Feb 2025 10:19:37 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W4vbagJx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M9+ReYcbofuM3hTUzdhk2DDAdh851+yZKnWKHkFDox9j72WwT4qcPnnPEJxkmbMiD4ZTejFdqGz/jUbwUD9yvuDfw3eJzMwRy7tfZ1j4g7MWtOE20tmZoUosNte1HX363e5IHhQZgVnYJV8Z/UsDqSI046SkD/FHG+IfT984v4a5D0wDAZs9Lp00PW18zToWSxorVWJZ8EnXvBa/xl3YhtT8r502hSGnQYa4WLQ0GIBJwbNKq5bCDpE+rgXadqZz3xtQBuSHJXBfH/Uy3cuUIK+WVQABo3NLwZIOSEdEguStGSKEGw/tA924vKZAnaDz92AbqKsiz+81cTFuB2XdiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0r/xeRBuHTF1/L8g1xGtBwZKfEvG28aCm6Q2Pgwgc3I=;
+ b=YRj8qzeDo4CtpDVvSn4OLENJPdTlr7mo0aEIoK5j9FRjyyIJY9m9SNJS4mtbdP8GFLTOGDkW1qitwg39utzO86h33umomR4e0yDNJe3V1weZEGHilTMHTp9Jn72ZHlv6x28tKcykiLWhOfmnLgC/W8QWJOG+I1O7tEFjKxZlxSFNnmFRO5t3aHVSTH7h2aw+T1UfAAgc5OL8jCn40wzeShmNNsjSzs+yvNB85Hs8Y656t3Wh/Gx43M8cmt/9E4TuIgh6dQYqsvWIdXc9c+eL2e0yPeehnCCX3K89AGWEBMRccO3ZBn2UhsrSzi8LZoXY9m9Px8bqMwLsSsxFDELSEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0r/xeRBuHTF1/L8g1xGtBwZKfEvG28aCm6Q2Pgwgc3I=;
+ b=W4vbagJxOtfPjS4fHBOrwy2nCK164GncNtBF1zSzphTZkp4AJ3Dk5d29uH1pWUaqjpEK5JjK7mwGNqS8Edd1bwDCZQMUUxYIJt13c+ueLZFbpzfiaubMUPO+3tem27yNXl7cLa9iKc8rLTB12PSZoAXLKgqycA81kdloHNrkXaezgL57ZmrbfA7EM+N5ztNseumAipCvGa0+kc4CEwPvO6AkPG/CcTCzxwuGxCYb+Alj0KkWCqeadu/+zIuhAOV3VhgRUD2n+UMo8oRH6rUMX8t+NE1xBwYVunw51K54FkwOLc+26llkIRkR2OQFEvvWzcicvMuCFZeMWVdiNKbmLg==
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
+ by PA4PR04MB7662.eurprd04.prod.outlook.com (2603:10a6:102:f2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
+ 2025 09:22:34 +0000
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Fri, 21 Feb 2025
+ 09:22:34 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
+	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Topic: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Index: AQHbgpN/wLtM4lMuwkuGi4ZYC/hIXbNQXDmAgACiP4CAAGZqcIAADMYAgAAJXMA=
+Date: Fri, 21 Feb 2025 09:22:34 +0000
+Message-ID:
+ <AS8PR04MB8849177C48CD9D04641D777596C72@AS8PR04MB8849.eurprd04.prod.outlook.com>
+References: <20250219054247.733243-1-wei.fang@nxp.com>
+ <20250219054247.733243-3-wei.fang@nxp.com>
+ <20250220160123.5evmuxlbuzo7djgr@skbuf>
+ <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <AS8PR04MB88497C415FE73CCA84843CAC96C72@AS8PR04MB8849.eurprd04.prod.outlook.com>
+ <PAXPR04MB8510ECBBA69BD5E50DB1C03088C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB8510ECBBA69BD5E50DB1C03088C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|PA4PR04MB7662:EE_
+x-ms-office365-filtering-correlation-id: ca08bd1d-a6fb-4dcc-9680-08dd5259469a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?KTm1run0iEWGAgmP1AUratyaW3ozqgLfJu/9KlxCSX9/9jd2Z52Q0c+V3iXN?=
+ =?us-ascii?Q?GVVuwwhvRi8Dn5KwpyPLVCglvkfuJynIeRDJwfSirmH86qJov2+ivtORts0d?=
+ =?us-ascii?Q?+gZrSpKih1ivwDJSjRWyWuXBSA07K3JlF5itB6g85hLwyPq2/Y1CVOOxZ5Tn?=
+ =?us-ascii?Q?v3HjBzP+09RG+yflOu65EDuZq5sMBGQg6jbenk2r0MYs1V7zChaccmbkaw/y?=
+ =?us-ascii?Q?Jdgw9HaDNJHDRcaB4UUIC2Gku3xdzpcisF/2X+9jv0X3h2gCwE4hiO9OUTU5?=
+ =?us-ascii?Q?aKQWOutBGWf5Z0fBSjkyvWYUtrclB6zIaMlF4me+NulJre9D+/OnYrFSx3sq?=
+ =?us-ascii?Q?Zw7JimertqItXtJOkJ8zT5EOITUH82+4Lb7inv8BIgodXxPG5v/YvCPZml/s?=
+ =?us-ascii?Q?aA+ZxIKPSoCSXjWRjmgiwa4Zio5SfeCfDcYov7BdKSApBaH/HwyrbYf/N4BF?=
+ =?us-ascii?Q?/98jfIumJRVwRGzO6JBu4vvCx2Rd82KDsxb5Y+neY6wjyX4uJeMq/Z8WhmvE?=
+ =?us-ascii?Q?yTNOT+tTtB41D+C9p/E3CK1mxiZ35JBSh+6IFPtD4++YU9OaUVF2c3ekoW8q?=
+ =?us-ascii?Q?KUwVBCwoPSgdMtClZdosdAkcdoeNblAznCG2E2V6mrJL/U8qd4BpaCiVdgTQ?=
+ =?us-ascii?Q?YfduLgo4+2X3W+mUe9DWPViAqL6Ow/nlv3GDxv/nhEpPrqCro2C0siP4YfQy?=
+ =?us-ascii?Q?UsvqfpfQauoZDUJV3pzLfkeAPMOUOLsByfk8NixaByMwFVub5wT2kxyyuV6/?=
+ =?us-ascii?Q?L9Uv93kBnW0KrHBRsNBovX2QD5/UhnLgTfXLNAkgmptfO2IilqzT+41ZLszR?=
+ =?us-ascii?Q?KApQQQJ2hblkRMreiRJqbIXrWP/cCJJ0mPUW9qjUdp+9BiBTwMn815f1YDk7?=
+ =?us-ascii?Q?+mN31IMEUvi0Vcf1PhpuP/sepwrV9/n1r4XLAHcGiEtzP1B1gCTt4/PLwk6N?=
+ =?us-ascii?Q?cKCcAUfHwaIvVrL6ity9jVFZH+kub2dIYIbhxVmHACvNKOk0sol25u9x2Tal?=
+ =?us-ascii?Q?K7z4sUK63zkiea0ULct49xwpHJmVX68nzWICD8f/Livi4RZE0x3HsZNfgaWo?=
+ =?us-ascii?Q?6R+4XcXkThaUSxSS2pGzQeKjxsTwHC91gGX5J6pstdIBQVeKtGaPwxtI1dWx?=
+ =?us-ascii?Q?lK6xN2OBoZICJ6axQqzeKHCDCUEkAWHYUfXqlPZTFX5zRZpknCCevSKmqKT4?=
+ =?us-ascii?Q?XVulYpZPxT+atxUoLnUyvGdPkXhSyuOlgHgAEKo24L9lY21mxW/a4KwlPLCk?=
+ =?us-ascii?Q?zLCTyR7KeXfLdgwn7ZWu9b9nZlVVzbMAac3Cix+KD+YYushUnaSHcC6PBt4z?=
+ =?us-ascii?Q?GRtlcHYhd7mNxclhtospIzCev66uFTAhpxqc0MfuWWSuMUgzZUa8ph6fUllW?=
+ =?us-ascii?Q?4iN3CPV9nJggghvExUTSxLdBPg/+NxB3Zm6iF8e2JwbmZzCoOSu/smOV70qK?=
+ =?us-ascii?Q?yWiqYJyrvPP6edkWX2AMT3s13nxuGuET?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ig8YFzAU0poNimtjZ+dN23Mr+TIo5hfntsXpUK7jL9bphfXx2RDGdwrGeozL?=
+ =?us-ascii?Q?gegY7Y+5vIzmD15Hdci5alHKRHE3ciFJhGctxq00TfofYRCJuA4cVu4RgWac?=
+ =?us-ascii?Q?eJMg6MAlUpLtBek/yrV2cMCuaZJBamkKDICSR/HNfu9ZPnEYaQFe0/fEYoTS?=
+ =?us-ascii?Q?wmFAKW1H7eKv8S9cWir3RDMub4KZDTL7warRitr3HLDT6DwmsCWZekvpb6bw?=
+ =?us-ascii?Q?7QVXOpGBcBBdwRzjcCodU9Qips8eUFtXeiSw/GwTC9Hioazp2FNVJCBSfsDw?=
+ =?us-ascii?Q?Wnjeht8zygZbXZ3fXBG8KTzul0y6fV1WAPdgzlw+vrD7wwR631sPNcmr57e9?=
+ =?us-ascii?Q?oL5UHzlLmuZuV3nrPHGdkV6I2XK+pO8PCw4DinFONjMOIg6FxCUMHY0amIz6?=
+ =?us-ascii?Q?msVKdEzCGwh9UOfRBpLZ6ZZychvJRoyyv7YoXBWZj7oirox505/u+QfyDK6e?=
+ =?us-ascii?Q?7xeA9nUGWHMZN/4FiL4Mi3A0wkTQiAr/XvCnLX01pGD0Zaz5QXsq+WCbOuRq?=
+ =?us-ascii?Q?0O6gVaUTlZwmsmUaIGV4mhZDfh9/MbAGUo7CK7ZfOG2ZbzCfstmveGCUvEeZ?=
+ =?us-ascii?Q?Ln+sAtpLtPlLaMJYlUA+20LDR9pmYdHwYNefxD84S20w2SagL9r2JRCQbCcH?=
+ =?us-ascii?Q?k3NsVqfZvQp8RrZbvOnR5Hy9gAg4GuwrqNT5y3GlINQGYzhvtFiz/4rnJGdI?=
+ =?us-ascii?Q?tkXH6aHqr0szG+XdZkgfP1CuI3o8qJN/TssZOhr59JTcELRrQ20iBtbRaYij?=
+ =?us-ascii?Q?cDN9SOr7o6OY8GSDTL/lQ1lM6faBcmbXVXRn4L9BUXvnkVWc68humAZAkH/q?=
+ =?us-ascii?Q?d4JEF5GRiIT9v6T2kTxJFduX7sbDI5L9sV1Es4L2HfXmN8xZMtAhBawR0ZKQ?=
+ =?us-ascii?Q?mxn/UZGeJ9oqMdKbyr0UNUF0JkuwTAK5bOPcKjwnrbTDz6jLvXxWDYDYr/B+?=
+ =?us-ascii?Q?PXRFLQkLK3KVZavjrniXBFc8d866iWQPSpSY3Hvb9+0BVW+UWAwCpeEX+5ju?=
+ =?us-ascii?Q?p13YrL7ZrR6lvvWVDvAaasyiUDCV0lQla8Xyi6jc8KfcHOAbv3mAofEo0UTt?=
+ =?us-ascii?Q?H5uFHVI1PHQ+t6q3SRICG9Avk0Wc6ttRA876ecUoD3y5e7OI63J5GC+vMXy7?=
+ =?us-ascii?Q?C6QFE5o2pDNKG2QffIzdwXJhKd44OMWECvm/FnJFbpK/v7JBF6OlNzxA1R6P?=
+ =?us-ascii?Q?qrGhvwxK72GomyN3R8YlTLfbRNTkzepNjWhD9rd1YsYpIZu3H/Jnni1ynS/7?=
+ =?us-ascii?Q?kiU1QuW2tWGlsGLzSgEaVhxbC5HLIWHYjht2a7Okvzqve0Odc20IxGDtkZFP?=
+ =?us-ascii?Q?b9CAwqaYDrkdg867DR92RBozRAg2FcFFRRyk7XUXrMz2J8lc3KyGgibxyS3X?=
+ =?us-ascii?Q?WvjRbe+x/UfPRpWillZNt9Vtq0OKSzjEIl2mRoxNMIaNUNorUpkcFzifI9+3?=
+ =?us-ascii?Q?Y4agle76Cjx5wI3r4jwCkIQi28huXmX5cExOsXY1IxartsHLcCNbPJPVPooa?=
+ =?us-ascii?Q?g/ns1Plf191VQIpVrKNsWTSrMkXOu9S1xHsW5aI8aFdqxAI9yGhmTpl8zs/T?=
+ =?us-ascii?Q?bFIzybgazXGApwEwwrc4C1/B7IBggsl3iYLswVm9?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/25] drm/dumb-buffers: Provide helper to set pitch
- and size
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20250218142542.438557-1-tzimmermann@suse.de>
- <20250218142542.438557-3-tzimmermann@suse.de>
- <dcd59a75-7945-4a2e-99f9-3abbb3e9de14@ideasonboard.com>
- <355ed315-61fa-4a9d-b72b-8d5bc7b5a16c@suse.de>
- <596b960e-71f8-4c2c-9abe-058206df1dfb@ideasonboard.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <596b960e-71f8-4c2c-9abe-058206df1dfb@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 016201F38C
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[ideasonboard.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid,bootlin.com:url]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca08bd1d-a6fb-4dcc-9680-08dd5259469a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 09:22:34.6502
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Lq6XNFoWvc5KyrODnosDuVikiK3jomImSLh9gWQruI2l7cwoBaAJA0pD2ZncEXBMF6giyBdKEj78UHoRYoQwFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7662
 
-Hi
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Friday, February 21, 2025 10:34 AM
+[...]
+> Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistic=
+s
+>=20
+> > > > I'm not sure "correct the statistics" is the best way to describe t=
+his
+> > > > change. Maybe "keep track of correct TXBD count in
+> > > > enetc_map_tx_tso_buffs()"?
+> > >
+> > > Hi Vladimir,
+> > >
+> > > Inspired by Michal, I think we don't need to keep the count variable,
+> because
+> > > we already have index "i", we just need to record the value of the in=
+itial i at
+> > the
+> > > beginning. So I plan to do this optimization on the net-next tree in =
+the
+> future.
+> > > So I don't think it is necessary to modify enetc_map_tx_tso_hdr().
+> > >
+> >
+> > And what if 'i' wraps around at least one time and becomes greater than=
+ the
+> > initial 'i'? Instead of 'count' you would have to record the number of =
+wraps.
+>=20
+> I think this situation will not happen, because when calling
+> enetc_map_tx_tso_buffs()/enetc_map_tx_buffs()/enetc_lso_hw_offload(),
+> we always check whether the current free BDs are enough. The number of
+> free BDs is always <=3D bdr->bd_count, in the case you mentioned, the fra=
+me
+> will occupy more BDs than bdr->bd_count.
+>=20
 
-Am 20.02.25 um 11:53 schrieb Tomi Valkeinen:
-> Hi,
->
-> On 20/02/2025 12:05, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 20.02.25 um 10:18 schrieb Tomi Valkeinen:
->> [...]
->>>> + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
->>>> + * legacy user space. Please don't use them in new code. Other modes
->>>> + * are not support.
->>>> + *
->>>> + * Do not attempt to allocate anything but linear framebuffer memory
->>>> + * with single-plane RGB data. Allocation of other framebuffer
->>>> + * layouts requires dedicated ioctls in the respective DRM driver.
->>>
->>> According to this, every driver that supports, say, NV12, should 
->>> implement their own custom ioctl to do the exact same thing? And, of 
->>> course, every userspace app that uses, say, NV12, should then add 
->>> code for all these platforms to call the custom ioctls?
->>
->> Yes, that's exactly the current status.
->>
->> There has been discussion about a new dumb-create ioctl that takes a 
->> DRM format as parameter. I'm all for it, but it's out of the scope 
->> for this series.
->>
->>>
->>> As libdrm's modetest currently supports YUV formats with dumb 
->>> buffers, should we remove that code, as it's not correct and I'm 
->>> sure people use libdrm code as a reference?
->>
->> Of course not.
->>
->>>
->>> Well, I'm not serious above, but I think all my points from the 
->>> earlier version are still valid. I don't like this. It changes the 
->>> parameters of the ioctl (bpp used to be bits-per-pixel, not it's 
->>> "color mode"), and the behavior of the ioctl, behavior that we've 
->>> had for a very long time, and we have no idea how many users there 
->>> are that will break (could be none, of course). And the 
->>> documentation changes make the current behavior and uses wrong or 
->>> legacy.
->>
->> Before I go into details about this statement, what use case exactly 
->> are you referring to when you say that behavior changes?
->
-> For every dumb_buffer allocation with bpp that is not divisible by 8, 
-> the result is different, i.e. instead of DIV_ROUND_UP(width * bpp, 8), 
-> we now have width * DIV_ROUND_UP(bpp, 8). This, of course, depends on 
-> the driver implementation. Some already do the latter.
-
-The current dumb-buffer code does a stride computation at [1], which is 
-correct for all cases; although over-allocates sometimes. It's the one 
-you describe as "width * DIV_ROUND_UP(bpp, 8)". It's in the ioctl entry 
-point, so it's somewhat authoritative for all driver's implementations. 
-It's also used by several drivers.
-
-The other variant, "DIV_ROUND_UP(width * bpp, 8)", is used by gem-dma, 
-gem-shmem and others. It can give incorrect results and possibly OOBs. 
-To give a simple example, let's allocate 15-bit XRGB1555. Bpp is 15. 
-With a width of 1024, that would result in 1920 bytes per scanline. But 
-because XRGB1555 has a filler bit, so the pixel is actually 16 bit and a 
-scanline needs to be 2048 bytes. The new code fixes that. This is not 
-just a hypothetical scenario: we do have drivers that support XRGB1555 
-and some of them also export a preferred_depth of 15 to userspace. [2]  
-In the nearby comment, you'll see that this value is meant for dumb buffers.
-
-Rounding up the depth value in user space is possible for RGB, but not 
-for YUV. Here different pixel planes have a different number of bits. 
-Sometimes pixels are sharing bits. The value of bits-per-pixel becomes 
-meaningless. That's why it's also deprecated in struct drm_format_info. 
-The struct instead uses a more complicated per-plane calculation to 
-compute the number of bits per plane. [3] The user-space code currently 
-doing YUV on dumb buffers simply got lucky.
-
-[1] 
-https://elixir.bootlin.com/linux/v6.13.3/source/drivers/gpu/drm/drm_dumb_buffers.c#L77
-[2] 
-https://elixir.bootlin.com/linux/v6.13.3/source/include/drm/drm_mode_config.h#L885
-[3] 
-https://elixir.bootlin.com/linux/v6.13.3/source/include/drm/drm_fourcc.h#L83
-
->
-> This change also first calls the drm_driver_color_mode_format(), which 
-> could change the behavior even more, but afaics at the moment does not. 
-
-Because currently each driver does its own thing, it can be hard to 
-write user space that reliably allocates on all drivers. That's why it's 
-important that parameters are not just raw numbers, but have 
-well-defined semantics. The raw bpp is meaningless; it's also important 
-to know which formats are associated with each value. Otherwise, you 
-might get a dumb buffer with a bpp of 15, but it will be displayed 
-incorrectly. This patch series finally implements this and clearly 
-documents the assumptions behind the interfaces. The assumptions 
-themselves have always existed.
-
-The color modes in drm_driver_color_mode_format() are set in stone and 
-will not change incompatibly. It's already a user interface. I've taken 
-care that the results do not change incompatibly compared to what the 
-dumb-buffer ioctl currently assumes. (C1-C4 are special, see below.)
-
-> Although, maybe some platform does width * DIV_ROUND_UP(bpp, 8) even 
-> for bpp < 8, and then this series changes it for 1, 2 and 4 bpps (but 
-> not for 3, 5, 6, 7, if I'm not mistaken).
-
-True. 1, 2 and 4 would currently over-allocate significantly on some 
-drivers and the series will reduce this to actual requirements. Yet our 
-most common memory managers, gem-dma and gem-shmem, compute the sizes 
-correctly.
-
-But there are currently no drivers that support C4, C2 or C1 formats; 
-hence there's likely no user space either. I know that Geert is 
-interested in making a driver that uses these formats on very low-end 
-hardware (something Atari or Amiga IIRC). Over-allocating on such 
-hardware is likely not an option.
-
-The other values (3, 5, 6, 7) have no meaning I know of. 6 could be 
-XRGB2222, but I not aware of anything using that. We don't even have a 
-format constant for this.
-
->
-> However, as the bpp is getting rounded up, this probably won't break 
-> any user. But it _is_ a change in the behavior of a uapi, and every 
-> time we change a uapi that's been out there for a long time, I'm 
-> getting slightly uncomfortable.
-
-As I tried to explain, we currently have both versions in drivers: 
-rounding up bpp and rounding up (bpp*width). User-space code already has 
-to deal with both cases.
-
-Best regards
-Thomas
-
->
-> So, as a summary, I have a feeling that nothing will break, but I 
-> can't say for sure. And as I'm having trouble seeing the benefit of 
-> this change for the user, I get even more uncomfortable.
->
->  Tomi
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Ok, let's see the net-next patches and discuss then.
