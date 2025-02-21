@@ -1,156 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5491B0406
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 08:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F4B202C32
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 08:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740127122; cv=none; b=D9o9hPc8EaJgbna5QXQC2l623r9KI0Ej21e4qxK/QQRKuWFNepkZqOmKzBDV2o3eAxmjXMn4Trw8HIyAy4yeAIzrjAwvfaajpFdxIDfxjmDwi/KlniaphYE82U6g/lgRe8EtAu0p4i9zWKIPdjxQ61c6U1rjTRzywTxk6K1qfVQ=
+	t=1740127935; cv=none; b=SRKES8ANYqAuY4YHkeTEN2NOhauyt0QAMr29ej5HPP3tsDrJTfcbnPuk99rMvdz06sSRFRP0anvSdYa3Y6lbJDVb4SS4gmcefIMPtOLR/4+Yiv6H7OQt+jp8CU15F5jZYX0Q0Mkb5KuCP7zsDWIXJBANnC+OfI9g78zq20BZSXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740127122; c=relaxed/simple;
-	bh=nqodSYX9zfwa+wP+jRooDOmd19luEYIiS/x1QP3QuqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SvhNXg20Vh33BbcSz+poKv3lDy/d7qNX9E/EZTMFvaJeFhJjI1k8d2KGBLfT5gj/XLoMFiXDNg36fc9qTOO4N0QtLB+IFYJ1wmqXPCdHNkyYwOaMBf/tgXUVc4DcqpdeqazqKfkMcFLb6PH8XVRLPNvWNpoYs5esdc+wwymbCIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRNDj7Dy; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740127935; c=relaxed/simple;
+	bh=jWobIjjmDN3S6Fnk2dQ+DGar/Fi8dKd+0Wo0aj7gSUk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z6RcoDIxhz6VyfQgXRWdN4xKoF5zkPqOGzYNQMc2FUK/ySJy+6Qbn5kT1iqf0lGIR9WxeWn+xoAtfd8WsP8bwqLpgG3Ocokr+LPXSWljskHcSzZhW35UKVIX/C5vZ3PB2UK0uC03cbyOUiaQFhZgzNvAcAwySWyLJ7puV06omDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDAuQ0XH; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRNDj7Dy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740127120; x=1771663120;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nqodSYX9zfwa+wP+jRooDOmd19luEYIiS/x1QP3QuqQ=;
-  b=cRNDj7Dyy5ybFnbejEr3tuNkbavsqAPRmB92vlO9nit68D0zi74awByQ
-   GPJKTTsVYw/AtnWNOlWBhIRo/lN43rNTELpuUAZSU5TVZ945Wjuk6ptZo
-   Sni8uCdGcI0NAoxw45dhYLt+Q6bMTVOfSYaRczJF1y2hgEEWZ98LZ7vnX
-   wViGeUxKA+nyQRJB8UFV93DQ+HMl88m9qSc7ru4jM+OwIf+4hy/DSUWDP
-   U+TX+xvF27wV1FLk5iqIslULaj+eOSSreuHT3i85ITAPBsuPNiu17Zf0c
-   DoQ9Jr6zzvt1ORrG8r8XCNxcNtWwXJzkwpAv3KQl9CwedjxDI+eziLSHA
-   Q==;
-X-CSE-ConnectionGUID: 6Rqy8f0kTaqWAJx6MeaLIg==
-X-CSE-MsgGUID: NKeJen5PQVeZ+GCnSfaSFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11351"; a="41058467"
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="41058467"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 00:38:39 -0800
-X-CSE-ConnectionGUID: yBxMvSy1Rh+CXJ0lab4mqA==
-X-CSE-MsgGUID: 08+yRwERQR+OdaXElvcbxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,304,1732608000"; 
-   d="scan'208";a="115255765"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 00:38:35 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 81C82120289;
-	Fri, 21 Feb 2025 10:38:32 +0200 (EET)
-Date: Fri, 21 Feb 2025 08:38:32 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Cosmin Tanislav <demonsingur@gmail.com>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] dt-bindings: media: video-interfaces: add support
- for Virtual Channel IDs
-Message-ID: <Z7g7iCUlsUN2LBIW@kekkonen.localdomain>
-References: <20250220230818.275262-1-demonsingur@gmail.com>
- <20250220230818.275262-2-demonsingur@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDAuQ0XH"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2211cd4463cso36470245ad.2
+        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 00:52:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740127933; x=1740732733; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DlIgqCz0Bm+91Vdon2hQ0cQM2Da+fTaQGYYMw9HsqC4=;
+        b=RDAuQ0XHmzqStLCow7jzyKEZiosRjXVdhbsGfdebk4c/ANAoGbUTIgPj4x79fsf6le
+         lsgGOfnIXFBa8OX218KNnoX0IVCe45g7tik+Cgm6EnSTdlXzfD44whprKGRANYB/K43S
+         ikpcYmKceDClUyWL97eIvdN+nGrWQHeaDkD93jbfiwB/nx8hU1sw/fzLUpNJnlfMGUQw
+         S+nOHh2rFejAEHtfdt3Gpv9H4CXRrvVSK9GQiGMqPEZbmX6/6k1gZGJwoB4rjkXzpJGI
+         OV8PVKwxc25j7aBvANocueXtKNIWxK4T90IUaK1ATTVSxYCTEB5utNPyF0v3R7du/N8d
+         XWOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740127933; x=1740732733;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DlIgqCz0Bm+91Vdon2hQ0cQM2Da+fTaQGYYMw9HsqC4=;
+        b=dCD721Ae46D0pKLCOfLRFUJgTe4EiJ5bQJ9ecHaQGN68Lnd/Q+c3L4uSEWE3yXNpUL
+         Vn0pYhiHvKbnTDXPrXZv9DJjxIGFSHB4pYX46YAob9iG1Qoudat9czfJwkiaRM2yh1bf
+         Zhd5Hyov2lxp4S/G8Acw7+MZ4aloZNP6ewPAaUZNReznk++quiVBYs32sEJ7go9IFIx9
+         AFJaYdbotFVRa8h4XWjEtlZTUD29qdWZv27CF8xNvDEMTWvU2iw9ROXzN9gqlvnEOetv
+         KnU2pKMM8D9ZTOpzBxJ5ylW6sQIxBc0L5luhvmaRbDLF+mnB3Gv5Cd7e5HEVwGQbjmnt
+         kcmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMWwrB5OsRni+yH4PSU9MGgzYrMalKIkW3Ceadon+Ho+kh88TzJ1rM7gVsLkxdMgO3djk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwFtKgxDDx9ETRj02NqfcWKELWf0OW5CSCGpcjrvgShKJZOP7Z3
+	QV2H+XZyl2EJsScUiFdVXxdJmtkP2Be09IaHC7PKWQQdbmPkSGK06cIinuk3uKuvbhNL8hO7UGY
+	DaU9M7cd504+Qk6HrtWxwV048g2A=
+X-Gm-Gg: ASbGncvlrlKqp6pR7vQlhvQf2PY//V3mVjRRsbZ511M1PmBrGmwPdMk2/WUQ1kME33S
+	BQgo1GNR2MdGGUKkQHG6ztXWC9Lp19TAthmFsiuKh6C89H7puI146u/436mDttrrJ4/aINoDIzy
+	ehOqvQOOWOYcYoUfcSp3eO8qwNQxqPfwjGauBX8E3JYQ==
+X-Google-Smtp-Source: AGHT+IE4RNFZsUdcC+Az/pPyn8dX9rljdP/Z5hfEIBv+Z54mKOPsANtz1C01SeJk4ImSyu09+DbDaPKDwVb/a6c1c1E=
+X-Received: by 2002:a17:902:e80b:b0:215:6b4c:89fa with SMTP id
+ d9443c01a7336-2219ff3604dmr36634085ad.8.1740127932926; Fri, 21 Feb 2025
+ 00:52:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220230818.275262-2-demonsingur@gmail.com>
+References: <20250219192102.423850-1-daniel.baluta@nxp.com>
+ <20250219192102.423850-9-daniel.baluta@nxp.com> <c52e6c5c-f49e-4727-b669-086ae7cb0e1e@gmail.com>
+ <6e03b0c09c4e6d222670025c6540f73a0a0a819d.camel@pengutronix.de> <9028f7a8-7cf7-4ebf-86a6-0d894c66edb1@gmail.com>
+In-Reply-To: <9028f7a8-7cf7-4ebf-86a6-0d894c66edb1@gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 21 Feb 2025 10:52:00 +0200
+X-Gm-Features: AWEUYZk3O0UDfRBUUGtaK3pMjLH9rJuAF3_7PiIGx3Zt9ZlWm0Pjpm4mYFBC0o4
+Message-ID: <CAEnQRZC=U_Bw7Hzr14qu7O9YM=qcXeMTSGQnM-ZX_hqSyg4sqA@mail.gmail.com>
+Subject: Re: [PATCH v2 8/8] imx_dsp_rproc: Use reset controller API to control
+ the DSP
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, Daniel Baluta <daniel.baluta@nxp.com>, robh@kernel.org, 
+	shawnguo@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, mathieu.poirier@linaro.org, 
+	shengjiu.wang@nxp.com, Frank.Li@nxp.com, peng.fan@nxp.com, 
+	laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Cosmin,
+On Fri, Feb 21, 2025 at 3:20=E2=80=AFAM Laurentiu Mihalcea
+<laurentiumihalcea111@gmail.com> wrote:
+>
+>
+>
+> On 2/20/2025 5:45 PM, Philipp Zabel wrote:
+> > On Do, 2025-02-20 at 00:22 +0200, Laurentiu Mihalcea wrote:
+> >> On 2/19/2025 9:21 PM, Daniel Baluta wrote:
+> >>> Use the reset controller API to control the DSP on i.MX8MP. This way
+> >>> we can have a better control of the resources and avoid using a sysco=
+n
+> >>> to access the audiomix bits.
+> >>>
+> >>> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> >>> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> >>> ---
+> >>>  drivers/remoteproc/imx_dsp_rproc.c | 25 +++++++++++++++++--------
+> >>>  drivers/remoteproc/imx_rproc.h     |  2 ++
+> >>>  2 files changed, 19 insertions(+), 8 deletions(-)
+> >>>
+> >>> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/=
+imx_dsp_rproc.c
+> >>> index ea5024919c2f..631563e4f86d 100644
+> >>> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> >>> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> >>> @@ -19,6 +19,7 @@
+> >>>  #include <linux/pm_runtime.h>
+> >>>  #include <linux/regmap.h>
+> >>>  #include <linux/remoteproc.h>
+> >>> +#include <linux/reset.h>
+> >>>  #include <linux/slab.h>
+> >>>
+> >>>  #include "imx_rproc.h"
+> >>> @@ -111,6 +112,7 @@ enum imx_dsp_rp_mbox_messages {
+> >>>   */
+> >>>  struct imx_dsp_rproc {
+> >>>     struct regmap                           *regmap;
+> >>> +   struct reset_control                    *reset;
+> >> Maybe rename this to "stall"? There's also the DAP stuff that's actual=
+ly used
+> >> to reset the core so this might be a bit confusing?
+> > So Run/Stall does not actually reset anything? Maybe then it should not
+> > be modeled as a reset control. It looks to me like the
+> > DAP_PWRCTL[CORERESET] bit in the Audio Processor Debug region would be
+> > a much better fit.
+>
+> Yep, it does not as far as I'm aware. This bit is used to insert stall cy=
+cles
+> into the accelerator's pipeline. As for the DAP bit: agreed.
+>
+> (Daniel pls feel free to correct me if I got something wrong here)
+>
+> For a bit of context here:
+>
+> Previous approach used a syscon to manage the Run/Stall bit (see [1], "fs=
+l,dsp-ctrl"
+> property). The main issue with that is that syscon doesn't enforce any de=
+vice dependency
+> (e.g: PM) and you do need the AUDIOMIX power domain to be powered on befo=
+re accessing
+> the registers from said syscon.
+>
+> Now, AUDIO_BLK_CTRL offers multiple DSP-related configuration bits (Run/S=
+tall bit included).
+> If we ever decide we want to access those bits we can't model them as res=
+et controllers as it
+> makes no sense whatsoever. As such, I think that modelling Run/Stall as a=
+ reset controller is
+> just an arguably unneeded and inaccurate (assuming reset controllers are =
+supposed
+> to model only actual reset signals) solution.
+>
+> IMO, unless someone can think of a scenario in which this would break, we=
+ should just cut our
+> losses and go back to the syscon-based approach. The DSP is already attac=
+hed to the AUDIOMIX
+> power domain so it should be on when attempting to access its registers. =
+Also, the DSP
+> should be the only device wanting to configure the DSP-related AUDIO_BLK_=
+CTRL bits anyways?
+>
+> What are your thoughts on this?
 
-Thanks for the patches.
+Thanks Laurentiu. Your summary is spot on.
 
-On Fri, Feb 21, 2025 at 01:08:09AM +0200, Cosmin Tanislav wrote:
-> Multi-camera systems often have issues with receiving video streams
-> from multiple cameras at the same time because the cameras use the same
-> Virtual Channel IDs.
-> 
-> CSI bridges might not support remapping the Virtual Channel IDs, making
-> it impossible to receive the separate video streams at the same
-> time, while the CSI receiver is able to de-mux streams based on VC IDs.
-> 
-> Cameras sometimes have support for changing the VC IDs they output
-> themselves.
-> 
-> For a practical example, GMSL2 deserializer chips do not support VC ID
-> remapping in tunnel mode, and neither do the serializers. Allowing the
-> cameras to have their VC IDs configured would allow multi-camera setups
-> to use tunnel mode.
+Controlling DSP is done via two memory areas:
+ (1) Audiomix area for Run/Stall bits
+ (2) Debug Acces Port (DAP)  area for software reset
 
-We've tried to avoid having virtual channels in firmware and in UAPI,
-I'm not yet entirely convinced we need to depart from the established
-practices. Let's see. Apart from that, please see my comments below.
+We need to model this in our drivers and we need both of the areas.
 
-> 
-> Add support for specifying these Virtual Channel IDs in Video Interface
-> Endpoints. The supported values are 0 to 3, with a maximum of 4 values.
-> Although the CSI-2 specification allows for up to 32 virtual channels,
-> most hardware doesn't support more than 4. This can be extended later
-> if need be.
-> 
-> Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-> ---
->  .../devicetree/bindings/media/video-interfaces.yaml   | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> index 038e85b45befa..414b5fa8f3472 100644
-> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> @@ -231,6 +231,17 @@ properties:
->        shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
->        busses only.
->  
-> +  vc-ids:
+For (1) the DSP node needs somehow to refer to audiomix dt node and our
+initial choice was to use a syscon binding to Audiomix. This got us a NACK
+from Frank  and  Krzysztof as we naturally should always bring syscon in
+discussion if we can model the behavior using an existing system like reset
+for example.
 
-Other properties aren't using abbreviations, at least most of them. How
-about "virtual-channels"?
+Modelling the Run/Stall bits as a reset controller is a little bit in
+the grey area
+but Frank Li made some valid points in the patch 2/8 of the series.
 
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    minItems: 1
-> +    maxItems: 4
-
-Shouldn't this be 32?
-
-> +    items:
-> +      maximum: 3
-
-31 here, too.
-
-> +    description:
-> +      An array of Virtual Channel IDs. These are unsigned integers that specify
-
-I'd leave out the explanation on the data type. It's redundant.
-
-> +      the VC IDs used by the device for its data streams. This property is valid
-> +      for MIPI CSI-2 only.
-> +
->    strobe:
->      $ref: /schemas/types.yaml#/definitions/uint32
->      enum: [ 0, 1 ]
-
--- 
-Kind regards,
-
-Sakari Ailus
+Daniel.
