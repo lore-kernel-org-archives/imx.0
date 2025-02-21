@@ -1,136 +1,196 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2061.outbound.protection.outlook.com [40.107.21.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5351D54FE
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 07:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740121400; cv=none; b=qYwE6MY+MfzUtnDjzqnqyGLRq1NN4k+Dcsx3Om+YQXycxhGpgI3rY68qo0GW6dP0X0BKgBGGwRR3qvRijnndWPDgXb9ca2kFSSYoIRwp84kVuenTqU2YoxicPfPb+e3IhPHgVKm3oPA+FoYm7T8lw7gtCCrJbK253bF1g9qiwWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740121400; c=relaxed/simple;
-	bh=fL3VFHc8Iw4UEcrhx6AYcJSOc4ybHtXWyyLl28Js0K0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DGhUM1AMXfa5Vc007CNOrmLMjvXqUfLgXeRwHrUKTg5KO95TJyXT9P7NJKzQ/6O2I+nsyxrYEyZf6S+pXjBw5EJmVQBpYXIkKZMZjztf9gqT+f5SJtFG1xHnj64kqn58jlzqTIzPeuxeu5O/+yMbIVDWG0/W+E5UYiENP0ErFGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Sb3fOUjc; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32AB1FFC67
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 08:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740125034; cv=fail; b=oJRchQrZUjukB9x2Va39QQ6u7fzO0zNV8SXBcdvUBPEY0KRW/2qWdgOd9JnS0YIDklBWJVADINUrKnlyWyfRWBDokVc9F931/ttDqp56gg5R2r+wjjMUU/beir2DlhN2DEmfgPaNKIwmbXyFTskfV6MHPv/YgYJbi5Wuk6l7J+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740125034; c=relaxed/simple;
+	bh=x2zG2YySkzp/W1+bKA1OFqFM8lmxVsdxH55Bjr1u0AY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uZvjrPKiJTziL/L5LxYtR+qrXuQm8NJH9ItDZk/kDPExd19WZA5XqRG2jZQuI2xW77xZ7YY0pGevfaFR97NF5cZEcvZTvQw1HsjvHhAPPb4VkTGTI33yo01PAoMZxs8uCvec1eRG6okbVS7CVsNTRMWt/1dVyeF7MlASMc6BiSI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=f+cwhfu3; arc=fail smtp.client-ip=40.107.21.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Sb3fOUjc"
-Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:1c30:4abb:6de5:9248:813e:8db3])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EC9EC7E0;
-	Fri, 21 Feb 2025 08:01:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1740121311;
-	bh=fL3VFHc8Iw4UEcrhx6AYcJSOc4ybHtXWyyLl28Js0K0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sb3fOUjc8Ww6ftO3DRierlIUIhRnugYs1k00i1XGt0yZ+HoWYADlDijVeegrVJlcn
-	 jwynw9W5+nZyU4C6VON2EQjEIxsdLJUPpzgBfFQL7zUSx7bFi4iS71qDov0AxWXBr+
-	 vxACfRy0BTvvxst9YPFGSgXqw6Gf9J4NbhRAX6y4=
-Date: Fri, 21 Feb 2025 12:33:09 +0530
-From: Jai Luthra <jai.luthra@ideasonboard.com>
-To: Cosmin Tanislav <demonsingur@gmail.com>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] media: i2c: imx219: pass format's code to
- imx219_get_format_bpp()
-Message-ID: <73rzq5ja6gsjd3oatbnqvmqminiolgz4meelvxqnbieategxsf@zb23f36gm4nd>
-References: <20250220230818.275262-1-demonsingur@gmail.com>
- <20250220230818.275262-5-demonsingur@gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="f+cwhfu3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r+K5n6YhyuyKbGRBKvTf6J6w+LV6mhgb/+T88/tYTDEu8i4pHKxuKWLWcqcrg/xxRoP0xD7OsG66hzSipKPvPa75USR3tBgCVd5fjUQvyJdgbktTXJJGK1xgCDtcINSMlTvBTUYVxtUvqoQnitI270srmEJs+scHt5s49J3mlNGWJfgRxab7eqnqKNNe+KhgCgyjN7O//4tagNYiLJzgqwPthhR/gd3+yJCfRGhT2+W2TURsw/xbP31DSik3ZPK8d+0usplpXOK+prZC8IEZYpCKcX9nVHMKyM/BEfA05lbPu1ht0LK/c8e5kL+uR1YiU8YSka2+NAxqGtU+/zFXsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x2zG2YySkzp/W1+bKA1OFqFM8lmxVsdxH55Bjr1u0AY=;
+ b=I6SyJQdv+Cw1hD3eflY6ZssDC8x31uLQbj/IOLqt7CfxhtZq2UNI0emQTINCnZuAD3cQxV1SjosG0xIOwFDYTdYiCICt8S43cWHdZP+e9BwDwhsmtwPztYXO6ais+kQbwjcMsf/M6z38rASG6tqk4CwHkVGzdxHk74mFfKIPTu7aOUsFyRzC9zhzuQxbHiqgu13k2ZnVPsEfFT2nKb7Dgi3axu5JNZexA2eV1GSGaQaANSv7bOsKbi5Dt4OEDXgTrRTrKXj5ko84eGICozephz2l0glW0TJ+ZkCDNi/XXfYrzvRYWPRK1OMqg04DuJeOoLiQG7C7snIcbaHcjJ5tQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x2zG2YySkzp/W1+bKA1OFqFM8lmxVsdxH55Bjr1u0AY=;
+ b=f+cwhfu3NBS4MfR5AfstAUZ0IcPXt9Y4nmeYXQsIv5HVISklzNRGxIJLYiBqi/HaxZzX9mEfSnh+GmtrfXdxiq+1ZxqyELGmfX2nnbJS0YAlwr1QCSA6GTWK8aiDsu6Hlp5viapAIZuSe/OUnxMi/m+Ho/QwcAa+lu7cmtfbhYn/EWohTLU1zC41+ftmImS6/tx0hc6Gphcg9gp2kHKVsZTFnqFpQlORjVbUcFxR9NxKanh1cIHFeHjzN93W99RrP1djceLhIKVNU2ifEDILskJ6yfPpgUacH87z909D0UoF7q0r80H5XJ9Rcgnnp0aBaw4yIvpewbfdBRe090fywg==
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
+ by AM9PR04MB8323.eurprd04.prod.outlook.com (2603:10a6:20b:3e5::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
+ 2025 08:03:48 +0000
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8445.013; Fri, 21 Feb 2025
+ 08:03:48 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
+	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Topic: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
+Thread-Index: AQHbgpN/wLtM4lMuwkuGi4ZYC/hIXbNQXDmAgACiP4CAAGZqcA==
+Date: Fri, 21 Feb 2025 08:03:48 +0000
+Message-ID:
+ <AS8PR04MB88497C415FE73CCA84843CAC96C72@AS8PR04MB8849.eurprd04.prod.outlook.com>
+References: <20250219054247.733243-1-wei.fang@nxp.com>
+ <20250219054247.733243-3-wei.fang@nxp.com>
+ <20250220160123.5evmuxlbuzo7djgr@skbuf>
+ <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|AM9PR04MB8323:EE_
+x-ms-office365-filtering-correlation-id: 6469cb31-89d8-4b7b-b9cb-08dd524e4575
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|1800799024|376014|38070700018|7053199007;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?AYu5hP1650iPfZ4PoMPxfUKECVXy9A5gDZsngD1rU3jALXWoApzn6DrJlLIO?=
+ =?us-ascii?Q?G/hHvTgJlascC4ppE8jvyf34cmpfgW5rs5WEVBG2zYMTFqEg2qpcTd7Or/eW?=
+ =?us-ascii?Q?QaQq1BRyk3OmFq9b7Hp36FxRS+eNNoJLwxXFRzacfgELq9cet2uazX+f/Trk?=
+ =?us-ascii?Q?oa51JsFhoqmLAyK3gkn3e5iT4WXnsTiP3A51bKpwSwUFZQyXFLSvRpZjZHGq?=
+ =?us-ascii?Q?t9etFDXRO1dShMp1t671hn2VN9yIikcrY6vZctmKwPRIls7mb14JFF9ZSOdT?=
+ =?us-ascii?Q?bGh76oOKimzG43cYv6cE6/G55o6q/iG9sgBjSxteMzVtIrQiAaxTlqPmHfCM?=
+ =?us-ascii?Q?MH1bbD8YwdX5027bA4QXbW3FQPaDDLglMK7OTvtoNmPjQWkICAWe1wzKh+Ws?=
+ =?us-ascii?Q?8y+Ai4g/dm8AmgcDHNUqfG3yOwgNn2bYKlFYCulr3tK2Ky5lUuH9369VwaPz?=
+ =?us-ascii?Q?XLAYNu7pc5lduIEi31amJyRaF03bdQz14dciXPbzUaNFF4DFVwOAYyJ/SS0p?=
+ =?us-ascii?Q?Hf3vDzsxxMCEqv4uYc9ACB4HOyTUU4moqL3qR06gishh/FfHPLJ1XDE0lPjt?=
+ =?us-ascii?Q?a/gjD6O7cd/mN9vxAkV39O4knpszuYHIbXedVSXANZhtIJ17Kr9T6rbkG8iK?=
+ =?us-ascii?Q?yJdwvIXGW51lCv/fwKQMUQdJL7ILlHbhDP/QmuD5Kek0MZ9igmE84g4xmmyP?=
+ =?us-ascii?Q?y/sb4oi19BOHGkQK8dQfyygU2NVmZ4kiHFB+6ROM8mATQZr/dmh97TeEXhUL?=
+ =?us-ascii?Q?q34lwSUUvKO96JfeQdTFL2JkcIy66iDBiKIGJ3+AXMSPw8LkRSKiV0yW9mTD?=
+ =?us-ascii?Q?k3VQAnl4djAsK2Rylw07wVNIU5iuFBnP2vi0pcioY1EGlX9eRPDAz+v9YCUM?=
+ =?us-ascii?Q?jswyrknESpegSCgQh8zaiNdv7Iq+14PRAF2RCExLH3hUzQd5tnm9+mqfkW6P?=
+ =?us-ascii?Q?CbS3yfCOFc+BEFhXfPkCNmADLoceyjrvTX/GjqVfhXPkiSdzhcSjwMqnUpn4?=
+ =?us-ascii?Q?NVSH3WYRvXVvJfj+LLH4scqVNfNAnObj6AexNWuPQmBDdJCjkl7/RcJAv13o?=
+ =?us-ascii?Q?4fnd2NQ8Z4DLbdINP8kuWqMlzMVAC1rHF9ZksV0o/4wEmdHB6x4GwA57M4nR?=
+ =?us-ascii?Q?tdY0XLvNLRcL9daDDgopWyPc7pCkuAAWZTFxISFRCSaWK2fjGTwNZYmK9qDn?=
+ =?us-ascii?Q?Ij2aUdlPrcC24Et5MI1z+K2xwpxJ7TbSr6wjr8MFTY+TT3g3xw11UlySNHu3?=
+ =?us-ascii?Q?TxY2BUrCTDVYMNo6Yazcn5Z2zhmbxUsetoFDfAaVZOUryx9+5t0h5ANzU64X?=
+ =?us-ascii?Q?D1GyCnKG3lkfCVjFoG/m4YcoywFFUhkGmGihedcEHHULn2DlyzMOgfjLitgg?=
+ =?us-ascii?Q?2OMdSY6Xp40Y9QDkcqY3YCoZqC89/AtvOo2FxWJeFQzVkd5NwsLFiPT8aKee?=
+ =?us-ascii?Q?GentXG58IubCI/3znHlNStKOlujMT3NF?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(38070700018)(7053199007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?PSYJC/7iRD2di0J8QY9JJDO35VO0O6RzXvwpBsSzR/o03pmfdIgGHaQv2fu4?=
+ =?us-ascii?Q?CumqpHK7q04ro6jSFX+Ebd+aB1FtLY2R6WwWzRnExJWxK23pWai9jc66KQhy?=
+ =?us-ascii?Q?aZikXlIglhAHAoQOyduiaXimyCDZJV9FC2tHS/KUajSWxEgMONIoL1DwtopE?=
+ =?us-ascii?Q?P8yNgfvSlsQ2D5RgM84QR4PelA16b/49Fb/8vVBsiZBfNN03L+tqXMMtvfTY?=
+ =?us-ascii?Q?TLNwsOeLy90Qa0y5q033sTqK7OMnqTf5W3D9F67JRj+kz5iysgcdDcBjuptq?=
+ =?us-ascii?Q?9s8/MQlt4Bdax+VEEl58JNy/+mQDOfOinI41zVOVeqThuF01hjysExJm/DmH?=
+ =?us-ascii?Q?m6BVDQA0aY5jJpJmwlWFKur5sm36F/XglHUXgIH10LzsQ1hCApr3LxpjLUJ2?=
+ =?us-ascii?Q?A+gkLW7mVUliI/xn9TjgXaXSrpQMFUXfblrR4gIyJPWT2s2Duq0Jjl64gqhr?=
+ =?us-ascii?Q?zfh4cUahrWWvxXGdgtDPzPeQrbslApZk4U3acDQLQ2B/nqP5TkE4d6fmIljc?=
+ =?us-ascii?Q?LgtJWAUI3vfn2K85Ej/B5Qkf46f/C0gJ6W7jsWx7NNyfvccLja89S0vvsKWC?=
+ =?us-ascii?Q?KpvYz46bn3FcsDKOyc5DPlMzY/ZBd8NjNYm/niKCapWhifAA86nCLDSTJAP7?=
+ =?us-ascii?Q?gl7NYoMyj5a2pmg0qApuUFWoxcKTNqD77j0uqg6xXKcLqUCJ8CBaeLxQDtfs?=
+ =?us-ascii?Q?KY4ogxX6CmbzRvL2s2q+UGScGbwZq2DHCqaD5QP6+8idcZlbzdckgicNfCaf?=
+ =?us-ascii?Q?LNBQtdKp6/rC/F9GP54sYHM+RfFzM7tvDPjvLwWF0N2oIn2QtL9jdyzgimLr?=
+ =?us-ascii?Q?7DQqlWE3IK6nzqh9/b5RlZzOjR6Y7WsPOMh2ZVSMjP9OcnNP8dzrG+y3Ofly?=
+ =?us-ascii?Q?CdL1c4giqSEizWil5fWZGv+zfi7Oey0MIM06KPHY/QnTgMP8PPqbclK9Uq+O?=
+ =?us-ascii?Q?5R6WKUuJgMNIXFGYVzyScEdnQYCgQxpbj25VXldhY1sRdauJ+ckyKatCMpMy?=
+ =?us-ascii?Q?3xDDqBnregyY2CC5vEdtmFgzXUOnjRzCmz3zroK3r9xydGgRyUjx5FXMmqh3?=
+ =?us-ascii?Q?HJss3BZk1eVi2gzQ0SzQHS0UQ5YBzcKUrVl3Pb6lctqGXP00BAHCN1y94Tob?=
+ =?us-ascii?Q?xSrLdenPH/9miqMzX+jy0J5NCvrD9TV+VM7Or2rG1tiAWJI8WNDXAAy+GhuF?=
+ =?us-ascii?Q?zRkJO52pZw5h2aTQNUvUTbHGcdUfk1oUrlAGUjaba8GPohDj1pn8+84j2qJm?=
+ =?us-ascii?Q?k9hFXedJrZVirMS7lOcoMWw5Eyac7fLdXS6Rtn6uyMpHXFTlGGnfwZKYrSr6?=
+ =?us-ascii?Q?f9WSX5ugh7SWX+gFVI1vuatGzZGTnj1dRBN06ISr15etPfoNekf7hWAF/1Af?=
+ =?us-ascii?Q?tBfKL7no+UP5L3h4Eo/uSlGEYBP16gHof5F9eX4P6aj0/KJJda+3H+rtqnn2?=
+ =?us-ascii?Q?6533yPifTStotSZ8HFIREsZLnbMD41rFfxfNKs4zL3lUGdm3mFmyHCLuJPjK?=
+ =?us-ascii?Q?d2p7DMV2BDqoPsCstEDrCgm036Tji+7jBAb9p7GcToVz0EV4MnFqq92RbUmP?=
+ =?us-ascii?Q?GJx42pICKMP3bn6xqA/239oe0HGU0Gm/xZwMPhaa?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qu3uozr2fidqrsfy"
-Content-Disposition: inline
-In-Reply-To: <20250220230818.275262-5-demonsingur@gmail.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6469cb31-89d8-4b7b-b9cb-08dd524e4575
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2025 08:03:48.2611
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tr0YYTDRUU4mp4tdBr49sq5LIoqP9BZQ6sm47ZA4k5A9L6JVO9+ij0ILfjZIxcyFjaeU5HJY6fRK3++pTKNC1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8323
 
 
---qu3uozr2fidqrsfy
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 4/6] media: i2c: imx219: pass format's code to
- imx219_get_format_bpp()
-MIME-Version: 1.0
 
-Hi Cosmin,
-
-Thanks for the patch.
-
-On Feb 21, 2025 at 01:08:12 +0200, Cosmin Tanislav wrote:
-> imx219_get_format_bpp() only uses the code of the format, pass it
-> instead of the whole format to allow usage when the whole format is not
-> available.
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Friday, February 21, 2025 3:42 AM
+> To: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Clark Wang
+> <xiaoning.wang@nxp.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; Ioana Ciornei <ioana.ciornei@nxp.com>; Y.B. Lu
+> <yangbo.lu@nxp.com>; michal.swiatkowski@linux.intel.com;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev=
+;
+> stable@vger.kernel.org
+> Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistic=
+s
 >=20
-> Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-
-Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
-
-> ---
->  drivers/media/i2c/imx219.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> > I'm not sure "correct the statistics" is the best way to describe this
+> > change. Maybe "keep track of correct TXBD count in
+> > enetc_map_tx_tso_buffs()"?
 >=20
-> diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-> index fcd98ee54768e..ad1965a91ae3c 100644
-> --- a/drivers/media/i2c/imx219.c
-> +++ b/drivers/media/i2c/imx219.c
-> @@ -387,9 +387,9 @@ static u32 imx219_get_format_code(struct imx219 *imx2=
-19, u32 code)
->  	return imx219_mbus_formats[i];
->  }
-> =20
-> -static u32 imx219_get_format_bpp(const struct v4l2_mbus_framefmt *format)
-> +static u32 imx219_get_format_bpp(u32 code)
->  {
-> -	switch (format->code) {
-> +	switch (code) {
->  	case MEDIA_BUS_FMT_SRGGB8_1X8:
->  	case MEDIA_BUS_FMT_SGRBG8_1X8:
->  	case MEDIA_BUS_FMT_SGBRG8_1X8:
-> @@ -680,7 +680,7 @@ static int imx219_set_framefmt(struct imx219 *imx219,
-> =20
->  	format =3D v4l2_subdev_state_get_format(state, 0);
->  	crop =3D v4l2_subdev_state_get_crop(state, 0);
-> -	bpp =3D imx219_get_format_bpp(format);
-> +	bpp =3D imx219_get_format_bpp(format->code);
-> =20
->  	cci_write(imx219->regmap, IMX219_REG_X_ADD_STA_A,
->  		  crop->left - IMX219_PIXEL_ARRAY_LEFT, &ret);
-> --=20
-> 2.48.1
+> Hi Vladimir,
+>=20
+> Inspired by Michal, I think we don't need to keep the count variable, bec=
+ause
+> we already have index "i", we just need to record the value of the initia=
+l i at the
+> beginning. So I plan to do this optimization on the net-next tree in the =
+future.
+> So I don't think it is necessary to modify enetc_map_tx_tso_hdr().
 >=20
 
---=20
-Thanks,
-Jai
-
---qu3uozr2fidqrsfy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEETeDYGOXVdejUWq/FQ96R+SSacUUFAme4JS0ACgkQQ96R+SSa
-cUUyoQ//XZ0w48A1jFQeb14U2B2VcdX6fhhBL2Dw7kfgnqm9mVIOrt3BxXZDo4yk
-dgi+CLC0RIDhrVtEnLN+m3L3f+Q+f5H6LV7QePfE2ZEYCAhXLgR8gRBx1NTIs9Ym
-RmH+tCQw1tPto+5X6U6nP13vbHGPaxM3403m7U7Xe/qu7KNcPcpznm5dGzClWlmD
-I0Foq0e2f5iRsjaIkvZf0cJ+XTX0G6i2BESibGX7Zrlk65bj0cr995UFYp3+IBEQ
-Cn86gTDm4eL67hVppoy45eUbowOxJ+zVER7P73zbxc/s70M8qlc+t+mmJ3EEXuVU
-j2mm451bRreIR9QoEo0D0y8P1a6QPGboTy2Gy7GDevQ+N3NsZlPEqtmGp/Mqlq4b
-vl0Mj4pX5Y49VHFXCZjyrPFIxwobW2u+1dC5iy31+b5xWIm4c//If8Je1Bg9LBlo
-vvvKcyP8pPy1rDFGn5014rgHlDIFrneiNln6/UQzG7bboI0kp0U0NbTFjkq2kdFi
-lpjGyNX19zBlRnWhRIpOcXYKFF+++Zme9uVEG1DG1KZJRG+0aiLkc3PgQwcURknE
-+AiBNpaW06e2mof17gRaftQwOR9P/vcNnjt4yXAQoKSxKIEzXdJcHNseXcE4JMhm
-sztXjWNiv31ooynp3ARdYAZzbGpcybCbtfVhGsJyHCSPAuYL23E=
-=qZw6
------END PGP SIGNATURE-----
-
---qu3uozr2fidqrsfy--
+And what if 'i' wraps around at least one time and becomes greater than the=
+=20
+initial 'i'? Instead of 'count' you would have to record the number of wrap=
+s.
+Even if not possible now in specific cases, there should be no limitation o=
+n
+whether 'i' can wrap around in the loop or not (i.e. maybe some users want =
+to
+try very small Tx rings etc.)
