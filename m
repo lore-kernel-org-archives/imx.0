@@ -1,62 +1,62 @@
 Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA34C25335B
-	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B26A25335D
+	for <imx@lists.linux.dev>; Fri, 21 Feb 2025 19:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740165598; cv=none; b=EAZpkAQhGCNl/U7GFopzyMH3pDq0x3DgCEjp1F+Zka959c+KgmBHTmx4ikk1JXhfAaJwrI7adhKEdpcK5sCvC6EeKO7yLI0sUhsAaH1V58Ad30IRuFF6Sxk3F2PSK8GDY5AKqCbTEE9cLS74rocL1D/hATHgHJQoHTf50Ic/1Fg=
+	t=1740165599; cv=none; b=SQGM1fbC82Ee8Mw1vIgRoZ5VX58WOJLqHMi5BAKSknieiFPTqsC5COg9mQOq5wk9nBr7elzh0oj4YsYrONzP+xduDxYpo9MdnQRt9V8EWYM9XplVLUBhgXIGUlxbsqW12CI8egfoUygJKpamOedHZxlkspYmcjagytImTXNWDb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740165598; c=relaxed/simple;
-	bh=zbfAUKiUNSyy6oSEBdQN+iRDEr73rZQgEXyyQSAdsFQ=;
+	s=arc-20240116; t=1740165599; c=relaxed/simple;
+	bh=wMVxyLYxdUH+NfOdC4YAZCVPaLUE6SupMeq+EC0HtRk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kqfwiJ9rcTSgZqKP8XKFN0aoKiv/8g1x1ksTeALUYhZL102g0J5nBqpOGhukpz3qui9ezODICL3orbly3P/RG9tn+ATdcUfE03zkm5qstaM6uJ1EpyWvQK7HtaLONdsjnHNdiPBcocEc1z800FbI8pi8oGdlinPIKCAQj7Eegxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFtENEOn; arc=none smtp.client-ip=209.85.218.45
+	 MIME-Version; b=BmtzUWbb1Vi2NyY8EeTPfpkaPQLAUVlw3DHe5TCj+4TLPLT/UjUDAmbSoIgaat1iymLbjqnsH5fBAUVZStj0fAGbMhjW1pJkfoj2vy66woiO88i7j6LhQgW7VxYIxba8JSYedpvmzUS9eIiKdFB7PhRPnGPcpEiTEa/vYWsMLSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLRyaS75; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFtENEOn"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abb7520028bso344199866b.3
-        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 11:19:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLRyaS75"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abb7a6ee2deso383506666b.0
+        for <imx@lists.linux.dev>; Fri, 21 Feb 2025 11:19:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740165594; x=1740770394; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740165596; x=1740770396; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UQ9m9HGe9/qjs9gf28iHfA2/6NxUxjMKKdh6HhKymZg=;
-        b=LFtENEOnZVUKfaK+LhuWWUe7VdlqARdWidyHvJKPPp1h9u0t12QYD4KcsGEuiWPpLN
-         vYyPGp7CxY+YKGwOdz7gRoSfsDSFBuzBa7RQosJcZlsY6NknsrfI9SJ9Zjq3+iDDuLuh
-         4s3H67Za6NSLyxVDMj3nwDEBCuScKhV2yug6xyFlGW8SsqnySMV9cJGzdCIDVIAkZWtP
-         3wYwleX7FP7CrWYeuJOOBkHCvqq3vnTf0jHIDV0b1UIdMrb55PUMEzyYcBpeRfhUryJT
-         Mmt3PtVobJoLkg8mVN6KFsNKnsouCzteIWzgiGT4pF5fgR/9U647xfM++02mByhWk3fM
-         V5NA==
+        bh=4TKxWTtkSqxwzx6dDc4iUz9ohfHIlpkY7Ca7ccTsz/A=;
+        b=VLRyaS75ArjC2obPBlV7t2/7/qW3mfZsDZpL3Yvn9g7EetfUm5z6mqR+dOKmfxF4eM
+         6mDm2UbMy2FiywPbtUsMbjjyQOVe/TCeD0Yx7dDbiZOy71LSSyJ87lvqCyAjTwE71GFG
+         n5rAKNxyvE5y+9wGER9pJ67zjCOn7yNrEOLWJnmr9fORa/7k3bBWPn1FWGQHDx16jDip
+         BnYAjS28XRB6qtkie04vv7sbO9hWbBz5ulfulXMasypoX9t2Bd1yNeZoFpW1OZEb4Wgx
+         /MyzUXShwTBjZCFMf7I5hiRTD5aSh3dzhNXGLzDNTGCzewwdcsDMxR3OauEI5dmhWXnf
+         BDyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740165594; x=1740770394;
+        d=1e100.net; s=20230601; t=1740165596; x=1740770396;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UQ9m9HGe9/qjs9gf28iHfA2/6NxUxjMKKdh6HhKymZg=;
-        b=EDWF9i3kYnHUv1b9vix0bHD1JtkGOPJecutV2HYLqh55SZLCFQ8tv6grnO5ooKS9C2
-         7NtYnYmkqb+O49zp+5nOrbDkWOsC0ub8S+Ot2HkX1PXCetgZFiiQSNMm9N+Izw/o1huF
-         O6KxhhUu8XNRd12/lOEqZIKQ7bkkb37bERY1qhUM15RtkVdeejESDM48MIOfrYH2qOjB
-         1sR7zRPM0prdLNj09QearcxFvejECvJyOncx1ewWMX0sFwZ+tsIkbH2+Ko7Zem7Qj+/n
-         hFfYHLVqtC4Ioi9Vzw82Nyt7FYq94Fb9N+u0gek0JYtXdcH/blvQDl7vABfhP0epmoSo
-         3Z+w==
-X-Forwarded-Encrypted: i=1; AJvYcCX63VcgUkt2sjaP2CWU9a10urFi1fvN0xQc9n9Ko2bgw6XMoqD8OM+MJtSwRZVql+TiIXA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1Dd2OkLuvtfEtdtABr2qLMgda7nMJAC5sqlt16aE7IXiyc4r/
-	aWrH1KAtYlSmajJKNA+EHlaqfNooLPhG8R8FPEymwRF59KswUmhE
-X-Gm-Gg: ASbGncscMYkL3RbbiM/Bzydrq5BfSbQVVodCRCpQon3v96DsA6Fi6NLLE7KdP0TtRRf
-	6HkpVdWMV+JAG0b/p6r1l0uPyx/6N6RMYP0Rcud2jPelPmccqhWj5gxcxQ0MysCshD/SygYNuaG
-	3j9zJoWpUxLzxDVZOJXS4We6p5hsJGxcoCK410VOikoX3d6XKdH7stip63VFXydl9OqRspVT1zY
-	+GWD2r0gm6+mAe4XKl8XkQCqEjjxer4sjiLbTnWhVW9G81hwNgjSnEYf+DNL0KdTuHkVwGlFtd/
-	pQ6HHKUkadx3Sp4pdlFlOeLvKC+KzQ9Lc1H6x3aycfmU4Ll5AmsLEiiK0Hk=
-X-Google-Smtp-Source: AGHT+IE3CwqgwPcD60DkN7R6068FIpprPZitsT+PIQCgtbOY0Zrq/F8xkAzZ5w5gvOhKLrjtzpX6hg==
-X-Received: by 2002:a17:906:794e:b0:abb:d9c6:ecb2 with SMTP id a640c23a62f3a-abc09aa9b80mr441416066b.21.1740165593802;
-        Fri, 21 Feb 2025 11:19:53 -0800 (PST)
+        bh=4TKxWTtkSqxwzx6dDc4iUz9ohfHIlpkY7Ca7ccTsz/A=;
+        b=cJrwRxtzUUgdVKVyqsq0zaI2KwrHOtEE0UFenJPbZ4feQ+lsoZ0rnWOKXfdGNzenhU
+         F8siUuQPc8Qgrh9PSiYqYtDDtPDv4e+GjXzgeuO34wH4KIXDYGQp15iTbI0Rx+dXkX0J
+         X9sNj1zy1r/U41sVB3B+m9mmPJO15YAKS8++sCbbvhNrN2BGCRtuRty+W0vr3yFJRZNF
+         ag1q03rI7UevE/e6TUsSGHByg3ZYr6HjDsQjAFcWh4Dd+1x8MKQbdf3FhMYwb/rTvDHJ
+         9AcdxEFjH1XgnHfKDVcBWHDHUqWZN+vtjGL30H9LrcLlPPdUec6buMGWj2/42mLuLfxt
+         y88g==
+X-Forwarded-Encrypted: i=1; AJvYcCXbvsBRiZzaCF6T2QlXn8hhDwZ4BT+W2lpBhMAEjT/JDSH6jr87iHjTyfVeVsq8oHdIJqM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7cUoM9DiWqaVK3y0N2D2H0TfnrNJo2//fjTs/tsxNo7j04NB0
+	q7vCnCS2Gv3pLdJXvxcB4AoR9FfkDmEJclO2PpaGSrEADr8wc3UW
+X-Gm-Gg: ASbGnctaifTvSmdqpRSA5Fa3PEKPBQW0HbTvCgODfqKKLozEB8tX3xOGrdw3SdgR+5D
+	ZFZdtS1E6uiQwTjKEUNH+XH08H8jH+Wyw2uJUKqWiPqUZ1T+EoHZ+F62AbKEc1Qu3+cMbU6LPq6
+	bEKijWUqcYE/LsyqCyrpc2TqEf4orB7i89JMUdWlaWDOU5OJSjFdvLlbnB6dYh1AezPGt9b6hG3
+	Dur/OXsx1erFhQOMHOTF8ClXarYzgjK8fKCSght/7kL3XJywooXknZIqoBGFQUW+webEfKH+Sag
+	G4szF6hvTtmP+T3soXyi6TrH0qz2pTWPyyUm+77XObpdX0Mp1KOkcLdA48Y=
+X-Google-Smtp-Source: AGHT+IFDfbIPVZIMARA0RdhZrJ6UuY0dVTRO1/KxreNJ+xkg/EYBzXyrYM3lqR01Fe4RA0v/JrznqQ==
+X-Received: by 2002:a17:907:2d08:b0:ab7:def3:ca1d with SMTP id a640c23a62f3a-abc09e44f67mr482288866b.49.1740165595692;
+        Fri, 21 Feb 2025 11:19:55 -0800 (PST)
 Received: from playground.nxp.com ([82.79.237.175])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9cee79fasm995276266b.129.2025.02.21.11.19.52
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9cee79fasm995276266b.129.2025.02.21.11.19.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 11:19:53 -0800 (PST)
+        Fri, 21 Feb 2025 11:19:55 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -71,9 +71,9 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] bus: add driver for IMX AIPSTZ bridge
-Date: Fri, 21 Feb 2025 14:19:07 -0500
-Message-Id: <20250221191909.31874-4-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Date: Fri, 21 Feb 2025 14:19:08 -0500
+Message-Id: <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
 References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
@@ -87,164 +87,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The secure AHB to IP Slave (AIPSTZ) bus bridge provides access control
-configurations meant to restrict access to certain peripherals.
-Some of the configurations include:
+AIPS5 is actually AIPSTZ5 as it offers some security-related
+configurations. Since these configurations need to be applied before
+accessing any of the peripherals on the bus, it's better to make AIPSTZ5
+be their parent instead of keeping AIPS5 and adding a child node for
+AIPSTZ5. Also, because of the security configurations, the address space
+of the bus has to be changed to that of the configuration registers.
 
-	1) Marking masters as trusted for R/W. Based on this
-	(and the configuration of the accessed peripheral), the bridge
-	may choose to abort the R/W transactions issued by certain
-	masters.
+Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
+missing 'power-domains' property. The domain needs to be powered on before
+attempting to configure the security-related registers.
 
-	2) Allowing/disallowing write accesses to peripherals.
-
-Add driver for this IP. Since there's currently no framework for
-access controllers (and since there's currently no need for having
-flexibility w.r.t the configurations) all this driver does is it
-applies a relaxed, "default" configuration, in which all masters
-are trusted for R/W.
-
-Note that some instances of this IP may be tied to a power domain and may
-lose their configuration when the domain is powered off. This is why the
-configuration has to be restored when the domain is powered on.
+The DT node name is not changed to avoid potential issues with DTs in
+which this node is referenced.
 
 Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
 Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- drivers/bus/Kconfig      |  6 +++
- drivers/bus/Makefile     |  1 +
- drivers/bus/imx-aipstz.c | 92 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 99 insertions(+)
- create mode 100644 drivers/bus/imx-aipstz.c
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-index ff669a8ccad9..fe7600283e70 100644
---- a/drivers/bus/Kconfig
-+++ b/drivers/bus/Kconfig
-@@ -87,6 +87,12 @@ config HISILICON_LPC
- 	  Driver to enable I/O access to devices attached to the Low Pin
- 	  Count bus on the HiSilicon Hip06/7 SoC.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index e0d3b8cba221..a1d9b834d2da 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+ 			};
+ 		};
  
-+config IMX_AIPSTZ
-+	tristate "Support for IMX Secure AHB to IP Slave bus (AIPSTZ) bridge"
-+	depends on ARCH_MXC
-+	help
-+	  Enable support for IMX AIPSTZ bridge.
-+
- config IMX_WEIM
- 	bool "Freescale EIM DRIVER"
- 	depends on ARCH_MXC || COMPILE_TEST
-diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-index cddd4984d6af..8e693fe8a03a 100644
---- a/drivers/bus/Makefile
-+++ b/drivers/bus/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_FSL_MC_BUS)	+= fsl-mc/
+-		aips5: bus@30c00000 {
+-			compatible = "fsl,aips-bus", "simple-bus";
+-			reg = <0x30c00000 0x400000>;
++		aips5: bus@30df0000 {
++			compatible = "fsl,imx8mp-aipstz", "simple-bus";
++			reg = <0x30df0000 0x10000>;
++			power-domains = <&pgc_audio>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
++			#access-controller-cells = <0>;
+ 			ranges;
  
- obj-$(CONFIG_BT1_APB)		+= bt1-apb.o
- obj-$(CONFIG_BT1_AXI)		+= bt1-axi.o
-+obj-$(CONFIG_IMX_AIPSTZ)	+= imx-aipstz.o
- obj-$(CONFIG_IMX_WEIM)		+= imx-weim.o
- obj-$(CONFIG_INTEL_IXP4XX_EB)	+= intel-ixp4xx-eb.o
- obj-$(CONFIG_MIPS_CDMM)		+= mips_cdmm.o
-diff --git a/drivers/bus/imx-aipstz.c b/drivers/bus/imx-aipstz.c
-new file mode 100644
-index 000000000000..75696eac8ba2
---- /dev/null
-+++ b/drivers/bus/imx-aipstz.c
-@@ -0,0 +1,92 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2025 NXP
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
-+
-+#define IMX_AIPSTZ_MPR0 0x0
-+
-+struct imx_aipstz_config {
-+	u32 mpr0;
-+};
-+
-+static void imx_aipstz_apply_default(void __iomem *base,
-+				     const struct imx_aipstz_config *default_cfg)
-+{
-+	writel(default_cfg->mpr0, base + IMX_AIPSTZ_MPR0);
-+}
-+
-+static int imx_aipstz_probe(struct platform_device *pdev)
-+{
-+	void __iomem *base;
-+	const struct imx_aipstz_config *default_cfg;
-+
-+	base = devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
-+	if (IS_ERR(base))
-+		return dev_err_probe(&pdev->dev, -ENOMEM,
-+				     "failed to get/ioremap memory\n");
-+
-+	default_cfg = of_device_get_match_data(&pdev->dev);
-+
-+	imx_aipstz_apply_default(base, default_cfg);
-+
-+	dev_set_drvdata(&pdev->dev, base);
-+
-+	pm_runtime_set_active(&pdev->dev);
-+	devm_pm_runtime_enable(&pdev->dev);
-+
-+	return devm_of_platform_populate(&pdev->dev);
-+}
-+
-+static int imx_aipstz_runtime_resume(struct device *dev)
-+{
-+	void __iomem *base;
-+	const struct imx_aipstz_config *default_cfg;
-+
-+	base = dev_get_drvdata(dev);
-+	default_cfg = of_device_get_match_data(dev);
-+
-+	/* restore potentially lost configuration during domain power-off */
-+	imx_aipstz_apply_default(base, default_cfg);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops imx_aipstz_pm_ops = {
-+	RUNTIME_PM_OPS(NULL, imx_aipstz_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-+};
-+
-+/*
-+ * following configuration is equivalent to:
-+ *	masters 0-7 => trusted for R/W + use AHB's HPROT[1] to det. privilege
-+ */
-+static const struct imx_aipstz_config imx8mp_aipstz_default_cfg = {
-+	.mpr0 = 0x77777777,
-+};
-+
-+static const struct of_device_id imx_aipstz_of_ids[] = {
-+	{ .compatible = "fsl,imx8mp-aipstz", .data = &imx8mp_aipstz_default_cfg },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, imx_aipstz_of_ids);
-+
-+static struct platform_driver imx_aipstz_of_driver = {
-+	.probe = imx_aipstz_probe,
-+	.driver = {
-+		.name = "imx-aipstz",
-+		.of_match_table = imx_aipstz_of_ids,
-+		.pm = pm_ptr(&imx_aipstz_pm_ops),
-+	},
-+};
-+module_platform_driver(imx_aipstz_of_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("IMX secure AHB to IP Slave bus (AIPSTZ) bridge driver");
-+MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
+ 			spba-bus@30c00000 {
 -- 
 2.34.1
 
