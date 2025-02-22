@@ -1,124 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8E52A1CF;
-	Sat, 22 Feb 2025 01:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605462063FB
+	for <imx@lists.linux.dev>; Sat, 22 Feb 2025 08:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740187781; cv=none; b=qJNXAazj5WY3Btp/UFAitNe3IN+sHnDdC/Z69JLzJ07OL+xZu79qN1Wqb9pRFeZAGcio19Q4rhRr4hx9w08G7YDdFMAj5phOYpTKR7fEjQ7cD0RO8+L1hfvXfkG4Lt5GdZHklXbH2lP/iL45BvWx6obMykrlUDyi0clfDLNiy+M=
+	t=1740214798; cv=none; b=YbPPeYvQZ2GUpPdZ+7hCi25nqYX1gXdfrjXiqpg+dg4yrLahpnMlIr8tBg3eCT6fQIbL4TYYfPRiCP/pHx9JPSHns6CT9HcbDoH/5Qo+h3AJPI7M5OiTutk8QctTjDuN3eP5+wnecyu8ycZDdstyTReHXCuiwFW+jqu1MPguhEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740187781; c=relaxed/simple;
-	bh=M/8afILG/fiSMw6cLfHMqMulnTBlFbWMNBSND4QBAuE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=omUenoWoRlwZPNNds3ND+wFwpO75f5YTWpRLVF0zwzjv6T2AdyR7QfyqG2uIbl+guds+nQnSEmLDd+VSymIWPdKYnPvmF1Y68ewvA7aZ+EIV+9IKsJgtugVd0HUt1u+0GqD2C1zhTXt4jLNbiYXt3ZfMZzvHtnJkTGWFsJj6ykU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8srSeKj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740214798; c=relaxed/simple;
+	bh=1RsyIBrd/lKJdHWdJV0umjIe4T8GMvgP+vJ45Pl8ico=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ASKjcMcfa1kLH4n5ItFq2xMURg5BcJgOiuRwcMSGJ4wp794swcwba8tUmP/GncIoDLqEzrvreWCqCZb63rSKRekwXKiZVGLUwt0+CAGUDBe2OjTifECmboS8yuGG9kIxpWsZ8hXlsgJon9YX+i2D17glO4nOCkuE5gvBZUJNn4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EB/CgnJh; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8srSeKj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E390C4CED6;
-	Sat, 22 Feb 2025 01:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740187780;
-	bh=M/8afILG/fiSMw6cLfHMqMulnTBlFbWMNBSND4QBAuE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=V8srSeKjQCkRGONBXy9ePBQV4CUVrRdTUDJwg7i/A7oOmgCMNQLWkvMcQ+i/5+i/m
-	 CmOUI/22IW+5nH1nHgxGH0LUJ+SlCtCxMw0OfKEv3N/VS5KXymn2qGzyZzuQr7B/h+
-	 nwBrColLbfUC+1L+d12ux/VnAX533oZobVDJS2vBmJUTvYrMqY9bXDWnVgG6OwfU0F
-	 P29wqoT74KE3Eq4cAOTsOcJ5mL9unybZFJgf6I3msDUHQLlgjRenOKNjbg5PNSstuD
-	 TXU7WnWsCa8XkABpBVycl8MVGYCBomwVkMIHMRiTzgD+OCY6zTqYPig95sNFHudgKs
-	 o+K7owCl1VxAQ==
-Date: Fri, 21 Feb 2025 19:29:38 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EB/CgnJh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=Q6FAWBhfs60pu6OhdgDHuN8n9DU58L3ZOK6V1wpeXKQ=;
+	b=EB/CgnJhBXtcC8VlgGWwqzGqGa8DAFbvLirRbGq24hVt5WpMLml7rdum8r6uY6
+	iggN4S6DH6TtqioKjznyXtv6Lctwkz7xLkjFmhYjg9uDTMfrL7G8GCKpiW/UcIGM
+	Cnp9cn/vcPpfqy89gC5Uj+ibqO7gPVcF/0OTVTdHIlDiM=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHKVLlkblnMNy2CQ--.23671S3;
+	Sat, 22 Feb 2025 16:59:19 +0800 (CST)
+Date: Sat, 22 Feb 2025 16:59:17 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
+	shengjiu.wang@gmail.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH v1] arm64: dts: imx8-apalis: add clock configuration for
+ 44.1 kHz hdmi audio
+Message-ID: <Z7mR5cXC3p0IA67x@dragon>
+References: <20250120094632.13894-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- Shawn Guo <shawnguo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Conor Dooley <conor.dooley@microchip.com>, devicetree@vger.kernel.org, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com>
-References: <20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com>
-Message-Id: <174018774174.599965.6492650307461479037.robh@kernel.org>
-Subject: Re: [PATCH v4 0/4] arm64: dts: add imx95_15x15_evk boards support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120094632.13894-1-eichest@gmail.com>
+X-CM-TRANSID:Ms8vCgDHKVLlkblnMNy2CQ--.23671S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUc8nYDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQL7ZWe5dcBkgwAAsZ
 
-
-On Fri, 21 Feb 2025 16:15:56 -0500, Frank Li wrote:
-> Add related binding doc.
+On Mon, Jan 20, 2025 at 10:45:22AM +0100, Stefan Eichenberger wrote:
+> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > 
-> Add imx95_15x15_evk boards, which have big difference with imx95_19x19_evk
-> boards.
+> Currently, HDMI audio cannot play sound at a 44.1 kHz sample rate due to
+> a clock frequency mismatch. This update resolves the issue by allowing
+> the sai driver to change the clock parent to AUDIO_PLL_1 when the sample
+> rate is 44.1 kHz. It also ensures that AUDIO_PLL_1 operates at the
+> correct frequency for this configuration.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Changes in v4:
-> - Add usb typce part
-> - Link to v3: https://lore.kernel.org/r/20250220-imx95_15x15-v3-0-247777ed91c4@nxp.com
-> 
-> Changes in v3:
-> - Add Rob and Conor's ack tags
-> - Remove undocument property (need doube check why dtb-check have not
-> report warning).
-> 
-> - Link to v2: https://lore.kernel.org/r/20250114-imx95_15x15-v2-0-2457483bc99d@nxp.com
-> 
-> Changes in v2:
-> - fixed typo 'inctrl-names'.
-> - Link to v1: https://lore.kernel.org/r/20250113-imx95_15x15-v1-0-8c20cbaab9ed@nxp.com
-> 
-> ---
-> Frank Li (4):
->       dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
->       arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
->       arm64: dts: imx95: Add i3c1 and i3c2
->       arm64: dts: imx95: Add imx95-15x15-evk support
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml    |    1 +
->  arch/arm64/boot/dts/freescale/Makefile            |    1 +
->  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1130 +++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx95.dtsi          |   27 +
->  4 files changed, 1159 insertions(+)
-> ---
-> base-commit: 3d34d52fb62b250297279c3d95b2562180a44569
-> change-id: 20250110-imx95_15x15-6a64db8c0187
-> 
-> Best regards,
-> ---
-> Frank Li <Frank.Li@nxp.com>
-> 
-> 
-> 
+> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-arch/arm64/boot/dts/freescale/imx95-15x15-evk.dtb: pcie@4c380000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-
-
-
-
+Applied, thanks!
 
