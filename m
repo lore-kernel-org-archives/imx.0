@@ -1,44 +1,47 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9246C13E02D
-	for <imx@lists.linux.dev>; Sat, 22 Feb 2025 15:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A86610A3E
+	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 06:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740236427; cv=none; b=KKfVWSuO5PsHMCdCRzdgdOAfvo2mfRnPyEa+mL7QOubTlv2rjdTnNlRpc7dgX1O4+3gG5OfkiNa4z5zXIDWz90An7OPsmhSjw4UlyBJNGlL0JRgN8AGCWuBulTRNeT8kI4+tptsVGp5q3KdmY0V4UpUGdT9NcpvEFFelx1tr9Hc=
+	t=1740291068; cv=none; b=gw7+j/8HV9/tUQJOAdXH2qCqZj11hq0NSwJuDkYCazaB7QsmEPYJX2RzgGH51v/WSkg2dCGycGTKtPce6YLZqOUGnZOkKt1ZpMF2GqJdtCn6xMqnB9Q0RXzu4iPqGa8nv0T0QrBlnMh00gBNJW5EEbI6MFSU/GuujKAg6HIjTNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740236427; c=relaxed/simple;
-	bh=OKe6QRTlXlfRzsO6k+n/DgK5Yjn37vIB+q2Y13+5D3Q=;
+	s=arc-20240116; t=1740291068; c=relaxed/simple;
+	bh=Jn9Meso2LWjBuECA8Jb9aB5l1UPTW7cHi1W2fgrXJrE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXsx8oYR/mbaXnnTWRvAy6qPkKEZgLaIxV/o9Bx68FXAD7CXLVxokWW6TdkaQQGCdKWAwBICcg0onA1W75o4qfyspm+dDbQnAd6mMoC/7I8s0tk3xnOTjWlXqgFmM0E2dZi6ZF28KkGj3Qj/naxEniw5td55UNM+mmuVhmGerK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Y4gQA153; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=MufB2GX5NuOidcy3EFhRX5HcTSxP34HLXgidcz0x4QcwGb/a92xIuIqopi+JSF5zhGVxJ2CKoSgW2+haqvWhu9TtvIZQqyCc8ylthmoLiKkhyhaOosRVDA8HjYEBThXQvgRAZar9FVu1lhGeoIyth2LHcDuNL2Mc+fMih+1MBAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ivsPA/lQ; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Y4gQA153"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ivsPA/lQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=lr9E6bgj+FVra1H0FVQ1LPnUfFoxChUOCwxBKvYbs+0=;
-	b=Y4gQA153sXLHJXw5OAPbt5ep7sPGg527sh4tlG03czMimAa5U7wDIb42/JqLwN
-	x5cvJWjeFjPc8PBZEsJTduIEnN3ccnwoNz2Er0Fk4F+Jrk3o0wA3g8UPVk9Z39eL
-	O1j5lLTV7dJ6PgTqmfV5kCNp/cLo7Qmvm3qYUKOjMzsyo=
+	Content-Type; bh=rO+gRo73pxHWZnf3Uevq5TM1eEuO1YJeFmYf2Fpyzak=;
+	b=ivsPA/lQcPO96FCaMKFp2KwNIZiIoIl5AgVI/wN/oiTkk0oAQ3etIpaRpAx34C
+	O9+y0SlDo8OdYTyCll6j+EwqwbCYfDlx//oo5X+n29K25rTXf4QiED5Z4wZACnZ/
+	niNLTK8PP2pykN5p1Xvj5BAR8Sjkp5h7uNN7WOnUbQoFw=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAnSaFy5rlnUPC7CQ--.24012S3;
-	Sat, 22 Feb 2025 23:00:04 +0800 (CST)
-Date: Sat, 22 Feb 2025 23:00:02 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnSlrXu7pnhEaeCQ--.22694S3;
+	Sun, 23 Feb 2025 14:10:33 +0800 (CST)
+Date: Sun, 23 Feb 2025 14:10:31 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
-Subject: Re: [PATCH 5/5] arm64: dts: imx95: add ref clock for pcie nodes
-Message-ID: <Z7nmckvKi1xcb4Qo@dragon>
-References: <20250128211559.1582598-1-Frank.Li@nxp.com>
- <20250128211559.1582598-5-Frank.Li@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s32@nxp.com, clizzi@redhat.com, aruizrui@redhat.com,
+	eballetb@redhat.com
+Subject: Re: [PATCH v2 1/2] arm64: dts: s32g: add the eDMA nodes
+Message-ID: <Z7q711GJZWOp0j+0@dragon>
+References: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,20 +50,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250128211559.1582598-5-Frank.Li@nxp.com>
-X-CM-TRANSID:Ms8vCgAnSaFy5rlnUPC7CQ--.24012S3
+In-Reply-To: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
+X-CM-TRANSID:Mc8vCgCnSlrXu7pnhEaeCQ--.22694S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUV2NtUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBX7ZWe5p-zUGwAAsF
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsR6wDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERj8ZWe6ksyM4wAAs8
 
-On Tue, Jan 28, 2025 at 04:15:59PM -0500, Frank Li wrote:
-> Add "ref" clock for i.MX95's pcie and fix below CHECK_DTBS warnings:
-> arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml
+On Mon, Feb 03, 2025 at 10:09:19AM +0200, Larisa Grigore wrote:
+> Add the two eDMA nodes in the device tree in order to enable the probing
+> of the S32G2/S32G3 eDMA driver.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
 
-#1 ~ #4 are applied and #5 doesn't apply.
-
-Shawn
+Applied, thanks!
 
