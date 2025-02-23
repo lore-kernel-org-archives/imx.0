@@ -1,43 +1,40 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12AF1FC7D0
-	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 07:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A574F198E7B
+	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 08:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740297515; cv=none; b=GVw7LUGDrk/qmgeYJjRHcIMG+KP9rCVAxMCzRbxUkHqicK0qj7EPi5Jou/EF8xNk1GKz/Wci2V1HHEX7Dc60qaEGcRtrDwiAlP7KcxP14GirWDDutlsRJprzpboryl/kLC5MRTuemUG2RrJtKb4TAgrf2vh+n6Q9CpyANjXUjGw=
+	t=1740298478; cv=none; b=HChNkqb/qAXUyZEUYybrgQzS7VNH+rVOZPEhknvm+eCVGH/QaK7+nOUqmekoGR8s7tGBstpUQsqgqzDQAU8Hcqemibt0QDuj9C1JUIf8CrEFnISN6D9yP6CDxyhQASA89xSmvFBDeH0gowSi4xAVFBhpHHdPs3Wr+TsSeC8Sn+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740297515; c=relaxed/simple;
-	bh=Oz3P9N3xl5usKcUKWWwm/yarUuwrPLqlOqj5lKlurM0=;
+	s=arc-20240116; t=1740298478; c=relaxed/simple;
+	bh=EsSDH5RDWjgl+Q0mmtZhHUdhAQy1893oIm7uW2kYDbw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EIIy+0fdVtDYQLUJj2y77IEnbRMj6l1F7/ZTod94pYK2ejFUESF6a2RpTn8C1K7OTnJhOnxbpI6s/eX9UcIV4V4wLl/0cD5LHtwEg2ZHG4wU1b0mfB0OCsOLHJEXxSMYe7eb8gjhLsHO6SQl4VgyhvS4sOdspoAOTux1oGDgrYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VeBopwtz; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=BKbv/lWpFmsxAgziF8Ha5GTjyc03aNTaxAJxTMbNbRqaMp6/jRJuI/riNH0dvlnHyDqJEGX6xwETP9UvKKOffsdNmC//5qK2eLUXFhcMuuQ30XsTUawV6k8uvRMPUsnZyeAC1LGebVMnuZdBxBy7oOa+6rAVjJqxwKJwNCUeb+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=RCtDqBhC; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VeBopwtz"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="RCtDqBhC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=zf7C3JIfy4ywsPNZ0w+h08cIa2jemMKNKRi45EogFjg=;
-	b=VeBopwtzBAgZy9FqVI+FAMxjeG5ieI31VYLCgb2v/zrFjuYWIIvqlauDw9+YCF
-	yZEp9wPhsQtTJPHloc2sWQGyxf7AnGbYJiDwMk/v9z45cU5QyDQNM8oRE/sgj5pb
-	FEA7LhpSk+mWbYxEbpiEOpzynHr7sJEepifNpCHXX9/Xo=
+	Content-Type; bh=n3SRU/TDBo/tfOH6JoaPn06v8I/Q1ljpHPKh21D3Jgw=;
+	b=RCtDqBhCNuIrI9hy8GZFB1a0sHFGaDzajlFD8ozBMopzGI7CR/9wG3aUu/LHLd
+	0ouIQ679RbCOxLaOnRVbggWzKKP6jwSmP9r6nVDCLqs2bbJEinA5pqJ356RjVYtU
+	SfvLyTPKzL+nPQ6NszY8LSkEnekdnKoWPjHBUGiKxN3zo=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBXXvcK1bpnD5KfCQ--.23112S3;
-	Sun, 23 Feb 2025 15:58:04 +0800 (CST)
-Date: Sun, 23 Feb 2025 15:58:02 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgB339XU2Lpn4weMCQ--.22264S3;
+	Sun, 23 Feb 2025 16:14:14 +0800 (CST)
+Date: Sun, 23 Feb 2025 16:14:12 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, francesco.dolcini@toradex.com,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: Remove LVDS
- panel and backlight
-Message-ID: <Z7rVCnypQW1wpyAW@dragon>
-References: <20250214092634.12414-1-francesco@dolcini.it>
+Subject: Re: [PATCH v1 0/2] arm64: dts: freescale:
+ imx8mm/imx8mp-verdin-dahlia: add Microphone Jack to sound card
+Message-ID: <Z7rY1DCwS3RjjS9s@dragon>
+References: <20250217145744.179213-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,22 +43,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250214092634.12414-1-francesco@dolcini.it>
-X-CM-TRANSID:Mc8vCgBXXvcK1bpnD5KfCQ--.23112S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsku4UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhD8ZWe6kuHc6AAAsB
+In-Reply-To: <20250217145744.179213-1-eichest@gmail.com>
+X-CM-TRANSID:M88vCgB339XU2Lpn4weMCQ--.22264S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFyrKF13GFWfWw4xtFWDArb_yoWxKFb_Wa
+	n7CF1kJr1ktFsrG345Gr45Ja1I9ay8AryrWryDWFZ2v348Ja4rZ3s8KFn5WF1Uta929F47
+	Zw15XFsI9rWa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0kR67UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhD8ZWe6kuHc6AABsA
 
-On Fri, Feb 14, 2025 at 10:26:34AM +0100, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Mon, Feb 17, 2025 at 03:56:39PM +0100, Stefan Eichenberger wrote:
+> This patch series adds a Microphone Jack to the simple-audio-card of the
+> Verdin iMX8MM and iMX8MP Dahlia carrier board device trees to separate
+> the microphone and headphone functions.
 > 
-> Remove LVDS panel and backlight nodes from the Verdin iMX8M Mini SoM
-> dtsi file, those two hardware components are not part of the SoM,
-> therefore they should not be present in this file.
+> This resolves the following boot-time kernel log message, which
+> indicated a conflict when the microphone and headphone functions were
+> not separated:
+>   debugfs: File 'Headphone Jack' in directory 'dapm' already present!
 > 
-> This is solving a dtb checker warning about panel-lvds compatible.
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Stefan Eichenberger (2):
+>   arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to
+>     sound card
+>   arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to
+>     sound card
 
-Applied, thanks!
+Applied both, thanks!
 
