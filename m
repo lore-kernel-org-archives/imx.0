@@ -1,85 +1,106 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488C520409D;
-	Sun, 23 Feb 2025 12:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393AB204C2B
+	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 13:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740313437; cv=none; b=emqEiymnwUwVOuB515+I3QVMpDB7QhSf9at0pKtHJ1RoL+QuJxtY5kQDdCPJI4kPeLEVS5L16U5hxc5P5qr0hzfRd2fciAo4geRgkSm5vlpynYU0uOpa+VI7ko4/XOqm+wOQrdrbUH0IbIbb5mZC3Ow0D8b1OyWs3+jhd6v7MbE=
+	t=1740319028; cv=none; b=dUni0qiwsEovbWbW3DwpLAuI9/3TFjuUGItf2Xd7QBec8M9MjuYAcJR2nqWcy6TlQSRQlfbiWF8vmOeybCwu+MjtVmrYwp0OcK9uogv8hKhTG4wNfFMqFIc7v4XLo79CLNlPppNAXu4jXerdyPpGwCUfuFFDUhsXK2mDfcOEv8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740313437; c=relaxed/simple;
-	bh=SAtjKJzWIpJyRrFIuLsbqjKbdqlRUwzMsn7039kipes=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ioOZPBi1UHXD9EiHWigSmPRrJMZWvw6n81hZMrpV2u8FVf0XKuA3c8zuxepF6ATfo4hI4myGy/gbJu4tsFD/6QBXS00eByRq28QaB15NiA6dV+MIrCK1MJoe1m78vsNwXhnA2vkrAoI7Q/HO0pM/Hr30IM2i/REb2SBb2dBJRO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=eRTbiZ7C; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1740319028; c=relaxed/simple;
+	bh=b5sKo7or1yxhOykhB8W9cO08pjMsuK4KXAFBMM1a5/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rb2EWXCeF6d/tKTmM2O6Ro2fY0s1R/nmD8o/n+7bKgNzO8Y12T1lAAsLH8Q4wFk1Evj2P0Cklyh9nl6Pjz2S0a5hxjdH7tda8E1CLwjWr77+mrLPN2xrCX0BayXca3cFbridjqtuwc03bK9NOJL9pKb3ITGn6W+p9Hdn6MLZAF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no; spf=pass smtp.mailfrom=remarkable.no; dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b=I6x+iH9Q; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=remarkable.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remarkable.no
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="eRTbiZ7C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=snjxivABr1OyDqYb2NVPxunB52diksXhIJ5NrLLPtwA=;
-	b=eRTbiZ7C2HzhplWvs668ZS3GL4umJm5x5LFASkoRGSETScNulnTjRECIP0N2qg
-	LJjI6/yLL6PMYe+JlohMdMxDdVmqHgYcs0gZQvAkH4G1m3innCX8fH44Vsh6zIYZ
-	T3hF4SScFaLi4FR8iEYTSyqXI1z3qju5RjMO1iamFp4TI=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBHbxscE7tnTfSOCQ--.21898S3;
-	Sun, 23 Feb 2025 20:22:54 +0800 (CST)
-Date: Sun, 23 Feb 2025 20:22:51 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>, soc@lists.linux.dev,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend] firmware: imx: IMX_SCMI_MISC_DRV should depend on
- ARCH_MXC
-Message-ID: <Z7sTG4yMsek11nLe@dragon>
-References: <9638976432d8dfcb0c4df9d454b661f9022a2d7b.1738766259.git.geert+renesas@glider.be>
- <Z7rMdg7+m6qa0Hft@dragon>
- <CAMuHMdW=ZH7D+m54rh-25nFShCYhRhEjkjaB1LtOrRF5RyrXiQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=remarkable.no header.i=@remarkable.no header.b="I6x+iH9Q"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54622940ef7so4072599e87.3
+        for <imx@lists.linux.dev>; Sun, 23 Feb 2025 05:57:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=remarkable.no; s=google; t=1740319024; x=1740923824; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oSt5Oh4aOXUsbkkdJcXi4r7HM5aKQql9O5bNB1EciEQ=;
+        b=I6x+iH9Qa5l3FaP1PovsQAUfTLGG6ToYHERwOaOPk0jtI4t4OF4YzK05ln85ZP2U3v
+         lXdNjOOi8yWrRNAmzYdqqSY5bw3uKVBeULE9XFxAMMISLyX4qWKRWJbWSvkavWYAGCRb
+         zw5+RX+ag/R1HbJYACq1yjKfIwiW24pYmHpm75a4YLkZK0gcGFTJT3KXp3oF6wwqyHT8
+         TBKpT/288xclbCR8C4nVEezH7wviDCtcGpvzZRRiVcw9cIBUmJEjGbSWhPOjNdk48wWH
+         imb5pRX/t63FxMvfGBNJd7ThXzzGPAnMB15F4fIFHZs59GI8bahnncDTeb69433yOaUf
+         MRdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740319024; x=1740923824;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oSt5Oh4aOXUsbkkdJcXi4r7HM5aKQql9O5bNB1EciEQ=;
+        b=EGVwx9wyZjngHKk2AkdYTC3moIOTYdkMrBYPTpzfyYwn2YptdNriV9FpbEOwUhERjy
+         xoJNNnfrCnAA9OfRCQDWKjpOXWaYecW/amhWULOwFUWvarsjsDSdzUh2/l77KjQ5PcLH
+         mlMd/GM0akAW3eUveshOxkGAXmNh7VqAJbGoDojnarHJbBvbG9YbuCfd3p1384O9XGUd
+         aIugKU4N2s+fMqCIIu6Zy63XlQA2UKLQbpEl78f+CzuEYPZwK5oIHNaqKvJLS/LWnrIT
+         vGAqMUj0V1plvIVUji4zjmCr2rEpkoHkRVMIWW+S0p737mOnjINQI92zf6VVUsECYJ2f
+         865g==
+X-Forwarded-Encrypted: i=1; AJvYcCVVILfWnXzhckNWM2gfZVn6IQYloKubjDHTyoy4evp2zwmWGtOMAkU51+GB3F+NF0o3TTg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxE1ET7JXfFjbSOj9HKjAKuTGJwIMT1dQuEM3RxuuFbjXy/y591
+	5hreWUiMTTsgMPV528zfA+MFrvr3xenXk629G3sFneQUa274ZvBnaRygEMdKKA==
+X-Gm-Gg: ASbGncstFf6mJbS1MZjRYpTZ3e61baTHx4c1mFZ/ybKS17Ghx/XxCPbclNYWMie9wac
+	zTeSE8gdnCpmRakYT7SQWf0jdzWYT7+DWzBT9v1D49n/JbRRowlewTUvv2yAzvKlcWhp3kqqHIE
+	Ow5mya9udIX8+logChwaozt5DCYwPV6N2iH4BUXzU20TRrDdsa2pii7rOampAXjQt22EFZWm95h
+	GF5Z4qOVkA1Ypy5mxdZVciK3wgxGaDYVFhoH3vFqEdXGm4+QUw+9eak7Xh1uwqCX04m7ICsPjNn
+	J2b91D/iXKfLFBoEhYVqn/ULzodZHoOt4meg8PcbYSUnTIrtR+p5DwDfMT2upDvongsw27ff0cz
+	L
+X-Google-Smtp-Source: AGHT+IEsAPLG0VnAgEWySFLvjEpv9b6lcCK03yae88Y4++t5RMI5NrCMFxRtv8orcMuGnVhJE1uZKw==
+X-Received: by 2002:a05:6512:3995:b0:542:91a5:2478 with SMTP id 2adb3069b0e04-54838f4eee6mr3963231e87.32.1740319024112;
+        Sun, 23 Feb 2025 05:57:04 -0800 (PST)
+Received: from ?IPV6:2001:4643:2b9c:0:a407:a1b4:766f:a8eb? ([2001:4643:2b9c:0:a407:a1b4:766f:a8eb])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5452ba47793sm2794112e87.249.2025.02.23.05.57.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Feb 2025 05:57:03 -0800 (PST)
+Message-ID: <37e3fbc9-87c2-49d4-bf32-e4c5906cdad6@remarkable.no>
+Date: Sun, 23 Feb 2025 14:57:02 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdW=ZH7D+m54rh-25nFShCYhRhEjkjaB1LtOrRF5RyrXiQ@mail.gmail.com>
-X-CM-TRANSID:M88vCgBHbxscE7tnTfSOCQ--.21898S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrur45ur18tFW3AFWUGFykZrb_yoWDGwbEyr
-	4vkw1DC345GryDCF1qgr1avr17t3y2qFWYq3s5Ga17WayfXayDAFn5CrWfAwnakay0gF1a
-	krnIqrnYk34aqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnI38UUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgH8ZWe63ifITQAAsr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] gpio: vf610: Switch to gpio-mmio
+To: Linus Walleij <linus.walleij@linaro.org>, Bough Chen
+ <haibo.chen@nxp.com>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ imx@lists.linux.dev
+Cc: linux-gpio@vger.kernel.org
+References: <20250219-vf610-mmio-v3-0-588b64f0b689@linaro.org>
+ <20250219-vf610-mmio-v3-2-588b64f0b689@linaro.org>
+Content-Language: en-US
+From: Johan Korsnes <johan.korsnes@remarkable.no>
+In-Reply-To: <20250219-vf610-mmio-v3-2-588b64f0b689@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-+ Uwe
-
-On Sun, Feb 23, 2025 at 09:29:29AM +0100, Geert Uytterhoeven wrote:
-> Hi Shawn,
+On 2/19/25 10:04 PM, Linus Walleij wrote:
+> After adding a pinctrl flag to gpio-mmio we can use it
+> for driving gpio-vf610.
 > 
-> On Sun, 23 Feb 2025 at 08:21, Shawn Guo <shawnguo2@yeah.net> wrote:
-> > On Wed, Feb 05, 2025 at 03:41:43PM +0100, Geert Uytterhoeven wrote:
-> > > The i.MX System Controller Management Interface firmware is only present
-> > > on Freescale i.MX SoCs.  Hence add a dependency on ARCH_MXC, to prevent
-> > > asking the user about this driver when configuring a kernel without
-> > > Freescale i.MX platform support.
-> > >
-> > > Fixes: 514b2262ade48a05 ("firmware: arm_scmi: Fix i.MX build dependency")
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> > Thanks for the patch, Geert!  But I have just picked up the change from
-> > Uwe [1].
+> The existing code has the same semantics and the generic
+> gpio-mmio, including reading from the data out register
+> when the direction is set to input, and it can also handle
+> the absence of the direction register better than the
+> current driver: we get the direction from the shadow
+> direction registers in gpio-mmio instead.
 > 
-> Thanks, but mine has been upstream since Friday ;-)
+> Since gpio-mmio has an internal spinlock we can drop the
+> direction-protecting spinlock from the driver.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=be6686b823b30a69b1f71bde228ce042c78a1941
 
-Ah, Arnd beat me to it.  Thanks for information!
+Hi,
 
-Shawn
+Could the following headers be dropped?
 
+#include <linux/pinctrl/consumer.h>
+#include <linux/spinlock.h>
+
+Kind regards,
+Johan
