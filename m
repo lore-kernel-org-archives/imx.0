@@ -1,43 +1,42 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35E72BAF7;
-	Sun, 23 Feb 2025 07:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B07A10A3E
+	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 07:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740295321; cv=none; b=YWAZARPzVmWWcziqHR4ZdGuk6dPfLdSZ8D5F4IvUuRx0dt6JNzQ/Mn5N6CzJefYe86WkvGPXiOtjKBYiPzlvL7OQ/wXITxeyiJk8tgvtl/wP5q8hn2O3IHWr3ZE1AewFqupmgHuOwYZcD5sjp+QepJvuHRaYbDcou0mkJg24uCY=
+	t=1740296315; cv=none; b=BaNc0M27n2o5ek1/Nf80FDbiC8XN3HunNM1ADu7R2tTdVRg9eeMFgY6p138Cry96rIvOO7LS7mwizwhwUhwKhg5OsW+mpZHq1d2aeh6LK56Dwbsdz2yAS0l++AV6aBJkCxVgaUJwrCSZ+rP8XOam4VPceF3MyEcw6g3fsE1ygbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740295321; c=relaxed/simple;
-	bh=nGyfLB/fx7ZPd0J5Y49mn0isbQeGuFYMvEeVgYfsi40=;
+	s=arc-20240116; t=1740296315; c=relaxed/simple;
+	bh=i2dYoaxI8qTqb4j86RQOLybkjeou1XdI0LVEdkYI/yc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q6O0v3JnhckLvwZerBrAopiCVGy+y+nE8CFCiJLCn1B6h6mygSCsOyAbjNZ9gIMJOxBRIM/3f8H8mj/APGHeCHD4GD+TABA6mm/4v+91fQCfGBLn9kEwWLKJE9xz5kQ8DTC2m99havq4vHNnGXgdDVV0gv5rAslMuknI6GuLXio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EXuso7zT; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=qEggcrk4dA01tIwZB2zcwoGircidB16hEj9T2cY27zQUPS/8XBUC+uYdstSxW5VdasnlU9c18C+H5ByeLH0mj/U3vmlSHqbdK1BwWaRHl0yb+HJfOwGz/KPU3m9GynBx9TONFwCkKa1msFSeI3HU/1+58EFmVSwxqrqUdn7FHqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=NJ25arv6; arc=none smtp.client-ip=220.197.32.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EXuso7zT"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="NJ25arv6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9y4HplaZVCu1QQjMAnhjKML9wwHJeOFR7OdXRZKJR4s=;
-	b=EXuso7zTjRTSduWNS6SUjCikx4WLdlc5rZmclXdlA/4OTl/VNctCXl0HhEX5jI
-	DGA06+qWahBDZyhHrB0z5anwOLLSWiKaC7/JjW7VYCj6/YS19TGs7e7oSFwz2f69
-	YqtVXwxG/33r2ZtT4iTBFw6vx6Knh6mV0Ng07gholDUCE=
+	Content-Type; bh=oPXVRdAdTKk+04iwLdlaaflbSGUMVrgPOHzRGIn45yQ=;
+	b=NJ25arv6TSaeOvQf8IygctFsn3BzU1ead0BXGkM/ZNb2emKqNBj2QZ7MiKFSRM
+	4TEWq7VmJE/7hetNDF693lfCMLIuERGkIzwypO8oW2Rlc58WMkFT6o0lpeWJO+a1
+	NUEmVZ4McAIcgXGFYsi5D0N4hL+63Yaza4qw92VJku7I8=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAnC6x2zLpn1yKfCQ--.22908S3;
-	Sun, 23 Feb 2025 15:21:27 +0800 (CST)
-Date: Sun, 23 Feb 2025 15:21:26 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXS3Zg0Lpnl1efCQ--.23292S3;
+	Sun, 23 Feb 2025 15:38:10 +0800 (CST)
+Date: Sun, 23 Feb 2025 15:38:08 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
+To: rafael@beims.me
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Brown <broonie@kernel.org>, soc@lists.linux.dev,
+	Rafael Beims <rafael.beims@toradex.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend] firmware: imx: IMX_SCMI_MISC_DRV should depend on
- ARCH_MXC
-Message-ID: <Z7rMdg7+m6qa0Hft@dragon>
-References: <9638976432d8dfcb0c4df9d454b661f9022a2d7b.1738766259.git.geert+renesas@glider.be>
+Subject: Re: [PATCH] arm64: dts: colibri-imx8x: Add missing gpio-line-names
+Message-ID: <Z7rQYN06RUFR2Xqy@dragon>
+References: <20250210123134.1659719-1-rafael@beims.me>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,27 +45,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9638976432d8dfcb0c4df9d454b661f9022a2d7b.1738766259.git.geert+renesas@glider.be>
-X-CM-TRANSID:Mc8vCgAnC6x2zLpn1yKfCQ--.22908S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtw1xZr17Jr13JFW3tryrJFb_yoWxAFXEv3
-	9Y9wnrC3s5GrZ7KF10gr1ayF1Sg3yqg3y5Jw1IqF4agFySq34xtF4vy3s3WF1S9FZ2grya
-	kas09rsI9ryaqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0uMKJUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgb8ZWe6xy0Q-QAAsH
+In-Reply-To: <20250210123134.1659719-1-rafael@beims.me>
+X-CM-TRANSID:Mc8vCgCXS3Zg0Lpnl1efCQ--.23292S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxuWlDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAgb8ZWe6xy0Q-QABsG
 
-On Wed, Feb 05, 2025 at 03:41:43PM +0100, Geert Uytterhoeven wrote:
-> The i.MX System Controller Management Interface firmware is only present
-> on Freescale i.MX SoCs.  Hence add a dependency on ARCH_MXC, to prevent
-> asking the user about this driver when configuring a kernel without
-> Freescale i.MX platform support.
+On Mon, Feb 10, 2025 at 09:30:50AM -0300, rafael@beims.me wrote:
+> From: Rafael Beims <rafael.beims@toradex.com>
 > 
-> Fixes: 514b2262ade48a05 ("firmware: arm_scmi: Fix i.MX build dependency")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Add missing gpio-line-names for SODIMM_79 and SODIMM_97
+> 
+> Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
 
-Thanks for the patch, Geert!  But I have just picked up the change from
-Uwe [1].
-
-Shawn
-
-[1] https://lore.kernel.org/imx/20250204101531.233549-2-u.kleine-koenig@baylibre.com/
+Applied, thanks!
 
