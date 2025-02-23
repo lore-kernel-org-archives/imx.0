@@ -1,66 +1,63 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A86610A3E
-	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 06:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E542111
+	for <imx@lists.linux.dev>; Sun, 23 Feb 2025 07:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740291068; cv=none; b=gw7+j/8HV9/tUQJOAdXH2qCqZj11hq0NSwJuDkYCazaB7QsmEPYJX2RzgGH51v/WSkg2dCGycGTKtPce6YLZqOUGnZOkKt1ZpMF2GqJdtCn6xMqnB9Q0RXzu4iPqGa8nv0T0QrBlnMh00gBNJW5EEbI6MFSU/GuujKAg6HIjTNc=
+	t=1740294460; cv=none; b=rry+5AkJ1nG1wXlbMQhJMWHFg51FYp6f9DytjSwWS0lKgnyojhSR+r3d5hABtoHyuBTNCCBFjzWf3spXpkahdniw+KsuknvGFY9OMwYCwsqKGO+WdPP6BIuZ0ZzNzLDXAmXvqS/c2mGYEEYYiwWOl4yhceB5hfQGaqLGZI3b40Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740291068; c=relaxed/simple;
-	bh=Jn9Meso2LWjBuECA8Jb9aB5l1UPTW7cHi1W2fgrXJrE=;
+	s=arc-20240116; t=1740294460; c=relaxed/simple;
+	bh=K9KbJODbj5DWSkcFOlQEvI7mnwMX8YYi5qod3+jkGSo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MufB2GX5NuOidcy3EFhRX5HcTSxP34HLXgidcz0x4QcwGb/a92xIuIqopi+JSF5zhGVxJ2CKoSgW2+haqvWhu9TtvIZQqyCc8ylthmoLiKkhyhaOosRVDA8HjYEBThXQvgRAZar9FVu1lhGeoIyth2LHcDuNL2Mc+fMih+1MBAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ivsPA/lQ; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=BYbqe4Nj5jUAPQVYqo3cw7HVuaWIeZFJf0q2hzKkWdpCYIZWMloIHr2Enf8bcGwwMXYa9d2RKQbKLOfKdhoBfBlS+XW8uIXsqlbfnEICVD87Gee0JcaV+ycSB0t3THEAlZlG8Up+Uhxay/uxnoeUnSt2NZUYQYs5ODUTYfsxKBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=pwiskjuR; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ivsPA/lQ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="pwiskjuR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=rO+gRo73pxHWZnf3Uevq5TM1eEuO1YJeFmYf2Fpyzak=;
-	b=ivsPA/lQcPO96FCaMKFp2KwNIZiIoIl5AgVI/wN/oiTkk0oAQ3etIpaRpAx34C
-	O9+y0SlDo8OdYTyCll6j+EwqwbCYfDlx//oo5X+n29K25rTXf4QiED5Z4wZACnZ/
-	niNLTK8PP2pykN5p1Xvj5BAR8Sjkp5h7uNN7WOnUbQoFw=
+	Content-Type; bh=HJyf244BKYlmxx6vt7GoqUcdxk6vRqqaQBKzOBNAKR4=;
+	b=pwiskjuREwWzmU2YFTlaqpcyXqeUMxp/OSfnAqVymbXf9hiw9Lvtd+aoSjNZHe
+	BUYwi1YXBYOj5bCWYD0HVnYRlE0r6lp4+qthgYGqkJbRtoulqY9meTBgNnJE6azb
+	lQndUIoPaIjdjeueuP/UIS8n3dTWxJUZRp/W4vAFhnD+A=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnSlrXu7pnhEaeCQ--.22694S3;
-	Sun, 23 Feb 2025 14:10:33 +0800 (CST)
-Date: Sun, 23 Feb 2025 14:10:31 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgC3CsgOybpn9z2LCQ--.22768S3;
+	Sun, 23 Feb 2025 15:06:56 +0800 (CST)
+Date: Sun, 23 Feb 2025 15:06:53 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	s32@nxp.com, clizzi@redhat.com, aruizrui@redhat.com,
-	eballetb@redhat.com
-Subject: Re: [PATCH v2 1/2] arm64: dts: s32g: add the eDMA nodes
-Message-ID: <Z7q711GJZWOp0j+0@dragon>
-References: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Peng Fan <peng.fan@nxp.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] firmware: imx: Make IMX SCMI MISC driver only selectable
+ on i.MX
+Message-ID: <Z7rJDYrPFf9dS+9t@dragon>
+References: <20250204101531.233549-2-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250203080919.1814455-1-larisa.grigore@oss.nxp.com>
-X-CM-TRANSID:Mc8vCgCnSlrXu7pnhEaeCQ--.22694S3
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250204101531.233549-2-u.kleine-koenig@baylibre.com>
+X-CM-TRANSID:M88vCgC3CsgOybpn9z2LCQ--.22768S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsR6wDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiERj8ZWe6ksyM4wAAs8
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVxR6UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQf8ZWe6ksy3WAAAsj
 
-On Mon, Feb 03, 2025 at 10:09:19AM +0200, Larisa Grigore wrote:
-> Add the two eDMA nodes in the device tree in order to enable the probing
-> of the S32G2/S32G3 eDMA driver.
+On Tue, Feb 04, 2025 at 11:15:30AM +0100, Uwe Kleine-König wrote:
+> This hardware component is only available on i.MX9. So don't offer to
+> enable this driver without i.MX support or compile coverage testing.
 > 
-> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
 Applied, thanks!
 
