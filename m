@@ -1,102 +1,44 @@
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDDD1DE8B6;
-	Sun, 23 Feb 2025 09:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8751FC3;
+	Sun, 23 Feb 2025 10:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740301396; cv=none; b=NBB8vzlQtsODI2mk1ddzJaRy5Zl5wBWrg4/53eOh/GVnsrBJTIxHAniReKUNuF3YWuxa13VDtYtfSj9161aRWq2h617jjWT13oM9bxCNm9ofCiEm+u559ybkoTULL+jF4dx4/3aA1ytHbJ+Cw5XIBwCnVcAT6uhZTTV41awwnII=
+	t=1740306432; cv=none; b=qyWt5jlXpNc2bQv7pRwFzoev5PArunp3hLKCAXACQw0CsjMQsZSZGcgVa9/T0U+fZm6qOEfibjNZulKBVMCyeSKh4Q84/IN3iZoyrzl94jG2sXtb5uQIA6k6aOBOsHvk53A86cHSQAZxKP+EDG1f/WSzSsP5o+8AjbwbboNG15s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740301396; c=relaxed/simple;
-	bh=fCEcMc7RMUMnSFEpm2pdzeZjD2OWZZgNfbMOgPYCsEk=;
+	s=arc-20240116; t=1740306432; c=relaxed/simple;
+	bh=M/NiBlLZB/96+Sf8fu4U8io2VkaRX38UaB7BPciHyp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpbbfAZEV5mQInPdmzEr4R4sTvgEpVenNaPneEkN0rGCGDwEztuxlBEwFmFTm3flBb2vGHJWyB92ofaYL36Fj6T5IzIfA6CJVjNv03IJrLZe/ClibMdNoUtz3lRm1h11e9+XKlot9URlC8E8AfGgOmddx1SPYG5e8Z1xNhU3AKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=UP91jSsr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ozyeWCSV; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=u0kDMN1Q31bR/Z4r1qJXC94tWiu4onsSWD8JT+jSWA7x1ay927ZANddN17BAgBiSCYgMh4jMF14jEUxTN7K+XNoJCEhfaJOagVbZ1uBXqcfwncCDyIPc7qv2HIVy6OgkY1ux3gBgiAHbypkaklFUquDy2GW905wYtxG+X8mToMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtyaSA7k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="UP91jSsr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ozyeWCSV"
-Received: from phl-compute-13.internal (phl-compute-13.phl.internal [10.202.2.53])
-	by mailflow.phl.internal (Postfix) with ESMTP id 68ABD200D15;
-	Sun, 23 Feb 2025 04:03:13 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-13.internal (MEProxy); Sun, 23 Feb 2025 04:03:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1740301393; x=1740308593; bh=rR0lG1HqwL
-	HdKmh1L1Q+3HA+XJIsSU89HsqNgZSMZYY=; b=UP91jSsrK21sGc1fKzC0Xubvi/
-	Px4QjbV6BgKX2of72GCoI1++xhm58Y90bUtAlQ8BbromQukfP7uRjf+QBosA4tKU
-	xjNVvZlyxAYwOg6qUGA14YxpESaNeXo++GKCMa4ZVkPxYgTiL/34P0HXI5P9QB5Q
-	hRNCaCh3kHcJt5kZceiqMlJhsarUcbc7BPUZVF6e/RFvumm1S/qyvuHBKOy0SQSL
-	cTxOZlG6l8J8AhLzPmZVZqGgE8p876szBPfQ6yJET1S3b/5J491YdjOBZHNefgIU
-	epYvEHMx9EdFtPqr6EZT/K0DkwavXSKyBQYMff8efUrsI6lzy4+seUPKdMlQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1740301393; x=1740308593; bh=rR0lG1HqwLHdKmh1L1Q+3HA+XJIsSU89Hsq
-	NgZSMZYY=; b=ozyeWCSVrq6ZeFCaCQrEBXXOybLROwbF7zB4axtI05UnC8bMek/
-	HplkY+Yvidoj+m8cI1r4lRSwj9ZTJ7TaZqHt3HMlT4PIflL+DlVGoN5K1oCG8aUz
-	p3F9I69j3MnwgJyvJzTSxQabyUBOzBhPMlK28TqnxjcRrKc30e93jAjx8kwUhAwD
-	3Zyj1O3z02AAVqY37WA7wMAFH4ZFwzdoXYjR+3riyStqb67uD6p9j0ByZkOcC+59
-	uBAaryvqNyaDSmPXMMRmkluf8DVrYM5VyyRDPL/eo6mY45RZdsFB8QX5Inuyrd9P
-	AG8VzmK4W5axKyqv2tT30XAg+H2GfBS0ylw==
-X-ME-Sender: <xms:T-S6Z2C_xYV3bNnptucocY4qCtKeewxrsC0NAgKeJtJHQOEnAvf_IA>
-    <xme:T-S6ZwjYmJMzaRjxL0LrFwxA-ln-OAx4dKP6-Z6hCSL2O4048xGhSw4v0UFmtDOeC
-    3B0MlGpmv5vJ4UGKGA>
-X-ME-Received: <xmr:T-S6Z5mD6zi27a04xfe7S4HaT139eF6aNHYgTPpzBta_8Oc-LAlDN2BGuz2sAmgbwgWzae5WkzIuim3CprI_Zam768WV9ky-65U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejheegtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdej
-    necuhfhrohhmpeflrghnnhgvucfirhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqne
-    cuggftrfgrthhtvghrnhepudefhfehudetjeeutdfhvefhtdeltdfgheefkeefleegveev
-    tedtveelfffhiedtnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnhgv
-    thdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hfnhhklhdrkhgvrhhnvghlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhvvghnsehs
-    vhgvnhhpvghtvghrrdguvghvpdhrtghpthhtoheprghlhihsshgrsehrohhsvghniiifvg
-    highdrihhopdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodguth
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhgtrghnsehmrghrtggrnhdrshht
-    pdhrtghpthhtohepuhhlfhdrhhgrnhhsshhonheslhhinhgrrhhordhorhhgpdhrtghpth
-    htohepmhgthhgvhhgrsgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:T-S6Z0zqcRiXeOlqKx8mmZ-1komXthg5pod44TaAINRYJcNV8t5iTw>
-    <xmx:T-S6Z7TOVONgPflH1HKdseNAh33d0XxwpGvUFdpRLFugHALGbaLAcQ>
-    <xmx:T-S6Z_ZWqCOWzXqX9ZYAAtiduWdDKEfNkz9cFA_BldrCFC1LmRChjA>
-    <xmx:T-S6Z0ScM17wGYjATkl3QKYgA9tAn_PeJErj30vEXjLZkqKlK1MzRw>
-    <xmx:UeS6Z1nV0QWUnynP-qzHUMWNgfwJNKMvjNTeFFlmE23wPF3FtzGIHOd8>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 23 Feb 2025 04:03:11 -0500 (EST)
-Date: Sun, 23 Feb 2025 10:03:09 +0100
-From: Janne Grunau <j@jannau.net>
-To: Sasha Finkelstein <fnkl.kernel@gmail.com>
-Cc: Sven Peter <sven@svenpeter.dev>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Hector Martin <marcan@marcan.st>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	Eileen Yoon <eyn@gmx.com>, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 4/5] media: apple: Add Apple ISP driver
-Message-ID: <20250223090309.GA430621@robin.jannau.net>
-References: <20250219-isp-v1-0-6d3e89b67c31@gmail.com>
- <20250219-isp-v1-4-6d3e89b67c31@gmail.com>
- <20250219113422.GA26386@robin.jannau.net>
- <CAMT+MTR4yPzC-NBLT6uLhveHFDWpwwn=hUzU6=WDc73+UVEMwQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtyaSA7k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8045C4CEDD;
+	Sun, 23 Feb 2025 10:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740306431;
+	bh=M/NiBlLZB/96+Sf8fu4U8io2VkaRX38UaB7BPciHyp0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WtyaSA7kyxslpOuXl8UvM2sb2GrvXcbFGIl9j9QxEoZ5Z5D7Ez41+9sDvPtkBfv3F
+	 mxpoipHXNZ0b59zuGAWrB+hDRQoO8TCMiOFDJ0TsACaEr/sBZItLpxXSV9/DARCcfc
+	 v/e13HWsXGYtGIXM4mEMnCW7k5Cp5Yjek0ibuQh/fLpXa9mticuYQR68l/xvbOqJoV
+	 y6HfeeZTLidNA3OQ6v6gXvgBE+rJwXlL7jIC9HygPRCncKY+IsywLcwzkguhSXwoIb
+	 /Mn0v2UpQ3ByfHl7WclQ4whC8lWw/j0Ne81LOnNg12cn3pEVw/HJHVGbFe6bL4ATSH
+	 Z1KsoNKolO4DQ==
+Date: Sun, 23 Feb 2025 11:27:08 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] arm64: dts: imx8mm: Add pinctrl config definitions
+Message-ID: <20250223-messy-silent-tuatara-68f2e7@krzk-bin>
+References: <20250218-pinctrl_defines-v2-0-c554cad0e1d2@gocontroll.com>
+ <20250218-pinctrl_defines-v2-1-c554cad0e1d2@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -105,27 +47,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMT+MTR4yPzC-NBLT6uLhveHFDWpwwn=hUzU6=WDc73+UVEMwQ@mail.gmail.com>
+In-Reply-To: <20250218-pinctrl_defines-v2-1-c554cad0e1d2@gocontroll.com>
 
-On Sun, Feb 23, 2025 at 09:48:30AM +0100, Sasha Finkelstein wrote:
-> On Wed, 19 Feb 2025 at 12:34, Janne Grunau <j@jannau.net> wrote:
-> > > +     while (maps < end) {
-> > > +             maps++;
-> > > +             maps = of_translate_dma_region(dev->of_node, maps, &heap_base,
-> > > +                                            &heap_size);
-> > > +     }
-> >
-> > The hand-rolled reserved memory parsing looks like it can be replaced
-> > with of_iommu_get_resv_region();
+On Tue, Feb 18, 2025 at 09:39:16AM +0100, Maud Spierings wrote:
+> Currently to configure each IOMUXC_SW_PAD_CTL_PAD the raw value of this
+> register is written in the dts, these values are not obvious. Add defines
+> which describe the fields of this register which can be or-ed together to
+> produce readable settings.
 > 
-> I have looked into it, and `of_iommu_get_resv_region` does the wrong
-> thing. We fill out `reg`, and it grabs that instead of `iommu-addresses`.
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h | 27 ++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>
 
-Downstream commit 704ace01cd3c4 [0] ("iommu: Add IOMMU_RESV_TRANSLATED
-for non 1:1 mapped reserved regions") adds device virtual addresses to
-struct iommu_resv_region. Sorry for the added dependency but it is
-required anyway for the isp to work.
+Why are you adding defines which have no users? This is just dead code.
 
-ciao Janne
+Best regards,
+Krzysztof
 
-[0] https://github.com/AsahiLinux/linux/commit/704ace01cd3c423b1e2492f0777d9c4c0f3404d8
