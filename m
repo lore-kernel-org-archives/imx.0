@@ -1,247 +1,106 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2040.outbound.protection.outlook.com [40.107.241.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5211A23AA
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 19:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740425609; cv=fail; b=IAKkpvIHuR+XpPlZl7eLvDHcVuuEejGGfbxyjuuGjHz0FfRpRBwO79TWc9So+zGBhE2BiH7oH4/Y+rIVf3iSGYCFxOAaPrkR0NAYmeSwxJTSVrTPdO4CFlQWigOUblnmlN/YkeHwzH1f4v4YZWTkNzfTpX99Zb4aw/O6jFg1AfQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740425609; c=relaxed/simple;
-	bh=l5atS8MbDh/TI/KBAhwK6s6yhKf7BcqeugfBB7/kjRA=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=NHYa3YPM5NIQxfaybEYzr20k1aV8xRxOD0X2w1nC9h76P9EK7DnHFHo1mAr8pV/aBrFigGgU7cE5pXmUj3omsaNO6CDQPRU/sXvQy44uo1tw5dpz9pkwbV1HbVmH3bt2jkAUKKZGu5ykt8tloSQgLG9/NKGpMXZzzlPd6exZZEc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NXo3ixGe; arc=fail smtp.client-ip=40.107.241.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7A52571CC
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 19:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740426627; cv=none; b=EzUZ/NfzvAx3MGnxrUCIlSwicw9OGpzmG7//R1LGp4P+IQwgYvFohmW9NHEeQD5LPD+QDcazEvJygML3OT3k2srDxak8tgMgPQhu2SA9kokMG/9cdWTqGI/ctAMFCMwcQgl5T971FaIK6+UCKDTFnT3Xu9QXH0NGK1EiaeBiYBU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740426627; c=relaxed/simple;
+	bh=Edth2VWVcL+GjsEVcws8isbYUTtJY3BgQThXqgK4CI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OpoPysnccmqKnbJohLHD0SGyZ614yMa8H5Q2i4otoTjAyukBzbdVcDCPj5B7xRte5HAbHCRnXkIecyF3uhucTChc5gdKDVYK96hYXlgnkJ9iO2ZJtwZehwqquMpf/sAi6QgqO0ehwMH2VBU8dJLM1oobvhhTppMgZkldlMGRDdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=T5lrDe83; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NXo3ixGe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F2UVMDtDivB+ryYB8YpuYwwsauBLJy/dZ07WtuaEPk6ZwEhlfDztmAAsPwjL0aEFFiEtKNJhFRB0PjWvX2+QqwPnireDVESrmuxY9jSNZ1Wvv0aXvwNcP4iuj2O8Cprnf6demxBb7Gi3ZxnVUrjHHPltFdzvQC7X4qY1MZhtTl25Skj78SpsnPrQX3iIRnC/LsGFxBIzwEX9V7rTh8vSegKA5GCUtiIEhVkX4KngEwwqemC2O2SAAuLna3NHHNkz8JW/ZlKRQMC7Zu8hanYoiU4+8JkcOs4bLTw82SEuGpiRnqksn79JeloxSEZwxmM788sTuDzVCXanBMOv+yJoaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VIttIXAedeu42MO5SEx3eSCSc4jppgjq8uOVY2verPE=;
- b=QxiJn+YUSskDJ0toe3bfQvw4dfsgv9E2kteUvI0xAj9eG9kbHGfpOZEE0fufDVApV/ml7YSU7O+dZ5fjLKUXJjvxjm2t8KCnRTUARTnlccEUsSMFhTkmCja56z2+62sIokyh5OpKAsjrQY+PLGRRcGXQZCzxb1ROljyXcYtJYuBQXbWZJXTeob6tORIv7d69AC/P0NCEx+zhxUOaAFy/RzF84MvrWMBd+6BMh5nNVBUFNxSC+PAoz0DuMxIdHj8sv81tQs/mJBqP0iY89RwnDuJm6/wLpSojB43l/Qsn/N3Ae39c2zNRVbD4XC6N6yOt1DH6j+o/XNhAPbd2PiZdnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VIttIXAedeu42MO5SEx3eSCSc4jppgjq8uOVY2verPE=;
- b=NXo3ixGeObY5ouT5mY2F71APx+u71ghpieHMzeTp+3Qb9dDOcR326uVmI8jk1cHLIJUcrPQj1lYeNYyJy+4O+KEm6L7u01QQ39SWiWIn+yLSYbmRL6G122KXpYQsWywDx/Yesg8t1ktRQD4pFw83G+MSOCqJ9gFWVnI81ccmlb4PyOjWd+jaWTkECkA+crKy4tW5tYD/jUaG+NkA6E/HCPH42NqPMkORm8frIlBnmgt0gSUY+8iVIzUqJVc4iLtbgVigiPS7te9Pk2YPxs0OxdLz/QeIUfzMuS0le9vIPgI6jl0vtYGZSZtYNd5IQOeqQWQmEyNmYczhBG1HrHUlJw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU6PR04MB11088.eurprd04.prod.outlook.com (2603:10a6:10:5c3::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.20; Mon, 24 Feb
- 2025 19:33:23 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 19:33:23 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 1/1] arm64: dts: im8mq: move dwc3 usb port under ports
-Date: Mon, 24 Feb 2025 14:33:07 -0500
-Message-Id: <20250224193308.407606-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0105.namprd03.prod.outlook.com
- (2603:10b6:a03:333::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="T5lrDe83"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38f22fe889aso4301946f8f.3
+        for <imx@lists.linux.dev>; Mon, 24 Feb 2025 11:50:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1740426624; x=1741031424; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L9+hwLdkesHaCpLTwGTfreJKZNomNLyAPfa//tZH28c=;
+        b=T5lrDe83Ni0nj36a7CYHr/5xQXPThELvuhSZgY5iPGzQQJ3eU+Yb3JGSs+xgdNhPkK
+         ZaksUoNDo5qemIlip1J6rnoMnoN2RmTn7Vnp/Qpi+xE4GyFrgGFdrrlSiLF20dzzoYqt
+         ddYUgXhQjklTcW2fA4OB/p8rtlCU9jsg7e4QGk1VDK3w+iLkJcmtQOLp2KGyUoPCqXCc
+         R3VkyobA/53Agspl4EuMt1HRVJis+KcxEJ40COkjPTQhOKAlujD0nt0Cn5HQhwcJpoy3
+         Mngy/gPD/5tdhBH1YS++0D85W1hpnSmWsG6m4vk/7oEV1nyef5AhntR9Wg2MnyJ+gcZj
+         QAwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740426624; x=1741031424;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L9+hwLdkesHaCpLTwGTfreJKZNomNLyAPfa//tZH28c=;
+        b=nWRUK43pFitQyi5kjwMKpp450S12yY0D8WFLLwIWQGoaeyrEHReQTJK4ZJMDzbiJng
+         XyN4UZWB0f5BW9BvmDn5M4p/dbse0i3/GqiWullO5hdT7MyXhGNBYm3J36GS9ymPIrx8
+         ysNtB4L3v8gHEGn/A9MqlRnQgwqmLUob3TWAmjt3pECO5kzUamuXvkJkwJsDydVmMCJ3
+         Fb3t3T3vCSxVERZDjoRe3D0JVqrWY2oWfX3wMJDZoZBPArWiH6jToy8IdUGCV0rGxiLc
+         xGMfe/TOb/C+SuQi1H0syd6sDrc9QhPBNbxxYBh3v30oZZCrdludY0jsTGHjISu4ziI5
+         yNeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNI5GOdBy57DlLCFM6JXcDqmadJ1KjhmE+rbONhT+egPB8jzT9fQ81ZIQzS3NceRTWgcU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwRQAStXHIrniHsjd7HO/2sx3R6S+gjPE389kkUUygC4QRR/tva
+	YtTxoGAF64EmS0VHa9mhoEgwSC10EIwRWOKK9ObEs2titT3R3VPZjDuUvKsFtWY=
+X-Gm-Gg: ASbGncsEHzQRZtk+KkmxZZ8TGpSIkv+84bgzbKZz/vM/Ch1oU1Ic1b17dhySQaIgEjV
+	zQP9Y6EiQXV86jSUXga/2p0TOQDBmfvnDX7H9avn00Fq7E7D3ysP5Hpz9gQgecsRssbg7xsCJYI
+	dNMytpGyaWyC22OEV5Ovqr3hKpqJD+LelSkqcIYuViamhitjmJk8m9MmqV2W/aRhtUGOEOiRLGa
+	ZiwcXnVrE/YjlRAlsD0gqvKih3KTMnJ9Jl3wjNBOyj/lFmNvpjGhOX7zgrN2FtMWs/p+5M3i51G
+	Z4oKOHOtNSJ4TWTZp6dl20Df
+X-Google-Smtp-Source: AGHT+IFyM3bVwnZAodvVkV3LiEo56tzMFahJhbq1Psx/DtYCXKVCQ4Dxpkxfi/9ZT236MmccVMOpNQ==
+X-Received: by 2002:a05:6000:1373:b0:38f:43c8:f766 with SMTP id ffacd0b85a97d-390cc60bb96mr371279f8f.31.1740426623515;
+        Mon, 24 Feb 2025 11:50:23 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:eb70:990:c1af:664a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab153dba2sm1315295e9.16.2025.02.24.11.50.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 11:50:23 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Johan Korsnes <johan.korsnes@remarkable.no>,
+	Bough Chen <haibo.chen@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	imx@lists.linux.dev,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] gpio-mmio: Extend to handle pinctrl back-ends
+Date: Mon, 24 Feb 2025 20:50:21 +0100
+Message-ID: <174042660990.65481.17407135211920816325.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250219-vf610-mmio-v3-0-588b64f0b689@linaro.org>
+References: <20250219-vf610-mmio-v3-0-588b64f0b689@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU6PR04MB11088:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5546de72-e4dc-42fe-f0ce-08dd550a1a39
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|52116014|921020|13003099007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aNI7u/g8PcFwIa3oO50xc6uonmWSViIeryj1S+zyIg/csFTv3mkLAqlNqoKx?=
- =?us-ascii?Q?r7v94V+YYjyg53nwsy78C6VAXXsXlzJ6QGifYdKd43kTBKqwXcRuHw5nOxpZ?=
- =?us-ascii?Q?i3JK8ltMoM4G1nMoUvayOL2SqjBFp/BTOWfGeWshcGb5DcBSo9+Ek4DRL3aI?=
- =?us-ascii?Q?VSMjuHhwd390Ukt4hZbG4Q7MTNuEQ/px8lQ5CInHC2yma0cDt9cCEDHyUysz?=
- =?us-ascii?Q?YU1W7dJwvdSLZOBci50QAfa1WZQ4iC33rQyNWkH0OI0nd1ah/2/TkpvizTr6?=
- =?us-ascii?Q?qZYUqj9MPFLVLGtMH6xZl6AFhmw5pzPjn0aenbwkV8PHE+0NWs7FKqiYausX?=
- =?us-ascii?Q?OJfVeJmErSI9/jkkx3be8U7zQrechSFZCQ3ozcHKaLFTNMMz28R8wYZiMN35?=
- =?us-ascii?Q?aXJ/FrrvKl67giaPjaM+Jgqmhxj36euF2e87bLw9oFg6VTcFruBHwDhbmRrK?=
- =?us-ascii?Q?hAyRYGaA97gyOgNkIZspeCe9wlPpNXOjdatog9aL84TiQ5OaTanlRsB/Py4e?=
- =?us-ascii?Q?wdIXu251glTSnj53fq7CFSk9suihH+0UyelcEEqRHDJYKOEpRdFuZFnMNylh?=
- =?us-ascii?Q?WGNPYiz7HuKw7nrYvnwl/atU3IDwAJLXlxGzp4pGYDIsMQaVu1UHVoZpusgd?=
- =?us-ascii?Q?IKpmFJniZDmUhfhOK9NZ+tmOv+QGwLvjmO8nKLlZ/1OH7fOe9d1Fou2Z2y4t?=
- =?us-ascii?Q?gikMRpEf3BHp2SmDBV54+3gFiPXR7nLtBW5qtwNa7bS327ZEZGFmwHx8Kxx+?=
- =?us-ascii?Q?udES0yomVbd0WP7/7JUxzSR4Hp8tc469J9mrEoCbePeYgY/vNob84EhozM9j?=
- =?us-ascii?Q?oabAtbk/Y4Z2jE+0p00Zw2SPBIhWSAfI4OOop9A/j/8Vn6cz1mJ8fSs0QXZw?=
- =?us-ascii?Q?VrYeo0aqmGtqvbrBcBTHGs/Vp/lsuQ1Sc+jq2hoT1ANuUa0cSvfmy2x6YlC8?=
- =?us-ascii?Q?4Rmzw8FaGCXGZ0dqPr4cISPfD38+vtWM2TZzX//WeRXTAxOz7xdpN2lBGWD1?=
- =?us-ascii?Q?4Zwm2uX9mygEneRX2ZyojYe+hwf1ZA9zEED/+qcT/iaDH9SXr8InFmfFDxog?=
- =?us-ascii?Q?nTtXhwcHhIcD+CbAdjhdifBak/BIYbzI5CluyTV3a7GOup6itpPsZw5xGPHT?=
- =?us-ascii?Q?Rq9ORUFbX/jBTISM02WwyA8Ylup1xZTCCeZFgwT/qQqZzJklRgKrg643JHLF?=
- =?us-ascii?Q?H2dXY0zYrdE40W/9ntMWhibqXHINKTrCo9h1ZNB7mpt1VN6XmJcvus5jKHNf?=
- =?us-ascii?Q?WaD7/3foyhXlMYPp5rhOq5fQzMoqCnkNSezV4PlVRD9w2EXBjcmc6xAPFWoL?=
- =?us-ascii?Q?lMVejNojm/TV5YpTSelvIPumoHEG6BjG7BKnXgXJKkQ/JqtWN5yIuFf/0K8D?=
- =?us-ascii?Q?6BaJvgGXltVA2PYauWf8APBhvZrIst1HGtuo+XhgM2hbDMEcvA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(52116014)(921020)(13003099007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YhkCZ8aOQnmIjVQJtMl8+ZLpQAWOpmwBm9hgOfiMIXFCxAZIxwIdqk8JPFt7?=
- =?us-ascii?Q?2ps71xGohfLl4oXB16G3lgRCHlHuiRklRJr+L5ps/MkD7fMKZbMnlsF05hoQ?=
- =?us-ascii?Q?B/6pJlXjcp9kTrto2c53/t56aNusuqcN4kTTej/Ut4Zn3ECLEdhVNp0TeM2l?=
- =?us-ascii?Q?+SybD5978bdRI8lVSu10M6yZKjLyvlA6O5wU0h4/SUlqvK9jMTkRX6QU/zUN?=
- =?us-ascii?Q?46OcdtoWWv2GH7XT6YasEysMoAgK3CCOaRpbmiX0WdlgYxJck/P0yEdfkYnJ?=
- =?us-ascii?Q?iKNF69iwvbmE8pnHz5S3DSmEOcfdk+ZFz+jho4GeQwuRUsohJvdQ/9+qlTUn?=
- =?us-ascii?Q?O3NNkROc/ylTJ+Ma6qNi1ujVgVq0Wshwxp3CLCO5A8l2iGLuYquZ9IZJizll?=
- =?us-ascii?Q?ueq2QmGxgWQ6fpxWncYoEJ873coIiUNtAK9NHguygxQN1cDpUfskvE9TCSd0?=
- =?us-ascii?Q?EqNRpZew94F8ncvt+jOokku8Joqq4AkdFyANH2V7iy567GRxcx0laLOOj0AF?=
- =?us-ascii?Q?dWeKl4SQI+tHSUn06kNyWRodZkoMLV4ynCR16cPYKhPk9aKDqUaxJ2xHcVCd?=
- =?us-ascii?Q?icmADRy6FngC/hQRsG6ZO7y9MRmimLqiDq6K3axT0y94HgXzB4g+9igQpQkT?=
- =?us-ascii?Q?6/4y7rcVq6Octaz4reMGpCiuzSXpVMppQrsP+Uj+JtRfpBL4JyExzaVizXPh?=
- =?us-ascii?Q?CEuTMuekzmA/wFrLY8/DZQ3v/v92OYVED8OQALz2RHW6FTC2j1hbBdTLdR51?=
- =?us-ascii?Q?5r1yiioVOvrN+Sx/1k6I1v/ag3C+8y204vhCWkwlx+u+IOjVLoxz4G4aT+yN?=
- =?us-ascii?Q?fMzv3oFr/Wa2QgoCRwN8CZG5n7RE4varGNWrlVPnPCQdYlYBcNr5+lSlNdOe?=
- =?us-ascii?Q?A3UTzvAByh/epwYPDXJTiny5nH05x/TGKOs/skv2J6SEZuWheUYLar3gtl+D?=
- =?us-ascii?Q?BAVa14RGVjkP5jzEt3dNNiW4vxXPmhxSEVhqdAk71fbAxTDvGbinTWTCN+ld?=
- =?us-ascii?Q?B1+pLKlELKEFJ1A7YEzl6ycHvj2/5YU7KZq7lWLi8m0bCpUzsrJh7/hX0Mp2?=
- =?us-ascii?Q?Ar1KpIqOOo43e9GhPGJmaOP2eKFhjEnwcRhUd2/QtbI/0UBWzUDRZUjM6Brp?=
- =?us-ascii?Q?LaR4OoYgQbcdX4eQyhCGcw1PrB3NPFvArv/djGGQY+sqsPuoWYeGcxfzAKs/?=
- =?us-ascii?Q?2RBjvA8zsyE7gU6nDfgU1dXeG7lmyyDDZI3Wg32253k5oyeIuyffKnJpA/0p?=
- =?us-ascii?Q?mmziD1Lq76BUax5rkQwwnF/NfdPOSkJxRdQLXxXS3cWt5zRIBLLeCgjDf4Jx?=
- =?us-ascii?Q?xoqotFkvJP24Wr6nPQN/NcAs0H4Pb7gNPgBT8ClZd7wIpvP5BpC6IFpunSgZ?=
- =?us-ascii?Q?LrRYETllqYVCDhutHfHDWcO9+I5AaPW81YkHbtEe70rKy7CfwBSH+mx1oDoA?=
- =?us-ascii?Q?f7zSlkcSsDrxaGJ9/KMQw0AywSIuWlZASfuciUhgzRcIxL0uAGenw1c3I7O8?=
- =?us-ascii?Q?JMYkbuSdso+KTalWXwjbVqwELSY4MdvnSV2qSOtObh0IQIngJsdHVvQ1W9QL?=
- =?us-ascii?Q?SQL6PHc8PsS+V6zULR4spaGkB4Ldd3ByGIbE8i/S?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5546de72-e4dc-42fe-f0ce-08dd550a1a39
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 19:33:23.6295
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eiwZGkSniaAXF+J9v4X8oxhfNsPbb23+gsBVhzbDMvI/37Nuyp6DH9AnGKxQ3Ovy45SRnvf3wixClK0AO6AMpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11088
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Move port@0 and port@1 under ports to fix below DTB_CHECK warnings.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: port@0:reg:0:0: 0 is less than the minimum of 1
-	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
-arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'dr_mode', 'phy-names', 'phys', 'port@0', 'port@1', 'snps,parkmode-disable-ss-quirk' were unexpected)
-	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../dts/freescale/imx8mq-librem5-devkit.dts   | 25 +++++++++++--------
- .../boot/dts/freescale/imx8mq-librem5.dtsi    | 25 +++++++++++--------
- 2 files changed, 28 insertions(+), 22 deletions(-)
+On Wed, 19 Feb 2025 22:04:32 +0100, Linus Walleij wrote:
+> If we're using gpio-mmio with a pinctrl backend the
+> direction callbacks need to finalize their work by
+> calling into the pin control back-end.
+> 
+> As I was made aware that the vf610 driver was missing
+> only that to use gpio-mmio instead of custom code,
+> I took a stab at it.
+> 
+> [...]
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-index 9d8e7231b7c63..d9f203c795197 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-@@ -979,24 +979,27 @@ &usb3_phy1 {
- };
- 
- &usb_dwc3_0 {
--	#address-cells = <1>;
--	#size-cells = <0>;
- 	dr_mode = "otg";
- 	status = "okay";
- 
--	port@0 {
--		reg = <0>;
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 
--		typec_hs: endpoint {
--			remote-endpoint = <&usb_con_hs>;
-+		port@0 {
-+			reg = <0>;
-+
-+			typec_hs: endpoint {
-+				remote-endpoint = <&usb_con_hs>;
-+			};
- 		};
--	};
- 
--	port@1 {
--		reg = <1>;
-+		port@1 {
-+			reg = <1>;
- 
--		typec_ss: endpoint {
--			remote-endpoint = <&usb_con_ss>;
-+			typec_ss: endpoint {
-+				remote-endpoint = <&usb_con_ss>;
-+			};
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index c19ffa8e8a79a..9e0e2d7271efb 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1321,25 +1321,28 @@ &usb3_phy1 {
- };
- 
- &usb_dwc3_0 {
--	#address-cells = <1>;
--	#size-cells = <0>;
- 	dr_mode = "otg";
- 	usb-role-switch;
- 	status = "okay";
- 
--	port@0 {
--		reg = <0>;
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 
--		typec_hs: endpoint {
--			remote-endpoint = <&usb_con_hs>;
-+		port@0 {
-+			reg = <0>;
-+
-+			typec_hs: endpoint {
-+				remote-endpoint = <&usb_con_hs>;
-+			};
- 		};
--	};
- 
--	port@1 {
--		reg = <1>;
-+		port@1 {
-+			reg = <1>;
- 
--		typec_ss: endpoint {
--			remote-endpoint = <&usb_con_ss>;
-+			typec_ss: endpoint {
-+				remote-endpoint = <&usb_con_ss>;
-+			};
- 		};
- 	};
- };
+Applied, thanks!
+
+[1/2] gpio: mmio: Add flag for calling pinctrl back-end
+      commit: 2145ba374069ee8edc9d29c2a6b56fe4a28a6e2d
+[2/2] gpio: vf610: Switch to gpio-mmio
+      commit: da5dd31efd2465ccc9a70a85bdc325e394256689
+
+Best regards,
 -- 
-2.34.1
-
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
