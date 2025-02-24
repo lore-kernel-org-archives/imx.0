@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2676F18CBEC;
-	Mon, 24 Feb 2025 20:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF9B1FDE0B;
+	Mon, 24 Feb 2025 20:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429259; cv=none; b=lrihbVxceCo6FohxqGtA70o4akyWAZPHPOS4ODj99fOiPA3wK4eXMWASTIVekBEzKy3ku7rkBysHdy/JO5jRAWilVtCz6dI7Jmz8lq2tQ4ofomCv8A27fzGxcy8IQ2AiisCZZcs/H19qh70o21MMBV3tbScySgY2rKCUZDyYOxQ=
+	t=1740429872; cv=none; b=UMC3rgdTgVluf8WNPSN7LSVVQFWKnrtO0ONPzVpmlXxxOInuctFsWcCW0FKjKKVfH15oDh4rV/aR4S/MYn4wnS1v2JFnQUkJJCY69d249v3yQORuuUCK89VAxlLloCPS3YTSPeLl8TFYhFzymS3gk42EJD2u2rhurWgTVE8iAw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429259; c=relaxed/simple;
-	bh=Dz1zijiLC2wKcMtXQyblBiBq7f6O6T+gxysG03w1iWI=;
+	s=arc-20240116; t=1740429872; c=relaxed/simple;
+	bh=6ZQ2uzFiFhD7gkzk+n7hLxToXvw9f/qLjNwvw3IN058=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vs8nuDDhpeGTUUrzehhUHDgORUGlhieYF/v6EQi4q163uZhNtFUnu58ltXLwoaaE864LqjPU+hUhNAICh3t+38FVOFBr/nTDhp+gJTqfRKzGJhmBy1/fnLs3eumIDI3PlKOhk2iRDXZ2oppWh2YqMtJhB2uc28e3EoroG4mGT8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RV1Cbumd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cTHlSXE3OVKoKUoOeDG3bjCWLmXBbW0LhmsqMB7ldz8A6aTxlmj80JETrMp3sCz8DNHGzVa0nvcGLQRuQ+5YQQ2a1lsm8sepS5sVdozAXdFdXvyjSv0liC7qFScaSYPftDoLltv2HJkTAj0SZa2EgfbgZr+oNXYBb7epeuY96C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwWbpNhC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RV1Cbumd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71810C4CED6;
-	Mon, 24 Feb 2025 20:34:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwWbpNhC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9165DC4CED6;
+	Mon, 24 Feb 2025 20:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740429258;
-	bh=Dz1zijiLC2wKcMtXQyblBiBq7f6O6T+gxysG03w1iWI=;
+	s=k20201202; t=1740429870;
+	bh=6ZQ2uzFiFhD7gkzk+n7hLxToXvw9f/qLjNwvw3IN058=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RV1Cbumd8WV24tBKgQ5qqJ8TiYzFAliX+O20CmNduxhAJakvOuDpScQfCFfPnLE75
-	 0NsM+C90r2KyfKW8KyHOR/Xc7FgYWgYw9QMYRVsmh3DMZL05qWmYqMp7FcX9GY/xPu
-	 +cbykTKspAKorz8aB4Y4zyF04hyVn6sQSw+LHFnk1UVYTtMJKkm1+pFbI1fVP6JKLN
-	 iTDk0LUgEFxBXZVXdocEYsQEhM8ZmHkZ3+M/VT87q6hzEeJK4eZmyFP4ZEY4psp90t
-	 SnMkZTXbOWYdQiI8IO4W7sYK1DcpamtMcu2eguZsEKzdWdVHvqASvuJTIltEEAx0Yj
-	 nYUhMzZxfrPOw==
-Date: Mon, 24 Feb 2025 14:34:16 -0600
+	b=mwWbpNhCqwW2+IaFJM8s1EadrnggVS8HGVSkSAatxVKhTW1CDmZCPuIV58P2ejefE
+	 9fFCKKpdviw7OhuqtW474AqL9TJoMz+idxN5Dg1PXNJ2HAJs/aJP2T2Com9JjsU/WN
+	 ccOvcuOl8SzV1MhWguZaOXc2gHGBy2MZfmB8pjl0yWZLUKRgLpAgoxCgkJBeAPKcV/
+	 6Mkkpf0jw2ofTdTGrB+rw6+cpM20zOg8/7qHNCeg+WOYOaTA1nymb9+I6nhpR0oc/f
+	 UM9JJvk16LHop1JdTSdslzTFJrIcugsdLECkKsvah8C1ZpSmpEWHx+fpN/InM+TFRx
+	 2YaKffluH7H3w==
+Date: Mon, 24 Feb 2025 14:44:28 -0600
 From: Rob Herring <robh@kernel.org>
 To: Maud Spierings <maudspierings@gocontroll.com>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>,
@@ -45,10 +45,11 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 04/14] dt-bindings: vendor-prefixes: add GOcontroll
-Message-ID: <20250224203416.GA4048823-robh@kernel.org>
+Subject: Re: [PATCH 05/14] dt-bindings: trivial-devices: add GOcontroll
+ Moduline IO modules
+Message-ID: <20250224204428.GA4050751-robh@kernel.org>
 References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
- <20250224-initial_display-v1-4-5ccbbf613543@gocontroll.com>
+ <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,20 +58,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224-initial_display-v1-4-5ccbbf613543@gocontroll.com>
+In-Reply-To: <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
 
-On Mon, Feb 24, 2025 at 02:50:54PM +0100, Maud Spierings wrote:
-> GOcontroll produces embedded linux systems and IO modules to use in
-> these sytems, add its a prefix.
-
-s/sytems/systems/
-s/ a / /
-
-
+On Mon, Feb 24, 2025 at 02:50:55PM +0100, Maud Spierings wrote:
+> The main point of the Moduline series of embedded controllers is its
+> ecosystem of IO modules, these currently are operated through the spidev
+> interface. Ideally there will be a full dedicated driver in the future.
+> 
+> Add the gocontroll moduline-module-slot device to enable the required
+> spidev interface.
 > 
 > Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 > ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
 >  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 8255bb590c0cc619d15b27dcbfd3aa85389c0a54..24ba810f91b73efdc615c7fb46f771a300926f05 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -107,6 +107,8 @@ properties:
+>            - fsl,mpl3115
+>              # MPR121: Proximity Capacitive Touch Sensor Controller
+>            - fsl,mpr121
+> +            # GOcontroll Moduline module slot for spi based IO modules
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+I couldn't find anything about SPI for GOcontroll Moduline. Can you 
+point me to what this hardware looks like. Based on what I did find, 
+this seems incomplete and not likely a trivial device.
+
+> +          - gocontroll,moduline-module-slot
+>              # Honeywell Humidicon HIH-6130 humidity/temperature sensor
+>            - honeywell,hi6130
+>              # IBM Common Form Factor Power Supply Versions (all versions)
+> 
+> -- 
+> 2.48.1
+> 
