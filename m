@@ -1,67 +1,70 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013061.outbound.protection.outlook.com [40.107.162.61])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2073.outbound.protection.outlook.com [40.107.241.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9989A2586D7
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 11:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689D725D558
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 11:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.73
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395480; cv=fail; b=mt2o8kFxVBizHDJSyTppfn5ZrdS3IH3TBREDRPml2hN9uc+1pMHFFEvQav08apl/9zSMkOLOz448aFHgv+ivZuqkKjfYMA9Q+EqEPIOOi3T+drdqYZ5/8WAulOzvs3n5PsEI0GPvrJn/s6qzL7KjOXo3R4lRNHAFvGSzY8u4R0o=
+	t=1740396598; cv=fail; b=STyJdmf5tQrLKr9fK7zyDZFlFoSc6L2sTHvqo89AP/5DXZ11O6RJTajpQEJ0L7hthpZWA5frifdSH/BnREnDqHB5AIMiUhbFiM0DMKXO6AnQThPqyWHd7EoHA8K2Q1yPMTJmJNMDaZ3S+bNJ6bw9dDknVmnvAPcI3Yt9HNJ/Hg4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395480; c=relaxed/simple;
-	bh=tyM7oP76z0Tl1FxTEsRvr+XgHs7dU3iBKonpUZtiduA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dusi4miPAtLwyODTpVmm40HXwkzS0wOnrz1wgU5VaiNUAR4uij/f5/jIgFkBn5sGzpUEG4UeaBMGEh+EKD1sg89F8tBRMElMq2Q/DFvThWHdhtoUF16zpkrQgmz3pxuLu4ET6I/MNv6BPlcS6IJPKsFWEvKWANtLTY4QStDBk6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iHYdAizV; arc=fail smtp.client-ip=40.107.162.61
+	s=arc-20240116; t=1740396598; c=relaxed/simple;
+	bh=4Oc9XOSATfJsapvDRUvROEn1kBs8X7lQebHwanmUA8Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RIIaffhjxXCBckmxALIiTCCyC77Xi7cU7FpYKihFLZwGtVDLx0/SeScWClbWG9BLy6OudEvFLMpPZ4/7MzhFPSMuS6ESBaMTJNF9LdBMZN+Zp3sU2mZTtEe+0O0YwImoV7jkywIwIfWQHzo8+6WH7luf+zNKSA2hiSq80IWBhdM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XogxnH4T; arc=fail smtp.client-ip=40.107.241.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iHYdAizV"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XogxnH4T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yjc/NKCVfl53Q8NC6TtOcBe+04o5qpsghkIpnnNj0yo8DEEkm6aGGSIa5hDxoxeRNg3CzsYQ9bGzgSwWP6KxHn9BDBFnIVyI9IpVLJXh9m8OHdDqxgUXtNJRlTMehMOnECnfkmYxmxy76Wcg5BPOApkvgG0fmoorZ1n8Ox2RsLNfgNa72uvXlTDtkv8oc9/uIr9r7npxZZM85SDgwR2oef9uH/Rq9iuU1Nz330S5QrBBjIe5uPuPI4LLMUypgArLo5+xlvZ5Ln93XToBRkSJaQIxCVUEbDhe7nCF2yq/rz7RhfXSmr1TtSZ6J9eoaxTzZU7LgEx+C52jw0K87c4Fgw==
+ b=CqY/aV4zlt00DzfM3Pu3ygtf56o/UeuQXxu7lDUcba4zF0BYMDxDJACBCcKm6T7hAQdmLlr8/6T1W6/bqY9CY7iCODbukM2ZjcS+wk9VVk0C72hN6r9kmrDuVpqnBtZnS5UlhXXGdPSZrrmTEHcJrT4J+dOv5JM31luhuUKwB516qZ26JvwoW8tJGinugQQ4pTCM8vnuWp8HvwK+AVfhJOFFAm5HzGBPDS2Br2r07Xkaphq7ZIHXvY4vqIkhWke57V3R3GsZXQ7e0i/D/wd0LpMbLn+6X58ANsyz2h4pDKOTH3AfVx/fWMIwfUCPjzmr+8p+gPcLSTu1wJzmKtev8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rVVEVsGB6zA92Y3v591g8HxBXB0akAI5243fq3KzmKk=;
- b=jZ6u92bwY1SmaD6kccH8g9uTqzb6f93WvElI2qH4AVXDnrMbVbTa9FqSY5WawTechjzbES9vd4Y8piWTNMXafDCYsBpJ6tgL+Mo12VE9MFsxegH1Haj9VldK4IUR5RZRFCte6O3VjH2GRn/BfDHLgNxr6azd4VvSUkCVDDZsw5AgKJcdLAeit9KVNQur+SC0n3TTsOuvHVFyeJ89Q4NaijUajDovK6CxC4mZdZcDK/3HPXNhAd4MUWYW/oWYgn5vbrZVN1rQpcQYLW+uezNV6IUV7OAAnZxM18OUcjdL+/sRaA4Tdpgd5CIzusQe0uoyo9unLmRGNYcCK3YUkvjCSw==
+ bh=zx6hBq7S3AXUvoSAgylFqU+jsWID7DRtjoYE126zu5E=;
+ b=A0m5oNSihczlUDV19e8lSL9OhiNDylHM7h5PMGVwfJj1PJ8tlRFk/oTsfsvKvMkhRcEUhUCeRzlshyBRUOP66wQD4QlYkRSGpiNhbclTxm9fVTKK1WTy7cvanqVRvXiVUW0gPW84K4ZpWYg1u8/cc7zGGcBWtvMo9+wgxRz0W00ebwyycLzu6+uE9Qx/j3sPPGFbDxbCo61Nt5E+bWrmDE8IYH+VGyDZyu8/GptjbMKkUtLScDACUQtYgFd29l+SJbSYwwRTGqKwk8Yos7mUCml2ddfVQ2bWmmbbxgxERSULonFyQ6wfnWr90P5ge6uQrggQbfiI3AlXK0Xqdj+gIw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rVVEVsGB6zA92Y3v591g8HxBXB0akAI5243fq3KzmKk=;
- b=iHYdAizVEaPXsAddTpn9pXO5ZGse+InutNbq57wHgPdY8hGT8smfBel8vP57wwZrqUNn54s9JYcIxvC9q70hZt9ppx2EKDDIfgfnVmlvMOMGdQDL2D4NB4x+9yZ4EcLchJNsj+N4ApQx9UNRjARzLQK277vy5ljI9mfkIi141vpfG6PYO3oy0DMVLV8QC5ma6P+BF1pmUz5Munh0ageLBakT2n/XE2PBrD3+fl/UP2GkGR/DsSSUFyfZ/3MpT4atSzI85NwIP4h49XeG08l2sTezlgVQgup/jAGN6wCjl1oCF3Io0N8iylRLzpl+ZDceLgY36zcs37WzINnxDp53Cg==
+ bh=zx6hBq7S3AXUvoSAgylFqU+jsWID7DRtjoYE126zu5E=;
+ b=XogxnH4TFA4KAa3u6fdi2ON09DQcX0IJ3d9siIPB1K0vimdI1Q8N7uOtcHLBAdXlUKjhD+7Mv8hlnzrL/2Yl/St/NPmLWWafaL8TJLnXrFx9hGxQq8ZoYLZhF7AYx63qkqBzvz1mENMNM603AUN08d04beeYsp0ULOZPygQ2Yqtb41ZVasFhpputNRjAudNu/rEg5PEALpvL7CZS6I2QrHXYpKodf2RICEZw830XzPbwtJu0PnHmu1oDqvBbFrCbstcXHcZIFlEon5I30E2npolqnoCOaMrsw2PkUL0ENyBHj4/1Ih0u9yVXebRb8Hz93LtosH+apG+F2FtRImkO6A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PA3PR04MB11105.eurprd04.prod.outlook.com (2603:10a6:102:4aa::5) with
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBAPR04MB7253.eurprd04.prod.outlook.com (2603:10a6:10:1a2::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 24 Feb
- 2025 11:11:14 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 11:11:14 +0000
-Date: Mon, 24 Feb 2025 19:07:51 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH 3/6] usb: chipidea: imx: add wakeup interrupt handling
-Message-ID: <20250224110751.7666zcafbyakvfb2@hippo>
-References: <20250219093104.2589449-1-xu.yang_2@nxp.com>
- <20250219093104.2589449-4-xu.yang_2@nxp.com>
- <Z7Y+gqu75xJyjy6n@lizhi-Precision-Tower-5810>
- <20250221032348.sncjhnldj6ecgeou@hippo>
- <Z7iabsMl4ilQqrXN@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7iabsMl4ilQqrXN@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: AS4P190CA0060.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:656::13) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 11:29:53 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
+ 11:29:53 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: ioana.ciornei@nxp.com,
+	yangbo.lu@nxp.com,
+	michal.swiatkowski@linux.intel.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v3 net 0/8] net: enetc: fix some known issues
+Date: Mon, 24 Feb 2025 19:12:43 +0800
+Message-Id: <20250224111251.1061098-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0005.apcprd02.prod.outlook.com
+ (2603:1096:4:194::6) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,291 +72,119 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PA3PR04MB11105:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95e692aa-a513-4c20-57f9-08dd54c3f35a
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DBAPR04MB7253:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0442c023-aacf-453a-cfb4-08dd54c68e92
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NEr5/kM5I7b7F1OI+KWLKhQ2cXN5xNxZAICO4KQL+dc6/HmK5Af00q4/tvW5?=
- =?us-ascii?Q?HcvZ8T6/5EqMFQNdVtzvERfEkL+PIZMJGQwi3wJ4MfQ+GFadjDetFdmX+iSJ?=
- =?us-ascii?Q?kwK7UkvhSXpI34wuA7B5UmV4pED3UPFQHhr8XXbMUyiQuqwaVjPIUPii1J3x?=
- =?us-ascii?Q?6BqIM2qjCzsgZzli0LlUeNgD+f6BzffiTlfD9qUaeyMr5NyoEUfdvyT6PUbi?=
- =?us-ascii?Q?F9Nzp7AydHeR5KO2/Kiejfc9GZyh15BFqWA9Ejm1jPc9glZcgA+EBC9FBeiP?=
- =?us-ascii?Q?Xq3GNv7Hl8Xk/+uRm2aZCbt6r+T6ixW/z1e498pY26GDLk62o6pyswf/j/Rn?=
- =?us-ascii?Q?VT422/hnZs8U8FqN3aWogWna4J4iNu7MBSCmmU2PxwV4YcNSjxCDKj/jtocI?=
- =?us-ascii?Q?/JV6Am0ADgzhlGp/HLQvQ6mmRq23yJj+zB8mk680FsfEwSZIJCkare1aRy1T?=
- =?us-ascii?Q?0VzAEH8TA2fWT+GWG9ntapEAKRrD8KfE+3pw8QzEMUB83w/Wpf8q4ysBBmdb?=
- =?us-ascii?Q?Xih3T30Vzq4Y79xqGrv7OicHGo8gJOb2ds6RbcERtJR+Zxu8TRRkKNQDG2U/?=
- =?us-ascii?Q?nBqTccc0m8cv17Ueno6BFZgPy2khqRUuC/bdh4m5HtbWUPiJrJ1/3cUqivYB?=
- =?us-ascii?Q?fe+v6uqDM5I/xipUW4cq9Z7xNZXhxI18CHHNmyA7zOuY7yUNO4UhF747nfQx?=
- =?us-ascii?Q?rnvwFtRHIzNBcEgP/cpEdYoKV6rpEmNmdPR6Pr3dJhKT6HgV2Ic9MT2mFxtg?=
- =?us-ascii?Q?HnviB1pWjcGcO685gncaO/oPdPs1/YmaE/zLg5BlXQb3XXUjhVe1VNXsCRlv?=
- =?us-ascii?Q?Ty8LKMlYP06vy91/NE/k8dGLG0XiHNTmtyXAc999I71k5AUlwv4FlpyeXIlS?=
- =?us-ascii?Q?wQ8dv8jK3uQpHn91D11b3U3NY7DPU1BfbpcuWOBz47moedf7YvKMXkuu9pix?=
- =?us-ascii?Q?QmwUoxDSRbHYEE+UjClnb4F2qL115JvncIUAQq53ARZdYYCrFtBIn2uTtZHn?=
- =?us-ascii?Q?y1d1+WDfx81VeFmuQXFI2gBmU1vdJS3F53LqHx6mqPrqfhLU+eT4DoUFcidt?=
- =?us-ascii?Q?ZzGTu6tLgjJzymYJ/Whlmve0Gw+/2NyipzyV1sv5kSbDBSU/9Ho0IO8aI7HP?=
- =?us-ascii?Q?E+uupWQY/hkzkE19byROPwZL91+YByUEWi4ayuLrQt9W0Beq5beOsh1yAqoV?=
- =?us-ascii?Q?UkOnG9aFyjPxv4bi62M/DetFuI8wlZzz7SZ0ML0RBtiTkizsdv+ehc/QQyFj?=
- =?us-ascii?Q?wqtx0oPcLn7thq4PbtO9FoA5PGx+2YVgAj39HWSHN4TBBDHrbswNJQ9b8wrc?=
- =?us-ascii?Q?9YF+EeINfpHoYhGxxN5rFIscr5061ZuwoSGGaucYmtkopexF8oB5QasK/xwL?=
- =?us-ascii?Q?vepUu9/wQ2PnxPuMGU69vKGeea6IcCPXATdG4Er/jHmwkpg+Ebd8gcXVM8ki?=
- =?us-ascii?Q?s9Xtsp11jdiWYknaYlXWH3LoYTDFRisv?=
+	=?us-ascii?Q?SkNxenD/uD5P1MEtjW1E4rQMdC6dbHJ9N9jnhcXDV5x0KE11kn2WI2FviyPB?=
+ =?us-ascii?Q?MY5qNNHVlfNvFR+f9m9GMTGhrNRxfuB58mx2RVx8peJsMMoIkmGA/Tq9pT38?=
+ =?us-ascii?Q?5SCEN7WbWYhQA3EEbpxEqwLTgeVbXVr8zQAyZ/O68RvM+2FaTfyKn2q8SrKo?=
+ =?us-ascii?Q?MsSjpytNyGgCR/+kYQEDg6v4eIpIsysVbbMqOyAum2sNvHKvfUfyZBDcoURT?=
+ =?us-ascii?Q?3eJNW8/D7QJ0rCeH5x0zG/4p6i7PZhzCC1XsEUTqDpASllv1vSDFHHZgP4uI?=
+ =?us-ascii?Q?Z6wFmjX7lBMhBSMR9vdB+Z8cWJPsUqMEbdKZ1+6z0uq+qt3DUceGubuk41Hv?=
+ =?us-ascii?Q?mFA1I4JshwUVHC+3LadeSD8pZfvOOuPl3lZH1D0pEbcMUxGq+UYxmFF06rqG?=
+ =?us-ascii?Q?TdQv7t/2IKdAqCzx+IUgs2aCdSQGUVkZkp2Hsd2weAAxaabFMTMoXl2E0FzP?=
+ =?us-ascii?Q?n/d41J7vV3D2sXMtXkc3W2iQZ8mpCs14OWZrCiomJF4z+8qiYojUa4xKq5uQ?=
+ =?us-ascii?Q?jtzDrvyMIT+xT+lpR/P6Pvf7RTJOKrutxfSHBCLwzRV1Qtpk0iOb75GBd9cA?=
+ =?us-ascii?Q?RrLOQTRd8S5qYPMFrPoojP5X1+pWCv/AnUV8y/9eajAg4+h2z9NtUIqjs8Cy?=
+ =?us-ascii?Q?b9kuSQf+sDq4dKDmaZgaIHC2WfbF7smuAe6YjhRnuMSL2xl9BURimYSqNc1S?=
+ =?us-ascii?Q?t/NwYwNoagsKLq/KHaCVzliM4BWBCPzLA8goYs9ftKzJBa0LIEdEskNP2Pl1?=
+ =?us-ascii?Q?ZCefyyDUzacurUWuLa9mRAvBgNMfj9f3AeQsNFpcLA1ZMB6Xq5VQTyMkcFua?=
+ =?us-ascii?Q?+e/8r5NPqWfVc81s50mZefgt8JVaY+N169M1DgbDJBT6U4PGmosbXOflI6UR?=
+ =?us-ascii?Q?y9Ll42eqAv9m4Yof3EL71e9MP4VxbRW4TjEOAJV81CeSnfleWRDZIDz7XviM?=
+ =?us-ascii?Q?1yTTJnp9xB2UMbSHHM4jRMGu44+g1X+nwHxhIXDmEprYR0bU2niRE36bdyC0?=
+ =?us-ascii?Q?GmZanmyczc5y7w6hKNJ4vIpfKSd7uXLwgR1+ScJspXVu60IY/3kGbJG2SgUp?=
+ =?us-ascii?Q?JYAGbvboHUKjszSWzUoe8s/EZbFl4JA5wcIsG48+jH8Jj14oig7tIkw2HVV0?=
+ =?us-ascii?Q?9iE1ZzBMKYaMxTElDvOVTW7Hc4z8DfHJUiB23/pqmPTLDcNs4Xc4U5+ZHL4J?=
+ =?us-ascii?Q?bA1RdNJDIcesYPk5Ofc2PxLRJCt6jAbUUQ+IB4/spFRroeVYAz7lTow0ttq4?=
+ =?us-ascii?Q?KCSmQn/9gLaFpPQ50W/oUlPKKHVyqLPOqiGEhocC48eyn0q+hOvOdhENvKv5?=
+ =?us-ascii?Q?t1CWam5hMBbqhM9xYKh89wcqDQW/HNvCAHYZcuCRWZpNL6q7l/YTy2VGNn1+?=
+ =?us-ascii?Q?UC4pXVy4iRwNN4ezQ1Xiz0HkUeTgrNetLPepOTXsD4FdVfjvWcXfy3rC9yGQ?=
+ =?us-ascii?Q?Y4dlbOucEfE+L3r7iGjxIKEN7o5cK9orv+uOl8CvC8+37Bv5OM1KxA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?t5AwmMflcHxEE0xEyNToc6InimoA7vy5lT1ymXrEw5S9fIYPSs++l/pDjGlu?=
- =?us-ascii?Q?qKarrwO522h38HbjwJ3UOeTq8FGADr7dEfQNSExczos+pLB3QRA8EygfZA2F?=
- =?us-ascii?Q?Lk/ZbnpHVN2QVHm1S+JG4m9UbBXEgeMODC6+i3IKYUHtK51mj6hZ60FDZVfy?=
- =?us-ascii?Q?tUHodH/0tXD6eB7LhVe0npeOPEXSFwQAwLY/Cy9HmAI3bFk9ImFIDqVZvASH?=
- =?us-ascii?Q?WTsOIw6wofKQgkFp0txd3/wv9d9bH9DvLjGv/1kgjI9qAdiSXgMJD2vv3YAL?=
- =?us-ascii?Q?VASX5oU48+c2TBiEnHNDReXmjQrkhGOHmqscnTNR2m4dAGn+ez+kQ7uuy6Br?=
- =?us-ascii?Q?DMzptxHPSWqoMPLXD9FE7ui2unw2l/xv33gu9/i408nk5LALjIdhxDnyOXSr?=
- =?us-ascii?Q?fZ17eDXDhNCgh2RMkw7vqsSWdLGAq19pRX0vbC31wAGEc4Bo4uSu8GZjtHGz?=
- =?us-ascii?Q?9Z4PJoiOE1MO2fh8C3Vrg4COinGmsVGqQSGNAK0HVnoguVq3/wfQGDgOianm?=
- =?us-ascii?Q?s9+WtEeZlBjk5Yo2+DFnl7oWJtQFBAVxe8DaMAqcIC3YDXdlwcmUtzwHV4El?=
- =?us-ascii?Q?7ZFJz6o+ruxQShb2UiUv5K87CSHtb9wvomgP2sDJ3DM2r/du97Y8d3sa3kbs?=
- =?us-ascii?Q?AQlmGfwwew8jC84Jj7SCLS8uqBzo//uqKVVKITA6eUKFAWBoxdGSBcoDySUq?=
- =?us-ascii?Q?Y0ia6pxKfXrhhOaTKirqonqB3jFKKHkchCg1ST6eJW3lBb05ivm+KmUmZny6?=
- =?us-ascii?Q?x/yj2+g8T+qMlUZkKTd51gPZy/4md9hHfrYxKx8gz8hQtjLbKBLGlpVM7tCH?=
- =?us-ascii?Q?W2x0IhJSwGgtFfIaBmcLSgnh1CMjgdNo/C7ScVz6X/Z+CPlGcruu4pmCApmr?=
- =?us-ascii?Q?ZEtaHU14k5Vr1usw+08ho405frrW5BMBB/bgn6JGBwJy0o75v3wpOaltcPAv?=
- =?us-ascii?Q?6UN/2WCNHYGSqp8pB9UV7A1uQv1MumHdSFjgq7F3IiZkAHRnkvaQ7t69UF72?=
- =?us-ascii?Q?6W4Ux/BK5lvjg+HR7w0TIAVncGNGz2usjE0B0Ji5BQ+3MqdUKuDtrbD/Ofei?=
- =?us-ascii?Q?tRgLIlVJvkuC8MIFNIbzcbB6jlTYhWzfVicI98RFD22ennx4zqYa1W/m6a/9?=
- =?us-ascii?Q?LNqMvwSRymaLmp3U+LWAq8F4R2z7Skgtel+eXyqqWxJX8S22C7DAWKC+tQDI?=
- =?us-ascii?Q?CERMEMjX7+nUCeOTMeFm9rFoeV15fpxQ9MW7vOHiTJubTHNKL1kLXQAB67Rc?=
- =?us-ascii?Q?SGpyDfHPfMdtztMNO2WGVnz07Vzr/nYc0jefRhBAyXaRWi1pzYvccDRI3DFb?=
- =?us-ascii?Q?y6MNjPK8q8xVJ2VA2Jw5E4fmHfFEB2QjkdXBIdQz0I7LQA3UTtH2I/oEcF0w?=
- =?us-ascii?Q?5Ag4Yxmvjiqr14KdXaTdEajgHNuyrE1eZutnqdwxEns4D4wA+/VTIPHgh/8h?=
- =?us-ascii?Q?80EtqG7IJIG9Eq2jimEadL3PeBSArBtTlVuxOHFiQpyS+JJJcQ+6fPk0Ql5P?=
- =?us-ascii?Q?A85qEtYCSgAWUbVecrxfNYHswhXqHyMvTUlpiBULSmYGiaSOm8E/fN2SPtlI?=
- =?us-ascii?Q?NFzQgtLbvIoyEm0u94rw8HcB64XYDhNzuBgDkjtG?=
+	=?us-ascii?Q?w3JGJSzB628DmDQNrU4jdgPi1mpMciU1lDtN+sq0MOwc7q6LSjy2AJgwco5q?=
+ =?us-ascii?Q?JxolkHf+9hYwQV2Fnh/3qLA3TrBejSWXyYmwIzMwassiP8Pwn1N50Qe3g4cw?=
+ =?us-ascii?Q?jl5eqHz+RmVm7vEVRjnWX5Za8ezM/Ili8t/gFOs7sCpgIt7nunorO4CEejgi?=
+ =?us-ascii?Q?fUHLegKRj/QnOjALsosiLxSU10XE4XJJUGkCpmvPLwEZhEI7nRsntwdofy2P?=
+ =?us-ascii?Q?bv0s/NOHZVgRRvRDHPKkv0Y+ywO9/2MTEvwju9c//pBm/6h37Gv/AISYeuOx?=
+ =?us-ascii?Q?2jntmCgZ3zSTXzFGbGlO6eQEg6G0YEOe+0zelSRAXedcl7cgMqd+bYktf/Rt?=
+ =?us-ascii?Q?hHJrgcgI16dI+fkaJr+CUsYaMLa4epNRSKGWSVWMCu4nTZJK2GPoYvqDrX+M?=
+ =?us-ascii?Q?6skPXKGktrhDsWg6e+ZjgB8AkZhIwXxazwzAQRtAzaI+KcXvu/IDLSLZy7RQ?=
+ =?us-ascii?Q?rg0iVRqGgDTCgBVO9PApQv6xA/qaiDsGrRsnatfOcrkcOgnfGzlzWefNASJq?=
+ =?us-ascii?Q?mWrM85uECDZfM6Ood1lrdd+Vq4SSd/O/PP5zK8uKFizUrtM1ibPUvPIle836?=
+ =?us-ascii?Q?Z84Cwk+r5pFTKgKd9d9LPhn11l+7MFaMe1FE4YbfapabttRRKFaxkjNsDhrP?=
+ =?us-ascii?Q?K368aQS0G+0cud5ibmtDT+mfqhri6Mc/6eGoIj5pIMc4HgXL5J1csECNTlfY?=
+ =?us-ascii?Q?HclqUZABv7ExRnMUY4ZSE8KY1BPraTIN+rffpNN2+MAcSbM35vS3iJmTSNQU?=
+ =?us-ascii?Q?XQZmFMmuyZJJsSl/ir5zC7Rkq1gT4pyYD0/3zzktnf5XXRdzmpKZbfj2rz1F?=
+ =?us-ascii?Q?8TUVylGP4LGPaFGlNI7EKqGa2VQY9MPtVJp9R69JChDPiI9nFbyYnA8iItcn?=
+ =?us-ascii?Q?BdkhRoT3/4a0Pb/SwdoKQUPy+eMmC9CHCF1d85rXnZS5zSJwyubyYeAP19M4?=
+ =?us-ascii?Q?aL7/+hgICwnvscwVcmdgGrgms9m9SHVmbYWx7UqrYP2FbQEbQ0eC58L4Y2c7?=
+ =?us-ascii?Q?aIVgAeqegqRk1PIdHnnnLxbyf4V5ErwexDPUvMFC0Nr61uYJKTFpFYXrPvk3?=
+ =?us-ascii?Q?9LlLK8QS7ka6PJ11e3v9AyOwbGdkGgi4D+0Th726GIte8/ZXLFK+RAzex1+H?=
+ =?us-ascii?Q?FBVAkrhcKLpYu8bjGIwU3jQZlAecVFyoeavLI8eeaotlk7wb8j0dZEvy3iGR?=
+ =?us-ascii?Q?OWxxxs4Fw/iNj4oMMAZo69V1LUPBT6tYo+JlcyKF0T6xUNDWFc8RHUFGhUXo?=
+ =?us-ascii?Q?OAh72cD4l1Rg2FC/6leEHo67qiITf4J7AxTVdasI1BNPm9mpkGXaHb8wNPD4?=
+ =?us-ascii?Q?aQBG5pHRIkfC2qYLKBVAxB+7V7Ven3Iogr1B8CJBw5KJrDSOE5mjS05AVHxm?=
+ =?us-ascii?Q?bm/j3xUmg6y/c6Z2KCz9FPPBc020qO/M/PdMNKjtBhvT7ePa40cb/14PlwyM?=
+ =?us-ascii?Q?cCFXBl/gMUjX1kT/eCrmP8+awRjcT1in7AbL5rGGn3MWmAUWPhjBeX/J66+T?=
+ =?us-ascii?Q?bb5kjj4oRhuFRP+Xbn/HUPuArAN0w03lCodnbeOP5XmjLvRul78tSojhK6TD?=
+ =?us-ascii?Q?664EUz8LeEiDGK6op5YM5v2jWag/A4hAgJE192gw?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95e692aa-a513-4c20-57f9-08dd54c3f35a
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0442c023-aacf-453a-cfb4-08dd54c68e92
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 11:11:14.5009
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 11:29:53.0965
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZSaBOsU/0q+yo3LGwi0TCc/2pTFcCkoLbFmG4jb3dIXwZXeznfrQ9VuO8eFsjYE0VQU9cwG9H241XncSp/5LNg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3PR04MB11105
+X-MS-Exchange-CrossTenant-UserPrincipalName: F+a5qjMUVGH212g82Fsr//DdPTAyopS9IqRaWVEhMG/jbcGa76FBEjCPvvwJp8zfAm/CHG5MgBBh5psjGtkrbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7253
 
-On Fri, Feb 21, 2025 at 10:23:26AM -0500, Frank Li wrote:
-> On Fri, Feb 21, 2025 at 11:23:48AM +0800, Xu Yang wrote:
-> > On Wed, Feb 19, 2025 at 03:26:42PM -0500, Frank Li wrote:
-> > > On Wed, Feb 19, 2025 at 05:31:01PM +0800, Xu Yang wrote:
-> > > > In previous imx platform, normal USB controller interrupt and wakeup
-> > > > interrupt are bound to one irq line. However, it changes on latest
-> > > > i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
-> > > > This will add wakup interrupt handling for i.MX95 to support various
-> > > > wakeup events.
-> > > >
-> > > > Reviewed-by: Jun Li <jun.li@nxp.com>
-> > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > > ---
-> > > >  drivers/usb/chipidea/ci_hdrc_imx.c | 42 ++++++++++++++++++++++++++++++
-> > > >  1 file changed, 42 insertions(+)
-> > > >
-> > > > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> > > > index 1a7fc638213e..5779568ebcf6 100644
-> > > > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> > > > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> > > > @@ -98,9 +98,12 @@ struct ci_hdrc_imx_data {
-> > > >  	struct clk *clk;
-> > > >  	struct clk *clk_wakeup;
-> > > >  	struct imx_usbmisc_data *usbmisc_data;
-> > > > +	/* wakeup interrupt*/
-> > > > +	int irq;
-> > >
-> > > use "wakeup_irq" to avoid confuse with normal controller irq?
-> >
-> > It doesn't matter. It can't be confused since the driver is different. The
-> > controller driver is core.c. This glue driver is ci_hdrc_imx.c.
-> >
-> > >
-> > > >  	bool supports_runtime_pm;
-> > > >  	bool override_phy_control;
-> > > >  	bool in_lpm;
-> > > > +	bool wakeup_pending;
-> > > >  	struct pinctrl *pinctrl;
-> > > >  	struct pinctrl_state *pinctrl_hsic_active;
-> > > >  	struct regulator *hsic_pad_regulator;
-> > > > @@ -336,6 +339,24 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
-> > > >  	return ret;
-> > > >  }
-> > > >
-> > > > +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
-> > > > +{
-> > > > +	struct ci_hdrc_imx_data *imx_data = data;
-> > > > +
-> > > > +	if (imx_data->in_lpm) {
-> > > > +		if (imx_data->wakeup_pending)
-> > > > +			return IRQ_HANDLED;
-> > > > +
-> > > > +		disable_irq_nosync(irq);
-> > > > +		imx_data->wakeup_pending = true;
-> > > > +		pm_runtime_resume(&imx_data->ci_pdev->dev);
-> > >
-> > > Not sure why need pm_runtime_resume here? There are not access register
-> > > here.
-> >
-> > It's needed for runtime resume case.
-> > When wakeup event happens, wakeup irq will be triggered. To let controller
-> > resume back, we need enable USB controller clock to trigger controller
-> > irq. So we call pm_runtime_resume() to resume controller's parent back
-> > and the parent device will enable clocks.
-> 
-> Please add comment here. why need in_lpm if we can make sure irq only
-> enable during suspend/resume pharse?
+There are some issues with the enetc driver, some of which are specific
+to the LS1028A platform, and some of which were introduced recently when
+i.MX95 ENETC support was added, so this patch set aims to clean up those
+issues.
 
-I have checked again, in_lpm checking is not needed. I will remove the
-if condition later.
+---
+v1 link: https://lore.kernel.org/imx/20250217093906.506214-1-wei.fang@nxp.com/
+v2 changes:
+1. Remove the unneeded semicolon from patch 1
+2. Modify the commit message of patch 1
+3. Add new patch 9 to fix another off-by-one issue
 
-> 
-> >
-> > >
-> > > > +
-> > > > +		return IRQ_HANDLED;
-> > > > +	}
-> > > > +
-> > > > +	return IRQ_NONE;
-> > > > +}
-> > > > +
-> > > >  static int ci_hdrc_imx_probe(struct platform_device *pdev)
-> > > >  {
-> > > >  	struct ci_hdrc_imx_data *data;
-> > > > @@ -476,6 +497,15 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
-> > > >  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-> > > >  		data->supports_runtime_pm = true;
-> > > >
-> > > > +	data->irq = platform_get_irq_optional(pdev, 1);
-> > > > +	if (data->irq > 0) {
-> > > > +		ret = devm_request_threaded_irq(dev, data->irq,
-> > > > +				NULL, ci_wakeup_irq_handler,
-> > > > +				IRQF_ONESHOT, pdata.name, data);
-> > > > +		if (ret)
-> > > > +			goto err_clk;
-> > > > +	}
-> > > > +
-> > > >  	ret = imx_usbmisc_init(data->usbmisc_data);
-> > > >  	if (ret) {
-> > > >  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
-> > > > @@ -621,6 +651,11 @@ static int imx_controller_resume(struct device *dev,
-> > > >  		goto clk_disable;
-> > > >  	}
-> > > >
-> > > > +	if (data->wakeup_pending) {
-> > > > +		data->wakeup_pending = false;
-> > > > +		enable_irq(data->irq);
-> > > > +	}
-> > > > +
-> > > >  	return 0;
-> > > >
-> > > >  clk_disable:
-> > > > @@ -643,6 +678,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
-> > > >  		return ret;
-> > > >
-> > > >  	pinctrl_pm_select_sleep_state(dev);
-> > > > +
-> > > > +	if (device_may_wakeup(dev))
-> > > > +		enable_irq_wake(data->irq);
-> > > > +
-> > > >  	return ret;
-> > > >  }
-> > > >
-> > > > @@ -651,6 +690,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
-> > > >  	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
-> > > >  	int ret;
-> > > >
-> > > > +	if (device_may_wakeup(dev))
-> > > > +		disable_irq_wake(data->irq);
-> > > > +
-> > >
-> > > Look like only want enable wakeup irq between suspend and resume. There are
-> > > some questions to understand hehavor.
-> > >
-> > > 1 driver probe --> 2. hdrc suspend -->3 hdrc resume --> 4 controller resume
-> > >
-> > > 1--2,  look like wakeup irq is enabled. maybe controller have some bit to
-> > > disable issue wakeup irq, otherwise flood irq will happen because you check
-> > > lpm in irq handler.
-> >
-> > It's not true.
-> >
-> > We has a bit WAKE_ENABLE to enable/disable wakeup irq. This bit will only be
-> > enabled when do suspend() and disabled when do resume(). So before suspend()
-> > called, the wakeup irq can't be triggered. No flood irq too.
-> >
-> > >
-> > > after 2. wakeup irq enable,  if wakeup irq happen, system resume.
-> > > ci_hdrc_imx_resume() only clear a flags, not any sync problem.
-> > >
-> > > But sequence imx_controller_resume() and ci_wakeup_irq_handler() may not
-> > > guaranteed.
-> > >
-> > > If ci_wakeup_irq_handler() call first, ci_wakeup_irq_handler() disable
-> > > itself. imx_controller_resume() will enable wakeup irq, which will be same
-> > > state 1--2. but if imx_controller_resume() run firstly,
-> >
-> > It's not true too. Because WAKE_ENABLE is disabled after resume().
-> >
-> > > ci_wakeup_irq_handler() will disable wakeup irq, which difference state
-> > > with 1--2.
-> > >
-> > > If there are a bit(WAKEUP_EN) in controller can control wakeup irq
-> > > enable/disable,
-> >
-> > Yes, WAKE_ENABLE bit. It's already used:
-> >
-> > ci_hdrc_imx_suspend()
-> >   imx_controller_suspend() -> enable WAKE_ENABLE
-> >
-> > ci_hdrc_imx_resume()
-> >   imx_controller_resume() -> disable WAKE_ENABLE
-> 
-> Okay,
-> 
-> I think wakeup_pending is not neccesary. ci_wakeup_irq_handler() can
-> simple disable WAKE_ENABLE.
+v2 link: https://lore.kernel.org/imx/20250219054247.733243-1-wei.fang@nxp.com/
+v3 changes:
+1. remove the patch "net: enetc: correct the EMDIO base offset for ENETC v4"
+2. Add a helper function enetc_unwind_tx_frame()
+3. Change the subject of patch 2, and refactor the implementation.
+4. Use enetc_unwind_tx_frame() in patch 8, and roll back 'i' when
+   enetc_map_tx_tso_data() returns an error
+5. Collect Reviewed-by and Tested-by tags
+---
 
-Right, wakeup_pending can be removed. However, it's not that simple to
-control WAKE_ENABLE in ci_hdrc_imx.c due to imx_controller_susepnd/resume()
-do more things expect enable/disable WAKE_ENABLE bit. And usbmisc.c doesn't
-export a function to directly control WAKE_ENABLE. Therefore, I still need
-to use enable/disable_irq() for simplicity.
+Wei Fang (8):
+  net: enetc: fix the off-by-one issue in enetc_map_tx_buffs()
+  net: enetc: keep track of correct Tx BD count in
+    enetc_map_tx_tso_buffs()
+  net: enetc: correct the xdp_tx statistics
+  net: enetc: VFs do not support HWTSTAMP_TX_ONESTEP_SYNC
+  net: enetc: update UDP checksum when updating originTimestamp field
+  net: enetc: add missing enetc4_link_deinit()
+  net: enetc: remove the mm_lock from the ENETC v4 driver
+  net: enetc: fix the off-by-one issue in enetc_map_tx_tso_buffs()
 
-Due to this wakeup irq is only used in suspend case, I would like to add
-IRQF_NO_AUTOEN flag to request_threaded_irq(), then enable irq in
-ci_hdrc_imx_suspend() and disable irq in ci_hdrc_imx_resume(). 
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 103 +++++++++++++-----
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |   2 +-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   7 +-
+ 3 files changed, 80 insertions(+), 32 deletions(-)
 
-For example:
+-- 
+2.34.1
 
-ci_wakeup_irq_handler()
-{
-	disable_irq_nosync(data->irq);
-	...
-}
-
-ci_hdrc_imx_suspend()
-{
-	...
-	enable_irq(data->irq);	
-}
-
-ci_hdrc_imx_resume()
-{
-	if (irq disabled)
-		disable_irq_nosync(data->irq);
-	...
-}
-
-Do you think if it's feasible and better than current patch?
-
-Thanks,
-Xu Yang
