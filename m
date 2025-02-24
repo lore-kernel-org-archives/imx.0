@@ -1,34 +1,54 @@
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A1B24BC14
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 20:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D1B244EA0;
+	Mon, 24 Feb 2025 20:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429169; cv=none; b=FQmnzRHxSO96CvFIqskjaQlw2ZqpKlhyhPFcDFUn5x4ii8OhZ2WVmXyHANySClOY4YVrzmbhjI4Fd+ylHY1h5yQkMDMmLsySvflNNbEyptTi8duoi1LiMoy1/RAxMx4NvpHr+CLsFF55WjujMpL4TMzyQmLHYycwSAUCFURVkro=
+	t=1740429182; cv=none; b=iVoak2b2gjjwZV0MDbMjqchqUZD10CUOQAUw93ifjE1K39Mv5FDMTENhCAlJPixPTvyQ17AiweMnmEEQfm/nCNqVCw6CAq8lz20hQ3jS4djWX9AFHKXC2m65OI84OQPQYpv09ZE71pn2/SWNM9gCrhj1a34+bR8sypyAaP1Hras=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429169; c=relaxed/simple;
-	bh=Fo1nhlLcIcQtFBiW5K4QNLHy3ZTDPDcY8zstXVin0wQ=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IuFY6wo0YSiIX5Kuy7Z+g11GRPoA20ivDlND6crA1Z374koY4dcGbgJE7r4faIgPmz/DKdY4eIVzw+CRceefK5IcnKwuDCLYLy8Pno2eiACX7L1wcd+vpME7ntJv5BvzsQI6nCX3870YzO8XpAaiF0Gfp3WE0HaU5482BNgxMcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
-	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-	id 7860645e-f2ee-11ef-9d7a-005056bd6ce9;
-	Mon, 24 Feb 2025 22:32:30 +0200 (EET)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 24 Feb 2025 22:32:30 +0200
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Johan Korsnes <johan.korsnes@remarkable.no>,
-	Bough Chen <haibo.chen@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, imx@lists.linux.dev,
-	linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] gpio: mmio: Add flag for calling pinctrl back-end
-Message-ID: <Z7zXXmtuDFWGRmfm@surfacebook.localdomain>
-References: <20250219-vf610-mmio-v3-0-588b64f0b689@linaro.org>
- <20250219-vf610-mmio-v3-1-588b64f0b689@linaro.org>
+	s=arc-20240116; t=1740429182; c=relaxed/simple;
+	bh=GkLISPYYv7MHf+2XRcdkauAMMfvihArhSS/JM26Wlk0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aA8+ZPsFMPELXZFeYNAS10c8+MmjW3K6yR3wcd2YdrCwaK7JnYOKtlyPnjF+LD6QL3mZlsK5TlTONWmpt3HAokpdaaM3rUYNAh0sfRlgB3qqRYm8BQfVj4nj/8lj7X/KHVTzgq+TdBHSuQsVn2Qgzf9Eyr+R1scurywjwHiipFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpPUC/MN; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpPUC/MN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4F5C4CED6;
+	Mon, 24 Feb 2025 20:33:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740429181;
+	bh=GkLISPYYv7MHf+2XRcdkauAMMfvihArhSS/JM26Wlk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SpPUC/MNxb4S9qhxCSK6x4tUp63wfrH1fgOsvPNILny2LanDLJyZTIgrgiu7/xQtX
+	 O5aUVEUcqlyG4BMcNvDLCYINAv+uLxhR4/dhnCRpdc6wQfI4YD92xr+BhVqJ02Obvv
+	 wLF29hb5o1JX+bhYumNmpjiRWxJE40eWYOcQtCTiq/9P+lFUWDZPEkACHcQLlwiLOk
+	 HVdfUdoFZ1YdJeWXMtZf+z43+iW7xslG3ueuc/GqMEH6I8mB2M4ORJVg1m/Wc2xeoh
+	 +nTUgVlmlMqq2kapHvxa6cgiMKWo6bxnCncKBKPTy18xQZBAQElatFG3LBz1k96W97
+	 tBV7fCVpjQ9dw==
+Date: Mon, 24 Feb 2025 14:33:00 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>,
+	David Airlie <airlied@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	devicetree@vger.kernel.org, Simona Vetter <simona@ffwll.ch>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	linux-arm-kernel@lists.infradead.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	imx@lists.linux.dev, Neil Armstrong <neil.armstrong@linaro.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>
+Subject: Re: [PATCH 03/14] dt-bindings: arm: fsl: Add GOcontroll Moduline
+ Display
+Message-ID: <174042917969.4048644.15922990848676002211.robh@kernel.org>
+References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
+ <20250224-initial_display-v1-3-5ccbbf613543@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,71 +57,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250219-vf610-mmio-v3-1-588b64f0b689@linaro.org>
+In-Reply-To: <20250224-initial_display-v1-3-5ccbbf613543@gocontroll.com>
 
-Wed, Feb 19, 2025 at 10:04:33PM +0100, Linus Walleij kirjoitti:
-> It turns out that with this flag we can switch over an entire
-> driver to use gpio-mmio instead of a bunch of custom code,
-> also providing get/set_multiple() to it in the process, so it
-> seems like a reasonable feature to add.
+
+On Mon, 24 Feb 2025 14:50:53 +0100, Maud Spierings wrote:
+> Document the compatible strings for the Moduline Display controller.
 > 
-> The generic pin control backend requires us to call the
-> gpiochip_generic_request(), gpiochip_generic_free(),
-> pinctrl_gpio_direction_output() and pinctrl_gpio_direction_input()
-> callbacks, so if the new flag for a pin control back-end
-> is set, we make sure these functions get called as
-> expected.
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-First of all, I like the series and esp. the second patch, thanks!
-One small comment below, though.
-
-...
-
->  static int bgpio_request(struct gpio_chip *chip, unsigned gpio_pin)
->  {
-> -	if (gpio_pin < chip->ngpio)
-> -		return 0;
-> +	if (gpio_pin >= chip->ngpio)
-> +		return -EINVAL;
->  
-> -	return -EINVAL;
-> +	if (chip->bgpio_pinctrl)
-> +		return gpiochip_generic_request(chip, gpio_pin);
-> +
-> +	return 0;
->  }
-
-While I understand the desire to avoid +LoCs, I still think it's better from
-maintenance p.o.v. to have a symmetry in APIs, i.e. providing
-
-bgpio_free()  // or whatever name suits with possibility to change the above
-{
-	if (chip->bgpio_pinctrl)
-		gpiochip_generic_free(...);
-}
-
-...
-
-> +	if (flags & BGPIOF_PINCTRL_BACKEND) {
-> +		gc->bgpio_pinctrl = true;
-> +		/* Currently this callback is only used for pincontrol */
-> +		gc->free = gpiochip_generic_free;
-> +	}
-
-And
-
-	gc->free = gpiochip_generic_free;
-	...
-	if (flags & BGPIOF_PINCTRL_BACKEND)
-		gc->bgpio_pinctrl = true;
-
-here.
-
-The rationale that if we ever add something to the request part, we won't
-forget to call it in the free part.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
