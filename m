@@ -1,44 +1,44 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2073.outbound.protection.outlook.com [40.107.247.73])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2085.outbound.protection.outlook.com [40.107.21.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C003FB31
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 03:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3FC43ABC
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 04:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.85
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740367635; cv=fail; b=NdM6olClhIy+U/gGgl4O2W7JdTbBrREX/zSrQw+/vm3FbmgGgL7lFPISM63WcQlzg6eFIxK1UFMMVBjurn7EGdAJCbG2ufdDvfzgTofKKDAvb+/DX2B8J4+SQFbmq7sFsSq3GZhfnu5EHGnnT/d0xJRDZ/PBCO2cdLU9YRgxvCQ=
+	t=1740372155; cv=fail; b=AdqWPvkDs6Wgx+Yx7s756lJ6p7MVeRijIULQ8DGjSJPZfWPWS3LHKnccrziZ4nWdaRKDged9NIxyTjN5a+FsufnUmPIk+VeYwdnPQtG9NSCr5AkYazzA3pI9/p6Ami1YmfZGXL6Eosq2FU9Mv13kPAs3EQd3Koymg3CrdymCPjg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740367635; c=relaxed/simple;
-	bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
+	s=arc-20240116; t=1740372155; c=relaxed/simple;
+	bh=3rhsFTLyMiRKg9ryY3mhM1a32PLUESJTSmRLCTxf1G0=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PCFVVczYEZU0WSa4+WVQLZC9NJDLI6YDC+O+LsTdsxNAm+Tyt/KohrkUOxpr2QAFZRUz/jgKqWWjit1OCogQXs8k3z6ZV4f+mpncdAUgiQ+1eeAWEQwjLmYLHBdxka8piL9oj4ar7J2MikQ6GwHV+P0MfwA9TtH09TPonKsI5ME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Mob3Ona6; arc=fail smtp.client-ip=40.107.247.73
+	 Content-Type:MIME-Version; b=ps+NH0K7neQXxhHNI8jwGIC2d3U/1ZYmR9+IQDG0Sk2fbrkM2KsEKAnktkMfrbctmnLKszLGUwTF+81JJGZV4aEs1Me5qdWn7zs09FPHtGX/Sh6O5dU1C2M1bljZmKMBGpfsMJnDHX8pcCq9D51tMsuGSyCKTIHkfYPIkQusNps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WJUFfAEZ; arc=fail smtp.client-ip=40.107.21.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Mob3Ona6"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WJUFfAEZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eDhVhBRCPJGTMlfKYB7bRmVDjMQO4+1IYnuCvtYsVIveGXLNCIaZOQMq59eGbOdp4a/JSiFpAk4m1F2IzObM/hBpBnYRrmkPpsISTmdcrvLZvprw/8Ry3NvzM5xR+OO2SXov4ClS3ANwuLdypUk6Ur2ieovPSYb8EwGB6CLouAObU4U/44vqZUSGINHJI4e5hcwacuVEfeeqYFsIKKB3Vbgi6Wd/6S34pqYqi7ZQvCyRtnDmTnc17qmf5JlGvsBlGgzt7xn8V6O/mHg81AzpT2tPRFLe1Ffqw883NPpth0JTLMO+2fKTbBnTN+qWBxKnE4Aq+T0wK9sd45VovHsprw==
+ b=WWrh++VgV7MqZXOJCB/Vblut+Y3YbPbaANdtwTSkTIWOkEhsL1tdVXHzkfTWSsPAkINsFKSd5nv45JJbkmpp65I63Sr1r/lAphQ48xtFYPa7e5Egoy0ucFeA6ueSIuA11AgdqtDt2ylkvtoHi7TtlD6kOFp8vajAR+c/spjagMTibXF0NLOyf8vXz976FikdovnKzE8nIBpl1NHpHxM/xDU/xLfhVTzdoI/q+cXxKn3kuc0rYW0j94MtLS4e2YZWkeFGC3+CxrHrQWBwddNuHgBszmeo6KK7Ug5+q/+RKdmxEbQiO9U34qJRDwR0EPqv4dAHSjsaaCeZCd/TJzMn3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
- b=t2DzixT5NPB2d3IVTFE5r06SLZdXzC2c0kirZahChyfAr+6fP1N1nVdInwOp6gnMKQ4B8YKF+x02ntipclpNp9MhsdRSzNIjtnn3GxCOWjzxDASiBXZzerly8KFhdke9QkvkAi1kjqKt2UWFGIFE/VpUdf4X9nimYQN/uywzNyklYF0W2/+s7WzzJABlK2FwmyncGFgvcMy/Q/xCYSnLSo8KAbmmOy1XK5i7JyqFwQmNcz6XRFUlZi74hZtep0NBehHtuNpftGWYcwcQunOJ7+dteKzlKan1tina5ndgf98EcgyXjFUIHjsVE/Y9AqUZFVvyCUpOlavywVio1QLrwA==
+ bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
+ b=i5BgLiatz04ltdwIC3arI0Qg7WvhVeyTtJHxkSARSb97O9stkuhN6za5NQAl5gRFzdgkr/I77BejAU+OPtN8vdLDyCGUZ9q2M3jSwyrzh6idIQ0LKby1vBW8Z1n9Rn2Y9yavR3UbMN2hp3EGu1eePYuZd2Plc4vj7fmDGtiK0/XOt/h7mnZDjowlklWSft/LiYDRfXZD8YNyoFg6HdxWy/RnpGtlXkeHi/IlB+lL9D8ZVG1v9OxuOZjzGjQsQBlC7tl7+urrYU5bh6a5V05NkSXymKEDKUeh8hxdRXgAEZI7iqF/oFACCiV/yrdEdERWOgTdLMwQqEEFSZRhiRDBUA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UO7I4C4xQKPZrMIaZCXJE3y1evwo9y9j3OTVgqB+IMg=;
- b=Mob3Ona6sebitd5+b0GJv4qcDRQ7/C4yX8D3qW7Wia87H3RuSLu3hlhO0xMxkaBE0tyjdfWK5E4EY6sv3bbeiriztISonGWXMRUMgV9whLLgQlkII3Q9+5fn0iPNcFP3snQkG5qDyh7tP6POpvmAhpF6QcsDa02Do5i3R2bCguA+xjLJxLBNs4CVXmgbchMLEj5Yg4J6iy04vj0S9fJ6YjWQZWpyAC6szDXTRSTErE30KpQTvW7hlvgpYpPlCbYHG+UVAqusIshSWjwWLe4sB1Cz1eyDMej/8htoRjUKYZ/4eXR1NZEZu8F3Lz4xbgr/MO+verPIQ8kBoewZRcGVCA==
+ bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
+ b=WJUFfAEZ9F/n+DWBRMfsfRPyNLWrWABKRW4hzYj8B9/zbFzcwXGaadSuZU7RdvPRsw3XY2qWAR8vmdNyvaDqW289Nc1SJv0BkZET/miFZU2fRVj4rvhB7Cdf0ckhhrqTXw/00wLu9VU9iMx1SR9AfTWg8Nuqph7Y73i7Lw3HF8doM7pH3WYCgv+LyE2P5qgEr9KsaR/Sbih0A6kBzQ4I00O7/oAdWsHXS94qzy1PzQNksQPrhiQt/iwGBimusdh4Zj41gWBHRN20puCDRSjI8fuqdimeeZg5c2OYp9aB8ihHeiDbOZYQLxlYT7ncyyNi0qGomFMdeXta0rxIqnGW5w==
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA1PR04MB10555.eurprd04.prod.outlook.com (2603:10a6:102:48d::14) with
+ by VI2PR04MB10596.eurprd04.prod.outlook.com (2603:10a6:800:278::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 03:27:10 +0000
+ 2025 04:42:30 +0000
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
- 03:27:10 +0000
+ 04:42:30 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: Vladimir Oltean <vladimir.oltean@nxp.com>
 CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
@@ -52,18 +52,22 @@ CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
 	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
-Thread-Topic: [PATCH v2 net 2/9] net: enetc: correct the tx_swbd statistics
-Thread-Index: AQHbgpN/Xw1oIgK130OBsitj8eB9+LNQXDmAgACfT2CAAIJ7gIAEVFAg
-Date: Mon, 24 Feb 2025 03:27:10 +0000
+Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_tso_buffs()
+Thread-Topic: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
+ enetc_map_tx_tso_buffs()
+Thread-Index: AQHbgpOTkcGlUe2F8Uqdee5IlYnyh7NQZPOegACoNSCAAHQsgIAEUdIA
+Date: Mon, 24 Feb 2025 04:42:30 +0000
 Message-ID:
- <PAXPR04MB8510EA8BC58E151B178F684188C02@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <PAXPR04MB8510A88FC949D501E5767FB888C02@PAXPR04MB8510.eurprd04.prod.outlook.com>
 References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-3-wei.fang@nxp.com>
- <20250220160123.5evmuxlbuzo7djgr@skbuf>
- <PAXPR04MB8510D3ACAB9DD6C86AC87E5488C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250221091835.g6ybtng4wiltg4ii@skbuf>
-In-Reply-To: <20250221091835.g6ybtng4wiltg4ii@skbuf>
+ <20250219054247.733243-1-wei.fang@nxp.com>
+ <20250219054247.733243-10-wei.fang@nxp.com>
+ <20250219054247.733243-10-wei.fang@nxp.com>
+ <20250220163226.42wlaewgfueeezj3@skbuf>
+ <PAXPR04MB85108B76779CDD5C6F862A5B88C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250221093027.wo74lqkbycky2vu5@skbuf>
+In-Reply-To: <20250221093027.wo74lqkbycky2vu5@skbuf>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -71,69 +75,69 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA1PR04MB10555:EE_
-x-ms-office365-filtering-correlation-id: ccd0df99-ff77-4971-bca6-08dd54831f73
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI2PR04MB10596:EE_
+x-ms-office365-filtering-correlation-id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
 x-microsoft-antispam-message-info:
- =?us-ascii?Q?FYOw/2fZ/Z6JMZrP5Y74JK21yT/G4SDQzrGbRIB4/FkeKgU8K0YYZf7H/j2L?=
- =?us-ascii?Q?q2cktp8iUHAEoCuBGwULoXuIHdLsdCOEUBsuiPUdGEuQaS2eKYyauzNkV3U4?=
- =?us-ascii?Q?7OEUhDOWv6zDnjT8KV3PoUlxQWijAYgEpL2por06OUdclGn/w8CiDs4cn2lA?=
- =?us-ascii?Q?4VBmSyvfWCDH6ZLtx1cFlP58JHw+smdTgP+Xukw9A3r902oYXURH3+HxEPFy?=
- =?us-ascii?Q?PF+VwgmeX/CRcZSG5O2rtVNLax9domzvLQQHr7dfML60nmnUtgUtM7pVxW7b?=
- =?us-ascii?Q?S4tNhMuTWcXGFzKPvKlp/rKDALP+sN4m2zfnnUUQbpcPE+nIdahQ5EyTlqPf?=
- =?us-ascii?Q?Nzi+8PP156hlLBkoCzx+P7qXOm68FK77GJyaVQKd+zNS+dK15AI1Rm9bZUPP?=
- =?us-ascii?Q?PKp3GL7BQkUlkOkaTehAebggDfZ3V/a1qX6mzhiN1LEnEhHHi07iO0UshgId?=
- =?us-ascii?Q?89XDsiwSLyhnWLbEz7GR5PSoxrystJu9icrbdxN9s4FQEliWfUR11DvxtnP/?=
- =?us-ascii?Q?4/l6ooA/Jh/gosPDIWiO5glVErSd+8/SlPgxOYmSjZdr+Z5lD4Ydj8YGMCJj?=
- =?us-ascii?Q?rSkLVAX+9W/+AUqMtJ1X6Gc1MqLRlHsllEacxAtty0qW/GNldsUjgkLdtNIs?=
- =?us-ascii?Q?/G1DjrEL9SMdlgmX7K/XWNLTfS1YPVKKbUegy3ny6fU+RKoxe7zMwrF34nS/?=
- =?us-ascii?Q?4DYpiGbUtnGi1kh4G/7YEfHudtTn7uEW57RauckeE4cQxBUTQheRHyzRmr4I?=
- =?us-ascii?Q?Xqra6J7qwPvc5s4J/dxMeBYLPIk31XbZZsJAjmAlIrcZ3bPHiOEpdxbsyphc?=
- =?us-ascii?Q?JsDh2tY6fCYgkoJQG/b3yRF1zJcJy66gwe4s7idxHlT4BrV7Yay//+74cZW0?=
- =?us-ascii?Q?ZAUXmRa3gVztyZksraJnV6tqkvx1cbiDC1T+upxB1jfxO/U88yn0DQNybqxp?=
- =?us-ascii?Q?98kkNOHOr8lSqHrUjffTqB9lijkn1Q96Af+ZEwtp07dHrvWuZoPYf3fPSNFZ?=
- =?us-ascii?Q?SJjmpG+CQb/OqepIJ2RylmRKuwfZHKk7t9v2yCw9v7FzNmEPNTenyqEygJK6?=
- =?us-ascii?Q?VyIAjp/JkYRUrVNh8R289zQe0ivNBDyVlTmsUJ9fIEiZxWcIXIHrflgm3nsu?=
- =?us-ascii?Q?ysL2IXM2gIGYEfpA1o5Y1EzXZqds41V/iEIez3q4C0bbYb3hj39J44vL2Y2O?=
- =?us-ascii?Q?wP/q+Dedr2UxICnF94cfPtKkN1A7ni805QQR31raQrC4kXm4B/uToLOvWDy7?=
- =?us-ascii?Q?YnE7poW3Uv3ru1sLC5qhUyCrFHb0mbq2nehnt2FEcH/0BrUIVvidVtxUBra9?=
- =?us-ascii?Q?yW89NAcc6WVXxyYLQnogsRoEXA9bAd7EeE6TGIpUj0Yx0GZWgega8Ta+HvwF?=
- =?us-ascii?Q?UHRymD3RuWc9M95T4qrVsp/ymSKFl6rYUD3L0nbpN4O0NBmzCy1bC43pivzc?=
- =?us-ascii?Q?JwI7SnxTsVSNBMY4Kw+At0zkUHn3hKQc?=
+ =?us-ascii?Q?6Evo0UJ3wN3lnTuLAhXtCq4OHrEuDXBsdAkoiGTRPlWmE9DNzk9xEPMDLIlF?=
+ =?us-ascii?Q?D7dRhCj4xbylqOJ7+C9x+teXVIZdk7C8hbSUT89hX0zlA1IoMnAY0tv2rWI4?=
+ =?us-ascii?Q?tKm7dtMqvjT+OU2MqU/0sbzPcLSJ6pHpIq7FvePTbIUjbBNYo86aj62cHoR+?=
+ =?us-ascii?Q?LU0aOLndIPqhdwhvQk/Shvd2iaIK2OO0UZMFLP02d+nzo4oHxodNBgQoHr1B?=
+ =?us-ascii?Q?gnaG+I+v9vFGfSCS3Sd0Tz6bmCSerCwrCIJUK5PFLBFvO3f+nNTIcnK/aOm6?=
+ =?us-ascii?Q?Fg3PgwVPt6bntAdH016S4Nwu3sNXpqf00geLPpVdsAsmDLiqpC+ViboG1iNv?=
+ =?us-ascii?Q?kX+rr7xsSM/GsAau6CnC/XsqdpVwmyP0tuFBT8GLDkieQpg8L8RNxTmR40EH?=
+ =?us-ascii?Q?a0jpaY8o9VxsbQcuy4hMGL+D/PbX4Oj7DqSKO1T5nxUcaLOfz6L3NaCcz3Kn?=
+ =?us-ascii?Q?3wkSsYge1N6RIlqNamoQANGq18+ctDmiD/fWsaG1NVFQ1gDlwVMw8A1lWxA7?=
+ =?us-ascii?Q?MGlAvTzFch9FvdULmcE91ZHI+omUZCOsw11c3/LkWTYrJuFjJcphPQxDVd+t?=
+ =?us-ascii?Q?iE7vZFdDnY4H/K+T4RjEGX6H5w9szutKG3ALsS/HgrDEhSfTeBqX9hUmpx4G?=
+ =?us-ascii?Q?zhzJ7Ww+bbKXDGrtzIKsQ3IXvSLZEHD3Vx4UhG/lhkMPfSXp3G5N7T6Bpbma?=
+ =?us-ascii?Q?/hB6YzWGcnghzHc5+nE4NdvXDdZtpCJHQNDii9yYqwwbu9T6mMoDEoOhtCtG?=
+ =?us-ascii?Q?yqcTw8eKy0EUD2ZmAw1VKUHNEGSN4+Bn2LwQc/+qMUIYHB9oMyY2dIUWc7j6?=
+ =?us-ascii?Q?ArP6uUvn+PGVaySnx1Yd5mZLMJgsmqNf3ljsmuktbzLOKPb+StN2CVXWt+Zd?=
+ =?us-ascii?Q?5qaLknVTLHCOkLjoySmihepbJBWYntERdDrQm85wQZpLBHisFEjviTgecML3?=
+ =?us-ascii?Q?7msZhCiwLzmplNwdLcd9NleP/mftG9WdP7Kv95ICBp0P2i+yHWCxxXCpY0gs?=
+ =?us-ascii?Q?mhB6UwHI+EZD8PW2X009s/AmQ77xs5+/8P8AqMx6kY889EaXaKqV1Q8eDmXe?=
+ =?us-ascii?Q?wO1tcRweANACWYri8x79iQF3PRPbT9PfSj/LauJ8lxZNjRJ0ySiF0+1FXStx?=
+ =?us-ascii?Q?YFPr7mWXu6qUqxauNqK7216RKYi1YzmeqWcLZzioM6Jrm7wB1F/G7pZS98kM?=
+ =?us-ascii?Q?SkKUwUskccjWOiwhtDMT9YGeCOI6hsza8e/TjkoWHy3ffrlkdeE0jGo5foqw?=
+ =?us-ascii?Q?ZSkLBrU6hQf3rJd2BptaE84uevTuF7q8amCTtvsquaY1bDbKwWnJOIDjNvtn?=
+ =?us-ascii?Q?iWwI2BTfou6vv1XnxuQhEGStIC8ie9aZ10FZleJGx8W1z82W4Sj4wl/ZWPMB?=
+ =?us-ascii?Q?g9OFmns+9QF1jgLmffDQRiN9S4jJrGrCtdXLrwc7FU0nMFobRjw6QDEYPQ4S?=
+ =?us-ascii?Q?xEI8JamPRF/0qP1ZNiHLJPDLRqYWvQXI?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?HAUO1z49CKP9KtakeCkxUMg1N93njy6hzNiqoS3J/6ZdarZlENVUlO0cWYhZ?=
- =?us-ascii?Q?XSp4VQpL8wBcbsUdziC8NS2Bm7IgyQJINP9I10j/AIVe/1HBfbSBazD34fgb?=
- =?us-ascii?Q?GEuJs7RWHGFGuAsD4ZOSaalLVjCy3TgLYVsf7lXm+9AW9Tf8UwN4n6GXFaPm?=
- =?us-ascii?Q?NkCseppOIgDQ1LS1jGBkMBlVNLIR0ETDAoo7YuruhDj9GtBx6N4doGDXRP1R?=
- =?us-ascii?Q?1SC7t7yk7mF7Pb3WG2t09WpOt+aTuvvqMay/ehgK+KcS4shu51XYSXiJH8Dj?=
- =?us-ascii?Q?Xp+tnc0LDzLlVtfKQl8s1mIi/bBYgEiZ1S7okEQ3RG7IMMGiLVh7eVVSl8tt?=
- =?us-ascii?Q?z3J/HOgMd3AP22gukcNEd/lLu9/a+WkzcGoKxwyB82QdM11+CfC2DnUiSFZl?=
- =?us-ascii?Q?F2Pn9QVdA+AZ2JblFunznPwZ8BsxqpQsBwGyOEpUyB6rbaCbzcbqy0Uxtqps?=
- =?us-ascii?Q?uO+pco2UTx+hXDsH9SEBcDFcykjiSdY16NF3oSzfvi6We3440Cd8w6j7+xqg?=
- =?us-ascii?Q?s5ohHzT9abAF15wgPpxR80hm8KpNoE91XPATpfk2PsrZln8XWfgqIWVpU5mY?=
- =?us-ascii?Q?+kt7AlVSe20WTtknl1H9QRVbrNhCg9o6gFFGwFDlYfhoCVLQqu9BW/21MNqz?=
- =?us-ascii?Q?D9JNSmR7koATCtckUBda+bCcMcFTc30N1sGIS3qQP39DEGahYahWxBCPGE3w?=
- =?us-ascii?Q?/VnRUWsGaLXg5jENzBBMOfcETrUt2/vGEGtzbDc/T53/3NcNLg1AMfSdtRh2?=
- =?us-ascii?Q?85QQIk7kOqeGmMsDiqkApwrYf9PV+/QIWFJ8JQ/Ls/qzEzI5e68c7OwjhFAV?=
- =?us-ascii?Q?VRW1BFpi7ewUUEeYNDKUBPHklBEUvqUh8j73T/Xbbdsxs0IhENY4RhQn9cVn?=
- =?us-ascii?Q?M0bxBVddhjCuboHATPXgBD/ZdLLGsVUs/kxmAUMWMXDSU6Jk2v4h4lQT6+6X?=
- =?us-ascii?Q?ayZ+Z3tymeFiQsJ/OCajL5WQHxAcI0geBClT3voO5fOzEXjXSNqSKTtpJ6YA?=
- =?us-ascii?Q?QYjbfdOAPe+EHMtJAvQ3zWPYXQgqtMyLdXGmQRUTvNAhmepK5xQKVs1LVFVl?=
- =?us-ascii?Q?kP813kT0+NViyIxTv2E+99YVONGUrgxY7Yf0p18BR5/ACgeUXQNnp/umwW6C?=
- =?us-ascii?Q?ghdYj67H1Mz1mDlkWYjl8+sB8ZZLTIti7SOTp9cnx5s5rYZNCkYG4lSjFxip?=
- =?us-ascii?Q?cuMNd3HGihTYSkPt5+TnN0XrsJGl/PISSZsaNC+lwIL9I8ZXCN9tiAAdqlzz?=
- =?us-ascii?Q?1Vu1bA2Sv1kjcQga8mEY0tsUDQKtEAY+//XYy9Z1Nbq5IvvFaxgjPs3WvOlQ?=
- =?us-ascii?Q?Aw+RR6hNBWj3Wu3RKAB8BYUn2FAfwZVtPT+SOmW4B6gNMQTQ8J+Ua79TqrpK?=
- =?us-ascii?Q?VLgk7+qHB2VhKZr6SVHtmyhq6nuQVDuRs99IbfDi4rrLVaJEcZr5LRNx4oxr?=
- =?us-ascii?Q?Um8oAkI+4Y0DRqC0IC8xklLw7q2GFYXDYGogyrSLZ2Zb9Wr13gSfAg9L8IBy?=
- =?us-ascii?Q?pcIaFPeeQ95benOUv+rl4kJxW2cz781+ngYDZEHenItlylVGTP0C/eQ6CQrH?=
- =?us-ascii?Q?vxtAiSZqhTftCnlcXrU=3D?=
+ =?us-ascii?Q?8FyQckGxPNaF+5GUBcJa/IJnQuUITNxC3lo7Qg0vhTesrY17gu8aKVJ7HofG?=
+ =?us-ascii?Q?p5q7VFrLAO37QZJSXr98/VG2A5y1yy4ruUAkd3uFWqW/0azmDMFT5gNiicBa?=
+ =?us-ascii?Q?0B1oMSuzd6Ug44mGjSuumvzefMxgRX71VmEvgEV0ej4jb3gwt9qq0LMF/eOC?=
+ =?us-ascii?Q?mAVIAMIyBqMY3LZ9oLc6lcOL/ebu+e0Z5QAx04vaVxJdTt4+F/liPy99N22r?=
+ =?us-ascii?Q?YrE/OhaYe01HlFbw3pqgpAZG1QHBaAAIzW5ytFLptFfRAiats8Ki+4aXuoee?=
+ =?us-ascii?Q?hRrV6La1WpbbzBnUUmTfC+4riYyEvDUR0cgR8Y9Y9qJp7ntyu6TVGpIrsgB2?=
+ =?us-ascii?Q?rlUyD2LRKNFb7uLLBibuZxgea5iin50QBgK2aXWqhC7aJ+yAQ0nWGBjjKq7g?=
+ =?us-ascii?Q?YHhAfWv/UTtCeAKMZGlhh0hVqdiJjU77zuVbfm8GTqr/TPBlLYyMgMBc2s8Z?=
+ =?us-ascii?Q?8DHmukhM95miT4UbLzUARnshkeX6JovKdOgX8MP2Ccgabub2X2kNmAksc2R2?=
+ =?us-ascii?Q?EEIe7wAy7ukGeWz6M/CPL3eNvIwG407/7t9yZVeRmWHWws36ksCx+DcMqhoF?=
+ =?us-ascii?Q?NFVOQ15WKxxIA81BJvWdO4ZBstGl4K5/EKpIAcYb6JtQ1a5LYIB8nVYAAXoE?=
+ =?us-ascii?Q?UjRIR8le5Lo0nd9moyyVODWiGJ28fiqt67FhjaU7DdYDn2mZRoIQ1YvV8IHQ?=
+ =?us-ascii?Q?6XUwxHFreAqz4i5cbFuB2PXEnIwoX5GNqANGfiZ1j/j7IdzSoMuM9okGHIzf?=
+ =?us-ascii?Q?Qwk/9rR1UadsIZHJOOBW2NvKB3D/rYsmAsybDEerSuKA7ESaMOqRgePDYVtx?=
+ =?us-ascii?Q?LXzUCH/6luoOL1r5k2lt6SbatHVKyIRHpR1jPPNlEanyhVQbHR2YDRCKrkbY?=
+ =?us-ascii?Q?cUtDnlajPiAbJyRSDNXgBt1rqYwuBQUqC/iEaKt1cJnECWPBDHdxykCMA+Te?=
+ =?us-ascii?Q?WU68dSJpNA7mfuq2NT7xm9zduSJiFI5K0OCCPSak5FQhQolDGjwhmw0w8TcF?=
+ =?us-ascii?Q?RhhsJxGcJZr+OeqrvP4iJy5kjoNUERmPu5sdfu8IyY2IiikN8S4szjfTAkcp?=
+ =?us-ascii?Q?24XfzilC5Ymas0VRasRzLPOGl6zbhNUPBwS4pkZm35mxlL5GsDJDqLu+zs+p?=
+ =?us-ascii?Q?agWh6UXPiBRTG5Lu84hDiaXRqAzKuuM+U1R86gp+DjShg4/+4pIZUHJVp4Rb?=
+ =?us-ascii?Q?mpGCjjxELGXM9aWegpO0Coal/wCIOfuRy4fUymzbsFphwAmAlCixP8/xG8b6?=
+ =?us-ascii?Q?81yHV0JiZnX8pEFGYNvoDcNXmruB4kltmIvF2UHB6KwOuJneLnKbQM3sUzWQ?=
+ =?us-ascii?Q?TOtVG+fImzMP3t2uQ04MvwH4UPHqSMEkvsdf+CPiwYEkFMsHthrTbNTqoFbp?=
+ =?us-ascii?Q?/HQta/ViIKd3T/9Dims+d6P5dYcA13/O+jJMnQQUB/fF3Jh0kuKUI9mpNoAq?=
+ =?us-ascii?Q?dM8+uePO9Jy3Cvu6ayNIxA89jlun77zMIBGkMYOvtIUlVWg6QHVeIcSwq6wI?=
+ =?us-ascii?Q?J+35JljPx1EKEZjnRb3vtK0Sin5xhEy3zy4fTS15vNld9zRK3RoAW4kw1iXR?=
+ =?us-ascii?Q?yOmauxv/ZVx9WNZh3tk=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -145,56 +149,152 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccd0df99-ff77-4971-bca6-08dd54831f73
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 03:27:10.1293
+X-MS-Exchange-CrossTenant-Network-Message-Id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 04:42:30.2043
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: D3n3R8SiO7fUYBZbgN1hQt3Fe/EG9h+CfhhIqEPtM9JJVtdgSobDrwZkt5sLWF/Z5vFEj9ghE/xzy8yb7sUSGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10555
+X-MS-Exchange-CrossTenant-userprincipalname: Og6mKJgpTLyEy4l/dIuFpzHP3lgiDKj/l9c3qeGqbV79IPrW+0fc+kRzPjwK/yqvbx6YcPayuW65kGsadtxCxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10596
 
-> On Fri, Feb 21, 2025 at 03:42:05AM +0200, Wei Fang wrote:
-> > > I'm not sure "correct the statistics" is the best way to describe thi=
+> > > +/**
+> > > + * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buff=
+er
+> TX
+> > > frame
+> > > + * @tx_ring: Pointer to the TX ring on which the buffer descriptors =
+are
+> located
+> > > + * @count: Number of TX buffer descriptors which need to be unmapped
+> > > + * @i: Index of the last successfully mapped TX buffer descriptor
+> > > + */
+> > > +static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int cou=
+nt,
+> int i)
+> > > +{
+> > > +	while (count--) {
+> > > +		struct enetc_tx_swbd *tx_swbd =3D &tx_ring->tx_swbd[i];
+> > > +
+> > > +		enetc_free_tx_frame(tx_ring, tx_swbd);
+> > > +		if (i =3D=3D 0)
+> > > +			i =3D tx_ring->bd_count;
+> > > +		i--;
+> > > +	}
+> > > +}
+> > > +
+> > >  /* Let H/W know BD ring has been updated */
+> > >  static void enetc_update_tx_ring_tail(struct enetc_bdr *tx_ring)
+> > >  {
+> > > @@ -399,13 +417,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
+> > > *tx_ring, struct sk_buff *skb)
+> > >  dma_err:
+> > >  	dev_err(tx_ring->dev, "DMA map error");
+> > >
+> > > -	while (count--) {
+> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
+> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
+> > > -		if (i =3D=3D 0)
+> > > -			i =3D tx_ring->bd_count;
+> > > -		i--;
+> > > -	}
+> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
+> > >
+> > >  	return 0;
+> > >  }
+> > > @@ -752,7 +764,6 @@ static int enetc_lso_map_data(struct enetc_bdr
+> > > *tx_ring, struct sk_buff *skb,
+> > >
+> > >  static int enetc_lso_hw_offload(struct enetc_bdr *tx_ring, struct sk=
+_buff
+> *skb)
+> > >  {
+> > > -	struct enetc_tx_swbd *tx_swbd;
+> > >  	struct enetc_lso_t lso =3D {0};
+> > >  	int err, i, count =3D 0;
+> > >
+> > > @@ -776,13 +787,7 @@ static int enetc_lso_hw_offload(struct enetc_bdr
+> > > *tx_ring, struct sk_buff *skb)
+> > >  	return count;
+> > >
+> > >  dma_err:
+> > > -	do {
+> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
+> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
+> > > -		if (i =3D=3D 0)
+> > > -			i =3D tx_ring->bd_count;
+> > > -		i--;
+> > > -	} while (--count);
+> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
+> > >
+> > >  	return 0;
+> > >  }
+> > > @@ -877,13 +882,7 @@ static int enetc_map_tx_tso_buffs(struct
+> enetc_bdr
+> > > *tx_ring, struct sk_buff *skb
+> > >  	dev_err(tx_ring->dev, "DMA map error");
+> > >
+> > >  err_chained_bd:
+> > > -	while (count--) {
+> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
+> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
+> > > -		if (i =3D=3D 0)
+> > > -			i =3D tx_ring->bd_count;
+> > > -		i--;
+> > > -	}
+> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
+> > >
+> > >  	return 0;
+> > >  }
+> > >
+> > > With the definitions laid out explicitly in a kernel-doc, doesn't the
+> > > rest of the patch look a bit wrong? Why would you increment "count"
+> >
+> > Sorry, I don't understand what you mean " With the definitions laid ou
+> > explicitly in a kernel-doc", which kernel-doc?
+>=20
+> This kernel-doc:
+>=20
+> /**
+>  * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer TX
+> frame
+>  * @count: Number of TX buffer descriptors which need to be unmapped
+>  * @i: Index of the last successfully mapped TX buffer descriptor
+>=20
+> The definitions of "count" and "i" are what I'm talking about. It's
+> clear to me that the "i" that is passed is not the index of the last
+> successfully mapped TX BD.
+>=20
+> > > before enetc_map_tx_tso_data() succeeds? Why isn't the problem that "=
+i"
+> > > needs to be rolled back on enetc_map_tx_tso_data() failure instead?
+> >
+> > The root cause of this issue as you said is that "I" and "count" are no=
+t
+> > synchronized. Either moving count++ before enetc_map_tx_tso_data()
+> > or rolling back 'i' after enetc_map_tx_tso_data() fails should solve th=
+e
+> > issue. There is no problem with the former, it just loops one more time=
+,
+> > and actually the loop does nothing.
+>=20
+> Sorry, I don't understand "there is no problem, it just loops one more
+> time, actually the loop does nothing"? What do you mean, could you
+> explain more? Why wouldn't it be a problem, if the loop runs one more
+> time than TX BDs were added to the ring, that we try to unmap the DMA
+> buffer of a TXBD that was previously passed to hardware as part of a
+> previous enetc_update_tx_ring_tail()?
+
+Based on your definitions of 'i' and 'count', you are right to say that it'=
 s
-> > > change. Maybe "keep track of correct TXBD count in
-> > > enetc_map_tx_tso_buffs()"?
-> >
-> > Hi Vladimir,
-> >
-> > Inspired by Michal, I think we don't need to keep the count variable, b=
-ecause
-> > we already have index "i", we just need to record the value of the init=
-ial i at
-> the
-> > beginning. So I plan to do this optimization on the net-next tree in th=
-e future.
-> > So I don't think it is necessary to modify enetc_map_tx_tso_hdr().
->=20
-> You are saying this in reply to my observation that the title of the
-> change does not correctly represent the change. But I don't see how what
-> you're saying is connected to that. Currently there exists a "count"
-> variable based on which TX BDs are unmapped, and these patches are not
-> changing that fact.
->=20
-> > > stylistic nitpick: I think this implementation choice obscures the fa=
-ct,
-> > > to an unfamiliar reader, that the requirement for an extended TXBD co=
-mes
-> > > from enetc_map_tx_tso_hdr(). This is because you repeat the condition
-> > > for skb_vlan_tag_present(), but it's not obvious it's correlated to t=
-he
-> > > other one. Something like the change below is more expressive in this
-> > > regard, in my opinion:
->=20
-> It seems you were objecting to this other change suggestion instead.
-> Sure, I mean, ignore it if you want, but you're saying "well I'm going
-> to change the scheme for net-next, so no point in making the code more
-> obviously correct in stable branches", but the stable branches aren't
-> going to pick up the net-next patch - they are essentially frozen except
-> for bug fixes. I would still recommend writing code that makes the most
-> sense for stable (to the extent that this is logically part of fixing a
-> bug), and then writing code that makes most sense for net-next, even if
-> it implies changing some of it back the way it was.
+necessary to roll back 'i' because the last 'i' did not successfully map th=
+e
+Tx BD.
 
-Okay, agree with you, I will improve the patch.
+Regarding to I said moving 'count++' to before enetc_map_tx_tso_data() is
+fine because the increment of 'i' and 'count' remain in sync, so 'i' will n=
+ot
+roll back to a value less than the initial value when err_map_data occurs.
+So it does not affect the DMA buffer of TXBD which was previously passed
+to the hardware as part of the previous enetc_update_tx_ring_tail().
+
