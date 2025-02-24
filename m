@@ -1,64 +1,63 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2042.outbound.protection.outlook.com [40.107.104.42])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E386B28DB3
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 06:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C166A1F1537
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 06:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740378207; cv=fail; b=M96rlQqcv+p59/MuezFOclz9kQa+K4y9MvJwgXkMTPM2QkCBlnHitrNRYBKaXiOWeGoDioBL4usP+8FRR1BXVlvtPwQT94OOBhSeUmt2vvNPTcgIT6vIbhqngolac+CyJZb8G8hhDzwx8Bx4gXPIq/jNmioWCdp6w955iI8NH9M=
+	t=1740380389; cv=fail; b=jXx0yWWMnNZiZdLDpW6sGSG5PLWgOAsfNR9ddAIhZx2kIq7UHyiXNzIENQNiwNyTGvljCqSnmkmvmIj7iQuxyEOANCBKsapTn0l/pv00HT/HqtVctJJfo+yXI8dIPCKeGxSP+dOEThovKnrC+GASWh4IOOy7S8UXgEUe7l8mWtU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740378207; c=relaxed/simple;
-	bh=fbma8iytnNipvQFU1N/Wu4vg2NgEiVrGE1HTZeaWN4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=opuEOZNkqI4dR0UgrKjNSYVEs6HCPxUz+6EBJfs03x6MPyOB9ICG8/KLRayo8c+ZtYJgv5CpqpAYKZcIaU0FfqIZzzsAg1n4oMdRjCjrOJCDz0WyS8jVOoPjKFKkLMfocDlr7/DQMFhjtyFwrkUIv6RVM1iFYg4Cw5EgsEvvu5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NVkAJ9ek; arc=fail smtp.client-ip=40.107.104.42
+	s=arc-20240116; t=1740380389; c=relaxed/simple;
+	bh=hJL3Ic8P3fFx+dwnXX3gwyBtL8KjKNZ4KdLTqqXZB/A=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AyYXP/h9QpSAv64SUURAX8Hap64yMusM+7NvhwynQmo+gocaI2C9pK/hXbkPozHqYmH6CeEv2B9kCIymQUaw2jfiEQJWNN/AQoSN5zryjrkqtzSXWsvZeycFmAQQdNQppx2R9FvCzzV1BwCwEJorEXA7Mh8PYTdJrXwN1TDOALs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fgQF7H8A; arc=fail smtp.client-ip=40.107.21.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NVkAJ9ek"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fgQF7H8A"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bxrLA81tuyUGApXxocTjlyxbsHd4bSIHm+yq49fC1nu4S40Wbsngjt1nHor3KTX6dVGyw+cou2FpWGY0MDfuLNO1OJ5xTH2cuXsPbGIw5a1vnD/zAs3Dy0wzO2hK4gSSyyU+2O7K3SJ1sp4bLix8KuLE0stWgpvzToEfww4bH40WJ17sT531G+meyQkHDkhHVzUgmWzC4sw2zjeYW9ZZqW2Bz2W3f4jA0f1dek3xNN6PUybwzQ/clUuNKsVrSoQDu4e1GVvsVuYKwnHN4pJKRxNWPxOqd/Apt1PzpSeYk/kUUOhqDdV2wQS99ZUuSUeuo9rgdNl457rFZQmp/g077w==
+ b=wFgHwhaw9YDUFh0q8L/uOo2Ldute1Z07wFQnFfxx/W1i7TlGTexdFOctVTWvlghbOL+fM6MyiJYLGliZKDARZbF9pCUoefKX6YuFhTQq89aX0dIo7vgVTcrENqsMWEkhR0FCO0Kv0c6XnzJFyirHThsWNFY82qUOst234nw7iBlTGMU8XvX/NoUowgNC6VUnyi6L5u1GcOMLhBHrSJEv+HAaoTDQRl/2nIs0ZDfQEhDGlpBAsIsteED0tvjAzahlnSZZXyVKF9QbkzVG5+SvvPUWZr1E0pLv3+5dlIesIplApI72jH3ja3sWk156A6Ew18TYcHIXmFi9ajh/xpl65w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dVrdDACLZL/SJJeRIl3793OwN6Vb0eMRbWMHU+vGG6Y=;
- b=NVqyVDAMcj0DmHldgU8HGP0hvR3cJ0zFAXMmRu9TG2xP4ytKPrMX80kPOBhTtxcbjSeMog31LohBQfKhMS+Q1RHjYt/VmUy5wAoWZtRN9ERxDoCsMbFw9wLyto9UsIHYVLH253h40gS3SrvcK/156PpAVUs3BwK+OaWZBWxMNAeaBOo+dxebU35OyoZYXuhlwyPIgCtGKy96YdUbVWvjylKapqI0fQL7S0Lb9oVPRt35HZBDlWuhEGpMvBJA10dzHxrfua296DylOc9O/1bLPYd33NvXORfVxKYhWIrvkFYkWBMjj8mIdnRUoYHrOqqRIkXM7Fs+byB5hEZ8hOFzng==
+ bh=2AUZ+fMss+M5gXKQ243hma0ZQnO2AW0SMSLI71dupWA=;
+ b=sWq/12BsXFELcsrEe9fkpMp25tiUJ6yzrifF1cCssDMi6ii+Kc0cHLF2c9C/ITUMerS+fZwe6oEfuoqcNk/s8wA09L4FqSHwA7TN5OmuQYxEPT9bKa71pE9LtH0c4Tmq2GSEEqaKvku1q90kDZ51rF++wXoW1VsJUu1J0cPdu08Slj2kabIE2e02YTKj+D8AcyiqatgSKjqZXblHUH1BVO+1Or3xTGCSwtgUzxtu1FhUUHbldk8d0eLaweLKxWD/N1D6HbizFD24PQPuej5l4F3buHcjkbpg0uV4MRy9YUrm3qI/pRoOlRyxtJZQNCMJ1PRz8UnES7cvJ8NwiywEfg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dVrdDACLZL/SJJeRIl3793OwN6Vb0eMRbWMHU+vGG6Y=;
- b=NVkAJ9ekqCbtRbx6DSKqO+Pel/3RkhmSQ9ZqdgD7svgOqxiq9pBEChFJ2WrBNZD3ysmaDKVai2Kv/91w5DSy4CubPttzKaycb1CvoayRLhzVcbiKIfLQc4aCf1kKbvBqRPeImYwO3qa99YTJazkLrRnGcOLgGDDGxTbHi+GrG30xry+urLaOhTz1AAY9yFZiCGZU6P1o2QEnQKUnndW2CLoGJevXZv66/jgfbceQkX7vXWAgFn7ODp0WeJ5AB3jJdXAD81mzoVS6gHnyz1EHPPCvzf2HtFDb8+TOCeJM3PMX8VyjTd1jboFYGkyWHSg7+zWCSqqbrF+bHWArJc8dbw==
+ bh=2AUZ+fMss+M5gXKQ243hma0ZQnO2AW0SMSLI71dupWA=;
+ b=fgQF7H8A3BEnjVe0rwxvG6JEB+HKIJZRkX/dATZyf4x+bYYSdIga0+AKTpsxXGG92E14gJrwmaar1rtO28a09xX4L0B00NQdiebNkau6WqsfDD626L/YfOB5XlpLTiTJEKQyYKRO4Vmwc/6awkOFz7hTnatLcNd4M0uV45n0Eu26ENvgBdyDg65YOcUeb/0cK2uIOQNY8rkxnXJYX7AGncBI7bVoZgMkNZyq9QgPu/uL6igIR8dNiA5/YE49/nBxjPJbYx7ZOZsuFQ8a1Ohyoh759YTJn0mQW7DpNWaFNflEHcyAcAaQ+ZYWxtuZKrQU+o8Qhq8f1Z305AC0vXDj9w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PA4PR04MB9414.eurprd04.prod.outlook.com (2603:10a6:102:2a9::5) with
+ by AS4PR04MB9689.eurprd04.prod.outlook.com (2603:10a6:20b:4fc::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.18; Mon, 24 Feb
- 2025 06:23:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
+ 2025 06:59:44 +0000
 Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
  ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
  ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 06:23:21 +0000
-Date: Mon, 24 Feb 2025 14:19:59 +0800
+ 06:59:44 +0000
 From: Xu Yang <xu.yang_2@nxp.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: len.brown@intel.com, pavel@kernel.org, gregkh@linuxfoundation.org,
-	dakr@kernel.org, stern@rowland.harvard.edu,
-	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v2] PM: sleep: core: Clear is_prepared if no_pm_callbacks
- is true before checking power.syscore
-Message-ID: <20250224061959.xzsk5eddj4xjlenq@hippo>
-References: <20250213105840.2864654-1-xu.yang_2@nxp.com>
- <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
- <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+To: rafael@kernel.org,
+	len.brown@intel.com,
+	pavel@kernel.org,
+	gregkh@linuxfoundation.org,
+	dakr@kernel.org,
+	stern@rowland.harvard.edu
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: [PATCH v3] PM: sleep: core: Clear is_prepared if both no_pm_callbacks and direct_complete is set
+Date: Mon, 24 Feb 2025 15:00:49 +0800
+Message-Id: <20250224070049.3338646-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
-X-ClientProxiedBy: AM0PR01CA0143.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:168::48) To DU2PR04MB8822.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0032.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::12) To DU2PR04MB8822.eurprd04.prod.outlook.com
  (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,193 +66,130 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PA4PR04MB9414:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63ef9cc8-0304-46b1-4584-08dd549bbc1b
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS4PR04MB9689:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50749e6f-5fab-4c83-134a-08dd54a0d16a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|7053199007|38350700014;
+	BCL:0;ARA:13230040|366016|376014|1800799024|52116014|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RkNib3J2Y3l3K05TUkxuSGR2TWl6b01lUnpHLytqa0phR2NmblBKVTR2bXlL?=
- =?utf-8?B?NG1UWU9QeEdKd0FSYWpuZ1pEYjNhRDJFRDZSNFlWU3ZKbEp1TXVucCtZcVdK?=
- =?utf-8?B?ZEtmMFpsK0FXNGNaa0ljekJjaG5JWkp3YjNjbjVzSUw2WVBUY3FwNlg5RGhC?=
- =?utf-8?B?RjYvYjllblZpdkN6U2o2bzRwRklRZ0VHUkxWRjRTNnd0alFKdGlFNm9aSnRC?=
- =?utf-8?B?WHpXejFOZDVGUnlLeWRWVUc2eFJmQUhTVXJyd0RUUS85V1duZzN5aWlra05X?=
- =?utf-8?B?bWpwYWQrd0tpR0NROUVxTE04TWh4dGE1Y2hpbXExbkhHNVpTRjYxUlM3Vmpj?=
- =?utf-8?B?bmpxVVNiVnNCbzZkVlUyaEVPRFFuaWcrOUZZRzA3aVZ2M0dkNm5aSk0vUmV0?=
- =?utf-8?B?WU5tK09tYW5IeVVQZkpPaEFoWEdEcHdkU2F3b1RLaysxQUF3L0o3Z2h0Z2VZ?=
- =?utf-8?B?cThHNTFyYjhzUVI3OVdMcWtSRm5PYkI1c3grdEFwK2ZGemV2L1BtRVZuYnMx?=
- =?utf-8?B?OSsyMllDaDRQam9ZN1UrM0JvdmRHNjBKdVh3QVN4dkkzeTdwM3NEdVJBM3BE?=
- =?utf-8?B?c2Z5ZEhNaWFrOTl5Z3o1dkJqSnlWbG9qVmNSQXlJaFYyU3dWZXFuVk9pbTRN?=
- =?utf-8?B?dVRPSGF5Z01GTGgvREJ3UGphaFV1Tk9aaktQcS9adTNmWDBvakpwUEdnZ0la?=
- =?utf-8?B?emg5NVhmYnk0bzdFdFVCOEgweWpQT1ZWU1FiODNWYXY3d2x3YjJmdWhrQ0sv?=
- =?utf-8?B?ZldxWUZXa25MWFU0ck9pb2dDZ0RhSEFNQzVHcDhSbjlsSzlHUWgrL2NJUEJr?=
- =?utf-8?B?N0pmZm1wWS96Z1h0UHR5eGRvM0FkVjc1RERuODB3MmlLV0F6THcxM21jQ2xv?=
- =?utf-8?B?WTFZUlhwdzR2Z2Yzano3ci9NQWRrUGxHWTZldG9mRnd3NFJjREtqSzFRcmJQ?=
- =?utf-8?B?c1RwVTM1ODFBTEE1Qyt6RFhUc3diL3I4Ymo3YnVMK01kK1dMM3JUNlgzSVBS?=
- =?utf-8?B?V1ozSkF5c0kvUk4xQmtVMGNmWGRxMi9QQTkwYW9mL3BEd0JEY2poWjBidzZo?=
- =?utf-8?B?TDVJREdtdVBrMWsyaWFkWFRKajd6eUV3b1FhL1gzUGc5bHJma2V3bzhNakJ2?=
- =?utf-8?B?Unc5K3JiQ0VvTUo4U3VEMzBaa0FJQmVBaEJmd0JhVHpYbWQ2QXJySWtCdito?=
- =?utf-8?B?dXl4aXhieFFnTXdKbm5ta3A2bzBXam9CSndUMy90VlhzSkxTS2JTZ1dvcUpX?=
- =?utf-8?B?clJNV2ttVTlrbFkxa21lRDl0eENJSENUcFdQQ3FWaXZaOXBqQzZOYVpEZzlQ?=
- =?utf-8?B?NlNIaWRxN3lFc3Y0b3NMUlo5eXF0M2dEbUdwS3lMK1JwMk1SRTFsd0V3MFg2?=
- =?utf-8?B?QkpCSzVCcCtXWWxBU1EvRG9MaHowTXo4NkNYV3dtZTh1aTk1YTFBRmFFN1l0?=
- =?utf-8?B?S1NJRkVUTDFKakJnbkdLQnZSaEhRVUtCTXpoOCtwL2E3SmFkcGhxQ0ZnMGM1?=
- =?utf-8?B?VWhMcnl6ZVJwUDFNcXV2RXlLWXBQY1VzdS80TVJQdGJqZFUxdXVnOEdxWVV5?=
- =?utf-8?B?THAwWmdRWnJkWm9yRVVWVU9aQk1uQStweEtHQ0VPRDVERzdyb1YyU2xEaUZC?=
- =?utf-8?B?QXY0cXRGU3l3WmwyWDhXMGVSUWRDY3Rya2xlcjJQbWlIblp1Z2drUDJaUWJ0?=
- =?utf-8?B?OEhNbXJoUDg3TEluaHhhU0FKbDJQUzN5RzMxaUhGVnF1RVgwdnpxZmdPRkxi?=
- =?utf-8?B?d3NrbnEyU0hRZHdOS0pNbHpBcm1uMi9qblU2MTdMUnBSY1BjT0J4cC9JczRt?=
- =?utf-8?B?aFgybzBTVE1Gc0Z1SXlXSU1VVUJyQjUvNzFmTENoenEwZyswanplcEZ0K2du?=
- =?utf-8?B?TVFlVGl1QU1HVm9UMHVBb1NkMnRydlhWby90Z1BRaWNxeUdsL2YzYzNKUVRp?=
- =?utf-8?Q?6iv1hLH1R5rbpF8RuS4JmNR1gcvji/Lh?=
+	=?us-ascii?Q?S9xRhNnzj2aPxztRYA2ImKby2boLVt5seHnqJKRxwjTW8vZYO3j2AOQI/dZ6?=
+ =?us-ascii?Q?XC17ugz3TeNwjRgt8ubAKop/Y7b3xbvzGnT03EyGQvATRITnQ6R+ek9989fy?=
+ =?us-ascii?Q?JguPNKngK6yub/1dFJB3taESVk3nj25uGCUBrvX/gSXvYdEywM9cwLcC6LB6?=
+ =?us-ascii?Q?S/CtUOg97mcW8+ol/ikbpNVLxEdPy7W2aCSaLU8x3UuyVJ9iAWOjceCkwSnz?=
+ =?us-ascii?Q?cD6vXYmGovUMA7Z0oLeZWgpagMt1w9LQaf3hW0ly86UHYXCZ1v6cYsq0/+eT?=
+ =?us-ascii?Q?2i4f5s+O3UkUNJNElYzG0+ONIEIezLwE5IWwM3FNoS9XgXYfjRtxD/a+IbrZ?=
+ =?us-ascii?Q?xG0WBklEJ0IK6zjK0geu/Xcvx2E13sIYbyPhkWSiIdvDD3cvomGZkyqeQh2m?=
+ =?us-ascii?Q?6O8byMuZShfa1DFxArTTWyQOl8Sx9avXMs7ndt+118FY3IIYiSTTQcNG7151?=
+ =?us-ascii?Q?t+7MXeiHef3Bm+OXkin2DU4U4P4Ajz06KsVYqj0beVVEdtlbmRS94y0E/8Vd?=
+ =?us-ascii?Q?+Ip+j5NuK1gAdPFh1s0bW5jxsQ5Txc/hPjTSNQo5mJPd1vxTWfMSR/Z89izf?=
+ =?us-ascii?Q?jwIUMSiUbLhuMgIYsIbjxw0YyDhrNK/W4KDEwUOvkBo2LR7PZCTjJdVfG8kh?=
+ =?us-ascii?Q?SY+K55+771X/9++lubGP94Y5RjedPHtBKX5jlqxaOkkd4u2QHmxr8Avz/QoL?=
+ =?us-ascii?Q?iWnWM8I+F4B88aQzeiYo79Ln3b2a8qJoCzg110wT4yCKCR7pJZOwrGomOK57?=
+ =?us-ascii?Q?C570HkJTCzsKmiFPlUDVRsGzyTcsuQGtZDaFcbyQeWHvp5UBqiTP++00G2h7?=
+ =?us-ascii?Q?eyGwbwN74Fg0E5o/CetWaeNrqJJyhCUXHUhSuViqlqeIFG9/hM8+3N31Mnbc?=
+ =?us-ascii?Q?i/XOWcCzqlGZyBftr7yU7irPEkWGM/OahO6Mok7I9B6L/fqaDyd+Zq+Gz3ZX?=
+ =?us-ascii?Q?YHD+xWd7p9l5RB5BDRJeY9oKGZeg0AT1X150SiIk8L3mkvV+ouWXzLfzucjQ?=
+ =?us-ascii?Q?oXB7g8E0yZP0BxGTR/PpywjDI9jy4qVWHNBqlGwv3fM7LaXQLIjZtpwbZXmK?=
+ =?us-ascii?Q?7X7RMJs7l7GENf2yWXn9TUs5e7ZtiXwHf5PUctEEWomIrPhqxxAweMFqIb4w?=
+ =?us-ascii?Q?SjDCBj1KE8zznKvfyrvXSWWUxO7okw1rHDib487T2eAMTY3FELLHiyq0afUv?=
+ =?us-ascii?Q?XO1c75c8WKmzqyhOmsyUVEz1qoVxYoAAKiwpa/HTH0zJgcknBOSFVEE2EnS2?=
+ =?us-ascii?Q?qvQi0yjTvNBVGlD0LsuWJU3pPWODv0iFb0A4n/j/FHgCUWzYM7bUkOH94s5A?=
+ =?us-ascii?Q?HDfg0PN/SaZ+klmkEdkh/6qrNs3reNhlNukTbtETXKv2d4+LRKNRZn23YQCn?=
+ =?us-ascii?Q?Yh4rsZzO7q0KINooadsRw4olIj6Rw1RYU/a++Qyvv6J/RLA2uo0XP7+M00j+?=
+ =?us-ascii?Q?uSxCGw7t5GKTHfr+Me7MBc/GH/ZKs2e0?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aVJWa3RxZEVhTmZ5TGt2ci9tT2F0bEFtWDg0dThSQlp6Vk9CMWxtMVV3Wm5p?=
- =?utf-8?B?VVdrazZ5MFB1YnA4bGl4bU5kUjBSK1B0RWVPazlpV1d0c0RPOUdLZVl6MTcv?=
- =?utf-8?B?SS9wOTMxdlN3NEJid1hxcXl0TklTYWxOR05lUzdScUNsVmdDOWM2bzZDSXVW?=
- =?utf-8?B?RXFydU02MGhObG01OTRrTFdVSGpBdEdVMEt5MnErdVIvUG8rSm1GMGFZdncw?=
- =?utf-8?B?MDdwamZ3QnpacGk5WHZQYUU4ZCswRER3Q2VURERXazBxTWkvbkNQVWVJUnpQ?=
- =?utf-8?B?TmtleExHeUVxaFlhc2dsZ2VDMlI3aGhpYlNZczR6bmROMzNnRkFwS3hyTjZD?=
- =?utf-8?B?ZWxSbzJEY0Z3UmhpRE80RkpPcG5nT042VU56c0RldkpwbWhYbGRtMmkvQjdN?=
- =?utf-8?B?eGNmWHlYU09McVFkVGNheHRybVlMdkpab0hHeFk3M2xGcGpnRkxVbVNSVFdi?=
- =?utf-8?B?T2p6OHdOT0JJUHpxd0x5d2d1OW8zK2ZUSU1nMkpibG1MU01xSVVHUlY2dWo5?=
- =?utf-8?B?YXJkcFV3dHBlY1dmbkx0OHBJcFU2UDVYNFhTdUxBY3BiY1VkZDk5Tzh0MkFH?=
- =?utf-8?B?TVdvVnBSWkhyWkd1U3BUNnNtVTdmZSs4eFRrYlJHUE94dU9HT0QrVHlZVkxJ?=
- =?utf-8?B?N204eDcxWFhTd1ByTU1BVnEwTnh1NjZEbnZJQ29NMlpCdmo2YzZWS29oV1ZP?=
- =?utf-8?B?QUMyZ1k2cVVJMEJZSUQ0M0ZUNFlKbklLd1VJMkFiMkl5cHRRbFJhbGFHdVVB?=
- =?utf-8?B?a3M0akhneXlkakY3WEF1akF6RHZzS3h0UkJoOXlvdEVESzRHU2ZnVm5zbUxQ?=
- =?utf-8?B?TFVBVU5vbzdJWU1PZjgwRUFIMFFRNjFXTHljSVlWOVRZVnpJek1vdW9NeUdN?=
- =?utf-8?B?eWppMFZQM050bTFvQ2RibUNZYXppU2dLaUN3RmdFa2lWU095aklEV3k2UE1N?=
- =?utf-8?B?MWdtcEhjM2V2UXNQbU5DeFRLTkFKdmM0YVB3WFRkZXljYTdUK3JUUXBmSEtF?=
- =?utf-8?B?ZGtrTzRoOUFKMnFxYjVRNC8rUmpGSWNvdGxWVVFJOVlFanhGaEpvUUx3WnNH?=
- =?utf-8?B?czJQbm9oTnpWbk1mSE5WUjNrbW91SktUbE1LdDJHOVhVQzFZUEZjRitHM1Jo?=
- =?utf-8?B?OUwwcmJnY00wU3liZFhDNkE3MTlSRXBwQ28wK3JnWmNLTk1seC9uS1JranB6?=
- =?utf-8?B?WlVGQ3I0MXBqU20zemttTWVBK0UvNTBDQnNlY28raHgwNWdJZy81ckd1ZWRV?=
- =?utf-8?B?SFF0cFFXMTZYTUJCbVFJTm44MjhIYjN6dHgwaWZQR1FqRm1QaUxNenFoSGxx?=
- =?utf-8?B?cXFrdEJiUTdtZTQyK0gxMlBsbEVrOVNWUXQ5TzJJZnF4V3JMdXdIcXlrN3BQ?=
- =?utf-8?B?UlR5U2wrQXd1b2ZrZk1HcVlZMGo3WW1xOVRScDZDVnlXMWJMREhMdldHdGRY?=
- =?utf-8?B?L3ZIQWtCQUhJMFpITlljcTJBN3RobzhIMElyQUZlR0p4OWd4VDFIMjdQc09D?=
- =?utf-8?B?cVIxWFM3NkZ3SFhCZmQxWHBCMHJIVDU4RTU3Zmk1aFJtWkMxYTFZVkpmZWtp?=
- =?utf-8?B?alZ5dkpIRDVmQnhLNlI2d1pMRWk2cUx5SlVwQTVLYzI5ZG5pbDgxRkY4MGNF?=
- =?utf-8?B?RXBMaWtaRVJJOUl6b0NDUi9jTHVHMjRsVE5OR3loMjQwOHBrU21JVHA4c05H?=
- =?utf-8?B?QUNwcVhoYVlmNDlkaUpNdVMwRmtkM0VSTUVSKzZMaUNlUmdmWDhwUFdXTWFR?=
- =?utf-8?B?TjJxc0ZUYmZwcTNXSkduYlZXbEZwNnByZ3k3d0JuS2QvbElvdzRqb0dwK2pp?=
- =?utf-8?B?YVFWSVB2b3JWWktXVk1nS0VRS2RlMGFGbitGaldpeWoyMkpBMGozaG5MY2Rw?=
- =?utf-8?B?N2txU25QOE1XVDRqVThSd01zcTZDZzRTeFhSRDlQMVp6aVQya2FNaHJPLys3?=
- =?utf-8?B?anNRQTEzYlJxR2srT2R3cFl3NVlXQlV6UEpuRmhFbyttTW03aXNUM3d2SDJy?=
- =?utf-8?B?OFAxbm9HVWhTRXZJQXZFSTIvQ3FQdWNCMUdLc1R4d1Zmam1EbHVrdzRVM0tl?=
- =?utf-8?B?OXRVUG16TnQyQURzbFMrSklNYkJtbm51S0ZibVY3cmF6aGNwN0hMMWgycHEw?=
- =?utf-8?Q?FN+DLMV4pnqBnoYyuqRYg4tNR?=
+	=?us-ascii?Q?agyhknbObQmWYgyR8icb9G6GoZrMPHxPfin/50ikj6xx+nr+U+Xjy5XFnbXC?=
+ =?us-ascii?Q?IbooLahNKbY0zlZgSQuugjUWtnc+ZgKN/srbOoiGpe+TuLLHfbLQs3BhTCfl?=
+ =?us-ascii?Q?+1MQdCKx36hQikcTV8hM2iEKJr50yLOKHoJXh2JlvY/XSc1PAB+8JhcYtuW/?=
+ =?us-ascii?Q?I45sNNYZGUkQGom3xbNgQyjdN6zwbQCm03KKu78MjeoEiUtG+SaubBl5qbbc?=
+ =?us-ascii?Q?giVVcwTMwB9WUAT82nY5kK5BIG/wjMrVv0ptDpAGfAitpJJfDK3sxI0gzYLL?=
+ =?us-ascii?Q?8yT4XmExYW6IB5W/Kt+tCXXMReAfbXxiClROVN5IYeToqDtSakhME9irLqnE?=
+ =?us-ascii?Q?OBEDmTB6piGUGil7Otb55oIc1rxBY7hHHGsh3WT1L9LL0KLkRk0ags3fR7Qs?=
+ =?us-ascii?Q?OWHy7TthDRgZQpgcgxl3Ui7uYxbmfK3ca2axuesf4CMLtAL5PxFddU0aN6Gs?=
+ =?us-ascii?Q?UPd6QSDHW3W3+T5B9zaSk80Fn0f6eIdgtHY+EsRlRV13M/waNofdhruu0a4A?=
+ =?us-ascii?Q?DeqmwpJaLRH35Zs9axjJdOel3i26WL9UEfQH35AK6LaZcC2rg2kW4Z5Nb4WA?=
+ =?us-ascii?Q?BX5IjS+oqGPhX7kHG01Grocd8ohApJJKA4cue3D62f6OwoyOdTC/DbREgUhB?=
+ =?us-ascii?Q?lxxyQzMkmrLH9Wwi/NmxV9D2gzAZF4wBQ3t4wFxcmitYSJTB08xxXtduPOWW?=
+ =?us-ascii?Q?DZDSoJLhcjxpl9AggJCl4stwWTXmRUDtUFGwg5akZIyg3qpfgprp/VkHWmKa?=
+ =?us-ascii?Q?GivIckz2JQl3imWUjWyjl6m15SoI6np7UmzBLaOTyajLM/6wHK4jYm/JZf6W?=
+ =?us-ascii?Q?2owmccWvvrTd49zyfAA1doFbj9xZRTouu7lsworj3vSes3AZo6ZgaWaqX7Vz?=
+ =?us-ascii?Q?IIQ4afaop3aPx7t8I8WXkd1E6w+yBeED/FxXSC2NaCTgIqPIPP5esVRMonAu?=
+ =?us-ascii?Q?hEmKXH+PW4n5gpsUNp1kjXgA1rIrzMIoIQ4dj5gilw4p/LQqV38QF6yKXSeG?=
+ =?us-ascii?Q?8SiXX2oKFSQ0r4EYPucyKKJxJ44d9loYsPbZUCbpFl6EU/OlwaYRqRIjBVhR?=
+ =?us-ascii?Q?4T/Y29YuILaTIafKsy4cw6Pf0yRb0IQ2i9rp/W2ptV/EE7yHWBC4noICJ6DE?=
+ =?us-ascii?Q?rIYctbMAOrT6kzzyJq00o4CFOmNJPZr0VRrzt98aMbE3TTDqkFKI40k8D2j8?=
+ =?us-ascii?Q?9fzaSoAFTY1morc14oB9HttglNSgb2aj6mkAQDJ9i4EsCBAggODk2JDIKmP6?=
+ =?us-ascii?Q?LRwEwGK4YI0ePwoZYdhSo5QBvDIgMeVRqRKU0e+o/4bOQdz74BBGm1LQ4pab?=
+ =?us-ascii?Q?3J5MiVkpZ7t50hDoitGPW2KQ5f8KJF3nIar+TASNKhwVxAKkN28VNT9gbyjZ?=
+ =?us-ascii?Q?RPqmlUhLe71YzCRGUW+iOGAAPAK9+Sd4JyZlDG6IaWlD1ounRgYu6yziLVma?=
+ =?us-ascii?Q?epw5fTxmGubDrnw3j4uIvp2UO4AR6dwGAS2vVKWKhhPb/c2SdfmnKexf29Uk?=
+ =?us-ascii?Q?qHyClUJ8A0O+jn9cXSAQigk80cm3vnxpr22Qt5JjFw8kI3SxrR3p+SH6fZMx?=
+ =?us-ascii?Q?R6J+NWqk8w0atNNnVeIWPvSa1MZ78BbmTFLzHzlG?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63ef9cc8-0304-46b1-4584-08dd549bbc1b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50749e6f-5fab-4c83-134a-08dd54a0d16a
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 06:23:21.1195
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 06:59:44.3544
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C47w1Se8UMCOlJT22xX5y7O5wRfSQS3SjLvF6CZSaTzPQ0IPhUE7Ji5jD5H5qwqcquOnBQ7b/OCPzZSQUXSIgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9414
+X-MS-Exchange-CrossTenant-UserPrincipalName: Oow7uyoJse7ADRdwN3PrrOtlb0ZNnosDncaedFcRAmXuUPw9qxFpUpYglADX/yipgvNuJ5SBLjxj9BIDxraSuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9689
 
-Hi Rafael,
+Currently, if power.no_callbacks is true for a device, device_prepare()
+will also set power.direct_complete to true. When device_resume() check
+power.direct_complete, setting power.is_prepared will be skipped if it
+can directly complete. This will cause a warning when add new devices
+during resume() stage.
 
-On Fri, Feb 21, 2025 at 09:49:11PM +0100, Rafael J. Wysocki wrote:
-> On Thu, Feb 13, 2025 at 10:33 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Thu, Feb 13, 2025 at 11:58 AM Xu Yang <xu.yang_2@nxp.com> wrote:
-> > >
-> > > Currently, if power.no_callbacks is true for a device, device_prepare()
-> > > will also set power.direct_complete to true. When device_resume() check
-> > > power.direct_complete, setting power.is_prepared will be skipped if it
-> > > can directly complete. This will cause a warning when add new devices
-> > > during resume() stage.
-> > >
-> > > Although power.is_prepared should be cleared in complete() state, commit
-> > > (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
-> > > clear it in earlier resume() stage. However, we need also set is_prepared
-> > > to false before checking syscore if the device has no pm callbacks.
-> > >
-> > > Take USB as example:
-> > > The usb_interface is such a device which setting power.no_callbacks to
-> > > true. Then if the user call usb_set_interface() during resume() stage,
-> > > the kernel will print below warning since the system will create and
-> > > add ep devices.
-> > >
-> > > [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdrc
-> > > [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
-> > > [  187.105010] PM: resume devices took 0.936 seconds
-> > >
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > >
-> > > ---
-> > > v2: clear is_prepared before check syscore as suggested by Rafael
-> > > ---
-> > >  drivers/base/power/main.c | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >
-> > > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> > > index 40e1d8d8a589..5e69cfaec661 100644
-> > > --- a/drivers/base/power/main.c
-> > > +++ b/drivers/base/power/main.c
-> > > @@ -926,6 +926,9 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
-> > >         TRACE_DEVICE(dev);
-> > >         TRACE_RESUME(0);
-> > >
-> > > +       if (dev->power.no_pm_callbacks)
-> > > +               dev->power.is_prepared = false;
-> > > +
-> > >         if (dev->power.syscore)
-> > >                 goto Complete;
-> > >
-> > > --
-> >
-> > As I've already said in the other thread, my initial feedback was
-> > based on an oversimplified view of this code, and the problem will
-> > need to be addressed differently.
-> >
-> > Sorry about that.
-> 
-> Unfortunately, I don't think that this can cover all of the corner
-> cases.  Something is going to escape, this way or another.
+Although power.is_prepared should be cleared in complete() state, commit
+(f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
+clear it in earlier resume() stage. However, we need also set is_prepared
+to false if both power.no_callbacks and power.direct_complete are true.
 
-Agree. Although I don't know how the corner case looks, it seems like
-a risk in the future.
+Take USB as example:
+The usb_interface is such a device which setting power.no_callbacks to
+true. Then if the user call usb_set_interface() during resume() stage,
+the kernel will print below warning since the system will create and
+add ep devices.
 
-> 
-> To minimize the number of things that may escape, I would first treat
-> direct_complete as a special case, so only clear power.is_prepared
-> early if direct_complete is set.
-> 
-> Then, clear it only for devices with power.no_pm_callbacks set, that is
-> 
->     if (dev->power.direct_complete) {
->         /* Add explanatory comment here */
->         if (dev->power.no_pm_callbacks)
->             dev->power.is_prepared = false;
-> 
->         /* Match the pm_runtime_disable() in device_suspend(). */
->         pm_runtime_enable(dev);
->         goto Complete;
->     }
+[  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdrc
+[  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
+[  187.105010] PM: resume devices took 0.936 seconds
 
-Thank you for the analysis and suggestions! Combined checking direct_complete
-and no_pm_callbacks seems like a better solution and this will precisely cover
-the issue I reported. I will adjust the patch and send v3 later.
+Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> 
-> This is not perfect because ideally the device with no callbacks
-> should wait for its parent and suppliers (if any) to resume before new
-> children can be added under it safely (in case the children depend on
-> the devices that it depends on) and is_prepared may be cleared before
-> that happens, but those new children may be added by the parent's
-> resume callback and they won't appear if the parent is not ready
-> anyway.
+---
+v3: combined checking no_pm_callbacks and direct_complete
+v2: clear is_prepared before check syscore as suggested by Rafael
+---
+ drivers/base/power/main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Understand.
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index dffa2aa1ba7d..b9b1fd43427d 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -930,6 +930,13 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+ 		goto Complete;
+ 
+ 	if (dev->power.direct_complete) {
++		/*
++		 * Allow new children to be added in the resume stage for
++		 * devices with no PM callbacks and can be completed directly.
++		 */
++		if (dev->power.no_pm_callbacks)
++			dev->power.is_prepared = false;
++
+ 		/* Match the pm_runtime_disable() in device_suspend(). */
+ 		pm_runtime_enable(dev);
+ 		goto Complete;
+-- 
+2.34.1
 
-Thanks,
-Xu Yang
