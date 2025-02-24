@@ -1,300 +1,259 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2085.outbound.protection.outlook.com [40.107.21.85])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2042.outbound.protection.outlook.com [40.107.104.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3FC43ABC
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 04:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E386B28DB3
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 06:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740372155; cv=fail; b=AdqWPvkDs6Wgx+Yx7s756lJ6p7MVeRijIULQ8DGjSJPZfWPWS3LHKnccrziZ4nWdaRKDged9NIxyTjN5a+FsufnUmPIk+VeYwdnPQtG9NSCr5AkYazzA3pI9/p6Ami1YmfZGXL6Eosq2FU9Mv13kPAs3EQd3Koymg3CrdymCPjg=
+	t=1740378207; cv=fail; b=M96rlQqcv+p59/MuezFOclz9kQa+K4y9MvJwgXkMTPM2QkCBlnHitrNRYBKaXiOWeGoDioBL4usP+8FRR1BXVlvtPwQT94OOBhSeUmt2vvNPTcgIT6vIbhqngolac+CyJZb8G8hhDzwx8Bx4gXPIq/jNmioWCdp6w955iI8NH9M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740372155; c=relaxed/simple;
-	bh=3rhsFTLyMiRKg9ryY3mhM1a32PLUESJTSmRLCTxf1G0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ps+NH0K7neQXxhHNI8jwGIC2d3U/1ZYmR9+IQDG0Sk2fbrkM2KsEKAnktkMfrbctmnLKszLGUwTF+81JJGZV4aEs1Me5qdWn7zs09FPHtGX/Sh6O5dU1C2M1bljZmKMBGpfsMJnDHX8pcCq9D51tMsuGSyCKTIHkfYPIkQusNps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WJUFfAEZ; arc=fail smtp.client-ip=40.107.21.85
+	s=arc-20240116; t=1740378207; c=relaxed/simple;
+	bh=fbma8iytnNipvQFU1N/Wu4vg2NgEiVrGE1HTZeaWN4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=opuEOZNkqI4dR0UgrKjNSYVEs6HCPxUz+6EBJfs03x6MPyOB9ICG8/KLRayo8c+ZtYJgv5CpqpAYKZcIaU0FfqIZzzsAg1n4oMdRjCjrOJCDz0WyS8jVOoPjKFKkLMfocDlr7/DQMFhjtyFwrkUIv6RVM1iFYg4Cw5EgsEvvu5Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NVkAJ9ek; arc=fail smtp.client-ip=40.107.104.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WJUFfAEZ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NVkAJ9ek"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WWrh++VgV7MqZXOJCB/Vblut+Y3YbPbaANdtwTSkTIWOkEhsL1tdVXHzkfTWSsPAkINsFKSd5nv45JJbkmpp65I63Sr1r/lAphQ48xtFYPa7e5Egoy0ucFeA6ueSIuA11AgdqtDt2ylkvtoHi7TtlD6kOFp8vajAR+c/spjagMTibXF0NLOyf8vXz976FikdovnKzE8nIBpl1NHpHxM/xDU/xLfhVTzdoI/q+cXxKn3kuc0rYW0j94MtLS4e2YZWkeFGC3+CxrHrQWBwddNuHgBszmeo6KK7Ug5+q/+RKdmxEbQiO9U34qJRDwR0EPqv4dAHSjsaaCeZCd/TJzMn3g==
+ b=bxrLA81tuyUGApXxocTjlyxbsHd4bSIHm+yq49fC1nu4S40Wbsngjt1nHor3KTX6dVGyw+cou2FpWGY0MDfuLNO1OJ5xTH2cuXsPbGIw5a1vnD/zAs3Dy0wzO2hK4gSSyyU+2O7K3SJ1sp4bLix8KuLE0stWgpvzToEfww4bH40WJ17sT531G+meyQkHDkhHVzUgmWzC4sw2zjeYW9ZZqW2Bz2W3f4jA0f1dek3xNN6PUybwzQ/clUuNKsVrSoQDu4e1GVvsVuYKwnHN4pJKRxNWPxOqd/Apt1PzpSeYk/kUUOhqDdV2wQS99ZUuSUeuo9rgdNl457rFZQmp/g077w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
- b=i5BgLiatz04ltdwIC3arI0Qg7WvhVeyTtJHxkSARSb97O9stkuhN6za5NQAl5gRFzdgkr/I77BejAU+OPtN8vdLDyCGUZ9q2M3jSwyrzh6idIQ0LKby1vBW8Z1n9Rn2Y9yavR3UbMN2hp3EGu1eePYuZd2Plc4vj7fmDGtiK0/XOt/h7mnZDjowlklWSft/LiYDRfXZD8YNyoFg6HdxWy/RnpGtlXkeHi/IlB+lL9D8ZVG1v9OxuOZjzGjQsQBlC7tl7+urrYU5bh6a5V05NkSXymKEDKUeh8hxdRXgAEZI7iqF/oFACCiV/yrdEdERWOgTdLMwQqEEFSZRhiRDBUA==
+ bh=dVrdDACLZL/SJJeRIl3793OwN6Vb0eMRbWMHU+vGG6Y=;
+ b=NVqyVDAMcj0DmHldgU8HGP0hvR3cJ0zFAXMmRu9TG2xP4ytKPrMX80kPOBhTtxcbjSeMog31LohBQfKhMS+Q1RHjYt/VmUy5wAoWZtRN9ERxDoCsMbFw9wLyto9UsIHYVLH253h40gS3SrvcK/156PpAVUs3BwK+OaWZBWxMNAeaBOo+dxebU35OyoZYXuhlwyPIgCtGKy96YdUbVWvjylKapqI0fQL7S0Lb9oVPRt35HZBDlWuhEGpMvBJA10dzHxrfua296DylOc9O/1bLPYd33NvXORfVxKYhWIrvkFYkWBMjj8mIdnRUoYHrOqqRIkXM7Fs+byB5hEZ8hOFzng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xNbJj+c2ivj0Oh/FmLJuUa/K3dvM5X8j33mZZ2YUlec=;
- b=WJUFfAEZ9F/n+DWBRMfsfRPyNLWrWABKRW4hzYj8B9/zbFzcwXGaadSuZU7RdvPRsw3XY2qWAR8vmdNyvaDqW289Nc1SJv0BkZET/miFZU2fRVj4rvhB7Cdf0ckhhrqTXw/00wLu9VU9iMx1SR9AfTWg8Nuqph7Y73i7Lw3HF8doM7pH3WYCgv+LyE2P5qgEr9KsaR/Sbih0A6kBzQ4I00O7/oAdWsHXS94qzy1PzQNksQPrhiQt/iwGBimusdh4Zj41gWBHRN20puCDRSjI8fuqdimeeZg5c2OYp9aB8ihHeiDbOZYQLxlYT7ncyyNi0qGomFMdeXta0rxIqnGW5w==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI2PR04MB10596.eurprd04.prod.outlook.com (2603:10a6:800:278::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 04:42:30 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Mon, 24 Feb 2025
- 04:42:30 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, "Y.B. Lu" <yangbo.lu@nxp.com>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Topic: [PATCH v2 net 9/9] net: enetc: fix the off-by-one issue in
- enetc_map_tx_tso_buffs()
-Thread-Index: AQHbgpOTkcGlUe2F8Uqdee5IlYnyh7NQZPOegACoNSCAAHQsgIAEUdIA
-Date: Mon, 24 Feb 2025 04:42:30 +0000
-Message-ID:
- <PAXPR04MB8510A88FC949D501E5767FB888C02@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-1-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250219054247.733243-10-wei.fang@nxp.com>
- <20250220163226.42wlaewgfueeezj3@skbuf>
- <PAXPR04MB85108B76779CDD5C6F862A5B88C72@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250221093027.wo74lqkbycky2vu5@skbuf>
-In-Reply-To: <20250221093027.wo74lqkbycky2vu5@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=dVrdDACLZL/SJJeRIl3793OwN6Vb0eMRbWMHU+vGG6Y=;
+ b=NVkAJ9ekqCbtRbx6DSKqO+Pel/3RkhmSQ9ZqdgD7svgOqxiq9pBEChFJ2WrBNZD3ysmaDKVai2Kv/91w5DSy4CubPttzKaycb1CvoayRLhzVcbiKIfLQc4aCf1kKbvBqRPeImYwO3qa99YTJazkLrRnGcOLgGDDGxTbHi+GrG30xry+urLaOhTz1AAY9yFZiCGZU6P1o2QEnQKUnndW2CLoGJevXZv66/jgfbceQkX7vXWAgFn7ODp0WeJ5AB3jJdXAD81mzoVS6gHnyz1EHPPCvzf2HtFDb8+TOCeJM3PMX8VyjTd1jboFYGkyWHSg7+zWCSqqbrF+bHWArJc8dbw==
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI2PR04MB10596:EE_
-x-ms-office365-filtering-correlation-id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?6Evo0UJ3wN3lnTuLAhXtCq4OHrEuDXBsdAkoiGTRPlWmE9DNzk9xEPMDLIlF?=
- =?us-ascii?Q?D7dRhCj4xbylqOJ7+C9x+teXVIZdk7C8hbSUT89hX0zlA1IoMnAY0tv2rWI4?=
- =?us-ascii?Q?tKm7dtMqvjT+OU2MqU/0sbzPcLSJ6pHpIq7FvePTbIUjbBNYo86aj62cHoR+?=
- =?us-ascii?Q?LU0aOLndIPqhdwhvQk/Shvd2iaIK2OO0UZMFLP02d+nzo4oHxodNBgQoHr1B?=
- =?us-ascii?Q?gnaG+I+v9vFGfSCS3Sd0Tz6bmCSerCwrCIJUK5PFLBFvO3f+nNTIcnK/aOm6?=
- =?us-ascii?Q?Fg3PgwVPt6bntAdH016S4Nwu3sNXpqf00geLPpVdsAsmDLiqpC+ViboG1iNv?=
- =?us-ascii?Q?kX+rr7xsSM/GsAau6CnC/XsqdpVwmyP0tuFBT8GLDkieQpg8L8RNxTmR40EH?=
- =?us-ascii?Q?a0jpaY8o9VxsbQcuy4hMGL+D/PbX4Oj7DqSKO1T5nxUcaLOfz6L3NaCcz3Kn?=
- =?us-ascii?Q?3wkSsYge1N6RIlqNamoQANGq18+ctDmiD/fWsaG1NVFQ1gDlwVMw8A1lWxA7?=
- =?us-ascii?Q?MGlAvTzFch9FvdULmcE91ZHI+omUZCOsw11c3/LkWTYrJuFjJcphPQxDVd+t?=
- =?us-ascii?Q?iE7vZFdDnY4H/K+T4RjEGX6H5w9szutKG3ALsS/HgrDEhSfTeBqX9hUmpx4G?=
- =?us-ascii?Q?zhzJ7Ww+bbKXDGrtzIKsQ3IXvSLZEHD3Vx4UhG/lhkMPfSXp3G5N7T6Bpbma?=
- =?us-ascii?Q?/hB6YzWGcnghzHc5+nE4NdvXDdZtpCJHQNDii9yYqwwbu9T6mMoDEoOhtCtG?=
- =?us-ascii?Q?yqcTw8eKy0EUD2ZmAw1VKUHNEGSN4+Bn2LwQc/+qMUIYHB9oMyY2dIUWc7j6?=
- =?us-ascii?Q?ArP6uUvn+PGVaySnx1Yd5mZLMJgsmqNf3ljsmuktbzLOKPb+StN2CVXWt+Zd?=
- =?us-ascii?Q?5qaLknVTLHCOkLjoySmihepbJBWYntERdDrQm85wQZpLBHisFEjviTgecML3?=
- =?us-ascii?Q?7msZhCiwLzmplNwdLcd9NleP/mftG9WdP7Kv95ICBp0P2i+yHWCxxXCpY0gs?=
- =?us-ascii?Q?mhB6UwHI+EZD8PW2X009s/AmQ77xs5+/8P8AqMx6kY889EaXaKqV1Q8eDmXe?=
- =?us-ascii?Q?wO1tcRweANACWYri8x79iQF3PRPbT9PfSj/LauJ8lxZNjRJ0ySiF0+1FXStx?=
- =?us-ascii?Q?YFPr7mWXu6qUqxauNqK7216RKYi1YzmeqWcLZzioM6Jrm7wB1F/G7pZS98kM?=
- =?us-ascii?Q?SkKUwUskccjWOiwhtDMT9YGeCOI6hsza8e/TjkoWHy3ffrlkdeE0jGo5foqw?=
- =?us-ascii?Q?ZSkLBrU6hQf3rJd2BptaE84uevTuF7q8amCTtvsquaY1bDbKwWnJOIDjNvtn?=
- =?us-ascii?Q?iWwI2BTfou6vv1XnxuQhEGStIC8ie9aZ10FZleJGx8W1z82W4Sj4wl/ZWPMB?=
- =?us-ascii?Q?g9OFmns+9QF1jgLmffDQRiN9S4jJrGrCtdXLrwc7FU0nMFobRjw6QDEYPQ4S?=
- =?us-ascii?Q?xEI8JamPRF/0qP1ZNiHLJPDLRqYWvQXI?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8FyQckGxPNaF+5GUBcJa/IJnQuUITNxC3lo7Qg0vhTesrY17gu8aKVJ7HofG?=
- =?us-ascii?Q?p5q7VFrLAO37QZJSXr98/VG2A5y1yy4ruUAkd3uFWqW/0azmDMFT5gNiicBa?=
- =?us-ascii?Q?0B1oMSuzd6Ug44mGjSuumvzefMxgRX71VmEvgEV0ej4jb3gwt9qq0LMF/eOC?=
- =?us-ascii?Q?mAVIAMIyBqMY3LZ9oLc6lcOL/ebu+e0Z5QAx04vaVxJdTt4+F/liPy99N22r?=
- =?us-ascii?Q?YrE/OhaYe01HlFbw3pqgpAZG1QHBaAAIzW5ytFLptFfRAiats8Ki+4aXuoee?=
- =?us-ascii?Q?hRrV6La1WpbbzBnUUmTfC+4riYyEvDUR0cgR8Y9Y9qJp7ntyu6TVGpIrsgB2?=
- =?us-ascii?Q?rlUyD2LRKNFb7uLLBibuZxgea5iin50QBgK2aXWqhC7aJ+yAQ0nWGBjjKq7g?=
- =?us-ascii?Q?YHhAfWv/UTtCeAKMZGlhh0hVqdiJjU77zuVbfm8GTqr/TPBlLYyMgMBc2s8Z?=
- =?us-ascii?Q?8DHmukhM95miT4UbLzUARnshkeX6JovKdOgX8MP2Ccgabub2X2kNmAksc2R2?=
- =?us-ascii?Q?EEIe7wAy7ukGeWz6M/CPL3eNvIwG407/7t9yZVeRmWHWws36ksCx+DcMqhoF?=
- =?us-ascii?Q?NFVOQ15WKxxIA81BJvWdO4ZBstGl4K5/EKpIAcYb6JtQ1a5LYIB8nVYAAXoE?=
- =?us-ascii?Q?UjRIR8le5Lo0nd9moyyVODWiGJ28fiqt67FhjaU7DdYDn2mZRoIQ1YvV8IHQ?=
- =?us-ascii?Q?6XUwxHFreAqz4i5cbFuB2PXEnIwoX5GNqANGfiZ1j/j7IdzSoMuM9okGHIzf?=
- =?us-ascii?Q?Qwk/9rR1UadsIZHJOOBW2NvKB3D/rYsmAsybDEerSuKA7ESaMOqRgePDYVtx?=
- =?us-ascii?Q?LXzUCH/6luoOL1r5k2lt6SbatHVKyIRHpR1jPPNlEanyhVQbHR2YDRCKrkbY?=
- =?us-ascii?Q?cUtDnlajPiAbJyRSDNXgBt1rqYwuBQUqC/iEaKt1cJnECWPBDHdxykCMA+Te?=
- =?us-ascii?Q?WU68dSJpNA7mfuq2NT7xm9zduSJiFI5K0OCCPSak5FQhQolDGjwhmw0w8TcF?=
- =?us-ascii?Q?RhhsJxGcJZr+OeqrvP4iJy5kjoNUERmPu5sdfu8IyY2IiikN8S4szjfTAkcp?=
- =?us-ascii?Q?24XfzilC5Ymas0VRasRzLPOGl6zbhNUPBwS4pkZm35mxlL5GsDJDqLu+zs+p?=
- =?us-ascii?Q?agWh6UXPiBRTG5Lu84hDiaXRqAzKuuM+U1R86gp+DjShg4/+4pIZUHJVp4Rb?=
- =?us-ascii?Q?mpGCjjxELGXM9aWegpO0Coal/wCIOfuRy4fUymzbsFphwAmAlCixP8/xG8b6?=
- =?us-ascii?Q?81yHV0JiZnX8pEFGYNvoDcNXmruB4kltmIvF2UHB6KwOuJneLnKbQM3sUzWQ?=
- =?us-ascii?Q?TOtVG+fImzMP3t2uQ04MvwH4UPHqSMEkvsdf+CPiwYEkFMsHthrTbNTqoFbp?=
- =?us-ascii?Q?/HQta/ViIKd3T/9Dims+d6P5dYcA13/O+jJMnQQUB/fF3Jh0kuKUI9mpNoAq?=
- =?us-ascii?Q?dM8+uePO9Jy3Cvu6ayNIxA89jlun77zMIBGkMYOvtIUlVWg6QHVeIcSwq6wI?=
- =?us-ascii?Q?J+35JljPx1EKEZjnRb3vtK0Sin5xhEy3zy4fTS15vNld9zRK3RoAW4kw1iXR?=
- =?us-ascii?Q?yOmauxv/ZVx9WNZh3tk=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by PA4PR04MB9414.eurprd04.prod.outlook.com (2603:10a6:102:2a9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.18; Mon, 24 Feb
+ 2025 06:23:21 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
+ 06:23:21 +0000
+Date: Mon, 24 Feb 2025 14:19:59 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: len.brown@intel.com, pavel@kernel.org, gregkh@linuxfoundation.org,
+	dakr@kernel.org, stern@rowland.harvard.edu,
+	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2] PM: sleep: core: Clear is_prepared if no_pm_callbacks
+ is true before checking power.syscore
+Message-ID: <20250224061959.xzsk5eddj4xjlenq@hippo>
+References: <20250213105840.2864654-1-xu.yang_2@nxp.com>
+ <CAJZ5v0gGO95FvSVg1xrG+5B8rbDCXbVyfBm8jDgiKUXieTfVPA@mail.gmail.com>
+ <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0g40qBahsytn9AUn_dPLG-1E+UCQSucA=8kCGdi3bzq8A@mail.gmail.com>
+X-ClientProxiedBy: AM0PR01CA0143.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:168::48) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PA4PR04MB9414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63ef9cc8-0304-46b1-4584-08dd549bbc1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RkNib3J2Y3l3K05TUkxuSGR2TWl6b01lUnpHLytqa0phR2NmblBKVTR2bXlL?=
+ =?utf-8?B?NG1UWU9QeEdKd0FSYWpuZ1pEYjNhRDJFRDZSNFlWU3ZKbEp1TXVucCtZcVdK?=
+ =?utf-8?B?ZEtmMFpsK0FXNGNaa0ljekJjaG5JWkp3YjNjbjVzSUw2WVBUY3FwNlg5RGhC?=
+ =?utf-8?B?RjYvYjllblZpdkN6U2o2bzRwRklRZ0VHUkxWRjRTNnd0alFKdGlFNm9aSnRC?=
+ =?utf-8?B?WHpXejFOZDVGUnlLeWRWVUc2eFJmQUhTVXJyd0RUUS85V1duZzN5aWlra05X?=
+ =?utf-8?B?bWpwYWQrd0tpR0NROUVxTE04TWh4dGE1Y2hpbXExbkhHNVpTRjYxUlM3Vmpj?=
+ =?utf-8?B?bmpxVVNiVnNCbzZkVlUyaEVPRFFuaWcrOUZZRzA3aVZ2M0dkNm5aSk0vUmV0?=
+ =?utf-8?B?WU5tK09tYW5IeVVQZkpPaEFoWEdEcHdkU2F3b1RLaysxQUF3L0o3Z2h0Z2VZ?=
+ =?utf-8?B?cThHNTFyYjhzUVI3OVdMcWtSRm5PYkI1c3grdEFwK2ZGemV2L1BtRVZuYnMx?=
+ =?utf-8?B?OSsyMllDaDRQam9ZN1UrM0JvdmRHNjBKdVh3QVN4dkkzeTdwM3NEdVJBM3BE?=
+ =?utf-8?B?c2Z5ZEhNaWFrOTl5Z3o1dkJqSnlWbG9qVmNSQXlJaFYyU3dWZXFuVk9pbTRN?=
+ =?utf-8?B?dVRPSGF5Z01GTGgvREJ3UGphaFV1Tk9aaktQcS9adTNmWDBvakpwUEdnZ0la?=
+ =?utf-8?B?emg5NVhmYnk0bzdFdFVCOEgweWpQT1ZWU1FiODNWYXY3d2x3YjJmdWhrQ0sv?=
+ =?utf-8?B?ZldxWUZXa25MWFU0ck9pb2dDZ0RhSEFNQzVHcDhSbjlsSzlHUWgrL2NJUEJr?=
+ =?utf-8?B?N0pmZm1wWS96Z1h0UHR5eGRvM0FkVjc1RERuODB3MmlLV0F6THcxM21jQ2xv?=
+ =?utf-8?B?WTFZUlhwdzR2Z2Yzano3ci9NQWRrUGxHWTZldG9mRnd3NFJjREtqSzFRcmJQ?=
+ =?utf-8?B?c1RwVTM1ODFBTEE1Qyt6RFhUc3diL3I4Ymo3YnVMK01kK1dMM3JUNlgzSVBS?=
+ =?utf-8?B?V1ozSkF5c0kvUk4xQmtVMGNmWGRxMi9QQTkwYW9mL3BEd0JEY2poWjBidzZo?=
+ =?utf-8?B?TDVJREdtdVBrMWsyaWFkWFRKajd6eUV3b1FhL1gzUGc5bHJma2V3bzhNakJ2?=
+ =?utf-8?B?Unc5K3JiQ0VvTUo4U3VEMzBaa0FJQmVBaEJmd0JhVHpYbWQ2QXJySWtCdito?=
+ =?utf-8?B?dXl4aXhieFFnTXdKbm5ta3A2bzBXam9CSndUMy90VlhzSkxTS2JTZ1dvcUpX?=
+ =?utf-8?B?clJNV2ttVTlrbFkxa21lRDl0eENJSENUcFdQQ3FWaXZaOXBqQzZOYVpEZzlQ?=
+ =?utf-8?B?NlNIaWRxN3lFc3Y0b3NMUlo5eXF0M2dEbUdwS3lMK1JwMk1SRTFsd0V3MFg2?=
+ =?utf-8?B?QkpCSzVCcCtXWWxBU1EvRG9MaHowTXo4NkNYV3dtZTh1aTk1YTFBRmFFN1l0?=
+ =?utf-8?B?S1NJRkVUTDFKakJnbkdLQnZSaEhRVUtCTXpoOCtwL2E3SmFkcGhxQ0ZnMGM1?=
+ =?utf-8?B?VWhMcnl6ZVJwUDFNcXV2RXlLWXBQY1VzdS80TVJQdGJqZFUxdXVnOEdxWVV5?=
+ =?utf-8?B?THAwWmdRWnJkWm9yRVVWVU9aQk1uQStweEtHQ0VPRDVERzdyb1YyU2xEaUZC?=
+ =?utf-8?B?QXY0cXRGU3l3WmwyWDhXMGVSUWRDY3Rya2xlcjJQbWlIblp1Z2drUDJaUWJ0?=
+ =?utf-8?B?OEhNbXJoUDg3TEluaHhhU0FKbDJQUzN5RzMxaUhGVnF1RVgwdnpxZmdPRkxi?=
+ =?utf-8?B?d3NrbnEyU0hRZHdOS0pNbHpBcm1uMi9qblU2MTdMUnBSY1BjT0J4cC9JczRt?=
+ =?utf-8?B?aFgybzBTVE1Gc0Z1SXlXSU1VVUJyQjUvNzFmTENoenEwZyswanplcEZ0K2du?=
+ =?utf-8?B?TVFlVGl1QU1HVm9UMHVBb1NkMnRydlhWby90Z1BRaWNxeUdsL2YzYzNKUVRp?=
+ =?utf-8?Q?6iv1hLH1R5rbpF8RuS4JmNR1gcvji/Lh?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aVJWa3RxZEVhTmZ5TGt2ci9tT2F0bEFtWDg0dThSQlp6Vk9CMWxtMVV3Wm5p?=
+ =?utf-8?B?VVdrazZ5MFB1YnA4bGl4bU5kUjBSK1B0RWVPazlpV1d0c0RPOUdLZVl6MTcv?=
+ =?utf-8?B?SS9wOTMxdlN3NEJid1hxcXl0TklTYWxOR05lUzdScUNsVmdDOWM2bzZDSXVW?=
+ =?utf-8?B?RXFydU02MGhObG01OTRrTFdVSGpBdEdVMEt5MnErdVIvUG8rSm1GMGFZdncw?=
+ =?utf-8?B?MDdwamZ3QnpacGk5WHZQYUU4ZCswRER3Q2VURERXazBxTWkvbkNQVWVJUnpQ?=
+ =?utf-8?B?TmtleExHeUVxaFlhc2dsZ2VDMlI3aGhpYlNZczR6bmROMzNnRkFwS3hyTjZD?=
+ =?utf-8?B?ZWxSbzJEY0Z3UmhpRE80RkpPcG5nT042VU56c0RldkpwbWhYbGRtMmkvQjdN?=
+ =?utf-8?B?eGNmWHlYU09McVFkVGNheHRybVlMdkpab0hHeFk3M2xGcGpnRkxVbVNSVFdi?=
+ =?utf-8?B?T2p6OHdOT0JJUHpxd0x5d2d1OW8zK2ZUSU1nMkpibG1MU01xSVVHUlY2dWo5?=
+ =?utf-8?B?YXJkcFV3dHBlY1dmbkx0OHBJcFU2UDVYNFhTdUxBY3BiY1VkZDk5Tzh0MkFH?=
+ =?utf-8?B?TVdvVnBSWkhyWkd1U3BUNnNtVTdmZSs4eFRrYlJHUE94dU9HT0QrVHlZVkxJ?=
+ =?utf-8?B?N204eDcxWFhTd1ByTU1BVnEwTnh1NjZEbnZJQ29NMlpCdmo2YzZWS29oV1ZP?=
+ =?utf-8?B?QUMyZ1k2cVVJMEJZSUQ0M0ZUNFlKbklLd1VJMkFiMkl5cHRRbFJhbGFHdVVB?=
+ =?utf-8?B?a3M0akhneXlkakY3WEF1akF6RHZzS3h0UkJoOXlvdEVESzRHU2ZnVm5zbUxQ?=
+ =?utf-8?B?TFVBVU5vbzdJWU1PZjgwRUFIMFFRNjFXTHljSVlWOVRZVnpJek1vdW9NeUdN?=
+ =?utf-8?B?eWppMFZQM050bTFvQ2RibUNZYXppU2dLaUN3RmdFa2lWU095aklEV3k2UE1N?=
+ =?utf-8?B?MWdtcEhjM2V2UXNQbU5DeFRLTkFKdmM0YVB3WFRkZXljYTdUK3JUUXBmSEtF?=
+ =?utf-8?B?ZGtrTzRoOUFKMnFxYjVRNC8rUmpGSWNvdGxWVVFJOVlFanhGaEpvUUx3WnNH?=
+ =?utf-8?B?czJQbm9oTnpWbk1mSE5WUjNrbW91SktUbE1LdDJHOVhVQzFZUEZjRitHM1Jo?=
+ =?utf-8?B?OUwwcmJnY00wU3liZFhDNkE3MTlSRXBwQ28wK3JnWmNLTk1seC9uS1JranB6?=
+ =?utf-8?B?WlVGQ3I0MXBqU20zemttTWVBK0UvNTBDQnNlY28raHgwNWdJZy81ckd1ZWRV?=
+ =?utf-8?B?SFF0cFFXMTZYTUJCbVFJTm44MjhIYjN6dHgwaWZQR1FqRm1QaUxNenFoSGxx?=
+ =?utf-8?B?cXFrdEJiUTdtZTQyK0gxMlBsbEVrOVNWUXQ5TzJJZnF4V3JMdXdIcXlrN3BQ?=
+ =?utf-8?B?UlR5U2wrQXd1b2ZrZk1HcVlZMGo3WW1xOVRScDZDVnlXMWJMREhMdldHdGRY?=
+ =?utf-8?B?L3ZIQWtCQUhJMFpITlljcTJBN3RobzhIMElyQUZlR0p4OWd4VDFIMjdQc09D?=
+ =?utf-8?B?cVIxWFM3NkZ3SFhCZmQxWHBCMHJIVDU4RTU3Zmk1aFJtWkMxYTFZVkpmZWtp?=
+ =?utf-8?B?alZ5dkpIRDVmQnhLNlI2d1pMRWk2cUx5SlVwQTVLYzI5ZG5pbDgxRkY4MGNF?=
+ =?utf-8?B?RXBMaWtaRVJJOUl6b0NDUi9jTHVHMjRsVE5OR3loMjQwOHBrU21JVHA4c05H?=
+ =?utf-8?B?QUNwcVhoYVlmNDlkaUpNdVMwRmtkM0VSTUVSKzZMaUNlUmdmWDhwUFdXTWFR?=
+ =?utf-8?B?TjJxc0ZUYmZwcTNXSkduYlZXbEZwNnByZ3k3d0JuS2QvbElvdzRqb0dwK2pp?=
+ =?utf-8?B?YVFWSVB2b3JWWktXVk1nS0VRS2RlMGFGbitGaldpeWoyMkpBMGozaG5MY2Rw?=
+ =?utf-8?B?N2txU25QOE1XVDRqVThSd01zcTZDZzRTeFhSRDlQMVp6aVQya2FNaHJPLys3?=
+ =?utf-8?B?anNRQTEzYlJxR2srT2R3cFl3NVlXQlV6UEpuRmhFbyttTW03aXNUM3d2SDJy?=
+ =?utf-8?B?OFAxbm9HVWhTRXZJQXZFSTIvQ3FQdWNCMUdLc1R4d1Zmam1EbHVrdzRVM0tl?=
+ =?utf-8?B?OXRVUG16TnQyQURzbFMrSklNYkJtbm51S0ZibVY3cmF6aGNwN0hMMWgycHEw?=
+ =?utf-8?Q?FN+DLMV4pnqBnoYyuqRYg4tNR?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63ef9cc8-0304-46b1-4584-08dd549bbc1b
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d62e899c-ff3d-4aa6-ed60-08dd548da59d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2025 04:42:30.2043
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 06:23:21.1195
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Og6mKJgpTLyEy4l/dIuFpzHP3lgiDKj/l9c3qeGqbV79IPrW+0fc+kRzPjwK/yqvbx6YcPayuW65kGsadtxCxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10596
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C47w1Se8UMCOlJT22xX5y7O5wRfSQS3SjLvF6CZSaTzPQ0IPhUE7Ji5jD5H5qwqcquOnBQ7b/OCPzZSQUXSIgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9414
 
-> > > +/**
-> > > + * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buff=
-er
-> TX
-> > > frame
-> > > + * @tx_ring: Pointer to the TX ring on which the buffer descriptors =
-are
-> located
-> > > + * @count: Number of TX buffer descriptors which need to be unmapped
-> > > + * @i: Index of the last successfully mapped TX buffer descriptor
-> > > + */
-> > > +static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int cou=
-nt,
-> int i)
-> > > +{
-> > > +	while (count--) {
-> > > +		struct enetc_tx_swbd *tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > +
-> > > +		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > +		if (i =3D=3D 0)
-> > > +			i =3D tx_ring->bd_count;
-> > > +		i--;
-> > > +	}
-> > > +}
-> > > +
-> > >  /* Let H/W know BD ring has been updated */
-> > >  static void enetc_update_tx_ring_tail(struct enetc_bdr *tx_ring)
-> > >  {
-> > > @@ -399,13 +417,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb)
-> > >  dma_err:
-> > >  	dev_err(tx_ring->dev, "DMA map error");
-> > >
-> > > -	while (count--) {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	}
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > > @@ -752,7 +764,6 @@ static int enetc_lso_map_data(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb,
-> > >
-> > >  static int enetc_lso_hw_offload(struct enetc_bdr *tx_ring, struct sk=
-_buff
-> *skb)
-> > >  {
-> > > -	struct enetc_tx_swbd *tx_swbd;
-> > >  	struct enetc_lso_t lso =3D {0};
-> > >  	int err, i, count =3D 0;
-> > >
-> > > @@ -776,13 +787,7 @@ static int enetc_lso_hw_offload(struct enetc_bdr
-> > > *tx_ring, struct sk_buff *skb)
-> > >  	return count;
-> > >
-> > >  dma_err:
-> > > -	do {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	} while (--count);
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > > @@ -877,13 +882,7 @@ static int enetc_map_tx_tso_buffs(struct
-> enetc_bdr
-> > > *tx_ring, struct sk_buff *skb
-> > >  	dev_err(tx_ring->dev, "DMA map error");
-> > >
-> > >  err_chained_bd:
-> > > -	while (count--) {
-> > > -		tx_swbd =3D &tx_ring->tx_swbd[i];
-> > > -		enetc_free_tx_frame(tx_ring, tx_swbd);
-> > > -		if (i =3D=3D 0)
-> > > -			i =3D tx_ring->bd_count;
-> > > -		i--;
-> > > -	}
-> > > +	enetc_unwind_tx_frame(tx_ring, count, i);
-> > >
-> > >  	return 0;
-> > >  }
-> > >
-> > > With the definitions laid out explicitly in a kernel-doc, doesn't the
-> > > rest of the patch look a bit wrong? Why would you increment "count"
+Hi Rafael,
+
+On Fri, Feb 21, 2025 at 09:49:11PM +0100, Rafael J. Wysocki wrote:
+> On Thu, Feb 13, 2025 at 10:33 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 > >
-> > Sorry, I don't understand what you mean " With the definitions laid ou
-> > explicitly in a kernel-doc", which kernel-doc?
->=20
-> This kernel-doc:
->=20
-> /**
->  * enetc_unwind_tx_frame() - Unwind the DMA mappings of a multi-buffer TX
-> frame
->  * @count: Number of TX buffer descriptors which need to be unmapped
->  * @i: Index of the last successfully mapped TX buffer descriptor
->=20
-> The definitions of "count" and "i" are what I'm talking about. It's
-> clear to me that the "i" that is passed is not the index of the last
-> successfully mapped TX BD.
->=20
-> > > before enetc_map_tx_tso_data() succeeds? Why isn't the problem that "=
-i"
-> > > needs to be rolled back on enetc_map_tx_tso_data() failure instead?
+> > On Thu, Feb 13, 2025 at 11:58 AM Xu Yang <xu.yang_2@nxp.com> wrote:
+> > >
+> > > Currently, if power.no_callbacks is true for a device, device_prepare()
+> > > will also set power.direct_complete to true. When device_resume() check
+> > > power.direct_complete, setting power.is_prepared will be skipped if it
+> > > can directly complete. This will cause a warning when add new devices
+> > > during resume() stage.
+> > >
+> > > Although power.is_prepared should be cleared in complete() state, commit
+> > > (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
+> > > clear it in earlier resume() stage. However, we need also set is_prepared
+> > > to false before checking syscore if the device has no pm callbacks.
+> > >
+> > > Take USB as example:
+> > > The usb_interface is such a device which setting power.no_callbacks to
+> > > true. Then if the user call usb_set_interface() during resume() stage,
+> > > the kernel will print below warning since the system will create and
+> > > add ep devices.
+> > >
+> > > [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdrc
+> > > [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
+> > > [  187.105010] PM: resume devices took 0.936 seconds
+> > >
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > >
+> > > ---
+> > > v2: clear is_prepared before check syscore as suggested by Rafael
+> > > ---
+> > >  drivers/base/power/main.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+> > > index 40e1d8d8a589..5e69cfaec661 100644
+> > > --- a/drivers/base/power/main.c
+> > > +++ b/drivers/base/power/main.c
+> > > @@ -926,6 +926,9 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+> > >         TRACE_DEVICE(dev);
+> > >         TRACE_RESUME(0);
+> > >
+> > > +       if (dev->power.no_pm_callbacks)
+> > > +               dev->power.is_prepared = false;
+> > > +
+> > >         if (dev->power.syscore)
+> > >                 goto Complete;
+> > >
+> > > --
 > >
-> > The root cause of this issue as you said is that "I" and "count" are no=
-t
-> > synchronized. Either moving count++ before enetc_map_tx_tso_data()
-> > or rolling back 'i' after enetc_map_tx_tso_data() fails should solve th=
-e
-> > issue. There is no problem with the former, it just loops one more time=
-,
-> > and actually the loop does nothing.
->=20
-> Sorry, I don't understand "there is no problem, it just loops one more
-> time, actually the loop does nothing"? What do you mean, could you
-> explain more? Why wouldn't it be a problem, if the loop runs one more
-> time than TX BDs were added to the ring, that we try to unmap the DMA
-> buffer of a TXBD that was previously passed to hardware as part of a
-> previous enetc_update_tx_ring_tail()?
+> > As I've already said in the other thread, my initial feedback was
+> > based on an oversimplified view of this code, and the problem will
+> > need to be addressed differently.
+> >
+> > Sorry about that.
+> 
+> Unfortunately, I don't think that this can cover all of the corner
+> cases.  Something is going to escape, this way or another.
 
-Based on your definitions of 'i' and 'count', you are right to say that it'=
-s
-necessary to roll back 'i' because the last 'i' did not successfully map th=
-e
-Tx BD.
+Agree. Although I don't know how the corner case looks, it seems like
+a risk in the future.
 
-Regarding to I said moving 'count++' to before enetc_map_tx_tso_data() is
-fine because the increment of 'i' and 'count' remain in sync, so 'i' will n=
-ot
-roll back to a value less than the initial value when err_map_data occurs.
-So it does not affect the DMA buffer of TXBD which was previously passed
-to the hardware as part of the previous enetc_update_tx_ring_tail().
+> 
+> To minimize the number of things that may escape, I would first treat
+> direct_complete as a special case, so only clear power.is_prepared
+> early if direct_complete is set.
+> 
+> Then, clear it only for devices with power.no_pm_callbacks set, that is
+> 
+>     if (dev->power.direct_complete) {
+>         /* Add explanatory comment here */
+>         if (dev->power.no_pm_callbacks)
+>             dev->power.is_prepared = false;
+> 
+>         /* Match the pm_runtime_disable() in device_suspend(). */
+>         pm_runtime_enable(dev);
+>         goto Complete;
+>     }
 
+Thank you for the analysis and suggestions! Combined checking direct_complete
+and no_pm_callbacks seems like a better solution and this will precisely cover
+the issue I reported. I will adjust the patch and send v3 later.
+
+> 
+> This is not perfect because ideally the device with no callbacks
+> should wait for its parent and suppliers (if any) to resume before new
+> children can be added under it safely (in case the children depend on
+> the devices that it depends on) and is_prepared may be cleared before
+> that happens, but those new children may be added by the parent's
+> resume callback and they won't appear if the parent is not ready
+> anyway.
+
+Understand.
+
+Thanks,
+Xu Yang
