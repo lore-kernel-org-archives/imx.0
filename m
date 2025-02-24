@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2124E4CF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69B024E4B7;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740405065; cv=none; b=Ef4Yfhc1obSmWGi7yLvKPNxPrXSrh5KubgagpeZeRoUQA5SA+KPnOdouVVJv4BZaKl1IpYp9MEvJo8sBPVrxKHiVRKSLVQs6ZdJUdQdTqNu3W8m7tR/BAxn/3gEv1uXKoSGkTdHQK7ht7K3OzEekcRvnx24ERSVZjJHMYvW54I4=
+	t=1740405065; cv=none; b=L/ZBaqPJq0GicTZoNSaw2SwKM6UL+N9YiYTICcnWJT1vhb15/B8KYJ97sLIOC3TgsT2BgYEoxEmJYUZz5+KuoDEEArrd5Qj7wXabem5ZgSzXqfLiEIgQaKoe6JsnhSBPvaIbM3Fj7d5Wq9cb2FTjtDzkPxhdS48EWC5VNDeVN10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740405065; c=relaxed/simple;
-	bh=5ZnKgIAuKnEFK7Y8NZ5mOCc85+F4VvfoYmgu9iVxDVY=;
+	bh=2fFVeE5CFvJX83ipfaRcNiSD6AFsyycdrk50gKKutJI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=segrQoaccusWfUoaSqgYyZ64+wD66QFdgfGry2E0Amyg7YN8K8YtNvwpUzfjY0TkbjeAtZu3yVah8MMC3uvEzwbUxLFtmp048lfWiBlOUSDXiHx5rMFK/7EmVDi/52QvKOShDyZcwkDqXhm6KkXIcO9lIENtr/KAdopJToBLqRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sB6/ir7j; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cChHkqu0q3t6IBeWey3uyKFOPVuIm876eoeTonN0h+YoR8IOGSxjfYixnL31yrAR0+br+0pDIhVL5/k90p2NaoLy5/N3kMWjekfGvMIfE8TF7t1J/NRPPautqPZTd5tdkjkK8UUAndOOpJ3T4scZ/lu+EWRoNpKLUUYJWXCfKEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbfjZmGE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sB6/ir7j"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8FC2FC4CEF8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbfjZmGE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6831EC4CEF3;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740405064;
-	bh=5ZnKgIAuKnEFK7Y8NZ5mOCc85+F4VvfoYmgu9iVxDVY=;
+	bh=2fFVeE5CFvJX83ipfaRcNiSD6AFsyycdrk50gKKutJI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sB6/ir7j88IjurwQACHCenKq6ObU4ymiotnN4cEBDRMunvAS3UYTy1hF7nwYj1m8x
-	 UucFkvX65qjTbXCdEQt+A1J9zzOhrJZGVUHLCNFmQrbcJHdxbli8VhcJuZuwOy848l
-	 /xWU3nyEe/K80/qkA6kNHMkFePLb/59zh520fHZvxsV8cHXd+dBwX3To0lorryJstD
-	 jBvaPdEy9ds7MaT1ixJ+p/Bu42ypv4DlH7jaSIjiqYd7BhTpvcWE/bC1HYBVkwp1pP
-	 QvQTo7w8Xd9vD6jLOVGtMn/7ZmJbu7DWhhRlXv8u69ZPgfvJG/LNSpatRUU1kTz0xT
-	 YVYnlvtXVEm0w==
+	b=IbfjZmGE6TulPMcMu5ucaAQTgTvn++o4J0YwgJGPXGx+p+Qv+8EGybZQDo6O4sHjm
+	 Du9YIbWupOhCl95tfy7ypFkPD09Zx8eUJQeEHJKYENSBBKCl6QMUmCPvfhIJyFQMtB
+	 TKclEtjkYWKSTkTXWelYCtljK3qLifZk2gyz3nVvfWx2TH51lZ39QOeczOOUeBIbed
+	 1ti52p6XEpvT6Fegf2JH4ly+BTLRrJ9Dh7fLa+Gvp3SHz3V+CjZ2FE2kg+mQN1Atf4
+	 Hbpjx5DzsiQvX4nRfDkkygZ4s/p8VCx07Q5ATLz3zJ1A5szm81bsHebyo/42fIJ5Ny
+	 x7ZNgz83QLFEw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87F28C021A4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E27BC021A4;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 24 Feb 2025 14:50:57 +0100
-Subject: [PATCH 07/14] drm/panel: simple: add BOE AV101HDT-A10 panel
+Date: Mon, 24 Feb 2025 14:50:55 +0100
+Subject: [PATCH 05/14] dt-bindings: trivial-devices: add GOcontroll
+ Moduline IO modules
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250224-initial_display-v1-7-5ccbbf613543@gocontroll.com>
+Message-Id: <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
 References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 In-Reply-To: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -60,11 +61,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=1886;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=1292;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=Cju7ma2SUhb+XLBd5DK6cBkjDfg4PKWYSUHWwciFPIU=;
- b=bnH85hLfjsMGDvGh+rvH0i7I1VxeDU9NSzTxo6hasSyf3NS+u/TjBLlkfwYzsKWsGujdRxJn+
- ZguaQGB1uQ8DSaVG5Bz4YOVYBI/PzV5ax7G8i3Wf5la1xd/tWSAKp1R
+ bh=MzfkGV7s1Bx+ubm3O33iLbvUjEe7KE6YD28WzxYypQI=;
+ b=XPAaKQUyngLl8QTmZ2xkR4XmJbDTaVMt0nfkm38EyJAR9Hbkjfs8fA5TFPpN3fjtjLE6mPMh0
+ IcCzcWXiVmbCoxk1qiFME3yluxZfxnzsoxkLi+xdTK8Air4RmwpRu2T
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -74,63 +75,31 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-add support for the BOE AV101HDT-A10 10.1" LVDS panel
+The main point of the Moduline series of embedded controllers is its
+ecosystem of IO modules, these currently are operated through the spidev
+interface. Ideally there will be a full dedicated driver in the future.
+
+Add the gocontroll moduline-module-slot device to enable the required
+spidev interface.
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 9b2f128fd3094bfb6731fc348b91cc101f495a86..a52977ab73dc2edab0d1954c702fd797d6a5b969 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1374,6 +1374,35 @@ static const struct panel_desc bananapi_s070wv20_ct16 = {
- 	},
- };
- 
-+static const struct display_timing boe_av101hdt_a10_timing = {
-+	.pixelclock = { 74210000, 75330000, 76780000, },
-+	.hactive = { 1280, 1280, 1280, },
-+	.hfront_porch = { 10, 42, 33, },
-+	.hback_porch = { 10, 18, 33, },
-+	.hsync_len = { 30, 10, 30, },
-+	.vactive = { 720, 720, 720, },
-+	.vfront_porch = { 200, 183, 200, },
-+	.vback_porch = { 8, 8, 8, },
-+	.vsync_len = { 2, 19, 2, },
-+	.flags = DISPLAY_FLAGS_DE_HIGH | DISPLAY_FLAGS_HSYNC_LOW | DISPLAY_FLAGS_VSYNC_LOW,
-+};
-+
-+static const struct panel_desc boe_av101hdt_a10 = {
-+	.timings = &boe_av101hdt_a10_timing,
-+	.num_timings = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 224,
-+		.height = 126,
-+	},
-+	.delay = {
-+		.enable = 50,
-+		.disable = 50,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
-+
- static const struct drm_display_mode boe_bp101wx1_100_mode = {
- 	.clock = 78945,
- 	.hdisplay = 1280,
-@@ -4813,6 +4842,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "bananapi,s070wv20-ct16",
- 		.data = &bananapi_s070wv20_ct16,
-+	}, {
-+		.compatible = "boe,av101hdt-a10",
-+		.data = &boe_av101hdt_a10,
- 	}, {
- 		.compatible = "boe,bp082wx1-100",
- 		.data = &boe_bp082wx1_100,
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 8255bb590c0cc619d15b27dcbfd3aa85389c0a54..24ba810f91b73efdc615c7fb46f771a300926f05 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -107,6 +107,8 @@ properties:
+           - fsl,mpl3115
+             # MPR121: Proximity Capacitive Touch Sensor Controller
+           - fsl,mpr121
++            # GOcontroll Moduline module slot for spi based IO modules
++          - gocontroll,moduline-module-slot
+             # Honeywell Humidicon HIH-6130 humidity/temperature sensor
+           - honeywell,hi6130
+             # IBM Common Form Factor Power Supply Versions (all versions)
 
 -- 
 2.48.1
