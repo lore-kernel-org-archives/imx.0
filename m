@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E3624EF63;
-	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2099D24EF7C;
+	Mon, 24 Feb 2025 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740405065; cv=none; b=HlmsZyuqn8FwQnxItI9Jk0lkFGkuhz2cAy40aEtoLxs+cjB3NcDgrRNuEo8ZrhZRzrkx4/XniuawTMxKuSdecX2w3Qbh3Jv0UIG5A33Hzrekmli4YwyULQyZ7T6ue/iacvumCPyOGd3ECYLhmSnkpKolprwBCoMJpbNzSqu78tg=
+	t=1740405065; cv=none; b=pAdPraOZmrJWEblNGjnDhPXqezjke7KONgyl4P6tLz0Nlzd6DDVrH33AYWeAaohdh1f1fTyHm4Xpgt4qQ4079O3vssfnI2L1A8VvnVr3UUisHKN0Iti8jNedyz2Dl+WmESOqhs1gg+1m879pKsTMdmNP585qS0cFSM2OINQ3d1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740405065; c=relaxed/simple;
-	bh=9rsK2DyiLn0rGQVW5aqBw0QCdbVsaOqhBOHIuUKMsyw=;
+	bh=hTPrO7u9vikyA+T0pYfEy9szULQyXPV8+3Ucv3Dz7Aw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SvYp8PbWEaG2bO00vPdKf0q74CbdYLe7Mz1025lKJg8+piY0qCPqkavKUALD/2t7+Sqqpdamj9nv8xOS0iwOoNJ2eFg3ONU55YLm1VZFRwlodcs9jzCQi33zQpl22fmDE1wdhCDZGgf3jco17xE0NL6x0MfhR12dlAMEkzWO2Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwGk/4lF; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=TaV6j1Eh3CYUpmn7nvF/ohKdZ4xPQ6QIE7qk8ZLePcmrte+szT2HjxXs7JOqXwLZ7BQOdl5qoxkAEjT73H/PYxF8pdgqmRpRJi/0nR6/F6uAcVT18aljcNniOYg8+zXciYnjMez/5q1Y0rIjjjCiSQuXS+Juou31YcYoPUHNXWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvkeoqHl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwGk/4lF"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A68A9C4CEF9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvkeoqHl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD7DFC116C6;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740405064;
-	bh=9rsK2DyiLn0rGQVW5aqBw0QCdbVsaOqhBOHIuUKMsyw=;
+	s=k20201202; t=1740405065;
+	bh=hTPrO7u9vikyA+T0pYfEy9szULQyXPV8+3Ucv3Dz7Aw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cwGk/4lFw/RV2zrHR2vk91lDkKP5hvOnqTQdpmGo2xFPdw3nxcVg9FD0E3a5RHR5Y
-	 JamEKWh9/tTYr8GO9eETAoDXd5uJQk1xuRB1/nHviJMWUq6ogD5QbqAIIwcR/oSu1h
-	 Gy+a4iFYyE5iIPNDLc8iy1bDbd8Wil95t9NKUB7wJxita3AiR9pOUd9rq2bTBlCDVH
-	 kyHn+4o3EW3J5L8281qM4nE4m/c66qnhus0e0fAopXmp2RPjpbK4/bLH1j1AiHdgaF
-	 8Z4XqC6BPMleA+iSBu7Bf8LQ8nX5fqJw0qCF16OWfrlk3XCAcq4c976SPGAM0LEYHR
-	 2zamrqgVtKikQ==
+	b=dvkeoqHlB9lYgUKZdTOejRPwtzq6S0NQ+Ii05pTy5Jx7bS+T1vGymNsHjJLkfqC+4
+	 CZmN8YsLNPi9AqqWFS6Yfn0USHXnC83zlcgoXpLAghuRTb0KPKLqtypsBNHZFMdZ+X
+	 63oFsUZycayI9rfSvIfNCYr8WLJ70kcL1arJJrFAuQny9EZHeykU08hTmFoFYuiwCx
+	 REUMgouU+W510AavoXNs32o/rKvmXkN6Kw7jcH0BAZ+10Gn8jo/WlHDgb41jWNjozz
+	 uHFIIaKNXQhjWFJ79XPJATkIWOvmEM7qUvhc4bTM6U40clOdLrHH8VuCBR7Qe275pg
+	 eLEH0vQ0No3Ag==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B318C021BB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D17F0C021A4;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 24 Feb 2025 14:50:58 +0100
-Subject: [PATCH 08/14] drm/panel: simple: Add BOE AV123Z7M-N17 panel
+Date: Mon, 24 Feb 2025 14:51:00 +0100
+Subject: [PATCH 10/14] MAINTAINERS: add maintainer for the GOcontroll
+ Moduline controllers
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250224-initial_display-v1-8-5ccbbf613543@gocontroll.com>
+Message-Id: <20250224-initial_display-v1-10-5ccbbf613543@gocontroll.com>
 References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 In-Reply-To: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -60,11 +61,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=1908;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=783;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=vOVkRssMq+0b54M++/GbRnRh45tiCsN1h3cNEf5At7g=;
- b=mIAf7wLfiBaXHgCEU4/8qvWOFXgtpexk2cgZKBPGdS9xQHEzRlSLaQGkNSxpz1dAA+cZucueh
- uDLvxXs5uZfBwENboFcPxubRl6D9NJ9o9TOrax33cAGbmns59TckZj6
+ bh=z0gueLFcKY7qkz1B8onsTw44Uj3rSydQ9QleSWa8oZk=;
+ b=lAU9+MTJ3smyQz3gcyDoGEboLTWpbgUoebuITkTiRp8H/PJvmRbJR/btf5ukRY8Wu3Lu5UwTg
+ LPE6zgrlw3EDBUSFGvF/oFRYliLy1A0rdygD1WXk695M6Udt9lsXsZy
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -74,63 +75,30 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-Add support for the BOE AV123Z7M-N17 12.3" LVDS panel.
+Add a maintainer for the GOcontroll Moduline series of controllers.
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index a52977ab73dc2edab0d1954c702fd797d6a5b969..232b03c1a259eb15e423b9d452d28e2ff95c70f8 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1403,6 +1403,35 @@ static const struct panel_desc boe_av101hdt_a10 = {
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b4c76d7ad890be0f618109918ad89328bc72e8cd..d80688d833322d4dbece34226180875c6b10ae40 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9843,6 +9843,12 @@ L:	linux-media@vger.kernel.org
+ S:	Maintained
+ F:	drivers/media/usb/go7007/
  
-+static const struct display_timing boe_av123z7m_n17_timing = {
-+	.pixelclock = { 86600000, 88000000, 90800000, },
-+	.hactive = { 1920, 1920, 1920, },
-+	.hfront_porch = { 10, 10, 10, },
-+	.hback_porch = { 10, 10, 10, },
-+	.hsync_len = { 9, 12, 25, },
-+	.vactive = { 720, 720, 720, },
-+	.vfront_porch = { 7, 10, 13, },
-+	.vback_porch = { 7, 10, 13, },
-+	.vsync_len = { 7, 11, 14, },
-+	.flags = DISPLAY_FLAGS_DE_HIGH | DISPLAY_FLAGS_HSYNC_LOW | DISPLAY_FLAGS_VSYNC_LOW,
-+};
++GOCONTROLL MODULINE CONTROLLERS
++M:	Maud Spierings <maudspierings@gocontroll.com>
++L:	devicetree@vger.kernel.org
++S:	Maintained
++F:	arch/arm64/boot/dts/freescale/*moduline*.dts*
 +
-+static const struct panel_desc boe_av123z7m_n17 = {
-+	.timings = &boe_av123z7m_n17_timing,
-+	.bpc = 8,
-+	.num_timings = 1,
-+	.size = {
-+		.width = 292,
-+		.height = 110,
-+	},
-+	.delay = {
-+		.prepare = 50,
-+		.disable = 50,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
-+
- static const struct drm_display_mode boe_bp101wx1_100_mode = {
- 	.clock = 78945,
- 	.hdisplay = 1280,
-@@ -4845,6 +4874,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "boe,av101hdt-a10",
- 		.data = &boe_av101hdt_a10,
-+	}, {
-+		.compatible = "boe,av123z7m-n17",
-+		.data = &boe_av123z7m_n17,
- 	}, {
- 		.compatible = "boe,bp082wx1-100",
- 		.data = &boe_bp082wx1_100,
+ GOODIX TOUCHSCREEN
+ M:	Bastien Nocera <hadess@hadess.net>
+ M:	Hans de Goede <hdegoede@redhat.com>
 
 -- 
 2.48.1
