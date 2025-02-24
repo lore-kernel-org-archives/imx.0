@@ -1,83 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC14618A6BD;
-	Mon, 24 Feb 2025 20:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8BD469D
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 21:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429920; cv=none; b=PofCIGiTNOl6VuOI/tAzMqjvo8F4QUtuhQ7+D5tVbCAS4A1ssohHXLggZCzfscv1rasIsgodGLMD6Nw48SvRjqfb2Ah8oWi5jcvhv9Q1qTyC7ksZOW+cpdoKUybBUNVZv5jKzbYDKdCDln4lQ3aDeOuc/GrmtHxvF2pLqrEEL9k=
+	t=1740433268; cv=none; b=O+dIQw6WitKqisaFBSXlCRfqVSB4bagRCrGg4AIqaRrmUfLvRa44siDA3k9JfOu05Gzu/xAhYMt4sBNQPlZOkaPGga0ZtffRlOAdCLhFGSCnFoH57JQqqNxH41SkC0Ewzwj0+xtOTBYj1tY+0NLNfdqQjNBpcntuaGZN7kr930k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429920; c=relaxed/simple;
-	bh=QgksAgFLJVabfIFwX75z/Nx5a6DuAlpc5gJA1Ykv2Ec=;
+	s=arc-20240116; t=1740433268; c=relaxed/simple;
+	bh=Q+CujMAdg3JdeG0AwSNgh4CB8wuFVGWqju3Cnisvqoo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cVE6kmTMR7gAyr98rL75Mvn59QTsImL5Zs5+kb5sAac08cQS0O7qi+8kuKV8DEnikHpkXYAajZQHB55zWONIyitQk5KrUbGAdVwAcjSuxiKVvBtm7uCKetBsWJv8RevSMEAWygiUE069k4Gb3Dxqip1gPwrjk1QyW+WeFymCe2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4PuSmUd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UZdcRHq5Dzhnhotkr07LTfmgp319okhLtvIEoeF5EUHOrcnqtz0LM8VwYAgOsRv4xus48EtVOQBxlAyUl0JVYlNu0KEJ20RnsBe/RH//kHowN07/cfIg8QLiQ1SZD9q9fd9/n7qWBRe3yPFX7WIUS0fl8Q6AQVWVCH9D6No+XhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ex9pL1tb; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4PuSmUd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D491C4CED6;
-	Mon, 24 Feb 2025 20:45:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740429920;
-	bh=QgksAgFLJVabfIFwX75z/Nx5a6DuAlpc5gJA1Ykv2Ec=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ex9pL1tb"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 642C2220;
+	Mon, 24 Feb 2025 22:39:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1740433177;
+	bh=Q+CujMAdg3JdeG0AwSNgh4CB8wuFVGWqju3Cnisvqoo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X4PuSmUd5e6xEQZv/m92TzrDuWVhYUGj5Z/fSbN9X3NjRGO4vd2/oE/ErwnO3/pCu
-	 wrW8DU37q0JZkRZ+kBVC5s1Fuji5ufLY5GKxKuyL+ENKJg96Ifn7uOcss5PyHj8VD7
-	 cEVG7FP+A8aqDBWBjORYcaYatL0k8S0az8QjfFaFF02iFbmoeU5I07+ToJjGd9uxzn
-	 LylpT+opFNf8oftDndf6VXgtMXk/7V9zOCTTvsICrYhZJNErObLlRWhd3Q8WUFpWOa
-	 rqy7+C7u718DposJaPRNyxvartvPH8K/PMoqZf74GKiTjutyzwnB0hhXrcfn6+PD7R
-	 EKun7ZzeFI+Ow==
-Date: Mon, 24 Feb 2025 14:45:18 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: dri-devel@lists.freedesktop.org, Liu Ying <victor.liu@nxp.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
-	David Airlie <airlied@gmail.com>,
+	b=ex9pL1tbcP/9cY083eTsnpcO0wzf98asX+w+AW8acupb/SVwqRCSGxLbmDFZ/xewl
+	 f/Jh2aA+64s6hv8ndxkexpeyr+m8Mx2ZuurdIrH6xArS9w05GNb+lrj9C+clo6Olvg
+	 pNJ+ScFu7DYSeoStUg/i1AGBNgaBi84C+5AB8CVE=
+Date: Mon, 24 Feb 2025 23:40:45 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Cosmin Tanislav <demonsingur@gmail.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH 06/14] arm64: dts: imx8mp: Add pinctrl config definitions
-Message-ID: <174042991798.4062591.16695660457830350664.robh@kernel.org>
-References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
- <20250224-initial_display-v1-6-5ccbbf613543@gocontroll.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: media: video-interfaces: add support
+ for Virtual Channel IDs
+Message-ID: <20250224214045.GA9516@pendragon.ideasonboard.com>
+References: <20250220230818.275262-1-demonsingur@gmail.com>
+ <20250220230818.275262-2-demonsingur@gmail.com>
+ <Z7g7iCUlsUN2LBIW@kekkonen.localdomain>
+ <aa67bfed-2cdf-452c-bd36-2c5647ae96ed@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250224-initial_display-v1-6-5ccbbf613543@gocontroll.com>
+In-Reply-To: <aa67bfed-2cdf-452c-bd36-2c5647ae96ed@gmail.com>
 
+Hi Cosmin,
 
-On Mon, 24 Feb 2025 14:50:56 +0100, Maud Spierings wrote:
-> Currently to configure each IOMUXC_SW_PAD_CTL_PAD the raw value of this
-> register is written in the dts, these values are not obvious. Add defines
-> which describe the fields of this register which can be or-ed together to
-> produce readable settings.
+On Fri, Feb 21, 2025 at 04:27:55PM +0200, Cosmin Tanislav wrote:
+> On 2/21/25 10:38 AM, Sakari Ailus wrote:
+> > On Fri, Feb 21, 2025 at 01:08:09AM +0200, Cosmin Tanislav wrote:
+> >> Multi-camera systems often have issues with receiving video streams
+> >> from multiple cameras at the same time because the cameras use the same
+> >> Virtual Channel IDs.
+> >>
+> >> CSI bridges might not support remapping the Virtual Channel IDs, making
+> >> it impossible to receive the separate video streams at the same
+> >> time, while the CSI receiver is able to de-mux streams based on VC IDs.
+> >>
+> >> Cameras sometimes have support for changing the VC IDs they output
+> >> themselves.
+> >>
+> >> For a practical example, GMSL2 deserializer chips do not support VC ID
+> >> remapping in tunnel mode, and neither do the serializers. Allowing the
+> >> cameras to have their VC IDs configured would allow multi-camera setups
+> >> to use tunnel mode.
+> > 
+> > We've tried to avoid having virtual channels in firmware and in UAPI,
+> > I'm not yet entirely convinced we need to depart from the established
+> > practices. Let's see. Apart from that, please see my comments below.
 > 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> Can you think if any other way of handling this? The most useful way
+> would be to have it accessible at runtime so that devices upstream of
+> the cameras could assign the VC IDs dynamically.
 > 
-> ---
-> This patch has already been sent in a different group of patches: [1]
-> It was requested there to submit it along with a user, this series also
-> includes some users for it.
+> This would be useful when having more cameras than the maximum supported
+> number of VC IDs (4, without extended VC IDs), and streaming from them
+> selectively.
 > 
-> [1]: https://lore.kernel.org/all/20250218-pinctrl_defines-v2-2-c554cad0e1d2@gocontroll.com/
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h | 27 ++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+> For example, for 8 cameras, you'd have to prepare your VC IDs in advance
+> to fit the streaming selection you want to make. If the cameras 0 to 7
+> have the VC IDs 0, 1, 2, 3, 0, 1, 2, 3, you wouldn't be able to stream
+> camera 0 together with camera 4.
 > 
+> Dynamic configuration of the VC IDs would solve that usecase since it
+> would assign VC IDs based on the routed streams.
+> 
+> v4l2_subdev_pad_ops has a .set_frame_desc() that could be used to apply
+> an updated v4l2_mbus_frame_desc, after retrieving it using
+> .get_frame_desc(). Cameras that don't support VC ID remapping would just
+> modify the v4l2_mbus_frame_desc to restore the VC ID to the original one
+> (similar to how set_fmt() can modify the passed in format to what it
+> supports) and the caller would have to handle that situation how it sees
+> fit.
+> 
+> Does that sound better than sticking the VC ID in device tree?
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+I think a VC allocator would be very interesting development. It's
+probably a bit more complex than hardcoding the information in DT, but
+it would also be much nicer :-) I haven't really thought about how this
+could be implemented though, but I'd be happy to discuss it.
 
+The timing is slightly unfortunate, as I'll be travelling on weeks 11
+and 12 and will have limited time then, but I'm sure Sakari and Tomi can
+also provide guidelines.
+
+> >> Add support for specifying these Virtual Channel IDs in Video Interface
+> >> Endpoints. The supported values are 0 to 3, with a maximum of 4 values.
+> >> Although the CSI-2 specification allows for up to 32 virtual channels,
+> >> most hardware doesn't support more than 4. This can be extended later
+> >> if need be.
+> >>
+> >> Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+> >> ---
+> >>   .../devicetree/bindings/media/video-interfaces.yaml   | 11 +++++++++++
+> >>   1 file changed, 11 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> >> index 038e85b45befa..414b5fa8f3472 100644
+> >> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> >> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> >> @@ -231,6 +231,17 @@ properties:
+> >>         shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
+> >>         busses only.
+> >>   
+> >> +  vc-ids:
+> > 
+> > Other properties aren't using abbreviations, at least most of them. How
+> > about "virtual-channels"?
+> > 
+> >> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> >> +    minItems: 1
+> >> +    maxItems: 4
+> > 
+> > Shouldn't this be 32?
+> > 
+> >> +    items:
+> >> +      maximum: 3
+> > 
+> > 31 here, too.
+> > 
+> >> +    description:
+> >> +      An array of Virtual Channel IDs. These are unsigned integers that specify
+> > 
+> > I'd leave out the explanation on the data type. It's redundant.
+> > 
+> >> +      the VC IDs used by the device for its data streams. This property is valid
+> >> +      for MIPI CSI-2 only.
+> >> +
+> >>     strobe:
+> >>       $ref: /schemas/types.yaml#/definitions/uint32
+> >>       enum: [ 0, 1 ]
+
+-- 
+Regards,
+
+Laurent Pinchart
