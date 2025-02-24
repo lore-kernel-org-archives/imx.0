@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A255233735;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C871724A06C;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740405064; cv=none; b=G44UrPD9cNrf997Z1sv1pOlWyvbBZeTc4qhUvwZs7eHIZZDzMPVR8wpCCyGTpfQvvYgNH2BjJpUoh7NTLUoh1JIhuQoohs0KNbG46QDv4v17o5B32sIvwa5EQGJnMLHbVF69eIXERQ+JF9mmiZHpwzOauUHzddnzNe77fqc3bYk=
+	t=1740405064; cv=none; b=auv3P8VTytZXbO0oRz+kUMljUxFLi2tTvrKQgnCVjK8n7A+KjFXVtUJv3pDzPtR9p3jhTFQERrzb0B1F3Sj4PSLqFy1Y2upw6pAjBaT9w7MgcYC2cAuWIWVOt3M86T9eCa6UPB9zbk6Z4nfpRLC5Q0ue5B/flyP6tJAEfgcAHaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740405064; c=relaxed/simple;
-	bh=0mZGCuRUu8bHqSrP5214OTRBF/zAooyQDahu/9GP8OI=;
+	bh=pZKfDA3ali55C1jq54Pf/O8lGAmzjSBZ65ftlVmOLmA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZQQPEoX2WPeS9iCx3e+7+urKgKGbYRVtvrG9nhS9KNttoCsicZINMT7WfLORBtcz2mRcuRWJF5dMl7b6yP2wc0sFdseItX+Zdy0bD7zNEkGP3dTDky+ppHlMU4jQhd8rztVX+k2RzgE/hPU5LC2PcDGnQdW0KQNsLbQw2Rur5FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbHNcOUp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gaCdNIaO82XRpaeqcjaYyhQreoMTMNYWY1f8aOacpYEjPsC+DMr/cguQgV+aLJImzAVld+bAf9FF8PG/uZizltS+4bDpgOaLNJiCe2osfFrTV13Io0R5FjbrR7WGYkQGvLBX4zL6yNiUAptaj3ljEQfLyUeEduuGV5362KXmNwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cM52n2M6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbHNcOUp"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2800AC4CEE8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cM52n2M6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 56299C4CEED;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1740405064;
-	bh=0mZGCuRUu8bHqSrP5214OTRBF/zAooyQDahu/9GP8OI=;
+	bh=pZKfDA3ali55C1jq54Pf/O8lGAmzjSBZ65ftlVmOLmA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RbHNcOUpp0bNIuC0zRogKbb3rn7e0998K4wPPN7PYwTDJmbHl6xwpLzA6z5TtvF1n
-	 PZEyRTaFmwm9tED4Hi03GxN0FCiZApo57Q+EApwspIRmNfk+vLnK5ucBjxj4t3AAMf
-	 LOnbi1iNApjHQ1ecnj2kDCAZswQnTRfKqNATv9gW+FAwx/IqGecSqBzq+R7YyVyg7i
-	 oTIMervG6gCgS5sbdnniFtar0p/Dmy5Ypl8F/wbXrEoMwqtdkzWQn7DmMMWMkU4Zcl
-	 K6gwd4Tj3Y10n4wQb+IXBxIfby++Ih7u/Mbqb/9LMSXLKNnGCxBkCHbLvxYlU1UD53
-	 ik2DFrcLenxKw==
+	b=cM52n2M6D8g8xJjlTRy3CFPc8+QvvP40luSWKnZyOHyrE6ahQSF7fEMvpwIUQ53HT
+	 qnU0HJWPI/V+8NmAhwrll8fjJ7OpUYascWVsTSYmnMXRebfbRajeTr6ICLv5EGrc8U
+	 VbGj01J8660oNcoEsMar1KuRjlP7Jtdw/WXkMrhuEbCXTfZk+B0xMjpRto6y6tOkjX
+	 9PLYLO9ToTM5Rfk1BW21ux09KgiAgtbvJLkFVoiqxiZ5wSF7rKOasOB9qe4vtnH179
+	 MupX4QiUPqqkFKwB/LyDFaoPiArmpz739ZG24lSxZkfzSVAdel2ZZtim/idUqek0/6
+	 HXVQFNQJEwDnw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 107DBC021B5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB12C021B5;
 	Mon, 24 Feb 2025 13:51:04 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 24 Feb 2025 14:50:51 +0100
-Subject: [PATCH 01/14] dt-bindings: display: simple: add BOE AV101HDT-A10
- panel
+Date: Mon, 24 Feb 2025 14:50:54 +0100
+Subject: [PATCH 04/14] dt-bindings: vendor-prefixes: add GOcontroll
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250224-initial_display-v1-1-5ccbbf613543@gocontroll.com>
+Message-Id: <20250224-initial_display-v1-4-5ccbbf613543@gocontroll.com>
 References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 In-Reply-To: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -61,11 +60,11 @@ Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, 
  Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=1040;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740405062; l=973;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=40zl28floi4M3jn7zLafA4I2SyrY1dnpQAFmoqwqXJY=;
- b=LLEVcADTtIeah3vQnwyqh6H6KYxyToPG8cRuzaIyjCyCSUvmauoZpOiqQDaZczem8xps+vaW1
- HGncx4sAL6dC7u+v73HIGHWpBAoE0EtsHLPn0l6slp4ol77GtQC/CPU
+ bh=GJs6pNBexRn96NM+OGXxZUfK9O73xNA0YJNFsc5BkjU=;
+ b=IJEmmCyq9UEKO0tAanMOCXF7YyKSMtNx5xwL9il4SoqOZ0zccX5GR4svLEQ+D5oAUtrxo2Flu
+ CzPPhebk0IOA4dQ509AFMK+reya+R2ZDIqRtiXy22t5OplPrBzlh7Vc
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -75,26 +74,27 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-add a compatible string for the BOE AV101HDT-A10 10.1" LVDS panel
+GOcontroll produces embedded linux systems and IO modules to use in
+these sytems, add its a prefix.
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index e3ee3a332bb7e1736a8d44773b0aef4873153be1..b0de4fd6f3d4129d10e07b46533bb551784d8d53 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -63,6 +63,8 @@ properties:
-       - auo,t215hvn01
-         # Shanghai AVIC Optoelectronics 7" 1024x600 color TFT-LCD panel
-       - avic,tm070ddh03
-+        # BOE AV101HDT-a10 10.1" 1280x720 LVDS panel
-+      - boe,av101hdt-a10
-         # BOE BP082WX1-100 8.2" WXGA (1280x800) LVDS panel
-       - boe,bp082wx1-100
-         # BOE BP101WX1-100 10.1" WXGA (1280x800) LVDS panel
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index dac80c62b742fec14cd7652d9d690acc4b4b1ee6..5dc61a05de0ce907caeb60bb92018569df0d19e3 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -597,6 +597,8 @@ patternProperties:
+     description: GlobalTop Technology, Inc.
+   "^gmt,.*":
+     description: Global Mixed-mode Technology, Inc.
++  "^gocontroll,.*":
++    description: GOcontroll Modular Embedded Electronics B.V.
+   "^goldelico,.*":
+     description: Golden Delicious Computers GmbH & Co. KG
+   "^goodix,.*":
 
 -- 
 2.48.1
