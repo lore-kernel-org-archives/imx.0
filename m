@@ -1,486 +1,367 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8441EA7CD
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 15:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740412473; cv=none; b=ClgFhLoDW/VTFXp4ymGtvLfevvEGpZWmlSoAgyji0T+j1GTHH5nl/bzF6b4SPrEq0zIHKVB9zuVD43LHYsdWsgTN9zewxwvbzBq9VJbdJRCH3pz7jKUCFNIt2yblXmDRGyauIPPC81HstHAYqFsNZpKzrsMNF1bWlKrP7kgX/7M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740412473; c=relaxed/simple;
-	bh=2BpOpyt+qop7JXHjTgwNxpmbtY4SYv3GAwUtj/i3ZZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxUvSA/Hm4Kf1ay3D2GuyPm0Hlpuod6MZ945yETeO1NL5PftuevPwtxLjEFkbN2yEWwlb0sI8vgO/NOGIxN4GlJn7xp2OrUjgW4Wy85LsQRPo01UNWje8U8244otHMVIMX4W4GpAr8eBiJAHEUtEZsX2Ae/Z6nIHZfYYPX1fXGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 642531516;
-	Mon, 24 Feb 2025 07:54:46 -0800 (PST)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD0563F6A8;
-	Mon, 24 Feb 2025 07:54:27 -0800 (PST)
-Date: Mon, 24 Feb 2025 15:54:19 +0000
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 3/7] firmware: arm_scmi: imx: Add i.MX95 LMM protocol
-Message-ID: <Z7yWK3E5inW39jeJ@pluto>
-References: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
- <20250212-imx-lmm-cpu-v2-3-3aee005968c1@nxp.com>
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013016.outbound.protection.outlook.com [40.107.159.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A66F254871
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 15:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740412715; cv=fail; b=mu448vmlv+x7/7d+BAmb8CsVcQu8VJUh/wT3a1gG6yvKZPIREBOnVBx1k+pXDkEyaLCpAGCPqlEpmJF3BEYeG5qPINB9XVMqVUYlTd7nsd1y9QH9aNzTN1w5R+8wQN3jwG35otwi2E5hRcpbn42sYDWur+9YkeyiuW1ryAhuX2Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740412715; c=relaxed/simple;
+	bh=9AVZ3hqnqFrb4f6A2Wm76qyGzMlAkC1EvLPYVnVbkzE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nHeu0cpKiTy8FkmwRhJOqDS2QFGokrucZSkeL8mLJuxDaoD6lkjlPNiXGif3AA0nGqj+Y7yn0ku98E0SKCpp3Y/Heh7gzdpiSGYKaLrMTv6o+5eiDumSgG6+5j7dX6ErZyC7Hcjo65mI+tZchqZDuQ/UHofiby9ahHejgit6bkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hsfx8ccN; arc=fail smtp.client-ip=40.107.159.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hsfx8ccN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NS5uoLOm/93VoihTQ3sczM2HrbkapLefHsLN13dGwop1A4pWuKHTaESUXFVspoqGcn9/c2eozz5uXGqTrFZ+p0wWjjP2ZDERcHpH9zzv9IAbPK6NmasD4Rwz7Ba3D4m6jDI/guTFwxZs/qrQBsTq4xfnmylPo2T2KxxSpFLZBLMxpjBbiUEdwyLRuztpkHcPzcsyZUytyDemLYfiC5Akhw/Vdr8c8naAoYJYq4ztE5DTcpUH1N9H612HYxr3p7SLVoVuDNV6CCROMMQclNliXelFag3YBbN8uzQvFdDllqCrROv6OI7LFMA9utiqAhffjp+EyX6EP6LmILDvDktL5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pevezh8nS0j4b6Qku2xY7DABGSFHCB4eMmROdjDA9sg=;
+ b=JS2ej7d/wHHhKuEXGP4GSl916QuMhT+aLzDpiGUpSjtgMxOmMqYtQLYy9ibDIUNf/chdd2Ug65qzaVihTvrLE2qUeFkxPCQjsUkqoVQ4S5If2NrB/juFJ5c3cowVksr0HWfdgOC3F949lraa0T5OXDTAIXErI8iT6JfEIhum50/yWbCsW173z7pU07OI9nEg4m2mn35RtNqXcOfyeLKN+r1AHB0FhKhKxL7+CR69UQtefoPQ9hxWeusrNnWodXEKR112ncIgMCtju1psxh/fYmXyBl2l4YlbYkuOLAt56Kmqp1p+IDVSVeRuPgkpUh/hM/Is2opv9TXMjkEyyo/Dgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pevezh8nS0j4b6Qku2xY7DABGSFHCB4eMmROdjDA9sg=;
+ b=hsfx8ccNrtozmSn7APNt1a8JEKmAmHb8L8B/dHY2oMBCkDuF3eyFkznlTeX233g1S+bVgSC2QxI+39m0AzTD3Qo/8HoiKi0aceyzX5jXKx+ZRwvf2Ee5y/0Fuv49j6bafsWrxItQpPCxyI8J0AFP9ZQSkH384Vp/+GiCJYX84X7vVSVfpqlgbXDWleNT6+wr4Vn7Btdk3TgTQB6lH+e0LbgoXLS6HYLtBtQWPLWm3iMdbtAjVJGtm4fVvUbWKG5GDVvOWEpTM+qVNxv/3Lrp+VPxm5cu8W30tLJdqagN/DMuH813lVm8w/pVDFp7mbfTMuxFScG5xEZaXEViF5SDFA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB10490.eurprd04.prod.outlook.com (2603:10a6:150:1e2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Mon, 24 Feb
+ 2025 15:58:28 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
+ 15:58:27 +0000
+Date: Mon, 24 Feb 2025 10:58:18 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 3/6] usb: chipidea: imx: add wakeup interrupt handling
+Message-ID: <Z7yXGgrX6FVQjy2M@lizhi-Precision-Tower-5810>
+References: <20250219093104.2589449-1-xu.yang_2@nxp.com>
+ <20250219093104.2589449-4-xu.yang_2@nxp.com>
+ <Z7Y+gqu75xJyjy6n@lizhi-Precision-Tower-5810>
+ <20250221032348.sncjhnldj6ecgeou@hippo>
+ <Z7iabsMl4ilQqrXN@lizhi-Precision-Tower-5810>
+ <20250224110751.7666zcafbyakvfb2@hippo>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224110751.7666zcafbyakvfb2@hippo>
+X-ClientProxiedBy: BYAPR05CA0020.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250212-imx-lmm-cpu-v2-3-3aee005968c1@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10490:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d900caa-7b69-40b4-5af6-08dd54ec1394
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j+JrOjZ/P05jP2pEw09O/8fiy8xyUBX5titnlHe+Qq3IU4cS4bsp4/tq/NMF?=
+ =?us-ascii?Q?Um/HU2OGoqeR6tySgT11WLgHPULVSYGXV7jutaWNPcq5TpwHK+pwepn2KGQA?=
+ =?us-ascii?Q?E+CKkfz5zdjP/QFMWIRa0JV/pz7kRu4WYJ6DPU/ybXb5zo6STveXlqffazsT?=
+ =?us-ascii?Q?1Yekmz6PLxt21MM8LroLYEtqtCOhJi5T1A4lF5eLeW9rnSKpTja132TfP6PC?=
+ =?us-ascii?Q?DuIjsJUyUpZm4tzpuYU/BdhZnoIXcW1ct4x3GKvE2xKl1RcpmnwYQNM2uVpz?=
+ =?us-ascii?Q?IseB4IbaFKnCizvKB8um76HQ1anIFUSOBAFL4rYbyk6hfEgzzhOj79s36V93?=
+ =?us-ascii?Q?i/xc4yVmQSfDLAcgWgz0r4vBdw5z0LkKO33sfHhS4HF8T4fe9/CZs9MQkdy9?=
+ =?us-ascii?Q?jyCdTLNycrVDunDLT2yzi0ML54fXtnKTYsThM37YqFnnRN8PcmTNM7nimTeV?=
+ =?us-ascii?Q?W9RQBqnrFQpxCxLXnC7q0/KcGcc6I5BF1cTKptFWoTat4/P1PM8mrDcu38It?=
+ =?us-ascii?Q?Yggxqyt16ggGsuNZkXjlqLNgjFME5dxPUE4NGWxjmWTPbMBLC9j1Gs/5tyGr?=
+ =?us-ascii?Q?7AMrAnC5/7+l0x7c7RPIAhKeHOPY1YVMT974GnBoogqxm11PlNLABMvkri6x?=
+ =?us-ascii?Q?+wI9/BcvQKnGr9+/gw5am7qlYcdjyqBxbDBQOpVJmCtr7395jmYBidecRFEw?=
+ =?us-ascii?Q?rnqYU/HBd9Ud1GQuRswMnzsMzA34h9QX+kFIFzKYSRWfZKZcj/5SDORAiPp2?=
+ =?us-ascii?Q?kySZOGEk1nJZ+UzY7tqGByc+Lb4UUo4g2ylgJLYR4iwRVJbEG+vJ+7Q8cqXT?=
+ =?us-ascii?Q?293tS0Q/2heEOojs26FJdDZLlqQ9bT+oJNM/GYb0dy8a8fmwE0rpVjMTpxRq?=
+ =?us-ascii?Q?ExR3BpiA3BvaPF2A326FOvKZ2h5qDnhbEljvCNZCJk5i2vPXXZGUjw+1bl5E?=
+ =?us-ascii?Q?C0ulBiQMTyVCbqbszA/wqU/DfhTXtgAKVT1A+hL9LudsFybm3K/lPYfI91+d?=
+ =?us-ascii?Q?XH1Y0GXaEiZC8pFDGl87XvNK/L5aN24k3KXsEeIK+x3ba098t4HuPfalbmcZ?=
+ =?us-ascii?Q?mIELOmHawYIY4qpCfPrCyEMMl4TG0W+GlmK3LY3pqhA5ivURCBFUisEMq/5A?=
+ =?us-ascii?Q?kkoZ0KeJ/iRfK/+xg6mW8Q7rb6+Yz6odl7bd4AbXxEmRmkgibLW2eolin+uI?=
+ =?us-ascii?Q?bkMmGnn/hhEMZDduCaBlP7KWvSQVl7lwguJuegzayz0eOCl3qx6e35vlNaKH?=
+ =?us-ascii?Q?bKMlQ+PUMWFOisimNLSxMjXgucXD9G21zt1Zrajvyldzncmo0A0Yy12fWSxQ?=
+ =?us-ascii?Q?fV2Jj216kMsHNXvlyvo5DOvEQO2As+vXnevwUhPcjTXJqzr8/P+aJgxdFOPq?=
+ =?us-ascii?Q?2/uSsEZ3rWPWOB2Jb7vYgghUVrSKVIk4XlclhWaEK6ARkkG2k86k2S8/ZXeM?=
+ =?us-ascii?Q?bMdw9QvpI3mbvGZW/2SA8Sf/Rpaz4F9Z?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S9931e5joU3sCRJovvsSohAVZvaYHg78DIp/ocesIJeRvob+Zg0TLxnmiWia?=
+ =?us-ascii?Q?5O9HZj9hr0YG9jXbMWJsvW/Jc/Weryzx9B7zN8UdKa+5E8d6m+1pzEK3rcAT?=
+ =?us-ascii?Q?uT+nOeqlwob3UIc9ooq0uCNjNvwTC6kId0TCKwxJjbHyYZNOchVojsaJy7ET?=
+ =?us-ascii?Q?Fst98BmoaLuRP04xPHO87v5lkVDPi5bm/gMfgKfPx3ebqbygi/TFUP9Vn454?=
+ =?us-ascii?Q?SYzRT8Acheu7aEUYyDMk5Ui+55wFYBaSQR/sgMxymkdWZIAsZh4fLzzE5ApQ?=
+ =?us-ascii?Q?65m0uT57PjrEjX0Sbe+CvnRIwnlbuqBH44ffpLNjSW4yNJ+6n07hI1yPNBg4?=
+ =?us-ascii?Q?1q4GU5+D+DFlptyWtKhz9RiymOK8HD8mH+vXUA6hSrkNXuXoZ5YARShfMSb9?=
+ =?us-ascii?Q?ybioFsxwOetUBTaHu2TcQE+Wcskwm+lbXMS7y6uob5FG8chY6Uo3Ig6/G6ne?=
+ =?us-ascii?Q?tnWA92JntVG7rnbHHw7iQmqJydtAgaHUPYrJrFRiu6Lj72lMWwtw1hCpyraZ?=
+ =?us-ascii?Q?ykDjgybO9FiyNXNyE4dA+SqYHwgi5bNTvfSKrar2WwYnfzbmC2Gw+5qHtjY9?=
+ =?us-ascii?Q?eDeosaz9rTxxxjbGBh1zoCK7+xMNgaiz6h0kEe9Eac6uOnUJuxXEEIdfPW8C?=
+ =?us-ascii?Q?LIE5HuAF8dIOFwGs4r20pVtgN4t8zxllksWlGmSQUNAnGtihmsYMjRSyJFz/?=
+ =?us-ascii?Q?DgG4QoLkeQOMaj11OnmUjaZ5HIUI86RNdpR4+GzJRHs2dEZ4DcZAWn2uLn4k?=
+ =?us-ascii?Q?HB2ia/4+12ViP0BfUCfSJyOshP6eJkSUmQ4VA0yKQkhP+exN/fWBFKUW8YMv?=
+ =?us-ascii?Q?tpMUGwy8b+m69/5RuSUSkFeh/oML9VxVMZDMeNllyXhxqEdSHTIU5y7zb9yI?=
+ =?us-ascii?Q?Lty8Pf5IfC/iAM4SqIbl5BY8cXgDvwnQTe/kthzUCuh3QDLzDfhCKTiDw0z+?=
+ =?us-ascii?Q?Ulxoc3Ce8PZM5TB2N0fTXXmSx+5C8/mp8Ia0pkSWuDhF+YuGfbiCITjMvvhG?=
+ =?us-ascii?Q?spQHELerTWrLd8/Cjlt/7/QIJ3J2dc9JhQWeOpsMcV29q+yS90MEyGQVdXiS?=
+ =?us-ascii?Q?aoZQevGj9YtfLUJQteFOUuA+vlIg6xdxgAwPdAdFtY+phmu9oYiK1J+rEvFp?=
+ =?us-ascii?Q?cGiHCAuPX0bvDznf9sJF51bIfyn9z5M4BxTwXwmwFyA6X/8e+XTBvYOiI2Cy?=
+ =?us-ascii?Q?Ks2Vo9Xpgel2kWlhhAIaoEuaEqaLZbjWxJqh+9bQJgd2yowoYw1G6v/RuVV1?=
+ =?us-ascii?Q?EnS2k5/wLPZhQSPZvml07zZCdM/F+NfixrV93itZbQSavnTYuub8tiM9rI0h?=
+ =?us-ascii?Q?4fCEDAeLwXXxS5uvhHb/2V9YVwglpM7LLvVjOTZUYfcQTpH3/xTGI5rfhN34?=
+ =?us-ascii?Q?f7Y3d46AYs/nRceTsyvzw3LHNVatqMwhfGA34gp1G8MMPJoGYqlz9p0HrB+c?=
+ =?us-ascii?Q?7bwXKD186uowgYFMNDpjN4roGN0B1/48LTb/sWDV6KYmJzDOVfHJLPbXidLh?=
+ =?us-ascii?Q?UcfE5NUpNZw5aHe8U6Htus7qIEktS/IW2s8DpU9qO7LyYgnteZ8dm0xAiQzE?=
+ =?us-ascii?Q?F7hSB6TstVr2kXwuYwE=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d900caa-7b69-40b4-5af6-08dd54ec1394
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 15:58:27.5925
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A/KGX1vstRE+N9Bcyl9Nfwa1CB7UU5E27FU5Kg/ytCH3ru2kRnYpCAgamM54WflPU7N01b+s3e7g3MpvcfhvNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10490
 
-On Wed, Feb 12, 2025 at 03:40:25PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Add Logical Machine Management(LMM) protocol which is intended for boot,
-> shutdown, and reset of other logical machines (LM). It is usually used to
-> allow one LM to manager another used as an offload or accelerator engine.
-> 
+On Mon, Feb 24, 2025 at 07:07:51PM +0800, Xu Yang wrote:
+> On Fri, Feb 21, 2025 at 10:23:26AM -0500, Frank Li wrote:
+> > On Fri, Feb 21, 2025 at 11:23:48AM +0800, Xu Yang wrote:
+> > > On Wed, Feb 19, 2025 at 03:26:42PM -0500, Frank Li wrote:
+> > > > On Wed, Feb 19, 2025 at 05:31:01PM +0800, Xu Yang wrote:
+> > > > > In previous imx platform, normal USB controller interrupt and wakeup
+> > > > > interrupt are bound to one irq line. However, it changes on latest
+> > > > > i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
+> > > > > This will add wakup interrupt handling for i.MX95 to support various
+> > > > > wakeup events.
+> > > > >
+> > > > > Reviewed-by: Jun Li <jun.li@nxp.com>
+> > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > > > ---
+> > > > >  drivers/usb/chipidea/ci_hdrc_imx.c | 42 ++++++++++++++++++++++++++++++
+> > > > >  1 file changed, 42 insertions(+)
+> > > > >
+> > > > > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > index 1a7fc638213e..5779568ebcf6 100644
+> > > > > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > @@ -98,9 +98,12 @@ struct ci_hdrc_imx_data {
+> > > > >  	struct clk *clk;
+> > > > >  	struct clk *clk_wakeup;
+> > > > >  	struct imx_usbmisc_data *usbmisc_data;
+> > > > > +	/* wakeup interrupt*/
+> > > > > +	int irq;
+> > > >
+> > > > use "wakeup_irq" to avoid confuse with normal controller irq?
+> > >
+> > > It doesn't matter. It can't be confused since the driver is different. The
+> > > controller driver is core.c. This glue driver is ci_hdrc_imx.c.
+> > >
+> > > >
+> > > > >  	bool supports_runtime_pm;
+> > > > >  	bool override_phy_control;
+> > > > >  	bool in_lpm;
+> > > > > +	bool wakeup_pending;
+> > > > >  	struct pinctrl *pinctrl;
+> > > > >  	struct pinctrl_state *pinctrl_hsic_active;
+> > > > >  	struct regulator *hsic_pad_regulator;
+> > > > > @@ -336,6 +339,24 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
+> > > > >  	return ret;
+> > > > >  }
+> > > > >
+> > > > > +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
+> > > > > +{
+> > > > > +	struct ci_hdrc_imx_data *imx_data = data;
+> > > > > +
+> > > > > +	if (imx_data->in_lpm) {
+> > > > > +		if (imx_data->wakeup_pending)
+> > > > > +			return IRQ_HANDLED;
+> > > > > +
+> > > > > +		disable_irq_nosync(irq);
+> > > > > +		imx_data->wakeup_pending = true;
+> > > > > +		pm_runtime_resume(&imx_data->ci_pdev->dev);
+> > > >
+> > > > Not sure why need pm_runtime_resume here? There are not access register
+> > > > here.
+> > >
+> > > It's needed for runtime resume case.
+> > > When wakeup event happens, wakeup irq will be triggered. To let controller
+> > > resume back, we need enable USB controller clock to trigger controller
+> > > irq. So we call pm_runtime_resume() to resume controller's parent back
+> > > and the parent device will enable clocks.
+> >
+> > Please add comment here. why need in_lpm if we can make sure irq only
+> > enable during suspend/resume pharse?
+>
+> I have checked again, in_lpm checking is not needed. I will remove the
+> if condition later.
+>
+> >
+> > >
+> > > >
+> > > > > +
+> > > > > +		return IRQ_HANDLED;
+> > > > > +	}
+> > > > > +
+> > > > > +	return IRQ_NONE;
+> > > > > +}
+> > > > > +
+> > > > >  static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> > > > >  {
+> > > > >  	struct ci_hdrc_imx_data *data;
+> > > > > @@ -476,6 +497,15 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> > > > >  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+> > > > >  		data->supports_runtime_pm = true;
+> > > > >
+> > > > > +	data->irq = platform_get_irq_optional(pdev, 1);
+> > > > > +	if (data->irq > 0) {
+> > > > > +		ret = devm_request_threaded_irq(dev, data->irq,
+> > > > > +				NULL, ci_wakeup_irq_handler,
+> > > > > +				IRQF_ONESHOT, pdata.name, data);
+> > > > > +		if (ret)
+> > > > > +			goto err_clk;
+> > > > > +	}
+> > > > > +
+> > > > >  	ret = imx_usbmisc_init(data->usbmisc_data);
+> > > > >  	if (ret) {
+> > > > >  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+> > > > > @@ -621,6 +651,11 @@ static int imx_controller_resume(struct device *dev,
+> > > > >  		goto clk_disable;
+> > > > >  	}
+> > > > >
+> > > > > +	if (data->wakeup_pending) {
+> > > > > +		data->wakeup_pending = false;
+> > > > > +		enable_irq(data->irq);
+> > > > > +	}
+> > > > > +
+> > > > >  	return 0;
+> > > > >
+> > > > >  clk_disable:
+> > > > > @@ -643,6 +678,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
+> > > > >  		return ret;
+> > > > >
+> > > > >  	pinctrl_pm_select_sleep_state(dev);
+> > > > > +
+> > > > > +	if (device_may_wakeup(dev))
+> > > > > +		enable_irq_wake(data->irq);
+> > > > > +
+> > > > >  	return ret;
+> > > > >  }
+> > > > >
+> > > > > @@ -651,6 +690,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
+> > > > >  	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+> > > > >  	int ret;
+> > > > >
+> > > > > +	if (device_may_wakeup(dev))
+> > > > > +		disable_irq_wake(data->irq);
+> > > > > +
+> > > >
+> > > > Look like only want enable wakeup irq between suspend and resume. There are
+> > > > some questions to understand hehavor.
+> > > >
+> > > > 1 driver probe --> 2. hdrc suspend -->3 hdrc resume --> 4 controller resume
+> > > >
+> > > > 1--2,  look like wakeup irq is enabled. maybe controller have some bit to
+> > > > disable issue wakeup irq, otherwise flood irq will happen because you check
+> > > > lpm in irq handler.
+> > >
+> > > It's not true.
+> > >
+> > > We has a bit WAKE_ENABLE to enable/disable wakeup irq. This bit will only be
+> > > enabled when do suspend() and disabled when do resume(). So before suspend()
+> > > called, the wakeup irq can't be triggered. No flood irq too.
+> > >
+> > > >
+> > > > after 2. wakeup irq enable,  if wakeup irq happen, system resume.
+> > > > ci_hdrc_imx_resume() only clear a flags, not any sync problem.
+> > > >
+> > > > But sequence imx_controller_resume() and ci_wakeup_irq_handler() may not
+> > > > guaranteed.
+> > > >
+> > > > If ci_wakeup_irq_handler() call first, ci_wakeup_irq_handler() disable
+> > > > itself. imx_controller_resume() will enable wakeup irq, which will be same
+> > > > state 1--2. but if imx_controller_resume() run firstly,
+> > >
+> > > It's not true too. Because WAKE_ENABLE is disabled after resume().
+> > >
+> > > > ci_wakeup_irq_handler() will disable wakeup irq, which difference state
+> > > > with 1--2.
+> > > >
+> > > > If there are a bit(WAKEUP_EN) in controller can control wakeup irq
+> > > > enable/disable,
+> > >
+> > > Yes, WAKE_ENABLE bit. It's already used:
+> > >
+> > > ci_hdrc_imx_suspend()
+> > >   imx_controller_suspend() -> enable WAKE_ENABLE
+> > >
+> > > ci_hdrc_imx_resume()
+> > >   imx_controller_resume() -> disable WAKE_ENABLE
+> >
+> > Okay,
+> >
+> > I think wakeup_pending is not neccesary. ci_wakeup_irq_handler() can
+> > simple disable WAKE_ENABLE.
+>
+> Right, wakeup_pending can be removed. However, it's not that simple to
+> control WAKE_ENABLE in ci_hdrc_imx.c due to imx_controller_susepnd/resume()
+> do more things expect enable/disable WAKE_ENABLE bit. And usbmisc.c doesn't
+> export a function to directly control WAKE_ENABLE. Therefore, I still need
+> to use enable/disable_irq() for simplicity.
+>
+> Due to this wakeup irq is only used in suspend case, I would like to add
+> IRQF_NO_AUTOEN flag to request_threaded_irq(), then enable irq in
+> ci_hdrc_imx_suspend() and disable irq in ci_hdrc_imx_resume().
+>
+> For example:
+>
+> ci_wakeup_irq_handler()
+> {
+> 	disable_irq_nosync(data->irq);
+> 	...
+> }
+>
+> ci_hdrc_imx_suspend()
+> {
+> 	...
+> 	enable_irq(data->irq);
+> }
+>
+> ci_hdrc_imx_resume()
+> {
+> 	if (irq disabled)
+> 		disable_irq_nosync(data->irq);
+> 	...
+> }
+>
+> Do you think if it's feasible and better than current patch?
 
-Hi,
+look better. Does ci_wakeup_irq_handler() always happen before
+ci_hdrc_imx_resume()?
 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/firmware/arm_scmi/vendors/imx/Kconfig      |  11 +
->  drivers/firmware/arm_scmi/vendors/imx/Makefile     |   1 +
->  drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c | 270 +++++++++++++++++++++
->  include/linux/scmi_imx_protocol.h                  |  31 +++
->  4 files changed, 313 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_scmi/vendors/imx/Kconfig b/drivers/firmware/arm_scmi/vendors/imx/Kconfig
-> index a01bf5e47301d2f93c9bfc7eebc77e083ea4ed75..1a936fc87d2350e2a21bccd45dfbeebfa3b90286 100644
-> --- a/drivers/firmware/arm_scmi/vendors/imx/Kconfig
-> +++ b/drivers/firmware/arm_scmi/vendors/imx/Kconfig
-> @@ -12,6 +12,17 @@ config IMX_SCMI_BBM_EXT
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called imx-sm-bbm.
->  
-> +config IMX_SCMI_LMM_EXT
-> +	tristate "i.MX SCMI LMM EXTENSION"
-> +	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
-> +	default y if ARCH_MXC
-> +	help
-> +	  This enables i.MX System Logical Machine Protocol to
-> +	  manage Logical Machines boot, shutdown and etc.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called imx-sm-lmm.
-> +
->  config IMX_SCMI_MISC_EXT
->  	tristate "i.MX SCMI MISC EXTENSION"
->  	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
-> diff --git a/drivers/firmware/arm_scmi/vendors/imx/Makefile b/drivers/firmware/arm_scmi/vendors/imx/Makefile
-> index d3ee6d5449244a4f5cdf6abcf1845f312c512325..f39a99ccaf9af757475e8b112d224669444d7ddc 100644
-> --- a/drivers/firmware/arm_scmi/vendors/imx/Makefile
-> +++ b/drivers/firmware/arm_scmi/vendors/imx/Makefile
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-$(CONFIG_IMX_SCMI_BBM_EXT) += imx-sm-bbm.o
-> +obj-$(CONFIG_IMX_SCMI_LMM_EXT) += imx-sm-lmm.o
->  obj-$(CONFIG_IMX_SCMI_MISC_EXT) += imx-sm-misc.o
-> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..4b9211df2329623fae0400039db91cb2b98cded1
-> --- /dev/null
-> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
-> @@ -0,0 +1,270 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * System control and Management Interface (SCMI) NXP LMM Protocol
-> + *
-> + * Copyright 2025 NXP
-> + */
-> +
-> +#include <linux/bits.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/scmi_protocol.h>
-> +#include <linux/scmi_imx_protocol.h>
-> +
-> +#include "../../protocols.h"
-> +#include "../../notify.h"
-> +
-> +#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x10000
-> +
-> +enum scmi_imx_lmm_protocol_cmd {
-> +	SCMI_IMX_LMM_ATTRIBUTES	= 0x3,
-> +	SCMI_IMX_LMM_BOOT = 0x4,
-> +	SCMI_IMX_LMM_RESET = 0x5,
-> +	SCMI_IMX_LMM_SHUTDOWN = 0x6,
-> +	SCMI_IMX_LMM_WAKE = 0x7,
-> +	SCMI_IMX_LMM_SUSPEND = 0x8,
-> +	SCMI_IMX_LMM_NOTIFY = 0x9,
-> +	SCMI_IMX_LMM_RESET_REASON = 0xA,
-> +	SCMI_IMX_LMM_POWER_ON = 0xB,
-> +	SCMI_IMX_LMM_RESET_VECTOR_SET = 0xC,
-> +};
-> +
-> +struct scmi_imx_lmm_priv {
-> +	u32 nr_lmm;
-> +};
-> +
-> +#define	SCMI_IMX_LMM_PROTO_ATTR_NUM_LM(x)	(((x) & 0xFFU))
-> +struct scmi_msg_imx_lmm_protocol_attributes {
-> +	__le32 attributes;
-> +};
-> +
-> +struct scmi_msg_imx_lmm_attributes_out {
-> +	__le32 lmid;
-> +	__le32 attributes;
-> +	__le32 state;
-> +	__le32 errstatus;
-> +	u8 name[LMM_MAX_NAME];
-> +};
-> +
-> +struct scmi_imx_lmm_reset_vector_set_in {
-> +	__le32 lmid;
-> +	__le32 cpuid;
-> +#define SCMI_LMM_VEC_FLAGS_TABLE	BIT(0)
-> +	__le32 flags;
-> +	__le32 resetvectorlow;
-> +	__le32 resetvectorhigh;
-> +};
-> +
-> +struct scmi_imx_lmm_shutdown_in {
-> +	__le32 lmid;
-> +	__le32 flags;
-> +};
-> +
-> +static int scmi_imx_lmm_validate_lmid(const struct scmi_protocol_handle *ph, u32 lmid)
-> +{
-> +	struct scmi_imx_lmm_priv *priv = ph->get_priv(ph);
-> +
-> +	if (lmid >= priv->nr_lmm)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int scmi_imx_lmm_attributes(const struct scmi_protocol_handle *ph,
-> +				   u32 lmid, struct scmi_imx_lmm_info *info)
-> +{
-> +	struct scmi_msg_imx_lmm_attributes_out *out;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_LMM_ATTRIBUTES, sizeof(u32), 0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	put_unaligned_le32(lmid, t->tx.buf);
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		out = t->rx.buf;
-> +		info->lmid = le32_to_cpu(out->lmid);
-> +		info->state = le32_to_cpu(out->state);
-> +		info->errstatus = le32_to_cpu(out->errstatus);
-> +		strscpy(info->name, out->name);
-> +		dev_dbg(ph->dev, "i.MX LMM: Logical Machine(%d), name: %s\n",
-> +			info->lmid, out->name);
-> +	} else {
-> +		dev_err(ph->dev, "i.MX LMM: Failed to get info of Logical Machine(%u)\n", lmid);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_lmm_boot(const struct scmi_protocol_handle *ph, u32 lmid)
-> +{
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = scmi_imx_lmm_validate_lmid(ph, lmid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_LMM_BOOT, sizeof(u32),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	put_unaligned_le32(lmid, t->tx.buf);
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
+Frank
 
-..this....
-
-> +static int scmi_imx_lmm_power_on(const struct scmi_protocol_handle *ph, u32 lmid)
-> +{
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = scmi_imx_lmm_validate_lmid(ph, lmid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_LMM_POWER_ON, sizeof(u32),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	put_unaligned_le32(lmid, t->tx.buf);
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-
-...can be refatcored to use one common workhorse fcuntion sued by both
-ops...
-
-> +
-> +static int scmi_imx_lmm_reset_vector_set(const struct scmi_protocol_handle *ph,
-> +					 u32 lmid, u32 cpuid, u32 flags, u64 vector)
-> +{
-> +	struct scmi_imx_lmm_reset_vector_set_in *in;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_LMM_RESET_VECTOR_SET, sizeof(*in),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	in = t->tx.buf;
-> +	in->lmid = cpu_to_le32(lmid);
-> +	in->cpuid = cpu_to_le32(cpuid);
-> +	in->flags = cpu_to_le32(flags);
-
-...bitfields in a flag field must not be enianity converted...only
-eventually subfields representing numbers (liek you did above)...
-
-..I feel FIELD_PREP should be fine...or even BIT(0) really given what
-these flags represents...
-
-...again check issues with smatch....
-
-> +	in->resetvectorlow = cpu_to_le32(lower_32_bits(vector));
-> +	in->resetvectorhigh = cpu_to_le32(upper_32_bits(vector));
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_lmm_shutdown(const struct scmi_protocol_handle *ph, u32 lmid,
-> +				 u32 flags)
-> +{
-> +	struct scmi_imx_lmm_shutdown_in *in;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = scmi_imx_lmm_validate_lmid(ph, lmid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_LMM_SHUTDOWN, sizeof(*in),
-> +				      0, &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	in = t->tx.buf;
-> +	in->lmid = cpu_to_le32(lmid);
-> +	in->flags = cpu_to_le32(flags);
-
-Same here, smatch would complain if you remove straight away this
-cpu_to_le32(), BUT this is a bitfield and does NOT contain any
-longer-than-2 number value that needs to be endianess manipulated...you
-just have to be able to set the required BIT 0 and 1, whitouth pissing
-off smatch :P
-
-> +	ret = ph->xops->do_xfer(ph, t);
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct scmi_imx_lmm_proto_ops scmi_imx_lmm_proto_ops = {
-> +	.lmm_boot = scmi_imx_lmm_boot,
-> +	.lmm_info = scmi_imx_lmm_attributes,
-> +	.lmm_power_on = scmi_imx_lmm_power_on,
-> +	.lmm_reset_vector_set = scmi_imx_lmm_reset_vector_set,
-> +	.lmm_shutdown = scmi_imx_lmm_shutdown,
-> +};
-> +
-> +static int scmi_imx_lmm_protocol_attributes_get(const struct scmi_protocol_handle *ph,
-> +						struct scmi_imx_lmm_priv *priv)
-> +{
-> +	struct scmi_msg_imx_lmm_protocol_attributes *attr;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
-> +				      sizeof(*attr), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	attr = t->rx.buf;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		priv->nr_lmm = SCMI_IMX_LMM_PROTO_ATTR_NUM_LM(le32_to_cpu(attr->attributes));
-
-This seems wrong to me...you have an 8bit field to extract from an
-attribute field...so I would at first cut the byte out and then convert
-to LE, NOT the other way around like you are doing
-(i.e.: le32_to_cpu((attr->attributes & 0xFF))).
-
-Even BETTER to use:
-
-	le32_get_bits((x), GENMASK(7, 0))
-
-...the thing is, being a single byte you really SHOULD NOT need to address
-any endianity concern (i.e. FIELD_GET(GENMASK(7, 0), (x))), BUT I fear that
-if you dont use some of the le32_ accessors smatch/sparse will complain since
-the message field is, correctly, declared as __le32.
-
-So le32_get_bits is the way to go (bit check with the static analyzer :P)
-
-> +		dev_info(ph->dev, "i.MX LMM: %d Logical Machines\n",
-> +			 priv->nr_lmm);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
-> +static int scmi_imx_lmm_protocol_init(const struct scmi_protocol_handle *ph)
-> +{
-> +	struct scmi_imx_lmm_priv *info;
-> +	u32 version;
-> +	int ret;
-> +
-> +	ret = ph->xops->version_get(ph, &version);
-> +	if (ret)
-> +		return ret;
-> +
-> +	dev_info(ph->dev, "NXP SM LMM Version %d.%d\n",
-> +		 PROTOCOL_REV_MAJOR(version), PROTOCOL_REV_MINOR(version));
-> +
-> +	info = devm_kzalloc(ph->dev, sizeof(*info), GFP_KERNEL);
-> +	if (!info)
-> +		return -ENOMEM;
-> +
-> +	ret = scmi_imx_lmm_protocol_attributes_get(ph, info);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ph->set_priv(ph, info, version);
-> +}
-> +
-> +static const struct scmi_protocol scmi_imx_lmm = {
-> +	.id = SCMI_PROTOCOL_IMX_LMM,
-> +	.owner = THIS_MODULE,
-> +	.instance_init = &scmi_imx_lmm_protocol_init,
-> +	.ops = &scmi_imx_lmm_proto_ops,
-> +	.supported_version = SCMI_PROTOCOL_SUPPORTED_VERSION,
-> +	.vendor_id = SCMI_IMX_VENDOR,
-> +	.sub_vendor_id = SCMI_IMX_SUBVENDOR,
-> +};
-> +module_scmi_protocol(scmi_imx_lmm);
-> +
-
-
-Should this also be added:
-
-MODULE_ALIAS("scmi-protocol-" __stringify(SCMI_PROTOCOL_IMX_LMM) "-" SCMI_IMX_VENDOR);
-
-...after this went in:
-
-commit d4cc8912cbff4990940b33cc61a9b09ddaee9704
-Author: Cristian Marussi <cristian.marussi@arm.com>
-Date:   Mon Dec 9 16:49:56 2024 +0000
-
-    firmware: arm_scmi: Add module aliases to i.MX vendor protocol
-
-...I think is in v6.14-rc already to rebae on...
-
-> +MODULE_DESCRIPTION("i.MX SCMI LMM driver");
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/linux/scmi_imx_protocol.h b/include/linux/scmi_imx_protocol.h
-> index 53b356a26414279f4aaaa8287c32209ed1ad57b4..07779c36ef9a126907e26e304a8feca16fd60ab2 100644
-> --- a/include/linux/scmi_imx_protocol.h
-> +++ b/include/linux/scmi_imx_protocol.h
-> @@ -11,8 +11,10 @@
->  #include <linux/bitfield.h>
->  #include <linux/device.h>
->  #include <linux/notifier.h>
-> +#include <linux/scmi_protocol.h>
->  #include <linux/types.h>
->  
-> +#define SCMI_PROTOCOL_IMX_LMM	0x80
->  #define	SCMI_PROTOCOL_IMX_BBM	0x81
->  #define	SCMI_PROTOCOL_IMX_MISC	0x84
->  
-> @@ -57,4 +59,33 @@ struct scmi_imx_misc_proto_ops {
->  	int (*misc_ctrl_req_notify)(const struct scmi_protocol_handle *ph,
->  				    u32 ctrl_id, u32 evt_id, u32 flags);
->  };
-> +
-> +#define	LMM_ID_DISCOVER	0xFFFFFFFFU
-
-What is this ? Documented anywhere ?
-
-> +#define	LMM_MAX_NAME	16
-> +
-> +enum scmi_imx_lmm_state {
-> +	LMM_STATE_LM_OFF,
-> +	LMM_STATE_LM_ON,
-> +	LMM_STATE_LM_SUSPEND,
-> +	LMM_STATE_LM_POWERED,
-> +};
-> +
-> +struct scmi_imx_lmm_info {
-> +	u32 lmid;
-> +	enum scmi_imx_lmm_state state;
-> +	u32 errstatus;
-> +	u8 name[LMM_MAX_NAME];
-> +};
-> +
-> +struct scmi_imx_lmm_proto_ops {
-> +	int (*lmm_boot)(const struct scmi_protocol_handle *ph, u32 lmid);
-> +	int (*lmm_info)(const struct scmi_protocol_handle *ph, u32 lmid,
-> +			struct scmi_imx_lmm_info *info);
-> +	int (*lmm_power_on)(const struct scmi_protocol_handle *ph, u32 lmid);
-> +	int (*lmm_reset_vector_set)(const struct scmi_protocol_handle *ph,
-> +				    u32 lmid, u32 cpuid, u32 flags, u64 vector);
-> +	int (*lmm_shutdown)(const struct scmi_protocol_handle *ph, u32 lmid,
-> +			    u32 flags);
-> +};
-> +
->  #endif
-> 
-
-Thanks,
-Cristian
+>
+> Thanks,
+> Xu Yang
