@@ -1,45 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE01F416D;
-	Mon, 24 Feb 2025 20:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0C615886C;
+	Mon, 24 Feb 2025 20:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740427822; cv=none; b=OPnAV4Q4orH3vyCMeALqLsFTZElqrBT1CO5EHaZosZpT6VlOfuJnSNbkZeEftxV/rn1nrpOOGqkorGj2TdPuYdaIHo2Rl8crZ45WiXcpQm3knH0mQFo4vnoKZwg4oBzjxfq7IB4NaAoGOE8/uAeLlZgCplp/Vr3s5Nit0wPNTVo=
+	t=1740429134; cv=none; b=k+ec16wrZG2A0ULZLFY5LeCgjYBzTtTfq5fwHTYKIHGCAXc4MiUjj4F+uL3HYv+hNPX27uvhwyLlTS2IbPXq165Yc5Z9MVxA2CYJpMtzSIDFNR1PJisqSGCH7GLvYDXPTqPO/BCNNupqZCzwTB/uZowElGBI6XeQGpe52X2kyys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740427822; c=relaxed/simple;
-	bh=//I4s2iMr9J6rEdDAzVgVvZ0bgv+PoI6wUAC1Ve268s=;
+	s=arc-20240116; t=1740429134; c=relaxed/simple;
+	bh=LEHxu5uUmeaV7+NU70Sza9810F5pHO55NG+jcIxXdLQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VopgTlJsMjP9ZLJJY2lPfnnFntuE1vazJq/uxEkCXqKygebWkbUhFOqec01Jl4tQmUb6tLe1PF01mbxwoOWWSY/ChEL4TRPQd2ZW6Mx3KhnE7LzeeaQE9Z3r8AlxoRNK4MifiNhUxgCcyLhgFGycbG7y2krwboUr8eULvNWIAcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLh1QEjv; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=L1yvoHm+GFqDz+rd1DhPjgHJ+v3y3H5NlMjVIoZ1huo9wkxkkZ3JslsGlvwnSjs5KZPATxezY9D0tcbBm5+yoaJZiceAfRqXs9ux8hj7ZbPZ4coal9+cHmS60tC2DQas30KuoXs8+diTNpq1CqCxG5SpL+VPDWl3Jqb+0xRSph8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWb+AJ2m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLh1QEjv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE86C4CED6;
-	Mon, 24 Feb 2025 20:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWb+AJ2m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2F2C4CEDD;
+	Mon, 24 Feb 2025 20:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740427822;
-	bh=//I4s2iMr9J6rEdDAzVgVvZ0bgv+PoI6wUAC1Ve268s=;
+	s=k20201202; t=1740429133;
+	bh=LEHxu5uUmeaV7+NU70Sza9810F5pHO55NG+jcIxXdLQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LLh1QEjvRNIcuhtCtWxYwMeqdndZeuETHVY2Zuyp83rJDJ9eYOnSB+RDITXFc929h
-	 jTaNDmQGFUIFWzu+L5lT4DBF5Fkz9w9vup88nYgrb1Oo8OlSn0CpncSwSK5dBiHu8D
-	 5/LD2tsNm+maVu0/2Ik4OkbcA5dOojRMyuqsrlp9hdS2Fr0PN8ZcokvGPvD9G5Jd4S
-	 +Xk+7l2PWOxwnVyfd+75hMRTgvwyE8gYtcCTDOGDNWCAkUZzZoZpXXqazTFY4ZMUWV
-	 maLviKqCVoJTYK9667ObN1pKQsUfMp31WWjyQd/+pbW8+pk/2jOi8/vtQXpVQxKXl3
-	 aMNRBiWr0Lh7A==
-Date: Mon, 24 Feb 2025 14:10:20 -0600
+	b=VWb+AJ2me2apk+gmPLWDZXowwwAyEGuesvKDYbTkGbZHkofFvMw3X3ejLPs2COr1o
+	 ZgWG/ZCnkVCXoqmgHOlJyw+MFXK10bkkBCq0uU8+r9oj8XVlreLKT9zfngo86iM40E
+	 aPuqms5vxELWLUCfMdDPKextu5DeajD2SxRgSCZ2P3x3+EQAI6+YZY9vNjOxIFmkFJ
+	 EbuLfaAacYExZJfr99LMkww9uW/iEkHAJg3kx8mPaiQhp5p9Ywi4v05Lb9LR3WoPfv
+	 Lg537vsSWQwVwA2rJXRKVGHKoCT5bnYp/D99eniwkRm/sVY4LM1Kl4VrxGEXC7IfKu
+	 m3ysrKMt5H7uw==
+Date: Mon, 24 Feb 2025 14:32:11 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: imx@lists.linux.dev, shawnguo@kernel.org, linux-kernel@vger.kernel.org,
-	s.hauer@pengutronix.de, devicetree@vger.kernel.org,
-	krzk+dt@kernel.org, festevam@gmail.com, lgirdwood@gmail.com,
-	broonie@kernel.org, conor+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 2/2] ASoC: dt-bindings: fsl,imx-asrc: Reference common
- DAI properties
-Message-ID: <174042782051.4022847.1009470798524846957.robh@kernel.org>
-References: <20250224090413.727911-1-shengjiu.wang@nxp.com>
- <20250224090413.727911-3-shengjiu.wang@nxp.com>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	David Airlie <airlied@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Liu Ying <victor.liu@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-kernel@vger.kernel.org,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>
+Subject: Re: [PATCH 01/14] dt-bindings: display: simple: add BOE AV101HDT-A10
+ panel
+Message-ID: <174042913116.4047506.14844482036971785905.robh@kernel.org>
+References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
+ <20250224-initial_display-v1-1-5ccbbf613543@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,17 +60,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224090413.727911-3-shengjiu.wang@nxp.com>
+In-Reply-To: <20250224-initial_display-v1-1-5ccbbf613543@gocontroll.com>
 
 
-On Mon, 24 Feb 2025 17:04:13 +0800, Shengjiu Wang wrote:
-> Reference the dai-common.yaml schema to allow '#sound-dai-cells' and
-> "sound-name-prefix' to be used.
+On Mon, 24 Feb 2025 14:50:51 +0100, Maud Spierings wrote:
+> add a compatible string for the BOE AV101HDT-A10 10.1" LVDS panel
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 > ---
->  Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
 Acked-by: Rob Herring (Arm) <robh@kernel.org>
