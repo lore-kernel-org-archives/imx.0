@@ -1,56 +1,34 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0299263F4D;
-	Mon, 24 Feb 2025 20:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A1B24BC14
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 20:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429151; cv=none; b=EmInWmQMTBfWPtI8tY2/z+UZP95S/PYTIGtasfkiIQq8pk+23D8OHjQw+5tBQUy7ETtGOo+9t9BdSnz2wr9umWnimlHQE0FN8YUtZAkKDFwkd3dcpUT1fP8RXmyBrjeugySr3122ovTPwd37Y2nwIArNAc6KhxqeLZhbOBp5PrQ=
+	t=1740429169; cv=none; b=FQmnzRHxSO96CvFIqskjaQlw2ZqpKlhyhPFcDFUn5x4ii8OhZ2WVmXyHANySClOY4YVrzmbhjI4Fd+ylHY1h5yQkMDMmLsySvflNNbEyptTi8duoi1LiMoy1/RAxMx4NvpHr+CLsFF55WjujMpL4TMzyQmLHYycwSAUCFURVkro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429151; c=relaxed/simple;
-	bh=7Eyqt9Yi27fAwHev0xOEgY0/gsh0CaOyA02i4c7f+q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=efSkZ7ZwILiT0zhU8H/wCobbQNZF5c372hqjeQSYFSJa0mu4dq215TR6CxjPPXtNoQsnD8MTyYzeh4Qdi+gf3F4ijUlIhJhJ7mG/oDqLpsRf/Zt6n/D5pr56zWN1/hfkHIyMDNFc2CBAfqMv2YbZMB4KR/K18+X1a5ZfWP1SnNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2UKt4dp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2UKt4dp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E19CC4CEE7;
-	Mon, 24 Feb 2025 20:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740429151;
-	bh=7Eyqt9Yi27fAwHev0xOEgY0/gsh0CaOyA02i4c7f+q4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L2UKt4dp2RNeu+KYdq+fQJdJTheZkYadYmOtIHueFj0GXVQuUlJv4EHvzrmv1Wf10
-	 ehwrZ9x3s5b+7d6WxmzWMMg4j7Mgx9B9gfB/rtJEyp3vt7HH7+VU9jA2JVRSrwaJhf
-	 xxzyDLlq5YZuzNCMthRET42kiJ6+hBHE0RvI+8YbDuoPz9OMTV0Is8E7fEyivjAp1v
-	 U3itUCvauiJdIBnxgRQdJ5NycxTs/JKlte2vxWxIRwy9wZNevC7mrgPrf/9rc6xNPu
-	 R22YZEkaXTAxNvTAEwTXVP2cAiV1pS/dHyR/D4yexI9v7LbZExCZvRQW3haj68/BsV
-	 h8AB6Gc0w+vDA==
-Date: Mon, 24 Feb 2025 14:32:29 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	devicetree@vger.kernel.org, Simona Vetter <simona@ffwll.ch>,
-	Fabio Estevam <festevam@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	dri-devel@lists.freedesktop.org, Shawn Guo <shawnguo@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Liu Ying <victor.liu@nxp.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 02/14] dt-bindings: display: simple: Add BOE AV123Z7M-N17
- panel
-Message-ID: <174042914940.4047956.6244302350129117835.robh@kernel.org>
-References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
- <20250224-initial_display-v1-2-5ccbbf613543@gocontroll.com>
+	s=arc-20240116; t=1740429169; c=relaxed/simple;
+	bh=Fo1nhlLcIcQtFBiW5K4QNLHy3ZTDPDcY8zstXVin0wQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IuFY6wo0YSiIX5Kuy7Z+g11GRPoA20ivDlND6crA1Z374koY4dcGbgJE7r4faIgPmz/DKdY4eIVzw+CRceefK5IcnKwuDCLYLy8Pno2eiACX7L1wcd+vpME7ntJv5BvzsQI6nCX3870YzO8XpAaiF0Gfp3WE0HaU5482BNgxMcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id 7860645e-f2ee-11ef-9d7a-005056bd6ce9;
+	Mon, 24 Feb 2025 22:32:30 +0200 (EET)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 24 Feb 2025 22:32:30 +0200
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Johan Korsnes <johan.korsnes@remarkable.no>,
+	Bough Chen <haibo.chen@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, imx@lists.linux.dev,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] gpio: mmio: Add flag for calling pinctrl back-end
+Message-ID: <Z7zXXmtuDFWGRmfm@surfacebook.localdomain>
+References: <20250219-vf610-mmio-v3-0-588b64f0b689@linaro.org>
+ <20250219-vf610-mmio-v3-1-588b64f0b689@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,17 +37,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224-initial_display-v1-2-5ccbbf613543@gocontroll.com>
+In-Reply-To: <20250219-vf610-mmio-v3-1-588b64f0b689@linaro.org>
 
-
-On Mon, 24 Feb 2025 14:50:52 +0100, Maud Spierings wrote:
-> Add support for the BOE AV123Z7M-N17 12.3" LVDS panel.
+Wed, Feb 19, 2025 at 10:04:33PM +0100, Linus Walleij kirjoitti:
+> It turns out that with this flag we can switch over an entire
+> driver to use gpio-mmio instead of a bunch of custom code,
+> also providing get/set_multiple() to it in the process, so it
+> seems like a reasonable feature to add.
 > 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> ---
->  .../devicetree/bindings/display/panel/panel-simple-lvds-dual-ports.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+> The generic pin control backend requires us to call the
+> gpiochip_generic_request(), gpiochip_generic_free(),
+> pinctrl_gpio_direction_output() and pinctrl_gpio_direction_input()
+> callbacks, so if the new flag for a pin control back-end
+> is set, we make sure these functions get called as
+> expected.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+First of all, I like the series and esp. the second patch, thanks!
+One small comment below, though.
+
+...
+
+>  static int bgpio_request(struct gpio_chip *chip, unsigned gpio_pin)
+>  {
+> -	if (gpio_pin < chip->ngpio)
+> -		return 0;
+> +	if (gpio_pin >= chip->ngpio)
+> +		return -EINVAL;
+>  
+> -	return -EINVAL;
+> +	if (chip->bgpio_pinctrl)
+> +		return gpiochip_generic_request(chip, gpio_pin);
+> +
+> +	return 0;
+>  }
+
+While I understand the desire to avoid +LoCs, I still think it's better from
+maintenance p.o.v. to have a symmetry in APIs, i.e. providing
+
+bgpio_free()  // or whatever name suits with possibility to change the above
+{
+	if (chip->bgpio_pinctrl)
+		gpiochip_generic_free(...);
+}
+
+...
+
+> +	if (flags & BGPIOF_PINCTRL_BACKEND) {
+> +		gc->bgpio_pinctrl = true;
+> +		/* Currently this callback is only used for pincontrol */
+> +		gc->free = gpiochip_generic_free;
+> +	}
+
+And
+
+	gc->free = gpiochip_generic_free;
+	...
+	if (flags & BGPIOF_PINCTRL_BACKEND)
+		gc->bgpio_pinctrl = true;
+
+here.
+
+The rationale that if we ever add something to the request part, we won't
+forget to call it in the free part.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
