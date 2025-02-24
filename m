@@ -1,229 +1,339 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013025.outbound.protection.outlook.com [52.101.67.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF57625B667
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 17:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740419354; cv=fail; b=CEOshCb0YS5bpzSrWnreT0WQ/P0hPji66dZDUuFT480x/Eb2ibPWKRAAQwNJQr3X4WQ7EZKk4bj48X3qKetfJ3QNO5FtOiQ3V00GVaQRlI5ENXVs9/AkbnoZMXdKFiEh2wFFlmkhZosw4/4dJmuJQT2saTEmU7jhgRqBUx7Eh58=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740419354; c=relaxed/simple;
-	bh=OGmbSi3iJY+o/g3V5HjA8cQz5HjS+OtBfv8H++6+h+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=errzShvZF+VL87H1AueggiA8f+F+OgvOXU0Lz5JxxzQNBVSCfCWZ1FNk2n8rlIlR6OExz9VKdG77BAP5+gte++wT+Xhs/dzCfef78mMh/4k2ZX441FRgq1OlCQwyKoe4naskEyzZCv2Rqz5n+VkQqwD5epzjvC8KvS9rg/McnVY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dox+2G31 reason="signature verification failed"; arc=fail smtp.client-ip=52.101.67.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dox+2G31"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AW77bTty9LmfANg9xV3/9BkweMrBCpqtbaZKx15gEUQvnwlgbRvbH41nUe7G+rRL/9iIxX+xBndWdXUmDNcKWzM5gpFVNCJTEkRlhOWq45z8fjHa5m2LLQX7rAXA+tGKHEfE7jWwV+ZfGWipQBNje89HQfAD4OvCDYTEPWMfeHkCXbnFYEzwiB/9A81sN3huz1HwJe+/719ZIcmINLlwYQkY8Z+AKGV7RBqfr/j6pLntywSN3vCu7rX0urKxpvL4X2EKJAEx960e6B2LWcE45lsAT0a7sZGCAR3aDqdx6K2jhf8hGN6h/N5E2rjmfRyAJ/oP11CZ2CkOrWifLbHPoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=38ZY167aasBCXPlQCaAz2qrg6mNc4xgK6PyZS99CUzU=;
- b=eNk2L2rBkrf2378k5yyLcPZ8Qy/7y5tvcnHbP+VESxdI1pkN6mNfHpFYqNAQyBR2LM4aBKlDxaXXTJqeJrWPDINXshgSDkrCKHbNuxfc9/yWAGFgt+qkIrUyvoW4D0tW0s7PczkFmFCJitWoeuhZaXNOCOl1jpi2QM4KJQEUjON3mVB0yGUeEicgnIG3aguWBEWKktiRdUgUR/pCyoWwqhRAmM/rCDkzz5hQN5UpqEHfz807hYlKuBT0YkoO/RkrV1u22meuOiCLhYBVKVdhMj7zELseXBq1Ew3JO1zOYbArJwLQgQfoW78rr0Fg+3IlnSKLHw/Gd7Sp5OiFuM/stQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=38ZY167aasBCXPlQCaAz2qrg6mNc4xgK6PyZS99CUzU=;
- b=dox+2G31Q5wLPx2VTbfIdd3PzCDDJpQG5Q8TLc/GQ3L8q6Y+D5tYBuy8/qYOn18f8zxPZ3arBMJ3JICiFLyWML2dnM+cjqgy/W+R8Yi+Cy0A1y5JU+gHaVbNsoYdP/ysQsxeZjdrDRhbxTI0EzQrc4hK0XIobND095LIniGCX4ayyIoFVCSKF00ED9ixcIlmShBJay2wSjkT+GOwxK21DVX+p5TLve0Ng59w8oC39vpcm799kVhxeGV3vtIkqUyZdSkSQJYV9jA0qtI4REv8MFQV+1RdbbzUwca+EtAs5LcEu0F8zh93OrtX28ybC96luEIZsqMFAsM/zPsyg2DIvA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA4PR04MB7855.eurprd04.prod.outlook.com (2603:10a6:102:ca::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 24 Feb
- 2025 17:49:09 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8466.016; Mon, 24 Feb 2025
- 17:49:09 +0000
-Date: Mon, 24 Feb 2025 12:49:01 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC310264FA1
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 18:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740420657; cv=none; b=EZ+N6aTccZBH1HCLpCDS2VcslpH7KH5op1ewlc5oKF6TlSkMgTu16iYTwFK58zl+tsQRZ2aogdYKDx9rIjilmT6O657XEFWkLnGfbg0mJTzfmeZfcswfmTsOExEjR8TYN03zwITVfHlvqA4ukYjRGoawcyqcYdn0P64iq2hhl5g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740420657; c=relaxed/simple;
+	bh=AgvRmCeiRGHIUxnqNfNH2rvw6T1rPBzqHaSEB9w3A1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a6Bn8k0OfSBRt4U57XRLpSACUT+bpcwVhtlHfDW57wsFDhCehNa2LCpdD1jjtGRDyR4GPZ3e5LpkAwRLqN4e69fuJW3jUKCy+V60VDgqrKThiHwcvFUm47eH/i7TqM86l7uwQCzQnamDTm6nOSO5Jxn5iyES1aBzmirXJznBIKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5A01152B;
+	Mon, 24 Feb 2025 10:11:09 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 236753F5A1;
+	Mon, 24 Feb 2025 10:10:51 -0800 (PST)
+Date: Mon, 24 Feb 2025 18:10:48 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 1/5] arm64: dts: imx8-ss-hsio: Wire up DMA IRQ for PCIe
-Message-ID: <Z7yxDRO+ICPCu0I2@lizhi-Precision-Tower-5810>
-References: <20250107140110.982215-1-alexander.stein@ew.tq-group.com>
- <20250107140110.982215-2-alexander.stein@ew.tq-group.com>
- <Z31KrdxPULx8K5ao@lizhi-Precision-Tower-5810>
- <4427798.ejJDZkT8p0@steina-w>
- <Z36o31uhQuI5lcH7@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z36o31uhQuI5lcH7@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BYAPR03CA0006.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 4/7] firmware: arm_scmi: imx: Add i.MX95 CPU Protocol
+Message-ID: <Z7y2KFYt5gIY19Qz@pluto>
+References: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
+ <20250212-imx-lmm-cpu-v2-4-3aee005968c1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB7855:EE_
-X-MS-Office365-Filtering-Correlation-Id: 053c80b6-f897-480b-fa96-08dd54fb8a46
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|13003099007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?VXpbt+ehNAu+0roa8KrLUTlzXJurw6bOl+b95RS4LFvJtgIJqut9/43iDn?=
- =?iso-8859-1?Q?acJnemBCg9E0uoSPG3FCYv9jiiVcgn76pGazpJHg8AiTriSSmA8T4zHo3r?=
- =?iso-8859-1?Q?qLeQGnVV0/bVYzJG/KEsC1d+dvvHiVqn6NDH6A8lOZSnyNb4UmuP1Hb067?=
- =?iso-8859-1?Q?7qx7LBIySCCxhkMJU0+pLXlv+2o2l0+cj2FpYdRr49Jyph4D/mjedryL18?=
- =?iso-8859-1?Q?Tx8sMMz5p13Pvj1XC7Fd8Uqj36k3uSmC9Gwh1wZ4jn3Uz7L3kcHfcAOCT3?=
- =?iso-8859-1?Q?VKJP72XMIP1gUaZk2IJkZWujPPh9xlJhFxgOvohp558Qf8FHC2BGF9Xham?=
- =?iso-8859-1?Q?ivg3pQ29TcBobBvt5OsRsBAL1L4P4vG1PMKRnAi6Gyq66yYyfeNjgc997i?=
- =?iso-8859-1?Q?5V2ap0AXAXXeWkls1btRQBVtbXaGg/EiXpJGcuwipqfOuozBSelHV5EIsk?=
- =?iso-8859-1?Q?clf1R9KFWkIHyXhXLPXpcR7ra2Hsy+bCBZNt8ychCFt/8xzQU6RIA/WP/2?=
- =?iso-8859-1?Q?sXmUa8gXAsBQ9e1b45+WtOeitC7kbOQabJBtV23ANYf8Li0X3xIOmLKnj8?=
- =?iso-8859-1?Q?dWVxWvb6ik7v7AV/qPk2DDXjSFUcnPGY1U0MBXgmWYnAyBBMHf/TNjj0vY?=
- =?iso-8859-1?Q?XupAh1OxU8ez44lNSDFmDwPOJIu4OGF2zmWu2sO0DkOdOZUTa9PyLE2cp9?=
- =?iso-8859-1?Q?2Bqt79O6DDFBOfK3ofZWQfbIJAxEFAAvODH/TzHmNhtIGANQOJxZYTUIr/?=
- =?iso-8859-1?Q?CPv1iPIeJ6n0qjncxNxIcHYmNGadgsuPB3PoRldyts5LCfTaLefvcRHRQP?=
- =?iso-8859-1?Q?ZxHEac49Q818X7QrPIX3SENFr1ZMeGAMCRiYdgiM5wYuzWpAzbYCM/n9mC?=
- =?iso-8859-1?Q?1XlGRIL3rA/qmm8RfgYIPiHAznlfyJgqfvacUK+pzppmSN4AM6zlWSst2M?=
- =?iso-8859-1?Q?Yz2efopG/hlC4E6u633hfVwGrUf7nxyiFSshr1rrQVueMxbgX8LwXxmkag?=
- =?iso-8859-1?Q?3Xc/ruazCkKSa6oMjrpcRiH7kZPQIxIvGh2//SHsJB2hxtjTs8dHiAjWjU?=
- =?iso-8859-1?Q?VttuEgstKH5yglbKAbEhVuh4Uck1BdFd7UJHkL6kIm7r2wZqXWgZao+ykY?=
- =?iso-8859-1?Q?KmxOiKPrtwZptsYzaXTCNIxGKWO8kcMt+JtrMexgYOscukJBv7K+mi8UPB?=
- =?iso-8859-1?Q?qcuZ/XQiB+YkikfhBhwvOPIirwGPnQflRO9/sMcE0KC+KKgqNwddXokgIu?=
- =?iso-8859-1?Q?zEhe6tSGEDK6o+JlvtyrMhoUoKi/KeJzFI37i7Q9PsvOPBjoAHSUOkE6lj?=
- =?iso-8859-1?Q?KbvZdf7oanaIz2S/JCINoE8JkUBif3GnTXnqlTdNwhN2LtEYpxzX7yEQXt?=
- =?iso-8859-1?Q?QjqJPAm/uqdPB2sAaApNwLqzOFuKvoRfhIII1fnes8/4qF/GLVscE+oBOQ?=
- =?iso-8859-1?Q?a71ha9lVLs936ak+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(13003099007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?9a12fxiDpmpI5W308fv90NwdTHRDdZYp345SVlZ313eiH7vkHEb4rGLEjw?=
- =?iso-8859-1?Q?0o09Tx8SMH2VkbhNpT+vTCpyYdBrWbQweJs9JMenHu/ju+A210Vx5x04Kr?=
- =?iso-8859-1?Q?oNOUavD6EUSQE8VZEV5LBlPqxKKDyg1hpqbysGxRdRXeJjo6IaRrJLt2Yx?=
- =?iso-8859-1?Q?QzWQ2YQ0FoGZOd0ll0qrpXP6zy3xwJJxQnhW+qvMZBGORJhJxmlnCaJGJy?=
- =?iso-8859-1?Q?d2EauTQXoTEFXjFOyPWRO0OOXFO2x7wgFBnAEvkU9RGFzaex1iAq4HHfp6?=
- =?iso-8859-1?Q?Yce9wbGBTLHtRE+CxX+XbryP+MnRLUnR4v+9sv/wZCw7oWJj4TPd2M3G42?=
- =?iso-8859-1?Q?DHFRVvrhuKou4r735ipGfE0wDUNP6oL0dUdnCeaCzbjrLjuBcTVxGVVrb7?=
- =?iso-8859-1?Q?+ojZH+ESehY36IIxOSLu1U9FTsBOgRSlUsqOl2Bp8rsORVf803sGYBaegb?=
- =?iso-8859-1?Q?CaYMDBdlBoJpyUPWGpPBDqwE65nUtrSvaAr+n7u4heItjQI+1byoUMglS+?=
- =?iso-8859-1?Q?OiVUNbg1mIZP2C33AFgWV7BknOYkaR6g3Gvi1CQcoazrimMNyMcvjXcPgS?=
- =?iso-8859-1?Q?Af4/nrERB6D5Xwc4DLvNXOieGttqJIWrf0V7a+cvckIybycWh3QTDrcS6C?=
- =?iso-8859-1?Q?27QRsUbhOROyTRH/Mg6C+elF34ffiviRNXix3j4m/qC4RPpU45SaHINsWD?=
- =?iso-8859-1?Q?gKmhxew0aVwuZaA72qUrThz6j5NYdrZrYwR5A+zgN+QVN2KKPLY7qYkoLc?=
- =?iso-8859-1?Q?GVgzyJi+9qYfow09WZgRu9XWvnVoEtXQP6su3OF2SishakPDha/cs3FSFh?=
- =?iso-8859-1?Q?BKQrPpdgwiXeFtVRpa9NebZ/DvaebUuIyILDYvBiNm7FLvPeiG7lF6WuzB?=
- =?iso-8859-1?Q?mVpEkSzCnQPaFkSJg59onmz2Xjj5P5iG8bh2tJ+2cssIjm2IEFfKBE4KcJ?=
- =?iso-8859-1?Q?U3/cdGXFrKC+Ucnzjf6ioHoU5eXkQxuJFM2U+iI2RoRtWhZ41lX5HccltH?=
- =?iso-8859-1?Q?7HUdJHQXko1sS1FmWHj2OigQKODNg1uvRF9wi3XQ+18H8r54ihydOSXE6S?=
- =?iso-8859-1?Q?UN7mUkGQdSsI8sKNVga9AGE0wZoaiD6K6J+EDWE94n7hPaNIVRrVu83hcb?=
- =?iso-8859-1?Q?z5av8gtigsgu0eFnYhZyzg2gjVvnLtLFByRkFbMBHLgavWixGKUuJ0X2nz?=
- =?iso-8859-1?Q?yZDRmGkLZO3qUnn7XqL4EP2DvenzPBLNuRJNYJZmxtMaYJAKitUJlmnSUZ?=
- =?iso-8859-1?Q?fsGKdXrnaZ5QSdLu7bQExGsKchkTQhwDJ2kqQZD+TNDFAh/7zJ9M+LKsC/?=
- =?iso-8859-1?Q?nYVD1CYny9Nqho0YFoAzEKWER5mRPrql6s5E1c9ZNfr+r6YzjmkS7egshi?=
- =?iso-8859-1?Q?y03YTm+uq/v3EslmcKjkMU1tcZz01QUuB8dOjL0cPy6PfTpkvCANia6pmV?=
- =?iso-8859-1?Q?opeVVPnvjiLEDXcabPxezcOaMm6csJszcyurVsXHlT5hFc1FfOhNWwaw/p?=
- =?iso-8859-1?Q?XlC7dEzbU9HuydOztmj9PxvYLu1rQnbQZJ2yX6DTcQTQIKk/r3g3SH/gn4?=
- =?iso-8859-1?Q?99F9FVMDhjGuMbJkmCLpXnV5l+LeDYOzC5nU3sFVvDpypwcW6SLO6mr/L/?=
- =?iso-8859-1?Q?bBx3No7CLu/7Mlxtm/MY8IxvYAWrBHZ6Li?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 053c80b6-f897-480b-fa96-08dd54fb8a46
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2025 17:49:09.3377
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tZ8yJ7jJ9AYXLskYBV9zzTT2+9zFUODtE6PepMwMJtMRzKIFSYbrP69p7tsGE1kLmp4uETIylL2OcB5px513Wg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7855
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250212-imx-lmm-cpu-v2-4-3aee005968c1@nxp.com>
 
-On Wed, Jan 08, 2025 at 11:33:35AM -0500, Frank Li wrote:
-> On Wed, Jan 08, 2025 at 10:58:18AM +0100, Alexander Stein wrote:
-> > Hi Frank,
-> >
-> > Am Dienstag, 7. Januar 2025, 16:39:25 CET schrieb Frank Li:
-> > > On Tue, Jan 07, 2025 at 03:01:06PM +0100, Alexander Stein wrote:
-> > > > IRQ mapping is already present. Add the missing DMA interrupt.
-> > >
-> > > PCI host side have not use bridge's DMA yet although hardware support it.
-> >
-> > So this is a driver limitation, right? So IMHO the device description is
-> > independent from that and still correct, right?
->
-> Yes, but dma register space may missed also. I suggest add later after
-> EP side support merged, which can verify informaiton is correct.
->
-> Anyway, I don't block this change.
+On Wed, Feb 12, 2025 at 03:40:26PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> This protocol allows an agent to start, stop a CPU or set reset vector. It
+> is used to manage auxiliary CPUs in an LM (e.g. additional cores in an AP
+> cluster).
+> 
 
+Hi,
 
-Did you run DTB_CHECK? I found new warning was added
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/firmware/arm_scmi/vendors/imx/Kconfig      |  11 +
+>  drivers/firmware/arm_scmi/vendors/imx/Makefile     |   1 +
+>  drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c | 287 +++++++++++++++++++++
+>  include/linux/scmi_imx_protocol.h                  |  10 +
+>  4 files changed, 309 insertions(+)
+> 
 
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: pcie@5f010000: interrupts: [[0, 102, 4], [0, 104, 4]] is too long
-        from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-aster.dtb: pcie@5f010000: interrupt-names: ['msi', 'dma'] is too long
-        from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: pcie@5f010000: interrupts: [[0, 102, 4], [0, 104, 4]] is too long
-        from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-eval-v3.dtb: pcie@5f010000: interrupt-names: ['msi', 'dma'] is too long
-        from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: pcie@5f010000: interrupts: [[0, 102, 4], [0, 104, 4]] is too long
-        from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml#
-/home/lizhi/source/linux-upstream-dts/arch/arm64/boot/dts/freescale/imx8dx-colibri-iris.dtb: pcie@5f010000: interrupt-names: ['msi', 'dma'] is too long
+[snip]
 
-...
+> +
+> +struct scmi_imx_cpu_info_get_out {
+> +#define	CPU_RUN_MODE_START	0
+> +#define	CPU_RUN_MODE_HOLD	1
+> +#define	CPU_RUN_MODE_STOP	2
+> +#define	CPU_RUN_MODE_SLEEP	3
+> +	__le32 runmode;
+> +	__le32 sleepmode;
+> +	__le32 resetvectorlow;
+> +	__le32 resetvectorhigh;
+> +};
+> +
+> +static int scmi_imx_cpu_validate_cpuid(const struct scmi_protocol_handle *ph,
+> +				       u32 cpuid)
+> +{
+> +	struct scmi_imx_cpu_info *info = ph->get_priv(ph);
+> +
+> +	if (cpuid >= info->nr_cpu)
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static int scmi_imx_cpu_start(const struct scmi_protocol_handle *ph, u32 cpuid)
+> +{
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_START, sizeof(u32),
+> +				      0, &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	put_unaligned_le32(cpuid, t->tx.buf);
+> +	ret = ph->xops->do_xfer(ph, t);
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+> +static int scmi_imx_cpu_stop(const struct scmi_protocol_handle *ph, u32 cpuid)
+> +{
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_STOP, sizeof(u32),
+> +				      0, &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	put_unaligned_le32(cpuid, t->tx.buf);
+> +	ret = ph->xops->do_xfer(ph, t);
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
 
-Frank
+Please refactor and unify this 2 seemingly identical start/stop funcs by
+defining a common helper...
 
->
-> Frank
->
-> >
-> > Best regards,
-> > Alexander
-> >
-> > > >
-> > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi | 5 +++--
-> > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi
-> > > > index 70a8aa1a67911..4bdfc15487cbc 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi
-> > > > @@ -57,8 +57,9 @@ pcieb: pcie@5f010000 {
-> > > >  		ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> > > >  			 <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> > > >  		#interrupt-cells = <1>;
-> > > > -		interrupts = <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>;
-> > > > -		interrupt-names = "msi";
-> > > > +		interrupts = <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>,
-> > > > +			     <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
-> > > > +		interrupt-names = "msi", "dma";
-> > > >  		#address-cells = <3>;
-> > > >  		#size-cells = <2>;
-> > > >  		clocks = <&pcieb_lpcg IMX_LPCG_CLK_6>,
-> > > > --
-> > > > 2.34.1
-> > > >
-> > >
-> >
-> >
-> > --
-> > TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> > Amtsgericht München, HRB 105018
-> > Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> > http://www.tq-group.com/
-> >
-> >
+> +static int scmi_imx_cpu_reset_vector_set(const struct scmi_protocol_handle *ph,
+> +					 u32 cpuid, u64 vector, bool start,
+> +					 bool boot, bool resume)
+> +{
+> +	struct scmi_imx_cpu_reset_vector_set_in *in;
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +	u32 flags;
+> +
+> +	ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_RESET_VECTOR_SET, sizeof(*in),
+> +				      0, &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	in = t->tx.buf;
+> +	in->cpuid = cpu_to_le32(cpuid);
+> +	flags = start ? CPU_VEC_FLAGS_START : 0;
+> +	flags |= boot ? CPU_VEC_FLAGS_BOOT : 0;
+> +	flags |= resume ? CPU_VEC_FLAGS_RESUME : 0;
+> +	in->flags = cpu_to_le32(flags);
+
+...you should just avoid the endianess helper given that is a bitfield (I cannot
+exclude that there are other places where we wrongly endianIZE bitfields...) and
+I think that the best way to do it without cause smatch to cry would be
+to use le32_encode_bits() which should just produce the desired flags
+into an __le32
+
+le32_encode_bits and friends are used throughout the code base and added
+
+https://patchwork.ozlabs.org/project/ubuntu-kernel/patch/20190606034255.2192-2-aaron.ma@canonical.com/
+
+which seems to be the best (and only) documentation :P
+
+> +	in->resetvectorlow = cpu_to_le32(lower_32_bits(vector));
+> +	in->resetvectorhigh = cpu_to_le32(upper_32_bits(vector));
+> +	ret = ph->xops->do_xfer(ph, t);
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+> +static int scmi_imx_cpu_started(const struct scmi_protocol_handle *ph, u32 cpuid,
+> +				bool *started)
+> +{
+> +	struct scmi_imx_cpu_info_get_out *out;
+> +	struct scmi_xfer *t;
+> +	u32 mode;
+> +	int ret;
+> +
+
+maybe overlay paranoid...but
+
+	if (!started)
+		return -EINVAL;
+
+...up to you, if you feel paranoid too
+
+> +	*started = false;
+> +	ret = scmi_imx_cpu_validate_cpuid(ph, cpuid);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_INFO_GET, sizeof(u32),
+> +				      0, &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	put_unaligned_le32(cpuid, t->tx.buf);
+> +	ret = ph->xops->do_xfer(ph, t);
+> +	if (!ret) {
+> +		out = t->rx.buf;
+> +		mode = le32_to_cpu(out->runmode);
+> +		if ((mode == CPU_RUN_MODE_START) || (mode == CPU_RUN_MODE_SLEEP))
+> +			*started = true;
+> +	}
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+> +static const struct scmi_imx_cpu_proto_ops scmi_imx_cpu_proto_ops = {
+> +	.cpu_reset_vector_set = scmi_imx_cpu_reset_vector_set,
+> +	.cpu_start = scmi_imx_cpu_start,
+> +	.cpu_started = scmi_imx_cpu_started,
+> +	.cpu_stop = scmi_imx_cpu_stop,
+> +};
+> +
+> +static int scmi_imx_cpu_protocol_attributes_get(const struct scmi_protocol_handle *ph,
+> +						struct scmi_imx_cpu_info *info)
+> +{
+> +	struct scmi_msg_imx_cpu_protocol_attributes *attr;
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
+> +				      sizeof(*attr), &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	attr = t->rx.buf;
+> +
+> +	ret = ph->xops->do_xfer(ph, t);
+> +	if (!ret) {
+> +		info->nr_cpu = SCMI_IMX_CPU_PROTO_ATTR_NUM_CPUS(attr->attributes);
+
+	
+	le32_get_bits(attr->attributes, GENMASK())
+
+> +		dev_info(ph->dev, "i.MX SM CPU: %d cpus\n",
+> +			 info->nr_cpu);
+> +	}
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+> +static int scmi_imx_cpu_attributes_get(const struct scmi_protocol_handle *ph,
+> +				       u32 cpuid)
+> +{
+> +	struct scmi_msg_imx_cpu_attributes_out *out;
+> +	char name[SCMI_SHORT_NAME_MAX_SIZE] = {'\0'};
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_CPU_ATTRIBUTES, sizeof(u32), 0, &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	put_unaligned_le32(cpuid, t->tx.buf);
+> +	ret = ph->xops->do_xfer(ph, t);
+> +	if (!ret) {
+> +		out = t->rx.buf;
+> +		strscpy(name, out->name, SCMI_SHORT_NAME_MAX_SIZE);
+> +		dev_info(ph->dev, "i.MX CPU: name: %s\n", name);
+> +	} else {
+> +		dev_err(ph->dev, "i.MX cpu: Failed to get info of cpu(%u)\n", cpuid);
+> +	}
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+> +static int scmi_imx_cpu_protocol_init(const struct scmi_protocol_handle *ph)
+> +{
+> +	struct scmi_imx_cpu_info *info;
+> +	u32 version;
+> +	int ret, i;
+> +
+> +	ret = ph->xops->version_get(ph, &version);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_info(ph->dev, "NXP SM CPU Protocol Version %d.%d\n",
+> +		 PROTOCOL_REV_MAJOR(version), PROTOCOL_REV_MINOR(version));
+> +
+> +	info = devm_kzalloc(ph->dev, sizeof(*info), GFP_KERNEL);
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	ret = scmi_imx_cpu_protocol_attributes_get(ph, info);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < info->nr_cpu; i++) {
+> +		ret = scmi_imx_cpu_attributes_get(ph, i);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return ph->set_priv(ph, info, version);
+> +}
+> +
+> +static const struct scmi_protocol scmi_imx_cpu = {
+> +	.id = SCMI_PROTOCOL_IMX_CPU,
+> +	.owner = THIS_MODULE,
+> +	.instance_init = &scmi_imx_cpu_protocol_init,
+> +	.ops = &scmi_imx_cpu_proto_ops,
+> +	.supported_version = SCMI_PROTOCOL_SUPPORTED_VERSION,
+> +	.vendor_id = SCMI_IMX_VENDOR,
+> +	.sub_vendor_id = SCMI_IMX_SUBVENDOR,
+> +};
+> +module_scmi_protocol(scmi_imx_cpu);
+
+similarly as LMM...
+
+MODULE_ALIAS("scmi-protocol-" __stringify(SCMI_PROTOCOL_IMX_CPU) "-" SCMI_IMX_VENDOR);
+
+Thanks
+Cristian
+
