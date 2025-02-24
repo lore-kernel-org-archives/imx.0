@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03102561AE
-	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FDA1519B9
+	for <imx@lists.linux.dev>; Mon, 24 Feb 2025 14:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740407336; cv=none; b=ktIkxqrBLI8qH7ojCmwNzcnupC8mO2qgSPppmFoRW6y1VC/QNHXRpbD+nYvMYAcD+UWd3LQRBTiAuX5jK82HrmoQHfGrkwP4Dod3X7pXSHCY7guaiHxkuP7a9CCyQUbF1kj1TLzkFuhlq+KV1hSvj/J/r8OcGy2UXHxfvmSbMPE=
+	t=1740407341; cv=none; b=lHAm3at9E8XX0Yb0W7M6k/Fl39nziotIg9PtjSLK7H3Y9ViD7Ej4lpBrP3xsCPnCcCwV7kPSL60K+ywENvgEzmkPK+ttP5kX07asrLwKvB13yKNBZyzf/7JCrV/UfKZGfmCScUnqExjkQHVp+37Rjo/S4hPii5BvIVJ5DfL+vAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740407336; c=relaxed/simple;
-	bh=AHV9PExneGNDlIztsPAwGvqiSD7lIAM4Hx7DE71MhZM=;
+	s=arc-20240116; t=1740407341; c=relaxed/simple;
+	bh=zhtVaOidnLZwODDfilv1rFpTFY4T032G84mUgsjCrCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h780fq4D/ePWsCEYjhcz1dla04Cf4xGT+YmOzlYC7VGnx7K4R9O/gH8pq+RcyDIW9F1VxjIhg9mMR9tfQdICeMyJqJ8N8OPA3F9gk/jBenJrWMO15o8gfuc4bt+PLGTm77Bb2c265om8aXq2zrNbjrwWD1ZQNOTvruOaXu6In58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=E5y6qxvv; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JOHuXYZ5 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=isfhcgimYSfa73cmUfHmT35wuJ0xcg2aHKvhh6SY2u8KLEw1RHb1h4+2UoE4dIs4cw+z5iDmSc4SEtTppSIhcDTh6fZ3C7des659WcEJZbB1RHACMNZEvbngcp8M0JReuiQn7uaCvAZ7ycuRr8ILJ+vZPKnFD6TtTSBAHeo68J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=U+F46lRv; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=eEcNe0in reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="E5y6qxvv";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JOHuXYZ5"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="U+F46lRv";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="eEcNe0in"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740407335; x=1771943335;
+  t=1740407339; x=1771943339;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sWKqOX5BSiiuBOfVvs+gR33D/sqaIKO5jTjWIObEE8A=;
-  b=E5y6qxvvliE1LKr/bTz8WZcgK0/ciYQduw5irvTbLm9u9fbt9tPXstRJ
-   XKZApJYqTcEOqjOlYERK7v2vKUjvPWAE1QayHogYqJdOLhI3jHtLy1ADw
-   3NgPwgfFfaZY3vnI6Lqe40I2lENXFBQW0X0QMzjhU5HMQRCOUQe9ViH8t
-   2FVnhiYKd2/WnFD6Zamffz1kWbw1hvh+sMTi5Ksox2ltbvyMUcdR0euTR
-   zbSkrOJUfARveLTve/tdfW3fBddQjgi4RHZqexuEtdHAxkQTkVj4tabyb
-   2pEd9lopuhjdh71QZtoJE8qQvTo+2Z167NpenSvQMCCLTpBMZW4jgABtP
+  bh=kOCuug6g2vlCEi2Q0VImtW/6CT/XO77dKbldUsHBpEA=;
+  b=U+F46lRv5JMhCE7cp1lLyPrv4T/LJ507M5f8DOTy6PV0wG+SONxPBHIN
+   /iRJPeicN/t+lvIskFrXe5jw4SbPI1dOao6aWGV+DLbeFRlrQnPGUKOlq
+   AVigQX8kozrZ9PyCMKCjOK/jFx1EP6zGF/D7Do1PioBnNOmr9L+MYQ1Ai
+   hA5xlicgZTUkSnyvaXx4cFrNGl6Zr8b+BwAX8RvULnY96kGVzJep1yUcS
+   kngwQ9BqgiMsdOKFuD7JHLQMq5/9Y6rS4xod9vjX+174+Fzx/3YfgQ/pZ
+   ZeZbp1NbyZWnnf1FisCLtZDbmijGEgAHo3pdHsm2AftfOkX6J1LjQ/7pQ
    w==;
-X-CSE-ConnectionGUID: nlRWI6nFT6yE2yzHATWdoA==
-X-CSE-MsgGUID: lPDIY21vTlyNPODEk8h+bA==
+X-CSE-ConnectionGUID: 4Bt33qgQSIqMqzutaJKLnA==
+X-CSE-MsgGUID: w0i6W07KQM+WSKibYuqlpQ==
 X-IronPort-AV: E=Sophos;i="6.13,309,1732575600"; 
-   d="scan'208";a="42042107"
+   d="scan'208";a="42042110"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Feb 2025 15:28:52 +0100
-X-CheckPoint: {67BC8224-28-6E0A4539-DBC44C3A}
-X-MAIL-CPID: C472B7EE68207FE8A685CB9E4A0C8BC4_1
-X-Control-Analysis: str=0001.0A002103.67BC8223.008B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 35F021679A1;
-	Mon, 24 Feb 2025 15:28:47 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 24 Feb 2025 15:28:58 +0100
+X-CheckPoint: {67BC822A-8-28232521-C0C2250B}
+X-MAIL-CPID: 6F94049082022C03CAAB93122D6C34A1_4
+X-Control-Analysis: str=0001.0A00211B.67BC8229.0026,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEB111679B0;
+	Mon, 24 Feb 2025 15:28:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740407328;
+	s=dkim; t=1740407333;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sWKqOX5BSiiuBOfVvs+gR33D/sqaIKO5jTjWIObEE8A=;
-	b=JOHuXYZ5msjXIsVC2G/ioyQOMnlvTAobJnlbb00ytJhaFlW4p79i/tfXezswfLiSEpnucL
-	wiPx5EmNMbTMrDspxE4J7CD6Ftu14fzUyhmxc1AeFzYzDix8wUYaDbr2i+nugXZrH1BIiI
-	NzYty9WJQMz2zicYz65xzrbi7/m0AVgrGvrPqmRWDIqCv9FBzRy6+CDEcYoPWq+3pM3ddV
-	PBjpL/Dp5zErebxHVKBQkRrKpEVVH/v3O4hCJ9GAHo+CKs4TGQcBWS6ZDetCBb2Yp5+5NJ
-	ni5NSPcuq0I9ovwZrl46uYrS+BLjaU7DbLkAa2U1K7lheII1Y56DKV5DT8kkDw==
+	bh=kOCuug6g2vlCEi2Q0VImtW/6CT/XO77dKbldUsHBpEA=;
+	b=eEcNe0inS5AFVueX0jaYpHDTN05XPKbpt1E8R24GIs9L/TMcfYfpOwh9F/rVw3MmstemA0
+	QEUJvNfnrv2ZEZRlTwatqtv1NnK/tT2I/CtkzYH7kGAKg2wA4XGv6nA6o7mt7Yu+alv0Wo
+	ss0yBgIakgOBjhwlWNW/dAZHnLLrGGNqmsO8o1ZwxmsDuRHyGPLAfx4T+NT8BdPFNycIKu
+	8e40VXuFf1MHL3RdgulHRMm6knM/dxKYFcFBR/dKUCHxtSZnXl9Dw0RsaPCfgn3tvZCy7L
+	dRUwh2KgHXnQ4aaERbyvpJTamoAaPaN7YPhdHnXMq+1mWVdHMXtCnJkMe2pGKw==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -74,9 +74,9 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	linux@ew.tq-group.com,
 	linux-clk@vger.kernel.org,
 	linux-pm@vger.kernel.org
-Subject: [PATCH v2 2/6] dt-bindings: soc: imx93-media-blk-ctrl: Add LDB subnode into schema and example
-Date: Mon, 24 Feb 2025 15:28:23 +0100
-Message-ID: <20250224142831.485159-3-alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 3/6] soc: imx: imx93-blk-ctrl: Scan subnodes and bind drivers to them
+Date: Mon, 24 Feb 2025 15:28:24 +0100
+Message-ID: <20250224142831.485159-4-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250224142831.485159-1-alexander.stein@ew.tq-group.com>
 References: <20250224142831.485159-1-alexander.stein@ew.tq-group.com>
@@ -89,93 +89,42 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Document the LDB bridge subnode and add the subnode into the example.
-For the subnode to work, the block control must scan its subnodes and
-bind drivers to them, do not misuse either simple-bus or simple-mfd
-here.
+This particular block can have DT subnodes describing the LVDS LDB
+bridge. Instead of misusing simple-bus to scan for those nodes, do
+the scan within the driver.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 51 +++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/pmdomain/imx/imx93-blk-ctrl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-index b3554e7f9e76d..d914dea6ecbb5 100644
---- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-+++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-@@ -24,6 +24,14 @@ properties:
-   reg:
-     maxItems: 1
+diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+index 0e2ba8ec55d75..fe2ff7a457502 100644
+--- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+@@ -7,6 +7,7 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+@@ -297,8 +298,14 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
  
-+  ranges: true
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 1
-+
-   '#power-domain-cells':
-     const: 1
+ 	dev_set_drvdata(dev, bc);
  
-@@ -46,9 +54,20 @@ properties:
-       - const: csi
-       - const: dsi
++	ret = devm_of_platform_populate(dev);
++	if (ret)
++		goto cleanup_provider;
++
+ 	return 0;
  
-+  bridge@20:
-+    type: object
-+    additionalProperties: true
-+    properties:
-+      compatible:
-+        contains:
-+          const: fsl,imx93-ldb
-+
- required:
-   - compatible
-   - reg
-+  - ranges
-+  - '#address-cells'
-+  - '#size-cells'
-   - power-domains
-   - clocks
-   - clock-names
-@@ -77,4 +96,36 @@ examples:
-                clock-names = "apb", "axi", "nic", "disp", "cam",
-                              "pxp", "lcdif", "isi", "csi", "dsi";
-       #power-domain-cells = <1>;
-+      #address-cells = <1>;
-+      #size-cells = <1>;
-+      ranges;
-+
-+      bridge@20 {
-+          compatible = "fsl,imx93-ldb";
-+          reg = <0x20 0x4>, <0x24 0x4>;
-+          reg-names = "ldb", "lvds";
-+          clocks = <&clk IMX93_CLK_LVDS_GATE>;
-+          clock-names = "ldb";
-+
-+          ports {
-+              #address-cells = <1>;
-+              #size-cells = <0>;
-+
-+              port@0 {
-+                  reg = <0>;
-+
-+                  ldb_from_lcdif2: endpoint {
-+                      remote-endpoint = <&lcdif2_to_ldb>;
-+                  };
-+              };
-+
-+              port@1 {
-+                  reg = <1>;
-+
-+                  ldb_lvds: endpoint {
-+                      remote-endpoint = <&ldb_to_panel>;
-+                  };
-+              };
-+          };
-+        };
-     };
++cleanup_provider:
++	of_genpd_del_provider(dev->of_node);
+ cleanup_pds:
+ 	for (i--; i >= 0; i--)
+ 		pm_genpd_remove(&bc->domains[i].genpd);
 -- 
 2.43.0
 
