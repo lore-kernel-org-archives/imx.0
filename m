@@ -1,137 +1,138 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F3D1C8627
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 11:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA01B267B8B;
+	Tue, 25 Feb 2025 11:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740484149; cv=none; b=tWya65SyRniICIIueUTdNDOJBMzT9xI+SwG+m7Wx6KuMpHRBojz95hoR04z9DZ+8l5fbKMtPvaAE7H7oZWOnNpNkR42eL2CZE65MJkPu6ZRlcIolvfgDzCLdl0fpVrjxBc+WR3kcjkbESZ/+iUaKb32bQxvMon9D3xo8k9JiLyM=
+	t=1740484373; cv=none; b=poWIJSvVKy2TehaaHLsRIb0GfHPjoAYPdMMXLXnwfWpxIrcFmBwZk2+sL5I3dAfQ6l9VA5vDBl+aiF8OVZvLhQoMQ0a8ehoLBV9B8t6HZoHnZ9RCruTLE2s6Cz8crmG3DXdGsnuglQKlfWH+0TKjoPxf7monH/77rzv7QsTKKgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740484149; c=relaxed/simple;
-	bh=RMX/vLzmRR+t1Z1tZJHPqlfhsfdx45TI3dWdcL1Fabs=;
+	s=arc-20240116; t=1740484373; c=relaxed/simple;
+	bh=hSHb3rOa9k5tsPmaPPeA5bikJl+Av+tcshX5VjzhvP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aRAA4daWNsao0DkaIr9MtLPnbN64CdD776Niqdn4BLLlThhaJlFhrKn7ZRa3x0x79ZC1s3X7/kkRhwjP7idar4F6G6vaY5pi6A9qM4cuWmhRpFmgzYfsBOe3ZjEcamUnTu13/acNzRsYW4sDyiy5nJae2zMxYWiJnxhVtBgPzO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D5E71516;
-	Tue, 25 Feb 2025 03:49:23 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 918D43F5A1;
-	Tue, 25 Feb 2025 03:49:04 -0800 (PST)
-Date: Tue, 25 Feb 2025 11:49:01 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Chuck Cannon <chuck.cannon@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH 3/5] firmware: arm_scmi: imx: Add LMM and CPU
- documentation
-Message-ID: <Z72uLenEmCwDCV5c@bogus>
-References: <20250121-imx-lmm-cpu-v1-0-0eab7e073e4e@nxp.com>
- <20250121-imx-lmm-cpu-v1-3-0eab7e073e4e@nxp.com>
- <Z5DhM1VLv2uCCVwT@bogus>
- <PAXPR04MB8459D4C2CA3D5AE58B2B509788E02@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Z72ZxspU3hfGZWez@bogus>
- <20250225124203.GA31590@nxa18884-linux>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LsLABwmXe1J+yhMKrJc8f3Q5qutjXkpuhtyyADhtk12pCIeILZLy64GOD4UEFAgNOrWPdwTg1G4S9rbwIdFVvG9bVb9EBoIFJvQxtCnrcgXmjXmF0rxvY+E9r8MXeGgoq13hfm1yJ2VeiIxcCPBfeqNi3ANvuXvD3pQ76wLOKjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axOr7SQB; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axOr7SQB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803AEC4CEDD;
+	Tue, 25 Feb 2025 11:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740484373;
+	bh=hSHb3rOa9k5tsPmaPPeA5bikJl+Av+tcshX5VjzhvP4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=axOr7SQBeGTA3q1VBqZiED6W6FPt3G7EHRdpdlPTJ0aengiP2RL4qJAdZWRpjahev
+	 cDz78xYjfg9QCWpj4+1wn4OPbZxS/oPm5lQvVulupYW2VrnWu9g0+hl1zvPCcEKwPQ
+	 GjQqtL0Wl1GPrV/BonDqWLaNdgTD+pl8eAhReFDmL5VD2aAJSHg4aKnwmao35N6n9h
+	 srvpA/g6CXOqMvbFoVB4cuSwEPPw3JCFxB8A8W23s/NxTasqq/ZWVVGLJddeeDW0iH
+	 2EMxexvwXOQr7cbFohPt+WksCavde2D181k0HtfIMi7HlNJY1s1ia5TziH+sey/x+B
+	 DfF36Ne7eCc5Q==
+Date: Tue, 25 Feb 2025 12:52:50 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 05/14] dt-bindings: trivial-devices: add GOcontroll
+ Moduline IO modules
+Message-ID: <20250225-smart-industrious-groundhog-41deb2@krzk-bin>
+References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
+ <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
+ <20250224204428.GA4050751-robh@kernel.org>
+ <PA4PR04MB763009E88F6406CD84ACBD33C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250225124203.GA31590@nxa18884-linux>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <PA4PR04MB763009E88F6406CD84ACBD33C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
 
-On Tue, Feb 25, 2025 at 08:42:03PM +0800, Peng Fan wrote:
-> On Tue, Feb 25, 2025 at 10:21:58AM +0000, Sudeep Holla wrote:
-> >On Thu, Jan 23, 2025 at 01:30:43AM +0000, Peng Fan wrote:
+On Tue, Feb 25, 2025 at 07:39:52AM +0000, Maud Spierings | GOcontroll wrote:
+> From:=C2=A0Rob Herring <robh@kernel.org>
+> Sent:=C2=A0Monday, February 24, 2025 9:44 PM
+> =C2=A0
+> >On Mon, Feb 24, 2025 at 02:50:55PM +0100, Maud Spierings wrote:
+> >> The main point of the Moduline series of embedded controllers is its
+> >> ecosystem of IO modules, these currently are operated through the spid=
+ev
+> >> interface. Ideally there will be a full dedicated driver in the future.
 > >>
-> >> This is to manage the M7 core by Linux. I just put more documentation here.
-> >> CPU protocol is also used by ATF to manage AP cores.
+> >> Add the gocontroll moduline-module-slot device to enable the required
+> >> spidev interface.
 > >>
+> >> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> >> ---
+> >>=C2=A0 Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+> >>=C2=A0 1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/=
+Documentation/devicetree/bindings/trivial-devices.yaml
+> >> index 8255bb590c0cc619d15b27dcbfd3aa85389c0a54..24ba810f91b73efdc615c7=
+fb46f771a300926f05 100644
+> >> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> @@ -107,6 +107,8 @@ properties:
+> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - fs=
+l,mpl3115
+> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 # MPR121: Proximity Capacitive Touch Sensor Controller
+> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - fs=
+l,mpr121
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # =
+GOcontroll Moduline module slot for spi based IO modules
 > >
-> >Good
-> >
-> >> > Also what other CPUs are we talking here.
-> >>
-> >> M7 core
-> >>
-> >
-> >Are they referred by any other name in the system ? I reason I ask is using
-> >plain "CPU" is too generic and confusing. At the same time using "M7" may be
-> >too specific. I am trying to see if there is any middle ground.
->
-> "CPU", if you mean the protocol name SCMI_CPU, there is no good choices.
-> I could add a note that "CPU indicates the various cores of i.MX SoC,
-> one CPU represents one core"
->
+> >I couldn't find anything about SPI for GOcontroll Moduline. Can you
+> >point me to what this hardware looks like. Based on what I did find,
+> >this seems incomplete and not likely a trivial device.
+>=20
+> I'll give some more details, if there is a v2 of this patch I will also
+> add more information in the commit message.
+>=20
+> The module slots have a number of pins, a lot of them currently unused as
+> they have not found a function yet, this is very much still a developing
+> product. The currently used interfaces to the SoC are:
+> 1. SPI bus as a spidev to ease developing new modules and quickly
+> integrate them. This is the main communication interface for control and
+> firmware updates.
+> 2. A reset pin, this is/was driven with the gpio-led driver but I doubt
+> that would get accepted upstream so I intend to switch to the much better
+> suited libgpio.
 
-Just a wild suggestion, you don't have to take this. Can it be called
-SM CPU or something ? If you can't change the firmware documents which
-is understandable, I suggest we call it sm_cpu or something appended before
-cpu to distinguish it from the AP CPUs on which Linux runs.
+reset-gpios is not in trivial devices, so that's already a hint you
+cannot use this binding.
 
-> The documentation origin from https://github.com/nxp-imx/imx-sm
-> hard for me to drive a change to use other name.
->
-> Anyway if you have ideas, I could bring to our firmware owner.
->
-> >
-> >> In general I would like to
-> >> > explore the possibility of collapsing this with LM protocol. CPUs within
-> >> > LM is LM's responsibility to bring up. And CPU can be seen as an LM for
-> >> > sake of this vendor protocol. I am not get into details here yet before I
-> >> > can understand what these CPUs are really in the system and why we
-> >> > need this.
-> >>
-> >> Our system supports M7 and A55 in one LM, so A55 use CPU protocol to
-> >> manage M7. When M7 and A55 in different LM, use LM protocol to
-> >> manage M7 LM.
-> >>
-> >
-> >The LM(assuming Logical Module/Machine) is an abstract construct, it should
-> >apply to even subset of components within an LM. Just wondering what are
-> >specific reasons do you think applying LM protocol you have on those M7
-> >CPUs alone in A55+M7 LM would not fit well.
->
-> We have internal mail "NXP-ARM SCMI OEM extension" between NXP-ARM that I
-> could not post here. In that mail, LM is explained.
->
+> 3. An interrupt pin, this is currently only used in the firmware update
+> utility [2] to speed up the update process. Other communication is done at
+> a regular interval.
+>=20
+> What is unused:
+> 1. A potentially multi-master i2c bus between all the module slots and
+> the SoC
+> 2. An SMBus alert line is shared between the modules, but not the SoC.
+> 3. A shared line designated as a clock line, intended to in the future
+> aid with synchronizing modules to each other for time critical control.
+>=20
+> current software that is used to work with the modules can be found at
+> [2] and [3], one of them is a Node-RED module the other is a blockset for
+> Matlab/Simulink generated code.
+>=20
+> If you know a better way I could describe this in the devicetree then I
 
-Fair enough. Please don't share any info that can't be. I understand.
+You need dedicated binding where you describe entire device, entire
+hardware, not what your driver supports in current release.
 
-> It is the LM protocol design that it only applies to the whole LM.
-> If the LM has A55+M7, A55+M7 will both be handled.
-> If the LM only has A55, A55 only be handled.
-> If the LM only has M7, M7 only be handled.
->
-> When M7 + A55 in one LM, using LM protocol to handle M7 will make A55 not
-> work properly. The current linux usecase is remoteproc, that means
-> stop M7 will make A55 also stop. So need use CPU protocol here.
->
-> When M7 and A55 in separate LM, using LM protocol to handle M7 LM works well.
-> The usecase is still remoteproc. In separate LM, A55 CPU protocol will be
-> blocked to handle M7 CPU per firmware security.
->
+Best regards,
+Krzysztof
 
-Thanks, I am now clear on LM has A55+M7 and M7 only. However your above
-statement relating to LMs with A55 only is not clear. If they run Linux,
-they just need to still use PSCI and this CPU protocol shouldn't be used
-to control them. Can you clarify on that ?
-
-Other than that, it looks like we do need both LM and CPU. Just asking
-all the details so that if in future we have a similar need that needs to
-be a standard protocol, it would help us better.
-
---
-Regards,
-Sudeep
