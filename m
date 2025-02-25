@@ -1,138 +1,1117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA01B267B8B;
-	Tue, 25 Feb 2025 11:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D265926869F
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 11:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740484373; cv=none; b=poWIJSvVKy2TehaaHLsRIb0GfHPjoAYPdMMXLXnwfWpxIrcFmBwZk2+sL5I3dAfQ6l9VA5vDBl+aiF8OVZvLhQoMQ0a8ehoLBV9B8t6HZoHnZ9RCruTLE2s6Cz8crmG3DXdGsnuglQKlfWH+0TKjoPxf7monH/77rzv7QsTKKgg=
+	t=1740484474; cv=none; b=YHVbsipsCNKgGNVT2+UQEpM8U2wxVBPDl+FLJ78G8g1IJbBg6Tcuo4WKuFw3DzqVP599NYit9MWPE6tYZ/LQ+DgFxaU9197fgPUgegfDRMRwUPewKxRITqUabzLScbId+4d/DVynrVFesf+VNevM45ia9pQVndoxTyfvMQrvbwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740484373; c=relaxed/simple;
-	bh=hSHb3rOa9k5tsPmaPPeA5bikJl+Av+tcshX5VjzhvP4=;
+	s=arc-20240116; t=1740484474; c=relaxed/simple;
+	bh=UeafEbFVPhK6uXlw1agjsjmtT4OhzY87QrZ4nGa0IyU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LsLABwmXe1J+yhMKrJc8f3Q5qutjXkpuhtyyADhtk12pCIeILZLy64GOD4UEFAgNOrWPdwTg1G4S9rbwIdFVvG9bVb9EBoIFJvQxtCnrcgXmjXmF0rxvY+E9r8MXeGgoq13hfm1yJ2VeiIxcCPBfeqNi3ANvuXvD3pQ76wLOKjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axOr7SQB; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axOr7SQB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803AEC4CEDD;
-	Tue, 25 Feb 2025 11:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740484373;
-	bh=hSHb3rOa9k5tsPmaPPeA5bikJl+Av+tcshX5VjzhvP4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=axOr7SQBeGTA3q1VBqZiED6W6FPt3G7EHRdpdlPTJ0aengiP2RL4qJAdZWRpjahev
-	 cDz78xYjfg9QCWpj4+1wn4OPbZxS/oPm5lQvVulupYW2VrnWu9g0+hl1zvPCcEKwPQ
-	 GjQqtL0Wl1GPrV/BonDqWLaNdgTD+pl8eAhReFDmL5VD2aAJSHg4aKnwmao35N6n9h
-	 srvpA/g6CXOqMvbFoVB4cuSwEPPw3JCFxB8A8W23s/NxTasqq/ZWVVGLJddeeDW0iH
-	 2EMxexvwXOQr7cbFohPt+WksCavde2D181k0HtfIMi7HlNJY1s1ia5TziH+sey/x+B
-	 DfF36Ne7eCc5Q==
-Date: Tue, 25 Feb 2025 12:52:50 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 05/14] dt-bindings: trivial-devices: add GOcontroll
- Moduline IO modules
-Message-ID: <20250225-smart-industrious-groundhog-41deb2@krzk-bin>
-References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
- <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
- <20250224204428.GA4050751-robh@kernel.org>
- <PA4PR04MB763009E88F6406CD84ACBD33C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=K+v6evt+a3YpFRwvmTib1g+HSfQJpp07vcPjGnFS+PFiFDc6/HXikl70n8JG5NtOlEutm4nVn1QSVCer3f6yTW2QaI9Ivd1VLI1esM3EmBn88JlIUV/zN9ntLTKan9tPoH6zzkQPWjteYBQgb/iBaC9ls9nSYdEteQkzB35TEDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BABB1516;
+	Tue, 25 Feb 2025 03:54:46 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B68283F6A8;
+	Tue, 25 Feb 2025 03:54:27 -0800 (PST)
+Date: Tue, 25 Feb 2025 11:54:25 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/7] firmware: arm_scmi: imx: Add LMM and CPU
+ documentation
+Message-ID: <Z72vcSmOMwIER--_@pluto>
+References: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
+ <20250212-imx-lmm-cpu-v2-1-3aee005968c1@nxp.com>
+ <Z7xl8h8Sh_UWYbI3@pluto>
+ <20250225090709.GA25303@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <PA4PR04MB763009E88F6406CD84ACBD33C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
+In-Reply-To: <20250225090709.GA25303@nxa18884-linux>
 
-On Tue, Feb 25, 2025 at 07:39:52AM +0000, Maud Spierings | GOcontroll wrote:
-> From:=C2=A0Rob Herring <robh@kernel.org>
-> Sent:=C2=A0Monday, February 24, 2025 9:44 PM
-> =C2=A0
-> >On Mon, Feb 24, 2025 at 02:50:55PM +0100, Maud Spierings wrote:
-> >> The main point of the Moduline series of embedded controllers is its
-> >> ecosystem of IO modules, these currently are operated through the spid=
-ev
-> >> interface. Ideally there will be a full dedicated driver in the future.
-> >>
-> >> Add the gocontroll moduline-module-slot device to enable the required
-> >> spidev interface.
-> >>
-> >> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> >> ---
-> >>=C2=A0 Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
-> >>=C2=A0 1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/=
-Documentation/devicetree/bindings/trivial-devices.yaml
-> >> index 8255bb590c0cc619d15b27dcbfd3aa85389c0a54..24ba810f91b73efdc615c7=
-fb46f771a300926f05 100644
-> >> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> >> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> >> @@ -107,6 +107,8 @@ properties:
-> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - fs=
-l,mpl3115
-> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 # MPR121: Proximity Capacitive Touch Sensor Controller
-> >>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - fs=
-l,mpr121
-> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # =
-GOcontroll Moduline module slot for spi based IO modules
+On Tue, Feb 25, 2025 at 05:07:09PM +0800, Peng Fan wrote:
+> Hi Cristian,
+> 
+> On Mon, Feb 24, 2025 at 12:28:34PM +0000, Cristian Marussi wrote:
+> >On Wed, Feb 12, 2025 at 03:40:23PM +0800, Peng Fan (OSS) wrote:
+> >> From: Peng Fan <peng.fan@nxp.com>
+> >> 
+> >> Add i.MX95 Logical Machine Management and CPU Protocol documentation.
+> >> 
 > >
-> >I couldn't find anything about SPI for GOcontroll Moduline. Can you
-> >point me to what this hardware looks like. Based on what I did find,
-> >this seems incomplete and not likely a trivial device.
->=20
-> I'll give some more details, if there is a v2 of this patch I will also
-> add more information in the commit message.
->=20
-> The module slots have a number of pins, a lot of them currently unused as
-> they have not found a function yet, this is very much still a developing
-> product. The currently used interfaces to the SoC are:
-> 1. SPI bus as a spidev to ease developing new modules and quickly
-> integrate them. This is the main communication interface for control and
-> firmware updates.
-> 2. A reset pin, this is/was driven with the gpio-led driver but I doubt
-> that would get accepted upstream so I intend to switch to the much better
-> suited libgpio.
+> >Hi,
+> >
+> >a few comments below.
+> >
+> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> >> ---
+> >>  drivers/firmware/arm_scmi/vendors/imx/imx95.rst | 737 ++++++++++++++++++++++++
+> >>  1 file changed, 737 insertions(+)
+> >> 
+> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >> index b2dfd6c46ca2f5f12f0475c24cb54c060e9fa421..78a09cd8102becd5584d28bdef18df2d77fb7e7c 100644
+> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >> @@ -32,6 +32,461 @@ port, and deploy the SM on supported processors.
+> >>  The SM implements an interface compliant with the Arm SCMI Specification
+> >>  with additional vendor specific extensions.
+> >>  
+> >
+> >In general I noticed that there is NOT specified anywhere if all the
+> >following commands are mandatory or optional in your protocol: would be
+> >better to be specified, as it is I will assume that are all mandatory.
+> 
+> The Doc from [1] does not specify optional or mandatory, I need check
+> with firmware owner to see whether this could be added.
+> 
+> [1]https://github.com/nxp-imx/imx-sm
+> 
 
-reset-gpios is not in trivial devices, so that's already a hint you
-cannot use this binding.
+Ok...just specify for each command what is the expectation.
 
-> 3. An interrupt pin, this is currently only used in the firmware update
-> utility [2] to speed up the update process. Other communication is done at
-> a regular interval.
->=20
-> What is unused:
-> 1. A potentially multi-master i2c bus between all the module slots and
-> the SoC
-> 2. An SMBus alert line is shared between the modules, but not the SoC.
-> 3. A shared line designated as a clock line, intended to in the future
-> aid with synchronizing modules to each other for time critical control.
->=20
-> current software that is used to work with the modules can be found at
-> [2] and [3], one of them is a Node-RED module the other is a blockset for
-> Matlab/Simulink generated code.
->=20
-> If you know a better way I could describe this in the devicetree then I
+> >
+> >> +SCMI_LMM: System Control and Management Logical Machine Management Vendor Protocol
+> >> +==================================================================================
+> >> +
+> >> +
+> [...]
+> >> +PROTOCOL_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x1
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      | See ARM SCMI Specification for status code definitions.   |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes |Protocol attributes:                                       |
+> >> +|                  |Bits[31:8] Reserved, must be zero.                         |
+> >> +|                  |Bits[7:0] Number of Logical Machines                       |
+> >
+> >...so this states how many LMs you have...ok...
+> >
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +PROTOCOL_MESSAGE_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x2
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: in case the message is implemented and available  |
+> >> +|                  |to use.                                                    |
+> >> +|                  |NOT_FOUND: if the message identified by message_id is      |
+> >> +|                  |invalid or not implemented                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes |Flags that are associated with a specific function in the  |
+> >> +|                  |protocol. For all functions in this protocol, this         |
+> >> +|                  |parameter has a value of 0                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x3
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if valid attributes are returned.                 |
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |DENIED: if the agent does not have permission to get info  |
+> >> +|                  |for the LM specified by lmid.                              |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes | Bits[31:8] reserved.                                      |
+> >> +|                  | Bits[7:0] Number of Logical Machines.                     |
+> >
+> >...BUT this returns again the number of LMs while asking the attributes
+> >of a specific LM ? .... is it a typo or what ? ...if it is just as a
+> >sort of placeholder for when you'll have really LM's attributes to show,
+> >consider that once this is documented and supported in this version of
+> >your vendor protocol it will be needed to be kept and maintained...maybe
+> >better just to declare this as zero in this version of the protocol if
+> >you dont really have anything for this command in this version...(like
+> >many times are defined the attributes fields in PROTOCOL_MESSAGE_ATTRIBUTES
+> >above, if you really know you could want/need this command in the
+> >future...is it used now ?
+> 
+> My bad. This should be updated with below
+> +------------------+-----------------------------------------------------------+
+> |uint32 attributes | Bits[31:0] reserved. must be zero                         |
+> +------------------+-----------------------------------------------------------+
+> |uint32 state      | Current state of the LM                                   |
+> +------------------+-----------------------------------------------------------+
+> |uint32 errStatus  | Last error status recorded                                |
+> +------------------+-----------------------------------------------------------+
+> |char name[16]     | A NULL terminated ASCII string with the LM name, of up    |
+> |                  | to 16 bytes                                               |
+> +------------------+-----------------------------------------------------------+
+> 
 
-You need dedicated binding where you describe entire device, entire
-hardware, not what your driver supports in current release.
+ok
 
-Best regards,
-Krzysztof
+> >
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_BOOT
+> >> +~~~~~~~~
+> >> +
+> >> +message_id: 0x4
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully booted.                        |
+> >
+> >...this and other commands below that cause a transition are a bit
+> >ambiguos in their description IMHO...does this mean that on reception of
+> >a SUCCESS the LM identified by lmid has successfully completed the boot ?
+> >
+> >...or, as I suppose, this being an immmediate command, SUCCESS means something
+> >like 'boot succesfully started', NOT that when this SUCCESS reply comes back the
+> >LM has booted...also becuse I can see a lot of notifications defined down below to
+> >signal the completion of such operations...
+> >
+> >..if this is the case please clarify...
+> 
+> right. This means the LM has been boot successfully started. Not means
+> LM fully function up.
+> 
+> I will updated this with "SUCCESS: if LM boots successfully started"
+>
 
+ok
+ 
+> 
+> >
+> >...if this is NOT the case and this is intended to return synchronoulsy
+> >when the required operation has completed, even though such machines are
+> >maybe (?) minimal/tiny compute systems, can you guarantee that they can boot/shutdown
+> >etc in a reasonably short time not to hog the channel for too long (I mean
+> >well before the configured transport timeout)...
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_RESET
+> >> +~~~~~~~~~
+> >> +
+> >> +message_id: 0x5
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 flags      |Reset flags:                                               |
+> >> +|                  |Bits[31:1] Reserved, must be zero.                         |
+> >> +|                  |Bit[0] Graceful request:                                   |
+> >> +|                  |Set to 1 if the request is a graceful request.             |
+> >> +|                  |Set to 0 if the request is a forceful request.             |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully resets.                        |
+> >
+> >Same ... does this simply mean LM reset issued successfully ?
+> 
+> For graceful reset, platform will issue a notification to agent and just return,
+> agent will do the reset, as linux reboot.
+> For forceful reset, platform will do the force reset of agent, this is longer
+> time.
+> 
+> I will update with "The LMM RESET command finished successfully in graceful reset
+> or LM successfully resets in forceful reset"
+> 
+
+ok
+
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_SHUTDOWN
+> >> +~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x6
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 flags      |Reset flags:                                               |
+> >> +|                  |Bits[31:1] Reserved, must be zero.                         |
+> >> +|                  |Bit[0] Graceful request:                                   |
+> >> +|                  |Set to 1 if the request is a graceful request.             |
+> >> +|                  |Set to 0 if the request is a forceful request.             |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully shutdowns.                     |
+> >
+> >Same...I suppose the shutdown has been sucessfully issued and could be
+> >still in progress...if this is not the case I fear this immediate
+> >command will potentially hog the channel for too long....
+> 
+> For graceful shutdown, platform will issue a notification to agent and just return,
+> agent will do shutdown.
+> For forceful shutdown, platform will do the force shutdown of agent, this is longer
+> time.
+> 
+> I will update with "The LMM shutdown command finished successfully in graceful request 
+> or LM successfully shutdown in forceful request"
+> 
+
+Yes please, in general for all this cases you should clearly state if
+the action is expected to be completed sunchronously with the immediate
+response of asynchronously and signaled by an optional notification...
+
+..I think it is important to clarify the expectations since you really
+do NOT use SCMI async commands (with DELAYED RESPONSES) but a mix of
+sync immediate commands and later notification on completion
+(AFAIU)...so better to be clear all over this commnds..
+
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_WAKE
+> >> +~~~~~~~~
+> >> +
+> >> +message_id: 0x7
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully wakes.                         |
+> >
+> >Same...I suppose you can know when an LM is fully woken only from the
+> >dedicated notification receipt...
+> 
+> I will updated this with "SUCCESS: if LM wake command successfully returns"
+>
+
+ok
+ 
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_SUSPEND
+> >> +~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x8
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully suspends.                      |
+> >
+> >Same..I suppose the SCMI server will know when the suspend for this LM is
+> >effective and will send a notification, so this is again only an indication
+> >that the suspend process has started...
+> 
+> Right.
+> I will updated this with "SUCCESS: if LM suspend command successfully returns"
+>
+
+ok
+ 
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >
+> >In general, you could also think to make the bahvour of all this
+> >operation configurable like teh RESET protocol does...so you could ask
+> >for an LMM op to complete synchronously OR instead let it happen
+> >asynchnously in the background after the command-request has completed
+> >and then wait for one of the existing notification...
+> >
+> >...again if this is already the expected behaviour please clarifiy the sync/async
+> >kind of execution that is expected when you issue such commands
+> 
+> Yes, for graceful, it is async; for forceful, it is sync.
+> If command not has graceful/forceful, such as lm wake/suspend, it is async
+> 
+
+Yes please specify this sync vs async completion as specified above and
+the expected optional notifs
+
+> >
+> >> +LMM_NOTIFY
+> >> +~~~~~~~~~~
+> >> +
+> >> +message_id: 0x9
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 flags      |Notification flags:                                        |
+> >> +|                  |Bits[31:3] Reserved, must be zero.                         |
+> >> +|                  |Bit[3] Wake (resume) notification:                         |
+> >> +|                  |Set to 1 to send notification.                             |
+> >> +|                  |Set to 0 if no notification.                               |
+> >> +|                  |Bit[2] Suspend (sleep) notification:                       |
+> >> +|                  |Set to 1 to send notification.                             |
+> >> +|                  |Set to 0 if no notification.                               |
+> >> +|                  |Bit[1] Shutdown (off) notification:                        |
+> >> +|                  |Set to 1 to send notification.                             |
+> >> +|                  |Set to 0 if no notification.                               |
+> >> +|                  |Bit[0] Boot (on) notification:                             |
+> >> +|                  |Set to 1 to send notification.                             |
+> >> +|                  |Set to 0 if no notification                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if the notification state successfully updated.   |
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if input attributes flag specifies     |
+> >> +|                  |unsupported or invalid configurations.                     |
+> >> +|                  |DENIED: if the agent does not have permission to request   |
+> >> +|                  |the notification.                                          |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_RESET_REASON
+> >> +~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0xA
+> >> +protocol_id: 0x80
+> >
+> >What is this...a bit of explanation would be fine given that this
+> >command is not straightforward to understand like the previous
+> >boot/suspend etc...
+> 
+> This function returns the boot/shutdown/reset reason for an LM.
+> 
+> Such as POR, WDOG and etc.
+> 
+> >
+> >> +
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|Name                 |Description                                             |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|uint32 lmid          |ID of the Logical Machine                               |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|Name                 |Description                                             |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|int32 status         |SUCCESS: if LM successfully suspends.                   |
+> >
+> >? typo ?
+> 
+> Sorry. This should be "the reset reason of the LM successfully updated"
+> 
+> >
+> >> +|                     |NOT_FOUND: if lmId not points to a valid logical machine|
+> >> +|                     |DENIED: if the agent does not have permission to request|
+> >> +|                     |the reset reason.                                       |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|uint32 bootflags     |Boot reason flags. This parameter has the format:       |
+> >> +|                     |Bits[31] Valid.                                         |
+> >> +|                     |Set to 1 if the entire reason is valid.                 |
+> >> +|                     |Set to 0 if the entire reason is not valid.             |
+> >> +|                     |Bits[30:29] Reserved, must be zero.                     |
+> >> +|                     |Bit[28] Valid origin:                                   |
+> >> +|                     |Set to 1 if the origin field is valid.                  |
+> >> +|                     |Set to 0 if the origin field is not valid.              |
+> >> +|                     |Bits[27:24] Origin.                                     |
+> >
+> >Are this origin values defined anywhere ?
+> 
+> It varies in the current imx-sm implementation, there is no spec
+> defining this, it could be a LMID or BBM register value or else.
+> 
+
+O_o ... ok... always a bit concerned about opaque stuff...not strong
+opinion as of now...
+
+> >
+> >> +|                     |Bit[23] Valid err ID:                                   |
+> >> +|                     |Set to 1 if the error ID field is valid.                |
+> >> +|                     |Set to 0 if the error ID field is not valid.            |
+> >
+> >And this errors ID ? which value should I expect here...and to what this
+> >errors refer to...
+> >
+> >> +|                     |Bits[22:8] Error ID.                                    |
+> 
+> There is not doc defining this. It just varies,
+> It could be BBM button, agentID, faultID or a peripheral ID or else.
+
+ok
+
+> 
+> >> +|                     |Bit[7:0] Reason(WDOG, POR, FCCU and etc)                |
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|uint32 shutdownflags |Shutdown reason flags. This parameter has the format:   |
+> >> +|                     |Bits[31] Valid.                                         |
+> >> +|                     |Set to 1 if the entire reason is valid.                 |
+> >> +|                     |Set to 0 if the entire reason is not valid.             |
+> >> +|                     |Bits[30:29] Number of valid extended info words.        |
+> >> +|                     |Bit[28] Valid origin:                                   |
+> >> +|                     |Set to 1 if the origin field is valid.                  |
+> >> +|                     |Set to 0 if the origin field is not valid.              |
+> >
+> >Ditto.
+> >> +|                     |Bits[27:24] Origin.                                     |
+> >> +|                     |Bit[23] Valid err ID:                                   |
+> >> +|                     |Set to 1 if the error ID field is valid.                |
+> >> +|                     |Set to 0 if the error ID field is not valid.            |
+> >> +|                     |Bits[22:8] Error ID.                                    |
+> >Ditto.
+> >> +|                     |Bit[7:0] Reason                                         |
+> >Ditto.
+> 
+> I will check imx-sm code and add more info for upper all three,
+> but there is no documentation and it varies in imx-sm code repo.
+> 
+
+ok
+
+> >> ++---------------------+--------------------------------------------------------+
+> >> +|uint32 extinfo[0,20] |Array of extended info words(e.g. fault pc)             |
+> >> ++---------------------+--------------------------------------------------------+
+> >
+> >..so what does this field represent....is this a fixed sized array ? seems more likely
+> >to be dynamically sized in range [0,20] AFAICU...
+> 
+> This should be updated with "extinfo[3]". The length has been speicified in 
+> "Bits[30:29] Number of valid extended info words."
+
+Ah ok ... much better thanks for clarifying
+
+> 
+> >
+> >...now...if it is dynamically sized:
+> >
+> >+ there should be a size field declaring the size of the returned
+> >answer, if not you should rely on the transport size to know where the
+> >message ends (unless if hard-coded based on the above flags...in that
+> >case explain and document)
+> 
+> already specified in shutdownflags BITS[30:29]
+> 
+
+ok
+
+> >
+> >+ you cannot assume that such a potentially big reply reply fit into a
+> >single message due to possible limitations of the transport
+> >sizes...IOW you should think about a 'multi-part' message like many
+> >exist in SCMI where the reply reports returned+remaining entries...
+> >..how can yo be sure to fit in any transport...this message has
+> >currently a potential max payload reply of 96 bytes ...
+> >
+> >> +
+> >> +LMM_POWER_ON
+> >> +~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0xB
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |ID of the Logical Machine                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully powers on.                     |
+> >
+> >Beside the same consideration as above regarding what this SUCCESS
+> >mean...what is meant to be the difference between LMM_POWER_ON and LMM_BOOT ?
+> 
+> POWER ON, it is just power up, not means the LMM is kicked out to boot.
+> BOOT, means LMM is kicked out to boot
+> 
+> For example, CPU has power and reset release function.
+> power on, means power up the CPU
+> boot, means reset release to let CPU run.
+
+yep, got that, but I was just wondering what was the purpose to have
+this distinction from the SCMI agent perspective
+
+> 
+> Especially for Cortex-M core, the TCM is in same power domain
+> as Cortex-M. before booting the core, need power up the core to loading
+> images to TCM, then boot the core.
+> 
+
+but it makes sense now a bit more....thanks for clarifying...
+
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine.  |
+> >> +|                  |INVALID_PARAMETERS: if lmId is same as the caller.         |
+> >> +|                  |DENIED: if the agent does not have permission to manage the|
+> >> +|                  |the LM specified by lmid.                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +LMM_RESET_VECTOR_SET
+> >> +~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0xC
+> >> +protocol_id: 0x80
+> >> +
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|Name                   |Description                                           |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|uint32 lmid            |ID of the Logical Machine                             |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|uint32 cpuid           |ID of the CPU inside the LM                           |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|uint32 flags           |Reset vector flags                                    |
+> >> +|                       |Bits[31:1] Reserved, must be zero.                    |
+> >> +|                       |Bit[0] Table flag.                                    |
+> >> +|                       |Set to 1 if vector is the vector table base address   |
+> >
+> >So what is this when Bit[0] is set to zero instead ?
+> 
+> Per current imx-sm, this flags is not used as of now, just a reserved
+> flag for future extension. So 0 or 1 does not matter here.
+> I will update with Bits[31:0] Reserved.
+
+ok
+
+> 
+> >
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|uint32 resetVectorLow  |Lower vector                                          |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|uint32 resetVectorHigh |Higher vector                                         |
+> >> ++-----------------------+------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if LM successfully powers on.                     |
+> >
+> >...typo ?...
+> 
+> "If reset vector is set successfully"
+> 
+> >
+> >> +|                  |NOT_FOUND: if lmId not points to a valid logical machine,  |
+> >> +|                  |or cpuId is not valid.
+> >> +|                  |INVALID_PARAMETERS: if reset vector is invalid.            |
+> >> +|                  |DENIED: if the agent does not have permission to set the   |
+> >> +|                  |the reset vector for the CPU in the LM.                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +NEGOTIATE_PROTOCOL_VERSION
+> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x10
+> >> +protocol_id: 0x80
+> >> +
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|Name                |Description                                              |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|uint32 version      |The negotiated protocol version the agent intends to use |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|Name                |Description                                              |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +|int32 status        |SUCCESS: if the negotiated protocol version is supported |
+> >> +|                    |by the platform. All commands, responses, and            |
+> >> +|                    |notifications post successful return of this command must|
+> >> +|                    |comply with the negotiated version.                      |
+> >> +|                    |NOT_SUPPORTED: if the protocol version is not supported. |
+> >> ++--------------------+---------------------------------------------------------+
+> >> +
+> >> +Notifications
+> >> +_____________
+> >> +
+> >> +LMM_EVENT
+> >> +~~~~~~~~~
+> >> +
+> >> +message_id: 0x0
+> >> +protocol_id: 0x80
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 lmid       |Identifier for the LM that caused the transition.          |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 eventlm    |Identifier for the LM the event is for.                    |
+> >
+> >So this is the LM that the event refer to ? i.e. this LM eventlm is the
+> >one that is booting/resetting/shutdown ? 
+> >if this is the case, maybe better as:
+> >
+> >	"Identifier of the LM this event refers to."
+> 
+> Thanks, will update as you suggest.
+> 
+
+ok
+
+> >
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 flags      |LM events:                                                 |
+> >> +|                  |Bits[31:3] Reserved, must be zero.                         |
+> >> +|                  |Bit[3] Wake (resume) event:                                |
+> >> +|                  |1 LM has awakened.                                         |
+> >> +|                  |0 not a wake event.                                        |
+> >> +|                  |Bit[2] Suspend (sleep) event:                              |
+> >> +|                  |1 LM has suspended.                                        |
+> >> +|                  |0 not a suspend event.                                     |
+> >> +|                  |Bit[1] Shutdown (off) event:                               |
+> >> +|                  |1 LM has shutdown.                                         |
+> >> +|                  |0 not a shutdown event.                                    |
+> >> +|                  |Bit[0] Boot (on) event:                                    |
+> >> +|                  |1 LM has booted.                                           |
+> >> +|                  |0 not a boot event.                                        |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >>  SCMI_BBM: System Control and Management BBM Vendor Protocol
+> >>  ==============================================================
+> >>  
+> >> @@ -436,6 +891,288 @@ protocol_id: 0x81
+> >>  |                  |0 no button change detected.                               |
+> >>  +------------------+-----------------------------------------------------------+
+> >>  
+> >> +SCMI_CPU: System Control and Management CPU Vendor Protocol
+> >> +==============================================================
+> >> +
+> >> +This protocol allows an agent to start or stop a CPU. It is used to manage
+> >> +auxiliary CPUs in an LM (e.g. additional cores in an AP cluster or
+> >> +Cortex-M cores).
+> >> +Note: For cores in AP cluster, ATF will use CPU protocol to handle them.
+> >
+> >So this is sort of a PSCI-by-proxy in which you ask the server to turn
+> >on/off some of the LM CPUs ?
+> 
+> Yes. A55 cores are in one LM, so in ATF one A55 use cpu protocol to manage other
+> A55 cores.
+> 
+> >
+> >First question would be is not enough to just ask for a specific LM to
+> >be booted with LMM ? or add to the LMM protocol a way to specifiy the
+> 
+> LMM is a large scope, CPU could be inside LMM.
+> 
+> >'level' of boot that you ask for an LM...I may miss many details but it
+> >seems to me a bit odd that you are allowd to ask, from the agent that
+> >could have just requested an LM to boot to have some CPUs ON or OFF...
+> >...and specify the boot/resume address vectors here to use when turning
+> >ON...
+> 
+> There is case the M7 and A55 are in the same LM, so in such case, if A55 core
+> needs to manage M7, need use CPU protocol.
+> 
+> If A55 and M7 are in two separate LMs, A55 needs use LMM protocol to manage
+> M7 LM.
+> 
+
+this is a sort of remoteproc-like via SCMI
+
+> >
+> >Maybe a bit more of explanation of the rationale and expectations here
+> >could help understanding the differet needs from LMM
+> 
+> There are some internal discussion between NXP and ARM if you search
+> your mail "NXP-ARM SCMI OEM extension".
+> 
+> I could not post them all here.
+> 
+
+ok
+
+> >
+> >> +
+> >> +The CPU protocol provides functions to:
+> >> +
+> >> +- Describe the protocol version.
+> >> +- Discover implementation attributes.
+> >> +- Discover the CPUs defined in the system.
+> >> +- Start a CPU.
+> >> +- Stop a CPU.
+> >> +- Set the boot and resume addresses for a CPU.
+> >> +- Set the sleep mode of a CPU.
+> >> +- Configure wake-up sources for a CPU.
+> >> +- Configure power domain reactions (LPM mode and retention mask) for a CPU.
+> >> +- The CPU IDs can be found in the CPU section of the SoC DEVICE: SM Device
+> >> +  Interface. They can also be found in the SoC RM. See the CPU Mode Control
+> >> +  (CMC) list in General Power Controller (GPC) section.
+> >> +
+> >> +CPU settings are not aggregated and setting their state is normally exclusive
+> >> +to one client.
+> >> +
+> >> +Commands:
+> >> +_________
+> >> +
+> >> +PROTOCOL_VERSION
+> >> +~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x0
+> >> +protocol_id: 0x82
+> >> +
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|Name           |Description                                                   |
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|int32 status   | See ARM SCMI Specification for status code definitions.      |
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|uint32 version | For this revision of the specification, this value must be   |
+> >> +|               | 0x10000.                                                     |
+> >> ++---------------+--------------------------------------------------------------+
+> >> +
+> >> +PROTOCOL_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x1
+> >> +protocol_id: 0x82
+> >> +
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      | See ARM SCMI Specification for status code definitions.   |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes |Protocol attributes:                                       |
+> >> +|                  |Bits[31:16] Reserved, must be zero.                        |
+> >> +|                  |Bits[15:0] Number of CPUs                                  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +PROTOCOL_MESSAGE_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x2
+> >> +protocol_id: 0x82
+> >> +
+> >> ++---------------+--------------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: in case the message is implemented and available  |
+> >> +|                  |to use.                                                    |
+> >> +|                  |NOT_FOUND: if the message identified by message_id is      |
+> >> +|                  |invalid or not implemented                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes |Flags that are associated with a specific function in the  |
+> >> +|                  |protocol. For all functions in this protocol, this         |
+> >> +|                  |parameter has a value of 0                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +CPU_ATTRIBUTES
+> >> +~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x4
+> >> +protocol_id: 0x82
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 cpuid      |Identifier for the CPU                                     |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if valid attributes are returned successfully.    |
+> >> +|                  |NOT_FOUND: if the cpuid is not valid.                      |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 attributes |Bits[31:0] Reserved, must be zero                          |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|char name[16]     |NULL terminated ASCII string with CPU name up to 16 bytes  |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +CPU_START
+> >> +~~~~~~~~~
+> >> +
+> >> +message_id: 0x4
+> >> +protocol_id: 0x82
+> >> +
+> >
+> >Any constraint to call this only after having successfully called RESET_VECROR_SET ?
+> 
+> No constraint, if not called RESET_VECROR_SET, it will use default value 0.
+> 
+> >
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 cpuid      |Identifier for the CPU                                     |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if the cpu is started successfully.               |
+> >> +|                  |NOT_FOUND: if cpuid is not valid.                          |
+> >> +|                  |DENIED: the calling agent is not allowed to start this CPU.|
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +CPU_STOP
+> >> +~~~~~~~~
+> >> +
+> >> +message_id: 0x5
+> >> +protocol_id: 0x82
+> >> +
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|uint32 cpuid      |Identifier for the CPU                                     |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|Name              |Description                                                |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +|int32 status      |SUCCESS: if the cpu is started successfully.               |
+> >> +|                  |NOT_FOUND: if cpuid is not valid.                          |
+> >> +|                  |DENIED: the calling agent is not allowed to stop this CPU. |
+> >> ++------------------+-----------------------------------------------------------+
+> >> +
+> >> +CPU_RESET_VECTOR_SET
+> >> +~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +message_id: 0x6
+> >> +protocol_id: 0x82
+> >> +
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 cpuid          |Identifier for the CPU                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 flags          |Reset vector flags:                                    |
+> >> +|                      |Bit[31] Resume flag.                                   |
+> >> +|                      |Set to 1 to update the reset vector used on resume.    |
+> >> +|                      |Bit[30] Boot flag.                                     |
+> >> +|                      |Set to 1 to update the reset vector used for boot.     |
+> >> +|                      |Bits[29:1] Reserved, must be zero.                     |
+> >> +|                      |Bit[0] Table flag.                                     |
+> >> +|                      |Set to 1 if vector is the vector table base address.   |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 resetVectorLow |Lower vector:                                          |
+> >> +|                      |If bit[0] of flags is 0, the lower 32 bits of the      |
+> >> +|                      |physical address where the CPU should execute from on  |
+> >> +|                      |reset. If bit[0] of flags is 1, the lower 32 bits of   |
+> >> +|                      |the vector table base address                          |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 resetVectorhigh|Upper vector:                                          |
+> >> +|                      |If bit[0] of flags is 0, the upper 32 bits of the      |
+> >> +|                      |physical address where the CPU should execute from on  |
+> >> +|                      |reset. If bit[0] of flags is 1, the upper 32 bits of   |
+> >> +|                      |the vector table base address                          |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|int32 status          |SUCCESS: if the CPU reset vector is set successfully.  |
+> >> +|                      |NOT_FOUND: if cpuId does not point to a valid CPU.     |
+> >> +|                      |INVALID_PARAMETERS: the requested vector type is not   |
+> >> +|                      |supported by this CPU.                                 |
+> >> +|                      |DENIED: the calling agent is not allowed to set the    |
+> >> +|                      |reset vector of this CPU                               |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +
+> >> +CPU_SLEEP_MODE_SET
+> >> +~~~~~~~~~~~~~~~~~~
+> >> +message_id: 0x7
+> >> +protocol_id: 0x82
+> >> +
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 cpuid          |Identifier for the CPU                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 flags          |Sleep mode flags:                                      |
+> >> +|                      |Bits[31:1] Reserved, must be zero.                     |
+> >> +|                      |Bit[0] IRQ mux:                                        |
+> >> +|                      |If set to 1 the wakeup mux source is the GIC, else if 0|
+> >> +|                      |then the GPC                                           |
+> >
+> >What is the GPC in this context ?
+> 
+> General Power Controller.
+> 
+> >
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 sleepmode      |target sleep mode                                      |
+> >
+> >What values can this assume ? Is there any predefined sleep value here ?
+> 
+> From imx-sm, the define is hardware related. I could list in next version.
+> 
+> #define CPU_SLEEP_MODE_RUN      0U
+> #define CPU_SLEEP_MODE_WAIT     1U
+> #define CPU_SLEEP_MODE_STOP     2U
+> #define CPU_SLEEP_MODE_SUSPEND  3U
+> 
+> RUN, WAIT, STOP, SUSPEND is GPC concept. it means when wfi, the GPC will
+> do what action.
+> 
+> >
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|int32 status          |SUCCESS: if the CPU sleep mode is set successfully.    |
+> >> +|                      |NOT_FOUND: if cpuId does not point to a valid CPU.     |
+> >> +|                      |INVALID_PARAMETERS: the sleepmode or flags is invalid. |
+> >> +|                      |DENIED: the calling agent is not allowed to configure  |
+> >> +|                      |the CPU                                                |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +
+> >> +CPU_INFO_GET
+> >> +~~~~~~~~~~~~
+> >> +message_id: 0xC
+> >> +protocol_id: 0x82
+> >> +
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Parameters                                                                    |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 cpuid          |Identifier for the CPU                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Return values                                                                 |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|Name                  |Description                                            |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|int32 status          |SUCCESS: if valid attributes are returned successfully.|
+> >> +|                      |NOT_FOUND: if the cpuid is not valid.                  |
+> >> ++----------------------+-------------------------------------------------------+
+> >> +|uint32 runmode        |Run mode for the CPU                                   |
+> >
+> >What are the possible runmode values ?
+> 
+> #define CPU_RUN_MODE_START      0U // start cpu
+> #define CPU_RUN_MODE_HOLD       1U // power up and hold cpu
+> #define CPU_RUN_MODE_STOP       2U // reset and hold cpu
+> #define CPU_RUN_MODE_SLEEP      3U // in cpuidle
+> 
+> Appreciate for detailed reviewing on the documentation.
+> 
+
+Thanks,
+Cristian
