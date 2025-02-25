@@ -1,63 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85371212F8F
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8680619E7ED
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740515597; cv=none; b=Xt7Wxrq6O0GgRg9Yg+LsRvDg/maCo2/lKkg6qdHq+L5wE24jMAYMttfsXw0UpNZio/IhZfdEXe7m3sjIZzi/0K9hKKuhOvxMTVCXo+Jsj8XPrWzbP0WHO8InDBD7Xkg5Vel63H8GsOU/71DGxNpjjzxmoz24xIW7qLZXkj57JUk=
+	t=1740515664; cv=none; b=s0+GhzcUIFo3ZdTQJUfg5c1f4zW8Bac6zFoKZ/V3pZUxZrZAzmJj/0eCWu+YfNpZhtdi2kdinRJD8gDppvTLmkzV5BCoh1p840QDt7ifrlih5TdFJ01B/MsQk28bGRM0StG9WSNveoDnZcaCnQHBhX7ly0k837CdTOTyDMu5chk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740515597; c=relaxed/simple;
-	bh=n+valiEsDDDHrBxP16wgaccR8w/epUQYkjfQhgtXiHo=;
+	s=arc-20240116; t=1740515664; c=relaxed/simple;
+	bh=wO6gTDBz/P29n3Bnp+RwMhO5+vhL1z74WiB9k3Xfdjo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/QBqQ1atIAafVSZY7cPEeK+ueBp3JIKn9DjFQcW3uHjHLt45mcii/5Yax9eFZ9avGehfHraxChUvEdOtD3L4wtNcLg1vhY91Wa091k6EnQl3WBloIOTzXCyNmWj8Ml3HZ7Jq6iPx5+4AIm/jrET3shh5t+gsHjazTfklTR2eHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KrA6cgzn; arc=none smtp.client-ip=209.85.128.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4Dz4hH5l+126IMcdPfnbrOywUjDSfxSnKnjp3e3a9nrG31B1wqos1BqqFmyJ/23kWi5V1RQrvvPyAeHskZ+k7hEr1+f/AwT2h9agFgIMJNHSCO04Ja1pjdIE4/sbqNJ3LXDX7SaAk1Yl3IEutKmtUZmeGg6XjgIjl0p3fBORXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMWec+Cg; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KrA6cgzn"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso37647215e9.0
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:33:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMWec+Cg"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4399deda38cso37571565e9.1
+        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:34:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740515594; x=1741120394; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740515661; x=1741120461; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mfzXyH7NZ0CXwUyIU7zqxa+qi2bPj6GEOWtmkR9Kazg=;
-        b=KrA6cgznODn8RzOUdOIZiKfwav9ti8fXwwi49anj2mCDcnGeP08FqIIR728LZs88E3
-         4ArEIJICxmZ9gaam7dwWdf2u/spW2i6uJH6Of80fPZPolUgE2sJzIhpeWqHHUeLFG9pK
-         zhPICRtXp1qfAwVRlfMxbSFw764so9KceQw8rqqv6Q0B0XYOpooHoubQSkspj5ZPoPtA
-         3AOcEv+AohTV3KeKzfzm44xg+tjDTJ1+IR3NNOgX/Wx7opUOC6My+IHvIg6xdSPPmS1t
-         6dBsDBwxiqsXq38Vx51oSdOidDNHDi4iVDqNRm4lq84p15x4f01Q+8dwqYkMKw0R9ali
-         HgTQ==
+        bh=4Ervwt0Iiaz8TlPYAI0hebTCzxJKg0dTs5t3Xq8VOzk=;
+        b=lMWec+Cgy/8pMIWPbsQdpgRhzvEdGcAy6MwNI0+//ucd48caDS/5cMbrwft0/UJ6ll
+         zvD6roT5zP8Dw31wVix+lp0Vy4Ly6oDLrAL1HDCqpw+ITF6pRtkVP5bg8Zrahz2jh96q
+         li/O1uHTy4gykMYFG5YYmswXxhN8O9R5FcNEHXcQUkZ3+cd/sIijcGb0xq5TCShbnojN
+         WIV9PdBpuNJXelOJf0e86wWjVkUU9Dh6dpubhUpeQSUVn1uvsahkr18gXOlmCg1XgfTa
+         Th7WodLvDLYrcHsUpHa8YU1aPilTFXSsMJd1xuRvZz/pSkTjSGFL3y3F7rSSSKnL0hBE
+         ko8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740515594; x=1741120394;
+        d=1e100.net; s=20230601; t=1740515661; x=1741120461;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mfzXyH7NZ0CXwUyIU7zqxa+qi2bPj6GEOWtmkR9Kazg=;
-        b=plHODutVakYM5oCCN2Up/l5gO0hirEWMBcNuj2vnjKB6TTadbJLzkm6bHn+62XZlap
-         FbOep289rvX0Qi9uI8FaOm5VgMSq8j+nxvIjBzGS+kE3b7UOyDiM+GL6fO2syhrF27oQ
-         T6KttFlbi/NGVkAc0qdy9JfJv3RnzYlPuZkTLgqDSZGzVPA5c1Ypu7parM+6uwlzWfYl
-         3qfHzPhKiWILw49E0SxtGLbIE/vQVN9rk3TdxE+qdtDT/8D5E5M8P+o+FEpByqTkgca8
-         ZgzfJOFsPFQblXJsT3b3WdGHXjmDIo4TTyw+qucRK7MBezivHZtMz2pscB0gSIKlNxzy
-         6xhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUk6ZWapMLWv8JsUda3pmnZ/6VepEJVMNUd6sxxq43B7YsmqjSrxpSz15pkYswYSgqRC88=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPAbWbldiFqnhWhei96c3WjcF81TJKqbgMym5qzMNSnf0SwAjY
-	rdAft11GdHWp4NM+9tanLMESicIdDu0OQJLtfFbNLNDYCgUfvr76
-X-Gm-Gg: ASbGncv0imQyNpyVNWyaL8rn6wwv6ll6n4XkFDapVxy4zVwSOteW6q8tEC0OSb6/wrh
-	eNuWWjbOsrY5tZm2verg06Ri0PzCdU8GxnJ0eKeHFse+B0IXr5a8ojeBWg7Y/fmiach7Sd92blV
-	8OJaZTWsAxLNuOZ26fsom6E2Uk8r1hnpCVYm6EONZro6OORlHUDKve2R9iEgHI/XoXEgMRoh1VD
-	zp2nwMchNeNXXiWj1lxgr1siNzU0QsVzHTWVHd0jrF/iEwWlNsjaDnX9ThAvOgn/Ovjx2LPL27K
-	/g/A4cUr2FVnEmP8abqzWLqAq86Vtxe+8LIKKzgISiGiWL3n6QQyQGIw2KqFHqvXMjgfjl2fnW7
-	34Ct/na7sS3ju
-X-Google-Smtp-Source: AGHT+IEOGawFqhgpNgYj/SR8/F9v9KrOsztMk0p6RFVqMJcMCZS2I8sfJ+MqQCPoKPwyjrwTYZAFuw==
-X-Received: by 2002:a05:600c:4446:b0:439:9bed:9cfd with SMTP id 5b1f17b1804b1-43ab0f311f9mr49606745e9.11.1740515593421;
-        Tue, 25 Feb 2025 12:33:13 -0800 (PST)
+        bh=4Ervwt0Iiaz8TlPYAI0hebTCzxJKg0dTs5t3Xq8VOzk=;
+        b=QRL4bGrhppKlqYi58W/9scpMy4RhlzzDaPyZKyQdLwgBij0RncwKLE7XflXh23MfY/
+         AOFZca8d48KpZP4zf+ht1AvElhBKd1O0CwwrJgPXeppeuFYHynDODhQbFu3SjyPBr5Dn
+         p034cLOOlQIw5Qo9J1aG54RHEmboImUk2k6jU2M1qGimP6mLWaoXPeRcWl7o2REvVMu3
+         2ULHV9DI3ocMfs3XN9347TVIKXitbDyuulyFTjYIXAiJccC6Ak741WdPx02CWBfGjPJC
+         tBhOUStpi0ZLo0w8t8++bx7nZ7d4g/cXc+uTQyO54HqActE/mbXdKKTDc+0dTM+zm5q1
+         C4sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVx0oHpt8Eil6FPUWfuN6WTU3kEpuWclvexV6BRo3xwvuzPYNolsy/Eg4YpKpZkexiy+Kg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz2CvjjAShJnI/rSuQ0vwtUIR4HqhK8eox0T79AsKljEsiuc55n
+	YHpoFsA+f4Mh4DCk3gmlAZiWQ2UgJa7cG0YrGRqYzD+Y1NlktHRR
+X-Gm-Gg: ASbGncvyMCL6OhlsaTb3I0rHOll9AzWOpZ8z82FfVOtexFTzqzusknGbZrv7rFJ7XNh
+	WJUWRiJsQHswnBqzN7itcSw1M20iv8eJjLBB8+2mQrcHnuDKif6ZCK7hQuBKmNhhO0pSmVmEUFO
+	vYTVOXnOKpQuo2P2vOBO45vMldDkQ4Sk+9ZtItPGHLLmD0QDSufLVQqAub0b8zncdBcOkVqx3pP
+	b8uRxd91iRy8lijcQrZSzJe2fWn3NCCKpTYF00ro9/eeagKDiO7Zk+sSEF2b55HAFsVL4luKlXM
+	KYeS1h3G3q7L3BhPUJMcwHhypcl5d4AioUAWHsJlhCuK8C77Xt0PjT3YGKI/1O9jTn2Hz4aa3bf
+	XZidsJT1ptxd/
+X-Google-Smtp-Source: AGHT+IH4PaS/thx0o4a7besZweYaotUTeodWY36gLy1s0OvXS5nmZXjt97njg+FlwYzzfUDwC/lzFg==
+X-Received: by 2002:a05:600c:468e:b0:439:9828:c44b with SMTP id 5b1f17b1804b1-43ab0f3ccddmr50953145e9.14.1740515660513;
+        Tue, 25 Feb 2025 12:34:20 -0800 (PST)
 Received: from orome (p200300e41f187700f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f18:7700:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd882602sm3388780f8f.41.2025.02.25.12.33.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab156a10fsm37694025e9.37.2025.02.25.12.34.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 12:33:12 -0800 (PST)
-Date: Tue, 25 Feb 2025 21:33:10 +0100
+        Tue, 25 Feb 2025 12:34:19 -0800 (PST)
+Date: Tue, 25 Feb 2025 21:34:16 +0100
 From: Thierry Reding <thierry.reding@gmail.com>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -71,11 +71,11 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Shawn Guo <shawnguo@kernel.org>, Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 1/7] net: stmmac: provide generic transmit
- clock configuration hook
-Message-ID: <qtxnw63qgwt4zbcwktooytp3uwg746gjqdhzqmszz6t2oma4ah@kzlytutixoky>
+Subject: Re: [PATCH RFC net-next 2/7] net: stmmac: provide generic
+ implementation for set_clk_tx_rate method
+Message-ID: <qnxvliijwsx7p7xht5mklsbpywgsx5kchsv4gagjmiuphwgoqa@tr2gidpfktxp>
 References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLYl-004RYv-Gz@rmk-PC.armlinux.org.uk>
+ <E1tkLYq-004RZ1-Kw@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,71 +83,51 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3tllvznwlcmcp5xs"
+	protocol="application/pgp-signature"; boundary="ub7wq6jvawxv6zt3"
 Content-Disposition: inline
-In-Reply-To: <E1tkLYl-004RYv-Gz@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1tkLYq-004RZ1-Kw@rmk-PC.armlinux.org.uk>
 
 
---3tllvznwlcmcp5xs
+--ub7wq6jvawxv6zt3
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RFC net-next 1/7] net: stmmac: provide generic transmit
- clock configuration hook
+Subject: Re: [PATCH RFC net-next 2/7] net: stmmac: provide generic
+ implementation for set_clk_tx_rate method
 MIME-Version: 1.0
 
-On Tue, Feb 18, 2025 at 11:14:39AM +0000, Russell King (Oracle) wrote:
-> Several stmmac sub-drivers which support RGMII follow the same pattern.
-> They calculate the transmit clock, and then call the clk API to set a
-> clock to that rate.
->=20
-> Analysis of documentation suggests that the platform is responsible for
-> providing the transmit clock to the DWMAC core (clk_tx_i). The expected
-> rates are:
->=20
-> 	10Mbps	100Mbps	1Gbps
-> MII	2.5MHz	25MHz
-> GMII			125MHz
-> RGMI	2.5MHz	25MHz	125MHz
-> RMII	2.5MHz	25MHz
->=20
-> It seems some platforms require this clock to be manually configured,
-> but there are outputs from the MAC core that indicate the speed, so a
-> platform may use these to automatically configure the clock. Thus, we
-> can't just provide one solution to configuring the clock.
->=20
-> Moreover, the clock may need to be derived from one of several sources
-> depending on the interface mode.
->=20
-> Provide a platform hook that is passed the interface mode, speed, and
-> transmit clock.
+On Tue, Feb 18, 2025 at 11:14:44AM +0000, Russell King (Oracle) wrote:
+> Provide a generic implementation for the set_clk_tx_rate method
+> introduced by the previous patch, which is capable of configuring the
+> MAC transmit clock for 10M, 100M and 1000M speeds for at least MII,
+> GMII, RGMII and RMII interface modes.
 >=20
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 > ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 +++++++++++
->  include/linux/stmmac.h                            |  4 ++++
->  2 files changed, 15 insertions(+)
+>  drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 ++
+>  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 32 +++++++++++++++++++
+>  2 files changed, 34 insertions(+)
 
 Reviewed-by: Thierry Reding <treding@nvidia.com>
 
---3tllvznwlcmcp5xs
+--ub7wq6jvawxv6zt3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAme+KQYACgkQ3SOs138+
-s6EOmw/+NeeoaUSqMoO7BHZUWvxr8/OKrzqzdp0HpmensxnadCO/WqOLakmT5co9
-XTRZQVmvq+ZQC1nWfstqK4ND3ulPNRma9zkyTk++49QMi40BznccIGX/YcME3zlM
-nGdEC5u9vH3xq1GBvsi0blaAouIy/8uqSnI0RXVj1RcJxWO+y99hBSKJnE0QpYzy
-T19f4RuwyuQAXFkhjBoBrl8sOJ7mZObyvvZV7/DobMmmFcvWCc1ieompVEWCV9st
-CJmAxheTHrPJ96/cWBPfaTLmntsZNV//h7tMjIV+vkBB1a4uVzcRELW5x5JDuC5O
-XHtyvCV7Ve02iTxfPVAeK/glqo7CK6XkhK32Uhl+yKp3alu5sP50w9AMlB5LVw7o
-zo3fyBvdK5+0L18tdb8fJdr36LQnYnq2Wnb3cT6DkjG/8CKMVocXMfQgfytk1FEp
-sIsFNpEj72fQ7xFikWevv6FWfX+5+x3IkiWKGWc62rUBTLUeCbXV8YawYcco2Du2
-RLw49bsH7J9GgTNL6ZrD0Q0owRqa0FibL3zMd+C3cl85qRq4jBmhXeluUoPi6Dkc
-DI8RPv9C0noqkFN5QcoVeE8n/mTCKvzONdUL4irltre6N/iMSDMfbbxOsdnWHsGE
-TWQbPh7S0dUQAbeKa1i8Y/9vALxV3CF6vOtAKvGkqhmgf18Ge3Y=
-=BaLA
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAme+KUgACgkQ3SOs138+
+s6G1TxAAi/NDxcQZKCI10VHrxMsf1JqDQf5d16ugQYy/sfomsGLksVt7u4qo01eJ
+56Nwsp31cLXit8KO6fh7kBhXbkKaozzFKpgvAeTCQyHM7KOmEKrIfrs7oo1fyFdR
+brnyzTSp5r301ED3wgPNAwg1lbSOFDX0JhSHF4lrQwkIu7TB7FC0gMlrNVuX4ll1
+6Jsi4x3YBtz+7zJh5KWFXlYnaGy2LCaYeR1JJsO5RxHtoL1QriSwcn0v8Z4GuaKN
+euINPJQL8ERPhMWzGY9KhUbUyR8CY3q87LBq1+cWzCZ4G5oO7zCKe1nuWuaUMZUR
+6eSfVvvpoa1DYRU7hlkllxD8WFE6adoOv9MR+5KUpMxDUN+fpGB+9kFfInnHJeOH
+QagK5nVlC+2WiXyfdATHT4Kef8m++YGZPuDeEtBgzHnOZ4IK+zvlsyf69cONycCU
+7oOrEmojJxKMK0A3o4/kFNccQNaPB3ZVdoRXJkZvdBjTuRZ2uvpKvYpoRb4bhAmE
+CF0avGa67oZSPuTTSizHZinbOmwpUsl6RhBS6rnqsWBohLzE0gGLAtWHs7lkyI4+
+wyEduelKoxYTYtcniJXK9RPPT59d5AajwDvEoA3uu3PLLfSY6FKP3Yg1eELMZS4u
+0XC+px/bSRP76lDB7td0YPQFcgCAmpRW4bJgB1oK8/OGDNh1V1Q=
+=85N8
 -----END PGP SIGNATURE-----
 
---3tllvznwlcmcp5xs--
+--ub7wq6jvawxv6zt3--
