@@ -1,171 +1,292 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013037.outbound.protection.outlook.com [52.101.67.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8086267F7B
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 11:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740481235; cv=fail; b=tYoKmhVmg74F5wUi7NMVDoKmQCLL+gWA1lzkmuL5JrE+knu7YUE7B9s1avLn88rwMPFeHpeXh1FjdOdx3yDDGCQe26ffGwah0Y6T4VZLDgiOGeeldIgg5iVwjXeJ1sDIU62hXp2H3WwAs5Z3kF3ESe7w/gyBx3aaAc8EqDub7Q4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740481235; c=relaxed/simple;
-	bh=j3BQJJmYzvfe2OKIsPP0eR8CqOHVmWmmba6QHXldPQ0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B0r5VzyIAxCjs/Wd/Cyu0+uPOaRncOExNCIKQi5AcpNQt+59q8c4d29zkiagWz96x6STOHA7K1ftnXHrwC7TCEUKKQA7lvqS4yVMoybeWONW33niHND1O/+/OYo4VjlQA21gRPqtF3EEI9UvHxvuXLGxi214xkbhShZsZXSCHEs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SacVVCr0; arc=fail smtp.client-ip=52.101.67.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SacVVCr0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BNsJLY28AphmBGbH3BPcCkeh9Jw87Wy4HQwDswriQyVJkwVK00dpmdGkvY5RKPIp8eBjS+EmBNlH1GnHWVt6XvBrw6JZvOazAI3vpTbSFN40Uy6vuKCo8aB7nRxt2Y6M3G0ZCj5QNm4zv4aACASzOlb8Nt24YOz+1z08nApVAqvKQZs0DxtyGMlwXWgu4jipqz1CYvQSKfqogCBjAxRi6SDc11Dc7l7umyidUzw/Dfll21EViOjAOLvK+/U5+hiSrqYDu3yhRFBhLpUs+EhrJxxmzWlKPBtvtnbi6n54gRYTxfQ5aEsRE/7U9MPkIKfVr6YbSBu2FXml4wDhhRmcJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j3BQJJmYzvfe2OKIsPP0eR8CqOHVmWmmba6QHXldPQ0=;
- b=DNwDlNHb6a5Z2sdMPi6Dgvi0JioeaVCKGycbFg45MVJobQCpxM3o2MI0j44yXAApfUttMZwBE7WT3B1JpTjt5heuP0Vr3oXSeI4Yob6I8bHL0zdyx2os8S4t40eEv2G46Ovqr2fjQObbBQiNNWXubIQyfDRO5EzRcVuJwIyjZfz+x/pLsEvHH0FjvOEa3RHlH/fkc8vK9MsBbQEvQaWalvBRuwHjOvDosud8AvwdS0zENlJw8h6TK8y/UtiTLdDJHz292c84MjxlWOMKX5iTcDvNtHKK2oCg3yIi6af1+1ASg32cDxtE6H9GpMCWHjK6xE42o1pLPgPbTiLBHm4SdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j3BQJJmYzvfe2OKIsPP0eR8CqOHVmWmmba6QHXldPQ0=;
- b=SacVVCr0bUAKck1Vay0TrB//7nOKzBgy9hybfNrYJPlWATotuF6v+tKYf4Bpgv64Y/QWiJCoauE1R1RSLB1Kk2KeYWMZWY8knOgqjl/ZJdTBqDKTCtWS+LTawPwdbETox04+zKdoAQDPCbAPIBIaHK2gVDTGJ7GDrzJuYZUSO+tSHHydtndguw003UWOIoli7ZAusYRCpkhrp7rcsX0KAQnimcoyC8nj5Bwz1b58eEYf2SBEezxevBK9Afzoy70LyuY2+YeKcQeahyezP3fqX6/q1MfHuUrIFFvhi+TeKI6fuCsSabtXwzD2EzdsUY2GOEnyop8H71lqqXD+47lVHA==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by VE1PR04MB7312.eurprd04.prod.outlook.com (2603:10a6:800:1a5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Tue, 25 Feb
- 2025 11:00:30 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8466.013; Tue, 25 Feb 2025
- 11:00:30 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Ulf
- Hansson <ulf.hansson@linaro.org>
-CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux@ew.tq-group.com"
-	<linux@ew.tq-group.com>, "linux-clk@vger.kernel.org"
-	<linux-clk@vger.kernel.org>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>
-Subject: RE: [PATCH v2 3/6] soc: imx: imx93-blk-ctrl: Scan subnodes and bind
- drivers to them
-Thread-Topic: [PATCH v2 3/6] soc: imx: imx93-blk-ctrl: Scan subnodes and bind
- drivers to them
-Thread-Index: AQHbhshzO7y3KbOJQUW16EzpI9lw3LNX2x+Q
-Date: Tue, 25 Feb 2025 11:00:30 +0000
-Message-ID:
- <PAXPR04MB84592DE3846EEBEFBE2302D088C32@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20250224142831.485159-1-alexander.stein@ew.tq-group.com>
- <20250224142831.485159-4-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20250224142831.485159-4-alexander.stein@ew.tq-group.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|VE1PR04MB7312:EE_
-x-ms-office365-filtering-correlation-id: 7bc7c794-0a19-42ac-9d5f-08dd558b9e60
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018|921020;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?U/KDhcRs6BMmldAEdif96fvRu22ke0DUnVx8tQJ4FW2/J5Amxu8kryBdjmiT?=
- =?us-ascii?Q?kecPXwMCMxURO1tdPoiQZ88q+o5ZsXY455Njc0A+qL4ZoK5ITeOeYk5y78pq?=
- =?us-ascii?Q?MIkWcLA5Oa9Pl7wlOwK1A3NP8aBG9hMrk9XdWJtcOEOQntmKb51Bozgc1Zhi?=
- =?us-ascii?Q?DKhKUGHDG2g32izSfm05siueFDA4TZJEkx5mDZGn8ryc0BqkbjZLHdOFe4AM?=
- =?us-ascii?Q?TUs4vouUshu5euAbwJgFQLY/J3Pvt5oMtw+dHEU+3cv3JHwOcXRxbGgaeqLT?=
- =?us-ascii?Q?sL8g/4sd3zNPmXXA4nsQb0TsYgigAcfgj4hmsB/WL897l2h9h7Dc+dcST2VE?=
- =?us-ascii?Q?EVFqAG6Vm2SQ6CpeoDSaO+4TMgnuuykSDAI6gUmThul1T5midKQquSsq4cDK?=
- =?us-ascii?Q?FOLRkbR7nUYvjgzs41wcpX4WXTAK7q1T7rfKwgjVeeaNCAVPFK7ZxjvwXxfo?=
- =?us-ascii?Q?taYUFG0CXwDKzHpaMpU6Go0NRHxoC7/WTEORDVDykPhRAKZoG85NApAsbKQl?=
- =?us-ascii?Q?9/dPvrggi+wIBEHA8OSdHxMSul5dZQFhyEMBYdUVHhh2eSP1nzsH+AqWxWMU?=
- =?us-ascii?Q?fV7IsT5caGA4ctQAHgWiSZzvWHZJYxfkZr1xAmYSl94ODn7QrMNp7N15+ld6?=
- =?us-ascii?Q?PraK/juUGp8UiwF0ekfmu68e5IxFNSC5GO62HIxr/taBk4Ot4H1wec68eBPA?=
- =?us-ascii?Q?hfm/c0HBepjg+mBJEod3NXAlwk8y74/R5zyoG/6ct/Qfb101agxhpblowsqD?=
- =?us-ascii?Q?gQDOpgQJee4JOtse0JmB9A7CuoCXMn0yh3UFj3m/58Py7rxXIo8fztbpVg5X?=
- =?us-ascii?Q?5r7zXUhiZmX/J+0rom46MOiBwEGmCjpXffaTYovg5YsS38joPttt/aCrUsWz?=
- =?us-ascii?Q?9bCXvSMzdz3OJvdOCV3yby3DwTd/IX9rezvcdt2b0eJrDOz/dQnrWtVOxVWD?=
- =?us-ascii?Q?HHHlE7GlTG8wLzlXhCMaZaxtKwdXQwcahdWOidU0DInRgRMdmC2EiWD20wzK?=
- =?us-ascii?Q?1fl4/RvvvNYtsjJb7BZ1eHtgViMPXY7J3xp0SOBAzHkQSjOL9GqHp5jvcsd9?=
- =?us-ascii?Q?H8z4B2y0supnzb0H+31O6Il+YVFJUhvWGZxO3JALhKQPUuUu23tnziYYuvY8?=
- =?us-ascii?Q?26Xu3z/vZE3nMXwy5TqVvPKw5uypKycJWJYPblbDp+NceZ1VaQCQGcPT7UyX?=
- =?us-ascii?Q?W4hSLrU9/PByjOyF39LqMoiyNrs1sDXC4HlEoHd06dmaV4HDsYcgxTqVFAbI?=
- =?us-ascii?Q?TRcG17FilsGHtjtaf3ig8cNMQhzxwyhIJysfU5QfyF/BO4tWgvYeeaPpga8+?=
- =?us-ascii?Q?r60qDAPXYBszbqa+zeshv8zlGn4Untxsh9bl5+B9deqoDuKyXtSraKIl7LGo?=
- =?us-ascii?Q?z3T2kn1pSRe2SyOZNgfWbRQaqW6fkGdtMU1quts4zQsoA+4lHjXWW8clvVKH?=
- =?us-ascii?Q?y4Dh4VLDXLh5Lgs4sJxeHa9CdFc8H/l+?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?31tDz/wCO+H0/WEJOY4DVq5Hfx+ZrK7vGwRRMIz1gr+y0tphCAt//8kC7s+L?=
- =?us-ascii?Q?AQfirl+icVv+9DJU7SVpXx7V11dkoVoSZ/c4z7N/bhPpfE9br22TnkylgJUu?=
- =?us-ascii?Q?z/5eFdbAHVQY6RSPyITcZSP89oIcjMyioj302fYwJTwAtHkDV0MIdJXB0cWV?=
- =?us-ascii?Q?XbX1ho450qkzPbyjqaw4+zIhSnYa/nNp8LzmpOHXadysQlGNDrHGcx6EcYDJ?=
- =?us-ascii?Q?qbhtVPewBqTGCL30OlZs4G5P0CrtCjgm1+fEnisKxArInBk7c82mE8Adc9g+?=
- =?us-ascii?Q?AVlQh9HazmY5MjO034EhI3lefkyeUdTmWYfieXiotbUIJLR2vhbFWwHiVsRb?=
- =?us-ascii?Q?D9dfK5j9lv7zUohxTk0Q1aqPkQmYL4SmdlwfIJkocowOQbROhKPRak99U1ST?=
- =?us-ascii?Q?MkKcNUYiVp2gLUA0rq3lu92dkozn0/hk5A1lSRfo7q7DrSXiBF+oW4qBOzhm?=
- =?us-ascii?Q?WUczynrW3N8aaJ3dssTu8mOaGcwNJxuu4+BW9lUuePH72epsNtQnnoqiK+ME?=
- =?us-ascii?Q?vfpkg4wGGA/nMJ1/o6dpiMfH7f2k5IXLgf53rqIgNUINigahT/kJN3uP7FAG?=
- =?us-ascii?Q?ucNteC9eKVvyauRPkqhOKAOxjvxYx/tm4e74rjfkn3BINP/IKPqf2j9nZrdz?=
- =?us-ascii?Q?s8G4hQ0f0RUkt1cm1ISOt4urEje2tWeE1wmbLz7GBrVK70KDNvXlbGS/4Juh?=
- =?us-ascii?Q?6WRJZeB/B+b6JEMpvzFzVuA2F0KRy3ZIhXpCfNoARtD+6M8QbIMRIuyHb72d?=
- =?us-ascii?Q?YxkDaBL20JKbYkvC+xXhTCsH/Ih8B4CB0tlI5eTrMeLzwKKHKVoQIsRgaYmE?=
- =?us-ascii?Q?bZt5G7zhFbIMnNXyhalBOrbmWnt9l3eAkBbmBoeppkD2Cvtq3TuDiOFGKYCf?=
- =?us-ascii?Q?Lf8/O5EL+TnPH3RIy/EZKKwib/xBFIA7gWb9Qe24n6dybsMq1f91MinCzM2x?=
- =?us-ascii?Q?EYWcDINajKQOhfA8v/+Cg7e8aJQFr1ZsiNEqIjL6SEDc8/DNHfeJJ45Hecih?=
- =?us-ascii?Q?yY9sZulpzXsSjP/KAF9nEYTeBHaPYJ9f9RDZ6w3gLOR5/4J8LUq/rP1wVjRD?=
- =?us-ascii?Q?8ZuvAlHRCLEoagxitTwUY6ocB1EdcTA/IYtAwdxcTvbkzeaGrCAqQjF4VGQP?=
- =?us-ascii?Q?7R9LSIEnJXEIDivtwq6huJ7HtncdwXYnstB481nfvxSMIx8CwwHlDENYRq5G?=
- =?us-ascii?Q?c9u6RL+WH7DxE96ZofzCJmyaNECkM99mDF2tTqqWsyzaxfB/C1mYQTtSMq4k?=
- =?us-ascii?Q?NU/VzUanDWCas8TzDzhw2U/I7zL2yeuyHcA9HqTc3s2tlbh1cM43go0vgPrk?=
- =?us-ascii?Q?wxYsLpMETuKm28r8FLmOdI1g1IjlgwYkAQMV1FolfJbCvKczniaUYnilGO4E?=
- =?us-ascii?Q?YHjqrSVZuWEITUK5++LUhA5567zLRL8bBQKs101sctrkl2BRj/QbprR+sMbS?=
- =?us-ascii?Q?sT1GsQXvPqGOklYq1A7b5CMg4xo2Ldbd1GlhoJll0kyERpOfKZDkP2l2APdd?=
- =?us-ascii?Q?ONLxrAdN/z9erOJKqt04PG4gq9AeLLR9ehLtjGTqmnLQJE6QvWEhdz1MjxuS?=
- =?us-ascii?Q?RrQM7Ik8cloKYP6UwPM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F103DBB6
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 11:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740482720; cv=none; b=ldMYNeq4eVyNcpnzofzf9I7+SM/GTpzr3TYO3eIL+1StTg1wiU3DRnjCqPzLnNZvAbR984llnktUVH1ma6DXbxWO06I/xr7OWsD+aVai5o4Z1QJ/2/8ekcxYYfXbWakxTofmZ1sZ+MpbkC8ljAASpFKLhfHNszN20C/fCMWzEsg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740482720; c=relaxed/simple;
+	bh=JElWj9omZOIOVZlAA3KWEGXWH56+yW8/E4mjL6NYtoE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAgxOOhPNzVu5S8jITjly5PomqENLduC21Y9imqeHwi8PW1XqPOI8wFo2m8P9sWBO/oi1exznzsk5DaloHq4L/d6oWJcxpkKRUJq/4GjOTlS7YwKFwnjShS4s2j8b8WO1iWhP6eNxW51VuLUQ+qOZR123l+naCHXhbJoWYTtV8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84B651516;
+	Tue, 25 Feb 2025 03:25:34 -0800 (PST)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 04FA53F673;
+	Tue, 25 Feb 2025 03:25:15 -0800 (PST)
+Date: Tue, 25 Feb 2025 11:25:06 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 5/7] firmware: imx: Add i.MX95 SCMI LMM driver
+Message-ID: <Z72okilByCKhSsA3@pluto>
+References: <20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com>
+ <20250212-imx-lmm-cpu-v2-5-3aee005968c1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bc7c794-0a19-42ac-9d5f-08dd558b9e60
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Feb 2025 11:00:30.2106
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qaeTT3CelbFswoNqTVzGbmnqgwSQK/TaikLtrDtqzO+Tf+wRHJgH4E+/uwBUe6LnJSeJuv6aCJN+Y+dpmgOsKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7312
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250212-imx-lmm-cpu-v2-5-3aee005968c1@nxp.com>
 
-> Subject: [PATCH v2 3/6] soc: imx: imx93-blk-ctrl: Scan subnodes and
-> bind drivers to them
+On Wed, Feb 12, 2025 at 03:40:27PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> The i.MX95 System manager exports SCMI LMM protocol for linux to manage
+> Logical Machines. The driver is to use the LMM Protocol interface to
+> boot, shutdown a LM.
+> 
 
-Typo: soc->pmdomain
+Hi,
 
->=20
-> This particular block can have DT subnodes describing the LVDS LDB
-> bridge. Instead of misusing simple-bus to scan for those nodes, do the
-> scan within the driver.
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/firmware/imx/Kconfig    | 11 +++++
+>  drivers/firmware/imx/Makefile   |  1 +
+>  drivers/firmware/imx/sm-lmm.c   | 98 +++++++++++++++++++++++++++++++++++++++++
+>  include/linux/firmware/imx/sm.h | 33 ++++++++++++++
+>  4 files changed, 143 insertions(+)
+> 
+> diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
+> index 907cd149c40a8b5f1b14c53e1c315ff4a28f32ac..c3e344d6ecc645df1f0e3ee8078934c47f347fd7 100644
+> --- a/drivers/firmware/imx/Kconfig
+> +++ b/drivers/firmware/imx/Kconfig
+> @@ -23,6 +23,17 @@ config IMX_SCU
+>  	  This driver manages the IPC interface between host CPU and the
+>  	  SCU firmware running on M4.
+>  
+> +config IMX_SCMI_LMM_DRV
+> +	tristate "IMX SCMI LMM Protocol driver"
+> +	depends on IMX_SCMI_LMM_EXT || COMPILE_TEST
+> +	default y if ARCH_MXC
+> +	help
+> +	  The System Controller Management Interface firmware (SCMI FW) is
+> +	  a low-level system function which runs on a dedicated Cortex-M
+> +	  core that could provide Logical Machine management features.
+> +
+> +	  This driver can also be built as a module.
+> +
+>  config IMX_SCMI_MISC_DRV
+>  	tristate "IMX SCMI MISC Protocol driver"
+>  	default y if ARCH_MXC
+> diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
+> index 8d046c341be878bb6dd1e6277992ff66ae90e292..7762855d2a771169d4f1867d27e0d51be7c9ad03 100644
+> --- a/drivers/firmware/imx/Makefile
+> +++ b/drivers/firmware/imx/Makefile
+> @@ -2,3 +2,4 @@
+>  obj-$(CONFIG_IMX_DSP)		+= imx-dsp.o
+>  obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
+>  obj-${CONFIG_IMX_SCMI_MISC_DRV}	+= sm-misc.o
+> +obj-${CONFIG_IMX_SCMI_LMM_DRV}	+= sm-lmm.o
+> diff --git a/drivers/firmware/imx/sm-lmm.c b/drivers/firmware/imx/sm-lmm.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..ed9650a8cb7ca878874e8609f0a5c83b5e46204a
+> --- /dev/null
+> +++ b/drivers/firmware/imx/sm-lmm.c
+> @@ -0,0 +1,98 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#include <linux/firmware/imx/sm.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/scmi_protocol.h>
+> +#include <linux/scmi_imx_protocol.h>
+> +
+> +static const struct scmi_imx_lmm_proto_ops *imx_lmm_ops;
+> +static struct scmi_protocol_handle *ph;
+> +
+> +int scmi_imx_lmm_boot(u32 lmid)
+> +{
+> +	if (!ph)
+> +		return -EPROBE_DEFER;
+> +
+> +	return imx_lmm_ops->lmm_boot(ph, lmid);
+> +};
+> +EXPORT_SYMBOL(scmi_imx_lmm_boot);
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+
+...cant you unify this...
+
+> +
+> +int scmi_imx_lmm_info(u32 lmid, struct scmi_imx_lmm_info *info)
+> +{
+> +	if (!ph)
+> +		return -EPROBE_DEFER;
+> +
+> +	if (!info)
+> +		return -EINVAL;
+> +
+> +	return imx_lmm_ops->lmm_info(ph, lmid, info);
+> +};
+> +EXPORT_SYMBOL(scmi_imx_lmm_info);
+> +
+> +int scmi_imx_lmm_reset_vector_set(u32 lmid, u32 cpuid, u32 flags, u64 vector)
+> +{
+> +	if (!ph)
+> +		return -EPROBE_DEFER;
+> +
+> +	return imx_lmm_ops->lmm_reset_vector_set(ph, lmid, cpuid, flags, vector);
+> +}
+> +EXPORT_SYMBOL(scmi_imx_lmm_reset_vector_set);
+> +
+> +int scmi_imx_lmm_power_on(u32 lmid)
+> +{
+> +	if (!ph)
+> +		return -EPROBE_DEFER;
+> +
+> +	return imx_lmm_ops->lmm_power_on(ph, lmid);
+> +};
+> +EXPORT_SYMBOL(scmi_imx_lmm_power_on);
+
+...this...
+
+> +
+> +int scmi_imx_lmm_shutdown(u32 lmid, u32 flags)
+> +{
+> +	if (!ph)
+> +		return -EPROBE_DEFER;
+> +
+> +	return imx_lmm_ops->lmm_shutdown(ph, lmid, flags);
+> +};
+> +EXPORT_SYMBOL(scmi_imx_lmm_shutdown);
+> +
+
+...and this into some common operation that accepts parameters to
+specifiy what to do...like (just making up name)
+
+	scmi_imx_operation(lmid, flags, <OP>)
+
+...so exporting only ONE symbol ?
+
+> +static int scmi_imx_lmm_probe(struct scmi_device *sdev)
+> +{
+> +	const struct scmi_handle *handle = sdev->handle;
+> +
+> +	if (!handle)
+> +		return -ENODEV;
+> +
+> +	if (imx_lmm_ops) {
+> +		dev_err(&sdev->dev, "lmm already initialized\n");
+> +		return -EEXIST;
+> +	}
+> +
+> +	imx_lmm_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_IMX_LMM, &ph);
+> +	if (IS_ERR(imx_lmm_ops))
+> +		return PTR_ERR(imx_lmm_ops);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct scmi_device_id scmi_id_table[] = {
+> +	{ SCMI_PROTOCOL_IMX_LMM, "imx-lmm" },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(scmi, scmi_id_table);
+> +
+> +static struct scmi_driver scmi_imx_lmm_driver = {
+> +	.name = "scmi-imx-lmm",
+> +	.probe = scmi_imx_lmm_probe,
+> +	.id_table = scmi_id_table,
+> +};
+> +module_scmi_driver(scmi_imx_lmm_driver);
+> +
+> +MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
+> +MODULE_DESCRIPTION("IMX SM LMM driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
+> index 9b85a3f028d1b0a5287b453eb3ad8412a363fe6c..e02b7b558afb6f430f6fbeeaf3ee1f59feea3c1b 100644
+> --- a/include/linux/firmware/imx/sm.h
+> +++ b/include/linux/firmware/imx/sm.h
+> @@ -8,6 +8,7 @@
+>  
+>  #include <linux/bitfield.h>
+>  #include <linux/errno.h>
+> +#include <linux/scmi_imx_protocol.h>
+>  #include <linux/types.h>
+>  
+>  #define SCMI_IMX_CTRL_PDM_CLK_SEL	0	/* AON PDM clock sel */
+> @@ -20,4 +21,36 @@
+>  int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
+>  int scmi_imx_misc_ctrl_set(u32 id, u32 val);
+>
+
+This down below seems fine to me (maybe simoplfied as stated above) and
+I guess we should see if we dont hit some weird Kconfig combination that
+breaks some builds on some combination of modules/builtin: in the
+past I vaguely remember Arnd posting the build error...and in fact the
+above scmi_imx_misc_ctrl_set/get have NO ifdeffery and aer handeld in
+that reversed way in which the protocol depends on the driver
+
+config IMX_SCMI_MISC_EXT                                                         
+        tristate "i.MX SCMI MISC EXTENSION"                                      
+        depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)                     
+        depends on IMX_SCMI_MISC_DRV                                             
+        default y if ARCH_MXC                         
+
+...which weird but was needed by the build bots combinations....(I
+think)...so just a heads up that you could have to deal with that
+again...
+
+> +#if IS_ENABLED(CONFIG_IMX_SCMI_LMM_DRV) || IS_ENABLED(CONFIG_COMPILE_TEST)
+> +int scmi_imx_lmm_boot(u32 lmid);
+> +int scmi_imx_lmm_info(u32 lmid, struct scmi_imx_lmm_info *info);
+> +int scmi_imx_lmm_reset_vector_set(u32 lmid, u32 cpuid, u32 flags, u64 vector);
+> +int scmi_imx_lmm_power_on(u32 lmid);
+> +int scmi_imx_lmm_shutdown(u32 lmid, u32 flags);
+> +#else
+> +static inline int scmi_imx_lmm_boot(u32 lmid)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int scmi_imx_lmm_info(u32 lmid, struct scmi_imx_lmm_info *info)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int scmi_imx_lmm_reset_vector_set(u32 lmid, u32 cpuid, u32 flags, u64 vector)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int scmi_imx_lmm_power_on(u32 lmid)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int scmi_imx_lmm_shutdown(u32 lmid, u32 flags)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif
+>  #endif
+> 
+
+Other thean the above unification:
+
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+
+Thanks,
+Cristian
