@@ -1,157 +1,166 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED741269CEC
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 14:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850CF26B0B6;
+	Tue, 25 Feb 2025 14:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740492343; cv=none; b=i5+g0+LV8atkti2AGa//hM5aJIxIMgJt5pbKpsPuxOfylccx/tHBsc/2jUs/ml4No/yT4DN9uAwepd4AZCg79xi0J4V7IhGdPNYBhW4DjlYb9UonNNBItV7CE+AirsdRILGKLOAH/CWrQuL0rbTxDBD2dI88rw1D22mV+//S5U4=
+	t=1740493246; cv=none; b=nGPyXPo1vgV7R12MrcrwVjQPhHwkYW+wmUw4vOtK4KWqBT+D1Uc1LS+Q+8PyRDm6p++9ZZplFGjgp1vwkU7XSaixkgXZ6y/0laXzelqAJ79Twh8BqtllrhCJGwo8wK3Znh/CXfW5zOhMQvnXmnxnL3S/U4o87v9ZH7vPPWRYdUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740492343; c=relaxed/simple;
-	bh=kwghDFALfMvkIRmE1HPwrpB/0PzINC5FZ1kBkLfD77w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cQC34gRgR8o34ZFl6+FTSiL4mDDzNNakEWfJpAdoapv9MgqdIFeZc2qwXsJu/Z/+mzJ+EwZ0Y3mgmkfKWHAHDdDp1dDPV7iLlAlXvDSJPOofFb2940jNRucsfzQHslmCXMe/3KANVFjEInT/l/X6OozowHZ8/pNnH2Af1KLc3oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lNZIfkO/; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740493246; c=relaxed/simple;
+	bh=eDBxPB2ey6CEl5Fn4xbiSGUKr6VohrZZtt7brOucJf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R7YgSu23OeSXrgEYmBTcusfSWxKCw/H/ikJWFaAvdkbp33iLRffeUm1VXMWbEZhVOvsjXo8LsamRbKBdUGE7cLWRAPkvgndSAQDRcmsR0CzjzqU//4o8gtAulv3vYHQvdTgIN7xEF9zRUfsm+MLYcF9O8VOFKZ9Rb7UzzCNIBSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tB6gpsOp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lNZIfkO/"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e04064af07so8747092a12.0
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 06:05:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740492340; x=1741097140; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tPd/d1lS+e5D1SoZ8oB+qy8yBKc1e4tlJLwqgs9YB9g=;
-        b=lNZIfkO/zdEZAup9UAYWo8g3fYOMvlJPN33ex4cm7Jp0rXCH+dGWX3kDmrkmBok9aC
-         UnLH1tX5TrEPz7QoD4XEdxi6w1gMBpNRGQtTiJf4WZ2RcR2e7w01EvkIBxun3E3u10Dh
-         SJ1DnbcewA60MSgt0jdCa+F9KzQ9wZMJLWkbMxPSh1RtPibGRIOv/DoNSzsU0uBXqlge
-         TafuIdBBYhzO3CX+fJsFevrij+QdhZ2J0mO74HAgI9GTiP+5C0MCpUdk5B6u7CS5s6bx
-         VngB6joRyWw84gk+hZgfigLUCzNeK+XJjeupgtzYJcdJjF1R6SXmRfhDhFC9h5YLKIUk
-         B/ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740492340; x=1741097140;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tPd/d1lS+e5D1SoZ8oB+qy8yBKc1e4tlJLwqgs9YB9g=;
-        b=jnsuI2cd17zYewoittO9p5tCljj+ldHcIagBFGcvprR+kwoLPP9T3ie58k9py3X8Oz
-         Ydp1DU3wVVs65zf9Uimo6Q8nrWSYELubVF7BohjF6nHYpJc13XMwRaTo+hBCGcbj26FS
-         jDQqvDmhlPkuvz4+9Dz0Yiyn58Kb19MLMEwe6peC6sAJROielPypieTzc45g77EPO+bc
-         R/YgdU5BMx+qKrUnP6UhwGiC8Cw3307WbYjZS+QpOHqjdF1QLj13NprSS8RzFGzVuUYP
-         A1rQpPHLiyafeAHk4BG9CYs9iT2pAIRCw9SU2CoXAscWCq9vTLtwgO/xUFlhoNc2oHYT
-         KWGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNGk2qbODklH4Kii8BUW4A6nTz3j2fe51jm8y5rdzBZf3OTWU5tbw5suToEM1f886nJHw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZt6LK0IqJhphna/BeyXcWavSXxXKGqRYtPLKE4s5AtuSDPVzz
-	vG4WTvAkIb3tQ3fbffBR+ygCLiorg1OoPJdGSQMPlEXYmvs+BdFv
-X-Gm-Gg: ASbGncvtwET4ihIaDNa6huw/myZsT0/8i7Eir8wz9VWytYU1NOxa8wn5ektTb/5shTq
-	J2fEBGqEKKZI9PChF2gsYQG1hyqPLh9CBqAQG5CpkEsAgX5R9B4FjK+YSQXY8A2U9PaxqxZffKO
-	paTXUD7ZNIOMLqv+EyKTbq/B4XHoZXmwPYDjfVKsA4m3RjSAamnJJvyrUoYI7DnzVN8lZ+QMVp4
-	PCesHckcImxl7KScGlQVqZYHIaPT21EIKli6ZSyNfgMzP0XNUJwl3kK7cmQTndiyY7UZWVusG8n
-	RfLpw4AVGTA44odXrjgrkOwWiP6/M7Djr7+C6m/VOcUiDG8rMWc=
-X-Google-Smtp-Source: AGHT+IEduCdNbL7IFjCYL/sa3Uw1eSpI/ch7S+DMg3yhWwQhhBhMD+Xp89Ze8+kev4lk/55fC5U9WQ==
-X-Received: by 2002:a05:6402:1e8c:b0:5de:3478:269b with SMTP id 4fb4d7f45d1cf-5e44ba3ff2emr3170354a12.32.1740492339723;
-        Tue, 25 Feb 2025 06:05:39 -0800 (PST)
-Received: from [192.168.6.238] ([92.120.5.7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e45b716aadsm1258001a12.36.2025.02.25.06.05.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 06:05:39 -0800 (PST)
-Message-ID: <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
-Date: Tue, 25 Feb 2025 16:14:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tB6gpsOp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AC2C4CEDD;
+	Tue, 25 Feb 2025 14:20:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740493246;
+	bh=eDBxPB2ey6CEl5Fn4xbiSGUKr6VohrZZtt7brOucJf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tB6gpsOpZKp5aTOboDdyxR0i9eLXFNrNmyJ2DQAcxZG7y0ROWfd86e0ofq4/C3GmW
+	 EoCE+8hsHyQGRO/TQXvZQdoSp9FTZkRL/VMEmLJjvofLyy3tzlQwy+CQJ45ZX/HxYM
+	 qYoEvZyo6xCSG6gT0xlwTda3Y6XBPkTinf/6qbuTQCzHwPgfynS90twSPxcsBZI+Pq
+	 G09SKxwrVNnJdcStCTcZBUYGHwHDk6SFEZsdeEasBb73x2fyoBXbk5v6ca2PkcAj0N
+	 pwBFnmEMnFTVvBKPYPiKIQUcq9Fi8M1eepSTS3PR0XBqAycnnW8jxPdnfYbo13+5WQ
+	 b0QY4QMg0kaAw==
+Date: Tue, 25 Feb 2025 08:20:43 -0600
+From: Rob Herring <robh@kernel.org>
+To: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>, Liu Ying <victor.liu@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 05/14] dt-bindings: trivial-devices: add GOcontroll
+ Moduline IO modules
+Message-ID: <20250225142043.GA2173114-robh@kernel.org>
+References: <20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com>
+ <20250224-initial_display-v1-5-5ccbbf613543@gocontroll.com>
+ <20250224204428.GA4050751-robh@kernel.org>
+ <PA4PR04MB763009E88F6406CD84ACBD33C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
+ <20250225-smart-industrious-groundhog-41deb2@krzk-bin>
+ <PA4PR04MB76306D77C93FF2C51524BD95C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-Content-Language: en-GB
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
- <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
- <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
-From: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>
-In-Reply-To: <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PA4PR04MB76306D77C93FF2C51524BD95C5C32@PA4PR04MB7630.eurprd04.prod.outlook.com>
 
+On Tue, Feb 25, 2025 at 12:24:09PM +0000, Maud Spierings | GOcontroll wrote:
+> From: Krzysztof Kozlowski <krzk@kernel.org>
+> Sent: Tuesday, February 25, 2025 12:52 PM
+>  
+> >On Tue, Feb 25, 2025 at 07:39:52AM +0000, Maud Spierings | GOcontroll wrote:
+> >> From: Rob Herring <robh@kernel.org>
+> >> Sent: Monday, February 24, 2025 9:44 PM
+> >>  
+> >> >On Mon, Feb 24, 2025 at 02:50:55PM +0100, Maud Spierings wrote:
+> >> >> The main point of the Moduline series of embedded controllers is its
+> >> >> ecosystem of IO modules, these currently are operated through the spidev
+> >> >> interface. Ideally there will be a full dedicated driver in the future.
+> >> >>
+> >> >> Add the gocontroll moduline-module-slot device to enable the required
+> >> >> spidev interface.
+> >> >>
+> >> >> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> >> >> ---
+> >> >>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+> >> >>  1 file changed, 2 insertions(+)
+> >> >>
+> >> >> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> >> index 8255bb590c0cc619d15b27dcbfd3aa85389c0a54..24ba810f91b73efdc615c7fb46f771a300926f05 100644
+> >> >> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> >> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> >> @@ -107,6 +107,8 @@ properties:
+> >> >>            - fsl,mpl3115
+> >> >>              # MPR121: Proximity Capacitive Touch Sensor Controller
+> >> >>            - fsl,mpr121
+> >> >> +            # GOcontroll Moduline module slot for spi based IO modules
+> >> >
+> >> >I couldn't find anything about SPI for GOcontroll Moduline. Can you
+> >> >point me to what this hardware looks like. Based on what I did find,
+> >> >this seems incomplete and not likely a trivial device.
+> >>
+> >> I'll give some more details, if there is a v2 of this patch I will also
+> >> add more information in the commit message.
+> >>
+> >> The module slots have a number of pins, a lot of them currently unused as
+> >> they have not found a function yet, this is very much still a developing
+> >> product. The currently used interfaces to the SoC are:
+> >> 1. SPI bus as a spidev to ease developing new modules and quickly
+> >> integrate them. This is the main communication interface for control and
+> >> firmware updates.
+> >> 2. A reset pin, this is/was driven with the gpio-led driver but I doubt
+> >> that would get accepted upstream so I intend to switch to the much better
+> >> suited libgpio.
+> >
+> >reset-gpios is not in trivial devices, so that's already a hint you
+> >cannot use this binding.
+> >
+> >> 3. An interrupt pin, this is currently only used in the firmware update
+> >> utility [2] to speed up the update process. Other communication is done at
+> >> a regular interval.
+> >>
+> >> What is unused:
+> >> 1. A potentially multi-master i2c bus between all the module slots and
+> >> the SoC
+> >> 2. An SMBus alert line is shared between the modules, but not the SoC.
+> >> 3. A shared line designated as a clock line, intended to in the future
+> >> aid with synchronizing modules to each other for time critical control.
+> >>
+> >> current software that is used to work with the modules can be found at
+> >> [2] and [3], one of them is a Node-RED module the other is a blockset for
+> >> Matlab/Simulink generated code.
+> >>
+> >> If you know a better way I could describe this in the devicetree then I
+> >
+> >You need dedicated binding where you describe entire device, entire
+> >hardware, not what your driver supports in current release.
+> 
+> I see now that I also forgot the patch that adds this compatible to the
+> spidev driver. Didn't check for the spidevs in testing I guess.
+> 
+> Could I write bindings for this device, and then add the compatible to the
+> spidev driver for now? So it probes that driver, and then later when there
+> is a driver remove the compatible there and keep it only in the purpose
+> built driver?
+> 
+> So I'll write gocontroll,moduline-module-slot.yaml, don't quite know where
+> that would go. Define all these attributes in there and then add the 
+> compatible to drivers/spi/spidev.c
+> 
+> Is that okay?
 
-On 21.02.2025 21:56, Frank Li wrote:
-> On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> AIPS5 is actually AIPSTZ5 as it offers some security-related
->> configurations. Since these configurations need to be applied before
->> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
->> be their parent instead of keeping AIPS5 and adding a child node for
->> AIPSTZ5. Also, because of the security configurations, the address space
->> of the bus has to be changed to that of the configuration registers.
-> The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
-> config address part in your drivers.
->
-> Frank
+Yes. Bindings are forever, but drivers change. ;)
 
+Perhaps put it in connector/ as this looks a bit like a connector. Do 
+you envision DT overlays for the IO modules? Or modules don't have 
+sub-devices you need to describe? There's some effort to on connector 
+bindings (for mikrobus in particular) in order to de-couple host 
+buses/signals from the modules (i.e. so a DT overlay can be applied to 
+any DT defining the connector).
 
-Any concerns/anything wrong with current approach?
-
-
-I find it a bit awkward to have the whole bus address space
-
-in the DT given that we're only interested in using the access
-
-controller register space.
-
-
-I'm fine with the approach you suggested but I don't see a
-
-reason for using it?
-
-
->
->> Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
->> missing 'power-domains' property. The domain needs to be powered on before
->> attempting to configure the security-related registers.
->>
->> The DT node name is not changed to avoid potential issues with DTs in
->> which this node is referenced.
->>
->> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
->> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 8 +++++---
->>  1 file changed, 5 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> index e0d3b8cba221..a1d9b834d2da 100644
->> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
->> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
->>  			};
->>  		};
->>
->> -		aips5: bus@30c00000 {
->> -			compatible = "fsl,aips-bus", "simple-bus";
->> -			reg = <0x30c00000 0x400000>;
->> +		aips5: bus@30df0000 {
->> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
->> +			reg = <0x30df0000 0x10000>;
->> +			power-domains = <&pgc_audio>;
->>  			#address-cells = <1>;
->>  			#size-cells = <1>;
->> +			#access-controller-cells = <0>;
->>  			ranges;
->>
->>  			spba-bus@30c00000 {
->> --
->> 2.34.1
->>
+Rob
