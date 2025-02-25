@@ -1,102 +1,175 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE3267738
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A7E268C57
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740486731; cv=none; b=ubAwmL+uXI86J8iPn0oOh6iz00VZCYaeg72gRLONob/V0kRZAwnEh5usxftWrNFnw9y530AVbtK39cnMPmL0CAAVMSt+V89Lq8OEfdbcolDGrtVwwvzucFKRtLY3X48enkkthRSfQpxNF3qblfpg9CpB2WIgKmbVLCfOp/w8rj8=
+	t=1740488078; cv=none; b=pf35h5vwoNp+/Mr7/k9DrthyMNFC1fYIQ5u2++DRqlicso5C8G3t9lFkwyZhOv4f7tMq2JAMqI8I/TNUfE8A0KAku05jEaA3c+kijLDetLunBjE6D0HnL6mTtQG49RaamD767bgAneR1xYl76KoAcs0ZExnJboXFD+CFI73bzmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740486731; c=relaxed/simple;
-	bh=1pyD4SZ5Q/Lc9AqUwjBxII6k9+7yhxDr5m+K9ELoDbo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VE4ce1+xTag8NngqpnGBlwb1oBXwuMVT5NcgExm3r+092qJHTAOA07DCcQxc/CAX5wX/YWEDwQzmMUrOC6EcycwmtTngow3DoNpNpb7qyvPD2IlWPegPNb0DYQn6YWiciwUnMGR0oZeOvu2pvwkv4lJOP8mdM4MhXhgvHZAfiiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HnXzR9Xf; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740488078; c=relaxed/simple;
+	bh=W8LIqF7kkH6cCLj3gN0Tz1ix7jTva4xQTCeEx72fA+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aJXhEfSGqr90gT2WkVkbs10Y9jLZ+WTy+kuagL+bFcPUdQhODiyFc9hvLduRE/b9LgginIIgtGl9O8f/m5uyAiKUW3a1CIqZxWkMsz5zj6CtArDQFjCK91lE/yJ/si7JqTQsJAqBIeDAkOhbJcRGjgdjN4bfPcCQQ+Yjv2+W4YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=mjILcAIk; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HnXzR9Xf"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fc0bd358ccso11002128a91.2
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 04:32:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740486729; x=1741091529; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7hQ9PSnky3hzUHJ3r5I6w65ox232hzZUXn+oYcw3lsM=;
-        b=HnXzR9XfYU39oBC7M6eENuyRF7/n+HTghISXH1N3ZsBdPGTwAHDveqD3mx5Vkd9K6S
-         xgjjKItI0tUgyfbO13wqefKzEvXUCtZO89sFtyPuzTz/x/8lP1FNAQvkhzWfsm1i8D+K
-         yGV0e7JwHsMA5x6l/l/HFgePc3/oTdguD6EuHd5/ZO248nPp3RnfDuUVeTCVfaTgf0bc
-         CWCjPMKr+wz4OYjuQCZgJ2oWivmkHq+S4OhjccrP8bu054p01X5R6lKNL5TWnoBw8roq
-         xZHBOrPewinn+sd+AyZwlxILfQXJgCzg8L5e/NJPMaGwMEubVW8HrT6qd/aw3cTjui2f
-         kYrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740486729; x=1741091529;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7hQ9PSnky3hzUHJ3r5I6w65ox232hzZUXn+oYcw3lsM=;
-        b=UEzcZa+toVLwv/Z3ooC5+ddKNJYCBimoAFqL09XCE5fa39lLr53/28Y6Z+Cjp9UdOT
-         lXnUGrdbMaEUa4ImklMvvzZR7yJfotEbGDsVDJ+oaobyJRi9KbBFaqsvoJ9cnUF1P61H
-         1v95Cw9gM0scy++ASczM6ArhD8mATYA4H59ryDzSI62ORCotY+Mb9qZ/MfNxA8FzyXrs
-         Md/De3njwZV4AjNxG8xMMA57knUjnBPkwc7+J7DcLqU42xYOzxrU4BzewDOemzjwLe2w
-         Gx+E+j+ACSLrbiliABWqzcsEWbZzx1K9QGiS31lwwnXG2cQEalb3E6YYmWOoJypsrxmn
-         Uxpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJWSiDX2NBpVq7zNii/HtLFkUwOUMJ33H6PSFtHLLNdnfpXcA8EenmW1xBQwsgkePBzpc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8GMYa8S9odouvpl1ZonwFg5XggLhXyWW7a7i+pFXT8wHzvZJH
-	cYmvf9uiMomlBsZrcNDND+kmX8xeT3ijQLH7lpSdqMX34i4wdIp70ySJaMQ5qFdHRY/2hPUwplA
-	p9DwQ/32bORESpbVurbxgEMDxvKM=
-X-Gm-Gg: ASbGncuTKmsKI8prZOvVefQZvRRKhLMTrO80oQpqhzeZibdTUCZjkhFpD7mf8wBi6au
-	AhqJ6+vcmmsaXxA8gV87ENKZG4vvKsOCpa5ickhooRkINPp8AtmNGEU68KSZALRPoVgsQB1bAnF
-	Ua8l7N
-X-Google-Smtp-Source: AGHT+IEhj54F35PZEsJYYrzaWJyBanI+coj2uAU8OTJp3NVm093Jk0fuCJf+AJB+0L8a6Juozj6iHZgPqCZQO9GBPqA=
-X-Received: by 2002:a17:90b:2751:b0:2ee:df70:1ff3 with SMTP id
- 98e67ed59e1d1-2fe68a312b8mr6037629a91.0.1740486729075; Tue, 25 Feb 2025
- 04:32:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="mjILcAIk"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 624AE24002A
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 13:54:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1740488073; bh=W8LIqF7kkH6cCLj3gN0Tz1ix7jTva4xQTCeEx72fA+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=mjILcAIkXqzqNKdVJx8aNZciCsFDMgWk1hSEOtkfGbO6HFVdhu5Vy04vupoKrYvbv
+	 c6on3zliqSDojlPicjEIhjGdw22NRnh01nANE/3jRMwtf45rqgaGqjBEPbDvvOZQgg
+	 s4Jb6KbceFTD97AcdgGFKHeQkXDlrBbwG3iChrbmjhflZJIT8e5l8aV2shsyZ4sXKo
+	 6ofVmK+sYqzNywRiys2+yrDszLO59sxgwWTEXz+wqj0Y8Kj8BPrm6dHb8ttxz+aByz
+	 WtF5CLyU4itMYTueMHGswR3Km+h6T3R2kOXkZBOleO2kFLusG00NHpXaxrg6YwUFTp
+	 3ou6TTWtB7XpA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Z2HcG3WCTz9rxG;
+	Tue, 25 Feb 2025 13:54:21 +0100 (CET)
+Date: Tue, 25 Feb 2025 12:54:21 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Cc: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 05/12] dt-bindings: dma: Convert fsl,elo*-dma to YAML
+Message-ID: <Z729fRBNLAxdYD22@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-5-8137b0c42526@posteo.net>
+ <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
+ <Z684nUnDX4Sb98rQ@probook>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250225120707.2658709-1-m.felsch@pengutronix.de>
-In-Reply-To: <20250225120707.2658709-1-m.felsch@pengutronix.de>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 25 Feb 2025 14:33:45 +0200
-X-Gm-Features: AWEUYZlyvb2cM0-5vtqGVculafUAJm4OWsTkAKrC0Tw7wQoPYmnk7k-oBG7QuOM
-Message-ID: <CAEnQRZAoPxFN1ce0MEY34KpJO=SS4n33ehABH4auxWTDq8_R8g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] arm64: dts: imx8mn: fix micfil dmas settings
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: "robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, Sascha Hauer" <s.hauer@pengutronix.de>, kernel@pengutronix.de, aford173@gmail.com, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joy Zou <joy.zou@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z684nUnDX4Sb98rQ@probook>
 
-On Tue, Feb 25, 2025 at 2:12=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.=
-de> wrote:
->
-> The third dma cell is used for priority information not to encode
-> something else. The NXP downstream kernel use the third cell to encode
-> more information:
->
->  - Bit31: sw_done feature enable/disable
->  - Bit15~Bit8: selector
->  - Bit7~Bit0: priority level
->
-> but this was never mainlined. Therefore drop the further information and
-> just specify the priority which is 0.
->
-> FTR: The sw_done feature was mainlined without making use of the
-> devicetree.
->
-> Fixes: cca69ef6eba5 ("arm64: dts: imx8mn: Add support for micfil")
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+On Fri, Feb 14, 2025 at 12:35:41PM +0000, J. Neuschäfer wrote:
+> On Mon, Feb 10, 2025 at 02:39:13PM -0500, Frank Li wrote:
+> > On Fri, Feb 07, 2025 at 10:30:22PM +0100, J. Neuschäfer via B4 Relay wrote:
+> > > From: "J. Neuschäfer" <j.ne@posteo.net>
+> > >
+> > > The devicetree bindings for Freescale DMA engines have so far existed as
+> > > a text file. This patch converts them to YAML, and specifies all the
+> > > compatible strings currently in use in arch/powerpc/boot/dts.
+> > >
+> > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > > ---
+[...]
+> > Need ref to dma-common.yaml?
+> 
+> Sounds good, but I'm not sure what to do about the #dma-cells property,
+> which is required by dma-common.yaml.
+> 
+> There aren't many examples of DMA channels being explicitly declared in
+> device trees. One example that I could find is the the xilinx_dma.txt
+> binding:
+> 
+> 
+> 	axi_vdma_0: axivdma@40030000 {
+> 		compatible = "xlnx,axi-vdma-1.00.a";
+> 		#dma_cells = <1>;
+> 		reg = < 0x40030000 0x10000 >;
+> 		dma-ranges = <0x00000000 0x00000000 0x40000000>;
+> 		xlnx,num-fstores = <0x8>;
+> 		xlnx,flush-fsync = <0x1>;
+> 		xlnx,addrwidth = <0x20>;
+> 		clocks = <&clk 0>, <&clk 1>, <&clk 2>, <&clk 3>, <&clk 4>;
+> 		clock-names = "s_axi_lite_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk",
+> 			      "m_axis_mm2s_aclk", "s_axis_s2mm_aclk";
+> 		dma-channel@40030000 {
+> 			compatible = "xlnx,axi-vdma-mm2s-channel";
+> 			interrupts = < 0 54 4 >;
+> 			xlnx,datawidth = <0x40>;
+> 		};
+> 		dma-channel@40030030 {
+> 			compatible = "xlnx,axi-vdma-s2mm-channel";
+> 			interrupts = < 0 53 4 >;
+> 			xlnx,datawidth = <0x40>;
+> 		};
+> 	};
+> 
+> 	...
+> 
+> 	vdmatest_0: vdmatest@0 {
+> 		compatible ="xlnx,axi-vdma-test-1.00.a";
+> 		dmas = <&axi_vdma_0 0
+> 			&axi_vdma_0 1>;
+> 		dma-names = "vdma0", "vdma1";
+> 	};
+> 
+> It has #dma_cells (I'm sure #dma-cells was intended) on the controller.
+> 
+> 
+> Another example is in arch/powerpc/boot/dts/fsl/p1022si-post.dtsi:
+> 
+> 	dma@c300 {
+> 		dma00: dma-channel@0 {
+> 			compatible = "fsl,ssi-dma-channel";
+> 		};
+> 		dma01: dma-channel@80 {
+> 			compatible = "fsl,ssi-dma-channel";
+> 		};
+> 	};
+> 
+> 	...
+> 
+> 	ssi@15000 {
+> 		compatible = "fsl,mpc8610-ssi";
+> 		cell-index = <0>;
+> 		reg = <0x15000 0x100>;
+> 		interrupts = <75 2 0 0>;
+> 		fsl,playback-dma = <&dma00>;
+> 		fsl,capture-dma = <&dma01>;
+> 		fsl,fifo-depth = <15>;
+> 	};
+> 
+> 
+> There, the DMA channels are used directly and without additional
+> information (i.e. #dma-cells = <0>, althought it isn't specified).
 
-For all series:
+I had another look at dma-common.yaml and it explicitly requires
+#dma-cells to have a value of at least 1, so this second idea won't
+work.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
-Marco I couldn't find the cover letter for this series so I add my R-b tag =
-here.
+Best regards,
+J. Neuschäfer
