@@ -1,211 +1,74 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E6268689
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 15:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EF6175D5D;
+	Tue, 25 Feb 2025 15:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740496113; cv=none; b=GyyDdc5EibDla1qTTLpPRqJbcveq9zNcqoW/AoadaK/e4c9kkEJxM6xt9xV0bZuK3nCsvMnp5tIwGCmbX7Bj9X6gV30Z4r5ZumPGyzgVvNLresTDSdOKt/ufezIODURmov7qnalMZCPbV4ps3WNQAKITOI4j0QFQOKzmRHcHTPM=
+	t=1740498869; cv=none; b=nLOaaB2c0o/8vUkpqO8w6pl5anNy1SQzx/I7sTBsiyDXDzH3jECC6fJs0RdNF/UqTsM9RcW7GrF6pAJLuZj3hH9j/9+Mc/iLE4fyrX4fHXhwEOv448+92fu7xYr/Ubpwdlu6Ztt1ljCYvntl3lSlDk0NIrqewBtsChnTz8k0tvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740496113; c=relaxed/simple;
-	bh=Mc09/S3fGVi49IxpJn+6i1XyGTEZyCW41n3AVQAt/lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rdr3zVDA5CJ4r56ISYkTKBNSbz6QFLgQdrLSCYZQ1zzeZ3TTwrN7XcY4XlC5IE6GJiZNKRzqgBp2WEbX8jEMByM0XEXKKl2WUG7iOohMAJfkCsKrUW4WZHD411lvnEIaHt35QT+d8tjDFsiVtG9BQEODJpLitn0mFH59AWxb6XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=fpwfSYmb; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=P9DTov8v reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1740498869; c=relaxed/simple;
+	bh=JFYLCj2a+RezpMJ3sxiliKwrRs+8V3UC4lMf2gVjUZ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ct6TWnJnSp0crK0jUziks1cieYc145bVYC/tjxWTkQRzwK89Z0vLJ+J5Kwxnk3lshprXFRUJr/pStAfBJ90nU8iVQz2505BngoZfE75UQcPzbmzQzFdzMuDseZyC+BZNfWw77a/+h8vBgOY9nX6oz0W/r8trGgD+pD9ua3fkGE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1EROIzF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="fpwfSYmb";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="P9DTov8v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740496110; x=1772032110;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8OCdIQ+1x1cdbbT6miIAd2P9zxEWox7eNmbXTr+ysKY=;
-  b=fpwfSYmbj0J33C2nP/29PesegYwpxMvwQsenvvJ5YrunbL0tfu4QlFuI
-   hLjPwj6k/NAqwIJBLAppDzI3REPYX8O8GNkoc8psAxMbelph0EzGnnJ1f
-   oZsuvBFyoWDHU+VthQo/EwEo4kCHT6CMBoIKcRCAZl4OFMEd9yX0aUnq2
-   +gdk+WDtPbyzHVnSOwshiytIXb/I1Lbm+ctGdKhythmyrbm6GylvNwmL5
-   gb9bDzPiTdTMPmSVWLVB7kl22QwpHiJiOPXQIxy+f4ibvPtJZWo1KTVKN
-   x189g+q8XPh2xuhPUxD1lQ0ptbCTJjSm92fZUblV+SphvQ98BSrSG4tNh
-   w==;
-X-CSE-ConnectionGUID: 1GyThBsLQ4OceJgWl5whpQ==
-X-CSE-MsgGUID: FsBtDC9aQT2FMo0eJhVDew==
-X-IronPort-AV: E=Sophos;i="6.13,314,1732575600"; 
-   d="scan'208";a="42075805"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Feb 2025 16:08:27 +0100
-X-CheckPoint: {67BDDCEB-D-B8541F8F-E50F9B0E}
-X-MAIL-CPID: 05053AFA6C7480CC67EA1FCBF7FF12EF_2
-X-Control-Analysis: str=0001.0A00211E.67BDDCEA.00A2,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 70C09161586;
-	Tue, 25 Feb 2025 16:08:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740496102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8OCdIQ+1x1cdbbT6miIAd2P9zxEWox7eNmbXTr+ysKY=;
-	b=P9DTov8vYZt7Blks1GbficO9L/ZMl57uv2ZEwzS02Bqr9ZWS8uyxoxYPxvou+t/b2Oh2jX
-	8KAfzObCZac4PfeKKPv4PAwAhjBc1ATBGLXxB3BWUxFZqqYmMBMziJPwk21hd/mN+bG/8v
-	KeE2X+eWeQDHa4U3HmD9W28OwLqXFYQ4reeZYuY2li9KtwwJknfvG+5Hxcab3h9YYD8639
-	QJSQa3uDCO6EGgd0lX06YXAlKb0+udsqaZKdtYlShKomBYFjJ8PjG4zgUAKBsCjxgMqdM8
-	dQ7YHsSmY6qlN+DmfaWD/i+X5kuZ3xrhWyj8lymgD9BwEP3+ua9bmOZazZpAjA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com, linux-clk@vger.kernel.org, linux-pm@vger.kernel.org
-Subject:
- Re: [PATCH v2 2/6] dt-bindings: soc: imx93-media-blk-ctrl: Add LDB subnode
- into schema and example
-Date: Tue, 25 Feb 2025 16:08:20 +0100
-Message-ID: <2215802.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250225145254.GA2361434-robh@kernel.org>
-References:
- <20250224142831.485159-1-alexander.stein@ew.tq-group.com>
- <20250224142831.485159-3-alexander.stein@ew.tq-group.com>
- <20250225145254.GA2361434-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1EROIzF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F42C4CEDD;
+	Tue, 25 Feb 2025 15:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740498869;
+	bh=JFYLCj2a+RezpMJ3sxiliKwrRs+8V3UC4lMf2gVjUZ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h1EROIzFxI6gEfZ6wXdzoYlmjkB+CpxW0wGJlpqY4qK8gjy46yDYrLIIlpJ3nNz6N
+	 5IUP7YOc+4/PbQNEQMvDsk7GkW31sQ87tXNg2dqlAX7KySUBu4VLV4E7voF7yBk8r7
+	 O405pcWrXtjcbrHCTdYYWvEBBRpbWZYzz7jENm4Lb0b25pptAoWAEbrvmJuuP4+Xws
+	 q9Aro5yVSdl/gpbtOFMmu0/vYNexKV1ZhfMMGtn1dwsfxXkiK0ebVqkqqgZC8DYwFI
+	 UyumTkkA0bP+NEPesQCV2IrImtU7PzvurxDoCJRKlVEFMs9kuAaC1PyWVANZ76aU9V
+	 6z7gjYko3r/Cw==
+Date: Tue, 25 Feb 2025 09:54:27 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, krzk+dt@kernel.org, kernel@pengutronix.de,
+	peter.chen@kernel.org, shawnguo@kernel.org, conor+dt@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	jun.li@nxp.com
+Subject: Re: [PATCH v2 1/6] dt-bindings: usb: chipidea: Add i.MX95 compatible
+ string 'fsl,imx95-usb'
+Message-ID: <174049886689.2562544.3467933311134993488.robh@kernel.org>
+References: <20250225053955.3781831-1-xu.yang_2@nxp.com>
+ <20250225053955.3781831-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-
-Am Dienstag, 25. Februar 2025, 15:52:54 CET schrieb Rob Herring:
-> ********************
-> Achtung externe E-Mail: =D6ffnen Sie Anh=E4nge und Links nur, wenn Sie wi=
-ssen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten =
-Sie die E-Mail im Zweifelsfall zur Pr=FCfung an den IT-Helpdesk weiter.
-> Attention external email: Open attachments and links only if you know tha=
-t they are from a secure source and are safe. In doubt forward the email to=
- the IT-Helpdesk to check it.
-> ********************
->=20
-> On Mon, Feb 24, 2025 at 03:28:23PM +0100, Alexander Stein wrote:
-> > Document the LDB bridge subnode and add the subnode into the example.
-> > For the subnode to work, the block control must scan its subnodes and
-> > bind drivers to them, do not misuse either simple-bus or simple-mfd
-> > here.
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 51 +++++++++++++++++++
-> >  1 file changed, 51 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-=
-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
-lk-ctrl.yaml
-> > index b3554e7f9e76d..d914dea6ecbb5 100644
-> > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctr=
-l.yaml
-> > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctr=
-l.yaml
-> > @@ -24,6 +24,14 @@ properties:
-> >    reg:
-> >      maxItems: 1
-> > =20
-> > +  ranges: true
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 1
-> > +
-> >    '#power-domain-cells':
-> >      const: 1
-> > =20
-> > @@ -46,9 +54,20 @@ properties:
-> >        - const: csi
-> >        - const: dsi
-> > =20
-> > +  bridge@20:
-> > +    type: object
-> > +    additionalProperties: true
-> > +    properties:
-> > +      compatible:
-> > +        contains:
-> > +          const: fsl,imx93-ldb
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > +  - ranges
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> >    - power-domains
-> >    - clocks
-> >    - clock-names
-> > @@ -77,4 +96,36 @@ examples:
-> >                 clock-names =3D "apb", "axi", "nic", "disp", "cam",
-> >                               "pxp", "lcdif", "isi", "csi", "dsi";
-> >        #power-domain-cells =3D <1>;
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <1>;
-> > +      ranges;
->=20
-> Given the address below is 0x20, this looks wrong unless the parent=20
-> address is 0.
-
-Thanks for pointing out. Because system-controller@4ac10000 is not
-a simple-bus I assume this needs explicit ranges, as you pointed out in
-your comment on Patch 4, no?
-
-Best regards,
-Alexander
-
-> > +
-> > +      bridge@20 {
-> > +          compatible =3D "fsl,imx93-ldb";
-> > +          reg =3D <0x20 0x4>, <0x24 0x4>;
-> > +          reg-names =3D "ldb", "lvds";
-> > +          clocks =3D <&clk IMX93_CLK_LVDS_GATE>;
-> > +          clock-names =3D "ldb";
-> > +
-> > +          ports {
-> > +              #address-cells =3D <1>;
-> > +              #size-cells =3D <0>;
-> > +
-> > +              port@0 {
-> > +                  reg =3D <0>;
-> > +
-> > +                  ldb_from_lcdif2: endpoint {
-> > +                      remote-endpoint =3D <&lcdif2_to_ldb>;
-> > +                  };
-> > +              };
-> > +
-> > +              port@1 {
-> > +                  reg =3D <1>;
-> > +
-> > +                  ldb_lvds: endpoint {
-> > +                      remote-endpoint =3D <&ldb_to_panel>;
-> > +                  };
-> > +              };
-> > +          };
-> > +        };
-> >      };
->=20
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225053955.3781831-2-xu.yang_2@nxp.com>
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+On Tue, 25 Feb 2025 13:39:50 +0800, Xu Yang wrote:
+> The i.MX95 USB2.0 controller is mostly compatible with i.MX7D, except it
+> requires a second interrupt for wakeup handling. Add the compatible string
+> for the i.MX95 platform, add the iommus property, and enforce the
+> interrupt property restriction. Keep the same restriction for existing
+> compatible strings.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v2:
+>  - improve interrupts description
+>  - improve subject and commit message
+> ---
+>  .../bindings/usb/chipidea,usb2-common.yaml    |  3 +++
+>  .../bindings/usb/chipidea,usb2-imx.yaml       | 24 ++++++++++++++++++-
+>  2 files changed, 26 insertions(+), 1 deletion(-)
+> 
 
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
