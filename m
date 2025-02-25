@@ -1,84 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A525E20DD79;
-	Tue, 25 Feb 2025 20:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BADA20E028;
+	Tue, 25 Feb 2025 20:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514322; cv=none; b=uy3rLBC+vhfhsHd9dBv/2iZTKZ+OPFQ8gqrgmzxIxAkKgi7K6IILpmvZ0qnRS+n6IgTLHBNsr6p1vv4El2DqugrwoJFsdkXw9TnB3RHpLVPTrPuOtMU5TaYVFwXKEBUs6Cqc2dQCqJpEmDjL1TS+RXAuKNdWUhCzDPYZLo1Qu9Q=
+	t=1740514353; cv=none; b=ui01Ncshj6WEayBTv01PPMCc4WDxVsMA4auj1GqrQhJbdOwkX8Po6hPzhJUdQ1nC5T5Vha5932fm7wFLEoclC3TsFPhSw0V907LliLvblOvdW4cUPAcG0j7hZ6pCaEu22j/662yiXidpfFPtijhj4x5sNMBlEEbNy518DAdqu68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740514322; c=relaxed/simple;
-	bh=a0GeMkZG0232HfnLCqIvdoB14J+eWwO/Z0Wqyt65dDA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lH47R5Z4Rfe1jSZ0G82KJPAVb+UNGA11lTjqJN8TU698ecsX1hnyhfYFMzVva23pK2xNEcW5K380QhQ7Xv8Dr8zTXsd1BmABbvh5dLAQURnz2M+MgolK1cL/iJCKY+3oIad2JYeipwQR6bT84lIzNodmBhKU5DJddWqsrian6iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3+h1D30; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740514353; c=relaxed/simple;
+	bh=jkFZlDqbRxwvpb/csXsZpILkgeKZJ+LCenzb2959lCs=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=hSacpegJFeMCpOc4nWWQpBQDIub0sxuVIPBzsNboNPy/+/Cg9PcyDisVaWb/axuYfasAj4yIkmyxjNRFQ4sw9CL39pjfYF7OJvJVkwFbMRpVQch51LJwxLjn3ZaILeI7ACj+/241zFyVsVVghTiWVRGz0C0yHZnFah03QBvRwG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8L2oxFu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3+h1D30"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168F4C4CEDD;
-	Tue, 25 Feb 2025 20:11:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8L2oxFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E3DC4CEDD;
+	Tue, 25 Feb 2025 20:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740514322;
-	bh=a0GeMkZG0232HfnLCqIvdoB14J+eWwO/Z0Wqyt65dDA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f3+h1D30cfKH+jGQC4JV8nWNgvMQL/Dk8nM7aZvgejiGNC3fsZ9/5lfjB4A6et7BK
-	 CAOmumytdSYhtJyLWeekzDJ1hg+doGRppbJ733+McuPb9YgKrTqfdJ0Cyg6c1qIULR
-	 RjHxrc1ynskTRGo4tVO0Q+G14l8i7jRLeqjeKbo05tmcRAMYhy8LlrG+q08aotgjmY
-	 O1JlDh8ORGy9nShGYHOoX60TBVycwizDuU8F7WBRtS7dqopy54H+Fd/9OuAKDqJQ1F
-	 LzJZ8934ULkUsQUYQmkWt600M2TgwNkCQM8FW4Xcrdhb8wHtxN/KqSzLTdMWfC/8Jp
-	 CmjKrU+BywIHg==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: soc@linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: imx: mark imx53_suspend_sz as unused
-Date: Tue, 25 Feb 2025 21:11:52 +0100
-Message-Id: <20250225201157.4190864-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=k20201202; t=1740514352;
+	bh=jkFZlDqbRxwvpb/csXsZpILkgeKZJ+LCenzb2959lCs=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=S8L2oxFuJZ076tqLRePqBT4wMo9eOqzMOB4Q1TcVSLoS7Zpqwu5YE2GH+sncwuhvC
+	 3c+dyESCbHV1m4UFb/DIEwxeQ8ylalFEmT+DkxmSMG/5B6MdEMpSrrru4Q2wTFks/E
+	 jczAjUFLX13PDqfxERqNb5wvfm1zEEZOusz0OFUJ32sWPyhRhZJwpiMfvLzS6OQBtK
+	 a39dmCkae/21f9WjnAgOTdUj0oBc8aIMx61uvHlb446t9GoNU9KthYPNUccMvmnbkZ
+	 jrdsAwa+mhrizWxrAFZnqsDK4loMbFOe+ZSaS3uK9PtI6f3F4yiwuaQ7z4sDosASsL
+	 xsNva4+vPmXDg==
+Date: Tue, 25 Feb 2025 14:12:30 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Chester Lin <chester62515@gmail.com>, 
+ Matthias Brugger <mbrugger@suse.com>, Conor Dooley <conor+dt@kernel.org>, 
+ imx@lists.linux.dev, Enric Balletbo <eballetb@redhat.com>, 
+ linux-arm-kernel@lists.infradead.org, Christophe Lizzi <clizzi@redhat.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Alberto Ruiz <aruizrui@redhat.com>, NXP S32 Linux <s32@nxp.com>, 
+ devicetree@vger.kernel.org
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
+References: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
+Message-Id: <174051414934.2971045.13322665811292325537.robh@kernel.org>
+Subject: Re: [PATCH] arm64: dts: s32g: add FlexCAN[0..3] support for s32g2
+ and s32g3
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-Unused 'static const' variables cause a warning when building with
-W=1, and imx53_suspend_sz has a definition for this as an
-alternative when CONFIG_SUSPEND is disabled:
+On Mon, 24 Feb 2025 15:40:16 +0200, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> 
+> Add FlexCAN[0..3] for S32G2 and S32G3 SoCs.
+> 
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi      | 52 ++++++++++++++
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi      | 56 +++++++++++++++
+>  .../boot/dts/freescale/s32gxxxa-evb.dtsi      | 72 +++++++++++++++++++
+>  .../boot/dts/freescale/s32gxxxa-rdb.dtsi      | 48 +++++++++++++
+>  4 files changed, 228 insertions(+)
+> 
 
-    In file included from arch/arm/mach-imx/cpu.c:9:
-    arch/arm/mach-imx/common.h:101:18: error: 'imx53_suspend_sz' defined but not used [-Werror=unused-const-variable=]
 
-It's still referenced though, so mark it as __maybe_unused, so
-the one user can address the dummy copy and other files that include
-the header don't produce a warning.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/mach-imx/common.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-diff --git a/arch/arm/mach-imx/common.h b/arch/arm/mach-imx/common.h
-index 13f3068e9845..45c1a2a7b35f 100644
---- a/arch/arm/mach-imx/common.h
-+++ b/arch/arm/mach-imx/common.h
-@@ -98,7 +98,7 @@ extern const u32 imx53_suspend_sz;
- void imx6_suspend(void __iomem *ocram_vbase);
- #else
- static inline void imx53_suspend(void __iomem *ocram_vbase) {}
--static const u32 imx53_suspend_sz;
-+static __maybe_unused const u32 imx53_suspend_sz;
- static inline void imx6_suspend(void __iomem *ocram_vbase) {}
- #endif
- 
--- 
-2.39.5
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com:
+
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@401b4000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@401b4000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@401be000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@401be000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@402a8000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@402a8000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@402b2000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: /soc@0/can@402b2000: failed to match any schema with compatible: ['nxp,s32g3-flexcan', 'nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: /soc@0/can@401b4000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: /soc@0/can@401be000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: /soc@0/can@402a8000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: /soc@0/can@402b2000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: /soc@0/can@401b4000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: /soc@0/can@401be000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: /soc@0/can@402a8000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: /soc@0/can@402b2000: failed to match any schema with compatible: ['nxp,s32g2-flexcan']
+
+
+
+
 
