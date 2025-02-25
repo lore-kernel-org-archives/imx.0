@@ -1,63 +1,63 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D64920DD40
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB3E19F41B
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740515811; cv=none; b=C/okNyz/NQXyHBHUuhw+1lceJJpslI2p4a71hNqDwiX/m/D9kALiNTsoCZK9V0EFsVqyGDo6Kht4w+bJ5885tnDFCs7vmDYclUAJDpy5f4/ttmvUozUC1IZ4rdxFuvjUXB6DHFQdJJwHLwnHSNr2wEDvPQI7OoxpsN1iyGz2lXI=
+	t=1740516243; cv=none; b=ip84SCQ0MCuul920bAVqGbwGGwg/40vTcE2Ozs8r09VWvOZ6GN8IG4VAcTMM20174l3OupAJ3uMy88DZKbmxiUOO1TKBOmnROd/Ps56BUO2zj62lhlDMrKcQo9lGNeHZKIrluQBLaDGh3ZwZpKaC5db736q3uDh/7o7TDoFRp4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740515811; c=relaxed/simple;
-	bh=UCjaUYNwA7gkdeo7z/kfqp3ddYxARZ2+9UWe4SoPsMA=;
+	s=arc-20240116; t=1740516243; c=relaxed/simple;
+	bh=km6GgyUtBYWlPDyGMWfcUJBELXq839o82rzSdqdT8ck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ciildS3mMVFCsfpRFhIEWQXl47jAGDkuFsJfdoEODqo+aKzFzlv152hZlfr/xROPFG+Nkp9Mj7h3tJ6BKRtmghhLXRfornUrP4EHPjd8HGe9AAkAPCFxHtil/6I9o9Lm6VOtUM7bXz4isUa2f1J81Z5xh9bs5Jmn+c4RugLKzio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3tNJH5O; arc=none smtp.client-ip=209.85.218.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=PQ60KtqMbtKUA8Om6Mcm92eLcwwdCHw4/1XSVk/SQOritrl/W/T/QHKBxWm0bgPSrDQe0pSRs9udSRw5ypVBF/KOxcAUq//1sShUKaTNP/s9I3um01EROHs/Hba5q84YuxgrUyRx+V1kZf+1OtVjCi0GPWDAC5DmKLsxjRGFiPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FNP92aNs; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3tNJH5O"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abb999658fbso751363766b.3
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:36:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FNP92aNs"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38a8b17d7a7so3463725f8f.2
+        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:44:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740515806; x=1741120606; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740516240; x=1741121040; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4QFWKkvK1MfnhL/90Bgctff+RTyO4G/8PgMsyHu6Bc=;
-        b=F3tNJH5OUqrQwM7i/WQalUQmw//ULHtTun/+rN2eJVi21Xm+riLJBYAfLPB8tUiM6d
-         yYtODlpCCrPDwsOfS3j2ijZ0NZyOfzhLohiigNJFHVPWrkUG1vRiEaTtqvYVYjvrgba7
-         HDYAMn8Nr2hUwUckVoEabqnTscRlWOyxTbJdpAzBwbx2KnedDslugoIfooeCY819mhAd
-         hER+hi6q/MUD8lX6LNhiNRHI5K64X69KUx5JNl6kyA6nSwQl5z7ZdCN/gfsIPFL45tt/
-         22C6wY0heJzz9i1iK/FUNMEv3yiu00+hDyVZc+Y4U5uUJWq3cZztojPJBleIyUCLsN1w
-         j7kg==
+        bh=km6GgyUtBYWlPDyGMWfcUJBELXq839o82rzSdqdT8ck=;
+        b=FNP92aNsssifnAp2HkSp2DD3rWWWEOx9YNVoX+ZJFHLCisBKiyQQwTryIGA/2Ve4+L
+         h1kkiapPDG02MUCwJtJSPtmmXuWoZ708EXXnB3WY7AZBLgHUVwuEZo/pQ6xodYeb//vu
+         7DCUatG9q82k25+0CClvQEi2VCUtdQFBTg+/NFo9iVxfvsw0gbpALOAB/3ttkEGVQ16K
+         5YhYO+58vJxQU3a02VFQhec2FuugHevrn2EOxM1695eBNcdB8qgWGO3bNGBAvRiCCIHX
+         AzGLpjG30Z5WGMPdVeilQYAsfPUE25Wr9YTCVGMEDVFXU9yle0CTz9OlDjDggH9q60d6
+         k0hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740515806; x=1741120606;
+        d=1e100.net; s=20230601; t=1740516240; x=1741121040;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e4QFWKkvK1MfnhL/90Bgctff+RTyO4G/8PgMsyHu6Bc=;
-        b=NKUBOyvSESskaRxdshMNKAW6FGTPCvfba8P4wxg3NbiJPg/NbCBy89G4I4CUjpc2dt
-         bdhPNJUyJ6cc/vFLwNZlsyb3TXYSaSCYufacnfDKwF1+qC/RhMyCfYCMkcfAnKQVEMXl
-         2bkNFdGiP0XvghPoNxex7fWEO+EZPIpsyhVcXjyqykhTCULMiM5uFbEWl7fXKqCVJ13x
-         7c4WgwdF12nfxlSYMnP8aiDLnqt1ECqKBCiMR8kcfUWbP1XFT+Cga3bwPqbyDR6a/mSg
-         SFSP+yv+xYRDCnK2IniUM51IXb/76FsK6tRdgK2MCRzMWTxnMNkEKL1/unIn+91A66Qz
-         etDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVoWf6eLkZKJDrlsUAhw2gkqQG+/2yU83WgGWZFpho6Dts2bgTwMNL/tFWpZlbLHzn3ReY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxhOiD+WIscaBrfGSj66Hm+vdMeU2H4vX6gPjvu/SXFPQsmuFWR
-	QVChr8ucSsj6Lf+Nn6VcYWEtG57wfR2WAJAlePINKdy7+aplmDxe
-X-Gm-Gg: ASbGnctDol+w/5kQ5tkYvOk26+XOFMy6NCTp8lbr7kOZcYu4PjVmsRDRaPangG/5cCa
-	7fBET7rywZw18nHjho5yjICi3beRpO6tb++J2lUyKVFdx6CF2mVPrNHkx75PGuy8DCAtiKO4K34
-	l3LKqxsdrN88nSrHFkRveFORVl8Qfe3gjddUhl9SMCO6yEnyRSR3H/WnR9ccYY5kGToscwtwpZf
-	NPifpEh6vgav3+FXYGpkmkJaT3Vr9mKpuH8g/IynXLc82aL7VGpYjr/j+ptOigMr/Vg3SHkBA5v
-	/ZoF4F/tRLH8vRix7bS1qMy9mEF4NI1RVsCr5fsEW004oMWcUaReg8m3JIMJCmLqlOk7ES7ZIqU
-	9dNvLVg94U6QR
-X-Google-Smtp-Source: AGHT+IFncxJntu78FR7b4qYIZj+yv/K48D2ocZTvPMdxZVQ+iCvW4E3ccfSm9iifNVJPhsHG3qsgrQ==
-X-Received: by 2002:a05:6402:3512:b0:5dc:ea7e:8c56 with SMTP id 4fb4d7f45d1cf-5e44a256cc9mr9383487a12.22.1740515806327;
-        Tue, 25 Feb 2025 12:36:46 -0800 (PST)
+        bh=km6GgyUtBYWlPDyGMWfcUJBELXq839o82rzSdqdT8ck=;
+        b=comOA4mxw1VD3dcxSTfLSkZnyUPcZyEu4QSokcZa3u0502Z6wk2BjTt6CMvpezbg87
+         usZQuY69w/d+M/WAabR8UHTRTuT9flk7RcUu8XYRwBK6IlSNpLoyHqKej/5lSwH/MCD5
+         QXJsxZ9oFyAcX3mctSNIFEQUPNKByAKWO4XdHCAH+zk5hs7ox4KfsjBAE4pyYabYx+2P
+         ywR+/dhSTyklnznX4UanRu1VlQej1yhrjXiUVPHxUJc/qXxOQXMwzbO4TlU0mLseJsa2
+         sLP8SKZc1iWRh+QwAMh6k8kq6HjIKlMTzGUKq3vZn3ByDcsqR5w5f1upr8fNRCfsNSWd
+         /QSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQq+kCNJ6vteD6gvks4LnL/Kbp17Rn+wfAJjBzg6qHi65ZghMY2SftXF68JWUIszZajWw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyeilJRP9Zjg+Nw3PaYNLCxrv67+kipcjV1FJZECqZhPsHI1A0Z
+	fc3VRDuvnfdYhlZJwG+rpblIkMb0cy+MN/GqSsj/JA98AuQIj2sr
+X-Gm-Gg: ASbGncuWGiyX8L4NWldqwA1v4ZvVVV3GrETyakX7G4s4uiFSB2r3L+8huyYYmgNl6hl
+	zhavv93yITqI8zPbqUtkQBXg+pj+T5hMcdYaYZWzgsNz9vTVYtvSaCy0W+/+V8uFb27LhjoqAbS
+	rkEBuem3+dt+tDoHfNcYX8yreHTTw1qdSeXcP/onYL6shepRzFEbIwByCbwB4uf6Tl+2SR03wj7
+	+YBMKppus9t+8gG7DyLjN1VwWUpMXCHrlrSOhABG34WS6uVHzwH32W2sSvXiVOm6URUhHKZVONH
+	nXx+KYGFM5J0KEcb7OqkP/B2dRM6z0+Th9MZtw0lcf2SHE6qTeWArMyWITZuljYViRVfJPrikSh
+	Y4emfttykdtBF
+X-Google-Smtp-Source: AGHT+IFn60vNyjvN8suXWrn3N7MNMCvoYB7tyLvf0VIb/vaa4GNGBrrZf3vgpHtm6zuKbQT61XRnPw==
+X-Received: by 2002:a5d:64e9:0:b0:38b:f4dc:4483 with SMTP id ffacd0b85a97d-390d4f421e7mr518360f8f.29.1740516239496;
+        Tue, 25 Feb 2025 12:43:59 -0800 (PST)
 Received: from orome (p200300e41f187700f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f18:7700:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed205c7efsm199478066b.149.2025.02.25.12.36.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd86ce49sm3473823f8f.36.2025.02.25.12.43.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 12:36:45 -0800 (PST)
-Date: Tue, 25 Feb 2025 21:36:42 +0100
+        Tue, 25 Feb 2025 12:43:58 -0800 (PST)
+Date: Tue, 25 Feb 2025 21:43:56 +0100
 From: Thierry Reding <thierry.reding@gmail.com>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -71,11 +71,11 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Shawn Guo <shawnguo@kernel.org>, Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 4/7] net: stmmac: starfive: use generic
+Subject: Re: [PATCH RFC net-next 5/7] net: stmmac: s32: use generic
  stmmac_set_clk_tx_rate()
-Message-ID: <auqbgnqka3hdrwbxoaa3so6caju6jzzpsbr5yufaqgbqmhjmap@nbawhyq3nz6q>
+Message-ID: <x56yik7opvpr3o5vjlxoxzxdicrz2pimsh4lkpxol7c64r6irs@t7dfqy7ybn2a>
 References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLZ0-004RZH-SL@rmk-PC.armlinux.org.uk>
+ <E1tkLZ6-004RZO-0H@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,48 +83,54 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="npnnru3ejcetrulh"
+	protocol="application/pgp-signature"; boundary="ofk7odbwikmdng6s"
 Content-Disposition: inline
-In-Reply-To: <E1tkLZ0-004RZH-SL@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1tkLZ6-004RZO-0H@rmk-PC.armlinux.org.uk>
 
 
---npnnru3ejcetrulh
+--ofk7odbwikmdng6s
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RFC net-next 4/7] net: stmmac: starfive: use generic
+Subject: Re: [PATCH RFC net-next 5/7] net: stmmac: s32: use generic
  stmmac_set_clk_tx_rate()
 MIME-Version: 1.0
 
-On Tue, Feb 18, 2025 at 11:14:54AM +0000, Russell King (Oracle) wrote:
+On Tue, Feb 18, 2025 at 11:15:00AM +0000, Russell King (Oracle) wrote:
 > Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
 > clock.
 >=20
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 26 +++----------------
->  1 file changed, 4 insertions(+), 22 deletions(-)
+
+I wonder if the clk_set_rate() call for gmac->tx_clk could also be
+removed from s32_gmac_init(). Comparing to the other drivers that
+doesn't seem to be relevant since ->set_clk_tx_rate() will be called
+anyway when the interface is brought up.
+
+But it might be more difficult because somebody would actually have to
+go and test this, whereas this patch here is the equivalent of the
+previous code, so:
 
 Reviewed-by: Thierry Reding <treding@nvidia.com>
 
---npnnru3ejcetrulh
+--ofk7odbwikmdng6s
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAme+KdoACgkQ3SOs138+
-s6E3eA//VXPPJ389lkM7hL4gCsrCvhxDMVKpYPMFI55f6tZgLN36yUUjjp/67nLz
-TWhWj74unoSnThtfJlOzxs/l/n6/XM23PEtj+TVrBk507ao3hEWLWY0KPW7fHU0/
-kb7Jfe85CfqmkzrtLINfqpxvbb7bgSxP5yALfculXlykp61GY0aPIHUAXXWWUn2u
-SdgqTvYdA3oTDBJ2Cc+unBpVTSuH84RpMvnPLvtLu2+0t0ppjAf4MYJG09t3f/jr
-Ku7m1c9zlNWDrv1fSsIJ4kd8YakZsB9aDGxcP4rQhr/73uBetaUFfz92tTvMPAvn
-/vTqP75LzOPXu88BGK7ZV6SvdOBstrxxMOTM2/7/DSyCHv2V1Yt3xvplbP5YCble
-ORxVJNlzH0JweLWggg9xcvDlwas+jagLOYYp5If3cqsae9CFLxJr7zywxu+UaVT1
-DIpGMI0dnVaJcwOc01nlEWCzeOy0oe0lG9UZkUPKWbxoBB9Eit4ZibSmoTCf3l3q
-fjPgZBKRJa1hHMBEecD7gQja1zqMg0ZOcdXowP67ZIF9AkfCQHZNorMqQwicvA69
-w8x2PvFSXgexu6zDEAZ/5SMc7+iLQQ8gTR1SZHpna+9pl5S2X/CiYK4Ihvzs4EPY
-uXWe3lJzBecVr9TdDq5tgbk7cTqduZOS4Yvc1XkGEGgKA/JT4c8=
-=slen
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAme+K4wACgkQ3SOs138+
+s6G4pQ/9HAe8mzGeYLufQVT2wUZVpeDW6XeOv6EOFIvwsgTf+44yqDw3xiulERM5
+tTs3b8w6d4j3xO1PLdXoIlx3vANG5xRtGEcxXY3sB8HjmuSGWWig1zuSTAOJegbs
+we7h3FfZwYlMaSJAfvQNZsX/rDN/auA0R8opcByCxOqFAqRwwJSEH+avYvvVgKEZ
+Mmzov1YSzCyzB0pEEsAkdaB07XMdwl6Ee+ShlKaXzk88WS8KhxZKhYHWNFaAmqLo
+1jyGoa08Vz/Y1WMhLPLCMPrjmWjrMcVjhjCNp9xmCffiJHDAec+eRfV41Cwmp6HC
+wjh85xTUS/4hGh+Md5EWO8bxv9aTGHOkGwI4qVxl6xZVFJRkwZkAgrO4teY2RXy1
+/flh/cJcM9x88N9LAemunvF+RuPBv5mHV8VWgnJW2a91p7hWKZWV2gxcbzEL4L8p
+oKBcQDleR7I9gCunuLnQRiQlwSyw4oKX/96IQ86Dbr8th4/4pKsWtxfDPjHtqzo0
+XzbRtT+vlLIFlTprG9nh5PLO/Lxs9OzJ0kiqhJh24nAwMNxbXS/msQ+m8PRWT3C/
+/okF5ojWT+0ZijDIGhWi5uwBNWxiwav1tElTfJGEHIyz2qOiFZyFhUH7oi5E9iB4
+rin6SAkxYbIF5XDT+zuqAifn/g0BNDr2moVdUvgImYtAMQUCLmo=
+=c/GH
 -----END PGP SIGNATURE-----
 
---npnnru3ejcetrulh--
+--ofk7odbwikmdng6s--
