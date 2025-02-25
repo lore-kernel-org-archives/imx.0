@@ -1,34 +1,33 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E162222BA
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F752222CB
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514647; cv=none; b=i6WiPTiLB1WCTbFHYQ6RgeTNJxVOd+F/0BrdGb113OHGIPErBuGNrNsbhR0yDCt8kbFi8JYCR7pz67P5jclo+NqNlsWb6lS6sYoIuqY6dh3mcW11pQ4t/2lcU5Js/Pc5S6LM7566hKpjCtBA5XJObO2/ojjCjQsLAkW/b50hBNY=
+	t=1740514647; cv=none; b=IdTffT0z8g/ro5moJy6mLbfBf4RwX3mdFee7RP+/0H6Sd/TAEu/zAGARg0lLnRoFdzUne8sHGr2h/32qIht0+a3547v/677vdjJUXczvwcHWudgHkOCTGdaeeFWidQovTG5tXGbancXd69zwRPFPmLzGivOVFhaLhU6+0QXY3nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740514647; c=relaxed/simple;
-	bh=BkrgvYrVvbTdjW1UmhvpR+r7O/hE3sRrNTcek9ACWXA=;
+	bh=b17XZAvzaTH046mwhaHNwAtpVlTJZaGNfVU9xuXcyTM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qWZQd65G7olhRqGB0NYhzojnq0Qs9Hb+lDVAnFE344Y6TS2Kr2Bu5aRNNwfnd9IdNUsX0J6hOL9E4ndb0NxMrUVaLcJq27L8Pa7nWy/OdFdUzM8w+GrgnSnX94yAhI/td/deiQs1gC2/p9KvSRtVvfZH78rkSAwCGnp2QJO/uL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=K0iLGq1r; arc=none smtp.client-ip=13.77.154.182
+	 In-Reply-To:To:Cc; b=EINJIZR7RXPI27z9fXYiUjuUoJZBhvSWugA5+CrmtGhWG9Q4rCJJpAfhWM5BuZTWLqBRQ5/jppdFXqvcsvVqfBEdvw8dGb/EMN1IXTFbkjFNRL/rIfFXJf5h+Zqn0Yvh8srKHFrQp7bvZKf00im8jxXKEct89CHgj134VqNsCa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=rY57gui/; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="K0iLGq1r"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="rY57gui/"
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4BD7A2069419;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 75931206AB6C;
 	Tue, 25 Feb 2025 12:17:21 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BD7A2069419
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 75931206AB6C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1740514641;
-	bh=20ohR9ydXU2pCwzgNxjjrd2yDVsQ48Ay1dojiJT8hzc=;
+	bh=/rdlqcTwv5mN/sc7m2KrDg4m+dKAQX2yY+t0CXok2oY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=K0iLGq1rGc4Qg7xtebfYNMLt7AN2VvRrBSayFG3R2ubH/K1ImvnybXJrcnesEf8Va
-	 cjRHQ1+ptab8tqVzdvfsEgqdZ2cuicdWCcfCnvxFiNuLLWeeATmmp/van3jz7hvAmZ
-	 byfY8S+3q00hAqCMvFkJrtiZmQlqR3XmHjwAmbVw=
+	b=rY57gui/I5s3opnKpMkUiVz2c8KEinkfrPoI4a0X58a/iSSS8lb6zsgJqkOKu7xOq
+	 seorPBf8U1Bj+VcZjFfcO6jdNkWNML7i48hryZFC0g73WPEObXszX5QqDSiVWRpKsR
+	 xhTzpQnxfRVcu8e8QVi+FGZLfxmNCa9p9IBg3p6A=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 25 Feb 2025 20:17:24 +0000
-Subject: [PATCH v3 10/16] power: supply: da9030: convert timeouts to
- secs_to_jiffies()
+Date: Tue, 25 Feb 2025 20:17:25 +0000
+Subject: [PATCH v3 11/16] nvme: convert timeouts to secs_to_jiffies()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,7 +36,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-converge-secs-to-jiffies-part-two-v3-10-a43967e36c88@linux.microsoft.com>
+Message-Id: <20250225-converge-secs-to-jiffies-part-two-v3-11-a43967e36c88@linux.microsoft.com>
 References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
 In-Reply-To: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -96,25 +95,30 @@ expression E;
 - * \( 1000 \| MSEC_PER_SEC \)
 )
 
+Acked-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/power/supply/da9030_battery.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/da9030_battery.c b/drivers/power/supply/da9030_battery.c
-index ac2e319e95179039279dacaed1744136f679fbac..d25279c260308b6c82acb2aabf44f3749f71b703 100644
---- a/drivers/power/supply/da9030_battery.c
-+++ b/drivers/power/supply/da9030_battery.c
-@@ -502,8 +502,7 @@ static int da9030_battery_probe(struct platform_device *pdev)
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index f028913e2e622ee348e88879c6e6b7e8f8a1cc82..24c3e1765d491daf8fd600f96788bf5765946f54 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4466,11 +4466,9 @@ static void nvme_fw_act_work(struct work_struct *work)
+ 	nvme_auth_stop(ctrl);
  
- 	/* 10 seconds between monitor runs unless platform defines other
- 	   interval */
--	charger->interval = msecs_to_jiffies(
--		(pdata->batmon_interval ? : 10) * 1000);
-+	charger->interval = secs_to_jiffies(pdata->batmon_interval ? : 10);
+ 	if (ctrl->mtfa)
+-		fw_act_timeout = jiffies +
+-				msecs_to_jiffies(ctrl->mtfa * 100);
++		fw_act_timeout = jiffies + msecs_to_jiffies(ctrl->mtfa * 100);
+ 	else
+-		fw_act_timeout = jiffies +
+-				msecs_to_jiffies(admin_timeout * 1000);
++		fw_act_timeout = jiffies + secs_to_jiffies(admin_timeout);
  
- 	charger->charge_milliamp = pdata->charge_milliamp;
- 	charger->charge_millivolt = pdata->charge_millivolt;
+ 	nvme_quiesce_io_queues(ctrl);
+ 	while (nvme_ctrl_pp_status(ctrl)) {
 
 -- 
 2.43.0
