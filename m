@@ -1,134 +1,184 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.smtpout.orange.fr (smtp-79.smtpout.orange.fr [80.12.242.79])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2FE1624D4
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CCB1A2392
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 21:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740516423; cv=none; b=docu8GgqmGkZ2zfE23C2yCWmpfWAdyF+/fCd26akuV3VD2BQrgzGMWKLMZdZtGo27WCTQ+ClslB8y3QixZlSwRWhK7YvOc6VCuAZUQ/Q9yRactr+gq0mQyTQy3zuBws4ieizgHezN1gQ8HWOWQhFL7DN8SwVmBMKy2zW5eKnXG4=
+	t=1740517820; cv=none; b=CPjpIWXMQjmv/dgXNmHbsuQC72eHOInALzrKV+NIt+Pk/6qaCT9zPIU7JLFxfr64gyzVmMZ9AXUE9oDdMdprpHWndsf4Nxd0tDGUEq1LqYwEKBSCit4M8nRbIfJmGHFcSvy0dGzLW9+EJVzwwghsIqpC8n4L96PB/fKmtP+h734=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740516423; c=relaxed/simple;
-	bh=Act62FROw5FKgMdYrI/D7fctk9vB8HfEjrEmQQTWIAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKZv8LhjQZ/4G6GwUl0FmHM8z7i62TBGsIWWLHYX7n5zbazvM1j8h7P2v7stSBgMaXl1s3MLYm5ukwEWnPkvspnUug3kSYC4ZVDaiU4dgtM77ZVGGCCHprMdKAe+PkfgqROkJG0MMtritt+XCtYuqpn51XZhj78YwnYbqb8Si9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDKWrd6Q; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740517820; c=relaxed/simple;
+	bh=T3EHka1tFcSlRH3Fj1NbaXNKSeWHzxd6Y1SaHsloxZc=;
+	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
+	 In-Reply-To:Content-Type; b=OMSxxy09yHyr5JRC4L90nckq1gkJsZ0VzhYPSNe1S4gqrj4/Sg6aX3L52A32RVGDTY24HGpC8jthghHmGVTspnWSkdY9seZNTRXpz+pJPZTMovLzBTstSsMn+HuXbDBkDvX5MSC57JpbsiX9d0DOM3pu5oCIIumdb/ZEVTU5Ijc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Nt/l6W83; arc=none smtp.client-ip=80.12.242.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDKWrd6Q"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38f24fc466aso4478573f8f.2
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 12:47:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740516420; x=1741121220; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E918OTHi2yvVgDkqR2WK0eqY1K7lmB4Humnmkm0YU/k=;
-        b=DDKWrd6QZ/eePUrnKGsR07XGbIEF+pWmWw9rp8sXSQcMhybzJ76TwLae4Tm1clPhbK
-         qBWsVbiJVJMQjrSR8m7CAyfT2TzAcNO3bWL6zPBjMhFCRV8tnO6+ug2nqe3Q5Qgu38VP
-         qTLLlj2pc1uR5kr7SPO/mXrqGDQImNu7Hm0yljzRw7WdfWoe4opTeuoo0GEyp91eLZyT
-         2+lCYHEhjG+ENslZUIdU5vufHvV+jDSRT1OzzV4efoalYafp504Po1oMGI7LnfpwagRk
-         tE346WF3K7KBhV7AitvFu/6+tOdGh4ehpsxAbqRmDGIrA8baua/CrmSlyJ+nZ5IhFKgz
-         h1Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740516420; x=1741121220;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E918OTHi2yvVgDkqR2WK0eqY1K7lmB4Humnmkm0YU/k=;
-        b=Zs0zyQDDsGFVYFPtvtxuYCPcQcLPvwTNZKVfp0KYEcHjSSVPpWOECQuksQbykzOW0A
-         S/kstrQl4uJfzPgL562ZA6hM3RrFm8Vg6hwrSo2YL5msofk3lL7YPEOPFKVr9UB+r7jM
-         J09TeqouK9sE+d/7PP0Va2mcgsT27eyDRU6vzpe0riOhD02L1Sak4clHT6wJoO7vv19f
-         ge9Xye+qzw9NlLlP5a46ihbciBpC4fWaeKXoBMBJr1UJQhXCEoPVL13i0hNBKlu9+7yQ
-         eTlwlAjIqbxdhaCGLiZUbfb2r+OizudoyFGvSOk460/f7qoeDLWTqyGzeoGuNHdVHcF0
-         wr2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXNyMuphNj6mgfVw6b86ISVgH4ZCSIC92YOG2jf18E007OmweU/M/61fTj+oReF22yGr3c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWpa+9hC05hUvdukPZ0PT3m5sSPHxrYcBvwSOiLh9azBOY05fp
-	Hu3JsJ4wlGnKh/w3EfsnD14CED/G9G1sJEFCUsUNs7OGRXoFxRt6
-X-Gm-Gg: ASbGnctGIJNnfsCk4uTz8i74L5+RbzUngbGvT3ma8kEX+OCUA283QT1puq1ySpcPggO
-	iApRUs2JlVa2CBHnaHpnryCViAK0Qx+7BqUQr6vOA459/IjaZbIkxP5CqonQdHoJzEWiUU6OX2t
-	EBRLAYybRBSU7NfCYOAoaRFkIxGbMApyOQS6BI/U89F76DPh1vRhs2TvKVr02keVPhPDCGyw4YA
-	L6hDMqMhenBcIXpcU8PYhmm4/EOhRDBbb0Do40z2wjUYukLNYjVjzXePS+YnIwYMctZPx4850W+
-	MiOLvSi8RuqgHd8NSRqG5nZyqXZd1wyosElWz+WXmwxOX97MvaJ/9cyvgy5Fx/LM9tkcg/o0sSp
-	FLdefKwcBEcFF
-X-Google-Smtp-Source: AGHT+IEmw7lSBpfSNj3LhieZeCNYI4bj4PCJf7zwnwb1ygbIuUippUUYOdeYMqmm611SGM3iLvGYVw==
-X-Received: by 2002:a05:6000:4010:b0:38f:6697:af6e with SMTP id ffacd0b85a97d-38f7077dc73mr14301433f8f.1.1740516419999;
-        Tue, 25 Feb 2025 12:46:59 -0800 (PST)
-Received: from orome (p200300e41f187700f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f18:7700:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ab156a11bsm38026395e9.36.2025.02.25.12.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 12:46:58 -0800 (PST)
-Date: Tue, 25 Feb 2025 21:46:56 +0100
-From: Thierry Reding <thierry.reding@gmail.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Emil Renner Berthing <kernel@esmil.dk>, 
-	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	Inochi Amaoto <inochiama@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Jan Petrous <jan.petrous@oss.nxp.com>, Jon Hunter <jonathanh@nvidia.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org, 
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-Message-ID: <n67c4bq7n7ejakmqmglve3os6vqvm57umysjjzexxkygvusnoo@ndee4gfnmsst>
-References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLZB-004RZU-4A@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Nt/l6W83"
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id n2BftCcRTqJDFn2BitbctU; Tue, 25 Feb 2025 22:10:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1740517809;
+	bh=tARq/I59R/ifvYF0dCCLUoCvyYc1ZBk7Dm3FuvihB2s=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=Nt/l6W83BU5mDSrDQIQy8CZKAo0h68PJvcKps3BRoVn2m6bAUl1vWhK2es/BP8BFW
+	 DN3RlPUQFqJK58J49zS8Iq+H8FIQKGC4aR3FLiDA6idBgn8tIg5Twr41t+eDK/0sPp
+	 mg1FQKV8UkENBVw737LGxuMBZo+ZBM/oK6VglExOrG9+5UCmVjY6kqG7UnMc6VpiKZ
+	 s5Dl6bX1iLuElode1uDwU8GHn7T6IquRWeHKn8Hf+NPHn6mqYOqdxW2q2i+4k7lkXn
+	 e6Eo2vgp4trckiymDN9vhHfOlmyq2Gyk1kUlSKjSw+1pc9JkNq2cH1UTJN+cQ2XgrM
+	 /ezXxEpZ+Rm3Q==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Tue, 25 Feb 2025 22:10:09 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr>
+Date: Tue, 25 Feb 2025 22:09:55 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4kydm3gogek2i4nx"
-Content-Disposition: inline
-In-Reply-To: <E1tkLZB-004RZU-4A@rmk-PC.armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/16] rbd: convert timeouts to secs_to_jiffies()
+References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
+ <20250225-converge-secs-to-jiffies-part-two-v3-6-a43967e36c88@linux.microsoft.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Frank.Li@nxp.com, James.Bottomley@HansenPartnership.com,
+ Julia.Lawall@inria.fr, Shyam-sundar.S-k@amd.com, akpm@linux-foundation.org,
+ axboe@kernel.dk, broonie@kernel.org, cassel@kernel.org, cem@kernel.org,
+ ceph-devel@vger.kernel.org, clm@fb.com, cocci@inria.fr,
+ dick.kennedy@broadcom.com, djwong@kernel.org, dlemoal@kernel.org,
+ dongsheng.yang@easystack.cn, dri-devel@lists.freedesktop.org,
+ dsterba@suse.com, festevam@gmail.com, hch@lst.de, hdegoede@redhat.com,
+ hmh@hmh.eng.br, ibm-acpi-devel@lists.sourceforge.net, idryomov@gmail.com,
+ ilpo.jarvinen@linux.intel.com, imx@lists.linux.dev,
+ james.smart@broadcom.com, jgg@ziepe.ca, josef@toxicpanda.com,
+ kalesh-anakkur.purayil@broadcom.com, kbusch@kernel.org,
+ kernel@pengutronix.de, leon@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-xfs@vger.kernel.org,
+ martin.petersen@oracle.com, nicolas.palix@imag.fr, ogabbay@kernel.org,
+ perex@perex.cz, platform-driver-x86@vger.kernel.org, s.hauer@pengutronix.de,
+ sagi@grimberg.me, selvin.xavier@broadcom.com, shawnguo@kernel.org,
+ sre@kernel.org, tiwai@suse.com, xiubli@redhat.com, yaron.avizrat@intel.com
+In-Reply-To: <20250225-converge-secs-to-jiffies-part-two-v3-6-a43967e36c88@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Le 25/02/2025 à 21:17, Easwar Hariharan a écrit :
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies().  As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies() to avoid the multiplication
+> 
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
+> 
+> @depends on patch@ expression E; @@
+> 
+> -msecs_to_jiffies(E * 1000)
+> +secs_to_jiffies(E)
+> 
+> @depends on patch@ expression E; @@
+> 
+> -msecs_to_jiffies(E * MSEC_PER_SEC)
+> +secs_to_jiffies(E)
+> 
+> While here, remove the no-longer necessary check for range since there's
+> no multiplication involved.
+
+I'm not sure this is correct.
+Now you multiply by HZ and things can still overflow.
 
 
---4kydm3gogek2i4nx
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RFC net-next 6/7] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-MIME-Version: 1.0
+Hoping I got casting right:
 
-On Tue, Feb 18, 2025 at 11:15:05AM +0000, Russell King (Oracle) wrote:
-> Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
-> clock.
->=20
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+#define MSEC_PER_SEC	1000L
+#define HZ 100
+
+
+#define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
+
+static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+{
+	return (m + (MSEC_PER_SEC / HZ) - 1) / (MSEC_PER_SEC / HZ);
+}
+
+int main() {
+
+	int n = INT_MAX - 5;
+
+	printf("res  = %ld\n", secs_to_jiffies(n));
+	printf("res  = %ld\n", _msecs_to_jiffies(1000 * n));
+
+	return 0;
+}
+
+
+gives :
+
+res  = -600
+res  = 429496130
+
+with msec, the previous code would catch the overflow, now it overflows 
+silently.
+
+untested, but maybe:
+	if (result.uint_32 > INT_MAX / HZ)
+		goto out_of_range;
+
+?
+
+CJ
+
+
+> 
+> Acked-by: Ilya Dryomov <idryomov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Easwar Hariharan <eahariha-1pm0nblsJy7Jp67UH1NAhkEOCMrvLtNR@public.gmane.org>
 > ---
->  .../stmicro/stmmac/dwmac-intel-plat.c         | 24 +++----------------
->  1 file changed, 3 insertions(+), 21 deletions(-)
+>   drivers/block/rbd.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+> index faafd7ff43d6ef53110ab3663cc7ac322214cc8c..41207133e21e9203192adf3b92390818e8fa5a58 100644
+> --- a/drivers/block/rbd.c
+> +++ b/drivers/block/rbd.c
+> @@ -108,7 +108,7 @@ static int atomic_dec_return_safe(atomic_t *v)
+>   #define RBD_OBJ_PREFIX_LEN_MAX	64
+>   
+>   #define RBD_NOTIFY_TIMEOUT	5	/* seconds */
+> -#define RBD_RETRY_DELAY		msecs_to_jiffies(1000)
+> +#define RBD_RETRY_DELAY		secs_to_jiffies(1)
+>   
+>   /* Feature bits */
+>   
+> @@ -4162,7 +4162,7 @@ static void rbd_acquire_lock(struct work_struct *work)
+>   		dout("%s rbd_dev %p requeuing lock_dwork\n", __func__,
+>   		     rbd_dev);
+>   		mod_delayed_work(rbd_dev->task_wq, &rbd_dev->lock_dwork,
+> -		    msecs_to_jiffies(2 * RBD_NOTIFY_TIMEOUT * MSEC_PER_SEC));
+> +		    secs_to_jiffies(2 * RBD_NOTIFY_TIMEOUT));
+>   	}
+>   }
+>   
+> @@ -6283,9 +6283,7 @@ static int rbd_parse_param(struct fs_parameter *param,
+>   		break;
+>   	case Opt_lock_timeout:
+>   		/* 0 is "wait forever" (i.e. infinite timeout) */
+> -		if (result.uint_32 > INT_MAX / 1000)
+> -			goto out_of_range;
+> -		opt->lock_timeout = msecs_to_jiffies(result.uint_32 * 1000);
+> +		opt->lock_timeout = secs_to_jiffies(result.uint_32);
+>   		break;
+>   	case Opt_pool_ns:
+>   		kfree(pctx->spec->pool_ns);
+> 
 
-This isn't quite the same code, but the result should be the same since
-clk_set_rate() will be ignored if the clock is NULL, which would be the
-case for !dwmac->data->tx_clk_en.
-
-Reviewed-by: Thierry Reding <treding@nvidia.com>
-
---4kydm3gogek2i4nx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAme+LEAACgkQ3SOs138+
-s6FCDhAAscpV7eVp/AZQnvvZ4nw0Ad/YhFSj9yZtfDGHgapuDwrpMtuoI8uo9AXY
-D8+01yo35J7QfixSJ8u9vwrs2sZQLQsWQ1a90UudQueW5LuaW+Mjp7ErJgrh4B4C
-lsm3cUuv+/GblfCX4FgnceY9YHJGqoZNDzYAb+e6xmZCgFzRpT4emSCYCyVHnyS8
-sELpHrLTdgJlso7x8hWn3GsSgG6te0ToqLcru4HZ+gl4zRjh8ljfx+5tUkiCSdIf
-53t4tdRo/qhu/4EurhryxxJEsXSju1iYV57knOQp0QsplHARC7c4D10xVHFiYi4j
-M3mTMnRYGY/d9MMsd0pr193DktSogHur2k7zUdccpE7X34CPZcmfg5wLPO/qYK0S
-rJvto6QcJqqB4XagVfuoXoANvAOzlMXUviQBUHFFSumHmnwerkU0ntPzQdk5oQqt
-7I+TFMNlEiKA1VpLGbTWw8cEbvj7ZPGHnVd3EQIQp24lYqK/6IZiNB5ZOC0Q9ayk
-ydkm9PWQzIdlL3MFh/nho8iZ43nJF3rkTsML1leqt1/CdjHPHi+csCYATi2TqGEp
-GhcrScX9mxWkBZ7xWzFfETX610z1DwlzZDuZSlLtc1ZbyxLacU8EDIqY8bha661b
-8Irrrgzw/UAFApkCGAQxQ3NsIsc87T+t10FfEW8cdTCjolZd+hU=
-=eyD5
------END PGP SIGNATURE-----
-
---4kydm3gogek2i4nx--
