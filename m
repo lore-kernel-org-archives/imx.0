@@ -1,189 +1,235 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2078.outbound.protection.outlook.com [40.107.21.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E62ED517
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 21:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740519925; cv=fail; b=RcWLybbM72Q28oY0d8w3iIh4xS6yZwD4Z4ZfhLmpv5yTSYtREMbmGWTeuBCw3AKY2Uh9oU+3YHNDrqty5XRxQP+yqAwPVUZhPgoxLPF+KP0UGPBM83e/xt0dIQsTRfJmg9KKhMeahyjva8Bwr+GcZOhQgZRrL3ySdQFQUulm2Ko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740519925; c=relaxed/simple;
-	bh=UZR9uO8QbZBgeAo4pklt7qKo3OqGhTjWToecux3VejU=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tpKCc8e1jan+IDyFVlNgTJcpGocnnkQeXjLHtg8v/nfa9x0CENU11kwfsK87D+FevohatdppDmioEYgv1+NJrjT59kIHN98zJ/wCnaNnSmmMkgATfH2iX6BVDKUvemqPVP1u+3api1sMhl1LdV7AgTiNSdPjwrg4+NeEhOe4ub0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T+a0yI/G; arc=fail smtp.client-ip=40.107.21.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5618205AD5
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 22:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740522074; cv=none; b=TX8GS60IOPjakS5FzZNr8SpyVx5p9n3SRi4xYl4SKx3Y6JOrmWeX8HypPun18vHhl6LV7tvlQ95H4C05tzuVNNrq8tivMHNAUz/yNAwVtzbM52xx/Be5yQmf2beefm/igBS8Pk/MxTPCTp25OBjUN87ysAY/Z07auuK7uufAzsQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740522074; c=relaxed/simple;
+	bh=VRew4thqjNNr9Bhh7XZ9CycetampVVfLEpViJv98lrg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=aY3kA28ZagNWRu0k/iXgOB6jYYdSKoZekGbDWXAOtDhejRpvKHF6JXhI5Vct0fihBJQpIYODqlpGCjcwvB6jhTAH4kkhu3YggW0Ksp4GrDmpv+EGJ7rrIgBitPYGfwU/7fj3kHKlrIbdJAcmN44ZHi7ziQgAoQtbFuWOpCtIjMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SEOwyBL2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T+a0yI/G"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VKPKLY4XcXi5v+O4XEuX97ks4juDodp223ernqBzkl1G7qT73wa05FAJ1lQNi72cVFLHH2KOWX/3f152N6z6cwNuAhmGwRyWJkFt89nJtFHkMg+wA3NFZpnBLWsU87cnyI3ara073+jt0LED6H2wEIvddFZukqNpHddUGBN9a4R/I/NS+fSxNE+YA4EeqSVNoMI7Gou6Fcx8D2xkkUvoaVfpZthDbKT2GGWVaLTtZ0m4k9iGj/2l/zfx1qtTmiC2UrpkUp6Hdq/hbXO6UPKZKEJDmN3c1q4mgySzojF8PVdqyV7at8oqSzz+cojxQlKyzUkWygVg/kP9pijT+WW/sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Fif+ghJQkKPt6PdJSUUpGpjV52ssT4VmU0SSOPG25M=;
- b=o/WF/JAHe6fUPIfIlqy3+u8BZljSka5MxlbE5Vf07EWxgvNePTcI+hoTFxArJsuvAX4pddC4ZgtIAI/Ly9h96SdWwbbKM3FXYTaTJyss7pQmTgwotfiBX2lZFpm+XglheLxoYOhW/0mzPQlJRiUH/s5/lDSBMIaSV7211/kaGK6GmkEqj2h3DD5lyFcRvw4UnTA77U6k08xgnXd1quOrcZrkYilqsyOhB8khykGuM66YLyrTKZagwq5+SVYfap7deC8bLG+Y87M6NCOqQn0Qb5nIge2bAPTeN3wumFeerXPXH+HpZeJ+WJuE6p3t/dFGdPZ8czvOptaHJiQyOEL5wQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Fif+ghJQkKPt6PdJSUUpGpjV52ssT4VmU0SSOPG25M=;
- b=T+a0yI/G/w8TEmGMXp41jCcx2ucQ9UoQqezHaJQ9HA/T4k+XSPR4f5fpqqGNnVNHjbUbUY0rUwzmKJZnM1IZ3ZMmYXTNZRV14f4W+DIZpHLuday4d6K7FGIeIARbmVWsBVVSTsHRyUOBL/E6ZLkBN8W06r0ViHMrbjGm6jtKSy1vqEPVAFWDGInhJA3MXXMb5trFNfy0UqSgAcUZK/QdhXgO50Hb3QWOf8WhZAuOe+8BfIGanIZ1TSnoMT/4c9B6qNnm3HuI0Q7fyLR9hztY+FIKH0/qMn1rMkxJ/gVuG5JUL7xjV9WHyl5C2T3RaBPcRo7mM0Jw2iRjLsOYXgR8Mg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by VI0PR04MB11047.eurprd04.prod.outlook.com (2603:10a6:800:262::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Tue, 25 Feb
- 2025 21:45:19 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 21:45:18 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-imx@nxp.com,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Subject: [PATCH net-next] net: enetc: Support ethernet aliases in dts.
-Date: Tue, 25 Feb 2025 15:44:58 -0600
-Message-ID: <20250225214458.658993-1-shenwei.wang@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA9PR13CA0078.namprd13.prod.outlook.com
- (2603:10b6:806:23::23) To PAXPR04MB9185.eurprd04.prod.outlook.com
- (2603:10a6:102:231::11)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SEOwyBL2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740522071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=HmdS/AlEx+8JlcqZ5mtM6o9rE+VmGN6xnAqIajbGwQA=;
+	b=SEOwyBL2JiogcH302apskT2FoB49V3UEi2SYtJDpeZ64QKwb5vTgWfUDcEo0IO4654qr6b
+	nJb6YZIhoNKBC0VjB3uaR0sw4pI3Fpn00XzQEy94fIU1mgGDVxzAMUgxzBUwDBCfvpBV7A
+	MU6Hz8ufjLHhPj72TdhzZ3+Q/TLzOzA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-bEt8P_VWOeaeQWGLKOdHDg-1; Tue,
+ 25 Feb 2025 17:21:08 -0500
+X-MC-Unique: bEt8P_VWOeaeQWGLKOdHDg-1
+X-Mimecast-MFC-AGG-ID: bEt8P_VWOeaeQWGLKOdHDg_1740522063
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A699A1800874;
+	Tue, 25 Feb 2025 22:20:59 +0000 (UTC)
+Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.79])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8BC6E1800359;
+	Tue, 25 Feb 2025 22:20:46 +0000 (UTC)
+From: Anusha Srivatsa <asrivats@redhat.com>
+Subject: [PATCH RESEND 00/12] drm: Move to using
+ devm_platform_ioremap_resource
+Date: Tue, 25 Feb 2025 17:20:41 -0500
+Message-Id: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|VI0PR04MB11047:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb61f82d-c45f-4fbf-e97d-08dd55e5b269
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NUOORxnlb3dsFsD4cHdv2t6p2Ilia/jY1+bfH5m4s04coxZYc/YialbkvR5x?=
- =?us-ascii?Q?HJfC9om/ndcF8OSMlQ0+hJXCpd8OrhEwfcZJ0BEhcMgmztpgEU2ChzjFCgcR?=
- =?us-ascii?Q?0GmWyy0XsNEIbfZ/RP+S7DdgCqIPAVt8CR9Ao1QYBDKcOj1Mb3WJBLZf6bbG?=
- =?us-ascii?Q?5xAyZpVHSRwH/8HZ3tFTy66MzYgzNnFRQFAEk0oeCZPOTteS1jEvlw8gvK0L?=
- =?us-ascii?Q?c7lArUwW8RXxcE/XbiJgb8hyuKJTzX3a/aja2gYqSkHSG9h0wGKmABcbSfsn?=
- =?us-ascii?Q?IfDZZjuDHM2cuQbwBlhSqk9gpxbH1Cn4kB1ICdOwjgOkJd84pezY0aXLz8YC?=
- =?us-ascii?Q?gjg8Wov7VPRLRLUCqE5TiLts8xi6EzYslHmTviQxT1SmAzg3PfzdHZiQyAs0?=
- =?us-ascii?Q?z9yPGSq0hOOW1JEs/lRhVuaSmmWG+qIQCTphJrQKilWlqnNbg/IyczRheruC?=
- =?us-ascii?Q?O4IBfRSO7Tjjc9aXKRQuE9cYdXI0jKg8EjS3WNf8xM83Qo5cusaDUZ/OCQUu?=
- =?us-ascii?Q?S5zRKG1ofiV5M+Oib2BecYrSk/izEW3bFHNU6JguW54C7pH0BNXMtqRWAj3F?=
- =?us-ascii?Q?z6hYEUDWFHSqL6bHmUWRcVZApHbkEw52p9T+aed63WlLktCk1RQ6+wML+eN0?=
- =?us-ascii?Q?OBZpe64a58PbPQT42YteWrb2LhJLZTl1JQ/tlU9OT6RY6cqWEPgzf2nHtiaq?=
- =?us-ascii?Q?JBbsR06Wx9lZ4ekSYGlVzQYQaytt/zL0DRcOtB99MNRp+KRY+9Wx6QSngVnb?=
- =?us-ascii?Q?5xzvAOTGgkNKs2CoNnhtn6OhRnGyVTtiZpuIBNpSyuPWH07hnRxFrnIK+fhN?=
- =?us-ascii?Q?Pi4tdr+l7TffZ3SHFXLAaCQHls7KzQVGCQQGkYOyZ4vank+hDfyWJv2b2E8m?=
- =?us-ascii?Q?pWH64BLx8ZcYcTHvWedEj2uJM9ZF1NsPh557ZAYX4nVBD0WLtJjkXT/aTC9w?=
- =?us-ascii?Q?kqCIEH8VQxTPhAwx2Ho0/JJ12/4LTuFTCIV2ccVBGflSYGJI38e32PApErfX?=
- =?us-ascii?Q?MQDSQ/L8inwQnuRBstBRn53PhN/LP0JQqzArWXmZNnrlI5QfQ1PffSPRbmpa?=
- =?us-ascii?Q?HfTmXpjw/8yjGu7UgpbS6IQ9wH/hAn1Zf8FKD+xyUIQme3n8dUImhPYipZfZ?=
- =?us-ascii?Q?qKKVaxT5j8zzVvdi4B7phLvzE3C/CnydbXliZmV4EZq8AOP4GNG/6wQ/BkRo?=
- =?us-ascii?Q?DdWeGD2SWRYf1UrF11yzhaPG+HQ821JFkhPgTIojp+5Lye5GiYjfN5AQA/qL?=
- =?us-ascii?Q?HP7+ohJg/k77siRydKXXDExVAuUWlKaRNdUxOiIMbnAuK/LMo/aVO/z8v8tq?=
- =?us-ascii?Q?U40uGmwS4eb7NBl8ftUwpnNCPQRm52kKJWCFI1S9OKxC6/LrmOCKn2StmTIk?=
- =?us-ascii?Q?+5jiuELESFlvsHSP6UdX4PImndryTIOq2pU/UAdjKCRibgN+DRVE0TTw7lkP?=
- =?us-ascii?Q?0BROLeJFNPTsxB3w35fB/DlKXA9XD3/H?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?E5HSeiYCYxd5yT0N9wcW3U0dZAoc3jfcF9Uirmx4FF8mp7gxfXfuSUxj/85j?=
- =?us-ascii?Q?dKadDJkb0lRG/kx8mOd56OkKldCHdJuzRp1Gl3rE3GFME04ni67aOVERNYMh?=
- =?us-ascii?Q?LwR3GW2HVccOA3VrOW+fufdpP2wg/Kutiss22aitvCTJmfeFYdNRvQaRvt8d?=
- =?us-ascii?Q?+sXZm83WB7R2Y7V6yp20I08ChZrU2gNTqQK/xNdzci2pUG6x5qpSAacforY9?=
- =?us-ascii?Q?sz+PmbBC9fV8MqOGxgl+pgvu422YPlLSg3sXQbosBrFmQgUDCPY5RK4Kpxkf?=
- =?us-ascii?Q?+OMzV+MLbGLSidfMn6qPpYM95KOqatiTatSP4vl691BogEtx+749qg0FIQnC?=
- =?us-ascii?Q?mHstRjMTRxw1aJOFzfwrGP/BWqTPBqUn+S9cs19e0hYI8LXSrIQGK5Q9Rpel?=
- =?us-ascii?Q?HMumqXFJ1hKfUtwVaUgx5+WEF+a24/A4DSQkynOwwXVAJi8T3/r52fgGMc9g?=
- =?us-ascii?Q?G/+7K8Iq9BFrkS2b+yI0JNU3v36gJeeybXGY8i4hIivfIQTdGMaU98/UIXBX?=
- =?us-ascii?Q?JuY8ZU4jrPzafZjbTMlhGlm2bMSGUvRaUfg7bjwosFZREXFRPmhz1l5oO7fe?=
- =?us-ascii?Q?FNUcgXGzSKnP1O6eJ5KuJrkt/kzRyK3y3wP5rbvSfcg4nsLhT0qJPKRwgvIN?=
- =?us-ascii?Q?IwbwuRjMitJm8aQaMw6zh07iNJ+Yd0aPOlqn5uDtRAsCodnhQMKpLFb+JuB2?=
- =?us-ascii?Q?XJ66TDpdt/H1ul0U5ousLGf+gvMVndZv4Ql69ATtF4So1q9tc7MW7qLd9mVg?=
- =?us-ascii?Q?BmiW++EswfGCVUvHnBCE7hH1J0Ms21gZ8qDx3SCx7fk8gS+/li6m8WF86ZV4?=
- =?us-ascii?Q?xpUh9J3R9ImxWqGZ0sc3zrr4Hyh9fWwkWacnCpco/rP9oH706QeCDzmJ+TFN?=
- =?us-ascii?Q?BIuRqQRXK+SM6E564TvYMfnDgTNcX13wgA0DSqGlXOoxm8YdXImE13jnvmap?=
- =?us-ascii?Q?EvXDVMJy0BA73amNEFdiosoqefa3vXhuuBHRHzE4BvuJ6WhWGczHkPzpo2bc?=
- =?us-ascii?Q?usczMznkaLdy54GRX5wl/SubzD3Ey9YN6jWpKx9fegMnnDLr4lDymPRtIjlq?=
- =?us-ascii?Q?3fP+4w+Ik3zFCl81tqLoCzJw3C83DdEs50SqfGBanRcwcGMDXuYCRaB11mod?=
- =?us-ascii?Q?3pf4pdIUthrrLCrjjiswfsptT9k7YPCNB8B3v5aRu7eY8FYaR4OxV19VzRuZ?=
- =?us-ascii?Q?XMRjKygpwjDDsY/ZfXciFDcR+O4UJeSrzwfbRRoS/tmOC88Nqnhjek1LSvj6?=
- =?us-ascii?Q?57xDoHu1zGpUNpr2jW/K8g3CQsuF3Hs6zupz3F3gc4SbTPyhhuuC0a2VY/lx?=
- =?us-ascii?Q?5katdUeVylANe19A1FQ2rRCt35o2fg/wbFZ+DU+UtxCY7NXMxgjz1bcQtXlI?=
- =?us-ascii?Q?6ucruYvC1HXR9mKZ+qxKu/dnRqdH/RTNeh+9HyFcfegP6cbwpnQClgRdt4Hm?=
- =?us-ascii?Q?ZWzv6ehsK31yivVbbYVpGuJBGeAQguQNJTUubJP7OLQs4HA5B9GZDnVs8y2Y?=
- =?us-ascii?Q?eSNMcVUH67nXEYsOtwFWcIoJQKaSjylItEKe+UORZwrK2o4hFpfMbx8s8hvK?=
- =?us-ascii?Q?9JY7tNpKgQMv8MvkYynBpHwf6HHUkfaBYLfeQ84w?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb61f82d-c45f-4fbf-e97d-08dd55e5b269
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 21:45:18.8077
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OeG+nPDnYaQbcuINCvEs06h6ZZ/s9jfYfhAGUZtBR+a+d3YYWYR8B76RLh1w/xYymDeh94FKTc3cjZ64LWj6eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11047
+X-B4-Tracking: v=1; b=H4sIADlCvmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDIyNT3dzU3PyiSt2Uolzd3MziZN281IoS3SQjExOTJBMLi5QkIyWg1oK
+ i1LTMCrCx0UpBrsGufi5KsbW1AGMd+zJuAAAA
+X-Change-ID: 20250225-memory-drm-misc-next-b2444b488db2
+To: Joel Stanley <joel@jms.id.au>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+ Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Alexey Brodkin <abrodkin@synopsys.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>, 
+ CK Hu <ck.hu@mediatek.com>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740522045; l=4600;
+ i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
+ bh=VRew4thqjNNr9Bhh7XZ9CycetampVVfLEpViJv98lrg=;
+ b=ECHxTPhmX8SH8mJXx2ad9sYUXYHscl1DXpCA8GXt5zVBerbXI/IktA9aaJ7pdl+ts3xeDePFN
+ 9Ct46KCSVgmCxQFFFX9oDZfk9E0JAYbrP432VYqTJmou2zlqrmetjZp
+X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
+ pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: t83kDnWSdnyqTr9naVQtceIfguJ22Uvg66NOowBFzKQ_1740522063
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Retrieve the "ethernet" alias ID from the DTS and assign it as the
-interface name (e.g., "eth0", "eth1"). This ensures predictable naming
-aligned with the DTS's configuration.
+Start replacing the below occurences with the newer API:
+- (devm_)platform_get_resource + devm_ioremap_resource
+- (devm_)platform_get_resource + (devm_)ioremap
+- platform_get_resource_byname + devm_ioremap
+Move all these occurences to uses devm_platform_ioremap_resource
+instead.
 
-If no alias is defined, fall back to the kernel's default enumeration
-to maintain backward compatibility.
+This is a resend of v3 of the series. Sending this from drm-misc-next.
+Changes from v2 [1]:
+- Keep the old snippet of documentation and add further
+clarification (Thomas)
+- change in vc4 driver for the a resource is not needed.
+Add a comment to clarify why that is left behind (Maxime)
 
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+[1] - https://patchwork.freedesktop.org/series/144073/
+
+Used Coccinelle to make the code changes.Semantic patch:
+
+//First Case
+//rule s/platform_get_resource + devm_ioremap_resource/devm_platform_ioremap_resource
+@rule_1@
+identifier res;
+expression ioremap_res;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+-ioremap_res = devm_ioremap_resource(...);
++ioremap_res = devm_platform_ioremap_resource(pdev,0);
+
+//Second case
+//rule s/(devm_)platform_get_resource + (devm_)ioremap/devm_platform_ioremap_resource.
+@rule_2@
+identifier res;
+expression ioremap;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource(pdev,0);
+
+//Third case
+//rule s/(devm_)platform_get_resource_byname + (devm_)ioremap/devm_platform_ioremap_resource_byname.
+@rule_3@
+identifier res;
+expression ioremap;
+identifier pdev;
+constant mem;
+expression name;
+@@
+-struct resource *res;
+<+...
+-res = platform_get_resource_byname(pdev,mem,name);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource_byname(pdev,name);
+...+>
+
+Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Anusha Srivatsa (12):
+      drm/aspeed: move to devm_platform_ioremap_resource() usage
+      drm/fsl-dcu: move to devm_platform_ioremap_resource() usage
+      drm/hisilicon: move to devm_platform_ioremap_resource() usage
+      drm/mediatek: move to devm_platform_ioremap_resource() usage
+      drm/mxsfb: move to devm_platform_ioremap_resource() usage
+      drm/sprd: move to devm_platform_ioremap_resource() usage
+      drm/sti: move to devm_platform_ioremap_resource() usage
+      drm/stm: move to devm_platform_ioremap_resource() usage
+      drm/tegra: move to devm_platform_ioremap_resource() usage
+      drm/tiny: move to devm_platform_ioremap_resource() usage
+      drm/vc4: move to devm_platform_ioremap_resource() usage
+      Documentation: Update the todo
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index fc41078c4f5d..5ec8dc59e809 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -622,10 +622,20 @@ static int enetc4_pf_netdev_create(struct enetc_si *si)
- 	struct device *dev = &si->pdev->dev;
- 	struct enetc_ndev_priv *priv;
- 	struct net_device *ndev;
-+	char ifname[IFNAMSIZ];
- 	int err;
- 
--	ndev = alloc_etherdev_mqs(sizeof(struct enetc_ndev_priv),
--				  si->num_tx_rings, si->num_rx_rings);
-+	err = of_alias_get_id(dev->of_node, "ethernet");
-+	if (err >= 0) {
-+		snprintf(ifname, IFNAMSIZ, "eth%d", err);
-+		ndev = alloc_netdev_mqs(sizeof(struct enetc_ndev_priv),
-+					ifname, NET_NAME_PREDICTABLE, ether_setup,
-+					si->num_tx_rings, si->num_rx_rings);
-+	} else {
-+		ndev = alloc_etherdev_mqs(sizeof(struct enetc_ndev_priv),
-+					  si->num_tx_rings, si->num_rx_rings);
-+	}
-+
- 	if (!ndev)
- 		return  -ENOMEM;
- 
+ Documentation/gpu/todo.rst                      | 13 +++---
+ drivers/gpu/drm/aspeed/aspeed_gfx_drv.c         |  4 +-
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c       |  4 +-
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c    |  4 +-
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_color.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_gamma.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_merge.c       |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c         |  4 +-
+ drivers/gpu/drm/mediatek/mtk_disp_rdma.c        |  4 +-
+ drivers/gpu/drm/mediatek/mtk_dsi.c              |  4 +-
+ drivers/gpu/drm/mediatek/mtk_hdmi.c             |  4 +-
+ drivers/gpu/drm/mediatek/mtk_mdp_rdma.c         |  4 +-
+ drivers/gpu/drm/mxsfb/lcdif_drv.c               |  4 +-
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c               |  4 +-
+ drivers/gpu/drm/sprd/sprd_dpu.c                 |  9 +----
+ drivers/gpu/drm/sprd/sprd_dsi.c                 |  9 +----
+ drivers/gpu/drm/sti/sti_compositor.c            | 10 +----
+ drivers/gpu/drm/sti/sti_dvo.c                   | 10 +----
+ drivers/gpu/drm/sti/sti_hda.c                   |  9 +----
+ drivers/gpu/drm/sti/sti_hdmi.c                  | 11 +----
+ drivers/gpu/drm/sti/sti_hqvdp.c                 | 10 +----
+ drivers/gpu/drm/sti/sti_tvout.c                 | 10 +----
+ drivers/gpu/drm/sti/sti_vtg.c                   | 10 +----
+ drivers/gpu/drm/stm/ltdc.c                      |  4 +-
+ drivers/gpu/drm/tegra/dsi.c                     |  4 +-
+ drivers/gpu/drm/tiny/arcpgu.c                   |  4 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c                  | 53 +++++++++----------------
+ 28 files changed, 51 insertions(+), 171 deletions(-)
+---
+base-commit: 27d4815149ba0c80ef2db2a82f0512f647e76d62
+change-id: 20250225-memory-drm-misc-next-b2444b488db2
+
+Best regards,
 -- 
-2.43.0
+Anusha Srivatsa <asrivats@redhat.com>
 
