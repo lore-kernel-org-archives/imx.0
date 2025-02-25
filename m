@@ -1,272 +1,371 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013024.outbound.protection.outlook.com [40.107.162.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C6F3CF58
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 01:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159026AA7
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 02:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740447823; cv=fail; b=U1yj6I0dNK6JYdocjFqreQCbkaWXy2j7u4g/VtLyflZ8UfU+4qiqnJSUD0qdfO0bYeG8zQoRAIXPbzENBM7LVlojckjIpwJ2D3C4RYWRxF1oOnt64bcOeuqP+906dfwpAzVREgwqiYEh+WDZkcRWIpn5OjRsaWeLQOeVAn1jSeg=
+	t=1740449784; cv=fail; b=NJje3xI1V9uboDKJKcPUJWvAzxpBNEIUnSQM7+F9Dhsc+lv7V5hBodCbKacU0XVpl/8JZfXMXWKluSilqd7nR93+KxrdHeMDrOgXfzm0jOSGyce16ufp1RMkb/NVL0OjI6OXsdkD7gvuFDpwry1j+cBKhpj25bkNRubMGvYO2Bc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740447823; c=relaxed/simple;
-	bh=bVoMfOJg0kLEqniNu2n1Uns/oFR8HlfpH2I9hM++8zs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZitTZdQLqsdRmuNbgcTGi9PK3yLCLCigCsuMqrVvSNEa7HtnShna2DKhB593p1hGwYsKoHfnq6ynZTSisuNzJFuHQLD1ReKJPlMSoj4iJUpnpeqij2g/tljIRrkshAHxvXVpGDYY15RXhA2+5vlpvXBKuG7x/B2YyN7TicpZWjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CNCbUCok; arc=fail smtp.client-ip=40.107.22.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1740449784; c=relaxed/simple;
+	bh=RU45pBCvXcCZQyJlMJmBl/3Or/bqNf6QHXt7p0A3WDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fVYMHZCyHIyaTfZcqb7IbI/gPeR1rbfCHD4LQD399730LKqszeej40PhveUcRs9KpIUKWKvTvOo1ip4qtk7SN34Ly02WTdfZXTQzjlrBFQ52L9LCr2FkooOPUnSoB59ar7rwFZLsbDwvD9VRd7v1sxmcFsqhZLEsnKjvVSfGDG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bxRLD1Nu; arc=fail smtp.client-ip=40.107.162.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CNCbUCok"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bxRLD1Nu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GIEePxfNp3BQs+baHL3ASsYQNOgt57Szl09HYH0y3LgJRwO4rRlcBimd7HWR5HrcBJUu0Z4+8om+lIekPWQLbqeYuIq3ZjipixW4awWCRC4K2BHr7S0afo98vDJP+3+x+fozXur1O4ziCxGjBVmj9qAmzz6c4yXmZUjLfj+4f1rjV5jocb1xGhBEHSlQyMHWDXu5ZOB6AZRmkyjTBpDAN8weFZQsuSMydzKK6SVZqgROuSkg/D4wgFt5yAg62qhQJN6DC2vPX5cYH1yLQv6kS1sTajvHArLP+x/P0bAQgPZRsPFhQWA7v2rjz1Rtu4qRg/VOEZLv/+CBkmMkr/4TxA==
+ b=BdSfWz1IIbpOPeTawiCfOz1xNwAjkMuR5qMXtQ4OAfJcCd1bsyrLP5K4bKDVe+b7NICafYcifhItZBsoP6nJwhhOKP/9q1o0GjeNkveQboVZjQ+b6qG+OAZxtjsPh5Nl4BaehmO3X2DMsAMA2mduqeNrqrYDgxL9I7+Q1CvJzs4r8ypOHGH45sx8EzMWLLcoseTpGV0ySofJkQu/1RkgxE9rbrRN8eKOzjMHLwW8JxIOb+ePp5I/RsNENoeRim7V6+J4rBQxvi+6Gdx/EAkuqy6UKFbPpzkljCVcigUcqeqAOMmKebEOj7o7kT8xTRXEGsVkTWO7e9zz3YPSwmD4BQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nS10oNLp1rAJRzLDn+WW278lTI1qqu3gWgYTfzsq8qU=;
- b=iJ19sBA27wNtpsK0/m1h4HlHFfG7G0IKLVaCS7olIgJl7RvRtiFLnkIlA7oCV5uQ1dhvAZrz3Eoep6EjGrGBXZ+15JlwM3UNLQ0/HUWzENh/ufXDhQpuNdc7EY4YPtnc/bCfweb9gbcVKBCTix5rt1P3W+HeBjQeq0h/30t+SFZXGQf10VCTThRd/G6wxKn1+yfxMpqHdfgK0i2Vj2OIL+60KYbj6EKFhUg3/xBAe4yP86Ul+5v9oS6gwAAUb7AMABkka7oqsmZuQYISf7RAiSChLHoyL/HU3S9lfyUZjNbkPoxsEEvN5udOZsphB9QAvuRjPG+L8w0VX+05ugNb5g==
+ bh=kTX+r5mv5sBKWZpVufQNhNSmTowtdICzVcb316drOj8=;
+ b=b6Y6jKmSpW6AZngALTDAuXKhLV3qgTBw5pRKoI3PWAKBGeDfn0Pykov6PC1l61pMb+kl9abPy4giUVtf1miG2v7Hey8+fX7PFNZc6Dw0hYpMxqMOUqw1TtgWh62SuU3MnVrv9jNWs9edB9kYwV1VdchOg7ROLP3UC9kwRsjkBNECeqMxNPfZkThAamFupkr5W/eT1Mb1Yy49mC2FUg5gTiHvajvYC5mY2AFT8WXDmXBFbtdKhnlEWmFFnDSpr+jU6uxNO9OiGRF2hDehLKqeUMpVbtuMKgDAa0lBb/CsyZbEl5WcnKBWBzM3q5u6HMejcnPWP8jlIgF8XDx8cn6KQw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nS10oNLp1rAJRzLDn+WW278lTI1qqu3gWgYTfzsq8qU=;
- b=CNCbUCokkgOXmWOp9A4JqWGa/1NxFDGEB7SJUNLy5Axiq+NGmIV5NfFB82q3cY+B0R1Z5Z5eaHyvMJhKlnlNQfJ4Vx1uTTRwm6tB/9RsLry3TpBuUgQdl5nGnEPtfNEGGpoa2JcXdlbmZMVpKgrIj9wd5WCmHWnp05Din+93qTublA6sG9TqvEJwldY8kQZBO7XnSbUShlbfb0Tvw9N/Xxk7Yu8Uhqc0jQ2sSavqhvR/DCmmbdZxqn3ofW8RUQoermAd/Le+cDZIusN0pEdvFOGtp3Y3g1SMiWgN/csT167qlQU0DGgcFhtYSqlsEsdNFOzXUDCyOe+rl2i1CAHj8g==
+ bh=kTX+r5mv5sBKWZpVufQNhNSmTowtdICzVcb316drOj8=;
+ b=bxRLD1NuEutOXuf04fNcr20HOZFkdHJGhgjzDO+rbni5maLU7ydOZQ7tz3bxDpDL+qBUR2OpyMfahu8hGnd4tfMEqOSiBRcGpp0yoefj0R4zvO2B26bFOCVZQJIdwzp8piIXOvKRzCzxxS9kPDrVzKnCfpp5DiuA1eIob5coBiwUifrvYFveWwu1aaDyJyl1CM7kVqnOH+Oy8FQm/1ZRzSE9hneC/7zUgBtMlSchCq0AQ75NuXkBkQPrQoZWnxo3jrPFb2bFIx4zpOHK0aZ6NKYywf9F10N0wV1vTm8qBm2T8qffUCHVs4yCGk0eCxrrdkq5Ywe62OWThRFDa0fEkQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by DB8PR04MB6876.eurprd04.prod.outlook.com (2603:10a6:10:116::8) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI0PR04MB11071.eurprd04.prod.outlook.com (2603:10a6:800:262::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.19; Tue, 25 Feb
- 2025 01:43:37 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8466.020; Tue, 25 Feb 2025
- 01:43:37 +0000
-Message-ID: <93c5d8b2-2eaa-4f5b-9326-93657cb063da@oss.nxp.com>
-Date: Tue, 25 Feb 2025 09:43:27 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] media: amphion: Add a frame flush mode for decoder
-To: Sebastian Fricke <sebastian.fricke@collabora.com>
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
- shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250117075720.4018076-1-ming.qian@oss.nxp.com>
- <20250117075720.4018076-2-ming.qian@oss.nxp.com>
- <20250224141712.soexl43hrimwf236@basti-XPS-13-9310>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <20250224141712.soexl43hrimwf236@basti-XPS-13-9310>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR01CA0005.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::23) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+ 2025 02:16:18 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
+ 02:16:18 +0000
+Date: Tue, 25 Feb 2025 10:12:54 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 3/6] usb: chipidea: imx: add wakeup interrupt handling
+Message-ID: <20250225021254.f4el33a2sh5gsmir@hippo>
+References: <20250219093104.2589449-1-xu.yang_2@nxp.com>
+ <20250219093104.2589449-4-xu.yang_2@nxp.com>
+ <Z7Y+gqu75xJyjy6n@lizhi-Precision-Tower-5810>
+ <20250221032348.sncjhnldj6ecgeou@hippo>
+ <Z7iabsMl4ilQqrXN@lizhi-Precision-Tower-5810>
+ <20250224110751.7666zcafbyakvfb2@hippo>
+ <Z7yXGgrX6FVQjy2M@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7yXGgrX6FVQjy2M@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: AM0PR03CA0023.eurprd03.prod.outlook.com
+ (2603:10a6:208:14::36) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DB8PR04MB6876:EE_
-X-MS-Office365-Filtering-Correlation-Id: f707221a-69b1-46f6-daa7-08dd553dd288
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI0PR04MB11071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 314c8d48-9ed2-49d1-c98d-08dd5542631a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d0ZrSmpjeFN4TnpWUVlLRjNtVmQ2NzE4TFBqV3NiNnE5TmQ2d1dab2QxdDM1?=
- =?utf-8?B?dVhCU293aXdtNjg2a0ZQWXdkUHVxVFFPUUZRanVIc3VOaWdPdTVyajlTekdL?=
- =?utf-8?B?R0FBa09XUmtDMmtYdGZMeFhwR1NCQUxaM0RQSnZlNG9xTFBLdzlwWCtGWjJZ?=
- =?utf-8?B?TytYVllMYlZwc3Z5WHdWbmNJWXFNbi9xSlVHdlkwZGFDYmwvbGhGOW5xSG9K?=
- =?utf-8?B?OG5FZng5ZDZSbTV5ZStEQm4yRmwzZHZJV3BCR21IZHdTV3N3VHEwVjZnT0dR?=
- =?utf-8?B?SUlPaWVyT3cwUjVLdzhuVEVxTGRaaE1yQ25sbGZlUXIyamdEYzdMSDNlSWZx?=
- =?utf-8?B?cmd6VHN5N2hSVmU3b3hULy92TDhZd0VWQXltakh2YTFQa2Z5ZnBuRlVMTm9R?=
- =?utf-8?B?TnFHRGQyRE5RMTBqN1Y5OVZBelhTRkNsS3hCWFRDZ2JVTjVpSkFkOHdZWFFj?=
- =?utf-8?B?cXBiS1l5eW1ESEZWSFVoMi9jN1pydCsxUmJRcjNmRkI4VzZrL0ZoZnZUcTNC?=
- =?utf-8?B?T0VmcWM1aHJXeHpiTFRoVzlJNDVYbGUxam1melhHbGZKYzlJWFZVZHVFVFNw?=
- =?utf-8?B?S2ZRZi8yQjVLSytkQnJ1ZVAvM01HVEdoSXZsNkZ1WVV0V3Jmb2E5NFloUmVP?=
- =?utf-8?B?YVZZQzlzVGFaM1NNRVh4akZZbkdoVGRVNW9xaWV1Vkd4Z0ZZaDJFVEx5Yi82?=
- =?utf-8?B?Ylo0elN3MWFtcTB3WjhpTGorcGI2TEVicFA4cm94QnB5UG9Wa25Mb1BGa0VT?=
- =?utf-8?B?dko5R1NvbXhHVWQ0OFlNVkFMK0RrUGRUb01xdmF4NHJiRWw0Ni9KTDlVamNX?=
- =?utf-8?B?N25naG1GUitaQzk5N0lhU0dQSGhwUDBSb2FaSnN1QlBjY01JVnZQRDFtWE15?=
- =?utf-8?B?QkVoVCtBZzJKS3d6TUM3aExuaWVuNjd5OHNSRXRaSXF0c0NXK1RTNFlFQjdW?=
- =?utf-8?B?c3NtVG9oWlJZMU9vMTNaTisyL1ROdFo3MGxKNlRjczdDWUgxK0dvcEx4bE1S?=
- =?utf-8?B?QjQ3aG5GVmJKUDJONk55QXdKMVhLVmRYZjNubUVzSFRsakI4QVM1ZmFvRHg1?=
- =?utf-8?B?LzJSb0xtMVF2Qm82c2Zyb245ejFPZ2pBd01NR0o5YnhoZmNBV28yTjgrdFhy?=
- =?utf-8?B?cHBnakplRUVpZEowRzBqbFRGdmt5YVBGeVV0RzJ6TjF3dmZQS0dTeXdkbms3?=
- =?utf-8?B?V24vVit5aEdzVjNiZlpsOTNpRHhrbys1YWkvZ3BVQi9qRUlpV2hHempmN1NL?=
- =?utf-8?B?My9LSU5jUU9DN0lUWlE4YkV4MkZOWDcyQTRjVzRMaDZ0ZHdEblpjMVorbGQ0?=
- =?utf-8?B?WDdCWnVzb2l4c1pWcEdjLzdiY1dBOVVmTUhkN29zTEZPanFlOXNkTlcwZ002?=
- =?utf-8?B?Z21rYjlmQUdFZUF6NnZheWVtcUVoY2ZFWXBweTVvWlQ4eElpRUpYcWhXTnF6?=
- =?utf-8?B?N3d2TmtxTFdEMEdyaU96ZEdIUk1sTkJ5c0NqOTl6ZGJEbThsdzlTNzlWUkYy?=
- =?utf-8?B?TjE4cjlFaTluMVdvazVXV3paRlJ6TFh0dUd5cm9yL080Q3NzUEh2SGJLNE81?=
- =?utf-8?B?L3F5UzM4ai96eHRCMjBBTlBmSVZUenI1SGd2aXY3NDZBdHdScFpNUGNRazlM?=
- =?utf-8?B?blBvZDA2QlBiQkQ0Y1F6bXA4QmJhVDdua2ZBQzlSZHNxMENFWnpIYmVRb3lS?=
- =?utf-8?B?VDdFaHppUWhWdEJCV3JvTXo5K05HaGNPSlBCeXJiMW95bWZVWmYxaDFEY1pM?=
- =?utf-8?B?SmVQNXJZTWpLb2NZeEdhWWJFam1lWVhkNDA0a2RVMGtuK3dpRTArR0pIajdj?=
- =?utf-8?B?enJUQW9laEJGVEJWOENIcUZ1T2lDK2NRTjdiZGlRbXhSRGFWS2ZmTlArWmx4?=
- =?utf-8?Q?HVOFrT0FaUosX?=
+	=?us-ascii?Q?BUMErnojFubxlt472rBR8qQYMs//JCI0s9YB+FTA5OR49lbxq3zdTZE847Re?=
+ =?us-ascii?Q?Gtf6z7gXIOKxZuWKjn8AXTbOr0mg+DG7bFNytGoGfeoM9bUNAgxKphMIZze2?=
+ =?us-ascii?Q?xTaooCtIwQzJUqMRr+ROYLkCJW92jm2r+uC9dSrqd4szeQvsRuMdbXjrS18p?=
+ =?us-ascii?Q?nqkJwxh2WcC81VrP0XZqBUngZZNIJ1aJ/SL5xKXUtB0vOF9gsHG/asBSgb2T?=
+ =?us-ascii?Q?DKEE8CRHRwUlXv5WSOijJ+62RiPPHGnqqQ6P2I5zhyKK/jPJCZnFbJAjhRPn?=
+ =?us-ascii?Q?DSMyCejn9zVXNxYKHi02Z4xa4kl7wXpW+MdRlL2OlfRO4r+rTJ7Y7Mj9rct0?=
+ =?us-ascii?Q?5OO+7an8m8ufAYrQQydqHdBBx4Lx4JrRkDHYeu9rvheiiuBVLU6XO9TcXKrN?=
+ =?us-ascii?Q?Q+kUhu8eZ6IOYHH1AyTioAZEMwUBFw3O1HOXJsLZGY5mXv02WPyNFX8DvFQ9?=
+ =?us-ascii?Q?srSCQyl4xBqwkB9t91h8D5aCPxibkA9FVyRrAIxL6EP5KH/ktAczBn7vLRVH?=
+ =?us-ascii?Q?eeT0x8yTZ4Let2m3dkngMoilfGjwYnS5uIj7Hzo7MgPU3BIsCL97TBvZzeUq?=
+ =?us-ascii?Q?kYqDsSQRGxycVv3oW7W2ndz6i51Ab8u2hBnIK5/xPwwohyis6C7tJRsbLLW4?=
+ =?us-ascii?Q?sQz2uzciOM4uTEcGEPmTx62Q1sd+X1xN1smld1+MA2UFiHjSo9TEAcr4eZo8?=
+ =?us-ascii?Q?WCnKeM5NN0eWCrVfpUiQI0Q67k9WqublM4th5UKQCa0UVr1y/yoiRJGTs4l1?=
+ =?us-ascii?Q?zL8peZL4EvD4wzo1S6QZlGlHRCcvyRHh9jvRDCGSKPXX5LIs3fZDLWbYZco+?=
+ =?us-ascii?Q?qSvnvlShN/nHiFRGV32ieAZDlBBe4ncWp27321m07RwN/6Upw5If0bAzAJtw?=
+ =?us-ascii?Q?96sIYiICnYBt08xKABOez+aF6Mjkaxd0z/QF5l2W/P9w+Uy0GHhgJ5Op0s9C?=
+ =?us-ascii?Q?rgeZ9xT7AK4QeAxvedfDVFo7ZmpzkNYoN8Ls/deCOr5lAhhgYxGuuqhm4ISZ?=
+ =?us-ascii?Q?XkLADe0y2t9JMl3WYTEDX73/KAAYH18I5V6F2EsM2IsiI4T0YUFjNgmpIHIY?=
+ =?us-ascii?Q?2WCNZBqy4NSMm1e8IBPQ5i+EU/gC2lgnFsMlkKPU5leWEYixSUOO/xkpeWWO?=
+ =?us-ascii?Q?V7vrMpWfhePSUClJWGOMT+ap4VBXDpdI5bMUT/oqS06YZG3X50X4JXwkxNvk?=
+ =?us-ascii?Q?1Vs98hkRXj+hVq40sQi/Q1Zm0k+oYR+8AKv+fouc/qa8XTD2wsZ59q/V0iwy?=
+ =?us-ascii?Q?T5kfsxLGkmo5WOn7OndWjHA4QFYKm5TAAH2hz42y4Eal5NxgUEUVtuGDQYWv?=
+ =?us-ascii?Q?+8Urdl9yUwXa6qWfO+CMgCyiKRIUWjl8TRGhKleidUKXqD/XbirauqN6fj3Q?=
+ =?us-ascii?Q?iG+5YEN8mc4bH+4LoFZRBaYrRBx3FcMZrkp8EgO2yaIubz1wSJogMQ4p+HhE?=
+ =?us-ascii?Q?XeSZLcdLj7emJVQJ5pkFIPCoSf6ujpBK?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWZLL3EyWU9MQ0lhQTRnZ3A4SzBYWndicjBBdEg3YjYzMzNmdm0rbUFOTFhG?=
- =?utf-8?B?aG1EdnZsNDlIOGxBY08vV0RPNGtDalZTVU1sMDFMRU1mMm1WeFNHbWZ3RjRO?=
- =?utf-8?B?OTF0OFhWd0tCbTRUUVhHalFCT2RlcmZGckxMemp6YzFKSEFCRk1FNkl0dE90?=
- =?utf-8?B?ODl5OG5aZ3FlbVRISmVzNkxTTkw0N2FyNEl0NXgxV3J6UFZRclhnODhvMy81?=
- =?utf-8?B?MkZYUG1Ldm5tcHdRbDVaWmNPVTZnUDhveXVMbTRYbmsrTG1KVzZ5dXRzdi9m?=
- =?utf-8?B?R1pzSHBWc2hsVGlBRFd6VWcxV2ZNaXJKVDFDamVxTTczV0hMZm1pMkJsaEdv?=
- =?utf-8?B?L3RvK3MzQVEwMEljdWhvdDJPSDd1NXM2cjB0TXYwOXNtOXJEZFdDY2F4K1Jj?=
- =?utf-8?B?TzNRM1MrMlA4TGJTUGN3bVRUbHJIay9QY0YycWlDdUVnTU5LSTZ3bzdTZE55?=
- =?utf-8?B?R0lCUWsvVDZEYWZncTZUR1ZBYjQrZTFmSTU3NmxSVFdEY2NxSWVBYkJENWlG?=
- =?utf-8?B?UnBzem5PMnBCOGNMV0JyZ0xLaktwSVdpMWxuU0ZraW5QeFJlUnlHZXRobWlS?=
- =?utf-8?B?U3hQM3IvRzc4ZGhGVkMwK1N1V1A5RFphd0JObzZUTGpzUzBuaVlFeHZPeDVa?=
- =?utf-8?B?SFkrbTdVVDhvNElrUGNESDlKUkljSk01MGlpMEdmM3VCS3FYQ281VkhWdDV3?=
- =?utf-8?B?V3VJTmd3K0NxN2F0TWhRTHM0Tk1zcE1GZVlVVDQ4ZTdxVW9XMjJUUmZiamRK?=
- =?utf-8?B?TFJubTN2anA0cVllWUN2YlBnS3EzQmc2SjhsU2psTkdFVXpJNE1vOE13NHQr?=
- =?utf-8?B?bVBrVU5pNVFLZ3FPUythM2haUHYyL045ZXlrdjhwSmFyUGpYeVRxOExNempG?=
- =?utf-8?B?a1pCM1NvMGJybHJWMW93Y3Vmb2tMT1hJTkRTNDVYOEMxaW1CUjhOZllRdXMx?=
- =?utf-8?B?MnRCYkdFcFNJd0xSWmFLK3cwanpYTFJ4NW1JVHpLNUFhZWdSOXRrMmZFaG5w?=
- =?utf-8?B?Sjc4MFp5Z0pnM0JLRUFOcVlxWmpNOFduQm81Q3NhcTJvMFBxTTZqbmJMQWdw?=
- =?utf-8?B?OVJuWmlaMk1KaG40R0wySjlsTHVIdElzVEhBKzNLR0F1WjFXVGQ1b3RGQllN?=
- =?utf-8?B?QklMR09RL1hUN0l3eVV0MjFwakF2ZmIzb2lCUWhBYWVwNEIrTWdabmc5L3Jk?=
- =?utf-8?B?c0Jrd3JlNTE2R1FpbWNPOGFaZUVnWC9tWVd5KzNMc2xHNFhIc3ZVUUlxZUYr?=
- =?utf-8?B?anpsODlwRU1JcnJBL3RLVmNwbnN4dFhNR1BNZkJ0Z05JTnplN2tzckNwUHFh?=
- =?utf-8?B?VE1FeW4wa3JkT3hPaXdOd0w4bHAxVEtld1hncXZRTlJweGZUQUJEaGF2YnVQ?=
- =?utf-8?B?M3BoTWxsOXhBWHFYaWRkNEdnQjN2OFZuazg4YzM3dG5MV3JNZkx3aXZzOS9R?=
- =?utf-8?B?eFBTOXc3aXJOSngvNWs0NE9uUFBabXBHdkt5YXhqMUlJWm5kMGlPV1c4MGZ5?=
- =?utf-8?B?eG41cExOVGxmWVdZSFRCaENVSEVMTk5qWG1MSUhjUk5CZWV6b1ZtVUJmckQ2?=
- =?utf-8?B?NDlObWVRV0Z0d2lmM0lDeGFMRm12eHllaVdJS2Z4SjMrM3lOeFNSbWZOcWdj?=
- =?utf-8?B?MEFENE5iWDA3VFhMcFpkZjZ0aExvKy9nY29ZaWl6R3h3SE82ZmduS0ZmbHA1?=
- =?utf-8?B?cXNLM1Y1RnVuMTdzckJNQWFvTW1PcmlLVWRGNGIrbjVRcWwycitTSEFKSlNo?=
- =?utf-8?B?YWZqSkJaM1dubDcxdFdQRU5TQlVvbDVHMU1hUG93SGJGMXJKSC9saEJLakRT?=
- =?utf-8?B?Wi9CUElyWWQxSFV2ek5ZYWg1OHJpbkVoMW54aldiWHN0N2x1aHJlZytMNGNE?=
- =?utf-8?B?bUVLZ2VDVkloQUNka2c3MGpKaWVLcHV1NzJPQ1BYcHdqNzIxdXFiZlRndGp5?=
- =?utf-8?B?UkNkZjNDTnlUUDIzcys0bXVHRCtnSHVHT1htN2xWc3VQb3A0cVhLTFFYVHNF?=
- =?utf-8?B?WStyOHFTdmlKMHZiVE5ydG9ZR2Y0Ry9mTlQ3Y2hDRXMrc1puVG0rVXkvYXF5?=
- =?utf-8?B?NkZ6cHBYL3BwTU1EL24rbmhpZDB0ZGlIdzFSbGhmNlN0SXBWMHM5UlNWV2o3?=
- =?utf-8?Q?Wq4V5HJw2N5ry3w6z8auTp4EB?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f707221a-69b1-46f6-daa7-08dd553dd288
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+	=?us-ascii?Q?wlhYrUnvSno6hLpw1hrpFpFRN2YqrdemLh04sCiCWRqvZCZ/9RjlcZo/Dn82?=
+ =?us-ascii?Q?bIu6wiDv8Z9JM8U5CzpXJxG8b1MMdvUJ1ZuJO/0pzCPRPLCQVT5tVAgXj4ze?=
+ =?us-ascii?Q?Pl7ruGb4akIKth6BJnA2SXdCijHrfv9DpI9gEUgyEBsyncMJnUaBEGCyUDeT?=
+ =?us-ascii?Q?0f1TTQfpBR+B4AnqV6VdRnxxUGve4wyrb+8UsasmT39+2QoHEOx9MuImSmwv?=
+ =?us-ascii?Q?/RrexJLYx1MmGWxfN6fk1GujvYTRjQW9keZx0iN6/Jdhfz2YR1TOVxQX/4/1?=
+ =?us-ascii?Q?bgcT14A+B5S9SB4uJs9u/8R/kD55NFxQ+FGQnwlwHdflGlbsNBxREJPWsn/K?=
+ =?us-ascii?Q?lDhdpz/XeNZ3XzQcoIM/czcCrumJD7UheU6KAahOaG0etuTZVOa9oq1YJ6Gm?=
+ =?us-ascii?Q?IuHG7QZ8E0LGLmR22aZHxz8A4UFw6S+eA5yXpy35ekt66qz1SZ+L/qqu48VS?=
+ =?us-ascii?Q?NkFSEG1qUdvkx6Ys/lMx9HwFO4A/ve/wZKeAMKG/nGCXcMjCLOpo0gYCDFVE?=
+ =?us-ascii?Q?kkA9z7GE/9QAjnpB+TIlJjrJyXnxESfFKoSdLOWzd72FEx2SZ/QmSfhitlX+?=
+ =?us-ascii?Q?wq3Np0CEwslZevyLXinVW4gkihGVCV9i8RNT09mXzmsa1/8THKXEOHrnbyYx?=
+ =?us-ascii?Q?DcOgZYx1IXams9mGTrYlvEM+lypQBPRMFe0/5BgtNt1QvowrAFQaZrV8zlOG?=
+ =?us-ascii?Q?xTKeBscP/qJvpSZfMTVIJ3e3ejTATrmq2oLXJ3eEFHnN/5yW2kPIPVt6Rq0V?=
+ =?us-ascii?Q?JtQ5GQrJyaLD4R2EagM4Izjm/bU7RDS3mpypprizRinQ7bB2r0WF4nvjKzeY?=
+ =?us-ascii?Q?v8CBod8xCp8dWK74lbSRyCoBmZS1d2proOmPv8YYOC2PtR+EVgCac/+PO9ke?=
+ =?us-ascii?Q?Vh/JMC1E49wLtPtHU7GU7rXnWoLmqov/yIZhT0+Ep9SL5Sv+kmEAinPky+z3?=
+ =?us-ascii?Q?0i3XFQz6hQ9NQqHTSPpyA92+/sj1KdSYTzFba+JDt20q1JYUAL8tyW+MTPDO?=
+ =?us-ascii?Q?9ajH5z/dxvJeZSlI2Q3xax7byP4kp5IC+9gDhyeXvgeq+d4n1YbXVH8m7ZL+?=
+ =?us-ascii?Q?Agvg3/gB+13bkVyzEU5pVzLTjBuTzBCQNM5w5cgWn9ymPSVHyk4xX0rVsvKy?=
+ =?us-ascii?Q?yXwtP3B4YkT+6Ix6xZPlsAQnUA3XdqnovxQXrlpBHBlf97I+z+rrR3CaF1v0?=
+ =?us-ascii?Q?K537htoWi27YzWvLhQe8BcxfC56rlRrjFKSrw2KhDL8HZe9pZIWtLLBSMmZ7?=
+ =?us-ascii?Q?ACmjyRTQJo7EwxXlW3iOA3CkxjFfrL0dyJ4pruDkyj/jElCkJqTAy4gmp81/?=
+ =?us-ascii?Q?KeT1lmdjZ4MdYdGK7UjBdT24gkbduzbyZvzWImc4yapuRKHT9R7wFEHCfyVd?=
+ =?us-ascii?Q?soKC0hzz1awobDgwTCAF+rI4gzl2jA85bdcWTRvRAVwEj3Q1mtkrlOnBnD3z?=
+ =?us-ascii?Q?7aughGAV04cxbFVRRl67YULWw7PRvGluhaqic0lZ1pC+HqNiW8Ytl64mVQd1?=
+ =?us-ascii?Q?n2G9gfSQSFStXWkauiild+qzGA2oRU2yHOHZJhlv/J6QjD+0toYF1vKXQMgP?=
+ =?us-ascii?Q?DXUnSmZO/WtyG4h8RSWCry3/53b1u+RUD89mlM3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 314c8d48-9ed2-49d1-c98d-08dd5542631a
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 01:43:37.4342
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 02:16:18.0205
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pLX7KCE9yPtnCv4XjqZvAFs7vkWXk0LBD0JQI99ICqWqm9Tm2p6ExDBLN0IrL/t9OTCSw7OiKQxwq+7uLSlnSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6876
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7uRj1rEDOHqYXBZWPVq2heN0li3uO1KPdMuYDz5kPVLeb0YSu39qg6+WNhJemMxB5rwBlL/nLgreWO1XSRinuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11071
 
+On Mon, Feb 24, 2025 at 10:58:18AM -0500, Frank Li wrote:
+> On Mon, Feb 24, 2025 at 07:07:51PM +0800, Xu Yang wrote:
+> > On Fri, Feb 21, 2025 at 10:23:26AM -0500, Frank Li wrote:
+> > > On Fri, Feb 21, 2025 at 11:23:48AM +0800, Xu Yang wrote:
+> > > > On Wed, Feb 19, 2025 at 03:26:42PM -0500, Frank Li wrote:
+> > > > > On Wed, Feb 19, 2025 at 05:31:01PM +0800, Xu Yang wrote:
+> > > > > > In previous imx platform, normal USB controller interrupt and wakeup
+> > > > > > interrupt are bound to one irq line. However, it changes on latest
+> > > > > > i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
+> > > > > > This will add wakup interrupt handling for i.MX95 to support various
+> > > > > > wakeup events.
+> > > > > >
+> > > > > > Reviewed-by: Jun Li <jun.li@nxp.com>
+> > > > > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > > > > ---
+> > > > > >  drivers/usb/chipidea/ci_hdrc_imx.c | 42 ++++++++++++++++++++++++++++++
+> > > > > >  1 file changed, 42 insertions(+)
+> > > > > >
+> > > > > > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > > index 1a7fc638213e..5779568ebcf6 100644
+> > > > > > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> > > > > > @@ -98,9 +98,12 @@ struct ci_hdrc_imx_data {
+> > > > > >  	struct clk *clk;
+> > > > > >  	struct clk *clk_wakeup;
+> > > > > >  	struct imx_usbmisc_data *usbmisc_data;
+> > > > > > +	/* wakeup interrupt*/
+> > > > > > +	int irq;
+> > > > >
+> > > > > use "wakeup_irq" to avoid confuse with normal controller irq?
+> > > >
+> > > > It doesn't matter. It can't be confused since the driver is different. The
+> > > > controller driver is core.c. This glue driver is ci_hdrc_imx.c.
+> > > >
+> > > > >
+> > > > > >  	bool supports_runtime_pm;
+> > > > > >  	bool override_phy_control;
+> > > > > >  	bool in_lpm;
+> > > > > > +	bool wakeup_pending;
+> > > > > >  	struct pinctrl *pinctrl;
+> > > > > >  	struct pinctrl_state *pinctrl_hsic_active;
+> > > > > >  	struct regulator *hsic_pad_regulator;
+> > > > > > @@ -336,6 +339,24 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
+> > > > > >  	return ret;
+> > > > > >  }
+> > > > > >
+> > > > > > +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
+> > > > > > +{
+> > > > > > +	struct ci_hdrc_imx_data *imx_data = data;
+> > > > > > +
+> > > > > > +	if (imx_data->in_lpm) {
+> > > > > > +		if (imx_data->wakeup_pending)
+> > > > > > +			return IRQ_HANDLED;
+> > > > > > +
+> > > > > > +		disable_irq_nosync(irq);
+> > > > > > +		imx_data->wakeup_pending = true;
+> > > > > > +		pm_runtime_resume(&imx_data->ci_pdev->dev);
+> > > > >
+> > > > > Not sure why need pm_runtime_resume here? There are not access register
+> > > > > here.
+> > > >
+> > > > It's needed for runtime resume case.
+> > > > When wakeup event happens, wakeup irq will be triggered. To let controller
+> > > > resume back, we need enable USB controller clock to trigger controller
+> > > > irq. So we call pm_runtime_resume() to resume controller's parent back
+> > > > and the parent device will enable clocks.
+> > >
+> > > Please add comment here. why need in_lpm if we can make sure irq only
+> > > enable during suspend/resume pharse?
+> >
+> > I have checked again, in_lpm checking is not needed. I will remove the
+> > if condition later.
+> >
+> > >
+> > > >
+> > > > >
+> > > > > > +
+> > > > > > +		return IRQ_HANDLED;
+> > > > > > +	}
+> > > > > > +
+> > > > > > +	return IRQ_NONE;
+> > > > > > +}
+> > > > > > +
+> > > > > >  static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> > > > > >  {
+> > > > > >  	struct ci_hdrc_imx_data *data;
+> > > > > > @@ -476,6 +497,15 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> > > > > >  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+> > > > > >  		data->supports_runtime_pm = true;
+> > > > > >
+> > > > > > +	data->irq = platform_get_irq_optional(pdev, 1);
+> > > > > > +	if (data->irq > 0) {
+> > > > > > +		ret = devm_request_threaded_irq(dev, data->irq,
+> > > > > > +				NULL, ci_wakeup_irq_handler,
+> > > > > > +				IRQF_ONESHOT, pdata.name, data);
+> > > > > > +		if (ret)
+> > > > > > +			goto err_clk;
+> > > > > > +	}
+> > > > > > +
+> > > > > >  	ret = imx_usbmisc_init(data->usbmisc_data);
+> > > > > >  	if (ret) {
+> > > > > >  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+> > > > > > @@ -621,6 +651,11 @@ static int imx_controller_resume(struct device *dev,
+> > > > > >  		goto clk_disable;
+> > > > > >  	}
+> > > > > >
+> > > > > > +	if (data->wakeup_pending) {
+> > > > > > +		data->wakeup_pending = false;
+> > > > > > +		enable_irq(data->irq);
+> > > > > > +	}
+> > > > > > +
+> > > > > >  	return 0;
+> > > > > >
+> > > > > >  clk_disable:
+> > > > > > @@ -643,6 +678,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
+> > > > > >  		return ret;
+> > > > > >
+> > > > > >  	pinctrl_pm_select_sleep_state(dev);
+> > > > > > +
+> > > > > > +	if (device_may_wakeup(dev))
+> > > > > > +		enable_irq_wake(data->irq);
+> > > > > > +
+> > > > > >  	return ret;
+> > > > > >  }
+> > > > > >
+> > > > > > @@ -651,6 +690,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
+> > > > > >  	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+> > > > > >  	int ret;
+> > > > > >
+> > > > > > +	if (device_may_wakeup(dev))
+> > > > > > +		disable_irq_wake(data->irq);
+> > > > > > +
+> > > > >
+> > > > > Look like only want enable wakeup irq between suspend and resume. There are
+> > > > > some questions to understand hehavor.
+> > > > >
+> > > > > 1 driver probe --> 2. hdrc suspend -->3 hdrc resume --> 4 controller resume
+> > > > >
+> > > > > 1--2,  look like wakeup irq is enabled. maybe controller have some bit to
+> > > > > disable issue wakeup irq, otherwise flood irq will happen because you check
+> > > > > lpm in irq handler.
+> > > >
+> > > > It's not true.
+> > > >
+> > > > We has a bit WAKE_ENABLE to enable/disable wakeup irq. This bit will only be
+> > > > enabled when do suspend() and disabled when do resume(). So before suspend()
+> > > > called, the wakeup irq can't be triggered. No flood irq too.
+> > > >
+> > > > >
+> > > > > after 2. wakeup irq enable,  if wakeup irq happen, system resume.
+> > > > > ci_hdrc_imx_resume() only clear a flags, not any sync problem.
+> > > > >
+> > > > > But sequence imx_controller_resume() and ci_wakeup_irq_handler() may not
+> > > > > guaranteed.
+> > > > >
+> > > > > If ci_wakeup_irq_handler() call first, ci_wakeup_irq_handler() disable
+> > > > > itself. imx_controller_resume() will enable wakeup irq, which will be same
+> > > > > state 1--2. but if imx_controller_resume() run firstly,
+> > > >
+> > > > It's not true too. Because WAKE_ENABLE is disabled after resume().
+> > > >
+> > > > > ci_wakeup_irq_handler() will disable wakeup irq, which difference state
+> > > > > with 1--2.
+> > > > >
+> > > > > If there are a bit(WAKEUP_EN) in controller can control wakeup irq
+> > > > > enable/disable,
+> > > >
+> > > > Yes, WAKE_ENABLE bit. It's already used:
+> > > >
+> > > > ci_hdrc_imx_suspend()
+> > > >   imx_controller_suspend() -> enable WAKE_ENABLE
+> > > >
+> > > > ci_hdrc_imx_resume()
+> > > >   imx_controller_resume() -> disable WAKE_ENABLE
+> > >
+> > > Okay,
+> > >
+> > > I think wakeup_pending is not neccesary. ci_wakeup_irq_handler() can
+> > > simple disable WAKE_ENABLE.
+> >
+> > Right, wakeup_pending can be removed. However, it's not that simple to
+> > control WAKE_ENABLE in ci_hdrc_imx.c due to imx_controller_susepnd/resume()
+> > do more things expect enable/disable WAKE_ENABLE bit. And usbmisc.c doesn't
+> > export a function to directly control WAKE_ENABLE. Therefore, I still need
+> > to use enable/disable_irq() for simplicity.
+> >
+> > Due to this wakeup irq is only used in suspend case, I would like to add
+> > IRQF_NO_AUTOEN flag to request_threaded_irq(), then enable irq in
+> > ci_hdrc_imx_suspend() and disable irq in ci_hdrc_imx_resume().
+> >
+> > For example:
+> >
+> > ci_wakeup_irq_handler()
+> > {
+> > 	disable_irq_nosync(data->irq);
+> > 	...
+> > }
+> >
+> > ci_hdrc_imx_suspend()
+> > {
+> > 	...
+> > 	enable_irq(data->irq);
+> > }
+> >
+> > ci_hdrc_imx_resume()
+> > {
+> > 	if (irq disabled)
+> > 		disable_irq_nosync(data->irq);
+> > 	...
+> > }
+> >
+> > Do you think if it's feasible and better than current patch?
+> 
+> look better. Does ci_wakeup_irq_handler() always happen before
+> ci_hdrc_imx_resume()?
 
-Hi sebastian,
-
-
-On 2025/2/24 22:17, Sebastian Fricke wrote:
-> [You don't often get email from sebastian.fricke@collabora.com. Learn 
-> why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Hey Ming,
-> 
-> On 17.01.2025 16:57, Ming Qian wrote:
->> The amphion decoder will pre-parse 3 frames before decoding the first
->> frame. If we append a flush padding data after frame, the decoder
->> will finish parsing and start to decode when the flush data is parsed.
->> It can reduce the decoding latency.
->> In the past, we only enable this mode when the display delay is set to
->> 0. But we still can enable this mode without changing the display order,
->> so we add a frame_flush_mode parameter to enable it.
-> 
-> My recommendation:
-> 
-> By default the amphion decoder will pre-parse 3 frames before starting
-> to decode the first frame. Alternatively, a block of flush padding data
-> can be appended to the frame, which will ensure that the decoder can
-> start decoding immediately after parsing the flush padding data, thus
-> potentially reducing decoding latency.
-> This mode was previously only enabled, when the display delay was set to
-> 0. Allow the user to manually toggle the use of that mode via a module
-> parameter called frame_flush_mode, which enables the mode without
-> changing the display order.
-> 
-> 
-> Which fixes a few grammatical issues and tries to be a bit more clear.
-> But please confirm to me that I hit your intended meaning.
-> 
-> More comments below ...
-> 
-
-Yes, you're right, and your description looks better, I will follow it.
-
->>
->> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->> ---
->> drivers/media/platform/amphion/vpu_malone.c | 5 ++++-
->> 1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/media/platform/amphion/vpu_malone.c 
->> b/drivers/media/platform/amphion/vpu_malone.c
->> index 1d9e10d9bec1..f07660dc3b07 100644
->> --- a/drivers/media/platform/amphion/vpu_malone.c
->> +++ b/drivers/media/platform/amphion/vpu_malone.c
->> @@ -25,6 +25,9 @@
->> #include "vpu_imx8q.h"
->> #include "vpu_malone.h"
->>
->> +static bool frame_flush_mode;
->> +module_param(frame_flush_mode, bool, 0644);
-> 
-> Could you add a comment here that makes clear to the reader briefly what
-> the expected behavior of frame_flush_mode = 0 and frame_flush_mode = 1
-> is?
-> 
-
-OK, I'll add a comment to describe this mode.
-
->> +
->> #define CMD_SIZE                      25600
->> #define MSG_SIZE                      25600
->> #define CODEC_SIZE                    0x1000
->> @@ -1579,7 +1582,7 @@ static int vpu_malone_input_frame_data(struct 
->> vpu_malone_str_buffer __iomem *str
->>
->>       vpu_malone_update_wptr(str_buf, wptr);
->>
->> -      if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
->> +      if ((disp_imm || frame_flush_mode) && 
->> !vpu_vb_is_codecconfig(vbuf)) {
-> 
-> So you say that the mode was enabled with display delay set to 0,
-> meaning (disp_imm = 1) == (display delay = 0), right? E.g. disp_imm
-> means display_immediately I guess.
-> 
-> I think this all deserves a lot better documentation, otherwise the code
-> becomes quite cryptic. Could you add a comment before this line, which
-> explains the entry conditions disp_imm & frame_flush_mode and the
-> codeconfig thing and that explains briefly what kind of mode we are
-> entering here?
-> 
-
-Sure，I'll add comments to explain the code. I'm sorry fot the confusion.
-
-Thank you very much for your feedback, I will try to fix them in v3 patch.
+It depends on whether a wakeup event happens.
+If wakeup event comes, then wakeup irq will be triggered and 
+ci_wakeup_irq_handler() will be called before ci_hdrc_imx_resume().
+If not, only ci_hdrc_imx_resume() will be called.
 
 Thanks,
-Ming
-
-
->>               ret = vpu_malone_add_scode(inst->core->iface,
->>                                          inst->id,
->>                                          &inst->stream_buffer,
->> -- 
->> 2.43.0-rc1
->>
->>
-> 
-> Regards,
-> Sebastian Fricke
+Xu Yang
