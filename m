@@ -1,99 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A802212B3B;
-	Tue, 25 Feb 2025 20:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBAB20F096
+	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 20:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514355; cv=none; b=K1sefNMM8nVohkeO3JxWNuuJMMjxnljJBZ9FPusq9VktKwWmATqRcm4PNQghXMa9HBb08K65zG+kus7hpVzj0PydRyMJhyH6qEZaQT3mD970naTI6Wke/P9Gaa7lQm1h9pixKwaDAPHnODgLVyFXiwaLX/JCOuM7R6dCJ9T1/ik=
+	t=1740514641; cv=none; b=Ra6edwL0dgowGYFBQg/vQ4j42URlMaNsC5ggbzdXUIF1/x/q5bLp6BBHtz1vn0wcgKTyQ/J69qGjCYqbIkWqnSd2W1TWzjpTm+9NtqBkenjn9cxQvBi1KyMomHRdyGrJoJfWbpLsOQur8tkwPXX48EuNwtci72Dp1gfCn/76yA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740514355; c=relaxed/simple;
-	bh=o9Fk+gFtqkDJKzeh44jxcdnyRxWUtu90QSRKPJrniEc=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=dYR20fxOsF1BTwMo8NM8t85KVkOvSW9oimbpA+q/zQBMy9LAfmH2b5sXJxetBENMjwTeoad9VYQc6JPxGT9q3IRjxq+rgNTLdDgr3O2hcbQuFIiBzA8IftrvyCxRyprMj2BA6FrWG4MLV0FHno5iE4KGzaWsaG29tL8mnTshNq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZe9Qkng; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740514641; c=relaxed/simple;
+	bh=QWXk938u1ZUtRQ0fT2TND4jKL/fO2qpP0R5WJKK3KXc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bUMhS/TxDxDXhKawg+W11tJLVAfsO3jypTOiXkrAxRSedpY/YUwHGKY7gmF5btN+tIDvnNs4+v012xmgO1KrOa8k6og5wCr5807iSJq5N0DOzLE7eXvYQR07NybjqhTDQOaV+wAEon2ivKzl4mENM1OC/lXn+1DWtPgf7UO6DMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OJWfAvqA; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZe9Qkng"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D552C4CEDD;
-	Tue, 25 Feb 2025 20:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740514354;
-	bh=o9Fk+gFtqkDJKzeh44jxcdnyRxWUtu90QSRKPJrniEc=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=IZe9QkngILC30nEEw6qustbEinAHZUpnbbyBWhBiJ5t9ACmDcyle2GBpv1kQoQKRY
-	 rdfml+O8SwzX1C14iWVjFOHo2PoX38okfy3kcXeHZWRgWpczzm2299orjG0kYWZgJF
-	 A8/XCMTptDdpa6eFYHwcqciZPWmVAY59Gj2D319QrSd8l6W8ZTwI5iaRkSd8MC0dCD
-	 /z4fiHuaMxiqSz1acpXyDAnhod1vDKW636BPDg4fuL9sbxyncESeqghn/FpsN3eEg1
-	 nhJGV9sWh8Szq0lOuRpy09sGL5+JfCHbtdec3zwfGQgVfiAPUydrvzV89y8IWfYgLe
-	 7IMHhKL+mX+8A==
-Date: Tue, 25 Feb 2025 14:12:32 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OJWfAvqA"
+Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 920F4203CDFC;
+	Tue, 25 Feb 2025 12:17:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 920F4203CDFC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740514639;
+	bh=pRPTMwC85c4lYLBd5/aEkvEtme0QilCw7nKJr8ytgmI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=OJWfAvqAxjSS6nUkULU00Pa8nQ9u9kKy42lXSCjyZ4ZUUOElAuQC0IJLL8YdgMxy4
+	 fRHYXp6qo5lzLvyA3yVmWt3cKN1fewJPyBbSi8i8x+l37gp4hdCbMSActzutlKgtXo
+	 djKAYQpE3vAmx4Iwoj2HThNeFrxgkdmyOVA8YA+8=
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH v3 00/16] Converge on using secs_to_jiffies() part two
+Date: Tue, 25 Feb 2025 20:17:14 +0000
+Message-Id: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: s.hauer@pengutronix.de, festevam@gmail.com, shawnguo2@yeah.net, 
- shawnguo@kernel.org, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- linux-arm-kernel@lists.infradead.org, hongxing.zhu@nxp.com, 
- conor+dt@kernel.org, krzk+dt@kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250224170751.146840-1-Frank.Li@nxp.com>
-References: <20250224170751.146840-1-Frank.Li@nxp.com>
-Message-Id: <174051415001.2971194.5351687405398277268.robh@kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx95: add ref clock for pcie nodes
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEslvmcC/43NMRKCMBCF4aswqV1nExDQyns4FjFsZB0hThKjj
+ sPdDTY2FpT/K773FoE8UxC74i08JQ7sxhzlqhCm1+OZgLvcQqGqpJINGDcm8nkPZAJEBxe2Ngt
+ w0z5CfDiwVYWy0bq2dSOyc/Nk+fn9OBxz9xyi86/vZZLzOusblKpdoCcJCFtdk7F4UiW2+yuP9
+ +d6YONdcDaujRvE/JPUz1ZYLrFVtrsGN61GaTuk//Y0TR+h+4siOAEAAA==
+X-Change-ID: 20241217-converge-secs-to-jiffies-part-two-f44017aa6f67
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+ James Smart <james.smart@broadcom.com>, 
+ Dick Kennedy <dick.kennedy@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>, 
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens Axboe <axboe@kernel.dk>, 
+ Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+ "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+ Sagi Grimberg <sagi@grimberg.me>, Frank Li <Frank.Li@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+ Selvin Xavier <selvin.xavier@broadcom.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+Cc: cocci@inria.fr, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+ ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org, 
+ Easwar Hariharan <eahariha@linux.microsoft.com>, 
+ Takashi Iwai <tiwai@suse.de>, Carlos Maiolino <cmaiolino@redhat.com>
+X-Mailer: b4 0.14.2
 
+This is the second series (part 1*) that converts users of msecs_to_jiffies() that
+either use the multiply pattern of either of:
+- msecs_to_jiffies(N*1000) or
+- msecs_to_jiffies(N*MSEC_PER_SEC)
 
-On Mon, 24 Feb 2025 12:07:51 -0500, Frank Li wrote:
-> Add "ref" clock for i.MX95's pcie and fix below CHECK_DTBS warnings:
-> arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
-> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx95.dtsi | 25 ++++++++++++++++++++----
->  1 file changed, 21 insertions(+), 4 deletions(-)
-> 
+where N is a constant or an expression, to avoid the multiplication.
 
+The conversion is made with Coccinelle with the secs_to_jiffies() script
+in scripts/coccinelle/misc. Attention is paid to what the best change
+can be rather than restricting to what the tool provides.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Andrew has kindly agreed to take the series through mm.git modulo the
+patches maintainers want to pick through their own trees.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+This series is based on next-20250225
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-  pip3 install dtschema --upgrade
+* https://lore.kernel.org/all/20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com/
 
+---
+Changes in v3:
+- Change commit message prefix from libata: zpodd to ata: libata-zpodd: in patch 8 (Damien)
+- Split up overly long line in patch 9 (Christoph)
+- Fixup unnecessary line break in patch 14 (Ilpo)
+- Combine v1 and v2
+- Fix some additional hunks in patch 2 (scsi: lpfc) which the more concise script missed
+- msecs_to_jiffies -> msecs_to_jiffies() in commit messages throughout
+- Bug in secs_to_jiffies() uncovered by LKP merged in 6.14-rc2: bb2784d9ab4958 ("jiffies: Cast to unsigned long in secs_to_jiffies() conversion")
+- Link to v2: https://lore.kernel.org/r/20250203-converge-secs-to-jiffies-part-two-v2-0-d7058a01fd0e@linux.microsoft.com
 
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250224170751.146840-1-Frank.Li@nxp.com:
+Changes in v2:
+- Remove unneeded range checks in rbd and libceph. While there, convert some timeouts that should have been fixed in part 1. (Ilya)
+- Fixup secs_to_jiffies.cocci to be a bit more verbose
+- Link to v1: https://lore.kernel.org/r/20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com
 
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c300000: clocks: [[27, 87], [27, 36], [27, 35], [27, 88], [73, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux', 'ref'] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c300000: clocks: [[27, 87], [27, 36], [27, 35], [27, 88], [73, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux', 'ref'] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c380000: clocks: [[27, 87], [27, 36], [27, 35], [27, 88], [73, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c380000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux', 'ref'] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c380000: clocks: [[27, 87], [27, 36], [27, 35], [27, 88], [73, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie-ep@4c380000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux', 'ref'] is too long
-	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie-ep.yaml#
+---
+Easwar Hariharan (16):
+      coccinelle: misc: secs_to_jiffies: Patch expressions too
+      scsi: lpfc: convert timeouts to secs_to_jiffies()
+      accel/habanalabs: convert timeouts to secs_to_jiffies()
+      ALSA: ac97: convert timeouts to secs_to_jiffies()
+      btrfs: convert timeouts to secs_to_jiffies()
+      rbd: convert timeouts to secs_to_jiffies()
+      libceph: convert timeouts to secs_to_jiffies()
+      ata: libata-zpodd: convert timeouts to secs_to_jiffies()
+      xfs: convert timeouts to secs_to_jiffies()
+      power: supply: da9030: convert timeouts to secs_to_jiffies()
+      nvme: convert timeouts to secs_to_jiffies()
+      spi: spi-fsl-lpspi: convert timeouts to secs_to_jiffies()
+      spi: spi-imx: convert timeouts to secs_to_jiffies()
+      platform/x86/amd/pmf: convert timeouts to secs_to_jiffies()
+      platform/x86: thinkpad_acpi: convert timeouts to secs_to_jiffies()
+      RDMA/bnxt_re: convert timeouts to secs_to_jiffies()
 
+ .../accel/habanalabs/common/command_submission.c   |  2 +-
+ drivers/accel/habanalabs/common/debugfs.c          |  2 +-
+ drivers/accel/habanalabs/common/device.c           |  2 +-
+ drivers/accel/habanalabs/common/habanalabs_drv.c   |  2 +-
+ drivers/ata/libata-zpodd.c                         |  3 +-
+ drivers/block/rbd.c                                |  8 ++---
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c         |  2 +-
+ drivers/nvme/host/core.c                           |  6 ++--
+ drivers/platform/x86/amd/pmf/acpi.c                |  2 +-
+ drivers/platform/x86/thinkpad_acpi.c               |  2 +-
+ drivers/power/supply/da9030_battery.c              |  3 +-
+ drivers/scsi/lpfc/lpfc.h                           |  3 +-
+ drivers/scsi/lpfc/lpfc_els.c                       | 11 +++---
+ drivers/scsi/lpfc/lpfc_hbadisc.c                   |  2 +-
+ drivers/scsi/lpfc/lpfc_init.c                      | 10 +++---
+ drivers/scsi/lpfc/lpfc_scsi.c                      | 12 +++----
+ drivers/scsi/lpfc/lpfc_sli.c                       | 41 +++++++++-------------
+ drivers/scsi/lpfc/lpfc_vport.c                     |  2 +-
+ drivers/spi/spi-fsl-lpspi.c                        |  2 +-
+ drivers/spi/spi-imx.c                              |  2 +-
+ fs/btrfs/disk-io.c                                 |  6 ++--
+ fs/xfs/xfs_icache.c                                |  2 +-
+ fs/xfs/xfs_sysfs.c                                 |  8 ++---
+ include/linux/ceph/libceph.h                       | 12 +++----
+ net/ceph/ceph_common.c                             | 18 ++++------
+ net/ceph/osd_client.c                              |  3 +-
+ scripts/coccinelle/misc/secs_to_jiffies.cocci      | 10 ++++++
+ sound/pci/ac97/ac97_codec.c                        |  3 +-
+ 28 files changed, 82 insertions(+), 99 deletions(-)
+---
+base-commit: 0226d0ce98a477937ed295fb7df4cc30b46fc304
+change-id: 20241217-converge-secs-to-jiffies-part-two-f44017aa6f67
 
-
-
+Best regards,
+-- 
+Easwar Hariharan <eahariha@linux.microsoft.com>
 
