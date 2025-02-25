@@ -1,127 +1,153 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5643426E63A
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 14:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED4E21ABC7;
+	Tue, 25 Feb 2025 14:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740494691; cv=none; b=jyO4eRo/k9eHx6g3IWjQiuDuqBbWy44zj3/i8gCf0qsmM3rJ855vt4G7kX0EnJwXRdSQSfJ7aDVZpoEZu4BMlz/edFwu1q6lgmUTIgK3YanDPle2IwRWX/2C2E7NFHQXpEL8qyt0rD512KnoAsW6x7SarZRjoRo8QctbvMUx/e8=
+	t=1740495176; cv=none; b=kJ+oBHYxoh0sY3H7g3NlXLzrvUJM60Pckn5Gl45Dj9nVS7V1N+J7it/nx+o6lQwhFb1Ed94B+UQalNhlN43yzKnXHO3MZ86WvxJzqZwrXXr2K3dWaRhYKPPELXrQ+QU5IcKrC+P7qAEt0gj2hUDbIOk1hzJ3GHlFoN47ogsFyxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740494691; c=relaxed/simple;
-	bh=RIGf/G7C8iEdc/bId+fmLRVOqiywa1rCJ49vSacvFyY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1rhqsSmG4TT96jR1MmZAra/AnrHlHLkLZ0CHI8/psfvOBxHsbKnUCpRGe4jRMYe945q7+EzOihlxd+MoOczLULlt1qH3GwdjtG9t0Z5tTP1tg4PTDKB5T0snXuxf7CfQnk6BXlJBQyQz4ecgbCFqQNH6umdeH5cY4QhwAC3y/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=KrQmyzr/; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oEpbFiQ2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1740495176; c=relaxed/simple;
+	bh=9C5oZ34+32K1qOoiP/odmBMxPo1y7u2d3iAaqcJQqhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xss3VkNkcHoymxf3Lc6yOAoy8qCTkvbg7mddGNI6b2sfycfPrdOlR6evja02SE0M9TDFUFdfjUY7TXAqVoFd0bB7T+8Sdvoc0NeEOvaeBDYh8Au47idxU486WtMEX62qYAJJwZBls2vZZTdmRe6GWeXb60z5MevRFfFcHIagSNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nniS8Ylf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="KrQmyzr/";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oEpbFiQ2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740494687; x=1772030687;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FT06o2miAnw5cPfmTWHZubI3xiHqfvO2xjSPX/KMN8k=;
-  b=KrQmyzr/5GnyC4xNH3vZPHfRwTLc9MSvYRyEslG6YR7QVQtvX51hr+0b
-   akZGc6/QH7WKwZwkopoxeo5i8PZFvM/MB29DO/PiiFaKx5rT4NnF45fD0
-   yOjXSdLLcsyOpfAHS0wvmyaHHqnwdt85/OBvs91B5SA1Oz0KuUFUGeHJ3
-   0Ga0Qzf8ypBfWGk9rZOerNvldjMdvsCzEfaF/IxRTtVY/frsosCWOgSCA
-   tZdiZCB8VSP4FhZJg6wnDZkn/MRzmB9tep9rzQbMN7FCK1gJYppWbBOIe
-   qgwups4gQE53Koe2IS2MD/j4p915YSY96BTgcxNVUhxjbWWlENkBDk/iN
-   g==;
-X-CSE-ConnectionGUID: eMXG0DpYQMSKImBvzpP0Wg==
-X-CSE-MsgGUID: 94+PQPA/SaK4M7yxwKY14Q==
-X-IronPort-AV: E=Sophos;i="6.13,314,1732575600"; 
-   d="scan'208";a="42075197"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Feb 2025 15:44:44 +0100
-X-CheckPoint: {67BDD75C-26-28232521-C0C2250B}
-X-MAIL-CPID: BE2FC7B59292282D81112299F45E8048_4
-X-Control-Analysis: str=0001.0A002104.67BDD75D.001B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D1B93167F5D;
-	Tue, 25 Feb 2025 15:44:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740494680;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FT06o2miAnw5cPfmTWHZubI3xiHqfvO2xjSPX/KMN8k=;
-	b=oEpbFiQ27AGv0uiOoRWVCP5DmMFCUNUSa7/mBeB+Y3tVOOvCqEB6WWbvS6fuoRy8vHtgDu
-	nEVHAi0EMMgLl9TdyQs6iHdOGGPNtuk3omCD8zu0St1RonxIR+ZZGl94X79nA3QxPAShU4
-	FH+hOSbwqGRTHUIYZs/skx8p9bLxBXjU5Ym3yCoPCCRH+NEPBmjM9J59AneyKjJdM68hpJ
-	zQfL3bVjHTeolFWUwZO063f1zqhXwQsT4qUT4Ev8SU4RGqC5pVEdsLk+3gLd6E6ETPJEYd
-	DBwiYebuaRYyeMys+EzaJF6/Bxf7XZ+lSxi3Ou+kNwPp/WitHRWvCVQJTOFdjg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nniS8Ylf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55A7C4CEDD;
+	Tue, 25 Feb 2025 14:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740495176;
+	bh=9C5oZ34+32K1qOoiP/odmBMxPo1y7u2d3iAaqcJQqhI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nniS8Ylf0dMMCUmZyFFlrxUqtB/4nEuBBDOKSb2OukGdLPfst0NMG6qXCMbdBzdH8
+	 HZHY9wlPcJS58E4+vFSZKUwd2+FODlZ56AkpvHLitB3jlw/ESa8gsFi6Xq4/MVjbmZ
+	 jNQ0j6ZVf9PJS6/xsGXgbyOQJh4TdLdEalRnix6pv3LMz+qTewWMqmhQKs+Q/VaZ8n
+	 Sawyr7ETjhek+V9WX//mOuZCRU8R1kfnLOs1ThvaZQlWT/MQ7PCpJQa8y8gnFbffPI
+	 2fTYOgjKcBoYQKmvXAV4qNA0PamytmpOgQ7fJg0AAHHsYxfq5FJb8Uju9GkhXetzzz
+	 m6Gs2RSmY4azA==
+Date: Tue, 25 Feb 2025 08:52:54 -0600
+From: Rob Herring <robh@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Max Merchel <Max.Merchel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] ARM: dts: imx6ul-tqma6ul1: Change include order to disable fec2 node
-Date: Tue, 25 Feb 2025 15:44:35 +0100
-Message-ID: <20250225144436.813645-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] dt-bindings: soc: imx93-media-blk-ctrl: Add LDB
+ subnode into schema and example
+Message-ID: <20250225145254.GA2361434-robh@kernel.org>
+References: <20250224142831.485159-1-alexander.stein@ew.tq-group.com>
+ <20250224142831.485159-3-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250224142831.485159-3-alexander.stein@ew.tq-group.com>
 
-From: Max Merchel <Max.Merchel@ew.tq-group.com>
+On Mon, Feb 24, 2025 at 03:28:23PM +0100, Alexander Stein wrote:
+> Document the LDB bridge subnode and add the subnode into the example.
+> For the subnode to work, the block control must scan its subnodes and
+> bind drivers to them, do not misuse either simple-bus or simple-mfd
+> here.
+> 
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> index b3554e7f9e76d..d914dea6ecbb5 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> @@ -24,6 +24,14 @@ properties:
+>    reg:
+>      maxItems: 1
+>  
+> +  ranges: true
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+>    '#power-domain-cells':
+>      const: 1
+>  
+> @@ -46,9 +54,20 @@ properties:
+>        - const: csi
+>        - const: dsi
+>  
+> +  bridge@20:
+> +    type: object
+> +    additionalProperties: true
+> +    properties:
+> +      compatible:
+> +        contains:
+> +          const: fsl,imx93-ldb
+> +
+>  required:
+>    - compatible
+>    - reg
+> +  - ranges
+> +  - '#address-cells'
+> +  - '#size-cells'
+>    - power-domains
+>    - clocks
+>    - clock-names
+> @@ -77,4 +96,36 @@ examples:
+>                 clock-names = "apb", "axi", "nic", "disp", "cam",
+>                               "pxp", "lcdif", "isi", "csi", "dsi";
+>        #power-domain-cells = <1>;
+> +      #address-cells = <1>;
+> +      #size-cells = <1>;
+> +      ranges;
 
-TQMa6UL1 has only one FEC which needs to be disabled as one of the last
-steps.
-imx6ul-tqma6ul2.dtsi can't be included in imx6ul-tqma6ul1.dtsi as the
-defaults from imx6ul.dtsi will be applied again.
+Given the address below is 0x20, this looks wrong unless the parent 
+address is 0.
 
-Fixes: 7b8861d8e627 ("ARM: dts: imx6ul: add TQ-Systems MBa6ULx device trees")
-Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1-mba6ulx.dts | 3 ++-
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1.dtsi        | 2 --
- 2 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1-mba6ulx.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1-mba6ulx.dts
-index f2a5f17f312e5..2e7b96e7b791d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1-mba6ulx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1-mba6ulx.dts
-@@ -6,8 +6,9 @@
- 
- /dts-v1/;
- 
--#include "imx6ul-tqma6ul1.dtsi"
-+#include "imx6ul-tqma6ul2.dtsi"
- #include "mba6ulx.dtsi"
-+#include "imx6ul-tqma6ul1.dtsi"
- 
- / {
- 	model = "TQ-Systems TQMa6UL1 SoM on MBa6ULx board";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1.dtsi
-index 24192d012ef7e..79c8c5529135a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul1.dtsi
-@@ -4,8 +4,6 @@
-  * Author: Markus Niebel <Markus.Niebel@tq-group.com>
-  */
- 
--#include "imx6ul-tqma6ul2.dtsi"
--
- / {
- 	model = "TQ-Systems TQMa6UL1 SoM";
- 	compatible = "tq,imx6ul-tqma6ul1", "fsl,imx6ul";
--- 
-2.43.0
-
+> +
+> +      bridge@20 {
+> +          compatible = "fsl,imx93-ldb";
+> +          reg = <0x20 0x4>, <0x24 0x4>;
+> +          reg-names = "ldb", "lvds";
+> +          clocks = <&clk IMX93_CLK_LVDS_GATE>;
+> +          clock-names = "ldb";
+> +
+> +          ports {
+> +              #address-cells = <1>;
+> +              #size-cells = <0>;
+> +
+> +              port@0 {
+> +                  reg = <0>;
+> +
+> +                  ldb_from_lcdif2: endpoint {
+> +                      remote-endpoint = <&lcdif2_to_ldb>;
+> +                  };
+> +              };
+> +
+> +              port@1 {
+> +                  reg = <1>;
+> +
+> +                  ldb_lvds: endpoint {
+> +                      remote-endpoint = <&ldb_to_panel>;
+> +                  };
+> +              };
+> +          };
+> +        };
+>      };
+> -- 
+> 2.43.0
+> 
