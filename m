@@ -1,86 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D041539ACC;
-	Tue, 25 Feb 2025 20:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A525E20DD79;
+	Tue, 25 Feb 2025 20:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514086; cv=none; b=RcSupwAr73MSBR2/iDXPTsB2UwYTuLoFOla3KmeI69Adw4R3nKDd1VTvT58QsBiEBDvW5TmW+Wfgervke9BddcbwNBixVM4jfU2xyefHOatAOptxq2yGfNNrV0FhJ7zNqNJuZ9dNPAQp2G/GXOJt/QhHMPj7CYs+J6S6Gw0xfsQ=
+	t=1740514322; cv=none; b=uy3rLBC+vhfhsHd9dBv/2iZTKZ+OPFQ8gqrgmzxIxAkKgi7K6IILpmvZ0qnRS+n6IgTLHBNsr6p1vv4El2DqugrwoJFsdkXw9TnB3RHpLVPTrPuOtMU5TaYVFwXKEBUs6Cqc2dQCqJpEmDjL1TS+RXAuKNdWUhCzDPYZLo1Qu9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740514086; c=relaxed/simple;
-	bh=JHvTrakxRhdhuk+kBY06tb9Lr0ActVSa7Q4+RPH0pK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IDV7Dygjvi1S+VeJWLcs+lFtSWKlkEzZ0Xsiu/RLWqJsWL7hwk8Hc0P7fBzE4SPpuFBsTylJUjym1cFYgd3IF1ZFnW15dLk6REulxpTpJTmXL9mcKQLG9IcvOqrTlN6syPaq2vq4iTAVwBw1620esg3UbTVH0xZyVI7sxDtQ/No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKzlaEeo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740514322; c=relaxed/simple;
+	bh=a0GeMkZG0232HfnLCqIvdoB14J+eWwO/Z0Wqyt65dDA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lH47R5Z4Rfe1jSZ0G82KJPAVb+UNGA11lTjqJN8TU698ecsX1hnyhfYFMzVva23pK2xNEcW5K380QhQ7Xv8Dr8zTXsd1BmABbvh5dLAQURnz2M+MgolK1cL/iJCKY+3oIad2JYeipwQR6bT84lIzNodmBhKU5DJddWqsrian6iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3+h1D30; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKzlaEeo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CD0C4CEDD;
-	Tue, 25 Feb 2025 20:08:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3+h1D30"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168F4C4CEDD;
+	Tue, 25 Feb 2025 20:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740514086;
-	bh=JHvTrakxRhdhuk+kBY06tb9Lr0ActVSa7Q4+RPH0pK4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fKzlaEeoJRWop5oAYb/YCS8M3HQGqwjJwMv93yKTF+5ZGXcyYNs0jDb3SNTw2tE5J
-	 Y2ZVchmubya8cGdPdunn3Ce8SurKCWGHt/gqiUrr+4TYEEVqF8CWl8HQvLBMawu7yx
-	 rpOagGnIsYYfUx8KIPZbgV8XwUOGMqFV3Y0UB3dWZRxljWZ4wXQXHoVluPPmSaNA4C
-	 UvHnD0OexH1v/9kWeA+M6xRzcJMA8tZfAN3JDiMNFq/syCAaM8RS7tEmJA5uvpMlw5
-	 84wLguasfXtfSnVYJZwDwQ0MjBqzp5XPCyuLAIbZHkTFbJTfYI+Dae4eBG+y+YKwa5
-	 YFGCilE1PYtIA==
-Date: Tue, 25 Feb 2025 14:08:04 -0600
-From: Rob Herring <robh@kernel.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, Frank Li <Frank.li@nxp.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Jonas Karlman <jonas@kwiboo.se>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	s=k20201202; t=1740514322;
+	bh=a0GeMkZG0232HfnLCqIvdoB14J+eWwO/Z0Wqyt65dDA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f3+h1D30cfKH+jGQC4JV8nWNgvMQL/Dk8nM7aZvgejiGNC3fsZ9/5lfjB4A6et7BK
+	 CAOmumytdSYhtJyLWeekzDJ1hg+doGRppbJ733+McuPb9YgKrTqfdJ0Cyg6c1qIULR
+	 RjHxrc1ynskTRGo4tVO0Q+G14l8i7jRLeqjeKbo05tmcRAMYhy8LlrG+q08aotgjmY
+	 O1JlDh8ORGy9nShGYHOoX60TBVycwizDuU8F7WBRtS7dqopy54H+Fd/9OuAKDqJQ1F
+	 LzJZ8934ULkUsQUYQmkWt600M2TgwNkCQM8FW4Xcrdhb8wHtxN/KqSzLTdMWfC/8Jp
+	 CmjKrU+BywIHg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: soc@linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [PATCH v2 05/10] dt-bindings: display/lvds-codec: add
- ti,sn65lvds822
-Message-ID: <20250225200804.GA2947190-robh@kernel.org>
-References: <20250106-skov-dt-updates-v2-0-4504d3f00ecb@pengutronix.de>
- <20250106-skov-dt-updates-v2-5-4504d3f00ecb@pengutronix.de>
- <37d2a7bb-1c8c-4c33-a277-dc1a7448433b@pengutronix.de>
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: imx: mark imx53_suspend_sz as unused
+Date: Tue, 25 Feb 2025 21:11:52 +0100
+Message-Id: <20250225201157.4190864-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37d2a7bb-1c8c-4c33-a277-dc1a7448433b@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 19, 2025 at 02:26:52PM +0100, Ahmad Fatoum wrote:
-> Dear DRM bridge maintainers,
-> 
-> On 06.01.25 17:06, Ahmad Fatoum wrote:
-> > Add compatible strings for TI SN65LVDS822, a FlatLink LVDS receiver.
-> > 
-> > Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> Shawn has asked that the DT or display maintainers take this one patch
-> through their tree. He has already applied the remainder of the series.
-> 
-> Can you take a look? DT maintainers already acked it.
+From: Arnd Bergmann <arnd@arndb.de>
 
-I've applied it.
+Unused 'static const' variables cause a warning when building with
+W=1, and imx53_suspend_sz has a definition for this as an
+alternative when CONFIG_SUSPEND is disabled:
 
-Rob
+    In file included from arch/arm/mach-imx/cpu.c:9:
+    arch/arm/mach-imx/common.h:101:18: error: 'imx53_suspend_sz' defined but not used [-Werror=unused-const-variable=]
+
+It's still referenced though, so mark it as __maybe_unused, so
+the one user can address the dummy copy and other files that include
+the header don't produce a warning.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/mach-imx/common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/common.h b/arch/arm/mach-imx/common.h
+index 13f3068e9845..45c1a2a7b35f 100644
+--- a/arch/arm/mach-imx/common.h
++++ b/arch/arm/mach-imx/common.h
+@@ -98,7 +98,7 @@ extern const u32 imx53_suspend_sz;
+ void imx6_suspend(void __iomem *ocram_vbase);
+ #else
+ static inline void imx53_suspend(void __iomem *ocram_vbase) {}
+-static const u32 imx53_suspend_sz;
++static __maybe_unused const u32 imx53_suspend_sz;
+ static inline void imx6_suspend(void __iomem *ocram_vbase) {}
+ #endif
+ 
+-- 
+2.39.5
+
