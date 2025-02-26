@@ -1,292 +1,347 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012041.outbound.protection.outlook.com [52.101.71.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1903E20F076
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 10:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740564083; cv=fail; b=mgvUBZGB0qeK1xSqkzvpgzKoq7h1JMy0kTd/xSQ1Ivj29GRCs3kgQWhOwCcj4OAsPQiGeB0Uj4zavziCcwZhLQcqJCbrhUDkUD/omhLziorwPNRiZyPXeHxDmJ7aKH9YgMTY+lsBXp6nIFVlgi1HmofVoR0omx0OHgmQVpahiDc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740564083; c=relaxed/simple;
-	bh=draE6GvM2K5MabRbCXV2k6D621y6j5Tz/CKH+LYcPoQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=u9rhGUi9bk6ch288bvPrpKmPOWU6nkQezZNixRAwlduWO6JbwAuF5Jive9gNAyr1OLYSRPX8sT1Qvhb/NxvoNi4zXbppWl5XrO+fnkXSZo7Ze+u/FGyuolKcq6vHgfe64BpbRZrz0K1kcjZ2QMT67nYFyYQKd8ph/P5OtbvX0L8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IW8PfmyF; arc=fail smtp.client-ip=52.101.71.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A324DFE0
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 10:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740565001; cv=none; b=GF6nnsgX4vFPCjF1QZezTWi/1dQMcPFDsw4pNbEKSwJDQnsyyKd4svXwco/wy8Lfv98rTQIrEeElleS2FheboUWY3oIt/lvWrsnMLv+VgvxqgBUtdi+OPdLukar4B2TQbge2WzeLHBsdNaIhcEHDhdbZdUIejhEZRfuVpsOQ5VQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740565001; c=relaxed/simple;
+	bh=dIedMb4lwQBVScSxDRpIfkc8+JevTX/YCTTblYgJwRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oqVqrIHayyeqhttDCglo8N0f+txVazYyc0O8Pk9135yiuz1f1OdAYBq+P7A/Y7OaA9JcBFBSrPVLGvIMSVW4hSY3xg/VmagL/PCcgShJc3XPMuTXkzYNMfeRxS/Fwl1tgMlNqybw8Khmdo4V3Ik4/jRtRnu/meAZjGMpdX0Ki24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CYhMLnp7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=py/wyHhe; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CYhMLnp7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=py/wyHhe; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IW8PfmyF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rIfvsN0uE6j0IMwsmLiHfNvZxlRhEUCEGBdGiZTmFiVIXsg10LcNbqbOo6AodqgVZcVAA+14uX4VKasMOIGIBDyILqX2gfcWhCjUjyU5vmcUYf7lz6P/3KQaEcinz90xYlIJ+me+q+E5ixQROEWguCpvVws+CQ0g26rde/M/bbbrdCrMR35IH5T3QZ0b0rj86q15FrCYED/0iDilhtpFf57+qvcTtFnHqa0Mt1EreReVZ2ekWgwIRkF6aeEBzwF5JekrFtXBZylbNphIfJyNzdwQ2kcBp1Btt9kdV7uyiGARXO7P8j8B1gadHXmvlBlIiysXYFDLYfLwxJiLQViGDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fe4tLjaLbeEncaaXWPQSkDfmQPxGeKrT36PD4+ovozE=;
- b=ECoJUdlSL6HzFcR7S9VvIdU9cHJSL5DiifXTuX9si5DVf/rsSXa6v6z+/+JRmGd+yD7i+eamNi4FVC8gfACLBUs3gQPKF5PZ/ke8oa/LvxaL7LuJGu7aLphIdTzhe3jSzDSy4+ZtC67kv8yWkzz+ifb4G+nN/7o1Slz6POEYv+yl1GWFuBIDQB0j/miO6g4fovkaDLsVWVpQ4SIiaUHagzI5fZm9hLs++KM3EWjtrkQzrwlJ0WYggTfZ6TbC3W7ZOyetizX3ktIixthxyS/ixtbRMU992W90QycxJzZ9RhTd6Jx3MI1JIAnVHh8I0bDSPf2naTilkq4GYdEj89oQaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fe4tLjaLbeEncaaXWPQSkDfmQPxGeKrT36PD4+ovozE=;
- b=IW8PfmyF72UT7eGthtKwNS6FmlqLCzeYgydVCL7KLBjSz4b7VYG6Zil8+qXeX1avV8hvqGsIF+qoVHLorGArdYyogx77VBvbRWLZh9NzvHF0App9TmfHJuCGh1cUGQuWkbiU7zoP+NuQ8BABvMMsTFPtv0zIeeXuTEIrWunA5MHImWLKFZS8B3YZVMoaLvbzX8ZErNtk09zhA5Y0UBVYU8/QWo9UdzfHfqFOaHGPtaleF3O9HEjABx+pGqofFEXI9kT13YfJ5M0W901sTQh/eCfa/+qrsqADW+lZ6P2iDO2gVykLeMjVI2RbNrzM3Qsu89At113P8PKxJun0glG9Jg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by DU0PR04MB9225.eurprd04.prod.outlook.com (2603:10a6:10:350::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Wed, 26 Feb
- 2025 10:01:16 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8466.020; Wed, 26 Feb 2025
- 10:01:15 +0000
-Message-ID: <867dc64b-15cc-46bd-89db-b63ffdb6c186@oss.nxp.com>
-Date: Wed, 26 Feb 2025 18:01:05 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] media: amphion: Reduce decoding latency for HEVC
- decoder
-To: Sebastian Fricke <sebastian.fricke@collabora.com>
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
- shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250117075720.4018076-1-ming.qian@oss.nxp.com>
- <20250226094545.byr2b3p26w5vit63@basti-XPS-13-9310>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <20250226094545.byr2b3p26w5vit63@basti-XPS-13-9310>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR01CA0054.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::22) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CYhMLnp7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="py/wyHhe";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CYhMLnp7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="py/wyHhe"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B800B1F388;
+	Wed, 26 Feb 2025 10:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740564996; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=W7huWkA+q4tRzFzbc4OooKbD6jGNlYW/aDI0Z6LcjV8=;
+	b=CYhMLnp7q0zfIxH8iu3DNheOYB4NL+Nf+4CwGTh2xeQ6XaiMe2y/w5C4nc6bW9xz7RbgAw
+	8ryL8T8ngv+vFjbcTTbAftFmRhYB2lclHddKns9vVCLWfBZDzJSvvQlUKLgV5Wmz5BH8cQ
+	v3TWwB2RQtT2+I3JBCLYix3NLqlliWA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740564996;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=W7huWkA+q4tRzFzbc4OooKbD6jGNlYW/aDI0Z6LcjV8=;
+	b=py/wyHhesHkF3t5R/Yc8G+Nte20Q0gW31h5UiRetlboW695aUKEXNBzADKuVjVvPuLRL9V
+	oWrCKyFxSZ0u4RBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740564996; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=W7huWkA+q4tRzFzbc4OooKbD6jGNlYW/aDI0Z6LcjV8=;
+	b=CYhMLnp7q0zfIxH8iu3DNheOYB4NL+Nf+4CwGTh2xeQ6XaiMe2y/w5C4nc6bW9xz7RbgAw
+	8ryL8T8ngv+vFjbcTTbAftFmRhYB2lclHddKns9vVCLWfBZDzJSvvQlUKLgV5Wmz5BH8cQ
+	v3TWwB2RQtT2+I3JBCLYix3NLqlliWA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740564996;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=W7huWkA+q4tRzFzbc4OooKbD6jGNlYW/aDI0Z6LcjV8=;
+	b=py/wyHhesHkF3t5R/Yc8G+Nte20Q0gW31h5UiRetlboW695aUKEXNBzADKuVjVvPuLRL9V
+	oWrCKyFxSZ0u4RBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3ED391377F;
+	Wed, 26 Feb 2025 10:16:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8GvYDQTqvmfDagAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 26 Feb 2025 10:16:36 +0000
+Message-ID: <97832f2b-ea2f-4fec-990b-bbd5ccaa9a91@suse.de>
+Date: Wed, 26 Feb 2025 11:16:35 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DU0PR04MB9225:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd545131-4918-4fe2-9e61-08dd564c81ea
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OVNnK1pROGZ5SnpBT1pUOU45RGtDeVhXSUNsMHBrWlF3aGlFWEIzTU5NbHpV?=
- =?utf-8?B?UHJWaEVFazZKVitVendRQnFJTGltclhVMGJkZzVjdzBtaUlXRVNyL3ZOejd5?=
- =?utf-8?B?M2k0YWR2WVlDb0c2cUFUYzIxcUdnMncvRlhxYW14ckN6N0RHR2lBdXhFazZz?=
- =?utf-8?B?d20zWmRqVHM1aFBUcGUybnl0YkRHL2pQcnJlRmczTjl0Ujg2Y25RMW9FL2tJ?=
- =?utf-8?B?VHNvMmQveHZtalJva2s4TFFkQzFEeldOWFpiaW9pZmNuaHFCMTFTUkFidkVZ?=
- =?utf-8?B?TXArMjVPbnp0dUpQK0xGNmRWdVR6c3lyR0MwVHdlZ013N0ZlR21TQlJuM3J4?=
- =?utf-8?B?N3A5TDhiWDkzYi92RDdiM0dZK2pmay9FaXhkUlJRaitJdlFGdktFb2hmRkZ0?=
- =?utf-8?B?RWdZZkVLbUVMdDI4Yi9wdndvWDJnNE5nUWVzUFpoNngyUytSVVRrNTFZY3Q0?=
- =?utf-8?B?TmpvQlcramdNdVdyWGhpMkVaK0VLR3BMYjMybW9BOEFYeTNnWDVWMFBIU1pD?=
- =?utf-8?B?SzNIQ1d1MWpLZktWQWwweHNEVTJXMHcrSlY1UW5qUDVDMWFWVkpndDFhRmFD?=
- =?utf-8?B?SXptMFZDb1JIVmJqeHBSZHJpTzRQY2ZxeGJpMzZIbUh6d3dwN29yWFhYTDBN?=
- =?utf-8?B?blBOeldTQndRMWlhTytOQ25keVh4cTdhUGliTmFTVUdjNHVYVnp2Q3QxU3c3?=
- =?utf-8?B?ZE12dkFSNjVmSUI1azhQY3lOVkZFYWxUMlA4Y2xhaEprVHZuWUI1Si9YbERI?=
- =?utf-8?B?cGtGd2tsUm9DdTZJa2xUUlZEdkdDckpOMzN0VGk5SVpMRVk3REdUMVk5Wldi?=
- =?utf-8?B?MVZiQVFySGtaektIN0tOV1d4a0F5QTFVMHhDb1NYK1djMEJLekgyaHlESEpl?=
- =?utf-8?B?YjNHNnY1bHhXdFhRSEtCY0FkZlZDVDl6UHR5eXZJVDh5Z3ozT0NPY3hEajBx?=
- =?utf-8?B?empRSlIzQ1pGU3dXQXlRZ2hKcS9VZWhrY2xNYllPOUxhanpSaXNVKzE5ckRM?=
- =?utf-8?B?SHpwTnJkWW4xcG1RUUdIMlBLWFRJQ1dPWGkyV1NmTDNBNGxyckI1RmI5OEo0?=
- =?utf-8?B?VUN1cG5CNnd2UDJJMmF1c0syS05SVVUwOUVJeXRSUG9jSzZFTzdUNkwvd2Iw?=
- =?utf-8?B?VzEvSVU3N3ZjZmZndVA5SlIyaEQ0RW4xSzNpQ1pqTGtWVEJyTXlYT1pUN2JV?=
- =?utf-8?B?bUxGTEI0blF6L08rZHFma3NnN1A5bmE1YkxzbkhJOTFSQWtOUXRodTdxY3lQ?=
- =?utf-8?B?aHBNcHhPWUhQTFJ2aFlkSlBoR2E3TFFLVnVSeDl4ME5VQURUZW1iK2dwa0Nw?=
- =?utf-8?B?NkpiN3VYNWRPY29XUWRiNjFaKzBkVzR2Q25YSVZEdzZUb3FRaUIweW0wQnlq?=
- =?utf-8?B?MEQ0Q2kvb0Z2TGVvdFlia3BFWUZURDBTYWt3VWtJOTZIbDZHNWJvWHIrYllt?=
- =?utf-8?B?RkFKM1kwdGZRL1BqUmVZc1g0a2l4SFE1VnV5K3VCb2RpRFcwTHhRZTNYdW9y?=
- =?utf-8?B?T3ZneTVYQll0OU8yOTBWNm15Skx4TnlOY1JHZXBvWURLK3I0YmlKVndnVlR0?=
- =?utf-8?B?THdyZnpxYlZkK0RlT1NZdFpqenlXVHBJc0FhRy9ENXorR2h4c3I2dk4vclBj?=
- =?utf-8?B?ajIwRGMyelI5endYSTJ5dld1ak14emEySzBDSVhlUXM4bHBRTkQwU0VBMGly?=
- =?utf-8?B?M2JjU1NDVFp0Mk85SjhKcEJSTnYrNi91SUp1MTNFYnREMEtUbVZIWEdJOSsz?=
- =?utf-8?B?bElSNitHd0xiemxCY2h3WGVPL3JWV3g3WVVVMEF4dmUzTTJ4c2JIRlY5Tnk2?=
- =?utf-8?B?ZElEVTdkL2s4RHFobmhqNVJIZWM1aWVia01nblRZd0VKZXF5YzUxanp6OHJE?=
- =?utf-8?Q?+IxWy0Unm15sR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cXJyb2hhTmIwUHRSenhTTXZlYTR6ckxvUWFwNFRQYUdyZWR5WU1ieFZPRm9D?=
- =?utf-8?B?WEtwSHBKbzE1Nm4yUmk5M09BY2hIRExHVkU5U2h4V1RIc3NSYTJpd2tNdnRa?=
- =?utf-8?B?dzdITW5YZVYxRDVoQVpnVFNhRk0zTTdoZ0MvYTh6N0lxelVtQkh1NTVYeFFa?=
- =?utf-8?B?RlNlTEVPcE9EVHRiRGpPSVNrS0l5TXpXV20zbEVBV1owZWh0bGh3elJPVSth?=
- =?utf-8?B?Sm93amlyTFAzTlpzNk5Ic216L1BjeDlTYmtZTmhzQThVWllnLzQyQk5VMU9X?=
- =?utf-8?B?bEtmMkp4VElCL1IvVnc0TSthWDdXQmdQelo1WUU4N2s5SWlOMjM1dHRwWnVs?=
- =?utf-8?B?dG9EcDM4TGwvZ2srSFM3ai80c1N4SWtGdTdBUkZaNDFPVTllSTBJK3ZBNktJ?=
- =?utf-8?B?K013cDNEeDhncXN0cU1oTDVzZW4xcEp5cHdJU0ZGTHZ3TnNGNi9Oc2NaWDBl?=
- =?utf-8?B?S2oyRjg2bXNXN09HUFFRdks3STgzbHl6ZlUxT3N5ZjBvRzQrcFNOWWxjTTM2?=
- =?utf-8?B?NllVSGsrL0Jid2dCV2swaURncVhjczYxd3pxNytDZU11NEVhd24yOFd4MGp3?=
- =?utf-8?B?M2kyeUpJL2FPeDVrNDc1QzhTYUZWQmd2em9aeEFrT3dSVVlFSXZtTG13Mk85?=
- =?utf-8?B?SWpPOGErZ2gyUHBNQUFqaEdxZjRLV2ozbVcwVVR3dzNZREd3N0d5R29MNG16?=
- =?utf-8?B?SmVoZFlNQjBNa0J2dXByYS83emxDcU16cGRPa00zSVN5YlM3TWZKVjdFOXRk?=
- =?utf-8?B?ZS9oTEdRdXd5dUtEYmRGdU1kb2Jyakl0aDllQlg0THd5VUdPenhHa0hxcnlh?=
- =?utf-8?B?WXNZMTJjN1ZtQ21CQ0FwWGExNUQrVWpxdUswUy9DNXh6K0FkREViaVdESUFS?=
- =?utf-8?B?a21PSE9taitYMUNkQ2g4N1VMWHNIZ0IwNEdiTHJreGsvcVA1TmtnbHVCa2JQ?=
- =?utf-8?B?SVc5NGNYdExNdXF2TExXVlZHOEV4aU5nUG5abEVJUm1SZjk0U2R6NVJiRjlV?=
- =?utf-8?B?dWZ1dUlyQW0wcjR1eWVvdjIvM0RxN2tmK2lWcjJtdkNyK1o0QUtnem1VbTJx?=
- =?utf-8?B?SkxLYlk2bHNaUklvZ01DV3hwemlURGZMYmdGSVpndUhUK1pKbUNXVG1PL25Y?=
- =?utf-8?B?UnBQWUNhVlh4enR3dnVnZ3IyRGVTdjhMUnEwQzJqTWZ4NUFNdWdTUUtyMjdI?=
- =?utf-8?B?QzYzSzVSQTU0eFBralVPay9TSGN4L0FXaTRCUTcyS1lZcGw3VW1EelNFY0JH?=
- =?utf-8?B?YnVZMFQveml0ZGZCSk1nT1ViYjJiMDE4eE54SHRaaXBRWGV4TGYxTFlMRTYv?=
- =?utf-8?B?WVJDYWdOZmNodnNCTTlLSmxPd3UwTjJ2NTNqRXBYYm4wZThMRVQ1Wk1SL1dO?=
- =?utf-8?B?MndXaFZ5bXVSbU55c3R0bENuZXU3MFcvWkFlWTAxSi85VmdIbXAvejBUODc4?=
- =?utf-8?B?alpqOG5rUGZTZzN6VExaZG9tS1c3blVuTzVEaFFFZkpjWUNzanBBNTNEaXhD?=
- =?utf-8?B?VEErdFpzQjJOaGUrNXliUGVhdDgyZllTTHUzUW03bDltd3c2ZEc0QlVCS3Rj?=
- =?utf-8?B?VFg2aGhGS2tWWTZEVjcvUUNjem1CU1RFamprM0NFM2w4NlQyS0FqcHlvYkpj?=
- =?utf-8?B?R0Y3a25hWU1tRG9GWVZzdHdmbGs2Z045dDVLRHpGeTE2c2xKQ2R2enpjTk0z?=
- =?utf-8?B?dVM5dUl3cWdFcENEVlBKdWFMV2tFUk9tK3k5WVRWK2dCdUFWeVN6dnE2Lzhw?=
- =?utf-8?B?bUNiSkZVYUYzdTdnNkxjaFB3MXV2VzBDMTNtSGZmWDBndWIvOXo2UUpUaEVj?=
- =?utf-8?B?elNJaDhybjZCSVkvb0J1eVhXVWR5MENmZUw3c0dhMjVDSWxuSHRqdjdObHd5?=
- =?utf-8?B?MjZJRmhUU2l3YVNITFAyU0pxL0Yrd1VGNStHMHBiTXJGTnkybEhIY1E3TTBU?=
- =?utf-8?B?a0lkV283VzlMQ0pTelVTVWNnckIvNFkrakRuMnpUWUNnYWhNVVlubVdKSnhy?=
- =?utf-8?B?aDVDa3NVQ2pSMkVpQWt6czVCSVZFdiszZFRNaXE5YWxINnhSR0w3MklTZUJi?=
- =?utf-8?B?QzVhcHlJM284amVQanZsd0hEMjR4MldYMG0yQ2FxbzkzRFE3Z1VCVmpvSW1u?=
- =?utf-8?Q?qfy+szNVw0q8VfJUgdL5G7Cyq?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd545131-4918-4fe2-9e61-08dd564c81ea
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 10:01:15.8602
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xINt6UdxPm4Y00YrBh+VJM2IRkKAishDj6pn7ukoAXxI82wuo+nsYoncCmb3zZTgEDEg1ZmsI1sqnxZoIaa80A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9225
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/25] drm/dumb-buffers: Provide helper to set pitch
+ and size
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
+ spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20250218142542.438557-1-tzimmermann@suse.de>
+ <20250218142542.438557-3-tzimmermann@suse.de>
+ <dcd59a75-7945-4a2e-99f9-3abbb3e9de14@ideasonboard.com>
+ <355ed315-61fa-4a9d-b72b-8d5bc7b5a16c@suse.de>
+ <596b960e-71f8-4c2c-9abe-058206df1dfb@ideasonboard.com>
+ <87ca2b81-a67a-468b-ae2b-30d02a3a64bc@suse.de>
+ <f74af5cc-bca8-45c1-9204-b362fcd6f998@ideasonboard.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <f74af5cc-bca8-45c1-9204-b362fcd6f998@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.990];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[ideasonboard.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
+Hi
 
-Hi Sebastian,
+Am 25.02.25 um 14:45 schrieb Tomi Valkeinen:
+> Hi,
+>
+> On 21/02/2025 11:19, Thomas Zimmermann wrote:
+>> Hi
+>>
+>> Am 20.02.25 um 11:53 schrieb Tomi Valkeinen:
+>>> Hi,
+>>>
+>>> On 20/02/2025 12:05, Thomas Zimmermann wrote:
+>>>> Hi
+>>>>
+>>>> Am 20.02.25 um 10:18 schrieb Tomi Valkeinen:
+>>>> [...]
+>>>>>> + * Color modes of 10, 12, 15, 30 and 64 are only supported for 
+>>>>>> use by
+>>>>>> + * legacy user space. Please don't use them in new code. Other 
+>>>>>> modes
+>>>>>> + * are not support.
+>>>>>> + *
+>>>>>> + * Do not attempt to allocate anything but linear framebuffer 
+>>>>>> memory
+>>>>>> + * with single-plane RGB data. Allocation of other framebuffer
+>>>>>> + * layouts requires dedicated ioctls in the respective DRM driver.
+>>>>>
+>>>>> According to this, every driver that supports, say, NV12, should 
+>>>>> implement their own custom ioctl to do the exact same thing? And, 
+>>>>> of course, every userspace app that uses, say, NV12, should then 
+>>>>> add code for all these platforms to call the custom ioctls?
+>>>>
+>>>> Yes, that's exactly the current status.
+>>>>
+>>>> There has been discussion about a new dumb-create ioctl that takes 
+>>>> a DRM format as parameter. I'm all for it, but it's out of the 
+>>>> scope for this series.
+>>>>
+>>>>>
+>>>>> As libdrm's modetest currently supports YUV formats with dumb 
+>>>>> buffers, should we remove that code, as it's not correct and I'm 
+>>>>> sure people use libdrm code as a reference?
+>>>>
+>>>> Of course not.
+>>>>
+>>>>>
+>>>>> Well, I'm not serious above, but I think all my points from the 
+>>>>> earlier version are still valid. I don't like this. It changes the 
+>>>>> parameters of the ioctl (bpp used to be bits-per-pixel, not it's 
+>>>>> "color mode"), and the behavior of the ioctl, behavior that we've 
+>>>>> had for a very long time, and we have no idea how many users there 
+>>>>> are that will break (could be none, of course). And the 
+>>>>> documentation changes make the current behavior and uses wrong or 
+>>>>> legacy.
+>>>>
+>>>> Before I go into details about this statement, what use case 
+>>>> exactly are you referring to when you say that behavior changes?
+>>>
+>>> For every dumb_buffer allocation with bpp that is not divisible by 
+>>> 8, the result is different, i.e. instead of DIV_ROUND_UP(width * 
+>>> bpp, 8), we now have width * DIV_ROUND_UP(bpp, 8). This, of course, 
+>>> depends on the driver implementation. Some already do the latter.
+>>
+>> The current dumb-buffer code does a stride computation at [1], which 
+>> is correct for all cases; although over-allocates sometimes. It's the 
+>> one you describe as "width * DIV_ROUND_UP(bpp, 8)". It's in the ioctl 
+>> entry point, so it's somewhat authoritative for all driver's 
+>> implementations. It's also used by several drivers.
+>>
+>> The other variant, "DIV_ROUND_UP(width * bpp, 8)", is used by 
+>> gem-dma, gem-shmem and others. It can give incorrect results and 
+>> possibly OOBs. To give a simple example, let's allocate 15-bit 
+>> XRGB1555. Bpp is 15. With a width of 1024, that would result in 1920 
+>> bytes per scanline. But because XRGB1555 has a filler bit, so the 
+>> pixel is actually 16 bit and a scanline needs to be 2048 bytes. The 
+>> new code fixes that. This is not just a hypothetical scenario: we do 
+>> have drivers that support XRGB1555 and some of them also export a 
+>> preferred_depth of 15 to userspace. [2] In the nearby comment, you'll 
+>> see that this value is meant for dumb buffers.
+>>
+>> Rounding up the depth value in user space is possible for RGB, but 
+>> not for YUV. Here different pixel planes have a different number of 
+>> bits. Sometimes pixels are sharing bits. The value of bits-per-pixel 
+>> becomes meaningless. That's why it's also deprecated in struct 
+>> drm_format_info. The struct instead uses a more complicated per-plane 
+>> calculation to compute the number of bits per plane. [3] The 
+>> user-space code currently doing YUV on dumb buffers simply got lucky.
+>>
+>> [1] https://elixir.bootlin.com/linux/v6.13.3/source/drivers/gpu/drm/ 
+>> drm_dumb_buffers.c#L77
+>> [2] https://elixir.bootlin.com/linux/v6.13.3/source/include/drm/ 
+>> drm_mode_config.h#L885
+>> [3] https://elixir.bootlin.com/linux/v6.13.3/source/include/drm/ 
+>> drm_fourcc.h#L83
+>>
+>>>
+>>> This change also first calls the drm_driver_color_mode_format(), 
+>>> which could change the behavior even more, but afaics at the moment 
+>>> does not. 
+>>
+>> Because currently each driver does its own thing, it can be hard to 
+>> write user space that reliably allocates on all drivers. That's why 
+>> it's important that parameters are not just raw numbers, but have 
+>> well- defined semantics. The raw bpp is meaningless; it's also 
+>> important to know which formats are associated with each value. 
+>> Otherwise, you might get a dumb buffer with a bpp of 15, but it will 
+>> be displayed incorrectly. This patch series finally implements this 
+>> and clearly documents the assumptions behind the interfaces. The 
+>> assumptions themselves have always existed.
+>
+> This is perhaps where the biggest gap in understanding/view is: I have 
+> always thought dumb-buffer's "bpp" to mean bits-per-pixel, where, for 
+> more complex formats, "pixel" is not necessarily a visible pixel but a 
+> container unit of some kind. So bpp * width = stride.
+>
+> It would not occur to me to allocate XRGB1555 dumb-buffer with 15 bpp, 
+> but 16 bpp, as that's what a pixel takes. I have never seen the 
+> dumb-buffer bpp connected directly to the pixel format (that's what 
+> the ADDFB brings in).
+>
+> I may be alone with that thinking, but afaics the documentation leans 
+> a bit on my interpretation (instead of considering bpp as a "color 
+> mode"), although admittedly the docs also don't really say much so 
+> this may be fully just my interpretation:
+>
+> https://man.archlinux.org/man/drm-memory.7.en
 
-On 2025/2/26 17:45, Sebastian Fricke wrote:
-> [You don't often get email from sebastian.fricke@collabora.com. Learn 
-> why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> Hey Ming,
-> 
-> thank you for the patch!
-> 
-> On 17.01.2025 16:57, Ming Qian wrote:
->> The amphion decoder firmware supports low latency flush mode for
->> HEVC format since v1.9.0, it can help reduce the decoding latency by
->> appending some padding data after every frame, then driver can enable
->> this feature when the display delay 0 is enabled.
-> 
-> I see that you already changed the commit message for this version, but
-> I still have a few recommendations for the description:
-> 
->      The amphion decoder firmware supports a low latency flush mode for
->      the HEVC format since v1.9.0. This feature, which is enabled when
->      the display delay is set to 0, can help to reduce the decoding
->      latency by appending some padding data to every frame.
-> 
-> The rest looks good to me.
+Agreed, this could be read in the way you do. Is this being generated 
+from source somehow? The information is not incorrect, but how did they 
+get to this interpretation? It would definitely need an update with this 
+patch series applied. Citing from the man page:
 
-Thanks for your feedback, I'm preparing the v3 patch, and it will follow
-your advice.
+   "/bpp/ is the number of bits-per-pixel and must be a multiple of 8."
 
-Thanks,
-Ming
+That's what currently works on all drivers. But nothing enforces that it 
+"must by a multiple of 8". Doing so would prevent C1/C2/etc pixel 
+formats without over-allocation.  OR bpp is not bits-per-pixel but just 
+some factor that controls the buffer size. This is how you use it for 
+YUV formats.
 
-> 
-> Regards,
-> Sebastian
-> 
->>
->> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->> ---
->> v2
->> - Improve commit message
->> - Add firmware version check
->>
->> drivers/media/platform/amphion/vpu_malone.c | 22 ++++++++++++++++++---
->> 1 file changed, 19 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/media/platform/amphion/vpu_malone.c 
->> b/drivers/media/platform/amphion/vpu_malone.c
->> index 5c6b2a841b6f..1d9e10d9bec1 100644
->> --- a/drivers/media/platform/amphion/vpu_malone.c
->> +++ b/drivers/media/platform/amphion/vpu_malone.c
->> @@ -68,6 +68,9 @@
->>
->> #define MALONE_DEC_FMT_RV_MASK                        BIT(21)
->>
->> +#define MALONE_VERSION_MASK                   0xFFFFF
->> +#define MALONE_MIN_VERSION_HEVC_BUFFLUSH      (((1 << 16) | (9 << 8) 
->> | 0) & MALONE_VERSION_MASK)
->> +
->> enum vpu_malone_stream_input_mode {
->>       INVALID_MODE = 0,
->>       FRAME_LVL,
->> @@ -332,6 +335,8 @@ struct vpu_dec_ctrl {
->>       u32 buf_addr[VID_API_NUM_STREAMS];
->> };
->>
->> +static const struct malone_padding_scode *get_padding_scode(u32 type, 
->> u32 fmt);
->> +
->> u32 vpu_malone_get_data_size(void)
->> {
->>       return sizeof(struct vpu_dec_ctrl);
->> @@ -654,9 +659,16 @@ static int vpu_malone_set_params(struct 
->> vpu_shared_addr *shared,
->>               hc->jpg[instance].jpg_mjpeg_interlaced = 0;
->>       }
->>
->> -      hc->codec_param[instance].disp_imm = 
->> params->display_delay_enable ? 1 : 0;
->> -      if (malone_format != MALONE_FMT_AVC)
->> +      if (params->display_delay_enable &&
->> +          get_padding_scode(SCODE_PADDING_BUFFLUSH, 
->> params->codec_format))
->> +              hc->codec_param[instance].disp_imm = 1;
->> +      else
->>               hc->codec_param[instance].disp_imm = 0;
->> +
->> +      if (params->codec_format == V4L2_PIX_FMT_HEVC &&
->> +          (iface->fw_version & MALONE_VERSION_MASK) < 
->> MALONE_MIN_VERSION_HEVC_BUFFLUSH)
->> +              hc->codec_param[instance].disp_imm = 0;
->> +
->>       hc->codec_param[instance].dbglog_enable = 0;
->>       iface->dbglog_desc.level = 0;
->>
->> @@ -1024,6 +1036,7 @@ static const struct malone_padding_scode 
->> padding_scodes[] = {
->>       {SCODE_PADDING_EOS,      V4L2_PIX_FMT_JPEG,        {0x0, 0x0}},
->>       {SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264,        {0x15010000, 
->> 0x0}},
->>       {SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264_MVC,    {0x15010000, 
->> 0x0}},
->> +      {SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_HEVC,        {0x3e010000, 
->> 0x20}},
->> };
->>
->> static const struct malone_padding_scode padding_scode_dft = {0x0, 0x0};
->> @@ -1058,8 +1071,11 @@ static int vpu_malone_add_padding_scode(struct 
->> vpu_buffer *stream_buffer,
->>       int ret;
->>
->>       ps = get_padding_scode(scode_type, pixelformat);
->> -      if (!ps)
->> +      if (!ps) {
->> +              if (scode_type == SCODE_PADDING_BUFFLUSH)
->> +                      return 0;
->>               return -EINVAL;
->> +      }
->>
->>       wptr = readl(&str_buf->wptr);
->>       if (wptr < stream_buffer->phys || wptr > stream_buffer->phys + 
->> stream_buffer->length)
->> -- 
->> 2.43.0-rc1
->>
->>
+   "You most commonly want to pass 32 here."
+
+That's also just semi-true. 32 is simply what mostly works in practice 
+IFF you interpret it as XRGB8888. Userspace should read the formats from 
+the primary plane, or at least look at the driver-provided 
+preferred_depth field.
+
+>
+> https://cgit.freedesktop.org/drm/libdrm/tree/include/drm/drm_mode.h#n1055
+
+This one doesn't say anything specific AFAICT. Bpp is somewhat pointless 
+information without a known pixel and framebuffer layout, as I've 
+outlined before.
+
+>
+> I (mostly) understand all the complexities around here, thanks to your 
+> replies, and I think I'm ok with the series as it doesn't break 
+> anything (need to test the v3, though).
+
+Thank you so much.
+
+>
+> I still don't like it though =). And I would be happier with the 
+> simpler "bpp" interpretation that I mentioned above, instead of it 
+> being a color mode. But we can't have it both ways, and perhaps it's 
+> better to unify the code and have the behavior explained explicitly as 
+> you do in this series, even if the explanation only covers some RGB 
+> formats.
+
+No worries. The intention is not to break anything and existing code 
+will continue to work.
+
+Best regards
+Thomas
+
+>
+>  Tomi
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
