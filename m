@@ -1,154 +1,242 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9079610D;
-	Wed, 26 Feb 2025 07:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E984D26869E
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 07:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740554219; cv=none; b=ouXU4XQ/NQtYdd9UY3udt0KQ06JzaPQ7uEWNsNIc0jOpJu1aN8XyF+pvg+wezQ9Z2PVBbJum1GbS4h+/yoCu5infV4jCsFUk6TXPfJEuPNoIMiqyzcryGK3mByZNldUVtTgaK7aI5DBdlDEd4dMt+9Q7oUtVs11v0FlzR4tnIi8=
+	t=1740554943; cv=none; b=A2xrgd7fJ4/q2e3wPcL8Cx2bsCQD7XLJ/FFzJklWDZvHt3RBlPsFSj4chqK5CA19y+NqcqxAuQ+oVuPUDeTKCY3L6++AYqtNVYEzcQN+rYjGgbKgYbsNsW6BkAMvJTu2mEkAgmbl4H2cEe08YCNEMQZ7kSe9cvxcJYYRRDHMYuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740554219; c=relaxed/simple;
-	bh=1Kb0KQQpe86zLyyYFwC5pDOTMSMspwB5NAM1OebGI9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+YWfyxlIlcFdcMrNhGyY7+lx/0oNygLFuqyS6ick9RoQ0soT7n39fn2Nw3Ic0GeUFZLfmLdQAUkA6gMl+g7zIprJIQMQMK/XXtiuFONWoMaHTHfPfnDxBj5bEIRBBYGOkJlXid5yH4mdUhJX2g6grewE12AqefFGa+gG72NhPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H4BYT5Et; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1740554943; c=relaxed/simple;
+	bh=6zbN5jOaaksOEj+lbfcyYF58FVbBR2uEiZ1U9Xm0Q7A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MKtw7E30jVvebcV3AEZTQS9lWypdu075VOwLJLeMjV+8LCnebNupyuaGEegmr6xBE1po0MkQB8BAcsOUgvSOqdEPRvuIpjnH+dHqf6jfFO8cJE2ZScq6L3cf9y8rkroxBoHb1ZROyfw/sGKvZLKc8ldgy/FVnOY+Q+CNtAUpSPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZU6OTFpV; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H4BYT5Et"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740554218; x=1772090218;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1Kb0KQQpe86zLyyYFwC5pDOTMSMspwB5NAM1OebGI9E=;
-  b=H4BYT5EtdB2qMF32HWwqyjT/Q2Ez4vEBu3kam09Fh/WUVPdBYRZqZGGO
-   issIENybDJmGcsLicpEo2L/DlKqw4PMJ/K54LlDw0jfXeqb7ONq7VzuG4
-   Ztq5clEmEyjXfQ36S6nmfr0hpOJ4+NG4s2Fe9D2y9v2KeZfMkBSzckAc5
-   88N1B6WLg6gS+bocOD6n073Cn9P+yhGaeLmz3PYH3V8BfABAqZekLKir6
-   4/S4V+PSBsZJ2HE/j7WgjRT4r8DTqbh78Mb1sq1nMAle3coRF9hq6N8pp
-   Y6CODl2mHwgY7hB6AftZPWD7LbLG6WBZnFvsk1JUe4vVn0zAxEeFaNc9E
-   Q==;
-X-CSE-ConnectionGUID: /ffLIad3Q8q3bdqsrLypYw==
-X-CSE-MsgGUID: VKU/8rHjTjGBr1tBbyF4Rw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="40623203"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="40623203"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2025 23:16:57 -0800
-X-CSE-ConnectionGUID: sTb0f3sYRs6tMWCGyOF8nw==
-X-CSE-MsgGUID: 5us5yGZDS+mZTJyldJmxsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="147448898"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 25 Feb 2025 23:16:53 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tnBf0-000BK7-3D;
-	Wed, 26 Feb 2025 07:16:50 +0000
-Date: Wed, 26 Feb 2025 15:16:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>, gregkh@linuxfoundation.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, peter.chen@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v2 4/6] usb: chipidea: imx: add wakeup interrupt handling
-Message-ID: <202502261559.XexYUCXi-lkp@intel.com>
-References: <20250225053955.3781831-5-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZU6OTFpV"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5dec996069aso10508798a12.2
+        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 23:29:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1740554939; x=1741159739; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jy5UzyKzocsSx5cSXomfjfFL//CTemBkcuebkephmC0=;
+        b=ZU6OTFpVKVVv19ZaH25o7tGsseVzxX6hCvYjd/90on8kiqyD91JEviiAhNUGvmlXgN
+         1WFL29ucblGFUQCBGoUaq1BndiJ5hrclgisq253qrQKXPIJf8SXLYG/KhWYdRTjiWX8X
+         Da7JSZ3z6TSFlYoBh/Un4GVLQz37nEOGRnD5hC72pY4VPPfdy7iZI+STh+i6Ag0zx2oA
+         LfhLh8iR0+b/oqtxi3AmKnKdBeMZI1qgdM+Nr9/cy277DT0HWesZszg1WmuH3GS+cNo/
+         sP5ZdZ9dFYYqgMsQh35XHkHqlQC4Vg9TyMD9R3uFc0eA0ezMcJp23FRNAzUIU3lBmTK+
+         TNpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740554939; x=1741159739;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jy5UzyKzocsSx5cSXomfjfFL//CTemBkcuebkephmC0=;
+        b=HoAALLU8VjKxl2yS5pY1+7kX3uvHsblRaypzEPvYOBFK1CvDgY6zQk29G43gPHqhow
+         SG4QjZr+tnyMB0AjQLXEcg2mvuf2yRDbXUD5gCTQC3+dduT+5a3u1cfJDlUVF8PyRtcg
+         4ptfEkl0mvN2WP/JFECyyBFWddm1bJBMw5yT8YLYe8FcSXpkUGdFLOMZwUKRJ1GQ6lJT
+         Fr08ZxQdMZyL53MRMwABoqhfo2AiwXsSxUEG6/dvX100MehF3wBxzR998fQAPGPChOPH
+         71ZHIEDmyugKX/a5kBWBmXR1V++adbvyEcfysWM3blBJm871ZO377zqf6/BWAFh09aFk
+         Wvsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrktV1YRzlO29QoEs9LDukd4fIImXpsgkFV+iQbK5JROUhiBPjLX7KB/wXDUUDh7QuXSE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzV5/Oqoqi0ocpE3IGbPASqssun3rr9Uiff1CT7sgXTrXiGhb1p
+	udOgEUsrP4Eq/0/iQGunjr+zEQCdZGlWFCVoNWDQw6cjuDk1peJ3C6DwkvQF16XFE+GX2opySKz
+	jYREPIiYbsbGZxuY57P0aS6gVZEHbI2V/pXnMfg==
+X-Gm-Gg: ASbGnctn+zOtx4ExRU3yb1WHj4YA1fwszj2+z+Pq8lnD7uMcf9pgLAr6A4DwTg5pS9p
+	U6Zl1FAQvIASr6b6r/+pckqMO/6Pm1DFZdzKNzjf4YAUccYYODFzicvm+kY1ZnoExSB7GQRXRAS
+	6bEM7lsg==
+X-Google-Smtp-Source: AGHT+IFYP8Tba+z3P6zhrfLVohTtXs/BwRHQBKKRVXu59ZSzqEPbWtjoPmnK2n59Ee5Tugvqu0RIdPnu12lt6iEjWaU=
+X-Received: by 2002:a17:906:18b1:b0:ab6:ed8a:601f with SMTP id
+ a640c23a62f3a-abeeed1123amr202024966b.12.1740554939189; Tue, 25 Feb 2025
+ 23:28:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250225053955.3781831-5-xu.yang_2@nxp.com>
+References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
+ <20250225-converge-secs-to-jiffies-part-two-v3-6-a43967e36c88@linux.microsoft.com>
+ <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr>
+In-Reply-To: <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr>
+From: Daniel Vacek <neelx@suse.com>
+Date: Wed, 26 Feb 2025 08:28:48 +0100
+X-Gm-Features: AQ5f1JpekOKemtGu2BHsnbGs6fr563e7jHjxxRB5HZ2bESNce9YNZRbPCIKk9Cc
+Message-ID: <CAPjX3Fcr+BoMRgZGbqqgpF+w-sHU+SqGT8QJ3QCp8uvJbnaFsQ@mail.gmail.com>
+Subject: Re: [PATCH v3 06/16] rbd: convert timeouts to secs_to_jiffies()
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Frank.Li@nxp.com, 
+	James.Bottomley@hansenpartnership.com, Julia.Lawall@inria.fr, 
+	Shyam-sundar.S-k@amd.com, akpm@linux-foundation.org, axboe@kernel.dk, 
+	broonie@kernel.org, cassel@kernel.org, cem@kernel.org, 
+	ceph-devel@vger.kernel.org, clm@fb.com, cocci@inria.fr, 
+	dick.kennedy@broadcom.com, djwong@kernel.org, dlemoal@kernel.org, 
+	dongsheng.yang@easystack.cn, dri-devel@lists.freedesktop.org, 
+	dsterba@suse.com, festevam@gmail.com, hch@lst.de, hdegoede@redhat.com, 
+	hmh@hmh.eng.br, ibm-acpi-devel@lists.sourceforge.net, idryomov@gmail.com, 
+	ilpo.jarvinen@linux.intel.com, imx@lists.linux.dev, james.smart@broadcom.com, 
+	jgg@ziepe.ca, josef@toxicpanda.com, kalesh-anakkur.purayil@broadcom.com, 
+	kbusch@kernel.org, kernel@pengutronix.de, leon@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org, 
+	linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	martin.petersen@oracle.com, nicolas.palix@imag.fr, ogabbay@kernel.org, 
+	perex@perex.cz, platform-driver-x86@vger.kernel.org, s.hauer@pengutronix.de, 
+	sagi@grimberg.me, selvin.xavier@broadcom.com, shawnguo@kernel.org, 
+	sre@kernel.org, tiwai@suse.com, xiubli@redhat.com, yaron.avizrat@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Xu,
+On Tue, 25 Feb 2025 at 22:10, Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
+>
+> Le 25/02/2025 =C3=A0 21:17, Easwar Hariharan a =C3=A9crit :
+> > Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> > secs_to_jiffies().  As the value here is a multiple of 1000, use
+> > secs_to_jiffies() instead of msecs_to_jiffies() to avoid the multiplica=
+tion
+> >
+> > This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci w=
+ith
+> > the following Coccinelle rules:
+> >
+> > @depends on patch@ expression E; @@
+> >
+> > -msecs_to_jiffies(E * 1000)
+> > +secs_to_jiffies(E)
+> >
+> > @depends on patch@ expression E; @@
+> >
+> > -msecs_to_jiffies(E * MSEC_PER_SEC)
+> > +secs_to_jiffies(E)
+> >
+> > While here, remove the no-longer necessary check for range since there'=
+s
+> > no multiplication involved.
+>
+> I'm not sure this is correct.
+> Now you multiply by HZ and things can still overflow.
 
-kernel test robot noticed the following build errors:
+This does not deal with any additional multiplications. If there is an
+overflow, it was already there before to begin with, IMO.
 
-[auto build test ERROR on shawnguo/for-next]
-[also build test ERROR on tty/tty-testing tty/tty-next tty/tty-linus linus/master v6.14-rc4 next-20250225]
-[cannot apply to usb/usb-testing usb/usb-next usb/usb-linus]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Hoping I got casting right:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/dt-bindings-usb-chipidea-Add-i-MX95-compatible-string-fsl-imx95-usb/20250225-134215
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250225053955.3781831-5-xu.yang_2%40nxp.com
-patch subject: [PATCH v2 4/6] usb: chipidea: imx: add wakeup interrupt handling
-config: x86_64-buildonly-randconfig-003-20250226 (https://download.01.org/0day-ci/archive/20250226/202502261559.XexYUCXi-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250226/202502261559.XexYUCXi-lkp@intel.com/reproduce)
+Maybe not exactly? See below...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502261559.XexYUCXi-lkp@intel.com/
+> #define MSEC_PER_SEC    1000L
+> #define HZ 100
+>
+>
+> #define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
+>
+> static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+> {
+>         return (m + (MSEC_PER_SEC / HZ) - 1) / (MSEC_PER_SEC / HZ);
+> }
+>
+> int main() {
+>
+>         int n =3D INT_MAX - 5;
+>
+>         printf("res  =3D %ld\n", secs_to_jiffies(n));
+>         printf("res  =3D %ld\n", _msecs_to_jiffies(1000 * n));
 
-All errors (new ones prefixed by >>):
+I think the format should actually be %lu giving the below results:
 
-   drivers/usb/chipidea/ci_hdrc_imx.c: In function 'imx_controller_resume':
->> drivers/usb/chipidea/ci_hdrc_imx.c:633:14: error: implicit declaration of function 'irqd_irq_disabled'; did you mean 'arch_irqs_disabled'? [-Werror=implicit-function-declaration]
-     633 |         if (!irqd_irq_disabled(irq_get_irq_data(data->wakeup_irq)))
-         |              ^~~~~~~~~~~~~~~~~
-         |              arch_irqs_disabled
->> drivers/usb/chipidea/ci_hdrc_imx.c:633:32: error: implicit declaration of function 'irq_get_irq_data'; did you mean 'irq_set_irq_wake'? [-Werror=implicit-function-declaration]
-     633 |         if (!irqd_irq_disabled(irq_get_irq_data(data->wakeup_irq)))
-         |                                ^~~~~~~~~~~~~~~~
-         |                                irq_set_irq_wake
-   cc1: some warnings being treated as errors
+res  =3D 18446744073709551016
+res  =3D 429496130
 
+Which is still wrong nonetheless. But here, *both* results are wrong
+as the expected output should be 214748364200 which you'll get with
+the correct helper/macro.
 
-vim +633 drivers/usb/chipidea/ci_hdrc_imx.c
+But note another thing, the 1000 * (INT_MAX - 5) already overflows
+even before calling _msecs_to_jiffies(). See?
 
-   616	
-   617	static int imx_controller_resume(struct device *dev,
-   618							pm_message_t msg)
-   619	{
-   620		struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
-   621		int ret = 0;
-   622	
-   623		dev_dbg(dev, "at %s\n", __func__);
-   624	
-   625		if (!data->in_lpm) {
-   626			WARN_ON(1);
-   627			return 0;
-   628		}
-   629	
-   630		if (data->plat_data->flags & CI_HDRC_PMQOS)
-   631			cpu_latency_qos_add_request(&data->pm_qos_req, 0);
-   632	
- > 633		if (!irqd_irq_disabled(irq_get_irq_data(data->wakeup_irq)))
-   634			disable_irq_nosync(data->wakeup_irq);
-   635	
-   636		ret = imx_prepare_enable_clks(dev);
-   637		if (ret)
-   638			return ret;
-   639	
-   640		data->in_lpm = false;
-   641	
-   642		ret = imx_usbmisc_resume(data->usbmisc_data,
-   643					 PMSG_IS_AUTO(msg) || device_may_wakeup(dev));
-   644		if (ret) {
-   645			dev_err(dev, "usbmisc resume failed, ret=%d\n", ret);
-   646			goto clk_disable;
-   647		}
-   648	
-   649		return 0;
-   650	
-   651	clk_disable:
-   652		imx_disable_unprepare_clks(dev);
-   653		return ret;
-   654	}
-   655	
+Now, you'll get that mentioned correct result with:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+#define secs_to_jiffies(_secs) ((unsigned long)(_secs) * HZ)
+
+Still, why unsigned? What if you wanted to convert -5 seconds to jiffies?
+
+>         return 0;
+> }
+>
+>
+> gives :
+>
+> res  =3D -600
+> res  =3D 429496130
+>
+> with msec, the previous code would catch the overflow, now it overflows
+> silently.
+
+What compiler options are you using? I'm not getting any warnings.
+
+> untested, but maybe:
+>         if (result.uint_32 > INT_MAX / HZ)
+>                 goto out_of_range;
+>
+> ?
+>
+> CJ
+>
+>
+> >
+> > Acked-by: Ilya Dryomov <idryomov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.or=
+g>
+> > Signed-off-by: Easwar Hariharan <eahariha-1pm0nblsJy7Jp67UH1NAhkEOCMrvL=
+tNR@public.gmane.org>
+> > ---
+> >   drivers/block/rbd.c | 8 +++-----
+> >   1 file changed, 3 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+> > index faafd7ff43d6ef53110ab3663cc7ac322214cc8c..41207133e21e9203192adf3=
+b92390818e8fa5a58 100644
+> > --- a/drivers/block/rbd.c
+> > +++ b/drivers/block/rbd.c
+> > @@ -108,7 +108,7 @@ static int atomic_dec_return_safe(atomic_t *v)
+> >   #define RBD_OBJ_PREFIX_LEN_MAX      64
+> >
+> >   #define RBD_NOTIFY_TIMEOUT  5       /* seconds */
+> > -#define RBD_RETRY_DELAY              msecs_to_jiffies(1000)
+> > +#define RBD_RETRY_DELAY              secs_to_jiffies(1)
+> >
+> >   /* Feature bits */
+> >
+> > @@ -4162,7 +4162,7 @@ static void rbd_acquire_lock(struct work_struct *=
+work)
+> >               dout("%s rbd_dev %p requeuing lock_dwork\n", __func__,
+> >                    rbd_dev);
+> >               mod_delayed_work(rbd_dev->task_wq, &rbd_dev->lock_dwork,
+> > -                 msecs_to_jiffies(2 * RBD_NOTIFY_TIMEOUT * MSEC_PER_SE=
+C));
+> > +                 secs_to_jiffies(2 * RBD_NOTIFY_TIMEOUT));
+> >       }
+> >   }
+> >
+> > @@ -6283,9 +6283,7 @@ static int rbd_parse_param(struct fs_parameter *p=
+aram,
+> >               break;
+> >       case Opt_lock_timeout:
+> >               /* 0 is "wait forever" (i.e. infinite timeout) */
+> > -             if (result.uint_32 > INT_MAX / 1000)
+> > -                     goto out_of_range;
+> > -             opt->lock_timeout =3D msecs_to_jiffies(result.uint_32 * 1=
+000);
+> > +             opt->lock_timeout =3D secs_to_jiffies(result.uint_32);
+> >               break;
+> >       case Opt_pool_ns:
+> >               kfree(pctx->spec->pool_ns);
+> >
+>
+>
