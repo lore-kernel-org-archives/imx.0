@@ -1,72 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2DC226D14
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7E1E1DEA
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 09:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740559977; cv=none; b=dv0GJePGVby3Y14keHdftSmsVKZmPgWZJnanAp0J+UptrbxbiuoMNaCBgni/LkfoQ/uWDLlV1SPu2Sag96z3IkBXFtzhcGU7wTCYQtwkIbZw7Ah3fEr1nRXEcQiWBHFu9a+HgWtwY+LYVZV9wyhHw1fUVS+4ykMl3iz2UKIrwwI=
+	t=1740562808; cv=none; b=iHwK+KOyPpIK47w01M29rVal5QD2hf/QQxbjMQDB7eS2deJkA4ns1gUwxfGik92Sak822zonnqOCjuRhMUwXwrGwOElz3MdQDT/pvCBCD5pT5PCtRfafxBLnVS3Mjvhtrej9a2mFDe6dWY9Kt5lCPhUKQbUYNtZGGkw/uHzxfE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740559977; c=relaxed/simple;
-	bh=sWyxuVp5GIn2PyGiKOrfhffWXLzuRAsQpL6ER1bVxKA=;
+	s=arc-20240116; t=1740562808; c=relaxed/simple;
+	bh=oXYrs8fLkSqwtRneRydxS1WiAhpp9hDEK2JtL3e2Wtc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H+4yDl+h609oNIjHuqq9zhGMRbLcVrUVhflawk7tDG7iXpRqpfykhRL+1y9iESOxl822CQCbyaGyy6T8KwATW7cZOA7OfdF937xeL0bAxTEgcBOUqvJIVl/876MHqTnfeUiP7Ju0MNqWN3vz4p5F6n6cz+AL+KsowRXPljq9YVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bm+3tYIR; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RM15E9ZFSc1pnJbpLkSTQkXWWmrIkQUBHc8mLLwXe/oIdpsydFnk1jsn+R2BeE1Xd2yKH1bMwmvHJisjyIBpJ1fiaUoD7F4jW1BfKnnOJpfpZPeuQuTlOOOos5LTaoNC94lmu+lDeK8oQIasOaycuz0Rf5xjngrgqiITGJLlbKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UqutqlGJ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bm+3tYIR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740559975; x=1772095975;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sWyxuVp5GIn2PyGiKOrfhffWXLzuRAsQpL6ER1bVxKA=;
-  b=Bm+3tYIRHp1WWe6KQHWRMMkGTy7ubaZVK2H6ltsTlSKkTR+dQ0pFmP3m
-   QWP4y0GM/6Mb6eLxkNZ481uxZFbCXx7KzhZwdR7zKq3VU9YTFRIebM62k
-   1O5aXxFncEtdTPH8hMuVOZBG1EjbPzkXTykGxO5cgn1NV97RX88qnobtn
-   zk3P0IUqJ6lC5Bep4tBstfY9p654mNyWIls0clIUTHju1SQ0VKcxVEfAz
-   1ehzZHLV0MjbabHilFEjM5ou8lcqIlgzfLeT0NWC9s2MxjSYDK4fr7BT5
-   UrXR7tPBQA+Ao4U4NwaxkXyBR0Crj+0LII/XHc0DPALv6H3goj+gHVsRv
-   g==;
-X-CSE-ConnectionGUID: 2MKj+4A/QLaMTsCc6J6RgA==
-X-CSE-MsgGUID: 0yK0HKw0QXqzYip6GgNi1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11356"; a="52389682"
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="52389682"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 00:52:55 -0800
-X-CSE-ConnectionGUID: Ij3kjip9SWyZdE5qJLB6Tw==
-X-CSE-MsgGUID: Pr4CVODQQOSIt8dTwipeBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,316,1732608000"; 
-   d="scan'208";a="117128677"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 00:52:52 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id AF9D911F944;
-	Wed, 26 Feb 2025 10:52:49 +0200 (EET)
-Date: Wed, 26 Feb 2025 08:52:49 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Cosmin Tanislav <demonsingur@gmail.com>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UqutqlGJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=83zqbI+x0U8gPtjXear3SquLiO46uugWTwSYAMtbREo=; b=UqutqlGJIvxUsGizH3OmMYEY79
+	1gUkhNTP6dnsG+xmSD9xemC1LTrj5vJtrHPQFCOEf8uykUCEgktMB9PRlBrgw8V9Plwa/r1N1Yhkn
+	tjB0bufEAycPO1r/FWfGxiEYGaWv8s0UhFkIlcCnfKsx7N08rKykXCsy0XjPqmxabduh/ypagv8JV
+	OJIuldAhllwqQGTb9TEsS/afmerYWy8+wPNqeO41sSu35L7UDEkVI8aawV/LmZftEmEtNxAm78bn5
+	olE6xbjjH8MHE2Vd1QBQp0bBVc/zGk2/FIviY8wWn6fzq90d4x5BM/Aq02WkJWFN87+xpfIhfuf21
+	dL2zjjyw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45812)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tnDtL-0003mS-2I;
+	Wed, 26 Feb 2025 09:39:49 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tnDt8-0006xF-1k;
+	Wed, 26 Feb 2025 09:39:34 +0000
+Date: Wed, 26 Feb 2025 09:39:34 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Furong Xu <0x1207@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] media: i2c: imx219: Report streams using frame
- descriptors
-Message-ID: <Z77WYcoV1MhWrpV3@kekkonen.localdomain>
-References: <20250220230818.275262-1-demonsingur@gmail.com>
- <20250220230818.275262-6-demonsingur@gmail.com>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thierry Reding <treding@nvidia.com>, hailong.fan@siengine.com,
+	2694439648@qq.com
+Subject: Re: net: stmmac: weirdness in stmmac_hw_setup()
+Message-ID: <Z77hVrC5Lcbxrlx8@shell.armlinux.org.uk>
+References: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
+ <20250226104326.0000766e@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,26 +74,125 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250220230818.275262-6-demonsingur@gmail.com>
+In-Reply-To: <20250226104326.0000766e@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Cosmin,
-
-On Fri, Feb 21, 2025 at 01:08:13AM +0200, Cosmin Tanislav wrote:
-> From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On Wed, Feb 26, 2025 at 10:43:26AM +0800, Furong Xu wrote:
+> On Thu, 20 Feb 2025 16:17:43 +0000, "Russell King (Oracle)" wrote:
 > 
-> Implement the .get_frame_desc() subdev operation to report information
-> about streams to the connected CSI-2 receiver. This is required to let
-> the CSI-2 receiver driver know about virtual channels and data types for
-> each stream.
+> > While looking through the stmmac driver, I've come across some
+> > weirdness in stmmac_hw_setup() which looks completely barmy to me.
+> > 
+> > It seems that it follows the initialisation suggested by Synopsys
+> > (as best I can determine from the iMX8MP documentation), even going
+> > as far as to *enable* transmit and receive *before* the network
+> > device has been administratively brought up. stmmac_hw_setup() does
+> > this:
+> > 
+> >         /* Enable the MAC Rx/Tx */
+> >         stmmac_mac_set(priv, priv->ioaddr, true);
+> > 
+> > which sets the TE and RE bits in the MAC configuration register.
+> > 
+> > This means that if the network link is active, packets will start
+> > to be received and will be placed into the receive descriptors.
+> > 
+> > We won't transmit anything because we won't be placing packets in
+> > the transmit descriptors to be transmitted.
+> > 
+> > However, this in stmmac_hw_setup() is just wrong. Can it be deleted
+> > as per the below?
+> > Tested-by: Thierry Reding <treding@nvidia.com>
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index c2913f003fe6..d6e492f523f5 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -3493,9 +3493,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
+> >  		priv->hw->rx_csum = 0;
+> >  	}
+> >  
+> > -	/* Enable the MAC Rx/Tx */
+> > -	stmmac_mac_set(priv, priv->ioaddr, true);
+> > -
+> >  	/* Set the HW DMA mode and the COE */
+> >  	stmmac_dma_operation_mode(priv);
+> >  
 > 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> A better fix here:
+> https://lore.kernel.org/all/tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com/
 
-In addition to this, the idea has been that the set_frame_desc() could be
-used to set aspects of the frame descriptor. My thinking has been that you
-could modify the entries, up to the degree supported by the driver, but not
-add or remove them. This should be properly documented in v4l2-subdev.h.
+I don't think that addresses the issue I highlighted above, since it's
+still calling stmmac_mac_set(, true) in stmmac_hw_setup(), which I
+believe to be wrong (as per my explanation above.)
+
+However, the removal of setting GMAC_CONFIG_TE in the start_tx method
+looks correct to me, because:
+
+- the start_tx method is called via stmmac_start_tx(), which is only
+  called from stmmac_start_tx_dma().
+
+- stmmac_start_tx_dma() is called from:
+  * stmmac_start_all_dma()
+  * stmmac_tx_err()
+  * stmmac_enable_tx_queue()
+
+* stmmac_start_all_dma() is called from the end of stmmac_hw_setup(),
+  but we've already called stmmac_mac_set(, true) both before and
+  after the patch in the above URL, so is redundant.
+
+  Incidentally, this brings the same set of questions I've stated in
+  my initial email, and to me this is wrong.
+
+* stmmac_tx_err() can only happen when we are already active (so
+  transmission was already enabled).
+
+* stmmac_enable_tx_queue() is called from stmmac_xdp_enable_pool(),
+  which will only call this if netif_running() returns true,
+  implying that the netdev is already adminstratively brought up
+  and thus stmmac_hw_setup() will have been called.
+
+  Again, this brings the same set of questions I've stated in my
+  initial email, and to me this is wrong.
+
+
+While looking at Simon's comment, he talks about stmmac_xdp_open(), so
+I just looked at that, and found:
+
+        netif_carrier_on(dev);
+
+Then there's:
+
+        netif_carrier_off(dev);
+
+in stmmac_xdp_release().
+
+These were introduced in commit ac746c8520d9 ("net: stmmac: enhance XDP
+ZC driver level switching performance"), well after stmmac had been
+converted to phylink. Phylink documents this:
+
+16. Verify that the driver does not call::
+
+        netif_carrier_on()
+        netif_carrier_off()
+
+    as these will interfere with phylink's tracking of the link state,
+    and cause phylink to omit calls via the :c:func:`mac_link_up` and
+    :c:func:`mac_link_down` methods.
+
+So, the presence of these calls will mess up phylink, resulting in
+mac_link_up() and/or mac_link_down() *NOT* being called at appropriate
+times.
+
+However, stmmac_xdp_(open|release)() doesn't seem to do anything to
+bring the PHY or PCS up/down. This makes me wonder whether XDP support
+in the stmmac driver is basically broken, or maybe the netdev needs to
+already be administratively up (ip li set dev ... up). I don't know
+XDP as I've never used it. If that is the case, then those
+netif_carrier_*() calls need removing. Or - I say again - stmmac needs
+to *stop* using phylink. It's one or the other. A network driver
+either needs to use phylink properly or not use phylink *at* *all*.
 
 -- 
-Regards,
-
-Sakari Ailus
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
