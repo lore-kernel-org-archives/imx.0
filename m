@@ -1,117 +1,118 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB643218AB4
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 14:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D83921CC48;
+	Wed, 26 Feb 2025 14:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740580923; cv=none; b=kvvAnVP/EFgjKcS0lz615KVKu0MxGZ88CXwY7MzCyz27iV0pH4R5+iaq6+bSDwsyAwEyCdGob1etak+KwsaOB2hw8CnGBvkTYjT9/Ck7liU+3kdFpOiIM5bgeNxpsBuZ/krsdGGZIXd3918krAaBNhDoKA98O98P5Y8LOMQXlDQ=
+	t=1740581289; cv=none; b=Ez3HUPhy99RHn8+EMhg1UligOL5EIAuyJ1JyxhDycZBvPBzPXf8R0OdNSLC7lsp8YvwL4tZPsCufvn1NFcP21zeoQ0mXOxyv1hXS8ZiDl4sGSsNy8NnJ2dYBSWdzZce6NyWJ2VlupmqaCaUZf3E3TzCanGiTYG0hb0JhLIHwtxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740580923; c=relaxed/simple;
-	bh=4FWXayBvVhNTS0E6OWpQiCVezWoKUfgMUUoPmP8gePk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pl3SMZiWx05KDwgmvtlSHLnb0k6m5Z1+/3oQoE7QqzQ9E+mfbBtJkdjXmrQxyI+Rr6HghCH/KFyY/51Tv38E+L0Tjyxh2LAHwDUnyaNhPM0Vt7ZRkRovW5C1Omf1wlpWpgmRxP18MRC4ts478C0ELN9jBq8Corx8AC7UgTo2YZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bIGUBXoG; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740581289; c=relaxed/simple;
+	bh=xd3neVQnKKxta6h/dkB0x1HKr/mwp+2cJLoVDQVsKqc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pj+lqlf7JMzSAp21JZqFwVmHnorc3PODgoqTaA3Q1lEzd56gSseyTCkvcUPs7ww1x62ISrrg1QmWeJIhD5Evom7Jd9EzU2RHiqhsqfeJNN0zn63uOqPPMsp+j+mHpxr3VxVbxNRlzMoMf/HyM+HzZNl5AwJqupPOgptklxW7/Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHrrOgkR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bIGUBXoG"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ab7430e27b2so1069334866b.3
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 06:42:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740580919; x=1741185719; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yd4Q4hVeUYOM1ue+qUfzWNg9Q9i3oT/9A9AYIFfGkUc=;
-        b=bIGUBXoGplPZcFfjOVZxsURnME0WTfGjbIqBXivpdxrIoH5d0Knwh8kW+uLOqYSOS0
-         sp3dWJNWbO1XpmSUlXHoPk4Fc2Za4iKfrSJmkJvLq83VChSIi8fai2yTkUID+HE2lc8l
-         3HNvGHFPEO2ezN7IUdJbp/XhqTE41scTo4izOynT5rG3H6T48B6lu0ptAF0lLLAZh6Mo
-         l8H1SBvuWBYinHYaLcmYcYR/1/tUuECueuw3bsmZc8c0Xf3Hid89bugLJwceCOLmI/s4
-         rwWex0vDE7DLMKPK+kEmIzGuekoSZgus1TqjFIRx5e9yQtnqxyaM5NMqyqyQebPUnMYo
-         Bc9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740580919; x=1741185719;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yd4Q4hVeUYOM1ue+qUfzWNg9Q9i3oT/9A9AYIFfGkUc=;
-        b=RZ0H3pO8K5oq6ysZPgpmDk+0+Bf/e5ZlSkSVX6iPNMw5X1m3+x2yq+JmwLPYktSndx
-         l/tSeCCB4cNVeezPeSWfQwfz1x80tPckxMMztWU01QivweG/gFAbQEN/YsDZhV0KKEQa
-         fzEzo7un+hsqynl662YqbWCJ+Kst84fmVuonNFj7H0g6CZzTNfXv6+NP2p16vZk+FmtJ
-         DfGuFy8uaPWO0wisJ6Ns3AVC44zLmTfbDd9SKTsS/FvPOf7yUP+N5+n75XiJpR3NgdLL
-         bHKZVvX97TYrktuOZBQEQmQP8W/W036XfqrM3ngKz+UVlMjwmGd9eUraKia48GxVBdCt
-         yf4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVvyfhDlBI6VLelkiAb2JLbz2ExzaRBo9vrmvcnKp9niSRXH1dUe3bvFMfHDEh3C+QtYBg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSd4jUTVUkk2a1YveyBio2ALqezxSTNppFh79xXqwwjMQF2ERW
-	HtgSp6g5Q+X/5N7XG7GM8dFUDRnlB6lsyTH63hHr5RZtVz1wiZ+X/fSslQFki9U=
-X-Gm-Gg: ASbGncumi1SE5uue2Yo1UblSAIvpBxE6Ik/+VzcebLMt/cutqiwprDPpKhz5DlEpWwd
-	E/I5LsLARqiIqcdVPJINSmN7T8/IAWrTUQMIAJPKhhUXDg6cMxRRhklz62Sa0zYrH8Dlu3jAKwy
-	H/+WFX1spTvrR/IYJHSBkkswxS8e3coeK6N4C5Y0rMR5OO/A7GCSLKduMm39QajTliKpk1jlTAM
-	0lSsEplChB72SAwIW0yKngqEqfiLqPP8ehVx/LpaMRAJf/+OSIM9CVM4mA6x45z5ZwEf3YlrH89
-	X8XxAlbQGY/+rIgRaztpz4qVFPGx9Nw=
-X-Google-Smtp-Source: AGHT+IEqq+wCIO+7KpV9xqIa2Ubw1hCVyP4Ga6WxVj5wemOObN4UBSusPlhMuI5n8yBIpYErWlyqpg==
-X-Received: by 2002:a17:906:314d:b0:ab7:9df1:e562 with SMTP id a640c23a62f3a-abc0de55dbcmr1974440866b.48.1740580919225;
-        Wed, 26 Feb 2025 06:41:59 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abed2012142sm333883966b.117.2025.02.26.06.41.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 06:41:58 -0800 (PST)
-Date: Wed, 26 Feb 2025 17:41:53 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: slongerbeam@gmail.com, p.zabel@pengutronix.de, mchehab@kernel.org,
-	gregkh@linuxfoundation.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	hverkuil@xs4all.nl, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: imx: fix a potential memory leak in
- imx_media_csc_scaler_device_init()
-Message-ID: <450cdcc9-ccb8-4ebd-847c-b106fae2d709@stanley.mountain>
-References: <20250226142126.3620482-1-haoxiang_li2024@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHrrOgkR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611C8C4CED6;
+	Wed, 26 Feb 2025 14:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740581289;
+	bh=xd3neVQnKKxta6h/dkB0x1HKr/mwp+2cJLoVDQVsKqc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nHrrOgkRXHnaJloFeHcTWFMBS6+Fcuy0rjgphJAHpsvi2mcRgDXskJXRe9cOWAM/E
+	 qWcdyAlnrIYnU/YXtzy91y/uCmVTRbC6NG2k3edfTHzrU0+t85qoTgvzMqQdmexUYg
+	 mr9+yn7QMTIuQ88tg2bhQ62xsrJfU6xRQvlCCwiO3nCH6Sp5x5WkpK+wcLPpsNxp3R
+	 gS82Bdf0KbW3RpECZNRxtrhyFtVe7JQB012Bpz4dzC0cXAH40wvOdCLVF5zAkIZ+Yo
+	 VFILJ39/Ko+fJCQJPSn30MYVJgydxJQdZaL3EdvHCHu7HYo2T4UGp0ZOASwU4xCu75
+	 P2Wgfmk+Jlr2g==
+From: Maxime Ripard <mripard@kernel.org>
+To: Joel Stanley <joel@jms.id.au>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Stefan Agner <stefan@agner.ch>,
+	Alison Wang <alison.wang@nxp.com>,
+	Xinliang Liu <xinliang.liu@linaro.org>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	John Stultz <jstultz@google.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marek Vasut <marex@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Philippe Cornu <philippe.cornu@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Alexey Brodkin <abrodkin@synopsys.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Anusha Srivatsa <asrivats@redhat.com>
+Cc: Maxime Ripard <mripard@kernel.org>,
+	linux-aspeed@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: (subset) [PATCH RESEND 01/12] drm/aspeed: move to devm_platform_ioremap_resource() usage
+Date: Wed, 26 Feb 2025 15:47:53 +0100
+Message-ID: <174058126145.2737122.17862276006786077975.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250225-memory-drm-misc-next-v1-1-9d0e8761107a@redhat.com>
+References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com> <20250225-memory-drm-misc-next-v1-1-9d0e8761107a@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226142126.3620482-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 26, 2025 at 10:21:26PM +0800, Haoxiang Li wrote:
-> Add video_device_release() in label 'err_m2m' to release the memory
-> allocated by video_device_alloc() and prevent potential memory leaks.
+On Tue, 25 Feb 2025 17:20:42 -0500, Anusha Srivatsa wrote:
+> Replace platform_get_resource + devm_ioremap_resource
+> with just devm_platform_ioremap_resource()
 > 
-> Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->  drivers/staging/media/imx/imx-media-csc-scaler.c | 1 +
->  1 file changed, 1 insertion(+)
+> Used Coccinelle to do this change. SmPl patch:
+> @rule_1@
+> identifier res;
+> expression ioremap_res;
+> identifier pdev;
+> @@
+> -struct resource *res;
+> ...
+> -res = platform_get_resource(pdev,...);
+> -ioremap_res = devm_ioremap_resource(...);
+> +ioremap_res = devm_platform_ioremap_resource(pdev,0);
 > 
-> diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-> index e5e08c6f79f2..f99c88e87a94 100644
-> --- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-> +++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-> @@ -913,6 +913,7 @@ imx_media_csc_scaler_device_init(struct imx_media_dev *md)
->  
->  err_m2m:
->  	video_set_drvdata(vfd, NULL);
-> +	video_device_release(vfd);
+> [...]
 
-The video_set_drvdata() call is pointless.  It just does:
+Applied to misc/kernel.git (drm-misc-next).
 
-	vfd.dev->driver_data = NULL;
-
-but that's not necessary if we're just going to free "vfd" on the next
-line.
-
-regards,
-dan carpenter
-
->  err_vfd:
->  	kfree(priv);
->  	return ERR_PTR(ret);
-
+Thanks!
+Maxime
