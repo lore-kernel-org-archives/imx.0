@@ -1,138 +1,161 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2071.outbound.protection.outlook.com [40.107.247.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B85421C9EE
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 02:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740537822; cv=none; b=bHcaozf029ZbMJLxoUF06a78kvfD3bu3Wx7Wdee1vX3+grYo9e0SHTnAoIA4pvwdY3lp9SNTxhdMnBRrf73N3wjsZY31+aLhVr9fsjJGSf9y8s07Fpnw8nZFmSUgPGPDOjPk3Kbs8s4MmchCkYMOEny7ApDw3+0i9yD8RY64BA0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740537822; c=relaxed/simple;
-	bh=+QWYbR1IEqUHxYtc6gkd4YrIaQZcWJeKBo2yzavBrTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rBsd5MIFJwZQRSsskGAuunb77eJqCajK+0FIFfjDNC/SuUr1NQC3fRqUrQMoBbjWPygzJI4pS7EDkKs3FiAQfBb0xd46lVsln3BlPtvhg2hYSZvWUgKXRmVPgZQ2G1ES4e9mk9uEOthrjZA2oYs60kJwRc3CFGw5VXb6puo/x8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsD/GvIP; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3542070
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 02:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740537846; cv=fail; b=OJ2aClGs80m7bfLEHsUHzdDmd3Zx3FyQezL+OSjoy2w/kni6yoB1FVxpmh+1RcWlwSuewn5rz3MZ1qZJ55uBr5+tN1VxLG3X4YLmQZYoafWvHRY2lECwd2DWNilEYwwkMjykhaSu+KuGHZU5Voezgxl6kY+VqUBVGlB1fBAnbJ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740537846; c=relaxed/simple;
+	bh=CIT+hE+j9szy82dffZlVmGqICUA71BSOlx255INcehw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=qoM+csCNlgKcUSA04/NM5frwgqGAfINBihhbOLk5wV5xx+7z2fLJ7Q/DyRigXZyxqt7fYscdHZanz/WSIICYnLaEM8lTKsmgTajXYIuYS/7Kj1zBZltEmDoQwnNpovcDBSqhX44rT/Lg0ynEOns0q7ISjY1t0hQ6et7gHJdGJyQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hCHTDNen; arc=fail smtp.client-ip=40.107.247.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsD/GvIP"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fe77285e12so1761049a91.1
-        for <imx@lists.linux.dev>; Tue, 25 Feb 2025 18:43:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740537820; x=1741142620; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=09wSZxKgriakTOPJO9UMgX94JkvJeeXEmpJoFk0WInU=;
-        b=bsD/GvIPLgQE2JrQIvCAlUrpfj6LR4651JDaci3I8FDd0owF76G/GSCMCEhVh0VbUx
-         Dg1AUbfqIu2Yg9NNNJvd6YlnwjPa0tEVkbJgssvErWBbgM4T3SXUxko69wqRzFcFWXTC
-         8iVum9UvFQT8Q31rjS3T3LhfPmZgj3BN2HMWwlHglk21O7GEciiVVSezzGJ9vu9YW/eE
-         6ZOmf0DiqfI669HrxWWVjHNH3gEsIkVOoDk0rwi5A7014aorEzTwjDF/1lsmJLyuhJp5
-         vszLpU5O/GNnYFn7ro9GL2x9G0HBveZpIosyUtbu4odhA0WgeB2JEhw2F/ORNlRKXthP
-         BLJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740537820; x=1741142620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=09wSZxKgriakTOPJO9UMgX94JkvJeeXEmpJoFk0WInU=;
-        b=fz1veT7VqKhbYt1ONw+xHnVKIrkKWDOr9+7T5qTZsrYDiEwGBb19dHGK2OOgI6hLwK
-         xk0YBtAsv9+A49duL22cQYo7nAabHy6ctzCkAtGUZotBfAXNiEJ0iMXCq3slBlApC9Nd
-         Tfoh2F8ekKmlrE5T6A0PYWwHAyPRdMpvpFMsWXG22BT6SAH50hf0GjZm530jQFrNLoeY
-         z1G2DhLD2HbFMmpy3MKj1Dukc8sjG/ED6Gg9yrDWjEBzOStOJyDRXXB0ILVeszvT6Y91
-         IuGG02w54/IRVuA1dCalbnjQ884BPGAjimQyHitLVFHNDTR+iBtHHpCHsfKBxjVYeZcy
-         kiOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4jVgGkfqoICqZVVf/cZb8cZUPiCMxPjCaHordUmtepVH2cgCyI5AZKsbzGw5tJGzbPG8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjTi1TaT9/YdDESSAVWVGlDXgUBu2MUTctRdZD3Ma/Edy42Ywr
-	/uFk9BD/3k7kCeMh/TA52GgfyocMKL35e4yMMeBgLFSF2hAyxYIA
-X-Gm-Gg: ASbGncvGvZY1MDBzRa0rb6e7mMzBvR04LwneOPK5WdqXHYuWQvE1tmHbZK5QOOn6jXj
-	wYpRht4kLglUcK9iaAT5TqsdS9Z9HNOHIcH/MIept9Dtv5qWvsPLmD2T8uoEmL5zelXTYkiG5cD
-	enfEAyZu23v79TARco4D1P1YORW4dRgoUjRGmlxlJkNTbLsKVsf/Fcv8fBod/2heli2XFFYXNxZ
-	U8+KHDFepm1cmYOa+j0gx2lw/mv0eqdZmLiH4SiEwJB6LCDGinwQKex/jklhz8RRmw2qO2gIqvL
-	G3o84RhqWcpCxqJNQE9TX/Q=
-X-Google-Smtp-Source: AGHT+IHqWiTmKahLoNDEtQkn8Ysj7aO7VlP6FoYVWXaVQHY/r9/BHTTRDx4CPzCNopfHUXBmu0dRbg==
-X-Received: by 2002:a17:90b:53c3:b0:2ee:f687:6acb with SMTP id 98e67ed59e1d1-2fe68adedc1mr8899627a91.13.1740537820375;
-        Tue, 25 Feb 2025 18:43:40 -0800 (PST)
-Received: from localhost ([129.146.253.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fe825d2b85sm326939a91.26.2025.02.25.18.43.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 18:43:40 -0800 (PST)
-Date: Wed, 26 Feb 2025 10:43:26 +0800
-From: Furong Xu <0x1207@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Emil
- Renner Berthing <kernel@esmil.dk>, Eric Dumazet <edumazet@google.com>,
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, Inochi Amaoto
- <inochiama@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Jan Petrous
- <jan.petrous@oss.nxp.com>, Jon Hunter <jonathanh@nvidia.com>,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Minda Chen <minda.chen@starfivetech.com>,
- netdev@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni
- <pabeni@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Thierry Reding <treding@nvidia.com>, hailong.fan@siengine.com,
- 2694439648@qq.com
-Subject: Re: net: stmmac: weirdness in stmmac_hw_setup()
-Message-ID: <20250226104326.0000766e@gmail.com>
-In-Reply-To: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
-References: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hCHTDNen"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AMEJphcfQHGLTuN+o+M74k1+45yNzzLcuZ9bZP2n+4SwztlKAisWiL6BGRlw84OJb/wt6v3MBQrwiNTq7DZLhDfvbrzyYQFtOWDhzufErYb1MHQtQZSspTsSzONswaN2UIOlInqMQdT8Wm7/r6CPH7zGVc1rWcVnuDxlqxqH0K2f+pNTu5uzqwTTMRpBCMzFDJ20s2pl+x8T+xnmu9S8dTpz+66EGX9GJDcx8WtQkINP1jFdrO4twve1lOotl0S1vY2mU+LALw/sluVbveRX4ccBFfHs9PgL95zxMmWr29ZspkbPV0+UZqJUctnKK8dzuIr84nV+tI+ChlU5j8Tqjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V9naiSAwXhkX9XnnDuXDajGQ5uNqQoM403e6LVYkOfY=;
+ b=k+/z9sIK7Yl4ymaIMJUtq7wTfQmYnSkC2E6hU7/GsJRrp+zqJqOoEARup/nJwbI3NsLaT26wq5hwf+Er0qG6d050FevlM6LewyF4GnY6M9slgVXLbqNfG82/7Je0HwHIamBT3P+wliFeHsgJFZqBJqLtGBrhJSn0yjyW1Zd9VR7LRkuWcRYZWA406N96xWbTRJ6OBP9+PqJoBVO167n4cWnl1EVOmBh0vTtmLDnPa11Nmnctb84JkUX8cUuw5y92oTBweKr7XteCoXK/U/McH+oDsLb7gSVh0nXLzF3pZI0lawQ10gig50sy88MjgZIipXfP6M7CudZDtL5kufpp8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V9naiSAwXhkX9XnnDuXDajGQ5uNqQoM403e6LVYkOfY=;
+ b=hCHTDNenCUaRqH44csLuLrOuBMV5qfyGhpaHE01J9eTtE8NBl2OPYzDMHAw14OHcBqJrcZVweVu61KeMR/J/Kg23+l9AmBaWpeOBpp7QcvwgVN4aXhNfnxfMssxnBInAywl9FuVd3LBEJd66e8YaqZONbEZjZOrNdpuAajg7hideiFNsc/NIylz7q1MayY82r3Z5LoVkL7uARhcc4k1iCWA/2rUrn1p47lU8FlYfIPHq2O25yEbypdRmzmLYba4jgBSVOF8KWLxNhn75sxmElH6R76n1ZpzLl5LxtK291KCm3HJEeEzWqvffuoolP+pjQLV/DXWOz64DtTbVJiR3Fg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+ by AS8PR04MB8387.eurprd04.prod.outlook.com (2603:10a6:20b:3f7::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Wed, 26 Feb
+ 2025 02:44:00 +0000
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93%5]) with mapi id 15.20.8489.018; Wed, 26 Feb 2025
+ 02:44:00 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] Use domain number replace the hardcodes
+Date: Wed, 26 Feb 2025 10:42:54 +0800
+Message-Id: <20250226024256.1678103-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0195.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::17) To AS8PR04MB8676.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|AS8PR04MB8387:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2727a1bc-6230-4ad5-86c9-08dd560f6cb8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9ICmenG+xJn2OPmMJxgyG/9WjbacoO9I/zg8Ricwpw3Zlidc8pL4m2fW/WRJ?=
+ =?us-ascii?Q?whxW2/KDpnMqc2MrN4aV7DonsU00RXU7lZMz0ysiOXdE/h3oRuy9Ci+Ly4NP?=
+ =?us-ascii?Q?druObzTQnuf/PB70WPkwOE7Vv525C++cmou04O0f0wq/VJ2poJh0bQelq4iv?=
+ =?us-ascii?Q?WkDaVNz6cxVtyykWnzSHx9CO1tplLzfqcZYYt/RgQWovcutaJQAPjDtDEi2y?=
+ =?us-ascii?Q?Db3lRoXNLBWmUJ4yNssjx0TQx4WciG1ju6svtrk5gG6OrEfxq7Kbwss50nxa?=
+ =?us-ascii?Q?QMRqD8XXMJXbF27qlgIBHsmSFx3gHYFFpIBgEHEPRprbZAPC3jrTw/9cvlQL?=
+ =?us-ascii?Q?TI3iavKj9DmRPyRFlK7Nbg2lDHBM2QVSrzqMGpcQSf03P9bkRM8XALG3+TLG?=
+ =?us-ascii?Q?R93WCyLPnALzNcEhjhIKpx6Q3C1lLr9p5i1d5lxj+Jx0v+al5yFzpjdIDSsG?=
+ =?us-ascii?Q?HscUiExyLiReCo22DfuYmSL3pIBa0R/Kb7sozafx/53muls+qhp58lfB428Y?=
+ =?us-ascii?Q?YQuEFePNOiULY6u2bVw9jljSPDLGXmTCMtcKRTp96SmmkmrItiPHn+VjMuUJ?=
+ =?us-ascii?Q?aLiFHLsGVinNHSp6iwjNt2PM3z8ymFfrEA++SWvg+oM4aeMuyLSXrE8en98u?=
+ =?us-ascii?Q?Aqohc5W1U9D8r+k9L7dio+EKILgffOWU2wAXpFClL6hfBF2Jrn6gLRSXHscA?=
+ =?us-ascii?Q?ofumjHU/+95C8qHBli0EnpCMnaXa1zI897xXS+v/gLdVGV1UFb27lrvI5Q9t?=
+ =?us-ascii?Q?/2uh3he0/7DD4Qnu0i934RwlM+PN6KuU8Iv7t7knHhBi8b3dBjfW4gfsF53J?=
+ =?us-ascii?Q?iPi5GLXGNQbAVzOg+5R4Z3OaLTe06v41rzCmgg6rwb2F8zqlPhBFNAcxeD4T?=
+ =?us-ascii?Q?+gt9xZJ1iZgUzW5iwa+wzsyyV7MMrD3SzhjtapIOYIFIUUwz6xffjfHKBIYG?=
+ =?us-ascii?Q?T5IGn+bCD1TCHBBoA8evx/nedtL4yazo3w3vtfj0njfZqTmPAfuZaznh+qVa?=
+ =?us-ascii?Q?SnbAzjKYprqBo4LvKq1MMUyVr4Ic0vZJ5lNtaGtQzyIfebJ1rIXDBqhDtBvD?=
+ =?us-ascii?Q?YDYw81WAxp5OB0FHTCRVo6dDpsEHYMbfxPn0zYdqa5VxhiDgCuohE8Td2wnC?=
+ =?us-ascii?Q?JsTlTChL3a53akOSIVd8vCusFGpG/gn4qsMUJ14gJIWFlhywwqAVjZFnNIpG?=
+ =?us-ascii?Q?bk7yKK++RHSThaGCiwJNgVSkieI6it946ieQg5i2ATxGdmdd/ZKbLvVNlN7L?=
+ =?us-ascii?Q?rf7nzPhOiYCT2vVRzSJddzEnPedSip//6lXGbkK7pZH4oMa33Sn+tWaoynLu?=
+ =?us-ascii?Q?BoAJLeezn+pKKiCSa5mqo0puVf90tvLCYP+tfpqiHGI15f7e9zCUworK3gdc?=
+ =?us-ascii?Q?esj1239iXCTvlJOwRBgW8seGY4ejUF5v5YC6GKZV5lPQ3JREbEkpV4OUNn5Q?=
+ =?us-ascii?Q?8NNUqeFTvLiV1IRg7ZRtBtiu0gN05u7z3l5LE/wPdEwLts2MnIAhqg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HluluSKwPRsmv4sDxcDG5yh+Vn9JbbRR1LhnusLCdz9gbzK+x5AXRitzXtjD?=
+ =?us-ascii?Q?POLp3nlDC8OklD/GlYvo1HX0r1e6lljL0Kff1v9O6Mk4CKADkKG6rla86eWe?=
+ =?us-ascii?Q?nY11VS6vpwtsSR2PTUC89pOLiTo7E3cPp8/0utOvMvVM1ZeV50Zx4IrRYqNJ?=
+ =?us-ascii?Q?MGFz/jVjdrGz4Ef8hJsa44AJ9UlZl9K0gPBHQpx0DAQtqUnNAQzLIDS2e6nM?=
+ =?us-ascii?Q?zFLFcZk2lhUuuaVC6Hn3t0sCbcRWHvlJzqYwOTeBZ7HaWiOOpDH82jnHXC/g?=
+ =?us-ascii?Q?jTHM5l/w19hPjpvjdRuKOo6SRtVINqrhUJGRI7vuNQyRjrZtV2N1HcnHAYWm?=
+ =?us-ascii?Q?StAcydIbAaEWMVVZ9S7cxbzsn0+U+LC7tKQ0r0/OQagyH+6nE6i0OR2nd1y4?=
+ =?us-ascii?Q?r1dNTfP5NnUieFNTpjnccPc8QAYPDCgisXcIeC+yp4WX4kQyg5OK0LY8BuxM?=
+ =?us-ascii?Q?5jvn4M2Abopp33IcotELStnQesN1MTYgwv6wtKpPOVMCyHReRnuFEdrEIofR?=
+ =?us-ascii?Q?3qmimEnguDvJaM+PcS4voi2fYSSOJH+p0SMvZ5SVlxF0jnodUnyQn6nZUvWs?=
+ =?us-ascii?Q?il+HskRIbTcynkdi6lIOLIoopKzWemdR4Z8vj6TdUDwkGuuKE/XjodXOWpsT?=
+ =?us-ascii?Q?rW5YRE5/5QN8M1a+N1JUrSzlnpD08obn2KO0hCfihRBcXF5v6M4GAz4nxbUj?=
+ =?us-ascii?Q?Kq7dxB2jBULZfh6I7OPs1Wni8Hx7/KBcA4WfouFh2pLbO9oNex9V+yRJtz7p?=
+ =?us-ascii?Q?BkpBiQ187BejhKMZqird8XqvVH5tJeaCkrY+h1KrDXQAgsUyZGuo0/Mm2vEP?=
+ =?us-ascii?Q?+EumrT8VHNCjkrfRgeN0NR0QozerhiRm4iIibfip4rrVPy+sISeoP+DHSsM/?=
+ =?us-ascii?Q?mrHGkDwYhQqp2UZzyy+w2Mclk/RD3lzbGIUE5mCjXB+WcBmVWYcbZI6/SSA3?=
+ =?us-ascii?Q?CqoyBA5h2XVLEWzIHO8xte1A+hlycFyJbI/jyGFtP2ioMWJrvZRvh7b7T0oF?=
+ =?us-ascii?Q?C62lE+BMKWGOTPqydhfgcD7XHntiRmn8p/Hrix//SBw0LQV9yYWOzkgIY8LV?=
+ =?us-ascii?Q?UYPEd2SQFAspCMFYd1cPTboYTwvqNYbVHr/2DQ82gKpTWB18l/3eEfuttHJQ?=
+ =?us-ascii?Q?9AhIMAqKOjwl/gE1Bk0KT1SziKiiq3KkFpeCPRa9rQoVi38oGZFgdFuMg9Td?=
+ =?us-ascii?Q?MiXxqU2oixwu0VkoY9m6YC1L23tMHkAUi+5iDOOCLoSPca8LryGqoeOxE/b0?=
+ =?us-ascii?Q?bgYJcLOgIb6C/vsW0nklWCYBsYWY9jyx4TztRQIfu66V+YmRVdlc+d6tNhUv?=
+ =?us-ascii?Q?+aal1AnnJBu3Ars7XctVF91noKlSo38MzHQCAPFgnsiZCtt+j0PMWQXTASya?=
+ =?us-ascii?Q?8yw/RTu2PiLCZOz5co7PDElMT85l4uOnEdBMg/s0GInSI23D3K8SR+2GTvcG?=
+ =?us-ascii?Q?E+pSk9dhRTAZbdohjr5cEcLqHNbCdKk6OyhYxaq0GjQOsjslktpibp1gVxmj?=
+ =?us-ascii?Q?mFVwK33aMQa6VStJuSSFLVFC5vz2Sb+iwnbE4Xq+xQ31LcbAI1ozJxWcmwrw?=
+ =?us-ascii?Q?tTP+8FyKf76a6QWs+/F356UsrvtVP/Al1euN3pI4?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2727a1bc-6230-4ad5-86c9-08dd560f6cb8
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2025 02:44:00.8280
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 596NMRP6vhhM5nZI0HCo99G+uzfJLGT3/YWyE8zQh3On/y9HbW3ArV0expXpSA6eLCf5byaS1xFkhkEoDGEmuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8387
 
-On Thu, 20 Feb 2025 16:17:43 +0000, "Russell King (Oracle)" wrote:
+Use the domain number replace the hardcodes to uniquely identify
+different controller on i.MX8MQ platforms.
 
-> While looking through the stmmac driver, I've come across some
-> weirdness in stmmac_hw_setup() which looks completely barmy to me.
-> 
-> It seems that it follows the initialisation suggested by Synopsys
-> (as best I can determine from the iMX8MP documentation), even going
-> as far as to *enable* transmit and receive *before* the network
-> device has been administratively brought up. stmmac_hw_setup() does
-> this:
-> 
->         /* Enable the MAC Rx/Tx */
->         stmmac_mac_set(priv, priv->ioaddr, true);
-> 
-> which sets the TE and RE bits in the MAC configuration register.
-> 
-> This means that if the network link is active, packets will start
-> to be received and will be placed into the receive descriptors.
-> 
-> We won't transmit anything because we won't be placing packets in
-> the transmit descriptors to be transmitted.
-> 
-> However, this in stmmac_hw_setup() is just wrong. Can it be deleted
-> as per the below?
-> Tested-by: Thierry Reding <treding@nvidia.com>
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index c2913f003fe6..d6e492f523f5 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3493,9 +3493,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
->  		priv->hw->rx_csum = 0;
->  	}
->  
-> -	/* Enable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, true);
-> -
->  	/* Set the HW DMA mode and the COE */
->  	stmmac_dma_operation_mode(priv);
->  
+[PATCH v1 1/2] arm64: dts: imx8mq: Add linux,pci-domain into pcie-ep
+[PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
 
-A better fix here:
-https://lore.kernel.org/all/tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com/
+arch/arm64/boot/dts/freescale/imx8mq.dtsi |  1 +
+drivers/pci/controller/dwc/pci-imx6.c     | 14 ++++++--------
+2 files changed, 7 insertions(+), 8 deletions(-)
 
-I can reproduce and confirm that patch works well.
-I was going to leave a Tested-by: tag on that patch if everything looks good enough,
-but the author (now copied) never come back.
