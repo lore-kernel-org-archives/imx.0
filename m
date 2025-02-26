@@ -1,115 +1,120 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879742253A7
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C885421E097
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740588875; cv=none; b=iqV8fKTopKiFagtJpUZPCC10V0auUIxzP7subtPgWrQD6BV2VzbGrNB5IWKYed/ZpdUpDNuDMGusK2lPiHA7PUjEs1uUgr/QyJPEiLPJmgKpavdvsQbbPG7SIq0o+iw5BWAc8xc32DNhp4Bov6C6nq18ARmCVTQ66NLZ/vTcw/s=
+	t=1740588973; cv=none; b=hEiX65h9f7y7Qq4T40xcOEsdhXTKgmxwqyVNEvujEj+NF01ANndigemDzynJ8YERBL17GJhgViaKO16D1ll+ul27S/od48WOu1Jwjby26Tx55rHHqNrJyViq7G9UHZhwedhx6GMra83r1kN/d/hYKixdU+pFd1T23rC7oN+kCVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740588875; c=relaxed/simple;
-	bh=sFeqh9nKZoEYQ+a6IXzXR8geyg5sacchQjdojt4E2As=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YTuDK5D22MTSbgqVrCbpHz9Zf2eMlSVNJD1I3c/IlA/Fkhf6geFMQYuHi5T1vdzfb33hppLM4TVod0yj9I2Ob6nZWFROfG6wGY47X1rjD9WwNmWceUY0zNsom9/Ug9AasPpavBB3H9LAmOytZt3SW1SSw2Y0mrqJLiFn4nZoq40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5fjTOEk; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740588973; c=relaxed/simple;
+	bh=e/e6uDD2H1sZumsUBc8WfzpCmedKf1Cjo2LfktnMCRA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FbhCOW+PyxwzaIWD4c7mcen3WSsabStaQ9dot4/Fhn2W2JTTbUTbqU5/mN64y9I2Sn7A1TthTXMgTxyLaSV5JDcGZSiMEvGMtMW2EPCzLCKyDItaKCmzsc4vePy3H4VPVQuPjlbr1LuvxySMWLoz4ClUNOyWBkzKQszlCEjN2xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VyWLVNOg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5fjTOEk"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4394036c0efso205375e9.2
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:54:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740588871; x=1741193671; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oZpy5GPgAtfFVvCtInpJGMk0J6F8LViPBE4i9el70qY=;
-        b=G5fjTOEk8+Fx/IBaDOCaCk9qNSWm2EwnInlZSKvR0bwL5MbaKHMSrajt3221NKPZTh
-         k3NJE5ESFdGPt5QXsHTHECrCJpIZyteS50fh/MmkzqEFhezK1cXtQ8S9jqG7dZ8pJnMQ
-         ltabf4KguaoLzHi4skD1mpgBltRyr9Vxyo5ufuPLd6G53kAtBNGY/xisEFvOQqiAOeHr
-         WOsP72QEsw1RqWrk6Uy8oFh/ZlvyBM4ZgL23W0lTLW6Byr3psDwg8d7r0RPq9cn2PwIr
-         u64MsjxuRs2OduSX2qfPRJ7yU2+JAf70dYgWIr1KecEFRC4WMqxeQomEIocmQWE4oiNn
-         CN4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740588871; x=1741193671;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oZpy5GPgAtfFVvCtInpJGMk0J6F8LViPBE4i9el70qY=;
-        b=fzh/Xm2M5o3O17bY6EizUCZgpoJHwOGHap5+d1eCHn4ELV6bEyyCN7Ejyrq9LxQNXX
-         ULnLISDx+lTJdD9WBZU3O0fnBzN0q5glQL73A7OqBnQFiTU3JK0WyUpAoU0XL/Qv6B+Q
-         N+u/O2SuCj4inn23MXzsav/5ETij35i4bEXC3Leq7PhdJHDnYbHD6IyarLoK1UO39Dij
-         HdicAa4M8ouIH2JeTd2ThQ3teEzm7LMz4kUfwl9Wno7sOzhx2FLIYeqh3+9sDVdO3xi8
-         QDt0Hi5LPyLdlZxmlDPCbsr80Egkk1mcydtC92Og5AR3cSHSH8U+ax6nAgFRYbNXO0vc
-         Xy8g==
-X-Forwarded-Encrypted: i=1; AJvYcCU3jEESNk25BvEENw/ZnTmE3ou6nKbZg4zLTnGsDSOWn58qlf9Vt1c+RRUCUn3lB/hINi8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhCbAZA9ciz67DWoZlkN/or0pInAsWfyPbiqPEJCOaBhje0dpt
-	NnmiOk1M/CM+2yt4QLdxHaUnpUGhk6a6wPY3/WEf1VPmpyWBKsqa
-X-Gm-Gg: ASbGnctPComMzBqq73ndifCk7zDCBbT2RHmGt9jdzGDLCbNUIR6+UIsF2eOoAnvk6l7
-	S4Cmg7BrXJhPYBvx5nPv1gLiu6XJNZWCjGXkVc2YtWBoJREu64qCqqw9OVFh4gXhtNIl0l0OroG
-	XBZlUGokKyZKMz4ECCB/FlGEMtmVr9KC55Gob1vsz0mueLQO9KxsyjXaHqCD985tLwqeQTQhrCO
-	kcT9FMBPWoLt3gyUvqncPe04beEPVhuaPzRinDu7sGqawQouDE9njpiyPZP8E3vyt515E2fPYpi
-	1YvjKWg+Ug5t2p5FzqbsWISePYtA8v1l0nLGP6wy794FEdOP3vcVMz1GREZDWYLg
-X-Google-Smtp-Source: AGHT+IHImZk8rItKoGgyrvgUbtToZbbr8RHyX95hu/4NZrjTjx7+3Bt9rfSiRS3zYUPBD5ly6hBYtg==
-X-Received: by 2002:a05:600c:5123:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-43ab8fd8ee4mr38322665e9.7.1740588870582;
-        Wed, 26 Feb 2025 08:54:30 -0800 (PST)
-Received: from playground.localdomain ([188.25.208.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba587163sm27672515e9.36.2025.02.26.08.54.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 08:54:30 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.li@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-Date: Wed, 26 Feb 2025 11:53:14 -0500
-Message-Id: <20250226165314.34205-6-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
-References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VyWLVNOg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ACFC4CED6
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740588973;
+	bh=e/e6uDD2H1sZumsUBc8WfzpCmedKf1Cjo2LfktnMCRA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VyWLVNOgXqfOFWRVBDYGVyG6AHQcqYYt+vShgQQEJOb98YnI4l363YHrG6+2oaExi
+	 Ly1cg3TSEVcJaGExC4xfDxDqfMlix1ytwNl3y9s3JfbhLH3TpphUvNcEEquVUcGlE2
+	 +rcKFFtfb80KzDo6rJwKOoZexU0dG3JuvCOM423ZMb5iuH7+rnv+h+sy0Sqjel4Esr
+	 vwab6mVIYN/ohltRch9rzVz/qYXmWUehwbSiyK4ilhCTvyt2wGwiHtPgewmXesfDw+
+	 FVGbOdwDEthRq5Uw/g2FuOz8DnzkRAadf1xZcHNtAd8SIsbhrbFDehKF6ti4XGvvU6
+	 iLyuEgtHv29ZA==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2bca6017608so58815fac.0
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:56:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVyoMh6S4nz0y06lltA1hUudbVhPFxEqPamtuymHJQGZWKH8SWk3ct7QdMybKf06rnWo2c=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxvkh2kpcRjUme1GMT5qiVk2tdBxjRIqAtFL9bcNHtBAkcwuYyE
+	LEB74Oprvw6lZR1PCNbHKyygDu+AKLuTf0nPDx2ZTspvqWH1NXrzK5FH3Hb4OsUqOsT6HUdyyG/
+	PSv6YBcyAK6y4/CQS4pxA70xuvfs=
+X-Google-Smtp-Source: AGHT+IF8FVsLXXUPxrruZDj/6g3EXfBpP3hVZ7yd8KRhKSwXfZSR7MfVe1OoSJUCVlzqKz497AUQLbP+08IJXDTtt6s=
+X-Received: by 2002:a05:6870:ff8a:b0:29e:569a:f90d with SMTP id
+ 586e51a60fabf-2c13079f269mr2549885fac.32.1740588972588; Wed, 26 Feb 2025
+ 08:56:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250224070049.3338646-1-xu.yang_2@nxp.com>
+In-Reply-To: <20250224070049.3338646-1-xu.yang_2@nxp.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 26 Feb 2025 17:56:01 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0g1xMRk6B=C9QnFDMFwHgBABkNmr09USBFfHSo1HjyA1Q@mail.gmail.com>
+X-Gm-Features: AQ5f1Jo5mT_bF083RcgF_jcoM9zxH-ADxDFNC7YVSguWdIL3Mwl7v1iWSw68ZPs
+Message-ID: <CAJZ5v0g1xMRk6B=C9QnFDMFwHgBABkNmr09USBFfHSo1HjyA1Q@mail.gmail.com>
+Subject: Re: [PATCH v3] PM: sleep: core: Clear is_prepared if both
+ no_pm_callbacks and direct_complete is set
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: rafael@kernel.org, len.brown@intel.com, pavel@kernel.org, 
+	gregkh@linuxfoundation.org, dakr@kernel.org, stern@rowland.harvard.edu, 
+	linux-pm@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Mon, Feb 24, 2025 at 7:59=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> Currently, if power.no_callbacks is true for a device, device_prepare()
+> will also set power.direct_complete to true. When device_resume() check
+> power.direct_complete, setting power.is_prepared will be skipped if it
+> can directly complete. This will cause a warning when add new devices
+> during resume() stage.
+>
+> Although power.is_prepared should be cleared in complete() state, commit
+> (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to is_prepared) allow
+> clear it in earlier resume() stage. However, we need also set is_prepared
+> to false if both power.no_callbacks and power.direct_complete are true.
+>
+> Take USB as example:
+> The usb_interface is such a device which setting power.no_callbacks to
+> true. Then if the user call usb_set_interface() during resume() stage,
+> the kernel will print below warning since the system will create and
+> add ep devices.
+>
+> [  186.461414] usb 1-1: reset high-speed USB device number 3 using ci_hdr=
+c
+> [  187.102681]  ep_81: PM: parent 1-1:1.1 should not be sleeping
+> [  187.105010] PM: resume devices took 0.936 seconds
+>
+> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>
+> ---
+> v3: combined checking no_pm_callbacks and direct_complete
+> v2: clear is_prepared before check syscore as suggested by Rafael
+> ---
+>  drivers/base/power/main.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+> index dffa2aa1ba7d..b9b1fd43427d 100644
+> --- a/drivers/base/power/main.c
+> +++ b/drivers/base/power/main.c
+> @@ -930,6 +930,13 @@ static void device_resume(struct device *dev, pm_mes=
+sage_t state, bool async)
+>                 goto Complete;
+>
+>         if (dev->power.direct_complete) {
+> +               /*
+> +                * Allow new children to be added in the resume stage for
+> +                * devices with no PM callbacks and can be completed dire=
+ctly.
+> +                */
+> +               if (dev->power.no_pm_callbacks)
+> +                       dev->power.is_prepared =3D false;
+> +
+>                 /* Match the pm_runtime_disable() in device_suspend(). */
+>                 pm_runtime_enable(dev);
+>                 goto Complete;
+> --
 
-The DSP needs to access peripherals on AIPSTZ5 (to communicate with
-the AP using AUDIOMIX MU, for instance). To do so, the security-related
-registers of the bridge have to be configured before the DSP is started.
-Enforce a dependency on AIPSTZ5 by adding the 'access-controllers'
-property to the 'dsp' node.
+Applied as 6.15 material under a new subject and with edits in the changelo=
+g.
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 3097acb4bd21..3550e44d00b5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2423,6 +2423,7 @@ dsp: dsp@3b6e8000 {
- 			mboxes = <&mu2 2 0>, <&mu2 2 1>,
- 				<&mu2 3 0>, <&mu2 3 1>;
- 			memory-region = <&dsp_reserved>;
-+			access-controllers = <&aips5>;
- 			status = "disabled";
- 		};
- 	};
--- 
-2.34.1
-
+Thanks!
