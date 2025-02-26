@@ -1,62 +1,62 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BE122488E
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB3222577
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740588404; cv=none; b=YGFNid9iqrtcABjZm+9wbOnvYhzsCWCT9y3Mi31VM6UfFqWNndDw8+RuOs/j+2aXgdPVLSPuV5qTZgWigRIWrAt61mpBTz/BnnuTwc8+UvDu+ZYfq9P++OfKPet0nyLQqnQGKei+LwN1yYlMXJJKpnRq0EwY3doOHfQzmPmBiMU=
+	t=1740588406; cv=none; b=HT3W9x3Xz3oQ9JBORfOAMrkTquOlZlDM1kqNFSudUVGNHWIq+g9uRXZGTJ64/D36ADgj6KqrxffPQOMMK/lMrQoZPq1tDNnWfLjqBkFB8vQN/kbYZgdF8/AKVtjNw+nuh0WET/2NdCOAG8UYpgQ/+KrKJqzy46+lvSgTqXjsAtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740588404; c=relaxed/simple;
-	bh=3HhpQLzDJ5PhgxGSSZYJ2mur7iygkWAwE5N74zfdasM=;
+	s=arc-20240116; t=1740588406; c=relaxed/simple;
+	bh=712s+CZwtbCsu6iB8mRETbiuzFlVQdvECgHqf0Zlhsw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VEeY1T35O3y45V/ZPbqcKOzxk5UsxJ/Mow2ug+zx24Il10fcZnOfRNaf/bpOcgtDkJOzbNK5VTTSZaf5WXsXPn71jlQC5Y6WZg/9unGpbYRhc9iEQv3P4aj5Ni7jhRSGH3qRK4Tbg71epe6i7YxMy9QWmUMJOmQs/Rt09GgnW6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6zry7Gl; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version; b=JhMCEOgbvaM/OrTSo8wpAwC1gx/1DXqCFoNireLX15PGGlTc8M7rBstcx6YVbKOLOLhQBD04Rjtjm5iU3barHWEOPAssOUlAwMib9bwrUoXAp46c25Yh3Vw6Z64Rs4WKtYi34vfKVKJjQLFcDkza4UZ/rtPpiWuobtlXHw/2Ywc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLAls5fz; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6zry7Gl"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4399deda38cso262405e9.1
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:46:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLAls5fz"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38f6287649eso5535976f8f.3
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:46:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740588401; x=1741193201; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1740588403; x=1741193203; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6pnuI6sBYlkwLaLjuQ7fgcpXHpa/8YRA5z4IIzVEteY=;
-        b=B6zry7GlHLpD69jVL3ZA/AyExtIjgVwCYPvVV1HsKzcJ4hC5ZOfTV7V7LIMuJgQFlF
-         HutMTU92ytj3vZATTiiorjbV3b32ilvyE44HVxbio2XlH1lu4LkBaPta+hUv571AIgHl
-         QCH797cnP4YQ2zZVaD5K405HCWUVc4VSff24UZi+Fj6k4sKWMXh4xxlmmsjZKrxSE9LA
-         BjFNiFxTu3KU5ypj4JtqZfacPc/EDnSc9QxxmzKez9Ispaaxy3l4bxYNVyQDhr5+UrdQ
-         Hk6X3YrX60ExqaJRuMc+7pN5295ZvMW9irBTkZcF2jooff6fJBbTgkkUg2EA6ClesRGo
-         w3tw==
+        bh=Ia5D1StmV4CnXYyEpke0sKKPWzBMRVegEo2c54oP3lM=;
+        b=hLAls5fzS2Q0/QszVdb6cbt+uQMOo3aF+DAvhkbqMnv4tLMmdaguVUZv4HXn+PM6BC
+         aLDreU7b3tAp5D6jJwsnm24xvjBW2+zI8y4kz+8diLyT0gF0zw8rSKBmkmPM4vm8LsFb
+         eplcsVy/oSMWyAjVDTiUmUYIkfCYxZDvVAe++E6McUopErLXvTBqVKOrZzv2V++/HkqD
+         uul93772cRslrXUe93BgBvQdWAEOflVQQLfgcU/jjgQp25dpYOprSpSpT5QILKpWn1Zq
+         LBorbXBBA+YEi4MRfmU87AilL0TWWvId2COvrTSkOmY7m4ZYFSSpnJUNPJda7wEqJgq5
+         G1yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740588401; x=1741193201;
+        d=1e100.net; s=20230601; t=1740588403; x=1741193203;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6pnuI6sBYlkwLaLjuQ7fgcpXHpa/8YRA5z4IIzVEteY=;
-        b=VfhLBaxFcop5Wk6qUiymHD8evcXl8f+7nsZEZrGBts0auSzTMvOrZdN8olAX+eOJcI
-         DlDVtR153BSPrr7NIiLLpKKctnaplgOsbttt4sHk3lOpwRdv6rEV/a6Pwhb4sI0jHS4u
-         Zc/k9s4AT/SXIIJkRqVlHwePBpfF4h+PTnVvJV3thR3Wmz6JcaldrzT8csk/quoiIoa5
-         pJoNo2DAZMcT0NCdr/CTM7bJsEjA2jNxkY24frFZirD3JPg8sskzF5RI5f3sT0c/39bt
-         obxZLQTQBegKxhQqKmu4J2QYYcmCwAJb2nxYmPnTTzs9PeQRu05oMrIhHG/Tkymu9flw
-         JuIA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3PL8sw5AG4i4QF/2l4cE9G7zk50HVFsYXO37bd2IOvRoB9Mfe7iAUl2Ivgt2e1FcdQTA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywd0QRxNA7zoSe18JzpiI9lWc1gScEeeRUVcFzaTQGGZfOCcir7
-	LsJCrGlDsWQGPl+5JNVjC8+K9NpVrCwZZJK9onz5IF0pZHqzFsT5CbgrSyBu
-X-Gm-Gg: ASbGncsQ/0QcAaGzg2R6yqjcLi2wqkk+By3k7C25GbK4W5QxvwTQmOe0Cpq6XZ8N+6z
-	j9yx16YFc4k/EN2lEajt2AD8HZuzbGMQSQZMM3lVw5UX2+nnvLj/SiRDssL3AZ3rVB9+yuiZRJH
-	4FYMaXR7MoGP76+wpQQA6MDfDffxQQ+ZaatYz0zzAPCeCNat78iCL5yh4qSIaZNorbZMbp4qvNU
-	JJQdhhOKNIMQ6mi5038y70nMGlYNdyNP1szbuwINKHfSlyZYIrhyUqyT2fzji+loXarw1lIX9/9
-	JYkIWifV9ivaxZv9/3M6thBTs6lI4xPxX5WFC0FyhAJoTVXCYcuGc/Spi0RamDU8
-X-Google-Smtp-Source: AGHT+IExPqM/gnSNIKRczXrwwSNY2JYUNb14I/Jluil+QDW7N2/0KA9eUaCIBmPYlFa5rXUAj1siew==
-X-Received: by 2002:a05:600c:a01:b0:439:a88f:852a with SMTP id 5b1f17b1804b1-43ab0f6deb8mr72370865e9.23.1740588401209;
-        Wed, 26 Feb 2025 08:46:41 -0800 (PST)
+        bh=Ia5D1StmV4CnXYyEpke0sKKPWzBMRVegEo2c54oP3lM=;
+        b=rwIhnT72yV0uQI4Eyqok+TVjokFQ7E/xdp/fOBVzKEJU3DBDM5fIIJmznKQ6a81CPb
+         lZCxvWJn5moRMRVWTtDxO+smSEUHDk9OyfMz7zgOO+SfxMtNVo/X0Z/k1/Go/G/ajanI
+         7Dfet60Tg3IVy9yUIrd7gknZwidsn8hpv4miDrYYzfBoO1uw2Bk4m3pKisN/yfa5RKnr
+         5GpwPuSIqibrCq9L13VZxyVb7epz2GQu1M4qC8J1TFNeGAXng14qiG6kcjgIQmwmIe11
+         JrnHvge11rDZWIL/lSThJWKZ2Mh3DW+nmSPErcyTTZK9MfK+W0vEML7XX3iOy0Si76iF
+         19+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXhfWXfqNTLEgia7yc0281dcTGRj4BoK2RqKMkvjVzYtEinx0T+Acg2EJhZZ03ltbhmQQY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRJMyjRXI191NnioGzR5aFq6u/VhDkQFhUCEkYRV3K4V4Oih1P
+	55rCyjuzCYdOBBX+TtKOVA/pQqsHg7WVluDTxzzdMc54iVAhvGSH
+X-Gm-Gg: ASbGncsZzKLcIcF5eUWBTGy7ItTTH5ZP+7Aem4u4AywxggNvWeAIrupoPXFXn+h1oBX
+	k40h46SGY5fBOwij9mm1NkZJGW10uQxCReqp0sg5e3AdGu/aYPsLFW0AnsW1luJvL+8oQN4jlez
+	c8L/xb42a2Yd9Atg6pM4EQU9n8ZEdm914kwIqrr+psAw8ePyVQV6x0165Ueg0XX4ABa1BRT9zlb
+	66SE+a0Y5wEeDp+N1LR2Up0KIiKkozQIhjQXd4U4p2xb2qYBO6mwdPTS3nGHNFt6tiXR8Qpirfs
+	c1Rb5v7FrABcltFQeMK2clyRnpDt2Q3CtbYiHmdIFXHCeb+yNX2rktFOigmkFvSd
+X-Google-Smtp-Source: AGHT+IGWZHwSsvPWIGZD7v0lzUemtXIqVysf29/KMNwus1o2RKo13ASNNOWiAsEb7Vjp9//75b552g==
+X-Received: by 2002:a05:6000:1789:b0:38f:28dc:ec23 with SMTP id ffacd0b85a97d-38f7079aa1bmr17417528f8f.19.1740588403302;
+        Wed, 26 Feb 2025 08:46:43 -0800 (PST)
 Received: from playground.localdomain ([188.25.208.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8e7165sm6200215f8f.73.2025.02.26.08.46.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8e7165sm6200215f8f.73.2025.02.26.08.46.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 08:46:40 -0800 (PST)
+        Wed, 26 Feb 2025 08:46:43 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Abel Vesa <abelvesa@kernel.org>,
 	Peng Fan <peng.fan@nxp.com>,
@@ -73,9 +73,9 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/4] clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
-Date: Wed, 26 Feb 2025 11:45:11 -0500
-Message-Id: <20250226164513.33822-3-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 3/4] arm64: dts: imx8mp: add AUDIO_AXI_CLK_ROOT to AUDIOMIX block
+Date: Wed, 26 Feb 2025 11:45:12 -0500
+Message-Id: <20250226164513.33822-4-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250226164513.33822-1-laurentiumihalcea111@gmail.com>
 References: <20250226164513.33822-1-laurentiumihalcea111@gmail.com>
@@ -89,39 +89,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The DSP and OCRAM_A modules from AUDIOMIX are clocked by
-AUDIO_AXI_CLK_ROOT, not AUDIO_AHB_CLK_ROOT. Update the clock data
-accordingly.
+Needed because the DSP and OCRAM_A components from AUDIOMIX are clocked
+by AUDIO_AXI_CLK_ROOT instead of AUDIO_AHB_CLK_ROOT.
 
-Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
+Fixes: b86c3afabb4f ("arm64: dts: imx8mp: Add SAI, SDMA, AudioMIX")
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 ---
- drivers/clk/imx/clk-imx8mp-audiomix.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index c409fc7e0618..775f62dddb11 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -180,14 +180,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
- 	CLK_GATE("asrc", ASRC_IPG),
- 	CLK_GATE("pdm", PDM_IPG),
- 	CLK_GATE("earc", EARC_IPG),
--	CLK_GATE("ocrama", OCRAMA_IPG),
-+	CLK_GATE_PARENT("ocrama", OCRAMA_IPG, "axi"),
- 	CLK_GATE("aud2htx", AUD2HTX_IPG),
- 	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
- 	CLK_GATE("sdma2", SDMA2_ROOT),
- 	CLK_GATE("sdma3", SDMA3_ROOT),
- 	CLK_GATE("spba2", SPBA2_ROOT),
--	CLK_GATE("dsp", DSP_ROOT),
--	CLK_GATE("dspdbg", DSPDBG_ROOT),
-+	CLK_GATE_PARENT("dsp", DSP_ROOT, "axi"),
-+	CLK_GATE_PARENT("dspdbg", DSPDBG_ROOT, "axi"),
- 	CLK_GATE("edma", EDMA_ROOT),
- 	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
- 	CLK_GATE("mu2", MU2_ROOT),
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index e0d3b8cba221..86c3055789ba 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1619,10 +1619,11 @@ audio_blk_ctrl: clock-controller@30e20000 {
+ 					 <&clk IMX8MP_CLK_SAI3>,
+ 					 <&clk IMX8MP_CLK_SAI5>,
+ 					 <&clk IMX8MP_CLK_SAI6>,
+-					 <&clk IMX8MP_CLK_SAI7>;
++					 <&clk IMX8MP_CLK_SAI7>,
++					 <&clk IMX8MP_CLK_AUDIO_AXI_ROOT>;
+ 				clock-names = "ahb",
+ 					      "sai1", "sai2", "sai3",
+-					      "sai5", "sai6", "sai7";
++					      "sai5", "sai6", "sai7", "axi";
+ 				power-domains = <&pgc_audio>;
+ 				assigned-clocks = <&clk IMX8MP_AUDIO_PLL1>,
+ 						  <&clk IMX8MP_AUDIO_PLL2>;
 -- 
 2.34.1
 
