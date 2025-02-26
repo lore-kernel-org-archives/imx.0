@@ -1,183 +1,128 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E130F14387B
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 12:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F089980BEC;
+	Wed, 26 Feb 2025 14:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740573634; cv=none; b=IIXUdltalrNJG1w6qvQh1oTUPsO/+oH/fIQBGFc1tVf9Dpl/M7YauUh8jbnBM8bEEeOgcTh+Sai0OaXSiZSrFy9d+9GS74xvgROaoL9nTXYN1ZJvRhy18JblqhlRUF8yDbVt3IcWBYHE5xZ24HwB9ahprqY7iZ8WAXJvqnjiJ10=
+	t=1740579559; cv=none; b=aOddYSqyFlg7QC6Nq0ydLjRA4u8s9q/RCP7z8H5E2YGnkyXNpa2akKWnoiPDE9w7IyGvcXGzPW9QJex9tNdA8/ds8S59IV7D+aJNGLIw9i0Bd9TGuxDBaZq6cuUyweSq4NUU2H3BXLrwLPekN28qIWXxs3f0jA5OaIB2TExIhkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740573634; c=relaxed/simple;
-	bh=4l7oxSeeX+iwjdikDsl221mshHqE7XJYGKYFrPjhu+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QMBN6q+sZm0YqcpmjPlNWB7rWMmEhT1+ISo7vLGwijcZBTHO8lBLOQ4dLT4vJV952BN05En0pahgm9XvL3ZjE+ETZDXvi7+ejhqoztA4Ir+fIJbmPHHzJEZxRlXA0jrWkreXE8dfdbjrwBpnw/EsXfRdSCJnJxcRKu4tYjX72cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qeMkGQ3y; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1740579559; c=relaxed/simple;
+	bh=qPNp8kJ1SPfm9hzzYuFUJ6PYED9G/nfRjZrkm1H8psw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d0VuYOeUMYMHwbr9xNeihd2jklBXBpfQ6YBkLlXjLQSzdlzpa1g3CkYSUqokpGFIFsRmB5ZSIbgkVqYXe2FvM78ts5GRwUCsrZc2p9GVjeFloXgJMvNjwqvrm/UFTwIm2Ky2hkq//FuuxhrCYS/gn1EvJcKuTQZEWX+3kGMFMuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bL+z4glL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qeMkGQ3y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jY/bwN9A5xa9iSopLwyTQOxIV4QgdsLsdC4BTyAYt0s=; b=qeMkGQ3y0EikusQ5iHd4bfTahQ
-	VIXzKqFJ8IuD3zi7Bds5zQxg6xqFWF1UTAxmGM5ZFoaZpFhfGgwlOywV9EthV0Aw1BXHUkvLrNKAV
-	rmcVXqxqtO4SQUrZ2YNITE4q9QJqb2A+zRm77pMqU3169CUNZCcoFYmCGRod2yFDfu8ydaJ+NHk6a
-	jQVGp+KrPPtvH8pDfAlr5i1MHou26K+PWMKnf+fbN40ZHh1D6KN9GJhwEUQ0jmwijbhhKS9UAj/h4
-	+kZw30OqsrDFWVsqH1MK6fFHR/ZAS5ERJK8l/v+NOP86YirCEDQ51wEXwnGxoIjp/dfaT3PbslIWO
-	IdQ4fMHQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:32848)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tnGi8-0004Ez-2J;
-	Wed, 26 Feb 2025 12:40:24 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tnGi5-000766-0H;
-	Wed, 26 Feb 2025 12:40:21 +0000
-Date: Wed, 26 Feb 2025 12:40:20 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH RFC net-next 6/7] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-Message-ID: <Z78LtBo2lfTGG-9o@shell.armlinux.org.uk>
-References: <Z7RrnyER5ewy0f3T@shell.armlinux.org.uk>
- <E1tkLZB-004RZU-4A@rmk-PC.armlinux.org.uk>
- <n67c4bq7n7ejakmqmglve3os6vqvm57umysjjzexxkygvusnoo@ndee4gfnmsst>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bL+z4glL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 725D1C4CED6;
+	Wed, 26 Feb 2025 14:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740579558;
+	bh=qPNp8kJ1SPfm9hzzYuFUJ6PYED9G/nfRjZrkm1H8psw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=bL+z4glLMLjtif7nD9V/K+zaxSZc5JKr1f6vzndjetO9s6CLSiE3EieO271ZapLua
+	 w4DbabGONJtBQ1cSvWyZdKcxYMYuri+cVoFNBGE9GL1l1neZnpGDVJvmQtX9cbgpPE
+	 lOeGOExJzZRd4A1YOpI4/eq7TyJG7GOzboFnZCM1G/dPHWZaCUpgLMlrgeo2yMFdxw
+	 qAfj7yCnENDpX1iu52Jf2jWpMSjN4jENNcJdsPHbZWxG5v9Tt9l3KjlifPE+GzecVZ
+	 h1zoPYVbK32Yj86q11vI5Wr3oKSXojO2e2y6cAFgLNR11Sm7bsA2W6tVdTGNa7fjDd
+	 slxQu3SaHJwFg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64F8CC021B8;
+	Wed, 26 Feb 2025 14:19:18 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH v2 00/12] arm64: dts: freescale: Add support for the
+ GOcontroll Moduline Display
+Date: Wed, 26 Feb 2025 15:19:11 +0100
+Message-Id: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <n67c4bq7n7ejakmqmglve3os6vqvm57umysjjzexxkygvusnoo@ndee4gfnmsst>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN8iv2cC/3WNQQqDMBBFryKzbkoyGpGueg+REuOoA2kiiUhFv
+ HtT912+B//9AxJFpgSP4oBIGycOPgPeCrCz8RMJHjIDStQSsRLseWXjXgOnxZldjKZBVA3JmjT
+ k1RJp5M9VbLvMM6c1xP062NTP/m9tSkihre37sValrsrnFGzwawzO3W14Q3ee5xejftpzswAAA
+ A==
+X-Change-ID: 20250224-initial_display-fa82218e06e5
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740579556; l=2470;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=qPNp8kJ1SPfm9hzzYuFUJ6PYED9G/nfRjZrkm1H8psw=;
+ b=RO2wdKrxZIYN3bZWZRvWLLnJ4q4OJ3zzHkzPM4aFfF+XjDIXbjVCFjRpeOidaQRPXZt2qJz7l
+ zFN4KACCPHFDLlu/B1Tc95xI78GkFMvm5PPtjNbTX4mec1Lj8g+V8Sc
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On Tue, Feb 25, 2025 at 09:46:56PM +0100, Thierry Reding wrote:
-> On Tue, Feb 18, 2025 at 11:15:05AM +0000, Russell King (Oracle) wrote:
-> > Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
-> > clock.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---
-> >  .../stmicro/stmmac/dwmac-intel-plat.c         | 24 +++----------------
-> >  1 file changed, 3 insertions(+), 21 deletions(-)
-> 
-> This isn't quite the same code, but the result should be the same since
-> clk_set_rate() will be ignored if the clock is NULL, which would be the
-> case for !dwmac->data->tx_clk_en.
+Add inital support for 2 variants of the Moduline Display controller.
+This system is powered by the Ka-Ro Electronics tx8p-ml81 COM, which
+features an imx8mp SoC.
 
-You're right, thanks for spotting! I'll move it out of the if()
-statement so the code has the exact same behaviour. Replacement patch
-below.
-
-> Reviewed-by: Thierry Reding <treding@nvidia.com>
-
-Thanks for the review.
-
-8<====
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH net-next] net: stmmac: intel: use generic
- stmmac_set_clk_tx_rate()
-
-Use the generic stmmac_set_clk_tx_rate() to configure the MAC transmit
-clock.
-
-Note that given the current unpatched driver structure,
-plat_dat->fix_mac_speed will always be populated with
-kmb_eth_fix_mac_speed(), even when no clock is present. We preserve
-this behaviour in this patch by always initialising plat_dat->clk_tx_i
-and plat_dat->set_clk_tx_rate.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- .../stmicro/stmmac/dwmac-intel-plat.c         | 24 +++----------------
- 1 file changed, 3 insertions(+), 21 deletions(-)
+Changes in v2:
+- Dropped the trivial-devices patch
+- Added a patch with bindings for the gocontroll,moduline-module-slot
+- Added a patch to spidev.c to enable the spidev driver for the module
+  slot
+- Added a missing usb-c connector in the av101hdt-a10 variant dts
+- Switched to the new bindings for the module slots in the base dts
+- Fixed some commit typos
+- Link to v1: https://lore.kernel.org/r/20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-index 0591756a2100..599def7b3a64 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-@@ -22,31 +22,12 @@ struct intel_dwmac {
- };
- 
- struct intel_dwmac_data {
--	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
- 	unsigned long ptp_ref_clk_rate;
- 	unsigned long tx_clk_rate;
- 	bool tx_clk_en;
- };
- 
--static void kmb_eth_fix_mac_speed(void *priv, int speed, unsigned int mode)
--{
--	struct intel_dwmac *dwmac = priv;
--	long rate;
--	int ret;
--
--	rate = rgmii_clock(speed);
--	if (rate < 0) {
--		dev_err(dwmac->dev, "Invalid speed\n");
--		return;
--	}
--
--	ret = clk_set_rate(dwmac->tx_clk, rate);
--	if (ret)
--		dev_err(dwmac->dev, "Failed to configure tx clock rate\n");
--}
--
- static const struct intel_dwmac_data kmb_data = {
--	.fix_mac_speed = kmb_eth_fix_mac_speed,
- 	.ptp_ref_clk_rate = 200000000,
- 	.tx_clk_rate = 125000000,
- 	.tx_clk_en = true,
-@@ -89,8 +70,6 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 	 * platform_match().
- 	 */
- 	dwmac->data = device_get_match_data(&pdev->dev);
--	if (dwmac->data->fix_mac_speed)
--		plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
- 
- 	/* Enable TX clock */
- 	if (dwmac->data->tx_clk_en) {
-@@ -132,6 +111,9 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	plat_dat->clk_tx_i = dwmac->tx_clk;
-+	plat_dat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
-+
- 	plat_dat->bsp_priv = dwmac;
- 	plat_dat->eee_usecs_rate = plat_dat->clk_ptp_rate;
- 
+---
+Maud Spierings (12):
+      dt-bindings: arm: fsl: Add GOcontroll Moduline Display
+      dt-bindings: vendor-prefixes: add GOcontroll
+      dt-bindings: connector: Add the GOcontroll Moduline module slot bindings
+      arm64: dts: imx8mp: Add pinctrl config definitions
+      MAINTAINERS: add maintainer for the Ka-Ro tx8p-ml81 COM module
+      MAINTAINERS: add maintainer for the GOcontroll Moduline module slot
+      MAINTAINERS: add maintainer for the GOcontroll Moduline controllers
+      arm64: dts: freescale: add Ka-Ro Electronics tx8p-ml81 COM
+      arm64: dts: freescale: Add the GOcontroll Moduline Display baseboard
+      arm64: dts: freescale: Add the BOE av101hdt-a10 variant of the Moduline Display
+      arm64: dts: freescale: Add the BOE av123z7m-n17 variant of the Moduline Display
+      spi: spidev: Add an entry for the gocontroll moduline module slot
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
+ .../connector/gocontroll,moduline-module-slot.yaml |  88 ++++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |  17 +
+ arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h     |  27 +
+ ...tx8p-ml81-moduline-display-106-av101hdt-a10.dts | 100 ++++
+ ...tx8p-ml81-moduline-display-106-av123z7m-n17.dts | 133 +++++
+ .../imx8mp-tx8p-ml81-moduline-display-106.dtsi     | 535 ++++++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi | 547 +++++++++++++++++++++
+ drivers/spi/spidev.c                               |   2 +
+ 10 files changed, 1452 insertions(+)
+---
+base-commit: 2bc63dbeabecce860eb8b261bf67b97552fe7747
+change-id: 20250224-initial_display-fa82218e06e5
+
+Best regards,
 -- 
-2.30.2
+Maud Spierings <maudspierings@gocontroll.com>
 
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
