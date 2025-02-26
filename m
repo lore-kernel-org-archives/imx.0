@@ -1,253 +1,178 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79416224255
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F050224233
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740558592; cv=none; b=b35/NmwHWrpWT1dKlMsj5EQaouJeUvP8JS+lr9Zma5blzi0xu/arAO8FjyP05diXV84DjWy2zXyaXV8nf3xrclfFWSx9ZwcIfyL2xJyPj7kj3rYnDoDO8hNIAjU7EIAdoqrQTywCYb0bE0nzwczZKluVc6IN+7gEd8kp+TV70oc=
+	t=1740558616; cv=none; b=hal4+mgPtC6yX4Bc3mdRqqT8dEcNZup97MYusTzEtBvDRu2QNa2/3O9Y7xhr8+g1jPLQQMk7/3/IOeUsPsCw8OpjjP8SZ98o1UQkltxtu9Pvb+gvjxcFxESqQPOjNMyIOShoec4qT26kpVTsmlLllazP7owJZuJmcFsOrCSuQkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740558592; c=relaxed/simple;
-	bh=+w08B6WQFLWGoY7KAUzC4ng4zpNF75XfE1/K5F/1xRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xe05wW/DiYw1ZqMBxh0j6pgOdxcbIkJjo4CCQ4Hs3EV+y9i3TfeTfo8o+3u27HMRbB0VIiHKwgpRn921KHWijP51RX9nYtr3KaadOoeWiL01WrDUDtezu78R6i+7m6HJXdqPM4N+m+ruM01VQlSDdz+nmY4U2rKPX9fZGsVbovk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dk6e3F7Z; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1740558616; c=relaxed/simple;
+	bh=1+mykuRo96bb63Fh3sFe5w2cPWfzGYls8q6WYMHs0po=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ct9zPgDxdsXHzyBK9gjhw3gmN7+POBNfhvIDH6C3IKXceI9iQyQ+90OkPR13+tZoMBQS6ib+R7lyHje7R3eKQqMawrlTBaF1YzDa2h5v/DcepFb25kcFf6pgnFszZD67vUzg4hl6lgXXZ0kZHEI1XHz9oIjSEzgabFDy6R+5miA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=a2KIG2mZ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=k4b8csBF reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dk6e3F7Z"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaec61d0f65so1311141866b.1
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 00:29:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="a2KIG2mZ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="k4b8csBF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1740558588; x=1741163388; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qd/P01QUb5F02hWZoi0IIwP5a5sgbN5wVj3NeUV9KKE=;
-        b=dk6e3F7ZargL7wuCC51IvGsdUIZAdClNf3/TJ5Mf1NSefKm/Wj1cahhYfBYGcZVhpV
-         ejGy7C1lITvmMIQjCCrip9ZAi3qYh4dpj1AoAMAsye2qKmo7r2oJH2XZYBSvreTBJ8cN
-         P94VlOI62PGsEZBTjtA+Jn+IOgPCnC83RftsEHDTISySsx1ovv/spVJtXce1gDr+9Hke
-         c/UULXX85A1THBbsHrrX4JlgajxG3vpA1jhkpsO/MdBwmfEu58uatGwsjy+C6/y3Bnhv
-         LUo7l2Sjbf9dzjFwQaKK3kLRSZGJRKLhhYJmyetesX9gireKoa6C88BS0l+SJsqF4q2M
-         pKMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740558588; x=1741163388;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qd/P01QUb5F02hWZoi0IIwP5a5sgbN5wVj3NeUV9KKE=;
-        b=cti+MhoedHa5BXIFcQnQP2NM1Y5vLgFb+h+XdJ8ItIPW4dQW0DbecDbHiSw2yF2c4T
-         jNto8Qe0fU7idMeKoRa0OjrrBcZNF1lMGqFXcyRv3fzEpsS+UAlJW5f3RVL+7NLv/Ab0
-         poKc9mwJl8KEf43RNiVcXKLSbk5ac4GxO6a4C3ZINJ2WQMPE1dD14ED9NjN8TUGj/YSu
-         IkFTyfTeLT5ch/hLEiaoSyKL++M4shj4VfFffvtTUfcqSni5tcpo5oWCN9U2BKc+LWKr
-         iIJ/XcTN3gDeFu0vIP2ANtHrFOpk1yHCzUHVXck9eheqLNt3p4hloRbMzEys0/OxofUg
-         XrIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLLHBDsZMZ+nTHmxg+Gxj5qj4sz7ciSzt2kgIHPkK8JM6mfcRLj7avaEZTHgi2JBzkt7s=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyb9FPpTzI65h3CL8ZtNZ/PoN0hZneD/AWGLgkVHE+5nLQ6QcuP
-	dAgJ9x6khn4NhnGcAKe/HeebvYpSCM65WV8jlV/90jEKjGiMpvX6ZcaHf1jRcar+eJ9tQ4EIXyg
-	WU92Ce8ev9vEOkG1WRWW6jJx1jyiaRuWy3dHpwg==
-X-Gm-Gg: ASbGnctHLDF9AxIP5sMJRgte+VX49OtX31yZ12zxUryid+SII0yWuVkwtGJyUzfvPKx
-	IHPCp+LinjEH1Aw1EGdQPbnlK/MvjqmqWcS5NMIAyCz4bpk5UWnAujdSMNB3vkO3RJbq9frvFc/
-	v6vBXoPA==
-X-Google-Smtp-Source: AGHT+IHCBmf3hFVyDRWrbNjNMJpg3u3tAe5Gkum3edJXg5+W5jYzpdGCY2CkRcaqBj3q4FkgF3ZBCF2Ur/l8ZS65ls8=
-X-Received: by 2002:a17:907:7711:b0:ab7:c152:a3ca with SMTP id
- a640c23a62f3a-abed0c66952mr598124866b.6.1740558587743; Wed, 26 Feb 2025
- 00:29:47 -0800 (PST)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1740558612; x=1772094612;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QTp1DwcDw762KDomIRK2976/YjMdtiSjqpoN9MvDBnw=;
+  b=a2KIG2mZ9KXzk2kUjzokfDYPEcofv0tvvzkZIlFf8GWhMkkFJduWquV7
+   N0GsFcinzvfO0iMBaWlN0f2OIeN9bOm4RFKqrdx6i++vaXbVU5kfzNFuE
+   /oH57WjkhmeuNBme9cj7WC2zhOv2NiPWH7xtgFm3gKGc1MHpSxWVaf1C5
+   GZrS8bWJeW/ZKFzqGSXODRrwwGOVieTAop0v11BwS/MfcMdiW3i9VdWqA
+   W1AHU1x5w0hXqv+OkrqwGGqriqWUIGIMIfmHxjDvgHxTwA2NLUJsNbok5
+   I5JybMfhJg1RPUdgxrF/zX5wdswWvx/Q+Q3GFx57KP48n4z/TZzpZKPpZ
+   w==;
+X-CSE-ConnectionGUID: mnH/OuQLRu6ZleMIQlem2g==
+X-CSE-MsgGUID: 7jd0BkKsS/eVEg8don57xg==
+X-IronPort-AV: E=Sophos;i="6.13,316,1732575600"; 
+   d="scan'208";a="42100428"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 26 Feb 2025 09:30:09 +0100
+X-CheckPoint: {67BED111-35-28232521-C0C2250B}
+X-MAIL-CPID: 7BEE2FE34E5CA2663E70FFD0064A9E7F_4
+X-Control-Analysis: str=0001.0A002114.67BED111.0049,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E89C168E0D;
+	Wed, 26 Feb 2025 09:30:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1740558605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QTp1DwcDw762KDomIRK2976/YjMdtiSjqpoN9MvDBnw=;
+	b=k4b8csBFyeNFO8pULNoZ5iEdQxDjDA8ObrojCjEeglCFxvD0zH8hinWyCXxU2aUkTBk2k2
+	JRLqwoDkA052+wne1RXCwY8xO8EEyt8PeM2vyA0Z6RLBHAewoGdmO8sSkM2JigdSZ3pecq
+	3X4HQUsYs8SvtX1qVdWZ7nvDDD/m4aAgCk50bii/dy8tq9WQ39e3uxkdTgNbiUI3J2mFlm
+	jOBdWcAUPGTg/4Rhd8voBj0RXnFeJj7Nsfq23lacJNjlKrsxwYTrz0tN2Gd1/jxQqKRQVk
+	Bd0EOloWzEMKJ9IDH5b3VkfkRIlEX/38U0czCNgYGFtN7ICm0L2pwOFTwFXVSg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx95: add ref clock for pcie nodes
+Date: Wed, 26 Feb 2025 09:30:01 +0100
+Message-ID: <2979558.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250225170802.2671972-1-Frank.Li@nxp.com>
+References: <20250225170802.2671972-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
- <20250225-converge-secs-to-jiffies-part-two-v3-6-a43967e36c88@linux.microsoft.com>
- <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr> <CAPjX3Fcr+BoMRgZGbqqgpF+w-sHU+SqGT8QJ3QCp8uvJbnaFsQ@mail.gmail.com>
- <7b8346a1-8a7d-4fcf-a026-119d77f2ca85@wanadoo.fr>
-In-Reply-To: <7b8346a1-8a7d-4fcf-a026-119d77f2ca85@wanadoo.fr>
-From: Daniel Vacek <neelx@suse.com>
-Date: Wed, 26 Feb 2025 09:29:36 +0100
-X-Gm-Features: AQ5f1Jrr13SgxwVjT6ysFNM9oHlwZl6dEEKFUrutAasFQHuednVFm1EELk7zLLU
-Message-ID: <CAPjX3Fc1UuWvih_krriaF32aPCbGP0SPg2TSrBA8Xb7a=Ozc5Q@mail.gmail.com>
-Subject: Re: [PATCH v3 06/16] rbd: convert timeouts to secs_to_jiffies()
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Frank.Li@nxp.com, James.Bottomley@hansenpartnership.com, 
-	Julia.Lawall@inria.fr, Shyam-sundar.S-k@amd.com, akpm@linux-foundation.org, 
-	axboe@kernel.dk, broonie@kernel.org, cassel@kernel.org, cem@kernel.org, 
-	ceph-devel@vger.kernel.org, clm@fb.com, cocci@inria.fr, 
-	dick.kennedy@broadcom.com, djwong@kernel.org, dlemoal@kernel.org, 
-	dongsheng.yang@easystack.cn, dri-devel@lists.freedesktop.org, 
-	dsterba@suse.com, eahariha@linux.microsoft.com, festevam@gmail.com, 
-	hch@lst.de, hdegoede@redhat.com, hmh@hmh.eng.br, 
-	ibm-acpi-devel@lists.sourceforge.net, idryomov@gmail.com, 
-	ilpo.jarvinen@linux.intel.com, imx@lists.linux.dev, james.smart@broadcom.com, 
-	jgg@ziepe.ca, josef@toxicpanda.com, kalesh-anakkur.purayil@broadcom.com, 
-	kbusch@kernel.org, kernel@pengutronix.de, leon@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org, 
-	linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	martin.petersen@oracle.com, nicolas.palix@imag.fr, ogabbay@kernel.org, 
-	perex@perex.cz, platform-driver-x86@vger.kernel.org, s.hauer@pengutronix.de, 
-	sagi@grimberg.me, selvin.xavier@broadcom.com, shawnguo@kernel.org, 
-	sre@kernel.org, tiwai@suse.com, xiubli@redhat.com, yaron.avizrat@intel.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, 26 Feb 2025 at 09:10, Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> Le 26/02/2025 =C3=A0 08:28, Daniel Vacek a =C3=A9crit :
-> > On Tue, 25 Feb 2025 at 22:10, Christophe JAILLET
-> > <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org> wrote:
-> >>
-> >> Le 25/02/2025 =C3=A0 21:17, Easwar Hariharan a =C3=A9crit :
-> >>> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-> >>> secs_to_jiffies().  As the value here is a multiple of 1000, use
-> >>> secs_to_jiffies() instead of msecs_to_jiffies() to avoid the multipli=
-cation
-> >>>
-> >>> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci=
- with
-> >>> the following Coccinelle rules:
-> >>>
-> >>> @depends on patch@ expression E; @@
-> >>>
-> >>> -msecs_to_jiffies(E * 1000)
-> >>> +secs_to_jiffies(E)
-> >>>
-> >>> @depends on patch@ expression E; @@
-> >>>
-> >>> -msecs_to_jiffies(E * MSEC_PER_SEC)
-> >>> +secs_to_jiffies(E)
-> >>>
-> >>> While here, remove the no-longer necessary check for range since ther=
-e's
-> >>> no multiplication involved.
-> >>
-> >> I'm not sure this is correct.
-> >> Now you multiply by HZ and things can still overflow.
-> >
-> > This does not deal with any additional multiplications. If there is an
-> > overflow, it was already there before to begin with, IMO.
-> >
-> >> Hoping I got casting right:
-> >
-> > Maybe not exactly? See below...
-> >
-> >> #define MSEC_PER_SEC    1000L
-> >> #define HZ 100
-> >>
-> >>
-> >> #define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
-> >>
-> >> static inline unsigned long _msecs_to_jiffies(const unsigned int m)
-> >> {
-> >>          return (m + (MSEC_PER_SEC / HZ) - 1) / (MSEC_PER_SEC / HZ);
-> >> }
-> >>
-> >> int main() {
-> >>
-> >>          int n =3D INT_MAX - 5;
-> >>
-> >>          printf("res  =3D %ld\n", secs_to_jiffies(n));
-> >>          printf("res  =3D %ld\n", _msecs_to_jiffies(1000 * n));
-> >
-> > I think the format should actually be %lu giving the below results:
-> >
-> > res  =3D 18446744073709551016
-> > res  =3D 429496130
-> >
-> > Which is still wrong nonetheless. But here, *both* results are wrong
-> > as the expected output should be 214748364200 which you'll get with
-> > the correct helper/macro.
-> >
-> > But note another thing, the 1000 * (INT_MAX - 5) already overflows
-> > even before calling _msecs_to_jiffies(). See?
->
-> Agreed and intentional in my test C code.
->
-> That is the point.
->
-> The "if (result.uint_32 > INT_MAX / 1000)" in the original code was
-> handling such values.
+Hi Frank,
 
-I see. But that was rather an unrelated side-effect. Still you're
-right, it needs to be handled carefully not to remove additional
-guarantees which were implied unintentionally. At least in places
-where these were provided in the first place.
+Am Dienstag, 25. Februar 2025, 18:08:02 CET schrieb Frank Li:
+> Add "ref" clock for i.MX95's pcie and fix below CHECK_DTBS warnings:
+> arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie@4c300000: clock-n=
+ames: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
+> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change from v2 - v3
+> - fix typo 1000000
+>=20
+> change from v1 - v2
+> - rebase to dt/dt64
+> - add clock 100mhz
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 25 ++++++++++++++++++++----
+>  1 file changed, 21 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
+ts/freescale/imx95.dtsi
+> index 51625bc9154ec..9bb26b466a061 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -291,6 +291,13 @@ sai5_mclk: clock-sai-mclk5 {
+>  		clock-output-names =3D "sai5_mclk";
+>  	};
+> =20
+> +	clk_sys100m: clock-sys100m {
+> +		compatible =3D "fixed-clock";
+> +		#clock-cells =3D <0>;
+> +		clock-frequency =3D <100000000>;
+> +		clock-output-names =3D "clk_sys100m";
+> +	};
+> +
 
-> >
-> > Now, you'll get that mentioned correct result with:
-> >
-> > #define secs_to_jiffies(_secs) ((unsigned long)(_secs) * HZ)
->
-> Not looked in details, but I think I would second on you on this, in
-> this specific example. Not sure if it would handle all possible uses of
-> secs_to_jiffies().
+Where does this clock come from? Does this origin on board-level?
 
-Yeah, I was referring only in context of the example you presented,
-not for the rest of the kernel. Sorry about the confusion.
+Best regards,
+Alexander
 
-> But it is not how secs_to_jiffies() is defined up to now. See [1].
->
-> [1]:
-> https://elixir.bootlin.com/linux/v6.14-rc4/source/include/linux/jiffies.h=
-#L540
->
-> >
-> > Still, why unsigned? What if you wanted to convert -5 seconds to jiffie=
-s?
->
-> See commit bb2784d9ab495 which added the cast.
+>  	osc_24m: clock-24m {
+>  		compatible =3D "fixed-clock";
+>  		#clock-cells =3D <0>;
+> @@ -1595,6 +1602,14 @@ usb3_dwc3: usb@4c100000 {
+>  			};
+>  		};
+> =20
+> +		hsio_blk_ctl: syscon@4c0100c0 {
+> +			compatible =3D "nxp,imx95-hsio-blk-ctl", "syscon";
+> +			reg =3D <0x0 0x4c0100c0 0x0 0x1>;
+> +			#clock-cells =3D <1>;
+> +			clocks =3D <&clk_sys100m>;
+> +			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +		};
+> +
+>  		usb3_phy: phy@4c1f0040 {
+>  			compatible =3D "fsl,imx95-usb-phy", "fsl,imx8mp-usb-phy";
+>  			reg =3D <0x0 0x4c1f0040 0x0 0x40>,
+> @@ -1633,8 +1648,9 @@ pcie0: pcie@4c300000 {
+>  			clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> -				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> -			clock-names =3D "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> +				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +				 <&hsio_blk_ctl 0>;
+> +			clock-names =3D "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+>  			assigned-clocks =3D<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+>  					 <&scmi_clk IMX95_CLK_HSIOPLL>,
+>  					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> @@ -1706,8 +1722,9 @@ pcie1: pcie@4c380000 {
+>  			clocks =3D <&scmi_clk IMX95_CLK_HSIO>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> -				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> -			clock-names =3D "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> +				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +				 <&hsio_blk_ctl 0>;
+> +			clock-names =3D "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+>  			assigned-clocks =3D<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+>  					 <&scmi_clk IMX95_CLK_HSIOPLL>,
+>  					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+>=20
 
-Hmmm, fishy. Maybe a function would be better than a macro?
 
-> >
-> >>          return 0;
-> >> }
-> >>
-> >>
-> >> gives :
-> >>
-> >> res  =3D -600
-> >> res  =3D 429496130
-> >>
-> >> with msec, the previous code would catch the overflow, now it overflow=
-s
-> >> silently.
-> >
-> > What compiler options are you using? I'm not getting any warnings.
->
-> I mean, with:
->         if (result.uint_32 > INT_MAX / 1000)
->                 goto out_of_range;
-> the overflow would be handled *at runtime*.
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Got it. But that may still fail if you configure HZ to 5000 or
-anything above 1000. Not that anyone should go this way but...
 
-> Without such a check, an unexpected value could be stored in
-> opt->lock_timeout.
->
-> I think that a test is needed and with secs_to_jiffies(), I tentatively
-> proposed:
->         if (result.uint_32 > INT_MAX / HZ)
->                 goto out_of_range;
-
-Right, that should correctly handle any HZ value. Looks good to me.
-
-> CJ
->
-> >
-> >> untested, but maybe:
-> >>          if (result.uint_32 > INT_MAX / HZ)
-> >>                  goto out_of_range;
-> >>
-> >> ?
-> >>
-> >> CJ
-> >>
->
-> ...
