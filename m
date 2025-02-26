@@ -1,60 +1,62 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0D121E08D
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0024222587
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 16:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740588864; cv=none; b=lyOyo3qz3r8Hk/9PJuZMi7VO4csxjcfHl7kHV2PEdsBOz4nCP5eXbR9Stt/kKhB2Nby/3C2utZwWG/GUFv8BwwxYzvKANIIsNVxINQjW0Nf9yZ90rGvgXQjQhDU69SARA5dhdLdTx4cNbnIDEGbcHTc3b9243jLVuYz1O7cbkDQ=
+	t=1740588866; cv=none; b=hvqlKIzTeVJRL8JU/piMJCfVf1f/TDifq0NZBUkHKvwY93V0HQ2dKQMfDi/dxPNZEk3KpFtiW4bXNJ2egLIPNOmpSr+m07oLfP/czFpyn3Usy0d3LTvylBidjwrUTQ/Pma59IE0Y4fTD6pYXX2O0So55tLvcWTTG9PWMe54dlew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740588864; c=relaxed/simple;
-	bh=vEb7wZbAKp2+E00O1H3FnSBoPcs396kmDnQUTh8XiO8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o9XszNHRwg2LNX5K1GVQPY5f4GJIka8QEt3MySCnf2r2EuFSSRXPvSN8Wi1QCREJcZuIDAICBMaeKQdSqBg4M7uOX19Q7F1Sc8Nohe0Y8ShV6xNpLFTRsmfQJW4k4y/tkDziaFq9owFsnbtbW9gwaDEIpKwitZWFxxPGs55wDm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cDPttHac; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1740588866; c=relaxed/simple;
+	bh=C2Mob+k4J3IoAbjsCJdN2Pf4fKN/wfPJXERox26zYvs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JzVcIkdW3jkUyAZH1/ODAlR18si7+kvhGLsTVi8NbefpSSx98VsEJmmB81DRQVnb3U6iPUMmy+0So7VgBx4kQ59aSUVNVQIZY0tjTSdZnrGHoIwwWYNzDG6jt+upAUrVb3qNNR3wwVCgu3pBBKAFr/CPQuwFvZk12HzZZLEic/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHxyPhx8; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cDPttHac"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f406e9f80so6392071f8f.2
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:54:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHxyPhx8"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43995b907cfso179765e9.3
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 08:54:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740588861; x=1741193661; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V7vkfh4ddTTsMmNol3nhPNfYX8H1c5FYy0uhOqg4mVE=;
-        b=cDPttHacAbCtCdG6aPLUWlJ0q5CI7zKQFHjnTzFXF6+/9dErM0/x47QVkCWRECAHUb
-         OqLIFdsREpDkit9ZH4q6fT3DQxPfOgqV5qXt4B1dxNWUu5zeNE3EQbBs5KnINrnu+wbE
-         oXLL+Ul7trpQSEoj1if4FY3iArSi5PjcHnoSk1mXPAcbVZNykdpjp5//cXlSkHXFvZLH
-         7SAPM6Hau3u2NmwJaICNZqAMSMDQjT02EvkYRIItjKxPWvA3Dj6T5f5tvxdv2SfY+n/I
-         CNscZs/jdewV++ji+iMWpypnQb2kzYlv+qyL/82+NbT4SuueF3irKGW2BRCBsWhs2sSH
-         MPGg==
+        d=gmail.com; s=20230601; t=1740588863; x=1741193663; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XuMNXFiz3GQQsxpeqmzCHgRVoLvWr6tPdor7ZIiVrdE=;
+        b=mHxyPhx8GiXoQGhdG/T5IhZr2sHInIIGzsGUWPUhHF16ry2AJA3xEVL8pwsvpnp3sH
+         Ic8gggidjlxBMHaO2lBycv40Ns+8ATu5O0/1wHOp78bIw7GJoAHTiay61Y+ZuU66o3FB
+         JZO9MORF/V3+K9rAwBBDkYvRVxscuk0wVQPJSpBtIFfW5Y1CUmy82wPVhkM+Cpd2o3Ql
+         0FcFnE/F8pib5T575TvG1Ftzxpdo8qO1Hz4yciS4LqF0IBY3hpmA6aShgO4vcHgp/SOc
+         QcERQT1Wk4lAwzdNJbQcn1D94izgRMMQwRH2hfhc+mzqz1e3eTfE7LMRbricDIS7JXRs
+         9axw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740588861; x=1741193661;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V7vkfh4ddTTsMmNol3nhPNfYX8H1c5FYy0uhOqg4mVE=;
-        b=ZB00FQakCr6yJeGAQU6ZonjBohW5ww7d4NrV/pY1IN6yltucbBTudy8ysVAMa2ghos
-         3sMbb2j74aVyfmzHouyNAG7yLCWGxPFUDcDNQv7ehYM18gCSa+zzUlISXstpim4iE+eI
-         1nbKgB75B0a8usRemJZ6fjNF/CuFLIK0+W3n45S0ayiiQhLYvsot4ys0v0jQZcQozNqB
-         N2x4Xyo1KeVW/3cFeCtSkkqK8XkLbIgNNfbJAQIHdBQwQ+i+67eJiWLIH+SQOAbtVhR1
-         Qj3HwwrgBBMynX7EGqjhZbES6k7FWCPAgjhXcPU+oyHstzW0UcPW9Ij31COtpKcFjaek
-         gsTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgm3unfza/DSyZg6D3qIRBPo6vQ/UCLD2FVyVHc6cZdumbev3cHKGQ4I+qSyCCkoDE6pA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YywlwBJRly2BjbV0MvFGQLgKpcw/pcUs7I0O4RmpsxujfhxWZg1
-	dQQxgVJkrO6cKq94vcfUK0vBSJez7lT2ds+GUpJWYJRzUTqcPJFb
-X-Gm-Gg: ASbGncts2ywrmlP58/Dz7Z5WOs0e11dK6yrK+YzKaUnj8Sj9H7PaTRsXTWWvEkebhmV
-	Y1e1s9cWBMUjXoUQ35Whf9OcQpuiVC19M2TCq2bPaTFBwB3FpIc1b1F6ZrtS7wfwRt4xxIi9RmQ
-	uVxsJud3L2HhqlTPO2f8vS+1RSiMHcuU482JTLQdcGvnm2INpsVyXqr5J+H8UIel5ZXbCQZ7vQ3
-	70ztuzdcJMqt+A+b8pJOcHUd1GMv3hjNXisPieTbmdmXwlgCqhAcYdXXbaDEJ8LLd30b/TOccoC
-	HUdFcieITcc69NbVE48RRQGtt1MNYWoDfrux+v35nu0IWtMNzWUNcNjRBRQUbmbw
-X-Google-Smtp-Source: AGHT+IFkEUgrTUm48/FTrUcUruOOa4wlLyjFj2y//pjXXddwMb+aMzVxF/jrzVCXgJFveDwHMDYHJg==
-X-Received: by 2002:a05:6000:2c2:b0:38d:d371:e04d with SMTP id ffacd0b85a97d-390d4f8b6a7mr3152525f8f.34.1740588860292;
-        Wed, 26 Feb 2025 08:54:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740588863; x=1741193663;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XuMNXFiz3GQQsxpeqmzCHgRVoLvWr6tPdor7ZIiVrdE=;
+        b=fiLxuvM7tP+ZaUXlFj4pJ/O3EvdnqqaNkBgZMmuPIP8/+m19iatM56fnAkzZyLxyeE
+         cFffqfFwKTUW3Va7U5EA6zqropWCvMg3GkCTEOIHPbpsjs0HBQWY+ECehdysqh5l/CS7
+         2oN3yEvo6sl69iqonhYYq9BFSAoWlbLEvxeTjdZFYzHaovrkRij8NE9Qzw8zrdcI8GYt
+         4BW6JxedFPxzKDWd/6q9vJxS+KvC6rafHih1tK5einYqLYgD4OoHPDuBM4JZHTo3WfUV
+         S2EO/gvazK1KOBGsUIaOutFrm3dpLTLTTJCufs4n/rLaBSkY3HkeFJQH0QkEowyp42y0
+         ewgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFrEkqOGR8AaXB1RR+ARVkp1KsFm68omFFwI8VztobF/M4FdtZSvgKwT3yXw4NCXbxFwA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZ234GSVEB5yscU6j1K95eo1cPT3G/mOfAQ8rdd0LhZzhpsRRB
+	B74Uf3cicWTpxD2gwVMYkEI8sd+WkIUL/TbTcsSVnjRRSQlXUwDi
+X-Gm-Gg: ASbGnctfI1J/srabIXUssS4OXmb3QfNGwnIbZ15XYFGrC0+cmL9IVh+9KPUuSHLL14c
+	UXr80o0jAy0scrWqh41Hg8xEPrP43iMCHWREXY4O+6kWjGNAslMqSSLgmkkDEoXUP7+l5w8uP8T
+	aFmMrS98Uo7yruGPeHeeZWlQng277T1FBRKmUZVpYWuf8bNiRpD5OUm5Ppb9LKKg62GKE8+qnNl
+	zoFuwz7LXm8NRQuUGHhps16JOb2SmrDYK4YngfIIl7HsH9nbvfMzSd/tEpxvOJgM5JfDNavGAO+
+	OpKoMkkp+k14j6rNykSblbKqnURjG1QUTuywP5yFbqPHrMi7wKrPp2z4GAi8D1Fz
+X-Google-Smtp-Source: AGHT+IGzw1JxAgCRr2hkHehSx21ZaK94xm+T4qbqC1Q9fKPlmg9xMtjNJBFuBwKL4xp8lj7A86l4rQ==
+X-Received: by 2002:a05:600c:1ca7:b0:439:9898:f18c with SMTP id 5b1f17b1804b1-43ab0f72a40mr64043405e9.26.1740588862923;
+        Wed, 26 Feb 2025 08:54:22 -0800 (PST)
 Received: from playground.localdomain ([188.25.208.27])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba587163sm27672515e9.36.2025.02.26.08.54.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba587163sm27672515e9.36.2025.02.26.08.54.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 08:54:19 -0800 (PST)
+        Wed, 26 Feb 2025 08:54:22 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -69,10 +71,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
-Date: Wed, 26 Feb 2025 11:53:09 -0500
-Message-Id: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v2 1/5] dt-bindings: bus: add documentation for the IMX AIPSTZ bridge
+Date: Wed, 26 Feb 2025 11:53:10 -0500
+Message-Id: <20250226165314.34205-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,57 +87,108 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The AIPSTZ bridge offers some security-related configurations which can
-be used to restrict master access to certain peripherals on the bridge.
+Add documentation for IMX AIPSTZ bridge.
 
-Normally, this could be done from a secure environment such as ATF before
-Linux boots but the configuration of AIPSTZ5 is lost each time the power
-domain is powered off and then powered on. Because of this, it has to be
-configured each time the power domain is turned on and before any master
-tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
-
-The child-parent relationship between the bridge and its peripherals
-should guarantee that the bridge is configured before the AP attempts
-to access the IPs.
-
-Other masters should use the 'access-controllers' property to enforce
-a dependency between their device and the bridge device (see the DSP,
-for example).
-
-At the moment, we only want to apply a default, more relaxed
-configuration, which is why the number of access controller cells
-is 0.
-
-The initial version of the series can be found at [1]. The new version
-should provide better management of the device dependencies.
-
-[1]: https://lore.kernel.org/linux-arm-kernel/20241119130726.2761726-1-daniel.baluta@nxp.com/
-
+Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
-Changes in v2:
-* adress Frank Li's comments
-* pick up some A-b/R-b's
-* don't use "simple-bus" as the second compatible. As per Krzysztof's
-comment, AIPSTZ is not a "simple-bus".
----
-
-Laurentiu Mihalcea (5):
-  dt-bindings: bus: add documentation for the IMX AIPSTZ bridge
-  dt-bindings: dsp: fsl,dsp: document 'access-controllers' property
-  bus: add driver for IMX AIPSTZ bridge
-  arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-  arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-
- .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 86 +++++++++++++++++
- .../devicetree/bindings/dsp/fsl,dsp.yaml      |  3 +
- arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  9 +-
- drivers/bus/Kconfig                           |  6 ++
- drivers/bus/Makefile                          |  1 +
- drivers/bus/imx-aipstz.c                      | 92 +++++++++++++++++++
- 6 files changed, 194 insertions(+), 3 deletions(-)
+ .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 86 +++++++++++++++++++
+ 1 file changed, 86 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
- create mode 100644 drivers/bus/imx-aipstz.c
 
+diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+new file mode 100644
+index 000000000000..dfcfe4a8ae74
+--- /dev/null
++++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+@@ -0,0 +1,86 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Secure AHB to IP Slave bus (AIPSTZ) bridge
++
++description:
++  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
++  issuing transactions to IP Slave peripherals. Additionally, this module
++  offers access control configurations meant to restrict which peripherals
++  a master can access.
++
++maintainers:
++  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx8mp-aipstz
++
++  reg:
++    maxItems: 1
++
++  power-domains:
++    maxItems: 1
++
++  "#address-cells":
++    enum: [1, 2]
++
++  "#size-cells":
++    enum: [1, 2]
++
++  "#access-controller-cells":
++    const: 0
++
++  ranges: true
++
++# borrowed from simple-bus.yaml, no additional requirements for children
++patternProperties:
++  "@(0|[1-9a-f][0-9a-f]*)$":
++    type: object
++    additionalProperties: true
++    properties:
++      reg:
++        items:
++          minItems: 2
++          maxItems: 4
++        minItems: 1
++        maxItems: 1024
++      ranges:
++        oneOf:
++          - items:
++              minItems: 3
++              maxItems: 7
++            minItems: 1
++            maxItems: 1024
++          - $ref: /schemas/types.yaml#/definitions/flag
++    anyOf:
++      - required:
++          - reg
++      - required:
++          - ranges
++
++required:
++  - compatible
++  - reg
++  - power-domains
++  - "#address-cells"
++  - "#size-cells"
++  - "#access-controller-cells"
++  - ranges
++
++additionalProperties: false
++
++examples:
++  - |
++    bus@30df0000 {
++      compatible = "fsl,imx8mp-aipstz";
++      reg = <0x30df0000 0x10000>;
++      power-domains = <&pgc_audio>;
++      #address-cells = <1>;
++      #size-cells = <1>;
++      #access-controller-cells = <0>;
++      ranges;
++    };
 -- 
 2.34.1
 
