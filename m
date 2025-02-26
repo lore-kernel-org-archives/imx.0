@@ -1,148 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC102135B6
-	for <imx@lists.linux.dev>; Tue, 25 Feb 2025 22:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F031028EB
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 00:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740522196; cv=none; b=Mp6xv4w0+s/ZLNEj6Qoj7cVUHa3492NE1fgGDp7pG8eCs0p/Lsn2m7H1XFqhZ3tAxo4Bi0DIHqVa2ZhjV6DQ5F/4XTPebLNQGby8TXZrvxJh31k2JmhG9MfuJfK3x6d67YuejJGjbbr1SM9PtjBSCtaZCiQXv/XRftJLdiwsNx0=
+	t=1740528167; cv=none; b=opcS9GhYrIJbKaAGKePEeT8lAG1Fmj2jmWI+SKlYvw3RhcKYs4tg69X9sDdIC85PwihLFu4tyd4h0UZggVswkUDBUSxb8Szp4RhieeCR1YRbJs/QgOM9d6zlln1/W/z/T+Qvbu2YoOm0wK1W/Xs+SnLDN4fpc27zWpdIs2cr6xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740522196; c=relaxed/simple;
-	bh=/15qlsboM6yCAvaydvQcsEN4W06HB6cK0UlxWA8+/dI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ofgTETT9xyJ3CaG2j32fTn8rSOHfWmZA392mqqaixouuG+MNuaSuDYouwG3A6YJGml0apk9QkDMi7WsUfTx0c+5onxE5u8Z4xsLeL0o/Ggfjx0caiqRg2E54VIsYvJLBjxuQZfXE1x9AKXrwHoS8IMoGLuE3TSVXLaihC78ohPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LC3ir0+O; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1740528167; c=relaxed/simple;
+	bh=SQMRA5N+jXvNo2T5JsKh4b8XY33eotbHHZmlw5h9oWs=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=RaBKuWdhwuSRseaF1F6MRy511PlfcfVr5Drz+DAm9GV/YqASfOZ83zAEwdCKinSCLUH9z/JC85EqFdMOgpEcFYPiVFmPdKc+/VID7jAEt5ozcOhnuHgBYhqo5E5zPx7b2a318ahFro9DKBdoo3CssxEYC3b6bGgSjtEBHBwcH64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HuaKl3qd; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LC3ir0+O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740522194;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YKTxXn5l9L/3067x1ZnZ8w6M1gB59GICvb9XtTgB0s=;
-	b=LC3ir0+OZKAoIFN09kk7QIu3MUoz2vSTyEdNft0hRwMd0ptV/NW82p4k+JAWm6Glyqc6pZ
-	JxRt/2wPaoLjhBng/0k7NHz6gPVL8BH0R5B49IY1IAPQecE9VM+35JbOHnQ4D3nnsrtAGr
-	wLNTD5jp0yFzi5kmzqCfN2FpA6r+gzk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-oa49bnmHNVqMO6CG_JqJbQ-1; Tue,
- 25 Feb 2025 17:23:08 -0500
-X-MC-Unique: oa49bnmHNVqMO6CG_JqJbQ-1
-X-Mimecast-MFC-AGG-ID: oa49bnmHNVqMO6CG_JqJbQ_1740522183
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D68F01903085;
-	Tue, 25 Feb 2025 22:23:00 +0000 (UTC)
-Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.79])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D5CD1800357;
-	Tue, 25 Feb 2025 22:22:51 +0000 (UTC)
-From: Anusha Srivatsa <asrivats@redhat.com>
-Date: Tue, 25 Feb 2025 17:20:53 -0500
-Subject: [PATCH RESEND 12/12] Documentation: Update the todo
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HuaKl3qd"
+Received: from [100.65.162.92] (unknown [20.236.10.206])
+	by linux.microsoft.com (Postfix) with ESMTPSA id A62F5203CDFE;
+	Tue, 25 Feb 2025 16:02:43 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A62F5203CDFE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740528165;
+	bh=BFPE5nqMT5TV/F32YTt+Q2sFqdqX3HzV4emGmVK7HJw=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=HuaKl3qdKUi413qXmLg1j75aNN8MijOcIeKtJu18EQJFDjoRXls3deulMv1TJVsSW
+	 65ILxLiYMFv1sS1yCqPvEvTeMb7w5g4ew6OAxy2dKtMZrrLZYy7Kf0E371zAONpm5r
+	 c4JAQrpBSBxtsQowW5sxR9dgfpM5kWSNcx4MfN/8=
+Message-ID: <df0c2400-147c-4104-a2e6-d1038ff31524@linux.microsoft.com>
+Date: Tue, 25 Feb 2025 16:02:42 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250225-memory-drm-misc-next-v1-12-9d0e8761107a@redhat.com>
-References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
-In-Reply-To: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
-To: Joel Stanley <joel@jms.id.au>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
- Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
- Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Alain Volmat <alain.volmat@foss.st.com>, 
- Raphael Gallais-Pou <rgallaispou@gmail.com>, 
- Yannick Fertre <yannick.fertre@foss.st.com>, 
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
- Philippe Cornu <philippe.cornu@foss.st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Mikko Perttunen <mperttunen@nvidia.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Alexey Brodkin <abrodkin@synopsys.com>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
- linux-doc@vger.kernel.org, Anusha Srivatsa <asrivats@redhat.com>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740522045; l=1573;
- i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
- bh=/15qlsboM6yCAvaydvQcsEN4W06HB6cK0UlxWA8+/dI=;
- b=ctwB++vs/uJo3W74tDO1hgYWH+/4RjK1rS8II5NkImDP6J2u1dRysoaEir8KpfcS5eR2mtRZk
- klKUEMHenKeDWvB9gJk66H8NhG2Mti3PcGp+7DJwrN0qR8FJ1Dt9Wf3
-X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
- pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Cc: eahariha@linux.microsoft.com, Frank.Li@nxp.com,
+ James.Bottomley@HansenPartnership.com, Julia.Lawall@inria.fr,
+ Shyam-sundar.S-k@amd.com, akpm@linux-foundation.org, axboe@kernel.dk,
+ broonie@kernel.org, cassel@kernel.org, cem@kernel.org,
+ ceph-devel@vger.kernel.org, clm@fb.com, cocci@inria.fr,
+ dick.kennedy@broadcom.com, djwong@kernel.org, dlemoal@kernel.org,
+ dongsheng.yang@easystack.cn, dri-devel@lists.freedesktop.org,
+ dsterba@suse.com, festevam@gmail.com, hch@lst.de, hdegoede@redhat.com,
+ hmh@hmh.eng.br, ibm-acpi-devel@lists.sourceforge.net, idryomov@gmail.com,
+ ilpo.jarvinen@linux.intel.com, imx@lists.linux.dev,
+ james.smart@broadcom.com, jgg@ziepe.ca, josef@toxicpanda.com,
+ kalesh-anakkur.purayil@broadcom.com, kbusch@kernel.org,
+ kernel@pengutronix.de, leon@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org,
+ linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-xfs@vger.kernel.org,
+ martin.petersen@oracle.com, nicolas.palix@imag.fr, ogabbay@kernel.org,
+ perex@perex.cz, platform-driver-x86@vger.kernel.org, s.hauer@pengutronix.de,
+ sagi@grimberg.me, selvin.xavier@broadcom.com, shawnguo@kernel.org,
+ sre@kernel.org, tiwai@suse.com, xiubli@redhat.com, yaron.avizrat@intel.com
+Subject: Re: [PATCH v3 06/16] rbd: convert timeouts to secs_to_jiffies()
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
+ <20250225-converge-secs-to-jiffies-part-two-v3-6-a43967e36c88@linux.microsoft.com>
+ <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Content-Language: en-US
+In-Reply-To: <e53d7586-b278-4338-95a2-fa768d5d8b5e@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Update the Documentation to be more precise.
+On 2/25/2025 1:09 PM, Christophe JAILLET wrote:
+> Le 25/02/2025 à 21:17, Easwar Hariharan a écrit :
+>> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+>> secs_to_jiffies().  As the value here is a multiple of 1000, use
+>> secs_to_jiffies() instead of msecs_to_jiffies() to avoid the multiplication
+>>
+>> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+>> the following Coccinelle rules:
+>>
+>> @depends on patch@ expression E; @@
+>>
+>> -msecs_to_jiffies(E * 1000)
+>> +secs_to_jiffies(E)
+>>
+>> @depends on patch@ expression E; @@
+>>
+>> -msecs_to_jiffies(E * MSEC_PER_SEC)
+>> +secs_to_jiffies(E)
+>>
+>> While here, remove the no-longer necessary check for range since there's
+>> no multiplication involved.
+> 
+> I'm not sure this is correct.
+> Now you multiply by HZ and things can still overflow.
+> 
+> 
+> Hoping I got casting right:
+> 
+> #define MSEC_PER_SEC    1000L
+> #define HZ 100
+> 
+> 
+> #define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
+> 
+> static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+> {
+>     return (m + (MSEC_PER_SEC / HZ) - 1) / (MSEC_PER_SEC / HZ);
+> }
+> 
+> int main() {
+> 
+>     int n = INT_MAX - 5;
+> 
+>     printf("res  = %ld\n", secs_to_jiffies(n));
+>     printf("res  = %ld\n", _msecs_to_jiffies(1000 * n));
+> 
+>     return 0;
+> }
+> 
+> 
+> gives :
+> 
+> res  = -600
+> res  = 429496130
+> 
+> with msec, the previous code would catch the overflow, now it overflows silently.
+> 
+> untested, but maybe:
+>     if (result.uint_32 > INT_MAX / HZ)
+>         goto out_of_range;
+> 
+> ?
+> 
+> CJ
+> 
 
-v2: Update for clarity
-v3: Further details in Todo
+Thanks for the review! I was able to replicate your results, I'll try this range check
+and get back.
 
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
----
- Documentation/gpu/todo.rst | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index 256d0d1cb2164bd94f9b610a751b907834d96a21..c57777a24e03d91b1ffe04365f7356f2d938befd 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -441,14 +441,15 @@ Contact: Thomas Zimmermann <tzimmermann@suse.de>
- 
- Level: Intermediate
- 
--Request memory regions in all drivers
---------------------------------------
-+Request memory regions in all fbdev drivers
-+--------------------------------------------
- 
--Go through all drivers and add code to request the memory regions that the
--driver uses. This requires adding calls to request_mem_region(),
-+Old/ancient fbdev drivers do not request their memory properly.
-+Go through these drivers and add code to request the memory regions
-+that the driver uses. This requires adding calls to request_mem_region(),
- pci_request_region() or similar functions. Use helpers for managed cleanup
--where possible.
--
-+where possible. Problematic areas include hardware that has exclusive ranges
-+like VGA. VGA16fb does not request the range as it is expected.
- Drivers are pretty bad at doing this and there used to be conflicts among
- DRM and fbdev drivers. Still, it's the correct thing to do.
- 
-
--- 
-2.48.1
-
+Thanks,
+Easwar (he/him)
