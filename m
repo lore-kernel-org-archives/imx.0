@@ -1,140 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CB925D916;
-	Wed, 26 Feb 2025 22:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33B62620C8;
+	Wed, 26 Feb 2025 23:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740608855; cv=none; b=d76Q3Mwjz88n0xsCbBsWj58VZDPi8Xr5dH7o9/LVn9/Tn7hmULQo8KY1Hu8meTkvP5PnHWKCugg7nhm+f+lsnHUhxCQJuYBOZyjBHuB4M1UeWfj3X/YVQ2beJ/GyeCry6/Z18C0TU4yRFtXagwu89oxotKT0uCENIcbub9QVC6I=
+	t=1740612823; cv=none; b=ToNiWlKcWU+ClqUp9ifJZDA5ELImfj4Q0LQO2H06QqR68YEPlWrHDUoLCyaV2UaigmrKegAbvBRsxuFSN9LzFT3lhQzgoR+I07MI8yAj5lB99jAjM9jwvrMIMY064fpYsyocTF/Ke8DQFPhWQZZs5QSTLws6v5h85CrZqlUzP/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740608855; c=relaxed/simple;
-	bh=/TBxRjD+YRDof+mNKcnMf3FsANOHIzAqS1izxvRKSkA=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Wr/qfZcZwKv3FHXGIG5nnmo28C9DHCY/wTsKev8oCzUVoWWP9Q/S4qBU7PfaYfwWIUppl7nUfiOhLYE8uaqTvuvl1LftJe7DIs/VaNmrnt1jflZVC829UWW/wAr8ji3WmBizOTsTGr6AR+a+Q3WiwdCY3Mugtno30q/r5uujqBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJUentzn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740612823; c=relaxed/simple;
+	bh=JU2kjfLvtCKvCAcKZzE2OOPkpTNFwZNgTF7Ciu+cRA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ehWFxzqKcU4ucnBUvvVcycE+IU/o1tBv58OVQ6eHXbXhFliDA3StmAd1ZXkuReM6i4Z4CFAxTOPgr5c+RU4cDdyyOvpfgzasnZfFGxzs9TXqmaic/sCoRf69m5/KT/lyXP9PKe7SoBctAOG18S6ZAqsS/7aZy2SckzARYGCjnUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mph1cYH0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJUentzn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63415C4CED6;
-	Wed, 26 Feb 2025 22:27:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mph1cYH0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD53C4CED6;
+	Wed, 26 Feb 2025 23:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740608855;
-	bh=/TBxRjD+YRDof+mNKcnMf3FsANOHIzAqS1izxvRKSkA=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=pJUentzn6RXKQfY73yLb7U7Z0MOp2FRQtxkufabY66glfMQGuamgElASdmZN6R8Up
-	 Fvi395sNQ2Vm3XBtm0TmeE6e3pIcideJviwU+2LB88nLxQ01yfWKaLyPCHtpIqKVy1
-	 d2BgqnPG9pUDZ21Kh7p0VjwtBARziCYpGNKNX65q1bjyx0+F07xEcdKiPL8jSjDZM5
-	 SXSka8fFGgmeCDkdRvDm41GKoaNBVvKDB9e7VvobgMyQL2g2YsfzMTj184/fQHdzuE
-	 EFXupjHCf8dKEdq3lRmSS6ZPWsaoOCwsoEdN8/aCv0B2WBo7G0GD1Do5aQrvdXXb22
-	 nRbCMHTWkdkeg==
-Date: Wed, 26 Feb 2025 16:27:34 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1740612822;
+	bh=JU2kjfLvtCKvCAcKZzE2OOPkpTNFwZNgTF7Ciu+cRA4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=mph1cYH0/GtxEnkYNjCOOhVVx56YpsQjSOk1NStNxEAjASxrD7HdP89Eu4QiFsjQp
+	 FaY8Xks0fxxWsXbG0tGc1hVg1E8MwdMRqFTK8X7jjvATAcXjECwZqgiyPCvT3dHxUt
+	 qW1qWzKdtvNXzRAGOsnQSV66plI7HGitg8nnLwYby1irqcym0luHmdV+wN76k2JwOm
+	 iR34vJbsDmq6bIXion0gGlpstWi49EKe12WKUXlHfzk0KtCantRd19Hb9ATkeh73Qx
+	 sOq2e+gAUnuYFRHoKt4gCCqbzhMUX33KGRP89sfavZuSOlnmEtXD32v2ULnB/BGLti
+	 +yYugUjDQL0qQ==
+Date: Wed, 26 Feb 2025 17:33:39 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v9 4/7] PCI: dwc: Use devicetree 'ranges' property to get
+ rid of cpu_addr_fixup() callback
+Message-ID: <20250226233339.GA562682@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>, Mark Brown <broonie@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Conor Dooley <conor+dt@kernel.org>, 
- linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Neil Armstrong <neil.armstrong@linaro.org>, Simona Vetter <simona@ffwll.ch>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Thomas Zimmermann <tzimmermann@suse.de>, 
- linux-arm-kernel@lists.infradead.org, Liu Ying <victor.liu@nxp.com>, 
- Maxime Ripard <mripard@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- linux-spi@vger.kernel.org, David Airlie <airlied@gmail.com>, 
- imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Maud Spierings <maudspierings@gocontroll.com>
-In-Reply-To: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
-References: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
-Message-Id: <174060863556.3857034.912870225795774413.robh@kernel.org>
-Subject: Re: [PATCH v2 00/12] arm64: dts: freescale: Add support for the
- GOcontroll Moduline Display
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250128-pci_fixup_addr-v9-4-3c4bb506f665@nxp.com>
 
+On Tue, Jan 28, 2025 at 05:07:37PM -0500, Frank Li wrote:
+> parent_bus_offset in resource_entry can indicate address information just
+> ahead of PCIe controller. Most system's bus fabric use 1:1 map between
+> input and output address. but some hardware like i.MX8QXP doesn't use 1:1
+> map. See below diagram:
+> ...
 
-On Wed, 26 Feb 2025 15:19:11 +0100, Maud Spierings wrote:
-> Add inital support for 2 variants of the Moduline Display controller.
-> This system is powered by the Ka-Ro Electronics tx8p-ml81 COM, which
-> features an imx8mp SoC.
-> 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> ---
-> Changes in v2:
-> - Dropped the trivial-devices patch
-> - Added a patch with bindings for the gocontroll,moduline-module-slot
-> - Added a patch to spidev.c to enable the spidev driver for the module
->   slot
-> - Added a missing usb-c connector in the av101hdt-a10 variant dts
-> - Switched to the new bindings for the module slots in the base dts
-> - Fixed some commit typos
-> - Link to v1: https://lore.kernel.org/r/20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com
-> 
-> ---
-> Maud Spierings (12):
->       dt-bindings: arm: fsl: Add GOcontroll Moduline Display
->       dt-bindings: vendor-prefixes: add GOcontroll
->       dt-bindings: connector: Add the GOcontroll Moduline module slot bindings
->       arm64: dts: imx8mp: Add pinctrl config definitions
->       MAINTAINERS: add maintainer for the Ka-Ro tx8p-ml81 COM module
->       MAINTAINERS: add maintainer for the GOcontroll Moduline module slot
->       MAINTAINERS: add maintainer for the GOcontroll Moduline controllers
->       arm64: dts: freescale: add Ka-Ro Electronics tx8p-ml81 COM
->       arm64: dts: freescale: Add the GOcontroll Moduline Display baseboard
->       arm64: dts: freescale: Add the BOE av101hdt-a10 variant of the Moduline Display
->       arm64: dts: freescale: Add the BOE av123z7m-n17 variant of the Moduline Display
->       spi: spidev: Add an entry for the gocontroll moduline module slot
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
->  .../connector/gocontroll,moduline-module-slot.yaml |  88 ++++
->  .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
->  MAINTAINERS                                        |  17 +
->  arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h     |  27 +
->  ...tx8p-ml81-moduline-display-106-av101hdt-a10.dts | 100 ++++
->  ...tx8p-ml81-moduline-display-106-av123z7m-n17.dts | 133 +++++
->  .../imx8mp-tx8p-ml81-moduline-display-106.dtsi     | 535 ++++++++++++++++++++
->  .../arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi | 547 +++++++++++++++++++++
->  drivers/spi/spidev.c                               |   2 +
->  10 files changed, 1452 insertions(+)
-> ---
-> base-commit: 2bc63dbeabecce860eb8b261bf67b97552fe7747
-> change-id: 20250224-initial_display-fa82218e06e5
-> 
-> Best regards,
-> --
-> Maud Spierings <maudspierings@gocontroll.com>
-> 
-> 
-> 
+> @@ -448,6 +451,26 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
+>  	if (IS_ERR(pp->va_cfg0_base))
+>  		return PTR_ERR(pp->va_cfg0_base);
+>  
+> +	if (pci->use_parent_dt_ranges) {
+> +		if (pci->ops->cpu_addr_fixup) {
+> +			dev_err(dev, "Use parent bus DT ranges, cpu_addr_fixup() must be removed\n");
+> +			return -EINVAL;
+> +		}
+> +
+> +		index = of_property_match_string(np, "reg-names", "config");
+> +		if (index < 0)
+> +			return -EINVAL;
+> +
+> +		 /*
+> +		  * Retrieve the parent bus address of PCI config space.
+> +		  * If the parent bus ranges in the device tree provide
+> +		  * the correct address conversion information, set
+> +		  * 'use_parent_dt_ranges' to true, The
+> +		  * 'cpu_addr_fixup()' can be eliminated.
+> +		  */
+> +		of_property_read_reg(np, index, &pp->cfg0_base, NULL);
+> +	}
 
+I think all this code dealing with the "config" resource could go in a
+helper function.  It's kind of a lot of clutter in
+dw_pcie_host_init().
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+It would be nice to assign pp->cfg0_base once, not assign res->start
+to it and then possibly overwrite it later.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+> @@ -841,6 +841,15 @@ void dw_pcie_iatu_detect(struct dw_pcie *pci)
+>  	pci->region_align = 1 << fls(min);
+>  	pci->region_limit = (max << 32) | (SZ_4G - 1);
+>  
+> +	if (pci->ops && pci->ops->cpu_addr_fixup) {
+> +		/*
+> +		 * If the parent 'ranges' property in DT correctly describes
+> +		 * the address translation, cpu_addr_fixup() callback is not
+> +		 * needed.
+> +		 */
+> +		dev_warn_once(pci->dev, "cpu_addr_fixup() usage detected. Please fix DT!\n");
+> +	}
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+Can you split the warnings out to a separate patch?  I think we should
+warn once in every initialization path where .cpu_addr_fixup() could
+be used, i.e.,
 
-  pip3 install dtschema --upgrade
+  dw_pcie_host_init()
+  dw_pcie_ep_init()
+  cdns_pcie_host_setup()
+  cdns_pcie_ep_setup()
 
+IMO these should warn if .cpu_addr_fixup() is implemented, regardless
+of use_parent_dt_ranges.
 
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250226-initial_display-v2-0-23fafa130817@gocontroll.com:
+I'm still puzzling over some of the rest of this, so no need to post a
+revised series yet.
 
-arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb: usb@32f10108: usb@38200000: Unevaluated properties are not allowed ('connector' was unexpected)
-	from schema $id: http://devicetree.org/schemas/usb/fsl,imx8mp-dwc3.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb: usb@38200000: Unevaluated properties are not allowed ('connector' was unexpected)
-	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
-
-
-
-
-
+Bjorn
