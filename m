@@ -1,198 +1,162 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B7E1E1DEA
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 09:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740562808; cv=none; b=iHwK+KOyPpIK47w01M29rVal5QD2hf/QQxbjMQDB7eS2deJkA4ns1gUwxfGik92Sak822zonnqOCjuRhMUwXwrGwOElz3MdQDT/pvCBCD5pT5PCtRfafxBLnVS3Mjvhtrej9a2mFDe6dWY9Kt5lCPhUKQbUYNtZGGkw/uHzxfE0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740562808; c=relaxed/simple;
-	bh=oXYrs8fLkSqwtRneRydxS1WiAhpp9hDEK2JtL3e2Wtc=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283A4258CC6
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 09:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740563168; cv=pass; b=soomJM45a8iPnmKoXTWc4yYYGtZyBZpH+bFN6A9sy+eTASk66EvXvvohPH6L42LHbQXeAyj/gmk9W4sawSz1VWohWwdjnEwjuNv/d0oldzxS/OlxyVfPqQEEc3bqbwD/x3LAt0xOpfT13OZ9NHQGG4vH4KjUynJjlPfgHDTwRAU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740563168; c=relaxed/simple;
+	bh=jMhCi2lGoBNhfWScI0gNVaijzNEe6KlHiTA4K78enB4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RM15E9ZFSc1pnJbpLkSTQkXWWmrIkQUBHc8mLLwXe/oIdpsydFnk1jsn+R2BeE1Xd2yKH1bMwmvHJisjyIBpJ1fiaUoD7F4jW1BfKnnOJpfpZPeuQuTlOOOos5LTaoNC94lmu+lDeK8oQIasOaycuz0Rf5xjngrgqiITGJLlbKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UqutqlGJ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxBBoDh9tHt5OLZI/q6hxT9G6wBb90dwBckQWmdXMx2BcQKdg1nERHcLyxuEg8QpEiorRoh5lcjv7tn5M36VJYnxxyTBu7cZCvdptFdp2Y4FjflPb6knpjMJk9jqXP062po3Q3g03HbMoz5hzZRHZ6VoMWs1dQaNgEajktAOe40=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b=I8IyydGQ; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UqutqlGJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=83zqbI+x0U8gPtjXear3SquLiO46uugWTwSYAMtbREo=; b=UqutqlGJIvxUsGizH3OmMYEY79
-	1gUkhNTP6dnsG+xmSD9xemC1LTrj5vJtrHPQFCOEf8uykUCEgktMB9PRlBrgw8V9Plwa/r1N1Yhkn
-	tjB0bufEAycPO1r/FWfGxiEYGaWv8s0UhFkIlcCnfKsx7N08rKykXCsy0XjPqmxabduh/ypagv8JV
-	OJIuldAhllwqQGTb9TEsS/afmerYWy8+wPNqeO41sSu35L7UDEkVI8aawV/LmZftEmEtNxAm78bn5
-	olE6xbjjH8MHE2Vd1QBQp0bBVc/zGk2/FIviY8wWn6fzq90d4x5BM/Aq02WkJWFN87+xpfIhfuf21
-	dL2zjjyw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45812)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tnDtL-0003mS-2I;
-	Wed, 26 Feb 2025 09:39:49 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tnDt8-0006xF-1k;
-	Wed, 26 Feb 2025 09:39:34 +0000
-Date: Wed, 26 Feb 2025 09:39:34 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Furong Xu <0x1207@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thierry Reding <treding@nvidia.com>, hailong.fan@siengine.com,
-	2694439648@qq.com
-Subject: Re: net: stmmac: weirdness in stmmac_hw_setup()
-Message-ID: <Z77hVrC5Lcbxrlx8@shell.armlinux.org.uk>
-References: <Z7dVp7_InAHe0q_y@shell.armlinux.org.uk>
- <20250226104326.0000766e@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b="I8IyydGQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1740563155; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=m31gMZ7PHeDL/F4qCXEU4O3yLVCHcOVX/5y1QMYRaSweufzdT1jXwNp1dMeRmvKshBycs8FeSuzrYIv2uUQ9MVw2ubaAWczoK7ZhMBFrsgtUgkXYAKFAVsYeRXFXt69HgzrdADDKyBG/sd+18VK+VvWaVAuFap3SVHjb3koAp+c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740563155; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=r/92kSJvY1+rN7R1Wa41yTcFlIjE+7u8+6SYiP5XVx4=; 
+	b=POFs53U5pyE0qysaazZesJqL2f+JCSyzetbBgz3V4E/Q27aLKJvW+vZqCco8CNCW1ImJt2ns0PEO5IFdLrftN0IdQR3mIAsTdtB9Mpf3NMcAzj7iy6Dl4RK14ZRrtatTtATXl6WvI3lzqKsM6rM1F1JbNiDCTvaSJqUkJgivTRU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.fricke@collabora.com;
+	dmarc=pass header.from=<sebastian.fricke@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740563155;
+	s=zohomail; d=collabora.com; i=sebastian.fricke@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=r/92kSJvY1+rN7R1Wa41yTcFlIjE+7u8+6SYiP5XVx4=;
+	b=I8IyydGQEZwn7/WYgA/DfF4oMMeiC2EYo5lrBwXlRSS0/MlQq8IhONdNXcGKl+fQ
+	pl53yxiw7eWzMe4n25/m5E+ic5ghVSAylF3uFIKq4Rj9ATlGXx62JZI6jKeu0B/B8B8
+	pYCvZ1e+WdVC5PvHkjdsIImyy5EsPHAc2wIN2ang=
+Received: by mx.zohomail.com with SMTPS id 1740563153661642.0756053378082;
+	Wed, 26 Feb 2025 01:45:53 -0800 (PST)
+Date: Wed, 26 Feb 2025 10:45:45 +0100
+From: Sebastian Fricke <sebastian.fricke@collabora.com>
+To: Ming Qian <ming.qian@oss.nxp.com>
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+	shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+	xiahong.bao@nxp.com, eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
+	imx@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/2] media: amphion: Reduce decoding latency for HEVC
+ decoder
+Message-ID: <20250226094545.byr2b3p26w5vit63@basti-XPS-13-9310>
+References: <20250117075720.4018076-1-ming.qian@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250226104326.0000766e@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20250117075720.4018076-1-ming.qian@oss.nxp.com>
+X-ZohoMailClient: External
 
-On Wed, Feb 26, 2025 at 10:43:26AM +0800, Furong Xu wrote:
-> On Thu, 20 Feb 2025 16:17:43 +0000, "Russell King (Oracle)" wrote:
-> 
-> > While looking through the stmmac driver, I've come across some
-> > weirdness in stmmac_hw_setup() which looks completely barmy to me.
-> > 
-> > It seems that it follows the initialisation suggested by Synopsys
-> > (as best I can determine from the iMX8MP documentation), even going
-> > as far as to *enable* transmit and receive *before* the network
-> > device has been administratively brought up. stmmac_hw_setup() does
-> > this:
-> > 
-> >         /* Enable the MAC Rx/Tx */
-> >         stmmac_mac_set(priv, priv->ioaddr, true);
-> > 
-> > which sets the TE and RE bits in the MAC configuration register.
-> > 
-> > This means that if the network link is active, packets will start
-> > to be received and will be placed into the receive descriptors.
-> > 
-> > We won't transmit anything because we won't be placing packets in
-> > the transmit descriptors to be transmitted.
-> > 
-> > However, this in stmmac_hw_setup() is just wrong. Can it be deleted
-> > as per the below?
-> > Tested-by: Thierry Reding <treding@nvidia.com>
-> > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > index c2913f003fe6..d6e492f523f5 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > @@ -3493,9 +3493,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
-> >  		priv->hw->rx_csum = 0;
-> >  	}
-> >  
-> > -	/* Enable the MAC Rx/Tx */
-> > -	stmmac_mac_set(priv, priv->ioaddr, true);
-> > -
-> >  	/* Set the HW DMA mode and the COE */
-> >  	stmmac_dma_operation_mode(priv);
-> >  
-> 
-> A better fix here:
-> https://lore.kernel.org/all/tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com/
+Hey Ming,
 
-I don't think that addresses the issue I highlighted above, since it's
-still calling stmmac_mac_set(, true) in stmmac_hw_setup(), which I
-believe to be wrong (as per my explanation above.)
+thank you for the patch!
 
-However, the removal of setting GMAC_CONFIG_TE in the start_tx method
-looks correct to me, because:
+On 17.01.2025 16:57, Ming Qian wrote:
+>The amphion decoder firmware supports low latency flush mode for
+>HEVC format since v1.9.0, it can help reduce the decoding latency by
+>appending some padding data after every frame, then driver can enable
+>this feature when the display delay 0 is enabled.
 
-- the start_tx method is called via stmmac_start_tx(), which is only
-  called from stmmac_start_tx_dma().
+I see that you already changed the commit message for this version, but
+I still have a few recommendations for the description:
 
-- stmmac_start_tx_dma() is called from:
-  * stmmac_start_all_dma()
-  * stmmac_tx_err()
-  * stmmac_enable_tx_queue()
+     The amphion decoder firmware supports a low latency flush mode for
+     the HEVC format since v1.9.0. This feature, which is enabled when
+     the display delay is set to 0, can help to reduce the decoding
+     latency by appending some padding data to every frame.
 
-* stmmac_start_all_dma() is called from the end of stmmac_hw_setup(),
-  but we've already called stmmac_mac_set(, true) both before and
-  after the patch in the above URL, so is redundant.
+The rest looks good to me.
 
-  Incidentally, this brings the same set of questions I've stated in
-  my initial email, and to me this is wrong.
+Regards,
+Sebastian
 
-* stmmac_tx_err() can only happen when we are already active (so
-  transmission was already enabled).
-
-* stmmac_enable_tx_queue() is called from stmmac_xdp_enable_pool(),
-  which will only call this if netif_running() returns true,
-  implying that the netdev is already adminstratively brought up
-  and thus stmmac_hw_setup() will have been called.
-
-  Again, this brings the same set of questions I've stated in my
-  initial email, and to me this is wrong.
-
-
-While looking at Simon's comment, he talks about stmmac_xdp_open(), so
-I just looked at that, and found:
-
-        netif_carrier_on(dev);
-
-Then there's:
-
-        netif_carrier_off(dev);
-
-in stmmac_xdp_release().
-
-These were introduced in commit ac746c8520d9 ("net: stmmac: enhance XDP
-ZC driver level switching performance"), well after stmmac had been
-converted to phylink. Phylink documents this:
-
-16. Verify that the driver does not call::
-
-        netif_carrier_on()
-        netif_carrier_off()
-
-    as these will interfere with phylink's tracking of the link state,
-    and cause phylink to omit calls via the :c:func:`mac_link_up` and
-    :c:func:`mac_link_down` methods.
-
-So, the presence of these calls will mess up phylink, resulting in
-mac_link_up() and/or mac_link_down() *NOT* being called at appropriate
-times.
-
-However, stmmac_xdp_(open|release)() doesn't seem to do anything to
-bring the PHY or PCS up/down. This makes me wonder whether XDP support
-in the stmmac driver is basically broken, or maybe the netdev needs to
-already be administratively up (ip li set dev ... up). I don't know
-XDP as I've never used it. If that is the case, then those
-netif_carrier_*() calls need removing. Or - I say again - stmmac needs
-to *stop* using phylink. It's one or the other. A network driver
-either needs to use phylink properly or not use phylink *at* *all*.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>
+>Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>---
+>v2
+>- Improve commit message
+>- Add firmware version check
+>
+> drivers/media/platform/amphion/vpu_malone.c | 22 ++++++++++++++++++---
+> 1 file changed, 19 insertions(+), 3 deletions(-)
+>
+>diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+>index 5c6b2a841b6f..1d9e10d9bec1 100644
+>--- a/drivers/media/platform/amphion/vpu_malone.c
+>+++ b/drivers/media/platform/amphion/vpu_malone.c
+>@@ -68,6 +68,9 @@
+>
+> #define MALONE_DEC_FMT_RV_MASK			BIT(21)
+>
+>+#define MALONE_VERSION_MASK			0xFFFFF
+>+#define MALONE_MIN_VERSION_HEVC_BUFFLUSH	(((1 << 16) | (9 << 8) | 0) & MALONE_VERSION_MASK)
+>+
+> enum vpu_malone_stream_input_mode {
+> 	INVALID_MODE = 0,
+> 	FRAME_LVL,
+>@@ -332,6 +335,8 @@ struct vpu_dec_ctrl {
+> 	u32 buf_addr[VID_API_NUM_STREAMS];
+> };
+>
+>+static const struct malone_padding_scode *get_padding_scode(u32 type, u32 fmt);
+>+
+> u32 vpu_malone_get_data_size(void)
+> {
+> 	return sizeof(struct vpu_dec_ctrl);
+>@@ -654,9 +659,16 @@ static int vpu_malone_set_params(struct vpu_shared_addr *shared,
+> 		hc->jpg[instance].jpg_mjpeg_interlaced = 0;
+> 	}
+>
+>-	hc->codec_param[instance].disp_imm = params->display_delay_enable ? 1 : 0;
+>-	if (malone_format != MALONE_FMT_AVC)
+>+	if (params->display_delay_enable &&
+>+	    get_padding_scode(SCODE_PADDING_BUFFLUSH, params->codec_format))
+>+		hc->codec_param[instance].disp_imm = 1;
+>+	else
+> 		hc->codec_param[instance].disp_imm = 0;
+>+
+>+	if (params->codec_format == V4L2_PIX_FMT_HEVC &&
+>+	    (iface->fw_version & MALONE_VERSION_MASK) < MALONE_MIN_VERSION_HEVC_BUFFLUSH)
+>+		hc->codec_param[instance].disp_imm = 0;
+>+
+> 	hc->codec_param[instance].dbglog_enable = 0;
+> 	iface->dbglog_desc.level = 0;
+>
+>@@ -1024,6 +1036,7 @@ static const struct malone_padding_scode padding_scodes[] = {
+> 	{SCODE_PADDING_EOS,      V4L2_PIX_FMT_JPEG,        {0x0, 0x0}},
+> 	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264,        {0x15010000, 0x0}},
+> 	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264_MVC,    {0x15010000, 0x0}},
+>+	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_HEVC,        {0x3e010000, 0x20}},
+> };
+>
+> static const struct malone_padding_scode padding_scode_dft = {0x0, 0x0};
+>@@ -1058,8 +1071,11 @@ static int vpu_malone_add_padding_scode(struct vpu_buffer *stream_buffer,
+> 	int ret;
+>
+> 	ps = get_padding_scode(scode_type, pixelformat);
+>-	if (!ps)
+>+	if (!ps) {
+>+		if (scode_type == SCODE_PADDING_BUFFLUSH)
+>+			return 0;
+> 		return -EINVAL;
+>+	}
+>
+> 	wptr = readl(&str_buf->wptr);
+> 	if (wptr < stream_buffer->phys || wptr > stream_buffer->phys + stream_buffer->length)
+>-- 
+>2.43.0-rc1
+>
+>
