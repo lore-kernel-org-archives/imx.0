@@ -1,65 +1,65 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DC425EF9A
-	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 21:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFC825C6F9
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 21:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740605942; cv=none; b=Lds0e875BAZJOUhS57cAu1ft3jKa8r0qIAVIHslWMjf843F4XYWzZaBFI9svfuzoZw5T8k/86HxMdauIAWVk7cmFs0Y7h8QXXPjrTHXLgS0D4zd+NQHmtpdDzmueFxTxW6BKvVry34tJWP6udbeIK4GUllqyhPrhoSTkb8VVNZo=
+	t=1740606008; cv=none; b=oCRBT+8KhBc3fcaGzOjPvrKvPjFgxoSH7SgQh2iSuerrD8btipeEBypgZhqhAERxLxyjF3l3EYXjnf/GUhnZ0n3Cs+gI0PM0MJv8I9wzDombbC5Kh+QVhTvs1oSvQX1KTHY4Kvwdtqt+7X7pdwZVajjV+yxzhE2jMFRmXGq7GRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740605942; c=relaxed/simple;
-	bh=ArH4DXosS6VEtxEnXgez/2JkV2drVRXeyu1zi5Qgjq4=;
+	s=arc-20240116; t=1740606008; c=relaxed/simple;
+	bh=XmQRIyIS2TIQ3FYwT/lQVWnjUvJUJoqOY/Xxdl0Z+/s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ChZd8gBku3N0aR6PWL++ccYE9mlYIa/klgdRqH1tQ5m5Gtdx40Fdu9tQ6Ayd0KXy0KP+Y2LR62yE+szZtaI0rZxvUEPBUlVAdBmwuZ6ecf7DDsHreDZRhgk4RvN7eQNwl1ir5YmMCJUFPHDbtYphIbEY3S60M7UwxPI6rVoFaQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TXQ7pBA1; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=WK7+uhcSk3rKFA8rN1uPZyykEv6OMdcgO5jGJIaE+RDn8wdsUJBiNAGcL814aWvdnHQ+jlz/6tA3XRAmLDLLD3YOhSek9ZrNSVIqX2ObpnPvgH/QJSREz2HzketL9OOty4zVz1nBJX4fP46T+R9mbqF81X0Y10souFPNtweFjQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EHpos/zH; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TXQ7pBA1"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43938828d02so368315e9.1
-        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 13:38:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EHpos/zH"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-439999d2bbfso388415e9.2
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 13:40:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740605938; x=1741210738; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1740606005; x=1741210805; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PKWXxeyerycjT8mINlrePYKkJ8KjgafF3u1tMHpySjU=;
-        b=TXQ7pBA1YqRi6kxVwC7GD6hC6CI4M91w39Lu0g0B5H7rISh0jt1fr9KtPMDfi8qnV4
-         poIiPYDDKRpKhHH017eRhIqK0TvTCtHLvoJH1J+WMN02Yu8+TjBGeXl73wmBIQ7GAlnf
-         5z3vyoAFY7y8JehO6iUraL10Iwyo4gXQLxtBxccbPKuoaraX0X/F2oGCMhaurFxMH4gP
-         7aQ0K+RItZeWMNKLBAvpqiMWOiKBT2NqaJS06HaNPbojrFmdc/ZxFXzGtcYnVmuwyA9O
-         iaTJ0Kgg8A69+ZJU0GL9KyV1cVMTGtEcBfD2IahP9BqNZJ+i9cDJHXBpBjDd5dAMbfdA
-         MaVQ==
+        bh=JgO9NpdCEGs6Z6jBDJsgB6BtDtxW71jiKGyTEKJKCGA=;
+        b=EHpos/zH8h6uE+mGq4hP3muD0iwX2Zj3iEL2XkBVNaMJhZZb9Q1Kent8h7SEaf8Ssr
+         VJT1s8tDtqy6e/jPUwqtAC/sfBbN/MHq4sGBqrk7UEiN/AIi80jAcV/qVE4sJD7kc/z3
+         p7eqiqiCX5L6qyRQK3pf7Ap3nHq6tG+djIk6hLI2GTN7hFwnALt+9sbt5GWmilhB/bQu
+         QWOKpMAp32NdJiRQkKxqUGfoZCoNq3bk90UOcw/yHhNUux+7WwPkXdXFupnEAta5yo5e
+         nVUV7kiV3fmvfHPA+2TGOf0RHrds9+70PtRgIolornz3Ysr92Tp5Xd3VN/NC39NeGDjB
+         Gl3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740605938; x=1741210738;
+        d=1e100.net; s=20230601; t=1740606005; x=1741210805;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PKWXxeyerycjT8mINlrePYKkJ8KjgafF3u1tMHpySjU=;
-        b=EI2tb5iCZCodCndM8soUbOWZwIXm/d6KVm15LAJZrjp7u3mTHxZ4A1TmpoT4OVTGKv
-         tpJ5mVmMAscVMIV91ZudEo5m3QLrRTmJjAwnLeAwBS4CTvlZrTSiDGJCFnFLc1ZBh4au
-         sZFrFDoDkL38cu6k+nwdw6C62eQc3vn1wr4BKxq7xC3W6B71LLuiTsp8iyAAA95BXJmE
-         7OS5kp49zLzC8Qb4BunCKbb2gZcRvjM0woUX+aHWD/Zdp2icYgTKuYdak3V5LRKyndZt
-         0JQEgZ8XO0q24b6W8rf8mVknDWdlVA2l7e4fo770jM7aEj6LDSlFRxSmp6pNIxxuvQUU
-         CqrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGamPDtI/3I6RVO6Rrzf6f5fBfmNiFCF+g0dq3Sd7CTUyBehEx+SocQ5IhIAqzWLvAADc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwIg78yxDrEFsll7fE4kOMJGABhMuS8iuv+6jofUu1e2gh9+TPz
-	gld7EBqBK4e+OmBg5sQR0iO+uK+G9cODdBJ3m4Lum6Lh80uzYqcuGsLIuLbLOtA=
-X-Gm-Gg: ASbGncuXtK3Y4CHdv7RpwQLgrbnNmGpNmDDotbf8tT2/8wOUg2wW2Lh9Tk2KcVr1EeH
-	hYGnkfl8Jb2vLxL22yso55y9NOOMrWpAJGaFsZ3rQhA3HdCULppjDZWBbttTow2d4IUF86MKLjM
-	adU/Tf5STy/XtdPMRTgNIhUCLJEXxwDOeDTp++PzkPsCa5VLQZQQHS0XuIMYACAlB92b4P8WNbj
-	EoIiHJXbYzPpLVWhZyEWqiXodRa8J0BMbFiQPRvSr6gZ136SEvpFAIxiXdAZuZVGrFoZISasfSX
-	FSaEQV3Iu/I4AXDlCT2MNpbbC246/a+Wjpf9rxD5cMua1A==
-X-Google-Smtp-Source: AGHT+IGl7z2yXYQHS8gtgp/PqAYtjqjx8GIvMA1PyfTi0fvGywrgelfkuzD4zx0PHjsiR/DbwpgGzg==
-X-Received: by 2002:a05:600c:1d25:b0:439:930a:5899 with SMTP id 5b1f17b1804b1-439ae22991cmr84882045e9.7.1740605938535;
-        Wed, 26 Feb 2025 13:38:58 -0800 (PST)
+        bh=JgO9NpdCEGs6Z6jBDJsgB6BtDtxW71jiKGyTEKJKCGA=;
+        b=Bru2m3nch+xh/nBugyIBtZsWpPQvytf4tfuESkxYMY7Xt0Y/KMGKn4IjEPxGtH5roj
+         CYR2zId+vWPunmHeAPE8ztFeDSXs8uAIkKtHHKTyARcPPb2kb2moL6THs/AnmcY3Ogtx
+         JctUQwylp2AcKJr5xyHyrkul7NhLymRMCzoZ3wkdLXroLjuFbCuPw2yzrsxYBbCTFrO0
+         WuTyi5BlnMskiZf4IxxsmnuNulj37Ki+XNyoOAyTw5IYqhrvvzWIlUcZ5W2V8UVedvWy
+         9ThEtc7HA/+/ht1HfQ2dEdbP7CUQWP3bf4P+9EFHq2eO+ItoirtAqNypaMG8WXsLs0jY
+         4hOg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIngRlOL+lRE8C9arPXOkfgDWUE+OOk1Q0XTRhUa4SRx8KatxVjgCIvJNbRnEBMoupqls=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJFLzheLLIiOQYTqVV3pGOV52JGOVpH+M0NMkBz1H3jFxFiJ1i
+	w7M4B45/0aCE6oa0r3E70f/omu8AD5gQHxs6QEZGItAdjefAAeGR24+C4uv9hdc=
+X-Gm-Gg: ASbGncvzWQQPgO4fpjrxeRt8pTEbztLnHdG4ZbfqHTfayc3MqY/tRH+MJzrT3NgZwdq
+	tUofiG+kKbJt+NPvKtHEb3aU24o2yQPa+K1496W+jVKDvigDdUY47g9xD4jUCi1TZR2kYywIaQY
+	/hbrbFVHgRJvr3SHUPsHzgNub1mHVb2v3Pt3tB9vPTHORT+w6b6lr1WHrQobrMprre1pJQxdxeI
+	Wljv3okkQQkaCsU/eM8AAzmjaktixiKFEG1N1jaRkFL5PT4fjZHfsp99tUNR8GHx7QsAF7u228Y
+	b72b2SdME21/+xrBUpdYfHMzYshvOHBsdfxKUElK+egyNw==
+X-Google-Smtp-Source: AGHT+IH5K8VXJUv24C/joRhmZsMKIJdarB1HjHPAB90m4NhFdVMZeL3+c4slkqthb1e8MrMy4FkHHw==
+X-Received: by 2002:a5d:6d8e:0:b0:390:e150:96b8 with SMTP id ffacd0b85a97d-390e1509a57mr323111f8f.6.1740606004983;
+        Wed, 26 Feb 2025 13:40:04 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.206.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b736f839asm2112905e9.2.2025.02.26.13.38.55
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47960b6sm67703f8f.17.2025.02.26.13.40.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 13:38:57 -0800 (PST)
-Message-ID: <6db6b361-caed-42f4-b319-2b8cd43a73b5@linaro.org>
-Date: Wed, 26 Feb 2025 22:38:54 +0100
+        Wed, 26 Feb 2025 13:40:04 -0800 (PST)
+Message-ID: <ac6a461b-44f3-414e-b5a2-2d5a0a87cdf8@linaro.org>
+Date: Wed, 26 Feb 2025 22:40:01 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,13 +67,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] media: dt-bindings: Add Sony IMX728
-To: Sebastian LaVine <slavine@d3embedded.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?=
- <nfraprado@collabora.com>, Abel Vesa <abel.vesa@linaro.org>,
- Achath Vaishnav <vaishnav.a@ti.com>,
+Subject: Re: [PATCH 2/4] media: i2c: Add driver for Sony IMX728
+To: Sebastian LaVine <slavine@d3embedded.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
+Cc: =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Abel Vesa <abel.vesa@linaro.org>, Achath Vaishnav <vaishnav.a@ti.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
  Ard Biesheuvel <ardb@kernel.org>,
  Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
@@ -102,9 +101,9 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  Vignesh Raghavendra <vigneshr@ti.com>, Will Deacon <will@kernel.org>,
  Zhi Mao <zhi.mao@mediatek.com>
 References: <20250212195656.69528-1-slavine@d3embedded.com>
- <20250212195656.69528-2-slavine@d3embedded.com>
- <20250213-shrewd-tacky-chachalaca-778a50@krzk-bin>
- <D82KGJEBFQO0.1TX611HMKWB16@d3embedded.com>
+ <20250212195656.69528-3-slavine@d3embedded.com>
+ <416d75fd-40d0-45d7-9590-0322abb480ca@linaro.org>
+ <D82NHO05EBSQ.3AZF1VYBU17V5@d3embedded.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -151,49 +150,30 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <D82KGJEBFQO0.1TX611HMKWB16@d3embedded.com>
+In-Reply-To: <D82NHO05EBSQ.3AZF1VYBU17V5@d3embedded.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 26/02/2025 18:50, Sebastian LaVine wrote:
-> Hello Krzysztof,
-> 
-> On Thu Feb 13, 2025 at 4:26 AM EST, Krzysztof Kozlowski wrote:
->> On Wed, Feb 12, 2025 at 02:56:53PM -0500, Sebastian LaVine wrote:
->>> Adds bindings for the Sony IMX728.
->>>
->>> Signed-off-by: Sebastian LaVine <slavine@d3embedded.com>
->>> Mentored-by: Stuart Burtner <sburtner@d3embedded.com>
->>> ---
->>
->> Please run scripts/checkpatch.pl and fix reported warnings. After that,
->> run also 'scripts/checkpatch.pl --strict' and (probably) fix more
->> warnings. Some warnings can be ignored, especially from --strict run,
->> but the code here looks like it needs a fix. Feel free to get in touch
->> if the warning is not clear.
-> 
-> The only output I get from scripts/checkpatch.pl for this patch is the
-> following:
-> 
->> next$ scripts/checkpatch.pl --strict  patches/outgoing/0001-media-dt-bindings-Add-Sony-IMX728.patch
->> WARNING: Non-standard signature: Mentored-by:
->> #9:
->> Mentored-by: Stuart Burtner <sburtner@d3embedded.com>
->>
->> total: 0 errors, 1 warnings, 0 checks, 108 lines checked
->>
+On 26/02/2025 21:13, Sebastian LaVine wrote:
 >> ...
+>>
+>>> +
+>>> +static int imx728_set_stream(struct v4l2_subdev *sd, int enable)
+>>> +{
+>>> +       struct imx728 *imx728 = to_imx728(sd);
+>>> +       int ret;
+>>> +
+>>> +       mutex_lock(&imx728->lock);
+>>
+>> Just use guard. That's actually perfect candidate.
+>>
 > 
-> I can change this to a Signed-off-by from Stuart if you would like,
-> though I feel that Mentored-by is applicable to this case.
+> Okay -- I'll include this change in v4. I'm not so familiar with using
+> this interface, so please let me know if this is incorrect:
+> 
 
-It has been two weeks, so I don't remember what warning I saw (countless
-of patches in between). It's possible I had in mind the "mentored-by",
-because it's nowhere explained in Linux. Does it mean part of DCO chain?
-Does it mean reviews or suggestions? This should be one of standard
-tags, IMO, with all its effects (because tags have meaning, e.g. DCO or
-reviewer's statement of oversight).
 
+Yes, looks fine.
 
 Best regards,
 Krzysztof
