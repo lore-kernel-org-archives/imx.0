@@ -1,128 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23CE2222CB;
-	Wed, 26 Feb 2025 14:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053CC22171E
+	for <imx@lists.linux.dev>; Wed, 26 Feb 2025 14:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740581303; cv=none; b=V0bRN+qdZC2UKLtihRWITOdkurUw55rZqhCZZhkCT3DkJZqOAnQ7cE+DvLbT5JG6kBuz0VK8w3fPsU+egiBOOy0kX8RXAh/inVIvRPVMBV8ZRgm/0ng3xck/HqsLVwOUQ+t4k1KRcxpd/JoUgSc1mt5ttZUqjgmJiojv0+7e2/g=
+	t=1740581743; cv=none; b=Re5VMcFI7v6EFwoAjsQTwGYG0FL9sPMGKvHUhq11fO2wqOiTNARa+o15OEoyyNP4HG53W86YhD6VyrwsbtrXeEkEY/QSCTP/Dj639u+Fw4tudGgdiWib7j6xZjcp1xYN8Z/wwebgFEqiDVusnY0ENEN+rS2i44jV6yzSvywO1sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740581303; c=relaxed/simple;
-	bh=0kWYmB/zokqmJ9Xk1NaO2fJR2wQi5MCDrrTHi5pb4GI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+morXbJe87ZDMvCMgZwsjBRPVAU06hWtRa4UgRXkMQzWP3izYQvdI4JjIVfT1FYcpRqwKsF9CJEAv/ACxhXujqeyG98qo0lUcpcSwfjp6iThnReeyNgi9jbDCyZKV38i/em9oB95DgVYs/adC60ML/NLJDs2YcrWIPWb1vnKjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ei0b9YtU; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ei0b9YtU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C32C4CEEC;
-	Wed, 26 Feb 2025 14:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740581303;
-	bh=0kWYmB/zokqmJ9Xk1NaO2fJR2wQi5MCDrrTHi5pb4GI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ei0b9YtUHY3RZh/d2khLUG5C74xzOhBX1EAlmeWMT3qMtUbccY5JK3IHd5f+69Tjn
-	 U5AGfaZbZo/+Q8ZOiDWEORqcb7vBkCRsvsn4sUS9qG7d9vyDXFu//LUkIU0gcse6o0
-	 FU8irzW9zoTkpDzXPXiyNzuoo/5F0b+UP0Jdp3P1cykHscDpzEyDZhDqFcxErlGDP4
-	 QfFuISqvCfQIerRJk7hKmAkB8r3Y7CBPKWFklXXrxZmX2YHYp6wPuh2rgHo/aoDwwS
-	 moSj0GKQWflQP2QWx/b8IwaOrbXv3R+W2+A+4x0mJEFkQdC3GI4BTonmi0LyRp4GoB
-	 55upu3YK9Edkg==
-From: Maxime Ripard <mripard@kernel.org>
-To: Joel Stanley <joel@jms.id.au>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Stefan Agner <stefan@agner.ch>,
-	Alison Wang <alison.wang@nxp.com>,
-	Xinliang Liu <xinliang.liu@linaro.org>,
-	Tian Tao <tiantao6@hisilicon.com>,
-	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	John Stultz <jstultz@google.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Marek Vasut <marex@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1740581743; c=relaxed/simple;
+	bh=kqe+6WP8zwuAM8lStwswFPaBIe7m1+DTxkz3F6unuCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YVAL1NGPYylcy51VEB0Id9udYiAqgpY79q1XJtsCbpCmMJpx1rkWfxSsIHGeOxp55+vYIJfbAedaWAxeOhCjbW8zMexaR7J9U6MqCDBseSAeNZ408jjewx89dpHqIIPjR3goJqRWulg0EdhctlTWIb8Ip3DKvdGRibhVAYkMmN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-220bff984a0so147943245ad.3
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 06:55:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740581741; x=1741186541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qygdnn8/rGb3p7MtdeT/GcR8Vsv7irPMGDAbFAo9qWg=;
+        b=uG5OZPVB35CKrnx0wKQo+1udkpfmw2MJiblkf+tcIXAhcaPNcYF+moAB5MPLeca8N+
+         SIfZPaqy//4upHaeGx62VpYzaJReOoHobQ+AhBHneo53BrOZeFFf8TZEZjJsxy2L//cU
+         0T86XHJmLanHhPIIjAHQhHSRElaTQcI8fzFcgNaVhSg+fgXjeogxeUQeP5NKqN57OoTC
+         ctgV8NUKVPuwyzX/Wrnfe/gMl/GcuykDkL1vKZMm9ohMNdLgvHmAo1ByuRTb5yTDPeBp
+         /04i28NRP3KqIJ9VV1ez113zlgCnZJbUdjeDEd0uzskSLzpIji3JCGprqRkCl0+b4gGA
+         DpGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUB3N/hWSNXn7t61UdYe/MbEtKu2XVEKX6pBZnOMlKJlxXKAn1GlrlkVHi9jGpmENFnX/g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzFHl+TJuA3KOtylb2lEEP86tR+Oy7cjZB/N2tOkjOdBYAwqJsq
+	91FMKYoYNLJX3Vr6xhLTQ2TIXQAkUcp6amhuDwNCHofDE4a64Dw1qeQGKMGbqiQ=
+X-Gm-Gg: ASbGnctZjKJnTq/dwcP0muBDSLFrI+KMF0YJCrVPA13r/pc7hyD6BAPIcMSUdWlwDmy
+	JAOQa/1BwQyCbUzkx3VXT/yvj1CBt98EiIcz3ViXCQ+uzjvO8IVI0pvq4OM0ogv1CY+EPtC/R2Y
+	5Cv0K72oASiIZMctDyAFrxSzeGctCZH/ULIv/A0At6HXVksU/EIr6AechwUFFj2Ke/Wu/QOf1+m
+	387Jld10dNd9HNQLUI1wkVHxCd0iHr/rs/n5Go6haWX1Cz8PA8FO+KkWSOgq4/wxifCJz/mtdov
+	KJZmWSmrMVMFWySADUmKLqYLoev591W9WSjp8TJIYCAS+usBDgMHllBOIBRc
+X-Google-Smtp-Source: AGHT+IHpReDZSPPm6VjjIZPy7MkI2n87DOyqv+KvtWFP7LuZsR9/Xzl8+SaiWZs9PmK6WFRJ4senxw==
+X-Received: by 2002:a05:6a00:1709:b0:732:2967:400 with SMTP id d2e1a72fcca58-7347910977emr12444159b3a.12.1740581741225;
+        Wed, 26 Feb 2025 06:55:41 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7347a6f761fsm3544593b3a.47.2025.02.26.06.55.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 06:55:40 -0800 (PST)
+Date: Wed, 26 Feb 2025 23:55:39 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
-	Yannick Fertre <yannick.fertre@foss.st.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
-	Philippe Cornu <philippe.cornu@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Anusha Srivatsa <asrivats@redhat.com>
-Cc: Maxime Ripard <mripard@kernel.org>,
-	linux-aspeed@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: (subset) [PATCH RESEND 11/12] drm/vc4: move to devm_platform_ioremap_resource() usage
-Date: Wed, 26 Feb 2025 15:47:57 +0100
-Message-ID: <174058126147.2737122.5690208783260352743.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250225-memory-drm-misc-next-v1-11-9d0e8761107a@redhat.com>
-References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com> <20250225-memory-drm-misc-next-v1-11-9d0e8761107a@redhat.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 1/3] dt-bindings: PCI: fsl,imx6q-pcie: Add optional DMA
+ interrupt
+Message-ID: <20250226145539.GA3691935@rocinante>
+References: <20250225102726.654070-1-alexander.stein@ew.tq-group.com>
+ <20250225102726.654070-2-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225102726.654070-2-alexander.stein@ew.tq-group.com>
 
-On Tue, 25 Feb 2025 17:20:52 -0500, Anusha Srivatsa wrote:
-> Replace platform_get_resource_byname + devm_ioremap_resource
-> with just devm_platform_ioremap_resource()
-> 
-> Used Coccinelle to do this change. SmPl patch:
-> //rule s/(devm_)platform_get_resource_byname +
-> //(devm_)ioremap/devm_platform_ioremap_resource.
-> @rule_3@
-> identifier res;
-> expression ioremap;
-> identifier pdev;
-> constant mem;
-> expression name;
-> @@
-> -struct resource *res;
-> <+...
-> -res = platform_get_resource_byname(pdev,mem,name);
-> <...
-> -if (!res) {
-> -...
-> -}
-> ...>
-> -ioremap = devm_ioremap(...);
-> +ioremap = devm_platform_ioremap_resource_byname(pdev,name);
-> ...+>
-> 
-> [...]
+Hello,
 
-Applied to misc/kernel.git (drm-misc-next).
+> i.MX8QM and i.MX8QXP/DXP have an additional interrupt for DMA.
 
-Thanks!
-Maxime
+Applied to dt-bindings, thank you!
+
+	Krzysztof
