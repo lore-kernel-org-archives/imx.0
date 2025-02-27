@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44A270023;
-	Thu, 27 Feb 2025 18:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8889270023;
+	Thu, 27 Feb 2025 18:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740681527; cv=none; b=hpT+fP50W3uauLKdGDR7/ecx3KedbkDHEh985r5N5QvShazTUnNnDHMn9KBsBe9ByR3YXZkn0np5BK4e15YfChGR4WOJOR4adjLWIeYnumSrRQv4Y6n/yIxqVe2RMMqzsLagn/R29X07Q1nbKx0ENM8hXsiuMdOAFJwreXHpW24=
+	t=1740681527; cv=none; b=FFc7uDLAJOEL9GA2Okcyu+ONN5UEnJwl5EWd5TemFIqrF3jHYMMcnQLkNpJ9T8EB8cXTORp6DLK21AOSJKPF/Hk9FVgBjJ4UN4cxChH8dGY38Zy29+1iSFkLu5mpWMI3SNI6xQmS2VaBGj0TtIL32UeCjBx93anMdXD0I9WF74M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740681527; c=relaxed/simple;
-	bh=ZEh0HdUPc37gEQdO1Yx/0m4K8N8QNoJ4XE94JSmyAUQ=;
+	bh=Z+caVF3WAY2knsCtcAjSC7EXLJEDrKmetnCISZqADto=;
 	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=ujWJl/2k32OeujL0HIQ5ff7F4Oc4/4uuBEJ0sAqMCNlEyVqIUdQ19w3OeMagqilAU6pFdyUYOQWSrnuGsMVnD0qCU4vIltNhJM9TGSJRlUEcK6uuyeepR0b90zuKHT1UW5xqbHQiMLQvM3jlOjzaCBXQg0WmtWxWWlvq9iVaSMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGbhO7gH; arc=none smtp.client-ip=10.30.226.201
+	 Message-Id:Subject; b=bnU/e0zaCr9uETQyC73ju7D9HNnrj7eaMOjBvAUXN23EVVhjBhOhi2Hjlre8jtWFDfUpx1lM06JgQGuwHcGncflxmi6NWyHV+a2+dBsGF0fhl/0sbekYi0EM8NA3SbUqNcPCyRhTy2INbh7CTm/88+CLTtQ+LqC6P20sTMPoH0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0dFvaV7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGbhO7gH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763AFC4CEE6;
-	Thu, 27 Feb 2025 18:38:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0dFvaV7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333F6C4CEDD;
+	Thu, 27 Feb 2025 18:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740681525;
-	bh=ZEh0HdUPc37gEQdO1Yx/0m4K8N8QNoJ4XE94JSmyAUQ=;
+	s=k20201202; t=1740681527;
+	bh=Z+caVF3WAY2knsCtcAjSC7EXLJEDrKmetnCISZqADto=;
 	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=FGbhO7gHJzXUFnJvil2Z/hNik5CP824c9iXnrwFxeS6bvvm065zFRSAUXn2XGChVw
-	 vMDYP2iEXww5CDxkLwLFmG+QVX81Zqpvf7e6oQiSmVW+Doop55Vft930CC47G2ZmAE
-	 XeRvCl8LlRixsPk7hr8j22yXmhrKOFMmFuMy16LmjdFPtFosmE+dYxjmkFNA6Mwkoe
-	 JHoUtXwxQWwAmyu+YYLKK3pnV0rbXwh152+IMJdXzuaZ4I08OvokN/a7EOp3TNT9/l
-	 MxoUt9KXcQPRyUlyAERV4Nwp4JT/vYyrqce4Cv4oiJId+0qUnlleaiN3LprxnmZ0gL
-	 p/FLINMGKEUYA==
-Date: Thu, 27 Feb 2025 12:38:43 -0600
+	b=K0dFvaV768MG9I4/TmzvJjYmxtETOpnaffL7ns6oEJdi9HKOEQhS2q1IUraAj8j01
+	 0JghJJYNPVjxMmyMwljsL/Md1nqoABcOmYcB5BoCHyAfkoaXYOHycTOtiTZKXlKdav
+	 /F3bwBTVyEzTIvkC16xSMH1yDWfricDLqixMLDW0b3nTxyyS11BznZMoOJ+Zu/UIgg
+	 gMJ2SBNeHE+K32sVE9vQqTny0c1g2+ROndctN6sogrT4ha7JVb7HOiz3KvyKYhdS7E
+	 chcUldFeBAS6npmMbclOBoILZHrMLz6TFlYRUd1F9S8LBPJqjxe0In/+s27POxoCfm
+	 F6x2H4O24GVxw==
+Date: Thu, 27 Feb 2025 12:38:45 -0600
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -36,32 +36,32 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, Sebastian Reichel <sre@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Liviu Dudau <liviu.dudau@arm.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
+ linux-arm-kernel@lists.infradead.org, 
+ Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+ David Airlie <airlied@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ devicetree@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>, 
+ Shawn Guo <shawnguo@kernel.org>, dri-devel@lists.freedesktop.org, 
  Boris Brezillon <boris.brezillon@collabora.com>, 
- Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, 
- Steven Price <steven.price@arm.com>, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Steven Price <steven.price@arm.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, 
+ Sebastian Reichel <sre@kernel.org>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Maxime Ripard <mripard@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+ Fabio Estevam <festevam@gmail.com>
 To: Marek Vasut <marex@denx.de>
-In-Reply-To: <20250227170012.124768-4-marex@denx.de>
+In-Reply-To: <20250227170012.124768-8-marex@denx.de>
 References: <20250227170012.124768-1-marex@denx.de>
- <20250227170012.124768-4-marex@denx.de>
-Message-Id: <174068152031.3906478.5706475681847116220.robh@kernel.org>
-Subject: Re: [PATCH 3/9] dt-bindings: gpu: mali-valhall-csf: Document
- optional reset
+ <20250227170012.124768-8-marex@denx.de>
+Message-Id: <174068152164.3906545.6393185343383919273.robh@kernel.org>
+Subject: Re: [PATCH 7/9] dt-bindings: gpu: mali-valhall-csf: Document
+ i.MX95 support
 
 
-On Thu, 27 Feb 2025 17:58:03 +0100, Marek Vasut wrote:
-> The instance of the GPU populated in Freescale i.MX95 does require
-> release from reset by writing into a single GPUMIX block controller
-> GPURESET register bit 0. Document support for one optional reset.
+On Thu, 27 Feb 2025 17:58:07 +0100, Marek Vasut wrote:
+> The instance of the GPU populated in Freescale i.MX95 is the
+> Mali G310, document support for this variant.
 > 
 > Signed-off-by: Marek Vasut <marex@denx.de>
 > ---
@@ -87,8 +87,8 @@ On Thu, 27 Feb 2025 17:58:03 +0100, Marek Vasut wrote:
 > Cc: imx@lists.linux.dev
 > Cc: linux-arm-kernel@lists.infradead.org
 > ---
->  .../devicetree/bindings/gpu/arm,mali-valhall-csf.yaml          | 3 +++
->  1 file changed, 3 insertions(+)
+>  Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
 My bot found errors running 'make dt_binding_check' on your patch:
@@ -100,7 +100,7 @@ dtschema/dtc warnings/errors:
 
 doc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250227170012.124768-4-marex@denx.de
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250227170012.124768-8-marex@denx.de
 
 The base for the series is generally the latest rc1. A different dependency
 should be noted in *this* patch.
