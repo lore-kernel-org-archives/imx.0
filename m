@@ -1,35 +1,35 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782581D4335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D7614E2E2
 	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 17:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740675655; cv=none; b=iWZnGa+wg3h0LP3FAWwzAjsgBqhDaCXAb+K93wwViAHPpLPPSs873fqjpEBWbumElZQ0/OrTZtnJs0tHjxTKjbLJUzArZQ+4skEaqq9AHYgCx5rR30S1+BToIURhJw+Ypz3eCi3M0QvpB0HJbU+Ceb6j+TtAEbKkGHyoL3NB2X8=
+	t=1740675655; cv=none; b=qAHX8B96feFVF1DSkC1IdBL2AgemiaUVvE/ySbl0FPOw5eBuHHoVsaVX3orC7/7w9IPVJEaKNRCSpkARdCjCufMH9WWv1HJXQk9c+1SETc6vroGxA1aKKoMi530Yoqjm/mvRdlf4qrwDI1oFTMuxOQIopT0179wZd2x7gXiOXiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740675655; c=relaxed/simple;
-	bh=aOLdfrJgG4xijrWsw1Q6AbfF+TEncusrKqqhCnXwUoo=;
+	bh=ljKfgJCVimgtdvN53O6i8tuaaRPgqVXVzu89sWou08s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCqoCbY+4CTjBHSceID+757hd++hh6FjqLvDTCkf3EgacM+IMgOXyqnZDhdIUZ+FdhasgU1rPLPal7xy7icQcleq6Rj+kjHMler47znokH4SEMGh6KrAc3KJkAYy4XnW/n9m3w2KGlMIrnTv65e//NHEhMbHXNW5d5cdFEvDvvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=KQNxjRXp; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=JbqGry1km6Heiv4YuR9uvRiiZ4F7Fx0Xu1dI88v8hdaBHk9IOBsB/RjfexvmgGpQR/VKQcLTTDveJMjeV16i/9LkpZRLUOOO+p2fDoiowtafjdijBF+DCVMcEl418cMk0SspDm/03/kegT3VJw2pgjdwZkvFuGT+DH8NuBaDWKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=C9u7OYl/; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="KQNxjRXp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A02410382F1A;
-	Thu, 27 Feb 2025 18:00:43 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="C9u7OYl/"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3656710382F22;
+	Thu, 27 Feb 2025 18:00:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740675645;
+	t=1740675650;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q+0tAWt+Qjct3O4SDcG8rZZ2o6M/LcHVGvtP3po6lSY=;
-	b=KQNxjRXpcvJbz9cgkcZQoHo9j6WJlFA4+eHsi+79LIXltTLb8A2GR9urWj7yMW/wa4fC++
-	O7re390e2VOV3buJ5/H6NnTQ2nJ9lhtq8tQ8dJKEU9I6CIgBgfQpklf8Qh1wkKodqvMZgY
-	1kXjSslr0OIIA+HI6ZwkwsQA9/bl3iTU5+jCdZ4O3fei8TLnvxUThvGT7PIe3I+tUxP5WX
-	uCsYX7xWdJ0IziUY+ZGVfNDARw9uFflLV38qjFs/KZGwnouYXYptpWA0Yr68dV5dhbd45a
-	608JCAPJkOQTBgxfxoEMdJe/nPXD4hDYp6Xxg/Og7YOgn2xnNNJQp0hfdSF7Pw==
+	bh=Cr2T/qLGB0lwW96DWD8/vn79iF6uSlhDoMgeSvZtY94=;
+	b=C9u7OYl/kCgGFNXv4fgqJPN5xUljK3pSWs9pfuRzXI7Z2Ok0IBxAIkJopoHgkFZgm6oqU3
+	RCT16E2KiWU/pBZFZtinFrdrOjU4CwXCJ79ddZzqAMPLHKQbhE8Rp3StAkdrXd1XhudYkR
+	8qmj+dtW3bJRAPRzmWkRKEKPfeBzPvH6kvZoJncJslrOSam6RzGrFcCpRo7DqQzUKgZ0ic
+	18ZNB0MGmhVymPTifxaRH30Sh2K4PEQ1iWAgjRoTwMpo+lbc0iw1xK0q+A61eShDVoy4Hn
+	GLmr37DUmqNoMpgGNpAqK/Crt1lqH8WDAX1KoeoFZqhJHp2F8ys6kyFrv9dOjw==
 From: Marek Vasut <marex@denx.de>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -53,9 +53,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	devicetree@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev
-Subject: [PATCH 1/9] dt-bindings: reset: imx95-gpu-blk-ctrl: Document Freescale i.MX95 GPU reset
-Date: Thu, 27 Feb 2025 17:58:01 +0100
-Message-ID: <20250227170012.124768-2-marex@denx.de>
+Subject: [PATCH 4/9] drm/panthor: Implement optional reset
+Date: Thu, 27 Feb 2025 17:58:04 +0100
+Message-ID: <20250227170012.124768-5-marex@denx.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250227170012.124768-1-marex@denx.de>
 References: <20250227170012.124768-1-marex@denx.de>
@@ -70,7 +70,7 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 The instance of the GPU populated in Freescale i.MX95 does require
 release from reset by writing into a single GPUMIX block controller
-GPURESET register bit 0. Document support for this reset register.
+GPURESET register bit 0. Implement support for one optional reset.
 
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
@@ -96,65 +96,99 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- .../reset/fsl,imx95-gpu-blk-ctrl.yaml         | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/reset/fsl,imx95-gpu-blk-ctrl.yaml
+ drivers/gpu/drm/panthor/Kconfig          |  1 +
+ drivers/gpu/drm/panthor/panthor_device.c | 23 +++++++++++++++++++++++
+ drivers/gpu/drm/panthor/panthor_device.h |  3 +++
+ 3 files changed, 27 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/reset/fsl,imx95-gpu-blk-ctrl.yaml b/Documentation/devicetree/bindings/reset/fsl,imx95-gpu-blk-ctrl.yaml
-new file mode 100644
-index 0000000000000..dc701bd556c0b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/reset/fsl,imx95-gpu-blk-ctrl.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/reset/fsl,imx95-gpu-blk-ctrl.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/gpu/drm/panthor/Kconfig b/drivers/gpu/drm/panthor/Kconfig
+index 55b40ad07f3b0..ab62bd6a0750f 100644
+--- a/drivers/gpu/drm/panthor/Kconfig
++++ b/drivers/gpu/drm/panthor/Kconfig
+@@ -14,6 +14,7 @@ config DRM_PANTHOR
+ 	select IOMMU_IO_PGTABLE_LPAE
+ 	select IOMMU_SUPPORT
+ 	select PM_DEVFREQ
++	select RESET_SIMPLE if SOC_IMX9
+ 	help
+ 	  DRM driver for ARM Mali CSF-based GPUs.
+ 
+diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+index a9da1d1eeb707..51ee9cae94504 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.c
++++ b/drivers/gpu/drm/panthor/panthor_device.c
+@@ -64,6 +64,17 @@ static int panthor_clk_init(struct panthor_device *ptdev)
+ 	return 0;
+ }
+ 
++static int panthor_reset_init(struct panthor_device *ptdev)
++{
++	ptdev->resets = devm_reset_control_get_optional_exclusive_deasserted(ptdev->base.dev, NULL);
++	if (IS_ERR(ptdev->resets))
++		return dev_err_probe(ptdev->base.dev,
++				     PTR_ERR(ptdev->resets),
++				     "get reset failed");
 +
-+title: Freescale i.MX95 GPU Block Controller
++	return 0;
++}
 +
-+maintainers:
-+  - Marek Vasut <marex@denx.de>
+ void panthor_device_unplug(struct panthor_device *ptdev)
+ {
+ 	/* This function can be called from two different path: the reset work
+@@ -217,6 +228,10 @@ int panthor_device_init(struct panthor_device *ptdev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = panthor_reset_init(ptdev);
++	if (ret)
++		return ret;
 +
-+description: |
-+  This reset controller is a block of ad-hoc debug registers, one of
-+  which is a single-bit GPU reset.
+ 	ret = panthor_devfreq_init(ptdev);
+ 	if (ret)
+ 		return ret;
+@@ -470,6 +485,10 @@ int panthor_device_resume(struct device *dev)
+ 	if (ret)
+ 		goto err_disable_stacks_clk;
+ 
++	ret = reset_control_deassert(ptdev->resets);
++	if (ret)
++		goto err_disable_coregroup_clk;
 +
-+properties:
-+  compatible:
-+    - const: fsl,imx95-gpu-blk-ctrl
+ 	panthor_devfreq_resume(ptdev);
+ 
+ 	if (panthor_device_is_initialized(ptdev) &&
+@@ -512,6 +531,9 @@ int panthor_device_resume(struct device *dev)
+ 
+ err_suspend_devfreq:
+ 	panthor_devfreq_suspend(ptdev);
++	reset_control_assert(ptdev->resets);
 +
-+  reg:
-+    maxItems: 1
++err_disable_coregroup_clk:
+ 	clk_disable_unprepare(ptdev->clks.coregroup);
+ 
+ err_disable_stacks_clk:
+@@ -563,6 +585,7 @@ int panthor_device_suspend(struct device *dev)
+ 
+ 	panthor_devfreq_suspend(ptdev);
+ 
++	reset_control_assert(ptdev->resets);
+ 	clk_disable_unprepare(ptdev->clks.coregroup);
+ 	clk_disable_unprepare(ptdev->clks.stacks);
+ 	clk_disable_unprepare(ptdev->clks.core);
+diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
+index da6574021664b..fea3a05778e2e 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.h
++++ b/drivers/gpu/drm/panthor/panthor_device.h
+@@ -111,6 +111,9 @@ struct panthor_device {
+ 		struct clk *coregroup;
+ 	} clks;
+ 
++	/** @resets: GPU reset. */
++	struct reset_control *resets;
 +
-+  clocks:
-+    maxItems: 1
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  '#reset-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - power-domains
-+  - '#reset-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    reset-controller@4d810000 {
-+        compatible = "fsl,imx95-gpu-blk-ctrl";
-+        reg = <0x0 0x4d810000 0x0 0xc>;
-+        clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
-+        power-domains = <&scmi_devpd IMX95_PD_GPU>;
-+        #reset-cells = <1>;
-+    };
+ 	/** @coherent: True if the CPU/GPU are memory coherent. */
+ 	bool coherent;
+ 
 -- 
 2.47.2
 
