@@ -1,35 +1,35 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07ED1DDC16
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DB91DBB37
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 17:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740675662; cv=none; b=By9jgVCO1XVTt1syqLrrrHNwm4+bJa9sInmZarK6TwKMXON5Ca8clhrWeTApKnq4nOEQ/Pc3JUrlJSsO5MM+JjV6AJloD/U4oz2NT2Jq5wsae77imYL3N6ZXpfFPD6zssG4p9xgHnM5lRGBfBpHXW4xxmDLmpUCgu7AdVCY3s2I=
+	t=1740675664; cv=none; b=WzgBrnV3vb9RpOnpTek8HDNUgB7gRXLTvGeNuKI48ehPBR0eyCHITI69at5rGJam1McgKOgaIOKNsAnyRz68biQ6eN7yXfWzZ5ke0fvfiHXlAyTGYPg10grip49QFg2lzAvEYO0VKfm8vOIcTXXLBvio4+jRhMl+a1+wtXki7FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740675662; c=relaxed/simple;
-	bh=BSgCx7NE6nrinVvv1LAiEbgFR+HeYzjL62HCTacxYjo=;
+	s=arc-20240116; t=1740675664; c=relaxed/simple;
+	bh=Tpj2kAyKeMlsVqLzWxWNh4wDresVNbiRTFb9TM6WUzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqZfMRYItIT6ZBn/3i6/uH935gQDSnID8A2LX1+VAt3FNJscdHMFe6LbrJen/6R9K1jROlHvLgoRbCo7SPPXqox8KcfkdJbE+LQzWs/BnJvJxzsi1Mh4AOupjCR2G+/gkY0ZGzX09Z1bGZSTRCzw13SMk1Z1Wz9DhWEyvXzFi1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ODvEJVWI; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=CwUo8fqZ+piwKyNsIPVH4fHpKud0EoLO/hHkrEh0rin71wQed2B3ll+FKAr8BNFW8hNo85j6nLknayCgwC+nFgj26beNd544BApmaw1SZjSo/Qyc3nGKqsO07Bz969MH8EN3L7frjbv3W9k0LkWTRdx7Hz3Jn4CzwnYiOoN/wP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QUM6ZqO5; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ODvEJVWI"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19ACC10375A1E;
-	Thu, 27 Feb 2025 18:00:57 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QUM6ZqO5"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 011E1103718C9;
+	Thu, 27 Feb 2025 18:00:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740675658;
+	t=1740675660;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dLRiMt6/Dpy2Jty4UVTf/yvA7e/j44jHTgLx5ffQrLk=;
-	b=ODvEJVWIhWmh+IobAVZwz92gr/HgIwjafRAW0V3ehEqsbQUOr8VqAzwPsDu2OOFd38Z/YT
-	/wk0C7uAVnPyhMroKz0MWro3S9ixeeI2xnoEY24vjN5zYyXWxNnOgyIqABdJF2aJzPLsss
-	GG3m1Rd+Zl7k9oUaNlQ3EXbMv0fdx6JaKbDXuC6nXa/Y5IOM2bvBu72UaRv6E/VkLteRIM
-	SK3OCq+ZqoCaZj7dX+2s6osBzXmB8XJaqIu6jY+Haz/muhMDPTFLDvFUreBNOdlhc/Nn2U
-	ICc84CI6rDTYs9nrjDEa6sJfB1LYz527IAMr52Jwa0uLyZjm5lLrG7ZWkbB46Q==
+	bh=80ISeY7DDf1yy5uWTMBnUjkKTvDUwesh5b01Bc/k5X0=;
+	b=QUM6ZqO5tHSNtzDnhtd4p5ZL4LiWkQdSQZexHRrS83MopTiyTlhNNjjMzIy/oLeixVlZdd
+	uUpx49bGRzb0kHs52yiVWMd6PCsO5w3eQhTmv7cyQy4NscTCyKuoVeA1dN4iWxF+NOqpcJ
+	VWl48Xg6FSruutDN5v8q8ulOwqHfPXaHY3ozDlHvVpDGQEUsxAItjObsVqmvKMgDA1nMPh
+	qbXJlxAj9tyEXl4kjcojBauMrvSprBvYnXpuxcUoRqOuwx+zyzKb+bwox5ems5+N2iFb9b
+	v/Weo9c+N5xzhiHYInpXtZNhpF5w4RjtseNW4eOv97nRt57f00Y626VC7h0X1w==
 From: Marek Vasut <marex@denx.de>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -53,9 +53,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	devicetree@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev
-Subject: [PATCH 8/9] drm/panthor: Add i.MX95 support
-Date: Thu, 27 Feb 2025 17:58:08 +0100
-Message-ID: <20250227170012.124768-9-marex@denx.de>
+Subject: [PATCH 9/9] arm64: dts: imx95: Describe Mali G310 GPU
+Date: Thu, 27 Feb 2025 17:58:09 +0100
+Message-ID: <20250227170012.124768-10-marex@denx.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250227170012.124768-1-marex@denx.de>
 References: <20250227170012.124768-1-marex@denx.de>
@@ -68,8 +68,10 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The instance of the GPU populated in Freescale i.MX95 is the
-Mali G310, add support for this variant.
+The instance of the GPU populated in i.MX95 is the G310,
+describe this GPU in the DT. Include description of the
+GPUMIX block controller, which can be operated as a simple
+reset. Include dummy GPU voltage regulator and OPP tables.
 
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
@@ -95,34 +97,89 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/gpu/drm/panthor/panthor_drv.c | 1 +
- drivers/gpu/drm/panthor/panthor_gpu.c | 1 +
- 2 files changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx95.dtsi | 62 ++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-index 06fe46e320738..2504a456d45c4 100644
---- a/drivers/gpu/drm/panthor/panthor_drv.c
-+++ b/drivers/gpu/drm/panthor/panthor_drv.c
-@@ -1591,6 +1591,7 @@ static struct attribute *panthor_attrs[] = {
- ATTRIBUTE_GROUPS(panthor);
+diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+index 3af13173de4bd..36bad211e5558 100644
+--- a/arch/arm64/boot/dts/freescale/imx95.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+@@ -249,6 +249,37 @@ dummy: clock-dummy {
+ 		clock-output-names = "dummy";
+ 	};
  
- static const struct of_device_id dt_match[] = {
-+	{ .compatible = "fsl,imx95-mali" },	/* G310 */
- 	{ .compatible = "rockchip,rk3588-mali" },
- 	{ .compatible = "arm,mali-valhall-csf" },
- 	{}
-diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-index 0f07ef7d9aea7..2371ab8e50627 100644
---- a/drivers/gpu/drm/panthor/panthor_gpu.c
-+++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-@@ -67,6 +67,7 @@ struct panthor_model {
- }
++	gpu_fixed_reg: fixed-gpu-reg {
++		compatible = "regulator-fixed";
++		regulator-min-microvolt = <920000>;
++		regulator-max-microvolt = <920000>;
++		regulator-name = "vdd_gpu";
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
++	gpu_opp_table: opp_table {
++		compatible = "operating-points-v2";
++
++		opp-500000000 {
++			opp-hz = /bits/ 64 <500000000>;
++			opp-hz-real = /bits/ 64 <500000000>;
++			opp-microvolt = <920000>;
++		};
++
++		opp-800000000 {
++			opp-hz = /bits/ 64 <800000000>;
++			opp-hz-real = /bits/ 64 <800000000>;
++			opp-microvolt = <920000>;
++		};
++
++		opp-1000000000 {
++			opp-hz = /bits/ 64 <1000000000>;
++			opp-hz-real = /bits/ 64 <1000000000>;
++			opp-microvolt = <920000>;
++		};
++	};
++
+ 	clk_ext1: clock-ext1 {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+@@ -1846,6 +1877,37 @@ netc_emdio: mdio@0,0 {
+ 			};
+ 		};
  
- static const struct panthor_model gpu_models[] = {
-+	GPU_MODEL(g310, 0, 0),	/* NXP i.MX95 */
- 	GPU_MODEL(g610, 10, 7),
- 	{},
- };
++		gpu_blk_ctrl: reset-controller@4d810000 {
++			compatible = "fsl,imx95-gpu-blk-ctrl";
++			reg = <0x0 0x4d810000 0x0 0xc>;
++			#reset-cells = <1>;
++			clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
++			assigned-clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
++			assigned-clock-parents = <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
++			assigned-clock-rates = <133333333>;
++			power-domains = <&scmi_devpd IMX95_PD_GPU>;
++			status = "disabled";
++		};
++
++		gpu: gpu@4d900000 {
++			compatible = "fsl,imx95-mali", "arm,mali-valhall-csf";
++			reg = <0 0x4d900000 0 0x480000>;
++			clocks = <&scmi_clk IMX95_CLK_GPU>;
++			clock-names = "core";
++			interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "gpu", "job", "mmu";
++			mali-supply = <&gpu_fixed_reg>;
++			operating-points-v2 = <&gpu_opp_table>;
++			power-domains = <&scmi_devpd IMX95_PD_GPU>, <&scmi_perf IMX95_PERF_GPU>;
++			power-domain-names = "mix", "perf";
++			resets = <&gpu_blk_ctrl 0>;
++			#cooling-cells = <2>;
++			dynamic-power-coefficient = <1013>;
++			status = "disabled";
++		};
++
+ 		ddr-pmu@4e090dc0 {
+ 			compatible = "fsl,imx95-ddr-pmu", "fsl,imx93-ddr-pmu";
+ 			reg = <0x0 0x4e090dc0 0x0 0x200>;
 -- 
 2.47.2
 
