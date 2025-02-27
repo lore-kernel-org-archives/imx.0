@@ -1,35 +1,35 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E61DC9AB
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07ED1DDC16
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 17:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740675660; cv=none; b=krbUOOtsIBONWc/EsoQbzbjNW5PzDlpX2OC/1qPJqt9kCt2eZgeK4IBaYaRShC8H/BAZ/LJEeW8Mre1hahzxgUc9mLQP9km+7tEmmUoFuDJz0cWDjaz89UJNWS0Q56DSBZ4/1InAaWGxKDnugo3IyGiIfTa78EGuM3qED0KywN4=
+	t=1740675662; cv=none; b=By9jgVCO1XVTt1syqLrrrHNwm4+bJa9sInmZarK6TwKMXON5Ca8clhrWeTApKnq4nOEQ/Pc3JUrlJSsO5MM+JjV6AJloD/U4oz2NT2Jq5wsae77imYL3N6ZXpfFPD6zssG4p9xgHnM5lRGBfBpHXW4xxmDLmpUCgu7AdVCY3s2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740675660; c=relaxed/simple;
-	bh=pXwNtyIEdC9iEX/i3Brbz+cvMQ82OTiTQ6eSh0EwDSk=;
+	s=arc-20240116; t=1740675662; c=relaxed/simple;
+	bh=BSgCx7NE6nrinVvv1LAiEbgFR+HeYzjL62HCTacxYjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bok+EDYnEC9HrEp2tTkaoyw4tn9vklw3ceiV+uB34mjlKCdIqvyEPBvsCt7v0sPOzfRl/VxpcF3BGU3nkYvwskOfXOSw4xFCBdBJJt7jTCgyVnXgGSpS1FZTe7yeXyM5KfxqpsmgsMLI650nG/2YQw7s5E8NeMgh/R/bVuABwr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=IuhA8IB8; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=WqZfMRYItIT6ZBn/3i6/uH935gQDSnID8A2LX1+VAt3FNJscdHMFe6LbrJen/6R9K1jROlHvLgoRbCo7SPPXqox8KcfkdJbE+LQzWs/BnJvJxzsi1Mh4AOupjCR2G+/gkY0ZGzX09Z1bGZSTRCzw13SMk1Z1Wz9DhWEyvXzFi1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ODvEJVWI; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="IuhA8IB8"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45D76103801B9;
-	Thu, 27 Feb 2025 18:00:55 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ODvEJVWI"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19ACC10375A1E;
+	Thu, 27 Feb 2025 18:00:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740675656;
+	t=1740675658;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PKmkyZsvoEXQ3oHPek2RaKdUe/+800h3uZ080lhDXM0=;
-	b=IuhA8IB8s4QYIMIERpFZTKD8rXnESB1uTfOseZ/4mAt2ieHPTA2t82movTel8DiWMXpFTT
-	W9nSQCFv2WncvpaCpbxjuS6eZnt/IbKWn58TGA65MPL12ply6YE1kbheYeRAN3v+XXSFyE
-	Rg4E01AN3qKwj4wjuGcG8HWQlf+r+DMNcjVmryR7ezdEZAs6NmJIVGWpaglh2WA4N8vLLB
-	C1h7QhHNORYFS10iUH0NUJjnDJIFDUEsanHCXd4Ber1CogYwyBnpkInBNnnhd4AtCdYDPk
-	xhD21PwyI+I3jWIZaqkr8NifIY8ziPxCXDGEv/TLYqsziqWP/huHIELpXsJjgQ==
+	bh=dLRiMt6/Dpy2Jty4UVTf/yvA7e/j44jHTgLx5ffQrLk=;
+	b=ODvEJVWIhWmh+IobAVZwz92gr/HgIwjafRAW0V3ehEqsbQUOr8VqAzwPsDu2OOFd38Z/YT
+	/wk0C7uAVnPyhMroKz0MWro3S9ixeeI2xnoEY24vjN5zYyXWxNnOgyIqABdJF2aJzPLsss
+	GG3m1Rd+Zl7k9oUaNlQ3EXbMv0fdx6JaKbDXuC6nXa/Y5IOM2bvBu72UaRv6E/VkLteRIM
+	SK3OCq+ZqoCaZj7dX+2s6osBzXmB8XJaqIu6jY+Haz/muhMDPTFLDvFUreBNOdlhc/Nn2U
+	ICc84CI6rDTYs9nrjDEa6sJfB1LYz527IAMr52Jwa0uLyZjm5lLrG7ZWkbB46Q==
 From: Marek Vasut <marex@denx.de>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -53,9 +53,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	devicetree@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev
-Subject: [PATCH 7/9] dt-bindings: gpu: mali-valhall-csf: Document i.MX95 support
-Date: Thu, 27 Feb 2025 17:58:07 +0100
-Message-ID: <20250227170012.124768-8-marex@denx.de>
+Subject: [PATCH 8/9] drm/panthor: Add i.MX95 support
+Date: Thu, 27 Feb 2025 17:58:08 +0100
+Message-ID: <20250227170012.124768-9-marex@denx.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250227170012.124768-1-marex@denx.de>
 References: <20250227170012.124768-1-marex@denx.de>
@@ -69,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
 The instance of the GPU populated in Freescale i.MX95 is the
-Mali G310, document support for this variant.
+Mali G310, add support for this variant.
 
 Signed-off-by: Marek Vasut <marex@denx.de>
 ---
@@ -95,21 +95,34 @@ Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 ---
- Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panthor/panthor_drv.c | 1 +
+ drivers/gpu/drm/panthor/panthor_gpu.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-index 0efa06822a543..3ab62bd424e41 100644
---- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-+++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-@@ -18,6 +18,7 @@ properties:
-     oneOf:
-       - items:
-           - enum:
-+              - fsl,imx95-mali            # G310
-               - rockchip,rk3588-mali
-           - const: arm,mali-valhall-csf   # Mali Valhall GPU model/revision is fully discoverable
+diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+index 06fe46e320738..2504a456d45c4 100644
+--- a/drivers/gpu/drm/panthor/panthor_drv.c
++++ b/drivers/gpu/drm/panthor/panthor_drv.c
+@@ -1591,6 +1591,7 @@ static struct attribute *panthor_attrs[] = {
+ ATTRIBUTE_GROUPS(panthor);
  
+ static const struct of_device_id dt_match[] = {
++	{ .compatible = "fsl,imx95-mali" },	/* G310 */
+ 	{ .compatible = "rockchip,rk3588-mali" },
+ 	{ .compatible = "arm,mali-valhall-csf" },
+ 	{}
+diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
+index 0f07ef7d9aea7..2371ab8e50627 100644
+--- a/drivers/gpu/drm/panthor/panthor_gpu.c
++++ b/drivers/gpu/drm/panthor/panthor_gpu.c
+@@ -67,6 +67,7 @@ struct panthor_model {
+ }
+ 
+ static const struct panthor_model gpu_models[] = {
++	GPU_MODEL(g310, 0, 0),	/* NXP i.MX95 */
+ 	GPU_MODEL(g610, 10, 7),
+ 	{},
+ };
 -- 
 2.47.2
 
