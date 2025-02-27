@@ -1,99 +1,69 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FAB226183
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 11:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB47922DF9C;
+	Thu, 27 Feb 2025 12:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740655751; cv=none; b=bq/xb4lBRcZi2eVn03xg0l02sAN+C96oFGZebwOAozuMg5FzRlJzDzib4FFg2Q5sonfdj2nf5Rk20juSSH5yl/e5Qpm2Fmrp/VqmBdGev0DFWKTsUQAWRJpT5EgKniMFT7O1KWxYXGOuvZ1mGAteX2KOdlqtOzcyE0PTUD3bvF8=
+	t=1740658076; cv=none; b=rZYzs2Jne0NmQXvQ7BIdTfbk8AF5FkyOLSlSbkiQHDUsCGCxgibmLVCv0RUFE4vtCSGMxQ3T5lByBFuR9A4fxQfgoKDsrFpiCEJQDGJYot+7Ws6+8j6LUlXjw2QWpP7X6aCnOZSo32KVxB7OyNqbPETicvNzCNYNoNJaA7A8mFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740655751; c=relaxed/simple;
-	bh=ZywMm4CjYa5hw1+87SFh/PxwPwctZfrw6ORjAyszIUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UC0iaAm/vmLHNvrkpWYyO2/fmZv2ouhaIhk7vDguRl6acYn4sj7p9VkBvl3uz+ULZxmK4jpYlGdkTYq1tEcrUotsHmfswKSHaaQSFzj7h4sMUJeNEGc9aRgIbkM/TG7pV6fB2z8ywSHiTjk50CLg0OJ4kXVON4zjhpaplIpT6gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnc4X-00058G-Bq; Thu, 27 Feb 2025 12:28:57 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnc4W-0037HX-2y;
-	Thu, 27 Feb 2025 12:28:56 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnc4W-003Omf-2c;
-	Thu, 27 Feb 2025 12:28:56 +0100
-Date: Thu, 27 Feb 2025 12:28:56 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
-Message-ID: <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
-References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
- <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
+	s=arc-20240116; t=1740658076; c=relaxed/simple;
+	bh=QZ7uyDt7FFYNwCiAJyDRERDGCfQwMZ43xoPoHsEClRo=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=u3tSjvlvknAfs8NeZv7I1JGa2A8LNVdBdj/0/KV4UwUzT3TYmZsUokjV2rVVl2+RNvmzomj45IG6mj924xbe3aRyqYtbfBepq0LR348qr8Jctj4NqEzLrz6e4zUHG8PhW2g9kSJOPHeP5GYgOcs3lk5s5XRKZN0iU63DOL/J9v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqycOa0p; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqycOa0p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83690C4CEDD;
+	Thu, 27 Feb 2025 12:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740658076;
+	bh=QZ7uyDt7FFYNwCiAJyDRERDGCfQwMZ43xoPoHsEClRo=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=VqycOa0pw5e5NnBE49RDN9rqu4NFQF6bYVnANL9BMmew2PhzHXjo4lKtKHs+aImL1
+	 MulGrvCCwCTKuOvnetFS7dWbti+jD02DX4CH5dI2Ev6t8dCz5+N+AHRQcUVXgNsIHB
+	 BAtK0/gbLffIVqaCCddD3f7kFpTLdRU2ILY0YAPJmoQ25xRFY0MYJn7+I2lxwo8KjO
+	 hDeQh4/etfQlDfNM5atgJeMXELw6c8o9CFZjk82+bfF+vg18OlB1XqEixFMXvSnSGB
+	 pPOpBBUm/p1qLi/jiuv1jrnhEkVwyv1G6lmOU+rzDwaVL3A3vPTuHLA0rmcUjVhEwT
+	 s6RhPBoLqKLpA==
+From: Vinod Koul <vkoul@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ imx@lists.linux.dev, dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250221222153.405285-1-Frank.Li@nxp.com>
+References: <20250221222153.405285-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dt-bindings: dma: fsl,edma: Add i.MX94 support
+Message-Id: <174065807313.367410.5471708868415737706.b4-ty@kernel.org>
+Date: Thu, 27 Feb 2025 17:37:53 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-Hi Laurentiu,
 
-On 25-02-26, Marco Felsch wrote:
-> Hi,
+On Fri, 21 Feb 2025 17:21:53 -0500, Frank Li wrote:
+> Add support for the i.MX94 DMA controllers. The SoC includes two DMA
+> controllers: one compatible with i.MX93 eDMA3 and another compatible with
+> i.MX95 eDMA5.
 > 
-> On 25-02-26, Laurentiu Mihalcea wrote:
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > 
-> > The AIPSTZ bridge offers some security-related configurations which can
-> > be used to restrict master access to certain peripherals on the bridge.
-> > 
-> > Normally, this could be done from a secure environment such as ATF before
-> > Linux boots but the configuration of AIPSTZ5 is lost each time the power
-> > domain is powered off and then powered on. Because of this, it has to be
-> > configured each time the power domain is turned on and before any master
-> > tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
+> Add compatible string "fsl,imx94-edma3" with fallback to "fsl,imx93-edma3".
+> Add compatible string "fsl,imx94-edma5" with fallback to "fsl,imx95-edma5".
 > 
-> My question still stands:
-> 
-> Setting these bits requires very often that the core is running at EL3
-> (e.g. secure-monitor) which is not the case for Linux. Can you please
-> provide more information how Linux can set these bits?
+> [...]
 
-Sorry I didn't noticed your response:
+Applied, thanks!
 
-https://lore.kernel.org/all/a62ab860-5e0e-4ebc-af1f-6fb7ac621e2b@gmail.com/
+[1/1] dt-bindings: dma: fsl,edma: Add i.MX94 support
+      commit: 34436106af3d00b9cf94dbf7200b8162937f9943
 
-If EL1 is allowed to set the security access configuration of the IP
-cores doesn't this mean that a backdoor can be opened? E.g. your
-secure-boot system configures one I2C IP core to be accessible only from
-secure-world S-EL1 (OP-TEE) and after the power-domain was power-cycled
-it's accessible from EL1 again. This doesn't seem right. Why should a
-user be able to limit the access permissions to an IP core to only be
-accessible from secure-world if the IP core is accessible from
-normal-world after the power-domain was power-cycled.
+Best regards,
+-- 
+~Vinod
 
-Regards,
-  Marco
+
