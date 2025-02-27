@@ -1,95 +1,163 @@
-Received: from mail.schwermer.no (mail.schwermer.no [49.12.228.226])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1B2229B2A
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 10:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.228.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7119D22A4CC
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 10:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740653343; cv=none; b=cuQAOayquuAw3S8iE+GLuNd9yxjIFpH4jsFAT1hoI2oryt8VCc/GdgqsHYRHjkyUQCH+fh3hYoPBOTwEkhLhVdepApYkOSQeBFlof7bp4VhrKFKqB0fvKiGwIhk/pBXVXrKiFn0K7KjWgKZHsA34et0N3sZPcP0k2+A2pTfANA0=
+	t=1740653889; cv=none; b=SU3nkMUaAVPopQ9qUdvz0lXwUAhZ9XNPso5Fx4Xym8lugEj95Kl6ZkNEKYzxVPpJA2OWW9Ra1ID93ZPVyiFQCCyb5pYyq1mhWUmYKwjEGsH/QQQ1xvXWauDy4E3XMUKsNt/Eb5eZQG+pOdSoLI7EWlVpZX4Cp0KFxBTR5HQNrTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740653343; c=relaxed/simple;
-	bh=XFvITTT61Tv/+qqv77dTQmqL4vvdN5yvzPbBOCi9ogA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RyYvlXajxfoKXRN4uaZn4UFrP49H7EiYQUN0awAIKBIZXzpBcIgkmx9GILIIFlHHpNgKodUAqBanCnmwgMnuL3lFH32vSE5+fq1sAbeXFrQEivoTXNU+OLs9oxnuAhflWFvr2Of5vSRlWbWuuAT8LWvqLMmLozFronfr4uY56Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=svenschwermer.de; spf=pass smtp.mailfrom=svenschwermer.de; dkim=pass (2048-bit key) header.d=svenschwermer.de header.i=@svenschwermer.de header.b=I0SPPhL/; arc=none smtp.client-ip=49.12.228.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=svenschwermer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svenschwermer.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svenschwermer.de header.i=@svenschwermer.de header.b="I0SPPhL/"
-X-Virus-Scanned: Yes
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=svenschwermer.de;
-	s=mail; t=1740653332;
-	bh=XFvITTT61Tv/+qqv77dTQmqL4vvdN5yvzPbBOCi9ogA=;
-	h=Subject:To:Cc:References:From:In-Reply-To;
-	b=I0SPPhL/w6IL2Bl0YsVQbvaIIiJdoi/f8cWvdGxumek3ABzNZ9ZNWGSRuFxU3OzNM
-	 ZyPJ/Am5levr7iK1BFcrSYFKRklRVmYJBFUtUGb39pwoZ5HETCfX+7qc3LdsGq0ZM1
-	 pja92eNlS4H9dYOttQVHzeKGLA/EK3lyQ0pgjV8F4HPcFm7yChOq2XS+e9M3jZUyM7
-	 MjbvYpMssWQ8S/99xFwkNcEQUDipTdk7ww5WFlDwjwZiA7wRk2r7NnUJ5WI8724WCt
-	 w3JNGMMsF6ho0YQgUEaTWMHYxQznIPbmvaAYkgPVKxqAIxXJtMgKpnED/80lzOCPnk
-	 lk/IW6ZIMwALw==
-Message-ID: <97804db1-8c82-45dd-b4ed-569fc3fa7785@svenschwermer.de>
-Date: Thu, 27 Feb 2025 11:48:51 +0100
+	s=arc-20240116; t=1740653889; c=relaxed/simple;
+	bh=M229xz7sJxjtA/Uv0ymIAtI/MmcxmVuJ18d7ilVsX6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4ElMzQIPKN6CsCwOVwzITZOT+gJ9XKe5PPfx910KhQu/bF1DdZllyoYQQhTCe+Fb/zisPLurg5sX3WALIKZvc1be7o7T3hnsR1UGHlvJz+La/bj+Zhchzg2xd0eVaK9zva8oIIE4LVytcqDoPDrDGl9tBriA3Y3UTcs230KtNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnbaV-0008AV-Km; Thu, 27 Feb 2025 11:57:55 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnbaV-0036wT-18;
+	Thu, 27 Feb 2025 11:57:55 +0100
+Received: from pengutronix.de (p5b164285.dip0.t-ipconnect.de [91.22.66.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DA0BA3CD463;
+	Thu, 27 Feb 2025 10:57:54 +0000 (UTC)
+Date: Thu, 27 Feb 2025 11:57:54 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>
+Cc: Frank Li <Frank.li@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+	Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Message-ID: <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
+References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+ <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
+ <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/1] mxs-dcp: Fix support for UNIQUE_KEY?
-To: David Gstir <david@sigma-star.at>
-Cc: "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, shawnguo@kernel.org,
- s.hauer@pengutronix.de, "kernel@pengutronix.de" <kernel@pengutronix.de>,
- festevam@gmail.com, imx@lists.linux.dev, Richard Weinberger
- <richard@nod.at>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-References: <20250224074230.539809-1-sven@svenschwermer.de>
- <FDAF33B1-DE06-4A1F-BE9A-4E3E5EDE03D5@sigma-star.at>
-Content-Language: en-US
-From: Sven Schwermer <sven@svenschwermer.de>
-In-Reply-To: <FDAF33B1-DE06-4A1F-BE9A-4E3E5EDE03D5@sigma-star.at>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="khvk74ne4kfr3emu"
+Content-Disposition: inline
+In-Reply-To: <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi David,
 
-I actually found documentation supporting my findings in the mean time:
+--khvk74ne4kfr3emu
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+MIME-Version: 1.0
 
- From the i.MX6ULL Security Reference Manual (section 5.3.4):
+On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
+>=20
+> On 21.02.2025 21:56, Frank Li wrote:
+> > On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
+> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>
+> >> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> >> configurations. Since these configurations need to be applied before
+> >> accessing any of the peripherals on the bus, it's better to make AIPST=
+Z5
+> >> be their parent instead of keeping AIPS5 and adding a child node for
+> >> AIPSTZ5. Also, because of the security configurations, the address spa=
+ce
+> >> of the bus has to be changed to that of the configuration registers.
+> > The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
+> > config address part in your drivers.
+> >
+> > Frank
+>=20
+>=20
+> Any concerns/anything wrong with current approach?
+>=20
+>=20
+> I find it a bit awkward to have the whole bus address space
+> in the DT given that we're only interested in using the access
+> controller register space.
+>=20
+>=20
+> I'm fine with the approach you suggested but I don't see a
+> reason for using it?
 
-The OTP key (CRYPTO KEY) can be selected using the DCP_Control1[OTP_KEY] 
-bit in the control field of the packet descriptor _or_ by using the key 
-select 0xFF in the CTRL1 field of the descriptor.
+Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
+Applications Processor Reference Manual, Rev. 3, 08/2024), the
+AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
+different than the bus configuration. Why not model it as part of the
+bus?
 
-However, this seems to be contradict by what's later stated in section 
-5.3.6.4.2:
+> >> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/bo=
+ot/dts/freescale/imx8mp.dtsi
+> >> index e0d3b8cba221..a1d9b834d2da 100644
+> >> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+> >>  			};
+> >>  		};
+> >>
+> >> -		aips5: bus@30c00000 {
+> >> -			compatible =3D "fsl,aips-bus", "simple-bus";
+> >> -			reg =3D <0x30c00000 0x400000>;
+> >> +		aips5: bus@30df0000 {
+                       ^^^^^^^^^^^^
+> >> +			compatible =3D "fsl,imx8mp-aipstz", "simple-bus";
+> >> +			reg =3D <0x30df0000 0x10000>;
+> >> +			power-domains =3D <&pgc_audio>;
+> >>  			#address-cells =3D <1>;
+> >>  			#size-cells =3D <1>;
+> >> +			#access-controller-cells =3D <0>;
+> >>  			ranges;
+> >>
+> >>  			spba-bus@30c00000 {
+                        ^^^^^^^^^^^^^^^^^
 
-If the OTP_KEY value is set, the KEY_SELECT field from the Control1 
-register indicates which OTP key is to be used.
+This looks very strange: The aips5 bus starts at 0x30df0000 and has a
+child bus starting at 0x30c00000?
 
-After your test, I'll send a v2 with a reworded commit message 
-incorporating this.
+regards,
+Marc
 
-Sven
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-On 2/27/25 10:55 AM, David Gstir wrote:
-> Hi Sven,
-> 
->> On 24.02.2025, at 08:42, Sven Schwermer <sven@svenschwermer.de> wrote:
->>
->> Hi there,
->>
->> I'm not 100% certain about this patch but trial and error seems to
->> confirm that this patch makes it indeed possible to use UNIQUE_KEY which
->> I was not able to do with the current implementation.
->>
->> I would appreciate if somebody with access to this hardware could test
->> this independently, e.g. the folks at sigma star who authored the
->> original patch (3d16af0b4cfac).
-> 
-> thanks for the patch! I’ll test this on my end and will report back ASAP.
-> 
-> - David
-> 
-> 
+--khvk74ne4kfr3emu
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfARS8ACgkQDHRl3/mQ
+kZy1eAf+NIqSit01hbOk1TNt3Hmnml2DOG0v3yFMt3q0JGMriHkU9Rfgf+J6HLQF
++7ZiOn+KkncBW72Or3hAO4/BjlQoHwaf7ds4d+INbRY9JZxlqc1HovkScesRV+Gi
+ce/CK0cz7sG02xqvFf4D08p3GaC5Do6oGtXmlOt8Mi45HC3ulKLnri/In9ZnfGXb
+HZQr89ukWg67YwLxVd+wwIQzoGPH/qWZAhe+f6lfB8SGd1Jcp+vLoFLBJ2LctquC
+wShPsn0p+dzhjANxj8yNc3uIncdU5yToRwWTTjodk6xQez9Duc+JZplVPMx6ptoJ
+W1mmqIcEGNHve3tu7qHKeKwmrpiH+w==
+=8kNX
+-----END PGP SIGNATURE-----
+
+--khvk74ne4kfr3emu--
