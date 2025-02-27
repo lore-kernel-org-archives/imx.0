@@ -1,190 +1,179 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2044.outbound.protection.outlook.com [40.107.21.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC29F28EC
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 01:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740618941; cv=fail; b=OcqJmLcx6m2d4DNj67LdqWjVwBZRMNsh1Ee17sk/aMXjydAS+uqoLKcOhlbYeIBvMx8dRGYQ6+2KjTLr510uv5En8096qiqHCMunUVKBtEY+ckEKRdUO80jZSRYmzlDgs9mSOFoX4BR6BDzcHWsQKw/N5ST/jDFYuflAM7egYBA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740618941; c=relaxed/simple;
-	bh=wjswY1jrfZqOonVlzZ6+jNBsm1BV2bJZV6aDMbVnpfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=og7xcHLsJ3wxMR/aYEhaqsP8BUnMllVLQeTGQIZIVdVxtRESe3R4mKKeN30halapmzce7UUuBXyOxAP5lc72LzxqMmyeIwNtTTpKOTWg9l6DVyqEZBNf/XDvfTTE7w6Sx5YrCPwV3lqPZ1iy/ASs2tGF/yUjrc/v46I76p65lFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tAyjIaKx; arc=fail smtp.client-ip=40.107.21.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542C7270037
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 01:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740621164; cv=none; b=RCZA4dtShDzecxTKsqKkPn3tXUQi2J4eQBOa89E1XAZ1SYgLmh8CFv/EEbQ/2CFIWW5+uJifgHKdNXGijV4Id+t5bmDFovVW6w0/qSQWV16H+4zaqP1I+gdH7Q7ElQaKf1NlLz3y5GH9k39UPAF20+Z61uD1ebRnUr7kCbMuNRc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740621164; c=relaxed/simple;
+	bh=YjKKT691QN0DPGRmJjP9TtTEtKQK38mNUGvDi7DJwQo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JABDbWDHgVdHYZqAPFDiakf4z2ZG0HOnWMzlu0nkNzPhmbgEdvqnQFKQRCVm+FrION8Ishg2OmztiNsbotO1gFgiYi9o9uUr07mO3llINkLU29WI7eN7aTm+YCMN9ut9UvDTOGL16SeCMavgJhS+5vG73lDdCE3rP76zfzZfXQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gLINlhXS; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tAyjIaKx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vutPxSEr/h9CG5ImpZSLMQU1zRuyMQXRIxaWcBr+c8wAr8N9iO+t1W+EtOt3NZnflM2mfZ3xi08tOIqaFspMQkWJTRn21/ApslD5L9C1xc4GnRD7ICKA8IYtOZjl6+CSMNsyXU61MXTUPYeSs+PQiGFz2RcEO6Xoo+5JqpNW5EM737MeeDEvCsDPOrKv/eD1JWIGWv87eYfe1cGdjWXc6LZX6yxAIJXmsIQlc5RFQCtf3EkubERWzDd/j0/HY2H3YHH7+5A52/Wzr4pnHx7F+c6c4pLIJkAG+Y56AcLow0iHwiYWPO6G7Qn2jQ6P6BG4YTSJCe7rH6PAc6X1knEklg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7zK1RUbXKHlzXrcZALk/0mfFlGY+1QVGfGd4ueKGGMs=;
- b=Y+SSliUfuYK7Hm/u2Je+lTtQbgzcMnCDNRQlU4jjKfVRp7lQKD4qr1rl81jjWxlrt6ChRJwZ7gvE77apPvcDl0JsRUeOUbFv6rs20LO8nc9cejhqkLdcdLz71P19YVQfSxP+iD4FmAcg4Ew0Mbwi24LCIPOPbUwZpWDxxV7fz+XoZBRd26jOf7uXBozcWZkiGB1xvYd+w5LHu0f8jOmIdHEC9G/4HrzrMvP2KNQ2J/otUPYdxCRKMxy6Iqjl6GZ24z9Sq0jnrt669CYgAgT7g3OMAWIQqO68+C/cGLCze9Alu2haDZi2TpaESkGMO6ww04i3nnLOz1wlXCilCFXCvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7zK1RUbXKHlzXrcZALk/0mfFlGY+1QVGfGd4ueKGGMs=;
- b=tAyjIaKx6suLe3wHr+xZWb97hV86shmmiQwmzWTDuaVGOz8bSb0MUBdJrFvJBA+LieqNRegRLed30Ax+s1Gw0HyWLx1KzThULBZGYmLeYCB0/++oe80FM4g8wDBvHpBaF4RHqT4AqH883gNsjIxXA76A3eO6owTw/eCLewfGpnlveQMn1j5bhTdqAfwCkxUYWu+UZjESsfz95vGV48cimqM6qLHO2dn5D0aJ7Awiu8E2ybvO1HGOoVU7QespFyNcVn4sBVOaI9h+n75danVB9cTlfXlzChCAdpkn6kMBCB2oLywIhgQHfffzFts5pQ2NNl5hDyL/j5fwLVM8eZhf5g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AS8PR04MB7704.eurprd04.prod.outlook.com (2603:10a6:20b:296::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Thu, 27 Feb
- 2025 01:15:36 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8466.013; Thu, 27 Feb 2025
- 01:15:36 +0000
-Date: Thu, 27 Feb 2025 10:22:48 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Marek Vasut <marex@denx.de>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Adam Ford <aford173@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-clk@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] clk: imx8mp: fix parents of AUDIOMIX DSP/OCRAM_A
-Message-ID: <20250227022248.GA11411@nxa18884-linux>
-References: <20250226164513.33822-1-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226164513.33822-1-laurentiumihalcea111@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0023.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gLINlhXS"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5fd19b469b0so116197eaf.3
+        for <imx@lists.linux.dev>; Wed, 26 Feb 2025 17:52:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740621162; x=1741225962; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ixz4rke/Pu4MIs/yXHWsa0RBvJ804N4RrG8GmiSG7vE=;
+        b=gLINlhXSoxVwsj6qDTuBNeDxeePc+fx0GApWUypDf3GQ1H+eECYZW3Huc3mCx47O1B
+         c6zdekjGax30izpT7xm5ssKQLxj5XZ/0vdd2Zz2Tmz6vokLJ+NPGaaCLdtbNTkwf4j4e
+         DQrE+bfiNpDwqcj9rk9LGeDhu4qhQ7PmEmdCqK5HCacLnxXjm/X9I7SndNApbgvWu+xs
+         TgxpQHbnRq+3ks+qFIoiku05MFUY/ZkPIusjCQ62YdVZmoKw4Wq83jZ1ip1PvReKbuhJ
+         KdtDcvxfJk2qdEU7+ZBdLaFmbBAfQGNU85YfO1nJSOR0pktzfrFlgbQix2jYLJPFb3Bw
+         WuTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740621162; x=1741225962;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ixz4rke/Pu4MIs/yXHWsa0RBvJ804N4RrG8GmiSG7vE=;
+        b=Yvx6a1jph1tkCJ9EDBTOlSjdCoyyjymS7EotYk2B+rj9U1GBXNlOswQdsjJ2zF/3a2
+         QtbOPM4Xg2wN3ZI4RZCqEYSkFLpHtD8eFO92upyfyUcCT2/JKPWOGpA3io6BZiGpNbg8
+         FYmkBXNHLczDZVKSwMiTtX4qYeR0z54R3TSzHPmmzUU/PO4kL9KunC3IUebxMSQKMkIk
+         yc/ceZDNQXxVTrkKDwmgsRlKQReFxSq40fIwi+LmNxOYwFyAnqqeQpWtSrQWm1aDhtNW
+         anylYe/6J8N+v2bWCJa1r+5Bymc89G+UkjtGT7jSoVVZFDyn0k7EEoOsRjgJHY7MZg6+
+         A9QA==
+X-Forwarded-Encrypted: i=1; AJvYcCVg0ZtJWFG6gE18MHDpkBBRlUZRtiX1AZy5LVJ4qwixiZvcfntCRcmkaUZ4BoIupJA/SUo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/hzBtdjVLdrEQJLGrcW9Xlqv0fIQADXKWS6bhvvgvhtkb56d1
+	iqA/xLHXpD/iom0fRUFU1IfRtveKbMV3MLTv2cqsRP0QPH0F9jeOHDMJYb+x1y5nHfP7f0j4dJE
+	tErRbYQs4BJAhWgJMAuk4LkTSQMs=
+X-Gm-Gg: ASbGnctx+yuU7393MRI5xosGGcFaLjB2gX1DBd3Y/FvEDJbt+yqwuV4LhId4xmO1Zq0
+	mO/BmBKxqX+0ju2oc1zkaKHcXBvOURVALmDtdDWQHuLsREq1TThxqprpiyVTPlwg+SzMCq2NEC3
+	BNh9ESYblYCIBVDnOTR7U5lXqngEGsjnpuMivKwlI=
+X-Google-Smtp-Source: AGHT+IGqnXgTmRNVtKjZ/iy4Us2fHmhfpIjxOOKmUbGHr3+Ih8p+w6kJGd3DiiswHNSoSt374klMkalELnpHhT8BfD0=
+X-Received: by 2002:a05:6808:1513:b0:3f3:f90b:f1b3 with SMTP id
+ 5614622812f47-3f425a658admr16487647b6e.5.1740621162105; Wed, 26 Feb 2025
+ 17:52:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB7704:EE_
-X-MS-Office365-Filtering-Correlation-Id: de557f3d-5dc0-495c-5fa4-08dd56cc3d31
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OWJ1P8tsBCKC7TNNEe2VDMr5xxtAjxXqbYPkyEWzW3V3iWOiIowS3fljS5Wh?=
- =?us-ascii?Q?pAHDwuLo2HBePdf/FeNXQ7CTR+aQ612zDl2N1m6Kgl4vWUfp8o1hHlVuL4LU?=
- =?us-ascii?Q?4tUVIGMTxVlFn2gYIgX1Acor6WXG2qKSDrknPQL2bGAXo0Wy59yBlYMTS9P6?=
- =?us-ascii?Q?X7cynSVjziIpKFOtvGYNwJ67usmGnl1nnLlEeEql0T2U2FELs8aHuyEXQJqZ?=
- =?us-ascii?Q?CqzWae9kkazY7ZH7ijGmfHLbZfcGsf+Ek5AbDuv/GJAu/9mTP4oiXN/mk9Sm?=
- =?us-ascii?Q?7M9FAdWk8cHEkA5g1SUrf8w8UdGjrZn88D+4+luAZfzm+mwwc19HQ12y2Gz8?=
- =?us-ascii?Q?FGXjmKDaVa2hPZLzhRzJnTklAqxivYCGd18bG5t7TcCEaXnj+BlC0DSVDa6J?=
- =?us-ascii?Q?CIIX12gopRKlHy7n1Mgn/HbVx1RZBrfQ3N84/Y35qYvZjO4obdRkIfD430S+?=
- =?us-ascii?Q?XYQAzLCkSBuuYl5Qycqi38pE4NN4AaujTNdVv0DICGQM0NIa/Cjt+Z7iemzX?=
- =?us-ascii?Q?YdjwnIxkLiYfjwSAnLtGLIBQkclqE36pzJe20eHrtJnn1Y3Ro8XyUcssF4Ls?=
- =?us-ascii?Q?TMqE8+gqmIIGG52VLUFpXIOjzSIO3gceMnhBDq6swIOfO1KzEBZOTmzrYem9?=
- =?us-ascii?Q?JEGerQyh9Jx/76p6FJ/GIWPjy4IjbIBDbtd3ZK0mjd0rVu9NE0P4W8/CaOo9?=
- =?us-ascii?Q?suYvr+0J8YuI6KQjp7v9YltpxCD+nhGXC4aRFmw0bQQYm0M1bD/ONDXxHYrY?=
- =?us-ascii?Q?5FPolBKl4yLrlCQ/qTse0DhIw6SHm37Qd1PATUdlKDjQxRT96qG1oOLdkexZ?=
- =?us-ascii?Q?uC6fQy9ndk/i0Yyj4zAIRtPz3LfO0Eu/lo+A3hdM4XljLYAucI6BNdF1pk+y?=
- =?us-ascii?Q?pzZAXv84R7q4pVLIxBOz5QWPLrVq7Y/njOqrRKsLNDMVLlhlTG2IU/nRjJS7?=
- =?us-ascii?Q?CHGCqq/gyiTE/pjpgQGJq8b2M70SP727r23tBmQFNzH3aLpCcJITCdA7qmJx?=
- =?us-ascii?Q?harSblS5O74AMsTDSYYrd2ZqGKZPElC/xRjjr+9cp3eloSzQDAdH5jr9QRUO?=
- =?us-ascii?Q?+TQ+uxwdX0Oh2tuj0tEsGm0yZVf78DBRt6c3BgUb3ynN9O2nQVXkS8fBrAXE?=
- =?us-ascii?Q?FL3YPdaHUZpzNKK59PClHWBcF8P7/gp9Jniwh4uztM1ruXGKFsV8g885lXYK?=
- =?us-ascii?Q?x1D9NnwkZTiaf7L1+dQaLw40NM9mQoovYmmpaCb8DK0UqnB/O5/m29//1qVZ?=
- =?us-ascii?Q?pgXM0qZjdCi+BAu2jIjN6I2x9BPTCFrlceWleEVw4TkMEABHysU/r/nXEc3e?=
- =?us-ascii?Q?dhtvCtigMWhsOBM3a4QObBVBlS5E71qryxJYnIp7Eq9UQAN7A8h5sWxvdcnd?=
- =?us-ascii?Q?BW4UaMIbsAMWm/UcGsOo8YtYWxjxtgKUF0YTQ36dVX4XFubifoP8WYhHVEtK?=
- =?us-ascii?Q?d1W7XIEACuGFdrNg5wiKYfqIgIMPVXANP2YECOP2Kux1obw9qRyOSg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WxE63zPAeCD0Z8iekoNq6C1gwXiq8sTzOMil1wwuDHxRRNVeZ4+EHaX6+lQP?=
- =?us-ascii?Q?wUWFwPho+eg4Wx/JCvsRb3C3+Zi4KqBwCT7WJLBLGswABu76jd/sKMJ2q79u?=
- =?us-ascii?Q?CTRB43sSnKHOP6wx9WWeo46I5/g4zfF1PeP1dKPUKW7lB7OmH8paVgi7IVaW?=
- =?us-ascii?Q?GWxG85ZwnjZrXIZ/VYlqkpjJy4xdGOnMPGr8dCMF0aAipRKGknXBusTdi/G0?=
- =?us-ascii?Q?990yQtO14uGJ1ikYJa2LFz2yCjeg+KVaMV3Y8eLD9/bfKGtj1jwMlaCdul70?=
- =?us-ascii?Q?ol3o0EVvLh6/3W0pddoPnYrknH/5T+0imruVGTdYrcatSwWwRE/TC2rx5w7w?=
- =?us-ascii?Q?1qDTNbgXEOrOnDNk0lOt+j0FgcAMaTGdUxbIkWcwXlsY+Ib3FYRQ7Wh3PEXj?=
- =?us-ascii?Q?jJ0ZXS6Cj6nT54pONEhlGrJZnrKIVgCnaCWh3vipkJzBMGY9KEANeVqcNiJp?=
- =?us-ascii?Q?+DeJgDkmSxLbMvVd852Z+EjEPKTAtH5Q5ff7Emq29sPYZOJ12Q7t1SDmOU9y?=
- =?us-ascii?Q?WDFSDvBOplQKZyWNZ0sFd4O2ADMTwEZbnoJ+576vN1+Aih6+FL5pkWNlTOL2?=
- =?us-ascii?Q?CfCqkTFjuNxFWptjdKl9eG2gt6OShBe/LXTmwuzv1zqazNGiYaOxB6db+tVO?=
- =?us-ascii?Q?kNe8MdWxhNVWobR0en1Dj+gpt3Qv1EqFU2bwiiQF1cPu9DsszK7jPAlgxqnT?=
- =?us-ascii?Q?3BEMgbH6msbsyu5d7pF4F8vR135mGKdaLaIDnGOUi96q5o/cCVIN4rTM5A+K?=
- =?us-ascii?Q?GaPahZ/b07JaBpwWjmUVUdy2/9rQCQxV6gbDpdQ5vP5eRSLAKdkW0bGjVdLv?=
- =?us-ascii?Q?8jSgD5zLlyio6zGF4pFWVMnFVYMUhr14sG+6kuMctwa42Ed6KW+n5IQUikpe?=
- =?us-ascii?Q?W6axwk6TLt3/cjjPe6ybwstTinWDSOwIQV6l7Fb3RrVVR/iMlhVUV6vpG9CU?=
- =?us-ascii?Q?9XuZnJc0pftW7maas/7g53ut/UKFOuaeqDrYU4/vm5BpZXKfoW1/hAz3ExY5?=
- =?us-ascii?Q?EurMFDezspKXd8SKlezaqmx8vUGhCbH1OfhJd9LzXa2pqPDGYrk7g3mIAbBZ?=
- =?us-ascii?Q?UozvAn1mrPt5EzSVdMUm/sv7uS9XfzPN++SU5zoIPC6/5C7mnJ9yN5rgMh0h?=
- =?us-ascii?Q?wORIVy73TxYO9RtJU902wxDWLMxde9hV6kCVYAiZcr3RJHkNWVa2wqCcrikX?=
- =?us-ascii?Q?nWazV8mwpL57QJYO8xsSm4X/iK/uC36Aae/IPCuKqxh5H1mempu+u1XKAElH?=
- =?us-ascii?Q?GEVTpM6ToGX7Uv9/uxGWLahJAlFCcQELvVK8EmKtGu9lbAqJ92cGTio2iYd4?=
- =?us-ascii?Q?5ut7k1F1cr54vwE3BsjvH+vQ6gryYSP0VpkfdxAmTXeUSL1Hiw27GN9xnCpc?=
- =?us-ascii?Q?SYOWGqKyyqWBGQ4X+xcHOFzwtpj8wX4aHUcOaaP5rIHwpUoyqR/iSfmdSMQl?=
- =?us-ascii?Q?HVG2fx+Kf+R1g+/kyX2TMf6nGG9HngVillmGWbh6i67mXTFn5NBnmTLCkp8O?=
- =?us-ascii?Q?sc90hhaUHJHtP26C7Cd7mKeQ5PJNnW3NhZsDTFRZ7QvB0abifmTEJPL/gBK6?=
- =?us-ascii?Q?NnLI/9LOnZf4D80T6GLhFyAsFBWUBVdvCt2RHxc7?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de557f3d-5dc0-495c-5fa4-08dd56cc3d31
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 01:15:35.9479
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JG6TqAtyCNd+tZ4BP5J4CSSEGaJ3IlnLiLAYlYMAxdm6N3K5xAItRFIoxFvb0olz5VSEQ+NRO/3kRgVPm4cayA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7704
+References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com> <20250225-memory-drm-misc-next-v1-6-9d0e8761107a@redhat.com>
+In-Reply-To: <20250225-memory-drm-misc-next-v1-6-9d0e8761107a@redhat.com>
+From: Chunyan Zhang <zhang.lyra@gmail.com>
+Date: Thu, 27 Feb 2025 09:52:06 +0800
+X-Gm-Features: AQ5f1Jo4V-x_aMe6cNu_t6bm5DyuMpmkfFoBZmOQ95iqLbLXuNwjk8JtAQUipWI
+Message-ID: <CAAfSe-vGC2bA10yNRjSkLo3Y=2K8HJvssuM8qLeB=57vQk1eZg@mail.gmail.com>
+Subject: Re: [PATCH RESEND 06/12] drm/sprd: move to devm_platform_ioremap_resource()
+ usage
+To: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Joel Stanley <joel@jms.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Stefan Agner <stefan@agner.ch>, 
+	Alison Wang <alison.wang@nxp.com>, Xinliang Liu <xinliang.liu@linaro.org>, 
+	Tian Tao <tiantao6@hisilicon.com>, Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu <yongqin.liu@linaro.org>, 
+	John Stultz <jstultz@google.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Marek Vasut <marex@denx.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+	Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Alexey Brodkin <abrodkin@synopsys.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 26, 2025 at 11:45:09AM -0500, Laurentiu Mihalcea wrote:
->From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Wed, 26 Feb 2025 at 06:22, Anusha Srivatsa <asrivats@redhat.com> wrote:
 >
->Correct the parent of the AUDIOMIX DSP and OCRAM_A clock gates by setting
->it to AUDIO_AXI_CLK_ROOT, instead of AUDIO_AHB_CLK_ROOT. Additionally, set
->the frequency of AUDIO_AXI_CLK_ROOT to 800MHz instead of the current
->400MHz.
+> Replace platform_get_resource + devm_ioremap
+> with just devm_platform_ioremap_resource()
 >
->---
->Changes in v3:
->* add missing Fixes tag for binding patch
->* improve the commit message of the binding patch
->* link to v2: https://lore.kernel.org/imx/20250221190929.31469-1-laurentiumihalcea111@gmail.com/
+> Used Coccinelle to do this change. SmPl patch:
+> @rule_2@
+> identifier res;
+> expression ioremap;
+> identifier pdev;
+> @@
+> -struct resource *res;
+> ...
+> -res = platform_get_resource(pdev,...);
+> <...
+> -if (!res) {
+> -...
+> -}
+> ...>
+> -ioremap = devm_ioremap(...);
+> +ioremap = devm_platform_ioremap_resource(pdev,0);
 >
->Changes in v2:
->* add Fixes tags
->* add Iulia's R-b
->* link to v1: https://lore.kernel.org/imx/20250217165718.74619-1-laurentiumihalcea111@gmail.com/
->---
->
->Laurentiu Mihalcea (4):
->  dt-bindings: clock: imx8mp: add axi clock
->  clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
->  arm64: dts: imx8mp: add AUDIO_AXI_CLK_ROOT to AUDIOMIX block
->  arm64: dts: imx8mp: change AUDIO_AXI_CLK_ROOT freq. to 800MHz
->
-> .../devicetree/bindings/clock/imx8mp-audiomix.yaml     | 10 ++++++----
-> arch/arm64/boot/dts/freescale/imx8mp.dtsi              |  7 ++++---
-> drivers/clk/imx/clk-imx8mp-audiomix.c                  |  6 +++---
-> 3 files changed, 13 insertions(+), 10 deletions(-)
+> Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
 
-For the patchset:
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
 
+> ---
+>  drivers/gpu/drm/sprd/sprd_dpu.c | 9 +--------
+>  drivers/gpu/drm/sprd/sprd_dsi.c | 9 +--------
+>  2 files changed, 2 insertions(+), 16 deletions(-)
 >
->-- 
->2.34.1
+> diff --git a/drivers/gpu/drm/sprd/sprd_dpu.c b/drivers/gpu/drm/sprd/sprd_dpu.c
+> index cb2816985305fd19eac27413c214681a5a1e9ffa..65cd5aa1634eee5a6735ccffa4ee3979844d92ce 100644
+> --- a/drivers/gpu/drm/sprd/sprd_dpu.c
+> +++ b/drivers/gpu/drm/sprd/sprd_dpu.c
+> @@ -784,16 +784,9 @@ static int sprd_dpu_context_init(struct sprd_dpu *dpu,
+>  {
+>         struct platform_device *pdev = to_platform_device(dev);
+>         struct dpu_context *ctx = &dpu->ctx;
+> -       struct resource *res;
+>         int ret;
+>
+> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       if (!res) {
+> -               dev_err(dev, "failed to get I/O resource\n");
+> -               return -EINVAL;
+> -       }
+> -
+> -       ctx->base = devm_ioremap(dev, res->start, resource_size(res));
+> +       ctx->base = devm_platform_ioremap_resource(pdev, 0);
+>         if (!ctx->base) {
+>                 dev_err(dev, "failed to map dpu registers\n");
+>                 return -EFAULT;
+> diff --git a/drivers/gpu/drm/sprd/sprd_dsi.c b/drivers/gpu/drm/sprd/sprd_dsi.c
+> index 8fc26479bb6bce0aa94914f49d0986a7e19326c1..1668bb4166ab0ad3812c5654244544a9caf249a6 100644
+> --- a/drivers/gpu/drm/sprd/sprd_dsi.c
+> +++ b/drivers/gpu/drm/sprd/sprd_dsi.c
+> @@ -901,15 +901,8 @@ static int sprd_dsi_context_init(struct sprd_dsi *dsi,
+>  {
+>         struct platform_device *pdev = to_platform_device(dev);
+>         struct dsi_context *ctx = &dsi->ctx;
+> -       struct resource *res;
+>
+> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       if (!res) {
+> -               dev_err(dev, "failed to get I/O resource\n");
+> -               return -EINVAL;
+> -       }
+> -
+> -       ctx->base = devm_ioremap(dev, res->start, resource_size(res));
+> +       ctx->base = devm_platform_ioremap_resource(pdev, 0);
+>         if (!ctx->base) {
+>                 drm_err(dsi->drm, "failed to map dsi host registers\n");
+>                 return -ENXIO;
+>
+> --
+> 2.48.1
 >
