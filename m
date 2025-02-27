@@ -1,140 +1,96 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160A32222B7
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 20:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2344719DF52
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 20:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740687449; cv=none; b=BfUpHU+JuTK43gVgIp9oAw4JiFa7z5C3VoT2rLroHLFcnyh+pLJwjkQ4D4D4PSWzd7XgctcJ/oiRrbz4fcvCFAvtPY447MhMTOXVxgvc6h0iKCcUjVgVSs334zoq03L7Jof2c+Ug2UJczoC1UUNmJO9s6EI+8jUeRLJhBf2F8DM=
+	t=1740688822; cv=none; b=eEfce2AAzex8LFBm0Zfn4YmekZDJAqLgvhtw6IUGAo0ljbuJPoIdrKghwDutUWYHtwju/oOlsIXGKu2g2I4pv1Qcjf/1V9VFs6JDupF9OKR/5Qz/MlNdcj+RfAv8RVfn00rsDQOG0pilA9TwZv/sPobqf+ufoV2oP06SXsvjZ+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740687449; c=relaxed/simple;
-	bh=r+wfz5/EBVvMWJa1eYT4r6ZhHTFZ4plfU3tWfAnNoFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HX/YYKvl5eCPo2Atuvp0qkchO5nAoUPV11LJpQKpGBwHPPX7wraQ8H4ILj6EkL6Dpe1kGSPADQ80VOLx8xpiCT67GvFsvayCv7/bcaTe9mkO6mF/JY0+gGuT7N3wRkwfXncsjOKj5CbcImxkSC6TchgD4nFZMJ8Equ/T6hEyd+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnkJi-0004yh-Ub; Thu, 27 Feb 2025 21:17:10 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnkJh-003BEq-1W;
-	Thu, 27 Feb 2025 21:17:09 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tnkJh-003Wgm-15;
-	Thu, 27 Feb 2025 21:17:09 +0100
-Date: Thu, 27 Feb 2025 21:17:09 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Simona Vetter <simona@ffwll.ch>, Liviu Dudau <liviu.dudau@arm.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Steven Price <steven.price@arm.com>, imx@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	dri-devel@lists.freedesktop.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH 8/9] drm/panthor: Add i.MX95 support
-Message-ID: <20250227201709.2diz57xv2tntw36q@pengutronix.de>
-References: <20250227170012.124768-1-marex@denx.de>
- <20250227170012.124768-9-marex@denx.de>
+	s=arc-20240116; t=1740688822; c=relaxed/simple;
+	bh=MF8I6te1K3qz6y2VrEfd37qQ99PRoXXDs9VHbbxDBi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QShwcymtKR1629ovSs19+t5lVc3pJ8Ub68OBrqvtcNWq0ozPVqpPgneGLhlXMkw8JWBZczBXiqeAXpTntzgRqvGYouURkcRaS6E30ZsI6WeSSPR7hJFWOYHCYHB8P0UkumUUOi8oqKonQbudX5A8VXmKeqos/n3paon7cywHeDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Y6udNiAu; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Y6udNiAu"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1CF6E10382D2E;
+	Thu, 27 Feb 2025 21:40:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1740688817;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E8ACEuyNDLYUMJdsnlbLhn6wugLzJDUc8NzlV6FztT8=;
+	b=Y6udNiAuASjGCPGlDzD77fbQ7ezJlJ4K2/iMpZltQjf5aZffExkoSZB9KKYv+95Fqsvb/q
+	nkcIXtTK3MtOF6SVtekIt7nyeVCsrq9VfxTci6Bk5cCyBlisvdNPb4m75jYpY4Nbfvu0e7
+	hscqaePaHkjchYcwSAhQGqPLEM2hNUjUK8UuzxowRAh+n7LGWtmOx8Sgij+43mgyc0HCcd
+	r5j/Iba2E2z0zKQ8hmy0egAmG4CyyDuVEVMZ2mr0BDYploZQkWcf1WPvy9xtBpWmy51zPn
+	GUWOnK6CDK4QJNhOi+zneKlA73/eQPbBb4015Y2mAjzdchoIDwnfBpUpX96JDg==
+Message-ID: <53b63cbd-612f-4da2-a957-ab7adbdc3802@denx.de>
+Date: Thu, 27 Feb 2025 21:22:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227170012.124768-9-marex@denx.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] dt-bindings: reset: imx95-gpu-blk-ctrl: Document
+ Freescale i.MX95 GPU reset
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+References: <20250227170012.124768-1-marex@denx.de>
+ <20250227170012.124768-2-marex@denx.de>
+ <Z8ChTqXdQCbSTJCy@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <Z8ChTqXdQCbSTJCy@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Marek,
+On 2/27/25 6:30 PM, Frank Li wrote:
 
-On 25-02-27, Marek Vasut wrote:
-> The instance of the GPU populated in Freescale i.MX95 is the
-> Mali G310, add support for this variant.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  drivers/gpu/drm/panthor/panthor_drv.c | 1 +
->  drivers/gpu/drm/panthor/panthor_gpu.c | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
-> index 06fe46e320738..2504a456d45c4 100644
-> --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> @@ -1591,6 +1591,7 @@ static struct attribute *panthor_attrs[] = {
->  ATTRIBUTE_GROUPS(panthor);
->  
->  static const struct of_device_id dt_match[] = {
-> +	{ .compatible = "fsl,imx95-mali" },	/* G310 */
-			  ^
-			 nxp?
+[...]
 
-Can we switch to nxp instead?
+>> +examples:
+>> +  - |
+>> +    reset-controller@4d810000 {
+>> +        compatible = "fsl,imx95-gpu-blk-ctrl";
+>> +        reg = <0x0 0x4d810000 0x0 0xc>;
+> 
+> No sure if it pass dt_binding_check, I remember default 32bit address
+> reg = <0x4d810000 0xc>
+> 
+>> +        clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
+> 
+> suppose you missed dt-binding include file for IMX95_CLK_GPUAPB
+Sigh, I knew I forgot something before sending this series out, thanks.
 
-Regards,
-  Marco
+But we have a bit of a problem here, the IMX95_CLK_GPUAPB macro is 
+defined in a header in arch/arm64/boot/dts:
 
->  	{ .compatible = "rockchip,rk3588-mali" },
->  	{ .compatible = "arm,mali-valhall-csf" },
->  	{}
-> diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
-> index 0f07ef7d9aea7..2371ab8e50627 100644
-> --- a/drivers/gpu/drm/panthor/panthor_gpu.c
-> +++ b/drivers/gpu/drm/panthor/panthor_gpu.c
-> @@ -67,6 +67,7 @@ struct panthor_model {
->  }
->  
->  static const struct panthor_model gpu_models[] = {
-> +	GPU_MODEL(g310, 0, 0),	/* NXP i.MX95 */
->  	GPU_MODEL(g610, 10, 7),
->  	{},
->  };
-> -- 
-> 2.47.2
-> 
-> 
-> 
+arch/arm64/boot/dts/freescale/imx95-clock.h:#define IMX95_CLK_GPUAPB 
+               (IMX95_CCM_NUM_CLK_SRC + 42)
+
+Shouldn't this header be moved into dt-bindings/ ?
+
+I can use fixed number 83 to reference the GPUAPB clock in this binding 
+document until this is solved, even if that's not a nice thing.
