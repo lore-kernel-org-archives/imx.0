@@ -1,75 +1,36 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9576228CBF
-	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 10:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F931487D5
+	for <imx@lists.linux.dev>; Thu, 27 Feb 2025 10:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740650402; cv=none; b=QoLON/upYlzzI3GIw/9ClfMwvs3WZQqguNw2XUA+D+9e82NOo+ne+YBSOpBLH+DxtF1k/5OB7UrhJc/Tc+nXYa7dQsvzeLVeuc0ai0OQUujs23HyarQ/QKQqim9Ede2XAK7GfVRvKS70vJmQOID+qxPdA4752IMwn/tgErZ4Wbo=
+	t=1740652243; cv=none; b=TWzb25OCqheQZhpYn7BzzVgeb7OvoIPLen3Aa72FZjd/izPjbBdwUcOxGLDcIuMeFswo87JA74/QJgo4gH3trt5WELAi33TlJeHbmeCF4ZMEBSzymzSkeO5mcAukf3cgJsynNAHkSxrw942osswjRWuqJHTa+kzXqYYAEXZ7GpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740650402; c=relaxed/simple;
-	bh=Hxy4zLP7nPAij63gn8nYyXPjhnD7qhC4nNggf0uoN4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ogrpAuqY2VgtntOCfG9VRTMtRxRsMv/fGSdvA/Z8Dlo14SIs7BCyp8G6NzCZAGsN9cMQDFZrwZkkR350o4yRlqUhky6BQRiVh6txbqoG8CwK41krAzo49iN8wULy8RK5iRIlunyPxngw5ANo1P3fx5xvWi7SSTRbLvcTTwPvijo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xjxybo9G; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740652243; c=relaxed/simple;
+	bh=GaSgLST/tBv0E/MPGw6ZCFKMm27+YvybP4d9v5gSsAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QRKha+DOj9vOssf0vnkPNPG8yGxCV2sE+AW9He9Ss1EtohXVpmlsMHMHd+V1lxtt6i6t1p428QDUcmQdYb2aec6GA0hYA0A/vQS7/8swRq8i2Y0QqjfjPyOlnJaNvKQcSago/CY50k2DaXzjc5hBw0Hpg2Pga5IsEFPEfJZSO4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=de6IKaUW; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xjxybo9G"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abf1da0cb66so16667866b.3
-        for <imx@lists.linux.dev>; Thu, 27 Feb 2025 02:00:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740650399; x=1741255199; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sIHFyw4DJimMnpIl8i0OzzVtEtYlzfhRkm9JXG7+7wU=;
-        b=Xjxybo9GGhelLpyevjov7GaKOY3/8iLlzjtuUMtKrn9xmh79h/KipyDpFwM8mlbtvQ
-         4NR7GeuciqlYn1E18SNXWUdbrMl14SMumZYMF9dERSO6U+rqe5DFWeXqJg34br+UdVsW
-         ikjD2O53ll8Q7Ur3a8uFQCgfiTnujUPrwwnrXGaSmmiX6dB5ULCpd8eEUGL7hnWOjcX3
-         G9xGwXmWpdKCKCQfqhFXfR75xcajs5uTMQsAQzS/5ANAb86iccedzo2TgGjqx3MpZVry
-         YcW/GLGDjSDbhudAAjmej7XGCo6gYuzca6pCA3OgiqYQdm+WPlNeeLsTOX0JcT2v4obP
-         ovEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740650399; x=1741255199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sIHFyw4DJimMnpIl8i0OzzVtEtYlzfhRkm9JXG7+7wU=;
-        b=rtBLWIwNY1WXL6RBF2UF+G2Gm6NqoFg2VdK85uVni5lESu5X9GzRBcved5vt03rjuh
-         OMF5V8V2p+huVKtBE/aheorTL3BmmFoWE50+rO6KpkdXzPpkaFN+yCyp7dy9AWZIS/gh
-         xvneDIGAxJPp0C00VK1H7fC9pQwiNtFf1GkecjCIxrxa1I2erZvN4a5fEUKkVPpPmBMg
-         32Qnab9AbUx+YhAankyE0BQDwGsFbfjBlWmgie/J18ePK/k3RclOsBsAk7eYIOaThvmL
-         EA6LY0+xT4+Hr9PPSN8S5goYU7kWCeD081HjPbIGysh0AYZOwhMityyhqLXMUDMyRe7z
-         3QNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlg3VQ75dpsk6881BZ1YAY4GUpPQqz6kTFYR/+FLZKLO3ctGtGvGE/RtxpsJp2zN1Am7c=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzk8QSj/1F2T1gx43Bsli1wGYiKomVvraoEIj5mHP4AITpicuNF
-	lrF01pkH3YeST+6mwxAOeEnM/vJlIjlXxdNSvea59yEUsOnm0mICJm3ir06ytfc=
-X-Gm-Gg: ASbGnctYNyUeQfWA0AY6d/xfloKhZEReRuAXuHrAmkNhRrj9gldT9hTzAcXGybvdxTr
-	NzWsYYmwFr9/XqTRHEy31DjN5MOC9YuXSjwYuzQvcSysWAAB+ocKcp2f+I5GBqOnreO/HYe6psG
-	39YPsKo4kCSXZt0TEcx0WYJCZrfRNVzzV5JLtPT2sNUeKamG1D+xRcHZKiz0kDaHuTjLQSWOu9f
-	6v7bmifgaqn6MJOWlYIKR8wWkPj1xewkWUj5sxva3a0bqCWgnfLhKMoe7e4x+hCgnBUqUTgj3MB
-	N9J/49dMrfZj7EdyUkPwCA9fpqefsZE=
-X-Google-Smtp-Source: AGHT+IHunHmqDDk/8KV7z25yVlfx9n1ZmOsivVdt03USwowQNbi9YBZAEFtlG6SH7Vi2b3fPs6n3vQ==
-X-Received: by 2002:a17:906:7cd8:b0:ab7:b5d9:525a with SMTP id a640c23a62f3a-abc09c1a653mr2285136866b.37.1740650399043;
-        Thu, 27 Feb 2025 01:59:59 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abf0c0dc21csm96948866b.42.2025.02.27.01.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 01:59:58 -0800 (PST)
-Date: Thu, 27 Feb 2025 12:59:51 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: slongerbeam@gmail.com, p.zabel@pengutronix.de, mchehab@kernel.org,
-	gregkh@linuxfoundation.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	hverkuil@xs4all.nl, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: imx: fix a potential memory leak in
- imx_media_csc_scaler_device_init()
-Message-ID: <d09ac514-be27-46eb-8b2a-1a397e3321d6@stanley.mountain>
-References: <20250227074451.3698971-1-haoxiang_li2024@163.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="de6IKaUW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=qd4HzO5DI05dF9t4EH+iv2z6iNBamypUQVWMX+idBZQ=;
+	b=de6IKaUWk4gJS58kgVUA8ARoMXnGwGbRNG4BeySV+MMY3ZiTd1W24oSrMyonRA
+	Xft550fi30swTpCZE7b9RAa4Ocbx4Uy9E6eIt/yF3FFcaezDzUwADcWLq5be/OcW
+	tZrTUTJXSNocCDhrCKPGcwGJnDFUzohLZBjyGa4rlgegU=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3EYquPsBnJxMcCg--.28199S3;
+	Thu, 27 Feb 2025 18:30:08 +0800 (CST)
+Date: Thu, 27 Feb 2025 18:30:06 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.14
+Message-ID: <Z8A+rihFV4K3l8QR@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,24 +39,56 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250227074451.3698971-1-haoxiang_li2024@163.com>
+X-CM-TRANSID:Ms8vCgC3EYquPsBnJxMcCg--.28199S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ArW7WF18WFykKFW8XF1UKFg_yoW8CFW3pF
+	4fArnxKr18JryfArnxXw48XF9xta1rJF45Wr13t3y8CF15CFn7Jr1jqryIgry2qryxAr43
+	tF17JryUCFy5Ww7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uu6wNUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBA8BZWfANJQmPgAAsw
 
-On Thu, Feb 27, 2025 at 03:44:51PM +0800, Haoxiang Li wrote:
-> Add video_device_release() in label 'err_m2m' to release the memory
-> allocated by video_device_alloc() and prevent potential memory leaks.
-> Remove the reduntant code in label 'err_m2m'.
-> 
-> Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
-> Changes in v2:
-> - Remove the reduntant code. Thanks, Dan!
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
 
-Thanks!
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
 
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+are available in the Git repository at:
 
-regards,
-dan carpenter
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.14
+
+for you to fetch changes up to 2c1092823eb03f8508d6769e2f38eef7e1fe62a0:
+
+  arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card (2025-02-23 16:13:33 +0800)
+
+----------------------------------------------------------------
+i.MX fixes for 6.14:
+
+- A tqma8mpql board fix from Alexander Stein to correct vqmmc-supply for
+  usdhc3
+- A change from Joe Hattori to fix OF node leak in imx-scu driver probe
+- A soc-imx8m driver fix from Peng Fan unregister cpufreq and soc device
+  in cleanup path
+- A couple of changes from Stefan Eichenberger to fix iMX6 Apalis
+  poweroff and iMX8M verdin-dahlia sound-card descriptions
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
+
+Joe Hattori (1):
+      firmware: imx-scu: fix OF node leak in .probe()
+
+Peng Fan (1):
+      soc: imx8m: Unregister cpufreq and soc dev in cleanup path
+
+Stefan Eichenberger (3):
+      ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
+      arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
+      arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
+
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi      | 10 ++++-----
+ .../boot/dts/freescale/imx8mm-verdin-dahlia.dtsi   |  6 ++---
+ .../arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi | 16 ++++---------
+ .../boot/dts/freescale/imx8mp-verdin-dahlia.dtsi   |  6 ++---
+ drivers/firmware/imx/imx-scu.c                     |  1 +
+ drivers/soc/imx/soc-imx8m.c                        | 26 ++++++++++++++++++++--
+ 6 files changed, 40 insertions(+), 25 deletions(-)
 
