@@ -1,148 +1,179 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB10E25DCEF
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 10:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ECC25DB17
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 10:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740737566; cv=none; b=anXvX+rsfTN7ni4AlXNaTvp4szvkcWR3YJu5fCBYF8s+DVywHWRi8mieRTah1KmdydIuc1LKjWidDyIBP31bus1QUKCr60m2zhP6+okHxDhyUlyj5G0tcP2C3Qx4l93dHiNEvxcMFihnP+uG6W8hhDJqPsWKlEPvUSIk8gHO+Lg=
+	t=1740738002; cv=none; b=UbA04O1bRpz5fu1WWMq5yk0aw9R1yGnt+mBX4L5vc4v6i25eQ33QNvoBpOIXwjaT0fy6ZLkz8v4l9KBCkrKF/UySx2eSfLrWiRDbFx+dQmBFSPt/G3vsMRfmd/PCS7ka8eOV8Lsy7Vwq8m46eFRO6HFrsfjG6dAcTLvElnJeXnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740737566; c=relaxed/simple;
-	bh=Qdq5WAjFPi4TKMEVn4IsIN7wUCANmhG6byBsJnCflk8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FtyqMU4HNuDTOQNAKv/YJFPloZHADNJ7cef4yGX3yeZ7bsjazqnD0BDzb4LHQrKWywHMzKnjJkGVBZk35+B6p2Gv8FmgQaV1AjUXtT9qradoAqc/U4oxp/YZHav+tWAAQ4KoZwP4jmRTWpch3tlRW3VnFoUHDIlfmTv2tRvJiw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=JXckqPJq; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RZIbN3OU reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="JXckqPJq";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RZIbN3OU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740737564; x=1772273564;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wrZESIfIEMlm8bcE5XbWXGC11n9EvGXbhxL7sNZTaKg=;
-  b=JXckqPJq/NpU3rnbvEh6F+GISVZkBNRfJYSOLd9tcUE6ox3RV8q3Rtzb
-   Q1MQiy1n0DTBUvPX5Booth7I9QrpmXoZzn1EjSLOUdPsCv4Iei00b+Ohy
-   gaFtnQ0G83QvDu8IEfN/YwIw8XzAM/HaqDLBx3Mszppa51I/FTJnszAFa
-   +GWMTMj/QxAO+jmdg+GVhNRcofRHoZLQ0SN1XnbHxSlHGI2emyFF829xO
-   AaLid7QpVNl1bexkwaLwQtKt3hnOtOvVvJzKMVfinfaFNTaOZ/IeTRD1N
-   G5yStcG+AkzWofh/ovQ/YCYtqZTjLxdkIrJ6sz8opWt87gmqJQIVkoUQp
-   A==;
-X-CSE-ConnectionGUID: pa+KqxuLQCOJlUmpZ8dqOg==
-X-CSE-MsgGUID: XOcdYrqWQr2Yz50o0V+ekw==
-X-IronPort-AV: E=Sophos;i="6.13,322,1732575600"; 
-   d="scan'208";a="42171238"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 28 Feb 2025 11:12:41 +0100
-X-CheckPoint: {67C18C19-E-2895743E-CD1E7AB7}
-X-MAIL-CPID: 18FEA1C7F914205254E6E81087CE3540_4
-X-Control-Analysis: str=0001.0A002119.67C18C19.00E0,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D6AAB168CC3;
-	Fri, 28 Feb 2025 11:12:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740737557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wrZESIfIEMlm8bcE5XbWXGC11n9EvGXbhxL7sNZTaKg=;
-	b=RZIbN3OUvhZO996W35ymd+UmvU0Oe1s/ZIRdblX0G9pxMXjaPdqV3Si/TXhOId9nWCmi4P
-	5opWJlWKMH3LggKe/bDCqJkXBP4MYy12GrGsaasQWYP3JaQGj+Zdpg2TDyEiqLPmlGVvEf
-	a7oGgXhCV8ENhJXpx7RP4iwwqWQs8SRoSzLuif/iCFCSeH6pMlIWJq9p3GfmePgTt0sxGY
-	ZqZl3ZHOU0e/KmiFwlp7JILTqf6x0AZN4T7OJOgTdHU8AW1lM6RQiRL+cfGOKW90hrhESa
-	qOjpJvckYPsC91rSpqL/8PwGVYKWPrTMtn66RABwjrBDuv2LRT7uRf87Acr2HA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marex@denx.de>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Steven Price <steven.price@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, Marek Vasut <marex@denx.de>
-Subject:
- Re: [PATCH 7/9] dt-bindings: gpu: mali-valhall-csf: Document i.MX95 support
-Date: Fri, 28 Feb 2025 11:12:35 +0100
-Message-ID: <4281241.1IzOArtZ34@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250227170012.124768-8-marex@denx.de>
-References:
- <20250227170012.124768-1-marex@denx.de>
- <20250227170012.124768-8-marex@denx.de>
+	s=arc-20240116; t=1740738002; c=relaxed/simple;
+	bh=wZZhMkhQRmVPgHtgd0PNxvh1/Smcic6VSazFh0kFzjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lE7ex5f+NQHMnpHXvc1CH83gbF1i9gphk0ffMZOYdnK0aRjR82Yq1s+EU9m4C19rPUeqNCf+KcXzPRZUzaG65ZpY3aIE85MsJZ6rFIDLU7b78cv6/vt412COKnIplfq306Jq2qwlGy2sCaLIBARKDrOXTiMDHY5GbaaaK1MF0Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tnxTE-0000p1-HQ; Fri, 28 Feb 2025 11:19:52 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tnxTE-003HFg-0g;
+	Fri, 28 Feb 2025 11:19:52 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tnxTE-005Ghl-0F;
+	Fri, 28 Feb 2025 11:19:52 +0100
+Date: Fri, 28 Feb 2025 11:19:52 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+	Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>,
+	imx@lists.linux.dev,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Message-ID: <20250228101952.g6tae3ni5xrhjk3y@pengutronix.de>
+References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+ <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
+ <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
+ <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
+ <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Am Donnerstag, 27. Februar 2025, 17:58:07 CET schrieb Marek Vasut:
-> The instance of the GPU populated in Freescale i.MX95 is the
-> Mali G310, document support for this variant.
->=20
-> Signed-off-by: Marek Vasut <marex@denx.de>
+Hi,
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On 25-02-27, Frank Li wrote:
+> On Thu, Feb 27, 2025 at 11:57:54AM +0100, Marc Kleine-Budde wrote:
+> > On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
+> > >
+> > > On 21.02.2025 21:56, Frank Li wrote:
+> > > > On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
+> > > >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > > >>
+> > > >> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> > > >> configurations. Since these configurations need to be applied before
+> > > >> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
+> > > >> be their parent instead of keeping AIPS5 and adding a child node for
+> > > >> AIPSTZ5. Also, because of the security configurations, the address space
+> > > >> of the bus has to be changed to that of the configuration registers.
+> > > > The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
+> > > > config address part in your drivers.
+> > > >
+> > > > Frank
+> > >
+> > > Any concerns/anything wrong with current approach?
+> > >
+> > >
+> > > I find it a bit awkward to have the whole bus address space
+> > > in the DT given that we're only interested in using the access
+> > > controller register space.
+> > >
+> > >
+> > > I'm fine with the approach you suggested but I don't see a
+> > > reason for using it?
+> >
+> > Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
+> > Applications Processor Reference Manual, Rev. 3, 08/2024), the
+> > AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
+> > different than the bus configuration. Why not model it as part of the
+> > bus?
+> >
+> > > >> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > >> index e0d3b8cba221..a1d9b834d2da 100644
+> > > >> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > >> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > >> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+> > > >>  			};
+> > > >>  		};
+> > > >>
+> > > >> -		aips5: bus@30c00000 {
+> > > >> -			compatible = "fsl,aips-bus", "simple-bus";
+> > > >> -			reg = <0x30c00000 0x400000>;
+> > > >> +		aips5: bus@30df0000 {
+> >                        ^^^^^^^^^^^^
+> > > >> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
+> > > >> +			reg = <0x30df0000 0x10000>;
+> > > >> +			power-domains = <&pgc_audio>;
+> > > >>  			#address-cells = <1>;
+> > > >>  			#size-cells = <1>;
+> > > >> +			#access-controller-cells = <0>;
+> > > >>  			ranges;
+> > > >>
+> > > >>  			spba-bus@30c00000 {
+> >                         ^^^^^^^^^^^^^^^^^
+> >
+> > This looks very strange: The aips5 bus starts at 0x30df0000 and has a
+> > child bus starting at 0x30c00000?
+> 
+> @30df0000 should match controller reg's address.
+> 
+> subnode address 0x30c00000,  should be descript in "ranges", which 1:1 map.
+> 
+> So it should be reasonable. another example:
+> i2c@1000 {
+> 
+> 	device@1c <- which use difference address space.
+> }
+> 
+> The similar case also happen at pcie.
 
-> ---
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
->  Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.y=
-aml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> index 0efa06822a543..3ab62bd424e41 100644
-> --- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> @@ -18,6 +18,7 @@ properties:
->      oneOf:
->        - items:
->            - enum:
-> +              - fsl,imx95-mali            # G310
->                - rockchip,rk3588-mali
->            - const: arm,mali-valhall-csf   # Mali Valhall GPU model/revis=
-ion is fully discoverable
-> =20
->=20
+I'm not really convinced that pcie and i2c are good examples here. I2C
+does have an other addressing scheme by nature and the hotplug-able pcie
+is dependeds on the pcie device memory map of course.
+
+Here we're talking about an access control IP core on a bus which is
+static.
+
+But.. it looks like from DT abstraction it's fine because STM did
+something similiar with their st,stm32mp25-rifsc or st,stm32-etzpc
+albeit it does look strange and I don't know why we have to limit the
+address space since it was already mapped but used by the fsl,aips-bus
+driver.
+
+Regards,
+  Marco
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+> 
+> Frank
+> 
+> >
+> > regards,
+> > Marc
+> >
+> > --
+> > Pengutronix e.K.                 | Marc Kleine-Budde          |
+> > Embedded Linux                   | https://www.pengutronix.de |
+> > Vertretung Nürnberg              | Phone: +49-5121-206917-129 |
+> > Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+> 
+> 
+> 
+> 
