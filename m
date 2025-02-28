@@ -1,141 +1,106 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DE272904
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 18:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27836280A3F;
+	Fri, 28 Feb 2025 18:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740767253; cv=none; b=SIHM4PMbjnksH1cWtCfnW2S7nkKxNh+r3eAXeGeBOmyPuesGBC0sgdWiyFZ8YAW4vXGbAkzm0fJBOeWvVTSEk+fyNpXsoJBjIet0QnCDWskcIrDOyjQtKOVaVV4xChOlRVcdi+SdQ+xM0Re6zXRLiFpwhOJ7B4IjNsKX9tIqIDg=
+	t=1740767402; cv=none; b=tbAPvVoupwpkAXR9ij4uOXzuJy46EwaDRMoU2c97Ub9mvEglC3Osqceh2u1DHZEkved0KK0Y1AGZWx+AZ+/5fFDh+k/XiG0JI32BRi6mWFSHAnlWMbTg7eUv4YXrswQ513de0ibXvRDM3CKhvXAymsQmg7A6LNie4NkqLSH4OlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740767253; c=relaxed/simple;
-	bh=39z+E4PPVM1efwupG9Mf9KyEkQkdzCvRmmxkXn2IotI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IOMdpRUGS0R/E9/NwAEjBPgzC1ZCYlZhCRgwLweIUJcO3LSjqfRPQsOpB47q/rS2ByqHOTkTub+veD+l+ejvEwc8st8iy9mAYo22CyiBCCbLZNqjt+xj+liq0QMABmt7RX2vznKGsWcu3LS2gQlG+n5UddmWQox13uvQbhcKkZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=FwveDW+W; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1740767402; c=relaxed/simple;
+	bh=OilwAZ5RXV38zTb+M44/89NDdAfBWpMVpgBj9F3ie5M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=o8DkMOm/cDyLpI+hZgVZ7plkfi+zHIHZZgZnU8DHnp5mnhNd5LIesA2YPiRQbEBD9xXyVk2uh9rUIpJ1KjwFmQot4jHTZTviB+r8OK/KOQR7Ct0Whk6xiQQ4r6nKR9bj5NYRBx35NYzlvvI0anuW/FPY/yhhTaIizESEKl/EyQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qko06JpB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="FwveDW+W"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED201102901CC;
-	Fri, 28 Feb 2025 19:27:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1740767250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UtwTjTpw0Vr5sz6bdwu5/AqqBhdI7OSOUmgECWI+xPM=;
-	b=FwveDW+W0Zn4acPWayV/4P1UVN2P1khcGzVmkJVhGS101XEfdWPoOyh8+AG7WIaKam633t
-	uDzHhOiDp0imrWhBZMmUREAaLwQdPgPKem8CyvX2T1ZrRDRe1Mh6UsbhOpxE7oH0udlcGc
-	IIVEaPn8mfY+5hQHRP7W0n+D3mOSzEocFwefXjspugKDwozTtccc8HXC+FfAY5lxhPEmEw
-	MTz7HZz5M7QuqPn20F3ZKC60ni935e0zwSsB3X1fyqFQFFaZUsTJAElVz15dHQATRW/48P
-	IIyfxRvvG/LYHhzcD3AEZDxSs/4Onu5JlLRMjcv1dU5uTYt6gWvzKDdvxgC7dA==
-Message-ID: <4a27b6bf-aca8-4f29-9561-609a42eb81a0@denx.de>
-Date: Fri, 28 Feb 2025 18:43:53 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qko06JpB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917B1C4CEED;
+	Fri, 28 Feb 2025 18:30:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740767401;
+	bh=OilwAZ5RXV38zTb+M44/89NDdAfBWpMVpgBj9F3ie5M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=qko06JpBaB0Mhqay9/mFCbAZRqjBKioIFBIjsaLX69CFiooIOK6cQTIib8VidkwDa
+	 6920EKQBFWvPxU/KaDSCCQeUmtMyIhUFxJ4SaiAw+TBD9dSJ0sDdr0AIc+oDoyea1u
+	 Cc0CV4QGr2nGWBKrENwhuXlvL4dMSg7D60RJwDn6Ay2EiIGoH5Re4bbPE/fUduBWAl
+	 ED/lJ4r/dxbL76l1rHW5blvs99gEzk0NkQhN1AmHpo1/2Viw687dTXHMY1839QATdA
+	 CihdYAaDCONwhLA+EZWj70TPPMYxNRubEUWc1r8VX0g5dC2CXgcB4OQ0nXMhkcf+XD
+	 ym4ylURLCwE1w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB9B4380CFF1;
+	Fri, 28 Feb 2025 18:30:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] arm64: dts: imx95: Describe Mali G310 GPU
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Steven Price <steven.price@arm.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, devicetree@vger.kernel.org, imx@lists.linux.dev
-References: <20250227170012.124768-1-marex@denx.de>
- <20250227170012.124768-10-marex@denx.de> <2153305.bB369e8A3T@steina-w>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <2153305.bB369e8A3T@steina-w>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 00/11] net: stmmac: cleanup transmit clock setting
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174076743376.2237263.14950662798271470831.git-patchwork-notify@kernel.org>
+Date: Fri, 28 Feb 2025 18:30:33 +0000
+References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
+In-Reply-To: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
+To: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, drew@pdp7.com, kernel@esmil.dk,
+ edumazet@google.com, festevam@gmail.com, wefu@redhat.com, guoren@kernel.org,
+ imx@lists.linux.dev, kuba@kernel.org, jan.petrous@oss.nxp.com,
+ jbrunet@baylibre.com, khilman@baylibre.com,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
+ martin.blumenstingl@googlemail.com, mcoquelin.stm32@gmail.com,
+ minda.chen@starfivetech.com, neil.armstrong@linaro.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
+ s.hauer@pengutronix.de, shawnguo@kernel.org
 
-On 2/28/25 11:36 AM, Alexander Stein wrote:
-> Hi Marek,
+Hello:
 
-Hi,
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
->> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
->> index 3af13173de4bd..36bad211e5558 100644
->> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
->> @@ -249,6 +249,37 @@ dummy: clock-dummy {
->>   		clock-output-names = "dummy";
->>   	};
->>   
->> +	gpu_fixed_reg: fixed-gpu-reg {
->> +		compatible = "regulator-fixed";
->> +		regulator-min-microvolt = <920000>;
->> +		regulator-max-microvolt = <920000>;
->> +		regulator-name = "vdd_gpu";
->> +		regulator-always-on;
->> +		regulator-boot-on;
->> +	};
+On Thu, 27 Feb 2025 09:16:15 +0000 you wrote:
+> Hi,
 > 
-> Is this an internal voltage?
-
-I think so.
-
->> +
->> +	gpu_opp_table: opp_table {
+> A lot of stmmac platform code which sets the transmit clock is very
+> similar - they decode the speed to the clock rate (125, 25 or 2.5 MHz)
+> and then set a clock to that rate.
 > 
-> Node-Names use dash instead of underscore.
-
-Fixed, thanks.
-
-[...]
-
->> @@ -1846,6 +1877,37 @@ netc_emdio: mdio@0,0 {
->>   			};
->>   		};
->>   
->> +		gpu_blk_ctrl: reset-controller@4d810000 {
->> +			compatible = "fsl,imx95-gpu-blk-ctrl";
->> +			reg = <0x0 0x4d810000 0x0 0xc>;
+> The DWMAC core appears to have a clock input for the transmit section
+> called clk_tx_i which requires this rate.
 > 
-> Mh, GPU_BLK_CTRL is /just a bit) more than the GPU reset. Does it make sense
-> to make this an gpu-reset-only node, located at 0x4d810008?
+> [...]
 
-The block controller itself is larger, it spans 3 or 4 registers, so 
-this should describe the entire block controller here.
+Here is the summary with links:
+  - [net-next,01/11] net: stmmac: provide set_clk_tx_rate() hook
+    https://git.kernel.org/netdev/net-next/c/dea5c8ec20be
+  - [net-next,02/11] net: stmmac: provide generic implementation for set_clk_tx_rate method
+    https://git.kernel.org/netdev/net-next/c/12bce6d5404e
+  - [net-next,03/11] net: stmmac: dwc-qos: use generic stmmac_set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/17c24f6dc641
+  - [net-next,04/11] net: stmmac: starfive: use generic stmmac_set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/c81eb3da0be8
+  - [net-next,05/11] net: stmmac: s32: use generic stmmac_set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/36fa8c960720
+  - [net-next,06/11] net: stmmac: intel: use generic stmmac_set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/61356fb1b0d6
+  - [net-next,07/11] net: stmmac: imx: use generic stmmac_set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/b693ce4f2704
+  - [net-next,08/11] net: stmmac: rk: switch to use set_clk_tx_rate() hook
+    https://git.kernel.org/netdev/net-next/c/c8caf6100f6d
+  - [net-next,09/11] net: stmmac: ipq806x: switch to use set_clk_tx_rate() hook
+    https://git.kernel.org/netdev/net-next/c/ca723519c28b
+  - [net-next,10/11] net: stmmac: meson: switch to use set_clk_tx_rate() hook
+    https://git.kernel.org/netdev/net-next/c/2a7d55f901a5
+  - [net-next,11/11] net: stmmac: thead: switch to use set_clk_tx_rate() hook
+    https://git.kernel.org/netdev/net-next/c/945db208fbe7
 
->> +			#reset-cells = <1>;
->> +			clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
->> +			assigned-clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
->> +			assigned-clock-parents = <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
->> +			assigned-clock-rates = <133333333>;
->> +			power-domains = <&scmi_devpd IMX95_PD_GPU>;
->> +			status = "disabled";
->> +		};
->> +
->> +		gpu: gpu@4d900000 {
->> +			compatible = "fsl,imx95-mali", "arm,mali-valhall-csf";
->> +			reg = <0 0x4d900000 0 0x480000>;
->> +			clocks = <&scmi_clk IMX95_CLK_GPU>;
-> 
-> There is also IMX95_CLK_GPUAPB. Is this only required for the rese control above?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-I think I have to describe those clock here too, possibly as 'coregroup' 
-clock ?
 
->> +			clock-names = "core";
->> +			interrupts = <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>,
->> +				     <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
->> +				     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>;
->> +			interrupt-names = "gpu", "job", "mmu";
-> 
-> DT bindings say this order: job, mmu, gpu
-Yes, currently it is sorted by IRQ number, fixed.
