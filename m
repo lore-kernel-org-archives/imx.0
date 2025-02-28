@@ -1,315 +1,110 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011006.outbound.protection.outlook.com [52.101.65.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7499276D38
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 02:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740710221; cv=fail; b=X9nsuwe8+q5VQVoby+ZHee7nBaMJdiGLh/NQkzRY9hPds9GKoY0+6Gv2Ee9l4xaCSNM+EHrxZOH1fzxRvieyV2Mdqz2my9p5iklY038s0mr4dhem1eJwqeQD45MZ1ury+8baU2VXcpM731IbOFEQB0wP7rTkeYzJ+SttW50KlCI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740710221; c=relaxed/simple;
-	bh=gTlOrTCC0Hrm3KUgsUIy1RNonrqxc1Dl1G/1HjoXXZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eebqvXukHur3R1a9YJnMod5LRXuXjyusZzmbWkU+Wgd3N/hh1iYMUTPdzi9kxxTlDgZ12rx+wvJN5CTCLX++BWTU5NNAmTiMxO+Zbq5lMjiqJmRCiBSup0VEMGW8PzCrZ4VHW/qffcybGPKqKqmG/f6LpqFGDFguKT0t7R2PXLM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d3mOIZoi; arc=fail smtp.client-ip=52.101.65.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE11BC099
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 06:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740722452; cv=none; b=BGNz9YmcVqj/NlAW2pze0SI8fufADyndgGaa7jT2TYhUbFtJlwIW0rZqdubOj9ye+2AfJVXNfGJyIbrsGPoxW6Oep3MTW+irX889UYYvZn7NJOwKkExab5UVS25L3YqBaQB4lJ+VikWVF2xxGyi3wZHTsrrwzLfSLRkX9yuFyy8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740722452; c=relaxed/simple;
+	bh=twi/yzpdXsZjs7Pe1CdQSGFbeIRq05yQQFooB/+9mvU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=j1YzfFnaJ+eBNgkaHqdPEwk5hxFYcgHKxkak9fJlyLG/fp7sIVFOUiyzbPrrOtY0dHUFBrTknOAaOeSmrN7f6trMj2pw68Baxea1dAjjN2Vxbveb7Ry9P64Y6AWCnnumdjUix9euQhnAqUDNQCQJKppzqcnHJZuZKDmbKQ+qlJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTqM+Eyw; arc=none smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d3mOIZoi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yC+/u1zck8f/lpqQw/9akN5H+5KLG9ZIj1MTIb80CrZVKYGeNMrD0dPJ3HTeFh7U/CWZ3hngMOUvUvoT4zeWjUIsHBgotnVeOL6+yGia1DEF1YdsZqLWf+W+lLC3d2B11aUzOi5v37qdjABYD1dfLxb9rkMz2q0z/Dt906qp0YfsHxC8Fpnr/15lVBWYsrUT80Y0pweYTckM7xpDvttOoGsaYZAvKE4pOAAFtf3BdMcvQLm47h2XkhB5UV+EPy4I+WbizxeBdreMPgp4fg309HtUJbJ5NU3Kd8qcVuehuhJm2Z4Nek/JQQ+1BZ1sbouX+/2VF/lmrpzDpcLw6RcSUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UhlikSiV5DRDyM6ha0pg+mxGX2BzHp9cBplcHIL6Yv8=;
- b=OVlT+yECvT4At/Tp16d0nD65vkwx2iAasffLnoEsPRol4sv4HKQeYHa98yk/u0mSBxGdxVAy3rQceDoYKzJFCSpoPJ6LIBfrPoY1T+AONVYGRvWaY+f5UP/GEys/NpeRmZTpEX3TAlUwIzZXidgxjOY07idSt8WaDldGBBuIAeuzBhShWs3mYn9WoHe6ZvDNsolgUn7nhEt5gCxNBaQrnRxmV1iNLzGzH9V2OimynZ56AO3qH9QDTxzIFt6HMdEqloNcItGwXyp4pXKguX9SoNeqX8wtNzSREWZjWg1JAOgV6DCjs8t7tIprGk0lBL3M2/I/XqNpQkeHiQyHNIJuNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UhlikSiV5DRDyM6ha0pg+mxGX2BzHp9cBplcHIL6Yv8=;
- b=d3mOIZoiLk4WlILL9FXwKXcu8+xkoAJMP0A8i2Qxvhh31wFxsHuASyAfmbuWU3NI5pRPiSnGWL6CoMWwmGk5Tao9xW+jUNM627q9eHm6SroALTab9kMYQYhtSWKftDIOUUtGQFRAL75L8OHxyskDwJJu1k0INA4VXozeKd/bmSiasuadUDybf0NU3oWyfPixlq2CVLpduUBv3y8h1vyg8LAJycGzDJpQxpQrWYAbS2YfYY3tBI1XoN7hAdB1rf4thBHL3Idz8r8OqfuBHT5Ef3dBHYL9qXuHCjVTSx+Yx+JogrhzOyBklIMXJ7R1B4P7OC4NlSk5ixrvEdoRJGGuIg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by AS8PR04MB8183.eurprd04.prod.outlook.com (2603:10a6:20b:3f1::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.23; Fri, 28 Feb
- 2025 02:36:54 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8489.021; Fri, 28 Feb 2025
- 02:36:54 +0000
-Date: Fri, 28 Feb 2025 10:33:29 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 4/6] usb: chipidea: imx: add HSIO Block Control wakeup
- setting
-Message-ID: <20250228023258.uznzhfnp7zsrxzed@hippo>
-References: <20250227095348.837223-1-xu.yang_2@nxp.com>
- <20250227095348.837223-5-xu.yang_2@nxp.com>
- <3535014.QJadu78ljV@steina-w>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3535014.QJadu78ljV@steina-w>
-X-ClientProxiedBy: SG2PR03CA0089.apcprd03.prod.outlook.com
- (2603:1096:4:7c::17) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTqM+Eyw"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-86b2cc5b3c4so692276241.3
+        for <imx@lists.linux.dev>; Thu, 27 Feb 2025 22:00:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740722450; x=1741327250; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=llT+ginst054rhLhA6/yosLb6bykmkgNldbu3QbBuo4=;
+        b=BTqM+Eyw8/cUP0M46kUD0CUhspYgpJazokOHR75LZ0s3J3Le2w43Q6IHlNWc0NPO8j
+         KBKQLsHDx5w7kb2Mzd+86nAT4uDDQ4FyFiU/pJJ8DZSLnAp6jvxVagHywDSYQ6c/G94f
+         cwDinNca5Br3kyV2yaJDScGfvEaPuF9sdTQjSHNzSJJiE+xcd4IysMxxNpR68tUGa0Xj
+         zZcMGQEL4fuTMeNwffBSPpa/b+MFIlRZyJOB7WO3dt1XkG5WdgLzYfZNcbt2ECGpWCAy
+         oBnZJdMytm2kNAvqj97wyqwZRlt1Y8VKRp09P1s7awvTQYedh7Qxh6rIqcXHA0b6yppe
+         7KZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740722450; x=1741327250;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=llT+ginst054rhLhA6/yosLb6bykmkgNldbu3QbBuo4=;
+        b=gnQ1oYcwaL8pSr/IBmH5rYuAaD46Hg+DryTRJvl25VAEY3sYhxVjngQ0T+px7DM6iK
+         x6r27nQz6sYWXWkpHOA9QwaQUCr/FtuU1l8rO4StFWWwCkFdV0yWh5DKmPAM6IpriTK+
+         HccSFvbQVPN/FapDE4jrog8XJqno1ldG8lnKLgs/xsd1LIBzJlbgOkJqrHwTvqWAOXqK
+         wLuISNpA6UUH5Nm00K5OSyE0vUM/Qvr8Nn9XJrq/HaXKAX/DTWjllB9eGtPexktPOAjg
+         krobNwd0NVL6K5KD6CrTu8E7lXdYAZ3oxTO6Cq6CUOOY1xg53Xb4dp4TEyaElFeefAdg
+         z/AA==
+X-Gm-Message-State: AOJu0Yxdv0mfR/2ALCC/6MF7RgUZjNlFn6QJuIpCtecPbhdVP5ALpDV9
+	UDsxz82y8YbwOLC81Qhvtu18Oskchywa5A8b5PN2dluRTXPenKY4HbegRpFdH4fjAamHsnlJPPG
+	KEanJgFVpcGmWq4pAEwsR91BtRt+fBQ==
+X-Gm-Gg: ASbGncue9Z4uHW1MdyNR47c0eUSFR+m3zRRRTP7bM+Xl04ikvxiLIOZa42crvfYtOUx
+	rXNUgCZaWw0xczb79men8CCTea852vfa9buoD5uz3UGrxW5NVA7QjHqQ9az/m2DsUYMZEFuGef9
+	v5apHyuBnnZcmms+Y7qyeGzgF4RmiAsofR1mFsgfE=
+X-Google-Smtp-Source: AGHT+IEw3bOzxz+D4RRtXdGLVVCwq4xoxXyDIF4NB0Jj9uEuWuXKI6wXo8OwXwzRYdzY3dnSkRyPaa+qCyosS6Apfys=
+X-Received: by 2002:a05:6102:1485:b0:4bb:ecb9:b34d with SMTP id
+ ada2fe7eead31-4c044eda3b5mr1797529137.18.1740722449741; Thu, 27 Feb 2025
+ 22:00:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AS8PR04MB8183:EE_
-X-MS-Office365-Filtering-Correlation-Id: baf2c16b-e6f3-4a3a-b12b-08dd57a0c367
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Yn6wklyhRusC6Ba2Ui0dEF3AIeT36RO1eYoSAGFuyBU+6GdJgcDxgF+hs0Pv?=
- =?us-ascii?Q?Oj3Wkxwqhc8SGFGICnHGydT2h6uQSsIKYDoY+M6wy7Ne3+Rd7sGuzkOEUQVL?=
- =?us-ascii?Q?2uc7+stz8eqBwLcEw2a7l0+vqRYn5LYo96RnMTScIowl2M+3uv5k+f8cwLu0?=
- =?us-ascii?Q?BsmFChqsTvnG6re25FQXJmXwf7XMLqoq2SQMpzP5YbB8t/Ikn3U7ud8sCFjg?=
- =?us-ascii?Q?VvYii9pgSkvPZcsKjTJY+0BV5aE7xLFrpi5mrRM2mEOj9c8qgyO8M1R2Dh8p?=
- =?us-ascii?Q?sqIPigDtBrQcF3Ku2pDD4o31P7vGgcUrq8i+6Q69cVRLcdMSTbcZRc1iYeng?=
- =?us-ascii?Q?qKAlqkICosApxCqk0Fty9jqTbldw3Z6vZmac1wkVIGu7AqebOaSyl3tLiBg2?=
- =?us-ascii?Q?7199YbwsxlQcu/kZDeG2KnnGIgvayON9u2vRgvWZHflVc/XeMNpvV94Aqmll?=
- =?us-ascii?Q?w8TYas1jn6cvLSLRew3azwlZ7HjTQSSZvkriS+ChVufrPSSEW1YA5sIQBkhe?=
- =?us-ascii?Q?yGjbaNagUHh9KqNWU9+3fMEwf2dxQcCJDjgl3w585zJif/unInnYCAR673os?=
- =?us-ascii?Q?x4r6dBzXdTUPBhj/T6mrkjpmsTTpXLkDi9Xu0NW8rqgR5q3GbolXpW+IyV3+?=
- =?us-ascii?Q?lmBh3EPdTmXesjz3R+7wVabAwTp0zXIW9P5WjtrOF99xGqa9H0qBj+PWJOHq?=
- =?us-ascii?Q?XqBPmLynI9kQR4wvFYUpnfjqGd9jNVQvSwvakEwFaVAyUrn9FnhzHX2/4JWZ?=
- =?us-ascii?Q?40TiWGQEc0SlVcJ1MNnmW4D/SEUqrG/psTmbVO8bIqqvXFwRABUaQQUhdpXX?=
- =?us-ascii?Q?x9PU0Hwsovnb5X45kSqyUKnu+JUsYlzaOmVyzKXLmQoeqO+oaxkggxePKovx?=
- =?us-ascii?Q?phLb/xuOBnahnEHOO3Eqory2ZW1YtERCgOvCyUc2RnHZ5S6piDlnS6arB0NU?=
- =?us-ascii?Q?5I+sguNgj84VZfJCHDgAkJalrS6UAOb/dAQyM13hnJouIAi1a+tHxuLq17Di?=
- =?us-ascii?Q?RtEE6YVIfgcmLQBvegIfmnHlxeNTB5O5nlfzlJsOZPBEMriI3HepD4ZW1m9O?=
- =?us-ascii?Q?gc1T4b4feGCrDRepDb4TfitWLOJGVm5C6UXB+qVcnsmoHxcCrvr3a8om+h+l?=
- =?us-ascii?Q?qXb6FS63UmP/fAfgj3KMBKfX01QwIL6t59Xnve9fXevNhSPTEToVNXcoqfEB?=
- =?us-ascii?Q?xl1oo9gYQKvdaE1o62TP/KhPPap0QBHKRSPea63jhk3spS1nRsusUiJ0GFX3?=
- =?us-ascii?Q?9mDTYrjZFMaeO62+n8GOcUXpvdX8wwB12rQQN7DDhqXSkBP8NAlk7L9yTiP6?=
- =?us-ascii?Q?2J2RSalJJEY41LJMM5aHVXuYRYJSbVgPuGltwXtoWD8HNqltkwas1XGMoCRv?=
- =?us-ascii?Q?FCvwX9R5pysr6TkwcIHYKL5wBvIREGa+yQ0six5r40wu+DaCZXSUsFPZc+8C?=
- =?us-ascii?Q?SCKz9R42gg+9nkTrlgNrKe1EWGOtdFyu?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+RRdYJT1jO44JKDkTnynI+9nvNRwAsbUBmgsqPfl5H3TlTNpAg8Q7Gb9sDGS?=
- =?us-ascii?Q?uU2Y5JYuBUQUj+x5VyAHEup3AfJcBfysV7WjWkqhZBsWAfEoJ5FNnQVFWher?=
- =?us-ascii?Q?5z0X1QQleN1l0iscH+OC93HrbYAVEruwVqIeQNFDhZIAcURohba39DxGqaOA?=
- =?us-ascii?Q?1ZT1NNDUnfRGquyjeM46gaClJcgzyybRe0Y5git7cYN7hpt5nRFqADlo/+IS?=
- =?us-ascii?Q?Q4MNbKrXuqMzF2N0Zi/pDvK3h1JIY6OX8BKm0Py79bq38kWLIZmkJ4KSdYvQ?=
- =?us-ascii?Q?89XRrbBLnbH/I3Q3JosYeXIbI2PgBNEQbe3hbhd8JBVaKtp0LFCYEjItM0mM?=
- =?us-ascii?Q?FC54K5pRA3FTr7avb/kt5L5DDraZuespAvcrKILMqNmPzKmel34KHMs3YHfx?=
- =?us-ascii?Q?aUz8RryIO1CF9UK7JAf/+NLpmjW4cflxJpAiBT6DsQgNgHINiVeeS7HqOnXo?=
- =?us-ascii?Q?hbDWZa2BBX1f5VCfEiBnTvNndd+T7rRTPyAhFRxsyI8HjaTW9xhplIys18qT?=
- =?us-ascii?Q?jvHBtNoA6kOQACURXdTRt1j1WFtltmyw6pVgVEDowPgsjByOAcTDo10fjAA6?=
- =?us-ascii?Q?Hz0I8SQDksorGXo+iR+70D2JsipZk20WYiZ4znXcXf3UCnrtvrMGWingzBx4?=
- =?us-ascii?Q?C0ogxfJhdRSPdwuif5oQ5WlibkVhA3HLMDhFfzqXA7L3ugiS0NUsAbJFAQbl?=
- =?us-ascii?Q?XXxkSXqjACLYG689vHtpGUjzoTdALWjPta2xtxWtKTVN5bk2exuVzpfS3Mg0?=
- =?us-ascii?Q?3xyT4eFJ890iGarawkVz1Z7EBYCAk/WZYuCvsF6KqJjdy6c67cb1HDidDtmT?=
- =?us-ascii?Q?OXyFfiVeHQkz8XuFOyDUflghtnvjry5uFti7KUax6ylF813GuG4qqEXsNq2k?=
- =?us-ascii?Q?JGKcqEunt/iQfa4l8h4EhxvKN2J0fT7C5BOUIX1GUGqgxhDjyCkwHekr9q9h?=
- =?us-ascii?Q?u453ae0jEpJMovBd5bmb3y0p+g0qJLtIR9A0vUv4+fJfdKop5HwttvLOOy59?=
- =?us-ascii?Q?xR1+f0G/I4Zv66Cn+q2ZOawB9hn00bwYFl/jTXbnuoLHwEHuKnbYVD/wkgGE?=
- =?us-ascii?Q?VpNvVt/AXhdqNyI+ZzYDkYbQSPsHC+8k6teye/UH9ipw/VWEaAzavIfCrrkr?=
- =?us-ascii?Q?RsXPDoXv1ywAKL7o1dVMy2iyL4wZRhr4uwVTSuoWnDU6bVwo392VxzgZIITQ?=
- =?us-ascii?Q?jvOaWEXqQbGHv0nS9IcnqF3XmeiNqCODD0Iix9UEhVzJQSqsDRULtDAqE3W/?=
- =?us-ascii?Q?PLq4RFcKwX90366dLtPmJxCjg7BWFKTq3VMc8tXBwjD6nx79Q7D8XspCrmRd?=
- =?us-ascii?Q?8E9F7/fM3/152xDIxjHnGZgu5a4aNIcOTGQDZPpq5IvgLIEVZ04dtUni/a/z?=
- =?us-ascii?Q?BMItq+uMLJ00Y5XSMqWPvmfAGd80oekQslDwtxbzLc+hMQSboLrh3fkamxtR?=
- =?us-ascii?Q?Gi4zP6yumHQ5bG5zqOzlpC8dBPbzUfYX1NvifbbaokvTbTF9IOVYVuFFB3Aw?=
- =?us-ascii?Q?l08UW2GdJtMIDLvp/iFFqCGV7P8AMjMJg9Y6qhI5DHJQ6eTztkTXbkMc7T6r?=
- =?us-ascii?Q?Y5Hg0Vc8trIx8H0A1eW7460Z6u1pAGOm174bXeDm?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: baf2c16b-e6f3-4a3a-b12b-08dd57a0c367
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 02:36:54.6487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JbMWS+lEMRiY1FaAOQpsMGjMAGlDPUckmEqtV0rmRbZx82ap/LJEEi3d5oHnaou2opdsjjIINfTHSwm0S3DsVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8183
+References: <CAD-cv=PxghRoD12wiJL0=e30OMqT0S-Wbw-yt-ubVP45F-tz6g@mail.gmail.com>
+In-Reply-To: <CAD-cv=PxghRoD12wiJL0=e30OMqT0S-Wbw-yt-ubVP45F-tz6g@mail.gmail.com>
+From: Andrea Tessadri <tessadriandrea@gmail.com>
+Date: Fri, 28 Feb 2025 07:00:40 +0100
+X-Gm-Features: AQ5f1JoJpvY2GAXSA9MrcbqgtJzLxFpD9LvqWun8N0BYf_HshljWMHboV9xC77o
+Message-ID: <CAD-cv=PqGB455jgVunJQ5x0brGyG9zz6NJaBt+7Qd+3UpY0eug@mail.gmail.com>
+Subject: Fwd: Adding circular buffer capability to spi-imx.c
+To: imx@lists.linux.dev, linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 27, 2025 at 04:12:54PM +0100, Alexander Stein wrote:
-> Hi,
-> 
-> Am Donnerstag, 27. Februar 2025, 10:53:46 CET schrieb Xu Yang:
-> > On i.MX95 platform, USB wakeup setting is controlled by HSIO Block
-> > Control:
-> > 
-> > HSIO Block Control Overview:
-> > - The HSIO block control include configuration and status registers that
-> >   provide miscellaneous top-level controls for clocking, beat limiter
-> >   enables, wakeup signal enables and interrupt status for the PCIe and USB
-> >   interfaces.
-> > 
-> > The wakeup function of HSIO blkctl is basically same as non-core, except
-> > improvements about power lost cases. This will add the wakeup setting for
-> > HSIO blkctl on i.MX95. It will firstly ioremap hsio blkctl memory, then do
-> > wakeup setting as needs.
-> > 
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Reviewed-by: Jun Li <jun.li@nxp.com>
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > 
-> > ---
-> > Changes in v3:
-> >  - remove usbmisc_imx95_init(), use usbmisc_imx7d_init()
-> > Changes in v2:
-> >  - add Rb tag
-> > ---
-> >  drivers/usb/chipidea/usbmisc_imx.c | 72 ++++++++++++++++++++++++++++++
-> >  1 file changed, 72 insertions(+)
-> > 
-> > diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-> > index 1394881fde5f..8c30908c11ed 100644
-> > --- a/drivers/usb/chipidea/usbmisc_imx.c
-> > +++ b/drivers/usb/chipidea/usbmisc_imx.c
-> > @@ -139,6 +139,22 @@
-> >  #define MX6_USB_OTG_WAKEUP_BITS (MX6_BM_WAKEUP_ENABLE | MX6_BM_VBUS_WAKEUP | \
-> >  				 MX6_BM_ID_WAKEUP | MX6SX_BM_DPDM_WAKEUP_EN)
-> >  
-> > +/*
-> > + * HSIO Block Control Register
-> > + */
-> > +
-> > +#define BLKCTL_USB_WAKEUP_CTRL		0x0
-> > +#define BLKCTL_OTG_WAKE_ENABLE		BIT(31)
-> > +#define BLKCTL_OTG_VBUS_SESSVALID	BIT(4)
-> > +#define BLKCTL_OTG_ID_WAKEUP_EN		BIT(2)
-> > +#define BLKCTL_OTG_VBUS_WAKEUP_EN	BIT(1)
-> > +#define BLKCTL_OTG_DPDM_WAKEUP_EN	BIT(0)
-> > +
-> > +#define BLKCTL_WAKEUP_SOURCE		(BLKCTL_OTG_WAKE_ENABLE	   | \
-> > +					 BLKCTL_OTG_ID_WAKEUP_EN   | \
-> > +					 BLKCTL_OTG_VBUS_WAKEUP_EN | \
-> > +					 BLKCTL_OTG_DPDM_WAKEUP_EN)
-> > +
-> >  struct usbmisc_ops {
-> >  	/* It's called once when probe a usb device */
-> >  	int (*init)(struct imx_usbmisc_data *data);
-> > @@ -159,6 +175,7 @@ struct usbmisc_ops {
-> >  
-> >  struct imx_usbmisc {
-> >  	void __iomem *base;
-> > +	void __iomem *blkctl;
-> >  	spinlock_t lock;
-> >  	const struct usbmisc_ops *ops;
-> >  };
-> > @@ -1016,6 +1033,41 @@ static int usbmisc_imx6sx_power_lost_check(struct imx_usbmisc_data *data)
-> >  		return 0;
-> >  }
-> >  
-> > +static u32 usbmisc_blkctl_wakeup_setting(struct imx_usbmisc_data *data)
-> > +{
-> > +	u32 wakeup_setting = BLKCTL_WAKEUP_SOURCE;
-> > +
-> > +	if (data->ext_id || data->available_role != USB_DR_MODE_OTG)
-> > +		wakeup_setting &= ~BLKCTL_OTG_ID_WAKEUP_EN;
-> > +
-> > +	if (data->ext_vbus || data->available_role == USB_DR_MODE_HOST)
-> > +		wakeup_setting &= ~BLKCTL_OTG_VBUS_WAKEUP_EN;
-> > +
-> > +	/* Select session valid as VBUS wakeup source */
-> > +	wakeup_setting |= BLKCTL_OTG_VBUS_SESSVALID;
-> > +
-> > +	return wakeup_setting;
-> > +}
-> > +
-> > +static int usbmisc_imx95_set_wakeup(struct imx_usbmisc_data *data, bool enabled)
-> > +{
-> > +	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
-> > +	unsigned long flags;
-> > +	u32 val;
-> > +
-> > +	spin_lock_irqsave(&usbmisc->lock, flags);
-> > +	val = readl(usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
-> > +	val &= ~BLKCTL_WAKEUP_SOURCE;
-> > +
-> > +	if (enabled)
-> > +		val |= usbmisc_blkctl_wakeup_setting(data);
-> > +
-> > +	writel(val, usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
-> > +	spin_unlock_irqrestore(&usbmisc->lock, flags);
-> 
-> usbmisc->blkctl is NULL if DT does not provide a 2nd IORESOURCE_MEM.
+Hi all,
+   I work with a IMX8 PLUS EVK and I need to receive a high rate data
+flow via SPI from a real-time external microcontroller clocked by an
+ADC capture.
 
-Good catch. Thanks!
+My idea was to extend the spi-imx.c driver to add capability to use
+dma_prep_cyclic with iMX8 powerful SDMA.
 
-It may return an errno if usbmisc->blkctl is NULL.
+So, in this case Linux will be spi slave (the real time micro is
+master) but I wouldn't like to use PIO mode since I can control spi
+master to send data 4 bytes aligned to fit DMA alignment requirements.
 
-> 
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static const struct usbmisc_ops imx25_usbmisc_ops = {
-> >  	.init = usbmisc_imx25_init,
-> >  	.post = usbmisc_imx25_post,
-> > @@ -1068,6 +1120,14 @@ static const struct usbmisc_ops imx7ulp_usbmisc_ops = {
-> >  	.power_lost_check = usbmisc_imx7d_power_lost_check,
-> >  };
-> >  
-> > +static const struct usbmisc_ops imx95_usbmisc_ops = {
-> > +	.init = usbmisc_imx7d_init,
-> > +	.set_wakeup = usbmisc_imx95_set_wakeup,
-> > +	.charger_detection = imx7d_charger_detection,
-> > +	.power_lost_check = usbmisc_imx7d_power_lost_check,
-> > +	.vbus_comparator_on = usbmisc_imx7d_vbus_comparator_on,
-> > +};
-> > +
-> >  static inline bool is_imx53_usbmisc(struct imx_usbmisc_data *data)
-> >  {
-> >  	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
-> > @@ -1289,6 +1349,10 @@ static const struct of_device_id usbmisc_imx_dt_ids[] = {
-> >  		.compatible = "fsl,imx8ulp-usbmisc",
-> >  		.data = &imx7ulp_usbmisc_ops,
-> >  	},
-> > +	{
-> > +		.compatible = "fsl,imx95-usbmisc",
-> > +		.data = &imx95_usbmisc_ops,
-> > +	},
-> >  	{ /* sentinel */ }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
-> > @@ -1296,6 +1360,7 @@ MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
-> >  static int usbmisc_imx_probe(struct platform_device *pdev)
-> >  {
-> >  	struct imx_usbmisc *data;
-> > +	struct resource *res;
-> >  
-> >  	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-> >  	if (!data)
-> > @@ -1307,6 +1372,13 @@ static int usbmisc_imx_probe(struct platform_device *pdev)
-> >  	if (IS_ERR(data->base))
-> >  		return PTR_ERR(data->base);
-> >  
-> > +	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> > +	if (res) {
-> > +		data->blkctl = devm_ioremap_resource(&pdev->dev, res);
-> > +		if (IS_ERR(data->blkctl))
-> > +			return PTR_ERR(data->blkctl);
-> > +	}
-> > +
-> 
-> Any chance to ensure imx95 has actually data->blkctl?
+I am stuck with implementation:
+1) to change transfer_one is not the good way because I don't need
+pump messages from SPI subsystem, I just need DMA doing the job and to
+follow the transfer with a callback triggered by SDMA part every
+"period len"
 
-I think let usbmisc_imx95_set_wakeup() return an error should be enough.
-Some errors will be printed for user. Also dt-bindings has restriction for
-imx95.
+2) to add the transfer function (deprecated) to use spi_async is a
+possibility but I don't know how to pass the period len info: if I
+consider to pass a message with several transfers I have to check that
+every buffer in a transfer has the same size
 
-Thanks,
-Xu Yang
+3) to use transfer function with a spi message and several transfers
+(one for each period of a circular buffer) prevents me to use
+dma_prep_cyclic that works on a single buffer (then descriptors inside
+dma_prep_cyclic will split the buffer in N periods)
+
+Should I go for using setup and cleanup that are now empty ?
+In this case I can consider:
+A) with setup I can pass into spi_device the information about a
+circular buffer allocated by a protocol driver and also I can add a
+callback to be triggered by DMA
+B) with cleanup I could stop the DMA transfer when needed
+
+Anyway, setup and cleanup shouldn't start or stop the spi transfer and
+this is why I am puzzling to get the proper solution.
+
+Thank you in advance
+
+  Andrea Tessadri
+  (Italy)
