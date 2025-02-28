@@ -1,71 +1,71 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011019.outbound.protection.outlook.com [52.101.70.19])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2065.outbound.protection.outlook.com [40.107.104.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E118915624B
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 15:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565C470814
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 15:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740756786; cv=fail; b=DjCD2iz7sNrDwjwI2N5AjKeCq+1irAM+BMNo8TMDCRnQxsZA3mfKQJIbvLZ+Sg3Ktb/eXox7msim+c8xUJvsqdmRv8YNokkRoIiCs5+8AUcNcdDidUgK4yjZ7xg0kFtxFEfj/HLXBDgOFwkc1uWt8m4nCefgTH2ZtgApSBl9cdk=
+	t=1740757087; cv=fail; b=XpiSfNMNnsGsg7N/G4qZcAn7ODngXySvuqSiBZyeFw3gA4yuknxGvvFSbtB6mv/Og2dkwebxnWRIFcBEXDU8ezswB4W9ZjqNS9fnrLduYFqC/JTgreqv23BMBaItHE76INav64OFxt9t+TriuNXnZpuMpdYRD1atdwpUog8pys4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740756786; c=relaxed/simple;
-	bh=e3gdQPtaP9Z2QDdc8Q1LbXSB+PEjmG49uE9xPt4TCj0=;
+	s=arc-20240116; t=1740757087; c=relaxed/simple;
+	bh=pRvFGEWkMpfTIx8VquoJC3lSmqkL4yUxVdB556I7WuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Q61tLApitM0K2ymBQVFvHS/+VgwJ28xG/IFDzkbI2yCppc8wqsglY4KtggkvV9ltiOlm86ZF9AX/zl6shFRgp5rl4WZQ7k7ANjCuiU4DgTpX3L9XnrlGqoWXWVc3Q0Xbbmo3hqtnmSwMjFMyZ2AO5GsCh1z33Nv2bqw7ygq0FL8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C3duHlZq reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.19
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZKKwJY1W39qXyun/JM9MkVSyJHf4g7alcGC+SlvZ2c+ZjxO22awV7fvsu9F19nU1b8J4KpKCeKHDom6jJcBFHm4klkEzIOwZ1xuDSId5jzMXCHFxFgJrXAmY+ORg9GfzuUuSAAaWTvJ90B1cylw+jKLR2wthrTSZE6Wd0rNQnVE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aC8OWdm/; arc=fail smtp.client-ip=40.107.104.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C3duHlZq"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aC8OWdm/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X8FikN+YuS+ObiIhO0GywyWiv/S5/T0ywEqsA1KhoXEPRF1uJ5bN4z3TGz0Aq2acACgv229hCH9wM04iY7imeh3LKs02b4LowpjfycF83qehENshJQKeNX8HXS+NDtP3UEiAmWqu5A5Qc7/fvTw2QxaOTvBw0XZ3HXtXovp4wYkktiooRQfyIhB9zkGDORnZpMx0jp8Gh+t/Rku7fjLfGcDdyKKPWudene9TnOP2SuYeBQUt4sw5pyS0Yl38kcK9w2vsAqLtsuJReurE/EfsHiFZXRgeiZcYWK2/l2M4/EHEf0Xko1UWbveimxzYlPA8/9o77+3F/bp9h+f15DlgQA==
+ b=CTF4a6RStoT2bBbMv/h8+XpyQpBBQyM4bYkvC6NnGb92c2xQszm6QuauNdu89GSqRWJ69r2PVl8WUMZRxy57JdatDJLWLGBFH8zXZVGiJFZMxUltW4UV5I5MkTusAsVULyRYRUbJuAphYSW8g55Ngt0p9MelZyUvnn7o+1qh2PD95+f8Jwtng8SPZGXLxTe4UW5kmLcWVes+2a3xvxrdFawudbKDD2seI7/43MyHf7A3nTANMqV98CptZfeZRyAQidH8f45b3145irUXjWL6TmXiER6nbcGyHevAk82sWEw7A00rL96SvqwZtKPrVVtdv7JSRVTmWDNaTVaU4EHgUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mtWT2eleqY4oUTEVILZbL/ynZ+FMzNmMIXhOOs8wLdw=;
- b=MjyS+jkxI4g/HHdC+NEtzifkfUmIS/tjyH9s7ODY0+lt8K/K6DKChxDQH6Zho5dL0aMZNzxm9Tme7ExEbdPpx+sbI4e8VbojKhem+uELtI6a00xYl7LldMM9h6Rgz2w5uPB9PHcus9sgRpHia/XpdU8STP62ixmx99ZEK4dG4RwjHBfjo8nsm34UcyRrNszK+1ko7/JMo30epDQRNCRr9qSm37e+tSMLZsdFPbqkMIA3zx/ftLdUGNbY4FkSkpIkorm7TLnGBuzPOxeHsYfa+p2BQOPKmAbY/27kf1qbMhdOpXCcrNLtkU5It8lR9yQONjGlKc0IuTtUXW7LrlKPQw==
+ bh=EPrdJFRFn59ARtf/d1tXroJOa7V4JrIR97fj2e3g0jY=;
+ b=riWxyzhlzjFn0BpEBz5PsXrrekV6wwmmaTeQab0yMcBzQXtA93CLLzrE7O8Fn4TMDN79Tb9qGWJ6qwYNzKfxXsCXyvVcWPDfCoq7WV/lTNF98sEW9T9ObwoP4IWR0MO+TezEOYt6dJVKgnZKmlkbtGMD97yQe2Om8/2vZJKjDsiNO+bcIge+g71iFY9xiRODuIfdF60Gau3kQHYpVmEaFH7B2ZREOf8rO+PUsP8u/PRzx2kEzmOGzE39BNvSp1TxawkR9kezNpsqXcSPQEmYfIuh5MEi1CVs+EpGCGqpD4bPdOK/Exl8Wq33o98NAri2P/Bl7ab3K5c1gEyQ54pe2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mtWT2eleqY4oUTEVILZbL/ynZ+FMzNmMIXhOOs8wLdw=;
- b=C3duHlZq3DyYwxbKiiwID8xFv02ythXcjXmXImEURzNlHngNpRk4H8ckYP/ZISbfDm42qrKkbEABvE72J2fY2rSc0UuGgkHAveR+rzQohU7EzcT6jkEEM9p875XeaBxw+SQu/gvSU1xFmIXou2TCMOgiFrf6oQEcVJVoT+SMEOUuY1c43Cv/peBNfZvnu1dBKkGcpQURinw9Kdon5Mn7nLVZB83PO847Enu3kVq89uEhk6FalpeC2sA1Vnbkl8Tv8UNNKJWDbugrPi2RufzwA25H3KW4U0opcQkwo+yXHjuWxBNAVdAuhwd7W8GnXLUNb3H3IT2qdAn/UyUZSLmCtg==
+ bh=EPrdJFRFn59ARtf/d1tXroJOa7V4JrIR97fj2e3g0jY=;
+ b=aC8OWdm/zq5Qf4XR9jC8+G8kqb2oPpLPoa1cKYCe4E/O8m6Eo3ZYldL0aGrHogYD8ckWjJ+S2aEiiZUxH3QFgSmmu4XCWTbowZ/qYrwvn1TBOCe7fYwIKNnrX7gQTgVqSz/CddcDPnYMMAPR5tWAubv0QyHBxqoRFGXrH2KP58hR1qREoUI6/hkzbDnes1ttcUDryw4V59W06E0ccQM6MRLJTIVqxzQEREjJYqKv6SYuViVkRQzxy6jnvpAGIJIMKqMsoPS4M3B4FMKlD3zKENqpdSM+a5H7vaqQnyeewHItxARoua1fRZXcs38gBHoecGaGykdbEWQtfyoko6IKnw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7915.eurprd04.prod.outlook.com (2603:10a6:10:1ea::20) with
+ by PAXPR04MB8895.eurprd04.prod.outlook.com (2603:10a6:102:20e::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.23; Fri, 28 Feb
- 2025 15:33:01 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.21; Fri, 28 Feb
+ 2025 15:38:02 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8489.019; Fri, 28 Feb 2025
- 15:33:00 +0000
-Date: Fri, 28 Feb 2025 10:32:50 -0500
+ 15:38:02 +0000
+Date: Fri, 28 Feb 2025 10:37:52 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
-Subject: Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map
- property
-Message-ID: <Z8HXIvAZcvNY72Jx@lizhi-Precision-Tower-5810>
-References: <20250128211559.1582598-1-Frank.Li@nxp.com>
- <1819305.VLH7GnMWUR@steina-w>
- <Z8CVU/RWXSNe7bfN@lizhi-Precision-Tower-5810>
- <47051102.fMDQidcC6G@steina-w>
-Content-Type: text/plain; charset=iso-8859-1
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-rtc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, NXP S32 Linux <s32@nxp.com>,
+	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+Subject: Re: [PATCH v8 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+Message-ID: <Z8HYUDy/XG+IYi9l@lizhi-Precision-Tower-5810>
+References: <20250228081812.3115478-1-ciprianmarian.costea@oss.nxp.com>
+ <20250228081812.3115478-3-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <47051102.fMDQidcC6G@steina-w>
-X-ClientProxiedBy: BYAPR06CA0047.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250228081812.3115478-3-ciprianmarian.costea@oss.nxp.com>
+X-ClientProxiedBy: SJ0PR13CA0048.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::23) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,218 +74,531 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7915:EE_
-X-MS-Office365-Filtering-Correlation-Id: d932bc1c-1b0b-4768-082a-08dd580d2f43
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8895:EE_
+X-MS-Office365-Filtering-Correlation-Id: faf3b1e6-fe9b-44cd-7bfe-08dd580de2d1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|52116014|376014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?OmcGX525oJE09Yjkglx8STKySFDQs6ji9fJ50WRL6USpPRYBbcUgqe7tSx?=
- =?iso-8859-1?Q?BxMlGcpQtx0oRKUXom5QdWNVAX5+KAkMn/vKovmNAim/iULG8pSyW1RpSS?=
- =?iso-8859-1?Q?LhTfOP3fFm9CGip5aFELDlDvXAvTuMOCOArtzZ9uGd687I/odmoQCjjKoK?=
- =?iso-8859-1?Q?LbBlhkIeE9Rf7bYq79hYUG0q+ZQxvJNazV08cTrgk9+JFxSdES6brWY9x5?=
- =?iso-8859-1?Q?BbgHom/AV4xnfk65OkBpEfqLRPEcqwmZtc1tSFKuD6b+DFaO73Us9JhDt/?=
- =?iso-8859-1?Q?fO5dTrScCZhO4W2+53l64slgX4npgY3jmzF0vOyyqJ2HMSkoW9scitC4X4?=
- =?iso-8859-1?Q?8qMYuj270W5/0sheOW+ph7rt+oEVYHhsoyOFnNi1RnNztkosHze9O4vJBV?=
- =?iso-8859-1?Q?WiXoQ+YP8YNd7SteovJJLAjSiD/3F1Rk7mGdYVWTe0I0Wi/U9lGDM7v5iT?=
- =?iso-8859-1?Q?dZoyaaPf41Dcn5i++t/kdHbJojhQAsbR/jFWEIiMndm1ifIyYLBfyhhtup?=
- =?iso-8859-1?Q?i3sScwRTLoNTkDRNMtHw0Yz+9zNXNw9pjFV7qBu360R46Y3BIntk/qXUJA?=
- =?iso-8859-1?Q?M3IoTbov1S+DgDqtY61mZHMema/5vM9G/ozeerZY+F9IN5Kkp+5sAn8rQB?=
- =?iso-8859-1?Q?gKFjtl3Oh6Jtgw9qvjxl3G4f2570he+GQJUth1L8VxLZZDFLCOMmH/0fUQ?=
- =?iso-8859-1?Q?GKN4t5kQrPjEUlQusCn21C+zne25NYar4kobmdPTd9wCUpDpAK3ZZpUI5t?=
- =?iso-8859-1?Q?adOAxLKDK91sv+T4mX0xerxEeMDre8DN5rmrB66Xhyml2fDgvajnvcu2/U?=
- =?iso-8859-1?Q?hLyihJXdYmVjuz/X0gBfj1wq8Nsvdyc9GtdOiSYnz5NHZrAV97re/yeNjx?=
- =?iso-8859-1?Q?PxcqceLU+vQhATDqLwrtK6tbXqPWTsGgQDaMZBjrTCVC3dJN+h4p4ZZbn5?=
- =?iso-8859-1?Q?T6Ovj492qPPkgKQfeZ/E5vk4dUlqV8sSBLJCj2f3Oc8HfQu+f7ZV1/2M65?=
- =?iso-8859-1?Q?sb5Lc6NDINC1MiASglX3rUyV5wftPvta7ufcyIHJ0K5aLTZEA0oLacBaOP?=
- =?iso-8859-1?Q?Mz1rUAa1/u151t4rtQzuhSC3wM5KCqPjn+1LOLp4xTlZBFZM+1OGn5CwJr?=
- =?iso-8859-1?Q?oVp9rUtwYsgq8y9XOeiKqr5GOOL3O7xhSuqT9r0rZbcErha96f1cwUX/O1?=
- =?iso-8859-1?Q?03JwUZF56NVIt1x1GhC+xhdpK94VERKVG2hMhRHTqUxffE2BME4lfCk3wv?=
- =?iso-8859-1?Q?bZdOWn2PlJiEKwaamWGh5Aj74zHOJXCzd4VHPScMDeIDgsbbJNjpbcZrJq?=
- =?iso-8859-1?Q?jnNwVQCDi1Uo8J978i7l9Sp8w/+ap+7Sr2vT29C9qMVNYU6+YJjtQg/L70?=
- =?iso-8859-1?Q?2tELUF2udTX+5LiwF3UGyTeMgh2fk6svJokV3FWUdsKp3S7jm4780+fHq2?=
- =?iso-8859-1?Q?bNasl+6FAay+LvEF?=
+	=?us-ascii?Q?K7P5WTzEbAjVAzSkPdK8//CdFhC8Sc2hmTT1FNQ0LRIl6DGZNNXscZ/8vomG?=
+ =?us-ascii?Q?rNuOAl9iLXLxM79Fr2tEQWUALNOK9Sk0T6qlENEgNTJT6ixwx14FnIM187CB?=
+ =?us-ascii?Q?2MuDPQpNrIWpjkkMghU+GQPkrZt0BKPZbRX21nHnZsHr5y9w84rpD5GcRPs5?=
+ =?us-ascii?Q?TrXZxYV8orczW2VsghXEIhVsPyG7aYrk9uf3VsWTfuJuanMKo6riGBLDiWJL?=
+ =?us-ascii?Q?ubjJGD+y8A31lKPGqZ2vOkTg8/Oq1Cz29T3FGXFAC/E7vZyy/ZYqYmVtlG8R?=
+ =?us-ascii?Q?Yrj2Csnw204ENERDZAaq52fv3P5E/gimzN2mg9ZaIcqFLQvsWwfeU/ZoKkxo?=
+ =?us-ascii?Q?d5t8rHo5u6H4N2FI8J7rG9agwA8KQdjB/th+eAaZWNXyEdYamghl6aGrwUYM?=
+ =?us-ascii?Q?ADJmkN3VmUsvo1YfCNuU2phgdTE1DqGiyM7HcxPedrQ+Pcyo1Ac5zQHnI3pi?=
+ =?us-ascii?Q?psbG/uv4iAaNoF+Of08cTDyDShG3RY8gsWYptZKGUzzCvX+ba0OR+SN3foxW?=
+ =?us-ascii?Q?K+uT0ks0m2fYxUevVEwW7qTc+MbJLEoODI5UiP9IB1H63wKDPWAx5ClU9/R9?=
+ =?us-ascii?Q?rpA6nUnqbagKdvym9s80a5CCkiKSKEO/FaKtcaLlpUwk7dhxbZDPVv7hZWx6?=
+ =?us-ascii?Q?z0VV4AWhXZX+W2f2nx8ED4Zzobn1cNhvih49TcXpdCT9V2Rs9aplyWFFGuoK?=
+ =?us-ascii?Q?3U/zQCB3a6LVFJel+4KAzTeBCTmhXrtRYJXllu7isytyPfZbyuQanXDW6/N5?=
+ =?us-ascii?Q?9RO10KuJybV4ei7mGxz2PnKhnJQEff1bzLfWhfJSQhZBQzxM+Oa4CYB7NGa6?=
+ =?us-ascii?Q?CTmNQ2tLd2XpqOSw2RhI9iKmmN3Tz5seGWHmH1VSKYTUXX+VHPDTXJqXliV4?=
+ =?us-ascii?Q?QgD1QJQXOPk+ecTU47tgzJN5apeaHQ6ICduCW/Vu36sNPW8msUYj5QOCEpoi?=
+ =?us-ascii?Q?a2mwf2/Sq6Luu3cAWPTq6qswnVJNnJryUk7hVzs+4IPxu4Vy8ViCWjzyTFq1?=
+ =?us-ascii?Q?3eCMslwZZUQLGgOKaIgDsSJcj/EFJQIS+oywkNfQmxP/U8IMeZYy/wdwC+ER?=
+ =?us-ascii?Q?Xo4SYmgAgLrLxn5/pNxwUf53AaBffroqVj28sQwy1LJqqlEhh1DTkkZA3Onw?=
+ =?us-ascii?Q?wrbCCnEqR4hPU3v7SuTokbIzzs0PNUDTjgGuheWdoVMEq6f54uGsEeeVniit?=
+ =?us-ascii?Q?YmIy4UGmPyDQkrmrUT/QGcWwVR3Dgkg5a1JGYkBsJY39L4Z7F3r84EahPQcS?=
+ =?us-ascii?Q?m2LK2heGay/Oi+2cj1EuKZjDsspYMSMjT6DhjZ3AVoBmiQY3amI/OZ8a62JC?=
+ =?us-ascii?Q?yoIfyyHfZFpJgEmI4kUtsN5nOjZMHNsQ0LHMbXuLr8xGEXP5GZU9WCJMSr43?=
+ =?us-ascii?Q?nw6lf3sVAbstBZXWC/OJRKzxV30wxIQ5p/dtrzIUaampa2iKxDsDNLfQy7Kl?=
+ =?us-ascii?Q?81wDccuTHQPPjfld+Ncl/PQuvSdZjF+9?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?bnJjQ8IY6kxsVL/gabQ2x0dcFtgn5Mk9szDJ16e1uubXf2Ko7nJaEZJ86K?=
- =?iso-8859-1?Q?/Z/yAOx+EX8t8sxj3vvdkgrX7JXObPGNsFr/DqbcjzRcp8XhIMfGPg8Rhk?=
- =?iso-8859-1?Q?g82Pni5cShhMdRO1OXoR4+VGJIXT5cr5xw5dc6ZMFeBk2Pcvojr8pCzVw2?=
- =?iso-8859-1?Q?AFgnH5i9Kx5pE6YXGSRvHq4f0YpfQ2VjhVrTNQd+PfhIbR1ncmgibQUoFq?=
- =?iso-8859-1?Q?jlBLR8vHbdAzSXdblU/KvwGaBFOe4XX5qyE4Q0TgWz3tidIkmnbtRGh0jZ?=
- =?iso-8859-1?Q?pjeModfapKH6zFCTizf7H8+FfmtMp66O/0U8Zz/mZFAnvKWGLCN82Vcr6g?=
- =?iso-8859-1?Q?K+cR1NxFKepvd6Kh8CR5HXluOW5U2FEo54buTjZIpsK0kxtunDWxcm4Oo7?=
- =?iso-8859-1?Q?CoTiAwnhVUGMy88lp3aCE1FSG2q5l26xLwyxEv63bFbbrmVebYwUwmY/bJ?=
- =?iso-8859-1?Q?6aR0hV9EHCOk2H1Zq8VZj2BgKVARrEm6Zpe9UmCLv4kj2I0rXLaixrk5ZF?=
- =?iso-8859-1?Q?6xgWKg/tTzhXLo/WhziRnJLZnu9kxeNxPmpZ0mPRIh7aNad2hYlPxJsGQ5?=
- =?iso-8859-1?Q?aUteHnhCvJDqiQZ78uw7uc6IuCC1L373WZSvZ4SUIDsdrxK6HeNtbZbJUs?=
- =?iso-8859-1?Q?HdMl6epUsR7Z3GRhrtAAh4+qEKgxDC+xaXaCQnk3wNKMaT7Mp3x3cdcxeC?=
- =?iso-8859-1?Q?eXut5WuXUc795dUCABipa4Kt5BVz6eNbvVP4eta/I8tdQ1ziF6OcfMUb47?=
- =?iso-8859-1?Q?ZRKQRrMc0Uu8F4S20o2iNiJa6GmJ5HGKyj7AzkRtGLJEF9j4oqWxOZRV2E?=
- =?iso-8859-1?Q?OON71YSeMs7x9Ph4yf6/EBqSawjDcUs+mmmJ0q5tUO/TxUnah0KDy/8nnd?=
- =?iso-8859-1?Q?OkaFAHFcCp8qofxVQHM9AGFzRSx4SzaQMDvaHanVL6+M6fF7gaLCY4crvD?=
- =?iso-8859-1?Q?YNCIJmeBj5yv0ktXfl86DmZEk9SwsFM44nXiA3s/af1wHuN5n765yY0lAy?=
- =?iso-8859-1?Q?DhrhYrZMhFO5BSfAPMGUauQeC9OpR2x9pJGZrlBpcT6vvs74k9acQ8BYoc?=
- =?iso-8859-1?Q?oU9RGSj8oDXyDk30u+Hie9a0MEF0QbljOc87nTclCXs5Y9mJyLlIm7DYEs?=
- =?iso-8859-1?Q?iDraHmIQNHkaDWmLoCIaNe9+TPN2hPg/0RgpuYwe7u+WSC9/TbFsE1IRm2?=
- =?iso-8859-1?Q?jqyWdWYHhY/Ud4fqSX0cKy5NtS4Ko7sr6U3Jnu72l6i46iWCzOkY+b+i+q?=
- =?iso-8859-1?Q?/YAfj2vT7EkWYi2qc3x78MHJWIRCuiWg1zByv1n/oL4C2t9418jARbjTm4?=
- =?iso-8859-1?Q?9d9ZI5eFB5fofSXQ55SyuOJbROIMP5fo3e27CdsobGjGSCGa0ysUdyHyv3?=
- =?iso-8859-1?Q?ALmth8K9CAF1onzfY8RYfbhDBjQldGWg2z2KLbnU0Vwf7xmy0akvXj4NET?=
- =?iso-8859-1?Q?LsR5cHfXkfG0GvFG61j7voN1nlUtoOLbErWiIJRORwW+8TMW9CUkJixVB+?=
- =?iso-8859-1?Q?bkM8JD9XPJCZOsTpzBu0W64zpScLXCI12NySBbp8elck1hyUj3vVjKxn4Z?=
- =?iso-8859-1?Q?Q3CZJ4HrHMCoUuln3VBbsh5bnE5KYL5nXouhfev6NVu8mLLpBMwvBTgMy9?=
- =?iso-8859-1?Q?e2U5w4U5/UAwM=3D?=
+	=?us-ascii?Q?fXbaZPb4+O9SwZ12VHJkkhuu3b8wAdet8WncpvVdpVVdRRt8ywPmHhRg2woP?=
+ =?us-ascii?Q?4VtXnFJNJG7MA0wcpzyv677kj8Zo5IPw1Gw9A8msTQNvvNLN+Cst99IMD7LI?=
+ =?us-ascii?Q?pr18BBsUFkeq5a4DSgpWgDawT2SmLZLFFievP4hSGrnR78yjx39aF+UhYJwN?=
+ =?us-ascii?Q?chmADD1L9BzX/0lrcOt+t68iMm7SybmUNH4PIxbDwo55qlOedX104ic0dArM?=
+ =?us-ascii?Q?o2+6Cv9UfQLirM3awyYz5peB1/P/4J1nKLsOpOwc+AD7tQ9sAtsRgNiaeNth?=
+ =?us-ascii?Q?TqD9ieCICTU3FolNwpVBtnVIGlS/JDBCRVymN1SRq/HDJ/6WkWH9NdE4bYtx?=
+ =?us-ascii?Q?OCle9D3EZPGuTp/8z6Ms8Uu4pLM4v+75qnwM6ln99jGbYEker9yioPKHp80l?=
+ =?us-ascii?Q?zVJpity9/LEfjMs76vwXCKLMH4qUREj1NjIjBRHIKTuR9hmp+ZdZ/x/1ogBJ?=
+ =?us-ascii?Q?j53XTs636DSUgZiBj41TUVjwWo9WaBk1lfoymRBkoPONK/ltg0JidDNPMYhs?=
+ =?us-ascii?Q?ldiImQJUvMdX8Lc778jnQs5+H7e35g45qZdV/5lfXW2gAzit5I3f4i8Ht+js?=
+ =?us-ascii?Q?mU1mRtDQjfzJm3mGUwrAdopmoVMoS5yFY83ULHDAqYZyqCSgce1+XUjt+gSq?=
+ =?us-ascii?Q?fMePyuryFPZ8c6tLzgFooWl8Yh2bedX37C40hfESmUaFLBCtPfUniJHkIOSK?=
+ =?us-ascii?Q?5UMxz210MQHAf14ACbYBlRZl5j15CbMrPY7iy2Vyj+JkLpJ9e/UHXT1Lg5bt?=
+ =?us-ascii?Q?hHmjCoQEP2TeRV7Kovo/s2dBc6yo7/tRPXWh81rn0z7Q4BOHBighZ80FfjWi?=
+ =?us-ascii?Q?65rtMUXN5NMew2lRI52KNe/PzYZSqpfl18bqUnKUo3IGwC6OIM6Twv24HKSd?=
+ =?us-ascii?Q?E3lT12S0pSuH36mQnegf4ZTp3QFxyfU4VFc4vCQi0gaFdHtCqSDQebkr1Vhl?=
+ =?us-ascii?Q?Mqw3gnChBfDRbbCLfB3nOaSkF84b9mQvdGDahKKschXUwcf06XIVLdFqQfi7?=
+ =?us-ascii?Q?apeSaWFC90LiKsSglAmmQJ+AS7J5f/9AZPbCEzzBBJRFdBoQtK5CiO1lPiq/?=
+ =?us-ascii?Q?mbPzC1ampZ9viQwseuJNgfnISL+SjUDXQXYP9IIgJT2YQaVs7CJYq9U/OUyQ?=
+ =?us-ascii?Q?79wJf/GxrPy8aKL/KH8lyAAuuk2MuadBly03fOXntsU3kdLaCDsJJ9qp6iuX?=
+ =?us-ascii?Q?6U3CMw1AOMpf6IXkg/INophlTQI7J4w28mDOX3sgI0ZRJe017M2g8xdYmL7o?=
+ =?us-ascii?Q?NeCITq8Gbl6tTxcCWHUiy3A8jW0v6JsgVSgtd0hJZOcJ78EikKvZgSMRomya?=
+ =?us-ascii?Q?8Kb2xYKK56rnkypWcgeD03bIt06no96fFOjtKe6RS5AfQ0w32UiIz4LMxItc?=
+ =?us-ascii?Q?debCCwI2tbic2h+MDHMukvdU7E52RjxgL1mPM/tVnoZcacS4ZN3CFKiIuivD?=
+ =?us-ascii?Q?PacxOEH4+aR7EmXXwdjZw2lonT45GqxtDSlC1ecrRhEO/+EczmrTEHukxfat?=
+ =?us-ascii?Q?qqcTE8z4IjKao2UO7YM54v5+wnc83gonUm3TaNCsq6ZA9adCHh3SDomLNnTS?=
+ =?us-ascii?Q?+SxO3EUr20lgX05oA0PsapNh5Yc7NvuBxzp9Fxb+?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d932bc1c-1b0b-4768-082a-08dd580d2f43
+X-MS-Exchange-CrossTenant-Network-Message-Id: faf3b1e6-fe9b-44cd-7bfe-08dd580de2d1
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 15:33:00.8565
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 15:38:02.2699
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: epOYAOYlehm1xSpeTaGu/e8vogR0xRyd+CceHtVV+Dsaiou9lhM6nOdd6LjMieE7kPcyiP1pOqk60CyoJu6x0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7915
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5TR2VMEc7HnwqwOOsWsdFHtCJtcRL0lP8Qhk9cek/7+RDMa99Y5AGL2yhCrrBHAcC3GztOE46ApYT0oHl1u5zg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8895
 
-On Fri, Feb 28, 2025 at 10:08:58AM +0100, Alexander Stein wrote:
-> Hi Frank,
+On Fri, Feb 28, 2025 at 10:18:10AM +0200, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 >
-> Am Donnerstag, 27. Februar 2025, 17:39:47 CET schrieb Frank Li:
-> > On Thu, Feb 27, 2025 at 08:54:13AM +0100, Alexander Stein wrote:
-> > > Hi Frank,
-> > >
-> > > Am Mittwoch, 26. Februar 2025, 17:31:26 CET schrieb Frank Li:
-> > > > On Wed, Feb 26, 2025 at 01:11:37PM +0100, Alexander Stein wrote:
-> > > > > Hi Frank,
-> > > > >
-> > > > > Am Dienstag, 28. Januar 2025, 22:15:58 CET schrieb Frank Li:
-> > > > > > Add PCIe's msi-map and iommu-map property because i.MX95 support smmu and
-> > > > > > its.
-> > > > > >
-> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > ---
-> > > > > >  arch/arm64/boot/dts/freescale/imx95.dtsi | 14 ++++++++++++++
-> > > > > >  1 file changed, 14 insertions(+)
-> > > > > >
-> > > > > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > > > > index 6b8470cb3461a..2cebeda43a52d 100644
-> > > > > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > > > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > > > > @@ -1573,6 +1573,12 @@ pcie0: pcie@4c300000 {
-> > > > > >  			assigned-clock-parents = <0>, <0>,
-> > > > > >  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-> > > > > >  			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
-> > > > > > +			/* pcie0's Devid(BIT[7:6]) is 0x00, stream id(BIT[5:0]) is 0x10~0x17 */
-> > > > > > +			msi-map = <0x0 &its 0x10 0x1>,
-> > > > > > +				  <0x100 &its 0x11 0x7>;
-> > > > >
-> > > > > Aren't you missing msi-map-mask = <0x1ff>; here? Similar to pcie1.
-> > > > > Either way, with this change PCIe on pcie0 is not working anymore,
-> > > > > regardless of msi-map-mask.
-> > > >
-> > > > Yes, it should have msi-map-mask. During my test, I have not enable enetc
-> > > > so I have not found this problem.
-> > >
-> > > Just to be clear: This is not about enetc. This works fine here.
-> > >
-> > > > > Without msi-map-mask:
-> > > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
-> > > > > > OF: /soc/pcie@4c300000: no msi-map translation for id 0x300 on (null)
-> > > > > > r8169 0000:03:00.0: error -EINVAL: enable failure
-> > > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -22
-> > > > >
-> > > > > With msi-map-mask:
-> > > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
-> > > > > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
-> > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
-> > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
-> > > > > > r8169 0000:03:00.0: error -EIO: PCI read failed
-> > > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
-> > > >
-> > > > Can you try remove iommu-map and keep msi-map? then remove msi-map and
-> > > > keep iommu-map to check which one cause this problem.
-> > >
-> > > With only msi-map removed, but smmu enabled:
-> > > > arm-smmu-v3 490d0000.iommu: event 0x10 received:
-> > > > arm-smmu-v3 490d0000.iommu:      0x0000001100000010
-> > > > arm-smmu-v3 490d0000.iommu:      0x0000020a00000000
-> > > > arm-smmu-v3 490d0000.iommu:      0x000000009b0cc000
-> > > > arm-smmu-v3 490d0000.iommu:      0x0000000000000000
-> > > > arm-smmu-v3 490d0000.iommu: event: F_TRANSLATION client: 0000:01:00.0 sid: 0x11 ssid: 0x0 iova: 0x9b0cc000 ipa: 0x0
-> > > > arm-smmu-v3 490d0000.iommu: priv data read s1 "Input address caused fault" stag: 0x0 r8169 0000:03:00.0
-> > > > enp3s0: Link is Down
-> > >
-> > > With only iommu-map removed, both smmu enabled or disabled:
-> > > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
-> > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
-> > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
-> > > > r8169 0000:03:00.0: error -EIO: PCI read failed
-> > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
-> > >
-> > > Only if smmu is disabled and msi-map is removed the driver probes
-> > > successfully:
-> > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
-> > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
-> > > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4c0, IRQ 160
-> > > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
-> > > > r8169 0000:03:00.0 enp3s0: renamed from eth0
-> > > > r8169 0000:03:00.0: enabling bus mastering
-> > > > r8169 0000:03:00.0 enp3s0: Link is Down
-> > >
-> > > > >
-> > > > > Without msi-map/iommu-map:
-> > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
-> > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
-> > > > > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4c0, IRQ 166
-> > > > > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
-> > > > > > r8169 0000:03:00.0 enp3s0: renamed from eth0
-> > > > > > r8169 0000:03:00.0: enabling bus mastering
-> > > > > > r8169 0000:03:00.0 enp3s0: Link is Down
-> > > > >
-> > > > > pcie1 works as expected. But this is only a single PCIe device, rather than
-> > > > > having a PCIe bridge.
-> > > > > Any idea what's wrong here?
-> > > >
-> > > > Can you help dump more information at for PCIe bridge case:
-> > > >
-> > > > imx_pcie_add_lut(), need rid and sid information.
-> > > > drivers/pci/controller/dwc/pci-imx6.c
-> > >
-> > > Just to be clear, without msi-map and iommu-map I get:
-> > > > imx6q-pcie 4c380000.pcie: rid: 0x0, sid: 0x18
-> > > > imx6q-pcie 4c380000.pcie: rid: 0x100, sid: 0x19
-> >
-> > Can you help dump register value PE0_LUT_CREQID offset 0x101 for your
-> > smmu-map or msi-map enable case
+> Add a RTC driver for NXP S32G2/S32G3 SoCs.
 >
-> I am assuming you meant offset 0x101c, as stated in the RM.
-> I added a dump directly before printing "PCI read failed" in r8169_main.c.
-
-Can you point me the code about where "error -EIO: PCI read failed"?
-
-I tested nvme devices worked at both PCIE0 and PCIE1.
-
-Which PCI switch do you use?
-
-Frank
-
-> Unfortunately this only returns 0 for both PCIe devices, so I'm wondering
-> if this is correct.
+> RTC tracks clock time during system suspend. It can be a wakeup source
+> for the S32G2/S32G3 SoC based boards.
 >
-> > 2nd test.
-> > change IMX95_PE0_LUT_MASK to 0x1ff
+> The RTC module from S32G2/S32G3 is not battery-powered and it is not kept
+> alive during system reset.
 >
-> Unfortunately I do not notice any effect/difference.
+> Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  drivers/rtc/Kconfig    |  11 ++
+>  drivers/rtc/Makefile   |   1 +
+>  drivers/rtc/rtc-s32g.c | 386 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 398 insertions(+)
+>  create mode 100644 drivers/rtc/rtc-s32g.c
 >
-> Best regards
-> Alexander
+> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+> index 0bbbf778ecfa..510dc2db745d 100644
+> --- a/drivers/rtc/Kconfig
+> +++ b/drivers/rtc/Kconfig
+> @@ -2103,4 +2103,15 @@ config RTC_DRV_AMLOGIC_A4
+>  	  This driver can also be built as a module. If so, the module
+>  	  will be called "rtc-amlogic-a4".
+>
+> +config RTC_DRV_S32G
+> +	tristate "RTC driver for S32G2/S32G3 SoCs"
+> +	depends on ARCH_S32 || COMPILE_TEST
+> +	depends on COMMON_CLK
+> +	help
+> +	  Say yes to enable RTC driver for platforms based on the
+> +	  S32G2/S32G3 SoC family.
+> +
+> +	  This RTC module can be used as a wakeup source.
+> +	  Please note that it is not battery-powered.
+> +
+>  endif # RTC_CLASS
+> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+> index 489b4ab07068..e4b616ecd5ce 100644
+> --- a/drivers/rtc/Makefile
+> +++ b/drivers/rtc/Makefile
+> @@ -161,6 +161,7 @@ obj-$(CONFIG_RTC_DRV_RX8111)	+= rtc-rx8111.o
+>  obj-$(CONFIG_RTC_DRV_RX8581)	+= rtc-rx8581.o
+>  obj-$(CONFIG_RTC_DRV_RZN1)	+= rtc-rzn1.o
+>  obj-$(CONFIG_RTC_DRV_RENESAS_RTCA3)	+= rtc-renesas-rtca3.o
+> +obj-$(CONFIG_RTC_DRV_S32G)	+= rtc-s32g.o
+>  obj-$(CONFIG_RTC_DRV_S35390A)	+= rtc-s35390a.o
+>  obj-$(CONFIG_RTC_DRV_S3C)	+= rtc-s3c.o
+>  obj-$(CONFIG_RTC_DRV_S5M)	+= rtc-s5m.o
+> diff --git a/drivers/rtc/rtc-s32g.c b/drivers/rtc/rtc-s32g.c
+> new file mode 100644
+> index 000000000000..251d86ab3046
+> --- /dev/null
+> +++ b/drivers/rtc/rtc-s32g.c
+> @@ -0,0 +1,386 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/of_irq.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/rtc.h>
+> +
+> +#define RTCC_OFFSET	0x4ul
+> +#define RTCS_OFFSET	0x8ul
+> +#define APIVAL_OFFSET	0x10ul
+> +
+> +/* RTCC fields */
+> +#define RTCC_CNTEN				BIT(31)
+> +#define RTCC_APIEN				BIT(15)
+> +#define RTCC_APIIE				BIT(14)
+> +#define RTCC_CLKSEL_MASK		GENMASK(13, 12)
+> +#define RTCC_DIV512EN			BIT(11)
+> +#define RTCC_DIV32EN			BIT(10)
+> +
+> +/* RTCS fields */
+> +#define RTCS_INV_API	BIT(17)
+> +#define RTCS_APIF		BIT(13)
+> +
+> +#define APIVAL_MAX_VAL		GENMASK(31, 0)
+> +#define RTC_SYNCH_TIMEOUT	(100 * USEC_PER_MSEC)
+> +
+> +/*
+> + * S32G2 and S32G3 SoCs have RTC clock source1 reserved and
+> + * should not be used.
+> + */
+> +#define RTC_CLK_SRC1_RESERVED		BIT(1)
+> +
+> +/*
+> + * S32G RTC module has a 512 value and a 32 value hardware frequency
+> + * divisors (DIV512 and DIV32) which could be used to achieve higher
+> + * counter ranges by lowering the RTC frequency.
+> + */
+> +enum {
+> +	DIV1 = 1,
+> +	DIV32 = 32,
+> +	DIV512 = 512,
+> +	DIV512_32 = 16384
+> +};
+> +
+> +static const char *const rtc_clk_src[] = {
+> +	"source0",
+> +	"source1",
+> +	"source2",
+> +	"source3"
+> +};
+> +
+> +struct rtc_priv {
+> +	struct rtc_device *rdev;
+> +	void __iomem *rtc_base;
+> +	struct clk *ipg;
+> +	struct clk *clk_src;
+> +	const struct rtc_soc_data *rtc_data;
+> +	u64 rtc_hz;
+> +	time64_t sleep_sec;
+> +	int irq;
+> +	u32 clk_src_idx;
+> +};
+> +
+> +struct rtc_soc_data {
+> +	u32 clk_div;
+> +	u32 reserved_clk_mask;
+> +};
+> +
+> +static const struct rtc_soc_data rtc_s32g2_data = {
+> +	.clk_div = DIV512_32,
+> +	.reserved_clk_mask = RTC_CLK_SRC1_RESERVED,
+> +};
+> +
+> +static irqreturn_t s32g_rtc_handler(int irq, void *dev)
+> +{
+> +	struct rtc_priv *priv = platform_get_drvdata(dev);
+> +	u32 status;
+> +
+> +	status = readl(priv->rtc_base + RTCS_OFFSET);
+> +
+> +	if (status & RTCS_APIF) {
+> +		writel(0x0, priv->rtc_base + APIVAL_OFFSET);
+> +		writel(status | RTCS_APIF, priv->rtc_base + RTCS_OFFSET);
+> +	}
+> +
+> +	rtc_update_irq(priv->rdev, 1, RTC_IRQF | RTC_AF);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +/*
+> + * The function is not really getting time from the RTC since the S32G RTC
+> + * has several limitations. Thus, to setup alarm use system time.
+> + */
+> +static int s32g_rtc_read_time(struct device *dev,
+> +			      struct rtc_time *tm)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +	time64_t sec;
+> +
+> +	if (check_add_overflow(ktime_get_real_seconds(),
+> +			       priv->sleep_sec, &sec))
+> +		return -ERANGE;
+> +
+> +	rtc_time64_to_tm(sec, tm);
+> +
+> +	return 0;
+> +}
+> +
+> +static int s32g_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +	u32 rtcc, rtcs;
+> +
+> +	rtcc = readl(priv->rtc_base + RTCC_OFFSET);
+> +	rtcs = readl(priv->rtc_base + RTCS_OFFSET);
+> +
+> +	alrm->enabled = rtcc & RTCC_APIIE;
+> +	if (alrm->enabled)
+> +		alrm->pending = !(rtcs & RTCS_APIF);
+> +
+> +	return 0;
+> +}
+> +
+> +static int s32g_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +	u32 rtcc;
+> +
+> +	/* RTC API functionality is used both for triggering interrupts
+> +	 * and as a wakeup event. Hence it should always be enabled.
+> +	 */
+> +	rtcc = readl(priv->rtc_base + RTCC_OFFSET);
+> +	rtcc |= RTCC_APIEN | RTCC_APIIE;
+> +	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
+> +
+> +	return 0;
+> +}
+> +
+> +static int s32g_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +	unsigned long long cycles;
+> +	long long t_offset;
+> +	time64_t alrm_time;
+> +	u32 rtcs;
+> +	int ret;
+> +
+> +	alrm_time = rtc_tm_to_time64(&alrm->time);
+> +	t_offset = alrm_time - ktime_get_real_seconds() - priv->sleep_sec;
+> +	if (t_offset < 0)
+> +		return -ERANGE;
+> +
+> +	cycles = t_offset * priv->rtc_hz;
+> +	if (cycles > APIVAL_MAX_VAL)
+> +		return -ERANGE;
+> +
+> +	/* APIVAL could have been reset from the IRQ handler.
+> +	 * Hence, we wait in case there is a synchronization process.
+> +	 */
+> +	ret = read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
+> +				0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
+> +	if (ret)
+> +		return ret;
+> +
+> +	writel(cycles, priv->rtc_base + APIVAL_OFFSET);
+> +
+> +	return read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
+> +				0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
+> +}
+> +
+> +/*
+> + * Disable the 32-bit free running counter.
+> + * This allows Clock Source and Divisors selection
+> + * to be performed without causing synchronization issues.
+> + */
+> +static void s32g_rtc_disable(struct rtc_priv *priv)
+> +{
+> +	u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
+> +
+> +	rtcc &= ~RTCC_CNTEN;
+> +	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
+> +}
+> +
+> +static void s32g_rtc_enable(struct rtc_priv *priv)
+> +{
+> +	u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
+> +
+> +	rtcc |= RTCC_CNTEN;
+> +	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
+> +}
+> +
+> +static int rtc_clk_src_setup(struct rtc_priv *priv)
+> +{
+> +	u32 rtcc;
+> +
+> +	if (priv->rtc_data->reserved_clk_mask & (1 << priv->clk_src_idx))
+> +		return -EOPNOTSUPP;
+> +
+> +	rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
+> +
+> +	switch (priv->rtc_data->clk_div) {
+> +	case DIV512_32:
+> +		rtcc |= RTCC_DIV512EN;
+> +		rtcc |= RTCC_DIV32EN;
+> +		break;
+> +	case DIV512:
+> +		rtcc |= RTCC_DIV512EN;
+> +		break;
+> +	case DIV32:
+> +		rtcc |= RTCC_DIV32EN;
+> +		break;
+> +	case DIV1:
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	rtcc |= RTCC_APIEN | RTCC_APIIE;
+> +	/*
+> +	 * Make sure the CNTEN is 0 before we configure
+> +	 * the clock source and dividers.
+> +	 */
+> +	s32g_rtc_disable(priv);
+> +	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
+> +	s32g_rtc_enable(priv);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct rtc_class_ops rtc_ops = {
+> +	.read_time = s32g_rtc_read_time,
+> +	.read_alarm = s32g_rtc_read_alarm,
+> +	.set_alarm = s32g_rtc_set_alarm,
+> +	.alarm_irq_enable = s32g_rtc_alarm_irq_enable,
+> +};
+> +
+> +static int rtc_clk_dts_setup(struct rtc_priv *priv,
+> +			     struct device *dev)
+> +{
+> +	u32 i;
+> +
+> +	priv->ipg = devm_clk_get_enabled(dev, "ipg");
+> +	if (IS_ERR(priv->ipg))
+> +		return dev_err_probe(dev, PTR_ERR(priv->ipg),
+> +				"Failed to get 'ipg' clock\n");
+> +
+> +	for (i = 0; i < ARRAY_SIZE(rtc_clk_src); i++) {
+> +		priv->clk_src = devm_clk_get_enabled(dev, rtc_clk_src[i]);
+> +		if (!IS_ERR(priv->clk_src)) {
+> +			priv->clk_src_idx = i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (IS_ERR(priv->clk_src))
+> +		return dev_err_probe(dev, PTR_ERR(priv->clk_src),
+> +				"Failed to get rtc module clock source\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static int s32g_rtc_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct rtc_priv *priv;
+> +	unsigned long rtc_hz;
+> +	int ret;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->rtc_data = of_device_get_match_data(dev);
+> +	if (!priv->rtc_data)
+> +		return -ENODEV;
+> +
+> +	priv->rtc_base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(priv->rtc_base))
+> +		return PTR_ERR(priv->rtc_base);
+> +
+> +	device_init_wakeup(dev, true);
+> +
+> +	ret = rtc_clk_dts_setup(priv, dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv->rdev = devm_rtc_allocate_device(dev);
+> +	if (IS_ERR(priv->rdev))
+> +		return PTR_ERR(priv->rdev);
+> +
+> +	ret = rtc_clk_src_setup(priv);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv->irq = platform_get_irq(pdev, 0);
+> +	if (priv->irq < 0) {
+> +		ret = priv->irq;
+> +		goto disable_rtc;
+> +	}
+> +
+> +	rtc_hz = clk_get_rate(priv->clk_src);
+> +	if (!rtc_hz) {
+> +		dev_err(dev, "Failed to get RTC frequency\n");
+> +		ret = -EINVAL;
+> +		goto disable_rtc;
+> +	}
+> +
+> +	priv->rtc_hz = rtc_hz / priv->rtc_data->clk_div;
+> +	if (rtc_hz % priv->rtc_data->clk_div)
+> +		priv->rtc_hz++;
+> +
+> +	platform_set_drvdata(pdev, priv);
+> +	priv->rdev->ops = &rtc_ops;
+> +
+> +	ret = devm_request_irq(dev, priv->irq,
+> +			       s32g_rtc_handler, 0, dev_name(dev), pdev);
+> +	if (ret) {
+> +		dev_err(dev, "Request interrupt %d failed, error: %d\n",
+> +			priv->irq, ret);
+> +		goto disable_rtc;
+> +	}
+> +
+> +	ret = devm_rtc_register_device(priv->rdev);
+> +	if (ret)
+> +		goto disable_rtc;
+> +
+> +	return 0;
+> +
+> +disable_rtc:
+> +	s32g_rtc_disable(priv);
+> +	return ret;
+> +}
+> +
+> +static int s32g_rtc_suspend(struct device *dev)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +	u32 apival = readl(priv->rtc_base + APIVAL_OFFSET);
+> +
+> +	if (check_add_overflow(priv->sleep_sec, div64_u64(apival, priv->rtc_hz),
+> +			       &priv->sleep_sec)) {
+> +		dev_warn(dev, "Overflow on sleep cycles occurred. Resetting to 0.\n");
+> +		priv->sleep_sec = 0;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int s32g_rtc_resume(struct device *dev)
+> +{
+> +	struct rtc_priv *priv = dev_get_drvdata(dev);
+> +
+> +	/* The transition from resume to run is a reset event.
+> +	 * This leads to the RTC registers being reset after resume from
+> +	 * suspend. It is uncommon, but this behaviour has been observed
+> +	 * on S32G RTC after issueing a Suspend to RAM operation.
+> +	 * Thus, reconfigure RTC registers on the resume path.
+> +	 */
+> +	return rtc_clk_src_setup(priv);
+> +}
+> +
+> +static const struct of_device_id rtc_dt_ids[] = {
+> +	{ .compatible = "nxp,s32g2-rtc", .data = &rtc_s32g2_data},
+> +	{ /* sentinel */ },
+> +};
+> +
+> +static DEFINE_SIMPLE_DEV_PM_OPS(s32g_rtc_pm_ops,
+> +			 s32g_rtc_suspend, s32g_rtc_resume);
+> +
+> +static struct platform_driver s32g_rtc_driver = {
+> +	.driver		= {
+> +		.name			= "s32g-rtc",
+> +		.pm				= pm_sleep_ptr(&s32g_rtc_pm_ops),
+> +		.of_match_table = rtc_dt_ids,
+> +	},
+> +	.probe		= s32g_rtc_probe,
+> +};
+> +module_platform_driver(s32g_rtc_driver);
+> +
+> +MODULE_AUTHOR("NXP");
+> +MODULE_DESCRIPTION("NXP RTC driver for S32G2/S32G3");
+> +MODULE_LICENSE("GPL");
 > --
-> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht München, HRB 105018
-> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
->
+> 2.45.2
 >
