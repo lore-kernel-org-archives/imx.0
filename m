@@ -1,106 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27836280A3F;
-	Fri, 28 Feb 2025 18:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1BE1C175A
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 19:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740767402; cv=none; b=tbAPvVoupwpkAXR9ij4uOXzuJy46EwaDRMoU2c97Ub9mvEglC3Osqceh2u1DHZEkved0KK0Y1AGZWx+AZ+/5fFDh+k/XiG0JI32BRi6mWFSHAnlWMbTg7eUv4YXrswQ513de0ibXvRDM3CKhvXAymsQmg7A6LNie4NkqLSH4OlM=
+	t=1740771760; cv=none; b=o28NQqzvIq8GlJGhv7c83OaJEoTz5VCZb6Y6zMhGo/3g2LXSTDWSXcGwDevbQvf6vteIBHm1lwWuEDAgljTcfxhUNLTNvKE/aDtT32abzkcnUrc2rG1xng4Rpo7K4LBUd/Zsj6bUQHNeW2iT7ZYFhqxkraOoKzC8qpyFlDPdHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740767402; c=relaxed/simple;
-	bh=OilwAZ5RXV38zTb+M44/89NDdAfBWpMVpgBj9F3ie5M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=o8DkMOm/cDyLpI+hZgVZ7plkfi+zHIHZZgZnU8DHnp5mnhNd5LIesA2YPiRQbEBD9xXyVk2uh9rUIpJ1KjwFmQot4jHTZTviB+r8OK/KOQR7Ct0Whk6xiQQ4r6nKR9bj5NYRBx35NYzlvvI0anuW/FPY/yhhTaIizESEKl/EyQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qko06JpB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740771760; c=relaxed/simple;
+	bh=ER+r8NXmdkWggNU0HA9uV61RbAhrlmzZHANxsH2Jtn8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mD8AOSaZInKGhiQmAGLay9Hb98drLcKqWTnTkAdwPnbyQ7IlqtX8jgIubVLzil5eofZH+Jfe7AzNmRUSuHjnAbJwX5wCtYFUDvtAEEbmp66u+xKzLPCrw5xc7exDHVq8t2sqYTe5bXPOldoYuODQJYFYBBf3V0i784RBhc0lRM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UZQ3BYx4; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qko06JpB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917B1C4CEED;
-	Fri, 28 Feb 2025 18:30:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740767401;
-	bh=OilwAZ5RXV38zTb+M44/89NDdAfBWpMVpgBj9F3ie5M=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qko06JpBaB0Mhqay9/mFCbAZRqjBKioIFBIjsaLX69CFiooIOK6cQTIib8VidkwDa
-	 6920EKQBFWvPxU/KaDSCCQeUmtMyIhUFxJ4SaiAw+TBD9dSJ0sDdr0AIc+oDoyea1u
-	 Cc0CV4QGr2nGWBKrENwhuXlvL4dMSg7D60RJwDn6Ay2EiIGoH5Re4bbPE/fUduBWAl
-	 ED/lJ4r/dxbL76l1rHW5blvs99gEzk0NkQhN1AmHpo1/2Viw687dTXHMY1839QATdA
-	 CihdYAaDCONwhLA+EZWj70TPPMYxNRubEUWc1r8VX0g5dC2CXgcB4OQ0nXMhkcf+XD
-	 ym4ylURLCwE1w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB9B4380CFF1;
-	Fri, 28 Feb 2025 18:30:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UZQ3BYx4"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30797730cbdso23748951fa.3
+        for <imx@lists.linux.dev>; Fri, 28 Feb 2025 11:42:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740771756; x=1741376556; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ER+r8NXmdkWggNU0HA9uV61RbAhrlmzZHANxsH2Jtn8=;
+        b=UZQ3BYx47njmjVB4laC7KCXimiwaUQzRVlz5S8G+b/Dgb/yUiCEo9a/dLSdcOLricC
+         ii3svTZG/pe9YwH7fcUztBcMRGkUrjj1cnmftpaFzvboTzc4TZms+KIZ1YXBV5NbJqi3
+         gv1NGBrxQ7wiEuyaxPMMLAkmQzB3IaUQrmMtVbc2Wm927YDCz9V2GltLdWJR8RPTe6GR
+         K/ROr24sDb9sv/zoBRx8AB72RZvU0ykSOl5/CG1r4g02xKDo3LFP/uX1l9lq11ihrFaj
+         n+Frvu/B7K4bsJQ2Mb05uvOU3Vx1IJ0Q2Xwb9w+oFKNGsABuIEkG6/TlSl1L70eQ12Gu
+         RDMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740771756; x=1741376556;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ER+r8NXmdkWggNU0HA9uV61RbAhrlmzZHANxsH2Jtn8=;
+        b=bk9GuuPb92JxxnLF159HCPSPgdLyJbpFPv1sEi7QGScntdUgDL/kRiaxO1WUhGyuZW
+         4U4BFjCihYnsV4dOQxdENWHt4HTT9U0Ms1C848qhkjO5ajiR1rrH5v5eQo0UzsMhUOs/
+         T2eKD2pPHPC2+a/68QYNocya2RyTc4ABm9aILg9TWXUWCxC/nw5JmiY0wD8E071kLMnX
+         MBX9iuXP8kX5TKPAwidCQXtnOZpfiuJ46vZt5voYSxG/FKOJBAFIVAGlStLcJBT6Vsi5
+         PXGNWs2DfhY1lBBG5SbChyAy5oBtOC3pPTCkUFbh0UpskNFkPeNo/43gIQMRiKN4pvS2
+         iKAw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVIYUVq0qwPPNYoJUAB8kRwRpIkFW5Zs1q46e9tf4ykqDArNYPhdUTfx/uB1ZUSthHKgU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywa6NwJy6eoIPZodJFIt9BrzLjWCatbxVWC/ymq4wzeh8W40Dn4
+	mT4dn5rHP5ROOl+qb9qEbOg5LpshWweF+WDMnvuV2koSkH9kkhvNSLkWEW/2hTjSRfG0NLRny+H
+	yG9o6+o135uCoXpPipUUNVoLsG3Y=
+X-Gm-Gg: ASbGncs75HMbAytqqvCZnW6j4Z1X3O8R2Q1DFhd3Ep0f8LMhEktF6x4aaaOrNcfyG1Q
+	decjhvZkVodjDcId3H4STucZKdZIu6JG/LTwWH7Gr0xPTUnPbzguGmrTt2e5+MLxGwJquiF1mKY
+	WPeWQjMjGZFd00Qve6uX9hrpjz8tH+zcFk9kRLQA==
+X-Google-Smtp-Source: AGHT+IF0kZIiHzdFJYX2bvCwbKhMQkcQPj5hmb4BkhewRGIZt77ta8Te2nCI3MxmD7G1uvJYlftQUPlvNFyy6H3yMRA=
+X-Received: by 2002:a2e:8215:0:b0:308:f860:7c1 with SMTP id
+ 38308e7fff4ca-30b93418c69mr12907051fa.30.1740771756188; Fri, 28 Feb 2025
+ 11:42:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/11] net: stmmac: cleanup transmit clock setting
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174076743376.2237263.14950662798271470831.git-patchwork-notify@kernel.org>
-Date: Fri, 28 Feb 2025 18:30:33 +0000
-References: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
-In-Reply-To: <Z8AtX-wyPal1auVO@shell.armlinux.org.uk>
-To: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, drew@pdp7.com, kernel@esmil.dk,
- edumazet@google.com, festevam@gmail.com, wefu@redhat.com, guoren@kernel.org,
- imx@lists.linux.dev, kuba@kernel.org, jan.petrous@oss.nxp.com,
- jbrunet@baylibre.com, khilman@baylibre.com,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
- martin.blumenstingl@googlemail.com, mcoquelin.stm32@gmail.com,
- minda.chen@starfivetech.com, neil.armstrong@linaro.org,
- netdev@vger.kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
- s.hauer@pengutronix.de, shawnguo@kernel.org
+References: <20250227170556.589668-1-ernest.vanhoecke@toradex.com> <20250227170556.589668-2-ernest.vanhoecke@toradex.com>
+In-Reply-To: <20250227170556.589668-2-ernest.vanhoecke@toradex.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 28 Feb 2025 16:42:24 -0300
+X-Gm-Features: AQ5f1JoDhtvIJKnD6zt795G88ZFNlnPp4nsAKKBjoBY0YUhUy9idNheY0yKrIcI
+Message-ID: <CAOMZO5ARY0P3nNnh6tmLi1p5N0uXb8ZLqkBs3ZekXD4U_-rOww@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: dts: apalis/colibri-imx6: Enable STMPE811 TS
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, Feb 27, 2025 at 2:06=E2=80=AFPM Ernest Van Hoecke
+<ernestvanhoecke@gmail.com> wrote:
+>
+> Enable the STMPE811 touchscreen in the SOM dtsi files. The STMPE811 is
+> part of the SOM. It's self contained within it, therefore, disabling it
+> is not the correct default behavior.
+>
+> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Please run /scripts/checkpatch.pl and fix the following warning:
 
-On Thu, 27 Feb 2025 09:16:15 +0000 you wrote:
-> Hi,
-> 
-> A lot of stmmac platform code which sets the transmit clock is very
-> similar - they decode the speed to the clock rate (125, 25 or 2.5 MHz)
-> and then set a clock to that rate.
-> 
-> The DWMAC core appears to have a clock input for the transmit section
-> called clk_tx_i which requires this rate.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,01/11] net: stmmac: provide set_clk_tx_rate() hook
-    https://git.kernel.org/netdev/net-next/c/dea5c8ec20be
-  - [net-next,02/11] net: stmmac: provide generic implementation for set_clk_tx_rate method
-    https://git.kernel.org/netdev/net-next/c/12bce6d5404e
-  - [net-next,03/11] net: stmmac: dwc-qos: use generic stmmac_set_clk_tx_rate()
-    https://git.kernel.org/netdev/net-next/c/17c24f6dc641
-  - [net-next,04/11] net: stmmac: starfive: use generic stmmac_set_clk_tx_rate()
-    https://git.kernel.org/netdev/net-next/c/c81eb3da0be8
-  - [net-next,05/11] net: stmmac: s32: use generic stmmac_set_clk_tx_rate()
-    https://git.kernel.org/netdev/net-next/c/36fa8c960720
-  - [net-next,06/11] net: stmmac: intel: use generic stmmac_set_clk_tx_rate()
-    https://git.kernel.org/netdev/net-next/c/61356fb1b0d6
-  - [net-next,07/11] net: stmmac: imx: use generic stmmac_set_clk_tx_rate()
-    https://git.kernel.org/netdev/net-next/c/b693ce4f2704
-  - [net-next,08/11] net: stmmac: rk: switch to use set_clk_tx_rate() hook
-    https://git.kernel.org/netdev/net-next/c/c8caf6100f6d
-  - [net-next,09/11] net: stmmac: ipq806x: switch to use set_clk_tx_rate() hook
-    https://git.kernel.org/netdev/net-next/c/ca723519c28b
-  - [net-next,10/11] net: stmmac: meson: switch to use set_clk_tx_rate() hook
-    https://git.kernel.org/netdev/net-next/c/2a7d55f901a5
-  - [net-next,11/11] net: stmmac: thead: switch to use set_clk_tx_rate() hook
-    https://git.kernel.org/netdev/net-next/c/945db208fbe7
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+From:/Signed-off-by: email address mismatch: 'From: Ernest Van Hoecke
+<ernestvanhoecke@gmail.com>' !=3D 'Signed-off-by: Ernest Van Hoecke
+<ernest.vanhoecke@toradex.com>'
