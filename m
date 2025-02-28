@@ -1,200 +1,232 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2047.outbound.protection.outlook.com [40.107.104.47])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841CB24290E
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 08:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740730723; cv=fail; b=n3885VmRNe1U12kEeHhE+naq9LbOKCm+BX25DEHqf6SR2HvFkwBPSKPeS43Vb2WBIad2u8ObfjtuFR9a3PvIlK2F3JC9yOpxgiZpM5xxJweavdYrWRSdgPxKwC+NBpCFJGuJ8ruh5IOBaKBkMokBCjM+wK7tXfkVzmElWhODpiw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740730723; c=relaxed/simple;
-	bh=MiLy6fWAXFgmN7SIgI5DtjximCyaaR4gvfG8iOL7Brg=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79DA1BE23E
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 09:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740733751; cv=none; b=PT/Gqixq5RJhkaMYD7yLeV9HXSf1m0uYrH6EdtucY9GeGgJpqkEgYl69JEmuVKI03/Cy22HkpeTMxo4TnMP/PTOup3+OZBAF7D8gsuM+yL3rB8H2sDdF2fiNpRD4XhS1xDfETRXr+PqdLpHzC17X/cTslFJP0tcPJXepgnncDtM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740733751; c=relaxed/simple;
+	bh=GoZcqFvSJPGWqXzIQfuyYmSDMLtzVMtF1NBzltjHK+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MYc6NEqDC6lONgxPoYc9lHZpMkEc6qFxJGClGdtviBAGHCVxBi4pNfjZcKajVKNnu++E0q8HyoOL6K8kyS4ObPKbi2xYH/vDaY+h1LGU/+V+IyAQIrW+m7+SDTZ6HKgEGK7OGZggttWC9SFzQAkh6MsU9xAAU9KG4s9FyTF90pk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fVdgdK95; arc=fail smtp.client-ip=40.107.104.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 MIME-Version:Content-Type; b=sxwaHQ4wD+GEf1M2MeSHPimppmYfAOhj4KOtRIQ4juB2tNIQDNEWpcmAM92j03rjmzmPrSy7lU26+1rLV6CS96Wevrx12hKvS1bCn8ynXRpiAmPtNSW17MWxZpucI9lwHK3+UF3YqKWymnlIk43ediMF0kmNS0C3t9eeY8hZjVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=e75+3Ov5; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Of13F4q/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fVdgdK95"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NdDgaF/lLYGPHo35CaNZMzNFMarMnVq7qvfmTWK6nvUJLHP8HV2dUfOuj+TokSOJWNo/pIAJOGj6g9LLwM+3JRUKN2aZaG50K5RJB+ZL582a/TM4ajczwXMxf7ozLG5kJu7XI5iI/G2Cnq3g1lvoEqTDNavPKXDDUTpNncjuEUYsDn8eXuUr4fwRQ10RXSDkWD4e5NBZ4+O8SUZ3zyb2ALtViUq8Uk/U4kJGDt+uxnUhdngwwgAyCG0CVgW5DYD6mbn3pCht5WdADzjC0Up755I73Hq7gJUPIpEK2dlsYEf7G0OjTCVwJERyQ0jlVL+33zBHqWIE+GyYwYCi84H55Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QrvbbjDEfYI7M4Aepm5H409LTkOnMYEJPjIxD3CWMWo=;
- b=lTjM3IHeVzkVM0DovkGukRzTBrp054El0Eo7htMZubIyn8dolUi+sK3cRqqxU2uTdwGPGtlP3FbmeaPFMaE0IZlXPHfoEG7F3v6aekUA5yWAuSskF7X72E20y3nRJB5NuuKTF179Lxh1vfAC2FC3jVqoeuqZGkuJ8VdwzQpj+PBJnTgPIe9Dc256PNxpnbT9MSSzhzylP8em1yMVITSwNXdolODdxU6qD1zpPLl1QMdnL8HMWnkyyAnHWDe7w29G3eXrZkk1gzpkZvbdKbwo/Z2QFIppCN6tVmeYR3GAK+szDrHeq3J5+g4OD8FhK8PkT7ckAzS0+J74CBB8rQXYog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QrvbbjDEfYI7M4Aepm5H409LTkOnMYEJPjIxD3CWMWo=;
- b=fVdgdK95gMXw/iOTOweCEzsmR3JL/QlVOanU+o7wKRJRlmOgK725GhtHZGYZaLWt6+rZIzKe3CW0vxvCoKVlECzEkq+nEWjZS7zDLAaoZlOFc2RasYW+iDBURhcqTj+h10eGXrrgjYoPwNIw9BXkQGy8xWY7FqaT9/lOVvxgSc05wpHPG+Y5UXipDQRjyFQgM7i1/8RhaXny7e0E7Z3SUjv/Zj48w67uAEh9Z8D7tj//VZLi8p+A1Fd0jHFhNeYjP5pn+lG/vq92aYGLNWJISynL2oMZoeejVadYZN+2Iguv3O4ZnjFnPJu5GxwMFhnrFE3zn7hYl/H5ctu8BF5bRA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by PR3PR04MB7305.eurprd04.prod.outlook.com (2603:10a6:102:83::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.15; Fri, 28 Feb
- 2025 08:18:38 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%4]) with mapi id 15.20.8489.021; Fri, 28 Feb 2025
- 08:18:37 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Cc: linux-rtc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	NXP S32 Linux <s32@nxp.com>,
-	imx@lists.linux.dev,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Subject: [PATCH v8 4/4] MAINTAINERS: add NXP S32G RTC driver
-Date: Fri, 28 Feb 2025 10:18:12 +0200
-Message-ID: <20250228081812.3115478-5-ciprianmarian.costea@oss.nxp.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250228081812.3115478-1-ciprianmarian.costea@oss.nxp.com>
-References: <20250228081812.3115478-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM8P189CA0012.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:218::17) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="e75+3Ov5";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Of13F4q/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1740733748; x=1772269748;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=oaH/BdmFOOEzxH+k/7wamxTTgjyZGL+sPbe4jCuCFkE=;
+  b=e75+3Ov5NJNejybvsoDOB2B22gxIggkaZ4yntkLz8XQTnt4cwgZQbksi
+   X9irlC8xyi3rQoVVHyRm0ACNJPbovp88eTrCCjOVRaeuGr4v/vQkHlxC5
+   AXQIKyZeNamJWuqnHsG9KYTaVTUuU+tTdh7eJYxloIAfy2Vf2eAYxP01X
+   H9hr2ZLg4sbDIOf9mZF+c/KW1dw+rcZ6GexB2F8KDiY7q6cP2R/BXSVpR
+   Yy/Ha9R1+enoaApu66FpLXADoIo8FSmDrtmTAMvpjBUwJBIpte6bRjxX3
+   1WtSm9dVoUPudSsAb10f1nWt8cGPMlNNYcoaugSTUHiTWb7A6lKTSFJUy
+   A==;
+X-CSE-ConnectionGUID: eweSCwxNQpCliKzed/NdZw==
+X-CSE-MsgGUID: Ed2i1XEuSTq/5mTYpDTHag==
+X-IronPort-AV: E=Sophos;i="6.13,321,1732575600"; 
+   d="scan'208";a="42169107"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 28 Feb 2025 10:09:04 +0100
+X-CheckPoint: {67C17D30-1D-2895743E-CD1E7AB7}
+X-MAIL-CPID: 0D00C71E310ECE96A7A5641DF01FE932_4
+X-Control-Analysis: str=0001.0A002111.67C17D30.0098,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0802D16B0CC;
+	Fri, 28 Feb 2025 10:08:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1740733740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oaH/BdmFOOEzxH+k/7wamxTTgjyZGL+sPbe4jCuCFkE=;
+	b=Of13F4q/jPwHfnNiYwxUYGpitPqaBTSS/QMJE6xY3fb7oHj4rhilrG4w2bmPiV4HekJzF/
+	kuHwyoWzlexoaYAMt1N2WfH6G/sXwd0D95D5ovMSulOMd37YDfXjUQbI1BsCEuWu7H1sLh
+	+kaql49u8oKmoSfxWozVk1viMCEdSPakIGnxs+Md5nxgdYRWDfOu/GdwpoIuiO6msZ+R49
+	lhGLfLkckJoSyg+fvR6J/EdRLm6g8BOc9dsJP7Co06HKG1kh/rTwyV9MjyfO0XSzHN2cZj
+	ZLBg4O7c4OpjhjKHGIzU+AHvMi1Izj/VArzDLMZX0OifuNT79LaAIiDaAzjgnQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
+Subject:
+ Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map property
+Date: Fri, 28 Feb 2025 10:08:58 +0100
+Message-ID: <47051102.fMDQidcC6G@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <Z8CVU/RWXSNe7bfN@lizhi-Precision-Tower-5810>
+References:
+ <20250128211559.1582598-1-Frank.Li@nxp.com> <1819305.VLH7GnMWUR@steina-w>
+ <Z8CVU/RWXSNe7bfN@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|PR3PR04MB7305:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9b403c9-6847-4b33-3527-08dd57d08090
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cTNQUXRTS2p2N3htWXkzcWs4Mm5VcHZvejA4NlZnSlkzQXE1V2ZGZ1F1K0lJ?=
- =?utf-8?B?cXpPU3JVMTRKcmp5MzUybERlMys2ZGVmclpHdE9GcVlpVGFSZVhyeDNlVXBQ?=
- =?utf-8?B?ZC9jQXlGTVhwakpzdzQ0UE1samNWQ2tIckNuWWVzaVZpWFBjODIxTmJXRmw5?=
- =?utf-8?B?Yy9TWDZFMFowYkpWbHZuWmFoWEd3aHZUSzEvMWhPZkNJVVcrRFkxU1JnbE9k?=
- =?utf-8?B?SHBrZ2FXT0RjMzh0YkNJUG1JS1I0a0ZDbGdSdSttYkp4V2NXTTJjaC95VytE?=
- =?utf-8?B?OWxoeldqTExIUVBva3g4VG1pdW1Va0ZIUGJsWkxFbU5VVStKeDhuUDloS0g1?=
- =?utf-8?B?dDBDbUg3d2JoZFZ3V3pUTDZqOEJvWlFnMWExU0NOREs3cnJQQS9yak5udW11?=
- =?utf-8?B?cmt1Z0N5bFY2bVFKQ09qZVVZYmFIUGU0Q0F2bDJkM1R0NTVZKzU0cUZQaGpv?=
- =?utf-8?B?U3c0MCtKUGdyZFF3SlNKOHJFUUhob3hKdWJzMXFIU2cwdmFxcHJ6ZVROWmY3?=
- =?utf-8?B?ZEpYS3RFQ0V3V3pUdmp3cUxzbWo1bzJwWFRoMUhEa1lsOWRKR3B2SVB6bXQy?=
- =?utf-8?B?N1F4TVFwRmV5SldlTHo2d1FPcWtldkliSjBLQzhJVk9WaXBsZFp1MGN3UVFu?=
- =?utf-8?B?NlNCMFlqbXFUQi9NZ3MvUU5EbFFRWlB6eDhTTGpvellJVUxTb3dyRjM3cnZK?=
- =?utf-8?B?cXpFS2ljVFJvZ2tOV0tzazZ6RzllT2ZkNElUMFJDS0FuYVZKdE9uOFFvc040?=
- =?utf-8?B?MjFYTWdiU3RoRm1XVnVoK2xmWDd5dFc4bG5YZk5sci9tclV0OG1aZ2FEMzRx?=
- =?utf-8?B?eVlMVGpaS21CQVQvQmhqY0dUQm5JTTRJNUVOemd3TXFGOWhMRDlaNUlpNFly?=
- =?utf-8?B?RG5JSUJiMmFldDlKNGdPVmM0UElDMWpWQXNZdzFLdXJCaVA3bVNXM0ZaQUlp?=
- =?utf-8?B?Q0Fxb3dYQ3BpekFGU2pFNHdYZ2ZGODRuRWVtQm5SK1RUTis0SmpNVWI1bzNP?=
- =?utf-8?B?WVhxYzVHZzU4T3BrS2Z0QjVNeDg4cmxvckt0VWtDZllZZzJ6MGlNQ1U5Tmo5?=
- =?utf-8?B?aUdvdWFBblJhdE5qVUpkYTF0aXg5ekQ5cG9vR1dEWVlvNUZzUUh1bm5RMzJH?=
- =?utf-8?B?anpYRHAvZW1VRGhaaVNJbHMxa09Ld1RQUXhJVGVEZnFoN1pVNkR6TStwRHRL?=
- =?utf-8?B?WHhKaGVwQUQ1aVNqVDI2aHVuRXZGdHpzNzY2MVBCRkcxZWVJQ2RibC9kV3pp?=
- =?utf-8?B?ZG9rVTJYa0xETzZkMjZBMkdlZkE5Nk1MRzA3SHNhVUo5aFg2VHFQc0FiL0Uv?=
- =?utf-8?B?NEpmOEh2cXgxa1pQaVVEZ0NCSDVmNGZjd1N0KzVQbEczdFVSY1RaK1pjbGpE?=
- =?utf-8?B?dlRMQlZjeGRVR1JIanI2elhBdXpnZW1uMFJzNHg4aW84OUQvWElKcVlOWkJQ?=
- =?utf-8?B?TDVOb2E5MHlmaXIxZE5nNHJsdWc0R0tuS0c4Zmdpeno2aFh0WWo5eE1scGZ3?=
- =?utf-8?B?Z2l4dGFTUVN0WDJIcUxRdzlnZHZVR25hUmhYb3pxWmNtZGJsRFZHdWx2VGZk?=
- =?utf-8?B?TGNxZ1BRcUcxdVNabWNXcDQvd3BjRi9nZks4ZUsvTkM0SWpmRGhDVHBWQTgy?=
- =?utf-8?B?THlwempFcCthbXBzODJzQlpMczZnd2F5YjFZTHJjZ2FMQUJValdvZzZZbm1M?=
- =?utf-8?B?ejlKNHFiMnY1OGJnRGVlSk9nenA2Wks2R0JkZGp2cWpQMDZrNGlmRGZ6VlZM?=
- =?utf-8?B?VUZGM045Q3gyOGs2dUdxeVJVcElpZkY2TTJLZHllOWdPOXgwSGJ0STBLOFFN?=
- =?utf-8?B?Y3IxRmpHdnI2WDVWRXQvTkswckhYR1pDNmx0bmlEVFhZRWVmL3FYM2l0SVJF?=
- =?utf-8?Q?aqPB12NnFOk+u?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cmZneFlFWFhKdiszUVB5RVdEZkM1dG9qUGJEb0hZVDZUWFZ0NlI1c2hIV1dr?=
- =?utf-8?B?ZnRnK2hGd2hmVUxiTHVxV3QzWHAwYnB0eFJsQzNJSDZTUTZReXpnU1B2clRQ?=
- =?utf-8?B?eGFFQ0MzMk9JcXBYSzIvNmtSS2xmL1JrZmQ4TGFwUzJrTmxoV3JrYlJ5bkdV?=
- =?utf-8?B?NEZTU2NNN21sbjFpMG1uU3EyL3JIQXJqbk1sMkpSWHo1SVZNR1BPT3Jvcm1C?=
- =?utf-8?B?M1pVdXFGTk1teHh1SnZaQVFQeFpienVQdWtYV1VxZlRRN05tcnlyNWNJaU4y?=
- =?utf-8?B?RXVVdEJOTGhJTXVaYUpJcVkzUzVVVXNwRlBpQ2dVUFUrdGo0a3dZNHpGbG12?=
- =?utf-8?B?RHRFV01kQ2xiK0grK2FZVzFXTjZNMkpIN1BIMW11WWJwWFhmOWJpbXJrRnE2?=
- =?utf-8?B?ZmJ1U0hyYzBIclBlUzRnb3BOR2VJcVNFTmVDNC9oaHRXTEdlMXdMWEtwbDhv?=
- =?utf-8?B?bHdtd0liaGpFM2Z4emJieGh1cjJvQVZqRWg3QUhmR3hqVE5TdU5oTVphQ2VF?=
- =?utf-8?B?a29tT1ZxWnhSc0gvWnE3SXVxUGdyc2RJMGhVeTZrWFFCZFAzYlF5WWZ4djBE?=
- =?utf-8?B?OGE3SHRUcExacUpGYnpyZk5HSW5VbkdQQ2NKdHlYdmlhanBtTCtTNlJzdUdQ?=
- =?utf-8?B?MWN4QWpqNjYwbUc4ckxIalFReGZLcml2WHRqNU45SXNCWURuY1VhUm5kVmJP?=
- =?utf-8?B?S01PS3VpcGlEMDBQdGtPOG9Zb2dKUmhkZklGZ0ozeVgxWlhBZWNqaGZWMjlL?=
- =?utf-8?B?RlFvcHpqbVExMFljQ3djbW9oYzNjTENWWUJnY01xM2VrbVJBK2toS1VtMVJw?=
- =?utf-8?B?OXFpcUlPZ2RZcUxDRStDT2QzSGNlRmoyZmtRQVRXVmc1cDBYVFQxeEY1bTVS?=
- =?utf-8?B?ekFwb1luRzVWR3c1SzVQbHRNMSs2bS9Qd0pHVmQ2OTFVdmIyNElIYklyR1hW?=
- =?utf-8?B?V01xdzRQeXlUSTR2RzkvT1ZRK3NETWdJVEVHZVhKbzdScXRzZFpvb1dab3M0?=
- =?utf-8?B?OExheEZET2NPMmNWcitsa2NwYnpSWlpaVS9vTEJIeEM0enJySmc4VFlZeWxo?=
- =?utf-8?B?eGN0czVOTHRvN2xuTlNjZVVBM2dBRWtxNm5qVTl3T09jNXFDTm9LY3hiMGNP?=
- =?utf-8?B?MVh1MFY3NGI2bUNWMXdnYldlYURlNGpXZFVGOUZTeU1JZE1ab3ZNampPUXFj?=
- =?utf-8?B?ak8rSm03SkhNVktkK0ZiV1dJRUN2d29maWZnZU9DT2lVamp5V3YvU0Q4a05q?=
- =?utf-8?B?a0grd0lZZnlHWDdjaThyUUxzcm02Q3NTeEZZbWV3K0FvdzVVbWw1TVpyVWJk?=
- =?utf-8?B?d2E0TUN1WWdNcmgwQUpwVkFtNitxQ0c1eGFOTmRxb0JwVmRraTVpVmVwYVVk?=
- =?utf-8?B?YlI3NExtS1VPZmhnRG1iNnB4QkpOMXQzcE1iWVhPYjg0T0FqaSt4QlphNk9Z?=
- =?utf-8?B?YmJTQUtTTUUwZVVVdGZEWjQxYi9neUNiKzhRRmVPeXA2M0FJSTVqb1BxYnlk?=
- =?utf-8?B?NXh3d2pPSnYxVXNZb1NZOTg3R1dpVm5sUVpRMHE3dUhyQVE2bFBtemk1WWNl?=
- =?utf-8?B?ZHY5ZFRTMEZ6Z3AxU09TKzIrNm5HV01YNFlQeEw4Z0R5VWdndXlrZktsZUdO?=
- =?utf-8?B?OEJNYjkvVzZORFdYUjVuTkh6MXVuWUJCLzFmbUtJcFRLU1lZbTJsMS91cktv?=
- =?utf-8?B?UFdiVmhYQWpBMGQ3dmlhWURVVEJ0c2hiT1N2Y1V6T1NBTktKdWNGalM2Slh1?=
- =?utf-8?B?aVI0V3BraXhjL095Z0M0Nm5vV2ljU3o4TmlUTU9UVkN2T1JyNHJpT0YwSEEx?=
- =?utf-8?B?cWJ6K1NWUzZNM283TkNSVUIyK3BpWkloM2g2Q3ZBQW43M2t3MEdVVG4zSFZy?=
- =?utf-8?B?YWZ2VUo4TnEzMDNLT1lUVmZTd3BFaWlSY0FkVnk5T1o5OU0wMkNjOVdGM0th?=
- =?utf-8?B?Vi9BNnB3czczYWF2aElpd21VR284ak9OQ2pQOFNhMUlhc01aNUJyU2NFL3oz?=
- =?utf-8?B?YXFMOSs0dVFXQ2RMd3g4SHIwQjd0cWxFQldYMGJ1ZkUyTWhTdWFuUzBNUDdk?=
- =?utf-8?B?QjhheDJGNSsrbnJDRTE4blJEVHNnS2p1bHJ5cFZ6aGFyM3lPamo1TjhFeGNh?=
- =?utf-8?B?N2R1UkFtUFo0TFBJbDZYQVhsbWFObGk1NWFVNXU4NFA4NVJoN3JhWHZNc2FV?=
- =?utf-8?B?NFE9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9b403c9-6847-4b33-3527-08dd57d08090
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 08:18:37.9193
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s+AGNGvHz46LXI0R3D7HfOUQ21k6ijENpcNA3nixrlPduF+SojN62vxZD+23nQQcNicFKxrht8aCTJN/D819PaniorZyKNRGM/NZcQ+02lU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7305
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Hi Frank,
 
-Add the NXP S32G RTC driver as maintained so further patches on this
-driver can be reviewed under this architecture.
+Am Donnerstag, 27. Februar 2025, 17:39:47 CET schrieb Frank Li:
+> On Thu, Feb 27, 2025 at 08:54:13AM +0100, Alexander Stein wrote:
+> > Hi Frank,
+> >
+> > Am Mittwoch, 26. Februar 2025, 17:31:26 CET schrieb Frank Li:
+> > > On Wed, Feb 26, 2025 at 01:11:37PM +0100, Alexander Stein wrote:
+> > > > Hi Frank,
+> > > >
+> > > > Am Dienstag, 28. Januar 2025, 22:15:58 CET schrieb Frank Li:
+> > > > > Add PCIe's msi-map and iommu-map property because i.MX95 support =
+smmu and
+> > > > > its.
+> > > > >
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > >  arch/arm64/boot/dts/freescale/imx95.dtsi | 14 ++++++++++++++
+> > > > >  1 file changed, 14 insertions(+)
+> > > > >
+> > > > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx95.dtsi
+> > > > > index 6b8470cb3461a..2cebeda43a52d 100644
+> > > > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > @@ -1573,6 +1573,12 @@ pcie0: pcie@4c300000 {
+> > > > >  			assigned-clock-parents =3D <0>, <0>,
+> > > > >  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+> > > > >  			power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> > > > > +			/* pcie0's Devid(BIT[7:6]) is 0x00, stream id(BIT[5:0]) is 0x=
+10~0x17 */
+> > > > > +			msi-map =3D <0x0 &its 0x10 0x1>,
+> > > > > +				  <0x100 &its 0x11 0x7>;
+> > > >
+> > > > Aren't you missing msi-map-mask =3D <0x1ff>; here? Similar to pcie1.
+> > > > Either way, with this change PCIe on pcie0 is not working anymore,
+> > > > regardless of msi-map-mask.
+> > >
+> > > Yes, it should have msi-map-mask. During my test, I have not enable e=
+netc
+> > > so I have not found this problem.
+> >
+> > Just to be clear: This is not about enetc. This works fine here.
+> >
+> > > > Without msi-map-mask:
+> > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: =
+00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > OF: /soc/pcie@4c300000: no msi-map translation for id 0x300 on (n=
+ull)
+> > > > > r8169 0000:03:00.0: error -EINVAL: enable failure
+> > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -22
+> > > >
+> > > > With msi-map-mask:
+> > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: =
+00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 00=
+000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > r8169 0000:03:00.0: error -EIO: PCI read failed
+> > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
+> > >
+> > > Can you try remove iommu-map and keep msi-map? then remove msi-map and
+> > > keep iommu-map to check which one cause this problem.
+> >
+> > With only msi-map removed, but smmu enabled:
+> > > arm-smmu-v3 490d0000.iommu: event 0x10 received:
+> > > arm-smmu-v3 490d0000.iommu:      0x0000001100000010
+> > > arm-smmu-v3 490d0000.iommu:      0x0000020a00000000
+> > > arm-smmu-v3 490d0000.iommu:      0x000000009b0cc000
+> > > arm-smmu-v3 490d0000.iommu:      0x0000000000000000
+> > > arm-smmu-v3 490d0000.iommu: event: F_TRANSLATION client: 0000:01:00.0=
+ sid: 0x11 ssid: 0x0 iova: 0x9b0cc000 ipa: 0x0
+> > > arm-smmu-v3 490d0000.iommu: priv data read s1 "Input address caused f=
+ault" stag: 0x0 r8169 0000:03:00.0
+> > > enp3s0: Link is Down
+> >
+> > With only iommu-map removed, both smmu enabled or disabled:
+> > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 000001=
+00, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > r8169 0000:03:00.0: error -EIO: PCI read failed
+> > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
+> >
+> > Only if smmu is disabled and msi-map is removed the driver probes
+> > successfully:
+> > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4c0, =
+IRQ 160
+> > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx check=
+summing: ko]
+> > > r8169 0000:03:00.0 enp3s0: renamed from eth0
+> > > r8169 0000:03:00.0: enabling bus mastering
+> > > r8169 0000:03:00.0 enp3s0: Link is Down
+> >
+> > > >
+> > > > Without msi-map/iommu-map:
+> > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4=
+c0, IRQ 166
+> > > > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx c=
+hecksumming: ko]
+> > > > > r8169 0000:03:00.0 enp3s0: renamed from eth0
+> > > > > r8169 0000:03:00.0: enabling bus mastering
+> > > > > r8169 0000:03:00.0 enp3s0: Link is Down
+> > > >
+> > > > pcie1 works as expected. But this is only a single PCIe device, rat=
+her than
+> > > > having a PCIe bridge.
+> > > > Any idea what's wrong here?
+> > >
+> > > Can you help dump more information at for PCIe bridge case:
+> > >
+> > > imx_pcie_add_lut(), need rid and sid information.
+> > > drivers/pci/controller/dwc/pci-imx6.c
+> >
+> > Just to be clear, without msi-map and iommu-map I get:
+> > > imx6q-pcie 4c380000.pcie: rid: 0x0, sid: 0x18
+> > > imx6q-pcie 4c380000.pcie: rid: 0x100, sid: 0x19
+>=20
+> Can you help dump register value PE0_LUT_CREQID offset 0x101 for your
+> smmu-map or msi-map enable case
 
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+I am assuming you meant offset 0x101c, as stated in the RM.
+I added a dump directly before printing "PCI read failed" in r8169_main.c.
+Unfortunately this only returns 0 for both PCIe devices, so I'm wondering
+if this is correct.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 873aa2cce4d7..515ed8115922 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2873,8 +2873,10 @@ R:	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
- R:	NXP S32 Linux Team <s32@nxp.com>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
-+F:	Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
- F:	arch/arm64/boot/dts/freescale/s32g*.dts*
- F:	drivers/pinctrl/nxp/
-+F:	drivers/rtc/rtc-s32g.c
- 
- ARM/NXP S32G/S32R DWMAC ETHERNET DRIVER
- M:	Jan Petrous <jan.petrous@oss.nxp.com>
--- 
-2.45.2
+> 2nd test.
+> change IMX95_PE0_LUT_MASK to 0x1ff
+
+Unfortunately I do not notice any effect/difference.
+
+Best regards
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
