@@ -1,280 +1,177 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0251BC09F
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 07:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC901CBA02
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 08:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740727352; cv=none; b=Ma+ryaTpLUoE06GGq9gusXUcLdfV6pbV6b1DUObEnDiAeQrHDOxAhJl5M/ll2xuib01EeSR8zqntbHef8PkY3RJDF8NxkF7snjEK7qhwTxScRXXB+dQTFaYUh0Pjm9imxBHqJgkEbKntYTHelvVGUxEi6vLEfPeZV/0B66R6qpo=
+	t=1740730300; cv=none; b=C3Z/gNaR00C6vQz6ERFBqSXjbXg9QzmBgG5oO54hAx5Z3hQjj/45rwUY4iCwWzUcPeu9mD6J/LBVN60Zdgwr/V4thQJwrWGSNBrOHzva8MI7W10P6bwgSuL4scaJvlk19+47XcyN+OITc75HmD/ZQuta47/ZJbvKj/AVh7VyDck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740727352; c=relaxed/simple;
-	bh=bhxd/KfCNKiM9vyi/5pp6JzKN+UPILhE65qZ1iaU7xE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mRZk0edWREeEjCWH1PZJXauvd+aZp4HoMZamilgcJLdBPt98a2ilZpfTnEQ5KzUTrlcF57yXughq08PLd157ScHJAbGiRijOgEebjptSMLGmkHyFlG3SiP5vdWNf93XDOpuipDfLlv555Mzf+M/F7c2XCvSgTz0igUR+o6Xux7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Hz2ViURM; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ogRXbwIh reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Hz2ViURM";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ogRXbwIh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1740727348; x=1772263348;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TkFVKPQR+LQml2cZHEZ/ObJmevOgd54N2EFHAcZPN8M=;
-  b=Hz2ViURMJIEG5WNpEWKS/EUimoedEbFeg/5NuLnviuh2YRhzwJqVlYt2
-   mN+pECws8kv8jWKga2t/aeOU1qG6/XY39tH324wcyphKx24ljC2jXcIHO
-   +bmun+6aDVTXZxq+TsBYConMi9UrYjlNTNwHxHU+kpkOB6qaOM5imRdz2
-   dacecpsJq5zGrjqiJQKIW1JkxNe8Q7nnGaAFewkqegVLvWnTydOtXeyTU
-   6PiZYTQM5nWQk99hBPC2UcmvgTijQ9jRghGwb9herZKBIr0JAqq1Ct2Wf
-   ekWG2sGKaRSJdsRABBN9EYtfWHGNe2P+atUOCJGboofVrS0LHRJ88ekWm
-   A==;
-X-CSE-ConnectionGUID: Pwm/jGH8QIarCnxCey13iw==
-X-CSE-MsgGUID: Bb3tnsBjSVCJhB4/uuKrXA==
-X-IronPort-AV: E=Sophos;i="6.13,321,1732575600"; 
-   d="scan'208";a="42165579"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 28 Feb 2025 08:22:25 +0100
-X-CheckPoint: {67C16431-13-FDFF3AB5-CA03ADD1}
-X-MAIL-CPID: 4348E4AA195BD790F26CB356D6936DF1_2
-X-Control-Analysis: str=0001.0A00211D.67C1642F.00A8,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A999916AE35;
-	Fri, 28 Feb 2025 08:22:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1740727341;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TkFVKPQR+LQml2cZHEZ/ObJmevOgd54N2EFHAcZPN8M=;
-	b=ogRXbwIhZocCHuUkWQGFg2gbcCpc0BNHIU0NTP5Mt/Zq0r/UgzXW1ldBuvV6mLlKByTKu5
-	z0BwzkXLEF+i4tc6ORisef1h/QpgO/nfXEKgG8sQBQPiJ9GJPaNRWZslahpltwXjt40r8z
-	lxlyS5Tx8rONJeuucC31zomyPaTh6KrrQHrZzeIuPWepa5MEMxbLbEyO/AAaoaLDpfBEHx
-	cPrkpGvuCliTL8GZb8e/LbkEv7d58K+NIqJ8UUXPwmfIJnB76oouYK250Sh2Ts0wWetg3E
-	qHsA9/2YbducH85cQ243AiKAd02ECdhvzTxCf5GvGahHEKIW93px6JWacSlh2w==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
- linux-usb@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
- jun.li@nxp.com
-Subject:
- Re: [PATCH v3 4/6] usb: chipidea: imx: add HSIO Block Control wakeup setting
-Date: Fri, 28 Feb 2025 08:22:19 +0100
-Message-ID: <4411149.ejJDZkT8p0@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250228023258.uznzhfnp7zsrxzed@hippo>
-References:
- <20250227095348.837223-1-xu.yang_2@nxp.com> <3535014.QJadu78ljV@steina-w>
- <20250228023258.uznzhfnp7zsrxzed@hippo>
+	s=arc-20240116; t=1740730300; c=relaxed/simple;
+	bh=M35At36jitEPaf1x3YEf6gOVTaKVe9qHPFcvDgMzjWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C2ECOr1zpeVYAGv9AZXZOz2IgpFKKB11xaJbKScEbtYO8R2oOXvbx76OCb5ZiySyqQNt102nYj8LBd464Hb/TlwkZntdJoV/HyZazkt9o+lMalQIbP3cr+1XJTWqTycesEaMUtOEY/HD8185e7Pv0DVq7r+MUi1xD0bWDpkYInA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnvSx-0001Ku-9e; Fri, 28 Feb 2025 09:11:27 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tnvSw-003GJi-2L;
+	Fri, 28 Feb 2025 09:11:26 +0100
+Received: from pengutronix.de (p5b164285.dip0.t-ipconnect.de [91.22.66.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5BA913CDEE4;
+	Fri, 28 Feb 2025 08:11:26 +0000 (UTC)
+Date: Fri, 28 Feb 2025 09:11:24 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Message-ID: <20250228-astonishing-didactic-guillemot-9c78ff-mkl@pengutronix.de>
+References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+ <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
+ <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
+ <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
+ <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="t6hsk4jscu4czxbb"
+Content-Disposition: inline
+In-Reply-To: <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--t6hsk4jscu4czxbb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+MIME-Version: 1.0
 
-Hi,
-
-Am Freitag, 28. Februar 2025, 03:33:29 CET schrieb Xu Yang:
-> On Thu, Feb 27, 2025 at 04:12:54PM +0100, Alexander Stein wrote:
-> > Hi,
-> >=20
-> > Am Donnerstag, 27. Februar 2025, 10:53:46 CET schrieb Xu Yang:
-> > > On i.MX95 platform, USB wakeup setting is controlled by HSIO Block
-> > > Control:
-> > >=20
-> > > HSIO Block Control Overview:
-> > > - The HSIO block control include configuration and status registers t=
-hat
-> > >   provide miscellaneous top-level controls for clocking, beat limiter
-> > >   enables, wakeup signal enables and interrupt status for the PCIe an=
-d USB
-> > >   interfaces.
-> > >=20
-> > > The wakeup function of HSIO blkctl is basically same as non-core, exc=
-ept
-> > > improvements about power lost cases. This will add the wakeup setting=
- for
-> > > HSIO blkctl on i.MX95. It will firstly ioremap hsio blkctl memory, th=
-en do
-> > > wakeup setting as needs.
-> > >=20
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > Reviewed-by: Jun Li <jun.li@nxp.com>
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > >=20
-> > > ---
-> > > Changes in v3:
-> > >  - remove usbmisc_imx95_init(), use usbmisc_imx7d_init()
-> > > Changes in v2:
-> > >  - add Rb tag
-> > > ---
-> > >  drivers/usb/chipidea/usbmisc_imx.c | 72 ++++++++++++++++++++++++++++=
-++
-> > >  1 file changed, 72 insertions(+)
-> > >=20
-> > > diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipide=
-a/usbmisc_imx.c
-> > > index 1394881fde5f..8c30908c11ed 100644
-> > > --- a/drivers/usb/chipidea/usbmisc_imx.c
-> > > +++ b/drivers/usb/chipidea/usbmisc_imx.c
-> > > @@ -139,6 +139,22 @@
-> > >  #define MX6_USB_OTG_WAKEUP_BITS (MX6_BM_WAKEUP_ENABLE | MX6_BM_VBUS_=
-WAKEUP | \
-> > >  				 MX6_BM_ID_WAKEUP | MX6SX_BM_DPDM_WAKEUP_EN)
-> > > =20
-> > > +/*
-> > > + * HSIO Block Control Register
-> > > + */
-> > > +
-> > > +#define BLKCTL_USB_WAKEUP_CTRL		0x0
-> > > +#define BLKCTL_OTG_WAKE_ENABLE		BIT(31)
-> > > +#define BLKCTL_OTG_VBUS_SESSVALID	BIT(4)
-> > > +#define BLKCTL_OTG_ID_WAKEUP_EN		BIT(2)
-> > > +#define BLKCTL_OTG_VBUS_WAKEUP_EN	BIT(1)
-> > > +#define BLKCTL_OTG_DPDM_WAKEUP_EN	BIT(0)
-> > > +
-> > > +#define BLKCTL_WAKEUP_SOURCE		(BLKCTL_OTG_WAKE_ENABLE	   | \
-> > > +					 BLKCTL_OTG_ID_WAKEUP_EN   | \
-> > > +					 BLKCTL_OTG_VBUS_WAKEUP_EN | \
-> > > +					 BLKCTL_OTG_DPDM_WAKEUP_EN)
-> > > +
-> > >  struct usbmisc_ops {
-> > >  	/* It's called once when probe a usb device */
-> > >  	int (*init)(struct imx_usbmisc_data *data);
-> > > @@ -159,6 +175,7 @@ struct usbmisc_ops {
-> > > =20
-> > >  struct imx_usbmisc {
-> > >  	void __iomem *base;
-> > > +	void __iomem *blkctl;
-> > >  	spinlock_t lock;
-> > >  	const struct usbmisc_ops *ops;
-> > >  };
-> > > @@ -1016,6 +1033,41 @@ static int usbmisc_imx6sx_power_lost_check(str=
-uct imx_usbmisc_data *data)
-> > >  		return 0;
-> > >  }
-> > > =20
-> > > +static u32 usbmisc_blkctl_wakeup_setting(struct imx_usbmisc_data *da=
-ta)
-> > > +{
-> > > +	u32 wakeup_setting =3D BLKCTL_WAKEUP_SOURCE;
-> > > +
-> > > +	if (data->ext_id || data->available_role !=3D USB_DR_MODE_OTG)
-> > > +		wakeup_setting &=3D ~BLKCTL_OTG_ID_WAKEUP_EN;
-> > > +
-> > > +	if (data->ext_vbus || data->available_role =3D=3D USB_DR_MODE_HOST)
-> > > +		wakeup_setting &=3D ~BLKCTL_OTG_VBUS_WAKEUP_EN;
-> > > +
-> > > +	/* Select session valid as VBUS wakeup source */
-> > > +	wakeup_setting |=3D BLKCTL_OTG_VBUS_SESSVALID;
-> > > +
-> > > +	return wakeup_setting;
-> > > +}
-> > > +
-> > > +static int usbmisc_imx95_set_wakeup(struct imx_usbmisc_data *data, b=
-ool enabled)
-> > > +{
-> > > +	struct imx_usbmisc *usbmisc =3D dev_get_drvdata(data->dev);
-> > > +	unsigned long flags;
-> > > +	u32 val;
-> > > +
-> > > +	spin_lock_irqsave(&usbmisc->lock, flags);
-> > > +	val =3D readl(usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
-> > > +	val &=3D ~BLKCTL_WAKEUP_SOURCE;
-> > > +
-> > > +	if (enabled)
-> > > +		val |=3D usbmisc_blkctl_wakeup_setting(data);
-> > > +
-> > > +	writel(val, usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
-> > > +	spin_unlock_irqrestore(&usbmisc->lock, flags);
-> >=20
-> > usbmisc->blkctl is NULL if DT does not provide a 2nd IORESOURCE_MEM.
+On 27.02.2025 11:45:36, Frank Li wrote:
+> On Thu, Feb 27, 2025 at 11:57:54AM +0100, Marc Kleine-Budde wrote:
+> > On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
+> > >
+> > > On 21.02.2025 21:56, Frank Li wrote:
+> > > > On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
+> > > >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > > >>
+> > > >> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> > > >> configurations. Since these configurations need to be applied befo=
+re
+> > > >> accessing any of the peripherals on the bus, it's better to make A=
+IPSTZ5
+> > > >> be their parent instead of keeping AIPS5 and adding a child node f=
+or
+> > > >> AIPSTZ5. Also, because of the security configurations, the address=
+ space
+> > > >> of the bus has to be changed to that of the configuration register=
+s.
+> > > > The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map=
+ only
+> > > > config address part in your drivers.
+> > > >
+> > > > Frank
+> > >
+> > >
+> > > Any concerns/anything wrong with current approach?
+> > >
+> > >
+> > > I find it a bit awkward to have the whole bus address space
+> > > in the DT given that we're only interested in using the access
+> > > controller register space.
+> > >
+> > >
+> > > I'm fine with the approach you suggested but I don't see a
+> > > reason for using it?
+> >
+> > Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
+> > Applications Processor Reference Manual, Rev. 3, 08/2024), the
+> > AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
+> > different than the bus configuration. Why not model it as part of the
+> > bus?
+> >
+> > > >> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8mp.dtsi
+> > > >> index e0d3b8cba221..a1d9b834d2da 100644
+> > > >> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > >> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > >> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+> > > >>  			};
+> > > >>  		};
+> > > >>
+> > > >> -		aips5: bus@30c00000 {
+> > > >> -			compatible =3D "fsl,aips-bus", "simple-bus";
+> > > >> -			reg =3D <0x30c00000 0x400000>;
+> > > >> +		aips5: bus@30df0000 {
+> >                        ^^^^^^^^^^^^
+> > > >> +			compatible =3D "fsl,imx8mp-aipstz", "simple-bus";
+> > > >> +			reg =3D <0x30df0000 0x10000>;
+> > > >> +			power-domains =3D <&pgc_audio>;
+> > > >>  			#address-cells =3D <1>;
+> > > >>  			#size-cells =3D <1>;
+> > > >> +			#access-controller-cells =3D <0>;
+> > > >>  			ranges;
+> > > >>
+> > > >>  			spba-bus@30c00000 {
+> >                         ^^^^^^^^^^^^^^^^^
+> >
+> > This looks very strange: The aips5 bus starts at 0x30df0000 and has a
+> > child bus starting at 0x30c00000?
 >=20
-> Good catch. Thanks!
+> @30df0000 should match controller reg's address.
 >=20
-> It may return an errno if usbmisc->blkctl is NULL.
->=20
-> >=20
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static const struct usbmisc_ops imx25_usbmisc_ops =3D {
-> > >  	.init =3D usbmisc_imx25_init,
-> > >  	.post =3D usbmisc_imx25_post,
-> > > @@ -1068,6 +1120,14 @@ static const struct usbmisc_ops imx7ulp_usbmis=
-c_ops =3D {
-> > >  	.power_lost_check =3D usbmisc_imx7d_power_lost_check,
-> > >  };
-> > > =20
-> > > +static const struct usbmisc_ops imx95_usbmisc_ops =3D {
-> > > +	.init =3D usbmisc_imx7d_init,
-> > > +	.set_wakeup =3D usbmisc_imx95_set_wakeup,
-> > > +	.charger_detection =3D imx7d_charger_detection,
-> > > +	.power_lost_check =3D usbmisc_imx7d_power_lost_check,
-> > > +	.vbus_comparator_on =3D usbmisc_imx7d_vbus_comparator_on,
-> > > +};
-> > > +
-> > >  static inline bool is_imx53_usbmisc(struct imx_usbmisc_data *data)
-> > >  {
-> > >  	struct imx_usbmisc *usbmisc =3D dev_get_drvdata(data->dev);
-> > > @@ -1289,6 +1349,10 @@ static const struct of_device_id usbmisc_imx_d=
-t_ids[] =3D {
-> > >  		.compatible =3D "fsl,imx8ulp-usbmisc",
-> > >  		.data =3D &imx7ulp_usbmisc_ops,
-> > >  	},
-> > > +	{
-> > > +		.compatible =3D "fsl,imx95-usbmisc",
-> > > +		.data =3D &imx95_usbmisc_ops,
-> > > +	},
-> > >  	{ /* sentinel */ }
-> > >  };
-> > >  MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
-> > > @@ -1296,6 +1360,7 @@ MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
-> > >  static int usbmisc_imx_probe(struct platform_device *pdev)
-> > >  {
-> > >  	struct imx_usbmisc *data;
-> > > +	struct resource *res;
-> > > =20
-> > >  	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-> > >  	if (!data)
-> > > @@ -1307,6 +1372,13 @@ static int usbmisc_imx_probe(struct platform_d=
-evice *pdev)
-> > >  	if (IS_ERR(data->base))
-> > >  		return PTR_ERR(data->base);
-> > > =20
-> > > +	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> > > +	if (res) {
-> > > +		data->blkctl =3D devm_ioremap_resource(&pdev->dev, res);
-> > > +		if (IS_ERR(data->blkctl))
-> > > +			return PTR_ERR(data->blkctl);
-> > > +	}
-> > > +
-> >=20
-> > Any chance to ensure imx95 has actually data->blkctl?
->=20
-> I think let usbmisc_imx95_set_wakeup() return an error should be enough.
+> subnode address 0x30c00000,  should be descript in "ranges", which 1:1 ma=
+p.
 
-Better fail early rather than later.
+Ok. What about aips1...4? Should the be changed as well in this patch?
 
-> Some errors will be printed for user. Also dt-bindings has restriction for
-> imx95.
+Marc
 
-That's true, but don't assume the DT is always setup correctly.
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-Best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+--t6hsk4jscu4czxbb
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfBb6oACgkQDHRl3/mQ
+kZys/Af+JyX79oEo+P42qia0ifhUHhQ8uxl4ubBgAq31jz/UbCwphkgDjXDi58Yr
+GEnxGy2rsLcwwyivdNwDMLAmlUx6Kc2ufwOC5cVbtUV4hvkb8FvaMCKg0SnHWSVE
+AYbPnnjeYF9AWiDzK6hS48Ml8LUuFGordlFBMtXpreyGQsxJ9brOqEJw4U/q0qbO
+O6RDfZPqmFXyiTaw74+Nt1plN8pW2cOod4vT/5kBqPQgDJYvoePucEaZDPQZp+o5
+b1dSH6J75wo0PKIiCbbKJ6oaflX7YUJNg61FxHxLGmm+rEoCwOc6ieHgM+6uAMtu
+SArJMXcrD5c2+tHQu2ndLQl+tQ+Scg==
+=/SWf
+-----END PGP SIGNATURE-----
+
+--t6hsk4jscu4czxbb--
