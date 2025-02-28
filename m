@@ -1,223 +1,280 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825A1C57B2
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 07:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740727127; cv=fail; b=J+LtOxtN612UKM4Gqtm1o1J3la6J8leELNdtpiXHNlwhl43TUss8LWgqxww2ZxjsNQLvuKCBdSgujHF9EhM62QuF7+BQxIZ3k3FuIYkYgZrlp4xPANu9FwenWC3yQJ6/KqAgLqekHh0505+9MN/aUs+3zsQgNkuXd/SoptHRklE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740727127; c=relaxed/simple;
-	bh=AIjEW1iuHqLDuYIZZXKS/1ogA3leukZcjC1fGuw6X8g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FNIL+wkx7nALRvy7+Jo8OYi/dVhPwRgpih2P4BZz/SVBRdG3RzOQpbQ+of+e6HnQ7t+g8ey434HYUvb8kwZm0qs9JyiXl90Z6FL3Ps70B89h9V/GhuG6xKLEFXChjv4LYUEvhy6au5X75MjN9BvzifRhJJZtQoURlvt7NU3sjXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=N8F1jYKA; arc=fail smtp.client-ip=40.107.22.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0251BC09F
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 07:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740727352; cv=none; b=Ma+ryaTpLUoE06GGq9gusXUcLdfV6pbV6b1DUObEnDiAeQrHDOxAhJl5M/ll2xuib01EeSR8zqntbHef8PkY3RJDF8NxkF7snjEK7qhwTxScRXXB+dQTFaYUh0Pjm9imxBHqJgkEbKntYTHelvVGUxEi6vLEfPeZV/0B66R6qpo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740727352; c=relaxed/simple;
+	bh=bhxd/KfCNKiM9vyi/5pp6JzKN+UPILhE65qZ1iaU7xE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mRZk0edWREeEjCWH1PZJXauvd+aZp4HoMZamilgcJLdBPt98a2ilZpfTnEQ5KzUTrlcF57yXughq08PLd157ScHJAbGiRijOgEebjptSMLGmkHyFlG3SiP5vdWNf93XDOpuipDfLlv555Mzf+M/F7c2XCvSgTz0igUR+o6Xux7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Hz2ViURM; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ogRXbwIh reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="N8F1jYKA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D7F56sEB5D5igsKAnm79vzZkE6EBVFVxBk+/e7fW7ydRJWAZcRDZNd70+/fpU0MHbMpB/PoXsAdxhduee/icZxhPwHD7tEI5qsKY/4i79b/modHVMi0QiwUhANJxxAZh6qwk5lU2bckYwtQ/RH1JypRil/8GIyX6bitT+uMAUn5GrMs1afON971w2tKo7+xjuFWAC8eyt/GVrD+5oFIF0pGU3fLrnNhKrUGWSRZrKqdamyyukSX1OMMXNfOyyj3VwmF09hpEZiDKzuqJ6oXbW/BWT9vO1O6tLbuJK1coZMgqTT9dArFHM8QAjpwuCQVITfswOy7l89kg/Nh4VVe16Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dO/gQByDYvHjvuAd2hY6MBjjuxO8dNknTOFPvkLcpHg=;
- b=X+DUpfSWFaTrafehEsTLcj97ghL5dJCi25aC2v4GiWWTwa/sBiIX4L4g8nWzL39LW7M0I0pwkF8gbRA9oq//wG2o6gFH4wzoHuakLuOjslzv7vhCQZSjpJ2RapJrYlP8H3TjGNwjb4btJAoR07twsWglCHLH07nWcVAjaZgPruon+rBiF48G8HECovTSO9o3UR1ZYoJzJa7jYYtQFjCRM87AL5Xmur0QWXVjwYRGxOMKCoy43ytc5h7Rz4VY5AFzs9JDQJGR2+FqGulP1LDaA61XyPCP4YhB+lFr3crtJpF7OBdmHSb3VcQqr812PA29BR3OAjDXx3WpAdnJG3CNdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dO/gQByDYvHjvuAd2hY6MBjjuxO8dNknTOFPvkLcpHg=;
- b=N8F1jYKAVxaYkT+5tWwLXiWH1IU89SUgbA8lcS1wdYJ/NUJEKdYbtk2rtZkSB9R5U28rdnK4Dae+wG9TPe+lwwonR1SW6aaawpIN63y91SfiE2TBIC4W8EMaYuUlHQMaZ6OpU8/I+K1kgK1fOLd3YGi1kix3ltLgmbob95n+aSq56JQFwFKfVMvMCWmHZxki9qL3fW+0HfGbfvPsXrlTMDPe/f9pNNc6UbI59Hrp3p5BVq3JokHDhuQXU6fhh/5CGgGdEYfYIglTzuHg6S0w2TCpXTOv+nD66LJjnuSlMo/6/MRlTCqmP7NI7YIKX9MbTgYG9TsFG15uSplJP0xmUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8511.eurprd04.prod.outlook.com (2603:10a6:102:212::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Fri, 28 Feb
- 2025 07:18:42 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8466.013; Fri, 28 Feb 2025
- 07:18:42 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Frank.Li@nxp.com,
-	vkoul@kernel.org
-Cc: imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH V4 RESEND 2/2] dmaengine: fsl-edma: free irq correctly in remove path
-Date: Fri, 28 Feb 2025 15:17:20 +0800
-Message-Id: <20250228071720.3780479-2-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250228071720.3780479-1-peng.fan@oss.nxp.com>
-References: <20250228071720.3780479-1-peng.fan@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0051.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::6) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Hz2ViURM";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ogRXbwIh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1740727348; x=1772263348;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=TkFVKPQR+LQml2cZHEZ/ObJmevOgd54N2EFHAcZPN8M=;
+  b=Hz2ViURMJIEG5WNpEWKS/EUimoedEbFeg/5NuLnviuh2YRhzwJqVlYt2
+   mN+pECws8kv8jWKga2t/aeOU1qG6/XY39tH324wcyphKx24ljC2jXcIHO
+   +bmun+6aDVTXZxq+TsBYConMi9UrYjlNTNwHxHU+kpkOB6qaOM5imRdz2
+   dacecpsJq5zGrjqiJQKIW1JkxNe8Q7nnGaAFewkqegVLvWnTydOtXeyTU
+   6PiZYTQM5nWQk99hBPC2UcmvgTijQ9jRghGwb9herZKBIr0JAqq1Ct2Wf
+   ekWG2sGKaRSJdsRABBN9EYtfWHGNe2P+atUOCJGboofVrS0LHRJ88ekWm
+   A==;
+X-CSE-ConnectionGUID: Pwm/jGH8QIarCnxCey13iw==
+X-CSE-MsgGUID: Bb3tnsBjSVCJhB4/uuKrXA==
+X-IronPort-AV: E=Sophos;i="6.13,321,1732575600"; 
+   d="scan'208";a="42165579"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 28 Feb 2025 08:22:25 +0100
+X-CheckPoint: {67C16431-13-FDFF3AB5-CA03ADD1}
+X-MAIL-CPID: 4348E4AA195BD790F26CB356D6936DF1_2
+X-Control-Analysis: str=0001.0A00211D.67C1642F.00A8,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A999916AE35;
+	Fri, 28 Feb 2025 08:22:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1740727341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TkFVKPQR+LQml2cZHEZ/ObJmevOgd54N2EFHAcZPN8M=;
+	b=ogRXbwIhZocCHuUkWQGFg2gbcCpc0BNHIU0NTP5Mt/Zq0r/UgzXW1ldBuvV6mLlKByTKu5
+	z0BwzkXLEF+i4tc6ORisef1h/QpgO/nfXEKgG8sQBQPiJ9GJPaNRWZslahpltwXjt40r8z
+	lxlyS5Tx8rONJeuucC31zomyPaTh6KrrQHrZzeIuPWepa5MEMxbLbEyO/AAaoaLDpfBEHx
+	cPrkpGvuCliTL8GZb8e/LbkEv7d58K+NIqJ8UUXPwmfIJnB76oouYK250Sh2Ts0wWetg3E
+	qHsA9/2YbducH85cQ243AiKAd02ECdhvzTxCf5GvGahHEKIW93px6JWacSlh2w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
+ linux-usb@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ jun.li@nxp.com
+Subject:
+ Re: [PATCH v3 4/6] usb: chipidea: imx: add HSIO Block Control wakeup setting
+Date: Fri, 28 Feb 2025 08:22:19 +0100
+Message-ID: <4411149.ejJDZkT8p0@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250228023258.uznzhfnp7zsrxzed@hippo>
+References:
+ <20250227095348.837223-1-xu.yang_2@nxp.com> <3535014.QJadu78ljV@steina-w>
+ <20250228023258.uznzhfnp7zsrxzed@hippo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAXPR04MB8511:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ef61f4-b40d-415e-080c-08dd57c8215b
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hfEVdZ1BIz8ztaqpuuRFwU1/qe+VGei0XjMZ4gsTJK6iovdBl2UL8ZRqRoNq?=
- =?us-ascii?Q?7P8LT3pO4zDZOQpvG4znVlh3AGWfFpfl3otueWbA3E1n2ip9sWWmqlFfTaaU?=
- =?us-ascii?Q?5jeFFQUPTz9eREwl+D45gK5uVgXvoY6DCg14fCiu8y+h6zCQb/42rD5D7GgN?=
- =?us-ascii?Q?DmzkvmBkvCWkBXUgdj09WM599yHvrFyyaNDHmuiOZYCtu3sauYvx1Fanl6hV?=
- =?us-ascii?Q?Ybv6UzhI9buZr4HOsUaDv7OYhEnGbLWVffj8PVHJ2wUnaLmbujDgURyn7AGc?=
- =?us-ascii?Q?HQKoGuaeokVEsIzkh159/+vuLqTcWUjig8B0UV688aCRMlkh7Nm3bHqAEKFq?=
- =?us-ascii?Q?eLNBUJ7GrGsaScAGngu24R7KZ319EIRTYBA6quvD4suz4w8w+YBRkqp5af6k?=
- =?us-ascii?Q?In7vVR1oKDwNhc+TWE/27BGFTeoUzBtuQk+xw+Ho3ux0DK0hx95X0SWG9La1?=
- =?us-ascii?Q?lyosHN77Y0AfBuARYZKNIbz4HQmge61Yn23Hu83FGIyIG9WyjmjfT4bNRoaf?=
- =?us-ascii?Q?56NpmiG2DOI/oosM/mdKBE9+5O7y5KkT09dEoZOQ5uZDjBkRH6heFnsnu5Mk?=
- =?us-ascii?Q?1wOnU/Qqb/hOMx0imo299NzcRqMK9L3DdVbjAt5KGM9ZvaBBeIhZIv1IdO7j?=
- =?us-ascii?Q?pzBP6f9noeXfDpc7qTUvS8SeJ3WJMArsRvQbGWM5Q311vX5bX46cDmWYBgMh?=
- =?us-ascii?Q?fwX59BGBOUph8qkbaRhehsT/rE3mii6+LAzxL2q7o2Nh+tlI7eWX6RclyLrl?=
- =?us-ascii?Q?KzdcC3lIWZOgIud5BGQ39DOv3ULg0vhRG6DNz71B4E0zD3/Cz/rDFhPcjfCx?=
- =?us-ascii?Q?ctgGSXhLnJmfQ5n+N2khok0Pn+kTuybolggjbk+ph9YGFPnZtzCLXDiZBgmC?=
- =?us-ascii?Q?zfc+GqsYvDQWl1YsCguyIODEZeCU3av5NLZfkNVbHok6XyrQNWE5YCdQ6NxZ?=
- =?us-ascii?Q?FJazeE46RrC1fpHIZe3IAdoxn174muareaSjR1ALzkAdUqLjmx3Sy2zJpwvc?=
- =?us-ascii?Q?NiBxcAOUokX7nOuSLgU7TKCxxQ2jihM9OOLcbq4ySNFyTZb2r44Z4sqywmit?=
- =?us-ascii?Q?wL9BB5/OgtcZ/XUd8iwWLdicBSzjezLtEjSJwo5HHOUBrTQdUwX2RJMF+dAO?=
- =?us-ascii?Q?ahFQY+azpsObHU29yFqCv+YJWdzpWS1HBz/Fn9GGyF2v3JKyEaXNM7JHFekH?=
- =?us-ascii?Q?jyl+wxcXf009bPX4g6WWT/3ItJeR2/uVr8tmzqXwcOJrIW7fxQ6tHEZIUXuS?=
- =?us-ascii?Q?v50QMqwy4XdN2YQupoS50ZyHB6BrqGk2Ok+1KzltFFjeS/8OqLm3cZg36Re6?=
- =?us-ascii?Q?pgrn4Kn7DhWjGUj6qb3v9Hl7+9KyzeS7x5D5wOFUe0HT8rmuiX7VlM9Ad5/C?=
- =?us-ascii?Q?rM3sv7VjpAR4SrPItXuqM9b8trrOC+XruWFk7rR8SVgr41BZWauNj99yRoTl?=
- =?us-ascii?Q?X0uzOFH/sEHfVFdS2M5O4hSaFXO8dKQ0?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UiUbvcLrC6o+s72kXgHljbp8ds7MJoZ96H1UNVe0z0Dg29KCp3zOqrrKoizR?=
- =?us-ascii?Q?3Q8DrZJHugCtH3IURRybMmHvYJ3CzTwo15WIoMiufXmemahO6KGu75/vKDY9?=
- =?us-ascii?Q?jsOgTkoF1vlrNvX9SpVoW13BjyFV0V/jxUyM3DEqcrO1JuWS1j1cYZ0GIK5F?=
- =?us-ascii?Q?gEN+wvcWcO+e8kUaFfdC4tbDNLJC9hcU2isSTEqRtnY77/HwM5abQGoRpxwX?=
- =?us-ascii?Q?LGsL2otNxthYxfWghDtvNCdLPxCg/tXSrhVuh9ok8HhhVJhdxYtcvJkCrrla?=
- =?us-ascii?Q?DR//5l/DEvh//5qUjNKXR5KaMdh2LBcRrzgTrXodVSoB5NqViX1J3BpEFXLR?=
- =?us-ascii?Q?mUDMgfRgGk1TF4Kygfn4fBpdp1dpzO7jDEcSNXuq91u5NLJkrYEuKzx3vfJP?=
- =?us-ascii?Q?OiV7fLI5pkmRbzsHSaiYxSVsAphW3ifM61zqh6FpAOEQf+9TG4TKd3tq4onR?=
- =?us-ascii?Q?U9/HaDSxZ96hPzOUlWlgjfb3s2wusW5XZGKqbEWilUU2RCIiGsh52PbDgDQX?=
- =?us-ascii?Q?pobWU7b8+9dM4R0ZVkX0+DVoBcgLlHcjTV5nPnBbYrroKxiW0s/9rLARXIzo?=
- =?us-ascii?Q?FCqlvg4jy36uhXXLCWVikwIuKv00l8GXjjYrO67MpVWlUTEFD2T5P5lhLmu8?=
- =?us-ascii?Q?OAuaW9DKK5iqnV/khRIcpySUs5WCABvu7e/TlCaYrC0BkFz38FxGxxUIJfvr?=
- =?us-ascii?Q?WUdc/PUOEtq4oc8oYGwxEYzIXK4F2eSF40xukVagA1W0LIcM6eWLhyKAe9uz?=
- =?us-ascii?Q?jQk9j/gdkQYLFEzmJgMFe47sWvf6/bLOTCbYbfS/hU+S/LukIq8RfJZ8Si/U?=
- =?us-ascii?Q?EmNu+aCka8lCat28SHP9CXAKSLNvs+jVh2m64w4OSovcNQayymC97Q6FGSeh?=
- =?us-ascii?Q?rIRFM0akGMoPbqNGULQXe1hu1GoAY5YBxf7BAiMoM9w6syo7211FL/9XMnYA?=
- =?us-ascii?Q?Dmje8SrIn9vCPnCPaGYFoZIPqW3tPkO7bS2vEGphhg3zrd4zV9YkiaDDzvYw?=
- =?us-ascii?Q?+4h7Hfd44GXBHZa/dUIHIfuRAE0qopRl63haKlf8cyl0eKl8UDN7xkYRhsp+?=
- =?us-ascii?Q?KXjWPE5xNXszZDgPFUoYSV3XMX33f9xi2YU/DYU1z56aXoxFU10v5blpRiQv?=
- =?us-ascii?Q?75hMudxuwEXvX8LBYjRrpmB7yui/FlqP3s1Kg0BbxTB8xu54faKuGX3wreo9?=
- =?us-ascii?Q?26BTg8cxd5xrfVzdbphpHT8E5OktNtj7n/Iobn1EpcVb/rthIA0jcHnhrXbI?=
- =?us-ascii?Q?MaS9yurK/h7yS4epktPdj3Msp8BZlGXureEzlLSy22Q7alFl+q45B9Ff68Cz?=
- =?us-ascii?Q?aA4zenlE+0d+9jsA10bsaPSHEOtJGPxjZ1K5lFTaXWKT65ZiVpubVx+Ue8sM?=
- =?us-ascii?Q?nzwyWkDHnsq5DtuQZ4EIQzfJzawvnzB0m6+D0mNc2ovF8ibNrzx1oG1HBeIv?=
- =?us-ascii?Q?QhaSaMl4vf3Vg0O+X2NO4ioJ4OwRIV/srjjNYMzCoGQAuOe5vtJSGM00fX0q?=
- =?us-ascii?Q?C3t7N4COr3Gy3ckthManny7s6O1zgS9nxi5inRUjyOH70bP4bdHL4Lq0AqUf?=
- =?us-ascii?Q?ICujBf+k9ZTFsE5gnuHkKor9ieUSKf/m67aCKBf8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ef61f4-b40d-415e-080c-08dd57c8215b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 07:18:42.3615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WvnP4yiaxQYg8LKQ0nIs29imPbZhtRvZ3ulFwRDZzwLlblIl8PmxveCjzq3qR8esqiO2oGaP/qJv3s9YvqbMig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8511
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Peng Fan <peng.fan@nxp.com>
+Hi,
 
-Add fsl_edma->txirq/errirq check to avoid below warning because no
-errirq at i.MX9 platform. Otherwise there will be kernel dump:
-WARNING: CPU: 0 PID: 11 at kernel/irq/devres.c:144 devm_free_irq+0x74/0x80
-Modules linked in:
-CPU: 0 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-rc7#18
-Hardware name: NXP i.MX93 11X11 EVK board (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : devm_free_irq+0x74/0x80
-lr : devm_free_irq+0x48/0x80
-Call trace:
- devm_free_irq+0x74/0x80 (P)
- devm_free_irq+0x48/0x80 (L)
- fsl_edma_remove+0xc4/0xc8
- platform_remove+0x28/0x44
- device_remove+0x4c/0x80
+Am Freitag, 28. Februar 2025, 03:33:29 CET schrieb Xu Yang:
+> On Thu, Feb 27, 2025 at 04:12:54PM +0100, Alexander Stein wrote:
+> > Hi,
+> >=20
+> > Am Donnerstag, 27. Februar 2025, 10:53:46 CET schrieb Xu Yang:
+> > > On i.MX95 platform, USB wakeup setting is controlled by HSIO Block
+> > > Control:
+> > >=20
+> > > HSIO Block Control Overview:
+> > > - The HSIO block control include configuration and status registers t=
+hat
+> > >   provide miscellaneous top-level controls for clocking, beat limiter
+> > >   enables, wakeup signal enables and interrupt status for the PCIe an=
+d USB
+> > >   interfaces.
+> > >=20
+> > > The wakeup function of HSIO blkctl is basically same as non-core, exc=
+ept
+> > > improvements about power lost cases. This will add the wakeup setting=
+ for
+> > > HSIO blkctl on i.MX95. It will firstly ioremap hsio blkctl memory, th=
+en do
+> > > wakeup setting as needs.
+> > >=20
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > Reviewed-by: Jun Li <jun.li@nxp.com>
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > >=20
+> > > ---
+> > > Changes in v3:
+> > >  - remove usbmisc_imx95_init(), use usbmisc_imx7d_init()
+> > > Changes in v2:
+> > >  - add Rb tag
+> > > ---
+> > >  drivers/usb/chipidea/usbmisc_imx.c | 72 ++++++++++++++++++++++++++++=
+++
+> > >  1 file changed, 72 insertions(+)
+> > >=20
+> > > diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipide=
+a/usbmisc_imx.c
+> > > index 1394881fde5f..8c30908c11ed 100644
+> > > --- a/drivers/usb/chipidea/usbmisc_imx.c
+> > > +++ b/drivers/usb/chipidea/usbmisc_imx.c
+> > > @@ -139,6 +139,22 @@
+> > >  #define MX6_USB_OTG_WAKEUP_BITS (MX6_BM_WAKEUP_ENABLE | MX6_BM_VBUS_=
+WAKEUP | \
+> > >  				 MX6_BM_ID_WAKEUP | MX6SX_BM_DPDM_WAKEUP_EN)
+> > > =20
+> > > +/*
+> > > + * HSIO Block Control Register
+> > > + */
+> > > +
+> > > +#define BLKCTL_USB_WAKEUP_CTRL		0x0
+> > > +#define BLKCTL_OTG_WAKE_ENABLE		BIT(31)
+> > > +#define BLKCTL_OTG_VBUS_SESSVALID	BIT(4)
+> > > +#define BLKCTL_OTG_ID_WAKEUP_EN		BIT(2)
+> > > +#define BLKCTL_OTG_VBUS_WAKEUP_EN	BIT(1)
+> > > +#define BLKCTL_OTG_DPDM_WAKEUP_EN	BIT(0)
+> > > +
+> > > +#define BLKCTL_WAKEUP_SOURCE		(BLKCTL_OTG_WAKE_ENABLE	   | \
+> > > +					 BLKCTL_OTG_ID_WAKEUP_EN   | \
+> > > +					 BLKCTL_OTG_VBUS_WAKEUP_EN | \
+> > > +					 BLKCTL_OTG_DPDM_WAKEUP_EN)
+> > > +
+> > >  struct usbmisc_ops {
+> > >  	/* It's called once when probe a usb device */
+> > >  	int (*init)(struct imx_usbmisc_data *data);
+> > > @@ -159,6 +175,7 @@ struct usbmisc_ops {
+> > > =20
+> > >  struct imx_usbmisc {
+> > >  	void __iomem *base;
+> > > +	void __iomem *blkctl;
+> > >  	spinlock_t lock;
+> > >  	const struct usbmisc_ops *ops;
+> > >  };
+> > > @@ -1016,6 +1033,41 @@ static int usbmisc_imx6sx_power_lost_check(str=
+uct imx_usbmisc_data *data)
+> > >  		return 0;
+> > >  }
+> > > =20
+> > > +static u32 usbmisc_blkctl_wakeup_setting(struct imx_usbmisc_data *da=
+ta)
+> > > +{
+> > > +	u32 wakeup_setting =3D BLKCTL_WAKEUP_SOURCE;
+> > > +
+> > > +	if (data->ext_id || data->available_role !=3D USB_DR_MODE_OTG)
+> > > +		wakeup_setting &=3D ~BLKCTL_OTG_ID_WAKEUP_EN;
+> > > +
+> > > +	if (data->ext_vbus || data->available_role =3D=3D USB_DR_MODE_HOST)
+> > > +		wakeup_setting &=3D ~BLKCTL_OTG_VBUS_WAKEUP_EN;
+> > > +
+> > > +	/* Select session valid as VBUS wakeup source */
+> > > +	wakeup_setting |=3D BLKCTL_OTG_VBUS_SESSVALID;
+> > > +
+> > > +	return wakeup_setting;
+> > > +}
+> > > +
+> > > +static int usbmisc_imx95_set_wakeup(struct imx_usbmisc_data *data, b=
+ool enabled)
+> > > +{
+> > > +	struct imx_usbmisc *usbmisc =3D dev_get_drvdata(data->dev);
+> > > +	unsigned long flags;
+> > > +	u32 val;
+> > > +
+> > > +	spin_lock_irqsave(&usbmisc->lock, flags);
+> > > +	val =3D readl(usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
+> > > +	val &=3D ~BLKCTL_WAKEUP_SOURCE;
+> > > +
+> > > +	if (enabled)
+> > > +		val |=3D usbmisc_blkctl_wakeup_setting(data);
+> > > +
+> > > +	writel(val, usbmisc->blkctl + BLKCTL_USB_WAKEUP_CTRL);
+> > > +	spin_unlock_irqrestore(&usbmisc->lock, flags);
+> >=20
+> > usbmisc->blkctl is NULL if DT does not provide a 2nd IORESOURCE_MEM.
+>=20
+> Good catch. Thanks!
+>=20
+> It may return an errno if usbmisc->blkctl is NULL.
+>=20
+> >=20
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  static const struct usbmisc_ops imx25_usbmisc_ops =3D {
+> > >  	.init =3D usbmisc_imx25_init,
+> > >  	.post =3D usbmisc_imx25_post,
+> > > @@ -1068,6 +1120,14 @@ static const struct usbmisc_ops imx7ulp_usbmis=
+c_ops =3D {
+> > >  	.power_lost_check =3D usbmisc_imx7d_power_lost_check,
+> > >  };
+> > > =20
+> > > +static const struct usbmisc_ops imx95_usbmisc_ops =3D {
+> > > +	.init =3D usbmisc_imx7d_init,
+> > > +	.set_wakeup =3D usbmisc_imx95_set_wakeup,
+> > > +	.charger_detection =3D imx7d_charger_detection,
+> > > +	.power_lost_check =3D usbmisc_imx7d_power_lost_check,
+> > > +	.vbus_comparator_on =3D usbmisc_imx7d_vbus_comparator_on,
+> > > +};
+> > > +
+> > >  static inline bool is_imx53_usbmisc(struct imx_usbmisc_data *data)
+> > >  {
+> > >  	struct imx_usbmisc *usbmisc =3D dev_get_drvdata(data->dev);
+> > > @@ -1289,6 +1349,10 @@ static const struct of_device_id usbmisc_imx_d=
+t_ids[] =3D {
+> > >  		.compatible =3D "fsl,imx8ulp-usbmisc",
+> > >  		.data =3D &imx7ulp_usbmisc_ops,
+> > >  	},
+> > > +	{
+> > > +		.compatible =3D "fsl,imx95-usbmisc",
+> > > +		.data =3D &imx95_usbmisc_ops,
+> > > +	},
+> > >  	{ /* sentinel */ }
+> > >  };
+> > >  MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
+> > > @@ -1296,6 +1360,7 @@ MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
+> > >  static int usbmisc_imx_probe(struct platform_device *pdev)
+> > >  {
+> > >  	struct imx_usbmisc *data;
+> > > +	struct resource *res;
+> > > =20
+> > >  	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+> > >  	if (!data)
+> > > @@ -1307,6 +1372,13 @@ static int usbmisc_imx_probe(struct platform_d=
+evice *pdev)
+> > >  	if (IS_ERR(data->base))
+> > >  		return PTR_ERR(data->base);
+> > > =20
+> > > +	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
+> > > +	if (res) {
+> > > +		data->blkctl =3D devm_ioremap_resource(&pdev->dev, res);
+> > > +		if (IS_ERR(data->blkctl))
+> > > +			return PTR_ERR(data->blkctl);
+> > > +	}
+> > > +
+> >=20
+> > Any chance to ensure imx95 has actually data->blkctl?
+>=20
+> I think let usbmisc_imx95_set_wakeup() return an error should be enough.
 
-Fixes: 44eb827264de ("dmaengine: fsl-edma: request per-channel IRQ only when channel is allocated")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
+Better fail early rather than later.
 
-V4:
- Update commit log per Frank
- Add R-b
-V3:
- Update commit log
-V2:
- None
+> Some errors will be printed for user. Also dt-bindings has restriction for
+> imx95.
 
+That's true, but don't assume the DT is always setup correctly.
 
- drivers/dma/fsl-edma-main.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Best regards
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 7eb4d898434b..756d67325db5 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -401,6 +401,7 @@ fsl_edma2_irq_init(struct platform_device *pdev,
- 
- 		/* The last IRQ is for eDMA err */
- 		if (i == count - 1) {
-+			fsl_edma->errirq = irq;
- 			ret = devm_request_irq(&pdev->dev, irq,
- 						fsl_edma_err_handler,
- 						0, "eDMA2-ERR", fsl_edma);
-@@ -420,10 +421,13 @@ static void fsl_edma_irq_exit(
- 		struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
- {
- 	if (fsl_edma->txirq == fsl_edma->errirq) {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
- 	} else {
--		devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
--		devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
-+		if (fsl_edma->txirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->txirq, fsl_edma);
-+		if (fsl_edma->errirq >= 0)
-+			devm_free_irq(&pdev->dev, fsl_edma->errirq, fsl_edma);
- 	}
- }
- 
-@@ -620,6 +624,8 @@ static int fsl_edma_probe(struct platform_device *pdev)
- 	if (!fsl_edma)
- 		return -ENOMEM;
- 
-+	fsl_edma->errirq = -EINVAL;
-+	fsl_edma->txirq = -EINVAL;
- 	fsl_edma->drvdata = drvdata;
- 	fsl_edma->n_chans = chans;
- 	mutex_init(&fsl_edma->fsl_edma_mutex);
--- 
-2.37.1
 
