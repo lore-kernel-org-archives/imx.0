@@ -1,110 +1,193 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2061.outbound.protection.outlook.com [40.107.21.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE11BC099
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 06:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740722452; cv=none; b=BGNz9YmcVqj/NlAW2pze0SI8fufADyndgGaa7jT2TYhUbFtJlwIW0rZqdubOj9ye+2AfJVXNfGJyIbrsGPoxW6Oep3MTW+irX889UYYvZn7NJOwKkExab5UVS25L3YqBaQB4lJ+VikWVF2xxGyi3wZHTsrrwzLfSLRkX9yuFyy8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740722452; c=relaxed/simple;
-	bh=twi/yzpdXsZjs7Pe1CdQSGFbeIRq05yQQFooB/+9mvU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=j1YzfFnaJ+eBNgkaHqdPEwk5hxFYcgHKxkak9fJlyLG/fp7sIVFOUiyzbPrrOtY0dHUFBrTknOAaOeSmrN7f6trMj2pw68Baxea1dAjjN2Vxbveb7Ry9P64Y6AWCnnumdjUix9euQhnAqUDNQCQJKppzqcnHJZuZKDmbKQ+qlJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTqM+Eyw; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BE91BC09F
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 07:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740727109; cv=fail; b=BkE8h92MuuPM5mKGUJ1j6XoBqpazuArsxr++Ogc34SNApMC8ko4JeHUdDR/zNgq9z4aDyKT4USXg9wGwWl/whnTjEdWvcf5IrI5pTjVrVxh2i1xO0GmUU8Igg6wr9s508KiqH+O8cscDVfZ7CCAAjo/4xkKesAe6gxF5c5+cEAQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740727109; c=relaxed/simple;
+	bh=YYMxUWKJCZ5vn7scW6G7tPKpsyyj9kl7xXyGX32xtAs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UCRZ6ALvuQJt+9ocyDQLPcN8vv/E/j+Vyh1C6lfV4l5MKTqSmd96cqIGzu5ArLjPdD39qUgOPqTfXSnS/J1G4bVzbg4cGOeJbGTCFUNOPCpugfd8V7oqUL572r75YIUb9ZfQPb0SnvPyk6cZ8qpQx7kIrPT3HxstJiYSBDRd7ig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=GyNZqINP; arc=fail smtp.client-ip=40.107.21.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTqM+Eyw"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-86b2cc5b3c4so692276241.3
-        for <imx@lists.linux.dev>; Thu, 27 Feb 2025 22:00:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740722450; x=1741327250; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=llT+ginst054rhLhA6/yosLb6bykmkgNldbu3QbBuo4=;
-        b=BTqM+Eyw8/cUP0M46kUD0CUhspYgpJazokOHR75LZ0s3J3Le2w43Q6IHlNWc0NPO8j
-         KBKQLsHDx5w7kb2Mzd+86nAT4uDDQ4FyFiU/pJJ8DZSLnAp6jvxVagHywDSYQ6c/G94f
-         cwDinNca5Br3kyV2yaJDScGfvEaPuF9sdTQjSHNzSJJiE+xcd4IysMxxNpR68tUGa0Xj
-         zZcMGQEL4fuTMeNwffBSPpa/b+MFIlRZyJOB7WO3dt1XkG5WdgLzYfZNcbt2ECGpWCAy
-         oBnZJdMytm2kNAvqj97wyqwZRlt1Y8VKRp09P1s7awvTQYedh7Qxh6rIqcXHA0b6yppe
-         7KZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740722450; x=1741327250;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=llT+ginst054rhLhA6/yosLb6bykmkgNldbu3QbBuo4=;
-        b=gnQ1oYcwaL8pSr/IBmH5rYuAaD46Hg+DryTRJvl25VAEY3sYhxVjngQ0T+px7DM6iK
-         x6r27nQz6sYWXWkpHOA9QwaQUCr/FtuU1l8rO4StFWWwCkFdV0yWh5DKmPAM6IpriTK+
-         HccSFvbQVPN/FapDE4jrog8XJqno1ldG8lnKLgs/xsd1LIBzJlbgOkJqrHwTvqWAOXqK
-         wLuISNpA6UUH5Nm00K5OSyE0vUM/Qvr8Nn9XJrq/HaXKAX/DTWjllB9eGtPexktPOAjg
-         krobNwd0NVL6K5KD6CrTu8E7lXdYAZ3oxTO6Cq6CUOOY1xg53Xb4dp4TEyaElFeefAdg
-         z/AA==
-X-Gm-Message-State: AOJu0Yxdv0mfR/2ALCC/6MF7RgUZjNlFn6QJuIpCtecPbhdVP5ALpDV9
-	UDsxz82y8YbwOLC81Qhvtu18Oskchywa5A8b5PN2dluRTXPenKY4HbegRpFdH4fjAamHsnlJPPG
-	KEanJgFVpcGmWq4pAEwsR91BtRt+fBQ==
-X-Gm-Gg: ASbGncue9Z4uHW1MdyNR47c0eUSFR+m3zRRRTP7bM+Xl04ikvxiLIOZa42crvfYtOUx
-	rXNUgCZaWw0xczb79men8CCTea852vfa9buoD5uz3UGrxW5NVA7QjHqQ9az/m2DsUYMZEFuGef9
-	v5apHyuBnnZcmms+Y7qyeGzgF4RmiAsofR1mFsgfE=
-X-Google-Smtp-Source: AGHT+IEw3bOzxz+D4RRtXdGLVVCwq4xoxXyDIF4NB0Jj9uEuWuXKI6wXo8OwXwzRYdzY3dnSkRyPaa+qCyosS6Apfys=
-X-Received: by 2002:a05:6102:1485:b0:4bb:ecb9:b34d with SMTP id
- ada2fe7eead31-4c044eda3b5mr1797529137.18.1740722449741; Thu, 27 Feb 2025
- 22:00:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="GyNZqINP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nKnvVLu+vEtCMNQJaIaXrdu4hTzdDUFc8+/CVgZhIR7eKVl8r/cxVF7sqCmzRGw1Eq1aVVp+6ReLCUYq42zsY6CkRWCaC6XLdD/88882BttaA0fUT+3RTGOLM/9EQ4mQxsrCF/DkKbrlCZTe4i3XLR1TSlCV2DoECHpyZlOoXcmW5skeoFGchqseLYGg69lj/aTUd/v1hpL1Qy92xgABsMtlYx3zuuppbKBZrfoMzB2uJN5bZhUdr/cw16b9VKXgVxyoJD2D4knC4lELgSV6bgiwo1xRDiga+SkYILnYV4HJnASAOiygpW5MhMocRfqXojF5wTshhLv6cfWTFutXTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zlIYcCBH/bNJp0ufj+/bA0t11S4KBsNYXHuzaBvJ4/w=;
+ b=IZWxQ0mXwIYd7R1J1+YNjCJL7Fy8cW/5/6l/m7y2VOr7BQIJSCPElbyATs71alr9nQWzIWCUGrmChs19HF3+3KAdcBfW7rG2n516CE6akSXgPPlWUcf0Ye82hJniCjXmAmvd5dCAeZGZow8xlQ546Gbu4E6ZupQ9GSkCzX96U4Z9460QnXe/MMrYKLQMFWLIsSevJFeWUrkKfeGkBW0d5h/UU9+N4buu7E4kFCSV6GnhtClpnoxI4rrE24qWqi4GOAvPFeIOCWV/E3SALvn7wZRLA585lD02QgEWOzLLoaKhDYIaojhQ4IhxF1kXD0JoP0UUwJ+OJsQHy9dcoI6X3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zlIYcCBH/bNJp0ufj+/bA0t11S4KBsNYXHuzaBvJ4/w=;
+ b=GyNZqINPBtcJk09cg8gNUGTxsyPl8xrZ9AzWOF7DgJTbRKTkr5KEWfD6Xzep11FlbrNjORLNm0sgWaVsBW56Dt2vK7c1ln4WhoI7P3l1QhZPFFwOifcC5cI8qlVWyHpV8AjTvVc5G+CLjirXNGRKYRWhUNkefDXJA5NYMQbVCMZgj487/Q4o6kMip0e0KQdnFf1yOuocNqp6lpSPg6We73GY8c5obKDmkt7ajrrtrHretoQzXdDy2VbNqgvueMVyU3h70j8GFH5kn7NxFgvs9naB9q3r1z2oafkPLwPGvaxN3fZ4YJ0ZJLue/FUVbbwbLnUurm9S+qUlujbJdRR6LA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by PAXPR04MB8511.eurprd04.prod.outlook.com (2603:10a6:102:212::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Fri, 28 Feb
+ 2025 07:18:23 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8466.013; Fri, 28 Feb 2025
+ 07:18:23 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Frank.Li@nxp.com,
+	vkoul@kernel.org
+Cc: imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH V4 RESEND 1/2] dmaengine: fsl-edma: cleanup chan after dma_async_device_unregister
+Date: Fri, 28 Feb 2025 15:17:19 +0800
+Message-Id: <20250228071720.3780479-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0051.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::6) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAD-cv=PxghRoD12wiJL0=e30OMqT0S-Wbw-yt-ubVP45F-tz6g@mail.gmail.com>
-In-Reply-To: <CAD-cv=PxghRoD12wiJL0=e30OMqT0S-Wbw-yt-ubVP45F-tz6g@mail.gmail.com>
-From: Andrea Tessadri <tessadriandrea@gmail.com>
-Date: Fri, 28 Feb 2025 07:00:40 +0100
-X-Gm-Features: AQ5f1JoJpvY2GAXSA9MrcbqgtJzLxFpD9LvqWun8N0BYf_HshljWMHboV9xC77o
-Message-ID: <CAD-cv=PqGB455jgVunJQ5x0brGyG9zz6NJaBt+7Qd+3UpY0eug@mail.gmail.com>
-Subject: Fwd: Adding circular buffer capability to spi-imx.c
-To: imx@lists.linux.dev, linux-spi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAXPR04MB8511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98da5dbe-000d-4062-c840-08dd57c815c0
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gkIkYq4SR9h46FFRnZy5k48sIVoB/tK+x5maaqY1mcq8adATSXHdgCxi6nAC?=
+ =?us-ascii?Q?UttNZyc2Ql91cc+TyXXSVQaA9ZlNVE7Kmg5bVg6GClBM43cn5s7NNlgdhFrA?=
+ =?us-ascii?Q?ael2BuyA5eRx5oCj+n3aae14tEcBBms1rSaCoY7pPOtag21XTEs5REtUS/Mw?=
+ =?us-ascii?Q?4kRaq7XM79RDy212EfFwNhiYrr8VBv9dU/mlBv4a+IKKXPnWQBC7SJjGq6Vi?=
+ =?us-ascii?Q?wkeutFrEz+EzPSnz9um9ahd4vYfd4/uPQPjF/NaJKaOOzQerb0irt5BaggeB?=
+ =?us-ascii?Q?wd38/5OiPhWt/Oa1py1cFNqQV226ytiAuRCehFJ6F4Aogp3oLgI1GUrMa9pZ?=
+ =?us-ascii?Q?yY9XiGJktLIQYa/tbV4u5P6NyrlePlmsDhGzjcEqKXBWCTreFSMP9KVPFJdP?=
+ =?us-ascii?Q?7BY1qNT1SDhDYxxV/MNeKH7ydfOsWIFls50SMxVutWEWmO7SZJcyDwJjsu0x?=
+ =?us-ascii?Q?VX8M2m5B5I3ItBlW/esQiE2JwOEFNAgjHRVQP29bcaObjqXn6cjonQGcWdAm?=
+ =?us-ascii?Q?waieSl0rMZxkzmuudVOhFlYJI4SkhOQQ1RVdUBkf6Kt+BeTfVwIRjJwbfX9+?=
+ =?us-ascii?Q?Jfra1Ja9onKEox72XrJ4NCRFItNdk6hLDQEnIfuu5VLeLGHuqqig9Ozq42rc?=
+ =?us-ascii?Q?T+OlwL8fSov+/Lbo7asQpb8FMNu1wjwxDY/7afLyST2Dnbtgt5s34V48VzTd?=
+ =?us-ascii?Q?+g4zWGgcuf/d8cPyCF8rAh2YaIFNNxdskh/ac78oz5uVKK+jMjwZtNTz/FbF?=
+ =?us-ascii?Q?RHTMxpY5FuDKPVJFfqc7ZwNqV5qc2Cr01wqyfWHd4ysYzJrv6O3vlOKIyWJa?=
+ =?us-ascii?Q?KccBJ59op2YT/2LIHh5SxyizXLbPCbZn0DIkGS1GxYtW899sMdMM+eAgTdud?=
+ =?us-ascii?Q?W+sSLkWsAMz0oRi3q/RGUzzNRq9Mh0hLapTjPO0tVHxgv7X/I9cLTAM/25Mx?=
+ =?us-ascii?Q?atO/MUiKwDMkU/rXP2IXKaQGkZ5f+X0IBbJL96P7uVMyo0ew1m03hDR4ToNC?=
+ =?us-ascii?Q?Rl5XPgpmO4JN6p0xVuiY5uALOFRuOBSoZ9LNUpOiYTGKwDe0qf4v1L1qu615?=
+ =?us-ascii?Q?De6Bqj+raBbBBYLaGBAZ4Rb4snY9Pl/PUoi7EFAE6LtKPs1P7yBPSir9+MQ8?=
+ =?us-ascii?Q?wiRykCIwfSzmfov8H1dOBQq762rhxXW+0S7Ale51iiTLDYgA4fUu4pZlcpn1?=
+ =?us-ascii?Q?XqpgSAYjyO2+8p0HEYijnIo7eWAx3V2DgpL4zpcCFdV5BJjWLSMWRDJqZ3Bh?=
+ =?us-ascii?Q?Hbx+i3bOZJHWPt8y/AM0hShzLO3Jvb2Xf68XX7OZ9FdgCbvQPfMp81cs0Y1Z?=
+ =?us-ascii?Q?dU4eM2wJVIrVxWS4FjSo0IXLIu+az/Z3swTH+dWUZMZwVmPaJ1D/vmFaZjJE?=
+ =?us-ascii?Q?m8X5rDydq1gp0LqakGCgYljRJpcI5AZw86CsPIXLMuHB2OSTGxwWqZmVvah+?=
+ =?us-ascii?Q?kjZntqNyEoCuD4dfWTsN3oOZHbvqjE7G?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IirA6fiTSEiQhMOOF1jjhu5VxK6RUHfTqo5KUp0rV4Y20J+EmxuHvsJf1QpB?=
+ =?us-ascii?Q?EXUfds9RS1zzu7ibQm4qGf6u3Qd53I33cn0KrOqrFRavm6X1p7dzP0sYZNdP?=
+ =?us-ascii?Q?fq5NBSycxHr5wevgwaPUNgyn9OtUwKCF1lSFN3FVGLXB5sKoreXnBx6r7nTw?=
+ =?us-ascii?Q?VjOsuYQUCPfEiVw+IfaPQY96i953ir6ilppff11QnJjfz3y1ZD97CqHaW1Fq?=
+ =?us-ascii?Q?oTZspq7u6Vnmxq2m/+VPDamn/9DOXestWUN+6NkqfZ+osv27OBklL3a8h7P2?=
+ =?us-ascii?Q?IsK23iN1IiVZAeoeJwHlZfp+0UbvyjTRvDoJw5MtxqGTjWtUbBugEfxgdBFD?=
+ =?us-ascii?Q?ve8/Tt/Z8XhfVIUSSaNmh7AosfEO9xg0HQQDfXW1g9gr3eHWz2wJQbs4hmxR?=
+ =?us-ascii?Q?6f/ypsSQprk54bGunVgfUewsEY+TsZ+1Hl/472n1MzdGLvEkg/5qyFvCF4xA?=
+ =?us-ascii?Q?r1xRtSfDoFI+z9yU2KMB8gDzHz2f/X3ecr0vC2jb6Vw/AqKSsmyDXr4wQy9T?=
+ =?us-ascii?Q?gOdDFgsFrpZjP+mKr0KkXfBgZLQiKxOUUzpO44Zn9OP0Fcb2Q5Ff0EUEloig?=
+ =?us-ascii?Q?/sRiw76nbSsOHnCVQZVF2wto0N1J83HakpjBbe4hN4uXCNgoOGgMZhW142C9?=
+ =?us-ascii?Q?ezpQgmBGH8q6UpvbNJYLQCX38BQwSrStbolWBEwqhDzCyJME2Li5QzsouQrY?=
+ =?us-ascii?Q?p4ATWMAoR1WQLXoAIRHFDNOIaZlEMyvu3/odTzmxTPSA0dHBajjUMqaVyF+Q?=
+ =?us-ascii?Q?eC/mgCriEGHvVY+yQRszpblQew7gnIVUr5BsHdGlvTeBsfMPAIUfA4NuZ2mr?=
+ =?us-ascii?Q?TTtZrFg9YGo86vLeUb8ptPZSX4N7VALxS5l8DzfZbkZYIQBpcwy4YYcdpOeJ?=
+ =?us-ascii?Q?vKOr+5EQpKpWOPeQnB5hXhjhGnWLfzqXRxgMbDkdYuh8eqcbD8cPLuigEBqL?=
+ =?us-ascii?Q?GEjH4QlPUzjcEKkbZZPTyDUlCE8i2G/cKDG0VXavRh1o8J83qlLLihtZIce+?=
+ =?us-ascii?Q?V4dAlFdNgM7t64BWc0vv2foLMkm8ih5ao8ThY3Y2fylhVsmobwH3pVRCY4zt?=
+ =?us-ascii?Q?KciP5dxAhvi0Z+kMDpKjPa+BTTq9Z1SxJ8/Cs/aRU7z3czA5AJaaeoDV9AfX?=
+ =?us-ascii?Q?lxVPE7tVYahanxDps+519ILv4IJM3U2eFb8CGUInCYkDWCHcQvJjT+Y5YY8P?=
+ =?us-ascii?Q?FD8O0ft6Hx7P2GNl2iCpoU/EbjQeUJn5FqparedQlffwxyHllzr2eMA8tc4B?=
+ =?us-ascii?Q?cvWPS0Z9a1RhYU7vjaJpP4fb+o8sZ3b67WtLDKuxlvjmEcMlJDYtfdR5tlQL?=
+ =?us-ascii?Q?mLyOovgjQxcGgZGhpldPwJ+4Qqpq1yKAW6Q+ghL1Eevx3xPHuJay9KdyX34T?=
+ =?us-ascii?Q?+dm1XShK9IpRln2GW/uKM4V9n1UV9OJzEl5cKzEzQrGo/Cr3DErJ9sjqsXal?=
+ =?us-ascii?Q?IRqmIBM9S79wSUhgjiTDNddZCNL3+icXgPqowkFrNlmMgIiscKRGPcr+Lk3z?=
+ =?us-ascii?Q?pwBDJJNyfffku9/RuGsI1QFw1d3V6Ui9eEm7bhAQ28gLc0C5dx2QwIUpsNMJ?=
+ =?us-ascii?Q?hYpkUE+160N2Fah4sJkJjfDbbt3HoltfQqC4qtXt?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98da5dbe-000d-4062-c840-08dd57c815c0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 07:18:23.0453
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G0LibMGvMILOmXm0EZhqNtmQ/xxz+421T+50lvWs6hIErapTUbuI8ppnYmDboBnBYITp8Mc0f7gP8YISINpPPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8511
 
-Hi all,
-   I work with a IMX8 PLUS EVK and I need to receive a high rate data
-flow via SPI from a real-time external microcontroller clocked by an
-ADC capture.
+From: Peng Fan <peng.fan@nxp.com>
 
-My idea was to extend the spi-imx.c driver to add capability to use
-dma_prep_cyclic with iMX8 powerful SDMA.
+There is kernel dump when do module test:
+sysfs: cannot create duplicate filename
+/devices/platform/soc@0/44000000.bus/44000000.dma-controller/dma/dma0chan0
+ __dma_async_device_channel_register+0x128/0x19c
+ dma_async_device_register+0x150/0x454
+ fsl_edma_probe+0x6cc/0x8a0
+ platform_probe+0x68/0xc8
 
-So, in this case Linux will be spi slave (the real time micro is
-master) but I wouldn't like to use PIO mode since I can control spi
-master to send data 4 bytes aligned to fit DMA alignment requirements.
+fsl_edma_cleanup_vchan will unlink vchan.chan.device_node, while
+dma_async_device_unregister  needs the link to do
+__dma_async_device_channel_unregister. So need move fsl_edma_cleanup_vchan
+after dma_async_device_unregister to make sure channel could be freed.
 
-I am stuck with implementation:
-1) to change transfer_one is not the good way because I don't need
-pump messages from SPI subsystem, I just need DMA doing the job and to
-follow the transfer with a callback triggered by SDMA part every
-"period len"
+So clean up chan after dma_async_device_unregister to address this.
 
-2) to add the transfer function (deprecated) to use spi_async is a
-possibility but I don't know how to pass the period len info: if I
-consider to pass a message with several transfers I have to check that
-every buffer in a transfer has the same size
+Fixes: 6f93b93b2a1b ("dmaengine: fsl-edma: kill the tasklets upon exit")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
 
-3) to use transfer function with a spi message and several transfers
-(one for each period of a circular buffer) prevents me to use
-dma_prep_cyclic that works on a single buffer (then descriptors inside
-dma_prep_cyclic will split the buffer in N periods)
+V4:
+ None
+V3:
+ Add R-b
+V2:
+ Update commit log
 
-Should I go for using setup and cleanup that are now empty ?
-In this case I can consider:
-A) with setup I can pass into spi_device the information about a
-circular buffer allocated by a protocol driver and also I can add a
-callback to be triggered by DMA
-B) with cleanup I could stop the DMA transfer when needed
+ drivers/dma/fsl-edma-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anyway, setup and cleanup shouldn't start or stop the spi transfer and
-this is why I am puzzling to get the proper solution.
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 760c9e3e374c..7eb4d898434b 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -802,9 +802,9 @@ static void fsl_edma_remove(struct platform_device *pdev)
+ 	struct fsl_edma_engine *fsl_edma = platform_get_drvdata(pdev);
+ 
+ 	fsl_edma_irq_exit(pdev, fsl_edma);
+-	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_edma->dma_dev);
++	fsl_edma_cleanup_vchan(&fsl_edma->dma_dev);
+ 	fsl_disable_clocks(fsl_edma, fsl_edma->drvdata->dmamuxs);
+ }
+ 
+-- 
+2.37.1
 
-Thank you in advance
-
-  Andrea Tessadri
-  (Italy)
