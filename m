@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4192526B2B1
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 12:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A4D26B2A7
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 12:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740746303; cv=none; b=L5A0LHiCnt0WqqI3T9Qyc7ac5ya7B1P3HtUaTnjHuNbFs52NJw1GbAdLC52PVC8TZO0BqYFB+fJdGWagKXLm2hjaA+znRB94KA6u3i8MDy7E5O+X5bY6MVTybPbcxgEZv/cZ9+YZgF4kUrw0DU0LqqVUV4HJyp0hEGpTXicL1FY=
+	t=1740746305; cv=none; b=h/BCfZiF8uC0/U3QdpAgxjG5AZ3bmzFUlQVqQdmu5WYkCOkYQHj1yOieb53c5Sv4Z9SkTXL9bvZPyuPPNjLWc4rZ5FD6iw316YSCLr/+5JQ++QCadnAanxX4nUmWDfnrkWCrc86dTCp3ryFitB1TaqN+hkhtNIahBkb+8DblNVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740746303; c=relaxed/simple;
-	bh=mka7v9dOIXrR8ujDVY8H8EAYsXt6YV5/tGysz30JByQ=;
+	s=arc-20240116; t=1740746305; c=relaxed/simple;
+	bh=DZD875o1zR1JJ32xiqYTydGWJqFSjevYCUQv5vmvk8I=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SOwHhOHGw8wvocXH+/u3QKp651AZ+uu/k6sJ6pkmCFcHUFce9DmXaXg4PM3Ikz/J6LLef4yq+UHK4zkaTr7644BtIIAno+JaslqH/NE1SVH8QNuYzl+Sfa6EeBkkkipn5S7RR2Mg3hcrh6b/Eiq1vC+7Ik69+7i8jYFlCagS2n0=
+	 Content-Type:MIME-Version; b=Gfa9xL1inUhGzSRNA7zBjYnPLwLqsv5omewfgciUx0aeYtwVwhTSXv8mlhvdKjod3hZ4mtGoGX0X3BehXmqkRHNe6LQrlZNBorWpxDLUouTCJt7dDkyNLrkQzGx12+tCOc3D9U3TDjnjFv0AUT3ft86aCYWE0ALcFfyvt472d6k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tnzd7-0000HS-GM; Fri, 28 Feb 2025 13:38:13 +0100
+	id 1tnzd6-0000H9-Kc; Fri, 28 Feb 2025 13:38:12 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tnzd7-003IP3-0u;
-	Fri, 28 Feb 2025 13:38:13 +0100
+	id 1tnzd5-003IOz-2H;
+	Fri, 28 Feb 2025 13:38:11 +0100
 Received: from pza by lupine with local (Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tnzd7-0007DC-0c;
-	Fri, 28 Feb 2025 13:38:13 +0100
-Message-ID: <77fc8298ec2c214cef39c956bbf484b6229888f3.camel@pengutronix.de>
-Subject: Re: [PATCH v1 2/2] phy: freescale: imx8m-pcie: assert phy reset and
- perst in power off
+	id 1tnzd5-0007Cv-20;
+	Fri, 28 Feb 2025 13:38:11 +0100
+Message-ID: <c965906ea8797385399534e974cabdba5564ae0f.camel@pengutronix.de>
+Subject: Re: [PATCH v1 1/2] phy: freescale: imx8m-pcie: cleanup reset logic
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Stefan Eichenberger <eichest@gmail.com>, vkoul@kernel.org, 
 	kishon@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
@@ -39,11 +38,11 @@ To: Stefan Eichenberger <eichest@gmail.com>, vkoul@kernel.org,
 	hongxing.zhu@nxp.com, francesco.dolcini@toradex.com
 Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Stefan
-	Eichenberger <stefan.eichenberger@toradex.com>, stable@vger.kernel.org
-Date: Fri, 28 Feb 2025 13:38:13 +0100
-In-Reply-To: <20250228103959.47419-3-eichest@gmail.com>
+	Eichenberger <stefan.eichenberger@toradex.com>
+Date: Fri, 28 Feb 2025 13:38:11 +0100
+In-Reply-To: <20250228103959.47419-2-eichest@gmail.com>
 References: <20250228103959.47419-1-eichest@gmail.com>
-	 <20250228103959.47419-3-eichest@gmail.com>
+	 <20250228103959.47419-2-eichest@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4-2 
@@ -61,54 +60,35 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 On Fr, 2025-02-28 at 11:38 +0100, Stefan Eichenberger wrote:
 > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 >=20
-> Ensure the PHY reset and perst is asserted during power-off to
-> guarantee it is in a reset state upon repeated power-on calls. This
-> resolves an issue where the PHY may not properly initialize during
-> subsequent power-on cycles. Power-on will deassert the reset at the
-> appropriate time after tuning the PHY parameters.
+> Remove the switch statement and base perst release on whether it is
+> found in the device tree. The probe function fails without the reset
+> property, making it mandatory. Therefore, always release reset
+> independent of the variant.
 >=20
-> During suspend/resume cycles, we observed that the PHY PLL failed to
-> lock during resume when the CPU temperature increased from 65C to 75C.
-> The observed errors were:
->   phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
->   imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
->   imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x=
-0/0x80 returns -110
->   imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+> This does not change the behavior of the driver but reduces driver
+> complexity and allows for easier future modifications.
 >=20
-> This resulted in a complete CPU freeze, which is resolved by ensuring
-> the PHY is in reset during power-on, thus preventing PHY PLL failures.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie stan=
-dalone phy driver")
 > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 > ---
->  drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 >=20
 > diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/fre=
 escale/phy-fsl-imx8m-pcie.c
-> index 00f957a42d9dc..36bef416618de 100644
+> index e98361dcdeadf..00f957a42d9dc 100644
 > --- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
 > +++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> @@ -158,6 +158,17 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
->  	return ret;
->  }
+> @@ -141,15 +141,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+>  			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
+>  	usleep_range(100, 200);
 > =20
-> +static int imx8_pcie_phy_power_off(struct phy *phy)
-> +{
-> +	struct imx8_pcie_phy *imx8_phy =3D phy_get_drvdata(phy);
-> +
-> +	reset_control_assert(imx8_phy->reset);
+> -	switch (imx8_phy->drvdata->variant) {
+> -	case IMX8MP:
 > +	if (imx8_phy->perst)
 
-This check is not necessary, reset_control_assert(NULL) is a no-op:
+This check is not necessary, reset_control_deassert(NULL) is a no-op:
 
-> +		reset_control_assert(imx8_phy->perst);
-> +
-> +	return 0;
-> +}
+>  		reset_control_deassert(imx8_phy->perst);
 
 regards
 Philipp
