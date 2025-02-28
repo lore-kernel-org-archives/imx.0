@@ -1,82 +1,72 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013010.outbound.protection.outlook.com [40.107.162.10])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011038.outbound.protection.outlook.com [52.101.65.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450F928628C
-	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 17:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480021F4C99
+	for <imx@lists.linux.dev>; Fri, 28 Feb 2025 17:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740762481; cv=fail; b=XJOltPbhSxCgiGPOV8yHe3ymi1G3xoFDMlvHJCg+z705Kkif5/vqHSOejOwMO7AQBN7jWoTMlTgIBe6lJ6sBzJw25Wmwq4pW65RwR3YeUdZ5UvM/fhZaQa8mStoS6VfIZt/Dj/TS6PtslfgGT1RBimXD/erLAUamKftu6rDjKBI=
+	t=1740762720; cv=fail; b=GmDTzboUefCuld7UKOhMGNhRltvAu/PDN+ZGc8Rqt8Zld8Ag/9e2p+1g/cw7RchqyGHI3TIlfmBDUQ6m5yzwehocS1fK7PQAImtSw6/V4APBOg8xLFhnVQbhV5czlpaKfwckH/TEJm+E8JdDYogqVrZCkMKRjqrm5cg6kC3VnTE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740762481; c=relaxed/simple;
-	bh=iEuvskA5NAVhaSdGhvvkEnpufuEGUWvJbf5MtiSyOEM=;
+	s=arc-20240116; t=1740762720; c=relaxed/simple;
+	bh=ytsEaWy3Heg1+eYE/NW6yZWfNJibA9InohKY/lAaTgo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tX8JNsWYYxJqsLeRS4lGuJEzzRJcEv4S5+zpwQnjQhO+YxPlPLK8pwiLB5L8tsQuOYR+Osnxvv2MX1ENIQMGF9FNf4qb2iV0eSj5pppL1WdUYwpzHgXSx38Gm4vGqcErzdgB50CU1Pu/lT5ujjqKX1eAslxhjL3OESmUWQQ9ZSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Q0QL3S07; arc=fail smtp.client-ip=40.107.162.10
+	 Content-Disposition:In-Reply-To:MIME-Version; b=M1+XgHy8iQFkzJKpeZ+VJnbOGt1t9gs8q1WncH+gsTs+R2QfhSkykGoVps0RJoMUp3R1GXXBkixGQPxo3q3zROuEyWXsOXWjur7mhbEaI0AtzBwt//Zhxoi9qB5h8jz18HbsukOEb5fRl9qeDol991cGjL04InX4RqzWu0n+EbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ei26qR9T reason="signature verification failed"; arc=fail smtp.client-ip=52.101.65.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Q0QL3S07"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ei26qR9T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u8TH6bdX605b7AFqoNOFPUFtX3/VEOaZKvt5tFtXD7ltfHNoZlUAZ/sNF4kjGRHhs6Yhq+Jy3LqnIclBsDqqWOgHRR8k4arPSx6S/wixGVH5KHuZhI8xast/CmI5V/d/qbtBp5ldv7TVFYnfqNd3z1qhUITWynStUG+cwgdvK0fb7n3wrWtEYAz/ChEcvG+S7JEFZAiJPxsvuDJf2dx0ibXx3Zj9mQnWNk/UHOAx1IZ0Q4RTFM5gbOu8+IR5BREae9C+JKqbc397/iAb/D/FfYltkUuyjQmnUF7nLO/cWSHkC0SIZwyB1nfWzdlXBIOemjYITLQHjrNsvr+03yfRkQ==
+ b=HDfX4y9U+VvTHK+DN9r5kUBJCOy8ZbQE4HyCXr8ySuL/2y66fhtXQJx9neh9Ol4/JCD3kvCLP83RZSmQQm926FiUGw5NTRBJJgsBJd1Uj7ZCnM9e41NbkykT819rFA3AvGoIfxAmjUmXrr7vYFRkdO+4QYJ9IbnqUXpzvIPLcVOgScMlYZJYBJgng355tajS4YYrZE9mG1oiRDG5Ev+TL8HWbuesfWabhgNwi1YSIOP79DQe9vMYNY245yNY1XnXMw1seN8xpxJlH6N6qPDypjNB9TiDus9mxyhwE5BFUXRcQ4PjEgOpR936Rg0pcNIiNpFCI7cMeTVGl8DEiwltRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9azf/yJgzBeFm/Uzg6q67IEQEdWBzlyagDfRYHshJeA=;
- b=HoKs/Vgf5GT57P8VEA3zeMohbZws2wyhPfMeZPm4uSBjzAypLwGPDozoM5agvhagVS3m9cMVUy9hVnxeoZPzTZtNiW+tYiIS1HjEXdWUU819NKfLHOSGL/pa6DikqnBtqgyO8VKbut7dAwo3j41+Xa32kUbWqRowmSSyCfqmF1eKjVjeJup/46nUgRx/1qyn2iFKpjpFL4n8OG3RxG/YSS+k7MY+pxpwCps9ehdskuLlEbORpOb/gdUU//UqOVdIl7B+TXrLS+WSxoThDbTMUuJwp4p8cWgDfcp6bTXZDWMNod2Q1izpv6a3WX1X0KUVpILdZi4+x6XZnI+6OHq/ig==
+ bh=8wke8UjKKRAPcISyvJWTWeKSL/jeTf3ukEY+aHI1oFY=;
+ b=TDDNbPEGyEOzdKyt0LaHpiVUkJPuOxMlSvhgdeQbPtf4UE1Qg5AwkAyfDRRf/zi3q3wBT5N2rzzCaPf9JQ3cqWJkv2R3EMyrYAfeLETixwWje3lU/D5GBrHxoHtVgttmpL5j2pdkKdMG/250vZaqMW7kn8q4YCjgkMGhETq/VxNQ4LSY4+auVAmDWWnDwJVl/6aQTnwKJk79rg0JttO5aCP2/YV3hd2UOG4gFYtcYnU54ul9HWK1rcWbVdvE0AzpJjqhOtTVd/wgVeqpocUYcGJB6bo12ppxQzfeSYWY8Rl4fbAIyEL3qlW8avIRmabXn24PtQpCKl+ecT/tB8cicg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9azf/yJgzBeFm/Uzg6q67IEQEdWBzlyagDfRYHshJeA=;
- b=Q0QL3S07E28JURU0RFECgmtagR/t8JtvPuSFEmk5NPv2pgqz0YkiLzUZVuE4VasB8N1F1tD9V4URscQnLIhYqvj3fKFchXIGkQrRWPQ573lXrGj7MaQQFv6cb0lu3ntsMP0y8Z4mkeSUi7BMbGu+vuc65WwEGVaXrVziawwz8xKIa3R3IaXr8YSbWJtPiPtRU10d44rDcupMQChRm76Gw2Lazw7MPsaeOfpUmGVikRDC3F9mSB91qh/4uUM0ZIGoS0PynULjfTjkAP1dnNSnY5WQUp6O7EC3jfmw2mnWzUfh8w6ISuDr8oOcrhYJ/362/1g3eFCpiDBuP2cOpQVOmg==
+ bh=8wke8UjKKRAPcISyvJWTWeKSL/jeTf3ukEY+aHI1oFY=;
+ b=Ei26qR9TwmHu2/+2IW5p9yFEjrZw7VGOiGCKTNioZqkwbgYfurxNz6mUDu11woGc1mwKKyjtxStcIsWncaQNnTPYFcXgKfzBXqHhwZgLR8kB3zMoULgNbHCer9kcLNh+XJXMbtcbxCNAyZcoZymXgxrS6rVRrXqpXP/E9oVRJSe3hYK+/9Yrv6WJzQop4ylT7l9rCMQBeYBoxka3tJWGW46TMf4JCswKPH9R8x//hBoI7Nv5mkyeoTFU0sXtCEXM2fl6IVWjrrWMtIPMSuRImKE0IQefhH7QNni4hG6oUDxShL/lkrwfrVUBli9Ky6q8PFuwNEK6BxKFMlepoI4pYg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by DU4PR04MB10531.eurprd04.prod.outlook.com (2603:10a6:10:55a::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Fri, 28 Feb
- 2025 17:07:55 +0000
+ 2025 17:11:55 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8489.019; Fri, 28 Feb 2025
- 17:07:55 +0000
-Date: Fri, 28 Feb 2025 12:07:43 -0500
+ 17:11:55 +0000
+Date: Fri, 28 Feb 2025 12:11:47 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org,
-	jdmason@kudzu.us, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v15 00/15] PCI: EP: Add RC-to-EP doorbell with platform
- MSI controller
-Message-ID: <Z8HtX05shTGRA4xd@lizhi-Precision-Tower-5810>
-References: <20250211-ep-msi-v15-0-bcacc1f2b1a9@nxp.com>
- <Z7eKBsxrmthtElpz@lizhi-Precision-Tower-5810>
- <87r03sgxf2.ffs@tglx>
-Content-Type: text/plain; charset=us-ascii
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
+Subject: Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map
+ property
+Message-ID: <Z8HuU6ULEN756lyr@lizhi-Precision-Tower-5810>
+References: <20250128211559.1582598-1-Frank.Li@nxp.com>
+ <47051102.fMDQidcC6G@steina-w>
+ <Z8HXIvAZcvNY72Jx@lizhi-Precision-Tower-5810>
+ <3661300.LM0AJKV5NW@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87r03sgxf2.ffs@tglx>
-X-ClientProxiedBy: BYAPR01CA0044.prod.exchangelabs.com (2603:10b6:a03:94::21)
- To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3661300.LM0AJKV5NW@steina-w>
+X-ClientProxiedBy: BY5PR13CA0023.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::36) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,102 +75,228 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10531:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfaf0767-4b4e-4b71-2d40-08dd581a71a3
+X-MS-Office365-Filtering-Correlation-Id: 87c78609-07d7-48a7-96c5-08dd581b0093
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PPgzkbdjeM33xg2iPijQLsAyOSJNSOEljB+RkJHmjtbrB3nzG+njGK3tY+YR?=
- =?us-ascii?Q?uXY5PWVy/OS/bHS/ZLkNIXR01dZ8tJuOrhDzN/Anr5/6M+q8YmvJLJPnNbmc?=
- =?us-ascii?Q?5ubtZkkWhGIXga8HLBO1xB7ORjdEjd0UX0Ig/fXV8r3oIiW2BLR1a3LJPhdZ?=
- =?us-ascii?Q?gkROtvBd1sYMFR3JS7wgCeaAoivucsjtKjegNcCzH5QrvjBfAE9s4/3CYZDr?=
- =?us-ascii?Q?Jwdwzvw+534l7xnrPJTxIPZJuVk8lcdvtCzi66jk7Xl0xtD5JctcHT5vGXbH?=
- =?us-ascii?Q?VFgHHRsNg/qQ2RUfeZCWEVaBnsy2JSqUuz6NVKDTVPOAYX0lkQ4Lem3yijAd?=
- =?us-ascii?Q?XMDumNvanTxK37zHsWYJe9jJBjzWSg3FOch/Na+wtfoU85W0TBbx1vgYxTPq?=
- =?us-ascii?Q?OTESwgNxC1ASi0FSJgdxI+CSjAmB0/itdoJp8Pzr6ZiLzk6bGjJhXrzdCbeh?=
- =?us-ascii?Q?CkRs4hBwjPrtcNYvnsYKh/5l1MLL8VJNDI+elyeg8P82YHFEA9ElsEpaGwwU?=
- =?us-ascii?Q?HgQNX39e1btVlhalId4ipxszz4+MfOp+CjtihxyWc4lPzrQrHw+P+awV1UZ/?=
- =?us-ascii?Q?ONu9pKTb+KGx9IkV+M+sUIS9tv9QQphmuNt9bYAPOGkVlJcd9JXywNlZp+Te?=
- =?us-ascii?Q?jVHNrK2iUWWO4EWGEqwYlUjoPdJxFuyLU+ZEaq5fm5jz3PfKVrk61R8aznPd?=
- =?us-ascii?Q?WU3DscL5zvWFHgB971vZ131dcccUsyC1//ctb+xnE8WyVQ6V8q0z186lK8+w?=
- =?us-ascii?Q?MSKI6EoPfSC8TS5r1t+lrvXD9l0eR5FWv4lzWoxz4tOFfySxdqIPYz+RuepZ?=
- =?us-ascii?Q?rv643U3juGUE2R/mR0EBhaRX86jTD4bYd+rsdUQmIzoLcSbuY/+adbNDemK3?=
- =?us-ascii?Q?1uq1TD27chOwqK6VHlXGHy4rM+CqSIeM87ioOZVEtZq1275sBue1E8BH9upQ?=
- =?us-ascii?Q?x0ZTbWzxdJDOQSryuVspphPM8E6Vw2JKFIPYyUxRc2xmyZjsA5N2QRTL4MoG?=
- =?us-ascii?Q?GEQ5iKmILNJVKSTyhTKcuvYxgXPMJSIC2X0D8Aks2mm+Wy7U3bcBHFP0zRvG?=
- =?us-ascii?Q?KiMFBm8p6W/Dm2GZ8GsKrjHJwHoTS05+aLTbEKEuA0jb9QRQqgLalUemV4FF?=
- =?us-ascii?Q?lBbwhYF3z5Ft5glWSs1fy2SS3hUQRoHFLZrmZrrtEAMVE9Rs0ZJgP4Q4mfDg?=
- =?us-ascii?Q?2MwU+ZAu1adrRAEyTCoR1l7pZv5GLEzpEvOjGUtCH39DEoWhi2duMr4soURY?=
- =?us-ascii?Q?xJNk9/ry1FbZCIKFhP2vtntAzCTDnEDFKYQo2N7FOQehQ+3frrjCPzGznZbq?=
- =?us-ascii?Q?U8i+k+egqTa6NsfIb5BNkJNDYhbR3lX0tvkvLDhqrB3GrZaQBsEbH2KEBqav?=
- =?us-ascii?Q?ZOrISzpRW4xR0fFpf0+s8XJqy0vtIsewopRrbj98ugVGRTSCIWYoZCA9mCnK?=
- =?us-ascii?Q?86K5rVUPX0wPnEBg2+Pawl4dctSJb7lu?=
+	=?iso-8859-1?Q?jP8SNKio7jXF+3DRPnJ+PCKVoERSEzK3mk7gE0XxU/kAO6BgvSQXTD/ZE1?=
+ =?iso-8859-1?Q?p/s2uN58UQFvt0QcaKRj1sKul0FkqOapVBBrCt1gOg4WZ2heorZTMclB+P?=
+ =?iso-8859-1?Q?x/frPIxxG78qx584iuSJeQOyFMwA2kbCdF9f+z3dPgkul1hzF+o6bZFX6t?=
+ =?iso-8859-1?Q?9OhvTAA++foqg4dHniyM/IZYUI1dLfv+x7mOnezqUz7jUmaNLTilDkbgeP?=
+ =?iso-8859-1?Q?Ad2JyliNYDiKmhN1fkLrYCt7UmJlfOJES7lqClYAojhdworLUMsCd6v+U6?=
+ =?iso-8859-1?Q?yMDWRFpoH6iQWUjv/aH0ICHPYHzXGIH+XlO5D7YjCvd2XmZbMHkeOLdGic?=
+ =?iso-8859-1?Q?w6O9bua2k5WiTFR3w++Cu+VyCP8lZ7pHwfbSV1uchsFx//T3Wvep3kaLR8?=
+ =?iso-8859-1?Q?X6vOcsI0VtmM1fxgZWX8u5LNeBhV/G94Bc+ipqmGwo4/9D1SRkqy2F1zKD?=
+ =?iso-8859-1?Q?gj/kcyZI/WV8cNm676UrUytB8KcSJtHs4nrDPM4Q+atrM63z8FRUTuTotu?=
+ =?iso-8859-1?Q?6jAkrp4AZBi5GrdSvHtXjAxy6fHYon23pLF0fKXuZ8hFuiulSIbedAHprH?=
+ =?iso-8859-1?Q?Mr/W11lXXGhma8C35xWaLJRmkbD2oJ2R7w2VEpCUKDmL8qL/SDV0s9d4nK?=
+ =?iso-8859-1?Q?3z8eR6WmlcGRi6AqKG1foVoAl8R7yhjsiSHBRuzoGITqxI26DPjqzKm+HC?=
+ =?iso-8859-1?Q?wsw5Z6S/vrqX1lv7tuEayPehNAHcYEhJP+fUQxeyYyp31FiHNMY92IIRH8?=
+ =?iso-8859-1?Q?O9r9vL1a8Q9Dg0SiCo2zHMxO9az8lNPUDjpOKpEBry9uEKomPntgcvUH/v?=
+ =?iso-8859-1?Q?DLETdK3oChjEAXj6ZpU7BzHlXVeLvzqW2OY1XzMdVtuEC+wHo30CAZmhM3?=
+ =?iso-8859-1?Q?D8To5GE1reMYYf/7S5xS1ruW6RuGxB4Jp1iF0iN0Ajmv4n49CJUyus1XCz?=
+ =?iso-8859-1?Q?OZTWFpN5bhvF2XcROTDRkqedwLA17cE25EQ0JK8m27PAW4Baf+RCsgi/vg?=
+ =?iso-8859-1?Q?e1kgvkrAAt+Q2MustyrbGuykfvZN6nSrtwt0iXoCwGT2X+8xxvJ1y/CnYy?=
+ =?iso-8859-1?Q?gG7Vs3niSNG8zikuvk0coe+ma707fMux9ounhAOGpLhDskgFv4qBiyE97j?=
+ =?iso-8859-1?Q?2hx2Qi1qTORs4lknCcZ6hQm1MShGvgTRkgZVpGntZKS3iRDdEAcJ5pS6fr?=
+ =?iso-8859-1?Q?Zm4xddLI2MyoYev93A67JOSBc9k0qkRPhKHDUVwjE54PYG+orlS9M11X51?=
+ =?iso-8859-1?Q?2MdvZMRHJuG8kTfJhVqhFQS8S0zrtKYQjNDCLCKgv2E+BgnXJ4oKo3Q+2s?=
+ =?iso-8859-1?Q?KCQjSraej/Mt7pMwTrTEck3iA5Pen/72rQmf0A7t6aJJTuPpvfurRpOvas?=
+ =?iso-8859-1?Q?Pb+GIkjqlgqqEqvthVHYF3edNEffqoyPNaiwmTzABWywyt4nGyprbJx1Gd?=
+ =?iso-8859-1?Q?XZcTVEkk5o3zOEDa?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ASW/G482Udr6qfNSyJNhaMQ7ExBvorwMTCQqXdkL4aRQyzB5FrWPFBsnNrHT?=
- =?us-ascii?Q?GS58U9iHIjyNmjcsvmKrcNmjHd9xPI70A4hOOYwsaheD1REI4/4IGks/jggc?=
- =?us-ascii?Q?OOpNRBqjGLkKqK/GrOsIIOgAqfG68/WkxUY1H6wr40USQ9s7NDrKTM1GIHlH?=
- =?us-ascii?Q?F3f0nNmCEpXhCV0o6LT+1onZxEe7fVor+UnFVyCpQ+5LYwayKr0IwkHYdZKB?=
- =?us-ascii?Q?sGQK8W4ibGTpCXuki8R/DLaEjsO3YhGvj1GbE7MTNJ+g/uoFtS+zPhSLXs0j?=
- =?us-ascii?Q?wY22qIRGPENP3Jd3xF2kkmLbskeMHlbBhK1ddpGlReJ+XD29aQTy9VvFOZNA?=
- =?us-ascii?Q?Ljv16wODd23vJjAzKz0abOrsN7iQybpbdLS93UYiMZl0eYYHwB+5rdkcZurq?=
- =?us-ascii?Q?do2M4A46wfW3hopPinyswqXfk6oWGfnF3j3nyPJ2Dp0LuSDc+KUaCDAYscNI?=
- =?us-ascii?Q?cf/w4dEH557btuIV/VS0CPcTY6+i0aY++6FIAyDa7KAXgsh/JWJmKGzQVRzA?=
- =?us-ascii?Q?5i2p5d8PKl9rmp2zs0kZhe36LSCQhuv7RUoCSlnno+Var3k1WNu3H0Cs6r17?=
- =?us-ascii?Q?X+l0JZm+DUNMJToHpXDCvqvlfHcVZL/6zI4MPHeM73gPH2dpLMY66sDhpw6a?=
- =?us-ascii?Q?7/JzFhX9FFcyIbxOfWJiobfjG9n8lQ8RINl3amQvmye5Fkddjf0kvpsa4B7R?=
- =?us-ascii?Q?7z/yXou1dc+l60bOA7vQfwKK1usK0c/CoRfCeFZ7I7Hyg/bWrz75snFCyZjY?=
- =?us-ascii?Q?Q1jeadzCJlTbOoki6J1cTTNU/b8+Pt6wpnBRCDG8soB/MAaBc86V6l2XVLVQ?=
- =?us-ascii?Q?SDw8jyI0r1V9krQQI5NAXuiDNmocFNE2qVV3CGYpjIRKav7EPedw2UTDr6Fk?=
- =?us-ascii?Q?0+DZLfX6V67fu1yi5drr5cbOr3Txe+UYryZ705rp/tCgjRP/f1yeiFV3X6KM?=
- =?us-ascii?Q?SB0tK0BmNz7NWsBZVConLXk3Y15e4t3+Bgu2QxNMiU9mJ6P8hhZasdLDGXVF?=
- =?us-ascii?Q?E07/NZJOxV54GMZYrXee5mOBHOFwiHomUXFUfRp4qms08JXyDF35LYawPz63?=
- =?us-ascii?Q?Nij73bj6XNHFQNOdhmhvwZetvt2gmXkQ+1YHb++j7oM9ypyoCJP1v3e/EQ36?=
- =?us-ascii?Q?4dpXfaFeAWspNQkiDrr+sAQTzgOtHw8b6IL7jzsNTtqthD1jUbStxd/Xn+7p?=
- =?us-ascii?Q?7PDkRwU2hebQ942XvLt926hRObb3g++6glVlb5uIxgXzB1xIdGh2NzjvrZHV?=
- =?us-ascii?Q?lMjWmHf98c+m027pF2OZG0i3ok7FXQm31+G7vHggVW3AwgcpY9un58MobCLW?=
- =?us-ascii?Q?vTqsTpqdpAj4sZKj2gEiYA1lmG8MLRCRFwUqlHm3NNF1k4L9grRf5uc6uNbr?=
- =?us-ascii?Q?kRtXYtd0Jd2xSwOsbEv7jWPbke+1uM3JNcaPfNj//IIqxB5ZPACS+skkzTjl?=
- =?us-ascii?Q?Fm8MXfCHM0BNUyUzCVEPELDbhdu2PgujXiUXr/p1V+rBzvTDIll8nEprPVDU?=
- =?us-ascii?Q?DOu5QdmWnCWKrkPPSp3xNMRvVKAP3uzS5TeJ9K146vrrvpJr+Kuc8DK3vX1i?=
- =?us-ascii?Q?gSoZjH/5+vN/1TpFKqWVs1IxJJOWY78uTCOOx05/?=
+	=?iso-8859-1?Q?ij1zWOPgzhSiZSeEAot7JxiYaeel3jxYGvLFzKENsEn0j5VwVsLt7KGgyS?=
+ =?iso-8859-1?Q?hYLF8prjVAQ++njRlwPRDu71U2jH9fH8dpseKft6EJbIr3Ypyq1PyeH/Je?=
+ =?iso-8859-1?Q?AvaWH3x4tSAOcauFmlp88oochtlC6IfqaSlOlzckn6puKXe+PTyO+6iaV9?=
+ =?iso-8859-1?Q?ECzX7hYEaGGEUsVrNCbsUzBl04tWAit1UaTvVsn0Wi4hCb69l3ApQVk4M6?=
+ =?iso-8859-1?Q?sahjW2ZFUBBYQ455w0bQXx3PQJJU001DtNG5a3Fg37Qk0JzFFzlb8ShG8p?=
+ =?iso-8859-1?Q?oiLO3vxJ9w1NIYzsvXCHgPIAxGrefNEEKTqbH4auWQT38VIha/PbBoViMO?=
+ =?iso-8859-1?Q?I21Z6+Z9qon5WNtgmv9tn9mNnKOoY/SkPxY+XN8koRoZGf/wzStCZFoghD?=
+ =?iso-8859-1?Q?98TPLLtQlulcA28yLAfqVuDbzMfoXyUv25XbUUldfFf8VQKLC1Z6ldnDk9?=
+ =?iso-8859-1?Q?cU8xcIFhvkBwNT65tqoTrL9Jep/bg8CjCZTBmUWIQHJyxSSmve5OdzQqZg?=
+ =?iso-8859-1?Q?M1kM1YVy61PomSRwcGIsvzZi7p+0w/hGsx0Bhw1op77fw+LD8UIzEYjBl0?=
+ =?iso-8859-1?Q?txFPQ19qlYpeXO/haFZFqJW9OEEpPXKRGul7QLVNHvWAXuVw5w/vTRVXVU?=
+ =?iso-8859-1?Q?tTeVAwzjC2Ts+hsHPPza02J/nBOnxI/DOYGSUjF7LjEKkXCnSK60uAqlxy?=
+ =?iso-8859-1?Q?LnsHV6KUjlTF8t8ys/MvnLrGfSkGIC5DukdO0YjtpR4aL0cOjqBLyH2WcM?=
+ =?iso-8859-1?Q?t4p6liNY6VVFNHd6lwcDfEg3GzAbIpek4XHxaMmLg8BqcryZ7Ft2MG/lQ7?=
+ =?iso-8859-1?Q?NG7FTqEnBkcZgr7pEXOoKkArtENk3h9T0DtAqGtnyTl/Xt0Jlpl7Gbaj/8?=
+ =?iso-8859-1?Q?d8bDOZ9z/8A90fHPZ8vbTyMm3gSQzwGwc9JifktmkuMDDhiea2x8gSROdc?=
+ =?iso-8859-1?Q?DsIzQq3gd7hi/63zbcIv8eteW26l27bLowPBhRQ+WCWElF3Da3TlaJHOwg?=
+ =?iso-8859-1?Q?0kxP+4P6PTMNHReLJXsk5rDC3l6mTDFt/fE6cpEwNobSu1rkJglJrauLAB?=
+ =?iso-8859-1?Q?4f6bGjtrZmvIafwCQCdoFAMYKqLG7+KEYgKflVjO6dyGzYEzCxxnmrUYbl?=
+ =?iso-8859-1?Q?0mu56ZO7j2+IjKyNAo45qMTGMfH0X4XHAPOODnsqTyRr+9u2yrmVm5a1GB?=
+ =?iso-8859-1?Q?rbAw7VwFwLnr5i9YeL94TJyQp53bXAdft9dam7HU/xJQSFHbkDJxJqjK9Y?=
+ =?iso-8859-1?Q?Zhe2GVQzPJcFltI+AauP1sHI3FK43nAUIhYCLgEs6quMCRmGib2CoTQoZl?=
+ =?iso-8859-1?Q?VZNwvKp2lsP42rgv2X+GwUvoibIX6LfObzRDW88yq90Chls5/C6v7pQet3?=
+ =?iso-8859-1?Q?FHkm9jm/ELoLy0ZOjVn292Uwr/XzfQqTzXRW4gg0bFqmMEShIYZ2oJzw/L?=
+ =?iso-8859-1?Q?91P1ftaVf8I80hAXUqiMC8ONB/5GwWWHzHJ0tX0fOGqdV0Tm2P93umqOUJ?=
+ =?iso-8859-1?Q?gUXdbHFWExrLCudJqQyI1ZQxGP6OpahGb4U4wx/XfcMO556mKgMMSBB1uV?=
+ =?iso-8859-1?Q?zZ139Nd1fD9D5NZo8OyYjoXxwxQ5lCA0YwhNVbMw41GnqRekUhUjAOUxJU?=
+ =?iso-8859-1?Q?pvs6wz8caAvAD+gZvZxyowqVNWBvWdZNnd?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfaf0767-4b4e-4b71-2d40-08dd581a71a3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87c78609-07d7-48a7-96c5-08dd581b0093
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 17:07:55.6772
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 17:11:55.4569
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VkKOekWPuBS9BjXXC+wZCcAbLb1WBkDROBR5tIIUokcOSdtZl5Au708VZYnTqD/sZd2+eSxTncwyqby1/IagfA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: xCnrj3uBZaKe6egbhFZJEHv88y+tlVdLapE4lrrMTymxa6cf0jLZNx0ONONq+fi1QfOedKsVeuzLLa82PNj/kg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10531
 
-On Thu, Feb 20, 2025 at 09:42:57PM +0100, Thomas Gleixner wrote:
-> On Thu, Feb 20 2025 at 15:01, Frank Li wrote:
-> > On Tue, Feb 11, 2025 at 02:21:53PM -0500, Frank Li wrote:
-> >
-> > Thomas Gleixner and Marc Zyngier:
-> >
-> > 	Do you have any comments about irq/msi part?
+On Fri, Feb 28, 2025 at 05:01:15PM +0100, Alexander Stein wrote:
+> Hi Frank,
 >
-> I'm not having objections, but this needs to be acked by Marc as he had
-> pretty strong opinions on the overall approach.
+> Am Freitag, 28. Februar 2025, 16:32:50 CET schrieb Frank Li:
+> > On Fri, Feb 28, 2025 at 10:08:58AM +0100, Alexander Stein wrote:
+> > > Hi Frank,
+> > >
+> > > Am Donnerstag, 27. Februar 2025, 17:39:47 CET schrieb Frank Li:
+> > > > On Thu, Feb 27, 2025 at 08:54:13AM +0100, Alexander Stein wrote:
+> > > > > Hi Frank,
+> > > > >
+> > > > > Am Mittwoch, 26. Februar 2025, 17:31:26 CET schrieb Frank Li:
+> > > > > > On Wed, Feb 26, 2025 at 01:11:37PM +0100, Alexander Stein wrote:
+> > > > > > > Hi Frank,
+> > > > > > >
+> > > > > > > Am Dienstag, 28. Januar 2025, 22:15:58 CET schrieb Frank Li:
+> > > > > > > > Add PCIe's msi-map and iommu-map property because i.MX95 support smmu and
+> > > > > > > > its.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > > ---
+> > > > > > > >  arch/arm64/boot/dts/freescale/imx95.dtsi | 14 ++++++++++++++
+> > > > > > > >  1 file changed, 14 insertions(+)
+> > > > > > > >
+> > > > > > > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > > > > index 6b8470cb3461a..2cebeda43a52d 100644
+> > > > > > > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > > > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > > > > @@ -1573,6 +1573,12 @@ pcie0: pcie@4c300000 {
+> > > > > > > >  			assigned-clock-parents = <0>, <0>,
+> > > > > > > >  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+> > > > > > > >  			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> > > > > > > > +			/* pcie0's Devid(BIT[7:6]) is 0x00, stream id(BIT[5:0]) is 0x10~0x17 */
+> > > > > > > > +			msi-map = <0x0 &its 0x10 0x1>,
+> > > > > > > > +				  <0x100 &its 0x11 0x7>;
+> > > > > > >
+> > > > > > > Aren't you missing msi-map-mask = <0x1ff>; here? Similar to pcie1.
+> > > > > > > Either way, with this change PCIe on pcie0 is not working anymore,
+> > > > > > > regardless of msi-map-mask.
+> > > > > >
+> > > > > > Yes, it should have msi-map-mask. During my test, I have not enable enetc
+> > > > > > so I have not found this problem.
+> > > > >
+> > > > > Just to be clear: This is not about enetc. This works fine here.
+> > > > >
+> > > > > > > Without msi-map-mask:
+> > > > > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > > > > OF: /soc/pcie@4c300000: no msi-map translation for id 0x300 on (null)
+> > > > > > > > r8169 0000:03:00.0: error -EINVAL: enable failure
+> > > > > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -22
+> > > > > > >
+> > > > > > > With msi-map-mask:
+> > > > > > > > OF: /soc/pcie@4c300000: iommu-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > > > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > > > > r8169 0000:03:00.0: error -EIO: PCI read failed
+> > > > > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
+> > > > > >
+> > > > > > Can you try remove iommu-map and keep msi-map? then remove msi-map and
+> > > > > > keep iommu-map to check which one cause this problem.
+> > > > >
+> > > > > With only msi-map removed, but smmu enabled:
+> > > > > > arm-smmu-v3 490d0000.iommu: event 0x10 received:
+> > > > > > arm-smmu-v3 490d0000.iommu:      0x0000001100000010
+> > > > > > arm-smmu-v3 490d0000.iommu:      0x0000020a00000000
+> > > > > > arm-smmu-v3 490d0000.iommu:      0x000000009b0cc000
+> > > > > > arm-smmu-v3 490d0000.iommu:      0x0000000000000000
+> > > > > > arm-smmu-v3 490d0000.iommu: event: F_TRANSLATION client: 0000:01:00.0 sid: 0x11 ssid: 0x0 iova: 0x9b0cc000 ipa: 0x0
+> > > > > > arm-smmu-v3 490d0000.iommu: priv data read s1 "Input address caused fault" stag: 0x0 r8169 0000:03:00.0
+> > > > > > enp3s0: Link is Down
+> > > > >
+> > > > > With only iommu-map removed, both smmu enabled or disabled:
+> > > > > > OF: /soc/pcie@4c300000: msi-map, using mask 000001ff, id-base: 00000100, out-base: 00000011, length: 00000007, id: 00000300 -> 00000011
+> > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > > r8169 0000:03:00.0: error -EIO: PCI read failed
+> > > > > > r8169 0000:03:00.0: probe with driver r8169 failed with error -5
+> > > > >
+> > > > > Only if smmu is disabled and msi-map is removed the driver probes
+> > > > > successfully:
+> > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4c0, IRQ 160
+> > > > > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
+> > > > > > r8169 0000:03:00.0 enp3s0: renamed from eth0
+> > > > > > r8169 0000:03:00.0: enabling bus mastering
+> > > > > > r8169 0000:03:00.0 enp3s0: Link is Down
+> > > > >
+> > > > > > >
+> > > > > > > Without msi-map/iommu-map:
+> > > > > > > > r8169 0000:03:00.0: enabling device (0000 -> 0003)
+> > > > > > > > r8169 0000:03:00.0: enabling Mem-Wr-Inval
+> > > > > > > > r8169 0000:03:00.0 eth0: RTL8168g/8111g, d8:9d:b9:00:16:10, XID 4c0, IRQ 166
+> > > > > > > > r8169 0000:03:00.0 eth0: jumbo features [frames: 9194 bytes, tx checksumming: ko]
+> > > > > > > > r8169 0000:03:00.0 enp3s0: renamed from eth0
+> > > > > > > > r8169 0000:03:00.0: enabling bus mastering
+> > > > > > > > r8169 0000:03:00.0 enp3s0: Link is Down
+> > > > > > >
+> > > > > > > pcie1 works as expected. But this is only a single PCIe device, rather than
+> > > > > > > having a PCIe bridge.
+> > > > > > > Any idea what's wrong here?
+> > > > > >
+> > > > > > Can you help dump more information at for PCIe bridge case:
+> > > > > >
+> > > > > > imx_pcie_add_lut(), need rid and sid information.
+> > > > > > drivers/pci/controller/dwc/pci-imx6.c
+> > > > >
+> > > > > Just to be clear, without msi-map and iommu-map I get:
+> > > > > > imx6q-pcie 4c380000.pcie: rid: 0x0, sid: 0x18
+> > > > > > imx6q-pcie 4c380000.pcie: rid: 0x100, sid: 0x19
+> > > >
+> > > > Can you help dump register value PE0_LUT_CREQID offset 0x101 for your
+> > > > smmu-map or msi-map enable case
+> > >
+> > > I am assuming you meant offset 0x101c, as stated in the RM.
+> > > I added a dump directly before printing "PCI read failed" in r8169_main.c.
+> >
+> > Can you point me the code about where "error -EIO: PCI read failed"?
+>
+> The error messages comes from [1]. As far as I can tell, this is the first
+> read after pcim_iomap_table().
 
-Marc Zyngier:
+Strange, it is CPU read MMIO, should not go through iommu at all.
 
-	Do you have any concern about irq/msi part? Is it clean enough to
-answer what your conern at previous version?
+>
+> > I tested nvme devices worked at both PCIE0 and PCIE1.
+> >
+> > Which PCI switch do you use?
+>
+> This is a COTS MiniPCIe ethernet card [2]. If I'm reading correctly
+> the bridge seems to be a P17C9X20
 
-	How can we move forward? This help PCI EP side avoid software
-polling status.
+I order the same chipset one from amazon. Let me debug it after get it.
 
 Frank
 
 >
-> Thanks,
+> Thanks and best regards
+> Alexander
 >
->         tglx
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/net/ethernet/realtek/r8169_main.c?h=next-20250228#n5454
+> [2] https://www.delock.com/produkt/95237/merkmale.html?f=s
+> --
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+>
+>
