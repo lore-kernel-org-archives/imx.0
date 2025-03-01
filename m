@@ -1,144 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19DF1D5AB6;
-	Sat,  1 Mar 2025 12:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B123F372;
+	Sat,  1 Mar 2025 12:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740831472; cv=none; b=Qka4uR4zs19JsvggL7Q9J/hwKU6ARAdO9cMwPbdBhQWFRWl3KRiSV4s/2putT8acmLzMoMx9u8rmojSb/dv4Hiaq14DytLuaDkBtkK63OX78G1M2Qn/WqIR7vP4OjJQLnmECidtV+lheqVcc1xpDr4YzX++F0LMoocnLsasLrKw=
+	t=1740832574; cv=none; b=tx6CPyWvClYWdZyoYb5pa/pP9zmVswTpBFcVW6aObMfNxJeZc0QUw76tPxZGwjzNJL+KjIPv2Ez2GbgaEEE8YZxqCeNd5oSUveoa/qMZWvOY1+F8WCvvVPtCnCFvFmD+r+5CgVfG/DQuT/ULfK3tFWThnPIaPvdHyBKJImW/ReU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740831472; c=relaxed/simple;
-	bh=A8PdxtCizk6PgunyHAGQsWVRlwM9EY3+12Tc6z3znSM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ggn1lM/jdaS9lNuDoirpGjWhtzSpVaufRfb/sPUPDhLFgkXvtFy3AvdyXfjsC2GSEnKmb1wueCE2DxEn5uOvI2hQHozLELVOgCB2O4DI+jQN4/zhDsjaEse7cTru5kiKz2+8BYG7AjMVBlOSBgRL0H89xrVG99G8RxxnLinuI1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhPy5+fO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740832574; c=relaxed/simple;
+	bh=tQYPuG6Ii/l98cVIkI3pivmYR2x8MKY/gWKoA8SUagA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biqYjVM6S+U+BIwLRo1Ic78tvE2LDt+OJC4L1W5p+oEJrEp+dMrd1UXDC0elnOGNDP+c0MW/vZPZ3ZLoWUsU7azmCJuU4vEZNBiGTXWpEQmi2ruyCICFzYDVbldfWcslZxWs8qp2aTM3IIy7h4k0L9j14G9nHkUtmcoQXPdXyak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=f/ye+d10; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhPy5+fO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D36C4CEDD;
-	Sat,  1 Mar 2025 12:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740831471;
-	bh=A8PdxtCizk6PgunyHAGQsWVRlwM9EY3+12Tc6z3znSM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nhPy5+fOugQVe9poY7fQwjki9+P9S5nAFF7/0COxLPJun7AgwHNF1TsOHcKCUswYj
-	 UKVBh311X/Qk27ZtNHK3Tehk193k3QgTaCn5jQ3M2X6JXObmTolINnm2sYP/28HImG
-	 +oX+sz5e+NfyVqK0jK8c2+4f5uPYOx9Hxn6uVdx7NyV2eSQirUq8oOgrPLE8rL/vwS
-	 /O+CaBOIXSBZA05VOfTXyj9iNLyad0/43WHOcEBCWq4PGn/nCLeYnV7yoAz54teeWE
-	 /RUxG/sphEsuVn3x0lOlKMXtIZVJ0h3FR1Un1qjr0MrofAosyShEgeeQVTRkFG0SGi
-	 VphvI9rWcvJbw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1toLmu-009Ltj-1q;
-	Sat, 01 Mar 2025 12:17:48 +0000
-Date: Sat, 01 Mar 2025 12:17:47 +0000
-Message-ID: <86jz99osgk.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>,	"Rafael J. Wysocki"
- <rafael@kernel.org>,	Thomas Gleixner <tglx@linutronix.de>,	Anup Patel
- <apatel@ventanamicro.com>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,	Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>,	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?=
- <kw@linux.com>,	Bjorn Helgaas <bhelgaas@google.com>,	Arnd Bergmann
- <arnd@arndb.de>,	Shuah Khan <shuah@kernel.org>,	Richard Zhu
- <hongxing.zhu@nxp.com>,	Lucas Stach <l.stach@pengutronix.de>,	Lorenzo
- Pieralisi <lpieralisi@kernel.org>,	Rob Herring <robh@kernel.org>,	Shawn Guo
- <shawnguo@kernel.org>,	Sascha Hauer <s.hauer@pengutronix.de>,	Pengutronix
- Kernel Team <kernel@pengutronix.de>,	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,	Conor Dooley
- <conor+dt@kernel.org>,	Niklas Cassel <cassel@kernel.org>,
-	dlemoal@kernel.org,	jdmason@kudzu.us,	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,	linux-pci@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,	imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v15 01/15] platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
-In-Reply-To: <20250211-ep-msi-v15-1-bcacc1f2b1a9@nxp.com>
-References: <20250211-ep-msi-v15-0-bcacc1f2b1a9@nxp.com>
-	<20250211-ep-msi-v15-1-bcacc1f2b1a9@nxp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="f/ye+d10"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=P3/qjrfLtWYJDebvoDnNBB0jTi3XIrdnZ0O+aHW2BIM=; b=f/ye+d10lC3QiYvG
+	pHW+c2INfQEuEYy1KkYauJBXMemdAujPqVC2eLg3iSKWj7XTsI+cNoLpTAYkJ+3RmUhZGIRIIM929
+	K6GXPQ/Ls+1Lg994KqWr2jaxKvAZvstaMENOdvBCSlzmq7zyFi8KAdm3VZULsPfd/dAZnmqh8pERt
+	DWYhubypGNXQIgSwx+q2uVk1/s9+0fgnJEhoG9m2iMbzVd4V54SlWxwIgz+GBniDhJtcaKUVrKOJ/
+	pHu9Rm80WS2FJVeZkZEU9c7n+6TC4FK5WSKA4k4uZC1hmiTMaNddm87x++XfqJKK6nmsIMeG2EQFv
+	FYdB29KiD8dOQXYUIg==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1toM4S-001pv8-2I;
+	Sat, 01 Mar 2025 12:35:56 +0000
+Date: Sat, 1 Mar 2025 12:35:56 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: p.zabel@pengutronix.de, airlied@gmail.com, simona@ffwll.ch,
+	deller@gmx.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] gpu: ipu-v3: Remove unused functions
+Message-ID: <Z8L_LOkOfRXUAKN6@gallifrey>
+References: <20241226022752.219399-1-linux@treblig.org>
+ <174082343297.2941786.11452976094065423321.b4-ty@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Frank.Li@nxp.com, kishon@kernel.org, rafael@kernel.org, tglx@linutronix.de, apatel@ventanamicro.com, gregkh@linuxfoundation.org, dakr@kernel.org, manivannan.sadhasivam@linaro.org, kw@linux.com, bhelgaas@google.com, arnd@arndb.de, shuah@kernel.org, hongxing.zhu@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, robh@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, krzk+dt@kernel.org, conor+dt@kernel.org, cassel@kernel.org, dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <174082343297.2941786.11452976094065423321.b4-ty@linaro.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 12:35:40 up 296 days, 23:49,  1 user,  load average: 0.00, 0.00,
+ 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Tue, 11 Feb 2025 19:21:54 +0000,
-Frank Li <Frank.Li@nxp.com> wrote:
+* Dmitry Baryshkov (dmitry.baryshkov@linaro.org) wrote:
+> On Thu, 26 Dec 2024 02:27:45 +0000, linux@treblig.org wrote:
+> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > 
+> > Hi,
+> >   This set removes a bunch of functions in ipu-v3 that
+> > have been unused for a long time (since 2012-2017).
+> > 
+> >   No changes to functions are made, just full deletions.
+> > 
+> > [...]
 > 
-> The follow steps trigger kernel dump warning and
-> platform_device_msi_init_and_alloc_irqs() return false.
+> Applied to drm-misc-next, thanks!
+
+Thanks!
+
+Dave
+
+> [1/7] gpu: ipu-v3: ipu-ic: Remove unused ipu_ic_task_graphics_init
+>       commit: 16e3bf497fb2d379f3d461fa0c85d14de0a3d183
+> [2/7] gpu: ipu-v3: Remove unused ipu_rot_mode_to_degrees
+>       commit: a52ba18c254c0a3819e632e6371554f1c6f5bd16
+> [3/7] gpu: ipu-v3: Remove unused ipu_idmac_channel_busy
+>       commit: 4f9c64e95c3510f4a5192bd401de5611c1dd5637
+> [4/7] gpu: ipu-v3: Remove unused ipu_image_convert_* functions
+>       commit: 96e9d754b35e87a5be2de7dce3c810ffdd769c84
+> [5/7] gpu: ipu-v3: Remove unused ipu_vdi_unsetup
+>       commit: 27985c86e283e1e5ac8a9809f189f03643a6f5f2
+> [6/7] gpu: ipu-v3: ipu-csi: Remove unused functions
+>       commit: c687c3147d5de801ed835b077802b68fe85d8a3d
+> [7/7] gpu: ipu-v3 ipu-cpmem: Remove unused functions
+>       commit: 2800028d5bdee8e9a3cda2fec782dadc32225d8d
 > 
-> 1: platform_device_msi_init_and_alloc_irqs();
-> 2: platform_device_msi_free_irqs_all();
-> 3: platform_device_msi_init_and_alloc_irqs();
+> Best regards,
+> -- 
+> With best wishes
+> Dmitry
 > 
-> [   76.713677] WARNING: CPU: 3 PID: 134 at kernel/irq/msi.c:1028 msi_create_device_irq_domain+0x1bc/0x22c
-> [   76.723010] Modules linked in:
-> [   76.726082] CPU: 3 UID: 0 PID: 134 Comm: kworker/3:1H Not tainted 6.13.0-rc1-00015-gd60b98003b43-dirty #57
-> [   76.735741] Hardware name: NXP i.MX95 19X19 board (DT)
-> [   76.740883] Workqueue: kpcitest pci_epf_test_cmd_handler
-> [   76.746212] pstate: a0400009 (NzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [   76.753172] pc : msi_create_device_irq_domain+0x1bc/0x22c
-> [   76.758586] lr : msi_create_device_irq_domain+0x104/0x22c
-> [   76.763988] sp : ffff800083f43be0
-> [   76.767313] x29: ffff800083f43be0 x28: 0000000000000000 x27: ffff8000827a7000
-> [   76.774466] x26: ffff00008085f400 x25: ffff00008000b180 x24: ffff000080fc6410
-> [   76.781624] x23: ffff000085704cc0 x22: ffff8000811c8828 x21: ffff000085704cc0
-> [   76.788774] x20: ffff000082814000 x19: 0000000000000000 x18: ffffffffffffffff
-> [   76.795933] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [   76.803083] x14: 0000000000000000 x13: 0000000f00000000 x12: 0000000000000000
-> [   76.810233] x11: 0000000000000000 x10: 000000000000002d x9 : ffff800083f43ba0
-> [   76.817383] x8 : 00000000ffffffff x7 : 0000000000000019 x6 : ffff0000857e443a
-> [   76.824533] x5 : 0000000000000000 x4 : ffffffffffffffff x3 : ffff000085704ce8
-> [   76.831683] x2 : ffff000080835640 x1 : 0000000000000213 x0 : ffff0000877189c0
-> [   76.838840] Call trace:
-> [   76.841287]  msi_create_device_irq_domain+0x1bc/0x22c (P)
-> [   76.846701]  msi_create_device_irq_domain+0x104/0x22c (L)
-> [   76.852118]  platform_device_msi_init_and_alloc_irqs+0x6c/0xb8
 > 
-> Do below two things in platform_device_msi_init_and_alloc_irqs().
-> - msi_create_device_irq_domain()
-> - msi_domain_alloc_irqs_range()
-> 
-> But only call msi_domain_free_irqs_all() in
-> platform_device_msi_free_irqs_all(), which missed call
-> msi_remove_device_irq_domain(). This cause above kernel dump when call
-> platform_device_msi_init_and_alloc_irqs() again.
-
-I don't think this commit message makes much sense, and doesn't
-explain the essential problem, which is the lack of symmetry. I'd
-suggest something like:
-
-"platform_device_msi_init_and_alloc_irqs() performs two tasks:
-allocating the MSI domain for a platform device, and allocate a number
-of MSIs in that domain.
-
-platform_device_msi_free_irqs_all() only frees the MSIs, and leaves
-the MSI domain alive.
-
-Given that platform_device_msi_init_and_alloc_irqs() is the sole tool
-a platform device has to allocate platform MSIs, it would make sense
-for platform_device_msi_free_irqs_all() to teardown the MSI domain at
-the same time as the MSIs.
-
-This also avoids warnings and unexpected behaviours when a driver
-repeatedly allocates and frees MSIs."
-
-With that:
-
-Acked-by: Marc Zyngier <maz@kernel.org>
-
-	M.
-
 -- 
-Without deviation from the norm, progress is not possible.
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
