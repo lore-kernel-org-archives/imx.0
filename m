@@ -1,344 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CD61E522
-	for <imx@lists.linux.dev>; Sun,  2 Mar 2025 15:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60CCC13B;
+	Sun,  2 Mar 2025 17:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740927838; cv=none; b=WMSWxzgUmlN29HNiJDqSKIpgyq7kmbaDkGphVOwYr7AWjS1Ojzvgo5te/9wVby/HAfVNPVkRfAEikKUh+uZjGUmQPx7HwDuteTo8KpU9B7O3T8qFqcm2LzmUVf3/RB+suniuzHQdUsuGH6Do65mEuLR0P1N++2Lt6qUHhXpG7QM=
+	t=1740938171; cv=none; b=HSv5q07w0kDDcwo/lAGBZnPITHQpZ55vgVWzis44tjMlw5UGTe19Wg6Uvx1UwVmw7QJgeHP5gHlsUJ55BIOyPk8rE92P58VorglkyimIMZcXQzmlNEzi/ybuI/3/M1i9jZLjXsMOAXE7AKsnvJzLvWv9F9XM6YqPHl4s5X42Qw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740927838; c=relaxed/simple;
-	bh=yKEyjVjrcZ07H0H/l2fXaHH3kRT0mUTfx7ZYWTJvsrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MKw7hsbuN7upNrQxQldhYWDeLJ1a/vAtxmneSv1TXiX2FzHGGI4wDn/l5WOFmnfYF8+qBMM4UGmockqBu7qAA46rok/PpKsThbRfhbakZlxigGBnYxsGlyeyMMWo9SvMIh4zXZuq/EG+ZIxIFCZo2E+zwyg6qg7qaim+lVHgl6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zpv+ZJN+; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zpv+ZJN+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A16C4CEFF
-	for <imx@lists.linux.dev>; Sun,  2 Mar 2025 15:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740927838;
-	bh=yKEyjVjrcZ07H0H/l2fXaHH3kRT0mUTfx7ZYWTJvsrs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zpv+ZJN+pYf6vpFtD1qXkXbY8//W/77cBmoSU7sykIszFxrZ+3xkXbxzvgTEWBAGF
-	 A2nk+qP7wSCGjvexvvfNm+CW0nayj7O1d1M3taQ9gvF2IZjyE4FOHeSpJVu3bXwI7f
-	 YtL1z6Tqn8o/iyAL/aHRmSuB8MML3y0LPUgVV4Q8PyCroeFy16SJccIbONKZu02/gK
-	 awBxB7+nP1LxK0u7JIDtkZgB+iw4OgHOzL//MD3UT453Lyyex/pEJYO6eCrexDty/Z
-	 Az0b2wvdcmV8kMB5xAIgHysgX+wbXAa8EguESVqcF6gy7KcK9ZaZ/BX0va/GDIVSzM
-	 K1T8XwJmUlulw==
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fee05829edso1804856a91.3
-        for <imx@lists.linux.dev>; Sun, 02 Mar 2025 07:03:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUTeX9oqb9vtaMrudyG8zWwCVp+lABtPbiVWqju1ViX+RKi+VjkubA3kNJdlEFk6whtu/0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxd1UAQpcNmbI3651mJh3w43CUNPpAP5dy1bBi637icQZZvdwBq
-	CPfcLt25L3TVCE+pjsIHb5Vs1e9lxSMPgJUb4n6zi2fBmwaYNmv2wZjfpRgPKoSdmE5+Vcabn3c
-	SaMGKgUg8x3YCLMZrENYfoVhNaw==
-X-Google-Smtp-Source: AGHT+IFcggPNuy4DXBSberKRtq5j3TpP8ycVDoZHKl3XBUqSRO6lbtiDAuC4ZtjulRmLzqaolJxpQyXzSIZZGSZq2Ew=
-X-Received: by 2002:a17:90b:3c02:b0:2fa:1029:f169 with SMTP id
- 98e67ed59e1d1-2febabf406cmr17371736a91.33.1740927837148; Sun, 02 Mar 2025
- 07:03:57 -0800 (PST)
+	s=arc-20240116; t=1740938171; c=relaxed/simple;
+	bh=lnQZAyT6pee79h3cEN16oOAZ7yiLgLiJJjZhexo20uE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=TGdlAt1nGic/6FSwZmmo1qvTdG2bVlNKi/u/i/FBxz/iMOWwn+cTpQFt6ebJAXgaBwfVZl7ot4GEDxls032r4aOIQ4v98/4QVMAPvrK6BF7HhVQIwl2JYSUqVzBkV+BJHLiMgBi4J4Dk2FgxLqrGA8f16lW/qZ0unWe3WL69ejY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1tonXr-007Sul-2g;
+	Sun, 02 Mar 2025 17:56:06 +0000
+Received: from ben by deadeye with local (Exim 4.98)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1tonXo-00000003rfR-3Wo5;
+	Sun, 02 Mar 2025 18:56:04 +0100
+Message-ID: <5a5a21d119da57ad16d6971951e532b30465bf1c.camel@decadent.org.uk>
+Subject: CVE-2024-50181: clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux
+ for i.MX7D
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Peng Fan <peng.fan@nxp.com>, Abel Vesa <abelvesa@kernel.org>, 
+	cve@kernel.org
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev
+Date: Sun, 02 Mar 2025 18:55:52 +0100
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-jI3jpvw8/Aw06qBarYxD"
+User-Agent: Evolution 3.54.1-1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250213-mem-cocci-v3-v1-0-93466d165349@redhat.com> <20250213-mem-cocci-v3-v1-4-93466d165349@redhat.com>
-In-Reply-To: <20250213-mem-cocci-v3-v1-4-93466d165349@redhat.com>
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Date: Sun, 2 Mar 2025 23:04:44 +0800
-X-Gmail-Original-Message-ID: <CAAOTY_9vqSTQBa2EkdBRiznxKG0nphisen1aCipQYN1qgHzrfg@mail.gmail.com>
-X-Gm-Features: AQ5f1Jow8xnYudaM1cpXtjCz7_kHiw0p--GeKhar_Us_V5O0D7c-NQScsqvu7NU
-Message-ID: <CAAOTY_9vqSTQBa2EkdBRiznxKG0nphisen1aCipQYN1qgHzrfg@mail.gmail.com>
-Subject: Re: [PATCH 04/12] drm/mediatek: move to devm_platform_ioremap_resource()
- usage
-To: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Joel Stanley <joel@jms.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Stefan Agner <stefan@agner.ch>, 
-	Alison Wang <alison.wang@nxp.com>, Xinliang Liu <xinliang.liu@linaro.org>, 
-	Tian Tao <tiantao6@hisilicon.com>, Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Yongqin Liu <yongqin.liu@linaro.org>, 
-	John Stultz <jstultz@google.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Marek Vasut <marex@denx.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Alain Volmat <alain.volmat@foss.st.com>, 
-	Raphael Gallais-Pou <rgallaispou@gmail.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
-	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Alexey Brodkin <abrodkin@synopsys.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-aspeed@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, 
-	linux-doc@vger.kernel.org, CK Hu <ck.hu@mediatek.com>
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+
+
+--=-jI3jpvw8/Aw06qBarYxD
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Anusha:
+Hi all,
 
-Anusha Srivatsa <asrivats@redhat.com> =E6=96=BC 2025=E5=B9=B42=E6=9C=8814=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=888:20=E5=AF=AB=E9=81=93=EF=BC=
-=9A
->
-> Replace platform_get_resource + devm_ioremap_resource
-> with just devm_platform_ioremap_resource()
->
-> Used Coccinelle to do this change. SmPl patch:
-> @rule_1@
-> identifier res;
-> expression ioremap_res;
-> identifier pdev;
-> @@
-> -struct resource *res;
-> ...
-> -res =3D platform_get_resource(pdev,...);
-> -ioremap_res =3D devm_ioremap_resource(...);
-> +ioremap_res =3D devm_platform_ioremap_resource(pdev,0);
+CVE-2024-50181 is supposed to be fixed by commit a54c441b46a0 "clk: imx:
+Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D"=C2=A0but I think this
+assignment should be rejected.
 
-Applied to mediatek-drm-next [1], thanks.
+Based on
+<https://lore.kernel.org/all/DU0PR04MB9417404E8E89CB82386146B6881E2@DU0PR04=
+MB9417.eurprd04.prod.outlook.com/>
+it doesn't seem like there was a real issue to be fixed in the upstream
+kernel.
 
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.=
-git/log/?h=3Dmediatek-drm-next
+Ben.
 
-Regards,
-Chun-Kuang.
+--=20
+Ben Hutchings
+Any smoothly functioning technology is indistinguishable
+from a rigged demo.
 
->
-> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Reviewed-by: Maxime Ripard <mripard@kernel.org>
-> Reviewed-by: CK Hu <ck.hu@mediatek.com>
-> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
-> ---
->  drivers/gpu/drm/mediatek/mtk_disp_color.c | 4 +---
->  drivers/gpu/drm/mediatek/mtk_disp_gamma.c | 4 +---
->  drivers/gpu/drm/mediatek/mtk_disp_merge.c | 4 +---
->  drivers/gpu/drm/mediatek/mtk_disp_ovl.c   | 4 +---
->  drivers/gpu/drm/mediatek/mtk_disp_rdma.c  | 4 +---
->  drivers/gpu/drm/mediatek/mtk_dsi.c        | 4 +---
->  drivers/gpu/drm/mediatek/mtk_hdmi.c       | 4 +---
->  drivers/gpu/drm/mediatek/mtk_mdp_rdma.c   | 4 +---
->  8 files changed, 8 insertions(+), 24 deletions(-)
->
-> diff --git a/drivers/gpu/drm/mediatek/mtk_disp_color.c b/drivers/gpu/drm/=
-mediatek/mtk_disp_color.c
-> index dd8433a38282a9ba1bcc3a4ddd01dd89738ccb60..39c7de4cdcc16b56a5a1d046a=
-aabaf5580227ed2 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_disp_color.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_disp_color.c
-> @@ -96,7 +96,6 @@ static int mtk_disp_color_probe(struct platform_device =
-*pdev)
->  {
->         struct device *dev =3D &pdev->dev;
->         struct mtk_disp_color *priv;
-> -       struct resource *res;
->         int ret;
->
->         priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> @@ -108,8 +107,7 @@ static int mtk_disp_color_probe(struct platform_devic=
-e *pdev)
->                 return dev_err_probe(dev, PTR_ERR(priv->clk),
->                                      "failed to get color clk\n");
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap color\n");
-> diff --git a/drivers/gpu/drm/mediatek/mtk_disp_gamma.c b/drivers/gpu/drm/=
-mediatek/mtk_disp_gamma.c
-> index b17b11d93846f2019d8c4afb294375333e22dc42..8afd15006df2a21f3f52fe00e=
-ca3c5501f4fb76a 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_disp_gamma.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_disp_gamma.c
-> @@ -256,7 +256,6 @@ static int mtk_disp_gamma_probe(struct platform_devic=
-e *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
->         struct mtk_disp_gamma *priv;
-> -       struct resource *res;
->         int ret;
->
->         priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> @@ -268,8 +267,7 @@ static int mtk_disp_gamma_probe(struct platform_devic=
-e *pdev)
->                 return dev_err_probe(dev, PTR_ERR(priv->clk),
->                                      "failed to get gamma clk\n");
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap gamma\n");
-> diff --git a/drivers/gpu/drm/mediatek/mtk_disp_merge.c b/drivers/gpu/drm/=
-mediatek/mtk_disp_merge.c
-> index 563b1b248fbbb38ef03bb3e3ceecdd265961df60..b174dda091d3fbd16796e8e12=
-8b030fccf5b902c 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_disp_merge.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_disp_merge.c
-> @@ -306,7 +306,6 @@ static const struct component_ops mtk_disp_merge_comp=
-onent_ops =3D {
->  static int mtk_disp_merge_probe(struct platform_device *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
-> -       struct resource *res;
->         struct mtk_disp_merge *priv;
->         int ret;
->
-> @@ -314,8 +313,7 @@ static int mtk_disp_merge_probe(struct platform_devic=
-e *pdev)
->         if (!priv)
->                 return -ENOMEM;
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap merge\n");
-> diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/me=
-diatek/mtk_disp_ovl.c
-> index df82cea4bb79c472acbb66e0df27fbad3e70bd20..d0581c4e3c999cf865fdd0aaf=
-4c2f38dd404926e 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-> @@ -604,7 +604,6 @@ static int mtk_disp_ovl_probe(struct platform_device =
-*pdev)
->  {
->         struct device *dev =3D &pdev->dev;
->         struct mtk_disp_ovl *priv;
-> -       struct resource *res;
->         int irq;
->         int ret;
->
-> @@ -621,8 +620,7 @@ static int mtk_disp_ovl_probe(struct platform_device =
-*pdev)
->                 return dev_err_probe(dev, PTR_ERR(priv->clk),
->                                      "failed to get ovl clk\n");
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap ovl\n");
-> diff --git a/drivers/gpu/drm/mediatek/mtk_disp_rdma.c b/drivers/gpu/drm/m=
-ediatek/mtk_disp_rdma.c
-> index bf47790e4d6be5d60070c63c15c75fa201cc4b27..c9d41d75e7f2a3af5820921b7=
-e563da377ce8d0d 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_disp_rdma.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_disp_rdma.c
-> @@ -313,7 +313,6 @@ static int mtk_disp_rdma_probe(struct platform_device=
- *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
->         struct mtk_disp_rdma *priv;
-> -       struct resource *res;
->         int irq;
->         int ret;
->
-> @@ -330,8 +329,7 @@ static int mtk_disp_rdma_probe(struct platform_device=
- *pdev)
->                 return dev_err_probe(dev, PTR_ERR(priv->clk),
->                                      "failed to get rdma clk\n");
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap rdma\n");
-> diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediate=
-k/mtk_dsi.c
-> index 40752f2320548fbf6c7de96b18e8a636ac9c31be..f298293471de49473dd059733=
-83dc22f7d3b6c23 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-> @@ -1192,7 +1192,6 @@ static int mtk_dsi_probe(struct platform_device *pd=
-ev)
->  {
->         struct mtk_dsi *dsi;
->         struct device *dev =3D &pdev->dev;
-> -       struct resource *regs;
->         int irq_num;
->         int ret;
->
-> @@ -1217,8 +1216,7 @@ static int mtk_dsi_probe(struct platform_device *pd=
-ev)
->         if (IS_ERR(dsi->hs_clk))
->                 return dev_err_probe(dev, PTR_ERR(dsi->hs_clk), "Failed t=
-o get hs clock\n");
->
-> -       regs =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       dsi->regs =3D devm_ioremap_resource(dev, regs);
-> +       dsi->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(dsi->regs))
->                 return dev_err_probe(dev, PTR_ERR(dsi->regs), "Failed to =
-ioremap memory\n");
->
-> diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediat=
-ek/mtk_hdmi.c
-> index ca82bc829cb96446d4d34eeef45848df03bd716b..d729c13590cb5ec176f15b680=
-c262a26b677e6aa 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-> @@ -1425,7 +1425,6 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi =
-*hdmi,
->         struct device_node *cec_np, *remote, *i2c_np;
->         struct platform_device *cec_pdev;
->         struct regmap *regmap;
-> -       struct resource *mem;
->         int ret;
->
->         ret =3D mtk_hdmi_get_all_clk(hdmi, np);
-> @@ -1471,8 +1470,7 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi =
-*hdmi,
->         }
->         hdmi->sys_regmap =3D regmap;
->
-> -       mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       hdmi->regs =3D devm_ioremap_resource(dev, mem);
-> +       hdmi->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(hdmi->regs)) {
->                 ret =3D PTR_ERR(hdmi->regs);
->                 goto put_device;
-> diff --git a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c b/drivers/gpu/drm/me=
-diatek/mtk_mdp_rdma.c
-> index fc69ee38ce7d6a245a7460cfde8de426e83b2e80..7982788ae9df51f1a378d8d53=
-8737f38af7299f2 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
-> @@ -291,7 +291,6 @@ static const struct component_ops mtk_mdp_rdma_compon=
-ent_ops =3D {
->  static int mtk_mdp_rdma_probe(struct platform_device *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
-> -       struct resource *res;
->         struct mtk_mdp_rdma *priv;
->         int ret =3D 0;
->
-> @@ -299,8 +298,7 @@ static int mtk_mdp_rdma_probe(struct platform_device =
-*pdev)
->         if (!priv)
->                 return -ENOMEM;
->
-> -       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       priv->regs =3D devm_ioremap_resource(dev, res);
-> +       priv->regs =3D devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(priv->regs))
->                 return dev_err_probe(dev, PTR_ERR(priv->regs),
->                                      "failed to ioremap rdma\n");
->
-> --
-> 2.47.0
->
+
+--=-jI3jpvw8/Aw06qBarYxD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmfEm6kACgkQ57/I7JWG
+EQmmxg/+Nb+BEUyQ7+twwSbrEVBoCaFG2DTaOn+HLgmmFenpoj04ynMfZJc0GelB
+B6YJ/vj7jY+LzWFKdZ0DKRNU5++TK8pLD2p2sMiTQhA3W7xSDGRcGKB6KjEkmsVv
+cjHTB67tgeGCsd0CpcI05iTeDyHXF26fJEHOPOEp+vsPTcD3BqnX1D+wC62dqDKP
+RMN6YNJ6Klo2/vRsp4rspdb3T+e7PPjE9NDfuqx7YF3Qx3TY4lUiW8kYq2VE+J35
+iwAwXKPwjzFJekhDJsOU0vPorAYF19isZjXmsJ8aYm67ODHM06YiLPo8+x+9FUPu
+mnyZDTtUDnKzUdpyDJHh6wokACwdiP1QirhRmBL77VpNUawyPNsoIJ879J6PHmd9
+0k7L+GD/LbDJXJoA1p9i8FPp4m0LOoEWCUAW1CyaY7JrGNpq7Gt0gaaQl45qpPsJ
+z7rvPaT/dy207oxp/suYNvcBRKZB2iuabBVNfaGuTtPs0U/2999NhQokn23savpR
+9Ow/kD2OH286Kg7+OxReGUm3eP0jUyWyR6Iec+Bzj/3QFfIeiyXtmxC7Qu46amSC
+XhwxELnTzPX8H3m3jI8mTfTxH/QBumXxAd6rlIrW/AD2BZpRdn9+xfHp/AvoN2lA
+GcYHbh+/tydSwssxuMv3z7wlAQFXeBqpbp1ZC1bC5Bec3QnCEEw=
+=CxY6
+-----END PGP SIGNATURE-----
+
+--=-jI3jpvw8/Aw06qBarYxD--
