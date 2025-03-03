@@ -1,121 +1,118 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F35AD27
-	for <imx@lists.linux.dev>; Mon,  3 Mar 2025 09:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888CA1FAC4F
+	for <imx@lists.linux.dev>; Mon,  3 Mar 2025 12:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740994257; cv=none; b=aKMHEGUPHUQYL+e8tbhIvmjWKAWykQIJcXvc8UvCPxF1xUc3DdfgQDuatDYsF//ygXV4lYU8e0td0ZQO1gWJ5GVIKdEixGyYawVhlSnLBiArP96NUPRojz4OzhnCKELKZJTlqBM0SjgUcdKOuFWK3nP0wVBFlsUaQVwuR5W0fJk=
+	t=1741003758; cv=none; b=Aj/ajaypHs/WMCR3Lob3WGDKWqqiNdgx1Rjsm1ee6E2kUcbzcfRYnlQ9FAu47kh+/a/UsmhpK0aVf4eJq/4ycpV7V1p8LK+GY4Fprj5zh2J/VbvKykTv6vYcSGWWj2oD2KUFB2PaKKGOTtAUER5YknUSu7WxVvgVUvFK9G/Qo1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740994257; c=relaxed/simple;
-	bh=jLJKFq3DzDFZlX1XSnSbaeOdYYwfb/ehBF5/SPp1ssQ=;
+	s=arc-20240116; t=1741003758; c=relaxed/simple;
+	bh=CwRY/rTetmbFsCAGzHS6I5hPpA3XCZob2B/wGQCeqqk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mrhfmr6XmaYQMgFP1n/ZfIsy0vlX1+XBzGtCIF4EsThC9E5/W9yMXC/v+0Kc/psGFC91EzbJ0IA6CfxaIJoRQtrz3vAYyHKzu57zHzXDU6j3jnFTK4MdJwOSKgpGrOQXp0vM/6kL7NeTAs/xfFTk222HqwDxJ2I5MCZf8h2jhj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=coeO4nll; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="coeO4nll"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-439a1e8ba83so39658215e9.3
-        for <imx@lists.linux.dev>; Mon, 03 Mar 2025 01:30:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740994254; x=1741599054; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=40IljttzQ4D51zd6+tKieDE6wTjSWdKsG254DqLzf6A=;
-        b=coeO4nllsPxjxk+ZtbGkmjQDoZZUKWih/l9Svk8JUPpKykE6H/wATmxi5vdGTPiUQI
-         mctvCwcRDkWufBebmRqOmUaDEt6nVyyEAK1XhKTE0nEQoRA/Aw0zSaBs6jYU2eXM8lkY
-         rVS6JnL3Rnxvabx19Pa33c9q+GMYL9lHlvS1U5zpXmtz33O+aIbfQFKI9cbonxA9r1tp
-         TJRwvY3j0QcinS3BUJSxJXwhlSR8sSbHUL2+uundl+R0mw5UKe73S8OQivtQstl7VXvL
-         PFaq4t0+6222VO7tvCG2A5vXXfXPHQ7MQZMqMtAVkB9ia7TMu+TrTu0P3lyuhhKj3JBH
-         HkYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740994254; x=1741599054;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=40IljttzQ4D51zd6+tKieDE6wTjSWdKsG254DqLzf6A=;
-        b=cigOSSEffDjxN7RNOtuF6Ao3R875GlrHn6gKdgJmMBECQHuoDM3Q0GCO/8SSZcbdO3
-         zPo3Zvi3g4GZMG2ygDh0rHg6LXL7URJWACviPCgKAyfHde48sa8ECD9Z0aMni8XueshG
-         OxdvKyRPxdPHUGRMXYBdFeMAGtqToNH/JAMRJR8uaZRRZmyFQzelog/2JUGDCdxqkm4H
-         P2gAPz8KZAkPDzHHGGCelB33t6zcsJG7S76f/OWl87rO3O2Na1J562lVyQ27cru8PUQc
-         EidkgcMSh35slhNwx9M2pVlvJszr0vxgjbqK2FuZX7HmAB3oR80ZAZOp8YQL5SAEbmM/
-         Xckw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9k/fvdbdn2KxflQEYRCsRyNhhNcpWfp/Amrd6RlwHrK1Y90QpDlMqIsoQi8VSLqIIiX8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzTyIsyRTKLbgwZmQIiJjZ3CgZDkhYRbdFf2cWAGdGXCTbTknwi
-	jI5gTAHcbP9suljywb0HXodTtLvxDfXu6c9Pvt+eXQIZkwQ6EskR
-X-Gm-Gg: ASbGnctsS/t4XLb2Ept06mNd+ecYjIGKQIEYhKowEaBlyG7BmkIiRtKpeEgj/R+zYdf
-	vcsLkgMy9Y0BLKBPhi8i58q85lN5U+BHd/s0UXPLUvz5eh/gpVBW8Q7wJhfzQGGLBaZDl3kiFpZ
-	en+cDuTZqIsahtzyj6rPadzincrhTG6zuHQHcBfOpfFQ28fydV5OLCOapLJsLi9nuKK7YO+/4iE
-	nNl1wEg4fi/NJHU2426RZpgLRlSg/Y9dzUK4Gkv+uDFmfnYhlZgS643txuTtnAh64L/kDL/Wc19
-	KKpgjfUdTpuY2dv7DLk4eKjPmGVYm3fb0ZPP3+pXjL3v
-X-Google-Smtp-Source: AGHT+IE593cTzA3Ll5VUo6n9spv8sl0rB5EmPJ7Oo0urGlRI3JU+kEeG6M0t/EplWSVuxhmvW3R3dg==
-X-Received: by 2002:a05:600c:4444:b0:439:92ca:f01b with SMTP id 5b1f17b1804b1-43ba6708bd2mr103876125e9.13.1740994253402;
-        Mon, 03 Mar 2025 01:30:53 -0800 (PST)
-Received: from eichest-laptop ([2a02:168:af72:0:4dab:10cc:7f02:7565])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5710c2sm179671575e9.32.2025.03.03.01.30.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 01:30:52 -0800 (PST)
-Date: Mon, 3 Mar 2025 10:30:51 +0100
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: vkoul@kernel.org, kishon@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	tharvey@gateworks.com, hongxing.zhu@nxp.com,
-	francesco.dolcini@toradex.com, linux-phy@lists.infradead.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v1 1/2] phy: freescale: imx8m-pcie: cleanup reset logic
-Message-ID: <Z8V2yzfYGirBFi1u@eichest-laptop>
-References: <20250228103959.47419-1-eichest@gmail.com>
- <20250228103959.47419-2-eichest@gmail.com>
- <c965906ea8797385399534e974cabdba5564ae0f.camel@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KTX04VluIOBnR05kgnb2ZWzbIultwMFvmasbGTXL9jh2NNG8KIaZQo/MnFUxnKKJTsPUabqTTCpri/2TLArdkMYWK/dnaH95/g3bhAwAdv24CjjU4XHtJmgBKZtILE1EIUlPjn3IfqrFAnFWdh/RIJBeVBqzkGBT1kpxnUwkIJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4531106F
+	for <imx@lists.linux.dev>; Mon,  3 Mar 2025 04:09:29 -0800 (PST)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6F6623F673
+	for <imx@lists.linux.dev>; Mon,  3 Mar 2025 04:09:15 -0800 (PST)
+Date: Mon, 3 Mar 2025 12:08:51 +0000
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sebastian Reichel <sre@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Steven Price <steven.price@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+Subject: Re: [PATCH 6/9] drm/panthor: Reset GPU after L2 cache power off
+Message-ID: <Z8Wb05rmGW0ORnJB@e110455-lin.cambridge.arm.com>
+References: <20250227170012.124768-1-marex@denx.de>
+ <20250227170012.124768-7-marex@denx.de>
+ <Z8GY0nWXOxCKF-XL@e110455-lin.cambridge.arm.com>
+ <fa88c1c1-89ba-4a10-bd57-0819d7740c0a@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c965906ea8797385399534e974cabdba5564ae0f.camel@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fa88c1c1-89ba-4a10-bd57-0819d7740c0a@denx.de>
 
-Hi Philipp,
-
-On Fri, Feb 28, 2025 at 01:38:11PM +0100, Philipp Zabel wrote:
-> On Fr, 2025-02-28 at 11:38 +0100, Stefan Eichenberger wrote:
-> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > 
-> > Remove the switch statement and base perst release on whether it is
-> > found in the device tree. The probe function fails without the reset
-> > property, making it mandatory. Therefore, always release reset
-> > independent of the variant.
-> > 
-> > This does not change the behavior of the driver but reduces driver
-> > complexity and allows for easier future modifications.
-> > 
-> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > ---
-> >  drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 12 ++++--------
-> >  1 file changed, 4 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> > index e98361dcdeadf..00f957a42d9dc 100644
-> > --- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> > +++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> > @@ -141,15 +141,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
-> >  			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
-> >  	usleep_range(100, 200);
-> >  
-> > -	switch (imx8_phy->drvdata->variant) {
-> > -	case IMX8MP:
-> > +	if (imx8_phy->perst)
+On Fri, Feb 28, 2025 at 06:05:36PM +0100, Marek Vasut wrote:
+> On 2/28/25 12:06 PM, Liviu Dudau wrote:
+> > Hi Marek,
 > 
-> This check is not necessary, reset_control_deassert(NULL) is a no-op:
+> Hi,
 > 
+> > On Thu, Feb 27, 2025 at 05:58:06PM +0100, Marek Vasut wrote:
+> > > This seems necessary on Freescale i.MX95 Mali G310 to reliably resume
+> > > from runtime PM suspend. Without this, if only the L2 is powered down
+> > > on RPM entry, the GPU gets stuck and does not indicate the firmware is
+> > > booted after RPM resume.
+> > 
+> > That doesn't sound right. Can you tell me what GPU firmware are you running
+> > (we are now printing the git sha of the image at boot time).
+> Please see below. It could be some sort of NXP firmware fork ?
+> 
+> It comes from the NXP firmware repo , mali-imx-r50.2-710cfb6 .
+> 
+> panthor 4d900000.gpu: [drm] clock rate = 1000000000
+> panthor 4d900000.gpu: EM: created perf domain
+> panthor 4d900000.gpu: [drm] mali-unknown id 0xac74 major 0x0 minor 0x0
+> status 0x1
+> panthor 4d900000.gpu: [drm] Features: L2:0x7110306 Tiler:0x809 Mem:0x1
+> MMU:0x2830 AS:0xff
+> panthor 4d900000.gpu: [drm] shader_present=0x1 l2_present=0x1
+> tiler_present=0x1
+> panthor 4d900000.gpu: [drm] Firmware protected mode entry not be supported,
+> ignoring
+> panthor 4d900000.gpu: [drm] Firmware git sha:
+> 8e5cfcfec20cc8aff8509d37e72babc935d34a3b
 
-Thanks for the feedback, I will remove the check in the next version.
+This looks like it has been part of a R50 release of the DDK, which is recent
+enough to consider it up-to-date. The issues you're seeing with fast resume are
+probably due to some integration issues or other quirks.
 
-Regards,
-Stefan
+Boris has the most recent experience with playing with fast resume, maybe
+he can share some tips on where to add messages in Panthor to try to debug
+your problem.
+
+Best regards,
+Liviu
+
+> panthor 4d900000.gpu: [drm] CSF FW using interface v1.1.0, Features 0x0
+> Instrumentation features 0x71
+> [drm] Initialized panthor 1.3.0 for 4d900000.gpu on minor 0
+> 
+> $ sha256sum mali_csffw.bin
+> befd23b9279b26010ebf35c835cc3aa7d0f50758930c7306ff4f5abbe5218624
+> mali_csffw.bin
+> 
+> [...]
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
