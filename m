@@ -1,96 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A01B236430
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 14:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C7426656B;
+	Tue,  4 Mar 2025 14:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100034; cv=none; b=MFJLhmqoC8DcDfA1AecauorlQklEe+I9sUfBOT6Yox1dbFN9Yz1w41lkhY4hweTlOi5qwzqLRNa7oGt/i892KaPZTgnqSXwAfO7DoMXF4VCYNkTOm6aEGV51yRvSaWdj8n+ANYy4erSNzMvtXk0Ad8DpITTyAP4+KLdzxYPJibU=
+	t=1741100058; cv=none; b=dJyiBBV6LMHXC1ZLMZv88oTIjiR3beGbT0KKq38WX02g41AYPkLHXLKEmqzcZgOPxhJZW9mbr1C06M5tz4psBnovOha/exPtWk3W8R4qxI/VwP0qjJjXNFuEC6lod7gOCpe27Jn9YzMYAxtLklpC7sj59HWLK1tdRMELNsij+Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100034; c=relaxed/simple;
-	bh=HsTlftYkKCeipenMXUveAq4+33NodqfLnatqWiT1P1s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oq11Ie/y77TEub70ADYqCDyJ1Hl+ZU+rg3XbAlDKZUbyA8Bw2S0GiXebjlDtHm0uRoDhvsD89m93XnE90+3+xIxuHo5d0BxLsUIzYFwdXgvQc23j4X01u7Q9X0aGCdJLKE+aW0OLswxt75RUFfcgBpNVSXRfQUISPNDcrlJWiLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQZjmslb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741100058; c=relaxed/simple;
+	bh=1UpOOfRz3bQJCHN0CM1PhgLYuR/m+/e8m5cpvhZg+Js=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QFMWSfZNIYJK+p19SBCJIQljTSeh91V6Kv4EdxxM5SRORS1S4LHU53zk2PlOKhv5K+IZie0NkW8J+6xWef4Rhhuv2ui14L4iOmxgcM1h2Fv1q36z4N/x5GN2oxjDyC3wHBFEzNeDKcYjZo2hGb4Mfg74QXBXKNpg2SCzURWT70Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJwvRMwp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQZjmslb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1003BC4CEE5
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 14:53:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJwvRMwp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A00C4CEE7;
+	Tue,  4 Mar 2025 14:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741100034;
-	bh=HsTlftYkKCeipenMXUveAq4+33NodqfLnatqWiT1P1s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iQZjmslbg1vFFJ4PTdTy19G+W1Rjw1PtEov7AIip06DVoW1KqELK+wZJrQLg/M20k
-	 QWf348+vVS0vUKmR1VKvUVIZlKBhoVhSseO3OzyGyPBwwNx6YEL9AnfZYaesa9qRsG
-	 TaDQWT7Ncx/huzWdUrN9/xyPNSZA2b4C3t3X7acNG8XYc6LAbNKEfM1ebyYCxhRRLX
-	 +fiDqB43o77Q4FjuXWeJy8FRSm74g8A9TyMOBDDJMYWJVB+MiLNs8rmUAIYZ/EVH0G
-	 XoKeHsmTOdTezWjGrvuxMq0QsseuvB2uAbtppJ5wreBzOuzuGtiCqSpU4Z1POrM5Zq
-	 3u3E7zD4RIvdw==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so6668465a12.3
-        for <imx@lists.linux.dev>; Tue, 04 Mar 2025 06:53:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUkEsqPS9cGExQvgt/DvAUef/D9n2F/sgapbCrrZHnxf2861a4JHVAzyzq76a+4ZhL5fJE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxLOv+TfGFxav66/8EMa+MGOXTUy9KDa41G/aatqfKLi+ePr4zF
-	AOJ5Fxvu/jMprjmV4Zlhqxe08DqAP6HOfZN+IFps9MrHu9WQ0yn/7OYoALeUwc5rNCIkExcGom4
-	zmNrkbGNBqbG1sM3kbgdVzDAy3g==
-X-Google-Smtp-Source: AGHT+IE5mO4/8XgjI8KQ2e5F+7omKuYNfycraNBEqmz3SlLPHhy1o9Ys5IwlzPRSfa7418Cy7GqCZEdMwYx2hxIjsjs=
-X-Received: by 2002:a05:6402:278f:b0:5dc:caab:9447 with SMTP id
- 4fb4d7f45d1cf-5e4d6af3a69mr47248954a12.18.1741100032682; Tue, 04 Mar 2025
- 06:53:52 -0800 (PST)
+	s=k20201202; t=1741100057;
+	bh=1UpOOfRz3bQJCHN0CM1PhgLYuR/m+/e8m5cpvhZg+Js=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MJwvRMwpHaS2DCt7ZSeeIRQtCnx1GCZzx41vay0BzuYEYFjR+cp0l15kPkr4Ew7FD
+	 jh64P4nAyhYNNrh2AyB497qmB1tHol5TJpm+MWgV0M2p81xSHwSGvQjKhKlOtI6FQ4
+	 cg3dB3nHT++XJVbzFq4xWYhdueZgtw02e9jjdo72ulUlHgjtsfRI+vL/WwP3Xg68gH
+	 KBmmnF+FtSgQLYCdn+zrwNfmOzoXPWINSqH0woSM6OGmQgoJr1Dl2Pe06DwtcKPkIt
+	 c4ydGR+FRl7/jqcKaGREn1tszGl5wEJxNZpeKEApHsj9H2AEoHqSynF72iIQehfUrt
+	 c+J9P3ZaH7d7w==
+Message-ID: <9581e376-19b2-4d4e-ad81-cc24e39e9d33@kernel.org>
+Date: Tue, 4 Mar 2025 15:54:10 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250304093127.1954549-1-ping.bai@nxp.com> <20250304093127.1954549-2-ping.bai@nxp.com>
- <20250304131314.GA2441686-robh@kernel.org> <AS8PR04MB8642D20F0F5A7E8622A7685F87C82@AS8PR04MB8642.eurprd04.prod.outlook.com>
-In-Reply-To: <AS8PR04MB8642D20F0F5A7E8622A7685F87C82@AS8PR04MB8642.eurprd04.prod.outlook.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 4 Mar 2025 08:53:41 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJd06AOJKXFiDq=rihFa7qWnLciBeHKCKwkRUfF7AJTMA@mail.gmail.com>
-X-Gm-Features: AQ5f1JpxHqjc804-H4q0nUUAZsYT3JdBkeRI39RJP2dCndrM526cVcfcNMXQa1o
-Message-ID: <CAL_JsqJd06AOJKXFiDq=rihFa7qWnLciBeHKCKwkRUfF7AJTMA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: dma: fsl-edma: add
- interrupts-extended property
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Aisheng Dong <aisheng.dong@nxp.com>, 
-	Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] arm64: dts: freescale: Add basic dtsi for imx943
+To: Jacky Bai <ping.bai@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ aisheng.dong@nxp.com, peng.fan@nxp.com, frank.li@nxp.com
+References: <20250304093127.1954549-1-ping.bai@nxp.com>
+ <20250304093127.1954549-4-ping.bai@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250304093127.1954549-4-ping.bai@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 4, 2025 at 8:40=E2=80=AFAM Jacky Bai <ping.bai@nxp.com> wrote:
->
-> Hi Rob,
->
-> > Subject: Re: [PATCH v2 1/4] dt-bindings: dma: fsl-edma: add
-> > interrupts-extended property
-> >
-> > On Tue, Mar 04, 2025 at 05:31:24PM +0800, Jacky Bai wrote:
-> > > Add interrupts-extended property for edma that has multiple interrupt
-> > > controllers used.
-> >
-> > Did you try using interrupts-extended? No. Because either is supported =
-by the
-> > tools already.
-> >
->
-> We need to use interrupts-extended property for i.MX94 because for the ed=
-ma's
-> interrupts, some are connected to irqsteer interrupt controller and some =
-are connected
-> to the GIC. make dtbs_check report error, so I add this dt binding change=
-s.
->
-> Sorry, Which tools are you referring?
+On 04/03/2025 10:31, Jacky Bai wrote:
+> Add the minimal dtsi support for i.MX943. i.MX943 is the
+> first SoC of i.MX94 Family, create a common dtsi for the
+> whole i.MX94 family, and the specific dtsi part for i.MX943.
+> 
+> The clock, power domain and perf index need to be used by
+> the device nodes for resource reference, add them along
+> with the dtsi support.
+> 
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> ---
+>  - v2 changes:
+>   - remove the unnecessary macro define in clock header as suggested by Krzysztof
+>   - split the dtsi into imx94.dtsi and imx943.dtsi
+>   - use low case in the pinfunc header as Frank suggested
+>   - reorder the device nodes and properties
+>   - resolve Krzysztof's other comments
 
-dtschema
+Which ones? Be specific.
 
-The schemas specify 'interrupts' only. The dts files can use either
-interrupts or interrupts-extended. If that doesn't work for you, it is
-a bug in dtschema.
+Based on last issue, I don't think you implemented comments.
 
-Rob
+
+> +
+> +			a55_irqsteer: interrupt-controller@446a0000 {
+> +				compatible = "fsl,imx-irqsteer";
+> +				reg = <0x446a0000 0x1000>;
+> +				#interrupt-cells = <1>;
+> +				interrupt-controller;
+> +				interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 228 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&scmi_clk IMX94_CLK_BUSAON>;
+> +				clock-names = "ipg";
+> +				fsl,channel = <0>;
+> +				fsl,num-irqs = <960>;
+> +			};
+> +		};
+> +
+> +		aips4: bus@49000000 {
+> +			compatible = "fsl,aips-bus", "simple-bus";
+> +			reg = <0x0 0x49000000 0x0 0x800000>;
+> +			ranges = <0x49000000 0x0 0x49000000 0x800000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			wdog3: watchdog@49220000 {
+> +				compatible = "fsl,imx93-wdt";
+
+imx93 or imx95, like in other places? And the commit msg says imx943.
+
+I already asked for that.
+
+> +				reg = <0x49220000 0x10000>;
+> +				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&scmi_clk IMX94_CLK_BUSWAKEUP>;
+> +				timeout-sec = <40>;
+> +				fsl,ext-reset-output;
+> +				status = "disabled";
+> +			};
+> +		};
+Best regards,
+Krzysztof
