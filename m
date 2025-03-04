@@ -1,73 +1,80 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C39F1FDA89
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 09:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEA5173
+	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 09:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741081890; cv=none; b=FuoUzuglH3YVCybAjiI84N9x5yzOF7FtXDBo/3gZdZWyW3Nvrlhjxa8WR05c7aYSvl1hzWnqmC6U9RI2NQNsxUgn8C6BQ0vWbDl8c6ap6BXlEZbLAlv1V5kE7saTe+eYnQ/maFM9a3NbYTwX+JK9Uu96dp5vf2FEnz0LeT84URU=
+	t=1741081940; cv=none; b=NoPwefpHE6bB6F4/K3E5mXR+kWZ19JIxftyfQWgLCUhHpnr/137dcPPHP9S0KPOeAGMwaWdJoAgvFaUBztBjyjf5nSeB0G3zAx+kXtrDdEkNXplUS7fCvJ5vM6pjZHaVnsBGmLbgVnLQ7jzBADbYSfQlDFfmX/Qm7Lg+Tu/1RIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741081890; c=relaxed/simple;
-	bh=2x9I3P3U+OVZLNZ1nZmMds2DdCgCnQFPMLPvfWGgvAc=;
+	s=arc-20240116; t=1741081940; c=relaxed/simple;
+	bh=hXGug7FgtSHuxCFFEipVALOby2Wjhd3nLF352x7nsFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C3RxSyrPspKuCLl3VjYjI/ASu46YdoS/xn4PkIs8dJCW7F54Tfcn99L2+55ho69gk7bDGu4YV3uYqK1COLIzXpvaiKw8fI2RmckMZuO+gP5ACXtHpqFXqwU5I8NoB14+ewbwQnsh0vAQoF/pfnLWojJ9V3x7GtiqUHAWx6X95rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=MnDyjMKs; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Q+fCkgkM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=O+9h8MgdzlpEPsju8H6EZ69IvwpaVFrWSFFPW+aSsn+4UEZHz4kTOpH5YEKn/SSEEGiUNrNJ49kvT06N0T4lgXQXEMzdb7IAvJhXikRGHn8jZvpmBSkb4SRps11cJXcBmXoUmUutUBfLSxD725Pw0cpnvuIV6p3yUSDpa8bBDP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=McH7icBO; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=koFWoSw0 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="MnDyjMKs";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Q+fCkgkM"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="McH7icBO";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="koFWoSw0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1741081886; x=1772617886;
+  t=1741081937; x=1772617937;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0U0lGs7WpN5bzMDdr2hYg/hjI2BrsoigYq6t/slDM0Q=;
-  b=MnDyjMKsOfinh3aeHfAIfPZebj1oI72yFJcFx28yw4VGePBQot1TXEWZ
-   N7YFUvVbzG7AUBZ3Cp1ObY8W23wS0TxRuKHIKHBeiOhDXNc2IRjWPYDjb
-   lxmgNEulX/u4J7aH5jwrAI9gGrBe3jSGiF0wwjTDhHEL1dYKUfBDSxEM5
-   nW5EyqUnpGjNFe9MuA4GfI2Vl+yuKXwNKxDN+xIu2QX8SXmsHXT+EDMWL
-   +LEStqPGYVhk7n2mzPiwc5EYcqxer5sx62/L+T4vhtaIWCt16Yr8bc58E
-   Ion6MAGjusFOhquyjoBEHcWUyehsjhHqGTbYFrj+q/9Yf9aXbVS7Tk/DC
-   g==;
-X-CSE-ConnectionGUID: d5qkUfK5RBGvEqNHcKyEAA==
-X-CSE-MsgGUID: AF5Dx6k/RMWASpBQy7rdTQ==
+  bh=iUsHT7BkvvVZ2doNOAGllF0BwQPdhpWqLZzk/yD8Vrc=;
+  b=McH7icBOBOi3tG7pFZbaBoR6EDQbbYZDTGqpTrfJStIC99+eOCnZCUWk
+   wTz3H+njimwSxxwHwpOoGKVpuMqA01Vhy+L928/NwM1QOTgWd27hMpRqX
+   qNUNq9ys+5UuiZGClSEHP16fulAZbRSi1jBrxNrAL3xh9TZQnvTMQfA0T
+   VAemym3M6Lx3XJTPBmhIqK8fWu4QZYxv08xq+AyJxMZBpoOmaYXPOOKps
+   oteDySFFkOaGMFVsGmpmQSngVYm3Yyga2cOD0Bjbx2FECe+oUpH25ltm3
+   scHjKjW1zn2BFdY0XG8XLVKI1Cqb2gfdPhAIwpOwkiF9Cy85cntjFPmoS
+   w==;
+X-CSE-ConnectionGUID: /bl8OXK5RaaGQPX/3aiVLQ==
+X-CSE-MsgGUID: REU/aoFmSIOpOSZV6HugPg==
 X-IronPort-AV: E=Sophos;i="6.13,331,1732575600"; 
-   d="scan'208";a="42262083"
+   d="scan'208";a="42262157"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Mar 2025 10:50:14 +0100
-X-CheckPoint: {67C6CCD6-F-A886F308-CE21D9DB}
-X-MAIL-CPID: C699F4D445EE5CF8D3B21DD2C9AF3AC4_2
-X-Control-Analysis: str=0001.0A002107.67C6CCD4.0073,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC001160A39;
-	Tue,  4 Mar 2025 10:50:06 +0100 (CET)
+  by mx1.tq-group.com with ESMTP; 04 Mar 2025 10:52:14 +0100
+X-CheckPoint: {67C6CD4E-28-97089932-E672704E}
+X-MAIL-CPID: 628BE1DE09BC53C991B85770F1670AD8_3
+X-Control-Analysis: str=0001.0A002111.67C6CD4E.00B4,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54FF116CC2F;
+	Tue,  4 Mar 2025 10:52:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1741081809;
+	s=dkim; t=1741081930;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0U0lGs7WpN5bzMDdr2hYg/hjI2BrsoigYq6t/slDM0Q=;
-	b=Q+fCkgkMLEQHAJ91rbKy8LU76nniTY/qmYumb8uW684qiHINn/TA4ToRjcxZPusuhjcf5S
-	XP3212bqkOthfGgb22J+atsOb+wOlsuaswwcorf8+xkx+t/Gmy6vGHt4kEdhLteIY8jDjp
-	kDN82+/WHj+Fauury7EFhKSZxlrkz//cdOB53RC5JszoVfV+1mTHHWsferkPS6lDQ63OTV
-	pjQOT0TKglmCx3Y1k4TQKnHhBlBJgZs1q1TqgirMadH3fqZwUUcN/t11pvnWo65FgBViPb
-	/MQxi7C0wb8ZFYfHNUZvpMYkb2CL4cA/6QUAQadIyDDrhFLualdDhWcWy5KTSA==
+	bh=iUsHT7BkvvVZ2doNOAGllF0BwQPdhpWqLZzk/yD8Vrc=;
+	b=koFWoSw09WVbwOj8YlQRnL11S9C72pwazdD9v2+cQHPuYzuVo+7ciykwETxJbylbU/Ycqg
+	f82kmBhNIDF917h/CPFJcpQKdQJbCU6qE0fcNKX7/b9V0rLpz3jd3Vf72OBDBD0H3rqY7d
+	muwWJfuGQpHWrhWNHbaqNtC2GGp2rBte7V8a3c6Gr9eGxM16HXtHGA3BRJRaBgdcr11rfK
+	RDYryUbgqEOsN473Gj3/2gvVt49FEB6cgoJxboRSj4/vIC6EaLIEb2D2os2BL7VQ+tmvYu
+	tX9akweDqLrAk/X0RVLQBIw6RJrY3bv5OaF7g5j/YA0NO7yBQaknRVhoxdRs2Q==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, peter.chen@kernel.org,
- Xu Yang <xu.yang_2@nxp.com>
-Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v4 3/6] usb: chipidea: imx: add wakeup interrupt handling
-Date: Tue, 04 Mar 2025 10:50:06 +0100
-Message-ID: <3342061.aeNJFYEL58@steina-w>
+To: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Liu Ying <victor.liu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, victor.liu@nxp.com, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, peng.fan@nxp.com,
+ Conor Dooley <conor.dooley@microchip.com>
+Subject:
+ Re: [PATCH v5 1/2] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode
+ to schema and example
+Date: Tue, 04 Mar 2025 10:52:05 +0100
+Message-ID: <3348463.44csPzL39Z@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20250303033344.1251076-4-xu.yang_2@nxp.com>
+In-Reply-To: <20250304082434.834031-2-victor.liu@nxp.com>
 References:
- <20250303033344.1251076-1-xu.yang_2@nxp.com>
- <20250303033344.1251076-4-xu.yang_2@nxp.com>
+ <20250304082434.834031-1-victor.liu@nxp.com>
+ <20250304082434.834031-2-victor.liu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -78,132 +85,139 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-Am Montag, 3. M=E4rz 2025, 04:33:41 CET schrieb Xu Yang:
-> In previous imx platform, normal USB controller interrupt and wakeup
-> interrupt are bound to one irq line. However, it changes on latest
-> i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
-> This will add wakeup interrupt handling for i.MX95 to support various
-> wakeup events.
+Hi,
+
+thanks for the update.
+
+Am Dienstag, 4. M=E4rz 2025, 09:24:33 CET schrieb Liu Ying:
+> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Document the Parallel Display Format Configuration(PDFC) subnode
+> and add the subnode to example.
 >=20
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 > ---
-> Changes in v4:
->  - warning if no irq provided for imx95
-> Changes in v3:
->  - include <linux/irq.h> to fix possible build issue
-> Changes in v2:
->  - rename irq to wakeup_irq
->  - disable irq by default
->  - enable irq when suspend, disable irq when resume
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 35 ++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
+> v3->v5:
+> * No change.
 >=20
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci=
-_hdrc_imx.c
-> index 1a7fc638213e..2baae9e6e673 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -6,6 +6,7 @@
->   */
+> v2->v3:
+> * Newly introduced to replace the standalone dt-binding in v1 and v2. (Ro=
+b)
+> * Resend with Conor's R-b tag and with the patch rebased upon v6.11-rc1.
+>=20
+>  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 68 +++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-bl=
+k-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk=
+=2Dctrl.yaml
+> index b3554e7f9e76..3f550c30d93d 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.=
+yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.=
+yaml
+> @@ -24,6 +24,12 @@ properties:
+>    reg:
+>      maxItems: 1
 > =20
->  #include <linux/module.h>
-> +#include <linux/irq.h>
->  #include <linux/of.h>
->  #include <linux/of_platform.h>
->  #include <linux/platform_device.h>
-> @@ -98,6 +99,7 @@ struct ci_hdrc_imx_data {
->  	struct clk *clk;
->  	struct clk *clk_wakeup;
->  	struct imx_usbmisc_data *usbmisc_data;
-> +	int wakeup_irq;
->  	bool supports_runtime_pm;
->  	bool override_phy_control;
->  	bool in_lpm;
-> @@ -336,6 +338,16 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *=
-ci, unsigned int event)
->  	return ret;
->  }
-> =20
-> +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
-> +{
-> +	struct ci_hdrc_imx_data *imx_data =3D data;
+> +  '#address-cells':
+> +    const: 1
 > +
-> +	disable_irq_nosync(irq);
-> +	pm_runtime_resume(&imx_data->ci_pdev->dev);
+> +  '#size-cells':
+> +    const: 1
 > +
-> +	return IRQ_HANDLED;
-> +}
+>    '#power-domain-cells':
+>      const: 1
+> =20
+> @@ -46,9 +52,43 @@ properties:
+>        - const: csi
+>        - const: dsi
+> =20
+> +  bridge@60:
+> +    type: object
+> +    additionalProperties: false
 > +
->  static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  {
->  	struct ci_hdrc_imx_data *data;
-> @@ -476,6 +488,18 @@ static int ci_hdrc_imx_probe(struct platform_device =
-*pdev)
->  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
->  		data->supports_runtime_pm =3D true;
-> =20
-> +	data->wakeup_irq =3D platform_get_irq_optional(pdev, 1);
-> +	if (data->wakeup_irq > 0) {
-> +		ret =3D devm_request_threaded_irq(dev, data->wakeup_irq,
-> +						NULL, ci_wakeup_irq_handler,
-> +						IRQF_ONESHOT | IRQF_NO_AUTOEN,
-> +						pdata.name, data);
-> +		if (ret)
-> +			goto err_clk;
-> +	} else if (device_is_compatible(dev, "fsl,imx95-usb")) {
-> +		dev_warn(dev, "wakeup irq is missing\n");
-> +	}
+> +    properties:
+> +      compatible:
+> +        const: nxp,imx93-pdfc
 > +
->  	ret =3D imx_usbmisc_init(data->usbmisc_data);
->  	if (ret) {
->  		dev_err(dev, "usbmisc init failed, ret=3D%d\n", ret);
-> @@ -584,6 +608,7 @@ static int imx_controller_suspend(struct device *dev,
->  	}
-> =20
->  	imx_disable_unprepare_clks(dev);
-> +	enable_irq(data->wakeup_irq);
->  	if (data->plat_data->flags & CI_HDRC_PMQOS)
->  		cpu_latency_qos_remove_request(&data->pm_qos_req);
-> =20
-> @@ -608,6 +633,9 @@ static int imx_controller_resume(struct device *dev,
->  	if (data->plat_data->flags & CI_HDRC_PMQOS)
->  		cpu_latency_qos_add_request(&data->pm_qos_req, 0);
-> =20
-> +	if (!irqd_irq_disabled(irq_get_irq_data(data->wakeup_irq)))
-> +		disable_irq_nosync(data->wakeup_irq);
+> +      reg:
+> +        maxItems: 1
 > +
+> +      ports:
+> +        $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +        properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: Input port node to receive pixel data.
+> +
+> +          port@1:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: Output port node to downstream pixel data recei=
+vers.
+> +
+> +        required:
+> +          - port@0
+> +          - port@1
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - ports
+> +
+>  required:
+>    - compatible
+>    - reg
+> +  - '#address-cells'
+> +  - '#size-cells'
+>    - power-domains
+>    - clocks
+>    - clock-names
+> @@ -76,5 +116,33 @@ examples:
+>                 <&clk IMX93_CLK_MIPI_DSI_GATE>;
+>                 clock-names =3D "apb", "axi", "nic", "disp", "cam",
+>                               "pxp", "lcdif", "isi", "csi", "dsi";
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <1>;
+>        #power-domain-cells =3D <1>;
+> +
+> +      bridge@60 {
 
-if (data->wakeup_irq > 0) is necessary. I'll get a NULL-pointer
-dereference on imx93.
+Given that you add a subnode, I would assume Rob's comment from [1]
+also applies to you here.
 
-Best regards
-Alexander
+Despite that, looks good to me. With that fixed:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
->  	ret =3D imx_prepare_enable_clks(dev);
->  	if (ret)
->  		return ret;
-> @@ -643,6 +671,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
->  		return ret;
-> =20
->  	pinctrl_pm_select_sleep_state(dev);
+[1] https://lore.kernel.org/all/20250225145833.GB2361434-robh@kernel.org/
+
+> +        compatible =3D "nxp,imx93-pdfc";
+> +        reg =3D <0x60 0x4>;
 > +
-> +	if (device_may_wakeup(dev))
-> +		enable_irq_wake(data->wakeup_irq);
+> +        ports {
+> +          #address-cells =3D <1>;
+> +          #size-cells =3D <0>;
 > +
->  	return ret;
->  }
-> =20
-> @@ -651,6 +683,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
->  	struct ci_hdrc_imx_data *data =3D dev_get_drvdata(dev);
->  	int ret;
-> =20
-> +	if (device_may_wakeup(dev))
-> +		disable_irq_wake(data->wakeup_irq);
+> +          port@0 {
+> +            reg =3D <0>;
 > +
->  	pinctrl_pm_select_default_state(dev);
->  	ret =3D imx_controller_resume(dev, PMSG_RESUME);
->  	if (!ret && data->supports_runtime_pm) {
+> +            pdfc_from_lcdif: endpoint {
+> +              remote-endpoint =3D <&lcdif_to_pdfc>;
+> +            };
+> +          };
+> +
+> +          port@1 {
+> +            reg =3D <1>;
+> +
+> +            pdfc_to_panel: endpoint {
+> +              remote-endpoint =3D <&panel_from_pdfc>;
+> +            };
+> +          };
+> +        };
+> +      };
+>      };
 >=20
 
 
