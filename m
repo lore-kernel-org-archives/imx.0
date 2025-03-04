@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C7426656B;
-	Tue,  4 Mar 2025 14:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA0E25F976;
+	Tue,  4 Mar 2025 14:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100058; cv=none; b=dJyiBBV6LMHXC1ZLMZv88oTIjiR3beGbT0KKq38WX02g41AYPkLHXLKEmqzcZgOPxhJZW9mbr1C06M5tz4psBnovOha/exPtWk3W8R4qxI/VwP0qjJjXNFuEC6lod7gOCpe27Jn9YzMYAxtLklpC7sj59HWLK1tdRMELNsij+Xo=
+	t=1741100130; cv=none; b=fq5IYpOd3+EhAskEkfWFdEmjTWOb4SZh9FtlbRmHvzsY55gNZKxyzY2UFDvbjUNlH7H47TN+aDBmzbNSYkGc6PUPsTYGlEDn3MMdiTSRr4Sco574WyyODr5MB5aKeZgk8Fw/5HKXgLsadcc5e62o5YAxCi2ewBugs1tVtHlTtM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100058; c=relaxed/simple;
-	bh=1UpOOfRz3bQJCHN0CM1PhgLYuR/m+/e8m5cpvhZg+Js=;
+	s=arc-20240116; t=1741100130; c=relaxed/simple;
+	bh=s4OMHqaghf7VgovvMYDR8EsxKRWV8TX+3/RXkg5kUjs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QFMWSfZNIYJK+p19SBCJIQljTSeh91V6Kv4EdxxM5SRORS1S4LHU53zk2PlOKhv5K+IZie0NkW8J+6xWef4Rhhuv2ui14L4iOmxgcM1h2Fv1q36z4N/x5GN2oxjDyC3wHBFEzNeDKcYjZo2hGb4Mfg74QXBXKNpg2SCzURWT70Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJwvRMwp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=tiliSwPNfYhUaIIbVsHi4uaqt7UpmJ+LVKbEL95ClOWZrWGn/5KeUu5eyisCrCG3auokOuExt0SA9BGQY7XXBHZkycrWYExQzN6kXekvzs8ft51zfIFFEvqfg+00dV4nvAKohsj53VkkBFO/lxiaPUQXfiBR4OEdOnViDcOvtDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTmPTW/y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJwvRMwp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A00C4CEE7;
-	Tue,  4 Mar 2025 14:54:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTmPTW/y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8258C4CEE7;
+	Tue,  4 Mar 2025 14:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741100057;
-	bh=1UpOOfRz3bQJCHN0CM1PhgLYuR/m+/e8m5cpvhZg+Js=;
+	s=k20201202; t=1741100129;
+	bh=s4OMHqaghf7VgovvMYDR8EsxKRWV8TX+3/RXkg5kUjs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MJwvRMwpHaS2DCt7ZSeeIRQtCnx1GCZzx41vay0BzuYEYFjR+cp0l15kPkr4Ew7FD
-	 jh64P4nAyhYNNrh2AyB497qmB1tHol5TJpm+MWgV0M2p81xSHwSGvQjKhKlOtI6FQ4
-	 cg3dB3nHT++XJVbzFq4xWYhdueZgtw02e9jjdo72ulUlHgjtsfRI+vL/WwP3Xg68gH
-	 KBmmnF+FtSgQLYCdn+zrwNfmOzoXPWINSqH0woSM6OGmQgoJr1Dl2Pe06DwtcKPkIt
-	 c4ydGR+FRl7/jqcKaGREn1tszGl5wEJxNZpeKEApHsj9H2AEoHqSynF72iIQehfUrt
-	 c+J9P3ZaH7d7w==
-Message-ID: <9581e376-19b2-4d4e-ad81-cc24e39e9d33@kernel.org>
-Date: Tue, 4 Mar 2025 15:54:10 +0100
+	b=FTmPTW/yX160iNTopS59op4X1QbZLeAi3d9qa7GA8ub2Ntb2aj4++bmDg6tXO7PEj
+	 b5e1Eio06N/OH4/D0agPbcrY7m/Vlpv8vc9KC+SiWILPF261057Lr7wt6P01URXBFd
+	 19G+eQwxqAcjH1mSbyK+kiqUh7NWZQZqse0g8Q0Az/8lIcFDSNyMd3s/2GomnxcWvM
+	 r8TvIOP7lbjcGfxIh7MIo5padzDP5BfP/fpMr+aHDdq2mZsPmr0qCwYsikfQlOoNMD
+	 KNBICReiMbFktQNXc0Ug+IsKJapHd1NCkRJk82kImyUkPz3FFsBGZchSxhsUXa0ZDO
+	 1RHxKo0YeVFOQ==
+Message-ID: <487093b6-d9fc-4c85-95b8-174fe76e04c5@kernel.org>
+Date: Tue, 4 Mar 2025 15:55:22 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,14 +35,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arm64: dts: freescale: Add basic dtsi for imx943
+Subject: Re: [PATCH v2 2/4] dt-bindings: arm: fsl: add i.MX943 EVK board
 To: Jacky Bai <ping.bai@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de
 Cc: kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  aisheng.dong@nxp.com, peng.fan@nxp.com, frank.li@nxp.com
 References: <20250304093127.1954549-1-ping.bai@nxp.com>
- <20250304093127.1954549-4-ping.bai@nxp.com>
+ <20250304093127.1954549-3-ping.bai@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -88,73 +88,38 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250304093127.1954549-4-ping.bai@nxp.com>
+In-Reply-To: <20250304093127.1954549-3-ping.bai@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 04/03/2025 10:31, Jacky Bai wrote:
-> Add the minimal dtsi support for i.MX943. i.MX943 is the
-> first SoC of i.MX94 Family, create a common dtsi for the
-> whole i.MX94 family, and the specific dtsi part for i.MX943.
-> 
-> The clock, power domain and perf index need to be used by
-> the device nodes for resource reference, add them along
-> with the dtsi support.
+> Add DT compatible string for NXP i.MX943 EVK board.
 > 
 > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
 > ---
->  - v2 changes:
->   - remove the unnecessary macro define in clock header as suggested by Krzysztof
->   - split the dtsi into imx94.dtsi and imx943.dtsi
->   - use low case in the pinfunc header as Frank suggested
->   - reorder the device nodes and properties
->   - resolve Krzysztof's other comments
 
-Which ones? Be specific.
-
-Based on last issue, I don't think you implemented comments.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
-> +
-> +			a55_irqsteer: interrupt-controller@446a0000 {
-> +				compatible = "fsl,imx-irqsteer";
-> +				reg = <0x446a0000 0x1000>;
-> +				#interrupt-cells = <1>;
-> +				interrupt-controller;
-> +				interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 226 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 228 IRQ_TYPE_LEVEL_HIGH>,
-> +					     <GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX94_CLK_BUSAON>;
-> +				clock-names = "ipg";
-> +				fsl,channel = <0>;
-> +				fsl,num-irqs = <960>;
-> +			};
-> +		};
-> +
-> +		aips4: bus@49000000 {
-> +			compatible = "fsl,aips-bus", "simple-bus";
-> +			reg = <0x0 0x49000000 0x0 0x800000>;
-> +			ranges = <0x49000000 0x0 0x49000000 0x800000>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +
-> +			wdog3: watchdog@49220000 {
-> +				compatible = "fsl,imx93-wdt";
+---
 
-imx93 or imx95, like in other places? And the commit msg says imx943.
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
 
-I already asked for that.
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here. However, there's no need to repost
+patches *only* to add the tags. The upstream maintainer will do that for
+tags received on the version they apply.
 
-> +				reg = <0x49220000 0x10000>;
-> +				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&scmi_clk IMX94_CLK_BUSWAKEUP>;
-> +				timeout-sec = <40>;
-> +				fsl,ext-reset-output;
-> +				status = "disabled";
-> +			};
-> +		};
+Full context and explanation:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+</form letter>
+
 Best regards,
 Krzysztof
