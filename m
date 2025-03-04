@@ -1,142 +1,212 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97D91EDA3E
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 18:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44DE27605F
+	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 21:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741113525; cv=none; b=G5xyW8DaRXr/pbnKh/3umdKRUu+QEZPF0cHIhz9NV1OqecQujuBdCXwHquer54dM5pCvKX4dJwtgkUtkGEIbV7Zmmy4s0jhQ5xSq1AkHtAgnkoFtUCVnJrYdE2uhRdqvy8XCNADgpgZpv9eRgMEphBwb60ZVMPdbjMJcyHsgoPE=
+	t=1741122367; cv=none; b=epjRY5eu70aXsry8XdBChGOEMCeDeGpTIikt2hk6ogckfTlGi+sJ4+zQvXV/t7VSQOrEbPRtNsgBtB59vN9cHF8mUxN+t58oHrjxJPOplXY4ho+nIrnxk3AsN14jA8iRQJ4GR5jqfHxuLhw9XpNi/XiLtetMSZMEWZjEM/6zHLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741113525; c=relaxed/simple;
-	bh=hSLwXWcUbwo7t49r9pt8k3ZvIyCKvfSqv0ZtVn9VHGo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ehmnz5SnipFsgYdl8Dm7o8Fe5c4CULeGlMf/8GmYYmWRx0k3dDNHAHSTj+lrAoLn+3EvBgxtOP1mv+hQinswMC/qn9F6XHxP32TAHk1Cb90FVqsNMv/sZSLqNGCCg8Cqi5L1Qc0dlC07IYkktcCLAnieWXIiS0RAJdrAwXSYCj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0jYNMQ1; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741122367; c=relaxed/simple;
+	bh=tTzktltTbp+f/YuZQWlOZqnNOLQ0oDxFl3zFfOzmDuE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MiFCgsnG2jCovi4dugRq+QScV+T/KiVACybmKtIhkkUxAgmxTCBXTBLPv387o2EvCivhFqgwiJO24h9sCbiJw57jBtCsi3sAM1MT1HqWiA48YJsy8Pa/c9HI6OME8TusfQhBYSMpqnSG9eIJEdwpMuYMtmpLiQokLjPdOBlu82Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qo0gSU9o; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0jYNMQ1"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43bd03ed604so3935245e9.2
-        for <imx@lists.linux.dev>; Tue, 04 Mar 2025 10:38:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741113522; x=1741718322; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H948FRDwgMsgmADI+OEoZ51nO5/psSifQe84iLy+MzA=;
-        b=k0jYNMQ11et7Socy/j+u/Dyx/Ndvzjxy0fEM+QsCZUNPIaRFwNGb5rQS+AaokXSBaa
-         beqGkeOMmehzUH0eXAvwj9n7iC8x9qCUBQtWvxPTfDX6Yaaf/dsIuGeVP1/zsDlTNRXG
-         V1fEGIE2JJIK2/FawSpe0Wr/ZOjZXsFOrLODz7XJtX75XYwlpA9CKJDwW75Ec9oKYtR5
-         e/TNs4SxCrIeacxLkVT0FYal9P6e2lqo+I67PaBZsDSGi38BgIUaUL4ocjJY9GL5IOtS
-         5tbIIC0gV8H28Eg8mupFCI1EelZ187pMPFCqWFEYO8qzMWrBaLs09ZyP+MqmtvqGmqvC
-         8qCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741113522; x=1741718322;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H948FRDwgMsgmADI+OEoZ51nO5/psSifQe84iLy+MzA=;
-        b=WP2g36DbjCCye6LuPsIC+7ycVyNAbofPv5FiISVUyZ0EZtgTr0G5yCFir5K4JN40kE
-         PWmampM2igE2Y2Nj9IBIo1J/RVSt0yjzQH6PyOWAYWoYkWy0vGaeO7v207nDwJGKhbuB
-         w8WURvObxfTNW4nolKePWrk+LW/VvOLw/FXgkY91EwNgx6kXF1JN/oiML6KqFBl9WV0P
-         y+ou8lxZ2lYRhviAofHZF7VjBVOl8+R5Y6oaKnDDY1+XcuedAjwN4jfOYjMRKfws/guE
-         /s5vzQDn3+zI0Q8dtTRXEtpx7uB1Vz4IajfSjjxQ+phg8yNb5Oj7xB1tKyVa93UEhNHu
-         U3aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpnTHCaRoSOZ9JzbuFOA2ftZuwBbpWQQNxoKeU+Nx+r7wF67HAbVp1D8YIAGELQX4Fq+8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdCvB/lY5BdTLyVsSvjxi37hy7Tkv3cInmARc6Rk8LSw2qcjRY
-	vCcPix0T16X/TBlTZfxcPAd2rH/SPPkpN054kx0rcRj39RC9Fewb
-X-Gm-Gg: ASbGncurLaiLa8V0WkHIxEIaL900DbIJTgKNtBUDNIXevCfEE7t5TWbQQF4sdXDj+SW
-	3PWui/NW8a5gJ8NYnTEYZn5f6P07/oVNz6fzV2tkR9HG6PM7KnCfikC2kSJxb1tPs5DWkw5Ye1t
-	1WbHsHNEZ47WRcD6ZOivrfW9V6sWa7DZyJIWN5i5stdYyAkOfIhPglL7O/a9LmolUqFi6DFW3rk
-	fbL8yLVmfKjGaWB54zsMnCjTEqgkC4AzTCQrqXgskAGA2nO3Q+ukVqdTjkY/UqWxlHtlVFoosqk
-	mIZAB48ZiZiacH4Ox4IfC5EmSmtUlRzTCAMkd/+jBpNgIYZO0tWUMVHptWy1d4gmVsvkg8S4ww=
-	=
-X-Google-Smtp-Source: AGHT+IG1166SxCE4sFCdzuiE0V7QxZDudPu8M9dvEeKEFshASL6QcVMXEy639K5WegyKjMIjEPWGqA==
-X-Received: by 2002:a05:600c:1384:b0:439:8bc3:a698 with SMTP id 5b1f17b1804b1-43ba66e5e9bmr153210385e9.6.1741113521738;
-        Tue, 04 Mar 2025 10:38:41 -0800 (PST)
-Received: from [192.168.1.132] ([82.79.237.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bbe676b41sm93370475e9.11.2025.03.04.10.38.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Mar 2025 10:38:40 -0800 (PST)
-Message-ID: <31451d28-d179-49b7-81fb-0f8914cc9c1a@gmail.com>
-Date: Tue, 4 Mar 2025 20:38:37 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qo0gSU9o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741122364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6KWLJdJ5fiIb930pUJLqgFqnld1vEloL0BCIsYX5tKU=;
+	b=Qo0gSU9oBT4Pqv9hIews1nsyttQyywyPyLhoAsI0JkK6einoUNnidfc7Uk7/hzkRxIwawI
+	b1z6M8bgXI6YLvdzUrYnCYkiqe+Mze01+trUfkDBaNNt7X/2uQXJ6r6qTvI9tdj26UOxA+
+	a/nUUu0aQPaDkQiosLsb6NOjQt38UOA=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-8p-Y_gSbPemwfxF2TVQ7pw-1; Tue,
+ 04 Mar 2025 16:05:56 -0500
+X-MC-Unique: 8p-Y_gSbPemwfxF2TVQ7pw-1
+X-Mimecast-MFC-AGG-ID: 8p-Y_gSbPemwfxF2TVQ7pw_1741122350
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 20205196E078;
+	Tue,  4 Mar 2025 21:05:49 +0000 (UTC)
+Received: from asrivats-na.rmtustx.csb (unknown [10.2.16.107])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 863E5180035F;
+	Tue,  4 Mar 2025 21:05:40 +0000 (UTC)
+From: Anusha Srivatsa <asrivats@redhat.com>
+Subject: [PATCH v5 0/7] drm: Move to using devm_platform_ioremap_resource
+Date: Tue, 04 Mar 2025 16:05:30 -0500
+Message-Id: <20250304-mem-fixes-v1-0-fb3dab8d901f@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] arm64: dts: imx: add imx95 dts for sof
-Content-Language: en-US
-To: Frank Li <Frank.li@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
- <20250211225808.3050-4-laurentiumihalcea111@gmail.com>
- <Z6vcBvs4xGQ+pGCJ@lizhi-Precision-Tower-5810>
- <36ca7549-aee7-4f14-9311-77978a42362a@gmail.com>
- <Z7zNymSs5qeHp9wL@lizhi-Precision-Tower-5810>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <Z7zNymSs5qeHp9wL@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABprx2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDYwMT3dzUXN20zIrUYl1jk5Q0c8MUQ4skSwsloPqColSwBFB5tFKZqVJ
+ sbS0AVVYK2l8AAAA=
+X-Change-ID: 20250304-mem-fixes-34df71d18b98
+To: Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+ Xinwei Kong <kong.kongxinwei@hisilicon.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+ Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Anusha Srivatsa <asrivats@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741122340; l=4017;
+ i=asrivats@redhat.com; s=20250122; h=from:subject:message-id;
+ bh=tTzktltTbp+f/YuZQWlOZqnNOLQ0oDxFl3zFfOzmDuE=;
+ b=tLxkFhbjw7T7MpPQYdS80+nQqIVDddH0gSbIMbiohOArqEncZj1ftcdpm/JGZ6GFdJ1dhbNll
+ zZTUamGjMv5C/C0Xon0mjVY0BqUtVSB/5VCcFwcg+kMfQBGgVc0MkWq
+X-Developer-Key: i=asrivats@redhat.com; a=ed25519;
+ pk=brnIHkBsUZEhyW6Zyn0U92AeIZ1psws/q8VFbIkf1AU=
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
+Start replacing the below occurences with the newer API:
+- (devm_)platform_get_resource + devm_ioremap_resource
+- (devm_)platform_get_resource + (devm_)ioremap
+- platform_get_resource_byname + devm_ioremap
+Move all these occurences to uses devm_platform_ioremap_resource
+instead.
 
+This is v5 of the series.
 
-On 2/24/2025 9:51 PM, Frank Li wrote:
-> On Mon, Feb 24, 2025 at 09:17:03PM +0200, Mihalcea Laurentiu wrote:
->> On 12.02.2025 01:23, Frank Li wrote:
->>> On Tue, Feb 11, 2025 at 05:58:08PM -0500, Laurentiu Mihalcea wrote:
->>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>>
->>>> Add imx95 DTS for SOF usage.
->>>>
->>>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>> ---
->>>>  arch/arm64/boot/dts/freescale/Makefile        |  1 +
->>>>  .../dts/freescale/imx95-19x19-evk-sof.dts     | 85 +++++++++++++++++++
->>>>  2 files changed, 86 insertions(+)
->>>>  create mode 100644 arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dts
->>>>
->>>> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
->>>> index 839432153cc7..27f64e333e4b 100644
->>>> --- a/arch/arm64/boot/dts/freescale/Makefile
->>>> +++ b/arch/arm64/boot/dts/freescale/Makefile
->>>> @@ -282,6 +282,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
->>>> +dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
->>> look like should use dt overlay ?
->>
->> can you pls explain why you'd see this as an overlay?
-> It is addtional option, which base on imx95-19x19-evk.dtb. Default wm8962
-> is used for built-in dai, this provide option to move it dsp.
->
-> Ideally this option should work for all boards, which use wm8962.
->
-> We try to move MxN problem to M + N. otherwise, there are huge numbers of
-> dtb files.
->
-> Frank
+Changes in v5:
+- Some patches already merged, leave them out.
+- Handle return properly. The new API returns a error pointers
+and not NULL. While this is taken care of in most drivers in
+the series, the sprd and sti needed changes. Thanks to Dan
+for pointing this out with his fix:
+https://lore.kernel.org/dri-devel/a952e2b4-d4b8-49ac-abd9-9967c50f4a80@stanley.mountain/
 
-Yeah but these are not cameras/sensors (for which there's a lot of possible combinations)
-we're dealing with. Unless your board has the same codec, same GPIO for headphone
-detection, and uses the same SAI instance this overlay will not work. For instance,
-this wouldn't work for the imx95 15x15 EVK board as that uses a different GPIO for
-headphone detection. As such, you'll most likely end up with a different DT overlay for
-each board instead of a DTB.
+Changes in v4:
+- Address vc4 driver compilation error
 
-Also, from the experience with the IMX8 series, we really don't have many DTBs. Usually,
-it's been 1 for the base board and 1 for the audio board if applicable (which can probably
-be turned into DT overlays. It would certainly make more sense this way).
+Changes in v3:
+- Keep the old snippet of documentation and add further
+clarification (Thomas)
+- change in vc4 driver for the a resource is not needed.
+Add a comment to clarify why that is left behind (Maxime)
 
+Changes in v2:
+- Fix compilation errors
 
-Given all this, I'm still not convinced that DT overlays are the way to go.
+Used Coccinelle to make the code changes.Semantic patch:
+
+//First Case
+//rule s/platform_get_resource + devm_ioremap_resource/devm_platform_ioremap_resource
+@rule_1@
+identifier res;
+expression ioremap_res;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+-ioremap_res = devm_ioremap_resource(...);
++ioremap_res = devm_platform_ioremap_resource(pdev,0);
+
+//Second case
+//rule s/(devm_)platform_get_resource + (devm_)ioremap/devm_platform_ioremap_resource.
+@rule_2@
+identifier res;
+expression ioremap;
+identifier pdev;
+@@
+-struct resource *res;
+...
+-res = platform_get_resource(pdev,...);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource(pdev,0);
+
+//Third case
+//rule s/(devm_)platform_get_resource_byname + (devm_)ioremap/devm_platform_ioremap_resource_byname.
+@rule_3@
+identifier res;
+expression ioremap;
+identifier pdev;
+constant mem;
+expression name;
+@@
+-struct resource *res;
+<+...
+-res = platform_get_resource_byname(pdev,mem,name);
+<...
+-if (!res) {
+-...
+-}
+...>
+-ioremap = devm_ioremap(...);
++ioremap = devm_platform_ioremap_resource_byname(pdev,name);
+...+>
+
+Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+---
+Anusha Srivatsa (7):
+      drm/fsl-dcu: move to devm_platform_ioremap_resource() usage
+      drm/hisilicon: move to devm_platform_ioremap_resource() usage
+      drm/mxsfb: move to devm_platform_ioremap_resource() usage
+      drm/sprd: move to devm_platform_ioremap_resource() usage
+      drm/sti: move to devm_platform_ioremap_resource() usage
+      drm/tegra: move to devm_platform_ioremap_resource() usage
+      Documentation: Update the todo
+
+ Documentation/gpu/todo.rst                      | 13 +++++++------
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c       |  4 +---
+ drivers/gpu/drm/hisilicon/kirin/dw_drm_dsi.c    |  4 +---
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_ade.c |  4 +---
+ drivers/gpu/drm/mxsfb/lcdif_drv.c               |  4 +---
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c               |  4 +---
+ drivers/gpu/drm/sprd/sprd_dpu.c                 | 13 +++----------
+ drivers/gpu/drm/sprd/sprd_dsi.c                 | 13 +++----------
+ drivers/gpu/drm/sti/sti_compositor.c            | 14 +++-----------
+ drivers/gpu/drm/sti/sti_dvo.c                   | 14 +++-----------
+ drivers/gpu/drm/sti/sti_hda.c                   | 13 +++----------
+ drivers/gpu/drm/sti/sti_hdmi.c                  | 15 +++------------
+ drivers/gpu/drm/sti/sti_hqvdp.c                 | 14 +++-----------
+ drivers/gpu/drm/sti/sti_tvout.c                 | 14 +++-----------
+ drivers/gpu/drm/sti/sti_vtg.c                   | 14 +++-----------
+ drivers/gpu/drm/tegra/dsi.c                     |  4 +---
+ 16 files changed, 40 insertions(+), 121 deletions(-)
+---
+base-commit: 0670c2f56e45b3f4541985a9ebe06d04308e43b0
+change-id: 20250304-mem-fixes-34df71d18b98
+
+Best regards,
+-- 
+Anusha Srivatsa <asrivats@redhat.com>
+
