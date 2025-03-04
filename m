@@ -1,114 +1,178 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD79E1F790F
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 07:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBEB1F55ED;
+	Tue,  4 Mar 2025 08:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741074994; cv=none; b=r63PRroFGJ604zcFCkhNgEnpM2gdyDfwr2G1dH5cUnxdYXYJKJnaRke6opC9oT+DW7Fhm85Qll24QmmRZcSBE4a0Sp4EDUyU1FSZbFaOWQZw3Zim1zpo3YrVprHbF0cK3z8W57u4CChiKYMSILWTjJDzLnfqq/gOYxIMLb8MY6E=
+	t=1741075495; cv=none; b=Kx5wzJ1mcOauMiMZUaCHeo0yYVuopk6HNlV8IdTtWLH8eonHvIEtZEQLjKnkSpoB6yc/Ibfs/RKG/URdW2wq+8si8FOePDBq9pxlOau+SIs0uhMGtSen3VpuFiytmiM/atHQglbjQSpnpNerK9V4CVT+IRv01157h6WlncjCniA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741074994; c=relaxed/simple;
-	bh=VMRBgjIDZdW/DUx7Nvq3Qj0k9aCWgrwl34GD0mz0AqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V5rTbcYwMT7xf3axxrTrOd4og3OKDUqRU0arXReYuFbSncWzjkPiW8f10dD4Bhk2vXTlcI03UTGZxZUxmGVkqtQ6O5BLdt9cJGV3EAiYntUgYnHZpVS7E7Y0UWCIldot+cc9kf4UYu/900fBQEJkPMG91xJLjBIsEfo+UB20fFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tpN8b-0003qJ-4c; Tue, 04 Mar 2025 08:56:25 +0100
-Message-ID: <4175faf6-1d41-4409-89db-dd902c966dd5@pengutronix.de>
-Date: Tue, 4 Mar 2025 08:56:23 +0100
+	s=arc-20240116; t=1741075495; c=relaxed/simple;
+	bh=vIjLPcUzgSKENXMFoyq8MSR3rL6XCeonIPvrarBTHfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B3U28mQepnDeUKBZ3n6NMOTj1oq13K3Ud7oOpW42XburH4dZohnZurfBb24PF2hIqk3KcLpSJpsARfjv8Uq0j0wDklZMadRDHcbwIBaIV+cTjwdWnR9jpKda7Fz9W+yXl5p/GZw/YVpUpIwHCcHe3LN3VSeuo2p7w3BGDx6jYKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTMooLPO; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTMooLPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCBEC4CEE5;
+	Tue,  4 Mar 2025 08:04:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741075492;
+	bh=vIjLPcUzgSKENXMFoyq8MSR3rL6XCeonIPvrarBTHfI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MTMooLPO8Bbb2GKqdM1BuZCtLRVMLpPUiZewyqhTUOANTZEdA7zKLpNVpc2b4+pde
+	 qLxD1GPfTrr2crKHjmFBRkbsQhLcZE/wIdMSn7xP+K7vJd7ZRJEAH9qDQUxuZcs5kx
+	 PTy2NgT0nWNSVjrgvdi0A9uofQ0NxTbml1X58f1jrN3deGiad5mCcW/u5Oh/f1kNxH
+	 WkgVk5ns/TvPqpAEbTVtWOTQmUYqzcBtq42vbowT/RyyDgHhCJdC0cKAvbzxnmEotI
+	 4k4ylvc9gwaqMoZC+TRzV16b9VRVTbQY41zF+zC/l+py0e6GMwaWsk+QqwNP9zvG1O
+	 WP0yWgzyy+/YA==
+Date: Tue, 4 Mar 2025 09:04:50 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+	Joel Stanley <joel@jms.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
+	Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+	Xinwei Kong <kong.kongxinwei@hisilicon.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+	Yannick Fertre <yannick.fertre@foss.st.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Alexey Brodkin <abrodkin@synopsys.com>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>, linux-aspeed@lists.ozlabs.org, 
+	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
+ devm_platform_ioremap_resource() usage
+Message-ID: <20250304-astute-curvy-ladybug-f9ff15@houat>
+References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
+ <20250225-memory-drm-misc-next-v1-7-9d0e8761107a@redhat.com>
+ <24958ae8-6153-4798-abeb-e770d66ca8e4@foss.st.com>
+ <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/6] arm64: dts: freescale: imx8mp-skov: switch to
- nominal drive mode
-To: Abel Vesa <abel.vesa@linaro.org>, Abel Vesa <abelvesa@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Frank Li <Frank.li@nxp.com>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Marek Vasut <marex@denx.de>
-References: <20250218-imx8m-clk-v4-0-b7697dc2dcd0@pengutronix.de>
- <174102306220.2928950.8878245519332562153.b4-ty@linaro.org>
- <Z8XnuIIfDFykrKH8@linaro.org>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z8XnuIIfDFykrKH8@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-Hello Abel,
-Hello Shawn,
-
-On 03.03.25 18:32, Abel Vesa wrote:
-> On 25-03-03 19:31:02, Abel Vesa wrote:
->>
->> On Tue, 18 Feb 2025 19:26:40 +0100, Ahmad Fatoum wrote:
->>> Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the imx8mp.dtsi
->>> configures some clocks at frequencies that are only validated for
->>> overdrive mode, i.e., when VDD_SOC is 950 mV.
->>>
->>> For the Skov i.MX8MP board, we want to run the SoC at the lower voltage of
->>> 850 mV though to reduce heat generation and power usage. For this to work,
->>> clock rates need to adhere to the limits of the nominal drive mode.
->>>
->>> [...]
->>
->> Applied, thanks!
->>
->> [1/6] dt-bindings: clock: imx8m: document nominal/overdrive properties
->>       commit: d5992f1af1550a9e11e42cfa2ca1ad2a1b7fd7f3
->> [2/6] arm64: dts: imx8mp: Add optional nominal drive mode DTSI
->>       (no commit info)
->> [3/6] arm64: dts: imx8mp: add fsl,nominal-mode property into nominal.dtsi
->>       (no commit info)
->> [4/6] arm64: dts: freescale: imx8mp-skov: configure LDB clock automatically
->>       (no commit info)
->> [5/6] arm64: dts: freescale: imx8mp-skov: operate SoC in nominal mode
->>       (no commit info)
->> [6/6] clk: imx8mp: inform CCF of maximum frequency of clocks
->>       commit: 06a61b5cb6a8638fa8823cd09b17233b29696fa2
-> 
-> Applied only patches 1 and 6.
-> 
-> My b4 setup messed up. Sorry.
-
-Thanks for applying, Abel!
-
-@Shawn, could the remainder of the patches go through your tree?
-
-Thanks!
-Ahmad
-
-> 
->>
->> Best regards,
->> -- 
->> Abel Vesa <abel.vesa@linaro.org>
->>
-> 
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="3cvx2hh6lak7gb3g"
+Content-Disposition: inline
+In-Reply-To: <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--3cvx2hh6lak7gb3g
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
+ devm_platform_ioremap_resource() usage
+MIME-Version: 1.0
+
+On Mon, Mar 03, 2025 at 12:29:19PM -0500, Anusha Srivatsa wrote:
+> On Wed, Feb 26, 2025 at 5:19=E2=80=AFAM Raphael Gallais-Pou <
+> raphael.gallais-pou@foss.st.com> wrote:
+>=20
+> >
+> > On 2/25/25 23:20, Anusha Srivatsa wrote:
+> > > Replace platform_get_resource/_byname + devm_ioremap
+> > > with just devm_platform_ioremap_resource()
+> > >
+> > > Used Coccinelle to do this change. SmPl patch:
+> > >
+> > > @rule@
+> > > identifier res;
+> > > expression ioremap;
+> > > identifier pdev;
+> > > constant mem;
+> > > expression name;
+> > > @@
+> > > -struct resource *res;
+> > > ...
+> > > -res =3D platform_get_resource_byname(pdev,mem,name);
+> > > <...
+> > > -if (!res) {
+> > > -...
+> > > -}
+> > > ...>
+> > > -ioremap =3D devm_ioremap(...);
+> > > +ioremap =3D devm_platform_ioremap_resource_byname(pdev,name);
+> > >
+> > > and
+> > > @rule_2@
+> > > identifier res;
+> > > expression ioremap;
+> > > identifier pdev;
+> > > @@
+> > > -struct resource *res;
+> > > ...
+> > > -res =3D platform_get_resource(pdev,...);
+> > > <...
+> > > -if (!res) {
+> > > -...
+> > > -}
+> > > ...>
+> > > -ioremap =3D devm_ioremap(...);
+> > > +ioremap =3D devm_platform_ioremap_resource(pdev,0);
+> > >
+> > > v2: Fix compilation error.
+> >
+> >
+> > Hi Anusha,
+> >
+> >
+> > You did not take into account my comment regarding the changelog. :-)
+> >
+> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
+commentary
+> >
+> > While the commit summary do not specify the version, this changelog
+> > suggests
+> > that the version of your series as been incremented.
+> > If this is a v2, then a version descriptor should be applied to the
+> > patchset.
+> >
+> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
+subject-line
+> >
+> > Hi  Raphael,
+>=20
+> That is correct. While this patch is a v2, there is another patch or two =
+in
+> the same series that is on v4 when it got acked and reviewed. Having
+> patches belonging to the same series with different version prefixes seem=
+ed
+> odd when I sent the series. Hence added what exactly changed in the commit
+> log.
+
+This breaks a lot of tools though. If your series changes, you need to
+increase the version number, no matter how small or insignificant it
+changed compared to the previous one. resend is only meant to be used
+when you send the exact same series.
+
+Maxime
+
+--3cvx2hh6lak7gb3g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ8a0GwAKCRAnX84Zoj2+
+dvPAAX0T6CB5j6he9IlacsjKLYZXt0M1IhAKVugJHAC1WHuswlCAJSgEyELEpzS1
+ddcuQ7kBf3wXscEAe3lhr3vk0F2KVEj4r8JtBnUwxNM0o1E63auMQV7dNPG5Z5Ku
+4gxKbq/wJQ==
+=hPVI
+-----END PGP SIGNATURE-----
+
+--3cvx2hh6lak7gb3g--
