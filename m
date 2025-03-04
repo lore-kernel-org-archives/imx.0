@@ -1,347 +1,243 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2053.outbound.protection.outlook.com [40.107.21.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24849200118
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 11:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741086549; cv=none; b=YCk9mJCQXkccf6jRBlsiP9pl4aLIHTLoGZTdEwkVH5hOPJ7TAKOTeLU2USK6qR1vtexkUmkgpJqqTlF35ew9lmunjmx2sRkxdXijfDHK4/OAkobI1tp5vKOSgz7eQzACPy1V8+gsPllToLf1qQTyyCtvHtRWgAnFnShY+Cycwfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741086549; c=relaxed/simple;
-	bh=u0YmdJFlgr6Ci4zwZEY7A4+gyfwZZMpZ49LowVF7sWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YwF+jvqXQQJBwpbmpoSy8bvcpw5DZfKjFe1dRZ8Ouhtmo85CbUmd5B4iaKqxArALpRSH+dfTdzj8fKMmej3zEgv/xa0CXmlhJGZvKEVNTzP9jmXzWJew2j+xjZN5E7q+SMJJsDmgbHIBVUGuK5cFHt9AmmxDaeIfEIw+iR7LVno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wdwDPQ5J; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MUzrvEzP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wdwDPQ5J; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MUzrvEzP; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E1B201018
+	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 12:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741089725; cv=fail; b=sI1g4wNwHu0CzPQYvdCz7YWSHGY4/wdzpNcUnPGxUKfECMS0owzlOXM8ra3AvB1p+vxJp7ZV+VYTOs9tFAFNojAe9Dn1YK6BWj7bZU6miz0biG4RJGtpX3gYfOZ9dkMvLgVqWqS8pte1m19iUcMcy35eVsu4z4IQHBiOLWcmoPM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741089725; c=relaxed/simple;
+	bh=8o5BfgDT/Bl/6s7kY/LGId4VxNPxC23ttWujk7sj9xs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=O8b5uW5t95OTB3zaPM3nWDTUgZLPHvZ7xBPXDh+2TkSWFr1sK2pw5KwC/dVf76zDfUVKsRZ4oMMtyoOyJukFVfS474aF6OmaZriO5ysnzPdL/mP0FZNMoozdhgz7C2iXNLTqc64ouF0uYZKe55qH1pav7O8Px8NNguw4VPdYI98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NgGEJJRh; arc=fail smtp.client-ip=40.107.21.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wdwDPQ5J";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MUzrvEzP";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wdwDPQ5J";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MUzrvEzP"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 58F731F74D;
-	Tue,  4 Mar 2025 11:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741086545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a+fxtDaCqIKsV3/+j7+mbgqDngXaphwg7nZVJK1S25Y=;
-	b=wdwDPQ5JW3v6aP23c0Qc7mf9sHv06uXuwAvObmCFRx+XNMUn4SNGdQyUBjNY4KkTlMa1VX
-	o6roVTvCwxek25YNVYLHd1FaKCZsVl9lPIro57lz/HFWkr9FPhkqsQ5Qn4hMPlQcBe0W/L
-	GHvAhscu1yPo+IpKC7jXJpySzek8nyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741086545;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a+fxtDaCqIKsV3/+j7+mbgqDngXaphwg7nZVJK1S25Y=;
-	b=MUzrvEzP6KOiJdBfdKfbDY1afQgc6OxZ1PwrgIo8wnFfhWj2V6Cc8zhSEcALBzV7oNbrb+
-	5xisIk3apOtPgQDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741086545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a+fxtDaCqIKsV3/+j7+mbgqDngXaphwg7nZVJK1S25Y=;
-	b=wdwDPQ5JW3v6aP23c0Qc7mf9sHv06uXuwAvObmCFRx+XNMUn4SNGdQyUBjNY4KkTlMa1VX
-	o6roVTvCwxek25YNVYLHd1FaKCZsVl9lPIro57lz/HFWkr9FPhkqsQ5Qn4hMPlQcBe0W/L
-	GHvAhscu1yPo+IpKC7jXJpySzek8nyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741086545;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a+fxtDaCqIKsV3/+j7+mbgqDngXaphwg7nZVJK1S25Y=;
-	b=MUzrvEzP6KOiJdBfdKfbDY1afQgc6OxZ1PwrgIo8wnFfhWj2V6Cc8zhSEcALBzV7oNbrb+
-	5xisIk3apOtPgQDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 37CA913967;
-	Tue,  4 Mar 2025 11:09:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YX+UDVHfxmdIbwAAD6G6ig
-	(envelope-from <iivanov@suse.de>); Tue, 04 Mar 2025 11:09:05 +0000
-Date: Tue, 4 Mar 2025 13:09:04 +0200
-From: "Ivan T. Ivanov" <iivanov@suse.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v12 1/5] Documentation/firmware: add imx/se to
- other_interfaces
-Message-ID: <20250304110904.qr5rtsvkqa3l64t4@localhost.localdomain>
-References: <20250120-imx-se-if-v12-0-c5ec9754570c@nxp.com>
- <20250120-imx-se-if-v12-1-c5ec9754570c@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NgGEJJRh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A9d4E5jqtsIZ5m9k0Hj+YFCyXa+xZhqrTJb6VA2hMkdOpi90CWUlzl3W90ky9tXU6f5ko3ScqklqHqpq/KnWlzNNpQDrve1b4dpIW8E5FlSo/bkei08oNczutjLXyRAesqSoVzH8Jl2H6kaQMXp3grgEwsXcFVvgVkjDBRDJFppHDRZug5FVrpyTJXSykrQHux52tohYYSf8UMghVtly0fUapf+lyBcei6Sm0pvl9Kn59v1o33Z7b/AymIsHrCJNz+WPqmL4KBD51Dbm0X0dxJYxBWKrhauVs26bV5BnXjYTZZPmo+iIX1yCGwvwU71NyomFNj0bg7WYrFdE0FYjbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i4aaskmcDiiGlWNXKNw3X6Qvf9tpKQ0Jue1BQ0vH2F8=;
+ b=vNl+GYtOaNjodAkSi/YLb1z4YtL0lBuBf8+StTVpRx0mJpvFtm28DREWYsYwIKZPqHMT50uLbcyr3eVFTGtBTZ3HCNfDyoMylx+FJas55bnLUo13XIrK6z5I/sj53h0z5gHddUWOEqDa37Lrd5bv8guYSA03X3LUBK6XH3gyDsZ6IW47Ogaj82dpjk1ZfyZ6Dim7kp0mc4t4ewocdygjIj9Re4isjR1+ad8CAkItMPWS17opiOkQADO3dcR/86hPMwCEHo2rD+Zf3AnlL8aPdG2lnSnn+EnWJXfAwuEB0x9hqSKbIRkIzgXMd1PSI2pjv3ixPehE4a1bEAGrzk/BHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i4aaskmcDiiGlWNXKNw3X6Qvf9tpKQ0Jue1BQ0vH2F8=;
+ b=NgGEJJRhOVcVrPUMd92MgK/SaY5cLrgPuwyqdBkRjTLkEbtvUu9akhPOwISIVQac+i5KGj03z5JptNrdopriopsQ7S68tJix5HwQe+RxoU7xrRFaC94miBOAlspzUwBY+QZ9BnVXjX1yLhILmg4TFLEd8/QBy/K7lyAM2Pa7WnzNKtX8jKrUfdRvbTTabcPb1/az3rKk3dGjrhfarFMGV/nV2A+Tl4GZ9pnBetEmWSd5mgni4G/t/L4m+lzaBD6cui/MewETeg+ldtEJCNzOICmd+GYaGFG80prKLSHve2J1OHkDBY0klno3jy903SYUyn2FnfUHLoqXApM+GLUxVA==
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
+ by DBBPR04MB7546.eurprd04.prod.outlook.com (2603:10a6:10:1f7::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.29; Tue, 4 Mar
+ 2025 12:02:00 +0000
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb%7]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 12:02:00 +0000
+From: Jacky Bai <ping.bai@nxp.com>
+To: Thomas Gleixner <tglx@linutronix.de>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+CC: "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Aisheng Dong <aisheng.dong@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, "S.J. Wang"
+	<shengjiu.wang@nxp.com>
+Subject: RE: [PATCH] irq: imx-irqsteer: irq_count can larger than registered
+ irq
+Thread-Topic: [PATCH] irq: imx-irqsteer: irq_count can larger than registered
+ irq
+Thread-Index: AQHbjOn4IgHKsrBBwUqLLU4QWAWAzLNiwVCAgAABMUA=
+Date: Tue, 4 Mar 2025 12:02:00 +0000
+Message-ID:
+ <AS8PR04MB8642733D81F0A37FBB70902E87C82@AS8PR04MB8642.eurprd04.prod.outlook.com>
+References: <20250304094513.1964356-1-ping.bai@nxp.com> <87bjuh6r9q.ffs@tglx>
+In-Reply-To: <87bjuh6r9q.ffs@tglx>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8642:EE_|DBBPR04MB7546:EE_
+x-ms-office365-filtering-correlation-id: 41a576d6-3153-4bce-fada-08dd5b145ef6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?DDliPtDXNEd3F1mPnYzpEdpDwka28xCbZ5ovt8sk5ct5x9A1uZ3OAeAjN0tR?=
+ =?us-ascii?Q?lbAD43Bwj19Ru0UOwusWltNfF8IbJ+UMaBaijyLjbH0MkSEgP8ZpuFVBRjun?=
+ =?us-ascii?Q?krqsfgnJZiYXLvUq1UDJ/Qm2bvA3r8a+eRD/7QtifX5os+WrOLtys/x2Ewn4?=
+ =?us-ascii?Q?ryyL5+jPjuow221VH8y8aHJYmdpDifV7CzavgI4iotsh1xMH5hEuKAf25Ira?=
+ =?us-ascii?Q?aRvIwzY+rWAKrFDzmbXzrT7AX2rkQ8PiLgpmnYvlRz3LnI49dL//s3B2yWn8?=
+ =?us-ascii?Q?NqsXFpuE960hLq++FApD6C6voKtCQP4okLj0JCbY5DkwWgUBOJ0FEqRiWgll?=
+ =?us-ascii?Q?Zby+6PIWmkhv+JVodkbJGMh3v778pgG5npsjAhqYHjwl5NakbwGmlBezOuSV?=
+ =?us-ascii?Q?6Go6kmOssbbm4CC96wPRv0u3oYiThS+W85PWpRUCnonIcultVPlHaEUCQI/I?=
+ =?us-ascii?Q?RrUqUNaj+CbaWEotw0wmGDnjiwy885NbH03kMBBId1gwp60BGto3XHntCysm?=
+ =?us-ascii?Q?5sjLUcxFk990VlJ0auxVm0mlzxx9KO++VC/bIpSxUGIu8hbuWhsa3IK1Gp9U?=
+ =?us-ascii?Q?9sHJtKOozdBcPHALfDc+Zy3PMdT5xYv9VlIQLG2TximoWM7Y8zwFgKOx/iSB?=
+ =?us-ascii?Q?8wDW6LVs278v2TXvFtpRnAwaQsD+BvBglMXs1W/NEz7PtZQjo+WEHoBGyiFw?=
+ =?us-ascii?Q?CvsgVpNKRg5W+2Zj4PghM1pOwb6LCC215sC+MRbhIGainVyqsswy1wgNohaw?=
+ =?us-ascii?Q?2Iy2inKX6dQkOqMUZYmo7x/YQm1xV7EYQh0Z3z7MJkV/6yG0HG8Bt/w8XDMe?=
+ =?us-ascii?Q?jQ33D9VO6Goo6vVxfNDJdDtyTuKfl8aYj3JG9JnakKTreLHY/b7unQymvUm4?=
+ =?us-ascii?Q?Y+yd59FRf7UD3KxXeCnnqv0l5Rkq/bHRMLq/1Tg+7G5ak5nXel8C2teXnE+N?=
+ =?us-ascii?Q?n3ezjndADifJo/oJsLY6Js+tID43xv//dA3Pq+HCjvtBAHGix8r4RVWKqVyO?=
+ =?us-ascii?Q?0iGq0uRxkCxzBas7zvLH3Kjr+50MCl46qn+0Un6sOfitQTwwPIR0ubUG2FdZ?=
+ =?us-ascii?Q?iSXAVLqYvMFKzuUozjsXtWC+9SsjmxaSBYIw3gn2bFzjIYnuiEnA570yEwBx?=
+ =?us-ascii?Q?XzPaMMBw5DEST+pBHhJpNk+j5jFLwz5OBnCmQUw1IcuIuvj+W7+YdbKfqUon?=
+ =?us-ascii?Q?eR1LW095w60wfpQgfgp7E4/f/2sixYshbiggWu36t3fesQ7fGqTQAIcUvKlx?=
+ =?us-ascii?Q?4SGn7o1CZLZIncQ7wZaZJn6zqGjwJj+Qqjyn+/YSDmVj0OmdcvqzzrKa5pK2?=
+ =?us-ascii?Q?fK7jAiLZ0E7E1SUVsgHAron5CAPAoY+OxOYN8FwxIP67/gEQ60HagQ/nMG0q?=
+ =?us-ascii?Q?MfL5xTnxjS/1pk/ygKd0Gjqckfx+efpNFDl87gmZlOcWOfMwSIS5fg0q2FEV?=
+ =?us-ascii?Q?3VLN4bFiDDy+rWK5LJgj0PpM27DRTk6p?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?9U5FU7a+4HSCDvI71TiEQYxMT3VIoctyME/Mrykt9/YVP7jbcHtWX9Jwx0vQ?=
+ =?us-ascii?Q?oTrpLMgRHygwHo4J+kkD9dseVvb2VK8BoFgh4O4hUjT6VlbBqUtDXniAsFfR?=
+ =?us-ascii?Q?lmq188QFbHbgdNwtOLhBBG8hldCuJc50cC8F9ba9vlFb5F29eOfaeDT9d0uW?=
+ =?us-ascii?Q?3gz2GyjVcxPnCO5a4wElyzWpyiR6d8A3qeyFcggAx7/T/jo50v2exFYW5JpC?=
+ =?us-ascii?Q?CH3dAhCSCIhxayX1U0ans431FOchpHh6O8SOcIqSmouvIDb4FvakGqum5oqR?=
+ =?us-ascii?Q?Pi2+EOkTExfTiWqo3LJVA41YO1trnewQS44UrsESICRFobmHtiqejy0QBTaK?=
+ =?us-ascii?Q?UqzDoLPXTPzP6oOoNgQtt+E7BQAv0k62lqqUi0svtHR5Iei3G3feofv//TgT?=
+ =?us-ascii?Q?gY+mrYOowaoy95lqEYX2+4OJvsYmi0yl0xq2GihH00VLI20kTqi85sh5u25X?=
+ =?us-ascii?Q?n9lRWPU2TJSYaA9mnOurQ+AI9w1kTc/OakAQ3fNyxgfm3c5WcskS5XKBn6QR?=
+ =?us-ascii?Q?I0mgxAQnX4VFhmljVN+ysNdm9ZXLuUEcn0CPjIR6GS3Z4OREiGl5p8rrwoOP?=
+ =?us-ascii?Q?XYczYl/+NX4wiphvjRO17E/it9YIUi1zjOprVe3TT8M3DTZ/3lz/xpM23f+e?=
+ =?us-ascii?Q?ED9NKQQcij16qsn3gbn8BbqEdFyWaK1dWvl3ACJE2L92wd74d6Bnnfc/yoeZ?=
+ =?us-ascii?Q?j78JC2Zg2mp5C8f9J3o+lJs/z9A50W8mmidOSG4z4vgorR/beBe01GQHV8aA?=
+ =?us-ascii?Q?WXpjPcsOAC+XMU4eSDVZe2btKy59Ubpc1Nw6te+yON5p1Y0t9mBuVo3GNIdA?=
+ =?us-ascii?Q?v+cYma6MqFSNgB8JhvGc4g89XOX4Ti2nZozE+es58Fb0SGAOT+WwJ8QgMBOq?=
+ =?us-ascii?Q?2XX0AQ6MDfPKnFEzTiowweH5pbNqtUwg4zoXQT5J9DWdRCny4ZFuC+RbDqbb?=
+ =?us-ascii?Q?IIFkOuVl6SJRwSAjUMtZpgq1A7uEnYGw3ljyHBI/YeCLYVz6Q57vGl1fB2Bl?=
+ =?us-ascii?Q?tUnelqT+7AHUhUhOMpMN9IBQv6Y2puSrA7jCHjN0x2/yca41vI6hATM2gfMN?=
+ =?us-ascii?Q?F5nRR3t9iHl9s8pY0L0rwQkq+QnPrUE6+Bgqt0W0LLzwq7TNkxrhX1LQwXaO?=
+ =?us-ascii?Q?CKSHtf2xMWBPgWzLRw3YmOHAqKVrsx1mWqoop2rMh/DYmOJYIWvnrINokKHy?=
+ =?us-ascii?Q?otznIUrZmvBSAFaqRg6SkELIn0pTHfYFHhHI71XtsSzpne4fS2k/mXb5JHbD?=
+ =?us-ascii?Q?YFjnGH1zmLjSN+c/z6gDFHrY8n7LZqQkCZFyK6lVPol3XXBMMTx/j7R7Xr14?=
+ =?us-ascii?Q?L7kyiOFA0iQTy/PZgDSv3h+PYw+YBkb9SfuBhunmcdMttlNilSBXUJXFldq2?=
+ =?us-ascii?Q?ZNgh0CQRek3xYPyRq15jTmjCGvv3Did7Niah5inYX+kV1YAEOiGrcDN/0qXq?=
+ =?us-ascii?Q?odgJTdWZRKSrhTMtIiHYf6Zi9maoGOfX8Ajmvu/3wq8jG6NuHEbaEzwWTXar?=
+ =?us-ascii?Q?j4ErfURZE41onNosCa1HQd6dnAA5EWnwzPyOH1xm/iOT/mV1jVG3WrodKHP8?=
+ =?us-ascii?Q?xC+oyKPk9jJ7GwGavK4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250120-imx-se-if-v12-1-c5ec9754570c@nxp.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[dt];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lwn.net,kernel.org,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,imap1.dmz-prg2.suse.org:helo,i.mx:url]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41a576d6-3153-4bce-fada-08dd5b145ef6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2025 12:02:00.7127
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QiH1ehXrbpzFYTkb3q+o1linl7GjmHc6lIQGKT+cBOh2csV3YI5nJP/IAb7icF1MUdsxhsDKRJWkuLIA5hTZ9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7546
 
-Hi,
+> Subject: Re: [PATCH] irq: imx-irqsteer: irq_count can larger than registe=
+red irq
+>=20
+> On Tue, Mar 04 2025 at 17:45, Jacky Bai wrote:
+> > From: Shengjiu Wang <shengjiu.wang@nxp.com>
+Hi Thomas,
 
-On 01-20 22:22, Pankaj Gupta wrote:
 >=20
-> Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s)
-> that contains the NXP hardware IP(s) for Secure Enclaves(se) like:
-> - NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
+> Please use the proper subsystem prefix as documented:
 >=20
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> ---
->  .../driver-api/firmware/other_interfaces.rst       | 121 +++++++++++++++=
-++++++
->  1 file changed, 121 insertions(+)
+>=20
+...
+
+>=20
+> Also 'irq_count can larger than registered irq' is not a sentence and tel=
+ls
+> absolutely nothing what this patch is about.
 >=20
 
-<snip>
+My fault, will fix it.
 
-> +
-> +- c_dev:
-> +  This layer offers character device contexts, created as '/dev/<se>_mux=
-_chx'.
-> +  Using these multiple device contexts that are getting multiplexed over=
- a single MU,
-> +  userspace application(s) can call fops like write/read to send the com=
-mand message,
-> +  and read back the command response message to/from Firmware.
-> +  fops like read & write use the above defined service layer API(s) to c=
-ommunicate with
-> +  Firmware.
-> +
-> +  Misc-device(/dev/<se>_mux_chn) synchronization protocol:
-> +
-> +                                Non-Secure               +   Secure
-> +                                                         |
-> +                                                         |
-> +                  +---------+      +-------------+       |
-> +                  | se_fw.c +<---->+imx-mailbox.c|       |
-> +                  |         |      |  mailbox.c  +<-->+------+    +-----=
--+
-> +                  +---+-----+      +-------------+    | MU X +<-->+ ELE |
-> +                      |                               +------+    +-----=
--+
-> +                      +----------------+                 |
-> +                      |                |                 |
-> +                      v                v                 |
-> +                  logical           logical              |
-> +                  receiver          waiter               |
-> +                     +                 +                 |
-> +                     |                 |                 |
-> +                     |                 |                 |
-> +                     |            +----+------+          |
-> +                     |            |           |          |
-> +                     |            |           |          |
-> +              device_ctx     device_ctx     device_ctx   |
-> +                                                         |
-> +                User 0        User 1       User Y        |
-> +                +------+      +------+     +------+      |
-> +                |misc.c|      |misc.c|     |misc.c|      |
-> + kernel space   +------+      +------+     +------+      |
-> +                                                         |
-> + +------------------------------------------------------ |
-> +                    |             |           |          |
-> + userspace     /dev/ele_muXch0    |           |          |
-> +                          /dev/ele_muXch1     |          |
-> +                                        /dev/ele_muXchY  |
-> +                                                         |
+> > The irqsteer IP itself can support up to 5 channels and each channel
+> > can support max 960 IRQs per. The actual number of
+>=20
+> Can you please write out words, i.e. interrupts, hardware etc.. This is a
+> changelog and not twatter.
+>=20
+> Aside of that: 'per.' does not make any sense. 'per' wants to be followed=
+ by a
+> noun: '...per $WHAT.'
+>=20
 
-I tried these patches on FRDM i.MX 93 board using this
-devicetree excerpt:
+Thx, will improve and fix in v2.
 
-	ele_if0: secure-enclave {
-		compatible =3D "fsl,imx93-se";
-		mbox-names =3D "tx", "rx";
-		mboxes =3D <&s4muap 0 0>,
-			<&s4muap 1 0>;
-		memory-region =3D <&ele_reserved>;
-	};
+> > channels and IRQ per channel implemented in HW is SoC related.
+>=20
+> > For previous i.MX SoCs, normally only one channel and max 512 IRQ is
+> > implemented, But for i.MX94, the irqsteer HW is implemented for 960
+> > IRQs, even it only has 384 IRQs connected.
+> >
+> > That means on i.MX94, the 'irq_number' is 6 but the 'irq_count' is
+>=20
+> What means irq_number and irq_count here?
 
-	ele_reserved: ele-reserved@a4120000 {
-		compatible =3D "shared-dma-pool";
-		reg =3D <0 0xa4120000 0 0x100000>;
-		no-map;
-	};
+For irqsteer, the interrupt inputs are divided into groups, each group has =
+64 interrupt
+Inputs and use one irqsteer's interrupt output line to raise interrupt to p=
+arent interrupt controller.
 
-Unfortunately I do not see these device nodes, but only /dev/hsm0_ch0.
+The irq_number means how many interrupt output lines from irqsteer are real=
+ly
+connected to the parent interrupt controller, while the irq_count means the=
+ max
+interrupt input line groups in the irqsteer instance.
 
-=2E..
-fsl-se secure-enclave: i.MX secure-enclave: hsm0 interface to firmware, con=
-figured.
-=2E..
+If the irq_count is 15, as each group has 64 interrupts, it means the irqst=
+eer
+can support up to 960 interrupt inputs.
 
-This matches SE_TYPE_STR_HSM, so perhaps documentation needs updating.
+>=20
+> > 15, so we need to increase the CHAN_MAX_OUTPUT_INT to 0xF(960 / 64)
+>=20
+> What kind of math is 0xF(960 / 64) ? And what has this to do with
+> irq_number=3D6 ad irq_count=3D15?
 
-Then I build imx-secure-enclave user space tools. I have to update device
-nodes ELE_MU_HSM_PATH_xxx to match what c_dev exports, hopefully I
-patched it in the right place :-)
+As mentioned above, if the irqsteer is designed in HW with max 960 interrup=
+t inputs,
+It needs 15 interrupt outputs: 960 / 16 =3D 15. Even if we only 384, 512, o=
+r any number of
+interrupt inputs less than 960 are actually connected to valid peripheral i=
+nterrupt.
 
-Unfortunately just starting  nvm_daemon gives me following kernel
-crash [1].
+For i.MX94, In the SoC design, the irqsteer is designed with max 960 interr=
+upt inputs, the
+irq_count is 15. But only 384 inputs are really connected in HW. For these =
+384 interrupts,
+it need 6 irqsteer interrupt output(384 / 64 =3D 6), the irq_number is 6.
 
-Please could you point me to the proper instruction how to test this?
+In other world, the irq_number means the number of used interrupt outputs, =
+while irq_count
+means the max interrupt outputs that can be supported by an irqsteer instan=
+ce.
 
-Thank you,
-Ivan
+I will refine the changelog to make it more clear. Sorry for the confusion,=
+^_^
 
----
-# ./usr/bin/nvm_daemon  ./etc/file ./etc/ 0
-
-[  597.387002][    C0] Unable to handle kernel NULL pointer dereference at =
-virtual address 0000000000000010
-[  597.396866][    C0] Mem abort info:
-[  597.400347][    C0]   ESR =3D 0x0000000096000006
-[  597.404775][    C0]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-[  597.410764][    C0]   SET =3D 0, FnV =3D 0
-[  597.414499][    C0]   EA =3D 0, S1PTW =3D 0
-[  597.418321][    C0]   FSC =3D 0x06: level 2 translation fault
-[  597.423877][    C0] Data abort info:
-[  597.427438][    C0]   ISV =3D 0, ISS =3D 0x00000006, ISS2 =3D 0x00000000
-[  597.433600][    C0]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-[  597.439329][    C0]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-[  597.445318][    C0] user pgtable: 4k pages, 48-bit VAs, pgdp=3D00000000a=
-04ac000
-[  597.452433][    C0] [0000000000000010] pgd=3D08000000a04b0003, p4d=3D080=
-00000a04b0003, pud=3D08000000a04b3003, pmd=3D0000000000000000
-[  597.463728][    C0] Internal error: Oops: 0000000096000006 [#1] SMP
-[  597.469985][    C0] Modules linked in: af_packet trusted caam_jr caamhas=
-h_desc caamalg_desc caam error crypto_engine asn1_encoder authenc libdes bt=
-nxpuart snd_soc_fsl_asoc_card snd_soc_imx_audmux snd_soc_simple_card_utils =
-snd_ac97_codec snd_soc_fsl_sai bluetooth fsl_imx9_ddr_perf imx_pcm_dma snd_=
-soc_fsl_utils qoriq_thermal ecdh_generic rfkill snd_soc_fsl_mqs flexcan snd=
-_soc_core snd_compress can_dev optee sec_enclave(OE) imx_rproc ac97_bus ffa=
-_core snd_pcm_dmaengine tee snd_pcm snd_timer snd soundcore nls_iso8859_1 n=
-ls_cp437 vfat fat uio_pdrv_genirq fuse dmi_sysfs ip_tables x_tables spidev =
-mmc_block rpmb_core tcpci tcpm typec rtc_pcf2127 crct10dif_ce pca9450_regul=
-ator ci_hdrc_imx 8021q ci_hdrc ghash_ce usb_otg_fsm garp gf128mul ulpi mrp =
-sm4 sha2_ce udc_core sha256_arm64 pwrseq_simple roles ehci_hcd sha1_ce dwma=
-c_imx usbcore phy_generic gpio_keys usb_common nvmem_imx_ocotp_ele usbmisc_=
-imx sdhci_esdhc_imx stmmac_platform sdhci_pltfm stmmac cqhci sdhci pwm_imx_=
-tpm mmc_core pcs_xpcs i2c_imx_lpi2c phylink spi_fsl_lpspi imx7ulp_wdt
-[  597.470224][    C0]  fsl_edma fixed overlay btrfs blake2b_generic xor xo=
-r_neon raid6_pq libcrc32c sunrpc dm_mirror dm_region_hash dm_log dm_mod be2=
-iscsi bnx2i cnic uio cxgb4i cxgb4 tls libcxgbi libcxgb qla4xxx iscsi_boot_s=
-ysfs iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi sd_mod sg scsi_mo=
-d scsi_common br_netfilter bridge stp llc efivarfs aes_neon_bs aes_neon_blk=
- aes_ce_blk aes_ce_cipher
-[  597.595841][    C0] Supported: No, Unreleased kernel
-[  597.600794][    C0] CPU: 0 UID: 0 PID: 1912 Comm: nvm_daemon Tainted: G =
-          OE        6.12.0-g6dd51d0 #1  (unreleased) 1bbfa4b46f0796a1c0b0ab=
-ee639edd3b3230f00f
-[  597.617891][    C0] Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE
-[  597.623877][    C0] Hardware name: fsl NXP i.MX93 11X11 FRDM board/NXP i=
-=2EMX93 11X11 FRDM board, BIOS 2024.04-00004-g27baba14a58-dirty 04/01/2024
-[  597.636801][    C0] pstate: 804000c9 (Nzcv daIF +PAN -UAO -TCO -DIT -SSB=
-S BTYPE=3D--)
-[  597.644443][    C0] pc : se_if_rx_callback+0xa8/0x1f0 [sec_enclave]
-[  597.650709][    C0] lr : mbox_chan_received_data+0x24/0x40
-[  597.656187][    C0] sp : ffff800080003e20
-[  597.660182][    C0] x29: ffff800080003e20 x28: ffff000085e60080 x27: 000=
-000000000001b
-[  597.667999][    C0] x26: ffff0000e89f388c x25: 0000000000000004 x24: fff=
-f0000996a4ac8
-[  597.675816][    C0] x23: ffff0000a43e3810 x22: ffff0000996a4ac8 x21: fff=
-f0000996a4a80
-[  597.683634][    C0] x20: 000000000000000c x19: ffff0000e89f3880 x18: 000=
-0000000000000
-[  597.691451][    C0] x17: ffff80007d89b000 x16: ffff800080000000 x15: 000=
-0000000000000
-[  597.699268][    C0] x14: 0000000000000000 x13: 0000000000000000 x12: 000=
-0000000000000
-[  597.707086][    C0] x11: 0000000000000040 x10: ffff0000801fab30 x9 : fff=
-f800080cbfbfc
-[  597.714903][    C0] x8 : ffff000080400948 x7 : 0000000000000000 x6 : 000=
-0000000000000
-[  597.722720][    C0] x5 : 0000000000000008 x4 : 000000000000000c x3 : 000=
-00000e1100307
-[  597.730538][    C0] x2 : 0000000000000000 x1 : ffff80007bb5fb98 x0 : fff=
-f0000a43e3810
-[  597.738356][    C0] Call trace:
-[  597.741485][    C0]  se_if_rx_callback+0xa8/0x1f0 [sec_enclave eaa590c7f=
-5850e16202e831d5a0ef9bbd976ab91]
-[  597.750957][    C0]  mbox_chan_received_data+0x24/0x40
-[  597.756087][    C0]  imx_mu_specific_rx+0x1ec/0x280
-[  597.760958][    C0]  imx_mu_isr+0x314/0x340
-[  597.765135][    C0]  __handle_irq_event_percpu+0x58/0x240
-[  597.770526][    C0]  handle_irq_event+0x54/0xd0
-[  597.775041][    C0]  handle_fasteoi_irq+0xac/0x1e0
-[  597.779825][    C0]  handle_irq_desc+0x48/0x70
-[  597.784254][    C0]  generic_handle_domain_irq+0x24/0x40
-[  597.789549][    C0]  gic_handle_irq+0x11c/0x260
-[  597.794073][    C0]  call_on_irq_stack+0x24/0x30
-[  597.798684][    C0]  do_interrupt_handler+0x88/0xa0
-[  597.803554][    C0]  el1_interrupt+0x44/0xd0
-[  597.807818][    C0]  el1h_64_irq_handler+0x18/0x30
-[  597.812602][    C0]  el1h_64_irq+0x7c/0x80
-[  597.816684][    C0]  _raw_spin_unlock_irq+0x14/0x70
-[  597.821555][    C0]  wait_for_completion_interruptible+0x28/0x50
-[  597.827544][    C0]  ele_msg_rcv+0xa0/0x100 [sec_enclave eaa590c7f5850e1=
-6202e831d5a0ef9bbd976ab91]
-[  597.836488][    C0]  se_if_fops_read+0xc8/0x1f0 [sec_enclave eaa590c7f58=
-50e16202e831d5a0ef9bbd976ab91]
-[  597.845779][    C0]  vfs_read+0xcc/0x320
-[  597.849696][    C0]  ksys_read+0x78/0x120
-[  597.853691][    C0]  __arm64_sys_read+0x24/0x40
-[  597.858207][    C0]  invoke_syscall+0x70/0x100
-[  597.862644][    C0]  el0_svc_common.constprop.0+0x48/0xf0
-[  597.868034][    C0]  do_el0_svc+0x24/0x40
-[  597.872038][    C0]  el0_svc+0x3c/0x170
-[  597.875869][    C0]  el0t_64_sync_handler+0x120/0x130
-[  597.880913][    C0]  el0t_64_sync+0x1a8/0x1b0
-[  597.885258][    C0] Code: b9400263 2a1403e4 f0fffe61 912e6021 (f9400842)
-[  597.892035][    C0] ---[ end trace 0000000000000000 ]---
-[  597.897330][    C0] Kernel panic - not syncing: Oops: Fatal exception in=
- interrupt
-[  597.904878][    C0] SMP: stopping secondary CPUs
-[  597.909521][    C0] Kernel Offset: disabled
-[  597.913691][    C0] CPU features: 0x0,0000000c,00000004,00280928,4201721b
-[  597.920468][    C0] Memory Limit: none
-[  597.924205][    C0] Rebooting in 90 seconds..
+BR
+Jacky
+>=20
+> Thanks,
+>=20
+>         tglx
 
