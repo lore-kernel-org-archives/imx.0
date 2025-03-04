@@ -1,96 +1,90 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB26225D6
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 10:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CAB1EEA36;
+	Tue,  4 Mar 2025 10:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741082997; cv=none; b=DdxiCj3PjiLGCduEnGRWzC6UW2/h23XhiHwo3bJL00vPFujLeY1rs+ZTR584kAMUKDzZe/8t5twVui6SFjx6QY7jykqkuisizapUeMoU0ZbbMQM0oOx2PZoe7NB0cRXV86M6YtRmoJ49KOY2Hriu/SbA3V+gLxbGojQhPUYqnds=
+	t=1741085832; cv=none; b=XpHpxF0P+5Qj4LKRg68cA14bGs2vkEN8JuxzhYXXq98GwUs3xeFos8CYXDho0qUJjbOvBeTeWX25L6qhiwTHRroCUuzeESrT6/5F2azfO3jNcA+fOmO7EM7mwx77B+WifLvNBz9KL1InfxuUsoElCYFMjArVyO1PY3pW+AuYnik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741082997; c=relaxed/simple;
-	bh=gpufqaTqjpP6z1NEK42OACyK2k4GqN0zGHXMKvy3KzA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ie0xhd2+9kJ/g9hk9aT0rNbURu5Aey6d5M+6FI2SUXVyQUIhgZWEvN3+KI9Gs9tht3sEVglMiF0IKEyDZaFMY7+R1McoDslNT+NicyqcMvaYduxvsNby4WViLcjdiy1/yPSYlJz/S3pwj65MFPaXQ6bTAkN7OhmgHeBoGXpJMMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1umtxGSh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P7Qostk+; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1741085832; c=relaxed/simple;
+	bh=Uvkzu29Y8PUMAEcuNdr5Ez6in0wuHeIuBJMkRl6oCQM=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=kHX3QYVN+ydfleNEzJuMFebxDOr4AbAZnF976MBP9BFvovzPHrLqWYzEUatf98PAZsvIz8ni1jfYw4xRhhv3gXY+mTrF6IU6yKeG13X9E7XiQ2hHG9VnfNX68Yu2PaBX72BEyPA1n1FPVC9/T06qn7t8s96uLnKVvMTbjltAfjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIyUKJxP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1umtxGSh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P7Qostk+"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741082994;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dGrYAp2UYRB4ahPvzjkNTvyhBhRpzSJnkRhzP34zvcs=;
-	b=1umtxGShTe/HM+xs3bZ9BbOVGzCe2+AifYvLvOD7LbDIzG3k9DovpDEe3hbkcKG/gGy0pO
-	kCNEbrRfXhxm6h+ZWnKLzaPPCTBfQgcGRHdPa9laVB4R4srBdRo7dgzx8Nnr5Y6VCA1dqB
-	6Yj8c6GtisdPxbuc6ys7Qrqyp9zYK+ZA82wuDJBRXL99FnB5ylI/CFPIfrGbDqjIGaOJvZ
-	kF2yf3Ju0wgKapobQxMVttUxgwq8HSEtQo4OCiKUI8pKlAdzUXKkhcQypCKa5KnFRny9Ly
-	E9AxM2s4TTKd2ejwAlyI7nGl91W66NBgbsxzA2v/of7ieCW5amVYD2zyjIo3Ow==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741082994;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dGrYAp2UYRB4ahPvzjkNTvyhBhRpzSJnkRhzP34zvcs=;
-	b=P7Qostk+Q2bXrVqb2DnypZKDI/nn16FYUiL0Zw/eiCQzbwL+O6vI00L7Pq9mXI4tuuItMZ
-	+mtiNDa5jOQadkCA==
-To: Jacky Bai <ping.bai@nxp.com>, shawnguo@kernel.org, s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de, festevam@gmail.com, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- aisheng.dong@nxp.com, peng.fan@nxp.com, frank.li@nxp.com,
- shengjiu.wang@nxp.com
-Subject: Re: [PATCH] irq: imx-irqsteer: irq_count can larger than registered
- irq
-In-Reply-To: <20250304094513.1964356-1-ping.bai@nxp.com>
-References: <20250304094513.1964356-1-ping.bai@nxp.com>
-Date: Tue, 04 Mar 2025 11:09:53 +0100
-Message-ID: <87bjuh6r9q.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIyUKJxP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D3FC4CEE9;
+	Tue,  4 Mar 2025 10:57:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741085831;
+	bh=Uvkzu29Y8PUMAEcuNdr5Ez6in0wuHeIuBJMkRl6oCQM=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=YIyUKJxP1QiFVa39ZNliUPZUqE+mBxDuds863otU1QSxEG/kIDfZlii+GXo+v1bGr
+	 Amz3O4YsNKPKtjcDlanJlT9Z6fY+5nGherJD7c5sCeY34T/piM2gXBBVnlOgK9INww
+	 9UHMLJDWidn/TA9Khakir8hi6dgl0aX5F8cjWWGMBKEf6EcO49q7jsR/qfpnrqOXUY
+	 7mjDDR7EVXIe4068pVDQ7qnYJzMOCM4yJv0ZMWfTMrRS/u2/KYkJrtG0Ro1ZgJR1sY
+	 sKN0UAA21HVBXezAYetRAhgNVH//y1tNt7YOMdlxmQmEjTjmS4rmaZiLc7GcfYEe/L
+	 S1S9R6BQBokcg==
+Date: Tue, 04 Mar 2025 04:57:10 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, shawnguo@kernel.org, 
+ conor+dt@kernel.org, kernel@pengutronix.de, frank.li@nxp.com, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, peng.fan@nxp.com, 
+ aisheng.dong@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com, 
+ krzk+dt@kernel.org
+To: Jacky Bai <ping.bai@nxp.com>
+In-Reply-To: <20250304093127.1954549-2-ping.bai@nxp.com>
+References: <20250304093127.1954549-1-ping.bai@nxp.com>
+ <20250304093127.1954549-2-ping.bai@nxp.com>
+Message-Id: <174108583009.1693369.10518412306267353272.robh@kernel.org>
+Subject: Re: [PATCH v2 1/4] dt-bindings: dma: fsl-edma: add
+ interrupts-extended property
 
-On Tue, Mar 04 2025 at 17:45, Jacky Bai wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Please use the proper subsystem prefix as documented:
+On Tue, 04 Mar 2025 17:31:24 +0800, Jacky Bai wrote:
+> Add interrupts-extended property for edma that has multiple interrupt
+> controllers used.
+> 
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> ---
+>  - v2 changes:
+>   - newly added entry
+> ---
+>  Documentation/devicetree/bindings/dma/fsl,edma.yaml | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
 
-  https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#patch-submission-notes
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Also 'irq_count can larger than registered irq' is not a sentence and
-tells absolutely nothing what this patch is about.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/dma/fsl,edma.yaml:102:5: [warning] wrong indentation: expected 6 but found 4 (indentation)
+./Documentation/devicetree/bindings/dma/fsl,edma.yaml:104:5: [warning] wrong indentation: expected 6 but found 4 (indentation)
 
-> The irqsteer IP itself can support up to 5 channels and each
-> channel can support max 960 IRQs per. The actual number of
+dtschema/dtc warnings/errors:
 
-Can you please write out words, i.e. interrupts, hardware etc.. This is
-a changelog and not twatter.
+doc reference errors (make refcheckdocs):
 
-Aside of that: 'per.' does not make any sense. 'per' wants to be
-followed by a noun: '...per $WHAT.'
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250304093127.1954549-2-ping.bai@nxp.com
 
-> channels and IRQ per channel implemented in HW is SoC related.
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
-> For previous i.MX SoCs, normally only one channel and max 512
-> IRQ is implemented, But for i.MX94, the irqsteer HW is implemented
-> for 960 IRQs, even it only has 384 IRQs connected.
->
-> That means on i.MX94, the 'irq_number' is 6 but the 'irq_count' is
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-What means irq_number and irq_count here? 
+pip3 install dtschema --upgrade
 
-> 15, so we need to increase the CHAN_MAX_OUTPUT_INT to 0xF(960 / 64)
-
-What kind of math is 0xF(960 / 64) ? And what has this to do with
-irq_number=6 ad irq_count=15?
-
-Thanks,
-
-        tglx
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
