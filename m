@@ -1,85 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270D1254B01
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F4285408;
+	Tue,  4 Mar 2025 17:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741108270; cv=none; b=ao+tWYX/kbSBn8xMxjCXm4ZH4NUgAPfiupFDkJOVWD/6+9EgPWmcrgzbstnsGyZk/psvBM4br9/TmfIyMX+klzgLESoUrnXSqnhl6F1Ryx4jHEX0eC0fpgL1qPDmD4C7C6oBJMiCyaLUH3UqCAHi1YADW06Uoh+sYerviDueWA4=
+	t=1741110612; cv=none; b=igP4rAR3rKPk04yiryVZDIheldZc/IwohHLgzfAJN2pMtxwrK4+bdpG+i79okkTh6L0Gbf17DKKJpG8SHq4MWvJ0AOzUySp+7cWtXJMGufDftLasTWX2KIt8zBl6TbS6eJ7YAUdT/tOD6/dTk/zHiJFENJ9x9obS3YCt3SORfEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741108270; c=relaxed/simple;
-	bh=xIG690djDhXKXH4IBWWZJH31VsCI0TyOl9Qn3zjmGxQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d8xSflnx2WcFoeDUHqfez18Bwp+ZpcJ28TQ3o7wWP64SHNheKIYQlr2TfV7Xt/QyOUvG9YTMYNgUW8kHAk/1AYIGzt11udSreQmkMtAR3r0s0UgOcPVD4fwhcfjqKNqy2yaocsZSbAONe75nE9KAVM7GKm6UyjMydqm0jnA7j6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMzXGm/p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741110612; c=relaxed/simple;
+	bh=RUs05QEUeWMhEa3TyZUPqxN1hhHry9gVbabsRe4U85o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=fS+VLNfXK4dMsiMHdPW1Fru/c8wpxJbOrLgO/D58m0nO8IdmEaWlYscgnU4YN/M5TQk1U3Wr5YJGlNzXuL1tKCJuYw48qXy4+sl93V2cc3gv/51oV+o8LwEdPGkVUmCMS0LwZ6CnBunj642pNsCbpRH3IRM4LQgOgd77EAoh2Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7CoSsFn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMzXGm/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D48C4CEED
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 17:11:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7CoSsFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40C3C4CEE5;
+	Tue,  4 Mar 2025 17:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741108269;
-	bh=xIG690djDhXKXH4IBWWZJH31VsCI0TyOl9Qn3zjmGxQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eMzXGm/peXE2BD5aGPmJeqoiZxx0i2Kf49LPMJ67YalBWSMqKue6Mkmjv6m2wGgTl
-	 /3OiUnbAhOI/KyqhqLIldNaIMrugCdqsz4llVVTgyy39QV9IC9tlo0I8KYi2y8wQ+s
-	 A5xD8caVUFWUPxoV7O1oqb15otQWnP/VQuQVINVWKrPh+//S/0Ksypjna3qFE6oDnT
-	 P65ociX14cMYQSeHJImZUj4TmP+YuI1y7e8pFpB5Z9zB4ZGPsJO2H9oJCEftAHz+SR
-	 M4fwKG15JdsB+ser2yHaQd1NUZTHHKY6HgcsO6XrKVaAESIyY8DXdJnojjS1ifPr5j
-	 QVabhxHZErRFQ==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abf4802b242so662056666b.1
-        for <imx@lists.linux.dev>; Tue, 04 Mar 2025 09:11:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWBLRSQccVcGodS+BRfNGGJLWr6Q+3/EvvyDwuB5yiWqqaKMMlq9LUDG112+oM9rQMuObs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzkX8sh7BVcFRXs89st1j6QxF4b5VCbLVREmhNKNUyP0Tk+ZoCa
-	FsSJWqsP0UhhpRnQz5GEeY1a/Mz2dSm4FlcAF8rpCi6CJPhZ/BW6VfAvuIOZUIffFuBiV8RdaJ1
-	38ZeHR4FiqX65GkTeLMd3yzIb0g==
-X-Google-Smtp-Source: AGHT+IFgs8oMB90zZE6lwaT3tbdeTZ2vDb6K7bI3B7uxQqUz1+cPe+fBOtsCycQF9VShe8mD0kCNZUK3gMn27oWuAu8=
-X-Received: by 2002:a17:907:1c92:b0:ac1:ea29:4e74 with SMTP id
- a640c23a62f3a-ac20d92560dmr8023966b.28.1741108267600; Tue, 04 Mar 2025
- 09:11:07 -0800 (PST)
+	s=k20201202; t=1741110612;
+	bh=RUs05QEUeWMhEa3TyZUPqxN1hhHry9gVbabsRe4U85o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Z7CoSsFnye2QUmquT+Qifh2gocwU2GPjYNg5Tgh6EdKsBGvQ5RQTnQIAchaiVa9dj
+	 ClX9B2KV7SqTuvlGUw5XXYBnXhhZz7vVHJDy1pmTewZwQCUa4cEAGu/94MPtoJ56qN
+	 0J3uuDxf4fZ/mICYiUitpINUlxPbXpoIuPqErDJJOy6z1nZSrrV50t5eerukfzD6A2
+	 wiBck3nT0zFnRrBfc8GT3osydTQpJ5GGL1M4mBLTN4O/gbklcuPV0x0GUKuU6TGn2H
+	 +M1QOtI30Q0la1lQeSSJry6DOlV0Q4n+ox9faV5rOyQdLYRzn9c4axUCOARXB19TeD
+	 iYUVDhZ0z1rNg==
+Date: Tue, 4 Mar 2025 11:50:10 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v9 3/7] PCI: Add parent_bus_offset to resource_entry
+Message-ID: <20250304175010.GA207565@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250224193308.407606-1-Frank.Li@nxp.com>
-In-Reply-To: <20250224193308.407606-1-Frank.Li@nxp.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 4 Mar 2025 11:10:54 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLJciDgc2cPy7QApH4ia=Rx3MnoVMS3pha3u9PVy_EfPg@mail.gmail.com>
-X-Gm-Features: AQ5f1JoVIjx_EnjE9gxDA6sYaQfZU0bi3wrsrEMOzYkBv4xckzwxDP8YmX37Q1Q
-Message-ID: <CAL_JsqLJciDgc2cPy7QApH4ia=Rx3MnoVMS3pha3u9PVy_EfPg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] arm64: dts: im8mq: move dwc3 usb port under ports
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8YlySM6Xtr0beo1@lizhi-Precision-Tower-5810>
 
-On Mon, Feb 24, 2025 at 1:33=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Move port@0 and port@1 under ports to fix below DTB_CHECK warnings.
->
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: po=
-rt@0:reg:0:0: 0 is less than the minimum of 1
->         from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml=
-#
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: Un=
-evaluated properties are not allowed ('#address-cells', '#size-cells', 'dr_=
-mode', 'phy-names', 'phys', 'port@0', 'port@1', 'snps,parkmode-disable-ss-q=
-uirk' were unexpected)
->         from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml=
-#
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../dts/freescale/imx8mq-librem5-devkit.dts   | 25 +++++++++++--------
->  .../boot/dts/freescale/imx8mq-librem5.dtsi    | 25 +++++++++++--------
->  2 files changed, 28 insertions(+), 22 deletions(-)
+On Mon, Mar 03, 2025 at 04:57:29PM -0500, Frank Li wrote:
+> On Wed, Feb 26, 2025 at 06:23:26PM -0600, Bjorn Helgaas wrote:
+> > On Tue, Jan 28, 2025 at 05:07:36PM -0500, Frank Li wrote:
+> > > Introduce `parent_bus_offset` in `resource_entry` and a new API,
+> > > `pci_add_resource_parent_bus_offset()`, to provide necessary information
+> > > for PCI controllers with address translation units.
+> > >
+> > > Typical PCI data flow involves:
+> > >   CPU (CPU address) -> Bus Fabric (Intermediate address) ->
+> > >   PCI Controller (PCI bus address) -> PCI Bus.
+> > >
+> > > While most bus fabrics preserve address consistency, some modify addresses
+> > > to intermediate values. The `parent_bus_offset` enables PCI controllers to
+> > > translate these intermediate addresses correctly to PCI bus addresses.
+> > >
+> > > Pave the road to remove hardcoded cpu_addr_fixup() and similar patterns in
+> > > PCI controller drivers.
+> > > ...
+> >
+> > > +++ b/drivers/pci/of.c
+> > > @@ -402,7 +402,17 @@ static int devm_of_pci_get_host_bridge_resources(struct device *dev,
+> > >  			res->flags &= ~IORESOURCE_MEM_64;
+> > >  		}
+> > >
+> > > -		pci_add_resource_offset(resources, res,	res->start - range.pci_addr);
+> > > +		/*
+> > > +		 * IORESOURCE_IO res->start is io space start address.
+> > > +		 * IORESOURCE_MEM res->start is cpu start address, which is the
+> > > +		 * same as range.cpu_addr.
+> > > +		 *
+> > > +		 * Use (range.cpu_addr - range.parent_bus_addr) to align both
+> > > +		 * IO and MEM's parent_bus_offset always offset to cpu address.
+> > > +		 */
+> > > +
+> > > +		pci_add_resource_parent_bus_offset(resources, res, res->start - range.pci_addr,
+> > > +						   range.cpu_addr - range.parent_bus_addr);
+> >
+> > I don't know exactly where it needs to go, but I think we can call
+> > .cpu_addr_fixup() once at startup on the base of the region.  This
+> > will tell us the offset that applies to the entire region, i.e.,
+> > parent_bus_offset.
+> >
+> > Then we can remove all the .cpu_addr_fixup() calls in
+> > cdns_pcie_host_init_address_translation(),
+> > cdns_pcie_set_outbound_region(), and dw_pcie_prog_outbound_atu().
+> >
+> > Until we can get rid of all the .cpu_addr_fixup() implementations,
+> > We'll still have that single call at startup (I guess once for cadence
+> > and another for designware), but it should simplify the current
+> > callers quite a bit.
+> 
+> I don't think it can simple code. cdns_pcie_set_outbound_region() and
+> dw_pcie_prog_outbound_atu() are called by EP functions, which have not use
+> "resource" to manage outbound windows. 
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Let's ignore cadence for now.  I don't think we need to solve that
+until later.
+
+dw_pcie_prog_outbound_atu() is called by:
+
+  - dw_pcie_other_conf_map_bus(): atu.parent_bus_addr = pp->cfg0_base
+
+    I think dw_pcie_host_init() can set pp->cfg0_base with the correct
+    intermediate address, either via the the of_property_read_reg() or
+    .cpu_addr_fixup().
+
+    If dw_pcie_host_init() does this, then we don't need
+    .cpu_addr_fixup() in dw_pcie_prog_outbound_atu().
+
+  - dw_pcie_rd_other_conf(): atu.parent_bus_addr = pp->io_base
+
+    Similarly, dw_pcie_host_init() should be able to set pp->io_base
+    to the intermediate address, so we don't need .cpu_addr_fixup() in
+    dw_pcie_prog_outbound_atu().
+
+  - dw_pcie_iatu_setup(): atu.parent_bus_addr = entry->res->start
+
+    Here "entry" iterates through bridge->windows, and we should be
+    able to set entry->parent_bus_offset at init-time, using
+    .cpu_addr_fixup() if necessary, so we can apply that offset
+    unconditionally, regardless of use_parent_dt_ranges, and we won't
+    need .cpu_addr_fixup() in dw_pcie_prog_outbound_atu().
+
+  - dw_pcie_pme_turn_off:
+    atu.parent_bus_addr = pci->pp.msg_res->start - pci->pp.msg_parent_bus_offset
+
+    This should be the same as dw_pcie_iatu_setup() since
+    msg_parent_bus_offset comes from the window iteration in
+    dw_pcie_host_request_msg_tlp_res().  As long as the windows have
+    the correct parent_bus_offset at init-time, we should be all set.
