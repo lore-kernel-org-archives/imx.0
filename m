@@ -1,300 +1,147 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011048.outbound.protection.outlook.com [52.101.65.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A8327F4EA
-	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 22:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741127162; cv=fail; b=szMKpDoPhOOplOYn8LgZlOJzHAag55SxMn6EMOKWOPACAAMx+aFAw9WNEFngugng4AQdn+JJ2UvoM9xR3dIPB+MAcimsq2xwJaFpRBzChfOuszgDFJQOR/8FCeWfKOTtUMlk7U5n2JEskLy9YW70+z+MWs1xxWQ3R0RI0CD+DqA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741127162; c=relaxed/simple;
-	bh=yD5fUYeIXKYJm5LAdctrKDPn/0fXCniOro4i/sjVPbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MzlSX8vVjYayZG1VMiY8clAvemRNwXcE1ne5hd9hNSou2WQCcFfVmKWO5+ScEsiedLQbE0iVVmLw5Y3IAU57oQRzmTFEiDr4ACcYySPh15Acu5EUSI+tgE2MvfFSzErI1oRKlq6mlohOjoM5J9hUBgnvFh/k8cY4o4f6x8/C1NM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bdje6374; arc=fail smtp.client-ip=52.101.65.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3A25FA19
+	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 22:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741129135; cv=none; b=oGQZwbujmwyOzO4060EsQG/rxHuUvhalXNhnDgDYagV3fO5g/VIis6xbpypbro4d0KBxeP5CIh2M4Qm3X1ImV3tGwJT0/WlbmLosVOhj3JEq4XLRuJizz2Zv/44vlWIcWTNxquLK9Xyyz0/p9ePJ8zsfnom9xfSzv/Cq2Tn3T10=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741129135; c=relaxed/simple;
+	bh=UQUvyGDPdTFPyPH9MsvwvLhlQDmkv4oUAlzRyvh03mU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hDp7cUGl5uiLCWMudqo6qUBUjfwBMglRF0qNx8rUv7X/BAC75YizvQ2Mc7PKq3mgMH8r3cBTnr4sU/RMLDhwPamsf2maHee2BRdYVenWgc9xf5W0OoPcCNrRYXHqGyN7ewUD3bEJZOD17NvC8Pr4FM+T70mnQlfd68HIUAg+J9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FlLT2/Sd; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bdje6374"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A3VKtHQ+OnIrsN9dJVitnm5NgktQqch+4prz4+YXQlh2N12xN1fqDaTabjHENKHwepJzVqb+98kqL6cwd39G4yAL0rwv4cOLeToYcPqJBVczKsw8eArvjTWa5zLd+vo/y05oPzYOCifp0YN7ae9FMwjYfCWFFQe4Dw/DEaKSbeakuFOJ28f/HDiqdJbTjXiPZxn2LDGTmTG95gxiNfdZZ1fTRxA1KVdrbfxFtChKoBCaa+VYQe9xEbYh9tclNkGmGijlwY6+TZY457WAgf8wHU1z0bCwiGn4YG2hPC1671GsA3U3SeVD6nEY1MzwKtq9zXfxlG2AJ6TPyeC13FHRVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rwkDYmzVPNpZ2gk0RPESjpw1ZbZ0C1/i5yPC3xmXoBU=;
- b=lLNHcXmV0z9r1pLpE53ViFkPEkQYzVuEuYJRYyn3Yp0gVAt6aBqSRSmh7V38YT8NdYPynvj6Yahzv/+zbLu6C/+rSDJPUfA+RlX91efLFfoj84n9N49pQRQd0n1fx7PAnaMSvZ4kRpVndcBu9B2EPKqqs2iCya8ax9LLVb6zrSKzEhZGWPw3dNKNdRYdMkcMj1SZzNAY5/Q0ETiWW2d2ePKNIobgJ0Lip2lc1XoscBvQkv3CJsN8AFcEGXV6nvTvY/eEd6n3wG1cLrYGfn+Om6Xa+0v7TA+f146H86PVdUI70tSe7Hah+DobIVId/D1tEm9TVxVK3DdhpTwOUBoI2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rwkDYmzVPNpZ2gk0RPESjpw1ZbZ0C1/i5yPC3xmXoBU=;
- b=bdje6374JvOi4vrqF92hnEKj+hgQSvptWEd7ih3lBpZTpt3SsaszhqvBgALEEHJsQS4RIDHuGe4pUuIgerPsfJBFFpCM6R//9+D38KxgA4qMgLTcpfA19Ckgm+wwUD0acqB6jcyyTh9hjDMDfL5l0x8UDzIC9hL9wH1Wcy11fmLs3JbcXENQ1s4GZe2JAxqHKhB+2yIdFbZ7h4RKocqAWlWyXWI9Fnvak/EP+v/Aga4EdQon8zWbeQkIrqt6o2EmnkNTsGhJHV0ZgUS3dacNMNKJtgQnWBgj3fMnGKxu8EPei/MJ7SbPKsDIY5SMqELeNJAOCWD2CcYAXRkxqJK7gQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DUZPR04MB9793.eurprd04.prod.outlook.com (2603:10a6:10:4b0::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Tue, 4 Mar
- 2025 22:25:55 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
- 22:25:55 +0000
-Date: Tue, 4 Mar 2025 17:25:45 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v9 3/7] PCI: Add parent_bus_offset to resource_entry
-Message-ID: <Z8d96Qbggv117LlO@lizhi-Precision-Tower-5810>
-References: <Z8YlySM6Xtr0beo1@lizhi-Precision-Tower-5810>
- <20250304175010.GA207565@bhelgaas>
- <Z8d6qpNaL4eJRQI1@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8d6qpNaL4eJRQI1@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: BYAPR06CA0056.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::33) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FlLT2/Sd"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43bbd711eedso25280135e9.3
+        for <imx@lists.linux.dev>; Tue, 04 Mar 2025 14:58:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741129132; x=1741733932; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=euJMffvlvKCZA7VwIhx2ASa4VsvPUMdrYRd7gnRpu9k=;
+        b=FlLT2/SdXUsdCocWhy71oJnIhsh0ROGtw/k6D1fixKppvX7/2OzuOrFGGG84g1Pz0H
+         nPvWjnPX8w7EdqU03KvqIrnnbS8VQYBkTfg1muDTbgVHuowzd0cNodb+G3mhOvrv1apZ
+         LGRiTq0NH9u26dkYbUEjX78OjKR/ssRJcbbcITKPbIi83W9p2xjSpHluzzZdgDAXHw6U
+         qU/TdymAKVa6+kSqxKXTeOozbv+SJ0ZIC4G8RothXM/IIMGc1U5HJTEEdbIZzN2OuSQL
+         Of2X8b2NsoYLIPrRQOEiQ/1azpQmVNV7IpS/Zzro2YZ56m0uCIHaMgk2dYyyDLO0YTar
+         /MvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741129132; x=1741733932;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=euJMffvlvKCZA7VwIhx2ASa4VsvPUMdrYRd7gnRpu9k=;
+        b=gQaXDOuw8uv/Tz/6Ad+GPFHH9tOFI35si3pbxhpLcCHiX6pmH/Wjwo0h9J7dc+UcYR
+         sekJctcOH8dzi/d5h60WICDll8txtL8JbeEjTxW4E9g/oZXqsL5xlbfSZIAgo1WlZVcg
+         gGelM34NomwSVguDEgczi8rARVLA9YbfOSIPH5DAX+cTa7E0EVlImL6/4O6vE6DbXLEJ
+         F4qGobS+J9+wNvitlPa5GWp/kj3TK6OaeHtf+OP8uzT52CZwYSU/79nkZbfmP3GjRUXV
+         WxjD6j7zPwOViicctPLNbBYgjpq7VayQgl7g9wHS9oVavqfcSNDKBOSTlFopzOtD9FD7
+         Hy7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdx9d8V32+Ascn/GVPAe0ktPIt7b70ZCl0vmJc08KzMnaF6r3tExF5T2v7Ao+0ZsELQGc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUApgyZ2w++ypOWetGnFA97dexFip6ZO6150jb6RvSELl96IVe
+	7rAw4N/V2BBMylp2afPvUOHkb/M+AbxFXfxYQW/egOXtyAMp0HVZ
+X-Gm-Gg: ASbGncuheFkWZIqxoRZAJ4ZP3SEA6DM7qnDM1+wuLaO2rEHqVxv/ieuvHq1f4qS+lCH
+	A6PNLEqZ7wKDgAERJUh88A3tPj5ICKBwc4kFei1sNQipssbSeetK/v4aP7RB6bYXZSgj8YGz+dQ
+	vwkS+VvNet3LUfZOUwtK5Gym0m6ZM47bPW3NCZnhkwJdmWP+XvuDvxXvIej4SDovwJsrrGB1cLK
+	0aCnTxYfiCGg8vK85tRNJMZbNGvUgLwd60Dz2Okx8AahgxWnvVE9mqy7kqWVBRmQC61fDV7UFtM
+	CgwcznYVptwzI8VD4mVPrIyDa2e/CvUQ8zTtRWwO1vq11OdmKveh1dWfAGJiJnwu1agxaAw+aw=
+	=
+X-Google-Smtp-Source: AGHT+IEnZTNGMRVDZWEmNMh2Ly2iO00Yysf+lVJrqtBsE5l6FSnrdxxlk5xiRwD/bXG0pp141DVtRQ==
+X-Received: by 2002:a05:600c:a409:b0:43b:c2d7:44d with SMTP id 5b1f17b1804b1-43bd2adb09dmr3443515e9.21.1741129131631;
+        Tue, 04 Mar 2025 14:58:51 -0800 (PST)
+Received: from [192.168.1.132] ([82.79.237.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b6ddesm18952075f8f.41.2025.03.04.14.58.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 14:58:50 -0800 (PST)
+Message-ID: <541539db-0015-41de-837f-aabbea68486a@gmail.com>
+Date: Wed, 5 Mar 2025 00:58:47 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DUZPR04MB9793:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20938421-f7c5-4ada-47a2-08dd5b6b8768
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/9S/u/fWFjqY8uyU9+N8GYcQG2sSunOkGr+9JqUguLZqUSt44BL540eNcBx4?=
- =?us-ascii?Q?sW9XWrlEYKTV3JH4h6zHhGcoLc5QU69uepYxdEvIvkAY5epvp0e2040njdgH?=
- =?us-ascii?Q?yFNvN5VJ30BnJzIunYnWKuSQVJ+w7zs5dekKWmG4vxvc00MXYdKnVv5F4/3T?=
- =?us-ascii?Q?/HhKZmqrqNCf0gUXugMvX26Y84ZqicJpGgrh+FSIBs9hI3S4aCWqOOc/wv8D?=
- =?us-ascii?Q?MUnrCLZQBgN1mkpp8+iQmffM9uAS855St7BXqfYYq36oVzevhu7RROg9RwIv?=
- =?us-ascii?Q?cNkTEp/RC7799qZkyJ5zgNx5EFkM85XFP4GbLCS6fla1kwEjxsJxTymICPDu?=
- =?us-ascii?Q?cgpSu4877Q06AcMKU2Y++7aDFtl5G2+/HAx2kOxMDRUlZTGWLRoM+vyDhsHQ?=
- =?us-ascii?Q?y1jfVK9L+60Pt5/qrMR77g5Ac+z+yL2mzD6q789mB/rs8yepjEkWvFVt6xgx?=
- =?us-ascii?Q?vq+CxocdNOoA1vGNywZVJrc+MoZ3GtTH0woM7ZNHzPFXfkgMC8KH02GFGVeh?=
- =?us-ascii?Q?nuTbznFbVpRMLzc2x2vdkYEqEjvgZXev80k8jNaxDwnrZ1EimM3c6Er7PbWv?=
- =?us-ascii?Q?yuAU6YtoESMmsdNOWozx9ZOVyZZ+z4CFFbSy8v1tIADbaEpUKrY6RbxpfwoH?=
- =?us-ascii?Q?8nU6ObiW7fzDh405vtWcB6zr3HQIb5AZy+YijHUmYuvpuBzVS4AYizqIzK8L?=
- =?us-ascii?Q?4NLxPBMBP3z+xWcW5Yyr24Cj7dv2vCqm2fgQ+oAvfHiRtZBnCyp77bQrM0e0?=
- =?us-ascii?Q?FgcFVpjJFxUHUQNL6DUiEtvAqYzaskZsnMXVdJJP7tS4H082ZBE6FzExMQG3?=
- =?us-ascii?Q?4trV4UhuYk2D/H0UfX7FEYuZ5gff57uGNl1PtLorKMQheYcPwM25up4uWHVU?=
- =?us-ascii?Q?zCdx7tK1YyX16R23/568qQ4eG9cQ4dk0QtLqjSAnTJEhEUW3Bdn5N48ldH0B?=
- =?us-ascii?Q?VMgCTGBA8xAD9UdwO7J+9zls9Td0v+4T3dozzO0xxGLifN9bqUMKo93yQrA0?=
- =?us-ascii?Q?hCD010nx16oR6yAjttVqlpqYuP/j5TGhKhGG71RKfal86z6ZOgjQ5MJq57ZN?=
- =?us-ascii?Q?5ZLJSEqbrl4CP5YAENc5oEkwRSwh6CDBK9BhU2dNDIprulak/Frn1Izic3cg?=
- =?us-ascii?Q?nH/twaQ2dOIWPwmz8ZtMUn0fa9m+FmTmVNiLefPzZ7ACLuX1FiCjgGO+9Kpc?=
- =?us-ascii?Q?Yx3cUCAc2+2+G5MZE2sWziw2NM8L5vfzN4rv2Sgbe+nlwfgWChFgYAZ6gD+u?=
- =?us-ascii?Q?peDEaS6hJ9ovArlF2s3AszNhwRPgG521b9BJ1uhnjbMOZDEK6KmLMhSOi+4r?=
- =?us-ascii?Q?BcTdcPoqstBHGW1VDVQ8cpQ/1g4yAG45yB2FTxaP+Oxc2uCGWpNFBMtGqbDY?=
- =?us-ascii?Q?nidtTymvcprM18gcKtDE3811SdPiqg8RhRQctLmDvEbXqduber1Pu0A1vDFo?=
- =?us-ascii?Q?pZfCA8XRtUKbtICeR45lYD4UQnGrHkR4?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qrPpMwhfh8hYxGnzMMO6nGkIZhj9gHhWfVEyktf/YsNSyJVn1w7S2TZSMN/g?=
- =?us-ascii?Q?+NywnEnC0ZzF60cfF/gFp2oFXpXV6VPiJyJTMaaeOjROV+oIrf33JxN5FGBr?=
- =?us-ascii?Q?F1SxKhoSCFE+8w+ptlwipz6fcMY99fTT/Nawp/T7OIa6FY7vG6u6DyAsdbHg?=
- =?us-ascii?Q?ucpgVzq91Z4XwcGpL3jYnp06IHgBNqOZ1yNskeF9m69RvaBLbifshPAMV/70?=
- =?us-ascii?Q?BHXFpQvUSHFResichhJgmCFxIP+3l85qCSvGfjvCu21W2r/gia4f4ag1rtu9?=
- =?us-ascii?Q?NA2j61tdnoUvhIubi+8pk6QkYBnyGiYG2ofh+d8rYrTg2zmmbtmeqrR6bFar?=
- =?us-ascii?Q?dNxowNZZ0wzApvhX6h5bfYTOpaYKpEaw4tovIKgrzrbvLGq5jaoA6jB0GhVN?=
- =?us-ascii?Q?tcpQyCU6z6U/cF0sLfhtOOajhljkOPYFLzbolXIbp05GsBrWlXPLDft6Xp7m?=
- =?us-ascii?Q?2jkM/82/Xz982PUOyGWSHjqgEHME0jVMvHqPaFx297BInMXQqVc865KCiPAa?=
- =?us-ascii?Q?NEKVADPUOHIJtWpJaUKHHPsuIvNdcHY+VtmIETw+yUefO43riDMVhb0T1gge?=
- =?us-ascii?Q?K5H4O2Lm2N1/wjF1/lYJXaETFKgP1QSebXALoUiwYY2o+Cbsr7VffpXzBGsd?=
- =?us-ascii?Q?8SkCVxdZJ7Me8UA0wrcDDPSr2kBl5Hv4KPZlwSMwm/UeLdksHZNwzxKECcFr?=
- =?us-ascii?Q?zrPqHNiLlISDo13Ol8uivG8JMiyWk6I5FnSYGy1bpItpR28wA7d/hA05bFlX?=
- =?us-ascii?Q?ZgNZ20xlOudYvSDvJGmc+LxMwE67tSxatlICHcIdKZpLor8MNAOGzBkgrbd5?=
- =?us-ascii?Q?SFC0D++ch1J32b02H9AYaPrvLPoD9Y4VD0vhZlyu64dyxXY1WZtA3n8EtnlS?=
- =?us-ascii?Q?pP6Imqy+o78+ZwPA6JAezlR3PA7Yq8DH8BGUfZSFoaQZgnMt62W/Vk+vBFFB?=
- =?us-ascii?Q?U6vIcC3308jXHEv5UTRGva3VzinGCXE2mPGaISEDGXPZ6ARAAlWRGd2DcqqE?=
- =?us-ascii?Q?5hkWkVbIR6gqi0WyNvz6vI33cm/NpQOh0KBcCzLpAxv/5SKnOYSG0Cu6EjpB?=
- =?us-ascii?Q?ZRjWdV1nisjepw4DPpgVr7T9t7g41puoGpuesaWhBAnmwJeeBh6EPaafkY8a?=
- =?us-ascii?Q?ta/cwcVMUYRA6nbSJ7gI1Xkn1MqZ70Ye6YAkrUfqypKqs1Nkc+Va3vHffH3s?=
- =?us-ascii?Q?5iX0/WkmzhsZwES58I2pMQSnxUQ9EcYdK+z97OQsG9c/I0jJSK/2DpkmnmKC?=
- =?us-ascii?Q?9YtRA0upAU4jx541nj4QXs3WSYv1ERwmlAsPayO92pHQJ22dTntGOloLl7xf?=
- =?us-ascii?Q?ZN7Ih4HRBLeESgrmuxOcgV+cPFu5zu6YiVy7ePqetskgtwFgqMQj0NjxjZeS?=
- =?us-ascii?Q?OOWyYmJ9fhcNQNmd68riiQwuACsJcrMQiXb7aXEAxxvexw/FhJcybf/viYQf?=
- =?us-ascii?Q?VB3fQpkSjh2GGbP7ga9b9pj4DZ/SNE1+6P/T4YV5Br6pqu+69QBa7bq7K+rV?=
- =?us-ascii?Q?LXbsJeTtZdjo0xiA9F+PllFw8Y3UIzTYut0dU+OZIHJuVG/Z/+eTPIMWkR3T?=
- =?us-ascii?Q?GlueB/LZorNS7AEuePBYx7wNA0Tucnfn0YRPWUJY?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20938421-f7c5-4ada-47a2-08dd5b6b8768
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 22:25:55.0155
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zbyUs2G3RrYfwK2l8FgKSEz/6rcn+38tKU3VP4HrVf+8oP3rdrG6CW0huIsrCKtQkaPi6MZcboYu/EzEkz2CFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9793
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-kernel@vger.kernel.org
+References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+ <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
+ <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 04, 2025 at 05:11:54PM -0500, Frank Li wrote:
-> On Tue, Mar 04, 2025 at 11:50:10AM -0600, Bjorn Helgaas wrote:
-> > On Mon, Mar 03, 2025 at 04:57:29PM -0500, Frank Li wrote:
-> > > On Wed, Feb 26, 2025 at 06:23:26PM -0600, Bjorn Helgaas wrote:
-> > > > On Tue, Jan 28, 2025 at 05:07:36PM -0500, Frank Li wrote:
-> > > > > Introduce `parent_bus_offset` in `resource_entry` and a new API,
-> > > > > `pci_add_resource_parent_bus_offset()`, to provide necessary information
-> > > > > for PCI controllers with address translation units.
-> > > > >
-> > > > > Typical PCI data flow involves:
-> > > > >   CPU (CPU address) -> Bus Fabric (Intermediate address) ->
-> > > > >   PCI Controller (PCI bus address) -> PCI Bus.
-> > > > >
-> > > > > While most bus fabrics preserve address consistency, some modify addresses
-> > > > > to intermediate values. The `parent_bus_offset` enables PCI controllers to
-> > > > > translate these intermediate addresses correctly to PCI bus addresses.
-> > > > >
-> > > > > Pave the road to remove hardcoded cpu_addr_fixup() and similar patterns in
-> > > > > PCI controller drivers.
-> > > > > ...
-> > > >
-> > > > > +++ b/drivers/pci/of.c
-> > > > > @@ -402,7 +402,17 @@ static int devm_of_pci_get_host_bridge_resources(struct device *dev,
-> > > > >  			res->flags &= ~IORESOURCE_MEM_64;
-> > > > >  		}
-> > > > >
-> > > > > -		pci_add_resource_offset(resources, res,	res->start - range.pci_addr);
-> > > > > +		/*
-> > > > > +		 * IORESOURCE_IO res->start is io space start address.
-> > > > > +		 * IORESOURCE_MEM res->start is cpu start address, which is the
-> > > > > +		 * same as range.cpu_addr.
-> > > > > +		 *
-> > > > > +		 * Use (range.cpu_addr - range.parent_bus_addr) to align both
-> > > > > +		 * IO and MEM's parent_bus_offset always offset to cpu address.
-> > > > > +		 */
-> > > > > +
-> > > > > +		pci_add_resource_parent_bus_offset(resources, res, res->start - range.pci_addr,
-> > > > > +						   range.cpu_addr - range.parent_bus_addr);
-> > > >
-> > > > I don't know exactly where it needs to go, but I think we can call
-> > > > .cpu_addr_fixup() once at startup on the base of the region.  This
-> > > > will tell us the offset that applies to the entire region, i.e.,
-> > > > parent_bus_offset.
-> > > >
-> > > > Then we can remove all the .cpu_addr_fixup() calls in
-> > > > cdns_pcie_host_init_address_translation(),
-> > > > cdns_pcie_set_outbound_region(), and dw_pcie_prog_outbound_atu().
-> > > >
-> > > > Until we can get rid of all the .cpu_addr_fixup() implementations,
-> > > > We'll still have that single call at startup (I guess once for cadence
-> > > > and another for designware), but it should simplify the current
-> > > > callers quite a bit.
-> > >
-> > > I don't think it can simple code. cdns_pcie_set_outbound_region() and
-> > > dw_pcie_prog_outbound_atu() are called by EP functions, which have not use
-> > > "resource" to manage outbound windows.
-> >
-> > Let's ignore cadence for now.  I don't think we need to solve that
-> > until later.
-> >
-> > dw_pcie_prog_outbound_atu() is called by:
-> >
-> >   - dw_pcie_other_conf_map_bus(): atu.parent_bus_addr = pp->cfg0_base
-> >
-> >     I think dw_pcie_host_init() can set pp->cfg0_base with the correct
-> >     intermediate address, either via the the of_property_read_reg() or
-> >     .cpu_addr_fixup().
 
-And chicken and egg problem here for artpec6_pcie_cpu_addr_fixup(), which
-need cfg0_base. But try to use .cpu_addr_fixup() to get cfg0_base's
-intermediate address.
 
-Frank
+On 2/27/2025 1:28 PM, Marco Felsch wrote:
+> Hi Laurentiu,
+>
+> On 25-02-26, Marco Felsch wrote:
+>> Hi,
+>>
+>> On 25-02-26, Laurentiu Mihalcea wrote:
+>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>>
+>>> The AIPSTZ bridge offers some security-related configurations which can
+>>> be used to restrict master access to certain peripherals on the bridge.
+>>>
+>>> Normally, this could be done from a secure environment such as ATF before
+>>> Linux boots but the configuration of AIPSTZ5 is lost each time the power
+>>> domain is powered off and then powered on. Because of this, it has to be
+>>> configured each time the power domain is turned on and before any master
+>>> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
+>> My question still stands:
+>>
+>> Setting these bits requires very often that the core is running at EL3
+>> (e.g. secure-monitor) which is not the case for Linux. Can you please
+>> provide more information how Linux can set these bits?
+> Sorry I didn't noticed your response:
+>
+> https://lore.kernel.org/all/a62ab860-5e0e-4ebc-af1f-6fb7ac621e2b@gmail.com/
+>
+> If EL1 is allowed to set the security access configuration of the IP
+> cores doesn't this mean that a backdoor can be opened? E.g. your
+> secure-boot system configures one I2C IP core to be accessible only from
+> secure-world S-EL1 (OP-TEE) and after the power-domain was power-cycled
+> it's accessible from EL1 again. This doesn't seem right. Why should a
+> user be able to limit the access permissions to an IP core to only be
+> accessible from secure-world if the IP core is accessible from
+> normal-world after the power-domain was power-cycled.
+>
+> Regards,
+>   Marco
 
-> >
-> >     If dw_pcie_host_init() does this, then we don't need
-> >     .cpu_addr_fixup() in dw_pcie_prog_outbound_atu().
-> >
-> >   - dw_pcie_rd_other_conf(): atu.parent_bus_addr = pp->io_base
-> >
-> >     Similarly, dw_pcie_host_init() should be able to set pp->io_base
-> >     to the intermediate address, so we don't need .cpu_addr_fixup() in
-> >     dw_pcie_prog_outbound_atu().
->
-> I found some driver's cpu_addr_fixup()'s implement depend on the
-> initilize sequence.
->
-> for example:
-> 	pcie-artpec6.c
->
-> static u64 artpec6_pcie_cpu_addr_fixup(struct dw_pcie *pci, u64 cpu_addr)
-> {
->         struct artpec6_pcie *artpec6_pcie = to_artpec6_pcie(pci);
->         struct dw_pcie_rp *pp = &pci->pp;
->         struct dw_pcie_ep *ep = &pci->ep;
->
->         switch (artpec6_pcie->mode) {
->         case DW_PCIE_RC_TYPE:
->                 return cpu_addr - pp->cfg0_base;
->         case DW_PCIE_EP_TYPE:
->                 return cpu_addr - ep->phys_base;
->         default:
->                 dev_err(pci->dev, "UNKNOWN device type\n");
->         }
->         return cpu_addr;
-> }
->
-> This implement require *cfg0_base* and *phys_base*, pp/ep, need set before
-> call artpec6_pcie_cpu_addr_fixup().
->
-> static u64 visconti_pcie_cpu_addr_fixup(struct dw_pcie *pci, u64 cpu_addr)
-> {
->         struct dw_pcie_rp *pp = &pci->pp;
->
->         return cpu_addr & ~pp->io_base;
-> }
->
-> this one require *io_base* and *pp* need be set before call
-> visconti_pcie_cpu_addr_fixup()
->
-> Because I have not such hardware platform, it is not trivial change and
-> it is hard to involve bugs.
->
-> If move .cpu_addr_fixup() too early, it will cause kernel dump.
->
-> I suggest keep current overall sequent and try to clean up these driver's
-> cpu_addr_fixup() firstly.
->
-> Frank
->
-> >
-> >   - dw_pcie_iatu_setup(): atu.parent_bus_addr = entry->res->start
-> >
-> >     Here "entry" iterates through bridge->windows, and we should be
-> >     able to set entry->parent_bus_offset at init-time, using
-> >     .cpu_addr_fixup() if necessary, so we can apply that offset
-> >     unconditionally, regardless of use_parent_dt_ranges, and we won't
-> >     need .cpu_addr_fixup() in dw_pcie_prog_outbound_atu().
-> >
-> >   - dw_pcie_pme_turn_off:
-> >     atu.parent_bus_addr = pci->pp.msg_res->start - pci->pp.msg_parent_bus_offset
-> >
-> >     This should be the same as dw_pcie_iatu_setup() since
-> >     msg_parent_bus_offset comes from the window iteration in
-> >     dw_pcie_host_request_msg_tlp_res().  As long as the windows have
-> >     the correct parent_bus_offset at init-time, we should be all set.
+I'm no security expert so please feel free to correct me if I get something wrong.
+
+This isn't about S/NS world. The bridge AC doesn't offer any configurations for
+denying access to peripherals based on S/NS world. AFAIK that's the job of the CSU
+(central security unit), which is a different IP.
+
+Perhaps I shouldn't have used the term "trusted" as it might have ended up creating
+more confusion? If so, please do let me know so I can maybe add a comment about
+it in one of the commit messages. In this context, "master X is trusted for read/writes"
+means "master X is allowed to perform read/write transactions".
+
+Even if the bridge is configured to allow read/write transactions from a master
+(i.e: master is marked as trusted for read/writes) that wouldn't be very helpful.
+You'd still have to bypass the CSU configuration which as far as I understand is also
+used by the bridge to deny access to peripherals (e.g: if transaction is secure+privileged
+then forward to peripheral, otherwise abort it). See the "4.7.6.1 Security Block"
+and "4.7.4  Access Protections" chapters from the IMX8MP RM.
+
+Given all of this, I think the purpose of this IP's AC is to add some extra,
+light, security features on top of the CSU.
