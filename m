@@ -1,178 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2078.outbound.protection.outlook.com [40.107.249.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBEB1F55ED;
-	Tue,  4 Mar 2025 08:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741075495; cv=none; b=Kx5wzJ1mcOauMiMZUaCHeo0yYVuopk6HNlV8IdTtWLH8eonHvIEtZEQLjKnkSpoB6yc/Ibfs/RKG/URdW2wq+8si8FOePDBq9pxlOau+SIs0uhMGtSen3VpuFiytmiM/atHQglbjQSpnpNerK9V4CVT+IRv01157h6WlncjCniA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741075495; c=relaxed/simple;
-	bh=vIjLPcUzgSKENXMFoyq8MSR3rL6XCeonIPvrarBTHfI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3U28mQepnDeUKBZ3n6NMOTj1oq13K3Ud7oOpW42XburH4dZohnZurfBb24PF2hIqk3KcLpSJpsARfjv8Uq0j0wDklZMadRDHcbwIBaIV+cTjwdWnR9jpKda7Fz9W+yXl5p/GZw/YVpUpIwHCcHe3LN3VSeuo2p7w3BGDx6jYKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTMooLPO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59D01F891D
+	for <imx@lists.linux.dev>; Tue,  4 Mar 2025 08:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741076632; cv=fail; b=cSDOs+yPlQMHQn2p9DNxWVNxVMolC2c9HaTXgIv11EDe4t7B7nPhi6PhrRjb6Eydq3Ue1q+PWf0IF/cUJ5tywX/S9MsXxmapCj+QP55OW8M86/42iLyzL1xKthpnsryrsvChZWN7BEF7LtIUqousoyhQ/lIE2zIM+xo+yRspUTk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741076632; c=relaxed/simple;
+	bh=+RKXLeQwAbMm5aXNOIjYlof6vkg2RGNX1ljoxCAGDqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iDf/omvUbxRbf2FHdiH//I506hF8KZDt4igwGqtlAsRAqk3H+RaFabhoowqUY/d4qtRDpIraVAZtDGFt7/EPGZjT7sQVAkyg6FKJPqDOeT1tt0nkoR1GaVMXM9Ok1oKO8jYgeDRwEgl+3sB++FjcMXbNWxThPUYFt1qaA7/LV6o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aeT0v531; arc=fail smtp.client-ip=40.107.249.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTMooLPO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCBEC4CEE5;
-	Tue,  4 Mar 2025 08:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741075492;
-	bh=vIjLPcUzgSKENXMFoyq8MSR3rL6XCeonIPvrarBTHfI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MTMooLPO8Bbb2GKqdM1BuZCtLRVMLpPUiZewyqhTUOANTZEdA7zKLpNVpc2b4+pde
-	 qLxD1GPfTrr2crKHjmFBRkbsQhLcZE/wIdMSn7xP+K7vJd7ZRJEAH9qDQUxuZcs5kx
-	 PTy2NgT0nWNSVjrgvdi0A9uofQ0NxTbml1X58f1jrN3deGiad5mCcW/u5Oh/f1kNxH
-	 WkgVk5ns/TvPqpAEbTVtWOTQmUYqzcBtq42vbowT/RyyDgHhCJdC0cKAvbzxnmEotI
-	 4k4ylvc9gwaqMoZC+TRzV16b9VRVTbQY41zF+zC/l+py0e6GMwaWsk+QqwNP9zvG1O
-	 WP0yWgzyy+/YA==
-Date: Tue, 4 Mar 2025 09:04:50 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
-	Joel Stanley <joel@jms.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
-	Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
-	Xinwei Kong <kong.kongxinwei@hisilicon.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Yongqin Liu <yongqin.liu@linaro.org>, John Stultz <jstultz@google.com>, 
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
-	Yannick Fertre <yannick.fertre@foss.st.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Alexey Brodkin <abrodkin@synopsys.com>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Jonathan Corbet <corbet@lwn.net>, linux-aspeed@lists.ozlabs.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
- devm_platform_ioremap_resource() usage
-Message-ID: <20250304-astute-curvy-ladybug-f9ff15@houat>
-References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
- <20250225-memory-drm-misc-next-v1-7-9d0e8761107a@redhat.com>
- <24958ae8-6153-4798-abeb-e770d66ca8e4@foss.st.com>
- <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aeT0v531"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HlvppSbLGB91k2+wXzUMBnkQzyUBw9L2MSldjrmBmwJz2rwS3NjRJO6xenuU7t1UetvWoU4fD9jAEZ+uFwP/AQcccWvkLf/cEH8nkJHoVzcqdwILblyfdRtJDouWM9oTErQvtfg8lQdG8OT7bZHxeDNg3n82V0ato1+Y47UUkBbH5PB6v2hnirlIP9KKXxAu24tHU3Qf7+M7HP6oequdxlDpzt+0MdfA7fmklJ4tyBff6GMaNdwKN7e0vhIjimFzoSnsgnOStPZ34tZ6dPw4etkGtCOk3WvZWhM6jSh7LGocU9UK92k/aKoI9La/qUdZDQo2d0i/z8B3lIoHgTVogA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w4Jm7+1/bMXeSHR72Kk85JSPA7j7pmFZWvbFtx+nkgk=;
+ b=n7OV2OCHiHuQYIcLX12IXGuYjvQKgF/aZicfOULiDNBMVwFjxa1rLchy9BzkOuYm/wz7oXInlp4ISz6/WONZLOytzam0ywC+8iPPCkZwh2Uk1sh54cjbZlXPwGBqrd0AXYD5z8QFGZg7V26/qmE/kL+Xb1bqOjeWHBFYffoWQVwCaZW31Af224HGJDyNPe2m8DDTHTTeYqLl7R1o/lURetLJDUl5Aow8MMeYCEI3COqByre495sMriXH724VEYwa+E79j4RFwtwa3jTlt1QkV7+dM5gn5s7b2v9RvfNm2VRi9tezDk6u0sc3v6q/Yc0ZFlctlimJroyDEwtDPPlYLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w4Jm7+1/bMXeSHR72Kk85JSPA7j7pmFZWvbFtx+nkgk=;
+ b=aeT0v531BJf0ddjsFmNnD0CVifVmRCAgl0TNu1ogEU0zRzoJgWivXUNSb903VlR2ey6inh7V0XWT/QeMKtsYwUqESG8vvjFFW52dGE+SHlPywoZWrEVtYLeKZA0aFxsN2j0QMHv+CrSV7Y2lp8yvhCmArTOe3W77Zs2ZtfVqog5jKMl2j6i0rd9FC2wzs12avueOJ3dedbpoz1XNGlSUuKe18mK+AWtnhLBL4XhD56dkx0Ag8QWeUJj8dcXyllymG6YmyBXWCK7yEUr0JP3dnuYkikksg8PTe5MuvnFanLR71CUiL948Ia1NAPR8dye7QT03QxH2uZNIJ2gkacbvpw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by PA2PR04MB10311.eurprd04.prod.outlook.com (2603:10a6:102:413::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Tue, 4 Mar
+ 2025 08:23:48 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%3]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 08:23:47 +0000
+From: Liu Ying <victor.liu@nxp.com>
+To: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	victor.liu@nxp.com,
+	andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	peng.fan@nxp.com,
+	alexander.stein@ew.tq-group.com
+Subject: [PATCH v5 0/2] drm/bridge: imx: Add i.MX93 parallel display format configuration support
+Date: Tue,  4 Mar 2025 16:24:32 +0800
+Message-Id: <20250304082434.834031-1-victor.liu@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SGAP274CA0006.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::18)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="3cvx2hh6lak7gb3g"
-Content-Disposition: inline
-In-Reply-To: <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PA2PR04MB10311:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73fe2333-5186-4428-cc73-08dd5af5e2cc
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?4w9NOPyTM7SyGKgjY3hw7J4URfBSpOvmMyiQojfjwq59otZ4xLLyin0R/zrF?=
+ =?us-ascii?Q?yMuhtnA9A6+CVMOG8pzvL/mOyYN7QFBpdmyPLEeSeoUPV2VTQ1veSRn5ldOh?=
+ =?us-ascii?Q?6V+iCLb4ZIG4Vs8nMKgsvDXJI2G8VZQVybRbzT9/dwVPCFsQ+o4876biZk9a?=
+ =?us-ascii?Q?96wPyk9jGisoWoJzp3oXqvfzLPFGtPXzdJz7Xr4VMYuQtb/iCg3Hl4gHLB9+?=
+ =?us-ascii?Q?zUiPPGeKq9xgaCQFQdQcvWiBxvAp5BMQhprorw9tg+ccd1Oz5BsYxamm9dhw?=
+ =?us-ascii?Q?JZAMNsTRm6Pld8gBmcf2FcG9vn3FueEaB8ySqwEy5NsldlLz+mqJ8zoxe21/?=
+ =?us-ascii?Q?p5DRbmvDgiJjwJd8xrs3PEPygVqraSSGhHYZkFAR5hl7Vu81in+kNmXBdFic?=
+ =?us-ascii?Q?t/blcakaEbrjyNkNPQl/NvFQBIZk1AvNX03Qt/WgejBtYebdYTq+rKECBAjX?=
+ =?us-ascii?Q?frWCEDVx5/igLLCA2direvyGDDvQ1qZ6J+Eufhszu/bgiFEVwMzcuIdYrn8z?=
+ =?us-ascii?Q?i5TlOlWXoMIlRCHo/KmQMANdrwOIVmYAUUm4l8rnW3wJqQXKR7oLVZJ7xZpC?=
+ =?us-ascii?Q?9oHu55BSzDNCMpRpbdnODRX7LNfL/l3wxJ+Tp2617NY1FmezenaJ4oEeFmqC?=
+ =?us-ascii?Q?uVv+EKeJUcz2xvCZsWB/Fwt0B/n/i9BZ8z2PEU3y0pURSYDtXkV0emY0jD85?=
+ =?us-ascii?Q?pqRa6IUDUvWrDe8ToQ7/RsGf8wJqjnoz4yH3AbxG8b1Ek6bsIWPaPW/BEw4s?=
+ =?us-ascii?Q?piaeXexBXx3Gzg01bnyxXCV8CcObeqwRzymz5/EfzuXoJoJ+QnZicmW2gpLp?=
+ =?us-ascii?Q?JddjI5IgtelAl6snR1mVelzJjfGgzDGe0sTq4CQZQ3INt7GZJE0FpduTozC0?=
+ =?us-ascii?Q?CJQUOSa2LId/wLn248fjSB4Is1ozxAes6mLqDljN+gztjKIR3QS90dTfaRZo?=
+ =?us-ascii?Q?nY/BJMC0lPee58QDq/t6ZBTcsoZNdYsKSvL8sbfhdsJsd8ot3y8CxYzlPLZJ?=
+ =?us-ascii?Q?shwa6AAfNxTA8SpsSrFdOsPjGF5Kh44LFtSD1pvox8OraqOugwMq4E3B+qog?=
+ =?us-ascii?Q?r5c0Zgi3sj+02WZyN4mSXE9vGMS3Nipz7YVyJLZ+swrRMV8czwZKvQwDCxHE?=
+ =?us-ascii?Q?D5mbRB1tEOYZNd5nkg/Q966KG/UAnTutzJ7UHgkWxzE6z2hSHJ8dSkZpcNGh?=
+ =?us-ascii?Q?aI+LHo6NrGTvOpQf4OtbHKKLLawd/nRH4p/KMkg2iMpmdOqkIBNu6WRJdO4h?=
+ =?us-ascii?Q?5gYdjWjvuH+zT5RhWUdPKunu5GwKIj+JKEOEVyzuzZensbpV593rvM+6PheD?=
+ =?us-ascii?Q?utJVu/ISwWayI8zgSCUdcJse/DE79+TnrbUojpXWqqSO6FL3lLmsl8sdeBRF?=
+ =?us-ascii?Q?aLdJplb3woxUaKJuUgPbFrHg+LY61GDIIOqlO3EqL7fJ6UkzSHRATSRiRcPw?=
+ =?us-ascii?Q?l5nvgJosJu1ZUQVDhJlUTdOCCPQlAMTW?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?RczLTn1TUd7J/93smoQghDOLJ7JQWMbmAhncvyYblErTGpkd59ikWKwuEq33?=
+ =?us-ascii?Q?ygtDrHmAHNFnpYtquZt4fCMq/NMaZuT+HR9UVl13swY6WlW2m3CH6Kwlh28Z?=
+ =?us-ascii?Q?OkFYprUDhqoFR6hjmIPtucP84/Ni21bMwY/gOMwxZsTI18gDXLo1xOUvZJpk?=
+ =?us-ascii?Q?73I72qejRC1/clx1jQwHDY44ML6bxeZ2+E7PinDbBwd33CEQVVB5wDdQ/2b9?=
+ =?us-ascii?Q?qzbNeH1T6wMrzaZbLBUBeKcH0Imzg6r3AeL2N/8F4wR42P6PQO6AQdSdjy9/?=
+ =?us-ascii?Q?Erbtf50hpzZE2RIywNXMRY9f5C4X8sJnOsLq061hFnyKqcldU+BALnWGI6pZ?=
+ =?us-ascii?Q?5G4pBxfGHFp0Cs/LUTsTmnMHmia/0ZbcRB3vpwEfdjn+CoATnhKBOSxqMkHz?=
+ =?us-ascii?Q?Sy3z02YjjY7zvaTjtKwnzNTsl4KljFgREXlZwXdVAopRCDfM2zs0hZuii1ya?=
+ =?us-ascii?Q?OIkHMxFFxKvZPDlwkyTvjXOdtxqlpBEqufC5o2q6/ZsiVKYI6RlDuawUpU0u?=
+ =?us-ascii?Q?+B9INdWMEcFtl3e2lz4tP7L7s7twKKdr8TqR2ZkHnN9MjQ/4ccY3EJK1wqhY?=
+ =?us-ascii?Q?ykAuprALQU31xGJ1m1s0JDnsP75KkqqH3e0OpiyvXsKXRo91Gqz+gBl/5Y/D?=
+ =?us-ascii?Q?2jlC3GTN4FqqzH/RbOkqH5We8WuAkiFzlvYwThSAoKSmE/EFqDsRA1SKVm33?=
+ =?us-ascii?Q?vGX7cQkPQt3KymKpI9+WfY9TXF+TfbKd6ppET0CUJVM113AgMo+VeX6N9m1H?=
+ =?us-ascii?Q?4+lnNCfYN4BrctNqi/c7rcL1oyRyeVj0lEmjH7GyoMtge2ceAde3FVthdtk3?=
+ =?us-ascii?Q?Q3S7+69TbuQeAURXvFp3ZJe1O12GcKduK9eWxg/Atv8Kp5iAd/8cXBWyisYS?=
+ =?us-ascii?Q?WlX4hN4U4wzCjljeD2sUjWWjkLyCfTc9oHrXzYu1GJ/N+mkFVnlI/ThdkdQU?=
+ =?us-ascii?Q?feyvmjaZ5s4XRQR6t8iHhFOhD5/0oYNaeD2jzAVEV66LK7p3CPrbyp3RxEnO?=
+ =?us-ascii?Q?kCvf+5MJ4QZ/q7min4QtpWUKKxlGL3Moo2F4wnUZEQC7Ns+7MrxdWpo62eQk?=
+ =?us-ascii?Q?KQrtvGofKnKjF0+VgntrCHqSIMHQaWaOojGBwo8kNAL9oqqPddn3kpviqO8k?=
+ =?us-ascii?Q?Y/qMil47hBtLE9axY/eTJB21uEcg5iZDImDQ51B+i2zvDpCfcBUgxGboK8wh?=
+ =?us-ascii?Q?SWtCu07j0DN7uv/h6SJqSjO+lE+ZZhUHmwuLvJ1oc1JH/yCDen5MCdpQqmew?=
+ =?us-ascii?Q?kYwcYo6jcnwCHisWlgLhsdDT4yJceDXA5gI44d/WTlpms3XZmJSErjFJdW6Y?=
+ =?us-ascii?Q?9IPzHZDBdUXAiQtAlK77uULszT9CPvsnG8BcG5ORI+Xb4vNZStw39DiigSUm?=
+ =?us-ascii?Q?UEyjY895+zEV4iLoERtRw8ZSLbigf3+gdYkpqDpvJ0GNN0ALybqbbrwKkLHN?=
+ =?us-ascii?Q?9HSqVZ1e+t0TsU3Co27MNXuhtdadmk8Uv/yss/0CUfmd78lacHB2KJl4WE0W?=
+ =?us-ascii?Q?0skDnIrZjn8tdLlc/ZmswRP9tjb3xImoidcJmGPZk8CqHCRqnnNoEbPxRDE0?=
+ =?us-ascii?Q?Agu9mLbJCnPBZJ67oP84gW7spTKuv8o//SRb1y5p?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73fe2333-5186-4428-cc73-08dd5af5e2cc
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 08:23:47.7457
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k1M3Ylc9ECq3vF2RgeSukjxuSIUoq4AP8+NE5c4RF8rpsTx4WM5fAmdMOU8OybxWBoawio6Wqbzij52Cfjv08w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10311
 
+Hi,
 
---3cvx2hh6lak7gb3g
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
- devm_platform_ioremap_resource() usage
-MIME-Version: 1.0
+This patch set aims to add NXP i.MX93 parallel display format configuration
+DRM bridge driver support. i.MX93 mediamix blk-ctrl contains one
+DISPLAY_MUX register which configures parallel display format by using
+the "PARALLEL_DISP_FORMAT" field. i.MX93 LCDIF display controller's
+parallel output connects with this piece of small logic to configure
+parallel display format.
 
-On Mon, Mar 03, 2025 at 12:29:19PM -0500, Anusha Srivatsa wrote:
-> On Wed, Feb 26, 2025 at 5:19=E2=80=AFAM Raphael Gallais-Pou <
-> raphael.gallais-pou@foss.st.com> wrote:
->=20
-> >
-> > On 2/25/25 23:20, Anusha Srivatsa wrote:
-> > > Replace platform_get_resource/_byname + devm_ioremap
-> > > with just devm_platform_ioremap_resource()
-> > >
-> > > Used Coccinelle to do this change. SmPl patch:
-> > >
-> > > @rule@
-> > > identifier res;
-> > > expression ioremap;
-> > > identifier pdev;
-> > > constant mem;
-> > > expression name;
-> > > @@
-> > > -struct resource *res;
-> > > ...
-> > > -res =3D platform_get_resource_byname(pdev,mem,name);
-> > > <...
-> > > -if (!res) {
-> > > -...
-> > > -}
-> > > ...>
-> > > -ioremap =3D devm_ioremap(...);
-> > > +ioremap =3D devm_platform_ioremap_resource_byname(pdev,name);
-> > >
-> > > and
-> > > @rule_2@
-> > > identifier res;
-> > > expression ioremap;
-> > > identifier pdev;
-> > > @@
-> > > -struct resource *res;
-> > > ...
-> > > -res =3D platform_get_resource(pdev,...);
-> > > <...
-> > > -if (!res) {
-> > > -...
-> > > -}
-> > > ...>
-> > > -ioremap =3D devm_ioremap(...);
-> > > +ioremap =3D devm_platform_ioremap_resource(pdev,0);
-> > >
-> > > v2: Fix compilation error.
-> >
-> >
-> > Hi Anusha,
-> >
-> >
-> > You did not take into account my comment regarding the changelog. :-)
-> >
-> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
-commentary
-> >
-> > While the commit summary do not specify the version, this changelog
-> > suggests
-> > that the version of your series as been incremented.
-> > If this is a v2, then a version descriptor should be applied to the
-> > patchset.
-> >
-> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
-subject-line
-> >
-> > Hi  Raphael,
->=20
-> That is correct. While this patch is a v2, there is another patch or two =
-in
-> the same series that is on v4 when it got acked and reviewed. Having
-> patches belonging to the same series with different version prefixes seem=
-ed
-> odd when I sent the series. Hence added what exactly changed in the commit
-> log.
+Patch 1/2 adds NXP i.MX93 parallel display format configuration subnode
+in i.MX93 mediamix blk-ctrl dt-binding.
 
-This breaks a lot of tools though. If your series changes, you need to
-increase the version number, no matter how small or insignificant it
-changed compared to the previous one. resend is only meant to be used
-when you send the exact same series.
+Patch 2/2 adds NXP i.MX93 parallel display format configuration DRM bridge
+driver support.
 
-Maxime
+v4->v5:
+* Rebase the patch set upon next-20250303.  This causes the drop of .remove_new
+  from patch 2/2 by using devm_drm_bridge_add().  Also, this causes API change
+  for imx93_pdfc_bridge_atomic_enable() in patch 2/2.
+* Update year of copyright in patch 2/2.
 
---3cvx2hh6lak7gb3g
-Content-Type: application/pgp-signature; name="signature.asc"
+v3->v4:
+* Use dev_err_probe() in imx93_pdfc_bridge_probe() in patch 2/2. (Krzysztof)
+* Drop MODULE_ALIAS() in patch 2/2. (Krzysztof)
+* Update year of Copyright in patch 2/2.
 
------BEGIN PGP SIGNATURE-----
+v2->v3:
+* Define i.MX93 parallel display format configuration subnode in
+  i.MX93 mediamix blk-ctrl dt-binding. (Rob)
+* Resend with Conor's R-b tag on patch 1/2 and with the patch set rebased
+  upon v6.11-rc1.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ8a0GwAKCRAnX84Zoj2+
-dvPAAX0T6CB5j6he9IlacsjKLYZXt0M1IhAKVugJHAC1WHuswlCAJSgEyELEpzS1
-ddcuQ7kBf3wXscEAe3lhr3vk0F2KVEj4r8JtBnUwxNM0o1E63auMQV7dNPG5Z5Ku
-4gxKbq/wJQ==
-=hPVI
------END PGP SIGNATURE-----
+v1->v2:
+* Set *num_input_fmts to zero in case
+  imx93_pdfc_bridge_atomic_get_input_bus_fmts() returns NULL in patch 2/2.
+* Replace .remove callback with .remove_new callback in
+  imx93_pdfc_bridge_driver in patch 2/2.
 
---3cvx2hh6lak7gb3g--
+Liu Ying (2):
+  dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and
+    example
+  drm/bridge: imx: Add i.MX93 parallel display format configuration
+    support
+
+ .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     |  68 +++++++
+ drivers/gpu/drm/bridge/imx/Kconfig            |   8 +
+ drivers/gpu/drm/bridge/imx/Makefile           |   1 +
+ drivers/gpu/drm/bridge/imx/imx93-pdfc.c       | 186 ++++++++++++++++++
+ 4 files changed, 263 insertions(+)
+ create mode 100644 drivers/gpu/drm/bridge/imx/imx93-pdfc.c
+
+-- 
+2.34.1
+
