@@ -1,211 +1,137 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C623597E
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 12:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64471FDA82
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 14:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741178768; cv=none; b=EHcMLln9KRka+ofnPOjDyOV4sAotB851q358c5Ni634TYuOgrfFB8/APKf5Q2XNNjvaTBeNlvbbmn/hJYaOGz047L/tHrAaC1+fTgpVfqvzYnCkRgUcXNQ324m1YS7P3xj0RXlmspmWPHtjxMKiuoVlN3bDJ3HvaE9fBCpc4JHI=
+	t=1741183776; cv=none; b=aJSJrKh29YVO8KpY3Mh/cZw7h9oELcnoFElbbjqp4AisVCs9RR7BshZXn2XzffrPVmM2hH433n6QkUdyn71+sFcmejfu+SOUY8T41bsion48Fma5npB+bp6asPUcMvQ4nEYLlbdlmSKkNbnayoePHmWBcJQI468ynbiYbSFRqhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741178768; c=relaxed/simple;
-	bh=xx8JpjJPC8xYDKoDVOJwNq5GyjLhOLnf6u0v8a2NSeQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IVyLfY9T8p5ADf+tTevA5xMs39RR9snFdoLdNYjo7lkTFwS6u/N2HT9aCQGWe2yVx4pIbfVd8t46Zhq3RhSJ6nRTJZbPyxvSB+RGnqF2A9ZTyrZeIkXPjOimW33U4RlFP8c7Xa352AwJEdtfzfLs92KaWv85d95ZpLWCsajXlYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXXefX/R; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741183776; c=relaxed/simple;
+	bh=FvXY0J6HFmz+F4kGGhdiUtByaCV/93S7mXHV8f989j8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U2ROjpQbMRkUqRBwO8Y+x0sa5eUV3RDXn1yVaVBRB7TDO03IpuIO909KKIyzS42fXCbnru3F5d23KzdI4U6Cp/WiADIsGORp4YYsAFTEn3mPfBxQvtXnvZa/EZKjGxH6k1Ba1WWWXFZtRprvfYhKJiR4eCMVpGxQNf0pWmwZBKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=fUVMj/t/; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXXefX/R"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-223594b3c6dso117136325ad.2
-        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 04:46:06 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="fUVMj/t/"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-390f5556579so3035189f8f.1
+        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 06:09:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741178766; x=1741783566; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OZhOmEpDhm76SJPq5OYpOzDDF0g2lT4rBhjCoTGHE34=;
-        b=FXXefX/RQCeJchVpFIEKVYutx+xjh9iCnce31XnxbjWB/38QoI5WhocomKjfGQ85r6
-         WTOGVnuzTr0IpWC9IyCEePLEt3G1xcamG9oOTyL51iAOsrtvK4WrqxGTuhbkFjjupltb
-         rKyHMmCXwA6bE4ILY6s8imcZEKQrqvDQpk+aRLGzVPjKI43MMja+kSEEvZ0rvGC+iY2D
-         8saULV1G/fQodtQVb3W3n3Jmes/hVuG5DeryP9BEbb3dokK1hsSJQVThUvl+ZFooBKQk
-         ZfJSZbfPZo33XGz0i12kI1OaWofE4zd1N5YPRRJvsgRfZfQIvXFOT7lgOoxHJ8YvLwr7
-         KWOA==
+        d=amarulasolutions.com; s=google; t=1741183773; x=1741788573; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jC9QV0bJcgZgqHHH3SUMbf/vptPD4PQ0vRL1kkv5HIw=;
+        b=fUVMj/t/J26HsUB7Cv14N01+XGbfPnsFFuthCygGszmnfQb1jWkt6SO8R03G54eg4k
+         fElTsykvTunv/vWVP2A9mRj7NRdsMR22yyQqXC96W9ZQLirOAmQ59WBI6ku0aPA0zUfy
+         d0dsLkDGmvZFVYsXOE3u1VAB+q59YNKjY0rxs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741178766; x=1741783566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OZhOmEpDhm76SJPq5OYpOzDDF0g2lT4rBhjCoTGHE34=;
-        b=AYKR00FNP9/nYXhil4TEpbpqRdeWOyQax6gWUPhIWJ04AKJSNIMVbBKRcqfmMThQ7V
-         rjpqBSG4ErqIvfcNce1voDW1xckCG5bkmVksXFEefSPNwGXO5nLhujKIWdE4sCjLJTcC
-         TRJsNH3cJ35nCJGv+1JrLNhxL9z5JuCnbxXE22GRHyj6jA83ZH/7lY8kZnQ4JFGlMcpA
-         OpoA73Avy2td3ESdveGtuN8EqOvzmgAUaajtDFOEgGTFAr+KShsX2tR4u8mWQwZGM/9l
-         ghFjgdRj2vnQgeetYKymTCQKXNUBQjDj4pibVS7AMFtZH1Zc/woGmKNXe0SjMPDgJPq1
-         2q+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUYZ1D30GELzRyefi8YpPCD9wtoP1JyGzCD8Os6nl4ojhRIRkgv7d9DnmeEM1g12lcAf3s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPKZrw9/k7hRvkm2pjyTsLjUCi7PCpfDEaE+kb3GEVFbd7F+N+
-	lriwLIDEkC9+8mIDjDg4L6fjcd8FP1d4wJzrHI09pnoTT6y4Ul77Rbf3UvVLtocPyCPwR3sho8l
-	da2KvU4054fwqn+IBuH+vhYTqhIE=
-X-Gm-Gg: ASbGncsTEUUXfOhYCPvsT/XCCkETHPkEFzpbmrBH3ye4k+Zy6i/yeBmzcxYLNkHZyW4
-	JFgKqsJpAzvwzBQW2X/MN1bBJ5YMeGurYbEoCUMwYY8JywqDhM0ASzxGVvXe4LQfQ6uDpek9nET
-	Vu/Rt3KATaJDWQLUrba/lLNio=
-X-Google-Smtp-Source: AGHT+IHdwW4hQa2cLPlWYrU5ue4mWciZc0p5rQqeJ2JBGI1XN4w7WGoKToi7KE7C9eD7Ld4Askkac6qqdMHiE8X06ik=
-X-Received: by 2002:a17:902:ebc1:b0:223:f9a4:3fa8 with SMTP id
- d9443c01a7336-223f9a457bemr25544855ad.19.1741178766361; Wed, 05 Mar 2025
- 04:46:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741183773; x=1741788573;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jC9QV0bJcgZgqHHH3SUMbf/vptPD4PQ0vRL1kkv5HIw=;
+        b=xKuqOsJmjX6zdbOghTwWoSvdJVcu9vbEEci3tavnZOjk61YMDipw0X5rJ5T+TIHieb
+         VQp9fgv8KEt4QWOER5nLoTSbiOrdETGrwxpCgZgG97cItfJnb3x5SjoFkQCE2KlGCGfd
+         P6OnCnMHgo7v+yQcpJZjP7UielcJf+pqSzPLks7A6sjlMeiygUkMXW29MncJeDZVNjF1
+         yOYUOnC9mVxovt2UVyMp4NWuWUMcZIdLPvOBAwm59fivlNUz/blg5WjEBDyTOJEY4wnf
+         FxnCOqY/gxHHd9VgRnzBDInxIMBqHcgzIAix+Aus3H3e4L6yynmQyqDP0xy41SZpoE/E
+         QWrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVA3vXLJjZbzfdRdDP2DO67Qa9V6ZKAQxUv2pPmvkFHiqC3LB8xg+k/cOMeGDgHF0VM6c0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxisl56EVZg7JX6Y9NwO2klbI99cNh2iOR/6VzXJGMYFVFjfc2l
+	PUjypDoY8AAdglyLbN2dYoX/IIQ7ZQeDRp7THOt04xkZqyvYxhulfF/sUlwO9u4=
+X-Gm-Gg: ASbGnctiWiNOjrHJ2PAeWe31/qJ0vUMmM3MaYRCPhGVrwLf5oD/VT0o3eO7AKsTVuGj
+	1IXOBwUdbiJ9FsggKHffEM3Y+o44g44M5OGe3ibfSILT2Z+8AuSm6oZjbzXDcnBH0mstPpdmC3G
+	FRUnee2sJ0f49SNzV/g5YiQo8FOT03sRwcz1GzCKmWQPQ2ZL8eMOKjpMfliNi6JIOJuO90jBGcv
+	e5oUEyAnJrvaSS520oY+hz3s0Ge50Soua9byIxnLKlk/F18cEb8hnSVYPK9aqwpUrNxu9cCC2Te
+	inlEQXEhv0XQl9WT4OkhU1F1Z8vqd+WIaRs5Cs4kFGncvICv3tk8CuTlmWZKiQLExWhE12+DBA1
+	kkVaf
+X-Google-Smtp-Source: AGHT+IHdccH4w20LAtL5Tnt1zvD+qT2oMJLO3EagpAUtyRarROFNC3ETwO4Ig2JSfhHI6IHFm6KeuA==
+X-Received: by 2002:a05:6000:1546:b0:390:df02:47f0 with SMTP id ffacd0b85a97d-3911f7bb461mr2279778f8f.42.1741183772882;
+        Wed, 05 Mar 2025 06:09:32 -0800 (PST)
+Received: from localhost.localdomain ([2001:b07:6474:ebbf:334:5d7f:7a52:9e84])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4847e62sm21374802f8f.67.2025.03.05.06.09.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 06:09:32 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Maxime Ripard <mripard@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stefan Agner <stefan@agner.ch>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [RESEND PATCH v3] drm/mxsfb: Remove generic DRM drivers in probe function
+Date: Wed,  5 Mar 2025 15:09:16 +0100
+Message-ID: <20250305140929.174398-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250304162136.1963384-1-florin.leotescu@oss.nxp.com>
- <20250304162136.1963384-2-florin.leotescu@oss.nxp.com> <Z8cp1xoIXT8lgD8T@lizhi-Precision-Tower-5810>
-In-Reply-To: <Z8cp1xoIXT8lgD8T@lizhi-Precision-Tower-5810>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 5 Mar 2025 14:47:45 +0200
-X-Gm-Features: AQ5f1Jq_yZI7Qka024KvL_NkiadJQvrOZEyL3YURWLhpyxIxGw7rSu6jJaSDwjY
-Message-ID: <CAEnQRZCT4vfFBApv+C3Wp17Fk0-Rwx36h4eCTTygaXFYFipEGg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: hwmon: Add Microchip emc2305 yaml schema
-To: Frank Li <Frank.li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: florin.leotescu@oss.nxp.com, Jean Delvare <jdelvare@suse.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	viorel.suman@nxp.com, carlos.song@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, festevam@gmail.com, 
-	Florin Leotescu <florin.leotescu@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello Frank, Conor, Krzysztof,
+Use aperture helpers to remove all generic graphics drivers before
+loading mxsfb. Makes mxsfb compatible with simpledrm.
 
-Thanks a lot for your comments and help.
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-In this initial patchseries we only add minimal OF support and
-introduce a minimal binding.
+---
 
-> How did you pickup the maintainer entry?
+Changes in v3:
+- Add 'Reviewed-by' of  Thomas Zimmermann
 
-We got the author of the first commit for
-See 0d8400c5a2ce ("hwmon: (emc2305) add support for EMC2301/2/3/5 RPM-based=
-")
+Changes in v2:
+- Use aperture_remove_all_conflicting_devices() instead of
+  drm_aperture_remove_framebuffers().
 
-> If only one reg You can go through trivial-devices.yaml
+ drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-This is not a trivial device as we will add some specific properties
-with our next patches
-(e.g polarity etc)
+diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+index 59020862cf65..e5eb644b54ae 100644
+--- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
++++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+@@ -8,6 +8,7 @@
+  * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+  */
+ 
++#include <linux/aperture.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/io.h>
+@@ -361,6 +362,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free;
+ 
++	/*
++	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
++	 * located anywhere in RAM
++	 */
++	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "can't kick out existing framebuffers\n");
++
+ 	ret = drm_dev_register(drm, 0);
+ 	if (ret)
+ 		goto err_unload;
+-- 
+2.43.0
 
-> Missing descriptions of the fans, no?
-> missing $ref to fan-controller schema.
-
-Do we need to add this now? As this is only the minimal binding
-support. We want to add that
-in a follow up patch when we go into specifics.
-
-> The emc2301 label here can be dropped, it is not used.
-
-Will fix.
-
-> The nodename should be "fan-controller", not pwm here I guess.
-
-Sure, will fix.
-
-On Tue, Mar 4, 2025 at 6:56=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Tue, Mar 04, 2025 at 06:21:34PM +0200, florin.leotescu@oss.nxp.com wro=
-te:
-> > From: Florin Leotescu <florin.leotescu@nxp.com>
-> >
-> > Introduce yaml schema for Microchip emc2305 pwm fan controller.
-> >
-> > Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> > ---
-> >  .../bindings/hwmon/microchip,emc2305.yaml     | 43 +++++++++++++++++++
-> >  1 file changed, 43 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,e=
-mc2305.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.=
-yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > new file mode 100644
-> > index 000000000000..cac0075a65bb
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
-> > @@ -0,0 +1,43 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/hwmon/microchip,emc2305.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Microchip EMC2305 SMBus compliant PWM fan controller
-> > +
-> > +maintainers:
-> > +  - Michael Shych <michaelsh@nvidia.com>
->
-> who is it? look like not Microchip and hwmon maintainer.
->
-> > +
-> > +description: |
->
-> Needn't |
->
-> > +  Microchip EMC2301/2/3/5 pwm controller which supports up
-> > +  to five programmable fan control circuits
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - microchip,emc2301
-> > +      - microchip,emc2302
-> > +      - microchip,emc2303
-> > +      - microchip,emc2305
->
-> According to your driver code look like all compatible with microchip,emc=
-2301
->
-> oneOf:
->   - enum:
->       - microchip,emc2301
->   - items:
->       - enum:
->           - microchip,emc2302
->           - microchip,emc2303
->           - microchip,emc2305
->       - const: microchip,emc2301
->
-> So your driver just need one "microchip,emc2301" compatible string.
->
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        emc2301: pwm@2f {
-> > +            compatible =3D "microchip,emc2301";
-> > +            reg =3D <0x2f>;
->
-> If only one reg:
-> You can go through trivial-devices.yaml
->
-> Frank
->
-> > +        };
-> > +    };
-> > --
-> > 2.34.1
-> >
->
