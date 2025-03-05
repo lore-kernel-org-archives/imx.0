@@ -1,276 +1,178 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2063.outbound.protection.outlook.com [40.107.21.63])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADFA205E06
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 10:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741168884; cv=fail; b=GeQDQUXaE5riIdK8wdIgjcFnKMgni7tbJMsd6Rcj3LXVI9m17WvYBqfBd9PkK50KBQf66yORegPFVyKpGPqx7G5LIrem6E151DtZDn+5JJqFIfkSMcAddSWWtjIR3XiGgdH7w4mcjuudz6ndFo8PIAVUbBWnjH5dLqpNw6ukyVA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741168884; c=relaxed/simple;
-	bh=WcbGSF7kL35sAFpaN4tmka6+hfVyeUeUYh1LaGlM9fE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DBg+Yu9hcJuMNpVA2uoedxFYeykrcezyGbj8Y7Gp/KZ0xjz2vrhRPZHp8didKC2UHwlhj5RX+B0td++0v9N2QSt3itMSGKb3MDl/1UtdvJHbESdn/nwtyvzkwg7p5IeUXS31InRTiZdf7M3IReReTKbH5EGOvwm0LtIETInaML8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aSii665l; arc=fail smtp.client-ip=40.107.21.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6A12063D7;
+	Wed,  5 Mar 2025 10:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741169476; cv=none; b=MsPlABNaK7qMgUe4nLfe35MgdXLLxA2nv7lYbzuLvKBLU8mQoig7Xq0V5eLA+k99FKx2XM4vUJdXmgQSnsTJmwTu87M54Uwbh5K0bbm6B5xMDQPoHJFr4oibDYfx+CFxYFXcfuV0rtxxurOuD009oa2kDmFANVWyXLFNZsYdF68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741169476; c=relaxed/simple;
+	bh=30rEyG+pIJxPNakYv5p7IGH7V2SxGpqIbqxG9RIgGU4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n99VepLz77ePbxUJHOaEZ5QSxJ5Cj/eXWEZmkAtNAXI625ggAmyQ08PouAVeYxGogZx7ICsbbarGC0kfpJXiotI4wPHFHW4yYpyxb6Pc6ucy4c3lka2xFftDmwlBKnFHHQxytqyMZocq2zcjX1LZiss3CzmgZ6z37ZCiU0gREjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=W8ld+Ol0; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aSii665l"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=um4WdmpLMXf1HpmCrt+Bv/PmF4GVS0uq3MXGInlnvKD4PeHkF2aBZqanEjzTnDm7DlLRWjKzk2lAu/qmOlyR7OW/MWFwfjnrz37d5O+J2s7dBsIe9BpTpDaoQxQMQAJFWdEaritK8BpFyegLJY3OdalwaUhzzErldrHT/OxpCMeSHDRrfIrCrWEGtx6eybdqD20l8fr32XMErSwFenu4KUCKdMWHZY9JaQ9hDa71/gpb2JkkAdzhUmuSbVkvhA3E08VQcSug9kSYj1YvGyHH9oXgZXL3phH0/5paeFSmLca9T8S8Rd4Hfv1JD9KiVzmoZCe/6aawm1UkGkzB0g7iiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zi3Ta5oQXcePbjnJLMNF/ShJJD47jZo9ro9ibNheTqs=;
- b=LCfVtGbp2C5or0sTjY8A4ivB4sDLvsEZ8JR8y5I5vGxNGz5MOV7AzG7yeN5LNPD23Tbe1GxzTEn2xLGjPWO6fJYfYwxk3s+9l+TlIBbsQQ3N+lK7OB/iRzgj1D4gghjCBspCfqFMZW2rTw2ug4cAZlwKeL2g2xsCwMtrtN036aro5qTGvURva6Lay9A5iWZSOfY3OZqtgqTUqQ3GR7RmBvphxYvClcckFMx/Crbn8ZWMFuwctSsKV8RhEwz7LbH/TO7vWUlMLarQYcOIsgZCPcS0clGkCtcRH0/0d6UrjSX8WfRr6TFBGGChvFh4vrbbzVCwSjhnQOK1t+ugIkqI0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zi3Ta5oQXcePbjnJLMNF/ShJJD47jZo9ro9ibNheTqs=;
- b=aSii665l0Imvt21asQC/Hl2OD1S8q6U+z5ThufwHTr8BJoh8/FzSHOpDteCDVGsBggBaECX1cZ/++zUzVbD8GX0X73rpDcBSqeje+o2AXChGTl/j6VYhlk0Jy94/JlEFsGNo/9y+J5SxakCGLUswdVH8MpYzPmCq3iAU+NvOXzQR1AxBWiEl/BzBoh9pEqS0wtrZ+a4kJQzsivXv86qhrHiKis77kkQYvxlPLylRZ0vAonuPBoFFuHo4LdwAhsOmqDZUk3lU/nt9eh24aBytulrLIxkirJkgTryVOrmxN6xek5WDMOz1ssWe95zIlffvo+Y0AoiErmZ9vap+K22RWw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by VI0PR04MB10541.eurprd04.prod.outlook.com (2603:10a6:800:26a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.27; Wed, 5 Mar
- 2025 10:01:19 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6%5]) with mapi id 15.20.8511.015; Wed, 5 Mar 2025
- 10:01:19 +0000
-From: Daniel Baluta <daniel.baluta@nxp.com>
-To: p.zabel@pengutronix.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	shawnguo@kernel.org,
-	mathieu.poirier@linaro.org,
-	devicetree@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org
-Cc: conor+dt@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	andersson@kernel.org,
-	Frank.Li@nxp.com,
-	peng.fan@nxp.com,
-	laurentiu.mihalcea@nxp.com,
-	iuliana.prodan@nxp.com,
-	shengjiu.wang@nxp.com,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Subject: [PATCH v4 8/8] imx_dsp_rproc: Use reset controller API to control the DSP
-Date: Wed,  5 Mar 2025 12:00:36 +0200
-Message-ID: <20250305100037.373782-9-daniel.baluta@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250305100037.373782-1-daniel.baluta@nxp.com>
-References: <20250305100037.373782-1-daniel.baluta@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: WA2P291CA0031.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1f::12) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="W8ld+Ol0"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5258qqsZ019244;
+	Wed, 5 Mar 2025 02:10:37 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=qbqF48qVGJ7k977FyHARI9U
+	rv+TEi3KnHj8UcH7vyaU=; b=W8ld+Ol0lHAzikVYU52DOPnFV7VVZgfOtqPH0jJ
+	VaMQnIcC1KqcbpBxK0AJrqnZIfA7kp5JmtRAMDtrxPbofa3ohLjhuhaGeIDQV7qj
+	eaivNu7zId34ZTotRMa0qGJ5TL5NbOPjewooyqQWLOezzRjZsAe5Y2SI6yQRXSd9
+	SxUkPw0D8uEmxrBVJD6DWrZiSSGGNtKSpovRv41muoRNt2PA7hGD6R0Fs8c6/l8v
+	WsZn4iiU6EyK6RmfGhTCZx35/VxR0Q2u5q7TXZ3CNzitlD3fqXHsSj0hJD3TA2Zb
+	453lgjgyf+3tsZGmbYzHE03WqBXMqOgWz1QybM5PE2L3o8A==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 456kg184rh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 02:10:36 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 5 Mar 2025 02:10:35 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 5 Mar 2025 02:10:35 -0800
+Received: from tx2-sever.caveonetworks.com (unknown [10.110.141.15])
+	by maili.marvell.com (Postfix) with ESMTP id 35B843F703F;
+	Wed,  5 Mar 2025 02:10:35 -0800 (PST)
+From: George Cherian <george.cherian@marvell.com>
+To: <linux@roeck-us.net>, <wim@linux-watchdog.org>, <jwerner@chromium.org>,
+        <evanbenn@chromium.org>, <kabel@kernel.org>, <krzk@kernel.org>,
+        <mazziesaccount@gmail.com>, <thomas.richard@bootlin.com>,
+        <lma@chromium.org>, <bleung@chromium.org>,
+        <support.opensource@diasemi.com>, <shawnguo@kernel.org>,
+        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+        <festevam@gmail.com>, <andy@kernel.org>, <paul@crapouillou.net>,
+        <alexander.usyskin@intel.com>, <andreas.werner@men.de>,
+        <daniel@thingy.jp>, <romain.perier@gmail.com>,
+        <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
+        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
+        <benjaminfair@google.com>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
+        <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+        <naveen@kernel.org>, <mwalle@kernel.org>, <xingyu.wu@starfivetech.com>,
+        <ziv.xu@starfivetech.com>, <hayashi.kunihiko@socionext.com>,
+        <mhiramat@kernel.org>
+CC: <linux-watchdog@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <chrome-platform@lists.linux.dev>, <imx@lists.linux.dev>,
+        <linux-mips@vger.kernel.org>, <openbmc@lists.ozlabs.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <patches@opensource.cirrus.com>,
+        George Cherian <george.cherian@marvell.com>
+Subject: [PATCH v4 0/2] Add stop_on_panic support for watchdog 
+Date: Wed, 5 Mar 2025 10:10:23 +0000
+Message-ID: <20250305101025.2279951-1-george.cherian@marvell.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|VI0PR04MB10541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 234ce139-b55e-4b63-4685-08dd5bccacca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IjQQ/p1HX1jFVwGB5grt+8YtvcDuVBfbrktqqq3wu//3sdnPKlVXJsMRJsdI?=
- =?us-ascii?Q?rzLLofyMLbHJKgbU9hx6Oyg2tDHVYxwRlm5rqWjeRAbMgaKaq0pREQ6UR7b1?=
- =?us-ascii?Q?dxhUQoh3KuM8fIyCyGC04u1TEpZ5Z54jDtfyIuVbUopKurtYVc86y11R4vSH?=
- =?us-ascii?Q?YmlrQqECGIF8/zk5slGGuru29cryjo7xgsWL44vFiGy5CBVFK4ZQNR8dnTBK?=
- =?us-ascii?Q?4U8aO86xNK3jgnVU7xuoy4IiohWtVw9Bw78WANN9+ntYAX8TytqV+j23GRlL?=
- =?us-ascii?Q?44qBkBPQ/0Dg+fAVPzVk8k5IN3Ng7u+VI2ffnbLovhb0YRtmb98g3ZuEiqek?=
- =?us-ascii?Q?Nc1isxBRRCf6ptLU+XuFpZUeMgTdsHJxZvaYeIpfwdycIDchSwTqTah3KD12?=
- =?us-ascii?Q?YZpr4tKEDLC3JbQHj6EqCPvgrzbLsVwlKgy04Sbps57nrIZ0+s94nlhsD8TD?=
- =?us-ascii?Q?pNslDW0HqECkz5AUE4tZIL88j9efz9752qIninAxw/NZfAcPWYBRQx4S2+/v?=
- =?us-ascii?Q?u3IQWBZqfZJqobpOL5f9lA5I6sfqXC3dRRMnzdrlzvE/w7SGofo3GHDbu5U1?=
- =?us-ascii?Q?ML/YnaspOqHBbpThE1eaXHSVRT9InjoyX0ZYOi7F6LeFAWrV31ENX2pDboKj?=
- =?us-ascii?Q?H5fV2m1NLxiQJyalvuYWwG4QLB3HA3vQhuExPhypnQMqac6ArtLaSkM2NFKc?=
- =?us-ascii?Q?fNNooz0kQnc8Fbpc1mAoLGSpxgr8dFTtYtOhuUHonwIY7ZGTM4+azQrAGdGY?=
- =?us-ascii?Q?8spSYN4BUplHEvhM1yGll4AMTrSklCabBPu/CyOZ0eArtJJOxHRktlrtGBLE?=
- =?us-ascii?Q?uq9WCv6mKrn+vOXkxeVmZfLXmSXYIRwY6m5P5MyupUfMuhsQkRoce3HXTjqr?=
- =?us-ascii?Q?oIqpt/VyWY9dsaab8FCSuhHaRwk7QJvry6+N/8q9nXsMsADR8QG5htpPlclZ?=
- =?us-ascii?Q?d4T7Blmf9ElJUvXml1CE8AcBT5O9wbhLevrnadIERda8/60HD80T+qI0mXiF?=
- =?us-ascii?Q?999u8cfq7sDMJKbz5pSO4HkAU42+l5Nka+nhJMvjgz3WC9T51NacIGBh1SUx?=
- =?us-ascii?Q?QWA/xkmaRFcebRUW2Vp1G2tAedghliNELoxRincDmGJibOE2aPLpUXUrjU6P?=
- =?us-ascii?Q?jyqw0XXhM4zS3tNBiuDRdA3GazRpefjo2iDpjrSenTAsLKpbYuuPuEiiaj5U?=
- =?us-ascii?Q?lVXVsvi9GOkWTs0BZLgdSd8Md0tCEGoITgG1DaenuYqDi9nSTYwst5eiLcvJ?=
- =?us-ascii?Q?29Il/M8i7DHlR4nNkXDll+rMtWj7W1P6qkKDz3j2V7KFICaROVMalrivJc9h?=
- =?us-ascii?Q?NikNC5THs2hqFWTTZx1R/5+O/esXwjz7ewai8nbo1PGl3loBK9jGDAyFxo2W?=
- =?us-ascii?Q?tlGID9NAn4/hYOqv3EdGRg08gzjUNBxsUKOGhtvG02KvFdv8FtDuRwYNrUvI?=
- =?us-ascii?Q?hHpDGS3dgb+vSh+guEKDvtaik5lEoifE?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?sDhR+A/S72IlOK95ApddkEunwir1PTM7nAYbWpn5o3QyCPkgc5oDk9VfHhmw?=
- =?us-ascii?Q?7Hw4HYmorMNz2kxNYew+z9xlwwDR752MgMSMDQD3vemDJnX5IVCjD5ohtPWw?=
- =?us-ascii?Q?XVCoc3OsMBXHHeOrxwHbcJqdQVli3VEWgAn7PhgI21sNotXjCpwq+/surzAj?=
- =?us-ascii?Q?jXwM5I6wVLpCAAk1A16etw3Soy9mcVzl1lro61zKyDHUo89xqlreVf+65Tas?=
- =?us-ascii?Q?KqdYJyrVANCDf01FpNEFmeC1jCcXLhl2TZv9HTbBmRaRf5s3Jo90eIrduA79?=
- =?us-ascii?Q?cmayLGAz0UNlL4yBHhelTJuu8iKLnFLhApMGFklZUL2rXgao56+q7ys8ZIEp?=
- =?us-ascii?Q?xW5kWL4nQEr9Eexd0J2T1aZT1EikRWkKhYlmoLtxVgKZhemcr6mKnWoqjmbB?=
- =?us-ascii?Q?8Ercl4TeYvwcxd2PMQtuk6EQr7g7A7057uUzN+mF9qi88EGA5wH7GVKyAmLd?=
- =?us-ascii?Q?iAe2Od38egN2OQM0tfQoffaJHt/4Sa0dgZ88P4JgnHmXm0iayX5RzncVkpkR?=
- =?us-ascii?Q?c0TOlH9X8EFG/wWgI32GTDauqpaMnoeZ7i0tIdlWBLpZ06xZSPOdtfcNwNu0?=
- =?us-ascii?Q?dl89FB/5BhFcZsPfmfmzgwqb6tXrtNBBrbE0op+xtw8utyNbTSllyuxmbsEY?=
- =?us-ascii?Q?x2WQmwUyZk1QKmOqrrWoz7K9C+olPe0cvpEXfdMIsoPXThwCj+VWxEjU0RSR?=
- =?us-ascii?Q?H8UQivtu6QMvTmEQuSBJ6LmXagfsBulamI2R4Gw5uiP5lNL/vIQ3/GqV+TPV?=
- =?us-ascii?Q?JAp+j8qSmKF4BvBxSq/E0dXegYz/nj8fZByMG9Ts5YhbT8mvsVB5E52P3g+l?=
- =?us-ascii?Q?GS69ULf7iAdleCc6bxRe0gG/14g2sIdZtmmScY91EdmgpYV6bdGnVfVKY7sx?=
- =?us-ascii?Q?L4WOuM7EV0kOm+jGfdtWzDEPSxtHFCSrvbE4ahHEfmaPUK/0c48bQACAWM9f?=
- =?us-ascii?Q?D2pK7m5LAQbYtFMAHXbgaBmTo7YwR5Wo2lYmQnSVQcyIUVo1jjPBrCQI5GOU?=
- =?us-ascii?Q?AKrTFpUJLmsELP4wZDXYnZD6o0pYd/qXvtBx8p6KTg3IFpUAvwlD35C8580K?=
- =?us-ascii?Q?deWhm6zp+uMCB4bRjCsN5TH0mzHcTN9EcrwGBbosrImcViGPsKsMjGNqT9p5?=
- =?us-ascii?Q?2Xtvml3ekLoKBauDYhcauh01Dgt6Szgxs/b66PwGLHrHcT78HkjS1IQtm5CW?=
- =?us-ascii?Q?0RA9Oi4LO7AfoiE49rpy3WK57m4zOV6da+NKnsM0Gw/FS++Iq/vT0n0/O6U0?=
- =?us-ascii?Q?gRskiZ+1X5AqFWozog8ZHtFDq28sBYGoHGZi2sNcD/72SR3VZYLcNvL0ewlH?=
- =?us-ascii?Q?KLtOKVud3QShcZEdcm27JvIr5JX/1Of4IYL/vumPML0TDpDDV12ESu8VH+Al?=
- =?us-ascii?Q?Oo9AAnMnV2gX/0UTfN0+8OH8pDkxmyvwPNCiXcdDjVefSSxjYG7bLCBBOWRk?=
- =?us-ascii?Q?4ath4kMfPK+l9LfhHNk9lqAi3i/hHQT6hjUSDDSVnhHP99Zluf33teNdYn6u?=
- =?us-ascii?Q?AM7QsBP2Q86MQqNHBar0Kg12fxWR2IBrc8wVaKARwIdxnBmLcjot7EW8zUt7?=
- =?us-ascii?Q?0adUG3P/c8KMjxrjK6jH06wfhG6u25pi1ngGu9RL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 234ce139-b55e-4b63-4685-08dd5bccacca
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 10:01:18.9501
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5HlO+7s5tdr4aUZkKZibTM5jWlOIEgaCpbDnV7FPv4VWmuvd+JYhuGSJHnuFqJS+uTv9LpzNlXGSUYFlqBkZbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10541
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: w2sqtc8AAqn1lQeUebd10xLXrXXuTShg
+X-Proofpoint-GUID: w2sqtc8AAqn1lQeUebd10xLXrXXuTShg
+X-Authority-Analysis: v=2.4 cv=E7k3pbdl c=1 sm=1 tr=0 ts=67c8231c cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=Vs1iUdzkB0EA:10 a=lsmenjMKv-2rqCzf5cEA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-05_04,2025-03-05_01,2024-11-22_01
 
-DSP on i.MX8MP doesn't have a direct reset line so according to hardware
-design team in order to handle assert/deassert/reset functionality we
-need to use a combination of control bits from two modules. Audio block
-control module for Run/Stall control of the DSP and DAP module in order
-to do software reset.
+This series adds a new kernel command line option to watchdog core to
+stop the watchdog on panic. This is useul in certain systems which prevents
+successful loading of kdump kernel due to watchdog reset.
 
-Initial design accessed RunStall bits from audio block control using the
-syscon interface but this got NACKed by community because of abusing the
-syscon interface [1].
+Some of the watchdog drivers stop function could sleep. For such
+drivers the stop_on_panic is not valid as the notifier callback happens
+in atomic context. Introduce WDIOF_STOP_MAYSLEEP flag to watchdog_info
+options to indicate whether the stop function would sleep.
 
-So instead we use the reset controller API.
 
-[1] https://patchwork.kernel.org/project/imx/patch/20250212085222.107102-6-daniel.baluta@nxp.com/
+Changelog:
+v1 -> v2
+- Remove the per driver flag setting option
+- Take the parameter via kernel command-line parameter to watchdog_core.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
----
- drivers/remoteproc/imx_dsp_rproc.c | 25 +++++++++++++++++--------
- drivers/remoteproc/imx_rproc.h     |  2 ++
- 2 files changed, 19 insertions(+), 8 deletions(-)
+v2 -> v3
+- Remove the helper function watchdog_stop_on_panic() from watchdog.h.
+- There are no users for this. 
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index ea5024919c2f..bc60edcdd661 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -19,6 +19,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/remoteproc.h>
-+#include <linux/reset.h>
- #include <linux/slab.h>
- 
- #include "imx_rproc.h"
-@@ -111,6 +112,7 @@ enum imx_dsp_rp_mbox_messages {
-  */
- struct imx_dsp_rproc {
- 	struct regmap				*regmap;
-+	struct reset_control			*run_stall;
- 	struct rproc				*rproc;
- 	const struct imx_dsp_rproc_dcfg		*dsp_dcfg;
- 	struct clk_bulk_data			clks[DSP_RPROC_CLK_MAX];
-@@ -192,9 +194,7 @@ static int imx8mp_dsp_reset(struct imx_dsp_rproc *priv)
- 	/* Keep reset asserted for 10 cycles */
- 	usleep_range(1, 2);
- 
--	regmap_update_bits(priv->regmap, IMX8M_AudioDSP_REG2,
--			   IMX8M_AudioDSP_REG2_RUNSTALL,
--			   IMX8M_AudioDSP_REG2_RUNSTALL);
-+	reset_control_assert(priv->run_stall);
- 
- 	/* Take the DSP out of reset and keep stalled for FW loading */
- 	pwrctl = readl(dap + IMX8M_DAP_PWRCTL);
-@@ -231,13 +231,9 @@ static int imx8ulp_dsp_reset(struct imx_dsp_rproc *priv)
- 
- /* Specific configuration for i.MX8MP */
- static const struct imx_rproc_dcfg dsp_rproc_cfg_imx8mp = {
--	.src_reg	= IMX8M_AudioDSP_REG2,
--	.src_mask	= IMX8M_AudioDSP_REG2_RUNSTALL,
--	.src_start	= 0,
--	.src_stop	= IMX8M_AudioDSP_REG2_RUNSTALL,
- 	.att		= imx_dsp_rproc_att_imx8mp,
- 	.att_size	= ARRAY_SIZE(imx_dsp_rproc_att_imx8mp),
--	.method		= IMX_RPROC_MMIO,
-+	.method		= IMX_RPROC_RESET_CONTROLLER,
- };
- 
- static const struct imx_dsp_rproc_dcfg imx_dsp_rproc_cfg_imx8mp = {
-@@ -329,6 +325,9 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
- 					  true,
- 					  rproc->bootaddr);
- 		break;
-+	case IMX_RPROC_RESET_CONTROLLER:
-+		ret = reset_control_deassert(priv->run_stall);
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -369,6 +368,9 @@ static int imx_dsp_rproc_stop(struct rproc *rproc)
- 					  false,
- 					  rproc->bootaddr);
- 		break;
-+	case IMX_RPROC_RESET_CONTROLLER:
-+		ret = reset_control_assert(priv->run_stall);
-+		break;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -995,6 +997,13 @@ static int imx_dsp_rproc_detect_mode(struct imx_dsp_rproc *priv)
- 
- 		priv->regmap = regmap;
- 		break;
-+	case IMX_RPROC_RESET_CONTROLLER:
-+		priv->run_stall = devm_reset_control_get_exclusive(dev, "runstall");
-+		if (IS_ERR(priv->run_stall)) {
-+			dev_err(dev, "Failed to get DSP runstall reset control\n");
-+			return PTR_ERR(priv->run_stall);
-+		}
-+		break;
- 	default:
- 		ret = -EOPNOTSUPP;
- 		break;
-diff --git a/drivers/remoteproc/imx_rproc.h b/drivers/remoteproc/imx_rproc.h
-index 17a7d051c531..cfd38d37e146 100644
---- a/drivers/remoteproc/imx_rproc.h
-+++ b/drivers/remoteproc/imx_rproc.h
-@@ -24,6 +24,8 @@ enum imx_rproc_method {
- 	IMX_RPROC_SMC,
- 	/* Through System Control Unit API */
- 	IMX_RPROC_SCU_API,
-+	/* Through Reset Controller API */
-+	IMX_RPROC_RESET_CONTROLLER,
- };
- 
- /* dcfg flags */
+v3 -> v4
+- Since the panic notifier is in atomic context, watchdog functions
+  which sleep can't be called. 
+- Add an options flag WDIOF_STOP_MAYSLEEP to indicate whether stop
+  function sleeps.
+- Simplify the stop_on_panic kernel command line parsing.
+- Enable the panic notiffier only if the watchdog stop function doesn't
+  sleep
+
+George Cherian (2):
+  watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
+  drivers: watchdog: Add support for panic notifier callback
+
+ drivers/watchdog/advantech_ec_wdt.c |  3 ++-
+ drivers/watchdog/arm_smc_wdt.c      |  3 ++-
+ drivers/watchdog/armada_37xx_wdt.c  |  2 +-
+ drivers/watchdog/asm9260_wdt.c      |  2 +-
+ drivers/watchdog/bcm47xx_wdt.c      |  3 ++-
+ drivers/watchdog/bd9576_wdt.c       |  2 +-
+ drivers/watchdog/bd96801_wdt.c      |  2 +-
+ drivers/watchdog/cgbc_wdt.c         |  2 +-
+ drivers/watchdog/cros_ec_wdt.c      |  5 ++++-
+ drivers/watchdog/da9052_wdt.c       |  3 ++-
+ drivers/watchdog/da9055_wdt.c       |  4 +++-
+ drivers/watchdog/da9062_wdt.c       |  4 +++-
+ drivers/watchdog/da9063_wdt.c       |  4 +++-
+ drivers/watchdog/db8500_wdt.c       |  5 ++++-
+ drivers/watchdog/dw_wdt.c           |  5 +++--
+ drivers/watchdog/f71808e_wdt.c      |  3 ++-
+ drivers/watchdog/gpio_wdt.c         |  2 +-
+ drivers/watchdog/i6300esb.c         |  5 ++++-
+ drivers/watchdog/imx_sc_wdt.c       |  2 +-
+ drivers/watchdog/intel-mid_wdt.c    |  5 ++++-
+ drivers/watchdog/it87_wdt.c         |  5 ++++-
+ drivers/watchdog/jz4740_wdt.c       |  5 ++++-
+ drivers/watchdog/kempld_wdt.c       |  3 ++-
+ drivers/watchdog/lenovo_se10_wdt.c  |  5 ++++-
+ drivers/watchdog/max77620_wdt.c     |  5 ++++-
+ drivers/watchdog/mei_wdt.c          |  3 ++-
+ drivers/watchdog/menf21bmc_wdt.c    |  4 +++-
+ drivers/watchdog/mlx_wdt.c          |  2 +-
+ drivers/watchdog/msc313e_wdt.c      |  5 ++++-
+ drivers/watchdog/npcm_wdt.c         |  3 ++-
+ drivers/watchdog/omap_wdt.c         |  5 ++++-
+ drivers/watchdog/pm8916_wdt.c       |  5 +++--
+ drivers/watchdog/pseries-wdt.c      |  2 +-
+ drivers/watchdog/rave-sp-wdt.c      |  5 ++++-
+ drivers/watchdog/renesas_wdt.c      |  7 ++++--
+ drivers/watchdog/retu_wdt.c         |  5 ++++-
+ drivers/watchdog/rn5t618_wdt.c      |  6 +++--
+ drivers/watchdog/rzg2l_wdt.c        |  5 ++++-
+ drivers/watchdog/rzv2h_wdt.c        |  5 ++++-
+ drivers/watchdog/shwdt.c            |  6 +++--
+ drivers/watchdog/sl28cpld_wdt.c     |  5 ++++-
+ drivers/watchdog/softdog.c          |  5 ++++-
+ drivers/watchdog/sp805_wdt.c        |  5 ++++-
+ drivers/watchdog/starfive-wdt.c     |  3 ++-
+ drivers/watchdog/stpmic1_wdt.c      |  5 ++++-
+ drivers/watchdog/ts4800_wdt.c       |  5 ++++-
+ drivers/watchdog/twl4030_wdt.c      |  5 ++++-
+ drivers/watchdog/uniphier_wdt.c     |  3 ++-
+ drivers/watchdog/w83627hf_wdt.c     |  5 ++++-
+ drivers/watchdog/watchdog_core.c    | 35 +++++++++++++++++++++++++++++
+ drivers/watchdog/wm831x_wdt.c       |  5 ++++-
+ drivers/watchdog/wm8350_wdt.c       |  5 ++++-
+ drivers/watchdog/xen_wdt.c          |  5 ++++-
+ drivers/watchdog/ziirave_wdt.c      |  5 ++++-
+ include/linux/watchdog.h            |  2 ++
+ include/uapi/linux/watchdog.h       |  1 +
+ 56 files changed, 198 insertions(+), 58 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
