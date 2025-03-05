@@ -1,141 +1,129 @@
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123451C84B9
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 06:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C745D1C8623
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 06:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741155769; cv=none; b=VIQDbt6T7dlrlKiEnUoxyZXelm/3MnN41XNugMX6qZ5c1d/t9qgVQWAeDmRwG0BkaANYZoW52eIZ7/rydOwlDNPWcesSWLC+QQOKeZmGy5uS7QWzHFyD53jgOvLq64mJkdL05doW9Moj1Ryz4ayHtIVODQYUjfB0kTz0PAqiWSY=
+	t=1741156359; cv=none; b=BJOx0fjX6cgEMol7tQ0hytuKPnlRnKdlTmzXF6rDXby0hpY3W1yl5e5WRXu6RfuCtqT1BD9llFHdfiJe91n2nASTsfUsjCh5R+j3cydJywFpwAGrETucTbuRPyBUZgiCF5UNLsy1/f8GHYRIeIrg6UPqs91IZXWRqhe9NhWyoc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741155769; c=relaxed/simple;
-	bh=Hp/3hLQszbQpC4Dkavwf3pq6VtFVA0LTPkBh/vhoZIw=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:References; b=HqiAGJnVcxnAio61DFwoG/t8ayxnXmOW8E2Ij/HWlIAj6SadXY0BgYeEZvmR5/3bPmZcTYEsjXTe2FBiLU6NzW3NL5YvVqhvQPSVm2XTHtYy2WL5eaZ3uVMFhZVYY4cJQu+QtMgDpS5YkeX2s9k1YAgoAztmKLOKvL7jV82ZvOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=W0PBd+yi; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1741156359; c=relaxed/simple;
+	bh=cvzoZmF/vBEUTMkxhVqY1m27118/Iwth+47/mXm8xgY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QP+ViJEbVg+C+5lOCi2yNT1gFVhZtATp9lOQCT/y6CJQskwVhuol2z7hAuaYnkPcXZR1Lqc9Zqmc03i663UPvfk/QeNszwLGx2joFigA7RwXAuYW+Q116NaQITLgve0yxOisA0oidjWowHCYPIB3NR6IVVcyF0iWkgCnnE/0Jdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HJdg0bKf; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="W0PBd+yi"
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250305062246epoutp02aa7bf5718cffa80e2be4329f317a30df~p0-HEg4qx0196701967epoutp023
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 06:22:46 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250305062246epoutp02aa7bf5718cffa80e2be4329f317a30df~p0-HEg4qx0196701967epoutp023
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1741155766;
-	bh=skXfz601zwxGnlS1FM693PJw5hGibXY8CTNZiA2Lo4I=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=W0PBd+yi6The5YrQkeDh0UCvBO0stflph3otVBGx4s98U0wiT6Eq62pXemkHABil9
-	 Hb1KguJQCCUOj6jnLSzdWl+MLDNx+RE+vqKQZH0FGqLU/7ODqc9etxf3wqJ5dngZVM
-	 aYHy9pQIACdPhhFZ5S9ijR7fRf5Q8dN4iKd7vSds=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-	20250305062245epcas5p23067eadd0e690fbee68023f2774468ac~p0-GUv7ny1813318133epcas5p2X;
-	Wed,  5 Mar 2025 06:22:45 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.181]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4Z72Xg2Z94z4x9Q0; Wed,  5 Mar
-	2025 06:22:43 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	32.02.19933.3BDE7C76; Wed,  5 Mar 2025 15:22:43 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250305060259epcas5p20c02f4c4b4ff84b0f790b4ea446056e6~p0t1X1d2e1988819888epcas5p2W;
-	Wed,  5 Mar 2025 06:02:59 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250305060259epsmtrp11bd6866051780894bf24883dc4b2621b~p0t1W9LDS0144901449epsmtrp1K;
-	Wed,  5 Mar 2025 06:02:59 +0000 (GMT)
-X-AuditID: b6c32a4a-b87c770000004ddd-7f-67c7edb3dabb
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	5E.5E.33707.219E7C76; Wed,  5 Mar 2025 15:02:58 +0900 (KST)
-Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250305060256epsmtip2ebb003603dcf4055c8070785ac5dc092~p0tzO5xUE2406324063epsmtip2J;
-	Wed,  5 Mar 2025 06:02:56 +0000 (GMT)
-From: Inbaraj E <inbaraj.e@samsung.com>
-To: linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: pankaj.dubey@samsung.com, rmfrfs@gmail.com,
-	laurent.pinchart@ideasonboard.com, martink@posteo.de, kernel@puri.sm,
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, gost.dev@samsung.com, Inbaraj E
-	<inbaraj.e@samsung.com>
-Subject: [PATCH] media: imx-mipi-csis: Fix v4l2 mbus frame descriptor type
-Date: Wed,  5 Mar 2025 11:26:55 +0530
-Message-Id: <20250305055655.6622-1-inbaraj.e@samsung.com>
-X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCJsWRmVeSWpSXmKPExsWy7bCmhu7mt8fTDZ5/5rV4eNXf4uaBnUwW
-	M++1slnc/TOJzWLV1J0sFvPbZrBYdE5cwm6x6fE1VovLu+awWfRs2MpqcW3FRFaLZZv+MFks
-	2vqF3aJxwXsWi7/bN7FYvNgi7iDgsXPWXXaP2R0zWT02repk89i8pN7jxeaZjB79fw08fh0W
-	9Xi04xajR9+WVYwenzfJBXBFZdtkpCampBYppOYl56dk5qXbKnkHxzvHm5oZGOoaWlqYKynk
-	Jeam2iq5+AToumXmAP2hpFCWmFMKFApILC5W0rezKcovLUlVyMgvLrFVSi1IySkwKdArTswt
-	Ls1L18tLLbEyNDAwMgUqTMjOWL/3AlvBRI6KLZt+sjUwNrF3MXJySAiYSPTPWsHYxcjFISSw
-	m1Hi/JWXzBDOJ0aJv382M8I511YeZ4RpWf/oCTOILSSwk1HiyW89iKIvjBLPV31iAkmwCahL
-	bOj+ztbFyMEhIlAl0btSBaSGWWAhk8TrawfYQGqEBbwk+g72gt3BIqAqsXTuUbBeXgFLib4l
-	S1kglslLrN5wAOwkCYFODom767awQSRcJD7feM0KYQtLvDq+BeohKYmX/W1Qto/E/jm/oK7O
-	kDi2fTlUvb3EgStzWECOYxbQlFi/Sx8iLCsx9dQ6sBuYBfgken8/YYKI80rsmAdjK0vMPHIf
-	6gRJiZ2Xd0Ld6SFxf/cGJkigxEqs+/eZeQKj7CyEDQsYGVcxSqYWFOempxabFhjlpZbDIyo5
-	P3cTIzh5anntYHz44IPeIUYmDsZDjBIczEoivK9PHU8X4k1JrKxKLcqPLyrNSS0+xGgKDLOJ
-	zFKiyfnA9J1XEm9oYmlgYmZmZmJpbGaoJM7bvLMlXUggPbEkNTs1tSC1CKaPiYNTqoFp/yeX
-	fW/95x6umugfIr46pDaQgSfQc7mK8bKmrgkWfKcDUhmPbDYykCq/bf35yOpkux/3rzbuP2y4
-	4mlMzbxfWveTbBhzt9W9Xlky/+7VJWwVbtxPuAv8LO0cFgeeaGc5Z/ei4diF2jkmDD+S5s0p
-	qji1j+eO1epDhW2MCZOVV+mZrDDLMFt/Oy/T/ZwYd7C0Wo9FkralP7cu5+6Nzrf3i+gmzin1
-	frfk4zOe5Que71S7z3YjykP7vUBP1KQ7+fuzVx0y2+pw4EqFU2ueVFHYpufPV7Y9LvCu7ZBt
-	qnOPlvpX9LzSNZNpLkv+L59ZK718+F8YxwYdt5v3b61E+slpU/w7+45f/jnvcPY9sU9KLMUZ
-	iYZazEXFiQCh3jAxJwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLLMWRmVeSWpSXmKPExsWy7bCSvK7Qy+PpBhd+W1o8vOpvcfPATiaL
-	mfda2Szu/pnEZrFq6k4Wi/ltM1gsOicuYbfY9Pgaq8XlXXPYLHo2bGW1uLZiIqvFsk1/mCwW
-	bf3CbtG44D2Lxd/tm1gsXmwRdxDw2DnrLrvH7I6ZrB6bVnWyeWxeUu/xYvNMRo/+vwYevw6L
-	ejzacYvRo2/LKkaPz5vkAriiuGxSUnMyy1KL9O0SuDLW773AVjCRo2LLpp9sDYxN7F2MnBwS
-	AiYS6x89Ye5i5OIQEtjOKNG5eAcTREJSYvbv6VBFwhIr/z1nhyj6xChxafV9RpAEm4C6xIbu
-	72wgtohAncT8B3NZQIqYBdYzSXx9DzKWk0NYwEui72Av2CQWAVWJpXOPgm3gFbCU6FuylAVi
-	g7zE6g0HmCcw8ixgZFjFKJpaUJybnptcYKhXnJhbXJqXrpecn7uJERzCWkE7GJet/6t3iJGJ
-	g/EQowQHs5II7+tTx9OFeFMSK6tSi/Lji0pzUosPMUpzsCiJ8yrndKYICaQnlqRmp6YWpBbB
-	ZJk4OKUamOb9rnWOEN4a8zeXsW5n+o31ilpGq33b7367nKhgk9O6iP/zvZueN/Z/rGv7eHJd
-	fUxGlBdvT1HH1qbXhfca779alqk96dVJ19p/G6Otn+e0t8pMdRZb5Lv6Wlc8p9JvnuVhn4w/
-	sc9WXPXk+a2++Q6G++YdqXa49sZCv9yV1z+s+LF6d/5CrdVqvE+MUy9EypzROOL670hSAGva
-	3dw9BT1P/wjrzNo1N1EgPzs1e8u8Yt9tTN0n9XULC9PO5OdM26HQP8XxcNHr7Q9uWc9xZlar
-	rLnwZX7cwm+VrN2sghNjNmZwGS21OrdBN+dsZyfX5/05a1Yoz816pe+j4Fd1920Vb3pj8fVT
-	dXrxf/NalViKMxINtZiLihMBPJ9jr9ACAAA=
-X-CMS-MailID: 20250305060259epcas5p20c02f4c4b4ff84b0f790b4ea446056e6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250305060259epcas5p20c02f4c4b4ff84b0f790b4ea446056e6
-References: <CGME20250305060259epcas5p20c02f4c4b4ff84b0f790b4ea446056e6@epcas5p2.samsung.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HJdg0bKf"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 524NA2ow013456;
+	Wed, 5 Mar 2025 06:32:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=vR5VynfP4MVglQhLx/xAmD1y
+	EZynwRM3f/t52ykQK4Q=; b=HJdg0bKfDTybGFJpxIX6r+WogBtZej/grWeD35eH
+	dviuxMM/9vRp2Q1VYo3EZoSLXWOhX2EknEcWzvOMhNfpa/unahbuVbYbEOgk6y5k
+	S4THXrjrfgYcJIXOUeUbR/q4mWJ3A1sd4FqUtalRvinnxc5qHZ9Hs2QJpy8DFkLQ
+	U5xwAiEc+T5dWNKwm6Enkg1b1x0Fxl9trwtiSSmdXG7D3RlVtUvNoB83PndBYN43
+	7yrndd00vahDSd+niYOcPhpKzaPlymb3z6OSWYpNRXwey/29bhGHsIMHRL+jPGjU
+	hYgV8IB7bKFp6dpLfla8SLo5xnJGt344bYzMKlc0Wt7FlQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 455p6wmabu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 06:32:05 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5256W4sK023404
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 5 Mar 2025 06:32:04 GMT
+Received: from cse-cd02-lnx.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 4 Mar 2025 22:32:01 -0800
+Date: Wed, 5 Mar 2025 14:31:57 +0800
+From: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+To: Jacky Bai <ping.bai@nxp.com>, <lpieralisi@kernel.org>,
+        <sudeep.holla@arm.com>, <rafael@kernel.org>,
+        <daniel.lezcano@linaro.org>, <james.morse@arm.com>, <d-gole@ti.com>
+CC: <linux-pm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+        <khilman@baylibre.com>, <quic_tingweiz@quicinc.com>,
+        <quic_yuanjiey@quicinc.com>
+Subject: Re: [PATCH v2] cpuidle: psci: Init cpuidle only for present CPUs
+Message-ID: <Z8fv3X0Pivh8zbMg@cse-cd02-lnx.ap.qualcomm.com>
+References: <20241120103749.1450017-1-ping.bai@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241120103749.1450017-1-ping.bai@nxp.com>
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=EZcyQOmC c=1 sm=1 tr=0 ts=67c7efe6 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=kj9zAlcOel0A:10 a=Vs1iUdzkB0EA:10 a=8AirrxEcAAAA:8 a=sozttTNsAAAA:8 a=COk6AnOGAAAA:8
+ a=AUesVnU23U_Rn2rDAs0A:9 a=CjuIK1q_8ugA:10 a=ST-jHhOKWsTCqRlWije3:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 6VvIHP9KaiVo-V4QU2O9xtOWpq3H0psq
+X-Proofpoint-ORIG-GUID: 6VvIHP9KaiVo-V4QU2O9xtOWpq3H0psq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-05_03,2025-03-04_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=939 suspectscore=0 bulkscore=0
+ clxscore=1011 priorityscore=1501 spamscore=0 impostorscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503050050
 
-For MIPI CSI2 v4l2 mbus frame descriptor type should be set to
-V4L2_MBUS_FRAME_DESC_TYPE_CSI2. Now frame descriptor type is set to
-V4L2_MBUS_FRAME_DESC_TYPE_PARALLEL. So changing the frame descriptor
-type to V4L2_MBUS_FRAME_DESC_TYPE_CSI2.
+On Wed, Nov 20, 2024 at 06:37:49PM +0800, Jacky Bai wrote:
+> With 'nosmp' or 'maxcpus=0' boot command line parameters,
+> the 'cpu_present_mask' may not be the same as 'cpu_possible_mask'.
+> 
+> In current psci cpuidle driver init, for_each_possible_cpu()
+> is used to init the cpuidle for each possible CPU. but in
+> drivers/base/cpu.c ->cpu_dev_register_generic(),
+> for_each_present_cpu() is used to register cpu device for
+> present CPUs.
+> 
+> When boot system with 'nosmp' or 'maxcpus=0', the cpuidle driver
+> init failed due to no valid CPU device sysfs node for non-boot CPUs.
+> 
+> [ 0.182993] Failed to register cpuidle device for cpu1
+> 
+> Use for_each_present_cpu() to register cpuidle only for present
+> CPUs.
+> 
+> Fixes: b0c69e1214bc ("drivers: base: Use present CPUs in GENERIC_CPU_DEVICES")
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> Reviewed-by: Dhruva Gole <d-gole@ti.com>
+> ---
+>  drivers/cpuidle/cpuidle-psci.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psci.c
+> index 2562dc001fc1..00117e9b33e8 100644
+> --- a/drivers/cpuidle/cpuidle-psci.c
+> +++ b/drivers/cpuidle/cpuidle-psci.c
+> @@ -410,7 +410,7 @@ static int psci_cpuidle_probe(struct platform_device *pdev)
+>  	struct cpuidle_driver *drv;
+>  	struct cpuidle_device *dev;
+>  
+> -	for_each_possible_cpu(cpu) {
+> +	for_each_present_cpu(cpu) {
+>  		ret = psci_idle_init_cpu(&pdev->dev, cpu);
+>  		if (ret)
+>  			goto out_fail;
+> -- 
+> 2.34.1
+> 
 
-Fixes: d200de90de2a0 ("media: imx: imx-mipi-csis: Implement the .get_frame_desc() operation")
-Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
----
- drivers/media/platform/nxp/imx-mipi-csis.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
 
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index 29523bb84d95..bb6550bed230 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -1137,7 +1137,7 @@ static int mipi_csis_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
- 	if (!csis_fmt)
- 		return -EPIPE;
- 
--	fd->type = V4L2_MBUS_FRAME_DESC_TYPE_PARALLEL;
-+	fd->type = V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
- 	fd->num_entries = 1;
- 
- 	entry->flags = 0;
--- 
-2.17.1
+I meet the same problem, and I test your patch, it is good to me.
 
+Thanks,
+Yuanjie
