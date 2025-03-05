@@ -1,273 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013035.outbound.protection.outlook.com [40.107.162.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D791C5F27;
-	Wed,  5 Mar 2025 11:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741174526; cv=none; b=XRTagposjHBZL8X2rD8uZUYfcg6VitBGVEo3LusLXvlsPCiWNnpKs+uL9llf4xVijhZ20xpPxlbRZZrPVV3PyP2o7g+vxVZsm2W3Fy0t97wSwBPslTaT78XzeyiMmBMcv0jLYyUOL2GkK62408jOLh1uBLDwi3dhN++KEe+JMRE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741174526; c=relaxed/simple;
-	bh=5wKZo1W3/KKJwo73d2ABuM4lG0wjBbXCHJqMn98euFU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eR9OZKhc3kwjEo0bG7TO39EtaoQO1jOlzFANfFHagavY9r5MUX3tCfS9m2vc6ZArkKs/jfUShRfZNoqMD4JcqwpkAqm/+hltkJ/xDAhhhSMA5MS1wo/yiBN4KC8xjoqJCveS489c9NU7oR5+fNq75knjlILApjxZUzztFpsideo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNzwL2Ap; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB1A21519F;
+	Wed,  5 Mar 2025 11:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741174713; cv=fail; b=VRONtc7/cO/KuYtZn1c9ezOiGXZLvPDUbF11HFmoWmhAFs58MKhYz/fLW/3knDrUv2Gt+otdE7NFoHEz6Zl0SKq+s6rE1fJYjXJI54rHUJGop8rlzJ0MCfy/ggSUl9Tlz82lnhBcaDBoAGGS1S0E94hkbVH8sFi18oNs9auTbns=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741174713; c=relaxed/simple;
+	bh=pFZh38+XhZJK2HDwwVG+2mRh1/C2c8mweNN02i5SEcI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JTdGBgzoNoTOItIpkIvVN73S80qW3rMfMtPH2zHkocIoiJntDbSK7RhhaonOJNosk51ivRfjl3p+CIolb8vjtXOjHcKJEANzyWQMiOD+MjbwyU8aJsWMXGf50oBAzRpQ4nLjRu3sAVwIYA1cL3VgWYZQpihQes7OZlFxJNazcdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=pass smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=jBDVu8qM; arc=fail smtp.client-ip=40.107.162.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNzwL2Ap"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD229C4CEE2;
-	Wed,  5 Mar 2025 11:35:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741174525;
-	bh=5wKZo1W3/KKJwo73d2ABuM4lG0wjBbXCHJqMn98euFU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HNzwL2Apz+ImWcI9E449fJ1uUCaPdrWT870QqZwQokeyeALzznCrATR+82SLgP5iR
-	 PNTj+ohzDf0Us/J46qONWbe9bakWDrN1d/DSgee/1e3NhX4sFWZ/vAVhJk9wwHzW21
-	 TmWMPE3apeOd993whfLADD6duv2C2uwBlf5MRjOuDIXMxf8tiWyj+Ft37yVK9ZrVPA
-	 lUTpnlqwIbVv8M020yEbOpnF74F99Tu4zzBx1DFMpW0MzXg27I0BZ6MQoRE6sX6bkt
-	 Vy48TaeHTxQI3sStfR6kbPjOeajO9cjOxotx/vyq8T5/lW+XWPmD2pOC8l5XjOZ/kQ
-	 4bjv6EnaztQsQ==
-Message-ID: <c7129d8e-87de-444c-be52-b2eedf03585f@kernel.org>
-Date: Wed, 5 Mar 2025 12:35:15 +0100
+	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="jBDVu8qM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q/ys0Pz01y1amu/keKZRMpD5wYVFcO55ccRxpQPu5t97hmE9mdgQOr1Mutdkh24jROfiOL7Qzql0FPFOW4SVNXHuxoC/21e57JFbw+Hi4PgiVY+QHfxTxfy/UGBgq5lLW7D8euwAnh7AuXVIbc7tXCSAEa4uzq5m8ZQ4Kv7fXmi6eXUXfPAdhVBimkDJs5M3SDdn71EzRgVFY2xJt35Qtl9k44Ho9jpjkzaQZAvTGAL557wZpa/0Wgw6Jt4NQBJpgRtwJwChVoexfT89w4nrKilJZVoe4GmN5eFVkWEAwchgTCOap/qFVpCe8LXCHv777lkUeNDQIb6xduympSaqjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+zEW/TZqeQ0mhAnFxXfH0l0Bi2RuEv8CE05Oz+M3huY=;
+ b=Qw1+TkwgZ9bLVacTTnGQMb6DwKwmVwTS6jXtSgchszIlnjzf/ogYX3kgzw4zz20kRBQEWP/zK5sWO7TCzLVwxm4JepjVRoqwYb47KgeGtvfT8Ti8VAaImBa1JVwc/fO5GIKQqZd7KZ0/62pSnN0AiaPWcVyBGmWJLVm9rbh8grweiBv+pqcuhcSX6flyAdleG10xtHtF9OkyjfTZpe6Ud+HcizR+mEn0inyKQGaSi4ZUD427cafk1pbuPkeE+gg+wOniGnkINEeuCoWuPOtDFTxViz/tGxNtQA9A76539ebbH96ULTKS6Yygu6Kq9KV5+kXlIP/gO9MwcefeCNkM4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
+ header.d=mt.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+zEW/TZqeQ0mhAnFxXfH0l0Bi2RuEv8CE05Oz+M3huY=;
+ b=jBDVu8qMM9VPHcT2fXSLHRazCwW2i3OQrPu5lgigPMEyxKNgeTe2IE+M0GCWlW+dPJO6hnvIMfqRtAqU6ePoK5T89sIm4i3w+rWsqxxo3qHa7vIux77u2FiDeV7fRvJuHr4pNrrvW2dBncWYGJscT0w8XLeZsvlEOHiMKFJOb7kvpUpyCrWkl+GpDfyEQS4ISehdTNQuj5LgwWJPy/EbmtjbfYN5HKx7rzNLDDNUGswhBLtpU4FrNaEzuGOShzig+ohhFCgd025SPh0HKysYyALHjWPwj/LQm1UIe8Rycb60ayLUeeq6PE/pCSyY3RUTyyAAxOo81/Q8iro9WohFYQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mt.com;
+Received: from DBBPR03MB10396.eurprd03.prod.outlook.com (2603:10a6:10:53a::11)
+ by VI1PR03MB6574.eurprd03.prod.outlook.com (2603:10a6:800:17f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
+ 2025 11:38:25 +0000
+Received: from DBBPR03MB10396.eurprd03.prod.outlook.com
+ ([fe80::ee3c:c9be:681:c0bf]) by DBBPR03MB10396.eurprd03.prod.outlook.com
+ ([fe80::ee3c:c9be:681:c0bf%7]) with mapi id 15.20.8511.015; Wed, 5 Mar 2025
+ 11:38:25 +0000
+From: Mathis Foerst <mathis.foerst@mt.com>
+To: linux-kernel@vger.kernel.org
+Cc: Mathis Foerst <mathis.foerst@mt.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	manuel.traut@mt.com,
+	mathis.foerst@zuehlke.com
+Subject: [PATCH v1 0/1] media: imx: csi: Parse link configuration from fw_node
+Date: Wed,  5 Mar 2025 12:38:01 +0100
+Message-Id: <20250305113802.897087-1-mathis.foerst@mt.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZR2P278CA0012.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:50::15) To DBBPR03MB10396.eurprd03.prod.outlook.com
+ (2603:10a6:10:53a::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] dt-bindings: soc: imx93-media-blk-ctrl: Add LDB
- subnode into schema and example
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com, linux-clk@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20250304154929.1785200-1-alexander.stein@ew.tq-group.com>
- <20250304154929.1785200-3-alexander.stein@ew.tq-group.com>
- <20250305-dandelion-axolotl-of-excitement-05fa70@krzk-bin>
- <4414669.ejJDZkT8p0@steina-w>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <4414669.ejJDZkT8p0@steina-w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR03MB10396:EE_|VI1PR03MB6574:EE_
+X-MS-Office365-Filtering-Correlation-Id: f04ac9a5-e0ba-4fa2-5d89-08dd5bda3dab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BPLFp41jWdMFkNrBgOui3NKB5lSgojR5c0iuEDkLGk/Wupw28cPR7YOwWqIl?=
+ =?us-ascii?Q?UoKP+iHdeYb1+wmQS/1+oO870XYpXcDbDDK8DyXsD85/z0/CBSxSjP+D7g16?=
+ =?us-ascii?Q?C//UdhKTkqD1BIcz7SyymwelvBVQN/DY7KYPievsSSY6lnJbuE+4qHA5kw+j?=
+ =?us-ascii?Q?WB4sDX3EqaBXT2oVqIglFdrflRfsUHAuxAZlxxwtBLHLK4JPKbqCfJd+3h+x?=
+ =?us-ascii?Q?WTkFu20Cns4Zum7xZpOz+h+jjEVDe8tqRBfNO9sEt1rvO3cQbYVUCHNniwBL?=
+ =?us-ascii?Q?NwNbgp13iM+9n5TAS3TLEkCBBlul7Am+3jFH/Bl+3kKhhThCuyJ7xASlb1WU?=
+ =?us-ascii?Q?eJBMjTAy9RoXXf2fRw4I4tzSkZj6sBlqhXCPTi5qIt1375VE0NRSJ35s1BzA?=
+ =?us-ascii?Q?M1tT+nkmEqNOkfocrFCJ9juYb7ewrwr5Zw15oumrBjm1BrKSgkut4QHrLTNf?=
+ =?us-ascii?Q?PxboaVgtoRi9wwwp6rIu/4pDCrNXBk+FwGbC2l4s3QsBwSDZHFEdNQ7m1aLY?=
+ =?us-ascii?Q?twPg1eAHvAhZdA9LNWXhK9N/3mv46DR3yl82c/9Uo8lsjxGEHvYYbq1DVOmb?=
+ =?us-ascii?Q?UUUPVZm2h4cZLjQm/8RxGy1NS+Ro91Ax5HR3foSNLxvXDdaJgudOMcUWfgiY?=
+ =?us-ascii?Q?AxgSLPcW9HnGB9vgREkwhAEbZYHxT3o2xWzdHpH6QHGfEObbtHzWgqr9S7Rk?=
+ =?us-ascii?Q?dFr5ZJ0lneJRJy+bpRXig3DSQcZCYmMEOyzcXAB1QXO5suSVKF+wCW6PFSaf?=
+ =?us-ascii?Q?VEsJi5YMRLcSV8pc8BOob5kWiJ6/F4raxOsuBgwuX9WMVYiSNtiJIdjYl1Xj?=
+ =?us-ascii?Q?4Pn7Fn1vtojKjpOg8MRoOf0KwjQSM0jaTmjy1tXG6cGwCARm6NSdYzUP98Mb?=
+ =?us-ascii?Q?Am67UEtqG8hF55pEc60WQH5eTuI7cyLCHCxEiORqs5JtGPWJNmkIglMFvnyx?=
+ =?us-ascii?Q?K3tzo567Np+1PQGYIMH+/bA5O7MUTub43Cs/ObluNULlLqWJCw6QpoD6d1Ef?=
+ =?us-ascii?Q?4GHLew2GStu4pPeeHFwdNmPRFvVYShUbwgFTNYRK1uLCS31VV8bZkNL2Mt5G?=
+ =?us-ascii?Q?33Noyb4/0oGvdl2u02iW1++ykpH9h9YYr4l/WqXMjbFTRsi5XVl5vwTNZRjG?=
+ =?us-ascii?Q?Nuv4ufxfY8cJJLF2jA/CABmhszJSCp/fKD9hvSTbjnh+yrMcTIRvBvZYDi+b?=
+ =?us-ascii?Q?yB8ew/5mYjlnc532T92GhZ9pRx+U6wzqR019yCZbcXvmVMKKi/o1ph6k319G?=
+ =?us-ascii?Q?wdSmmrt5HshjLEHwTk49BoJQM7WDpUNl4SSBiUzwCd2Y/ujLqdcrvFS6tr0V?=
+ =?us-ascii?Q?Sxb+NASXdf5Xom2aGzfkw4AwdsV8HFWpgpvOu7Zu8RUeEHz/Au2NDDFLupn1?=
+ =?us-ascii?Q?qafY+VS/nvw85nqHFIz6rN4Sd5ves6Z7QOn7QBd7HmODDTnbwAzctxX+YA/b?=
+ =?us-ascii?Q?9oDuMAdbXCyDARraTOgL9hv9DpDRh472?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR03MB10396.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IBgxwfD+0B9zeNTSJ4nRoeSYMUrcLgp5CtBQyaFJ/cp+992eNCenZZoBM3lD?=
+ =?us-ascii?Q?W5iEZ1VI7w0fUg0IE+0RWXU8aPkX1ZmIi828BXAA/IrlBoD7v1ezkVOBaCwA?=
+ =?us-ascii?Q?jGWgn5juJuqY/xP7payl6QtaJ+5+TUOGLgqsqGudlWfRv5wpC/+vKW3iMTwN?=
+ =?us-ascii?Q?EZdAZIKhuwAue9Wohi2kvhkycsB79vn0jR3tYHgyucsEWiGzRuTnzPOB8E7h?=
+ =?us-ascii?Q?+gz8TzhrL7yfLLWw9zOYUDbzL9LuPbZUvnx9VJaU9CcwtlfC1LBWcH7EuQxS?=
+ =?us-ascii?Q?gjNYZLMWujEVIs03+rB3kyr6NRfdJCVYQJiurn93o7HNFlMgJcr5rwl7nRES?=
+ =?us-ascii?Q?tZsAMk4rtSKp5kW2FH5PVSgmvj+P8vu5xDZyI2PQ6Um+euXiMWlpO7i1OJC0?=
+ =?us-ascii?Q?ToWRwQwH2WSpnkkOWMkSRCGfCUHOinOFDnhZs0NsfaYdec4fbjtbT/0CP1Tw?=
+ =?us-ascii?Q?3ZWpVtWqbCO1+GBtU8ZD3GQ8G3uxTRBfFIDKJhxcDZz5VwgyxVFOwxD1819U?=
+ =?us-ascii?Q?bfOc/ielLbu1n926q2tXtC/IZ5s/Mar7Vinf5XUvjuO59jsPZx7grRc3qWKi?=
+ =?us-ascii?Q?vCrtwluQwrf1XUCrPJ7jYCzt52rVzi6zy6LTJyy4b3JJ6vV/3ib3hS1VF3vS?=
+ =?us-ascii?Q?iRv1LJvai/sI/prvVgDaCBuRtjXC2Fu3ljVKiRkg1BQs0yd1xgUiPPl1acKS?=
+ =?us-ascii?Q?vkupoSwNmVc1Q5O3OZJYzcojezIBMHP4SMxhC0C2GTupZZFRq3q9TW0uu32Y?=
+ =?us-ascii?Q?4lto3yUjzpY7zwzqObC7A1Gqj8JtBv8zo1rI1uNgj99KrinZrCgmRsW/CWLu?=
+ =?us-ascii?Q?YL10FiYcBpKKQ4BFGSwJm1bvZdKln7Qe1GH+gLmLFh6BkgxtobiK8a/7HRZT?=
+ =?us-ascii?Q?L9/w+kvWVeBy8AOcLFgmQ+o/WOhzUnxfrMnB9bcPS0OYy6F1y0YmdhkyCuMI?=
+ =?us-ascii?Q?Sdiq5D30QXKDe5OHhPGRR9BDWzs9QE+AVi62RSJkZqeiIgsUL7+Tlijeah8q?=
+ =?us-ascii?Q?b6S0Iuupf6hKYVmz7tWswpDGTyzMda1Od9UnvirxNjzvpZk21PEx3RlEFzwM?=
+ =?us-ascii?Q?syV74ZC55BFlGPKNhypLDA1V/2/GU320QQp7MgWQpUR5adpv46KsDB5EAs/z?=
+ =?us-ascii?Q?NTV/wiYBpnvOVJsrM8K2Cw9puG6qmAHXRhARuAUR59Cymo34VPXASfC/0Q3f?=
+ =?us-ascii?Q?KJ0QuhN6xeHRemLiHXYYDPW3uAcjNiUWgwiSKOrSZ8w14CvfES4SgJoG4a8m?=
+ =?us-ascii?Q?lMqEf1ij4/oO+rl7PZlqG2tlDdAPVCxSE0JzoRAgNo59JhL43lk0FpAiM7M5?=
+ =?us-ascii?Q?03bGQp9tXHWaY996RPWuwdaCTSs3ca3dexKevGMUZP/20IeIZtE5TYJ9oflY?=
+ =?us-ascii?Q?19ZbfRHW274X/HawrNQTrzRqhkk3Si+rblV5S1Vu4rU3/CEpasje/nI43jJ4?=
+ =?us-ascii?Q?1BRy/R5YIGU50GANCr5DKaWhVV4st5LTu88fsp/pj3zaYhT5ZXNY4c3I78bI?=
+ =?us-ascii?Q?vZ5sLRIDX51d60/9Py3nUfNxtCwCDAQ0a+5obf1jKN9k4uO7IWnmp5oTchRS?=
+ =?us-ascii?Q?ilSkaLSa2ZGK2wr0nm8KiiSspMT+RzGRabK1yIO/?=
+X-OriginatorOrg: mt.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f04ac9a5-e0ba-4fa2-5d89-08dd5bda3dab
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR03MB10396.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 11:38:25.3713
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GTRQo8gSyCRA1q/NgUqR3rYjbVzq8F6d9jqyhJJv6YEpMMaF4iotZno4gQTvbaneCJJtXTX1y50Z+FnUNzbt/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR03MB6574
 
-On 05/03/2025 10:02, Alexander Stein wrote:
-> Hi,
-> 
-> Am Mittwoch, 5. März 2025, 08:13:04 CET schrieb Krzysztof Kozlowski:
->> On Tue, Mar 04, 2025 at 04:49:21PM +0100, Alexander Stein wrote:
->>> Document the LDB bridge subnode and add the subnode into the example.
->>> For the subnode to work, the block control must scan its subnodes and
->>
->> Don't describe drivers, but describe the hardware.
-> 
-> Thanks, I'll rephrase to describe the hardware better regarding LVDS.
-> 
->>
->>> bind drivers to them, do not misuse either simple-bus or simple-mfd
->>> here.
->>
->> I don't understand that simple-bus or simple-mfd statement. There are no
->> such compatibles here.
-> 
-> Same as above, the wording stems from 1cb0c87d27dcc ("dt-bindings: soc:
-> imx8mp-media-blk-ctrl: Add LDB subnode into schema and example").
-> I'll drop it to avoid confusion.
-> 
->>
->>>
->>> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
->>> ---
->>>  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 51 +++++++++++++++++++
->>>  1 file changed, 51 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> index b3554e7f9e76d..cd785111928bf 100644
->>> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> @@ -24,6 +24,14 @@ properties:
->>>    reg:
->>>      maxItems: 1
->>>  
->>> +  ranges: true
->>> +
->>> +  '#address-cells':
->>> +    const: 1
->>> +
->>> +  '#size-cells':
->>> +    const: 1
->>> +
->>>    '#power-domain-cells':
->>>      const: 1
->>>  
->>> @@ -46,9 +54,20 @@ properties:
->>>        - const: csi
->>>        - const: dsi
->>>  
->>> +  bridge@20:
->>
->> @20 looks wrong. Use 'ranges;' and try again your DTS...
->>
->> Binding is supposed to be complete. We have several examples when people
->> added children one-by-one, everytime with different reasoning about
->> child addressing.
->>
->> So please confirm: this is complete and no other children will ever be
->> added here... or you are 100% sure that all future children will be
->> unit-addressable (will have unit address and appropriate properties).
-> 
-> This block control is a collection of registers for different purposes:
-> * MIPI-DSI
-> * MIPI-CSI
-> * Parallel camera
-> * LVDS
-> * CAMERA_MUX
-> 
-> At lease for parallel camera, another subnode is expected ([1]).
+Hi,
 
+this patch fixes the imx-media-csi driver to work with camera drivers that
+do not implement the subdev-pad-operation "get_mbus_format".
 
-That one at least have MMIO as well. No I wonder whether the others will
-come without MMIO one day.
+It's the follow up of this discussion:
+https://lore.kernel.org/linux-media/Z8AoA6WjbXQufqR6@kekkonen.localdomain/
 
-Why this cannot be sent all at once? Entire device binding?
-
-> 
-> [1] https://lore.kernel.org/all/20240819024001.850065-1-victor.liu@nxp.com/
-> 
->> BTW, I don't quite get why this is both syscon and has translation for
->> child addresses. Does it mean your child does not use the same MMIO as
->> parent, thus leading to unsynchronized reg access?
-> 
-> I'm not sure what the best practices are. This LDB has two registers
-> inside this block. So it seems reasonable to me to indicate this using
-
-reg is fine, but you added ranges which means there is translation
-between child addressing and parent MMIO. Usually, although not always,
-when child is expected to use parent's syscon, you do not have ranges,
-because the syscon deals with that translation.
-
-What's more, your @20 means you depend on one specific value of ranges.
-
-I would just skip the ranges and claim there is no direct mapping of
-addresses. Reg defines offsets within this device addressing and this
-device will handle it.
-
-> a reg property. On the other hand, access is solely done by accessing
-> via syscon, so unsynchronized reg access is not an issue.
-> 
-> What I am getting from your comments this node should not have 'reg'
-> property, as it uses syscon anyway.
-
-
-> 
->>> +    type: object
->>> +    additionalProperties: true
->>> +    properties:
->>> +      compatible:
->>> +        contains:
->>> +          const: fsl,imx93-ldb
->>> +
->>>  required:
->>>    - compatible
->>>    - reg
->>> +  - ranges
->>> +  - '#address-cells'
->>> +  - '#size-cells'
->>>    - power-domains
->>>    - clocks
->>>    - clock-names
->>> @@ -77,4 +96,36 @@ examples:
->>>                 clock-names = "apb", "axi", "nic", "disp", "cam",
->>>                               "pxp", "lcdif", "isi", "csi", "dsi";
->>>        #power-domain-cells = <1>;
->>> +      #address-cells = <1>;
->>> +      #size-cells = <1>;
->>> +      ranges = <0x0 0x4ac10000 0x10000>;
->>> +
->>> +      bridge@20 {
->>> +          compatible = "fsl,imx93-ldb";
->>> +          reg = <0x20 0x4>, <0x24 0x4>;
->>> +          reg-names = "ldb", "lvds";
->>> +          clocks = <&clk IMX93_CLK_LVDS_GATE>;
->>> +          clock-names = "ldb";
->>> +
->>> +          ports {
->>> +              #address-cells = <1>;
->>> +              #size-cells = <0>;
->>> +
->>> +              port@0 {
->>> +                  reg = <0>;
->>> +
->>> +                  ldb_from_lcdif2: endpoint {
->>> +                      remote-endpoint = <&lcdif2_to_ldb>;
->>> +                  };
->>> +              };
->>> +
->>> +              port@1 {
->>> +                  reg = <1>;
->>> +
->>> +                  ldb_lvds: endpoint {
->>> +                      remote-endpoint = <&ldb_to_panel>;
->>> +                  };
->>> +              };
->>> +          };
->>
->> Messed indentation.
-> 
-> This is already from the original binding. I'll fix in a separate commit.
-
-How? I did not see any '-', only adding here.
-
+I tested the changes successfully on an i.MX6DL with an MT9M114 and an 
+MT9V032 camera. They both use the parallel camera interface.
+Sadly, I don't have the hardware to test with a MIPI CSI-2 camera.
 
 Best regards,
-Krzysztof
+Mathis Foerst
+
+
+Mathis Foerst (1):
+  media: imx: csi: Parse link configuration from fw_node
+
+ drivers/staging/media/imx/imx-media-csi.c | 36 ++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 4 deletions(-)
+
+
+base-commit: ac9c34d1e45a4c25174ced4fc0cfc33ff3ed08c7
+-- 
+2.34.1
+
