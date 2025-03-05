@@ -1,474 +1,219 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2061.outbound.protection.outlook.com [40.107.104.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BF9200121
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 09:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741167964; cv=none; b=Gh+hfxcpt8YOnzmKBGpaWbnd3daM+msNfuaGEZ5huH3oqLP9ruHx/xVDdAV4q4R8l4Vi81Z1Ftco3r1pyFXXoU9ms5S6go9fzWFGq2VsUH2TusctlFNgAgCTkmxUN89J0qzv+mBxbwK4BQoTNPx2Dw8UIJoqeGUCZ0pZAzlzbU4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741167964; c=relaxed/simple;
-	bh=Plq6/Tu6IqVfh61cVQXVKUeVdqnhsiqZ8xNpwElfhTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NORQTdWMv5YmUw2u4IQe1MZGhFcbYjhWWBhYBSxjoRvrKLPpBSxs3UfxBgGFEpjvZB1dCsXfsHZ4cRfQ9UEfEn2Z3KWxIYoXgjmHE3jT9UfWM5142zXOmhtqK0WT06QLFFufIPqy+GUIIrP5Qk2jmd6HPFo4RDaDziTOaH6/g74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=BxrMHxKZ; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6F12066FC
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 09:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741168460; cv=fail; b=hH7PXT2WUyQvav8DIONkPxSvFSyrg8vZJigxa0wi19kY++pWtTN5KEzSy8GURUtE2ht9wacKmkQs3w+LNEEb9/mLGEdWGPTBAqje7HbzTW7QVcHm1DEOP+3mNmCwgPqVndQ34LV+AXCyoDHytmHWU7+9o2Gy9NwsZoFPsYs4IZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741168460; c=relaxed/simple;
+	bh=duMFWqUnh/NlcFs+XbOIJ6ajyss0rAhbO+K3EPAC1xo=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=mYELYWqoJYR5GbsV1uJm2l5O0x6McXGqVKreY9lqMprks9YooMyxnbUHVHknK0vXaAjz/hinjf30/bF+p+6i83BsgWX9AmvW3ZvGJcdGNODYnZKpKzX6hQu44fP/et483CmP0JGdCsO0e96ZhuLoPzzDJhZfn4PYnMuaSMfgq08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ej5AYRDs; arc=fail smtp.client-ip=40.107.104.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="BxrMHxKZ"
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5257njAs000665;
-	Wed, 5 Mar 2025 09:58:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	LQXDAu/Cz7vbFe21nnUqOtM+s7wpjqaQJEOHMcYs7/M=; b=BxrMHxKZiP8/Y8ea
-	2dfoLCbqIp1LweePpkqi/ok1F4YMl1EY/3CjUjbEJNHP3FYGzk4hAcIl7Z0d0igz
-	c6SrcoubvDpKLCsulpE/eByZ2RKXO5HJgLdvmXDDNCOwTa/e5yRgUfyVqRNgHDHD
-	VZhkmbHJ53FuFoRJrn9FHWQB3VL6ZT0Efs65QnpVQWUbtVsa9dsppR7KQKH40ib5
-	Of61j9H2Hwow7nyqYo1nWxNjN1X56w6GazUjfJkyI3okMV23LbmzQDvnrAnc9dXA
-	zditwB0noEho8RahiQ9x715E5b8RSaE08xq2SJukA3Zvz7C8MXybPRxixLhJdvi4
-	/IsjlQ==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 453t9natuc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Mar 2025 09:58:07 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 84E0140056;
-	Wed,  5 Mar 2025 09:54:06 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 722C55AC880;
-	Wed,  5 Mar 2025 09:47:07 +0100 (CET)
-Received: from [10.130.77.153] (10.130.77.153) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 5 Mar
- 2025 09:47:05 +0100
-Message-ID: <3b173c1c-4e74-4907-961c-9c90d48a9412@foss.st.com>
-Date: Wed, 5 Mar 2025 09:47:05 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ej5AYRDs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yWohazJQml9/QPIujT77Y7j8EbMYb5NdSInr8evM1buAgdDvLdbsFSHN9HmSx2xhxTQB3dLqqCC7yAyBKrPrKolmP/Vz8gCG2BCYhNKT4FG7YLD//E2pFOQ5aP/43TXfT17iVLLzSSk6A8wAObODEGy53G6CMZIWJRt3SUGe5DUf0KOIWqyGHOWfgk1b5KBmOJ0VP8naypZVtG+PvHgCLyzWlZKwja4LT/OyVPz4I8Ks1iLHWZtRtj+o29PUWYmis1mJIPrWjjRoLB7GTB+x77Unii9FsbdaxJlixSH+DW1JKJj7N8SWJ/q1VotsDeySzPcOTRUdwXsnb/L/uzJwrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mrzNQ6xxO5XMmPy5DdCSSCRGmCtzogcRV3KQzK46K9w=;
+ b=ByiA3YNOtStYkaENpKFf6TTM7hBPawTSUJjgUrvtu6rn21Jcc+GKBd02qHV28b4saeu09c+vJSnKTSnGWpHewteIU1xQK7GLeJ6AAklyVSspTOraCg/oOJZkSOERrMVmALRLfotLH7mTgc6MeWmLF+UmCSGdlioGZuC0egHruFCp+o8NoMsANbR8U56ijfWL8CugLhzmCLW6va6GxbN5g4+MWyND25ABCwmSeg9X8unri4zlD9VKCSIEkxN8af+F7TE3mwpWsuYZjHXNYTQLCkwR6OVYFpQxlZhFaurd8Ra+AObXyBfaOov8ZRJSlWaxldV2p/i+cIxV2cgBIGQokg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mrzNQ6xxO5XMmPy5DdCSSCRGmCtzogcRV3KQzK46K9w=;
+ b=ej5AYRDsxAYFdLU8oRUDWy/MWkVdQG/cjcSwznJBLl/sOFRMqfECHw59armiHCvqT3n6NHBD0B6+XHBImuCZamXl8Af+OtNO/1zjkCpGVs4jy3nUyRGCsUmfeB+6dAKHFmfyERKl27J69nkwOT32sHzKkq5MQTIU8Vrpi9UzXmTr7v2DUZm0rtfz0IWt//lErnwmn1ct2Fj546JcMRgpxGprCo9QYFvQWn6akS398+ft9EuCbXyBiH8FkbcwLIglmhzoII+fsKrM7S+9onzIJqcfDjrQssafRiEy2rvWfZ7Y/E9Lr95sQJiJQU7HLGMQajNeEJqblVQwUNIqnLe4Rg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
+ by PA4PR04MB7552.eurprd04.prod.outlook.com (2603:10a6:102:ec::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
+ 2025 09:54:15 +0000
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb%7]) with mapi id 15.20.8511.015; Wed, 5 Mar 2025
+ 09:54:14 +0000
+From: Jacky Bai <ping.bai@nxp.com>
+To: tglx@linutronix.de,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	aisheng.dong@nxp.com,
+	peng.fan@nxp.com,
+	frank.li@nxp.com,
+	shengjiu.wang@nxp.com
+Subject: [PATCH v2] irqchip: irq-imx-irqsteer: Update the CHAN_MAX_OUTPUT_INT to 15
+Date: Wed,  5 Mar 2025 17:55:22 +0800
+Message-Id: <20250305095522.2177843-1-ping.bai@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0022.apcprd02.prod.outlook.com
+ (2603:1096:4:195::23) To AS8PR04MB8642.eurprd04.prod.outlook.com
+ (2603:10a6:20b:429::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
- devm_platform_ioremap_resource() usage
-To: Anusha Srivatsa <asrivats@redhat.com>
-CC: Joel Stanley <joel@jms.id.au>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Andrew Jeffery
-	<andrew@codeconstruct.com.au>,
-        Stefan Agner <stefan@agner.ch>, Alison Wang
-	<alison.wang@nxp.com>,
-        Xinliang Liu <xinliang.liu@linaro.org>,
-        Tian Tao
-	<tiantao6@hisilicon.com>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        Sumit
- Semwal <sumit.semwal@linaro.org>,
-        Yongqin Liu <yongqin.liu@linaro.org>,
-        John
- Stultz <jstultz@google.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp
- Zabel <p.zabel@pengutronix.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Marek
- Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer
-	<s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin
- Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Alain Volmat <alain.volmat@foss.st.com>,
-        Raphael Gallais-Pou
-	<rgallaispou@gmail.com>,
-        Yannick Fertre <yannick.fertre@foss.st.com>,
-        Philippe Cornu <philippe.cornu@foss.st.com>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen
-	<mperttunen@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Alexey
- Brodkin <abrodkin@synopsys.com>,
-        Dave Stevenson
-	<dave.stevenson@raspberrypi.com>,
-        =?UTF-8?Q?Ma=C3=ADra_Canal?=
-	<mcanal@igalia.com>,
-        Raspberry Pi Kernel Maintenance
-	<kernel-list@raspberrypi.com>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-aspeed@lists.ozlabs.org>,
-        <dri-devel@lists.freedesktop.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, <imx@lists.linux.dev>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-tegra@vger.kernel.org>, <linux-doc@vger.kernel.org>
-References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
- <20250225-memory-drm-misc-next-v1-7-9d0e8761107a@redhat.com>
- <24958ae8-6153-4798-abeb-e770d66ca8e4@foss.st.com>
- <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
-Content-Language: en-US
-From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-In-Reply-To: <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-05_03,2025-03-05_01,2024-11-22_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8642:EE_|PA4PR04MB7552:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d553762-1e4a-4464-418e-08dd5bcbaffd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZPPU6BEywHDu+eAKAENYm8E+UncOREm+9/8Hhb8FppfiLrKCOtsFkmejK63N?=
+ =?us-ascii?Q?575wryaxUDuSnfjfBVS0cXhUV5+OFHOxskPNs9KTt10BOreDrszZljXxntqW?=
+ =?us-ascii?Q?AzlbwhkHJD2Dol+VmL04yna9euNDYRO7nmYTiru2Qu7+mKcCHU8hUgAT+nvD?=
+ =?us-ascii?Q?VySWrFgY7Jonz8VMpJ+TRf9z0+bjseJ5BjbuCMW5Ueg7KL+HGHabyrgskDnC?=
+ =?us-ascii?Q?RxNt+9ndVcYN8lDrPcTVYDiTmXjQZR9H7Umcnl8ZLAbTtC/wC2LybbgD85G+?=
+ =?us-ascii?Q?znfRdC9wXO+HDRVn77vPqniU3mVnHoHKHNuo7RoQoX+GQIpEdqE3mWjT6F6/?=
+ =?us-ascii?Q?oTHZygiNhgY73Uh9oG9/nOdpcZ4fiVQLVFPrCEpNsKLoV8KWSU/7Xus6nc9Y?=
+ =?us-ascii?Q?zZgN5kQBgk5IEiB727ttsxvV2z6dWBWPloQUvIM6T4zGt7/rlf/fC6QsiAKy?=
+ =?us-ascii?Q?N/JZRGl4FOEQ7lQ2R80GUxBYXmXUnfCOuy39ELL71urBN2rgRES5mVzjRo0Q?=
+ =?us-ascii?Q?tQiFALmDirXOxhSt6/rLAFHlZtv9tAgLq/U4cvGefP/JalsBBeZc//pt1g4z?=
+ =?us-ascii?Q?YWSAX1bxE7pi6E6U2Vjq85c26F5Z7x3cGSc+hf9Uxzw6KFuKtW3TJ7idSpd+?=
+ =?us-ascii?Q?8xN/F77Vjx9r+CzOZcusIN+xGXgX7m3uNpEpqs0UiIEMSOsblXR7g/7XeV/F?=
+ =?us-ascii?Q?q+0L3UXXo5b4r89H2fOQLuGlcVQiNeagjWDxP9Dca9eDi/GNMh4O/hZtbhUJ?=
+ =?us-ascii?Q?nMg+8Mufub1IU4LPcC9jEJ4FJ/BQwMYf3l7ppPaEWKpK8DisXUva89H3SgH2?=
+ =?us-ascii?Q?qXIC8z6FskAUWz4ZKgz4EoIcsZlHrmjfAwwS2XEOoy2vLzfd+gKGLAKXlecS?=
+ =?us-ascii?Q?TeVXwECfhSAATd4xjyS1X/mdqjAlZzQNii5SbIbp6Ce79Rhc8layQWVu/cGV?=
+ =?us-ascii?Q?Ci2tgRfgN40UjVJ+a6Fl28Fmqp1alJ1YsVtGBoY7sdK3g3OKo/9jf982SGja?=
+ =?us-ascii?Q?pPpeFHsmt1jmK7ViXJjpG3JTnmxp8jdZ6Kk/GUTDrkf4HW/eUoXPTm4Vx5BN?=
+ =?us-ascii?Q?ZWPW4iCcWNZ7aqBuykMU+6fC18RUH/TGFCPwZo8E24/1FJJ/iYmnv7Xn/GcV?=
+ =?us-ascii?Q?p5qceNwgQ4abnO+x1fkeeH7x/Sl6pwUmzef1FTDOswHk8WnlRBdMzlRemjtr?=
+ =?us-ascii?Q?5aBTnwKy4EMC+L7coYisBsL2+eH2Fsg6HQ6cXlMkqDQctXi56pFpMvTGagNY?=
+ =?us-ascii?Q?mEQCYHC83X3C1FZV/u5ZUby4zBxN69QRE7nyeNvUGSyzUARZrKnRt4AZNUeX?=
+ =?us-ascii?Q?GMI/wAsuha3+R1m2YGB3kQLMMX5o0J0cy2J40VhE7gIHQ6HBc7G/Xl+R2bLZ?=
+ =?us-ascii?Q?5htfTT5MQbk5tKia07jpc7s1FSlNeNTkl4PThXnpacNjXyZH77WjZs/Txgt9?=
+ =?us-ascii?Q?D0wdhyipK8HLDitxBoMZOfiORPLYDa7m?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?epsjKApbhPqGJksangejQW9GA8mhk8oBSCGKga3opyhPT8uszrLhoebiG9Mf?=
+ =?us-ascii?Q?3BG+rG3rLtxizMyTrEnWbCN/PDymwrM+Uec1y3k2OeXuslp97bv0oJ4w4hEp?=
+ =?us-ascii?Q?EOn5fcjj4EtX4JzYj439VJR9QZ3D5KQuXgzY57c+q9QRynOgA+SufZCDRunI?=
+ =?us-ascii?Q?kvt6i3qdCGYsxNP2gvM6VKaBffNmVh4YUTUn2eSmwgqb5Uom5Skw+6W4clOb?=
+ =?us-ascii?Q?qurHxDGerRmLu9JrYNGHZ47JXHSyhfI/38O6/1byrmnMAHoupUfm2YI7KshP?=
+ =?us-ascii?Q?5rW1KaNdFxgOC+5XazZW71Q3ifnD6PQNmrPyvAxQiZ3Llm1QYQgBVJQOFnLP?=
+ =?us-ascii?Q?qV4wTPNvf1+f5VuWT3NAZqEScap2VtIPMrazt9b8mng2iOLnRtnFF0jFEID+?=
+ =?us-ascii?Q?VTbSuUHy/AVWjpwhQnYrNc0IHutPsJY7+AcYvaxSFqtcB2lRktuZu1PyulMz?=
+ =?us-ascii?Q?mxGyw+lLG9riwuk20ov/zCBdpX7maaZPvd/GOb1Xov++qcln2+yyz80ynusk?=
+ =?us-ascii?Q?n+h96s95F8LrYIaUSncxSl5t4DMloOSSYRvWIHl3oy/JRk7SqJvV989O7vOK?=
+ =?us-ascii?Q?ysGksOkInL5CYLt9xZ1bs+1Xd1jdux0mIeHMboVJzoJAePvVf0l4qmNI0Jl6?=
+ =?us-ascii?Q?m4jqp3OkLqhcZtyN9DB1O06CUXT2e+3XYKq+sWbKbSDSVRv4iAZEE1DhdE+7?=
+ =?us-ascii?Q?Hp2j7hMMm5kn7+Ov25bJBBI5L9V9Qlui4lzyPvlWgpn20q7YR35YVfaM/VTx?=
+ =?us-ascii?Q?O9nYTpW8MGIxnTyc8kfOEjb0dvMJXG/1Wi9U5YV24qM7UZdhX1SSrfbmK3zS?=
+ =?us-ascii?Q?fMDwK3DHNAHQ1ZH1zmCwXTrwh4w9ih4WpqgkB7ePd3Fy7SjeMGVDufieCw0F?=
+ =?us-ascii?Q?Wddc4mTX7gPTVWCFBNIKYfePDfU2hBWVwHpUz/PkhaV4bhYfTbyf1BQSd3fK?=
+ =?us-ascii?Q?FMxgyOiImf6hi5HAOWQFhis8SDdOm4UpGwQ8Fw2pgKEi7NmbyfsMuRvgu45e?=
+ =?us-ascii?Q?awlbnMhqzDHCAfphcVjsv00YEf8JqaCWlRwEo0dI9Kte4ugsz/qm7/w6IbsC?=
+ =?us-ascii?Q?PSyipEAB5AMHYu0DIFIGgLBxrOSljRXI0rzcN3FGbZzwSBwh1PWn1qFYhGmu?=
+ =?us-ascii?Q?qiTv96F/c/Xwswi9gspPK08OnXjeA4l+e/bYQ+vDMVh/TAN8iEGgs/dWKeAs?=
+ =?us-ascii?Q?Fpby9qEPDY/OGzqM2u0tV5EPy32xTjTbVDRWpxO/kgpw13gl8FLaZT1tA3LA?=
+ =?us-ascii?Q?2BWQuagz0XJtN5VuKA6n2aVr9Hw+tNT9tQsOf/5+YjVVxTVDEhMRvO3SjNo+?=
+ =?us-ascii?Q?QaEOT+FgM5XKjTtS5onwfb0svu4qd1hkAdZQqaKBFBm9ICApBx4xWyDP7fBo?=
+ =?us-ascii?Q?TTA6JDue9X1hxYyfkXZ+7hIT4+GeTrsNPKhYMZObBYpn8amufXdXsEL0hVTd?=
+ =?us-ascii?Q?gTzGu4Q2y2RgWudLQF7VugR9LeVhkHAHl6SpKhqboHYANM28YCBqAMSIMNxD?=
+ =?us-ascii?Q?qJytg8l3DXyUiThl6C9IVvk1k3Fo8wbwnrlQaLCBGvO0+jXRj3EEEQe+gwiB?=
+ =?us-ascii?Q?1xcn3cLbDRA9EXe8d0ewR68peA1crqrVbObhkGhS?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d553762-1e4a-4464-418e-08dd5bcbaffd
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 09:54:14.8756
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lWfyraM9uoZTkDve0GAJ3vuX3VObc8acBAplj/n3kk0+dRGBWxRC0bNkMfxBJ3+YchBBodVFVhZ1ZJsAllyh6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7552
 
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-On 3/3/25 18:29, Anusha Srivatsa wrote:
-> On Wed, Feb 26, 2025 at 5:19 AM Raphael Gallais-Pou <
-> raphael.gallais-pou@foss.st.com> wrote:
->
->> On 2/25/25 23:20, Anusha Srivatsa wrote:
->>> Replace platform_get_resource/_byname + devm_ioremap
->>> with just devm_platform_ioremap_resource()
->>>
->>> Used Coccinelle to do this change. SmPl patch:
->>>
->>> @rule@
->>> identifier res;
->>> expression ioremap;
->>> identifier pdev;
->>> constant mem;
->>> expression name;
->>> @@
->>> -struct resource *res;
->>> ...
->>> -res = platform_get_resource_byname(pdev,mem,name);
->>> <...
->>> -if (!res) {
->>> -...
->>> -}
->>> ...>
->>> -ioremap = devm_ioremap(...);
->>> +ioremap = devm_platform_ioremap_resource_byname(pdev,name);
->>>
->>> and
->>> @rule_2@
->>> identifier res;
->>> expression ioremap;
->>> identifier pdev;
->>> @@
->>> -struct resource *res;
->>> ...
->>> -res = platform_get_resource(pdev,...);
->>> <...
->>> -if (!res) {
->>> -...
->>> -}
->>> ...>
->>> -ioremap = devm_ioremap(...);
->>> +ioremap = devm_platform_ioremap_resource(pdev,0);
->>>
->>> v2: Fix compilation error.
->>
->> Hi Anusha,
->>
->>
->> You did not take into account my comment regarding the changelog. :-)
->>
->> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
->>
->> While the commit summary do not specify the version, this changelog
->> suggests
->> that the version of your series as been incremented.
->> If this is a v2, then a version descriptor should be applied to the
->> patchset.
->>
->> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#subject-line
->>
->> Hi  Raphael,
-> That is correct. While this patch is a v2, there is another patch or two in
-> the same series that is on v4 when it got acked and reviewed. Having
-> patches belonging to the same series with different version prefixes seemed
-> odd when I sent the series. Hence added what exactly changed in the commit
-> log.
+For the irqsteer channel, it can support up to 960 interrupt
+inputs. All the interrupt inputs are divided into groups of 64
+each. Each group of interrupts uses one irqsteer interrupt output
+connected to the parent interrupt controller like GIC.
 
+The CHAN_MAX_OUTPUT_INT is used to define the max interrupt outputs
+from the irqsteer. For previous i.MX SoCs, the irqsteer instance is
+designed with max 512 interrupt inputs. If the max interrupt
+inputs is 512, the max interrupt outputs is 512 / 64 = 8. But for
+i.MX94 family, the irqsteer is design with max 960 interrupt inputs
+capability, The CHAN_MAX_OUTPUT_INT is 15.
 
-Indeed, the serie version should remain consistent across all patches.
+Update the CHAN_MAX_OUTPUT_INT to 15 and do necessary code changes
+to support the max 960 interrupt inputs case.
 
-Maxime told you in an earlier answer, any modification of any patch what so ever
-increases the serie version. Thus all patches are at v5 (looking at your latest
-revision).
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+ - v2 changes:
+  - Improve the changelog
+---
+ drivers/irqchip/irq-imx-irqsteer.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Verbatim from the documentation :
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index b0e9788c0045..afbfcce3b1e3 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -24,7 +24,7 @@
+ #define CHAN_MINTDIS(t)		(CTRL_STRIDE_OFF(t, 3) + 0x4)
+ #define CHAN_MASTRSTAT(t)	(CTRL_STRIDE_OFF(t, 3) + 0x8)
+ 
+-#define CHAN_MAX_OUTPUT_INT	0x8
++#define CHAN_MAX_OUTPUT_INT	0xF
+ 
+ struct irqsteer_data {
+ 	void __iomem		*regs;
+@@ -228,10 +228,8 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 
+ 	for (i = 0; i < data->irq_count; i++) {
+ 		data->irq[i] = irq_of_parse_and_map(np, i);
+-		if (!data->irq[i]) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (!data->irq[i])
++			break;
+ 
+ 		irq_set_chained_handler_and_data(data->irq[i],
+ 						 imx_irqsteer_irq_handler,
+@@ -254,9 +252,13 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
+ 	struct irqsteer_data *irqsteer_data = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	for (i = 0; i < irqsteer_data->irq_count; i++)
++	for (i = 0; i < irqsteer_data->irq_count; i++) {
++		if (!irqsteer_data->irq[i])
++			break;
++
+ 		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
+ 						 NULL, NULL);
++	}
+ 
+ 	irq_domain_remove(irqsteer_data->domain);
+ 
+-- 
+2.34.1
 
-Other comments relevant only to the moment or the maintainer, not suitable for
-the permanent changelog, should also go here [under the --- marker]. A good
-example of such comments might be patch changelogs which describe what has
-changed between the v1 and v2 version of the patch.
-
-Please put this information after the --- line which separates the changelog
-from the rest of the patch. The version information is not part of the changelog
-which gets committed to the git tree. It is additional information for the
-reviewers. If it’s placed above the commit tags, it needs manual interaction to
-remove it. If it is below the separator line, it gets automatically stripped off
-when applying the patch:
-
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
-
-Raphaël
-
->
-> Anusha
->
->
->> Regards,
->> Raphaël
->>
->>> Cc: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
->>> Cc: Alain Volmat <alain.volmat@foss.st.com>
->>> Reviewed-by: Maxime Ripard <mripard@kernel.org>
->>> Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
->>> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
->>> ---
->>>  drivers/gpu/drm/sti/sti_compositor.c | 10 +---------
->>>  drivers/gpu/drm/sti/sti_dvo.c        | 10 +---------
->>>  drivers/gpu/drm/sti/sti_hda.c        |  9 +--------
->>>  drivers/gpu/drm/sti/sti_hdmi.c       | 11 +----------
->>>  drivers/gpu/drm/sti/sti_hqvdp.c      | 10 +---------
->>>  drivers/gpu/drm/sti/sti_tvout.c      | 10 +---------
->>>  drivers/gpu/drm/sti/sti_vtg.c        | 10 +---------
->>>  7 files changed, 7 insertions(+), 63 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/sti/sti_compositor.c
->> b/drivers/gpu/drm/sti/sti_compositor.c
->>> index
->> 063f82d23d80c4ba83624a0066a18416a2b37351..7aefce6706ba2cd7d97a33228c9b9812edecf06f
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_compositor.c
->>> +++ b/drivers/gpu/drm/sti/sti_compositor.c
->>> @@ -177,7 +177,6 @@ static int sti_compositor_probe(struct
->> platform_device *pdev)
->>>       struct device_node *np = dev->of_node;
->>>       struct device_node *vtg_np;
->>>       struct sti_compositor *compo;
->>> -     struct resource *res;
->>>       unsigned int i;
->>>
->>>       compo = devm_kzalloc(dev, sizeof(*compo), GFP_KERNEL);
->>> @@ -194,14 +193,7 @@ static int sti_compositor_probe(struct
->> platform_device *pdev)
->>>       memcpy(&compo->data, of_match_node(compositor_of_match, np)->data,
->>>              sizeof(struct sti_compositor_data));
->>> -
->>> -     /* Get Memory ressources */
->>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>> -     if (res == NULL) {
->>> -             DRM_ERROR("Get memory resource failed\n");
->>> -             return -ENXIO;
->>> -     }
->>> -     compo->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     compo->regs = devm_platform_ioremap_resource(pdev, 0);
->>>       if (compo->regs == NULL) {
->>>               DRM_ERROR("Register mapping failed\n");
->>>               return -ENXIO;
->>> diff --git a/drivers/gpu/drm/sti/sti_dvo.c
->> b/drivers/gpu/drm/sti/sti_dvo.c
->>> index
->> 4dcddd02629b6a1052be8fb8333bd3aa17c083c5..c877298a7f2bad171724eca4d43ea622db4c81cd
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_dvo.c
->>> +++ b/drivers/gpu/drm/sti/sti_dvo.c
->>> @@ -511,7 +511,6 @@ static int sti_dvo_probe(struct platform_device
->> *pdev)
->>>  {
->>>       struct device *dev = &pdev->dev;
->>>       struct sti_dvo *dvo;
->>> -     struct resource *res;
->>>       struct device_node *np = dev->of_node;
->>>
->>>       DRM_INFO("%s\n", __func__);
->>> @@ -523,14 +522,7 @@ static int sti_dvo_probe(struct platform_device
->> *pdev)
->>>       }
->>>
->>>       dvo->dev = pdev->dev;
->>> -
->>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->> "dvo-reg");
->>> -     if (!res) {
->>> -             DRM_ERROR("Invalid dvo resource\n");
->>> -             return -ENOMEM;
->>> -     }
->>> -     dvo->regs = devm_ioremap(dev, res->start,
->>> -                     resource_size(res));
->>> +     dvo->regs = devm_platform_ioremap_resource_byname(pdev, "dvo-reg");
->>>       if (!dvo->regs)
->>>               return -ENOMEM;
->>>
->>> diff --git a/drivers/gpu/drm/sti/sti_hda.c
->> b/drivers/gpu/drm/sti/sti_hda.c
->>> index
->> 14fdc00d2ba03d4f96ba407ac8e576decb6f32c0..3ca3abb80d425901f4c031edfd327a770d624e1c
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_hda.c
->>> +++ b/drivers/gpu/drm/sti/sti_hda.c
->>> @@ -750,14 +750,7 @@ static int sti_hda_probe(struct platform_device
->> *pdev)
->>>               return -ENOMEM;
->>>
->>>       hda->dev = pdev->dev;
->>> -
->>> -     /* Get resources */
->>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->> "hda-reg");
->>> -     if (!res) {
->>> -             DRM_ERROR("Invalid hda resource\n");
->>> -             return -ENOMEM;
->>> -     }
->>> -     hda->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     hda->regs = devm_platform_ioremap_resource_byname(pdev, "hda-reg");
->>>       if (!hda->regs)
->>>               return -ENOMEM;
->>>
->>> diff --git a/drivers/gpu/drm/sti/sti_hdmi.c
->> b/drivers/gpu/drm/sti/sti_hdmi.c
->>> index
->> 164a34d793d86f114394048667ae3189e1c39242..c64ce7a1ef58b9ce4429edd368269bea87d86984
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_hdmi.c
->>> +++ b/drivers/gpu/drm/sti/sti_hdmi.c
->>> @@ -1380,7 +1380,6 @@ static int sti_hdmi_probe(struct platform_device
->> *pdev)
->>>       struct device *dev = &pdev->dev;
->>>       struct sti_hdmi *hdmi;
->>>       struct device_node *np = dev->of_node;
->>> -     struct resource *res;
->>>       struct device_node *ddc;
->>>       int ret;
->>>
->>> @@ -1399,15 +1398,7 @@ static int sti_hdmi_probe(struct platform_device
->> *pdev)
->>>       }
->>>
->>>       hdmi->dev = pdev->dev;
->>> -
->>> -     /* Get resources */
->>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->> "hdmi-reg");
->>> -     if (!res) {
->>> -             DRM_ERROR("Invalid hdmi resource\n");
->>> -             ret = -ENOMEM;
->>> -             goto release_adapter;
->>> -     }
->>> -     hdmi->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     hdmi->regs = devm_platform_ioremap_resource_byname(pdev,
->> "hdmi-reg");
->>>       if (!hdmi->regs) {
->>>               ret = -ENOMEM;
->>>               goto release_adapter;
->>> diff --git a/drivers/gpu/drm/sti/sti_hqvdp.c
->> b/drivers/gpu/drm/sti/sti_hqvdp.c
->>> index
->> 0f658709c9d0d398c4eed65202443db9d0b41f8c..420395598d119a403d531211022e6005d6a2bd59
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_hqvdp.c
->>> +++ b/drivers/gpu/drm/sti/sti_hqvdp.c
->>> @@ -1356,7 +1356,6 @@ static int sti_hqvdp_probe(struct platform_device
->> *pdev)
->>>       struct device *dev = &pdev->dev;
->>>       struct device_node *vtg_np;
->>>       struct sti_hqvdp *hqvdp;
->>> -     struct resource *res;
->>>
->>>       DRM_DEBUG_DRIVER("\n");
->>>
->>> @@ -1367,14 +1366,7 @@ static int sti_hqvdp_probe(struct platform_device
->> *pdev)
->>>       }
->>>
->>>       hqvdp->dev = dev;
->>> -
->>> -     /* Get Memory resources */
->>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>> -     if (!res) {
->>> -             DRM_ERROR("Get memory resource failed\n");
->>> -             return -ENXIO;
->>> -     }
->>> -     hqvdp->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     hqvdp->regs = devm_platform_ioremap_resource(pdev, 0);
->>>       if (!hqvdp->regs) {
->>>               DRM_ERROR("Register mapping failed\n");
->>>               return -ENXIO;
->>> diff --git a/drivers/gpu/drm/sti/sti_tvout.c
->> b/drivers/gpu/drm/sti/sti_tvout.c
->>> index
->> af6c06f448c4819def8cc0d0836e30f991529690..0bebe815f5e7567f84388af93723a6fa7d2cc7a2
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_tvout.c
->>> +++ b/drivers/gpu/drm/sti/sti_tvout.c
->>> @@ -838,7 +838,6 @@ static int sti_tvout_probe(struct platform_device
->> *pdev)
->>>       struct device *dev = &pdev->dev;
->>>       struct device_node *node = dev->of_node;
->>>       struct sti_tvout *tvout;
->>> -     struct resource *res;
->>>
->>>       DRM_INFO("%s\n", __func__);
->>>
->>> @@ -850,14 +849,7 @@ static int sti_tvout_probe(struct platform_device
->> *pdev)
->>>               return -ENOMEM;
->>>
->>>       tvout->dev = dev;
->>> -
->>> -     /* get memory resources */
->>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->> "tvout-reg");
->>> -     if (!res) {
->>> -             DRM_ERROR("Invalid glue resource\n");
->>> -             return -ENOMEM;
->>> -     }
->>> -     tvout->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     tvout->regs = devm_platform_ioremap_resource_byname(pdev,
->> "tvout-reg");
->>>       if (!tvout->regs)
->>>               return -ENOMEM;
->>>
->>> diff --git a/drivers/gpu/drm/sti/sti_vtg.c
->> b/drivers/gpu/drm/sti/sti_vtg.c
->>> index
->> 5ba469b711b5318e9e9e6d8df127fb8933d1fac1..b5353fe774d72fd629ecd3ef75a5d2817ca8617f
->> 100644
->>> --- a/drivers/gpu/drm/sti/sti_vtg.c
->>> +++ b/drivers/gpu/drm/sti/sti_vtg.c
->>> @@ -380,20 +380,12 @@ static int vtg_probe(struct platform_device *pdev)
->>>  {
->>>       struct device *dev = &pdev->dev;
->>>       struct sti_vtg *vtg;
->>> -     struct resource *res;
->>>       int ret;
->>>
->>>       vtg = devm_kzalloc(dev, sizeof(*vtg), GFP_KERNEL);
->>>       if (!vtg)
->>>               return -ENOMEM;
->>> -
->>> -     /* Get Memory ressources */
->>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>> -     if (!res) {
->>> -             DRM_ERROR("Get memory resource failed\n");
->>> -             return -ENOMEM;
->>> -     }
->>> -     vtg->regs = devm_ioremap(dev, res->start, resource_size(res));
->>> +     vtg->regs = devm_platform_ioremap_resource(pdev, 0);
->>>       if (!vtg->regs) {
->>>               DRM_ERROR("failed to remap I/O memory\n");
->>>               return -ENOMEM;
->>>
->>
