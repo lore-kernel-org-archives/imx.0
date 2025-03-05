@@ -1,52 +1,35 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFD21FC7FE;
-	Wed,  5 Mar 2025 10:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964F9205E2B
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 10:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741169915; cv=none; b=oBwk1RqoimHICqT4N3oJ372i+51rExMqql982SW+yAXFkpbof9/SSiRK3qmc8riFHWVevekTO7kErnJgHyljJ0oTjvzurroeHkLCHgvicUF3YZM320G8GMxgp7igCThXbqCRtMZA7L9QpcaEfopjVv1pTDOgo2daGh0H/vH52s0=
+	t=1741170351; cv=none; b=FV5moHh2abAZNBSrgrrQRiEI2TnIDKS8sCx42YTslaTOPmeGtkbhB/6w7B1kljugos8zD+u4bNBjVIb1y8353ZJHsZPhZJrRzVe9IP6K45U3nHDnuQfRLqZEVHYsLRrn0Q8GPvAOslaRdCAtvV3qyhjvyylrtfpU+Q1DRpl9b5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741169915; c=relaxed/simple;
-	bh=4Vo3qOOAEBPswAqRgvzNrNkT7zw+CqURid5oS8C0xpo=;
+	s=arc-20240116; t=1741170351; c=relaxed/simple;
+	bh=fVbfzVkRLJ91dCVygzh7ls9q2eT4BMQh3d0gm4OxdDc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T50t8sazHtyJ/gmwr+/yGC47PXKEbuKjoRwVosij+VidKt/gpXoEfg25xtxH/R4wzHwCa6fM3GIAGahdjKGXRWh4g9kG/776tR/wT94VsYgxfcCdm135IVTJaMksoMEAN+ov/Iyb8ZLdWLmYTj1Hm8KO+yr+dEtTwxJ4zPSquJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVElypjc; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVElypjc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4705FC4CEE2;
-	Wed,  5 Mar 2025 10:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741169915;
-	bh=4Vo3qOOAEBPswAqRgvzNrNkT7zw+CqURid5oS8C0xpo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JVElypjcaIYX5rKtiv06hcSXy4HstFjKOeRhShpFjk2Jel2eSkA/O0uK8Wninv5/a
-	 hI5Ui+51QY9Sc5wOaelsMqqEki8iPKL/7clrg37rGARtPtuO5FAtalmSz/cR624zt9
-	 twTkQB6/0FugO2QSLBDkRJ1MULKIVW+tzVSg6Ccu0iGgHjhAUJfebciXlktocUXdn0
-	 bbIXddxhOqHs7IDCCnaG84EzsvIT+/+FsZux9DQ1iCMoMbwVVWuwRuT4u+s9e3MuJC
-	 lkrQutRMyjpWtEs6QOIxSX4h5Qvjsi5oAAXmBv854hriyofgHQ/0kVmCe+F7yX5KZc
-	 9wpnC/K5XUGSQ==
-Date: Wed, 5 Mar 2025 11:18:23 +0100
-From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
-To: George Cherian <george.cherian@marvell.com>
-Cc: linux@roeck-us.net, wim@linux-watchdog.org, jwerner@chromium.org, 
-	evanbenn@chromium.org, krzk@kernel.org, mazziesaccount@gmail.com, 
-	thomas.richard@bootlin.com, lma@chromium.org, bleung@chromium.org, 
-	support.opensource@diasemi.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, andy@kernel.org, paul@crapouillou.net, 
-	alexander.usyskin@intel.com, andreas.werner@men.de, daniel@thingy.jp, romain.perier@gmail.com, 
-	avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com, 
-	yuenn@google.com, benjaminfair@google.com, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, 
-	mwalle@kernel.org, xingyu.wu@starfivetech.com, ziv.xu@starfivetech.com, 
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, linux-watchdog@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-mips@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH v4 1/2] watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
-Message-ID: <irmewriceyzxr6jvbiao5vqrvelpftbjalmheodx5w63zi6k2y@dg3wlvs6zryd>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <20250305101025.2279951-2-george.cherian@marvell.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=t6kahsEtgmuHCAqSORBCdojtpqfre+Fi8A4+uSEZ6J14kGmXLKC/rsre+NDNuR5LKvgDjBD1+EbYuCsr8CNAJrB48DUNhsPj2mEPDSPA7s2plP7vnyCsjkERno6hhhkF83LgcYuJeoJpzo4AIgpXsyitHH8Ro+a/LaoN0mcXGt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 361C7FEC;
+	Wed,  5 Mar 2025 02:26:01 -0800 (PST)
+Received: from bogus (unknown [10.57.37.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B9EA3F673;
+	Wed,  5 Mar 2025 02:25:45 -0800 (PST)
+Date: Wed, 5 Mar 2025 10:25:42 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Yuanjie Yang <quic_yuanjiey@quicinc.com>, Jacky Bai <ping.bai@nxp.com>
+Cc: lpieralisi@kernel.org, rafael@kernel.org, daniel.lezcano@linaro.org,
+	james.morse@arm.com, d-gole@ti.com, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, khilman@baylibre.com,
+	quic_tingweiz@quicinc.com
+Subject: Re: [PATCH v2] cpuidle: psci: Init cpuidle only for present CPUs
+Message-ID: <20250305102542.36q7lmctx5jm4mg7@bogus>
+References: <20241120103749.1450017-1-ping.bai@nxp.com>
+ <Z8fv3X0Pivh8zbMg@cse-cd02-lnx.ap.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,11 +38,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250305101025.2279951-2-george.cherian@marvell.com>
+In-Reply-To: <Z8fv3X0Pivh8zbMg@cse-cd02-lnx.ap.qualcomm.com>
 
-Hi George,
+Hi Jacky,
 
-why is armada_37xx_wdt also here?
-The stop function in that driver may not sleep.
+I wasn't Cc-ed on the original patch.
 
-Marek
+I was searching to provide feedback but couldn't find one.
+
+On Wed, Mar 05, 2025 at 02:31:57PM +0800, Yuanjie Yang wrote:
+> On Wed, Nov 20, 2024 at 06:37:49PM +0800, Jacky Bai wrote:
+> > With 'nosmp' or 'maxcpus=0' boot command line parameters,
+> > the 'cpu_present_mask' may not be the same as 'cpu_possible_mask'.
+> > 
+> > In current psci cpuidle driver init, for_each_possible_cpu()
+> > is used to init the cpuidle for each possible CPU. but in
+> > drivers/base/cpu.c ->cpu_dev_register_generic(),
+> > for_each_present_cpu() is used to register cpu device for
+> > present CPUs.
+> > 
+> > When boot system with 'nosmp' or 'maxcpus=0', the cpuidle driver
+> > init failed due to no valid CPU device sysfs node for non-boot CPUs.
+> > 
+> > [ 0.182993] Failed to register cpuidle device for cpu1
+> > 
+> > Use for_each_present_cpu() to register cpuidle only for present
+> > CPUs.
+> > 
+
+Can you reword it something like
+"
+
+for_each_possible_cpu() is currently used to initialize cpuidle in the
+PSCI cpuidle driver.
+
+However, in cpu_dev_register_generic(), for_each_present_cpu() is used
+to register CPU devices which means the CPU devices are only registered
+for present CPUs and not all possible CPUs.
+
+With nosmp or maxcpus=0, only the boot CPU is present, leading to the
+failure:
+
+  |  Failed to register cpuidle device for cpu1
+
+Change for_each_possible_cpu() to for_each_present_cpu() in the PSCI
+cpuidle driver to ensure it only registers cpuidle devices for CPUs
+that are actually present.
+
+"
+
+With that, you can add:
+
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+
+Please cc Ulf Hansson <ulf.hansson@linaro.org> as well. Either him or
+Rafael can then pick up the patch.
+
+-- 
+Regards,
+Sudeep
