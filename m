@@ -1,254 +1,474 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F221F5850
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 09:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BF9200121
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 09:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741165348; cv=none; b=cg7l0LEMI7g8O8Ygf2P5Jms3aTsH0SKALv5lzC0YhsB9PRuRHZnAmA8c1i4bmXFWkYZBAm3Y92m2fzg+pVGEetahD+lKPEsFmiVJADvYUJ71P2fW9Y4LhKEUeG5o7yOagKWO7T2OcdsjjozPLDD2SZfV8YP7jTvuix19Jt/lMUI=
+	t=1741167964; cv=none; b=Gh+hfxcpt8YOnzmKBGpaWbnd3daM+msNfuaGEZ5huH3oqLP9ruHx/xVDdAV4q4R8l4Vi81Z1Ftco3r1pyFXXoU9ms5S6go9fzWFGq2VsUH2TusctlFNgAgCTkmxUN89J0qzv+mBxbwK4BQoTNPx2Dw8UIJoqeGUCZ0pZAzlzbU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741165348; c=relaxed/simple;
-	bh=7BZUuY0NVXBKg5hilWvkKI6gUrRsdS6N+7BHvgE6STY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LOQhZYf9zer4jky7LpeJtklNWuuK7NBDBp/F3Zs7YqpPZsZs2Kc8HyaCg2NOd3DPJT0j4AaVLq6p4/QYS1QLaHY7RxsTEVVk3xCQMdHrlTR2IXQkStlZ4PgAHYImnyHoC7AUEOPcGVXhc4MKwUHHyYOEruPUPhpw/r6UL5akVuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=oGhRETlV; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qzcWgjDG reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1741167964; c=relaxed/simple;
+	bh=Plq6/Tu6IqVfh61cVQXVKUeVdqnhsiqZ8xNpwElfhTA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NORQTdWMv5YmUw2u4IQe1MZGhFcbYjhWWBhYBSxjoRvrKLPpBSxs3UfxBgGFEpjvZB1dCsXfsHZ4cRfQ9UEfEn2Z3KWxIYoXgjmHE3jT9UfWM5142zXOmhtqK0WT06QLFFufIPqy+GUIIrP5Qk2jmd6HPFo4RDaDziTOaH6/g74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=BxrMHxKZ; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="oGhRETlV";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qzcWgjDG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1741165345; x=1772701345;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vqA7WR0bg0u4G+HAomrK/aLC9+18x4n+S7IKkNThfiM=;
-  b=oGhRETlVDZZCHC9MIrW+AooGvmn9EluSFMJWw20uogoB0J7bBY6By5Zv
-   4dbRWfeewGNjVzFcoUEUurE9O8kkCfb6LfJEeBjthyz9AcPa0Wb7muwe7
-   atekAZGwYrynYOWS2o9AYfhOwI+lOkXZbtZTvTZu9Zhy5x5RYNrIQGBls
-   cadgc2STY1oUF4v3HojbkPAKTed+UMR9YnFn2tPOUd3C77Ubgjhpq0ZiK
-   aE2ZCnyw5QjiyHnfrqqsd43ooJMKAJBock4UebJXYMCoUrswiCFQRLGOb
-   P9kQTQ5iwGkGzPv8U9kcsdg2L+t22lRMtgsSeGbkhtcSsTgVtpryNmAJR
-   A==;
-X-CSE-ConnectionGUID: IH657TY3Tl23yR3Vv1dR/A==
-X-CSE-MsgGUID: cgkFUMvxRU6w9KHMn9F1ow==
-X-IronPort-AV: E=Sophos;i="6.14,222,1736809200"; 
-   d="scan'208";a="42301885"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 05 Mar 2025 10:02:22 +0100
-X-CheckPoint: {67C8131E-23-7141A0B0-E6EDEC14}
-X-MAIL-CPID: 0BDC1C9894ABA85FF037DCAB1A11A9B5_3
-X-Control-Analysis: str=0001.0A00636C.67C8131F.010A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A72F3170EA5;
-	Wed,  5 Mar 2025 10:02:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1741165338;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vqA7WR0bg0u4G+HAomrK/aLC9+18x4n+S7IKkNThfiM=;
-	b=qzcWgjDGS6jWPY+RITIk8yBviKpMKL0y16KSXMlshqTDttq6zKFd8uRh0rjbusm21alLLO
-	0zncE1o54zqa2PkjSbvWyACMubP8NqizUU7F39NtdEyf8B7h5zWhZ3ivT6X25sqtCFjSSc
-	Bq3JpoZAEKG0N2u2vqMbhZJRAtcHkfgPLIvm7R5McponzskDZSRi22nXnOhJg1CUW3KHx/
-	aVeSFRyy4/ATHnHp/9XUjp3UP5VCYqp6++6rG5zw1KmH82cgRaFpKEHzJKR3F3q1GHoDJc
-	hgimR61srqwk7i5wU9S6wvO15O4FIatNLRGINZRrOvbwgrcOGQlB24ojz6hXxA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux@ew.tq-group.com, linux-clk@vger.kernel.org, linux-pm@vger.kernel.org
-Subject:
- Re: [PATCH v3 2/6] dt-bindings: soc: imx93-media-blk-ctrl: Add LDB subnode
- into schema and example
-Date: Wed, 05 Mar 2025 10:02:16 +0100
-Message-ID: <4414669.ejJDZkT8p0@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250305-dandelion-axolotl-of-excitement-05fa70@krzk-bin>
-References:
- <20250304154929.1785200-1-alexander.stein@ew.tq-group.com>
- <20250304154929.1785200-3-alexander.stein@ew.tq-group.com>
- <20250305-dandelion-axolotl-of-excitement-05fa70@krzk-bin>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="BxrMHxKZ"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5257njAs000665;
+	Wed, 5 Mar 2025 09:58:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	LQXDAu/Cz7vbFe21nnUqOtM+s7wpjqaQJEOHMcYs7/M=; b=BxrMHxKZiP8/Y8ea
+	2dfoLCbqIp1LweePpkqi/ok1F4YMl1EY/3CjUjbEJNHP3FYGzk4hAcIl7Z0d0igz
+	c6SrcoubvDpKLCsulpE/eByZ2RKXO5HJgLdvmXDDNCOwTa/e5yRgUfyVqRNgHDHD
+	VZhkmbHJ53FuFoRJrn9FHWQB3VL6ZT0Efs65QnpVQWUbtVsa9dsppR7KQKH40ib5
+	Of61j9H2Hwow7nyqYo1nWxNjN1X56w6GazUjfJkyI3okMV23LbmzQDvnrAnc9dXA
+	zditwB0noEho8RahiQ9x715E5b8RSaE08xq2SJukA3Zvz7C8MXybPRxixLhJdvi4
+	/IsjlQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 453t9natuc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 09:58:07 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 84E0140056;
+	Wed,  5 Mar 2025 09:54:06 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 722C55AC880;
+	Wed,  5 Mar 2025 09:47:07 +0100 (CET)
+Received: from [10.130.77.153] (10.130.77.153) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 5 Mar
+ 2025 09:47:05 +0100
+Message-ID: <3b173c1c-4e74-4907-961c-9c90d48a9412@foss.st.com>
+Date: Wed, 5 Mar 2025 09:47:05 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-
-Hi,
-
-Am Mittwoch, 5. M=E4rz 2025, 08:13:04 CET schrieb Krzysztof Kozlowski:
-> On Tue, Mar 04, 2025 at 04:49:21PM +0100, Alexander Stein wrote:
-> > Document the LDB bridge subnode and add the subnode into the example.
-> > For the subnode to work, the block control must scan its subnodes and
->=20
-> Don't describe drivers, but describe the hardware.
-
-Thanks, I'll rephrase to describe the hardware better regarding LVDS.
-
->=20
-> > bind drivers to them, do not misuse either simple-bus or simple-mfd
-> > here.
->=20
-> I don't understand that simple-bus or simple-mfd statement. There are no
-> such compatibles here.
-
-Same as above, the wording stems from 1cb0c87d27dcc ("dt-bindings: soc:
-imx8mp-media-blk-ctrl: Add LDB subnode into schema and example").
-I'll drop it to avoid confusion.
-
->=20
-> >=20
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 51 +++++++++++++++++++
-> >  1 file changed, 51 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-=
-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
-lk-ctrl.yaml
-> > index b3554e7f9e76d..cd785111928bf 100644
-> > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctr=
-l.yaml
-> > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctr=
-l.yaml
-> > @@ -24,6 +24,14 @@ properties:
-> >    reg:
-> >      maxItems: 1
-> > =20
-> > +  ranges: true
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 1
-> > +
-> >    '#power-domain-cells':
-> >      const: 1
-> > =20
-> > @@ -46,9 +54,20 @@ properties:
-> >        - const: csi
-> >        - const: dsi
-> > =20
-> > +  bridge@20:
->=20
-> @20 looks wrong. Use 'ranges;' and try again your DTS...
->=20
-> Binding is supposed to be complete. We have several examples when people
-> added children one-by-one, everytime with different reasoning about
-> child addressing.
->=20
-> So please confirm: this is complete and no other children will ever be
-> added here... or you are 100% sure that all future children will be
-> unit-addressable (will have unit address and appropriate properties).
-
-This block control is a collection of registers for different purposes:
-* MIPI-DSI
-* MIPI-CSI
-* Parallel camera
-* LVDS
-* CAMERA_MUX
-
-At lease for parallel camera, another subnode is expected ([1]).
-
-[1] https://lore.kernel.org/all/20240819024001.850065-1-victor.liu@nxp.com/
-
-> BTW, I don't quite get why this is both syscon and has translation for
-> child addresses. Does it mean your child does not use the same MMIO as
-> parent, thus leading to unsynchronized reg access?
-
-I'm not sure what the best practices are. This LDB has two registers
-inside this block. So it seems reasonable to me to indicate this using
-a reg property. On the other hand, access is solely done by accessing
-via syscon, so unsynchronized reg access is not an issue.
-
-What I am getting from your comments this node should not have 'reg'
-property, as it uses syscon anyway.
-
-> > +    type: object
-> > +    additionalProperties: true
-> > +    properties:
-> > +      compatible:
-> > +        contains:
-> > +          const: fsl,imx93-ldb
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > +  - ranges
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> >    - power-domains
-> >    - clocks
-> >    - clock-names
-> > @@ -77,4 +96,36 @@ examples:
-> >                 clock-names =3D "apb", "axi", "nic", "disp", "cam",
-> >                               "pxp", "lcdif", "isi", "csi", "dsi";
-> >        #power-domain-cells =3D <1>;
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <1>;
-> > +      ranges =3D <0x0 0x4ac10000 0x10000>;
-> > +
-> > +      bridge@20 {
-> > +          compatible =3D "fsl,imx93-ldb";
-> > +          reg =3D <0x20 0x4>, <0x24 0x4>;
-> > +          reg-names =3D "ldb", "lvds";
-> > +          clocks =3D <&clk IMX93_CLK_LVDS_GATE>;
-> > +          clock-names =3D "ldb";
-> > +
-> > +          ports {
-> > +              #address-cells =3D <1>;
-> > +              #size-cells =3D <0>;
-> > +
-> > +              port@0 {
-> > +                  reg =3D <0>;
-> > +
-> > +                  ldb_from_lcdif2: endpoint {
-> > +                      remote-endpoint =3D <&lcdif2_to_ldb>;
-> > +                  };
-> > +              };
-> > +
-> > +              port@1 {
-> > +                  reg =3D <1>;
-> > +
-> > +                  ldb_lvds: endpoint {
-> > +                      remote-endpoint =3D <&ldb_to_panel>;
-> > +                  };
-> > +              };
-> > +          };
->=20
-> Messed indentation.
-
-This is already from the original binding. I'll fix in a separate commit.
-
-Best regards,
-Alexander
-
->=20
-> > +        };
->=20
-> Best regards,
-> Krzysztof
->=20
->=20
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 07/12] drm/sti: move to
+ devm_platform_ioremap_resource() usage
+To: Anusha Srivatsa <asrivats@redhat.com>
+CC: Joel Stanley <joel@jms.id.au>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Andrew Jeffery
+	<andrew@codeconstruct.com.au>,
+        Stefan Agner <stefan@agner.ch>, Alison Wang
+	<alison.wang@nxp.com>,
+        Xinliang Liu <xinliang.liu@linaro.org>,
+        Tian Tao
+	<tiantao6@hisilicon.com>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        Sumit
+ Semwal <sumit.semwal@linaro.org>,
+        Yongqin Liu <yongqin.liu@linaro.org>,
+        John
+ Stultz <jstultz@google.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp
+ Zabel <p.zabel@pengutronix.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Marek
+ Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Orson Zhai <orsonzhai@gmail.com>,
+        Baolin
+ Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Alain Volmat <alain.volmat@foss.st.com>,
+        Raphael Gallais-Pou
+	<rgallaispou@gmail.com>,
+        Yannick Fertre <yannick.fertre@foss.st.com>,
+        Philippe Cornu <philippe.cornu@foss.st.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen
+	<mperttunen@nvidia.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Alexey
+ Brodkin <abrodkin@synopsys.com>,
+        Dave Stevenson
+	<dave.stevenson@raspberrypi.com>,
+        =?UTF-8?Q?Ma=C3=ADra_Canal?=
+	<mcanal@igalia.com>,
+        Raspberry Pi Kernel Maintenance
+	<kernel-list@raspberrypi.com>,
+        Jonathan Corbet <corbet@lwn.net>, <linux-aspeed@lists.ozlabs.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, <imx@lists.linux.dev>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-tegra@vger.kernel.org>, <linux-doc@vger.kernel.org>
+References: <20250225-memory-drm-misc-next-v1-0-9d0e8761107a@redhat.com>
+ <20250225-memory-drm-misc-next-v1-7-9d0e8761107a@redhat.com>
+ <24958ae8-6153-4798-abeb-e770d66ca8e4@foss.st.com>
+ <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
+Content-Language: en-US
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+In-Reply-To: <CAN9Xe3Q8=_Tz51i6gxNM6445p-rhNiK7B5Ljcga8g_Nn676dCQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-05_03,2025-03-05_01,2024-11-22_01
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+On 3/3/25 18:29, Anusha Srivatsa wrote:
+> On Wed, Feb 26, 2025 at 5:19 AM Raphael Gallais-Pou <
+> raphael.gallais-pou@foss.st.com> wrote:
+>
+>> On 2/25/25 23:20, Anusha Srivatsa wrote:
+>>> Replace platform_get_resource/_byname + devm_ioremap
+>>> with just devm_platform_ioremap_resource()
+>>>
+>>> Used Coccinelle to do this change. SmPl patch:
+>>>
+>>> @rule@
+>>> identifier res;
+>>> expression ioremap;
+>>> identifier pdev;
+>>> constant mem;
+>>> expression name;
+>>> @@
+>>> -struct resource *res;
+>>> ...
+>>> -res = platform_get_resource_byname(pdev,mem,name);
+>>> <...
+>>> -if (!res) {
+>>> -...
+>>> -}
+>>> ...>
+>>> -ioremap = devm_ioremap(...);
+>>> +ioremap = devm_platform_ioremap_resource_byname(pdev,name);
+>>>
+>>> and
+>>> @rule_2@
+>>> identifier res;
+>>> expression ioremap;
+>>> identifier pdev;
+>>> @@
+>>> -struct resource *res;
+>>> ...
+>>> -res = platform_get_resource(pdev,...);
+>>> <...
+>>> -if (!res) {
+>>> -...
+>>> -}
+>>> ...>
+>>> -ioremap = devm_ioremap(...);
+>>> +ioremap = devm_platform_ioremap_resource(pdev,0);
+>>>
+>>> v2: Fix compilation error.
+>>
+>> Hi Anusha,
+>>
+>>
+>> You did not take into account my comment regarding the changelog. :-)
+>>
+>> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
+>>
+>> While the commit summary do not specify the version, this changelog
+>> suggests
+>> that the version of your series as been incremented.
+>> If this is a v2, then a version descriptor should be applied to the
+>> patchset.
+>>
+>> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#subject-line
+>>
+>> Hi  Raphael,
+> That is correct. While this patch is a v2, there is another patch or two in
+> the same series that is on v4 when it got acked and reviewed. Having
+> patches belonging to the same series with different version prefixes seemed
+> odd when I sent the series. Hence added what exactly changed in the commit
+> log.
 
 
+Indeed, the serie version should remain consistent across all patches.
+
+Maxime told you in an earlier answer, any modification of any patch what so ever
+increases the serie version. Thus all patches are at v5 (looking at your latest
+revision).
+
+Verbatim from the documentation :
+
+Other comments relevant only to the moment or the maintainer, not suitable for
+the permanent changelog, should also go here [under the --- marker]. A good
+example of such comments might be patch changelogs which describe what has
+changed between the v1 and v2 version of the patch.
+
+Please put this information after the --- line which separates the changelog
+from the rest of the patch. The version information is not part of the changelog
+which gets committed to the git tree. It is additional information for the
+reviewers. If it’s placed above the commit tags, it needs manual interaction to
+remove it. If it is below the separator line, it gets automatically stripped off
+when applying the patch:
+
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
+
+Raphaël
+
+>
+> Anusha
+>
+>
+>> Regards,
+>> Raphaël
+>>
+>>> Cc: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+>>> Cc: Alain Volmat <alain.volmat@foss.st.com>
+>>> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+>>> Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+>>> Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+>>> ---
+>>>  drivers/gpu/drm/sti/sti_compositor.c | 10 +---------
+>>>  drivers/gpu/drm/sti/sti_dvo.c        | 10 +---------
+>>>  drivers/gpu/drm/sti/sti_hda.c        |  9 +--------
+>>>  drivers/gpu/drm/sti/sti_hdmi.c       | 11 +----------
+>>>  drivers/gpu/drm/sti/sti_hqvdp.c      | 10 +---------
+>>>  drivers/gpu/drm/sti/sti_tvout.c      | 10 +---------
+>>>  drivers/gpu/drm/sti/sti_vtg.c        | 10 +---------
+>>>  7 files changed, 7 insertions(+), 63 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/sti/sti_compositor.c
+>> b/drivers/gpu/drm/sti/sti_compositor.c
+>>> index
+>> 063f82d23d80c4ba83624a0066a18416a2b37351..7aefce6706ba2cd7d97a33228c9b9812edecf06f
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_compositor.c
+>>> +++ b/drivers/gpu/drm/sti/sti_compositor.c
+>>> @@ -177,7 +177,6 @@ static int sti_compositor_probe(struct
+>> platform_device *pdev)
+>>>       struct device_node *np = dev->of_node;
+>>>       struct device_node *vtg_np;
+>>>       struct sti_compositor *compo;
+>>> -     struct resource *res;
+>>>       unsigned int i;
+>>>
+>>>       compo = devm_kzalloc(dev, sizeof(*compo), GFP_KERNEL);
+>>> @@ -194,14 +193,7 @@ static int sti_compositor_probe(struct
+>> platform_device *pdev)
+>>>       memcpy(&compo->data, of_match_node(compositor_of_match, np)->data,
+>>>              sizeof(struct sti_compositor_data));
+>>> -
+>>> -     /* Get Memory ressources */
+>>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>> -     if (res == NULL) {
+>>> -             DRM_ERROR("Get memory resource failed\n");
+>>> -             return -ENXIO;
+>>> -     }
+>>> -     compo->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     compo->regs = devm_platform_ioremap_resource(pdev, 0);
+>>>       if (compo->regs == NULL) {
+>>>               DRM_ERROR("Register mapping failed\n");
+>>>               return -ENXIO;
+>>> diff --git a/drivers/gpu/drm/sti/sti_dvo.c
+>> b/drivers/gpu/drm/sti/sti_dvo.c
+>>> index
+>> 4dcddd02629b6a1052be8fb8333bd3aa17c083c5..c877298a7f2bad171724eca4d43ea622db4c81cd
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_dvo.c
+>>> +++ b/drivers/gpu/drm/sti/sti_dvo.c
+>>> @@ -511,7 +511,6 @@ static int sti_dvo_probe(struct platform_device
+>> *pdev)
+>>>  {
+>>>       struct device *dev = &pdev->dev;
+>>>       struct sti_dvo *dvo;
+>>> -     struct resource *res;
+>>>       struct device_node *np = dev->of_node;
+>>>
+>>>       DRM_INFO("%s\n", __func__);
+>>> @@ -523,14 +522,7 @@ static int sti_dvo_probe(struct platform_device
+>> *pdev)
+>>>       }
+>>>
+>>>       dvo->dev = pdev->dev;
+>>> -
+>>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>> "dvo-reg");
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Invalid dvo resource\n");
+>>> -             return -ENOMEM;
+>>> -     }
+>>> -     dvo->regs = devm_ioremap(dev, res->start,
+>>> -                     resource_size(res));
+>>> +     dvo->regs = devm_platform_ioremap_resource_byname(pdev, "dvo-reg");
+>>>       if (!dvo->regs)
+>>>               return -ENOMEM;
+>>>
+>>> diff --git a/drivers/gpu/drm/sti/sti_hda.c
+>> b/drivers/gpu/drm/sti/sti_hda.c
+>>> index
+>> 14fdc00d2ba03d4f96ba407ac8e576decb6f32c0..3ca3abb80d425901f4c031edfd327a770d624e1c
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_hda.c
+>>> +++ b/drivers/gpu/drm/sti/sti_hda.c
+>>> @@ -750,14 +750,7 @@ static int sti_hda_probe(struct platform_device
+>> *pdev)
+>>>               return -ENOMEM;
+>>>
+>>>       hda->dev = pdev->dev;
+>>> -
+>>> -     /* Get resources */
+>>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>> "hda-reg");
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Invalid hda resource\n");
+>>> -             return -ENOMEM;
+>>> -     }
+>>> -     hda->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     hda->regs = devm_platform_ioremap_resource_byname(pdev, "hda-reg");
+>>>       if (!hda->regs)
+>>>               return -ENOMEM;
+>>>
+>>> diff --git a/drivers/gpu/drm/sti/sti_hdmi.c
+>> b/drivers/gpu/drm/sti/sti_hdmi.c
+>>> index
+>> 164a34d793d86f114394048667ae3189e1c39242..c64ce7a1ef58b9ce4429edd368269bea87d86984
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_hdmi.c
+>>> +++ b/drivers/gpu/drm/sti/sti_hdmi.c
+>>> @@ -1380,7 +1380,6 @@ static int sti_hdmi_probe(struct platform_device
+>> *pdev)
+>>>       struct device *dev = &pdev->dev;
+>>>       struct sti_hdmi *hdmi;
+>>>       struct device_node *np = dev->of_node;
+>>> -     struct resource *res;
+>>>       struct device_node *ddc;
+>>>       int ret;
+>>>
+>>> @@ -1399,15 +1398,7 @@ static int sti_hdmi_probe(struct platform_device
+>> *pdev)
+>>>       }
+>>>
+>>>       hdmi->dev = pdev->dev;
+>>> -
+>>> -     /* Get resources */
+>>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>> "hdmi-reg");
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Invalid hdmi resource\n");
+>>> -             ret = -ENOMEM;
+>>> -             goto release_adapter;
+>>> -     }
+>>> -     hdmi->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     hdmi->regs = devm_platform_ioremap_resource_byname(pdev,
+>> "hdmi-reg");
+>>>       if (!hdmi->regs) {
+>>>               ret = -ENOMEM;
+>>>               goto release_adapter;
+>>> diff --git a/drivers/gpu/drm/sti/sti_hqvdp.c
+>> b/drivers/gpu/drm/sti/sti_hqvdp.c
+>>> index
+>> 0f658709c9d0d398c4eed65202443db9d0b41f8c..420395598d119a403d531211022e6005d6a2bd59
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_hqvdp.c
+>>> +++ b/drivers/gpu/drm/sti/sti_hqvdp.c
+>>> @@ -1356,7 +1356,6 @@ static int sti_hqvdp_probe(struct platform_device
+>> *pdev)
+>>>       struct device *dev = &pdev->dev;
+>>>       struct device_node *vtg_np;
+>>>       struct sti_hqvdp *hqvdp;
+>>> -     struct resource *res;
+>>>
+>>>       DRM_DEBUG_DRIVER("\n");
+>>>
+>>> @@ -1367,14 +1366,7 @@ static int sti_hqvdp_probe(struct platform_device
+>> *pdev)
+>>>       }
+>>>
+>>>       hqvdp->dev = dev;
+>>> -
+>>> -     /* Get Memory resources */
+>>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Get memory resource failed\n");
+>>> -             return -ENXIO;
+>>> -     }
+>>> -     hqvdp->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     hqvdp->regs = devm_platform_ioremap_resource(pdev, 0);
+>>>       if (!hqvdp->regs) {
+>>>               DRM_ERROR("Register mapping failed\n");
+>>>               return -ENXIO;
+>>> diff --git a/drivers/gpu/drm/sti/sti_tvout.c
+>> b/drivers/gpu/drm/sti/sti_tvout.c
+>>> index
+>> af6c06f448c4819def8cc0d0836e30f991529690..0bebe815f5e7567f84388af93723a6fa7d2cc7a2
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_tvout.c
+>>> +++ b/drivers/gpu/drm/sti/sti_tvout.c
+>>> @@ -838,7 +838,6 @@ static int sti_tvout_probe(struct platform_device
+>> *pdev)
+>>>       struct device *dev = &pdev->dev;
+>>>       struct device_node *node = dev->of_node;
+>>>       struct sti_tvout *tvout;
+>>> -     struct resource *res;
+>>>
+>>>       DRM_INFO("%s\n", __func__);
+>>>
+>>> @@ -850,14 +849,7 @@ static int sti_tvout_probe(struct platform_device
+>> *pdev)
+>>>               return -ENOMEM;
+>>>
+>>>       tvout->dev = dev;
+>>> -
+>>> -     /* get memory resources */
+>>> -     res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>> "tvout-reg");
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Invalid glue resource\n");
+>>> -             return -ENOMEM;
+>>> -     }
+>>> -     tvout->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     tvout->regs = devm_platform_ioremap_resource_byname(pdev,
+>> "tvout-reg");
+>>>       if (!tvout->regs)
+>>>               return -ENOMEM;
+>>>
+>>> diff --git a/drivers/gpu/drm/sti/sti_vtg.c
+>> b/drivers/gpu/drm/sti/sti_vtg.c
+>>> index
+>> 5ba469b711b5318e9e9e6d8df127fb8933d1fac1..b5353fe774d72fd629ecd3ef75a5d2817ca8617f
+>> 100644
+>>> --- a/drivers/gpu/drm/sti/sti_vtg.c
+>>> +++ b/drivers/gpu/drm/sti/sti_vtg.c
+>>> @@ -380,20 +380,12 @@ static int vtg_probe(struct platform_device *pdev)
+>>>  {
+>>>       struct device *dev = &pdev->dev;
+>>>       struct sti_vtg *vtg;
+>>> -     struct resource *res;
+>>>       int ret;
+>>>
+>>>       vtg = devm_kzalloc(dev, sizeof(*vtg), GFP_KERNEL);
+>>>       if (!vtg)
+>>>               return -ENOMEM;
+>>> -
+>>> -     /* Get Memory ressources */
+>>> -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>> -     if (!res) {
+>>> -             DRM_ERROR("Get memory resource failed\n");
+>>> -             return -ENOMEM;
+>>> -     }
+>>> -     vtg->regs = devm_ioremap(dev, res->start, resource_size(res));
+>>> +     vtg->regs = devm_platform_ioremap_resource(pdev, 0);
+>>>       if (!vtg->regs) {
+>>>               DRM_ERROR("failed to remap I/O memory\n");
+>>>               return -ENOMEM;
+>>>
+>>
