@@ -1,210 +1,220 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011025.outbound.protection.outlook.com [52.101.65.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4870E24E4B4
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 15:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741189347; cv=fail; b=DUEi6IcppvxCYkHz/Zi8r9Nl/NUGCJCRYWxfFsMc3oIdHiTNcR19b7nPZe4g0BWMm7JFhVV+1glu/vbRKHYbtt1EBniXLZaTbNL1M7AE1ZMZTSek9Ssx2GRfWD4ar+83owknzecUIA9aSh1DyUrhKluXtg0gp64oM/GggoFuIMs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741189347; c=relaxed/simple;
-	bh=0dvY8usiuK8cCi3wR+ypEOdl0JEml35z9n1343Hd9nA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EzGgcDRiHYEI7TLAyOIo1MlImNWDtBDUTV991HgUIyQaoRpthqiurJvPpi7Fyoq1TC37r8KH0vNt7oJ7olLdupMtx76tqiFyTAKCFOXMYGQHyFmA/JDVFIzdE9ep4OrtGI9/6Kiry8UbQdks5Awi9sLVBwhz+1Wil/mosZOUK+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gyBAE/gU; arc=fail smtp.client-ip=52.101.65.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B8A18FC9F
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 16:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741193672; cv=none; b=oLWYNH0hx5xHXRObbpA3Hv2d2DX/RS5X+rWY64ibA5gz6W51T/2cSRe10clbpczQps9xmSFQeajf2MSqWf7DAqTSfNGFojBp8imIeJsh0IgYY/ZQhbL5v8QasFPNYGFeMbhlbsQ21H+aaJM/T0hKLn82rIDIboQZDPnJrIn8pqM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741193672; c=relaxed/simple;
+	bh=mNYCIaC/TiQFcye4zOvTyd+zkhijqrF9hc5gPlQ6OiQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VRyvbpJ1lpGKqyfaQMJfVVDosqZKHWQ0f+Qd+mLO46A09W1slTqPi4SWiosIgWlv4/dSVXBxzMWNlp96v2O/bR7yjfuxUEep4mF5x6SVeqJNiflwmwhNCxbAcqd1zInGMRFkGsTzHfZgcNtACgxeZVuI9gCvYXFdVYrStE0aL2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hfVrDLDp; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gyBAE/gU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nbM+N5SLXX3Bmb43Q4dEZjy8rN1HwMcIukAPm2/tYenNPVRbIUK7qUR5X0l1GM+Kpvd3ZVGfCaHvhY8u0RZPBpItpSeUu6EvmzmZLquAeigEriZSHYeyFODSU6pv/YmD+nxvkRE9UBb1dJ4n9u6Zi48DTRIZEVq9QRApYin975u7x5QKCagigJLDOub+xlRkxfK+04ny8pdZP04aSJnnQg5nAdDDJ6Xe4h+SA1bQDt0hwi6epR7n+4K9FokSuyoiUBjGvPoD8Ss9pYvjMaZ1po2em69ut51t1E0U76IcsKnfxLjO/vazQxhL/Muu/t0jL0YiF9fWRvaUVw61brJIrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FIdAET+6Y35mYOcF+P2jrw6vClf0MPpwb1Ue860o5T8=;
- b=jaAxX0nBd3RLPy95UYzUutiWaI5kDkC9K2HjiHdpGDJNUD6kv1MXyYSop3K/AkN8+H63FOtYbPgdUk0Pb/gnBG3sAsHwMhuxQPh28xKPRh+9V4elmao9Do4vKDIdg4PTWXjW98ZHuktaa7K9UkSRnuzPWq6ZZVABeAq7et3kagSmO2L21KM6l1aEMgnEUn9vGRzsVIzX3WnVwycJfeOXzg64vxGB87qr6AMQkA/N3vSp3vSL/XzqXbOVu/rjCz3uMcVM1IVbcV+v3rAODGAxC0i9c5pTKoqZeX1Zx+9fCSIwBSzlQFmGOCrJ8OXYwV8/TTKHs+elENIsAZM5HIa+zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FIdAET+6Y35mYOcF+P2jrw6vClf0MPpwb1Ue860o5T8=;
- b=gyBAE/gUrYAyjPeGnIAkpARAwAK8Sf2hAiPjVLwgkEYtz5d5+kqIqFBuyCoYAGp2+y11IPqGrFaM+gkhNChWFxI/8Xl+ktmc/cqmyOUUllBpAOlsp5AEul4OtfNUrp+tFNS3HU+MpGh5edo9C4kq70KT0xI4E2RLx0mHlt1cHgorfY0YUzdHKuZclwhOrSoYfwtzMDIT+L5UKbp9LnHEXmwvyau4pCIhLIVspLxdbZ/FRCYDG6RuOCyQ6OELXxn/lFybq+FmdadWTf+n6G1cACe7JCQThQgCI/ISZPnWg/2pH81SdMvDDO1pEfN6U9d6FLTA2FoBHQfxKu93JJ50cw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM9PR04MB8162.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.16; Wed, 5 Mar
- 2025 15:42:21 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
- 15:42:21 +0000
-Date: Wed, 5 Mar 2025 10:42:13 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	p.zabel@pengutronix.de, tharvey@gateworks.com, hongxing.zhu@nxp.com,
-	francesco.dolcini@toradex.com, linux-phy@lists.infradead.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] phy: freescale: imx8m-pcie: assert phy reset and
- perst in power off
-Message-ID: <Z8hw1W0PBsmanylZ@lizhi-Precision-Tower-5810>
-References: <20250305144355.20364-1-eichest@gmail.com>
- <20250305144355.20364-3-eichest@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305144355.20364-3-eichest@gmail.com>
-X-ClientProxiedBy: SJ0PR03CA0292.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::27) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hfVrDLDp"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22359001f1aso162709765ad.3
+        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 08:54:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741193670; x=1741798470; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qjVsQnSqRQBd2D93xCfGrKX4ZhGOSg4lpjeYRuVrhMg=;
+        b=hfVrDLDpqZHJo2gqvzcjevvAB7q6q+WyvZREfoVh7HEvq6Qqej5e+2ZvypV0bSSfbN
+         QiYvVK5oydRCo0t6/UXDSm141CxmCWfCYiW0TTOz/tHAA8WTxxQbG4/ot+0V+za76xeV
+         xFd5P+PpcV+hBQ8m87pDTEFl/nRm46wmldsebLna0DaAEN3yF9HelcmLetHgfTcIzLTV
+         tXNwNCz9aGGkQe4J5d8tmyj1ykWtd0cQ1a1tj48AdsxdjAE95m+0KL6nVQnm4hn0JXuJ
+         D2JyoFmfQ5i4UJiBM1LIDLgl8jlVEt4NFU0XvlMPYxJfnOl+7mA3vDhGK8k8W2Fqx+02
+         hYBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741193670; x=1741798470;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qjVsQnSqRQBd2D93xCfGrKX4ZhGOSg4lpjeYRuVrhMg=;
+        b=bGCJP2RdrVH6rlxrAGvBOMcctj5FVgT5sTeUzSXZGDiftUp++06Wz8sHLMqjSsq2+w
+         W4BeIQLYF69LVyTCRE5YxekgGn4uli1bvM2MY6SAKf68Oq6jAQtyQjZ91S0hY0hWmBAZ
+         krxUEKPcZXZNXwk2uXxyvaFTIdYrGd9tYPkUokZ6FQf3M2iVg6PCb2JI2zRtpwGT9kKg
+         A0xs9RcdLHyiUboqfyKw8efz9gZwbPcfr/Pl6PIxrnHs2YvgiYPg9y6SN9tC3QgKntWQ
+         1KdXAuMwXs58hDU1C0XdWaJh6uvJJR0IFyUeAmDsyJDu8JioYaJMznMUPXUDRRP11BPp
+         m6GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxcTt9Qpr1L5059vzF33su+wKGGJCiAt8vGghnYKRc6kA7vbxS4nnt/TRKlPYz39vBfok=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxeTksGEWmAjXmugcTSqosq9EKXChRwmMRsZTxi4NfkDzoFL1jC
+	ugKbte2oOYM5VaxNuxxfBSrWUYnn4h3pCZhQfyoXOYP+otnRV24k
+X-Gm-Gg: ASbGncviuCsDfopU44VL9S1Fxu8qQeXS82soyw3cOTCPSrRkGEMIDDD73O9NStCyLqa
+	7x9IxVRjcITT1n9YgskdeU4UIMz08kRZsZui80+4Rl64PARspubrO+iHdFwH5N8tA4jU0UpbNrT
+	t6bVfdMVekEXPIAE0MUTncYwWZhU7F8ryLe5pfhwQlGCYTsTldmCcaFfwWPuGFWb7Zd6HqwtYaC
+	GknQQjSHA34B8ij8aGTFBkmUSh6iPWx3DEFr51Dh0z5G2OWP3xpBxRR1tME9BgfooeqHBvNQTvx
+	PljwflpFO/PMB6rMyTUj/A/q/MdN+Dbinu70lpw3H9NAY8gNUH/A2fi/okns0uEy85do5kOrlV4
+	tFlPYx6Hm5ZzcMb1Edw==
+X-Google-Smtp-Source: AGHT+IELUYOiv9nEvMo6emFh85nrbdMhcJOVKHgtRdU/NVg8mbP4tsGNtdZVd7IcFJrPh5kmFt3Caw==
+X-Received: by 2002:a17:902:f693:b0:223:6455:8752 with SMTP id d9443c01a7336-223f1d39301mr66361165ad.43.1741193669541;
+        Wed, 05 Mar 2025 08:54:29 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501f9e46sm115772545ad.53.2025.03.05.08.54.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Mar 2025 08:54:28 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <23608097-f226-471b-b070-d3834e5c129b@roeck-us.net>
+Date: Wed, 5 Mar 2025 08:54:27 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM9PR04MB8162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e3d8571-f489-4ab7-4874-08dd5bfc517c
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?CqY9JeCnnhIlxmmSVvd3Q47p8Dtie2Bf926RKcqDpUl+vXvoKMhYs3jJfrlZ?=
- =?us-ascii?Q?ujUEFghehCf8gEeXMHVkCGwkAUtzmKlQYHCVCDI85LT9D9FctrD+sCZimcTB?=
- =?us-ascii?Q?c7+ohC4lbJN1lSAvKKjtbPvh/jJK/tpgpuZMUGLXPMBtZfbxeVBN6bI7RkOS?=
- =?us-ascii?Q?l7G7BJjv79TuG8y9L5j2NmXal/koWE3VoTFAzg+val9pGEWMzfzPei3tRcIG?=
- =?us-ascii?Q?lDJUhpV4YY+nFS+SUQRJx/Z4WyXCO2dQY777h0EWHcQ8eUh0ZswUZNWPKt6O?=
- =?us-ascii?Q?17LHNKWxE0DJsc0hJlAEAP/fGQsPPkgkoB2CyrLOWW2SP4jAQn8gx8bYVgPd?=
- =?us-ascii?Q?28G5Ip42hVSY1RTV/9nA043F4qXoOf0mnSA324SwC3duJHyGFqO+JiGfb9Im?=
- =?us-ascii?Q?5VbPBIE504a5xUqDgN3PHYNcd3TLpjOpcPU305vUmQK+uiII7KZbZDkzCp0Z?=
- =?us-ascii?Q?d0j5NeTux9KyNqvvKRjQdQM9PjnwhubKLrQjLco9u2nKiC7cmEl4N9HBQFSN?=
- =?us-ascii?Q?+Kb7ZrBQKDpSNQ2oTwDE6Ejrf2V2GwlDnmNzYsVAHXXZq6Isydj5Kj2S/OdO?=
- =?us-ascii?Q?cYVII5qvoWNaGzTS3Qvj6fQU2m/qf9LsdXL8A4IfIif705ifKU/W08EQWwJ5?=
- =?us-ascii?Q?LYftHuahKm6XsauOjjIFIsStg/8npqlsyyORwIPekpRzz71fh8D7+IFUX2le?=
- =?us-ascii?Q?t/muNKzStw7R4jFMLbi47gX1rJhiAzpb9ThBO2+ISRRDdhPT8bQw355sArXj?=
- =?us-ascii?Q?Z0cUKSr89/tuQQ4XlIX0IdCbr65CYf5/hqXSPD2iJMuXwdA8IDwp8A4xRref?=
- =?us-ascii?Q?rS7EwnWSpVJ/AQKjc61Mqt4DohP4JrbyWd1VcLLIgWbUBYZPgGo+opNOnAEh?=
- =?us-ascii?Q?w3qxlMVyVMbxjWYg6Tt2wXnOebkToiRirTfA1JEzs7pjWRPz9okn4nbMnBdS?=
- =?us-ascii?Q?5s3tw3z4abAa10TvIrRoCYHH6QHw54lEK33erwZFR+DmEC0T6KXKF4UVMtdR?=
- =?us-ascii?Q?btncpt/Nk1Au4bWMhNJajCYBtT5SqaIVsDG6Ca2SJWwoSi3ht9O/9JrZBbUk?=
- =?us-ascii?Q?XonmdTcNXKACo6sca34drKRMYLZ0mnLDJDO11OpbI7ZiF2qOj5vQjYZJPyKh?=
- =?us-ascii?Q?YCl+rXO8+7i2fJ+hjw0iWUb0s6RVkcd2fiHDIAwTpPMynBQgIfYtFDeP/hZa?=
- =?us-ascii?Q?U6Hqe+nKuuqXSCVEnDRLYBvgjsaSsP5csqj8MgAtUdegthmNB5VXlYtRoiHZ?=
- =?us-ascii?Q?NcpQiMlj9cr6/vS5t5WCMttOdXzwZmJ6BVqyEk390WnEAXSRktyXWlJYCnlc?=
- =?us-ascii?Q?HAXTIDhqHCuG5zdCbBymEyUpOjjkfszMAE0VxPQdNmn1QG1712FgeybB1Xy1?=
- =?us-ascii?Q?/xUY0F/aGDFY3oKiED5+PTOEZlSy/ZNmkZU9fQhSvyw0hB40AJd8Jzhdu3NP?=
- =?us-ascii?Q?xTpwsC6JCWItdXZ+EqlUEB46IXvyfeXs?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?l8OKB6Cf4+q4wvq7hgn9e2U6Nr6DBb7W+5yirJRgyT8meZzQOOKznm6cA/Cd?=
- =?us-ascii?Q?OVulXbCKCKqBMrC+a+lLoD61OGz9kpnNe8IBiccL4AtU4izxsWA6JORkbAre?=
- =?us-ascii?Q?BHsUiQkgqtnCGB7YiSvc4Cl0bIRd6Hxg0Lxa8X2DUgIIHXE7G63+/GltseCD?=
- =?us-ascii?Q?z6624xa6vnV+rFEUg+Ott5f/+OH3nVznK8qpudm5EfvFCOPAmBuUUL78NzU9?=
- =?us-ascii?Q?0LFn8hNbFmAr5xCxt5SEyazHhbvZOqqPQ3blG4uhmvPtzkcqanxMZH+gpR3k?=
- =?us-ascii?Q?e/FkfnYEEH8WEIp3hMs5Ll1rJmWopFekE1FNqvSuUDYfMBIpJj/AcaMfJvhl?=
- =?us-ascii?Q?5H7+zQLJFlDYKGv8+GeFprrCNIOfIPYpO833v61XDWpzzTk4Ei/elgpc0G+A?=
- =?us-ascii?Q?rfLeuC69Btf3YOZ2jbWTpTcXNVl7H9DiypR0VQSEmEhH8I643ciKXxVIhtuW?=
- =?us-ascii?Q?4cKqT5n1hk0+DspDB5stMWtExIihJSkBsvoV8y915g+4zrWFYJM6pIlMUGkx?=
- =?us-ascii?Q?gWFYpa2a1+O6Lq5jNs2EA/aTtyeBhJAKnzDBhqXWBr9XNHeHHKysQT7NfwS/?=
- =?us-ascii?Q?WycK33Hb/JdqQZ9l14JOs1s1cUNLwIWAzJWhLf1E7WNDgJPRPROXfSUrWQA9?=
- =?us-ascii?Q?S8amDBwVCCBPhuWj1fjtyk60JZKazgk3BZOHZqi/Ivjv4BpKrjD+9j2JZO0m?=
- =?us-ascii?Q?hCpccanvyXVP2BozNvOxWkgP2aNXXp1HlxIt0UxrzkdMgA+lz4nCRwW2YFJt?=
- =?us-ascii?Q?uA3LbAyVsfa3WyVxZmnx1s7iOdqK8cNj2h75A4waT8M4m9MoakYYi2wgkHlB?=
- =?us-ascii?Q?0XNemkapBMjfCYhpuFMdp4N9cvldXvsnzIff5X7m2YcqIJdbQUBrjcezLmMK?=
- =?us-ascii?Q?Kz6gnOs9BQxbA7YB4CKdDKdTFcHBZjMRxaKApmegJ7/J/EXguYI/amAk+6yK?=
- =?us-ascii?Q?PZ1pr7doASRFEafXyJMIEXC8W21cBTt19IlYVUNsI3705h2IIRZkQVHWmseS?=
- =?us-ascii?Q?/NKl4kvrEVRoaet7CM68hPO62E5TjXPQ6vMlYne8b9yGfkpLAERBdxF+SH9u?=
- =?us-ascii?Q?b7GwazHbVabKNZmxhP5LeZgyNvj7lbkPtj8cB2sMXsuyntfTsoHBd4hc9cVl?=
- =?us-ascii?Q?kB+az4edDy4N9G7h320YB6sLTiIirDmDB1NXi+vda5hbvQSgIZAEBlvo/aLB?=
- =?us-ascii?Q?BYzjikr24Wf8HTga5FgzxivVY35gZOlsm7zvGI8t0GdwRIB23my3gIBZ29zD?=
- =?us-ascii?Q?AHXHNg/7LyELRBM4iaxDgy0UYafW7g6tjvAIlnt4n2tgO8Jlu6y71mUiF3Eq?=
- =?us-ascii?Q?+CJfSfWsPQy3e3bVn/cw7xsjF9wsxQYjU52BqjV9hyXZP7jcIc/tQRzTHj7t?=
- =?us-ascii?Q?3aJFpH7D3oi1F2ZpIuX3vrIU4nL5zEpf6sfPJhjfE3FfigHtdkb4S19Ljavo?=
- =?us-ascii?Q?l2DyzUY3bJhckXiik0jWLHRXABHCDKvT0Hc8Y/oNw54QULiQ2Nwozv90S1ri?=
- =?us-ascii?Q?JrNm41UoNCmT8Kimg2WP1d96SryDCaCUSy6bazqGw2JeDA2/x5KfccDXNTbU?=
- =?us-ascii?Q?dJx2zRLErWybPnW/6dljD+1XjLNiknI+cFr+Bp8L?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e3d8571-f489-4ab7-4874-08dd5bfc517c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 15:42:21.6544
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FKFSmQZPJBni8VQySEOEoSMHzy9JD3a07RCowNmhj0ot0uzWuH1kt5CoPI0BEa+rGYx9EKZV/5umEY2e5M0zug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8162
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] hwmon: emc2305: Use
+ devm_thermal_of_cooling_device_register
+To: florin.leotescu@oss.nxp.com, Jean Delvare <jdelvare@suse.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: viorel.suman@nxp.com, carlos.song@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>
+References: <20250304162136.1963384-1-florin.leotescu@oss.nxp.com>
+ <20250304162136.1963384-4-florin.leotescu@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250304162136.1963384-4-florin.leotescu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 05, 2025 at 03:43:16PM +0100, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
->
-> Ensure the PHY reset and perst is asserted during power-off to
-> guarantee it is in a reset state upon repeated power-on calls. This
-> resolves an issue where the PHY may not properly initialize during
-> subsequent power-on cycles. Power-on will deassert the reset at the
-> appropriate time after tuning the PHY parameters.
->
-> During suspend/resume cycles, we observed that the PHY PLL failed to
-> lock during resume when the CPU temperature increased from 65C to 75C.
-> The observed errors were:
->   phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
->   imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
->   imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
->   imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
->
-> This resulted in a complete CPU freeze, which is resolved by ensuring
-> the PHY is in reset during power-on, thus preventing PHY PLL failures.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
+On 3/4/25 08:21, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+> 
+> This prepares emc2305 driver to use configuration from Device Tree nodes.
+> Using devm_thermal_of_cooling_device_register also simplifies cleanup
+> procedure, so we are able to remove the emc2305_unset_tz and emc2305_remove
+> functions which are no longer used.
+> 
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
 > ---
->  drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> index 5b505e34ca364..7355d9921b646 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-> @@ -156,6 +156,16 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
->  	return ret;
->  }
->
-> +static int imx8_pcie_phy_power_off(struct phy *phy)
-> +{
-> +	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-> +
-> +	reset_control_assert(imx8_phy->reset);
-> +	reset_control_assert(imx8_phy->perst);
-> +
-> +	return 0;
-> +}
-> +
->  static int imx8_pcie_phy_init(struct phy *phy)
->  {
->  	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-> @@ -176,6 +186,7 @@ static const struct phy_ops imx8_pcie_phy_ops = {
->  	.init		= imx8_pcie_phy_init,
->  	.exit		= imx8_pcie_phy_exit,
->  	.power_on	= imx8_pcie_phy_power_on,
-> +	.power_off	= imx8_pcie_phy_power_off,
->  	.owner		= THIS_MODULE,
->  };
->
-> --
-> 2.45.2
->
+>   drivers/hwmon/emc2305.c | 28 +++-------------------------
+>   1 file changed, 3 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+> index a236f27c75bc..5f3f06308826 100644
+> --- a/drivers/hwmon/emc2305.c
+> +++ b/drivers/hwmon/emc2305.c
+> @@ -112,8 +112,6 @@ static char *emc2305_fan_name[] = {
+>   	"emc2305_fan5",
+>   };
+>   
+> -static void emc2305_unset_tz(struct device *dev);
+> -
+>   static int emc2305_get_max_channel(const struct emc2305_data *data)
+>   {
+>   	return data->pwm_num;
+> @@ -293,8 +291,9 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+>   	pwm = data->pwm_min[cdev_idx];
+>   
+>   	data->cdev_data[cdev_idx].cdev =
+> -		thermal_cooling_device_register(emc2305_fan_name[idx], data,
+> -						&emc2305_cooling_ops);
+> +		devm_thermal_of_cooling_device_register(dev, dev->of_node,
+> +							emc2305_fan_name[idx], data,
+> +							&emc2305_cooling_ops);
+>   
+>   	if (IS_ERR(data->cdev_data[cdev_idx].cdev)) {
+>   		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
+> @@ -337,21 +336,9 @@ static int emc2305_set_tz(struct device *dev)
+>   	return 0;
+>   
+>   thermal_cooling_device_register_fail:
+
+This label is no longer necessary. Instead, any goto can be replaced with
+an immediate return statement.
+
+> -	emc2305_unset_tz(dev);
+>   	return ret;
+>   }
+>   
+> -static void emc2305_unset_tz(struct device *dev)
+> -{
+> -	struct emc2305_data *data = dev_get_drvdata(dev);
+> -	int i;
+> -
+> -	/* Unregister cooling device. */
+> -	for (i = 0; i < EMC2305_PWM_MAX; i++)
+> -		if (data->cdev_data[i].cdev)
+> -			thermal_cooling_device_unregister(data->cdev_data[i].cdev);
+> -}
+> -
+>   static umode_t
+>   emc2305_is_visible(const void *data, enum hwmon_sensor_types type, u32 attr, int channel)
+>   {
+> @@ -599,14 +586,6 @@ static int emc2305_probe(struct i2c_client *client)
+>   	return 0;
+>   }
+>   
+> -static void emc2305_remove(struct i2c_client *client)
+> -{
+> -	struct device *dev = &client->dev;
+> -
+> -	if (IS_REACHABLE(CONFIG_THERMAL))
+> -		emc2305_unset_tz(dev);
+> -}
+> -
+>   static const struct of_device_id of_emc2305_match_table[] = {
+>   	{ .compatible = "microchip,emc2301", },
+>   	{ .compatible = "microchip,emc2302", },
+> @@ -622,7 +601,6 @@ static struct i2c_driver emc2305_driver = {
+>   		.of_match_table = of_emc2305_match_table,
+>   	},
+>   	.probe = emc2305_probe,
+> -	.remove	  = emc2305_remove,
+>   	.id_table = emc2305_ids,
+>   };
+>   
+
