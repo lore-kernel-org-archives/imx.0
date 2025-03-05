@@ -1,293 +1,211 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2088.outbound.protection.outlook.com [40.107.105.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC19205AB0
-	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 12:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741178406; cv=fail; b=g4vJoDqVkl0N7+dQnXtr9OKh3H2NxtBscy5ovFEmHlau7n191kMZTJG0g/6gb0pRA0toxrmpduxU93XKWBWlAMTq3TxRHjDq0WDvk2O+y9bKWTuqAMLNhTDOZpkD/lgN9C1Oqjskea6yLNXiPo2JPi6eDOSKcwTWcCzirC0zW8k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741178406; c=relaxed/simple;
-	bh=Il1Oyw0GUJ673pa7xy/5OMx4t17MsQhzKQ9qKUjckC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Ajy4PhSu43eRQdyjEdvzgdvMVT8tVVHjKglUPlyIvYNEld91SEJX7H1ucnB72zXHeVvOGrkJTV4lXO9gCdQMkmwWAxnghLWOo2kjyz+6fbKaOOB/wuUwI7124ixQLTlI14Lq3i0Pg/OGIXaZJ8GNjbUIwlmt2hmllINEODPjIVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=BxAqMfHg; arc=fail smtp.client-ip=40.107.105.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C623597E
+	for <imx@lists.linux.dev>; Wed,  5 Mar 2025 12:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741178768; cv=none; b=EHcMLln9KRka+ofnPOjDyOV4sAotB851q358c5Ni634TYuOgrfFB8/APKf5Q2XNNjvaTBeNlvbbmn/hJYaOGz047L/tHrAaC1+fTgpVfqvzYnCkRgUcXNQ324m1YS7P3xj0RXlmspmWPHtjxMKiuoVlN3bDJ3HvaE9fBCpc4JHI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741178768; c=relaxed/simple;
+	bh=xx8JpjJPC8xYDKoDVOJwNq5GyjLhOLnf6u0v8a2NSeQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IVyLfY9T8p5ADf+tTevA5xMs39RR9snFdoLdNYjo7lkTFwS6u/N2HT9aCQGWe2yVx4pIbfVd8t46Zhq3RhSJ6nRTJZbPyxvSB+RGnqF2A9ZTyrZeIkXPjOimW33U4RlFP8c7Xa352AwJEdtfzfLs92KaWv85d95ZpLWCsajXlYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXXefX/R; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="BxAqMfHg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vUWtMbLqQlRqgCIxMo17Z0eA6t++QaFp++sFI4HpoFJ8Dr/XyXXiqRR6z280aobcc59NmeH6WX4MMUK3QKVPus5gzr4EMjcKD/G3dmK5qLIT+Zkqtvs/5qOhXYkV29IvgMsuKqY4ZOhlBZghiKvym4AUs/MGLaz3ZjkT9QTsORSl4V48wPD053d5ewcrXGcZKvy/Z9Q6JiEQj2Q6xOmCDPjlcnxuusBDVZ4k+p1rnxxwOS0XPU2caNjkKORT/SWp9e9tM0mlkzvborzN7g3eCrkgxTg9H9ilt3pOOI6zSAFfxNEKmK+Hpw2VuGZW33ZoY5Ewwdvmm3hLNA99cFrgDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b8VAjib+6A103TMmVmC8d30dlP5ysyD2y/eNhRaWlg4=;
- b=sp5uNcYwL9m17T5zBPL9H49LWEtNYzFDQRTnbRza5ADWu0Gzc6pBRSdn41KBAeF+s0hhATaCS9TzUK2SNStyRaaDKlF6Ve92YSfjb6tWTu3t6atX21DdkjqL8QYsuVKWx92GG73fWzMwftJXqPXXNnqnt1dcF6mXn7AnEkeMWjCJtTp12zg1P+V5+5izZh1OfGxOscsEjwdvHtcIKV37VYN/+J+syRzuSVd9hKcjNVrn1x85JB9DsBKsiUVpFdcQgb3VMiyJHXA3WTXyP0B+HgkaocyMm8iqYfoZ7z1gZW8D1t4zt/ff56BKJUNKHFot+JvviQmY/4/nSne0hoZkoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b8VAjib+6A103TMmVmC8d30dlP5ysyD2y/eNhRaWlg4=;
- b=BxAqMfHgfh+cxtWQWuzIqBzVF0GtgdONB1eE34XbplLuIQsIaD6xlR3dW26YlknzZWATDk5wmSBPKozE9+Qr1DvwSzqbvJu0px9U8Qlf1esYyh1m9psaeXvLXpBG+paUOwPcBPBNR0YIfkLtHpqOpzXNtN+5VztJ7z2lYBXDUN5ZE77+jbGGM9HJV2a2MNRGMStqQJX51Wlb2jY/3SMg5R+ssA2wT4hOWVsKM/QrnlXqftZrmT90acp5WcSz4Q4LTFActvitGTCnj3tjZzrrMYC2g7KvglT8PjHpRF4QjzTEkcyL+UjZTUT/d6VyDC/NrBkGC42ukI+4zU0jiHCy5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
- by PA2PR04MB10513.eurprd04.prod.outlook.com (2603:10a6:102:416::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.25; Wed, 5 Mar
- 2025 12:39:59 +0000
-Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
- ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
- ([fe80::88b8:8584:24dc:e2a1%7]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
- 12:39:59 +0000
-From: "Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"S.J. Wang" <shengjiu.wang@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mpuaudiosw <Mpuaudiosw@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>
-Cc: imx@lists.linux.dev,
-	linux-remoteproc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH] remoteproc: imx_dsp_rproc: conditionally wait for FW_READY
-Date: Wed,  5 Mar 2025 14:39:23 +0200
-Message-Id: <20250305123923.514386-1-iuliana.prodan@oss.nxp.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR02CA0124.eurprd02.prod.outlook.com
- (2603:10a6:20b:28c::21) To DU2PR04MB8774.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXXefX/R"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-223594b3c6dso117136325ad.2
+        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 04:46:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741178766; x=1741783566; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OZhOmEpDhm76SJPq5OYpOzDDF0g2lT4rBhjCoTGHE34=;
+        b=FXXefX/RQCeJchVpFIEKVYutx+xjh9iCnce31XnxbjWB/38QoI5WhocomKjfGQ85r6
+         WTOGVnuzTr0IpWC9IyCEePLEt3G1xcamG9oOTyL51iAOsrtvK4WrqxGTuhbkFjjupltb
+         rKyHMmCXwA6bE4ILY6s8imcZEKQrqvDQpk+aRLGzVPjKI43MMja+kSEEvZ0rvGC+iY2D
+         8saULV1G/fQodtQVb3W3n3Jmes/hVuG5DeryP9BEbb3dokK1hsSJQVThUvl+ZFooBKQk
+         ZfJSZbfPZo33XGz0i12kI1OaWofE4zd1N5YPRRJvsgRfZfQIvXFOT7lgOoxHJ8YvLwr7
+         KWOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741178766; x=1741783566;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OZhOmEpDhm76SJPq5OYpOzDDF0g2lT4rBhjCoTGHE34=;
+        b=AYKR00FNP9/nYXhil4TEpbpqRdeWOyQax6gWUPhIWJ04AKJSNIMVbBKRcqfmMThQ7V
+         rjpqBSG4ErqIvfcNce1voDW1xckCG5bkmVksXFEefSPNwGXO5nLhujKIWdE4sCjLJTcC
+         TRJsNH3cJ35nCJGv+1JrLNhxL9z5JuCnbxXE22GRHyj6jA83ZH/7lY8kZnQ4JFGlMcpA
+         OpoA73Avy2td3ESdveGtuN8EqOvzmgAUaajtDFOEgGTFAr+KShsX2tR4u8mWQwZGM/9l
+         ghFjgdRj2vnQgeetYKymTCQKXNUBQjDj4pibVS7AMFtZH1Zc/woGmKNXe0SjMPDgJPq1
+         2q+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUYZ1D30GELzRyefi8YpPCD9wtoP1JyGzCD8Os6nl4ojhRIRkgv7d9DnmeEM1g12lcAf3s=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxPKZrw9/k7hRvkm2pjyTsLjUCi7PCpfDEaE+kb3GEVFbd7F+N+
+	lriwLIDEkC9+8mIDjDg4L6fjcd8FP1d4wJzrHI09pnoTT6y4Ul77Rbf3UvVLtocPyCPwR3sho8l
+	da2KvU4054fwqn+IBuH+vhYTqhIE=
+X-Gm-Gg: ASbGncsTEUUXfOhYCPvsT/XCCkETHPkEFzpbmrBH3ye4k+Zy6i/yeBmzcxYLNkHZyW4
+	JFgKqsJpAzvwzBQW2X/MN1bBJ5YMeGurYbEoCUMwYY8JywqDhM0ASzxGVvXe4LQfQ6uDpek9nET
+	Vu/Rt3KATaJDWQLUrba/lLNio=
+X-Google-Smtp-Source: AGHT+IHdwW4hQa2cLPlWYrU5ue4mWciZc0p5rQqeJ2JBGI1XN4w7WGoKToi7KE7C9eD7Ld4Askkac6qqdMHiE8X06ik=
+X-Received: by 2002:a17:902:ebc1:b0:223:f9a4:3fa8 with SMTP id
+ d9443c01a7336-223f9a457bemr25544855ad.19.1741178766361; Wed, 05 Mar 2025
+ 04:46:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|PA2PR04MB10513:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a3fda0e-4ab0-4be7-9a66-08dd5be2d798
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?f1nbFPs1i3xsqr/eAMgaMfugyGQc/x1Fy+NFO9V5w25v3LVqohy6acX4hEBa?=
- =?us-ascii?Q?w4ytecpPIzF8pAZvK+9paV4BSeRqKX5DZ04MeEA3Xvv7zTldXh32RFVe6xto?=
- =?us-ascii?Q?8DVMGwodvqfz3rj30Pekx9myKDXQUBGpshp6c5nAfag7P5VxM4+yq1BSe8wi?=
- =?us-ascii?Q?WMsyrVszKVPdsW0HMrcOe/Lfki61exkN8dUabINNw6cGBldWsAMgmEvmsEYH?=
- =?us-ascii?Q?lLfceWYtTE1ZUOxGNg9GwcXUJ+IwA7Zg/Jn2UofT4ToDYuclPL3OS8aUgNW8?=
- =?us-ascii?Q?RlKO3463uhvasVBORtGikb1ezTcTr9GBVl4+mtitICAcKgS0gpkkLwLn4Zon?=
- =?us-ascii?Q?rcMMJbLWs3XJrkqAQy12baCd3bG9KJr0/MdRnmeJCi34LglQq2NTQjhnrXTK?=
- =?us-ascii?Q?VxHZjSqbx6HEfcU2igQhk0XNGm8uV5bDywbp1CEbJg0EWefRsoxrxjd2Uq6Q?=
- =?us-ascii?Q?yozdpP3rZEsrKyP9vceC26MZ4izHmEK9nosqrNXQPvk1/3ThzOxsW5ouD862?=
- =?us-ascii?Q?wi9YXyXvlmGC/XJy6jpxgsWiYbXTe7o1mBpm85huKLDLs1C2/gqCl8B2UGkv?=
- =?us-ascii?Q?4Kkxt0OxHndsWRrSPHf7iXWJji61GghTgWsE52eV24BwpUvtC2X1DlrM2RVZ?=
- =?us-ascii?Q?6zGQUDiMXmeoWl3RXwjSyYYSuqN33/iX6z55RpKvXaH+p2EQnFUUlr5GzG95?=
- =?us-ascii?Q?ulkGnkjVjbLAwn9UTH163976KKcbHC/umcLNQxhHAfFWlci0QHK8RibHRKKj?=
- =?us-ascii?Q?FLSoGsiRkKyM+Tr6PV6hv3Pp/ZJ9ZhtLCMcAoB8e2OV6k9aKliYLxhgdFO0o?=
- =?us-ascii?Q?IW3yXfcpPAcKNGxEiEm/qyiEkAREOK471VS/6udminRTqCs5IyqDph6sOC2A?=
- =?us-ascii?Q?JCRYazQKAXzyb07cE31ByuYfsAa302i+vEs2LrMx/yPZFGX4s3wZXImRhsvS?=
- =?us-ascii?Q?pvpcrigI1q06msICIrNkk0cvtF/gQkthCzZmR/qqEmgMlLBVRRcLwQgQiVw0?=
- =?us-ascii?Q?z9vVq3wZfR9eFjh9X/f7AbJ9BPkLTNuqn8lFYltopm82V3jGlPJnP7w+rz+G?=
- =?us-ascii?Q?JA22g+EcVmZ+gcIioCe+yUQh3ZpikRohBWq5iwan1XL+6ANgao4bEbsfUTB6?=
- =?us-ascii?Q?EtrB0rBZcP9oNponwPRXDmys0bhgfTQN3af1MiZ1O07x2z1ogEGdDk46aU+v?=
- =?us-ascii?Q?jd3M8oDO1QshkMLRZKpSLqGWh8mo/qGqflglzmDRJDQK0ZhRwgi4ufSvwJXM?=
- =?us-ascii?Q?NdBRpltFVXBtA7uWkUlxsUEPJyNYyQPxgX353rMWlm9DiKiefRrIbJINZ5Bm?=
- =?us-ascii?Q?yPqYT7xj1hIYeOMsI+bJfh+iuUmzzOhCAMZ6n3wIRCJ2Ch8mQx7Lj8Sc/qo5?=
- =?us-ascii?Q?KrqpUh/yaKjc8MKUPZwynVfOhLvLHhyY7eIeLIdhTVkHaP452lw34HPFt5Zz?=
- =?us-ascii?Q?H0DkTIGXouFcci20v7dYKyWbJJ/wJkmA?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PGGreCGLxoWhua3fwhKpAZUzfBwrRXwA9ST7JhsbY/ZC1+ueiJCTk6acT6Ph?=
- =?us-ascii?Q?k8+B49l1x2JK1uooze7G6YcBisptbUjasKJnjVRlSxLG8Zlq99+bmR150eFR?=
- =?us-ascii?Q?ooIykpSZp0Oej5bCHKmPocklS7sbXkl8N1nVPbrTjzJFwly52TS0Z2JwbL3P?=
- =?us-ascii?Q?YwvU6pdAOjd6aLkfW8aY357XeiPZmZnhC7pTBFa94VoFZB++PSPdAikDES0B?=
- =?us-ascii?Q?DClUJOzmXRBCL2lS1HKwv04Zh3v4AXOkxzC7qpCScZi9AiLFN0E0FIB+Hg2d?=
- =?us-ascii?Q?FN4/+26Tq3/X9GgAolqo1NOo56pHvt+Ajy9BYDGOab6R9K1gSHtcHA2XwZLM?=
- =?us-ascii?Q?wQnGMNn8OyR5x9RW0A/FqSyqhrx1Nc0IQzo5VHhHUaUf5GroOqqh54c4Fbgu?=
- =?us-ascii?Q?uAukbiTChjlzDygLbNsr8Tt5mSCdW81wm/Zo/VkF6/AfBXcVhHZbVAGYbMMQ?=
- =?us-ascii?Q?Izgu3wombUAQsHSibnk0wffeAf5E+BuNtOemVhFjw4wTmxPwu4OilVcJmQ4v?=
- =?us-ascii?Q?w6iTX55Uu7iHJLFnTxcTpGxS5q1U3xmwbuc6elFXy27A/q/HkmDSdZecCGrK?=
- =?us-ascii?Q?fWosx+3HodW/pK8onuzdPWFvIRG4FxNbTDDzC8pL3QvXtiUYQD/dSxJFckV3?=
- =?us-ascii?Q?eYt4oSI+WPY+5m2DVvs+gGzVDjtjOTNo5gDfvN8YUiNzYlrXPlyreJC/neWV?=
- =?us-ascii?Q?5J/+opwMpOv3fuarQzSrlC2n8cguaN8WAL4Y8GC0adm3LjkI3NLwNrIISoYw?=
- =?us-ascii?Q?a7JKplZHX41jNV07bZqQssWS2D7v4QtZDqqq9He80yvdIiTd2Vdg6pBgyLwC?=
- =?us-ascii?Q?MpTDpvTUSc5aNQeYyEWYeNHL9XPDSwcAuJAJZ2TjOeX42GRP+82VZAHD6QVD?=
- =?us-ascii?Q?BgXfxB0sW+U9tb6XWCO5J9tNv1sH89OpN0lRZyftCuOcqbNUVRKeMuEDsljV?=
- =?us-ascii?Q?rRM6tIYJFUZYPZa08AOg0cwa8dpo2gg/V5owQ0PvsZwhbSlai+FekyV95CYE?=
- =?us-ascii?Q?aZkagG+8/UNq6PBlg2B3uAa2hpBMRVu810dwPoV4mbOuhm2R1+cFsmGlpRwf?=
- =?us-ascii?Q?MEJjjuylYfNwXsjSUSOFXq7rBQctolD4W//7jBx7kGc0lkVtNdPEf0UTVBLj?=
- =?us-ascii?Q?YKaROWK4poOO04fQ7b0XDPVCZ9RwZ03FN6Q9sMZ319Hz9hz/C3RVrzBop04S?=
- =?us-ascii?Q?xoFroMR/GzpWIcphANU8BWyE9jFO0NMyws+jmgl6yWXTUWB6gumjT9oiaTAv?=
- =?us-ascii?Q?PWTV7/g9ulHeBijE5qw30HYYQ1076BLvwn4VaHDlIKlzeBMtp2lqywMyyCzW?=
- =?us-ascii?Q?ddcA8TKvwYr6WJ2/PvWhhHPY5GCpbBUOJVaIZgmFqm+p5BiGbYJJE1qn+Trg?=
- =?us-ascii?Q?mcFkO397lMZHsjjyiIGQskpq1hii5j27/CAR10YZx54Hhfvy5RP8BE4a5rxs?=
- =?us-ascii?Q?xkPXhNg9y+7IuyiL4cYzr47h41Ig9s+tEQLrMQe15l6KB3PdbgiKuIgZM2Ei?=
- =?us-ascii?Q?BUdS6j18Sr71hQQklcascYI6OEvzn/zY1hH88nrCHG5h6oc1/qC3Z2BW7Y1F?=
- =?us-ascii?Q?ibfYCs65hFAJqdVrakh3QrIrnrS2hSwqCBtDslQ2R26RUO3ne7EGntaTOaFm?=
- =?us-ascii?Q?Kw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a3fda0e-4ab0-4be7-9a66-08dd5be2d798
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 12:39:59.8024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tXO0zEEhGGgf+Q2NqSOrTDmyCxMz1SNtOs3QuUPG4Niyg/jFOOwDgmrYAOnG5EayZdAMIOQrnBnK+SuZygsd2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10513
+References: <20250304162136.1963384-1-florin.leotescu@oss.nxp.com>
+ <20250304162136.1963384-2-florin.leotescu@oss.nxp.com> <Z8cp1xoIXT8lgD8T@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z8cp1xoIXT8lgD8T@lizhi-Precision-Tower-5810>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 5 Mar 2025 14:47:45 +0200
+X-Gm-Features: AQ5f1Jq_yZI7Qka024KvL_NkiadJQvrOZEyL3YURWLhpyxIxGw7rSu6jJaSDwjY
+Message-ID: <CAEnQRZCT4vfFBApv+C3Wp17Fk0-Rwx36h4eCTTygaXFYFipEGg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: hwmon: Add Microchip emc2305 yaml schema
+To: Frank Li <Frank.li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: florin.leotescu@oss.nxp.com, Jean Delvare <jdelvare@suse.com>, 
+	Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	viorel.suman@nxp.com, carlos.song@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, festevam@gmail.com, 
+	Florin Leotescu <florin.leotescu@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
+Hello Frank, Conor, Krzysztof,
 
-Some DSP firmware requires a FW_READY signal before proceeding,
-while others do not.
-Introduce imx_dsp_rproc_wait_fw_ready() to check the resource table
-and determine if waiting is needed.
+Thanks a lot for your comments and help.
 
-Use the WAIT_FW_READY flag (bit 1) to distinguish cases where
-waiting is required, as bit 0 is reserved for VIRTIO_RPMSG_F_NS
-in OpenAMP and mentioned in rpmsg documentation (not used in Linux,
-so far).
-This flag is set by the remote processor in the dfeatures member of
-struct fw_rsc_vdev, indicating supported virtio device features.
+In this initial patchseries we only add minimal OF support and
+introduce a minimal binding.
 
-Update imx_dsp_rproc_start() to handle this condition accordingly.
+> How did you pickup the maintainer entry?
 
-Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
----
- drivers/remoteproc/imx_dsp_rproc.c | 84 +++++++++++++++++++++++++++---
- 1 file changed, 77 insertions(+), 7 deletions(-)
+We got the author of the first commit for
+See 0d8400c5a2ce ("hwmon: (emc2305) add support for EMC2301/2/3/5 RPM-based=
+")
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index b9bb15970966..8eefaee28061 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
--/* Copyright 2021 NXP */
-+/* Copyright 2021, 2025 NXP */
- 
- #include <dt-bindings/firmware/imx/rsrc.h>
- #include <linux/arm-smccc.h>
-@@ -38,6 +38,15 @@ MODULE_PARM_DESC(no_mailboxes,
- #define REMOTE_IS_READY				BIT(0)
- #define REMOTE_READY_WAIT_MAX_RETRIES		500
- 
-+/*
-+ * This flag is set by the remote processor in the dfeatures member of
-+ * struct fw_rsc_vdev, indicating supported virtio device features
-+ *
-+ * Use bit 1 since bit 0 is used for VIRTIO_RPMSG_F_NS
-+ * in OpenAMP and mentioned in kernel's rpmsg documentation
-+ */
-+#define WAIT_FW_READY				BIT(1)
-+
- /* att flags */
- /* DSP own area */
- #define ATT_OWN					BIT(31)
-@@ -300,13 +309,74 @@ static int imx_dsp_rproc_ready(struct rproc *rproc)
- 	return -ETIMEDOUT;
- }
- 
-+/*
-+ * Determines whether we should wait for a FW_READY reply
-+ * from the remote processor.
-+ *
-+ * This function inspects the resource table associated with the remote
-+ * processor to check if the firmware has indicated that waiting
-+ * for a FW_READY signal is necessary.
-+ * By default, wait for FW_READY unless an RSC_VDEV explicitly
-+ * indicates otherwise.
-+ *
-+ * Return:
-+ *   - true: If we should wait for FW READY
-+ *   - false: If FW_READY wait is not required
-+ */
-+static bool imx_dsp_rproc_wait_fw_ready(struct rproc *rproc)
-+{
-+	struct device *dev = &rproc->dev;
-+	struct fw_rsc_hdr *hdr;
-+	struct fw_rsc_vdev *rsc;
-+	int i, offset, avail;
-+
-+	/*
-+	 * If there is no resource table, wait for FW_READY
-+	 * unless no_mailboxes module param is used
-+	 */
-+	if (!rproc->table_ptr)
-+		return true;
-+
-+	/* Iterate over each resource entry in the resource table */
-+	for (i = 0; i < rproc->table_ptr->num; i++) {
-+		offset = rproc->table_ptr->offset[i];
-+		hdr = (void *)rproc->table_ptr + offset;
-+		avail = rproc->table_sz - offset - sizeof(*hdr);
-+
-+		/* Ensure the resource table is not truncated */
-+		if (avail < 0) {
-+			dev_err(dev, "Resource table is truncated\n");
-+			return true;
-+		}
-+
-+		/* Check if the resource type is a virtio device */
-+		if (hdr->type == RSC_VDEV) {
-+			rsc = (struct fw_rsc_vdev *)((void *)hdr + sizeof(*hdr));
-+
-+			/* vdev does not require waiting for FW_READY */
-+			return !!(rsc->dfeatures & WAIT_FW_READY);
-+		}
-+	}
-+
-+	/*
-+	 * By default, wait for the FW_READY
-+	 * unless a vdev entry disables it
-+	 */
-+	return true;
-+}
-+
- /*
-  * Start function for rproc_ops
-  *
-- * There is a handshake for start procedure: when DSP starts, it
-- * will send a doorbell message to this driver, then the
-- * REMOTE_IS_READY flags is set, then driver will kick
-- * a message to DSP.
-+ * The start procedure involves a handshake: when the DSP starts, it
-+ * sends a doorbell message to this driver, which sets the
-+ * REMOTE_IS_READY flag. The driver then sends a message to the DSP.
-+ *
-+ * Before proceeding, the driver checks if it needs to wait for a
-+ * firmware ready reply using imx_dsp_rproc_wait_fw_ready().
-+ * If waiting is required, it calls imx_dsp_rproc_ready() to complete
-+ * the initialization.
-+ * If waiting is not required, the start function returns.
-  */
- static int imx_dsp_rproc_start(struct rproc *rproc)
- {
-@@ -335,8 +405,8 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
- 
- 	if (ret)
- 		dev_err(dev, "Failed to enable remote core!\n");
--	else
--		ret = imx_dsp_rproc_ready(rproc);
-+	else if (imx_dsp_rproc_wait_fw_ready(rproc))
-+		return imx_dsp_rproc_ready(rproc);
- 
- 	return ret;
- }
--- 
-2.25.1
+> If only one reg You can go through trivial-devices.yaml
 
+This is not a trivial device as we will add some specific properties
+with our next patches
+(e.g polarity etc)
+
+> Missing descriptions of the fans, no?
+> missing $ref to fan-controller schema.
+
+Do we need to add this now? As this is only the minimal binding
+support. We want to add that
+in a follow up patch when we go into specifics.
+
+> The emc2301 label here can be dropped, it is not used.
+
+Will fix.
+
+> The nodename should be "fan-controller", not pwm here I guess.
+
+Sure, will fix.
+
+On Tue, Mar 4, 2025 at 6:56=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Tue, Mar 04, 2025 at 06:21:34PM +0200, florin.leotescu@oss.nxp.com wro=
+te:
+> > From: Florin Leotescu <florin.leotescu@nxp.com>
+> >
+> > Introduce yaml schema for Microchip emc2305 pwm fan controller.
+> >
+> > Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> > ---
+> >  .../bindings/hwmon/microchip,emc2305.yaml     | 43 +++++++++++++++++++
+> >  1 file changed, 43 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,e=
+mc2305.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.=
+yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> > new file mode 100644
+> > index 000000000000..cac0075a65bb
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> > @@ -0,0 +1,43 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/hwmon/microchip,emc2305.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Microchip EMC2305 SMBus compliant PWM fan controller
+> > +
+> > +maintainers:
+> > +  - Michael Shych <michaelsh@nvidia.com>
+>
+> who is it? look like not Microchip and hwmon maintainer.
+>
+> > +
+> > +description: |
+>
+> Needn't |
+>
+> > +  Microchip EMC2301/2/3/5 pwm controller which supports up
+> > +  to five programmable fan control circuits
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - microchip,emc2301
+> > +      - microchip,emc2302
+> > +      - microchip,emc2303
+> > +      - microchip,emc2305
+>
+> According to your driver code look like all compatible with microchip,emc=
+2301
+>
+> oneOf:
+>   - enum:
+>       - microchip,emc2301
+>   - items:
+>       - enum:
+>           - microchip,emc2302
+>           - microchip,emc2303
+>           - microchip,emc2305
+>       - const: microchip,emc2301
+>
+> So your driver just need one "microchip,emc2301" compatible string.
+>
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        emc2301: pwm@2f {
+> > +            compatible =3D "microchip,emc2301";
+> > +            reg =3D <0x2f>;
+>
+> If only one reg:
+> You can go through trivial-devices.yaml
+>
+> Frank
+>
+> > +        };
+> > +    };
+> > --
+> > 2.34.1
+> >
+>
