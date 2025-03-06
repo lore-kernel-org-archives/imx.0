@@ -1,222 +1,175 @@
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013016.outbound.protection.outlook.com [40.107.162.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AEB1F4188;
-	Thu,  6 Mar 2025 16:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297D813635B
+	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 17:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741278813; cv=pass; b=kH1NQXvUtMgxNesAqzJvGVXqX++bFfJBNlOikXKkzELo2v/vbMJsAdI+3kvvNo9z3MHJ9c6VAbI7KmnK9FwzXV4RWxw7x2NL6hfBobk2oKDERTxbKRZuekt0z6JkY6mGJIiHI9H+XoChJ49CqJL5J/ANx8Z2e7D7NalGiROVX3w=
+	t=1741280810; cv=fail; b=EZEV7w1IVGSzEGhVu503E8WclWEVpUG6GBQaHIeDKfbm+LWoRjOr71b0tpg1hCXVaoFRMj+77mOfBjODOfGUqxUyaPjSunut+lC9tWromCDTPNYSdaGrrqEx9UimHwj8F9667iuaeSP415fWDsYATFHb4nk7sP6EftsTk8R437g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741278813; c=relaxed/simple;
-	bh=4lgMmgfNgoWC+JNlOHQFpGd5xL6R5LMAkgWVRtpFecM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WbklRq9IqaGm59FzjQUL6EKHWdDESg42IKqi/a/lpnAICEb0egu5yNrrEJMnyFLHcuX0ZCN1cYtpudE0h+yuFaGNT46aoRFVJnWYkn46ARUGOEKcyk03Kf2elOjEtq2feQDpLnHcTOARlj7kJa6c/RYVM6OMddZWWQd5SE8rRvI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=krhmM5S2; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	s=arc-20240116; t=1741280810; c=relaxed/simple;
+	bh=q69Wcap+dR+jBHD7evNrid+s1HCNKcxLf5IPBUrRDIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=H7P2FohaiXAiE762oxGMIASkCv4ct67MVwmL34xXcG5O7hUHdlS+5I7/j8Apyr9jZBeDWP49jVQdBqysoxmInnZabCoQIIKR8Y9ihNKMH/2WqePR1vJyqER8/b6dLZztBY+RzWqIG02+clUFrADgm+ORoJmuoQmJMnSJRPjGCEc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cDWuoLUY; arc=fail smtp.client-ip=40.107.162.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="krhmM5S2"
-Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4Z7w2l38DYzyNC;
-	Thu,  6 Mar 2025 18:33:19 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1741278802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FU1dvFue8oQTK3aBF6A/gGzFXjSlyHzhzEo8txyLQPU=;
-	b=krhmM5S23MXIk6gZMykk21LK/zIPu1rqMfjwHioPy9BIQygmc1k1BDThwP0FfLcyP89/x2
-	b0aFigklgjtgVIa1fNkCUJicde2yBf1DPrUOOBQqqXte5R9EjZlHBKPi1F5ciVNfgWhxbZ
-	ssajOLoE9KXYCbxfbj6bWyiXmGO4Hx8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1741278802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FU1dvFue8oQTK3aBF6A/gGzFXjSlyHzhzEo8txyLQPU=;
-	b=fUfFyRsoegM4MnO2Zbhp69jDOLRMFOxbStL/SIzzNirCLgtYDC2Sy8jfpZ8B54ZTQdUlJR
-	pXr6Xs+W79Q60zh9PeEfKmcl7h8SK60fKiOSpPsehUU/4U2UJW2KPckIIQqkHYlxtbU0cO
-	CGF1ln7BGgAW/N7ZLiNa46bQmi7OVJM=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1741278802; a=rsa-sha256; cv=none;
-	b=h1BTf/HNzJqS0lWKnc3Auqvdnegs18T2wlEKyb/i7YrmPWa1aNKDa8UP8TGJ9Re43CCWJT
-	zQ+5EQRJRUtf8ogmnHUdgTKLpObuFstm22EUntSsz+sYXKSYmmPYRz9iwiL0YE2FHGZyPX
-	BTX6fQCporPXmRCOrgZwqynpzmSCbcs=
-Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id CC6CE634C93;
-	Thu,  6 Mar 2025 18:33:18 +0200 (EET)
-Date: Thu, 6 Mar 2025 16:33:18 +0000
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Mathis Foerst <mathis.foerst@mt.com>
-Cc: linux-kernel@vger.kernel.org, Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cDWuoLUY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yBdpCwZ/2C7NIBm+pxvrr+dDu6I2N+lgRpges5naQ1SCEQca9QGexUCCKtRFKBjK+a9RRJGIZc80/kwd6MbRAnC143iRd6TIqRF1aZb9VDrXSRzZcMKu/aR8svz+M/0fYAbP9AMDURmvU7gfhGkKo4ucSX+RShXzmsYx7cCj7jiX/Q87wkJ2gVBUxftW4jA7L+SjTyxgMI2UXgGMER5qPURQTRL+ZKArGRXP3DZeLJOs6H8hHOpaArIbQS/k54WvqgZNs8SfJMskR++F/Yu4ztMOxVUIsO/PMRAwHid+WZ4dPD8Wkf8UjSbihiily298zMQaxAo5aKkMdtEUne+bcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PawRMDD2ocz/RPxW0UustzNT+f6H0frkwH/deQhbkME=;
+ b=VFi0GVuwRhJxah7oPlTreVj1061n/9NG+7iauIxAEH4/Dz1bQV2wXOx9MgAFMraXNC5mPhBzvQKYk06JwM91tUjgkXG6VSNBMtB7Mf4VaUwg1nXzpyAMDQRYFcWHjm4lta291NDpXXhkvp33Jj8GwdggkXaQcldwe8GuBRunBzdb0zQaLW7+4AD41mgJJ/IyynmYBJdZ3z++nv0djJ+3SzojSLd5u/bd9k/zGBM4zmUPwuUZV03qIyyNqoFLDANSO63rbilePvECz9l6RCKUbt/2AqVgRkVl2hzTvCSiYIga7UQksRyiRfYHJ/BrXQQ6qXfN28gwE62RzUbmm/n8fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PawRMDD2ocz/RPxW0UustzNT+f6H0frkwH/deQhbkME=;
+ b=cDWuoLUY73HV2SMerokte6x/crnI/nqk7hYAEyKLtAnzKpn4yW4uF6pEWXMYZEIxnREbc51oKAWSPYvTRc6S9wfVNqpkaWeMLMCcvRq6QMI7N/RqiZkdGnE6y46B0ToN3uaZgpMdhdoFa0lrjQwZY763LN4dyka1zj5PwwZfgkgwLLjUvy8Q/V75xYmOMaUoiWBuR3t9/zPgFfGAbkgHg09yh/tVuRZ5oQkgD3W6ghxpM7MG2KFr2ju0B95KYCarlQzn3OYHC5Z0fI02X52xa0NNfIc3RlaFTzsdJgHWHdVnJtlhCA+1t2BsSlLldzOQ19Tujk4oZ+NW6HHLHNKzeA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB10680.eurprd04.prod.outlook.com (2603:10a6:150:20c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.28; Thu, 6 Mar
+ 2025 17:06:45 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8511.017; Thu, 6 Mar 2025
+ 17:06:45 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, manuel.traut@mt.com,
-	mathis.foerst@zuehlke.com
-Subject: Re: [PATCH v1 1/1] media: imx: csi: Parse link configuration from
- fw_node
-Message-ID: <Z8nOTrjEW_OYBGlq@valkosipuli.retiisi.eu>
-References: <20250305113802.897087-1-mathis.foerst@mt.com>
- <20250305113802.897087-2-mathis.foerst@mt.com>
+	Fabio Estevam <festevam@gmail.com>,
+	linux-watchdog@vger.kernel.org (open list:WATCHDOG DEVICE DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH] dt-bindings: watchdog: fsl-imx7ulp-wdt: Add i.MX94 support
+Date: Thu,  6 Mar 2025 12:06:28 -0500
+Message-Id: <20250306170628.236422-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR05CA0038.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305113802.897087-2-mathis.foerst@mt.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10680:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c6f2db3-c2c4-4fd1-aeba-08dd5cd145f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?D/+55/Bx0MDYEn8wExm7kx0rlFzfxR1dO110OdoPy1+WyXmOb942JdwUTSHd?=
+ =?us-ascii?Q?B0ZbGxTjvCHUvNlovgw3RR+wRAyUJrHdgLsE9ZsEl9JiNr5kcWhfP6B4ovCw?=
+ =?us-ascii?Q?wnBpdXo639ZzL9A/+MMk50D2Y2VRCOoC5FuXQWmx++XgadTBwpgtqUCNUwhp?=
+ =?us-ascii?Q?lCGgP3CuDQp8PFBKUmyHHFivwiAbY+DhJ8Kk0/HTvrHz5wARlNseexMU/TfW?=
+ =?us-ascii?Q?dUg7sG025UrpmDE5wLtHCmOEt8u6GOzqcje5/HKAAwHNzEwE+mU1T2rdqkqV?=
+ =?us-ascii?Q?YhY59zc3U1/jneyt/74RWq36hDH/SUDnuFSneJ/GpzZSbR1DVxNF+MEwdgQV?=
+ =?us-ascii?Q?831MX73u22NaQwcQf8tIKCt+gsQD0i0SdPF53tUbZ0oWOYWxl+9X95DHtdLI?=
+ =?us-ascii?Q?3UY/B63pb7hmiQkeS58NqVU1T4k1FCRFvrHqQt4QxMnW1Xj9/CGaiGXNvVAN?=
+ =?us-ascii?Q?1JgKbUd+Co51Rjn+JprkPBY97Rjt7omGnGeA4Z7dU+UhzXd86tZ4nVodqSZe?=
+ =?us-ascii?Q?hlnzdFTxPPP5rB1neWlL1t4R6xt7IwSu163sPX1SYEELTwIbZc0ydPieCuWN?=
+ =?us-ascii?Q?gtchSM46V1T5dAVgWlvU9OOOXUjTrfyMY4db1a1kbpLpGnIHuVdPfi5EJEx2?=
+ =?us-ascii?Q?QoMc83/Pxa0d6x00Sy1AZTNAOVrWcw9LIpvKrQln4ggtMyUi6T9dU/mUsqmp?=
+ =?us-ascii?Q?99JvjZjlsKhN/uamsJt6k9mXUbENxOeHJZ2d+fbCMPL8SvJCiNWa0NiEmr+w?=
+ =?us-ascii?Q?ugvKqdpGmqVr7YL3rpvMJhc/bwyZURUpaT8aJOGOr2bkC2eB0GUsa/earsMc?=
+ =?us-ascii?Q?fp6XbdDKKDtTAkLJEEHTxDpUbE/LDkDPbY/CM9qtwO7Fqg4yoU6MxS+CPm16?=
+ =?us-ascii?Q?QiGFe9gSsQq9iJo/HXxIaDd7a96gkBUojjd2z9h561Nq4YouRlHTT5o+CPFF?=
+ =?us-ascii?Q?rsVWnYViHfV+jY1Ch2600jKhH609xS3Icdq88RoqwijZe/xWODqn9N9dNUlp?=
+ =?us-ascii?Q?CVN5f0UWf0Pze4qaGFzwLTD/cPvGmgQll0do+x0ae1om08SlC5DLlYhNPbeu?=
+ =?us-ascii?Q?sWiYaG517s0JkBva+X/LzJHoGFop/+3xFeGu3FxE8Jx92XuFv/V9laHJdmiK?=
+ =?us-ascii?Q?PYSKeA7BlLV1b1A/H5yj4cBN6z952DTAFEKOOuu52b41y1dJNWrYhtylpDtI?=
+ =?us-ascii?Q?gKx8D930g42t4H0o7ge1HNGqMXYA8GKB9ZUAshIYeQtVW946wh8Kzth2SlcU?=
+ =?us-ascii?Q?+8JoYUKmWvebK1iU0cwPeACEpGzpvxIx5sDJAB5oT8iVPuPxJsOoK2Dsk3jq?=
+ =?us-ascii?Q?mJsieLVSIuNHFYMt0tFkZieOguvhCh7OmP2/AD7JCvHwFsoSXiasjBjwviAH?=
+ =?us-ascii?Q?hchVWbV/fh/YZLO5KlvR/zpgCltiI+sr5SSl7EKEa4Hoj2so7swHQkz41d3J?=
+ =?us-ascii?Q?nbUqtJACxF8wN3Q/zTC/dbyCAFQoX6gSTdOLjkz89ctSEYwWLCHyUw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?oG7CXzq47RePVir+I/cyHvEh01n+QkPP3UOFjjOYGP2pJJCiuj7C7CG0uSLk?=
+ =?us-ascii?Q?sUpW9q4bahIWjn+undK4hP92bCNuQrcm60IrPkagrZQwLcJigm0r3D8YKMIL?=
+ =?us-ascii?Q?cJcic2mFWwTsj2W6pXSaCWzM5cIfDw0PWPQ5ZRCJzG4c5h3V7ivpFXhkfQk6?=
+ =?us-ascii?Q?K0snPiN4X4OpY9asDHLcy8W6ejG9hIzlsbGUsLndta4WsH+ER0TwuQTx/7xW?=
+ =?us-ascii?Q?/aB6Y5EM8NFKNx7pCso/mSwx0ROCp7UUQDAJhHJUv4KM8NCI3a8wXjduzD0S?=
+ =?us-ascii?Q?SrMfKTHtBaPkPrOIIel+9bn9AGhznF0BOEe3bvataTTeLnKvdqgkLKK4UWR8?=
+ =?us-ascii?Q?gZ+i/6BMQQq+suqDD0G2La84jHdUCZsIa3dEzSYjJyPpZCI23hSRJT+v2hgN?=
+ =?us-ascii?Q?64tTDaNJJNDkAbLrwGr0U/NgsSIwevYpnxdnsN3GKIREpBJt3Y58qeohuZoD?=
+ =?us-ascii?Q?BFBkoRfiykjpGl2EpvV5RviIgHo5u2SeDsjslM7Jk28eSqoIceI4FwR9x0VC?=
+ =?us-ascii?Q?Lm4Q6bCyOydw+LOcMsBIaDITXwHovLykoNhSzm2hs3b68sJf51bfb8PHGDKj?=
+ =?us-ascii?Q?PKOdobLuv1l0ZJ42/opTyw2gGUWn+lEQdo+GKYUWZZs/KAsgegWR5HO/sQax?=
+ =?us-ascii?Q?B2tMxkrvr4hWrDQcwW2e5fuy/uaSUwTwllRVAAKmpP30LtUpMfeRJChyr5lX?=
+ =?us-ascii?Q?qTUGFQWeJcT5CAC4v3yP4tsmbGCF+REU7p6Z/9YdnNn6QO97c2xB3bBknnUG?=
+ =?us-ascii?Q?dUwLAK/WvVI5LXfAl2+rqL0F4S3zrK2K8dlooTLQcYW4ipBNexzUBkxJC7mQ?=
+ =?us-ascii?Q?HqVDOSsgk9hTrp3+8dRtwBl3OXO6g8R4dKqMR9iUyebzL4NP0SyBSt0aSMTY?=
+ =?us-ascii?Q?zjLdIZq/uJMwcWWhCFaQjJSDg88voQTEIFFOsO4yaDehu/Ze25kKj1jiXwJt?=
+ =?us-ascii?Q?r4Dbpq9lwCTukc0yjgYrKoomC8EdaC9HIb/1y9crWVF2BzopPuWXZMmKP9fX?=
+ =?us-ascii?Q?YW6ILqhYJT64e/SuwXZiGg9TRuYXcoxFl8aztzMvIGkmx5tG0SAHaa3ry+VV?=
+ =?us-ascii?Q?7KSiYn/OxIbAHYs14Se7MEtcchBpg5xkBl12Y/jIuf4xiVyfwrppYy2wWA/d?=
+ =?us-ascii?Q?BEBVpBUYZgbSPv8DjLc+Mr9IaVqNlJ+PhnUPyeTTQzE3I34w2W7Hpbycc9TV?=
+ =?us-ascii?Q?65JGrqoVQ77owg9oraBJuG5htMwMJhEXXiRspq+f3yisB295VIculAY5bPaS?=
+ =?us-ascii?Q?BOvKHoZsPNyvtpneAA3q0CpGgKFDB4VbsWkmLd0Wa8ODfYm+2pW3xy1KVn31?=
+ =?us-ascii?Q?hh54sChuBLQSUBxZjNy+/xtJ5C4JuPRdZT9KOehfVDQf6tZoLbjVvbt0SOzi?=
+ =?us-ascii?Q?Cu7Dv0aknnCEi+0z0TMCwIiUoUWg12iX3SrvkVNwocI4OP8v/KeTpP8Aqe6e?=
+ =?us-ascii?Q?TYG5GsNKajTYoVAafR2NxQdBSC6FGoQdt41vdja0QLDittbnXUIeGrb0Sj/4?=
+ =?us-ascii?Q?jBAZzoO29JtJ9gGRjoVP4AkUOiSdUsDiJ6tfmlavpeohdmGD6QsC9D3YkfKy?=
+ =?us-ascii?Q?0yPMVc9zjQCnoOjojUDs45GsYGHUK2uvknJ4fons?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c6f2db3-c2c4-4fd1-aeba-08dd5cd145f6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2025 17:06:45.1378
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U7cpqWmDz83cL1pn9iwAzjbQT+XWygg/4qaX2kQ3qyoWq8dfHMseYvCVHQTdESnkn+3ZmrxF4QiYTjnzYkYqcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10680
 
-Hi Mathis,
+Add compatible string "fsl,imx94-wdt" for the i.MX94 chip, which is
+backward compatible with i.MX93. Set it to fall back to "fsl,imx93-wdt".
 
-Thanks for the patch.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml         | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On Wed, Mar 05, 2025 at 12:38:02PM +0100, Mathis Foerst wrote:
-> The imx-media-csi driver requires upstream camera drivers to implement
-> the subdev-pad-op "get_mbus_config" [0]. Camera drivers that don't
-> implement this function are not usable on the i.MX6.
-> 
-> The docs for get_mbus_config [1] say:
-> @get_mbus_config: get the media bus configuration of a remote sub-device.
->             The media bus configuration is usually retrieved from the
->             firmware interface at sub-device probe time, immediately
->             applied to the hardware and eventually adjusted by the
->             driver.
-> 
-> Currently, the imx-media-csi driver is not incorporating the information
-> from the firmware interface and therefore relies on the implementation of
-> get_mbus_config by the camera driver.
-> 
-> To be compatible with camera drivers not implementing get_mbus_config
-> (which is the usual case), use the bus information from the fw interface:
-> 
-> The camera does not necessarily has a direct media bus link to the CSI as
-> the video-mux and/or the MIPI CSI-2 receiver of the i.MX6 might be in
-> between them on the media pipeline.
-> The CSI driver already implements the functionality to find the connected
-> camera sub-device to call get_mbus_config on it.
-> 
-> At this point the driver is modified as follows:
-> In the case that get_mbus_config is not implemented by the upstream
-> camera, try to get its endpoint configuration from the firmware interface
-> usign v4l2_fwnode_endpoint_parse.
-> For the supported mbus_types (V4L2_MBUS_PARALLEL, V4L2_MBUS_BT656 and
-> V4L2_MBUS_CSI2_DPHY), extract the mbus_config from the endpoint
-> configuration.
-> For all other mbus_types, return an error.
-> 
-> Note that parsing the mbus_config from the fw interface is not done during
-> probing because the camera that's connected to the CSI can change based on
-> the selected input of the video-mux at runtime.
-> 
-> [0] drivers/staging/media/imx/imx-media-csi.c - line 211..216
-> [1] include/media/v4l2-subdev.h - line 814
-> 
-> Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-> ---
->  drivers/staging/media/imx/imx-media-csi.c | 36 ++++++++++++++++++++---
->  1 file changed, 32 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-> index 3edbc57be2ca..394a9321a10b 100644
-> --- a/drivers/staging/media/imx/imx-media-csi.c
-> +++ b/drivers/staging/media/imx/imx-media-csi.c
-> @@ -169,6 +169,8 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
->  {
->  	struct v4l2_subdev *sd, *remote_sd;
->  	struct media_pad *remote_pad;
-> +	struct fwnode_handle *ep_node;
-> +	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
-
-Are there any defaults in DT bindings (other than 0's)? Also initialising a
-field to zero this way is redundant, just use {}.
-
->  	int ret;
->  
->  	if (!priv->src_sd)
-> @@ -210,11 +212,37 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
->  
->  	ret = v4l2_subdev_call(remote_sd, pad, get_mbus_config,
->  			       remote_pad->index, mbus_cfg);
-> -	if (ret == -ENOIOCTLCMD)
-> -		v4l2_err(&priv->sd,
-> -			 "entity %s does not implement get_mbus_config()\n",
-> -			 remote_pad->entity->name);
-> +	if (ret == -ENOIOCTLCMD) {
-
-	if (!ret)
-		return 0;
-
-And you can unindent the rest.
-
-> +		/*
-> +		 * If the upstream sd does not implement get_mbus_config,
-> +		 * try to parse the link configuration from its fw_node
-> +		 */
-> +		ep_node = fwnode_graph_get_endpoint_by_id(dev_fwnode(remote_sd->dev),
-
-Always parse only local, not remote endpoints.
-
-Also: instead of supporting get_mbus_config() in a driver, we would ideally
-have a helper that optionally uses it and secondarily gets the endpoint
-configuration from a local endpoint. It's better to do that once rather
-than have every driver do this differently, including a different set of
-bugs.
-
-That being said, V4L2 fwnode endpoint parsing is a somewhat driver specific
-task and that should remain with the driver. So I'd think the helper should
-take a driver-parsed struct v4l2_fwnode_endpoint as an argument, for that
-endpoint.
-
-I'm not saying no to this patch though. But in the long run we'll be better
-off with a helper in the framework.
-
-> +							  0, 0,
-> +							  FWNODE_GRAPH_ENDPOINT_NEXT);
-> +		if (!ep_node)
-> +			return -ENOTCONN;
-> +
-> +		ret = v4l2_fwnode_endpoint_parse(ep_node, &ep);
-> +		fwnode_handle_put(ep_node);
-> +		if (ret)
-> +			return ret;
->  
-> +		mbus_cfg->type = ep.bus_type;
-> +		switch (ep.bus_type) {
-> +		case V4L2_MBUS_PARALLEL:
-> +		case V4L2_MBUS_BT656:
-> +			mbus_cfg->bus.parallel = ep.bus.parallel;
-> +			break;
-> +		case V4L2_MBUS_CSI2_DPHY:
-> +			mbus_cfg->bus.mipi_csi2 = ep.bus.mipi_csi2;
-> +			break;
-> +		default:
-> +			v4l2_err(&priv->sd, "Unsupported mbus_type: %i\n",
-> +				 ep.bus_type);
-> +			return -EINVAL;
-> +		}
-> +	}
->  	return ret;
->  }
->  
-
+diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
+index a09686b3030db..711c18efcd4fd 100644
+--- a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
++++ b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
+@@ -22,6 +22,10 @@ properties:
+           - const: fsl,imx8ulp-wdt
+           - const: fsl,imx7ulp-wdt
+       - const: fsl,imx93-wdt
++      - items:
++          - enum:
++              - fsl,im94-wdt
++          - const: fsl,imx93-wdt
+ 
+   reg:
+     maxItems: 1
 -- 
-Kind regards,
+2.34.1
 
-Sakari Ailus
