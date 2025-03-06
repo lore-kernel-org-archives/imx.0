@@ -1,63 +1,62 @@
-Received: from out.smtpout.orange.fr (out-68.smtpout.orange.fr [193.252.22.68])
+Received: from out.smtpout.orange.fr (out-17.smtpout.orange.fr [193.252.22.17])
 	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2531C8638
-	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 07:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F3D1D8DE0
+	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 07:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741245328; cv=none; b=kkiUNa55j+Cyfb+lL3lCcIERsfKTPHb2U960G+mIEbOKqMfwIpyjyo0du1I1rf7rd4ELS62+LTpkEOySsJpQSMJ15Gdol4aK9Mub+RH/qVZTmf/7mobLSSgfw25RqvM7ZbqBLfQZ+UYtkr7x7+2yurn6rzHtZowK+pKVPzySf/Y=
+	t=1741245363; cv=none; b=lJhOSoZxuoFain8c15k/M1zlO4rSGVryQ4GMsdSAwbXBfwU6wjn28uXT97URHaNdI+hx2qwpQMFbthvKVN6bCQu+K5adpouw760xpNcvQuieL8ywpOnBvzalwr5vWYQAWBDcmV9e36q+/twPvGjamdm4EPlF6hmZtu/8ZvOYQKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741245328; c=relaxed/simple;
-	bh=7IUWR6VRphGA3aYG0HEflrporgT5Cn484F0bHIkP0Cw=;
+	s=arc-20240116; t=1741245363; c=relaxed/simple;
+	bh=0418C/W8KiV5zE5TlgyDvTR1gSi2KXM/MYdvecfDGyc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BU/FOJjOR1kkFV3ZyYYsSUXKK0h600IupUkvcmZ7hHWHqoySQxquZPi0K2CyGjbwTBs5OVh8GwDD5x1rdbHZBFNoNidZ66dxp5VBmgqJyDxkeYNPw74uD0vwNRUr+lS3LnoPzd0csTQVNvEg2FKbL1DO89U1WnezGHYEwveCphs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=f3SzWnFk; arc=none smtp.client-ip=193.252.22.68
+	 To:Cc:Content-Type; b=MvUKDZDHd69Fen1vbjiqLki0oiU9lcIWNF+m+OzHNmJKqOto8hEbgOf62CXuobstUrX3r4Z1rwL4FoZzHeXietCaBY4qlchcqpItUKznQp4fd6e5nF6tFqEEV5RSvN+t7YWLRRVNiCBOAOAYfnqeZSv0EVKN1meL1YbNzDvnHmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=CRkTN6z8; arc=none smtp.client-ip=193.252.22.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="f3SzWnFk"
-Received: from mail-ed1-f42.google.com ([209.85.208.42])
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="CRkTN6z8"
+Received: from mail-ed1-f41.google.com ([209.85.208.41])
 	by smtp.orange.fr with ESMTPSA
-	id q5RrtHgGon53Vq5RutjmYV; Thu, 06 Mar 2025 08:15:18 +0100
+	id q5SQtTiEdOOosq5STtHq4I; Thu, 06 Mar 2025 08:15:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1741245318;
-	bh=7IUWR6VRphGA3aYG0HEflrporgT5Cn484F0bHIkP0Cw=;
+	s=t20230301; t=1741245354;
+	bh=0418C/W8KiV5zE5TlgyDvTR1gSi2KXM/MYdvecfDGyc=;
 	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=f3SzWnFkBHBNsSUVUak8ipH/vV54a6yvsobqC5kUVQU2mhMQIunOM255/nxBlDg4w
-	 vs/unQ9pk2y3gOQPhayvwDcvuMN8y/h1DksXa2YbthX9888tAt9Neoo/Zw+zq5TfRR
-	 dwGCrPb0bCDryWRzUl+j/JsGmTuRV3eCXeEUcKMB6k0HAYgSOvPaU4bj0f7wgiT3cs
-	 xcMjxkM/RSAUuRbRv3PDUr+FSELcC2HGzaO4L2jDThQOXqaBWOr9HYVcOBds1ddWVi
-	 +TVeJWKf7MrXCYqkq+NEjN3rQ/PgORB7IfACrAdmEAvFJYr5M75xCvsDkM7pBFeleW
-	 1vxiBQWo8ByiA==
-X-ME-Helo: mail-ed1-f42.google.com
+	b=CRkTN6z8F3rMDESrtWSAFcCWRB1a/gyrCgFQbk8+MqAUIAzcAAsqvpcuuFrbPRI/W
+	 dGmTvcHbYUrMJN8DYkB7z6xCPH5gr5R7J/G4Rb56L/FQH/Zd0RTB2D2loyjJxMTTBd
+	 ogsKb575pOCypsGwiYD2po1JFv0p+yDug3pfgyTuiI8VSSvHp71zvqFReCs+MPp0qi
+	 RJo6xSY15q0jdCCtNoqM2hXtoyFFn+Dp3FwviBbbtPfud8435kwaJGxtdFDmJQnzNN
+	 X5vSnqzAgZHXhDvzc141H2hm2q9D3Cgeq6SjBJygrnekpxDuEPemEWL6LX8+APgHFD
+	 UpfmkllaJ+BcA==
+X-ME-Helo: mail-ed1-f41.google.com
 X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 06 Mar 2025 08:15:18 +0100
-X-ME-IP: 209.85.208.42
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e04064af07so531591a12.0
-        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 23:15:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXQZUb7uT1pcJCERKM5nNkM9xOp11+e2LDMcP02p52ygbjLJPZ/hsB379nb4MGIIzYCWLY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxQ2g7MBfAs6c1oYfXuDTHm5EkHoyjhYxn+qwSytkEev/oW2o/E
-	qOCoFEWLBNWXEF0C0Twx7nwuuwNA1qi0a3gT1CQS5dKBHs9Tc7PF5TxunGjN+xuleljU3Qk/sxd
-	ludgrRFGKVVYBcxhqurbES3bmOKA=
-X-Google-Smtp-Source: AGHT+IH8hhh6oAYyC6uPKA9rsfgpkWm6NvzIO7DuDV3vZ2zHoYRgLCoR764aoz0s0rZpSzABXV4x3MLsFt2ljnQKjUc=
-X-Received: by 2002:a17:907:c302:b0:abe:c894:5986 with SMTP id
- a640c23a62f3a-ac20dae1ff1mr707065166b.39.1741245315138; Wed, 05 Mar 2025
- 23:15:15 -0800 (PST)
+X-ME-Date: Thu, 06 Mar 2025 08:15:54 +0100
+X-ME-IP: 209.85.208.41
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e57c81d5d0so392738a12.2
+        for <imx@lists.linux.dev>; Wed, 05 Mar 2025 23:15:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWwdQouy/0Fkl3Ee0VlHIqh8R7wPl7Dus8Kqp1B4pYvJDWiXK2bbPkOWBp1mZALtscVgTo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwD7JYqRVMksr0gLgWzCYWGMVY+T7av7BrDkZuoCsn2t7YwJlnW
+	NsFox50/+YRKaeOhuMtwtq6vOHWw0C/nWF/xdi6/iWmgg0y7LqSOyXKM+SwX3glz91oeNrw8VfJ
+	AHuacazjoAhe2HSFwniyrxm/ixIg=
+X-Google-Smtp-Source: AGHT+IFm3MQS5dgUYs1J7ifAfjVQ57iJeI+pjUmHRcmb45bQF4uoMwgIZEif/LCb+H/9N+qRcChkDTYQ1VADoEncMp4=
+X-Received: by 2002:a05:6402:13cd:b0:5dc:74fd:abf1 with SMTP id
+ 4fb4d7f45d1cf-5e59f3ee29amr14210055a12.15.1741245347074; Wed, 05 Mar 2025
+ 23:15:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250306065921.2329517-1-haibo.chen@nxp.com>
-In-Reply-To: <20250306065921.2329517-1-haibo.chen@nxp.com>
+References: <20250306065921.2329517-1-haibo.chen@nxp.com> <20250306065921.2329517-2-haibo.chen@nxp.com>
+In-Reply-To: <20250306065921.2329517-2-haibo.chen@nxp.com>
 From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Date: Thu, 6 Mar 2025 16:15:03 +0900
-X-Gmail-Original-Message-ID: <CAMZ6Rq+XNSCKLucZkiMReh+8M4Enh2s0ugHzdkJeGT1=d+GkLw@mail.gmail.com>
-X-Gm-Features: AQ5f1JpY8DmpHY3mF04-zFYQMw4LTMTeBGxWIrKJrVySNOR79ap0KMlA_eWB2ik
-Message-ID: <CAMZ6Rq+XNSCKLucZkiMReh+8M4Enh2s0ugHzdkJeGT1=d+GkLw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] can: flexcan: only set CAN_STATE_ERROR_ACTIVE when
- resume has no issue
+Date: Thu, 6 Mar 2025 16:15:35 +0900
+X-Gmail-Original-Message-ID: <CAMZ6RqLZNeTsmXkdxyUtiu016xuqbPeG1jyiE1WMPVNrhS=dAw@mail.gmail.com>
+X-Gm-Features: AQ5f1JrdIDM0fL-S0vORrvulswXM_f2Ms6biMDjYK9kiDkIB2GoOPzf_rtumh5Y
+Message-ID: <CAMZ6RqLZNeTsmXkdxyUtiu016xuqbPeG1jyiE1WMPVNrhS=dAw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] can: flexcan: disable transceiver during system PM
 To: haibo.chen@nxp.com
 Cc: mkl@pengutronix.de, ciprianmarian.costea@oss.nxp.com, han.xu@nxp.com, 
 	u.kleine-koenig@baylibre.com, linux-can@vger.kernel.org, 
@@ -67,9 +66,16 @@ Content-Type: text/plain; charset="UTF-8"
 On Thu. 6 Mar 2025 at 15:58, <haibo.chen@nxp.com> wrote:
 > From: Haibo Chen <haibo.chen@nxp.com>
 >
-> Only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process has
-> no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+> During system PM, if no wakeup requirement, disable transceiver to
+> save power.
 >
 > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
 Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+
+For this series, I guess you want to add stable@vger.kernel.org in CC.
+Power saving seems worth a backport to me :)
+Marc, maybe you can take care of this when applying?
+
+Yours sincerely,
+Vincent Mailhol
