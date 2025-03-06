@@ -1,171 +1,213 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2048.outbound.protection.outlook.com [40.107.21.48])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CB2271813
-	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 19:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C822063EB;
+	Thu,  6 Mar 2025 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741289435; cv=fail; b=CSoWWHUzh3DTN/H1VL9eIDkzPm0p+qLMzvhpqVakUsvz9/bjysd2g6yD0zSqjNJpPdvD3qLrJ1EIsZ8HuQcOUZqzimRpDqVmgrr4MCgyk0vAuq5y8ZCiIUF8aVgW/T1i9aXX4OkDm7lygmmMvid/UYbXFSro7zxtFawXbizTmDY=
+	t=1741295634; cv=pass; b=jWO/B3uZY+T7dvbta5KhDoWOx/rTTTti8kyxMrmqhEdlajIvdaUsD/ltJIZJQjpxMVOtpBk+F4io6lzS0dJtiXzt8OAsqHWobYuU+/ONDrXqkS4V5QwkmVxsUb8e9y5KOmnanvFs8GiYDjs9hh0BjfAHWOz8B8YGHMt6jazFpmQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741289435; c=relaxed/simple;
-	bh=DQfdWxkDu+nv8JQYO1YxdNIOn9gyDDdttKxXxaRT/9Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=V2YAIf0jntjQbqLon0dj76duWKPpwdN9nfTNd/0creCjOZwEuwF8E+eSKH8xoBTKeLXr49Nu7Aqpq+lc6vUVZuofkGeuVn6omfbgl5HFdJXagJpQg4EwJiZwJ53VvCqgucCWy8gSKwRiuxGqOcLzW50pZ8tc4SnFc22ENq/Nmdo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gSTuIyRi; arc=fail smtp.client-ip=40.107.21.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1741295634; c=relaxed/simple;
+	bh=2YeV/1mWxuLyHhkSMOigK8GBrpDYk/+Quuds0otH2Z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AYNV8xHnvv5q3tUSkzqwJm0PXZxaai3SjrP1gDR7si3EkTy3P4nYzloJBeLW7e7ylrYppgHMGinjln07gmU9XFTmZLz1AwgN9aOAYHUManw1WWYvGIWlqsmZsqMfQ4xjqxzPmVKwuPIlLhajKH5zs1WbqwWzL1z1R1dmcprqokc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=QHKpVznW; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gSTuIyRi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TxGOEUr8TEPBjqmP+edLEfys6cnBu3aZsWy7rP2SsFST7ZgWyrBbcHUgHeI+sEapmsPJsO1PT/RNIXJT86rdLDPyeZiVDKlc5NUGZQ253mAywNpolup77Ar1Y8RzNcaGnOKz1O77T6wyc3eCTgXGdLW/z4PY0Ita3ZWdyJt4xdil3NHziMhl34EeIGl9+Ahm1QHSgLBmrG8wYo2HajDWk7ZAkCn5G89Cq9MqN66sYO5jc1+NCUnoshvOMI94/gpUl3HkUXJV9hAO9+qmUN9Wg5Yst7BOANytKASPB4olQiG63Ui1mgjf82XCydUbEng72bSPcbd360q7xAIeo4oHcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i4lZprBsjxfoJKmSJtBmCNOzlyVAap6iteMuzJTK2AE=;
- b=SzKmp4EsNPr3u1e5nT5IgxFEbDF0QmaKFeGtoHYw0st+R9v5xeWN9h/7V6lk86o72VeQaMnPmA65rbwNAuiKhYS0WL0mKN7VepoErLEsrnDtQC74FtqGuU5EvVlPxx9eBbyy2uHzA2I5foZ8Vuv90UZyrRq6DgFpxlPen+bZ0yPVJ5cI/hpgPmjMwWvyzRKrmVwqi/mpH0TwLwjR54KDmw10+GuWbrLWupse5k61FjL6pI8p7mNio7xDijxxtZG2hEn7ZbTgXMBbUUkXnAOJJtoA8PPaSkyaQGynyJOz2oc8IqQ7ve/mOx3hDzRe5hilEJQcWGY5sWOko+czjJs/EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i4lZprBsjxfoJKmSJtBmCNOzlyVAap6iteMuzJTK2AE=;
- b=gSTuIyRiGLfHltBukqVu0PwyP1WgZS9GKYq+K15MImoJN1ubz0q9uqVdL99N9WNjwGm9XSxkCMJxDrXSiw2VnEvFI9hHHYJ0SDO3n7nw8rGarm2WDvf5Op0vD7tixOqvia9rStpvkqEXbYEtbPy7rqmjSMpaSc1ij7i8zSZAvC2w70g8FroqWuCevsYPm1CoaDdaHT3yQ3g9t2rbJ+xX7Hv4M3z/jm+ZxIIFJXawuDqni3bMozN6vbBfyGdq9nDMi49LecxTCVi/edwd3OpEvl7EZRFGxIUFHvfOu0s7UtxsmzGyOso6+3kuVOqVQdO2W5EeE6f0WAqpX42fvWLSZg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7652.eurprd04.prod.outlook.com (2603:10a6:20b:285::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.19; Thu, 6 Mar
- 2025 19:30:30 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8511.017; Thu, 6 Mar 2025
- 19:30:30 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="QHKpVznW"
+Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sailus)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Z82GN1hW5z49Q16;
+	Thu,  6 Mar 2025 23:13:48 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1741295629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RyXNjuHLnx3cU+qPnE9MNm9qjAiojX2ux1nNWDZm2TY=;
+	b=QHKpVznW8iOM4SSfMfAUzcBerrMwpo5ndWtah6O0FYF5U5qIavbQWW0yuVdXBWA1duZfPG
+	/tPNUGI/434peavUNxEA2kX3HSOY9FIMbXWNYSAPJKQdVQ7rgoY+fQnCfgOk1SxxG1BHxc
+	23NY7Y6H0hyhzO6u2omYlpkPPM/s6q9LNlrxIWndp5uz99rOSfAxRhvL92OD3YWvxGpy0U
+	YJ+iPeMNPhJGbqwzzEa0omqYpudmdFN7+Jp4Lz2X86ldR8Sx94xeFlvOhcwhj0cd/io67F
+	W3As/b7mzHhPVyiTFykzsK9o4FIFi5weN9IMheju33jYHCZVd+/nB9nx3wAnZg==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1741295629; a=rsa-sha256;
+	cv=none;
+	b=odHNYxXjVxIMvfaBsNyalVkmcTcgedlDXyrhQhsDLMI56nvguJdnH9gEt1w0TSUd5UJwJ5
+	cLwunozpTjPqWC33xOmxa/EE8rfzQLM4rGvYTc1+ziYvrPJT8zjsyTyAjcQIgQDBDKDQ0L
+	jRAhQ39xD6luECNolcTi0pLdNZGO6cRihpAnNXEKq96nd+JY72TWHGwqDGY+1y2PKVGStZ
+	o3ed7haqNQr3UlHxrQByRgXhgZlI+WQZQUJQPlQ6N8P7y7EkBGzgsu/B5PmeLS9iNA9uUE
+	W98onpkBkWErJ2mECRo0vso+TTrKHKPeeyjv4vfFPSP8hlvPhtE+M210UOlhGg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1741295629;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RyXNjuHLnx3cU+qPnE9MNm9qjAiojX2ux1nNWDZm2TY=;
+	b=eJzhBEsC+Ytpu13kBlhPZecQyJnWw45qF0/4DHv8VDb+WsOQoiPKvwZDprykmqqd61Tk+W
+	M+/yFaW2nLr3dI+hzkbXgNlIy9WkyjULc0TMPcNPEMWS1lXV2mSQ4gQ//71LERkXyEX8kg
+	GhY/y6YffUbBlB9s8lCfVY3pv0nsFw92Y/OGVWeOF1vBNetpA0guOfq0liwMN9VIX80QII
+	28OgfEKAcYtP8Y69c/6tJkOGvVGjnrB5Vp8xOPj1J7errMK189/gEl57RcyvZN9uuyNTdS
+	5XDgw/x4K0wal3SYfTSUdf4YF8qd2ViDIDxaIeWS09XUPFBG6jdm3zJfi3yDeg==
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 095B1634C93;
+	Thu,  6 Mar 2025 23:13:47 +0200 (EET)
+Date: Thu, 6 Mar 2025 21:13:46 +0000
+From: Sakari Ailus <sakari.ailus@iki.fi>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Mathis Foerst <mathis.foerst@mt.com>, linux-kernel@vger.kernel.org,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH] arm64: dtsi: imx93: add alias id for bbnsm_rtc
-Date: Thu,  6 Mar 2025 14:30:14 -0500
-Message-Id: <20250306193014.490091-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0099.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, manuel.traut@mt.com,
+	mathis.foerst@zuehlke.com
+Subject: Re: [PATCH v1 1/1] media: imx: csi: Parse link configuration from
+ fw_node
+Message-ID: <Z8oQCuqKVH225lPw@valkosipuli.retiisi.eu>
+References: <20250305113802.897087-1-mathis.foerst@mt.com>
+ <20250305113802.897087-2-mathis.foerst@mt.com>
+ <Z8nOTrjEW_OYBGlq@valkosipuli.retiisi.eu>
+ <84aa2d87-d7f1-46c9-b28d-6f0e9a78788d@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7652:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e82c337-c1a8-48ba-78b2-08dd5ce55ae1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|52116014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Bw0xn0zsz8jDQJGCobS9jr3Ch0ju/NWaU1USj0Zy7mXbFm0x9FL+ivufmGgH?=
- =?us-ascii?Q?8gGCQYume1e2uEaTBjKrC5B/vS96VXT0Cv8za/gt+WiypwsliAZmWEVk5WS2?=
- =?us-ascii?Q?KIaJd0MQ59PD21k7/Kjyuf7Xz6JqMhyXdxhWlrIBW9mPgt/VwN3/DoTYBSm6?=
- =?us-ascii?Q?Hv06a1BD5HiAMZD+3P41WkzQu3UCcgzWYYBPE0w75OxYcn382gZ1YGrkJabp?=
- =?us-ascii?Q?EwHKQuKsvZDzkWv3dyc6osLw5vkJyIwnHb8jrFCDAzfVxi0zjTuerRcI/1HF?=
- =?us-ascii?Q?dMuy/4p+v2fsC+D3PIYPz6N9EFgivmyU+3foPfXWrtTa5LlbjikFa4sgjw/p?=
- =?us-ascii?Q?M259nZXhVOWK/TPxHJ3kD+dceR8Koojq/AdrgihkbsOe5eyG1MvUY6WtXhhW?=
- =?us-ascii?Q?OCBWqJYf+Tt9sSFpne9VQDR9oItz73WyWQKFLw7ZoPw3qRSCDPCU4BSbAqTm?=
- =?us-ascii?Q?Rg8VN9HF2o3n7aKTuQC6Pv+VkAS0N+jhZUFYskdlUSoags3v7KPKkrf3C0ZD?=
- =?us-ascii?Q?r63LqTIXv3EULxqWT1dtD8EGwzo+PqMRMkgoRjtUbCEUOaSuzqIjim8TtAbr?=
- =?us-ascii?Q?uywXn/o3FSDLTa9jTq2qfaK7bOM91AmgGOohLWJzjVRwn8K7i0EoZw2wPBFH?=
- =?us-ascii?Q?LkgMxe/Bh7V9zf/6j/accwLQLktpK0RjAGEoTiTnJplT/KF0hSkOBZjtNs/v?=
- =?us-ascii?Q?8IQ9+GDLjcwbS9S4i+wF6uscUMKjbRj1FtO/hoNj3xl9oSS0acMwzOXGI0HN?=
- =?us-ascii?Q?dKK09zpTSsOKpcQjViF3a28hWNxepxS/2UB6eHI8aPqgHVWY7elZhFyN8QAj?=
- =?us-ascii?Q?ikD62UlUu/gCUmXW7ixDOQdG1IQIBl4Q5YjiNnuCcmfIYJzS/gEodIkHQPdD?=
- =?us-ascii?Q?LcP1izTHcuDZRaDeNfMV8eInVzGu6bmUWTsjLsdvHSOyJQsbXs6xJzR2J2/3?=
- =?us-ascii?Q?z3qIhisttlGg07Z4GQBL81jQEIW2GfYn2CLyBYjVdyTyDMxIYXD00cnWYoB4?=
- =?us-ascii?Q?gUoe5WJdLNzhETEP3LMJXdB8c9qfMWe7XX/zkswHXMkkCzkA+7aOQ6w1FqcL?=
- =?us-ascii?Q?IUWPzrAANMRKOHHgh4eudYhyCklfWhgbJMmbdTPy2+HLaiW5fexBnS2VMzTW?=
- =?us-ascii?Q?5GENpQUgTH4YNV57KSATAtz0RDQjLc9WsYCFad+J4heSICr9d5ea6blS8/fQ?=
- =?us-ascii?Q?9y+k1g2zQes9qMsYTzD4afxNXUfAptAdcvvqD2qVL4jXi/S0H07kGYCtItSe?=
- =?us-ascii?Q?61Q463cMyh3exkBjP7179XuiNDo7ff3MqIgx5P+QwFxbf0EDoSNZJgccrRLo?=
- =?us-ascii?Q?2w0hD/D3VaPrNGwEgcAicnggRPkL67EnnAdI1qtoamgrT9qsSHi21JhUP0AN?=
- =?us-ascii?Q?rIxwxqGqRNq1yVmoH6TmAo/Q8/f9KHv9FDxir46SMOzB27fVYedmS9KipROf?=
- =?us-ascii?Q?+PMjpCRguGU2DMX9aPnfQEW407yP3mL98IZvc0bGY3z19dQxS0w64A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s5Vnn0nPhvO2Km4M6PM3K5kjHPHi1fzGxYzj+RH0hf1KZvqCVJCGBnLIxUwL?=
- =?us-ascii?Q?1BSnF8vIniSTcOeKra7w/Q8OScpVV6TtlQ9NN7jSOPAAK5i03fQXcXE9WeHV?=
- =?us-ascii?Q?yte/dQ1LmuazOPtoXcQtx75X6swYOwwWpjSDSXQq/Ig7B8XvLuTqzGNzpytT?=
- =?us-ascii?Q?H8Xu1HUT4PGLZwM6OhAWaqSZ7N4YQbq4X/GsYfcTcMExcgSy03qu1S+pifwD?=
- =?us-ascii?Q?ntdHED+Y4r6Ya5NejHxfGZfgb4VoVt/jX+U5UoRumCu8pEi3+jVnkYrKvsJO?=
- =?us-ascii?Q?MpeaGsbl8xSU+iYANRLBCTABLgige9s6UBdpLKwhi5XbmmLwjN8MVxGog/gZ?=
- =?us-ascii?Q?kp7F+kAYo9g/SYV64d8fwk+1wsCSnn6CPCmi/Hm18vXOYT7YizqJT5dmZZbM?=
- =?us-ascii?Q?7ZsH4iS9zh2fFkrkWF7DBOvgbRnBvxZJfLp5Z6kwRsCXh+oLpMgEBpAKALU0?=
- =?us-ascii?Q?g3ABUqDKAQf1E8Y5KJlMYsiBjUOVUysWGwbVbTzjVPePLSBQFMFC9hGoRFAm?=
- =?us-ascii?Q?Z4PiScje1cN/z9Rwg/vTsE5yYHidkl0k6V2nAYR3BdyKwLkJGgXk49tCNEQq?=
- =?us-ascii?Q?o+T75jBGua8WXjZCtqMTnM1xYUsktAh5np73TSezwnmx0tQHrP0ts9RlsU7A?=
- =?us-ascii?Q?mEQ+5GfwWvLnmJrjzzOCKqwXq0gbcdHKPIyY+Lm6df9Dn6fQsY2mZ2nlRggf?=
- =?us-ascii?Q?4o7xWl3iN27TsZyqx2HdE2viA7Ia1n3ps/rARpHp5mL/w6RtrZZNGO/RCYks?=
- =?us-ascii?Q?RAIS0xojUogpeOxfKMlxfGTpsysubK+g2cUR5z1nEemy9zwm8Gncui+aZK9H?=
- =?us-ascii?Q?5N12LvlSRZ518+zkkE4MPrYnmn8ZDzP80qdny/Eqnsf5w7OahM+0WhpOXhlf?=
- =?us-ascii?Q?1P6/B7Xzshah4pf21JyCBuKFXFSyhX7+l/5zb7uaV/3SZhirGrsIi4TlC3E0?=
- =?us-ascii?Q?uISWuIxQmZuxYn1Jnb0nhF0k9W0QJ2qNMlIHhyZ3dJVmCg72e0wxch7jXPzy?=
- =?us-ascii?Q?TT/5RzI4fMSn954GwElcKfZNa2TeT16kDKyIlRVhp2IxxytB9J9X6cqmLzXZ?=
- =?us-ascii?Q?NFKXTInMtlyavS39rXIkSqGA6+lcHkcms+DuJWRLdc3ZzfcH8MTHGjYWdZae?=
- =?us-ascii?Q?4QqdjlrWDuCXrMwuLTwD1d8VgZbTyH4BQtp9x/lzfli4QSAJrnMXIW/smzbG?=
- =?us-ascii?Q?e18ni91ixfRhscuq84pbRZPNPXBZ2DTxHDUz/aktwv+s2AtfvbCDvqvsdMVU?=
- =?us-ascii?Q?6ypguMIjedcCs3mHS8eJKZlYK2fK/asd4TmL+Z/okA7+YkNg2zaFFXbhEEZB?=
- =?us-ascii?Q?Xnu3+0tkNs43trqv2xq4hDmNRskPE0I7lsKu2zdMBkcxDSSMiU/3NDWMCXCX?=
- =?us-ascii?Q?eNihBvknfI91efc0iYfQRt+aPkLp4L8XYh3ePMEJi/tGGrUD4ZXWtJP4d7QU?=
- =?us-ascii?Q?qavLMIBGmCt2rKqrfXek9uCbmHyeK1IVNour+agNOzA2rq2Q8HumT9xR7vQ+?=
- =?us-ascii?Q?tFPUzvDOnkRloz/aRGUxSzeOYYNNVsVQB5iVCeN3LPdTBU9dKfsGZ2JlN3fz?=
- =?us-ascii?Q?mHg34FhqE5ORk8qSqXl/RPjLgUlT5fPRAOYuGYLT?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e82c337-c1a8-48ba-78b2-08dd5ce55ae1
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2025 19:30:30.1661
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9aRrnU7EtRL3gPTN6M2h2iTd3sgGkR0wYzrS/0qAw6y3vRN78YGd7FlhI2Z4afkO55Ei/k8j1aIDG6giuwijug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7652
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <84aa2d87-d7f1-46c9-b28d-6f0e9a78788d@stanley.mountain>
 
-From: Joy Zou <joy.zou@nxp.com>
+Hi Dan,
 
-Add rtc0 alias to set bbnsm_rtc as the default rtc.
+On Thu, Mar 06, 2025 at 10:07:20PM +0300, Dan Carpenter wrote:
+> On Thu, Mar 06, 2025 at 04:33:18PM +0000, Sakari Ailus wrote:
+> > Hi Mathis,
+> > 
+> > Thanks for the patch.
+> > 
+> > On Wed, Mar 05, 2025 at 12:38:02PM +0100, Mathis Foerst wrote:
+> > > The imx-media-csi driver requires upstream camera drivers to implement
+> > > the subdev-pad-op "get_mbus_config" [0]. Camera drivers that don't
+> > > implement this function are not usable on the i.MX6.
+> > > 
+> > > The docs for get_mbus_config [1] say:
+> > > @get_mbus_config: get the media bus configuration of a remote sub-device.
+> > >             The media bus configuration is usually retrieved from the
+> > >             firmware interface at sub-device probe time, immediately
+> > >             applied to the hardware and eventually adjusted by the
+> > >             driver.
+> > > 
+> > > Currently, the imx-media-csi driver is not incorporating the information
+> > > from the firmware interface and therefore relies on the implementation of
+> > > get_mbus_config by the camera driver.
+> > > 
+> > > To be compatible with camera drivers not implementing get_mbus_config
+> > > (which is the usual case), use the bus information from the fw interface:
+> > > 
+> > > The camera does not necessarily has a direct media bus link to the CSI as
+> > > the video-mux and/or the MIPI CSI-2 receiver of the i.MX6 might be in
+> > > between them on the media pipeline.
+> > > The CSI driver already implements the functionality to find the connected
+> > > camera sub-device to call get_mbus_config on it.
+> > > 
+> > > At this point the driver is modified as follows:
+> > > In the case that get_mbus_config is not implemented by the upstream
+> > > camera, try to get its endpoint configuration from the firmware interface
+> > > usign v4l2_fwnode_endpoint_parse.
+> > > For the supported mbus_types (V4L2_MBUS_PARALLEL, V4L2_MBUS_BT656 and
+> > > V4L2_MBUS_CSI2_DPHY), extract the mbus_config from the endpoint
+> > > configuration.
+> > > For all other mbus_types, return an error.
+> > > 
+> > > Note that parsing the mbus_config from the fw interface is not done during
+> > > probing because the camera that's connected to the CSI can change based on
+> > > the selected input of the video-mux at runtime.
+> > > 
+> > > [0] drivers/staging/media/imx/imx-media-csi.c - line 211..216
+> > > [1] include/media/v4l2-subdev.h - line 814
+> > > 
+> > > Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
+> > > ---
+> > >  drivers/staging/media/imx/imx-media-csi.c | 36 ++++++++++++++++++++---
+> > >  1 file changed, 32 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+> > > index 3edbc57be2ca..394a9321a10b 100644
+> > > --- a/drivers/staging/media/imx/imx-media-csi.c
+> > > +++ b/drivers/staging/media/imx/imx-media-csi.c
+> > > @@ -169,6 +169,8 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
+> > >  {
+> > >  	struct v4l2_subdev *sd, *remote_sd;
+> > >  	struct media_pad *remote_pad;
+> > > +	struct fwnode_handle *ep_node;
+> > > +	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
+> > 
+> > Are there any defaults in DT bindings (other than 0's)? Also initialising a
+> > field to zero this way is redundant, just use {}.
+> > 
+> 
+> I was going to respond in much the same way.  This is equivalen to:
+> 
+> struct v4l2_fwnode_endpoint ep = { .bus_type = V4L2_MBUS_UNKNOWN };
 
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx93.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Thinking about this in a context of parsing the endpoint, in fact the
+bus_type should be specified. Presumably the hardware is D-PHY, so the
+correct value would be V4L2_MBUS_CSI2_DPHY. This way
+v4l2_fwnode_endpoint_parse() doesn't need to guess.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 56766fdb0b1e5..7d9aa15ebf5d0 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -34,6 +34,7 @@ aliases {
- 		mmc0 = &usdhc1;
- 		mmc1 = &usdhc2;
- 		mmc2 = &usdhc3;
-+		rtc0 = &bbnsm_rtc;
- 		serial0 = &lpuart1;
- 		serial1 = &lpuart2;
- 		serial2 = &lpuart3;
+> 
+> > >  	int ret;
+> > >  
+> > >  	if (!priv->src_sd)
+> > > @@ -210,11 +212,37 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
+> > >  
+> > >  	ret = v4l2_subdev_call(remote_sd, pad, get_mbus_config,
+> > >  			       remote_pad->index, mbus_cfg);
+> > > -	if (ret == -ENOIOCTLCMD)
+> > > -		v4l2_err(&priv->sd,
+> > > -			 "entity %s does not implement get_mbus_config()\n",
+> > > -			 remote_pad->entity->name);
+> > > +	if (ret == -ENOIOCTLCMD) {
+> > 
+> > 	if (!ret)
+> > 		return 0;
+> > 
+> > And you can unindent the rest.
+> 
+> I was going to say this too but then I thought actually this needs to
+> be:
+> 
+> 	if (ret != -ENOIOCTLCMD)
+> 		return ret;
+> 
+> Which is weird.  Better to break all the new code into a separate
+> helper function.
+> 
+> 	if (ret == -ENOIOCTLCMD)
+> 		ret = parse_fw_link_config_stuff();
+> 
+> 	return ret;
+
+Indeed. get_mbus_config() presumably wouldn't return an error but
+correctness is usually a good idea.
+
 -- 
-2.34.1
+Regards,
 
+Sakari Ailus
