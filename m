@@ -1,44 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEEC23C8C7;
-	Thu,  6 Mar 2025 16:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B5D23F42D;
+	Thu,  6 Mar 2025 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741278454; cv=none; b=PtCfkSN8xNHPzoZ/1yef4xRImIIj7zYIgeYYaj3dq9Yf0r/aWjPkP31xGCmUroMCKB4DaQUL586Qq0Rq5LejLoeLnWRKnINsvVZ7D2o2SPvA2puIhuyCKCQ/7TJHLbXjdmTB3uhuAqLQMNuY7OHvSg3IKfSAd1q1ehTpqfuZVIQ=
+	t=1741278472; cv=none; b=mQ1tDK4z6lgbZzOY+OBwMPlRv38XTYL0XJpKMx7bSOZXzKBeWnr+a0PaFkAxg4+5oMcUiPbwDAAw19r31sqjeaDLQ2ZnZMAVAIZWB85GvG43UyW7+AAtf2Upzw14w5Fk4wocRMU2FMTK6JPl+neGhhE8b+QARM1UotCpfDT9SDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741278454; c=relaxed/simple;
-	bh=jthW/fL1Zasqiw/0qv4ietdcvP4mUzmlvnMjEK6S/c8=;
+	s=arc-20240116; t=1741278472; c=relaxed/simple;
+	bh=6CMCRwOUYh67tKcbM/XuwZFGUiXaz18QVK9UO2VRh/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J2k3hBwhv2aphOV9uhECjx5Jlqi/AqKlkpCdlG6MBBkzUkfMt4pu78ywdOWBUOjx2nhKMiob4VzaPyZQBnB9WAlidXJOdurenSbGDw58GiTRo3OMjXgRmllY8wdRbC6QnNaSXHi48lHNSflS1aJGVMpQSbHAPF/AnoiQNAnoVU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyQKJlX5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ve4wIZa++58XBAXGyWt2kS6u0OMDrY25KAuCyW64kDXR10g5DgfABRSqiP5cDRd6MbS9pZ1f6IqwWFBq7RhxmuZVhErN0QcWMeWEJSODinwTaU1dC4KoHBzhoSZcNRXGq2R9d+w2kbHj2x07Fh98fQueOyRhrHJ/GLiaUknA0tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8/rVKxc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyQKJlX5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8012EC4CEE9;
-	Thu,  6 Mar 2025 16:27:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8/rVKxc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AA6C4CEE8;
+	Thu,  6 Mar 2025 16:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741278453;
-	bh=jthW/fL1Zasqiw/0qv4ietdcvP4mUzmlvnMjEK6S/c8=;
+	s=k20201202; t=1741278471;
+	bh=6CMCRwOUYh67tKcbM/XuwZFGUiXaz18QVK9UO2VRh/Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tyQKJlX5QTnZ9LVFjuBHhFWvLxUQ/SOjbUgz6ld452D3UEM5bil3vqclpHWBrXa1V
-	 qPT0Cl9KG/A2CD3WXvk/nrB+4KzdGdJvIT1qUmAICiY1Kc+UawzAnBTjuPP6o62Xj9
-	 kMcZIaMYKqVO3CmcdA8WjpcZLff95jpB9wWNdydA0zxJ0oQWCHw/HUblZiP5hEbO8/
-	 je+KFdxtcXX4KH+i0LI4HDCYnY7ZBYDqa6VzN9KRiVEzeAHoKLDHMuHAAJyWRsD0gB
-	 nYacfdM8dQAFkLc4D0SIWi3yMTz7SBy3nStVCKD/u1GN2DIYUCptAliXLt1zt/it7c
-	 bG/GQB+5s/0/Q==
-Date: Thu, 6 Mar 2025 16:27:29 +0000
+	b=o8/rVKxc+BgfIZHssN+untqD7OxtqqKGGYp4111h7EbNrivuEv3U2w9Mh7oJQvVgA
+	 DKc3rDfXmRbLNPALNTjG568jXUYItcNWszXtsRGuMN24TsDMkZand/Rr+duoTls1ov
+	 dBTvq7xsab29aDihh5RVA6HYbMgPAu9l8Hyvpq1g+iDQNbS8pfpErO9PwAakpw0xg/
+	 Ahiv6QmtRPuYAPD+XYTSyf2e6wHrjMce3Wg6oRsLL9VNONpdKh+bYjLSWnXUJj2Bwq
+	 53l5J80twC6Gpd5umt+wmer864ybaHC+ictKumNbw0Qth9cDBaG/yiSgSxBPrg/uwC
+	 ViGMChagTidDQ==
+Date: Thu, 6 Mar 2025 16:27:46 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Jassi Brar <jassisinghbrar@gmail.com>, Rob Herring <robh@kernel.org>,
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Andi Shyti <andi.shyti@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	"open list:MAILBOX API" <linux-kernel@vger.kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:FREESCALE IMX LPI2C DRIVER" <linux-i2c@vger.kernel.org>,
+	"open list:FREESCALE IMX LPI2C DRIVER" <imx@lists.linux.dev>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: mailbox: fsl,mu: Add i.MX94 compatible
-Message-ID: <20250306-immature-ether-d92fb5b8f18a@spud>
-References: <20250306155225.99807-1-Frank.Li@nxp.com>
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: i2c: imx-lpi2c: add i.MX94 LPI2C
+Message-ID: <20250306-backstab-chewing-89e93ccba5d7@spud>
+References: <20250306155815.110514-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,68 +51,55 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FX1q63A62l42URpo"
+	protocol="application/pgp-signature"; boundary="FI7Itgj+bcYXrnFK"
 Content-Disposition: inline
-In-Reply-To: <20250306155225.99807-1-Frank.Li@nxp.com>
+In-Reply-To: <20250306155815.110514-1-Frank.Li@nxp.com>
 
 
---FX1q63A62l42URpo
+--FI7Itgj+bcYXrnFK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 10:52:24AM -0500, Frank Li wrote:
-> Add compatible string "fsl,imx94-mu" for the i.MX94 chip, which is backwa=
-rd
-> compatible with i.MX95. Set it to fall back to "fsl,imx95-mu".
+On Thu, Mar 06, 2025 at 10:58:15AM -0500, Frank Li wrote:
+> Add compatible string "fsl,imx94-lpi2c" for the i.MX94 chip, which is
+> backward compatible with i.MX7ULP. Set it to fall back to
+> "fsl,imx7ulp-lpi2c".
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
 > ---
->  Documentation/devicetree/bindings/mailbox/fsl,mu.yaml | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >=20
-> diff --git a/Documentation/devicetree/bindings/mailbox/fsl,mu.yaml b/Docu=
-mentation/devicetree/bindings/mailbox/fsl,mu.yaml
-> index 00631afcd51d8..581425aacdccf 100644
-> --- a/Documentation/devicetree/bindings/mailbox/fsl,mu.yaml
-> +++ b/Documentation/devicetree/bindings/mailbox/fsl,mu.yaml
-> @@ -54,6 +54,10 @@ properties:
->                - fsl,imx8qm-mu
->                - fsl,imx8qxp-mu
->            - const: fsl,imx6sx-mu
-> +      - items:
-> +          - enum:
-> +              - fsl,imx94-mu
-> +          - const: fsl,imx95-mu
+> diff --git a/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml b/D=
+ocumentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+> index 1dcb9c78de3b5..969030a6f82ab 100644
+> --- a/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+> +++ b/Documentation/devicetree/bindings/i2c/i2c-imx-lpi2c.yaml
+> @@ -26,6 +26,7 @@ properties:
+>                - fsl,imx8qm-lpi2c
+>                - fsl,imx8ulp-lpi2c
+>                - fsl,imx93-lpi2c
+> +              - fsl,imx94-lpi2c
+>                - fsl,imx95-lpi2c
+>            - const: fsl,imx7ulp-lpi2c
 > =20
->    reg:
->      maxItems: 1
-> @@ -142,7 +146,8 @@ allOf:
->        not:
->          properties:
->            compatible:
-> -            const: fsl,imx95-mu
-> +            contains:
-> +              const: fsl,imx95-mu
->      then:
->        patternProperties:
->          "^sram@[a-f0-9]+": false
 > --=20
 > 2.34.1
 >=20
 
---FX1q63A62l42URpo
+--FI7Itgj+bcYXrnFK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8nM8QAKCRB4tDGHoIJi
-0puLAQDaMSbzKyckc83ABSYO3V7PLYkBLV70po+etx2BbBLI+QD/Ux+vA7N69rjQ
-cOR9TOdmWil9KRROSc7oGB1n6PkOsgo=
-=U1NF
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8nNAgAKCRB4tDGHoIJi
+0l57AQCqtv96l2iZhR6gqRjBt3zAi8MxJxWpWyM1j5TLuPotSAD9F+lDTHLtWifM
+PYf5w7zIctNlp+bnBCKzUd2Nsh8yFAc=
+=rJKT
 -----END PGP SIGNATURE-----
 
---FX1q63A62l42URpo--
+--FI7Itgj+bcYXrnFK--
