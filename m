@@ -1,120 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024418732B
-	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 14:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFBC4C8E;
+	Thu,  6 Mar 2025 14:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741271413; cv=none; b=qWiKXvzi1L/Srz4GrxQuEgIupJ6HCqhczfvxQubGtpxTlzn3B9I0Nph0hi4EJkQk26XcXkG3l6fEpm6HErtt3PAxY4K2GteX8BECh1MGNQjmIiN4n6wxCADmi36oH9bxIOfpg/K7OhZLWQItYRvZHiCHL1yvRwWW+hBhpXAmQjM=
+	t=1741272486; cv=none; b=HFja16a/igqo9MpJ7XT7Eo39S9i454HwSbbVVcej2JXjIm12v6XJ5G+AKXp8Af6BX+ZmQxloPJ8+zmsptsiE3XGjRKX0+YYlfVpHGvHyC3G8KFVbVCYOffwOHGl1huDdhFR2VYd5Q4VyjMBLz5xvlSswU6oxi20xVba19hJXkoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741271413; c=relaxed/simple;
-	bh=tdngADQvbAIOi7rpWve4EPmXndFqmD+MDTRj1HNgtAw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WMBDZiRhu5KhoYlrdQHTdnEz1VlOETdcAQoJQ58SBI+ExLCOsPky3po1AoNoyxnWgKrG7v5OYLAkzIVSCzeuZcTuKQ8FuXzDRO8+Q2zSePzyRJ2COCpU/Ka9pOsg6qftbD2VQH9kzxQtLhqm1McxjjWwHOUOT6i7nbqsTSYtRSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjBe8UUJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1741272486; c=relaxed/simple;
+	bh=bla4hIb0IkIaS1NTrqHiiXPmlh5fLuqeLRBBeaE0n+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GbG874Tj3W2yX2MT1kLIzNfJEkh7p5QTQTldSAS43xlA6JD9WwjrsuubEUhsbkXDfyfJz0SQlDVDaKaBw2dl2MSz2RDen5O9Ddy9hwAJ7NAQJ6lO5LES+8hFuhpPP2nsLyccvwUdn7PE1j5vupg6OOnEGy+uK0Ize0q3X7el8gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BVqOOTua; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjBe8UUJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741271409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-	b=XjBe8UUJ8RqJvat1obarkYZqrO6JL3qGQD19sUSlw14DZubPyjrurYPzmCKFc26ab4PG1s
-	Gop52hKu0ipLguSno/C9scWfkrck7PIi25qVgT646GsE+p/omON8UaY2kFOP2zznazvU7p
-	8mmrEFqgLLCet/X8CKvq2ZA7P/GLtNc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-p6FsqSmsO8ejHZMlbsPfVQ-1; Thu, 06 Mar 2025 09:29:53 -0500
-X-MC-Unique: p6FsqSmsO8ejHZMlbsPfVQ-1
-X-Mimecast-MFC-AGG-ID: p6FsqSmsO8ejHZMlbsPfVQ_1741271392
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-390e62ef5f6so295892f8f.2
-        for <imx@lists.linux.dev>; Thu, 06 Mar 2025 06:29:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741271392; x=1741876192;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-        b=Xo/c6n2Xo/dkfk0FVXIA7CuKa46WYrkAxxTCqb/B+uPTuG90DHRAaDdIPBOwmPmeHe
-         cLDYNniA+C/kF14HeKivYXivQl/rYNdtoH154sMAlxCYolAag9XvV/0YKirjUydj3VV/
-         06m3bLeHq/XSNrQ+k9ol1vJnAB7kc3B24nhCFDOl1phmpdmgRYQR5hxS5s/CHO+hbA/2
-         Kraj6+FS+CNfWXDu9S3uqFOjbS1Ww3QFwejGt5E02epvAWs0vwJQSX6/+q/GZgu+mpKv
-         QMCf9AU0HXQ8nGkFH7YAdCCta1rZxavxnI42pG98YmMDmyYQ0lJGKKBBd405Rgx+dhAp
-         nsQg==
-X-Forwarded-Encrypted: i=1; AJvYcCX++6gOxmd+/IFq73wiOrqGFuIoff6zLpAXc4HNyKVCgfhwt1bpneRbf1+G5Mkzh+gaBbk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRgXlnvvX9lSomU947wK/sna0JG+1fKsFAJRh82i6d49lZW/NW
-	pqRasINH5ICoGhTRo29Jy8rJZ7lHMcIfrNQIoh8TIWIhFWCPVewWFCCuEcmTcOUaXRhm3sEy1Je
-	Ouxp4YFjSrSFMjO6Zwb0bGzFDfIni+rU08+7lc5GrEI1ZDgWe7g==
-X-Gm-Gg: ASbGncv4lsadgVuuNnxyHisGsOpIGuVNeym2cwUHb5rwNRuoZfkfGI/e+KDEAS102dq
-	jRTe031rpiOAHYPta7wdSIDm5u74ZaWN22uRfhjEdKjYS2087P0y035Tiu/unllaBg+E1m7/KiZ
-	qnGlhQtf/7KMYoX2BJtHhXQI5HcIcZ8BLDerZEa87kA4SxTByjh7eElhz7begZLZipYBLeImz24
-	w/fOK8cIJcKBcAm+6ugXSZmNmwu/vNck8Sy4ZNjqGQHwFXtb8OvwZe7PhDI60fo/08Hledg7m91
-	qrk+aloK2AJyqar0BlyzYPag1nU+TxlqxEExahs7weBPlg==
-X-Received: by 2002:a5d:47c3:0:b0:391:300f:7474 with SMTP id ffacd0b85a97d-391300f7814mr755639f8f.18.1741271391555;
-        Thu, 06 Mar 2025 06:29:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmNrvNwgj8JP10FUTkFjkayzhqglMLbK2EPOM2dy9cPE1fLkIBgeqVz0hx1d6bSuhoE5j+XQ==
-X-Received: by 2002:a5d:47c3:0:b0:391:300f:7474 with SMTP id ffacd0b85a97d-391300f7814mr755608f8f.18.1741271391040;
-        Thu, 06 Mar 2025 06:29:51 -0800 (PST)
-Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c102e01sm2234126f8f.93.2025.03.06.06.29.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Mar 2025 06:29:50 -0800 (PST)
-Message-ID: <03492277-b7e8-4cd1-b92e-699ee0d7dc85@redhat.com>
-Date: Thu, 6 Mar 2025 15:29:49 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BVqOOTua"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741272484; x=1772808484;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bla4hIb0IkIaS1NTrqHiiXPmlh5fLuqeLRBBeaE0n+8=;
+  b=BVqOOTuaHTG1pbTEwEKDEotWRQ8ZoSS2AOXIEMbnvW5RUMbYip346gaM
+   XM/5xTE7oSAZ73RggYV+0t5SKzQK/THHm7WM/4aOvPCnSDJDUc7w0mfPi
+   wOOL+CiKbA4rYOyM63IqrIYvXDfxO7OtzOCHTNzWzo6sBmID8NrMIpEpC
+   Q14irORzhoF0vL0H3a9IL5rAS+1SI/4cL3My3HysHg5Ug7s43NTpCveDd
+   KWsaF67PP5M9hBB70Qd8OB+lk+Dhxd20vsmUn1WAciaYUroIlh7QfaV7O
+   GqN2ttFvuWya9MpOP75gAJqEaeGJ0VGRF+rwBIEV9/s/UGFHOSZ5q/VHU
+   A==;
+X-CSE-ConnectionGUID: 2fDBtJ9sQ9CYhHKSbu7Fgg==
+X-CSE-MsgGUID: wINkz8EtTxmAZQ5AvGaC5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="59830994"
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
+   d="scan'208";a="59830994"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2025 06:48:04 -0800
+X-CSE-ConnectionGUID: o4CM4XnkTwKUZWqrou7E7A==
+X-CSE-MsgGUID: gJEqCfufS6On0GZn3XiLUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,226,1736841600"; 
+   d="scan'208";a="119052400"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 06 Mar 2025 06:48:00 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tqCVx-000NAs-1f;
+	Thu, 06 Mar 2025 14:47:57 +0000
+Date: Thu, 6 Mar 2025 22:47:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+Subject: Re: [PATCH v8 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+Message-ID: <202503062204.QeQoZBYt-lkp@intel.com>
+References: <20250228081812.3115478-3-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 04/13] net: enetc: add MAC filter for i.MX95
- ENETC PF
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20250304072201.1332603-1-wei.fang@nxp.com>
- <20250304072201.1332603-5-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250304072201.1332603-5-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mJoGKu0Kg-iBBG19K5YPaNI3cIZglFAJb1BoU5Gm_kc_1741271392
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228081812.3115478-3-ciprianmarian.costea@oss.nxp.com>
 
-On 3/4/25 8:21 AM, Wei Fang wrote:
-> +static void enetc_mac_list_del_matched_entries(struct enetc_pf *pf, u16 si_bit,
-> +					       struct enetc_mac_addr *mac,
-> +					       int mac_cnt)
-> +{
-> +	struct enetc_mac_list_entry *entry;
-> +	int i;
-> +
-> +	for (i = 0; i < mac_cnt; i++) {
-> +		entry = enetc_mac_list_lookup_entry(pf, mac[i].addr);
-> +		if (entry) {
-> +			entry->si_bitmap &= ~si_bit;
-> +			if (!entry->si_bitmap) {
+Hi Ciprian,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on arm64/for-next/core krzk-dt/for-next linus/master v6.14-rc5 next-20250306]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ciprian-Costea/dt-bindings-rtc-add-schema-for-NXP-S32G2-S32G3-SoCs/20250228-162229
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250228081812.3115478-3-ciprianmarian.costea%40oss.nxp.com
+patch subject: [PATCH v8 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20250306/202503062204.QeQoZBYt-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250306/202503062204.QeQoZBYt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503062204.QeQoZBYt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/rtc/rtc-s32g.c:204:9: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     204 |         rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
+         |                ^
+   1 error generated.
 
 
-Minor nit: here and elsewhere you could reduce the level of indentation
-restructoring the code as:
+vim +/FIELD_PREP +204 drivers/rtc/rtc-s32g.c
 
-		if (!entry)
-			continue;
+   196	
+   197	static int rtc_clk_src_setup(struct rtc_priv *priv)
+   198	{
+   199		u32 rtcc;
+   200	
+   201		if (priv->rtc_data->reserved_clk_mask & (1 << priv->clk_src_idx))
+   202			return -EOPNOTSUPP;
+   203	
+ > 204		rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
+   205	
+   206		switch (priv->rtc_data->clk_div) {
+   207		case DIV512_32:
+   208			rtcc |= RTCC_DIV512EN;
+   209			rtcc |= RTCC_DIV32EN;
+   210			break;
+   211		case DIV512:
+   212			rtcc |= RTCC_DIV512EN;
+   213			break;
+   214		case DIV32:
+   215			rtcc |= RTCC_DIV32EN;
+   216			break;
+   217		case DIV1:
+   218			break;
+   219		default:
+   220			return -EINVAL;
+   221		}
+   222	
+   223		rtcc |= RTCC_APIEN | RTCC_APIIE;
+   224		/*
+   225		 * Make sure the CNTEN is 0 before we configure
+   226		 * the clock source and dividers.
+   227		 */
+   228		s32g_rtc_disable(priv);
+   229		writel(rtcc, priv->rtc_base + RTCC_OFFSET);
+   230		s32g_rtc_enable(priv);
+   231	
+   232		return 0;
+   233	}
+   234	
 
-		entry->si_bitmap &= ~si_bit;
-		if (entry->si_bitmap)
-			continue;
-/P
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
