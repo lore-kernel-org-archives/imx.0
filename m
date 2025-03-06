@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896B6208990;
-	Thu,  6 Mar 2025 22:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B5927C853;
+	Thu,  6 Mar 2025 22:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741300124; cv=none; b=KcsDMAzlolJo4GiAEzFUabtYo/weVrKxv3JrLskxo8dzBOnkgaETv5YwZf5vsEB2jVf+9iJ+qd2gSnolZW4Uvsj9IgtJSxOwFMk7HYSkn1/WrUBt0lHEDaCma+VhyQlPCqvd56oRfFTXmY46aJWSr7sQcPae5qmiSO4m5dkVEr0=
+	t=1741300469; cv=none; b=Wbz8D6QMEhfDv57HTI813dO+o4cn44Nbbg8qo/qOem2/9qCWVMiI2Ix+rfc2CWZqV84BOh//i6zhQsOQBAXWRcPEGKG++CsmQcVLDdNI3rW2ixRnw9Bmfz2LhcxYp9rX3v6UI6Kv+QeLnyb+JwNXY0dhAdRQBs6Q4xYLe6BxIhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741300124; c=relaxed/simple;
-	bh=2ABLlxIoMSQNDKV1phjvCwSi0BkSICv6/GcMMhHQews=;
+	s=arc-20240116; t=1741300469; c=relaxed/simple;
+	bh=jnmEI0O48dE/8nutBn2HVLhExmXei9Y4n/ey1QBf6Q4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E+J9Q6KHZ8IbdKTBt0ZS1BcxXzR45KOn8GLPOYmLXvOS98q6PeG/PeAyMz2WXQ3XypyvBEA7ezQxHM4SD7eWH9tBmbvGqfkseSmDPkMRo+FeVwWIwSspB8YMEblwaSmZjaRPGMmutGWtR+O7fhFZ0ljgyr5mp+Eqs5ewqonhyos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXrYt4Jr; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=gCegR9vcwC7bMg59mesM2FcskUESFz5Q8pdH7oAka3NuBo0wNBzwj9b0n5rB/DeP1/rVLe3ME+Ul1swToVGbZpIPIDQh049n7YxuZoJh5V0C84Pff5F8Uvr7k2qBqCJuyuVq5VQCxMiS8WwqyXf7v7/KQq//vE0TrLQlam9Zmnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEzHs+Vr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXrYt4Jr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAC2C4CEE0;
-	Thu,  6 Mar 2025 22:28:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEzHs+Vr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47383C4CEE0;
+	Thu,  6 Mar 2025 22:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741300123;
-	bh=2ABLlxIoMSQNDKV1phjvCwSi0BkSICv6/GcMMhHQews=;
+	s=k20201202; t=1741300468;
+	bh=jnmEI0O48dE/8nutBn2HVLhExmXei9Y4n/ey1QBf6Q4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HXrYt4Jr8Ujw+I6ULk6lGN2aJq67C6kOW7bkoi+HYdokVxAaUNiqBmlKFwKMIrUzV
-	 /r+awFkHB42epS4kjHahTJMSz8SCh5iVUfVp7FUF05c4R3e9WFYlvMcQd6pvb/PIRG
-	 RPh6M60eNx8EDbdYyajwTtECC9oIg1VLkSS2sAtzN1NhfrH6nFqXSNLOwz3GkCZA6+
-	 KBsYqC6pbbEcQeaiauNhnDRWjLY/616Ldj2jYEknJuPovaqTvDRBAhnxlU1dt3Clii
-	 EjJjm2Sm/NmPQXdT+3s2pzy3QpcISUN6EqKKfSGJqwg5Ac6K0ooKjpz/lAeLt3vPaX
-	 XCTRScQhSUdUA==
-Date: Thu, 6 Mar 2025 14:28:42 -0800
+	b=pEzHs+VrlHLMd6zr1qi15LpNpPfR1LabvhCacarSCskvDHYep7dWk3zsDEMunufkk
+	 lC/TV9815LsESFjZhqaQfBqnK+8KGbWmLDZqL7o6o7NUqwcE+g4uoX163PY+O9ECkM
+	 sg8/P832YOFgKaN0v9ynHgTO42xYgjDEiL7UnbTTpImtLts114YI5AZDk47h0ebGgd
+	 2+eZfUNhELiIsxjp5Qbjm2pg0cHcWt6AFs6hZbRskG+4LJPXpZ1HOBwJv/lahbIC/0
+	 EVq4FOQjmnV65GO93QN3IeWVN0KjvLkNO+KVOTHb6b6G4E4sXJm9izqq8wXiNwHLfn
+	 5aoBXxnE38T5A==
+Date: Thu, 6 Mar 2025 14:34:27 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Wei Fang <wei.fang@nxp.com>
 Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
@@ -34,12 +34,12 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  pabeni@redhat.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 net-next 01/13] net: enetc: add initial netc-lib
- driver to support NTMP
-Message-ID: <20250306142842.476db52c@kernel.org>
-In-Reply-To: <20250304072201.1332603-2-wei.fang@nxp.com>
+Subject: Re: [PATCH v3 net-next 06/13] net: enetc: add RSS support for
+ i.MX95 ENETC PF
+Message-ID: <20250306143427.2bf83572@kernel.org>
+In-Reply-To: <20250304072201.1332603-7-wei.fang@nxp.com>
 References: <20250304072201.1332603-1-wei.fang@nxp.com>
-	<20250304072201.1332603-2-wei.fang@nxp.com>
+	<20250304072201.1332603-7-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,41 +49,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  4 Mar 2025 15:21:49 +0800 Wei Fang wrote:
-> +config NXP_NETC_LIB
-> +	tristate "NETC Library"
+On Tue,  4 Mar 2025 15:21:54 +0800 Wei Fang wrote:
+> Add Receive side scaling (RSS) support for i.MX95 ENETC PF to improve
+> the network performance and balance the CPU loading. The main changes
+> are as follows.
+> 
+> 1. Since i.MX95 ENETC (v4) use NTMP 2.0 to manage the RSS table, which
+> is different from LS1028A ENETC (v1). In order to reuse some functions
+> related to the RSS table, so add .get_rss_table() and .set_rss_table()
+> hooks to enetc_si_ops.
+> 
+> 2. Since the offset of the RSS key registers of i.MX95 ENETC is also
+> different from that of LS1028A, so add enetc_get_rss_key_base() to get
+> the base offset for the different chips, so that enetc_set_rss_key()
+> and enetc_get_rss_key() can be reused for this trivial.
 
-Remove the string after "tristate", the user should not be prompted
-to make a choice for this, since the consumers "select" this config
-directly.
-
-> +	help
-> +	  This module provides common functionalities for both ENETC and NETC
-> +	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
-> +	  flower and debugfs interfaces and so on.
-> +
-> +	  If compiled as module (M), the module name is nxp-netc-lib.
-
-Not sure if the help makes sense for an invisible symbol either.
-
->  config FSL_ENETC
->  	tristate "ENETC PF driver"
->  	depends on PCI_MSI
-> @@ -40,6 +50,7 @@ config NXP_ENETC4
->  	select FSL_ENETC_CORE
->  	select FSL_ENETC_MDIO
->  	select NXP_ENETC_PF_COMMON
-> +	select NXP_NETC_LIB
->  	select PHYLINK
->  	select DIMLIB
->  	help
-
-> +#pragma pack(1)
-
-please don't blindly pack all structs, only if they are misaligned 
-or will otherwise have holes.
-
-> +#if IS_ENABLED(CONFIG_NXP_NETC_LIB)
-
-why the ifdef, all callers select the config option
-
+Please split this patch into refactoring of existing code and new
+additions.
