@@ -1,195 +1,129 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61379263F5F
-	for <imx@lists.linux.dev>; Thu,  6 Mar 2025 19:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED6A26E639;
+	Thu,  6 Mar 2025 19:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741288048; cv=none; b=br81L5b96G7HeOtJ3nJ5nJuCKbth8EQ9ODjQNJ98E7HvZSxIz8R1iy1z323Bt7BBWXKxGro1TPFuWQLwKvcGP5iVlQXi5NNgYLs4iOW60LP1JT5fSiH7Cdxfr07kw3DPrOxvvc4wFd/cLHX9mCTvnzidukej/Fs3Fza7fhEmzdM=
+	t=1741289201; cv=none; b=G8yUilEHPJNX3NgB8ftBGxrDMRWCvU0etupPK+6Lf1Rs+h8E9b5KsLD26BSQzceVuKTurxXJWfZqo/INle5lpET1AWxeIsWPpH1Qatac4axfb+snBvb6Gu7UOaM7WxpbQ7g+5fbszb+ljEi3QetCxCsSuWjV6jIvpAGMGDsph24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741288048; c=relaxed/simple;
-	bh=NuM0/4Z7CHDs8YxtoXcHEdVgcIA8PHCLZ43FdsDlooE=;
+	s=arc-20240116; t=1741289201; c=relaxed/simple;
+	bh=TYNF5uSYA4qLy4+0N6piNIXODyphiWdbD9W6y3Or87U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JW8nkRXgNOiStMtO25E5vyO8mj73uOfDbFjZruf9hCFCgYWdUpoespKpP0+l69Wgwe3Xt2OszXsP03XLCeZaQomYbAjA9nX7ORJr0xf+K0Js+BhEG0gy9/jZvMnvfqNANo5EG3XPrPe4uo8rkQvatXuEa8c7Y2kcMc5qgAbUY30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fb462/mD; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XVrgnweYfy5WDzrVT/GpRZfh8KaaIk6XsMHnHQhwC/4qixo1kWurzftzWlVmp3xt6vpv1JcMKSofJKHCs7xDIkY1rYgF3yuZIzUOZ1mUPS1AdB97rlSqiOIE7HpIzt7IRJSXi9AFF4iZtyIjYyQbilCSrSKqZjUXB9Jxr3JO6B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctJ1zHO3; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fb462/mD"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso535654f8f.3
-        for <imx@lists.linux.dev>; Thu, 06 Mar 2025 11:07:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctJ1zHO3"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f2f391864so647945f8f.3;
+        Thu, 06 Mar 2025 11:26:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741288044; x=1741892844; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1741289198; x=1741893998; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hcPTYtu0Id6NGn3oYEB5ke8Yt/wGoQtkJ2G5rC4dZ8Y=;
-        b=Fb462/mD/bYof5TLtAzqBKr5NX9Pfj4MFY0XWulPOm4C2dEB4trUR/rWcLheLncyFz
-         fAj963hTrny7SG3MxQi0SQjiKzc3v1YZlZw3obAh6WanIS66oT7fhK0Ut64rXqMNA6bP
-         dOGxZQ3QvMOY4tBHXNfFwSul7uaZsZDHF87yfNkLscVjJo5SdqmZmI44ioBCHflizWfT
-         mTtE/afSI8j9tsniAg2P0KEc8yMij1r9CtAx4+XRVJZ+l9YTp/XB3lnJBjv8euzPeRdi
-         W1YucfMunPqUN0vzVOOcenCe9vwCM+uw/9oaZeB5ETAUjaNwocj68dsTUdEjG4aPV81c
-         wAug==
+        bh=yNcfgkruRbdQ2LTcDlb82l2rtv263h9UvbuoZgmPSdM=;
+        b=ctJ1zHO3fQ/fA/HO1UswN5wc69n2qhcTDDxQeWaQFrq4Qk58wxh/akN23Oe6mwRqZZ
+         HwiSeCBrsXh9cdX9jw4gAzW5ETTVhs59j5EB+FcP/z34kp7THIUmX/gYVKbnP/2qU1UF
+         lfMpF3/U5bZBPuOnGM2N8wLGdYkJ3xcDD8soJbvKXSxTJSDUlgjfmW9cLynEZJi+uX9u
+         MtP1yR0loHvEcnzLLGcJHMvukpQZ2NUatF6W6HQ+PggkjZCeJr0MTQL67rUS1YQ26NcS
+         IhJULhKmTUt75+frJwhDIHfHi8lQdUXLYMhSYbfKkVRCqR+yQKW4KRabC87UfwDz2w/m
+         kuaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741288044; x=1741892844;
+        d=1e100.net; s=20230601; t=1741289198; x=1741893998;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hcPTYtu0Id6NGn3oYEB5ke8Yt/wGoQtkJ2G5rC4dZ8Y=;
-        b=CTaENLYrGmwaFo+owmF8zx1c7OIuf7WIRBCazTFRhTPS8p2kE5gawbdiab8yu0GtAK
-         76qPkR6AVkyuKs6kavIGV8VrocHm+jwpnppKNccD/m0/h3n4uHjk/bloixzWfDDlA42G
-         qLIhLCwMquqF+yezgE9goOxPo0ng6KyhNmxaC+54+voWHFAffLQQTNKBobEjm5UIBiKv
-         4XpWzeFT/zpLAX8JYkGhKqSm9yYf9iuNSmVBC0VGG+lVHiwQt/epuK66739u1NpvWvOi
-         Rxpu2E/7NwgmlJ3yyu/EuDK3VQLcIz7hX/EcomjtAq9z4yb20pjsWrq9VUrh+ZzyPO0s
-         akWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbnBOehnM0jALWBQG/LgursZB/KytbLqWRUTtBe1eCPLahY1rjNdPN+tKyxoWIaE5VnSE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWfn/ncs35O+qVx3L4OXcJU87U6cSmunZsO9P6fWHqF44mfLgm
-	nyvBzRTJ+AiZ32RAuaEgp2p1PyQ5G9GBk4fINPTiNmqkUY0ihZ2pdOB98DnAdj4=
-X-Gm-Gg: ASbGncsRrB5AAIgIWyRjPjp4FB7YJieqoUU5QRKh+DNsPJ3tHrMTJ5HibTXfUstuLqQ
-	D2WQ3/PgsqtqotVyc2L1mBAI9Ew4rAzYXGZ4DetLilqtgx7agev3wn1tVCo1pELcbqswbbfNdTS
-	N6vfDLEAr4t41TDkNcNkTSvEjZHMGdzSvmClAzmV2XwCkGjGnu1+bF6HhsEz/fc9uTG+l69DRzN
-	+twMWLQDJ3nMCDy3o5cseUXhBvoFiDJWQ1pIRQ2bwve0iLKuDx4jCqEftX/4ZiXGjsKQj6cVMRG
-	h1UFFVgjXVw0rEaCvNKYVLp9ZVy29Sn+eskYpdaW37JHH/ZxBg==
-X-Google-Smtp-Source: AGHT+IGw/KEJ9CBs+ZmqDYKL+kV1HSN6Zuv++vQFuUB2xUBy6Y//0Fpmd9GzursfaQ4hN9Ki5iMA9Q==
-X-Received: by 2002:a5d:6c66:0:b0:390:fceb:72f1 with SMTP id ffacd0b85a97d-39132d7625emr290402f8f.26.1741288044594;
-        Thu, 06 Mar 2025 11:07:24 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3912c0e1476sm2880709f8f.70.2025.03.06.11.07.23
+        bh=yNcfgkruRbdQ2LTcDlb82l2rtv263h9UvbuoZgmPSdM=;
+        b=cMrDNqN6/ZkeyTpHmKs1Dt5Iy+3XUUr25pGEiZFrFlOy5Fuachf1HmSBc2jTEZAVSr
+         A+aW5CDrUWd1PNN5FPwGb8wOlu7M//3AztnZBgheMXpw6DNBxWONgsACGwpHSr81785f
+         SVsDYbf0ACcUqHcTtak5etUCSSPfRdaRMSOKM/nb4DruU352J4tH63lEdtb3lhSwnd5/
+         LJGA14oacxMpVqAGnkkVFMWuLAE4K2hIThTWeBa2GNSfR7VzyB1e0PxWuHS6Lm2u72Ib
+         oWTk1KdfJU6x4LI1K548WaGakOrtJz76zNCI30n2YOKmmGMjfCL4klwtKk6XsrszAXKf
+         M/2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWKHJExyPoGGiRqjwOpbeoHeKpmpwDXCqJ/e8z0eWjfmKP3LPurpyVCRd1Na5WEDWkdsQs=@lists.linux.dev, AJvYcCXFwhZOan5AkY+DiCJPsoaPsGCIvsGdpSe/0BsPPNe67Cq5VbnnymA3yyjs8IXGO7pYJLYRl7qtQcYMihLUtDM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxw5aiwy1zA8lnV5SYyeZXsDDhQ8o2c32Oy//MQOzMFCEw7mk32
+	CJ/k/tlo4diVJ4F0be98/KCD2DHcJzg1nblgofSTvF16EXH10+7+
+X-Gm-Gg: ASbGnctWPo/9N38fhyeVnVj9GaHr6Xt/OupnpeNDel8/drmlK2VoFaOXjmhefYnfv+p
+	cQ54jEdizW5l7G9WMjhfGKamBzd8+MMBcsn6PrbcIyDHHMOs3/0H+J+3WDMiYEs85hNLnxAuuBf
+	ox7eUMRtTnwecNQupHGwxS8zch3AeG9/yHJLNQNg7WHG1mHrtHCT23lGtJsGloo1gg+ULjjwtmR
+	aIW2/DlkU5gg1Fmy/qdttkWXUFa6q56kVRO0Jb/AwQZJB92NvmNDYx/sdmjaXelIiOZozSXe+Qs
+	xudjzuepSh3Pdlil1mUO/bAesy4DsNS59YQK61xJeWa9B2jCjlvQ11YFxFpeO77D9JVq4y+W1B/
+	AbBvyKauqxLzFAvLVHycvbNSeInNNmb8=
+X-Google-Smtp-Source: AGHT+IGse2HrwvQit3ez+Tb+IZmcWPgul6Oz1Of3MncB8IKv5GiNEYehZwUGHa/gmdRGfttFwUyGrw==
+X-Received: by 2002:a5d:5f45:0:b0:390:eebc:6f32 with SMTP id ffacd0b85a97d-39132da8fecmr291664f8f.48.1741289198054;
+        Thu, 06 Mar 2025 11:26:38 -0800 (PST)
+Received: from orome (p200300e41f3a9f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f3a:9f00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e1d67sm2905872f8f.74.2025.03.06.11.26.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 11:07:23 -0800 (PST)
-Date: Thu, 6 Mar 2025 22:07:20 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: Mathis Foerst <mathis.foerst@mt.com>, linux-kernel@vger.kernel.org,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, manuel.traut@mt.com,
-	mathis.foerst@zuehlke.com
-Subject: Re: [PATCH v1 1/1] media: imx: csi: Parse link configuration from
- fw_node
-Message-ID: <84aa2d87-d7f1-46c9-b28d-6f0e9a78788d@stanley.mountain>
-References: <20250305113802.897087-1-mathis.foerst@mt.com>
- <20250305113802.897087-2-mathis.foerst@mt.com>
- <Z8nOTrjEW_OYBGlq@valkosipuli.retiisi.eu>
+        Thu, 06 Mar 2025 11:26:36 -0800 (PST)
+Date: Thu, 6 Mar 2025 20:26:33 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org, 
+	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
+	Mikko Perttunen <mperttunen@nvidia.com>
+Subject: Re: [PATCH v3 20/25] drm/tegra: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+Message-ID: <mtsi7lohn4nq75y3mdzk7eomloxvswjn4blsmruutpejhppd5i@wexuiu7yfea3>
+References: <20250218142542.438557-1-tzimmermann@suse.de>
+ <20250218142542.438557-21-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="y6cp6aqkj6w24xiu"
 Content-Disposition: inline
-In-Reply-To: <Z8nOTrjEW_OYBGlq@valkosipuli.retiisi.eu>
-
-On Thu, Mar 06, 2025 at 04:33:18PM +0000, Sakari Ailus wrote:
-> Hi Mathis,
-> 
-> Thanks for the patch.
-> 
-> On Wed, Mar 05, 2025 at 12:38:02PM +0100, Mathis Foerst wrote:
-> > The imx-media-csi driver requires upstream camera drivers to implement
-> > the subdev-pad-op "get_mbus_config" [0]. Camera drivers that don't
-> > implement this function are not usable on the i.MX6.
-> > 
-> > The docs for get_mbus_config [1] say:
-> > @get_mbus_config: get the media bus configuration of a remote sub-device.
-> >             The media bus configuration is usually retrieved from the
-> >             firmware interface at sub-device probe time, immediately
-> >             applied to the hardware and eventually adjusted by the
-> >             driver.
-> > 
-> > Currently, the imx-media-csi driver is not incorporating the information
-> > from the firmware interface and therefore relies on the implementation of
-> > get_mbus_config by the camera driver.
-> > 
-> > To be compatible with camera drivers not implementing get_mbus_config
-> > (which is the usual case), use the bus information from the fw interface:
-> > 
-> > The camera does not necessarily has a direct media bus link to the CSI as
-> > the video-mux and/or the MIPI CSI-2 receiver of the i.MX6 might be in
-> > between them on the media pipeline.
-> > The CSI driver already implements the functionality to find the connected
-> > camera sub-device to call get_mbus_config on it.
-> > 
-> > At this point the driver is modified as follows:
-> > In the case that get_mbus_config is not implemented by the upstream
-> > camera, try to get its endpoint configuration from the firmware interface
-> > usign v4l2_fwnode_endpoint_parse.
-> > For the supported mbus_types (V4L2_MBUS_PARALLEL, V4L2_MBUS_BT656 and
-> > V4L2_MBUS_CSI2_DPHY), extract the mbus_config from the endpoint
-> > configuration.
-> > For all other mbus_types, return an error.
-> > 
-> > Note that parsing the mbus_config from the fw interface is not done during
-> > probing because the camera that's connected to the CSI can change based on
-> > the selected input of the video-mux at runtime.
-> > 
-> > [0] drivers/staging/media/imx/imx-media-csi.c - line 211..216
-> > [1] include/media/v4l2-subdev.h - line 814
-> > 
-> > Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-> > ---
-> >  drivers/staging/media/imx/imx-media-csi.c | 36 ++++++++++++++++++++---
-> >  1 file changed, 32 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-> > index 3edbc57be2ca..394a9321a10b 100644
-> > --- a/drivers/staging/media/imx/imx-media-csi.c
-> > +++ b/drivers/staging/media/imx/imx-media-csi.c
-> > @@ -169,6 +169,8 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
-> >  {
-> >  	struct v4l2_subdev *sd, *remote_sd;
-> >  	struct media_pad *remote_pad;
-> > +	struct fwnode_handle *ep_node;
-> > +	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
-> 
-> Are there any defaults in DT bindings (other than 0's)? Also initialising a
-> field to zero this way is redundant, just use {}.
-> 
-
-I was going to respond in much the same way.  This is equivalen to:
-
-struct v4l2_fwnode_endpoint ep = { .bus_type = V4L2_MBUS_UNKNOWN };
-
-> >  	int ret;
-> >  
-> >  	if (!priv->src_sd)
-> > @@ -210,11 +212,37 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
-> >  
-> >  	ret = v4l2_subdev_call(remote_sd, pad, get_mbus_config,
-> >  			       remote_pad->index, mbus_cfg);
-> > -	if (ret == -ENOIOCTLCMD)
-> > -		v4l2_err(&priv->sd,
-> > -			 "entity %s does not implement get_mbus_config()\n",
-> > -			 remote_pad->entity->name);
-> > +	if (ret == -ENOIOCTLCMD) {
-> 
-> 	if (!ret)
-> 		return 0;
-> 
-> And you can unindent the rest.
-
-I was going to say this too but then I thought actually this needs to
-be:
-
-	if (ret != -ENOIOCTLCMD)
-		return ret;
-
-Which is weird.  Better to break all the new code into a separate
-helper function.
-
-	if (ret == -ENOIOCTLCMD)
-		ret = parse_fw_link_config_stuff();
-
-	return ret;
-
-regards,
-dan carpenter
+In-Reply-To: <20250218142542.438557-21-tzimmermann@suse.de>
 
 
+--y6cp6aqkj6w24xiu
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 20/25] drm/tegra: Compute dumb-buffer sizes with
+ drm_mode_size_dumb()
+MIME-Version: 1.0
+
+On Tue, Feb 18, 2025 at 03:23:43PM +0100, Thomas Zimmermann wrote:
+> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
+> buffer size. Align the pitch according to hardware requirements.
+>=20
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Mikko Perttunen <mperttunen@nvidia.com>
+> ---
+>  drivers/gpu/drm/tegra/gem.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+
+Acked-by: Thierry Reding <treding@nvidia.com>
+
+--y6cp6aqkj6w24xiu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmfJ9ukACgkQ3SOs138+
+s6GThw/9F553EWmmWz8ONopI5pY7Fy+Pu8kzqsU5bhKSKO2aqJ8y4PFOQAzaacO8
+2HuvhLXsP6l91B+R49oebJTWnbgcl9ThzcA4njgdKRFc7yZU/EZUEUGdwDkU6qsh
+/rkDnM+a+MzIAd3Z31B0Kvb0tUsl4e0UBueDHmjfP554dbtnMr94eIHuqLVRb1/D
+LB6ddm8DbZVoDKT9Ji2gLQpW84oFuIzRZPOV8JmPe+wE8Xf6A9sLloqJndErnvHg
+B8X2K8PzxkNNJGaZtQMUpiJ+S1oDNZnnKtzt0Wb+b9itJqUgykve29vGBDBImsb5
+8JLFlkdPFdKpFsbAvGyHv8b+F2rDVu4Oelg88WWDUSMc9Ut274u5/a2DTUOwF806
+DtCADAFUOOcIyDZKfPpeQuWDPeScN3/ANW8iQMlyPaNO5fBKlisFjiF1Bh0gS+vQ
+shkKb74wChg/4jgq1+M+I4DPdCQRe0kGIqbNZ4yK71owOjoSE6WIxxEt0UUKxPwh
+XZyf8ZF2O9TCPMigN6Qw2AGUhaC3HsAG9KbhOTSeUAsOwohFtYY+3B6Hkb8SQHEM
+i05OutqXEhtdSZgBK+HuweZtYWCBfy/BcMeD99Rkg01C+aMZcNPGVLpvGqpryNaB
+Ga0hQwFdIjbnMbXxjzyfJfs7GqNyTAJtpiqBO3uDhWH2LxJHZ7M=
+=2m1E
+-----END PGP SIGNATURE-----
+
+--y6cp6aqkj6w24xiu--
