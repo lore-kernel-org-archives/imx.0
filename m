@@ -1,167 +1,195 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99C022156D
-	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 16:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85F523E242
+	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 17:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741363353; cv=none; b=nd6+jhKkGzUUZQ+T3tBW7AkifYv2uSPknjoJuKmh1utR1TwSzUNBQheTQ8bAqBT2CpP1IQJSpo8VIdvF4vLRru0BcpVE+/hC5tmFM8MlWJ6tUlDkB3RhXomoyWwE6hRyH8sUBtZqZBS5TLvcw7kui73Lq52A/BDVbWPekjnXxBQ=
+	t=1741370007; cv=none; b=II8Bk8P1Bp2si5q1jydZJsJ3p6a1Ckv/DzWPTzyT/OQddXYw8Lm/CLgeiABveEm6P1NTspU6vZZQJCFcww6+cDZH4IIPbYlTmsM5oMwU2CgW3aTktbE9hU/vhMRKx7h5/WA07eChy/YOqVS7WQCypQXDpxXJ91Vxr+dJVUK/TNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741363353; c=relaxed/simple;
-	bh=lFdxkbYzjD0P48GbkFhKMmz9eW4sEbkQm1/W23ttC3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SfP2xUjVC1Gt12+EbShQv6lIzQfjBzr0nsye6wqsuCS7ZuQB1cQAS3yiOsFkw4bo3rZdbcUGmONnclisN7hUXvFvhwhHCfVOdx+XNYze/X5hCCxGp68ZNvEr5623goUbf0yJm5P/M1DeM/TuXLZXLY73rK4GkuKP1+O5XLgwZNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xi7XdyTY; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xi7XdyTY"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-223f4c06e9fso37800155ad.1
-        for <imx@lists.linux.dev>; Fri, 07 Mar 2025 08:02:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741363351; x=1741968151; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Zb+NvzLUHQoq1FpAOfoO3rgYMLTUz+QxxpRaXvte7s=;
-        b=Xi7XdyTYiUbIsfeXS/4E4C1oHWShvE+vNhVlusGncLCG2QENmpULdKGrM2fulrAZl3
-         KXrcDV1v9ghmg3tA2b91gi+gvdq6LEaR7VL8m1tjG8YV22Eg1SPYo4cV38ScaH4IAe2C
-         2pQyPWbKMhS7AWVjD424YIvk04R54jPAbuhYtEnraFHeReCBSm9Q3MaBVXIcS18fQfmj
-         aKzAd4ZnIhJn2zq0hgaT20fFDDSJ8mtcUwaAYQOVHQ32iLXO8srGQ7lW8Oc0ujqP2x/u
-         OjdlrPVai05h+eaBvUtKzERiOxShyxOoE1OoaB6DVZjSXNo9DFIngh6n89tlzOokaN5D
-         arhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741363351; x=1741968151;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Zb+NvzLUHQoq1FpAOfoO3rgYMLTUz+QxxpRaXvte7s=;
-        b=tW9Jiujp97QXf/zroTTS3oJUk4ht2DWbUCQhCGGlxxYPlRvDaIqQkBSbb3hz5EIUBo
-         BYIYq47ODW9/DA+AGJrLFLRsPaTxzi+aVtR9cyp2/GpdNCYBhJ8/hJAu6Tn8OCa6BwAR
-         LSEGuKGfFoDidi1L2NKneIBNm1maYPt7U4MmET9ldqZRq/xAyM2CJTpKI5wOP6hnUzg5
-         fcDQABEyXgXn/alRk1F2w0iFTjHatF6j88aZd/OTP3+exL02I/5rK4NyPEalb2/WIbxT
-         akRU+YdtDofa96bwIJEw3+o/4EvG4UwfTJb1LzrJVdFJog9rUuY5zpxqXEqbvRMrp4t5
-         ODgA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDF1lCBrDVMS/x4v5dLPI+kl3KhHZFxxbbIaNr2BCz65JzQ81QFNH22TEDxxEcoDKMPr0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7yO4eXBMOj/Pb3xheCmO4viIsHtlYqpdXHPeHmH20av0U43O/
-	YMLk+zevG81P1IYQsbXrh5vJdPaGDs/AE4WLGsbql9w+uaYZjRKa
-X-Gm-Gg: ASbGncu6RY9JWQ8xW3KowHjPxk+Xu2ZRDhzq1kwbragbc8ZrVMwsf2ZmnhB88wzgiJj
-	OhCm3XhlEHw0yUNuI1an39amhfTCxXnzW87SP1q3XqzSzQ1ei3PCKKB89b5/xVvpBkPS/mXp/4S
-	FWiVaqTf8hr4kCNmS0FjTTW4H99KcuN7xnFqMPKbbKVrZHyVyh238uyOYEx0vG3KTE8ZCesZor7
-	FqOzhpDXSKmmh8TBb9Uu2/CmozsKc+sljsznqqctfBb9Oqhf0Yz0F6tTp44/phH9WSVEelBJxxU
-	6AL3BgbOIk8XgJo5z7oFj2s3BSZDaJncLEtTVFBtLtj9BcteHZ6XM+804AM2dNPHunpgMmJ9j75
-	eHcVljqW0WibLy58s0g==
-X-Google-Smtp-Source: AGHT+IGznSvrYjNrYuAgQA1A2W1jR7Q+mpt9Mdt9FcdIUUbJ2WN2Iq2LMwq9M4nmJ7MiIMinbFk74A==
-X-Received: by 2002:a17:903:1a10:b0:221:8568:c00f with SMTP id d9443c01a7336-2244b098602mr1713835ad.0.1741363350733;
-        Fri, 07 Mar 2025 08:02:30 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af512724c14sm468713a12.37.2025.03.07.08.02.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Mar 2025 08:02:29 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <64d7d06b-337e-498a-87dd-03ae41e6a2de@roeck-us.net>
-Date: Fri, 7 Mar 2025 08:02:27 -0800
+	s=arc-20240116; t=1741370007; c=relaxed/simple;
+	bh=uGp2XOYaAoeUpb/9b5BbIParJDTxLmqRE1Kf/2le0gE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d72UnphZ0MwTfbRHZlCfUJJaGZQr8IGqupxDaW/L+jwxlBnjrQ2l+uJnwt0ib3yt5crpIt+VDuSPA61z8OdduJEfyj9r7a1BAE+MpGpvRolgAMnIDIwuUtRVzjP7/reZncMHn0jDVpz9kUyGqIlTx6GY2JHTI46ZfkwiNFUX+FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqbsk-0007Ns-8T; Fri, 07 Mar 2025 18:53:10 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqbsj-004Wj2-1G;
+	Fri, 07 Mar 2025 18:53:09 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqbsj-000Zmp-0n;
+	Fri, 07 Mar 2025 18:53:09 +0100
+Date: Fri, 7 Mar 2025 18:53:09 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Daniel Baluta <daniel.baluta@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] ASoC: dt-bindings: support imx95's CM7 core
+Message-ID: <20250307175309.od3grjzr63dxp6ec@pengutronix.de>
+References: <20250211225808.3050-1-laurentiumihalcea111@gmail.com>
+ <20250211225808.3050-2-laurentiumihalcea111@gmail.com>
+ <20250212093610.x4ixrackmn3u2xrf@pengutronix.de>
+ <CAEnQRZBeQdnC+K92+Udb5awTmom10YHHNt7Ld-pYK4A1i8sr3Q@mail.gmail.com>
+ <d66996eb-f49b-448b-9743-d19a3c3eba52@sirena.org.uk>
+ <e45411df-1b8b-4f21-878d-d52e1112e62d@gmail.com>
+ <20250213064724.kbmxsk5szpxwclj6@pengutronix.de>
+ <88584d8f-e1cd-4b56-8906-461e1e6d9cc9@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: watchdog: fsl-imx7ulp-wdt: Add i.MX94
- support
-To: Frank Li <Frank.Li@nxp.com>, Wim Van Sebroeck <wim@linux-watchdog.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:WATCHDOG DEVICE DRIVERS" <linux-watchdog@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20250307154424.2613795-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20250307154424.2613795-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88584d8f-e1cd-4b56-8906-461e1e6d9cc9@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 3/7/25 07:44, Frank Li wrote:
-> Add compatible string "fsl,imx94-wdt" for the i.MX94 chip, which is
-> backward compatible with i.MX93. Set it to fall back to "fsl,imx93-wdt".
+On 25-03-04, Laurentiu Mihalcea wrote:
+> On 2/13/2025 8:47 AM, Marco Felsch wrote:
+> > Hi Laurentiu, Daniel,
+> >
+> > On 25-02-12, Laurentiu Mihalcea wrote:
+> >> On 2/12/2025 2:38 PM, Mark Brown wrote:
+> >>> On Wed, Feb 12, 2025 at 12:11:49PM +0200, Daniel Baluta wrote:
+> >>>> On Wed, Feb 12, 2025 at 11:38 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >>>>> On 25-02-11, Laurentiu Mihalcea wrote:
+> >>>>>> +    const: fsl,imx95-cm7-sof
+> >>>>> Albeit Krzysztof already add his Reviewed-by, can I ask why we need to
+> >>>>> add the -sof suffix instead of -audio or so? SOF is a software project
+> >>>>> but you can clearly run different software on the audio-copro as well.
+> >>>> Sure you can run a different software project on the audio DSP but
+> >>>> you will need a way to distinguish between the different projects.
+> >>>> There might be different mailbox, memory configurations. So you will  need
+> >>>> to invent another suffix specific to the new project.
+> >>>> We can make  const: fsl,imx95-cm7-audio as the one used with SOF
+> >>>> and think about a different name later for when another project will
+> >>>> want to use the DSP.
+> >>> I think the point here was that the DT should stay the same even if the
+> >>> DSP firwmare changes, just as how changing the main OS shouldn't affect
+> >>> the DT.
+> >> It's rather unfortunate but based on the experience from the 8 series
+> >> (imx8qm, imx8qxp, imx8mp), the programming model can differ quite
+> >> a bit (e.g: remoteproc vs SOF) even if the core is the same (i.e: DSP core).
+> >>
+> >> The different programming models also required different DT configurations
+> >> (e.g: dif. mboxes as Daniel mentioned, some extra properties (i.e: reg-names), etc...)
+> >>
+> >> The "-sof" suffix was chosen here instead of the more generic "-audio" (or whatever else
+> >> alternative) because the DT configuration is specific to SOF's programming model. Other
+> >> audio applications running on the same core may have dif. configurations (e.g: use
+> >> DTCM/ITCM for memory instead of DDR, dif. mbox count, etc...). I suppose this kind of thing
+> >> is bound to happen to some degree since the DT node doesn't just describe the CM7 core
+> >> (but, rather, it also encompasses information on the memory, mboxes, etc. used)
+> >> but perhaps I'm wrong?
+> > Time will tell if there will be any other user except for SOF for the
+> > DSP but and this is what I wanted to point out: the DTS should abstract
+> > the HW. IMHO The CM7-Audio node should contain all properties required
+> > to turn power and reset the core (e.g. clocks, reset, pm-domains). I get
+> > your point regarding different configs but please have a look at
+> > mt8183-kukui.dtsi. Here the rpmsg config is a subnode of the actual
+> > system-control-proc. This makes much more sense to me since the HW part
+> > is part of the generic core-node and all the software config goes into a
+> > separate subnode.
+> >
+> > Regards,
+> >   Marco
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> I understand your point but we're dealing with 2 different programming
+> models here: SOF and remoteproc as opposed to just remoteproc as it's
+> the case for Mediatek.
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+The idea is exactly to decouple the CM7 HW config from the
+software/firmware running on it and this is what MediaTek did.
 
-> ---
-> change from v1 to v2
-> - fix typo im94 in compatible string
-> ---
->   .../devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml         | 4 ++++
->   1 file changed, 4 insertions(+)
+Of course they are only interested in teh RPMsg part but this approach
+could be used to decouple the HW and the FW part which is your use-case
+(different FWs running on the CM7).
+
+> Going for a similar approach would also mean quite a bit of software
+> changes as we'd need to factor out the common bits (most importantly here:
+> core operations like start/stop) and placing them in a common driver. 
+
+Exactly but shouldn't be to hard to implement. Of course it is more work
+than just adapting the compatible.
+
+> This is not trivial and I'm not sure it's worth the effort right now
+> given that:
 > 
-> diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
-> index a09686b3030db..6ec391b9723a5 100644
-> --- a/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
-> +++ b/Documentation/devicetree/bindings/watchdog/fsl-imx7ulp-wdt.yaml
-> @@ -22,6 +22,10 @@ properties:
->             - const: fsl,imx8ulp-wdt
->             - const: fsl,imx7ulp-wdt
->         - const: fsl,imx93-wdt
-> +      - items:
-> +          - enum:
-> +              - fsl,imx94-wdt
-> +          - const: fsl,imx93-wdt
->   
->     reg:
->       maxItems: 1
+>     1) The current way we model the hardware inside the DT is not exactly inaccurate.
+>     The core does physically use those memory regions, mailboxes, etc.
+> 
+>     2) Whatever we do, the information in the DT will still depend on the programming model.
+>     It's just that you're placing it in a child node, instead of the parent, which is arguably not that
+>     big of an improvement?
 
+The benefit is to have different configs in place and a board can choose
+between them, e.g.:
+
+	sof_cpu: cm7-cpu@80000000 {
+		compatible = "fsl,imx95-cm7";
+		reg = <0x0 0x80000000 0x0 0x6100000>;
+		reg-names = "sram";
+		clocks = <...>;
+		resets = <...>;
+		access-controllers = <...>;
+
+		firmware-name = "nxp/foo";
+		firmware-config = <&cm7_sof>;
+
+		cm7_sof: cm7-sof {
+			compatible = "fsl,imx95-sof";
+			memory-region = <&adma_res>;
+			memory-region-names = "dma";
+			mboxes = <&mu7 2 0>, <&mu7 2 1>, <&mu7 3 0>, <&mu7 3 1>;
+			mbox-names = "txdb0", "txdb1", "rxdb0", "rxdb1";
+
+			cpu: port {
+				cpu_ep: endpoint {
+					remote-endpoint = <&codec_ep>;
+				};
+			};
+		};
+
+		cm7_rpmsg: cm7-rpmsg {
+			compatible = "fsl,imx95-rpmsg";
+		};
+
+		cm7_foo: cm7-foo {
+			compatible = "fsl,imx95-foo";
+		};
+	};
+
+I get your point and I'm not against your patchset. Just IMHO the above
+example would make more sense to me since the CM7 hardware handling
+(en-/disable/access/reset/clock) can be done by a common driver and must
+not be done by each subsystem driver: sof, rpmsg, etc. Also the since
+the driver would be common it could be reused by other CoProcessors
+within the system as well since there are now more and more CoProcessors
+on a SoC.
+
+Regards,
+  Marco
