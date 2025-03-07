@@ -1,232 +1,146 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B3B20C481
-	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 10:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741342255; cv=fail; b=i2t2/ehmUSCFOe0FXcdlKdtB9BjhtwzL7qN8C/4phS8IzTjHPw7lRewHN2H8yuXYFlbfP3YuB6Cr8+O4XdVvx+YSbaNmS/2bNEHVwos8XGhmUIFbSLax+fI+S5TpAv69qUjukGpx27ZnFKu1QFQKtwr7TyBgRnT9BvAripUy2xM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741342255; c=relaxed/simple;
-	bh=41H1o0zx9VjinbDlai4D9r43S5S/hQ2Ln3W90FDbZ/I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=re0unuKIxBnNtVs3xVqBbPbwngnnDAvPlxoMo5LFX6miDm2W031A5Xx5BhSiMXiOIrhmvanrYIIQWW+Miv7UgenEdSAA69bEF6LweQlNWE8EULeluq2GSUbL9GmgkhgG/rXdpSg4Ypb7HRRDSWADXMxOFScS26gdru+G7vdxyR8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KCzNt062; arc=fail smtp.client-ip=40.107.20.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1926221324B
+	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 10:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741342689; cv=none; b=NcHQKqp/cnFlPXRX+kGQonv6LFjtCTrp4/br0Iw2z8Yf4kP3xyCnV2btNqVkZrtaAo1STwvTjd+ExrGtqoyb/MZt2uAeeaEJCbXsTb6oqklVp1s5BjIGH8DmD9Pmmz1ImFpkuF5w4C8l7IomT4zj+JOVqo3clO+iEIuhKWgRTu8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741342689; c=relaxed/simple;
+	bh=VuUdpkHlmMFr7mbOhennh+/tErc6Jkpp5XmmJqVRPSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R3j0rb3/iznb5E16Qd2XJAoPHXBNm7J07oVBAchYX+78QRgu72rYsjYOfStkvoy6IFgafgHXIn3PqO7px1giGgIFZoFVJADgIAQn5X2Hp5wsMsoglsvaihaQKqLuGmhcWyUwCVOOgQN60Z/4A7zo7en57Tp2Z+2KDLm5fBjrqO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ErLridn3; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KCzNt062"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y3E+ahmO7+LfIb2LUPFGXxzBqJUayrxV9ocFP+wgCt1ByjXvxGxXwKZFbAZWAVVrGrtn8CvhH6jDhZxhLJIExqRl42fC813kosWDhYow9bu2gSzJKgvxkqQmQWT4OtegnFmuCTSVCarPaxP8PICW13Qgcls1WCyL+xp5m/kWBfE7e60N9vq5mlJMTivZ/+lElP3OF2w66DiUJQUSjEPieTtFv+y9oadIpgdNL48jBAoYXjpLhF8NB82pf/fSR/RWbnVPvd8bjC99ikWnTukwBrXW+292nXaJieNAzQPsCJ904VKmZIztYsofhos6ulvmcccNdfueCInl8FPXL1opRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ya6HZAYQcqRbYFvGThCbCZe2yKbmSsTePP8UQLATyI=;
- b=SEoC1EnE7LagMRHY+kEaDHEWR9dqjNUlvPGDHikkBGBbzwyp0lwEz3VuOgqI8M9Cm/Im2kks09LxSTFRc9ik5jPCOJuavJcZZxPmA/Kol3+LBzPI5y7BeYCN0hqyxfeP/0OYBD2iV8jK7oQTIY01P7Q6xypARTVBgcujZTbW7kVwD87DkxNkQNvQxW6FK6cxOVLyABgFFkaw9cUZayjt6ZCJ2s7zrMhMr8DyPPb6knByIm8h4tQmHx84Ks3RAOQHHhuVCvLU/4tqm3dx9PIN7NLW+MfAwwYzYSADJVJzhgANScyJj7QAfSUQsgqIGE9j7JIFMB7bLf3uw9Jy/dfAKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1ya6HZAYQcqRbYFvGThCbCZe2yKbmSsTePP8UQLATyI=;
- b=KCzNt062+cJ38H66sC5uRIW4dfDkjmjjuicvFBf0+sBjQtuBZ0svCMYBzije2vKMKIH+viUeqSs+VV+9hk/bLWL8KQV/H2I3V7JLjGm5LUWAhECwZb4RTqnkJLLl7kee0WWWVzCYjtev9H45XQfQ2RYUDG3n94HO15miZb6fNu4R/GHirlkqLwVbl/i4sDGnzI+Cr8rmGn33pZbaELHIxDaugZy6g4PfAnYTp6F24RfZqITvzUDh9uKcPHEtq0AxRo00EWd5woAL0hJu3U1e6KpNByxwwxkKMbUyVlNYKzbgWvcHjc/nh4zogp9YOai8eQNlsLlkCJGyH6KQ8A4fJA==
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
- by DB9PR04MB9723.eurprd04.prod.outlook.com (2603:10a6:10:4ce::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.20; Fri, 7 Mar
- 2025 10:10:50 +0000
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb%7]) with mapi id 15.20.8511.019; Fri, 7 Mar 2025
- 10:10:50 +0000
-From: Jacky Bai <ping.bai@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: "rafael@kernel.org" <rafael@kernel.org>, "daniel.lezcano@linaro.org"
-	<daniel.lezcano@linaro.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"ulf.hansson@linaro.org" <ulf.hansson@linaro.org>, "james.morse@arm.com"
-	<james.morse@arm.com>, "d-gole@ti.com" <d-gole@ti.com>, "anup@brainfault.org"
-	<anup@brainfault.org>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "aou@eecs.berkeley.edu"
-	<aou@eecs.berkeley.edu>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "khilman@baylibre.com" <khilman@baylibre.com>,
-	"quic_tingweiz@quicinc.com" <quic_tingweiz@quicinc.com>,
-	"quic_yuanjiey@quicinc.com" <quic_yuanjiey@quicinc.com>
-Subject: RE: [PATCH v4] cpuidle: Init cpuidle only for present CPUs
-Thread-Topic: [PATCH v4] cpuidle: Init cpuidle only for present CPUs
-Thread-Index: AQHbjzc48QAeOzv5L02tuSUugwb8UbNnbkUAgAAAI3CAAAOqAIAAACvA
-Date: Fri, 7 Mar 2025 10:10:50 +0000
-Message-ID:
- <AS8PR04MB86425524495B3FEF19F32E6B87D52@AS8PR04MB8642.eurprd04.prod.outlook.com>
-References: <20250307080303.2660506-1-ping.bai@nxp.com>
- <Z8rBYuDiIyo8y6HT@bogus>
- <AS8PR04MB86425B7CEE7443F822A2DBCA87D52@AS8PR04MB8642.eurprd04.prod.outlook.com>
- <Z8rEkgYoThJAJdPV@bogus>
-In-Reply-To: <Z8rEkgYoThJAJdPV@bogus>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8642:EE_|DB9PR04MB9723:EE_
-x-ms-office365-filtering-correlation-id: 03c2feb5-1f88-43ca-979c-08dd5d60566e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?0hMl5HA8+u0O3DavDQGgX7+qEpk4b8KGuFsKC1TF3PANAO/X2hlh9yeyeY64?=
- =?us-ascii?Q?46ZYsxPQy7EzSqFBPcEFyKonrWF5gxYLLBnwjqsT8v5KrYwk+TYoTp4BQSTf?=
- =?us-ascii?Q?3BMzZhnJNVTcobSfGrBw1ilg/5dKv5bQNsVWuLx7CCl+466pzih558P6Sg7t?=
- =?us-ascii?Q?sxS/qKMfc+gexczDudiZ/S/Uc4KtOSmCSyFnGKdEn+4eZzCOPuQMhf2nQjjb?=
- =?us-ascii?Q?86ESgwveztMFWEGvpm/sZ8++OIURF4hG5Th1WOVp12NRvkRjNjax4UxMDypn?=
- =?us-ascii?Q?AAsPd0txuMHi2NLHXvqsmhI9syb/d0LufUn0AtlCyID0yzBFipIc9dtL1HQf?=
- =?us-ascii?Q?WTUkCpqdFRXsxc51dXh7H0/9tJ30ej7WCm+VOsBBNQfK55uf5Zlp1Wx+IZWH?=
- =?us-ascii?Q?WJLfnzRKs8YwJP7Mn13x19YSwIaoIXzbcGN1WBZQfVB6SOLE0AGejeRbj3KZ?=
- =?us-ascii?Q?5o5BmMg/SEnQHyAdqMI7spdPIpiykXef4Dfrv/VU77BswbfaPEDLoZNYFKl+?=
- =?us-ascii?Q?g10stsqpg19NS6NUOqgjU4+LflZXFoZUMdGUmExTo/g8amT5ZotXAkU3Zw4C?=
- =?us-ascii?Q?a/ToJaszDCv1RoT+TuFW85/UIASEmAzlutINVGn+xMYmsnbUfSQAv/9TQjxh?=
- =?us-ascii?Q?s2TJjmn5cJAD51/uYvQ40QqhTnbdpZ2G+avVokQ4qJjJqVUwkQMxBCHAebJH?=
- =?us-ascii?Q?JVSoXH3MokF+0y51gQ5wMbNLOUf7plaMi6aTvUcu28rLgZa+AE0YSqxj2E0q?=
- =?us-ascii?Q?9JEIkPq5o3NI21Cw+l4i7ikQmJDXbfo6h9ChkEhXkWCM4VGa6hhRD35xFW80?=
- =?us-ascii?Q?dfjb6YKo07tDhL14MnD5t/aVA5tsF0MREehfAPu5aH+n8h4NyFDfPNWiec+F?=
- =?us-ascii?Q?I8DGiidUYVXflnAtRgNjSNI0tUJxGVGlCSRsu3yy5FH+ecouRof2mMiNC8KZ?=
- =?us-ascii?Q?LfaGbASrEN4LGKM8PTUXK5oE9InmK41VdER6HYqy72+0MwjpPSW+Irvax1lG?=
- =?us-ascii?Q?9Ag+jtVXva8Lvb1X5YXMZU1V/8xKOmbJE6TcZI5RWH/2Vtg8Hgns3kOs313/?=
- =?us-ascii?Q?EfjoCxx0a8yvtnYkgnLE7MBzf3Ay7UHAeoexAE46DbRx4amH2X80qVyaN11H?=
- =?us-ascii?Q?ExTV/w3bhWGxurkmQQacWplUbVmtEt7bkCk9fUNWw21PcsBYS0dKLqFjoe02?=
- =?us-ascii?Q?w/mrsWgWJITOTcyUXNOqehJrXl1j09JL6k+UHwvmRSHRnW8+Vw5VKgDiOVhg?=
- =?us-ascii?Q?7Inn+hg9xvgxKy20PIrhsmy870IHx4K47/72czaM5cgss5hQWf0QTtm9VjY/?=
- =?us-ascii?Q?dTCiUxE4tmRXP3IeGLpnPta1gNKGTo/qT5lI/A0nhGgXkufFjytiF2QZLgKg?=
- =?us-ascii?Q?/gk+l3G2a9nHHRbXIsUgCO/WMGW+4Vpx1fG5Owy2SZj3kLCU/2Dd2hlGUc9D?=
- =?us-ascii?Q?4oCEn7dxcJyA3qkEuOW446To+oUhyDdw?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?E6vYFsphWUoU0Z9bRZMEqyat67EtguYx1grI7IxDzD9GQrst0H2zRsinrqmd?=
- =?us-ascii?Q?6eB+fiJQGH7MxkWiwd8Gpc7oMmlvYmeG8bRBX9DoaJOW7zoq8wyqTISRxR5O?=
- =?us-ascii?Q?H0NAhzuzS2CO8ZUXSgMBE/d9QP+g2cw1SAU3erDWDEaVitR68wnc0qpbkBOj?=
- =?us-ascii?Q?gao9pWKFy3KMAIkVMMTXY5H4GuuULeXaIfbqG9XZUWtfDFZ8Q8ULIbm6bo99?=
- =?us-ascii?Q?blXoqtMSdAPtm35iLatmRtDXn6eQG93xO3FUtKPu9MCYcvl3GzuqzrZDd4Pg?=
- =?us-ascii?Q?nPuMX/Mo+/N1ivkSZBJO4wTF8Kg3BoNuOuJNpvWP4afXrwtZeC75+weVw5fc?=
- =?us-ascii?Q?S4yvgKb8sk1zbsyM4+zj+EC59ILmORNm+ziaT7x6/hPVlq0perZdw4A48WmI?=
- =?us-ascii?Q?tgpHIElwN0PdEs2eR37XIV0c4l4CiC/ECuqjB+FQSzKRjSAVLySYVfokLT4s?=
- =?us-ascii?Q?aNg5wzbdmDmubnKaPgsi8XuXqtpgthkLFmSC1Yrtqy01Snvwwgjk/nHkYn4C?=
- =?us-ascii?Q?oW7CMl2LyoWZrNWMK4bDedqQ45jcX3BHe7o+4VFsSiVuVNlCGoykvivM86wq?=
- =?us-ascii?Q?JfWgjv/+o6lRMnNcX2aNMVhn382AsXv4kFBLxBLiRKyKEi20ce9NUQyqdVsu?=
- =?us-ascii?Q?Iss5mUutyzxthpEXATrBX3xhcrvrx9u31UlIyhky5vz2l3pqxV2F4I1D7lxm?=
- =?us-ascii?Q?dyFVazloa2g/OwQCU0XPuDlFCyaO4B1ysEXnufSIXHC0xNAq0w/NF5gR9b4m?=
- =?us-ascii?Q?/maVPEfP4p8nEraURIVlyobCjSCSQ8FmwDCm5DuyEjyShl1pbd6mwBrUqLPi?=
- =?us-ascii?Q?R0kT4KgixJUYD/hengLNU6/PxBD3F21XV4fEpeQ4eu2iBGgINYs2gh2tkyUa?=
- =?us-ascii?Q?fPhgvcTiLha+zyVoBmtI17mMf83ZkuX4Rg2eoj1Vt+1Y1rrgLBQHluf6ro6u?=
- =?us-ascii?Q?DKck7Qab3MLA0MC2GVqMzpiIFDjtknRGI195+ira0Ej6ha8GbqVdnfSNint/?=
- =?us-ascii?Q?EaoPqroiNEU8h17YHGIll6SReMV/MPPJOOB1l0Vq3ejOIz59gH5tMRRMJnVh?=
- =?us-ascii?Q?w2uT/4d4YOyXPilrxhKYIs1F4Wx5zSOrKNjEy1oULH69shTf8Xw4GMXgnGCn?=
- =?us-ascii?Q?W2EZktF968cO6WJDfryhHLtU5wLG5G81iMiZBRrAyYQ86Tfv/YrZTNC5cQ9b?=
- =?us-ascii?Q?sjIjC6u0XwBH+qBanl5kmO3dSRN+e03ofyzqY07NzqeB0LDBkL7NqmTjlL1B?=
- =?us-ascii?Q?7lO4lBNeATVXPVqfLHNqUXo7V3DpoIAOtEF5kQ540AWyTzOivYzgcqiUzsVv?=
- =?us-ascii?Q?vZJSExdpQl7QG5+HzhlmM4bQXcOgbLA2USPtY21elabTiviDcKpckxdcKNcb?=
- =?us-ascii?Q?CTRco3e1fAq+qRxOlk66xR+ZMZceSpAVXcfpPt3oRs/hzbiZRQs+HLwfIBVD?=
- =?us-ascii?Q?19CdtJ5DPy9MRhkPlm+GMEuFk+FMd4Z7iYYnlnPQe2P7avszscYSE4LKafHO?=
- =?us-ascii?Q?1Rs4dBmxl6eQeIIR55/HAR8fwUUdENn8xfiQCDxeObRONgmIjLat9UHW3Ps0?=
- =?us-ascii?Q?bSn9yxzr1piZOo3FGpY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ErLridn3"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-39129017bbbso708377f8f.1
+        for <imx@lists.linux.dev>; Fri, 07 Mar 2025 02:18:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741342686; x=1741947486; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R3zujwTDTSnOftF9d4bbs2FCsfJL0He6fFCsD1C9TNw=;
+        b=ErLridn3ANAJmRJJoEe9v1YGtVDWDEmCLcLN9IGg56+3NbQ4kARZbNIPFJugNa3GjG
+         hGThjklJvts6TzNlU7K7pYYOjc82/apJfLX1SHTJjjmiNe6kwzWU662kx4y7LVghgJbY
+         uJflBDi6CW9mY1RVgwhm2JxchMLXCZ38NCxlEA0bK5KmIUrQTRIO0VLO2Y+9JqseQD5V
+         lZsPeN1U0Rofx+YG/m1yvRnQI1bXZMUuEeUA6TjkFaqj6l2/d0mHTo2zh9IZLYAZPc0q
+         dCdHgOCIotV5kntK2r8GY/t3LCvm5KTf0VCfxIRRCwHgGZtOxXi10TKSHFWT+Afl03P9
+         r9+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741342686; x=1741947486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R3zujwTDTSnOftF9d4bbs2FCsfJL0He6fFCsD1C9TNw=;
+        b=o1mNkDrhyX7kRFgGeh4+Dkn6NfUc1ZvU1OoFJsfVbC8J8wjHkBEQbXr4bWDMS5I1gL
+         3JW9oqcNqgW/AYDUrhi6jOVg2I028j6PWMtXclQYVMPz5MwyGcEAiV2NtXFsOeSm9QuQ
+         Ken9BWSavGzzelYWUCwbWzFM/ETQ684/6p0eT6sCmyBfNTS4bsvm+qXX3TgRCVpzIfeO
+         1HE1kVQ1T9ctaeiRERMIrxkTX2L2cmEgCULH/ckcD9J4oo0NPfi2GjzJzDodtLY4bRCf
+         toI5fucKkn+OBlBkXN/k/q7LGix8zng3Y+sgyOzs5InfFTZzysdTXKeNDFdUvezVvj+3
+         3rDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQkUdMqEbYWG74CYQJbvYQgtjFgRgTTPpnJ7DMnJPDNkrZYHKAZuZcgpBr3cdUyc4RnhI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWKjlsgnlkiMQDQwzSjjzSUCHbNxdOLzRKzT5gLvqgkIzjsxQ1
+	F4ho6vbPDGLRCWsK0+qAkSs61bCVICKOZ5dfW/yhTRYQ0ujC88JE
+X-Gm-Gg: ASbGncvk4+BHCvVieGXdYkRqZc4JdGv0vTq9BMEKjy6oSEzUBkp3Rw+52jLHKTDbk3g
+	NSylWOXNeU9hWPyVJWKiHW3I5T8Y3tqYjxO4rcXxPJZ8KI1FztTPBdjBqq58ZesczrwrADhDFzN
+	OaRwlld/DEHs/ZV7H1+Toe/UZ36RaEPhRRmWEheJIjpdWn96Q0ZAi3dmHirC/lN8drjxqaVlcuW
+	Ey3n8eD3k4g/B4WA1vIBIK71UwjJIyHtElzjmNR92o3EoD5btUhDyeul8o01HPQ1uu+NTvIInV2
+	f73s7p22gdxvDa9b4JtOJKqDq8PyAOlpIcsPPJzavr5zH2apT8EfyK5eCRgiGmsByrr1S6lvizP
+	FiAnI2Nig3pvXrWF3uRl2nTQ=
+X-Google-Smtp-Source: AGHT+IGm5hWJ5tWDkJ/PuMrlbEjX8ZelRicivEZmMFKj0WGovJlJZMjjCvPcqwJRfFTKZqrD3ik87A==
+X-Received: by 2002:a5d:5f89:0:b0:390:f9d0:5e3 with SMTP id ffacd0b85a97d-39132d671b9mr1522906f8f.1.1741342686055;
+        Fri, 07 Mar 2025 02:18:06 -0800 (PST)
+Received: from ernest.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c103aa5sm4900262f8f.94.2025.03.07.02.18.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 02:18:05 -0800 (PST)
+From: ernestvanhoecke@gmail.com
+X-Google-Original-From: ernest.vanhoecke@toradex.com
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v2 0/2] ARM: dts: apalis/colibri-imx6: Add support for v1.2
+Date: Fri,  7 Mar 2025 11:17:47 +0100
+Message-ID: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03c2feb5-1f88-43ca-979c-08dd5d60566e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2025 10:10:50.4763
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wWjGssMQFo7zCYlZdA2AHQ9xzIyFCxYq/VVdbzaYDFOhTMowqnNk/U+sgk3Q3BtMMjK3UvlfXnITQwCUt2i2GQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9723
+Content-Transfer-Encoding: 8bit
 
-> Subject: Re: [PATCH v4] cpuidle: Init cpuidle only for present CPUs
->=20
-> On Fri, Mar 07, 2025 at 10:02:14AM +0000, Jacky Bai wrote:
-> > Hi Sudeep,
-> >
-> > > Subject: Re: [PATCH v4] cpuidle: Init cpuidle only for present CPUs
-> > >
-> > > On Fri, Mar 07, 2025 at 04:03:03PM +0800, Jacky Bai wrote:
-> > > > for_each_possible_cpu() is currently used to initialize cpuidle in
-> > > > below cpuidle drivers:
-> > > >   drivers/cpuidle/cpuidle-arm.c
-> > > >   drivers/cpuidle/cpuidle-big_little.c
-> > > >   drivers/cpuidle/cpuidle-psci.c
-> > > >   drivers/cpuidle/cpuidle-riscv-sbi.c
-> > > >
-> > > > However, in cpu_dev_register_generic(), for_each_present_cpu() is
-> > > > used to register CPU devices which means the CPU devices are only
-> > > > registered for present CPUs and not all possible CPUs.
-> > > >
-> > > > With nosmp or maxcpus=3D0, only the boot CPU is present, lead to th=
-e
-> > > > failure:
-> > > >
-> > > >   |  Failed to register cpuidle device for cpu1
-> > > >
-> > > > Then rollback to cancel all CPUs' cpuidle registration.
-> > > >
-> > > > Change for_each_possible_cpu() to for_each_present_cpu() in the
-> > > > above cpuidle drivers to ensure it only registers cpuidle devices
-> > > > for CPUs that are actually present.
-> > > >
-> > > > Fixes: b0c69e1214bc ("drivers: base: Use present CPUs in
-> > > > GENERIC_CPU_DEVICES")
-> > > > Reviewed-by: Dhruva Gole <d-gole@ti.com>
-> > > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> > > > Tested-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
-> > > > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> > > > ---
-> > > >  - v4 changes:
-> > > >   - add changes for other cpuidle driver that has the similar issue
-> > > >     as cpuidle-pcsi driver.
-> > > >
-> > > >  - v3 changes:
-> > > >   - improve the changelog as suggested by Sudeep
-> > > > ---
-> > > >  drivers/cpuidle/cpuidle-arm.c        | 8 ++++----
-> > > >  drivers/cpuidle/cpuidle-big_little.c | 2 +-
-> > > >  drivers/cpuidle/cpuidle-psci.c       | 4 ++--
-> > > >  drivers/cpuidle/cpuidle-riscv-sbi.c  | 4 ++--
-> > >
-> > >
-> > > Why have you spared drivers/cpuidle/cpuidle-qcom-spm.c ? IIUC the
-> > > issue exists there as well.
-> > >
-> >
-> > For qcom-spm driver, it has below code logic to handle no cpu device
-> > case, and no rollback to cancel the whole cpuidle registration. So I ju=
-st leave
-> it as it is.
-> > Do we need to update it?
-> >
-> > for_each_possible_cpu(cpu) {
-> >         ret =3D spm_cpuidle_register(&pdev->dev, cpu);
->=20
-> Did you look into this function ?
+From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-Yes, at the very beginning of this function it will check if the cpu device
-is available, if not, directly return -ENODEV, something I misunderstood?
+Apalis/Colibri iMX6 V1.2 replaced the STMPE811 ADC/touch controller,
+which is EOL, with the TLA2024 ADC and AD7879 touch controller.
 
-BR
->=20
-> --
-> Regards,
-> Sudeep
+Accurately describe the new hardware.
+
+v1.1 of these SoMs is still described by the following DTSI files:
+imx6qdl-apalis.dtsi
+imx6qdl-colibri.dtsi
+
+The STMPE811 touchscreen controller is no longer disabled by default.
+The STMPE811 is self contained within the SoM, therefore, disabling it
+is not the correct default behavior.
+
+v1.2 is now supported by a DTSI that modifies v1.1:
+imx6qdl-apalis-v1.2.dtsi
+imx6qdl-colibri-v1.2.dtsi
+
+For each carrier board using these modules, a new DTS file was added
+that includes the v1.1 DTS and modifies it with this v1.2 DTSI.
+
+The original DTS can be used for modules up to and including v1.1.
+
+v2: Fixed the "From" field
+v1: https://lore.kernel.org/all/20250227170556.589668-1-ernest.vanhoecke@toradex.com/
+
+Ernest Van Hoecke (2):
+  ARM: dts: apalis/colibri-imx6: Enable STMPE811 TS
+  ARM: dts: apalis/colibri-imx6: Add support for v1.2
+
+ arch/arm/boot/dts/nxp/imx/Makefile            |  9 +++
+ .../dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts | 11 ++++
+ .../nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts   | 11 ++++
+ .../nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts   | 11 ++++
+ .../dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts  | 11 ++++
+ .../nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts   | 11 ++++
+ .../dts/nxp/imx/imx6q-apalis-v1.2-eval.dts    | 11 ++++
+ .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts  | 11 ++++
+ .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts  | 11 ++++
+ .../dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts   | 11 ++++
+ .../boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi | 57 +++++++++++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |  1 -
+ .../dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi     | 57 +++++++++++++++++++
+ .../arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi |  1 -
+ 14 files changed, 222 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi
+
+-- 
+2.43.0
+
