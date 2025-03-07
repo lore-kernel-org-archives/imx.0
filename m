@@ -1,61 +1,63 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1926221324B
-	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 10:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E43213254
+	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 10:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741342689; cv=none; b=NcHQKqp/cnFlPXRX+kGQonv6LFjtCTrp4/br0Iw2z8Yf4kP3xyCnV2btNqVkZrtaAo1STwvTjd+ExrGtqoyb/MZt2uAeeaEJCbXsTb6oqklVp1s5BjIGH8DmD9Pmmz1ImFpkuF5w4C8l7IomT4zj+JOVqo3clO+iEIuhKWgRTu8=
+	t=1741342696; cv=none; b=fcCdrRRNELGawSrYRUpuzLYxgvwOHzyZlHepBWqPem94tXUBOqbgHamnJpTu70rMMxyya3h5B55GNoZ4DRdlrK0yYBcwz9JVIVJqXaipbqMt7Y7FfFVDn2PjsdGtQbAbTf8zfljv5AnBej6T2LmKsHZ9dZQV2Z1AFp4Hus7WrhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741342689; c=relaxed/simple;
-	bh=VuUdpkHlmMFr7mbOhennh+/tErc6Jkpp5XmmJqVRPSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R3j0rb3/iznb5E16Qd2XJAoPHXBNm7J07oVBAchYX+78QRgu72rYsjYOfStkvoy6IFgafgHXIn3PqO7px1giGgIFZoFVJADgIAQn5X2Hp5wsMsoglsvaihaQKqLuGmhcWyUwCVOOgQN60Z/4A7zo7en57Tp2Z+2KDLm5fBjrqO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ErLridn3; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1741342696; c=relaxed/simple;
+	bh=Hrpk3fM2ToSeRY6ZSJ5LgTGAbZEfHue5uXU35dGs0RY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ctMGIG7ETedR8SKyFsPuSB/qwGVOgRKQDT90zEI6OI7hg2+J9JUEQ8YIx9v2jBE8kbvfsx+N8qp276lqHT8N2ZvFkbxg2+VAWMnTUWnOq8eZw+gmV8yjbvQnJIoWDla0WsPq/JNn2hGg6u06oxndNYchowC7kUV8wS1m4Fy7ZZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ioKkf0nx; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ErLridn3"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-39129017bbbso708377f8f.1
-        for <imx@lists.linux.dev>; Fri, 07 Mar 2025 02:18:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ioKkf0nx"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-390effd3e85so1514233f8f.0
+        for <imx@lists.linux.dev>; Fri, 07 Mar 2025 02:18:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741342686; x=1741947486; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R3zujwTDTSnOftF9d4bbs2FCsfJL0He6fFCsD1C9TNw=;
-        b=ErLridn3ANAJmRJJoEe9v1YGtVDWDEmCLcLN9IGg56+3NbQ4kARZbNIPFJugNa3GjG
-         hGThjklJvts6TzNlU7K7pYYOjc82/apJfLX1SHTJjjmiNe6kwzWU662kx4y7LVghgJbY
-         uJflBDi6CW9mY1RVgwhm2JxchMLXCZ38NCxlEA0bK5KmIUrQTRIO0VLO2Y+9JqseQD5V
-         lZsPeN1U0Rofx+YG/m1yvRnQI1bXZMUuEeUA6TjkFaqj6l2/d0mHTo2zh9IZLYAZPc0q
-         dCdHgOCIotV5kntK2r8GY/t3LCvm5KTf0VCfxIRRCwHgGZtOxXi10TKSHFWT+Afl03P9
-         r9+Q==
+        d=gmail.com; s=20230601; t=1741342693; x=1741947493; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FalLckkLy2c4ipBkbA3HgidqaPtgkZG/OVl2zJ65m2Q=;
+        b=ioKkf0nxi3icUjpfl5xyMSOiB/vwxI8axNHuVUoFsysDwtKrqNAWt+Z1AsdfsFB47S
+         FOUc87lIq/dldigUhWTRzoSr9jeSbT69phPbfTm1h/gBzPKdLRcXwDPPVQRGGWHcfOn5
+         MTYxUMND/TUILhvoi6pOvfiHNokB5PRnBqMZA/acVYNt8duv3MhxieuRCKXJhOLteOmy
+         bEXRVTDUphcPNz0G8xXhnv9utVdii6hYR8fpKx+TxRrDhGu6m/vNME4Yiq6mgBdAa18a
+         mSGm5k4XDuhARrQygv53s0b/2FDEvIGDfoZhIWwvTQojZzCvX+o8OHJMl8sVt6cBwjtp
+         2EPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741342686; x=1741947486;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R3zujwTDTSnOftF9d4bbs2FCsfJL0He6fFCsD1C9TNw=;
-        b=o1mNkDrhyX7kRFgGeh4+Dkn6NfUc1ZvU1OoFJsfVbC8J8wjHkBEQbXr4bWDMS5I1gL
-         3JW9oqcNqgW/AYDUrhi6jOVg2I028j6PWMtXclQYVMPz5MwyGcEAiV2NtXFsOeSm9QuQ
-         Ken9BWSavGzzelYWUCwbWzFM/ETQ684/6p0eT6sCmyBfNTS4bsvm+qXX3TgRCVpzIfeO
-         1HE1kVQ1T9ctaeiRERMIrxkTX2L2cmEgCULH/ckcD9J4oo0NPfi2GjzJzDodtLY4bRCf
-         toI5fucKkn+OBlBkXN/k/q7LGix8zng3Y+sgyOzs5InfFTZzysdTXKeNDFdUvezVvj+3
-         3rDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQkUdMqEbYWG74CYQJbvYQgtjFgRgTTPpnJ7DMnJPDNkrZYHKAZuZcgpBr3cdUyc4RnhI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWKjlsgnlkiMQDQwzSjjzSUCHbNxdOLzRKzT5gLvqgkIzjsxQ1
-	F4ho6vbPDGLRCWsK0+qAkSs61bCVICKOZ5dfW/yhTRYQ0ujC88JE
-X-Gm-Gg: ASbGncvk4+BHCvVieGXdYkRqZc4JdGv0vTq9BMEKjy6oSEzUBkp3Rw+52jLHKTDbk3g
-	NSylWOXNeU9hWPyVJWKiHW3I5T8Y3tqYjxO4rcXxPJZ8KI1FztTPBdjBqq58ZesczrwrADhDFzN
-	OaRwlld/DEHs/ZV7H1+Toe/UZ36RaEPhRRmWEheJIjpdWn96Q0ZAi3dmHirC/lN8drjxqaVlcuW
-	Ey3n8eD3k4g/B4WA1vIBIK71UwjJIyHtElzjmNR92o3EoD5btUhDyeul8o01HPQ1uu+NTvIInV2
-	f73s7p22gdxvDa9b4JtOJKqDq8PyAOlpIcsPPJzavr5zH2apT8EfyK5eCRgiGmsByrr1S6lvizP
-	FiAnI2Nig3pvXrWF3uRl2nTQ=
-X-Google-Smtp-Source: AGHT+IGm5hWJ5tWDkJ/PuMrlbEjX8ZelRicivEZmMFKj0WGovJlJZMjjCvPcqwJRfFTKZqrD3ik87A==
-X-Received: by 2002:a5d:5f89:0:b0:390:f9d0:5e3 with SMTP id ffacd0b85a97d-39132d671b9mr1522906f8f.1.1741342686055;
-        Fri, 07 Mar 2025 02:18:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741342693; x=1741947493;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FalLckkLy2c4ipBkbA3HgidqaPtgkZG/OVl2zJ65m2Q=;
+        b=lnx7cECcRiCXt/slPNqWlI2QhIsIXV5O7V50OgQRltZLG3FhO6qiBkswRwdk2f1fBK
+         Ae0TLTt1JOy9xhE+s9gCuNkNBUrr0kuifuj8Uet0zlQbHVDOx22eoUez9njSjchTMllS
+         MeMAKUQPJyb8sa9TFK0WJ6AQgQvGf4/EqXy+TCo3BYGg1AB9ALz4P9hQPe7vGQiHTO1x
+         gaAsJ50t1YyUF5jCASifDuoavzuifdZyEmDiv/WMudi71ETd5RyBfUROdprz4+HTxoDx
+         +B7/IYp/6mWeiXW9brga2e917p7a4RfUFLJ8aUXIRxEJA4Jm8ZX8BEx9vrlp138qWKgT
+         uxgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVL6TEZo9IxjPw6gPF03dlF12n6DPZgspvBYz+5P32Nrc3pAUqrHZ9aNTZU94hPnqK2h1A=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRbjB2T8111Lw94N+azmWUEaCn3bBU06IduWk5mknlQUtYTHI6
+	MjfNTtAEkuiZaNABgf8+IgK9HCXkfa78lH8hCJ0TeVyLckQWy47I1Q/QAHAI
+X-Gm-Gg: ASbGncssy52wCEDmihGwjcmhB0axmS0iAD2z4HM1FOtQUAUI2hCHtDZHR637j7r8OMV
+	bZfzJ/Tslmhd5IArA3EwEc5xZFpP0VMR0GJgsT09fSUVNifRjo0iOk+MK1apD8SN+9q/UvGCKA8
+	4hdYPerec4eH3IrSme/g0a0C61dBjduYFJj9tsAm7OInjiQaDGMr12jMVvEn4Jb2q07lJMZR4Mw
+	l46+gR5h6qsKW2E4nnxurvYb86PqGMpi/jwoK7mlKCQ3nLmjmXH4ZjVE/h2KFoq3oV6EdCQsNI7
+	TAOpxKv8EsfoPLuaQUzQ2gaQbnRY48aF4Zc6PIIVeeMX75DdfyiX4gis0UzLO7L+yLDYKikPsoF
+	jMwqVuiTEEFqUWHYpr2aW/TQ=
+X-Google-Smtp-Source: AGHT+IHI4qarjn6okL8fiFQY3ltBC2yY6DhIkGRizLqTlNjxjx9HKfSflu8OqxGOPt8PeQnTelbnew==
+X-Received: by 2002:a05:6000:402a:b0:391:2dea:c9a5 with SMTP id ffacd0b85a97d-39132d6b61cmr1665637f8f.20.1741342693057;
+        Fri, 07 Mar 2025 02:18:13 -0800 (PST)
 Received: from ernest.corp.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c103aa5sm4900262f8f.94.2025.03.07.02.18.05
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c103aa5sm4900262f8f.94.2025.03.07.02.18.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 02:18:05 -0800 (PST)
+        Fri, 07 Mar 2025 02:18:12 -0800 (PST)
 From: ernestvanhoecke@gmail.com
 X-Google-Original-From: ernest.vanhoecke@toradex.com
 To: Rob Herring <robh@kernel.org>,
@@ -71,10 +73,12 @@ Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2 0/2] ARM: dts: apalis/colibri-imx6: Add support for v1.2
-Date: Fri,  7 Mar 2025 11:17:47 +0100
-Message-ID: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+Subject: [PATCH v2 1/2] ARM: dts: apalis/colibri-imx6: Enable STMPE811 TS
+Date: Fri,  7 Mar 2025 11:17:48 +0100
+Message-ID: <20250307101758.27943-2-ernest.vanhoecke@toradex.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+References: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,62 +89,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 
-Apalis/Colibri iMX6 V1.2 replaced the STMPE811 ADC/touch controller,
-which is EOL, with the TLA2024 ADC and AD7879 touch controller.
-
-Accurately describe the new hardware.
-
-v1.1 of these SoMs is still described by the following DTSI files:
-imx6qdl-apalis.dtsi
-imx6qdl-colibri.dtsi
-
-The STMPE811 touchscreen controller is no longer disabled by default.
-The STMPE811 is self contained within the SoM, therefore, disabling it
+Enable the STMPE811 touchscreen in the SOM dtsi files. The STMPE811 is
+part of the SOM. It's self contained within it, therefore, disabling it
 is not the correct default behavior.
 
-v1.2 is now supported by a DTSI that modifies v1.1:
-imx6qdl-apalis-v1.2.dtsi
-imx6qdl-colibri-v1.2.dtsi
-
-For each carrier board using these modules, a new DTS file was added
-that includes the v1.1 DTS and modifies it with this v1.2 DTSI.
-
-The original DTS can be used for modules up to and including v1.1.
-
+Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
 v2: Fixed the "From" field
-v1: https://lore.kernel.org/all/20250227170556.589668-1-ernest.vanhoecke@toradex.com/
+v1: https://lore.kernel.org/all/20250227170556.589668-2-ernest.vanhoecke@toradex.com/
+---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi  | 1 -
+ arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi | 1 -
+ 2 files changed, 2 deletions(-)
 
-Ernest Van Hoecke (2):
-  ARM: dts: apalis/colibri-imx6: Enable STMPE811 TS
-  ARM: dts: apalis/colibri-imx6: Add support for v1.2
-
- arch/arm/boot/dts/nxp/imx/Makefile            |  9 +++
- .../dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts | 11 ++++
- .../nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts   | 11 ++++
- .../nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts   | 11 ++++
- .../dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts  | 11 ++++
- .../nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts   | 11 ++++
- .../dts/nxp/imx/imx6q-apalis-v1.2-eval.dts    | 11 ++++
- .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts  | 11 ++++
- .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts  | 11 ++++
- .../dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts   | 11 ++++
- .../boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi | 57 +++++++++++++++++++
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |  1 -
- .../dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi     | 57 +++++++++++++++++++
- .../arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi |  1 -
- 14 files changed, 222 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi
-
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+index dffab5aa8b9c..23913f18586c 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+@@ -664,7 +664,6 @@ stmpe_ts: stmpe_touchscreen {
+ 			st,settling = <3>;
+ 			/* 5 ms touch detect interrupt delay */
+ 			st,touch-det-delay = <5>;
+-			status = "disabled";
+ 		};
+ 
+ 		stmpe_adc: stmpe_adc {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+index 9f33419c260b..9a9f9764dc65 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
+@@ -588,7 +588,6 @@ stmpe_ts: stmpe_touchscreen {
+ 			st,settling = <3>;
+ 			/* 5 ms touch detect interrupt delay */
+ 			st,touch-det-delay = <5>;
+-			status = "disabled";
+ 		};
+ 
+ 		stmpe_adc: stmpe_adc {
 -- 
 2.43.0
 
