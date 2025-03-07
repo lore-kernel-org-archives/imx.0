@@ -1,305 +1,187 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2044.outbound.protection.outlook.com [40.107.105.44])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE29EBE;
-	Fri,  7 Mar 2025 13:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741354725; cv=fail; b=iw0FMIHNTWCi7IE4MVhiJ8tZ4EbP3+3LbENvI6OnpTruZxNSr0Xtp0NmeF2ydJH+yX9sp3O+75oC6PmYfzk4kM/JfJNYaKayOVwgimI43JslIxLvfC95chSTGlqTo9qp2p3udH1oX7cTvlEcoA3yk7IlOVeU3B8NxXeFGcbhjr4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741354725; c=relaxed/simple;
-	bh=7v01mL6MYGlbZnANREuhFFgcsulLN+WU9XOg2jQhSdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sQG8/mX/z5W6AFPa9yhQ6Y7lZK5qdRHpzLREu3rQ+h47Cz7JylYmLzbV7VvCTHsZ9nYl/NedXTHy+Guy+ivEhTnzVGaFN5+WNl5PWl77+qrOSL5rVkameEck06wmkpyDbzCyk0DBNge/sg5YzWaDMkFmxSy6EjJCmlWK2DjycWA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=pass smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=cKXQdUKO; arc=fail smtp.client-ip=40.107.105.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="cKXQdUKO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jv9tkyL/K6ObTRcFjbkFf0EkizbupqtwUaEMLS4ov6+WHEKvuQDxhSm9AYKGV42j7qPaJ5xVhTsF7BrqOp/c/51e0yCbjfNsavu8hl/apsPsrqPYiZUqCGkk6toGyejyUTMtRtkLfduic6tQ39rksB/aIKYn0co7Kxc2jhAa9Kf1DlTPWasFrUVVSBt1z1fmfvJEwy7YJJoh9rT2YvQ0Mh4XcRB6ibBnDHXpAQuydeilmeK95CG9u5IDgfeV1+Cp/GECJibP74kr78KHE39YWROc+CGZInvNZYgwlf+3S+azmHmpCNT8GJyyAnRp59c4XGbF4DGvXa4ZmkQP7dsh2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z4Fwuntd5k4pzx4sjSOCt+EHZTrpZASJNn/tK0Fdke0=;
- b=gEDUvpq4qNJiEcX/A3epiigCAYetMLyqCv1K6pG6gt6iu/GPeiUo/RtLc6cZ37G8Rx39NPQW0A+JdtBPk9qS+qy1hUpyToOHHwXl0Oy1LSpqfI9Dis4mY12nBk+yQCIfL6lx67AdjIBQ7lHMHUILOFJSi97vMvgysxkc/3KSfSpT+MZdhdpOFfqHGQKl+Y8z7OfUJPQh12ACzTou9Zma0AeNBxHM3M9BJI/tOZPCu6vGKEquBdtAVVCOJOUHqJ4/Ar/3EIM3uFK1V9wzvXwrBEaRmhyCjc8IHHHCKaEgWSDY3jh+ZckAKU3jIguapVFTPj/8CJ2DJrJXivx299FpjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z4Fwuntd5k4pzx4sjSOCt+EHZTrpZASJNn/tK0Fdke0=;
- b=cKXQdUKO15Wy6l0wWuqABFgmAUUUbvfBRk5HpBbmox5Lx/8Q4hsw7mWfmnaaAFfz8ILphMQ2lUrWu/G4HX6+RLCxCkLVBWFdDi6Y7enz3RqUaS2TKNPfuHK1/8At+hp+IlgzKgkgfq1l4ZbkbCaQfkHtI4ZyByvH2zDgOx2GEIKwT6qbTWq4J0UcXcAM5j2jhrOg6h8RmrFrm8LZtdghqHjiHxliNAIk032D1OH0UIiMd8ewNl2c9yaydE6ic72KrkBJCTzlKyrEwEhEWndLbuzlkULl5veWqVJXW0u17ARescFgFj4MOEwljnKOu/wobPIXieWcEOJAPV5/k/mZLw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com (2603:10a6:10:53a::11)
- by VI1PR03MB6431.eurprd03.prod.outlook.com (2603:10a6:800:195::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Fri, 7 Mar
- 2025 13:38:35 +0000
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf]) by DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf%7]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 13:38:35 +0000
-Date: Fri, 7 Mar 2025 14:38:29 +0100
-From: Mathis Foerst <mathis.foerst@mt.com>
-To: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-kernel@vger.kernel.org,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D7B1922EF
+	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 14:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741358414; cv=none; b=tIZQf+5yWXGqMmBt66F8mT2lUjz1LNMFoPhDWGH2sDnjxhRdCiRZ7Rf517Yg25ZWnRIXT7pLOuZLeHZk4+cSk7GTgNVO97hEYVlPId5OeYjGACfgkliO48HxrObt7UXSQ6alN03VssgduNbdQtlUyoKRpliMeYXBryhid+A15is=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741358414; c=relaxed/simple;
+	bh=zJqZeLk7niPxv+gNZzVEwSQrvYWMHIJnaH5lMK+VwS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aSisR9c+kJtGeeq/fICGKVOEEV6CRi7jnvRbitrhZTZ4qOP4onpXAnuPl9oAnk49YjnbYYNTsFdYSPgZpfEmk9DkhONUcjaQsnS7VW1LMVMFes8ApfC9WtxgyypeTrN2nVQcoJvX7w52NEd3o8RrqpZlUkn/XhFHoklpROdX9Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqYrk-0004Bx-MV; Fri, 07 Mar 2025 15:39:56 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqYrk-004VBw-0X;
+	Fri, 07 Mar 2025 15:39:56 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tqYrk-000XG3-06;
+	Fri, 07 Mar 2025 15:39:56 +0100
+Date: Fri, 7 Mar 2025 15:39:56 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, manuel.traut@mt.com,
-	mathis.foerst@zuehlke.com
-Subject: Re: [PATCH v1 1/1] media: imx: csi: Parse link configuration from
- fw_node
-Message-ID: <Z8r21Z2HthBwGDSq@mt.com>
-References: <20250305113802.897087-1-mathis.foerst@mt.com>
- <20250305113802.897087-2-mathis.foerst@mt.com>
- <Z8nOTrjEW_OYBGlq@valkosipuli.retiisi.eu>
- <84aa2d87-d7f1-46c9-b28d-6f0e9a78788d@stanley.mountain>
- <Z8oQCuqKVH225lPw@valkosipuli.retiisi.eu>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8oQCuqKVH225lPw@valkosipuli.retiisi.eu>
-X-ClientProxiedBy: ZR2P278CA0002.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:50::7) To DBBPR03MB10396.eurprd03.prod.outlook.com
- (2603:10a6:10:53a::11)
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
+Message-ID: <20250307143956.aft3xolakts3nlja@pengutronix.de>
+References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+ <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
+ <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
+ <541539db-0015-41de-837f-aabbea68486a@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR03MB10396:EE_|VI1PR03MB6431:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf480bc9-5d7f-47d7-0259-08dd5d7d5c29
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1LIpBUXSfHVpWS3TKq9SkxfE+H1KeBQrJ+0+2QwNNgfgEnPXvwcWAL3QBzE8?=
- =?us-ascii?Q?1LFOx9mxB7aB+cCjm1xS2kGjKkdH2pDhM+5RfEX8WzUYG/HH+qwuyKq5qV6h?=
- =?us-ascii?Q?53gGU3j9Y4oPk36PIwNHQktg1K+D8TJ9OdXNIBPD85b5CVRtxWAgDHAw1lSP?=
- =?us-ascii?Q?cYpsWu8LmjpU0FabLX25KcbtfXjIW1ZRBCOzvMqyL0OxbFtNbQZYBUuUk6I7?=
- =?us-ascii?Q?a7itT+qZzeP2PZe8MoOVmpdSm9XJYxdWzIBXUrhcTnHoSuAWD0Q342G83F5w?=
- =?us-ascii?Q?1vBa7JOWsTEkoob4NBzmDaCWh/TVx2umyZ0HgH+lQa3iVILq8dl7298u0JMn?=
- =?us-ascii?Q?2dTw/QvRdLJUKHryr0Asib0a0MQ/4xK7DD+kXFddhUY1BfpOkK6GiMslDqr9?=
- =?us-ascii?Q?lJb9lzxLFMaqEKJyxX109tGPgkkv0RQAz2ONwMqdqmRZPeT1kubTwwb3ZzNn?=
- =?us-ascii?Q?GaXLE2+HsHjyCcDvW8wYA7UbwSdWB1Zg0Hhk4PkcC97dCc1Ud2sDuf2qg4h+?=
- =?us-ascii?Q?M/tkW4H0dSZhk1iGFnAFNaND0D7vX7VHDtZIYN6ygUC4E9BQmJgXFlY+Du1w?=
- =?us-ascii?Q?8nkGNDmrc5z+nvRfvZZIxK6BDthOEfYWhYg7iSC//7wV5hOxOZh2FHYLVGPC?=
- =?us-ascii?Q?c/blvAokclfA84yznhU1Kzr+BqsE/Xzzd7jqA5OkxOeN6eZCEc7gl/AbjHio?=
- =?us-ascii?Q?rEVH4ayW1LkaIV2hzF5tbq3r+UWt6hSo03XiErgXhwqk0AG0KUDide2V7Fd8?=
- =?us-ascii?Q?Rs6v3AT1dw0cLzXKSjqRqXjXYVzND+dmyPn7vXDoNfQfAXeZR9pQhdYiPDIu?=
- =?us-ascii?Q?kGHiJ4WL9pbRg7o8bKkWJbBZ7OoVW7OHGpQLDGjPNjmK6u4xlfSbvci9LnN3?=
- =?us-ascii?Q?JG0qKJU4huun35UprnRtoayHU9hHvhSeBFMmDQxeWv3xKEfZeYGoXJueUQy5?=
- =?us-ascii?Q?AuyZ+GEi9xrHZnz5Z6XW8gu5V5Ni4vrEeT46HkxH/5WS6PhVJEq9G2ymyM7g?=
- =?us-ascii?Q?mPhzFXyKsPYOitC3MCRy5UDJn/jbKF3yvv6oYaxCyBn/wE0LlBq4AHRCqRmN?=
- =?us-ascii?Q?XtY5g17I+NiK1cl+UgWdNbQL3TbhGasMynLwJYXTis2l1atgoL42yhS4ZhkA?=
- =?us-ascii?Q?JgUnZ4EmxGuR8fuBQrv32n75bxmTmCktznOBsH7eg+oeKWlv5URES/l6B1kM?=
- =?us-ascii?Q?8BVEb8cu2rE7vMldZOHFpTvzgq9as50Eo4cvsdHhg1Dmh9sJbAu6bj7j9t2P?=
- =?us-ascii?Q?Q9rPRZK0Rlk9JEcwvr+HoshxTb/BwDhff5JpZFmo9o9a/LEUVBLAqr4wh6Mo?=
- =?us-ascii?Q?q8tf325g0rvb91RIiZjVrmyP+nuv1CWsjKSJoNTDN+RKqjpVQ9b3fxWEE/2o?=
- =?us-ascii?Q?6+nYnPDCR2c3FHhbfQL00F3QKxplhak1Xhf8WdltZDMapQ2axZtqcJfCiGUP?=
- =?us-ascii?Q?tKjP6lL4aLSU+wVBFP81QORAoEhPOyRh?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR03MB10396.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?onBAQfV9YLLW/a0SVS/OZmyPwv3KJgCA3Exymbgq3+Kj6yPbRidLtlqcDvTj?=
- =?us-ascii?Q?qq9vtgGACJJTeB2n7JRCwR/oGgpqXYs2kdr+AJRhZkmijQ1qXKj8QvcTV1+N?=
- =?us-ascii?Q?E5aRFGiEy49Z9UezsypvEpi7cZb4aNuZWmaUo3G2bwAvRYQ37xJqPy/7lzK/?=
- =?us-ascii?Q?XUY1S38Kdgmpw87hTbunIFID/jDsG5alyPb1/8k6Pat9t0tLKuVcyIIGqGRw?=
- =?us-ascii?Q?aOlvHBwt0PZZc1gfs1JVieFl+sE6yoO8W5b3ZSq1mnvBuZwSENmADxSjb17l?=
- =?us-ascii?Q?MU+ia4gb2YLfQY0KzQ1dLn6zaTPeFUOe8YajvcGi9ayw9I4GXqdzQ69KQrj2?=
- =?us-ascii?Q?dvx8/jKXsEd7ldBp7M/h4AwW9fK5TJ4X+OnwS+c6gmmUO33UN/qoSip82eWB?=
- =?us-ascii?Q?Wudx29vAp+5EHStoZu4eSc0wbMtPUZv9kdYBZj5kWk/J8OeGj2BVIcuvMZGg?=
- =?us-ascii?Q?MPV5mZ6HeVqrXJ1Zm6PZGdQhbqYCWpRz1uXA/g+RPHTzZoQ0yOAyptmJUhnf?=
- =?us-ascii?Q?7EiwP4cuGc+fiwKgEIqakKhi5JPnvuERzFtwKI8JMTqA4ehGbMGywlupl6km?=
- =?us-ascii?Q?9437opTIRTXPzNCfM5+dnlFGXxMIaNry6AZyQj7u7yCip8VfG8ouMS36UUJJ?=
- =?us-ascii?Q?L9FVp7a3yETeiOno+Giiv/HvDvxnR6GSa79KJ1mEx81wAcx/mCrdtVv3BObk?=
- =?us-ascii?Q?Kc/pKhHr7eiqErGK3IJDE6wRYRfdStIkr1CwSjkzuN5hyN/34DMqIcj4lnA0?=
- =?us-ascii?Q?abmRNrT7VoUKcSfKFE7K1vtTAVTB3/BvLX40HBtNxh5yj6jk6WimyNpric3N?=
- =?us-ascii?Q?8CZq02mTYca1LDQuLha3yPUCefr0Om/x2JTzxyXQDp08RmVU1Feh+SK3mJJG?=
- =?us-ascii?Q?usvX9Uom0Tr92OBCo9HlsGbaIjPBaUj2O9kufU2g+G8hP0vqxhxXeLfkLoFw?=
- =?us-ascii?Q?De547LDu6sEBxAQCyUJfawXX0zr59n9jFC079o4ZioUJWWRak118ntUDURL2?=
- =?us-ascii?Q?S69D2RKk6JkD55mmWwktP07XATNlKQ3GvwEVH7KMYRWzxeLuGmPU6EFxw2aA?=
- =?us-ascii?Q?JUc5c7Y/VHenHN50oFaduyC/HE1Xun4KI0etZW/0wKvgVl7LXzdHC2SWoINe?=
- =?us-ascii?Q?arHyfwfo6BowiD+Pb/eRPaqLDBa/JXAgMznqqvKsbcgsViXabbpXXBWf19Ct?=
- =?us-ascii?Q?jIWQgiI7e/53SHHlEX8yHEO0Zwf44a7iJUZWWVKz+bs6LY9ryYoJL/dm3Abt?=
- =?us-ascii?Q?sBrkP+V/X2wmJA76XBLGfKOnERo37/n5vr/4Vptc+kSfKShiBFSZ3QViC4tZ?=
- =?us-ascii?Q?2SFCRg+OLUIIVC7FcFD1t8rfrRe5wZj7v6yapuDcKp+6jSykgoKK/aQvXUDi?=
- =?us-ascii?Q?gERKRVkFaSfcfK+5KoFOYTNNSyVpHUqJK9YFs6RjQS3SJSPO4ItLVpWZ5as5?=
- =?us-ascii?Q?uizq40JmkH7MuR4pEO3p+A0Qa9vroyhunOcTeVmjUyP5oh+XTpJycgMAmcvw?=
- =?us-ascii?Q?IqsHNo+N7UES+LigYwgxgxzkEVIiy11ejDyADc3PQBV0eAXLaDtJG2pkeIiW?=
- =?us-ascii?Q?8EBbLchs/BvCCmq+vDaqaoafx14O1VuAmgdVv7bZ?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf480bc9-5d7f-47d7-0259-08dd5d7d5c29
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR03MB10396.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 13:38:35.7443
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mWOYyKQ74/2X7NBB/B6cxETzpBEiOdbPStqvdZlePh3Zkcj6NidP3bIGz3WoFIPe+asgThoVrcZPxrKZa0Yk/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR03MB6431
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <541539db-0015-41de-837f-aabbea68486a@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Sakari, Hi Dan,
-
-thanks a lot for your feedback.
-
-On Thu, Mar 06, 2025 at 09:13:46PM +0000, Sakari Ailus wrote:
-> Hi Dan,
+On 25-03-05, Laurentiu Mihalcea wrote:
 > 
-> On Thu, Mar 06, 2025 at 10:07:20PM +0300, Dan Carpenter wrote:
-> > On Thu, Mar 06, 2025 at 04:33:18PM +0000, Sakari Ailus wrote:
-> > > Hi Mathis,
-> > > 
-> > > Thanks for the patch.
-> > > 
-> > > On Wed, Mar 05, 2025 at 12:38:02PM +0100, Mathis Foerst wrote:
-> > > > The imx-media-csi driver requires upstream camera drivers to implement
-> > > > the subdev-pad-op "get_mbus_config" [0]. Camera drivers that don't
-> > > > implement this function are not usable on the i.MX6.
-> > > > 
-> > > > The docs for get_mbus_config [1] say:
-> > > > @get_mbus_config: get the media bus configuration of a remote sub-device.
-> > > >             The media bus configuration is usually retrieved from the
-> > > >             firmware interface at sub-device probe time, immediately
-> > > >             applied to the hardware and eventually adjusted by the
-> > > >             driver.
-> > > > 
-> > > > Currently, the imx-media-csi driver is not incorporating the information
-> > > > from the firmware interface and therefore relies on the implementation of
-> > > > get_mbus_config by the camera driver.
-> > > > 
-> > > > To be compatible with camera drivers not implementing get_mbus_config
-> > > > (which is the usual case), use the bus information from the fw interface:
-> > > > 
-> > > > The camera does not necessarily has a direct media bus link to the CSI as
-> > > > the video-mux and/or the MIPI CSI-2 receiver of the i.MX6 might be in
-> > > > between them on the media pipeline.
-> > > > The CSI driver already implements the functionality to find the connected
-> > > > camera sub-device to call get_mbus_config on it.
-> > > > 
-> > > > At this point the driver is modified as follows:
-> > > > In the case that get_mbus_config is not implemented by the upstream
-> > > > camera, try to get its endpoint configuration from the firmware interface
-> > > > usign v4l2_fwnode_endpoint_parse.
-> > > > For the supported mbus_types (V4L2_MBUS_PARALLEL, V4L2_MBUS_BT656 and
-> > > > V4L2_MBUS_CSI2_DPHY), extract the mbus_config from the endpoint
-> > > > configuration.
-> > > > For all other mbus_types, return an error.
-> > > > 
-> > > > Note that parsing the mbus_config from the fw interface is not done during
-> > > > probing because the camera that's connected to the CSI can change based on
-> > > > the selected input of the video-mux at runtime.
-> > > > 
-> > > > [0] drivers/staging/media/imx/imx-media-csi.c - line 211..216
-> > > > [1] include/media/v4l2-subdev.h - line 814
-> > > > 
-> > > > Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-> > > > ---
-> > > >  drivers/staging/media/imx/imx-media-csi.c | 36 ++++++++++++++++++++---
-> > > >  1 file changed, 32 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-> > > > index 3edbc57be2ca..394a9321a10b 100644
-> > > > --- a/drivers/staging/media/imx/imx-media-csi.c
-> > > > +++ b/drivers/staging/media/imx/imx-media-csi.c
-> > > > @@ -169,6 +169,8 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
-> > > >  {
-> > > >  	struct v4l2_subdev *sd, *remote_sd;
-> > > >  	struct media_pad *remote_pad;
-> > > > +	struct fwnode_handle *ep_node;
-> > > > +	struct v4l2_fwnode_endpoint ep = { .bus_type = 0 };
-> > > 
-> > > Are there any defaults in DT bindings (other than 0's)? Also initialising a
-> > > field to zero this way is redundant, just use {}.
-> > > 
-> > 
-> > I was going to respond in much the same way.  This is equivalen to:
-> > 
-> > struct v4l2_fwnode_endpoint ep = { .bus_type = V4L2_MBUS_UNKNOWN };
+> On 2/27/2025 1:28 PM, Marco Felsch wrote:
+> > Hi Laurentiu,
+> >
+> > On 25-02-26, Marco Felsch wrote:
+> >> Hi,
+> >>
+> >> On 25-02-26, Laurentiu Mihalcea wrote:
+> >>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>>
+> >>> The AIPSTZ bridge offers some security-related configurations which can
+> >>> be used to restrict master access to certain peripherals on the bridge.
+> >>>
+> >>> Normally, this could be done from a secure environment such as ATF before
+> >>> Linux boots but the configuration of AIPSTZ5 is lost each time the power
+> >>> domain is powered off and then powered on. Because of this, it has to be
+> >>> configured each time the power domain is turned on and before any master
+> >>> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
+> >> My question still stands:
+> >>
+> >> Setting these bits requires very often that the core is running at EL3
+> >> (e.g. secure-monitor) which is not the case for Linux. Can you please
+> >> provide more information how Linux can set these bits?
+> > Sorry I didn't noticed your response:
+> >
+> > https://lore.kernel.org/all/a62ab860-5e0e-4ebc-af1f-6fb7ac621e2b@gmail.com/
+> >
+> > If EL1 is allowed to set the security access configuration of the IP
+> > cores doesn't this mean that a backdoor can be opened? E.g. your
+> > secure-boot system configures one I2C IP core to be accessible only from
+> > secure-world S-EL1 (OP-TEE) and after the power-domain was power-cycled
+> > it's accessible from EL1 again. This doesn't seem right. Why should a
+> > user be able to limit the access permissions to an IP core to only be
+> > accessible from secure-world if the IP core is accessible from
+> > normal-world after the power-domain was power-cycled.
+> >
+> > Regards,
+> >   Marco
 > 
-> Thinking about this in a context of parsing the endpoint, in fact the
-> bus_type should be specified. Presumably the hardware is D-PHY, so the
-> correct value would be V4L2_MBUS_CSI2_DPHY. This way
-> v4l2_fwnode_endpoint_parse() doesn't need to guess.
-
-I think we must use "bus_type = V4L2_MBUS_UNKNOWN" here:
-
-The i.MX6 has two types of camera interfaces: Parallel and MIPI CSI-2.
-They are connected either directly or via a video-mux to the CSIs
-(See IMX6DQRM.pdf - Figure 9-3 for the connection diagram)
-
-Pre-defining V4L2_MBUS_CSI2_DPHY here would let
-v4l2_fwnode_endpoint_parse() fail if the camera uses the parallel bus.
-
-We could distinguish between MIPI CSI-2 and Parallel input by checking
-the grp_id of the upstream device like it's already done in
-csi_get_upstream_mbus_config().
-But for the Parallel case we still can't know if we should set bus_type
-to V4L2_MBUS_PARALLEL or to V4L2_MBUS_BT656 - the i.MX6 supports both
-formats on the parallel interface.
-
-That's why I would argue that v4l2_fwnode_endpoint_parse() must figure
-out the bus_type from the fw node.
-
+> I'm no security expert so please feel free to correct me if I get
+> something wrong.
 > 
-> > 
-> > > >  	int ret;
-> > > >  
-> > > >  	if (!priv->src_sd)
-> > > > @@ -210,11 +212,37 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
-> > > >  
-> > > >  	ret = v4l2_subdev_call(remote_sd, pad, get_mbus_config,
-> > > >  			       remote_pad->index, mbus_cfg);
-> > > > -	if (ret == -ENOIOCTLCMD)
-> > > > -		v4l2_err(&priv->sd,
-> > > > -			 "entity %s does not implement get_mbus_config()\n",
-> > > > -			 remote_pad->entity->name);
-> > > > +	if (ret == -ENOIOCTLCMD) {
-> > > 
-> > > 	if (!ret)
-> > > 		return 0;
-> > > 
-> > > And you can unindent the rest.
-> > 
-> > I was going to say this too but then I thought actually this needs to
-> > be:
-> > 
-> > 	if (ret != -ENOIOCTLCMD)
-> > 		return ret;
-> > 
-> > Which is weird.  Better to break all the new code into a separate
-> > helper function.
-> > 
-> > 	if (ret == -ENOIOCTLCMD)
-> > 		ret = parse_fw_link_config_stuff();
-> > 
-> > 	return ret;
+> This isn't about S/NS world. The bridge AC doesn't offer any
+> configurations for denying access to peripherals based on S/NS world.
 
-Good point. I factored out a helper function as suggested.
+It does, please see the AIPSTZ_OPACR register definition. The imx-atf of
+sets OPACR registers to 0 (of course), which means that the S/NS is not
+checked _but_ it can be configured.
 
-> 
-> Indeed. get_mbus_config() presumably wouldn't return an error but
-> correctness is usually a good idea.
-> 
-> -- 
-> Regards,
-> 
-> Sakari Ailus
+Also please see chapter 4.7.6.1 Security Block:
 
+The AIPSTZ contains a security block that is connected to each
+off-platform peripheral. This block filters accesses based on
+write/read, non-secure, and supervisor signals.
 
-Best regards,
-Mathis Foerst
+> AFAIK that's the job of the CSU (central security unit), which is a
+> different IP.
 
+Please see above.
+
+> Perhaps I shouldn't have used the term "trusted" as it might have
+> ended up creating more confusion? If so, please do let me know so I
+> can maybe add a comment about it in one of the commit messages. In
+> this context, "master X is trusted for read/writes" means "master X is
+> allowed to perform read/write transactions".
+
+No you didn't confused me but you triggered my interest :) and I started
+to check the (S)TRM.
+
+> Even if the bridge is configured to allow read/write transactions from
+> a master (i.e: master is marked as trusted for read/writes) that
+> wouldn't be very helpful.
+
+We're talking about the IP access permissions, right. If the
+"secure-I2C" is accessible from NS world this would make a difference of
+course.
+
+> You'd still have to bypass the CSU configuration which as far as I
+> understand is also used by the bridge to deny access to peripherals
+> (e.g: if transaction is secure+privileged then forward to peripheral,
+> otherwise abort it). See the "4.7.6.1 Security Block" and "4.7.4 
+> Access Protections" chapters from the IMX8MP RM.
+
+I have read this too, also that the AIPSTZ can force the mode into
+user_mode regardless of the CSU settings, if I get this correct.
+
+What I don't understand as of now is the interaction of the AIPSTZ and
+the CSU. You can configure different bus-masters within the CSU to be
+S/NS as well as the pheripherals. Now the part which I don't understand
+right now: According the OPACx register description:
+
+x0xx SP0 — This peripheral does not require supervisor privilege level
+           for accesses.
+x1xx SP1 — This peripheral requires supervisor privilege level for
+           accesses. The master privilege level must indicate supervisor
+	   via the hprot[1] access attribute, and the MPROTx[MPL] control
+	   bit for the master must be set. If not, the access is
+	   terminated with an error response and no peripheral access is
+	   initiated on the IPS bus.
+
+The peripheral can be configured via the AIPSTZ as well. So which IP
+(CSU or AIPSTZ) override the other if the settings don't match, e.g. if
+CSU says: "this I2C controller for secure-world" and the AIPSTZ says:
+"this I2C is for non-secure-world".
+
+> Given all of this, I think the purpose of this IP's AC is to add some
+> extra, light, security features on top of the CSU.
+
+Or to override the CSU settings like the MPROTOx values:
+
+xxx0 MPL0 — Accesses from this master are forced to user-mode
+           (ips_supervisor_access is forced to zero) regardless of the
+	   hprot[1] access attribute.
+xxx1 MPL1 — Accesses from this master are not forced to user-mode. The
+            hprot[1] access attribute is used directly to determine
+	    ips_supervisor_access.
+
+Can you pleae elaborate a bit more how NXP designed the interaction
+between both the AIPSTZ and the CSU?
+
+Regards,
+  Marco
