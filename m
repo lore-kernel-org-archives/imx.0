@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EED321D5BE;
-	Fri,  7 Mar 2025 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DD521E0BA;
+	Fri,  7 Mar 2025 15:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741362943; cv=none; b=C6G8W40lu/S2M23rfJJPEVwbQluOgFjxb0GeHG4bNLg2EVrI44DXHZHpqIp4Dz26AcAjVw0X4AOYT7XUhN4ZPC50PcUHrFH4vWQXfQ9jh+9c7dE0DGxljf9Nvn+sifKkPzLM0Y+uF20lo0ggZWnow2ZnVA5ouX4nm/W2ed8DT1I=
+	t=1741362984; cv=none; b=l61baK3Qe1GMHWnwzj7ny5kXhovrRw9JEUTxhfypLoasy6USw1P/eRcPGYQLELIw3K0HKh0Db+jvcZiN/b0NpjNf52W0i8ZYlukXe0/exIp+nOeiiQ9V78N07ze2PJKbOlpsUfNeD0DgzeXl5gZG0L8Yokb4DrsUZmDuag4eJCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741362943; c=relaxed/simple;
-	bh=RuMvtaW1d4WXmWnoVBWNYqp3QXUaMXIuol3d+mQwQxg=;
+	s=arc-20240116; t=1741362984; c=relaxed/simple;
+	bh=ZbL34hW/27gh68ZRT0ugYFZcKY9WnAmuyG/G7jaVWmQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dfs9mMWCp68YSmiBk/C1LzEoDw23avq43WjvfCg72EC+w0On3xmHzHQl7QbAkkC66CWykK3zhQGqVXnJ+9FtkdQogTNXf0sWeb2aTElDUkeSQxOF87TnEwdxw6wmfl1BJjpOSfjbMbYV/co4CTA9drPlJmvalPB5duha8r5RKL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTe3f3Dv; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=P6IvAhb+h4suKFruQqhiSOt+DUnwckQie1KrDlj8iyNjiJ0aUu9mOmkcM6BHQ1hZoz5EJ84krNJRPBKtBOHDiO/X94fElO1WobL5FOaCm3ZcKlWAmDHEALBtZVlBLf40F1tJOj5i14RcBBDdoHhWxi8bUos3Ov1t0mUxvYmzIuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rD3JLEEc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTe3f3Dv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE09C4CED1;
-	Fri,  7 Mar 2025 15:55:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rD3JLEEc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA02C4CED1;
+	Fri,  7 Mar 2025 15:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741362942;
-	bh=RuMvtaW1d4WXmWnoVBWNYqp3QXUaMXIuol3d+mQwQxg=;
+	s=k20201202; t=1741362984;
+	bh=ZbL34hW/27gh68ZRT0ugYFZcKY9WnAmuyG/G7jaVWmQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XTe3f3DvsiL0Ghx969nc5i+tlIbM7u5h0M3ynR+PZopKzbCP5vw942SmkVcW0W3Oe
-	 VG+fmCFooZoRPnqMBT5stUa/acY7XLkSQdzuCzmUZonnxIk9d7IMqq5chhF2veaJ3G
-	 TY/1qSxrb02IoSOaLkcD6hdNCiHf+zZCdLgVY3C5U8vgNiuVr2vURmWrzzgt+c1P6A
-	 WgmAH8jsAF0FeezmgtzQYhfCVn1E64KD2at5c+yKmfoSZuayvE+kvL2UCZxHkbkZP8
-	 GZzEo6QQ88aww8wzT8Jp68wSlSMazfl6pRNQgqR6J18sc5k06VUQXskutF5BDwppcA
-	 3JvOYJZEqjNhA==
-Date: Fri, 7 Mar 2025 15:55:37 +0000
+	b=rD3JLEEcm40zrCG8Ym/lLoA7Lawl1zLgd4HtvGwPQ04n+NfYHluLZGBwBsZxk5lIs
+	 L/Fwh9dA6fGjnv4OHmlgoh4mr2PH+UIQdvXspQtsP0WkMqXxMwlT1NxAl+KuuG2N3N
+	 VBvhcQbZ6adZo9kcQeEAj0+SC9C10ScoU5V5hVC8Pn5fUa0rOHATZUN0hc1aOah5X/
+	 M46N4kfM4MY90JI6ajG47sgP35rdAthZh3aUKsmkd0KaFfp25jiCtqyKt8MqK6tfkt
+	 Qms8L9wgG4Ot0sri6KYbiA3FLyexrQ0tIDXoHX6/yWchB/lMuzj0elXWrmlI+z8rH1
+	 9xrWK4XwzwGcQ==
+Date: Fri, 7 Mar 2025 15:56:19 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>,
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Fugang Duan <fugang.duan@nxp.com>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-kernel@vger.kernel.org>,
-	"open list:TTY LAYER AND SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] dt-bindings: serial: fsl-lpuart: support i.MX94
-Message-ID: <20250307-satirical-washday-5ac15a6980d2@spud>
-References: <20250306171052.244548-1-Frank.Li@nxp.com>
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH] dt-bindings: can: fsl,flexcan: add i.MX94 support
+Message-ID: <20250307-catwalk-handiwork-5f2d11b60d85@spud>
+References: <20250306171032.243954-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,34 +47,59 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gLJbNM/LIicxX3Ye"
+	protocol="application/pgp-signature"; boundary="iGmX26asLor8ZikF"
 Content-Disposition: inline
-In-Reply-To: <20250306171052.244548-1-Frank.Li@nxp.com>
+In-Reply-To: <20250306171032.243954-1-Frank.Li@nxp.com>
 
 
---gLJbNM/LIicxX3Ye
+--iGmX26asLor8ZikF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 12:10:51PM -0500, Frank Li wrote:
-> Add compatible string "fsl,imx94-lpuart" for the i.MX94 chip, which is
-> backward compatible with i.MX8ULP. Set it to fall back to
-> "fsl,imx8ulp-lpuart".
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Thu, Mar 06, 2025 at 12:10:32PM -0500, Frank Li wrote:
+> Add compatible string "fsl,imx94-flexcan" for the i.MX94 chip, which is
+> backward compatible with i.MX95. Set it to fall back to
+> "fsl,imx94-flexcan".
 
+typo here, not that it matters ultimately.
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---gLJbNM/LIicxX3Ye
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml b=
+/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> index 73252fe56fe6c..560da9fa1ea15 100644
+> --- a/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/fsl,flexcan.yaml
+> @@ -45,6 +45,10 @@ properties:
+>            - enum:
+>                - nxp,s32g3-flexcan
+>            - const: nxp,s32g2-flexcan
+> +      - items:
+> +          - enum:
+> +              - fsl,imx94-flexcan
+> +          - const: fsl,imx95-flexcan
+> =20
+>    reg:
+>      maxItems: 1
+> --=20
+> 2.34.1
+>=20
+
+--iGmX26asLor8ZikF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sW+QAKCRB4tDGHoIJi
-0tNjAQCnBgS8XwdKznNKPINg5H0qzt2RWJvieQaj1HllU5gb7QEAlSAfqMLMvXja
-KJo/kGK+9PlYCf20Ilb1Q8q6FNopQQ4=
-=WFNI
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sXIwAKCRB4tDGHoIJi
+0nSxAP4rhBDGVyVFAz83c7InJ5rTTWbKUhqfPsT71YY6YQAQOgEAtmRpkn/QlPGE
+iO4Ewn/RiJ5VPNUmnH0AZ2/vMp1ZIws=
+=YkNV
 -----END PGP SIGNATURE-----
 
---gLJbNM/LIicxX3Ye--
+--iGmX26asLor8ZikF--
