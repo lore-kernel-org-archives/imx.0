@@ -1,229 +1,191 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012057.outbound.protection.outlook.com [52.101.71.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C5921C173
-	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 15:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741360966; cv=none; b=tYkSWhUGmwjmTOAP96tXatzO9YvI04oFYT53zURa9XqZd137a1stmErw1Jb/Km9TUbtRnLbBUPqoctQwnkox0i7TUagHA8dDcvFR5iGSpG5ujI1jIPouwAV4myVhSRkuo07PmZuxEhozWz7WTPzM6eggGaso8fkoYaVVbIZYcXE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741360966; c=relaxed/simple;
-	bh=WHr1e8qTMHJuHINJNk9gGWeCKxzj0Za5k4m/XaKG0OA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJSZHaCJ2j9Ue9pBncgryEQKfrm6jj5ZGCEaVuNJl2/yInkdY6t+CHSJVaWgtlL9hB3/nOiJOXa1drcY7sT+WvH0m7z3LqMMvz84l4UILRcKjVRjPXpqhx7Pv+WATqCLfj/g3lDL/HfrHGjnluokH84SGgnLZ86qqQP+9wpwlRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tqZX3-0006KQ-Au; Fri, 07 Mar 2025 16:22:37 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tqZX3-004VYW-0F;
-	Fri, 07 Mar 2025 16:22:37 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1tqZX2-000XmN-2w;
-	Fri, 07 Mar 2025 16:22:36 +0100
-Date: Fri, 7 Mar 2025 16:22:36 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-Message-ID: <20250307152236.3ayulbjqnu3vn7mf@pengutronix.de>
-References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
- <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
- <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
- <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
- <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
- <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
- <20250228101952.g6tae3ni5xrhjk3y@pengutronix.de>
- <bfe3c719-f1c5-4ae5-9a40-45ad75cd5855@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EED321CC63
+	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 15:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741361249; cv=fail; b=K3sLyd4lcIjAhu4q/A7qGGam3Q18JgriX0Pr8BdRO9nHPWlu/Ht7B4HyDcbORZXeIb5We3RG7WJjA9iL/LEHkn7RSbwXjRHtqfNaXFVP340QK5wZcF2O6p3/0R42icU4jmG1/ILdYAD0Uj/ruuGB+yAejQdvSdRGV2RC+uEtvK0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741361249; c=relaxed/simple;
+	bh=LKYhQbFSIHE7zVMMoZ0tb/JwCB/d/Pjd6pE/my7FH4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RrEyw2+bgeLMP4uGd5GfSay1hWgh5KBxMYU5bzDqs6Z5SzdMqfJwZXTFr9bXqpLk0yT/7Nr8EjKC1TuPMq1aQ0h1vu3mvniBwmApqGoY9Yu9jIDcbja2zwoZb0d1/s98xuAsRMtFQj9lXy4amWsrcq4bzuLxrK84M03X2DYO7K4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KextMIbw; arc=fail smtp.client-ip=52.101.71.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KextMIbw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dsar4fq6v2uOv3GHA9s7/u38j4lboo2CHdZ9ilTRL1SUq2BgCrOGNvCtr3+knVONGHju9xD+99bRQ0nkOUyaj7n/KTPsabq+L880jFONcxkzCnb9YMsxVPZZzNTp0r98+ecJ6CWyur/pAHZXRwnvejEH/Ym3NMXWK/vbMVkdnB16guj8Bj71QPAsiV4O9Bx77d5eziUiqNFGilzaUKaW+nSx8OvXisn6JXqn8kwKZpHv/jQdGUEGu/uSCiOQN+yRIVbLg7k+vOUAbrG2UMjIs+z+J2siaupJLFpoLlcv8RGEcmi57OhjyVMzXsK/7Bw6q/1Q4rx6+o5XW8o1GSEkaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LrAos/qcl5ePR8aFL9+EB9wSxe4soXueFQzBa/7qlnU=;
+ b=fYKeuBLMajmatfJdQBp1mOwXgoxTbS9BqnsrS5bvCBKBqz7pOd3WR9nozhyFov8dCedBcnZXkWPyGwPTcf3IQcQEJzC1GkYAQxTj04HC+PdOiRaFoYiAxsyRufX2ejxAnL6oM8r0cc2qXNbMlQ2IU12i/1F3RGinSYVzEEpRR7tQK2sTSFc8RZGBhrL0vtl42I/4B77nQAaUPtIy534tk5PO+99GU07CzRmDU0dNYGpsz4pix8fJZNTjET8KopBXqOHCbNsh9+PEWm2Or57HJDzEXFNMieot4vMq90W5e5Awanb+ot7NS6B9nzfTj/Vk085i3zJkdaDM1RZxEbVd4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LrAos/qcl5ePR8aFL9+EB9wSxe4soXueFQzBa/7qlnU=;
+ b=KextMIbwzbvCR//mhtNmQUgAWnaXADRe/1XIYRLFjsPpZJII6DTp3/iHjQXtba6dz7VHTEuMj0XjRdNKLlm9BQKww3aEbi4811XsYJdl4G36Un2HmtrUcF7bAmZOtY1b5HBuKGgudyQxCAqEVO4yC3pDIp7BAIZTjp8l0r5yxFCu94aARdasvq0o3YSPCSD4YECfyGkLLXY/goiXZKiKgRswmr8kas7S447PAFYo2gca5qpvUr7Cmfhm1njo1kBbb0SrIXMHriOe0vuRbe+BGgJB+pLR1sLwjhFmtVGM+cepNH1/qD4A0EcSgn24eHE3BTHrIEchyc2O+Zx3EKOi0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU0PR04MB9694.eurprd04.prod.outlook.com (2603:10a6:10:312::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.22; Fri, 7 Mar
+ 2025 15:27:23 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
+ 15:27:23 +0000
+Date: Fri, 7 Mar 2025 10:27:16 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, shenwei.wang@nxp.com
+Subject: Re: [PATCH] tty: serial: fsl_lpuart: disable transmitter before
+ changing RS485 related registers
+Message-ID: <Z8sQVNaLCxl3x9eG@lizhi-Precision-Tower-5810>
+References: <20250307021950.1000221-1-sherry.sun@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307021950.1000221-1-sherry.sun@nxp.com>
+X-ClientProxiedBy: SJ0PR13CA0040.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bfe3c719-f1c5-4ae5-9a40-45ad75cd5855@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9694:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f12fc81-ce6c-4178-edb7-08dd5d8c8ee3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ccTb80PlbgdCfpdqlDp7TQDOhZLC0WCnsi/QL+vSmqDLn4fuLUOedPssqsLa?=
+ =?us-ascii?Q?alweR2INYfrXtLeKhMh55QGdvLGVH55XsmkLTLVxmUmlqXEzh0eRt5NOclUi?=
+ =?us-ascii?Q?RemUd4IBlTVi15axLL8dGZQvFJRHCZoj2La9RxHJxSIN9to+6x5FYpl1uAWj?=
+ =?us-ascii?Q?y8OH8TBaBTjopXs+m2Ah0oKg+Zs8Yvyob+gU78m2AGPLZBJU7KThcvPrM6Ur?=
+ =?us-ascii?Q?QQkVK6zXSR5KPwwuiqTFNKHWOKo9T0dGX7Qen529JJnyEJrgwYLQkzuGeiWh?=
+ =?us-ascii?Q?tC6S6yMFf2h1obcT3RkwQJTFlppU4uWEVYYPTIhQWaaUHf7ZLwtjN6LoJYRR?=
+ =?us-ascii?Q?eiKRIoGiXJvqZZfVk+NGejZPppD+5vN4SyLTmtgRRHXKVYdGgFJrhDlgz+IO?=
+ =?us-ascii?Q?auRJE/68L0+N/NZuJeyXboPjO7dKrwFbKz42MLgJ1NPiiX3D9lnjNzAxGr9Z?=
+ =?us-ascii?Q?FJd74pa9zrAjwU0x88uQssr+sTysFuso/KS579CqWZDO7nRQIqY2xGWFkWBS?=
+ =?us-ascii?Q?PDL+NaAT73sov5UlfbLkgw/nY28hnmeBQkqeaXLbnbybVc9DIsY1s+wc1N7Q?=
+ =?us-ascii?Q?IIWNvda/tn1oGgpVKYlS8c1b+PoJMDX/oBudyRzzMwRCTXEA5+EMsh5DDbqe?=
+ =?us-ascii?Q?eZK8fIdTfX8Hov5iPExDJSAnbEOeKBC5xHeLj85UJ32Ex7FlvOcJFAmMPmZB?=
+ =?us-ascii?Q?/M4gx2biyfjNq++4dabFLl9+FgkLfxAzxbe4wKKZ2ip0wS/XC7iS8drTeVIy?=
+ =?us-ascii?Q?3zEFsMDjJn/Uzu4w0tb4djNr/bCc9nIxQe9bZ9VrvUEi3veXsGaPOqQZ1MAb?=
+ =?us-ascii?Q?X0Xep7OSbO16ys6PUC57mh4MmK/KjkDFS8XOm6QrfibZ22dnVcbktP/b0qcg?=
+ =?us-ascii?Q?hKVvZ2AeH0Qb8h3rpPYl78RDUwMuNT9PCDPmKJ5p6juraI1muO0481AaRuHt?=
+ =?us-ascii?Q?ztRkJDej/5xrTQf8IpyvLoSnV7sehvVW6RuTvVa4MRJb4unzGkSvFq+WP/0N?=
+ =?us-ascii?Q?EcyXnWvfcPCF12JXMzisuymGUoegx3TGd+ISHSkLHdZCGhLMlqo62ZdvtNp9?=
+ =?us-ascii?Q?rkBTrT3duvY4AFQqOfmufVD3VAK57GQzTlOvkpQ4pT4jLj98DZafAqsScfpG?=
+ =?us-ascii?Q?tRq1GzmWhtlC6/AhJ3O4CJ50dnEirnlvPFbSIikpMcENj+Xu+hx7XNRMKFor?=
+ =?us-ascii?Q?SYPeAKMYTxJCZ/3uoDSpWYFfE7PhOYXHMOSCLUaV1Q034NQ0B982C/oGNSWt?=
+ =?us-ascii?Q?XHHVnm4X8P2L38Ok2M0m1CatRGuBfUr9zFZHBezjyWroO0xDLCN6ne+fhaVz?=
+ =?us-ascii?Q?/k8EHcsAI4rminZjV5EtU8/m3JAJOAbwabT6rdZmbXiH4qJt1qgjH18XGxc2?=
+ =?us-ascii?Q?/KqqXwPsoloAv7uwIQjR/OSGmLWU5ilidnYWNWXOqE/4dMf0TqSjcJKbsE65?=
+ =?us-ascii?Q?9WHxQLqkQQlDBt3+xLLNx5y/lZFH4CAP?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?17zHIKoPf36G7ePIhNNv86BKUIuNkOuKYQngmC9HBU6VE3z2OHcA3ytcsjAN?=
+ =?us-ascii?Q?MRJrh2EopRjG7zt1FgV0AlO3qy0oDIDW2b+amBjs1JeDmmtmxZY8txPSOEc2?=
+ =?us-ascii?Q?aEExfb6apccPcZ6YSRM3Uuu3haexac9M3oYTHuDENyD9+/FqbI2brw+Lrh1d?=
+ =?us-ascii?Q?QRWbpkWFaRBQEqkj/UILpB5AmZ/M2t4lUrvfPQXyvyf4y1JAduAeo1jH2Fqp?=
+ =?us-ascii?Q?hIH4v2AVCduKzvgPUdsW4Sa+no9riukHk0+m+B52UlPZ6SvrwRJzfv31Lzwy?=
+ =?us-ascii?Q?QzEwBDyiVEDuy4wS+oa9dDdH0hEZGzbE0OjRGEhMSmOmMEiN13MIDyO4iADY?=
+ =?us-ascii?Q?FBG9CgmqQeJba7r8k0x9J+NiarSHxO5a/ncfBTqJETdPtlDCvENKBZ/HnBt0?=
+ =?us-ascii?Q?4QIEoHj9Jn6g5WRtqf2HWIhcspg+I3ABoeRcJPTDZ3JR58YNt+ZACy10+F8N?=
+ =?us-ascii?Q?wpaN7zHfjePRnkIPvGBtXoKEEs65WTVXLUtyBNIQZFceYOBKZ/y5Sop55DIW?=
+ =?us-ascii?Q?L6SDZHOC8Wln6XA3JrvK3mkH511knCwlA7yJTDxuLXs0f2y3zVYljonZvMFj?=
+ =?us-ascii?Q?4AT/0+v1X3z6b2/XOrULHz6RtK7kjMODchU1EUm5Em53p5DEa2PjENZJsVgl?=
+ =?us-ascii?Q?pVPoB6QE78zsemMfrylxXwhgkw945/Rdl76/bx592QFPUpsxs3STKDG178fQ?=
+ =?us-ascii?Q?d+Y/sUweGDJL+YfN0VnnMpAHEr+mEvGlFTwz87iDJxwK+vix5lmbMuJMMnJ1?=
+ =?us-ascii?Q?Cwu6ZKW5I+uVh15KoU3W5GjiUXH0Wc1sDMnfm6Z7MRaRol1BNLeBLIesWFAa?=
+ =?us-ascii?Q?R9eUpkKaBEkijr+KROw//ph5bsQSwDPSkr1QjuSgKjNDOCQH/xYyC4w++7Dl?=
+ =?us-ascii?Q?6yEOxco9h/NpPjREiM3exfvY+9APea2J+yoRfpPgSXh5XEbODSDOstBXt93m?=
+ =?us-ascii?Q?mvhsCKssfrhNSYgLm4EQZYEO9ADMqx+H1Q03QFFyKgdJ+0XJTixIdRerLQcH?=
+ =?us-ascii?Q?GLsXFozmgjMjPM02fUqacYliL0OV2IeM3W8o2McP7LMPaTkCvc7nBDpjdtJf?=
+ =?us-ascii?Q?LxY9Pj4X0nGpzCRj9DJEBrtYRFkcm46jhB1HIh+sc9T3miIYQBaE+C9FSDy8?=
+ =?us-ascii?Q?M02PM+x0Zj7QPnD/OlynkcjNP7sdQpHDDppX6lOaVdtoxAtlyQ7I+t4Jm21J?=
+ =?us-ascii?Q?bWgMxY4BibZOncvQTbhO0K46+8+RLBCdLNKUMrHN2f3sWeNYh2VJbCICJGwe?=
+ =?us-ascii?Q?CRVMwqs8Ao71ib39o0GbRZ5rloKB2c5p7z+l5ABfpCP2o4oCBdzIe5hbOwMc?=
+ =?us-ascii?Q?km6QNc0jgHEkH13Vg3Pnj2sRwi5Y7cw93bH9Hljz3sKANXNDp0h5kxoS+Csv?=
+ =?us-ascii?Q?k9DOM/y96/YTGvyZbGRlu0IwJfyAUBohbwFfYTyzTsqJg5IuR0lTlavrsVY7?=
+ =?us-ascii?Q?3McObjkL7SRQJ4w0/5k0k6IeLcqgi5pyI70AtGbRmo9CiD6Z7lE6PyVz5A+Y?=
+ =?us-ascii?Q?SaSZn9i3MsWy/ysE1Nf6EKNXEAnddjM603q/Cs2BTKfWnMb4+i2L3K5LOu9Y?=
+ =?us-ascii?Q?m8Vri7Ns8NdqUBlcaX6xkCesubLqjx40+VafHtGC?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f12fc81-ce6c-4178-edb7-08dd5d8c8ee3
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 15:27:23.3688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g0XyDKT88WspYGxUG5usJDSuUbGVi+mt5kpl+QPMP5dW1dgCelKAQ4YeQq3oZJX/Azqm8G7PMClxCGv+IgUssw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9694
 
-On 25-03-04, Laurentiu Mihalcea wrote:
-> 
-> On 2/28/2025 12:19 PM, Marco Felsch wrote:
-> > Hi,
-> >
-> > On 25-02-27, Frank Li wrote:
-> >> On Thu, Feb 27, 2025 at 11:57:54AM +0100, Marc Kleine-Budde wrote:
-> >>> On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
-> >>>> On 21.02.2025 21:56, Frank Li wrote:
-> >>>>> On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
-> >>>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >>>>>>
-> >>>>>> AIPS5 is actually AIPSTZ5 as it offers some security-related
-> >>>>>> configurations. Since these configurations need to be applied before
-> >>>>>> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
-> >>>>>> be their parent instead of keeping AIPS5 and adding a child node for
-> >>>>>> AIPSTZ5. Also, because of the security configurations, the address space
-> >>>>>> of the bus has to be changed to that of the configuration registers.
-> >>>>> The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
-> >>>>> config address part in your drivers.
-> >>>>>
-> >>>>> Frank
-> >>>> Any concerns/anything wrong with current approach?
-> >>>>
-> >>>>
-> >>>> I find it a bit awkward to have the whole bus address space
-> >>>> in the DT given that we're only interested in using the access
-> >>>> controller register space.
-> >>>>
-> >>>>
-> >>>> I'm fine with the approach you suggested but I don't see a
-> >>>> reason for using it?
-> >>> Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
-> >>> Applications Processor Reference Manual, Rev. 3, 08/2024), the
-> >>> AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
-> >>> different than the bus configuration. Why not model it as part of the
-> >>> bus?
-> >>>
-> >>>>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> >>>>>> index e0d3b8cba221..a1d9b834d2da 100644
-> >>>>>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> >>>>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> >>>>>> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
-> >>>>>>  			};
-> >>>>>>  		};
-> >>>>>>
-> >>>>>> -		aips5: bus@30c00000 {
-> >>>>>> -			compatible = "fsl,aips-bus", "simple-bus";
-> >>>>>> -			reg = <0x30c00000 0x400000>;
-> >>>>>> +		aips5: bus@30df0000 {
-> >>>                        ^^^^^^^^^^^^
-> >>>>>> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
-> >>>>>> +			reg = <0x30df0000 0x10000>;
-> >>>>>> +			power-domains = <&pgc_audio>;
-> >>>>>>  			#address-cells = <1>;
-> >>>>>>  			#size-cells = <1>;
-> >>>>>> +			#access-controller-cells = <0>;
-> >>>>>>  			ranges;
-> >>>>>>
-> >>>>>>  			spba-bus@30c00000 {
-> >>>                         ^^^^^^^^^^^^^^^^^
-> >>>
-> >>> This looks very strange: The aips5 bus starts at 0x30df0000 and has a
-> >>> child bus starting at 0x30c00000?
-> >> @30df0000 should match controller reg's address.
-> >>
-> >> subnode address 0x30c00000,  should be descript in "ranges", which 1:1 map.
-> >>
-> >> So it should be reasonable. another example:
-> >> i2c@1000 {
-> >>
-> >> 	device@1c <- which use difference address space.
-> >> }
-> >>
-> >> The similar case also happen at pcie.
-> > I'm not really convinced that pcie and i2c are good examples here. I2C
-> > does have an other addressing scheme by nature and the hotplug-able pcie
-> > is dependeds on the pcie device memory map of course.
-> >
-> > Here we're talking about an access control IP core on a bus which is
-> > static.
-> >
-> > But.. it looks like from DT abstraction it's fine because STM did
-> > something similiar with their st,stm32mp25-rifsc or st,stm32-etzpc
-> > albeit it does look strange and I don't know why we have to limit the
-> > address space since it was already mapped but used by the fsl,aips-bus
-> > driver.
-> >
-> > Regards,
-> >   Marco
-> 
-> The address space of the bridge was changed to that of the bridge's
-> configuration space because I think it's very awkward from the
-> software's point of view to have to hardcode the offset and size of
-> the configuration space inside the driver. 
-
-You mean the access-controller IP core. I could also arguee that it's
-akward to put the bridge access-controller IP core into the middle of
-the bridge address-space instead of placing it at the very beginning of
-the bridge. But this doesn't help here :)
-
-I see what you mean but from DT abstraction POV it seems more reasonable
-to keep it as it is and just adapt the compatible. The current driver
-maps the whole address space too, so I don't see why we need to change
-it if we change it to the aipstz driver. If you see the
-access-controller IP core as part of the bus I don't see any problem and
-would argue that the offset detail needs to be handled within the
-driver.
-
-> I also looked at what STM did with "st,stm32-etzpc" so I thought this
-> would be acceptable from the DT's POV.
+On Fri, Mar 07, 2025 at 10:19:50AM +0800, Sherry Sun wrote:
+> According to the LPUART reference manual, TXRTSE and TXRTSPOL of MODIR
+> register only can be changed when the transmitter is disabled.
+> So disable the transmitter before changing RS485 related registers and
+> re-enable it after the change is done.
 >
-> Regarding why I chose not to model the access controller part as a subnode of the
-> bus:
-> 
->     1) The access controller is part of the bridge itself (not a separate module accessible
->     via the bridge like it's the case for its children) so I think the current approach
->     should also make sense if we take the hardware into consideration.
+> Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for 32-bit uart flavour")
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 
-I don't like this approach if you see the controller as part of the
-bridge because the offset could be handled within the bridge driver.
-I also that the register offset needs to be supplied else we can't reuse
-the driver and we don't want to adapt the driver for each SoC.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-What came into my mind is the following:
-
-	spba-bus@30c00000 {
-		compatible = "nxp,imx8mp-aiptz-bus", "nxp,aiptz-bus";
-		reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
-		reg-names = "bus", "aipstz";
-
-		child-nodes {};
-		child-nodes {};
-		child-nodes {};
-	}
-
-This way we can abstract the access-controller register space and the
-whole bus register space and a generic driver could be written just by
-making use two reg fields.
-
->     2) The access controller configuration also impacts the AP. As such, we needed a way to
->     enforce a dependency between the children of the aips5 bus and the access controller
->     (we could have used the 'access-controllers' property like we did with the DSP but having
->     to do that for all children of the bus is not ideal I'd say.
-> 
-> Of course, argument no. 2 is somewhat brittle in the context of i.MX8MP as the reset
-> values of the AC's registers already allow the AP to access said peripherals. Despite this,
-> I think the current approach would be more scalable given that the IP offers some more
-> configuration bits which we might want to toggle. For that to work, we need to make sure
-> the bits are toggled before the AP accesses the peripherals on the bridge.
-
-Please have a look on my suggestion above.
-
-Regards,
-  Marco
-
-> Note that we don't do this for aips1-aips4 because it's really not needed. If I'm not mistaken,
-> they're not really attached to a PD so we don't need to re-configure them each time the domain
-> is power cycled (which is why we can just do it once from ATF during the boot process)
+> ---
+>  drivers/tty/serial/fsl_lpuart.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+> index 91d02c55c470..4dc2f3e2b8e0 100644
+> --- a/drivers/tty/serial/fsl_lpuart.c
+> +++ b/drivers/tty/serial/fsl_lpuart.c
+> @@ -1484,6 +1484,16 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
+>
+>  	unsigned long modem = lpuart32_read(&sport->port, UARTMODIR)
+>  				& ~(UARTMODIR_TXRTSPOL | UARTMODIR_TXRTSE);
+> +	u32 ctrl;
+> +
+> +	/* TXRTSE and TXRTSPOL only can be changed when transmitter is disabled. */
+> +	ctrl = lpuart32_read(&sport->port, UARTCTRL);
+> +	if (ctrl & UARTCTRL_TE) {
+> +		/* wait transmit engin complete */
+> +		lpuart32_wait_bit_set(&sport->port, UARTSTAT, UARTSTAT_TC);
+> +		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE, UARTCTRL);
+> +	}
+> +
+>  	lpuart32_write(&sport->port, modem, UARTMODIR);
+>
+>  	if (rs485->flags & SER_RS485_ENABLED) {
+> @@ -1503,6 +1513,10 @@ static int lpuart32_config_rs485(struct uart_port *port, struct ktermios *termio
+>  	}
+>
+>  	lpuart32_write(&sport->port, modem, UARTMODIR);
+> +
+> +	if (ctrl & UARTCTRL_TE)
+> +		lpuart32_write(&sport->port, ctrl, UARTCTRL);
+> +
+>  	return 0;
+>  }
+>
+> --
+> 2.34.1
+>
