@@ -1,44 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7DC220683;
-	Fri,  7 Mar 2025 15:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042FF194C78;
+	Fri,  7 Mar 2025 15:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741363076; cv=none; b=Q/NGAe1EGStTrR6jXwDDor0duL7eE6iCIa1rAGEZVv8oaTktKYmdvyBtqI0goY3OGVzvWpCeGvQiW8HgPy2Pu5Q/xWdGJeKTUpdmMZRJpTkVSgtTkfiaMDjeGN+9sfjGbuJSXUNMuSxAbCMR5HYPlB6dq40lgldRLBsau8Kj1gU=
+	t=1741363098; cv=none; b=FNXYCoPO92ahn4XSZetM8LTxH6zGTWHAXJS5DXh+2mVKPThHPOfwH7izspHl4VR2ym6oTeVko68cqUjTW2FmYba2es95Vl50BvnE0Dga8OUkUuBR5GTYSKsq8O3PnY2GUhT7R3WZMrXy2tYo2YYNWi+Td+lYtfdpSmjw/40vsJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741363076; c=relaxed/simple;
-	bh=QT1XHh/w8QwT1pLRiOGWxMsbky6BpHG6YvS1p8T0uU8=;
+	s=arc-20240116; t=1741363098; c=relaxed/simple;
+	bh=DbOJCP64/Zf1wfRed5mRMA7gHSuE9mWdYEEM8LkNjNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayrXSB+ZnN0+oOyFlxvz0CQJkBpjFba3icDqefdoW4O5PXD0mtF/N5LOVLCIYJ9iJiGvY4gVVcqXzG1j+u8ACKR8Z9bnhIW7Ax2HKzys0WKoRr7hCpzxzn0hwmh81R4IwTKMaqo1gEUNIWEgqC01TNdPrzMnTyGmRi/HMsBvgyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqROB/MQ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tTlTVxN3k+32FwNqaQZIoXKrUnYlLiR+7JHTnJ0EX3FQnP97qqd5eMNAzCkt4B1dC20nwr7eUkGumlb4x2iKT/2/+fadvlt2yeo2kgFe/R7C96KHzTh41La/rHA1UaE1MRitCUt9MXoUCYKZZaPSvgSGfB3EpXusLUUm3TAWTSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfm1QjW0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqROB/MQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF12C4CED1;
-	Fri,  7 Mar 2025 15:57:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfm1QjW0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5BDC4CED1;
+	Fri,  7 Mar 2025 15:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741363074;
-	bh=QT1XHh/w8QwT1pLRiOGWxMsbky6BpHG6YvS1p8T0uU8=;
+	s=k20201202; t=1741363097;
+	bh=DbOJCP64/Zf1wfRed5mRMA7gHSuE9mWdYEEM8LkNjNc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LqROB/MQjqgP6Rxj7Ka2JK/VyG82Yw1XNISbXOGkuJVwtsqWRhMcXuyrPpAXmqbMf
-	 eqJ8MhwoTh0o8qu8D7AU14C5aWPnC8IV4XMCsGy1R4YdhKH1k93ZTUbU/ehUZPoxTZ
-	 RF+kya+bNA+vAWYvH4UlgWJgBeA6vu19p0A5O8gEJ0Lu1NgvvaaJY6JC6uM8KA5iPK
-	 gp2r/4730w41fI6wZfjxOPNY2hpkbmQsVusd1q2NB/iUMH2PWFWwEhDb2DFdb7J5Gr
-	 9SOTUOE25hNfyv5M3STCc95jPsDlzkbqExLIN7e3so/vWoMJrlhXXetaSVv0ITUnEK
-	 qwkAK5IRMJQBg==
-Date: Fri, 7 Mar 2025 15:57:49 +0000
+	b=lfm1QjW0+Yj40viKDxMa/eaI1kIybtAHMSB9BuuhaavCDsQS+lTcgvkY6LsfGIaM8
+	 ycoYHNpzCe4tQgpyS93zEEpX2Ujp4Xc9G/udOdZmUMhBcqGYTdWuQ70Q33xRghPYIt
+	 oB6U/ZoAW3oRVKmCSsey8mMo9Jy0ZEBBt560tzIIqLoQaQ4wPBQ8hSOKxp/FovR89E
+	 1TAdPTWiB8WL5uXYfeO8EU26V5IdurFTlb/TQb5Cx7VcAMN/wAxD8xDeWowH4kUsIE
+	 fa119vcwUufZu7wvBPeShILRoz29j2dhEDA+HId+rG/RzP1/wKVrgwYcq+Lzb4mHOd
+	 Tzvje4zwr6hmw==
+Date: Fri, 7 Mar 2025 15:58:12 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Bai Ping <ping.bai@nxp.com>,
-	"open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] dt-bindings: timer: nxp,sysctr-timer: Add i.MX94 support
-Message-ID: <20250307-popular-margarita-f16341b53f30@spud>
-References: <20250306170902.241057-1-Frank.Li@nxp.com>
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: pwm: imx: Add i.MX93, i.MX94 and i.MX95
+ support
+Message-ID: <20250307-scion-comprised-03e8ea95abed@spud>
+References: <20250306170845.240555-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,49 +52,50 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MqHaBOafbLChmy6G"
+	protocol="application/pgp-signature"; boundary="lEFFTIemAybPsts5"
 Content-Disposition: inline
-In-Reply-To: <20250306170902.241057-1-Frank.Li@nxp.com>
+In-Reply-To: <20250306170845.240555-1-Frank.Li@nxp.com>
 
 
---MqHaBOafbLChmy6G
+--lEFFTIemAybPsts5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 12:09:02PM -0500, Frank Li wrote:
-> Add compatible string "nxp,imx94-sysctr-timer" for the i.MX94 chip, which
-> is backward compatible with i.MX95. Set it to fall back to
-> "nxp,imx95-sysctr-timer".
+On Thu, Mar 06, 2025 at 12:08:45PM -0500, Frank Li wrote:
+> Add compatible string "fsl,imx93-pwm", "fsl,imx94-pwm" and "fsl,imx95-pwm=
+",
+> which is backward compatible with i.MX7ULP. Set it to fall back to
+> "fsl,imx7ulp-pwm".
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/timer/nxp,sysctr-timer.yaml   | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  .../devicetree/bindings/pwm/imx-tpm-pwm.yaml          | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/timer/nxp,sysctr-timer.yam=
-l b/Documentation/devicetree/bindings/timer/nxp,sysctr-timer.yaml
-> index 891cca0095281..6b80b060672e5 100644
-> --- a/Documentation/devicetree/bindings/timer/nxp,sysctr-timer.yaml
-> +++ b/Documentation/devicetree/bindings/timer/nxp,sysctr-timer.yaml
-> @@ -18,9 +18,14 @@ description: |
+> diff --git a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml b/Doc=
+umentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
+> index ac0a35bf8648c..d5a9340ff9209 100644
+> --- a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
+> +++ b/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
+> @@ -23,8 +23,15 @@ properties:
+>      const: 3
 > =20
->  properties:
 >    compatible:
 > -    enum:
-> -      - nxp,imx95-sysctr-timer
-> -      - nxp,sysctr-timer
+> -      - fsl,imx7ulp-pwm
 > +    oneOf:
 > +      - enum:
-> +          - nxp,imx95-sysctr-timer
-> +          - nxp,sysctr-timer
+> +          - fsl,imx7ulp-pwm
 > +      - items:
 > +          - enum:
-> +              - nxp,imx94-sysctr-timer
-> +          - const: nxp,imx95-sysctr-timer
+> +              - fsl,imx93-pwm
+> +              - fsl,imx94-pwm
+> +              - fsl,imx95-pwm
+> +          - const: fsl,imx7ulp-pwm
 > =20
 >    reg:
 >      maxItems: 1
@@ -96,15 +103,15 @@ l b/Documentation/devicetree/bindings/timer/nxp,sysctr-timer.yaml
 > 2.34.1
 >=20
 
---MqHaBOafbLChmy6G
+--lEFFTIemAybPsts5
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sXfQAKCRB4tDGHoIJi
-0o+GAQDkXHThxI93oIJC0azv+CB0mG0BDZBf4Kg7YZh9Ts8v3wEAgq0KKkRnfRel
-dWTh3Aam6YBVKAh9krDuOp956tpoTAo=
-=atln
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sXlAAKCRB4tDGHoIJi
+0vOkAQDWqdqeelxxD0R357bSU/Q1uJv1tmCMs6Lf/ewtxmAb2AD9HplVxYRL9SjA
+/DlA2PnHJvXCFTiqK98yaz/Qb8OR3wo=
+=lBWI
 -----END PGP SIGNATURE-----
 
---MqHaBOafbLChmy6G--
+--lEFFTIemAybPsts5--
