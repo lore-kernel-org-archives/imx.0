@@ -1,50 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042FF194C78;
-	Fri,  7 Mar 2025 15:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E337F2222B4;
+	Fri,  7 Mar 2025 15:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741363098; cv=none; b=FNXYCoPO92ahn4XSZetM8LTxH6zGTWHAXJS5DXh+2mVKPThHPOfwH7izspHl4VR2ym6oTeVko68cqUjTW2FmYba2es95Vl50BvnE0Dga8OUkUuBR5GTYSKsq8O3PnY2GUhT7R3WZMrXy2tYo2YYNWi+Td+lYtfdpSmjw/40vsJE=
+	t=1741363121; cv=none; b=bjrfWtkRVziaLE+KnwfGPgfqoNvmgr4fdS7ZJjGRtulISdadCfqvGwyp6Yo1tA5SP6CHxbDx4/EI2zxdA9xqd5YescvpgbMZx5E67ztOWL7kqDqUFF8QmsBxmBeafW7n6aP5jLMSaBaX0NoEvbwaEgfVJx11spLUUXV6rpaJikg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741363098; c=relaxed/simple;
-	bh=DbOJCP64/Zf1wfRed5mRMA7gHSuE9mWdYEEM8LkNjNc=;
+	s=arc-20240116; t=1741363121; c=relaxed/simple;
+	bh=qIjEQRPaB18kefxL0AfkJKEKomtj3Ay/2qC0bYTJ9GM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tTlTVxN3k+32FwNqaQZIoXKrUnYlLiR+7JHTnJ0EX3FQnP97qqd5eMNAzCkt4B1dC20nwr7eUkGumlb4x2iKT/2/+fadvlt2yeo2kgFe/R7C96KHzTh41La/rHA1UaE1MRitCUt9MXoUCYKZZaPSvgSGfB3EpXusLUUm3TAWTSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfm1QjW0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VA3IPRRy2R8AnTDBIlWjCPF2AerlC1LsCz3ulb/NK2b7zlPBLvRpyb+dAXT4cLsznkp3oBhwvGvoa4dSLFLZWr9pbn9/3w21bgb5KXZ6N4Kf/XUW2ZEce3/JalOzcmZ/+IXc1TKd/v0MADtExTOge69QOQ1vUgS+32UjnLLwO7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPyVWWfO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfm1QjW0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5BDC4CED1;
-	Fri,  7 Mar 2025 15:58:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPyVWWfO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F21FC4CEEB;
+	Fri,  7 Mar 2025 15:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741363097;
-	bh=DbOJCP64/Zf1wfRed5mRMA7gHSuE9mWdYEEM8LkNjNc=;
+	s=k20201202; t=1741363120;
+	bh=qIjEQRPaB18kefxL0AfkJKEKomtj3Ay/2qC0bYTJ9GM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lfm1QjW0+Yj40viKDxMa/eaI1kIybtAHMSB9BuuhaavCDsQS+lTcgvkY6LsfGIaM8
-	 ycoYHNpzCe4tQgpyS93zEEpX2Ujp4Xc9G/udOdZmUMhBcqGYTdWuQ70Q33xRghPYIt
-	 oB6U/ZoAW3oRVKmCSsey8mMo9Jy0ZEBBt560tzIIqLoQaQ4wPBQ8hSOKxp/FovR89E
-	 1TAdPTWiB8WL5uXYfeO8EU26V5IdurFTlb/TQb5Cx7VcAMN/wAxD8xDeWowH4kUsIE
-	 fa119vcwUufZu7wvBPeShILRoz29j2dhEDA+HId+rG/RzP1/wKVrgwYcq+Lzb4mHOd
-	 Tzvje4zwr6hmw==
-Date: Fri, 7 Mar 2025 15:58:12 +0000
+	b=oPyVWWfOwbo7R7OEgpGaAJMpK16OGzfnWJHsl0XwAQHcN/O9BR61XjSv2xvVEydn8
+	 ntM7iXqKuNl8aVZVwGBLggTD+zczblQ4MVK9yL64kAwNZmusOl21kjI41FxMjuR1hN
+	 wbCQ/W2/xrSajNoez1EgPJDRf/XAxaKf6yIfUuZgCX0wrT4kFkefJAicHqp/Uygcro
+	 aurEoQ8+5p6RKccxdrWwfzlVuYRt+tIjdNbp0Emvn3kgPIDiuohZmjerf7PxD5BNR7
+	 cfrFuzO1Z3Gcz2iM3TH8dRDZLFZ4Mg9LxEsgN5Z0i9LU8JblUfg9zsEr1BifqvaxSA
+	 f967i5gFC0eSQ==
+Date: Fri, 7 Mar 2025 15:58:34 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <linux-iio@vger.kernel.org>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <imx@lists.linux.dev>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
 	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
 	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: pwm: imx: Add i.MX93, i.MX94 and i.MX95
- support
-Message-ID: <20250307-scion-comprised-03e8ea95abed@spud>
-References: <20250306170845.240555-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add i.MX94 and i.MX95 support
+Message-ID: <20250307-county-dissuade-eed621016369@spud>
+References: <20250306170825.239933-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,50 +51,46 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="lEFFTIemAybPsts5"
+	protocol="application/pgp-signature"; boundary="KXsyaRMt3FIL14G8"
 Content-Disposition: inline
-In-Reply-To: <20250306170845.240555-1-Frank.Li@nxp.com>
+In-Reply-To: <20250306170825.239933-1-Frank.Li@nxp.com>
 
 
---lEFFTIemAybPsts5
+--KXsyaRMt3FIL14G8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 12:08:45PM -0500, Frank Li wrote:
-> Add compatible string "fsl,imx93-pwm", "fsl,imx94-pwm" and "fsl,imx95-pwm=
-",
-> which is backward compatible with i.MX7ULP. Set it to fall back to
-> "fsl,imx7ulp-pwm".
+On Thu, Mar 06, 2025 at 12:08:25PM -0500, Frank Li wrote:
+> Add compatible string "nxp,imx94-adc" and "nxp,imx95-adc", which is
+> backward compatible with i.MX93. Set it to fall back to "nxp,imx93-adc".
+>=20
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
->=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/pwm/imx-tpm-pwm.yaml          | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  .../devicetree/bindings/iio/adc/nxp,imx93-adc.yaml       | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml b/Doc=
-umentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
-> index ac0a35bf8648c..d5a9340ff9209 100644
-> --- a/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
-> +++ b/Documentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
-> @@ -23,8 +23,15 @@ properties:
->      const: 3
+> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml=
+ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> index dfc3f512918f6..c2e5ff418920c 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> @@ -19,7 +19,14 @@ description:
 > =20
+>  properties:
 >    compatible:
-> -    enum:
-> -      - fsl,imx7ulp-pwm
+> -    const: nxp,imx93-adc
 > +    oneOf:
 > +      - enum:
-> +          - fsl,imx7ulp-pwm
+> +          - nxp,imx93-adc
 > +      - items:
 > +          - enum:
-> +              - fsl,imx93-pwm
-> +              - fsl,imx94-pwm
-> +              - fsl,imx95-pwm
-> +          - const: fsl,imx7ulp-pwm
+> +              - nxp,imx94-adc
+> +              - nxp,imx95-adc
+> +          - const: nxp,imx93-adc
 > =20
 >    reg:
 >      maxItems: 1
@@ -103,15 +98,15 @@ umentation/devicetree/bindings/pwm/imx-tpm-pwm.yaml
 > 2.34.1
 >=20
 
---lEFFTIemAybPsts5
+--KXsyaRMt3FIL14G8
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sXlAAKCRB4tDGHoIJi
-0vOkAQDWqdqeelxxD0R357bSU/Q1uJv1tmCMs6Lf/ewtxmAb2AD9HplVxYRL9SjA
-/DlA2PnHJvXCFTiqK98yaz/Qb8OR3wo=
-=lBWI
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ8sXqgAKCRB4tDGHoIJi
+0sW1AQDC/Er748sapxFMd23satNd1nUEpiuLsDDeYVNHhH7FaAD+K4ncLXN2PlXH
+N/Yu5AqvnRZT54ZbMVn+FGE+3SLsRA4=
+=SPaL
 -----END PGP SIGNATURE-----
 
---lEFFTIemAybPsts5--
+--KXsyaRMt3FIL14G8--
