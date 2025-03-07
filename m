@@ -1,377 +1,257 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8229B219E98
-	for <imx@lists.linux.dev>; Fri,  7 Mar 2025 13:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A47221A452;
+	Fri,  7 Mar 2025 13:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353559; cv=none; b=co244d5DLytw1wwRJ0t6AXmTIXtOgPyfvzq2Y/YI+K4wuiJ9yMXchyTFyIvk8yN1C5KQVae0NJ8D4PngfEGIoLFkRU4/CwbJDBxwkZNI0PgUdE4JrYqfAPVNUdcZ48KK6lN8vGf214zC8XRH2oqQUh64CxFkYw+UzbO/BVZFcuI=
+	t=1741353962; cv=none; b=DKMflIh5+bRQxYvEaFzcEqnzx7SYN8LmZu89DM24hZr436npMbJuTJK/xIiA/kAYdPWUfjaFr103lT51cLRb4rhJ8X3LXFHuylYypMPU50R2DFXIZ/l5Vu4Ry/TPT/X1RBziVsXlq3zX1zJMFw6lWesMWDtMnK3UiaQpKtO90pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353559; c=relaxed/simple;
-	bh=jt+9rA9ZPCCaYRIrwyfR3Op0oyoIsDZhOFigxKin82U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aO4iD+g8qZQhn7GyCfr7Apf6HvQsFgVOFB+z4E6+3QGCEcaG+hOp3QQ/Dogwg1wEuGXSDXxQdlfYPOfw1e4PGCZfmQUYj+ItHy8wEIopyuwa0WPwSQvriSd+USiWjtdzg7BUmuMJsT7cSSwbD9hcCh0JeHk/Fpr+IdQb2xwmTVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=WZ+iZ1II; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1741353962; c=relaxed/simple;
+	bh=yqUeHKLUWqPb7pEaBgZimIff4G2SozbiDGDTN0fcW6g=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=nvJL2J216DQzKk6GXOkVDtXk1wjVzMLA4JkwGiFj5tmqh75dwMDy8/5e4jNqZYXioXlPFJG4xPjNPsPMhkRWBbnqqUakrHcAd3H+mcNod1xk/fSH8vZvLlW0ev9qTJSJApbUvAvcMsIuTX8ICXWLlghkv/b9Rjnen53WOJqg+og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIyhPx3c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="WZ+iZ1II"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abf5e1a6cd3so337727066b.2
-        for <imx@lists.linux.dev>; Fri, 07 Mar 2025 05:19:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1741353556; x=1741958356; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GmXXr/GHvAGv2swMlIkbl+Www19HcX8d7ze1AMoIM9w=;
-        b=WZ+iZ1IIbk9MFjwI5ZeIuXX1hcZswRKwWnLmx9YDPh/0i0t1CHTTcun3MjzgGUNMOa
-         oASBF4hywL2u82f2LxfXF9Oiqm4xDEsW3eOYYsHfML4sofjb46UQ+0YDrwXGK/otH2GQ
-         XdY9VqC43/FYIpnyNQ99jE3DZBgLBt4JOl/Vw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741353556; x=1741958356;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GmXXr/GHvAGv2swMlIkbl+Www19HcX8d7ze1AMoIM9w=;
-        b=kzZqIDXIyFHkWeOHr8psOvXJ9W4xA/Ij5+oddISlqXVr30WlxC3YB/GxMezkdYaGts
-         v8CLBTnwmOsls0HQS3T+6Qrt0EUzKxEOBneA5qZltXlEdh4rF3B5yUIn9v/jSRqf7GXM
-         2qRKTEedCyjXUK7Lbgr4IVxDVuy5kD31DTaorE4Pp7eFhZgccWLkqvp55sy0wiotFkUX
-         gekUpUNgJy2HCxtKSXGMmD1lDHkpzPEyBXNOv3vpuMbW8MeBSgRndiwjdWxI/yqR1plK
-         RwB2P42pylN0eF/X+xZiZHMRBXe3kYqIdSsGxMCZ4WT32PWkdwWzE47JfLev/aRPTauC
-         0vJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXhbqBgR4G9KTqGshBBnMQZDmedFkA7rMWkKif/NAQsc77KA1fkflGqFmkyDN4nwGbioys=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1H9DNyAf+f32FwUXBb5hTrR0W0ggC/svmIb+zyYG50QYqrbtL
-	tU+fTcm8dDuXjREu5ikG4hHI3kDoSIsk4b85JLeNbeTFJBLki7/j+IFfvccm2Y4=
-X-Gm-Gg: ASbGncvogOSHRvy4fydwhrd/fptnbpqPS2mZYnRHS2SGD9vj/JG247jYJl6r8cJHV4U
-	eGsbm9W9InRpo+o3WxLcvFswYSzuQBOkK7/FAEDek4vrXe3lWkeY6N15ZZCELQEdMJULeGGbyGo
-	/LiaM6/Vx6tEKIlJ4iv7VA4+PAWXmPED/D/k7F4qAuIrtJgTO9FEJBIaAt8Re0LQ7ArQktppiKs
-	diY1xuH9b+8JCa78tO6nEAeN5NGaeAAgWSgD833ooqJEZ2n/q/TL8ZJKMOik9+r1gV643IZAw4P
-	JDEixtZU6MBMLXRBvz+vHiyu/UYAos0hsFPjqjnJmAQby3OOVfcgEPoG
-X-Google-Smtp-Source: AGHT+IGWJEXpT4oFObUhXEX1baZSA5ka+RDW0BObeZF31pqEHYIrQhNdRsTwmr/EHhhCwd6ldgP0tQ==
-X-Received: by 2002:a17:907:7ea9:b0:abf:6b30:7a94 with SMTP id a640c23a62f3a-ac252f4c9eamr387695566b.45.1741353555414;
-        Fri, 07 Mar 2025 05:19:15 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac2399d2dd8sm272788966b.166.2025.03.07.05.19.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 05:19:14 -0800 (PST)
-Date: Fri, 7 Mar 2025 14:19:12 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	airlied@gmail.com, simona@ffwll.ch, dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 02/25] drm/dumb-buffers: Provide helper to set pitch
- and size
-Message-ID: <Z8ryUGgxqVTEw9pe@phenom.ffwll.local>
-References: <20250218142542.438557-1-tzimmermann@suse.de>
- <20250218142542.438557-3-tzimmermann@suse.de>
- <Z8qxcTIcD4W5OGwL@phenom.ffwll.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIyhPx3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F39C4CED1;
+	Fri,  7 Mar 2025 13:26:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741353961;
+	bh=yqUeHKLUWqPb7pEaBgZimIff4G2SozbiDGDTN0fcW6g=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=YIyhPx3chIXecJfkgbuVJSesMmg0y88AL9CU3AVb3kgLB8x7qnouYLDtX54u62EfD
+	 O+UmS68TXuoLvNk2tvZhxIzMF29IKTqE+bBr0GX0AWZi9tciN6S+ysRwsByGcPXj8U
+	 oyN0Ib5DqRJN/U7GYajw0oclLaPYdHAwmn3gWicGZLc7puCRA7nPu7B764NOMyMoFv
+	 dWkjajPbWh+/0+cEkmv4+l2K+DaRz6tXXLSPmT3Jb0qqBaFrCwXqF66YvzIaUlvcWS
+	 0+oViuPe2CqTZydvYwUZ+66d0XDLYfYbY1S0GgtBJS0u5ZL0nT8PfFD7fCBAgA8aSO
+	 vqop2U3hFAIbQ==
+Date: Fri, 07 Mar 2025 07:25:59 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8qxcTIcD4W5OGwL@phenom.ffwll.local>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, 
+ linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ linux-kernel@vger.kernel.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org
+To: ernestvanhoecke@gmail.com
+In-Reply-To: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+References: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+Message-Id: <174135385275.4031184.1416379470522159928.robh@kernel.org>
+Subject: Re: [PATCH v2 0/2] ARM: dts: apalis/colibri-imx6: Add support for
+ v1.2
 
-On Fri, Mar 07, 2025 at 09:42:25AM +0100, Simona Vetter wrote:
-> On Tue, Feb 18, 2025 at 03:23:25PM +0100, Thomas Zimmermann wrote:
-> > Add drm_modes_size_dumb(), a helper to calculate the dumb-buffer
-> > scanline pitch and allocation size. Implementations of struct
-> > drm_driver.dumb_create can call the new helper for their size
-> > computations.
-> > 
-> > There is currently quite a bit of code duplication among DRM's
-> > memory managers. Each calculates scanline pitch and buffer size
-> > from the given arguments, but the implementations are inconsistent
-> > in how they treat alignment and format support. Later patches will
-> > unify this code on top of drm_mode_size_dumb() as much as possible.
-> > 
-> > drm_mode_size_dumb() uses existing 4CC format helpers to interpret
-> > the given color mode. This makes the dumb-buffer interface behave
-> > similar the kernel's video= parameter. Current per-driver implementations
-> > again likely have subtle differences or bugs in how they support color
-> > modes.
-> > 
-> > The dumb-buffer UAPI is only specified for known color modes. These
-> > values describe linear, single-plane RGB color formats or legacy index
-> > formats. Other values should not be specified. But some user space
-> > still does. So for unknown color modes, there are a number of known
-> > exceptions for which drm_mode_size_dumb() calculates the pitch from
-> > the bpp value, as before. All other values work the same but print
-> > an error.
-> > 
-> > v3:
-> > - document the UAPI semantics
-> > - compute scanline pitch from for unknown color modes (Andy, Tomi)
-> > 
-> > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > ---
-> >  drivers/gpu/drm/drm_dumb_buffers.c | 116 +++++++++++++++++++++++++++++
-> >  include/drm/drm_dumb_buffers.h     |  14 ++++
-> >  include/uapi/drm/drm_mode.h        |  46 +++++++++++-
-> >  3 files changed, 175 insertions(+), 1 deletion(-)
-> >  create mode 100644 include/drm/drm_dumb_buffers.h
-> > 
-> > diff --git a/drivers/gpu/drm/drm_dumb_buffers.c b/drivers/gpu/drm/drm_dumb_buffers.c
-> > index 9916aaf5b3f2..600ab281712b 100644
-> > --- a/drivers/gpu/drm/drm_dumb_buffers.c
-> > +++ b/drivers/gpu/drm/drm_dumb_buffers.c
-> > @@ -25,6 +25,8 @@
-> >  
-> >  #include <drm/drm_device.h>
-> >  #include <drm/drm_drv.h>
-> > +#include <drm/drm_dumb_buffers.h>
-> > +#include <drm/drm_fourcc.h>
-> >  #include <drm/drm_gem.h>
-> >  #include <drm/drm_mode.h>
-> >  
-> > @@ -57,6 +59,120 @@
-> >   * a hardware-specific ioctl to allocate suitable buffer objects.
-> >   */
-> >  
-> > +static int drm_mode_align_dumb(struct drm_mode_create_dumb *args,
-> > +			       unsigned long pitch_align,
-> > +			       unsigned long size_align)
-> > +{
-> > +	u32 pitch = args->pitch;
-> > +	u32 size;
-> > +
-> > +	if (!pitch)
-> > +		return -EINVAL;
-> > +
-> > +	if (pitch_align)
-> > +		pitch = roundup(pitch, pitch_align);
-> > +
-> > +	/* overflow checks for 32bit size calculations */
-> > +	if (args->height > U32_MAX / pitch)
-> > +		return -EINVAL;
-> > +
-> > +	if (!size_align)
-> > +		size_align = PAGE_SIZE;
-> > +	else if (!IS_ALIGNED(size_align, PAGE_SIZE))
-> > +		return -EINVAL;
-> > +
-> > +	size = ALIGN(args->height * pitch, size_align);
-> > +	if (!size)
-> > +		return -EINVAL;
-> > +
-> > +	args->pitch = pitch;
-> > +	args->size = size;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * drm_mode_size_dumb - Calculates the scanline and buffer sizes for dumb buffers
-> > + * @dev: DRM device
-> > + * @args: Parameters for the dumb buffer
-> > + * @pitch_align: Scanline alignment in bytes
-> > + * @size_align: Buffer-size alignment in bytes
-> > + *
-> > + * The helper drm_mode_size_dumb() calculates the size of the buffer
-> > + * allocation and the scanline size for a dumb buffer. Callers have to
-> > + * set the buffers width, height and color mode in the argument @arg.
-> > + * The helper validates the correctness of the input and tests for
-> > + * possible overflows. If successful, it returns the dumb buffer's
-> > + * required scanline pitch and size in &args.
-> > + *
-> > + * The parameter @pitch_align allows the driver to specifies an
-> > + * alignment for the scanline pitch, if the hardware requires any. The
-> > + * calculated pitch will be a multiple of the alignment. The parameter
-> > + * @size_align allows to specify an alignment for buffer sizes. The
-> > + * returned size is always a multiple of PAGE_SIZE.
-> > + *
-> > + * Returns:
-> > + * Zero on success, or a negative error code otherwise.
-> > + */
-> > +int drm_mode_size_dumb(struct drm_device *dev,
-> > +		       struct drm_mode_create_dumb *args,
-> > +		       unsigned long pitch_align,
-> > +		       unsigned long size_align)
-> > +{
-> > +	u64 pitch = 0;
-> > +	u32 fourcc;
-> > +
-> > +	/*
-> > +	 * The scanline pitch depends on the buffer width and the color
-> > +	 * format. The latter is specified as a color-mode constant for
-> > +	 * which we first have to find the corresponding color format.
-> > +	 *
-> > +	 * Different color formats can have the same color-mode constant.
-> > +	 * For example XRGB8888 and BGRX8888 both have a color mode of 32.
-> > +	 * It is possible to use different formats for dumb-buffer allocation
-> > +	 * and rendering as long as all involved formats share the same
-> > +	 * color-mode constant.
-> > +	 */
-> > +	fourcc = drm_driver_color_mode_format(dev, args->bpp);
-> > +	if (fourcc != DRM_FORMAT_INVALID) {
-> > +		const struct drm_format_info *info = drm_format_info(fourcc);
-> > +
-> > +		if (!info)
-> > +			return -EINVAL;
-> > +		pitch = drm_format_info_min_pitch(info, 0, args->width);
-> > +	} else if (args->bpp) {
-> > +		/*
-> > +		 * Some userspace throws in arbitrary values for bpp and
-> > +		 * relies on the kernel to figure it out. In this case we
-> > +		 * fall back to the old method of using bpp directly. The
-> > +		 * over-commitment of memory from the rounding is acceptable
-> > +		 * for compatibility with legacy userspace. We have a number
-> > +		 * of deprecated legacy values that are explicitly supported.
-> > +		 */
-> > +		switch (args->bpp) {
-> > +		default:
-> > +			drm_warn(dev, "Unknown color mode %d; guessing buffer size.\n",
-> > +				 args->bpp);
-> > +			fallthrough;
-> 
-> We cannot let userspace trigger dmesg warnings (or anything else really
-> that spams logs). Also I think for future proofing it would be good if we
-> just reject anything we don't currently know about instead of silently
-> letting this mess become worse. Hence my vote is to reject unknown bpp
-> hack values.
-> 
-> > +		case 12:
-> > +		case 15:
-> > +		case 30: /* see drm_gem_afbc_get_bpp() */
-> 
-> This is a bit too cryptic to me, I think if you want to do comments I'd
-> just put a long-form one above each value that explains where we've found
-> it and why it happens. I'm also assuming these all have depth = 0, which I
-> guess is something we should check just to keep this as strict as
-> possible? Or do they have matching depth?
 
-Correction from irc: Thomas pointed out that there's no depth in the
-create_dumb ioctl, I was mixing this up with addfb and failed to check. So
-please disregard this part, I was fabricating stuff out of some very thin
-air (and probably not enough coffee in the brain too).
--Sima
+On Fri, 07 Mar 2025 11:17:47 +0100, ernestvanhoecke@gmail.com wrote:
+> From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> 
+> Apalis/Colibri iMX6 V1.2 replaced the STMPE811 ADC/touch controller,
+> which is EOL, with the TLA2024 ADC and AD7879 touch controller.
+> 
+> Accurately describe the new hardware.
+> 
+> v1.1 of these SoMs is still described by the following DTSI files:
+> imx6qdl-apalis.dtsi
+> imx6qdl-colibri.dtsi
+> 
+> The STMPE811 touchscreen controller is no longer disabled by default.
+> The STMPE811 is self contained within the SoM, therefore, disabling it
+> is not the correct default behavior.
+> 
+> v1.2 is now supported by a DTSI that modifies v1.1:
+> imx6qdl-apalis-v1.2.dtsi
+> imx6qdl-colibri-v1.2.dtsi
+> 
+> For each carrier board using these modules, a new DTS file was added
+> that includes the v1.1 DTS and modifies it with this v1.2 DTSI.
+> 
+> The original DTS can be used for modules up to and including v1.1.
+> 
+> v2: Fixed the "From" field
+> v1: https://lore.kernel.org/all/20250227170556.589668-1-ernest.vanhoecke@toradex.com/
+> 
+> Ernest Van Hoecke (2):
+>   ARM: dts: apalis/colibri-imx6: Enable STMPE811 TS
+>   ARM: dts: apalis/colibri-imx6: Add support for v1.2
+> 
+>  arch/arm/boot/dts/nxp/imx/Makefile            |  9 +++
+>  .../dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts | 11 ++++
+>  .../nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts   | 11 ++++
+>  .../nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts   | 11 ++++
+>  .../dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts  | 11 ++++
+>  .../nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts   | 11 ++++
+>  .../dts/nxp/imx/imx6q-apalis-v1.2-eval.dts    | 11 ++++
+>  .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts  | 11 ++++
+>  .../nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts  | 11 ++++
+>  .../dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts   | 11 ++++
+>  .../boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi | 57 +++++++++++++++++++
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |  1 -
+>  .../dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi     | 57 +++++++++++++++++++
+>  .../arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi |  1 -
+>  14 files changed, 222 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dts
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-apalis-v1.2.dtsi
+>  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-colibri-v1.2.dtsi
+> 
+> --
+> 2.43.0
+> 
+> 
+> 
 
-> 
-> Cheers, Sima
-> 
-> > +		case 10:
-> > +		case 64: /* used by Mesa */
-> > +			pitch = args->width * DIV_ROUND_UP(args->bpp, SZ_8);
-> > +			break;
-> > +		}
-> > +	}
-> > +
-> > +	if (!pitch || pitch > U32_MAX)
-> > +		return -EINVAL;
-> > +
-> > +	args->pitch = pitch;
-> > +
-> > +	return drm_mode_align_dumb(args, pitch_align, size_align);
-> > +}
-> > +EXPORT_SYMBOL(drm_mode_size_dumb);
-> > +
-> >  int drm_mode_create_dumb(struct drm_device *dev,
-> >  			 struct drm_mode_create_dumb *args,
-> >  			 struct drm_file *file_priv)
-> > diff --git a/include/drm/drm_dumb_buffers.h b/include/drm/drm_dumb_buffers.h
-> > new file mode 100644
-> > index 000000000000..6fe36004b19d
-> > --- /dev/null
-> > +++ b/include/drm/drm_dumb_buffers.h
-> > @@ -0,0 +1,14 @@
-> > +/* SPDX-License-Identifier: MIT */
-> > +
-> > +#ifndef __DRM_DUMB_BUFFERS_H__
-> > +#define __DRM_DUMB_BUFFERS_H__
-> > +
-> > +struct drm_device;
-> > +struct drm_mode_create_dumb;
-> > +
-> > +int drm_mode_size_dumb(struct drm_device *dev,
-> > +		       struct drm_mode_create_dumb *args,
-> > +		       unsigned long pitch_align,
-> > +		       unsigned long size_align);
-> > +
-> > +#endif
-> > diff --git a/include/uapi/drm/drm_mode.h b/include/uapi/drm/drm_mode.h
-> > index c082810c08a8..eea09103b1a6 100644
-> > --- a/include/uapi/drm/drm_mode.h
-> > +++ b/include/uapi/drm/drm_mode.h
-> > @@ -1058,7 +1058,7 @@ struct drm_mode_crtc_page_flip_target {
-> >   * struct drm_mode_create_dumb - Create a KMS dumb buffer for scanout.
-> >   * @height: buffer height in pixels
-> >   * @width: buffer width in pixels
-> > - * @bpp: bits per pixel
-> > + * @bpp: color mode
-> >   * @flags: must be zero
-> >   * @handle: buffer object handle
-> >   * @pitch: number of bytes between two consecutive lines
-> > @@ -1066,6 +1066,50 @@ struct drm_mode_crtc_page_flip_target {
-> >   *
-> >   * User-space fills @height, @width, @bpp and @flags. If the IOCTL succeeds,
-> >   * the kernel fills @handle, @pitch and @size.
-> > + *
-> > + * The value of @bpp is a color-mode number describing a specific format
-> > + * or a variant thereof. The value often corresponds to the number of bits
-> > + * per pixel for most modes, although there are exceptions. Each color mode
-> > + * maps to a DRM format plus a number of modes with similar pixel layout.
-> > + * Framebuffer layout is always linear.
-> > + *
-> > + * Support for all modes and formats is optional. Even if dumb-buffer
-> > + * creation with a certain color mode succeeds, it is not guaranteed that
-> > + * the DRM driver supports any of the related formats. Most drivers support
-> > + * a color mode of 32 with a format of DRM_FORMAT_XRGB8888 on their primary
-> > + * plane.
-> > + *
-> > + * +------------+------------------------+------------------------+
-> > + * | Color mode | Framebuffer format     | Compatibles            |
-> > + * +============+========================+========================+
-> > + * |     32     |  * DRM_FORMAT_XRGB8888 |  * DRM_FORMAT_XBGR8888 |
-> > + * |            |                        |  * DRM_FORMAT_RGBX8888 |
-> > + * |            |                        |  * DRM_FORMAT_BGRX8888 |
-> > + * +------------+------------------------+------------------------+
-> > + * |     24     |  * DRM_FORMAT_RGB888   |  * DRM_FORMAT_BGR888   |
-> > + * +------------+------------------------+------------------------+
-> > + * |     16     |  * DRM_FORMAT_RGB565   |  * DRM_FORMAT_BGR565   |
-> > + * +------------+------------------------+------------------------+
-> > + * |     15     |  * DRM_FORMAT_XRGB1555 |  * DRM_FORMAT_XBGR1555 |
-> > + * |            |                        |  * DRM_FORMAT_RGBX1555 |
-> > + * |            |                        |  * DRM_FORMAT_BGRX1555 |
-> > + * +------------+------------------------+------------------------+
-> > + * |      8     |  * DRM_FORMAT_C8       |  * DRM_FORMAT_R8       |
-> > + * +------------+------------------------+------------------------+
-> > + * |      4     |  * DRM_FORMAT_C4       |  * DRM_FORMAT_R4       |
-> > + * +------------+------------------------+------------------------+
-> > + * |      2     |  * DRM_FORMAT_C2       |  * DRM_FORMAT_R2       |
-> > + * +------------+------------------------+------------------------+
-> > + * |      1     |  * DRM_FORMAT_C1       |  * DRM_FORMAT_R1       |
-> > + * +------------+------------------------+------------------------+
-> > + *
-> > + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
-> > + * legacy user space. Please don't use them in new code. Other modes
-> > + * are not support.
-> > + *
-> > + * Do not attempt to allocate anything but linear framebuffer memory
-> > + * with single-plane RGB data. Allocation of other framebuffer
-> > + * layouts requires dedicated ioctls in the respective DRM driver.
-> >   */
-> >  struct drm_mode_create_dumb {
-> >  	__u32 height;
-> > -- 
-> > 2.48.1
-> > 
-> 
-> -- 
-> Simona Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
 
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/nxp/' for 20250307101758.27943-1-ernest.vanhoecke@toradex.com:
+
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /soc/bus@2100000/i2c@21a0000/pcie-switch@58: failed to match any schema with compatible: ['plx,pex8605']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval.dtb: panel-lvds: compatible: ['panel-lvds'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-eval-v1.2.dtb: panel-lvds: compatible: ['panel-lvds'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora.dtb: panel-lvds: compatible: ['panel-lvds'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.1.dtb: panel-lvds: compatible: ['panel-lvds'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /ldb: failed to match any schema with compatible: ['fsl,imx6q-ldb', 'fsl,imx53-ldb']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu2_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: iomuxc-gpr@20e0000: 'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/imx/fsl,imx-iomuxc-gpr.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /soc/ipu@2800000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: panel-lvds: compatible:0: 'panel-lvds' is not one of ['admatec,9904379', 'auo,b101ew05', 'auo,g084sn05', 'chunghwa,claa070wp03xg', 'edt,etml0700z9ndha', 'hannstar,hsd101pww2', 'hydis,hv070wx2-1e0', 'jenson,bl-jt60050-01a', 'tbs,a711-panel']
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6q-apalis-v1.2-ixora-v1.2.dtb: panel-lvds: compatible: ['panel-lvds'] is too short
+	from schema $id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /soc/bus@2100000/mipi@21dc000: failed to match any schema with compatible: ['fsl,imx6-mipi-csi2']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /soc/bus@2100000/vdoa@21e4000: failed to match any schema with compatible: ['fsl,imx6q-vdoa']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /soc/ipu@2400000: failed to match any schema with compatible: ['fsl,imx6q-ipu']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-aster.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /capture-subsystem: failed to match any schema with compatible: ['fsl,imx-capture-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /display-subsystem: failed to match any schema with compatible: ['fsl,imx-display-subsystem']
+arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-iris-v2.dtb: /disp0: failed to match any schema with compatible: ['fsl,imx-parallel-display']
+
+
+
+
+
