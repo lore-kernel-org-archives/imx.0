@@ -1,124 +1,78 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8AD1F098F
-	for <imx@lists.linux.dev>; Sun,  9 Mar 2025 17:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E0521D3C2
+	for <imx@lists.linux.dev>; Sun,  9 Mar 2025 20:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741543112; cv=none; b=kV8UHBzIcAMayhhY4GTJyT2z8WQpHVTyjHf0BYeLFd1ukp9F6SdxNLodWtczznBYgZOaD403ND5ut1eO2kinwFP+/pmQIxuz+GYRPSUCUzwvHHSAD/XQ8BTnB3KEsFTOo1wZDEXoGIGj+ejXwfJ2OYp0y1ORViWgkOMpuqFygmg=
+	t=1741552588; cv=none; b=fsLui/t2U4Ew4/j1VhczgSYWq4B+cnNNLeD0x+r3DBCuSQJEyBbKspRnKnSO7cO3fztyjSc8LviREEYBqhY9S/MBL/EhsX+5h8sl7aUaMCP3f/KEf/XM7JM+//ozxIPzVopRGb14eyYxU9GOFdCjhOaA4ixx7Rv2ZRgNa2XDpAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741543112; c=relaxed/simple;
-	bh=06wf01TsmmpRes+UvWw6uQMyFGml7XZZArYvq8jmXho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qj9HzetSXvB0lcXnfoOCOiLfgk/fHYq84pcPbv8VNRN8XbmDLWl2NffpMEGr6DR2uMkuvxBjY/w2asjYWeDGWwXYo55QwsMg/4z2rjZDJOvJOPUlLB91KRMvrZwxXjuJSYWjmQWqyEvCOCZ+9KuGENGIrABQWJS0bMSX5/dswbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=EU2LlHVf; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="EU2LlHVf"
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.2])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 2F51F40737B5;
-	Sun,  9 Mar 2025 17:58:22 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2F51F40737B5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1741543102;
-	bh=6xAcFWQMf/3kpz8hZodjQsek1OR4yEQXvAw17qmj90Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EU2LlHVfLgHvwfGvs7O7sFpiCmJalp1HkLqW04BxWO/Hlw6/fN0m60rk1SVm0NdU5
-	 ckARJkC89MD2pv7OJarVGcoEsxJNbuobjDcfTXb8hyCxC+LuWwvysFPAN/SrOZnZVk
-	 d4diBZDvzpf9bAmZErO3Kqflnt+opBalYsozDsic=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Peter Chen <peter.chen@kernel.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Sebastian Reichel <sre@kernel.org>,
-	Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>,
-	linux-usb@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
-Date: Sun,  9 Mar 2025 20:57:59 +0300
-Message-ID: <20250309175805.661684-4-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250309175805.661684-1-pchelkin@ispras.ru>
-References: <20250309175805.661684-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1741552588; c=relaxed/simple;
+	bh=vBSbV1b6P8CXHisFotONcoU0zzd7se5BPST4f4Y9UVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hzl4flAquPP/AupFzOM28vPrAVvUn7PZJ37xm+71L6CuwmjI+DMzTn+M0rCaFVG2dqCVcmpQZUxPyavG0fEjzgFls8YErlXdFELmITLyOw07xGJYfyhEl0P40ydjioo3gdAowoN/pG8Ym+sTd+5AODwGHKAqLwxQ4EPwNC3izTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2239c066347so58569665ad.2
+        for <imx@lists.linux.dev>; Sun, 09 Mar 2025 13:36:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741552587; x=1742157387;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5W1PPB8C5k9Rxvd4JqWh8H/eOLc6K5SLc+31IQB3dkE=;
+        b=otJbR/v8m3TmUIpyZHPQ1clxoDCcpnVE45pC18EkEWFCtTCqzCSEv8VjPdmjNH7dFE
+         CYQiU/1aKqisXHr5TgB0qy5inNcku5o0KlxDLsU/w2M6SEltMK9ZZ/CqPFkUWd0ZueiM
+         whnv10WvgPYVRcY8AxbuU1W+kXty/Bva+XfKbRU6H4HUQ6rr1qBlC5AgGDs/HLYC3+Sq
+         BmNWnxif+T2n37tEce0yHBXW5zOcFyONp4hTsWGeVInTiQ2muPCuZ1Tp3yX/c1bpnMZn
+         UrFLsqhIqwcZ6WPdck0PRUKGkck3oUoYT7g0dyGQPMlQBzUPApvqP/v4yJRmvl0mIP1O
+         oH/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUbciJMVxTRlbujGQV53wJcbWu5ovjKzdbEPURNUnVMICmAFfNkmXhkqjYW5oGDKyYvhVE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyet9o/3X23Is+FBXFAOdWhttq3ROr9Kuo0fek8JCQ1ZVzOfDY6
+	DrZsPqTB3vx8vGAjid8GUHvNPueCmRs44eG47rhsCGwZrEYUVSIm
+X-Gm-Gg: ASbGnctrgurJ1OjsgeM03yH1nCBCGQRaG629fs09yViR5sclWwOd1A9Lw7SRmIHfQxh
+	g6cg03E40sc9zbdvFjebscTfoeRaijZD6Hq7pZEW6/xdJGxfoDHVXKRuzzcp3AgrahpIuSvteIG
+	bXOKo3p5ShEzUWkBrdQ4uJywByB6dofFkq+bsr4kLHWBRGNDeBWX0uC9NQanvkopJtb/wf26vCZ
+	uk1C0pL6VSJY9M9bqj1mIG+KUJapAy+jfQxvc/bezj5vLNXOtgX+qjRPeAY+PmVAMMmegpKlcnB
+	C+mWlBgJewAdTxODi9MjAComOcgQMjx7ho8pdZ5GfCqnGjLcKNg3figDunF3yRS9i7iTEx/yhFy
+	t81LLsTphhVmspg==
+X-Google-Smtp-Source: AGHT+IHj2p8QQGuPQO35NOVEoLjztQAIUj/vuHS+l9hV6ZdhMc7VKvfvvYb1Hm2TLPNP1gLnAWZ+5g==
+X-Received: by 2002:a05:6a00:4b4a:b0:736:54c9:df2c with SMTP id d2e1a72fcca58-736aaab75e8mr14689147b3a.15.1741552586706;
+        Sun, 09 Mar 2025 13:36:26 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-736c30b3a0csm2793283b3a.88.2025.03.09.13.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 13:36:26 -0700 (PDT)
+Date: Mon, 10 Mar 2025 05:36:24 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
+	s.hauer@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
+Message-ID: <20250309203624.GB3679091@rocinante>
+References: <20250226024256.1678103-1-hongxing.zhu@nxp.com>
+ <20250226024256.1678103-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226024256.1678103-3-hongxing.zhu@nxp.com>
 
-usb_phy_init() may return an error code if e.g. its implementation fails
-to prepare/enable some clocks. Detect this early. Trying to disable it
-later on driver removal would result in a WARNING splat.
+Hello,
 
-And properly rollback on probe error path by calling the counterpart
-usb_phy_shutdown().
+> Use the domain number replace the hardcodes to uniquely identify
+> different controller on i.MX8MQ platforms. No function changes.
 
-Found by Linux Verification Center (linuxtesting.org).
+Applied to controller/imx6, thank you!
 
-Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 3f11ae071c7f..720b998376b9 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -470,7 +470,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
- 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
- 		data->override_phy_control = true;
--		usb_phy_init(pdata.usb_phy);
-+		ret = usb_phy_init(pdata.usb_phy);
-+		if (ret) {
-+			dev_err(dev, "Failed to init phy\n");
-+			goto err_clk;
-+		}
- 	}
- 
- 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -479,7 +483,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	ret = imx_usbmisc_init(data->usbmisc_data);
- 	if (ret) {
- 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -488,7 +492,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
- 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	if (data->usbmisc_data) {
-@@ -522,6 +526,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 
- disable_device:
- 	ci_hdrc_remove_device(data->ci_pdev);
-+phy_shutdown:
-+	if (data->override_phy_control)
-+		usb_phy_shutdown(data->phy);
- err_clk:
- 	clk_disable_unprepare(data->clk_wakeup);
- err_wakeup_clk:
--- 
-2.48.1
-
+	Krzysztof
