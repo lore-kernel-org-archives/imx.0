@@ -1,277 +1,116 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572A33F9
-	for <imx@lists.linux.dev>; Sun,  9 Mar 2025 00:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAF81DE4F8
+	for <imx@lists.linux.dev>; Sun,  9 Mar 2025 16:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741480398; cv=none; b=qOMq5MECS6Ig+D18xyaXhIl9CYX57Fzjak7XSSO/P5V4p+YxMMjwSwDoH5Sh7yoZAUVrYDacRfRpz1hge8Mu6vTA+8/mAuVz+8AmpGOKplbOOZ6zWux0ir9jJY3F57ZViA8SI8H152NDH2/LG4j4MIYU3vL2Fna0u0oxfHfuBlo=
+	t=1741538623; cv=none; b=qRZRhf71KjwXkbu3rIlfyD6eDlG0fPFIEg1RedQWGf4qtz3G09C/4wxEdUbfYS5zKu+AVDmO5DD6ky+H4dNx9t2xG6zdQ+4ti9wRx+5/fw6w1zgjTfXA1UfsOzWLA/Zc+roh6ElubxbD1jRMxWH7Jh1LlZI48Wl7K+P78QUqI7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741480398; c=relaxed/simple;
-	bh=H5vGGdWJkwimPxQknMpb14wXFyU4qmgXRHQJ9Ps5V7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mfFNu+39sk2PozKA5Zr3AKCVaJi+HhYoB/8trZ10COX8vpqOWQkJbQQxocSekmLV4e2Gstq53ddZbj1mdKovfGL686PTjN3KroBNwnInegdYOhc30xJKeZUXRGRRVOr9kqumlw4jqgh3q4PyjlKA5YDSfN4Iivv6RHL1IP8D5Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifDmixI7; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1741538623; c=relaxed/simple;
+	bh=u3lFbDaSfxLs5RBx2vryQP0crfJJodis+bKxzLi1MLA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Z02OG43u2uGt+P/+l9IY/sLRsJpXGc+H1TzX1MuafHbCgsaGizlOA5/BY5zsNmgJnZtC85cSMu1GJtBPpqomWIIOssNTwQv3xmUR0PQBS6ikf1wyUd2jbR5c2KGGW0GWbLhpALf24i+FcbIP5+W1NgxO7gotuX7mP/ulHeGZ6G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hmt5eUSq; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifDmixI7"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3912e96c8e8so1609257f8f.2
-        for <imx@lists.linux.dev>; Sat, 08 Mar 2025 16:33:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hmt5eUSq"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913958ebf2so1397358f8f.3
+        for <imx@lists.linux.dev>; Sun, 09 Mar 2025 09:43:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741480394; x=1742085194; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1741538620; x=1742143420; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qPD5zeaLyTv7Qy4hdBTQxNRUyG0FnO7mcXkBMLrnQgo=;
-        b=ifDmixI73GqqZ2tFEaKDXZ81swPupeon0/d96rLGUYwze+5Y8h5x8tZ6hk8H3rR5sx
-         4pZtNyF/aY/HnrQzgOeko2E8nB0J0CIQcwrtkWblVmrAWILVXnZAH1LhLOyWf1+LZBwc
-         t8uHyOMWpN1QBqGwkEpg4ArHXO8mQDXLGP3biBCAYLNCJijS4Z8KX6diDk3oIel9H3YC
-         Stq7YX/qfaC5AEn0HSw6gKsVhMgAJkQtgVw8R2OX5BzqiPculzYT1LzICT0TNZpX1XOx
-         6tkoL6pCgG6JytPKtSDCG/Gpvv6ES9GGVQCOW6Ci2HQGEjQdIKWJ/ldw8KzcoWGnpCXI
-         xBHg==
+        bh=lHXkBuZmZFlrGfeJ/m4uYp0lVYdhSJImm8UniMvvnLw=;
+        b=Hmt5eUSqLPa9yQTUPyljFGf1IHhcuk3tgFHqYvYpAqih5O2tloavMlswjX9bMfknnq
+         x2AL0XMfu2qCF4OSPvV931bkOK3YI64vl0PhoQQGCkK0IToWV3IkEgMmr9/39rW9G2RW
+         0JK9zKSHI7+erIUrKyALZWcyYKSzRn/iK/jMlEtf6yHekDh2Sb2LVlLa5FSVBr/kZofK
+         iNI+fm5OdChXF20SwsZ+YKlVNZm2vMX1hpw5ap0163WmSLWonyNHuck6Ktmy3s3VVF2d
+         MI/3CCMKJBEsC6lQhUUNL70SZcqpZc9tbzTBB4Zk2WUq0VjETJ42UVyfN6e6rTi6NQfq
+         KVig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741480394; x=1742085194;
+        d=1e100.net; s=20230601; t=1741538620; x=1742143420;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qPD5zeaLyTv7Qy4hdBTQxNRUyG0FnO7mcXkBMLrnQgo=;
-        b=rZva3O602cY7TiWoxIs+Bb3r6ixxv4Qn+1kRPIYFKTQR4qli05gst6bq9D+HfL9aDS
-         gZ8GCl2J2SVo3vI3HyviRswzzaoXlFm+4/SRSm3SxeUHexShRYI8kJES6TCVUDL/Jn19
-         ffiFaMJZJ51Osa9yEhQDvIYsEPlMPWpEA7EgAADJe3N0Tx80TmghmgxiEkm50Jgc5Jtp
-         FRs9lIwwwLDz/k4hWWEx2t9GNeJentINzBfEbQ7de0LgPdRIc2ntS1E8RMz8VQSXTwZ2
-         ZLgJSFgxG6RNiXguNH/N+vtvPT72E9wkggYt3lYLAlglzyPdrpIccTJj/5XKjUykoDYt
-         F1gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxXuvNiZugK0ib1QjlZsWonRI9pXJIVMhJPM/J8Kvy3VYxyFc3DS56xmY2jDIuSdtHL9o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxMW1CY56P78L2WO2j1aSFrgRmrCfwzCp6ogG1XNPUArj0wmQ43
-	TOkV0UhGiLpQAxpiMYPqzZaWj+FAOPIv9O1vSBurZLZTz3/RyG9d
-X-Gm-Gg: ASbGncuuz0P+dIIugrf5CgDJIAWFHIowYtlsY5jJTwc5fuLDseyJLz4zgoBxo1cB9db
-	B2Oupq581ecanBdLOU3nUfqFY/uyhvD6YNmXNbmqnaxztHJ01cxqfHpnmQgOiSm04JaUqaVv64C
-	E3Uvm+IbBqkozVCDLGxBnOdk7nbnRf+32swr3klvNp1ZDc00bJ7+Xoa3TUfI9HGjWZrt/+pvkrJ
-	P9gG2RcwFhuWNM7OP4uoxctJzEGgaR7Qci7eQl1HQ1y3fKyCzY8No7Wffcjw4C+dfa7eQ7ooAzP
-	MlgVfaS864MrhC9EFVE0wSi4057Gw7e0PuAfIW0tui3ZsGQ+LHq5xql3WqiQUlcPN9aucsSH8g=
-	=
-X-Google-Smtp-Source: AGHT+IH28MQPA+zgYnEC4J5mfzAYw/utosENTHqe/I9TDxz+92mmLwx5LY/MLbLi26Rzp9G7AsQlAA==
-X-Received: by 2002:a5d:584f:0:b0:391:ffc:2413 with SMTP id ffacd0b85a97d-39132da08b4mr5384923f8f.40.1741480393495;
-        Sat, 08 Mar 2025 16:33:13 -0800 (PST)
-Received: from prasmi.Home ([2a06:5906:61b:2d00:238d:d8a2:7f2b:419e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c1031fdsm9976382f8f.89.2025.03.08.16.33.10
+        bh=lHXkBuZmZFlrGfeJ/m4uYp0lVYdhSJImm8UniMvvnLw=;
+        b=hR9N0GR8sPen1uVJbaknb3RVXgeEeVImqD0plm0ewXwPAatTfbHyWSHTn6JDN7Awiy
+         kknw6/oj/nVLnTlymq39rpn/lCT4a9h0hFhdLV1bmwzPUX1X9x33k1V0Mat5bqVCDcsS
+         p7vsLI/xcJB5AcoYUts3x6SpNvO/HwvGaelBx+e69Q5YLZ++PczYANfAsqSyyuk9DEHG
+         9zmQhD6l+1EtIDIs1KGec2hdEdeSuDapmlLxGTMhG53za0WvkksmsIff/FwLdBD0hMZR
+         /LpBToOjYJGxYL3YPVv1I06zCBLphHenQYuudwJ/p7CqnS8LuksnnWgqdbn17c+Mkz0W
+         7apw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnDnWTnMGDf3ZUBgQnUPiiNc8ZEom2jU5ClcFgZ+GwMpggwoVYMp7QHdhq5IUtX8dpQGE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwowAyF9l3FW8vdJcCgrWhwbHeIfSezpoCHBVK+exOcoNFbe7t6
+	QB+yGRnNbgx8iyNuVO+2QrCixq59z3KLpLbs8wLXmqw+AFenriv/
+X-Gm-Gg: ASbGncv6gywc3jIhhHHEkNWnKdUSWe5j8YEk/PxsF88X0gOAjCHt1m2eSH5hgpFni/a
+	hE6aWwrQrvCp3XSxKcW1UQPdJ5sHJKvhTzM3B7AxGQIgSgyztpgDSVfLAvBGAUAkX3Kf7KyITIo
+	AjAYIp95WYzq5WAMxUsxaz0sXFUDanj5S4bHKOWjwimXCh2mD2PDhPFqLLRmBR05wvohMYbX7tj
+	rY4H07LzVTfy41KeHJryowEH7J1P0pXORXqI+vKohBhpoJj5Mn8/3Wq5vvaDd9sS4IrHgeNAxuz
+	dM06Y3rhzEgAVC1q+6GsGdbtVCSEJ1ScVLUggqB+iyJo8w==
+X-Google-Smtp-Source: AGHT+IFyKUxBLZUDgMFG2/EF/TMdarKQbkjcYBNMq1ME6vdXSZxz5Pi5uDoQh4n16DYoLNiBrcSuZA==
+X-Received: by 2002:a05:6000:18ac:b0:390:f1b5:e619 with SMTP id ffacd0b85a97d-39132d5ae53mr9107933f8f.31.1741538619822;
+        Sun, 09 Mar 2025 09:43:39 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:64b2:9f80:ccfa:15da])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ceef2fb8dsm36719485e9.18.2025.03.09.09.43.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Mar 2025 16:33:11 -0800 (PST)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>,
-	Biao Huang <biao.huang@mediatek.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Linux Team <linux-imx@nxp.com>,
-	David Wu <david.wu@rock-chips.com>,
-	Christophe Roullier <christophe.roullier@foss.st.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	netdev@vger.kernel.org
-Cc: devicetree@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+        Sun, 09 Mar 2025 09:43:39 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: miquel.raynal@bootlin.com,
+	Frank.Li@nxp.com,
+	alexandre.belloni@bootlin.com
+Cc: linux-i3c@lists.infradead.org,
 	imx@lists.linux.dev,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-mediatek@lists.infradead.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next] dt-bindings: net: Define interrupt constraints for DWMAC vendor bindings
-Date: Sun,  9 Mar 2025 00:33:01 +0000
-Message-ID: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] i3c: master: svc: fix signed/unsigned mismatch in dynamic address assignment
+Date: Sun,  9 Mar 2025 16:43:14 +0000
+Message-Id: <20250309164314.15039-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+svc_i3c_master_do_daa_locked() declares dyn_addr as an unsigned int 
+however it initialises it with i3c_master_get_free_addr() which 
+returns a signed int type and then attempts to check if dyn_addr is 
+less than 0. Unsigned integers cannot be less than 0, so the check 
+is essentially redundant. Furthermore i3c_master_get_free_addr() 
+could return -ENOMEM which an unsigned int cannot store.
 
-The `snps,dwmac.yaml` binding currently sets `maxItems: 3` for the
-`interrupts` and `interrupt-names` properties, but vendor bindings
-selecting `snps,dwmac.yaml` do not impose these limits.
+Fix this by capturing the return value of i3c_master_get_free_addr() 
+in a signed int ‘dyn_addr_ret’. If that value is negative, return 
+an error. Otherwise, assign it to the unsigned int ‘dyn_addr’ once 
+we know it’s valid.
 
-Define constraints for `interrupts` and `interrupt-names` properties in
-various DWMAC vendor bindings to ensure proper validation and consistency.
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Fixes: 4008a74e0f9b ("i3c: master: svc: Fix npcm845 FIFO empty issue")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
-Hi All,
+ drivers/i3c/master/svc-i3c-master.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Based on recent patch [0] which increases the interrupts to 11
-and adds `additionalItems: true` its good to have constraints
-to validate the schema. Ive made the changes based on the DT
-binding doc and the users. Ive ran dt binding checks to ensure
-the constraints are valid. Please let me know if you'd like me
-to split this patch or if any of the constraints are incorrect,
-as I don't have documentation for all of these platforms.
-
-https://lore.kernel.org/all/20250308200921.1089980-2-prabhakar.mahadev-lad.rj@bp.renesas.com/
-
-Cheers, Prabhakar
----
- .../devicetree/bindings/net/amlogic,meson-dwmac.yaml   |  6 ++++++
- .../devicetree/bindings/net/intel,dwmac-plat.yaml      |  6 ++++++
- .../devicetree/bindings/net/mediatek-dwmac.yaml        |  6 ++++++
- .../devicetree/bindings/net/nxp,dwmac-imx.yaml         |  8 ++++++++
- .../devicetree/bindings/net/rockchip-dwmac.yaml        | 10 ++++++++++
- Documentation/devicetree/bindings/net/stm32-dwmac.yaml | 10 ++++++++++
- .../bindings/net/toshiba,visconti-dwmac.yaml           |  6 ++++++
- 7 files changed, 52 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-index 798a4c19f18c..0cd78d71768c 100644
---- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-@@ -152,6 +152,12 @@ properties:
-           The second range is is for the Amlogic specific configuration
-           (for example the PRG_ETHERNET register range on Meson8b and newer)
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index f22fb9e75142..eea08f00d7ce 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -998,9 +998,11 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
+ 			 * filling within a few hundred nanoseconds, which is significantly
+ 			 * faster compared to the 64 SCL clock cycles.
+ 			 */
+-			dyn_addr = i3c_master_get_free_addr(&master->base, last_addr + 1);
+-			if (dyn_addr < 0)
++			int dyn_addr_ret = i3c_master_get_free_addr(&master->base, last_addr + 1);
++
++			if (dyn_addr_ret < 0)
+ 				return -ENOSPC;
++			dyn_addr = dyn_addr_ret;
  
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    const: macirq
-+
- required:
-   - compatible
-   - reg
-diff --git a/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml b/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
-index 42a0bc94312c..62c1da36a2b5 100644
---- a/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
-+++ b/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
-@@ -41,6 +41,12 @@ properties:
-       - const: ptp_ref
-       - const: tx_clk
+ 			writel(dyn_addr, master->regs + SVC_I3C_MWDATAB);
  
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    const: macirq
-+
- required:
-   - compatible
-   - clocks
-diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-index ed9d845f6008..3aab21b8e8de 100644
---- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-@@ -64,6 +64,12 @@ properties:
-       - const: rmii_internal
-       - const: mac_cg
- 
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    const: macirq
-+
-   power-domains:
-     maxItems: 1
- 
-diff --git a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-index 87bc4416eadf..e5db346beca9 100644
---- a/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-+++ b/Documentation/devicetree/bindings/net/nxp,dwmac-imx.yaml
-@@ -56,6 +56,14 @@ properties:
-         - tx
-         - mem
- 
-+  interrupts:
-+    maxItems: 2
-+
-+  interrupt-names:
-+    items:
-+      - const: macirq
-+      - const: eth_wake_irq
-+
-   intf_mode:
-     $ref: /schemas/types.yaml#/definitions/phandle-array
-     items:
-diff --git a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-index f8a576611d6c..891396140a7f 100644
---- a/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/rockchip-dwmac.yaml
-@@ -58,6 +58,16 @@ properties:
-               - rockchip,rv1126-gmac
-           - const: snps,dwmac-4.20a
- 
-+  interrupts:
-+    minItems: 1
-+    maxItems: 2
-+
-+  interrupt-names:
-+    minItems: 1
-+    items:
-+      - const: macirq
-+      - const: eth_wake_irq
-+
-   clocks:
-     minItems: 5
-     maxItems: 8
-diff --git a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-index 85cea9966a27..987254900d0d 100644
---- a/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/stm32-dwmac.yaml
-@@ -54,6 +54,16 @@ properties:
-     items:
-       - const: stmmaceth
- 
-+  interrupts:
-+    minItems: 1
-+    maxItems: 2
-+
-+  interrupt-names:
-+    minItems: 1
-+    items:
-+      - const: macirq
-+      - const: eth_wake_irq
-+
-   clocks:
-     minItems: 3
-     items:
-diff --git a/Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml b/Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml
-index 052f636158b3..f0f32e18fc85 100644
---- a/Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/toshiba,visconti-dwmac.yaml
-@@ -42,6 +42,12 @@ properties:
-       - const: stmmaceth
-       - const: phy_ref_clk
- 
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    const: macirq
-+
- required:
-   - compatible
-   - reg
 -- 
-2.43.0
+2.39.5
 
