@@ -1,242 +1,123 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2079.outbound.protection.outlook.com [40.107.20.79])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA123908E
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 14:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741618405; cv=fail; b=ddWGAd6+aO/BKmg6cv6d6j96cGA0/tn9swHwwJMvltpD9DHHBrQnIdz1k8ObsPDemtczUxaKeFd78zfq3+oi666H2OTQmf155XqpG6UqStaodkgpnG4y8r4JUErqhv+r9BErEyxMBOK6jqHclqrdPFKTOtyUzPSmCuHkSY4mniw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741618405; c=relaxed/simple;
-	bh=jbWpsz311vCnfyqIKiml9rEBgSrKmR6B/3gVSualEM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gdkjW2FOWdEnSSYqEsZwNDhK7I0ozDmq/kbhpgwltPbZcow2yuvDehZAIKga6QPjMOf+rn0oDWBLolxHgiKWHSoVIRah4/tEXF7As1DXdTSOS6p8t6NE8v6naX8bp6Pix6J5+rbnxflaqp5GVtmsIV9mFa5LrjhKdK6ROKfHWG4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MsLXXhqp; arc=fail smtp.client-ip=40.107.20.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7643D22B8D2;
+	Mon, 10 Mar 2025 15:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741619471; cv=none; b=hIhvDeC2Gw8p8MyqQk1dvBbdjW5oOh7md8+2ygrcVgHbIG/+xSen6wBfIJ9yR6yCLlPBvS4HPW+Hmxl0iDwBbFF5h+BpnS/ggxB+z7ONsiNlHQMfrlhSmpAeRRd5Wv+n/ueXd6I/96ud//mG/9oq0qN0v0qsTy+mcpMzWPyboA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741619471; c=relaxed/simple;
+	bh=atd+PUJZNIOrqCwFpaInjw5P9puj5TcBLXrLKnepJLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=tGKK4Aqxo6oUDtVf3E5aItBl2cNBS1SsVkQCrUVkylUg9dTwv8h7CjRw58LyLdcnynU+YZCiBPZ7MvnpOgRJ85sjAA5xf9jfPCgtwbWArYJt8toDaUELcXWMAHx0dYTVBd9BbiCH1DTXKjGyHq3y9liQLK7LqYrW8/Sa4tYKHKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjok9gkM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MsLXXhqp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uNt3CYD5HuFR6c4qhcM/RNi/+pRpCWVtTfHm+IE1uwuJiCf2cWew1CJTp+Zhx7VSrnrFCNCWbb3yom29WAHPzTcky2ejWNvsh/r1nIlKRLyKHn8Dvnv+ayD/nyaiaiYUz1utqvcfG3a4l/yBaG5ZRuITbS15vQLmZU95k2vEtFb7wRNzUUQwAmwZaKbwiqboAgObioF1iwY8OsPbRNgrR+Q7sBE9I+DoosytunLzqNA9WnZcR5Y/AIfD6OYyTY5P5EtHszdzGlGQIWlY884DFw3Um2igkHOqDAu+pepQ2WS+A5gPMshtDnpv+L1G9DdKl6C4eubskQx2MYBduZzevw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mONm3OKHGiUo5JhzqC3SU+XpjZ5un4W5cAdbtl40oN8=;
- b=DPRF1aOVXkwLPqUX9rAy9A3+7wGRxbjj18/j2jIm+pBdzkbzMHrwIlyLRqkY0smqX5MZo+U5Lag00nBxqXfsbONe+JBaJK/q/nOSAOW6kqUO9EvjDoJ4aHbhESJn3IXbAttcmTW3ZLESeGHNg28EFiL+RHeXypHyzIywD81ZmNc4YUyqIwx9JLIffuvPBpNgokMP0r5AsuHAikwmVXBVVwuIQgBgLnAM4kyaWRAC2xLdmc3e0CvCuyuUc32ZEKXJUFX6IOqy4u4OgaQW+hpgFT8YX1FBFt3ia0qUrE/VSthJRyZGoFp/RRGQAADfycCzgBV5z9yn5FsVkp/vGXbEwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mONm3OKHGiUo5JhzqC3SU+XpjZ5un4W5cAdbtl40oN8=;
- b=MsLXXhqpZ2fx7WwgNvOP9NCIJIkNuOlaC/EwWgvHfltPgoCa0enCUpAffwFJptljeKkmwb3iU9jU7IRXm9ScFt8A6U8q2gN9GBmk1GPnqGPv2OMg8GVIPmkukP078d0nM+XDb/NexI8mIrb+z26HyTUNbdT1aqlC+qlJjbCte5BE+nJl5CNFbP9B36YJZ3bGCB25PTnwxbMIW4WGgrPM0BW4Qxcmql3CEn48iq34XG16cZZORXVX8ZQGjTatfZlkfFsL/70U99XzueyhMokKcDkNu1mnpTV/xsxwDxtWNlolJAENRMrJSX8HJxU7W2JzzoUrfRvbNk4tUNcyjg/PAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8603.eurprd04.prod.outlook.com (2603:10a6:20b:43a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.26; Mon, 10 Mar
- 2025 14:53:19 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8511.025; Mon, 10 Mar 2025
- 14:53:19 +0000
-Date: Mon, 10 Mar 2025 10:53:10 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Sebastian Reichel <sre@kernel.org>,
-	Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] usb: chipidea: ci_hdrc_imx: disable regulator on
- error path in probe
-Message-ID: <Z8781hzSKJ5P0gBe@lizhi-Precision-Tower-5810>
-References: <20250309175805.661684-1-pchelkin@ispras.ru>
- <20250309175805.661684-3-pchelkin@ispras.ru>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250309175805.661684-3-pchelkin@ispras.ru>
-X-ClientProxiedBy: BYAPR08CA0026.namprd08.prod.outlook.com
- (2603:10b6:a03:100::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjok9gkM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B093DC4CEEF;
+	Mon, 10 Mar 2025 15:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741619470;
+	bh=atd+PUJZNIOrqCwFpaInjw5P9puj5TcBLXrLKnepJLc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=gjok9gkMjFNUJMrB2dSFP20dG5MFn7ciouO2+4x4hxhoxDYl9c5fWmVN3QffQhhPI
+	 E/Vb86Y/PO2Py7XNnZmgS9eCGTSyWtPQ3d8xFM7SqUDAp9uMiN2hjVGECHZ9UeHPLX
+	 Ci7y2irDK/Rx0tcOfOQJytkBCpzi4PtXFjKnMebcC3mjLfkEAJlrUIYRgU0w3lfl4t
+	 s4MROwNpDJY5UJjQ2mOf7p6/tU+LYXxNtE/BUxidtLN/YgsRbgOhPT4bwD7LvPFpZf
+	 GztVz0hEL+LG/uAZtJC2NQoNjgGAeP6kHiqPcjdol6//isZLLS2SVma16WKPUbmTjp
+	 sbMN3nL1VrIIw==
+Date: Mon, 10 Mar 2025 10:11:09 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kw@linux.com, manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
+	s.hauer@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
+Message-ID: <20250310151109.GA540579@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8603:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9102cb00-0784-47ca-76ae-08dd5fe34bf7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HUe3fDTDuKm5roWvHOfPH8Wc3IrMb39gvLAON/55bUGYScPOkCbbnVVE0w0/?=
- =?us-ascii?Q?lv/v/QVXuC/f+2+yZsUjSNzKJKcG+z3VDpHo1Qh4ii2Y2VBy65JMzl5/kheT?=
- =?us-ascii?Q?byPDEfydPsLJ12YCnYyknAlt6lFDIvVOvdiqdieRNQjDBiSFGXaoYUP+631T?=
- =?us-ascii?Q?0eExmWoOrpzmxGFnon63JMONi8PkI18Y01OflpPoPE1MlMCoj1qAHbGpy61D?=
- =?us-ascii?Q?Bz3ug8pF3Ta4SOWxUUHvgzIsqN5mW/RDYgIVXWJdbW/Y93IMR8uu3KwSlKC9?=
- =?us-ascii?Q?mp1c/MmJHFA62exFW7fj+/3IzS/ZEkX03GQKXDfD9MChQDMfHIVSb3zevJmc?=
- =?us-ascii?Q?FRNLxd/KOaeAIq6WEbtzjulLr5Hvr8EUMwzZMS7gHf0/OZyU+nIi/HSGF4g/?=
- =?us-ascii?Q?ng6209kIHPVZa57VZxPgkv2t0qDlwCaBaSacX4IfHmYTWK6E80DgDE/BlB25?=
- =?us-ascii?Q?T49TH1ucbzRomL4Pd+HF5gBG60uhaPIWOc7sy1tZ12Tlwfqku+5F0Ml0sOID?=
- =?us-ascii?Q?fgTfVSv530V5i2lQRfSqQj7XTuN6vCSmGY8PD54WuXfypQmznunpF0DPdETB?=
- =?us-ascii?Q?0U63Wn5ZJF1TCqGK/uq4r41sUHoKka5UKP4mhGv41YpWTmftDXL2rHX3doDM?=
- =?us-ascii?Q?kpLqdhnbxlep4F7pVtn86S/FqUa/PIMB8yUv//5Xq0JaMsmkuPJ4l6xqumpi?=
- =?us-ascii?Q?R6cQ93gwcLfBblKNrqZi1XmTGB+BiAux7MUHzIHrO3Un0UasNWjygzAAdQ/K?=
- =?us-ascii?Q?fSvvN/y64zs69IRpBwEk94J0Qz1F4370xO0H45nbBBS1+IKENG7rGFnOoKWF?=
- =?us-ascii?Q?WGKs6cWwkuW7doDIL9cbnaoktoQOvFgU1GE/Uhuupa3aFh7zWWlr+wPNiKSb?=
- =?us-ascii?Q?e6sUNwgM8aAfK4ul13TKLijzuEqXR2YZMnyu7VnV6497IW0Ml9Ych4tGaSd6?=
- =?us-ascii?Q?OcYmvAPH/En6v+3LYipUWTDcggC0REWcjLX59fdBDxdYeJ9jeH/643vOqwIj?=
- =?us-ascii?Q?FlfvrKDbTi0V4iKsq1UpiPEigwyZYSkHh+n0KBnz9xsEjwv2loTYjC1wgf/M?=
- =?us-ascii?Q?G4L8yfyVLtRJyid0CUyzyycgiWU9OpN9vbfWoQCdebOLLtOc9KZqNCaJLZ2Z?=
- =?us-ascii?Q?SHqYn5vK1Q4zcGn43eyYtbf3uhQtki/7RObzUkMlh0oX8i+DxvysLFHQ/ByK?=
- =?us-ascii?Q?9w1NLE2sqIyIrlUvxT/HGJsfevqWahqkKdnWlRhZCCKmgn0ncg7b/iRux8wc?=
- =?us-ascii?Q?azXfn9bXLtFL5X7mohPQeggOKwDk08YmYUxd72X83bkIDVl7hBUQI+w7+uvQ?=
- =?us-ascii?Q?RTghaUK2WfI7DhiKfE3CgZwxYhDXeAe/8t6T3lke+OW94cYlscI1truSkii+?=
- =?us-ascii?Q?c85BP5NFkfT45pr7V9fXSGDX/D37YkD3rrZxI0lmt2Z5gG9iH/361yd0MyIs?=
- =?us-ascii?Q?wohx398wRu8cDe5s+omdgXTiUHZ8SUhV?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zkyJC60OPxha2v8DZPuQTGXJOrjz7BfbrljL7zinqvb3JExLnGMZYKL27Cys?=
- =?us-ascii?Q?iyDAkIok+wy+NR3dfjeTm201kgvhsha14BFVynHBU7LuoNu8F6WsMAOLAWQM?=
- =?us-ascii?Q?EzLmXijpUCzt6Nxl3eYHRCbQRyQd35jaV5+moGbKjO1UnKqBBWBUAqBNF26F?=
- =?us-ascii?Q?uOakjBaqpO1cvL1QIt1WmfnS7E0+367IKpGKpPK6uTUNUhhiRPGeKHH7d1zS?=
- =?us-ascii?Q?KDytqa6KJ9VwlTFUocr8N5K1paMbm5xEt4zU+ruNTGZt/r3kMLRTnr3DChXX?=
- =?us-ascii?Q?Ru5oiu0UU90TL/5gJSMwyIcVvdfN6AfijXUOUtF/KQAhNFdaWoJ3D3bbuO8z?=
- =?us-ascii?Q?EzYFCsxwRZwDT+5/7bzSc5pGzLQtP7e3ROAxFfHNaK9fy5wpwF5ErRX9OCsa?=
- =?us-ascii?Q?CzuJeeKKU/2EPx32t1zgCBavTQcceXFjhldOYVsMwWMQjtYW0R5wSZWnoQYT?=
- =?us-ascii?Q?QBmnPNWgG000asaNe3Qil+kC5AA0251zuCrdJHKCuMMY/RMYgbQnZEYPE1mS?=
- =?us-ascii?Q?cJs0anjFc4kSm4+q+3Z9oPQn6alztkf/5h5O0DjeUFbJOnAplIeVK8f7eKUP?=
- =?us-ascii?Q?9reK6XOUCchVNTddlERLm++xOJvau8teXPNUOfdXRby+Ic/SbeEwoz2VJ1dK?=
- =?us-ascii?Q?/JP/7ey2A57aAIKNUTB6zLVvyoBCh7Xy04IO1U6JgO37H5lnEOIog4igXCzN?=
- =?us-ascii?Q?EKUovu9Q0U1r3MbqDVzqtu/GkuDIeQEVpQ2RhjuLLEazhHeJe1TY06loN/IS?=
- =?us-ascii?Q?eIKJF7xiOKQs0hAo/HvRxQQEOBR9uLsyHlMPDBHp66G0udO5jt5rFdscJQ2U?=
- =?us-ascii?Q?ueov/WcCN7d5nG3xwTXmvnKYAFWfGr7XO0iJ3NwyImSp2kDBrjjjm+7FAm6X?=
- =?us-ascii?Q?WTszoIdfaA0tnzhsnHRCWLUPvGVbMFEqVUk8H145JodM9vusAj2apcg9Kvkp?=
- =?us-ascii?Q?nJ2ZJSeBNxYItKd76hiRtheZodZXLGUgCrAPKIHH6zDoPvRqc4GS8RpsAd5S?=
- =?us-ascii?Q?amkFYm8mRg0SOmQdcfhsbTFCIErw8b2pFgs4Zv5wnVvaRxgTGR37CHL2jKdW?=
- =?us-ascii?Q?4Ff5OB5UvfukcCHgMn8SI+ok6j2xdx5BcdiTzf6HghAQZ2me+o4njzI0Pf6C?=
- =?us-ascii?Q?qt/iLvJHKmiM3dCSWsi4oD3FXQRTOmVuN7fx2WyPgYoIrAQTv5/5eKFV9IqO?=
- =?us-ascii?Q?9UrRlZG5GQykDAg13R1lIdJpuWpFBWhNMw+J6lmtVmhyJBxCEL/mIq+VI4X0?=
- =?us-ascii?Q?XkRLZf9pnfyeBI7AurIh63HpxhrgHX9wJoLNVaeN3PVIYrIdOrry+dGqgWFA?=
- =?us-ascii?Q?b8kaL6nsk2n97picfRB+5CZ4OQTJxsRhn68HKLLiEKksoOlJfAY07mft8TqQ?=
- =?us-ascii?Q?msD01Bq+eUIBT16ZZMKkUxCylEp303JY+ksDNnnVcP9jEpASQCq4X+B3awUW?=
- =?us-ascii?Q?S83+nAC+mHr3/stpBj4AcLfqmuxX6gg2yq77ji8DFjBqsy50Fg3IyknPzUBQ?=
- =?us-ascii?Q?ksYMbu5jvqSs/o7j58L6Z0hTVoDQNytlSTFlmb1f7SrUYsAY4n3tJ9zurYPy?=
- =?us-ascii?Q?WvmrRZfQaB6aNwGbNBI=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9102cb00-0784-47ca-76ae-08dd5fe34bf7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 14:53:19.5260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y9Kwqb4QfYYn5B/iVtX67mwKK7ZzODCpe0MIjmoTqwZ3fk3BXx6QWdcCIUoSbxXYx5nU/zjiwiuA5rIf6FaY9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8603
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226024256.1678103-3-hongxing.zhu@nxp.com>
 
-On Sun, Mar 09, 2025 at 08:57:58PM +0300, Fedor Pchelkin wrote:
-> Upon encountering errors during the HSIC pinctrl handling section the
-> regulator should be disabled.
->
-> After the above-stated changes it is possible to jump onto
-> "disable_hsic_regulator" label without having added the CPU latency QoS
-> request previously. This would result in cpu_latency_qos_remove_request()
-> yielding a WARNING.
->
-> So rearrange the error handling path to follow the reverse order of
-> different probing phases.
-
-Suggest use devm_add_action() to simple whole error handle code.
-
->
-> Found by Linux Verification Center (linuxtesting.org).
-
-I think this sentense have not provide valuable informaiton for reader.
-
-Frank
-
->
-> Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
+> Use the domain number replace the hardcodes to uniquely identify
+> different controller on i.MX8MQ platforms. No function changes.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index 619779eef333..3f11ae071c7f 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -407,13 +407,13 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  				"pinctrl_hsic_idle lookup failed, err=%ld\n",
->  					PTR_ERR(pinctrl_hsic_idle));
->  			ret = PTR_ERR(pinctrl_hsic_idle);
-> -			goto err_put;
-> +			goto disable_hsic_regulator;
->  		}
->
->  		ret = pinctrl_select_state(data->pinctrl, pinctrl_hsic_idle);
->  		if (ret) {
->  			dev_err(dev, "hsic_idle select failed, err=%d\n", ret);
-> -			goto err_put;
-> +			goto disable_hsic_regulator;
->  		}
->
->  		data->pinctrl_hsic_active = pinctrl_lookup_state(data->pinctrl,
-> @@ -423,7 +423,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  				"pinctrl_hsic_active lookup failed, err=%ld\n",
->  					PTR_ERR(data->pinctrl_hsic_active));
->  			ret = PTR_ERR(data->pinctrl_hsic_active);
-> -			goto err_put;
-> +			goto disable_hsic_regulator;
->  		}
+>  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 90ace941090f..ab9ebb783593 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -41,7 +41,6 @@
+>  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+>  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+>  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
+> -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+>  
+>  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
+>  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
+> @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	struct dw_pcie *pci;
+>  	struct imx_pcie *imx_pcie;
+>  	struct device_node *np;
+> -	struct resource *dbi_base;
+>  	struct device_node *node = dev->of_node;
+>  	int i, ret, req_cnt;
+>  	u16 val;
+> @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  			return PTR_ERR(imx_pcie->phy_base);
 >  	}
->
-> @@ -432,11 +432,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->
->  	ret = imx_get_clks(dev);
->  	if (ret)
-> -		goto disable_hsic_regulator;
-> +		goto qos_remove_request;
->
->  	ret = imx_prepare_enable_clks(dev);
->  	if (ret)
-> -		goto disable_hsic_regulator;
-> +		goto qos_remove_request;
->
->  	ret = clk_prepare_enable(data->clk_wakeup);
->  	if (ret)
-> @@ -526,12 +526,13 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  	clk_disable_unprepare(data->clk_wakeup);
->  err_wakeup_clk:
->  	imx_disable_unprepare_clks(dev);
-> +qos_remove_request:
-> +	if (pdata.flags & CI_HDRC_PMQOS)
-> +		cpu_latency_qos_remove_request(&data->pm_qos_req);
->  disable_hsic_regulator:
->  	if (data->hsic_pad_regulator)
->  		/* don't overwrite original ret (cf. EPROBE_DEFER) */
->  		regulator_disable(data->hsic_pad_regulator);
-> -	if (pdata.flags & CI_HDRC_PMQOS)
-> -		cpu_latency_qos_remove_request(&data->pm_qos_req);
->  	data->ci_pdev = NULL;
->  err_put:
->  	if (data->usbmisc_data)
-> --
-> 2.48.1
->
+>  
+> -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev, 0, &dbi_base);
+> -	if (IS_ERR(pci->dbi_base))
+> -		return PTR_ERR(pci->dbi_base);
+
+This makes me wonder.
+
+IIUC this means that previously we set controller_id to 1 if the first
+item in devicetree "reg" was 0x33c00000, and now we will set
+controller_id to 1 if the devicetree "linux,pci-domain" property is 1.
+This is good, but I think this new dependency on the correct
+"linux,pci-domain" in devicetree should be mentioned in the commit
+log.
+
+My bigger worry is that we no longer set pci->dbi_base at all.  I see
+that the only use of pci->dbi_base in pci-imx6.c was to determine the
+controller_id, but this is a DWC-based driver, and the DWC core
+certainly uses pci->dbi_base.  Are we sure that none of those DWC core
+paths are important to pci-imx6.c?
+
+>  	/* Fetch GPIOs */
+>  	imx_pcie->reset_gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+>  	if (IS_ERR(imx_pcie->reset_gpiod))
+> @@ -1565,8 +1559,12 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	switch (imx_pcie->drvdata->variant) {
+>  	case IMX8MQ:
+>  	case IMX8MQ_EP:
+> -		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+> -			imx_pcie->controller_id = 1;
+> +		ret = of_get_pci_domain_nr(node);
+> +		if (ret < 0 || ret > 1)
+> +			return dev_err_probe(dev, -ENODEV,
+> +					     "failed to get valid pcie domain\n");
+> +		else
+> +			imx_pcie->controller_id = ret;
+>  		break;
+>  	default:
+>  		break;
+> -- 
+> 2.37.1
+> 
