@@ -1,43 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7643D22B8D2;
-	Mon, 10 Mar 2025 15:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4D422D4DD
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 15:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741619471; cv=none; b=hIhvDeC2Gw8p8MyqQk1dvBbdjW5oOh7md8+2ygrcVgHbIG/+xSen6wBfIJ9yR6yCLlPBvS4HPW+Hmxl0iDwBbFF5h+BpnS/ggxB+z7ONsiNlHQMfrlhSmpAeRRd5Wv+n/ueXd6I/96ud//mG/9oq0qN0v0qsTy+mcpMzWPyboA0=
+	t=1741621365; cv=none; b=FOA3RB8fVzNvb5+ZgB/FCLA9xvowggqaXGErx9RGQZZrBs0uNQNM8w0wAvgtZ+ROxF38UQUC+Z3DuLtlxb6tvKxFg140mE+OI6Qxe2jdT21swKHsoBhwDrQu8XwSAjxlFyqet61xF95ZeN55vq0jBAtKBBCj0aD1HuD6CIJugLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741619471; c=relaxed/simple;
-	bh=atd+PUJZNIOrqCwFpaInjw5P9puj5TcBLXrLKnepJLc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tGKK4Aqxo6oUDtVf3E5aItBl2cNBS1SsVkQCrUVkylUg9dTwv8h7CjRw58LyLdcnynU+YZCiBPZ7MvnpOgRJ85sjAA5xf9jfPCgtwbWArYJt8toDaUELcXWMAHx0dYTVBd9BbiCH1DTXKjGyHq3y9liQLK7LqYrW8/Sa4tYKHKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjok9gkM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741621365; c=relaxed/simple;
+	bh=CiSdzcds41wtt/vO4onxV8kRnf5RNQMUtDCtG2jDKJc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JmCyvSRwcYzV+i3Pm36c7PjcfQl8ck5PgRgC0TV2cMb8OfwTUIyg4l2S7nYMKjYQdCwGr27jO2QmTXRYw4XXsI8wLQA4PMXFO3mDSO/rAcBlr4AQoJwa7WepKTGqrAb6K/Ekt7BUBQnhbK/AzsSZcy5DgOMfpdAvEwDSt+cC1hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DX2cG7tJ; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjok9gkM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B093DC4CEEF;
-	Mon, 10 Mar 2025 15:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741619470;
-	bh=atd+PUJZNIOrqCwFpaInjw5P9puj5TcBLXrLKnepJLc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gjok9gkMjFNUJMrB2dSFP20dG5MFn7ciouO2+4x4hxhoxDYl9c5fWmVN3QffQhhPI
-	 E/Vb86Y/PO2Py7XNnZmgS9eCGTSyWtPQ3d8xFM7SqUDAp9uMiN2hjVGECHZ9UeHPLX
-	 Ci7y2irDK/Rx0tcOfOQJytkBCpzi4PtXFjKnMebcC3mjLfkEAJlrUIYRgU0w3lfl4t
-	 s4MROwNpDJY5UJjQ2mOf7p6/tU+LYXxNtE/BUxidtLN/YgsRbgOhPT4bwD7LvPFpZf
-	 GztVz0hEL+LG/uAZtJC2NQoNjgGAeP6kHiqPcjdol6//isZLLS2SVma16WKPUbmTjp
-	 sbMN3nL1VrIIw==
-Date: Mon, 10 Mar 2025 10:11:09 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kw@linux.com, manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
-	s.hauer@pengutronix.de, festevam@gmail.com,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
-Message-ID: <20250310151109.GA540579@bhelgaas>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DX2cG7tJ"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff80290e44so6557642a91.0
+        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 08:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741621362; x=1742226162; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=enikGLAVKD32XDQkaI8PyWJI+pkAkZngBKEbealMEZc=;
+        b=DX2cG7tJnNkamzAWvNUWfsc4RhR6L51RC0pjxUhrUUq4ZkWwmOk5CzHY+kARVNKWfm
+         wiXB97myIrDQto0qyfqR0LGff3poGpP0xRyagoYkk7/emBzwarPfOFOoG2SY+WvzaQ9F
+         jMlHZz7Rk4I1S7tSuG+YAszw+H2gY9LFIJwhmH3nkBxapxlrt8ykfWpvpR2sQ2lMnx58
+         CPB2lT1JdJVtx4dOkr65CIA64epIObirS+xj6tODrjzCB4HoO/nVZJFQPSyh4pPQuZfD
+         CFi5CGdzyPUHXjw1z94PK1Rg2ZYivJt2AiyaiNp9zobYZsWPTy1jGI1xEXAOPAqATj2S
+         qd1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741621362; x=1742226162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=enikGLAVKD32XDQkaI8PyWJI+pkAkZngBKEbealMEZc=;
+        b=PlkQo+87hhXvNC6O2Ln9HyJX2ZPZDc6cl8UefhjJZsrOUybjh44eomfyYuPi3UAruh
+         2/pp9CWY09currJU/j7hIWVocAk7eilkSmQ27JL5a8mCUzv9+AMS1jQoaLc+Z7HOnhdA
+         KWg6/uhWrHNf6Fl1ApHJZdSLkOfO8h0DmhLGmpEQlkYGhYGmyy2me5UKejiLcTxDc8gE
+         dkLomigiM8kJVgyzateEAFXvCMDEdE4WH+x9sgYtUF1mLR2pBg6j5VArnw6gUVVFu46m
+         ra0WtMPVTvCcYBcXUA1WZGKlbxEYMgHfvJbGdtGFH2S0SolEuV8OQOKp2HZ0A+N/h5Wl
+         DFEA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9E5YP4AEwpRDazwXncflM9Ny3q2SZOV/nijfcK30rNjhifntb6Jp1NUMgjNoGsC3tkL8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwOlVr7JsT/ZhM+t9mi9FZUx6sTvnRiW6k+6Z+3WO96X1Yx5K18
+	94zaMEQ75Mdy8iQILSKXBzNLAjQwzQ190AwoELaIJNi/E1gkqrlIeMkeYbi84RU=
+X-Gm-Gg: ASbGnctFWHDw47IFcFhMk6bVD6+ZcOej3mIA4sw7ldm5g6I0eELL9M4FxQ6EvCT2wtV
+	oZD3TdJrZ4++2VUkHY/yM8lA3sIT6J+dGdkc2Vc7xXC19W6rZnAI5AdYUapm55g+ECyO7+YR2J3
+	WZyIaNEhCJf/tLDZmq/loqr/LUfAKttgjz0VlD3ApqLOJSawB+5/Rl5vPa+KDg0vIbdwmCsHUjM
+	lAaeY2rQGt2xwUNqzoPa1dwyHXb+Yl7kRq9Y0ysbRq5h1RpitzpFWH1nO5GWzhMwZouM795rslP
+	ktMTbsFXCPjOaG6xMaCwuSvWuoWpD1hwom8rLBH2ljV8misj
+X-Google-Smtp-Source: AGHT+IHNf11G7DyVu/twsvugWYwlU9A3A6njxqIwYNnQaUcCkH2JVILiZmtg9HpM2KZSrY/MiuYxRw==
+X-Received: by 2002:a05:6a20:c996:b0:1f5:8903:860f with SMTP id adf61e73a8af0-1f589038757mr2586991637.14.1741621362485;
+        Mon, 10 Mar 2025 08:42:42 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:d163:942a:6a37:7631])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af286bb9f26sm7496813a12.25.2025.03.10.08.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 08:42:41 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:42:39 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: p.zabel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org,
+	shawnguo@kernel.org, devicetree@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, andersson@kernel.org,
+	Frank.Li@nxp.com, peng.fan@nxp.com, laurentiu.mihalcea@nxp.com,
+	iuliana.prodan@nxp.com, shengjiu.wang@nxp.com
+Subject: Re: [PATCH v4 8/8] imx_dsp_rproc: Use reset controller API to
+ control the DSP
+Message-ID: <Z88Ib7HkbRQoiyZp@p14s>
+References: <20250305100037.373782-1-daniel.baluta@nxp.com>
+ <20250305100037.373782-9-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,78 +80,138 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250226024256.1678103-3-hongxing.zhu@nxp.com>
+In-Reply-To: <20250305100037.373782-9-daniel.baluta@nxp.com>
 
-On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
-> Use the domain number replace the hardcodes to uniquely identify
-> different controller on i.MX8MQ platforms. No function changes.
+Good day,
+
+On Wed, Mar 05, 2025 at 12:00:36PM +0200, Daniel Baluta wrote:
+> DSP on i.MX8MP doesn't have a direct reset line so according to hardware
+> design team in order to handle assert/deassert/reset functionality we
+> need to use a combination of control bits from two modules. Audio block
+> control module for Run/Stall control of the DSP and DAP module in order
+> to do software reset.
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Initial design accessed RunStall bits from audio block control using the
+> syscon interface but this got NACKed by community because of abusing the
+> syscon interface [1].
+> 
+> So instead we use the reset controller API.
+
+I am good with this patchset.  The only thing I'd like so see modified is the
+above changelog.  The second paragraph doesn't belong there, i.e it is not
+useful to remark on a design that was not accepted.  Instead please concentrate
+on _why_ we are moving from the current design to using the reset controller
+API.
+
+This can go in the 6.15 merge window if you send me a V5 fast enough.
+
+Thanks,
+Mathieu
+
+> 
+> [1] https://patchwork.kernel.org/project/imx/patch/20250212085222.107102-6-daniel.baluta@nxp.com/
+> 
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
+>  drivers/remoteproc/imx_dsp_rproc.c | 25 +++++++++++++++++--------
+>  drivers/remoteproc/imx_rproc.h     |  2 ++
+>  2 files changed, 19 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 90ace941090f..ab9ebb783593 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -41,7 +41,6 @@
->  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
->  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
->  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
-> -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index ea5024919c2f..bc60edcdd661 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+>  #include <linux/remoteproc.h>
+> +#include <linux/reset.h>
+>  #include <linux/slab.h>
 >  
->  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
->  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
-> @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	struct dw_pcie *pci;
->  	struct imx_pcie *imx_pcie;
->  	struct device_node *np;
-> -	struct resource *dbi_base;
->  	struct device_node *node = dev->of_node;
->  	int i, ret, req_cnt;
->  	u16 val;
-> @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  			return PTR_ERR(imx_pcie->phy_base);
->  	}
+>  #include "imx_rproc.h"
+> @@ -111,6 +112,7 @@ enum imx_dsp_rp_mbox_messages {
+>   */
+>  struct imx_dsp_rproc {
+>  	struct regmap				*regmap;
+> +	struct reset_control			*run_stall;
+>  	struct rproc				*rproc;
+>  	const struct imx_dsp_rproc_dcfg		*dsp_dcfg;
+>  	struct clk_bulk_data			clks[DSP_RPROC_CLK_MAX];
+> @@ -192,9 +194,7 @@ static int imx8mp_dsp_reset(struct imx_dsp_rproc *priv)
+>  	/* Keep reset asserted for 10 cycles */
+>  	usleep_range(1, 2);
 >  
-> -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev, 0, &dbi_base);
-> -	if (IS_ERR(pci->dbi_base))
-> -		return PTR_ERR(pci->dbi_base);
-
-This makes me wonder.
-
-IIUC this means that previously we set controller_id to 1 if the first
-item in devicetree "reg" was 0x33c00000, and now we will set
-controller_id to 1 if the devicetree "linux,pci-domain" property is 1.
-This is good, but I think this new dependency on the correct
-"linux,pci-domain" in devicetree should be mentioned in the commit
-log.
-
-My bigger worry is that we no longer set pci->dbi_base at all.  I see
-that the only use of pci->dbi_base in pci-imx6.c was to determine the
-controller_id, but this is a DWC-based driver, and the DWC core
-certainly uses pci->dbi_base.  Are we sure that none of those DWC core
-paths are important to pci-imx6.c?
-
->  	/* Fetch GPIOs */
->  	imx_pcie->reset_gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
->  	if (IS_ERR(imx_pcie->reset_gpiod))
-> @@ -1565,8 +1559,12 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	switch (imx_pcie->drvdata->variant) {
->  	case IMX8MQ:
->  	case IMX8MQ_EP:
-> -		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
-> -			imx_pcie->controller_id = 1;
-> +		ret = of_get_pci_domain_nr(node);
-> +		if (ret < 0 || ret > 1)
-> +			return dev_err_probe(dev, -ENODEV,
-> +					     "failed to get valid pcie domain\n");
-> +		else
-> +			imx_pcie->controller_id = ret;
+> -	regmap_update_bits(priv->regmap, IMX8M_AudioDSP_REG2,
+> -			   IMX8M_AudioDSP_REG2_RUNSTALL,
+> -			   IMX8M_AudioDSP_REG2_RUNSTALL);
+> +	reset_control_assert(priv->run_stall);
+>  
+>  	/* Take the DSP out of reset and keep stalled for FW loading */
+>  	pwrctl = readl(dap + IMX8M_DAP_PWRCTL);
+> @@ -231,13 +231,9 @@ static int imx8ulp_dsp_reset(struct imx_dsp_rproc *priv)
+>  
+>  /* Specific configuration for i.MX8MP */
+>  static const struct imx_rproc_dcfg dsp_rproc_cfg_imx8mp = {
+> -	.src_reg	= IMX8M_AudioDSP_REG2,
+> -	.src_mask	= IMX8M_AudioDSP_REG2_RUNSTALL,
+> -	.src_start	= 0,
+> -	.src_stop	= IMX8M_AudioDSP_REG2_RUNSTALL,
+>  	.att		= imx_dsp_rproc_att_imx8mp,
+>  	.att_size	= ARRAY_SIZE(imx_dsp_rproc_att_imx8mp),
+> -	.method		= IMX_RPROC_MMIO,
+> +	.method		= IMX_RPROC_RESET_CONTROLLER,
+>  };
+>  
+>  static const struct imx_dsp_rproc_dcfg imx_dsp_rproc_cfg_imx8mp = {
+> @@ -329,6 +325,9 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
+>  					  true,
+>  					  rproc->bootaddr);
 >  		break;
+> +	case IMX_RPROC_RESET_CONTROLLER:
+> +		ret = reset_control_deassert(priv->run_stall);
+> +		break;
 >  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+> @@ -369,6 +368,9 @@ static int imx_dsp_rproc_stop(struct rproc *rproc)
+>  					  false,
+>  					  rproc->bootaddr);
 >  		break;
+> +	case IMX_RPROC_RESET_CONTROLLER:
+> +		ret = reset_control_assert(priv->run_stall);
+> +		break;
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+> @@ -995,6 +997,13 @@ static int imx_dsp_rproc_detect_mode(struct imx_dsp_rproc *priv)
+>  
+>  		priv->regmap = regmap;
+>  		break;
+> +	case IMX_RPROC_RESET_CONTROLLER:
+> +		priv->run_stall = devm_reset_control_get_exclusive(dev, "runstall");
+> +		if (IS_ERR(priv->run_stall)) {
+> +			dev_err(dev, "Failed to get DSP runstall reset control\n");
+> +			return PTR_ERR(priv->run_stall);
+> +		}
+> +		break;
+>  	default:
+>  		ret = -EOPNOTSUPP;
+>  		break;
+> diff --git a/drivers/remoteproc/imx_rproc.h b/drivers/remoteproc/imx_rproc.h
+> index 17a7d051c531..cfd38d37e146 100644
+> --- a/drivers/remoteproc/imx_rproc.h
+> +++ b/drivers/remoteproc/imx_rproc.h
+> @@ -24,6 +24,8 @@ enum imx_rproc_method {
+>  	IMX_RPROC_SMC,
+>  	/* Through System Control Unit API */
+>  	IMX_RPROC_SCU_API,
+> +	/* Through Reset Controller API */
+> +	IMX_RPROC_RESET_CONTROLLER,
+>  };
+>  
+>  /* dcfg flags */
 > -- 
-> 2.37.1
+> 2.43.0
 > 
