@@ -1,108 +1,111 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1807622488E
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 16:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1F230BE4
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 16:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741624297; cv=none; b=JZDR/pLRowibEBzWKCDsxWWNogV6xjHJOS2YcsyoBaMz57azniK2noLwhsIMNzJP5eW7z5FkDghYXG/mjPQRoSn7HSrKyvQn/RNCIxwDW9Il9MmfJSGkEbdR8KhskwxsCdbXg++2QQ6UXr9xfAshyznDsBPgRqHyebzR2A5wi7g=
+	t=1741624810; cv=none; b=tlez6jaEKqULCumv59UUmaPMlUpH7QH/4U2SnMXfJhBFKLjeITN4crY85VrG7qRh8eD70unjfLWg4hkn7qceJKnG1pvMPyCGlQrU+Ke54Lp4hHTsD0Zw3mgyfuSbzBkUIILPnw20zzKaOTQi71LPrFvRrePJO7jdBKC7xGQSeh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741624297; c=relaxed/simple;
-	bh=Men/YQvbniyBZCsHsLLPHLGHHkqzBckBKs8MSvuAcUg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
-	 References:In-Reply-To; b=oBUP+sKkmPjhEtkWiKJi2Bb8tBZyUlXip9UQItmy4IlRLDejRZu09LIZ5RvTXTdsE6nPW2UTI2AKdXNqKxiSgkutOBGUiDHHXOsNjcdtaHaDmna52LZjKfnb4lDBtMWNNe65kihUlzBibykCMxOEMuKBzQCdnw/ETzR3meRYnPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZdbJLhsM; arc=none smtp.client-ip=217.70.183.199
+	s=arc-20240116; t=1741624810; c=relaxed/simple;
+	bh=FJ/g4p5K4DhZe5aNgiyBGgNgUhTwe26PsEdnxAtkehY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=o0QB1LXEnnTI+iYNCi5dTBK8J08UIgTOtjOHxpMK9Asm/okUijbax3e/RnrjwFw619YXdI3qwqwvq6Ati0ppSVEmfBUMpfRDxgmD5YrtgEaeZ+Nf/5JouZ7zMlR2VCPlLBpXOTDZ7Ebe8UpgFmjcLcF9WpRS4+sSIOdiH5k591c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VlT4BOzS; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZdbJLhsM"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CA26D4421A;
-	Mon, 10 Mar 2025 16:31:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VlT4BOzS"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 520E041DF6;
+	Mon, 10 Mar 2025 16:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741624293;
+	t=1741624806;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Men/YQvbniyBZCsHsLLPHLGHHkqzBckBKs8MSvuAcUg=;
-	b=ZdbJLhsMMvNtKlRd1B4Xxs/CP2OEBSFJQYi8sAu5+jOg/ppkH8n8f0wnGfsORUMbLDvZIE
-	AFc2QC/dNL3f1ZcCeZjdFlZuvErFK6bCwsSvM1iLlT+9VxJv9pjpgg3ol8YyJtUJcaKRYK
-	4i2KuWmOug8oPC9l1Xuj315Yr8zfggcfe3ai92c8dAOo8jvTb+shgcXHN4MOt7v7uyAHX9
-	Z2JyH9WSexnJ0tcCb4JEiljRXVxC8vgtnlgJYx65e+JfvoEfJJiYEEJOnq2vZw1ok+u+oY
-	fHo5GJw7SIp2R8a2GxA4RMD6pEbMoie43PLSn4PEVqyWWy6jZnGy0xRNqZrMPg==
+	bh=GFmJVkvgEr7zPfQ20jjW3wMDTUUTOBdrrvb2AdJk2z4=;
+	b=VlT4BOzSDzwOKvMH3AFVaudzLMasQEOtRQivw/fPBOo3sQGLitdcE5pPg/HakDLuu5fodv
+	RBnilJbL8SejASp4E6onzGzyL5P0ZrZtvqtvUOjEt/LcDLTvzcvjaK5lH/dox0xZPHs44U
+	VRDUtxdVXa+JV9YBIgj7SDBYhk4YewRDkKCwhYrNlBtYwX4wq4AB7hXyGwL41bHGVD4Cyd
+	xjpJeOCJIDyhgPWU/1xQlqql5tWD2vIOkwxEOATAVscV9S5k8LeLoX4hSSy+KYMTJ/ZSrp
+	f7h/BxTgSl33OAFqDbN/ceOSm/6Qc07DjNE2osEQLYxRV+uxPp6cP5xm9U+gVQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Mon, 10 Mar 2025 17:39:48 +0100
+Subject: [PATCH v4 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
+ Concerto board
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Mar 2025 17:31:32 +0100
-Message-Id: <D8CQAAKOZ1O5.8JVESQPJSSM8@bootlin.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
- Concerto board
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250310-varsom6ul-concerto-dts-v3-0-551e60713523@bootlin.com>
- <20250310-varsom6ul-concerto-dts-v3-1-551e60713523@bootlin.com>
- <63f8aa7d-fcd4-450f-b3a1-44886a29fc7e@kernel.org>
- <cd2f3c97-53bb-42f5-a3cd-4385bfda5dc7@kernel.org>
-In-Reply-To: <cd2f3c97-53bb-42f5-a3cd-4385bfda5dc7@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250310-varsom6ul-concerto-dts-v4-1-6034fda6ec64@bootlin.com>
+References: <20250310-varsom6ul-concerto-dts-v4-0-6034fda6ec64@bootlin.com>
+In-Reply-To: <20250310-varsom6ul-concerto-dts-v4-0-6034fda6ec64@bootlin.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1139;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=FJ/g4p5K4DhZe5aNgiyBGgNgUhTwe26PsEdnxAtkehY=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnzxXlMg/BcfWlXJmfaq+uYf55WPEuRwC7kJQiR
+ hH6/2m2X+qJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ88V5QAKCRDRgEFAKaOo
+ Nh3vEACk/cWrSLz7Db6mxHyQBfgW2xa23PjCQYpq28VNPJd6JgrYhReZSWBv+GjtlOexgtdKqI/
+ QbQ7/BrKtROsHrWWBCR+VRY6Wv0+pYxdM9UrfGSyT1dPCZelAxr+u2tZS+H4cNTO3LGiPqvrfb6
+ 3Vn50hPc7Bh823P9ClbLaJCjFN1c79nnBwijQo9lTqQzRsWDqBDm0g4bMilk/N0QprwR3wdPhX7
+ 93C0I6R9+GGvWwDPuER1B/QFfz7wUnN+GdusqpjiPQdViNgw/qEA3Z+f2iFOXE3gYV1Z/7hkTtb
+ Fc+dRTNhZ60b/6B5q8raXi9zo5lbBS4FAaTiNlL4kau4V0p4x4MFSQicCdW6jwgEhLrCWGuYfVQ
+ V3LpRLx5y40mwMdmliL7ICTCvDKUQ5+07dSgsKEl6nlIqTjbHdkyZp7S2OLDEFHtv0MvlT94PEB
+ Tc8PvvB7pqlTLxaW0Npj0rSmnxMWy8nvymkZDbE1wdwKJVM8I2v3OUjXuij5kQGG0SdjBRCz+Ji
+ 7MRnPMcCbeCx5V0Ke2WLvI8gUYSNK+vC+I62eH7TxvzvByJLni8Gm8FBFJvgtqy0PHOvlklPIXI
+ tY7ncDpAifzo5G5b6a7gZgtqo+5FTLT8RW9IjuTO9l5Dtsgx0/cNcQUUq9eNWXYPD02b4mlv4/p
+ VJGvvfXlUPLwOmg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudelkeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedvhedtteetheefgfejleeiledvieevleduffejgeeufedujeeufeefjeefveegudenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrt
- ghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudelkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudegpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfhgvshhtvghvrghmsehgm
+ hgrihhlrdgtohhmpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghonhhorhdrughoohhlvgihsehmihgtrhhotghhihhprdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 
-On Mon Mar 10, 2025 at 5:22 PM CET, Krzysztof Kozlowski wrote:
-> On 10/03/2025 17:22, Krzysztof Kozlowski wrote:
->> On 10/03/2025 16:56, Antonin Godard wrote:
->>> Add support for the Variscite i.MX6UL VAR-SOM-MX6UL and the Variscite
->>> Concerto carrier board.
->>>
->>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->>> ---
->> <form letter>
->> This is a friendly reminder during the review process.
->>=20
->> It looks like you received a tag and forgot to add it.
->>=20
->> If you do not know the process, here is a short explanation:
->> Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
->> of patchset, under or above your Signed-off-by tag, unless patch changed
->> significantly (e.g. new properties added to the DT bindings). Tag is
->> "received", when provided in a message replied to you on the mailing
->> list. Tools like b4 can help here. However, there's no need to repost
->> patches *only* to add the tags. The upstream maintainer will do that for
->> tags received on the version they apply.
->>=20
->> Please read:
->> https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/=
-submitting-patches.rst#L577
->>=20
->> If a tag was not added on purpose, please state why and what changed.
->
-> And now I noticed you used b4, so I really do not get how the tags can
-> be missing here. :/
+Add support for the Variscite i.MX6UL VAR-SOM-MX6UL and the Variscite
+Concerto carrier board.
 
-Sorry, that's totally my fault here, I forgot to run 'b4 trailers -u' befor=
-e
-sending... :/ And I don't think it's part of the prep checks?
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-I will send a new version with the proper trailers.
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 0db2cbd7891ffb361e0ac60fe6be66e381b2a8f4..a8f8cb845a2085eb13594adacf33f372185e8b0b 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -688,6 +688,12 @@ properties:
+           - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
+           - const: fsl,imx6ul
+ 
++      - description: i.MX6UL Variscite VAR-SOM-MX6 Boards
++        items:
++          - const: variscite,mx6ulconcerto
++          - const: variscite,var-som-imx6ul
++          - const: fsl,imx6ul
++
+       - description: Kontron BL i.MX6UL (N631X S) Board
+         items:
+           - const: kontron,bl-imx6ul       # Kontron BL i.MX6UL Carrier Board
 
-Antonin
+-- 
+2.47.0
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
