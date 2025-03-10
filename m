@@ -1,247 +1,263 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013028.outbound.protection.outlook.com [40.107.162.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44131E5B7B
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 20:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741637893; cv=fail; b=h9dCJ3kofSsX/RpOu1wZbZvJ0NJQnmYGogeBQHT+cEMplwNmi01fMyxt1VDaKjJNAjtj44UkUr50r9dZnPIh37+3JuAWO3cozdYJlLJ8N5Uo7kOXlRvmNhq/uN5NafRoCrKbmY1u8qSVRsJHwJUJAKphOI3JF6+7Pc3cxy7Kb8Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741637893; c=relaxed/simple;
-	bh=98mr0hEDlbNB1twO9eEomfVdivfO7N5yLVSVflAGipo=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=SgTgVNKx5uD74KTSDtjr/KTiZD0ghMLwq+guVOcPs93LD0QJkmycUf/1YqRiG9Cu80y+hhkDhrI4JzEWI9mrWX5mwm2My7eEOqUA4yO1yEMAg9xozN3GKLD9L4ltHIisNn2y1iCFC8+9GFSf9tYgYs/t6BcftmgRXdnkJV1cX1w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CCVuq9b/; arc=fail smtp.client-ip=40.107.162.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EBE1D6199
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 20:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741638294; cv=none; b=evO1PnPJNFjhbHc7CLh9jusb5hURqRXkG9LnhNjk79RWnjuZKtDyKdNQaUlxIOVT5QIvxT6DuoWx+Dp29Zlo7uMh6RbojoOFEiofzMIXD51m1VDeWie+3/ohBXG6AicivGw//pf0ldy2JCF48C8GSrORdoM35jIzQ7AbKt5/qoM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741638294; c=relaxed/simple;
+	bh=zRAETu+vtx7OO3I4ymMlEe8g3nZQLbUML46LRlTlR6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NzBqK2HerCmGfFDmIbkkKXiTbQZwxcXACQT+GSxkcFuluu17Ci0rxk8nihvDey8lMWMxcrZ557f7KM4lvLAO8dJZTmD1dgkJwPYw9/eaIUz6QXA7AeUFFFLJvETiDCMlMf6ikNvbaySM90KjtvRF6+Ehh1wyEsi6pQUHtofLC50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3Z/DxAF; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CCVuq9b/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wEnmi4JqAgnW6p2wSKQk78aGKnhz2KQIy4MMvK6G04tv7LCc4dj9De8YcbqBBf/EeZ9KEz/eR0frvL+GNZ83AXAM2mtMkZe+73Ktk2o5zYyFsuAXseDIvWE9c3xTqLAtG+y6c7yhccJQMc1J1dFu7rt/Vok5EUyJc5kDe90Npjho3nU+vY/3oxzGHxvmH04yRzcjkiNQ6DSnLpc0VTA+9jEprWF9PMdWDFvbYMBcRRIepF0qPEDRA+qCc831tJatmzyYN0v4KJB+tRswluRkJj0FEjcv46b1qf+Lc/psyOgwk4DM8ZWqzq9J3//jbRKw5f+gJppkbdx/pYfzjyCUlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uBW2fAmfiSNKUGb/8tkUB5oukqJc1J6cu2/BIg5Rkdw=;
- b=UqcMVK8YA8Nhzm5hCKWdUFVmJk4C+TdGALZAk8EXHVM3bZYocMSIHbRbvx9BrjWyKBJ/MyIOYxwXoRPmDGSn2MWRACIiZRoDD98sGhlKKBb0Oo+XKVEmCjwQ4wDdCvNDG3qXNjWCdP+1/VNdI6VRxfycmHtw6usb3kB2ClXjI0ILAxCBn/Cc6gzAjIf6n17FiAiGzcfS5UW3BJh32W+x1DyjfjNS8iqeDhn+BQ0VKA6+OBJHhw4/WAfGqRKGVY+o5UhOGEGfMeMrDJp+Ht0QOGoyuldF6qqMMTV9XfwoFqzYT4ub8GK6SzPgrPNDEUrAmtEN+KgvI0ytvm67hru57A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uBW2fAmfiSNKUGb/8tkUB5oukqJc1J6cu2/BIg5Rkdw=;
- b=CCVuq9b/cA5ItzYF7DJoE0+QHGAcYVLORqZ9dU2ipfqCj6wP6ejsIpzZTEdsc4e283nMHjHFmvUR3mgFvSXrIFQ+eVi/XhmhtgvFbjiCh6E1fuXQkSozPouEpSSd9ZKRDhPI/Ofzer3Em3Ek+9oqPkg9JQ3Mb+6RCtCrROF01MisgC1voQNn/fwptQ/Mg08bz1pJQ/Di2Ovzb9eJoPhR2PV8kEnb+Sx9oHBZtmR/hyqj3MBxxjU0l0XgK1FJB8jEKQZ77HUyAbNr2oQKoZBok0KgnA1Tg5H+AbKkTNC+Iqotf/kIYPJ3vwvo5nOQtuuei6bjn+BTC+pBGcRjCU1gZw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB9255.eurprd04.prod.outlook.com (2603:10a6:102:2bb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.26; Mon, 10 Mar
- 2025 20:18:08 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8511.025; Mon, 10 Mar 2025
- 20:18:08 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 10 Mar 2025 16:16:48 -0400
-Subject: [PATCH v10 10/10] PCI: imx6: Remove cpu_addr_fixup()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-pci_fixup_addr-v10-10-409dafc950d1@nxp.com>
-References: <20250310-pci_fixup_addr-v10-0-409dafc950d1@nxp.com>
-In-Reply-To: <20250310-pci_fixup_addr-v10-0-409dafc950d1@nxp.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Jingoo Han <jingoohan1@gmail.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741637834; l=2220;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=98mr0hEDlbNB1twO9eEomfVdivfO7N5yLVSVflAGipo=;
- b=UcMJDdXUszV7GESUyUPsgL17MLWzwHSC4V+uetF59Ju0+JhfslXCaMAya/Fqrt+sY1bsAofed
- f72Lyb2L4GODjjLG5Sb3yQ9t1dn1qyPpLjCGZ6+kh/m2nlbRMKCUkDT
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR08CA0058.namprd08.prod.outlook.com
- (2603:10b6:a03:117::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3Z/DxAF"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39129fc51f8so3890231f8f.0
+        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 13:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741638291; x=1742243091; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6+ktPkSgcUGUlkY81X04oFnn6Ho1f2nUx2ZGQe0I0/8=;
+        b=G3Z/DxAFbcVz0ZJ52SEpmoApFogdOnPw7XJYh+d8xZ7OnEF+EbuqrFpndNpJFt1d8w
+         Z8K2TC4t/Yt1Tq76fA6m7hTQ6ZaXVLlcVZyjCzwQjxX9yC+krCxqSmM/Ne07FtiGMn/A
+         p56c8wqoe5yPyc33LhiewDehHqD27LGx28eI+pXpiVljnsd8sQwluqVkJARj3j4fQDPM
+         mlP/lkAAHTNRcZqAknAa0oobXfZE7Ceol7fABJTLRWJU3w9wvE4GlzANRQwywPBYVbns
+         ZlA0uIEYm7pj5HiS51ymuLWC1LxbKkKypxGowRP7gRXEKTi9c3W++2Zqk86lhwpKXdBq
+         6PEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741638291; x=1742243091;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6+ktPkSgcUGUlkY81X04oFnn6Ho1f2nUx2ZGQe0I0/8=;
+        b=OEfrjyEIKfSaOOPFHvlVH1hCgZky5jceHbNV0HRhO2U9ftBu7xwIUYqnatEQj8dWhJ
+         +jNnaYkpYq9R/NvZaj1br5qMfPosto5R9Aeivg3N1k5ieuETtJb0HMss7ELP52cV5E5w
+         epbeH+C08Q/8JXuaWrMr8vCmkxLOc6azMMDbSxRIWsjRoK+dQ+8tTvTUsBkG4EX2L5VW
+         D4aJzQYpKU5CckxTyffaYXfg1AIPd28JX+WE8CQ1NhZ5HkAkGbNe1U49kHI3LsyutbQv
+         3kC35cYz68pbO9lfSpyN/sQCw5dTqIG4CWThiy6wqHBbGfBFBIMki4rhmEJwvolba0Nl
+         ACiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNmOHzgclD9eV53hjiNX0bToDOUqX7WJMb1QUGbd/c0Vk1yhSALu6OJI/JsO14OF8304U=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+EgPuwMOR4w4pPk53BamUg6ENgfH6oFRCaGaEGte9at2+X36L
+	UIw/Tu/fgJRITD81j0gvpclOxuDh0SqKODvjvMswhR+ROtJc+DMSAcAKExmoi9Y=
+X-Gm-Gg: ASbGncu/U0hSdkCQjXJm5XRzRXbXw/i2zktz2612pJfhOiWEr/n4Lk5yThLUb5uQ9Fb
+	4NoVKizqkprK9s/edEwM2u25m7+FDgtOBQ47p2yljm5IcMpcJJHhIbQ5oY3ppdF+lI06O2776tZ
+	NMUOvpg9c80VPEtl/0rN6wnPl+O/xLukFa3GxrvOg2Fxw5YxVCH9Br5hSrT/JqioK+nqrjwr8Ru
+	vMOjIFFuaOvaSgnYf05bAc9MNuS1OWpadd46c6VULCcWDmK3crkD8yDIh4rdzH4mihm+fNzHIB4
+	cz5z8RXb8LBgRg/R1HPkoMLRixXyTBzZeVG5eMGD+K/7Lv1O6Z4Qbv5AaxNZuoCyZJCxQ9Y3vA=
+	=
+X-Google-Smtp-Source: AGHT+IHSzh7GZzsKQtSd3xfRZgUnU3VBKg01JBP3XWDNFJWhCbZmJMR+PhPG67a9gA+EwukcX+lhbg==
+X-Received: by 2002:a05:6000:144d:b0:391:139f:61af with SMTP id ffacd0b85a97d-39132d8c768mr9284588f8f.32.1741638290675;
+        Mon, 10 Mar 2025 13:24:50 -0700 (PDT)
+Received: from [192.168.1.132] ([82.79.237.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdff72sm16179790f8f.36.2025.03.10.13.24.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 13:24:50 -0700 (PDT)
+Message-ID: <ec38d41d-f2ce-4a98-bb02-d1ae9beb0b3b@gmail.com>
+Date: Mon, 10 Mar 2025 22:24:44 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9255:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e751f96-6dfc-4ec5-b965-08dd6010ac29
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UjhFcStZRERaWXgzQkd2aTI4d2lNU0tWWUlBbjNBeWRsNi9jU3VWeE10VE94?=
- =?utf-8?B?ZDUxWDNNcnB3SFR0Z1ZpSEhEdklnNysxK2FMMlNEcXFON1NjK1JlTXY3NWVD?=
- =?utf-8?B?MXEvcXcva0NicDlZUzg1bWYydTBNcUZUd29rdmRFY2t0ZWMxcGdzZE95bXpw?=
- =?utf-8?B?L1hlU2J0N05XSSs4RzF1RDRwZGNqWmRSOXQyci9ML2dMMGN2M1g1eDNsVVI3?=
- =?utf-8?B?a0R2NzR2dzFtYW5WR2hERHhPYlpVdDcxeitsVVZOY2xETzg5eHowOUpsdTht?=
- =?utf-8?B?YytUMys2VUlEVS9SaGV1OEJnUE8zZXRVdHBiMEM3RGZ0c0hRdXNlOVM5THFH?=
- =?utf-8?B?Z1lmcVYxWGFOTy9oOEV6c3M1NFlLb0dVeHJNWHlmM1NPVGI5NmxPZTlnMHl3?=
- =?utf-8?B?OE0rOG5FNW1jZEhXRUxkc2hzYUcrQTROWWFxS2RyQVpEbXNSZWQyTFNQbElq?=
- =?utf-8?B?WVYxOXZGSzdRMnUyLzA4ZEo5M0RYSEpITXpwOTJBZnhpMnE0ZGIvSWcrRkpI?=
- =?utf-8?B?bG4rNE01VXo2MjlYSS9FSVh1VWVrWjM0U3FhRGdaK1V5RGVTT1BLenNNb2Ry?=
- =?utf-8?B?RTRicEtmWkpjVURnaFd0dGQ4bVpNVWhjQ243MkoyS3pmRlhaY0pQQjFPSHgy?=
- =?utf-8?B?RVdhQW1sZGRpQUxqdnM3MHFKa0pkM2FROGwzV2o5TVYySGE3a0M0OFRhdVVp?=
- =?utf-8?B?Qmlhc3NURFZXWGo4QmlSdWphMzMxZ1RlQzdVS0hEVmljRXIrSVVtQ21aUjRm?=
- =?utf-8?B?bEtVMGtJOEtRb2g4QU1JQmRMR0E1SVdzbnJVRWhLcUFRR1FBSVZJbGdYbnNW?=
- =?utf-8?B?cU1WSVR2Y3Z0RktRNEY5M2drMTR0aEN2MnZTVEY1VTNQUmlDYXg0ajYycVdQ?=
- =?utf-8?B?K092L3lKSFZ5TnpNWkhSc3k4OXlTTVBpeDhHZlJLSVdEM29rbHJIYUE1ZzFF?=
- =?utf-8?B?SVJuTVk0SXAybnhzSU9zVlZTQ3M4TGNaZnlES215cExNL202KzhzajBZemJ2?=
- =?utf-8?B?ODVlNGlMeDRNK29iQ1pZbXhJQktVVHV1STdXZTN3MHdEN0JkVjRUMzJnd1lZ?=
- =?utf-8?B?bnlHRjNKYlMrNDdIam1JS0NMQXVvVzR6QWExdjlqbjNxZXVBUXZTYlQyNkRr?=
- =?utf-8?B?WnFyZzU5ck9ockg4R0FZclJ3Mm5WUExldHpIM08zR3pvRFlwUFp4Ujk5NTdP?=
- =?utf-8?B?WFhScnQ1NkFkR0o2Uks0WGNoTkpCc1lQbG85STVlZmVpNHpTaGswQ2VJZGtr?=
- =?utf-8?B?dWlBaWlxaEgrOWxxck5sVVFEZURkVVVyeDdqelBndGRIRDdtMVJISVR6dzFk?=
- =?utf-8?B?aTVjbC8yZTFVem15dGdTWDBJdGFBamE1N1hYUVZVSmxra2xGdy9mVDAzZHdl?=
- =?utf-8?B?TGhlcnlSRjk2S0Q4cTdnSkkraVlDS3BVcTduSjJnTzFlS1Qya3J3YWVVN01Q?=
- =?utf-8?B?Y1NVSFdTN2VOR1NGK09FSUxpbUNETWFaUCs3US96Vm9wcC85Mk5Wc1dWY1l1?=
- =?utf-8?B?Ny9uRHhDYW5ReUR0RDNzMkJIWjU2eGVoUE03MFhHZHhlc0V1T0xscW0zT25H?=
- =?utf-8?B?Tk95c0ZpMmdKSUNsTTJEZUwxNHJTVTIxUzE0Q0lyQmFHbHJWNHJPU05qUDJS?=
- =?utf-8?B?MHRyOTJNaGpCc3ROVHE5SmpSUjlBSi91NlN5OFd1bGpVZld4SVRkZmMwVzZB?=
- =?utf-8?B?ck04K0hCRlVOMEtQaWQzVjY5TTRDN2pFelAzN3NlSU04aGVkZzlGRXB4Unlt?=
- =?utf-8?B?UzBmUGxzbHVMNHQwRmVFVWxmMytqMXZ5WUdjR0pKSWlzYXFOaGJNcHJiU1U5?=
- =?utf-8?B?QWxrSlRpVDdMZDNwTTBsdy9rTGpLVHk3dGMwNXBCY05MTCtleGZncWpLcVFB?=
- =?utf-8?B?OGJ0TDFSL2pRSHhsRnNlcDZ0U09tdzk3ckRGWnI5KzlRM1Y1K1BBbWlsUndj?=
- =?utf-8?Q?5Q+US9ShoohYtEpO6iKftmd0fiv3ohqf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFlDb25yaSt4WnhrbjV0bmJmSEFleFNoN2hkUUNRNG8yYVFrczMrTG5NZERD?=
- =?utf-8?B?U1JBWVZ6YkEzT0MwdllpMEorREQyS1MwdTI5SEJnY2pEVHNJU25kZ3ZmakJO?=
- =?utf-8?B?eEVQNnFYalFBSXFGZzJnSEwwdDlYNVhGbXJPVFNTd2l4RFo3OUR0NTRqV0Rp?=
- =?utf-8?B?Ym0zY3dHOStmWmdpOE9TcFBlYzJhTFdKa1kwNGozM1ZoRlNFOXorUFEwT3Vh?=
- =?utf-8?B?d3plN25hWjdjNDlyYk1pdjFmR2xlNURDdnQyM0xrY2J6UkpFbEVPdHJzMUFq?=
- =?utf-8?B?c2lmRUdDY1d6SURvOHJ4aUt2aTlXZldtZWpKZE1ISThRU2t4YStLN2hSdUFM?=
- =?utf-8?B?Ung0OTdtRTAwUnVKVk1maktaMnFVVWtJcldyTDF1K0FLeklwR3NXYW5DeDR4?=
- =?utf-8?B?eW9KUG56TVJUMFp3ZTJhRDVRTHZ4K0xHQVErQ3NFVjRPQmQ5cDZYRnJULytS?=
- =?utf-8?B?aFhKcktEcTdMb2ZZZjY5Yk9jdFh6aFZsZHh0U3duK0Z1SDYvYlJ4aUJTK1ZL?=
- =?utf-8?B?QXZNd08xRjQ1VXg4MHVHZXFGajA1ZUFUdjh1TjhONmlMYWVvSFNuWFJVRmxX?=
- =?utf-8?B?RU5IUTZWZXZMNFpCVlF5WnJkNnA0cUJzVmdaOVExMVBtYUI1dVk1SSsvbzk0?=
- =?utf-8?B?QzBnbWVwVytxZSs4K2lqU3pGWERwM2xkb3NUTnEyVC9MZ3dYRWZvZEV5a0FP?=
- =?utf-8?B?bkNOQXdzc2w2ZXlqeHFQYU9XYXY5WTlMeWVwNDlpUzlwM3diallyZGdPZDZY?=
- =?utf-8?B?TFNnMEdSYjRESkVLTmlkRGloREtRWmJScVBjTUl2Uzk0VC9YMUM5YTdFNWE0?=
- =?utf-8?B?aStXd01VWXVEMG55Nk1KbW5NcEhRVWpnUDhheG40VnZkeTdSK2JCSVJpUDRF?=
- =?utf-8?B?b1Q1b2xYQjBUaGxYV3gva25aQVZxa0xKOTFOMGxnOVJKWUU4RGM3T0VPR21r?=
- =?utf-8?B?SFdYNzVWQ25kZ0RMQTVqUDd3eE9OMk5DMTlXV3Rudi8xNi9XSmprUFV4eDdr?=
- =?utf-8?B?WlQ0UlhGZktrMUxYQldLaWl0cXA2cWNxcDJSSTU0RjJwYTVzRmdYM2ZLTzAy?=
- =?utf-8?B?OHRJdXRUVjNmMHZVNGw1U2tyaFRKc2FYbXJ1UTVXWnV2NjBxMExNM05UblJi?=
- =?utf-8?B?YUdheDBnVVd4TzZoL0hJVVNXbTRXUVc5dTBmTWhFT2psZjNaY3B3VXBRUGla?=
- =?utf-8?B?akNJbSsvRFZSNXB5L2hqczdXdnlyQmU2UVZFaVZTVzdOWklYdzRwV01KRllQ?=
- =?utf-8?B?TlI1aUdvNnRYa0tTbnZiU25vSlNOQ3dIMzdLTW9MbmZVK3RzWEVrcEQ0enZS?=
- =?utf-8?B?VnEvbzlFUnlMTjJTd0tnT2UvQzROS3doUmdoNERWb3FzK20wblBNN2gzSWNi?=
- =?utf-8?B?a1EwV0xnSzl2aW1yMXI5Tk5rVnVpTERlejQ0U1lLOXdSZjA0Sk1ISmg3cFpp?=
- =?utf-8?B?ZlRHV0pCZ0o1RCtJaVBjaXNCczVTcVVyQ1BRUUhqcXdOYWwva1Rmc094SGhQ?=
- =?utf-8?B?dnovZDlTRWZzK04wam5SbENxaTIzYnNpTWtZZUx0S1FsVjFDdlVCUUJEeTR4?=
- =?utf-8?B?dzZEc3NRMXN3aVdVK0Yzd3p1dmxTcWZpUmpxelBJcXdPV3psUUd1b21NcnBp?=
- =?utf-8?B?eHNXSGtrVlRYc0V6d1E4VDVkWDVVbEtlaEJGV2FuYUhVaER2UlovVFVqMXZ4?=
- =?utf-8?B?T1Z4YUxWMmRqTWlGQVV0ZnBMY09mQWRSbjZwZEdDN0ZNU1lGYVpvOG1XYnpm?=
- =?utf-8?B?RU96czZOQW9vMUROdXEvNm1VOEFwWXpBVFl3c0JURitQK1hobkFpNlkwNzBp?=
- =?utf-8?B?QUl2bjZEWHZHaVY4MHdONkh0Q0ZmZHRUWThiTkpyaHFyUXRBNE5VUDB3RGpq?=
- =?utf-8?B?cGpjYmRhY0VzMnhLb1F4MHYxRlg3Qit4ZURNWmFiL0N0WXRxZVh0ZlZJTzBM?=
- =?utf-8?B?amY2Nkdzc0VNcnJ5SFZnOG1jYXVqRm1LbzVyUTNmaUhxV1B3WSthQUVNTkZC?=
- =?utf-8?B?RkgzTXBoa2lKSExpaG41a0pJeTMzT1dEeDR1L0dtd3drcExTaHJiZkYvaSsz?=
- =?utf-8?B?Rnk3MHVjUzg1RHFBSzVlQ3Z4YUM1YzNFVzdDb3B6RGpxRE1oUzE4R2Y2Snlu?=
- =?utf-8?Q?lqrFBniJLffUKccfjIa02Hi/5?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e751f96-6dfc-4ec5-b965-08dd6010ac29
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 20:18:08.1616
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZbpO/Urz8QPyGfPoRgtCub7b3PhXUx0k0UZSgPNOKP+7kLSdY5zd447PTaEtt154vPKkfJ+AUAfq2YWSo+YHVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9255
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Frank Li <Frank.li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linux-arm-kernel@lists.infradead.org
+References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+ <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
+ <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
+ <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
+ <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
+ <20250228101952.g6tae3ni5xrhjk3y@pengutronix.de>
+ <bfe3c719-f1c5-4ae5-9a40-45ad75cd5855@gmail.com>
+ <20250307152236.3ayulbjqnu3vn7mf@pengutronix.de>
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <20250307152236.3ayulbjqnu3vn7mf@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Remove cpu_addr_fixup() because dwc common driver already handle address
-translate.
 
-Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change from v9 to v10
-- none
 
-Change from v8 to v9
-- rebase latest linux-next (close enough to v6.14-rc1)
+On 3/7/2025 5:22 PM, Marco Felsch wrote:
+> On 25-03-04, Laurentiu Mihalcea wrote:
+>> On 2/28/2025 12:19 PM, Marco Felsch wrote:
+>>> Hi,
+>>>
+>>> On 25-02-27, Frank Li wrote:
+>>>> On Thu, Feb 27, 2025 at 11:57:54AM +0100, Marc Kleine-Budde wrote:
+>>>>> On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
+>>>>>> On 21.02.2025 21:56, Frank Li wrote:
+>>>>>>> On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
+>>>>>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>>>>>>>
+>>>>>>>> AIPS5 is actually AIPSTZ5 as it offers some security-related
+>>>>>>>> configurations. Since these configurations need to be applied before
+>>>>>>>> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
+>>>>>>>> be their parent instead of keeping AIPS5 and adding a child node for
+>>>>>>>> AIPSTZ5. Also, because of the security configurations, the address space
+>>>>>>>> of the bus has to be changed to that of the configuration registers.
+>>>>>>> The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
+>>>>>>> config address part in your drivers.
+>>>>>>>
+>>>>>>> Frank
+>>>>>> Any concerns/anything wrong with current approach?
+>>>>>>
+>>>>>>
+>>>>>> I find it a bit awkward to have the whole bus address space
+>>>>>> in the DT given that we're only interested in using the access
+>>>>>> controller register space.
+>>>>>>
+>>>>>>
+>>>>>> I'm fine with the approach you suggested but I don't see a
+>>>>>> reason for using it?
+>>>>> Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
+>>>>> Applications Processor Reference Manual, Rev. 3, 08/2024), the
+>>>>> AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
+>>>>> different than the bus configuration. Why not model it as part of the
+>>>>> bus?
+>>>>>
+>>>>>>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+>>>>>>>> index e0d3b8cba221..a1d9b834d2da 100644
+>>>>>>>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+>>>>>>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+>>>>>>>> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+>>>>>>>>  			};
+>>>>>>>>  		};
+>>>>>>>>
+>>>>>>>> -		aips5: bus@30c00000 {
+>>>>>>>> -			compatible = "fsl,aips-bus", "simple-bus";
+>>>>>>>> -			reg = <0x30c00000 0x400000>;
+>>>>>>>> +		aips5: bus@30df0000 {
+>>>>>                        ^^^^^^^^^^^^
+>>>>>>>> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
+>>>>>>>> +			reg = <0x30df0000 0x10000>;
+>>>>>>>> +			power-domains = <&pgc_audio>;
+>>>>>>>>  			#address-cells = <1>;
+>>>>>>>>  			#size-cells = <1>;
+>>>>>>>> +			#access-controller-cells = <0>;
+>>>>>>>>  			ranges;
+>>>>>>>>
+>>>>>>>>  			spba-bus@30c00000 {
+>>>>>                         ^^^^^^^^^^^^^^^^^
+>>>>>
+>>>>> This looks very strange: The aips5 bus starts at 0x30df0000 and has a
+>>>>> child bus starting at 0x30c00000?
+>>>> @30df0000 should match controller reg's address.
+>>>>
+>>>> subnode address 0x30c00000,  should be descript in "ranges", which 1:1 map.
+>>>>
+>>>> So it should be reasonable. another example:
+>>>> i2c@1000 {
+>>>>
+>>>> 	device@1c <- which use difference address space.
+>>>> }
+>>>>
+>>>> The similar case also happen at pcie.
+>>> I'm not really convinced that pcie and i2c are good examples here. I2C
+>>> does have an other addressing scheme by nature and the hotplug-able pcie
+>>> is dependeds on the pcie device memory map of course.
+>>>
+>>> Here we're talking about an access control IP core on a bus which is
+>>> static.
+>>>
+>>> But.. it looks like from DT abstraction it's fine because STM did
+>>> something similiar with their st,stm32mp25-rifsc or st,stm32-etzpc
+>>> albeit it does look strange and I don't know why we have to limit the
+>>> address space since it was already mapped but used by the fsl,aips-bus
+>>> driver.
+>>>
+>>> Regards,
+>>>   Marco
+>> The address space of the bridge was changed to that of the bridge's
+>> configuration space because I think it's very awkward from the
+>> software's point of view to have to hardcode the offset and size of
+>> the configuration space inside the driver. 
+> You mean the access-controller IP core. I could also arguee that it's
+> akward to put the bridge access-controller IP core into the middle of
+> the bridge address-space instead of placing it at the very beginning of
+> the bridge. But this doesn't help here :)
+>
+> I see what you mean but from DT abstraction POV it seems more reasonable
+> to keep it as it is and just adapt the compatible. The current driver
+> maps the whole address space too, so I don't see why we need to change
+> it if we change it to the aipstz driver. If you see the
+> access-controller IP core as part of the bus I don't see any problem and
+> would argue that the offset detail needs to be handled within the
+> driver.
+>
+>> I also looked at what STM did with "st,stm32-etzpc" so I thought this
+>> would be acceptable from the DT's POV.
+>>
+>> Regarding why I chose not to model the access controller part as a subnode of the
+>> bus:
+>>
+>>     1) The access controller is part of the bridge itself (not a separate module accessible
+>>     via the bridge like it's the case for its children) so I think the current approach
+>>     should also make sense if we take the hardware into consideration.
+> I don't like this approach if you see the controller as part of the
+> bridge because the offset could be handled within the bridge driver.
+> I also that the register offset needs to be supplied else we can't reuse
+> the driver and we don't want to adapt the driver for each SoC.
+>
+> What came into my mind is the following:
+>
+> 	spba-bus@30c00000 {
+> 		compatible = "nxp,imx8mp-aiptz-bus", "nxp,aiptz-bus";
+> 		reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
+> 		reg-names = "bus", "aipstz";
+>
+> 		child-nodes {};
+> 		child-nodes {};
+> 		child-nodes {};
+> 	}
+>
+> This way we can abstract the access-controller register space and the
+> whole bus register space and a generic driver could be written just by
+> making use two reg fields.
 
-Change from v7 to v8
-- add mani and richard's review/ack tag
-- use varible 'use_parent_dt_ranges'
 
-Change from v2 to v7
-- none
-Change from v1 to v2
-- set using_dtbus_info true
----
- drivers/pci/controller/dwc/pci-imx6.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+by changing the compatible, we've also effectively changed the programming model.
+I don't really see why we need to stick to the old way of configuring the bus node (i.e:
+specify the whole address space of the bus as well) when all we really care about is the AC
+configuration region?
+ 
+anyhow, I'm not going to insist on this. I think the proposed approach will work just
+fine. If there's no other comments on this then I'll just switch to it in V3.
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 90ace941090f9..d1eb535df73e1 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1217,22 +1217,6 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
- 		regulator_disable(imx_pcie->vpcie);
- }
- 
--static u64 imx_pcie_cpu_addr_fixup(struct dw_pcie *pcie, u64 cpu_addr)
--{
--	struct imx_pcie *imx_pcie = to_imx_pcie(pcie);
--	struct dw_pcie_rp *pp = &pcie->pp;
--	struct resource_entry *entry;
--
--	if (!(imx_pcie->drvdata->flags & IMX_PCIE_FLAG_CPU_ADDR_FIXUP))
--		return cpu_addr;
--
--	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
--	if (!entry)
--		return cpu_addr;
--
--	return cpu_addr - entry->offset;
--}
--
- /*
-  * In old DWC implementations, PCIE_ATU_INHIBIT_PAYLOAD in iATU Ctrl2
-  * register is reserved, so the generic DWC implementation of sending the
-@@ -1263,7 +1247,6 @@ static const struct dw_pcie_host_ops imx_pcie_host_dw_pme_ops = {
- static const struct dw_pcie_ops dw_pcie_ops = {
- 	.start_link = imx_pcie_start_link,
- 	.stop_link = imx_pcie_stop_link,
--	.cpu_addr_fixup = imx_pcie_cpu_addr_fixup,
- };
- 
- static void imx_pcie_ep_init(struct dw_pcie_ep *ep)
-@@ -1645,6 +1628,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	pci->use_parent_dt_ranges = true;
- 	if (imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE) {
- 		ret = imx_add_pcie_ep(imx_pcie, pdev);
- 		if (ret < 0)
 
--- 
-2.34.1
+>
+>>     2) The access controller configuration also impacts the AP. As such, we needed a way to
+>>     enforce a dependency between the children of the aips5 bus and the access controller
+>>     (we could have used the 'access-controllers' property like we did with the DSP but having
+>>     to do that for all children of the bus is not ideal I'd say.
+>>
+>> Of course, argument no. 2 is somewhat brittle in the context of i.MX8MP as the reset
+>> values of the AC's registers already allow the AP to access said peripherals. Despite this,
+>> I think the current approach would be more scalable given that the IP offers some more
+>> configuration bits which we might want to toggle. For that to work, we need to make sure
+>> the bits are toggled before the AP accesses the peripherals on the bridge.
+> Please have a look on my suggestion above.
+>
+> Regards,
+>   Marco
+>
+>> Note that we don't do this for aips1-aips4 because it's really not needed. If I'm not mistaken,
+>> they're not really attached to a PD so we don't need to re-configure them each time the domain
+>> is power cycled (which is why we can just do it once from ATF during the boot process)
 
