@@ -1,52 +1,37 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E5B22425E
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 09:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703FD1D5AB2;
+	Mon, 10 Mar 2025 10:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598949; cv=none; b=cjqTiBxaVV6TaHpkGkP21RyJHv+2zMxwT+EhNnwn99Y6yO4faTlP5CZMQSbJ9KzgtluxwoQSLWEZhs7iDGkEe8Fq7uuS7kQA2eN9TEeDQG8S6ENdgbCfuiP+i/XY1sBVcjL5zIU9gKTBsYwmg1HD0OJmfFH97trcDc8K3LR7/XA=
+	t=1741601996; cv=none; b=Yw8znpodFjd1WPxsmsRrQn707kGgYGPkFVmWx1yXVLpoF424EvGH95tWFplf32GAw/v5Tev0rbhhPlo+oHcyJXY8QQp1ZxZ5u2zKD1WW/8XltJGRgPdvJeH0PwysMFMd/LuiqD8meYzF+jXHWV3v53L1yuJ1NG5cnX+CSEnwNic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598949; c=relaxed/simple;
-	bh=uZM3lp58dqP9fRo8T3M/Fyf3CLx9G0+yBPauwPD1UJc=;
+	s=arc-20240116; t=1741601996; c=relaxed/simple;
+	bh=100GLxY3vbQfixL5KlFRnqxcfqt31VUMXg8446EaDyI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBnzcIe80e8tOrQboyez21m2q75YLDeeF/gbhYxr1j9YghPv4CKPDhEVADUcO5ALJcDzZFgZ+HNQpPY6UO9WDDxvP+mAAvZbvnN8aaQdDVIpHSAkEaFE7IKzR90cBYk/zf+ifyAGM2KvFRmxDdQ4YuedVcrssxnE6sJ/oZrihSY=
+	 Content-Type:Content-Disposition:In-Reply-To; b=TOuPHlJ5cPeLAsvtxsuwQeiISdGtwQ9BZyRMsgwO1k8NGQJbJ0K+74EvT/gDmaNm30oIqhwAVE5FYy3bnJo+5SmQk2Mi83ClYqd3tpln3BYJAQ+YMEGbcK7JZX9EAy8Wm8DEydF9hMY2kLEhclxFL3WwMaQ0od2m3KGrVbvDVI4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F97815A1;
-	Mon, 10 Mar 2025 02:29:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5103C153B;
+	Mon, 10 Mar 2025 03:20:05 -0700 (PDT)
 Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D59473F5A1;
-	Mon, 10 Mar 2025 02:29:03 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:29:01 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A2573F673;
+	Mon, 10 Mar 2025 03:19:50 -0700 (PDT)
+Date: Mon, 10 Mar 2025 10:19:48 +0000
 From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>, <arm-scmi@vger.kernel.org>,
+To: Jacky Bai <ping.bai@nxp.com>
+Cc: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <ilia.lin@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>, <tiny.windzz@gmail.com>,
+	<wens@csie.org>, <jernej.skrabec@gmail.com>, <samuel@sholland.org>,
+	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+	<linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<imx@lists.linux.dev>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <Z86w3ZRS6T2MvV3X@bogus>
-References: <Z6uFMW94QNpFxQLK@bogus>
- <20250212070120.GD15796@localhost.localdomain>
- <Z6x8cNyDt8rJ73_B@bogus>
- <CAGETcx87Stfkru9gJrc1sf=PtFGLY7=jrfFaCzK5Z4hq+2TCzg@mail.gmail.com>
- <Z65U2SMwSiOFYC0v@pluto>
- <20250218010949.GB22580@nxa18884-linux>
- <Z7Rf9GPdO2atP89Z@bogus>
- <20250218133619.GA22647@nxa18884-linux>
- <Z7Wvyn1QJQMVigf9@bogus>
- <Z7Z-ZnztmvUxWoQJ@NXL53680.wbi.nxp.com>
+	<linux-sunxi@lists.linux.dev>, <linux-mediatek@lists.infradead.org>,
+	<imx@lists.linux.dev>
+Subject: Re: [PATCH] cpufreq: Init cpufreq only for present CPUs
+Message-ID: <Z868xB3_3NhMsa7R@bogus>
+References: <20250310071640.3140435-1-ping.bai@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,27 +40,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z7Z-ZnztmvUxWoQJ@NXL53680.wbi.nxp.com>
+In-Reply-To: <20250310071640.3140435-1-ping.bai@nxp.com>
 
-On Thu, Feb 20, 2025 at 08:59:18AM +0800, Peng Fan wrote:
->
-> Sorry, if I misunderstood.
->
-> I will give a look on this and propose a RFC.
->
-> DT maintainers may ask for a patchset including binding change and
-> driver changes to get a whole view on the compatible stuff.
->
-> BTW, Cristian, Saravana if you have any objections/ideas or would take on this
-> effort, please let me know.
+On Mon, Mar 10, 2025 at 03:16:40PM +0800, Jacky Bai wrote:
+> for_each_possible_cpu() is currently used to initialize cpufreq
+> in below cpufreq drivers:
+>   drivers/cpufreq/cpufreq-dt.c
+>   drivers/cpufreq/mediatek-cpufreq-hw.c
+>   drivers/cpufreq/mediatek-cpufreq.c
+>   drivers/cpufreq/qcom-cpufreq-nvmem.c
+>   drivers/cpufreq/sun50i-cpufreq-nvmem.c
 >
 
-Can you point me to the DTS with which you are seeing this issue ?
-I am trying to reproduce the issue but so far not successful. I did
-move to power-domains for CPUFreq on Juno. IIUC all we need is both cpufreq
-and performance genpd drivers in the kernel and then GPU using perf genpd
-fails with probe deferral right ? I need pointers to reproduce the issue
-so that I can check if what I have cooked up as a solution really works.
+Again how did you just narrow down to the list above ? Is that just a
+random pick ? As I suggested with corresponding cpuidle changes, please
+look into the details in side the for_each_possible_cpu() loop and then
+decide if it applies or not.
+
+For me, it applied to the below files as well at the least.
+
+drivers/cpufreq/mvebu-cpufreq.c
+drivers/cpufreq/qcom-cpufreq-hw.c
+drivers/cpufreq/scmi-cpufreq.c
+drivers/cpufreq/scpi-cpufreq.c
+drivers/cpufreq/virtual-cpufreq.c
+
+Please check everything thoroughly as I just looked at these briefly.
 
 --
 Regards,
