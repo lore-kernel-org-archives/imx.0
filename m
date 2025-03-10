@@ -1,78 +1,85 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E0521D3C2
-	for <imx@lists.linux.dev>; Sun,  9 Mar 2025 20:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5BD2FB;
+	Mon, 10 Mar 2025 01:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741552588; cv=none; b=fsLui/t2U4Ew4/j1VhczgSYWq4B+cnNNLeD0x+r3DBCuSQJEyBbKspRnKnSO7cO3fztyjSc8LviREEYBqhY9S/MBL/EhsX+5h8sl7aUaMCP3f/KEf/XM7JM+//ozxIPzVopRGb14eyYxU9GOFdCjhOaA4ixx7Rv2ZRgNa2XDpAA=
+	t=1741569967; cv=none; b=e4WnVrAaGv+KYMUmSxr/7h7nlc3qHGyRTInGIbp+3y6nN/kVfOZMwSCnPfXBpJCtLGcpKTNoKi5wB29gtXi/TwXe2IqKtt6s/X23Rx/AUoaOtQcaAJ25hVuJunzil0cGRlM1XJ48l5IL+wi737p6RVW2lnK1HcN24Xn8wTnYQVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741552588; c=relaxed/simple;
-	bh=vBSbV1b6P8CXHisFotONcoU0zzd7se5BPST4f4Y9UVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hzl4flAquPP/AupFzOM28vPrAVvUn7PZJ37xm+71L6CuwmjI+DMzTn+M0rCaFVG2dqCVcmpQZUxPyavG0fEjzgFls8YErlXdFELmITLyOw07xGJYfyhEl0P40ydjioo3gdAowoN/pG8Ym+sTd+5AODwGHKAqLwxQ4EPwNC3izTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2239c066347so58569665ad.2
-        for <imx@lists.linux.dev>; Sun, 09 Mar 2025 13:36:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741552587; x=1742157387;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5W1PPB8C5k9Rxvd4JqWh8H/eOLc6K5SLc+31IQB3dkE=;
-        b=otJbR/v8m3TmUIpyZHPQ1clxoDCcpnVE45pC18EkEWFCtTCqzCSEv8VjPdmjNH7dFE
-         CYQiU/1aKqisXHr5TgB0qy5inNcku5o0KlxDLsU/w2M6SEltMK9ZZ/CqPFkUWd0ZueiM
-         whnv10WvgPYVRcY8AxbuU1W+kXty/Bva+XfKbRU6H4HUQ6rr1qBlC5AgGDs/HLYC3+Sq
-         BmNWnxif+T2n37tEce0yHBXW5zOcFyONp4hTsWGeVInTiQ2muPCuZ1Tp3yX/c1bpnMZn
-         UrFLsqhIqwcZ6WPdck0PRUKGkck3oUoYT7g0dyGQPMlQBzUPApvqP/v4yJRmvl0mIP1O
-         oH/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUbciJMVxTRlbujGQV53wJcbWu5ovjKzdbEPURNUnVMICmAFfNkmXhkqjYW5oGDKyYvhVE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyet9o/3X23Is+FBXFAOdWhttq3ROr9Kuo0fek8JCQ1ZVzOfDY6
-	DrZsPqTB3vx8vGAjid8GUHvNPueCmRs44eG47rhsCGwZrEYUVSIm
-X-Gm-Gg: ASbGnctrgurJ1OjsgeM03yH1nCBCGQRaG629fs09yViR5sclWwOd1A9Lw7SRmIHfQxh
-	g6cg03E40sc9zbdvFjebscTfoeRaijZD6Hq7pZEW6/xdJGxfoDHVXKRuzzcp3AgrahpIuSvteIG
-	bXOKo3p5ShEzUWkBrdQ4uJywByB6dofFkq+bsr4kLHWBRGNDeBWX0uC9NQanvkopJtb/wf26vCZ
-	uk1C0pL6VSJY9M9bqj1mIG+KUJapAy+jfQxvc/bezj5vLNXOtgX+qjRPeAY+PmVAMMmegpKlcnB
-	C+mWlBgJewAdTxODi9MjAComOcgQMjx7ho8pdZ5GfCqnGjLcKNg3figDunF3yRS9i7iTEx/yhFy
-	t81LLsTphhVmspg==
-X-Google-Smtp-Source: AGHT+IHj2p8QQGuPQO35NOVEoLjztQAIUj/vuHS+l9hV6ZdhMc7VKvfvvYb1Hm2TLPNP1gLnAWZ+5g==
-X-Received: by 2002:a05:6a00:4b4a:b0:736:54c9:df2c with SMTP id d2e1a72fcca58-736aaab75e8mr14689147b3a.15.1741552586706;
-        Sun, 09 Mar 2025 13:36:26 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-736c30b3a0csm2793283b3a.88.2025.03.09.13.36.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Mar 2025 13:36:26 -0700 (PDT)
-Date: Mon, 10 Mar 2025 05:36:24 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org, bhelgaas@google.com,
-	s.hauer@pengutronix.de, festevam@gmail.com,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
-Message-ID: <20250309203624.GB3679091@rocinante>
-References: <20250226024256.1678103-1-hongxing.zhu@nxp.com>
- <20250226024256.1678103-3-hongxing.zhu@nxp.com>
+	s=arc-20240116; t=1741569967; c=relaxed/simple;
+	bh=niTPujelY/5yJ2aZGPQo/oOGRfZZBnNHnH4STmdWhzs=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qgKMpvF+nBIICriiXdaIMg7Q01YaFpko+gTd67nPO9xyIBrzDQj+hRhu7k6Hb5zNin/3mcWmsK+6GKmEAbbwtNdJpThDZ1LKjt+EFioCmecbv0FebapEqHrQphEes4LMsYgKoI5ZZ8ogsVeA3ZnJy3oszue/imjBihhc7Tf6Sss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKgWNPOg; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKgWNPOg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2FEC4CEED;
+	Mon, 10 Mar 2025 01:26:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741569966;
+	bh=niTPujelY/5yJ2aZGPQo/oOGRfZZBnNHnH4STmdWhzs=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=OKgWNPOgpP5Hvg55x3Eo8nfgm3rpxEtORf+cHGQuqJPyuod3JxrLOYXrgN3E5zmYq
+	 3zN6Gszv2KmYUFBjI01gFPoeBunNxJILmMhXFto63eiyCH60BTSPK1umTO5AIRznl9
+	 XCcXaruCqXjuWFPPEUE4W1772K90TAU0iMSVtbN2ZwdsbCzEMypvkFp6t/1/UAhjJC
+	 eyKlJE4ofA6d6TKlENGKtbnV5KF00GtC+L9mtJPAfNlUftK1Xc6wK/gX083x6y8tFZ
+	 CpIaKLcvVsvMsYoUALvDt8XkB37af1J1wdmStxJUIOPYhbAPEOh1F2814zWqrzUy9w
+	 Hv0crZGSQZ7bw==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <20250306053138.1914956-1-shengjiu.wang@nxp.com>
+References: <20250306053138.1914956-1-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: dt-bindings: fsl,imx-asrc: Document audio graph
+ port
+Message-Id: <174156996154.2353078.15110736493128457712.b4-ty@kernel.org>
+Date: Mon, 10 Mar 2025 01:26:01 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226024256.1678103-3-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-42535
 
-Hello,
+On Thu, 06 Mar 2025 13:31:38 +0800, Shengjiu Wang wrote:
+> This device can be used in conjunction with audio-graph-card to provide
+> an endpoint for binding with the other side of the audio link.
+> 
+> 
 
-> Use the domain number replace the hardcodes to uniquely identify
-> different controller on i.MX8MQ platforms. No function changes.
+Applied to
 
-Applied to controller/imx6, thank you!
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-	Krzysztof
+Thanks!
+
+[1/1] ASoC: dt-bindings: fsl,imx-asrc: Document audio graph port
+      commit: db91ad81a2545eb82aa47d0306bc3e1adb05e336
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
