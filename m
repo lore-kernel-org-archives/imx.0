@@ -1,277 +1,273 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2132.outbound.protection.outlook.com [40.107.220.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE371CAA60
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 19:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741635550; cv=fail; b=dLs78bonk7t0OyjXDSpCj5D+LxF8/x6ZifHO3X8YExvzEgIpGjuyilswLD98g0OfC5dBhYXZRM6O8HZgm/8oGfY8kstclXME2vFg8aMda2MVe2WjojLOacpLcwvuuLbUeb+QBLj2pqDC5YfFKsDAKimUWKjE3KurQ3scfbvOKVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741635550; c=relaxed/simple;
-	bh=Vp02aJMoMgCFcwxjtz9766y2i4+UCBryc/FaU3E3nVo=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=GAlrEQpqpcLL+dzEH0W0g50fPP/4Nls582e30Ui+A1siGdiiAF47r1gXTBbSdsU2Nc2IWsD8pn4KJGOrzFyM70L3Xp8CBVDqAtL/vr/4W4FP5+nkSOiYzMbIhrXavq/b67y5+7Iaty1Xfrv2+O/GAyQQmCwJprwxdbmDpKJCa8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=d3embedded.com; spf=pass smtp.mailfrom=d3embedded.com; dkim=pass (1024-bit key) header.d=d3engineering.onmicrosoft.com header.i=@d3engineering.onmicrosoft.com header.b=HImhpGOW; arc=fail smtp.client-ip=40.107.220.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=d3embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d3embedded.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795A21D516F
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 20:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741637185; cv=none; b=CMjwoWsID50pxlDkXLfJoAT+gs/HzaiUxSOgKQsrb2Oxf1W+I60OUZQcyhCytxNyuyDB41HHOjPh4qwiNGaXplIsOqq5qeaFNbpWpyGa1tVysEjVu8pz27MmN7IfEkhqNdw5Dxfbd55eiCY+X3lk1Qcw7/t5bKVvKoYJkK7bQGI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741637185; c=relaxed/simple;
+	bh=81myXmDInhVPmhXO3slZMem7I5EfWSw4e3v9rXz9TEE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tqPFRC+T+aYDGy9tra8gGeKcChK7uxQGW3I+lNZO/nJCW2fVkvvsmuuXvw4pZKbsmrhr5CpBIvvJ8qDcKoggBFIfj4VTBoReoajH+o7eb/s6FnfXIEgkMQOJo+n4Bi7kasq3wyN7Y9Xeccn+CdFuF/ZHzJwpM1f9KdqSFeCflB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iNqnqs7F; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=d3engineering.onmicrosoft.com header.i=@d3engineering.onmicrosoft.com header.b="HImhpGOW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5biTWJOHWad1Ksub+U7uDlQY9idfbXct5Yoy2Z13YelLZgcjb6F7PuRkEZJBUlp0qMFI3RVFdXZU+rlr4Z01ggyoHUxzRoZRJ5cKZ6wimTseELqRWE7opjRnsbSfrTUNNqVsFyzXpT+pwZQCZXH3IrnSAZpoINOKcDZPs6hUkhF2fdwrvvnR1vQyVB5U2wnnziMMz/edRiF9TO/9OAJyCsMpjfQn0xtW4ovrB/A+5qg/GYf3xMaBgWXO7mTwpZzmgKwI02YytQYWyRcaEPxN3NPYOdx82/2IruCwtZ2yvMQwBMQxdaB/vyT7KCviWjILnVX9nplp9k+yD9XId7iLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LGCEjNLk84A2mvz6bdof30fwKaKgjlROox6RtIQnx2g=;
- b=v5wGQ8fCPGBM8wu3pvlCzXaexDKqAahd2CizN44YAGECmxPyn6dfFMBfEYFzQmfTVJUk8oAfLvm8PZt5hfJXMz0ySxMO4+BGEneXTjpf6i8RfM90TguELINyoD8jb3dGNH1TEXo0B88Uw217WDESugfBPBYeBBMq1cDpM03SohbxoeMeCt+FutLMvaPEujMvNO6+KkAxWE8ZGdN1E5Cz9wJFHr3+0kTYEcoJj7tP8MAff9krT4AzoCs5jVQ9i5SlLp3cRoJ0pygow7keyQxuNiM4jpG//23UK+PYo7+zzaM1TIr5cV5f9pwQeiDmwVxtziz2EsHBQqywi9bYrPmTyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=d3embedded.com; dmarc=pass action=none
- header.from=d3embedded.com; dkim=pass header.d=d3embedded.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNqnqs7F"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so9029525e9.1
+        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 13:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=d3engineering.onmicrosoft.com; s=selector2-d3engineering-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LGCEjNLk84A2mvz6bdof30fwKaKgjlROox6RtIQnx2g=;
- b=HImhpGOWueFBYPsNXaXSGo/WOViCPIacBZAqkJGmR+mkr94XVngZiGMODIc6hqk8CZ/MODGmRfesoC+1B4hpbt0k2p8ufYcGRYAPpIJKbM8NBd7TqaTN1fxJXTfB6QL7ePIpG82wjnbmUw3chsr9RYlu3n0pfQWtViIg+TPeczE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=d3embedded.com;
-Received: from CH0PR14MB7306.namprd14.prod.outlook.com (2603:10b6:610:186::18)
- by DM6PR14MB3551.namprd14.prod.outlook.com (2603:10b6:5:1ba::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Mon, 10 Mar
- 2025 19:39:06 +0000
-Received: from CH0PR14MB7306.namprd14.prod.outlook.com
- ([fe80::8bfa:1131:30b1:9295]) by CH0PR14MB7306.namprd14.prod.outlook.com
- ([fe80::8bfa:1131:30b1:9295%6]) with mapi id 15.20.8511.026; Mon, 10 Mar 2025
- 19:39:05 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Mar 2025 15:39:02 -0400
-Message-Id: <D8CU9UT1XQV9.3NFZ4OAQOKQG0@d3embedded.com>
-Subject: Re: [PATCH 2/4] media: i2c: Add driver for Sony IMX728
-From: "Sebastian LaVine" <slavine@d3embedded.com>
-To: "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>
-Cc: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linux-media@vger.kernel.org>, =?utf-8?b?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?=
- <nfraprado@collabora.com>, "Abel Vesa" <abel.vesa@linaro.org>, "Achath
- Vaishnav" <vaishnav.a@ti.com>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>, "Ard Biesheuvel"
- <ardb@kernel.org>, "Benjamin Mugnier" <benjamin.mugnier@foss.st.com>, "Biju
- Das" <biju.das.jz@bp.renesas.com>, "Bjorn Andersson"
- <quic_bjorande@quicinc.com>, "Catalin Marinas" <catalin.marinas@arm.com>,
- "Conor Dooley" <conor+dt@kernel.org>, "Dmitry Baryshkov"
- <dmitry.baryshkov@linaro.org>, "Elinor Montmasson"
- <elinor.montmasson@savoirfairelinux.com>, "Fabio Estevam"
- <festevam@gmail.com>, "Geert Uytterhoeven" <geert+renesas@glider.be>, "Hans
- Verkuil" <hverkuil@xs4all.nl>, "Javier Carrasco"
- <javier.carrasco@wolfvision.net>, "Jianzhong Xu" <xuj@ti.com>, "Julien
- Massot" <julien.massot@collabora.com>, "Kieran Bingham"
- <kieran.bingham@ideasonboard.com>, "Kory Maincent"
- <kory.maincent@bootlin.com>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski@linaro.org>, "Mauro Carvalho Chehab"
- <mchehab@kernel.org>, "Mikhail Rudenko" <mike.rudenko@gmail.com>, "Nishanth
- Menon" <nm@ti.com>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Rob
- Herring" <robh@kernel.org>, "Sakari Ailus" <sakari.ailus@linux.intel.com>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>,
- "Stuart Burtner" <sburtner@d3embedded.com>, "Tero Kristo"
- <kristo@kernel.org>, "Thakkar Devarsh" <devarsht@ti.com>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Umang Jain"
- <umang.jain@ideasonboard.com>, "Vignesh Raghavendra" <vigneshr@ti.com>,
- "Will Deacon" <will@kernel.org>, "Zhi Mao" <zhi.mao@mediatek.com>
-X-Mailer: aerc 0.20.1
-References: <20250212195656.69528-1-slavine@d3embedded.com>
- <20250212195656.69528-3-slavine@d3embedded.com>
- <20250213101903.GH5888@pendragon.ideasonboard.com>
-In-Reply-To: <20250213101903.GH5888@pendragon.ideasonboard.com>
-X-ClientProxiedBy: MN0PR05CA0028.namprd05.prod.outlook.com
- (2603:10b6:208:52c::12) To CH0PR14MB7306.namprd14.prod.outlook.com
- (2603:10b6:610:186::18)
+        d=gmail.com; s=20230601; t=1741637182; x=1742241982; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gD97NhLlEYL97V/2ZHq8YNEp8iOcNHwTCGab1mS8SQo=;
+        b=iNqnqs7FjbtHaGqilv7U5BzMe4hlZdSXZFT59gAzfLVkzQcfwiM54E6yj3kN6VYJ9g
+         n2WCmZ3Dp4o9GSzsmogRYI9/zNY6LZOMAJvyM9pCwib2x3/vqZ1g6n7NU5IMgLBtILW/
+         CRVrtrP47+Wu41XRig+EhsDFtsMqBwkbxtFiMJDbUeHqkA3FkZrsAbkqOr3vlN9Vt5Qd
+         DOLCm8iO439nuC9Lz5BKLbeztIe5tv2gBMeErZ5IyH6js56KEZASNazdIhL6fNcZQY6E
+         N+2vYKh7zFyWTHofWx3tGu0vsgU8UOIJDJ+xP8RwJ5U7aqNArj2hESISxaDZavWVcSvK
+         y4qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741637182; x=1742241982;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gD97NhLlEYL97V/2ZHq8YNEp8iOcNHwTCGab1mS8SQo=;
+        b=ZF96c3w34MGyOGW13kcd042PlWEJbvHzHWgNRWN7zNE2vf9rd2s1ZDQc0FnEJvz/dS
+         1TuqPcM9W+DR8g45MA/579x/Z2/+QHUl3bDPfOAoZmtUUm+/F60rGP8zJFLHJMXLbGyq
+         SEuIruoQOR4T2dUo7A1QqItp9Z8fjmTownx3EB3gYb2eeu2h4bOERGjU4vVf7diQKkSk
+         0nenvfm/tCILjQdonQ6t4v7L+EJ3nZqesoV2sKsK+V63XDLrOE8V06v7yN9m4gUQGX5M
+         k24+GhnjGbk7lMzMsi5BpI6qmcOX57Zj9XBFzlSmIK7doyH7fLftaYZYMIKkUADH02QX
+         cljg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWfT+1IhAC/dZ/l01BUp9CT2e4dddZMF7bc0WDzxpIg5gaf7zheLomu9CPJStJJV22ieo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9Z7+5oS05pB9d0wOxEvJRqr0kTJuOLwBXF22VaXax3UxyRdPV
+	fmUR4lp1Xc6tyCOe6Ipg8b/SlUUXhOC2QAxsTcqujfbPSt3ZVvw9
+X-Gm-Gg: ASbGncvLObAlkVdx5TtTIrD8Dba2C84jWra/dNkAJbUNcwSXJTcHkvJ3edpGuePR5tp
+	jIQ0zhQDxeRFKlTYLarSX+oWE7XiStMHlrEEiiSnAvv3mtgl0JlsKJvpCpaD5yYe8iTV4pJ5o+A
+	2ErXBa08kdwGAISTIziyPdgi0iqVYgH+ZsXfpgeHHYptOBJaBwPBPplLEoUNFj+Y/Qf0/yB3eQ0
+	B23erWc44mYYzHKuS8MxXe0p5s4xP/vNtcpANylOk5VPUNZ5SQmM4z15M0E1UocprdTmy+z/G8H
+	hauXf9ldrMGfUi+k8RMxoTE5xKMWF0nqHitbYwCixujExmg8dVPKaZviJsoT9bEFROZ+iSpJmQ=
+	=
+X-Google-Smtp-Source: AGHT+IGDtT3+hnE0yeEMt3/RuibcNDttpuQq96wWCddY+2VjI5dzRc+BpF7FBBIizcSJBbIrNO8ERA==
+X-Received: by 2002:a5d:47c2:0:b0:38d:d166:d44 with SMTP id ffacd0b85a97d-39279e5172emr1037350f8f.23.1741637181448;
+        Mon, 10 Mar 2025 13:06:21 -0700 (PDT)
+Received: from [192.168.1.132] ([82.79.237.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8b0548sm160697355e9.6.2025.03.10.13.06.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 13:06:20 -0700 (PDT)
+Message-ID: <4aef911d-d766-4ae7-951b-76843cf33c56@gmail.com>
+Date: Mon, 10 Mar 2025 22:06:14 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR14MB7306:EE_|DM6PR14MB3551:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05416320-21ce-4386-822d-08dd600b37ef
-X-LD-Processed: b7153db5-3376-478b-b601-92ce9bc0d3bc,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?Ty9EM2lVRVNKWVE1a09zc0RrTDRFTG8yOGxBUVBsaEFGNmhnTzhVeVZqRTZC?=
- =?utf-8?B?ckJ4eCtSZGpnL1JjRnI3WGNpTFVXVGVTTkRMbXhaOWN6TSt1ZmFhZFVkYlRY?=
- =?utf-8?B?ZGpiQ2hwLzdqbG9CdTAyWlRYVzV5WS9TNGkzUXluZzh3a1BjTGg2bzNKR2g0?=
- =?utf-8?B?Znh0SW15R1pJK04rUHNKTC9ZSXVSSU51TWNFaHNmUWRMM1N5SExwbmV1cUFu?=
- =?utf-8?B?a21CUGpMYnFyNlJLaGNKUmltaVorOW9LL3IrTUVWVzVBS2xaY3V5N0NKd1Qy?=
- =?utf-8?B?Nm9vMkp0QldPUDM1WWx1Zm1USllVWFBrTjFpT3RVdHY1TXp6enpiQzBGUzFZ?=
- =?utf-8?B?NDJna01XSDQwT3ZjVlVzRUw5dGd0OVBFeGVsOG1SSFJjVHVDcHJVcERuZGU3?=
- =?utf-8?B?aXN5NWhCeFgvRmM4Z3E3ZWVieU0yaWNqVVpPMVlwOExadmt5UXorUkRnUStL?=
- =?utf-8?B?dlRkZW1yNHNDanhyeWFVcWR5Znk1empMS05LLzh2QWNOay9YRjluL2UxRU0r?=
- =?utf-8?B?Rm5ibEI2RFdZUStCSXZJNFcvNnU4c3diU0tZR2ViMmFGclpETEt2b3JiU2JC?=
- =?utf-8?B?MGF5VE9yK3NYdDJ2VEpZV2w0b05SWk9RcWRxbDhyYmVGOHRkeS9jaWR4OXM3?=
- =?utf-8?B?MzlNZGdLcE5NL0U2SWkxdS9MQXh2MnZYMzdJd3BMbVBaY2htSml1ZDk0cXAz?=
- =?utf-8?B?TG5odjlpUXV2R3BIWlc4amF2RUxwVFJxY2p1SDlIR0V3eUZlRU0yZFVBSUVD?=
- =?utf-8?B?R3IrRldrZlhuNXl5eG8wa2J5eFIvcnFjRHdxWVoyamxIaDNwS0pBZnRTTHVz?=
- =?utf-8?B?R3RwSEpsRU1GR0U4eHBZeTdlVm9QSXBFVmFTeFZ4RzVCQmZlUEFaV3hzMjh2?=
- =?utf-8?B?aFdKUEc4MEVtdHhDbzhPNzlLaU5hblFxNU9Md3F2VFVhUGNuQU4zZDlIdnhk?=
- =?utf-8?B?RXlZa3ZMK2R2SVQwRDNSUzhZUFNJTWU5MVkvVGlwVWw3UFh5bkVIVVBGdFpp?=
- =?utf-8?B?c2xaUEJhWlVRZlh5dGV6cjhQTWxUMEJ3VE85WGZ4QS8zb2NicWRPMmpXWUQv?=
- =?utf-8?B?U2tpb1hXNzhHUUEzRk5OQnA0SE8zYmRwaUhFeWdEd0haT01wamw4cHFCTWpo?=
- =?utf-8?B?aG1zQ1E1cXZkZVN3QU4zYUV4WjFxZU5IY05wS1g1cVpQSFlIY2hpaVFnNHV6?=
- =?utf-8?B?NkRQVGFFcFNnWUxhWjM0MWI3QVpXTTNWaElsTVpmd0tEK1ZzMkhBVHNIU0J1?=
- =?utf-8?B?Zi96WC9neXQ2R2FBQzhwcHUyamJBWXpaWFRtQzh3OVNHV0pDM01tOEdTZlFK?=
- =?utf-8?B?aW16ME4rY0hXU05FZ1hNMnNpalhqZmJhcVZ0bGVyWTdFMjNrdE9YUGNCTjl6?=
- =?utf-8?B?Vll5d1dFY1gzRDE1cWNBMTI5c1E4RmJVVjkza29rMHFLU2p1Qy85THNlWkcr?=
- =?utf-8?B?aXR3aStUMkJoZkQ1QlBGeEt4ZGU4Y0xNVmJrSmp3M1pTb3RCVnlOOEdSWnds?=
- =?utf-8?B?cWtyVVB4cmFQNzNibUd3bDFXT0M1RVJqZ2hzWno2clZWN20rRE5PcCsrQ2pk?=
- =?utf-8?B?MTJ5LytFVkdvRm05RDkyZ3J2MThtRC9lZTBZRDlnRzQ0MCt4MGFsTEdwbnpx?=
- =?utf-8?B?M01RcjJpTXlqZHBDSnYyNkg0bWliU3JXOGg4MkpzUDFXLzJudnZxeUdWb3FK?=
- =?utf-8?B?NFgzMWQ1cWdZMjNwUkNDQTg2UTVzU1ZyOVAwLzhIbzFoeXpEazU4NDZESi9W?=
- =?utf-8?B?aFlCdGdrRVFIR3JteFB4cXRSQlRlZ3ZoN3BaOHQwemI4TGZpRm56b3d0RFF2?=
- =?utf-8?B?Vm9FMWdVSmJRdmt5VXdIT2U4ekl4cDRrSnQzNjhTbVFJeFBPT0ZSTG1MMHlH?=
- =?utf-8?Q?xWQrual/MPI8e?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR14MB7306.namprd14.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?SWJ3MlJzY2VBbTVqR0laai91U29WUWd1blFJUEZyMTJLd1NMN1BuUWtrR2RW?=
- =?utf-8?B?UEg1N0NLZ1FtajVaYVlKSWlvYmlER2xRMFVZZFcwS2VoRjVaQitWRTdEenM2?=
- =?utf-8?B?azRCRWpOdG5uWmVNVVdPSjFYYVVtZEpuN1BYRnJWb1ptTTJmSE02b1ljclQ1?=
- =?utf-8?B?T3hzaC9xODhOYjRSejZkTElOa3dwUEpzMlB3YTdzYkhmY0xiOWNBYmszUCtY?=
- =?utf-8?B?QTQreTY5RGZuQ29rWUFyRTZQZVJWZ1c1RFlxS1piTjBUcUJPMUpIRm44bFg0?=
- =?utf-8?B?cHM3WmdSY0xtWURTL1d2cktVZ2NBcDdQd1YzRXp5ZlNTNVhEeGFsTG5qWHpW?=
- =?utf-8?B?NnFwanJOT29oYm1jQmhabVpRUFFSLzRSdDVCWWYwSU5CK2Q0WTBDNUZaTndh?=
- =?utf-8?B?MlJiZFpWL1BTUUQ5RGV4bHloc1RZb1d3OURTOG9UaUxIenZJeHRWOTFrYUtm?=
- =?utf-8?B?SWtoRDlhcGtDUDBLaVl5ZWZHTlZLRGRzOEloRnREdU5VQUs3YWl1Q0NnaXRQ?=
- =?utf-8?B?M2xoUDVCOWlsKyt6NTZWSWdhODBGRzVlakY2VldscWVwaklZbkR5amdyN0hh?=
- =?utf-8?B?blNLRE90MTA1dUc1UEZEZGE0bjh6UGF5Qy9mRUt1bUFBZmVzRmwrYVI5RjQy?=
- =?utf-8?B?ZzlkOHNOajRGZEpNNThWOWZycXRTMDg4MmFORkFHc2x5WUR3OHpkbEM1Nisy?=
- =?utf-8?B?eElubDhGMUpsWkpIQVBQOU1yTWxGN0FiVmpRcW9JTXRIbGs2ejdDZlNsYkNH?=
- =?utf-8?B?L3AvcVUrNXlEaEVLSE9IUkFDVjh3TmV5N2l2NG5iRUFaTExoMTJzd1BtbTYw?=
- =?utf-8?B?UTNFeitYemFBWEcvVTdtbE4vZkd5cjJJcWowbStIYXhHZGpIeE1wZU1XWU51?=
- =?utf-8?B?K0dheXIxNmV2U1k5bW4yd3duS0ZhRmY4MWw3SUt2SUhBbnNOVkxFZ3NtaDZN?=
- =?utf-8?B?V1E5L2xnRENFNlJNMWZKbmhtbFIrdGhjcEhOVjBNb2wzb1hpTWRGZFlzNTZU?=
- =?utf-8?B?Sjl1WXA4WDhvVjg1azZCQ09lNHR1UTJzMFc3MFpuRVdrbElJQ2c1SzFibzlD?=
- =?utf-8?B?aEgvUy8zMXdNNnBTRkQzcjl2QmhWaWQzTlNQcEtEQWlNSkw5bGNTOHFRM29a?=
- =?utf-8?B?WGM5VHpndGxYTVNTeDc5dGVSSVdyaUVEN29hS1lqaVdEdmJvdHo0SGNDRlQ3?=
- =?utf-8?B?SUV2bzFxbXlPbGo4V3RnM1FOZ3k0c1p5dDNmamVqSkZjT3dtT3NLU1FXV1RL?=
- =?utf-8?B?WmN6Snp6dHR4c2YwaUwyZldHOW1uTmpkRFFvZVdzak0xRFV1akdBOGt3cFNO?=
- =?utf-8?B?dXU5djRnbElMNndSbDdRcUZYNEd3cTZ3aytLK1pOWVdkcVlxbnZkUzNxSUth?=
- =?utf-8?B?OWIza0d2cG90bGltMkIrYkc5bFJkbjZXOHpLR2dMUjBDUWZlb1djS3BpbFlH?=
- =?utf-8?B?UXZBdnRSd3IrUldmcTVGYStBKzU3c0ZJUmFxK3ZKeHl5QTlDOUZxdjArTEdn?=
- =?utf-8?B?cE4zSGJmcVNwMFRWQkFMTWo4ZjVidHRzUEF2bThaQnpRbFNCYUJQM0JKckw2?=
- =?utf-8?B?bFAwVit2QUQvek5sRFRFUTVJT0Mya1lhcFhnVHlNVlFEL1IvM1F4SEw4M1hY?=
- =?utf-8?B?a1QxSk10U2Jnb0cxbFlQTEQvelV0VHFCQ3VBbVc3eTlEcDdmd25YVmZRQ3Ru?=
- =?utf-8?B?b3pEMG1hQ09pVkNGQThlVUR2RjMvTjkranFDOFgvb09vcXVlSUw1Tzh5eG9t?=
- =?utf-8?B?YmxRa0NVazcreDZ3MGRrMjVwVmpObFNSY05KeGhyUGkxaUVELzhSWUVBQksy?=
- =?utf-8?B?SWl3OUlvejhocnRVc2R2NkFSYU9LVlFWUjlZZVRNbExvT0E1RFRPTU9kenZs?=
- =?utf-8?B?U3FGbGFJT280NmVHWEdtOVhCMG5hSCtudmk3UUdYTllmdzJZSlpjRWgzb1Q0?=
- =?utf-8?B?a003VnhUajY0am1TSHF3Vzk5UFNhZjJzK0JramxabTVxbUhjYmJId3k0QWZ3?=
- =?utf-8?B?bUZzY3FlaHVacWVwU3hpSk5raWVldVgrM29uU2VxQU43NmJ1ZnRrNW5xT2JO?=
- =?utf-8?B?V3hZYTc5ekVqUEF5dHpDanBUeUNsMS9GUGhlbFg5Q0I1NHFNaGR3V2NVS0Rr?=
- =?utf-8?B?SkxrLzVoc2w1MnM1czkxdHUvY3IvLytOaEdGK3BrK1dJdTFrUDlhUjd5N2lK?=
- =?utf-8?B?K3c9PQ==?=
-X-OriginatorOrg: d3embedded.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05416320-21ce-4386-822d-08dd600b37ef
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR14MB7306.namprd14.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2025 19:39:05.8407
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: b7153db5-3376-478b-b601-92ce9bc0d3bc
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 02V/J2U2NjCRsFl95w5572EugtHQGgtMbpjdrRxoJuqO/lKhx2x9FuKD+xBcjg7Pw9jLPpcRjH02XWELd074xQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR14MB3551
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux-kernel@vger.kernel.org
+References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
+ <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
+ <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
+ <541539db-0015-41de-837f-aabbea68486a@gmail.com>
+ <20250307143956.aft3xolakts3nlja@pengutronix.de>
+Content-Language: en-US
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <20250307143956.aft3xolakts3nlja@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu Feb 13, 2025 at 5:19 AM EST, Laurent Pinchart wrote:
->
-> ...
->
->> +static const struct cci_reg_sequence imx728_wdr_12bit_3856x2176[] =3D {
->
-> This table is way too big, with over 8000 entries. Some are even
-> duplicated, with identical or different values for the same register. It
-> will take more than a second at 400kHz to program this.
->
-> At the very least I would expect a way to compact the table and make use
-> of I2C register address auto-increment. Default power-up values should
-> also likely be just dropped.
->
-> I haven't checked in details, but doesn't this table also contain tuning
-> data for your specific camera ?
->
 
-In my testing, it takes around two seconds to write this table to the senso=
-r.
 
-I can investigate how to condense the table further, though the
-registers for this sensor are more complex than just writing values to
-addresses. The meaning of certain address writes depend on previous
-writes -- thus the "duplicated" writes you mentioned.
+On 3/7/2025 4:39 PM, Marco Felsch wrote:
+> On 25-03-05, Laurentiu Mihalcea wrote:
+>> On 2/27/2025 1:28 PM, Marco Felsch wrote:
+>>> Hi Laurentiu,
+>>>
+>>> On 25-02-26, Marco Felsch wrote:
+>>>> Hi,
+>>>>
+>>>> On 25-02-26, Laurentiu Mihalcea wrote:
+>>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>>>>
+>>>>> The AIPSTZ bridge offers some security-related configurations which can
+>>>>> be used to restrict master access to certain peripherals on the bridge.
+>>>>>
+>>>>> Normally, this could be done from a secure environment such as ATF before
+>>>>> Linux boots but the configuration of AIPSTZ5 is lost each time the power
+>>>>> domain is powered off and then powered on. Because of this, it has to be
+>>>>> configured each time the power domain is turned on and before any master
+>>>>> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
+>>>> My question still stands:
+>>>>
+>>>> Setting these bits requires very often that the core is running at EL3
+>>>> (e.g. secure-monitor) which is not the case for Linux. Can you please
+>>>> provide more information how Linux can set these bits?
+>>> Sorry I didn't noticed your response:
+>>>
+>>> https://lore.kernel.org/all/a62ab860-5e0e-4ebc-af1f-6fb7ac621e2b@gmail.com/
+>>>
+>>> If EL1 is allowed to set the security access configuration of the IP
+>>> cores doesn't this mean that a backdoor can be opened? E.g. your
+>>> secure-boot system configures one I2C IP core to be accessible only from
+>>> secure-world S-EL1 (OP-TEE) and after the power-domain was power-cycled
+>>> it's accessible from EL1 again. This doesn't seem right. Why should a
+>>> user be able to limit the access permissions to an IP core to only be
+>>> accessible from secure-world if the IP core is accessible from
+>>> normal-world after the power-domain was power-cycled.
+>>>
+>>> Regards,
+>>>   Marco
+>> I'm no security expert so please feel free to correct me if I get
+>> something wrong.
+>>
+>> This isn't about S/NS world. The bridge AC doesn't offer any
+>> configurations for denying access to peripherals based on S/NS world.
+> It does, please see the AIPSTZ_OPACR register definition. The imx-atf of
+> sets OPACR registers to 0 (of course), which means that the S/NS is not
+> checked _but_ it can be configured.
 
-I do not believe this table contains tuning information for our camera
-module in particular.
+which bits are you referring to more precisely? because, from the OPACR
+register definition we have:
 
-> [snip]
+1) TP (Trusted protect) - bit 0 => controls whether the peripheral allows
+transactions from an untrusted master. A master is considered trusted if
+MTR/MTW (from MPR registers) is set to 1 (MTR means trusted for read,
+MTW means trusted for write)
+
+2) WP (Write protect) - bit 1 => controls whether the peripherals allows
+write transactions (i.e: is write protected or not)
+
+3) SP (Supervisor protect) - bit 2 => controls whether the master needs
+supervisor privilege or not to issue transactions to the peripheral. For
+Cortex-A53 this refers to the execution level (EL0 - EL3). There's no S/NS
+checks here. EL1-EL3 are supervisor accesses, EL0 is not.
+
+4) BW (Buffer Writes) - bit 3 => some flow control configuration bit I'd assume
+
+
 >
->> +};
+> Also please see chapter 4.7.6.1 Security Block:
 >
-> [snip]
+> The AIPSTZ contains a security block that is connected to each
+> off-platform peripheral. This block filters accesses based on
+> write/read, non-secure, and supervisor signals.
+
+yep, but this block is not configured by the AIPSTZ. AFAIK it's configured
+by the CSU. So, as far as I understand it, the interaction is as follows:
+
+basically you have the CSU which offers some security-related configurations
+(see "Table 4-16 Security Levels" from the section you've mentioned). These
+configurations are used by the AIPS bridges to filter transactions.
+
+For example: assume you have peripheral X on AIPS5. The user configures
+the CSU such that peripheral X should only accept R/W transactions from
+privileged S world. Now, assume Cortex-A53 issues a transaction from
+NS EL1 (Linux, for example). The bridge will receive the transaction and
+check to see if it's privileged and S world. Since it's not then the transaction
+will be aborted.
+
+The AIPS bridge offers no S/NS world-related configuration options. All you can
+do with it is:
+
+1) Mark certain masters as "trusted" and block read/writes based on that (via MPR's
+MTR/MTW and OPACR's TP)
+2) Force transactions to user privilege (via MPR's MPL)
+3) Make certain peripherals deny unprivileged transactions (via OPACR's SP)
+
 >
->> +static int imx728_get_frame_interval(struct v4l2_subdev *sd,
->> +                                    struct v4l2_subdev_state *sd_state,
->> +                                    struct v4l2_subdev_frame_interval *=
-fi)
->> +{
->> +       struct imx728 *imx728 =3D to_imx728(sd);
->> +
->> +       fi->interval.numerator =3D 1;
->> +       fi->interval.denominator =3D imx728->fps;
->> +       return 0;
->> +}
->> +
->> +static int imx728_set_frame_interval(struct v4l2_subdev *sd,
->> +                                    struct v4l2_subdev_state *sd_state,
->> +                                    struct v4l2_subdev_frame_interval *=
-fi)
->> +{
->> +       struct imx728 *imx728 =3D to_imx728(sd);
->> +       u32 req_fps;
->> +
->> +       mutex_lock(&imx728->lock);
->> +
->> +       if (fi->interval.numerator =3D=3D 0 || fi->interval.denominator =
-=3D=3D 0) {
->> +               fi->interval.denominator =3D IMX728_FRAMERATE_DEFAULT;
->> +               fi->interval.numerator =3D 1;
->> +       }
->> +
->> +       req_fps =3D clamp_val(DIV_ROUND_CLOSEST(fi->interval.denominator=
-,
->> +                                             fi->interval.numerator),
->> +                           IMX728_FRAMERATE_MIN, IMX728_FRAMERATE_MAX);
->> +
->> +       fi->interval.numerator =3D 1;
->> +       fi->interval.denominator =3D req_fps;
->> +
->> +       imx728->fps =3D req_fps;
->> +
->> +       mutex_unlock(&imx728->lock);
->> +       dev_dbg(imx728->dev, "%s frame rate =3D %d\n", __func__, imx728-=
->fps);
->> +
->> +       return 0;
->> +}
+>> AFAIK that's the job of the CSU (central security unit), which is a
+>> different IP.
+> Please see above.
 >
-> The frame rate on raw sensors is controlled through h/v blanking. You
-> can drop thse functions, especially given that imx728->fps isn't used
-> anywhere else.
+>> Perhaps I shouldn't have used the term "trusted" as it might have
+>> ended up creating more confusion? If so, please do let me know so I
+>> can maybe add a comment about it in one of the commit messages. In
+>> this context, "master X is trusted for read/writes" means "master X is
+>> allowed to perform read/write transactions".
+> No you didn't confused me but you triggered my interest :) and I started
+> to check the (S)TRM.
 
-Okay, I will drop these functions in v4. Thanks.
+glad to have picked your interest with this series!
 
---
-Sebastian
+>
+>> Even if the bridge is configured to allow read/write transactions from
+>> a master (i.e: master is marked as trusted for read/writes) that
+>> wouldn't be very helpful.
+> We're talking about the IP access permissions, right. If the
+> "secure-I2C" is accessible from NS world this would make a difference of
+> course.
 
-Please be aware that this email includes email addresses outside of the org=
-anization.
+It wouldn't though. No configuration in the AIPS bridge AC will make the I2C
+accesible from NS world.
+
+>
+>> You'd still have to bypass the CSU configuration which as far as I
+>> understand is also used by the bridge to deny access to peripherals
+>> (e.g: if transaction is secure+privileged then forward to peripheral,
+>> otherwise abort it). See the "4.7.6.1 Security Block" and "4.7.4 
+>> Access Protections" chapters from the IMX8MP RM.
+> I have read this too, also that the AIPSTZ can force the mode into
+> user_mode regardless of the CSU settings, if I get this correct.
+>
+> What I don't understand as of now is the interaction of the AIPSTZ and
+> the CSU. You can configure different bus-masters within the CSU to be
+> S/NS as well as the pheripherals. Now the part which I don't understand
+> right now: According the OPACx register description:
+>
+> x0xx SP0 — This peripheral does not require supervisor privilege level
+>            for accesses.
+> x1xx SP1 — This peripheral requires supervisor privilege level for
+>            accesses. The master privilege level must indicate supervisor
+> 	   via the hprot[1] access attribute, and the MPROTx[MPL] control
+> 	   bit for the master must be set. If not, the access is
+> 	   terminated with an error response and no peripheral access is
+> 	   initiated on the IPS bus.
+>
+> The peripheral can be configured via the AIPSTZ as well. So which IP
+> (CSU or AIPSTZ) override the other if the settings don't match, e.g. if
+> CSU says: "this I2C controller for secure-world" and the AIPSTZ says:
+> "this I2C is for non-secure-world".
+
+the SP bit you've mentioned is used to deny unprivileged transactions.
+The privilege is given by the execution level for CA53. EL0 transactions are
+unprivileged, EL1-EL3 are privileged, but this can depend based on the type
+of access. See Table 7-10 "Cortex-A53 MPCore mode and ARPROT and AWPROT
+values" from ARM's Cortex-A53 MPCore Processor Technical Reference Manual
+for details.
+
+the bit has nothing to do with S/NS world so there's no overriding the
+S/NS world-related policy given by the CSU.
+
+>
+>> Given all of this, I think the purpose of this IP's AC is to add some
+>> extra, light, security features on top of the CSU.
+> Or to override the CSU settings like the MPROTOx values:
+>
+> xxx0 MPL0 — Accesses from this master are forced to user-mode
+>            (ips_supervisor_access is forced to zero) regardless of the
+> 	   hprot[1] access attribute.
+> xxx1 MPL1 — Accesses from this master are not forced to user-mode. The
+>             hprot[1] access attribute is used directly to determine
+> 	    ips_supervisor_access.
+>
+> Can you pleae elaborate a bit more how NXP designed the interaction
+> between both the AIPSTZ and the CSU?
+
+I believe this will override the privilege level of the transaction at the
+bridge level. This could be useful if you want to, for instance, force
+transactions for peripherals under AIPS5 to user but use HPROT[1]
+(or the value you've configured via the CSU) for peripherals under AIPS4.
+Not sure of an usecase in which you'd want that though.
+
+anyways, hope my comments will shed a bit more light on this.
