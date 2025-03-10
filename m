@@ -1,61 +1,63 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B65422A4DB
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 12:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5A5227BB9
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 12:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741609670; cv=none; b=YlRfYyQ0/cZaA1vcBslLhnC3hvcsGDRZ7Wl9AGVWlmumwAm+XlYTKpNe37UFSA5lxkmYH3/JOBpHoXuZ5uVyLyhPabs6yHTWohe2FgekpgX7oF388AUgajhX7lqLgF3dDIsscis5fbqhBB6CwfyLLJ5pIQtgTTuqHz1z4Pb16MY=
+	t=1741609676; cv=none; b=s9klSzYAo8CwIlANvxjAAFQk5K10RrX/upFmhkCKtEP+daIo9fO13okyAb+18xcgFURQT1dzTG5OrEITltXSVKok3ov2MG27TGe6ybr5DHi5vTn9mwDAUquAdF7hakHKtVQQnukbb5nc7TsGMXA0VdxyGeImJc3yHwDEIVQw7iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741609670; c=relaxed/simple;
-	bh=/GglX1v0AV4sIr5Y7bGG0tbMg9+k7e9ag9LwxmbYDCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EqBZlscGt87SSt0pydWMI8+bAIs8tM7WXeHLo0sGQx10TxQ0DWGrt3qf1tSprlirciAvEFmXsulDfSGp8TjfHkhcnjI9FmKUqKgHdxP/6SycPZYzH59lwlukpclbAYxwqOdCr01ETbiQlCbsG0ADc1oyyhvg32dI8LX3NUt+ajE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcGoEdIG; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1741609676; c=relaxed/simple;
+	bh=Zy2fJh3cTHOqRs4mkjI77HUqzP8JFc4VAdL+NBQchrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HYHCv+ZmuvlQbRKl4+34X2fr5UYoycfgix0WuxBIW2omquep7rDS8T0pQU+0MwcplosnlPEIK2rZCemozzu9TkXo5l52wTEYaLNN60XNHrb9H/B1zpefUmosb6FYRWnU95K2wQTPjIgVnLdBHAOQa3gzacVjB+C5rTkVklve8pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dez1KU5q; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcGoEdIG"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso44136245e9.1
-        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 05:27:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dez1KU5q"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43bc48ff815so23949465e9.0
+        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 05:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741609667; x=1742214467; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P0gVa+47vgpIskiaBk5o99cR3lWwJb6rgWAQDG1BpiA=;
-        b=dcGoEdIGcGeVhjCocWjJ00iF8R5YpKGXfqgp+c+/2OaKamiHwkfkJzvUL2FbvPUT+Y
-         Tzz6EvTt0ELW4B+fOlwpfaP4WMG/K6HCL1EMJuj1rvkZshburkzdVORStMwv1sHLUNmI
-         f6qRgct1TaDozNnPX3nqSMq1jUvnIviDGvzkBryYAVLJ7HKxcz+ZoPqkGcGsoMCZ1F9r
-         G1RmgeW6A/OSHx4IJ4ozBcb3Rpvac86ipb5cJrb5CwjrVu46yxETMDwE87ADQ4bHl3TZ
-         UJBMuWzHcxS/6GNvPtIU4DeDAqHc9MV94eBB54ZHTORc3XfYMsMmn0pasw+Mb2BWkQRP
-         8B/A==
+        d=gmail.com; s=20230601; t=1741609673; x=1742214473; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pP5AGd49889Z3JFGOGRHgkg7HKkdewQ+Zwhw794fEIw=;
+        b=Dez1KU5qILr2Rb/K11jhC/EkGtErEzyCCokbPJ2YieNn1hEsfZKvG0rLZaDt6dZudy
+         XWlXQipdLvn6cWOUDDkn3mnPPaQneK/jIFkwEk9rqZvZ7nQsZQgqfV44+ZBwo3xPlL1h
+         APH7oBDBMWSPhyFwLuvwZKp5hAOhlv/KKPDEaCoV11BxKb9qdw8RDvP7P2y7f7zUyggH
+         CeU+TrmHUqZb6oCxdq70V0mtZMrJPvOznk1gOdfkVnO8pHE5Af4ZqgbmVtxF9b3PGDll
+         TC8GtUINKdJyC6onXWW3H75XIwrjSr8XhG1U7CCRyO8OClTpajtf/cFr6/8iMCNF2E1H
+         U9fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741609667; x=1742214467;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P0gVa+47vgpIskiaBk5o99cR3lWwJb6rgWAQDG1BpiA=;
-        b=kafujCSsy3Sz0p2DuihYdSNijIBlcTJeg9knOFIjAoGX8jYkKTOovZ4Rb06JOVxAMj
-         pZ3MUNTFIEhpsvNqOc4EqGNHBF2D9IkajX7M6zUEnaxHemOYh04JAgbJUkkV3Ahj9bcd
-         FT96RunN4ok4FEsLD0TbW1inyTc8ZGCXtjs86v+4dnKN4LpWg4WepBVjlX9dNn1uf4W8
-         +yqBwwggP2MMzS9d5wCtL8FWdlc6t2mfJsqdWMmXIUJk3SC8NjuMpCR+Ed4QqExhN89+
-         DgswQRINqmOzYNTv4RGNtP260pb3EORaFJuz24PB1FCxyV5dmwDOOmqxV81W+1OKut65
-         jzaw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2m6eFXoCt1nP6KqAHTYyIDgx2wuQKFx8G0o0DnctU4+eQMoreAGhzG8Y4OnW9+EVw1rc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlqCoPNlOu+nc1omoREVZFm19jCHXF8QUVJVbvgvDCch04JDx5
-	yRIBkcszI5WiDHupRgipnpdzEXaoNS9yMPfgvTusvtN7Meb2obgC
-X-Gm-Gg: ASbGncuT+0/sCOmbhl9IIjC/aWBqjfEDD67SRCg4yaE24lQouQ2hwCprlU4N68JbQbg
-	Y5/ca8UXXS4TWSrbTJfjalsaq4Azi2AwOtF3DqCkSVEATPAQAuaF5lE64+Q8T1gbWzhjJ6U71pS
-	bfzJ34pkEZrbw49Q11Na/APSaIDPylwlnGqSA8Jy3rSVNetzkGmGWF9M6yCaj6jrhLHDpqNrg7/
-	4Gp6wiZbj5+MaQ8qIODpSos8KxlvPXiGHxAQWpkOsu2f7WJkSPBJW3u07qKQnTfAWagOa/h1jEe
-	3BxaZY8Dxbr5gjCN1B/thzK437FRpUKU2Fy07UkLKVOE8sa3cgRbDa+tkoFL2Oy2pTC1g8YuyVa
-	Jd92wyPQ6pF7TWn3Y8T0AYkkjQQg=
-X-Google-Smtp-Source: AGHT+IHnfkFyUH7zwhO3UJXB4ON9kY20gf9Xj9a8RVVLTh0OxFR3WRoI6eW5/kVQ7doqUEWryYXkVw==
-X-Received: by 2002:a05:600c:4e91:b0:43b:d116:6483 with SMTP id 5b1f17b1804b1-43c6021f13cmr85331995e9.27.1741609667099;
-        Mon, 10 Mar 2025 05:27:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741609673; x=1742214473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pP5AGd49889Z3JFGOGRHgkg7HKkdewQ+Zwhw794fEIw=;
+        b=etVTXm6fYt5PnM7DZjMbxce/9B4Pj4M78u0Wy5gvjuVdnyoCuTVm/jJ2lIyTNukLZ4
+         JMRmQ3UjeE79PxSPRStjf2/gc+aZLHJKVzhQRuDCVZjAYudbRUl24hQh4zLHwGqVyjYC
+         mcW1Zc3OZSZ1CTMZn9NNikVIuS4h1FuKrKXQwd+Fnp9M9bxrxX0iwIkG4ZJuO9KChqsV
+         IYWaHD8bn57gU+q075VXhZJtf/uKZTe2uknJot0eixRMu2/kRvVKKrsaLYNfKeAmEsMi
+         INNTDCDsY+Hm9msP2nENsJEpJI/D+qNd5P9C8oKQ3V3hAiR8pdpd3dyVVjYDBlwHjpu1
+         2+Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJXJcZYRFmmoybOqLFSd3G3byERd2R4Ocu/ca84Sh3MT75KNt6YLF88rhrPA1msq1nG7A=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz1u32E+oblDTxgXlmaVQNtD7BMesyJCfdkQYjhX2d/MNF/CO98
+	IDlDtR2xXUhY7zh7+iOWTHnBmXulg6zAzK/ZfZe+QcanuLUZZYVv
+X-Gm-Gg: ASbGncutSnpQlNHiAfqP9kT5kjVJcI4BV/iCF5FNk+8mp3cHhbAN9+WkubDDDc4ru+9
+	g6b7Gb5cnsqsuuNZx0bKkHze7wwAG2kGKWnEPErbcou+E9pJOggjz+IXMcVRIbYBhJHFc6MfFe5
+	88lcG+c75DLI0WCF0G1uw6IXIKrM//uDeU1e7URBzubnRKMSlWNi3UXaI9SsnS+sfFUpLvWfXL+
+	BFQJc8/INUl8QYPEFe350OAWACjp8aRORWH7w0nTb+myJ0WIiF3qKp7/qoSUddL9QnxTx4I5v8h
+	xMydGGFcZS38JAcV0QP0SGMEC991c44Lxv44t0w7CSDtJnurm9dspnmQ9rDAODtEtBZCMPcchLD
+	VTUq0133VUoSJgcNC
+X-Google-Smtp-Source: AGHT+IHkdFXutwUlHgJUEeibLtGVxZ9e1BYhqaRmZdU3VrmHHopZkCNH9T65QpbRvqLO+DUNS6Gfbw==
+X-Received: by 2002:a05:600c:1e08:b0:43c:f680:5c2e with SMTP id 5b1f17b1804b1-43cf6805d78mr26252335e9.13.1741609673265;
+        Mon, 10 Mar 2025 05:27:53 -0700 (PDT)
 Received: from eichest-laptop.toradex.int (85-195-230-40.fiber7.init7.net. [85.195.230.40])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd6530f26sm171963245e9.4.2025.03.10.05.27.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd6530f26sm171963245e9.4.2025.03.10.05.27.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 05:27:46 -0700 (PDT)
+        Mon, 10 Mar 2025 05:27:52 -0700 (PDT)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: vkoul@kernel.org,
 	kishon@kernel.org,
@@ -71,11 +73,14 @@ To: vkoul@kernel.org,
 Cc: linux-phy@lists.infradead.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/2] phy: freescale: imx8m-pcie: fix and cleanup phy
-Date: Mon, 10 Mar 2025 13:27:02 +0100
-Message-ID: <20250310122745.34947-1-eichest@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH v3 1/2] phy: freescale: imx8m-pcie: cleanup reset logic
+Date: Mon, 10 Mar 2025 13:27:03 +0100
+Message-ID: <20250310122745.34947-2-eichest@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250310122745.34947-1-eichest@gmail.com>
+References: <20250310122745.34947-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,25 +89,45 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The imx8m-pcie PHY PLL fails to lock under certain conditions when
-returning from suspend. This is resolved by asserting the PHY reset when
-powering off the PHY during suspend. This ensures that the PHY is
-properly reset when powering on again in resume.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Changes in v3:
-- Update commit message of cleanup patch (Frank)
-- Add Reviewd-by and Acked-by (Frank and Richard)
+Remove the switch statement for releasing perst and reset since they are
+already correctly set at probe and are no-ops for
+reset_control_deassert(NULL). Call these unconditionally.
 
-Changes in v2:
-- Remove unnecessary check if perst is not null (Philipp)
+This does not change the behavior of the driver but reduces driver
+complexity and allows for easier future modifications.
 
-Stefan Eichenberger (2):
-  phy: freescale: imx8m-pcie: cleanup reset logic
-  phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 23 +++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index e98361dcdeadf..5b505e34ca364 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -141,15 +141,9 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
+ 	usleep_range(100, 200);
+ 
+-	switch (imx8_phy->drvdata->variant) {
+-	case IMX8MP:
+-		reset_control_deassert(imx8_phy->perst);
+-		fallthrough;
+-	case IMX8MM:
+-		reset_control_deassert(imx8_phy->reset);
+-		usleep_range(200, 500);
+-		break;
+-	}
++	reset_control_deassert(imx8_phy->perst);
++	reset_control_deassert(imx8_phy->reset);
++	usleep_range(200, 500);
+ 
+ 	/* Do the PHY common block reset */
+ 	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
 -- 
 2.45.2
 
