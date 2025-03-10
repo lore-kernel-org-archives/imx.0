@@ -1,284 +1,109 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012024.outbound.protection.outlook.com [52.101.66.24])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2603189B80
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 15:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741621443; cv=fail; b=SISdYJeYzaX0v0FNtePiat7Vzu3PQI7QFlYKjqc46YVNrynQ/00g5D2ty8cbRVcsMnKDOFMtHSVcZ/7MvHMFZT5D7ReIZkh6VGC8MpKRxk2oFc0bYWish/IR62yPPPyNWxQTPNTblSbYdV98gQ7YnXyNr36984IXqmp4MyoowlQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741621443; c=relaxed/simple;
-	bh=+jQmYrU9Fa4zjaH5hM6YDJWPL5bfMV2Cphd0Gfr6mz8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oCGylPtLZC8fm4deBx2SOPYekvZVofya4DAD4cE2+S06WPfebwLRE8kINxWYl7KwXXpDa0UMVySJTg5vyZ3nkCfmlmF0hIzSja0V7P1h6nMziGiiqMJKHh70wvvzzs75mK4uyxLpi6nlhmO+rzQY57Pg6LMPAe0rHYqAZhcSGJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GQmbnO67; arc=fail smtp.client-ip=52.101.66.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8205F22DFE5
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 15:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741622231; cv=none; b=An65FVJmnz0bUesMRJHJXt1f6C8I54ZDDRBsXNMGPhUs/F4cjow5Njfdb52ZVgksQfvIx+HbssF4tnRkHZEMcbIevf1rRHjrB5TW+tyIs15UiuvAjOqZ5XgyPbGRBjNGnM/ETwvL0hBhXL/vsLPrejChIqfzHUvoKl3WESfvIlI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741622231; c=relaxed/simple;
+	bh=TMVSI2zGfqwniwiuhzluD6wQ3DWKu2knPI+0dq4y2jo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sWD/9wfCS83T8Qu7NEjjVh8G8rnQlQOIA9HI33geWh7WNLEGivqyZ8PL2fE0YmrTtTqm6syJrjq15MXqC8x6PR2wLhDEwYG+IJNhQfWshleutlbuKQtxCULzwZCbCIuUjlvax0eOX95ZWi3UeiNXRQoXWf/l7ea3Iwt4sQWa3i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ngbR+vkB; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GQmbnO67"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CS4n3cH/47OEWXn+823peTiBZARjtuhpLW2BFVGHZezFMVHtRZna0ARramjIqZtyfV/ZLbg08BSZV3/Xejp8zUowvjfXW/5SFbCMzUoAmb4XSsYwrmtAUHkb9FVYYZTxQhR2hfTLTlTXlKTmXCuT0HJiWzpXXXbUXCbSW9f9IYyuuyhGApwK13KwZRk55r3jCa0pES1i6zEAmQTxChWL2zZ903tyLx6CiwZm7Bx7zKoPfI1KaqeD3dG9kBBdFDRmwZRjqF1epbcvQyaJra+55202IzXrWFrmpnmFbYCr38gtytE1b80FIzBGC4FiYg/Y0C6Yw9n/01TNSzGifmxiMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nkWMZTBpjGqIy62JngdH0iZ8pD9OAMB0wXcfMkeUzZQ=;
- b=sbE6lhOwCopDl2LjXBtesbWfF+t2JhAZltAeQGR0clF0qFnOqSRZrINa4MBu+5kt7qV+9nLRTxq4Jzr/ULXWKYcLqaVx6ciQpcHPYflME49oRzBJ9LVXMj5AHxgK6Z1YcWB14nJwLvDEbQz2QU8280l5UxY6FJumI3q39Rx95o3XxdiPIlT8w7mu+C3f9d6YbietcItEAQCidb/yTKxx1S7jwPuN3y0GCjjoU02gvIpp/U/AmvHIewv8d5/I7ZgDpZ+bfaiHvZ39/OjmJ5NTEk3sRqcqPECC6WKIefUOpD8k+nwqscRvktN8+X5IUt6XiEEttDenFMX+C3Q9WcBYjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nkWMZTBpjGqIy62JngdH0iZ8pD9OAMB0wXcfMkeUzZQ=;
- b=GQmbnO67n23yRZW9ig+8R1LtfqxmOxVRrUQkAS780GiEe4XJ7YKpoA4u6vLw+06atgXGoDuAAAXg0KsxXgpOzn8ir/5GKLV9ejrLFZ+hW1NB2abjVV8bwFgkLJRkTyQ9PLdRXwMsfGfZViA8eTOQlyPe7QqBZ9UwNZWxuDrFentrr/ZXRNzkmWGw30awUVItpVVLBEc68z9ZZdOf3sqz+HbgWM4ipmBswr8G9rVw8wvB0Al5BK0OyIJ+7qSUujYjmwL8UcD/rvDwD/rJmHvaZ+57FKsuP/mlxiyW1rtdqVRVx+pCoCKYzAsR+8M+UDr7Hjc6+eGYItqn9IEQMLJK+w==
-Received: from AS8PR04MB9176.eurprd04.prod.outlook.com (2603:10a6:20b:44b::7)
- by VI2PR04MB11217.eurprd04.prod.outlook.com (2603:10a6:800:29a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Mon, 10 Mar
- 2025 15:43:52 +0000
-Received: from AS8PR04MB9176.eurprd04.prod.outlook.com
- ([fe80::4fa4:48:95fd:4fb0]) by AS8PR04MB9176.eurprd04.prod.outlook.com
- ([fe80::4fa4:48:95fd:4fb0%7]) with mapi id 15.20.8511.026; Mon, 10 Mar 2025
- 15:43:52 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Sherry Sun <sherry.sun@nxp.com>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "jirislaby@kernel.org" <jirislaby@kernel.org>
-CC: "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH] tty: serial: fsl_lpuart: disable transmitter before
- changing RS485 related registers
-Thread-Topic: [PATCH] tty: serial: fsl_lpuart: disable transmitter before
- changing RS485 related registers
-Thread-Index: AQHbjwdrI17dbdYUjEGgjdmD4rfiRLNoB41AgAOYg4CAAOfx0A==
-Date: Mon, 10 Mar 2025 15:43:51 +0000
-Message-ID:
- <AS8PR04MB917638F081F9D6C1F046694C89D62@AS8PR04MB9176.eurprd04.prod.outlook.com>
-References: <20250307021950.1000221-1-sherry.sun@nxp.com>
- <PAXPR04MB91855AF296383041F5FD502389D52@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <DB9PR04MB84290B4889DDD2A9E0F0B47292D62@DB9PR04MB8429.eurprd04.prod.outlook.com>
-In-Reply-To:
- <DB9PR04MB84290B4889DDD2A9E0F0B47292D62@DB9PR04MB8429.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB9176:EE_|VI2PR04MB11217:EE_
-x-ms-office365-filtering-correlation-id: c169839b-b214-4dd2-627b-08dd5fea5b91
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|7053199007|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?CuVccclZXm1l7LSYOyQNXUuJXjUQJg2Hkhq5NGw6mibMH62UZlmILbd/O4ZG?=
- =?us-ascii?Q?poUfq7R7C7i+1gyGCdMBBmmTcSjKfFHFsy4tTFVT1keWCo8T0vB2+C6X3PP/?=
- =?us-ascii?Q?qOWQ/rkOuDEuwslO4ityfmppUH6xXKVXO9iSZGOSaS0m/SJ+SlAvxlGCjQ7h?=
- =?us-ascii?Q?vWxntczO3/QXkxqu1N8gQku8fUOQfkBjwhuh4z9yr7YHTUxQqDlfmyrPSOb2?=
- =?us-ascii?Q?dbVRRtQwjruHltTlYU4Q+0y/QbwIQncV5kOa9Ux8jms3nuTd9crceqtA5Leg?=
- =?us-ascii?Q?/BLHeils102NHIcF4Os9rfU5pSiJUN2WdHqs6wrN0NYGocNJAi+JUUqF3nHA?=
- =?us-ascii?Q?/zSI6eytPHva8OXCQOfHndvsiGi9rGluoBSU4OckTaXh0EeMaJxt9mt58Oe9?=
- =?us-ascii?Q?6NUY46XRpB8Mv41u01C24PEOyPumGpdONqZI4uh3GDS0bkA1+VM10IDOQgDK?=
- =?us-ascii?Q?gf0FnRLYqzEPXelM2SNEfcMQR7izNtQxKjGOBwJcFaHoSYQiId5PbLqIuycJ?=
- =?us-ascii?Q?+58re4XNjnxAe+w1IlVctmeBKKh7WI2+lNAWdS3UGW611MhXSOtqY2vFqq6K?=
- =?us-ascii?Q?/M22OPZa6DWHDrEx+u9e69t3tqglOsPufc3JxJHGdrM3Ykp++iYveeE72iB+?=
- =?us-ascii?Q?tmDY3ECOrAKmP82D88EUwhUXvykNceEZNJIHdbY+LPIWevNqBUVziwab+iuI?=
- =?us-ascii?Q?NkNHuYQ7UqOnxaWtHDt7CPUs2moM/anE36Lx+qF0s8zAwrsi5XD0mQTU1os1?=
- =?us-ascii?Q?4VMPs6jOzlcWYIm8JJFHvzE5cnD4s3uIwEEWPGekVGYXhZitCL5hw+5EuYtA?=
- =?us-ascii?Q?0UiIZIpMcxJ9lKsygoKdGR4ggtNCSsQvilmtTN7T5JvNW3abq9RK1e6A8l3m?=
- =?us-ascii?Q?8XXYv+qvL2q8NPBSHHBNmAUg+q257jzoT7JQlmvf8W7KtFDnwc4fIQLxtSAO?=
- =?us-ascii?Q?n0E1V7iTt9w92/F9FZ/CrS/JKeh+hfz4nS810BoAQYO1a6qw0ugCCcoNvhGa?=
- =?us-ascii?Q?/ZCOF4/52BiDHXLqmm8v9miuN+ZknOetdz5+5Su/DM7Z2yofS2JrrrD9bGIs?=
- =?us-ascii?Q?1ZB7VzP5uOg96H6VvUrwismrmIW1i7njFjRh3P8rlfX+JeL+VGi/NUKYMzsn?=
- =?us-ascii?Q?vovwbkCvshr/aJjX7wglnaf8/S73/0u3m5edM6pn0GlJEK5FuWXbkzeUP7/j?=
- =?us-ascii?Q?ez6QZmr7frpODRXEocvULcvNeo/F3l3wGIjWHf3KGuY9QrglwCJKc/muN7b3?=
- =?us-ascii?Q?T+UsR0OObYH8ilR2bkQcUkstphwNhmT6sccja0H+eYYlMYMWZz2LqyGFv8Fi?=
- =?us-ascii?Q?UjzQ02pw1Z79NCO9vPDg6wytYQYYjNpd5KF7eWYZO4y8rSME27geUyWv2dHr?=
- =?us-ascii?Q?IB35iWmj2g9bnh3zCcMw0ihbrr0nVWiC1ox0n4H3CoYDfOYZeeeauhyzu+ao?=
- =?us-ascii?Q?QegC3rYwySOWWjMnr2Evbyyc+YTwxgKL?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9176.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?G+ZerlhKIq9vxlwYRkfkDNdvoHVhqWRYnSdpwswgN4sRRnfXBs6ThDtQQ2+s?=
- =?us-ascii?Q?NiyFBiWd5Ub/WIZEsMisMbqCovwZuHmD2P8ch1xEwKda2raM+6iDipsukRMN?=
- =?us-ascii?Q?Vaiqh9wy5AYj+Bq5UCS+tD35FEf067VhxhWwFKfcZgHr+2PdIdhpptlfgKuA?=
- =?us-ascii?Q?jRSyJzrJtM4bxpbuMIWMImVaR1YWQFBV7FM9xeZQWcBFGpvMV4ZJGBQm3mIX?=
- =?us-ascii?Q?sWpOosB4zEXMEIntkChvUGFsj5q0rICsxW4xJdglI8lw27YCN+41mTHuvsjP?=
- =?us-ascii?Q?kt2Y7tulgL6JD1n30rsVQ0NzvIZMRmQGAVyM10Mnpgk9hGnIzEmbvjuS8rEV?=
- =?us-ascii?Q?5J6whZMOMzDrc7utqLBiwSpSpU3/b5gelpm0j4hiMuren8Prj29ZYhCAbGHU?=
- =?us-ascii?Q?3zDG1Ggf7KB9BQi8Xtz+g6BJZPj0ZzwkI9KESUK9XrhAbV/3bpDppI45YXAr?=
- =?us-ascii?Q?T5KZ0o1RZTxJdfpn86MFZVJZFqMyAfgLrjFDGJi3NH3LXzkPxDXOrJH5X4xY?=
- =?us-ascii?Q?MlJnW0kvXZvFLUEu3jX83F365rw0ZjYmBCd3fPVJyKMFLn17986TL2v4fzE8?=
- =?us-ascii?Q?dOZv7fm93gN72E4zH8ih1+8O8FlypyLZ8OSaD/iVIVq2aSMYn0sSzm2s2xXN?=
- =?us-ascii?Q?wPHKjp/IHE4dYTbEd9atqYbgT29zD24ro0pirhibhPJKek5NQxSCxybmCSzM?=
- =?us-ascii?Q?Mn2pqwHEmVAGrQGzR0V1UEpX7QprKKqtINtuqsOfu4yD3iLgU1Iqi++iUuoI?=
- =?us-ascii?Q?S1WLi186pSUnujIPhylfb2qcxc1bZrmPn4w85UDE2NCW9VnqTGCU10AxHYaF?=
- =?us-ascii?Q?L4LW1wcdMZzz+ElzlAGUoi2e+soeohmrsLljPkC07uNmuNSdqMaLGo6fGi9r?=
- =?us-ascii?Q?xCpTSHcDFz+yIIJ69iLX9Q78TvApb7aK4KjNCd/I/PZv4vQ1j6Up07u3NYTr?=
- =?us-ascii?Q?8v8B0mlAB+SnvKwZFcCZ5R06VjNhzWeMEHIKbTe/pHth2rR4DXHHToH8vRGJ?=
- =?us-ascii?Q?kv6quQywpJ87b6dGwgYuCGeVrfAdtdsxyk8QHhZGYzdNmrHVtmW/6ic9SOd5?=
- =?us-ascii?Q?M9LLy0xm2Ygff9cJVaSxyzeeMFYupoHUoDAT/HwmVjussnuyH2z2qf/099KO?=
- =?us-ascii?Q?BesACsb75GVvUjLSe7tGezxI7+uMPeTvcUM2XqjG3WSYfdhUIdbJhOdteULv?=
- =?us-ascii?Q?09DYbW202N4sdMA2gKpyc5hUpBmDivb16Fkp5CjH2A4dAn6TfdP8lDlxPCQv?=
- =?us-ascii?Q?Ng6WFPlpUIW4MoTrR1WTsbQL22rijWXAPgN5KuhedioJdEQs+GfW1JBvaglu?=
- =?us-ascii?Q?VumgEChUZN5ozMyO8yzRdQV8I04R1VTAAqrIUSuSbyRFt97R0VtdlzaIg7uu?=
- =?us-ascii?Q?k1G1Q8jHFQfLemfMLMgRmpe9gCnwBEPZdJ2wZJE6Qdh3uCg1C3MS1TvxAbL3?=
- =?us-ascii?Q?QA9l4pI1XJ9vJ+F6Zug+PvFhFYdUtkQkvAZEjzQhcn7kIjK3LUegqvZICPd2?=
- =?us-ascii?Q?j4Ez7YECasathqy9FshuN6UNZt/6pGbuqDQ7addHfSgSH3DjMtYaNYbrlBLZ?=
- =?us-ascii?Q?yTkPUjabSGsYrz19vyuqMdh1AMtlW53Sf/lDa0b1?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ngbR+vkB"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4D44544199;
+	Mon, 10 Mar 2025 15:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741622227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WBLy6wqoJxrI6Sq3aEgj7fgqeaYRLpYnXmNTnu+lE3c=;
+	b=ngbR+vkBc9xzIp6DGmi2QfjL1d5SAO0Xse+YW10wkME9OSgksZMofslMUhRPAQ0jvi9wAR
+	xPe/Zgp6aajwlTARRWxqK4PTZ8QSaiFfqGKi04mhnWxlAVArtShUPtIg/GekJa/v5EF+5D
+	5dLqWiGtqH1CRFPgcJbL2aTm7LWHhiQzqEimFffoWXeqQz4LgjcIvEGIzCFYJl6wCqnyan
+	ytGyUZfOT1h5MTgIIlLU5OVysGTQqHD5cxExmXjI5RgxOu4urIv98hV0kRA0TqneMEio5R
+	rxyC24nPF8i8033WyD1dRmF526YVzTxI+Xhvv0wwuH4WtkIjtxdnO2ZqI27uzQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Mon, 10 Mar 2025 16:56:07 +0100
+Subject: [PATCH v3 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
+ Concerto board
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9176.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c169839b-b214-4dd2-627b-08dd5fea5b91
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2025 15:43:51.9204
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vdqAfGUwyaHAesewXrUImcvti/NxYLT53iHRFXWIFkS/p5skRv0Mhalcy9lQ7+twWaHeiYKzzOx7QXkbVszZsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11217
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250310-varsom6ul-concerto-dts-v3-1-551e60713523@bootlin.com>
+References: <20250310-varsom6ul-concerto-dts-v3-0-551e60713523@bootlin.com>
+In-Reply-To: <20250310-varsom6ul-concerto-dts-v3-0-551e60713523@bootlin.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1086;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=TMVSI2zGfqwniwiuhzluD6wQ3DWKu2knPI+0dq4y2jo=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnzwvRKAtb9RX0+IISECyeAyAc+PzHjC4KgCpRL
+ M1VuemYnbuJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ88L0QAKCRDRgEFAKaOo
+ NmuGD/wJGaqSrv7s/cs4ENQzEcKbTBf1mrVlSz8AIbtBRQUki2H/rO7VInhseA4z1n3EDJwTixp
+ ZU0YeVURTIECM7HE+HH5QaNvGMBrsYwcdgnRUzYzxSAD1vTRtYo18+KGnkc5bfacBH+zx8MBILI
+ jAv+I6ftaiRvQJFn99j1DXh1Yp4umV09+tfr8eOsWry+fFxHRw5TSL33AwgBt/bP+RZP1J7Ri7k
+ oHQHkWth92CyTLHZFiHGf5YfSMI76EOB787BaRIKgPGTjvUVMYSEkqT1YKkhUGYb0Nscv3o+y/F
+ 333YMY3kwxG++4bWOBex3D2iXk51ZO2NDOM2TFNEh7kufO/X7Pm2hVbhiPVwqrtuJ5WAbzVPzyR
+ NP9vtBX588GgZRSS0+t07x3OnJbkXsmzxRBxzm50n7n//JDu7tYJV1gklf9LoRTn2tmAwVTw1IA
+ hFNRrD+PALQErnnyjqsvLUqLaYVE1ysk4IvbkzGKCqPW3SZxWxDQLlQmKlMUA/rlP3chaISIjJV
+ ug7utTMqrGaleQry+cDI4foIc8VtyawRlI9CS6wWyfasu8GNT2mLC4zOFawMQ659hGYc09ID0yp
+ H/H0NV04HJtI9V4PxK7gZQx5fYYdJMyfwooo+/OfXOhi8Ll87BPKK404SNx9IRNQyxS50SqQPAm
+ +jIxPYDMrwIEFtg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudeljeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrt
+ ghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: antonin.godard@bootlin.com
 
+Add support for the Variscite i.MX6UL VAR-SOM-MX6UL and the Variscite
+Concerto carrier board.
 
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> -----Original Message-----
-> From: Sherry Sun <sherry.sun@nxp.com>
-> Sent: Sunday, March 9, 2025 8:52 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com>; gregkh@linuxfoundation.org;
-> jirislaby@kernel.org
-> Cc: linux-serial@vger.kernel.org; linux-kernel@vger.kernel.org;
-> imx@lists.linux.dev
-> Subject: RE: [PATCH] tty: serial: fsl_lpuart: disable transmitter before =
-changing
-> RS485 related registers
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Shenwei Wang <shenwei.wang@nxp.com>
-> > Sent: Saturday, March 8, 2025 3:20 AM
-> > To: Sherry Sun <sherry.sun@nxp.com>; gregkh@linuxfoundation.org;
-> > jirislaby@kernel.org
-> > Cc: linux-serial@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > imx@lists.linux.dev
-> > Subject: RE: [PATCH] tty: serial: fsl_lpuart: disable transmitter
-> > before changing
-> > RS485 related registers
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Sherry Sun <sherry.sun@nxp.com>
-> > > Sent: Thursday, March 6, 2025 8:20 PM
-> > > To: gregkh@linuxfoundation.org; jirislaby@kernel.org
-> > > Cc: linux-serial@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > > imx@lists.linux.dev; Shenwei Wang <shenwei.wang@nxp.com>
-> > > Subject: [PATCH] tty: serial: fsl_lpuart: disable transmitter before
-> > > changing RS485 related registers
-> > >
-> > > According to the LPUART reference manual, TXRTSE and TXRTSPOL of
-> > MODIR
-> > > register only can be changed when the transmitter is disabled.
-> > > So disable the transmitter before changing RS485 related registers
-> > > and re-enable it after the change is done.
-> > >
-> > > Fixes: 67b01837861c ("tty: serial: lpuart: Add RS485 support for
-> > > 32-bit uart
-> > > flavour")
-> > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> > > ---
-> > >  drivers/tty/serial/fsl_lpuart.c | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> > >
-> > > diff --git a/drivers/tty/serial/fsl_lpuart.c
-> > > b/drivers/tty/serial/fsl_lpuart.c index
-> > > 91d02c55c470..4dc2f3e2b8e0 100644
-> > > --- a/drivers/tty/serial/fsl_lpuart.c
-> > > +++ b/drivers/tty/serial/fsl_lpuart.c
-> > > @@ -1484,6 +1484,16 @@ static int lpuart32_config_rs485(struct
-> > > uart_port *port, struct ktermios *termio
-> > >
-> > >  	unsigned long modem =3D lpuart32_read(&sport->port, UARTMODIR)
-> > >  				& ~(UARTMODIR_TXRTSPOL |
-> > > UARTMODIR_TXRTSE);
-> > > +	u32 ctrl;
-> > > +
-> > > +	/* TXRTSE and TXRTSPOL only can be changed when transmitter is
-> > > disabled. */
-> > > +	ctrl =3D lpuart32_read(&sport->port, UARTCTRL);
-> > > +	if (ctrl & UARTCTRL_TE) {
-> > > +		/* wait transmit engin complete */
-> > > +		lpuart32_wait_bit_set(&sport->port, UARTSTAT,
-> > UARTSTAT_TC);
-> > > +		lpuart32_write(&sport->port, ctrl & ~UARTCTRL_TE,
-> > > UARTCTRL);
-> >
-> > Since there may be a delay between writing to the register and the
-> > UARTCTRL_TE bit actually changing to 0, we should poll the UARTCTRL
-> > register and verify that UARTCTRL_TE has really become 0 before proceed=
-ing.
-> > Otherwise, subsequent operations would still execute while the
-> > UARTCTRL_TE bit remains in the status of 1, which is not the intention =
-of this
-> patch.
-> >
->=20
-> Hi Shenwei,
->=20
-> Description of TE bit in LPUART RM: "After this field becomes 0, the fiel=
-d reads 1
-> until the transmitter has completed the current character and the TXD pin=
- is
-> tristated".
-> I added the UARTSTAT_TC status check to make sure the transmitter has
-> completed, not sure if it is reasonable to add the TE bit poll read, sinc=
-e usually we
-> poll read the status register bits instead of the control bits.
->=20
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 0db2cbd7891ffb361e0ac60fe6be66e381b2a8f4..a8f8cb845a2085eb13594adacf33f372185e8b0b 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -688,6 +688,12 @@ properties:
+           - const: phytec,imx6ul-pcl063   # PHYTEC phyCORE-i.MX 6UL
+           - const: fsl,imx6ul
+ 
++      - description: i.MX6UL Variscite VAR-SOM-MX6 Boards
++        items:
++          - const: variscite,mx6ulconcerto
++          - const: variscite,var-som-imx6ul
++          - const: fsl,imx6ul
++
+       - description: Kontron BL i.MX6UL (N631X S) Board
+         items:
+           - const: kontron,bl-imx6ul       # Kontron BL i.MX6UL Carrier Board
 
-Sorry, had a typo in the last mail. Fixed below.=20
-
-I am not sure if the condition "TE=3D=3D0" is equivalent to "TC=3D=3D1" in =
-this context. =20
-If you confirm it, I am fine with the patch.
-
-Thanks,
-Shenwei
-
-> Best Regards
-> Sherry
->=20
->=20
-> > Thanks,
-> > Shenwei
-> >
-> > > +	}
-> > > +
-> > >  	lpuart32_write(&sport->port, modem, UARTMODIR);
-> > >
-> > >  	if (rs485->flags & SER_RS485_ENABLED) { @@ -1503,6 +1513,10 @@
-> > > static int lpuart32_config_rs485(struct uart_port *port, struct
-> > > ktermios
-> > *termio
-> > >  	}
-> > >
-> > >  	lpuart32_write(&sport->port, modem, UARTMODIR);
-> > > +
-> > > +	if (ctrl & UARTCTRL_TE)
-> > > +		lpuart32_write(&sport->port, ctrl, UARTCTRL);
-> > > +
-> > >  	return 0;
-> > >  }
-> > >
-> > > --
-> > > 2.34.1
+-- 
+2.47.0
 
