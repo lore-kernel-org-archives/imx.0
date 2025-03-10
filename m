@@ -1,112 +1,108 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D2E229B18
-	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 11:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B65422A4DB
+	for <imx@lists.linux.dev>; Mon, 10 Mar 2025 12:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741607981; cv=none; b=mjDFw74DxkUguXWI/pW0Z/VTzHwOGHihW1Fg8EHi0ZExgR1wBgc6I2pQcL/Yq4cXjbgjmgE3A87ur7gTzC5zpRxxV5wARCCOVXQAkl7TW5ilpv3OoURkDDYuEAZi9rLsONuhJdMvWUOo5eOBRRrfzWSdh9NIyDyRLr9IZuQ6doQ=
+	t=1741609670; cv=none; b=YlRfYyQ0/cZaA1vcBslLhnC3hvcsGDRZ7Wl9AGVWlmumwAm+XlYTKpNe37UFSA5lxkmYH3/JOBpHoXuZ5uVyLyhPabs6yHTWohe2FgekpgX7oF388AUgajhX7lqLgF3dDIsscis5fbqhBB6CwfyLLJ5pIQtgTTuqHz1z4Pb16MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741607981; c=relaxed/simple;
-	bh=JdTtNW4KV9x3208UN40VO7s75L7zCHPjuhDtsTLEx4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ekknl8N/WZiOo+i32/7AltwtW13qtZswqg4/YDGgM4pV2HdNHN+DjYk/aa7OOjbosRfD9xTlMmoXaT9IkpDFSpx5uTj2ocSM0zja/a/HvSBcZKkaKObMFithq+MaMOmxbI+5Pvxe8oR8x8hvIgJP4AEjwgKSxcW4V8GYgLElJbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 481C71516;
-	Mon, 10 Mar 2025 04:59:50 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D9B693F5A1;
-	Mon, 10 Mar 2025 04:59:35 -0700 (PDT)
-Date: Mon, 10 Mar 2025 11:59:33 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <Z87UJdhiTWhssnbl@bogus>
-References: <Z6x8cNyDt8rJ73_B@bogus>
- <CAGETcx87Stfkru9gJrc1sf=PtFGLY7=jrfFaCzK5Z4hq+2TCzg@mail.gmail.com>
- <Z65U2SMwSiOFYC0v@pluto>
- <20250218010949.GB22580@nxa18884-linux>
- <Z7Rf9GPdO2atP89Z@bogus>
- <20250218133619.GA22647@nxa18884-linux>
- <Z7Wvyn1QJQMVigf9@bogus>
- <Z7Z-ZnztmvUxWoQJ@NXL53680.wbi.nxp.com>
- <Z86w3ZRS6T2MvV3X@bogus>
- <DB9PR04MB84614FBF96E7BC0D125D97F688D62@DB9PR04MB8461.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1741609670; c=relaxed/simple;
+	bh=/GglX1v0AV4sIr5Y7bGG0tbMg9+k7e9ag9LwxmbYDCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EqBZlscGt87SSt0pydWMI8+bAIs8tM7WXeHLo0sGQx10TxQ0DWGrt3qf1tSprlirciAvEFmXsulDfSGp8TjfHkhcnjI9FmKUqKgHdxP/6SycPZYzH59lwlukpclbAYxwqOdCr01ETbiQlCbsG0ADc1oyyhvg32dI8LX3NUt+ajE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcGoEdIG; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcGoEdIG"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso44136245e9.1
+        for <imx@lists.linux.dev>; Mon, 10 Mar 2025 05:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741609667; x=1742214467; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P0gVa+47vgpIskiaBk5o99cR3lWwJb6rgWAQDG1BpiA=;
+        b=dcGoEdIGcGeVhjCocWjJ00iF8R5YpKGXfqgp+c+/2OaKamiHwkfkJzvUL2FbvPUT+Y
+         Tzz6EvTt0ELW4B+fOlwpfaP4WMG/K6HCL1EMJuj1rvkZshburkzdVORStMwv1sHLUNmI
+         f6qRgct1TaDozNnPX3nqSMq1jUvnIviDGvzkBryYAVLJ7HKxcz+ZoPqkGcGsoMCZ1F9r
+         G1RmgeW6A/OSHx4IJ4ozBcb3Rpvac86ipb5cJrb5CwjrVu46yxETMDwE87ADQ4bHl3TZ
+         UJBMuWzHcxS/6GNvPtIU4DeDAqHc9MV94eBB54ZHTORc3XfYMsMmn0pasw+Mb2BWkQRP
+         8B/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741609667; x=1742214467;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P0gVa+47vgpIskiaBk5o99cR3lWwJb6rgWAQDG1BpiA=;
+        b=kafujCSsy3Sz0p2DuihYdSNijIBlcTJeg9knOFIjAoGX8jYkKTOovZ4Rb06JOVxAMj
+         pZ3MUNTFIEhpsvNqOc4EqGNHBF2D9IkajX7M6zUEnaxHemOYh04JAgbJUkkV3Ahj9bcd
+         FT96RunN4ok4FEsLD0TbW1inyTc8ZGCXtjs86v+4dnKN4LpWg4WepBVjlX9dNn1uf4W8
+         +yqBwwggP2MMzS9d5wCtL8FWdlc6t2mfJsqdWMmXIUJk3SC8NjuMpCR+Ed4QqExhN89+
+         DgswQRINqmOzYNTv4RGNtP260pb3EORaFJuz24PB1FCxyV5dmwDOOmqxV81W+1OKut65
+         jzaw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2m6eFXoCt1nP6KqAHTYyIDgx2wuQKFx8G0o0DnctU4+eQMoreAGhzG8Y4OnW9+EVw1rc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzlqCoPNlOu+nc1omoREVZFm19jCHXF8QUVJVbvgvDCch04JDx5
+	yRIBkcszI5WiDHupRgipnpdzEXaoNS9yMPfgvTusvtN7Meb2obgC
+X-Gm-Gg: ASbGncuT+0/sCOmbhl9IIjC/aWBqjfEDD67SRCg4yaE24lQouQ2hwCprlU4N68JbQbg
+	Y5/ca8UXXS4TWSrbTJfjalsaq4Azi2AwOtF3DqCkSVEATPAQAuaF5lE64+Q8T1gbWzhjJ6U71pS
+	bfzJ34pkEZrbw49Q11Na/APSaIDPylwlnGqSA8Jy3rSVNetzkGmGWF9M6yCaj6jrhLHDpqNrg7/
+	4Gp6wiZbj5+MaQ8qIODpSos8KxlvPXiGHxAQWpkOsu2f7WJkSPBJW3u07qKQnTfAWagOa/h1jEe
+	3BxaZY8Dxbr5gjCN1B/thzK437FRpUKU2Fy07UkLKVOE8sa3cgRbDa+tkoFL2Oy2pTC1g8YuyVa
+	Jd92wyPQ6pF7TWn3Y8T0AYkkjQQg=
+X-Google-Smtp-Source: AGHT+IHnfkFyUH7zwhO3UJXB4ON9kY20gf9Xj9a8RVVLTh0OxFR3WRoI6eW5/kVQ7doqUEWryYXkVw==
+X-Received: by 2002:a05:600c:4e91:b0:43b:d116:6483 with SMTP id 5b1f17b1804b1-43c6021f13cmr85331995e9.27.1741609667099;
+        Mon, 10 Mar 2025 05:27:47 -0700 (PDT)
+Received: from eichest-laptop.toradex.int (85-195-230-40.fiber7.init7.net. [85.195.230.40])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd6530f26sm171963245e9.4.2025.03.10.05.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 05:27:46 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: vkoul@kernel.org,
+	kishon@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	p.zabel@pengutronix.de,
+	hongxing.zhu@nxp.com,
+	tharvey@gateworks.com,
+	Frank.Li@nxp.com,
+	francesco.dolcini@toradex.com
+Cc: linux-phy@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] phy: freescale: imx8m-pcie: fix and cleanup phy
+Date: Mon, 10 Mar 2025 13:27:02 +0100
+Message-ID: <20250310122745.34947-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DB9PR04MB84614FBF96E7BC0D125D97F688D62@DB9PR04MB8461.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 10:45:44AM +0000, Peng Fan wrote:
-> > Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting
-> > fwnode for scmi cpufreq
-> > 
-> > On Thu, Feb 20, 2025 at 08:59:18AM +0800, Peng Fan wrote:
-> > >
-> > > Sorry, if I misunderstood.
-> > >
-> > > I will give a look on this and propose a RFC.
-> > >
-> > > DT maintainers may ask for a patchset including binding change and
-> > > driver changes to get a whole view on the compatible stuff.
-> > >
-> > > BTW, Cristian, Saravana if you have any objections/ideas or would
-> > take
-> > > on this effort, please let me know.
-> > >
-> > 
-> > Can you point me to the DTS with which you are seeing this issue ?
-> > I am trying to reproduce the issue but so far not successful. I did move
-> > to power-domains for CPUFreq on Juno. IIUC all we need is both
-> > cpufreq and performance genpd drivers in the kernel and then GPU
-> > using perf genpd fails with probe deferral right ? I need pointers to
-> > reproduce the issue so that I can check if what I have cooked up as a
-> > solution really works.
->
-> This is in downstream tree:
-> https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts/freescale/imx95.dtsi#L2971
-> https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts/freescale/imx95.dtsi#L3043
-> https://github.com/nxp-imx/linux-imx/blob/lf-6.6.y/arch/arm64/boot/dts/freescale/imx95.dtsi#L80
->
-> we are using "power-domains" property for cpu perf and gpu/vpu perf.
->
-> If cpufreq.off=1 is set in bootargs, the vpu/gpu driver will defer probe.
->
+The imx8m-pcie PHY PLL fails to lock under certain conditions when
+returning from suspend. This is resolved by asserting the PHY reset when
+powering off the PHY during suspend. This ensures that the PHY is
+properly reset when powering on again in resume.
 
-OK, does the probe of these drivers get called or they don't as the driver
-core doesn't allow that ? I just have a dummy driver for mali on Juno
-which just does dev_pm_domain_attach_list() in the probe and it seem to
-succeed even when cpufreq.off=1 is passed. I see scmi-cpufreq failing
-with -ENODEV as expected.
+Changes in v3:
+- Update commit message of cleanup patch (Frank)
+- Add Reviewd-by and Acked-by (Frank and Richard)
 
-I need to follow the code and check if I can somehow reproduce. Also are
-you sure this is not with anything in the downstream code ? Also have you
-tried this with v6.14-rc* ? Are you sure all the fw_devlink code is backported
-in the tree you pointed me which is v6.6-stable ?
+Changes in v2:
+- Remove unnecessary check if perst is not null (Philipp)
 
---
-Regards,
-Sudeep
+Stefan Eichenberger (2):
+  phy: freescale: imx8m-pcie: cleanup reset logic
+  phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 23 +++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+-- 
+2.45.2
+
