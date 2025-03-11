@@ -1,258 +1,226 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2043.outbound.protection.outlook.com [40.107.103.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA422629C
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 14:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741703775; cv=fail; b=OZSDY0YXjq041Blmcp0uB9ldsVNd6a8yqdDLvaPYbxjwWMObGDdzz26lwDRCK18vGRSiE2PcQ1CauoaMDaKUsTPYGu26aBHOlSAjXouAJUr9SLxcatw2y1IP5oj78YPaTC4E7hmHscgEmMfIw8mX4PHAI6BCmZRONmJkbjkJQvg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741703775; c=relaxed/simple;
-	bh=GHwGnpmgnk1xtghlnDT7NcHEGLjsXvmuTyL6wdBT0jg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FP5rSBfURDuvad7ackhcFdeHATq+7K1PV34h//3faa2C1bi7yvorZNHwp0jeEoPOn1ye5V/5huCN+VbxGi1UR8slxNVcBwYuUz7hKRMn2bladRD4Jh3FKP+Dk9KOJpIMdbhQTwDlgK00mqmEYuSSRZsDdnxhHm2zNe8j7uzn0QM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BNEH+sJZ; arc=fail smtp.client-ip=40.107.103.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387725C6E8
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 14:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741704190; cv=none; b=bstHU0Yh7Jqc4hmBUxhU8+/nMjJy3szPZecysRYeIEBXMe9it86w3T/E0EZw+mzbFsGB4ViFLjiaVqOym/CCzPE6oyPLq18Mi1gxl2SUvsLl1zAGbLZ3gVDe3rLtTNref7DXhrGMZkewVIhboA+kaxMJ7hbksFlyfI5X0TK3wmk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741704190; c=relaxed/simple;
+	bh=VkUyoAyyCmW63H5OQPvbiafh/ZxBkE7JGT7ZH6ENAKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LMll/XcKSym6Mc2QHDw6WmXJFs9nAGwLi6hYEcHla22bNF0QXdagLpYINJlW2K2c9ER+0yUxzOiMA/9EMeTt8PARrH7HfsYNI7BnFzSP7eL2Opd5zi4+dJV1KbpzIt9VBqXIqW/20OhFs03J6Lh6C/D68H25N+rMDKAGbZtFQJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gii9pqpU; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BNEH+sJZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BLncpX2Cl2rG+Dhgd6edvNKjJJfV8HEHtlPxRYozz7bdb+lknRAGBb9hPGcFYQqZzTqBpJwBWFUAivZDW1L7jSnvhduJRosckDqYem+EFRQeyrU+13uWEuFkjjZKtBKFUgzJDdG2AG15lZGXC/zQlMv/l1KLIJAnE69HLJiHzwt6EqSDzTH/3Bis5MO6Z8ak4lQOtHSihrfAbJP2C7+6mAhXqYmnP9FBaHrRPaNh4BSOgujnmdS69zRA2zJ5NIbzqCYOJukPTutMD/nz2+F/NgUJVzEpGQT5/5GSittUpWAl3RbswrXXRc9L8+7ubffO8Es0umun2jmLxIEXbUiapQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i1Oh2kTBQIPhsH+tgki5spNkWnJkN8LF77NKI0Tn/tk=;
- b=HScYI783yVottIhMtFT3LUGoIFc53jH6h5D9vumViJIsXh+mfNbna58CX9ueYywrPJCQj+cH9eSPMfnkZhpRDinNTIHmii6hOnY9pRIl/ynF6IB/PyaXtKZ2g9ZlK3Lp0souIl1Gd3ie5vBTic57hG7x7Q0mJNULt4nw5tiIrn4ANunAt0GIek4v7GyhDllWyUIS1FTESE7YwNX4qahwiop2/sKdvo4io+4rqNf4s22KJSEUcmddtl03ZsZEbfPdVnyqy6P1zN/KtjVVeXLFv7ubRuL7fSvjkPQylHJBpa2VFuJMdVgPZInu6g4NMNWVnsCUiX0uh4P/IVxjlWGiOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i1Oh2kTBQIPhsH+tgki5spNkWnJkN8LF77NKI0Tn/tk=;
- b=BNEH+sJZKpwdCe73Sg2he9H9eBVCEVewZWGryUvn19n16KLK8ECQLXkSyyy6jW7GLJNI6Otc3VU6DMZYwALuSaItYGW0Bc8+iB5/al41zKN6EoNY8B2h89ZluCGF+l/LMQpsyfoHFsJzPNjSRGlV7OyCZof/QA0jtZPKOxVqIQpgmrZ7h1RE0fBn52xnKrnrqiNgTQEWwPnPOxHnSf2/vpZugvD/I7F1obt75LOvFFTet5FTPVr2FDaHxOO1ECIS5qOiFuRbPzPnPAyf5SKyqkH22cqy7A0RuRNnKKsomxP1e+3bRpPusaaJShnboapTNrwnlyyTfEfzjVAxxQszgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA2PR04MB10506.eurprd04.prod.outlook.com (2603:10a6:102:41e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Tue, 11 Mar
- 2025 14:36:09 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
- 14:36:09 +0000
-Date: Tue, 11 Mar 2025 10:36:00 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v13 3/5] arm64: dts: imx8ulp-evk: add nxp secure enclave
- firmware
-Message-ID: <Z9BKUBlcF2W2oBEp@lizhi-Precision-Tower-5810>
-References: <20250311-imx-se-if-v13-0-9cc6d8fd6d1c@nxp.com>
- <20250311-imx-se-if-v13-3-9cc6d8fd6d1c@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311-imx-se-if-v13-3-9cc6d8fd6d1c@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0154.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gii9pqpU"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6fd8be1e534so52470547b3.3
+        for <imx@lists.linux.dev>; Tue, 11 Mar 2025 07:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741704187; x=1742308987; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8eN7PsSljamLFmL3eAZGuj/XK8vFI8v0YSA3pxuzua8=;
+        b=Gii9pqpU86ELEKkcbT5tSYuifVZVDAqbTL5l9tCrgYLAI6/B3pkfKp6LeJPzto9v4g
+         t7Seh1fs+fBzHTVEZJesiZvUEBR5PlnrDiUcyePBgsOMBLjfBA7zjV2ad4NXI23j28FK
+         rmvcM6R1Bkb7XUQ5XsCgdkO/tBl3RYmkaV1NVhtWwYfVI7oFpJCqI4wU4qsUC4Fbn/H1
+         oMnlpuF3d2XOT0zoc102JiYv7XqL1op7oyB4oJQQSPl7c6+0Co8MiYVpqeYE2HNdP04C
+         FRheDgJ+bJ3jV7AEUItjqrjmac3gDoJQWkDePwsHwr0d7XlyF7zkTqxn5LZ+GYt/yE9B
+         BlHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741704187; x=1742308987;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8eN7PsSljamLFmL3eAZGuj/XK8vFI8v0YSA3pxuzua8=;
+        b=CrXqfDwrqudoIrVgEjyRRyCYqiPrpOfJKLfVcbanLwQlIusETr+kcudfIe+d5gL4RR
+         cPRzOpPS3QfPfTq51O3YTJBHMspj51jqhZWCK2MCAEhMwJZNwUqu8pxUco065sUkhZ1L
+         5EcVgh0UHJjeUCt6Q1cH9vvrnJ/6Dhn6Z2rIXpdOBdaEX23uTHoNfHGbJwPAtNIlqvLC
+         jGtfEn2ojnJDMpZ3YwVw1A2C7DYM7B3rTjm38U6CLysZBP8yjmKH2Y6s6l+tQ6eFP7Ye
+         LS0USKVBekFMf6UMwnpK9aEw6E4PjBpR+zVpYxCUujg/SDyx6PeUD5MbeTTXBnzQeYaP
+         r7KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXg6dGho4GKXjIhYMKWqDTS57B2BUnYbxkjWKqchhDKYkwMgddRRRfVd2qXjFLQGpYeN0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFtkaaB9lx4YR2LFFJ+AGGJASwn8q1C9fokXLtfSMZbcBrxQfh
+	iHhQrN2D/5eL0dx4k05wd4Da0htEPt+q0VcsvlT3ETvvDZ4rgLlZKfOBCNOhD70g0EcuT4OyVC0
+	KvN/9tumLvp40fYma3s0bcBXxkpVBTSQMoZlO1g==
+X-Gm-Gg: ASbGncsa+SXMhVpDFP41YFnwTRcHDqMbTf29+6Xy9xhg/w030nXWEZA6jRnNftXAfWh
+	P/3vuWkjqPIn/Hd4jromhE+0SpZ7WW4fvcwYOR1AidLrkNeFkrV0eb2oBUgSW/kgpspgSn2xbcU
+	axVR18PXXEx1zLNP0Uh7YG+bobDvg=
+X-Google-Smtp-Source: AGHT+IG/Nkb2MMo911BY6LZyKSsboklHqls3Mfm0CSui2XrmwBdOBouV0yL+jXkPDlFtJivejjAsU40tXjhf+7Ul5/s=
+X-Received: by 2002:a05:690c:3706:b0:6fb:a696:b23b with SMTP id
+ 00721157ae682-6febf3c519dmr225655647b3.33.1741704187487; Tue, 11 Mar 2025
+ 07:43:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10506:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec52da24-4cb3-484b-353d-08dd60aa1095
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AtGHTxVbwb/bTcHjUClqkCHErz6YaEk2kQceljkeBQ8A0H98VnUjKrDXFzu/?=
- =?us-ascii?Q?N0sVEgTG9MVNgxTtKZHOMEsNIDIe9ZBahteCB68dHtxmhO1H3dhS5sIQrKTW?=
- =?us-ascii?Q?8adchi9wvUIZEZ1A8qJo9kzDOpCqItY5c5Y7IUWkLkmyTZqCwvTU7yuHrxEz?=
- =?us-ascii?Q?pKNaqFq3WUD7Y7fu10eamaObnG7hmi6/DoC3Nr/l0PF6wj+WFBtmwtCDgf4p?=
- =?us-ascii?Q?Xvz3/awxENNE7A14eJfPSgxUTnWZ7VIdQrI1sYD7uu5F0UzjBLPF6DNn0MDH?=
- =?us-ascii?Q?pFOnfplxN9DaxCxIYd8ZRM0wWhm0Nmm7Txi/YMocmzS6ftHpw+9z5emgsb4p?=
- =?us-ascii?Q?UgcO/iVEdJ/8w4RgS6DF7tjKXqiis2kiUUBsYhqxcqr6igAk6+BVADc1wZrL?=
- =?us-ascii?Q?MHmmBVrJF+SRivEkwHJ7qC3IPCZ2BfO3HP0RlHFCXXHjI/ovQitS67myF1KH?=
- =?us-ascii?Q?clcxYe+PqMSkZv+3g4QfK+rHdMsBvAoL5u6pyQ/J54i0cAIzbXrfpE5Pa9Fi?=
- =?us-ascii?Q?RxtwfZokTdaMysqpSMT+HvH393UfKlh3hTtk/G3slSOnkPk8iri79hrM+mET?=
- =?us-ascii?Q?HQ2Zi65N/YkmBuw9gKIVuE1Fy6m+THp5Y50hMB9iAksZ3YPhOEz8TpwsItTl?=
- =?us-ascii?Q?K3tYeM1D2qfx4DVuOXhpRzOkUIPvtTmrkajot4Q7uK+vjot8Oo+3ir/ZO3ne?=
- =?us-ascii?Q?UAczuyVvj4Y81Oznn/oV85od+Knh9sWVGC92ZxT5TbCjVRCByXDYAeX8lUoq?=
- =?us-ascii?Q?0/1Ar4bFXSUVP4usQJq6tbJhvNEuyyMHWjrauXZClE3o3AQreOyqwPWgSRzr?=
- =?us-ascii?Q?lk5Q97SdyowT7qbA6Tn4wiNTeL8fGvx2yHjn5kWA5Sqoe768p719YtXEiM5h?=
- =?us-ascii?Q?sZRJq/1m4QT9XX+/tJQDoQUJGVAjYVe9ZaFiAOcQpDMq0cC8UYUXkwHIbsi8?=
- =?us-ascii?Q?LBoO+VvhwlC6wFIovfYwQuopTAygDaWA7BjCca6ZkP7mtbUdN6ZrGVvh+e9s?=
- =?us-ascii?Q?FOT+xxAjG0yThV5BGJTqOtUs6rziv4MBL3XDYGzC0u5V7EfD1AMnb1VLjk4f?=
- =?us-ascii?Q?/kugC2D92zKmSCXx/nlDaGp2Z5UGuluxZR7U0n7eiDKlugAYfASP+YRi0uC+?=
- =?us-ascii?Q?hgL/+ye+0M8DIcHxIvheYYb5BL8ve63yqKKQIIre+HDgmoa/iTkozqvQ7OfG?=
- =?us-ascii?Q?uAPb9t0GnIKzfgtOB1Ae3kG9NKiBdKRyRnvlLv/Fgdcs/mesRHZS7EiptLrG?=
- =?us-ascii?Q?oqQing+HEL6h1SQnX8zonq8EteJfFllpERd52Ycixzi9JKF/gOsjU5RjoYbx?=
- =?us-ascii?Q?Uwn0CBS7VnoB3M3Zcv32F6wye8VTvmkfigCgGPJ8gXmkHOoaiYBgkEh6UJ0K?=
- =?us-ascii?Q?K399bDWFo15xh5Y0dp72ECOSUbgvupHmh2xBZbLlXelumnN4ZLy+e1v02oWS?=
- =?us-ascii?Q?aF4JaacaTWASnEzeqaluVXbMgXOoMS9T?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nl30aAD/KKiLjKYFoTZrYaNAhBdMtM18nSr2pXdVwRiLz5NhzfAzPBX426Jm?=
- =?us-ascii?Q?lmCWu6snhMOZRFzOnKstzIuzuLcH3apPoN/vWe83rzo8i/nGgzVnxXrfiULx?=
- =?us-ascii?Q?m1StU0qJB1+PRM8Zesns2AdmXycoqsWrQlfifBKDGR3D4Fk15aLzamX5HFTd?=
- =?us-ascii?Q?lMHZrojDrpibIaMKVtUlgpjovuV+Z49olAFuZIpcwFvP20K0l6ruqBEFxdxf?=
- =?us-ascii?Q?q/9nsc1t05Bf6DvKtqc2M1iJ8PUM2AtVNs6wYRSaAJgDWI65lROHsNym1aMo?=
- =?us-ascii?Q?4K6oglsqtndhzZx9PSrriuOCc7fVuojiGUa5s86AP9pHX31MKuhoyuLnJ1Gy?=
- =?us-ascii?Q?1s/QdTQiKwcwWnLdz/mak5qnZBcf7Fh/zsMEd2NzIqhdFZEtwyHIB+/u3w1l?=
- =?us-ascii?Q?AJNPCBYGZYoxNIma07/3DKri6AX54alFuxcp21+UmhAKZW7AFrmqiECvwRxN?=
- =?us-ascii?Q?VriDsCF/aOKuvRMHIgLO93I/l+M+GmCHC/GYS2IaFSExHr+3vJTEriWjqTXa?=
- =?us-ascii?Q?ob2jTLIURV0BMYi7WnowFSvxdCqsht+2/MoarRfqd0djlUfyeeUD6GYbnSr7?=
- =?us-ascii?Q?ysoTSOoHNj4DZsSYj5JehF2psNhMY0Oe+kwMi2f4o+8Pv4Oqi8VoSlILWbsX?=
- =?us-ascii?Q?PRpx3EU3JhigqpWAhCLX2UVg/5B1wJNyRSXaAKqtLLUs1Q6918i722MR48YC?=
- =?us-ascii?Q?huYPOesygvewGnMAHESF7NjBn82lG90XLY4mr1X5bY3BPF1j915gOzSIi7c3?=
- =?us-ascii?Q?eJuSpJ+KMbD3KnJLqQ6KXIJ1JLVJv8vw/bZmP59u45+ACD0aRuW5QBShTodO?=
- =?us-ascii?Q?g1AnaXQuK/1saTqLh17ZdST4KbRg6Psrg7o2mizMCx83AXwfF5gTur3weJL8?=
- =?us-ascii?Q?1xVdoRH5Ra4A7rthx6E5PoJlHgy9ixSEK4VnoplodRIOKRKrT7shGcS5DPP2?=
- =?us-ascii?Q?LIMM0Ac6XrTG+X7HHNX0x6AapFoJ79+7WFh5gCkRodo98S4JTrabJMGFCAhv?=
- =?us-ascii?Q?2MweTmaWozICJjUy99vNX60WjFELwrwTSqQdEUK0lKlDio3AGwSpWyXDlOyU?=
- =?us-ascii?Q?4GTn0vHMPKRJ6sXWmzKrR2F8JDi3ehpO3PjUUkgG8DMH9RThwvhnRQCIes2K?=
- =?us-ascii?Q?aWERmoS5mfxiLtgliH89PkI4H3to5efSdAWktG3gc/W+ptzLX33Ou5m2RX9H?=
- =?us-ascii?Q?CxCLAlV7T00gx8Y8x6XlL6u+PMmLDoiu8a13dO2d21Hbl7dlr8ehyLqGxOLw?=
- =?us-ascii?Q?qP67cHmKG1SdB21RicHM9W4l1tHixT+bBm/kaT0paWLTG2PHWRPhjloKOEWa?=
- =?us-ascii?Q?iWZUwHrJuVhXHxrLxwsxJAjUdfEJzr/TlIM0y0nDnOGGtfl2Y5B8PISgvQdN?=
- =?us-ascii?Q?RKReOsp0dkSGkrAFjMQwE5wS2U5nVsa3qHIJ2t0wCOcXp+TkEjnS8qe5Oh+r?=
- =?us-ascii?Q?50QZsEZo4xHl7EDRkhWq4r03aBsjx3zhnhDljNcGw3gVFZ3gxiqXGLztFEym?=
- =?us-ascii?Q?YAUjSDzkoIgWCZowDiBxkntUjmtmqfHR8wUluk/ISmDz62SLpzqT33SqdnRn?=
- =?us-ascii?Q?Bg0zPV3HKYpb+TUzOuEy30LbUx+L2kEPe3SWk6YT?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec52da24-4cb3-484b-353d-08dd60aa1095
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 14:36:09.6958
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BVRgHe01AT2XOr74ipIldWBzmGdhKe352hJs0aLM7ozhq48CTLV4g5L/US+LtMb+NIbAi51DdcWaShL0WEYqdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10506
+References: <20250307145547.2784821-1-ping.bai@nxp.com>
+In-Reply-To: <20250307145547.2784821-1-ping.bai@nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 11 Mar 2025 15:42:31 +0100
+X-Gm-Features: AQ5f1JpuVnMxrQT-gRgqkxyP6H2nzFhKukp5aY_RBibf6JhIgaCor4IM8qvGE-0
+Message-ID: <CAPDyKFqsE4nArB+Qn5gH5P7vVePpZ6Z7ruas2-EGYsctGV-=4w@mail.gmail.com>
+Subject: Re: [PATCH v5] cpuidle: Init cpuidle only for present CPUs
+To: rafael@kernel.org, Jacky Bai <ping.bai@nxp.com>
+Cc: daniel.lezcano@linaro.org, lpieralisi@kernel.org, sudeep.holla@arm.com, 
+	james.morse@arm.com, d-gole@ti.com, anup@brainfault.org, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	imx@lists.linux.dev, khilman@baylibre.com, quic_tingweiz@quicinc.com, 
+	quic_yuanjiey@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 11, 2025 at 09:09:34PM +0530, Pankaj Gupta wrote:
-> Add support for NXP secure enclave called EdgeLock Enclave
-> firmware (se-fw) for imx8ulp-evk.
+On Fri, 7 Mar 2025 at 15:54, Jacky Bai <ping.bai@nxp.com> wrote:
 >
-> EdgeLock Enclave has a hardware limitation of restricted access to DDR
-> address: 0x80000000 to 0xAFFFFFFF, so reserve 1MB of DDR memory region
-> from 0x80000000.
+> for_each_possible_cpu() is currently used to initialize cpuidle
+> in below cpuidle drivers:
+>   drivers/cpuidle/cpuidle-arm.c
+>   drivers/cpuidle/cpuidle-big_little.c
+>   drivers/cpuidle/cpuidle-psci.c
+>   drivers/cpuidle/cpuidle-qcom-spm.c
+>   drivers/cpuidle/cpuidle-riscv-sbi.c
 >
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> However, in cpu_dev_register_generic(), for_each_present_cpu()
+> is used to register CPU devices which means the CPU devices are
+> only registered for present CPUs and not all possible CPUs.
+>
+> With nosmp or maxcpus=0, only the boot CPU is present, lead
+> to the failure:
+>
+>   |  Failed to register cpuidle device for cpu1
+>
+> Then rollback to cancel all CPUs' cpuidle registration.
+>
+> Change for_each_possible_cpu() to for_each_present_cpu() in the
+> above cpuidle drivers to ensure it only registers cpuidle devices
+> for CPUs that are actually present.
+>
+> Fixes: b0c69e1214bc ("drivers: base: Use present CPUs in GENERIC_CPU_DEVICES")
+> Reviewed-by: Dhruva Gole <d-gole@ti.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Tested-by: Yuanjie Yang <quic_yuanjiey@quicinc.com>
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Rafael, I assume you will pick these up? Or let me know if you want me
+to take them via my pmdomain tree.
+
+Kind regards
+Uffe
+
 > ---
->  arch/arm64/boot/dts/freescale/imx8ulp-evk.dts | 17 ++++++++++++++++-
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi    | 13 +++++++++++--
->  2 files changed, 27 insertions(+), 3 deletions(-)
+>  - v5 changes:
+>    - add changes for cpuidle-qcom-spm
 >
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> index 290a49bea2f7..a25d71bf2c26 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>  - v4 changes:
+>   - add changes for other cpuidle driver that has the similar issue
+>     as cpuidle-pcsi driver.
+>
+>  - v3 changes:
+>   - improve the changelog as suggested by Sudeep
+> ---
+>  drivers/cpuidle/cpuidle-arm.c        | 8 ++++----
+>  drivers/cpuidle/cpuidle-big_little.c | 2 +-
+>  drivers/cpuidle/cpuidle-psci.c       | 4 ++--
+>  drivers/cpuidle/cpuidle-qcom-spm.c   | 2 +-
+>  drivers/cpuidle/cpuidle-riscv-sbi.c  | 4 ++--
+>  5 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/cpuidle/cpuidle-arm.c b/drivers/cpuidle/cpuidle-arm.c
+> index caba6f4bb1b7..e044fefdb816 100644
+> --- a/drivers/cpuidle/cpuidle-arm.c
+> +++ b/drivers/cpuidle/cpuidle-arm.c
+> @@ -137,9 +137,9 @@ static int __init arm_idle_init_cpu(int cpu)
 >  /*
-> - * Copyright 2021 NXP
-> + * Copyright 2021, 2025 NXP
+>   * arm_idle_init - Initializes arm cpuidle driver
+>   *
+> - * Initializes arm cpuidle driver for all CPUs, if any CPU fails
+> - * to register cpuidle driver then rollback to cancel all CPUs
+> - * registration.
+> + * Initializes arm cpuidle driver for all present CPUs, if any
+> + * CPU fails to register cpuidle driver then rollback to cancel
+> + * all CPUs registration.
 >   */
+>  static int __init arm_idle_init(void)
+>  {
+> @@ -147,7 +147,7 @@ static int __init arm_idle_init(void)
+>         struct cpuidle_driver *drv;
+>         struct cpuidle_device *dev;
 >
->  /dts-v1/;
-> @@ -24,6 +24,17 @@ memory@80000000 {
->  		device_type = "memory";
->  		reg = <0x0 0x80000000 0 0x80000000>;
->  	};
-
-space line here.
-
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		ele_reserved: ele-reserved@90000000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0 0x90000000 0 0x100000>;
-> +			no-map;
-> +		};
-> +	};
+> -       for_each_possible_cpu(cpu) {
+> +       for_each_present_cpu(cpu) {
+>                 ret = arm_idle_init_cpu(cpu);
+>                 if (ret)
+>                         goto out_fail;
+> diff --git a/drivers/cpuidle/cpuidle-big_little.c b/drivers/cpuidle/cpuidle-big_little.c
+> index 74972deda0ea..4abba42fcc31 100644
+> --- a/drivers/cpuidle/cpuidle-big_little.c
+> +++ b/drivers/cpuidle/cpuidle-big_little.c
+> @@ -148,7 +148,7 @@ static int __init bl_idle_driver_init(struct cpuidle_driver *drv, int part_id)
+>         if (!cpumask)
+>                 return -ENOMEM;
 >
->  	reserved-memory {
->  		#address-cells = <2>;
-> @@ -259,6 +270,10 @@ &usdhc0 {
->  	status = "okay";
->  };
+> -       for_each_possible_cpu(cpu)
+> +       for_each_present_cpu(cpu)
+>                 if (smp_cpuid_part(cpu) == part_id)
+>                         cpumask_set_cpu(cpu, cpumask);
 >
-> +&hsm0 {
-> +	memory-region = <&ele_reserved>;
-> +};
-> +
->  &fec {
->  	pinctrl-names = "default", "sleep";
->  	pinctrl-0 = <&pinctrl_enet>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> index 2562a35286c2..c79a5de227b3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> diff --git a/drivers/cpuidle/cpuidle-psci.c b/drivers/cpuidle/cpuidle-psci.c
+> index dd8d776d6e39..b46a83f5ffe4 100644
+> --- a/drivers/cpuidle/cpuidle-psci.c
+> +++ b/drivers/cpuidle/cpuidle-psci.c
+> @@ -403,7 +403,7 @@ static int psci_idle_init_cpu(struct device *dev, int cpu)
 >  /*
-> - * Copyright 2021 NXP
-> + * Copyright 2021, 2025 NXP
+>   * psci_idle_probe - Initializes PSCI cpuidle driver
+>   *
+> - * Initializes PSCI cpuidle driver for all CPUs, if any CPU fails
+> + * Initializes PSCI cpuidle driver for all present CPUs, if any CPU fails
+>   * to register cpuidle driver then rollback to cancel all CPUs
+>   * registration.
 >   */
+> @@ -413,7 +413,7 @@ static int psci_cpuidle_probe(struct platform_device *pdev)
+>         struct cpuidle_driver *drv;
+>         struct cpuidle_device *dev;
 >
->  #include <dt-bindings/clock/imx8ulp-clock.h>
-> @@ -154,7 +154,7 @@ sosc: clock-sosc {
->  		#clock-cells = <0>;
->  	};
+> -       for_each_possible_cpu(cpu) {
+> +       for_each_present_cpu(cpu) {
+>                 ret = psci_idle_init_cpu(&pdev->dev, cpu);
+>                 if (ret)
+>                         goto out_fail;
+> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+> index 3ab240e0e122..5f386761b156 100644
+> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
+> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+> @@ -135,7 +135,7 @@ static int spm_cpuidle_drv_probe(struct platform_device *pdev)
+>         if (ret)
+>                 return dev_err_probe(&pdev->dev, ret, "set warm boot addr failed");
 >
-> -	sram@2201f000 {
-> +	sram0: sram@2201f000 {
->  		compatible = "mmio-sram";
->  		reg = <0x0 0x2201f000 0x0 0x1000>;
+> -       for_each_possible_cpu(cpu) {
+> +       for_each_present_cpu(cpu) {
+>                 ret = spm_cpuidle_register(&pdev->dev, cpu);
+>                 if (ret && ret != -ENODEV) {
+>                         dev_err(&pdev->dev,
+> diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> index 0c92a628bbd4..0fe1ece9fbdc 100644
+> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
+> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> @@ -529,8 +529,8 @@ static int sbi_cpuidle_probe(struct platform_device *pdev)
+>                         return ret;
+>         }
 >
-> @@ -169,6 +169,8 @@ scmi_buf: scmi-sram-section@0 {
->  	};
->
->  	firmware {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-
-Needn't #address-cells and  #size-cells because no regs in children nodes
-
-Frank
-
->  		scmi {
->  			compatible = "arm,scmi-smc";
->  			arm,smc-id = <0xc20000fe>;
-> @@ -186,6 +188,13 @@ scmi_sensor: protocol@15 {
->  				#thermal-sensor-cells = <1>;
->  			};
->  		};
-> +
-> +		hsm0: secure-enclave {
-> +			 compatible = "fsl,imx8ulp-se-ele-hsm";
-> +			 mbox-names = "tx", "rx";
-> +			 mboxes = <&s4muap 0 0>, <&s4muap 1 0>;
-> +			 sram = <&sram0>;
-> +		 };
->  	};
->
->  	cm33: remoteproc-cm33 {
->
+> -       /* Initialize CPU idle driver for each CPU */
+> -       for_each_possible_cpu(cpu) {
+> +       /* Initialize CPU idle driver for each present CPU */
+> +       for_each_present_cpu(cpu) {
+>                 ret = sbi_cpuidle_init_cpu(&pdev->dev, cpu);
+>                 if (ret) {
+>                         pr_debug("HART%ld: idle driver init failed\n",
 > --
-> 2.43.0
+> 2.34.1
 >
