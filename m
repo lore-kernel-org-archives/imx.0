@@ -1,139 +1,64 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99850217719
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 19:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B4E2F28;
+	Tue, 11 Mar 2025 22:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741722091; cv=none; b=bS/ajI9ED1KvuiKl5b9k/c9GQDyxRcNWGR9kvFC/QNPqngfcrEKmcNKiGEsxUWALkv5mwFePiqKmbHwj4lWfjMmNRpBVpG/HFuPeCLTJv68cUZY+YLl70FCz6JLj7lo7p54h/jOTBe+Se2Hies9YspaXrPvsoionkq0yD8s4znI=
+	t=1741731347; cv=none; b=ZXaYPam5ACH6K65lvXvdhZ6chi5k4jFkViPLCVQjHqnBZkpMiIOIr+iVUZInW8UIya66iE/5Ov3aSJCc7OOdP3eNE3LoKWulMdM31Or6WZInNY6HJl9aYA+A8DgJsyFU35PsFGDhvGq7rg3nlkIvohJogeofhEjzS/XmKI9H9mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741722091; c=relaxed/simple;
-	bh=3sZEVpOpMnWgAyLZBmsVsQDMF5e4p5snXFNG0axQQ6w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tqFMnWZZhrWuLADklMwh/8J8Gyputy0I3EbE/4sfCzoxyhFnKzbJpD+x17jvH/ZOcWihFy6i/YlYXoOaPozIehUMK71O+bvjNTUH4a3fg6cBmvJMEvg/f45AkyqIYHIieznbnZrzBWNRFQQlLZrOF27JJcPDwUYXO1Dr6JvTPuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ts5Tg-0007gL-85; Tue, 11 Mar 2025 20:41:24 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ts5Tf-005ESk-1n;
-	Tue, 11 Mar 2025 20:41:23 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ts5Tf-001qa6-1Z;
-	Tue, 11 Mar 2025 20:41:23 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 11 Mar 2025 20:41:12 +0100
-Subject: [PATCH] arm64: dts: imx8mp: configure GPU and NPU clocks in
- nominal DTSI
+	s=arc-20240116; t=1741731347; c=relaxed/simple;
+	bh=SRFNaVjROWG5Dt9gNTjWV0ukYRS5OSkz9zoqD9zJvQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bjRqcWEKFBlytYCrnjOwh6I0ls3fT33npY+m9pRbmb6GFn4wpSfjnnM4ronWZrYSLPDvF+EO3pqLTgCrjug0nTUPKig99C58A1/tuBcF675f5Y2Ynzvx4JgC/zXjHUUZkYdBeYBI/s/Ra2oJU/aJU55aWlkoHbYDTa26AvxZF5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nkc5t/z7; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nkc5t/z7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6D5C4CEEA;
+	Tue, 11 Mar 2025 22:15:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741731347;
+	bh=SRFNaVjROWG5Dt9gNTjWV0ukYRS5OSkz9zoqD9zJvQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nkc5t/z7RY2QR5Ik5Tg1u8IdSsNhnI7b9xV/r1LDicUHJVDUabklDzPXoQ2m4PJMO
+	 8+pMJfQewardsCgHqZHUOWFO887YZcqN7DNWE1LJsbradfwyBDg2m4+e6zSQy3EUxb
+	 3sD3ccIyer3qnYxuljxjpyKH4AUqXnJ1ygKZRmSai15iYHky9jSBYDFqexYtsUjOu6
+	 ezfVKGvL2ra4m8g8+0mJd1nasX+bgDrFHdjMvT0le0i7hOUMos107eoz5nBwIxzdL/
+	 xK/HWJfxfyVXrDpTw6oVzZ8CdEQH6EF4L+jkdys6Lndh+RywDb2vJY81GDIH71Uesw
+	 +ZkIltjpXPgUg==
+Date: Tue, 11 Mar 2025 23:15:38 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	"open list:FREESCALE IMX LPI2C DRIVER" <linux-i2c@vger.kernel.org>, "open list:FREESCALE IMX LPI2C DRIVER" <imx@lists.linux.dev>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: i2c: imx-lpi2c: add i.MX94 LPI2C
+Message-ID: <oyjjcxuqki47gruavd2ms5lc4z2mawbdwjd2mwwxss2tq2xqm5@m2ztzpibjrkv>
+References: <20250306155815.110514-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250311-imx8m-clk-nominal-gpu-v1-1-78de5ea24c5d@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIANeR0GcC/x3MQQqAIBBA0avErBvQQqyuEi1SpxpKC6UIorsnL
- d/i/wcSRaYEXfFApIsT7yFDlgXYZQwzIbtsqESlRC0lsr8bj3ZbMeyew7jhfJzoTG2cNtq2QkF
- uj0gT3/+3H973A8Jlk9NnAAAA
-X-Change-ID: 20250311-imx8m-clk-nominal-gpu-db3bd7b7c905
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Lucas Stach <l.stach@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
- Peng Fan <peng.fan@nxp.com>, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250306155815.110514-1-Frank.Li@nxp.com>
 
-Commit 255fbd9eabe7 ("arm64: dts: imx8mp: Add optional nominal drive
-mode DTSI") added imx8mp-nominal.dtsi, which overrides all overdrive
-clock rates in imx8mp.dtsi to the nominal rates.
+Hi,
 
-At the same time, commit 9f7595b3e5ae ("arm64: dts: imx8mp: configure
-GPU and NPU clocks to overdrive rate") went in, which changed some
-clock rates away from the nominal values.
+On Thu, Mar 06, 2025 at 10:58:15AM -0500, Frank Li wrote:
+> Add compatible string "fsl,imx94-lpi2c" for the i.MX94 chip, which is
+> backward compatible with i.MX7ULP. Set it to fall back to
+> "fsl,imx7ulp-lpi2c".
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Resolve the discrepancy by effectively reverting the changes in the
-latter commit inside imx8mp-nominal.dtsi. This is required for proper
-operation of the imx8mp-skov boards, which are currently
-imx8mp-nominal.dtsi's only users and lets all other boards that don't
-include it benefit from the new higher frequencies.
+merged to i2c/i2c-host.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-If the commit hashes are not stable, please feel free to squash this
-change directly into what's currently commit 255fbd9eabe7 ("arm64: dts:
-
-imx8mp: Add optional nominal drive mode DTSI").
----
- arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi | 26 +++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi
-index a1b75c9068b288a2fba73bbd96b1519a50df85a3..dc0ccd723c6d92e7946ebd52bac535e4175498d0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi
-@@ -24,6 +24,20 @@ &clk {
- 	fsl,operating-mode = "nominal";
- };
- 
-+&gpu2d {
-+	assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
-+	assigned-clock-rates = <800000000>;
-+};
-+
-+&gpu3d {
-+	assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
-+			  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-+				 <&clk IMX8MP_SYS_PLL1_800M>;
-+	assigned-clock-rates = <800000000>, <800000000>;
-+};
-+
- &pgc_hdmimix {
- 	assigned-clocks = <&clk IMX8MP_CLK_HDMI_AXI>,
- 			  <&clk IMX8MP_CLK_HDMI_APB>;
-@@ -46,6 +60,18 @@ &pgc_gpumix {
- 	assigned-clock-rates = <600000000>, <300000000>;
- };
- 
-+&pgc_mlmix {
-+	assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
-+			  <&clk IMX8MP_CLK_ML_AXI>,
-+			  <&clk IMX8MP_CLK_ML_AHB>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-+				 <&clk IMX8MP_SYS_PLL1_800M>,
-+				 <&clk IMX8MP_SYS_PLL1_800M>;
-+	assigned-clock-rates = <800000000>,
-+			       <800000000>,
-+			       <300000000>;
-+};
-+
- &media_blk_ctrl {
- 	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_AXI>,
- 			  <&clk IMX8MP_CLK_MEDIA_APB>,
-
----
-base-commit: 5a690619426fc4b09c7fd3f40d3a69264ef3db0f
-change-id: 20250311-imx8m-clk-nominal-gpu-db3bd7b7c905
-
-Best regards,
--- 
-Ahmad Fatoum <a.fatoum@pengutronix.de>
-
+Thanks,
+Andi
