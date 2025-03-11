@@ -1,43 +1,43 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C901566A
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1181DE4F0
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741661276; cv=none; b=AtETxvrd+0J4LD+s2HYrlO9tcg0Cid0YLF8U7RLgCPtc1KO+FPOiztyPsnjqJBYUUF2kTl9D/32zGoK+QGgFdPPgrsqtfKotFFYeCo5bkeAXcuMEq/+SnqaFXAAFyFfkJ3VxP1BhFEHGtALSH/8tjN6kftFjbT+3HN6XwYg5U30=
+	t=1741661450; cv=none; b=ki1FGAJTKoppD1VEOTc0JktbUjD7ISXCxsXA6/oLSCNd2+tEnKa0SvLV535p7ygI2cZAbDiFsF2+pr+1PWZqKtQpE095JOKiIQkRUkmwxq8mF09qRi5QDK7nH3g/y9d4NQroDh4XcCvBFmEPKCU0SCZxechtCXsvU1uqECo5Utg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741661276; c=relaxed/simple;
-	bh=Fzqz7dFMDlYf04/3j+5kk7viIEamjr4Tpo1oxYIS7Pk=;
+	s=arc-20240116; t=1741661450; c=relaxed/simple;
+	bh=1fbW+QU0NIiVwq5BQT5D3WXMNirWuD/+Eje0aoYYGe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K9Z9GSd3FhsBP4SpPdkqoST/sXRdwje34uC9U/9bvCJEry/YWobljjcuOQYmcQsPFvy84e9caOrylsrEoqrLYP/nqmUac3kfHY/IK9te4Q+DExXBZlwftKoo9uoPu3hw92pt8aRhO1cEw7XSYSn0o3XfqnQ1g0lLlacZKIPKOtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=aUk0JzXj; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=f1bVK8R5J2ScWG/GLOWb80fwYgrsCjWFLELzH0r+Z16Jil83ra+P6r5u8g2GL3t50GtWsXlMDfmb61UZGPw3VyY3SyR9tMpcj0xFiewHSGRCRMxVWr4p2S4hSmW4KLn6rUjPMOMvPnVLq1lUejOFKRCin4nk8yTCFkqnT2eAIVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CAvKBMGZ; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="aUk0JzXj"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CAvKBMGZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=WsOaeFx84mEMIUh1L0Rg4ey/wr5JNJW+7tpTSLncbys=;
-	b=aUk0JzXj24LIHoUlTD1VitEKqbk5WwNNDL1dNpHPSq1kBdHcdBqZLNPR7HRFRJ
-	d6xvoCXtdbkyhM2TBH3Mus6x9u3PLGyNPYufcRPWdofRIXPJ0I9svTRsbd0ns5Z3
-	xUhHsQxELYQvDN13ohHKEAMZOJb5Wkf9TevnFbZOA/wyU=
+	Content-Type; bh=yD8oPqx1bJfk/6wLNnCY911Tq4LRHUDIWKPgfRYfY9Y=;
+	b=CAvKBMGZE/ItnDvOCYd+rSxGncNxtQSNRWGL6AZRPdjVBtA5OxP1HUlVfl49Wa
+	LX7skFDHB4KyrfUj7e5ppoguMy1H2/GIoAY7fbq3uDHK1F6rqarapdz89D5f0tlL
+	Q2k0bFbAP7/zF1ECaANX98+b9mQokLMQcjlbwjQk5alUA=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCns4o+pM9nw3GvAA--.42893S3;
-	Tue, 11 Mar 2025 10:47:28 +0800 (CST)
-Date: Tue, 11 Mar 2025 10:47:26 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAnZD_2pM9nHKK0AA--.48569S3;
+	Tue, 11 Mar 2025 10:50:32 +0800 (CST)
+Date: Tue, 11 Mar 2025 10:50:30 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>, linux@ew.tq-group.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] ARM: dts: imx6ul-tqma6ul1: Change include order to
- disable fec2 node
-Message-ID: <Z8+kPrY3BsyniZS2@dragon>
-References: <20250225144436.813645-1-alexander.stein@ew.tq-group.com>
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx95: add ref clock for pcie nodes
+Message-ID: <Z8+k9s/vrLE7N4km@dragon>
+References: <20250225170802.2671972-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,23 +46,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250225144436.813645-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:M88vCgCns4o+pM9nw3GvAA--.42893S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxG-eUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQQNZWfPU+r87wAAs-
+In-Reply-To: <20250225170802.2671972-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Ms8vCgAnZD_2pM9nHKK0AA--.48569S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVvedUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAh4NZWfPWknv1gAAs2
 
-On Tue, Feb 25, 2025 at 03:44:35PM +0100, Alexander Stein wrote:
-> From: Max Merchel <Max.Merchel@ew.tq-group.com>
+On Tue, Feb 25, 2025 at 12:08:02PM -0500, Frank Li wrote:
+> Add "ref" clock for i.MX95's pcie and fix below CHECK_DTBS warnings:
+> arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: pcie@4c300000: clock-names: ['pcie', 'pcie_bus', 'pcie_phy', 'pcie_aux'] is too short
+> 	from schema $id: http://devicetree.org/schemas/pci/fsl,imx6q-pcie.yaml
 > 
-> TQMa6UL1 has only one FEC which needs to be disabled as one of the last
-> steps.
-> imx6ul-tqma6ul2.dtsi can't be included in imx6ul-tqma6ul1.dtsi as the
-> defaults from imx6ul.dtsi will be applied again.
-> 
-> Fixes: 7b8861d8e627 ("ARM: dts: imx6ul: add TQ-Systems MBa6ULx device trees")
-> Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Applied, thanks!
 
