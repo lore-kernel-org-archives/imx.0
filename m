@@ -1,65 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362F82620C3;
-	Tue, 11 Mar 2025 18:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7AC1DE3CE;
+	Tue, 11 Mar 2025 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741717109; cv=none; b=I4BLcDlRgPcKoLfLAMbNEHOxFVv2bAZ5Lmcfnbz7Nb29Np+QG9afpY3Tuv7lJrP0DwMuYlgDNbCJZijhbvnVtHd6a598JaQlWmHV0eSkC32hGi7qzx14AG3XtxLfEUBj4CVzwqh0LDaKFdvHMni7hnp17UeyBV/MfHPpimrvhvQ=
+	t=1741718101; cv=none; b=T4dH9c70s7kJCXKPLXUYb457pBfPNTCDnJLfGNLIxdu8O1KONvortzOFJQ91OEEURLToRo9VZIAYeA10B30dlGgmXYJ9JYcnO9gYY48U6DBFZU6AHrRxCBQj+88BS5NWsjSmXLuD7bUzu6GSnh0jN3MmfEuIE8M2OQbNTwQOdXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741717109; c=relaxed/simple;
-	bh=022RnomY3mAc+2RTtmJ6xcrKdVXRF9n9VsGw1okq6uQ=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=jQ/Nx75mKI9TnvklFkxb9FNAYIfYwBIiqFTklDHYRKMmBJAtNfzhRZPK6+bsHnDoEJoULw1GXRlZ3fpAyCnmBYP1NZOgNX4QBff2XAR/h/ddxXmy+940k4AOMsPtuTPVYTypIHZWWMyD+Cy+qpZKmsCvQVnuCC7VgIHmrEl5EFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXr6HCno; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741718101; c=relaxed/simple;
+	bh=sVHNbdJnau3K6ieK5h764cFOUI/8Mm9xtddYsKbK+KQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JfGboSJLdaYs2Wc223s60N/N6iepRYKYqcdebDB9Q8+sAU3uPjjnaLvGLt5VOL8u5x0Tj7BdcTFz8g24/mhvFP2oGYtA7gCiMWKHIk/HrRvxsdFXxojoUTR+A6Zk1wv/QPzjOzMoTextf9fTiISFFSq3nQ75kk9fZjAFseadjTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNtft3sY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXr6HCno"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5856BC4CEE9;
-	Tue, 11 Mar 2025 18:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741717108;
-	bh=022RnomY3mAc+2RTtmJ6xcrKdVXRF9n9VsGw1okq6uQ=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=GXr6HCnovY5hjygoUZFISGN9FPq7MIzpO0SpbkZlWMT1RjfM+I+lHuMD0RFyhBRc8
-	 UsgK7jOw4MHDpTakAz9Xb8s9WQE0CWPa9vIkl8dPIfkNSnVxeZc7rcxsVcqwxT2Y2t
-	 +NT3kLYPZci1iyF9sYSsjNjGru5h/XmS+zOV1Hc8UaKep/DAWoV7x+EdN7T8W4KioB
-	 FLyYC1kR4HSnseTeGG8aJvKDxAH40OafZ1pKVTsZxD+HwVhJj3MgXa6hG66u/O/rrW
-	 r2x9kzs1Oh/dHdnSi8fizruSwEukkdfSBPtWxYfQB9+h+61u4CUS+qfcnoGsW5cQmZ
-	 gKF2jlWmHkmpA==
-Message-ID: <c6cb66744fc8986bc997d9e9e03de12f.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNtft3sY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71747C4CEE9;
+	Tue, 11 Mar 2025 18:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741718100;
+	bh=sVHNbdJnau3K6ieK5h764cFOUI/8Mm9xtddYsKbK+KQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lNtft3sY19IiVuoDzWfgWESJrNn8CH/auzECap2rnCrOyzG33cEo99oc2alPIEy/f
+	 cfy5T3Uj0QvfOnC9Z8Z7W61KLNXyeCfSdqIICG4pUe/lynRsu/ubZghRKuRRf2g/v5
+	 VNPXnEL/LCImE+wpS4xk1EZps/FDDPFe2bezUc5M=
+Date: Tue, 11 Mar 2025 14:34:56 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
+ Concerto board
+Message-ID: <20250311-omniscient-fiery-bison-8e7feb@lemur>
+References: <20250310-varsom6ul-concerto-dts-v3-0-551e60713523@bootlin.com>
+ <20250310-varsom6ul-concerto-dts-v3-1-551e60713523@bootlin.com>
+ <63f8aa7d-fcd4-450f-b3a1-44886a29fc7e@kernel.org>
+ <cd2f3c97-53bb-42f5-a3cd-4385bfda5dc7@kernel.org>
+ <D8CQAAKOZ1O5.8JVESQPJSSM8@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250311094140.722154-1-abel.vesa@linaro.org>
-References: <20250311094140.722154-1-abel.vesa@linaro.org>
-Subject: Re: [GIT PULL] clk: imx: Updates for v6.15
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: imx@lists.linux.dev, NXP Linux Team <linux-imx@nxp.com>, linux-clk@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette <mturquette@baylibre.com>
-Date: Tue, 11 Mar 2025 11:18:26 -0700
-User-Agent: alot/0.12.dev8+g17a99a841c4b
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <D8CQAAKOZ1O5.8JVESQPJSSM8@bootlin.com>
 
-Quoting Abel Vesa (2025-03-11 02:41:40)
-> The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f0=
-5b:
->=20
->   Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/=
-clk-imx-6.15
->=20
-> for you to fetch changes up to 06a61b5cb6a8638fa8823cd09b17233b29696fa2:
->=20
->   clk: imx8mp: inform CCF of maximum frequency of clocks (2025-03-03 19:0=
-2:15 +0200)
->=20
-> ----------------------------------------------------------------
+On Mon, Mar 10, 2025 at 05:31:32PM +0100, Antonin Godard wrote:
+> > And now I noticed you used b4, so I really do not get how the tags can
+> > be missing here. :/
+> 
+> Sorry, that's totally my fault here, I forgot to run 'b4 trailers -u' before
+> sending... :/ And I don't think it's part of the prep checks?
 
-Thanks. Pulled into clk-next
+Mostly, because there's no clear picture of how this would work reliably. All
+other checks are on a "ran since modifications to the series" basis, but this
+one would have to be time-based.
+
+Should it check if the trailer updates have been run in the past XX minutes
+(and how long should that XX be?).
+
+
+-K
