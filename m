@@ -1,43 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2293C1DE2DF
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E301E47DD
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741661837; cv=none; b=C9G/hcQprMwQCyRXPQdnbGqCLi/Vc3ygGOSQUYUaS6Nx2XNfJN7WMXUI0BBbHf5U8nYauaQw6GeUbDfU1QUe/AWHaH9lcV/2xVc0p1y/0bYpCNwop6iqX0PCMV+L//+Tp8CxJumrWOXKWB5JRAVnUEx+7MIJjhN6XMy+a6nGmgk=
+	t=1741661943; cv=none; b=O6f90l0E/VkDxUbw0Q1TQCNda35HVSVQLm6C00XFrnNKoYaZDmT4FOGnxs2lttWSXp1PQr7+d09BpgfotZ9zuXVs/BrLW1AnuUwLQ0+hXgdkkdUm5glDs2J78XCfJ3RbibjgqTJ53JKzxwJJ6d0eqJY87ePXjYC8shlSJxBdW/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741661837; c=relaxed/simple;
-	bh=rwQqyDcDc+bMra20ugcrb8veDxxTFzOfBpewMmM2OsI=;
+	s=arc-20240116; t=1741661943; c=relaxed/simple;
+	bh=FU1Fda26sF6aIGkPyt3zuGoD7LdpQPSS+hCtJJEfPm8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HRAw0bGVy4mk34EfES4sMF98TFJS1/c2xE6pcVU8XP2XTmZj/TP+1xRoyujm5dCF+XGnTFtVhlmI6yD/N7wcJ2ieY2UUVi5Sw08fc9ZoRxe8kPlD4dZj0nvwXti2PuiWREGge+1iM5o2UNr7f4gg1ARGV0onpp0EAgP3pCnOK4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=bZN/HkxA; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=AuBop8HhzA+FpsQVw01vmB8987O0cnvLwD6CRNGUCcj+WLrB1MTmSw0tSsUPpQap4xiEAd5LV6q+0McaPfN+sMcdLowfPupiXzf6On0E1HUPlVwU8P2F+gAzphMQUbc0GmOOfIoOLSnmZv8hpE446qMHH5Xma5D1KSZSpewQJsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=mZnOCRZQ; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="bZN/HkxA"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="mZnOCRZQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=2UT5JWESlIqMK88Qm0fZJYn8VJFoNxpbvjgrdMRXN5E=;
-	b=bZN/HkxAw8pLxgZlkQiT5Uevk+4WAvRTFDqPITaWXNqhsjzQM27BtnVpAqTS+O
-	tUKdb3R6e3galk+evy/LBZmavjIEHvB6B55Z2DriV8CjulaoOsj2Hy3xklw0zMQJ
-	liWMaEFT+JF4XsDbDQ5vF/y3RqtwkOsdXEdJBeTRBDhX4=
+	Content-Type; bh=GSR8BTfCX9kMB6qOH0+UvwaxFfvP+jyFvyHmy/gj9gE=;
+	b=mZnOCRZQXcVe3qU42I6laEGda6LowRCDbbqby/VYSPkoIP7nfG6xvzU/5Jqa6z
+	pRCqMJYTRfo35c3f5zV+o/9Rtii1wOF3p/1FvJciRnfLqV26vVOhM21mslRJvhB4
+	Yt4vHL4RM0M1NetSflvuDl68Ia94puFgxeiaoP6+yAvgc=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXbUZxps9nP+awAA--.43587S3;
-	Tue, 11 Mar 2025 10:56:51 +0800 (CST)
-Date: Tue, 11 Mar 2025 10:56:49 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBnGk7Fps9n5JGvAA--.954S3;
+	Tue, 11 Mar 2025 10:58:14 +0800 (CST)
+Date: Tue, 11 Mar 2025 10:58:12 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, soc@linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH resend v3 1/1] arm64: dts: imx93: add ddr edac support
-Message-ID: <Z8+mcZw9yjOr3m/y@dragon>
-References: <20250225192159.2907320-1-Frank.Li@nxp.com>
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: imx: mark imx53_suspend_sz as unused
+Message-ID: <Z8+mxDdvtak/3SRs@dragon>
+References: <20250225201157.4190864-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,16 +44,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250225192159.2907320-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Mc8vCgCXbUZxps9nP+awAA--.43587S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVvedUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNROT+GfPpnP3ogAA3l
+In-Reply-To: <20250225201157.4190864-1-arnd@kernel.org>
+X-CM-TRANSID:M88vCgBnGk7Fps9n5JGvAA--.954S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JFyDGF4DWw1DAr18Zr4fKrg_yoWxtwcE9a
+	yrtw1xAr1fJr9Igw17Jan0yr40g3yDurn8Z34rJ3WakFyj9FZrZ3y8t34kX39agr42k3Wx
+	GF9Iqw1fCrZ5CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU00PfJUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBUNZWfPoGYkbQAAse
 
-On Tue, Feb 25, 2025 at 02:21:58PM -0500, Frank Li wrote:
-> Add ddr edac support for imx93.
+On Tue, Feb 25, 2025 at 09:11:52PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Unused 'static const' variables cause a warning when building with
+> W=1, and imx53_suspend_sz has a definition for this as an
+> alternative when CONFIG_SUSPEND is disabled:
+> 
+>     In file included from arch/arm/mach-imx/cpu.c:9:
+>     arch/arm/mach-imx/common.h:101:18: error: 'imx53_suspend_sz' defined but not used [-Werror=unused-const-variable=]
+> 
+> It's still referenced though, so mark it as __maybe_unused, so
+> the one user can address the dummy copy and other files that include
+> the header don't produce a warning.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Applied, thanks!
 
