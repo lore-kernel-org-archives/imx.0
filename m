@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F05C13B
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 11:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60559258CF8
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 12:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741693091; cv=none; b=ZXzUNTnID6fMNwrzPUiswR1LJnIX2ZalxuuSatiaVba/VNxtqBiEHmDx4idXTSrqRJ1efWmeHMW3CbftSN567cFBIbw9gowaj0kiy4XyibVQGcO34ugU29+/HLnWcJ3cARLCxNQS2zesSZpb8j/sngZioWmar7XTwHMG9Hwk7Ag=
+	t=1741694714; cv=none; b=B7xOmO4/XhCMsglUKx2MU13RlXrydkYOh2EJgRAaYMUye2KMLq4Q1Cy8Gx1M8n+o59s+rDkUI3AzPZsyzMpCjkM8mzVS+HXJnY145QBYHmqdGy700A8M6ZBnJWk/vBbmo1+kkmR93f6YlfhLSzoDbZFVMALfiFN7HRLKFR4FSmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741693091; c=relaxed/simple;
-	bh=vP/kGEBZIU6KLrstKzG0ch0zA0Ln/GSF9oD1jnqbtYE=;
+	s=arc-20240116; t=1741694714; c=relaxed/simple;
+	bh=t20yuOvGQQsvRDlo35tvfwHYzGxDYPuVQtBjEcVnqQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sr2EsVAkBL+mgVGoTaKOdkgIYiWvc6OOHPeRztfYw/pIn1X+ir94vc/UL7KDfI5OX3SIcHN1vwcZTYW1DmedkhB8ZwjqH528mS5z8mOkM3lvvx6LCoys3dOnXhONB1Qz3RBuMHoZMIFBaVRrYfFYquCDtuqegVIgVHmNSkV2iek=
+	 Content-Type:Content-Disposition:In-Reply-To; b=YxoTiTSASj5tJYnZA4K8aDw4KBQHHrJyDXNAdyVcD5guKcjaKcmlg0PpYuvz5vim6U/AZ0+VTrlele57SRxyM2Lh49sjbXw3PMwJtaJlutApEnCUtCGKICPYkVfTcwFh4+B2q0VszW9sdom7OkwinRt8/7+Qqxg04Dt+SNf656k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,172 +18,223 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1trxva-0004bI-OE; Tue, 11 Mar 2025 12:37:42 +0100
+	id 1tryM5-0008Nt-Gb; Tue, 11 Mar 2025 13:05:05 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1trxva-005Ajv-12;
-	Tue, 11 Mar 2025 12:37:42 +0100
+	id 1tryM3-005B4L-13;
+	Tue, 11 Mar 2025 13:05:03 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1trxva-007iuK-0e;
-	Tue, 11 Mar 2025 12:37:42 +0100
-Date: Tue, 11 Mar 2025 12:37:42 +0100
+	id 1tryM3-007j7z-0d;
+	Tue, 11 Mar 2025 13:05:03 +0100
+Date: Tue, 11 Mar 2025 13:05:03 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+Cc: Frank Li <Frank.li@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] imx8mp: add support for the IMX AIPSTZ bridge
-Message-ID: <20250311113742.uwedagolaxjy6unb@pengutronix.de>
-References: <20250226165314.34205-1-laurentiumihalcea111@gmail.com>
- <20250226212219.lthoofw7nrs3gtg6@pengutronix.de>
- <20250227112856.aylsurbt3uqm4ivw@pengutronix.de>
- <541539db-0015-41de-837f-aabbea68486a@gmail.com>
- <20250307143956.aft3xolakts3nlja@pengutronix.de>
- <4aef911d-d766-4ae7-951b-76843cf33c56@gmail.com>
+	Shawn Guo <shawnguo@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 4/5] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Message-ID: <20250311120503.ryqg2thnj4mkgsjz@pengutronix.de>
+References: <20250221191909.31874-1-laurentiumihalcea111@gmail.com>
+ <20250221191909.31874-5-laurentiumihalcea111@gmail.com>
+ <Z7jahtO3bxjkMfnc@lizhi-Precision-Tower-5810>
+ <cd6a84cd-ff17-45df-becc-9bfc74522f73@gmail.com>
+ <20250227-monumental-whale-of-security-b1c84e-mkl@pengutronix.de>
+ <Z8CWsI/DKZtDBkzE@lizhi-Precision-Tower-5810>
+ <20250228101952.g6tae3ni5xrhjk3y@pengutronix.de>
+ <bfe3c719-f1c5-4ae5-9a40-45ad75cd5855@gmail.com>
+ <20250307152236.3ayulbjqnu3vn7mf@pengutronix.de>
+ <ec38d41d-f2ce-4a98-bb02-d1ae9beb0b3b@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <4aef911d-d766-4ae7-951b-76843cf33c56@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec38d41d-f2ce-4a98-bb02-d1ae9beb0b3b@gmail.com>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mfe@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On 25-03-10, Laurentiu Mihalcea wrote:
-> 
-> 
-> On 3/7/2025 4:39 PM, Marco Felsch wrote:
-> > On 25-03-05, Laurentiu Mihalcea wrote:
-> >> On 2/27/2025 1:28 PM, Marco Felsch wrote:
-> >>> Hi Laurentiu,
+> On 3/7/2025 5:22 PM, Marco Felsch wrote:
+> > On 25-03-04, Laurentiu Mihalcea wrote:
+> >> On 2/28/2025 12:19 PM, Marco Felsch wrote:
+> >>> Hi,
 > >>>
-> >>> On 25-02-26, Marco Felsch wrote:
-> >>>> Hi,
-> >>>>
-> >>>> On 25-02-26, Laurentiu Mihalcea wrote:
-> >>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>> On 25-02-27, Frank Li wrote:
+> >>>> On Thu, Feb 27, 2025 at 11:57:54AM +0100, Marc Kleine-Budde wrote:
+> >>>>> On 25.02.2025 16:14:34, Mihalcea Laurentiu wrote:
+> >>>>>> On 21.02.2025 21:56, Frank Li wrote:
+> >>>>>>> On Fri, Feb 21, 2025 at 02:19:08PM -0500, Laurentiu Mihalcea wrote:
+> >>>>>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>>>>>>>
+> >>>>>>>> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> >>>>>>>> configurations. Since these configurations need to be applied before
+> >>>>>>>> accessing any of the peripherals on the bus, it's better to make AIPSTZ5
+> >>>>>>>> be their parent instead of keeping AIPS5 and adding a child node for
+> >>>>>>>> AIPSTZ5. Also, because of the security configurations, the address space
+> >>>>>>>> of the bus has to be changed to that of the configuration registers.
+> >>>>>>> The orginal 0x30c0_0000..0x31200000 include 0x30df0000, why not map only
+> >>>>>>> config address part in your drivers.
+> >>>>>>>
+> >>>>>>> Frank
+> >>>>>> Any concerns/anything wrong with current approach?
+> >>>>>>
+> >>>>>>
+> >>>>>> I find it a bit awkward to have the whole bus address space
+> >>>>>> in the DT given that we're only interested in using the access
+> >>>>>> controller register space.
+> >>>>>>
+> >>>>>>
+> >>>>>> I'm fine with the approach you suggested but I don't see a
+> >>>>>> reason for using it?
+> >>>>> Looking at the "AIPS5 Memory Map" (page 34/35 in i.MX 8M Plus
+> >>>>> Applications Processor Reference Manual, Rev. 3, 08/2024), the
+> >>>>> AIPS5_Configuration is part of the AIPS5 bus. IMHO the bus is something
+> >>>>> different than the bus configuration. Why not model it as part of the
+> >>>>> bus?
 > >>>>>
-> >>>>> The AIPSTZ bridge offers some security-related configurations which can
-> >>>>> be used to restrict master access to certain peripherals on the bridge.
+> >>>>>>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >>>>>>>> index e0d3b8cba221..a1d9b834d2da 100644
+> >>>>>>>> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >>>>>>>> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> >>>>>>>> @@ -1399,11 +1399,13 @@ eqos: ethernet@30bf0000 {
+> >>>>>>>>  			};
+> >>>>>>>>  		};
+> >>>>>>>>
+> >>>>>>>> -		aips5: bus@30c00000 {
+> >>>>>>>> -			compatible = "fsl,aips-bus", "simple-bus";
+> >>>>>>>> -			reg = <0x30c00000 0x400000>;
+> >>>>>>>> +		aips5: bus@30df0000 {
+> >>>>>                        ^^^^^^^^^^^^
+> >>>>>>>> +			compatible = "fsl,imx8mp-aipstz", "simple-bus";
+> >>>>>>>> +			reg = <0x30df0000 0x10000>;
+> >>>>>>>> +			power-domains = <&pgc_audio>;
+> >>>>>>>>  			#address-cells = <1>;
+> >>>>>>>>  			#size-cells = <1>;
+> >>>>>>>> +			#access-controller-cells = <0>;
+> >>>>>>>>  			ranges;
+> >>>>>>>>
+> >>>>>>>>  			spba-bus@30c00000 {
+> >>>>>                         ^^^^^^^^^^^^^^^^^
 > >>>>>
-> >>>>> Normally, this could be done from a secure environment such as ATF before
-> >>>>> Linux boots but the configuration of AIPSTZ5 is lost each time the power
-> >>>>> domain is powered off and then powered on. Because of this, it has to be
-> >>>>> configured each time the power domain is turned on and before any master
-> >>>>> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
-> >>>> My question still stands:
+> >>>>> This looks very strange: The aips5 bus starts at 0x30df0000 and has a
+> >>>>> child bus starting at 0x30c00000?
+> >>>> @30df0000 should match controller reg's address.
 > >>>>
-> >>>> Setting these bits requires very often that the core is running at EL3
-> >>>> (e.g. secure-monitor) which is not the case for Linux. Can you please
-> >>>> provide more information how Linux can set these bits?
-> >>> Sorry I didn't noticed your response:
+> >>>> subnode address 0x30c00000,  should be descript in "ranges", which 1:1 map.
+> >>>>
+> >>>> So it should be reasonable. another example:
+> >>>> i2c@1000 {
+> >>>>
+> >>>> 	device@1c <- which use difference address space.
+> >>>> }
+> >>>>
+> >>>> The similar case also happen at pcie.
+> >>> I'm not really convinced that pcie and i2c are good examples here. I2C
+> >>> does have an other addressing scheme by nature and the hotplug-able pcie
+> >>> is dependeds on the pcie device memory map of course.
 > >>>
-> >>> https://lore.kernel.org/all/a62ab860-5e0e-4ebc-af1f-6fb7ac621e2b@gmail.com/
+> >>> Here we're talking about an access control IP core on a bus which is
+> >>> static.
 > >>>
-> >>> If EL1 is allowed to set the security access configuration of the IP
-> >>> cores doesn't this mean that a backdoor can be opened? E.g. your
-> >>> secure-boot system configures one I2C IP core to be accessible only from
-> >>> secure-world S-EL1 (OP-TEE) and after the power-domain was power-cycled
-> >>> it's accessible from EL1 again. This doesn't seem right. Why should a
-> >>> user be able to limit the access permissions to an IP core to only be
-> >>> accessible from secure-world if the IP core is accessible from
-> >>> normal-world after the power-domain was power-cycled.
+> >>> But.. it looks like from DT abstraction it's fine because STM did
+> >>> something similiar with their st,stm32mp25-rifsc or st,stm32-etzpc
+> >>> albeit it does look strange and I don't know why we have to limit the
+> >>> address space since it was already mapped but used by the fsl,aips-bus
+> >>> driver.
 > >>>
 > >>> Regards,
 > >>>   Marco
-> >> I'm no security expert so please feel free to correct me if I get
-> >> something wrong.
+> >> The address space of the bridge was changed to that of the bridge's
+> >> configuration space because I think it's very awkward from the
+> >> software's point of view to have to hardcode the offset and size of
+> >> the configuration space inside the driver. 
+> > You mean the access-controller IP core. I could also arguee that it's
+> > akward to put the bridge access-controller IP core into the middle of
+> > the bridge address-space instead of placing it at the very beginning of
+> > the bridge. But this doesn't help here :)
+> >
+> > I see what you mean but from DT abstraction POV it seems more reasonable
+> > to keep it as it is and just adapt the compatible. The current driver
+> > maps the whole address space too, so I don't see why we need to change
+> > it if we change it to the aipstz driver. If you see the
+> > access-controller IP core as part of the bus I don't see any problem and
+> > would argue that the offset detail needs to be handled within the
+> > driver.
+> >
+> >> I also looked at what STM did with "st,stm32-etzpc" so I thought this
+> >> would be acceptable from the DT's POV.
 > >>
-> >> This isn't about S/NS world. The bridge AC doesn't offer any
-> >> configurations for denying access to peripherals based on S/NS world.
-> > It does, please see the AIPSTZ_OPACR register definition. The imx-atf of
-> > sets OPACR registers to 0 (of course), which means that the S/NS is not
-> > checked _but_ it can be configured.
-> 
-> which bits are you referring to more precisely? because, from the OPACR
-> register definition we have:
-> 
-> 1) TP (Trusted protect) - bit 0 => controls whether the peripheral allows
-> transactions from an untrusted master. A master is considered trusted if
-> MTR/MTW (from MPR registers) is set to 1 (MTR means trusted for read,
-> MTW means trusted for write)
-> 
-> 2) WP (Write protect) - bit 1 => controls whether the peripherals allows
-> write transactions (i.e: is write protected or not)
-> 
-> 3) SP (Supervisor protect) - bit 2 => controls whether the master needs
-> supervisor privilege or not to issue transactions to the peripheral. For
-> Cortex-A53 this refers to the execution level (EL0 - EL3). There's no S/NS
-> checks here. EL1-EL3 are supervisor accesses, EL0 is not.
-
-Argh.. my head mixed the supervisor phrase :/
-
-> 4) BW (Buffer Writes) - bit 3 => some flow control configuration bit I'd assume
-> 
-> 
+> >> Regarding why I chose not to model the access controller part as a subnode of the
+> >> bus:
+> >>
+> >>     1) The access controller is part of the bridge itself (not a separate module accessible
+> >>     via the bridge like it's the case for its children) so I think the current approach
+> >>     should also make sense if we take the hardware into consideration.
+> > I don't like this approach if you see the controller as part of the
+> > bridge because the offset could be handled within the bridge driver.
+> > I also that the register offset needs to be supplied else we can't reuse
+> > the driver and we don't want to adapt the driver for each SoC.
 > >
-> > Also please see chapter 4.7.6.1 Security Block:
+> > What came into my mind is the following:
 > >
-> > The AIPSTZ contains a security block that is connected to each
-> > off-platform peripheral. This block filters accesses based on
-> > write/read, non-secure, and supervisor signals.
+> > 	spba-bus@30c00000 {
+> > 		compatible = "nxp,imx8mp-aiptz-bus", "nxp,aiptz-bus";
+> > 		reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
+> > 		reg-names = "bus", "aipstz";
+> >
+> > 		child-nodes {};
+> > 		child-nodes {};
+> > 		child-nodes {};
+> > 	}
+> >
+> > This way we can abstract the access-controller register space and the
+> > whole bus register space and a generic driver could be written just by
+> > making use two reg fields.
 > 
-> yep, but this block is not configured by the AIPSTZ. AFAIK it's configured
-> by the CSU. So, as far as I understand it, the interaction is as follows:
-> 
-> basically you have the CSU which offers some security-related configurations
-> (see "Table 4-16 Security Levels" from the section you've mentioned). These
-> configurations are used by the AIPS bridges to filter transactions.
-> 
-> For example: assume you have peripheral X on AIPS5. The user configures
-> the CSU such that peripheral X should only accept R/W transactions from
-> privileged S world. Now, assume Cortex-A53 issues a transaction from
-> NS EL1 (Linux, for example). The bridge will receive the transaction and
-> check to see if it's privileged and S world. Since it's not then the transaction
-> will be aborted.
-> 
-> The AIPS bridge offers no S/NS world-related configuration options. All you can
-> do with it is:
-> 
-> 1) Mark certain masters as "trusted" and block read/writes based on that (via MPR's
-> MTR/MTW and OPACR's TP)
-> 2) Force transactions to user privilege (via MPR's MPL)
-> 3) Make certain peripherals deny unprivileged transactions (via OPACR's SP)
+> by changing the compatible, we've also effectively changed the
+> programming model.
 
-Okay, thanks for the explanation with your input and the the TRM 4.7.6.1
-saying:
+You need to keep the backward compatible which means, a new kernel have
+to boot an old dts (firmware), which is stil the case since the
+"simple-bus" driver sill matches on the old dts files.
 
-8<--------------------------------------------------------------
-A 3-bit input, 8-bit output translation block can be used such that only
-three register bits are required to set the security profile and the
-translation block will drive the correct 8-bit configuration vector.
-Each peripheral connected to the AIPSTZ would require this translation
-block. The top level AIPSTZ has this three bit input line
-`csu_sec_level[2:0]' corresponding to each peripheral X.
-8<--------------------------------------------------------------
+But this doesn't mean that a new dts (firmware) have to be compatible
+with an old kernel.
 
-I think that I understood the AIPSTZ user/supervisor now. The master
-user/supervisor privileges are provided by the CSU HPx settings and can
-be forced to user-mode via the AIPSTZ MPRTOx MPL0 bit.
+> I don't really see why we need to stick to the old way of configuring
+> the bus node (i.e: specify the whole address space of the bus as well)
+> when all we really care about is the AC configuration region?
 
-The remaining bits from the config vector between the CSU and the AIPSTZ
-are not taken into account.
+I see and as I said it's just my oppinion that we should abstract it
+this way since upstream already accepted the approach you implemented
+for the STM32 case.
 
-Thanks for the clarification!
+If NXP would have placed the AC at the beginning of each AIPS bus you
+wouldn't need to deal with this problem too since you would have the
+base register already.
+
+> anyhow, I'm not going to insist on this. I think the proposed approach
+> will work just fine. If there's no other comments on this then I'll
+> just switch to it in V3.
+
+That would be nice but please wait for maintainers feedback e.g Shawn.
 
 Regards,
   Marco
