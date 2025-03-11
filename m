@@ -1,137 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF77C25EFBA;
-	Tue, 11 Mar 2025 15:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654825F972
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 15:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741708495; cv=none; b=vE9YzfdIX7VJLlmaMFZn4d158bMQ2nipx/kLaAwJ+FB+hCA/VD8Vl7Xauu+fqj1EL1En+vG8DNehnC6Jnuj92xS2sICuVcTp/s/KWTcmf55LiLIHamGOAaDSJKcMD+qm26Ue+OGcwPCL53qgOhRUFgu03x2hISVcojYyo/2fsOg=
+	t=1741708499; cv=none; b=E85X3bANj1wfqG3/g7Oz2loCz1q5RkIq4jvBQMEK/U8VsblfqBT12q9KIMhq0djSNACVfgFvHvD0/ySIvnFK9d9f2Tp/B52oAzJSEbLsdGDAE64PNoEAAmLNfuLkkXCCGsW8HJrsobfBwGtamSymrFHmRvcX7hmr6V0eeoEwIzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741708495; c=relaxed/simple;
-	bh=59F6J7gJoDFQunyroBn4G1SonEz9fZYnbkG7e7m9IQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=msejliKcXOnf1m/3JbVP+9aQxg9HqYCmYL3oAgHtHT/ZAWIg0CQOYsIKBGeT/oTnS30BgxwqGj+uR6BIrnttsjNaU5FZ96P3dmqzkYD9fliW/pdImJyTwm+v5mCPSOE4tt+sXxc5R+rTWG8J24h6A2FHaZZfa082huFAHibD8F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t0yA/FyC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741708499; c=relaxed/simple;
+	bh=roaMBKXR8qKD/jB1DO2kvb+4bZ+7d5WKSfOXUC9ZwLE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Pn8Bukdcj7PriIoNVldvvg98ZEiqNW0fGHr0UKAXG+xpHhLM2XcRyCMJcsSVrlY3flHCIQgG80dEeBdudQrc6uHCHBfCNC1ehIZX1UW16SVLDHTuae+2ZVd0RvyqoK5JX8sB/+aDUw1kSRoKm7EvXmCMGnm2qNgpBbEle5J7qLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1tmXxKit; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LiqGsVTS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1tmXxKit; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LiqGsVTS; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t0yA/FyC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B81C4CEE9;
-	Tue, 11 Mar 2025 15:54:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741708494;
-	bh=59F6J7gJoDFQunyroBn4G1SonEz9fZYnbkG7e7m9IQE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=t0yA/FyC7lczjY8YSNzsRaULUN+PBIZd2eGD73GoaovsruwvmZ8igVjOGsovn/t8c
-	 2sFn8Vsmrd8uRE8LRmyBN+rIVHYAliR4OpPBIljRCC5KBTV3v8saF9DyI73ZsME04h
-	 bbEznsUiUuxYBqW1U43M/5D29DCmk85we3nYORuXfYmR9iF3V+98GVPAefwbQ8xRsJ
-	 5/9a9x3lUgVWq0ZkFxcO64LY4HTab44jiE5/PgSzK20DMdQfxrG8x+wgMlZNNF3jKC
-	 ay84W9nFwOV/CHw2DfQrlBUwsJuPtyFK36F7WZ7afC8DhVt7EH4e21gmnV8CLKd/Kk
-	 w2rnsiYaUEWzQ==
-Date: Tue, 11 Mar 2025 10:54:52 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
-Message-ID: <20250311155452.GA629749@bhelgaas>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1tmXxKit";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LiqGsVTS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1tmXxKit";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LiqGsVTS"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6CA3D1F38F;
+	Tue, 11 Mar 2025 15:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741708489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+NaxrZ58v7KbvSgmylUcHGu27OMC1B7uFqKMqZUAWsA=;
+	b=1tmXxKit7PZAOPFsFJJbuZ/K1y3mDLpan/elzkN+eesYl607QGVH53LbvVxOB/IH1CGbrX
+	W24cBAuafdgBp4QO23LucFNdIxmJ173XFh6QogfCDxN9vR8XY9bsdl2RkOKQUciX3e7zuz
+	vUTaaClcMmy9b8oBMv5AX17FY1RdKwo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741708489;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+NaxrZ58v7KbvSgmylUcHGu27OMC1B7uFqKMqZUAWsA=;
+	b=LiqGsVTSa9Vy5ofjUJY9sbE4rFjvLUZSIgNSqOjRCiwv88MrnH5gAOQ9HVTUphuNPAWykV
+	y1o0f7xKpyS1buCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741708489; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+NaxrZ58v7KbvSgmylUcHGu27OMC1B7uFqKMqZUAWsA=;
+	b=1tmXxKit7PZAOPFsFJJbuZ/K1y3mDLpan/elzkN+eesYl607QGVH53LbvVxOB/IH1CGbrX
+	W24cBAuafdgBp4QO23LucFNdIxmJ173XFh6QogfCDxN9vR8XY9bsdl2RkOKQUciX3e7zuz
+	vUTaaClcMmy9b8oBMv5AX17FY1RdKwo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741708489;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+NaxrZ58v7KbvSgmylUcHGu27OMC1B7uFqKMqZUAWsA=;
+	b=LiqGsVTSa9Vy5ofjUJY9sbE4rFjvLUZSIgNSqOjRCiwv88MrnH5gAOQ9HVTUphuNPAWykV
+	y1o0f7xKpyS1buCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D982D13AB8;
+	Tue, 11 Mar 2025 15:54:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iEjOM8hc0GdUdQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 11 Mar 2025 15:54:48 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: simona@ffwll.ch,
+	airlied@gmail.com,
+	mripard@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	geert@linux-m68k.org,
+	tomi.valkeinen@ideasonboard.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	freedreno@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-samsung-soc@vger.kernel.org,
+	nouveau@lists.freedesktop.org,
+	virtualization@lists.linux.dev,
+	spice-devel@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	xen-devel@lists.xenproject.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v4 03/25] drm/gem-dma: Compute dumb-buffer sizes with drm_mode_size_dumb()
+Date: Tue, 11 Mar 2025 16:47:07 +0100
+Message-ID: <20250311155120.442633-4-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250311155120.442633-1-tzimmermann@suse.de>
+References: <20250311155120.442633-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8676E66BD40C37B2A7E390178CD12@AS8PR04MB8676.eurprd04.prod.outlook.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org,ideasonboard.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLqirfcw6gnbcr9a9yhi49fhi6)];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Score: -1.30
+X-Spam-Flag: NO
 
-On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: 2025年3月10日 23:11
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kw@linux.com; manivannan.sadhasivam@linaro.org; bhelgaas@google.com;
-> > s.hauer@pengutronix.de; festevam@gmail.com; devicetree@vger.kernel.org;
-> > linux-pci@vger.kernel.org; imx@lists.linux.dev; kernel@pengutronix.de;
-> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
-> > hardcodes
-> > 
-> > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
-> > > Use the domain number replace the hardcodes to uniquely identify
-> > > different controller on i.MX8MQ platforms. No function changes.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
-> > >  1 file changed, 6 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 90ace941090f..ab9ebb783593 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -41,7 +41,6 @@
-> > >  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
-> > >  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
-> > >  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11, 8)
-> > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
-> > >
-> > >  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
-> > >  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
-> > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct platform_device
-> > *pdev)
-> > >  	struct dw_pcie *pci;
-> > >  	struct imx_pcie *imx_pcie;
-> > >  	struct device_node *np;
-> > > -	struct resource *dbi_base;
-> > >  	struct device_node *node = dev->of_node;
-> > >  	int i, ret, req_cnt;
-> > >  	u16 val;
-> > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
-> > platform_device *pdev)
-> > >  			return PTR_ERR(imx_pcie->phy_base);
-> > >  	}
-> > >
-> > > -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev, 0,
-> > &dbi_base);
-> > > -	if (IS_ERR(pci->dbi_base))
-> > > -		return PTR_ERR(pci->dbi_base);
-> > 
-> > This makes me wonder.
-> > 
-> > IIUC this means that previously we set controller_id to 1 if the first item in
-> > devicetree "reg" was 0x33c00000, and now we will set controller_id to 1 if
-> > the devicetree "linux,pci-domain" property is 1.
-> > This is good, but I think this new dependency on the correct
-> > "linux,pci-domain" in devicetree should be mentioned in the commit log.
-> > 
-> > My bigger worry is that we no longer set pci->dbi_base at all.  I see that the
-> > only use of pci->dbi_base in pci-imx6.c was to determine the controller_id,
-> > but this is a DWC-based driver, and the DWC core certainly uses
-> > pci->dbi_base.  Are we sure that none of those DWC core paths are
-> > important to pci-imx6.c?
-> Hi Bjorn:
-> Thanks for your concerns.
-> Don't worry about the assignment of pci->dbi_base.
-> If pci-imx6.c driver doesn't set it. DWC core driver would set it when
->  dw_pcie_get_resources() is invoked.
+Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
+buffer size. Align the pitch to a multiple of 8.
 
-Great, thanks!  Maybe we can amend the commit log to mention that and
-the new "linux,pci-domain" dependency.
+Push the current calculation into the only direct caller imx. Imx's
+hardware requires the framebuffer width to be aligned to 8. The
+driver's current approach is actually incorrect, as it only guarantees
+this implicitly and requires bpp to be a multiple of 8 already. A
+later commit will fix this problem by aligning the scanline pitch
+such that an aligned width still fits into each scanline's memory.
+
+A number of other drivers are build on top of gem-dma helpers and
+implement their own dumb-buffer allocation. These drivers invoke
+drm_gem_dma_dumb_create_internal(), which is not affected by this
+commit.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ drivers/gpu/drm/drm_gem_dma_helper.c     | 7 +++++--
+ drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
+index b7f033d4352a..49be9b033610 100644
+--- a/drivers/gpu/drm/drm_gem_dma_helper.c
++++ b/drivers/gpu/drm/drm_gem_dma_helper.c
+@@ -20,6 +20,7 @@
+ #include <drm/drm.h>
+ #include <drm/drm_device.h>
+ #include <drm/drm_drv.h>
++#include <drm/drm_dumb_buffers.h>
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_vma_manager.h>
+ 
+@@ -304,9 +305,11 @@ int drm_gem_dma_dumb_create(struct drm_file *file_priv,
+ 			    struct drm_mode_create_dumb *args)
+ {
+ 	struct drm_gem_dma_object *dma_obj;
++	int ret;
+ 
+-	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
+-	args->size = args->pitch * args->height;
++	ret = drm_mode_size_dumb(drm, args, SZ_8, 0);
++	if (ret)
++		return ret;
+ 
+ 	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
+ 						 &args->handle);
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+index ec5fd9a01f1e..e7025df7b978 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+@@ -145,6 +145,8 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
+ 	int ret;
+ 
+ 	args->width = ALIGN(width, 8);
++	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
++	args->size = args->pitch * args->height;
+ 
+ 	ret = drm_gem_dma_dumb_create(file_priv, drm, args);
+ 	if (ret)
+-- 
+2.48.1
+
