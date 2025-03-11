@@ -1,42 +1,40 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B55A1EF01
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50681DF26B
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741659780; cv=none; b=JOyTa/yF7e1MsG/KAkZksouMHw4GSxBp3IOQp1grIAS1RmLqJ8pxOE6/ov1JP+WUCD/j6HA6piGsnJY852KR5nndX6zvgHBg3f6YN9cuo4gBzDRpQbWPOxa0gV9KcFOv2KU1zqsJj9a2cY1ihjBY9yP9PKTNfyLh21qULxVGEfc=
+	t=1741660148; cv=none; b=e8PXM8EOrDeWh0JPMh/c/U2LUYQotj/grOWyKCQFryXe0+OESS3YnomwqKzkwH7g5IOkKsy3N4CX9MuIY+XLaQ2JhhhpPg84HkBR7Q7aFARBj6QmROy7Cvhv/+XE6LA9vJsWWAEldqLs/fM8ZjguaphHmRCbTITD4v1VGvPHwnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741659780; c=relaxed/simple;
-	bh=FwDXJPajxYapMkrEHeU4zgpIrMKAAFr1prC0HvmXJa0=;
+	s=arc-20240116; t=1741660148; c=relaxed/simple;
+	bh=874v8COafl3Qhv6xKrbErRRlovnYAQlx9ser4aWd+MM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MsCR4rG9bbGQ5oAGpsfhcz7L3MU5Nlu/r+aI0pQS3uLNsS9leOu+NParY/dzwGn6U/Awxus57CccIv9YqsIoB6YfpgbAcHaTVZFDNMT7urvjlfUYEaN8Xv7sj8WagECYO3hfSO53jX64dtZSiRkeWHBr1R3KoVhS7jgFJaF7U1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ip1G6nMb; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=f1S32ayt/NydOe5Ton3ChjDhuR6SIsv2TCYYz55Zitr1GNed++sgu9eMAZTJ+XwSVclpyTta9U9V9AuHVLnUlWm4xGn5LDZlZy46V/eHBBuPs0i22bpkzIT1HMpqIs/++mEi9VMCPr69eWIFkhXpwohB86/Kt/h+VrHLesHvFw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=VhMpyXWu; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ip1G6nMb"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="VhMpyXWu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=SH7i3hEBunXl56kGHk5HmVNJ3ShdY5ZTb+FytLjyRoY=;
-	b=ip1G6nMbetQfy4n7AFrG5+zjHYqZOIHmTr3npDbaScpW1iyI9Rne44mmrPIlld
-	DHRemHeIcXi/ub2gwMyzlN1zfjIc2AAQ6EObqg08WoVAWD6C6890Mm2R5YFMng2C
-	xTrmstW6UnVyxH4LaGLe/xYwkKclUflqVQDUlzrAqdYNA=
+	Content-Type; bh=IUd1uRT/xLiAftfidXKIq5PpZVoa+Ty/sg4D9wULGPE=;
+	b=VhMpyXWueRjMCzQuQzyXA8/6J8sU6SRwpZn1XOlJH7FejxOxo2i8eYYtRjDFDs
+	FcWD/ydRINoqPyZHI5bd6d02I+6n/NxCufbCaQUYYQY/TDrym/maZfJKeedlfNc1
+	biv8Ug1kgoyhFEDs+KoLbDoWyw1c1buG6xG3QK1yt87fo=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHMiJwns9n3Eq0AA--.48756S3;
-	Tue, 11 Mar 2025 10:22:41 +0800 (CST)
-Date: Tue, 11 Mar 2025 10:22:39 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXC0+Hkc9nkneuAA--.826S3;
+	Tue, 11 Mar 2025 09:27:37 +0800 (CST)
+Date: Tue, 11 Mar 2025 09:27:35 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 0/4] arm64: dts: add imx95_15x15_evk boards support
-Message-ID: <Z8+eb5HNX/FQPg5P@dragon>
-References: <20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com>
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	patchwork-lst@pengutronix.de
+Subject: Re: [PATCH] arm64: dts: imx8mp: configure GPU and NPU clocks to
+ overdrive rate
+Message-ID: <Z8+RhzwHNJvUcF+P@dragon>
+References: <20250204182737.3361431-1-l.stach@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,18 +43,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250221-imx95_15x15-v4-0-385ee8e03dfd@nxp.com>
-X-CM-TRANSID:Ms8vCgDHMiJwns9n3Eq0AA--.48756S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVpVbDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQQNZWfPU+rdgwAAsy
+In-Reply-To: <20250204182737.3361431-1-l.stach@pengutronix.de>
+X-CM-TRANSID:M88vCgBXC0+Hkc9nkneuAA--.826S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4db1UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwINZWfPUl2s+wAAsR
 
-On Fri, Feb 21, 2025 at 04:15:56PM -0500, Frank Li wrote:
-> Frank Li (4):
->       dt-bindings: arm: fsl: add i.MX95 15x15 EVK board
->       arm64: dts: imx95: Add #io-channel-cells = <1> for adc node
->       arm64: dts: imx95: Add i3c1 and i3c2
->       arm64: dts: imx95: Add imx95-15x15-evk support
+On Tue, Feb 04, 2025 at 07:27:37PM +0100, Lucas Stach wrote:
+> A lot of other clocks on the i.MX8MP, including the DRAM set up by the
+> bootloader are already running at overdrive clock rates. While this is a
+> deviation from the configuration of other i.MX8M* family SoCs, overdrive
+> is the default for most i.MX8MP boards and only some special purpose
+> boards will choose to run the SoC at nominal drive rates. Up the GPU and
+> NPU clock rates to their overdrive level to be consistent with other
+> clocks set up in the dtsi.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
-Applied all, thanks!
+Applied, thanks!
 
