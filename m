@@ -1,120 +1,269 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo-csw-fb.securemx.jp (mo-csw-fb1800.securemx.jp [210.130.202.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482C6259C;
-	Tue, 11 Mar 2025 03:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741665045; cv=none; b=tXuz775Ct51ji8N09AQJV8nPu+TmewbXjpNDy8i/008el9SIW2H8gn+zCY277I01Xj+mh4hez99Y49f6d7tyn98u3NmUvT1Uf2vjqMYopsRDstKvpWltpMwoyt7w06c0Giip/ukBZwL+udojLMeO59HzDz83Yc3isR2OB85CoPk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741665045; c=relaxed/simple;
-	bh=g38SPJz6l7CQ6ZyZLTsOe0KvKxHvh1gz8m1lvtYzsVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DmNnHBvaRInLYhpn+bdh+JC2HG1UGQDBvxFSrj9wXXgTbG2LUbZ0EMpygHFhoJa8jJl2SQBzgZ/fjaUhIu4ai/CQKiP7wS/2jiKYcs1mP/zM9U57BUgtYEB9jR+1z2M8GdmoaN5oLn+iQxaLxRx6rH50W/r3gNOoA4n+YOWc07I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cdjv7F9Q; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E4481E
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 04:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=210.130.202.159
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741667497; cv=fail; b=a5t2XVx4kCtOfoh5itC5kDYDYEfcWCgieMhNuN+j1YRzOiA/+MYRGViLOSTg+aW8hnRzc+bmdJcK8LP1LOb/4/Dsj8+OFDSAz5U4+3uFRbvp8XjeJ6R0r36tiMqhmyQAvx7AF7NFL81EqOQIR5WXCtKDWzDhm3FuR+vIYEWZL4E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741667497; c=relaxed/simple;
+	bh=kOyMXra9tx1tiz15mH5EirzFVKukx7gMLdH5u3dYsNE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=vFmPiuirStxdMS9ILwvBU3FG7hltDSRs9x8HrdNiQIi3uBYyTuYN7FIPyqi1SkbzsFHB3yKhu6Px3aVF46xY6D5lafsIhWYHbjPk5qkxMlJz6EjpaFdht6w1cDCo69+U9Yj5xmNamNh1k8syOy9djNaxq/wyFURbBxNj3rx+fg4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp; spf=pass smtp.mailfrom=toshiba.co.jp; dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b=CepyYV5+; arc=fail smtp.client-ip=210.130.202.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toshiba.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toshiba.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cdjv7F9Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE63C4CEE9;
-	Tue, 11 Mar 2025 03:50:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741665044;
-	bh=g38SPJz6l7CQ6ZyZLTsOe0KvKxHvh1gz8m1lvtYzsVs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cdjv7F9QzVO8k0fza4YBIM1B6mrJfixT6RDaBAWNtL6Ra4uTPHH+2L/PusS1I5ioQ
-	 t6m6uqWTT7dlsYPlO/Zf6TcjR6ytHWFebAavoe2jyJMsI3FWESzT4LFlIbT60LED4a
-	 vkIhylwqp8Mg/LfuYzP7SDWKu3b3G82B2gG6BnHmhJ5NjHCjMKEVNsgc4PHriD3ddz
-	 TsIL44JybnTaHYbzw2ErqCenkyoLgpj6CFKg+wT2OzqAf0TcUiRiefKdMFjc5qWkml
-	 IVKR3fo7RpEk1oSQHPVBOlHLdw+wjljMl2A/1+lqbiPMhqLMC6BVROFWLQ5YE4mXCm
-	 tJeUAKIhXACMw==
-Message-ID: <7b0bfff1-7398-4236-9579-7fc2cd450c44@kernel.org>
-Date: Tue, 11 Mar 2025 04:50:41 +0100
+	dkim=pass (2048-bit key) header.d=toshiba.co.jp header.i=nobuhiro1.iwamatsu@toshiba.co.jp header.b="CepyYV5+"
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1800) id 52B2r6s82113931; Tue, 11 Mar 2025 11:53:06 +0900
+DKIM-Signature: v=1;a=rsa-sha256;c=relaxed/simple;d=toshiba.co.jp;h=From:To:CC
+	:Subject:Date:Message-ID:References:In-Reply-To:Content-Type:
+	Content-Transfer-Encoding:MIME-Version;i=nobuhiro1.iwamatsu@toshiba.co.jp;s=
+	key3.smx;t=1741661511;x=1742871111;bh=kOyMXra9tx1tiz15mH5EirzFVKukx7gMLdH5u3d
+	YsNE=;b=CepyYV5+aTHQ8hfuYC2XupdKKlftNwn5kYKg5jWfqwdBBPXHSrLViwwO1TLUp6Yox4iv2
+	+4TZtv7DBDPMi/ycEPtGChyYhk1QVGhvxSPti8KUuT9xD4ahs698RjzddLIFeA84OKCq0iujxUM2m
+	0yKM0RqV9ov/y3H9jjYKSDYWSTca7PzlrJjGDWOC1HCP/UrBSi1f/+uH4wNz2KByTlEI9PqlT7YNf
+	lqlBUqrLrqrglhiBpkenVdG7JcLaXH/B6zzwg8z2Qf0avE6lexxqECPWnuXOujb/DLeDWBHUjJbpA
+	Xm2lbVll4qqUD+75dSVT+J4tE1hJqOcME3SNvoSNIw==;
+Received: by mo-csw.securemx.jp (mx-mo-csw1802) id 52B2pmaD2906371; Tue, 11 Mar 2025 11:51:48 +0900
+X-Iguazu-Qid: 2yAbuzQy1XRZSQHHOT
+X-Iguazu-QSIG: v=2; s=0; t=1741661507; q=2yAbuzQy1XRZSQHHOT; m=nSx6m3gyVmsSceJkTgkJU4th1Rq2yCpeQUqzRA80AgI=
+Received: from imx12-a.toshiba.co.jp ([38.106.60.135])
+	by relay.securemx.jp (mx-mr1802) id 52B2pfFw1419632
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 11:51:43 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eE5fK+hYesmD2Ef2aPUuVw7upfU5gRF/P2qMsmxJhSGE7Bwr3w1XcF85N66SXBXhgBj++Fwe+XZYA2Vd8AXZ6kWG/uEaw5aLwT0jhKbeDkVWEGFD8Xr1klqpgGfZS+M7l0LJs1BHNb25lZRluPrZETa73oB7rchrxU2KrVzdoZzf3q+uEfu+3C4yUc+tblnmSGVg/zws68f3NCJl4jYr+30VmyJCW67/yqUFdjCM4PWY6vlQkj+ceYleak7ub9dke9UZMWH/2NnZ5GfNOt1JAAta4M5XQBEc1XHAGtL/Dug7ZmYxcyM73tdu083NjOAmpGbyQCvG0s7KYuqWL6aVhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/ecrAQ0g+Q+kzOINfhj9FoHm6E+mIMSLrB4OWo0S6es=;
+ b=ZaKxlW0W5HH54bPyjX1EVqV+sotu2YWU6cGXl4joa3+8hSPaZy2PWgaMR953Ui2WZkRz28UO76XiMdHqYizf8clrDlLRU28OVFfydH77Z43u/AGwSdOdtzEdJpZlMLEbVKwW7cwJzpDSXFHikt1RkB7Wi2/qWxXLiVMhu96Ib+tQSdWAe/nk1Z1DmPlHuR5PwAKiMK482Cu7FavRhiZ84btQ1ibJY9BTfC7T4VsCg72X4U3gkMp0F91hqzahKTqvcXzIJmgt9cMfX/k+TZILNtTItU8p/IArk01bb7mvkLIHn3jA3ureYPOAWBRZQUZ+C+SR4qdXAr1tMkCqWhOTiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=toshiba.co.jp; dmarc=pass action=none
+ header.from=toshiba.co.jp; dkim=pass header.d=toshiba.co.jp; arc=none
+From: <nobuhiro1.iwamatsu@toshiba.co.jp>
+To: <prabhakar.csengg@gmail.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <neil.armstrong@linaro.org>,
+        <khilman@baylibre.com>, <jbrunet@baylibre.com>,
+        <martin.blumenstingl@googlemail.com>, <shawnguo@kernel.org>,
+        <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+        <festevam@gmail.com>, <heiko@sntech.de>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <matthias.bgg@gmail.com>,
+        <angelogioacchino.delregno@collabora.com>,
+        <vineetha.g.jaya.kumaran@intel.com>, <biao.huang@mediatek.com>,
+        <xiaoning.wang@nxp.com>, <linux-imx@nxp.com>,
+        <david.wu@rock-chips.com>, <christophe.roullier@foss.st.com>,
+        <rmk+kernel@armlinux.org.uk>, <netdev@vger.kernel.org>
+CC: <devicetree@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-rockchip@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-mediatek@lists.infradead.org>,
+        <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: RE: [PATCH net-next] dt-bindings: net: Define interrupt constraints
+ for DWMAC vendor bindings
+Thread-Topic: [PATCH net-next] dt-bindings: net: Define interrupt constraints
+ for DWMAC vendor bindings
+Thread-Index: AQHbkIrfy9b5BBS/D0ihD4P7fHbQtbNtPxyg
+Date: Tue, 11 Mar 2025 02:51:37 +0000
+X-TSB-HOP2: ON
+Message-ID: 
+ <TY7PR01MB148181E9FA1336D0D3CE9275A92D12@TY7PR01MB14818.jpnprd01.prod.outlook.com>
+References: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: 
+ <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=toshiba.co.jp;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY7PR01MB14818:EE_|TY3PR01MB11931:EE_
+x-ms-office365-filtering-correlation-id: 301f50ff-8626-44e8-ccfa-08dd6047a45f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: 
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018|921020|95630200002;
+x-microsoft-antispam-message-info: 
+ =?iso-2022-jp?B?Mkt5WjdHa2dPa0tLNTZYdThxNzJvVjhlQ1MzQ1dTek00ajU3aHI5d0V3?=
+ =?iso-2022-jp?B?ZHFNakxuK2l1bzJ3blVrV2pCTmU5Z1NHZHJlSFlNV0Q2a21lK3QxZ0s3?=
+ =?iso-2022-jp?B?OE54cWFiTmtmYklIc0FFSWVOK1cwWWhrWkFwcHNzT1NKQnJwa08wcVRy?=
+ =?iso-2022-jp?B?bHZuT2hXbEFFb3FGK2FBT0YxQkQ1dmFNWlZ2N0FYVmptWGVZdHN2S0hO?=
+ =?iso-2022-jp?B?aEI4UXNvaWQ4ejZnRndIV0F2OUt0S1hHTlB0ZWx4SVIxZVR4NzNiTExE?=
+ =?iso-2022-jp?B?RzErRUhzVU1UQmNXKzRxMlZBeTNZQlUzU3psWWo1NElCY0IwTGZMWGxs?=
+ =?iso-2022-jp?B?VUcxRWN4NnRMV1pxQ283cVE5N3dWS2dKa1NuYVlnU2JUZFNJUTBCRVN1?=
+ =?iso-2022-jp?B?VzVQSzhjUmhydEVkcXNQU2NaUk9Hb0ZMVTZVUUlGa2UrcUt6MTNZTHJ6?=
+ =?iso-2022-jp?B?ZFBxZHF6bnVLbSt0TkhDR0lVd3lGSTk3Rll2dTNkZlFlekRWbkxVUU1X?=
+ =?iso-2022-jp?B?VlZNeWZsTDBsRWFqMmtXM0NwY0huYVFEL2NJTmxXWkc1SXMzbVViMExO?=
+ =?iso-2022-jp?B?bHQ5UTQwRkNZQlpOZTFaOVpGM3IwV2txVGRUYWJEVm95Z3oxMUlReENj?=
+ =?iso-2022-jp?B?Y3V1QXN2cnB4aGYvYVAxdFBPVkxITUxZQjJOZDRtU25YZzAvWVJiR2xD?=
+ =?iso-2022-jp?B?QnRZMzBRWTVma3JFVFZFcXdoWkJqSzRjNmkvaU5DSFFTN1Z3S3Q1N080?=
+ =?iso-2022-jp?B?Zm85SCtZdXo1Rk1wc1hhbmpPcEFtdVdBVXBNREtQMGdWTWJxeXdwVndL?=
+ =?iso-2022-jp?B?SEltbG9vaU9DSGVlN2lSTVo3RmlBTklOWnFGRFlWRXVtS0JhSU5kUnpN?=
+ =?iso-2022-jp?B?ejc0MUh6NVBmSHdMUEZleUw5bTBNeVkrbFRudGgzVnBrZEZZbWhBVzFs?=
+ =?iso-2022-jp?B?YnBkbHptbmp1ZEpVVDI4RjgyQzQ5K0U4N0ZnWjJyS2haWUpJYTRXN0Uy?=
+ =?iso-2022-jp?B?MjlEZ1A5Q1I1c3VJU3oxQWlLYnFjQUVjcHBlZER4ZFNZSkd0cTE1Q1FK?=
+ =?iso-2022-jp?B?ajF4elNSYWlBYmNwa29ieEdoNjVFU2FwNUlUeDhuejZRa2hiTzdkbkVX?=
+ =?iso-2022-jp?B?bUxDeS9XUFlURytGSWM1Uis3dXhsTzV6TE9BNEdSRmJiWFh0cTZkekx1?=
+ =?iso-2022-jp?B?dlNPbUVEZU9ibTFKU1FBeWViVEZlMStnSHNqNkRjRVRiYVpteEhWcGMr?=
+ =?iso-2022-jp?B?VmpTWTdaU2RFbGN4dTFuNFcyM2lwQ2pLYVJmd2NPL0oxd2FLVWlERUhC?=
+ =?iso-2022-jp?B?YmxiUEIrUlM2OWpJN2lTV2MzUGY1dHhPVVd4VFFReTNYc2Q1ak8xdjg3?=
+ =?iso-2022-jp?B?SWdwNlZlVVhnZFpMVzNaNTFKc2ZUYkVrdWlHUmFRKzlsK3U3bkxwRWdy?=
+ =?iso-2022-jp?B?emFyV3Z5cEY2a25wQ2lKSGF3MjhpaEhBbVpPUncrT3RKYU1WWlBObzZl?=
+ =?iso-2022-jp?B?S1dYVUgrcVdMbGVKUW9WcDlzUm9RekdyWStia1doUVNhNTR6VnZRYmx3?=
+ =?iso-2022-jp?B?UmE1aXhqd3NOOWo4Z0pnRjN2bTNRNmsrZUFOY0hjU0lsbEN6MHM0SVUx?=
+ =?iso-2022-jp?B?byt3R0FHdmxIRzE3U1g1dVBzOStzYUVVUVVmaUVRa0VPd3RRK1loZXVa?=
+ =?iso-2022-jp?B?L2QvMmlZejBXcUx2OXJnODZvS1hSeklYVy93eUpYTldxS2NxcVl2bFFy?=
+ =?iso-2022-jp?B?emJjRDNMeEEvTVdBc3pjT1dlRm8rS3FubHdROG9PUDFWVnkrWGpNMWc4?=
+ =?iso-2022-jp?B?OGdOWHIxVk8zV29Fa2xuKzk0OFp4QVIwMGZnSldJNm44dDhOS2dHcW1E?=
+ =?iso-2022-jp?B?SHl6NkI1NzNySkx2dzliRVdtblVydTNtbnpmRzZNU2FKTDJVb3AyaXFz?=
+ =?iso-2022-jp?B?RUM1ai91OUk3dUZUL290TnYzV2pEbGZOaUh3d1pHUkJ2bTNta2hWMllp?=
+ =?iso-2022-jp?B?M1Bzb1J1Sy9EREFnRWFaaEhHblpRZFZuUzdlc1lMb3ZseCtPc3l5cEJx?=
+ =?iso-2022-jp?B?bnlSRlFVcVNWblNvRG45RXl5T1p5V1A2cWw5MW96dlZlSnFZNHF0WkYx?=
+ =?iso-2022-jp?B?RzlJWTNEMWZobDBFRlFLNG5DV3lOL1VmcURIeTlGOU96bVpUWXlSd1N3?=
+ =?iso-2022-jp?B?RHJJPQ==?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7PR01MB14818.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018)(921020)(95630200002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-2022-jp?B?NmthQTJyT003Y3ZFS1BIckwwTVJJRWtYZXovVytBUXU1N1FnVDRlZWow?=
+ =?iso-2022-jp?B?enUyTHRkSFppeVFORkE2blBLWUNNUTlkNWRSM1I2TFMxajZiVXFTc0hl?=
+ =?iso-2022-jp?B?N3htYnMzTEduRmdpQ21VQkQvUzFHV3Y1TS9aQ1ZuVld6Z1U0WVRadTcr?=
+ =?iso-2022-jp?B?QTZhVS8wOFc5bStTY2NXb0ZQQjJZSXJkNW9MaGs3RXBiOUtBU2pnd01z?=
+ =?iso-2022-jp?B?NzJFMndJcXpTTlBRWnUrbHRweG5IN0dCR3Q2VS9jOVhDU0lhSUNIamVv?=
+ =?iso-2022-jp?B?R3dGWVE3UllPMTR4U05aK2FUS3E3MVVqKzdTWlp0V1ZsbTNOR0pVZWZ4?=
+ =?iso-2022-jp?B?UGl4d0RNS0tqdDdwakRCMXdtZERrbDBIOXpvNDBKTTVsaDc0cG9Jam1h?=
+ =?iso-2022-jp?B?UlhVMzBRVmFmcnU2aXhnMktIVkVvNjc3WGtyUGFZaG5zLzNIakhYUHZt?=
+ =?iso-2022-jp?B?SkZQN3ZUYnNMWEU0LzV1WExkcjMySEtjRUpOUTZWcjZxRzJsK0dtZFRO?=
+ =?iso-2022-jp?B?enFVblZHVjlqTmJteGFLeDYyZzkzMkY2RjcrK3N4SnJoRVhjUkk1bUIv?=
+ =?iso-2022-jp?B?bU0zMXRVS2VpUHdlalE2ZWw5TGlESVJiQktoY2JIRkNlRXIzWFBJemQz?=
+ =?iso-2022-jp?B?T2Q1SDBDZDEwemkrcmgvaHVPSXhFOUxuZGJzM3luTjVGZTZaMzhQS1oy?=
+ =?iso-2022-jp?B?YlZOL2p3UVI1VHhiV2J4U05Ja2Q5YXd5V1lMVUxhMktrK0hscjJWNity?=
+ =?iso-2022-jp?B?S3dCY0RtT2FuVzlEWFpXL1cvazFCelV5QW8rWXREMlUrUm1YT0ZsbmFR?=
+ =?iso-2022-jp?B?Y2EyZlJGNGVySTA2dyt4ZDd6QlA0STZIVi9LNUdTekZ6VVQ4b2pXRnZN?=
+ =?iso-2022-jp?B?NHdFeVF2YkZaWW1sVjFlWE92ZjVaVkpVdERhVWpUS0NHdGg3Q1JGaXBH?=
+ =?iso-2022-jp?B?dy9HUWFKeHQxY1dQYmpwczNYVmZuZitJODJ2UjFnU0JNVTJDdjd6N1ZS?=
+ =?iso-2022-jp?B?QzhqQVNiM2ZaUGZlUVF3MVZBeWQ4YTNKWFVJY001Wmt3WnhGMm8zemlt?=
+ =?iso-2022-jp?B?K1VkakdGWWx3cVZtYzNzTWxjaHhaOHdXL2JnOTF1U3JJRklpMDBCRVh0?=
+ =?iso-2022-jp?B?WDZuN09EMzc2YnJ0S2U0WEtHeXJsNk95V1NrTVlRa2Q0aXp5WVZ4TjNh?=
+ =?iso-2022-jp?B?QjVGL0tudGdoUldscVRCV1dtSEVyay9NbUY1RjBiaW5GWVBMdW1adXFU?=
+ =?iso-2022-jp?B?Nml4UTJyQlFKQ2NLUzljOThrUW0wRzJJb1djNDBoUWFGb3BqQ2pUNGV3?=
+ =?iso-2022-jp?B?UG9aMXI0eXl6TVpUUjJkcy9DQWw0V0Y2TXV4VXZ3azZkaVoyL3lwTEp3?=
+ =?iso-2022-jp?B?SVNlODR5R2FYNG9RQ2xPL1VlcG8zb05xSjFNWjcxcmg4RUlBL3BqR2Ju?=
+ =?iso-2022-jp?B?cXhrcDNmUWZDWU9vZEpJOWtsTHJTV2Zrd2ZjUjg3UzhxTmNpZW5HMGxE?=
+ =?iso-2022-jp?B?ZGozYnJJcXJCWGpiQldYVWVqeWRSK2tJT2psMDFvSUpaSG9teDZqS3pE?=
+ =?iso-2022-jp?B?WVhiYmJUWG5ZZGNrcDlSanl2NjdiMVNpSXV1VlR1aEZqbmRaWGowcVBI?=
+ =?iso-2022-jp?B?OU5wQ2htbUZtdWJPekdvNlUvcTBELzJTNGZzUUEzUW1VZmJ2SVV3RXU1?=
+ =?iso-2022-jp?B?UGVPVi91QzdROUU2ZVc1MlhUZDhLdDE5N1RzZTJqRzJVbG9Ba3MvSjZn?=
+ =?iso-2022-jp?B?Vm1reGd5TmlVcmVreW5JYW55NEU0Y1FRRHhoQ25JVXlYUzV1emRKNEFT?=
+ =?iso-2022-jp?B?OVpSUmJaeWo1bmUyblRqTjRscFovRnJVVStZTm5kc3ErZ04xTEhJL3Jh?=
+ =?iso-2022-jp?B?Q0g5bEU5WUdVc3hpb0dmdExMdVYxMCtsTk1XYXFJcVFidmkzbnN6MzBH?=
+ =?iso-2022-jp?B?MjhaT1F4OTZpWkY2emY5MHZLMDEzOThtU0JhQ1RqL1paN2tOTUJ6NEw3?=
+ =?iso-2022-jp?B?eUVCVzRLUEhwTWJGQ1I1clVWMjR6T0NlSTdJTmkzT1IwbVNPaFBUM2cz?=
+ =?iso-2022-jp?B?OWJtdVhzcGZjbys0NzJSM1RGdVpVUXNKeWN1eWM4SlJHblVEZXViVDk0?=
+ =?iso-2022-jp?B?VzZRZWhTeUtrRkFtZ2JTdHl5YmJIbU5aN3pWRmRvQWRhVjd0aXpubGU0?=
+ =?iso-2022-jp?B?L242OUMvWVhPWGlwTGVudkNpVWREUDg5ZFJxazNqeWZKaVRJckN1VzlQ?=
+ =?iso-2022-jp?B?SzN5UlNEK2NBTVh5Y3ltSS9abUhZMDQyYmZ0REhTS284TWFML09uUkZV?=
+ =?iso-2022-jp?B?aWtOdFgwd1ZoZmljWDFNYkJST0lGRHArMUE9PQ==?=
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 3/3] tty: serial: lpuart: rename register variables
- more specifically
-To: Sherry Sun <sherry.sun@nxp.com>, gregkh@linuxfoundation.org
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, shenwei.wang@nxp.com
-References: <20250311033336.1254842-1-sherry.sun@nxp.com>
- <20250311033336.1254842-4-sherry.sun@nxp.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250311033336.1254842-4-sherry.sun@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: toshiba.co.jp
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY7PR01MB14818.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 301f50ff-8626-44e8-ccfa-08dd6047a45f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2025 02:51:37.2972
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f109924e-fb71-4ba0-b2cc-65dcdf6fbe4f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LJkWU0SXAJ01J31i0RVe49Fed6AkGM9zbgO1L1qUvXxW3KzKbnYQDJhBuoLtounV8zRx5hvnGNf3wSG7lFypCehKjCiTG9mxh4wa23DhFQkjIu9bdqnKnJYzLRy3v+xT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11931
 
-On 11. 03. 25, 4:33, Sherry Sun wrote:
-> There are many fuzzy register variables in the lpuart driver, such as
-> temp, tmp, val, reg. Let's give these register variables more specific
-> names.
-> 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Hi,
+
+> -----Original Message-----
+> From: Prabhakar <prabhakar.csengg@gmail.com>
+> Sent: Sunday, March 9, 2025 9:33 AM
+> To: Andrew Lunn <andrew+netdev@lunn.ch>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Rob Herring
+> <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
+> <conor+dt@kernel.org>; Neil Armstrong <neil.armstrong@linaro.org>; Kevin
+> Hilman <khilman@baylibre.com>; Jerome Brunet <jbrunet@baylibre.com>;
+> Martin Blumenstingl <martin.blumenstingl@googlemail.com>; Shawn Guo
+> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; Heiko Stuebner <heiko@sntech.de>; Maxime
+> Coquelin <mcoquelin.stm32@gmail.com>; Alexandre Torgue
+> <alexandre.torgue@foss.st.com>; iwamatsu nobuhiro(=1B$B4d>>=1B(B =1B$B?.M=
+N=1B(B =1B$B!{#D#I#T#C=1B(B
+> =1B$B""#D#I#T!{#O#S#T=1B(B) <nobuhiro1.iwamatsu@toshiba.co.jp>; Matthias =
+Brugger
+> <matthias.bgg@gmail.com>; AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@collabora.com>; G. Jaya Kumaran
+> <vineetha.g.jaya.kumaran@intel.com>; Biao Huang
+> <biao.huang@mediatek.com>; Clark Wang <xiaoning.wang@nxp.com>; Linux
+> Team <linux-imx@nxp.com>; David Wu <david.wu@rock-chips.com>;
+> Christophe Roullier <christophe.roullier@foss.st.com>; Russell King (Orac=
+le)
+> <rmk+kernel@armlinux.org.uk>; netdev@vger.kernel.org
+> Cc: devicetree@vger.kernel.org; linux-amlogic@lists.infradead.org;
+> linux-kernel@vger.kernel.org; imx@lists.linux.dev;
+> linux-rockchip@lists.infradead.org;
+> linux-stm32@st-md-mailman.stormreply.com;
+> linux-mediatek@lists.infradead.org; Prabhakar
+> <prabhakar.csengg@gmail.com>; Lad Prabhakar
+> <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Subject: [PATCH net-next] dt-bindings: net: Define interrupt constraints =
+for
+> DWMAC vendor bindings
+>=20
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>=20
+> The `snps,dwmac.yaml` binding currently sets `maxItems: 3` for the
+> `interrupts` and `interrupt-names` properties, but vendor bindings select=
+ing
+> `snps,dwmac.yaml` do not impose these limits.
+>=20
+> Define constraints for `interrupts` and `interrupt-names` properties in
+> various DWMAC vendor bindings to ensure proper validation and consistency=
+.
+>=20
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > ---
->   drivers/tty/serial/fsl_lpuart.c | 220 ++++++++++++++++----------------
->   1 file changed, 110 insertions(+), 110 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-> index f830b5a3ba8e..901c83461bfc 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-> @@ -441,36 +441,36 @@ static unsigned int lpuart_get_baud_clk_rate(struct lpuart_port *sport)
->   
->   static void lpuart_stop_tx(struct uart_port *port)
->   {
-> -	unsigned char temp;
-> +	unsigned char cr2;
+> Hi All,
+>=20
+> Based on recent patch [0] which increases the interrupts to 11 and adds
+> `additionalItems: true` its good to have constraints to validate the sche=
+ma. Ive
+> made the changes based on the DT binding doc and the users. Ive ran dt
+> binding checks to ensure the constraints are valid. Please let me know if=
+ you'd
+> like me to split this patch or if any of the constraints are incorrect, a=
+s I don't
+> have documentation for all of these platforms.
+>=20
+> https://lore.kernel.org/all/20250308200921.1089980-2-prabhakar.mahadev-la
+> d.rj@bp.renesas.com/
+>=20
+> Cheers, Prabhakar
+> ---
 
-Overall looks good. In cases like these (there are many), you should 
-have switched this to u8 in patch 1/3 too ;).
+>  .../bindings/net/toshiba,visconti-dwmac.yaml           |  6 ++++++
 
-thanks,
--- 
-js
-suse labs
+Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+
+Best regards,
+  Nobuhiro
+
