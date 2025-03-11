@@ -1,118 +1,111 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602C022FF42
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 08:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4B22A81A
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 09:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741683492; cv=none; b=tJiUkGKM+5p7oFRnvQjeLof49P0yR99dZ8QavAWG/yPoKe7pbXiBQ979CRVKoh6W+iWsbXaSha6i3fwc6F/hCJs0NIGFCEGoRAZVVy7kHwgdbMWgfl9gpaC1Y0W3yH3z3tUclnn/toK14aJjo2MeCQIqbn2bh+lz2WfZk92mmvE=
+	t=1741686119; cv=none; b=jFAfvsjyxnIrU6g7oxEAkeB97dOrQkqLMQ3YJN9ruoMo82sQnRhSNTQv0DrIvOKxGNBNLEru87KABhafrWCRWQfz86zlAwuG9IApLm9xJgNhaCVhOpWtmaopq1gbxDBU7tG/B3atxvSBFCWH/pBOjHb17xyjP4ZxZv6LHwGLTJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741683492; c=relaxed/simple;
-	bh=OoJriUqFnHkd+c0rjQnFxlTZBZ6vjf/CcBs/t4RG/qs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SORXNt9yy1fAM7Y1D47ipPLTCy6gzoPhCVhbs07ml3NgAsR7h5rqxqPLeQ/OLMRdUH6qean2KPCOvOLlpYIA0QzNAORxlFmMjJhrMWFD56j6l0FxXCDVM4hyDU/awSr+nYiWxDIkPfy4UXrighCMwoNFIUqUqfF+oo+98Xk/AcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MAr4Qjg9; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741686119; c=relaxed/simple;
+	bh=03Gv4s873UjI+xmcPzGntYsW1I0NmUQapHmHTtq49bk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EcROcIj10o+iHeqiZXfCAD9o+j06+qWldgmHECQscHCvcvmA0bjx/bna+CRzUTiWd+CSvmA33dxD9423IvcKqC4dQVeWWNeG8MNPP4qzPqwZardTOe8SklUeLUAOHTwp50Ajy0dpVoj6cwtrKL0T95r1BwFbwfSal1wCpFoi2yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uffNNV5O; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MAr4Qjg9"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2234e4b079cso92592685ad.1
-        for <imx@lists.linux.dev>; Tue, 11 Mar 2025 01:58:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uffNNV5O"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43bdf0cbb6bso30241815e9.1
+        for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:41:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741683490; x=1742288290; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lA2bydqpRt+OlncV1V8Whn8hMq0Jg5Zcz7zDV610P04=;
-        b=MAr4Qjg9mXOzg1V/NgVvc6HuO813MVLwMeoYWLxxm5I2FVjQywKeaK5yTj/YY0RGgP
-         P1qWnZbDyMDIzHPF88k6QkBzSDzoWN6TnKYuo5TSpIHpIf8YiCQc12wRv8SahFxnK8C9
-         RTgKwcovweF87ca4tAE62betBLd/S/W07teZ6KRILQIjVqDG0cpRh//B7dJU67/7cLEk
-         ax3cObRNd5pc6XhnZxnwv6d3aJu4hmx+wRf9dzIuEcf3nc1I0+vQ2jyUPJ9txRNQrALh
-         jcGaFQLGXhoIoW532sborMKRdpi2aQMotmGR0TrHRKK/p3ziMlFQmfO5jEmGChMJsNrX
-         VNvA==
+        d=linaro.org; s=google; t=1741686116; x=1742290916; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FLzoATiFKr1B8iCGXJt123FaClKzJD6A9v143qispxo=;
+        b=uffNNV5OWnrGgxhC1sRfZUqExtteepxwTgmZ7aEW639vApn9kDl4iRPOdpWxDrxQcq
+         HUjrAOoscJzSkteQ5swqWXGzjfNAng7lrI/gBwRni6vaAinv2w01m4NLFBfTRMsofgzZ
+         2YG9E4lOnmhd6l1GSTHpR+iy9ZUFPOaj2QE/lBo8yTHhT4nTufJVcRqYAw2nl4JK83QM
+         J9qPXtEMjetCW0pH4daAzSrxlZzV78L++KdwBvJaMqI0qDFKXRjxeTRffsKsO5NW6G72
+         +Xl/kFeLUZpVETl8skZFnn5VK0S2t3180SrkBNjYgFib5xZXxnIHEg9muqKbw2ZpWX4D
+         lfmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741683490; x=1742288290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lA2bydqpRt+OlncV1V8Whn8hMq0Jg5Zcz7zDV610P04=;
-        b=EzNPa56TpmdFK488bYNTFKI6NKBBFasaRjb17cEMwgFryKQl6ylsKC7p0YXME7rwng
-         BdmAv5X+yI4ltpCw+TTVIv+q7Mo4u3XgaL7Rp4tXPhv7jPBKM1U0TXNWSMWdhwNYXeBx
-         ZU0No86cyZFqgImS7RiUwGAc3iv9limXHWjPgumtapEOWG3NCBzHHtF4PnJ5gdTjHk2m
-         yse5ZX7UAJrbtZkU1gPHgVYN/O09U2T70i1LB56vWiuuHb05fSILI3EnrrYc2Oxghi1I
-         daBIMx9l1W4wLu2p0KS7tU4YVQk/MaM4SoYKqbGYDWcoPsvC1GbwQKtsmbt1+YBbfNtW
-         R6RA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBcPZPYRvHokTdD3wUx4lPUhWT6SBVsxpZrYOnU5s+AXBFQn/wIxpQulaQx489onoacao=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0/vNkP9NqDageci/KUVsbl9+KildU4zZgiimId5MH1FKtQX6X
-	7/IBL8PX9xdTJgy+Z6ZyFXJFBb2vlilw36EUBzzoWHW/PPT0xwRpyx4coXxISrthujtIhynzVLs
-	a8c12qmxtOwe1WKJphP0K5W/hzS4=
-X-Gm-Gg: ASbGncuVq48wTHAmggYjRwJ2eyB+NvNhBKId63HY3pyEycIuuSQWOrOPMHHbRsfULen
-	OhP5hAfenqG8Jag16Xskej0H0KjaRczLC0EHh6gLiGlMhqSQaelwlqc1B94uvBNk+x8149f74pb
-	EeyBD0pPx6vjPSOM6wPraObNo=
-X-Google-Smtp-Source: AGHT+IHRbLEfFkSRN7svD/SU2NARgmIEUPnyFQQfIvjDTjaMuTGcz4qJxDZa2+cv/4IHsddy318d5FT1qriGzMT0Ex0=
-X-Received: by 2002:a17:902:ec84:b0:220:ca08:8986 with SMTP id
- d9443c01a7336-22428a98135mr255205425ad.22.1741683490491; Tue, 11 Mar 2025
- 01:58:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741686116; x=1742290916;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FLzoATiFKr1B8iCGXJt123FaClKzJD6A9v143qispxo=;
+        b=DC/T1V69kliGmxszma4XhXIxEkcODiCoL9Etx5BKF+VLNuSQyhsXaIs4rgHm96rIJI
+         zW0XxHaax3dfJNyNk068QlCSYJLS/OoKeD7iXWC9ZPaShaNidpKIYNvPzizEp1rkh4/f
+         zVzNEyiTL2lWE94WYwu6Re7W3fM6IFdA0Iwc3d2pD+Cl3lirmvJ1iXGAldu+d/zpqMBV
+         WlYle7X6TbQidYLynU+qAh1fchFZWiHAS8/xU0pTM/hFic5wsgwjkTlcWVwTZgrwRHLJ
+         MdCHU2PGOQZpxmxTJqJ3FpZHBsOT+x2jwEOtDjOhA2c3GCSrhwJrx0fePZ+mIX1Rtghx
+         oD6g==
+X-Gm-Message-State: AOJu0Yyi1BJtJBERmNuMawjBgCIQH7+9zFRCL0IkUZUH6vzY9Zk8V0+k
+	vIimehD4PQj5SWr14L506eregBytVfU8oLuxV2kKcN3NbbHGBiGweE+rT9TX3Yo=
+X-Gm-Gg: ASbGnct8rTIekW6lEJaY1Rc7qkXu0WPCjUE3QAcZkl8F+VmgET1N6LIb/gVUQZtLmK9
+	UhvNO5l+v1lnZ8oJbwTKD9R+xm7nDnAJnPVrK4PBdyspcMFCX5jOT/ko5rhWEGGGXPX1Jl9TUp2
+	deb1Md5RxwSWRDpCtaoMAZhKYzimqCYOkZvms8Wx2f535VtZMhWUSDZFpWQKh/LtEyrTtPEx7tQ
+	5hEBjndZUmpUJec+adZG4VHq1ZMv05pHwPMvrNHSqjQvcDlEk1pvfmYaMGME7FYs0+if+SyTrUq
+	fDg0l5THxOUFe2Yshj3WKzRzNAW0Wbd5eUMwlm2wCRE=
+X-Google-Smtp-Source: AGHT+IEdiLqVceheU3laOr68GSrQpdRVp3WLSzOWbWgbN9P+MXJtFbu6q15juGPjGglXL1E+FUFlQQ==
+X-Received: by 2002:a05:6000:2c7:b0:38f:451b:653c with SMTP id ffacd0b85a97d-39132d77a3bmr10037297f8f.7.1741686116146;
+        Tue, 11 Mar 2025 02:41:56 -0700 (PDT)
+Received: from hackbox.lan ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfdb9sm17427957f8f.27.2025.03.11.02.41.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 02:41:55 -0700 (PDT)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Mike Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-clk@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v6.15
+Date: Tue, 11 Mar 2025 11:41:40 +0200
+Message-Id: <20250311094140.722154-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250305100037.373782-1-daniel.baluta@nxp.com>
- <20250305100037.373782-9-daniel.baluta@nxp.com> <Z88Ib7HkbRQoiyZp@p14s>
-In-Reply-To: <Z88Ib7HkbRQoiyZp@p14s>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 11 Mar 2025 10:59:46 +0200
-X-Gm-Features: AQ5f1Jqksp8_Ow3W7CPPxQeuga9K9-0CI_LlAxXmLAD4nYxorLD8ECBrBf3t_78
-Message-ID: <CAEnQRZDeBkNYBNQwJL5LZgLK49siqomzyM_RDccdusJa22yiJA@mail.gmail.com>
-Subject: Re: [PATCH v4 8/8] imx_dsp_rproc: Use reset controller API to control
- the DSP
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, p.zabel@pengutronix.de, robh@kernel.org, 
-	krzk+dt@kernel.org, shawnguo@kernel.org, devicetree@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, conor+dt@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	andersson@kernel.org, Frank.Li@nxp.com, peng.fan@nxp.com, 
-	laurentiu.mihalcea@nxp.com, iuliana.prodan@nxp.com, shengjiu.wang@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 5:43=E2=80=AFPM Mathieu Poirier
-<mathieu.poirier@linaro.org> wrote:
->
-> Good day,
->
-> On Wed, Mar 05, 2025 at 12:00:36PM +0200, Daniel Baluta wrote:
-> > DSP on i.MX8MP doesn't have a direct reset line so according to hardwar=
-e
-> > design team in order to handle assert/deassert/reset functionality we
-> > need to use a combination of control bits from two modules. Audio block
-> > control module for Run/Stall control of the DSP and DAP module in order
-> > to do software reset.
-> >
-> > Initial design accessed RunStall bits from audio block control using th=
-e
-> > syscon interface but this got NACKed by community because of abusing th=
-e
-> > syscon interface [1].
-> >
-> > So instead we use the reset controller API.
->
-> I am good with this patchset.  The only thing I'd like so see modified is=
- the
-> above changelog.  The second paragraph doesn't belong there, i.e it is no=
-t
-> useful to remark on a design that was not accepted.  Instead please conce=
-ntrate
-> on _why_ we are moving from the current design to using the reset control=
-ler
-> API.
->
-> This can go in the 6.15 merge window if you send me a V5 fast enough.
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
 
-Thanks for review. Reworded the commit message and send V5.
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
 
-Thanks,
-Daniel.
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-6.15
+
+for you to fetch changes up to 06a61b5cb6a8638fa8823cd09b17233b29696fa2:
+
+  clk: imx8mp: inform CCF of maximum frequency of clocks (2025-03-03 19:02:15 +0200)
+
+----------------------------------------------------------------
+i.MX clock changes for 6.15
+
+- Add missing AXI clock to the i.MX8MP AUDIOMIX in dt-bindings schema.
+- Fix DSP and OCRAM_A parent clocks in i.MX8MP AUDIOMIX clock provider.
+- Document vendor specific operating-mode property in i.MX8M clock
+  provider dt-bindings schema.
+- Apply overdrive/nominal constraints based on DT property in i.MX8MP
+  clock provider.
+
+----------------------------------------------------------------
+Ahmad Fatoum (2):
+      dt-bindings: clock: imx8m: document nominal/overdrive properties
+      clk: imx8mp: inform CCF of maximum frequency of clocks
+
+Laurentiu Mihalcea (2):
+      dt-bindings: clock: imx8mp: add axi clock
+      clk: clk-imx8mp-audiomix: fix dsp/ocram_a clock parents
+
+ .../devicetree/bindings/clock/imx8m-clock.yaml     |   8 ++
+ .../devicetree/bindings/clock/imx8mp-audiomix.yaml |  10 +-
+ drivers/clk/imx/clk-imx8mp-audiomix.c              |   6 +-
+ drivers/clk/imx/clk-imx8mp.c                       | 151 +++++++++++++++++++++
+ 4 files changed, 168 insertions(+), 7 deletions(-)
