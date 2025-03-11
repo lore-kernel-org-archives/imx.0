@@ -1,126 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFF11DED47;
-	Tue, 11 Mar 2025 02:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91BA3FD1
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741658887; cv=none; b=jM0DOXn1GqnLLpb1evWbpUIhFU+j66daX0D7uuiaDKwJBlGoXIl89RbPHAtmsXWZVJOvfLWPeXMEyBHK8LqeqDJMW59ytROmD0eisc9judOyJsnkwaRRHwv7khqH0dzGQ/9qcSQF7kFKQI4uLQjTPOPQRUqzDeaNW/X7EamW4Lo=
+	t=1741659113; cv=none; b=oQNTR4Dg3zW74cAf3hRfdcsnKTVs6jAnrRyixW4I7FOPG112Oe1N2o+dc/O26FjauSgS/Um6mdON19coz8hWq8cGJY+RPzkOgTwyQx+YuYYsujv61vtNFA/7hfqTwxiBRK1/bUUZd+8YU6l11MiYnpYiRKno+4iAX1N+91lDJBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741658887; c=relaxed/simple;
-	bh=EO2y2EASnimfmC0To8IgjADGLB03IrpBXSrBRgvMOXc=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=MyAQ9PpvHk0UfRBxXL881HgKnFSOb8nyIUas40a6jqHjVvi88sZnO9rGyiWWH98xIYSlpX3AeMEUJZLdoeeJY/ZkK0ArYkRF0JCoad6fLoqYfyGughvYk5tVouV6sR2H6LHKtMbrHUUFzKyJuJkaZyOL4oYjF7osh98JVTajZqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wQfQZG6I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741659113; c=relaxed/simple;
+	bh=Uqg4BvoIFHOy8ZsafPUstg5rBCNgYL7IMM8j6pBom3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VlwkE21gOKb6kZrXtQ4dtomrX36LKYtr78xNEP1sHZxp0wfP+1HMx2K+mn1I79FcZbQzRLTCawv/DZSbnUlBnma5zVfUrqHT/8ULp/4Pkdb3kqWspR6bL+aySUWWEehsMBqKeOsp43LBIgNP4usKoORwDCugTZ2s7rtwjPg0fYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QyvimTas; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wQfQZG6I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872A9C4CEE5;
-	Tue, 11 Mar 2025 02:08:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741658886;
-	bh=EO2y2EASnimfmC0To8IgjADGLB03IrpBXSrBRgvMOXc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=wQfQZG6IKVV4Tew+S+0o+lnw12y0URQfWSPems1i8x5dKQTaPMYHdQMJDIg/0LCcq
-	 9ysqdCzIccJgUTy5+1XImjyPHewrVrCASW3U/ThAkRtkSNX1mJCMOLQBPQJNwR3UZE
-	 sXCoysWhDTs3Eikr7+eLtWHhOyIiad0yrUckBntM=
-Date: Mon, 10 Mar 2025 19:08:03 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay
- <ogabbay@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix
- <nicolas.palix@imag.fr>, James Smart <james.smart@broadcom.com>, Dick
- Kennedy <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Chris Mason <clm@fb.com>, Josef Bacik
- <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, Ilya Dryomov
- <idryomov@gmail.com>, Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens
- Axboe <axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Damien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Carlos Maiolino
- <cem@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel
- <sre@kernel.org>, Keith Busch <kbusch@kernel.org>, Christoph Hellwig
- <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Frank Li
- <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Hans de Goede
- <hdegoede@redhat.com>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=
- <ilpo.jarvinen@linux.intel.com>, Henrique de Moraes Holschuh
- <hmh@hmh.eng.br>, Selvin Xavier <selvin.xavier@broadcom.com>, Kalesh AP
- <kalesh-anakkur.purayil@broadcom.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
- Romanovsky <leon@kernel.org>, Easwar Hariharan
- <eahariha@linux.microsoft.com>, cocci@inria.fr,
- linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-sound@vger.kernel.org,
- linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-spi@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- platform-driver-x86@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
- linux-rdma@vger.kernel.org, Takashi Iwai <tiwai@suse.de>, Carlos Maiolino
- <cmaiolino@redhat.com>
-Subject: Re: (subset) [PATCH v3 00/16] Converge on using secs_to_jiffies()
- part two
-Message-Id: <20250310190803.aaf868760781c9ae3fbe6df1@linux-foundation.org>
-In-Reply-To: <174165504986.528513.3575505677065987375.b4-ty@oracle.com>
-References: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
-	<174165504986.528513.3575505677065987375.b4-ty@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QyvimTas"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=aNXkJxcJ2zsVazXzVhb67vC/AWSm5E/sISjDwq9fejc=;
+	b=QyvimTasT15gCS/eL9gH7dR1XCjRIaHLmSGawEgiQNyCNQEbQqZUQBmpNu8ytM
+	W6ateqgBkQc1Y3b0eOALREUSlFp/7z0kKxudAbLp826Yz3bcmsfOjgcTlYFYxszk
+	NEoDQugL3Yo58BGWfkXKCydkgxL4XvH92CJnSgF+BWNSA=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCHyeCWlM9nKL2zAA--.807S3;
+	Tue, 11 Mar 2025 09:40:40 +0800 (CST)
+Date: Tue, 11 Mar 2025 09:40:38 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v2 0/6] arm64: dts: imx8mp-skov: add new variants
+Message-ID: <Z8+Ultn2BDg+fSng@dragon>
+References: <20250218-skov-imx8mp-new-boards-v2-0-4040379742ea@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218-skov-imx8mp-new-boards-v2-0-4040379742ea@pengutronix.de>
+X-CM-TRANSID:Ms8vCgCHyeCWlM9nKL2zAA--.807S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU4IJmUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRANZWfPUEK8TAAAs7
 
-On Mon, 10 Mar 2025 21:19:03 -0400 "Martin K. Petersen" <martin.petersen@oracle.com> wrote:
-
-> On Tue, 25 Feb 2025 20:17:14 +0000, Easwar Hariharan wrote:
+On Tue, Feb 18, 2025 at 07:38:12PM +0100, Ahmad Fatoum wrote:
+> Ahmad Fatoum (5):
+>       dt-bindings: arm: fsl: add more compatibles for Skov i.MX8MP variants
+>       arm64: dts: imx8mp-skov: move I2C2 pin control group into DTSI
+>       arm64: dts: imx8mp-skov: describe I2C bus recovery for all controllers
+>       arm64: dts: imx8mp-skov: add revC BD500 board
+>       arm64: dts: imx8mp-skov: support new 7" panel board
 > 
-> > This is the second series (part 1*) that converts users of msecs_to_jiffies() that
-> > either use the multiply pattern of either of:
-> > - msecs_to_jiffies(N*1000) or
-> > - msecs_to_jiffies(N*MSEC_PER_SEC)
-> > 
-> > where N is a constant or an expression, to avoid the multiplication.
-> > 
-> > [...]
-> 
-> Applied to 6.15/scsi-queue, thanks!
-> 
-> [02/16] scsi: lpfc: convert timeouts to secs_to_jiffies()
->         https://git.kernel.org/mkp/scsi/c/a131f20804d6
+> Oleksij Rempel (1):
+>       arm64: dts: imx8mp-skov: add basic board as fallback
 
-Really, an acked-by would have been much easier all around, but whatever.
-
-Did you get my fix?
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: scsi-lpfc-convert-timeouts-to-secs_to_jiffies-fix
-Date: Tue Feb 25 07:32:03 PM PST 2025
-
-fix build
-
-Cc: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: James Bottomley <james.bottomley@HansenPartnership.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/scsi/lpfc/lpfc_sli.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/drivers/scsi/lpfc/lpfc_sli.c~scsi-lpfc-convert-timeouts-to-secs_to_jiffies-fix
-+++ a/drivers/scsi/lpfc/lpfc_sli.c
-@@ -3954,7 +3954,7 @@ void lpfc_poll_eratt(struct timer_list *
- 	else
- 		/* Restart the timer for next eratt poll */
- 		mod_timer(&phba->eratt_poll,
--			  jiffies + secs_to_jiffies(phba->eratt_poll_interval);
-+			  jiffies + secs_to_jiffies(phba->eratt_poll_interval));
- 	return;
- }
- 
-_
+Applied all, thanks!
 
