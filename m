@@ -1,43 +1,49 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260F4EEBA
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46461E5B87
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741660630; cv=none; b=CTnLx8o5Ty4HXU9iWiv57nn7/lHjjhGh5y9+02GHFAUz46fEjwMe3bvw4WpnJOtsQ3yREzWfW2Qu1UjfnGngcYP8Wd5scXR9vXZiKsNI0pH23LQ8E/3IkQ+B4itS8Orb/5muknrVQH2RQg0lfyB0ebPkpclb7UFeThVkJzENqPI=
+	t=1741660696; cv=none; b=iqCbX12IEUF4tQfOmOyYUmkOCTxVZrJ7Sm62O0569KfA7yYSF8atmBOZza6uPL0UH22bj6Z46h01TyXHh6UGCUennDWMtUE9SxgsQiOO8ls+42wRSTeFokjjiYlXqC6GggCghJFbNUSglXX0n0zyYfQkTz39cTxnTOMJxJO8OSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741660630; c=relaxed/simple;
-	bh=FXtPzAGVJb0GdIlkJWer/5cmp+mFmG55OSNf2JR/SK0=;
+	s=arc-20240116; t=1741660696; c=relaxed/simple;
+	bh=KWatzy3ps/ft2pAnIO0ksgwLKinSyjdTbP0ffkXQcwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcJP3DWyJ577Rfgw80c2OaSAT2Zhvza0hRCQRkwJOCxyGGF+QgJWUbQ92Flp9KlJsdXFvW54jcjrDNvPPbWEtLzSzkgIW1jXjyK/PPdqUrjfeZX23EamtQGtFt/QKez4azozzjjKvg7Mf75c7L31LVidLOXgQX0hLEmqFSOTYhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lPnlQljQ; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkwMlvfxD5IkiUA8sb6hTfT6UmKyC8KYJz05HTLddGYQJ6Bg0hwhxgsR71Ahl+qLNBCckV6v3k4J94cpydV3pXEOWnSL8sSpqkl03FkN1JkZ7ietQBJWdwCELUpjBg4JnduNHC1ZjqPhxKCJXyTeFbZ6iJbqblJMW3Q+4dz1mOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QJz17dUO; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lPnlQljQ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QJz17dUO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ynTyUmTRCgFTrUshSeCg3vb32qg0W3S4+Fy0XJ4c8bs=;
-	b=lPnlQljQAhc8CzTGxTeVOX4ueEc/kN7y2BvyDQp4u5LvrdQPaN8hStqne9EMN2
-	FUNpegP2C6hbrt+Xx5h/RZYg7fhsXJlYeumba48vBAHlwKtyylT4vRtopgPar/p4
-	dNUQ4HkoEYQ0opeCu4j57BMGcDwLF7vIADn8JTjYMF1Cc=
+	Content-Type; bh=ICnWS1cvR/lqvpW3gZSBK0qzpmW+rKkDV9mICgOyRUw=;
+	b=QJz17dUOuRqwYZ4lw1SFnNr1/JueywpcOnyinBhnk7Mj3pbNGLgnEkb878/6qI
+	USJVuEPEyLp93fUX2fC+aEJf5yxBTLRDVJqpT084uww3n1eT98OIxAj0FMS1yej0
+	/4G5NII8rkRnaPKQvX7si2hZeDxGPh5fsYDJx4ZN6HzGw=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAXFkPEoc9n2Xe0AA--.48983S3;
-	Tue, 11 Mar 2025 10:36:54 +0800 (CST)
-Date: Tue, 11 Mar 2025 10:36:52 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAnDnqBn89nqoywAA--.815S3;
+	Tue, 11 Mar 2025 10:27:15 +0800 (CST)
+Date: Tue, 11 Mar 2025 10:27:13 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: im8mq: move dwc3 usb port under ports
-Message-ID: <Z8+hxCxum9uTLGGC@dragon>
-References: <20250224193308.407606-1-Frank.Li@nxp.com>
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>,
+	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH] arm64: dts: s32g: add FlexCAN[0..3] support for s32g2
+ and s32g3
+Message-ID: <Z8+fgXENvCrqXvTP@dragon>
+References: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,23 +52,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224193308.407606-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Ms8vCgAXFkPEoc9n2Xe0AA--.48983S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZr4fGFy3XF1kAw15ZrykGrg_yoW3uFX_Aa
-	17Wr1rur4DZFs7KF1jyFn7Aa4UK347J3srXryfXw1kXryIv3Z2kF45tr95ur1UGF40qF93
-	Ar15JF10y39akjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0rsqJUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgANZWfPVKnuuQAAs4
+In-Reply-To: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
+X-CM-TRANSID:Mc8vCgAnDnqBn89nqoywAA--.815S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3l1vUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQcNZWfPUELrJgAAsR
 
-On Mon, Feb 24, 2025 at 02:33:07PM -0500, Frank Li wrote:
-> Move port@0 and port@1 under ports to fix below DTB_CHECK warnings.
+On Mon, Feb 24, 2025 at 03:40:16PM +0200, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 > 
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: port@0:reg:0:0: 0 is less than the minimum of 1
-> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
-> arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dtb: usb@38100000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'dr_mode', 'phy-names', 'phys', 'port@0', 'port@1', 'snps,parkmode-disable-ss-quirk' were unexpected)
-> 	from schema $id: http://devicetree.org/schemas/usb/snps,dwc3.yaml#
+> Add FlexCAN[0..3] for S32G2 and S32G3 SoCs.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-Applied with a change on subject prefix, s/im8mq/im8mq-librem5, thanks!
+Applied, thanks!
 
