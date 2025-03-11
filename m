@@ -1,49 +1,48 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46461E5B87
-	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51DB17741
+	for <imx@lists.linux.dev>; Tue, 11 Mar 2025 02:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741660696; cv=none; b=iqCbX12IEUF4tQfOmOyYUmkOCTxVZrJ7Sm62O0569KfA7yYSF8atmBOZza6uPL0UH22bj6Z46h01TyXHh6UGCUennDWMtUE9SxgsQiOO8ls+42wRSTeFokjjiYlXqC6GggCghJFbNUSglXX0n0zyYfQkTz39cTxnTOMJxJO8OSM=
+	t=1741661182; cv=none; b=h/w8wyA7KS7y7epEjYylvNa2hz7bMebC8GqPw9Y1ZcZsCNZhUEJ4r6crgMj/YmLPDUjdYs7WoKDbpd4juPcd7dCa+8vpyuXitKJAWh8gtNJPsrzJKfawl4lD2KFncVHMMsqeR4g5PJQrJ8eX917prFPTdoNQ4sFv6pdIganoUjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741660696; c=relaxed/simple;
-	bh=KWatzy3ps/ft2pAnIO0ksgwLKinSyjdTbP0ffkXQcwA=;
+	s=arc-20240116; t=1741661182; c=relaxed/simple;
+	bh=r5C5UHC/MEvYiNybKnqxQY5J2VLFO/BGtRfgQh/kKSc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kkwMlvfxD5IkiUA8sb6hTfT6UmKyC8KYJz05HTLddGYQJ6Bg0hwhxgsR71Ahl+qLNBCckV6v3k4J94cpydV3pXEOWnSL8sSpqkl03FkN1JkZ7ietQBJWdwCELUpjBg4JnduNHC1ZjqPhxKCJXyTeFbZ6iJbqblJMW3Q+4dz1mOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=QJz17dUO; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZuKniGZzXIGh4ksEXu+6FgLqa7IC0j/RjcLPUiMniv778AYUZYK3CnuxYwVDJECoaPWOR8DMO2rNxwlWrMjdSXgsGz+MTB+DY4TxiQpx5PJsiETfnzoxeqkXcrn3dF0psg9CuXqzKkXmPcDMnTrTC3SnnxSbzfnbMyzkDPVlNXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=RMCb81w2; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="QJz17dUO"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="RMCb81w2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ICnWS1cvR/lqvpW3gZSBK0qzpmW+rKkDV9mICgOyRUw=;
-	b=QJz17dUOuRqwYZ4lw1SFnNr1/JueywpcOnyinBhnk7Mj3pbNGLgnEkb878/6qI
-	USJVuEPEyLp93fUX2fC+aEJf5yxBTLRDVJqpT084uww3n1eT98OIxAj0FMS1yej0
-	/4G5NII8rkRnaPKQvX7si2hZeDxGPh5fsYDJx4ZN6HzGw=
+	Content-Type; bh=HOnuc6V7iZj1VHst/LjUygWq87lYaT/N7rhOGEcupU8=;
+	b=RMCb81w28Z95GMpjzit9coBp5ZegdbVkG1EVgach9vpYzvBpRGVMgsMA8bORSm
+	tVDKkMtP0t5q4tbhb+QnW+z/J0Xx0DtfqcBydniCVqEc4m93HeXjXYsQ1g87Gpdf
+	JQk2FYnhnJ6CaLJhpsas+dMsHTvRbiIUhtCs+qtM8D3SY=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAnDnqBn89nqoywAA--.815S3;
-	Tue, 11 Mar 2025 10:27:15 +0800 (CST)
-Date: Tue, 11 Mar 2025 10:27:13 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgA3xq+Xo89n92ivAA--.43267S3;
+	Tue, 11 Mar 2025 10:44:41 +0800 (CST)
+Date: Tue, 11 Mar 2025 10:44:39 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>,
-	imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>
-Subject: Re: [PATCH] arm64: dts: s32g: add FlexCAN[0..3] support for s32g2
- and s32g3
-Message-ID: <Z8+fgXENvCrqXvTP@dragon>
-References: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 0/3] imx8qxp: PCIe fixes
+Message-ID: <Z8+jl+QWCwStEitG@dragon>
+References: <20250225102726.654070-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,18 +51,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250224134016.3921196-1-ciprianmarian.costea@oss.nxp.com>
-X-CM-TRANSID:Mc8vCgAnDnqBn89nqoywAA--.815S3
+In-Reply-To: <20250225102726.654070-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:M88vCgA3xq+Xo89n92ivAA--.43267S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3l1vUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQcNZWfPUELrJgAAsR
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUV75rUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAh4NZWfPWknoJAAAsD
 
-On Mon, Feb 24, 2025 at 03:40:16PM +0200, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> 
-> Add FlexCAN[0..3] for S32G2 and S32G3 SoCs.
-> 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On Tue, Feb 25, 2025 at 11:27:20AM +0100, Alexander Stein wrote:
+> Alexander Stein (3):
+>   dt-bindings: PCI: fsl,imx6q-pcie: Add optional DMA interrupt
+>   arm64: dts: imx8qm-ss-hsio: Wire up DMA IRQ for PCIe
+>   arm64: dts: mba8xx: Remove invalid propert
 
-Applied, thanks!
+s/propert/property as Bjorn suggested, then applied both DTS changes.
+
+Shawn
 
