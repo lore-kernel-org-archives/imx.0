@@ -1,112 +1,91 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD2C23F377
-	for <imx@lists.linux.dev>; Wed, 12 Mar 2025 11:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E884923F38B
+	for <imx@lists.linux.dev>; Wed, 12 Mar 2025 11:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741778706; cv=none; b=QRH38XUKyrBn7wQhEqNSf4ugbbjf3PoMuSf5SyxDRYfnn9fUQMjkMSX3kkf3ApZd78OEf7U5bNTlyGEzbSVIMqB7Ay/QJ08IlIf2Er0/ezEdRnTbXcSht/BxWl5kF2TKeZpXW9hoye7i2duZAhXboxDmxmFlbEtbSDxqDSBeNZk=
+	t=1741778940; cv=none; b=KzfvP8mBmbTfPEmh9OqNzZhjLlgSbuelj+1gsu4OORRWzdGQm2ZNqkpjJdt9QvHObpdq/0kyc97KRSh6Trg3RJvri1ozHPf8QIwRiJBbL4bvsFqYoCT4j1I5XAlWpzVVH9hY6IQBqk5S3j7Ab7aEdq564ZJcqoisnqxb+hBwh5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741778706; c=relaxed/simple;
-	bh=KZOfhNvGBAR8H62mSv+Cnr7UPfTIt95Y31gyzfttSyk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QV2Ef+l5/SMt4imUGe+OaQLmVecyJLMz92ISFlekJZRebtX3a//Ow4jk29Osx2nGjKFkKYzoxaOlrg8R4ATtulCqjY/IMnyeU+fcOC3sJRTvOEe4wXWGv8AzmIGMuF4ZqR+egYpM2be60eB6pSFVGSMhQeb76z00tAE8nhDbbZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Rl18LG72; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Rl18LG72"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6fd80f30ba5so45988667b3.3
-        for <imx@lists.linux.dev>; Wed, 12 Mar 2025 04:25:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741778703; x=1742383503; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAyMzA/EpimoKgZu8On+/pcgYmPCkV2jR9c+DuBL0OM=;
-        b=Rl18LG72ORjb02fJAB2r2ds/6gr5LCpA1Gq0bSGNQlXrd0gXSycGdyqCrel4INCOLJ
-         KazO8o1aluiUloygsXLk7cq9uogTr3jks60JJiIcMMvJWYIAoXfSIIaBlxIbgFRkywsQ
-         0Wn0YA1M1l601UZ5W8kCNrn3BE8biEBih/s/NDPUWxsrp0VAshnPPLPGvpivuPBR759Q
-         HscNlg/2OZjPCkvYHqTkGW+hwrLx8Vo28OVQWYtvNhz3bExczyF12jtfo8yQ82+ARI3a
-         go8S2Pllrd3BtnmNGwbxYLHyVmWs9HGOnOez1EBB7H7zUZwfd+DvjHahqVJsUivZ3ldY
-         CZag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741778703; x=1742383503;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RAyMzA/EpimoKgZu8On+/pcgYmPCkV2jR9c+DuBL0OM=;
-        b=jqX0cU/UVMeycFWSrt3BOM4GAXqDPbIAexHZU/pTIyFRC7wi0c9+Dhb3kZ782BFuWK
-         ZyZc9vcTlbzQugrFYdhWx36nXeZacgUQnelAdYcUcRg5NzAFxpdbnHmKPS0K1mD/Auvk
-         MwQEhPqDCO4ToJow2aKCLK1DV14jmAAcpNToDy+RSguJi0+SR+9mwS86VCWLKZUETUlP
-         mH7hKCXe4SP4mXkQlrzOuDRQCa5WAx9wHHOzwrmLxK41zDoGUqs5EzpgbWRlNqOeyACh
-         nO+v7SmTSE2gPD8AAW+jNDksk6bW3Er8SE0wTYVhW0TqHOctB7VbrXt9zUlwLcsjqK+4
-         Sqbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWhg5CpB+qpJ4AAPZTEYipj8lquUzwIb3+NBfNfndxOZSHHB52ByJyaAAaiZN3UfRbjHyU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyu7+b1ciZ5TQlV0pBv1n0wxFdzrcD0edqTA8kTn7snF36MylNo
-	GXM5AKOT2jeZAbaZLImTDjx+Ki8Y2KV3VZ6Ta8uBEu1/vE+Y8EEcdbz5BgVXZaPg59fyzclnMhn
-	gG5sFlHp5US1sta+LzGLHG1y3+dfp+0asNRTkpA==
-X-Gm-Gg: ASbGncvFlpZNSwOSEqnHgvGI+o+FVmPtjSZYspzrOJqDqZGALuTysIA0IgaBY1ikNUr
-	Lw7m1IlGgu9+Ph/wPImop/uaRZTClS9IO0apctqmerk1dCkr+z9IPttT6R0vJCvSp8ftesNamVZ
-	t7rl/Ms7Oki3UxBFu8Ym/SLpjVkCk=
-X-Google-Smtp-Source: AGHT+IGglu9wcUZQJ7kM7L4REyiuLkmFGiD8FrS6mR3Xkylx8tygAZpPYRnV6JQzsp7VhJrt3avxrAJ6Y8EDAb/0jS8=
-X-Received: by 2002:a05:690c:4287:b0:6fe:d759:b156 with SMTP id
- 00721157ae682-6fed759b590mr172175717b3.2.1741778703631; Wed, 12 Mar 2025
- 04:25:03 -0700 (PDT)
+	s=arc-20240116; t=1741778940; c=relaxed/simple;
+	bh=X5+GB3yUeu0AMb3m1p/GP6GJgAjCm9u72uZGthp/DlM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a+i8CYa7TpQ3ZLNs5AKBpKP/BCGxuFGr+SS1czHQEYOcZdR39pR5fv7bWjKGTlWrcKzTssFaI4ugvLZpOsSYXRYIcEsZqlNV+Bv+rZxcVKi4OnXeinQmEpob3Vmmm56NQuCnkx+rar5tDf38A3scevLIbm/SchQzGejxKigxM/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25A46152B;
+	Wed, 12 Mar 2025 04:29:09 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 962C83F694;
+	Wed, 12 Mar 2025 04:28:55 -0700 (PDT)
+Date: Wed, 12 Mar 2025 11:28:52 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <Z9Fv9JPdF5OWUHfk@bogus>
+References: <Z7Wvyn1QJQMVigf9@bogus>
+ <Z7Z-ZnztmvUxWoQJ@NXL53680.wbi.nxp.com>
+ <Z86w3ZRS6T2MvV3X@bogus>
+ <DB9PR04MB84614FBF96E7BC0D125D97F688D62@DB9PR04MB8461.eurprd04.prod.outlook.com>
+ <Z87UJdhiTWhssnbl@bogus>
+ <Z87sGF_jHKau_FMe@bogus>
+ <PAXPR04MB8459EA5C7898393E51C246AD88D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <PAXPR04MB8459A73179FFF0ED0C9A51E488D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <Z9AdICiyaCmzKh-N@bogus>
+ <Z9FnZzBQuZ1j5k3I@bogus>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250306170937.242183-1-Frank.Li@nxp.com>
-In-Reply-To: <20250306170937.242183-1-Frank.Li@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 12 Mar 2025 12:24:26 +0100
-X-Gm-Features: AQ5f1JoI6EhIkJvZ2urcM945k8zoD09K83RZ6y4RdDZ4NA6PxGMieT1lQ5GBlVM
-Message-ID: <CAPDyKFprhKa-XqJgfPjphuBCcn4ra2Gj0VewZ8iGqjYAYc2CFw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: mmc: fsl-imx-esdhc: Add i.MX94 support
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9FnZzBQuZ1j5k3I@bogus>
 
-On Thu, 6 Mar 2025 at 18:09, Frank Li <Frank.Li@nxp.com> wrote:
+On Wed, Mar 12, 2025 at 10:52:23AM +0000, Sudeep Holla wrote:
+> On Tue, Mar 11, 2025 at 11:23:12AM +0000, Sudeep Holla wrote:
+> > On Tue, Mar 11, 2025 at 11:12:45AM +0000, Peng Fan wrote:
+> > >
+> > > So it is clear that wrong fw_devlink is created, it is because scmi cpufreq device is
+> > > created earlier and when device_add, the below logic makes the fwnode pointer points
+> > > to scmi cpufreq device.
+> > >         if (dev->fwnode && !dev->fwnode->dev) {
+> > >                 dev->fwnode->dev = dev;
+> > >                 fw_devlink_link_device(dev);
+> > >         }
+> > >
+> >
+> > Thanks, looks like simple way to reproduce the issue. I will give it a try.
+> >
+> 
+> I could reproduce but none of my solution solved the problem completely
+> or properly. And I don't like the DT proposal you came up with. I am
+> not inclined to just drop this fwnode setting in the scmi devices and
+> just use of_node.
 >
-> Add compatible string "fsl,imx94-usdhc" for the i.MX94 chip, which is
-> backward compatible with i.MX8mm. Set it to fall back to
-> "fsl,imx8mm-usdhc".
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Applied for next, thanks!
+Sorry for the typo that changes the meaning: s/not/now
 
-Kind regards
-Uffe
+I meant "I am now inclined ..", until we figure out a way to make this
+work with devlinks properly.
 
-
-> ---
->  Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> index b9b9995705290..b98a84f932772 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.yaml
-> @@ -57,6 +57,7 @@ properties:
->                - fsl,imx8mp-usdhc
->                - fsl,imx8ulp-usdhc
->                - fsl,imx93-usdhc
-> +              - fsl,imx94-usdhc
->                - fsl,imx95-usdhc
->            - const: fsl,imx8mm-usdhc
->        - items:
-> --
-> 2.34.1
->
+-- 
+Regards,
+Sudeep
