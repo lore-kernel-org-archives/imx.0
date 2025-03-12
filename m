@@ -1,79 +1,214 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4429C20B208
-	for <imx@lists.linux.dev>; Wed, 12 Mar 2025 07:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5936023026F
+	for <imx@lists.linux.dev>; Wed, 12 Mar 2025 08:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741765264; cv=none; b=gj0eCnDuqL7RiA61WW6JJXlERJdg3/HEWsIF2hUuL2+kO909gkvo2lTmDAXA6lNqGjEe7LcNjHeJDD6c1ezw3AChGwfGDHcrLhO6r74PI8Z9mCpld7Ofe7MkrkY4bLrorW3tc9o2Cqa/QYRk5luNMdrPplPD1Vh0abQTf21sy3g=
+	t=1741767477; cv=none; b=uszsnQJlpzQXDQYCo/CkfwZIpubijn8PIHJ1lhqaxe9n7Olu8X/Cx/lD2jdo2DErbtiaSflJjrv/RfZ92JNU6Wxdh1p7I2WQLAjd9HUtcOX4ovWC8DqIPhq0fNWDYlIfv3w7W87JhdCHjuUEfyNiT+NdLWVAxXje9nd2NxBe2ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741765264; c=relaxed/simple;
-	bh=Ll0u4SL2ekYYJZhxDteT/U6jFtv7SYneFXCAknm1IR0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bMjQekb1U25WYSzMZByAlDaldBELaQCaMBXIBQYQd4zNnpR4bmyE8s7Ldb1phPdOfPqIFMATD9ut+LsUe+KPg3wHhdUuDr70Pz1S+8WCJtiTI5+Jb7oHXWLzcic5ibTxD1xneS97Gz6hS51W4D65dkx1e51Usi/CUInDVVF9lIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=njprxXF8; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1741767477; c=relaxed/simple;
+	bh=7JtfDFJnmZHRtjNa+tQkiHtYQOHNcn+PWRuERHTuazI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ryEM2jBmbSfShwDcfiIDI4vpmjf8pd4v2P9ojmz5mVh259lTUdsf7w4/1f0TJXMtsLEqZzAh+pO+vq3F15TLuuEYH6nawtK0/E4OvH7NZDcNl2Cs8LHo1cutUTY+1lZzbV8q2qCSu4Be5VmPv5lNPJJOu46+0o6PSb8f+HCd+r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mSdm0CDI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2lHpqyUM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=2NOtoWk3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L1KBGOUI; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="njprxXF8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=hDg8L
-	yTwf6Z5RZfJ2WcwAVMbQDI394/OUmNQpCPItl0=; b=njprxXF8Bppm24AkPfqjN
-	7EbCLpa0AuOG4Tt3D0lIHuDbeLNw+8LwzM79+7v1ZO8IoTrBIsxF1gmmuulOYCLP
-	PVjXPZdTED09GZ73BsP6G8IxFARi9vzPCf77mOeDq+hIhFShhO2fwqXPy1nNzkIm
-	8SD78swPiSAUFtVl1pm5d0=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAnwdRtOtFnQ6_FAA--.2767S3;
-	Wed, 12 Mar 2025 15:40:31 +0800 (CST)
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org,
-	arm@kernel.org
-Cc: Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL 2/5] i.MX SoC changes for 6.15
-Date: Wed, 12 Mar 2025 15:40:02 +0800
-Message-Id: <20250312074005.663165-2-shawnguo2@yeah.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250312074005.663165-1-shawnguo2@yeah.net>
-References: <20250312074005.663165-1-shawnguo2@yeah.net>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mSdm0CDI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2lHpqyUM";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="2NOtoWk3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L1KBGOUI"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 11A7921182;
+	Wed, 12 Mar 2025 08:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741767468; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GSOHoa1ZQ0qdVTrSgPUGYM6S96Eo1g2ZFjEamRQ2nOU=;
+	b=mSdm0CDIdvB6uLxx6zRnsG4Ecp9B8GLTTcqSpLg/hToiNhovmIQtyPjBp1PdTn48VkauY7
+	N2OX2kmuZiHIU/RyZm809t89hNCuSwcbXtoZj8lUOkKvjwMJjz339ENAAZRD/swLJ5jo1m
+	sthuFFuNF3WuHBtcPwH/dRjdrkVuifw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741767468;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GSOHoa1ZQ0qdVTrSgPUGYM6S96Eo1g2ZFjEamRQ2nOU=;
+	b=2lHpqyUMEMjBLTUq58WAtMt1kwGtVY2JDs8Oj1RToqFsbxqeLxc7c7dtIucbtAN5SmXOCB
+	qci1fxqin8+7vXCA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741767467; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GSOHoa1ZQ0qdVTrSgPUGYM6S96Eo1g2ZFjEamRQ2nOU=;
+	b=2NOtoWk3iQVCM2YdgmbdbohAj8C+BBSmrgVP6+qfsnNORQ7mFXkF5HOMZOxn/OcQJVBjv1
+	56w5JL9wxTcT6S7MlMvtA7Xf7ghb9UEgCJTeQtRSsWopAqpjkeLJmPekAItvUtk55qwMOH
+	TF3lRfqVgiQUDIi2VfADxBk08VDLlY8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741767467;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GSOHoa1ZQ0qdVTrSgPUGYM6S96Eo1g2ZFjEamRQ2nOU=;
+	b=L1KBGOUIGPKFfIZN+PbNNV++j9M+DIBK6Q3B+y5QqUe9xvfVXrg5kEcC+xzl+LkBMyzHTG
+	sa1N118DhaKJr8CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 98BAF1377F;
+	Wed, 12 Mar 2025 08:17:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vULzIypD0WcQegAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 12 Mar 2025 08:17:46 +0000
+Message-ID: <41c4b56d-0932-465c-9dc7-c3a20cb49bdb@suse.de>
+Date: Wed, 12 Mar 2025 09:17:46 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Ms8vCgAnwdRtOtFnQ6_FAA--.2767S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryrAF1DCrW5uFW5ur45KFg_yoWfGFX_GF
-	9rJF4xJr1UJr13Aw15Gr10qr1UJw1kGFyUur18tr4Utr1Iq3W5Jwnrtr48Xr1DXF18GrWU
-	Gr1UWw1kJw1IkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8xgA7UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhEOZWfRL8cyTQAAsJ
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v3] drm/mxsfb: Remove generic DRM drivers in probe
+ function
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+ Michael Trimarchi <michael@amarulasolutions.com>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Marek Vasut <marex@denx.de>, Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>, Stefan Agner <stefan@agner.ch>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250305140929.174398-1-dario.binacchi@amarulasolutions.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250305140929.174398-1-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[amarulasolutions.com,gmail.com,linux.intel.com,denx.de,kernel.org,pengutronix.de,ffwll.ch,agner.ch,lists.freedesktop.org,lists.linux.dev,lists.infradead.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
-From: Shawn Guo <shawnguo@kernel.org>
+Merged into drm-misc-next. Thanks for the patch.
 
-The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
+Am 05.03.25 um 15:09 schrieb Dario Binacchi:
+> Use aperture helpers to remove all generic graphics drivers before
+> loading mxsfb. Makes mxsfb compatible with simpledrm.
+>
+> Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+>
+> ---
+>
+> Changes in v3:
+> - Add 'Reviewed-by' of  Thomas Zimmermann
+>
+> Changes in v2:
+> - Use aperture_remove_all_conflicting_devices() instead of
+>    drm_aperture_remove_framebuffers().
+>
+>   drivers/gpu/drm/mxsfb/mxsfb_drv.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> index 59020862cf65..e5eb644b54ae 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> @@ -8,6 +8,7 @@
+>    * Copyright (C) 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+>    */
+>   
+> +#include <linux/aperture.h>
+>   #include <linux/clk.h>
+>   #include <linux/dma-mapping.h>
+>   #include <linux/io.h>
+> @@ -361,6 +362,15 @@ static int mxsfb_probe(struct platform_device *pdev)
+>   	if (ret)
+>   		goto err_free;
+>   
+> +	/*
+> +	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
+> +	 * located anywhere in RAM
+> +	 */
+> +	ret = aperture_remove_all_conflicting_devices(mxsfb_driver.name);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret,
+> +				     "can't kick out existing framebuffers\n");
+> +
+>   	ret = drm_dev_register(drm, 0);
+>   	if (ret)
+>   		goto err_unload;
 
-  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-soc-6.15
-
-for you to fetch changes up to 4f8ec94af325d501904d7e86363bd162004161bd:
-
-  ARM: imx: mark imx53_suspend_sz as unused (2025-03-11 10:57:51 +0800)
-
-----------------------------------------------------------------
-i.MX SoC changes for 6.15:
-
-- Mark imx53_suspend_sz as __maybe_unused to fix a possible build warning
-
-----------------------------------------------------------------
-Arnd Bergmann (1):
-      ARM: imx: mark imx53_suspend_sz as unused
-
- arch/arm/mach-imx/common.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
