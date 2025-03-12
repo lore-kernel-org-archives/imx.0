@@ -1,154 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2725A22DF9D;
-	Wed, 12 Mar 2025 15:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21319142659
+	for <imx@lists.linux.dev>; Wed, 12 Mar 2025 15:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741791869; cv=none; b=DVZ7l4M60koFb8aIg7iAyKEChJ+Kj3lOfczf++BHWUAffF4AFC5kgYKZPMd8oU0ipr33+MhY95fyzZ5jmETjMDBuJXG6XNDGx6Omy/QrkGJV5DdroInSTlF2ohE+QBsZkfL/90sg1gsyNIzX4UoLh5f31RP+MlXTACL+8tnuAB0=
+	t=1741792085; cv=none; b=ke51TiIJDEfnS9uQfh0B9URjIYcU3IARkUb57Fstc0LR9uiObNUiKntXm+WMbEBue+H1N2faMlJ5ygDwN6Eqw0m7ENLavLPN70p+b377Xg6CpjKtE189DobedKdJlTWC9yB3IWH3Gyozdul/6bySAYTA9z2NypkrXkvFKw3kncc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741791869; c=relaxed/simple;
-	bh=0LPk8+MvfGynbwPGt0NyOytayCc66T5wfAVNQKAjUrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ASaR6XEdIYB9bibKRET8fF/Oz1MeydVcH6zRakvKhTwOSoI4RojsyD0AhL1oCwV5ew/HnMuXw9GFMi/QIG8JYSPEWdQ3RsbUXa6qWHpdUFczlqd7JhUF1HtGFdNn7D1EeDZTp1narjJ1L8NGrDnSEamXowqSRysvHwMUwuFqKKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I216Xd/e; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I216Xd/e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6940BC4CEDD;
-	Wed, 12 Mar 2025 15:04:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741791868;
-	bh=0LPk8+MvfGynbwPGt0NyOytayCc66T5wfAVNQKAjUrY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=I216Xd/eU3neOxcuswv7lF+WIHdCJHXoZollljYS9f5Sg3tH1cpxwS6+GmLSaHZn5
-	 OckHLmef0JjB9F/50Ks/GVtqOQsh1YxNfGc2tBFgovF9H/lNV3QgC8bLD6o+3pZQpI
-	 hTV/xrbPwP1m0p5ysSBZ+nzGcPuvNx1KAvA0LAszJqGHrwCivPCwcDiTdDXQpqTJPw
-	 I7x79FU3hWDQfscuGsp17s5E067AhXp++KBfhbfZ4uUIgQHG3skB8zkiWGm4y5/p5O
-	 Fyeo0kuJkdL7ZD0mYuuwFZ/vr6W3zRW0Un9ilz+8pt2G5BlYMSZepkODtztnP9VRs2
-	 S0STqRqv1Ah9Q==
-Date: Wed, 12 Mar 2025 10:04:26 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
-Message-ID: <20250312150426.GA674002@bhelgaas>
+	s=arc-20240116; t=1741792085; c=relaxed/simple;
+	bh=EQNdua2VLd3U3jzo/wjMCIM4ze/LCO+NyUs4QsHvXao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AF65pklj5UULujbmmXCikueLvt3dKAq296nrSF1vNtCQo40EEvegrP5XyOmXuTaCK+vg0nJWYmcqdGnm8C2t/U835zaiMRpX69SDiUx0mX1/vwbDAlElosagIfkx30EQ9rkOJpKUD5Fk5+Pm+ZtMW9NHRmGg8ujhJ/1EGHblO0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D0DF1515;
+	Wed, 12 Mar 2025 08:08:14 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7A853F5A1;
+	Wed, 12 Mar 2025 08:07:59 -0700 (PDT)
+Date: Wed, 12 Mar 2025 15:07:50 +0000
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Abel Vesa <abelvesa@kernel.org>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH NOT APPLY v2 4/4] clk: scmi: Support spread spectrum
+Message-ID: <Z9GjRhQmsu0fBoWG@pluto>
+References: <20250205-clk-ssc-v2-0-fa73083caa92@nxp.com>
+ <20250205-clk-ssc-v2-4-fa73083caa92@nxp.com>
+ <Z6SqeNsAqbZM8nr1@pluto>
+ <20250303041125.GC13236@nxa18884-linux>
+ <Z8iKErarE0lHWxEy@pluto>
+ <20250310081635.GA16799@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fcb5f09f8e4311c7a6ef60aaf3cb4e3f05a8f05e.camel@pengutronix.de>
+In-Reply-To: <20250310081635.GA16799@nxa18884-linux>
 
-On Wed, Mar 12, 2025 at 09:28:02AM +0100, Lucas Stach wrote:
-> Am Mittwoch, dem 12.03.2025 um 04:05 +0000 schrieb Hongxing Zhu:
-> > > -----Original Message-----
-> > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > Sent: 2025年3月11日 23:55
-> > > On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
-> > > > > -----Original Message-----
-> > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > Sent: 2025年3月10日 23:11
-> > > > > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
-> > > > > > Use the domain number replace the hardcodes to uniquely identify
-> > > > > > different controller on i.MX8MQ platforms. No function changes.
-> > > > > > 
-> > > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > > ---
-> > > > > >  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
-> > > > > >  1 file changed, 6 insertions(+), 8 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > index 90ace941090f..ab9ebb783593 100644
-> > > > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > @@ -41,7 +41,6 @@
-> > > > > >  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
-> > > > > >  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
-> > > > > >  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11,
-> > > 8)
-> > > > > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
-> > > > > > 
-> > > > > >  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
-> > > > > >  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
-> > > > > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct
-> > > > > > platform_device
-> > > > > *pdev)
-> > > > > >  	struct dw_pcie *pci;
-> > > > > >  	struct imx_pcie *imx_pcie;
-> > > > > >  	struct device_node *np;
-> > > > > > -	struct resource *dbi_base;
-> > > > > >  	struct device_node *node = dev->of_node;
-> > > > > >  	int i, ret, req_cnt;
-> > > > > >  	u16 val;
-> > > > > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
-> > > > > platform_device *pdev)
-> > > > > >  			return PTR_ERR(imx_pcie->phy_base);
-> > > > > >  	}
-> > > > > > 
-> > > > > > -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev,
-> > > 0,
-> > > > > &dbi_base);
-> > > > > > -	if (IS_ERR(pci->dbi_base))
-> > > > > > -		return PTR_ERR(pci->dbi_base);
-
-> > Use the domain number replace the hardcodes to uniquely identify
-> > different controller on i.MX8MQ platforms. No function changes.
-> > Please make sure the " linux,pci-domain" is set for i.MX8MQ correctly, since
-> >  the controller id is relied on it totally.
-> > 
-> This breaks running a new kernel on an old DT without the
-> linux,pci-domain property, which I'm absolutely no fan of. We tried
-> really hard to keep this way around working in the i.MX world.
+On Mon, Mar 10, 2025 at 04:16:35PM +0800, Peng Fan wrote:
+> On Wed, Mar 05, 2025 at 05:29:54PM +0000, Cristian Marussi wrote:
+> >On Mon, Mar 03, 2025 at 12:11:25PM +0800, Peng Fan wrote:
+> >> Hi Cristian,
+> >> 
+> >> On Thu, Feb 06, 2025 at 12:26:32PM +0000, Cristian Marussi wrote:
+> >> >On Wed, Feb 05, 2025 at 05:49:54PM +0800, Peng Fan (OSS) wrote:
+> >> >> From: Peng Fan <peng.fan@nxp.com>
+> >> >> 
+> >> >> Support Spread Spectrum with adding scmi_clk_set_spread_spectrum
+> >> >> 
+> >> >
+> >> >Hi,
+> >> >
+> >> >I forwarded ATG with our latest exchange on the possibility of using a
+> >> >standard OEM type instead of Vendor one if it is general enough....
+> >> 
+> >> Do you have any update?
+> >> 
+> >
+> >Yes I think you can go on with your original plan of using vendor OEM
+> >types: as of now we are not gonna standardize a new commmon SCMI type
+> >for Clock-SS, given there is really just one SCMI user of such clock
+> >features...maybe in the future if more users shows up...
 > 
-> I'm fine with using the property if present and even mandating it for
-> new platforms, but getting rid of the existing code for the i.MX8MQ
-> platform is only a marginal cleanup of the driver code with the obvious
-> downside of the above breakage.
+> Thanks for updating me. Back to how to add extensions in clk-scmi.c,
+> do you have any suggestions? I am thinking to provide vendor/sub-vendor
+> for clk-scmi.c and use vendor "NXP" sub-vedor "IMX" for spread spectrum.
+> 
 
-I don't know the history of these DTs, but if there are any old DTs
-for platforms that use controller 1 but lack 'linux,pci-domain', I
-agree that we should not break them.
+Definitely based on vendors subvendors, not sure about how, I have not
+really though about the details: you also shoudl consider that the new
+clk ops for spread spectrum should be registered ONLY when you are on a
+supported platform (of course) AND the OEM types nnamespace is per-vendor:
+like vendor protocols your NXP OEM config type 0x80 must coexist with any
+future possible OTHER_VENDOR OEM ConfigType 0x80.
 
-If we need to retain the dbi_base check so that old DTs continue to
-work, I think it should look something like this:
+Thanks,
+Cristian
 
-  domain = of_get_pci_domain_nr(node);
-  if (domain >= 0) {
-      if (domain > 1)
-          return dev_err_probe(..., "invalid domain %d\n", domain);
-      imx_pcie->controller_id = domain;
-  } else {
-      dev_warn(..., "DT lacks linux,pci-domain, falling back to DBI addr\n");
-      dbi_res = platform_get_resource(pdev, IORESOURCE_MEM, index);
-      if (dbi_res->start == IMX8MQ_PCIE2_BASE_ADDR)
-          imx_pcie->controller_id = 1;
-  }
-
-The previous code used devm_platform_get_and_ioremap_resource() and
-set pci->dbi_base, but (1) there's no need to set pci->dbi_base since
-the DWC core does that anyway, and (2) I think using ioremap() means
-we depend on CPU virt == CPU phys, and I don't think we need to depend
-on that.
-
-Bjorn
