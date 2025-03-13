@@ -1,175 +1,249 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D7D1FBC99
-	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 15:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CDA26982D
+	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 16:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741880816; cv=none; b=o+2j06ZB4AOvAROfzFDXvi+SVL9KnndRyBhqEgvtH4UV268u8Yfggt6rPXhPWWCZCCQ6DBUdHdV9qtCy2/lSoW+t78/lJWDHaswEIL9RvUjuIsf+wEUXjWqrKSltVrRdN79uMqAW5tceeke4oatISR6LL7NGhp5SmiaT2h3GcfE=
+	t=1741881772; cv=none; b=Ajh9yBT4IknIgEBL1DeO/S0m4mvaJBPoYkZqy64BDPPndClxsWw5MIA/YT8RW4RI2EPL3VzvH9gSLLCBbrV8/f0paxyhXKiJvaqQ4mmpY0zowvKhqs8WCucgp/j5DjbBe9gnqLLlj2ewlGevimrWrfZ+70lhepP+oHC+SaNccPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741880816; c=relaxed/simple;
-	bh=8rhT5K5h5si2y4Q7V7FrHe+5lvc9WpW5/QmzS2Xdq6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MypXz3fbSJ2d8HHQBcwFs8mEMQs/f58kc9HgotNBvW7bZ72UeEf2QB7WLpXrhO6mnM+Wa4aATvipISOBzJOfRxd1c1JE2f9ZgcNkWQ+i/jQ7eVtkdNBAiSd0H8Lr/nxQmBeW6inzX15WavnNBsv7th4hVxiRZ/zUekOBdkA9AyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j3QTFoYR; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741881772; c=relaxed/simple;
+	bh=200rEEKCxCwR9aTs5c19KdhJj1J5nUOlggvZXZWCqQA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eFv/QRspWXCWjp4Iqwl7lT0IWZLLxSzmxmT1+mwjpfScEiKvpv3ac6v6phZCJP3d/bD+sLDhtoWK8pxlMBr6NB6HCZxmlx6VEz42UqfaMPPg32iNJfLFQWU9UADgKfwg430TYNipwGYdmsOLVOPghk8iVnbR6zgue0fan38mj8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RO9WW+xO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=77t1Xa4L; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RO9WW+xO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=77t1Xa4L; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j3QTFoYR"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-223f4c06e9fso22121665ad.1
-        for <imx@lists.linux.dev>; Thu, 13 Mar 2025 08:46:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741880813; x=1742485613; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/dk/KVdNUO+2NCTC/VAHji5cbX9MUum8KYD6NkCMODY=;
-        b=j3QTFoYRz5gfI2Dp9wbGBnIOAhSyG67r2ri+9TZxvKsGnYx7e5jeoBevD62NkNfgXL
-         g3E1Y4RSmlJnXj2yR4F0AcBrWoQx2F0LA5Kj5HCMm1svd6QpKVq6d3mD6BMYpZqlcuO5
-         Lo5Q92A8A0SCsDiv9u8kD1DME6sIySAQ4FCjsAY18sYgiBGX7GgGm+aFj0CH9PUZrfhB
-         h/B3iH9p54emFuyKtvbQjqq+WdBwHz8Gd9fN7ZLdkPjvjKifOLpwbo3rrD/kk7rfDhxk
-         46/Of8XuiE+YRnO1q7upSe7EGv84BGLNs+Rsi5uXvfXPwGvyYsLNRpqEmEA+DAj3Gk6g
-         OpzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741880813; x=1742485613;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/dk/KVdNUO+2NCTC/VAHji5cbX9MUum8KYD6NkCMODY=;
-        b=eF14QeqC4f/Id7hYsfYfzRq8YjGg0hXBSdVNjnVM+Tnudgi6Cs/F/Ur6L+bwFCq8aJ
-         /R4kgMGq1LbRr4UNwV8JpqIERfz+iloZbaMk7PnIZ7fynWb6ii/d1meFClYFMH+b2Weh
-         NTnkywOcSqXmaglB/Mxe2Uk5HV62IbLPYsLusPSUqXyZ/ihbFTQleGFXNU9Gi5n+gpYR
-         JoAguO0XBSW1omQyJX3wRphy9fvoQx9POygLQIGNId0XgbUlWR9gSmL5hOLbWN4N7Y+v
-         ATIIzRrt/+IiDfPm4ZHPvzoMGw9TLNpcaWJ6aM80xYs7aT1Nnt+1wsd2a88wDVbyQxub
-         hiNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIovvLIWXlyWL3Bnj8qcCxXFOBvmo2o3KAW96YG7BmoIk7fLuq8CRd84PUqpdlAVcpiq0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwsqM06qaI9cAfYTq3wjGIKbUzk2BkDUmnkkC4TG1AfI5gFc3Cj
-	LnSN8wjlYR+4aezjIzjJ8SSHofSzh4mhD4y+keUrflZZ7TNyMlz51mbd9fxuJUQ=
-X-Gm-Gg: ASbGncuFqZXF3dgJRVbWt6iIWJZePrpLHjxL3kTGhQKGOCNTGcwBHMk+kHZDqV+O8nX
-	PEPiltZ57l5bV3MlzcO1i26z/H8oW6+UqM97Sq5VLjZVm/nk33wJr6F+yE9zU4TSsPSus7ruI8A
-	9A0U1rjiCMzqInr5/o+8K/AK09wmBtuv9UAgPHyK1t82hF+g164bD15VM+g2CpyK1NdTXlNZO9M
-	dhi+yswUKcfBU8eQlYTRHJe1PdeP6ohfmi9vJsKjxRuV71BOhkAzJGtfz3K5cmO6prTTFgHgQDr
-	6HEBAZyPwdc7bBwsZcU8cB48/HsfkL5MM6JeODEVDQ1mE7yscJxxu72PIMg=
-X-Google-Smtp-Source: AGHT+IHmhKUWmuw5hxmGn5MltXhJp+mOVpY2OPHTTEaVO3b51JPFYbzscOBmXvFxMsGPCnOFc7K2lg==
-X-Received: by 2002:a17:903:3d03:b0:223:5187:a886 with SMTP id d9443c01a7336-225c66a7cb6mr49221535ad.22.1741880813496;
-        Thu, 13 Mar 2025 08:46:53 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:46d2:1635:3673:c3f9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6ba710dsm14851215ad.128.2025.03.13.08.46.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 08:46:52 -0700 (PDT)
-Date: Thu, 13 Mar 2025 09:46:50 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: p.zabel@pengutronix.de, robh@kernel.org, krzk+dt@kernel.org,
-	shawnguo@kernel.org, devicetree@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, conor+dt@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, andersson@kernel.org,
-	Frank.Li@nxp.com, peng.fan@nxp.com, laurentiu.mihalcea@nxp.com,
-	iuliana.prodan@nxp.com, shengjiu.wang@nxp.com
-Subject: Re: [PATCH v5 0/8] imx8mp: Add support to Run/Stall DSP via reset API
-Message-ID: <Z9L96ssnL1S5z7rb@p14s>
-References: <20250311085812.1296243-1-daniel.baluta@nxp.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RO9WW+xO";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="77t1Xa4L";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RO9WW+xO";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="77t1Xa4L"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C19B21189;
+	Thu, 13 Mar 2025 16:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741881768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
+	b=RO9WW+xOZL4x0VifG/9+R2HjAoHTYHGFDKb2tZchGVn1hbh+bb94MFnJ/R6JyKkVllVBlM
+	rtYWJ+eT2h/J4p6dilXU02fXGc8lvoUH+gHTlXK1KTwJIm8oxL+oN/SxYBPYy1tpccL2yG
+	qbzRwFYeGV2G3EAYZ6v6LLsGGo5A2YA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741881768;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
+	b=77t1Xa4LDjVyozoy7z32oI6+ODHP5u8xAcWjHpJAmvQ0xBOYw//7Cx7lNXtWzotq3rSVQk
+	6FYjdaVEd+dwZABw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RO9WW+xO;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=77t1Xa4L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741881768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
+	b=RO9WW+xOZL4x0VifG/9+R2HjAoHTYHGFDKb2tZchGVn1hbh+bb94MFnJ/R6JyKkVllVBlM
+	rtYWJ+eT2h/J4p6dilXU02fXGc8lvoUH+gHTlXK1KTwJIm8oxL+oN/SxYBPYy1tpccL2yG
+	qbzRwFYeGV2G3EAYZ6v6LLsGGo5A2YA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741881768;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
+	b=77t1Xa4LDjVyozoy7z32oI6+ODHP5u8xAcWjHpJAmvQ0xBOYw//7Cx7lNXtWzotq3rSVQk
+	6FYjdaVEd+dwZABw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25E39137BA;
+	Thu, 13 Mar 2025 16:02:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2nXJB6gB02dkJgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 13 Mar 2025 16:02:48 +0000
+Message-ID: <a2f39979-459d-4581-baed-ff75e0af1bce@suse.de>
+Date: Thu, 13 Mar 2025 17:02:47 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311085812.1296243-1-daniel.baluta@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/mxsfb: fix missing rollback on failure in
+ mxsfb_probe()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
+ Stefan Agner <stefan@agner.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Michael Trimarchi <michael@amarulasolutions.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250313-mxsfb_probe-fix-rollback-on-error-v2-1-38374088e8c7@bootlin.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250313-mxsfb_probe-fix-rollback-on-error-v2-1-38374088e8c7@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9C19B21189
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_TO(0.00)[bootlin.com,denx.de,agner.ch,linux.intel.com,kernel.org,gmail.com,ffwll.ch,pengutronix.de,amarulasolutions.com];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -4.51
+X-Spam-Flag: NO
 
-On Tue, Mar 11, 2025 at 10:58:03AM +0200, Daniel Baluta wrote:
-> This patch series adds support to control the Run/Stall DSP bits found on
-> i.MX8MP via the reset controller API instead of using the syscon API.
-> 
-> DSP found on i.MX8MP doesn't have a direct reset line so according to hardware
-> design team in order to handle assert/deassert/reset functionality we
-> need to use a combination of control bits from two modules.
-> 
-> Audio block control module:
-> 	- for Run/Stall control bits of the DSP
-> 
-> Debug Access Port (DAP)
-> 	- for Software Reset via IMX8M_DAP_PWRCTL register
-> 
-> The current implementation for IMX DSP Remotproc driver and for Sound Open
-> Firmware driver (already upstream) uses the following approach:
-> 	- maps the Audio Block Control address via syscon API through
->           the fsl,dsp-ctrl property of the dsp node.
-> 	- maps the DAP address space using directly a call to ioremap
->           with IMX8M_DAP_DEBUG macro depicting the DAP base address.
-> 
-> The both approaches are problematic when comes to describing the address
-> spaces via the DT:
-> 	- for Audio Block Control, because it uses the syscon interface
-> 	- for DAP because it hardcodes de base address instead of using a dt node.
-> 
-> This patch series aims to fix the Audio Block control usage of the
-> syscon interface and replace it with Reset Controller interface.
-> 
-> Main advantages of using the Reset Controller API is that we stop
-> abusing the syscon interface, offer a better probe ordering, PM runtime
-> support. Main critique of using the Reset Controller API is that
-> Run/Stall bits are not reset bits (but according the hardware design
-> team they are part of the reset proccess since there is no real reset
-> line).
-> 
-> Initial discussion is here:
-> https://patchwork.kernel.org/project/imx/patch/20250212085222.107102-6-daniel.baluta@nxp.com/
-> 
-> Note that we can safely remove the fsl,dsp-ctrl property usage from IMX DSP
-> remoteproc driver because there is no Device Tree users.
-> 
-> Changes since v4:
-> https://lore.kernel.org/lkml/20250305100037.373782-3-daniel.baluta@nxp.com/T/
-> 	- picked-up R-b tags from Frank Li and Peng Fan
-> 	- reworded commit message of patch 8/8 as per Mathieu Poirier suggestion
-> 
-> Changes since v3:
-> https://lore.kernel.org/linux-arm-kernel/20250225102005.408773-5-daniel.baluta@nxp.com/T/
-> 	- renamed resets ids as per Philipp comments
-> 	- add boths resets (named them runstall and softreset) as per Philipp comments
-> 
-> Changes since v2:
-> (https://lore.kernel.org/lkml/Z7ZNngd3wtJ5MZgl@lizhi-Precision-Tower-5810/T/)
->         - picked R-b and A-b tags
->         - use run_stall instead of reset to refer to reset controller
->           instance
->         - remove 'resets' description as it is a common property
->         - add correct include in the yaml dts snippet example
-> Changes since v1:
-> (https://lore.kernel.org/imx/20250219030809.GD6537@nxa18884-linux/T/)
->         - addresed comments received on v1
->         - picked up R-b and A-b tags
-> 
-> Daniel Baluta (8):
->   dt-bindings: reset: audiomix: Add reset ids for EARC and DSP
->   dt-bindings: dsp: fsl,dsp: Add resets property
->   arm64: dts: imx8mp: Use resets property
->   reset: imx8mp-audiomix: Add prefix for internal macro
->   reset: imx8mp-audiomix: Prepare the code for more reset bits
->   reset: imx8mp-audiomix: Introduce active_low configuration option
->   reset: imx8mp-audiomix: Add support for DSP run/stall
->   imx_dsp_rproc: Use reset controller API to control the DSP
-> 
->  .../devicetree/bindings/dsp/fsl,dsp.yaml      | 24 +++++-
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  3 +
->  drivers/remoteproc/imx_dsp_rproc.c            | 25 ++++--
->  drivers/remoteproc/imx_rproc.h                |  2 +
->  drivers/reset/reset-imx8mp-audiomix.c         | 78 +++++++++++++------
->  .../dt-bindings/reset/imx8mp-reset-audiomix.h | 13 ++++
->  6 files changed, 114 insertions(+), 31 deletions(-)
->  create mode 100644 include/dt-bindings/reset/imx8mp-reset-audiomix.h
+Hi
 
-Other than patch 3 for which I haven't received a Reviewed-by, I have applied
-this set.
+Am 13.03.25 um 16:21 schrieb Luca Ceresoli:
+> When aperture_remove_all_conflicting_devices() fails, the current code
+> returns without going through the rollback actions at the end of the
+> function, thus the actions done by drm_dev_alloc() and mxsfb_load() are not
+> undone.
+>
+> Fix by moving this call at the very beginning of the probe function, so
+> that no rollback is needed if it fails. Conflicting drivers need to be
+> kicked out before setting up DRM anyway.
+>
+> Fixes: c8e7b185d45b ("drm/mxsfb: Remove generic DRM drivers in probe function")
+> Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-Thanks,
-Mathieu
+The patchdiff is somewhat non-intuitive, but looks correct.
 
-> 
-> -- 
-> 2.43.0
-> 
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+Thanks for the fix.
+
+Best regards
+Thomas
+
+> ---
+> The offending commit is not yet merged into master, and even less in a
+> released kernel, so this does not need to go through stable.
+>
+> Changes in v2:
+> - move this call at the beginning instead of adding a goto
+> ---
+>   drivers/gpu/drm/mxsfb/mxsfb_drv.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> index c183b1112bc4e9fe4f3b048a2b6e4c98d1d47cb3..ee64053d381448360140c419fed1dc4fe9f7c68e 100644
+> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
+> @@ -352,14 +352,6 @@ static int mxsfb_probe(struct platform_device *pdev)
+>   	struct drm_device *drm;
+>   	int ret;
+>   
+> -	drm = drm_dev_alloc(&mxsfb_driver, &pdev->dev);
+> -	if (IS_ERR(drm))
+> -		return PTR_ERR(drm);
+> -
+> -	ret = mxsfb_load(drm, device_get_match_data(&pdev->dev));
+> -	if (ret)
+> -		goto err_free;
+> -
+>   	/*
+>   	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
+>   	 * located anywhere in RAM
+> @@ -369,6 +361,14 @@ static int mxsfb_probe(struct platform_device *pdev)
+>   		return dev_err_probe(&pdev->dev, ret,
+>   				     "can't kick out existing framebuffers\n");
+>   
+> +	drm = drm_dev_alloc(&mxsfb_driver, &pdev->dev);
+> +	if (IS_ERR(drm))
+> +		return PTR_ERR(drm);
+> +
+> +	ret = mxsfb_load(drm, device_get_match_data(&pdev->dev));
+> +	if (ret)
+> +		goto err_free;
+> +
+>   	ret = drm_dev_register(drm, 0);
+>   	if (ret)
+>   		goto err_unload;
+>
+> ---
+> base-commit: f9f087d946266bc5da7c3a17bd8fd9d01969e3cf
+> change-id: 20250313-mxsfb_probe-fix-rollback-on-error-3074b9080f34
+>
+> Best regards,
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
