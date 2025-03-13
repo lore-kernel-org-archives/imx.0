@@ -1,207 +1,99 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65C91BDCF
-	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 08:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FD914900B
+	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 09:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856090; cv=none; b=AV2iTtlyvK6eif5gffbmLXT/a4t3SBioFIGodO8QYoVU+QjZUdpFFhNkh6R05dDycTvYkjtfQ5VrzmS2bYMtIYgiMAhjMhfKdF0HnQLB+CuUHvdV6Na3wlp2YHPtJO1ktmw6I3t4rAw+SwJ5DpUAq0Xy7PJDP6VUp+EaOUUq2zs=
+	t=1741859898; cv=none; b=E19zXqHMSBJGDzUQvOyza2yPDOeMZnG6nq9E9fSgXN2OjftMwjNlybHXKz2EPen5MF0S6De38hcmPOwz3irlHpVtA2xz1OGlaq90xP58YiYs3+XXEC8fYoLeN/Bpb9cgOwunsmmb1Zp0h7vwVKjhC4n/xsEiOwRGoU3PPUKwJjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856090; c=relaxed/simple;
-	bh=z4kFVAh8ZwdeetGifHupttht3HiRwRg8if5+O9Ubfv4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hfuRefYg7+l93JUZn1J5NiRc6OwdkSDhPUPHvjbxz0LgKjom0zmz5cs7pMGv4HpUyppRggWgEbO22sq+QzEogM7BuKtppHrYm3wJA2SqgaV3yufVcbhsR8Dvwl4cAkFcce+8XPowfpKnJfbuGWHlGU7qGJtaM5CYwGWeJTRjFQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1tseKg-00021i-Us; Thu, 13 Mar 2025 09:54:26 +0100
-Message-ID: <b425a7c7a7d6508daf23fe7046864a498029a7ac.camel@pengutronix.de>
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
- hardcodes
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, Bjorn Helgaas <helgaas@kernel.org>,
-  "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>,  "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,  "lpieralisi@kernel.org"
- <lpieralisi@kernel.org>, "kw@linux.com" <kw@linux.com>, 
- "manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
- "bhelgaas@google.com" <bhelgaas@google.com>,  "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,  "kernel@pengutronix.de"
- <kernel@pengutronix.de>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Date: Thu, 13 Mar 2025 09:54:25 +0100
-In-Reply-To: <Z9GYm/jp9VIhCEeY@lizhi-Precision-Tower-5810>
-References: 
-	<AS8PR04MB8676E66BD40C37B2A7E390178CD12@AS8PR04MB8676.eurprd04.prod.outlook.com>
-	 <20250311155452.GA629749@bhelgaas>
-	 <DU2PR04MB8677AC699DF11D847AB768708CD02@DU2PR04MB8677.eurprd04.prod.outlook.com>
-	 <fcb5f09f8e4311c7a6ef60aaf3cb4e3f05a8f05e.camel@pengutronix.de>
-	 <Z9GYm/jp9VIhCEeY@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1741859898; c=relaxed/simple;
+	bh=/c5MAp6L886OYk2fj4O2XrUIjpykoT6Bi36NGjY9unE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nesr+mY/GtXUkxEPiq6c+uPnthNAG3//ZQGM2DIUt7M6+D4QIqKUyFS9EftR16rT5GP7XNCYO9tDgUaygDq1c+BpisSR9YkBRqdqIsbh8fD1qsyRiFzGcY8TINWZyyGGnMq+hohk82/reS5BPsD4Ppdoyshhwe11tdyLSNDEMwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: a6f5324efff111efa216b1d71e6e1362-20250313
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:e2b2fb55-5bd7-4a50-bc8f-f02c2a35492d,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6493067,CLOUDID:39939feb8854b0a194969a4e76a66e63,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:nil,UR
+	L:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,S
+	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a6f5324efff111efa216b1d71e6e1362-20250313
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangheng@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1315595742; Thu, 13 Mar 2025 17:58:02 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 4C2B0E008902;
+	Thu, 13 Mar 2025 17:58:02 +0800 (CST)
+X-ns-mid: postfix-67D2AC2A-121602164
+Received: from kylin-pc.. (unknown [172.25.130.133])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 8E0A8E008901;
+	Thu, 13 Mar 2025 17:57:59 +0800 (CST)
+From: Zhang Heng <zhangheng@kylinos.cn>
+To: miquel.raynal@bootlin.com,
+	richard@nod.at,
+	vigneshr@ti.com,
+	han.xu@nxp.com,
+	hs@denx.de,
+	david@protonic.nl,
+	jre@pengutronix.de
+Cc: linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Zhang Heng <zhangheng@kylinos.cn>
+Subject: [PATCH 1/2] mtd: rawnand: gpmi: Use str_enabled_disabled() in gpmi_nand_attach_chip()
+Date: Thu, 13 Mar 2025 17:57:55 +0800
+Message-ID: <20250313095756.945890-1-zhangheng@kylinos.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
 
-Am Mittwoch, dem 12.03.2025 um 10:22 -0400 schrieb Frank Li:
-> On Wed, Mar 12, 2025 at 09:28:02AM +0100, Lucas Stach wrote:
-> > Am Mittwoch, dem 12.03.2025 um 04:05 +0000 schrieb Hongxing Zhu:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > Sent: 2025=E5=B9=B43=E6=9C=8811=E6=97=A5 23:55
-> > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > > > kw@linux.com; manivannan.sadhasivam@linaro.org; bhelgaas@google.com=
-;
-> > > > s.hauer@pengutronix.de; festevam@gmail.com; devicetree@vger.kernel.=
-org;
-> > > > linux-pci@vger.kernel.org; imx@lists.linux.dev; kernel@pengutronix.=
-de;
-> > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace th=
-e
-> > > > hardcodes
-> > > >=20
-> > > > On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
-> > > > > > -----Original Message-----
-> > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > > Sent: 2025=E5=B9=B43=E6=9C=8810=E6=97=A5 23:11
-> > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.=
-org;
-> > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org;
-> > > > bhelgaas@google.com;
-> > > > > > s.hauer@pengutronix.de; festevam@gmail.com;
-> > > > > > devicetree@vger.kernel.org; linux-pci@vger.kernel.org;
-> > > > > > imx@lists.linux.dev; kernel@pengutronix.de;
-> > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.=
-org
-> > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replac=
-e the
-> > > > > > hardcodes
-> > > > > >=20
-> > > > > > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
-> > > > > > > Use the domain number replace the hardcodes to uniquely ident=
-ify
-> > > > > > > different controller on i.MX8MQ platforms. No function change=
-s.
-> > > > > > >=20
-> > > > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > > > ---
-> > > > > > > =C2=A0drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++------=
---
-> > > > > > > =C2=A01 file changed, 6 insertions(+), 8 deletions(-)
-> > > > > > >=20
-> > > > > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > index 90ace941090f..ab9ebb783593 100644
-> > > > > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > @@ -41,7 +41,6 @@
-> > > > > > > =C2=A0#define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
-> > > > > > > =C2=A0#define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
-> > > > > > > =C2=A0#define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11,
-> > > > 8)
-> > > > > > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
-> > > > > > >=20
-> > > > > > > =C2=A0#define IMX95_PCIE_PHY_GEN_CTRL			0x0
-> > > > > > > =C2=A0#define IMX95_PCIE_REF_USE_PAD			BIT(17)
-> > > > > > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct
-> > > > > > > platform_device
-> > > > > > *pdev)
-> > > > > > > =C2=A0	struct dw_pcie *pci;
-> > > > > > > =C2=A0	struct imx_pcie *imx_pcie;
-> > > > > > > =C2=A0	struct device_node *np;
-> > > > > > > -	struct resource *dbi_base;
-> > > > > > > =C2=A0	struct device_node *node =3D dev->of_node;
-> > > > > > > =C2=A0	int i, ret, req_cnt;
-> > > > > > > =C2=A0	u16 val;
-> > > > > > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
-> > > > > > platform_device *pdev)
-> > > > > > > =C2=A0			return PTR_ERR(imx_pcie->phy_base);
-> > > > > > > =C2=A0	}
-> > > > > > >=20
-> > > > > > > -	pci->dbi_base =3D devm_platform_get_and_ioremap_resource(pd=
-ev,
-> > > > 0,
-> > > > > > &dbi_base);
-> > > > > > > -	if (IS_ERR(pci->dbi_base))
-> > > > > > > -		return PTR_ERR(pci->dbi_base);
-> > > > > >=20
-> > > > > > This makes me wonder.
-> > > > > >=20
-> > > > > > IIUC this means that previously we set controller_id to 1 if th=
-e
-> > > > > > first item in devicetree "reg" was 0x33c00000, and now we will =
-set
-> > > > > > controller_id to 1 if the devicetree "linux,pci-domain" propert=
-y is 1.
-> > > > > > This is good, but I think this new dependency on the correct
-> > > > > > "linux,pci-domain" in devicetree should be mentioned in the com=
-mit log.
-> > > > > >=20
-> > > > > > My bigger worry is that we no longer set pci->dbi_base at all. =
- I
-> > > > > > see that the only use of pci->dbi_base in pci-imx6.c was to
-> > > > > > determine the controller_id, but this is a DWC-based driver, an=
-d the
-> > > > > > DWC core certainly uses
-> > > > > > pci->dbi_base.  Are we sure that none of those DWC core paths a=
-re
-> > > > > > important to pci-imx6.c?
-> > > > > Hi Bjorn:
-> > > > > Thanks for your concerns.
-> > > > > Don't worry about the assignment of pci->dbi_base.
-> > > > > If pci-imx6.c driver doesn't set it. DWC core driver would set it=
- when
-> > > > > =C2=A0dw_pcie_get_resources() is invoked.
-> > > >=20
-> > > > Great, thanks!  Maybe we can amend the commit log to mention that a=
-nd
-> > > > the new "linux,pci-domain" dependency.
-> > > How about the following updates of the commit log?
-> > >=20
-> > > Use the domain number replace the hardcodes to uniquely identify
-> > > different controller on i.MX8MQ platforms. No function changes.
-> > > Please make sure the " linux,pci-domain" is set for i.MX8MQ correctly=
-, since
-> > > =C2=A0the controller id is relied on it totally.
-> > >=20
-> > This breaks running a new kernel on an old DT without the
-> > linux,pci-domain property, which I'm absolutely no fan of. We tried
-> > really hard to keep this way around working in the i.MX world.
->=20
-> 8MQ already add linux,pci-domain since Jan, 2021
->=20
-> commit c0b70f05c87f3b09b391027c6f056d0facf331ef
-> Author: Peng Fan <peng.fan@nxp.com>
-> Date:   Fri Jan 15 11:26:57 2021 +0800
->=20
-> Only missed is pcie-ep side, which have not been used at all boards dts
-> file in upstream.
+Remove hard-coded strings by using the str_enabled_disabled() helper
+function.
 
-I wasn't aware of this. 2021 is quite a while ago, so I suspect that
-nobody is going to run a new kernel with a DT this old. I retract my
-objection.
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+---
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Regards,
-Lucas
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nan=
+d/raw/gpmi-nand/gpmi-nand.c
+index d76802944453..f4e68008ea03 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -17,6 +17,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/dma/mxs-dma.h>
++#include <linux/string_choices.h>
+ #include "gpmi-nand.h"
+ #include "gpmi-regs.h"
+ #include "bch-regs.h"
+@@ -2319,8 +2320,8 @@ static int gpmi_nand_attach_chip(struct nand_chip *=
+chip)
+ 					  "fsl,no-blockmark-swap"))
+ 			this->swap_block_mark =3D false;
+ 	}
+-	dev_dbg(this->dev, "Blockmark swapping %sabled\n",
+-		this->swap_block_mark ? "en" : "dis");
++	dev_dbg(this->dev, "Blockmark swapping %s\n",
++		str_enabled_disabled(this->swap_block_mark));
+=20
+ 	ret =3D gpmi_init_last(this);
+ 	if (ret)
+--=20
+2.47.1
+
