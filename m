@@ -1,159 +1,187 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013058.outbound.protection.outlook.com [52.101.67.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD26267705
-	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 12:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741867233; cv=none; b=PMqOONtSritL4HW2MN66gPULQAmTv3oW8ighJDYI8A9mAjnJk3g11AasbJ218bXP2x4gNKgC0XdyuHhaFKyF+7iWTf1FS87B0qteR1hq5VAQyrN/+NylaPcoMrhu5pufCgMHg+BVWNLoYkuQVcEpXXTq35pznryJub9wg9h41Nw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741867233; c=relaxed/simple;
-	bh=J5ZnDyYHqXPQNT8PvS6OPC1GJFY+7ztEdCGme2XVaBY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Sy43QrzBzgiabvoDHOb9P5ugQeO4EmIL5hS+ZwB6l9Ls+EMirYPFANeQHRDVP5023gVMN5VmDQvZI5M1zh2k6xkg57tCuDqPCuZ2wRly3wN6pT/zr9UG9Lpdah0SB8RKr2RjhvuJPVsQDgmU7fdl9i+FFaPQPnqljY9awjVsh+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=aiCSNS6/; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E8C266F06
+	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 12:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741870237; cv=fail; b=LQq9WfeBZZTXxs4tCZ86uxtW9X2lmB9rTMMs8Ms1IwHh5hos09ZrvMFRy5E2ZOW3A1teLOSAu+FeT1KoAzgAsGiDxQGMX4YLBAgIj8Aj03gEnpW1fWEtGCZo/con/izgTDrRqa+WI3PwgcXwrPiZ/ex9T7t4cAxQ8YhoRD5IEaQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741870237; c=relaxed/simple;
+	bh=+pRKLGjVUV2K7HW4XjBTpZv+k3QPlKDkzB4ysqaZOWE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ShX7Oh/MTg1/05MTccoQfgszcFBtRkx+SjJiYUxxyNKz0PhkRrS6F+aUnfUTGgxqjx//0ZdCRvjNWRg4Igt6PlI0V2mY88Rx4pkiiYLsXHmNlqjIpYzYnVJpFUOI8hnit4qMXOTQfMJCxYEffDBtDJYasljzs9T0NlW7pVOz9M0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Bz2LeEJB; arc=fail smtp.client-ip=52.101.67.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="aiCSNS6/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc
-	:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=8ZLxBCJU5+2bbPYm14gJ4+vJIc5p7eAYUKUUoCYfZmk=; b=aiCSNS6/xRj8pUFUH7APA+2zsO
-	D6H1lElRjtZzE6BaWoLJRv46KNDD8Z0Pf15TmkGhCPFCDwBQW94hUXZNqqkAjWvHTSVFR+OtUOndD
-	gie3wYwInOvGWN/NIYuxakRPRRFqT85bpoCtBcxxbIxhqKEE6oyl5x/KfDikjxMt5KzzT5bP5ESso
-	KN6h5nIeWZQJgDfL8YShtVfaWHCYv/p2csAKTQXBAXReCcOct3lQDYQSejdYlBp8hnM817ysb7+mI
-	qEkhOIUOUwexM5Ls+CyInts+wQHf9Hv2kkeLfhT5gSwO28CA6uRCnqfR4+P/p/KOcaCNb5El2RkkR
-	B/QGx1rg==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:35000 helo=[192.168.69.52])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <andrej.picej@norik.com>)
-	id 1tsgzM-0069qp-2C;
-	Thu, 13 Mar 2025 12:44:36 +0100
-Message-ID: <a0d83b69-c84d-4804-abcd-e546be8a2e3d@norik.com>
-Date: Thu, 13 Mar 2025 12:44:33 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Bz2LeEJB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N15dEoEqRlMaJ5aOyQJ6QaUX5HEoN1TmHHUD0uwVnTN9wMC1PiF57C952/Vc6AFTIfVsKZ36AUTZoyK+XEz6YmY7zRgs/qiz2LqMt2mBkiP++nPZ84fbMq+/iorwU8yBEt+haDKI+5PR0sVXfRu63YvCmQM1hHrSlivakjo1J4cvdBffunb6HV1+KyOdkRk1NwjIO7WbSlQ01keRltaNUhcpYJbuMKQ6D4j4cC7Ot6ZNryBRQ03AQzOX9h+NBvmH49k3WGdSiC11Cq5o1F9mBHcPtXk/qol/b20Txhsj2toS0WMQzcuW9/p//ca/6PH8700XIdet0he+kJzgqAoQSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W3l6R/stwEv6uTQhkVJHmR6wmEkE3isQ7Y25mnYLogY=;
+ b=Ocen8IiO1t/3/K19kNNinSz033ourMEUwHxPFz/5rsDip5+CuWtPEgKoA8j00YRO/MtSPDVxpYmr9uCulhFZUNKZ4taB5UNLmSogJGbOtC+GSjq/8xB2sptVDDT2LFGdTIJm5vDAc78Wzc1byYqXqi6oON8ggM6gXpScg5ecOmrrXZ1+Ve8MGosGAICTjwvZyeeQ8Q45+a3o5ZbHg4jdb7iNMFA47j9nDIYjfl3yAU3TpRE4u8W/wU9aj3552ID3jY4sbNjRkZ9HIybrFoM8bNCqROjw0zYUxUA8Y7bNe+pEq7Bigj6p3iCc40Xzdf0vr4eUg1YD6T+9KIDVmtvYdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W3l6R/stwEv6uTQhkVJHmR6wmEkE3isQ7Y25mnYLogY=;
+ b=Bz2LeEJBCDkpoKqZ0/M/SURwYypcBRzx779UF4d2g78fdvuYfpO+FSSW/pajw6mRC0DUAbdlosiAmN06l9UQjBp3OVuXMrijApyvA2JWsvGNxnfqHgVrn18zotyg0NDxXg7MeI6tswNLZzoxKs9M8hSpVPf9Duzmu18mb4MfHoYbFngaCFkkiNRkAyT84cizW3l41FHQvJrOimHP7x4gmcR3uRWJsMexmLZJrYaY5v8CYHjiCvL8kk/X5wWm3mJ7q2t6YQnRtAjpC0UEKhp/PZfra5SmzrnrWA9q0UBWJG0w+uqSgprh9rZlGR6EVIq0EiUhK6T7x1My6spitUojjQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
+ by GV1PR04MB9056.eurprd04.prod.outlook.com (2603:10a6:150:1f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Thu, 13 Mar
+ 2025 12:50:31 +0000
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::3a74:80e4:4144:62db]) by DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::3a74:80e4:4144:62db%4]) with mapi id 15.20.8534.027; Thu, 13 Mar 2025
+ 12:50:30 +0000
+From: florin.leotescu@oss.nxp.com
+To: Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: viorel.suman@nxp.com,
+	carlos.song@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	festevam@gmail.com,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: [PATCH v4 0/3] Add OF support for Microchip emc2305 fan controller
+Date: Thu, 13 Mar 2025 14:57:43 +0200
+Message-Id: <20250313125746.2901904-1-florin.leotescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4PR09CA0005.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5e0::11) To DU7PR04MB11163.eurprd04.prod.outlook.com
+ (2603:10a6:10:5b3::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] [PATCH v7 3/3] arm64: dts:
- imx8mm-phyboard-polis-peb-av-10: Set lvds-vod-swing
-From: Andrej Picej <andrej.picej@norik.com>
-To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, marex@denx.de
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- upstream@lists.phytec.de, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org
-References: <20241216085410.1968634-1-andrej.picej@norik.com>
- <20241216085410.1968634-4-andrej.picej@norik.com>
-Content-Language: en-US
-Autocrypt: addr=andrej.picej@norik.com; keydata=
- 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
- xtT/8OxBOVSHvA==
-In-Reply-To: <20241216085410.1968634-4-andrej.picej@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
-X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|GV1PR04MB9056:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e61ec8d-2f9f-4fc5-e34a-08dd622da2ed
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?10Pk8s011zWEexFYHldXLJPDhOIzzkKkVLWZQ7+ctTBD2WmCSZWys/mIH7?=
+ =?iso-8859-1?Q?XyUGXOi59Lz2IiFwhYW1VddO994q5+n6sEIdxqZ5t6KTf+zRkUuqbhF/Fz?=
+ =?iso-8859-1?Q?uAdc5DMBgI9r4ay6tDg7l+ZREtkWYvmoIfl/QiWJVJSDP39qGIvMK46i7d?=
+ =?iso-8859-1?Q?l/9ryj4cLp9JcemgmjSJqqrDqgRQd3hi3j+MycQ1qAa9sEHoG7hvnGcb1B?=
+ =?iso-8859-1?Q?Fjd2E+O8apMMcU8PRIZ3HjvAl9TwfylTEO9pvVStsXSGkCBaDEknGT4tLp?=
+ =?iso-8859-1?Q?HjvavDuRd/hzewUJUByWChcAH9oATu1Z11aQN2Sg+EvqCFJTaOlc8lZWD0?=
+ =?iso-8859-1?Q?TIp740De/iF4js9hE9GCPd6kzp0B7iDVXQE/ZwqU2yzeWjuVxA804wKc5d?=
+ =?iso-8859-1?Q?KEJEo0JUdukQ/HkfXMfiIaTZ8E0rDhhvia/sPRGgLDq7k8a907XMnQn8QP?=
+ =?iso-8859-1?Q?RGw9yjN0R5O9igntQYpzgdEp2Z7XFw9Q6/w9TyPFnI0hz+JuuqmEpiby2N?=
+ =?iso-8859-1?Q?ppq7IUGj+RrpHOXEcK+KbPLjjBUqxfeJxU6QSrHGV/laAIW+B6Ki+6/lET?=
+ =?iso-8859-1?Q?Yr9a891rgJj932DdLifb6RQJGagd1NDPPwEJtpqfCYAtu+5hOLZBFcySvl?=
+ =?iso-8859-1?Q?skz+o6XMDh8yB7psy4Npp+T4WrgKHwbtuwPSkE87t2BdrUJShjADlQJU8M?=
+ =?iso-8859-1?Q?8y4rdBIG12vFypSmHMzqtKfsfTOBn3h7xBttJtWmfbXTcgQmb9XrV9AYbj?=
+ =?iso-8859-1?Q?QAHJm3ooS9rN9xhrT8LbQcMtOO/0w+bEt3amRUtsHzaU8f6OQ1WsEPJ4Ex?=
+ =?iso-8859-1?Q?oTVjXWAEeFsNlAr8JztDqOS2MiOd47LH5vtqmUmgvNF+9U4cROF8DoxX/R?=
+ =?iso-8859-1?Q?vGmNXvXXGun6fCOr3hlZc31NDmjBVKGIsNntdvEDbDc2sBEGzOvNHkb/GN?=
+ =?iso-8859-1?Q?kTNa6ZKnF1Diegy0u4fMVrXcnq/D7KcCYXOntISwkCIbvYOxnRyIv1e3Zj?=
+ =?iso-8859-1?Q?ql3F1vuQJ6Z00tERXJuTnwYDo2X9NEequWCQKRfpkRzrAbVRecqbhvKkHQ?=
+ =?iso-8859-1?Q?CNq8xpxqUKW2pQZDAystkWbI0g6C/eQ8i+lLcjKzGobnvgz5hsGipLhjpi?=
+ =?iso-8859-1?Q?7tmauQlXEggg37/n+y7cQSLrOTNXHAoJgjIgV5Ufp61+mjpx2xYIK7E84N?=
+ =?iso-8859-1?Q?bGUCkZuVOcUZ/V3E2zeWLgSzZCEAaiJPiN5g0AaC423M8Yxiyogn5+a2Cb?=
+ =?iso-8859-1?Q?EJfYfYScmHe1d2q7JHXkTQlXRBg11uQ6beNMXOAb4burSTL3zxkkmYuaZD?=
+ =?iso-8859-1?Q?GqXOlsmIBgtJU5K2VJiRWrq+Ot5Z1dyPvnC6bUoUnqjNv4APKY4tBxVO9+?=
+ =?iso-8859-1?Q?Art6HtAnKm+gSbLSYqkyNcAkxZBBKLeA8jozWFX3xTKyM7zDsnuYl4lo9S?=
+ =?iso-8859-1?Q?VmxSstZ9q1b+t4SO?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?d1bdqR2QUya7WoYj8aCTX1HG6J684CPCvrFUeE82khSMa291KxZ9RnJM3z?=
+ =?iso-8859-1?Q?WVch2M9AE02ZrPtbwJ3URZ/2MjOgTqFgjcZ9qrf0uc59eBTDzdq5cadGAh?=
+ =?iso-8859-1?Q?q5+AwCwmbqM/FmrlqENptYjBJgKQIbTBqY/dRSmuhjeAoipX8AS79srYL/?=
+ =?iso-8859-1?Q?Htri913DxVwOn42o3S9hxsGnZ/qasHMQfKiHGUrrea7jtkxbCbV3G0K6dn?=
+ =?iso-8859-1?Q?JvLXjheEYQZCUzInYTM9KE30OB0UiVsnKifGKQ0wTz9cZxnVRIYThLySfy?=
+ =?iso-8859-1?Q?E0rm6EhGLQQ+vVzjZSE50lRa7t8Or0WxM+55hAJTLgqqlIbltlPQDLj0N7?=
+ =?iso-8859-1?Q?aX0UqZ4sqTXwte9HgFLVGPua/7U2feeunyXCLFCMrkVHxHCrdNsP2mEB+U?=
+ =?iso-8859-1?Q?oHNJw4aBiPNlp4A958i9s/atnhu1WtPhcGWukTI+UEGSHkOdRX5OeRwxvt?=
+ =?iso-8859-1?Q?wU8DR59/6yA2rf+QPse4udyB40YTc7D5ZVqEHC9FsamZP0u3tiFOmlAMV/?=
+ =?iso-8859-1?Q?XcMEQS5AXaYZXJlI/Jf2uNrI2iAb3yRI9LT68wp6xJ/OUkbBdaL6IxRbCQ?=
+ =?iso-8859-1?Q?mh+ciMdSE+tBga9v/eNRNjEOMoTENBGjA4taukyIkojLJ6APTL+SXQ2TPO?=
+ =?iso-8859-1?Q?Y+glLDYC4a9hgBew1H3sIVoum+BUAD9hc1m9pzmooUw/rZd72fh/bJJ2J1?=
+ =?iso-8859-1?Q?558hJhFUaho/5rLzmdEEZSXf5gmQF09qox+O9Hj9oaPdMbUQP/ImbMeuuh?=
+ =?iso-8859-1?Q?kRJN60WpUWLTZOB0VGVNNxodKj98cFrKRrHeWGl8Sh4OWi8kwaWTVs2DqO?=
+ =?iso-8859-1?Q?mQ9WtwkaJeH7aXgHEqfgqD66oM1toMMDW31oxR9AQapULoA3ROlvg8M1Nq?=
+ =?iso-8859-1?Q?FkGGNkmC4gT5Uc6l2bMfj8C+Os0bWAnc3wuo9GDLqKMNXgdQ4Qb4pZytto?=
+ =?iso-8859-1?Q?3FQhwHOR9oYOWxQvq8ePdnN80B8nQRxgV03gI/DEzUC3zKZ0ukBYb49jHZ?=
+ =?iso-8859-1?Q?sHfHXs+deiPvBS+70vxMWmBwONmlhs2WRuyz5XEgIg/qHT1TDghUo7YDpF?=
+ =?iso-8859-1?Q?SAvv5xAneFbHaMt1vLk8GyI/G2IPjBeE4zAK/S+pPRFOFe/365JqjYdA+k?=
+ =?iso-8859-1?Q?IizPaYEl/hJRWWgP4/pZf6T22uYna05rYCpYvfStoxRvjWQZK/TDoX+HC1?=
+ =?iso-8859-1?Q?2vLZXXvQIw7ZBKfQ7Hw4twGA5d7u7ziMrQetTlbbNzxLLCMU11BEo8MN1h?=
+ =?iso-8859-1?Q?I/7hXUd8gyOd6XKPK5fw35kDHZdyZXzPhm30jL9/N0fuXthib31j/Yeb+p?=
+ =?iso-8859-1?Q?zsKb5w32T1osz8z5F9RylNA0MQ8EpYqG+C2oguuwcqILk11ZxJZkQW3qzJ?=
+ =?iso-8859-1?Q?uWRHUxRzHClqvLBvOq1R+B0cAbuJSgPlYVgz036j2g0o+c4nZb4jzSvOPO?=
+ =?iso-8859-1?Q?122oaB17IQ4WI52BoXEzh/6e2XVEGQYD72M39w/w18FrXAk2qLoWMo2uO/?=
+ =?iso-8859-1?Q?bqpzUszqe1OOHlAi0QmaxMBedO3LDLH0t+kkVeWuKkqUNrjwtZpgUu90nr?=
+ =?iso-8859-1?Q?AueWOBlHL/mRC2lwebryNYuj8mngqu0GjLE6rJwh5RLCgOkvbaSVnsNkKB?=
+ =?iso-8859-1?Q?IwHIbOqGqt2KhQqFUNOZKyR4/RjJ8SMR+S?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e61ec8d-2f9f-4fc5-e34a-08dd622da2ed
+X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 12:50:30.7343
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NIZ7o1a3SowXFuzLcCS6nhIOQLA5NWZvLMqCia8k3L7RG89aN2v3lIi39Ah6rYyUZwIBhmtO8NZVhzfbmW9GTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9056
 
-Hi,
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-is there anything else I need to do, or can this patch now be applied?
+This patch series add initial OF support for Microchip emc2305 fan controller.
 
-The initial two patches that introduce property support have already 
-been merged, and the patch series that this patch depends on [1] has 
-also been applied.
+Changes since v3:
+- Removed thermal_cooling_device_register_fail label since is no longer needed
+  and replaced goto with imediate return, as recommended by Guenter Roeck. 
+- Redefined compatible property in dt-binding, as recommended by Frank Li.
+- Updated driver of compatible list.
+- Renamed node name in the dt-binding example, as recommended by Connor Dooley.
+- Corrected dt-binding commit subject.
+- Added dt-binding fan descriptions and $ref to fan schema, 
+  as Connor Dooley & Krzysztof Kozlowski recommended.
+  Used similar as on maxim,max6639 and nuvoton,nct7363. 
+- Updated dt-binding example.
 
-[1] https://lore.kernel.org/all/Z7rZjdXwN2W+Y2Bd@dragon/
+Changes since v2:
+- Removed the introduction of new properties for now and we only 
+  enable basic OF support.
+- Link to previous version: 
+  https://lore.kernel.org/linux-arm-kernel/20250219133221.2641041-3-florin.leotescu@oss.nxp.com/T/
 
-Best regards,
-Andrej
+Florin Leotescu (3):
+  dt-bindings: hwmon: Add Microchip emc2305 support
+  hwmon: emc2305: Add OF support
+  hwmon: emc2305: Use devm_thermal_of_cooling_device_register
 
-On 16. 12. 24 09:54, Andrej Picej wrote:
-> Set custom differential output voltage for LVDS, to fulfill requirements
-> of the connected display. LVDS differential voltage for data-lanes and
-> clock output has to be between 200 mV and 600 mV.
-> Driver sets 200 Ohm near-end termination by default.
-> 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
-> Changes in v7:
-> - no change
-> Changes in v6:
-> - no change
-> Changes in v5:
-> - no change
-> Changes in v4:
-> - no change
-> Changes in v3:
-> - no change
-> Changes in v2:
-> - use new properties from previous patches
-> ---
->   .../boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso     | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> index a9de42cf14be..8bf9cc553bea 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> @@ -186,6 +186,8 @@ port@2 {
->   			reg = <2>;
->   			bridge_out: endpoint {
->   				remote-endpoint = <&panel_in>;
-> +				ti,lvds-vod-swing-clock-microvolt = <200000 600000>;
-> +				ti,lvds-vod-swing-data-microvolt = <200000 600000>;
->   			};
->   		};
->   	};
+ .../bindings/hwmon/microchip,emc2305.yaml     | 104 ++++++++++++++++++
+ drivers/hwmon/emc2305.c                       |  38 ++-----
+ 2 files changed, 114 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+
+-- 
+2.34.1
+
