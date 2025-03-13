@@ -1,107 +1,92 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA1261389
-	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 09:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E971E8325;
+	Thu, 13 Mar 2025 11:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741859898; cv=none; b=U70E5fhXOvy5CAG4D1C4wqIy1FindcLILbUuAPhoFtdFFc/JOLv5kOoo/HwaS0odM/apIoBwV6s8WQJ4m6afcSTaFTTEN57rPUst+Su/EoHF8d7OdFtWlYgz6/9R04WWey6AZUUcJhntxVBHATDajJkfp8B0VbbMasSncEG+jdo=
+	t=1741864197; cv=none; b=Fup8I/DzyoszZH7U8rN5qTp4orubCwV3I5h2a4nj8gWLC+hH4LoQC+pICBGq/63cVgDQdXVmAF3x3n6DXO24y+vHSHC9g2i7CEXZjAEuJGlX/QGgC6uaJfv0TezMXS0haF9emUoxsviZBd00isblx3i3LN5byVH5rPLzNK6HZjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741859898; c=relaxed/simple;
-	bh=Hq9CSFW4OLk9g/ymdHCTxYNqoYjVud9AM9/SURafbNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYsqqG+Zyb+Bnu6ejWD/I5Pd+1Gcsibx/TSMeoxxc03CidUqBwsikiWd5g96bFaqcyqTt1LfUqHdZb14DwEzgbibmuV3bdhV0ElpiTd9gZDwAZt6CdES+cs+k20ZdULlibQ+QDvfJIBAsEzCgbm7FP/zfuWwLsQnxjdWqyv4SlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: a8a3dbc2fff111efa216b1d71e6e1362-20250313
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:3de06487-e397-4f0a-86da-1bab374ecafa,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:2d9882719783582ce917f1dc80192fb1,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0|50,EDM:5,IP:n
-	il,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LE
-	S:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: a8a3dbc2fff111efa216b1d71e6e1362-20250313
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 656145711; Thu, 13 Mar 2025 17:58:05 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 234BFE008902;
-	Thu, 13 Mar 2025 17:58:05 +0800 (CST)
-X-ns-mid: postfix-67D2AC2C-8975662165
-Received: from kylin-pc.. (unknown [172.25.130.133])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 0D53AE008901;
-	Thu, 13 Mar 2025 17:58:03 +0800 (CST)
-From: Zhang Heng <zhangheng@kylinos.cn>
-To: miquel.raynal@bootlin.com,
-	richard@nod.at,
-	vigneshr@ti.com,
-	han.xu@nxp.com,
-	hs@denx.de,
-	david@protonic.nl,
-	jre@pengutronix.de
-Cc: linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>
-Subject: [PATCH 2/2] mtd: mchp48l640: Use str_enable_disable() in mchp48l640_write_prepare()
-Date: Thu, 13 Mar 2025 17:57:56 +0800
-Message-ID: <20250313095756.945890-2-zhangheng@kylinos.cn>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250313095756.945890-1-zhangheng@kylinos.cn>
-References: <20250313095756.945890-1-zhangheng@kylinos.cn>
+	s=arc-20240116; t=1741864197; c=relaxed/simple;
+	bh=y5Rt/A3I0puk2tWJqwdD+VS9AYs8xTcIZQZ75uLi/aQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ak3AvlsujpbijMrwkx+O0KoHYJufdLd7x4RCTmpJlurlFyLclg3H3KzjFOil0vputju417HmDXnO9Vdh8OLKbNj2SZhDFgi9CBp+ivLKJUhEC3XArFPwB1kNbEJS5xes7IuRZa7TFxKpNDBJ0mMUviPrTYST2yo/nGPRwRustrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFpakx8q; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFpakx8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B53C4CEDD;
+	Thu, 13 Mar 2025 11:09:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741864196;
+	bh=y5Rt/A3I0puk2tWJqwdD+VS9AYs8xTcIZQZ75uLi/aQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=OFpakx8qWuEP5hs9WCekvz25n4fnw63dd3zf1Hsha7Gk7+1cmshaz6E6oE8d6Ieh+
+	 tBzkhdDKSaYH1OgAoNK+7jfD0fdJN4xQ1W2eZZQZ9HelvNaxoDzMiG4MttBJXWwp8t
+	 OYQ48FdLg1Aw9IqOqJEj0BBUa8qX6V/9YjFqw9jvVKWW22JNwRMHhG8JnhrlhbaW6S
+	 29uLDOm+zyzCye6P/FtsnHmuM8tJKNGUgYdVxO1sAeEi7yoQhyS/YRufPMcwDeeXtg
+	 ax/RpzUJ7Toj8NLazkxeVIel3BUqwjK+RCDn16ltaxBF+hnLwAAfRjkh+iPS9k7Pz+
+	 SWDFtToOpr/aQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB6693806651;
+	Thu, 13 Mar 2025 11:10:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] dt-bindings: net: Define interrupt constraints for
+ DWMAC vendor bindings
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174186423076.1466791.15724461347771862891.git-patchwork-notify@kernel.org>
+Date: Thu, 13 Mar 2025 11:10:30 +0000
+References: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, neil.armstrong@linaro.org, khilman@baylibre.com,
+ jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, heiko@sntech.de, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, nobuhiro1.iwamatsu@toshiba.co.jp,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ vineetha.g.jaya.kumaran@intel.com, biao.huang@mediatek.com,
+ xiaoning.wang@nxp.com, linux-imx@nxp.com, david.wu@rock-chips.com,
+ christophe.roullier@foss.st.com, rmk+kernel@armlinux.org.uk,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-mediatek@lists.infradead.org,
+ prabhakar.mahadev-lad.rj@bp.renesas.com
 
-Remove hard-coded strings by using the str_enable_disable() helper
-function.
+Hello:
 
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
----
- drivers/mtd/devices/mchp48l640.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/mtd/devices/mchp48l640.c b/drivers/mtd/devices/mchp4=
-8l640.c
-index 7584d0ba9396..4af9208f9690 100644
---- a/drivers/mtd/devices/mchp48l640.c
-+++ b/drivers/mtd/devices/mchp48l640.c
-@@ -23,6 +23,7 @@
- #include <linux/spi/flash.h>
- #include <linux/spi/spi.h>
- #include <linux/of.h>
-+#include <linux/string_choices.h>
-=20
- struct mchp48_caps {
- 	unsigned int size;
-@@ -128,11 +129,11 @@ static int mchp48l640_write_prepare(struct mchp48l6=
-40_flash *flash, bool enable)
- 	mutex_unlock(&flash->lock);
-=20
- 	if (ret)
--		dev_err(&flash->spi->dev, "write %sable failed ret: %d",
--			(enable ? "en" : "dis"), ret);
-+		dev_err(&flash->spi->dev, "write %s failed ret: %d",
-+			str_enable_disable(enable), ret);
-=20
--	dev_dbg(&flash->spi->dev, "write %sable success ret: %d",
--		(enable ? "en" : "dis"), ret);
-+	dev_dbg(&flash->spi->dev, "write %s success ret: %d",
-+		str_enable_disable(enable), ret);
- 	if (enable)
- 		return mchp48l640_waitforbit(flash, MCHP48L640_STATUS_WEL, true);
-=20
---=20
-2.47.1
+On Sun,  9 Mar 2025 00:33:01 +0000 you wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> 
+> The `snps,dwmac.yaml` binding currently sets `maxItems: 3` for the
+> `interrupts` and `interrupt-names` properties, but vendor bindings
+> selecting `snps,dwmac.yaml` do not impose these limits.
+> 
+> Define constraints for `interrupts` and `interrupt-names` properties in
+> various DWMAC vendor bindings to ensure proper validation and consistency.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] dt-bindings: net: Define interrupt constraints for DWMAC vendor bindings
+    https://git.kernel.org/netdev/net-next/c/5a1dddd29444
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
