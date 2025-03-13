@@ -1,92 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E971E8325;
-	Thu, 13 Mar 2025 11:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F70265CD7
+	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 11:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741864197; cv=none; b=Fup8I/DzyoszZH7U8rN5qTp4orubCwV3I5h2a4nj8gWLC+hH4LoQC+pICBGq/63cVgDQdXVmAF3x3n6DXO24y+vHSHC9g2i7CEXZjAEuJGlX/QGgC6uaJfv0TezMXS0haF9emUoxsviZBd00isblx3i3LN5byVH5rPLzNK6HZjU=
+	t=1741864481; cv=none; b=VoWA+U73cH+IOE2qQcd3XMqbd2MFK0XiOSgmzCws6rWOcAzGCWmG85BNJ7NvSj33jj0cjaDhn7+y3iAb3gFCIANjqlyPexBzlLO4FpP2vP5E4CVzzZEx0O2thvW4y5kYmmoC1844ZWDTr+hF/0I2RoZqbJQ0EY6YLMe4tXDnstA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741864197; c=relaxed/simple;
-	bh=y5Rt/A3I0puk2tWJqwdD+VS9AYs8xTcIZQZ75uLi/aQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ak3AvlsujpbijMrwkx+O0KoHYJufdLd7x4RCTmpJlurlFyLclg3H3KzjFOil0vputju417HmDXnO9Vdh8OLKbNj2SZhDFgi9CBp+ivLKJUhEC3XArFPwB1kNbEJS5xes7IuRZa7TFxKpNDBJ0mMUviPrTYST2yo/nGPRwRustrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFpakx8q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741864481; c=relaxed/simple;
+	bh=GxZRHUz0odpMCAdOXDZV2Gewb34GcPHensWB6qpYNW0=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:From:To:Mime-Version:
+	 References:In-Reply-To; b=j99ihb3n1sPxb52OGt6UQudmhDvL0zFqnw5g9gJBf/2vvZZg49xjn6H1Lib4USiIxa5kKmOOmzfjiR1DN+pqyScwL2MKcpVxs3S72SPHxuPmzOjIOn38wjR1SM0cf1yrY+5961txstcxlqGjBLQxBqOXUXr+ATbdGL2YSTCA3hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=K57RJVVr; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFpakx8q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B53C4CEDD;
-	Thu, 13 Mar 2025 11:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741864196;
-	bh=y5Rt/A3I0puk2tWJqwdD+VS9AYs8xTcIZQZ75uLi/aQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=OFpakx8qWuEP5hs9WCekvz25n4fnw63dd3zf1Hsha7Gk7+1cmshaz6E6oE8d6Ieh+
-	 tBzkhdDKSaYH1OgAoNK+7jfD0fdJN4xQ1W2eZZQZ9HelvNaxoDzMiG4MttBJXWwp8t
-	 OYQ48FdLg1Aw9IqOqJEj0BBUa8qX6V/9YjFqw9jvVKWW22JNwRMHhG8JnhrlhbaW6S
-	 29uLDOm+zyzCye6P/FtsnHmuM8tJKNGUgYdVxO1sAeEi7yoQhyS/YRufPMcwDeeXtg
-	 ax/RpzUJ7Toj8NLazkxeVIel3BUqwjK+RCDn16ltaxBF+hnLwAAfRjkh+iPS9k7Pz+
-	 SWDFtToOpr/aQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB6693806651;
-	Thu, 13 Mar 2025 11:10:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="K57RJVVr"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D6C2343152;
+	Thu, 13 Mar 2025 11:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741864470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GxZRHUz0odpMCAdOXDZV2Gewb34GcPHensWB6qpYNW0=;
+	b=K57RJVVry+aqhLyQrVxSO4IAxED4+E2G+7+fkUvNhgvK7Q9jpbbOqar2SDtepqXnrMWaVB
+	LTT8Tn/GX2Q/yC3FHeXUxH1TrSQXNYQU+WJslfCY6/o6XRlpdl9RQbp1xtO0wDFIOfpORM
+	itwbhKXW/COXgf3O68gErM3szNiCucaOtDlksnV+sv/rm4eVQ8kZn1EoUQE8D+gujujYZC
+	G9acDWmdcUhDRR4QZksDRmrXpGOBpumVsOUYlRgUAT71aGXP3DaNy7KjArTC7vGRYOO2KJ
+	qe/dqoT6aTaBp8x0FASOVeSyE91RzsvOKDRM51E8m4Uzi6OyGgeYDCySyDIRBQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 13 Mar 2025 12:14:26 +0100
+Message-Id: <D8F3F4YLD0ZM.19X0451BIIDVO@bootlin.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: arm: fsl: Add VAR-SOM-MX6UL SoM and
+ Concerto board
+Cc: "Krzysztof Kozlowski" <krzk@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Konstantin Ryabitsev" <konstantin@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] dt-bindings: net: Define interrupt constraints for
- DWMAC vendor bindings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174186423076.1466791.15724461347771862891.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Mar 2025 11:10:30 +0000
-References: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20250309003301.1152228-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, neil.armstrong@linaro.org, khilman@baylibre.com,
- jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, heiko@sntech.de, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, nobuhiro1.iwamatsu@toshiba.co.jp,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- vineetha.g.jaya.kumaran@intel.com, biao.huang@mediatek.com,
- xiaoning.wang@nxp.com, linux-imx@nxp.com, david.wu@rock-chips.com,
- christophe.roullier@foss.st.com, rmk+kernel@armlinux.org.uk,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-mediatek@lists.infradead.org,
- prabhakar.mahadev-lad.rj@bp.renesas.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250310-varsom6ul-concerto-dts-v3-0-551e60713523@bootlin.com>
+ <20250310-varsom6ul-concerto-dts-v3-1-551e60713523@bootlin.com>
+ <63f8aa7d-fcd4-450f-b3a1-44886a29fc7e@kernel.org>
+ <cd2f3c97-53bb-42f5-a3cd-4385bfda5dc7@kernel.org>
+ <D8CQAAKOZ1O5.8JVESQPJSSM8@bootlin.com>
+ <20250311-omniscient-fiery-bison-8e7feb@lemur>
+In-Reply-To: <20250311-omniscient-fiery-bison-8e7feb@lemur>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvdejkedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegtfffkufevhffvggfgofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhueejkedugfefffektddtvdehheeuieeggfetgfdvveeftdehudduteffgfevgfenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudegpdhrtghpthhtohepkhhonhhsthgrnhhtihhnsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshhesk
+ hgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: antonin.godard@bootlin.com
 
-Hello:
+Hi Konstantin,
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+On Tue Mar 11, 2025 at 7:34 PM CET, Konstantin Ryabitsev wrote:
+> On Mon, Mar 10, 2025 at 05:31:32PM +0100, Antonin Godard wrote:
+>> > And now I noticed you used b4, so I really do not get how the tags can
+>> > be missing here. :/
+>>=20
+>> Sorry, that's totally my fault here, I forgot to run 'b4 trailers -u' be=
+fore
+>> sending... :/ And I don't think it's part of the prep checks?
+>
+> Mostly, because there's no clear picture of how this would work reliably.=
+ All
+> other checks are on a "ran since modifications to the series" basis, but =
+this
+> one would have to be time-based.
+>
+> Should it check if the trailer updates have been run in the past XX minut=
+es
+> (and how long should that XX be?).
 
-On Sun,  9 Mar 2025 00:33:01 +0000 you wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> The `snps,dwmac.yaml` binding currently sets `maxItems: 3` for the
-> `interrupts` and `interrupt-names` properties, but vendor bindings
-> selecting `snps,dwmac.yaml` do not impose these limits.
-> 
-> Define constraints for `interrupts` and `interrupt-names` properties in
-> various DWMAC vendor bindings to ensure proper validation and consistency.
-> 
-> [...]
+Had some thoughts about this the past few days.
 
-Here is the summary with links:
-  - [net-next] dt-bindings: net: Define interrupt constraints for DWMAC vendor bindings
-    https://git.kernel.org/netdev/net-next/c/5a1dddd29444
+What about checking if it was run at least once between vX and vX+1? Maybe
+during the `b4 send` command? In case it wasn't run, give a hint/warning to=
+ the
+user before proceeding?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+This could also be enforced with an b4 config option like
+b4.force-trailers-update - either set by the user or the project configurat=
+ion.
+Not so sure about this one though...
 
+Now if I were to speak for myself, I would love to have an option that just
+fetches the new trailers during `b4 send` and errors out / warns me about
+it if there's anything new that isn't part of my series. Which could be als=
+o
+ignored with --ignore-trailer-errors or something like that, in any case.
 
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
