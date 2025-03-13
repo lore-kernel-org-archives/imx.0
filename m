@@ -1,249 +1,196 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CDA26982D
-	for <imx@lists.linux.dev>; Thu, 13 Mar 2025 16:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CC02690C8;
+	Thu, 13 Mar 2025 16:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741881772; cv=none; b=Ajh9yBT4IknIgEBL1DeO/S0m4mvaJBPoYkZqy64BDPPndClxsWw5MIA/YT8RW4RI2EPL3VzvH9gSLLCBbrV8/f0paxyhXKiJvaqQ4mmpY0zowvKhqs8WCucgp/j5DjbBe9gnqLLlj2ewlGevimrWrfZ+70lhepP+oHC+SaNccPo=
+	t=1741882011; cv=none; b=Bx7mhlwPHogboAaw8dnVCAtf0zOCmXr8+q3PILrh961f6sgf6elQTYCW39OxP4HflUa+qw3E/YvKl6H/ebs3phP37S+rXBm4/Pke++pQ0H3J3qA7n8gqvUN5ZUCZTZ8EwHAbP9Onv/O2L3LXkPX67OLMpv40BpKCAufU9dPZAuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741881772; c=relaxed/simple;
-	bh=200rEEKCxCwR9aTs5c19KdhJj1J5nUOlggvZXZWCqQA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eFv/QRspWXCWjp4Iqwl7lT0IWZLLxSzmxmT1+mwjpfScEiKvpv3ac6v6phZCJP3d/bD+sLDhtoWK8pxlMBr6NB6HCZxmlx6VEz42UqfaMPPg32iNJfLFQWU9UADgKfwg430TYNipwGYdmsOLVOPghk8iVnbR6zgue0fan38mj8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RO9WW+xO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=77t1Xa4L; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RO9WW+xO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=77t1Xa4L; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1741882011; c=relaxed/simple;
+	bh=Mx/+tLwb7T1JrZ/ABp2sKGt2Jj7jvlKNBLxVpfOsVnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DjiNSwh4gksj4LcirrkAS+M9NWm44jHUAcWl+rgdq766w8SzkzLUayyoEB0zw7la7tcBTEHagy0WUG+FdoPdH0Yx8J8LLQaZn92B342qB9qIsF1FAe4KwS9oAWEliqqEwGiMTFgPwPrMzQlDPSAHKs7spj0igM0wEE+IfL/o7bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ocuFDpji; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RO9WW+xO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="77t1Xa4L";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RO9WW+xO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="77t1Xa4L"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C19B21189;
-	Thu, 13 Mar 2025 16:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741881768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
-	b=RO9WW+xOZL4x0VifG/9+R2HjAoHTYHGFDKb2tZchGVn1hbh+bb94MFnJ/R6JyKkVllVBlM
-	rtYWJ+eT2h/J4p6dilXU02fXGc8lvoUH+gHTlXK1KTwJIm8oxL+oN/SxYBPYy1tpccL2yG
-	qbzRwFYeGV2G3EAYZ6v6LLsGGo5A2YA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741881768;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
-	b=77t1Xa4LDjVyozoy7z32oI6+ODHP5u8xAcWjHpJAmvQ0xBOYw//7Cx7lNXtWzotq3rSVQk
-	6FYjdaVEd+dwZABw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RO9WW+xO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=77t1Xa4L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741881768; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
-	b=RO9WW+xOZL4x0VifG/9+R2HjAoHTYHGFDKb2tZchGVn1hbh+bb94MFnJ/R6JyKkVllVBlM
-	rtYWJ+eT2h/J4p6dilXU02fXGc8lvoUH+gHTlXK1KTwJIm8oxL+oN/SxYBPYy1tpccL2yG
-	qbzRwFYeGV2G3EAYZ6v6LLsGGo5A2YA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741881768;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tXbC/rj42XjQ00LcFGrOyNrm+z2xLbLsVvmtNJS5qSE=;
-	b=77t1Xa4LDjVyozoy7z32oI6+ODHP5u8xAcWjHpJAmvQ0xBOYw//7Cx7lNXtWzotq3rSVQk
-	6FYjdaVEd+dwZABw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25E39137BA;
-	Thu, 13 Mar 2025 16:02:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2nXJB6gB02dkJgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 13 Mar 2025 16:02:48 +0000
-Message-ID: <a2f39979-459d-4581-baed-ff75e0af1bce@suse.de>
-Date: Thu, 13 Mar 2025 17:02:47 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ocuFDpji"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24824C4CEDD;
+	Thu, 13 Mar 2025 16:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741882010;
+	bh=Mx/+tLwb7T1JrZ/ABp2sKGt2Jj7jvlKNBLxVpfOsVnI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ocuFDpjice0CwzZV+U1r2wGc/B4uqAhc1SLsAhGo3hZOCubtpYEujpWK0xMah00Qx
+	 Nkhy4eoJwBeQ04rISAQUc07RqNf8z1clfjRrJjXlpOXTOS0tYGyED432lopKTutbS5
+	 IerUm1HplPYC5RsM7OpEJvov9V+kvXHi8PJcKfWfaOj3ht7GfIPTwdVBwyDGfdqHOR
+	 KHp/fJsQB7u0+joeFsu3ruw68crrUu/wdrUniAW8SwtRtG+5E9HKiSlR4JHSA0iviI
+	 tfjWtOg4fPJTNvZbMJi0Mzuqn/PskRw2flaNg6mxClK5//ywkFwTQgQ36xUL35JB+x
+	 iKuTzrcXpm0Ww==
+Date: Thu, 13 Mar 2025 11:06:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Frank Li <Frank.li@nxp.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kw@linux.com" <kw@linux.com>,
+	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
+Message-ID: <20250313160648.GA736867@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/mxsfb: fix missing rollback on failure in
- mxsfb_probe()
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Marek Vasut <marex@denx.de>,
- Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- Michael Trimarchi <michael@amarulasolutions.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250313-mxsfb_probe-fix-rollback-on-error-v2-1-38374088e8c7@bootlin.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250313-mxsfb_probe-fix-rollback-on-error-v2-1-38374088e8c7@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9C19B21189
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_TO(0.00)[bootlin.com,denx.de,agner.ch,linux.intel.com,kernel.org,gmail.com,ffwll.ch,pengutronix.de,amarulasolutions.com];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b425a7c7a7d6508daf23fe7046864a498029a7ac.camel@pengutronix.de>
 
-Hi
+On Thu, Mar 13, 2025 at 09:54:25AM +0100, Lucas Stach wrote:
+> Am Mittwoch, dem 12.03.2025 um 10:22 -0400 schrieb Frank Li:
+> > On Wed, Mar 12, 2025 at 09:28:02AM +0100, Lucas Stach wrote:
+> > > Am Mittwoch, dem 12.03.2025 um 04:05 +0000 schrieb Hongxing Zhu:
+> > > > > -----Original Message-----
+> > > > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > > > Sent: 2025年3月11日 23:55
+> > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > > > > kw@linux.com; manivannan.sadhasivam@linaro.org; bhelgaas@google.com;
+> > > > > s.hauer@pengutronix.de; festevam@gmail.com; devicetree@vger.kernel.org;
+> > > > > linux-pci@vger.kernel.org; imx@lists.linux.dev; kernel@pengutronix.de;
+> > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
+> > > > > hardcodes
+> > > > > 
+> > > > > On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
+> > > > > > > -----Original Message-----
+> > > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > > > > > Sent: 2025年3月10日 23:11
+> > > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org;
+> > > > > bhelgaas@google.com;
+> > > > > > > s.hauer@pengutronix.de; festevam@gmail.com;
+> > > > > > > devicetree@vger.kernel.org; linux-pci@vger.kernel.org;
+> > > > > > > imx@lists.linux.dev; kernel@pengutronix.de;
+> > > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
+> > > > > > > hardcodes
+> > > > > > > 
+> > > > > > > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
+> > > > > > > > Use the domain number replace the hardcodes to uniquely identify
+> > > > > > > > different controller on i.MX8MQ platforms. No function changes.
+> > > > > > > > 
+> > > > > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > > > > > > ---
+> > > > > > > >  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
+> > > > > > > >  1 file changed, 6 insertions(+), 8 deletions(-)
+> > > > > > > > 
+> > > > > > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > index 90ace941090f..ab9ebb783593 100644
+> > > > > > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > @@ -41,7 +41,6 @@
+> > > > > > > >  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+> > > > > > > >  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+> > > > > > > >  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11,
+> > > > > 8)
+> > > > > > > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+> > > > > > > > 
+> > > > > > > >  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
+> > > > > > > >  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
+> > > > > > > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct
+> > > > > > > > platform_device
+> > > > > > > *pdev)
+> > > > > > > >  	struct dw_pcie *pci;
+> > > > > > > >  	struct imx_pcie *imx_pcie;
+> > > > > > > >  	struct device_node *np;
+> > > > > > > > -	struct resource *dbi_base;
+> > > > > > > >  	struct device_node *node = dev->of_node;
+> > > > > > > >  	int i, ret, req_cnt;
+> > > > > > > >  	u16 val;
+> > > > > > > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
+> > > > > > > platform_device *pdev)
+> > > > > > > >  			return PTR_ERR(imx_pcie->phy_base);
+> > > > > > > >  	}
+> > > > > > > > 
+> > > > > > > > -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev,
+> > > > > 0,
+> > > > > > > &dbi_base);
+> > > > > > > > -	if (IS_ERR(pci->dbi_base))
+> > > > > > > > -		return PTR_ERR(pci->dbi_base);
+> > > > > > > 
+> > > > > > > This makes me wonder.
+> > > > > > > 
+> > > > > > > IIUC this means that previously we set controller_id to
+> > > > > > > 1 if the first item in devicetree "reg" was 0x33c00000,
+> > > > > > > and now we will set controller_id to 1 if the devicetree
+> > > > > > > "linux,pci-domain" property is 1.  This is good, but I
+> > > > > > > think this new dependency on the correct
+> > > > > > > "linux,pci-domain" in devicetree should be mentioned in
+> > > > > > > the commit log.
+> > > > > > > 
+> > > > > > > My bigger worry is that we no longer set pci->dbi_base
+> > > > > > > at all.  I see that the only use of pci->dbi_base in
+> > > > > > > pci-imx6.c was to determine the controller_id, but this
+> > > > > > > is a DWC-based driver, and the DWC core certainly uses
+> > > > > > > pci->dbi_base.  Are we sure that none of those DWC core
+> > > > > > > paths are important to pci-imx6.c?
+> > > > > >
+> > > > > > Thanks for your concerns.  Don't worry about the
+> > > > > > assignment of pci->dbi_base.  If pci-imx6.c driver doesn't
+> > > > > > set it. DWC core driver would set it when
+> > > > > >  dw_pcie_get_resources() is invoked.
+> > > > > 
+> > > > > Great, thanks!  Maybe we can amend the commit log to mention
+> > > > > that and the new "linux,pci-domain" dependency.
+> > > >
+> > > > How about the following updates of the commit log?
+> > > > 
+> > > > Use the domain number replace the hardcodes to uniquely
+> > > > identify different controller on i.MX8MQ platforms. No
+> > > > function changes.  Please make sure the " linux,pci-domain" is
+> > > > set for i.MX8MQ correctly, since  the controller id is relied
+> > > > on it totally.
+> > > > 
+> > > This breaks running a new kernel on an old DT without the
+> > > linux,pci-domain property, which I'm absolutely no fan of. We
+> > > tried really hard to keep this way around working in the i.MX
+> > > world.
+> > 
+> > 8MQ already add linux,pci-domain since Jan, 2021
+> > 
+> > commit c0b70f05c87f3b09b391027c6f056d0facf331ef
+> > Author: Peng Fan <peng.fan@nxp.com>
+> > Date:   Fri Jan 15 11:26:57 2021 +0800
+> > 
+> > Only missed is pcie-ep side, which have not been used at all boards dts
+> > file in upstream.
+> 
+> I wasn't aware of this. 2021 is quite a while ago, so I suspect that
+> nobody is going to run a new kernel with a DT this old. I retract my
+> objection.
 
-Am 13.03.25 um 16:21 schrieb Luca Ceresoli:
-> When aperture_remove_all_conflicting_devices() fails, the current code
-> returns without going through the rollback actions at the end of the
-> function, thus the actions done by drm_dev_alloc() and mxsfb_load() are not
-> undone.
->
-> Fix by moving this call at the very beginning of the probe function, so
-> that no rollback is needed if it fails. Conflicting drivers need to be
-> kicked out before setting up DRM anyway.
->
-> Fixes: c8e7b185d45b ("drm/mxsfb: Remove generic DRM drivers in probe function")
-> Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Sounds good, thanks, Lucas.  We really do want to avoid breaking old
+DTs, so I appreciate your highlighting of it.  Even if we believe none
+of them will break, I think it's worth mentioning the
+'linux,pci-domain' dependency and the commit that added it to the
+.dtsi in the commit log.
 
-The patchdiff is somewhat non-intuitive, but looks correct.
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Thanks for the fix.
-
-Best regards
-Thomas
-
-> ---
-> The offending commit is not yet merged into master, and even less in a
-> released kernel, so this does not need to go through stable.
->
-> Changes in v2:
-> - move this call at the beginning instead of adding a goto
-> ---
->   drivers/gpu/drm/mxsfb/mxsfb_drv.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/gpu/drm/mxsfb/mxsfb_drv.c b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> index c183b1112bc4e9fe4f3b048a2b6e4c98d1d47cb3..ee64053d381448360140c419fed1dc4fe9f7c68e 100644
-> --- a/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/mxsfb_drv.c
-> @@ -352,14 +352,6 @@ static int mxsfb_probe(struct platform_device *pdev)
->   	struct drm_device *drm;
->   	int ret;
->   
-> -	drm = drm_dev_alloc(&mxsfb_driver, &pdev->dev);
-> -	if (IS_ERR(drm))
-> -		return PTR_ERR(drm);
-> -
-> -	ret = mxsfb_load(drm, device_get_match_data(&pdev->dev));
-> -	if (ret)
-> -		goto err_free;
-> -
->   	/*
->   	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
->   	 * located anywhere in RAM
-> @@ -369,6 +361,14 @@ static int mxsfb_probe(struct platform_device *pdev)
->   		return dev_err_probe(&pdev->dev, ret,
->   				     "can't kick out existing framebuffers\n");
->   
-> +	drm = drm_dev_alloc(&mxsfb_driver, &pdev->dev);
-> +	if (IS_ERR(drm))
-> +		return PTR_ERR(drm);
-> +
-> +	ret = mxsfb_load(drm, device_get_match_data(&pdev->dev));
-> +	if (ret)
-> +		goto err_free;
-> +
->   	ret = drm_dev_register(drm, 0);
->   	if (ret)
->   		goto err_unload;
->
-> ---
-> base-commit: f9f087d946266bc5da7c3a17bd8fd9d01969e3cf
-> change-id: 20250313-mxsfb_probe-fix-rollback-on-error-3074b9080f34
->
-> Best regards,
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Bjorn
