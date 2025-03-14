@@ -1,74 +1,56 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3C818A6BD
-	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 20:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89B190676;
+	Fri, 14 Mar 2025 21:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741983505; cv=none; b=F5HbCVokV6r9sCN2k8Q6E15drKABhCCMnQ+uImFKrFsiZmcfrLxlzrpufONWOxrAnOtErACkL5hLefCltjm8I/p6dbrVHRJRHbIXwIsdmHPjUtpqycwFKnrAUEpWztoSLbK6z4vVkSNcR0VRwl8yI424aj9b9lxIqUjuAkH/Rc4=
+	t=1741986413; cv=none; b=satuQsh3Xw9tOP9nVg/WicQTWCq/cBuuaQ7imJJOviNjQ0UU/kA3y6YEfvVMToehi27VZZpwGNkh9QHZDUpAbMB2lSLU7cy0Fg7TAadESyjsl+FYAY/tdwEr0LQcdxDT7oH/frRimpQKYob31qMgXkBMFtAXKTInF2WSB3ZyLOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741983505; c=relaxed/simple;
-	bh=4ESTlD1VAk2LRhm46kGze9fKTdLnaNIw02AlFjlKnqI=;
+	s=arc-20240116; t=1741986413; c=relaxed/simple;
+	bh=updmW668AXuEczJRzXxFtdkEvCU4OrjNSAp3qpvjLw4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K1dL8Cs+Q+fZJSXOQ5eehzLNia6gR9kylnlHczdkvMEYMeO8FYfvvgIdjjFaM9OivT2Y0DoG1lBCuQNUkm6pRsZU4ec0hCiRL1eRWx9BUSqYddMv168/gprLIa1Y69wPJoaRAwmPkDmQaue3mNxaS/gllvBZMjOE7yGh6EkNgGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CqvVWJ4x; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAoEprK5pRTt3IXscKDk+jDJQWCw6NEK6G6Mpwn0G6VOVCE4BLCho7HmN36NviYT13u+iSKJ8znilNOqP1c7EUmQM0WI5BDeVZtVljy/rLyZdZrY5HP//0DgQ4SeIW0Y2I4QQypaN4lAnjHjFz+ZzeUdZefR2iYjfHdY7+P6ZAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mllpNJ2v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CqvVWJ4x"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2241053582dso60232075ad.1
-        for <imx@lists.linux.dev>; Fri, 14 Mar 2025 13:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741983503; x=1742588303; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kVE/X+1dvBgKywWxxHtjJI1otue6/+H9v0hJ6Relc5w=;
-        b=CqvVWJ4xiAqhPJzL9nE4JugXAJPd27D/1a7aTRBNyqgdYO0dznpA4BDcpNYzpLGPYj
-         hk/pU09xTRrh7C0nBQBaQ67jbSxPec2Jvc32LhV2qThBM2ZaA+bpm5p7K789Mje/B86x
-         F4r5GHgBiM/1u35b5iczgo0eufVjRVTm0k69kmvLXgJbvzS8Mrt9bnXzyYBiF82P3Jgg
-         5unzwyYDIQGDseWzI9xoerrSo3VPeLApakm+cs5/MHZr/PXJJvMuR+PLxof9Hxn6nGmp
-         BStllldiYCyRO227vuwdBBFIgyQk7giUCHwWo2FtEJX/9MpIebCQa18iNNJ72bXSm6PF
-         vf5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741983503; x=1742588303;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kVE/X+1dvBgKywWxxHtjJI1otue6/+H9v0hJ6Relc5w=;
-        b=BhQNLLqA8oHKeE9lk9sWY0+u3CjerM+w6fu5g5MuSZPzgOTCIQUhAmbykS9eUfac+D
-         g2lJmdrGQJAM6czx06KBwLJWILwE1D+oFWdD7v/ER/Fl+7JbUmWpJ2reS+qHfm2B0avQ
-         51Iy//7OUC8oWzKyHVEiD5qoO3rtty8U4BPa0IH3lq5V+D79sxzuP4Rf793rMbSGi1Cw
-         c9bgdBVTWdbsDmyyzMgSVYW0oOWgGCr3zTxtkVg3vO++MiGaur9LjLf3wvtB82TgPqfz
-         6TpDveSgff+rR1kqrtb88p4aEE0Q6HuBWmK1r70PlYB0PzdOto5QapjTASuMr68kNi6b
-         gjGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsoIfBOyTclJfXuJERnf9yEHxsz/p/shSZN4YhiJ3n5+kF/v97Q8ArAM8067akUF+ziMo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXtFUE9FVQPalucwMPjS/RfP1QrtuXppIeLDWs7z0KdUgSvBDp
-	6EWKG0+9q/VloNQSfBjo7zd44D7Bok1Zjnib0glJq9iodoTlDynXeReD3ue8uqM=
-X-Gm-Gg: ASbGnctVduqV1cGEpQv0GTmKMsQ7CbgZFbGtOQbfHPysaA3D9fih3noQmk4CkgAlNDs
-	lnZkdrJanZ15DO1YRTh24u95yUFE/JT995YJBtiGd/IBFXIHZeI73Qh3GfX3a7Idulc5SGLAF3p
-	D4VtoGn7EHvAK6QMIK73pT0Dnbw5B/7s3FV5LnQlwxgNFyNFETPZ8K6m8Zt+vgu6GirfJw6qPO6
-	7DvmGkAHWn2AIcbHyu0l1u+5sf02yceOqkUowgylWOyHun95s1y5rgsQaa0oM8q++Ssh9YgLf9Q
-	qyPNDujGyNRzT1Ki6H7N/khAmtZ0qn7+jXrM66o5+BuspIA=
-X-Google-Smtp-Source: AGHT+IHXBdYKz+0nlSrPK7TcM2iKiILeG/wu7hs+o6yF94fn14To6hkfN4AHSD2DhQ5uyimEFEKDcQ==
-X-Received: by 2002:a17:902:e843:b0:224:1acc:14db with SMTP id d9443c01a7336-225e0ac3830mr51638205ad.29.1741983502703;
-        Fri, 14 Mar 2025 13:18:22 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:edf2:f43:33df:904c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bd5a7dsm32535845ad.251.2025.03.14.13.18.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 13:18:22 -0700 (PDT)
-Date: Fri, 14 Mar 2025 14:18:19 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, Frank.Li@nxp.com,
-	p.zabel@pengutronix.de, peng.fan@nxp.com,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] remoteproc: imx_dsp_rproc: Document run_stall struct
- member
-Message-ID: <Z9SPC1Rl28NKjFTV@p14s>
-References: <20250314151720.1793719-1-daniel.baluta@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mllpNJ2v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01900C4CEE3;
+	Fri, 14 Mar 2025 21:06:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741986413;
+	bh=updmW668AXuEczJRzXxFtdkEvCU4OrjNSAp3qpvjLw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mllpNJ2vShm53XePYhANE9KP2D4263ZkCTgGDLtAm7AFn21OBMlK1F/dNkxUhUoAM
+	 mf80c3yVKPa9GP29CvxlKBUKkSHRggb1ciT/HolwQ/a4TktfQQ2aBweYsUCF8mU7ad
+	 jIgbER5NtY8oSUMWQmNbDQlhKZfhjyeYxtz0VbLDHegKY7dlrWDLuAsz9CQ/kmqxPK
+	 lyDdyxynK7HtA/JZPnlUrCAtFmEZ/iojSonoH+9hM+IquUbweStcvNr5oR/POr7te1
+	 0oj5dQidA4o4fwcw0lD6fQ/a9CtRtcH47crB4M+bXH6C6VGlUw9SpRo22zeT78Hwad
+	 Vpbw40GJ/8tVA==
+Date: Fri, 14 Mar 2025 16:06:52 -0500
+From: Rob Herring <robh@kernel.org>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sam Ravnborg <sam@ravnborg.org>, Liu Ying <victor.liu@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2 03/12] dt-bindings: connector: Add the GOcontroll
+ Moduline module slot bindings
+Message-ID: <20250314210652.GA2300828-robh@kernel.org>
+References: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
+ <20250226-initial_display-v2-3-23fafa130817@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,38 +59,157 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250314151720.1793719-1-daniel.baluta@nxp.com>
+In-Reply-To: <20250226-initial_display-v2-3-23fafa130817@gocontroll.com>
 
-On Fri, Mar 14, 2025 at 05:17:19PM +0200, Daniel Baluta wrote:
-> Add documentation for 'run_stall' imx_dsp_rproc struct member.
-> This also fixes the following warning:
+On Wed, Feb 26, 2025 at 03:19:14PM +0100, Maud Spierings wrote:
+> Add the bindings that describe a GOcontroll Moduline module slot. This
+> slot provides all the interfaces to interface with a Moduline compatible
+> IO module. The actual module is not reasonable to describe as it can be
+> swapped at will, with this connector the driver will be able to probe
+> for a module on boot.
 > 
-> warning: Function parameter or struct member 'run_stall'
-> not described in 'imx_dsp_rproc'
+> The connector consists of 2 parts, one part for interfacing with the SoC
+> and main board, the other part has 13 IO channels for the module to
+> interact with the outside world. The functions of these IO channels are
+> determined by the type of module in the slot. The IO on the SoC side is
+> as follows:
 > 
-> Fixes: 0184b4fdbad1 ("imx_dsp_rproc: Use reset controller API to control the DSP")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202503142125.IE33sCto-lkp@intel.com/
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+>  - a 3v3 supply, this tends to be the logic level of the module and its
+>    microcontroller
+>  - a 5v0 supply, this can be used to power low power peripherals on the
+>    module
+>  - a 6v-8v supply, this can be used for high power peripherals on the
+>    module
+>  - a 6v-30v supply, this tends to be a dirty supply that comes from the
+>    controller supply after some circuit protection, or is the same as
+>    the 6v-8v supply.
+>  - an SPI bus which carries the communication between the SoC and the
+>    microcontroller on the module.
+>  - an I2C bus shared between the SoC and all module slots which can
+>    carry direct module-to-module communication.
+>  - a reset line
+>  - an interrupt line that indicates a clear to transmit signal
+>  - a sync line shared between the SoC and all module slots which could
+>    be used to synchronize modules for time sensitive IO spread across
+>    modules.
+>  - a SMBus alert line that is shared between the modules but is not
+>    connected to the SoC so that is ignored.
+> 
+> A slot-number property is used to identify the physical location of a
+> module slot. Without it, it would be impossible to identify which module
+> to control if there are multiple of one type, to address the desired IO.
+
+Is that for a person to identify slots or s/w? If just a person, we 
+generally use 'label' as in a sticker on the connector. If s/w, we 
+generally try to avoid made up indexing in DT though there are some 
+exceptions.
+
+> 
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 > ---
->  drivers/remoteproc/imx_dsp_rproc.c | 1 +
->  1 file changed, 1 insertion(+)
->
+>  .../connector/gocontroll,moduline-module-slot.yaml | 88 ++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/connector/gocontroll,moduline-module-slot.yaml b/Documentation/devicetree/bindings/connector/gocontroll,moduline-module-slot.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..a16ae2762d160180d5b163e20f5294235e65053b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/connector/gocontroll,moduline-module-slot.yaml
+> @@ -0,0 +1,88 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/connector/gocontroll,moduline-module-slot.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GOcontroll Moduline Module slot
+> +
+> +maintainers:
+> +  - Maud Spierings <maudspierings@gocontroll.com>
+> +
+> +description:
+> +  The GOcontroll Moduline module slot represents a connector that fullfills the
+> +  Moduline slot specification, and can thus house any IO module that is also
+> +  built to this spec.
+> +
+> +properties:
+> +  compatible:
+> +    const: gocontroll,moduline-module-slot
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description: indicates readiness, high means busy.
+> +    maxItems: 1
+> +  reset-gpios:
+> +    description: resets the module, active low.
+> +    maxItems: 1
+> +  sync-gpios:
+> +    description: sync line between all module slots.
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: low power 3v3 supply generally for the microcontroller.
+> +  vddp-supply:
+> +    description: medium power 5v0 supply for on module low power peripherals.
+> +  vddhpp-supply:
+> +    description: high power 6v-8v supply for on module high power peripherals.
+> +  power-supply:
+> +    description: high power 6v-30v supply for high power module circuits.
+> +
+> +  i2c-bus:
+> +    description: i2c bus shared between module slots and the SoC
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +
+> +  slot-number:
+> +    description:
+> +      The number of the module slot representing the location of on the pcb.
+> +      This enables access to the modules based on slot location.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +  spi-max-frequency: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - interrupts
+> +  - sync-gpios
+> +  - i2c-bus
+> +  - slot-number
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        connector@0 {
 
-Applied.
+I find this being a SPI device a bit strange. Is there a defined SPI 
+device that every slot is going to have? Or the connector has SPI 
+interface and *anything* could be attached on it?
 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index bc60edcdd661..90cb1fc13e71 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -96,6 +96,7 @@ enum imx_dsp_rp_mbox_messages {
->  /**
->   * struct imx_dsp_rproc - DSP remote processor state
->   * @regmap: regmap handler
-> + * @run_stall: reset control handle used for Run/Stall operation
->   * @rproc: rproc handler
->   * @dsp_dcfg: device configuration pointer
->   * @clks: clocks needed by this device
+> +            reg = <0>;
+> +            compatible = "gocontroll,moduline-module-slot";
+> +            reset-gpios = <&gpio5 10 GPIO_ACTIVE_LOW>;
+> +            sync-gpios = <&gpio4 16 GPIO_ACTIVE_HIGH>;
+> +            interrupt-parent = <&gpio4>;
+> +            interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+> +            vdd-supply = <&reg_3v3_per>;
+> +            vddp-supply = <&reg_5v0>;
+> +            vddhpp-supply = <&reg_6v4>;
+> +            i2c-bus = <&i2c2>;
+> +            slot-number = <1>;
+> +        };
+> +    };
+> 
 > -- 
-> 2.43.0
+> 2.48.1
 > 
