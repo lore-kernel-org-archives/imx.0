@@ -1,123 +1,75 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE171FE452
-	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 12:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66BC1FDA89;
+	Fri, 14 Mar 2025 12:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741955231; cv=none; b=jf/3zAAWHxdM4z4p67z/hTr9aL54wfV6nrHJY7IhYq4jzdy++C0Pmf9+64KXDPh8ev3RvNRw6wuEhZ+QFDEJO5AXydkbtUVyhvITD1/37f7F5q7cykTpuQh3nFRu8QMqdusYVG7tIZ1jOBWSGrfI3KRr+R3+h3R5tyleN9o+QKE=
+	t=1741955842; cv=none; b=tzQGauUusfZkAJArMLBCz3nU69g4SoRU+w1ai6/lhJux9oXpNrqpHYGxTk7GvEAwUte+/yK0qtd/6Z0Gpxtj5koi6guUN8HpizNmv2m70DcGxIow6hnfe+SQcqQ4P566ZM8/wVAhHhCz4JNWWJsJDJ0jRL4Y/EQ0eq00z9r3mmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741955231; c=relaxed/simple;
-	bh=CIE7Y7YG8R87HC0ZtwcGQ6RuyIkWQF1KLYOmNzvgzC8=;
+	s=arc-20240116; t=1741955842; c=relaxed/simple;
+	bh=S3esJdqF5lpQHu09B96cKlik0uJVTaNez4lDgMbLHPA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cVWtn5ZQdKWF6kFZqM/jslhrBDTRP0v9vT0F58xQDR/ZVbUGOyh2Sm7nK8dDJo15SJfsJ0Ur014Bh6ff3D0HPXpCYMH5eysp/VohSNs6rIaD039H0ZQbJvnyFlXK+/sw2f77U0eXNH7pIM8nyFmANDDBADfvwQ+PQ7uwNgJW3JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt482-0000VE-2x; Fri, 14 Mar 2025 13:27:06 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt481-005hQE-18;
-	Fri, 14 Mar 2025 13:27:05 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EAFC03DBAE0;
-	Fri, 14 Mar 2025 12:27:04 +0000 (UTC)
-Date: Fri, 14 Mar 2025 13:27:04 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: haibo.chen@nxp.com
-Cc: mailhol.vincent@wanadoo.fr, ciprianmarian.costea@oss.nxp.com, 
-	u.kleine-koenig@baylibre.com, fabio.estevam@nxp.com, festevam@gmail.com, 
-	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	imx@lists.linux.dev, han.xu@nxp.com
-Subject: Re: [PATCH v3 1/2] can: flexcan: only change CAN state when link up
- in system PM
-Message-ID: <20250314-succinct-tall-skunk-cf905e-mkl@pengutronix.de>
-References: <20250314110145.899179-1-haibo.chen@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p6RDR0echJv1zWis2+e/lRHpRyhWnZcZNG/1Zdlt6PlJt6ujfo0KW7bq0vZIgd0VmP+v8alC46HT8z00FyfGsx1/62bAIClXaisS8ilnoXZlE46W1LvExpSZ7NmSX72HPGpJnLq6Xiua5zk68O1l40OJFYZ8sKzgenJitlAzFxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbIQgj8T; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbIQgj8T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99125C4CEEB;
+	Fri, 14 Mar 2025 12:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741955842;
+	bh=S3esJdqF5lpQHu09B96cKlik0uJVTaNez4lDgMbLHPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vbIQgj8TSE4lQeZ2PT7fb2JoEj93MnLv3QU989Xgjmisv8UwUYj8PXvwPkzjVymog
+	 8gWijKRL0MImk406Plv157O/N55Rr5qeNPMS2pATpUslbkUSDMH5p2NdLlCUTJXPsN
+	 lhnzmeihtIy4WezdZjx3RjsYqhE8uPUVy4eVz4jY=
+Date: Fri, 14 Mar 2025 13:37:19 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, peter.chen@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v5 0/6] add USB2.0 support for i.MX95-19x19 EVK board
+Message-ID: <2025031404-elite-critter-05b7@gregkh>
+References: <20250312082700.260260-1-xu.yang_2@nxp.com>
+ <2025031443-rounding-subject-1f60@gregkh>
+ <20250314092137.6m3gmj4irxqwpy22@hippo>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n673osmdubliybov"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250314110145.899179-1-haibo.chen@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20250314092137.6m3gmj4irxqwpy22@hippo>
 
+On Fri, Mar 14, 2025 at 05:21:37PM +0800, Xu Yang wrote:
+> Hi Greg,
+> 
+> On Fri, Mar 14, 2025 at 09:18:51AM +0100, Greg KH wrote:
+> > On Wed, Mar 12, 2025 at 04:26:54PM +0800, Xu Yang wrote:
+> > > The i.MX95-19x19 EVK board features a USB 2.0 Type-A port, with this
+> > > series primarily introducing USB 2.0 support. In the i.MX95 architecture,
+> > > the USB wake-up handling mechanism is integrated within the HSIO block
+> > > control module, utilizing a dedicated wake-up interrupt. Therefore, we
+> > > also implemented corresponding wake-up logic code to properly manage this
+> > > functionality.
+> > > 
+> > > For detailed changes can refer to patch commit log.
+> > 
+> > Does not apply to my tree :(
+> 
+> It'd due to below dts patch #2,3 not in usb tree. However, linux-next already
+> have them. I see Shawn just send pull request for 6.15. To make it easy,
+> let me ping you when usb tree have them, is it ok?
+> 
+> https://lore.kernel.org/linux-usb/20241204050907.1081781-1-xu.yang_2@nxp.com/#t
 
---n673osmdubliybov
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 1/2] can: flexcan: only change CAN state when link up
- in system PM
-MIME-Version: 1.0
+That will not be until after 6.15-rc1 is out.
 
-On 14.03.2025 19:01:44, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
->=20
-> After a suspend/resume cycle on a down interface, it will come up as
-> ERROR-ACTIVE.
->=20
-> $ ip -details -s -s a s dev flexcan0
-> 3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group defaul=
-t qlen 10
->     link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
->     can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
->=20
-> $ sudo systemctl suspend
->=20
-> $ ip -details -s -s a s dev flexcan0
-> 3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group defaul=
-t qlen 10
->     link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
->     can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
->=20
-> And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-> has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
->=20
-> Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+thanks,
 
-Applied to linux-can.
-
-Thanks,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---n673osmdubliybov
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfUIJUACgkQDHRl3/mQ
-kZyvLQf5AcnFucNADIyh3YzRVDPUdJ21ijFvA31jS2h6YtsXPLA+KxNpc8Bz/2T0
-9IdIa5jOrl0gij1s3pUBmRxX34e7Ns68a3RROv8sA+rcTQXU/1ecKkbuNdFf4RWU
-b11qLMsZHb3sjY5k5ZUWEftvBV6XnTxx7mq/oChgZUsG9pZPBJ4HtbHR7zybFi1o
-Za67pVS081y7rpcJ1Y2rlkPRsRi07VDNq+ncWgsSMhU2+uXwklYmRUVwKfRU2d9r
-JV8FmmfMI7JHMWXEnCSUBPzkGZCDtjsofosenX8iO6X39wx7X3eaIRCTw6jSzjJC
-udmXDaE8dkwSlciHwd2Yav1cFK25Sg==
-=3eya
------END PGP SIGNATURE-----
-
---n673osmdubliybov--
+greg k-h
