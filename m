@@ -1,69 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD8202F96;
-	Fri, 14 Mar 2025 18:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3182A8D0;
+	Fri, 14 Mar 2025 18:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741976298; cv=none; b=bYVR7TixCCD2EOB2iI94VTN/cAvnSfTCxzj9B7e6OGx301m0DWp6Fy6uM97qwqlP3PV1L2fdWFekUV6cnc7iBYDHBcd4wjfjAbeLl6sdL0tsxmd75TzhIwCpwFtHZaeJXc0icxCnQTQ/K8dGbnG/idpwGELnIfTXcTRCpOG5C7Q=
+	t=1741976464; cv=none; b=SVi26ea7O5bV7XAZw7HmOCKHWWgRIcLCPtUKFnfsbXUuFYfvu4dtJKRziVhAVzEFgbXWYccnxUJk/R9ABkLzqpeTVBTMxNOkX+r86yOpzfEa8txDNNBVXIvqi1BZOxNc4vI2ukcPEM9Nsq1sqRwxuk2jGSrlYaTSQfLP4SpiYZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741976298; c=relaxed/simple;
-	bh=ZZepI8LPNaIPgCHzOcgRGZobZ670sZugs/z/7viGW38=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=eBmtGGHhjl40LgXmJ4Oraeg4R3AGCnReD3AqgIgEQj1WEskOKPdo6kUrah3zWh2A0OzHArAY8ype6dxkqjfcHXY7j8FjavvAvOXGTeQQK+hOcxuy6mTjrv/Hotivs9GGSuaOnVWLb8AmupjViQY4NHVKa0NPjq0/mDU6JJgLS1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+M9C0wO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741976464; c=relaxed/simple;
+	bh=kl2X8mVwSaZH4P+oC1wMNXj/evjiX1wGJ3tMBcCpssU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F0l5siCqUDgi3L0AYCO9Pcgy700mwjCpKHIADrMfB80R4DoxDEdUfvK0Y+mb6wLSfygpccnnJt3KXmK9g4oXDeTtkgpIrUc66XHydgjsncnWZ1UGQBqELnnMpf2Yzzp6YV52lUJnXgfPPAMc/2pbozgnYX3huSUOmPTariNBa9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1wVNbwK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+M9C0wO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A648FC4CEE3;
-	Fri, 14 Mar 2025 18:18:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1wVNbwK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB48C4CEE3;
+	Fri, 14 Mar 2025 18:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741976298;
-	bh=ZZepI8LPNaIPgCHzOcgRGZobZ670sZugs/z/7viGW38=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=T+M9C0wOPRULtny0dMIpwd1MQh6HhJIspUv2IWXZUEb/eyNziep/h+bAMFF0ciyrc
-	 gqQnmpoPsiqBcTf9jmWtvBDJU7fUQsOuDoei/DxS89x/Bwh8rYWBAfH/yQZH5w/RE3
-	 W2V5+iejNtwvnHVNGudeKC5J4AzgreZEu203VbUD72MZ9wXrb89KsGDVBExc2oFjB2
-	 81pXQSWHH733fLwNZdbTI7Pp7CXveyo1XKwL5XlOzroTaBIn2JWUpegy2ecmLN26iy
-	 Fc6yhY31xoJydnY8CoC/HzADCoH1EiH6riWuqnhnvlpxECDLki9uN3FyWI+k7LlLe/
-	 kYGiYv4VtgmSA==
-Message-ID: <6d7ef2d51bc98436fcfc7fa9076514ec@kernel.org>
-Date: Fri, 14 Mar 2025 18:18:15 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v7 11/11] drm/bridge: samsung-dsim: use dynamic lifetime
- management
-In-Reply-To: <20250314-drm-bridge-refcount-v7-11-152571f8c694@bootlin.com>
-References: <20250314-drm-bridge-refcount-v7-11-152571f8c694@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
- Hajda" <andrzej.hajda@intel.com>, "Anusha Srivatsa" <asrivats@redhat.com>, "David
- Airlie" <airlied@gmail.com>, "Dmitry Baryshkov" <lumag@kernel.org>, "Fabio
- Estevam" <festevam@gmail.com>, =?utf-8?b?SGVydsOpIENvZGluYQ==?= <herve.codina@bootlin.com>, "Hui
- Pu" <Hui.Pu@gehealthcare.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan
- Teki" <jagan@amarulasolutions.com>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Jonas
- Karlman" <jonas@kwiboo.se>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Marek
- Vasut" <marex@denx.de>, "Maxime Ripard" <mripard@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Paul Kocialkowski" <paulk@sys-base.io>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Robert Foss" <rfoss@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
- Vetter" <simona@ffwll.ch>, "Stefan Agner" <stefan@agner.ch>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann" <tzimmermann@suse.de>
-Content-Transfer-Encoding: quoted-printable
+	s=k20201202; t=1741976464;
+	bh=kl2X8mVwSaZH4P+oC1wMNXj/evjiX1wGJ3tMBcCpssU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L1wVNbwKbDzm3i2OHiUkdhMC2cbWxtIPNWUQYV9lrxpezJqu7/HcWGVSBkBHgv48N
+	 h+BdVTb3qNZMfrDpcM3B4GZ/PhumzL62IDZidEjyswRZCpH2TfYb31PUyXpr3wT7yY
+	 USIdnYdZ0h+c0sB/4qMNrorcGKWJUs0IJ3GZAQIhAy/YdIoEGX3IHc5/sTg9g8F78W
+	 rI2IIP5+93xW68HrYA/Sl2+m6OSHtXcW6+9gLZ6OmF40AudM8wVzRSALKjgjMPAvOi
+	 /7AkeQFVPNQkFJhs0h9XNEqOYZAyRlkufGEHwC2oukZrkODksegJdB9AqZLVZ1aLOK
+	 bBAuiJCUSEr7w==
+Date: Fri, 14 Mar 2025 19:21:01 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Anusha Srivatsa <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+	Dmitry Baryshkov <lumag@kernel.org>, =?utf-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+Message-ID: <20250314-daft-woodoo-cheetah-e029c5@houat>
+References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="mifitjekzidylpjw"
+Content-Disposition: inline
+In-Reply-To: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
 
-On Fri, 14 Mar 2025 11:31:24 +0100, Luca Ceresoli wrote:
-> Allow this bridge to be removable without dangling pointers and
-> use-after-free, together with proper use of drm_bridge_get() and _put() by
-> consumers.
+
+--mifitjekzidylpjw
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+MIME-Version: 1.0
+
+Hi,
+
+On Fri, Mar 14, 2025 at 11:31:13AM +0100, Luca Ceresoli wrote:
+> This series improves the way DRM bridges are allocated and initialized and
+> makes them reference-counted. The goal of reference counting is to avoid
+> use-after-free by drivers which got a pointer to a bridge and keep it
+> stored and used even after the bridge has been deallocated.
 >=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> The overall goal is supporting Linux devices with a DRM pipeline whose
+> final components can be hot-plugged and hot-unplugged, including one or
+> more bridges. For more details see the big picture [0].
 >=20
-> [ ... ]
+> DRM bridge drivers will have to be adapted to the new API, which is pretty
+> simple for most cases. Refcounting will have to be adopted on the two
+> sides: all functions returning a bridge pointer and all code obtaining su=
+ch
+> a pointer. This series has just an overview of some of those conversions,
+> because for now the main goal is to agree on the API.
+>=20
+> Series layout:
+>=20
+>  1. Add the new API and refcounting:
+>=20
+>     drm/bridge: add devm_drm_bridge_alloc()
+>     drm/bridge: add support for refcounting
+>=20
+>  2. get/put the reference in basic operations in the bridge core:
+>=20
+>     drm/bridge: get/put the bridge reference in drm_bridge_add/remove()
+>     drm/bridge: get/put the bridge reference in drm_bridge_attach/detach()
+>=20
+>  3. as an example of changes for bridge consumers, get a reference for the
+>     bridge returned by drm_bridge_chain_get_first_bridge(), have it put by
+>     all callers (all users will be covered later on separately):
+>=20
+>     drm/bridge: add a cleanup action for scope-based drm_bridge_put() inv=
+ocation
+>     drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bri=
+dge()
+>     drm/mxsfb: put the bridge returned by drm_bridge_chain_get_first_brid=
+ge()
+>     drm/atomic-helper: put the bridge returned by drm_bridge_chain_get_fi=
+rst_bridge()
+>     drm/probe-helper: put the bridge returned by drm_bridge_chain_get_fir=
+st_bridge()
+>=20
+>  4. convert a few bridge drivers (bridge providers) to the new API:
+>=20
+>     drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+>     drm/bridge: samsung-dsim: use dynamic lifetime management
+>=20
+> This work was formerly a part of my v6 DRM bridge hotplug series[0], now
+> split as a standalone series with many improvements, hence the "v7" versi=
+on
+> number.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Except for one patch where I had comments, I think the series is in
+excellent shape. We're still missing a couple of things to close this
+topic though:
 
-Thanks!
+  - Converting the other bridge iterators/accessors to take / put the refer=
+ences
+  - Mass converting the drivers to devm_drm_bridge_alloc
+  - Documenting somewhere (possibly in drm_bridge_init?) that it really
+    shouldn't be used anymore
+
 Maxime
+
+--mifitjekzidylpjw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ9RzjQAKCRAnX84Zoj2+
+diSPAYD12sjIXgXPRf7BpM6STJktvb89YmsuXfj5+lHzeniMrs6Zp+V4ziemLado
+cqXTAAgBfj5T5uiMZqBaPy+UxbyoWpdNB5xJ8B5O7i7F+qiCLQoCXZjhFQdI1vaR
+wbgQnB8LMA==
+=oW4m
+-----END PGP SIGNATURE-----
+
+--mifitjekzidylpjw--
