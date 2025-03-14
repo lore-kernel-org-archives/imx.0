@@ -1,114 +1,154 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059A11C8623
-	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 09:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C307A155C96
+	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 10:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741946019; cv=none; b=JledMSR9wVcu7hxhDmtB58zKoWQsggukpPuLupwrwvu8eExbT7MpKLZGmQZS9y1lgphXNSjRhDHbSv+J37jTby5COG70OCBoo/a6+/YPiKc9rjGCltwmh4W2PaINN7mdavA8fSqhmaiR944Ny9zlxO7cEpq/cK1bySGHaTj1jUI=
+	t=1741948298; cv=none; b=d3igqw17mn5CNFz6eByu9W6zVJDEJ2MtyQGJ1TLQ+Ixbsp3m2gc1ZlNnm/GFfpS5+PbltiU0f3P7BBlvrLaDlQIj9w1ZEQPUviGI/HtrzvRbiI5IWbidvO7JLjzrtdZ3jdh3reya7ZxqVOOHP05+pLUlLDc3Xn6WgeQcq53Ix30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741946019; c=relaxed/simple;
-	bh=uqi4a1i44VuR63mk4mLewvz1DOGcGyysr+VYBowc650=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=II7ATIQ6Lg0hRmL5ZmEoZ6dvJLl0SYXPxhNXL0TCznigc90+ffFOf/M7JV8lHmj80C3BnKTmS+TMR0n7krCmD3klMRtE1oI0ty07jIyWGPhnebl2iTDDlS2/+MFQk8vo3kc97PloBiai6bmYkaPaMTER5aOzIWNjjBCj+btNmhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt1jT-00006B-3y; Fri, 14 Mar 2025 10:53:35 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt1jS-005gEk-29;
-	Fri, 14 Mar 2025 10:53:34 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4E22B3DB8FA;
-	Fri, 14 Mar 2025 09:53:34 +0000 (UTC)
-Date: Fri, 14 Mar 2025 10:53:33 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: "mailhol.vincent@wanadoo.fr" <mailhol.vincent@wanadoo.fr>, 
-	"Ciprian Marian Costea (OSS)" <ciprianmarian.costea@oss.nxp.com>, Han Xu <han.xu@nxp.com>, 
-	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>, "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: RE: [PATCH 1/2] can: flexcan: only set CAN_STATE_ERROR_ACTIVE
- when resume has no issue
-Message-ID: <20250314-astonishing-astute-caracara-4ba78c-mkl@pengutronix.de>
-References: <20250306065921.2329517-1-haibo.chen@nxp.com>
- <20250314-invaluable-economic-caterpillar-80541a-mkl@pengutronix.de>
- <20250314-married-polar-elephant-b15594-mkl@pengutronix.de>
- <DU0PR04MB9496EC52CF54A8F635F1408690D22@DU0PR04MB9496.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1741948298; c=relaxed/simple;
+	bh=Phm7Ff0xccwaAEmV6NyMl/QCQm0KGjedhoTKD/LQUhI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GwL8boTmK76I5saXl9vsnVSkarIygkxNywaEtTqIS0a9didWLpGSP6LrI6MLZ37lV2e5Qp9l3kv0SaxB5SDMipolk9C+6qOktsZQDl7UCcy/gxbXAaVE+SS7mnQJ+3LXKPgYqNPbRGclbltc084XNidOe0aPj9o08oCWp3KacZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FZ1oz6ZJ; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FZ1oz6ZJ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C100143304;
+	Fri, 14 Mar 2025 10:31:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1741948294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yEpZ4juRT6fBQZCKbXYpQBMIgNr/IaPoGPb+iKoyN+0=;
+	b=FZ1oz6ZJsLewFtIdk4nCngYSG2+5EYWvhjJqyQfghuW7BeHzHc8uCudW8yTbDISu0ZadgA
+	WGx8ZuM1LNfHJUODHwoqKB2jjwlpDiDzvm7aXT1vqK9Dfhq8461JWNG9+ppm8xA7yyerZ8
+	+e7Uj1i3s+LStsWWjUQbGEZ5W1Q2aFXaQdK2d56rPTwEEydTtZ90PzZayYL/Nszxp847oG
+	zqZsoL6sr/fgNa1jZIE4t1rfWg+8+DHy9QdaDp0kbulKPTnVWDqolVf/r1jSyjvgeWsV7B
+	v+lsG7N3ktEu1PI0FL07j6D343uTXU3VEOnS1Dz/X/hA6i/FfVXeTubtmybGsA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+Date: Fri, 14 Mar 2025 11:31:13 +0100
+Message-Id: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="migyawgtbe5skj3c"
-Content-Disposition: inline
-In-Reply-To: <DU0PR04MB9496EC52CF54A8F635F1408690D22@DU0PR04MB9496.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHEF1GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyzHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDY0MT3ZSiXN2koswUoExRalpyfmleia6pRYolUBaI0syUgDoLgDKZFWB
+ To2NrawGhZXyjZQAAAA==
+X-Change-ID: 20250314-drm-bridge-refcount-58d9503503f6
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Anusha Srivatsa <asrivats@redhat.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufedtiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefgieetkeekgfdtudevueffueffveekheeiudfhfedvhfeukeeuhffhtddtvdekfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemrgdttddvmedusggrjeemgeekfhejmedulegtheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemrgdttddvmedusggrjeemgeekfhejmedulegthedphhgvlhhopegludelvddrudeikedrudejkedruddukegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtohepjfhuihdrrfhusehgvghhvggrlhhthhgtrghrvgdrtghomhdprhgtphhtthhopehinhhkihdruggrvgesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehmrghrvgigseguv
+ ghngidruggvpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepphgruhhlkhesshihshdqsggrshgvrdhiohdprhgtphhtthhopegrshhrihhvrghtshesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
+This series improves the way DRM bridges are allocated and initialized and
+makes them reference-counted. The goal of reference counting is to avoid
+use-after-free by drivers which got a pointer to a bridge and keep it
+stored and used even after the bridge has been deallocated.
 
---migyawgtbe5skj3c
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: RE: [PATCH 1/2] can: flexcan: only set CAN_STATE_ERROR_ACTIVE
- when resume has no issue
-MIME-Version: 1.0
+The overall goal is supporting Linux devices with a DRM pipeline whose
+final components can be hot-plugged and hot-unplugged, including one or
+more bridges. For more details see the big picture [0].
 
-On 14.03.2025 09:48:06, Bough Chen wrote:
-> > > > Only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process has
-> > > > no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
-> > >
-> > > When looking at the code, it makes no sense to set the can.state to
-> > > CAN_STATE_ERROR_ACTIVE, if the device isn't up.
-> > >
-> > > The suspend function doesn't look correct, either. I'll send a v3.
-> >=20
-> > After a suspend/resume cycle on a down interface, it will come up as
-> > ERROR-ACTIVE.
->=20
-> Seems only need to handle the priv->can.state when netif_running(dev) ret=
-urn true in PM.
+DRM bridge drivers will have to be adapted to the new API, which is pretty
+simple for most cases. Refcounting will have to be adopted on the two
+sides: all functions returning a bridge pointer and all code obtaining such
+a pointer. This series has just an overview of some of those conversions,
+because for now the main goal is to agree on the API.
 
-ACK - in both the suspend and the resume function.
+Series layout:
 
-regards,
-Marc
+ 1. Add the new API and refcounting:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+    drm/bridge: add devm_drm_bridge_alloc()
+    drm/bridge: add support for refcounting
 
---migyawgtbe5skj3c
-Content-Type: application/pgp-signature; name="signature.asc"
+ 2. get/put the reference in basic operations in the bridge core:
 
------BEGIN PGP SIGNATURE-----
+    drm/bridge: get/put the bridge reference in drm_bridge_add/remove()
+    drm/bridge: get/put the bridge reference in drm_bridge_attach/detach()
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfT/JoACgkQDHRl3/mQ
-kZx+Pwf/ZfEVLAzTROaB11mfgT1llPVOR7Xa88LWmIyUoRfgnqK/V4RQ5RSQYXvJ
-GwxehE4EaqhAN4O79BMA3D1E7Tc8lB9zo/npgG/+2Oew6cu4a8GCC0ZQHi2HwAx+
-eWYQBNTY5F3Hr7C/osnwavurydlvMK/Cq0UYXJ8fqp5ucCW03F/A5IuFULfhgvZ3
-G7rvdOjKTiaM2dY3IafRQuDBzle25Lr1UKbDQ/OtaARVWL7XOkTLtRGupMOWjeEU
-/m1JevFi9L8QxXKcRYWnZMfsra2q1gbUMTNCRQvMjOySiz/yeLhyD37XHWywHnZC
-mfEjnSMblOxB+xKbqkMXcrZbE/yYdw==
-=jj4o
------END PGP SIGNATURE-----
+ 3. as an example of changes for bridge consumers, get a reference for the
+    bridge returned by drm_bridge_chain_get_first_bridge(), have it put by
+    all callers (all users will be covered later on separately):
 
---migyawgtbe5skj3c--
+    drm/bridge: add a cleanup action for scope-based drm_bridge_put() invocation
+    drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bridge()
+    drm/mxsfb: put the bridge returned by drm_bridge_chain_get_first_bridge()
+    drm/atomic-helper: put the bridge returned by drm_bridge_chain_get_first_bridge()
+    drm/probe-helper: put the bridge returned by drm_bridge_chain_get_first_bridge()
+
+ 4. convert a few bridge drivers (bridge providers) to the new API:
+
+    drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+    drm/bridge: samsung-dsim: use dynamic lifetime management
+
+This work was formerly a part of my v6 DRM bridge hotplug series[0], now
+split as a standalone series with many improvements, hence the "v7" version
+number.
+
+[0] https://lore.kernel.org/dri-devel/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (11):
+      drm/bridge: add devm_drm_bridge_alloc()
+      drm/bridge: add support for refcounting
+      drm/bridge: get/put the bridge reference in drm_bridge_add/remove()
+      drm/bridge: get/put the bridge reference in drm_bridge_attach/detach()
+      drm/bridge: add a cleanup action for scope-based drm_bridge_put() invocation
+      drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bridge()
+      drm/mxsfb: put the bridge returned by drm_bridge_chain_get_first_bridge()
+      drm/atomic-helper: put the bridge returned by drm_bridge_chain_get_first_bridge()
+      drm/probe-helper: put the bridge returned by drm_bridge_chain_get_first_bridge()
+      drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+      drm/bridge: samsung-dsim: use dynamic lifetime management
+
+ drivers/gpu/drm/bridge/samsung-dsim.c |   7 +-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c |   7 +-
+ drivers/gpu/drm/drm_atomic_helper.c   |   5 ++
+ drivers/gpu/drm/drm_bridge.c          |  74 +++++++++++++++++++--
+ drivers/gpu/drm/drm_probe_helper.c    |   1 +
+ drivers/gpu/drm/mxsfb/lcdif_kms.c     |   3 +-
+ include/drm/drm_bridge.h              | 119 +++++++++++++++++++++++++++++++++-
+ 7 files changed, 201 insertions(+), 15 deletions(-)
+---
+base-commit: 9e6d91c60b0d64a4f945663993b3bbf4f3fb7392
+change-id: 20250314-drm-bridge-refcount-58d9503503f6
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
