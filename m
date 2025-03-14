@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A461FAC34;
-	Fri, 14 Mar 2025 18:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B640E14A0A3;
+	Fri, 14 Mar 2025 18:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741975979; cv=none; b=I91J9QwadzrIGCFeYAwX7caD7nGEqZusY/JgyLxQt1kuuvbvMVPtKpHJyLn2uwMw1yUcl4jYUCelSi3J0Dcm+zF8of0ZU3TIJsGzKfCcKqPrDoBTU7pvbOMdyAECRjg96VmBlmlvZSG6J408EGHXS/PGu4xhknRL+Z6gd0gqewg=
+	t=1741976240; cv=none; b=YgTDwBF7YdaNdmgi8Z7YHSff+3s+vX0smQa/FrBqc6fGxR9C4Xb8f4iTpZm9iRIu/eby/CiNor2rcw2X4RYDbmQw5jTBtrCiM2tyI4JXRtVzsiVFO/nu04mNCoxQzwFCnMICMORxoVgJ9JJC8WLlr0z5Gyxdj42N4I6+Tz+f5tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741975979; c=relaxed/simple;
-	bh=j5F5voyqMDf/Acb+Qij3yNPtv2PhlZR0mqxo0ZOIE8g=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=WMB8GMmM/mEklcY9MNlI1T5ARlkTcSnoqmW2ImzJ+mmYkP2iLs5ZVgqxs26kgP0IEtH50feDqKQK5MS3HGwdGbC0dnbasDCt8ok2U/X6fnd7N+VFGVck4kEEa8/UgbwlJeeJY945yGTozoDBJDZL9tCvufCyxxxO6JRY1dzxS5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9hk6SIO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741976240; c=relaxed/simple;
+	bh=1BOoTpa7j7kOWDgvxrb0tXDEr/wUI29Rp0UJrHYohJA=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=sRymJ2SqesJXtUJ4KhSpqs3hiL8xjbdFUYoVdV+HtPyLzL6m5Z7ybWQfNnYVgto83jTrR/Q2vsRVDjO6X52q9UQaqZbmzZt02PktmlGYvNo9vNFJ63CdxPT1oPkOfzZ6qCJKx5ub/TOl5hP7bqMluxXkif7a+HBZL1EJ1HhoTNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUZr8M+5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9hk6SIO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A112C4CEE3;
-	Fri, 14 Mar 2025 18:12:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUZr8M+5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31E9C4CEE3;
+	Fri, 14 Mar 2025 18:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741975979;
-	bh=j5F5voyqMDf/Acb+Qij3yNPtv2PhlZR0mqxo0ZOIE8g=;
+	s=k20201202; t=1741976240;
+	bh=1BOoTpa7j7kOWDgvxrb0tXDEr/wUI29Rp0UJrHYohJA=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=p9hk6SIOYoS2epV0wJxk40iVLBI/2s1h2Vw9v3hso51YWQnMQOVnWh8snIwvEOLeN
-	 QMrxmUvXFWSNXOt4+QtFsOjAp7w6B9qrI/IA+TGqPobkBPN/+YI8K2Y3aMLudmUXpz
-	 nKHB7WvV48iMPitNP6aq0BYneYwVkShT8WQmTcLAaAU37wtzDO9nwwpS/LXn44D4GY
-	 bZpUNiMp/oTrZH5H7O2RMa12mZUFRKuZyNGerFmtAsQiYxx+rotnCqNSmW5G7capiI
-	 GRixaeMfk64vPGV9H8O+K8WJ6abRCVb2zrXqqUO93oQEV1Or3i6EgK6CnlaUGU6khC
-	 AsgBYYTQzGxWw==
-Message-ID: <0cea0c073dfc52c20f583d64b51d7951@kernel.org>
-Date: Fri, 14 Mar 2025 18:12:56 +0000
+	b=pUZr8M+5YqTB0gwHjL2uSg75N4jc4CDIxlCHb7r1mXjx3YKJCmr8XK4iL2+emxFei
+	 lX2P5axT3LQE0vqeQiA9N6V6JNTGttlyHixDMwDJbeY7sE6LXdmX62UZ/mLGzaF1PU
+	 sjWxU+hkq4nT+hHhYo/NY/ggRFfO5MJ+KMinzqjzhJW+1fjnTsQZst58KpmkzNFSkw
+	 Ncw+wZWsjOUl3j7zOLzEFpzV1gSUqyozZTFKyb/8rC28QAuuhb7M8Tn5DSPCt1Vub3
+	 H6hpRu+O4ZAO2S36uWVrdlryZxxok2R3VVfiu1ZRaOl4IvEra9sYRV9cEhTxpTGVu6
+	 2Q/eSha1g30iw==
+Message-ID: <028ca14a547f52456a10529508cb0207@kernel.org>
+Date: Fri, 14 Mar 2025 18:17:17 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v7 09/11] drm/probe-helper: put the bridge returned by
- drm_bridge_chain_get_first_bridge()
-In-Reply-To: <20250314-drm-bridge-refcount-v7-9-152571f8c694@bootlin.com>
-References: <20250314-drm-bridge-refcount-v7-9-152571f8c694@bootlin.com>
+Subject: Re: [PATCH v7 10/11] drm/bridge: ti-sn65dsi83: use dynamic lifetime
+ management
+In-Reply-To: <20250314-drm-bridge-refcount-v7-10-152571f8c694@bootlin.com>
+References: <20250314-drm-bridge-refcount-v7-10-152571f8c694@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
  Hajda" <andrzej.hajda@intel.com>, "Anusha Srivatsa" <asrivats@redhat.com>, "David
  Airlie" <airlied@gmail.com>, "Dmitry Baryshkov" <lumag@kernel.org>, "Fabio
@@ -47,20 +47,20 @@ Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists
  Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
  Vetter" <simona@ffwll.ch>, "Stefan Agner" <stefan@agner.ch>, "Thomas
  Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann" <tzimmermann@suse.de>
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Fri, 14 Mar 2025 11:31:22 +0100, Luca Ceresoli wrote:
-> The bridge returned by drm_bridge_chain_get_first_bridge() is
-> refcounted. Put it when done.
-> 
+On Fri, 14 Mar 2025 11:31:23 +0100, Luca Ceresoli wrote:
+> Allow this bridge to be removable without dangling pointers and
+> use-after-free, together with proper use of drm_bridge_get() and _put() by
+> consumers.
+>=20
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> 
-> 
+>=20
 > [ ... ]
 
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
