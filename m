@@ -1,102 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C8A202963;
-	Fri, 14 Mar 2025 15:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC9E1EE03D
+	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 16:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741967586; cv=none; b=nM9TCSMxIDAOi66GLy2zR9Zhf6DzSwK6RwxSkNHzIYF9Fl9qQQ0PrVwDTHoi0Wcof+C4U8++5bNwOkDz/3jVsbzId7eV0UhObUrHUxC4Eqb8KvTWt0iJx/jPQcmqdKNBTvFB3hVceBHS+e1aPB8vud4uab8NGHDQJuPEOGpeLXc=
+	t=1741968322; cv=none; b=f0i6DULYUEoPlAuKduhHCgMtibcJi6mxU+zQqbJerEDBWdiaGotCkE5/gcWm63POegdJjq5yOtl9LRzW56BgHtQ5BnOXzwn/Uo2mhq+AjuogvYl/82S+BPMr1L1csR+zeXnzxgBoxpQ5+0nFiXBcXwrTgOoWZlAZwXBNS51wf70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741967586; c=relaxed/simple;
-	bh=J+7FE7jUtWw2AkNGj7vXJdveBzqHGNZ5nLZnbOlg8Bo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Kwvz+0JZit478aNS7QwIehfMb18kurYaSU8K5aH3rmHXVt0VxWVQzjCZLISFcElVTb8BEbWJm8vRZIn41vCwVaIsh9N4pWMrky7RYEsxgYaBI5DY0nhQdVyDipg9mtFNCTNZ5G8GPlHAqsgAywMjQP9skoYQ3JGcWeLuf4K+8JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhM+irCx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhM+irCx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF52C4CEE9;
-	Fri, 14 Mar 2025 15:53:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741967585;
-	bh=J+7FE7jUtWw2AkNGj7vXJdveBzqHGNZ5nLZnbOlg8Bo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=AhM+irCxXAaEjDCeEZLxG5c1Ms7aTmmFS9d+PQYBHJkboKQeHpTrEnSFYuX5xKFHT
-	 HVO+frw/2i/ZMZXfdKqzZvNCacLqc6RKivRZMMHX4zoMQZw1dTSmUzEqgGNIHKwBoW
-	 EkHAixH4eX2mizir1ao0e3xCU/b3x2t/oal8NDHo/07cnfQh8P/cZrzaf6RqMD8BPb
-	 HolwUOjg/7HnEu0FLCOS6K0fcioq8ad8F5in8+1Cf3G/jzACgzvRrd6DGGKnQcfmMo
-	 8IWiAhMPdYjUlz5eYMttVMRpnO2gTuty6YCiCHtQCnPdZZ4RVnzqQ40D4K9m0hbj3S
-	 HLawMom/GDLKw==
-From: Mark Brown <broonie@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, 
- Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Maud Spierings <maudspierings@gocontroll.com>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-In-Reply-To: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
-References: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
-Subject: Re: (subset) [PATCH v2 00/12] arm64: dts: freescale: Add support
- for the GOcontroll Moduline Display
-Message-Id: <174196758090.19958.7850853709519472369.b4-ty@kernel.org>
-Date: Fri, 14 Mar 2025 15:53:00 +0000
+	s=arc-20240116; t=1741968322; c=relaxed/simple;
+	bh=AlL/eilY7a6LvH7AFh4F/7NNvc/61nWc2Cn3lPejut0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UymRMMGcdrkfFE14s/jFg/hkf+uSQW4HLhjxc1KqUWWK6auk584u+Qkeim7AoUFju3MDmPxwLLGWoTE9wTKVBJ1Jdi2rpqCqwcgREKoDmP6okrEwtaZr6MVqrqmuxIXusZufqU2StbSRmRu52SY9mfs/H4ftiXDSNJQWzSPjgh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tt7X3-0003ae-7S; Fri, 14 Mar 2025 17:05:09 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tt7X2-005jEa-2G;
+	Fri, 14 Mar 2025 17:05:08 +0100
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1tt7X2-0009KL-21;
+	Fri, 14 Mar 2025 17:05:08 +0100
+Message-ID: <9bd42362c798cc3339ab9b34b32a9eb7eb4d1ba7.camel@pengutronix.de>
+Subject: Re: [PATCH] reset: imx: fix incorrect module device table
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Arnd Bergmann <arnd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+	Hauer <s.hauer@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 14 Mar 2025 17:05:08 +0100
+In-Reply-To: <20250314153541.3555813-1-arnd@kernel.org>
+References: <20250314153541.3555813-1-arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, 26 Feb 2025 15:19:11 +0100, Maud Spierings wrote:
-> Add inital support for 2 variants of the Moduline Display controller.
-> This system is powered by the Ka-Ro Electronics tx8p-ml81 COM, which
-> features an imx8mp SoC.
-> 
-> 
+On Fr, 2025-03-14 at 16:35 +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The ID table is for of_device_id, not platform_device_id:
+>=20
+> ERROR: modpost: drivers/reset/reset-imx-scu: type mismatch between imx_sc=
+u_reset_ids[] and MODULE_DEVICE_TABLE(platform, ...)
+>=20
+> Fixes: 6b64fde5c183 ("reset: imx: Add SCU reset driver for i.MX8QXP and i=
+.MX8QM")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Applied to
+Applied to reset/next, thanks!
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+[1/1] reset: imx: fix incorrect module device table
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3Dc361baf67200
 
-Thanks!
-
-[02/12] dt-bindings: vendor-prefixes: add GOcontroll
-        commit: 5f0d2de417166698c8eba433b696037ce04730da
-[03/12] dt-bindings: connector: Add the GOcontroll Moduline module slot bindings
-        commit: 43fd4d2f4f9df4ae1f6493d51cdd2687f325a225
-[06/12] MAINTAINERS: add maintainer for the GOcontroll Moduline module slot
-        commit: 8f1cc5242544052e4be037861abc8bc2b89cabda
-[12/12] spi: spidev: Add an entry for the gocontroll moduline module slot
-        commit: 10254a6c6073b0be171d434a3aeeff0256e59443
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+regards
+Philipp
