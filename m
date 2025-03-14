@@ -1,117 +1,208 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8631FBC8A
-	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 10:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741948325; cv=none; b=iBovRFYO1FbI71q3OFacxWB0IRzMrTwfDNDm+G3hhc2e+UJvpM4mujglRGoZ5orCmVUpeiP2S+UtxcPKuVLVm2dbD3c+CnmW19kA8WHdVYQvkcIyrrS4w0R4aucWs2mZbzoZLRdVjLOxkgygYTlxc5AxWfDt5wNta4jacTjD7Qg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741948325; c=relaxed/simple;
-	bh=U45g8iwNmKVwF8JuRRE40MIZL8GxhqYLJewGT8n6f/E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qdkoH4CHlyRSq061S30H8Sx/kDey4fm6r/5+5/JzDNpu32h5mGKu8T3//iiuhuq3g6xP15WNx5Zo5upe+So6GmyugBt7xc+58gZcY46nvP41ShzLL+f0Gn8sJu0DGIJi/qjix1svLbEfvzdgUxmHU3UG9Boopc9m2R5CGJYwRQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=imYmTWDR; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7F72AF1D
+	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 11:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741950038; cv=fail; b=o8vaGg8zc3gj2v+pqRYjoOHPjsteF0K7wH7zd5aIirbZSqe41rSFnNVGmOx+nLJCpR6x2N1VfPce+d8E+1B7amddDPgIfjHM7+NhiP7vOWeJ8a4hTWhX3sS8nhRd8hZuh9atngMLRf9LfnGDANyL9TRjlQnD8VyDJiymtAu1oX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741950038; c=relaxed/simple;
+	bh=cBQ2PpKrKwLdCgzNHZzHOZYi2o4Jfn7/jDkFQTrw58c=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QdhCPWqS3FAx3bljqJjTu6Lw7PZHavGzNOUUFkyAzf/78G4hOMW9f56d+XNkvR9a5Fzqemg8Vqpd5NBDdywCymSmtt8FSvlApW0kSzRPfJy7vj5J0pJ2zDu6VWCIvIg+ravTrbDV+sx/+JLOk5k7sxFSyBID0JcLhgI30zQisyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VwF40FeC; arc=fail smtp.client-ip=40.107.20.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="imYmTWDR"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B6A1E43319;
-	Fri, 14 Mar 2025 10:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741948322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Iwx6p4M4famV166YaX+k9uap2aPfGPkWwiC9dV1gl4=;
-	b=imYmTWDRRIhUzZAYkTcvQhg8TrX0tR95/uZwexFiDRyobi1MbuYgAzHHu8UrE4vrOiGNSp
-	fgV5k/Hvcmdeog5rwuJDO8Cxr7IxdKBworYIYdJMfSuromtX0+7UGt2SqwAqrNW6ctBZJm
-	IQHWnEbAXWf3kKMdtJKfqf/AiBz2xR0SucCqwZPEstgACaqqqI8f1p4j9lX7uwpqGzPOLB
-	E4Ctq+Drb4UDgJgVXoZT08m/J1DXqIzSHU/ngDTSvPLshSGWrjY2xNiM7DRhaF2U8HOW4k
-	yN2GpNT2b7qEt2j5MyJhBuIlLZohvL45JmPGP1hVfbnvyYU7xCBvH7nCNw6/Qg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 14 Mar 2025 11:31:24 +0100
-Subject: [PATCH v7 11/11] drm/bridge: samsung-dsim: use dynamic lifetime
- management
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VwF40FeC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jXyWW5DZiUZkbi6lu2ACiNJdgk+K97Cp/fMroHd1O9ZBwPKCOtZIqLg4Tk4f8/p80/Gk1z2r1SvyRXhxwye/7mZYhXE3KW1uRCLU4JJ6ZKP1eeuJsADlYEfLjys7YwmwbrVhatg7+uQqCVNKa6lMS1TmHlbIRSmrJkEupdYR70ov6OouBM6jLWfUxtaKIyvqdRWYNGq9RWvPChFfBjrF2UQZbNIxECOV207w8C6PgwWn/oTe7CCH0Ku8mKII17TXhZSoDDQZvdzZdX9HsK/riMvZyr5zoyzN8yuoQIc2lRl+0RzrUMlyMuA9Ww8jFGIOBPOnegwpiIqNqvmfYPuFcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2qyUfj1PkwM4YQesijSPV5olPWQwiWjo3wbQNSHzNZ0=;
+ b=WGcRIeX7S/488W1VryzX4hL2uiOtbus2pbWERcRY9Znt4c+4ONwRXr+bpObgHWwRQbaekZo7qzjXe+TktjEGitGtgCItdUr5HJwuH6GiTn6iyYInWS2u56yQpahP2xj8ZDFZwhCWvWvgPD+jhLEAabbMrR5S8BJw8uc3C5klSv2pWVy/SK3KyxFaO0fF0U82DdUrJYTgpQAusZa6QhXdtUnMcGlJZ58iIjfpULXKp9GhNTMQxGgkuFmHvUnBNWhjNOU4YhtqGYuLlOv7VYNpD3K0SBlVm99fjoLb7cdPy87GJD4TjFrBuEEtTgLBv2NZ3kHmSGhYXz9MgcUnmA4+nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2qyUfj1PkwM4YQesijSPV5olPWQwiWjo3wbQNSHzNZ0=;
+ b=VwF40FeCBhGhcPzdeFhcdgQQQZ2NeIZofMbXZhmEg1nzVv+GlXGoPckcSLlYCtrUNgm+6cMSvCG12jmJVEARuMiQdrf8YRvIuLlcrmWvE01PAuXzXyhYG9EB+9fDAUIWk28IrYO6HiDX9NZD0PhshcdCPLdk5nGeU9o8I1u++nIJq90sYtLLsIEJsAijGtfYKyv+BUUk3l+fiZSs5nQDSdT4yKo6EJZe7K6EHFB9qZlFk2cG1Or4jaeB54wdYBfQBLmvJhPryO2eI+CYAegJoNwrWSqSjtzGtblet/rHXhdhFPIn87jKKB63lIITCw2PcuC+eLpMZV6wV31UUJQfqQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
+ by VI2PR04MB10166.eurprd04.prod.outlook.com (2603:10a6:800:228::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.28; Fri, 14 Mar
+ 2025 11:00:32 +0000
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334%5]) with mapi id 15.20.8511.026; Fri, 14 Mar 2025
+ 11:00:32 +0000
+From: haibo.chen@nxp.com
+To: mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr
+Cc: haibo.chen@nxp.com,
+	ciprianmarian.costea@oss.nxp.com,
+	u.kleine-koenig@baylibre.com,
+	fabio.estevam@nxp.com,
+	festevam@gmail.com,
+	linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	imx@lists.linux.dev,
+	han.xu@nxp.com
+Subject: [PATCH v3 1/2] can: flexcan: only change CAN state when link up in system PM
+Date: Fri, 14 Mar 2025 19:01:44 +0800
+Message-Id: <20250314110145.899179-1-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0025.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::12)
+ To DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-drm-bridge-refcount-v7-11-152571f8c694@bootlin.com>
-References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
-In-Reply-To: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Anusha Srivatsa <asrivats@redhat.com>, 
- Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufedtiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiieeuvdfftefgueduleehueetgffgjeeitedtteetkeeuueeuueekveevvdeuveenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegrtddtvdemudgsrgejmeegkehfjeemudeltgehnecuvehluhhsthgvrhfuihiivgepkeenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegrtddtvdemudgsrgejmeegkehfjeemudeltgehpdhhvghloheplgduledvrdduieekrddujeekrdduudekngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefuddprhgtphhtthhopefjuhhirdfruhesghgvhhgvrghlthhhtggrrhgvrdgtohhmpdhrtghpthhtohepihhnkhhirdgurggvsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepmhgrrhgvgiesuggvnhigrdguvgdprhgtphhtthhopehjvghrn
- hgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehprghulhhksehshihsqdgsrghsvgdrihhopdhrtghpthhtoheprghsrhhivhgrthhssehrvgguhhgrthdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjohhnrghssehkfihisghoohdrshgv
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|VI2PR04MB10166:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4b353ea-eb60-4cbf-a11b-08dd62e77052
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kB5tayo7KmZqv5zQJ7u8h+tbW0gy/nSb0j6vYZKt2T+Qd2n7+CWqVHqpL5Tw?=
+ =?us-ascii?Q?CU5+OmGJL1xBysaF+UjEf5ESUF7Mr965/LM3wSokE+pieiaXY13QNOcJMgAu?=
+ =?us-ascii?Q?gQQ8zQw5KKcCDRmnYVbfk/Nx2N/hRYGw+lueEdwMnLWsVXhHJ2RxcP6HPCpL?=
+ =?us-ascii?Q?cDfko09HzVlAQnvEgZq8lFzAElJYG6AFrlVuErELWmZFS9vwT8zCf7dC2PAD?=
+ =?us-ascii?Q?0+q8jmYr5sN6Y7Ba/Lltfcd6e61dtz61SqSKRkDdNvHliuirjqJ313gLjnGN?=
+ =?us-ascii?Q?9Z7f1Rdj50vdxts47y3cTcyUsL1YQ6PmMCmhFEB3/x523tYTGjqbhc8WnaEf?=
+ =?us-ascii?Q?bDvC8VZXjkw/3zmzwKnyDAde7dD0YM/qfzLqC9ee5UAQCdPqIHBETDk0OnV1?=
+ =?us-ascii?Q?mZuU1Ty+PILczrsGR0b0vWXpIyR9QXIGiXYMjIcoV2xbUtEio2TJF+ShwfTJ?=
+ =?us-ascii?Q?IgsFXMLz/suC/TFOV2wJYBpphIzHPCn2w1qwE5n80yLKEKel6b6JAgCpfK3G?=
+ =?us-ascii?Q?P90yDzITC5lZVRdGS+FyegYJAm9+XLhzeYB1M5KpVnXhrON26kf/Z4IuFxhn?=
+ =?us-ascii?Q?uHR8AwSIqBdLe8x4sDSJvfuh+tWdtYH3TcOGAJOH0gNdlrDZn46cHt/m/1PK?=
+ =?us-ascii?Q?GcMM2GoXlJ3JMP+T8LlaMDOfBXMLvqIfMh9S+tpFE+8xLAp6ZAmB8wz+z+zO?=
+ =?us-ascii?Q?nw9vrCy4JiKVO1grkM3lJ1qqkSiLgc/GVgoJ9aSTSeUnEA3KJACdEDAdyNVK?=
+ =?us-ascii?Q?mdLMS6j0TWKURh/pZEJeaY1bxhTQjWWiOFDxuVQhoZrRwK4YfELXZB7xjD7r?=
+ =?us-ascii?Q?ZGbiHmTGHtXNgculp0aI/W1JPAjFbN8vWv7QhV9ebZiHgh4joP5pRcNqw4fq?=
+ =?us-ascii?Q?bJQ8cSlJVQe+5ovZZ+RL1DwneocHroNTrslwrThjGVGDwCHb+5qlECkmeXkK?=
+ =?us-ascii?Q?Axov9GzoOoTu3w7XOTd0eT67thDpWiGUDKu/ofxk5TMdeI9+A8bx0WdzlzTW?=
+ =?us-ascii?Q?42YYgMSRf3pjVZlVqinG5CaihneaSHkqCL/CiuGBkGK2Brk0Mh/rt0FGLTqn?=
+ =?us-ascii?Q?4evrgifSjjqNYuTDRDmLBo0Oc4E1cFkFtuysbYGSng7f8mCX5vG5Abtomgr6?=
+ =?us-ascii?Q?dWbEyxwWabD9I7wcWqCPACeS2tCVsUERQPOhCy7MVH0H081QFpYvzhpHYCr7?=
+ =?us-ascii?Q?xZ6S+7xRh5XsGCJv0PzZTaljRUe78Dzyq1Y9/Hd7s9/WpDeSwmWfESBfghD5?=
+ =?us-ascii?Q?ID1ViZ8c+YzP97UrxCLQi8nXOi2lO9DN2wfbLHxsuNU+2ue1PvtNiMf3Z+ZL?=
+ =?us-ascii?Q?KB3gGhQP7uBd3xL13SJUJ7IPdVhyrRcxUKIkBjPnGUzcwn/YDY1Gi5rgJpyN?=
+ =?us-ascii?Q?DX3L8CeCY02/Iride4XO9ehPfBlQFvkhW+35wVol95nmvN76UKZ/+LIHDrs4?=
+ =?us-ascii?Q?AwNF2ITckp4C/SM+rGjyK1aRn9VHN5Tk?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JZr/xuNWbWChRESspIiM5ib6PN0Poh8y6iHKs6Uqxs19MoX+CuWG3cFnI0Wv?=
+ =?us-ascii?Q?RIFwNn7Y1bM5z0ZlTTCMbjh0BTtuyZr4J9/cMonXotBGC3jxAbsd6zZwoxxi?=
+ =?us-ascii?Q?tLFH9qjREZEFkp7zUt3jipupklWhITl2mxob5iHwgvZ+qeVbvOxI+5B3bh2I?=
+ =?us-ascii?Q?ANwsGCcFG2wSkwshLTkNJW/wXdFQjhyf+TPPz8u34hzk9lV4E/u3x1PgiQs1?=
+ =?us-ascii?Q?ofpBw/QuDp0Eih31+cmnyADYXSufGK3J9y8QExY7Os1G9PsPvtIF97Tlodpu?=
+ =?us-ascii?Q?aL/LRsL+Z9Vbp5jyjHDqCr2SQpViJSkSDhvE97VLIrGk7cgzprZy0qVuSgoc?=
+ =?us-ascii?Q?vsCfYmq3hfzQvjgf10lXAFVngtSwkWjKipgaJvLMUtzwlbI8i/rKnCo+NUqV?=
+ =?us-ascii?Q?nUBZnagxjKEw2UvSZLdXFIyb12a4SZijIWpB2eIoavdwfoa6rlrD2HXif2Dk?=
+ =?us-ascii?Q?5ZtuPzq7PW9vMPo7S27jW2t3Yoq9w6UD/qiBcPAz5GwbEO7qKjV8FHbab4vv?=
+ =?us-ascii?Q?gVNSA+8X6EFvrSpo6Owb/4TIdgZOhLbEOVSJ4hNSrDC6OpYDmetXASC81bOw?=
+ =?us-ascii?Q?CKmvzrnGiWhOoovWBFeGXVbPYvdFh1MguRnkKDZPuNDvxUwI10i8+Yt7OR5b?=
+ =?us-ascii?Q?eRgRIMeE5hd1tJjxFWvip9M5VhUJSjj1m/j64+TN1uEZT5lSxVmlYAjKxd+G?=
+ =?us-ascii?Q?QTBzkOdTiZmaeoxsCShkEorYHexGn7yXtpONNcqZWrEdnPZ2C0JEH7d67vjR?=
+ =?us-ascii?Q?cGgd1n2a2EhNKjOx1aUy5VZl88LD2350w/ZcvBDGPbBOqXZr+aEekeHezUVw?=
+ =?us-ascii?Q?ik7dxTI96MfIpQzJGVGjbD/lnIbinnYi46RE2p81Fl40Ki7krfWe2Ixnccvq?=
+ =?us-ascii?Q?1boCo++AKtAOxTo9DNDD8xJ32T6nZiAvtGkL7Z+x9p7Z26D/frpJR9GGr5q0?=
+ =?us-ascii?Q?H0unb9MwB6cxVPFvJgKYrJnYTLeoM5/vEFSeQ2Vo/CkmojEmMwPXU0bEp4uj?=
+ =?us-ascii?Q?Nz8abu2EDRC6RjZSBsI1yJBLA0dGtWwSty4EN7LVNGOMurWa4mU+H1Zl6M6s?=
+ =?us-ascii?Q?dOe78yMQU1WR4/DzAhT3Rooqg6z0O1Ez3u5WfiIsnaiqMPEAnEor4DVtMuU1?=
+ =?us-ascii?Q?ylSvo7ZbOBTxyh03dEVJJU6fizTRl1OfwUGHDgv7YJqvojtyFHQS9hmyccaj?=
+ =?us-ascii?Q?AZzCqAMh3nSZp5Lw9rp8wewsZqgxoPUPHmpEMq9PGIPXmHj8n5JgC6kJBwgf?=
+ =?us-ascii?Q?pGTILN8Uf68hpPJdxpNhIjl8d9L8CxVO1KL8MX51ujWr0rrWh4hVFt7Ks/94?=
+ =?us-ascii?Q?D7m3bGSFQ/4a+fNps+Eyh7H96icIYihW2bvfFjaDjwbLxwMXIdUlZVFo5U0E?=
+ =?us-ascii?Q?KLza69ri4QM0FLsvqmBLOjHTric9kTDAnZtAti5VlyT3xfbBSNWzgcdi49Ia?=
+ =?us-ascii?Q?Rlsfn0ELyxUewQTBrJuomZO3oH225cZuArjlArsJ4V/eoc8w58krwTeC9QN0?=
+ =?us-ascii?Q?4BfnZ9Eh7b+/ha8ZQ/1MiKcAr4Zglp0qQT39de4OW9/p1JblG2aPIi6lajGl?=
+ =?us-ascii?Q?wRYU0za++WYaX7Sp22jvyz2mcHUbhMBbJNu0uzk8?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4b353ea-eb60-4cbf-a11b-08dd62e77052
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 11:00:32.0451
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yTjOCzsEwDkTrRTpwzosw3cmv4QcndputxTKKF2F1tYdsXMxu/4DBPUMQPvYqgUkzEPFh44vG39QuQ5LUP2fJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10166
 
-Allow this bridge to be removable without dangling pointers and
-use-after-free, together with proper use of drm_bridge_get() and _put() by
-consumers.
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
+
+$ sudo systemctl suspend
+
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
-
-This patch was added in v7.
+Changes for v3:
+ - only handle priv->can.state when netif_running(dev) return true in PM.
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/can/flexcan/flexcan-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 54de6ed2fae81bc13301a6b1ee8f38183a3118b6..3d41db7a0ceeddccc1a89a2ff1f38fe10ec6acfe 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1935,9 +1935,9 @@ int samsung_dsim_probe(struct platform_device *pdev)
- 	struct samsung_dsim *dsi;
- 	int ret, i;
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index b347a1c93536..d4d342d8f490 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2299,8 +2299,8 @@ static int __maybe_unused flexcan_suspend(struct device *device)
+ 		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
  
--	dsi = devm_kzalloc(dev, sizeof(*dsi), GFP_KERNEL);
--	if (!dsi)
--		return -ENOMEM;
-+	dsi = devm_drm_bridge_alloc(dev, struct samsung_dsim, bridge, &samsung_dsim_bridge_funcs);
-+	if (IS_ERR(dsi))
-+		return PTR_ERR(dsi);
+ 	return 0;
+ }
+@@ -2311,7 +2311,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
  
- 	init_completion(&dsi->completed);
- 	spin_lock_init(&dsi->transfer_lock);
-@@ -2007,7 +2007,6 @@ int samsung_dsim_probe(struct platform_device *pdev)
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2331,6 +2330,7 @@ static int __maybe_unused flexcan_resume(struct device *device)
  
- 	pm_runtime_enable(dev);
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	}
  
--	dsi->bridge.funcs = &samsung_dsim_bridge_funcs;
- 	dsi->bridge.of_node = dev->of_node;
- 	dsi->bridge.type = DRM_MODE_CONNECTOR_DSI;
- 
-
+ 	return 0;
 -- 
-2.48.1
+2.34.1
 
