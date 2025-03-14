@@ -1,76 +1,71 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2084.outbound.protection.outlook.com [40.107.103.84])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2073.outbound.protection.outlook.com [40.107.104.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6090200130
-	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 15:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC061C878E
+	for <imx@lists.linux.dev>; Fri, 14 Mar 2025 15:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.73
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741965693; cv=fail; b=IFBYHr6VnYtuppYJvHqD38SmWcmzK1j0uDKNqRmINek8+BMfKOZIGDFR4Px1V0zglIrTa5F4s8eq3XUBYVsTMLtzOrsvuv8aQZhINU9fGPBaPr2vLxahrpTvDKnbx1QghSwC41Pd7GWTlzf430aM1zwCsrwf5nvW9EkDBOJ6bgI=
+	t=1741965847; cv=fail; b=fVbDHa7aI37nJwXr8czwqzChQ1kegW3r49FCM/soZcIuzzyerkHLZvzZsSPpCoEbj1rFMvyK3DPHdkPL6Cl34F/UAEF88Ho4rMYu89Kr7RHagGxnWXnBQdbwIaxxYRCuGDRF211eXTr3iLXFQDEpdVopA5UYumZRaT49wsgrTIY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741965693; c=relaxed/simple;
-	bh=qyWr60b+ZQlP+HS0RRkqX5bzbrtasjnsMl5YaGDnBc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QZcLLjOoePItKYIGcGSra86XOLju0DYzy7k8PNa8smgkykdOM3GvRXnrVKq94oPo7R8/4/ZQnXPEcofkyW/lBdNhtenRrtXHUvRU2+k1oUgDAdozH69lkHLV4Dj1ngF5lLsKi7xSd2HPcK0Zncd189xvIcWJo74PDjSixxsiwwg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dsvvf2L0; arc=fail smtp.client-ip=40.107.103.84
+	s=arc-20240116; t=1741965847; c=relaxed/simple;
+	bh=kMQG1nWVlwJxYCJJ4idBxeCemmig8Phro/azmXSGBDo=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=YQ2Ip0Tudn8Ia5qLqBHbAKs0IuRMtM3fLULrs1eoNWR9Fl1JoHSHkiR88yD6zVu1O5wHPrB1XwTi3JGNmyDjGy8rI98AVW08UxM1KiXeOQIipRzVrx4wiap4Jqg6zhwcBBtNu4xqwx3j2/cF08bUillsclatn/I2pxuBsbZ1lh8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TZhX7U/N; arc=fail smtp.client-ip=40.107.104.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dsvvf2L0"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TZhX7U/N"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KQQSwGd8pZyavo5aXpviwFDKRt/Nt64HK0b/E8UTBsdQPIMIwYGBgqHKpCmSht/06ZzZUkOc1p6LUvFdFeONPMZoOYGaHxPxADxkgbOZC7UDkBBfNfSV4neyZ4FXBtA5LO8rlkexj+v4XXCc4AOS+k6tPjtAwSGAQxf3kcr+at3cacKkuH/Gqq8c29FPxVqon5kqSKuodn0QSlM2erP/Iu665e1QsqxghlGCph43P2YgZ53Y5Z+YQR8pmNHivJmvoDnMmfO3OxzD5DDBeKvHw+1wADAkOWeAseeQTsjfqSqDkc4+i+DxRsZITFUjY1HIpoSvDVgev+/c1dhgBHWMow==
+ b=KO2zVdCuRHulppAi1KPJRzDFX2BQMfJI12zQK2K4oNIxlykzQ1P4SxTWdZ+83loYOwJPaF4DcVZk+RbgV8WxD65Fwc1tLX0nowQcadvti104udKpGh7hulCXAMJYc5hzuwFhc4EY9OnM4knw/JJoGE4WnPjenDorpu86Zovh4bCJz3CS6RxyuTXGqsRuuVYJf9Q13Bu2V9p3QsicdfebdFax9ojptzwag2yv5mHjOUa8fSUN86BojLjrOpbawRW5Hwd4b4MUCOn+lix0FJ2nCRCAq4XadVrbGvGJbxuqlgj6eKACOXpDkbk7SLnsCxMoHqFcKCrZQGJuA6bC1qSUXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/WGgGvw6iyrbWzJ0QgoWSQYUGlUlN4FpjqhqNYngZl8=;
- b=otJAJ7F1aMF47ZF+3Om2O5jGZwYUzghqHxakmcl7gZsSnfCBA0PQEkiBIPkip/iq1+7gBINJu54m6rv5sDODyDQmMprHb7nRbHNfk9chQIKfI0/aOgp24S4DqWbtiaaqNW22Zi7eGbVvxPHAgTVv2tDibAWssANIIdpQwytKAQYBpfaIfW9enCOkktofZckjKXJCbDrvizueGj2EtrRHXqFZsCUMx46X4JMrahQGtL1WZt9Fe4/Rp19z5r98o7Ya756mnI7EOWLIRrCIdkeOclJmCGqlORnu4G7QUjE+yOWQG9/wOEfwXqqam1xAQlCUcLGcBHZCaLpS9bFZaPYdbg==
+ bh=5U3IEn5YlIQ0KP6tURAdorjPz4QUolk13MC+CvC0hKA=;
+ b=xUcczdB2JJ0AY+rzN5WKhPsS72U+mvwO08ZKOUnjNhRFsAuA/zTgUJNvTI6krfNMEgVXqm0PUmhO3HqMRzXiOiVxyntetIONQIsvAUsbMbTftphYxGMIRSiSzMmDYxila/DVdkoR1f3P80LvFDNSxqX2rNQB3008OhCABFLcFhJBBeh1VI5oz+/iKHfHoHpzqHXddPrCUFqISa/SlAhJ58pcCvrbUWHUWL7N+Pmpbm3mpg776jTGo4Z5MPoBFqQVgxm4ixu4VgXTMCnHDqxNlCo8omBCccuPKRPG7AslLQaiCjVeWB3PJANfuXJIunjWPWaqKf4FU7jv0Iow/forTw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/WGgGvw6iyrbWzJ0QgoWSQYUGlUlN4FpjqhqNYngZl8=;
- b=Dsvvf2L0K4nlczdBd7V/dLa5wfT8FGANnkI++ujpDEN4+3SgqpMZg9Wra8LwFyE8GJTSAdn5tQOXiWXLG56446G6W/AFpjLJqqHfQ+KvxPXBwLaYjKWw9wpLqRFEYrS5+sKrcM6i+utVEPzT3A5cq5mnnPpe1fhiNAejkL82T9+sPp2f7ukpcoPCc/snD1tEnplHIK+hTV0SXGWhB+vtYillFNmsXpoya26dTDJT4pkDtLvt5T5/HOLr2iAvZvev4nBq8HlOLp/vdSlU/VZXsAv8mhXtypAA7k0JLLhZY0KutpWxnOoBiij88ahiMCUCWilJ18PKGnvYXu9sMDfcVg==
+ bh=5U3IEn5YlIQ0KP6tURAdorjPz4QUolk13MC+CvC0hKA=;
+ b=TZhX7U/NJHqxOkldDEANiMLB9uq0muQ6JrubFjgd/ooRcJDM8n9APZx/H0U8yfnHKuuT8/GCzRLBYeyUy6RmxkkplNaSxwjFR0mHsSofHPs25jLacJiG7YJlvzsT4JU4X2IwvuNAPu/vHy5C61uoRK0Rl8hYZxHQeDOHqk1KJcNcABYNzZcoitkDe5/kcRfFpxkWlm0weD/3OcS7KMKB09UdoBaZ+68TdkGb8tiPFAxUJS1mwybcVws5G9hwZkJMX6T12RbBL/Jfx4tc5gV9zbfhosPz7/M/4XYP4sL66WRnvwNg7Bjo5d/1hEcRwiE8DSe1gU9Tx1qWXb8Py1aWjQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by AS5PR04MB9730.eurprd04.prod.outlook.com (2603:10a6:20b:677::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.31; Fri, 14 Mar
- 2025 15:21:28 +0000
+ 2025 15:24:03 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8511.026; Fri, 14 Mar 2025
- 15:21:28 +0000
-Date: Fri, 14 Mar 2025 11:21:19 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v11 06/11] PCI: dwc: Use devicetree 'ranges' property to
- get rid of cpu_addr_fixup() callback
-Message-ID: <Z9RJbyoFdkiYHXu9@lizhi-Precision-Tower-5810>
-References: <20250313-pci_fixup_addr-v11-6-01d2313502ab@nxp.com>
- <20250313220450.GA755590@bhelgaas>
- <Z9NikZqmmnkt/GQm@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z9NikZqmmnkt/GQm@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR13CA0187.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 15:24:03 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v5 0/2] regulator: add new PMIC PF9453 support
+Date: Fri, 14 Mar 2025 11:23:45 -0400
+Message-Id: <20250314-pf9453-v5-0-ab0cf1f871b0@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAFK1GcC/1XOTQ7CIBCG4asY1mKYgUFw5T2MC6SgLGyb1jQ1T
+ e8ubdIfl9+E5w0Da0OTQssuh4E1oUttqso86Hhg/uXKZ+CpyJuhQAUoiNfRKpLcimCKR+FIo2P
+ 5cd2EmPo5dLvn/Urtp2q+c7eD6bok9JLogAsOQWlDAArPcC37+uSrN5sCHe4Q4Iowo0i2QC+sl
+ qT/kdwjuSKZEZE5e9BWAtE/Unu0fU9l5Gz0JgonhDUbGsfxB+DH3R85AQAA
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Joy Zou <joy.zou@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741965840; l=1642;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=kMQG1nWVlwJxYCJJ4idBxeCemmig8Phro/azmXSGBDo=;
+ b=bdAOuHD/zP2syXrbCdkPPmtSf0yMPm4E5nfRhvxv/+6Nxk704pmCOuNuAzlGFHabPRY3WY1Mp
+ 8IxUuXHFmlwC+kHnvZBF2JP/WnfCdXjBMsyewzNHm1d9vG+spBLtRdQ
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR05CA0103.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,258 +75,150 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9730:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd60f724-9e13-4943-c3e0-08dd630be429
+X-MS-Office365-Filtering-Correlation-Id: 62f06481-3ed9-45f6-0f73-08dd630c4082
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?K0xMTlZpOC92TlJVaFFVbFNCRXMzaVNmUEorWjIvWHNrckJUTTNCdGYxeEov?=
- =?utf-8?B?aHVrQWNwVWdZR1l3K2U3QXpWZGRIUjdxYjRJWkU2SHRGQlU2WG5hcm4wa0lR?=
- =?utf-8?B?UUlyNjcyUVdrU0w3UUkzZjBjNFgyOTdtN3lPV0paaW5lZ053T2Q2NjRGNnJQ?=
- =?utf-8?B?VlBNdDhZTm9rUWlsc1ZZM3Y2S2xVc3NwSm0wTWtXbUs0MzJYcGN5SmdBMjBy?=
- =?utf-8?B?dTl5amZqVEg4QWhseEVyQzdqSk02NTVUZDVSV1pRenFYRjhteTUva0FuV3l1?=
- =?utf-8?B?M0s5dUZMYlYrVVlublU4YkpidEVkSUlpU3dnNkJvdmFJUXZCZGg4eHVKc1hn?=
- =?utf-8?B?MlBKZlYrVFVLTVIvZEtmWWgrNUN0djB5YzE3ZGhNLzRrZnA1czNRQUVZdWFR?=
- =?utf-8?B?bmJ2dG1uNjFVU3BhZVg2ak9sRUIrcWFqd0I5MUVtNTJySnpQdU5QMnVjTDkr?=
- =?utf-8?B?TkI1eGQwMWtxcFY4QU5WYldkc0loeE5CNWY0WXVGY2NtK1pYaHVOQVhxRHhV?=
- =?utf-8?B?V3RsUlpPR1FIeGkvYzhKR1VJaGtCdGIyZENqNVVBK1ZFb25qb1AwVjdqNi95?=
- =?utf-8?B?R0VFdkphVGgrNkJ2MzdXQXRMM1RsWUdCQ1BaZU1temJqWG9CNjFZczE4aW8x?=
- =?utf-8?B?WVYyZ2gwVzhRSkZzNExUekIvb3lONXVCTVZycHVGU285U0NabEpXMUdOcDcr?=
- =?utf-8?B?c3Q3MXJnK1pOOU1lSU9ab3Rjb1RyR1VRVGZ1UlFoMExYUXI3RXBSeXM2NGlI?=
- =?utf-8?B?WFFuM01zQW01bWVsVUZQMVpMOWdTNTJCQkxKNkF5SzA2TnVtQnFna2ZrRVpB?=
- =?utf-8?B?QUxGM2U2SFA1UmRYTk1rSWt6dHcrUlV1em85U285ZW8rbXI1cytBTzhGTjU2?=
- =?utf-8?B?OVh3Z2VRQXNqVHN0M0lsWG4zTndjWTdDQjRuQXlvNWwrTkc2Y3NmS09mZmFN?=
- =?utf-8?B?RjVTSngrenpXRE1RZEkrUVhEeUdEamx0cEowa1dFTjQwcmswNzZkS3pxSzFX?=
- =?utf-8?B?YWx2OUZpeTE4KzgxOU56aU9FWDdzK3FNVDNBZUFLR1BLWElLUTVVKzc2TDhE?=
- =?utf-8?B?MFRDMFh4VXV3MmM0VDJCWER1ei94ai9xWVhtdmhqRlkvWStIMkFJMXJlZkMx?=
- =?utf-8?B?TmZmYzEyNHhSaCt2dVljd3AvcnR0TGZsbGs2Z3JxeGpvMFBYb0UwalF6eFY0?=
- =?utf-8?B?VmtyR0ZCSXQ2VGpWZjMvQ3JUckREcXBsbUlFeG9QK1RMeWtyWlAxTk5aM2Ri?=
- =?utf-8?B?RFNsMWJpQUVrNnBoOUlsVk4xUlM1K0V0TGhVZDZJTG9nNXlwREhFMHVPUUhL?=
- =?utf-8?B?ZzFDdWM1VDVDdlA3eGFpWklpcEFlajRnaWcvMDJnTTI0dnZJUXFucWJOZ3F4?=
- =?utf-8?B?ZGZiSGFYU3V6TVlxbXhqc2FrTDBLYy9lWmREVlNHM3BTb2R0VDgyS253TUNq?=
- =?utf-8?B?R2R1T3p0QXY5MlBUS0I2Wkk5VzQvbHVXQTBua0NRclYwQ2pGM01UWTA4a0Ev?=
- =?utf-8?B?UnlyMzhmc2VpdW45dWgrT3NIdVFGNHh3Rk5IeHAxOXN1WVpPWndac21SMWph?=
- =?utf-8?B?cjNPOUk2WWNwWG9aTE11Y082UHk4SCs2VDc4MWRIVU9OTXZyeGsvRFBHQnNr?=
- =?utf-8?B?NFIyV1BIY1JEUVFjNng1SjU0bkhGNVREK04vQnU4WUY3bWZEVG5qd3NjRjE2?=
- =?utf-8?B?QzAvU29rTHdubTlKR21aNlEyUTluemdNYVVQQWZFUkQwemxQa05ad05WVHVa?=
- =?utf-8?B?d3Z1ZDlFVTFZQnhzajlSNU9vVmZJdFJmdlpvdkJrUi9yTG50UFlNQU9TUWtD?=
- =?utf-8?B?Q3c3Q0tBQWZNMTNVNTZ5YWxPNk9lOFJWbnp6dmcybWUwVHozUzdiL1dXVXEx?=
- =?utf-8?B?QU1KY00yU2hCN2ZjSkYrZURGaVlDSGVxZTFJdi9zTit2TWtIckx4WC9IOFRj?=
- =?utf-8?B?cnpGNzFwM2MyeEV3OHdBcGRZMzR2OW4zUVJTQklMZ3dBbnNId2pYeFVFYisy?=
- =?utf-8?B?WHlBMkhJSjN3PT0=?=
+	=?utf-8?B?K2NuNUxXZGV4aEQ5OGNiYUVHWGkzNU9SSDV2eDNmQTFYK09HMVorSFUvUVFy?=
+ =?utf-8?B?bzlUZmwzaG9GWlVVZzU1OW5vOHQyYXdTUFE3QWE0VGJYS3k1QWlTTXdVQmJJ?=
+ =?utf-8?B?RVhVQy83UHBVOE0vdG9jeEZmbmNDWnFFUWM3di91cUtxY2U4Q2xac2lCNjhs?=
+ =?utf-8?B?YWF6NkcyRDhwdzhKR2dra0VDWTJtWW9HUjJQUndTTmY4WmJvN2NyV2hrYTM1?=
+ =?utf-8?B?N2tERHJSQm9FMHd2RWpUVDR4RzB3MjVqOWJQSHlHR0pObEpEYWxFT3NheE45?=
+ =?utf-8?B?WTNCeXpnMXJJQWFZUHlvUE5ucDRrMFdjbHBBdG9TVGRLYkgwOW4xczBmb1pm?=
+ =?utf-8?B?aDFHS0t5anNBeFI3RkNBSHV4WmNwd1NsdE9wdDhLdDczckhRWDZSVnVRL3BW?=
+ =?utf-8?B?QlZPbnVZUkE1K3NSbTBjOUpPSkg2TzVYM3ZTZ2JwZlZHSUJZY3IvOENRNXEz?=
+ =?utf-8?B?dlNEQjNndUVZV3lDOS9wTUI1czg1bFBFT2kvUEJTTjU5UWJUTDZKZlpYZzNa?=
+ =?utf-8?B?MEtoKzRaOW5lZ1Zlb0ZXZXdlWGg1YUJpd2wxVTJtbmkrUVJyK1RnRjJCU2Qy?=
+ =?utf-8?B?eWp0L1IwK2ZEb0lQTGJmY3AwNVJlNHJleEQvZ3MyaUQ3eGNWOXEvZGFRR3dh?=
+ =?utf-8?B?MVJGdWV2RUdsZXEwSC9wWGdoNUd4VWNQUFJIQ1lYRHNURGFackhUekROV2lu?=
+ =?utf-8?B?N0hzOGNkaE4zeGVZb25wNFBxNjAvNHRmSnVCNEZIVnNva0NNQzF2dHRKZUha?=
+ =?utf-8?B?Nnk4ZkRYN0pvZUI4NHBDNzFEUDBKN3YvTERWQ3JvNHdacGJTS240UzFza2Nq?=
+ =?utf-8?B?ejE5SGg3by9ZaVVOUXBCR1A0ekZ3bjlSVHNvT255YWxmczh5VUNZUHVtSk1w?=
+ =?utf-8?B?dE1halA4SjF5Q2FraEpleElhSzB3QkRDV2RQVUF2V3FLblhwVml4aExzTXB3?=
+ =?utf-8?B?SE9Fc01iZ1FBRjZNUTU0V2I2UUVXZE13ZmhjbWplQkNHNXBMZWNmY0kyMWxE?=
+ =?utf-8?B?QlJ6NEI3VDNZYXBuTjlkdE9BaXJjbTZLUEVlZ0t3MDM5VEZ0VWJvYldVMHB2?=
+ =?utf-8?B?SWc0blFuaTZhMDJnNzBianBjdUZKWUpvV1VJNDNiaTJhSFdxL2tKdUl4Tk5V?=
+ =?utf-8?B?RVhWUytJNmh4Q2lBbTQydVVwZDl5b1h2YlVGbVZpN3lqRVZsMi9yc05FY2U3?=
+ =?utf-8?B?dkJzMTVMZ2h4QzcxSHRlNm1ya3MzSC9ycTh0RWJsNkJnTkFBU1lXaTBsQ0ZF?=
+ =?utf-8?B?MktRQWpEc2NsRU9FYnFNK1RkVzlaRGphSm93NXZodFNveW51ZUhHaHlxWklI?=
+ =?utf-8?B?V1J1cEVHVmdNU3c1MkYybkliVmxOSk1zQ0RwUFJkN2xMRWFiZDQ5bnlObVAy?=
+ =?utf-8?B?R3FGM1prK0J0OTBCclhtbnZoaGtQbmF5bDV0eGNGYjVKcXVBaHp3cHpYeGdo?=
+ =?utf-8?B?M0tTMnhRTkxZcnpoU0t3TXZySDd4L25vVmlHNVN6SEtWRFpUTnRRcEJtYWJM?=
+ =?utf-8?B?K1JONzAvdzltMjJsbjJ6QkVpU2lRYit5K0ZwNVdqd01yNFFBMmU0TXU3QWN4?=
+ =?utf-8?B?VHVVVlByNmxqVTVldTZIV2poQ2ZSWFN6eGh6cHN3eDNUZU13bEgzK0w1Ujkr?=
+ =?utf-8?B?QmlvNnkrbzEzek5wWVlDYkFlSks5K2k0WWpXeU52a2VqZEduRDhoT3BWVWls?=
+ =?utf-8?B?bHNDZ1N6eksrRHZCQXdjNkJ1cEVsZnhGdjVMWWs2TWxsZVR4K2tycWRjVkVp?=
+ =?utf-8?B?UUxlNkpPN1p5aXFHOTRWSFQxQ1ZKMk1ZMXlmWVA4Z2g4TU96VUVyNktEZ3dn?=
+ =?utf-8?B?MU9rSjBDWllTL0dsbVg3ZmpWZndlREY3ODlpVlN2Y0JTVnBubXdRVityOFdM?=
+ =?utf-8?B?d1BmMGcyY1UwMHVjUHMyZkFDQStXZzl1anhQMXQ2YTVUbENNeHd4VjZrV1Q3?=
+ =?utf-8?B?K1JvNjkzK2pTaWUweGtYaksrb21QMllBdEZGTktMU2NUSEF2U0NpYjZxaVJV?=
+ =?utf-8?B?RU1qSU5VbWFRPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?emtSVU9zdkpvYjRnWFFqckRSRHVvSXNVODZTUUpZUHpJSVkwSUx5YzBCSERB?=
- =?utf-8?B?bVVpNVVQa2R2bVN5NHRlRnBkTE1wamxSK2E0a2M3dWtNVll2YS8yOHNaYndu?=
- =?utf-8?B?NjhsbHAzS1lOb0gyZGpCb2s4YzEzSGRTS1lha3FIR29nSGhBSzczU2JEd0ty?=
- =?utf-8?B?blJyQ013YVZpWW9tMCtIdGJSNHFEWllzWGFhK0wrM1FaSG55RDJ2aURyR1ZE?=
- =?utf-8?B?TlZkM3RHV2QvazhnclBCeXR0TXRyakk4OGUxelp1bXhWOVl4aE1HVStyTnBl?=
- =?utf-8?B?cVUwdHBjN1dZU0dLVzRpRnRNbUFtRG9oQ09ETHBHdTRwNnFWRGZnQmNHYndZ?=
- =?utf-8?B?NFZDOWgrZHptTFlXUUFHNTVHalZJRXh6N1FIbUgvSytUTG1WM1ZoWVc1bjR0?=
- =?utf-8?B?YmlDVS9Ja1B1bHVvcDdHVkJaUy9BZmVDQjZ6NytrQVhpRXg2UDk1RVRjTUth?=
- =?utf-8?B?S0w4bzdoZUJWUEJXOWpTV0JjNzQ5cFUxQWNCa0pDbytnVmJtTWg2TThCV0N5?=
- =?utf-8?B?SnB1OTUwTEpWZ053Q3JLWFlTWllScExVYmdZZnJzVVFsZXIxbkhGWkp5YVVF?=
- =?utf-8?B?QjBDWHUyZTlJNjZ0TDVkNnBVem56MUwvYzk1Z0NXcHAvSElVMlE0VFdOdzNN?=
- =?utf-8?B?VWtXcHZxS0hzQWl1VzRqbHpjWXU4R2c2WmtGM0p1TlkrQitLbjhsekZkL0tO?=
- =?utf-8?B?M0thVVpKNUF5SDRXa1plRHpMNjBoQ2hzTTJmWFNMc0ovd2xEdklqRHVvYnpi?=
- =?utf-8?B?S0xhNmg0OWhQdWpDMkFvb2Z6QmhMYlVUL1U2MFVKUSs5R08zbzJ5NENZRDJq?=
- =?utf-8?B?RElXZEl0VGpWNTJOTzkwajlMTUQrTkRxMUgzMjVZQXgzUm1Id1hYNEdNTHB5?=
- =?utf-8?B?b242aS9WQVNqNUU5dXZnbHhjYUNsWGNZRmRKWURHSHdzcndQbTVvZVEvZWpH?=
- =?utf-8?B?TFVndTNXU0MwQytydVFOa0ErSENRZjdpcVpvRzk4YjFxNE5SbEN4WjQySTQ2?=
- =?utf-8?B?OHl0T0llSDJUbDQxdGU2OVdDSEE5RVlwOXNHRFNrUytBV0NyeUgybjRKWk5N?=
- =?utf-8?B?eS84RE5yVE94SnU4ZWdIMXhPeGlsR0ZORlhtWlF2a2hxeG43bCtqT0wyWk9M?=
- =?utf-8?B?bUFCYzRza1J4bkJKT0RUbExuRlU2dTZYYTdkQno1MFZRc1dKZlloRTdrMTF0?=
- =?utf-8?B?ZEt3SGpRME5zTlRqekludE9saVJMM3MzeE5uL0ZueGxHYlZJNTVEMW90Rmda?=
- =?utf-8?B?MC9qTklnelJrOEt1RCswMFJhUXBwWE9maEpNZ0dCM21WT1A5djV1cDI0WFl1?=
- =?utf-8?B?NXF5eWdwOUpTMDZrSWwyTkFTSGFEWGNsT2FBaVJmYkREeTRIWmxuZkVpenZ4?=
- =?utf-8?B?S2w0QU1YNUp3ZWFXeTVJdm1IQWVIUjQ0NUwzTEhmTldvZTZwWm1IM1k3ZU45?=
- =?utf-8?B?YjFqOFZZQ2tqVXR1N1FOUFUveW1nQTVwZlcrOE9lejFEWUtxL1lQNkN1aVdY?=
- =?utf-8?B?UFJKZ2dXbGIzMDV4WldhaTgwYjdSaDhhMGczWlhZcVdabDlSYkxhenRTMVMz?=
- =?utf-8?B?RnZOdVJhZTNiQnBlaTdHWThvVXptVHUyTzJvcEsrdkF4N012M1BZRHdsbEVN?=
- =?utf-8?B?aE5oRFhtdUpGdDZ6WGNUVXdKTUkvS3I0VHJvVUtUSXhLZ3BOemdndzBhaDAz?=
- =?utf-8?B?UzEyRFp5SzZSc0RLbjFvS3JTa21EZ2tTbXdxbU9IeStuZUYzTjVKZEhONlNl?=
- =?utf-8?B?YUJOU3BteGoxUWR5NldRd1BBSkxKUnJFcUJzaEhaMDNhMEZFU21Ubm9mdWZz?=
- =?utf-8?B?OWZOV2ZVd25ZNTc4VitlS2hvN0szWnVhYlZ3MUVKSnBvUkpvL2F6cTNNa0tF?=
- =?utf-8?B?bGxnNUxqaDRYNjg4QXRJY1o4WnhYTWk1eGY0bGFrcklXRndrYm44L3lJY2Jo?=
- =?utf-8?B?RGRDS3A0Wlc3ZlMvM0xRaTgxYzVnQ1FQU3VOeGhsWWZpQkhxWEE4NU82akFM?=
- =?utf-8?B?bmh3NGlENGprTGhlS3NqZHcrbUVWbTFxU2p5TUxXNUR1b2xiVFNCeFBSVHdH?=
- =?utf-8?B?d0xWWE9MRjdMYTNOcWxEU3FRNnB6UUF5am5zVmRuOVdhWUNmblloQ1FHM2Nn?=
- =?utf-8?Q?zLNV9ZCsi8fMhJ5wf02rjOAzW?=
+	=?utf-8?B?YWI4Ty9xbEtKL3VNZVYrNlQ5UUhGRjZ2NFF0d2lvWExobGpKNC9yZFNIZGpY?=
+ =?utf-8?B?YTVWeTRrdlVkZEd5N3ZHN1lXRkVRdVowZG12dmt3a01NcFZtdDRMQ0Q0WkhG?=
+ =?utf-8?B?a2ZwRjZiM1RBWTdmZXRZWHFpUHd6a3R6dmhuZEhWRmo5bTltWjRqdFA3REFy?=
+ =?utf-8?B?NkExZDAycHpmUVlWc0hodjJvRGlaZlRvVzJDdHdGeURkN1hRaDJnUGlIelJi?=
+ =?utf-8?B?bEpibzI2TjhRVlFlQWM4QmJtelZsUlFCUHkrUW1iU0JEN21ucWtQTk1DUU9z?=
+ =?utf-8?B?OUNPLzV5MlUrV1gzdGs0VVF5M3k2Z3pqQVUzZUlOcW5OdlVtajQ2Z1lFVVJz?=
+ =?utf-8?B?NGpMSW9MZ2FrSnlKWGYwdjY0OS9EcVJqdmwvUFZlanRGV3BnaUsxMFhUcVYw?=
+ =?utf-8?B?dVRSQmlJVldLTnY0MUR0VTlJT1VLeFRHcDJTdmpuS2pFSmNwb2FQcGwzV3BW?=
+ =?utf-8?B?bkplQ2lrbUxjQU1TcWJFZ2FTR2JuV0E1TkxCM25NVnRpSDhJZzNua2ZiSFR4?=
+ =?utf-8?B?eEd0Y2dnbTd4Z0laN1dPZ09XTEdLdTI0NHZWQzdtYWxSZkxXR1VONklHdk1K?=
+ =?utf-8?B?Qnd5Wkx3RDFCblo2WmJPNE1yNXdua2JBK3c1SndEUmF4NGpCODUySmgvZ214?=
+ =?utf-8?B?Vm0yR09RTmxaelQyMmx2SVVETG1CdTF3RWpYcG1BZm5xR3NqNzVqN29BYjFO?=
+ =?utf-8?B?cXBGZkdnR0VsZ012aXZVVkJ2M1hpTGZyYVFxWVlBR1FnWGoxSGlkTVF0ZE1m?=
+ =?utf-8?B?WG5CZVBoNHZuVDdFNjlnVWs1T3lKUGwwbEdMZGdhSXlGdm5nZHhyWUNkc2N5?=
+ =?utf-8?B?RTViV2hVc1lSOFZobUpnNThxQm5BNmRyRjUxV3dwVTZkd0k0ckhuYmZCc1dP?=
+ =?utf-8?B?ZGZ0c3h5UW5ya0RJSzk3YXB2SzhxbDg1Slo4ZHRmZXRrd1BQb0xKMTMwL2dM?=
+ =?utf-8?B?TWpwMjdMWEtLTGV2cUdMV2dNTnRveXVwVHFZRmtvOENRZndVQlpWcm1nWWVr?=
+ =?utf-8?B?RTAyQlpTUmhzbk1KT2hFTEliUi9YeUJsOHlUcXcyeXltQ0dLY0Qrb09LMTMr?=
+ =?utf-8?B?ZWlnM1BYT1JlRFpyLzhwYVRPNThzcmd2Rlpxa0U4YXVJcmJZaGVQMWlkK1dZ?=
+ =?utf-8?B?eGVRM0lacmNsaGN1SDRBak1OeVBZMGg4VXF2VXNBZG5UVWNlRmN6bk15eGY2?=
+ =?utf-8?B?SC9Vd2s4VmpRRnI5c2F6VjkrRmoxaVIrUVIvRnhydytzSHVSbDJ5dEtXVnUw?=
+ =?utf-8?B?OW1MMGtpNE5uWVdwSit0YmRFeXdMZi91M2JSVVZjMVVxZXJzNlk5a0dwNkRm?=
+ =?utf-8?B?Y003ZmVIbEJNTC8yMVZIeU9FQXEzUUd1a1dXQWtpRm1GeVVVZXViSlU5WWha?=
+ =?utf-8?B?ZHZYUXFNb2xxcDF5T0tlTHFKdGRXazI0RGYxYlRCdS9GNGM3MFYvb1pLZGVG?=
+ =?utf-8?B?OXVoRlczZG5kN01ocVVhazgyQ0hUWFJ4S09FUUdxdWp2dTRVZmZRdWx5VUha?=
+ =?utf-8?B?bFZMWXRZNXp1WHlZOWUwMzBhdVI5K0tmOEVLazEyb3JMWDlLb0dEMi9Na0I5?=
+ =?utf-8?B?RUZNSDRDaGVxK0hZK2p3eTdrWCtOQllCNFJpK204b2htVHU1L1U0aWlKekpw?=
+ =?utf-8?B?T0hLUWs1eGNhN2RZY0hSOW8reElJRFlMSTJ0NXVzWjBJeUVMWVN3aUYwTk1I?=
+ =?utf-8?B?ZzBMZXF3ZUovMUhJVmprWUVVdTJySTBOUDRRUWhpdjBqenJ1VGo4QmgzV0ky?=
+ =?utf-8?B?Z01pbGRBLzl4NUJhYlh4N2JBUjBhTVV0WDRQQWdudlVKR1U3OWxpSHkzQUNa?=
+ =?utf-8?B?WWhSS1A2OEw0bXRnY1FrdlgzcTJNT0N2NFNKWGo5Ly9xNUJpYlFqQWRxbFVD?=
+ =?utf-8?B?VjRoZDE5bjI3dUZCZ0R2V3hOcEk0VDkvNHJ6R2RRaVNsVEcyMWxtOEZRNnhl?=
+ =?utf-8?B?ZU5vZXVCazB2V1ZHeGJSaGVYcEh5ZlRKZ0oyYVpZMkRPNjVuTmRhY21sSXMz?=
+ =?utf-8?B?UjJaWXpXNHgrcWxFYUFhTnBWYldoRjhkVnl6T2VZUnhESTBRSzNGdmtMWDhm?=
+ =?utf-8?B?VW45QnNTRlZnRVdSQ1hxTXhXenZENnlpOG1ZYmdQbUNFTTQ1SWlXbmxoVGRS?=
+ =?utf-8?Q?IXJ1EaHwS0yBOQ/Y2azy2wU9O?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd60f724-9e13-4943-c3e0-08dd630be429
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62f06481-3ed9-45f6-0f73-08dd630c4082
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 15:21:28.1652
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Mar 2025 15:24:03.1317
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EwBqhN375+aX7Kl1jFxkf1E+L7rEPXrqia1d88/GueLWepM5BlOzoSgqgSPEe61KDjJIgFmqdu+WJ+VCV7X9Ow==
+X-MS-Exchange-CrossTenant-UserPrincipalName: XSHF9EsgdLWJqmIKLP7fhpjQQdSvQ/3y2BKIqQTr3HGBYo8gmmO5c5rW9zMMjQTjcb1r0sWwFJptoM1y+JAjtg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9730
 
-On Thu, Mar 13, 2025 at 06:56:17PM -0400, Frank Li wrote:
-> On Thu, Mar 13, 2025 at 05:04:50PM -0500, Bjorn Helgaas wrote:
-> > On Thu, Mar 13, 2025 at 11:38:42AM -0400, Frank Li wrote:
-> > > The 'ranges' property at PCI controller parent bus can indicate address
-> > > translation information. Most system's bus fabric use 1:1 map between input
-> > > and output address. but some hardware like i.MX8QXP doesn't use 1:1 map.
-> >
-> > I think you've used reg["addr_space"] to get the offset for Endpoints
-> > forever.
->
-> Yes, it still need ranges informaiton at parent bus.
->
-> 	bus@000
-> 	{
-> 		ranges = <...>; [1] /* still need this */
-> 		pcie {
-> 			ranges = <...>;[2]
-> 		};
-> 		pcie-ep {};
-> 	}
->
-> >
-> > I just noticed that through v9, you used 'ranges' to get the offset
-> > for the Root Complex (with "Add parent_bus_offset to resource_entry"),
-> > and I think v10 switched to use reg["config"] instead.
-> >
-> > I think I originally proposed the idea of "Add parent_bus_offset to
-> > resource_entry" patch, but I think it turned out to be kind of an ugly
-> > approach.
-> >
-> > Anyway, IIUC this v11 patch actually uses reg["config"] to compute the
-> > offset, not 'ranges', so we should probably update the subject and
-> > commit log to reflect that, and maybe remove the now-unused bits of
-> > the devicetree example.
->
-> We use reg["config"] to detect offset, but still need parent dts's ranges.
-> There are two ranges, one is at parent pci bus [1], the other is under
-> 'pci bus' [2].
+Add binding doc and driver.
 
-Beside, luckly dwc use reg["config"] to indicate config space. but dt also
-define ranges [2] under pcie node, which can also include 'config's space.
+DTS part wait for
+https://lore.kernel.org/imx/Z04W5chGq5TitB9f@lizhi-Precision-Tower-5810/
 
-cadence also use reg["cfg"] to do that.
-res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg");
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v5:
+- Rebase to regulator/for-next, upstream version remove LDO5 support.
+- Link to v4: https://lore.kernel.org/r/20241216-pf9453-v4-0-a9fc8f0a0098@nxp.com
 
-I am not sure why both choose use reg[] instead of [2]ranges under
-pcie node. But the result make our situation simpler.
+Changes in v4:
+- Add Krzy's review tag
+- fix GENMASK(7,4) problem
+- Link to v3: https://lore.kernel.org/r/20241213-pf9453-v3-0-5587c1693155@nxp.com
 
-Frank
+Changes in v3:
 
->
-> Although use reg["config"], but still need ranges [1]. And information at
-> ranges [2] also need be correct.
->
-> The whole devicetree example also validate to help write address translate
-> informaiton.
->
-> >
-> > I do worry a little bit about the assumption that the offset of
-> > reg["config"] is the same as the offset of the other pieces.  The main
-> > place we use the offset on RCs is for the ATU, and isn't the ATU in
-> > the MemSpace area at 0x8000_0000 below?
->
-> No, "Bus fabric" only decode input address from "0x7000_0000..UPLIMIT".
-> Then output address to 0x8000_0000..UPLIMIT. So below 0x8000_0000 never
-> happen.
->
-> >
-> > It's great that in this case the 0x7ff0_0000 to 0x8ff0_0000 "config"
-> > offset is the same as the 0x7000_0000 to 0x8000_0000 MemSpace offset,
-> > but I don't know that this is guaranteed for all designs.
->
-> So far, it is the same for use dwc chips. If we meet difference, we can
-> add later.
->
-> reg["config"] only simplied our implement base on the offset is the same.
-> But whole concept is unchanged.
->
-> Frank
->
-> >
-> > v9:
-> >   [PATCH v9 3/7] PCI: Add parent_bus_offset to resource_entry
-> >     https://lore.kernel.org/r/20250128-pci_fixup_addr-v9-3-3c4bb506f665@nxp.com
-> >   [PATCH v9 5/7] PCI: dwc: ep: Add parent_bus_addr for outbound window
-> >     https://lore.kernel.org/r/20250128-pci_fixup_addr-v9-5-3c4bb506f665@nxp.com
-> >
-> > v10:
-> >   [PATCH v10 05/10] PCI: dwc: Use devicetree 'ranges' property to get rid of cpu_addr_fixup() callback
-> >     https://lore.kernel.org/r/20250310-pci_fixup_addr-v10-5-409dafc950d1@nxp.com
-> >   [PATCH v10 06/10] PCI: dwc: ep: Add parent_bus_addr for outbound window
-> >     https://lore.kernel.org/r/20250310-pci_fixup_addr-v10-6-409dafc950d1@nxp.com
-> >
-> > > See below diagram:
-> > >
-> > >             ┌─────────┐                    ┌────────────┐
-> > >  ┌─────┐    │         │ IA: 0x8ff8_0000    │            │
-> > >  │ CPU ├───►│   ┌────►├─────────────────┐  │ PCI        │
-> > >  └─────┘    │   │     │ IA: 0x8ff0_0000 │  │            │
-> > >   CPU Addr  │   │  ┌─►├─────────────┐   │  │ Controller │
-> > > 0x7ff8_0000─┼───┘  │  │             │   │  │            │
-> > >             │      │  │             │   │  │            │   PCI Addr
-> > > 0x7ff0_0000─┼──────┘  │             │   └──► IOSpace   ─┼────────────►
-> > >             │         │             │      │            │    0
-> > > 0x7000_0000─┼────────►├─────────┐   │      │            │
-> > >             └─────────┘         │   └──────► CfgSpace  ─┼────────────►
-> > >              BUS Fabric         │          │            │    0
-> > >                                 │          │            │
-> > >                                 └──────────► MemSpace  ─┼────────────►
-> > >                         IA: 0x8000_0000    │            │  0x8000_0000
-> > >                                            └────────────┘
-> > >
-> > > bus@5f000000 {
-> > > 	compatible = "simple-bus";
-> > > 	#address-cells = <1>;
-> > > 	#size-cells = <1>;
-> > > 	ranges = <0x80000000 0x0 0x70000000 0x10000000>;
-> > >
-> > > 	pcie@5f010000 {
-> > > 		compatible = "fsl,imx8q-pcie";
-> > > 		reg = <0x5f010000 0x10000>, <0x8ff00000 0x80000>;
-> > > 		reg-names = "dbi", "config";
-> > > 		#address-cells = <3>;
-> > > 		#size-cells = <2>;
-> > > 		device_type = "pci";
-> > > 		bus-range = <0x00 0xff>;
-> > > 		ranges = <0x81000000 0 0x00000000 0x8ff80000 0 0x00010000>,
-> > > 			 <0x82000000 0 0x80000000 0x80000000 0 0x0ff00000>;
-> > > 	...
-> > > 	};
-> > > };
-> > >
-> > > Term Intermediate address (IA) here means the address just before PCIe
-> > > controller. After ATU use this IA instead CPU address, cpu_addr_fixup() can
-> > > be removed.
-> > >
-> > > Use reg-name "config" to detect parent_bus_addr_offset. Suppose the offset
-> > > is the same for all kinds of address translation.
-> > >
-> > > Just set parent_bus_offset, but doesn't use it, so no functional change
-> > > intended yet.
-> >
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -474,6 +474,15 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
-> > >  		pp->io_base = pci_pio_to_address(win->res->start);
-> > >  	}
-> > >
-> > > +	/*
-> > > +	 * visconti_pcie_cpu_addr_fixup() use pp->io_base,
-> > > +	 * so have to call dw_pcie_init_parent_bus_offset() after init
-> > > +	 * pp->io_base.
-> > > +	 */
-> > > +	ret = dw_pcie_init_parent_bus_offset(pci, "config", pp->cfg0_base);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > >  	/* Set default bus ops */
-> > >  	bridge->ops = &dw_pcie_ops;
-> > >  	bridge->child_ops = &dw_child_pcie_ops;
-> > >
-> > > --
-> > > 2.34.1
-> > >
+binding part
+- Change to LDO-SNVS from LDO_SNVS
+
+driver part
+- remove pf9453.h
+- remove double space
+- use low case hex value
+- remove , after terminate
+- use GEMASK
+- change to LDO-SNVS
+- Link to v2: https://lore.kernel.org/r/20241212-pf9453-v2-0-f59d2c096356@nxp.com
+
+Changes in v2:
+- Reuse nxp,pca9450-regulator.yaml. Add nxp,pf9453 in nxp,pca9450-regulator.yaml
+instead of create new one.
+- Link to v1: https://lore.kernel.org/r/20241206-pf9453-v1-0-1e4685114271@nxp.com
+
+---
+Frank Li (1):
+      regulator: dt-bindings: pca9450: Add nxp,pf9453 compatible string
+
+Joy Zou (1):
+      regulator: pf9453: add PMIC PF9453 support
+
+ .../bindings/regulator/nxp,pca9450-regulator.yaml  |  24 +-
+ drivers/regulator/Kconfig                          |   7 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/pf9453-regulator.c               | 879 +++++++++++++++++++++
+ 4 files changed, 910 insertions(+), 1 deletion(-)
+---
+base-commit: 50a9890fc545421f82a6ac894af4dfd1fbbbf7a5
+change-id: 20241205-pf9453-90e8dbda562a
+
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
+
