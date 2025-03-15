@@ -1,82 +1,118 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6562A1F193D
-	for <imx@lists.linux.dev>; Sat, 15 Mar 2025 09:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C8D376;
+	Sat, 15 Mar 2025 20:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742030766; cv=none; b=ZmwPva3cVq6cYMkJnTaHBfyAGtGUGaZXnc0pN0fe4wkEe9gTA1zQTAJxpoc1AI0j0Dz29Xwj/4RtynraJmi4ShZxt9AnjMygU6n4ze4T8p/gZnKZQw4kskxNe9bB9+1owrlCfV05MnBZcuUccRN7lG0qEinRc+RLq5zct2yzbRM=
+	t=1742069757; cv=none; b=Ichyx1EF0Jf1N3RCQAfW5E/ylcDEOOKZ7BVxw/Jnwnj4UptN24rDFrvPsqTo3YhqnsfGXIiSfy5jXIDEKdkG7OOhMmZhR9oSSF07/1DtIExBq3QXUYtoLL9qMvO9qEpt2dhJffeTUp6/1ryUYN4/vGFncY8bqYQb5G0PSrCRmQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742030766; c=relaxed/simple;
-	bh=7dP1gemwU1OOl+2ffb6QpZFJ60y5VCO/omQBJL5t6Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jzDQsRti/oGmLg4fkWQK29yjbNqSxYu3Ga4L/xKOsMAeW8J5/gUEZohIf/7o3D7z/kRqXln9zrNghccy57jKFr9gWJk/EuQFT+s0HAvcFYbk8PyHuMfwGntV1GZ5d6ShiI3foKlp78k3BikcIBhLmheP9thluZBT8hA7efIMmfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1ttNm1-00047n-9c; Sat, 15 Mar 2025 10:25:41 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1ttNm0-005qTX-1t;
-	Sat, 15 Mar 2025 10:25:40 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1ttNm0-00EwMG-1T;
-	Sat, 15 Mar 2025 10:25:40 +0100
-Date: Sat, 15 Mar 2025 10:25:40 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: =?utf-8?Q?S=C3=A9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	s=arc-20240116; t=1742069757; c=relaxed/simple;
+	bh=XEoOzG46XXSFCigErs0BgukJPEtc5flcUfkUJgOgzIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gm+reKvm4mvAP7StI433FtIeSXOetPCjvJv4dxSM4G0ACHzMn7LbQbFCnZ1/75jKXRCunMV82FZQYpsRNmfcPtDEsJct4Zke35eoFsnWvuLcEnAtaATMkLV6q42CO1PNFF0OkCZATaJJQ3ZrbgiepTwB64CGkKmuB102/IpTWIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9skukOw; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9skukOw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6D7C4CEE5;
+	Sat, 15 Mar 2025 20:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742069755;
+	bh=XEoOzG46XXSFCigErs0BgukJPEtc5flcUfkUJgOgzIc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=S9skukOwLYXwPWenoQ6yvLO7gET2V/b7mOX1ISf1RLNNW/Ym5CZ711TUYjp4DlpnA
+	 ssV40YFRIJs4wYy+hhVzK7bEmm8GG9NLXEYSSTUWn+wLgTN6rIFPVIugDZhAA6qZPX
+	 0nrODQlFO0hMfnqP8Og7F7TVXsWCw417DXBsYv6niXAmU4EdTZIDCiZ5BX3gShNz6Y
+	 I1h3Syv/c4p1o5zLAMABoQvznM6i25Ec4JFXEG25mwHig2uP4IgPVfEjU2GgIYXZm9
+	 ADL619FMCnMX+swWKpoVHA2jbjEz2DwqdVUWlfXjWyBn9dONEVuOOX8mx0t8h6ek8O
+	 N3jmR2OBoMWUQ==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Julien Boibessot <julien.boibessot@armadeus.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: opos6ul: add ksz8081 phy properties
-Message-ID: <Z9VHlE-5lvtoYFYb@pengutronix.de>
-References: <20250314-opos6ul-fix-ethernet-v1-1-1c0172949b40@armadeus.com>
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v12 00/13] PCI: Use device bus range info to cleanup RC Host/EP pci_fixup_addr()
+Date: Sat, 15 Mar 2025 15:15:35 -0500
+Message-Id: <20250315201548.858189-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250314-opos6ul-fix-ethernet-v1-1-1c0172949b40@armadeus.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Mar 14, 2025 at 05:20:38PM +0100, Sébastien Szymanski wrote:
-> Commit c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific
-> PHY fixup") removed a PHY fixup that setted the clock mode and the LED
-> mode.
-> Make the Ethernet interface work again by doing as advised in the
-> commit's log, set clock mode and the LED mode in the device tree.
-> 
-> Fixes: c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific PHY fixup")
-> Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-Looks good to me. Thank you!
-Reviewed by: Oleksij Rempel <o.rempel@pengutronix.de>
+This is a v12 based on Frank's v11 series.
+
+v11 https://lore.kernel.org/r/20250313-pci_fixup_addr-v11-0-01d2313502ab@nxp.com
+    
+Changes from v11:
+  - Call devm_pci_alloc_host_bridge() early in dw_pcie_host_init(), before
+    any devicetree-related code
+  - Call devm_pci_epc_create() early in dw_pcie_ep_init(), before any
+    devicetree-related code
+  - Consolidate devicetree-related code in dw_pcie_host_get_resources() and
+    dw_pcie_ep_get_resources()
+  - Integrate dw_pcie_cfg0_setup() into dw_pcie_host_get_resources()
+  - Convert dw_pcie_init_parent_bus_offset() to dw_pcie_parent_bus_offset()
+    which returns the offset rather than setting it internally
+  - Split the debug comparison of devicetree info with .cpu_addr_fixup() to
+    separate patch so we can easily revert it later
+  - Drop "cpu_addr_fixup() usage detected" warning since we always warn
+    about something in that case anyway
+
+Any comments welcome.
+
+
+Bjorn Helgaas (3):
+  PCI: dwc: Consolidate devicetree handling in
+    dw_pcie_host_get_resources()
+  PCI: dwc: ep: Call epc_create() early in dw_pcie_ep_init()
+  PCI: dwc: ep: Consolidate devicetree handling in
+    dw_pcie_ep_get_resources()
+
+Frank Li (10):
+  PCI: dwc: Use resource start as iomap() input in
+    dw_pcie_pme_turn_off()
+  PCI: dwc: Rename cpu_addr to parent_bus_addr for ATU configuration
+  PCI: dwc: Call devm_pci_alloc_host_bridge() early in
+    dw_pcie_host_init()
+  PCI: dwc: Add dw_pcie_parent_bus_offset()
+  PCI: dwc: Add dw_pcie_parent_bus_offset() checking and debug
+  PCI: dwc: Use devicetree 'reg[config]' to derive CPU -> ATU addr
+    offset
+  PCI: dwc: ep: Use devicetree 'reg[addr_space]' to derive CPU -> ATU
+    addr offset
+  PCI: dwc: ep: Ensure proper iteration over outbound map windows
+  PCI: dwc: Use parent_bus_offset to remove need for .cpu_addr_fixup()
+  PCI: imx6: Remove cpu_addr_fixup()
+
+ drivers/pci/controller/dwc/pci-imx6.c         | 18 +---
+ .../pci/controller/dwc/pcie-designware-ep.c   | 74 +++++++++++------
+ .../pci/controller/dwc/pcie-designware-host.c | 57 ++++++++-----
+ drivers/pci/controller/dwc/pcie-designware.c  | 82 ++++++++++++++-----
+ drivers/pci/controller/dwc/pcie-designware.h  | 24 +++++-
+ 5 files changed, 171 insertions(+), 84 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
