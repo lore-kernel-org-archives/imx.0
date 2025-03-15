@@ -1,34 +1,34 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.35])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79B19539F
-	for <imx@lists.linux.dev>; Sat, 15 Mar 2025 06:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.216.63.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6387195381
+	for <imx@lists.linux.dev>; Sat, 15 Mar 2025 06:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.216.63.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742019311; cv=none; b=sAg37XPRZDNDFCxfzyi0ZHhtP5CJbYnCwfJyV1714xRZY1irkZzzAP7+bVkyZrfkPgZOFjk93qPcUcjQ7FAr3YSNuSnr1UTXCXyXoKqke7NgMKgUdO6Mc7EqWB5cRSKhrCVGQ+6k4N59/JTFfP3RhdnHYb5z/alzIAyUw+3jfT0=
+	t=1742019323; cv=none; b=K8zuxHqsWiv68yJDErJFl0pmWJ8RVHotSWzoHJEAOgBnjLYW1iV0fpEvybRhDrHYVAUBEcfxzgqo129FU+lCD0aIkKhXrfeEmOtMqc89cNsMuE1CSZVjiBqi3fhBnRypEXqS7ZiF9/6CupjN81JZP8P6d5IPZNPse3mUO7al7w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742019311; c=relaxed/simple;
+	s=arc-20240116; t=1742019323; c=relaxed/simple;
 	bh=JCKlWqJuZdkHoNK0McQGH+nearGD+CoJy6QPiDs0y1A=;
-	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=RPF1GtK2fpn3GWxS6PYhJOCRKRGuOc83YBI4dLfqLI1Df/gE7PS21A42OwC2y/pQxV28TR7n7Pb3GVgpcN+bjZNEW4kcfgici30N5xjp3hA1uKqyZUZnosFiCHu9x5ctEl3W0whN9SVUtA6F+u3KeX1YmI4zr5QirBRvsAlfJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=63.216.63.35
+	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=JG0NuA3v4TmLQ96a0UUPex10ImFItimlQNCNfNbn6VMm5dPW9QcnDo4EHYprV70G2D/5/6cUOhhxbnxsDP82YlkYgbpxXi6elm0TZCQfy5VdU6VNzzKX/72jSvbOIbd50JEqS+wXizO33z3aqbhMlt8cBPxePfIUZ42vYlj6IVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=63.216.63.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4ZF9vD4629z5B1J5;
-	Sat, 15 Mar 2025 14:15:04 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 52F6Eqfl010351;
-	Sat, 15 Mar 2025 14:14:52 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4ZF9vS3DvWz8R040;
+	Sat, 15 Mar 2025 14:15:16 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 52F6F9nD054688;
+	Sat, 15 Mar 2025 14:15:09 +0800 (+08)
 	(envelope-from xie.ludan@zte.com.cn)
-Received: from mapi (xaxapp02[null])
+Received: from mapi (xaxapp05[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Sat, 15 Mar 2025 14:14:52 +0800 (CST)
-Date: Sat, 15 Mar 2025 14:14:52 +0800 (CST)
-X-Zmail-TransId: 2afa67d51adc771-6c561
+	Sat, 15 Mar 2025 14:15:11 +0800 (CST)
+Date: Sat, 15 Mar 2025 14:15:11 +0800 (CST)
+X-Zmail-TransId: 2afc67d51aef53c-65333
 X-Mailer: Zmail v1.0
-Message-ID: <20250315141452917TgYukep-fMdORK2wh1T1w@zte.com.cn>
+Message-ID: <202503151415111195hBKdQ6LAKcngyEswq9k5@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,9 +46,9 @@ Cc: <shengjiu.wang@gmail.com>, <festevam@gmail.com>, <nicoleotsuka@gmail.com>,
 Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIEFTb0M6IHVzZSBzeXNmc19lbWl0KCkgaW5zdGVhZCBvZiBzY25wcmludGYoKS4=?=
 Content-Type: multipart/mixed;
 	boundary="=====_001_next====="
-X-MAIL:mse-fl1.zte.com.cn 52F6Eqfl010351
+X-MAIL:mse-fl2.zte.com.cn 52F6F9nD054688
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 67D51AE8.002/4ZF9vD4629z5B1J5
+X-Fangmail-MID-QID: 67D51AF4.000/4ZF9vS3DvWz8R040
 
 
 
