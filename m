@@ -1,109 +1,124 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D323ED74
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 14:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3899E433A0
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 15:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223460; cv=none; b=mcXyO4QjVZFxKuwnOhZnsY2oAzyvCLBzf0yAKhd1nh4Ht/ee+wd/F55dJijkZM8FZ7yWmOzO2D1nBM0PF2PKBs5nSNWjwM0+WUkkCE5j1VfuloZTErOVsIj59eWa1oZvYf0ks3hTRDlu1LytE/v518FWCprIGE7zCgmYUm26SYE=
+	t=1742225528; cv=none; b=S+RFATwMxRfRoQt41E69xD/+rhccz1vADK1hsabTTT4LDPf1EmlJDYUkdaTRSkKK5AkB3gK51IWJuSyp5NUB9ic3iN+EEX2EPGZx9SLpU3gh+XOpBGrQgRMrn6o1th0Pp2ZpesGtp03s80Cf1D3LdqQvRrD8qhCVs8x8xOwRfo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223460; c=relaxed/simple;
-	bh=25KeBO3LinajIWSHJvuhTdoZgOpkTKqjJjTe7DGfM8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mc8c/C06TL0wLItvWb5EuGM6RvPajXOfyWULtZw6lyaTXPJ0/XzrXlvhet1zWKDj/zX8mpCX2HI1l8XMbaXtlSgrrlNNFdNLb92395ks3LDpNFw8zAx9gzs1sOOvZ+MKvulx4vDG49W7Uzon9XlQvTrIK2Kxdbr95hEMm1+q9uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X29XjBsF; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742225528; c=relaxed/simple;
+	bh=kG3UyNjWkxYSO1d4jwmEOZf0a4luiENZknkUpyNY1Jg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bNvgbH0UrBLJmaiP87JOiUfD/vPd8R4xxMoGyRlGvYD68AAnEfR0sqj5rwjbtIE/N9W7e08NlHkvt+VGGhGndo5UyLOUg8dAz5Yjrh6hmvqYcPoBR6ta4E5/16+yQl4Oadg7CYcPBgcuTmjt9jfHylmnXmSBo3ctHYmMMdYRQ/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=LTfCAEp3; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Uq5zOxs0 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X29XjBsF"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7619344392;
-	Mon, 17 Mar 2025 14:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742223455;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="LTfCAEp3";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Uq5zOxs0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1742225524; x=1773761524;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KipOP6WZevqOmUSTSh474YO5ixrB7kPV1cCaZGSd0cc=;
+  b=LTfCAEp38eCkEejWhYRpTXY8KzN5LBDprSv6pFaSRsx7oaNXzPxr78/+
+   Ubjia4hiIFMwq3Ip6gwkonBCuzEMEgSZkoQhPc0HsyUVqz1Zb6xzwsmCl
+   EwMMB0zgYuvcLFEODXeUZi9h6RRK70d7cpesIDB1HTffYK7XxF31qeeUT
+   YjkUWpq9AmFS1FvWEBLG1c5XuRrMrMvbu2WLMbVac2O04UskneMUw0FCu
+   R6TgEQiKEuUL4e4fewxgnnrXp5S6zgFLcNAZhKI+aA/bsVvtOSGc8YLrj
+   HpERAu9GxKi9DanJRX0cRwakFr0oFgUu/Cl7nUm0FAQr6zKX7T7S7TYI4
+   g==;
+X-CSE-ConnectionGUID: 8oKGuws+Tk+2dnMvWspdJQ==
+X-CSE-MsgGUID: ZUbpwkqrR8O5ARb/CW7m0g==
+X-IronPort-AV: E=Sophos;i="6.14,254,1736809200"; 
+   d="scan'208";a="43000310"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 17 Mar 2025 16:30:52 +0100
+X-CheckPoint: {67D8402D-3-903EAEAC-E04C76C8}
+X-MAIL-CPID: D69F11ED0F4E03A24B6BC23DFFFEA6EF_5
+X-Control-Analysis: str=0001.0A006397.67D84023.003C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B47A1648CF;
+	Mon, 17 Mar 2025 16:30:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1742225448;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Qkuh0DXp7wkpHA4U/hr9xccHxf9FKIYItr2z+4BB6U4=;
-	b=X29XjBsFlNR58JFDPaXDWBtoy2+6wpXwLjV2W3cfhdB4282VWXOG529KYxBPs5pWRmlIIW
-	u/TrZ78MytSw6ORQc1VrhWz/rwOCPypN7pYhSWRQXfLcBmgdwSiaQTe82xL1ENk6vJqJR7
-	xS8abVRKrgePsPb37BG29GSWoGqMwFUvCaPKoQ8OaCTAyC3aXqgElZNlyKvCr96YaLBpdN
-	xf/4Rl0IBl37YG6Y1bYieiEolFgJPieiJx8Hn9rEA7m3d2XezvYu1AzLmfBJagrJUDinJ3
-	uRIQQhiNfFAEZV4sKFhKazELb0EAvzIrVrlu1pJaKi30UdKV84cTb1+gwQxzBg==
-Date: Mon, 17 Mar 2025 15:57:30 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Marek Vasut <marex@denx.de>, Stefan Agner
- <stefan@agner.ch>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan
- Teki <jagan@amarulasolutions.com>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Anusha Srivatsa <asrivats@redhat.com>, Paul
- Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
- =?UTF-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, Hui Pu
- <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v7 06/11] drm/bridge: get the bridge returned by
- drm_bridge_chain_get_first_bridge()
-Message-ID: <20250317155730.4a328641@booty>
-In-Reply-To: <20250314-aspiring-myrtle-husky-a5f4ac@houat>
-References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
-	<20250314-drm-bridge-refcount-v7-6-152571f8c694@bootlin.com>
-	<20250314-aspiring-myrtle-husky-a5f4ac@houat>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	bh=KipOP6WZevqOmUSTSh474YO5ixrB7kPV1cCaZGSd0cc=;
+	b=Uq5zOxs0Q2Oh2zzZOxB4inAAzXeHVrTzt2nX709skPbcWUDR9LYBoiUiAYyf52iv2YweG5
+	JkLN6VCZjNG8ALhUIQovwtDil5XYyo96mm4Yxbz1Z/LE9/s1fn6eFgm+MrMDIu+xriBYNn
+	8f6sVJQ3EztaveLY8jMPucGHgQHW8GEmi7SOL/EWp972DQyRggo5MmHRUv/+YE0AEig3Ag
+	BIK+aNKm9A/LxUAabR4O3mapr8jb0kyL3GTWJEgLDYpVURN8x05NjMBX4K72V2duHca+7p
+	a9vaGfhs2e4JvYhdHosyBG4cdHddSLC1Avxty8JerPZw6RCV8C07fcF7zpkZpw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: shawnguo@kernel.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, krzk+dt@kernel.org,
+ conor+dt@kernel.org, festevam@gmail.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, frank.li@nxp.com, aisheng.dong@nxp.com,
+ daniel.baluta@gmail.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com,
+ iuliana.prodan@nxp.com, a.fatoum@pengutronix.de, mathieu.poirier@linaro.org,
+ linux-remoteproc@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v5 2/5] arm64: dts: imx8mp: Add mu2 root clock
+Date: Mon, 17 Mar 2025 16:30:46 +0100
+Message-ID: <5873285.DvuYhMxLoT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250317133306.2003909-3-daniel.baluta@nxp.com>
+References:
+ <20250317133306.2003909-1-daniel.baluta@nxp.com>
+ <20250317133306.2003909-3-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeelkeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrr
- hhordhorhhgpdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnfgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehjohhnrghssehkfihisghoohdrshgvpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 14 Mar 2025 19:10:41 +0100
-Maxime Ripard <mripard@kernel.org> wrote:
+Am Montag, 17. M=E4rz 2025, 14:33:03 CET schrieb Daniel Baluta:
+> Enable MU2 node and add mu2 root clock.
+> MU2 is used to communicate with DSP core.
+>=20
+> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index 3b725fe442d0..5b443fbeded8 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1253,7 +1253,7 @@ mu2: mailbox@30e60000 {
+>  				reg =3D <0x30e60000 0x10000>;
+>  				interrupts =3D <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
+>  				#mbox-cells =3D <2>;
+> -				status =3D "disabled";
 
-> On Fri, Mar 14, 2025 at 11:31:19AM +0100, Luca Ceresoli wrote:
-> > drm_bridge_chain_get_first_bridge() returns a bridge pointer that the
-> > caller could hold for a long time. Increment the refcount of the returned
-> > bridge and document it must be put by the caller.
-> > 
-> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+There is no need to enable MU2 if the DSP is disabled by default, no?
 
-...
+Best regards
+Alexander
 
-> > @@ -1112,8 +1115,8 @@ drm_bridge_get_prev_bridge(struct drm_bridge *bridge)
-> >  static inline struct drm_bridge *
-> >  drm_bridge_chain_get_first_bridge(struct drm_encoder *encoder)
-> >  {
-> > -	return list_first_entry_or_null(&encoder->bridge_chain,
-> > -					struct drm_bridge, chain_node);
-> > +	return drm_bridge_get(list_first_entry_or_null(&encoder->bridge_chain,
-> > +						       struct drm_bridge, chain_node));
-> >  }  
-> 
-> We'll need to modify drm_bridge_get_next_bridge, drm_bridge_get_prev_bridge, and
-> drm_for_each_bridge_in_chain in a similar manner, but for this one
+> +				clocks =3D <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_MU2_ROOT>;
+>  			};
+> =20
+>  			i2c5: i2c@30ad0000 {
+>=20
 
-Sure. I'm discussing this in the cover letter.
 
-Luca
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+
