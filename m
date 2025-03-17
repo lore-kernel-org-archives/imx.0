@@ -1,174 +1,198 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2087.outbound.protection.outlook.com [40.107.105.87])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A12226CF0
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 09:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742204588; cv=fail; b=mQOQdOSYSFzQ9dvFL5mPsSA0d1d17Teb/UahaNt8esPFO5V/SMh+yba3TF6yU+NJ74qxlqL5JgNlxAWQ+XVzI+5i2FEprAva7tfroyIb0oF8rsmgV8k1cNTsmkMKc/XoxR5bzxAHjL+JEvyDQqWfkK+qlSCI/jBdly82duXLmGk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742204588; c=relaxed/simple;
-	bh=i/FnjF71GU1uRlOyMvPEkOQJT6GnFpduVHNoxbfPePg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eTq6KssdQs0gShkgrzybB1ZQHBQZawBlSkIaGj9wpQ2ije3PJ3e1T82JRwE4Hsq7gycddzO/CmhpWQXaTlDCZjTj4ur9ZwnMnQyHhHpoK9zUINrnHO1qUn1Z83ip66HZvqdZIDlm6BKusOqh9vrwzNnBWemW3x+33DczyMKTMy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=P0yLGz4m; arc=fail smtp.client-ip=40.107.105.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="P0yLGz4m"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cY/dXggouxNVwOT1bu2TI/cwuJfAyRW4FQ3drmLfp/272oJqtH/oa6uy3SmrKtigPRPiP7TJZZ1zq2lidAmaEJeI/5PjJM9kpEfKEYK3gJqEsAu1AUDmPLsK7wYH95OMhS7AwlbLAJh9IcmhK/ANX/KuIh8veuFsSbJsHG1Tt/Eaz+K3s015I7K/tT+oF0kx1wNnIgB8wOxCjYR8JyOHEdULx/CYIa6kEgNXsUrh/hmbTD5f5b5TM6BhHUgxOrXwMArFu+ZBrgbOJc0Sdghi3I6IZFFZtePRqnvSoBaeY5/hVkByq7Rz2notAi7a1wG2cdcfGaiEmmigTJL3PeYMfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n6Chb4BEKFiohxMu56XswWBYmWZryunrkL08HUjfJmE=;
- b=jvsVKFG//LPZJWBY4+Kr+vrg4aULoj4r4VLry3K2iXyd2aPd7+JfQrfSCr4m1TpARfwn7FM6p2r0F8Gp7wIfQ2SEvB4HOyag4wUoavFgHd6BD+vh/s4BQK+/68Ox955n53R85jmio5Dep2hMVuGM5HJrm+mOARhqadaAuwvamMck3a7w6YecTgKHQvk4eYmDzDWrPzfLnVjjESFtibE1oH5EBv5jSGThzouyoKwVu3/N8uL2+UbDTKSK0MsGSAxVi2Qv8ng5vCsOI4jZuZtN63QppKQTqRhWGoq1oGnNKdoxA5gzAfcp9qCCo3tdK45k8sQk/qXN/XurNOtxum+P3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6Chb4BEKFiohxMu56XswWBYmWZryunrkL08HUjfJmE=;
- b=P0yLGz4m4IEs3lyowi3Bs5+GhE4yJxu0Wg+Igj8CXGooa9T8ni9LnmDGex13kW1zLpjxvt995qgGUr1llR24A62dOMHv0jMRpnLpFd+0uR5E7iBznbcWCVB5T3POHup1UYPx9AQFgIPLrZVNHILz4E3w3WmT6s/l/VOz+BcHE74usNiLo2ro+H7C+jkm+j8S0DkizJ4ob9G2beRAb+tGQwvdPt3O2c0YV6/luTlu3LuMXQIUuI02PA6xKXRWyI+eSK+YWfNFMOObEhDORvL1rw6O+0iR0EJV+rWbjsIrSM4+JZQR2QoIdfF6rMrsOJkWqkELQq/Ejbn7/tIcVTKDKg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by DBBPR04MB8060.eurprd04.prod.outlook.com (2603:10a6:10:1e6::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
- 2025 09:43:03 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
- 09:43:03 +0000
-Date: Mon, 17 Mar 2025 11:42:59 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 net-next 03/14] net: enetc: move generic MAC filterng
- interfaces to enetc-core
-Message-ID: <20250317094259.b6mwygvr75lxgkwh@skbuf>
-References: <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311053830.1516523-4-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1P190CA0023.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:802:2b::36) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0DF748D
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 09:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742204725; cv=none; b=Ewq8r0HHLfv2yau5pvVFGNM33BuaNDsUCe23tKo3QEXX2ShYdZbQC8HWpTYbf5YU5ESfLk5+xaxuXy6EG05GCAVpcCF3S/fAscIxhyfc/WVLdWSj7VmlfS0GCUm05kDvBMQhztxXiuUU+BIbKSNQ/QcnRoQiud6JINm2dasA3Pg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742204725; c=relaxed/simple;
+	bh=oTTljZWBVhyMYOri5e1Sd4AdjNYMYL5t/xz1a6HBDHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PWgm/TnVmMf7hy37JSv3y5o523Z/ZG+LCcVnS9Q8ZJYEpZW/RnyciPyLByy0o0FC3ndip6NH2l8yct/sjgBEcr0PM267OR5/CHdl62q1eUDwI9aYI4Ow2x7hloqjbgm+AJErLo+XwG99EdizlEO3zNBOwsgqEf9YOp0On9HwHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tu727-00042i-9p; Mon, 17 Mar 2025 10:45:19 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tu726-000Dre-1k;
+	Mon, 17 Mar 2025 10:45:18 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tu726-0018Bq-2l;
+	Mon, 17 Mar 2025 10:45:18 +0100
+Date: Mon, 17 Mar 2025 10:45:18 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, marex@denx.de,
+	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] soc: imx: Dump higher 64bits UID
+Message-ID: <20250317094518.yf2hbq5sjl7lgfwb@pengutronix.de>
+References: <20250314065225.442717-1-peng.fan@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DBBPR04MB8060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32938dbd-f18f-4324-162f-08dd65381c8a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AYNL2RIeYmeiaE8LNOPOJ1FVBpIktGKEIe1iVDGT5cfJ8W97etArmrXcrjuQ?=
- =?us-ascii?Q?RauNnxwo8kZMKKXBPDqGFntRxRvNIum+bl8CqpOfzEbZm/uhHjfS2KkHwNJg?=
- =?us-ascii?Q?/FsqS3KddkElD2tCvOv+ky2j4n4K9YeSgloi52jgSkhq1ERv/jxoIF3GWS7Y?=
- =?us-ascii?Q?LM68notIef92MiEKpnoKWUK9LkRlFocH3DblLU7G0wKsJMX42n91nVNFvXU1?=
- =?us-ascii?Q?Nkt20ekxDXDIzLJogwjmuALEtiUcAgSSGdjZYx2UrXvvx+Rn0VD9ATPNsjSX?=
- =?us-ascii?Q?3xl8fYtCNQ/mtkEEv/8dWCseSXkPYIZqRCaEFL9hqP7+7rkiUxs4yhjfebhm?=
- =?us-ascii?Q?5njOarpAoVCcnGbfDQM8z5pUAhx6h1jsJcnas1r7EJfzabCEMt2A8kBICiOb?=
- =?us-ascii?Q?Cze7VaAsp9xxEhQyXJSjsz4gcySNz5ucWmyyeJ1BFfSX022Ecm0xxb7pbzqg?=
- =?us-ascii?Q?eaL1Z7gRmsIbyh+XbozMYoOMsGAl4ZgJoaTvkkhwYAs6YxSwSwcgirlkQrEu?=
- =?us-ascii?Q?KSOa1I0SU/nS4X4Dz0lBizwsmavnAgfBlrUx/Q8oM4mn4xgrIV6Fbd/YTO+z?=
- =?us-ascii?Q?ejW/8I5QKHnS/HTwjTM4n5JqTF6ppGXq6u055pOsZGT64AM5pDmsqfibmhCN?=
- =?us-ascii?Q?7B4R1Ts8XQO9brRR+zovkljL35XzC/mEqDIvibcuPwmkOpP+twroC3dZIBga?=
- =?us-ascii?Q?eqivV/yyjXZ+Ehvdy7dORSoHQn6G3Yv26t1bLvyJxoLRG58pFuEic9Q6c0O0?=
- =?us-ascii?Q?9uXT3xre6WlnYT3zWbClLX8J5bFqe0iGtSNXQ++HKxRyGg3bZ6KB57htduDU?=
- =?us-ascii?Q?QJIuOs3dd7ChZVzQp3z75yP4+jAkYMDvHpzNEcDQp1Bf44MYKHYag0h6jomr?=
- =?us-ascii?Q?wvXUKrdjAx5y8WbIThxpEHXWi+a8CVu6IocXAOVw+glQx+l562mIz0wRKiSz?=
- =?us-ascii?Q?TNu1YXKgtfTwFeuyR5LA4ReaLbytmZH59Mpa//2HlsEjbaqcc7LiQD6D5qIX?=
- =?us-ascii?Q?bfJdkLLg9/fzLeoJJC23fn7NTsgKR0yqaDspnhNiBbKU+QzAzjSahUnV2a6k?=
- =?us-ascii?Q?87EdxpeOQDg/gBCKXv/4g5EEiPq6s4Rq4rzp8ptSGe1gqUhLe49aVvzbek7b?=
- =?us-ascii?Q?/i40Mo9GxS2DKusuJsNAOys61/iNTU+vf9w7io8hUWcAMbM4YcuVdDsrOHOZ?=
- =?us-ascii?Q?zBOPuxuO3nuvKTsRns3/XJeo73VH2niuCh+8JgBOvr/CUTZe4Ecq5eU4jvTw?=
- =?us-ascii?Q?mzdJ99QoSlNfTJmpW4jbsPLfCS1QqGQI5Xft8Hokc4F1Bda4Uupxz0GhlgBn?=
- =?us-ascii?Q?O0lgMFbWXSrNPseH8ZWk9Xp1YHglhWgj5hnE2cb5rNe7ScEu1H7IspPUqPP8?=
- =?us-ascii?Q?4TzP4znOfbMLmPnq+z6WHO0dcxUR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e69cWLOo7VN1suVvA9bYL2YF0rCDtDAVIiYISnrXQ9unmwle5u3FItP7i0sh?=
- =?us-ascii?Q?AjZO+zSyOQ/f85DD6FmeDj0TQppvt3HsWwrPR6QAdKadZz1ivlOt5Ej1AVOA?=
- =?us-ascii?Q?1rEDa4dZyPcrlKb9P5Vk6JBjEdpU70z6eRvJOwIoMePuVIy+ZOt8f5FLsS+v?=
- =?us-ascii?Q?XnZTAPgA8j8qnyLasiKfwGPn8RNzjGXk3YaFYtcl7xh5NTi/y4oNty7bnXGK?=
- =?us-ascii?Q?WXy2XK1fFPE5rSlXPb3ShfhC164SUT/F/KfqsBsoczCD+SQMJZ0pszgT/7+g?=
- =?us-ascii?Q?zim79PmlS2TeQj03zs/k5lsKHzkQt/CKntiXa1qR5iUR6phsgI/bfXaNf44+?=
- =?us-ascii?Q?HxWQRJ091DsAnfwOPOXkS/0Bp3YGsVgHBUG9ChLD3z8MJAJ+TFRKOoya6OIh?=
- =?us-ascii?Q?VCeu3UFaMIEiQv5/k2u1nLNp3rN/Q/2SOu1dk2NG4APadP46FjBA+gkc3/jz?=
- =?us-ascii?Q?oZq1Ns6KJvCbVg6/D3jeu1XvYgWNpYEfaCMZu6thstMXLE+bVRJu6B2dXlUW?=
- =?us-ascii?Q?1yji5Rkxv5JmvvmNy22tfLC4l/FI+JayYAsKA/iBA9rD7SJ3pDQVTeC+yx+r?=
- =?us-ascii?Q?dZoJ8aeLPADSPxjonY1W/b/3U45e78wLp4ExIpnrcuyq9MGsgeztTkQk5W1L?=
- =?us-ascii?Q?nPWmmmgpxH5VF2v2CUidgz7W69vhyb2BQyyJniUyg3my7YSJarUfVH8Ww1Lu?=
- =?us-ascii?Q?X3Uf4wsbfdXRHAjycIHzfTZluxt54SD6oksyCJ1huMhFj4QGU1aWqW29hODs?=
- =?us-ascii?Q?msu04/HIaznbT79e8KQszBi61lDmKnoWlefHiIK1glnyqz8bhORwsJoRk4Bm?=
- =?us-ascii?Q?zqkxwLB8ZW4/eDxiBUbso5SRLM+ocXFzr4QehmQ4BKxVAOZlsqGBdCpaSDa8?=
- =?us-ascii?Q?HgUb+Yknh7S5Wz6lq/N8LQrlgGWUV3y+ppcWVT81sogOIAJF9Lm9Ualmw/ac?=
- =?us-ascii?Q?6mkOWtxnidkC4A1zO2gmsgoam3Mwx+8JRJjizJ0uze63rksdvsaJTAXpaUJY?=
- =?us-ascii?Q?51yOv3oPbmVcI/b+mbPBexh0YXFFzMkxj0EbOrGG+4gZoy0E0iVors5pr677?=
- =?us-ascii?Q?OybQQaVsfjtv1vFOef6V2nCn/DNcaXG7lZIFCRmNqXyFEgOZHgL6jPPbTuFT?=
- =?us-ascii?Q?7W7qqIrUuH3Pq3w+JsbWrVEEYZB5rVwVlCYDjBBo07HfPOGp8GKy6dI5WyWZ?=
- =?us-ascii?Q?Z+Uj5pZCmXs1n/H/Qy5H6FjYv2SpqbzhjPUj9L3qBlcGKzMxOLiyH/8vrp7B?=
- =?us-ascii?Q?U++ykKVZ1/Er80wapFJDkj+jV36Fi5MsV/EzddNIR8rvLOahx/4blMm1Jc5E?=
- =?us-ascii?Q?Oul5V2ENoRpE1k8wqYySeSMMAzLxxS4NTYZEg8De5c1M0HjH025S5SF5Gmvg?=
- =?us-ascii?Q?Ok2ip/4on2po1qAfouJcYNOo96YeII6+xjIU+2bxy6fhCv+PsITix5bJigTY?=
- =?us-ascii?Q?3JmgmkNqAnk2yToUdjv7INS7Sie+7vCQMwL4A2Icqfafm+jFP/8i7bQfAVTT?=
- =?us-ascii?Q?XbnQZOE2KcBpHzRh3VhNusoedsiefiVlfb3yqsUQUYyCFgiSWsyD4Udxnm0K?=
- =?us-ascii?Q?fMOc+7Q851wdj99Ybl7VITrGp/oGQSTylvJ8QifS7/Bji299XL9v83i9vPQy?=
- =?us-ascii?Q?6w=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32938dbd-f18f-4324-162f-08dd65381c8a
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 09:43:03.0387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YsVdy8OapEo3M1lA4WGjEKrkUc6OpqPfmmaozkU8MBJGOBYx+mBAqOVPPYw1YR7h9z+o/l5DeGKkAoxGmrGE7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8060
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250314065225.442717-1-peng.fan@oss.nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-title: s/filterng/filtering/
+Hi Peng,
 
-On Tue, Mar 11, 2025 at 01:38:19PM +0800, Wei Fang wrote:
-> Although only ENETC PF can access the MAC address filter table, the table
-> entries can specify MAC address filtering for one or more SIs based on
-> SI_BITMAP, which means that the table also supports MAC address filtering
-> for VFs.
+On 25-03-14, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Currently, only the ENETC v1 PF driver supports MAC address filtering. In
-> order to add the MAC address filtering support for the ENETC v4 PF driver
-> and VF driver in the future, the relevant generic interfaces are moved to
-> the enetc-core driver. At the same time, the struct enetc_mac_filter is
-> moved from enetc_pf to enetc_si, because enetc_si is a structure shared by
-> PF and VFs. This lays the basis for i.MX95 ENETC PF and VFs to support
-> MAC address filtering.
+> i.MX8MP UID is actually 128bits and partitioned into two parts.
+> The 1st 64bits are at 0x410 and 0x420, and 2nd 64bits are at 0xE00
+> and 0xE10.
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Dump the whole 128bits for i.MX8MP, by introducing soc_uid_h.
+
+Thanks for taking care of this :) We noticed that this is crucial for
+burning the field-return fuse to keep the LOCK fuse unlocked.
+
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
+>  drivers/soc/imx/soc-imx8m.c | 29 +++++++++++++++++++++--------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+> index 3ed8161d7d28..02d8c85e9a28 100644
+> --- a/drivers/soc/imx/soc-imx8m.c
+> +++ b/drivers/soc/imx/soc-imx8m.c
+> @@ -24,13 +24,15 @@
+>  #define OCOTP_UID_HIGH			0x420
+>  
+>  #define IMX8MP_OCOTP_UID_OFFSET		0x10
+> +#define IMX8MP_OCOTP_UID_HIGH		0xE00
+>  
+>  /* Same as ANADIG_DIGPROG_IMX7D */
+>  #define ANADIG_DIGPROG_IMX8MM	0x800
+>  
+>  struct imx8_soc_data {
+>  	char *name;
+> -	int (*soc_revision)(u32 *socrev, u64 *socuid);
+> +	int (*soc_revision)(u32 *socrev, u64 *socuid, u64 *socuid_h);
+> +	bool uid_len_128;
 
-For this series I don't see any VF implementation of ndo_set_rx_mode().
-I don't think you have to move struct enetc_mac_filter from struct enetc_pf
-to struct enetc_si, so please don't do that until there is a justification
-for it that is contained in the same patch set, and the two can be
-evaluated together.
+Albeit your patch is not wrong, it could be far simpler if we redefine
+the soc_revision to serial_number. This way each SoC can specify 
+the dedicated mechanism of setting the serial number. Going this way we
+need two patches, the first one is converting the logic and the 2nd one
+is adding a dedicated hook for the i.MX8MP.
 
-Moving enetc_add_mac_addr_ht_filter() and enetc_reset_mac_addr_filter()
-to enetc.c seems fine.
+Regards,
+  Marco
+
+>  };
+>  
+>  #ifdef CONFIG_HAVE_ARM_SMCCC
+> @@ -49,7 +51,7 @@ static u32 imx8mq_soc_revision_from_atf(void)
+>  static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+>  #endif
+>  
+> -static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
+> +static int imx8mq_soc_revision(u32 *socrev, u64 *socuid, u64 *socuid_h)
+>  {
+>  	struct device_node *np __free(device_node) =
+>  		of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+> @@ -102,7 +104,7 @@ static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
+>  	return ret;
+>  }
+>  
+> -static int imx8mm_soc_uid(u64 *socuid)
+> +static int imx8mm_soc_uid(u64 *socuid, u64 *socuid_h)
+>  {
+>  	struct device_node *np __free(device_node) =
+>  		of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+> @@ -131,6 +133,12 @@ static int imx8mm_soc_uid(u64 *socuid)
+>  	*socuid <<= 32;
+>  	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
+>  
+> +	if (offset) {
+> +		*socuid_h = readl_relaxed(ocotp_base + IMX8MP_OCOTP_UID_HIGH + 0x10);
+> +		*socuid_h <<= 32;
+> +		*socuid_h |= readl_relaxed(ocotp_base + IMX8MP_OCOTP_UID_HIGH);
+> +	}
+> +
+>  	clk_disable_unprepare(clk);
+>  	clk_put(clk);
+>  
+> @@ -139,7 +147,7 @@ static int imx8mm_soc_uid(u64 *socuid)
+>  	return ret;
+>  }
+>  
+> -static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
+> +static int imx8mm_soc_revision(u32 *socrev, u64 *socuid, u64 *socuid_h)
+>  {
+>  	struct device_node *np __free(device_node) =
+>  		of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+> @@ -156,7 +164,7 @@ static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
+>  
+>  	iounmap(anatop_base);
+>  
+> -	return imx8mm_soc_uid(socuid);
+> +	return imx8mm_soc_uid(socuid, socuid_h);
+>  }
+>  
+>  static const struct imx8_soc_data imx8mq_soc_data = {
+> @@ -177,6 +185,7 @@ static const struct imx8_soc_data imx8mn_soc_data = {
+>  static const struct imx8_soc_data imx8mp_soc_data = {
+>  	.name = "i.MX8MP",
+>  	.soc_revision = imx8mm_soc_revision,
+> +	.uid_len_128 = true,
+>  };
+>  
+>  static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+> @@ -211,7 +220,7 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+>  	const struct of_device_id *id;
+>  	struct soc_device *soc_dev;
+>  	u32 soc_rev = 0;
+> -	u64 soc_uid = 0;
+> +	u64 soc_uid = 0, soc_uid_h = 0;
+>  	int ret;
+>  
+>  	soc_dev_attr = devm_kzalloc(dev, sizeof(*soc_dev_attr), GFP_KERNEL);
+> @@ -232,7 +241,7 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+>  	if (data) {
+>  		soc_dev_attr->soc_id = data->name;
+>  		if (data->soc_revision) {
+> -			ret = data->soc_revision(&soc_rev, &soc_uid);
+> +			ret = data->soc_revision(&soc_rev, &soc_uid, &soc_uid_h);
+>  			if (ret)
+>  				return ret;
+>  		}
+> @@ -242,7 +251,11 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+>  	if (!soc_dev_attr->revision)
+>  		return -ENOMEM;
+>  
+> -	soc_dev_attr->serial_number = devm_kasprintf(dev, GFP_KERNEL, "%016llX", soc_uid);
+> +	if (data && data->uid_len_128)
+> +		soc_dev_attr->serial_number = kasprintf(GFP_KERNEL, "%016llX%016llX",
+> +							soc_uid_h, soc_uid);
+> +	else
+> +		soc_dev_attr->serial_number = devm_kasprintf(dev, GFP_KERNEL, "%016llX", soc_uid);
+>  	if (!soc_dev_attr->serial_number)
+>  		return -ENOMEM;
+>  
+> -- 
+> 2.37.1
+> 
+> 
+> 
