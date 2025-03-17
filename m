@@ -1,51 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC2E79D2;
-	Mon, 17 Mar 2025 01:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF70C322B;
+	Mon, 17 Mar 2025 03:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742176570; cv=none; b=LWjNrQ5ujv0mnGa51/sd8jNtfwly6MiXp+8zWJmb1ov3zoBYPWj4NTChrk2oAs+GeS7Q7QDvd8dVWl0ZGwAI0BbOKYKPXKiCtTA0tiu7qhe7GH456b816v7VpSQKqOkT0JYOz1HZJpjvR2DX9bGBWJbtCoJD2Hqi3o9qfwnRuvg=
+	t=1742182015; cv=none; b=kTB9rquL1cT7TXVejUcs2R32LwUCzx6/gtbGXzUC08zJDrLQv0Nh3AlCa6bl7HUEk4MR1ZBchBHP4ok2lLVg1tGK1+fhjJMToNQpY5PMAnvkiLmUH1fexJ8rJJ/foYCDThKj01Ncu2LmkZ6q4EloPSUPLAvjoMjatQSSzbYuTk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742176570; c=relaxed/simple;
-	bh=DW/PqvX6IeUImr+orrmNc0CoOSwyap646QVZ5Tbd3sU=;
+	s=arc-20240116; t=1742182015; c=relaxed/simple;
+	bh=MntX4WXhD7Rn4lRpUTgk9hO7WmibdssDRP6V2g/nfq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WU48FuQMvkeuR+qBdvD2IkMDoClrahJxFkOuglF5Pr80gDrlOX2C9CI4iN6xrE63tgzoeGrsR3rIysXxmUMkRhoWrhJfStVORvElVWnv6E+j2jc+gITJkAKnWZ1GBtd4uwJDyu4nWlWo/HqtaqFmcPlVUXKZLD4oUH8F73TBp30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgO6gic3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=il5yS3pPfXY1yrKmHGEHORdd+XCcublZ5FJr3Gxr9qWUojHxllw/oOe6Md8LbnmrJaQs6oRV7MQZ9TmZNMNA1l+3PLKJHMv5yFtuWkoQ8BsxIQog7Lq5IR/psne36n2n9qmBsWLRPYqLlL6Z9GH/aJhWlia1NZNeDwm77J4vaxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAMvJ+7D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgO6gic3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA194C4CEDD;
-	Mon, 17 Mar 2025 01:56:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAMvJ+7D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1847BC4CEDD;
+	Mon, 17 Mar 2025 03:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742176569;
-	bh=DW/PqvX6IeUImr+orrmNc0CoOSwyap646QVZ5Tbd3sU=;
+	s=k20201202; t=1742182014;
+	bh=MntX4WXhD7Rn4lRpUTgk9hO7WmibdssDRP6V2g/nfq0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sgO6gic3aLP5WD4qeK/GnvwCiJSitTz2Gt1erDNWLnNrEkznxdXhqdc+O75VTAdxr
-	 61ZnvHhdUVMXBt5XeFtR9/A0H/OpeEG5Dg5ery/d6mRbPS3IIPbVr2NauH2bds90Xb
-	 oF5pg6/M568SpedRB0+4TCbcBKrbV7CVXP7XXSeerfOMCq5HQ2OcMlHSTHgASYe4WI
-	 ROiiBVv2ivwoe8mv9X89u2tpEWAsr/qZWwp0ADenS+DlqtIz8iXTJMSByy0k1QGhGc
-	 cue4kBlKeuA+rX6fTqLdLjoQSnM0MZqTTEvemDBE31VX4R5tCbBV3Wf/o8SEFaDY4f
-	 9expRlxM54ztg==
-Date: Mon, 17 Mar 2025 09:56:01 +0800
+	b=vAMvJ+7DYqO43upWJujNjVcF+gOkFRup/ERksXvyq1UUurhX4jq57SNhcFCSuIt7h
+	 Nh5fVVF3amiQTRaExNxbrHDNZOw72iRHAMxkgVPZIX0ZjEaCpziK6TcW4dS7T9r16V
+	 5wCtrn0wk1xUwdjiiEU1IoF88mK0v8XNYFwIhTAmPiZLH9oWjY1Pe2IL/bOiDjE35b
+	 vNvbpoD/84xqChjC2jhOiXRxR6sGdQLFJC2f7Ze0W30d7lDP0fBwfEuQIyeQAnQyL+
+	 RgDBT2y6dtmP4xOpuaCrBpswox50B30W7aYsLZDmoFGw0b+cEtKcjam2R+KgmHxGHS
+	 TQoSHv+Nb68Sg==
+Date: Mon, 17 Mar 2025 11:26:45 +0800
 From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Frank Li <Frank.li@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Sebastian Reichel <sre@kernel.org>,
-	Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] usb: chipidea: ci_hdrc_imx: implement
- usb_phy_init() error handling
-Message-ID: <20250317015601.GC218167@nchen-desktop>
-References: <20250316102658.490340-1-pchelkin@ispras.ru>
- <20250316102658.490340-4-pchelkin@ispras.ru>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v5 3/6] usb: chipidea: imx: add wakeup interrupt handling
+Message-ID: <20250317032645.GD218167@nchen-desktop>
+References: <20250312082700.260260-1-xu.yang_2@nxp.com>
+ <20250312082700.260260-4-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,72 +46,134 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250316102658.490340-4-pchelkin@ispras.ru>
+In-Reply-To: <20250312082700.260260-4-xu.yang_2@nxp.com>
 
-On 25-03-16 13:26:56, Fedor Pchelkin wrote:
-> usb_phy_init() may return an error code if e.g. its implementation fails
-> to prepare/enable some clocks. And properly rollback on probe error path
-> by calling the counterpart usb_phy_shutdown().
+On 25-03-12 16:26:57, Xu Yang wrote:
+> In previous imx platform, normal USB controller interrupt and wakeup
+> interrupt are bound to one irq line. However, it changes on latest
+> i.MX95 platform since it has a dedicated irq line for wakeup interrupt.
+> This will add wakeup interrupt handling for i.MX95 to support various
+> wakeup events.
 > 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
 Acked-by: Peter Chen <peter.chen@kernel.org>
 
 > ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+> Changes in v5:
+>  - remove warning
+>  - add wakeup_irq checking
+> Changes in v4:
+>  - warning if no irq provided for imx95
+> Changes in v3:
+>  - include <linux/irq.h> to fix possible build issue
+> Changes in v2:
+>  - rename irq to wakeup_irq
+>  - disable irq by default
+>  - enable irq when suspend, disable irq when resume
+> ---
+>  drivers/usb/chipidea/ci_hdrc_imx.c | 37 ++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
 > 
 > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index d942b3c72640..4f8bfd242b59 100644
+> index 1a7fc638213e..c34298ccc399 100644
 > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
 > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -484,7 +484,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
->  		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
->  		data->override_phy_control = true;
-> -		usb_phy_init(pdata.usb_phy);
-> +		ret = usb_phy_init(pdata.usb_phy);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to init phy\n");
-> +			goto err_clk;
-> +		}
->  	}
+> @@ -6,6 +6,7 @@
+>   */
 >  
+>  #include <linux/module.h>
+> +#include <linux/irq.h>
+>  #include <linux/of.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/platform_device.h>
+> @@ -98,6 +99,7 @@ struct ci_hdrc_imx_data {
+>  	struct clk *clk;
+>  	struct clk *clk_wakeup;
+>  	struct imx_usbmisc_data *usbmisc_data;
+> +	int wakeup_irq;
+>  	bool supports_runtime_pm;
+>  	bool override_phy_control;
+>  	bool in_lpm;
+> @@ -336,6 +338,16 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
+>  	return ret;
+>  }
+>  
+> +static irqreturn_t ci_wakeup_irq_handler(int irq, void *data)
+> +{
+> +	struct ci_hdrc_imx_data *imx_data = data;
+> +
+> +	disable_irq_nosync(irq);
+> +	pm_runtime_resume(&imx_data->ci_pdev->dev);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+>  static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  {
+>  	struct ci_hdrc_imx_data *data;
+> @@ -476,6 +488,16 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
 >  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-> @@ -493,7 +497,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  		data->supports_runtime_pm = true;
+>  
+> +	data->wakeup_irq = platform_get_irq_optional(pdev, 1);
+> +	if (data->wakeup_irq > 0) {
+> +		ret = devm_request_threaded_irq(dev, data->wakeup_irq,
+> +						NULL, ci_wakeup_irq_handler,
+> +						IRQF_ONESHOT | IRQF_NO_AUTOEN,
+> +						pdata.name, data);
+> +		if (ret)
+> +			goto err_clk;
+> +	}
+> +
 >  	ret = imx_usbmisc_init(data->usbmisc_data);
 >  	if (ret) {
 >  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
-> -		goto err_clk;
-> +		goto phy_shutdown;
+> @@ -584,6 +606,10 @@ static int imx_controller_suspend(struct device *dev,
 >  	}
 >  
->  	data->ci_pdev = ci_hdrc_add_device(dev,
-> @@ -502,7 +506,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  	if (IS_ERR(data->ci_pdev)) {
->  		ret = PTR_ERR(data->ci_pdev);
->  		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
-> -		goto err_clk;
-> +		goto phy_shutdown;
->  	}
+>  	imx_disable_unprepare_clks(dev);
+> +
+> +	if (data->wakeup_irq > 0)
+> +		enable_irq(data->wakeup_irq);
+> +
+>  	if (data->plat_data->flags & CI_HDRC_PMQOS)
+>  		cpu_latency_qos_remove_request(&data->pm_qos_req);
 >  
->  	if (data->usbmisc_data) {
-> @@ -536,6 +540,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+> @@ -608,6 +634,10 @@ static int imx_controller_resume(struct device *dev,
+>  	if (data->plat_data->flags & CI_HDRC_PMQOS)
+>  		cpu_latency_qos_add_request(&data->pm_qos_req, 0);
 >  
->  disable_device:
->  	ci_hdrc_remove_device(data->ci_pdev);
-> +phy_shutdown:
-> +	if (data->override_phy_control)
-> +		usb_phy_shutdown(data->phy);
->  err_clk:
->  	clk_disable_unprepare(data->clk_wakeup);
->  err_wakeup_clk:
+> +	if (data->wakeup_irq > 0 &&
+> +	    !irqd_irq_disabled(irq_get_irq_data(data->wakeup_irq)))
+> +		disable_irq_nosync(data->wakeup_irq);
+> +
+>  	ret = imx_prepare_enable_clks(dev);
+>  	if (ret)
+>  		return ret;
+> @@ -643,6 +673,10 @@ static int ci_hdrc_imx_suspend(struct device *dev)
+>  		return ret;
+>  
+>  	pinctrl_pm_select_sleep_state(dev);
+> +
+> +	if (data->wakeup_irq > 0 && device_may_wakeup(dev))
+> +		enable_irq_wake(data->wakeup_irq);
+> +
+>  	return ret;
+>  }
+>  
+> @@ -651,6 +685,9 @@ static int ci_hdrc_imx_resume(struct device *dev)
+>  	struct ci_hdrc_imx_data *data = dev_get_drvdata(dev);
+>  	int ret;
+>  
+> +	if (data->wakeup_irq > 0 && device_may_wakeup(dev))
+> +		disable_irq_wake(data->wakeup_irq);
+> +
+>  	pinctrl_pm_select_default_state(dev);
+>  	ret = imx_controller_resume(dev, PMSG_RESUME);
+>  	if (!ret && data->supports_runtime_pm) {
 > -- 
-> 2.48.1
+> 2.34.1
 > 
 
 -- 
