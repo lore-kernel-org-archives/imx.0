@@ -1,65 +1,65 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2041.outbound.protection.outlook.com [40.107.247.41])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5559227EAA
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 09:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCCF1474DA
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 10:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742205331; cv=fail; b=vGOrAsUOBTtymluXOX5dXidz99ZgOmNNtC7p5WAYfyHZsPg7HeVE2WR+LimlX7KZpseu03mIN2Q5B1ZSFqqr3ynMiW++qp1UWKwV4C+Cbj3WJrpy+Zr7lPbSyOc4kUnWnK48/SBMQGpg4a6at9DzN1hq2OtHIYzcUthREEhI4R8=
+	t=1742205647; cv=fail; b=GIptJoSy7rSAsER7sIbeqpPUQ0k2OH0fk/Klp80HM7RGRzRhoF3xL11tzaN6CnyVZkCXQ6X/8X2HJPvYaQ3N4RpAZto/GtZvFbUE2uUFhkIYwsou43qlW/iaVJGuOiSd+xmMZacPL3HKuvqzqogoadoRlB1ro/O4dUewK47g7Cw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742205331; c=relaxed/simple;
-	bh=qSOJw2XkcFQgjaQTsQzhupsS9m8PTUOfy7J/zEC8Lgg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UAIaj+FET0FI2mKt1Q2ebVqbbGNmWLTy0p9eDKLF19Bjt4vhjYEKorna5debQ9hCEhQZTue7f0/6ZQPtZ/+7EbeX8aCdxNhlgvrMoFpfV0zdOeYrc4doopwVL2lumwN5WNH13XSPfcG2M09Vt3ZX47wl07Q0NsYm/NIL1EJoe0M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FbEdxN+T; arc=fail smtp.client-ip=40.107.247.41
+	s=arc-20240116; t=1742205647; c=relaxed/simple;
+	bh=12TxkwmtZU2/TPEgEw5UFTkuDwI6IyHHJSG7qm8/Y0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tLajwqYIp552o+J9xixrmr6Ve+XQBxAVCBq4QqTRDTF3lIDgjq6UaDJmvVHI1Gx4kIe6Q1H36p8xZbbyN+p7jpHX2w1OFx1T5FoTrRkGScDU6irELz29FBpUGMsArGygOj+7/ZPuTkWjGtAoVuRNIkFDvXvrIIaEF2I9mwLujKI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ONukwLx1; arc=fail smtp.client-ip=40.107.20.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FbEdxN+T"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ONukwLx1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SL4kznU4RwSz0clZLWZq5SV7oKhdevzsAqPDgjP29760kZqVVeuWuYcCFGb1S/tpVOPr+eS5vi/am0oKykact0xhIIyacv5q3xsrtr7vfv+uwGmNW5WW+MjU9hpMeWgd1uIw9yw0XP3/AX+Xl7oLQIP1+EmeuAELQx59M5fvNfvL0Egekb/JiXdwt70brTHfsPZKKGRP/85u+YsPwhKLPeO5J7Lb/H+f5pNuMawla/urZrKupDpTtTtguhaSTMa5P+aRhg6XSMe2T33llBthwAojnBV5Oy5eixlulVhizmM/lw8YCV2gd/6ql9bMkNY9/qOdkIP4Dh1o7fmFUwZmTg==
+ b=RucYqQUWogWonhfPTBQsqouHwUleQboJG2FIu8p6TkyxhJLg+k40HUj6VWfgtKY22da3yZcJmQPEmq/SK5U61VKx5CaQAmGHDt3Cv2Fg9T1LU3NygKjDPQCLtP4ShnsYEMQs2024MeHznMzm0Hj7wcx/8EMPGYpHlV6b8eHz/BoFF31ZW0NdL4XOp4rX0FYQnPs0lXyidqzY+TUPT3nl9h1BMItd1unWcJlbPBiWf2Xbn5io9ASR+SwaEVnbRFvILZEtEOiaensgrODrfQ8uz5yTYaZE8/CcUlLEJcHMmUz8rEC9tJRdrI9Z9eeUu+O9t4Yp4K4iofSOHSyQBnplyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y2HMNd51ebCLuc/+lI+FA2F7wifTN78z+y0do2Gb1hE=;
- b=kKMSw4qbaSiNtVV0QEfPpbdvIaMDcMiT7uxJ5oim9dNx8o7mS1nYF6nin6JdXpb0Fs27a5pLt5aeooq4eQ/kYZxTewaU1+d//3pFaIsSwjEymZ1R6UNpXvsfXsaMHyiEixlPlzYy91IBhgTdwxcFv9I10lZ87Kf4ju7Gy9OMtQyLvHcPaiXwoNAQCBXN5G7ThrEC6d6e4XMvqWvd5M13x0cVZNSJcBOIv4fc2LkzD7u4hpjEub7kpd84WHJbGDjIdFX0EAwJCQeGeu9cetJ+aBXBqjHMwB6fejMrHSJBNeQSHDfn2ectCMuj7aMp8AvfTMkDTTWaLSaCi0jj4tFdkQ==
+ bh=9CLaaNIFVMdx2mWYpN5COpnkx/9WEM+JFnDT824eRe4=;
+ b=hEAn25QuhI8iwuNFGKR87PqgQZlnkqDKMoBSwdZT85CgaRGWmCx37/9sEGCI+JzbeGhVUIfF0tDEICRylRtXuC+Qd9carXplfc40s7hcqvKnYsdQJdK1VrrzqVz97TbSyXVpIYWnj9U72L/6EULijBfpg/eVN8LOXfTb5DlsXb4xEiTxZYaflwpAlokGipsKIlEU4/Zbjuc+nDTcR42yneIjOizI2TqoSPQsaKNsgti+/nJPnUmstKIRvCQUXc/9nAbGeZl0kaK5UDLF/Y06saDSI8aI3Q0jdwdMJuQMptPiV0w+P4bWLAFqOsZjBmN+nsQsr08rSvXqk/Nraiupgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y2HMNd51ebCLuc/+lI+FA2F7wifTN78z+y0do2Gb1hE=;
- b=FbEdxN+TLfdDOr5z3hGJJl5DxTkq/I95bbpua6vOENM3BPpQqxQV9FxvMw8KXhuuX2YVvMrkgJzwxC8oHe4v58Et6hG2BCTyoYCFdayQDw2gkISxRLvlrMhmz9iSaMhTXavD0i+p6JCOw2ksIUf1Gx5Esk+J4Mv9AQPxvmDUplCBFOjzGfx21Ms1haP0CJuJgc8Ps16oZ41KyyebW+vf3n2CHlBISX31xrxcrnoQjSDLn/7jlarDk0ydYsktwMNJFj28MJQl/QyoJpgawf3r8Tos6jJaIYIUJXmq3xuOIXMuqpEH/I2QFvbBd1alm/6qP42TWoKR1lWRUCqBjBFndA==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB8880.eurprd04.prod.outlook.com (2603:10a6:102:20f::15) with
+ bh=9CLaaNIFVMdx2mWYpN5COpnkx/9WEM+JFnDT824eRe4=;
+ b=ONukwLx1hm9Ha9p0BXX599ZgpKUHS126izaf8ADON1RoNsdZUfRGOgO+b0+rTMgkAuiw9Ke+OIT7YqpnzSYLvSxfasxBCDx57mvTW9wD3retFRx9Cgn/0JlQ4drkrrdbs3XUQrlI3y6UxiioKiGFKuciKF5WR76OQF7yBZsDRLmzk0pJfn4WScLO6h0HvqHmIos35b/jVDWT88lZ/dDBqUnTp8OUXF42HN4BTmZKW/ZF7QeiAWEVJ8OMfLsKT8Ant4lftHz8PcxQfxBcZ/vj51K7vJQy+pgMg+6HKjrShTtOtG8Twb/rcMUodBJfptD8fmbDGX08xuR6hwrYYeAcEQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by PAXPR04MB8176.eurprd04.prod.outlook.com (2603:10a6:102:1c9::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
- 2025 09:55:26 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
- 09:55:26 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ 2025 10:00:40 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
+ 10:00:40 +0000
+Date: Mon, 17 Mar 2025 12:00:37 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
 	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v4 net-next 01/14] net: enetc: add initial netc-lib driver
- to support NTMP
-Thread-Topic: [PATCH v4 net-next 01/14] net: enetc: add initial netc-lib
+Subject: Re: [PATCH v4 net-next 01/14] net: enetc: add initial netc-lib
  driver to support NTMP
-Thread-Index:
- AQHbkkpJSjcnE6eIUE+0uP7QMRa23rNxR0QAgACVlrCAALozgIAABn+AgAR7qACAAAK24A==
-Date: Mon, 17 Mar 2025 09:55:26 +0000
-Message-ID:
- <PAXPR04MB85102185D0A4C30F0688AA5488DF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Message-ID: <20250317100037.7o7r7gch433s5lq4@skbuf>
 References: <20250311053830.1516523-1-wei.fang@nxp.com>
  <20250311053830.1516523-2-wei.fang@nxp.com>
  <20250313163526.pqwp2wsfvio7avs6@skbuf>
@@ -67,214 +67,111 @@ References: <20250311053830.1516523-1-wei.fang@nxp.com>
  <20250314123715.fivq2cbczd4khxkk@skbuf>
  <PAXPR04MB851027E5F830F08F3395083888D22@PAXPR04MB8510.eurprd04.prod.outlook.com>
  <20250317092808.jel2au3cgfwblaxk@skbuf>
-In-Reply-To: <20250317092808.jel2au3cgfwblaxk@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAXPR04MB8880:EE_
-x-ms-office365-filtering-correlation-id: c416d48d-85aa-4e44-dc9a-08dd6539d7cb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?uqq4zlk0TXYxjWT3TlsLU1184dkZY+UEmPx9WvBoetY0O2PXXIRh0XScetAk?=
- =?us-ascii?Q?br8Zdz8tNVi7qbyeUdJUIHkeZPdog/bnI5gVJKoaM//3Ves+sOj4cYq2cTQN?=
- =?us-ascii?Q?zFwsf3kYRWZUGT+oHxCqOmruT2LqXUcSOOUsND1WLkh7ouefWS8fi3Jzc1lC?=
- =?us-ascii?Q?uXR7CJk6nOoT2n19sw6vTkO0YfWL3upU0wU6OzG810WoakYcy5zIQ7PhqaiB?=
- =?us-ascii?Q?WzNnhOd5lrVXvIkTHy2S02u3bwtaY6X6dROTtKyuw+dH8KNIv5J1aqLTslDr?=
- =?us-ascii?Q?MpTZNSvEOmme00wNf5LXwssgGkgHCcyE2tzCyJaJt+sgTy8d1h75NruYOBzb?=
- =?us-ascii?Q?b7ykIqBY6rjqKNJH7z2ZAr5QujtZ26MBro/2qT+g+zlRIoUDdT6gCavdulL4?=
- =?us-ascii?Q?giB2x32FJeOp5zGF2/d9bGWsQ+QTSIBhBYAsxiWJRiY4b8MV75xYVIW5CI/s?=
- =?us-ascii?Q?UH/tCWM6Vd8mC4a1kpUCRx5pNWQyX6kSKHZGjsY84J6zv/Np3s93hgm7nlCJ?=
- =?us-ascii?Q?KZcaT7+PbImkXiYZm88qLsn07++JQ4bze1EB5UZ2C6D6iBnbi9jiDQ7sh195?=
- =?us-ascii?Q?iYW13BSuPl06tJ1b2PpGIn4LQ7Lp+HHzihbRf/OdvXvoJElIld0zANNgCKfN?=
- =?us-ascii?Q?rbErq9dNiB93AAwZSlPCp0DWiDnI8UgWatR0wbcMtCa1UqSuABmYFU6Gcnv4?=
- =?us-ascii?Q?BBA3ONc4pzk508cDpGP+Ts/Gvzp7d9yUQ9Zli2+xhCsivs0Bm2VRuMsN333V?=
- =?us-ascii?Q?5a7v9mQ5PiOVrEnWXisdcAv91ODd2RuBBhdveKRpsoqaa7qIHrM5jtj4w1dE?=
- =?us-ascii?Q?WxWxyW5vP1RvlMZba2WZCzsa+0gDyrOfnp4/HWC2IaiG4I2g+dS4y8CMtZvm?=
- =?us-ascii?Q?uVoccaRtZvdLp5Kf+x0ClgmfAiyeinI1PJUTEujRf0+YXYB5bVmk66t2J0Nn?=
- =?us-ascii?Q?1l1db9uGF7CJV5f1lIYS0Jyw5DqqBojbC9I8mAViZODIWc0jWON7jBipmUJR?=
- =?us-ascii?Q?rRaJfY9KuJ3lHSOdb40tGCP5Pw/es+VDzoK9CJkYs3uhBnO7HdALbvgocSn5?=
- =?us-ascii?Q?JXwRM7fBMOthRU7/NacxsM8Kv/Ublex63t/SW3rlOUQUzv2p+xRqFrG4iqXs?=
- =?us-ascii?Q?g7xpZjCA7QqYmwd2CoXpVFDodXEUrMhDvihbRt4dBdDKNvff9RBwwT2aIk+P?=
- =?us-ascii?Q?fhGX0HlOdhFqosU3ddzyWU12z7Xls3YgoB0V3eCEydDoSpvt8D4WB7KkMskr?=
- =?us-ascii?Q?CZ4bQJfSjlBajhIcUG1tM729ESIxTxRwhgB0yPngKSU4oQmDgrx2j93KRt6M?=
- =?us-ascii?Q?v6xN3hyJpCn5gMbIl4SwNM8uqkpn54Y/IoeAKbCt1RBZ5wfkX7T0TH7SPGdt?=
- =?us-ascii?Q?Mv1kYagDoecvt2gi13CRiR/3LnwEi6WFvt5kHRingn+cePk5HL66rWanUtgV?=
- =?us-ascii?Q?kvfY2+YA5c10hBsv/fVbpC+8CM2LWwRI?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?DlKTG5FAc9EPTnMcMhOlsXG6YRJJCPaB4jrw+55aU6lObSjRLmJM+sO2MKRV?=
- =?us-ascii?Q?zk8YqGsdDPX/zNTV4sOy7UTi9e0gmSMyF7kR9q4qgx+B5mOgMp36cbj6PmZR?=
- =?us-ascii?Q?QHTU7cFQLoZ++5gsYAQD81Z07cH5v1w/tvW1f2ABvDh8/+owm501cglj7oG7?=
- =?us-ascii?Q?YzdIWy5GaMTyrf7dD6jcaM1eBPvL4AEDSaf4ZOnfS9sGGrLCZK10mqxMB2u8?=
- =?us-ascii?Q?Npt44bziO47EKozD6j4XVqlGAKDfVkeoAAvdZIYEGGq0O6UEZqoJwQBMgKsD?=
- =?us-ascii?Q?mlLPH5MWO7IyzQe1UAUvyUvErHBCa+o6PbfN0eYkxAAaS59sMKvt/1fY6sJw?=
- =?us-ascii?Q?nYrKmJvsSr4dxKfs6PB69nI4mhU9k4stmy5gK4Do6jD41pDJgL60pKdCk17l?=
- =?us-ascii?Q?T6WFyf8zyISUFkCwhWj4DArKw4pEUp/9bcaGeXO0gjnKigfhu2Lh0bYEIrxP?=
- =?us-ascii?Q?SUcls+c76wEE4QFkidIJntH/yJDkN+F4rJjjE7N45DtKJ/m7PPaY9nbzWbS/?=
- =?us-ascii?Q?N0jioiRPExiw2PykIwK9biuocARWHQ6hIKPqo1oZXiHF2P4aVzuSj3sKalPZ?=
- =?us-ascii?Q?U8XeCHiCzKSQE8dhKEHaHC1VPWwoWAwm+LzwTfHjYMOv5YjU9vz6b1q6WJNK?=
- =?us-ascii?Q?Q3JJqy51T2Xw2LtXsvBF2evklxB1shV3ye2eWX8Kg2GldeKjq+sSm3TqYuEQ?=
- =?us-ascii?Q?ulMJw46Q6lMy1OrGPKRPRiJ++422tIgQ8DqMM47j3NbOo36mqAroRvWa7IiV?=
- =?us-ascii?Q?r8fXGPsnlbwYCFXJndyLXR9odnOdlIG6byJBFbeGVT/uzTIDeraNrZWXeG3t?=
- =?us-ascii?Q?8/73ZPscqLbojpSrkBMu5sT/v1mpakNFSrlSoTwf4s7DaDWScBIrFYUokXlS?=
- =?us-ascii?Q?bmvBZo5hk3hbIMS0Gv5IMHOmZGjZgLBz381n/nrjtIsqAWPwzc2TJC7q/3fz?=
- =?us-ascii?Q?MWgpoO5Irxt5bGt4dKkySP6cq42UWNXKG6naOoTMMPliW/TxFxrN4NY4alxy?=
- =?us-ascii?Q?GJLum1vym420WaXqFFFYmvmaDMD1MKGCOrEKWjm16UY55QyvH5R4an1DGMGS?=
- =?us-ascii?Q?fWi8iFYNyn0rYJ77iq7pQDbiGEQSw3Dkgp9QH839b9ZRvF7WC85YR4afDzGp?=
- =?us-ascii?Q?GRNzN64spF/Q5CWTOtFLRSTm0ExGYr8RrUZ29Xx/ad++3kDzbuxd8o1eEQKL?=
- =?us-ascii?Q?XHbStTdK+RCOXinuoBrQOW9WGRDfgZnG3L6akJ1kqdl3QvXTslChOaAL1tDK?=
- =?us-ascii?Q?+NLgipuIQvNYSoO3iaB4TMY+uOjVtfkU2KMEcb2rWZLh5fXDy1AOVJfX8CnE?=
- =?us-ascii?Q?Nfj4f+DqMwXztQbLE6C7QIGXYNCQy3Vga7yiIgfUaD+cxy/pVWOjhIyT34aT?=
- =?us-ascii?Q?3sOXCv6CRZ2R6B/BG+tsmoQ6DkXRowDlE2JIumKW5Gfbr9Z3AnJhRZcRkhlp?=
- =?us-ascii?Q?//ZaRAQZAxy+b74r5f4DAKfXsNp30hHsHbIdrITJdHOqaFQb3l2EVtKdlsqr?=
- =?us-ascii?Q?l8GhuzSihpwIxGhQLUelNY+otZFYQSrz8feYJrR3NF+rvuWLvfGOVV8Qj9wd?=
- =?us-ascii?Q?/GT8Z41xImE+UQFjRHI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <PAXPR04MB85102185D0A4C30F0688AA5488DF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB85102185D0A4C30F0688AA5488DF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: VI1P195CA0075.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:802:59::28) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PAXPR04MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3e5677f-5aea-4049-c5ac-08dd653a92f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OjT80u0mPGzfNMxP1HucSk3g/Yj7EXian+LpA5/HpvFy5s8gJzFw+6kSh0jV?=
+ =?us-ascii?Q?lZKSnCp46YUE2Vt1lo+UmKFeHNk4Oad7rieeY+hdikafqUm98KJVS5XLgvYe?=
+ =?us-ascii?Q?6N3g6Wl4DpHbjU0D58lHoCly00aIcD34XI+Sb0eFSHeq3nYbRS3G8AgSD/cJ?=
+ =?us-ascii?Q?LINaPCLRm7TgNEzZ/25kgXvNf6DBPVEv4eW6koZjkmJtKEFgfYq4iIeejjQH?=
+ =?us-ascii?Q?NlWLbHkHz9inf+nX8BMYQ3uTZ/cWlrmv7qpDmLydxP5oegLIXeTnCvDzGn22?=
+ =?us-ascii?Q?c+Hm0kuxPONjpPqKSEwC/MeV5cF1WlpNyxMMHq5H/sheLpEIlPbsSmODU9aH?=
+ =?us-ascii?Q?eG+Tq0lzvf8NsUioFNuT1KmnK8a1MfEZPO98qZiXIEy4mLtNGNI/lpB006Ed?=
+ =?us-ascii?Q?Hi8OHhH3ZtEZAPKGXpY/6xXx2Xdk5GAvYJ7QbSQZqg9yI62sNF25OTyw88C8?=
+ =?us-ascii?Q?NS9cvu22/cg9xAMXeUJDx1IivW3FOZ7fZnqGHk+cGlhwOrQl4rA7WXMUDoUb?=
+ =?us-ascii?Q?YR0b6jZbe0gcO/bh977RDAUOrw5kw5oRoKaX44roIzm+NcYmB9e06DXyGUpa?=
+ =?us-ascii?Q?yamUvLF4bIYJpKsO92GZ75xBr1rNSJVNggRxDh8vo2vfNK4+wpOU6/e5P2yt?=
+ =?us-ascii?Q?MAnQssRTsBusU8Y2YhrTNaopbE6U/qmNohD9qgB0XeCEIVkuXXLFIiKvJ4Mb?=
+ =?us-ascii?Q?ogvyJWohkgEvwrjxN0TzAWUtmDW6qdsM8N2r0e4Yd4FBLhHJPPIHOuc211lV?=
+ =?us-ascii?Q?O5oORwNB+OxnFbpgaGNrkx1bb+bYJ8Q3magzrXKQC1W5MdscZl9ZAOGTvjSc?=
+ =?us-ascii?Q?0W0Nf9BVcD51SSNntP9d4seU+i2Shb6MwNU5z6JCSwxCQ+zqxU7DhGkbZEBk?=
+ =?us-ascii?Q?UufnsM2lpmtm2/p2cnX/WzFaWaqY254RgxQiunxn7Ep85ToDmGT8n9raa/VA?=
+ =?us-ascii?Q?xPqEEQHUHx2YWqg7eBXODiz5aY+0FpBcKKfDRkZVfhnnf/+EzL2b+5HirMGV?=
+ =?us-ascii?Q?KoA3WwKlU5nVtM5MV8xmAK57T9QjERzAe7G5omzb0uYtWN8GFJ/lWjEnFRx9?=
+ =?us-ascii?Q?ijJ3TWqJTlBHhmjgY61p4sXCuXwyMTe/DF3MV5ezEKrzNsTnqelGtq7eso43?=
+ =?us-ascii?Q?fgEx7bdfHrFPkTou3uAZeVO9q2ABNbAMZOK7AUZUmEhZzfSyYwiNoKQjt6IL?=
+ =?us-ascii?Q?MTfUlAS8Ppygww2ioeCJmGWJUQVJINvUOGCjzXgCu0OVo+sZpn0++lS6S0Cs?=
+ =?us-ascii?Q?ywQYv4SNyedze5PvPmIycyEXGKDXokj7rG9zKwMJEwveykSjhGI4mvCiOu20?=
+ =?us-ascii?Q?S3cBsPXX05w9uPkkWKqMPVKyiObqKHbE2jpUGNCpxjQpoO3M0k81LNU1yDWT?=
+ =?us-ascii?Q?lxkKIyqaPvF1RPUKi+q3EG+sr4St?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?atJnQHkTxlPcRKSG2ZGgTd18bdg0t3FR9TF9YDNBI9N3tPguTqSK4rA7/TXA?=
+ =?us-ascii?Q?RK+E7g9XJd2ukmBYfsuxGxuPN1+YETRmExeeO4dsc6AkWmFRmvWxsdVNNgNm?=
+ =?us-ascii?Q?8MT/qwYc0gXvElXs9obDO/52RJaZUR7NjwofwEVy27Cg287pypQqACghxLdv?=
+ =?us-ascii?Q?DqUCc2BSbQB5ZJBxG5VXQxD0XFeDSOThAkeHOU7u1FWqyDtA3+7JkZnHRga9?=
+ =?us-ascii?Q?DXgUTT43sE1EoJgWoiKI8a8dG1mvHq2uElV0VN90vgiOlkKMH8ojFGSlipM1?=
+ =?us-ascii?Q?048drxPkbs8Fefo85p3HkjPuIOlFgYb+L8nLpu62Q3KUCLrMj31DLj1OLCiI?=
+ =?us-ascii?Q?6UwR6PHbVeeCHgjzdgSACv4hyU6mNERJ2e5F5j0Qk8detATLcD2rMU13++Sa?=
+ =?us-ascii?Q?zV5gy3e79F6bR7RCQ0g+qSNMMAwTh5IZCSaXHbtl9qCVy1cN7Lthmp10mmR0?=
+ =?us-ascii?Q?Ux6VaJGYT6p9LQsKpCNqrfzOHpjDQxWoCf8QCuj6vmqSOpDJPLFMKuGNm1bA?=
+ =?us-ascii?Q?ta/j5BuAf4zCUW4fZgcRkFxlQr/lNpRuqBTpi5Jsj6QIfeP4Y9puWvFQ+P0E?=
+ =?us-ascii?Q?iaJ2Tb6g5L4uVpAQUY3F1r/e0DpasJGsJzmYeeo3Mb7GqwuV8cpPmo2gKHPY?=
+ =?us-ascii?Q?RTi+TVwqvJdpnbFFF/e3XoqifM//YtLHoYFyupGxv7PheAHf12v4BZsDN6GA?=
+ =?us-ascii?Q?e7YWVTZiHFuixvCG73jH6gQUs3IRPW4Q5zkrWlvNLehyMrInDsXccSclAAKl?=
+ =?us-ascii?Q?K8D8geDz2xND7tNqiT9kvlowAQ4OB3q8iA4hUudWyiW79+C+0zEdTEbQgWIH?=
+ =?us-ascii?Q?f4ZvcBWHHb+PEeeVd54bpNlm1k+wV5ozFEYySEVEX6PYvA3sXuT65esr5BTZ?=
+ =?us-ascii?Q?7uT4qBwU916OeQjUBtg0p/oe8qCyObFLf5jfWjw0h6+ad16G1hE7QEg+j8c7?=
+ =?us-ascii?Q?+hrhs+QUSSWXitPr//pnK9Z/+0todBgpwX50aSoANTnStXvb2GfpjnPMzFnt?=
+ =?us-ascii?Q?nPKdBeZxAo2+Mj4IUTrMhbT4ndNGap7HMLgEEYR91bNkOu0bxaYcDoZT4i6S?=
+ =?us-ascii?Q?qG4KBlBUpDKjzmT8suIOqI/X5adjXrK2niahL0eYoi1iuCpZE0MgAM9HejKE?=
+ =?us-ascii?Q?M1VMYXkqQE+Zg2Fsv5Net9X7bLLKYCbTMYC2uB6q63pxlmafIGbk1ebXlq0/?=
+ =?us-ascii?Q?ktJmXQj8J3tEIbODAHU1oysS42s+Z3gur4f7zUSNlz+fmf1nuna1PjHkMA83?=
+ =?us-ascii?Q?GkQJ5Senajqto1EuWlacNPJfTRvzY4t4kcXftAojd2zLrX/p1I7B05CQe+Y7?=
+ =?us-ascii?Q?PJLBW1VVArEhlzaBiDCYgg1GDbJCoTiF7Ae77TstQeMYdiESMvklcQU8r/On?=
+ =?us-ascii?Q?cJ2qtUzsEtec55+c/LEERYHIsX9N+1N2asarpd4S5AjwTrGL9YIaHlIt2zG/?=
+ =?us-ascii?Q?UkRyknINpHRXWklgV9rRgKXbWh8lKolQUlP+jspFay0HNPMe7wV8ZakzbpRg?=
+ =?us-ascii?Q?uhmTNVltN07ZAfOcbnhEyf1V8M1jtTUbeC9PG2s+ztgdutfMVPBpZ4LUPhX7?=
+ =?us-ascii?Q?leUt3AafAbjpy4pcP5sUVZSMz6ft3jb0hmIxEjs9d4g1HvMUP2tXPQF2k3hW?=
+ =?us-ascii?Q?oQ=3D=3D?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3e5677f-5aea-4049-c5ac-08dd653a92f6
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c416d48d-85aa-4e44-dc9a-08dd6539d7cb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2025 09:55:26.4187
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 10:00:40.8241
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wYI/qkwu4PQ2xqZRC38F1kBqqIBKBJ53bKyExulo08LowCl/+GB8M3iEUGk/D2ng/x+U1Hx7PuUGHwZG+SQt9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8880
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XCVlAs9Lki/yqR71/jsYctM1OixoV2FPDcRWUiuh7aMFHITKr5EnqmdpfU1LkCBTKz90FSqrEsVTT7/45ph3Lg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8176
 
-> On Fri, Mar 14, 2025 at 03:48:21PM +0200, Wei Fang wrote:
-> > > I mean, I was just suggesting to group the macros with the macros, an=
-d
-> > > the struct fields with the struct fields. Mixing them together looks =
-a
-> > > bit messy to me. Even worse in the definition of "union netc_cbd" whi=
-ch
-> > > IMO needs to be reconsidered a bit (a hint given below).
-> >
-> > I think this is a matter of personal preference. I was inspired by some
-> > of Intel's structure definitions. I think this method allows me to quic=
-kly
-> > understand what fields the member consists of and what bits each field
-> > occupies.
-> (...)
-> > Thanks, but we have added fully NTMP support in downstream, it's a grea=
-t
-> > challenge for me to convert it to the 'packing' method. I don't think I=
- have
-> > too much time to do this conversion. And I also need some time to figur=
-e
-> > out how to use it and whether it is worth doing so.
->=20
-> Ok, I'm not forcing you to use pack_fields(), but given the fact that
-> bit field overlap is now something that has to be manually checked, and
-> a bug of this kind already exists in this set, you will have to wait for
-> me, or other reviewers, to go through the bit field definitions from the
-> entire set.
->=20
-> > > And I agree with you, I also don't want ntmp_private.h to be exposed =
-to
-> > > the NTMP API consumers, and I wasn't suggesting that. I just want the
-> > > NTMP API to spare consumer drivers of the gory details, like for exam=
-ple
-> > > the buffer layout of a MAC filtering entry, reserved fields, things l=
-ike
-> > > that. What I was saying is to keep the buffer layout private to
-> > > ntmp_private.h, and expose a more abstract data structure to API
-> > > consumers.
-> >
-> > Sorry, I don't fully understand, for example, if we place the definitio=
-n
-> > of "struct maft_keye_data" in ntmp_private.h, how does the debugfs
-> > get the information from "struct maft_keye_data"? Add a helper function
-> > in the NTMP driver and export it to enetc driver? And how does
-> > enetc4_pf_add_si_mac_exact_filter() to set the mac address to "struct
-> > maft_keye_data", add another helper? If so, I think it is more complica=
-ted.
->=20
-> Well, my complaint, which has to do with style and personal preference,
-> is that exposing packed data structures to NTMP API clients puts an
-> unnecessary burden on them. For example, NTMP users have to call
-> cpu_to_le16()
-> to populate data.cfge.si_bitmap. A bug in the packed layout will
-> potentially have to be fixed in multiple places. The two options for a
-> more high-level NTMP API that I see are:
-> - You expose pointers to the packed data structures, but API functions
->   provide getters and setters, and the exact buffer layout is only known
->   to the NTMP layer.
-> - The API functions expose "unpacked" data structures, which are more
->   abstract and don't contain reserved fields and are in CPU native
->   endianness, and the NTMP layer packs them to buffers, either using
->   pack_fields() or manually.
->=20
+On Mon, Mar 17, 2025 at 11:55:26AM +0200, Wei Fang wrote:
+> Actually I did this is the original version, I mean in downstream kernel 6.6
+> tree. I add a "ntmp_mfe" in ntmp.h like below
+> 
+> struct ntmp_mfe {
+> 	u8 mac[ETH_ALEN];
+> 	u16 si_bitmap;
+> };
+> 
+> And the conversion was done by the NTMP driver. But then I found that this was
+> very troublesome. We get data from kernel "struct A,B,C", then the enetc driver
+> converts them to "struct D", and finally the ntmp driver converts it to "struct E".
+> So I thought why don't we convert "struct A,B,C" to "struct E" from the beginning?
+> After all, these data structures are only used by enetc and netc switch drivers, so
+> in kernel 6.12, I changed it to the current way.
 
-Actually I did this is the original version, I mean in downstream kernel 6.=
-6
-tree. I add a "ntmp_mfe" in ntmp.h like below
-
-struct ntmp_mfe {
-	u8 mac[ETH_ALEN];
-	u16 si_bitmap;
-};
-
-And the conversion was done by the NTMP driver. But then I found that this =
-was
-very troublesome. We get data from kernel "struct A,B,C", then the enetc dr=
-iver
-converts them to "struct D", and finally the ntmp driver converts it to "st=
-ruct E".
-So I thought why don't we convert "struct A,B,C" to "struct E" from the beg=
-inning?
-After all, these data structures are only used by enetc and netc switch dri=
-vers, so
-in kernel 6.12, I changed it to the current way.
-
-> Claudiu, what do you think? I can withdraw the request to hide packed
-> MAFT (and other) struct definitions from include/linux/fsl/ntmp.h if you
-> think they're fine there.
->=20
-> > > Thank you for posting the downstream layout of struct ntmp_priv which=
- I
-> > > was already aware of. What I was saying is that the word "private" me=
-ans
-> > > an aspect of the implementation which is hidden from other code layer=
-s.
-> > > There's nothing "private" here if the NTMP layer has access to the
-> > > definition of this structure. I was asking whether you agree that it'=
-s
-> > > more adequate to name this structure "ntmp_client", since it represen=
-ts
-> > > the data associated with a consumer of the NTMP API - a NETC SI or (i=
-n
-> > > the future) the switch. Or some other name. But the word "private" se=
-ems
-> > > misused.
-> >
-> > Okay, it seems to make you feel confused, let me rename it later, how a=
-bout
-> > "ntmp_user"?
->=20
-> "ntmp_user" works for me better than "ntmp_priv", thanks. Are you also
-> going to make the API functions from include/linux/fsl/ntmp.h take
-> "struct ntmp_user *" as first argument, rather than "struct netc_cbdrs *"=
-?
-
-I think we do not need to keep "struct netc_cbdrs", it can be integrated in=
-to
-"struct ntmp_user".
-
+I understand. With pack_fields(), "struct E" (the packed representation
+of "struct D") doesn't explicitly exist, just an abstract type
+representing the u8 *buffer, and the struct packed_field_u8 array[]
+which is hidden inside the NTMP layer.
