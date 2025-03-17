@@ -1,143 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6754228E3F;
-	Mon, 17 Mar 2025 06:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDA6290F
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 08:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742192489; cv=none; b=Q/Vf8o+e5vHxp96wNXaKUU7ARyf0ECt2SQovMWVGXqbr5lTnkryzMraiV2qbcsPj5UgwbV8w9A4vde8EroT+6ASix7wD7N1L9EdjUQmvydlxkQI+ctsWd75V5jgoGGjunblE7sFt87Kr8BLWEsNGAGpHwcAogUoyDU5bplEEYLk=
+	t=1742201280; cv=none; b=f0qM4xAZKf4jvkj1jSPlBf8k6npO8AAD8b/GtBDKMER4yZgj+8chKFxu46DEQBZMegAV6usnhEG2nJ5/wEzhhzPjRmUNmMODjH4RNKTQkuldM1cwVf4DYIQj3v9HD03eI0MDq3jszM/ugFLTHxgqQKUZFunoC9+DdAfu5wwf4Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742192489; c=relaxed/simple;
-	bh=fCMBUGoV/CmK63hWHLSVRtiCVntHpGgIWbVE2zyNOeM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lTye33gSr+djVNfPhOj9kMHGzKwyuinKAsVFFeqkV+i26Eqc0QGiqE7Cm0Y6c/hUM+j6mT+g94RkQSSKKO/D7y9JuUmwMoJKJQldor2/rw3HaRR/LJa2ogl6tCLYjSWHfDIli5+A7HTlkGLE8Kehyc//BMWjrgPOfbs2AQWvDPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1VO9p/+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742201280; c=relaxed/simple;
+	bh=JWF40QUvcWkqOKGgqM72bACfGKf0BSEtJRD7IGnHZXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=cAb4Jy2wmk50cRwYnYArYB7f4IoYWRCVjLaRb8Yx1mJL46jlaeUv7xFYs8KAL1IHu0Nj0bkfqOaERH/3VDt6h4tFSxXSdeZzPVQ5Aq6EFjXanzxycVmYqql0EB7vE6zIvmu4fZDli/9X1VxtJdTb9OjGtgWyEI77OgqSo6ohrSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmZkeC9v; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1VO9p/+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E73C4CEE3;
-	Mon, 17 Mar 2025 06:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742192488;
-	bh=fCMBUGoV/CmK63hWHLSVRtiCVntHpGgIWbVE2zyNOeM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n1VO9p/++wG9AF5fP451/y2IKPOcP+N6cstuUTJC7hHd1vCmLx79K05GAwJiaSffY
-	 n3X9gZ9hHrq1Bk3RJ3i//Gu88zagA+tS1fH26sNPJB1Pp1DCybZdLJgEvieQwzCk8F
-	 XvDm11BPpLTFSLtiu3FfP884iWF5Gxf4Aru7o4E6F3yE6HBpPKrxxViEj3/6vPO7Hk
-	 xBukA7E9OvLDVulB0Mit7dQaiBgxSgdSu8R6ugowmTNRshTqFC5n7fs4RxlxvH0ooB
-	 a2d6sU5IEp5UPqTQGUhtGPWblx3/esdOJ3DCvdnWeBEcVPTT9F2P9xB6e3UoGmRSGB
-	 nBvLYbgDW2E6Q==
-Message-ID: <10eecd8c-52b8-4050-8b1d-f612f4ffc653@kernel.org>
-Date: Mon, 17 Mar 2025 07:21:23 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmZkeC9v"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abf3d64849dso666960466b.3
+        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 01:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742201277; x=1742806077; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sivy2dFPDfrrWNy8pgqRVOZc7Oa4LQfVg4rx4RY+3RE=;
+        b=NmZkeC9vWGTLXtNhrnWb3fg5jrMrMISrYA02+6A/BLkA2tWHWYCAdW2Pr2Yi2fwxRn
+         3+95YENGSv+Qmdsz5OCK3WLQLl07PgTGqoobHOStSTSr7O+n9cybzM8FhwQvHx+HFhhf
+         VQo2UUPMO1fED0Qp3jExPzOWOmzm83i5QxhFzyGj/yD/2tf6q6wAA1xwiCaSFBfzq8g5
+         1C1LLGtiMIoj8LOcb9qEjgIm6djz2M1tIKkVkKMlXOtcvJlTgHQUgV+l9O5e/HP2FAHa
+         dopmt94AygLTxKPM/7/mxOXe7U5Ql4jiIQe0j9EIgA82PmYk2ICPAKUeY6aeQrfKPFN3
+         ML6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742201277; x=1742806077;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sivy2dFPDfrrWNy8pgqRVOZc7Oa4LQfVg4rx4RY+3RE=;
+        b=qa4zWcVWLeHnHz+HKNZb5B8KAeXROBAE86Gq6agJ9HoiLAb+n/RnRV3rbIWp9bMYgf
+         VDJBJolycIdTd9hN/4AbKRL05dKM0kBL/yWpO53r7Og3p/a/YkfDciNJoKTWX4d6yL+b
+         vOWH7XJ5y9awNUTMW8hhdDvvDbshnMGJTomppWKpoUBgi2YzgkrH3rI3oSsSpRCqKk6e
+         0KGI4QoFs8i3ZuK8zyWz5X9RcPzMmNKNvZhDcUbYtVlrrR0OQ8xyQyJ84M+t1uW4roRw
+         X4DjqpuR1voaJlRci0HewfnNITh8NtN/ioULMNsIOta/WHP7sixp60oiDiICXTvHw1uP
+         nkag==
+X-Forwarded-Encrypted: i=1; AJvYcCUk+6ogcS+0IKXOhmGN2OEUwfoRMtG8SnU2KROyiNwC8hWQXpZ1CSNxImkztWU2yJJYJAs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzuSyOPi08n3DTtQvOJ+M10gKDDFIqXmxRG6iMWyPKM3twH4Fxn
+	0aQK26Cr8ilciwDi1Iazv1nYcWY73G12g8skwWh6xsPjBDhFwKgaeNvgvQ==
+X-Gm-Gg: ASbGncui781e6QW1lX2EU/AUeVUOLMtDcXsSfueEWcXOxeHKZXlcSlHuEhckcn0qnhv
+	ykI4IAEYQWoZ4OQUo3ay3qjmW4udAKMzRaMXO/4CqVR5YsL7VM9D7WqcVeKT6hQrEkpQ65JVXfY
+	eooZB8xyQlRpV4TtogKMjkOZXInEt7rljHNBC0cD2MaDBJDUvjejq0B8JcJoO7AMV//gcbtrftV
+	L6a0BciXaLkNkK245EgG+Ls1COiF6aQTVjVj0NLVvMwt0Vmohg+CMTHS5Nng22J9q4eDnZB8gd+
+	8XLNcoXFBbNFXrMB82Yw0zK9aB8f9WCEIe7Zp2hq+nY/rNIq4EkbNNONGf4BTegTfcd/0GWNsyo
+	9XEuRaF6lWk1KA4M2Ye5vQIq2JiA6uy+GBD95YSVfwZo=
+X-Google-Smtp-Source: AGHT+IHWG4ioeUkKOqbyjHVa3nGcDKasGMk84coU/EEXrQ9CgoA9EeOa+Ei+KVhgfcSMQroZdbmSgQ==
+X-Received: by 2002:a17:907:7296:b0:abf:6e22:cac7 with SMTP id a640c23a62f3a-ac330263c1dmr1241552766b.15.1742201277303;
+        Mon, 17 Mar 2025 01:47:57 -0700 (PDT)
+Received: from alb3rt0-ThinkPad-P15-Gen-1 (host-81-118-90-13.business.telecomitalia.it. [81.118.90.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aea41sm622028666b.28.2025.03.17.01.47.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 01:47:57 -0700 (PDT)
+Date: Mon, 17 Mar 2025 09:47:53 +0100
+From: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
+To: shawnguo@kernel.org
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: OCOTP and DWMAC builtin modules are needed for imx93-11x11-evk
+ kernel dev via TFTP and NFS
+Message-ID: <Z9fhuVltKwqgHdLp@alb3rt0-ThinkPad-P15-Gen-1>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH linux-next] ASoC: use sysfs_emit() instead of scnprintf().
-To: xie.ludan@zte.com.cn, xiubo.lee@gmail.com
-Cc: shengjiu.wang@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
- lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250315141546004ww7-8GUuuRfAQIb8b4KYZ@zte.com.cn>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250315141546004ww7-8GUuuRfAQIb8b4KYZ@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 15. 03. 25, 7:15, xie.ludan@zte.com.cn wrote:
-> From: XieLudan <xie.ludan@zte.com.cn>
-> 
-> 
-> Follow the advice in Documentation/filesystems/sysfs.rst:
-> 
-> show() should only use sysfs_emit() or sysfs_emit_at() when formatting
-> 
-> the value to be returned to user space.
-> 
-> 
-> Signed-off-by: XieLudan <xie.ludan@zte.com.cn>
-> 
-> ---
-> 
->   sound/soc/fsl/imx-audmux.c | 26 +++++++++++---------------
-> 
->   1 file changed, 11 insertions(+), 15 deletions(-)
-> 
-> 
-> diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
-> 
-> index cc2918ee2cf5..6062503d3543 100644
-> 
-> --- a/sound/soc/fsl/imx-audmux.c
-> 
-> +++ b/sound/soc/fsl/imx-audmux.c
-> 
-> @@ -77,45 +77,41 @@ static ssize_t audmux_read_file(struct file *file, 
-> char __user *user_buf,
-> 
-> ret = sysfs_emit(buf, "PDCR: %08x\nPTCR: %08x\n", pdcr, ptcr);
-> 
-> if (ptcr & IMX_AUDMUX_V2_PTCR_TFSDIR)
-> 
-> -ret += scnprintf(buf + ret, PAGE_SIZE - ret,
-> 
-> +ret += sysfs_emit(buf + ret,
+While playing with linux-next and imx93-11x11-evk via NFS and TFTP
+I found that the dwmac-imx, nvmem-imx-ocotp-ele drivers by default are
+not builtin then the I was not able to reach userland. 
 
-This is wrong too [1].
+The following configs were needed to reach my goal:
+CONFIG_DWMAC_IMX8=y
+CONFIG_STMMAC_ETH=y
+CONFIG_NVMEM_IMX_OCOTP_ELE=y
 
-[1] 
-https://lore.kernel.org/all/9c552d9a-2d46-4069-a9c4-35fab857bfc3@kernel.org/
+is that something expected?
 
-regards,
--- 
-js
-suse labs
-
+Regards,
+Alberto
