@@ -1,205 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7A7146588;
-	Mon, 17 Mar 2025 20:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0832036FD;
+	Mon, 17 Mar 2025 22:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742243862; cv=none; b=iRU29ccZlGQBx9SavJSdjTNi3/2oKgU+3j+DcM8jiq4akaTs1sQD80x5Npldi1J+x36okN1aMQIHDgL8NXbDLA1Rkxf7d2pQHM5U+VsyZlVJc3KXWFxGjssiNsAkvYLWuVv8weq/DvabMygk87Q2DIin3MwmegaCYofqmFSQMkE=
+	t=1742249522; cv=none; b=MFG4LSlHQToco31zUQMdLU0+jZ7+n6WyP8EunYKp44tqHATdQ/Z5sJZmG9EHGKKlHZ2CQk72Kc7eIw26k2FmD6sEfgDP9RkbkYF+1Witd5rJGcsMBX6ymKIAXyq9KJsC0L3bXvtLM80UQC+uMm1neVV8DBVdbA3AfpY2S3icBAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742243862; c=relaxed/simple;
-	bh=aXqJ/pis7CyCbe3dFyicCUqHQk/5npXUAYLRJ48VhpE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=pPajdnr+xJ3jcRti9glZpnL8tdkGL9iIwDdymDYlRTSnOGBZXkcE79Oomnv2A+81A34aixweuvv9SKzvrC5N2Oi9a/aArmwtTgs5tSSkNG3sgHcEeEBYXKCFmCpX6fjhlITtCa6WvgM4yzseX+ZZ3+JOU356D9EfP6sKXhT/Gf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSsYA7uR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742249522; c=relaxed/simple;
+	bh=JEdZ8g1iC7LvD0mCARyJ8WNae6kxKED75zVQlYCHfjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Gco8JM8dBqZFsiH8UdmX6YQwF9G1XVyqllBC5hFaqgvT+V7CXlPWzKQ+mPo2+tsgzKgP6P5BzKHuYwp3gmoENT/nDavk3qmAn4xyl8IBRNYutrdxDvkaUZ/x7XzpT6s3JJT1fJ1fcvVEDQAXs9ON1VtYXQzTkvdT1tvAEK1/cAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk11OSnm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSsYA7uR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C76EC4CEE3;
-	Mon, 17 Mar 2025 20:37:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk11OSnm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCC2C4CEE3;
+	Mon, 17 Mar 2025 22:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742243861;
-	bh=aXqJ/pis7CyCbe3dFyicCUqHQk/5npXUAYLRJ48VhpE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=KSsYA7uRKzdXFAuqhX9P2fst3OX9TeQJZuRqxJs8GCrvLsscBDx0fyNv442eDOllN
-	 OeWYytyu+bCTnvlepAy1LCAmvr8GgtVi0q9jmExNhfbKTCRd8QYVc5jmXXnNjL2Z2T
-	 BZZmMef9h8bkdDRoZ2wq2l3O9gFadyLhL1KENsuu2nCLLMId7SePuV2vrDPpbXGMUb
-	 P8b6F1EqXCadq4Yh/mCfvL66jNBg2iYKbCMGDWJmMyeihlW61o+6IHc0DHhVMKz+iL
-	 88NTWhuKGqkRDaTSW4XI1pbYyp7DBbvXkZeyVGA64CkiYJrOeeZXKJHqhL/xsZJYbB
-	 um2Ww+xGXac6w==
-Date: Mon, 17 Mar 2025 15:37:40 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1742249521;
+	bh=JEdZ8g1iC7LvD0mCARyJ8WNae6kxKED75zVQlYCHfjg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Zk11OSnmRIHe1gd+qJ9NrAMljHh+/a/ZiBfI7D7Qjd6Sb4UVTyl5AqAOgX1u+yorY
+	 0lP7AxucUDDi9vYR52g1jtp+qhrCJVTD/n3duivvfyuNR4zi4V3ZyatQU67KtkHOwa
+	 yM+8fi1hSeGTfUVr2qKob17ces1ehwWrTIfDeQrJN7i8zratTI1tvK0h0+rE0gMplU
+	 TwvOB5I4p3GnjJkUotzsf0MNR1tweERRcH+lekiTra0tGkNv0tRDf5M/rQm4ImEpT3
+	 lNzNHfAwZBEHqMXBg7Mvy5LN3lWqD5VkwwCqkR0imtuhLCB+j7ST32TmPizFtD8i6l
+	 MVVyg/Le2JilA==
+Date: Mon, 17 Mar 2025 17:12:00 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v12 00/13] PCI: Use device bus range info to cleanup RC
+ Host/EP pci_fixup_addr()
+Message-ID: <20250317221200.GA975949@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: daniel.baluta@gmail.com, shengjiu.wang@nxp.com, 
- linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- shawnguo@kernel.org, mathieu.poirier@linaro.org, festevam@gmail.com, 
- aisheng.dong@nxp.com, krzk+dt@kernel.org, s.hauer@pengutronix.de, 
- a.fatoum@pengutronix.de, frank.li@nxp.com, conor+dt@kernel.org, 
- kernel@pengutronix.de, iuliana.prodan@nxp.com, imx@lists.linux.dev, 
- laurentiu.mihalcea@nxp.com
-To: Daniel Baluta <daniel.baluta@nxp.com>
-In-Reply-To: <20250317133306.2003909-1-daniel.baluta@nxp.com>
-References: <20250317133306.2003909-1-daniel.baluta@nxp.com>
-Message-Id: <174224352689.683565.9145622703259276578.robh@kernel.org>
-Subject: Re: [PATCH v5 0/5] Configure imx8mp dsp node for rproc usage
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250315201548.858189-1-helgaas@kernel.org>
 
-
-On Mon, 17 Mar 2025 15:33:01 +0200, Daniel Baluta wrote:
-> DSP found in i.MX8MP SOC can be used by multiple frameworks in order to
-> enable various applications:
->         - rproc/rpmsg framework, used to load for example Zephyr samples
->         - Sound Open Firmware, used to enable various audio processing
->           pipelines.
+On Sat, Mar 15, 2025 at 03:15:35PM -0500, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
 > 
-> Current dsp node was configured with SOF in mind but it doesn't work
-> well with imx8mp-evk dts. SOF controls audio IPs from firmware side
-> while imx8mp-evk.dts preffers to control audio IPs from Linux side.
+> This is a v12 based on Frank's v11 series.
 > 
-> So, configure 'dsp' node to be used with rproc scenario and later will
-> add a separate dts or an overlay to configure the node for SOF.
+> v11 https://lore.kernel.org/r/20250313-pci_fixup_addr-v11-0-01d2313502ab@nxp.com
+>     
+> Changes from v11:
+>   - Call devm_pci_alloc_host_bridge() early in dw_pcie_host_init(), before
+>     any devicetree-related code
+>   - Call devm_pci_epc_create() early in dw_pcie_ep_init(), before any
+>     devicetree-related code
+>   - Consolidate devicetree-related code in dw_pcie_host_get_resources() and
+>     dw_pcie_ep_get_resources()
+>   - Integrate dw_pcie_cfg0_setup() into dw_pcie_host_get_resources()
+>   - Convert dw_pcie_init_parent_bus_offset() to dw_pcie_parent_bus_offset()
+>     which returns the offset rather than setting it internally
+>   - Split the debug comparison of devicetree info with .cpu_addr_fixup() to
+>     separate patch so we can easily revert it later
+>   - Drop "cpu_addr_fixup() usage detected" warning since we always warn
+>     about something in that case anyway
 > 
-> This patch series configures and enables dsp node to be used with rproc.
-> 
-> Changes since v4:
-> (https://lore.kernel.org/linux-arm-kernel/Z6zGLn3B6SVXhTV1@lizhi-Precision-Tower-5810/T/)
-> 	- after comments received on v4, we implemented the run/stall
-> 	  bits using reset controller API (changes merged ->
-> https://patchwork.kernel.org/project/linux-arm-kernel/cover/20250311085812.1296243-1-daniel.baluta@nxp.com/)
->         - drop patches related to DSP run/stall/reset via syscon
-> 	- picked up patch related to using run_stall via reset
-> 	  controller API.
-> 
-> Daniel Baluta (5):
->   arm64: dts: imx8mp: Use resets property
->   arm64: dts: imx8mp: Add mu2 root clock
->   arm64: dts: imx8mp: Configure dsp node for rproc usage
->   arm64: dts: imx8mp: Add DSP clocks
->   arm64: dts: Add dsp rproc related mem regions
-> 
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 10 +++++++++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi    | 22 +++++++++++++-------
->  2 files changed, 25 insertions(+), 7 deletions(-)
-> 
-> --
-> 2.43.0
+> Any comments welcome.
 > 
 > 
+> Bjorn Helgaas (3):
+>   PCI: dwc: Consolidate devicetree handling in
+>     dw_pcie_host_get_resources()
+>   PCI: dwc: ep: Call epc_create() early in dw_pcie_ep_init()
+>   PCI: dwc: ep: Consolidate devicetree handling in
+>     dw_pcie_ep_get_resources()
 > 
+> Frank Li (10):
+>   PCI: dwc: Use resource start as iomap() input in
+>     dw_pcie_pme_turn_off()
+>   PCI: dwc: Rename cpu_addr to parent_bus_addr for ATU configuration
+>   PCI: dwc: Call devm_pci_alloc_host_bridge() early in
+>     dw_pcie_host_init()
+>   PCI: dwc: Add dw_pcie_parent_bus_offset()
+>   PCI: dwc: Add dw_pcie_parent_bus_offset() checking and debug
+>   PCI: dwc: Use devicetree 'reg[config]' to derive CPU -> ATU addr
+>     offset
+>   PCI: dwc: ep: Use devicetree 'reg[addr_space]' to derive CPU -> ATU
+>     addr offset
+>   PCI: dwc: ep: Ensure proper iteration over outbound map windows
+>   PCI: dwc: Use parent_bus_offset to remove need for .cpu_addr_fixup()
+>   PCI: imx6: Remove cpu_addr_fixup()
+> 
+>  drivers/pci/controller/dwc/pci-imx6.c         | 18 +---
+>  .../pci/controller/dwc/pcie-designware-ep.c   | 74 +++++++++++------
+>  .../pci/controller/dwc/pcie-designware-host.c | 57 ++++++++-----
+>  drivers/pci/controller/dwc/pcie-designware.c  | 82 ++++++++++++++-----
+>  drivers/pci/controller/dwc/pcie-designware.h  | 24 +++++-
+>  5 files changed, 171 insertions(+), 84 deletions(-)
 
+Applied to pci/controller/dwc-cpu-addr-fixup for v6.15.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250317133306.2003909-1-daniel.baluta@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dtb: dsp@3b6e8000: memory-region: [[142]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-var-som-symphony.dtb: dsp@3b6e8000: memory-region: [[105]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk3.dtb: dsp@3b6e8000: memory-region: [[156]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx-2x.dtb: dsp@3b6e8000: memory-region: [[127]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dahlia.dtb: dsp@3b6e8000: memory-region: [[164]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp-edimm2.2.dtb: dsp@3b6e8000: memory-region: [[102]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx-2x.dtb: dsp@3b6e8000: memory-region: [[129]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dtb: dsp@3b6e8000: memory-region: [[132]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dtb: dsp@3b6e8000: memory-region: [[118]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dev.dtb: dsp@3b6e8000: memory-region: [[165]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-nitrogen-smarc-universal-board.dtb: dsp@3b6e8000: memory-region: [[105]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-msc-sm2s-ep1.dtb: dsp@3b6e8000: memory-region: [[140]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-adpismarc.dtb: dsp@3b6e8000: memory-region: [[142]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-ivy.dtb: dsp@3b6e8000: memory-region: [[162]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx-2x.dtb: dsp@3b6e8000: memory-region: [[120]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-yavia.dtb: dsp@3b6e8000: memory-region: [[163]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dtb: dsp@3b6e8000: memory-region: [[155]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-mallow.dtb: dsp@3b6e8000: memory-region: [[164]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dtb: dsp@3b6e8000: memory-region: [[119]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-yavia.dtb: dsp@3b6e8000: memory-region: [[158]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb: dsp@3b6e8000: memory-region: [[131]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-navqp.dtb: dsp@3b6e8000: memory-region: [[111]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dtb: dsp@3b6e8000: memory-region: [[134]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dtb: dsp@3b6e8000: memory-region: [[130]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dtb: dsp@3b6e8000: memory-region: [[152]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-revc-bd500.dtb: dsp@3b6e8000: memory-region: [[130]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: dsp@3b6e8000: memory-region: [[148]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dtb: dsp@3b6e8000: memory-region: [[136]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-helios.dtb: dsp@3b6e8000: memory-region: [[142]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-wifi-dahlia.dtb: dsp@3b6e8000: memory-region: [[169]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dtb: dsp@3b6e8000: memory-region: [[156]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-dhcom-drc02.dtb: dsp@3b6e8000: memory-region: [[160]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-ivy.dtb: dsp@3b6e8000: memory-region: [[157]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-mallow.dtb: dsp@3b6e8000: memory-region: [[159]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dtb: dsp@3b6e8000: memory-region: [[153]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-kontron-bl-osm-s.dtb: dsp@3b6e8000: memory-region: [[150]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw82xx-2x.dtb: dsp@3b6e8000: memory-region: [[132]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-venice-gw75xx-2x.dtb: dsp@3b6e8000: memory-region: [[123]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dtb: dsp@3b6e8000: memory-region: [[144]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-verdin-nonwifi-dev.dtb: dsp@3b6e8000: memory-region: [[160]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtb: dsp@3b6e8000: memory-region: [[131]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dtb: dsp@3b6e8000: memory-region: [[107]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-dhcom-picoitx.dtb: dsp@3b6e8000: memory-region: [[158]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: dsp@3b6e8000: memory-region: [[129]] is too short
-	from schema $id: http://devicetree.org/schemas/dsp/fsl,dsp.yaml#
-
-
-
-
-
+Thank you very much, Frank, for all your hard work on driving this
+series!  I think this is a major improvement.
