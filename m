@@ -1,149 +1,125 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE0023315F
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 11:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E25D22CBCB;
+	Mon, 17 Mar 2025 11:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742210340; cv=none; b=BZWGAUawQqbH98jHnZEkDt+fhfC1fpKhC2lPB3P+RN1sE+yHfius+Zdi4/XW4UtZnLR6vfZDPTAOEihYM9GWFOgZ1PpQwiU7Ye9PSafHETsn/usbe4QVl+QJHDXrZZtHEBSiBXXJZlDqAby/4FRHZEX7xyjkB/TdWs+EKOTm3a8=
+	t=1742210598; cv=none; b=datzq15rB1lQV0TwdZFTz7PpIVs5JHFTUIfTuaL9WJFxb9+RYlueXmAyPVcl9mSmgFmWDhvGnOqgBonrrIg858t8nQsD62w5CzWV8I6/qmK6aax72tnvDxRdyE5162BuhTDi7Wo6wQ1GWetN2NTnwt2k+vJdSI0cNuljqsqK4K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742210340; c=relaxed/simple;
-	bh=BNlq7x+/ooXQ5PNMvqwHrshQHFzbSVEM5YZ1/1EZSOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KPfpC9s2AOfsGW7H359ZFY2XWgtXMtekud/ELepHL+nA/czpYy57zy2+JwZHtna3E40N+vXgcVgLuai6vvW+45Z6MPWwXWa7XVQaqsxP7w+GMJNF+8QjTneeLy1z/SzsV96mEhN38vHGTzFcbl0v8HVoLlc+KsB/hy6Et54Yb2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X72fKOEC; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1742210598; c=relaxed/simple;
+	bh=c2UFH3jGhzNtOf/2FaiDVr1S6TDplZcWAKpfpWcajsk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nWONY/W97TPRrNpFz3el1KT9zh1soYBU5NjKXJjiaHFCQclUF2eoJTh+XHtOc8XbkY9x+/qMcttXs6Xut76eTl3NTyMwaocjAk9yoHeFfLSavbqWyAMALEnr7GSJo7a/uIEsWa9f3Uo15OzKj/+Zjmn0zQCYaLsuk5V+JRQzpFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHLoWAlZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X72fKOEC"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5dbe706f94fso890747a12.2
-        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 04:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742210336; x=1742815136; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yb1bmwpZfvOX6yMK1i3HHBS8ZlfwQU6J5gT+QGlyLNY=;
-        b=X72fKOECkt5jGShRbdRznEXzSzSAVxmSwex8dsioNzox+wdT/0z4jfufiAfktJLDzM
-         CSU4OW41w18qR6of7co/S5/TVdJZ4D/8WSj67/KTEKqAurUsBUQxYzL7xsyTU+Pnzqu4
-         aGROcilK4SqCz+/sI2QhRBtctjHF0CwJlKm57KIivDUCGPo1k3PiIycMOjLwQ+JtDmY9
-         9JpRjaXb1bYq2qZpEJoh1FEoOHt/9+PkUSyRyVUkH9eKCCz64mHkegIlkIgf8vpor10C
-         vrZqh/11bdxxyje/fISzklSn1JHC5iGn0oXjlebbQ5KQ/kwLmYzCWL/YSc1hjmyOgiPe
-         F5Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742210336; x=1742815136;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yb1bmwpZfvOX6yMK1i3HHBS8ZlfwQU6J5gT+QGlyLNY=;
-        b=tZ3IIwS4PtHpw19hspb+DdWIFdEgsLWBH5ij4+4m6w9Zsqrsm9o5R8rZOEwzvr8hWC
-         D3EcwSnI4TFrfbC8IjttPnHsAna+Htj/J4Jt2xU4QbTC2hgc6lV6pNa1IviA2/bBQc6+
-         HmcAWvyQxjnu2z5ABhWk3eyloKsdBYrG8p3voKBkj1gFI/xIax6TWGgLuk1qwkqB963R
-         i9Pc+3ddE7BaGgfdslFr63PuUVzynFQx2n2w9RzxuCNy92RhbJWyG/HCPKSy43y/Ya4v
-         IX0PQBVVOfV/tqu5A92l6KyThk8nLxqQEf39XpLAbjo8yMDr9ydm2XFDAcq/IdNNEi2j
-         qpVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXo3WhF5KYAJwGajjqJgXi5yfP40rTtNR3GFqCgx5LFC5WsqPwwrs0nI5arZ9wlLtMcNOo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy1w0fXACHZuvlOsqospy/eoGwFbcR4pbCuZnKAnobap0Fu70t/
-	k9MHF9jGga/ddZRzg0avKaRsjdo4WytsYTg9hD+sGcoxl96IX9hwmSbBudT8bMs=
-X-Gm-Gg: ASbGncvJtLhoxL7EyB6DoAnGaSK+nIzzg4zmmd9go2Bi5iPaphI1QTIxxK9nK33gs4h
-	EYmNtfhZdDw5INT0uk+GtqclDpsrjoRGfAlJ4ZWVEV3HBwRjYdJ6Gw5lySa+7WTs3GEyyLlx69J
-	H0Xjw9yqZzgJoxk+JotnlCneUs1k0c7GtRjRCTophh1RWYhEr9/MDNFtskDEfISAmbpQ4O6b6Ga
-	ExwliGrBtI/g1hJYydoOuGJpUvKCRGMThhKG9pjTdTC9A/GQtk0yohUfJvTASLhwtf02PBm1rGr
-	fnTW2rfKclePvSjbZBtuikCQWoktbbVQm0kZUaevxhmgwqeFGglEiKJYGg==
-X-Google-Smtp-Source: AGHT+IGfG0kMUMy8OCD9zOa9XSNGd00YZZiW8tI8Vc7MTZK1U10MgZJVD9O1t41p31Vck9HevRFDYQ==
-X-Received: by 2002:a05:6402:3592:b0:5e4:d192:86c5 with SMTP id 4fb4d7f45d1cf-5e8a10edf48mr4164494a12.9.1742210336553;
-        Mon, 17 Mar 2025 04:18:56 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.198.86])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816973b87sm5851428a12.23.2025.03.17.04.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 04:18:56 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] ARM: dts: nxp: Align NAND controller node name with bindings
-Date: Mon, 17 Mar 2025 12:18:53 +0100
-Message-ID: <20250317111853.43708-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHLoWAlZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3966EC4CEE3;
+	Mon, 17 Mar 2025 11:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742210597;
+	bh=c2UFH3jGhzNtOf/2FaiDVr1S6TDplZcWAKpfpWcajsk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kHLoWAlZt7qKp84RdpDsC+iBSz9wkEagdZ/FuKljO45a5MgXbOjkoS2GfhRMO1qXl
+	 DvVT+coL7yWHEW12u9vGBtzhRdao9CcGjGZtZSghsmeGwm92xEQenDDOSFJPHnMBK6
+	 5YkgJJdBtstVL2kCAhwmoTRyEllUqT5/W2mVvm3M6eys0ud9eaESiLIbjCChNtAYDv
+	 4uJJlOaYN8QObSiBJ9eAPIP5o94TDsRPHqsDM4TR/3nka46cr2O63sVt5tnLFaD9XT
+	 YYhs8OEbqYdssSgkE5hX+amTPP52LtxOmyJQI4Io6b2JCRLs89+IDGcNGblLK/NJ49
+	 WRCVTYJBecvxw==
+Message-ID: <00667202-73e4-48ee-aa90-dee8c0dd5d43@kernel.org>
+Date: Mon, 17 Mar 2025 12:23:09 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] ARM: dts: apalis/colibri-imx6: Add support for
+ v1.2
+To: ernestvanhoecke@gmail.com, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+References: <20250307101758.27943-1-ernest.vanhoecke@toradex.com>
+ <20250307101758.27943-3-ernest.vanhoecke@toradex.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250307101758.27943-3-ernest.vanhoecke@toradex.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Bindings expect NAND controller device nodes to be named
-"nand-controller".
+On 07/03/2025 11:17, ernestvanhoecke@gmail.com wrote:
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts
+> new file mode 100644
+> index 000000000000..93fd0af53a3c
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6dl-colibri-v1.2-eval-v3.dts
+> @@ -0,0 +1,11 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/* Copyright (c) 2025 Toradex */
+> +
+> +/dts-v1/;
+> +
+> +#include "imx6dl-colibri-eval-v3.dts"
+> +#include "imx6qdl-colibri-v1.2.dtsi"
+> +
+> +/ {
+> +	model = "Toradex Colibri iMX6DL/S V1.2+ on Colibri Evaluation Board V3";
+> +};
 
-Cc: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm/boot/dts/nxp/imx/imx25.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx35.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-index 9cfff2151b7e..82601a4b7b4b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-@@ -611,7 +611,7 @@ bus@80000000 {
- 			reg = <0x80000000 0x3b002000>;
- 			ranges;
- 
--			nfc: nand@bb000000 {
-+			nfc: nand-controller@bb000000 {
- 				#address-cells = <1>;
- 				#size-cells = <1>;
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx35.dtsi b/arch/arm/boot/dts/nxp/imx/imx35.dtsi
-index 30beb39e0162..111d7c0331f5 100644
---- a/arch/arm/boot/dts/nxp/imx/imx35.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx35.dtsi
-@@ -363,7 +363,7 @@ emi@80000000 { /* External Memory Interface */
- 			reg = <0x80000000 0x40000000>;
- 			ranges;
- 
--			nfc: nand@bb000000 {
-+			nfc: nand-controller@bb000000 {
- 				#address-cells = <1>;
- 				#size-cells = <1>;
- 				compatible = "fsl,imx35-nand", "fsl,imx25-nand";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51.dtsi b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-index 8323e3a56a1f..f42903c9cf0d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
-@@ -595,7 +595,7 @@ weim: memory-controller@83fda000 {
- 				status = "disabled";
- 			};
- 
--			nfc: nand@83fdb000 {
-+			nfc: nand-controller@83fdb000 {
- 				#address-cells = <1>;
- 				#size-cells = <1>;
- 				compatible = "fsl,imx51-nand";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-index faac7cc249d0..0c38c37dd142 100644
---- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
-@@ -775,7 +775,7 @@ audmux: audmux@63fd0000 {
- 				status = "disabled";
- 			};
- 
--			nfc: nand@63fdb000 {
-+			nfc: nand-controller@63fdb000 {
- 				compatible = "fsl,imx53-nand";
- 				reg = <0x63fdb000 0x1000 0xf7ff0000 0x10000>;
- 				interrupts = <8>;
--- 
-2.43.0
+If devices are the same, you do not need new DTS. There is no benefit in
+creating DTS per every revision.
 
+Best regards,
+Krzysztof
