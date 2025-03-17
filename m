@@ -1,211 +1,149 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11022121.outbound.protection.outlook.com [52.101.66.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE0133987
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 10:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.121
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742208143; cv=fail; b=DQjdea++RHPLxBui7PKUwqm6SGFh8AjDUQDXArUuEyWGZWc9cdYPW7/1EMOXtDvYK1OI97Zdm+mMpgwOp7QsN7MWh5a/bIvjyXa5uR5wV8deAB4VLvCOB5tAmX9uq1LcxQ+gdIgagEL4FaJalT5xDhACp39Wbn1JV8q15WCsLpY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742208143; c=relaxed/simple;
-	bh=RJ0tiF5i4axc2murn0veyanLvTCJ/EQSw4FuJCzcDtc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CyrCImVf/IdVnFY3n2/vYvoPgTy2m1Uu8Q07dhjTiL92bC5712JAheg284OiUrWk5cctcd8YKd5RId2B3Pw+HlWfg+VI9uKxYe+ffJzs1b7MS9e7zSr48tmvZdcCNGB6u5tiV6puR1e/Evar3TXKUZGJ2v4xVnIdvNubQzp42kQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=4upJjkHp; arc=fail smtp.client-ip=52.101.66.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE0023315F
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 11:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742210340; cv=none; b=BZWGAUawQqbH98jHnZEkDt+fhfC1fpKhC2lPB3P+RN1sE+yHfius+Zdi4/XW4UtZnLR6vfZDPTAOEihYM9GWFOgZ1PpQwiU7Ye9PSafHETsn/usbe4QVl+QJHDXrZZtHEBSiBXXJZlDqAby/4FRHZEX7xyjkB/TdWs+EKOTm3a8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742210340; c=relaxed/simple;
+	bh=BNlq7x+/ooXQ5PNMvqwHrshQHFzbSVEM5YZ1/1EZSOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KPfpC9s2AOfsGW7H359ZFY2XWgtXMtekud/ELepHL+nA/czpYy57zy2+JwZHtna3E40N+vXgcVgLuai6vvW+45Z6MPWwXWa7XVQaqsxP7w+GMJNF+8QjTneeLy1z/SzsV96mEhN38vHGTzFcbl0v8HVoLlc+KsB/hy6Et54Yb2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=X72fKOEC; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="4upJjkHp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UgjRWMZqG9QiIMo21r3iLrWOx/AeseWEDZArziy1ys6u5JcVT7kkBqVM1cOTepoOyIbBAvoRX/ldMQ3wulvXGtcoshhEhZ8YFraQCepnFdIgIjkFS4UKrGXIqoy0vBAYWObk/NDMzE+8sgZRjSinfi8alsb3ORF7nGWyE5ul4HLvns0ttOwBv2jJTEDbKB/Eirb4WxWs0lx+J49MLXpRuBQ5Dlq5wY/68bugxYNOz2EquIXtS8ZeL371YnPPQVGpfhcO/WpsM43IJrieQN1QQ+QTxeLJTLka0Am9PIKJQIeejb5sxwxFtXUK+cRjBO7re4rCQSg0wiZUWlhaWi6Idg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RJ0tiF5i4axc2murn0veyanLvTCJ/EQSw4FuJCzcDtc=;
- b=ZsLQd/NGyOOJw2pMG/hr09HvRZtLXfmwlQHekSKdkAjopvRkZALdKhofdeVLUuzRgorkgObf0o2jrW17RTtrN8NVCoatuHVvOC83sHYq9KQk9CusDkboPmvDM3WuUs4ebyhgRY/h/R8mhyXomSm3OZUcBfswowpH4guQNgWE/ZDzP7nlJw9IGzKYwQHmOf/YpD0euy61sQgVpGHN+EBIryv92DuXsEOwTYAcsMyO0c/PpfxcBSJXPHM9UcDaodfKcpcQ9Xzc724TTUhYQqIHUzXbMXUg/ULBGdee8aRShGtEn/e3EgBHCQ/DgCI92tF2y1JlPeQXorWdicSemgoy/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X72fKOEC"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5dbe706f94fso890747a12.2
+        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 04:18:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RJ0tiF5i4axc2murn0veyanLvTCJ/EQSw4FuJCzcDtc=;
- b=4upJjkHpownOsGa63KeSvje2roDs4tl2pQX6XQu1OsJH2csXyYyr3fWpMv3QRSQl1WA1FX+hFtOjeO7UV9o8KUdJYpprUzV8ReBfol6mi/HgbtD/VxxLuEnPKhIIWVwoNMMGePqa92kRfzQhPvI8NHcUlnuTW8YQTAeFxROkI+L3CrojpOQqHRuLRnCjIPhsl7ScGTKtjaLVaoZmO0MpvjTB0Q+sjX5BWogD8/sU8wEigg+drSPFb00ombJs1jBqOTm7AfQOu9rCuwRLcO7KgSFXVoV7ZgOPcf+bv0LBGnhXIidxPGuns9ty3+Yf4bT2Huyle64IIkVDJ54AtHgwXQ==
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com (2603:10a6:102:ec::16)
- by VI1PR04MB7182.eurprd04.prod.outlook.com (2603:10a6:800:121::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
- 2025 10:42:15 +0000
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f]) by PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f%4]) with mapi id 15.20.8511.025; Mon, 17 Mar 2025
- 10:42:14 +0000
-From: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: Rob Herring <robh@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Thierry Reding
-	<thierry.reding@gmail.com>, Sam Ravnborg <sam@ravnborg.org>, Liu Ying
-	<victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Mark Brown <broonie@kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>
-Subject: Re: [PATCH v2 03/12] dt-bindings: connector: Add the GOcontroll
- Moduline module slot bindings
-Thread-Topic: [PATCH v2 03/12] dt-bindings: connector: Add the GOcontroll
- Moduline module slot bindings
-Thread-Index: AQHbiFlwk9848Rc4C0Wk0mPqKw6MoLNzOVEAgACo0sSAA12TAIAAANE/
-Date: Mon, 17 Mar 2025 10:42:14 +0000
-Message-ID:
- <PA4PR04MB7630DA5DF63C18530B86AB59C5DF2@PA4PR04MB7630.eurprd04.prod.outlook.com>
-References: <20250226-initial_display-v2-0-23fafa130817@gocontroll.com>
- <20250226-initial_display-v2-3-23fafa130817@gocontroll.com>
- <20250314210652.GA2300828-robh@kernel.org>
- <PA4PR04MB7630094413C8E1F3D715EE23C5DD2@PA4PR04MB7630.eurprd04.prod.outlook.com>
- <20250317-massive-calm-bat-43ff61@krzk-bin>
-In-Reply-To: <20250317-massive-calm-bat-43ff61@krzk-bin>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB7630:EE_|VI1PR04MB7182:EE_
-x-ms-office365-filtering-correlation-id: 5ae5253e-dfe2-42c3-a4d6-08dd6540615f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?NMwYnzqCam62wynIHo/oyfdORFIdkPrGisUvGzQSgyvVZyp19YWntLf+h/?=
- =?iso-8859-1?Q?26EMcdEiLqMbHL2K4MAiqm4YFrN8+2OpLCe6PSbbBCrXmpF85C1i3EUlzZ?=
- =?iso-8859-1?Q?ViHT381HUJnXUCiQHYEIKctdJbl6/xM2ahTyt8rxjvaRiadZbtUe9f4wVY?=
- =?iso-8859-1?Q?Ade9RW8lz1eogLvby16OYUzd8HDd+7F8WRGRmNOEUZLJZ3jbjJL42iyLPo?=
- =?iso-8859-1?Q?Dlfs/u+wAp6YUQmjLQrXub7wxVSVpL9g5bH+m1ePvmw53rsqqgkOqHwkwa?=
- =?iso-8859-1?Q?t4R/xzka6FXBfIK7zpRymyzHkGhKRzosSUinqCeGOqVkR8iZjghCY8EKs7?=
- =?iso-8859-1?Q?FWbYX/Qgx39Sfz3P7G4R9gQzdQR+Zvzc1Iw9kawsR/gqJcReI7jESVtwKd?=
- =?iso-8859-1?Q?VMcL0+0RlInCE5M4BynQ0yYyrgGA8nN7CFH1d/zGKWQwUzTqkALgBxZq19?=
- =?iso-8859-1?Q?uVrjhDol8ItawLXPiupLIo3r7TinowNoh8Wgl87Hn+tnK0GmaLE8snrHvz?=
- =?iso-8859-1?Q?zQdewf80n0ijoyMBCW6w/rtvCy49mz696T8jX8u+YMT8JueyjYJ8VMAaJm?=
- =?iso-8859-1?Q?LKHuRFc1iqPHjUVw99sAaftEU1vjdtXaAlh4MRQ7udCjjxFxvSu4dGTARu?=
- =?iso-8859-1?Q?mQ7RHdctVe5k96I0m+NypJZtbS7CGwqAtVW84ozySD0o3wOtAoEPTqSJKO?=
- =?iso-8859-1?Q?ypI/rwuKDVcBnoLWdJ81RkFeAuedwrycpzykQyRk5fQZBYkBa0O+qu84mv?=
- =?iso-8859-1?Q?p6PWBja/3HhLG2Bdv8bU8tvHSQa6MHIWXVW/r7nzlhKDI2DL7kb3ReixnG?=
- =?iso-8859-1?Q?jtAeGnjBut3phte95wQUnI+bZmI7upCJy1PG2pO+kUQWWyxQzfEMfq5tm1?=
- =?iso-8859-1?Q?Cq8lTBU7RMSLir0ZHEGWiU9KMW7gV1RY/emV7dqAadzJRYH3osXHabCaAk?=
- =?iso-8859-1?Q?5P/mQZwbsxwpffdIPeD9dLFub0bGxpGNSN50y9cnRkvGx0pm4Gs3PseBSx?=
- =?iso-8859-1?Q?xltMqDvFACNlclsJ5SPDV2Myeoc+aGkckRw3Gif17gMpGoHCbuf114H5Df?=
- =?iso-8859-1?Q?dGtLqXHxtoglWTknvJZi/CUnPtz0EI/aJqw28w6z2hfouQH98ZMuPB730c?=
- =?iso-8859-1?Q?QPbSbnGDdGQGf8tiAns9T/TakXP6RsapwJXtBnkeL9iiGPeg01Oy7giZAQ?=
- =?iso-8859-1?Q?QOBDmIkbg4TR/aP2gtkdmfoLMPrcBb0t9SXHGdiSvxrHwyxOVew+M360u/?=
- =?iso-8859-1?Q?ogG7rb3isWmgbOzE0liUPPlaVAxzdP8Dr7NnMWGfjxwmrMVGNwSgSQpQi+?=
- =?iso-8859-1?Q?G4viDrF1AvYmqpmTCYCL8uES3FXVLud2HasZgcF1Jte5/FpIs05s9kAYwj?=
- =?iso-8859-1?Q?oQyVIUVVIwODSa2FZdnTK8Nt5yN+pRBVBEe1nhesA/9lV2ehCTk599C7++?=
- =?iso-8859-1?Q?oy5kZWGmT9YSukYBbtlLcBLbw/26E9wa9XKTN035S0rCJGMU9tT6LY1XL2?=
- =?iso-8859-1?Q?eie//5JfNtIRwDSFRo530r?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?ADUISJ2exV9r1dUM7zFSIlMYMx0Xq4LWbg7PgNJ3fexkhz1AccrSS4/Ldk?=
- =?iso-8859-1?Q?wm8j1MUTrF53NVrZd1/K25WRkLkuUj/jmoacX9XCsP1Sa5xl1WABF0fjnU?=
- =?iso-8859-1?Q?ely27egcB8nwSNbe9U2geJCCHAxNSj2/fGt3sp856xPorZWbFyHSRPqExd?=
- =?iso-8859-1?Q?Pb60ManhkPhCv54k6d1L9zl2e5nzjTdhK8NphhfzqfQgbzU30Hqy75pwCI?=
- =?iso-8859-1?Q?0urKU5X4OHtnGUYR59jfmdDqH7zYlOXCaog5CuR3iIMriNF0lGPeQYFUfB?=
- =?iso-8859-1?Q?UZ1F82wNgojn23WkSxmd8+/ySnlmRqJjew/mJ0xGP9T4g1E5/Fy19Db7iU?=
- =?iso-8859-1?Q?iM3jl3Ach+P/CfmGtK5GqprlKx9xGc/AuIuyGviMDAUexzz95EedXSxxXe?=
- =?iso-8859-1?Q?TFRQcctEkEvfFHwJlEQ6QltPquiN0fA4BjstScz8wRVhniyJN4ytoPvSgw?=
- =?iso-8859-1?Q?oj7AOMdBPK55VwClTeKB3X7CM8jbla8GyOE3IYRQU/kV9TJ9wW4Mk1rMvM?=
- =?iso-8859-1?Q?DD/nk7Q9tcwc9oQeyRqa4t2dIqyoxvuPukuhQ8BVpbfinVT51meM1Uv393?=
- =?iso-8859-1?Q?pReCr5YgsCMJHvMVdEttnxGWlBXFXKE0Ow444+SarqH0iD6r9MUeUkM2x5?=
- =?iso-8859-1?Q?cM+UkuGJHrDuaW8U+xHm0/6gIqrhDm7h9s2v2XGmqZlraKBWGEOTVIA68d?=
- =?iso-8859-1?Q?mw/4h36u1cBhqDKGZ100K6CKK+5Q7dj5F8kQdtBtmv8VlYIuAY9OyItiVS?=
- =?iso-8859-1?Q?xwAJhUqimYywDzdyzHNh21XVV8amTkx3mHT7rRoejn2T7S+0F6bqRFlvEz?=
- =?iso-8859-1?Q?42w3fhn9MR1CfCRsErwXYlSjFFbGMkUC2a19sP0xdlf53Vjqcl56hwniPt?=
- =?iso-8859-1?Q?jC0QBRHDnF8y8Mkuf7DPKeTYj8ws0sVcH+n+F+d9Dn8r0VBZg3AKj5VL4H?=
- =?iso-8859-1?Q?76uVoypSpgqv7hm4McNjq0MD2+RGe3aKD+BBucFrroNjylilZg4GY35w5e?=
- =?iso-8859-1?Q?7/omeX0w3+VzfNSvVH+9SuMtDXRMyebqsC4u0SCBCwXaD8tVi5Q/EO0wyY?=
- =?iso-8859-1?Q?2wkCYOtR+bYP+wxeA+MiRZdezknWkcqxTGRjDk0fZteU3g87nhN4fD2eko?=
- =?iso-8859-1?Q?3LL7HIneqvY45bPLKhIdMy3GXd5PAHFlD6fPWp3DXBMBZZLNVP+Y/bOVQe?=
- =?iso-8859-1?Q?DHRJ4On+aYg7CnMUd1yAPFksnwJu+gEnpXxprBmfZ8zy3vHh0Smwyt7ahY?=
- =?iso-8859-1?Q?nsQfeUdIvbj3u0xZC9f4gQobd/7K9ubeSVgnfaFcnqdGRUB9EyZzGp7O1Y?=
- =?iso-8859-1?Q?9fxuT6xXnBJA5pb596o7JmKV69+ZlBGxbpRL1xpJP83H5RZN5553jsGjxs?=
- =?iso-8859-1?Q?nTOaNq1ek31k1wGUgoyIEnRI0e2IcFgQmovK7FKPem7pjC9faVHNwaszTC?=
- =?iso-8859-1?Q?NhIQWZWk6FFl10DvvI6cwNzWo9kKmENdzlW2+uhr7XTHmAa09ETgtftS30?=
- =?iso-8859-1?Q?OZFRlne8CSLo60fHi8b9UN8sTphOYxmCrLDaeXcshnl19gAGfjdwhjz6E0?=
- =?iso-8859-1?Q?fQUQtapnTnyhItovg1TqDRqILfDKCcxrdyDOFW3+msdyBerogzVZqH+4Nr?=
- =?iso-8859-1?Q?mOgWbSr/dQxpdXPt3vOuUzRUich2Mzk1+7XlRwtkdPmkwZi6tYZrZGZN0r?=
- =?iso-8859-1?Q?aoBzn0FXuXBBTXr35QpY4hhoWafgoV082b122Eo4bPP7AfFgxKClRqzn4W?=
- =?iso-8859-1?Q?mNNQ=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=linaro.org; s=google; t=1742210336; x=1742815136; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yb1bmwpZfvOX6yMK1i3HHBS8ZlfwQU6J5gT+QGlyLNY=;
+        b=X72fKOECkt5jGShRbdRznEXzSzSAVxmSwex8dsioNzox+wdT/0z4jfufiAfktJLDzM
+         CSU4OW41w18qR6of7co/S5/TVdJZ4D/8WSj67/KTEKqAurUsBUQxYzL7xsyTU+Pnzqu4
+         aGROcilK4SqCz+/sI2QhRBtctjHF0CwJlKm57KIivDUCGPo1k3PiIycMOjLwQ+JtDmY9
+         9JpRjaXb1bYq2qZpEJoh1FEoOHt/9+PkUSyRyVUkH9eKCCz64mHkegIlkIgf8vpor10C
+         vrZqh/11bdxxyje/fISzklSn1JHC5iGn0oXjlebbQ5KQ/kwLmYzCWL/YSc1hjmyOgiPe
+         F5Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742210336; x=1742815136;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yb1bmwpZfvOX6yMK1i3HHBS8ZlfwQU6J5gT+QGlyLNY=;
+        b=tZ3IIwS4PtHpw19hspb+DdWIFdEgsLWBH5ij4+4m6w9Zsqrsm9o5R8rZOEwzvr8hWC
+         D3EcwSnI4TFrfbC8IjttPnHsAna+Htj/J4Jt2xU4QbTC2hgc6lV6pNa1IviA2/bBQc6+
+         HmcAWvyQxjnu2z5ABhWk3eyloKsdBYrG8p3voKBkj1gFI/xIax6TWGgLuk1qwkqB963R
+         i9Pc+3ddE7BaGgfdslFr63PuUVzynFQx2n2w9RzxuCNy92RhbJWyG/HCPKSy43y/Ya4v
+         IX0PQBVVOfV/tqu5A92l6KyThk8nLxqQEf39XpLAbjo8yMDr9ydm2XFDAcq/IdNNEi2j
+         qpVA==
+X-Forwarded-Encrypted: i=1; AJvYcCXo3WhF5KYAJwGajjqJgXi5yfP40rTtNR3GFqCgx5LFC5WsqPwwrs0nI5arZ9wlLtMcNOo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy1w0fXACHZuvlOsqospy/eoGwFbcR4pbCuZnKAnobap0Fu70t/
+	k9MHF9jGga/ddZRzg0avKaRsjdo4WytsYTg9hD+sGcoxl96IX9hwmSbBudT8bMs=
+X-Gm-Gg: ASbGncvJtLhoxL7EyB6DoAnGaSK+nIzzg4zmmd9go2Bi5iPaphI1QTIxxK9nK33gs4h
+	EYmNtfhZdDw5INT0uk+GtqclDpsrjoRGfAlJ4ZWVEV3HBwRjYdJ6Gw5lySa+7WTs3GEyyLlx69J
+	H0Xjw9yqZzgJoxk+JotnlCneUs1k0c7GtRjRCTophh1RWYhEr9/MDNFtskDEfISAmbpQ4O6b6Ga
+	ExwliGrBtI/g1hJYydoOuGJpUvKCRGMThhKG9pjTdTC9A/GQtk0yohUfJvTASLhwtf02PBm1rGr
+	fnTW2rfKclePvSjbZBtuikCQWoktbbVQm0kZUaevxhmgwqeFGglEiKJYGg==
+X-Google-Smtp-Source: AGHT+IGfG0kMUMy8OCD9zOa9XSNGd00YZZiW8tI8Vc7MTZK1U10MgZJVD9O1t41p31Vck9HevRFDYQ==
+X-Received: by 2002:a05:6402:3592:b0:5e4:d192:86c5 with SMTP id 4fb4d7f45d1cf-5e8a10edf48mr4164494a12.9.1742210336553;
+        Mon, 17 Mar 2025 04:18:56 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.198.86])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816973b87sm5851428a12.23.2025.03.17.04.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 04:18:56 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: nxp: Align NAND controller node name with bindings
+Date: Mon, 17 Mar 2025 12:18:53 +0100
+Message-ID: <20250317111853.43708-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7630.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae5253e-dfe2-42c3-a4d6-08dd6540615f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2025 10:42:14.2212
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /dwBsoEDY/ympczg0uyofIn5I4NSu5+1Avh0/dRqqYw4kMscvrt4HQpySAn4iJBBCYXeEb5nytoOf7Lrap2SfqqbL2pzdEc+OOys6I6NmuE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7182
+Content-Transfer-Encoding: 8bit
 
-From:=A0Krzysztof Kozlowski <krzk@kernel.org>=0A=
-Sent:=A0Monday, March 17, 2025 11:34 AM=0A=
-=A0=0A=
->On Sat, Mar 15, 2025 at 07:32:28AM +0000, Maud Spierings | GOcontroll wrot=
-e:=0A=
->> >> +required:=0A=
->> >> +=A0 - compatible=0A=
->> >> +=A0 - reg=0A=
->> >> +=A0 - reset-gpios=0A=
->> >> +=A0 - interrupts=0A=
->> >> +=A0 - sync-gpios=0A=
->> >> +=A0 - i2c-bus=0A=
->> >> +=A0 - slot-number=0A=
->> >> +=0A=
->> >> +additionalProperties: false=0A=
->> >> +=0A=
->> >> +examples:=0A=
->> >> +=A0 - |=0A=
->> >> +=A0=A0=A0 #include <dt-bindings/gpio/gpio.h>=0A=
->> >> +=A0=A0=A0 #include <dt-bindings/interrupt-controller/irq.h>=0A=
->> >> +=0A=
->> >> +=A0=A0=A0 spi {=0A=
->> >> +=A0=A0=A0=A0=A0=A0=A0 #address-cells =3D <1>;=0A=
->> >> +=A0=A0=A0=A0=A0=A0=A0 #size-cells =3D <0>;=0A=
->> >> +=0A=
->> >> +=A0=A0=A0=A0=A0=A0=A0 connector@0 {=0A=
->> >=0A=
->> >I find this being a SPI device a bit strange. Is there a defined SPI=0A=
->> >device that every slot is going to have? Or the connector has SPI=0A=
->> >interface and *anything* could be attached on it?=0A=
->>=0A=
->> So a module slot is like a pcie slot, it can be occupied or not, and whe=
-n=0A=
->=0A=
->But which buses...=0A=
-=0A=
-I don't think I am fully understanding what you are asking of me. The=0A=
-module will always be an spi device, that is the main communication bus.=0A=
-=0A=
-Kind regards,=0A=
-Maud=
+Bindings expect NAND controller device nodes to be named
+"nand-controller".
+
+Cc: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/nxp/imx/imx25.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx35.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx51.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx53.dtsi | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
+index 9cfff2151b7e..82601a4b7b4b 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
+@@ -611,7 +611,7 @@ bus@80000000 {
+ 			reg = <0x80000000 0x3b002000>;
+ 			ranges;
+ 
+-			nfc: nand@bb000000 {
++			nfc: nand-controller@bb000000 {
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx35.dtsi b/arch/arm/boot/dts/nxp/imx/imx35.dtsi
+index 30beb39e0162..111d7c0331f5 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx35.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx35.dtsi
+@@ -363,7 +363,7 @@ emi@80000000 { /* External Memory Interface */
+ 			reg = <0x80000000 0x40000000>;
+ 			ranges;
+ 
+-			nfc: nand@bb000000 {
++			nfc: nand-controller@bb000000 {
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
+ 				compatible = "fsl,imx35-nand", "fsl,imx25-nand";
+diff --git a/arch/arm/boot/dts/nxp/imx/imx51.dtsi b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
+index 8323e3a56a1f..f42903c9cf0d 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx51.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx51.dtsi
+@@ -595,7 +595,7 @@ weim: memory-controller@83fda000 {
+ 				status = "disabled";
+ 			};
+ 
+-			nfc: nand@83fdb000 {
++			nfc: nand-controller@83fdb000 {
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
+ 				compatible = "fsl,imx51-nand";
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53.dtsi b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
+index faac7cc249d0..0c38c37dd142 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx53.dtsi
+@@ -775,7 +775,7 @@ audmux: audmux@63fd0000 {
+ 				status = "disabled";
+ 			};
+ 
+-			nfc: nand@63fdb000 {
++			nfc: nand-controller@63fdb000 {
+ 				compatible = "fsl,imx53-nand";
+ 				reg = <0x63fdb000 0x1000 0xf7ff0000 0x10000>;
+ 				interrupts = <8>;
+-- 
+2.43.0
+
