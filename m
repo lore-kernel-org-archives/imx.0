@@ -1,312 +1,110 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012028.outbound.protection.outlook.com [52.101.71.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AE7191F92
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 15:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742226910; cv=fail; b=k8gzZD6+SvMhYHP0UuE/tTItgsixSAG6PgYW8FR5KOPsi4iyR4/fsryYNRh+IFAD8fagHwfYOEf2/DVBE8g7b2y0+HLz/ZzOxh4CTfpbczE28YL00UyG2pleyC88VbDEgUz9XcVxeB326VaBuL1HVMVY0JppUFxW3FMlxoNrGHg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742226910; c=relaxed/simple;
-	bh=fR8ornzF2C7zjolI42T/qgs2TSrhVwT5CrB5GGdX3IQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ScoJtzn7QY9ISJLsEwcrdjZiG+zyubq4ZS2ukylkmREj6twyXOYn0dryVl1Bp8wpIpaTcrr/3fKd9WhuykWfcte19tMKScGAsob76dGpSjfhZ68eEF0D4gYCtyqGsc8mG7KriqJJJSQOhGqFeObMqtioSr64a7P7+LNb5WxX6rk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ukudm1j6; arc=fail smtp.client-ip=52.101.71.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74FB1A315F
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 15:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742227085; cv=none; b=GDeHtcFQx+D8r7Td+OBQyHKDG3+zzPiaLMSneCngkRis7guyVeeWckyVEVwNMu7I8bQ28KJJpP5N4oPUBLQ7kc9yXwGQD5e3i/1gg5vy12QOhYcoJwN6fiMltKXHuFrNOVPhDsgjIFmgRBU9CJcAj49qNe3NnzEOmwVReTgvHf0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742227085; c=relaxed/simple;
+	bh=yMKzmgdAa1GrfN1P1367oG58K7sJ1GR+/2GwB7WGKUc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KYsPbjofdtxpjzh1kjY1fqXayKBBvHh2b2dwbLZo3SLxxVEwmttFqES8RI5ZD71kiKDdyPi9c9tt4JCOJSX50WbyFyYl3O0TkMC4+hQHrWsqdZ6AZ2OKi77H7c7ifTkXMaKg3X0dvT5eaqhSu183uASAVn+9MFgcrnT/swG9Vts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DWSQ/q+J; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ukudm1j6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tX3PXBZdks2rW38dehRKNZoCQsdWhSnd12swlPZ8pa3ylT6FLtbghPYp0mTWpWRmQ2FksLvlPmawPpbkkJVGlgvW2HZAX2aoTHbNiwaPSlQiTRPavy0kCdzhoVN8kLs3WzLSqqNU7o+MvgS4o6aMdpUo3B9/qWUEJGZ7x/yVJJFznaLUH18aKqAAahi6nq1DgSvJO8AWDUjlw/EZjKGu4UFT2SYqc9oKItfLQS29pjH/CF3GGbBMKnlJBWS9TdsCjUQ1sJSX3xE+ckcDiFR3F++cNS3hx90+V/JRGSS/XK8W0EkmCDRvlZXn4js6yMzokMoWx5toudsyrAPpC2KU9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UiIEsYNxlG1fxPhrS4N852N2ZiB4pU++mVj7GjMFmGo=;
- b=KlXhY0DZRy+5NfGaKzG5TmDUH6CtOV+6ljC017JBnUmQz2uixsehgeObGCdd8GQkl9ZCPllOcGCg7L7WfWuL/23JL6TkZaat3RuUs+cokS2wkV1Ybfw1qYL++feoc53GbtAvBBQe2b+rDG4+r3edNlo4ZNK2jVydCImmJvEgH+Z0Bsrjxo0OThthhQwJr8QcvaJLmJzWBrPioGufQSRzv5QWr03R8cUftZmjJ8RdtXl0GGlqSunb8xhHinRkK35z28pE6fKn2az5wnUmWeqSHaVc371o4EZsOMMhX8KI+UhYkwcHPwChKuJvzwpqFakfCJOJhCr5qwTs6L/r0DQoaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UiIEsYNxlG1fxPhrS4N852N2ZiB4pU++mVj7GjMFmGo=;
- b=Ukudm1j6iAHleuEzZs6KzmpR7VBxTb2/gQvU6xJ+EdaE/BsU4sEU/rEOcpbl+LwNRQR1IhDLu0lHCH0YeM8KTim8KSlY6Z2070l8f2k6XeHiAmtDHZFunKayueinWCZteofENo6meTTRT990+mdDQOHTP4CJuyVkh7r88Ef7XsnVm30FFhlILbpRi4zGfchOqSrF83JQAkJjpvqHNfIAqIJtrbay/L7ihx3xqyD8CQdCk/MkINAzzvIM+iMI1f44T+IKxPCH1qpwjx8xrzj3mwP9CieeDXwVI0Gr1xaElMQjOGpme4IShPOM2jv2hS2oSXRGeNH9dYLNxBtBh3uhuQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AM9PR04MB8956.eurprd04.prod.outlook.com (2603:10a6:20b:40b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
- 2025 15:55:05 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
- 15:55:04 +0000
-Date: Mon, 17 Mar 2025 17:55:01 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 net-next 08/14] net: enetc: add RSS support for i.MX95
- ENETC PF
-Message-ID: <20250317155501.4haweyhlrfozg7zr@skbuf>
-References: <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-9-wei.fang@nxp.com>
- <20250311053830.1516523-9-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311053830.1516523-9-wei.fang@nxp.com>
- <20250311053830.1516523-9-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1PR07CA0215.eurprd07.prod.outlook.com
- (2603:10a6:802:58::18) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DWSQ/q+J"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2243803b776so43011875ad.0
+        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 08:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742227083; x=1742831883; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=06QGEsbiDHTPlITpRCkSEygiFBtZganqjlJySZAtEPM=;
+        b=DWSQ/q+JarZAnagRpre9Lojaz3BXvU1UQ5Yh3O0cFMjOc7eeXHyz/C8yxm7l9Dhahf
+         fmgfgVuHvZtJ5kh/DXqdtHLUloHf2prFEd6jNrLWMAeSLa6a4pMI6x+Y9J4J9eJ3gxil
+         srHCpVeIyV+wB5NtfRZA/bP1m8qJoRd6Q7aLJ4tX0Mk6lHZeZtGuJw12wKwXAgM117yC
+         1FHvjegBN6j3IUrti3TNfNcqcbrf1eAilCvLCQ9mH7xm7glJExXG14+TEu1fLlUTAbYE
+         mdhZJnqt5A1qfaDN7AZ1neUxQZfA5TfLQXc+1lGrO5QnIK6IZ9uuWYuNJI/giBVFF1cv
+         Cdxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742227083; x=1742831883;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=06QGEsbiDHTPlITpRCkSEygiFBtZganqjlJySZAtEPM=;
+        b=V6bcB7cN73bQ9YgAJMOksOnfZ1DI3BLNyy2r6vlFnlJzOvhNIUNFKOu6hKj9VNK4ni
+         9Vx0cP/Ma0zf0Y+jDYJUf+n5yXreiKTA1lH7zahWdhAoOTAY5f4z1d7UFB5Nx39e75O4
+         ZJLxm6Co/nRzmIF3q1Yq0PIePqE+k3dUUTq7Umxw/RBJe6HPgVJ9/79UkNiaB3XMAUdf
+         z6mSnouF+qFXoriU7iurt7WmziM7uj/3LyLdikyTmfPzUZymP+aUdZqk/r+m5BXa6Twg
+         Qc+jsm7HewXu2tNAGhcqw/BcHWfQEovLFxjvTw4fPsqVvj56R7CQGtFEKDgzGRL+2WiO
+         L6rA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTc7+Qm7d5HT8C72zUvFbRFOra7n4Uy+eAt8hQRdCcN2xeNYcjgEiIPSB/58H6VXFeoNg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyTrr0/G0whQdq+Leg9og2QPi1Qr3WweCtUK/3wP+ekUF6tK70r
+	z8L4kFCRcNxXxFRCqzdtT4t2OdMzeRR/Zpm/IyuSpb6ADuAjmkrimZwSsXZP3xw8tiIb47vVFx3
+	vzGAbO9wbGGCBVcve142cLoGasZw=
+X-Gm-Gg: ASbGncsInvjx31fFzArZ7v9TpJ+cYOvR6uSMo92+RSgZPSdp66HxoTv1K3o6ua/ODbh
+	wtjC61Qc4zctIK5eiKSi8tC49em68Ni9amw9q3M4ElHNRdGkNwAA5bBYwzf9+gUL8Rp9eF4bSGX
+	1BZL6VZ2YS4JqZYFkTHJIQtGGDX5Q=
+X-Google-Smtp-Source: AGHT+IG3Ayo9k0yRtjHNBCfqhmNJz3asFcvcSqQ3hdNGSq7kkzqBge1sZkHTYixEYa/8f6gTrblik9jUofUotL/jY/U=
+X-Received: by 2002:a17:90b:17c5:b0:2fe:b735:87da with SMTP id
+ 98e67ed59e1d1-3019e7a3ce7mr409937a91.0.1742227082981; Mon, 17 Mar 2025
+ 08:58:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB8956:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9133ceee-6b7a-4a96-2dc2-08dd656c155e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h6lWlKM/TgZO+1yh28lqnmZ9kIbHK8HZZcXDwLmXUvbE9fQYlzLhse0XAwLV?=
- =?us-ascii?Q?pGjh+2pmsVSlH24ggeheVW8wvCZWQDjRWDehFTA0EumJwRwjuhNQKA1Fg7dp?=
- =?us-ascii?Q?nNDo/RWuh6+rLoZFyav7m7d2gbOAmrqggr+HlOp6viLkygaqnejn9oELanGL?=
- =?us-ascii?Q?GYsFCCvN06v+U8mTz1qyfh+bQ/pmk8FKeprsRr21BAZJXJMQzThzCC0NQzKS?=
- =?us-ascii?Q?KEL9s32iBu5Lg+gSVQolB3PlIYww8rrLL2UHckP1LVvLE6CT4ptnfGVbIeAw?=
- =?us-ascii?Q?/hYkY+rWy6OwmrcPYgYJth5ZgoTi0yb7tve13Tv+9tuwIzNC2JHmh7a+QIUm?=
- =?us-ascii?Q?UEqTQ0n8o8h4LabaI1iUPQCsaaDxf5NvE6jZo+hOsRvoqaXMe8aOYsMfgvnW?=
- =?us-ascii?Q?7yBYxf+sghlFFesJuksXWvKmXIrcvKqsuVxa7ibFkLFGSW71ojf2IcY/CajD?=
- =?us-ascii?Q?OytaFbw57fGlip+MLua33Ga5Xd0RflS7qMuCUQtxv8GD+TeSfaBsPlUGcqWP?=
- =?us-ascii?Q?99gb6WerpWiF6MuztcnTqC+QntC/lBvqCkxUaJdgrjtVa4OV3kkb1fOabtyj?=
- =?us-ascii?Q?aVkd3q1i/e+/kJTwWJhzoRawSfysYFitPzS9Gr2zXZhmtohMsPZzDA4pzP/+?=
- =?us-ascii?Q?jHRqfm5cffQwJEnWbltz6DHQ1j9xiZoOVBXLkrCd0ORX8fbuvPwEVzsyzp2S?=
- =?us-ascii?Q?0c8gTHtZH5tI6SuavidYd2X1qzMnH5m0Vn9liiiBkBdBJXAb0DIOUqeQ7rWv?=
- =?us-ascii?Q?UfQZCVK2BxD6NIPimBbQ4g7NRX/e3X/wIPHP51R4i7A5Ahu+jiyiJTkrMU4N?=
- =?us-ascii?Q?ID1qOgoYpW2iv9L0P5Bam9Y84vq/a5d7vwnML9KgPs7C6Diy4LksUtvWtHUz?=
- =?us-ascii?Q?GnMkSrelfCl/Ye4XdgPxVMLO/fzdH+DmpBT+IpdCv6VEwsq9UZRzTZ0R5a/8?=
- =?us-ascii?Q?v9Um8+2EOBcy62QNfB45FmYaD3JnsOg2Zy2u4SVPX1mwbO58lLI2+gb1y61v?=
- =?us-ascii?Q?KhB6cFQDaD3jw/oHoHN4PI0ZhlDsK1hL/UbZukVqGMUGbdVCaq4zYlveF26h?=
- =?us-ascii?Q?vM/CUaY7hBcb/J2vvrMlFeFW/sKjbhW+k2qhMS6iwkHjZqar8YRZp8iBgBCA?=
- =?us-ascii?Q?zsfK4l/shDgRS+RqKKmXq0aQXOVEhXFAUVyNrWD2f79hDjq5+0QkQ9UDuJmV?=
- =?us-ascii?Q?Pl2posxjMJs2Tk6TB7hwP6wcjajydXkyr7003/6uIYn8xNelvEl74AeqcwOD?=
- =?us-ascii?Q?L4/i8Gv7RSC7ydMZSKk9x3Fi+GnvucTT29ZZa65J/yEtnyGax38Kfs8GBhBF?=
- =?us-ascii?Q?Tu9bynbeOHP32YL8RPWByHQOAxxHzYrMZSU33SrdsYgfoHCqIRLN+NAU6jmZ?=
- =?us-ascii?Q?aPuIN23RDX/v4Zql14pUBqsx07ya?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zLenjKgGX9uVsCgVLCTuX1yxpWY3IOtj2AlfSONyIazCTnJfTcTcx9MOH2EW?=
- =?us-ascii?Q?b59bf3i42z9AflWSap4qVdIilX/Ast6kw1r0T/WqKKkU/DUhnwZ89wFqHJ5S?=
- =?us-ascii?Q?ZKV4OAY8OIuDOSlGPMyoTcsq72GOwp7VmwD2CcvauaXMKqh6UDVfjYYJooXF?=
- =?us-ascii?Q?vCCIMuDCOnCxiVC50DE1QXf90aBLteoBWMXTM6nZuiTVNc2gZYBIMydj2Daw?=
- =?us-ascii?Q?YLXCFpidJcqXf+nGG09KJL5n/KikVuBCo8xSX4vs5JRX3eV0HLTFzqnPf6wE?=
- =?us-ascii?Q?lGbkvmUAh298hCNP7nk1dU/vyjtRC1S4Tjz38++ijT/0iFNSrYYhWZvKkMg1?=
- =?us-ascii?Q?BVQ0slO2EHWaSYqvL0Nwa0WjJ4rHZhQu61IKl2nGk3rU8ZwCYbPEvoSWgAmS?=
- =?us-ascii?Q?EAAG4gqE/QyOISYLW7GMSGjwJ8siQYsfvkDvGXM2GpwuWiry3JshhhWDKIu+?=
- =?us-ascii?Q?8YN6MAHZClTWJ0fZbv2xEbZJqN4ReMhZwnLI8KLtv8Vm9TD/LIQi+0Vl7yVy?=
- =?us-ascii?Q?uvGb3ty/3L8+3CIBgTsT4/oIhwWM7y1arz7wOh765HP9cpPyGwMVDB4ujaJd?=
- =?us-ascii?Q?fT6AYKOWdL12fpr7qjZMX5GbjHGU44d0EBMpkqyTGMLzB/2Fr2WXZ8ZYwGK9?=
- =?us-ascii?Q?T3r5pRgzmBX4v6ggAWreziK3kUV6T4Ehk+bS6c0dXn04rvLkdrdCO5VT45s4?=
- =?us-ascii?Q?DVuXp6KWndaihE6fWhceKQjhJydMPvFzgJtXIdVCPAuCq1tQ0IE/qBRexpn/?=
- =?us-ascii?Q?1gG2qPXnLDaAvmBTtzOwUQudYOh48TC8uCxqgVCUFBEFjrj/CxJ7vz/Y0uWL?=
- =?us-ascii?Q?jgtgiXIFqX0L2l97f60DB07MAXsXJYwr0eUxhM4NeEgJlNuky+MltSBUHpdq?=
- =?us-ascii?Q?D/SgxnUjgxM4xEvbm1R1D4Hh+uNxSejgZ1n171oNj/fq+eTNXR7jK0Kncnze?=
- =?us-ascii?Q?4gY+n/Pzak3oYOUGBdRlchgI5UgXZ543c66w+hI6IrO97vcvSQgm7+84xbev?=
- =?us-ascii?Q?yzKm7GZ63MgA5zemFP58P4/7ZD21826Is+G9cDL8BzTL3vFLkzot4LOi6j5m?=
- =?us-ascii?Q?9gZcG6x0I66dH7uFSvGzvA43wABXX73Oj4rYZ3gMjL3v4cgSnHvttXE+vjLD?=
- =?us-ascii?Q?EU/+mK5rl7MHbnrcoKp5UrZqYcTYeXP/ahZgT+QcezR6G7GI0inCIshdJwN8?=
- =?us-ascii?Q?cVxVT9XULDD6nMw2lBcHj0WaA5x3rb+qzBX2aOw1t3LLnYyBedmKMsScOcyD?=
- =?us-ascii?Q?P6KDHXqkzZzjcNpnMarMO7ahX4QzeyD+5Nvv5ZROKH3J7AJmlnA/p9RZCVo3?=
- =?us-ascii?Q?uUZfD9vptP5Ez3MXeFy0VIfAHKJ5gagh+8Y81isgra9x8qhDOG7Fv7VG/ghp?=
- =?us-ascii?Q?E8BhWmVa68QZsbiYbaXb8FMYOegr7PEP0RdEg7tEIwIFM0g1h/xWWx8L1J+C?=
- =?us-ascii?Q?e3rCGim7Ppvby//jqEeKTUfWV0smPATlfjxV9jwE0Mwp6WQrAxCxnL4LtdEK?=
- =?us-ascii?Q?Ey8EXVj7t5VjfRYJ3BLGe6VXGIfE0WhIycqDRT2fozdfi0whiWTHJYb44Oz0?=
- =?us-ascii?Q?wU7YRkWKtcXeYpsTKD+vOtD7rEhyZ7tEl8eJwL04yYuCyVB/VwLBUD9AecJa?=
- =?us-ascii?Q?hw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9133ceee-6b7a-4a96-2dc2-08dd656c155e
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 15:55:04.8105
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cWtGQg6SLfX6UdlVlvLHMXee92CoLHO3JeW/wYZ2A7B2hy4F016KrMyIgPVEb8mq5MKp8UFvxMeqaEshdRJgfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8956
+References: <20250317133306.2003909-1-daniel.baluta@nxp.com>
+ <20250317133306.2003909-3-daniel.baluta@nxp.com> <5873285.DvuYhMxLoT@steina-w>
+In-Reply-To: <5873285.DvuYhMxLoT@steina-w>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Mon, 17 Mar 2025 17:58:07 +0200
+X-Gm-Features: AQ5f1JrRqDM8p6JEGxBqM22DUaeaV1igcAM-i6by99ARfroWOHqb4YOLD6MREdU
+Message-ID: <CAEnQRZCsCYbQU8uxpFeyLmji65VRoO0rckRcoyc3frd2_B_KqQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/5] arm64: dts: imx8mp: Add mu2 root clock
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, festevam@gmail.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, frank.li@nxp.com, 
+	aisheng.dong@nxp.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com, 
+	iuliana.prodan@nxp.com, a.fatoum@pengutronix.de, mathieu.poirier@linaro.org, 
+	linux-remoteproc@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 11, 2025 at 01:38:24PM +0800, Wei Fang wrote:
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-> index a3ce324c716c..ecf79338cd79 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> @@ -543,6 +543,8 @@ void enetc_set_rss_key(struct enetc_si *si, const u8 *bytes);
->  int enetc_get_rss_table(struct enetc_si *si, u32 *table, int count);
->  int enetc_set_rss_table(struct enetc_si *si, const u32 *table, int count);
->  int enetc_send_cmd(struct enetc_si *si, struct enetc_cbd *cbd);
-> +int enetc4_get_rss_table(struct enetc_si *si, u32 *table, int count);
-> +int enetc4_set_rss_table(struct enetc_si *si, const u32 *table, int count);
->  
->  static inline void *enetc_cbd_alloc_data_mem(struct enetc_si *si,
->  					     struct enetc_cbd *cbd,
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> index f991e1aae85c..53dbd5d71859 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> @@ -693,6 +693,14 @@ static void enetc4_pf_set_rx_mode(struct net_device *ndev)
->  	queue_work(si->workqueue, &si->rx_mode_task);
->  }
->  
-> +static int enetc4_pf_set_features(struct net_device *ndev,
-> +				  netdev_features_t features)
-> +{
-> +	enetc_set_features(ndev, features);
-> +
-> +	return 0;
-> +}
-> +
->  static const struct net_device_ops enetc4_ndev_ops = {
->  	.ndo_open		= enetc_open,
->  	.ndo_stop		= enetc_close,
-> @@ -700,6 +708,7 @@ static const struct net_device_ops enetc4_ndev_ops = {
->  	.ndo_get_stats		= enetc_get_stats,
->  	.ndo_set_mac_address	= enetc_pf_set_mac_addr,
->  	.ndo_set_rx_mode	= enetc4_pf_set_rx_mode,
-> +	.ndo_set_features	= enetc4_pf_set_features,
->  };
->  
->  static struct phylink_pcs *
-> @@ -1108,6 +1117,8 @@ static void enetc4_pf_netdev_destroy(struct enetc_si *si)
->  static const struct enetc_si_ops enetc4_psi_ops = {
->  	.setup_cbdr = enetc4_setup_cbdr,
->  	.teardown_cbdr = enetc4_teardown_cbdr,
-> +	.get_rss_table = enetc4_get_rss_table,
-> +	.set_rss_table = enetc4_set_rss_table,
->  };
->  
->  static int enetc4_pf_wq_task_init(struct enetc_si *si)
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
-> index 4e5125331d7b..1a74b93f1fd3 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
-> @@ -299,3 +299,17 @@ int enetc_set_rss_table(struct enetc_si *si, const u32 *table, int count)
->  	return enetc_cmd_rss_table(si, (u32 *)table, count, false);
->  }
->  EXPORT_SYMBOL_GPL(enetc_set_rss_table);
-> +
-> +int enetc4_get_rss_table(struct enetc_si *si, u32 *table, int count)
-> +{
-> +	return ntmp_rsst_query_or_update_entry(&si->ntmp.cbdrs,
-> +					       table, count, true);
-> +}
-> +EXPORT_SYMBOL_GPL(enetc4_get_rss_table);
-> +
-> +int enetc4_set_rss_table(struct enetc_si *si, const u32 *table, int count)
-> +{
-> +	return ntmp_rsst_query_or_update_entry(&si->ntmp.cbdrs,
-> +					       (u32 *)table, count, false);
-> +}
-> +EXPORT_SYMBOL_GPL(enetc4_set_rss_table);
+On Mon, Mar 17, 2025 at 5:30=E2=80=AFPM Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Am Montag, 17. M=C3=A4rz 2025, 14:33:03 CET schrieb Daniel Baluta:
+> > Enable MU2 node and add mu2 root clock.
+> > MU2 is used to communicate with DSP core.
+> >
+> > Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> > Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boo=
+t/dts/freescale/imx8mp.dtsi
+> > index 3b725fe442d0..5b443fbeded8 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -1253,7 +1253,7 @@ mu2: mailbox@30e60000 {
+> >                               reg =3D <0x30e60000 0x10000>;
+> >                               interrupts =3D <GIC_SPI 136 IRQ_TYPE_LEVE=
+L_HIGH>;
+> >                               #mbox-cells =3D <2>;
+> > -                             status =3D "disabled";
+>
+> There is no need to enable MU2 if the DSP is disabled by default, no?
 
-I don't understand the logic for placing enetc4_get_rss_table() and
-enetc4_set_rss_table() in enetc_cbdr.c (built as part of fsl-enetc-core-y)?
-It's not core code, it's used only by NETC v4.
-
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> index 1a8fae3c406b..bc65135925b8 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> @@ -625,6 +625,24 @@ static int enetc_get_rxnfc(struct net_device *ndev, struct ethtool_rxnfc *rxnfc,
->  	return 0;
->  }
->  
-> +static int enetc4_get_rxnfc(struct net_device *ndev, struct ethtool_rxnfc *rxnfc,
-> +			    u32 *rule_locs)
-> +{
-> +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> +
-> +	switch (rxnfc->cmd) {
-> +	case ETHTOOL_GRXRINGS:
-> +		rxnfc->data = priv->num_rx_rings;
-> +		break;
-> +	case ETHTOOL_GRXFH:
-> +		return enetc_get_rsshash(rxnfc);
-
-These rxnfc commands seem implemented identically to the corresponding
-subset from enetc_get_rxnfc(). Rather than duplicating those, could you
-rather return -EOPNOTSUPP for the unsupported ones on NETC v4, and reuse
-enetc_get_rxnfc()?
-
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int enetc_set_rxnfc(struct net_device *ndev, struct ethtool_rxnfc *rxnfc)
->  {
->  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> @@ -685,22 +703,29 @@ static int enetc_get_rss_key_base(struct enetc_si *si)
->  	return ENETC4_PRSSKR(0);
->  }
->  
-> +static void enetc_get_rss_key(struct enetc_si *si, const u8 *key)
-> +{
-> +	int base = enetc_get_rss_key_base(si);
-> +	struct enetc_hw *hw = &si->hw;
-> +	int i;
-> +
-> +	for (i = 0; i < ENETC_RSSHASH_KEY_SIZE / 4; i++)
-> +		((u32 *)key)[i] = enetc_port_rd(hw, base + i * 4);
-> +}
-
-I would have expected that this refactoring of code into
-enetc_get_rss_key() would be done as part of the previous change:
-"net: enetc: make enetc_set_rss_key() reusable".
-
-> +
->  static int enetc_get_rxfh(struct net_device *ndev,
->  			  struct ethtool_rxfh_param *rxfh)
->  {
->  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
->  	struct enetc_si *si = priv->si;
-> -	struct enetc_hw *hw = &si->hw;
-> -	int err = 0, i;
-> +	int err = 0;
->  
->  	/* return hash function */
->  	rxfh->hfunc = ETH_RSS_HASH_TOP;
->  
->  	/* return hash key */
-> -	if (rxfh->key && hw->port)
-> -		for (i = 0; i < ENETC_RSSHASH_KEY_SIZE / 4; i++)
-> -			((u32 *)rxfh->key)[i] = enetc_port_rd(hw,
-> -							      ENETC_PRSSK(i));
-> +	if (rxfh->key && enetc_si_is_pf(si))
-> +		enetc_get_rss_key(si, rxfh->key);
->  
->  	/* return RSS table */
->  	if (rxfh->indir)
-> @@ -1249,6 +1274,11 @@ const struct ethtool_ops enetc4_pf_ethtool_ops = {
->  	.set_wol = enetc_set_wol,
->  	.get_pauseparam = enetc_get_pauseparam,
->  	.set_pauseparam = enetc_set_pauseparam,
-> +	.get_rxnfc = enetc4_get_rxnfc,
-> +	.get_rxfh_key_size = enetc_get_rxfh_key_size,
-> +	.get_rxfh_indir_size = enetc_get_rxfh_indir_size,
-> +	.get_rxfh = enetc_get_rxfh,
-> +	.set_rxfh = enetc_set_rxfh,
->  };
->  
->  void enetc_set_ethtool_ops(struct net_device *ndev)
+True, I can enable it only when needed. Will fix in next version.
