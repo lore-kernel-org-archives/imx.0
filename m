@@ -1,118 +1,179 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317CE1A9B28
-	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 18:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7581A7AF7
+	for <imx@lists.linux.dev>; Mon, 17 Mar 2025 18:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742234644; cv=none; b=T1Vvhf+IWpbIZ1BDpyjZ1b1pahM0Qk8YCiSMCKH7zwUHrs7qPgQCFAXuLrQ+Y8fRMchcTVPIfktJj8TF0lJuGSlYpU6brFlbfIAw5Y+4HOpBgCNNZiIxbBQgvOFt9LC4pen1sKM80q8bm1pClWrJpQ6KuO7xUuBOg8BxXJaeLYA=
+	t=1742235180; cv=none; b=TYzQAs8FamPrFKm2WIy63qfSpQ1cSVZljq2W7cjzCAZJh48zlIXYalpZpycPzNQg1rjuM+d25bzr7IZ3RtepuWx9/NEZloN+zJ0W2fBCvLbbjJPVs0AegfSBj5gOQxoHGc8x98ouns7XR5ys0kUiNFwejdhMSDTvK+0whLixDDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742234644; c=relaxed/simple;
-	bh=awgPAnbrbkaZkPs7TRo9ZTe/vWz9ohJbUh9GSIfTsRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GPSrxItoH4rq8Eud02AdJUXc+3hZaHjQCtJccCuNNKikWePQsbITe3743pA2lduq+wCF9iryAps8gQzrYK4/rFYZzTVijv/habso2Y8bYdEx5S4IVYHOTa+34DbhIQ6WznvjthOfPlZBIg9hrbHVBLTHVIGhnnJRH7kXVXlCtkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZO58918d; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742235180; c=relaxed/simple;
+	bh=ttnevuuRSs70eMR3kmeQzHoRYSox7LyShyytOBIQqWM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DEC4j7DIGZ+0lX0cSq4VQ0MYTF0OYG0Rdz0VNHXK02BwPaoPeJE2nXGv5W0zlQNnG5v8BJBIWmg7q1VI8uW/wuL8CMZ7yWsa8vSYp/jK4MitjoH3cy5auGC/8quXMCj9L5QufPbUC/AZTeSP2ux2R3OQ9i/Gojfgh/9BDZ8myY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O/kzUK0U; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZO58918d"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ac2bb7ca40bso944069666b.3
-        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 11:04:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O/kzUK0U"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-390e0f7b272so627584f8f.0
+        for <imx@lists.linux.dev>; Mon, 17 Mar 2025 11:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742234641; x=1742839441; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gMs0KQ2xoYfGwipz0GcDyzvKZDx/2Bps5YmVJfONNew=;
-        b=ZO58918dv0MGWg2bM/x9gPsT5r0f8/Gf4Q7iG/3Onv3pHzyQLACChI7k1kzXXjTF3Q
-         huBoWnHf2ItVOj4oUVuglg4Tabm075+Be1SyX4zaftt5ZQAkvtSiL0sh/Q51ZyiyF3Dt
-         EcSSOl7GoFxLa7cwRY6gEHOhXhjMMu4obfmcbrKFji8DtbAOxyKVx5KbkBF29kwG0NS4
-         lV75nhDv9q36lLtIJLfE1So7uJyho3pUA5/5uX1NAp2VEH7jjJsPXHiGYCR0BdTJXw4r
-         +XtS+/X2+/Uu6PaVbEXJ2Post7FsNdAX2Zh5eMOETBbEhn0Q2NDh3QGJxf7nx32nvBxp
-         qmMw==
+        d=linaro.org; s=google; t=1742235177; x=1742839977; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=im+lzt/l8oUZkwx4sSdHAnZN7RYYo3yZ6X9EY0kQmFc=;
+        b=O/kzUK0UTMHo8Z/EhbkZFoxWvgFMi7jPqLP8KksUjiOng5b9iAXb2ygTV0TTv32cqu
+         nOGqV5vtypw/10zroGzCQGuj+okI54vPmY4ksQdiG7wxKcUf2JQrJqbK9BXVvW0SYOBr
+         25mkR2cDveT9zehEyQKU9MC0/IgxwkK4uGrcY0nHtA/Jd5+SiNGAlrcpS2OIb3IttFX/
+         Jx19bORJL78gakamkoOKPQpnr30KNa7JGgNUNEtUQHrxvW4lEA54oXmGRMAK6ZJ8QkU0
+         kTNJVZhXa0IdlpY0fqCPAUxZFPOHKAWYtkaPZ23E35yPDI5tmky8YrZcdSdo2ONISZGp
+         Jgcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742234641; x=1742839441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gMs0KQ2xoYfGwipz0GcDyzvKZDx/2Bps5YmVJfONNew=;
-        b=ZGIssCKBr37SWaQePVQbRj604Rdg2R0/R1PtJaVD5VayvWvxAHjLIhbfqDc0CKLIvV
-         YxyphG0w0xUZQ6VpapU2Nc6SQCanVqC626kKV01N5wpfA29svZIbY/DF91ZJTeMxobB3
-         MnlP0XHQ9ck3ALbCchVS9qrn9LwAiVzs6nDNs8E2B3swZyFevtXp6eEH8ed7slTw/ltB
-         0YEE1c2o47Dbc2Pt23pSqaVO64vxG81J3VAIov3/msoGQs1a9VNzzWNhGHjP7PSAJbET
-         gde6UWDMeWGKj9VdhEp+7xbwg4lmG7TOPbLcLafcDAAXcHYFLzqGSMhKUldfw5CbQWG6
-         PdIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVO56UkD3Ax+aHA3T0g2ZKJnivPXcMXn1UGJ1m79xAb1VLA4rsybo3q8iLgakMLWzUGMWw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyo84VeprHBLCqH+29b+QAa7LYt9/TXQU31/6meOblvxio7QZqc
-	xU91yBUnG6W921oyP73HNsfrD8VWzzECO7IjxYgklMfKN1ULfz/3
-X-Gm-Gg: ASbGncu3xzEfflaSbjY/yB7Ek7uU6E6yRDQlirztNDgJ5rggrXtCwGew1KhjVxbgsBL
-	10suQC2Dj9NQ+0n8AslTqlXW9fc2M3jXOgUQLCzB+Sm2hMmM0HNr15G7E7co0Ir/J92AuTOzgUC
-	7/xmEUVZRP99ZpvlngrILK7yJrPA5w/uNSlbPEa2TNYu2Ui6YcsH/LwWHHqIJwZ7XLDehtNQzgQ
-	XPmkrLerSq21V5oYKb3Vgee0WhmDaDKKnZ2Oe4IQqrhoT0bXhVyhSewNJ1BKvqYor/fyoY42EEu
-	eeSx2CkjlZCMwUAhT/TA+HvKFYHYk8Fb0dRH2WbgsEfqdGsI59EULGqnaf9l4ApiOMTLt6XgcO1
-	qmkltHYsS5h5FRzHFwwm8PSZ1m/WAQmr5E3HpjkGLHkF5PPGZgVYjQw==
-X-Google-Smtp-Source: AGHT+IEqHcYMxvD4RWbMqL7gZkeMlgl4L7sidotxxKm051Mjf5HVCCNTwf97wRSQF+aZjoUe1nGS6g==
-X-Received: by 2002:a17:906:6a0a:b0:ac2:b414:ba2a with SMTP id a640c23a62f3a-ac330376bb6mr1524996566b.37.1742234641045;
-        Mon, 17 Mar 2025 11:04:01 -0700 (PDT)
-Received: from alb3rt0-ThinkPad-P15-Gen-1 (host-95-252-211-62.retail.telecomitalia.it. [95.252.211.62])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3149cdec8sm705009766b.112.2025.03.17.11.04.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 11:04:00 -0700 (PDT)
-Date: Mon, 17 Mar 2025 19:03:58 +0100
-From: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: shawnguo@kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: OCOTP and DWMAC builtin modules are needed for imx93-11x11-evk
- kernel dev via TFTP and NFS
-Message-ID: <Z9hkDqcKG1xOmIB5@alb3rt0-ThinkPad-P15-Gen-1>
-References: <Z9fhuVltKwqgHdLp@alb3rt0-ThinkPad-P15-Gen-1>
- <935028c6-ce56-46e0-96ff-46fa91c8f66a@linaro.org>
+        d=1e100.net; s=20230601; t=1742235177; x=1742839977;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=im+lzt/l8oUZkwx4sSdHAnZN7RYYo3yZ6X9EY0kQmFc=;
+        b=H8BqiUNH/VD27CWgL1ZbxU0huVOc1spGCLL3d3kmMX9yxfEPKztzvwIsamWmwscaTh
+         SfmnfHurhEMb/yOQUGDF6565hkaT3ZqGuktGfBEeNMZFeuYt7G6fNnlZYQ3dQaVjwr+2
+         bW3XVYI83Dsyll7Se4Iz76mW4sXNp4n+WPnKMLSVxrRRDRiPNhO4TI+ibKVnDe2MY6cx
+         5xkZELw7yJwKT1JU+YU6TYThsPjGH4PmNlgn3E5KXJ6rdOd0/DY+BjI2s2WaBHlOLKT9
+         4CkWEXefFS1q4+wvD5HFYKoV1nYb1gdGSq6jhw5STHnL8ecQ5ljODg75rZ8gtyE3QE2r
+         qJGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFKKW0taNTIlqyZmiKcCjtrUlcuCjlwWNGwm3U3MxDBpInmKZMJHI0/di3whXr+xl/LsM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxeEcSijvhFwmWgdz4d06c7xLWVs8lB4qvCmScnY8vQ63rrIq/G
+	1M9Hu4vX12Ni4S7VW5DTgswYfBfQeoNXGaguzx/L83suJMJadT4jeF1HaiMv7jU=
+X-Gm-Gg: ASbGnctCrAcWMuSVwyQP0b+q6qfV967WjEeZqMSOZ5gxS1GQJ8nLP/+qv0DCoGOwglr
+	c9RlmgwKBFVOrJT6ihpDYAx6FLJuF9W5bxMOMFPC5Nhid00y54Qk/RsLZz9oRjNcOUtpWwAlnoq
+	psRRWSQq1NuXmHDP8n55g4sXdd2oDggWQNE/Y5sa+UGNkdF0i1jHFk89TaMkpoBEjxmLJ0kjbCQ
+	TvMUkYwOPSKaH77Sv/b7B+FGTaCV8GP7yu0KiLmYhFIcil44ibQHTdyMSWZizPZeSrG+gS6kO4X
+	fRQTcq8lfPBedfBT6xn3BVHyoFo9ABBo+BVZS39+pPZdZfAYD4tNz9+2CtbOzFw=
+X-Google-Smtp-Source: AGHT+IH2rR2rP8fTM7ieRv7JpMuDjG5gkeJQOZupoiDEx9W4lXSbgwq0IEaADu9evSCfumBr8hQMvw==
+X-Received: by 2002:a05:6000:4008:b0:38f:2685:8457 with SMTP id ffacd0b85a97d-3971a58a449mr5344443f8f.0.1742235176916;
+        Mon, 17 Mar 2025 11:12:56 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.198.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395cb318a80sm15993744f8f.61.2025.03.17.11.12.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Mar 2025 11:12:56 -0700 (PDT)
+Message-ID: <ef163f08-35f9-4d1d-8082-c826c6cd0aa0@linaro.org>
+Date: Mon, 17 Mar 2025 19:12:55 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <935028c6-ce56-46e0-96ff-46fa91c8f66a@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: OCOTP and DWMAC builtin modules are needed for imx93-11x11-evk
+ kernel dev via TFTP and NFS
+To: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
+Cc: shawnguo@kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <Z9fhuVltKwqgHdLp@alb3rt0-ThinkPad-P15-Gen-1>
+ <935028c6-ce56-46e0-96ff-46fa91c8f66a@linaro.org>
+ <Z9hkDqcKG1xOmIB5@alb3rt0-ThinkPad-P15-Gen-1>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <Z9hkDqcKG1xOmIB5@alb3rt0-ThinkPad-P15-Gen-1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 17, 2025 at 05:07:26PM +0100, Krzysztof Kozlowski wrote:
-> On 17/03/2025 09:47, Alberto Merciai wrote:
-> > While playing with linux-next and imx93-11x11-evk via NFS and TFTP
-> > I found that the dwmac-imx, nvmem-imx-ocotp-ele drivers by default are
-> > not builtin then the I was not able to reach userland. 
-> > 
-> > The following configs were needed to reach my goal:
-> > CONFIG_DWMAC_IMX8=y
-> > CONFIG_STMMAC_ETH=y
-> > CONFIG_NVMEM_IMX_OCOTP_ELE=y
-> > 
-> > is that something expected?
+On 17/03/2025 19:03, Alberto Merciai wrote:
+> On Mon, Mar 17, 2025 at 05:07:26PM +0100, Krzysztof Kozlowski wrote:
+>> On 17/03/2025 09:47, Alberto Merciai wrote:
+>>> While playing with linux-next and imx93-11x11-evk via NFS and TFTP
+>>> I found that the dwmac-imx, nvmem-imx-ocotp-ele drivers by default are
+>>> not builtin then the I was not able to reach userland. 
+>>>
+>>> The following configs were needed to reach my goal:
+>>> CONFIG_DWMAC_IMX8=y
+>>> CONFIG_STMMAC_ETH=y
+>>> CONFIG_NVMEM_IMX_OCOTP_ELE=y
+>>>
+>>> is that something expected?
+>>
+>> You mean they are disabled or you just did not put them inside your
+>> initramfs?
+>>
+>> Best regards,
+>> Krzysztof
 > 
-> You mean they are disabled or you just did not put them inside your
-> initramfs?
+> Hello,
 > 
-> Best regards,
-> Krzysztof
+> By default they are enabled as external modules, then until we don't
 
-Hello,
+So everything is as expected...
 
-By default they are enabled as external modules, then until we don't
-reach userland they are not loaded thus eth and all the mechanism behind
-that are out.
+> reach userland they are not loaded thus eth and all the mechanism behind
+> that are out.
+> 
+> I'm not using initramfs just tftp and NFS as follows:
 
-I'm not using initramfs just tftp and NFS as follows:
-setenv loaddtb "tftp 0x80400000 imx93-11x11-evk.dtb"
-setenv loadkernel "tftp 0x83000000 Image"
-setenv netargs "setenv bootargs console=ttyLP0,115200 root=/dev/nfs ip=dhcp nfsroot=192.168.1.3:/tftp/root,v3,tcp"
-setenv bootcmd "run loaddtb; run loadkernel; run netargs; booti 0x83000000 - 0x80400000;"
+All arm64 platforms are supposed to use initramfs on defconfig with
+necessary modules.
 
-Do you think that initramfs can solve that?
+> setenv loaddtb "tftp 0x80400000 imx93-11x11-evk.dtb"
+> setenv loadkernel "tftp 0x83000000 Image"
+> setenv netargs "setenv bootargs console=ttyLP0,115200 root=/dev/nfs ip=dhcp nfsroot=192.168.1.3:/tftp/root,v3,tcp"
+> setenv bootcmd "run loaddtb; run loadkernel; run netargs; booti 0x83000000 - 0x80400000;"
+> 
+> Do you think that initramfs can solve that?
 
-To be honest I was expecting to have a builtin driver for eth by
-default, so that NFS and TFTP can be turned on without caring about the rest.
-But for sure I'm missing something  there :)
+Yes, that's the entire point of initramfs.
 
-Thanks,
-Alberto
+> 
+> To be honest I was expecting to have a builtin driver for eth by
+
+No, why? We built as much as possible as modules in defconfig. Otherwise
+it would be impossible to actually boot that image because several arm64
+platforms have limitations of boot partition size.
+
+Best regards,
+Krzysztof
