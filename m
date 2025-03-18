@@ -1,125 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A943620CCDB;
-	Tue, 18 Mar 2025 15:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB4620E008
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 15:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742312302; cv=none; b=i67RCpJEJn0qkUyaeIUBEct2KvSOTosZUwhY3O/92L8LhM9qu0GzQM/01fEhioMC3P2kebMdf6M1iiAw5AB7kQFm0cfCDk9tKjMWescMRHrPQi8AHqlzfLd4WWn98F5eJLukPbZF3Y5bQrGQUFQf83cZYKvtN2rolZmR0Dni00I=
+	t=1742312970; cv=none; b=dOT3AIGZXHBw1zOhSa1mK15zt0YGvhBk1ohbJ5wF4GRuemNBsMbHCYtuiiB0oQYOBUdmY+bB6qz5FSXzmru594agSM1JLhY1mwcamIiq0qmG7p5tzSMWbOc4+hQ033hj13ZaFdm72z1R9eiPBQJdxbH+4axtuqPHjb1+N/SgS5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742312302; c=relaxed/simple;
-	bh=6vRe1xGHKinnOHibJbE9BRfIfB0P0VJZl7MqbD8QsEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=pkb330dx67jppKnDeIB7uwmA7SzA1O+nIpC6/Ju4h+x8RBCI9pf6FME+QQ7x4XKL9fePeZ+yAcOlMhISEjCmKONURMV3Y667oqrzNJ2b9QBwjWj/ZTUPVF5hRiEubebWT9rtoINzJltEgmP6i2EMeqRn31OYFVwq6AJja9uY+xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXfwIEJS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742312970; c=relaxed/simple;
+	bh=9IcPCCGUZr/pvJFEOPTdZu3qhFBek7e24MNCUdrqCbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsX3Osk8zqHryh/l9vN2hLFVpEqNnTT2bRhsCH6WwCtWAXT3eHkckS0PMC7vcnybOCyRinVq0LDTCV0iZLdl9PdNKryVPGmfqrTpm5/gDt0TLd1vV0LKQ22ME7r5dohCsJyZhdiGpD5kicUNG2CZluCH/r3Zq2+F605cLEOGYC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fuN4Di8e; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXfwIEJS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF5CC4CEDD;
-	Tue, 18 Mar 2025 15:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742312302;
-	bh=6vRe1xGHKinnOHibJbE9BRfIfB0P0VJZl7MqbD8QsEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=bXfwIEJS6+zd+bIaOwENgY7nfrSmKdgrBe2vvcpdJKbJrb5Jqaf2uWbOkRjUHuWdF
-	 D4tvgE0rYDylQTxTJEYGj1hZJi7olHZJa53jvDS3hpLFZwMJAYn2RsA3VxwDV2vap0
-	 H4ch1ym4qQw1E2Tj+VivqRg9OE7TbeR6RDCT5lKjXHqgG+u1otXcTSX3h0sNcvp6E7
-	 jGwxT2q8nX8H/d5k89z1REfl/AOMKY1e8eCT+OZ2IWok3EFV20IspXV5/AIVqX9vrZ
-	 qBuv3xKvbQx1LJdpgbol0l4+isOkbxRnPsYKHydgj7XpEB4GTKE1tiVvTZVA0yKdUw
-	 9zr0WU38KpOGg==
-Date: Tue, 18 Mar 2025 10:38:20 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fuN4Di8e"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso8132139a12.2
+        for <imx@lists.linux.dev>; Tue, 18 Mar 2025 08:49:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742312966; x=1742917766; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=L6Ipmc6ilCbSYurjtaIb/33JjbYe+per91vNl3/7Nh8=;
+        b=fuN4Di8eKrlbobM7IM055H3kueaKETqrBWACU+p4x2f0es0hgBjXnZNSJvuHjg5pzh
+         N6O8aSakcaiNzPpZvkrrxs398V69DTSkkdxdfkqfHZ2Ss459cUlNel63n0ThvnZyDcqC
+         I8uQTB8ICfIh0MNNx0g7IjLmcpNCglr0YZYvAmWbpodPvjcbMUGbqo5JE2jU8A1jD3XF
+         f2oCQRWI+v47+3lvTfU61LFmKErmIp5pdZEkhH0HgAtc7sPNYO2xHIuenk8meBdaXPKO
+         GerAodcWcVQ/WA8JIMpT/u6yofV9C5ERcVgmYznZqIi2bNF7stdABwl6Cebd53M7xi5Y
+         Gncw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742312966; x=1742917766;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L6Ipmc6ilCbSYurjtaIb/33JjbYe+per91vNl3/7Nh8=;
+        b=aEprsQq2pZNHRMOpGO8K6RzUEQEXjmW/5MVtsUbEEzbuPjz/v17CG3fFLqRK5aOw2w
+         7Tkln2fQMuovha6yv71vFb7uYISoABg+SEH/83Zw7RYZ+cJ81hsLJFmsJKRCL8x/ldVm
+         1LArG5XCqoRcHjeVcIkuw2Be3BhaogbPJTGbgHZ2v73dyn42RlxarYwv07+UScupi6Qm
+         YKCDgMnQkrk+R1QW17vnbvEXgcrQ4cYBquUGOH9++pVsncaHLTbQO5F/W56Z6P1hmJqR
+         /zbVHmR9feI3cDzsqql7u38QWhfm1poWtvKe8xsEDuAvZ0BPEe8YkmVyo8LOhvDDSu6C
+         otBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZuj5pWfjz6qXoUIV34j5Y4EVZE5X6wJ8y0KfbgZb1JAhe4i42ozOR7uYujOIjSVabU04=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxqb5xergzbdOxy2cVC8dVpCs7haQvZgCkfTGFnYmaX3Fw3Ncvf
+	6L0Vqgf4wlRywfiKzK3ASwlizTQjPXOS+frSgUuIAInZjy/502ez
+X-Gm-Gg: ASbGncvHKBzFOFQ5vEhUnCuejYRMZeFQygLpsicXIwhlVR6R6I/Ul3ISgFfrXtBFJYa
+	50Sd9cVKzf/MeOBV3J9LL8AUf1gVoekJ/lEyHm/hmIF2H12qw6gE9pFfyzzJ4vRHo7f5RCIdwpx
+	kLBRvFIXkbpY56Iu52P7az7b+44SUf8f9BYJ5POXVijReevx8t3zQ2BIEJwIg4M74fqLHShtyX7
+	/JZkcPEGp9OSqqjLhlhowsclXGOtxswQzo3OknCeeSXE8SBo0avlZgfQiuX3zEOwyqiIc8HbbSE
+	4/ONewvB+BnaZePUbhTBHVR70W/0nRDrjTSI43CPw5zkXeXDcI7bzNXLcBLgM4enKuSm6t5GhGL
+	NxqNokGjbAgOitSB2M0Wk4KlSm7hUIOIu2K4JmBm5Qs3uuQ==
+X-Google-Smtp-Source: AGHT+IHMLkaV8uHFQVg2vHrzXkQR9/w+ti4OyBuv1b8SAJBLiHJR2w6USAKnVcw7fN1kQSv+zr3g9g==
+X-Received: by 2002:a17:906:da8c:b0:ac1:e332:b1f5 with SMTP id a640c23a62f3a-ac38d552e43mr506689066b.37.1742312966212;
+        Tue, 18 Mar 2025 08:49:26 -0700 (PDT)
+Received: from alb3rt0-ThinkPad-P15-Gen-1 (host-95-251-108-181.retail.telecomitalia.it. [95.251.108.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3147f0f5dsm885226766b.63.2025.03.18.08.49.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 08:49:25 -0700 (PDT)
+Date: Tue, 18 Mar 2025 16:49:23 +0100
+From: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v12 06/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
- checking and debug
-Message-ID: <20250318153820.GA1001146@bhelgaas>
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH] arm64: dtsi: imx93: add alias id for bbnsm_rtc
+Message-ID: <Z9mWA5ldMDqZcVf5@alb3rt0-ThinkPad-P15-Gen-1>
+References: <20250306193014.490091-1-Frank.Li@nxp.com>
+ <116096172.nniJfEyVGO@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250315201548.858189-7-helgaas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <116096172.nniJfEyVGO@steina-w>
 
-On Sat, Mar 15, 2025 at 03:15:41PM -0500, Bjorn Helgaas wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On Fri, Mar 07, 2025 at 11:19:13AM +0100, Alexander Stein wrote:
+> Hi,
 > 
-> dw_pcie_parent_bus_offset() looks up the parent bus address of a PCI
-> controller 'reg' property in devicetree.  If implemented, .cpu_addr_fixup()
-> is a hard-coded way to get the parent bus address corresponding to a CPU
-> physical address.
+> Am Donnerstag, 6. März 2025, 20:30:14 CET schrieb Frank Li:
+> > From: Joy Zou <joy.zou@nxp.com>
+> > 
+> > Add rtc0 alias to set bbnsm_rtc as the default rtc.
+> > 
+> > Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx93.dtsi | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > index 56766fdb0b1e5..7d9aa15ebf5d0 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> > @@ -34,6 +34,7 @@ aliases {
+> >  		mmc0 = &usdhc1;
+> >  		mmc1 = &usdhc2;
+> >  		mmc2 = &usdhc3;
+> > +		rtc0 = &bbnsm_rtc;
 > 
-> Add debug code to compare the address from .cpu_addr_fixup() with the
-> address from devicetree.  If they match, warn that .cpu_addr_fixup() is
-> redundant and should be removed; if they differ, warn that something is
-> wrong with the devicetree.
+> IMHO this is a board property, not SoC property.
 > 
-> If .cpu_addr_fixup() is not implemented, the parent bus address should be
-> identical to the CPU physical address because we previously ignored the
-> parent bus address from devicetree.  If the devicetree has a different
-> parent bus address, warn about it being broken.
+> Best regards
+> Alexander
+> 
+> >  		serial0 = &lpuart1;
+> >  		serial1 = &lpuart2;
+> >  		serial2 = &lpuart3;
+> > 
+> 
+> 
+> -- 
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+> 
+> 
+> 
+I agree with Alexander, furthermore if we look to others dtsi we don't
+create this relationship at soc level even if we have rtc there, is not?
 
-> +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
->  	struct device *dev = pci->dev;
->  	struct device_node *np = dev->of_node;
->  	int index;
-> -	u64 reg_addr;
-> +	u64 reg_addr, fixup_addr;
-> +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
->  
->  	/* Look up reg_name address on parent bus */
->  	index = of_property_match_string(np, "reg-names", reg_name);
-> @@ -1126,5 +1127,28 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
->  
->  	of_property_read_reg(np, index, &reg_addr, NULL);
->  
-> +	fixup = pci->ops->cpu_addr_fixup;
-> +	if (fixup) {
-> +		fixup_addr = fixup(pci, cpu_phy_addr);
-> +		if (reg_addr == fixup_addr) {
-> +			dev_warn(dev, "%#010llx %s reg[%d] == %#010llx; %ps is redundant\n",
+for example:
+arch/arm64/boot/dts/freescale/imx8mp.dtsi
+arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
 
-On second thought, I think this one should be a dev_info(), not a
-dev_warn().  We know the *current* devicetree describes the offset
-correctly, but there may be other devicetrees that do not describe it,
-and we need to keep .cpu_addr_fixup() for those other devicetrees.
-
-So there's nothing the current user can or should do about this.
-
-> +				 cpu_phy_addr, reg_name, index,
-> +				 fixup_addr, fixup);
-> +		} else {
-> +			dev_warn(dev, "%#010llx %s reg[%d] != %#010llx fixed up addr; devicetree is broken\n",
-> +				 cpu_phy_addr, reg_name,
-> +				 index, fixup_addr);
-> +			reg_addr = fixup_addr;
-> +		}
-> +	} else if (!pci->use_parent_dt_ranges) {
-> +		if (reg_addr != cpu_phy_addr) {
-> +			dev_warn(dev, "devicetree has incorrect translation; please check parent \"ranges\" property. CPU physical addr %#010llx, parent bus addr %#010llx\n",
-> +				 cpu_phy_addr, reg_addr);
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	dev_info(dev, "%s parent bus offset is %#010llx\n",
-> +		 reg_name, cpu_phy_addr - reg_addr);
->  	return cpu_phy_addr - reg_addr;
->  }
+Regards,
+Alberto
