@@ -1,237 +1,197 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2045.outbound.protection.outlook.com [40.107.20.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637001EF380
-	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 07:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742283987; cv=none; b=nhAThHcEJeMa0I8XAw44c9ITUFaxQNnZ0e90AnPIjf6UL4JvSMVT0aUpZBqbQIUL2mMPMFWb6cIaldx6NWE8Z4xFXRlgqn+YhipklRLUQw72SoFEtOJaoED167CD3JddFS8/A4yXU4alucTvXPxBbbXa24HxubUJrJKh8RQPNzQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742283987; c=relaxed/simple;
-	bh=LvywzN1RBsv3mdA4STwvBcFAP/jhi6wX7UwEJ79LVdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=agIFHS/+aRnnxnYM8wUgGJkxDlSONIEoXC8Y1sZ2jSiGjiO/MmPxy65c7zGvgtyLG78mCF2urd/+LLodaTnF+NvKv+2nakMpPpu5hLQ4Hu9j9LtQLm7pR0LUlXlCT6OaVV615mr5g2t1zeg5s+N1HYJv4wI/46ScqQkkShGyblM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ihZNOYQm; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB6C1A9B52
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 08:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742285309; cv=fail; b=Q5lyYnkdzCcM3RUhTG4v5YbN7OuLEsjgkJowoB9Zr9UAjIE0FJENZTVM/EjuHAuISP/OmWrcTgdA+O6krAEc5w3FnaGYkGlCrhl71VSrpFN4Q6g+BZZgtZLqVUVLniXCR63fzKX+weX3D8G3+WAIcqRSOsQ3LhdFp7BjjxC7BWE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742285309; c=relaxed/simple;
+	bh=kXJcnitRgc5mksBsJ8e65GpefdfbmAfurkW5WDrkw8g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=l8jdv+WWIDKMUuH7cfBgRZ5ikDkQq4kuEQGDn+IjH1sh+eUbO/Y49n2LzVUKOa5mSFnsnTeRMW4R/GeHmJ0AeCfxZ8Pz9ulOavXOUNwreF4J4gtefk8o314SHzoLPdA6IEULnyzzl5wsfMONL5AzEaWq8hDVmhemARhwG6MeUw8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eeJo78vq; arc=fail smtp.client-ip=40.107.20.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ihZNOYQm"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2260c915749so27704185ad.3
-        for <imx@lists.linux.dev>; Tue, 18 Mar 2025 00:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742283984; x=1742888784; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/5KVGOst+i3EqYlF+Sx7sAtMWBsKlTUEKDgYGkLY1j4=;
-        b=ihZNOYQmxPZesa4GBYcu54O3AmGIlNDak2EvhTyU/khJS1MhkYQbvEnDF48b+NrZx+
-         IvNO+cv2f+gnUSGwUdQDIaQcYiXwVzYXCyg1PgRvllFZYXZRd7E4I5PJt3sV/eqfVaPJ
-         hJ+i9wVAbfI6R9eMR+2bIYvtVlvO4gG8XCnInIB0KCi7pRtVDPyxpb9R22/lgVNf6JWS
-         E2Hht+nsjU9ITaSJUk756HRlGp6dBTMffvjQBqohmOiqa29AJohqcXQy5qy+8QS4Cqti
-         eGuh0WGa1r3VyXljhTCFGI6Jqr/ohPbsZT03CG9qaChP5fjke9tSe29s/AsjzDLg8vZM
-         UwzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742283984; x=1742888784;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/5KVGOst+i3EqYlF+Sx7sAtMWBsKlTUEKDgYGkLY1j4=;
-        b=C4/e4ZGRLhI/fWxK7NfutnjWIa+hDMLz8dXeSiJK04xjrnZ+fkEtfImq6HVR0TqayN
-         21CpSntHVY1kuOFRzIV90j3V33lcNroFaO4FCcGN3iykYG5Q2aawnxpbYVDCg5TgXvLB
-         bZNjElaOdwPHZodlXq9u/V9cSy1iLUQrjw0hp/oEy+TT1tzmF7QiiQGdMfz+6Nw1sPPv
-         VB1INnlvX7uKMNl3dQm/9ok3CtYkq4jL5p/b6Uw9UyjfG5+LmuvFqysaifCLAzygh6dK
-         qyxQixtNFpVlkEtYJ9nDH2sIcYhSlYoOtr4PbrAcJ0WEmxiRA3JZTs1MR49N1ISttrQp
-         V97Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV6KZYFK3vkd38mmfrDS4LfeEnlCSEqDrVgFVkgdXBxjToVKznLcez8dcD18e7fxmDbZyg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yza2N6DCFplBdQvssjV2Dpq6L8ckHBRzrxAu5K991AqFPGarPbB
-	8Yb5/SRIRpa41bbYFDwZl57czxlo1s2BzJrEFe1UeOz7IUSKM82oSB3efOFu8g==
-X-Gm-Gg: ASbGnctFl55bIPpjxRVsrDAr9x+z8GVCGESTMjPwm3NZ4f5kZSwyBh7rpNo8sgPOQGE
-	iKRjYQyVZ/uJDDXojb+9EsGHRm0OvFQsK/MMGz9oQX8RRVs62gy3vIQ7lSR+H+3eOx5CPK0ZCRq
-	GhVC41557xruJcFYahse34Ctb0GCJ6otiydMQUtSbR1z5W16ewFx/CVNv29jxyQUYrLE4FV5xs+
-	FYbBw2YTm1vGzoqtaZSEt79S+Z29SGbBsvg7CbcHwriHQz/vxBG3j2qOcqp99eE8Ec63xpxsQ36
-	kp15NAAh79goFn3WzQ0GwdmaMcqh3ff/3otIvLSX8l2qxYpjawI1WaooXncABgbxSN4=
-X-Google-Smtp-Source: AGHT+IGk7Wbvv+p+ljwVovByJjOFoHfppHTP1+cVpoZmuorSMChPEuewTXvxnqB++I9G1ZambQYJAA==
-X-Received: by 2002:a05:6a00:2309:b0:736:41ec:aaad with SMTP id d2e1a72fcca58-73722382f9bmr19932531b3a.14.1742283984406;
-        Tue, 18 Mar 2025 00:46:24 -0700 (PDT)
-Received: from thinkpad ([120.56.195.170])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737116b3de4sm9153147b3a.179.2025.03.18.00.46.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 00:46:23 -0700 (PDT)
-Date: Tue, 18 Mar 2025 13:16:18 +0530
-From: "manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.li@nxp.com>,
-	Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
-Message-ID: <20250318074618.tqbnr7nv665fk25n@thinkpad>
-References: <b425a7c7a7d6508daf23fe7046864a498029a7ac.camel@pengutronix.de>
- <20250313160648.GA736867@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eeJo78vq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f9JFDYTybqNTReYsCTOoWlsgJEOzRfVfpyw8ztpmo2du66DiJsU4ixa+o5ohBlEYcszk++Y4e4r24HmaP24GWmHbrnvvSYpQoVQFZbSxNjcJgwAbaBA242ce1kuCrKRqao7H83lcRQxaC4SKEUiXxtDzYkKFHzkJceLXFvYDrf44r7wmJyA9C38azuU+1JFG/8KnQtK8L6InqeI0BGWSm9f0C9RLvD4ysEeLjaVxpb9jJzZDzt9hL1i5xBANEV1A1uYtqv/KSSLqSS02OYMk/DMFrFN30BwbAWUG7yHsQZueghuaqUXELHMNpgIhlchUDSVHaJYlw6tK0EvDL4Y64Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vf/Sg30DdSzKq6EdE/zjvyymlQILv685rLnwn6NEfww=;
+ b=XRRsMvVkcK4Mt3ihoplG1zmXJ2225Ll03VGHwXG3i9F6awzd6w/jhXqBwaYE4DYIS2Qx7AeEKYyG5jUR3l3kVQQusPIFxYe4iTpxfrrYM6BUeIxYgoPv25Oqz9b2qfC41q/kPkDHkrJF3YjBIhJ4Gm321RqYhjJbgBCtJ9q5XMCIRKNzQzEEtusHk5WkEbUqKTyISwOxk3DWYm54JRJoGT9A8XriH9uVa6X8lEuMV2iRcf4GmsgFSeO80mjrLHx3Y+44jnjd2l/zoXRI/AgcLeauhCJNy2wg1ajHi1j51PosaANCD7mfffEmSMgQJmeGdkf0gqOACZdoPX64XzuyNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vf/Sg30DdSzKq6EdE/zjvyymlQILv685rLnwn6NEfww=;
+ b=eeJo78vqvjnNtJLCN9PX86bIhUxyx5tV2bW5mQH5mOBWeJi4hnxknwrx947UGrB3JBEHVF6fkPPju/9h98lOb12ZpQaKJCphNV0CQXUP2NueRVFo4Bu5R+wlvj/hylRzMeFE7L9o8hG3319Gus23dZ27bDrfzYXa909WgHLXuuyZrJOi3OtjKCZzrHroyx9ujESvyA3L4hmdXIh1onNyDXPxfYda2Z6v+SYaGbz8qCf2kyqncBx4JPdE/li2feaN2z6p/6sZ/D74VRHoA9BVIkQmoedAf56y1smysqeE5xnADXRRow5P2cv8bd4xluNlIBvYcEHoZNPZJa1TUtOtIQ==
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
+ by AS8PR04MB8724.eurprd04.prod.outlook.com (2603:10a6:20b:42b::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 08:08:24 +0000
+Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
+ ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 08:08:24 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v4 net-next 04/14] net: enetc: add MAC filter for i.MX95
+ ENETC PF
+Thread-Topic: [PATCH v4 net-next 04/14] net: enetc: add MAC filter for i.MX95
+ ENETC PF
+Thread-Index: AQHbkkpRqqFwb4ec7kKZ1OPwN45O47N3ajqAgAEnwbA=
+Date: Tue, 18 Mar 2025 08:08:24 +0000
+Message-ID:
+ <AS8PR04MB8849FBA73A50F0D553F1AF1B96DE2@AS8PR04MB8849.eurprd04.prod.outlook.com>
+References: <20250311053830.1516523-1-wei.fang@nxp.com>
+ <20250311053830.1516523-5-wei.fang@nxp.com>
+ <20250317141807.2zobsefxl5vnqdet@skbuf>
+In-Reply-To: <20250317141807.2zobsefxl5vnqdet@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|AS8PR04MB8724:EE_
+x-ms-office365-filtering-correlation-id: 315b0c63-985d-4be0-5b8f-08dd65f40e43
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?IcUFAAQ+moWadLc6pG3NGSKoIW+VganW4gJgNJ9CEsezqftbJ2XxPxOgvfbf?=
+ =?us-ascii?Q?XrEgMsf7hip4cUqlwLj3200s8nbgU+7ejTUbULHc219YYihcn0O2Cwx/B1kN?=
+ =?us-ascii?Q?t0BglVAKtdsiy5Tk6i+i5b1Drz+t/MCSejRR3/2noFl8bju3qbtACfeoUXXc?=
+ =?us-ascii?Q?Pxn67fT1Yg1kEn+bdr8YcQhXATzXm7ot9WYQN3K1ctrQcKUUQKkW1lbMBiau?=
+ =?us-ascii?Q?s8+NY4XVlo3EPkE6orzJE5c+8CObuQx7S7K6pL20mj6DigoRQ/LugZfqy+5y?=
+ =?us-ascii?Q?wXMBai469Jcv9/5yl7rVJm+HFP8rJTwcYM6H1qjtoqLdX3bGDtB4FaXAKx3u?=
+ =?us-ascii?Q?N+stlpd7CvlCCIBj1HJ3Ypz6mD1VbuRlyDNdqhf0WUOUwZAUkVAgnW9BWY/P?=
+ =?us-ascii?Q?nwQszZt09csayyg/IyoP963IVdQo89atnrX084+ybdp15lxP1J542/CsCCru?=
+ =?us-ascii?Q?uE/jJLPt+LlEWHAYv5J+DZMo3Q2TJSuq9C5ajuE8oQABxlf/UmcmY+8LOSxV?=
+ =?us-ascii?Q?VvEaIUEGfPD5AhiWiUA/F5uwd8CBaMyXv6kmUn8TO7rys3hR0cWnNsh7ZBVX?=
+ =?us-ascii?Q?Vp5S4FFvQHza/nKOb1Hj62PDCfXj0EWPdIEEZBQFhmhm6ludIRY7e+3PO9aO?=
+ =?us-ascii?Q?RZCHVKDn0eYgdICpQCouDICvi5OvZjkHuguz/ZLSuO/3Od7edOdEDDBNAugc?=
+ =?us-ascii?Q?r/KMgbcRB4Y2VkJbNLhd4GDdLcq9IwX+VapKViCkfeep9BkXfcTKr8Jbty8Y?=
+ =?us-ascii?Q?VxVfOZqUGSo7k7JnjDHvvEZq2Rm7OKAUvKo9hJyMskyPBVkUonMBjlrsO0OS?=
+ =?us-ascii?Q?ewjXLKsfe+dg5XzEF92WpTTstpg6BxFQ6ck0a01nU25MI7vyO/Z/kyC0Rnsz?=
+ =?us-ascii?Q?1uDSUxfvfiFRoBLgPSDGCpORnRu7miHmv9AO96YS0VqHddDsXPyPXvRaH12n?=
+ =?us-ascii?Q?P1wyH9W7T1j+pgvi5FZ82T1woqusVprTQu45z9mm6U2SzHdi/CQSLYFLD9rp?=
+ =?us-ascii?Q?MRAF54QbQFAVdSDEfjcL/J3HPcAd51I28aZmhzmc8GAHU8vNqXm8gUTK55Vz?=
+ =?us-ascii?Q?t2iuJqyFl33aOXwYGUxxkKFuQXWkLtnEiyyhOXYb0fAXROhN0D0tFsHCOv9j?=
+ =?us-ascii?Q?pA1nzUgmeV73/fMZ0JLY/3o09PTELz9orfjplrgWLd7qzP7U4T90bAHSTs/N?=
+ =?us-ascii?Q?ppmSd2Tz4ZqjORHUTWTSypMrEP6lF9Wg1ldprlHmfdEq6GFVBBlJi2YgLw4Y?=
+ =?us-ascii?Q?AUwYcmVYGnHwqR/LvdUl2J90U08NMhhnK+sZ4gE7t7WyKhuGRAR+4ytxluQQ?=
+ =?us-ascii?Q?/gxM2RgyaGZIaKx5JdlcGoEnpLKu1ma/N2KD8ttMRWHr6PgMox3ZTr45yEun?=
+ =?us-ascii?Q?uT4VUJWhb1cBDEjuotPWSm1yNzo9/nzLOM75K9BptmMDgFGdaLBVFIidcP6D?=
+ =?us-ascii?Q?tjWSbb1/3ixh0x7h+imNll67Mqlmwlxd?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?0/kD3wpjXq6EDdjeJxoRB6xZeRCrGa+7qPihoUIcXzDfFWkLykO8lRJOpiDG?=
+ =?us-ascii?Q?4XnB9eI54LJu6kjYYSSGSyRr6xeNF2vDncOqgDay3DX58UW1ukYXHm8V1sF6?=
+ =?us-ascii?Q?ag5CR1rBv1leQi7RP28xVG4EWU7mxNzcNNqtfQmDWnV7GxFkCo4wX2R/F+Ul?=
+ =?us-ascii?Q?/q+YJv7s7EdlIwM6goBLAJG+VC5SJxG+h0Bx43SNeEGMqhamb4A3/pFVvcbU?=
+ =?us-ascii?Q?81+Xwabf1VzZU9qp0YTDdgRU16N1On8yiQWv/DlkISMs+27ZoBt5fDKTrq+j?=
+ =?us-ascii?Q?Uiy5q0t6fZz0OeFgnPHTT6owZmc6fM8bEOj5RVbsUsB+CkSaMtiRf9RjLrPX?=
+ =?us-ascii?Q?kUrLA8wHXXzvVqAWewblI0MW5HIxanL6IUFstluEgKsjLid8DUuof8WckaIF?=
+ =?us-ascii?Q?NLcpvSGMj8FOV83GHJy5/x1pDjao5fcvjOirFECR9CtmzkvvI2Q7d42ejkcF?=
+ =?us-ascii?Q?y1/R6y1KGAEWW0AwNGjpH529dpFMztgwp1lyHV+nuOixD5zSQIFVvLZ9pgkB?=
+ =?us-ascii?Q?rMIrzsn1UpG9KDcQZgu/WZHxP7kZRAQN8/zYICAcyqUjArIetWHYNcGv6JD4?=
+ =?us-ascii?Q?4ypE/ROiCV5rPeTg+PALa1mU/NIzSVyWnqfcn4VfbVFbChOrU/21Q/dEJT4N?=
+ =?us-ascii?Q?fcQa+V95I40poYmkFjxtvHQm/YkDF5/gqVKQBAwMLQc/3JCRK3eqoExGD3ON?=
+ =?us-ascii?Q?Q5LEH7SOS18RIg2u8pq3iCp+SwZ2S2IsTMr8yD2EC8nNvqJ7aVjs2HF6OpgD?=
+ =?us-ascii?Q?cP93qdgTX8opRdhQG7tJj6ts2KbVq5aTGOUMmkdAZJA9i2cCDwceU/LzDwwO?=
+ =?us-ascii?Q?LFSFTwRxIPipJI/5umxqmTesCNpnqsm0RMA5+qrJFBO/hFrIdRX1cAi/Unah?=
+ =?us-ascii?Q?tAEF6VRSpxSj9i9RGwofT5L8IzHcnN+hJSGgCDDDehkjkST3iB5hChLf39lj?=
+ =?us-ascii?Q?1QCUbURMrtZOE15uI/QU8kxUNqEyDRRvjk/oVPeUqFieRM4/ujL9L9A/cvKt?=
+ =?us-ascii?Q?CGYasFZeC90/h4SqcInihaCSCJlKkVmfdZIvjsdeXgzLnj3k3HOp/8RftmwE?=
+ =?us-ascii?Q?ej2eo++u4dzmS+ivMlmGEdBFfeu7SyJ4G+i0DGxsk4pmHymGDHrabxOYr9FH?=
+ =?us-ascii?Q?cu20US4VjwphJbzmJZjV+kz0aw11Y8byCGXGQJKiXzQhuLTRBIZl1+jxGv9f?=
+ =?us-ascii?Q?xAe2jt6wITS+DUQVG1lcHCr4u1IoMfXbBkWvRBaE9peRE0rK+gmC7jWF3C8S?=
+ =?us-ascii?Q?R0DCHoRmjgu8vUNNPJJqiVG5n83eXN6pXFVV/o2NExwlIjFs88gQ2waD1iLz?=
+ =?us-ascii?Q?hJgpV2q1medXYAO2xo9t6i2Q36aXuQcqqBgUjalwR9bKYJ93erQEL9nhE5+7?=
+ =?us-ascii?Q?/kijO5a3zsZfC43//hgeUUDZwolj9/jYqvIgmHA5spG78lmKAeZ1N/JUrTn8?=
+ =?us-ascii?Q?jNu8SuxxqRLva7WyDQPJ30piTqXTkajEIlxT8dd/PV0z7HUEjLoSoVk//rQQ?=
+ =?us-ascii?Q?jzonP9iRXJ4P8fjdkYSx4zvIJKX4VAN9jH2StfUXU5xv117DQnk1k4ndExRU?=
+ =?us-ascii?Q?xwdeZQypko1DgaUDNN16uVBDFL8U+eX3NNB4wRiq?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250313160648.GA736867@bhelgaas>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 315b0c63-985d-4be0-5b8f-08dd65f40e43
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 08:08:24.1875
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v4FzrLMzkJNVaWzGfeu9r2zaprPJ45gwbm6cAEvSk9x6AxIm8/EpSROL5u7Yf5jcH1FUj41YcM+VeHAK1ap3tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8724
 
-On Thu, Mar 13, 2025 at 11:06:48AM -0500, Bjorn Helgaas wrote:
-> On Thu, Mar 13, 2025 at 09:54:25AM +0100, Lucas Stach wrote:
-> > Am Mittwoch, dem 12.03.2025 um 10:22 -0400 schrieb Frank Li:
-> > > On Wed, Mar 12, 2025 at 09:28:02AM +0100, Lucas Stach wrote:
-> > > > Am Mittwoch, dem 12.03.2025 um 04:05 +0000 schrieb Hongxing Zhu:
-> > > > > > -----Original Message-----
-> > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > > Sent: 2025年3月11日 23:55
-> > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org; bhelgaas@google.com;
-> > > > > > s.hauer@pengutronix.de; festevam@gmail.com; devicetree@vger.kernel.org;
-> > > > > > linux-pci@vger.kernel.org; imx@lists.linux.dev; kernel@pengutronix.de;
-> > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
-> > > > > > hardcodes
-> > > > > > 
-> > > > > > On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
-> > > > > > > > -----Original Message-----
-> > > > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > > > > > > Sent: 2025年3月10日 23:11
-> > > > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > > > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > > > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > > > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org;
-> > > > > > bhelgaas@google.com;
-> > > > > > > > s.hauer@pengutronix.de; festevam@gmail.com;
-> > > > > > > > devicetree@vger.kernel.org; linux-pci@vger.kernel.org;
-> > > > > > > > imx@lists.linux.dev; kernel@pengutronix.de;
-> > > > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > > > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
-> > > > > > > > hardcodes
-> > > > > > > > 
-> > > > > > > > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
-> > > > > > > > > Use the domain number replace the hardcodes to uniquely identify
-> > > > > > > > > different controller on i.MX8MQ platforms. No function changes.
-> > > > > > > > > 
-> > > > > > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > > > > > > > ---
-> > > > > > > > >  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
-> > > > > > > > >  1 file changed, 6 insertions(+), 8 deletions(-)
-> > > > > > > > > 
-> > > > > > > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > > > index 90ace941090f..ab9ebb783593 100644
-> > > > > > > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > > > > > > > @@ -41,7 +41,6 @@
-> > > > > > > > >  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
-> > > > > > > > >  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
-> > > > > > > > >  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11,
-> > > > > > 8)
-> > > > > > > > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
-> > > > > > > > > 
-> > > > > > > > >  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
-> > > > > > > > >  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
-> > > > > > > > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct
-> > > > > > > > > platform_device
-> > > > > > > > *pdev)
-> > > > > > > > >  	struct dw_pcie *pci;
-> > > > > > > > >  	struct imx_pcie *imx_pcie;
-> > > > > > > > >  	struct device_node *np;
-> > > > > > > > > -	struct resource *dbi_base;
-> > > > > > > > >  	struct device_node *node = dev->of_node;
-> > > > > > > > >  	int i, ret, req_cnt;
-> > > > > > > > >  	u16 val;
-> > > > > > > > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
-> > > > > > > > platform_device *pdev)
-> > > > > > > > >  			return PTR_ERR(imx_pcie->phy_base);
-> > > > > > > > >  	}
-> > > > > > > > > 
-> > > > > > > > > -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev,
-> > > > > > 0,
-> > > > > > > > &dbi_base);
-> > > > > > > > > -	if (IS_ERR(pci->dbi_base))
-> > > > > > > > > -		return PTR_ERR(pci->dbi_base);
-> > > > > > > > 
-> > > > > > > > This makes me wonder.
-> > > > > > > > 
-> > > > > > > > IIUC this means that previously we set controller_id to
-> > > > > > > > 1 if the first item in devicetree "reg" was 0x33c00000,
-> > > > > > > > and now we will set controller_id to 1 if the devicetree
-> > > > > > > > "linux,pci-domain" property is 1.  This is good, but I
-> > > > > > > > think this new dependency on the correct
-> > > > > > > > "linux,pci-domain" in devicetree should be mentioned in
-> > > > > > > > the commit log.
-> > > > > > > > 
-> > > > > > > > My bigger worry is that we no longer set pci->dbi_base
-> > > > > > > > at all.  I see that the only use of pci->dbi_base in
-> > > > > > > > pci-imx6.c was to determine the controller_id, but this
-> > > > > > > > is a DWC-based driver, and the DWC core certainly uses
-> > > > > > > > pci->dbi_base.  Are we sure that none of those DWC core
-> > > > > > > > paths are important to pci-imx6.c?
-> > > > > > >
-> > > > > > > Thanks for your concerns.  Don't worry about the
-> > > > > > > assignment of pci->dbi_base.  If pci-imx6.c driver doesn't
-> > > > > > > set it. DWC core driver would set it when
-> > > > > > >  dw_pcie_get_resources() is invoked.
-> > > > > > 
-> > > > > > Great, thanks!  Maybe we can amend the commit log to mention
-> > > > > > that and the new "linux,pci-domain" dependency.
-> > > > >
-> > > > > How about the following updates of the commit log?
-> > > > > 
-> > > > > Use the domain number replace the hardcodes to uniquely
-> > > > > identify different controller on i.MX8MQ platforms. No
-> > > > > function changes.  Please make sure the " linux,pci-domain" is
-> > > > > set for i.MX8MQ correctly, since  the controller id is relied
-> > > > > on it totally.
-> > > > > 
-> > > > This breaks running a new kernel on an old DT without the
-> > > > linux,pci-domain property, which I'm absolutely no fan of. We
-> > > > tried really hard to keep this way around working in the i.MX
-> > > > world.
-> > > 
-> > > 8MQ already add linux,pci-domain since Jan, 2021
-> > > 
-> > > commit c0b70f05c87f3b09b391027c6f056d0facf331ef
-> > > Author: Peng Fan <peng.fan@nxp.com>
-> > > Date:   Fri Jan 15 11:26:57 2021 +0800
-> > > 
-> > > Only missed is pcie-ep side, which have not been used at all boards dts
-> > > file in upstream.
-> > 
-> > I wasn't aware of this. 2021 is quite a while ago, so I suspect that
-> > nobody is going to run a new kernel with a DT this old. I retract my
-> > objection.
-> 
-> Sounds good, thanks, Lucas.  We really do want to avoid breaking old
-> DTs, so I appreciate your highlighting of it.  Even if we believe none
-> of them will break, I think it's worth mentioning the
-> 'linux,pci-domain' dependency and the commit that added it to the
-> .dtsi in the commit log.
-> 
 
-If there is a dependency, then it should be added to the binding. Only that will
-ensure that the DTs will have the dependent property present.
+> -----Original Message-----
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Sent: Monday, March 17, 2025 4:18 PM
+[...]
+> Subject: Re: [PATCH v4 net-next 04/14] net: enetc: add MAC filter for i.M=
+X95
+> ENETC PF
+>=20
+> On Tue, Mar 11, 2025 at 01:38:20PM +0800, Wei Fang wrote:
+[...]
+> > +static void enetc4_pf_destroy_mac_list(struct enetc_pf *pf)
+> > +{
+> > +	struct enetc_mac_list_entry *entry;
+> > +	struct hlist_node *tmp;
+> > +
+> > +	mutex_lock(&pf->mac_list_lock);
+>=20
+> The mutex_lock() usage here should raise serious questions. This is
+> running right before mutex_destroy(). So if there were any concurrent
+> attempt to acquire this lock, that concurrent code would have been broken
+> any time it would have lost arbitration, by the fact that it would
+> attempt to acquire a destroyed mutex.
+>=20
+> But there's no such concurrent thread, because we run after destroy_workq=
+ueue()
+> which flushes those concurrent calls and prevents new ones. So the mutex
+> usage here is not necessary.
+>=20
+> [ same thing with mutex_init() immediately followed by mutex_lock().
+>   It is an incorrect pattern most of the time. ]
+>=20
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+This is not as bad as it seems. In the final version of the code, mutex 'ma=
+c_list_lock'
+serializes the access btw the thread programming the filter for the PF inst=
+ance,
+and the threads programming the filter on behalf of underlying VFs (trigger=
+ed by async
+request from VF). But since VF support is not included in this patch set (a=
+s Wei
+already mentioned) the lock can/should be added later, with the VF patches.
