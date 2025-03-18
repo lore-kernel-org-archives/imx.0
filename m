@@ -1,201 +1,170 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2080.outbound.protection.outlook.com [40.107.105.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B033120D509
-	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 13:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742306053; cv=none; b=unSmdpD5D9uvuVX5o7mvSStyEFsNgq2gZo+jjk9SZoLwkdKAZ64E23DDeQL2Kiz1AR2+9t7ou8Zuj8MDY95s1NvGVF+YY72TIzxrMndmSH4Zk5IYkrEdsHLmRC11+ExJzGZPat119ffF4UlODjHYQUOwy2T0moHVX84HqPrBU4Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742306053; c=relaxed/simple;
-	bh=CxOI8mwu7JtKIevWK8uvc5MGY2JFwokUpAABhDp1EF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G6dlzUail02Pm7vmRo+jMsY6QTnpsI+0clvbY+YSFaps7tSYXOTXvDFjWujBkiYIQzCja0fogpR+RSm6rrmGotP+Em/LdSpAH7ZXMC/NEyvdHrbBuCc/n3mGCupTf6tnQ8kt+KkBKzMDfHjjmbk8r0Ntab6949LHh7VbyHa07No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HY9czdVQ; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150CB20D4FC
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 13:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742306278; cv=fail; b=YWkdoGXNeofq9xAVQyfek3PHrHZgh+FffuEXMrt9tsot+BoMvO/ohjCFFQ5PlEHUBTEKPKWh9ckXHnTk1nRn3mq6a4tkrfTEK01WQyzAwXwwtP+CMDz63nneyfGKbiKi9FvCUX5rXev6KofcrgHTCA0BQ6AyQS2WfHO9oAVJ9bM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742306278; c=relaxed/simple;
+	bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=GaPH6lwEfEwSHfcYNMo8RvNx4o9s9z+5Gu9eiLYPq/l5hcAqAW6SNBjQeswqt1nBydTh3qImhUUIaZcb7Q6NrBcb4z4dYpbgOqcmjnPB7apujIA0FTCFsRZTtrtNRP7qLsNSbyhmgIY9KQTq3NWwdm26uBPST5+FWCx2PkZ4+ks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N+aciL01; arc=fail smtp.client-ip=40.107.105.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HY9czdVQ"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac2ab99e16eso195167266b.0
-        for <imx@lists.linux.dev>; Tue, 18 Mar 2025 06:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742306049; x=1742910849; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ioS2cZEy0ukzwLsu1UzbYL55bIz2RUYjyFsEjQ2qJY4=;
-        b=HY9czdVQIUS0GVmMFpIy5cZGDwzSeY0V2Xyhptrw9r8O3zLjLH4JqbIUHto3SIeDHV
-         ej8J7rkWuPnwHfes1QA7zjt/P2I+1B5yUF5ZofUrVlMMNWyE6s1N+CPH7TWjkdsqqP8L
-         VA+EwtJp3y0ilYJXhy9SUQM0JIGp1+xhGRqhxV5A6zH4S6z0ico2g8zruoyuR39L3Gdd
-         nQFTkDzrPRBW+jETQb8+P39z305L2FBXtO+OtKv7rVlvHAiP2azjpqIgmyxcTQnDrCnU
-         aoLLRlZkt+etHpuB9h/Ie7pT/CwYn+Ln8vYKVQPykK0rwP086VTpRZ+Dg3BIwWu4A6kV
-         /MZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742306049; x=1742910849;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ioS2cZEy0ukzwLsu1UzbYL55bIz2RUYjyFsEjQ2qJY4=;
-        b=Iuoh/qjoMixILL80b7XRNKQwmzsJGpmiUlryFdeXkCCqzTW+5r2JhrD4L731g67F7+
-         /EAaiE/bZocYzTukQqRcUnPRSOSQAFdHq5XuLRzIC3BsjAck6oc4QHNaYlzeKAnClauo
-         vkh6W2TszGYjZMO7ZpB8/y27CMSpVq/3a5t9psQ3PU/j6Fx7b/HWsc0krMwWOnWZg21J
-         MyWEQioGLNkmou3YY48HTnEJk6v+lRVAkRQmtuQkqjR80wZsvCgIxsbUpmN/YhfYRBdy
-         eYf9w39Yr0ETlEaiIySSCzL95PAP7b2ZNkjBRaBezcyLNwkz2QlIK1TJIsz6uEUwXSyh
-         ThHw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVh3TTCcjiIqae84Jb8b69qzGFbfuPYFoXd13WUa4yfn3IMkiZ5txlUvfWkOzBFFTLvrA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJX8sbxSPl1vWByVchFm1Ly6zgoRwxek5QgwscIrzaXPvmfn5x
-	dNVLzjl4hg/UTi14qjlRijYjJrWI7XHp2KRPQXXdpPS9/XVFRkKc
-X-Gm-Gg: ASbGncsw9ygn3QsF0CrJXEfFJDSXOfSiu9C8cHlQzeT/R75r5MJOfHykyOU4YIHEakA
-	xNAwaNg8a6Q+btQjl7+PVEFwLR8t+V25ah+Bbrbh2SeIrN6PqIaitKzxIzvTOuEF4IZMi9ZbQta
-	eqebPGa+S8B6ASOY2B4N+LRAPlrJ+L+Ux1RMWVAJN84a26QKkzfB0M8EsmB1fUVobaTHIc5W8wL
-	yHEX0qg1uF439bU1KuBkc2wl7rv2P5JTz5gK42s82g2CrpgLk6VJPmTdm8CRNXc9o3N05nRE9IS
-	mimQwdBPxKmioVUx8LXglnEvpPNIN27aaT1vkB4Hw8MQ6xqeSxn+IdiNdgoYeJgor8TU4EYudZ4
-	Ea7S0NmWM8a19rFzho4y5y2ZLFBTCGI1kpEvWQSwD3p0Bmg==
-X-Google-Smtp-Source: AGHT+IHmjQU+EohyzzTayMACB/7/c62nd81pThtraC244l6FOU5kzeMBypubUIwPfYcCsaGXQp9bZw==
-X-Received: by 2002:a17:907:6ea9:b0:abf:74d6:e2b0 with SMTP id a640c23a62f3a-ac3301db34fmr1803410066b.3.1742306048621;
-        Tue, 18 Mar 2025 06:54:08 -0700 (PDT)
-Received: from alb3rt0-ThinkPad-P15-Gen-1 (host-95-251-108-181.retail.telecomitalia.it. [95.251.108.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3149cfb96sm840601766b.119.2025.03.18.06.54.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 06:54:08 -0700 (PDT)
-Date: Tue, 18 Mar 2025 14:54:05 +0100
-From: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v13 3/5] arm64: dts: imx8ulp-evk: add nxp secure enclave
- firmware
-Message-ID: <Z9l6/WKTmBvzjEfn@alb3rt0-ThinkPad-P15-Gen-1>
-References: <20250311-imx-se-if-v13-0-9cc6d8fd6d1c@nxp.com>
- <20250311-imx-se-if-v13-3-9cc6d8fd6d1c@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N+aciL01"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mXAcb/2vEU9Lv+rHJSKG9F+7vM9/iVlv07v2hacNj8WrV0AlJjP2MuyTBcZ0xDGwhevXfq/M1mrA6G43hbvHBuQ2fk7KkAuWuDrsBO5/Z/aNrqqOdRee64GbITV90S43ldPRTplzEkWaUtgMIGN6gzjX44S69szQh/nz/JyO1vnpprvQ1aXzBndyVA24uW9UhoUI/VpIvNlyWTs2q2MznHVntlSRaosJch0dqUm8LetA+dlqYNDiCmOdDMGN1G4oLoCsSWGq9vqvzJGXINhl1DRzzhlarGvFSt5PEVOXsqquR5NGO+gl6yw+JGf2Z7wAEzby9Y+yBUvs04F8eydeOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+ b=glQjin/uw+NBrH3p0Owf1+2f7UGz5BmjauhnbebQSgPsOB0Y8RrL0nN0DI+e6qal5h0xNZGFbH6ENcVJnWeQLvSMq+/OBSiA3veZLbK54qQHrS0ptiotGwxdpSCkudzUaB5xUm0WGarREDPUH7P6CxUXr+JmiVOGfww4hbcOIfuSKlApd7+VT1cKxnQgGicFM1038S67SO8CP91ulNii0adI1EqQe7HtDlbzLxHtFpUE88BvABIFQBukHjOkR7q6lI6DmT5+4ybuongM+0JibuUw+GxzL89gPYcuhopez6XsESVf1tSeACj0Ar9TJdzE8gJTQ99eaNQa0rHUnwgurg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4nbFtz1YjVIByACs/TnUxALLW0iwj7MDlsiUXWAkqMo=;
+ b=N+aciL01nvRJili32HRImwZFWl8Yt7TXqcOf62bUUP9D2wTOBG7s2ccVMm1j5gac0REowj8DH1fMBEHTnSly3DkrEK80v570FkmIzJmly89VxDgg/o6IEKYF3k9QHaOO5ru4SWqwW+q8B9L7M+5JTkbUJuf0OzME4ZY1dSLwLLY4OjYR1L02DgrnsJ6o2uug1I4+rA2DQJ9iRnB299DdEWh3Hl7L6VM47kvaXJmbk9vvMa4hm6RJzrf2X+uwEZnpfw269OUUk0TXAXWmEnb9UeIL8SbFAE6ezpMIj9gUkYomV4nn6qJrAZ1SBz6KuBQbCuXVW7noMGLdN6FINds3Ig==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB8820.eurprd04.prod.outlook.com (2603:10a6:20b:42f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 13:57:54 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 13:57:54 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v4 net-next 11/14] net: enetc: move generic VLAN hash
+ filter functions to enetc_pf_common.c
+Thread-Topic: [PATCH v4 net-next 11/14] net: enetc: move generic VLAN hash
+ filter functions to enetc_pf_common.c
+Thread-Index: AQHbkkpjqqWSAAAOAEKKZWKjEY8LSLN4umeAgAAryxA=
+Date: Tue, 18 Mar 2025 13:57:54 +0000
+Message-ID:
+ <PAXPR04MB8510E831836A28A00C5CC76988DE2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250311053830.1516523-1-wei.fang@nxp.com>
+ <20250311053830.1516523-12-wei.fang@nxp.com>
+ <20250318102121.5vmv4x6qs32x2y5s@skbuf>
+In-Reply-To: <20250318102121.5vmv4x6qs32x2y5s@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8820:EE_
+x-ms-office365-filtering-correlation-id: f38a1aad-7fb0-4276-4220-08dd6624e177
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?EvirBjNEjKa7Lrn3sR/N1nRFbD4Z3uiU61FSTY30N2RwAUTWCcTc8gwhy5F+?=
+ =?us-ascii?Q?nPOmgRr1WFx6ofZW5F5keeeUwfCc0hWgovnlRAz1IPq4wXMY/4NJbJtBIibR?=
+ =?us-ascii?Q?i8MBOONW70wIHcxXwP4qd35qnQvfP4GhU8kxaSCZypK6k2/u22lP6puekaTk?=
+ =?us-ascii?Q?DTZ7M4XkRP/jJVceoGgOW/PJP3C3WGkNP+n8Y4e/rK0+Pg2Jj0QGG9enV6+F?=
+ =?us-ascii?Q?EQBDAQOvQHN9FCAr1dSmfs6+kNLhXj/p9jMDYBAFgGE4/2Xfp7cPlYCPJ5Ap?=
+ =?us-ascii?Q?JhxSWkxmEQVcTYyMwufwDD9OfMrt0ft/OqMTchIzlr8dvooZUz2BA6xG4XnV?=
+ =?us-ascii?Q?o0kPMe6TbuTYV16ALE9F8F5CH4tuZ/hL+ivtLf+vsfLfkaxAv5e+5iuDjJFd?=
+ =?us-ascii?Q?bwdbKU+QK/SyRrgucHEarqIOFIOU6WxlF8OIPQQVQbsBC9IXT43BZQInpgNu?=
+ =?us-ascii?Q?m5CH1lUjJsqlz2to4rAzKe/PKcnr4BcR10RB5w7W+U+ZzT/UgFu1UlyLx1yk?=
+ =?us-ascii?Q?1OL/TOLME+3FyZtwWWfkZVqofBwefU6KRoC+Kn72Fof4odcjquNMvCd61dPN?=
+ =?us-ascii?Q?pM9xU++bNlBWVLH+0jBDmBIOHWMixo8h7v6ybuYyzmgG6ldDQioyK9F6s0Z9?=
+ =?us-ascii?Q?CO+LsmwQCCybJml/xS9q+NUur9JQQGtccQ4Ed5e0uVLszmrq3CXkIvER9N9A?=
+ =?us-ascii?Q?SrStnwZDYxbDPB+1RyLOejOiiRxfiUL03FpRHcDn1YjuPo2i+xkkthWSuaFH?=
+ =?us-ascii?Q?HcCJJNJjjNMnpaA0QiCKkpceng+iLfuDpde300fNsAoG+q1qZwas+dZs2Yjp?=
+ =?us-ascii?Q?QS7NJVnOPOa/GBptqQNV6vDqsG2i4fw5pUgtA+A0gIEL6vlgaNiysrGE49ND?=
+ =?us-ascii?Q?C+QURqkcMFa0G+yYLE2/Ka1m884E7xy/ikl21enOcVfAgVLg+aOOfwKK9aEn?=
+ =?us-ascii?Q?iQhIr6Czv41LRzDMBQADyjEFQcMoRKmpNH0WaGy5p5luPEELcjA/SH4SbnXt?=
+ =?us-ascii?Q?YPpc7sW62aPEalGjLsgrqxFqix09qjpJbbBICpDJETrcJbwbUo9GRmGEnfs1?=
+ =?us-ascii?Q?xj8X9lIKyCABD+Hwn2n8EU0XzVoL3olZkl6xJ8oVcQafaNY36LL9sb4z3aol?=
+ =?us-ascii?Q?S+p/uXsYEKrY48UozNa77PKzRplfkuL4ig51VclbqBeNNMGyMeMUdGXg43Fa?=
+ =?us-ascii?Q?c/INocBbaDeHNWp//Bfz7vahQ8CbqbxnzxtnFYfLnrs+NNy6YnuYY57bBpOq?=
+ =?us-ascii?Q?4jz4pxSeNC/bv5qlhl2B06rvSbIb+ml8Y7HcdgUh0eLETQgewJ4p0wHaNIIT?=
+ =?us-ascii?Q?pXE3EodnLWmVb+2LQqGRdZ2ksK1I/jN5iy3exhHHCI30jcCZQGcmVfQB+HMO?=
+ =?us-ascii?Q?Rvt4PctUHgZvtVB/eYTfQTzi2wQyn8/mdwr+wBrfR6M9Zwqh8lIrM/GQoAwV?=
+ =?us-ascii?Q?dm4zqfVDvfbZeUr5dLdSokCj80cgGsGF?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?WZvayS75+dePGVDqQHL/3HxHM5+fio2EmA6Dv6JTmNN9vXoVGS+SqejC3zqL?=
+ =?us-ascii?Q?FUTzC5joRZCqYAXWjWAz7SUNu5aqnlVUPOloIeGGmSUGtsJEwOKzSWCBlsIQ?=
+ =?us-ascii?Q?UN3nZ2ecXPvs/QndVZmFRiDrrjggGUGMzMWD0m4K2Lc5b0GC5cbhlj4/d16X?=
+ =?us-ascii?Q?+4xXfJdDor6WN20w/05XEclPulODAzAvAnITCKBHkBzHQFftNu7OlJtQhXWD?=
+ =?us-ascii?Q?oE7+8gagTDTkSdAwld7XQnzYc19mFkk9kSOZOBT181fY+M+lkEe3AJ6cusc+?=
+ =?us-ascii?Q?xRU8si+BNkoUHx9LEy6v8StXAfpUrSlrc41gX+rutxBP6ABQTBXace3tnFUE?=
+ =?us-ascii?Q?laq4vRUoHVDODLuCbO/tW7uTtCBWdGR+J0BWY9M8+P0/relk50/a8bBPwzmQ?=
+ =?us-ascii?Q?2DZbppb8ACzjvBSPZiyV6N+1J+uKtFzD7xppskGyiKRQL5UKwSIY4kJiZ0tw?=
+ =?us-ascii?Q?pg3EbzvN7ifEnN5kSUeS3cypwGy7k/Cl6SJ0x/U7gF11MXeYgF4isxPBmCeY?=
+ =?us-ascii?Q?1NELGwlmxS0v+lfBATy8b7wPO+VMax7h4o/DK3hh0EUdVUacEn5aGyVlzUaY?=
+ =?us-ascii?Q?mIH3InmORT2awL5iqKQT6spyKJoBDM9Nm/UgWpvwh5I1rr7KJzWZ0s9106nI?=
+ =?us-ascii?Q?P0AGVC4tgMyoXdvojr4BJM96IMwC5G/9xpPNjEK4QUJ6Qic3XRZetK7AKS4X?=
+ =?us-ascii?Q?m664qCYSrLZ97GEm8Mhs7zg5h+7eYJhcrqwyhTGWHNMWUmR6YyAP4x0N/Dny?=
+ =?us-ascii?Q?Jm0r5LOLk9mW040E/HR7glEK/Aj9EUMmQvuJ1gkZxu/CsREFdCLfLXST0DR9?=
+ =?us-ascii?Q?QOwlkvlL89+S5f3uz5eQO5V4V+IQl2P4FIEWfh0dtVhfQsbQeovY4vpGaWui?=
+ =?us-ascii?Q?XQQ7fqagA8OJHz1wmkmAISPe0xltIFrpOMabOwzaQyGe3T6onPguLx/CQM8A?=
+ =?us-ascii?Q?Z3rlmG0lVp6kVBBJGHmMHeGvbJJsAWe507YR9GT+Q8qsITEY8NZYBHBexfkz?=
+ =?us-ascii?Q?yXfpfitYVsiD39avtCCI4VbPwypo/DYG1boDhnthIF7SXMVXItnWyIcioxEJ?=
+ =?us-ascii?Q?6ZVAS4OGLm/LqN1cEEiokmszjUb2CdPa0yd4gPbcltfPKHGiJ1X8a2hyl7wY?=
+ =?us-ascii?Q?6v/0axC/TQFaAnnmTDPPhhqCnTwV6ni7e46K7/OI6YFn3Qtg0gmkzOR8MFYH?=
+ =?us-ascii?Q?2MnEIOuiMLLkC6D6Y5xjB759xMGlLmhzT9/kO+iy7h9aRvxZSCvV60xWmyH8?=
+ =?us-ascii?Q?jxbAK44vG5iowRWJBPnEp4yrKel+QErx0Dle+eJDw5tYt7SLLx34t0/QQ6Ny?=
+ =?us-ascii?Q?n0j305au0DdZ5wX4DmI8G9t5VqdPu6ZrUuxCgAWWb+kEUdSflSmFXMJLSEPq?=
+ =?us-ascii?Q?UAfOdUToLbgj9QtCgm/xBsebCBECURLMHkGu3Y8NmBVxGV4YhGOj4oUqWvuE?=
+ =?us-ascii?Q?plf+Qe/sNBeEZ5J+2QV7KRwNjfiHhi3KDdOpJy7FMk+ncF0OVrSjKRIZji+y?=
+ =?us-ascii?Q?cF1AKGBsGAUiZ5jv3ZAPBwUXG9AaQruu2nzlvrmHV6voxRZ8qocooPuy7d6I?=
+ =?us-ascii?Q?0TXDw5mV/j+wRd22Z0Q=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311-imx-se-if-v13-3-9cc6d8fd6d1c@nxp.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f38a1aad-7fb0-4276-4220-08dd6624e177
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 13:57:54.3588
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Z10zoQAM0aWO8M9N6JWDz1Rr/HHGmL7zpbaM1BEj5snPPlS8v5PmLWRyeyV62JcoGRbKg+hpENS8b646A9Vk3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8820
 
-On Tue, Mar 11, 2025 at 09:09:34PM +0530, Pankaj Gupta wrote:
-> Add support for NXP secure enclave called EdgeLock Enclave
-> firmware (se-fw) for imx8ulp-evk.
-> 
-> EdgeLock Enclave has a hardware limitation of restricted access to DDR
-> address: 0x80000000 to 0xAFFFFFFF, so reserve 1MB of DDR memory region
-> from 0x80000000.
-> 
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8ulp-evk.dts | 17 ++++++++++++++++-
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi    | 13 +++++++++++--
->  2 files changed, 27 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> index 290a49bea2f7..a25d71bf2c26 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp-evk.dts
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->  /*
-> - * Copyright 2021 NXP
-> + * Copyright 2021, 2025 NXP
->   */
->  
->  /dts-v1/;
-> @@ -24,6 +24,17 @@ memory@80000000 {
->  		device_type = "memory";
->  		reg = <0x0 0x80000000 0 0x80000000>;
->  	};
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		ele_reserved: ele-reserved@90000000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0 0x90000000 0 0x100000>;
-> +			no-map;
-> +		};
-> +	};
->  
->  	reserved-memory {
->  		#address-cells = <2>;
-> @@ -259,6 +270,10 @@ &usdhc0 {
->  	status = "okay";
->  };
->  
-> +&hsm0 {
-> +	memory-region = <&ele_reserved>;
-> +};
-> +
->  &fec {
->  	pinctrl-names = "default", "sleep";
->  	pinctrl-0 = <&pinctrl_enet>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> index 2562a35286c2..c79a5de227b3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->  /*
-> - * Copyright 2021 NXP
-> + * Copyright 2021, 2025 NXP
->   */
->  
->  #include <dt-bindings/clock/imx8ulp-clock.h>
-> @@ -154,7 +154,7 @@ sosc: clock-sosc {
->  		#clock-cells = <0>;
->  	};
->  
-> -	sram@2201f000 {
-> +	sram0: sram@2201f000 {
->  		compatible = "mmio-sram";
->  		reg = <0x0 0x2201f000 0x0 0x1000>;
->  
-> @@ -169,6 +169,8 @@ scmi_buf: scmi-sram-section@0 {
->  	};
->  
->  	firmware {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
->  		scmi {
->  			compatible = "arm,scmi-smc";
->  			arm,smc-id = <0xc20000fe>;
-> @@ -186,6 +188,13 @@ scmi_sensor: protocol@15 {
->  				#thermal-sensor-cells = <1>;
->  			};
->  		};
-> +
-> +		hsm0: secure-enclave {
-> +			 compatible = "fsl,imx8ulp-se-ele-hsm";
-> +			 mbox-names = "tx", "rx";
-> +			 mboxes = <&s4muap 0 0>, <&s4muap 1 0>;
-> +			 sram = <&sram0>;
-> +		 };
->  	};
->  
->  	cm33: remoteproc-cm33 {
-> 
-> -- 
-> 2.43.0
-> 
-> 
-Hello,
+> On Tue, Mar 11, 2025 at 01:38:27PM +0800, Wei Fang wrote:
+> > Since the VLAN hash filter of ENETC v1 and v4 is the basically same, th=
+e
+> > only difference is the offset of the VLAN hash filter registers. So, th=
+e
+> > .set_si_vlan_hash_filter() hook is added to struct enetc_pf_ops to set
+> > the registers of the corresponding platform.
+>=20
+> For the RSS hash key register, you added a function which retrieves the
+> register base. For the VLAN hash filter, you add ops. Same problem,
+> different solutions?
 
-I'm trying to test that solution with imx93-evk-11x11.
+I thought it was a bit different, because we have a 'si' parameter, anyway,
+I think it is fine to remove this ops and use the same way as RSS.
 
-Driver is loaded fine:
-[    2.098390] fsl-se firmware:ele-if@0: i.MX secure-enclave: hsm0 interface to firmware, configured.
-and I was able to expose /dev/hsm0_ch0 to userland.
-
-Can you share me tests that I can run against that device?
-
-Thanks,
-Alberto
