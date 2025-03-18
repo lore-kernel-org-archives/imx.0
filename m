@@ -1,49 +1,46 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A171B042C
-	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 16:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7854A20FAB9
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 16:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314677; cv=none; b=s2NWb75ssKlxrmLgVRebulzMKguR9AzjI1z6o/Ha5oY6r+YagqhCEmei+GsymouhIe/ZG7tHaXXc31dod+tEvqGEKc2MckAoAMJPtM9oXxxeB27gO0lXl6hyrFBmZbcXpXA50z7Yissw80Selirfbi+dT6z/NouWWx6fHa7BFyM=
+	t=1742314768; cv=none; b=i09zELp9x402HIzbRbUlMIv+xSnp8SyG0myu3PJ1+13yDf3OgXU+2K32AHJ96i91OpdzuZ/OTvO5AdCWZt56xIlYwTXlNt4wl8rEIo5lmkNbwIhVxlkjcUN5mvILdzOt8giUMtv30s5lfBfRotWGmYYTv33CbdDseWwWcJPG5Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314677; c=relaxed/simple;
-	bh=ym2igy2OrRFEHbZGLmiWHMoXN87HGxZYkWh0Q3os68Y=;
+	s=arc-20240116; t=1742314768; c=relaxed/simple;
+	bh=1LdBrTsOTT7bqE7JfVH0WA/3+gdovPuYkJIVQn/UGEw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uzIV4BK+YtzhsR5wGSfy5MTZ8nWlTpe5nohpe0dV5R+25yRepDUPlXwf2M1XGvC276iFiIHRzvJUHKg5/9llAqVx4+qEYf1LmT5b2Y/PjgU5Fom+Jgv1sLDKZi0KvJ1tqY2cGLYdKUikXwSEKJj3zQ2SDHVzWUfaTA4bAZnfVCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QV7EQI0x; arc=none smtp.client-ip=217.70.183.200
+	 MIME-Version:Content-Type; b=KIeDqdvuLdeDqlrZII+9HPwIkJUIQbhGh69bT+d2I5rH4gp5m01Xy2TQqE+7tu5jIsgs0uHnpIsqH3eYR+fn7Clgc4V1ZWEzhZrLWiaZBoyIUF173TRsHOtU77u8wMCBd/IYAPMblzyUqlIPE2wilFlEpnRtOdyBzsntdb1ZSxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nRgon7Sc; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QV7EQI0x"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 70FE044187;
-	Tue, 18 Mar 2025 16:17:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nRgon7Sc"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E91D44401;
+	Tue, 18 Mar 2025 16:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742314674;
+	t=1742314764;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N/1xnpzP9TTHmFe2YZGsO7xT/RMdtt3eNYKIyqdlcpo=;
-	b=QV7EQI0xNy8e+ecLyLElhdGhXXLQujhp8sAu+E5WR+M10/9YvVdC6JaLEYL3ERXRYM4Yvv
-	rO8AiSjRjuPnXZV3kIn99P/14zipcdYaIwB+wyv93MejCsVUJKgNbRD4vhu8Ai3OS06hfe
-	e9XQ2v4YgoVgaNuo+wlAk7HQdD3fAnn0JEVpCFMqgWEpEgUbFEK8VhWLowoP02xmJjWBNI
-	vqE+ik37us9t3zAFxw8Zeo44usvWGkRKJMPkJvsN7yHYDIoOXolnPch/YCwzSdF3ubkRhO
-	eTr3YDxWtPIjgeE2SH9nftz0tmbWm6t1aakpir68Xffb4zEoKne6Y90DxXAkqw==
+	bh=Vy+dwG9Ed+BXIN6V7N6B5XsHShfpjTK1x/IEQLwhV1g=;
+	b=nRgon7ScSSVwqM6Ohvz+i4Nvuv026ZMBCSwfTfLJBd33Fr7KAtptQcBlI3hGsw4W2nQr0L
+	QHLJ+8/dwYXCK0Bb717cLFzakI5JE+RCYCJ9kaj8Uk1Ka9RXJp6OsC47FGPEQ2AOrHNYMO
+	i3e3NooY4bzIC/n8p+JPAY5gaURM1uI+DxN7fGJ79gmsPbnbQ1/sBL/eh0YIyivxbb1P7o
+	NvvHFTeDPSrIjDyxsXiHN+Bv1USIXyEppkRFveuRfYdQDFRtPLY5sJH0BJIFTKRvhpYPZC
+	ned1PcKK7ECH23v54b7KIYQRb+QTuAf+Kuwygzd9bEUmX7mWsQHyvEbVH8GLJA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Han Xu <han.xu@nxp.com>, 
- linux-mtd@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20250307220515.3282954-1-Frank.Li@nxp.com>
-References: <20250307220515.3282954-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH] dt-bindings: mtd: gpmi-nand: Add compatible string for
- i.MX8 chips
-Message-Id: <174231467335.979959.13152834934879467871.b4-ty@bootlin.com>
-Date: Tue, 18 Mar 2025 17:17:53 +0100
+To: richard@nod.at, vigneshr@ti.com, han.xu@nxp.com, hs@denx.de, 
+ david@protonic.nl, jre@pengutronix.de, Zhang Heng <zhangheng@kylinos.cn>
+Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev
+In-Reply-To: <20250313095756.945890-1-zhangheng@kylinos.cn>
+References: <20250313095756.945890-1-zhangheng@kylinos.cn>
+Subject: Re: [PATCH 1/2] mtd: rawnand: gpmi: Use str_enabled_disabled() in
+ gpmi_nand_attach_chip()
+Message-Id: <174231476355.980483.5273570691547518617.b4-ty@bootlin.com>
+Date: Tue, 18 Mar 2025 17:19:23 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,25 +52,22 @@ Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.15-dev
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvledtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevjghfuffkffggtgfgofesthekredtredtjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffieffhfefvedvgffhledugeeugeekudffgfefgfeftdehgfduveejfffffeeugfenucffohhmrghinhepmhigjegurdhsohdpmhigkehqgihprdhsohenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrdegvddrgeeingdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheph
- hgrnhdrgihusehngihprdgtohhmpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopefhrhgrnhhkrdfnihesnhigphdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvledtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevjghfuffkffggtgfgofesthekredtredtjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieffhfeulefgtdeltefgleevgffgheduledvheduudelgfehlefgheeivedvgeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrdegvddrgeeingdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuggrvhhiugesphhrohhtohhnihgtrdhnlhdprhgtphhtthhopehhrghnrdiguhesnhigphdrtghomhdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmp
+ dhrtghpthhtohephhhsseguvghngidruggvpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvh
 X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, 07 Mar 2025 17:05:15 -0500, Frank Li wrote:
-> Add compatible string "fsl,imx8mp-gpmi-nand" and "fsl,imx8mq-gpmi-nand",
-> which back compatible with i.MX7D. So set these fall back to
-> "fsl,imx7d-gpmi-nand".
+On Thu, 13 Mar 2025 17:57:55 +0800, Zhang Heng wrote:
+> Remove hard-coded strings by using the str_enabled_disabled() helper
+> function.
 > 
-> Add compatible string "fsl,imx8qm-gpmi-nand" and "fsl,imx8dxl-gpmi-nand",
-> which back compatible with i.MX8QXP. So set these fall back to
-> "fsl,imx8qxp-gpmi-nand".
 > 
-> [...]
 
-Applied to nand/next, thanks!
+Applied to mtd/next, thanks!
 
-[1/1] dt-bindings: mtd: gpmi-nand: Add compatible string for i.MX8 chips
-      commit: b0e63a0847ee2d01ac34a45eafb112227262820f
+[1/2] mtd: rawnand: gpmi: Use str_enabled_disabled() in gpmi_nand_attach_chip()
+      commit: 9fe1617df3c8f522755996383b9a3abf8ce81662
+[2/2] mtd: mchp48l640: Use str_enable_disable() in mchp48l640_write_prepare()
+      commit: 3081f26059a88ce9f39a2fe1c1bfee853200bd79
 
 Patche(s) should be available on mtd/linux.git and will be
 part of the next PR (provided that no robot complains by then).
