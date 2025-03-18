@@ -1,179 +1,237 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2048.outbound.protection.outlook.com [40.107.20.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4691A08A8
-	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 07:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742282875; cv=fail; b=nJd8L0hyYZaIfU5H8zCSs14MKHAeALxN9LBGZTp0d5WauAPSQ5EbWtPMUnW+v7NkypbeHrA8uFQcIqP/YWE5ktlDsiItGye1HFh0QfTrsj9xlStPm/MkicPx9WuY0gmqvglO+IGiu7NcfV65fYNMVp/QZXR4LoHtQqaiLO0BbAM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742282875; c=relaxed/simple;
-	bh=rKMLeF2T2sIbgc0XCUev/Nx5Geh1/dYdDtuwrGhzr2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VLhWXs/ikhgE60UvbmY4YU+CDEq14SzHNSxS2zAz7HwXZ9SK8drK29EV0rRUFfapRSMYhThMtGpUdLEjz5QAZHbItvqjXWb5kWoQS/YVTtrZ80vk6SGZpNLRMDuNalM7L19f+uiYtkS6AgQScrzY+gh0cNEf6o1VesKPMZZB6j8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Br376tF8; arc=fail smtp.client-ip=40.107.20.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637001EF380
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 07:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742283987; cv=none; b=nhAThHcEJeMa0I8XAw44c9ITUFaxQNnZ0e90AnPIjf6UL4JvSMVT0aUpZBqbQIUL2mMPMFWb6cIaldx6NWE8Z4xFXRlgqn+YhipklRLUQw72SoFEtOJaoED167CD3JddFS8/A4yXU4alucTvXPxBbbXa24HxubUJrJKh8RQPNzQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742283987; c=relaxed/simple;
+	bh=LvywzN1RBsv3mdA4STwvBcFAP/jhi6wX7UwEJ79LVdE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=agIFHS/+aRnnxnYM8wUgGJkxDlSONIEoXC8Y1sZ2jSiGjiO/MmPxy65c7zGvgtyLG78mCF2urd/+LLodaTnF+NvKv+2nakMpPpu5hLQ4Hu9j9LtQLm7pR0LUlXlCT6OaVV615mr5g2t1zeg5s+N1HYJv4wI/46ScqQkkShGyblM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ihZNOYQm; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Br376tF8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r4Yu/lDwwyVrNCl0epV+eYp5jFRtnXmYbgsLJt3qdzMihpywSXVTztOV9LzCbasZavyGp3x9z5EnkP2T1pdF05EcbTj2JAFKmr8Bbh4+Wssg3CFbDH8ArcYv2CxL2CiOtQ05g5FLixzi4Hqxd+V/1X+6kr47FPw6kuntHY03RFGSs21fBALyn27V5eymys/NDs7tYHDsApmJqgFN5IgOfEXT2qQhdsfoHaROExNVd6VAdSGcpXQJ54PBdcQvL8oSrDw6KF7UkgiTxbYaiYYUfCEi3LUChZBrr0FaqYmxlgVijE2RN/LkNPkU2Wjeq/J/AYjCf1wwsZEEp8thuPgP+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zJ2DwVCsKiclxSYfq1UfwLgEW5b6kB5j0p2pojiOLCg=;
- b=HIs0MVyxZTFrSnv7QSq3up6IMSIYNpo2kQdk4vepjEY8s5p2UTtz4jHp0/wKYjEa0hmJjQBaLxwGYOz4WIC2bEKCH2m+Uh1ao4EzBiT/NYakvHPQ4wBh8saCC+zRuHOP3tXPHfoFpnP1JUlgQZMkLT2lzwQcO9vilKj/EMWTgtjFgEt6w2BDCrqOYx7+cCg2g6m8As1WCccPgVroLM3JC8+48RV1a70zwaRNfKapGps3GLgl19/bR33NH7PdxkSJ2cS97hl3mHGoWUeBe+Vr9tQqT/cc0YvpqCaxR3//bIJVfm/PA3ajVG5WQx4lML8XF7ZF1DWIS2c5Tm+NdJwG0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zJ2DwVCsKiclxSYfq1UfwLgEW5b6kB5j0p2pojiOLCg=;
- b=Br376tF8GvzsfCIKfH3Ks4vRUV+idN0O2wcDD2i24WYki96L4zdnhLDQavmlqwLPjKui9lESzbR8nrdXfaVhzJLcC7eIQjLKEqlsGixefs5xDszVb+seLfOKWOqZBLj8k+RpewTkyoOG4xLAs5/R6//6/deNPZzCIo/JlzbH7qt7H8zg0CgnQ6v9XYMhgKzs+LlK+6XfDmV8GZByNmPp+E3231sGmv8KRCLthj2LXv6aWbdXaUNBr+UPAlr4OedGNEcGl2wp7f8U47aEMfFMKFOzXc7epwVvVfesPTTNumxnQmIt+0imzvf+BXZJHRLFy5wkI4AsRXPGLnYdV6jzDA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DB9PR04MB8106.eurprd04.prod.outlook.com (2603:10a6:10:24b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
- 2025 07:27:51 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%7]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
- 07:27:51 +0000
-Date: Tue, 18 Mar 2025 15:24:14 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, peter.chen@kernel.org,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v5 0/6] add USB2.0 support for i.MX95-19x19 EVK board
-Message-ID: <20250318072414.x5y4kbe2ahl24uzg@hippo>
-References: <20250312082700.260260-1-xu.yang_2@nxp.com>
- <2025031443-rounding-subject-1f60@gregkh>
- <20250314092137.6m3gmj4irxqwpy22@hippo>
- <2025031404-elite-critter-05b7@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025031404-elite-critter-05b7@gregkh>
-X-ClientProxiedBy: SI2PR02CA0005.apcprd02.prod.outlook.com
- (2603:1096:4:194::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ihZNOYQm"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2260c915749so27704185ad.3
+        for <imx@lists.linux.dev>; Tue, 18 Mar 2025 00:46:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742283984; x=1742888784; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/5KVGOst+i3EqYlF+Sx7sAtMWBsKlTUEKDgYGkLY1j4=;
+        b=ihZNOYQmxPZesa4GBYcu54O3AmGIlNDak2EvhTyU/khJS1MhkYQbvEnDF48b+NrZx+
+         IvNO+cv2f+gnUSGwUdQDIaQcYiXwVzYXCyg1PgRvllFZYXZRd7E4I5PJt3sV/eqfVaPJ
+         hJ+i9wVAbfI6R9eMR+2bIYvtVlvO4gG8XCnInIB0KCi7pRtVDPyxpb9R22/lgVNf6JWS
+         E2Hht+nsjU9ITaSJUk756HRlGp6dBTMffvjQBqohmOiqa29AJohqcXQy5qy+8QS4Cqti
+         eGuh0WGa1r3VyXljhTCFGI6Jqr/ohPbsZT03CG9qaChP5fjke9tSe29s/AsjzDLg8vZM
+         UwzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742283984; x=1742888784;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5KVGOst+i3EqYlF+Sx7sAtMWBsKlTUEKDgYGkLY1j4=;
+        b=C4/e4ZGRLhI/fWxK7NfutnjWIa+hDMLz8dXeSiJK04xjrnZ+fkEtfImq6HVR0TqayN
+         21CpSntHVY1kuOFRzIV90j3V33lcNroFaO4FCcGN3iykYG5Q2aawnxpbYVDCg5TgXvLB
+         bZNjElaOdwPHZodlXq9u/V9cSy1iLUQrjw0hp/oEy+TT1tzmF7QiiQGdMfz+6Nw1sPPv
+         VB1INnlvX7uKMNl3dQm/9ok3CtYkq4jL5p/b6Uw9UyjfG5+LmuvFqysaifCLAzygh6dK
+         qyxQixtNFpVlkEtYJ9nDH2sIcYhSlYoOtr4PbrAcJ0WEmxiRA3JZTs1MR49N1ISttrQp
+         V97Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV6KZYFK3vkd38mmfrDS4LfeEnlCSEqDrVgFVkgdXBxjToVKznLcez8dcD18e7fxmDbZyg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yza2N6DCFplBdQvssjV2Dpq6L8ckHBRzrxAu5K991AqFPGarPbB
+	8Yb5/SRIRpa41bbYFDwZl57czxlo1s2BzJrEFe1UeOz7IUSKM82oSB3efOFu8g==
+X-Gm-Gg: ASbGnctFl55bIPpjxRVsrDAr9x+z8GVCGESTMjPwm3NZ4f5kZSwyBh7rpNo8sgPOQGE
+	iKRjYQyVZ/uJDDXojb+9EsGHRm0OvFQsK/MMGz9oQX8RRVs62gy3vIQ7lSR+H+3eOx5CPK0ZCRq
+	GhVC41557xruJcFYahse34Ctb0GCJ6otiydMQUtSbR1z5W16ewFx/CVNv29jxyQUYrLE4FV5xs+
+	FYbBw2YTm1vGzoqtaZSEt79S+Z29SGbBsvg7CbcHwriHQz/vxBG3j2qOcqp99eE8Ec63xpxsQ36
+	kp15NAAh79goFn3WzQ0GwdmaMcqh3ff/3otIvLSX8l2qxYpjawI1WaooXncABgbxSN4=
+X-Google-Smtp-Source: AGHT+IGk7Wbvv+p+ljwVovByJjOFoHfppHTP1+cVpoZmuorSMChPEuewTXvxnqB++I9G1ZambQYJAA==
+X-Received: by 2002:a05:6a00:2309:b0:736:41ec:aaad with SMTP id d2e1a72fcca58-73722382f9bmr19932531b3a.14.1742283984406;
+        Tue, 18 Mar 2025 00:46:24 -0700 (PDT)
+Received: from thinkpad ([120.56.195.170])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737116b3de4sm9153147b3a.179.2025.03.18.00.46.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 00:46:23 -0700 (PDT)
+Date: Tue, 18 Mar 2025 13:16:18 +0530
+From: "manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Lucas Stach <l.stach@pengutronix.de>, Frank Li <Frank.li@nxp.com>,
+	Hongxing Zhu <hongxing.zhu@nxp.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kw@linux.com" <kw@linux.com>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the hardcodes
+Message-ID: <20250318074618.tqbnr7nv665fk25n@thinkpad>
+References: <b425a7c7a7d6508daf23fe7046864a498029a7ac.camel@pengutronix.de>
+ <20250313160648.GA736867@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DB9PR04MB8106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ae68570-96a8-4c87-fe42-08dd65ee6424
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v2B7ZruI5l6eTk/ZtH+eLo7cd/2NYpwiBOkdiNYh2Lrkv3INg2fNmAI0AZgS?=
- =?us-ascii?Q?M/sGZADXkQmAbQVlrV4JoxfnMzC5a7kSpXWzBvqoz3bkQ0GcfPZ5KAxc8Ved?=
- =?us-ascii?Q?QOLr/SxZihb3csELluuLRRq6hGmHNllUdS4CmZ1rNTEbp1E3z4YBS4H5S0vX?=
- =?us-ascii?Q?lKvjnU0Y8W90A+YyTx62DgGOpd1e+Jom9ibkAhya5nDAm5I+T5xt03D78tXj?=
- =?us-ascii?Q?dH+/P8WwY9nQkqoh3E/NPWNK8eHKtn0ymSQ1m+OtDzBM6wKwhyNhdDVMPIBp?=
- =?us-ascii?Q?62i3/B/c/f16r3kaWhmRBNzW5yrlW03EcZ95HBiRJBxfvctMZtfYN4yDAVfp?=
- =?us-ascii?Q?tYVhMtI+ZFcoKqDa/7alQgS16X/eW537qmQcvgRzvtpnVM2jCh+d1shA+isk?=
- =?us-ascii?Q?uIIMeTuwTt7uaIxl+bHb5pLjRFtLAOB5Zv1lG4zi8qSzJ8Vq0SCDDtNnBfNx?=
- =?us-ascii?Q?/xZLPJyUpD8s/w5+AbD4iQ0NFA6NrqyRvYWy1wF4i8ywg86Kn0TlFrMIFlZr?=
- =?us-ascii?Q?o4MNNXkR4Eq1K5w5QLpCuzrzUN7EkiPM7ENWwiApGgyrsYJ8p7qZFvZQMnXf?=
- =?us-ascii?Q?bvvJa2A0QxfHsam5qsVo0frjKw6s50XshLmAUiwrVx/NOoReyN1BVRqxQt3c?=
- =?us-ascii?Q?zF6g25ievMLpVlubOz7rP7ZUDo+Qes7UTKJMkN9mW2rHHY7mvm2zYqRIIPBH?=
- =?us-ascii?Q?7ZJ5bivJQVVYRhqmXOwI8V0ePfZXgO3kxUcx30lBpU8EMK9BMQF0mxbidfIF?=
- =?us-ascii?Q?YcVc1TAuarvX7j/jXehyY8V4C/LqUCO5PgCrMWdgsSM7rVZ+i58xZkk4Hkbt?=
- =?us-ascii?Q?Tr/pTZ4yLpZxalnXh99jIpgqzOwkiXQ8wnQ85PFuj27q56FNlqYTndkKiDH3?=
- =?us-ascii?Q?VebT5NU243XNYc4ll5+j0xg8l8V/OW6Z306hFB8XcJG9M+KFZ6k/msL7Hirw?=
- =?us-ascii?Q?CuP9jNnZkwLaI6i2FLAtSNWYzcUu3U7r1Ib+ZiTIcWNaH+Q/LsYa74nspgXO?=
- =?us-ascii?Q?JDZF+SjJ/DY8ikUBEtOPGToWAiWKfnQ8tQ9Xx4ie+i+pVAiMQ4QkV/Q7pwiu?=
- =?us-ascii?Q?LoBJ/pqTJC81Y1q+NAMNt/G6wAiiBMgn2B1pNQMkHk8YXsrSZGRThmYx5Pbk?=
- =?us-ascii?Q?VTkPh/7m01iobylnHHutBHWtnGY5nOjax4o2B5RXcyIFCk4q3iwT9faejAu2?=
- =?us-ascii?Q?pg1BHkMBKF4RXFWr82gF9WaqB0bug8ZliPcsyFdG9lwVIfz7OgGEGBKYKV66?=
- =?us-ascii?Q?mtcUavMI0K+RxEolh+VDGYuaeTGdTS20lv3rRGBkbLtzAFX4TBAAKmANLxBb?=
- =?us-ascii?Q?C4bpPsWW+UbXT85ZYmfE484i+FKjs4C0wIzNhiPMuDSuyVZrhfhIU0IIo2Mb?=
- =?us-ascii?Q?7H2G4Lzcl/SPRQRwNYRYUJrS2LGeyjUqJlg+npsfpH0442kK5LHLCx1n45Ig?=
- =?us-ascii?Q?gEqweCYAgCD6efN7UMWUHsjouw9PFLgI?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vUkgMEv5GwT6QH8YRMIq/IJb6nQjOIrYuYiAgothiSbVglT0TW78D7p+2Pt7?=
- =?us-ascii?Q?2wUpcdkZVqxrI5jVRNvKGs3FpKGZhHoRVvbgdig0LCrAPplaHeFzF0DZ4fqO?=
- =?us-ascii?Q?JoRilB9TosocRxscatt3ptVcHiTZaAFohdlQjxOgZszOMe9KplCvCEmVrpxZ?=
- =?us-ascii?Q?6rG7Q90uc8bbbXChkxvH8DPrYUsF5dURu4CLdyZ8L6/3NydfnhED5yVaFgDz?=
- =?us-ascii?Q?zuvGM9RlyOxY+qVWhedIiOD6KdNUmMW7LB7h6S7xTbIZsZ1O2GDtL7Xo34Py?=
- =?us-ascii?Q?hTiyLpXoIp4cEMuXN+c21wkxfizqleGJpinp4jt4vKiTlJejPKesPPys48fp?=
- =?us-ascii?Q?rRKK8i13DWHvqBasuyneA3puPNPEKH/Ww5H7mitg9ilqqAnU/F+kXqF7PIKG?=
- =?us-ascii?Q?eT9Cp3exwlZIxp5xOhY+RQ3xXee4AncfO6iu+9XMmhaaM5T1GMP3/lvywm5X?=
- =?us-ascii?Q?j+vMoNJiLF8umCdB8Zm1CQU6WKJJkD9HjDsFm7vuUHn7yVrT0wOdhk0qr6TX?=
- =?us-ascii?Q?tJP4CP+ZB/xUnK+Rek4W0xnCkGwhpOeaQsD7eLnRDDidZWHmwo2KwET6bt0U?=
- =?us-ascii?Q?Ri+LRWAk51r+W39dku6UHSF30IvXIeQ6EX1ysvWIGgAn1vrK/0oTgLm/hOZ0?=
- =?us-ascii?Q?xil4TcWWHpGNGiXn+5orWGNmSIqCen9R/ZtshrHgdF3lLb+cO3OzZGnyiMYs?=
- =?us-ascii?Q?cfdepw1ng2Hjd+d5XKiovl+F2A5SHMUMTAaKJsukrKhyNpQCZ4EcCmaFB1sl?=
- =?us-ascii?Q?zYbHCO5zpkMxYkuccXvs1Z8txwuok7iDnsUUXN5/IZqu9pahyogAyRm4nbT9?=
- =?us-ascii?Q?xrwbiNQGqje2jjWskR9v5zzb0WFb6wTACYFhHC2XTUpOXcXTjuVlx6pBDu9+?=
- =?us-ascii?Q?opVHLJ9Cm1KkPTnuQU/8A/rnPl+jfjHRy+Zq3DXLi9XZQRSAu530F65lBs4+?=
- =?us-ascii?Q?c9fqsYYNyNX8SPCp02bvWPH8BlSKYEQSOPYho6mk+QNtqB49xulOKg7wyiZg?=
- =?us-ascii?Q?mAEyS0h0Ov7HO8Me2p5KLoqJMNJ5sG1VaDMJxTeZoF6N68kbD78S9aLaYMsF?=
- =?us-ascii?Q?lFPN2LJlQz/s+FN47O1V0nP6HT2hOb2bNRUHTdol+P1KExqrBPAeAyRWQjXH?=
- =?us-ascii?Q?cvy3XCdM1WTxvKC9+o7B0wjIJ9fnxhLIGPfs/fDOClXAbRxywQrKYGQAmyqA?=
- =?us-ascii?Q?fRa1nFgV91wFX4UVxEnYHrTixk5fej23iYkf9v7JxT8RK1z/0drpJpJX/RmB?=
- =?us-ascii?Q?uNuLDttChlQLYUnf3Rx92oroaIn8R8+R7ikniNmhnwelhjAuvxpCbRZut0AS?=
- =?us-ascii?Q?jhKjJi98y9+LxUYHkgZmOo0U1Pq8Zjry1X79SI69sCbFlFgu4u5CNcO86TgT?=
- =?us-ascii?Q?RSYbc4B7NBlDLCWdQjnZqqk0FI8Z8dz4GrsjINi69rTgubLVBg7mnoTyY6P4?=
- =?us-ascii?Q?yLmDcYTurN/HPKzm70/DnEB2P6QWxtThl/Jn8n4bZZnh5S7/KyxhlRs6WqnP?=
- =?us-ascii?Q?vNywcEI8uarynYN2z36preMEn1+3RnDouQQZLvwbw7NriRpfxwxfnO9+Tqyf?=
- =?us-ascii?Q?io6aLaLLt+RUUtDSVaPo9jS4U+POL1x2SBBPCV6V?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ae68570-96a8-4c87-fe42-08dd65ee6424
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 07:27:51.4634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mR8L+bhRCmDRogA6vrjnRvQbH4/P+YVO8E2vocWPpqC50xmc/6pCknubgSs/jUsy8egZhy5O3qeXhLjM/WOKwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8106
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250313160648.GA736867@bhelgaas>
 
-Hi Greg,
-
-On Fri, Mar 14, 2025 at 01:37:19PM +0100, Greg KH wrote:
-> On Fri, Mar 14, 2025 at 05:21:37PM +0800, Xu Yang wrote:
-> > Hi Greg,
-> > 
-> > On Fri, Mar 14, 2025 at 09:18:51AM +0100, Greg KH wrote:
-> > > On Wed, Mar 12, 2025 at 04:26:54PM +0800, Xu Yang wrote:
-> > > > The i.MX95-19x19 EVK board features a USB 2.0 Type-A port, with this
-> > > > series primarily introducing USB 2.0 support. In the i.MX95 architecture,
-> > > > the USB wake-up handling mechanism is integrated within the HSIO block
-> > > > control module, utilizing a dedicated wake-up interrupt. Therefore, we
-> > > > also implemented corresponding wake-up logic code to properly manage this
-> > > > functionality.
-> > > > 
-> > > > For detailed changes can refer to patch commit log.
+On Thu, Mar 13, 2025 at 11:06:48AM -0500, Bjorn Helgaas wrote:
+> On Thu, Mar 13, 2025 at 09:54:25AM +0100, Lucas Stach wrote:
+> > Am Mittwoch, dem 12.03.2025 um 10:22 -0400 schrieb Frank Li:
+> > > On Wed, Mar 12, 2025 at 09:28:02AM +0100, Lucas Stach wrote:
+> > > > Am Mittwoch, dem 12.03.2025 um 04:05 +0000 schrieb Hongxing Zhu:
+> > > > > > -----Original Message-----
+> > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > > > > Sent: 2025年3月11日 23:55
+> > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org; bhelgaas@google.com;
+> > > > > > s.hauer@pengutronix.de; festevam@gmail.com; devicetree@vger.kernel.org;
+> > > > > > linux-pci@vger.kernel.org; imx@lists.linux.dev; kernel@pengutronix.de;
+> > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
+> > > > > > hardcodes
+> > > > > > 
+> > > > > > On Tue, Mar 11, 2025 at 01:11:04AM +0000, Hongxing Zhu wrote:
+> > > > > > > > -----Original Message-----
+> > > > > > > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > > > > > > Sent: 2025年3月10日 23:11
+> > > > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > > > > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > > > > > > > shawnguo@kernel.org; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > > > > > > > kw@linux.com; manivannan.sadhasivam@linaro.org;
+> > > > > > bhelgaas@google.com;
+> > > > > > > > s.hauer@pengutronix.de; festevam@gmail.com;
+> > > > > > > > devicetree@vger.kernel.org; linux-pci@vger.kernel.org;
+> > > > > > > > imx@lists.linux.dev; kernel@pengutronix.de;
+> > > > > > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> > > > > > > > Subject: Re: [PATCH v1 2/2] PCI: imx6: Use domain number replace the
+> > > > > > > > hardcodes
+> > > > > > > > 
+> > > > > > > > On Wed, Feb 26, 2025 at 10:42:56AM +0800, Richard Zhu wrote:
+> > > > > > > > > Use the domain number replace the hardcodes to uniquely identify
+> > > > > > > > > different controller on i.MX8MQ platforms. No function changes.
+> > > > > > > > > 
+> > > > > > > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > > > > > > > ---
+> > > > > > > > >  drivers/pci/controller/dwc/pci-imx6.c | 14 ++++++--------
+> > > > > > > > >  1 file changed, 6 insertions(+), 8 deletions(-)
+> > > > > > > > > 
+> > > > > > > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > > b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > > index 90ace941090f..ab9ebb783593 100644
+> > > > > > > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > > > > > > @@ -41,7 +41,6 @@
+> > > > > > > > >  #define IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE	BIT(11)
+> > > > > > > > >  #define IMX8MQ_GPR_PCIE_VREG_BYPASS		BIT(12)
+> > > > > > > > >  #define IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE	GENMASK(11,
+> > > > > > 8)
+> > > > > > > > > -#define IMX8MQ_PCIE2_BASE_ADDR			0x33c00000
+> > > > > > > > > 
+> > > > > > > > >  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
+> > > > > > > > >  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
+> > > > > > > > > @@ -1474,7 +1473,6 @@ static int imx_pcie_probe(struct
+> > > > > > > > > platform_device
+> > > > > > > > *pdev)
+> > > > > > > > >  	struct dw_pcie *pci;
+> > > > > > > > >  	struct imx_pcie *imx_pcie;
+> > > > > > > > >  	struct device_node *np;
+> > > > > > > > > -	struct resource *dbi_base;
+> > > > > > > > >  	struct device_node *node = dev->of_node;
+> > > > > > > > >  	int i, ret, req_cnt;
+> > > > > > > > >  	u16 val;
+> > > > > > > > > @@ -1515,10 +1513,6 @@ static int imx_pcie_probe(struct
+> > > > > > > > platform_device *pdev)
+> > > > > > > > >  			return PTR_ERR(imx_pcie->phy_base);
+> > > > > > > > >  	}
+> > > > > > > > > 
+> > > > > > > > > -	pci->dbi_base = devm_platform_get_and_ioremap_resource(pdev,
+> > > > > > 0,
+> > > > > > > > &dbi_base);
+> > > > > > > > > -	if (IS_ERR(pci->dbi_base))
+> > > > > > > > > -		return PTR_ERR(pci->dbi_base);
+> > > > > > > > 
+> > > > > > > > This makes me wonder.
+> > > > > > > > 
+> > > > > > > > IIUC this means that previously we set controller_id to
+> > > > > > > > 1 if the first item in devicetree "reg" was 0x33c00000,
+> > > > > > > > and now we will set controller_id to 1 if the devicetree
+> > > > > > > > "linux,pci-domain" property is 1.  This is good, but I
+> > > > > > > > think this new dependency on the correct
+> > > > > > > > "linux,pci-domain" in devicetree should be mentioned in
+> > > > > > > > the commit log.
+> > > > > > > > 
+> > > > > > > > My bigger worry is that we no longer set pci->dbi_base
+> > > > > > > > at all.  I see that the only use of pci->dbi_base in
+> > > > > > > > pci-imx6.c was to determine the controller_id, but this
+> > > > > > > > is a DWC-based driver, and the DWC core certainly uses
+> > > > > > > > pci->dbi_base.  Are we sure that none of those DWC core
+> > > > > > > > paths are important to pci-imx6.c?
+> > > > > > >
+> > > > > > > Thanks for your concerns.  Don't worry about the
+> > > > > > > assignment of pci->dbi_base.  If pci-imx6.c driver doesn't
+> > > > > > > set it. DWC core driver would set it when
+> > > > > > >  dw_pcie_get_resources() is invoked.
+> > > > > > 
+> > > > > > Great, thanks!  Maybe we can amend the commit log to mention
+> > > > > > that and the new "linux,pci-domain" dependency.
+> > > > >
+> > > > > How about the following updates of the commit log?
+> > > > > 
+> > > > > Use the domain number replace the hardcodes to uniquely
+> > > > > identify different controller on i.MX8MQ platforms. No
+> > > > > function changes.  Please make sure the " linux,pci-domain" is
+> > > > > set for i.MX8MQ correctly, since  the controller id is relied
+> > > > > on it totally.
+> > > > > 
+> > > > This breaks running a new kernel on an old DT without the
+> > > > linux,pci-domain property, which I'm absolutely no fan of. We
+> > > > tried really hard to keep this way around working in the i.MX
+> > > > world.
 > > > 
-> > > Does not apply to my tree :(
+> > > 8MQ already add linux,pci-domain since Jan, 2021
+> > > 
+> > > commit c0b70f05c87f3b09b391027c6f056d0facf331ef
+> > > Author: Peng Fan <peng.fan@nxp.com>
+> > > Date:   Fri Jan 15 11:26:57 2021 +0800
+> > > 
+> > > Only missed is pcie-ep side, which have not been used at all boards dts
+> > > file in upstream.
 > > 
-> > It'd due to below dts patch #2,3 not in usb tree. However, linux-next already
-> > have them. I see Shawn just send pull request for 6.15. To make it easy,
-> > let me ping you when usb tree have them, is it ok?
-> > 
-> > https://lore.kernel.org/linux-usb/20241204050907.1081781-1-xu.yang_2@nxp.com/#t
+> > I wasn't aware of this. 2021 is quite a while ago, so I suspect that
+> > nobody is going to run a new kernel with a DT this old. I retract my
+> > objection.
 > 
-> That will not be until after 6.15-rc1 is out.
+> Sounds good, thanks, Lucas.  We really do want to avoid breaking old
+> DTs, so I appreciate your highlighting of it.  Even if we believe none
+> of them will break, I think it's worth mentioning the
+> 'linux,pci-domain' dependency and the commit that added it to the
+> .dtsi in the commit log.
+> 
 
-In this series, patch #1-4 should go to usb tree and path #5,6 should go to Shawn
-tree. You can't apply patch #5,6, right? However, you can ignore patch #5,6 and
-pick up patch #1-4, am my understanding right? Shawn will pick patch #5,6 to his
-tree.
+If there is a dependency, then it should be added to the binding. Only that will
+ensure that the DTs will have the dependent property present.
 
-Thanks,
-Xu Yang
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
