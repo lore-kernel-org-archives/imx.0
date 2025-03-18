@@ -1,250 +1,179 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2079.outbound.protection.outlook.com [40.107.241.79])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2048.outbound.protection.outlook.com [40.107.20.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112E1EF37C
-	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 07:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4691A08A8
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 07:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742282426; cv=fail; b=Wq67kUATguLPJg7JVLMba2ydZ5PCj64/qOrBGxbIc8++g1s6TXnZ8IKt3/fstpEn/sgFZC806eAzAz6qZB3BJPJDMHdJEO3tbPdAeereBfVfhB5TMQXqcSJIXWUK3iUFA4jCAgLIQlFXHG3YHlLJEOgvTQztKMlVQ/Xz4iR52lc=
+	t=1742282875; cv=fail; b=nJd8L0hyYZaIfU5H8zCSs14MKHAeALxN9LBGZTp0d5WauAPSQ5EbWtPMUnW+v7NkypbeHrA8uFQcIqP/YWE5ktlDsiItGye1HFh0QfTrsj9xlStPm/MkicPx9WuY0gmqvglO+IGiu7NcfV65fYNMVp/QZXR4LoHtQqaiLO0BbAM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742282426; c=relaxed/simple;
-	bh=U1ADTXSspRdGhlT4suaxsM8EmYwLdRKeWCuuZuE3pwk=;
+	s=arc-20240116; t=1742282875; c=relaxed/simple;
+	bh=rKMLeF2T2sIbgc0XCUev/Nx5Geh1/dYdDtuwrGhzr2M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZP/xg8B9iRtDdhvPz0lVL18fQyrFuH9hNhasD3156c3CVbOZtwR1y+mVi6Qh1PQwSowrOnRYQpQPK2o5krMROJoI82tvcmy3cHQ9wNZedLPZRNsUbyJ+2/C7VQAsM2FONorISB3u2MCI2qweNFlX6N68H3sPlkAMjiwEdz67Dz8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=UGGPFr9C; arc=fail smtp.client-ip=40.107.241.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=VLhWXs/ikhgE60UvbmY4YU+CDEq14SzHNSxS2zAz7HwXZ9SK8drK29EV0rRUFfapRSMYhThMtGpUdLEjz5QAZHbItvqjXWb5kWoQS/YVTtrZ80vk6SGZpNLRMDuNalM7L19f+uiYtkS6AgQScrzY+gh0cNEf6o1VesKPMZZB6j8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Br376tF8; arc=fail smtp.client-ip=40.107.20.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="UGGPFr9C"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Br376tF8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oOAYx3xQ6BusZ4DWk1wEJW1jDZglxulQ+fR2gW/7Q5LPOc3jP1IxKcoPgo4f/3Tf0ULs6TMgIRnVML4XAmw43xBil3W75a+ffuti8ykFPHT/WimODpgdriHJJxqAcNRnNDEMcXBDlM6emEJptTtG/Wn1xRIYUc1UaOLq86mt3vVrgyXfBB7VHk1/+OCkiA6bAZ2cxgMQAANVPQWIvw3zbwFpO8h6yvD35sIq/D/24Uxgb+ub7nYsv3xfp2ps27bxc+MuGoyVctiUZLbv16LAfkc4T2qwHU+BUMB47Pp+3fwNtjbGXtyGRzOGWwnzAWQlIePI+1FnhW5fKpkNtxw9JQ==
+ b=r4Yu/lDwwyVrNCl0epV+eYp5jFRtnXmYbgsLJt3qdzMihpywSXVTztOV9LzCbasZavyGp3x9z5EnkP2T1pdF05EcbTj2JAFKmr8Bbh4+Wssg3CFbDH8ArcYv2CxL2CiOtQ05g5FLixzi4Hqxd+V/1X+6kr47FPw6kuntHY03RFGSs21fBALyn27V5eymys/NDs7tYHDsApmJqgFN5IgOfEXT2qQhdsfoHaROExNVd6VAdSGcpXQJ54PBdcQvL8oSrDw6KF7UkgiTxbYaiYYUfCEi3LUChZBrr0FaqYmxlgVijE2RN/LkNPkU2Wjeq/J/AYjCf1wwsZEEp8thuPgP+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HBbJZvmC73v6IB6Qg6UErSsuCUHFV/Xl7/4GAe91Zjs=;
- b=teL3JSTsd4K+krlHcuxzqlLdeCBMwYFcPM+JQY8HKCXG57EZjsAr2ZPD7MP9FzgiEsQiLhO6DCJoE18X663GHCnIaSyKo3v+5u2q+v4cxkCA561z1DPNy8pSlRVER56vZH08uoSDyjRRNQZoN3rmdWl0dvHUEAgONf/ccdFF+wLFWdOJF9z+7XblzeP8aBHa+y4EWLSnbdQWdIMXuBBncEJOZmWU6FU2ZQ56SY6S1wRDxpXlkRszZFkGr+yGUTNoQB8GgRimtP64I6URQn9idaai0I2dwSxuWVfoEULKajKjXauhRr5HMjw8Av9DdF30INC8as3v9QACjupXVS+n5g==
+ bh=zJ2DwVCsKiclxSYfq1UfwLgEW5b6kB5j0p2pojiOLCg=;
+ b=HIs0MVyxZTFrSnv7QSq3up6IMSIYNpo2kQdk4vepjEY8s5p2UTtz4jHp0/wKYjEa0hmJjQBaLxwGYOz4WIC2bEKCH2m+Uh1ao4EzBiT/NYakvHPQ4wBh8saCC+zRuHOP3tXPHfoFpnP1JUlgQZMkLT2lzwQcO9vilKj/EMWTgtjFgEt6w2BDCrqOYx7+cCg2g6m8As1WCccPgVroLM3JC8+48RV1a70zwaRNfKapGps3GLgl19/bR33NH7PdxkSJ2cS97hl3mHGoWUeBe+Vr9tQqT/cc0YvpqCaxR3//bIJVfm/PA3ajVG5WQx4lML8XF7ZF1DWIS2c5Tm+NdJwG0Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HBbJZvmC73v6IB6Qg6UErSsuCUHFV/Xl7/4GAe91Zjs=;
- b=UGGPFr9C8za4mtBmBzQO/BvYPaUYs+AOZcl4fYDaEkjVxaXTEaZ5C/fBEVyuFtCLezH6/58uctqwoW6AfujDQdkM1X1r3z5X0HK++BCsG8lyA8WxJC47BeprbCoKpoT8Lc0AXpOjGczpQcgOt8pXOI2646JL7Jq6fZZowqnt9zELh3cx7vFGWzegYAUQ5DOZBTOoyLyznl7szAOT0/8spUqtpA/XCvyx1bGSrdpvMfgYQLxbjGBczTPrI9F3d1jxHCbql4J1WQeiPJ80qZbwIhvCsqGunbF52havH71CnyWFXpZPtjuanQFE2P/yJWjPRNvPsFDyOYAqBaa7UTvpvQ==
+ bh=zJ2DwVCsKiclxSYfq1UfwLgEW5b6kB5j0p2pojiOLCg=;
+ b=Br376tF8GvzsfCIKfH3Ks4vRUV+idN0O2wcDD2i24WYki96L4zdnhLDQavmlqwLPjKui9lESzbR8nrdXfaVhzJLcC7eIQjLKEqlsGixefs5xDszVb+seLfOKWOqZBLj8k+RpewTkyoOG4xLAs5/R6//6/deNPZzCIo/JlzbH7qt7H8zg0CgnQ6v9XYMhgKzs+LlK+6XfDmV8GZByNmPp+E3231sGmv8KRCLthj2LXv6aWbdXaUNBr+UPAlr4OedGNEcGl2wp7f8U47aEMfFMKFOzXc7epwVvVfesPTTNumxnQmIt+0imzvf+BXZJHRLFy5wkI4AsRXPGLnYdV6jzDA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by GVXPR04MB9802.eurprd04.prod.outlook.com (2603:10a6:150:110::10) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by DB9PR04MB8106.eurprd04.prod.outlook.com (2603:10a6:10:24b::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
- 2025 07:20:19 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
- 07:20:19 +0000
-Date: Tue, 18 Mar 2025 16:28:04 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-kernel@vger.kernel.org,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 0/7] firmware: scmi/imx: Add i.MX95 LMM/CPU Protocol
-Message-ID: <20250318082804.GA1326@nxa18884-linux>
-References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
+ 2025 07:27:51 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%7]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 07:27:51 +0000
+Date: Tue, 18 Mar 2025 15:24:14 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, peter.chen@kernel.org,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v5 0/6] add USB2.0 support for i.MX95-19x19 EVK board
+Message-ID: <20250318072414.x5y4kbe2ahl24uzg@hippo>
+References: <20250312082700.260260-1-xu.yang_2@nxp.com>
+ <2025031443-rounding-subject-1f60@gregkh>
+ <20250314092137.6m3gmj4irxqwpy22@hippo>
+ <2025031404-elite-critter-05b7@gregkh>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR06CA0204.apcprd06.prod.outlook.com (2603:1096:4:1::36)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+In-Reply-To: <2025031404-elite-critter-05b7@gregkh>
+X-ClientProxiedBy: SI2PR02CA0005.apcprd02.prod.outlook.com
+ (2603:1096:4:194::6) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GVXPR04MB9802:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c16a573-7ae1-437f-c431-08dd65ed56cd
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DB9PR04MB8106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ae68570-96a8-4c87-fe42-08dd65ee6424
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bbdI6Jr54Pm6g6Ie0Ro4oUW5SzfmQtX47mb/MfcgDbxwYQQzMe1TpXVzADg+?=
- =?us-ascii?Q?iS4bL7si8dvtwKfHKptUc1sGanZEvIWCcGLcyrkPGNSuct4XB9PAYqXalGdV?=
- =?us-ascii?Q?6cGuS9guWnKt5Uegl0aPuN17avE++e4EZoyD1YUPLKF/EH6zYnR7mxC/ocBq?=
- =?us-ascii?Q?yaLUkMIp4hKO5n4VeQ6tUfAWjvoFX+w90MNHBXZgAbC1nG9k3mlorRoZ/oVt?=
- =?us-ascii?Q?khYrhQw2mAe23nCm4YEEfpgFnJ+dMQTNZ5DyKmS1oEUmCfseNpHmTgI5LC1w?=
- =?us-ascii?Q?UvWwjAN2AO8ScAIxDflw53jpnNJmEDT1DscUiguSPmmaeidnOo4435CW/7t3?=
- =?us-ascii?Q?3WFoyOiKmgY2Ozb2wfV90nf71zbr0xgnKIvIrDiS6Yx4HXLED9weB50Kb4BU?=
- =?us-ascii?Q?g/KPPnMMfLcOFiAPoQB96IO/S+cX1E/yxMq3DSehvl8x9mo700d3cXVA0fgq?=
- =?us-ascii?Q?yKtBQCT+v4tBGpDwv2eQNxiEEyiCu6+tF9xTtbVzDuvVr1ieVP1J9OTFZT6G?=
- =?us-ascii?Q?neBqOEU+2SI8E4GM1RN6t3y/c2e0Ws1SQShAja34q5MFAaxFf2P31ziqH6RE?=
- =?us-ascii?Q?R/34e867cJ1MKi+WzFsankiyf5r/kcw7LkmgA61V+xk+CJnjhbvt6YSKoE89?=
- =?us-ascii?Q?LKYG5415vO8KxpB0wfWrzimKgPC95Kpgdlsuj5l734i7bWp19mjPemao4vVp?=
- =?us-ascii?Q?Sg9Pth2gN8cdv/FmNdqASc3ZO2GHp+Qo6ymJt3vVjyAAq5ronYlXhTJlzSyt?=
- =?us-ascii?Q?ay60utS5gK+/cwB1k79Hp445SSRkSuWU9SUOy+94c4Q/W/QSuHf9EcHHCgvn?=
- =?us-ascii?Q?zp/kW48XixU+unUXdoFyILXDW7DRhRJHIYNUFy5hm8nEjCFDOG04WVBFXyu+?=
- =?us-ascii?Q?hUuQv3N0fYFzZ0slbmKW+zHwZMDjWa5ojT0LD4h4/s/8ziO89iwAeK49LtrU?=
- =?us-ascii?Q?mMEzP0k6AWZR4lJI3aIOIZo2z5wGWjdwHW+Nsc4cbdHM1lkukfeGsyFVu50D?=
- =?us-ascii?Q?/NAzt0/fWUXrPWJEv3oDQFkxeY6SAdGW/pmvvGiK57hV5HBtSotDAy96TuR3?=
- =?us-ascii?Q?TXLkkRnYFo1vtDzbs4KVj0fXjH6aXxXEq0UfIROo47E5MnJFP9M16+3cVFOf?=
- =?us-ascii?Q?MQAb4gFy12lmuaWoyF/a3D48k/JyRU93QnNTGU5TucvD6COoC81/aVzZdjEv?=
- =?us-ascii?Q?+fKISt8CEFCtPDOfbTHcSgtbOi0meBeyX1834r8nJFjRzG2bHMVcpXTB3whZ?=
- =?us-ascii?Q?3hhLJNYUyGe9Scq5PL/4N3TpTKDEPYNTuDMBT8PIGNDOVCZhhAP5/ZkKGzvK?=
- =?us-ascii?Q?ZpTSOq2v186k6QkD34uh+xthJnI9fZ+dA2FcyFbEefUAWi/LXJtXWJGTn7r2?=
- =?us-ascii?Q?/ycf31oXCuQJAwaSCMPjQbrElTk0ThROQzA+sRUOlwF4lcYnvaJaa0Zg57sR?=
- =?us-ascii?Q?GJqK3lNohlP+5CtYTzlfalobe3jFi6VHrUPy2HR+n9SzBX7Y3C17cg=3D=3D?=
+	=?us-ascii?Q?v2B7ZruI5l6eTk/ZtH+eLo7cd/2NYpwiBOkdiNYh2Lrkv3INg2fNmAI0AZgS?=
+ =?us-ascii?Q?M/sGZADXkQmAbQVlrV4JoxfnMzC5a7kSpXWzBvqoz3bkQ0GcfPZ5KAxc8Ved?=
+ =?us-ascii?Q?QOLr/SxZihb3csELluuLRRq6hGmHNllUdS4CmZ1rNTEbp1E3z4YBS4H5S0vX?=
+ =?us-ascii?Q?lKvjnU0Y8W90A+YyTx62DgGOpd1e+Jom9ibkAhya5nDAm5I+T5xt03D78tXj?=
+ =?us-ascii?Q?dH+/P8WwY9nQkqoh3E/NPWNK8eHKtn0ymSQ1m+OtDzBM6wKwhyNhdDVMPIBp?=
+ =?us-ascii?Q?62i3/B/c/f16r3kaWhmRBNzW5yrlW03EcZ95HBiRJBxfvctMZtfYN4yDAVfp?=
+ =?us-ascii?Q?tYVhMtI+ZFcoKqDa/7alQgS16X/eW537qmQcvgRzvtpnVM2jCh+d1shA+isk?=
+ =?us-ascii?Q?uIIMeTuwTt7uaIxl+bHb5pLjRFtLAOB5Zv1lG4zi8qSzJ8Vq0SCDDtNnBfNx?=
+ =?us-ascii?Q?/xZLPJyUpD8s/w5+AbD4iQ0NFA6NrqyRvYWy1wF4i8ywg86Kn0TlFrMIFlZr?=
+ =?us-ascii?Q?o4MNNXkR4Eq1K5w5QLpCuzrzUN7EkiPM7ENWwiApGgyrsYJ8p7qZFvZQMnXf?=
+ =?us-ascii?Q?bvvJa2A0QxfHsam5qsVo0frjKw6s50XshLmAUiwrVx/NOoReyN1BVRqxQt3c?=
+ =?us-ascii?Q?zF6g25ievMLpVlubOz7rP7ZUDo+Qes7UTKJMkN9mW2rHHY7mvm2zYqRIIPBH?=
+ =?us-ascii?Q?7ZJ5bivJQVVYRhqmXOwI8V0ePfZXgO3kxUcx30lBpU8EMK9BMQF0mxbidfIF?=
+ =?us-ascii?Q?YcVc1TAuarvX7j/jXehyY8V4C/LqUCO5PgCrMWdgsSM7rVZ+i58xZkk4Hkbt?=
+ =?us-ascii?Q?Tr/pTZ4yLpZxalnXh99jIpgqzOwkiXQ8wnQ85PFuj27q56FNlqYTndkKiDH3?=
+ =?us-ascii?Q?VebT5NU243XNYc4ll5+j0xg8l8V/OW6Z306hFB8XcJG9M+KFZ6k/msL7Hirw?=
+ =?us-ascii?Q?CuP9jNnZkwLaI6i2FLAtSNWYzcUu3U7r1Ib+ZiTIcWNaH+Q/LsYa74nspgXO?=
+ =?us-ascii?Q?JDZF+SjJ/DY8ikUBEtOPGToWAiWKfnQ8tQ9Xx4ie+i+pVAiMQ4QkV/Q7pwiu?=
+ =?us-ascii?Q?LoBJ/pqTJC81Y1q+NAMNt/G6wAiiBMgn2B1pNQMkHk8YXsrSZGRThmYx5Pbk?=
+ =?us-ascii?Q?VTkPh/7m01iobylnHHutBHWtnGY5nOjax4o2B5RXcyIFCk4q3iwT9faejAu2?=
+ =?us-ascii?Q?pg1BHkMBKF4RXFWr82gF9WaqB0bug8ZliPcsyFdG9lwVIfz7OgGEGBKYKV66?=
+ =?us-ascii?Q?mtcUavMI0K+RxEolh+VDGYuaeTGdTS20lv3rRGBkbLtzAFX4TBAAKmANLxBb?=
+ =?us-ascii?Q?C4bpPsWW+UbXT85ZYmfE484i+FKjs4C0wIzNhiPMuDSuyVZrhfhIU0IIo2Mb?=
+ =?us-ascii?Q?7H2G4Lzcl/SPRQRwNYRYUJrS2LGeyjUqJlg+npsfpH0442kK5LHLCx1n45Ig?=
+ =?us-ascii?Q?gEqweCYAgCD6efN7UMWUHsjouw9PFLgI?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SAjuMzLGLXEfKKf4meWxrspEuu3XOjJ30gmFGrWUS9b5/7uiGSQkoj4j+1Bj?=
- =?us-ascii?Q?E1SfGYkC1CAcwkS/bFUeiPoVGqEQwfZ6xNU2vXRCYDUKYyuGRH9LdccOFYW2?=
- =?us-ascii?Q?p27R9DKzuidyJW4XQSrKtLZZxOmD93uEWUksC6MnhhtWhUBa5cpV8Bmn46TZ?=
- =?us-ascii?Q?bhMOcvouayHked7fJwBwE76x7YBFWAdjujM7txTGYdukBq8Fc3WRTE5AQyfh?=
- =?us-ascii?Q?62awZfETliMCwN5s4k6jFDGK6Wh59puurPVNG4p+xe9noLxxtQrA25Vr4nN9?=
- =?us-ascii?Q?DmEx0IB2w0IUVsyDA4kUGdB0a2u3G1xsRFKEK+724vMGv2mgmn5cbxGvNkAP?=
- =?us-ascii?Q?TKGEwm4VJzpUyVn99fhctaPOQtBjZ7lajBqrIoAbKfGs2yR21pOT1a2VMgLb?=
- =?us-ascii?Q?f+cUHG+MsgjAEc8MwY1FlYAm1XuVdGeNA++KPpGBZBq1xxNn8INrcgba2Vpk?=
- =?us-ascii?Q?wmDulrw4WOU7lqbJXejy8/+xH0b7yY434v4U326mK7tHsv0rH8NKawUlMza9?=
- =?us-ascii?Q?XXYeHjPGrBj5TUEZoy7EJr+RKYvgpRbTqN2lseuHy5IdmN3DrPKL0d6wlPlJ?=
- =?us-ascii?Q?R65PVFAT1mCYBD8Vp4INVLtXMuwlDoZMSBqE1F6Oz0mzC0Wu3Lu2MzUGUcTz?=
- =?us-ascii?Q?v064ovvdnWLxsqS+ASajC0NyCDBTsYTPdo2ONQWyP7+uZQZtjVjxJVNV43of?=
- =?us-ascii?Q?1tz5olZh44hvDQFN769X2QDGTDAdWH4Xngiw9H7+hAaCI2SezBexmAK+PwWK?=
- =?us-ascii?Q?ZiHkJYf6cJEXpHsm1VTawYsrTTXco5GC/E9QRnX1mGK7iJpJTcwnBoZW1e3b?=
- =?us-ascii?Q?8/LfHN/QL3dDTA+r7uWxrvK4I6TT74qjJIsJPE+UYamRXBtYXzVtjXucPBpZ?=
- =?us-ascii?Q?rV8kTv7EPKPEoqFvIqRY5gYOkm9Lwk2sHxgfbUnEdaTsx91Lbe/cCGFuecUw?=
- =?us-ascii?Q?rQ3BKQQhF3Ud+Er2aOJlzQM1ZxnwIBGiE4xFlfxLpSIeAHB6ot1icaYMLM/z?=
- =?us-ascii?Q?dQ7ZtQmERKpq4Wz+NJhJt/aPdkS9637WlBc4FE7zZkwB1KcX10C2+1yFKEI9?=
- =?us-ascii?Q?jW0Zrp2jlVH2B96v0YjN59Uq9v+rL8M4AjcTz+VqNpsEzWjzxwxorw/+omaq?=
- =?us-ascii?Q?QtF7CYtbIpj9GJIR9/+U79r77XFrcOjwtn29Ng6TxNQGW+kKWk9Ded1E+C9O?=
- =?us-ascii?Q?3KkG7028cAEbgfAKm33kztw2LJmjC+uzV9Tcp8cveasX/QJ1hVcjOt3TWV/E?=
- =?us-ascii?Q?yb7uKwtsE/aBENCJjyu3iTcGOn+4mRkuJ95E9WQKJvw0WLo4Xzmd/lyv9/lF?=
- =?us-ascii?Q?Mf+u9zG35RXykUxuQdxzL81Ycd/pOyeyLtv6Uw7Sli27zapQVG5n6dT2ajOD?=
- =?us-ascii?Q?dOUUZIHhhQXTwMyxhv0NBUzGyLTncMKePNPKsZ3H/tu9khyfyzeiaq5sqoVd?=
- =?us-ascii?Q?WzyD0wwNiFW9FfqZPzWgqYnAuB2SzthILtnPlriMYIHY+mY6+ow5Ezo0snli?=
- =?us-ascii?Q?NUT/1wi6CZYWQJpk4OsQsaqF+y7/h/PN38i6KIH2MrF2SpYcE9f3M9xfHKv/?=
- =?us-ascii?Q?w2EtyA8l/i79RoCoNe9EHhXLAlaYSQEZtyv9/s2X?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c16a573-7ae1-437f-c431-08dd65ed56cd
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+	=?us-ascii?Q?vUkgMEv5GwT6QH8YRMIq/IJb6nQjOIrYuYiAgothiSbVglT0TW78D7p+2Pt7?=
+ =?us-ascii?Q?2wUpcdkZVqxrI5jVRNvKGs3FpKGZhHoRVvbgdig0LCrAPplaHeFzF0DZ4fqO?=
+ =?us-ascii?Q?JoRilB9TosocRxscatt3ptVcHiTZaAFohdlQjxOgZszOMe9KplCvCEmVrpxZ?=
+ =?us-ascii?Q?6rG7Q90uc8bbbXChkxvH8DPrYUsF5dURu4CLdyZ8L6/3NydfnhED5yVaFgDz?=
+ =?us-ascii?Q?zuvGM9RlyOxY+qVWhedIiOD6KdNUmMW7LB7h6S7xTbIZsZ1O2GDtL7Xo34Py?=
+ =?us-ascii?Q?hTiyLpXoIp4cEMuXN+c21wkxfizqleGJpinp4jt4vKiTlJejPKesPPys48fp?=
+ =?us-ascii?Q?rRKK8i13DWHvqBasuyneA3puPNPEKH/Ww5H7mitg9ilqqAnU/F+kXqF7PIKG?=
+ =?us-ascii?Q?eT9Cp3exwlZIxp5xOhY+RQ3xXee4AncfO6iu+9XMmhaaM5T1GMP3/lvywm5X?=
+ =?us-ascii?Q?j+vMoNJiLF8umCdB8Zm1CQU6WKJJkD9HjDsFm7vuUHn7yVrT0wOdhk0qr6TX?=
+ =?us-ascii?Q?tJP4CP+ZB/xUnK+Rek4W0xnCkGwhpOeaQsD7eLnRDDidZWHmwo2KwET6bt0U?=
+ =?us-ascii?Q?Ri+LRWAk51r+W39dku6UHSF30IvXIeQ6EX1ysvWIGgAn1vrK/0oTgLm/hOZ0?=
+ =?us-ascii?Q?xil4TcWWHpGNGiXn+5orWGNmSIqCen9R/ZtshrHgdF3lLb+cO3OzZGnyiMYs?=
+ =?us-ascii?Q?cfdepw1ng2Hjd+d5XKiovl+F2A5SHMUMTAaKJsukrKhyNpQCZ4EcCmaFB1sl?=
+ =?us-ascii?Q?zYbHCO5zpkMxYkuccXvs1Z8txwuok7iDnsUUXN5/IZqu9pahyogAyRm4nbT9?=
+ =?us-ascii?Q?xrwbiNQGqje2jjWskR9v5zzb0WFb6wTACYFhHC2XTUpOXcXTjuVlx6pBDu9+?=
+ =?us-ascii?Q?opVHLJ9Cm1KkPTnuQU/8A/rnPl+jfjHRy+Zq3DXLi9XZQRSAu530F65lBs4+?=
+ =?us-ascii?Q?c9fqsYYNyNX8SPCp02bvWPH8BlSKYEQSOPYho6mk+QNtqB49xulOKg7wyiZg?=
+ =?us-ascii?Q?mAEyS0h0Ov7HO8Me2p5KLoqJMNJ5sG1VaDMJxTeZoF6N68kbD78S9aLaYMsF?=
+ =?us-ascii?Q?lFPN2LJlQz/s+FN47O1V0nP6HT2hOb2bNRUHTdol+P1KExqrBPAeAyRWQjXH?=
+ =?us-ascii?Q?cvy3XCdM1WTxvKC9+o7B0wjIJ9fnxhLIGPfs/fDOClXAbRxywQrKYGQAmyqA?=
+ =?us-ascii?Q?fRa1nFgV91wFX4UVxEnYHrTixk5fej23iYkf9v7JxT8RK1z/0drpJpJX/RmB?=
+ =?us-ascii?Q?uNuLDttChlQLYUnf3Rx92oroaIn8R8+R7ikniNmhnwelhjAuvxpCbRZut0AS?=
+ =?us-ascii?Q?jhKjJi98y9+LxUYHkgZmOo0U1Pq8Zjry1X79SI69sCbFlFgu4u5CNcO86TgT?=
+ =?us-ascii?Q?RSYbc4B7NBlDLCWdQjnZqqk0FI8Z8dz4GrsjINi69rTgubLVBg7mnoTyY6P4?=
+ =?us-ascii?Q?yLmDcYTurN/HPKzm70/DnEB2P6QWxtThl/Jn8n4bZZnh5S7/KyxhlRs6WqnP?=
+ =?us-ascii?Q?vNywcEI8uarynYN2z36preMEn1+3RnDouQQZLvwbw7NriRpfxwxfnO9+Tqyf?=
+ =?us-ascii?Q?io6aLaLLt+RUUtDSVaPo9jS4U+POL1x2SBBPCV6V?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ae68570-96a8-4c87-fe42-08dd65ee6424
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 07:20:19.6947
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 07:27:51.4634
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q994YAwtrREu6ScvI6YpEGoRIQzkPYVjvoH/Z/2SdQ81bS0cYXSSSXov+8YYSpCWbTYAPIVZsFdE0E8MoO/UBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9802
+X-MS-Exchange-CrossTenant-UserPrincipalName: mR8L+bhRCmDRogA6vrjnRvQbH4/P+YVO8E2vocWPpqC50xmc/6pCknubgSs/jUsy8egZhy5O3qeXhLjM/WOKwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8106
 
-Hi Sudeep, Cristian
+Hi Greg,
 
-On Mon, Mar 03, 2025 at 10:53:21AM +0800, Peng Fan (OSS) wrote:
->i.MX95 System Manager(SM) implements Logical Machine Management(LMM) and
->CPU protocol to manage Logical Machine(LM) and CPUs(eg, M7).
+On Fri, Mar 14, 2025 at 01:37:19PM +0100, Greg KH wrote:
+> On Fri, Mar 14, 2025 at 05:21:37PM +0800, Xu Yang wrote:
+> > Hi Greg,
+> > 
+> > On Fri, Mar 14, 2025 at 09:18:51AM +0100, Greg KH wrote:
+> > > On Wed, Mar 12, 2025 at 04:26:54PM +0800, Xu Yang wrote:
+> > > > The i.MX95-19x19 EVK board features a USB 2.0 Type-A port, with this
+> > > > series primarily introducing USB 2.0 support. In the i.MX95 architecture,
+> > > > the USB wake-up handling mechanism is integrated within the HSIO block
+> > > > control module, utilizing a dedicated wake-up interrupt. Therefore, we
+> > > > also implemented corresponding wake-up logic code to properly manage this
+> > > > functionality.
+> > > > 
+> > > > For detailed changes can refer to patch commit log.
+> > > 
+> > > Does not apply to my tree :(
+> > 
+> > It'd due to below dts patch #2,3 not in usb tree. However, linux-next already
+> > have them. I see Shawn just send pull request for 6.15. To make it easy,
+> > let me ping you when usb tree have them, is it ok?
+> > 
+> > https://lore.kernel.org/linux-usb/20241204050907.1081781-1-xu.yang_2@nxp.com/#t
+> 
+> That will not be until after 6.15-rc1 is out.
 
-Any comments?
-I am thinking to address comments and post v4 after 6.15 merge window close.
+In this series, patch #1-4 should go to usb tree and path #5,6 should go to Shawn
+tree. You can't apply patch #5,6, right? However, you can ignore patch #5,6 and
+pick up patch #1-4, am my understanding right? Shawn will pick patch #5,6 to his
+tree.
 
 Thanks,
-Peng
-
->
->To manage M7 in a separate LM or in same LM as Linux itself. LMM APIs
->and CPU APIs are needed.
->
->When M7 is in LM 'lm-m7', and this LM is managable by 'linux-lm',
->linux could use LMM_BOOT, LMM_SHUTDOWN and etc to manage 'lm-m7'.
->
->If in same LM, use CPU_START, CPU_STOP, CPU_RESET_VECTOR_SET and etc to
->manage M7.
->
->Both LMM/CPU APIs will be used by remoteproc driver. The remoteproc
->patchset will be posted out after this patchset gets reviewed or in
->good shape per Maitainer's view.
->
->Build pass with COMPILE_TEST
->Tested with remoteproc on i.MX95
->
->Signed-off-by: Peng Fan <peng.fan@nxp.com>
->---
->Changes in v3:
->Patch 1: Correct LMM_ATTRIBUTE return values
->        Update the return status of LM_BOOT/RESET/SHUTDOWN/WAKE
->        clarify sync/async in the Introduction chapter of LMM
->        Update the Origin entry in LMM_RESET_REASON
->        Clarify CPU run/sleep mode
->        Add note for CPU protocol to indicate AP using PSCI, non-AP use OS.
->        Specify mandatory for each command in LMM/CPU per firmware owner.
->        For BBM/MISC which have optional command, I will update doc in separate patch later
->Patch 2: Add description in binding doc
->Patch 3: Unify scmi_imx_lmm_[boot,power_on], Use le32_get_bits
->Patch 4: Unify scmi_imx_cpu_[start,stop], Use le32_encode_bits
->	 Add pointer check in scmi_imx_cpu_started
->	 correct nr_cpus calculation
->Patch 5: Unify lmm shutdown,boot/power_on, update kconfig to avoid build bot issue
->         Add R-b
->Patch 6: Unity cpu start/stop, update Kconfig to avoid build bot issue.
->         Add R-b
->
->Ran smatch as below, no issue found.
->~/smatch/smatch_scripts/kchecker drivers/firmware/arm_scmi/vendors/imx/
->~/smatch/smatch_scripts/kchecker drivers/firmware/imx/
->
->- Link to v2: https://lore.kernel.org/r/20250212-imx-lmm-cpu-v2-0-3aee005968c1@nxp.com
->
->Changes in v2:
->- Add dt-bindings patch 2
->- Add a maintainer entry with patch 7
->- Update doc to address various questions and make it clear
->- Use strscpy to use scmi server returned string
->- Drop extra blank line
->- Shrink scmi_imx_cpu_attributes_get function args.
->- Typo fixes
->- Add LMM_RESET_VECTOR_SET
->- Link to v1: https://lore.kernel.org/r/20250121-imx-lmm-cpu-v1-0-0eab7e073e4e@nxp.com
->
->---
->Peng Fan (7):
->      firmware: arm_scmi: imx: Add LMM and CPU documentation
->      dt-bindings: firmware: Add i.MX95 SCMI LMM and CPU protocol
->      firmware: arm_scmi: imx: Add i.MX95 LMM protocol
->      firmware: arm_scmi: imx: Add i.MX95 CPU Protocol
->      firmware: imx: Add i.MX95 SCMI LMM driver
->      firmware: imx: Add i.MX95 SCMI CPU driver
->      MAINTAINERS: add entry for i.MX SCMI extensions
->
-> .../bindings/firmware/nxp,imx95-scmi.yaml          |  23 +
-> MAINTAINERS                                        |   9 +
-> drivers/firmware/arm_scmi/vendors/imx/Kconfig      |  24 +
-> drivers/firmware/arm_scmi/vendors/imx/Makefile     |   2 +
-> drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c | 276 +++++++
-> drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c | 257 +++++++
-> drivers/firmware/arm_scmi/vendors/imx/imx95.rst    | 801 +++++++++++++++++++++
-> drivers/firmware/imx/Kconfig                       |  22 +
-> drivers/firmware/imx/Makefile                      |   2 +
-> drivers/firmware/imx/sm-cpu.c                      |  85 +++
-> drivers/firmware/imx/sm-lmm.c                      |  91 +++
-> include/linux/firmware/imx/sm.h                    |  19 +
-> include/linux/scmi_imx_protocol.h                  |  42 ++
-> 13 files changed, 1653 insertions(+)
->---
->base-commit: fb2b3e3bd74b8a3f742eaade06f6565323cf4bdf
->change-id: 20250120-imx-lmm-cpu-418daaa257e2
->
->Best regards,
->-- 
->Peng Fan <peng.fan@nxp.com>
->
+Xu Yang
