@@ -1,90 +1,234 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271CF212FAC;
-	Tue, 18 Mar 2025 16:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55921148A
+	for <imx@lists.linux.dev>; Tue, 18 Mar 2025 16:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742315347; cv=none; b=lVCcvNV+ThshYFGlDmSnavEDqUWoZ8Scfq1XWIqopcJic04lDsByST/Lqzslm/7xhUtkLgGZCQn9ca4gYuWpLqX2ieUxVkO2h6gOid06lRQeS5RpujfseAbE8oE2hJEtVgdkSmAe5tN2ipHWT0qIsCCWa2sHyhRtPUjl5znRVGU=
+	t=1742315854; cv=none; b=m2qOiwP5aqteperkhkmjf4SlihjQj9MB1xH6WBQYS4XC6BzwNJgK8ImOWmLwIqUBzvhkuStVTtA6IvpUPx9H2zaIthAvXWwAbfkmmVmSL64zbJFz9TruWJAR7GGg92C5f2YdHI6VaWr8rfEBo92e5gtSr1eVub0wDROf24UygwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742315347; c=relaxed/simple;
-	bh=CQkTVR5W6jN8FTtFT51uf7uIVr+B3UlEoOqBrGiOb7M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=U0pQjoeIf/E4cjs2R5ogPtYuSO7YzBuKcEna5QoPGNGDeGLYaxDCZ/vgpZjO5evQeBldm71Grvrk0efqhYAFkCtm5TikscqT0RBeE6IrynBURZw29I9RH8lBiCh7PFTJcVRy0Nsr+jcN9869X88c6S6cSCWS01hEIFCA2uehp7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8rC+aMS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742315854; c=relaxed/simple;
+	bh=0qDP6EQsWN062W7kH85IFiHUOEPw6iXqikml60E1P6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aaF+x+y9yRoNG7gzGykHrV2JxdY17V1Ep16L1AsvS+8489uVfzqxUMfcNmLS3y9RJLgmCmzKbuwi16Ryw9kZ+Qbkyhi+Zq33uCVu0oud0JzoDHlEkXwjEyo2oQI+afbjjssvmQ+RnLTZG+G/D/IzjTt/Aze2eRSnQKq3X6Go84I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PEpYyfnf; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8rC+aMS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F165C4CEDD;
-	Tue, 18 Mar 2025 16:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742315345;
-	bh=CQkTVR5W6jN8FTtFT51uf7uIVr+B3UlEoOqBrGiOb7M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=A8rC+aMSvzneKuAVXqlowQjEw7mMOE4/yL/vfEaKET0LPR91ma51QNlLHPWtzcks4
-	 +dq6bkEy+qPOMq+nSVqZfAhnu2PUvSgT0+JRElYe88LOBhKHlpK6/UMiQXeQ8rG53G
-	 DyLSHfS8W91e5XoTwH8PC994bEn/K3fIdRiRUokhrL1wSn/p8j3pMRx0zEeL1Tr2jl
-	 Ooo1+6t0v/OjdAZIKud3IuNVceS+qBJG3ET+pwwpfnYRCArE7Y6JVce2E2frm191CL
-	 T6NGdX83EMKP881E9Swm086+ITvUeXiXjUsCqWtdwFuHsKdGVxoHFb4EH0EWjzk4om
-	 PrPEX6+lUYaIw==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Shawn Guo <shawnguo@kernel.org>, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Frank Li <Frank.li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>, 
- Iuliana Prodan <iuliana.prodan@nxp.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20250311163255.2664-1-laurentiumihalcea111@gmail.com>
-References: <20250311163255.2664-1-laurentiumihalcea111@gmail.com>
-Subject: Re: (subset) [PATCH v5 0/3] add sof support on imx95
-Message-Id: <174231534280.179247.7213620173027724495.b4-ty@kernel.org>
-Date: Tue, 18 Mar 2025 16:29:02 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PEpYyfnf"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-30155bbbeaeso4915306a91.2
+        for <imx@lists.linux.dev>; Tue, 18 Mar 2025 09:37:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742315852; x=1742920652; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=RX5YGFbVgU4B7bQVgIXWTMqxSJNIzkC7ef+oNs3DsRY=;
+        b=PEpYyfnfPkTpMjCs4DuXKyymXxtz0+qDAkTemUGWeKqmiHA0m8EkoGQpp9F/yErTHT
+         wH2KhjNu+WH2jW+UThxmL9YPHqVni7evvPpgedAA46YBC2UQfXAA9RBJqWefbJy8eJqW
+         vpkYXYNiX+xhXFQJ7qlXEDZn/6XIAw0fNwlTNsdIAGPwA5P7gn54U1Y5s1e0hPPfqvW9
+         VF/DOceCSAs3I6Jw/KeBBhH1RbbSrcPL/ArfHbX98e14ATNLz/MXUtnjHhfC1BY4JFAf
+         PIQsy5KOuUbSViLNWOqZ65ytjV73ZdYNHJmTsY3/MmheKhmvU+etTYUtS110T92ajx36
+         4X2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742315852; x=1742920652;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RX5YGFbVgU4B7bQVgIXWTMqxSJNIzkC7ef+oNs3DsRY=;
+        b=vI7+1giV8vjam0eGPHhZUYbHwk2CpMqBwguf6jqGwDnZo5tCmjGfuvAJVXtJ0/LR6Z
+         NKJLtJEw8rbxd+B6H6WvZgImiIqgWAFdz95OzxCoi+j4ytvCvt7KuyJQR1Cb0JeGeiLY
+         UwY2aur5zsTwmtkcRD07x0BlZaB7Z1WJBk1umkjAF9SKof3yw4+5+BIuyGfK/ZCJgY2o
+         vhvCG+krp38/71Vn/MAfXZFkrld3SnHkLU+JByjCQBlub0pYaTz2FBbYYr4vmZ8i4k2s
+         zX+6D8rovyWfPKGm/vIuKAOm8olTj8CmEVu54kWba4P9Xo3a871htOvl9Wdu1Y2EBcJm
+         ARiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjbVkDaJfsexe9Vnw6i3KlFFMyQHzIJmLnS11R2zIgywgrroLE9V/WIw6GS7pvTT9o5D8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxxSlRKhBmiiyFdwtJBWtvu1tRzwV46Q0DL8JqbVM5d/rvdkjws
+	sje+6G3G9IvGXAg5SEPPAHBDr2yb2fZ4vzLuUJogw4pX+bP8J6nf
+X-Gm-Gg: ASbGncuSYVDGUs6o8tm9c7MgyHRgz72kxafrvpwJUQNDqQRFK9DsihcKZ0TM50stc5N
+	uQD3sfnKDH3oT5Em8cLdxCXwoYgzETNLkP/WCtDRdG942ybv+euEPRDcTDi7o/Gcn77GNytTLZt
+	floEUha6AfJKZExEzUE+o4rttSn3mA6L/fmMbRnTN50g8DJcFH5qUk/bgz+jUv+SvMEAOplFjf4
+	GsEdXcKDwDD4DKOsZVEyFKemnY3XOx37sa70OvWaiat+HY3ZQvXhRj6r3irxWXUqkPTzDudzClm
+	XQ+tZ932nt0z154c0hBLYNsrwAGBWnK7jLAOIKwt374maPAX2LJbH0i932Ron9QWdOZYZ3dbcMu
+	j53gcLD5snOOMdovQ0g==
+X-Google-Smtp-Source: AGHT+IEz2mE1n6qLna/bcwWtLqNzBsV58RfTXND5Fpx8ZSvD076I5rzelZDBeEfv4UsqUmvwKng7lw==
+X-Received: by 2002:a17:90b:1b47:b0:2ee:e113:815d with SMTP id 98e67ed59e1d1-301a5b14938mr4268197a91.8.1742315851830;
+        Tue, 18 Mar 2025 09:37:31 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30153532d7asm8443252a91.21.2025.03.18.09.37.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Mar 2025 09:37:31 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <ca734f66-593f-4e7c-bc76-e343a7eb88d7@roeck-us.net>
+Date: Tue, 18 Mar 2025 09:37:29 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] dt-bindings: hwmon: Add Microchip emc2305 support
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: florin.leotescu@oss.nxp.com, Jean Delvare <jdelvare@suse.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
+ linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, viorel.suman@nxp.com, carlos.song@nxp.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>,
+ Frank Li <Frank.Li@nxp.com>
+References: <20250318085444.3459380-1-florin.leotescu@oss.nxp.com>
+ <20250318085444.3459380-2-florin.leotescu@oss.nxp.com>
+ <7afcd224-1154-4e2f-b383-10f6a89fdae0@roeck-us.net>
+ <CAEnQRZBmYdLh29ha1FKz8=CbxjFBFFTgDkjrEmwTxW2WcxodfA@mail.gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <CAEnQRZBmYdLh29ha1FKz8=CbxjFBFFTgDkjrEmwTxW2WcxodfA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 11 Mar 2025 12:32:52 -0400, Laurentiu Mihalcea wrote:
-> Add sof support on imx95. This series also includes some changes to
-> the audio-graph-card2 binding required for the support.
+On 3/18/25 08:33, Daniel Baluta wrote:
+> On Tue, Mar 18, 2025 at 5:22 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On 3/18/25 01:54, florin.leotescu@oss.nxp.com wrote:
+>>> From: Florin Leotescu <florin.leotescu@nxp.com>
+>>>
+>>> Introduce yaml schema for Microchip emc2305 pwm fan controller.
+>>>
+>>> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+>>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>    .../bindings/hwmon/microchip,emc2305.yaml     | 113 ++++++++++++++++++
+>>>    1 file changed, 113 insertions(+)
+>>>    create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>>> new file mode 100644
+>>> index 000000000000..e61ef97e63af
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+>>> @@ -0,0 +1,113 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +
+>>> +$id: http://devicetree.org/schemas/hwmon/microchip,emc2305.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Microchip EMC2305 SMBus compliant PWM fan controller
+>>> +
+>>> +maintainers:
+>>> +  - Michael Shych <michaelsh@nvidia.com>
+>>> +
+>>> +description:
+>>> +  Microchip EMC2301/2/3/5 pwm controller which supports
+>>> +  up to five programmable fan control circuits.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    oneOf:
+>>> +      - enum:
+>>> +          - microchip,emc2305
+>>> +      - items:
+>>> +          - enum:
+>>> +              - microchip,emc2303
+>>> +              - microchip,emc2302
+>>> +              - microchip,emc2301
+>>> +          - const: microchip,emc2305
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  '#address-cells':
+>>> +    const: 1
+>>> +
+>>> +  '#size-cells':
+>>> +    const: 0
+>>> +
+>>> +  '#pwm-cells':
+>>> +    const: 3
+>>> +    description: |
+>>> +      Number of cells in a PWM specifier.
+>>> +      - cell 0: The PWM frequency
+>>> +      - cell 1: The PWM polarity: 0 or PWM_POLARITY_INVERTED
+>>> +      - cell 2: The PWM output config:
+>>> +           - 0 (Open-Drain)
+>>> +           - 1 (Push-Pull)
+>>> +
+>>> +
+>>> +patternProperties:
+>>> +  '^fan@[0-4]$':
+>>> +    $ref: fan-common.yaml#
+>>> +    unevaluatedProperties: false
+>>> +    properties:
+>>> +      reg:
+>>> +        description:
+>>> +          The fan number used to determine the associated PWM channel.
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +      - pwms
+>>
+>> Is it necessary to make 'pwms' mandatory ? The current code works
+>> just fine with defaults.
+> 
+> The code adding OF support is added just in the next patch, so the
+> current code isn't event
+> probed when trying to use dts.
+> 
+> Or am I missing something?
 > 
 
-Applied to
+The patch introducing devicetree support to the driver doesn't evaluate
+the pwm property. That makes it quite obvious that, from driver perspective,
+it isn't needed. I don't immediately see why it would add value to _force_
+users to provide pwm frequency, polarity, and the output configuration
+if the defaults work just fine.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/3] ASoC: dt-bindings: support imx95's CM7 core
-      commit: 811944a790451169876947a89338d2b86ff9fe5b
-[2/3] ASoC: dt-bindings: audio-graph-card2: add widgets and hp-det-gpios support
-      commit: ed92f40eccc801bd0e5dfd78b1058072638471f1
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Guenter
 
