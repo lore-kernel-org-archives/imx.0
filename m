@@ -1,64 +1,145 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44198B664
-	for <imx@lists.linux.dev>; Wed, 19 Mar 2025 09:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87E920C46A
+	for <imx@lists.linux.dev>; Wed, 19 Mar 2025 09:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742378059; cv=none; b=KXpDx67leCfjaa/xF9wqT7E131g773Q8MKLqdahE1PVrdUoopyfITzg7S2TSnfR7fgGonK6XiFPkmyCOCrwh1C8Y7NHj1gqf6CrtrcrrSL5HpbpSfkZLZI+zqs1AP0AwqA7cVo393AGKg06TMZ6eKbt5t/2Dd6UdaZ0li863yAY=
+	t=1742378386; cv=none; b=CEQCAOxntpg+HY75IkRi1La1VYq0y71zOChaeX14bFe928b/htm/BoxHyu+iw4Z3HovNPCNqmQ122d9mkBho9dWODV8xjRo1ppa2AAJ4Bluv2iVrO8fW7P0CBAg5gY4a98pwqK8fLd1cnpt1BENuqjE3yUj4vDdT0d8aUa2u/SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742378059; c=relaxed/simple;
-	bh=AnOGRXGgrFFLR8eD2QPQt4D1N8CkEu7pT4SS6OlZHVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JFnJO1kYCDdxLKYmfD7jUBvwvrTRZ2kh+uVidG5zBcisbeRu9G2rbQBn4MFLGc0vqVHQF2RlBDyns9aK13l9QJY4M3Sdyg6na+SocOAiRnU4dK/56ovHW/lr7KDcUgPxsUscZAYcMdR5vp+W3nSNyCJ2AeauIBOVUj4K3Xqr7CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B1DCD13D5;
-	Wed, 19 Mar 2025 02:54:25 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC4AC3F694;
-	Wed, 19 Mar 2025 02:54:14 -0700 (PDT)
-Date: Wed, 19 Mar 2025 09:54:12 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	<linux-kernel@vger.kernel.org>, <arm-scmi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <imx@lists.linux.dev>,
-	<devicetree@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 0/7] firmware: scmi/imx: Add i.MX95 LMM/CPU Protocol
-Message-ID: <Z9qURBnqtvbNoZ7K@bogus>
-References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
- <20250318082804.GA1326@nxa18884-linux>
+	s=arc-20240116; t=1742378386; c=relaxed/simple;
+	bh=A7/fZiQcIOJ5NJ0ZIQ3qSpzwWLkKdoNXZfhF+uZsw6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EtEQbnzh6sb2JEbQaMTsYuXPb0FAgjM7YDGKtqwjF3V8EUYUIe6GZbLzM5fXq4f/GMzmKaFifiqeGaD+WyY6gjmi9xFI25I6CwixI7a2WtBqexuG446UkIcOe7OjzvbqQ+6ZwZa2x4U/RRiO2QfzXIGzSJr2c6riq03JLBcLgh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UW+Xvx2D; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XTsKLwFy reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UW+Xvx2D";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XTsKLwFy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1742378383; x=1773914383;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GlT/C20cWGKRSDi1pjWsYB6aiO4zGZT8fzSlsIsRNJs=;
+  b=UW+Xvx2D8PTiJATcwUmJKsuwIErWL2i0l1Lk7dwmueSMKymvn4ffASPr
+   rNMhBws7g81ssKU3RWotIT9ECP5x65wo1/FGRWZJewo/JHJ7QUeQdvtmj
+   OpN4e7YFbQNJy5njoMR4kJPloH33ExJaWUyk67+CGYc8E8hEt7+xldDK3
+   CCPY+h3yU+jkTkWqcF+eIp7xMXZpjEan1gZLSgYBI+xLRAr+ayr2FTeh3
+   ECvPLM0yPeGmBinewANqFrjJO6ceArqtqzTKUcKeYU8lF+r5c50Us5ksk
+   CY7UPa41/OmpznlGeewSJjdSJsYTFm4zX3d4XItmaaAu7gnuGeaf+vG1+
+   w==;
+X-CSE-ConnectionGUID: xLtByYCFRwm1Mpj9OTlMyg==
+X-CSE-MsgGUID: xhT83+S8RHS7Vf1VWKmArA==
+X-IronPort-AV: E=Sophos;i="6.14,259,1736809200"; 
+   d="scan'208";a="43041375"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 19 Mar 2025 10:59:35 +0100
+X-CheckPoint: {67DA9587-18-7141A0B0-E6EDEC14}
+X-MAIL-CPID: B0D1A9EB8A7FE01E6C3F0B58B214D668_3
+X-Control-Analysis: str=0001.0A00639D.67DA957C.0053,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 695011609D3;
+	Wed, 19 Mar 2025 10:59:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1742378370;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GlT/C20cWGKRSDi1pjWsYB6aiO4zGZT8fzSlsIsRNJs=;
+	b=XTsKLwFytC12f2y9DCUDnDU+amWCWgwRNDRiqQi5I4Bsc4+JxbzXJfuaHE1in7liXkSSNr
+	57rK2Q+kycs4U5FtJNk0kZO0Z9gl9cWEqa1ePkJX7V8vLrtrlR4CjrrKIME9oS1H6ezQGT
+	PYNwhJb5SKVHoB6uU+t/DZ3BSpogTvdEGezueBbqfnOuVOerS1QmJ/iTLgk0uw8Zd9K/Gr
+	1EbJvqeWMsPNMMKd2cAOwY9DJ8e4CIyBgXpqVFxyPApeyMItEMHfebPRBtSRGViDsSmed7
+	FN4cwFtkkLO7GipfLuEAM4vtFz6YI9gfqJCNdgC2be1h0r7rFAN3T6fT239+Pw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: shawnguo@kernel.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, krzk+dt@kernel.org,
+ conor+dt@kernel.org, festevam@gmail.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, frank.li@nxp.com, aisheng.dong@nxp.com,
+ daniel.baluta@gmail.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com,
+ iuliana.prodan@nxp.com, a.fatoum@pengutronix.de, mathieu.poirier@linaro.org,
+ linux-remoteproc@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v6 2/5] arm64: dts: imx8mp: Add mu2 root clock
+Date: Wed, 19 Mar 2025 10:59:28 +0100
+Message-ID: <4999695.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250319094621.2353442-3-daniel.baluta@nxp.com>
+References:
+ <20250319094621.2353442-1-daniel.baluta@nxp.com>
+ <20250319094621.2353442-3-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318082804.GA1326@nxa18884-linux>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Mar 18, 2025 at 04:28:04PM +0800, Peng Fan wrote:
-> Hi Sudeep, Cristian
-> 
-> On Mon, Mar 03, 2025 at 10:53:21AM +0800, Peng Fan (OSS) wrote:
-> >i.MX95 System Manager(SM) implements Logical Machine Management(LMM) and
-> >CPU protocol to manage Logical Machine(LM) and CPUs(eg, M7).
-> 
-> Any comments?
-> I am thinking to address comments and post v4 after 6.15 merge window close.
-> 
+Hi,
 
-Sure I will take a look later this week or next week.
+Am Mittwoch, 19. M=E4rz 2025, 10:46:18 CET schrieb Daniel Baluta:
+> Enable MU2 node and add mu2 root clock.
+> MU2 is used to communicate with DSP core.
+>=20
+> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 4 ++++
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi    | 1 +
+>  2 files changed, 5 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/bo=
+ot/dts/freescale/imx8mp-evk.dts
+> index c26954e5a605..d2fdb420f2d3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+> @@ -690,6 +690,10 @@ dsi_out: endpoint {
+>  	};
+>  };
+> =20
+> +&mu2 {
+> +	status =3D "okay";
+> +};
+> +
 
--- 
-Regards,
-Sudeep
+I think this is supposed to be part of patch 5.
+
+>  &pcie_phy {
+>  	fsl,refclk-pad-mode =3D <IMX8_PCIE_REFCLK_PAD_INPUT>;
+>  	clocks =3D <&pcie0_refclk>;
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index 3b725fe442d0..deb98f03180a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1254,6 +1254,7 @@ mu2: mailbox@30e60000 {
+>  				interrupts =3D <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
+>  				#mbox-cells =3D <2>;
+>  				status =3D "disabled";
+> +				clocks =3D <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_MU2_ROOT>;
+
+Please keep status as the last property.
+
+Best regards
+Alexander
+
+>  			};
+> =20
+>  			i2c5: i2c@30ad0000 {
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
