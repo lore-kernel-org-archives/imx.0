@@ -1,104 +1,263 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597881DE3AA;
-	Wed, 19 Mar 2025 16:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE691DB131;
+	Wed, 19 Mar 2025 16:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742400492; cv=none; b=LOXWoB2GjWOM66ALWZnEN5a+kebaN8eJzYchwzCE7Vsy3vPzCir50oqajiWvbvWZJeuLWVW15qYmrkb6TthmaqFqRlJBzUVVaz3xNWtMRs2hBKo+L/PswfkRQlyVpgsbdHCa6eaWBpAmzbFfNgUGowM9plCjrTh0Pvq5+ZXquo4=
+	t=1742401016; cv=none; b=dBYOgOoFY+p+qqWbiMyjZ6tdxFR9cmaswXsCKSCNBUGe1xDNkBLisa8RS1BXhKYKF+s6eg/7e+NCwaYQVxEXM/gb7ub8USnYl8TrthuVNprtiCwfaSIpYELvsqLeC7/CvAWl4txZDTn05Pw4GLshGElbLBiR0YcRobM8PbfKd/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742400492; c=relaxed/simple;
-	bh=ZgQibqnYOqFsCMWXhLzNKeBk1b2KjH8VJddDDteh1cI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VH/p625krh9bANaARJOgvhwJOv9uBIolnJwjx1Y3QROTH8iAsfLQijnekMP/AlRC865IfGYVBcN1B1l0OaHvcClovI+QTYH+uIxJEzh17hdbEIys1OBPFGjTuAQZepAvLpnM6cCBspQrtx16Ikw5cro0e3BD4Jbu+dTfATmkf2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7hn4knW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742401016; c=relaxed/simple;
+	bh=xnDMEd3oDLdDyqilpxe7B268wCPcK5IAlUmeX80LEN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z4g5M2BytXrkoPCLSZdKTi2rlF1q5xyd0qpSL5KWqPVlwqWJF1WOrsNuYI/c9bkIONl56I6ZhJUz0UYroqm+yNsZQ6vLStvVXcJ7Lv7F3vyPsq6ezojm3YdlPBZU73o4CuMxyLqiv1HEzRL69mRt7alayMs6g93FsAY2b3NhVrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Am+CbsLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7hn4knW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B063C4CEE8;
-	Wed, 19 Mar 2025 16:08:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Am+CbsLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861A1C4CEE4;
+	Wed, 19 Mar 2025 16:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742400491;
-	bh=ZgQibqnYOqFsCMWXhLzNKeBk1b2KjH8VJddDDteh1cI=;
-	h=From:Date:Subject:To:Cc:From;
-	b=V7hn4knWJ6YXhzBccFogxrOttg65IlcaiZtOT4Q332gBSwu6eDswCj8ymLjyfweNN
-	 fZiFjKzpmAVxH+e6/gc1/6cqONePhrRpSmLvQOmUUsMoi81OIyMlDydNzKiRVqyTvm
-	 4kQuPTZXEBPBuLsM8Bhc54P5sh9fPjS40uSVY79YeFC7uARceDqmu/NZrcGWWdfLF3
-	 HYFtZp3zNXQK8z20NnYXrvfXa3F8GpGwNbyuJ0GH/mBjIwCcRdBCGJ3snCWujK3A5I
-	 V0kQvTbNLWv0bSAhaGPOffNqFSD8SYrWr0IM++c+CU7hXlEbPi3uJPAFijRVEqXz8a
-	 rKfo7h8KWvJtw==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 19 Mar 2025 09:08:01 -0700
-Subject: [PATCH] i3c: master: svc: Fix implicit fallthrough in
- svc_i3c_master_ibi_work()
+	s=k20201202; t=1742401016;
+	bh=xnDMEd3oDLdDyqilpxe7B268wCPcK5IAlUmeX80LEN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Am+CbsLWZVQEa12XMDxSuzyntXruJiE5MR3Cebx1u1THPmr/6TyF2BtIPaeBI9IXj
+	 3t30Df+b0rQp+UlY0FOwRk6CvkY0CwfQW2g6ku+RqJ505Iti8pAyKbGEc43dvkXaAO
+	 1cMoLK4kEzUSD/gB9IbAdLjv+nWTUJUo6Xcl1FvbxBH3usbwlFziLG7ff6yP+k7oqa
+	 6DsLot8nu46ZD5VcqEshL6C0nQNC3OVRuRMcIkEL9daIEQcjyxi4V2vBhNegC0znLa
+	 E0cQZyyqLQ2g5bGSBV9ysedz0dNqmm+1d84yNfYbtQUtxx304qOmNmTcB7J/Bdt/R4
+	 WDHPS3/vW8inQ==
+Date: Wed, 19 Mar 2025 17:16:53 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Inki Dae <inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Anusha Srivatsa <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+	Dmitry Baryshkov <lumag@kernel.org>, =?utf-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+Message-ID: <20250319-stylish-lime-mongoose-0a18ad@houat>
+References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
+ <20250314-daft-woodoo-cheetah-e029c5@houat>
+ <20250317155607.68cff522@booty>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAODr2mcC/x2MSwqAMAwFryJZG/BDKfUq4kJi2gaKSqsiiHc3u
- BzevHmgcBYuMFQPZL6kyLYqtHUFFOc1MMqiDF3TmaZvHUpP6OVGSrqin1M6Yt7OENF5Q5a8Yes
- c6H/PrOLfHqf3/QCnyO4qawAAAA==
-X-Change-ID: 20250319-i3c-fix-clang-fallthrough-9f5c7cf5e799
-To: Miquel Raynal <miquel.raynal@bootlin.com>, Frank Li <Frank.Li@nxp.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Stanley Chu <yschu@nuvoton.com>, linux-i3c@lists.infradead.org, 
- imx@lists.linux.dev, llvm@lists.linux.dev, patches@lists.linux.dev, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1618; i=nathan@kernel.org;
- h=from:subject:message-id; bh=ZgQibqnYOqFsCMWXhLzNKeBk1b2KjH8VJddDDteh1cI=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOm3Xr/UcwnsnaaTeu/iZ+s1S65X16vqNQasCJwSI2v7Q
- 0+zRSSto5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAEwkXZ2RYcLcHRt+pF05Uhb3
- UNAmTM65y+P/XvkosfjtBuLP1J5kzWFkWFD0ccYyqVtTyy5OUOyqdOyV+dJ/lPP+gikK5rHSVw1
- EGQE=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="zuzyymlcqte4eo4x"
+Content-Disposition: inline
+In-Reply-To: <20250317155607.68cff522@booty>
 
-Clang warns (or errors with CONFIG_WERROR=y):
 
-  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    596 |         default:
-        |         ^
-  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
-    596 |         default:
-        |         ^
-        |         break;
-  1 error generated.
+--zuzyymlcqte4eo4x
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+MIME-Version: 1.0
 
-Clang is a little more pedantic than GCC, which does not warn when
-falling through to a case that is just break or return. Clang's version
-is more in line with the kernel's own stance in deprecated.rst, which
-states that all switch/case blocks must end in either break,
-fallthrough, continue, goto, or return. Add the missing break to silence
-the warning.
+On Mon, Mar 17, 2025 at 03:56:07PM +0100, Luca Ceresoli wrote:
+> Hello Maxime,
+>=20
+> On Fri, 14 Mar 2025 19:21:01 +0100
+> Maxime Ripard <mripard@kernel.org> wrote:
+>=20
+> > Hi,
+> >=20
+> > On Fri, Mar 14, 2025 at 11:31:13AM +0100, Luca Ceresoli wrote:
+> > > This series improves the way DRM bridges are allocated and
+> > > initialized and makes them reference-counted. The goal of reference
+> > > counting is to avoid use-after-free by drivers which got a pointer
+> > > to a bridge and keep it stored and used even after the bridge has
+> > > been deallocated.
+> > >=20
+> > > The overall goal is supporting Linux devices with a DRM pipeline
+> > > whose final components can be hot-plugged and hot-unplugged,
+> > > including one or more bridges. For more details see the big picture
+> > > [0].
+> > >=20
+> > > DRM bridge drivers will have to be adapted to the new API, which is
+> > > pretty simple for most cases. Refcounting will have to be adopted
+> > > on the two sides: all functions returning a bridge pointer and all
+> > > code obtaining such a pointer. This series has just an overview of
+> > > some of those conversions, because for now the main goal is to
+> > > agree on the API.
+> > >=20
+> > > Series layout:
+> > >=20
+> > >  1. Add the new API and refcounting:
+> > >=20
+> > >     drm/bridge: add devm_drm_bridge_alloc()
+> > >     drm/bridge: add support for refcounting
+> > >=20
+> > >  2. get/put the reference in basic operations in the bridge core:
+> > >=20
+> > >     drm/bridge: get/put the bridge reference in
+> > > drm_bridge_add/remove() drm/bridge: get/put the bridge reference in
+> > > drm_bridge_attach/detach()
+> > >=20
+> > >  3. as an example of changes for bridge consumers, get a reference
+> > > for the bridge returned by drm_bridge_chain_get_first_bridge(),
+> > > have it put by all callers (all users will be covered later on
+> > > separately):
+> > >=20
+> > >     drm/bridge: add a cleanup action for scope-based
+> > > drm_bridge_put() invocation drm/bridge: get the bridge returned by
+> > > drm_bridge_chain_get_first_bridge() drm/mxsfb: put the bridge
+> > > returned by drm_bridge_chain_get_first_bridge() drm/atomic-helper:
+> > > put the bridge returned by drm_bridge_chain_get_first_bridge()
+> > > drm/probe-helper: put the bridge returned by
+> > > drm_bridge_chain_get_first_bridge()
+> > >=20
+> > >  4. convert a few bridge drivers (bridge providers) to the new API:
+> > >=20
+> > >     drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+> > >     drm/bridge: samsung-dsim: use dynamic lifetime management
+> > >=20
+> > > This work was formerly a part of my v6 DRM bridge hotplug
+> > > series[0], now split as a standalone series with many improvements,
+> > > hence the "v7" version number. =20
+> >=20
+> > Except for one patch where I had comments, I think the series is in
+> > excellent shape. We're still missing a couple of things to close this
+> > topic though:
+> >=20
+> >   - Converting the other bridge iterators/accessors to take / put the
+> > references
+>=20
+> I sent a couple in this series as you had asked, to show how conversion
+> looks like. But I have a large part of this conversion partially done
+> already, and it is the largest part of the refcounting work in terms of
+> touched files due to the large number of drivers using the iterators
+> and accessors. Here are the functions to convert:
+>=20
+>  A) drm_bridge_chain_get_first_bridge
+>  B) drm_bridge_get_prev_bridge
+>  C) drm_bridge_get_next_bridge
+>  D) drm_for_each_bridge_in_chain
+>  E) drm_bridge_connector_init
+>  F) of_drm_find_bridge
+>=20
+> A) is present in this series as an example but I don't think it should
+> be applied until all bridge drivers are converted to
+> drm_bridge_alloc(). Otherwise for not-yet-converted bridge drivers we'd
+> have drm_bridge_get/put() operating on an uninitialized kref, and
+> __drm_bridge_free() called on non-refcounted bridges, so I think we'd
+> see fireworks.
+>=20
+> In the previous iteration I used drm_bridge_is_refcounted() in
+> drm_bridge_get/put() to allow a progressive migration, but if we want
+> to convert everything in a single run we need to first convert all
+> bridges to drm_bridge_alloc() and then convert all accessors.
+>=20
+> The same reasoning applies to patches 3-4 which add get/put to
+> drm_bridge_add/remove() and _attach/detach().
 
-Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/i3c/master/svc-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+Agreed.
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index e0cd3ce28b7f..85e16de208d3 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -593,6 +593,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
- 		break;
- 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
- 		svc_i3c_master_emit_stop(master);
-+		break;
- 	default:
- 		break;
- 	}
+> B) to E) are ready in my work branch, about 20 patches in total.
+> Indeed item E) is a special case but it is handled there too.
+>=20
+> Item F) is the beast, because of the reverse call graph of
+> of_drm_find_bridge() which includes drm_of_find_panel_or_bridge() and
+> then *_of_get_bridge(), each having a few dozen callers, and leading
+> to the panel_bridge topic. I have converted maybe half of the users of
+> accessors in F), it's 35 patches but it's the easy half and I still need
+> to tackle to hardest ones.
 
----
-base-commit: 0430bf9bc1ac068c8b8c540eb93e5751872efc51
-change-id: 20250319-i3c-fix-clang-fallthrough-9f5c7cf5e799
+One thing to keep in mind is that, while it's not correct, if the bridge
+has been allocated with devm_drm_bridge_alloc, it's not worse either. If
+you're not getting a reference to your pointer, the point is buggy,
+sure, but it's just as buggy as before, and in the same situations.
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+So we can make that gradually if it's more convenient.
 
+One way to solve it would be that, for example, of_drm_find_bridge is
+oddly named according to our convention and it would make more sense to
+be called drm_of_find_bridge().
+
+So maybe we can just create drm_of_find_bridge() that takes a reference,
+make of_drm_find_bridge() deprecated in favour of drm_of_find_bridge(),
+add a TODO, and call it a day. People will gradually switch to the new
+API over time.
+
+> >   - Mass converting the drivers to devm_drm_bridge_alloc
+>=20
+> Again I sent a couple in this series as you had asked, to show how
+> conversion looks like for the typical bridge driver. There are ~70
+> drivers to convert in total and I think most will be easy as the two
+> examples presented here.
+>=20
+> I think this should be merged entirely before merging any accessor
+> changes, as explained above.
+
+Agreed.
+
+> >   - Documenting somewhere (possibly in drm_bridge_init?) that it
+> > really shouldn't be used anymore
+>=20
+> I'm afraid there is no drm_bridge_init(), bridge drivers just do
+> [devm_]kzalloc and set fields explicitly. So I don't think there is a
+> place to document this.
+
+Oh, right.
+
+Then, drm_bridge_add() would be a good candidate too to mention that
+bridges must be allocated using devm_drm_bridge_alloc().
+
+> However I used to have a documentation patch until v6 [0], and I think
+> it should be revived and resent at some point, after removing the
+> "legacy mode" as we are converting all drivers at once. BTW I also have
+> a kunittest patch that should be revived. Do you still prefer me to
+> resend these two patches as a separate series, waiting after the API in
+> this series is applied?
+
+Both options work for me.
+
+> Overall, I think this could be the path forward, let me know if
+> youthink it should be done differently:
+>=20
+>  A. have patches 1 and 2 of this series applied
+>     (why not, even patches 10-11)
+
+I had some comments on patch 2, but it's ok for me on principle.
+
+>  B. after (A), send series to convert all bridge drivers to new API
+>     (includes patches 10-11 of this series if not applied already)
+>  C. after (A), send documentation and kunittest patches
+>  D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
+>     (patches 3-4 in this series)
+>  E. after (B), send series to convert accessors (including patches 5-9
+>     in this series which convert drm_bridge_chain_get_first_bridge()
+>     and its users)
+
+Sounds like a plan.
+
+Maxime
+
+--zuzyymlcqte4eo4x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ9rt8QAKCRAnX84Zoj2+
+dpRkAYDyfJjZ9ehu+S5iLIu/iYFb5O41BAyd4X0ZxJYo+tvcvfATmXEOhoTLNTb8
+n3EjAwABf0KaSbw1P0Md0k9OqZLM6C1VpOctYVm+foj/msMaoLN2L5tDCWvYWRh5
++tfPevPTjA==
+=Dl6X
+-----END PGP SIGNATURE-----
+
+--zuzyymlcqte4eo4x--
