@@ -1,74 +1,153 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8D41DFE00;
-	Thu, 20 Mar 2025 13:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADDE1E883A
+	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 15:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742477052; cv=none; b=AuMGBzivTXvewIBrKJOr+KnGpRldg+5EKoi/NNLARuPT5vR4gHU03fYHiUb9vvkV9nrKL2HUsYF8XsZiRgwFFsG5CqWL1ujLo0Lg2Jakym1yAA00vUyDZ15yCWiIVErRd79UdoeCak5DJZahCBoKZdbPAT3I0zh+aO5M+vKbDNw=
+	t=1742485357; cv=none; b=No9NuWnr2qOUArgqheCp2lpMlOpMUqZlkGK46EMlzuNFFEtPwh6XjPiclImrgkbICurkmWK8Ada9h8qvxfr+tBOoN8ptmR2lNNacl9NHHyesE0/yvm/BBVpbjdRGE73aiUGTA5F+0fs36M0fO4hZLcmX+W7WuVbXvsdLYMz4uJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742477052; c=relaxed/simple;
-	bh=+TpLCsKFfjMwGBDtTsipoHPUIvdSM3dn8mNDo87/f8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=deFZT3Xk+SVNA0A+5iv4fcTzC+sWx9bL2JmPYmuCLUlrbaXOtK7Igvpbo+5Oar5j2Ya2uJjMGNyLsaQVC0w5ryJGV+rRQ1t+ab9wxhNAjT23ghIeXK+PktHyzQSEiMm4rpGb1cEAw5/APhZgliBwqGp06nUMJ/PHEu0iw0D5V8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UukUAibz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1742485357; c=relaxed/simple;
+	bh=d94NmL5l/c4RNcgkHzekopRG1modY77iggD4ffQWA1M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uJbVxy4o3PLThNLDM0s+0h8OHRW2oyZMwm4SGoAOFxtRvwSCf0QoJyhFWaUUYv+S1u48TgN15UlrXsGyxqrjmpWjc6B2jxloK5xFL0q76qEEqpT1ovptuNUd8v/rySQE6OCHooykjT3YQ4BcGTpHdQurRAZ8ScffTVsQwDeJTuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m18W9V4w; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UukUAibz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=m/Tu4PfY/OmYLj9IINFcwahi6xEnQdf1mSKCgFo1yJI=; b=UukUAibzOcZU1Qa6sLw0/3vXzu
-	4ZoM+SY8VlP2g4RqKALQ3cXbGQeWoBKt4q6hU9Ea5/ljiytKmxVsOC/bAcEQeMjCGRwYbgeyE4vpn
-	AoKW6s0OoCYMqD7ajG5TmxtsaLEM+wlvdwCyOAOTpL6+H5FXO+okIovtDhVTpdg5hE5w=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tvFsG-006Tmp-SM; Thu, 20 Mar 2025 14:23:52 +0100
-Date: Thu, 20 Mar 2025 14:23:52 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Marek Vasut <marex@denx.de>, Simon Horman <horms@kernel.org>,
-	Ronald Wahl <ronald.wahl@raritan.com>, Peng Fan <peng.fan@nxp.com>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>
-Subject: Re: [PATCH net-next] net: ethernet: Drop unused of_gpio.h
-Message-ID: <46bbe18e-05d8-40e3-a50a-b9c31d5ddede@lunn.ch>
-References: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m18W9V4w"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id ACB0D44408;
+	Thu, 20 Mar 2025 15:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1742485352;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8mBeHfjSG+AR7A8Fp8QKLSrhvK7lhd1SXAkNAnYVLtw=;
+	b=m18W9V4w7yusNw0mo6qqU9toSKUuwPKXTEBs5rlqYEFiw4yzWXhSy1EChVjxOqiubNVJjD
+	pAL2KTjUrvqX1tzM1/cEkI6ZOaVEzFJ8nBLpbpADeIq/6/Ayqk9wKswVouV6NfHHNExWw5
+	qayfzfiglank6Q4uNeCYNi5MXslQnDXWuQwiX8kro0kwzD5xfvJiD3cAGAxZYzlZm0yrdf
+	bpSLDnc2PkZg3S7s0PDz49uSDOtQWVhv1CP5JVL4RRDpf1Y7DKDC7Uipt3XcQ5jCAXwtJw
+	SKvFr4HyEtnAily0Fp+lKUbE8CL0CNj3JiMEAoILcnAW1QOGAn0KrBOE9AgrmQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v8 0/5] drm/bridge: add devm_drm_bridge_alloc() with bridge
+ refcount
+Date: Thu, 20 Mar 2025 16:42:09 +0100
+Message-Id: <20250320-drm-bridge-refcount-v8-0-b3ddaa9f1368@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFE33GcC/32NTQ7CIBCFr9LMWgzUUqgr72G6sPzYSSwYqETTc
+ HfHHsDkbb75Mu9tkF1Cl+HcbJBcwYwxEOhDA2a+hbtjaImh5a3kJ9ExmxY2JbRkkvMmvsLKpLY
+ DWYrvgT6fZPC9t15H4hnzGtNnHynqd/3fVxTjTMhWKuG16YfuMsW4PjAcTVxgrLV+AR1PxK24A
+ AAA
+X-Change-ID: 20250314-drm-bridge-refcount-58d9503503f6
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Anusha Srivatsa <asrivats@redhat.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeekiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefgieetkeekgfdtudevueffueffveekheeiudfhfedvhfeukeeuhffhtddtvdekfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegludelvddrudeikedrudejkedruddukegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsu
+ hhsvgdruggvpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnfgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Thu, Mar 20, 2025 at 11:15:24AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> of_gpio.h is deprecated. Since there is no of_gpio_x API, drop
-> unused of_gpio.h. While at here, drop gpio.h and gpio/consumer.h if
-> no user in driver.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+This series improves the way DRM bridges are allocated and initialized and
+makes them reference-counted. The goal of reference counting is to avoid
+use-after-free by drivers which got a pointer to a bridge and keep it
+stored and used even after the bridge has been deallocated.
 
-net-next.
+The overall goal is supporting Linux devices with a DRM pipeline whose
+final components can be hot-plugged and hot-unplugged, including one or
+more bridges. For more details see the big picture [0].
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+DRM bridge drivers will have to be adapted to the new API -- the change is
+trivial for most cases. This series converts two of them to serve as an
+example. The remaining ones will be done as a follow-up after this first
+part is merged.
 
-    Andrew
+After that, refcounting will have to be added on the two sides: all
+functions returning a bridge pointer and all code obtaining such a
+pointer. A few examples have been sent in v7 (link below), they are OK, but
+I removed them from v8 because they must be merged only after converting
+all bridges.
+
+Here's the grand plan:
+
+ A. add new alloc API and refcounting (this series, at least patches 1-3)
+ B. after (A), convert all bridge drivers to new API
+ C. after (A), add documentation and kunit tests
+ D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
+    (patches 3-4 in the v7 series)
+ E. after (B), convert accessors (including patches 5-9 in the v7 series
+    which convert drm_bridge_chain_get_first_bridge() and its users);
+    this is a large work and can be done in chunks
+
+Series layout:
+
+ 1. Add the new API and refcounting:
+
+    drm/bridge: add devm_drm_bridge_alloc()
+    drm/bridge: add support for refcounting
+    drm/bridge: deprecate old-style bridge allocation
+
+ 2. convert a few bridge drivers (bridge providers) to the new API:
+
+    drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+    drm/bridge: samsung-dsim: use dynamic lifetime management
+
+[0] https://lore.kernel.org/dri-devel/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v8:
+- Applied requested changes to patch 2
+- Add R-by to other patches
+- Removed v7 patches 3-9: they are OK but must wait until all bridge
+  drivers are converted to the new API
+- Added patch to deprecate old-style bridge allocation
+- Link to v7: https://lore.kernel.org/r/20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com
+
+---
+Luca Ceresoli (5):
+      drm/bridge: add devm_drm_bridge_alloc()
+      drm/bridge: add support for refcounting
+      drm/bridge: deprecate old-style bridge allocation
+      drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+      drm/bridge: samsung-dsim: use dynamic lifetime management
+
+ drivers/gpu/drm/bridge/samsung-dsim.c |  7 ++-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c |  7 ++-
+ drivers/gpu/drm/drm_bridge.c          | 96 +++++++++++++++++++++++++++++++++++
+ include/drm/drm_bridge.h              | 36 +++++++++++++
+ 4 files changed, 138 insertions(+), 8 deletions(-)
+---
+base-commit: c940d00c7306a77ec293661abca634756207c885
+change-id: 20250314-drm-bridge-refcount-58d9503503f6
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
