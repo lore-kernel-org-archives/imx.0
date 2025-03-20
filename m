@@ -1,231 +1,248 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2072.outbound.protection.outlook.com [40.107.21.72])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8911AA1C8
-	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 03:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742440648; cv=fail; b=d+xVyFP9zFWltL1oaPN8oolWB/emn2PxjsNL0/NnlXe6mgM2yHhpRdkPWzgDH6tOt1prph5/tK3qkdjT+eBmyNpkdFnj9JrivIv88c589uNycAo/TqrviRj109i6iQL/ElmcYVpzktwIVkQ4y5imyA6yUNFt5DJ1CRoLWNxfz3Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742440648; c=relaxed/simple;
-	bh=mQxof3DwvOYXt9SNgyQvpTeoJkkL02ZcRMPLd8TiK8U=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=A0OQGjaseyQTvoKCQYz0jgORF70KIU5IcSz1E/fej3HowR3BW/2BTngG7uTtRM1gjR/RZCrf5dAKQnSOCEqDXWXYDhGWKa5i8kVTHlwghIalvM84sz3y/OUTkyr9KK8NeL77KgijkSmTrvvyFAfxVxBaG0Zk/i7wiINQSq4MfVw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TtNz4e8W; arc=fail smtp.client-ip=40.107.21.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C281F4CAE
+	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 07:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742456496; cv=none; b=SmusfH5MK2LUfYmAtC+EIyM9Cs+zmdh1a6o2YXK1w37DwFS2yb9dHx+pFo18H+AFNoAuHrUu9c1kvMhW5hRWDDAyiPr+9PGnGK04H1oeRJnXRgBHG9l/Xfav+V8WpwT2e7TSxeNP2PP/MpFVlrl/TjmVpQvzT5n7atsuRMxO6sI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742456496; c=relaxed/simple;
+	bh=I6G/d5/C2EXxfscctBySxlIviUB0BPm6oXNQZcB57Pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lPT3lWLWtLcP+TyxUCVcygh+7r4MaTtPN4T/Dxy02PPSwhNZFevsscpw4CSeRm2hdwSVgHAsJNrjf8srQT7BoACyIYSRNHcRjVcHU2vyktnGrd3POfJdpg9mQJcVJJicitJMGKPDg2xoV1WgfKbAMeK5xh1XCt+gCxQY5SvReP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Fajab6of; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TtNz4e8W"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sTE/QJzLvXTaY+RsyfF9oLJMzcHNVkACW/BKwPccAt5nojCZqJZRbf46XPQcYWY8fxKzMlDpeAw2VIW+lySVTffALiA5SLPoMnMVgLxS9kZBdKNYDikur60p9Yh8QpZW9rYTw9hhE8gJbwUefCRpjL5iBjDl4VJG0lrjpjnOuVxHjackoTwRVEFhRbYeCOO6leguhDmcJLlfM5EXNHCw7Kv/CplxorNjTU9qsaxl4Au5Wne1K67eEeTgKJoVxhmVaon41QgtJX9+Sz1mFrbKg4qrcou9YgNVB3xH6os1J8Q6vjKqId7+qAx4+HO+sll4SyNm2FZxneL1rvobgYmyyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JCzdUzo8B6hOP96M1PDbcKDUsoAMcuk2uWjW58shMOI=;
- b=JSblVx3naXCeJ+eel2zcnecvYFixoYafwu556DbmamUCbVhsWZcJmIbq9HPaoMzSm3M0NS6+6O1FsAs/QCnnNJYbtL25vUS2Uz7Hd3B/kgziqEs5pCFGtSOW0+4ZcMFGVfxV1AcqpAS6DgMf6FlDzcSUgbD3tI5BMHzBLyOSM44ybv6rrI5rGr6NKBXYe9uFGe6Sq0I1AdanM9YKvI7D46yOLyPriipipoCEU/5IIplKIy7R2Iv2A+VSz1e6hZWdrtNoxd9hkICC/F9HxIKmjJIwwfcOYLnaMTzdapmpeY++DWCPCYD48KSIviw+L1799689su4cSrZjaXZYVkwEqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JCzdUzo8B6hOP96M1PDbcKDUsoAMcuk2uWjW58shMOI=;
- b=TtNz4e8WxmTJrpYVgA3fNJ85EMIATW9v8aljzJV1YMpcIUvUMzL4tLCojr4jQ12+2rm0NPvK5NgIsGlFISCAFBeylXH0SDvnKlkAfAT3rfQXOCIHCk6628gb/+WLUGiz3+LZNLBNeth5tac7FwoSPeWizBF1HCX6EyzqYIDRLWJUIY8IzGqUYpGzRhMWKALHsiHaIp9X2/7gQW9ITjYbfYwf14Q6SDunH6ON2yjrfBbci/BTkSc5QgYXkfDGotx48IhwubGaldWl3zRf2iSa1qShicqf4RpbsURairXyH5mEVZItDmz416m9wNOJLc/P0M+8S1WVipzdlwCl5Y3eGw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB9PR04MB9404.eurprd04.prod.outlook.com (2603:10a6:10:368::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.34; Thu, 20 Mar
- 2025 03:17:22 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8534.034; Thu, 20 Mar 2025
- 03:17:22 +0000
-From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Marek Vasut <marex@denx.de>,
-	Simon Horman <horms@kernel.org>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list),
-	imx@lists.linux.dev (open list:FREESCALE IMX / MXC FEC DRIVER)
-Subject: [PATCH net-next] net: ethernet: Drop unused of_gpio.h
-Date: Thu, 20 Mar 2025 11:15:24 +0800
-Message-Id: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0128.apcprd01.prod.exchangelabs.com
- (2603:1096:4:40::32) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Fajab6of"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E3C84436F;
+	Thu, 20 Mar 2025 07:41:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1742456486;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fmPdfR67O2wcc6/RI+Tc9AyY4rjn6JD2dOIfEvFlJnQ=;
+	b=Fajab6ofQy9GQKOL1lDcWQfm/0zyroqQRlF4ltPWxT9DK3Kz2DXP4fiTBAuRaWBovUj2Cq
+	7Xs65a44MCIogTqhY9yE+Pbjp+uATyM3uGz8ZXBovdasbw4nY74FcibRBPw15cVC5B//HL
+	HoE79L729ZJJC2p0S2zTI6MKh5g6VFJAR5pV3gUeTNOpVL9Bk7zrb72rG67qGTRwhtUEmP
+	doGblm+y8jR0MsywXUhEFuv1zt7JHUkmCFEJPi/JlSYAhD2EBPzsvfS9haVYm4wtkorHyP
+	nZ64j9pnqZIyUM2/BSBuYi5mvWIKq1K7tmjyz/E7reZ1jTkV0dPNeOZ858B90w==
+Date: Thu, 20 Mar 2025 08:41:18 +0100
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Marek Vasut <marex@denx.de>, Stefan Agner
+ <stefan@agner.ch>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan
+ Teki <jagan@amarulasolutions.com>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, Anusha Srivatsa <asrivats@redhat.com>, Paul
+ Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
+ =?UTF-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, Hui Pu
+ <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+Message-ID: <20250320084118.347bafc9@booty>
+In-Reply-To: <20250319-stylish-lime-mongoose-0a18ad@houat>
+References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
+	<20250314-daft-woodoo-cheetah-e029c5@houat>
+	<20250317155607.68cff522@booty>
+	<20250319-stylish-lime-mongoose-0a18ad@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB9404:EE_
-X-MS-Office365-Filtering-Correlation-Id: 891ded74-e038-4b1f-b107-08dd675dbabb
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CeUoJmGo4ry+VNqdAe50c9ZA4iySQ4J7BAJeg3ssf1tsOOo+1+mLLxOOmHZv?=
- =?us-ascii?Q?+6//IjU5wI0tPiUjewvM5RZFhoSP49uDrSykQIkTredJI28cp5se6ulhr742?=
- =?us-ascii?Q?SL/XmONZNCbP61F11YeV90Jty8rrTvjnhG3VfwJxt2qyLZREtK/LtGhujiBD?=
- =?us-ascii?Q?3I9pzTiibPSahTQj31t3Pwc6a6ZZuYBuZK1dAaPAkXRU73NRHj8KqsQWH4Lx?=
- =?us-ascii?Q?iRy2Bzr2AGwxHZoKACIK0JtYL0qK7hnCgAgur/8KNRL+NwH4kxXlj7BXYFhS?=
- =?us-ascii?Q?mgwTt0Fw21cTHRhzOsKCF9gCqlA268Cb8bE6aWh6/jfXV2JrdWY71iK1MNvG?=
- =?us-ascii?Q?IzbeOAhGNQ37HG5JF4n+fiNyhsdCWhLQo31acJ/UqbnRbYLc4U+d4F7URwwz?=
- =?us-ascii?Q?XTyBP3viDDdomI7zTmaaRTrZbEfGH3laQn13fKVjH3dZvQzmqF5zwzSiLMhW?=
- =?us-ascii?Q?992LHxaoOVO5+mUqHLkzycK6zsfRSw4L/LchuEuXBDSw5twzkFcu7eFOiU7o?=
- =?us-ascii?Q?dTVqivTfEBdkSqNjjjhf0CVj+6mg+xnhluXBoFZ9V2wViUo9wB3U2rVELj7T?=
- =?us-ascii?Q?tqoja5Hc+IEv6cU43xRXiAjaQ311qSc6Ja/Dd1z6k4djhea2zzI3ggfe/EuX?=
- =?us-ascii?Q?iHcbLD1l/ZdI9cdk6klf72/mny32cI7vboWoJNpycBLTEjVf4g8tGf3FXPUV?=
- =?us-ascii?Q?2o4L+jKgvG4JO7Ds3yVYMYSrZy4UOQosQ3YQUQ1XBtQy1KhTL0Bd9tlRQ3gA?=
- =?us-ascii?Q?ZiKD5ZZJr23J9X81MqyG0vV3acN3CcMl8wqvgW+b4ew3UiqrfIn0m/2+yhMH?=
- =?us-ascii?Q?lfR4DBnEqJ1gcUzIH6GviCBxDkgWj/nOM3E2wVY6iYZYAYEJTAGq/7Anaxb1?=
- =?us-ascii?Q?xq++RImwNac2cYAj5NuPWHH0W5opaIZPJVIY+AvjP0EfsA5u8FyeQz/4T/mN?=
- =?us-ascii?Q?RQdfoCtgypK2MWsgoymU0QrTInEomk2ghqwMXx9M1aYJUmr++UP2Etw+cTHr?=
- =?us-ascii?Q?I+zyE4VXf59eUjePBRxMrKyvyIwozC9A0GM0vBSmEWf0S0eLdHKmqFnU3dFP?=
- =?us-ascii?Q?oon0W6H3PTWHWlYXlH/Ud1cXIwZr1X+fJaFogVTq8j+f6PS3hyYzb+kJAOl4?=
- =?us-ascii?Q?MBFTrJc529y0j8Y0clHxf3cjQXyYKn49pssNqN1Ff1zjBwfjk64XSo0TTuMg?=
- =?us-ascii?Q?kXlh8NZkQIzrBan8klVbRQwDirS9rLiyuLdG+dH8VT9kIeIsspcBj9InivuY?=
- =?us-ascii?Q?UhhKrGZZ+AND+am2iE7PV4JDSibsANonKSLPsVTpaps1GFaeU1HYJGGGjGir?=
- =?us-ascii?Q?v/8XpRmtbMqXx96awWPLahWSq+g4tSJnIlA0FMy214U+JTGl9zNVDSpyA1n1?=
- =?us-ascii?Q?c4Gx4LBDHh8qd177+BiFjvhOl8dFAs8GDf8LypsHHAd6XYC6lLj0hM8cOJ4e?=
- =?us-ascii?Q?gZzgMa4+uAqbXKw8FZr1yTI5HLhEkmb2/muKnkTDHlPoe0bjstIEFQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FEGA53CVS5IAomw406stbCGvEVcidUId8HiQCPeCi3cNO21aPkover/xTgKK?=
- =?us-ascii?Q?H2NXgYza7phV8G71AGy8x4RT+0jW9shQ+ZWmyqF7hJGy6BVWBRnhuphGGqZ8?=
- =?us-ascii?Q?2rMkR9C8nnXivTzxBBa9bfzIAbkzbgDI8cCNG/MHuZ1HxtECi+iAWBeA4exm?=
- =?us-ascii?Q?mFH1Phh025c+eZ3DRmnMM1mJCEubBzGyhcJIIWx3Q2dxhUNh/YTZSiriLvlR?=
- =?us-ascii?Q?kkQ2jYsyh/dRgJoruKE44V3BxkaVF9pMdfBOMSlqKaooS3fVqqv83iPFUWqM?=
- =?us-ascii?Q?Ko0p9av4IbvfYvICn180JPS4nD7Yr2XAHxInPZW3koarLSF19M75LIePp0iP?=
- =?us-ascii?Q?WopzjjsKnUaE65m/EhBj0lkjQsP04kAZweYVFi+4y2Cs0fH4GCSlU7HmQYGh?=
- =?us-ascii?Q?BQ7P3KRnGlZfAkrhM2Za+Y1CWfXIr5yVLK63DW0srbMLpCAhmgHyhgTmbmEz?=
- =?us-ascii?Q?YsDsyXCWKepTyNC9XwYFW4Pt5pRq4K0RlG4DBghBLv1ZgIA6CaKO2cAjHTmN?=
- =?us-ascii?Q?YBG39OWn4mwXOIacJbYkxI7lLmtV3vNHhntJJY0ar+qZMyEbJflMzKHir42c?=
- =?us-ascii?Q?SX0snzvySCuoMUJ2CvY9rcc7O9JtYzmBnKjrggbVXigOzdW/d1Kqc3enIIG0?=
- =?us-ascii?Q?1ef9L/EmgOKIYfE6//xaYiXLBrrsSX9btzbTd5o5PtuFP1ayghsixkBeaKHX?=
- =?us-ascii?Q?IKsU3xgtPi5rByeCsrKS2kA+i3oNlIS7Q4CzqIbQ3RX5BSlicYIBpnZib01y?=
- =?us-ascii?Q?foPxLD/oE0/PK/ueO3/CgUb+zbX/2uKbSZVNA6vhAXNGFdpVFALjyGqH59qf?=
- =?us-ascii?Q?qPdX+0nDW7YL1VZ4NJCfEAQWZFRZEEwFRUt4hnMTuU3YVN1iSPv0SbCerLj6?=
- =?us-ascii?Q?SoN78hY+HrcenTgGKoMAcUcxyLM+ylGfAN110Y210X6aYNEEKCwgem/DbcI3?=
- =?us-ascii?Q?c8dA9y3uKfu/54BxrQUZG2lVKnaaR8oWb7mHQPV63FkC/N1WofdWhEaHlw45?=
- =?us-ascii?Q?qUalSOcTdHVcCB4nH+BEInn0wCygKDAvRGXMQ2i3qzJx2C1qs1Pb54csnNtZ?=
- =?us-ascii?Q?r7oYaZumGhwdZ7sfCa1MaJjzz5kmig/aUHWEOsmb9TQuG15KclpVfs3hvTyx?=
- =?us-ascii?Q?x5vVE21tsj0L/0/Wa2ct3vmTqBZ+pwLCxwnEEEVgiDJ9zVwSURvlHn17+KBo?=
- =?us-ascii?Q?bcR45fQ/ififVNQSIvu0nKaEtiN/FysLFK2dlGEx6S9jYKd3Bd5HmHQaAT3V?=
- =?us-ascii?Q?SAsZwNW0tAr0JX9thENoNUwxYMHDkRA3Z/teeLosJOpUQyYbJvZYyZtRHraH?=
- =?us-ascii?Q?3xm8oJinYzBGF0VkD12vimweKM02bkOYKf40n1JYVEOHJ5wXw6JCTbnFmxEa?=
- =?us-ascii?Q?GoPu5iLxrMJ40iPlnrUSwrU8XxmZSCIrtsFlLy91kNUlWOJlywHCNacHURcu?=
- =?us-ascii?Q?jcDcG667PhU0TQWFSVFkGnmzWf7Acxvj9G/qp/JF7BXljydVWkPtQV0hUP2C?=
- =?us-ascii?Q?RnSNP35bLZ/9kWdQjtSemYAQa6S4mS885FkZKUEsh9nuX+qinP5fbCmgsOSt?=
- =?us-ascii?Q?9+b8y/MH1Nq/6bGVX35AMTgYNAgjjcCfAzzlojF9?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 891ded74-e038-4b1f-b107-08dd675dbabb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 03:17:22.1929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eVUOlH6n2XBEH4FfDiSq0s4SnD+Cr9fmbacy8fnX86A128/jVLLGmDP+WFr9JVtRG4nAEyfOLyngye7OoNX7Sg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9404
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeejieegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrr
+ hhordhorhhgpdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnfgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehjohhnrghssehkfihisghoohdrshgvpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-From: Peng Fan <peng.fan@nxp.com>
+Hello Mazime,
 
-of_gpio.h is deprecated. Since there is no of_gpio_x API, drop
-unused of_gpio.h. While at here, drop gpio.h and gpio/consumer.h if
-no user in driver.
+On Wed, 19 Mar 2025 17:16:53 +0100
+Maxime Ripard <mripard@kernel.org> wrote:
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 3 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 1 -
- drivers/net/ethernet/micrel/ks8851_spi.c | 2 --
- drivers/net/ethernet/smsc/smsc911x.c     | 1 -
- 4 files changed, 7 deletions(-)
+> On Mon, Mar 17, 2025 at 03:56:07PM +0100, Luca Ceresoli wrote:
+> > Hello Maxime,
+> > 
+> > On Fri, 14 Mar 2025 19:21:01 +0100
+> > Maxime Ripard <mripard@kernel.org> wrote:
+> >   
+> > > Hi,
+> > > 
+> > > On Fri, Mar 14, 2025 at 11:31:13AM +0100, Luca Ceresoli wrote:  
+> > > > This series improves the way DRM bridges are allocated and
+> > > > initialized and makes them reference-counted. The goal of reference
+> > > > counting is to avoid use-after-free by drivers which got a pointer
+> > > > to a bridge and keep it stored and used even after the bridge has
+> > > > been deallocated.
+> > > > 
+> > > > The overall goal is supporting Linux devices with a DRM pipeline
+> > > > whose final components can be hot-plugged and hot-unplugged,
+> > > > including one or more bridges. For more details see the big picture
+> > > > [0].
+> > > > 
+> > > > DRM bridge drivers will have to be adapted to the new API, which is
+> > > > pretty simple for most cases. Refcounting will have to be adopted
+> > > > on the two sides: all functions returning a bridge pointer and all
+> > > > code obtaining such a pointer. This series has just an overview of
+> > > > some of those conversions, because for now the main goal is to
+> > > > agree on the API.
+> > > > 
+> > > > Series layout:
+> > > > 
+> > > >  1. Add the new API and refcounting:
+> > > > 
+> > > >     drm/bridge: add devm_drm_bridge_alloc()
+> > > >     drm/bridge: add support for refcounting
+> > > > 
+> > > >  2. get/put the reference in basic operations in the bridge core:
+> > > > 
+> > > >     drm/bridge: get/put the bridge reference in
+> > > > drm_bridge_add/remove() drm/bridge: get/put the bridge reference in
+> > > > drm_bridge_attach/detach()
+> > > > 
+> > > >  3. as an example of changes for bridge consumers, get a reference
+> > > > for the bridge returned by drm_bridge_chain_get_first_bridge(),
+> > > > have it put by all callers (all users will be covered later on
+> > > > separately):
+> > > > 
+> > > >     drm/bridge: add a cleanup action for scope-based
+> > > > drm_bridge_put() invocation drm/bridge: get the bridge returned by
+> > > > drm_bridge_chain_get_first_bridge() drm/mxsfb: put the bridge
+> > > > returned by drm_bridge_chain_get_first_bridge() drm/atomic-helper:
+> > > > put the bridge returned by drm_bridge_chain_get_first_bridge()
+> > > > drm/probe-helper: put the bridge returned by
+> > > > drm_bridge_chain_get_first_bridge()
+> > > > 
+> > > >  4. convert a few bridge drivers (bridge providers) to the new API:
+> > > > 
+> > > >     drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+> > > >     drm/bridge: samsung-dsim: use dynamic lifetime management
+> > > > 
+> > > > This work was formerly a part of my v6 DRM bridge hotplug
+> > > > series[0], now split as a standalone series with many improvements,
+> > > > hence the "v7" version number.    
+> > > 
+> > > Except for one patch where I had comments, I think the series is in
+> > > excellent shape. We're still missing a couple of things to close this
+> > > topic though:
+> > > 
+> > >   - Converting the other bridge iterators/accessors to take / put the
+> > > references  
+> > 
+> > I sent a couple in this series as you had asked, to show how conversion
+> > looks like. But I have a large part of this conversion partially done
+> > already, and it is the largest part of the refcounting work in terms of
+> > touched files due to the large number of drivers using the iterators
+> > and accessors. Here are the functions to convert:
+> > 
+> >  A) drm_bridge_chain_get_first_bridge
+> >  B) drm_bridge_get_prev_bridge
+> >  C) drm_bridge_get_next_bridge
+> >  D) drm_for_each_bridge_in_chain
+> >  E) drm_bridge_connector_init
+> >  F) of_drm_find_bridge
+> > 
+> > A) is present in this series as an example but I don't think it should
+> > be applied until all bridge drivers are converted to
+> > drm_bridge_alloc(). Otherwise for not-yet-converted bridge drivers we'd
+> > have drm_bridge_get/put() operating on an uninitialized kref, and
+> > __drm_bridge_free() called on non-refcounted bridges, so I think we'd
+> > see fireworks.
+> > 
+> > In the previous iteration I used drm_bridge_is_refcounted() in
+> > drm_bridge_get/put() to allow a progressive migration, but if we want
+> > to convert everything in a single run we need to first convert all
+> > bridges to drm_bridge_alloc() and then convert all accessors.
+> > 
+> > The same reasoning applies to patches 3-4 which add get/put to
+> > drm_bridge_add/remove() and _attach/detach().  
+> 
+> Agreed.
+> 
+> > B) to E) are ready in my work branch, about 20 patches in total.
+> > Indeed item E) is a special case but it is handled there too.
+> > 
+> > Item F) is the beast, because of the reverse call graph of
+> > of_drm_find_bridge() which includes drm_of_find_panel_or_bridge() and
+> > then *_of_get_bridge(), each having a few dozen callers, and leading
+> > to the panel_bridge topic. I have converted maybe half of the users of
+> > accessors in F), it's 35 patches but it's the easy half and I still need
+> > to tackle to hardest ones.  
+> 
+> One thing to keep in mind is that, while it's not correct, if the bridge
+> has been allocated with devm_drm_bridge_alloc, it's not worse either. If
+> you're not getting a reference to your pointer, the point is buggy,
+> sure, but it's just as buggy as before, and in the same situations.
+> 
+> So we can make that gradually if it's more convenient.
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index b5797c1ac0a4..1fe8ec37491b 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -17,8 +17,6 @@
- #include <linux/slab.h>
- #include <linux/init.h>
- #include <linux/io.h>
--#include <linux/gpio.h>
--#include <linux/gpio/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
-@@ -26,7 +24,6 @@
- #include <linux/platform_device.h>
- #include <linux/phylink.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
- #include <linux/ip.h>
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index fe4e7f99b6a3..876d90832596 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -30,7 +30,6 @@
- #include <linux/phy.h>
- #include <linux/fec.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_net.h>
- 
- #include "fec.h"
-diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
-index 3062cc0f9199..c862b13b447a 100644
---- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -20,8 +20,6 @@
- #include <linux/regulator/consumer.h>
- 
- #include <linux/spi/spi.h>
--#include <linux/gpio.h>
--#include <linux/of_gpio.h>
- #include <linux/of_net.h>
- 
- #include "ks8851.h"
-diff --git a/drivers/net/ethernet/smsc/smsc911x.c b/drivers/net/ethernet/smsc/smsc911x.c
-index f539813878f5..2e1106097965 100644
---- a/drivers/net/ethernet/smsc/smsc911x.c
-+++ b/drivers/net/ethernet/smsc/smsc911x.c
-@@ -43,7 +43,6 @@
- #include <linux/smsc911x.h>
- #include <linux/device.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_net.h>
- #include <linux/acpi.h>
- #include <linux/pm_runtime.h>
+I see your point, right. And definitely doing it in gradually will help.
+
+> One way to solve it would be that, for example, of_drm_find_bridge is
+> oddly named according to our convention and it would make more sense to
+> be called drm_of_find_bridge().
+> 
+> So maybe we can just create drm_of_find_bridge() that takes a reference,
+> make of_drm_find_bridge() deprecated in favour of drm_of_find_bridge(),
+> add a TODO, and call it a day. People will gradually switch to the new
+> API over time.
+
+Thanks for the suggestion, I will certainly try this way when I get
+back to the accessor conversion work. While increasing the number of
+deprecated functions is not great, I'm starting to suspect a conversion
+of _all_ the of_drm_find_bridge() users at once is not realistic.
+
+> > >   - Documenting somewhere (possibly in drm_bridge_init?) that it
+> > > really shouldn't be used anymore  
+> > 
+> > I'm afraid there is no drm_bridge_init(), bridge drivers just do
+> > [devm_]kzalloc and set fields explicitly. So I don't think there is a
+> > place to document this.  
+> 
+> Oh, right.
+> 
+> Then, drm_bridge_add() would be a good candidate too to mention that
+> bridges must be allocated using devm_drm_bridge_alloc().
+
+Sure. I'll add such a comment.
+
+> > Overall, I think this could be the path forward, let me know if
+> > youthink it should be done differently:
+> > 
+> >  A. have patches 1 and 2 of this series applied
+> >     (why not, even patches 10-11)  
+> 
+> I had some comments on patch 2, but it's ok for me on principle.
+
+Sorry, my wording was not clear. I really meant "have patches 1 and 2 of
+this series applied after the improvements proposed". So hopefully the
+v8 I'm sending today-ish. I'm going to send only patches 1, 2, 10 and
+11. The other patches are not meant to be merged now, so I'm resending
+them when appropriate.
+
+Luca
+
 -- 
-2.37.1
-
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
