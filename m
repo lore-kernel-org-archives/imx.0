@@ -1,248 +1,225 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C281F4CAE
-	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 07:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFD621B196
+	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 09:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742456496; cv=none; b=SmusfH5MK2LUfYmAtC+EIyM9Cs+zmdh1a6o2YXK1w37DwFS2yb9dHx+pFo18H+AFNoAuHrUu9c1kvMhW5hRWDDAyiPr+9PGnGK04H1oeRJnXRgBHG9l/Xfav+V8WpwT2e7TSxeNP2PP/MpFVlrl/TjmVpQvzT5n7atsuRMxO6sI=
+	t=1742462640; cv=none; b=W5F/McFxgdvxpz5Gj+d9G815EhnpFxYcWepMgWc/L1aXdQ1mXmNadwX6f09HRxoagMMFFYKYCakvoA/5CnajFe6lqeDy66XSVbYXngpnbEcS+aBxWYIiqbwjrNUrPxoI6lsPM/SM5QcPUQWTIJJgzzBlqZIGnPj2KE41ZaWOPJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742456496; c=relaxed/simple;
-	bh=I6G/d5/C2EXxfscctBySxlIviUB0BPm6oXNQZcB57Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPT3lWLWtLcP+TyxUCVcygh+7r4MaTtPN4T/Dxy02PPSwhNZFevsscpw4CSeRm2hdwSVgHAsJNrjf8srQT7BoACyIYSRNHcRjVcHU2vyktnGrd3POfJdpg9mQJcVJJicitJMGKPDg2xoV1WgfKbAMeK5xh1XCt+gCxQY5SvReP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Fajab6of; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742462640; c=relaxed/simple;
+	bh=mdZT7p6btRxqZ/HAzsWsKG7+qFDbrt8BpR+R3LmNz8o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jDJz8mMSZCJS1V/LQl1jJbPrBY9vOQcMubsNgFU5hrhpzhAHCt8b8ywWGWSbOEjeoyf0iKn/Y63lvPI6YPC43p4XnK4woEjLUII6sTvbTuhTvd6MPIkK8RYQlSfs7DjhFtgs9hDxqy4yYy3F80NJB2j5X2U9UMtzPswOHU1stvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=SAdDYbMG; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Fajab6of"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E3C84436F;
-	Thu, 20 Mar 2025 07:41:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742456486;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fmPdfR67O2wcc6/RI+Tc9AyY4rjn6JD2dOIfEvFlJnQ=;
-	b=Fajab6ofQy9GQKOL1lDcWQfm/0zyroqQRlF4ltPWxT9DK3Kz2DXP4fiTBAuRaWBovUj2Cq
-	7Xs65a44MCIogTqhY9yE+Pbjp+uATyM3uGz8ZXBovdasbw4nY74FcibRBPw15cVC5B//HL
-	HoE79L729ZJJC2p0S2zTI6MKh5g6VFJAR5pV3gUeTNOpVL9Bk7zrb72rG67qGTRwhtUEmP
-	doGblm+y8jR0MsywXUhEFuv1zt7JHUkmCFEJPi/JlSYAhD2EBPzsvfS9haVYm4wtkorHyP
-	nZ64j9pnqZIyUM2/BSBuYi5mvWIKq1K7tmjyz/E7reZ1jTkV0dPNeOZ858B90w==
-Date: Thu, 20 Mar 2025 08:41:18 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Marek Vasut <marex@denx.de>, Stefan Agner
- <stefan@agner.ch>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan
- Teki <jagan@amarulasolutions.com>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Anusha Srivatsa <asrivats@redhat.com>, Paul
- Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
- =?UTF-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, Hui Pu
- <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v7 00/11] drm/bridge: add devm_drm_bridge_alloc() with
- bridge refcount
-Message-ID: <20250320084118.347bafc9@booty>
-In-Reply-To: <20250319-stylish-lime-mongoose-0a18ad@houat>
-References: <20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com>
-	<20250314-daft-woodoo-cheetah-e029c5@houat>
-	<20250317155607.68cff522@booty>
-	<20250319-stylish-lime-mongoose-0a18ad@houat>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="SAdDYbMG"
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52K9HKHq023149;
+	Thu, 20 Mar 2025 10:23:39 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	crexQWu4l57R3sbdMnceBIPuj5iuismgQR90iwJhOlw=; b=SAdDYbMG9niyLueX
+	EmzCVR2UEw3l/kOQ0MwvxKZXvC+VsrRFslJFtNFw82j4ojfMLQ7c/92hs5wpdQZb
+	4pJLqvivmJP1npces5+rUxcaO0ZP3VD7BMgzU3HKp7ROvOQKo3UhrvVAfger3DYR
+	MG4YNVl28gSKPE6+LEulzoavrtjdTEz9mK/8Xpw48mBVW8GV8FKYTRiUbYxeNa85
+	aS+uag6Ka/MqzZ/37uKVx+RJDvG+1NW9JzBYrDDai9hCSaHR8ixkozxXbtNJmNXv
+	a1O013eA5hu5sFUBAG+IpUImoCNXg5hKNSAnPQLtGsak+EYIMDBetGbOgE+tP5m6
+	uCZcUw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45d1u84m7s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Mar 2025 10:23:39 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id BAD0D4005D;
+	Thu, 20 Mar 2025 10:22:13 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CEE927C1EF4;
+	Thu, 20 Mar 2025 10:21:28 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
+ (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Mar
+ 2025 10:21:28 +0100
+Received: from [10.252.18.22] (10.252.18.22) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Mar
+ 2025 10:21:27 +0100
+Message-ID: <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com>
+Date: Thu, 20 Mar 2025 10:21:26 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeejieegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrr
- hhordhorhhgpdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnfgruhhrvghnthdrphhinhgthhgrrhhtsehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehjohhnrghssehkfihisghoohdrshgvpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Linux-stm32] [PATCH 3/3] remoteproc: Use
+ of_reserved_mem_region_* functions for "memory-region"
+To: Rob Herring <robh@kernel.org>
+CC: Saravana Kannan <saravanak@google.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Shawn
+ Guo" <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam
+	<festevam@gmail.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20250317232426.952188-1-robh@kernel.org>
+ <20250317232426.952188-4-robh@kernel.org>
+ <26e72cb2-c355-4c40-bb98-fc0ff267bf4f@foss.st.com>
+ <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Organization: STMicroelectronics
+In-Reply-To: <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-20_03,2025-03-19_01,2024-11-22_01
 
-Hello Mazime,
 
-On Wed, 19 Mar 2025 17:16:53 +0100
-Maxime Ripard <mripard@kernel.org> wrote:
 
-> On Mon, Mar 17, 2025 at 03:56:07PM +0100, Luca Ceresoli wrote:
-> > Hello Maxime,
-> > 
-> > On Fri, 14 Mar 2025 19:21:01 +0100
-> > Maxime Ripard <mripard@kernel.org> wrote:
-> >   
-> > > Hi,
-> > > 
-> > > On Fri, Mar 14, 2025 at 11:31:13AM +0100, Luca Ceresoli wrote:  
-> > > > This series improves the way DRM bridges are allocated and
-> > > > initialized and makes them reference-counted. The goal of reference
-> > > > counting is to avoid use-after-free by drivers which got a pointer
-> > > > to a bridge and keep it stored and used even after the bridge has
-> > > > been deallocated.
-> > > > 
-> > > > The overall goal is supporting Linux devices with a DRM pipeline
-> > > > whose final components can be hot-plugged and hot-unplugged,
-> > > > including one or more bridges. For more details see the big picture
-> > > > [0].
-> > > > 
-> > > > DRM bridge drivers will have to be adapted to the new API, which is
-> > > > pretty simple for most cases. Refcounting will have to be adopted
-> > > > on the two sides: all functions returning a bridge pointer and all
-> > > > code obtaining such a pointer. This series has just an overview of
-> > > > some of those conversions, because for now the main goal is to
-> > > > agree on the API.
-> > > > 
-> > > > Series layout:
-> > > > 
-> > > >  1. Add the new API and refcounting:
-> > > > 
-> > > >     drm/bridge: add devm_drm_bridge_alloc()
-> > > >     drm/bridge: add support for refcounting
-> > > > 
-> > > >  2. get/put the reference in basic operations in the bridge core:
-> > > > 
-> > > >     drm/bridge: get/put the bridge reference in
-> > > > drm_bridge_add/remove() drm/bridge: get/put the bridge reference in
-> > > > drm_bridge_attach/detach()
-> > > > 
-> > > >  3. as an example of changes for bridge consumers, get a reference
-> > > > for the bridge returned by drm_bridge_chain_get_first_bridge(),
-> > > > have it put by all callers (all users will be covered later on
-> > > > separately):
-> > > > 
-> > > >     drm/bridge: add a cleanup action for scope-based
-> > > > drm_bridge_put() invocation drm/bridge: get the bridge returned by
-> > > > drm_bridge_chain_get_first_bridge() drm/mxsfb: put the bridge
-> > > > returned by drm_bridge_chain_get_first_bridge() drm/atomic-helper:
-> > > > put the bridge returned by drm_bridge_chain_get_first_bridge()
-> > > > drm/probe-helper: put the bridge returned by
-> > > > drm_bridge_chain_get_first_bridge()
-> > > > 
-> > > >  4. convert a few bridge drivers (bridge providers) to the new API:
-> > > > 
-> > > >     drm/bridge: ti-sn65dsi83: use dynamic lifetime management
-> > > >     drm/bridge: samsung-dsim: use dynamic lifetime management
-> > > > 
-> > > > This work was formerly a part of my v6 DRM bridge hotplug
-> > > > series[0], now split as a standalone series with many improvements,
-> > > > hence the "v7" version number.    
-> > > 
-> > > Except for one patch where I had comments, I think the series is in
-> > > excellent shape. We're still missing a couple of things to close this
-> > > topic though:
-> > > 
-> > >   - Converting the other bridge iterators/accessors to take / put the
-> > > references  
-> > 
-> > I sent a couple in this series as you had asked, to show how conversion
-> > looks like. But I have a large part of this conversion partially done
-> > already, and it is the largest part of the refcounting work in terms of
-> > touched files due to the large number of drivers using the iterators
-> > and accessors. Here are the functions to convert:
-> > 
-> >  A) drm_bridge_chain_get_first_bridge
-> >  B) drm_bridge_get_prev_bridge
-> >  C) drm_bridge_get_next_bridge
-> >  D) drm_for_each_bridge_in_chain
-> >  E) drm_bridge_connector_init
-> >  F) of_drm_find_bridge
-> > 
-> > A) is present in this series as an example but I don't think it should
-> > be applied until all bridge drivers are converted to
-> > drm_bridge_alloc(). Otherwise for not-yet-converted bridge drivers we'd
-> > have drm_bridge_get/put() operating on an uninitialized kref, and
-> > __drm_bridge_free() called on non-refcounted bridges, so I think we'd
-> > see fireworks.
-> > 
-> > In the previous iteration I used drm_bridge_is_refcounted() in
-> > drm_bridge_get/put() to allow a progressive migration, but if we want
-> > to convert everything in a single run we need to first convert all
-> > bridges to drm_bridge_alloc() and then convert all accessors.
-> > 
-> > The same reasoning applies to patches 3-4 which add get/put to
-> > drm_bridge_add/remove() and _attach/detach().  
+On 3/20/25 00:04, Rob Herring wrote:
+> On Wed, Mar 19, 2025 at 10:26 AM Arnaud POULIQUEN
+> <arnaud.pouliquen@foss.st.com> wrote:
+>>
+>> Hello Rob,
+>>
+>> On 3/18/25 00:24, Rob Herring (Arm) wrote:
+>>> Use the newly added of_reserved_mem_region_to_resource() and
+>>> of_reserved_mem_region_count() functions to handle "memory-region"
+>>> properties.
+>>>
+>>> The error handling is a bit different in some cases. Often
+>>> "memory-region" is optional, so failed lookup is not an error. But then
+>>> an error in of_reserved_mem_lookup() is treated as an error. However,
+>>> that distinction is not really important. Either the region is available
+>>> and usable or it is not. So now, it is just
+>>> of_reserved_mem_region_to_resource() which is checked for an error.
+>>>
+>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>>> ---
+>>> For v6.16
+>>>
 > 
-> Agreed.
+> [...]
 > 
-> > B) to E) are ready in my work branch, about 20 patches in total.
-> > Indeed item E) is a special case but it is handled there too.
-> > 
-> > Item F) is the beast, because of the reverse call graph of
-> > of_drm_find_bridge() which includes drm_of_find_panel_or_bridge() and
-> > then *_of_get_bridge(), each having a few dozen callers, and leading
-> > to the panel_bridge topic. I have converted maybe half of the users of
-> > accessors in F), it's 35 patches but it's the easy half and I still need
-> > to tackle to hardest ones.  
+>>> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+>>> index b02b36a3f515..9d2bd8904c49 100644
+>>> --- a/drivers/remoteproc/stm32_rproc.c
+>>> +++ b/drivers/remoteproc/stm32_rproc.c
+>>> @@ -213,52 +213,46 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>>>  {
+>>>       struct device *dev = rproc->dev.parent;
+>>>       struct device_node *np = dev->of_node;
+>>> -     struct of_phandle_iterator it;
+>>>       struct rproc_mem_entry *mem;
+>>> -     struct reserved_mem *rmem;
+>>>       u64 da;
+>>> -     int index = 0;
+>>> +     int index = 0, mr = 0;
+>>>
+>>>       /* Register associated reserved memory regions */
+>>> -     of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+>>> -     while (of_phandle_iterator_next(&it) == 0) {
+>>> -             rmem = of_reserved_mem_lookup(it.node);
+>>> -             if (!rmem) {
+>>> -                     of_node_put(it.node);
+>>> -                     dev_err(dev, "unable to acquire memory-region\n");
+>>> -                     return -EINVAL;
+>>> -             }
+>>> +     while (1) {
+>>> +             struct resource res;
+>>> +             int ret;
+>>> +
+>>> +             ret = of_reserved_mem_region_to_resource(np, mr++, &res);
+>>> +             if (ret)
+>>> +                     return 0;
+>>>
+>>> -             if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0) {
+>>> -                     of_node_put(it.node);
+>>> -                     dev_err(dev, "memory region not valid %pa\n",
+>>> -                             &rmem->base);
+>>> +             if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) {
+>>> +                     dev_err(dev, "memory region not valid %pR\n", &res);
+>>>                       return -EINVAL;
+>>>               }
+>>>
+>>>               /*  No need to map vdev buffer */
+>>> -             if (strcmp(it.node->name, "vdev0buffer")) {
+>>> +             if (strcmp(res.name, "vdev0buffer")) {
+>>
+>> I tested your patches
 > 
-> One thing to keep in mind is that, while it's not correct, if the bridge
-> has been allocated with devm_drm_bridge_alloc, it's not worse either. If
-> you're not getting a reference to your pointer, the point is buggy,
-> sure, but it's just as buggy as before, and in the same situations.
+> Thank you.
 > 
-> So we can make that gradually if it's more convenient.
-
-I see your point, right. And definitely doing it in gradually will help.
-
-> One way to solve it would be that, for example, of_drm_find_bridge is
-> oddly named according to our convention and it would make more sense to
-> be called drm_of_find_bridge().
+>> The update introduces a regression here. The strcmp function never returns 0.
+>> Indeed, it.node->name stores the memory region label "vdev0buffer," while
+>> res.name stores the memory region name "vdev0buffer@10042000."
+>>
+>> Several remoteproc drivers may face the same issue as they embed similar code.
 > 
-> So maybe we can just create drm_of_find_bridge() that takes a reference,
-> make of_drm_find_bridge() deprecated in favour of drm_of_find_bridge(),
-> add a TODO, and call it a day. People will gradually switch to the new
-> API over time.
+> Indeed. I confused myself because node 'name' is without the
+> unit-address, but this is using the full name. I've replaced the
+> strcmp's with strstarts() to address this. I've updated my branch with
+> the changes.
 
-Thanks for the suggestion, I will certainly try this way when I get
-back to the accessor conversion work. While increasing the number of
-deprecated functions is not great, I'm starting to suspect a conversion
-of _all_ the of_drm_find_bridge() users at once is not realistic.
+This is not enough as the remoteproc core function rproc_find_carveout_by_name()
+also compares the memory names. With the following additional fix, it is working
+on my STM32MP15-DK board.
 
-> > >   - Documenting somewhere (possibly in drm_bridge_init?) that it
-> > > really shouldn't be used anymore  
-> > 
-> > I'm afraid there is no drm_bridge_init(), bridge drivers just do
-> > [devm_]kzalloc and set fields explicitly. So I don't think there is a
-> > place to document this.  
+@@ -309,11 +309,11 @@ rproc_find_carveout_by_name(struct rproc *rproc, const
+char *name, ...)
+ 	vsnprintf(_name, sizeof(_name), name, args);
+ 	va_end(args);
+
+ 	list_for_each_entry(carveout, &rproc->carveouts, node) {
+ 		/* Compare carveout and requested names */
+-		if (!strcmp(carveout->name, _name)) {
++		if (strstarts(carveout->name, _name)) {
+ 			mem = carveout;
+ 			break;
+ 		}
+ 	}
+
+I just wonder if would not be more suitable to address this using the
+"memory-region-names" field.
+
+The drawback is that we would break compatibility with legacy boards...
+
+I let Mathieu and Bjorn review and comment
+
+
+Else with the fix in rproc_find_carveout_by_name(),
+
+-for the stm32_rproc:
+reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+tested-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+
+- for the st_remoteproc
+reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+
+Thanks,
+Arnaud
+
+
 > 
-> Oh, right.
-> 
-> Then, drm_bridge_add() would be a good candidate too to mention that
-> bridges must be allocated using devm_drm_bridge_alloc().
-
-Sure. I'll add such a comment.
-
-> > Overall, I think this could be the path forward, let me know if
-> > youthink it should be done differently:
-> > 
-> >  A. have patches 1 and 2 of this series applied
-> >     (why not, even patches 10-11)  
-> 
-> I had some comments on patch 2, but it's ok for me on principle.
-
-Sorry, my wording was not clear. I really meant "have patches 1 and 2 of
-this series applied after the improvements proposed". So hopefully the
-v8 I'm sending today-ish. I'm going to send only patches 1, 2, 10 and
-11. The other patches are not meant to be merged now, so I'm resending
-them when appropriate.
-
-Luca
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> Rob
