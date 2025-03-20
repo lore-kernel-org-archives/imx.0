@@ -1,119 +1,232 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59083224224
-	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 15:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35941DE3A8
+	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 18:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742485367; cv=none; b=IQ6VsiXJKlGmwh/dgQTBE44HiwE2p+4JMojM/QN5DLIeCSPcg92zdDgic9eaa8cPD2vKWO1Z6BItCApaiQoeA1lGPwVRsERnNpSk7pl62ENMghHBi2b3EXWC4O+LlyuQjuDDj1MNubLnf70D+DNI8r5iVSMTvcxnd05Odcnpk+Q=
+	t=1742493744; cv=none; b=O8pIEU/+JYc2AWEi4gKAVz/JqXUPjoXvg9CFNAsxXCgJUmwBQ+u3ztfhZansq3pX13FWunI9sC+xTq72IhAplhMHWfnsJJ5lmiQExGNjAXhF1PFZmj0t2sxmsZipALA9AXxxeWpZpUcLlLEfDx2HDoh+w+e9xnYqszkLkYkBua8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742485367; c=relaxed/simple;
-	bh=YD8k1Vkj2fa7j8F6a+2Iof/295jI2+0yrYEj0GcOhHA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gaLfaePK7f5PCKg/iVWcomr7C/hWzdqWVWFL6HWDdWY+ph/dLPDMCkVIoup4wiNO848cv4FOTNbzXeHbMZi5tXhQHBQAcsP96ByMLEkKbDJLYTMoX/e2jPpPo1ePTWKVrTyb9z8cZQ6RqN3vw8UVVgWTNBv7hn3OsFI0Sfjn5zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HvEc1FLO; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742493744; c=relaxed/simple;
+	bh=y9R11PCeG0aC7T4yQOMfIHSqYCQ5IC3utAoKlffVDss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fOhUeJIrJT9aR+HMYK2KC94vdPIdwRupXTGWygMtl86eBn7nqW3DI8WjOpfY+FRsHzEbtTmnRjc40EUfYYfbD9RTranfwQA6IqIgpVu7fRApKdDKyB8oESdjcXFr6vCNh5kxfsCljfCt4/p+pqG0GcqaAf1D5681japx93cJEBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FExZuvSg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HvEc1FLO"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EEE8444408;
-	Thu, 20 Mar 2025 15:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742485364;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XgB3E9/XVLuIu4T8MuTOjtqbhqCUgDiA94vVvHuz8zk=;
-	b=HvEc1FLOCYSH103JmeD8Ac+x9C0qJ0Yb8aCnQUAeURjilBPqBtie+pEAoS3bBCZ1mMTRzO
-	w+13OS9sCiWwoSsG4oQyPRAWozN+S0y5TTrnLN483RDVVK3dg4ttRLLEGBGH2Qa/11fzP0
-	8zipHiAyUGjNh3G9uDEHZJqYx6tcS4+Zk0ymioLVp0h2VmI0td4ocYdnre332hfOQznbj4
-	yWaX5AYsC4VtWUiTeSeSQZAYSMN+5KzjBk0lg3nvvUiRRXgYdx0gIRF3NUupoEESpC9jjO
-	gYD7P8qZob3Tf2zlkopohKCm/FfM4FQ5CyDpfb2F/DPOvaKovj04kko/z3htHw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Thu, 20 Mar 2025 16:42:14 +0100
-Subject: [PATCH v8 5/5] drm/bridge: samsung-dsim: use dynamic lifetime
- management
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FExZuvSg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269E8C4CEDD
+	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 18:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742493744;
+	bh=y9R11PCeG0aC7T4yQOMfIHSqYCQ5IC3utAoKlffVDss=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FExZuvSgG7lQ0nphnU46uCB3BITIfCUTFx/gRRNQECKgcsiWtNME41GgHctBairTj
+	 L2E4xjss89M+TnVQmJP3gNRjnUYvu3j22ltM8HOhpjuVYuimADN8rrVXMdfbsEwg/o
+	 FedshALdXFQlmmCNDqhhTbjSuJm60rHbMJpBjvugGcJ75Z77+vWHqHsj1ileqG8Pb/
+	 WqFwlWO8YJmUHunQSgj7i4OOkw4X//d/uscB7e10Kegh3pry9R0esBPLI1F4sswS9F
+	 qyRVrIrrc1RN+zEOhuXNUCBBuH9upKVbOG96on8DouTIArXT0b80FQXG77FldV3Nth
+	 1Bvi4yL9YGukA==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e61da95244so1935636a12.2
+        for <imx@lists.linux.dev>; Thu, 20 Mar 2025 11:02:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWdnmhNML+Agerk6l8AyKqQvE8baL/ffkeRCeXd32MxhAj7SsbKc0buLFSlU+n/ghT3znQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy1fn+rDjxObPMVWBI+zvcG+cAhVl87DMQLvuPs9PzV06WxwtPM
+	eUVI/Dgo5cTwaFB04/e8L1LdeYiKSc3wBDnA53UbL9e8YUtr9POWvPkJ6VoVMoZTezpSbUZZ5Gr
+	R9IBCxIS0RMxE/l6w83tapecxmA==
+X-Google-Smtp-Source: AGHT+IHQN97QVgyFz09nfrYtWbO3Ru8zTNvSZPoniI5opPgH/pEzb20TQeGjO3i0k0wm7am1Inl8y3sD3mZZgGtCBU4=
+X-Received: by 2002:a05:6402:13d6:b0:5de:aa54:dc30 with SMTP id
+ 4fb4d7f45d1cf-5ebcd40b7d9mr238445a12.5.1742493742665; Thu, 20 Mar 2025
+ 11:02:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250320-drm-bridge-refcount-v8-5-b3ddaa9f1368@bootlin.com>
-References: <20250320-drm-bridge-refcount-v8-0-b3ddaa9f1368@bootlin.com>
-In-Reply-To: <20250320-drm-bridge-refcount-v8-0-b3ddaa9f1368@bootlin.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Anusha Srivatsa <asrivats@redhat.com>, 
- Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeekiedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiieeuvdfftefgueduleehueetgffgjeeitedtteetkeeuueeuueekveevvdeuveenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpeefnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghloheplgduledvrdduieekrddujeekrdduudekngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefuddprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopehimhigs
- ehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhm
-X-GND-Sasl: luca.ceresoli@bootlin.com
+References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-4-robh@kernel.org>
+ <26e72cb2-c355-4c40-bb98-fc0ff267bf4f@foss.st.com> <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
+ <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com>
+In-Reply-To: <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 20 Mar 2025 13:02:11 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
+X-Gm-Features: AQ5f1Jr2DWg_p_3pOGaFM-d8b9OA-WiVr1l9JRvSP10bkvbhKAdr3MGldt734ck
+Message-ID: <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
+Subject: Re: [Linux-stm32] [PATCH 3/3] remoteproc: Use of_reserved_mem_region_*
+ functions for "memory-region"
+To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Allow this bridge to be removable without dangling pointers and
-use-after-free, together with proper use of drm_bridge_get() and _put() by
-consumers.
+On Thu, Mar 20, 2025 at 4:23=E2=80=AFAM Arnaud POULIQUEN
+<arnaud.pouliquen@foss.st.com> wrote:
+>
+>
+>
+> On 3/20/25 00:04, Rob Herring wrote:
+> > On Wed, Mar 19, 2025 at 10:26=E2=80=AFAM Arnaud POULIQUEN
+> > <arnaud.pouliquen@foss.st.com> wrote:
+> >>
+> >> Hello Rob,
+> >>
+> >> On 3/18/25 00:24, Rob Herring (Arm) wrote:
+> >>> Use the newly added of_reserved_mem_region_to_resource() and
+> >>> of_reserved_mem_region_count() functions to handle "memory-region"
+> >>> properties.
+> >>>
+> >>> The error handling is a bit different in some cases. Often
+> >>> "memory-region" is optional, so failed lookup is not an error. But th=
+en
+> >>> an error in of_reserved_mem_lookup() is treated as an error. However,
+> >>> that distinction is not really important. Either the region is availa=
+ble
+> >>> and usable or it is not. So now, it is just
+> >>> of_reserved_mem_region_to_resource() which is checked for an error.
+> >>>
+> >>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> >>> ---
+> >>> For v6.16
+> >>>
+> >
+> > [...]
+> >
+> >>> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/st=
+m32_rproc.c
+> >>> index b02b36a3f515..9d2bd8904c49 100644
+> >>> --- a/drivers/remoteproc/stm32_rproc.c
+> >>> +++ b/drivers/remoteproc/stm32_rproc.c
+> >>> @@ -213,52 +213,46 @@ static int stm32_rproc_prepare(struct rproc *rp=
+roc)
+> >>>  {
+> >>>       struct device *dev =3D rproc->dev.parent;
+> >>>       struct device_node *np =3D dev->of_node;
+> >>> -     struct of_phandle_iterator it;
+> >>>       struct rproc_mem_entry *mem;
+> >>> -     struct reserved_mem *rmem;
+> >>>       u64 da;
+> >>> -     int index =3D 0;
+> >>> +     int index =3D 0, mr =3D 0;
+> >>>
+> >>>       /* Register associated reserved memory regions */
+> >>> -     of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> >>> -     while (of_phandle_iterator_next(&it) =3D=3D 0) {
+> >>> -             rmem =3D of_reserved_mem_lookup(it.node);
+> >>> -             if (!rmem) {
+> >>> -                     of_node_put(it.node);
+> >>> -                     dev_err(dev, "unable to acquire memory-region\n=
+");
+> >>> -                     return -EINVAL;
+> >>> -             }
+> >>> +     while (1) {
+> >>> +             struct resource res;
+> >>> +             int ret;
+> >>> +
+> >>> +             ret =3D of_reserved_mem_region_to_resource(np, mr++, &r=
+es);
+> >>> +             if (ret)
+> >>> +                     return 0;
+> >>>
+> >>> -             if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0) {
+> >>> -                     of_node_put(it.node);
+> >>> -                     dev_err(dev, "memory region not valid %pa\n",
+> >>> -                             &rmem->base);
+> >>> +             if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) {
+> >>> +                     dev_err(dev, "memory region not valid %pR\n", &=
+res);
+> >>>                       return -EINVAL;
+> >>>               }
+> >>>
+> >>>               /*  No need to map vdev buffer */
+> >>> -             if (strcmp(it.node->name, "vdev0buffer")) {
+> >>> +             if (strcmp(res.name, "vdev0buffer")) {
+> >>
+> >> I tested your patches
+> >
+> > Thank you.
+> >
+> >> The update introduces a regression here. The strcmp function never ret=
+urns 0.
+> >> Indeed, it.node->name stores the memory region label "vdev0buffer," wh=
+ile
+> >> res.name stores the memory region name "vdev0buffer@10042000."
+> >>
+> >> Several remoteproc drivers may face the same issue as they embed simil=
+ar code.
+> >
+> > Indeed. I confused myself because node 'name' is without the
+> > unit-address, but this is using the full name. I've replaced the
+> > strcmp's with strstarts() to address this. I've updated my branch with
+> > the changes.
+>
+> This is not enough as the remoteproc core function rproc_find_carveout_by=
+_name()
+> also compares the memory names. With the following additional fix, it is =
+working
+> on my STM32MP15-DK board.
+>
+> @@ -309,11 +309,11 @@ rproc_find_carveout_by_name(struct rproc *rproc, co=
+nst
+> char *name, ...)
+>         vsnprintf(_name, sizeof(_name), name, args);
+>         va_end(args);
+>
+>         list_for_each_entry(carveout, &rproc->carveouts, node) {
+>                 /* Compare carveout and requested names */
+> -               if (!strcmp(carveout->name, _name)) {
+> +               if (strstarts(carveout->name, _name)) {
+>                         mem =3D carveout;
+>                         break;
+>                 }
+>         }
+>
+> I just wonder if would not be more suitable to address this using the
+> "memory-region-names" field.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
+That would be better as you shouldn't really care what a provider node
+name is where-as "memory-region-names" is meaningful to the driver.
 
-Changes in v8: none
+>
+> The drawback is that we would break compatibility with legacy boards...
 
-This patch was added in v7.
----
- drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+So not an option.
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 55ac6bd5da08c037aa7974df679d51e72bc54faf..0014c497e3fe7d8349a119dbdda30d65d816cccf 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1936,9 +1936,9 @@ int samsung_dsim_probe(struct platform_device *pdev)
- 	struct samsung_dsim *dsi;
- 	int ret, i;
- 
--	dsi = devm_kzalloc(dev, sizeof(*dsi), GFP_KERNEL);
--	if (!dsi)
--		return -ENOMEM;
-+	dsi = devm_drm_bridge_alloc(dev, struct samsung_dsim, bridge, &samsung_dsim_bridge_funcs);
-+	if (IS_ERR(dsi))
-+		return PTR_ERR(dsi);
- 
- 	init_completion(&dsi->completed);
- 	spin_lock_init(&dsi->transfer_lock);
-@@ -2008,7 +2008,6 @@ int samsung_dsim_probe(struct platform_device *pdev)
- 
- 	pm_runtime_enable(dev);
- 
--	dsi->bridge.funcs = &samsung_dsim_bridge_funcs;
- 	dsi->bridge.of_node = dev->of_node;
- 	dsi->bridge.type = DRM_MODE_CONNECTOR_DSI;
- 
+I think I'll have to fix this within the reserved mem code storing the
+name or do something like the diff below. I'd like to avoid the
+former. Using the original device_node.name is also problematic
+because I want to get rid of it. We redundantly store the node name
+with and without the unit-address. There's a lot of places like this
+one where we hand out the pointer with no lifetime.
 
--- 
-2.48.1
+diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rp=
+roc.c
+index 1e949694d365..cdee87c6ffe0 100644
+--- a/drivers/remoteproc/stm32_rproc.c
++++ b/drivers/remoteproc/stm32_rproc.c
+@@ -239,7 +239,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+                                                   resource_size(&res), da,
+                                                   stm32_rproc_mem_alloc,
+                                                   stm32_rproc_mem_release,
+-                                                  res.name);
++                                                  "%.*s",
+strchrnul(res.name, '@') - res.name, res.name);
 
+                        if (mem)
+                                rproc_coredump_add_segment(rproc, da,
+@@ -249,7 +249,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+                        mem =3D rproc_of_resm_mem_entry_init(dev, index,
+                                                           resource_size(&r=
+es),
+                                                           res.start,
+-                                                          res.name);
++                                                          "vdev0buffer");
+                }
+
+                if (!mem) {
