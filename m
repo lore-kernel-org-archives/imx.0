@@ -1,147 +1,79 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26951B85D1
-	for <imx@lists.linux.dev>; Thu, 20 Mar 2025 22:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB731DC05F;
+	Thu, 20 Mar 2025 22:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742508097; cv=none; b=dxQL4T8vZkhrLCN81CmC1nLDoiIg+7ap4nV0KmIf25mLHNb7kCvcz9UwSfHLqCjJdWcJb4KqsAN5+HmjuR3gBb5YtaUYloEkWAvvhCjdEgXioEdW9TxrOCUIrczx7xC9x0TpxEy38jUWCDtUrLLGXMxs+REKjhVMcQ6ZQglkRw4=
+	t=1742508193; cv=none; b=h6YM251v4NMGR0hEasjRmre+KqguLgvkOIntLBp8/f7tljz/RqtST/hLXbmVXt3dsOfDPx1PrJyCT5CnzCCQWwlPvjzD29njoGN1Csaf2IzNMcWkPapyOD0K/3U9hbgyT1UX6JK1LpT8RbNMkiB6LwLnH+ClC7DubWZvDXEUuPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742508097; c=relaxed/simple;
-	bh=Yg6H4vxZ/ypZ9QWZ72i/Vu4mvqZmQtAU3zw/DO+b4U0=;
+	s=arc-20240116; t=1742508193; c=relaxed/simple;
+	bh=o/NoRaNjVbaZ9od2IyCqGECRMJQPgyEg8JJo7vsV2r8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G4zw/5ae0MruHZ2Cj1K4Ijgil1grZuCoFXjIZX/9YY0Gs4DuvN5v0PbuyCUVU023Z6uMqf6mSqZKfQPlXuCbrbdZxR4ouptTA1Qv8lbdsdmSdWyJ2laUJGtFQh2khTqrX32mfe6MfW/CFeNCogI+SfiZhRY6VxO8b+mREGxibhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eoX0mlxd; arc=none smtp.client-ip=217.70.183.195
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5GdsDxiNR9T6rebaNMGrb9xW0xQQRw7MFuzgQ7UFZlsJNbRnh4Sx+V5bnwx0k9mwxVEB2+fB4Fi+X0AXLo2n0Ekhu2Zddu03X4+Q16JPSIE4ibIG+rulzflomWIi4yMBaKJAz9tHgYiFfptfTLmmcYhhl/Cp00YfCiVFvQHNWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BGuP+IQy; arc=none smtp.client-ip=217.70.183.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eoX0mlxd"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D3C6420487;
-	Thu, 20 Mar 2025 22:01:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BGuP+IQy"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 96B6D44364;
+	Thu, 20 Mar 2025 22:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742508093;
+	t=1742508187;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XaCKPJlwcuwqGD/thqS4n6Nbplq365BJsUtRQbhpno8=;
-	b=eoX0mlxdGPblU6qH1a3qTEhGU4jwNb+QkTTYzYytDQWWmCNogODfRMqL+vHZFVT4jK87uW
-	vJUs9/ZXA0OqBUfcNoCaZdeA0GD9Ph7DhZS7k91w3SUn2n4LQsOWeW3b3pDEI/iQuGSpL5
-	5+jYV7TAJSckeks092rjv786izvGIqIT1enOtNsQ3ddxJXyYlnqKftaOjnOCh78dv8Q9GC
-	ic2OufvNArgmAd53jFkM3dr6OksezBOIyXP0VbPI/H5b5vtNCpxentbk+OIEMYYyNgmdX6
-	cZ6rbEfv+IAG3scall1p1wSSPVv/ddKMNmakw7N+64G06hmBOIh+yDrKOyviOw==
-Date: Thu, 20 Mar 2025 23:01:31 +0100
+	bh=q9ANWztryAtzgs9DRNwfWIv3Pg0tyATZHHdZaolpDOY=;
+	b=BGuP+IQyk7BHW5sC3FOEVRzpV0bZKhxuuSXJ3EQgav8x4Vj86p9Iw6osoIrkzejmfEleML
+	c9UcXzN/7Ds8rib6jllcHjvCBSw+UoU5ByU1aYzkxcQ0+R7gaapu7pGFkku3xe3wLBjUJJ
+	3yrwbMpxzrsCXz/q9mepxDs7sTuCMt8f/pcoUI8Iq2j68RnaXFDrdbHNsxGmgQYFE+67YO
+	eP4IfL+c0wBqwdaWeO8N2Emis4FAV7pOfxNrVGpDkbJV3ggwZ3GcDe0eBAR2ua7GDr1vQI
+	FtXUMvOxxGLsCNEQ/SMi6ILGky2/TcE9uMM+8Iu6EZQbPC4gI+UrF1wdR+9QDg==
+Date: Thu, 20 Mar 2025 23:03:05 +0100
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Qasim Ijaz <qasdev00@gmail.com>, miquel.raynal@bootlin.com,
-	linux-i3c@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i3c: master: svc: fix signed/unsigned mismatch in
- dynamic address assignment
-Message-ID: <2025032022013134061aaa@mail.local>
-References: <20250317101516.19157-1-qasdev00@gmail.com>
- <Z9l3waI5EdrWmYC3@lizhi-Precision-Tower-5810>
- <Z9mGK0x8fsWvbTvo@qasdev.system>
- <Z9rEPLAmxrqP61sz@lizhi-Precision-Tower-5810>
+To: Miquel Raynal <miquel.raynal@bootlin.com>, Frank Li <Frank.Li@nxp.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: Stanley Chu <yschu@nuvoton.com>, linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev, llvm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH] i3c: master: svc: Fix implicit fallthrough in
+ svc_i3c_master_ibi_work()
+Message-ID: <174250817539.3598269.2833694260995006704.b4-ty@bootlin.com>
+References: <20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z9rEPLAmxrqP61sz@lizhi-Precision-Tower-5810>
+In-Reply-To: <20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeelfeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomheptehlvgigrghnughrvgcuuegvlhhlohhnihcuoegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhgfdvffdviefhtdfgffehleekieffjeetieevtdeuheeivdeujeelffehjeeiveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhinhhfrhgruggvrggurdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemvgdtrgemvdgumeeifeejtdemjeekvgdtmegttdgvkeemvdektdeimeekrggtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdgumeeifeejtdemjeekvgdtmegttdgvkeemvdektdeimeekrggtiedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepiedprhgtphhtthhopefhrhgrnhhkrdhlihesnhigphdrtghomhdprhgtphhtthhopehqrghsuggvvhdttdesghhmrghilhdrt
- ghomhdprhgtphhtthhopehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhugidqiheftgeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeelfeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetlhgvgigrnhgurhgvuceuvghllhhonhhiuceorghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepieejfefhffekjeeuheevueevjedvleevjeetudffheeutdffudefjeduffeuvddtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegvtdgrmedvugemieefjedtmeejkegvtdemtgdtvgekmedvkedtieemkegrtgeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvugemieefjedtmeejkegvtdemtgdtvgekmedvkedtieemkegrtgeipdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdprhgtphhtthhopefhrhgrnhhkrdfnihesnhigphdrtghomhdprhgtphhtt
+ hhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephihstghhuhesnhhuvhhothhonhdrtghomhdprhgtphhtthhopehlihhnuhigqdhifegtsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehllhhvmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
 X-GND-Sasl: alexandre.belloni@bootlin.com
 
-On 19/03/2025 09:18:52-0400, Frank Li wrote:
-> On Tue, Mar 18, 2025 at 02:41:47PM +0000, Qasim Ijaz wrote:
-> > On Tue, Mar 18, 2025 at 09:40:17AM -0400, Frank Li wrote:
-> > > On Mon, Mar 17, 2025 at 10:15:16AM +0000, Qasim Ijaz wrote:
-> > > > svc_i3c_master_do_daa_locked() declares dyn_addr as an unsigned int
-> > > > however it initialises it with i3c_master_get_free_addr() which
-> > > > returns a signed int type and then attempts to check if dyn_addr is
-> > > > less than 0. Unsigned integers cannot be less than 0, so the check
-> > > > is essentially redundant. Furthermore i3c_master_get_free_addr()
-> > > > could return -ENOMEM which an unsigned int cannot store.
-> > > >
-> > > > Fix this by capturing the return value of i3c_master_get_free_addr()
-> > > > in a signed int ‘dyn_addr_ret’. If that value is negative, return
-> > > > an error. Otherwise, assign it to the unsigned int ‘dyn_addr’ once
-> > > > we know it’s valid.
-> > > >
-> > > > Fixes: 4008a74e0f9b ("i3c: master: svc: Fix npcm845 FIFO empty issue")
-> > > > Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-> > > > ---
-> > >
-> > > Thank you for your patch, but similar one was already applied
-> > > https://lore.kernel.org/linux-i3c/174225158210.1593610.10018812780731849409.b4-ty@bootlin.com/T/#m5120e1c362e7e57f4cab139a45410fde421c2f37
-> > >
-> >
-> > Hi Frank
-> >
-> > I sent a fix for this issue on the 9th March, which is before the patch
-> > you linked which was sent on the 10th March.
+On Wed, 19 Mar 2025 09:08:01 -0700, Nathan Chancellor wrote:
+> Clang warns (or errors with CONFIG_WERROR=y):
 > 
-> Yes, but perfer original owner to fix this type minor fix.
+>   drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+>     596 |         default:
+>         |         ^
+>   drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+>     596 |         default:
+>         |         ^
+>         |         break;
+>   1 error generated.
 > 
+> [...]
 
-This is absolutely not what I said, the first one that is sent and is
-applicable should be applied.
+Applied, thanks!
 
-See how you didn't fix this trivial issue:
+[1/1] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
+      https://git.kernel.org/abelloni/c/e8d2d287e26d
 
-https://lore.kernel.org/linux-i3c/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org/T/#u
-
-> https://lore.kernel.org/linux-i3c/174129444617.1163689.11942276093411687387.b4-ty@bootlin.com/T/#t
-> 
-> Frank
-> >
-> > You can view my orignal patch here:
-> >
-> > https://lore.kernel.org/all/20250309164314.15039-1-qasdev00@gmail.com/
-> >
-> > Thanks
-> > Qasim
-> > > Frank
-> > > >  drivers/i3c/master/svc-i3c-master.c | 5 +++--
-> > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-> > > > index f22fb9e75142..eea08f00d7ce 100644
-> > > > --- a/drivers/i3c/master/svc-i3c-master.c
-> > > > +++ b/drivers/i3c/master/svc-i3c-master.c
-> > > > @@ -998,9 +998,10 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
-> > > >  			 * filling within a few hundred nanoseconds, which is significantly
-> > > >  			 * faster compared to the 64 SCL clock cycles.
-> > > >  			 */
-> > > > -			dyn_addr = i3c_master_get_free_addr(&master->base, last_addr + 1);
-> > > > -			if (dyn_addr < 0)
-> > > > +			int dyn_addr_ret = i3c_master_get_free_addr(&master->base, last_addr + 1);
-> > > > +			if (dyn_addr_ret < 0)
-> > > >  				return -ENOSPC;
-> > > > +			dyn_addr = dyn_addr_ret;
-> > > >
-> > > >  			writel(dyn_addr, master->regs + SVC_I3C_MWDATAB);
-> > > >
-> > > > --
-> > > > 2.39.5
-> > > >
-> >
-> > --
-> > linux-i3c mailing list
-> > linux-i3c@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-i3c
-> 
-> -- 
-> linux-i3c mailing list
-> linux-i3c@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-i3c
+Best regards,
 
 -- 
 Alexandre Belloni, co-owner and COO, Bootlin
