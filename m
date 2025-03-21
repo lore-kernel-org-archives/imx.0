@@ -1,185 +1,137 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D512323026F
-	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 20:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280A12A1C9;
+	Fri, 21 Mar 2025 21:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742587644; cv=none; b=eLBBZVD60PpToFuB25QBM2gAR3GYBamvyXbmqNzS0EN8EUxuMpS5421Ue39AAg7HcvRSl/FSgrOfgWAap0Ps82IxmqHqlKjMTxH9j4RYZuzE766p0BPPzEnCiLI3ehHpxZvPKEIMiEDAMyFjdmRL1nGDVMAb3UGNDwJlt1hy6P4=
+	t=1742592924; cv=none; b=V1o56pc8xYdNnhhBtoObQcPjCSgjaIoi4M6yFy6z+U0U0j+NlIT2sF8e3aLbKXlo5jR8JYWjTG1+sKvZiSM2qzxIavMbsGpBNtDi3mzvwfX1SeiMKtgMkHC5etmjFPyRcSKsuKbbQMLFV3wxh4JZedbiz+2SCTWsFt6Anu2WYDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742587644; c=relaxed/simple;
-	bh=GODJzvPep7JsM8otgz+5JkNHJzpd6QgPC2zwEWAXwqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXZQZmuVAowbE++NJr9MqEhRGm5awXvz89RtKGX5daExrNoWhbjUNG+StIGJVbF/7woq5rPKFp3RFLXRsLXJfAJiA9oC0k/PZanjXuZy/rrAenTvTkhdxX+OFZvt3PY446zAYSJMRW0T+BhQ0Pw9yoBd7NBxQwvAx3mYkQWyeGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=X7jesX2i; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1742592924; c=relaxed/simple;
+	bh=99MMakXTIkezKY2wg7hUxSRWmsbUh/X4l9UQUYmUuS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PtWxeek9TnlEYuE3Kws0j9hurXGmXdKZGedrxgGsoNKw9fQW2RpNsFYzbt+jeoHbyHeu0jzEjXM98lhigKa0oSr3mqKUbbgosl9+bW6HEQE81/O2unaXnPsWNN6UdhzmfzaRUZvMkVrezmu9Vw3o16Li39CcSwMaMk8FlBXk20I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNUtJeZu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="X7jesX2i"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98AF9101E90A8;
-	Fri, 21 Mar 2025 21:07:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742587640; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=5+jyyD01tuaQ9cu3oI1xcyMiNqOwJFt8kuWaEBU5/6M=;
-	b=X7jesX2iMhyumPrNedJv8B7XDjh9wic5AVfGyGcHHjXEGGlmQlyN5IX89SX6MgHKiAQMBR
-	Ct/179I90ZNIfnBvCXwnYO8JjWcvFXj6suKf1XPJsKG2iDb406uTu4IfNxw5kObrfNK38u
-	0IGcUf3aloiWa3ePtAQ09nGRbH9v8W13NlVg0YSTDLtPUKofPPgbrT7xk6R+1aIfrD7Xpz
-	ZPkmm0ovCje/ouFs6fjxQTxXdwZwYbZMJs9fgY7FBXuelthnbmkdZA8iBNqJqhRIipB/bO
-	UDfOEmH1jI2Ldj1BdeNVv8wIfYtqnA1sY0/4HdEr6EekGeuLolSMHTLNyW3YFA==
-From: Marek Vasut <marex@denx.de>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marex@denx.de>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNUtJeZu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76820C4CEE3;
+	Fri, 21 Mar 2025 21:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742592923;
+	bh=99MMakXTIkezKY2wg7hUxSRWmsbUh/X4l9UQUYmUuS8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kNUtJeZuriHtWQ9t2GLqbjr0xJOJG2+mrVK386fmuLXewV19OtcT8OtsctdN8owKu
+	 hIRO7rcym5RA6gYhwegr0cF9s8z+ImYBbd04nApIb5ChUaWBBP1iB6L9GK0g0rxipy
+	 flfS0wnWGHiYxt5nZwBcAVBmMzDaPhUirL2LHGa2l8gVvBzxgQYuY1fYA+GU//Ehuf
+	 jNEWUNAbLKd7dDT9CjTDpoQfeBkuKEatBplFRqwvXAeOr9auS9TNsnNIPSQYs8HP5i
+	 dJAUwERdELEyIZZpTa2h5PCGR5EbFTyfsAFZFEvlfOtqAM71FqbFD5GGGM3OjVjid5
+	 sl73VySMGqbuw==
+Date: Fri, 21 Mar 2025 16:35:22 -0500
+From: Rob Herring <robh@kernel.org>
+To: florin.leotescu@oss.nxp.com
+Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sebastian Reichel <sre@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Steven Price <steven.price@arm.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 9/9] arm64: dts: imx95: Describe Mali G310 GPU
-Date: Fri, 21 Mar 2025 21:05:59 +0100
-Message-ID: <20250321200625.132494-10-marex@denx.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250321200625.132494-1-marex@denx.de>
-References: <20250321200625.132494-1-marex@denx.de>
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	viorel.suman@nxp.com, carlos.song@nxp.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v6 1/3] dt-bindings: hwmon: Add Microchip emc2305 support
+Message-ID: <20250321213522.GA4149883-robh@kernel.org>
+References: <20250321143308.4008623-1-florin.leotescu@oss.nxp.com>
+ <20250321143308.4008623-2-florin.leotescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321143308.4008623-2-florin.leotescu@oss.nxp.com>
 
-The instance of the GPU populated in i.MX95 is the G310,
-describe this GPU in the DT. Include description of the
-GPUMIX block controller, which can be operated as a simple
-reset. Include dummy GPU voltage regulator and OPP tables.
+On Fri, Mar 21, 2025 at 04:33:06PM +0200, florin.leotescu@oss.nxp.com wrote:
+> From: Florin Leotescu <florin.leotescu@nxp.com>
+> 
+> Introduce yaml schema for Microchip emc2305 pwm fan controller.
+> 
+> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../bindings/hwmon/microchip,emc2305.yaml     | 110 ++++++++++++++++++
+>  1 file changed, 110 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> new file mode 100644
+> index 000000000000..79081c116274
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/hwmon/microchip,emc2305.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip EMC2305 SMBus compliant PWM fan controller
+> +
+> +maintainers:
+> +  - Michael Shych <michaelsh@nvidia.com>
+> +
+> +description:
+> +  Microchip EMC2301/2/3/5 pwm controller which supports
+> +  up to five programmable fan control circuits.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: devicetree@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
-V2: - Drop regulator-{always,boot}-on from fixed-gpu-reg regulator
-    - Keep the GPU and GPUMIX always enabled
-    - Switch from fsl, to nxp, vendor prefix
-    - Fix opp_table to opp-table
-    - Describe IMX95_CLK_GPUAPB as coregroup clock
-    - Sort interrupts by their names to match bindings
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 58 ++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Fix wrapping to wrap at 80.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 9bb26b466a061..3acdbd7fd4eee 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -249,6 +249,35 @@ dummy: clock-dummy {
- 		clock-output-names = "dummy";
- 	};
- 
-+	gpu_fixed_reg: fixed-gpu-reg {
-+		compatible = "regulator-fixed";
-+		regulator-min-microvolt = <920000>;
-+		regulator-max-microvolt = <920000>;
-+		regulator-name = "vdd_gpu";
-+	};
-+
-+	gpu_opp_table: opp-table {
-+		compatible = "operating-points-v2";
-+
-+		opp-500000000 {
-+			opp-hz = /bits/ 64 <500000000>;
-+			opp-hz-real = /bits/ 64 <500000000>;
-+			opp-microvolt = <920000>;
-+		};
-+
-+		opp-800000000 {
-+			opp-hz = /bits/ 64 <800000000>;
-+			opp-hz-real = /bits/ 64 <800000000>;
-+			opp-microvolt = <920000>;
-+		};
-+
-+		opp-1000000000 {
-+			opp-hz = /bits/ 64 <1000000000>;
-+			opp-hz-real = /bits/ 64 <1000000000>;
-+			opp-microvolt = <920000>;
-+		};
-+	};
-+
- 	clk_ext1: clock-ext1 {
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
-@@ -1890,6 +1919,35 @@ netc_emdio: mdio@0,0 {
- 			};
- 		};
- 
-+		gpu_blk_ctrl: reset-controller@4d810000 {
-+			compatible = "nxp,imx95-gpu-blk-ctrl";
-+			reg = <0x0 0x4d810000 0x0 0xc>;
-+			#reset-cells = <1>;
-+			clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
-+			assigned-clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
-+			assigned-clock-parents = <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-+			assigned-clock-rates = <133333333>;
-+			power-domains = <&scmi_devpd IMX95_PD_GPU>;
-+		};
-+
-+		gpu: gpu@4d900000 {
-+			compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
-+			reg = <0 0x4d900000 0 0x480000>;
-+			clocks = <&scmi_clk IMX95_CLK_GPU>, <&scmi_clk IMX95_CLK_GPUAPB>;
-+			clock-names = "core", "coregroup";
-+			interrupts = <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "job", "mmu", "gpu";
-+			mali-supply = <&gpu_fixed_reg>;
-+			operating-points-v2 = <&gpu_opp_table>;
-+			power-domains = <&scmi_devpd IMX95_PD_GPU>, <&scmi_perf IMX95_PERF_GPU>;
-+			power-domain-names = "mix", "perf";
-+			resets = <&gpu_blk_ctrl 0>;
-+			#cooling-cells = <2>;
-+			dynamic-power-coefficient = <1013>;
-+		};
-+
- 		ddr-pmu@4e090dc0 {
- 			compatible = "fsl,imx95-ddr-pmu", "fsl,imx93-ddr-pmu";
- 			reg = <0x0 0x4e090dc0 0x0 0x200>;
--- 
-2.47.2
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - microchip,emc2305
+> +      - items:
+> +          - enum:
+> +              - microchip,emc2303
+> +              - microchip,emc2302
+> +              - microchip,emc2301
+> +          - const: microchip,emc2305
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  '#pwm-cells':
+> +    const: 3
+> +    description: |
+> +      Number of cells in a PWM specifier.
+> +      - cell 0: The PWM frequency
+> +      - cell 1: The PWM polarity: 0 or PWM_POLARITY_INVERTED
+> +      - cell 2: The PWM output config:
+> +           - 0 (Open-Drain)
+> +           - 1 (Push-Pull)
+> +
+> +patternProperties:
+> +  '^fan@[0-4]$':
+> +    $ref: fan-common.yaml#
+> +    unevaluatedProperties: false
+> +    properties:
+> +      reg:
+> +        description:
+> +          The fan number used to determine the associated PWM channel.
 
+           maxItems: 1
+
+With that,
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
