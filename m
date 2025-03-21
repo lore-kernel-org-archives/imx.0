@@ -1,261 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012024.outbound.protection.outlook.com [52.101.66.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D053322AE76
-	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 13:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742562898; cv=none; b=k2d7aQVju0T8Y808OaG8CyXQtc+VHj5JWvJ2KW0LOYR5o/OTLESG892c27wKkLrsM0UKuE5Aa1S0mM/nYzONUFzsdYmU7KIhZHnSomaBnGY0AKdYpH+T0A5GpgOpKDK1lNgbUvF1plo71idfJf7kmbLHVZ4vwxyTNP4Vr1YxfTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742562898; c=relaxed/simple;
-	bh=yQTzME/6PP1TPK2T8WEG3txl4TCZUlsCKhod5W9SwfI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cpq6bMwMQUzXVQQYzQOcSDjK2BAF0l/7YD5SCefDfPHPo2FM3Z8mrJ/kPfOIEXNAJF0S0F/GavSuNECzP1CMuwgdE+CoD626e/aYFz+cFnX7yNoUpLvlIliyZbAy0lh5Orkg6enDIrTxM+4f3Ypu136PJ6DAKbSwbEuHrFzZSeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/KAHkSy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CB518E025
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 14:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742567180; cv=fail; b=XmVJDbwzykFbRFUHLceWLnW9FDZd+jtdQ6nStEQJM0l3wfeKlS7XX+IDMNy+PDLV5nhWgW1wi6+0MjVhx4muNuhYN7ESenqO+mv+t4uXm5ptTUXKoEQI2s1aUoBKniYDGar7qE59e2IvFtjNuelv+tGf/mt58/09pV/kecU5HGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742567180; c=relaxed/simple;
+	bh=lZipdt+fkW1J1TdxjjS5b0gjdifFCuG8+fDtOyBtfSU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Z2F0lzIca8jew3xIkeTdxRIWZtVIttzJuBywj7RNwsUm57k7J82CGNPCPAKW2bofI297YiiM1oSmPmla7wBxwd1pm8CpX6ZELn/IkAGbyT9qXqPvJsIPhgzUO0jeRIuXdjfatS2m7gT5SVGdMtynyM+374JrdBS0RL6Yjt4MFfo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AXpRlI0c; arc=fail smtp.client-ip=52.101.66.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/KAHkSy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50228C4CEEC
-	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 13:14:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742562898;
-	bh=yQTzME/6PP1TPK2T8WEG3txl4TCZUlsCKhod5W9SwfI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=F/KAHkSyYmfJOv/5FAv2z07LjM0mutjOxjLltd0/jQVYeEVaqUdPAPfK78OKA4Ymr
-	 pLf6gi5C5bxtakc6rutk2Od5FrqPTJEH2Ptbrbcc/qlzcBLHmESzUohhrNhe3RY6a2
-	 xLWK7adhpoEBLDSYMgFqdNPYgWaItn+OMTmFginUrrKOs5KFMaUpEF2El4ciFx+gsH
-	 W6CXmYmNIQVZR3dpJx+5GmlFmpm5GruBqwCBFhhfn5R7A+amiVHIwcDhNHffwZqxmf
-	 mnt67zM9LvEXc/PaTQTiHe3DXmMaMULycJPjbviQlLhRgu832JVpqWpyys8cpNviTM
-	 dUalSjf/sSkxQ==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e673822f76so3188162a12.2
-        for <imx@lists.linux.dev>; Fri, 21 Mar 2025 06:14:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUVeWG/aB3GqUYzP/XlAi2YX2mQlODI7Jewi5m+WyBvQeo4gPmVXr1f6eDHScAUZLywhuA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/gtXQabLorc34Q4W1ShArjGMF10c0kT5q4GlVOy0PZHPyG2S8
-	4RPRycCjc7dws3Lm8OCRVjk6sHn5eMpUZbMUyOh7KTeJyva2HJpw7TbyxlZgOz2JCCYXe+C7HLm
-	0mxZqFawdV2pwhzSkLQJ8x5G3Cg==
-X-Google-Smtp-Source: AGHT+IFKb3vaGpKb9OXSdeAes78/CEmG5k6oY1UfVro8GO1khGigitTlcZdAN7kLobo/GTF9XcNCydapHxU16QMQNfg=
-X-Received: by 2002:a05:6402:440a:b0:5e5:437c:1daf with SMTP id
- 4fb4d7f45d1cf-5ebcd468e6fmr2817130a12.16.1742562896829; Fri, 21 Mar 2025
- 06:14:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AXpRlI0c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aJrQgHR/73783bHgNjqVBhuuv5GO8oW1gWE3wti6KMkYNLmKHWgggYjHBS2qURDlVd00I77EjLPZiSLd+f2VF1Cid6hgJX4MwHNxOI9Pn5xhpHn4eQaDd9GIvGsna/BdSXwBntMA+S2xxpMokP/TascSQJ8W4v59uSKIHUmJL0BADSdxL94+azpYUwj91uv+Kwu5lNRZNGN2lZE03jSyQ9VtxjYFyrEdLdxl6xY2va+sMwNvogN3Nq25bqSf5xFAOi09Dqz+g1kk1QHCjmjzTvH+H3V9qibd/lBUDz7imPYy+vd2e8Cneps/ryQ6lCBeA5Q81k9CKcMfqNmfGFa0QQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V43UXLfaLyspJZhlALZ9PoKPEtBBQT/DnnevrubARwI=;
+ b=gYveiar0wCjssC5xRxDEKJbAodTlA2M8rjiNDfP+XCKjt3gUmSF08C/O9+83qob19hjsfQ56maW9Gt1nkjykKSygSDuRaSg5Jlh/b5Gd17ZfM1hjqv9RbiGXpKo9W9rS4NPNwybgtS1M4YD3djkItFKoCEZ10vF/qOpy6ZeK4hiBpAgRJkDXYwfoGp7Jilpz4fKjGfJWdqwkqPU9Vk0TISdoM9GQEUxLRCJSUzNnpf1Ozro7KBU5ecFhuAUoDV7ca239Mu5ZdiUBVIp8phTcYZZ4JWMNMUGbow2p4TbNaKYXkjYh/EdHQSMm0aJE9G0RAvmzgbaGo1vsLbVkivmPAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V43UXLfaLyspJZhlALZ9PoKPEtBBQT/DnnevrubARwI=;
+ b=AXpRlI0cqALTSCxtOSB+pfGAbBbNGxNMAE0EiZ++3CVV6mYotmcicstIZ4xkbk8JXSjCsv3e9PVY6lViQZPlFCOGRIFXWe85w86/5hx1zR73WG5C6WFGOYgpxXmFq1aneydxUg8z3AaaLYjpGQ1TWPyGC74sCaSbAhhQidnKhhQiGTjlr7NZldSlrfC0LdLMFlXK7DomhkpRwAyYpD0wM7f6UM25dSDh3FpVnDizYGBmm5l6KOb5he1hxtY7qkn3gZ2FRtu2QJRc1k7YQ3M4YjWIPY+pXR9NjArF/5PygYBCxhPOriwS9LOaiFZqFstNvgG7MZvk2yNZznS5nqVumQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com (2603:10a6:10:5b3::14)
+ by DUZPR04MB10061.eurprd04.prod.outlook.com (2603:10a6:10:4df::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.34; Fri, 21 Mar
+ 2025 14:26:14 +0000
+Received: from DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::3a74:80e4:4144:62db]) by DU7PR04MB11163.eurprd04.prod.outlook.com
+ ([fe80::3a74:80e4:4144:62db%4]) with mapi id 15.20.8534.031; Fri, 21 Mar 2025
+ 14:26:14 +0000
+From: florin.leotescu@oss.nxp.com
+To: Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Shych <michaelsh@nvidia.com>,
+	linux-hwmon@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: viorel.suman@nxp.com,
+	carlos.song@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	festevam@gmail.com,
+	Florin Leotescu <florin.leotescu@nxp.com>
+Subject: [PATCH v6 0/3] Add OF support for Microchip emc2305 fan controller
+Date: Fri, 21 Mar 2025 16:33:05 +0200
+Message-Id: <20250321143308.4008623-1-florin.leotescu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM4PR07CA0030.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::43) To DU7PR04MB11163.eurprd04.prod.outlook.com
+ (2603:10a6:10:5b3::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-4-robh@kernel.org>
- <26e72cb2-c355-4c40-bb98-fc0ff267bf4f@foss.st.com> <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
- <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com> <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
- <4eddc37b-5164-453a-9b7f-c4331a7d6243@foss.st.com>
-In-Reply-To: <4eddc37b-5164-453a-9b7f-c4331a7d6243@foss.st.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 21 Mar 2025 08:14:44 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+pNGObRJs9tFgHQbC8kCVm=myt+syQSLJVaO8D2GWHCQ@mail.gmail.com>
-X-Gm-Features: AQ5f1JoxWG99z-onx2wJCY2-zhJYXWv3cM0qorkPtzMXdYEUScnMR6DharJJMwg
-Message-ID: <CAL_Jsq+pNGObRJs9tFgHQbC8kCVm=myt+syQSLJVaO8D2GWHCQ@mail.gmail.com>
-Subject: Re: [Linux-stm32] [PATCH 3/3] remoteproc: Use of_reserved_mem_region_*
- functions for "memory-region"
-To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU7PR04MB11163:EE_|DUZPR04MB10061:EE_
+X-MS-Office365-Filtering-Correlation-Id: 347dc572-ec54-4a75-6dfc-08dd68845599
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?8ux4/0mGMJXtPddFj9zPYfeImnHY4T6oQGA8NBFbz08LOBJmZATgaz5w6Q?=
+ =?iso-8859-1?Q?bumIiiyDo3YJRy7MJKHoQ5wF9bjIltRJZn4ZNHgGo+pJAdJ06sjq3Neslx?=
+ =?iso-8859-1?Q?ebkta+4gTI9kUDjvaXVdUcxFjg4/KETLAmvku7+vE5t2ieafpBZO5O7KUQ?=
+ =?iso-8859-1?Q?JnB1XllATgr3VCH/9UDJR2z+GkrOocnmCXohUL3LwF1zP/5p2OyyxJr3Wv?=
+ =?iso-8859-1?Q?EPFVSqxp2KV4kyJTTwDgUDsGo7n0w/wTfXOiFhYoTpGHIjh+7JXR4V9oeO?=
+ =?iso-8859-1?Q?1lsq5omBIXiA+leBS9IyUceh2xxNn7D660IJh/kfXR+MJ8LA6d8yDtxVsT?=
+ =?iso-8859-1?Q?BiRVS1RZmkXbEzFVVeqO1qXT+1HCRH9TdOzFezeDVCW2xA5MxnF4x+7/FL?=
+ =?iso-8859-1?Q?faZZp3bXpw4vJDofJbnkU3mcjuy3MOvcpTeqV/7nxnKUcm/70neIMRKJaM?=
+ =?iso-8859-1?Q?dk3tRATCCP6kQarEAnZw1edlHdIIQ0UNpIaDWmakKrVFqyt1iy/G14Yhxo?=
+ =?iso-8859-1?Q?9TFpXAv/+hEEpoTfriaIz0Kd95ETDIafvNtFCNEjfWsGYcGGjffu49NmuD?=
+ =?iso-8859-1?Q?qUof1BURechR1i3kPnkECjLbN5ZbdYRvR05yRXeYtzAgdpo0kmEk4Em5Ut?=
+ =?iso-8859-1?Q?TmWUUuf0ksmqO9Zid+LiQ8xlxJZOkiUydYKYib7mz9JMfk8Rs5KUqhSD8a?=
+ =?iso-8859-1?Q?Pqcbmcf07+ePyp08/JWM+VRsHenTuU+J0VXOzlY/2f0bT1Kxlbdl/rwsi4?=
+ =?iso-8859-1?Q?eWmcUrHALOJ+X+nh5Cu6E/BHZu8accZFjL/hEQyuqtoF5e5Xq/6QYBHdf3?=
+ =?iso-8859-1?Q?AWP9kuXrupAxn9/2gsyyqIwENQYGom/OQ1NR9M/vLjcb+ypPC0J08DxScI?=
+ =?iso-8859-1?Q?I9VkAFhg8CYH7uaTTrtgOrpj5k1vkep1+OJK25SdSxaFezr5GBzWbpvMH4?=
+ =?iso-8859-1?Q?RHNL5lJ7CnWHwX0D07qbeS15lT/nsYhl3PPWmDbh4OCL1aXSqzr7l0R/Aq?=
+ =?iso-8859-1?Q?FgQawhCQB7YFetOVZTVgMcSxL1WlCJ+h3nCf/ylJL6CvpQ31jzAVeOQIZv?=
+ =?iso-8859-1?Q?ISe8tjumPKxiUox+W2r/r0hJ+Wy9XBhpnl/VF0ZKpLXyh2xY1Pa6QioKAI?=
+ =?iso-8859-1?Q?E2ZnACkAkRqdvgOe1kUFZ5MloBjCpA0Vmf1Q2AmpsZgGQGdyBv/dN2+VcB?=
+ =?iso-8859-1?Q?X1/BDtDHphPXwVcA2g2/tNE87CSWWlZPs+/33xNB764mI73ebtE2M65MyU?=
+ =?iso-8859-1?Q?pGi2IzEOEspJrfXum+QhVdI1Mw4HCzy9qFYnl46zcmTOe9aZw6s7W8Dsvw?=
+ =?iso-8859-1?Q?vQ3CDfyuTzfSybsUfXxEwDGK+pWy0tigsrTP87W32p0pDajxFQYq1t4xh3?=
+ =?iso-8859-1?Q?uds9uK+mVCxxX6aKB8tnSMFNXZNwzNWshzP+IDkfTDYXsRt516TJpbwt55?=
+ =?iso-8859-1?Q?PUYPhx/znQeI/XynT9tvHM48TFt6es48tfWx5w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU7PR04MB11163.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?GgAr3hQab2uxVqEP5ZZcvUzyNlFT9oTh07guBaEQLFYFOXZFmu5ZldXKs9?=
+ =?iso-8859-1?Q?vrYiI/tCw+W4Yb9OBwvVmkmSAeJUGSm2s3Qvr7urir3rDWNwKj5BCfQKUL?=
+ =?iso-8859-1?Q?gg9UvVUqyyjHyzdRLqRAjHmT999mOZAHVFYwR+bJryvuqLV1wvt25k8W55?=
+ =?iso-8859-1?Q?8w7cgtAe8VdDqvtEadeAQfyK1FMziZUwbYBFTmaoOBSFG98c+3xlEkkUwh?=
+ =?iso-8859-1?Q?eLJ94XwIRyqArq9sKyQIscq3iDC/tIBLQF8T5fTjonhPmRPXWrJHl1Ge00?=
+ =?iso-8859-1?Q?kCPDrUsoNJ2eF6YAxBnzbemc9kSJseWg1HFqmnI0LCJmiRleqV9d4pcn4r?=
+ =?iso-8859-1?Q?xefzvR8NVX5qYtaMOtlY8ANibrO6w/+jKeFFx3hC4xNxAEI5NljOcJ5Cx7?=
+ =?iso-8859-1?Q?c9lbhjjekchmtidzLNsHmlsMvJlmR/ULHjIVqUcXdCdSrJk0RyrtP4nTxw?=
+ =?iso-8859-1?Q?z1XaRusNr3/LgL6W0/d9kBXeo9dc1sEckF/SAMEx0SRqLq+qmMcYiZ+E45?=
+ =?iso-8859-1?Q?3+68mwU2wwZzSmvzb4Y1XggVqDFTgmN6aQxLuUI8VoKZnIRDxooNi2QY2V?=
+ =?iso-8859-1?Q?t4/laqvvur7TN7f4TVTSwG6RJ88n5dsa4hVeLpIJcDrwpLRKcqG9BQh4wu?=
+ =?iso-8859-1?Q?XPuh2RKhXSi0lgCOGbhpBP+xAJeA6WBVTUu3uX6neHAGdv3Etc7y78IoL4?=
+ =?iso-8859-1?Q?gD+V7MJh/cpJytykNZfo900PupozZIuVAwh0S0duqNJLjBZW9a1G6Yq8Da?=
+ =?iso-8859-1?Q?nX1toZa2uSYZHnWUNyD00tt5zBRbrT3T8uvA2AtBGowRMvyu5tkiz7srFk?=
+ =?iso-8859-1?Q?2Csw1XseA2ulCp/0HovlV9M99t0Y9Yh4cPPzSSAKKVStRYmRpZ+AHsePMK?=
+ =?iso-8859-1?Q?pvDi6Rw9AKJTriEa6Y3dGw2sf49kRKb/vR0Q415W8pLJpuRERXgkkDqFIw?=
+ =?iso-8859-1?Q?wIoOF+mVW5bOeyht3mD8LQycPzb8IGwtzmUetS5LUD3KMOk23PGEaJl/Kq?=
+ =?iso-8859-1?Q?IIu4KL+pvXRBGcfbO+uGqzy7AZ4B0S5STPrH8Y7Rj+SC8Q0cEzSOWy7e0G?=
+ =?iso-8859-1?Q?ULF3fVvFY6YUbCTpunUMLwqj2UkqWmxz83gatdIHnVYBTk/ZWXUv5xBEC7?=
+ =?iso-8859-1?Q?ch33/WnIlGyF+4NZgLCt1jn6EkJmLPKgQsmdB+iKOuMJhFoXzqLyAJA0K/?=
+ =?iso-8859-1?Q?1hImioWYjw8htRau4BaaJJRrvScMC/BeKpdzVws219mzke4VkLj+nQBqo3?=
+ =?iso-8859-1?Q?JS7PKcbBeK2PZyN+vQEaiNv7VW64yruPaP/owLHCddn/PFO7tEB0/XCscQ?=
+ =?iso-8859-1?Q?bd5S9qsJ0T/yD7TaUk/f4aHaF0TK+/8CrowhP25PMQTCgv19R9cX4daDNS?=
+ =?iso-8859-1?Q?w31XgNgUqd/gSo+u2Zc0MRGIU3GkUCQL/1cE6nFQLB81tK3hf5sbrx9Men?=
+ =?iso-8859-1?Q?Y9Gmu8ybDFZp5Bs/DrXtKbHM2Y4aZwrmeNhc8D05swQKJoxd+hEFT0yxKp?=
+ =?iso-8859-1?Q?AwBlssbrl8Indm7sNjDOg2b7FhdTVJIdPw3CoafK4TCHd3+33z1GN0ikFp?=
+ =?iso-8859-1?Q?RrAoHEA2zRdVKL6xix/Z9XQfkNI4Kj0Qrbbg8RtNpQgbXbj8IvN+ZRH99O?=
+ =?iso-8859-1?Q?f2DmB10MzzudB+otlNpeEPLFBK/Dbj7P2i?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 347dc572-ec54-4a75-6dfc-08dd68845599
+X-MS-Exchange-CrossTenant-AuthSource: DU7PR04MB11163.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2025 14:26:14.0525
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PEf6FbSYtDRN1Z5RZQpl6VIj6fmsP8hQ0WXAMLg5axXmj4YglnBAGzd5NSLwD49wl0a+OzYzj1CuxT0QNXd/TA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10061
 
-On Fri, Mar 21, 2025 at 3:25=E2=80=AFAM Arnaud POULIQUEN
-<arnaud.pouliquen@foss.st.com> wrote:
->
->
->
-> On 3/20/25 19:02, Rob Herring wrote:
-> > On Thu, Mar 20, 2025 at 4:23=E2=80=AFAM Arnaud POULIQUEN
-> > <arnaud.pouliquen@foss.st.com> wrote:
-> >>
-> >>
-> >>
-> >> On 3/20/25 00:04, Rob Herring wrote:
-> >>> On Wed, Mar 19, 2025 at 10:26=E2=80=AFAM Arnaud POULIQUEN
-> >>> <arnaud.pouliquen@foss.st.com> wrote:
-> >>>>
-> >>>> Hello Rob,
-> >>>>
-> >>>> On 3/18/25 00:24, Rob Herring (Arm) wrote:
-> >>>>> Use the newly added of_reserved_mem_region_to_resource() and
-> >>>>> of_reserved_mem_region_count() functions to handle "memory-region"
-> >>>>> properties.
-> >>>>>
-> >>>>> The error handling is a bit different in some cases. Often
-> >>>>> "memory-region" is optional, so failed lookup is not an error. But =
-then
-> >>>>> an error in of_reserved_mem_lookup() is treated as an error. Howeve=
-r,
-> >>>>> that distinction is not really important. Either the region is avai=
-lable
-> >>>>> and usable or it is not. So now, it is just
-> >>>>> of_reserved_mem_region_to_resource() which is checked for an error.
-> >>>>>
-> >>>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> >>>>> ---
-> >>>>> For v6.16
-> >>>>>
-> >>>
-> >>> [...]
-> >>>
-> >>>>> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/=
-stm32_rproc.c
-> >>>>> index b02b36a3f515..9d2bd8904c49 100644
-> >>>>> --- a/drivers/remoteproc/stm32_rproc.c
-> >>>>> +++ b/drivers/remoteproc/stm32_rproc.c
-> >>>>> @@ -213,52 +213,46 @@ static int stm32_rproc_prepare(struct rproc *=
-rproc)
-> >>>>>  {
-> >>>>>       struct device *dev =3D rproc->dev.parent;
-> >>>>>       struct device_node *np =3D dev->of_node;
-> >>>>> -     struct of_phandle_iterator it;
-> >>>>>       struct rproc_mem_entry *mem;
-> >>>>> -     struct reserved_mem *rmem;
-> >>>>>       u64 da;
-> >>>>> -     int index =3D 0;
-> >>>>> +     int index =3D 0, mr =3D 0;
-> >>>>>
-> >>>>>       /* Register associated reserved memory regions */
-> >>>>> -     of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
-> >>>>> -     while (of_phandle_iterator_next(&it) =3D=3D 0) {
-> >>>>> -             rmem =3D of_reserved_mem_lookup(it.node);
-> >>>>> -             if (!rmem) {
-> >>>>> -                     of_node_put(it.node);
-> >>>>> -                     dev_err(dev, "unable to acquire memory-region=
-\n");
-> >>>>> -                     return -EINVAL;
-> >>>>> -             }
-> >>>>> +     while (1) {
-> >>>>> +             struct resource res;
-> >>>>> +             int ret;
-> >>>>> +
-> >>>>> +             ret =3D of_reserved_mem_region_to_resource(np, mr++, =
-&res);
-> >>>>> +             if (ret)
-> >>>>> +                     return 0;
-> >>>>>
-> >>>>> -             if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0)=
- {
-> >>>>> -                     of_node_put(it.node);
-> >>>>> -                     dev_err(dev, "memory region not valid %pa\n",
-> >>>>> -                             &rmem->base);
-> >>>>> +             if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) =
-{
-> >>>>> +                     dev_err(dev, "memory region not valid %pR\n",=
- &res);
-> >>>>>                       return -EINVAL;
-> >>>>>               }
-> >>>>>
-> >>>>>               /*  No need to map vdev buffer */
-> >>>>> -             if (strcmp(it.node->name, "vdev0buffer")) {
-> >>>>> +             if (strcmp(res.name, "vdev0buffer")) {
-> >>>>
-> >>>> I tested your patches
-> >>>
-> >>> Thank you.
-> >>>
-> >>>> The update introduces a regression here. The strcmp function never r=
-eturns 0.
-> >>>> Indeed, it.node->name stores the memory region label "vdev0buffer," =
-while
-> >>>> res.name stores the memory region name "vdev0buffer@10042000."
-> >>>>
-> >>>> Several remoteproc drivers may face the same issue as they embed sim=
-ilar code.
-> >>>
-> >>> Indeed. I confused myself because node 'name' is without the
-> >>> unit-address, but this is using the full name. I've replaced the
-> >>> strcmp's with strstarts() to address this. I've updated my branch wit=
-h
-> >>> the changes.
-> >>
-> >> This is not enough as the remoteproc core function rproc_find_carveout=
-_by_name()
-> >> also compares the memory names. With the following additional fix, it =
-is working
-> >> on my STM32MP15-DK board.
-> >>
-> >> @@ -309,11 +309,11 @@ rproc_find_carveout_by_name(struct rproc *rproc,=
- const
-> >> char *name, ...)
-> >>         vsnprintf(_name, sizeof(_name), name, args);
-> >>         va_end(args);
-> >>
-> >>         list_for_each_entry(carveout, &rproc->carveouts, node) {
-> >>                 /* Compare carveout and requested names */
-> >> -               if (!strcmp(carveout->name, _name)) {
-> >> +               if (strstarts(carveout->name, _name)) {
-> >>                         mem =3D carveout;
-> >>                         break;
-> >>                 }
-> >>         }
-> >>
-> >> I just wonder if would not be more suitable to address this using the
-> >> "memory-region-names" field.
-> >
-> > That would be better as you shouldn't really care what a provider node
-> > name is where-as "memory-region-names" is meaningful to the driver.
-> >
-> >>
-> >> The drawback is that we would break compatibility with legacy boards..=
-.
-> >
-> > So not an option.
->
-> >
-> > I think I'll have to fix this within the reserved mem code storing the
-> > name or do something like the diff below. I'd like to avoid the
-> > former. Using the original device_node.name is also problematic
-> > because I want to get rid of it. We redundantly store the node name
-> > with and without the unit-address. There's a lot of places like this
-> > one where we hand out the pointer with no lifetime.
-> >
-> > diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm3=
-2_rproc.c
-> > index 1e949694d365..cdee87c6ffe0 100644
-> > --- a/drivers/remoteproc/stm32_rproc.c
-> > +++ b/drivers/remoteproc/stm32_rproc.c
-> > @@ -239,7 +239,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
-> >                                                    resource_size(&res),=
- da,
-> >                                                    stm32_rproc_mem_allo=
-c,
-> >                                                    stm32_rproc_mem_rele=
-ase,
-> > -                                                  res.name);
-> > +                                                  "%.*s",
-> > strchrnul(res.name, '@') - res.name, res.name);
-> >
-> >                         if (mem)
-> >                                 rproc_coredump_add_segment(rproc, da,
-> > @@ -249,7 +249,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
-> >                         mem =3D rproc_of_resm_mem_entry_init(dev, index=
-,
-> >                                                            resource_siz=
-e(&res),
-> >                                                            res.start,
-> > -                                                          res.name);
-> > +                                                          "vdev0buffer=
-");
-> >                 }
-> >
-> >                 if (!mem) {
->
->
-> That's work on my side.
-> Could we have an OF helper to retrieve the name from the full name?
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-That would be: sprintf(buf, "%pOFn", node);
+This patch series add initial OF support for Microchip emc2305 fan controller.
 
-The problem here is we don't have the device_node pointer. The only
-way I see to make the above prettier is perhaps a define.
+Changes since v5:
+- Corrected blank line as recommended by Krzysztof Kozlowski.
+- Removed pwms property from required list as Guenter Roeck suggested.
+  The pwms should not be mandatory as the driver works fine with defaults settings.
 
-Rob
+Changes since v4:
+- Corrected quotes to have a consistent definition.
+- Corrected DTS coding style as recommended by Krzysztof Kozlowski.
+- Updated pwms phandle to include pwm frequency, pwm polarity and pwm output,
+  as recommended by Guenter Roeck and skipped the pwm channel as recommended by Krzysztof Kozlowski.
+- Documented the pwms args in #pwm-cells description.
+- Updated pwms phandle in dt-binding example to include pwm frequency and 
+  use PWM_POLARITY_INVERTED macro to inverse the PWM polarity. 
+
+Changes since v3:
+- Removed thermal_cooling_device_register_fail label since is no longer needed
+  and replaced goto with imediate return, as recommended by Guenter Roeck. 
+- Redefined compatible property in dt-binding, as recommended by Frank Li.
+- Updated driver of compatible list.
+- Renamed node name in the dt-binding example, as recommended by Connor Dooley.
+- Corrected dt-binding commit subject.
+- Added dt-binding fan descriptions and $ref to fan schema, 
+  as Connor Dooley & Krzysztof Kozlowski recommended.
+  Used similar as on maxim,max6639 and nuvoton,nct7363. 
+- Updated dt-binding example.
+
+Changes since v2:
+- Removed the introduction of new properties for now and we only 
+  enable basic OF support.
+- Link to previous version: 
+  https://lore.kernel.org/linux-arm-kernel/20250219133221.2641041-3-florin.leotescu@oss.nxp.com/T/
+
+
+Florin Leotescu (3):
+  dt-bindings: hwmon: Add Microchip emc2305 support
+  hwmon: emc2305: Add OF support
+  hwmon: emc2305: Use devm_thermal_of_cooling_device_register
+
+ .../bindings/hwmon/microchip,emc2305.yaml     | 110 ++++++++++++++++++
+ drivers/hwmon/emc2305.c                       |  38 ++----
+ 2 files changed, 120 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/hwmon/microchip,emc2305.yaml
+
+-- 
+2.34.1
+
