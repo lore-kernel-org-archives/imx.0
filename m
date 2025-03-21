@@ -1,74 +1,64 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2051.outbound.protection.outlook.com [40.107.21.51])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2041.outbound.protection.outlook.com [40.107.249.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425351DEFDC;
-	Fri, 21 Mar 2025 15:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7906764A8F
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 15:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742570188; cv=fail; b=MVA41WnuAX17bcHSIGJzsc4Mxl8wti7ub2NfQq7N4K/ZgRttwOuw6KJ7EEzr2XHLjjIWGXOvoiYf3ZKnNlabskdzxht9oLDX32r6XFGfGJiygGtwgYjzQj50/Aij+HzqxE6RdoTlO/Dfs17UaqaFwZzyhWJthrvFZOw+j1Dzk6U=
+	t=1742570598; cv=fail; b=qbAs0hzXZ7hFklUsnvOaParqD07qMuNrV9h9NWs64/gF7oOPBI8ekXa/sVeiOjrb4A5C9c0dyMg642MdKRgEyEheFZluMJHBRHk7wLU4kRAIeovHL6dvOaEWE2p6u0toB+tE+ud4pjO89QPMT/ThBeR/TCU/WPblrqAFFVNtf3M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742570188; c=relaxed/simple;
-	bh=w4mkfal+aGcs2g6M22OgCv+xc8fD9iOhGsI5nu9kN/g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T3/wMB9vuJOI7soAHmvidxL+CML4vvIXuFR+7pA8Jf6wZ+UDNgPeJsYkR+cyQv0l2upQ/QsfjcxbpPSjLpXAg9SFa+wBil578Hn/mYdLNOgFfOPHmn2lX+fkUSMO6mFm1/FuYy2KGrkaVj7yRQelWsOy5qaO8zCnONyptWeoRsY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=pass smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=DrBrIuc6; arc=fail smtp.client-ip=40.107.21.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt.com
+	s=arc-20240116; t=1742570598; c=relaxed/simple;
+	bh=Ouj36VDSlBPmH4SDnyDMWTeqVyZLesF9+0T16kaJEdA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SYewbWDiyKl51tQlgZlK9Hjgjd84pzCkYnkdPRNClmAwf/k4qaJRZSsA64s4ro2RsUsIGledN1GuSwMrykrn0V3C0RYEk28GDi8chHHBWyydCxkHcvF5MxoxiawJqAEgCp8EtPl9U8aEH5QcaBVj/35Xjif75hAVK+6XWqPXwOA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Rblyk9qJ; arc=fail smtp.client-ip=40.107.249.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="DrBrIuc6"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Rblyk9qJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ER4GXFasFin+AjEzI7sXdrbdI85TE3H4WpCyxtOi8UfgAZdEmLaFQvO1IqUA1E80TuFqLfJhVNOy+8d9CZD8OnO9o1S/qMEKMfk1W5j8TZ0ki03lmPPWRvNgpwZDvZ+Drz6grpvGJVS81FbsQ3VicDjBXP6ZDJENTmldfrubeLzYJm4Sx1QZE5PuB/PAVOpg+D7tsFUGqJPcfB5cW9KOMsY6YatWuU08Uh9/vko15WxnCe3OlYUo+9O/Jf0u77xNf9l2qSeWyuGEYWdX3sMgRJdKAOhTtQN55AN7whYX3Pcx87Bd+2RvsZwyvu9455LSVQbVWQNA6i1fseqweMbSIA==
+ b=loi4tZq8BIgTMur0mLfHnrJjjeiXq0ImAg8d/JWq77Wq6EIbBT4X22HIpp3mlUUSDK2mSIHg4g5mufTdhPl8d4ZT4Dus+fmxum3mIvDV9gJxQrg77LYS+mwjJiu/dkgaB704SHSo1a45AiWhqI98hctXyVgy4VFmNppP1jsQSCGbJhEqX5SRz/isGHF65QW5oRAX+jwpjJ3FbtWf1LvGY8JVvwEkL8eSwQVXRRNaJCrYn6sGFP2m/XcnQ0yZ03Nt/9orXTippnbeYBiN3vdVaNbRn5wFQnKnx2/T3mvErYfJ2vOeG46i0YseRgCdVswYxx+tyAhtPRojPr5Zc/mHCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sJH3rQ/5vwA+BKIRxkB2lGJiGTgluDGsWcQcP3SSQVY=;
- b=g9ln16VIkozDaNLnyltWbjBh8qWRgG3xg//GZRQT0t8TZpvXNctxSpzd1VWL/8D+TAgyoGz1Y81tdXQ4N4kWO0I2Ps5Y+PwoQ+gBRSmNpwKVvkezxHtGrYYdAG8nNSaGlW+iwagVxXN4FnaKIlYTiWSELJdxug/jkt/wkNgAMTp8fqYOlZtNDBuut3hhJQc2CBpXInieRaFaAXLPbLBZQmalVv73bzzemqeEjGP+E12dct39tB6DCEkt1jkZOQzq11QCxJG/Y1L99aV2lP3v5K+G+rAw38GWxM+W4FVyemavFEpAKArsPilnEDmFlIvdtRnav3RoupPwl80/rsBatw==
+ bh=5WRqMgWO2qpCnklvIxMTpZBuAp559ec9QQD4eQbZ3QE=;
+ b=it1yiGHQHqPbgm9xkj7HtMjtIpm3RiMfcmWHq47++1AY+OYB55/5Za+cNBwcPIH6+jkVlNCSxFWSXlvGmThxLwy0h3/g+sAyT+aZWaGMDPETeuvOYqNeMxKW9tGod2W8cv0wwTdx8tguajQ6kEyVqQNPx02mjRQpkMtWGBVNDs0FHMrFdd9+5eAqjyGfAl6DXJA0u7M1R0Nb4i3W5eCmAGF/IpeyQEpsWH75M5q49dIWRj6UTj9jaa/+FXfzGWlb4Mz7+fn8fcSiMmrK5XlYv3I8UVn/jcDW22MWnOjQsfWWKoaGNj62ZCZD0jg/cL9HEBbKmT8UbB2mF3PzgrZG2Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sJH3rQ/5vwA+BKIRxkB2lGJiGTgluDGsWcQcP3SSQVY=;
- b=DrBrIuc6Fl70FlzhRSAJy8pqUFX2irwIJ+p8qLcu82btwz6SwF3WOUHzwlMGzOGEyMr7B19J+53AGnKa0q2HfklDcGAZIc1aKWA0VaouEW+isdgG4C09r1X1mzjrIZuQeTyC2BoqSmeMe/4RrGL+V7jz1aJyduwj3s0bekxNC3S4QjVDvgHnQvb3EIV34+IfdqAGupgWAW888jd2gvlX0ovmRg12BFvwW9eC8fjD3tY6lFX1C8hBHN68UNFRJZYsKtsZdI0rot0P/soipo1u0woslZh4uMIlf2uDJXnaY1Y8o8IMoTqA28MCnnMaes/t7/GwYgpAn/VV6278HpyKCg==
+ bh=5WRqMgWO2qpCnklvIxMTpZBuAp559ec9QQD4eQbZ3QE=;
+ b=Rblyk9qJtwTAWvik3OHZwiGNz6ax5t2cvWzBi9jBngeWnDLRC1qpsQBAqfJzJjsUUiwmILDwQqLMhn0gcUmr5WScL6P+GqD1G6PLFDKuin0ujugsMdxmDLc/31HjjHlDoi29j1f5rgILYLdFQUk+LDdTR6Z0v+Fw8XFVVOVff4t+9rmuCtSJ0ZRzPVXzNLoLbIuEDflIt3NWiV/Bt1FzpWBgYdsZ9qb4/4jsXcVrJUbbgthHA9PLjuK8ljzosPEfCXN/LWYSVGWCXw0jhV/+BhKa4uM7KLO10kbCB0+4ETj+9r9Ej8qCqtCB/OQ8ptcQ+ivuUHcWIgjpxXOQ/7fVEg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com (2603:10a6:10:53a::11)
- by VI0PR03MB10284.eurprd03.prod.outlook.com (2603:10a6:800:1b9::9) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com (2603:10a6:150:22::11)
+ by DB8PR04MB7068.eurprd04.prod.outlook.com (2603:10a6:10:fe::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.36; Fri, 21 Mar
- 2025 15:16:22 +0000
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf]) by DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf%4]) with mapi id 15.20.8534.036; Fri, 21 Mar 2025
- 15:16:22 +0000
-From: Mathis Foerst <mathis.foerst@mt.com>
-To: linux-kernel@vger.kernel.org
-Cc: Mathis Foerst <mathis.foerst@mt.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	manuel.traut@mt.com,
-	mathis.foerst@zuehlke.com
-Subject: [PATCH v4 1/1] media: imx: csi: Parse link configuration from fw_node
-Date: Fri, 21 Mar 2025 16:06:15 +0100
-Message-Id: <20250321150615.381112-2-mathis.foerst@mt.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250321150615.381112-1-mathis.foerst@mt.com>
-References: <20250321150615.381112-1-mathis.foerst@mt.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR2P278CA0071.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:52::17) To DBBPR03MB10396.eurprd03.prod.outlook.com
- (2603:10a6:10:53a::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.34; Fri, 21 Mar
+ 2025 15:23:13 +0000
+Received: from GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58]) by GV1PR04MB9071.eurprd04.prod.outlook.com
+ ([fe80::b7f2:1d0:6b6a:ba58%4]) with mapi id 15.20.8534.034; Fri, 21 Mar 2025
+ 15:23:13 +0000
+Date: Fri, 21 Mar 2025 10:23:07 -0500
+From: Han Xu <han.xu@nxp.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Volker Haspel <volker.haspel@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>, imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] spi: fsl-qspi: Explicitly unregister SPI host in
+ remove()
+Message-ID: <20250321152307.wzjmouuoypkukoqk@cozumel>
+References: <20250321-spi-v1-0-b9939baa64b6@gmail.com>
+ <20250321-spi-v1-2-b9939baa64b6@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321-spi-v1-2-b9939baa64b6@gmail.com>
+X-ClientProxiedBy: BY5PR13CA0032.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::45) To GV1PR04MB9071.eurprd04.prod.outlook.com
+ (2603:10a6:150:22::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,221 +66,154 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR03MB10396:EE_|VI0PR03MB10284:EE_
-X-MS-Office365-Filtering-Correlation-Id: 041c8504-a598-4148-2724-08dd688b568d
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9071:EE_|DB8PR04MB7068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81bf78b6-e277-4097-2f96-08dd688c4be0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PK3gDM4N9l01zLaAhLjWHx+wfi1QhnfP2l2DaS4Ymlf9cyGLcjtINupyrkln?=
- =?us-ascii?Q?preKH+FT30/cZlE00amnwNmN8hOnzUBjavwCBv+Oo6aSgMANvx3dxc4C2W3r?=
- =?us-ascii?Q?uFwSZlCblarCId8n0HHF2r30GH8dLA1dtb8Rch+cyVE8+nXKSLthKXWnGe7Q?=
- =?us-ascii?Q?xV+VdYKUaSOfatVUVU/O7CzrYf4bDd2mw3NZvxR9IrmCO+SstaB1V7tFRv0D?=
- =?us-ascii?Q?ALknG0gDuvohAkUQAEeo9Uyxrn2PD7czQS9J6Hwn2I9JaO6p2LJUuFqFiJrw?=
- =?us-ascii?Q?Pmo/RsgmdLE8uh2jtDW6RQ/WBrt4hZyDaiKm/yazRJO0nP2JCFIflzXA3OhE?=
- =?us-ascii?Q?g5Nvgio+vn6tFaCnP0UrYlHbu0VKyVwIw+UJGIsB3UxZSX3vAK6H6DZgGL2+?=
- =?us-ascii?Q?aDXMtZmYZqi3/601wjAWt/4fRH2EP+2A/klLlFFytKPyKgO60Rs5HTdUSvvZ?=
- =?us-ascii?Q?GxHpq3/jr7uzDnviFi6sPbmNVoCtcPlyMV8++Y08/mPaZEcNTKk/CdY3CUDh?=
- =?us-ascii?Q?MvWHKPwh5B6Nqiz+lemu9ZBgWvXE11qzD2gvcM4yjhzKlKgdxnsyOHD5orHf?=
- =?us-ascii?Q?pTu+Ds53DaepYC2h7cvuboWX9aB2/2l0E093AM6EWJtEH8zqo2Rsk6ndnnHo?=
- =?us-ascii?Q?i8JhOcgyqQdmaI3jnEu3BE8BmdEj9rJihTcR5gkhxOJ1oxr+lCsxvUxD5oaY?=
- =?us-ascii?Q?nnIp8A+XUdaoUz2i3Np3Qylb2DssJeVo5qQgdCvkgTRbZniigJ3QbcWJIYtQ?=
- =?us-ascii?Q?lvIbLV6pGbusTe+Tf9PiUvuI/EfrV8Efh6FMwPQ9uV/g2XqDjksgkL1TQaMt?=
- =?us-ascii?Q?cqDKSqh5j2C2vkXk4dhbCVDjIKYw2tCsxJFGvNqCA+0q272PlX/3W0jSc9BG?=
- =?us-ascii?Q?Kiwh1l4xAFz0Qamn56llEyIirYBmm3SdKJ2vC7lr8QirW+2/vI/0solsm0s8?=
- =?us-ascii?Q?6Awz2S7rrggaKAvtcCXYa0/fdqTEcgKqi39ASSHYwhPL3EzLOge/EbDu79+d?=
- =?us-ascii?Q?2icMNTgjFi+6Sw7RW5xtZ5qqK0HciZXrT0aj3j4hoc1XSkmqgbfK9HIE4Rag?=
- =?us-ascii?Q?FOIl4HubvtqQlMAAl71YAUFZqJRCCLYZ9kkNehyK17KwtVgD3bA/Qx1de3Os?=
- =?us-ascii?Q?NQYVX4oMw7lYs4vdTONm6SRWg56zmiG0XoSxGG4bb46iL9xhiyMdo2R1fecv?=
- =?us-ascii?Q?NR04NVNOkD8OjyRukqpK8RBE4WwYqV5eAnZn0w0hL1VQPZPASY/t7Cl8UiHP?=
- =?us-ascii?Q?8jq1+kL0N01gFtfEOryj3DzSMOtTYcJeGLC3ppMbcY5XPLbaq7kTe3hPaOAf?=
- =?us-ascii?Q?04hC0X0IJuNB9gwpG8TbeNpqwuAvR66SiYouSQZKlyUxXGGVSGVZCssfIVPe?=
- =?us-ascii?Q?EBdZ0kHHE1GfgitRHGS8NlJhser37Ji0WbuzkskR5znjq8F5/DHhp3fEYRUU?=
- =?us-ascii?Q?KIhK4eLEn9+bJM9tRm+5q1C1pO7aowh3?=
+	=?us-ascii?Q?DRBJiaQ7Fc23hiOhghkgweplARSkTEsLRFkS+z58Xz4YQSezWhPMUDdO7dgO?=
+ =?us-ascii?Q?bg+wbJe/JRa6+c4/uh1DA7Z4qHCYKx08adIxT6MeBXmMyRDGGAmTJ2/l5HY5?=
+ =?us-ascii?Q?ZL8c90K5ht/mwbueoQkgMS5W4tW2QfulFox2GlX+203YNfX8+oobtT+n/cA5?=
+ =?us-ascii?Q?wbPZF1SZ1eng6FhVUTR4SKhU+s0auLUKieVl0BAtQkWRrHbIT0gJQT+sSUzc?=
+ =?us-ascii?Q?3e3ONaWdEfJxnTCePb+RIWGKFNikbxeCCZh3oEoeot4EE/HGWwj485SFxLFT?=
+ =?us-ascii?Q?airPpZFpaADw6DQEBDevkPrd/Aa5NWI4GDe4wnFLMpueH9bPDTXFvIcGSQrs?=
+ =?us-ascii?Q?PvnsugM3dY1DRjlWVV7SC0IiUK2wkD4f+rqQ22zW6Ls1t2EzZ3sdSenaU3vE?=
+ =?us-ascii?Q?gkZx1pc8dCEeAClua/TkDD2zOZ1J9QvsjV+babmaw5Uko1cpo4Dlhzt2nhtC?=
+ =?us-ascii?Q?+SE4/f3DDr55VC1+aWiS5BRFbBGp+xsb1f9J9cFTAfSd6uoUvn8RwSX0cRt7?=
+ =?us-ascii?Q?ZvReVERqiAhUSIwCcp6PAuwJAioMaIyFSKKIYS5a5rkqdHTYHOATemJ68Ckl?=
+ =?us-ascii?Q?Py9jewRawoB6VAZroMSLzDFWusBkO2sYi6OcQnToEpHjkwPExyxfa9SDly58?=
+ =?us-ascii?Q?4IV9UQ6FnkJD5ROcG7FY3ES/CtfW4ZMYyHHIvz5z8MMUC5sgitkmJ5HX43gv?=
+ =?us-ascii?Q?tT9qwyzDIM2TU9S37UMx36umgIioxTskjQEw3pvMfjm/9Barz1ddguT3lFiu?=
+ =?us-ascii?Q?vkPZGkDpAi5foBV4QF2tPrSWwC4dCADcLcHyhK3ZaWBsI/LIKrfplev5gJHl?=
+ =?us-ascii?Q?2DPeQXTpHdKjQ7ncBulyjcuBnXiutAEE+uJZfWi4Dgdom6ELJyPKFMEjYvfy?=
+ =?us-ascii?Q?QuHPTiXXuawry1YYL6zUCoJR2VPElHalZH2i1TvsDCUxius6hGjeRVz2XFqk?=
+ =?us-ascii?Q?qwQn0j3Z85mupDsD7oHq3QZnvNT552d821dx5dhwaQb9ZhCvrE1SqG5CiYE8?=
+ =?us-ascii?Q?+A5Nd2+hp+OsMhB7Vr6dl+cYBbnDpKbdRq1Vf2hv1Ty6nymXi9wvPa0eDbsn?=
+ =?us-ascii?Q?SDwhi/NVuKjtqoTSPHJXgxXpKT2eouq/LbXlkG8SAlrRJ2o8J9ALerbKjxoK?=
+ =?us-ascii?Q?KzeZnZv6aJ2X+hUJd/0w98JNkmkW7TA5bQLX8td8sGinLLOjNU5XP+hs5GHI?=
+ =?us-ascii?Q?jqhs9M2RqwfXzvIlxLMfxZ8cb8453g5d95ZW0YtR5rawoySl2Gu/ZxI5NOcP?=
+ =?us-ascii?Q?d0/VB1OFGmiMx5rD+40+mszshju5g8R4V2i/GGLyp/Tda6nbFWYB5LgrY/oL?=
+ =?us-ascii?Q?RpSrEKxwExTM3jrfg+nieZZELgIb65hv5rgg9Zc8bSCMAblrT08jooH0d71o?=
+ =?us-ascii?Q?5QiGL9RrDA2rv2/Q1UKfbWxZlA7L3HvqsCyvYEPaqGwomvzW7U8Au+AxXu0L?=
+ =?us-ascii?Q?MzwVpL7mJL18Gh1zT/jywSAiRw5PKF81?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR03MB10396.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9071.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tqY5nMIhmAxcOW8oEhkCZOZIQyLw+G4HagzZ4Bb9UGp9LJQ0ggzqXUbSCEmR?=
- =?us-ascii?Q?FYHn942DUUiiVRWHoVJQgCN9YI/S03MkSGn9bA70BcosahRqkKoLNUZD50ZU?=
- =?us-ascii?Q?q/wmhDOtCNp1DNvpnTrxqYZ6hvhG7qm40M9NqSaj/GR5eASzR+K5udlqoQ5y?=
- =?us-ascii?Q?eTGc/+YnkaYpdMDdoUTOt1e/mL8ylRn7WRUwjLvADwVr6v4kc+l5yd6Gwp4M?=
- =?us-ascii?Q?aCxRhySfO7DT3NUjRqknbT82BSQSEt2kQyKCJU6r9Rx+KSj8EVokyNbNZvgR?=
- =?us-ascii?Q?mycB/zRIElFZ+8bbmMX5RJ7r3afF2CJhq9AYbkGIvAGOfG7JXrfYCLDWXGdZ?=
- =?us-ascii?Q?kISamWQdfwl2pbYZwArUvberPb/G5m9cZwLmqzg3F3P4451tgWi1ssjMIoT/?=
- =?us-ascii?Q?ybZByvyPxDNnrR7NQR0w2/VfLFP71dR1d1dm3hLLCjJuYgZc9KQIuzE5FSd+?=
- =?us-ascii?Q?z+cVZD0JPsPMuQKZUsA6SEVNRY6IrIhsC6p/rjpw9zkB7wqj8xZsM+6mVjxO?=
- =?us-ascii?Q?EtTCZDObuXdZRJshiRodFsrVnj8yj66exlDy7v1ccLHD0QSKeXizITdB9KUy?=
- =?us-ascii?Q?QJbsKNqA1/mDaqzOojVyAovcaVfE4KMJGIFa95BWVjN7QDJvQzTKjbvXafYs?=
- =?us-ascii?Q?LMyvNR8l62snfhU2FeScXnXoXw9RIEHZnYeh9nsdZlaBJdVDbhYhNhxviJLp?=
- =?us-ascii?Q?FUqxMZxaAVJl4UThw18KosuxHLtbYHlDHBNbl5qoAbYefQ3d/PsFSbSD31p8?=
- =?us-ascii?Q?vbgjmg1/MZJWnh2Lr6RSP6YFTbcUNZrVjh80wYkhwD2Bk2KJ3wqZKHsOcZt9?=
- =?us-ascii?Q?I4X7pK6mNdCa/UCc6E8qtBf+6mfIO7p3RYnzI4YDUmEYtrktI7GqO6gFiU/1?=
- =?us-ascii?Q?Hk7PIyaGdrYEj+FoKMclkc94L8uuRpx7ZFoupM3ZPBNHQDzNjo1R6e88duJk?=
- =?us-ascii?Q?bOdCSoSL4axMebVCNQoYGQnzF1wyOogOy/+3TzN35JAs+Z1qtcHorDHlwi2+?=
- =?us-ascii?Q?ElTytJE3+h10TKGuHmxSDNlpb+93LPxEHDtEnU0z/Rw0n42ENUDZ41mVLATr?=
- =?us-ascii?Q?pLzmjT0RR4Prdor/0LAqQxTIgKy9C7gp+zceipttuEmuWyFfV8M044a7aikb?=
- =?us-ascii?Q?wS7Z3bvkucRmXvPZXN2N4+3SC33Zs9r0Igjxre/CDYIaGe1JSvBtEO2oauvy?=
- =?us-ascii?Q?0xXJt+L2j1s5rPgqOItm/vu1XhONw174G8aG71hdlQ1d7m6FT4j7hpKevr2W?=
- =?us-ascii?Q?1pBr5KG0tW13SFDbImVu+ayXcC3ZhkQayknkTH5mR8EneAPZgsP1b0Ll3G5D?=
- =?us-ascii?Q?NgqbIBmIiD4Tt0mwnwKGjD7oS8+FMNkrfTuimTQq+ZrzyvxyT4s0IDLZiil8?=
- =?us-ascii?Q?4652J7SIL6jB3I3WV8Ya0e6sdCsTBmNFhwuuUc16X/o2ERiRTCJ7XFu1VXEO?=
- =?us-ascii?Q?hCpin5KTJ+paxqD7kI0kh1PwkaHnI0xx1hn38NlIGdIlhZAwx5cgaaUMVrm1?=
- =?us-ascii?Q?EHpDys99qH99aHnxKduLdw6GuaVnf0xf98lwvtrroW7+Vg1q6KkaiXo5UJW3?=
- =?us-ascii?Q?yqZbdrs8N4oeVL/VNmKBY0J05UUY5CoE2JCR8aoJ?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 041c8504-a598-4148-2724-08dd688b568d
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR03MB10396.eurprd03.prod.outlook.com
+	=?us-ascii?Q?bgmwFwq0CJJ5uJPuvsOW6+fnMDFB0fOSh8JwxUVlz5bYcvo9eGwcUDAx3jRB?=
+ =?us-ascii?Q?usFtn7ZsRNZ+DrtegdwqNwHELG2DRMpnWzlU3Znn+KaVivx4+Ujy6dQDrScO?=
+ =?us-ascii?Q?ehhukiJrAQGP8vRHH5+3DmD2usKZ/ITwsT9jZlPfnx+9QlhA3kjEd3SEv5/l?=
+ =?us-ascii?Q?iq6Na6+p270Orgp/sGzY77rFS2HuyyU5Ft8hADOsoz5os2GjrOPzUff3J0pm?=
+ =?us-ascii?Q?/2syz9xiESeGgtB0PIxUbdV4lnpDbG8EjeMXBN7H02DMMbbw3pz0YOlL/YDC?=
+ =?us-ascii?Q?6oE9dY7UIOsMvo9KZiQdHkI+fCml+XpcxT11k02kQrjCYQ/h+nlhb0IO4k03?=
+ =?us-ascii?Q?JDScLfJyRrsDXw2l+RqEKct762Y5wIr7AWYg+WbkJnnrQY+LANbH3Bw9SIdc?=
+ =?us-ascii?Q?VdlQ/EycGw4TJBv1Br2hF6rTIjsGj6U6ZkWbNN8ED40sPqvPQvp4LbHIXses?=
+ =?us-ascii?Q?XrbMkidWH8odAI5VJvCR9eVyhVG2/fcJO1LSyMc+mvjqfanKgTQyvRCv6/J/?=
+ =?us-ascii?Q?PJ6vfK/htUQDR6L+ybTGMHYmXb0qBDsuiANFwv0yOr0X3hLq9iPCbqg+RYED?=
+ =?us-ascii?Q?HjibBhtioJIyDd4QxvNhlWXXfExkQtzu2igmtZNeKEHoki0iQlqD+9AGrl8K?=
+ =?us-ascii?Q?wFAcBdjS8y8ErD0/tOs+CFAvuIDq9phB9h+kAyiZKat2UuJrdUU7XURiiKTj?=
+ =?us-ascii?Q?QW2QJV6/bblLCDqUdqHU+FdE2YBn6s8aykcHoC5diWqwjsBt+asYl5psliJC?=
+ =?us-ascii?Q?/+v5b1EiHSe+dpwsmH0vAfUerXFYmK8A8iK2blzGHdK35No5q50zloC2ULf8?=
+ =?us-ascii?Q?BcFSqJBxtCekRLUDefsqhD6f2AccornaANxO96Fuw7UD4kV2jRkb+fZ5rlFF?=
+ =?us-ascii?Q?qi5TcBIpftdNRKpZrMB2O3tW5E3KVMYhWFWKoScq3h04jqjguTT/1jPZ4Opf?=
+ =?us-ascii?Q?qcEOgOSznIKvD++dbBMrcXR9f/ACXixJHaA+uMwKzKIPM8diHlX7VNT5OyNM?=
+ =?us-ascii?Q?KmgTWrd7Onl2f23uqjHUfCLV5JjPG+E5taszuia7e6sKYfdQ0mZkhWZxInds?=
+ =?us-ascii?Q?dcaRr9mz36hSPkO7dmqmiTYqAkNhihULutEq+tJd0mYjuOiL54AL1CKmRGLO?=
+ =?us-ascii?Q?6Bpo8gKfhNUq531E/pLtuAOhg90pH7mb0h9PZH6amM9vPL1DSNus6TsgZRkT?=
+ =?us-ascii?Q?Ik4ljSaxeRaQMEk40jl3BpUSUxjR8cCE3pZdX3WnzVKjWgo/JrCSNDn0f3qS?=
+ =?us-ascii?Q?0S4s3z52xNG5zQikVb49+JXdKtCUKOyi7eIxKWo16YnO9mXSybZRFinRhj/+?=
+ =?us-ascii?Q?GQoKSGpr0IarIq84XN8jQkom7pjyPTgR4DFFXYkm6B9sDOUjlqrIps7pXHuj?=
+ =?us-ascii?Q?KOFIMcozrseLfgqnG7veSHQ6aS5pRXwE6SBgRw37V64QyF3EO31ch1zQP61d?=
+ =?us-ascii?Q?UTD3B9hCqKlIpGWfdByzysyvKlukZN2MmVuIoo+jjdLGoPR8/Yj0mRK6rVdH?=
+ =?us-ascii?Q?/o31QTELnmRbL+8t4S8OWVyUCqc6CXrr3Lo4hqMQbBwR6lUEh0Dz2p63KaKw?=
+ =?us-ascii?Q?XSLnmxzvmKnzAY7xQIM=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81bf78b6-e277-4097-2f96-08dd688c4be0
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9071.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2025 15:16:21.9773
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2025 15:23:13.6030
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4SZ//eiM4FnJ1W+RWIxkFFvku4E7Dj6OjfKpexorKadN64RL0X4h8rw7AWsTiVOcpIXu1L9lpCy+2flhUQ+Caw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR03MB10284
+X-MS-Exchange-CrossTenant-UserPrincipalName: uVpkYa/kBWRjRb8zaMyOMWaFg7mmZJObOGEd8n97ZzP9PQ8HlLytaBV/r9etykSi
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7068
 
-The imx-media-csi driver requires upstream camera drivers to implement
-the subdev-pad-op "get_mbus_config" [0]. Camera drivers that don't
-implement this function are not usable on the i.MX6.
+On 25/03/21 08:40PM, Kevin Hao wrote:
+> 
+> Currently, the SPI host is registered using a managed API, which
+> automatically unregisters it when the device is detached from its driver.
+> However, this unregistration occurs after the driver's remove() callback.
+> 
+> Since the host is already disabled inside the remove(), any pending IO
+> from child devices can easily corrupt the kernel.
+> 
+> For example, the following steps on an imx8mq-evk board can trigger a
+> kernel panic:
+>   while true; do cat /dev/mtd0 >/dev/null; done &
+>   echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+> 
+> To fix this, explicitly call spi_unregister_controller() in the
+> remove() callback. This ensures that all child devices are properly
+> removed before the host is disabled.
 
-The docs for get_mbus_config [1] say:
-@get_mbus_config: get the media bus configuration of a remote sub-device.
-            The media bus configuration is usually retrieved from the
-            firmware interface at sub-device probe time, immediately
-            applied to the hardware and eventually adjusted by the
-            driver.
+If you explicitly remove the child devices, such as 
+cd /sys/bus/spi/drivers/spi-nor
+echo spi0.0 > unbind
+then unbind the fsl-quadspi driver, the kernel panic does not occur.
 
-Currently, the imx-media-csi driver is not incorporating the information
-from the firmware interface and therefore relies on the implementation of
-get_mbus_config by the camera driver.
+Not sure if it should be the responsibility of the fsl-quadspi driver to handle
+this, IMO it is a common issue with all SPI drivers.
 
-To be compatible with camera drivers not implementing get_mbus_config
-(which is the usual case), use the bus information from the fw interface:
-
-The camera does not necessarily has a direct media bus link to the CSI as
-the video-mux and/or the MIPI CSI-2 receiver of the i.MX6 might be in
-between them on the media pipeline.
-The CSI driver already implements the functionality to find the connected
-camera sub-device to call get_mbus_config on it.
-
-At this point the driver is modified as follows:
-In the case that get_mbus_config is not implemented by the upstream
-camera, try to get its endpoint configuration from the firmware interface
-usign v4l2_fwnode_endpoint_parse.
-For the supported mbus_types (V4L2_MBUS_PARALLEL, V4L2_MBUS_BT656 and
-V4L2_MBUS_CSI2_DPHY), extract the mbus_config from the endpoint
-configuration.
-For all other mbus_types, return an error.
-
-Note that parsing the mbus_config from the fw interface is not done during
-probing because the camera that's connected to the CSI can change based on
-the selected input of the video-mux at runtime.
-
-[0] drivers/staging/media/imx/imx-media-csi.c - line 211..216
-[1] include/media/v4l2-subdev.h - line 814
-
-Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
----
- drivers/staging/media/imx/imx-media-csi.c | 62 +++++++++++++++++++++--
- 1 file changed, 58 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-index 3edbc57be2ca..bb5437d9c033 100644
---- a/drivers/staging/media/imx/imx-media-csi.c
-+++ b/drivers/staging/media/imx/imx-media-csi.c
-@@ -158,6 +158,50 @@ static inline bool requires_passthrough(struct v4l2_mbus_config *mbus_cfg,
- 		 infmt->code != MEDIA_BUS_FMT_YUYV8_2X8);
- }
- 
-+static int csi_parse_upstream_fw_link_config(struct csi_priv *priv,
-+					     struct v4l2_subdev *remote_sd,
-+					     struct v4l2_mbus_config *mbus_cfg)
-+{
-+	struct fwnode_handle *ep_node;
-+	struct v4l2_fwnode_endpoint ep = { .bus_type = mbus_cfg->type };
-+	int ret;
-+
-+	ep_node = fwnode_graph_get_endpoint_by_id(dev_fwnode(remote_sd->dev),
-+						  0, 0,
-+						  FWNODE_GRAPH_ENDPOINT_NEXT);
-+	if (!ep_node)
-+		return -ENOTCONN;
-+
-+	ret = v4l2_fwnode_endpoint_parse(ep_node, &ep);
-+	/*
-+	 * Retry with V4L2_MBUS_BT656 if parsing fails with V4L2_MBUS_PARALLEL
-+	 * as the parallel interface supports both MBUS types.
-+	 */
-+	if (ret == -ENXIO && mbus_cfg->type == V4L2_MBUS_PARALLEL) {
-+		ep.bus_type = V4L2_MBUS_BT656;
-+		ret = v4l2_fwnode_endpoint_parse(ep_node, &ep);
-+	}
-+	fwnode_handle_put(ep_node);
-+	if (ret)
-+		return ret;
-+
-+	switch (ep.bus_type) {
-+	case V4L2_MBUS_PARALLEL:
-+	case V4L2_MBUS_BT656:
-+		mbus_cfg->bus.parallel = ep.bus.parallel;
-+		break;
-+	case V4L2_MBUS_CSI2_DPHY:
-+		mbus_cfg->bus.mipi_csi2 = ep.bus.mipi_csi2;
-+		break;
-+	default:
-+		v4l2_err(&priv->sd, "Unsupported mbus_type: %i\n",
-+			 ep.bus_type);
-+		return -EINVAL;
-+	}
-+	mbus_cfg->type = ep.bus_type;
-+	return 0;
-+}
-+
- /*
-  * Queries the media bus config of the upstream entity that provides data to
-  * the CSI. This will either be the entity directly upstream from the CSI-2
-@@ -175,6 +219,7 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
- 		return -EPIPE;
- 
- 	sd = priv->src_sd;
-+	mbus_cfg->type = V4L2_MBUS_CSI2_DPHY;
- 
- 	switch (sd->grp_id) {
- 	case IMX_MEDIA_GRP_ID_CSI_MUX:
-@@ -186,8 +231,14 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
- 		sd = imx_media_pipeline_subdev(&sd->entity,
- 					       IMX_MEDIA_GRP_ID_CSI2,
- 					       true);
--		if (IS_ERR(sd))
-+		if (IS_ERR(sd)) {
- 			sd = priv->src_sd;
-+			/*
-+			 * If the CSI-2 receiver is not on the path, the
-+			 * parallel port is in use.
-+			 */
-+			mbus_cfg->type = V4L2_MBUS_PARALLEL;
-+		}
- 		break;
- 	case IMX_MEDIA_GRP_ID_CSI2:
- 		break;
-@@ -211,9 +262,12 @@ static int csi_get_upstream_mbus_config(struct csi_priv *priv,
- 	ret = v4l2_subdev_call(remote_sd, pad, get_mbus_config,
- 			       remote_pad->index, mbus_cfg);
- 	if (ret == -ENOIOCTLCMD)
--		v4l2_err(&priv->sd,
--			 "entity %s does not implement get_mbus_config()\n",
--			 remote_pad->entity->name);
-+		/*
-+		 * If the upstream sd does not implement get_mbus_config,
-+		 * try to parse the link configuration from its fw_node
-+		 */
-+		ret = csi_parse_upstream_fw_link_config(priv, remote_sd,
-+							mbus_cfg);
- 
- 	return ret;
- }
--- 
-2.34.1
-
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
+> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> ---
+>  drivers/spi/spi-fsl-qspi.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+> index efd87f44c63a5b12b76538aa459ca8eb203b9dcd..4767d2085510c2f231476ba75e46f83271c4c645 100644
+> --- a/drivers/spi/spi-fsl-qspi.c
+> +++ b/drivers/spi/spi-fsl-qspi.c
+> @@ -272,6 +272,7 @@ struct fsl_qspi {
+>         struct device *dev;
+>         int selected;
+>         u32 memmap_phy;
+> +       struct spi_controller *host;
+>  };
+> 
+>  static inline int needs_swap_endian(struct fsl_qspi *q)
+> @@ -862,6 +863,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+> 
+>         q = spi_controller_get_devdata(ctlr);
+>         q->dev = dev;
+> +       q->host = ctlr;
+>         q->devtype_data = of_device_get_match_data(dev);
+>         if (!q->devtype_data) {
+>                 ret = -ENODEV;
+> @@ -934,7 +936,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+> 
+>         ctlr->dev.of_node = np;
+> 
+> -       ret = devm_spi_register_controller(dev, ctlr);
+> +       ret = spi_register_controller(ctlr);
+>         if (ret)
+>                 goto err_destroy_mutex;
+> 
+> @@ -957,6 +959,8 @@ static void fsl_qspi_remove(struct platform_device *pdev)
+>  {
+>         struct fsl_qspi *q = platform_get_drvdata(pdev);
+> 
+> +       spi_unregister_controller(q->host);
+> +
+>         /* disable the hardware */
+>         qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
+>         qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
+> 
+> --
+> 2.48.1
+> 
