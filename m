@@ -1,103 +1,94 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEA322F3B8
-	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 18:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6941EEA3C
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 20:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742581307; cv=none; b=PUIxsFUPgmQByGOmD0gsnUIZMfCfdqdyG4EqZjHQH6hzOMao9Wi9g3MipE2WhAurQHkmUW1oF12h5hSBfkiw4gXpn7lmJBZMm4tx8pv+VPfnlA4gALvoGejR86fxWVZN+FaIa/eT02swlgNUQnKYEFH6Q5JcR2qHb/27JBj2eQA=
+	t=1742587344; cv=none; b=oO4BlQegNK09kAHHNR4lYlUF+Hk85Df4Vd6X/N8u3YypJLYACIsNlfh/jR8qoMAJc2g5/626fqu0gE+5SdKGFUMWxxrZk9PdQvRXV7XAKqC+uoDJAe12cTcT8s7nQ957zmYXY/zD2hFuZww/01z4UGpfnjSn1AFi5wHJhlO69Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742581307; c=relaxed/simple;
-	bh=pwPdibPJQed9NnbhGERtZINYpVjrQKL+yWaUc0BWwYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ct9yjbVffyhpglz5VEkPrqLTQpF5ejWztST//0mw1urvfdbrlEM2ghYzycg5f6gGyY/6eDnMMCmGfCz38sffDrVzQbega5U81tqqzGLFTyaK85yQLSidWC1xD6BVX7oA7jDWfyP27EJeXnjhjd7G1bxxmQzLE08byPkw5bTynRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M2+aLmXC; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1742587344; c=relaxed/simple;
+	bh=0xvRK68PTf00PJTJUFec9iWQ8iI4xFUDFM8Pu1QP8AM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EV7do5o9ExGzoueHH44X9zdqvovic/kL8Uw0f2zwoiyed6LirEmWzcus1H9Tgva3In935QobQXvmtyjw6JAno11I38nf5ImlkQiVqmV3404Tbgyncc6Vy3QmGHnLRVxFD2ZjtEQoWm7ajAKbACHFgjfDHczF2jj1Ro3kFkbHZT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=VMotOcUj; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M2+aLmXC"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B82C4439E;
-	Fri, 21 Mar 2025 18:21:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742581298;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VT3j5ia3YM4BM/xg+Fw4hf8d8cAPlpEijn+7bl03zsE=;
-	b=M2+aLmXCuAkAtEzK22T1y229k0Hx/fEcdMCuVydJ1io66hFVPtiOn7GBAwEYaUnyhjxC94
-	ICATURZtPDmh1DBptvQBie4GII1Pm7bGnMArOcVEhyHMLfO4ZtUjzrVAzlXBmLaMCSQJ2o
-	v0QxoN+dfKbAxbDnacFwsJVtWQlxGKo8R8MnuogRDC52wuk3izUBlzY9ufJLExiD6tlnKM
-	k7rbUwm2fL8rKxFOLoxjROHPAz5M5QHE7vXqivbMecIsaf6TpBAaFZ10mpgP3P7z/SWpQB
-	MHkfpgxw9FAok9ZSgsZYepow4fZBN6nB79LgrwrwqCk9UkR+nfFWiaV9ElT8qw==
-Date: Fri, 21 Mar 2025 19:21:32 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: "Maxime Ripard" <mripard@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Anusha Srivatsa"
- <asrivats@redhat.com>, "David Airlie" <airlied@gmail.com>, "Dmitry
- Baryshkov" <lumag@kernel.org>, "Fabio Estevam" <festevam@gmail.com>,
- =?UTF-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan Teki"
- <jagan@amarulasolutions.com>, "Jernej Skrabec" <jernej.skrabec@gmail.com>,
- "Jonas Karlman" <jonas@kwiboo.se>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, "Marek Vasut" <marex@denx.de>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Paul Kocialkowski" <paulk@sys-base.io>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Robert Foss"
- <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo"
- <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Stefan Agner"
- <stefan@agner.ch>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- "Thomas Zimmermann" <tzimmermann@suse.de>
-Subject: Re: [PATCH v8 2/5] drm/bridge: add support for refcounting
-Message-ID: <20250321192132.211893ec@booty>
-In-Reply-To: <400466cd3c229ea6c6cb25e2a58cee27@kernel.org>
-References: <20250320-drm-bridge-refcount-v8-2-b3ddaa9f1368@bootlin.com>
-	<400466cd3c229ea6c6cb25e2a58cee27@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="VMotOcUj"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0AFC510206773;
+	Fri, 21 Mar 2025 21:02:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1742587333; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=a14P7c9Bp63M0MikNJ0Fvj67ia2oHwxPak9QEd1B7t4=;
+	b=VMotOcUjpl1dTWWEKwIByS8XW1DZznwH/22i39U16DkYz+o0LxVp22AjGOgnvAJdMC4zAi
+	84RK7OrxFPOWowuQ9XaihDLTGw6uIWaxi5E/SRZSo2gVkblvdPtMBNQuf7rciyG00O9iTL
+	/Nzd/6AT+a0w9H4xiyeh8cc1Un12OGqFeSDfKS5YMh/vcq57IYeiCESxTGKa9zPRaX1M6X
+	MCd++V8xRc3pCSogyVZbD+k9i4NJJLhS55AxDnXL6LtVLdQ2WahxppQORHOra1Z7yDjiAE
+	eX/XV5KSQIh/bxBnkezBsFXhq1EaJQMIczhpqN2bZKwh6DF/VZWALBTfeKWFng==
+Message-ID: <6034b024-381c-4fed-9d97-ad7d5d293112@denx.de>
+Date: Fri, 21 Mar 2025 20:37:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 9/9] arm64: dts: imx95: Describe Mali G310 GPU
+To: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, devicetree@vger.kernel.org, imx@lists.linux.dev
+References: <20250227170012.124768-1-marex@denx.de>
+ <20250227170012.124768-10-marex@denx.de> <2153305.bB369e8A3T@steina-w>
+ <4a27b6bf-aca8-4f29-9561-609a42eb81a0@denx.de>
+ <Z8XFCv6ku6mG1_x5@e110455-lin.cambridge.arm.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <Z8XFCv6ku6mG1_x5@e110455-lin.cambridge.arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedukedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemsgdtjeemieegieelmegtieguieemgegtudelmeeffeekvgemjegvjegvmegttdejudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemsgdtjeemieegieelmegtieguieemgegtudelmeeffeekvgemjegvjegvmegttdejuddphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughrihdquggvvhgvlheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsr
- dhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopegrshhrihhvrghtshesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Maxime,
+On 3/3/25 4:04 PM, Liviu Dudau wrote:
 
-On Fri, 21 Mar 2025 09:54:55 +0000
-"Maxime Ripard" <mripard@kernel.org> wrote:
+[...]
 
-> On Thu, 20 Mar 2025 16:42:11 +0100, Luca Ceresoli wrote:
-> > DRM bridges are currently considered as a fixed element of a DRM card, and
-> > thus their lifetime is assumed to extend for as long as the card
-> > exists. New use cases, such as hot-pluggable hardware with video bridges,
-> > require DRM bridges to be added to and removed from a DRM card without
-> > tearing the card down. This is possible for connectors already (used by DP
-> > 
-> > [ ... ]  
+>>>> +			#reset-cells = <1>;
+>>>> +			clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
+>>>> +			assigned-clocks = <&scmi_clk IMX95_CLK_GPUAPB>;
+>>>> +			assigned-clock-parents = <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
+>>>> +			assigned-clock-rates = <133333333>;
+>>>> +			power-domains = <&scmi_devpd IMX95_PD_GPU>;
+>>>> +			status = "disabled";
+>>>> +		};
+>>>> +
+>>>> +		gpu: gpu@4d900000 {
+>>>> +			compatible = "fsl,imx95-mali", "arm,mali-valhall-csf";
+>>>> +			reg = <0 0x4d900000 0 0x480000>;
+>>>> +			clocks = <&scmi_clk IMX95_CLK_GPU>;
+>>>
+>>> There is also IMX95_CLK_GPUAPB. Is this only required for the rese control above?
+>>
+>> I think I have to describe those clock here too, possibly as 'coregroup'
+>> clock ?
 > 
-> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+> The 'coregroup' clock does indeed control the MMU and L2$ blocks as well as the AXI interface,
+> so if that is indeed a separate external clock source it should be defined. Could it be why
+> you're seeing issues with L2$ resume on the fast reset path?
+Sorry for the delayed reply.
 
-Thanks a lot for reviewing!
-
-I noticed you haven't replied on patch 3. Being a change you had
-suggested, I was wondering whether haven't noticed that. If you are OK
-with that patch, the entire series would have a R-by, which would be
-great to unlock all the work depending on this series.
-
-Luca
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+I did define these clock, they are enabled, but the L2 reset problem is 
+still present .
