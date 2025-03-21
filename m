@@ -1,33 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CD81388;
-	Fri, 21 Mar 2025 07:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6D017C210
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 08:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742543985; cv=none; b=oyHIuGmT9vJ6SJvODSe/+DAKzsPDRNlmgcqMhb9tmwH4Br+8hAt61VQ6IAp3ryvAs/CjFy+AGHXoynPndcuwWGRaOlscEIFDtyG5+/Xg9ck/XNeGQgZ0My4tCLGCUPd3GgI2Ae26YKZlTR3pgSDLTYBlFdZd6ZCu+EQWoAUKoHc=
+	t=1742545509; cv=none; b=dF51qee4fiEuALMy8XXFSgrR0UHaOmUjKKzuKay8QSyNgiQUjqvcw9We7IPAXe3tEf377GmUcb5s2TkaObL2bAy4pT72DStvpUn36GbOg+VD5OKoPqBA9PLmy3CtuADEkjnh5B14oYT8+peBDN5FoGqSyDzidLm52sps98WXShQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742543985; c=relaxed/simple;
-	bh=pOn9x6VL60RWSKq8tUSuctOL+F1TrQS8bDL/t0ctgOU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F7sX6ozOf4iKQLbSa2OXF//pnGXASw4YaYh3JrI3aeeZoubE9aOXtkcIByfxOuJDa9hmNpIFFixGu5OxNSmqurQN2fXLYT4LlvU1SbMBwugpM2wDQQs0ZiAw/RGzsCe4h5HR9DYft5NzRaUckq/4WtwogxHSD4d0ZP/H6uBj8/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzetHDiP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742545509; c=relaxed/simple;
+	bh=eDZBvk8xxDrFcGJyU+OAfjfBxoUm3S5gETgcH7JizNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=WlGAgqWM6KS8zbAQtfNJpcyvMDWk3wPl0ym/JQXytsdmE8HtujCsxiS3aJVbM16nNhcY0gfnlkWoiSEGuFMuMwgByIAjxIpwJ/ogwXZlth2PIrS9yH3x6znUMF6+dxOVU6JuzkKddZWVe6nCk+ADCsw6pGdEgOn9n45MtM9wzQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=qw1wgFDZ; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzetHDiP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC3AC4CEE3;
-	Fri, 21 Mar 2025 07:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742543985;
-	bh=pOn9x6VL60RWSKq8tUSuctOL+F1TrQS8bDL/t0ctgOU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HzetHDiP1v5WvZgW7SchOuLQEzW6PYuDsemfUwsjvpojaS0Cou9ctohlNmJhR/+eM
-	 vnqIBEHLmv4HivDJ0JQ+cAGzlAYXOdMiFtbrNDuR1mdLRkEHmbOyhQu9gHQcK2invq
-	 jNO6bWbiXpjPfAvICaWaJ0YKh8DyqHgijw0EfME6fRLAD4peQItcdbxrUGbZMaPsYE
-	 LCZttXhS80gXD0d5ru1Wn+gER79PZWmZiyzxyi67NcpKKhV/crmOlUCx8gcPSFa/cL
-	 p8Ot8loK6oZqEFM2HjOFEOoYYkBDzPpYNVog33tdvxKYTrACFpwKeCJ6uXBIG4Fh5y
-	 svQXTR8tRAoHQ==
-Message-ID: <b99eee70-5231-43fe-bff8-db92d78153e7@kernel.org>
-Date: Fri, 21 Mar 2025 08:59:36 +0100
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="qw1wgFDZ"
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52L7XAjn022991;
+	Fri, 21 Mar 2025 09:24:52 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	BJsB749pnTX72RwDRztsFQHu4pIA8A7ILSPDLgStd4o=; b=qw1wgFDZ4OU12BJK
+	sxhLItBYLieB0GN9SwtUcs6S5dUjLJcjecgsdOZBykhcsvhRQa5hMsrLWsJx4Cwe
+	pKXxuUYVLv5ldP8vmq+w2zYCkoAMPYPR2xNlsISpNyH+W2AHpIYTZBkAooVX2n0p
+	+QEb0UDtgMVM4hft1BcZGRDzdEMmzxq4wCgh8uVveCt+dpLpZ+ui0VBDy9Foqz/g
+	x3svWBaNPKP9mB0Qo4vWlz0sNHRwgdt+qJpW3d0JdzgE8kL0jC4uKKHiKnE4WalJ
+	uskPxqv9deihvesTAN6IekfwhenzbkYL2p+SbLzAVS2RuN0q2GrJsGkWl+Qlfn2p
+	mNbTmQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45h3tqr7g2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Mar 2025 09:24:52 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 4153E40068;
+	Fri, 21 Mar 2025 09:23:33 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id ABB387C6A8F;
+	Fri, 21 Mar 2025 09:22:31 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 21 Mar
+ 2025 09:22:31 +0100
+Received: from [10.48.86.121] (10.48.86.121) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 21 Mar
+ 2025 09:22:30 +0100
+Message-ID: <4eddc37b-5164-453a-9b7f-c4331a7d6243@foss.st.com>
+Date: Fri, 21 Mar 2025 09:22:30 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,100 +56,204 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] dt-bindings: hwmon: Add Microchip emc2305 support
-To: "Florin Leotescu (OSS)" <florin.leotescu@oss.nxp.com>
-Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Shych <michaelsh@nvidia.com>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Viorel Suman <viorel.suman@nxp.com>, Carlos Song <carlos.song@nxp.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "festevam@gmail.com" <festevam@gmail.com>,
- Florin Leotescu <florin.leotescu@nxp.com>, Frank Li <frank.li@nxp.com>
-References: <20250318085444.3459380-1-florin.leotescu@oss.nxp.com>
- <20250318085444.3459380-2-florin.leotescu@oss.nxp.com>
- <20250319-optimistic-positive-peacock-cc26b1@krzk-bin>
- <DU7PR04MB111631E2E5B074A306033D001FFD92@DU7PR04MB11163.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [Linux-stm32] [PATCH 3/3] remoteproc: Use
+ of_reserved_mem_region_* functions for "memory-region"
+To: Rob Herring <robh@kernel.org>
+CC: Saravana Kannan <saravanak@google.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Shawn
+ Guo" <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam
+	<festevam@gmail.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20250317232426.952188-1-robh@kernel.org>
+ <20250317232426.952188-4-robh@kernel.org>
+ <26e72cb2-c355-4c40-bb98-fc0ff267bf4f@foss.st.com>
+ <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
+ <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com>
+ <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <DU7PR04MB111631E2E5B074A306033D001FFD92@DU7PR04MB11163.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Organization: STMicroelectronics
+In-Reply-To: <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-21_03,2025-03-20_01,2024-11-22_01
 
-On 19/03/2025 12:54, Florin Leotescu (OSS) wrote:
 
->> No blank line here. Use existing code as template. If you find such code, share so we can fix it.
+
+On 3/20/25 19:02, Rob Herring wrote:
+> On Thu, Mar 20, 2025 at 4:23 AM Arnaud POULIQUEN
+> <arnaud.pouliquen@foss.st.com> wrote:
+>>
+>>
+>>
+>> On 3/20/25 00:04, Rob Herring wrote:
+>>> On Wed, Mar 19, 2025 at 10:26 AM Arnaud POULIQUEN
+>>> <arnaud.pouliquen@foss.st.com> wrote:
+>>>>
+>>>> Hello Rob,
+>>>>
+>>>> On 3/18/25 00:24, Rob Herring (Arm) wrote:
+>>>>> Use the newly added of_reserved_mem_region_to_resource() and
+>>>>> of_reserved_mem_region_count() functions to handle "memory-region"
+>>>>> properties.
+>>>>>
+>>>>> The error handling is a bit different in some cases. Often
+>>>>> "memory-region" is optional, so failed lookup is not an error. But then
+>>>>> an error in of_reserved_mem_lookup() is treated as an error. However,
+>>>>> that distinction is not really important. Either the region is available
+>>>>> and usable or it is not. So now, it is just
+>>>>> of_reserved_mem_region_to_resource() which is checked for an error.
+>>>>>
+>>>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>>>>> ---
+>>>>> For v6.16
+>>>>>
+>>>
+>>> [...]
+>>>
+>>>>> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+>>>>> index b02b36a3f515..9d2bd8904c49 100644
+>>>>> --- a/drivers/remoteproc/stm32_rproc.c
+>>>>> +++ b/drivers/remoteproc/stm32_rproc.c
+>>>>> @@ -213,52 +213,46 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>>>>>  {
+>>>>>       struct device *dev = rproc->dev.parent;
+>>>>>       struct device_node *np = dev->of_node;
+>>>>> -     struct of_phandle_iterator it;
+>>>>>       struct rproc_mem_entry *mem;
+>>>>> -     struct reserved_mem *rmem;
+>>>>>       u64 da;
+>>>>> -     int index = 0;
+>>>>> +     int index = 0, mr = 0;
+>>>>>
+>>>>>       /* Register associated reserved memory regions */
+>>>>> -     of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+>>>>> -     while (of_phandle_iterator_next(&it) == 0) {
+>>>>> -             rmem = of_reserved_mem_lookup(it.node);
+>>>>> -             if (!rmem) {
+>>>>> -                     of_node_put(it.node);
+>>>>> -                     dev_err(dev, "unable to acquire memory-region\n");
+>>>>> -                     return -EINVAL;
+>>>>> -             }
+>>>>> +     while (1) {
+>>>>> +             struct resource res;
+>>>>> +             int ret;
+>>>>> +
+>>>>> +             ret = of_reserved_mem_region_to_resource(np, mr++, &res);
+>>>>> +             if (ret)
+>>>>> +                     return 0;
+>>>>>
+>>>>> -             if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0) {
+>>>>> -                     of_node_put(it.node);
+>>>>> -                     dev_err(dev, "memory region not valid %pa\n",
+>>>>> -                             &rmem->base);
+>>>>> +             if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) {
+>>>>> +                     dev_err(dev, "memory region not valid %pR\n", &res);
+>>>>>                       return -EINVAL;
+>>>>>               }
+>>>>>
+>>>>>               /*  No need to map vdev buffer */
+>>>>> -             if (strcmp(it.node->name, "vdev0buffer")) {
+>>>>> +             if (strcmp(res.name, "vdev0buffer")) {
+>>>>
+>>>> I tested your patches
+>>>
+>>> Thank you.
+>>>
+>>>> The update introduces a regression here. The strcmp function never returns 0.
+>>>> Indeed, it.node->name stores the memory region label "vdev0buffer," while
+>>>> res.name stores the memory region name "vdev0buffer@10042000."
+>>>>
+>>>> Several remoteproc drivers may face the same issue as they embed similar code.
+>>>
+>>> Indeed. I confused myself because node 'name' is without the
+>>> unit-address, but this is using the full name. I've replaced the
+>>> strcmp's with strstarts() to address this. I've updated my branch with
+>>> the changes.
+>>
+>> This is not enough as the remoteproc core function rproc_find_carveout_by_name()
+>> also compares the memory names. With the following additional fix, it is working
+>> on my STM32MP15-DK board.
+>>
+>> @@ -309,11 +309,11 @@ rproc_find_carveout_by_name(struct rproc *rproc, const
+>> char *name, ...)
+>>         vsnprintf(_name, sizeof(_name), name, args);
+>>         va_end(args);
+>>
+>>         list_for_each_entry(carveout, &rproc->carveouts, node) {
+>>                 /* Compare carveout and requested names */
+>> -               if (!strcmp(carveout->name, _name)) {
+>> +               if (strstarts(carveout->name, _name)) {
+>>                         mem = carveout;
+>>                         break;
+>>                 }
+>>         }
+>>
+>> I just wonder if would not be more suitable to address this using the
+>> "memory-region-names" field.
 > 
-> Thanks!   I will remove it.
+> That would be better as you shouldn't really care what a provider node
+> name is where-as "memory-region-names" is meaningful to the driver.
 > 
-> Identified similar blank line on the following dt-binding files:
+>>
+>> The drawback is that we would break compatibility with legacy boards...
 > 
-> 1 adi,ad741x.yaml
-> 2 adi,adm1275.yaml
-> 3 adi,ltc2991.yaml
-> 4 maxim,max20730.yaml
-> 5 maxim,max6639.yaml
-> 6 maxim,max6650.yaml
-> 7 nuvoton,nct6775.yaml
-> 8 nuvoton,nct7363.yaml
-> 9 nuvoton,nct7802.yaml
-> 10 ti,adc128d818.yaml
-> 11 ti,ads7828.yaml
-> 12 ti,ina2xx.yaml
-> 13 ti,lm87.yaml
-> 14 ti,tmp513.yaml
-> 15 ti,tps23861.yaml
-> 16 winbond,w83781d.yaml
+> So not an option.
 
-Oh, that's quite a lot. Thanks, I'll fix them.
+> 
+> I think I'll have to fix this within the reserved mem code storing the
+> name or do something like the diff below. I'd like to avoid the
+> former. Using the original device_node.name is also problematic
+> because I want to get rid of it. We redundantly store the node name
+> with and without the unit-address. There's a lot of places like this
+> one where we hand out the pointer with no lifetime.
+> 
+> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+> index 1e949694d365..cdee87c6ffe0 100644
+> --- a/drivers/remoteproc/stm32_rproc.c
+> +++ b/drivers/remoteproc/stm32_rproc.c
+> @@ -239,7 +239,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>                                                    resource_size(&res), da,
+>                                                    stm32_rproc_mem_alloc,
+>                                                    stm32_rproc_mem_release,
+> -                                                  res.name);
+> +                                                  "%.*s",
+> strchrnul(res.name, '@') - res.name, res.name);
+> 
+>                         if (mem)
+>                                 rproc_coredump_add_segment(rproc, da,
+> @@ -249,7 +249,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>                         mem = rproc_of_resm_mem_entry_init(dev, index,
+>                                                            resource_size(&res),
+>                                                            res.start,
+> -                                                          res.name);
+> +                                                          "vdev0buffer");
+>                 }
+> 
+>                 if (!mem) {
 
 
-Best regards,
-Krzysztof
+That's work on my side.
+Could we have an OF helper to retrieve the name from the full name?
+
+Thanks,
+Arnaud
