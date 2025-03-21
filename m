@@ -1,146 +1,261 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7E322AE6B
-	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 12:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D053322AE76
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 13:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742560885; cv=none; b=dQjNLY28pBTW2SmqRwZlYMuJFfvMmt/mszxq/cpX4BtiZxPAFi7PpFmaTCgh3jXV5p7aeTEpl73W8WmHVzpMheKGKZBFzdBPRZ9bx7Ji6phjDmJ6fCE0AkY2uen9qoTmNfX3jj8gWBuB/UdMrg9m8JzIjEvdSV8pawcvmgM0BF4=
+	t=1742562898; cv=none; b=k2d7aQVju0T8Y808OaG8CyXQtc+VHj5JWvJ2KW0LOYR5o/OTLESG892c27wKkLrsM0UKuE5Aa1S0mM/nYzONUFzsdYmU7KIhZHnSomaBnGY0AKdYpH+T0A5GpgOpKDK1lNgbUvF1plo71idfJf7kmbLHVZ4vwxyTNP4Vr1YxfTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742560885; c=relaxed/simple;
-	bh=BG95/kpH2T2XChYHmeVEkv+OFNTEZEMhajpahTEw5MA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ilupazpaQlJe/LOU3HJMP/Nbflk/clMs6aJhh0trX1FTcL7EhOxHeZOYGn35UNGhtyPaOLeZFrzBzBfin3d+duDqlfDXwRZBmV1GNh+rGbcszOQsBX3A4gBZd+Gn2NaZstxOitbtOLsGquJ5bTvssryYnstgvm31l3GTokoqUa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lOxJQ0mQ; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742562898; c=relaxed/simple;
+	bh=yQTzME/6PP1TPK2T8WEG3txl4TCZUlsCKhod5W9SwfI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cpq6bMwMQUzXVQQYzQOcSDjK2BAF0l/7YD5SCefDfPHPo2FM3Z8mrJ/kPfOIEXNAJF0S0F/GavSuNECzP1CMuwgdE+CoD626e/aYFz+cFnX7yNoUpLvlIliyZbAy0lh5Orkg6enDIrTxM+4f3Ypu136PJ6DAKbSwbEuHrFzZSeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/KAHkSy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lOxJQ0mQ"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-30155bbbed9so2552950a91.1
-        for <imx@lists.linux.dev>; Fri, 21 Mar 2025 05:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742560883; x=1743165683; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7wwN9Kvr/NKHQSZ1VFBzwzCVRSebNdFa88rDFhJwVuA=;
-        b=lOxJQ0mQyRTwst98tEy1z1HPL0x7ds1n6TBiJcbQkwvhimsu7kF1CeshKWBUxb4lV6
-         qqcJ/U5mRUVYA9e1QhELLn+KrjqbioBwpTc3/EW7oPg6W8iApNs8eXM0mznMRVdRN8yh
-         kgIiTRQgCNQGgtyxg/F3bgl3K+n0nrDU86Z3YYa9vg8fUprD09EthFswmeH91Ccs17cE
-         170krqFNlkYR4lebubbqWpm08+Nw++xCMgeKMkEiCcDKmQpp/k9R4Cyjb9lu1cJuij6k
-         sZFSWiR0lVwLqHK0SWVsutHl3oJJXf8db5h21R0LQceJChpibmmNHEheMMhqJLCzSzEl
-         vLGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742560883; x=1743165683;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7wwN9Kvr/NKHQSZ1VFBzwzCVRSebNdFa88rDFhJwVuA=;
-        b=JgSBINP0hrjLliw38/H4PAEJJ+jCojirwZaxKzFxmZJ7oCiSzIsmskLuNQMU44Wc2h
-         W4lSGhe4ikZR2jCYaHxgyGmOQkxcCZ1cxORJ+mscS9jxNd2pXsV75L/mfE4JXkn4lFY9
-         DR8Zmads1583VqkbIQSfSTR2nXg6wC60YGKTkLjR/SxNpJGU6BW9YYHwKU2aOsb5y14e
-         0HjWbuub9i5SVcftsDZKIcRHFgaPNuRBI2pDaraNR+mzv61KXFqNiNptGQBPQ1D02n8j
-         TLsoDfXWIsgenIcPvyYliXUrQA5fq+XNsECOZuhlSW1fu37jAywtia87HjJJ5FGGDe6k
-         V0jA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTfYSbqp1DbtgUybYkCiMywKaIjG9JVizFbk5Fj1sjYvfmjc/k4UdVSoMGjs1LiIpPJVE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwsTJE88hmbKx4GxfMMbCAHPq1sMXqCAAibLfEwozJG/UC3ia7f
-	skm5gJS48+ZDgzxESmRLCiZj126COwT8KCDzdMx0KwHSeiFUHyEi
-X-Gm-Gg: ASbGnctVC30gSTACoGR4p0LTqYLnNg4b9f17Uf+CzYEm6rtHbkiqsnRCTD6xKyJB44H
-	yIaAdd55vT7+kFCykOYip83LNGvlGcTcLycQYqk42gBTW4Z5xy+YM3Pgpvgb+TDWQEaapmy6rX7
-	3cFYKvoEWMVCT4cF6vqbQmolarZMeTZGq5KNw4Jm5UuYtEZjAXXcYzRxO4yF4IrspPLDROLrA+c
-	OaccUyCGVVjtVgDc+N4w1qAlVD/RCrH0pwYd9E5ZElp6dIYFfh/U/XJI1lStYEwEroKuU1XK2M4
-	TCO5X60WfqjZpmwB8qPkl8r6JyJEIUzI883nNf48jA1LwhhVWfokdrDB
-X-Google-Smtp-Source: AGHT+IHKoofb89gkg69CyAvY7SuA69KooT8+07mHaCKF1Sl6zFIL6xNY6g4HTxlAOxSKosmFiBX+8g==
-X-Received: by 2002:a17:90b:280b:b0:2ee:d824:b559 with SMTP id 98e67ed59e1d1-3030fef09b9mr4797264a91.28.1742560883477;
-        Fri, 21 Mar 2025 05:41:23 -0700 (PDT)
-Received: from localhost.localdomain ([147.11.105.121])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf635929sm6424975a91.40.2025.03.21.05.41.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 05:41:22 -0700 (PDT)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Fri, 21 Mar 2025 20:40:22 +0800
-Subject: [PATCH 2/2] spi: fsl-qspi: Explicitly unregister SPI host in
- remove()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/KAHkSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50228C4CEEC
+	for <imx@lists.linux.dev>; Fri, 21 Mar 2025 13:14:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742562898;
+	bh=yQTzME/6PP1TPK2T8WEG3txl4TCZUlsCKhod5W9SwfI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=F/KAHkSyYmfJOv/5FAv2z07LjM0mutjOxjLltd0/jQVYeEVaqUdPAPfK78OKA4Ymr
+	 pLf6gi5C5bxtakc6rutk2Od5FrqPTJEH2Ptbrbcc/qlzcBLHmESzUohhrNhe3RY6a2
+	 xLWK7adhpoEBLDSYMgFqdNPYgWaItn+OMTmFginUrrKOs5KFMaUpEF2El4ciFx+gsH
+	 W6CXmYmNIQVZR3dpJx+5GmlFmpm5GruBqwCBFhhfn5R7A+amiVHIwcDhNHffwZqxmf
+	 mnt67zM9LvEXc/PaTQTiHe3DXmMaMULycJPjbviQlLhRgu832JVpqWpyys8cpNviTM
+	 dUalSjf/sSkxQ==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e673822f76so3188162a12.2
+        for <imx@lists.linux.dev>; Fri, 21 Mar 2025 06:14:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUVeWG/aB3GqUYzP/XlAi2YX2mQlODI7Jewi5m+WyBvQeo4gPmVXr1f6eDHScAUZLywhuA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/gtXQabLorc34Q4W1ShArjGMF10c0kT5q4GlVOy0PZHPyG2S8
+	4RPRycCjc7dws3Lm8OCRVjk6sHn5eMpUZbMUyOh7KTeJyva2HJpw7TbyxlZgOz2JCCYXe+C7HLm
+	0mxZqFawdV2pwhzSkLQJ8x5G3Cg==
+X-Google-Smtp-Source: AGHT+IFKb3vaGpKb9OXSdeAes78/CEmG5k6oY1UfVro8GO1khGigitTlcZdAN7kLobo/GTF9XcNCydapHxU16QMQNfg=
+X-Received: by 2002:a05:6402:440a:b0:5e5:437c:1daf with SMTP id
+ 4fb4d7f45d1cf-5ebcd468e6fmr2817130a12.16.1742562896829; Fri, 21 Mar 2025
+ 06:14:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250321-spi-v1-2-b9939baa64b6@gmail.com>
-References: <20250321-spi-v1-0-b9939baa64b6@gmail.com>
-In-Reply-To: <20250321-spi-v1-0-b9939baa64b6@gmail.com>
-To: linux-spi@vger.kernel.org
-Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
- Volker Haspel <volker.haspel@linutronix.de>, 
- John Ogness <john.ogness@linutronix.de>, imx@lists.linux.dev, 
- stable@vger.kernel.org, Kevin Hao <haokexin@gmail.com>
-X-Mailer: b4 0.14.2
+References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-4-robh@kernel.org>
+ <26e72cb2-c355-4c40-bb98-fc0ff267bf4f@foss.st.com> <CAL_Jsq+7ZhMWgbFDvPB+3BG7YfiS9PweybOGNY3r=d40RbGHJA@mail.gmail.com>
+ <130d61a8-6f03-46dc-94ca-f098bc09babc@foss.st.com> <CAL_JsqJZkEpx26=ro_y8hHA2x1Zm6z_SFOQHjQ-WzUa-gy+s0w@mail.gmail.com>
+ <4eddc37b-5164-453a-9b7f-c4331a7d6243@foss.st.com>
+In-Reply-To: <4eddc37b-5164-453a-9b7f-c4331a7d6243@foss.st.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 21 Mar 2025 08:14:44 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+pNGObRJs9tFgHQbC8kCVm=myt+syQSLJVaO8D2GWHCQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JoxWG99z-onx2wJCY2-zhJYXWv3cM0qorkPtzMXdYEUScnMR6DharJJMwg
+Message-ID: <CAL_Jsq+pNGObRJs9tFgHQbC8kCVm=myt+syQSLJVaO8D2GWHCQ@mail.gmail.com>
+Subject: Re: [Linux-stm32] [PATCH 3/3] remoteproc: Use of_reserved_mem_region_*
+ functions for "memory-region"
+To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently, the SPI host is registered using a managed API, which
-automatically unregisters it when the device is detached from its driver.
-However, this unregistration occurs after the driver's remove() callback.
-
-Since the host is already disabled inside the remove(), any pending IO
-from child devices can easily corrupt the kernel.
-
-For example, the following steps on an imx8mq-evk board can trigger a
-kernel panic:
-  while true; do cat /dev/mtd0 >/dev/null; done &
-  echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
-
-To fix this, explicitly call spi_unregister_controller() in the
-remove() callback. This ensures that all child devices are properly
-removed before the host is disabled.
-
-Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
----
- drivers/spi/spi-fsl-qspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index efd87f44c63a5b12b76538aa459ca8eb203b9dcd..4767d2085510c2f231476ba75e46f83271c4c645 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -272,6 +272,7 @@ struct fsl_qspi {
- 	struct device *dev;
- 	int selected;
- 	u32 memmap_phy;
-+	struct spi_controller *host;
- };
- 
- static inline int needs_swap_endian(struct fsl_qspi *q)
-@@ -862,6 +863,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 
- 	q = spi_controller_get_devdata(ctlr);
- 	q->dev = dev;
-+	q->host = ctlr;
- 	q->devtype_data = of_device_get_match_data(dev);
- 	if (!q->devtype_data) {
- 		ret = -ENODEV;
-@@ -934,7 +936,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 
- 	ctlr->dev.of_node = np;
- 
--	ret = devm_spi_register_controller(dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
- 
-@@ -957,6 +959,8 @@ static void fsl_qspi_remove(struct platform_device *pdev)
+On Fri, Mar 21, 2025 at 3:25=E2=80=AFAM Arnaud POULIQUEN
+<arnaud.pouliquen@foss.st.com> wrote:
+>
+>
+>
+> On 3/20/25 19:02, Rob Herring wrote:
+> > On Thu, Mar 20, 2025 at 4:23=E2=80=AFAM Arnaud POULIQUEN
+> > <arnaud.pouliquen@foss.st.com> wrote:
+> >>
+> >>
+> >>
+> >> On 3/20/25 00:04, Rob Herring wrote:
+> >>> On Wed, Mar 19, 2025 at 10:26=E2=80=AFAM Arnaud POULIQUEN
+> >>> <arnaud.pouliquen@foss.st.com> wrote:
+> >>>>
+> >>>> Hello Rob,
+> >>>>
+> >>>> On 3/18/25 00:24, Rob Herring (Arm) wrote:
+> >>>>> Use the newly added of_reserved_mem_region_to_resource() and
+> >>>>> of_reserved_mem_region_count() functions to handle "memory-region"
+> >>>>> properties.
+> >>>>>
+> >>>>> The error handling is a bit different in some cases. Often
+> >>>>> "memory-region" is optional, so failed lookup is not an error. But =
+then
+> >>>>> an error in of_reserved_mem_lookup() is treated as an error. Howeve=
+r,
+> >>>>> that distinction is not really important. Either the region is avai=
+lable
+> >>>>> and usable or it is not. So now, it is just
+> >>>>> of_reserved_mem_region_to_resource() which is checked for an error.
+> >>>>>
+> >>>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> >>>>> ---
+> >>>>> For v6.16
+> >>>>>
+> >>>
+> >>> [...]
+> >>>
+> >>>>> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/=
+stm32_rproc.c
+> >>>>> index b02b36a3f515..9d2bd8904c49 100644
+> >>>>> --- a/drivers/remoteproc/stm32_rproc.c
+> >>>>> +++ b/drivers/remoteproc/stm32_rproc.c
+> >>>>> @@ -213,52 +213,46 @@ static int stm32_rproc_prepare(struct rproc *=
+rproc)
+> >>>>>  {
+> >>>>>       struct device *dev =3D rproc->dev.parent;
+> >>>>>       struct device_node *np =3D dev->of_node;
+> >>>>> -     struct of_phandle_iterator it;
+> >>>>>       struct rproc_mem_entry *mem;
+> >>>>> -     struct reserved_mem *rmem;
+> >>>>>       u64 da;
+> >>>>> -     int index =3D 0;
+> >>>>> +     int index =3D 0, mr =3D 0;
+> >>>>>
+> >>>>>       /* Register associated reserved memory regions */
+> >>>>> -     of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> >>>>> -     while (of_phandle_iterator_next(&it) =3D=3D 0) {
+> >>>>> -             rmem =3D of_reserved_mem_lookup(it.node);
+> >>>>> -             if (!rmem) {
+> >>>>> -                     of_node_put(it.node);
+> >>>>> -                     dev_err(dev, "unable to acquire memory-region=
+\n");
+> >>>>> -                     return -EINVAL;
+> >>>>> -             }
+> >>>>> +     while (1) {
+> >>>>> +             struct resource res;
+> >>>>> +             int ret;
+> >>>>> +
+> >>>>> +             ret =3D of_reserved_mem_region_to_resource(np, mr++, =
+&res);
+> >>>>> +             if (ret)
+> >>>>> +                     return 0;
+> >>>>>
+> >>>>> -             if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0)=
  {
- 	struct fsl_qspi *q = platform_get_drvdata(pdev);
- 
-+	spi_unregister_controller(q->host);
-+
- 	/* disable the hardware */
- 	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
- 	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
+> >>>>> -                     of_node_put(it.node);
+> >>>>> -                     dev_err(dev, "memory region not valid %pa\n",
+> >>>>> -                             &rmem->base);
+> >>>>> +             if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) =
+{
+> >>>>> +                     dev_err(dev, "memory region not valid %pR\n",=
+ &res);
+> >>>>>                       return -EINVAL;
+> >>>>>               }
+> >>>>>
+> >>>>>               /*  No need to map vdev buffer */
+> >>>>> -             if (strcmp(it.node->name, "vdev0buffer")) {
+> >>>>> +             if (strcmp(res.name, "vdev0buffer")) {
+> >>>>
+> >>>> I tested your patches
+> >>>
+> >>> Thank you.
+> >>>
+> >>>> The update introduces a regression here. The strcmp function never r=
+eturns 0.
+> >>>> Indeed, it.node->name stores the memory region label "vdev0buffer," =
+while
+> >>>> res.name stores the memory region name "vdev0buffer@10042000."
+> >>>>
+> >>>> Several remoteproc drivers may face the same issue as they embed sim=
+ilar code.
+> >>>
+> >>> Indeed. I confused myself because node 'name' is without the
+> >>> unit-address, but this is using the full name. I've replaced the
+> >>> strcmp's with strstarts() to address this. I've updated my branch wit=
+h
+> >>> the changes.
+> >>
+> >> This is not enough as the remoteproc core function rproc_find_carveout=
+_by_name()
+> >> also compares the memory names. With the following additional fix, it =
+is working
+> >> on my STM32MP15-DK board.
+> >>
+> >> @@ -309,11 +309,11 @@ rproc_find_carveout_by_name(struct rproc *rproc,=
+ const
+> >> char *name, ...)
+> >>         vsnprintf(_name, sizeof(_name), name, args);
+> >>         va_end(args);
+> >>
+> >>         list_for_each_entry(carveout, &rproc->carveouts, node) {
+> >>                 /* Compare carveout and requested names */
+> >> -               if (!strcmp(carveout->name, _name)) {
+> >> +               if (strstarts(carveout->name, _name)) {
+> >>                         mem =3D carveout;
+> >>                         break;
+> >>                 }
+> >>         }
+> >>
+> >> I just wonder if would not be more suitable to address this using the
+> >> "memory-region-names" field.
+> >
+> > That would be better as you shouldn't really care what a provider node
+> > name is where-as "memory-region-names" is meaningful to the driver.
+> >
+> >>
+> >> The drawback is that we would break compatibility with legacy boards..=
+.
+> >
+> > So not an option.
+>
+> >
+> > I think I'll have to fix this within the reserved mem code storing the
+> > name or do something like the diff below. I'd like to avoid the
+> > former. Using the original device_node.name is also problematic
+> > because I want to get rid of it. We redundantly store the node name
+> > with and without the unit-address. There's a lot of places like this
+> > one where we hand out the pointer with no lifetime.
+> >
+> > diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm3=
+2_rproc.c
+> > index 1e949694d365..cdee87c6ffe0 100644
+> > --- a/drivers/remoteproc/stm32_rproc.c
+> > +++ b/drivers/remoteproc/stm32_rproc.c
+> > @@ -239,7 +239,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+> >                                                    resource_size(&res),=
+ da,
+> >                                                    stm32_rproc_mem_allo=
+c,
+> >                                                    stm32_rproc_mem_rele=
+ase,
+> > -                                                  res.name);
+> > +                                                  "%.*s",
+> > strchrnul(res.name, '@') - res.name, res.name);
+> >
+> >                         if (mem)
+> >                                 rproc_coredump_add_segment(rproc, da,
+> > @@ -249,7 +249,7 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+> >                         mem =3D rproc_of_resm_mem_entry_init(dev, index=
+,
+> >                                                            resource_siz=
+e(&res),
+> >                                                            res.start,
+> > -                                                          res.name);
+> > +                                                          "vdev0buffer=
+");
+> >                 }
+> >
+> >                 if (!mem) {
+>
+>
+> That's work on my side.
+> Could we have an OF helper to retrieve the name from the full name?
 
--- 
-2.48.1
+That would be: sprintf(buf, "%pOFn", node);
 
+The problem here is we don't have the device_node pointer. The only
+way I see to make the above prettier is perhaps a define.
+
+Rob
