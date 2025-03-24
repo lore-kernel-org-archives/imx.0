@@ -1,100 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA5B2E3374;
-	Mon, 24 Mar 2025 20:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D518B464;
+	Mon, 24 Mar 2025 20:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742848319; cv=none; b=vDOthIMSE4Mi/nvtw0xumAU/NivjFowaKSZrjipsT5Kqi88NtpZm07GhDDHp5/yBkvYRVmpQPDwAxJ8LY9CMdY/9GKoYE23qt4sKVnU7SV4PRpUHLeHz/cR4PqqcJqkbhSrX90pQzzpZb7bQ1yE1Z4SJPPNWAbRO4jWBA39fi5c=
+	t=1742849998; cv=none; b=Q/ONGnvhMtckejh+uKyCRoshfv0WgLZ89VEJz3FnAvcC2vfH5k2jr+dhX426kO2MlkouqGhyQsypRTYXQ41sSl4u1NYU4kw9wjS79NEUx4K0mm1Gt5ZNpRlBwWsCp9YghR0uq5BpIUsEK2R0jrxga+6EJUpVhGx+Oo1Mo7PDIos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742848319; c=relaxed/simple;
-	bh=LDTKp3W7h188ixr/vX4U7f5V6ZusmxQCsTGFE63qb20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s2Qr9vwEKj8MCs/WUk5gFlYgG50i0avt5XQ16+YG6pQb199LqrbxyKmsmIQb3q/0isPrpT8Em+bMyCh4ejKpNL4qzOcgFhZQkBu5GOVRIYaz3W3AkNvclxHEjavzalsu5Us4z7VZUypd3KWG5Of1iUChzFfT0PiZa9t6KdJINpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LT4IM+bM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742849998; c=relaxed/simple;
+	bh=ng1DJb9BxxzC35KV3EHcbDjjgiEcK9HC4BR+Pi2/KXo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=B5jkiDeFWd8bwHgxwQGW0+ZOb4lgw6cJPj5RdFDY/14rK1C4+eHZ1G5EBJxC1zUn0IildRTl/uKWGwNqEu1jL+d95duoeq6edwH6No/AskBFCI6UuedYRPUnf+jODmzZeU6g30knN5uRnMgWjrAQjviv6IqHbwRgtt+ebc6Lr6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h65ad5Yy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LT4IM+bM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD08C4CEDD;
-	Mon, 24 Mar 2025 20:31:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h65ad5Yy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40172C4CEDD;
+	Mon, 24 Mar 2025 20:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742848318;
-	bh=LDTKp3W7h188ixr/vX4U7f5V6ZusmxQCsTGFE63qb20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LT4IM+bMgEYMcruZeVIseTw5+f/xunSV2APT5kPRxD76MAc1Wg24Tz9VlF5iGCEJ8
-	 YGA3pU5hhz60cKgndPvFxfYPqSfkx+uKYR8Ng1dEAgUkAuntkDeqdCo3O6sv9oZCQT
-	 BHq12rVUyZKUjeLPjwOBkXH67myUVkzMBvIMF1tI162dpJ164PUMYyCtgJEvOJ6+XD
-	 Ieh4KXL553HZi1EfaxUqE9ucsNEN6JV/54/KoUh5zaDIwxvyEDeXgIfttMQh0fCKGu
-	 2QSf4KQPT+3uNDxjNU8LfOuup5OaEntF3WyDC49zxcpk7BtqntxOwdwWjdFc4D43NO
-	 527MT5yxxsFBg==
-Date: Mon, 24 Mar 2025 15:31:57 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Bert Vermeulen <bert@biot.com>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-gpio@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Michal Simek <michal.simek@amd.com>,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	linux-riscv@lists.infradead.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	linux-kernel@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sander Vanheule <sander@svanheule.net>
-Subject: Re: [PATCH] dt-bindings: gpio: Correct indentation and style in DTS
- example
-Message-ID: <174284830296.819870.8907081146872259608.robh@kernel.org>
-References: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+	s=k20201202; t=1742849997;
+	bh=ng1DJb9BxxzC35KV3EHcbDjjgiEcK9HC4BR+Pi2/KXo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=h65ad5YyMT1GSTxd3szEpvEVi8Nx/SzWXISGnLxm0lOnB/VfZpmK7p8vdfb1sG9SA
+	 z+1+jDi1dWYFeKv3txG1Vtar3RlnwyB/tHztvz+KNlilhEvxZfvU8P2BLfuZWKfwr1
+	 FOYqohE0w6U6szPKTYaTD5I1Ro4KDdP0kmN1lm//NIqilq1w0vyixTu19Saknm/mT7
+	 0+1MmyVuckWAvAiMxw5OqCt62yVi/hbsoZjKv6t1PAX1Kb3NSOKL6X8Rh+uCsWkq+H
+	 2EfVQYGvOl0EdisWQXgwSCO7UKHbiLtmLtyRPhGMYwrg3cpaX9V+Rciwpa8MJQdSIL
+	 pi5ubKgH6ZzAg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFDC380664D;
+	Mon, 24 Mar 2025 21:00:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: ethernet: Drop unused of_gpio.h
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174285003354.4171308.4171931189577511383.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Mar 2025 21:00:33 +0000
+References: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
+In-Reply-To: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
+To: Peng Fan (OSS) <peng.fan@oss.nxp.com>
+Cc: nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+ xiaoning.wang@nxp.com, steve.glendinning@shawell.net,
+ richardcochran@gmail.com, marex@denx.de, horms@kernel.org,
+ ronald.wahl@raritan.com, peng.fan@nxp.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
+Hello:
 
-On Mon, 24 Mar 2025 13:53:26 +0100, Krzysztof Kozlowski wrote:
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.  While re-indenting, drop
-> unused labels.
-> 
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../bindings/gpio/atmel,at91rm9200-gpio.yaml  | 16 ++---
->  .../bindings/gpio/fairchild,74hc595.yaml      | 20 +++---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    | 70 +++++++++----------
->  .../devicetree/bindings/gpio/nxp,pcf8575.yaml | 24 +++----
->  .../bindings/gpio/realtek,otto-gpio.yaml      |  8 +--
->  .../bindings/gpio/renesas,em-gio.yaml         | 20 +++---
->  .../bindings/gpio/renesas,rcar-gpio.yaml      | 24 +++----
->  .../devicetree/bindings/gpio/sifive,gpio.yaml |  6 +-
->  .../bindings/gpio/toshiba,gpio-visconti.yaml  | 24 +++----
->  .../bindings/gpio/xlnx,gpio-xilinx.yaml       | 48 ++++++-------
->  10 files changed, 130 insertions(+), 130 deletions(-)
-> 
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+On Thu, 20 Mar 2025 11:15:24 +0800 you wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> of_gpio.h is deprecated. Since there is no of_gpio_x API, drop
+> unused of_gpio.h. While at here, drop gpio.h and gpio/consumer.h if
+> no user in driver.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: ethernet: Drop unused of_gpio.h
+    https://git.kernel.org/netdev/net-next/c/b71f29272f5f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
