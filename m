@@ -1,200 +1,525 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013056.outbound.protection.outlook.com [52.101.72.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2639625D559
-	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 09:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742808148; cv=fail; b=kCNYnsUmPo6vxVORafQLCAJ+Y5vKx4cdIWg20UvM5KzT3zBJVAZYgQa217/pDiPgxkBTHAxHHVKLmc/gei8wFsILCCQYt7fvd5r5StcnZ3VTm+a/3joDLjJ2E/HqkR49sr5/bmA3RS1GC4c0mMqU7c5PCDJr3tMUEkkU3lGldnE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742808148; c=relaxed/simple;
-	bh=hT1D3C1lhA3Zi5cUDLqiaVfJYSuH5AZkV2q+nDDRpWQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=NoTX0u+6jx/0C6EzTnM/QrXdA9QEnaMmm2KAsOlfiBRPUzWak89XC5HRrXx7yXuMf1T7oI9ShjS6z5LZvgHLr7f8BnBZckxTODBY7vxwGeu8EFa76BYzFwnqoNVWPzGBmGZVEa8+cGZtJdX/RvKjmRRneFeqOsgFBEPsEvGmxGc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GZ/icTw7; arc=fail smtp.client-ip=52.101.72.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8D925E47C
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 12:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742820815; cv=none; b=rCpotx6nApYm5dq1Dy7HOD9TQvdB9d3TWpZ/eNkgPmAQPuHznNuQ86ki73gQXNYT0IEdA+JIevquMhyjNP05b5gfmeJkZUvGWFRqvijSYoEZJ8TPCUs7A4QXuJt1aHLiPm/dS7iME9ZWrhOwcXvINRDBdGhTh89t20KRS1ntjv4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742820815; c=relaxed/simple;
+	bh=6tfxJuz11nf6yaBM8dcuyFrk2xFgI22t3HJB5LQ4JMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ayp/i5teGXRdA1p4i7vh5+yf4OimBahIX5GIVrGiTtotiNYJ4gBSs1qS1alhctcdWCm/clXcfBGtEfoDFHFrtk+W5ZhsO2LkU4iD95UVpihbBIMJHS12iE4O2d0OGcKYMReomPF6QVUgby129Tv4au0mJsXiHOlXJZcjx8IkecA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cEB5VwAG; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GZ/icTw7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YumayFMDRglKrQuOgfryzJKXgd4dh6VMkvK9BwcrLRo1yBGiXWG5pGD45mJoXWkpq5C/9SPH8jMfwqQRLZRta8YiUCxmEixuQhLUzed8hs10GzF9xCwnNLvjBE7hQgVbN5wBROsX8jLY2MlqXfKdJTEENzf0O7B3ZTqbQo4jGYzxRHCDfALZwfY4KwOrlvrZZnPMEWZFsyzOfOtVS/hYLZhZfZMPkr5uMJX0c5WehUO4Z2LjOHJVfdoAID7Xcis+Tm7CkYPSlE/TAzJqH5uwWZGoII8L5ayuWdSTGvrYPOTXteURsB33nO0Cp8fEyWZ3bm/IJkQXc+WL724rN82r+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OFFmounG2W9sWD5Y3RMGQfBopJ+KlrSUsBWxBqENes0=;
- b=Utw9bzyUT37kvNoDNmY+Bsu0Ijhn6g7OZB6t4GWU8o/pZTuyuGDAf17hIw7/OmUwAvriFPYyg1nwkzCG7A/b2JUKxi6/RVgChUeAdfD+4QGyOw72RjjBV3VeO5hfu9hjymWS+jK09Yn69qpZ1fIx3p8pLu5W2BoEmzV9v3uoY7wgSiDnh6cwgOYEGNw4YtrpsRE6ZOrTQp+TeVw0c+J7odFbVAbWXsaOVB/yIY+OhrObG81z5JVcm3514CDOq5GjNZN5/FCTakbI8yZ+/uSj0Wip5GxD3Yo2mAispmqAcji4TqKfpGq+UuFxR2zmrF0pyjmf6QoeONrBlrvg0MHYtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OFFmounG2W9sWD5Y3RMGQfBopJ+KlrSUsBWxBqENes0=;
- b=GZ/icTw7CCS6VAmaBQfhcVe74kJ7/CKIEbHyMjhKfQs5xS25UmwYpl/vznaEXlV8U6eVVeVmFaXQGkC5RmXy7a6IWhiabEQ6hXpW/4vXT5BloHzTYUQS3bPlg76eKc/8rRpUPXRFbno2bxMdSWMP2mv5nVbTkpRK7EodoV+qylkOZJl5vaS0RXVuBiqn3Rs9eEvqLepdsgAX0PezPyl20PMCLeKeGrEQvU1Bx4caq58nntRHu9RKPwiWgKLG6b10/BmrvYdQFmQVMMGbxvnmvBwPBhoSkWfjYlgU/BgjWeszIIEKnyYDzPWP6z/AQ8FCV3TIjdSv3PwYUtKpCOItww==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
- by AM8PR04MB7249.eurprd04.prod.outlook.com (2603:10a6:20b:1d0::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 09:22:24 +0000
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::4db:3dc0:c292:493a]) by DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::4db:3dc0:c292:493a%6]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
- 09:22:24 +0000
-From: ziniu.wang_1@nxp.com
-To: adrian.hunter@intel.com,
-	ulf.hansson@linaro.org,
-	haibo.chen@nxp.com
-Cc: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-mmc@vger.kernel.org,
-	s32@nxp.com,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cEB5VwAG"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4394944f161so4665105e9.3
+        for <imx@lists.linux.dev>; Mon, 24 Mar 2025 05:53:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742820811; x=1743425611; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kN/OpfBAAZEiIoWKLqJAcN4TLH3/hS8jGoptF5162sA=;
+        b=cEB5VwAGBLCshHAXgmpZWhFonZCymu39EHWS/l7COTUu9aebP9Z0+KDlpwvUkpLUJG
+         bIsoDsrtLUaMv127mtSiiYig8zQCsJy966bhX19QHqK0JtJPTP8MWM7QNVob3tJiY8+7
+         wFYCmOzgSqRG1v2ADui/WRvxagd801n6mNYCpehejdLLYn4415UN9HkcFEa6ZxplBSd/
+         9stiCZMrv9eyBrIkgw8r5iFeFsBvjntCR/2Pqt4ox3lkurKrFlqsNVsOnz1TTbNj+EVg
+         vvIA/E6VCwoYijT1guugwxruNeH4J60C0jd309zHbFgVuV55A3oKMEj7dYiWbciradn3
+         3Szw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742820811; x=1743425611;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kN/OpfBAAZEiIoWKLqJAcN4TLH3/hS8jGoptF5162sA=;
+        b=DWFLmKivNm4VZv6/DKHIendo/5DyjiZ0wfQZygATxVAuMUuQ6rBzln/eKmTPvtclrD
+         SPR6S3nds81EX2g2l0KOkvJYNM1CCi0KKo9kl0Sw+V74Ve6CHFNArBNcTlSMPBtSOtBj
+         bpOUC3Wtc0KX9Q0vdddd5aK71MOjRfqv2/9ioJUzNijq7rIseVMy9bauyeac7mEFNAmV
+         S1pwWnTO9ElwgcJlzwDFBhItAc3Jk4zXYh6K65Rjyq2HlSt2v4K8jf1X57xo31rUBlOA
+         KiiczaWvJJLfMDKlP9436TRlBU8DZm/PJvyfEYn4WkF0t1eo0L16B9RVfLrmknLCV9n3
+         IttA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPqSCO+0OmSxmvfxiMPPWsd/uDmZcqhS/kDMMonT2llgCGBT8WipgiWo6LtDb+iFe9XhQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFhrEN34g5mpF3F+1diSxkkEFT2dATwbClpAKiBWAzSZArbSGn
+	4uTHdUduHvUFeB6vmH0ZyeE6D7WZrIUmQpTP9ipMQlkCiyolsIOYrQyD02GReFk=
+X-Gm-Gg: ASbGncu/511v/mAEGI2buPpU2oC51C3l1EoozYxlyY1UlmUoRh9mCnDQkOkrpJZQtWe
+	UC5Z/Uy9SHcLcomDS7qJ6VC7KFjnE2TTYD16WpYSk/n8YBCctALujN0A+hORmhNz+5+IDHr3txn
+	OE0NihF3DRq4bZO4GgO2JN27dKlWgBxP5zGu5/4nCfvbHmghHiSIfsQqb5BZLSCCpWTO87GjIG0
+	DQBX0aaFtRX1u07GcGsUweG2MOdu9Hnzl/D/xsN7HXBpOnxk7ofvD0Vy/SjqxQGcIwlYZhbxfAO
+	onAC73iqdsokqiLrYGt56vAeJpzjh9IItfrzwZUnDRmm1hTOBKuwWpkhtwpsxPWJebJK
+X-Google-Smtp-Source: AGHT+IFGl5UH7JEkweKaiQScp+fP058Ehf+t6oBnFmBfdv/F300EXT1IjZTgd+srP2QLSOk9FBTuGg==
+X-Received: by 2002:a05:600c:35ca:b0:439:90f5:3919 with SMTP id 5b1f17b1804b1-43d50a3b4c2mr48017095e9.4.1742820810970;
+        Mon, 24 Mar 2025 05:53:30 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.198.86])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43fdeb79sm171039565e9.25.2025.03.24.05.53.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 05:53:30 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manikandan Muralidharan <manikandan.m@microchip.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Sander Vanheule <sander@svanheule.net>,
+	Bert Vermeulen <bert@biot.com>,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mmc: sdhci-esdhc-imx: calclute data timeout value based on clock
-Date: Mon, 24 Mar 2025 17:23:36 +0800
-Message-Id: <20250324092336.2231385-1-ziniu.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4P192CA0027.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e1::17) To DU2PR04MB8567.eurprd04.prod.outlook.com
- (2603:10a6:10:2d6::21)
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: gpio: Correct indentation and style in DTS example
+Date: Mon, 24 Mar 2025 13:53:26 +0100
+Message-ID: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|AM8PR04MB7249:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69d3d8d1-eed6-4b92-b771-08dd6ab562e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XeMmVBa21BbqjuRYhRbGLRzcY1zd7VczoMImKVHZZnIcwJ9olwb4TgKwB3Ls?=
- =?us-ascii?Q?c9OrTsGgM3nICUIyeDIXaBNBN0HTSDOShggJWxRTTXA9tjQVp2d4YdoaOULb?=
- =?us-ascii?Q?bKgvp2H0WQ1UzhMNt90KD+8vKYI/vIqA55Yx6Y4zYJ+1VcbAw9gJKecf85yK?=
- =?us-ascii?Q?l3uv23m7MWZ8OcxLtLKQbpPaOBe2kZKbefmRAC/oyJfwMmmCZ2xKvuVYzNVW?=
- =?us-ascii?Q?r1gX93z0pqkGOtZEh/oTZA/V56E3gVmPlML+WreSXxqZe4rVZO+3lVmBQPfD?=
- =?us-ascii?Q?76bhWJLCVNnD5/pRy+MAZqumHp0SB411WV2N5IoAR7q1GMgvDudsHCqltSPh?=
- =?us-ascii?Q?sxz4bjuXQ/YxC/SNWz2a5TrG0zI2Z2bx/wo9NLfR2Wouxm/Rzryfg9vu2SSp?=
- =?us-ascii?Q?Xg+/1LxOM5NtEfubpVy0TWAfB1AhmY0j3F3WVD+AsZWvr3nE39X80nepz/fw?=
- =?us-ascii?Q?5ukann7BSmG9qtWoUeol/nv1cj1MEO8eYuoeF+55YHFXhJIGatNDbWsvtbsn?=
- =?us-ascii?Q?skdI0yHu3+1EYDfDu2fiYQT/1s+3VkGiH1aQnGdiKNTw5B3ebiQCoWTpndV4?=
- =?us-ascii?Q?bFd2aQ7FzeszWY8B/RhNl1XvxfFoeMYN9ozEv3LVYukVbdIL9MvpA8wEgf+D?=
- =?us-ascii?Q?IUuis1xcproAcBdH3y0oGd+POAxkqYHtm/ms2y/Ze9xDINmZ3BeDPT9mm7ij?=
- =?us-ascii?Q?T32kfbcW15xgmSVeoSk4fJP5opNLUgWByKIp/5uQzXjI15OJZV4gECct2i09?=
- =?us-ascii?Q?U+2qkaaCAJxWNOZIa1TLISGUuq/+fNJ60Mj+4aJvl0a437VTstLMzEzSI7GJ?=
- =?us-ascii?Q?MFKFVVgGsxEQnAEOiFOiIN7C/E0OmvyyJMa/vezRyhTR3+oHcIlx2PwjzFYI?=
- =?us-ascii?Q?MXg1DZ8+IGjTfsOB3IcEhbx3o7xv1Heo7LIpiuL5xkDwsGrD7NmRQBd/YQPw?=
- =?us-ascii?Q?2rwJG/qbApt8dcNy4B7rMv6bYotWM1tDvk0rDpvtTTsmaElihNWGskNuIy8F?=
- =?us-ascii?Q?CF5jxQx1fGvjI/HpQ7OdvI9D8QwdeG8aQY7VyQ84aEUTD6dakNExa5bjrn4k?=
- =?us-ascii?Q?bJREHRMvxIZNaOrnsBxp+B0L39tIM1nq6PKfS232SOJSkA6tGAKh9A5G5FOE?=
- =?us-ascii?Q?DgX1K+b1F762y/UwdZVdGPEL4Y0Ouhf5IZUeYDZHygb3oEmWl9oISVqCLTFU?=
- =?us-ascii?Q?lApvUoX/um3yC0bVTrt3aaecdQ/+d5Gzs+dCHINET/RelLGjlRxO2EAHgcFE?=
- =?us-ascii?Q?4A3XcvvxS4YKwCHXz5m9eNEIwxCUK5rcJJq7/Hcctomx90dWi7zk0XfNkCej?=
- =?us-ascii?Q?ibl+9WzOsCUhXsxz4NeL+XNf4MfyUmSSj3/9HeiwuxHpTVrGYk5yiiHYnFyk?=
- =?us-ascii?Q?27EVWrh+sZiOxtWiBtxYF1xOc2600xpuOS1e8JwfDBFwiFQjVceSc4oUgud3?=
- =?us-ascii?Q?GOpZsT2OPTVsUBSTk/QnI6o0DOdIq9Qq?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?namxMA2+xwq6Q0PwoUTIcagMldfaq5EsoPSod7uThLm8sb/BoawbSvhzVMh+?=
- =?us-ascii?Q?VcSmUoN+94nebcaed06iZatMFTwOukI08WnOBLosA/WXJLxx8r7DVOj+8xJD?=
- =?us-ascii?Q?GeXA8acIbJD9mqp7EW3dSYyUuQh/53nBPJfOHZ9aLOkDq0RuH5peARfXFQ4D?=
- =?us-ascii?Q?8zMU1PeMBzIXtB+ptyKgQJxP8DKRwHacdLzP2FHjRqViVXH68MVEw9rg/dE9?=
- =?us-ascii?Q?mHweKCWMzw4fJ31YrFpBowNOWvhOLa5Lt3NDRTaFrp48L9y1UfZo1w2aPgqp?=
- =?us-ascii?Q?jjaKWnNcs7qqp7NvxUK3r44ur1jDMQFmij1y0djS9yTyvCHfy2WnWDlQmPyo?=
- =?us-ascii?Q?93uh7Y+n0UkC1Nfxbju2XjPvvxTC7TGqKyi1Qf6QKt0QNGruz0P+6IZ1Ukzq?=
- =?us-ascii?Q?3uuAzaTnqI4POQujgcxX6/yX7896M6l3JK0y2GDVRdamzxZPFZMeLzvHoryb?=
- =?us-ascii?Q?8RVF+H4bkwz4O5E30PLn8Awesnzx++wBtKJbC0e22id7vBSBVKSI0WbsEcwj?=
- =?us-ascii?Q?8JN9UeyAVwyfkOWqRWprmqxBL4bjmWU9CMmbCQzZyTh27xNwb0QicqIJXFCI?=
- =?us-ascii?Q?yrXMCKaUhp5ZcsKrulvRs1+9Uz39Ky1fcwFcDTOFgzMeDjETnry98Lp1Zknq?=
- =?us-ascii?Q?uWiIKJEbVy9iRhu/GaWzVny+Lou8Bhz0rMa5qTLpP2v/O062AhZTdKfcnpbi?=
- =?us-ascii?Q?520xT/PX3hljfMq/etXUBrBKOp3TUdU6qhP7kf3CcxBkFI0hhTTlyFYKKw5H?=
- =?us-ascii?Q?Uu6/+fdMgQewksK302USpOQ0zCROKjc6BLvs3ifXrpOapCrJ+f5sEALxPp2m?=
- =?us-ascii?Q?zV6HQhtJrvEamYxZixLOy3KpJPmHHh0Uf1jzh7tjCm8byWNImrvj1CGaQoRO?=
- =?us-ascii?Q?JWa+vqWEaQ+K0As3PiGcn58xu8I++tBjJ5kE777cMuwvJXYKXYiDKw4MXzId?=
- =?us-ascii?Q?NQmZVJyDAqwT3hWLgSRdWVAlKWSSBRvOJALcH5TtH0UfI7+aKSi/vHZYAaUz?=
- =?us-ascii?Q?yYM0r9MmfesjRBIVTdPS+poAXvAFR8elsEkB2hWPmFOSLQuNlfq357vRnJNl?=
- =?us-ascii?Q?eTPLEZQJqaZQCFVcbOCefiKI64W4Qnn/DMvapKNywmkT8cx8NFoSSh0XFj/H?=
- =?us-ascii?Q?bdAYmvTMSJZI6259poZRwrXz1/HwsuFnVNLrfTr3QYQEu9Wpji5HwCVvdHIZ?=
- =?us-ascii?Q?7vtqCRMDDgIpStFq/fpLJVEeu9kC9AQAllYNbJydKsrnfafxLLZkJKKG3mRC?=
- =?us-ascii?Q?qAI9h48sXH/A7jQvHneYklshA9CPsr2gAMAcCfZ2R1lEvot+amH01Aq1Eqdq?=
- =?us-ascii?Q?fVub9wWdBTRqZzCuAwsHIgFAtnU5uysMpecC/rrfuPEsz6i59CV/BmMv6UIv?=
- =?us-ascii?Q?3j6iFwRljonZauEyl0o3EWb5K8x6nCOgFP+pZa/U/sIdjZZxkhZkatXqGa7B?=
- =?us-ascii?Q?j7LFiV1+8r23wkIHLnzoxqdHSHobM79hP5bDrAeusIOVvVL0JTExHlc6QLgC?=
- =?us-ascii?Q?Zm4sc5xzo3wvIKsAfdAzlvhMRKihRUPrAE9yI4a37uN7PPks9u0frZ2p5XYd?=
- =?us-ascii?Q?mxoPpBeOALSR2CZoM/ZZexLuQiRQDOqkBmL3k1h5?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69d3d8d1-eed6-4b92-b771-08dd6ab562e5
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 09:22:24.1491
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z0g7P2BLYCk9z3C7m28t/80+0Gbh6+hOyF0RYB/Pq/vXoq4z6D+y5Qr/xVxJbLD0hRzQevlbL2SsdRl/Y4d5WA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7249
+Content-Transfer-Encoding: 8bit
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+DTS example in the bindings should be indented with 2- or 4-spaces and
+aligned with opening '- |', so correct any differences like 3-spaces or
+mixtures 2- and 4-spaces in one binding.  While re-indenting, drop
+unused labels.
 
-Calclute data timeout value based on clock instead of using max value.
+No functional changes here, but saves some comments during reviews of
+new patches built on existing code.
 
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ .../bindings/gpio/atmel,at91rm9200-gpio.yaml  | 16 ++---
+ .../bindings/gpio/fairchild,74hc595.yaml      | 20 +++---
+ .../devicetree/bindings/gpio/gpio-mxs.yaml    | 70 +++++++++----------
+ .../devicetree/bindings/gpio/nxp,pcf8575.yaml | 24 +++----
+ .../bindings/gpio/realtek,otto-gpio.yaml      |  8 +--
+ .../bindings/gpio/renesas,em-gio.yaml         | 20 +++---
+ .../bindings/gpio/renesas,rcar-gpio.yaml      | 24 +++----
+ .../devicetree/bindings/gpio/sifive,gpio.yaml |  6 +-
+ .../bindings/gpio/toshiba,gpio-visconti.yaml  | 24 +++----
+ .../bindings/gpio/xlnx,gpio-xilinx.yaml       | 48 ++++++-------
+ 10 files changed, 130 insertions(+), 130 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index ff78a7c6a04c..e7316ecff64e 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -31,6 +31,7 @@
- #include "cqhci.h"
+diff --git a/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml b/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
+index 3dd70933ed8e..d810043b56b6 100644
+--- a/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
+@@ -69,13 +69,13 @@ examples:
+     #include <dt-bindings/interrupt-controller/irq.h>
  
- #define ESDHC_SYS_CTRL_DTOCV_MASK	GENMASK(19, 16)
-+#define ESDHC_SYS_CTRL_DTOCV_SHIFT	16
- #define ESDHC_SYS_CTRL_IPP_RST_N	BIT(23)
- #define	ESDHC_CTRL_D3CD			0x08
- #define ESDHC_BURST_LEN_EN_INCR		(1 << 27)
-@@ -1387,12 +1388,16 @@ static unsigned int esdhc_get_max_timeout_count(struct sdhci_host *host)
+     gpio@fffff400 {
+-            compatible = "atmel,at91rm9200-gpio";
+-            reg = <0xfffff400 0x200>;
+-            interrupts = <2 IRQ_TYPE_LEVEL_HIGH 1>;
+-            #gpio-cells = <2>;
+-            gpio-controller;
+-            interrupt-controller;
+-            #interrupt-cells = <2>;
+-            clocks = <&pmc PMC_TYPE_PERIPHERAL 2>;
++        compatible = "atmel,at91rm9200-gpio";
++        reg = <0xfffff400 0x200>;
++        interrupts = <2 IRQ_TYPE_LEVEL_HIGH 1>;
++        #gpio-cells = <2>;
++        gpio-controller;
++        interrupt-controller;
++        #interrupt-cells = <2>;
++        clocks = <&pmc PMC_TYPE_PERIPHERAL 2>;
+     };
+ ...
+diff --git a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
+index 0e5c22929bde..ab35bcf98101 100644
+--- a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
++++ b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
+@@ -71,15 +71,15 @@ unevaluatedProperties: false
+ examples:
+   - |
+     spi {
+-            #address-cells = <1>;
+-            #size-cells = <0>;
++        #address-cells = <1>;
++        #size-cells = <0>;
  
- static void esdhc_set_timeout(struct sdhci_host *host, struct mmc_command *cmd)
- {
--	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
--	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
-+	bool too_big = false;
-+	u8 count = sdhci_calc_timeout(host, cmd, &too_big);
+-            gpio5: gpio5@0 {
+-                    compatible = "fairchild,74hc595";
+-                    reg = <0>;
+-                    gpio-controller;
+-                    #gpio-cells = <2>;
+-                    registers-number = <4>;
+-                    spi-max-frequency = <100000>;
+-            };
++        gpio5@0 {
++            compatible = "fairchild,74hc595";
++            reg = <0>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            registers-number = <4>;
++            spi-max-frequency = <100000>;
++        };
+     };
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+index 8ff54369d16c..b58e08c8ecd8 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
++++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+@@ -84,52 +84,52 @@ examples:
+         reg = <0x80018000 0x2000>;
  
--	/* use maximum timeout counter */
-+	/*
-+	 * ESDHC_SYSTEM_CONTROL bit[23] used to control hardware reset
-+	 * pin of the card. Write 0 to bit[23] will reset the card.
-+	 * Only write DTOCV filed here.
-+	 */
- 	esdhc_clrset_le(host, ESDHC_SYS_CTRL_DTOCV_MASK,
--			esdhc_is_usdhc(imx_data) ? 0xF0000 : 0xE0000,
-+			count << ESDHC_SYS_CTRL_DTOCV_SHIFT,
- 			ESDHC_SYSTEM_CONTROL);
- }
+         gpio@0 {
+-                compatible = "fsl,imx28-gpio";
+-                reg = <0>;
+-                interrupts = <127>;
+-                gpio-controller;
+-                #gpio-cells = <2>;
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            compatible = "fsl,imx28-gpio";
++            reg = <0>;
++            interrupts = <127>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
  
-@@ -1777,6 +1782,8 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 		 * to distinguish the card type.
- 		 */
- 		host->mmc_host_ops.init_card = usdhc_init_card;
-+
-+		host->max_timeout_count = 0xF;
- 	}
+         gpio@1 {
+-                compatible = "fsl,imx28-gpio";
+-                reg = <1>;
+-                interrupts = <126>;
+-                gpio-controller;
+-                #gpio-cells = <2>;
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            compatible = "fsl,imx28-gpio";
++            reg = <1>;
++            interrupts = <126>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
  
- 	if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING)
+         gpio@2 {
+-                compatible = "fsl,imx28-gpio";
+-                reg = <2>;
+-                interrupts = <125>;
+-                gpio-controller;
+-                #gpio-cells = <2>;
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            compatible = "fsl,imx28-gpio";
++            reg = <2>;
++            interrupts = <125>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
+ 
+         gpio@3 {
+-                compatible = "fsl,imx28-gpio";
+-                reg = <3>;
+-                interrupts = <124>;
+-                gpio-controller;
+-                #gpio-cells = <2>;
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            compatible = "fsl,imx28-gpio";
++            reg = <3>;
++            interrupts = <124>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
+ 
+         gpio@4 {
+-                compatible = "fsl,imx28-gpio";
+-                reg = <4>;
+-                interrupts = <123>;
+-                gpio-controller;
+-                #gpio-cells = <2>;
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            compatible = "fsl,imx28-gpio";
++            reg = <4>;
++            interrupts = <123>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
+index 8bca574bb66d..5a6ecaa7b44b 100644
+--- a/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
++++ b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
+@@ -128,17 +128,17 @@ additionalProperties: false
+ examples:
+   - |
+     i2c {
+-            #address-cells = <1>;
+-            #size-cells = <0>;
++        #address-cells = <1>;
++        #size-cells = <0>;
+ 
+-            pcf8575: gpio@20 {
+-                    compatible = "nxp,pcf8575";
+-                    reg = <0x20>;
+-                    interrupt-parent = <&irqpin2>;
+-                    interrupts = <3 0>;
+-                    gpio-controller;
+-                    #gpio-cells = <2>;
+-                    interrupt-controller;
+-                    #interrupt-cells = <2>;
+-            };
++        gpio@20 {
++            compatible = "nxp,pcf8575";
++            reg = <0x20>;
++            interrupt-parent = <&irqpin2>;
++            interrupts = <3 0>;
++            gpio-controller;
++            #gpio-cells = <2>;
++            interrupt-controller;
++            #interrupt-cells = <2>;
++        };
+     };
+diff --git a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
+index 39fd959c45d2..728099c65824 100644
+--- a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
+@@ -81,7 +81,7 @@ dependencies:
+ 
+ examples:
+   - |
+-      gpio@3500 {
++    gpio@3500 {
+         compatible = "realtek,rtl8380-gpio", "realtek,otto-gpio";
+         reg = <0x3500 0x1c>;
+         gpio-controller;
+@@ -91,9 +91,9 @@ examples:
+         #interrupt-cells = <2>;
+         interrupt-parent = <&rtlintc>;
+         interrupts = <23>;
+-      };
++    };
+   - |
+-      gpio@3300 {
++    gpio@3300 {
+         compatible = "realtek,rtl9300-gpio", "realtek,otto-gpio";
+         reg = <0x3300 0x1c>, <0x3338 0x8>;
+         gpio-controller;
+@@ -103,6 +103,6 @@ examples:
+         #interrupt-cells = <2>;
+         interrupt-parent = <&rtlintc>;
+         interrupts = <13>;
+-      };
++    };
+ 
+ ...
+diff --git a/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml b/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
+index 8bdef812c87c..49fb8f613ead 100644
+--- a/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
++++ b/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
+@@ -57,14 +57,14 @@ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+     gpio0: gpio@e0050000 {
+-            compatible = "renesas,em-gio";
+-            reg = <0xe0050000 0x2c>, <0xe0050040 0x20>;
+-            interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
+-                         <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
+-            gpio-controller;
+-            #gpio-cells = <2>;
+-            gpio-ranges = <&pfc 0 0 32>;
+-            ngpios = <32>;
+-            interrupt-controller;
+-            #interrupt-cells = <2>;
++        compatible = "renesas,em-gio";
++        reg = <0xe0050000 0x2c>, <0xe0050040 0x20>;
++        interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        gpio-ranges = <&pfc 0 0 32>;
++        ngpios = <32>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
+     };
+diff --git a/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml b/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
+index cc7a950a6030..d32e103a64aa 100644
+--- a/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
+@@ -138,16 +138,16 @@ examples:
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+     #include <dt-bindings/power/r8a77470-sysc.h>
+     gpio3: gpio@e6053000 {
+-            compatible = "renesas,gpio-r8a77470", "renesas,rcar-gen2-gpio";
+-            reg = <0xe6053000 0x50>;
+-            interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+-            clocks = <&cpg CPG_MOD 909>;
+-            power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
+-            resets = <&cpg 909>;
+-            gpio-controller;
+-            #gpio-cells = <2>;
+-            gpio-ranges = <&pfc 0 96 30>;
+-            gpio-reserved-ranges = <17 10>;
+-            interrupt-controller;
+-            #interrupt-cells = <2>;
++        compatible = "renesas,gpio-r8a77470", "renesas,rcar-gen2-gpio";
++        reg = <0xe6053000 0x50>;
++        interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&cpg CPG_MOD 909>;
++        power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
++        resets = <&cpg 909>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        gpio-ranges = <&pfc 0 96 30>;
++        gpio-reserved-ranges = <17 10>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
+      };
+diff --git a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
+index fc095646adea..4bdc201b719e 100644
+--- a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
+@@ -76,8 +76,8 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-      #include <dt-bindings/clock/sifive-fu540-prci.h>
+-      gpio@10060000 {
++    #include <dt-bindings/clock/sifive-fu540-prci.h>
++    gpio@10060000 {
+         compatible = "sifive,fu540-c000-gpio", "sifive,gpio0";
+         interrupt-parent = <&plic>;
+         interrupts = <7>, <8>, <9>, <10>, <11>, <12>, <13>, <14>, <15>, <16>,
+@@ -88,6 +88,6 @@ examples:
+         #gpio-cells = <2>;
+         interrupt-controller;
+         #interrupt-cells = <2>;
+-      };
++    };
+ 
+ ...
+diff --git a/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml b/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
+index b085450b527f..712063417bc8 100644
+--- a/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
++++ b/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
+@@ -48,22 +48,22 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-      #include <dt-bindings/interrupt-controller/irq.h>
+-      #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+-      soc {
++    soc {
+         #address-cells = <2>;
+         #size-cells = <2>;
+ 
+         gpio: gpio@28020000 {
+-          compatible = "toshiba,gpio-tmpv7708";
+-          reg = <0 0x28020000 0 0x1000>;
+-          #gpio-cells = <0x2>;
+-          gpio-ranges = <&pmux 0 0 32>;
+-          gpio-controller;
+-          interrupt-controller;
+-          #interrupt-cells = <2>;
+-          interrupt-parent = <&gic>;
++            compatible = "toshiba,gpio-tmpv7708";
++            reg = <0 0x28020000 0 0x1000>;
++            #gpio-cells = <0x2>;
++            gpio-ranges = <&pmux 0 0 32>;
++            gpio-controller;
++            interrupt-controller;
++            #interrupt-cells = <2>;
++            interrupt-parent = <&gic>;
+         };
+-      };
++    };
+ ...
+diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
+index d3d8a2e143ed..8fbf12ca067e 100644
+--- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
++++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
+@@ -126,29 +126,29 @@ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+-        gpio@a0020000 {
+-            compatible = "xlnx,xps-gpio-1.00.a";
+-            reg = <0xa0020000 0x10000>;
+-            #gpio-cells = <2>;
+-            #interrupt-cells = <0x2>;
+-            clocks = <&zynqmp_clk 71>;
+-            gpio-controller;
+-            interrupt-controller;
+-            interrupt-names = "ip2intc_irpt";
+-            interrupt-parent = <&gic>;
+-            interrupts = <0 89 4>;
+-            xlnx,all-inputs = <0x0>;
+-            xlnx,all-inputs-2 = <0x0>;
+-            xlnx,all-outputs = <0x0>;
+-            xlnx,all-outputs-2 = <0x0>;
+-            xlnx,dout-default = <0x0>;
+-            xlnx,dout-default-2 = <0x0>;
+-            xlnx,gpio-width = <0x20>;
+-            xlnx,gpio2-width = <0x20>;
+-            xlnx,interrupt-present = <0x1>;
+-            xlnx,is-dual = <0x1>;
+-            xlnx,tri-default = <0xFFFFFFFF>;
+-            xlnx,tri-default-2 = <0xFFFFFFFF>;
+-        };
++    gpio@a0020000 {
++        compatible = "xlnx,xps-gpio-1.00.a";
++        reg = <0xa0020000 0x10000>;
++        #gpio-cells = <2>;
++        #interrupt-cells = <0x2>;
++        clocks = <&zynqmp_clk 71>;
++        gpio-controller;
++        interrupt-controller;
++        interrupt-names = "ip2intc_irpt";
++        interrupt-parent = <&gic>;
++        interrupts = <0 89 4>;
++        xlnx,all-inputs = <0x0>;
++        xlnx,all-inputs-2 = <0x0>;
++        xlnx,all-outputs = <0x0>;
++        xlnx,all-outputs-2 = <0x0>;
++        xlnx,dout-default = <0x0>;
++        xlnx,dout-default-2 = <0x0>;
++        xlnx,gpio-width = <0x20>;
++        xlnx,gpio2-width = <0x20>;
++        xlnx,interrupt-present = <0x1>;
++        xlnx,is-dual = <0x1>;
++        xlnx,tri-default = <0xFFFFFFFF>;
++        xlnx,tri-default-2 = <0xFFFFFFFF>;
++    };
+ 
+ ...
 -- 
-2.34.1
+2.43.0
 
