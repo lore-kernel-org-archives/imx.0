@@ -1,503 +1,170 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C504BA53
-	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 13:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F34D19E98A
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 13:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742821411; cv=none; b=geQH9666i2Ewgfowql8SsGXTp03KG9y1ikZuIIwNhvG8LOVX6Xy4RaCqL9+r7Fen46gEzoMtSDc50buJKvqGPiAcWZXVwKyJzOJqNdYHy3rwXujOghuknbye7qX4Q21WrMYAhFDO5GuQAGjUoYj1E/lBfayTi7eRAJYGMSlC2PE=
+	t=1742821551; cv=none; b=TUGoHJObTmGSGRTCpS+UjLyB0FL6L/303KI27uppLpathHuuZgYo2C4hWU+X0xDuYRy4b+fRoAZjrAY8kRaQBJH3waaQFsosJdWog1LLZh4nuDCUFxHYw8VNBztY7Dijx3yR4/bfNgCH3jvMrYXa5OtiNsnUFnlIO3+ySKGXHmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742821411; c=relaxed/simple;
-	bh=eos6W+9ir6pEgCNp1c8QmUJfmmzea1hANIHnNv6ejH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=urd1oxDFOSj9diY8NYGmtU4PI5fK1uXZEY3Ejh8TcXA1mGFMg/QFwhppuC98buv5Yd5v/y5zqCoXojRps1qGAPq0Pnjmg6GSbtBBkJTuwpVo5JQ8o4RUVGuyB5AtcgpriYZYWjkU7vY7MAiBIkfk6KiUKyQ6klwAoFDKiexO+Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=YNF2XMoS; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1742821551; c=relaxed/simple;
+	bh=vJfBDHCxyVQns/5+3y7fqVp7wz/PXkviSSt+13f9mwU=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=SWhRPFEtPQkIe6DT21M3l9qCsR+tABgK/zdskSpePuG5GfVYbt2h8Hw/0NSWi1X8+ZVKSDE3Da1ObW6VtXvTb4mFO6kraSrV556dZw/OGLmQIg90YE9mjPmwCQzU9LtXJKsRBA0bwlnZdqJ/yKPPGTU/bl9NnAQFitkqMuuDJeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJLHb1r3; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="YNF2XMoS"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D9E2D2C6;
-	Mon, 24 Mar 2025 14:01:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1742821301;
-	bh=eos6W+9ir6pEgCNp1c8QmUJfmmzea1hANIHnNv6ejH8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YNF2XMoSxwT4Yx+jjaag38dPG2tWYfX/QmAsCY/Y+XSrA35i/zrDkOHoSF1GWER5c
-	 E47luNt80TOHi67jvn/8+ApN3l7DgVXDAdgYFfO6XgpPaS1y8J2S3i0QMb8fgcex7b
-	 MBqVXo3jIsy4n4PIayQXPe4WctkgqCQ1J/mXRzNs=
-Date: Mon, 24 Mar 2025 15:03:05 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sander Vanheule <sander@svanheule.net>,
-	Bert Vermeulen <bert@biot.com>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: gpio: Correct indentation and style in DTS
- example
-Message-ID: <20250324130305.GD5113@pendragon.ideasonboard.com>
-References: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJLHb1r3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742821550; x=1774357550;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=vJfBDHCxyVQns/5+3y7fqVp7wz/PXkviSSt+13f9mwU=;
+  b=iJLHb1r3CX7af4jiJIttCJi5U4789injaBoYVTsWfDJaBco7XJVhf19V
+   E40aK3TW/mG3gNSWA2htf4B6wS6Z6YmBJpheJzOHh8wmE3PCNlTnSyqH3
+   DhU+ZIyaExH8NcVYsVY4kUjqZ9oYZg+00sggEvYbJP8qv5qLSTAU1B8H5
+   Gk8wFxqXhLKHxMqn1nE5fBRZWBBb5uXNGPFfsfDtMlYdB7caLAQ+io02m
+   6UEzh0ods99+RLlq16U+WiHVwSLAr5xJ6t9gQkijVf/1WVGkO23tRX6SF
+   8fuXoekY4QYo2XE6rL9jh0E0JBcN5pj9ylh4bfWgEe9y+De1i2oiTOwSA
+   w==;
+X-CSE-ConnectionGUID: F3WV4hzVQR6UcDgqfVR5WQ==
+X-CSE-MsgGUID: ieGBFDedSYeTg/0+z8/TRw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="54229801"
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="54229801"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 06:05:50 -0700
+X-CSE-ConnectionGUID: hPJMrlbWRneuwdv8CFBM3g==
+X-CSE-MsgGUID: mLbWTvKnSjK5/IiIFlZfFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="129107999"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.251])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 06:05:44 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 24 Mar 2025 15:05:41 +0200 (EET)
+To: Richard Zhu <hongxing.zhu@nxp.com>
+cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+    kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, 
+    bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+    kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+    LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 1/5] PCI: imx6: Start link directly when workaround
+ is not required
+In-Reply-To: <20250324062647.1891896-2-hongxing.zhu@nxp.com>
+Message-ID: <73205114-bdb5-2995-e00a-7df7046ea91d@linux.intel.com>
+References: <20250324062647.1891896-1-hongxing.zhu@nxp.com> <20250324062647.1891896-2-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Krzysztof,
+On Mon, 24 Mar 2025, Richard Zhu wrote:
 
-Thank you for the patch.
-
-On Mon, Mar 24, 2025 at 01:53:26PM +0100, Krzysztof Kozlowski wrote:
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.  While re-indenting, drop
-> unused labels.
+> The current link setup procedure is more like one workaround to detect
+> the device behind PCIe switches on some i.MX6 platforms.
 > 
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
+> To describe more accurately, change the flag name from
+> IMX_PCIE_FLAG_IMX_SPEED_CHANGE to IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
+> Then, start PCIe link directly when this flag is not set on i.MX7 or
+> later paltforms to simple and speed up link training.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->  .../bindings/gpio/atmel,at91rm9200-gpio.yaml  | 16 ++---
->  .../bindings/gpio/fairchild,74hc595.yaml      | 20 +++---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    | 70 +++++++++----------
->  .../devicetree/bindings/gpio/nxp,pcf8575.yaml | 24 +++----
->  .../bindings/gpio/realtek,otto-gpio.yaml      |  8 +--
->  .../bindings/gpio/renesas,em-gio.yaml         | 20 +++---
->  .../bindings/gpio/renesas,rcar-gpio.yaml      | 24 +++----
->  .../devicetree/bindings/gpio/sifive,gpio.yaml |  6 +-
->  .../bindings/gpio/toshiba,gpio-visconti.yaml  | 24 +++----
->  .../bindings/gpio/xlnx,gpio-xilinx.yaml       | 48 ++++++-------
->  10 files changed, 130 insertions(+), 130 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 34 +++++++++++----------------
+>  1 file changed, 14 insertions(+), 20 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml b/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
-> index 3dd70933ed8e..d810043b56b6 100644
-> --- a/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/atmel,at91rm9200-gpio.yaml
-> @@ -69,13 +69,13 @@ examples:
->      #include <dt-bindings/interrupt-controller/irq.h>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index c1f7904e3600..aa5c3f235995 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -91,7 +91,7 @@ enum imx_pcie_variants {
+>  };
 >  
->      gpio@fffff400 {
-> -            compatible = "atmel,at91rm9200-gpio";
-> -            reg = <0xfffff400 0x200>;
-> -            interrupts = <2 IRQ_TYPE_LEVEL_HIGH 1>;
-> -            #gpio-cells = <2>;
-> -            gpio-controller;
-> -            interrupt-controller;
-> -            #interrupt-cells = <2>;
-> -            clocks = <&pmc PMC_TYPE_PERIPHERAL 2>;
-> +        compatible = "atmel,at91rm9200-gpio";
-> +        reg = <0xfffff400 0x200>;
-> +        interrupts = <2 IRQ_TYPE_LEVEL_HIGH 1>;
-> +        #gpio-cells = <2>;
-> +        gpio-controller;
-> +        interrupt-controller;
-> +        #interrupt-cells = <2>;
-> +        clocks = <&pmc PMC_TYPE_PERIPHERAL 2>;
->      };
->  ...
-> diff --git a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-> index 0e5c22929bde..ab35bcf98101 100644
-> --- a/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/fairchild,74hc595.yaml
-> @@ -71,15 +71,15 @@ unevaluatedProperties: false
->  examples:
->    - |
->      spi {
-> -            #address-cells = <1>;
-> -            #size-cells = <0>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
->  
-> -            gpio5: gpio5@0 {
-> -                    compatible = "fairchild,74hc595";
-> -                    reg = <0>;
-> -                    gpio-controller;
-> -                    #gpio-cells = <2>;
-> -                    registers-number = <4>;
-> -                    spi-max-frequency = <100000>;
-> -            };
-> +        gpio5@0 {
-> +            compatible = "fairchild,74hc595";
-> +            reg = <0>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            registers-number = <4>;
-> +            spi-max-frequency = <100000>;
-> +        };
->      };
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> index 8ff54369d16c..b58e08c8ecd8 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> @@ -84,52 +84,52 @@ examples:
->          reg = <0x80018000 0x2000>;
->  
->          gpio@0 {
-> -                compatible = "fsl,imx28-gpio";
-> -                reg = <0>;
-> -                interrupts = <127>;
-> -                gpio-controller;
-> -                #gpio-cells = <2>;
-> -                interrupt-controller;
-> -                #interrupt-cells = <2>;
-> +            compatible = "fsl,imx28-gpio";
-> +            reg = <0>;
-> +            interrupts = <127>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
->          };
->  
->          gpio@1 {
-> -                compatible = "fsl,imx28-gpio";
-> -                reg = <1>;
-> -                interrupts = <126>;
-> -                gpio-controller;
-> -                #gpio-cells = <2>;
-> -                interrupt-controller;
-> -                #interrupt-cells = <2>;
-> +            compatible = "fsl,imx28-gpio";
-> +            reg = <1>;
-> +            interrupts = <126>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
->          };
->  
->          gpio@2 {
-> -                compatible = "fsl,imx28-gpio";
-> -                reg = <2>;
-> -                interrupts = <125>;
-> -                gpio-controller;
-> -                #gpio-cells = <2>;
-> -                interrupt-controller;
-> -                #interrupt-cells = <2>;
-> +            compatible = "fsl,imx28-gpio";
-> +            reg = <2>;
-> +            interrupts = <125>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
->          };
->  
->          gpio@3 {
-> -                compatible = "fsl,imx28-gpio";
-> -                reg = <3>;
-> -                interrupts = <124>;
-> -                gpio-controller;
-> -                #gpio-cells = <2>;
-> -                interrupt-controller;
-> -                #interrupt-cells = <2>;
-> +            compatible = "fsl,imx28-gpio";
-> +            reg = <3>;
-> +            interrupts = <124>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
->          };
->  
->          gpio@4 {
-> -                compatible = "fsl,imx28-gpio";
-> -                reg = <4>;
-> -                interrupts = <123>;
-> -                gpio-controller;
-> -                #gpio-cells = <2>;
-> -                interrupt-controller;
-> -                #interrupt-cells = <2>;
-> +            compatible = "fsl,imx28-gpio";
-> +            reg = <4>;
-> +            interrupts = <123>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
->          };
->      };
-> diff --git a/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-> index 8bca574bb66d..5a6ecaa7b44b 100644
-> --- a/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-> @@ -128,17 +128,17 @@ additionalProperties: false
->  examples:
->    - |
->      i2c {
-> -            #address-cells = <1>;
-> -            #size-cells = <0>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
->  
-> -            pcf8575: gpio@20 {
-> -                    compatible = "nxp,pcf8575";
-> -                    reg = <0x20>;
-> -                    interrupt-parent = <&irqpin2>;
-> -                    interrupts = <3 0>;
-> -                    gpio-controller;
-> -                    #gpio-cells = <2>;
-> -                    interrupt-controller;
-> -                    #interrupt-cells = <2>;
-> -            };
-> +        gpio@20 {
-> +            compatible = "nxp,pcf8575";
-> +            reg = <0x20>;
-> +            interrupt-parent = <&irqpin2>;
-> +            interrupts = <3 0>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
-> +        };
->      };
-> diff --git a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> index 39fd959c45d2..728099c65824 100644
-> --- a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> @@ -81,7 +81,7 @@ dependencies:
->  
->  examples:
->    - |
-> -      gpio@3500 {
-> +    gpio@3500 {
->          compatible = "realtek,rtl8380-gpio", "realtek,otto-gpio";
->          reg = <0x3500 0x1c>;
->          gpio-controller;
-> @@ -91,9 +91,9 @@ examples:
->          #interrupt-cells = <2>;
->          interrupt-parent = <&rtlintc>;
->          interrupts = <23>;
-> -      };
-> +    };
->    - |
-> -      gpio@3300 {
-> +    gpio@3300 {
->          compatible = "realtek,rtl9300-gpio", "realtek,otto-gpio";
->          reg = <0x3300 0x1c>, <0x3338 0x8>;
->          gpio-controller;
-> @@ -103,6 +103,6 @@ examples:
->          #interrupt-cells = <2>;
->          interrupt-parent = <&rtlintc>;
->          interrupts = <13>;
-> -      };
-> +    };
->  
->  ...
-> diff --git a/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml b/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
-> index 8bdef812c87c..49fb8f613ead 100644
-> --- a/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/renesas,em-gio.yaml
-> @@ -57,14 +57,14 @@ examples:
->    - |
->      #include <dt-bindings/interrupt-controller/arm-gic.h>
->      gpio0: gpio@e0050000 {
-> -            compatible = "renesas,em-gio";
-> -            reg = <0xe0050000 0x2c>, <0xe0050040 0x20>;
-> -            interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
-> -                         <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
-> -            gpio-controller;
-> -            #gpio-cells = <2>;
-> -            gpio-ranges = <&pfc 0 0 32>;
-> -            ngpios = <32>;
-> -            interrupt-controller;
-> -            #interrupt-cells = <2>;
-> +        compatible = "renesas,em-gio";
-> +        reg = <0xe0050000 0x2c>, <0xe0050040 0x20>;
-> +        interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
-> +        gpio-controller;
-> +        #gpio-cells = <2>;
-> +        gpio-ranges = <&pfc 0 0 32>;
-> +        ngpios = <32>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <2>;
->      };
-> diff --git a/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml b/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
-> index cc7a950a6030..d32e103a64aa 100644
-> --- a/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/renesas,rcar-gpio.yaml
-> @@ -138,16 +138,16 @@ examples:
->      #include <dt-bindings/interrupt-controller/arm-gic.h>
->      #include <dt-bindings/power/r8a77470-sysc.h>
->      gpio3: gpio@e6053000 {
-> -            compatible = "renesas,gpio-r8a77470", "renesas,rcar-gen2-gpio";
-> -            reg = <0xe6053000 0x50>;
-> -            interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-> -            clocks = <&cpg CPG_MOD 909>;
-> -            power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
-> -            resets = <&cpg 909>;
-> -            gpio-controller;
-> -            #gpio-cells = <2>;
-> -            gpio-ranges = <&pfc 0 96 30>;
-> -            gpio-reserved-ranges = <17 10>;
-> -            interrupt-controller;
-> -            #interrupt-cells = <2>;
-> +        compatible = "renesas,gpio-r8a77470", "renesas,rcar-gen2-gpio";
-> +        reg = <0xe6053000 0x50>;
-> +        interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&cpg CPG_MOD 909>;
-> +        power-domains = <&sysc R8A77470_PD_ALWAYS_ON>;
-> +        resets = <&cpg 909>;
-> +        gpio-controller;
-> +        #gpio-cells = <2>;
-> +        gpio-ranges = <&pfc 0 96 30>;
-> +        gpio-reserved-ranges = <17 10>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <2>;
->       };
-> diff --git a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
-> index fc095646adea..4bdc201b719e 100644
-> --- a/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/sifive,gpio.yaml
-> @@ -76,8 +76,8 @@ additionalProperties: false
->  
->  examples:
->    - |
-> -      #include <dt-bindings/clock/sifive-fu540-prci.h>
-> -      gpio@10060000 {
-> +    #include <dt-bindings/clock/sifive-fu540-prci.h>
-> +    gpio@10060000 {
->          compatible = "sifive,fu540-c000-gpio", "sifive,gpio0";
->          interrupt-parent = <&plic>;
->          interrupts = <7>, <8>, <9>, <10>, <11>, <12>, <13>, <14>, <15>, <16>,
-> @@ -88,6 +88,6 @@ examples:
->          #gpio-cells = <2>;
->          interrupt-controller;
->          #interrupt-cells = <2>;
-> -      };
-> +    };
->  
->  ...
-> diff --git a/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml b/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
-> index b085450b527f..712063417bc8 100644
-> --- a/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/toshiba,gpio-visconti.yaml
-> @@ -48,22 +48,22 @@ additionalProperties: false
->  
->  examples:
->    - |
-> -      #include <dt-bindings/interrupt-controller/irq.h>
-> -      #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->  
-> -      soc {
-> +    soc {
->          #address-cells = <2>;
->          #size-cells = <2>;
->  
->          gpio: gpio@28020000 {
-> -          compatible = "toshiba,gpio-tmpv7708";
-> -          reg = <0 0x28020000 0 0x1000>;
-> -          #gpio-cells = <0x2>;
-> -          gpio-ranges = <&pmux 0 0 32>;
-> -          gpio-controller;
-> -          interrupt-controller;
-> -          #interrupt-cells = <2>;
-> -          interrupt-parent = <&gic>;
-> +            compatible = "toshiba,gpio-tmpv7708";
-> +            reg = <0 0x28020000 0 0x1000>;
-> +            #gpio-cells = <0x2>;
-> +            gpio-ranges = <&pmux 0 0 32>;
-> +            gpio-controller;
-> +            interrupt-controller;
-> +            #interrupt-cells = <2>;
-> +            interrupt-parent = <&gic>;
->          };
-> -      };
-> +    };
->  ...
-> diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-> index d3d8a2e143ed..8fbf12ca067e 100644
-> --- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-> @@ -126,29 +126,29 @@ examples:
->    - |
->      #include <dt-bindings/interrupt-controller/arm-gic.h>
->  
-> -        gpio@a0020000 {
-> -            compatible = "xlnx,xps-gpio-1.00.a";
-> -            reg = <0xa0020000 0x10000>;
-> -            #gpio-cells = <2>;
-> -            #interrupt-cells = <0x2>;
-> -            clocks = <&zynqmp_clk 71>;
-> -            gpio-controller;
-> -            interrupt-controller;
-> -            interrupt-names = "ip2intc_irpt";
-> -            interrupt-parent = <&gic>;
-> -            interrupts = <0 89 4>;
-> -            xlnx,all-inputs = <0x0>;
-> -            xlnx,all-inputs-2 = <0x0>;
-> -            xlnx,all-outputs = <0x0>;
-> -            xlnx,all-outputs-2 = <0x0>;
-> -            xlnx,dout-default = <0x0>;
-> -            xlnx,dout-default-2 = <0x0>;
-> -            xlnx,gpio-width = <0x20>;
-> -            xlnx,gpio2-width = <0x20>;
-> -            xlnx,interrupt-present = <0x1>;
-> -            xlnx,is-dual = <0x1>;
-> -            xlnx,tri-default = <0xFFFFFFFF>;
-> -            xlnx,tri-default-2 = <0xFFFFFFFF>;
-> -        };
-> +    gpio@a0020000 {
-> +        compatible = "xlnx,xps-gpio-1.00.a";
-> +        reg = <0xa0020000 0x10000>;
-> +        #gpio-cells = <2>;
-> +        #interrupt-cells = <0x2>;
-> +        clocks = <&zynqmp_clk 71>;
-> +        gpio-controller;
-> +        interrupt-controller;
-> +        interrupt-names = "ip2intc_irpt";
-> +        interrupt-parent = <&gic>;
-> +        interrupts = <0 89 4>;
-> +        xlnx,all-inputs = <0x0>;
-> +        xlnx,all-inputs-2 = <0x0>;
-> +        xlnx,all-outputs = <0x0>;
-> +        xlnx,all-outputs-2 = <0x0>;
-> +        xlnx,dout-default = <0x0>;
-> +        xlnx,dout-default-2 = <0x0>;
-> +        xlnx,gpio-width = <0x20>;
-> +        xlnx,gpio2-width = <0x20>;
-> +        xlnx,interrupt-present = <0x1>;
-> +        xlnx,is-dual = <0x1>;
-> +        xlnx,tri-default = <0xFFFFFFFF>;
-> +        xlnx,tri-default-2 = <0xFFFFFFFF>;
-> +    };
->  
->  ...
+>  #define IMX_PCIE_FLAG_IMX_PHY			BIT(0)
+> -#define IMX_PCIE_FLAG_IMX_SPEED_CHANGE		BIT(1)
+> +#define IMX_PCIE_FLAG_SPEED_CHANGE_WORDAROUND	BIT(1)
+
+WORDaround ?? :-)
 
 -- 
-Regards,
+ i.
 
-Laurent Pinchart
+>  #define IMX_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
+>  #define IMX_PCIE_FLAG_HAS_PHYDRV		BIT(3)
+>  #define IMX_PCIE_FLAG_HAS_APP_RESET		BIT(4)
+> @@ -860,6 +860,12 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+>  	u32 tmp;
+>  	int ret;
+>  
+> +	if (!(imx_pcie->drvdata->flags &
+> +	    IMX_PCIE_FLAG_SPEED_CHANGE_WORDAROUND)) {
+> +		imx_pcie_ltssm_enable(dev);
+> +		return 0;
+> +	}
+> +
+>  	/*
+>  	 * Force Gen1 operation when starting the link.  In case the link is
+>  	 * started in Gen2 mode, there is a possibility the devices on the
+> @@ -896,22 +902,10 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
+>  		dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, tmp);
+>  		dw_pcie_dbi_ro_wr_dis(pci);
+>  
+> -		if (imx_pcie->drvdata->flags &
+> -		    IMX_PCIE_FLAG_IMX_SPEED_CHANGE) {
+> -
+> -			/*
+> -			 * On i.MX7, DIRECT_SPEED_CHANGE behaves differently
+> -			 * from i.MX6 family when no link speed transition
+> -			 * occurs and we go Gen1 -> yep, Gen1. The difference
+> -			 * is that, in such case, it will not be cleared by HW
+> -			 * which will cause the following code to report false
+> -			 * failure.
+> -			 */
+> -			ret = imx_pcie_wait_for_speed_change(imx_pcie);
+> -			if (ret) {
+> -				dev_err(dev, "Failed to bring link up!\n");
+> -				goto err_reset_phy;
+> -			}
+> +		ret = imx_pcie_wait_for_speed_change(imx_pcie);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to bring link up!\n");
+> +			goto err_reset_phy;
+>  		}
+>  
+>  		/* Make sure link training is finished as well! */
+> @@ -1665,7 +1659,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX6Q] = {
+>  		.variant = IMX6Q,
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+> -			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
+> +			 IMX_PCIE_FLAG_SPEED_CHANGE_WORDAROUND |
+>  			 IMX_PCIE_FLAG_BROKEN_SUSPEND |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.dbi_length = 0x200,
+> @@ -1681,7 +1675,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX6SX] = {
+>  		.variant = IMX6SX,
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+> -			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
+> +			 IMX_PCIE_FLAG_SPEED_CHANGE_WORDAROUND |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+>  		.ltssm_off = IOMUXC_GPR12,
+> @@ -1696,7 +1690,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  	[IMX6QP] = {
+>  		.variant = IMX6QP,
+>  		.flags = IMX_PCIE_FLAG_IMX_PHY |
+> -			 IMX_PCIE_FLAG_IMX_SPEED_CHANGE |
+> +			 IMX_PCIE_FLAG_SPEED_CHANGE_WORDAROUND |
+>  			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+>  		.dbi_length = 0x200,
+>  		.gpr = "fsl,imx6q-iomuxc-gpr",
+> 
