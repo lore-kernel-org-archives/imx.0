@@ -1,35 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2074.outbound.protection.outlook.com [40.107.21.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08CE263F22;
-	Mon, 24 Mar 2025 18:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742840909; cv=none; b=MswyazFQVEXyizX6PfPTg8FRZuHxlGyYT/H1EZ0sNp0yFMoecQEUDlSK3XtJNbd0Tq5tyx3q474P3skHl5DD0fZctV9TE6ghEy4K5R+cVRfHV9M2QCMszLtGJBlc+JNsV3rcI6N11Awb7mOevNi6AZXYHTt9zqp79gj/G1JN8lk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742840909; c=relaxed/simple;
-	bh=EWIOhq8a6WrbauOCbT88senxBdzZjHc5hedq099LcUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tKAAzptZMe0+fQDS/3f7SrGTng850nlB40uQYdmdaMjJnTnvF39OpQ73tBypkqKArQfKhTGjXhUqJMJ92mxSIyMpixudVfK8eYYi4swIVq6OfKxoHFqDz5dEJ+9H8P7eGeiarGM4rN8Hz/PCBrpK252WqLYtLDOZSZ/PPiXjWQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMSHIior; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EE1264A99
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 18:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742841195; cv=fail; b=nIoJdRzcUem/8xt6XVS+iV01jv2EmTxrk6G4SIxsJThbf0OL0M6yki8zzSGIB5PP7s18cp8+QSSC4iJ9smUKT/ynkQ5wtwkwzGe4JB1kSs4jnwMhOr2sbQUYpmsI/stJBRKXjJtSzkXtJZ6FNe/lCSzGPBsVBnuHGh1k5dPilL8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742841195; c=relaxed/simple;
+	bh=dNNaKLu7wRitHflO9rVD05HFceLnMhGXCvvMoRGtpIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NbSKTWqFEje6nMuS7gB1LF3Mr6N8804LeyHZx6+JnkDIn0a5U8E6CXKVWHorY7T6kkbwmGhACrK0Dd1QuuTFhIAwXKJhRjtVS8SiWg03MzRaLcW9H5djkJePbOn4ECj5DWH29QLIDIXHONMNcCGb6NyIzp/tVRDrZMMr9EYyIS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=USw/Z7AP; arc=fail smtp.client-ip=40.107.21.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMSHIior"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B447C4CEDD;
-	Mon, 24 Mar 2025 18:28:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742840909;
-	bh=EWIOhq8a6WrbauOCbT88senxBdzZjHc5hedq099LcUM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=jMSHIior9o47tI8oJHPN6ePxVwCZYJdCO/6fFs6AZByzpgiYy/9UX5RvfW6ih0Kql
-	 7gLZPoaZU0njyioZ5rfgfyA9Qqa7CIGgf9MmANlX/ud45edRowOoDEyRqDPypwFnXV
-	 Ne95va5kK2vmy4HBZ1UXFULxlV6pv8SJcKnbAkwyxTmehuJ3tc4af/Rd3nNeN+4YcL
-	 PD7RbLiRjbxoAZEYqlpESyh6+i5QJUD6v7X/ieViJmSs/yj3jW+6GpNETCvQCOJtFi
-	 wzHySGpGscT5I9gyPQX03ua+2JdbMHj2df1SRUCxBuEApbt/oheMREFl+dm+FCdC23
-	 ZOYYX+YyJ2bfw==
-Date: Mon, 24 Mar 2025 13:28:27 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="USw/Z7AP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VTG9rP4v8+yWnRQZmJamh2Xo5kd3gzbbAwm0ua6LUnLSZRWxMEAfQ0zYJ9uzBSGI72z1HrHLbqIB4XS3RkhjzunuS2myqZ2tzQI0TOcZ4eUGZQxP8Adpw8RphPxIFubOUHJiKP+UMPxrpLgqHVDbKktbSL7o9LiZO6aq9hkRHcAam1b9fdzsg1LUDs5Y8PtPUIub/q6QIRSZK7tIc9IR9Mh5Znrfrz9g5C1x+Kypcj/Y247G/LLVwBIbz4qpcAFKeBD9JQ5TOOR2ghsMWk/XJOCigR2D2Uy31Fal6B136xnXaYYECEmEVzJw/rTOrJGGdmTVFvKtEU+PD6tkxSwzWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fc6H56trw4FaCq6pasAt9+y6ydSnws2oFz5WB7lkHpE=;
+ b=lMppX0k7Y0uifUiNQZbWDYYyRdhYI/grfctXG7V3hVzp7HSjDTTfzcLQR0YE9yj8EZrpXm/q0937XTyFR8y6MoIf/PDrKN3gKiDBN+xK80l8laaElbwdOdvn6J55bg/u91l1MjIeRBezOxzrHHtB6JKU1IUUKY84bN855btaO9mhKz+3QGQ4kf4YQSrKfNv+owibdSWYhf9Ulg6gB0pFImebjVfoTScx5Sz+R0gsPBxorVzhvOkzsvRlBKRFAehcf6DAJrTM0iVaTO47jBSW/8Mb7+h3fz5cXfFSAJzjXi0907GDXHv+jvCJ1nyYoDcKGhWhMeU4smcYSz7b1mtcFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fc6H56trw4FaCq6pasAt9+y6ydSnws2oFz5WB7lkHpE=;
+ b=USw/Z7APbTG4wzJhDm9jwVMLILYnhviKrK8TaQiPAoUU800R18ebDr3/57Qw44pbXOG1k9BbQbgwz95kUDGwJLN4xzpqwZ2xR4Iokjp6T5SNup8y7K1punKVDFGDeRnB9+SkbCUze6WIVAoL/6oA8tRH1nWvTPTyB0oX2o3lloJhTl8UZko2RbthTwymuoDeNVLMcCK+irDXvy7ZRTxVP/Y95szkOJvrMq90O4kuTODOlWLIEbcbmVzSAwJRWYKS6KrSbW2zGlyoW0A1RoUACeouvDiRfljfvomNkO7nKxejF0d3aSUqUHUOo50y8Ww8Bca4rRj5WWwTjbwBu4t8sw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB9004.eurprd04.prod.outlook.com (2603:10a6:20b:40b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
+ 2025 18:33:09 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
+ 18:33:09 +0000
+Date: Mon, 24 Mar 2025 14:32:58 -0400
+From: Frank Li <Frank.li@nxp.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@google.com>,
 	Jingoo Han <jingoohan1@gmail.com>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
@@ -44,76 +59,206 @@ Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v12 05/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
-Message-ID: <20250324182827.GA1257218@bhelgaas>
+Subject: Re: [PATCH v12 06/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
+ checking and debug
+Message-ID: <Z+GlWm4QAkuyb9nI@lizhi-Precision-Tower-5810>
+References: <20250315201548.858189-1-helgaas@kernel.org>
+ <20250315201548.858189-7-helgaas@kernel.org>
+ <x2r2xfxrnkihvpoqiamgjmvppverjugp5r4we7lcfpz6jloxzy@7kdfzxiwv2po>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <x2r2xfxrnkihvpoqiamgjmvppverjugp5r4we7lcfpz6jloxzy@7kdfzxiwv2po>
+X-ClientProxiedBy: SJ0PR05CA0061.namprd05.prod.outlook.com
+ (2603:10b6:a03:332::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <j3qw4zmopulpn3iqq5wsjt6dbs4z3micoeoxkw3354txkx22ml@67ip5sfo6wwd>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB9004:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57982219-c901-4d9e-0fff-08dd6b0253a6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|366016|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SmROMyswUDA2MEh5ZGc4N1MxT202L0EzT3JGbXN0dWpHMC9qZXVESmhVc3RZ?=
+ =?utf-8?B?MW1PQ09WTjZ1c0NJdktWQnQ4ZU5EMTFrQzRLRjRZL1dQS3JvSjhVRVdqajNL?=
+ =?utf-8?B?U0t4UDFZVEVVSm54TWR1dk90bDFHd3VTZVh0RGhEV3g2WVRmaDlaUjI2L05w?=
+ =?utf-8?B?TkpnK3RBYmdoalRtdFNrVmUrbllJQkgyMHVsdUFtOEp4Qy9sTGdwWm82TUt4?=
+ =?utf-8?B?U0ZESG9GeFZ2T0Y0TEF6NVIydVh3SVZMNUg2dFZ0MFoxR29zTkVyVzdwRFY0?=
+ =?utf-8?B?TGJpZVA5dW5wbGVQRXBmRmwvTmphVDVDcFR4TGxLd2lDdnFJWlBwNDl0ZElU?=
+ =?utf-8?B?bVE1bFVjQzZOU2N5YkdpME9raU85R2U2Y3R5WmVQUVl4REFxRDNGTFEzKzF6?=
+ =?utf-8?B?U21GY2ZLcFZOeVV0TjNWeVdSR1k2Q0hRZy93aXY1a2ptN05SLzEzQW1LYUxO?=
+ =?utf-8?B?Z2xnMFVlcjBwd05IYWYrd0Nmc050bUVmNzNheGN4RjE2OGJtZGdnZWZQRW1P?=
+ =?utf-8?B?dE1ERTJRUU1DL3RlWnMyT0M4MHhpLzdZbFRRbVhxaExPQ2tRRCtYb0g5Ukcz?=
+ =?utf-8?B?SmNXOUdYa1ZPSHNtblRKRDk4UnBUcFN5dXRPQitBUEZnWDE0THRUamRoTDNT?=
+ =?utf-8?B?QXA0MWZQK3gvNzVLNUtZaFNjcnhPM3hPenhEcnUzUmxLWUlleURJdXBPMVZJ?=
+ =?utf-8?B?UFR4YnZlVkZ1TCtURFVJV0lRTVpKQ3A3a0lMT1NOM0ZscjAxbmxaTzZBMDlC?=
+ =?utf-8?B?MW5jQk1peVh6N1ZWVCtScElFaHJGaVUxMVp0ejdOSDJwRXRTc0t5TjN2OGll?=
+ =?utf-8?B?R1ZEMkdMZEU5UW82Y0t5d3JWZGtDcGIwTTk5VlNXRUtSVFl1aGthTUZxYXc1?=
+ =?utf-8?B?ZTJOS25ZcTNRTGY0bmxSOWREcS8zcis2UFJleHUvLzMvVnYxODVjVWRjU2xi?=
+ =?utf-8?B?STUyNXRGanR5VjdYWWtnblRDRnRyd05EaHFDd2xqWExuWTNEQWFxT3YxTzli?=
+ =?utf-8?B?Rk5yTUdTTFI4Um1sOWRSZlovRzlGeWIyRHVlbUJoVGxmMTIrZ3dQTjBsR2gx?=
+ =?utf-8?B?aGVINHRxT0d2WnFwRkppUWIxNk1qdHFpdWRsdjN4Vk83a3ZlbjNuMnRyN2lP?=
+ =?utf-8?B?L1BVeTVnSVlVMWg5UkJwMVowNm9pNFNZZytleTB3OGpNWnZoNW9mVitQajBt?=
+ =?utf-8?B?d0k1WEtOMkF4bFBmWjdTRGt6by96RkZBWWtTT3dGYWN0RUlZczZhUUg1V29M?=
+ =?utf-8?B?V1g1bTJ1T0R5NURBSnY3dHdpYlZlaXBVeEhBMndWR2NjOU5WdGtQTjFMUGlu?=
+ =?utf-8?B?VUl0aXlDaHlmWUsyT0JvYUtnaGs0aE02TXIrenJOYVZkbHJ6OC8xdjhrL2pR?=
+ =?utf-8?B?aW1Wak5HQ251ZkVkVVVSMWNPcGprd1gzb0ZWRURnOTZxd3pGZ2lCS1hLVmE4?=
+ =?utf-8?B?a1hNazB6eld0SGhKVCtVOXEwMWxNbmY5OUZKU2xmeUpKQzNXNm11a0pMcXN2?=
+ =?utf-8?B?M3JITEFXOEtYTlFKQWRSQWt2ekdsa0VrZmJOeWRtYW5IdFVkVUFUdUdFdUx0?=
+ =?utf-8?B?eFpKYXl1ajdqVzFTd2M0RFlScGlZNWdORkE4QjdSMHNobHBQclNMdDZlTWRT?=
+ =?utf-8?B?NU5PQXhDaDg4NzgwQzYvaTVuZTExUGtHWGZaR0xZelE0YUtUZ3hSemZwTVZI?=
+ =?utf-8?B?bTZMdzF3Szh5NkpTOFg2NVZWSE9UQWdYNml0UlZQdnZHck9rMzkra2l6N29Y?=
+ =?utf-8?B?R1g4SVl1Y1FUN0RKczJqSVlIUUdndkFlWFhwQnkrbUJ2TFdMUmZLVHg3SlA5?=
+ =?utf-8?B?V0VBV0ppNmV0S0RyVDgrM2gvVHdYZjJDTUd0SDFyZWRzZEFTbFFMOXk3VUNB?=
+ =?utf-8?B?WC9mUUN4SzNMc0tRaTBuNzFJZ05BNHlkUTVzUUVidkNRNkxsdFNZN1ZLZEto?=
+ =?utf-8?B?Y2VFaG0wSWpxYjdycy9SS2U0SDVUajI5US95akRnMzJOdTU4dmExakt0NXRK?=
+ =?utf-8?Q?IcBiqiHs96gbGQ+8xIiOy/GlCprAqI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ck81WTZUTTl4dVprQ0x3dEZZSFZOWmozZFNZUXRabkFCaloxdnRiRG51aEpJ?=
+ =?utf-8?B?Mlh2Q2JkWGQ2UHlEaWpzajg4ZXdRNnNzR29sUllGV0hzM1FRZUJBSHBNWXBD?=
+ =?utf-8?B?UkhvOC8vTUlGc3ppd1pjT1NNMTdHQmhLaDE2dHdRVkhaSW1idUlBMVNOOHY2?=
+ =?utf-8?B?SC9YY2xPY1pDNnpGL3M1ZFVaTDZyMGM2NEViS0VtRE92aVRtYVpKUEVzTnN6?=
+ =?utf-8?B?UUpLVm9mT25rbTl2cGtXcXdJanVRRDJ4OG5qR1JvZnJkd2ZFdkkwdjU2MjB3?=
+ =?utf-8?B?bVdEOG56MC9yOG5jSFU5dGErZTZsWDBia1ZnVHh1bGVrSC9vTnpEbStuY25R?=
+ =?utf-8?B?dFNaUmRrRmpyRlpLbk9wb2IyRUM4c2h3dDdyT1I0bVJ0RnZQY041dlFLbjZk?=
+ =?utf-8?B?aG9uWkxJTWliMGJ3bnBhNjJmL0FzU0ZhazJFRWEvNlAzVWxTSmxKVkFITzVQ?=
+ =?utf-8?B?WHAyN3lYbWp0SVV4cjdLbEdUQ0NsbHdTMmdQOEZ6VDVkMFgxOHZNcTh3eTFG?=
+ =?utf-8?B?NVArMGNBdjJPS0YrWmZPQ09iWHZpTTM4cWYvdG1ZUVNqaXNPSjZFRFJmQVI1?=
+ =?utf-8?B?d00wT1pyZjhNQ1Z5eGlxamd3SWhzaEZqaXVGRmlRcUxtMWlMaTFtVkxBSFQ3?=
+ =?utf-8?B?OXdTS1dLbUU0SFpscnFIVHFUQjdBR1hjYVNET1hNYUt5ZDM3WHZLWFNWQnp5?=
+ =?utf-8?B?REhKcGFqUWc1QkdKQ011N0V3WFpwM0x3S3RiLzh1cW43MW8ycTZPOFJUOHBP?=
+ =?utf-8?B?TGlZYmxwRVJVQ25GNS9LcHRDazhRODlzSmlWZzFva2gvTlJoQjc2MDlRMUtZ?=
+ =?utf-8?B?ZEIzQ2FzWW5NWTc4aTB5QngrRVlqR1F1WU9kVUF0Nkp0U2s1QUV5b2YzNkhn?=
+ =?utf-8?B?WkdzTTd3ZWgvK1N2cHhGaEdsam44NXRuQ1I5c21mcFllREJsclFkaDhEV2hN?=
+ =?utf-8?B?Uk5vUG1oZkhnb1UyVzF3UkpLL2toM3JmOXI0Rkg2V0RjeHJ6YjJqMUtFeERr?=
+ =?utf-8?B?QlJZNmtVeFdWUnUzdWtJV1g1c1k4Ui9iWTBkQXIzM1lac3pOSW02dmIxbk9F?=
+ =?utf-8?B?OUdEeEw1Rm9WOHVKWVNNRGw0UWdDNHFPM0ZwVkduUkpmR1dFWWZjUnh0M2Ni?=
+ =?utf-8?B?azBKd2Z0azRkbmpEVk5oUGxBQnhqN1YxYVRZZGs3eTdRZVRCVkpMQURNb1Rm?=
+ =?utf-8?B?aDdGYXQwTUY5K2pxQ1I0SHhzRFBYL3FTd055YmMwVU0vbWt1bSt4Z2lPajJ4?=
+ =?utf-8?B?NVFKQ0NvNUNWZGc0MTNTQkJ2SXlUNTE0SGpwaCtIT1FWVTRvVFpFYzhqMUVx?=
+ =?utf-8?B?VU9BVzg1UTlYK0IrVnhjLzhJZFlzSjRqelNDYjN4Wnphb1ZLb0JERHVGb2xn?=
+ =?utf-8?B?TUYxYkxtZm9NZnNlYSsxUzgvSGxoc2NYNGxSb244NEFlVDduZkNSN0dHR1hP?=
+ =?utf-8?B?b05jc2cvU05BclFLdFlHUXZHYmxrdTBvaDBQdU9oWm56VlpucXVnV0FaQUR1?=
+ =?utf-8?B?c2FNQmhqUjZ6V0xNVTd6d1lFWU1JeG9sbEZ6MVB4Y0lHTjFrSStGaEpLcXAx?=
+ =?utf-8?B?TjdNUnlpT1JETjRTditVQi92MmJidVVHUHZTRnpKd25yY3RGUXY0UTdmdW9D?=
+ =?utf-8?B?VGw4WWgwMUd1V0NpcFk3UEFzd1BTZjM5SHQrM3FHOXdCRjBBZFdSdnVmaFk5?=
+ =?utf-8?B?WG0yZWIvNWhwK1MzekJmVVFIUUdBVWh2aHNpVGZtbWp0cXRsL3NubXVqUUJw?=
+ =?utf-8?B?SThTbVNqOU5abCt4dEdmY2tnNm9oNjcyNW5Ua25mK3kvTDNhelIrMjVhZExQ?=
+ =?utf-8?B?QjRodk5ESUhJYnVMUmwyWVJzcW1TY1RtbEdsUGNuTHpJNkdEcjBUNFVPRjRG?=
+ =?utf-8?B?L1FQeVhCeFEwTWVtUThaREYzdERMRnI3TEVBTGZDTStzR1RPMkpvR2oxNkR1?=
+ =?utf-8?B?VEhoSXFhVERXY2c0bU9IRlpHd01xQjFtOW93L0hFUGY3VnJCd3lUWVYxbkNT?=
+ =?utf-8?B?aHUwc1Z2bnRLYUFTVmFVMVVySzZRMzFWd2pGRlVvdGJiaVptTEowU2RKRFps?=
+ =?utf-8?B?a0h1a28raDN1QURSeStxTDUyR2pVdVZUMTNKUW9YMkdueUNlOEJtd1ZjVHg2?=
+ =?utf-8?Q?V8A2o2yhZXmovLtzLXuHKUJMb?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57982219-c901-4d9e-0fff-08dd6b0253a6
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 18:33:09.5475
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lEuL86rdzNs8Yciid3v8Qp2mQr1DOXRUKxWaP+TmfD76ZsaDzPrI8gAlxLk8wY3slcfB6ejh41YAuel5LwS/bA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9004
 
-On Mon, Mar 24, 2025 at 10:48:23PM +0530, Manivannan Sadhasivam wrote:
-> On Sat, Mar 15, 2025 at 03:15:40PM -0500, Bjorn Helgaas wrote:
+On Mon, Mar 24, 2025 at 11:00:24PM +0530, Manivannan Sadhasivam wrote:
+> On Sat, Mar 15, 2025 at 03:15:41PM -0500, Bjorn Helgaas wrote:
 > > From: Frank Li <Frank.Li@nxp.com>
-> > 
-> > Return the offset from CPU physical address to the parent bus address of
-> > the specified element of the devicetree 'reg' property.
+> >
+> > dw_pcie_parent_bus_offset() looks up the parent bus address of a PCI
+> > controller 'reg' property in devicetree.  If implemented, .cpu_addr_fixup()
+> > is a hard-coded way to get the parent bus address corresponding to a CPU
+> > physical address.
+> >
+> > Add debug code to compare the address from .cpu_addr_fixup() with the
+> > address from devicetree.  If they match, warn that .cpu_addr_fixup() is
+> > redundant and should be removed; if they differ, warn that something is
+> > wrong with the devicetree.
+> >
+> > If .cpu_addr_fixup() is not implemented, the parent bus address should be
+> > identical to the CPU physical address because we previously ignored the
+> > parent bus address from devicetree.  If the devicetree has a different
+> > parent bus address, warn about it being broken.
+> >
+> > [bhelgaas: split debug to separate patch for easier future revert, commit
+> > log]
+> > Link: https://lore.kernel.org/r/20250313-pci_fixup_addr-v11-5-01d2313502ab@nxp.com
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-designware.c | 26 +++++++++++++++++++-
+> >  drivers/pci/controller/dwc/pcie-designware.h | 13 ++++++++++
+> >  2 files changed, 38 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> > index 0a35e36da703..985264c88b92 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> > @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+> >  	struct device *dev = pci->dev;
+> >  	struct device_node *np = dev->of_node;
+> >  	int index;
+> > -	u64 reg_addr;
+> > +	u64 reg_addr, fixup_addr;
+> > +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
+> >
+> >  	/* Look up reg_name address on parent bus */
+> >  	index = of_property_match_string(np, "reg-names", reg_name);
+> > @@ -1126,5 +1127,28 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+> >
+> >  	of_property_read_reg(np, index, &reg_addr, NULL);
+> >
+> > +	fixup = pci->ops->cpu_addr_fixup;
+> > +	if (fixup) {
+> > +		fixup_addr = fixup(pci, cpu_phy_addr);
+> > +		if (reg_addr == fixup_addr) {
+> > +			dev_warn(dev, "%#010llx %s reg[%d] == %#010llx; %ps is redundant\n",
+> > +				 cpu_phy_addr, reg_name, index,
+> > +				 fixup_addr, fixup);
+> > +		} else {
+> > +			dev_warn(dev, "%#010llx %s reg[%d] != %#010llx fixed up addr; devicetree is broken\n",
+> > +				 cpu_phy_addr, reg_name,
+> > +				 index, fixup_addr);
+> > +			reg_addr = fixup_addr;
+> > +		}
+> > +	} else if (!pci->use_parent_dt_ranges) {
+>
+> Is this check still valid? 'use_parent_dt_ranges' is only used here for
+> validation. Moreover, if the fixup is not available, we should be able to
+> safely return 'cpu_phy_addr - reg_addr' unconditionally.
 
-> > +resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
-> > +					  const char *reg_name,
-> > +					  resource_size_t cpu_phy_addr)
-> > +{
-> 
-> s/cpu_phy_addr/cpu_phys_addr/g
+I worry about some platform use fake bus address translation in dtb file.
+If none report below warn for some times, we can remove all
+use_parent_dt_ranges.
 
-Fixed, thanks!
+Frank
 
-> > +	struct device *dev = pci->dev;
-> > +	struct device_node *np = dev->of_node;
-> > +	int index;
-> > +	u64 reg_addr;
+>
+> > +		if (reg_addr != cpu_phy_addr) {
+> > +			dev_warn(dev, "devicetree has incorrect translation; please check parent \"ranges\" property. CPU physical addr %#010llx, parent bus addr %#010llx\n",
+> > +				 cpu_phy_addr, reg_addr);
+> > +			return 0;
+> > +		}
+> > +	}
 > > +
-> > +	/* Look up reg_name address on parent bus */
-> 
-> 'parent bus' is not accurate as the below code checks for the 'reg_name' in
-> current PCI controller node.
-
-We want the address of "reg_name" on the node's primary side.  We've
-been calling that the "parent bus address", I guess because it's the
-address on the "parent bus" of the node.
-
-I'm not sure what the best term is for this.  Do you have a
-suggestion?
-
-If "parent bus address" is the wrong term, maybe we need to rename
-dw_pcie_parent_bus_offset() itself?  
-
-Currently we pass in cpu_phys_addr, but this function doesn't need it
-except for the debug code added later.  I would really rather have
-something like this in the callers:
-
-  pci->parent_bus_offset = pp->cfg0_base -
-      dw_pcie_parent_bus_addr(pci, "config");
-
-because then the offset is computed sort of at the same level where
-it's used, and a grep for "cfg0_base" would find both the set and the
-use and they would be easy to match up.
-
-> > +	index = of_property_match_string(np, "reg-names", reg_name);
-> > +
-> > +	if (index < 0) {
-> > +		dev_err(dev, "No %s in devicetree \"reg\" property\n", reg_name);
-> 
-> Both of these callers are checking for the existence of the
-> 'reg_name' property before calling this API. So this check seems to
-> be redundant (for now).
-
-True, but I don't see a way to enforce the caller checks.  I don't
-like the idea of calling of_property_read_reg(np, index, ...) where we
-have to look the caller to verify that "index" is valid.
-
-Bjorn
+> > +	dev_info(dev, "%s parent bus offset is %#010llx\n",
+> > +		 reg_name, cpu_phy_addr - reg_addr);
+>
+> This info is useless on platforms having no translation between CPU and PCI
+> controller. The offset will always be 0.
+>
+> - Mani
+>
+> --
+> மணிவண்ணன் சதாசிவம்
