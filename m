@@ -1,84 +1,207 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011016.outbound.protection.outlook.com [52.101.70.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241E9266F09
-	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 19:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742843359; cv=none; b=QPoF4euyExRWUfoUFk1Hhv7I2h8EWZfrPnJPZGE4wVBbBbtcav+PkxHAJvP+tOhr3XracqQzHPQm2tBKTtoF9zAJUgzA8g1RiwUCO0NMg8aclkVBeTS+QIz7aNMpibJpMK8c02i7zJgwmrLzKPIw5lf1GxcXj6y8rOWEE9BzBhA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742843359; c=relaxed/simple;
-	bh=tMdbtZjxK5Hp6vpTGbR0eVJuD/+caqSIXla2BtJsgQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H5MSf3tInv/q0nY7U8rO2OVZrA0AvkqnqIVhtYtxRISbP7Pfjg6WMI/cCCUXkKzZUJPxHBaHw3JSG8Sy1Idrl8yuTq8D+HmfeTtDShxPgs7J9P5lOaFVBaHynz1lE7NEwQSY13GMDYLl8s6wCEJHskTzNbDBP8oxMrBTN2iUyG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EIVD1Puc; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61112620FC
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 19:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742843658; cv=fail; b=lO37pEU9peHnyyRD9LpIz04u+IJTaIKr0W9HG+tKBRID97O+0XkZz9S2/AhN5G/iKaFGIZrUFkymw7dZdGnkHsxuw0rW+GjfbhV9O2qrQL8Z94KOD2/Sga6Pzmw2FgMp3WUqHRZxpcWxeXkai3gSggXBzJfaKdIYEFNQuNHTJU0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742843658; c=relaxed/simple;
+	bh=Cl+WqOMhTQ4IaNlA++TTU0/ofqgjyOgEQ8/llAe8htY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uT/T0xqowSqawl7KhfDzQe9Q6yj8c8PcULnxW0ACLDh1OQvAvy0pa9dG+JQuYI91B6tvW0muO2GVlc7vWdE1pfEMekHrP0chIW7yaIZX+dU0BIyDbX12Ubu+FzaAjQpJj9bC969m7am9YljbQMZ8dtOOBdwqs9LP5ixPUBYd8B4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WAwi8Qa0; arc=fail smtp.client-ip=52.101.70.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EIVD1Puc"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CA52102E64C5;
-	Mon, 24 Mar 2025 20:09:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742843348; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=luE9KNFBY2yc7R/r8kECD9v8u+QS5s1DIkupBbe0SSw=;
-	b=EIVD1Puce9GrbbyT1REgTbYEiv/mzMu+ZRfY5ES/3/fMYFUQXKfknvvd1b5InJ9Eu6037N
-	MlWSub3tdlXkUWWZLL9Ww86CskVGBYSTFXBLSe1OXl6bzdiTcQFBc9ryum/GelslPY4Kse
-	qY7kNLYjJ0fN5NTayPBDktZKK2ue7mko3nk2nHIFYzYY5FK4BOin0JMko/LQVGjKW0VUfD
-	uR4Mv3JRJLu+mS40KfEJTCn8t7CRLTN+zB8YIEoMqcWR7Li++KbCeLsBiEv2X6UyktIx1I
-	pjoqE0y8H6y+qr/Z96/asN+t3K3T12cXKvs0DmYSgDpx027o+j00SAI1Rl65Jw==
-Message-ID: <22187ae5-7486-416b-b612-53021bfca11e@denx.de>
-Date: Mon, 24 Mar 2025 20:05:15 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WAwi8Qa0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zKJT2hwxOtLYcwy2rpAp9LVcQwZifPThss4OYTFEphOYmrHcSppWLt8s6DJL7AiFNECa3+hKtScrMFQE6Ql4SyDE8ui1k2SkGFm4XcUXpD0Rw36Pyts1Gjay3IdeVjThu6KwlE1wvzNgpJyJ7Uh8VLG7/DGbV8nhzz2ODOYJ1AflQZE5LnfMAaot/heKvr8s7ST19ZXCuPLm5z52frL20B2jT79gTMVljl4JcCgHviVePlwYSjNWFPcdmpnoiWG+buHXRCeEJIXU+SGBi8JOlFVLWt6E+A0/HB2fVOAtNOuLGD4sP4uMTDjKNy6SU0f/EZ3Z8yQUoSDdUbBUZBmdbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6BbVHMCiAUNyTjY+95gdqwMruxqrP8xyjC2fFREOqjw=;
+ b=fCA59NfL+PYqrIrWjN0+Jp3Gj0DQ2LiKzyBCunX7HCS7/cSUMmjNjcdbIqMjtZjfadqK+zBBNlpeYIGByFsOh33MGL3SR/VugJXp5vPO0h6PbViMOBSyb6O1XGwKXr3IYzTs0M+ZdtTFiz7a2Vplshgj6cMiCDB9xSO1CwsMBOm/spKyyHjjBQzJKQiLCbmAqIt5euUfeVbiX2zErfaqppDTK97PNo7+U5A7nELuG2fpIQDN28EUmPgrVq5Ol+AnIWxDedvK6/aCO9iw6damE0yuwqvqUvFR2ZJjypxhuSPCmsZeizM+IQ6zqEBDne6iQZPbHCATOKAbAcPnaa9BIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6BbVHMCiAUNyTjY+95gdqwMruxqrP8xyjC2fFREOqjw=;
+ b=WAwi8Qa0OzI8MwuK9vSvo02fwnlcuS7B65zWr4aRmhR3YHeVAR4YcDbEI0L16TtqDZbueKSAG/aRgJOCWYu1gTrVvXzTCcdkduIaT3dizax50szsqbb788Y99SY1kj9fI9PBmJdBB07RKJSkS7IXNfeG6XER/EURnF7E9IlkYN/78wd4+YdUG3BjcNED1+ByR3apfQJzvAinc4/1zs6cfJAHnvdlmuSQCrMpYUDO345VKNjwhO1X3p73UF+WdFlsPabcUML2Q6CIzbGkSwYUvwY7hcmXbR8CGdZTdwZLjJ+0OgV9aPKDhZE6U2ysZKk5G6TOigMe2IGQ5tpRjRi35Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI0PR04MB10439.eurprd04.prod.outlook.com (2603:10a6:800:238::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
+ 2025 19:14:13 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
+ 19:14:13 +0000
+Date: Mon, 24 Mar 2025 15:14:06 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 3/5] PCI: imx6: Workaround i.MX95 PCIe may not exit
+ L23 ready
+Message-ID: <Z+Gu/gmioiVJfDV0@lizhi-Precision-Tower-5810>
+References: <20250324062647.1891896-1-hongxing.zhu@nxp.com>
+ <20250324062647.1891896-4-hongxing.zhu@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250324062647.1891896-4-hongxing.zhu@nxp.com>
+X-ClientProxiedBy: PH7PR02CA0007.namprd02.prod.outlook.com
+ (2603:10b6:510:33d::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Steven Price <steven.price@arm.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-References: <20250321200625.132494-1-marex@denx.de>
- <20250321200625.132494-5-marex@denx.de>
- <20250324094333.7afb17a1@collabora.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20250324094333.7afb17a1@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10439:EE_
+X-MS-Office365-Filtering-Correlation-Id: dce68205-bf56-43f1-5193-08dd6b081032
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?b0WO77GOvzSM6FzP+xPmlsMhNrKjrEyPEcn3NGlajATbOy2KpsanJqnEWOJv?=
+ =?us-ascii?Q?5/wOuAaJmdAClsi3tjFS8mZTV4g/d+LM+asrtVX6ZfjhlfeS9MB90XgW1k2L?=
+ =?us-ascii?Q?T1eBDF1tiIzQhptScAWqvGlgSBtTvwNSrfqprtC/yFA9hm+2X5wif7f7arI7?=
+ =?us-ascii?Q?sQMn3QaRjrIqyw2AMOnZHu81CSNBMg9mrw9UNbYPdePjSlpmpVN9J8vQbwu/?=
+ =?us-ascii?Q?NgvIYBttqtDCjioBwy7IyCv5qL/+AfdgXW2xlHYchieBL2Z5omB841nyX9um?=
+ =?us-ascii?Q?blGbgG/VN01F5pFk0qi/lLH7F5J2hwg+iXkOBXCoZk0TUOgYiVH/OSJtjiq/?=
+ =?us-ascii?Q?Uw+e0IatasYYzKin2FntugZvDFxQu9KaE7sekSLcGBPmrwfX0TYKTGU5z3ZU?=
+ =?us-ascii?Q?+C9hYx94RPMTAVSe1Hu+0xy4Ux4mleUJRWQa+kj5L+hDl3ferP5232UL0cQD?=
+ =?us-ascii?Q?KPP9v4J8kp3azAajrLaMXwciyK8+Wdxbm0/02jD7zrw5YjsuuPeUym75VVjC?=
+ =?us-ascii?Q?F+hrPs4uLg77q3FjDPnhPvpZH5XT8Xpzd3Wo7SNRzwao98CYzQr6wPQTFiOf?=
+ =?us-ascii?Q?3f64erBFNbxf6HxAe5AEIrRwfI7SqOZDeD2OgoVqTKiFMpaTF783MiK/c7Ts?=
+ =?us-ascii?Q?n3PthdVhGTA70lAllFypIgIyJaG58+ZH+2cKu81zVhhMW36PMF2Iz+/Q7xGM?=
+ =?us-ascii?Q?aUdAVpFXXv2Wv905jNhFPa+xPWQicNHaMzjC9kOo8jzbVa4YtBxSyJ9vvwGn?=
+ =?us-ascii?Q?oD5aehLI4szK8A9uWBkvadZK+T4j+h8gPY37JZdvX4ykCHUr9uW1nomwde2Z?=
+ =?us-ascii?Q?47WY2PylNsDUO9F3W4PCH+MBhoDBl28rcO904tL3GE8gdgg70f3BQMnn8YOF?=
+ =?us-ascii?Q?SE6vXDSe/CGB8x0s03imcyYNst243iQ2eTiPpIwDyRj1Mp5lfWQK6YPqMlck?=
+ =?us-ascii?Q?lAyriNi1V4NJVPShcy79WcnRirMjs9jNAiuN4q4MetGsVMcXhzNxjgz8xxNi?=
+ =?us-ascii?Q?ptugHHVb+s92O4NoiSwdjHkv4mfm9DbW4vRQbv3VQjyvSCSwtxmvFkouJVbz?=
+ =?us-ascii?Q?98J675q9lu8vqSMQ6YGw/hK9RWq0me3VZCpNigB1EOa0h7wZyq0Dt8SDAlOP?=
+ =?us-ascii?Q?XoC2MipMWH7FvL6kxyF76ip9kgi0fa4NTbKaBw/6HJ5QR11Cny0wLQpdaVrZ?=
+ =?us-ascii?Q?KLDoNw5C7TP1Cjox+QAdX7o1nKFjnDMLLpRxbILQH53lwexxfe85eVaUaQqx?=
+ =?us-ascii?Q?RVUaC3wypDKUNW+rVcE+RyC23ng4KqkAuei8+E19Nl9aDDWerFHNdU2EZ5eT?=
+ =?us-ascii?Q?20d8FCYIOg/00YmN14hsT5YEyFbOPKRFT53rCHst4n1IzXaz3KJreczVHbEv?=
+ =?us-ascii?Q?+vGHx2d2rAe7I55tTWVecbI0y8i8/A36bewewZn3qvtxJF1Q5jmaZH3L4RbE?=
+ =?us-ascii?Q?a6oezMsRkJG0hOkm6eCgO0jvVm7LXMYe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?m/ge2Abo50ugDzezCaV99xEOXSrLj6j5yhbYoV/G9U9Zgv0cfch+Q/ZhJdOI?=
+ =?us-ascii?Q?kVmPxKQHFd2bn/sMaN7umLjR/gcs4uWtQfjPIFlb3ARbJgoPB8xbu67dKUVt?=
+ =?us-ascii?Q?YvKXnsKvU8piqWLOaHIuskSYr/l5RVu+zhckvOKOxpnNs9SOVo2zRZTGBoSU?=
+ =?us-ascii?Q?tc+0dEbqay7c6ICitu1hHqIyn7Acnuf1/5QdtOaedkv1LYdZsGcmPb5Kz1GG?=
+ =?us-ascii?Q?eqB0wc3DztRc9vBHEXAwjN19fiuHb9VnIE9U5cQN/uLfLRst9QenSbQy5q76?=
+ =?us-ascii?Q?Sul6yoEvWn2upNLZdUMqEdkOQhDDEbik9INuenpxDfX7DfWndyFLZKYfLCfQ?=
+ =?us-ascii?Q?mGjZ7v7CahuyYQQXpV/MuDhaFcW/ln4OTB2qzla1kK5KVdv2EG/6nULNlScr?=
+ =?us-ascii?Q?59Y+/Ug4JZpuFE1Lf38zqttuavljjlY8xxowX/NcIOi0aRmjBRlzFBqty+Ww?=
+ =?us-ascii?Q?OVhyTE6A5LfWPyY94PqIqhql7CSZH4/WMNvPFj17EB+zx5iUNga2iku8YkWk?=
+ =?us-ascii?Q?SVLpyu6+0sEnojfV9kg/YGFO4QTkx+S2AY9394aKAlO9AgK2mJk59BwoJyfG?=
+ =?us-ascii?Q?ha29x644xmITy7f+3z8TbJT50/7eMi5MmhN67aTp9yCBWFgDWs8pXddxBWht?=
+ =?us-ascii?Q?Ewhv6oWFzU0JPAn2y+NKJDfeslmXamG0RnLYhhbDTJc/cHK6ub3bCvTP2lGL?=
+ =?us-ascii?Q?7Mqsr1q+d6gnlXN3eYe89TwwBBRS9PXLKSrkfEEtsZNzHHj+JsfRLzMEyEgk?=
+ =?us-ascii?Q?z2cI4hPwq/31MFhyRZ5f313ttHvVN2a7d1loQqSu3r/mnjm29f2EjGu3SiKd?=
+ =?us-ascii?Q?Xp988o43qAILQ3UiO8qKBbviqZWAvMA2V+qQAu7THYhXMa/cp5uermzoFLnC?=
+ =?us-ascii?Q?p2CyfWs9ZVQZ7KvOhT72+9h4bnpdj0ABvi06twMmr2nJIGRWHiuLrWxpNy9j?=
+ =?us-ascii?Q?GSb0VzTF8TlQm/DVP/ZvLD3nCyNM6HV0/STzCFu49tzQBAgeQsioQEiidSXu?=
+ =?us-ascii?Q?SOHLtZn0Cf52mrNe+GEddEL6zOZGSB0FrvNH4vx+0UwVnVZ4BpooIULzl87a?=
+ =?us-ascii?Q?T2NMidIAKNJOxqaK07+tmA4PIMSppA1kUSjtBZIirc6lm2x1Ge2aXH+eStbk?=
+ =?us-ascii?Q?UN4kYmFeOzofMx/1/GYU0UINmXXsKXAZ/EYS6bkNZ6lL/xwvSzrO4edYkRAu?=
+ =?us-ascii?Q?W/KtwuhvCo6OPdQXF6DvU+QEfDiZgRH4iAbvEf4nhosQAUPDfaMbPVkkxssD?=
+ =?us-ascii?Q?XiF9zpbwq1owLi+UaLu8vLrxgvJEXM/PypSVgBy67z3k0yZJQ9kdQoMNkWuO?=
+ =?us-ascii?Q?QYM2gJ0ICuHAyOHMD056Ka+KnOX5Y8qTqUIC75aEgy810CQFBDLePmMXYKQw?=
+ =?us-ascii?Q?4+IhTTAtS4YAEfGcjGe2K835+Ic1zEGVi5H7Ugysz4n9i/KQ8u20vygxzYRq?=
+ =?us-ascii?Q?3f4HurGG+wiSborGmTIAV+1bTQWyu+Ddn23fO3s4dqiuaHTIsvrwRAXowHbr?=
+ =?us-ascii?Q?iSy3qtcO4I0amEvGVIUHZwpAWCXSF+DQkYTE6Pr96L/Jb6twG/7WvWMPgXG7?=
+ =?us-ascii?Q?W8co05h4yTkH/lUbpoJdCs20KDG1XPUdIsLPC8Hk?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dce68205-bf56-43f1-5193-08dd6b081032
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 19:14:13.4676
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YmAELHpIsfzU+yuYU7H72f4gUkJmM9AjNcX4pVcr7SuO2HfcBMoIbiGqlw4q+nP5KT5BoDSJSnQMEl7ziwc08Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10439
 
-On 3/24/25 9:43 AM, Boris Brezillon wrote:
+On Mon, Mar 24, 2025 at 02:26:45PM +0800, Richard Zhu wrote:
+> Workaround for ERR051624: The Controller Without Vaux Cannot Exit L23
 
-[...]
+provide a errata link here.
 
->> @@ -563,6 +585,7 @@ int panthor_device_suspend(struct device *dev)
->>   
->>   	panthor_devfreq_suspend(ptdev);
->>   
->> +	reset_control_assert(ptdev->resets);
-> 
-> Hm, that might be the cause of the fast reset issue (which is a fast
-> resume more than a fast reset BTW): if you re-assert the reset line on
-> runtime suspend, I guess this causes a full GPU reset, and the MCU ends
-> up in a state where it needs a slow reset (all data sections reset to
-> their initial state). Can you try to move the reset_control_[de]assert
-> to the unplug/init functions?
-The reset on the MX95 is not really a reset, it is clear-only 
-set-never-again bit which goes only one way, the "unreset" way, so I 
-don't think this has any impact. Also, I commented this out already and 
-it made no difference. I will give the second part of our suggestion a 
-try in the next few days though, and also try the updated downstream 
-firmware blobs (sigh).
+ERR051624: ...
+
+The words after ERR051624 is descript errata itself, not workaround.
+
+> Ready Through Beacon or PERST# De-assertion
+>
+> When the auxiliary power is not available, the controller cannot exit
+> from L23 Ready with beacon or PERST# de-assertion when main power is not
+> removed.
+>
+> Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
+>
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 0f42ab63f5ad..52aa8bd66cde 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -48,6 +48,8 @@
+>  #define IMX95_PCIE_SS_RW_REG_0			0xf0
+>  #define IMX95_PCIE_REF_CLKEN			BIT(23)
+>  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
+> +#define IMX95_PCIE_SS_RW_REG_1			0xf4
+> +#define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
+>
+>  #define IMX95_PE0_GEN_CTRL_1			0x1050
+>  #define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
+> @@ -227,6 +229,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
+>
+>  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+>  {
+> +	/*
+> +	 * Workaround for ERR051624: The Controller Without Vaux Cannot
+> +	 * Exit L23 Ready Through Beacon or PERST# De-assertion
+> +	 *
+> +	 * When the auxiliary power is not available, the controller
+> +	 * cannot exit from L23 Ready with beacon or PERST# de-assertion
+> +	 * when main power is not removed.
+> +	 *
+> +	 * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
+> +	 */
+> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
+> +			IMX95_PCIE_SYS_AUX_PWR_DET, IMX95_PCIE_SYS_AUX_PWR_DET);
+
+regmap_set_bits()
+
+Frank
+> +
+>  	regmap_update_bits(imx_pcie->iomuxc_gpr,
+>  			IMX95_PCIE_SS_RW_REG_0,
+>  			IMX95_PCIE_PHY_CR_PARA_SEL,
+> --
+> 2.37.1
+>
