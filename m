@@ -1,35 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D518B464;
-	Mon, 24 Mar 2025 20:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387511A071C
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 23:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742849998; cv=none; b=Q/ONGnvhMtckejh+uKyCRoshfv0WgLZ89VEJz3FnAvcC2vfH5k2jr+dhX426kO2MlkouqGhyQsypRTYXQ41sSl4u1NYU4kw9wjS79NEUx4K0mm1Gt5ZNpRlBwWsCp9YghR0uq5BpIUsEK2R0jrxga+6EJUpVhGx+Oo1Mo7PDIos=
+	t=1742859644; cv=none; b=FmtYzwpTmGlTAF9XP3ODeaTIMAR+7IcqwHXprYF8ELwkYhZgGiENTX7LDtBjhla05H9am6SJ/GApbvwYW/j6qz3my9ZKKXlsNqKzKRnFQijQmZxjEz1wV6xZ7iSYecq8zmcD7SeCE73JDpSIhC5i2y6uHSmVc4j7JKjUiANr6YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742849998; c=relaxed/simple;
-	bh=ng1DJb9BxxzC35KV3EHcbDjjgiEcK9HC4BR+Pi2/KXo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=B5jkiDeFWd8bwHgxwQGW0+ZOb4lgw6cJPj5RdFDY/14rK1C4+eHZ1G5EBJxC1zUn0IildRTl/uKWGwNqEu1jL+d95duoeq6edwH6No/AskBFCI6UuedYRPUnf+jODmzZeU6g30knN5uRnMgWjrAQjviv6IqHbwRgtt+ebc6Lr6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h65ad5Yy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742859644; c=relaxed/simple;
+	bh=rCmrnBlao2XUfzAQtujQ7ftFEmxwoE6+EH3ux0BP3Qs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PqObv8FDjSRfFlFDKdWgCNZfOz7YAyqw40wXwCYe2ojbCjFrvgcWH52qvw4s8Qj/Gbs3C+UhTRMXEsRU5XfI7k5hIN7wcNMtdJme2jA0LpYPMFM8Rzn0kh1jl7yLDQBBJynTo5+VbvmS/Gy2EZ3vNeyRsOUtH1Nap1M0+97zwig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=a5qdpjSi; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h65ad5Yy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40172C4CEDD;
-	Mon, 24 Mar 2025 20:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742849997;
-	bh=ng1DJb9BxxzC35KV3EHcbDjjgiEcK9HC4BR+Pi2/KXo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=h65ad5YyMT1GSTxd3szEpvEVi8Nx/SzWXISGnLxm0lOnB/VfZpmK7p8vdfb1sG9SA
-	 z+1+jDi1dWYFeKv3txG1Vtar3RlnwyB/tHztvz+KNlilhEvxZfvU8P2BLfuZWKfwr1
-	 FOYqohE0w6U6szPKTYaTD5I1Ro4KDdP0kmN1lm//NIqilq1w0vyixTu19Saknm/mT7
-	 0+1MmyVuckWAvAiMxw5OqCt62yVi/hbsoZjKv6t1PAX1Kb3NSOKL6X8Rh+uCsWkq+H
-	 2EfVQYGvOl0EdisWQXgwSCO7UKHbiLtmLtyRPhGMYwrg3cpaX9V+Rciwpa8MJQdSIL
-	 pi5ubKgH6ZzAg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFDC380664D;
-	Mon, 24 Mar 2025 21:00:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="a5qdpjSi"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3619C102E64C5;
+	Tue, 25 Mar 2025 00:40:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1742859638; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=ebW5uUbDixz+WtbLPFY5UlkKryXzpM2RUhwCViXppAI=;
+	b=a5qdpjSiqcP8TPDm/nqcqKeCTCdZ/Aaw1VFhOf78vzuwvd+GofIRY7yLIoU2jEby8DcMA3
+	g52MEK89jy/T2o+oHOKIa2q0wsPPf2rp3EMZhN4VcQELMbPidB0YZlU25oG8Jwr1Skk0Qz
+	/iiFkliEWNAg8sBEHJdp8a9+lTheVQhzxxcP0lsf976Phajm4i9jUVGeQX+5CJspFbKEVT
+	wMIxBKYCLp9qn5AAq//ihsnuDOjwkGBEmH85FA1GeE7qxoyhYQdAWw8jGSCSA9U3MwgNjv
+	KVBiKhzlFmGt6KKdQmZkY8PgaLExbHse+cmiO1oHXYJQtO5nYEnlqYNMG4tYTw==
+From: Marek Vasut <marex@denx.de>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Joao Goncalves <joao.goncalves@toradex.com>,
+	Joao Goncalves <jpaulo.silvagoncalves@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: arm: imx: document i.MX 95 Verdin Evaluation Kit (EVK)
+Date: Tue, 25 Mar 2025 00:40:01 +0100
+Message-ID: <20250324234013.140440-1-marex@denx.de>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,45 +59,55 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: Drop unused of_gpio.h
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174285003354.4171308.4171931189577511383.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Mar 2025 21:00:33 +0000
-References: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
-In-Reply-To: <20250320031542.3960381-1-peng.fan@oss.nxp.com>
-To: Peng Fan (OSS) <peng.fan@oss.nxp.com>
-Cc: nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
- xiaoning.wang@nxp.com, steve.glendinning@shawell.net,
- richardcochran@gmail.com, marex@denx.de, horms@kernel.org,
- ronald.wahl@raritan.com, peng.fan@nxp.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Document support for i.MX 95 Verdin Evaluation Kit (EVK), which
+used to be the Titan EVK.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Note that the SoM used in this EVK is a derivative SoM from Verdin
+line of SoMs, an actual i.MX95 Verdin SoM is under development.
 
-On Thu, 20 Mar 2025 11:15:24 +0800 you wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> of_gpio.h is deprecated. Since there is no of_gpio_x API, drop
-> unused of_gpio.h. While at here, drop gpio.h and gpio/consumer.h if
-> no user in driver.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> 
-> [...]
+[1] https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95-evaluation-kit
 
-Here is the summary with links:
-  - [net-next] net: ethernet: Drop unused of_gpio.h
-    https://git.kernel.org/netdev/net-next/c/b71f29272f5f
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Hiago De Franco <hiago.franco@toradex.com>
+Cc: Joao Goncalves <joao.goncalves@toradex.com>
+Cc: Joao Goncalves <jpaulo.silvagoncalves@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
+Cc: Michael Walle <mwalle@kernel.org>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Tim Harvey <tharvey@gateworks.com>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-You are awesome, thank you!
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 1b90870958a22..30dc200cc1561 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1352,6 +1352,7 @@ properties:
+           - enum:
+               - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
+               - fsl,imx95-19x19-evk       # i.MX95 19x19 EVK Board
++              - toradex,verdin-imx95-19x19-evk  # i.MX95 Verdin Evaluation Kit (EVK)
+           - const: fsl,imx95
+ 
+       - description: i.MXRT1050 based Boards
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.2
 
