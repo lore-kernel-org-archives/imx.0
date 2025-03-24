@@ -1,102 +1,172 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2066.outbound.protection.outlook.com [40.107.247.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BCAD5E
-	for <imx@lists.linux.dev>; Sat, 22 Mar 2025 00:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742602080; cv=none; b=Ft5H9ZYSt9v3OAa96qj4lhkHTjP+bOPcDJSbaEaha9x015VvSMubDI2UkiobEivUlM0cNpL2wJtrDSrqjM7f7YUhZnqo9RgzPpnLWledFmCnb5UI7dJtachlP6UgI+gZriQPQXfGHAfoimYr2Ui4PX2NvL514F0XAtJayozA5zU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742602080; c=relaxed/simple;
-	bh=3QKaKPMSJD+/egJfzRapWYRtqycA3II4RLMgHhqVCHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKH+msKvgo+KD57166x/pTR5UeVPh5Z8wAc77qJ6F3ysFzLbvsTAWETDZ0nAxsFk+KRh+oZjWwhngUldAGjELt+KpeljguygRLZGzRQboiBlmkffdYmWWbHry+kUq7HaDt/DK6dtk+TuXBzIzvFUy6s6HObN1AtILo3tawhIdeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TK1HRu10; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C799F5BAF0
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 02:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742782242; cv=fail; b=jbaiA0MvORcEpjM7Ih6eHV7mgUwVPNT2VWzjbvcnzrcxWgDXEwDlUDhalq0uZqEBVUz65SOIoaOH6cb1Ts6PIIGBCWz2HJTBRRTEjs4f7c76QSQnaTDUA9KC1yDdZgAgXyXAKZosTIt+Z9nTs3NUi8/ZUh49RNQ535IOuI/1B4c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742782242; c=relaxed/simple;
+	bh=gPlYSh9Qk64eBKwnkA8qIYyJ5KhC97tyg+sdu+wkuNk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Ls7Nr3b2rhhyNKKUd1JKWZu+5bUdVmNmKlO+6zJpLm5RV0VYqpEHxNEcwzSbkloikJSjr6ZPSuK9rzI/9G3i3uRcfsFKjHiXbDI/Ld+ns4NHb1GRBjp+7WfxVW3TXZ6PK9i93k6LEJvkt2GmWBeB3LyZQ0JmGN9Zwyf3URcYRHk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H5iLyCqo; arc=fail smtp.client-ip=40.107.247.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TK1HRu10"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2264aefc45dso27365695ad.0
-        for <imx@lists.linux.dev>; Fri, 21 Mar 2025 17:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742602079; x=1743206879; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8EXV+liqXecF19/95E6X4B8HYwLOUANKAp4Chr+5IZE=;
-        b=TK1HRu10zKheBz/y3YlQs0Qe3PSUM/UkfwjRWSUYBQgDPzUaewogCWjEgXJuYtiUAy
-         4Gi/XA8/6nhZjup6jw/NR3uPQPKfBqs4cUfJntVuX6rbX4q2fKRR2LONLvSmybd01hy7
-         6RqvZ8o5MqYaGoajHQuB/mTgzMJNFU2jGrlhysuecrE9e0btqikXnZjJH4rJcfq7WI/b
-         w82mITEalg1sNucIXs5s9Da2ccWJP4mLNyn3FWEHpbZVG3AXWuD/dQdlCmUP1WKPOAAl
-         cK5kAc0BK5bScdl+YIuQvnDwZGDngch+XLM2JCZSmXuZUOWKXT1RgPh7kjCLQX7YM3ju
-         IeCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742602079; x=1743206879;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8EXV+liqXecF19/95E6X4B8HYwLOUANKAp4Chr+5IZE=;
-        b=AvlpIo+7y+yYVGssEGSLM2pXhplLw3QI/9jdDPWDbkkCNmaNU2/qS+L6iom92HMxEz
-         oO0uMUK81THpmOY4OyY30CKeVGBiO9O2ZgYJyFmXmo4Rq8weXrpNFnQaES0y+Pck71C9
-         pmwKaALXTQBvk+Z9d5kqynh0B7sbaeCQfwPtWCI8MT1xnVbAYpbT6W8gwc7yf8jR+BX+
-         adnlOISLGxRn8vrvyB77pWimUtrMF04EtKgnBvy0ff9tJprDfxniHOclTnsZwGfyctjx
-         z3xK1O1xdpmsyGb9jcuLFS2b6R+pcMF+a2j+h0JyC8rhUr//7wfQfGV6GOJqNiJMhYkJ
-         Rnbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVF1EUPmQXCa1kbTsBAF6BrNh6xif+8NfKwBGHBR18/iRU8XIE6IHZS7vxIBDprUhwTWPI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yze6YcxgtGDF6xOn27EYjKkavCT5/6gLVSUDDimqqegTVNOq6P2
-	tVnG0P0n4oRy6rWhJKW1hyNiMT/DNzOgdGXyvWkLngZuWNnbuYNZ
-X-Gm-Gg: ASbGnctsbKhPG/xt63bI8eZqbtkmNd9FaseAvPoiPMzCpewgxDmcgpdMnLvX5+k7zty
-	NcAY3pGj3b4A4J1m8QGF0grhj3mxk6HkvqctSiJrulAJBG3HnYyVtcA6c78SfuHbaQ5Bw4qSpQB
-	7bTN3RFbUxhdXGNeC1ndMGOEqovuWvRWGJ6/WicFaHTzxgk6qMqua+b1Sm/TztJq4eJHXYASbqR
-	Ey5HOUE9UOWhDZti8QE3hf2ECiglWusDSqBheu4y3GVjCcblUPZcaHQ7oD2I3zne8Be3Loxl60l
-	MbzMMlevoWZr/yIBtmE4/6bcL76iXI06EpwE7WVkmKBgoSCmnJXi11sgSg==
-X-Google-Smtp-Source: AGHT+IFG3IzHoUnF4Irysf7rShLOoFBmDOITsQx3iVCYXu5PXAFkhXgqbngY+idRPjClaq9zGMWhOw==
-X-Received: by 2002:a17:903:32c3:b0:224:1774:1ecd with SMTP id d9443c01a7336-22780c5599amr67690555ad.4.1742602078632;
-        Fri, 21 Mar 2025 17:07:58 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811bd143sm23906575ad.150.2025.03.21.17.07.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 17:07:58 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 21 Mar 2025 17:07:57 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: florin.leotescu@oss.nxp.com
-Cc: Jean Delvare <jdelvare@suse.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Shych <michaelsh@nvidia.com>, linux-hwmon@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	viorel.suman@nxp.com, carlos.song@nxp.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	festevam@gmail.com, Florin Leotescu <florin.leotescu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v6 3/3] hwmon: emc2305: Use
- devm_thermal_of_cooling_device_register
-Message-ID: <f9982a05-5104-426d-b9ac-de4b5c4d465e@roeck-us.net>
-References: <20250321143308.4008623-1-florin.leotescu@oss.nxp.com>
- <20250321143308.4008623-4-florin.leotescu@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H5iLyCqo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xwdeaxSdua9LhpS91b2QLcZlKE2RavCqn02zjIuiS17XtOw0seswdGKhhiuF4rpq0Hkjdqa9wqySkmSpID2sKZ0WSJjxXTcmM5c0SjY6E+4iZV70WAHaaBMByYHpr52GaVTo5lSKgQWwmeLIryrbUvedSzRjXAUYXZp3ifiNkC/etL4B5Z3917H24ckJF6Dmg9c65glimw2ZfFoKps4TBlDSst9gzulBUCoDjQVV6PoaXTToOOGOXET4/x7HVuDHamSfK5MngRKThumPIsMNsdB4Q8uBXRNP3PJTMCC9y6tvRKX+ODNxt+9wagWYHfx/2gDOto+P67lEReoTJHwBhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9awYSsp1OcS+FqeAy8JBkrIuuSBzMPPvD8ygkce//XU=;
+ b=F9E1drvWYcCCxvm0OZMJ8tuoV72ox9NIggzvvI1t/k7ljj7K8eEg3xsi6Onp2zaRJmYtVKVHGPZu6KeNNXZfih7BKpw68EnPOcIif1kgA8ekWR2z/Pzh3hwsUp1zMQVdJ5e3dldw+0qVY7fxxLn6ViddklnrFXue8wLXE1wu/hIao4JLjX4U548g15t0D+1Dn1z+0LQqHcXrqNsFngC7G8rcge+JUXdLZFvg6BcbBW4pCU9An06LmWGTRZF4QrA/SRSgzX10rAzPn+9dL1roLFn1QFE55ZP8pXSuLruc44xAxVwHhmFbbH7aQNPxbdNGHWrzvpHV6conquPoNwbuSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9awYSsp1OcS+FqeAy8JBkrIuuSBzMPPvD8ygkce//XU=;
+ b=H5iLyCqovMvdhxKrviyes/9KlKmPMVFeBi+q+j9wW0BdeLOAj0oDiWk0VAZQ5T2Av7hRjAswKnxQ+oylKVB6oauPPIEjLpxPfEZUjHz9abDqqB1pd2rla1aLubRGgmgnYKeKWmL+Po/k3ePiacO//9I4jW2dmTkHpVCOfIeSfdVpR+lINes1Pu03KeNQ0Of3qzDI136jUlFeus1lbLkDS+S7Bc9gJo8Ru7rpRAtQIHEnSbZNj0C30z1fLNdur218+UP3gIYGg6K9+OJj2kSNcRAvFCL3327tACfFytqy7M07rE247UohU6LDyb1vfRq1EOwRY6TdFRkGDs9/+NkMAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
+ by DU4PR04MB10813.eurprd04.prod.outlook.com (2603:10a6:10:586::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
+ 2025 02:10:37 +0000
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37%6]) with mapi id 15.20.8534.034; Mon, 24 Mar 2025
+ 02:10:37 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH] tty: serial: fsl_lpuart: Fix unused variable 'sport' build warning
+Date: Mon, 24 Mar 2025 10:10:51 +0800
+Message-Id: <20250324021051.162676-1-sherry.sun@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG3P274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::23)
+ To DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250321143308.4008623-4-florin.leotescu@oss.nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB8429:EE_|DU4PR04MB10813:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98b1a1ee-c47a-426c-c769-08dd6a791105
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9yeOF0lB6F+8pwBZdQZi1OCwQIRBGuOTJ9CjI0kBpsHAEXJ2jLxKfKlOJMBF?=
+ =?us-ascii?Q?FNEbkYy8jX0Hpw9895ASOGKJG1K79q3X9k/MOpV9v1Yr6bjkIXWDQuMzOH+X?=
+ =?us-ascii?Q?qtUDrBR3VNlmY5NMUL9/x638wRYbCrymdX2ADgiXi1/rdevhIVlmnQldCwYc?=
+ =?us-ascii?Q?6o2fPohun87i+b0aenYl2c2UXF+dQL7TqohU1mbnMN8ztcGclYwqT2JXwBzL?=
+ =?us-ascii?Q?9JgV7NW/IX9S0sFb/b2yG3uaeJNYEgs0Fyrvy8mzJ9YmSzR0H7nicx1xEJ14?=
+ =?us-ascii?Q?q3ikfkkaSINltnLRi7hjQF8EvLPeE+B/Mtv9VnfYKX34GMVqIH16nPCKCJx2?=
+ =?us-ascii?Q?Pfh2ppaQKUjNGxFsQF2+HXBo8fv//AMMERyS/+mnk4NpmGWhhj+saANUFeZD?=
+ =?us-ascii?Q?TSX3uDrYBbTjBe2S2SCB+aHBptcsD423/jIEueSZf8Kj+wmmwg8qkgbAiQCX?=
+ =?us-ascii?Q?WyvzzPNAHWZCZnbryN5xzu4XkDcllqy9KwOdfGQN/j59GxdHkSLWB2tDdAOI?=
+ =?us-ascii?Q?RhyPv5M1wLbdCbvl+Vy2I/7+WAnFwH4zEh0fAPyV4PVLGNoxAHBncUfNz5Zs?=
+ =?us-ascii?Q?AZJHNkpZ/o57k9F3rprsH/Vud9ezsXX7O6/AzbZsVf06tU87bio9FJibrK02?=
+ =?us-ascii?Q?YgTZRojuw1w3ueDHLXJZ6q2C9a+pGLKmurcgYfDrywnxZ0JPbnBeMltu1sTK?=
+ =?us-ascii?Q?itGfBuuZANPIQNHXhFCVvempQXqZARy39d9zTWhQ9ECuvtTp3e3FVqEr9biT?=
+ =?us-ascii?Q?lXm1sEsTdj4OhtdacxHy/k9+Lu3nCaDxPfk+BKS0kLRZdcsBICxWRoBdft3Y?=
+ =?us-ascii?Q?9r1RlYz7milk0tkPLmLvz/0MzQedsWJosnnk+/pVLq2VJXHRybU5OGBqRW3k?=
+ =?us-ascii?Q?UcuhyqQu3pFDoymKXWa8HAw2SGGY8+BFXpYkt6rLEKyH6lNoC4t0wgvpjjjH?=
+ =?us-ascii?Q?eBz2Bur14sTSosgjw9oIZWH/OABcXC7YunUDJHMo/nOo76fuXIwWVZT5q0jD?=
+ =?us-ascii?Q?s1tkAQjQbqeL079FviuEvw4AbxOi7n6iEkrl9TP5AL4RMxv4/NSDUptanA6N?=
+ =?us-ascii?Q?+Fj7Wt+Gixp5UX3bSmsh/lN44RWlBZ/JK/ZzmlN49soGnG0L3h8CfbUQoxXS?=
+ =?us-ascii?Q?VHsKZf5Tj+rFx6n6PS/AsarvlEvDnKxeTC7951nJcFQix0Joo7XXhT5AW3At?=
+ =?us-ascii?Q?uTCV9eGHqgewpaDd6KuPdGKCdaRs/sm5645W6Lan+3746kp3kuEXYY5qvibU?=
+ =?us-ascii?Q?5KLvR/a9JVQaZaxcO35fxUiHxBYeAcZJBjYSfW+6EuPH8xh1A0YbmVHaEhRh?=
+ =?us-ascii?Q?UTJPMJAebX9x0Ndzpfl2WB+np9fKq/2MF/OrprDaAcCv23bDNTz3qKhyewsI?=
+ =?us-ascii?Q?58b4opQAS/F3M1KWx0V+s/z7yIOZOayGX/XW+/agVlTB2QhDfc1FcXKjiyaP?=
+ =?us-ascii?Q?2t8WGJJIHPIOoYnmYvSt2lGFo1P24nL7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ec9Qjnh6ZZoTPkYr9QcQ7VHu/ULVBgP2x8o3KdUFVXCRP5M4yUV2T+6UyGU3?=
+ =?us-ascii?Q?L0Yz0uXvNWaiThtfvc9BiguDkbqIUyCioD4opJsNU1Wvv4nw0xvoHf+gzV8u?=
+ =?us-ascii?Q?tbI3Gebab5RxYrPUxfMK5QDut1oG1lHoPf73DkAD4zTv/DU83VQ9M8VeSh5E?=
+ =?us-ascii?Q?M90en1V/TX4kgjwQbGQolqr6YK2CJXeiAH/0gAbU9KIIrREr9ukXQkqJ5bdG?=
+ =?us-ascii?Q?3KIx1S1Pys2cnhjvmAByku9lQXI5MUWt8VGDOr9//lvjmFiFLF3ZEFX1cXqU?=
+ =?us-ascii?Q?aakvRubcGzJIl6JXkUbskP+GQUc7zpC6B/EH6nP0OMwK7Xco/+6QEQqu4RAP?=
+ =?us-ascii?Q?LtS6FyAhUfzbh+B1+CyUEYdBciZin8bz4u8pvXeXGmGB7Z+dlmnw3IfXgfEu?=
+ =?us-ascii?Q?RAJyAFboMYroSBztAKxjYK/U8cjx+KKFV8T4FkAdmsr/BowefIztYc7mgqnT?=
+ =?us-ascii?Q?hEDny5ETdw6LElaQk4yu6O8BrSqorU0pKE4LJU5vhx5G3S6qO1SPwsx49Wtq?=
+ =?us-ascii?Q?2w3S+Fn1zS3Ul2ADnssPiAs7DAp37Z3XS4irvQc7BemJt1vDvZDF66h6YFhD?=
+ =?us-ascii?Q?9AXTdX0eWxq+tsYgIHcF5Ygjo6GkyH9pgQ9NN85N0hpIkwBw7soD5g7SEKIP?=
+ =?us-ascii?Q?bXwxPT3d4M3Px6xQLiF3R81GL8pISDFv1LuB2axqnBJ+TgGrWXVq82ui4Xx+?=
+ =?us-ascii?Q?xKIPwdOeyT4EPKGMfQ8A+hP/F8S9PY/23QmY6w005rrlLYUOCCsQOUWCDSp+?=
+ =?us-ascii?Q?poTTWtKrCxj6j4R3CczyO5x+fl5751/imFrnBnIERPNnw/lE6wtZVLJGf/0u?=
+ =?us-ascii?Q?pyp3mLa2Ei9+vbnUW6UQMN3SvAlQ+J9aIu8+IHti3wQTb28U2/IvrqUkKdgW?=
+ =?us-ascii?Q?b3hVzauYu88Iz0uvyDcwLJNwpHMciwRV3Cy6aPs7VXqzDRXJ9BwBFJI84nL2?=
+ =?us-ascii?Q?UxV7YirZ0MloftIFWV/Sy8wPQrDr6AIFbcB6nlBm2KD3TcH5Rfg1QccVIUG4?=
+ =?us-ascii?Q?MxDbbNt+7l6AVEsiB1oeFGjyRp5uLJCPzHwbcWbnME9fyfKmGvrKjP7wVIrl?=
+ =?us-ascii?Q?wnsHNlmjaHt8U2UQvebrLI1hcoh222vYJWE7DJfLFyi6ArRp8Pu6m3/Ctabp?=
+ =?us-ascii?Q?wV8HK2M/pYS5rVceeNFmmJ+nNunw+BCaDYWiuDiLMfwXlKcE41BhKt+68CVK?=
+ =?us-ascii?Q?usThC2GMlNZpvlyjOC45teOY86eDpkAbM+J1cyC4uXTIqH0YQoArHC1l3oZ6?=
+ =?us-ascii?Q?qGPDJZgoylzBSPVAl2G9UWHoY+UXvXbYPKF4CbIn3UdMCG6AuuCAuXyRydFy?=
+ =?us-ascii?Q?A5cApQDvBD2KL+NcIUG0QF3sx9LOBQ9fZcZpobmLbbfv41Zbu8Njg3djDxAS?=
+ =?us-ascii?Q?WLjk6WA5GnEgGWOI/Xle0huTYQ62EK9q2epmTLvBjoAnpVJ1+le5AyC1+MlT?=
+ =?us-ascii?Q?eDLYewc1Mr6xG/R36fTgcp/AKxOQtWpom5dbvtDwOa4LUMwBgOErH4/CEKKz?=
+ =?us-ascii?Q?EBIgP3xVa99jp1febufdZ5zz3yA954i1xT3u8qdl2o/FkDSJ3g/K0zkFp8cO?=
+ =?us-ascii?Q?KDxhVD6TGuHtE03vSaoqkdw9oTjnpf9jIYScWsQ0?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98b1a1ee-c47a-426c-c769-08dd6a791105
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 02:10:36.9051
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j+EHkwTqX7DdhUB8YJVHemZbdJlybf3gLRZ9IlZEEL9BfM5v8Sp4A+fZpATn1n+MylYVx9WSs81R6Ra2WAkHrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10813
 
-On Fri, Mar 21, 2025 at 04:33:08PM +0200, florin.leotescu@oss.nxp.com wrote:
-> From: Florin Leotescu <florin.leotescu@nxp.com>
-> 
-> Prepare the emc2305 driver to use configuration from Device Tree nodes.
-> Switch to devm_thermal_of_cooling_device_register to simplify the
-> cleanup procedure, allowing the removal of emc2305_unset_tz and
-> emc2305_remove, which are no longer needed.
-> 
-> Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Remove the unused variable 'sport' to avoid the kernel build warning.
 
-Applied.
+Fixes: 3cc16ae096f1 ("tty: serial: fsl_lpuart: use port struct directly to simply code")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503210614.2qGlnbIq-lkp@intel.com/
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+ drivers/tty/serial/fsl_lpuart.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Thanks,
-Guenter
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 33eeefa6fa8f..4470966b826c 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -639,8 +639,6 @@ static void lpuart32_wait_bit_set(struct uart_port *port, unsigned int offset,
+ 
+ static int lpuart_poll_init(struct uart_port *port)
+ {
+-	struct lpuart_port *sport = container_of(port,
+-					struct lpuart_port, port);
+ 	unsigned long flags;
+ 	u8 fifo;
+ 
+@@ -693,7 +691,6 @@ static int lpuart_poll_get_char(struct uart_port *port)
+ static int lpuart32_poll_init(struct uart_port *port)
+ {
+ 	unsigned long flags;
+-	struct lpuart_port *sport = container_of(port, struct lpuart_port, port);
+ 	u32 fifo;
+ 
+ 	port->fifosize = 0;
+-- 
+2.34.1
+
