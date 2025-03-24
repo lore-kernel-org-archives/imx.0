@@ -1,242 +1,152 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA1F26158E
-	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 16:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93890263F4F
+	for <imx@lists.linux.dev>; Mon, 24 Mar 2025 16:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742832664; cv=none; b=vBtREOSwhtxcdtJfF20+vGYWCwEdZy7F9/IzKoQmQyvEuU6iw6iKmne0TIxH1zpeqEs7MPwQOpCQ9IZvcdyxhtrSQ5EuUNgFyqwEqmw04/aOMhag44R9RmKvP43GfvsUxGTD05gIN0TTYJZdrQaeJYE22ULpeH1gI38dMbZyXKQ=
+	t=1742833811; cv=none; b=ofUeOk6i/1dbsaj/Z0unWSTPAGdsstzLaG37I8y4848puDaN8wlQLTekLt4Nkj7+sxLHQ4m89Zhclw/3mOA7/AB79DiH1gaZdOCis8PSnrfpm1nJxBkFqkDJuw2Fd1BHJSXUnJZifZJQJygsVrthgO0hF+axVybMYnxM09AtU7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742832664; c=relaxed/simple;
-	bh=RXGsw/IIZ2cQK4vDV2zmSSo3gezBRdYOcUXmqa2QnfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B/7DH9gK0c0BQPGzqIujSXpEk11FXYHPoX1B1MPDAEtLeRqKDCoHPMdnv8JpJH8JYOZMDlqCbsRcGxYpNB69xMVjt46QVK2lrAbKAS5Vf6MpXOKx1ozCwkMnEu5lumQYVnv0nQotkBr3kB4yvNZgoPdYnpsVmkMjj2EpEK6lz24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ostu+JeU; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1742833811; c=relaxed/simple;
+	bh=C3XAo9qh2gj1Wbuwolnf2JOAUQZCs6fKOeKZA1fqa6Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YKcoRHQtLkOQ0CPtjRXSnhisGZVnPwHqKR1rHwN0Ocddq+R6IzsPxcDl46o+eXD14ZXQD/9y6DvfD+Cw0l+bRO18ierBVVaKasejmFxu+rlU+cukTVBFpp4uXJG/IW0lxAu3bTr5WEWqV7gXcAYnrnrI07Ut/lffYxekvHv+Fgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bzsj99oQ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ostu+JeU"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227914acd20so42282225ad.1
-        for <imx@lists.linux.dev>; Mon, 24 Mar 2025 09:11:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bzsj99oQ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso32357615e9.1
+        for <imx@lists.linux.dev>; Mon, 24 Mar 2025 09:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742832662; x=1743437462; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r5vgk90XdjvD//xy5cJrxojmSgOgyA8sd6HdwMa8sAQ=;
-        b=ostu+JeUZ/A13yjVWuL0mGvVJKGwb4Ip5wQo+pWcGm1hay97EGYNVuX6PQOusMgi/T
-         4AipiesHKgRq93viOZ4SqGcG4E4SJ/IE2QUO3juROGfdG4i/kTOarrt85yKXQdqnB0Kr
-         mjL0DmCCDE+aTLA8NJ6Yaep8TpC9nsX41PP/1w3Xal6pVP953A6DYVaBQs7qD28grxPI
-         LLgS2TYQy86e4/TZtUZWJNnCy61vNbiXH52H3mDvNX17mM5W1ABT/Ace4pkBQ71tqWf5
-         buZbz/b4M1ZduO2GCypO1itjATq7xv6TS0GVCkjFfmpqBRhotZ/1fQ1kwpzPxJYNvYwZ
-         TeGg==
+        d=gmail.com; s=20230601; t=1742833808; x=1743438608; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RR/33HkyWRVzBTpKjMr4gmsX71tawz+FueWvMxXm7FQ=;
+        b=Bzsj99oQFcNHd5ELnBot3kcm1L2pQGgkptsLtHA5sisAISSH6g0f05+IeHWNLaE/zJ
+         5+zJem4Y1sUguoP8LybvDQ0WPZjgji+m5pETinxn+hVEW2QrTEghJPz2A1gF/pYyk5ce
+         qctk7RLOrFIRcL8x/BQr7bLplJjH7IW7JOzWFikGxqZR/CObZwlfnqF8u5SzpiwGD0E3
+         +JnXSxnoV47NwBjUQFUnJFlXxUYkXJhxUMhJSQsqy60qkNwa+cooA7SSpQKnA+/XdtiX
+         l+hwJ5x4gDDrdEOGcjVflvJpfF/DGeGL8uZIKeOqaLDLDELfeuwytgtEWshLx76zMP4Y
+         TxxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742832662; x=1743437462;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r5vgk90XdjvD//xy5cJrxojmSgOgyA8sd6HdwMa8sAQ=;
-        b=PZLx06yKrOkQknHe2PQgq6VJwug1kAV2ihVQVpOpesEiZcOQfgS65orxCkwyVdiQ+B
-         QH/iuO2hqUmxhs8TuipREIuKRurfrNM1RBPsZ8x/VyDnLg5NIe5FfCT2hQUENxE4gjMZ
-         ZaZhMv8fbcUctIYqoIW3tr16YE4rwOr+J2wlGWcQ8qyU6akOoxaPqMGmg3GBwptP+nNL
-         1KMeykN0PKWlDSWMdx5kmRe+K+6//zt7JaTDDCl0xDWcL9UzmOK+0rxVtEI1Glmo1Tue
-         41xx/Ua/GDm5wrTYXfe8YDZYIYEbt9WzkMQCqnl8OOnZRNVX1j0NZjoJPIxAQaC3mSsY
-         0b3g==
-X-Forwarded-Encrypted: i=1; AJvYcCV7jDks/FIBPEACeFAj1gHnn+4fBM+I4DGIckb2xEcg/bDl3SY3VvkpUJKHplimizzqKo8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQyFqn1ZgLP8k1X5s54VxmNnfh0/Uw00YUl7qtGIyebLZkrwTj
-	hTayVoU74J+ZLFGBEEEr/PHJUYvJLWRckwHNEH/LTTOY5ALRiVnu/Vb7JFt/GzU=
-X-Gm-Gg: ASbGncuLLXIUnfBCDC0BgzhBhOXPU4UYmdpoe8oi0UwnNQObdrptAuo3U09ElfSMuih
-	V54p3RkVElFZxFag23azN4EUrGUAd9OlH4GSAKw3BplnL/LR/++s/ny0vtWpd/8O7Jg69agnjRt
-	hKZc8lGXg4k6xf9FQ9MqV3tV6iF56k0fRuvuhKFH/GWKH45AsYtE1gYzdF4Yum84EcKi4XlCdA5
-	T0JV/fGVhTstcc/1yXNLIYP9Uvc6fi59HT5WSngxwW1w+8QVE14rGjYGk3MUEzzNxgvlhK3CVxr
-	L1K7otIJGaEGI41A32tzWYWsoxfSMd/zmJrEp9TggsRo5axD
-X-Google-Smtp-Source: AGHT+IEUktCIjYcV/UliuBFwLd7ktQyPdWhUBdENSBLSBk2b6FUGTx7qO3Kt+i5xGhua1KlGlHJUIg==
-X-Received: by 2002:a05:6a00:4648:b0:736:491b:5370 with SMTP id d2e1a72fcca58-73905a28b22mr22284141b3a.10.1742832661421;
-        Mon, 24 Mar 2025 09:11:01 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:1300:9465:2fd2:e14f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7390614afb5sm8086630b3a.121.2025.03.24.09.10.59
+        d=1e100.net; s=20230601; t=1742833808; x=1743438608;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RR/33HkyWRVzBTpKjMr4gmsX71tawz+FueWvMxXm7FQ=;
+        b=CZtAOELjoI27OQkM2/zdm9F3lfN8dSUJB9qqIRFWW9KxCX0QqXJXwMxghBLyB8mlk4
+         1yCoob4+qvfventRj6uGdFXmWhecZhR5rF+MRB6mwg8ZnGPIF7bNjxdcQpwkshfDNLTd
+         aU3FaDZQG+29Eqvf9hF/4G+6Sbg93eqr5HE3ihFuDewWbyncJ5EQ+L2LPx/4pclw0cXt
+         aegjThkNVwsrFYzELhT54NuvCECsDIdKVu/djkoqDv2mL7mgwwRAC8EbrR6tBtgkOQo1
+         ACTMYu7L8vO3rqOtOck669NLpIPKsa/HvjrTl34eHSEAKqx2Knfk7ZZ+fJW/uWMcMHgy
+         f3XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6eGkli9Z8SAj0TX16UMUppvNpKhLtHmmDfCSl4aYIJEhvDMkPXt3fGMHsDgi2LJZo1fg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxxfipAO3ZMQpi7zNHAwzaRAnZBEcshhi13Y0Z+MOmJMqECwHM9
+	0O1bsFGHb/zXyIKbbTvFyJpsZ8TRSAZtvRzoh+BpW4xbQTqWKsZ+
+X-Gm-Gg: ASbGncsSpUtB9sRiWh6a+df1b0RjWTXOIatpgtEP4m4wb57KhxGEVF3aGV7SAAJn+z5
+	iLgQ4uab9cSbG2k5kt8+T4pspqHwnB0kQwkQIZhbnEhO5su211CtUjc8wydv9Xs5nVSyAAn7VZ7
+	8lMNLr2mt2kVqmUvtyHHrif1Q2aNP2mknRJP+n2nDYoCVTE3PYhG92TfGIQPrwyqHD7qjWSqRmp
+	98WH2HLg70eJvHHBt2/sDber1Mn1aTzYtOG9D/6tOdcI0rGSBaf4p6gXmuSuJWY5SW47/aIk1qs
+	7MD8WRI/VBpl1BEmsFSJ5zAY+8Lor6KjFzqofqF13gA1WBiYA7x/INjW06iE35/QEXL83Km3Zaz
+	Tgr86icg=
+X-Google-Smtp-Source: AGHT+IEo9FRh6+xI/yyeaQ866fq+Tvmef9RLHhF10hpOmSRuuMOdP7oXv8eQi8BJzr1/UzfTyIuU2w==
+X-Received: by 2002:a5d:6da5:0:b0:391:2f71:bbb3 with SMTP id ffacd0b85a97d-3997f958f34mr10877702f8f.46.1742833807619;
+        Mon, 24 Mar 2025 09:30:07 -0700 (PDT)
+Received: from playground.localdomain ([82.79.237.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fdb0669sm124106765e9.34.2025.03.24.09.30.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 09:11:00 -0700 (PDT)
-Date: Mon, 24 Mar 2025 10:10:57 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Mon, 24 Mar 2025 09:30:07 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	"S.J. Wang" <shengjiu.wang@nxp.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mpuaudiosw <Mpuaudiosw@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>, imx@lists.linux.dev,
-	linux-remoteproc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2] remoteproc: imx_dsp_rproc: Add support for
- DSP-specific features
-Message-ID: <Z-GEEVMXUysX1Hhu@p14s>
-References: <20250318215007.2109726-1-iuliana.prodan@oss.nxp.com>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Frank Li <Frank.li@nxp.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/5] imx8mp: add support for the IMX AIPSTZ bridge
+Date: Mon, 24 Mar 2025 12:25:51 -0400
+Message-Id: <20250324162556.30972-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318215007.2109726-1-iuliana.prodan@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Good day Iuliana,
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-On Tue, Mar 18, 2025 at 11:50:07PM +0200, Iuliana Prodan (OSS) wrote:
-> From: Iuliana Prodan <iuliana.prodan@nxp.com>
-> 
-> Some DSP firmware requires a FW_READY signal before proceeding, while
-> others do not.
-> Therefore, add support to handle i.MX DSP-specific features.
-> 
-> Implement handle_rsc callback to handle resource table parsing and to
-> process DSP-specific resource, to determine if waiting is needed.
-> 
-> Update imx_dsp_rproc_start() to handle this condition accordingly.
-> 
-> Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-> ---
-> Changes in v2:
-> - Reviews from Mathieu Poirier:
->   - Use vendor-specific resource table entry.
->   - Implement resource handler specific to the i.MX DSP.
-> - Revise commit message to include recent updates.
-> - Link to v1: https://lore.kernel.org/all/20250305123923.514386-1-iuliana.prodan@oss.nxp.com/
-> 
->  drivers/remoteproc/imx_dsp_rproc.c | 59 +++++++++++++++++++++++++++++-
->  1 file changed, 57 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index b9bb15970966..1729bfbc602e 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -35,9 +35,17 @@ module_param_named(no_mailboxes, no_mailboxes, int, 0644);
->  MODULE_PARM_DESC(no_mailboxes,
->  		 "There is no mailbox between cores, so ignore remote proc reply after start, default is 0 (off).");
->  
-> +/* Flag indicating that the remote is up and running */
->  #define REMOTE_IS_READY				BIT(0)
-> +/* Flag indicating that the host should wait for a firmware-ready response */
-> +#define HOST_WAIT_FW_READY			BIT(1)
+The AIPSTZ bridge offers some security-related configurations which can
+be used to restrict master access to certain peripherals on the bridge.
 
-Right now the default behavior is to wait for a ready message from the remote
-processor.  We need to keep this implementation in order to remain backward
-compatible with older firwmare images.  As such the above should be:
+Normally, this could be done from a secure environment such as ATF before
+Linux boots but the configuration of AIPSTZ5 is lost each time the power
+domain is powered off and then powered on. Because of this, it has to be
+configured each time the power domain is turned on and before any master
+tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
 
-#define HOST_DONT_WAIT_FW_READY			BIT(1)
+The child-parent relationship between the bridge and its peripherals
+should guarantee that the bridge is configured before the AP attempts
+to access the IPs.
 
->  #define REMOTE_READY_WAIT_MAX_RETRIES		500
->  
-> +/* This flag is set in the DSP resource table's features field to indicate
-> + * that the firmware requires the host to wait for a FW_READY response.
-> + */
-> +#define WAIT_FW_READY				BIT(0)
-> +
->  /* att flags */
->  /* DSP own area */
->  #define ATT_OWN					BIT(31)
-> @@ -136,6 +144,19 @@ struct imx_dsp_rproc_dcfg {
->  	int (*reset)(struct imx_dsp_rproc *priv);
->  };
->  
-> +/**
-> + * struct fw_rsc_imx_dsp - i.MX DSP specific info
-> + * @len: length of the resource entry
-> + * @features: feature flags supported by the i.MX DSP firmware
-> + *
-> + * This represents a DSP-specific resource in the firmware's
-> + * resource table, providing information on supported features.
-> + */
-> +struct fw_rsc_imx_dsp {
-> +	uint32_t len;
-> +	uint32_t features;
-> +};
-> +
+Other masters should use the 'access-controllers' property to enforce
+a dependency between their device and the bridge device (see the DSP,
+for example).
 
-This needs a version field and magic number.  Have a look at what Xilinx did for
-inspiration [1] (both magic and complement of the magic number).  You will also
-need a "__packed" attribute for the structure.
+At the moment, we only want to apply a default, more relaxed
+configuration, which is why the number of access controller cells
+is 0.
 
-[1].
-https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/remoteproc/xlnx_r5_remoteproc.c#L103
+The initial version of the series can be found at [1]. The new version
+should provide better management of the device dependencies.
 
->  static const struct imx_rproc_att imx_dsp_rproc_att_imx8qm[] = {
->  	/* dev addr , sys addr  , size	    , flags */
->  	{ 0x596e8000, 0x556e8000, 0x00008000, ATT_OWN },
-> @@ -300,6 +321,39 @@ static int imx_dsp_rproc_ready(struct rproc *rproc)
->  	return -ETIMEDOUT;
->  }
->  
-> +/**
-> + * imx_dsp_rproc_handle_rsc() - Handle DSP-specific resource table entries
-> + * @rproc: remote processor instance
-> + * @rsc_type: resource type identifier
-> + * @rsc: pointer to the resource entry
-> + * @offset: offset of the resource entry
-> + * @avail: available space in the resource table
-> + *
-> + * Parse the DSP-specific resource entry and update flags accordingly.
-> + * If the WAIT_FW_READY feature is set, the host must wait for the firmware
-> + * to signal readiness before proceeding with execution.
-> + *
-> + * Return: RSC_HANDLED if processed successfully, RSC_IGNORED otherwise.
-> + */
-> +static int imx_dsp_rproc_handle_rsc(struct rproc *rproc, u32 rsc_type,
-> +				    void *rsc, int offset, int avail)
-> +{
-> +	struct imx_dsp_rproc *priv = rproc->priv;
-> +	struct fw_rsc_imx_dsp *imx_dsp_rsc = rsc;
-> +
-> +	if (!imx_dsp_rsc || imx_dsp_rsc->len != sizeof(imx_dsp_rsc->features)) {
-> +		priv->flags |= HOST_WAIT_FW_READY;
+[1]: https://lore.kernel.org/linux-arm-kernel/20241119130726.2761726-1-daniel.baluta@nxp.com/
 
-Unless I am missing something, this way of enforcing the default behavior won't
-work because in older images, function imx_dsp_rproc_handle_rsc() will never be
-called.
+---
+Changes in v3:
+* make '#address-cells' and '#size-cells' constants and equal to 1 in the
+binding. The bus is 32-bit.
+* add child node in the example DT snippet.
+* the 'aips5' DT node now contains 2 memory regions: that of the
+peripherals accessible via this bridge and that of the access controller.
+* link to v2: https://lore.kernel.org/lkml/20250226165314.34205-1-laurentiumihalcea111@gmail.com/
 
-To fix this I suggest renaming HOST_WAIT_FW_READY to
-HOST_DONT_WAIT_FOR_FW_READY.  That way the host can skip waiting for a FW ready
-message only when it was specifically told to do so.
+Changes in v2:
+* adress Frank Li's comments
+* pick up some A-b/R-b's
+* don't use "simple-bus" as the second compatible. As per Krzysztof's
+comment, AIPSTZ is not a "simple-bus".
+* link to v1: https://lore.kernel.org/lkml/20250221191909.31874-1-laurentiumihalcea111@gmail.com/
+---
 
-Thanks,
-Mathieu
+Laurentiu Mihalcea (5):
+  dt-bindings: bus: add documentation for the IMX AIPSTZ bridge
+  dt-bindings: dsp: fsl,dsp: document 'access-controllers' property
+  bus: add driver for IMX AIPSTZ bridge
+  arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+  arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
 
-> +		return RSC_IGNORED;
-> +	}
-> +
-> +	if (imx_dsp_rsc->features & WAIT_FW_READY)
-> +		priv->flags |= HOST_WAIT_FW_READY;
-> +	else
-> +		priv->flags &= ~HOST_WAIT_FW_READY;
-> +
-> +	return RSC_HANDLED;
-> +}
-> +
->  /*
->   * Start function for rproc_ops
->   *
-> @@ -335,8 +389,8 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
->  
->  	if (ret)
->  		dev_err(dev, "Failed to enable remote core!\n");
-> -	else
-> -		ret = imx_dsp_rproc_ready(rproc);
-> +	else if (priv->flags & HOST_WAIT_FW_READY)
-> +		return imx_dsp_rproc_ready(rproc);
->  
->  	return ret;
->  }
-> @@ -936,6 +990,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
->  	.kick		= imx_dsp_rproc_kick,
->  	.load		= imx_dsp_rproc_elf_load_segments,
->  	.parse_fw	= imx_dsp_rproc_parse_fw,
-> +	.handle_rsc	= imx_dsp_rproc_handle_rsc,
->  	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
->  	.sanity_check	= rproc_elf_sanity_check,
->  	.get_boot_addr	= rproc_elf_get_boot_addr,
-> -- 
-> 2.25.1
-> 
+ .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 107 ++++++++++++++++++
+ .../devicetree/bindings/dsp/fsl,dsp.yaml      |   3 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |   8 +-
+ drivers/bus/Kconfig                           |   6 +
+ drivers/bus/Makefile                          |   1 +
+ drivers/bus/imx-aipstz.c                      |  92 +++++++++++++++
+ 6 files changed, 215 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+ create mode 100644 drivers/bus/imx-aipstz.c
+
+-- 
+2.34.1
+
