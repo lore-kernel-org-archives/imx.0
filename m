@@ -1,63 +1,63 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01F025EF90
-	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 18:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38E619924E
+	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 18:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742926167; cv=none; b=msgdBplstkDnN+CBQUx/e8AQfu9iPn2y3rceCstl6yycgfyMK2XsKnw+t38KQ2FNe9A6+NHrkFScPbd51X9DXBsWpBNeoc5ngflvPyM34fFN6Bf05Q9b+QTxat+GYWl61mLtTeaBvfaQH4TFWIAy6mFfbyPAAFPGODDPTr7UJi4=
+	t=1742927363; cv=none; b=OTHSSTYHxARGEzj91Cr31iNKnXB8jF0ihPs9ZXFimhMcogPYeBnU8DVi80jCzmNECI3i+na33gg/GUhpgIzJom5KZo4GsYlBfKsIkw2iJ3OdRhIhqEOfmPaTssgMCCSSBVlbLKICFQ2lr+adMFIbM5CBwOebCCLCXhLhUterx6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742926167; c=relaxed/simple;
-	bh=kwrD0kk73w4WKSwM/MIyzGd8Rlp1W5PDLpfyMta66ns=;
+	s=arc-20240116; t=1742927363; c=relaxed/simple;
+	bh=crRjvH14g0jO6YfpzbicsPBlEzvQ8/tcMCqAvE641/s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S+wca/B55/cW3ytS8gzeX+UfG1fljD1VmLxEZy/CgTXjnr2WNFJ8MDMQqpFlCp3r/1OY/hjIMIHHZYDJxvEo14dPSe0q3KXCuP0TNVzBDFMpOEzJoruOFaFkfUwmgvT1jw78gRcCU91AkPcX9Pv4xDsrsuALA6+Fxsxi2lqAJFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ynaTmq2a; arc=none smtp.client-ip=209.85.214.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPBvcoyftuVBjUk+YVk3q3zaItuzybKm26Q0FqhYpim++LA0PVLOpIJopi3Q2i+3g1uSCNPMhpZuIgXdegScF5wJiSqkk+hDN7QEFstOeyoexfo+eiBZEUL6R/oQDhUlfc8HIdvZclbGNSh1mCMyorC2HPkLga+J1/nVtg7q3lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DZzDNr8B; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ynaTmq2a"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227d6b530d8so47448595ad.3
-        for <imx@lists.linux.dev>; Tue, 25 Mar 2025 11:09:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DZzDNr8B"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3014ae35534so9325433a91.0
+        for <imx@lists.linux.dev>; Tue, 25 Mar 2025 11:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742926163; x=1743530963; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1742927361; x=1743532161; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GkFwRrf70rNA8OmaYxw9PFrRp7+gsmsE+hCsvNFF5YM=;
-        b=ynaTmq2aQNiYopGX8TI8E0scE6DOTUHd+qKC+CTrIAuiSm73gh3WbY2YkYn+pPBncj
-         KikUXxN5CH+RD4Q/GmYxgZrLerKX2ELqn5oL6d+OBTquWGgHa7nXRXxWDvMss0HGDKTk
-         IvK+6xfXa3Kn4LAlBSk7MgaCaU7blGqYoBLijs3saFoHPfmS5asN4+LDCVatVJGjjcMD
-         k79Ds4Dk8Hcqs3PNdksmXhvv1uJkkKWvmKG9BiqUcR3OzW5in3yniVG411xe1orANlOY
-         +qBey7Y2KLO1ljSmvVAIPDno8/gFiVLyyyLgTWHbgoy1Ui+RwocEzoLbGH9mWPk0vBw1
-         dXHg==
+        bh=tmx5ewE9CpmYmb/EWKQ5oR/rMw7j+z90kb/HX9r8TaE=;
+        b=DZzDNr8BO0et4NfRzg5oSIr79h0K3PZeka3Aj2ihak1Wr+XnAdf9sH/RUBjx0Y9tRS
+         vdZkARSjUWykPzcrBqClzIYqDOKFVF3bmdVsKoDoMESOxoTih/eG31C8ZYvOlp4Mpn6s
+         v5k0/DEMhsim2pblFqL2ir/MMDe5235MeWqQKUYy8YcxasbiTG69/yPWkM/sJE4oduke
+         uSTcOryuno0Ip2YbyCeS2EeKs2xHYTMzVEnDx+H+3aHVO/TA2loGgv2mo7cXDzDqS+8p
+         OMPeheOQq+99g+EMcTxxaei5PjrO+ZfCHsMLZqgGpl+5X96Ug4h/KKUEpcHNBFCAEv7B
+         e+yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742926163; x=1743530963;
+        d=1e100.net; s=20230601; t=1742927361; x=1743532161;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GkFwRrf70rNA8OmaYxw9PFrRp7+gsmsE+hCsvNFF5YM=;
-        b=MywgvEno5idtI0KhmQziJp9nGzUE3xAe0anZgj7WhtPcKVrKDoenwmwh/zCehfpc6D
-         0n8VBlx1j2plIufr901xxwz2fuuEOxkMxpRFvRR+c+YirawrnXpXTSBFyQV4SQGzxflf
-         rmQwqwXpbbIF7zcnnuckjPJKRZ0joLNi2s6JolMyNf/NpSA3pwOoh7qScYo6tPrlvOAr
-         WJsh46fjRAkmpXg+CehaptU1IGIh87y2IzTVZqrBqT452btUnjk9Qw+oXD2alxyZvhpK
-         oPnlxvQZ1iUHZatt6W7NpBM9yU0lla3sKKgjGJnQQkn1LP4fol5oGzGP6sQ+DGoJXPzJ
-         5Urg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjotygeljQUaG8PFqlVclacShneVYuMFppcv7bYidNHdT6g0qc6RvMq8yLh5cKJF75rVY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzwURPVJt4k9xNBFDnbNdt4CqA/jZ3acrDzLHUWJvnOwM0UCihB
-	P/bnQ6nsLy2jlQm5AKtHdY1BFoewmY6N/HA9g3mZrCdb4v25zpKXmiBh0yvo0w==
-X-Gm-Gg: ASbGnct9pPZGzRFuTIfgvur9YRmp1AdWNvGkz4sduZpbAmJp00v/0fS/tAoeyILS7K+
-	hlXSyUJKPmub5HwT7Pku5y9LUStW7i+p33Mh/DZTwo6s3daCiI26TCX7lzyY45CYGCrp2eiAhMU
-	ioRW8zlF65uDoA/uqFHd3iMGLgvWPA2cXiCzU7ye35QoRALpT4hqHTbg5+jh8vG48V7MHZwm675
-	nWB31Gz7i3fvsO6l2bQzt+6ssYX/ZonJkBrTHmCPF5QrzNZ7uPIIjpWBP+hkW6+Hll5Z7U9GzdL
-	geXzHEK2loseY0jKN4QmZfOCv71AXNKSNcDcC8wopJzIXpQ8JbR5JleUD7U7xl+D9SE=
-X-Google-Smtp-Source: AGHT+IHsQEtK5eDuRWsdEQBYf6f44q2yB07kDLfDBWhVOxMWTo+zOzGbIhIFFRGiGOEd2PP4iDFCkA==
-X-Received: by 2002:a17:902:f693:b0:226:3781:379d with SMTP id d9443c01a7336-22780e1044fmr239586185ad.33.1742926163021;
-        Tue, 25 Mar 2025 11:09:23 -0700 (PDT)
+        bh=tmx5ewE9CpmYmb/EWKQ5oR/rMw7j+z90kb/HX9r8TaE=;
+        b=fWpYWcXFUsOhMAPQSWiGI/mFlWhGGE/Q0/hjiDhYUCgknB/+yBNkc8yrnO32RQkDjp
+         ipNRHDlzJOvo0dI1mqramtl9g9YvgYztt/roYSg/OGrRc1XzRHR6WeKcy8eKSgrQFTD8
+         UVH3pUfTw2NtB3YwGi0YcP6vG+hE/MIXHZaJsab/63NMmiDO8Mfn9CNo35jvPakfD7LF
+         UfqY4FW4UhsKabS8MABlXaI+qafv4xcBktJofjaJ1EWM4fzWvZjXZ+cf78OTxfHNRE/e
+         XMfnn0JhK8aS5XV/wMHbz7T9exBd1FhVpaqrydUgMbt97GCVhgjEIguGW3a1XyrbtQin
+         hW8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUGbfgayX1FacfFPtC4ZWKcHwSJJQg64wlKaicbqHVUupagr5tQ+/Ki6FXZv13sv2MY9uM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzdNFBSnzj0EYTmUjn0T7FKeNWuRHNPckKsZNOV1t3ayLS+BeFt
+	fKbpQXWNgxDgKHZkZ80YFVSwDjyCZPfruAdleqsOAwUOGf1PyRgwWSMaOh1V7g==
+X-Gm-Gg: ASbGncuoRp5YsQcmXxuJTMwV/AyZbcEgFYOmzqXN1nbwV5+ydHez1y4SAvCcpjsCeEp
+	b62pusGbeo8HDK39fBPtCIqXFrF3tLQNAbG40zdLyietSpgrkiVJXNe1Ozezk54T12mYAmzL4vG
+	pvxb06xNNNdumsPGBW7uWOT1P/DV1i4OCfjsh9Q+oiWk64oTrCZ4zf3JcU29WXVjUd5Nq0gnraG
+	cPlmdYWe/HZh+Ixldj9HIjkOj5nnL16YgYgruIx4ME5Xd5QIbnYiWG1w309xzAn0vedDd85Bukb
+	JUwesewQRf+deorBQzp2lt3C2jf+DiaYKUvRkLVvQVm9N2kL5mDCxKIc
+X-Google-Smtp-Source: AGHT+IGsYGiIj3zMmleKzhoEAggL4APoyOgKkCTRvkg+1ndeCLopUInmEMl2y5a6pf3LwaqPqiR7kA==
+X-Received: by 2002:a17:90b:2d0c:b0:2fa:1e3e:9be5 with SMTP id 98e67ed59e1d1-3030fd769d1mr34439112a91.0.1742927361019;
+        Tue, 25 Mar 2025 11:29:21 -0700 (PDT)
 Received: from thinkpad ([120.60.136.104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f3962esm93992265ad.4.2025.03.25.11.09.17
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811b2857sm93735025ad.155.2025.03.25.11.29.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 11:09:22 -0700 (PDT)
-Date: Tue, 25 Mar 2025 23:39:15 +0530
+        Tue, 25 Mar 2025 11:29:20 -0700 (PDT)
+Date: Tue, 25 Mar 2025 23:59:14 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Bjorn Helgaas <helgaas@kernel.org>
 Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
@@ -69,11 +69,10 @@ Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v12 06/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
- checking and debug
-Message-ID: <3rtte7uyv7gilxnstcxjizpkdlfk5rfxwyc3bd4ednjakn5rfc@fhidkj5vvmtf>
-References: <x2r2xfxrnkihvpoqiamgjmvppverjugp5r4we7lcfpz6jloxzy@7kdfzxiwv2po>
- <20250324200437.GA1257874@bhelgaas>
+Subject: Re: [PATCH v12 05/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
+Message-ID: <5hkzuqptaor4v5fc7ljxb36zdipeg67lsjfkcah5fkxfyyjt6e@oknqdtbwjitj>
+References: <j3qw4zmopulpn3iqq5wsjt6dbs4z3micoeoxkw3354txkx22ml@67ip5sfo6wwd>
+ <20250324182827.GA1257218@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,163 +82,95 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250324200437.GA1257874@bhelgaas>
+In-Reply-To: <20250324182827.GA1257218@bhelgaas>
 
-On Mon, Mar 24, 2025 at 03:04:37PM -0500, Bjorn Helgaas wrote:
-> On Mon, Mar 24, 2025 at 11:00:24PM +0530, Manivannan Sadhasivam wrote:
-> > On Sat, Mar 15, 2025 at 03:15:41PM -0500, Bjorn Helgaas wrote:
+On Mon, Mar 24, 2025 at 01:28:27PM -0500, Bjorn Helgaas wrote:
+> On Mon, Mar 24, 2025 at 10:48:23PM +0530, Manivannan Sadhasivam wrote:
+> > On Sat, Mar 15, 2025 at 03:15:40PM -0500, Bjorn Helgaas wrote:
 > > > From: Frank Li <Frank.Li@nxp.com>
 > > > 
-> > > dw_pcie_parent_bus_offset() looks up the parent bus address of a PCI
-> > > controller 'reg' property in devicetree.  If implemented, .cpu_addr_fixup()
-> > > is a hard-coded way to get the parent bus address corresponding to a CPU
-> > > physical address.
-> > > 
-> > > Add debug code to compare the address from .cpu_addr_fixup() with the
-> > > address from devicetree.  If they match, warn that .cpu_addr_fixup() is
-> > > redundant and should be removed; if they differ, warn that something is
-> > > wrong with the devicetree.
-> > > 
-> > > If .cpu_addr_fixup() is not implemented, the parent bus address should be
-> > > identical to the CPU physical address because we previously ignored the
-> > > parent bus address from devicetree.  If the devicetree has a different
-> > > parent bus address, warn about it being broken.
-> > > 
-> > > [bhelgaas: split debug to separate patch for easier future revert, commit
-> > > log]
-> > > Link: https://lore.kernel.org/r/20250313-pci_fixup_addr-v11-5-01d2313502ab@nxp.com
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pcie-designware.c | 26 +++++++++++++++++++-
-> > >  drivers/pci/controller/dwc/pcie-designware.h | 13 ++++++++++
-> > >  2 files changed, 38 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-> > > index 0a35e36da703..985264c88b92 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> > > @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
-> > >  	struct device *dev = pci->dev;
-> > >  	struct device_node *np = dev->of_node;
-> > >  	int index;
-> > > -	u64 reg_addr;
-> > > +	u64 reg_addr, fixup_addr;
-> > > +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
-> > >  
-> > >  	/* Look up reg_name address on parent bus */
-> > >  	index = of_property_match_string(np, "reg-names", reg_name);
-> > > @@ -1126,5 +1127,28 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
-> > >  
-> > >  	of_property_read_reg(np, index, &reg_addr, NULL);
-> > >  
-> > > +	fixup = pci->ops->cpu_addr_fixup;
-> > > +	if (fixup) {
-> > > +		fixup_addr = fixup(pci, cpu_phy_addr);
-> > > +		if (reg_addr == fixup_addr) {
-> > > +			dev_warn(dev, "%#010llx %s reg[%d] == %#010llx; %ps is redundant\n",
-> > > +				 cpu_phy_addr, reg_name, index,
-> > > +				 fixup_addr, fixup);
-> > > +		} else {
-> > > +			dev_warn(dev, "%#010llx %s reg[%d] != %#010llx fixed up addr; devicetree is broken\n",
-> > > +				 cpu_phy_addr, reg_name,
-> > > +				 index, fixup_addr);
-> > > +			reg_addr = fixup_addr;
-> > > +		}
-> > > +	} else if (!pci->use_parent_dt_ranges) {
+> > > Return the offset from CPU physical address to the parent bus address of
+> > > the specified element of the devicetree 'reg' property.
+> 
+> > > +resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+> > > +					  const char *reg_name,
+> > > +					  resource_size_t cpu_phy_addr)
+> > > +{
 > > 
-> > Is this check still valid? 'use_parent_dt_ranges' is only used here for
-> > validation. Moreover, if the fixup is not available, we should be able to
-> > safely return 'cpu_phy_addr - reg_addr' unconditionally.
+> > s/cpu_phy_addr/cpu_phys_addr/g
 > 
-> Yes, that's true IF the devicetree has the correct 'ranges'
-> translation.  This is to avoid breaking platforms with broken
-> devicetrees.
+> Fixed, thanks!
 > 
-
-You mean the driver without cpu_addr_fixup() and devicetree with broken 'ranges'
-property? So the existing platforms... Not a bad idea though.
-
-> > > +		if (reg_addr != cpu_phy_addr) {
-> > > +			dev_warn(dev, "devicetree has incorrect translation; please check parent \"ranges\" property. CPU physical addr %#010llx, parent bus addr %#010llx\n",
-> > > +				 cpu_phy_addr, reg_addr);
-> > > +			return 0;
-> > > +		}
-> > > +	}
+> > > +	struct device *dev = pci->dev;
+> > > +	struct device_node *np = dev->of_node;
+> > > +	int index;
+> > > +	u64 reg_addr;
 > > > +
-> > > +	dev_info(dev, "%s parent bus offset is %#010llx\n",
-> > > +		 reg_name, cpu_phy_addr - reg_addr);
+> > > +	/* Look up reg_name address on parent bus */
 > > 
-> > This info is useless on platforms having no translation between CPU and PCI
-> > controller. The offset will always be 0.
+> > 'parent bus' is not accurate as the below code checks for the 'reg_name' in
+> > current PCI controller node.
 > 
-> You're right.  This was probably an overzealous message for any
-> possible issues.
+> We want the address of "reg_name" on the node's primary side.  We've
+> been calling that the "parent bus address", I guess because it's the
+> address on the "parent bus" of the node.
 > 
-> What would you think of the below as a replacement?  It should emit at
-> most one message, and none for platforms where devicetree describes no
-> translation and there never was a .cpu_addr_fixup().
-> 
-> It's still pretty aggressive logging, but I'm just concerned about
-> being able to quickly debug and fix any regressions.  Ideally we can
-> revert the whole thing eventually.
-> 
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-> index 27b464a405a4..4b442d1aa55b 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware.c
-> @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
->  	struct device *dev = pci->dev;
->  	struct device_node *np = dev->of_node;
->  	int index;
-> -	u64 reg_addr;
-> +	u64 reg_addr, fixup_addr;
-> +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
->  
->  	/* Look up reg_name address on parent bus */
->  	index = of_property_match_string(np, "reg-names", reg_name);
-> @@ -1126,5 +1127,42 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
->  
->  	of_property_read_reg(np, index, &reg_addr, NULL);
->  
-> +	fixup = pci->ops ? pci->ops->cpu_addr_fixup : NULL;
-> +	if (fixup) {
-> +		fixup_addr = fixup(pci, cpu_phys_addr);
-> +		if (reg_addr == fixup_addr) {
-> +			dev_info(dev, "%s reg[%d] %#010llx == %#010llx == fixup(cpu %#010llx); %ps is redundant with this devicetree\n",
-> +				 reg_name, index, reg_addr, fixup_addr,
-> +				 (unsigned long long) cpu_phys_addr, fixup);
-> +		} else {
-> +			dev_warn(dev, "%s reg[%d] %#010llx != %#010llx == fixup(cpu %#010llx); devicetree is broken\n",
-> +				 reg_name, index, reg_addr, fixup_addr,
-> +				 (unsigned long long) cpu_phys_addr);
-> +			reg_addr = fixup_addr;
-> +		}
-> +
-> +		return cpu_phys_addr - reg_addr;
-> +	}
-> +
-> +	if (pci->use_parent_dt_ranges) {
-> +
-> +		/*
-> +		 * This platform once had a fixup, presumably because it
-> +		 * translates between CPU and PCI controller addresses.
-> +		 * Log a note if devicetree didn't describe a translation.
-> +		 */
-> +		if (reg_addr == cpu_phys_addr)
-> +			dev_info(dev, "%s reg[%d] %#010llx == cpu %#010llx\n; no fixup was ever needed for this devicetree\n",
-> +				 reg_name, index, reg_addr,
-> +				 (unsigned long long) cpu_phys_addr);
 
-So this check is to detect the usage of old DTs with new kernel without
-cpu_addr_fixup()? If so:
+Yeah, 'parent bus address' sounds bogus to me. 'ranges' property is described
+as:
 
-(1) The log is not accurate
-(2) The driver would be broken, so the log should be an error. This condition
-should not be met (if we do not remove the fixup for some time). But I think
-this check should be moved ahead of cpu_addr_fixup() so that the correct DTs
-would be honored first and the fixup would be ignored for them.
+	ranges = <child_addr parent_addr child_size>
+
+Here, child_addr refers to the PCIe host controller's view of the address space
+and parent_addr refers to the CPU's view of the address space.
+
+So the register address described in the PCIe controller node is not a 'parent
+bus address'.
+
+> I'm not sure what the best term is for this.  Do you have a
+> suggestion?
+> 
+
+We are just extracting the offset between translated (cpu_phy_addr) and
+untranslated (reg_addr) addresses of a specific register. Maybe the function
+should just return the 'untranslated address' and the caller should compute the
+offset to make it simple?
+
+> If "parent bus address" is the wrong term, maybe we need to rename
+> dw_pcie_parent_bus_offset() itself?  
+> 
+
+Yes!
+
+> Currently we pass in cpu_phys_addr, but this function doesn't need it
+> except for the debug code added later.  I would really rather have
+> something like this in the callers:
+> 
+>   pci->parent_bus_offset = pp->cfg0_base -
+>       dw_pcie_parent_bus_addr(pci, "config");
+> 
+
+I agree. This should become, dw_pcie_get_untranslated_addr().
+
+> because then the offset is computed sort of at the same level where
+> it's used, and a grep for "cfg0_base" would find both the set and the
+> use and they would be easy to match up.
+> 
+> > > +	index = of_property_match_string(np, "reg-names", reg_name);
+> > > +
+> > > +	if (index < 0) {
+> > > +		dev_err(dev, "No %s in devicetree \"reg\" property\n", reg_name);
+> > 
+> > Both of these callers are checking for the existence of the
+> > 'reg_name' property before calling this API. So this check seems to
+> > be redundant (for now).
+> 
+> True, but I don't see a way to enforce the caller checks.  I don't
+> like the idea of calling of_property_read_reg(np, index, ...) where we
+> have to look the caller to verify that "index" is valid.
+> 
+
+Ok.
 
 - Mani
 
