@@ -1,32 +1,32 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6207F25332E
-	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 16:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773ED61FFE
+	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 16:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742919144; cv=none; b=fFsapxDpJ2PB+0Epwk2Ctt50whCUBGCbkBrD2pr8vjHKes/q17zlLvuNARfDExks/cMqzHWLH77bLcwpJjVdN+sW8F6mk/v9F68fiHdFQ7FVLZ6RXBGZxpHdEOOd1ivFg/cki00RRhcR0lSfcN+BpW+THf6LckwaKHGcF/MgHPA=
+	t=1742919403; cv=none; b=nYOnV17V0IW0sTNRAGThZVTAUwpxFw2ipjaacY3ieTnrPQg6KRquWpm+XbzvzlN7LBUO4vnLN1a8mbd3QdrOZl+LJ0VUx6o0cfkdK2ALAAET5O4rbYmp0OuB90ybNWi8lcNwNgSX8fQn77dSy8cyXIdnPjbawFEXebcQTiS3To4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742919144; c=relaxed/simple;
-	bh=+KdiDrFiarGEbf3kb9HlXSM9P6HlZDF5FlBfLt0MCHU=;
+	s=arc-20240116; t=1742919403; c=relaxed/simple;
+	bh=8aUjtTkLVSkcyr6ieKYqb/IyOv7g99gpoF5vwmnrsKY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VHZGXrRhjRLcoSGWkCmqYqn+vJS+RiTbMqEBl0AH0Vj7umEjzbTrgND+DPsxaAyvsXtEv/XW/ILda9RIxqys5VK899F+BPenbCR5fQn++YABbLpB/3re2FeBl2cyvnFbbmbzcLtKHi7DdR2msEYC44JzFCz3j8wpbedzn79fJvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=aq0uJpy6; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version:Content-Type; b=RrCZ8qBLa2AA4gJ/YlNb/u9wLUUrCyPqWm9PQcI2Qeoojc4OhWiJ8tf4TH9O2xWubbSTVBG7cJsXY3+0QoB611G8efISV/5wrC1CxvkvEy+YWp9oDdwYAUu6VLu7Jp4qvNVDVhIlg1CTN9NfHrHi8CW0xEUwyTR8YJrRCKQynAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=etuhEHLc; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="aq0uJpy6"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 564B5102F66E4;
-	Tue, 25 Mar 2025 17:12:14 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="etuhEHLc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0EF54102F66E4;
+	Tue, 25 Mar 2025 17:16:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742919139; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=OCuZIdUEm0QWQuqdvQk8bF8aibatk8qGzYP76myy1Xo=;
-	b=aq0uJpy6Wp06yKfxV/hPNUiV24cd6mrnOWV4CE+8kfJBqN4oGmgoSUAcXMxOFAu5K8uoPq
-	aOOJI7VMVVHpQssTy9rh+Zxg+zWIJfrKhPErtAqbMYR1HxyWQ1fYv1i8SJbbOPP+jtWK+I
-	2w1/G0d9pKzC7lrHR+odcAgZqSkBD+uDrQnr9cIejI7sLvvN8PfA7/+HwmHP0ss0U5amVA
-	9uM1StWAo9+ovfCtq9IGG68B3G38MB40YR5IWv+mWqBtE7QZ/JEyCyuG80xA88fZyRURoC
-	scOhKT7Y5tgY+UlS0wn/6+bOVsFLoHR69E+bSx8QssbDMQUuBu3c/Mc/ZHJ3iQ==
-Date: Tue, 25 Mar 2025 17:12:13 +0100
+	t=1742919398; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=RWBAlXIiGSk72+6SessRFhuHLNEcm290ACC2CqugoH8=;
+	b=etuhEHLcGMuGJ2sHkEQHMUW7CYyd3kSRO3VgG7YzetdL6iKlTmQA65K9QexSY4M43MDD/r
+	KCcEd+MmekrLuoa37EcJI/0jVOs3zXxpLl1cNyqzsJwavPkatyebPXJQXI+e0SWcf9o4eS
+	AWqtCd6tTylJ06cBTHBZfrXyioOnFHYokl3L/EkiJMyvXIzE9MnzQe5s011oXV+4lGofXM
+	pfrMFFlbky0wXbK5uLpu8eZlkIxe/PjP4+fC8ikwsQ9kfo1YuS51Ftr2OF/xs0Dlhmm6VT
+	0TURP8y1DhSClSnNk+U1Lc1odU0a219CNa/vm6D3qm0KjQMMA9r/8Loc5VVXmg==
+Date: Tue, 25 Mar 2025 17:16:34 +0100
 From: Lukasz Majewski <lukma@denx.de>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -39,13 +39,13 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Richard
  Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Maxime
  Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH 2/5] dt-bindings: net: Add MTIP L2 switch description
- (fec,mtip-switch.yaml)
-Message-ID: <20250325171213.61de8d6b@wsk>
-In-Reply-To: <2ccab52d-5ed1-4257-a8f1-328c76127ebe@lunn.ch>
+Subject: Re: [PATCH 4/5] arm: dts: imx287: Provide description for MTIP L2
+ switch
+Message-ID: <20250325171634.1c982583@wsk>
+In-Reply-To: <40c6c272-d4a3-4bf2-87a1-17086d96afea@lunn.ch>
 References: <20250325115736.1732721-1-lukma@denx.de>
-	<20250325115736.1732721-3-lukma@denx.de>
-	<2ccab52d-5ed1-4257-a8f1-328c76127ebe@lunn.ch>
+	<20250325115736.1732721-5-lukma@denx.de>
+	<40c6c272-d4a3-4bf2-87a1-17086d96afea@lunn.ch>
 Organization: denx.de
 X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -54,34 +54,73 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/BTpJUUNgSsmMxe6X4ageVFE";
+Content-Type: multipart/signed; boundary="Sig_/greT4myIzbgADdfT0SPqvTm";
  protocol="application/pgp-signature"; micalg=pgp-sha512
 X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/BTpJUUNgSsmMxe6X4ageVFE
+--Sig_/greT4myIzbgADdfT0SPqvTm
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi Andrew,
 
-> > +  phy-reset-gpios:
-> > +    deprecated: true
-> > +    description:
-> > +      Should specify the gpio for phy reset. =20
+> On Tue, Mar 25, 2025 at 12:57:35PM +0100, Lukasz Majewski wrote:
+> > This description is similar to one supprted with the cpsw_new.c
+> > driver.
+> >=20
+> > It has separated ports and PHYs (connected to mdio bus).
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > ---
+> >  arch/arm/boot/dts/nxp/mxs/imx28-xea.dts | 56
+> > +++++++++++++++++++++++++ 1 file changed, 56 insertions(+)
+> >=20
+> > diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
+> > b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts index
+> > 6c5e6856648a..e645b086574d 100644 ---
+> > a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts +++
+> > b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts @@ -5,6 +5,7 @@
+> >   */
+> > =20
+> >  /dts-v1/;
+> > +#include<dt-bindings/interrupt-controller/irq.h>
+> >  #include "imx28-lwe.dtsi"
+> > =20
+> >  / {
+> > @@ -18,6 +19,61 @@ &can0 {
+> >  	status =3D "okay";
+> >  };
+> > =20
+> > +&eth_switch {
+> > +	compatible =3D "fsl,imx287-mtip-switch"; =20
 >=20
-> It seem odd that a new binding has deprecated properties. Maybe add a
-> comment in the commit message as to why they are there. I assume this
-> is because you are re-using part of the FEC code as is, and it
-> implements them?
+> The switch is part of the SoC. So i would expect the compatible to be
+> in the .dtsi file for the SoC.
 
-+1
+Ok.
+
+I'm also wondering if I shall use "fsl," or "nxp," prefix. The former
+one is the same as in fec_main.c, but as I do add new driver, the
+prefix could be updated.
 
 >=20
-> 	   Andrew
+> > +	pinctrl-names =3D "default";
+> > +	pinctrl-0 =3D <&mac0_pins_a>, <&mac1_pins_a>;
+> > +	phy-supply =3D <&reg_fec_3v3>;
+> > +	phy-reset-duration =3D <25>;
+> > +	phy-reset-post-delay =3D <10>;
+> > +	interrupts =3D <100>, <101>, <102>;
+> > +	clocks =3D <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> > +	clock-names =3D "ipg", "ahb", "enet_out", "ptp"; =20
 >=20
+> Which of these properties are SoC properties? I _guess_ interrupts,
+> clocks and clock-names. So they should be in the SoC .dtsi file. You
+> should only add board properties here.
 
+Ok. I will add them.
 
-
+>=20
+>        Andrew
 
 Best regards,
 
@@ -93,20 +132,20 @@ DENX Software Engineering GmbH,      Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
---Sig_/BTpJUUNgSsmMxe6X4ageVFE
+--Sig_/greT4myIzbgADdfT0SPqvTm
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfi1d0ACgkQAR8vZIA0
-zr2V+gf+JAQoDZbvVcOrU8Xf5yrlKENSX8KVhYJexfgs+qiD+wvn+CS8kUCphBCk
-rDQbqUh8g3qjogX3/PH1NWqIlXvz7EO55+P39PQExyszRX3HpW7ibOaTWMgnnWa4
-Ik2qLNREr7mWs83euMDjk21zx0+SacLsJ9I8A0k60wY720aUaxwAFm7p/uhTIvTo
-TdCeHqeaKWV/2ui8a2fnR5TNaM9LuCF2a+xxbv9OiqYdHlPVLQyFMtm7AZ4RWT+A
-AGnhGvNGIX87TACwdl5FRb85sSxbUbd2jLMzT04w268IgsXKhqMRmXyAxmktKSMx
-Z4U/nFhivYUqaXt05MM8Id9eAZ20/g==
-=vard
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfi1uIACgkQAR8vZIA0
+zr1rmggAx1FgdV+Uvb819ObkX0K7D/zPrmuFUWMVgi8RNIV2Wr55ejmrX3s/QQRV
+emSwGiQ4g3CJL9w4bbtQ1lvEmxPMmzlzG69NXvgWyLykHKFLnlCQ8YBclJHRHNWy
+gwzqLyqpSkM4RgM/qVh8Tqg1HEk9hyhwiLVwZo25qyPOq/0mPzbFhgqyKHi3CIxT
+U75LviRxABG9/5/7/7cNgYsobJfrKjFA4rRDjXiSfxwv6gX0oO8hyKLGMviv+5B8
+KBoETzr7Ukhty1Iqp2g8HyUAeU11GV+HxPwENZ6EwAy1FytBgKj28mP/kl+pAXLQ
+zpHVgwgILNnvfDlFKcZPaAcUBdmeMw==
+=gPXo
 -----END PGP SIGNATURE-----
 
---Sig_/BTpJUUNgSsmMxe6X4ageVFE--
+--Sig_/greT4myIzbgADdfT0SPqvTm--
