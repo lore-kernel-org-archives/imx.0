@@ -1,168 +1,247 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D2884FAD
-	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 17:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01F025EF90
+	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 18:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742923820; cv=none; b=AaVCs4iUGPpXqa3WQkAWEsdPJnMs53sHNOq4m5BMpmIn4msmW8seDq7ouXRLrYcU7MLpSv7DgCRqdmDrgoFvZVRlhAuyTrzdvL1tnzBNbYeiZjdupcwQBMECmRAG2AXC59+B0idef7EEYQNsMcaZ3z8vEj2gXedo+DiHflWdN0M=
+	t=1742926167; cv=none; b=msgdBplstkDnN+CBQUx/e8AQfu9iPn2y3rceCstl6yycgfyMK2XsKnw+t38KQ2FNe9A6+NHrkFScPbd51X9DXBsWpBNeoc5ngflvPyM34fFN6Bf05Q9b+QTxat+GYWl61mLtTeaBvfaQH4TFWIAy6mFfbyPAAFPGODDPTr7UJi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742923820; c=relaxed/simple;
-	bh=af/qHaAv8wr7ohqEEz6YmtWfQIwybjKt+19CY5VMK/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pKak+AZLfzkM6osG28wthCkNSUuNeYiFMhzHPgbyJuv18wet5Fot4nhagn/5hCE/wC+LQciebpUKGU3gSVWS8vQG3K6Q3I9hpVVmPV+5azB/mACnBpY3h/zA3NGVAXKSgz84/b3ZNYrOa1Euig04JtcaBjXzZOjf9+u1+ByFkz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=eYd7Nzep; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1742926167; c=relaxed/simple;
+	bh=kwrD0kk73w4WKSwM/MIyzGd8Rlp1W5PDLpfyMta66ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+wca/B55/cW3ytS8gzeX+UfG1fljD1VmLxEZy/CgTXjnr2WNFJ8MDMQqpFlCp3r/1OY/hjIMIHHZYDJxvEo14dPSe0q3KXCuP0TNVzBDFMpOEzJoruOFaFkfUwmgvT1jw78gRcCU91AkPcX9Pv4xDsrsuALA6+Fxsxi2lqAJFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ynaTmq2a; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="eYd7Nzep"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 34D83102F66E4;
-	Tue, 25 Mar 2025 18:30:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742923815; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=eI14fRc9SgUgLwy7/SzPwK7ui4N4JuoaWPwp0MI9v1w=;
-	b=eYd7NzepKQqK2eSrPI8FEFriEYWhaavSzTZJ4hcetjyIwJx+vVQimsoU9aOfT5VG5+vl6X
-	iCDiYqDiDVvvRetIf3pstTAnVGxtuUydTSc8sJUpPWU4ea8nUIFi8sqqK89G22zhBTUCjY
-	UegnfTP43buAPi1PaCWNEOfrZgoYRA3tIaOLY446g0RdlGQBSa9B2K1B2z8SWDefqSJTGF
-	PrtAMFV08qt85/1bjQOBFE5ud0RGAmt33zkvcC8hQKNmKl5OcvufCWKM29NwWBqhfnnu+B
-	BvATIGVovo0wlnzbyerfviUh+4aYAUtqC0HqH0bRbYcCKNG8BUeKXQk4ERDsgQ==
-Date: Tue, 25 Mar 2025 18:30:09 +0100
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Paolo
- Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
- <edumazet@google.com>, davem@davemloft.net, Andrew Lunn
- <andrew+netdev@lunn.ch>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org, Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH 5/5] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250325183009.3f7e8a1c@wsk>
-In-Reply-To: <39ec01b8-c2d7-47c3-90d9-32fe41f08a5d@kernel.org>
-References: <20250325115736.1732721-1-lukma@denx.de>
-	<20250325115736.1732721-6-lukma@denx.de>
-	<32d93a90-3601-4094-8054-2737a57acbc7@kernel.org>
-	<20250325142810.0aa07912@wsk>
-	<0a908dc7-55eb-4e23-8452-7b7d2e0f4289@lunn.ch>
-	<20250325173846.4c7db33c@wsk>
-	<39ec01b8-c2d7-47c3-90d9-32fe41f08a5d@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ynaTmq2a"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227d6b530d8so47448595ad.3
+        for <imx@lists.linux.dev>; Tue, 25 Mar 2025 11:09:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742926163; x=1743530963; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GkFwRrf70rNA8OmaYxw9PFrRp7+gsmsE+hCsvNFF5YM=;
+        b=ynaTmq2aQNiYopGX8TI8E0scE6DOTUHd+qKC+CTrIAuiSm73gh3WbY2YkYn+pPBncj
+         KikUXxN5CH+RD4Q/GmYxgZrLerKX2ELqn5oL6d+OBTquWGgHa7nXRXxWDvMss0HGDKTk
+         IvK+6xfXa3Kn4LAlBSk7MgaCaU7blGqYoBLijs3saFoHPfmS5asN4+LDCVatVJGjjcMD
+         k79Ds4Dk8Hcqs3PNdksmXhvv1uJkkKWvmKG9BiqUcR3OzW5in3yniVG411xe1orANlOY
+         +qBey7Y2KLO1ljSmvVAIPDno8/gFiVLyyyLgTWHbgoy1Ui+RwocEzoLbGH9mWPk0vBw1
+         dXHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742926163; x=1743530963;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GkFwRrf70rNA8OmaYxw9PFrRp7+gsmsE+hCsvNFF5YM=;
+        b=MywgvEno5idtI0KhmQziJp9nGzUE3xAe0anZgj7WhtPcKVrKDoenwmwh/zCehfpc6D
+         0n8VBlx1j2plIufr901xxwz2fuuEOxkMxpRFvRR+c+YirawrnXpXTSBFyQV4SQGzxflf
+         rmQwqwXpbbIF7zcnnuckjPJKRZ0joLNi2s6JolMyNf/NpSA3pwOoh7qScYo6tPrlvOAr
+         WJsh46fjRAkmpXg+CehaptU1IGIh87y2IzTVZqrBqT452btUnjk9Qw+oXD2alxyZvhpK
+         oPnlxvQZ1iUHZatt6W7NpBM9yU0lla3sKKgjGJnQQkn1LP4fol5oGzGP6sQ+DGoJXPzJ
+         5Urg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjotygeljQUaG8PFqlVclacShneVYuMFppcv7bYidNHdT6g0qc6RvMq8yLh5cKJF75rVY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwURPVJt4k9xNBFDnbNdt4CqA/jZ3acrDzLHUWJvnOwM0UCihB
+	P/bnQ6nsLy2jlQm5AKtHdY1BFoewmY6N/HA9g3mZrCdb4v25zpKXmiBh0yvo0w==
+X-Gm-Gg: ASbGnct9pPZGzRFuTIfgvur9YRmp1AdWNvGkz4sduZpbAmJp00v/0fS/tAoeyILS7K+
+	hlXSyUJKPmub5HwT7Pku5y9LUStW7i+p33Mh/DZTwo6s3daCiI26TCX7lzyY45CYGCrp2eiAhMU
+	ioRW8zlF65uDoA/uqFHd3iMGLgvWPA2cXiCzU7ye35QoRALpT4hqHTbg5+jh8vG48V7MHZwm675
+	nWB31Gz7i3fvsO6l2bQzt+6ssYX/ZonJkBrTHmCPF5QrzNZ7uPIIjpWBP+hkW6+Hll5Z7U9GzdL
+	geXzHEK2loseY0jKN4QmZfOCv71AXNKSNcDcC8wopJzIXpQ8JbR5JleUD7U7xl+D9SE=
+X-Google-Smtp-Source: AGHT+IHsQEtK5eDuRWsdEQBYf6f44q2yB07kDLfDBWhVOxMWTo+zOzGbIhIFFRGiGOEd2PP4iDFCkA==
+X-Received: by 2002:a17:902:f693:b0:226:3781:379d with SMTP id d9443c01a7336-22780e1044fmr239586185ad.33.1742926163021;
+        Tue, 25 Mar 2025 11:09:23 -0700 (PDT)
+Received: from thinkpad ([120.60.136.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f3962esm93992265ad.4.2025.03.25.11.09.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 11:09:22 -0700 (PDT)
+Date: Tue, 25 Mar 2025 23:39:15 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Niklas Cassel <cassel@kernel.org>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v12 06/13] PCI: dwc: Add dw_pcie_parent_bus_offset()
+ checking and debug
+Message-ID: <3rtte7uyv7gilxnstcxjizpkdlfk5rfxwyc3bd4ednjakn5rfc@fhidkj5vvmtf>
+References: <x2r2xfxrnkihvpoqiamgjmvppverjugp5r4we7lcfpz6jloxzy@7kdfzxiwv2po>
+ <20250324200437.GA1257874@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/mrx3VObtQardV+8O_zt0.CL";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250324200437.GA1257874@bhelgaas>
 
---Sig_/mrx3VObtQardV+8O_zt0.CL
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 24, 2025 at 03:04:37PM -0500, Bjorn Helgaas wrote:
+> On Mon, Mar 24, 2025 at 11:00:24PM +0530, Manivannan Sadhasivam wrote:
+> > On Sat, Mar 15, 2025 at 03:15:41PM -0500, Bjorn Helgaas wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > > 
+> > > dw_pcie_parent_bus_offset() looks up the parent bus address of a PCI
+> > > controller 'reg' property in devicetree.  If implemented, .cpu_addr_fixup()
+> > > is a hard-coded way to get the parent bus address corresponding to a CPU
+> > > physical address.
+> > > 
+> > > Add debug code to compare the address from .cpu_addr_fixup() with the
+> > > address from devicetree.  If they match, warn that .cpu_addr_fixup() is
+> > > redundant and should be removed; if they differ, warn that something is
+> > > wrong with the devicetree.
+> > > 
+> > > If .cpu_addr_fixup() is not implemented, the parent bus address should be
+> > > identical to the CPU physical address because we previously ignored the
+> > > parent bus address from devicetree.  If the devicetree has a different
+> > > parent bus address, warn about it being broken.
+> > > 
+> > > [bhelgaas: split debug to separate patch for easier future revert, commit
+> > > log]
+> > > Link: https://lore.kernel.org/r/20250313-pci_fixup_addr-v11-5-01d2313502ab@nxp.com
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pcie-designware.c | 26 +++++++++++++++++++-
+> > >  drivers/pci/controller/dwc/pcie-designware.h | 13 ++++++++++
+> > >  2 files changed, 38 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> > > index 0a35e36da703..985264c88b92 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> > > @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+> > >  	struct device *dev = pci->dev;
+> > >  	struct device_node *np = dev->of_node;
+> > >  	int index;
+> > > -	u64 reg_addr;
+> > > +	u64 reg_addr, fixup_addr;
+> > > +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
+> > >  
+> > >  	/* Look up reg_name address on parent bus */
+> > >  	index = of_property_match_string(np, "reg-names", reg_name);
+> > > @@ -1126,5 +1127,28 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+> > >  
+> > >  	of_property_read_reg(np, index, &reg_addr, NULL);
+> > >  
+> > > +	fixup = pci->ops->cpu_addr_fixup;
+> > > +	if (fixup) {
+> > > +		fixup_addr = fixup(pci, cpu_phy_addr);
+> > > +		if (reg_addr == fixup_addr) {
+> > > +			dev_warn(dev, "%#010llx %s reg[%d] == %#010llx; %ps is redundant\n",
+> > > +				 cpu_phy_addr, reg_name, index,
+> > > +				 fixup_addr, fixup);
+> > > +		} else {
+> > > +			dev_warn(dev, "%#010llx %s reg[%d] != %#010llx fixed up addr; devicetree is broken\n",
+> > > +				 cpu_phy_addr, reg_name,
+> > > +				 index, fixup_addr);
+> > > +			reg_addr = fixup_addr;
+> > > +		}
+> > > +	} else if (!pci->use_parent_dt_ranges) {
+> > 
+> > Is this check still valid? 'use_parent_dt_ranges' is only used here for
+> > validation. Moreover, if the fixup is not available, we should be able to
+> > safely return 'cpu_phy_addr - reg_addr' unconditionally.
+> 
+> Yes, that's true IF the devicetree has the correct 'ranges'
+> translation.  This is to avoid breaking platforms with broken
+> devicetrees.
+> 
 
-Hi Krzysztof,
+You mean the driver without cpu_addr_fixup() and devicetree with broken 'ranges'
+property? So the existing platforms... Not a bad idea though.
 
-> On 25/03/2025 17:38, Lukasz Majewski wrote:
-> >>>>
-> >>>> I don't understand this code. Do you want to re-implement
-> >>>> get_optional? But why?   =20
-> >>>
-> >>> Here the get_optional() shall be used.   =20
-> >>
-> >> This is the problem with trying to use old code. It needs more work
-> >> than just making it compile. It needs to be brought up to HEAD of
-> >> mainline standard, which often nearly ends in a re-write. =20
-> >=20
-> > But you cannot rewrite this code from scratch, as the IP block is
-> > not so well documented, and there maybe are some issues that you
-> > are not aware of.
-> >=20
-> > Moreover, this code is already in production use, and you don't
-> > want to be in situation when regression tests cannot be run. =20
->=20
-> This is a good reason to add it to staging, but not to mainline. Just
-> because someone has somewhere products with poor code is not the
-> reason to accept that poor code.
+> > > +		if (reg_addr != cpu_phy_addr) {
+> > > +			dev_warn(dev, "devicetree has incorrect translation; please check parent \"ranges\" property. CPU physical addr %#010llx, parent bus addr %#010llx\n",
+> > > +				 cpu_phy_addr, reg_addr);
+> > > +			return 0;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	dev_info(dev, "%s parent bus offset is %#010llx\n",
+> > > +		 reg_name, cpu_phy_addr - reg_addr);
+> > 
+> > This info is useless on platforms having no translation between CPU and PCI
+> > controller. The offset will always be 0.
+> 
+> You're right.  This was probably an overzealous message for any
+> possible issues.
+> 
+> What would you think of the below as a replacement?  It should emit at
+> most one message, and none for platforms where devicetree describes no
+> translation and there never was a .cpu_addr_fixup().
+> 
+> It's still pretty aggressive logging, but I'm just concerned about
+> being able to quickly debug and fix any regressions.  Ideally we can
+> revert the whole thing eventually.
+> 
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> index 27b464a405a4..4b442d1aa55b 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> @@ -1114,7 +1114,8 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+>  	struct device *dev = pci->dev;
+>  	struct device_node *np = dev->of_node;
+>  	int index;
+> -	u64 reg_addr;
+> +	u64 reg_addr, fixup_addr;
+> +	u64 (*fixup)(struct dw_pcie *pcie, u64 cpu_addr);
+>  
+>  	/* Look up reg_name address on parent bus */
+>  	index = of_property_match_string(np, "reg-names", reg_name);
+> @@ -1126,5 +1127,42 @@ resource_size_t dw_pcie_parent_bus_offset(struct dw_pcie *pci,
+>  
+>  	of_property_read_reg(np, index, &reg_addr, NULL);
+>  
+> +	fixup = pci->ops ? pci->ops->cpu_addr_fixup : NULL;
+> +	if (fixup) {
+> +		fixup_addr = fixup(pci, cpu_phys_addr);
+> +		if (reg_addr == fixup_addr) {
+> +			dev_info(dev, "%s reg[%d] %#010llx == %#010llx == fixup(cpu %#010llx); %ps is redundant with this devicetree\n",
+> +				 reg_name, index, reg_addr, fixup_addr,
+> +				 (unsigned long long) cpu_phys_addr, fixup);
+> +		} else {
+> +			dev_warn(dev, "%s reg[%d] %#010llx != %#010llx == fixup(cpu %#010llx); devicetree is broken\n",
+> +				 reg_name, index, reg_addr, fixup_addr,
+> +				 (unsigned long long) cpu_phys_addr);
+> +			reg_addr = fixup_addr;
+> +		}
+> +
+> +		return cpu_phys_addr - reg_addr;
+> +	}
+> +
+> +	if (pci->use_parent_dt_ranges) {
+> +
+> +		/*
+> +		 * This platform once had a fixup, presumably because it
+> +		 * translates between CPU and PCI controller addresses.
+> +		 * Log a note if devicetree didn't describe a translation.
+> +		 */
+> +		if (reg_addr == cpu_phys_addr)
+> +			dev_info(dev, "%s reg[%d] %#010llx == cpu %#010llx\n; no fixup was ever needed for this devicetree\n",
+> +				 reg_name, index, reg_addr,
+> +				 (unsigned long long) cpu_phys_addr);
 
-I've tried to upstream this driver several times. Attempts were
-made for 4.19 and 5.12. The reason the code was not accepted was that
-conceptually the code had to be written in a different way (exact
-discussion is available [1]).
+So this check is to detect the usage of old DTs with new kernel without
+cpu_addr_fixup()? If so:
 
-What I've tried to say above - was that I need to have working device
-at any point of development.
+(1) The log is not accurate
+(2) The driver would be broken, so the log should be an error. This condition
+should not be met (if we do not remove the fixup for some time). But I think
+this check should be moved ahead of cpu_addr_fixup() so that the correct DTs
+would be honored first and the fixup would be ignored for them.
 
-And, yes "upstream first" is a great policy, but imx287 based HW was in
-the kernel long time ago.
+- Mani
 
-> Otherwise all the people and
-> companies who upstream BEFORE would be quite disappointed. Why anyone
-> would care to work on upstreaming BEFORE hardware release,=20
-
-Yes, this shall be appreciated.
-
-> if you can
-> ship whatever to production and then ask mainline to pick up "because
-> it is in production use".
-
-Where I've stated this?
-
-My point is that for regression testing I prefer to gradually update
-the code and not start from scratch.
-
-I do appreciate your and Andrew's feedback and try to make the driver
-eligible for upstreaming.
-
-To sum up:
-##########
-
-- Yes, I'm aware that this code needs some more adjustments/update
-
-- Yes, fsl,fec.yaml was the wrong file to use as a starting point
-
-- Yes, bindings are ABI and shall be done right (that was one of the
-  reason the driver from 5.12 was not accepted).
-
-
-Links:
-[1] - https://lore.kernel.org/netdev/20210629140104.70a3da1a@ktm/T/
-
->=20
-> Best regards,
-> Krzysztof
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/mrx3VObtQardV+8O_zt0.CL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfi6CEACgkQAR8vZIA0
-zr3NAAgAhtMjYHZz0S6KDjq/IEmqopGlqJgFjvjtklfA8BpjDXNA6Is65pgFd6LH
-idHOlhnCV/PAkb0gwJ3VMuG++BluGUsIWV/JZ236mXW9VFoRFYC5zT4IDPJLd4Or
-pObbUtxs3V3ZVpn1ZFQ+y4aDcCYZL0iAIiYWdF36F30xJ821EjeCn5Ah43GfyCWk
-WSTG/uTuCNkOoGXyjeJHD+GG+YshNwd0GyJrdbSlUaPsSaBy1D4tST0QKinduNWq
-nvSvlUXZlL5o7jHPt+XXtWvyfNp3Odh/fdhshgeS4uIjd+3dGFdg0F4jx/TUVoiv
-A9YioUZbLh9npLz19KYNKzaGJDLNsw==
-=GR0R
------END PGP SIGNATURE-----
-
---Sig_/mrx3VObtQardV+8O_zt0.CL--
+-- 
+மணிவண்ணன் சதாசிவம்
