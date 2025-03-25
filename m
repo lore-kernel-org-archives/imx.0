@@ -1,32 +1,32 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67331C6FE2
-	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 12:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E20257AD4
+	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 12:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742904966; cv=none; b=u9Buds7WRMm0zpcXb9vT0xhE1v0lHUefRSC2BKj4zKNRhFIxc/Ae6fQsviF96m3OysrCR67CWR4tDiqYSRUu5n1uogDzHgfXJvZ5pDpAMS8TCGAf0LWVzjYXDHR1sOniT3E0wV2A6FQAayUfV9wtDCq6KHrMlJ2Qi/FTxzJmk60=
+	t=1742905205; cv=none; b=aG804TQdkK+FsRCdCa3uhJAknIs6SFoeqZS+PSNYuB7gScp3+edBz83SQfUiaIC63RCP1NA/7iKUzzZTtD1pgirBZ2jgtGteGsJDRYTdgaxjt0mWniKCS3YZEgI/7ajRnXsdGmbQvfQUoF1RpPaSBczmiFetNGVaskMTgiK+Vog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742904966; c=relaxed/simple;
-	bh=DguLGhX9kEpLPrUx76M1TNbQPbRQ0+l3RX/mmVVOTNM=;
+	s=arc-20240116; t=1742905205; c=relaxed/simple;
+	bh=W+zbuGuOsjMsAwj1TeKVa2TREDPoShSYxlcNLgWYVEk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WLZ0gjPhKLoFQhwEPYRdJ3jm2/OPqx3Ijp4+MbJsKm7Vi+is3Re0DidpgTKCITsBV5tU5eYFUCleksKHLAax83m9aJHBZWaWqQ5yhepb0pVVcZEv5NlZlsYAyOpYRV3Gtdi1FTDVHWd+Zasg44KQgzdiCIgxZ2j3J2i8kz99coE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QLKfZA5h; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version:Content-Type; b=Kz6tPoVXGaGMpeLn9TskJhK/x7YpmeJ1L0oty1beP5HEjn25MtFpBdUx7rfGO+Olss6tHLgIA2UlaYLBY2jwr6F3YPJlmu2XbKzTz0fVP4jix9cA/HJznS11C5Oq3kzBN/ts7P+Xk5J/c8ApDXribHxi+lWR60A4KokOGEQxbOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=iI10GOZx; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QLKfZA5h"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 33CA1102EBA49;
-	Tue, 25 Mar 2025 13:15:58 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="iI10GOZx"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BAD1F102F66FF;
+	Tue, 25 Mar 2025 13:19:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1742904959; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=Vw2aTZfKC8jL612WLeYf7YLLLB/WaqDvcUQ/QnVchBI=;
-	b=QLKfZA5hesyp7HKxl4wfAMJm/Eqm1iLloGyqwHdqYMYlU7JKUzljQH8FAvHiekj/fZ6IR6
-	nWKratYium4fr/hJiKgEkRw1BgDOPWdBf1mO7j/4sAsa2hiyK/Xx/axqfzxis7vnBd/H5S
-	5y8AiWj2Y+HsXX9uAAvp9KOSh4kka192Y9gxL/WN7nEJuwjRk2VgYYHTRHbFYSldPxP+2z
-	mvAZ1uGOg9Q2J+ddFJwrtxvLss3h17U1pd4acNFApe8ZIguAvv299V6369chRQffdhDxD2
-	Y9jN1ZDdRTvPJFGOhfnFIarSWpqVyc038v5zuXHEGRL+L8mO3lp7l43jL+F7kw==
-Date: Tue, 25 Mar 2025 13:15:57 +0100
+	t=1742905201; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=NWmWtlj/ywJV6x0SVa10Ru5jBz9yI3s7yAlnn7HAP+A=;
+	b=iI10GOZxX1mHgyM2u8+7/hdsGhCCl9XeQNlR9159nd7Yrmp1M9EzyoQznOCNezfJNl+mJ9
+	SugwMDIGDHQIt+JVt4gZ5jtXRMz5XkD7mYkyoH+3BBQsC6Wep4HQmwCEBLJguay3eUz7UO
+	a++388I8tOOmPQB3cMRAuhPNSnW6ZWmqKY49V2c5IiK5nn5VJccHfnIESBHN9fzadsHgW9
+	Xl3+WTEZKlPTP/gQXxOBNmcm+5pZf5nfRnW+HkKaqVdVO0M7unZEoNF4KEl9D0/hrc9Gqb
+	jTvv2XpW46Zt70RZ+tso/GL43Wd/7AiEZ0vMVJoY64YbV5uAx1kHujfKwWVfZw==
+Date: Tue, 25 Mar 2025 13:19:58 +0100
 From: Lukasz Majewski <lukma@denx.de>
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -39,13 +39,13 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Richard
  Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Maxime
  Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH 1/5] MAINTAINERS: Add myself as the MTIP L2 switch
- maintainer (IMX SoCs: imx287)
-Message-ID: <20250325131557.275f7c5c@wsk>
-In-Reply-To: <e7d3f22f-4576-448a-a77e-644cd21c9a16@kernel.org>
+Subject: Re: [PATCH 3/5] arm: dts: Adjust the 'reg' range for imx287 L2
+ switch description
+Message-ID: <20250325131958.552fbd0b@wsk>
+In-Reply-To: <93c9bc3d-7ad8-438e-966e-cd28a91540af@kernel.org>
 References: <20250325115736.1732721-1-lukma@denx.de>
-	<20250325115736.1732721-2-lukma@denx.de>
-	<e7d3f22f-4576-448a-a77e-644cd21c9a16@kernel.org>
+	<20250325115736.1732721-4-lukma@denx.de>
+	<93c9bc3d-7ad8-438e-966e-cd28a91540af@kernel.org>
 Organization: denx.de
 X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -54,44 +54,34 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/24q=A/Ak_cTLWFZ0Fb5BUSM";
+Content-Type: multipart/signed; boundary="Sig_/iHkkBmAY=t74XA_T2X_ZYbS";
  protocol="application/pgp-signature"; micalg=pgp-sha512
 X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/24q=A/Ak_cTLWFZ0Fb5BUSM
+--Sig_/iHkkBmAY=t74XA_T2X_ZYbS
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi Krzysztof,
 
 > On 25/03/2025 12:57, Lukasz Majewski wrote:
-> > Add myself as a maintainer for this particular network driver.
+> > The current range of 'reg' property is too small to allow full
+> > control of the L2 switch on imx287.
 > >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > ---
-> >  MAINTAINERS | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 5959513a7359..255edd825fa1 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -9270,6 +9270,13 @@ S:	Maintained
-> >  F:	Documentation/devicetree/bindings/i2c/i2c-mpc.yaml
-> >  F:	drivers/i2c/busses/i2c-mpc.c
-> > =20
-> > +FREESCALE MTIP ETHERNET SWITCH DRIVER
-> > +M:	Lukasz Majewski <lukma@denx.de>
-> > +L:	netdev@vger.kernel.org
-> > +S:	Maintained
-> > +F:
-> > Documentation/devicetree/bindings/net/fec,mtip-switch.yaml
-> > +F:	drivers/net/ethernet/freescale/mtipsw/* =20
+> > As this IP block also uses ENET-MAC blocks for its operation, the
+> > address range for it must be included as well.
+> >  =20
 >=20
-> You need to re-order the patches, there are no such files yet, so this
-> causes warnings.
+> Please use subject prefixes matching the subsystem. You can get them
+> for example with `git log --oneline -- DIRECTORY_OR_FILE` on the
+> directory your patch is touching. For bindings, the preferred
+> subjects are explained here:
+> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-pat=
+ches.html#i-for-patch-submitters
+>=20
+> Missing nxp or mxs.
 
-This shall be probably squashed with the patch adding mtipl2sw* files.
+Ok. I will add it.
 
 >=20
 > Best regards,
@@ -110,20 +100,20 @@ DENX Software Engineering GmbH,      Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
---Sig_/24q=A/Ak_cTLWFZ0Fb5BUSM
+--Sig_/iHkkBmAY=t74XA_T2X_ZYbS
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfinn0ACgkQAR8vZIA0
-zr1emQf/fXhcxk4JMbU6x8ViPUfMGnNtieJNZbqixCSsbi5ttFkxRK5g2HwuGSNG
-wRfDDxs+yMejO2q2ZRPnboRHMmp0cPs7BBdLsw0cs81BEMqTQN5/IvymAf7sjUST
-JXRupMGgghbwq8fkESm2wYzRQE43AvpLM1bbykl+akDt7AVLhqJwHKWk9/NZYcPz
-+64fDpsM2Il0oUU2oe5B4SHry4OE33So1s0VyUanuWZxANZnBRvTeh9RA42bviuK
-ehdZQVGt2Hi3ZAi5l7WP3GRwzNAzDAK297M4koxXXNKY7JsIGrUTRsLw4ha63gX9
-3hia1jZ/itQzBJ+iqsKLdzEN7qHZUg==
-=rHL2
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfin24ACgkQAR8vZIA0
+zr3N/gf8DYEFypnfPCvqTv0w1mjjvKAqlgERVYVIbxHIpd/6t5B0hhaY3vRUWPyJ
+VUqi8YCx8uavVTRzDM59fSfmYcFzOe7rUv9fVvS4+W3AtxqTmtndRXZUrFAtXrPf
+LwfMfvqJuoKPiLLcfPZQpNNY6iuzehkmrmcO+0MmOmsPNVHWsXUG/mmoefrSIy/Q
+yUysj6v1UeS8nm2XOXYf7Pij0CFaCgMDE7zdzziTkkLtBYywTPxMfUbNv8DjFUSX
+Xa6M/GMe39ehOU92VOjF0TRxyiDNXgRZ4kibznKZFpohskhQ1IugoT2tyXDspA6b
+JauuHhBMQ/y+Om9HVWaZV3LjzVe05Q==
+=TLOn
 -----END PGP SIGNATURE-----
 
---Sig_/24q=A/Ak_cTLWFZ0Fb5BUSM--
+--Sig_/iHkkBmAY=t74XA_T2X_ZYbS--
