@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292FDF9E6;
-	Tue, 25 Mar 2025 12:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4B01A08CA;
+	Tue, 25 Mar 2025 12:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742904274; cv=none; b=LFdcvzPt/78Xnl8z5xHLmGaoty1VBHtN5jZ2K6Te+GQG1vFdRLMe6TIEqEq4bufxnWtAI3gFXeToNgX/+clUkkJgffT4c4y5vG/viIKnop7FXBLXPx/1jeW5WHcZ3GMHbIHiMlPTt4vmjU02s2Mybw8mv8awqyvkbt5CF5LxaFg=
+	t=1742904308; cv=none; b=cV+aHkmi7/7IgLzQjG5xcpnWMyhdj8BCd5GzxkyR0rfblixyEO2i0FgP6n9kx0UP1S0qQC3kVL/iW0u/76ri8AX/cl7MEhireid7ghLX5/AWGKxgyT2dtZBmY2hUh7XLJySh9HxsO5hYowh6yx5WO0NjAXF0iIKdG3FvCDKBExQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742904274; c=relaxed/simple;
-	bh=c4o491m8BdPrwA5xBuaNCWE8YeUWm9bB8nBMClJ0y6o=;
+	s=arc-20240116; t=1742904308; c=relaxed/simple;
+	bh=VtttEXZ2GQhd/EjSumSB8FVKCizb2lPQSL5nCkB1qzA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Aa/aVmCsrmpb4dFVBuOYoRjfgCA3/rGGG/I+a3nxHs7crD1RjnCwiZz0knTDKZ42OwyJzBuyyOBRU83cGhd7wYeE/Zbk7NEZe4sCNIin9UNq78IMTZ/ejO0TZrU7QyEQkO8jvlwpPx+aO5A3NfRTNSNuiqmVIK0rP5cdQECO/iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieclwsu0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=heGdVrYFCzWC7uhyIeAV342DsJMXpAJmDuU5S5CakNQkyWXov9pAvAJ9Hc9nMI0B9nlA7NbNlnQKlrM8X/UrRo61CqbTqrnM6EdXBTNplHKcaPFYo4+1Ur6iFpgHNwABSfl95UA8WC1q3j6Ku84TI+k3rcOQIo8CuxetyvL5Nrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgWo8HPb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieclwsu0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF2BC4CEED;
-	Tue, 25 Mar 2025 12:04:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgWo8HPb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39808C4CEE4;
+	Tue, 25 Mar 2025 12:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742904273;
-	bh=c4o491m8BdPrwA5xBuaNCWE8YeUWm9bB8nBMClJ0y6o=;
+	s=k20201202; t=1742904307;
+	bh=VtttEXZ2GQhd/EjSumSB8FVKCizb2lPQSL5nCkB1qzA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ieclwsu0z5+H1sOQRF/mX8sCl4yuc6OoUpBaLRmfaDpKJgL2nvZEET0kILhTtpkzu
-	 zy6DAKP58gt+W1Ac5rCLk4WCx7dmtQjxkFhwvcmr2cw3+w4WfjTUfSqGZ7L/2GyERv
-	 dLxGXbsSWwfTt1d8dv2QxnRke929eSvdAtFBZwTm3/3oxdqb6ontmvGBE9qOTPgMgG
-	 2eR7m2sDQ5PZJFJU0wJ7EKdTsxc4/iGGMIzkUg5K7tAVQcT/T+J09/OCwb8hfpQuI8
-	 gTCK0aoiVzyKxP34IhI4kLlu2GaIYQkYiIlKfeJkCjpLuRtRgv8KQIfyHe7uno5RXs
-	 hj+eTsYZEFB9A==
-Message-ID: <2bf73cc2-c79a-4a06-9c5f-174e3b846f1d@kernel.org>
-Date: Tue, 25 Mar 2025 13:04:24 +0100
+	b=EgWo8HPbb181I+UHyz7z812jRD6IIlaeRXQfoTyQI8b+QmM8RP2KFljTw4gZ7F0Be
+	 7RcjN0BFX2xLv3FamkhW03fD2F2zJjOfoaCqtY/3Xlyxz+hnXm+PiSSFEh2MJ99Yr5
+	 LokbWEP4cVt35Qd4ENAuI6+k/qtHYQmD6JfaZOI5mvSZMSnvs+lvgV9iF19Uqwisuw
+	 2fkTEi+vouMcJdQkRDG8i5KQNkp/JqPjgjmF/IsPKc0/oPkys8+TRVhPN0qRxC39TP
+	 owKqc0vwyQtZHneA9waLg3UM24kUOcxQad2E9V5xZPSMTkdKc4M6XxYJdegOlqykkV
+	 FWagIT7nlARdA==
+Message-ID: <93c9bc3d-7ad8-438e-966e-cd28a91540af@kernel.org>
+Date: Tue, 25 Mar 2025 13:04:57 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] dt-bindings: net: Add MTIP L2 switch description
- (fec,mtip-switch.yaml)
+Subject: Re: [PATCH 3/5] arm: dts: Adjust the 'reg' range for imx287 L2 switch
+ description
 To: Lukasz Majewski <lukma@denx.de>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -49,7 +49,7 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
  linux-kernel@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
  netdev@vger.kernel.org, Maxime Chevallier <maxime.chevallier@bootlin.com>
 References: <20250325115736.1732721-1-lukma@denx.de>
- <20250325115736.1732721-3-lukma@denx.de>
+ <20250325115736.1732721-4-lukma@denx.de>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -95,82 +95,25 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250325115736.1732721-3-lukma@denx.de>
+In-Reply-To: <20250325115736.1732721-4-lukma@denx.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 25/03/2025 12:57, Lukasz Majewski wrote:
-> This patch provides description of the MTIP L2 switch available in some
-> NXP's SOCs - imx287, vf610.
+> The current range of 'reg' property is too small to allow full control
+> of the L2 switch on imx287.
 > 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> ---
->  .../bindings/net/fec,mtip-switch.yaml         | 160 ++++++++++++++++++
-
-Use compatible as filename.
-
->  1 file changed, 160 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/fec,mtip-switch.yaml
+> As this IP block also uses ENET-MAC blocks for its operation, the address
+> range for it must be included as well.
 > 
-> diff --git a/Documentation/devicetree/bindings/net/fec,mtip-switch.yaml b/Documentation/devicetree/bindings/net/fec,mtip-switch.yaml
-> new file mode 100644
-> index 000000000000..cd85385e0f79
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/fec,mtip-switch.yaml
-> @@ -0,0 +1,160 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/fsl,mtip-switch.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale MTIP Level 2 (L2) switch
-> +
-> +maintainers:
-> +  - Lukasz Majewski <lukma@denx.de>
-> +
 
-description?
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
-> +allOf:
-> +  - $ref: ethernet-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-
-Drop, you have only one variant.
-
-> +      - enum:
-> +	  - imx287-mtip-switch
-
-This wasn't tested. Except whitespace errors, above compatible does not
-have format of compatible. Please look at other NXP bindings.
-
-Missing blank line.
-
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 3
-
-Need to list items instead.
-
-> +
-> +  clocks:
-> +    maxItems: 4
-> +    description:
-> +      The "ipg", for MAC ipg_clk_s, ipg_clk_mac_s that are for register accessing.
-> +      The "ahb", for MAC ipg_clk, ipg_clk_mac that are bus clock.
-> +      The "ptp"(option), for IEEE1588 timer clock that requires the clock.
-> +      The "enet_out"(option), output clock for external device, like supply clock
-> +      for PHY. The clock is required if PHY clock source from SOC.
-
-Same problems. This binding does not look at all as any other binding. I
-finish review here, but the code has similar trivial issues all the way,
-including incorrect indentation. Start from well reviewed existing
-binding or example-schema.
+Missing nxp or mxs.
 
 Best regards,
 Krzysztof
