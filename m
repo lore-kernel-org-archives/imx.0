@@ -1,116 +1,71 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ACAA2D
-	for <imx@lists.linux.dev>; Tue, 25 Mar 2025 15:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A701EB3E;
+	Tue, 25 Mar 2025 15:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742914879; cv=none; b=ZEGIhFo8aJ4LEEgE7WlEPGAbJE+0BOQooc9DTvZD40W/iVqQ4YGzRpfuHDvJ2hoJ+tzokRpD6WWaiUEZTGibpjdOHwpUh6ArbtgeOltIh3hMCkiWILpd428TQjmqAHyVXvi1EoVwwaNVMLGi+tcWD2XnCS94sJPlWP2eyLklODs=
+	t=1742915168; cv=none; b=GGwdpCKHZs0LcICNQYieian4FgbR5p+F07CVUO7jX0tLXXoIXvB6NW5/F/d2QOnTuqEg5yPoNSlabqt8AXNuFvgiA5HdzwwI6j4npunmrnOWjukSrHZXd+AB0GyhxJRadZtOHWMooIIvVifLeCVid+1uDPfwAcTSMYc8dbsi/qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742914879; c=relaxed/simple;
-	bh=G7ZuWXpTgddV9TLH4afzONk/3BiPZ39GqPRYlepVGbk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MYSwKlGZcE0mWQm0d9IJhbzei+5KeO1vr8OUhp1rKduoL83KdugVO50tnbtQZhucyGPzLHWsxSblSHEKyvLbJ8JxGtW6ERvN5NO1xdw2BFvd1+z0ZhNHeWKaYAqrPc10uHvGIeOBT9pgX1CEN40ZFZeTvDqJpEP37E2TA43crro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tx5lo-00069R-Rt; Tue, 25 Mar 2025 16:00:48 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tx5ln-001b4w-1A;
-	Tue, 25 Mar 2025 16:00:47 +0100
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1tx5li-0009py-2A;
-	Tue, 25 Mar 2025 16:00:42 +0100
-Message-ID: <7cb810a0f80d61fea294b93ace2e2fb7515c077c.camel@pengutronix.de>
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Marek Vasut <marex@denx.de>, Boris Brezillon
- <boris.brezillon@collabora.com>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley
- <conor+dt@kernel.org>,  David Airlie <airlied@gmail.com>, Fabio Estevam
- <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,  Liviu
- Dudau <liviu.dudau@arm.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring
- <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel
- <sre@kernel.org>,  Shawn Guo <shawnguo@kernel.org>, Simona Vetter
- <simona@ffwll.ch>, Steven Price <steven.price@arm.com>,  Thomas Zimmermann
- <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org,  imx@lists.linux.dev
-Date: Tue, 25 Mar 2025 16:00:42 +0100
-In-Reply-To: <7233d56f-d07d-46c3-9954-57eb583a36ac@denx.de>
-References: <20250321200625.132494-1-marex@denx.de>
-	 <20250321200625.132494-5-marex@denx.de>
-	 <20250324094333.7afb17a1@collabora.com>
-	 <22187ae5-7486-416b-b612-53021bfca11e@denx.de>
-	 <13376dff8d861389464b7ecdb2f82fe211638500.camel@pengutronix.de>
-	 <7233d56f-d07d-46c3-9954-57eb583a36ac@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1742915168; c=relaxed/simple;
+	bh=WwTs38cduZqd9qtuPegb9fIa68DDTyF9/BCKDH+jYZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzYbCIUDp3EN7Z+eCpSqwm4d8TUSEZuW/kU0MuA+M6sWyV/w8blPIPtAwOT+swYRPMdr7D1/ee72SVPXY/SzrpZpY0Wqg0RpFB9ThAuTfKjTiRKL2x2OZ/ro+UZJKebzZBONa2dPx+FlR1O/QC8F2EJwFk6M0hwPWdOvvm2j6rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lC6ctQGR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lC6ctQGR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=RbNibk7vAHn+5HUmQKRDw9Q3Hr2VlQle5mTru3E9iuU=; b=lC6ctQGRJnnjgQd6d44kIc2Oxd
+	euHpZqofQd0+GoZrKsUg66OIffTd+fV+6Q1cAJy7bWbUddYTJazUOuxiYgztJs9E9F/wS3Twu0yUu
+	K/3Lyy5W2xEHlG6OUrJRDlrr0o15QJfGq54BUAuen3YFo3bKYQOXsc7hBvwD92tkc7X4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tx5qb-0074KB-TT; Tue, 25 Mar 2025 16:05:45 +0100
+Date: Tue, 25 Mar 2025 16:05:45 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, davem@davemloft.net,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH 2/5] dt-bindings: net: Add MTIP L2 switch description
+ (fec,mtip-switch.yaml)
+Message-ID: <2ccab52d-5ed1-4257-a8f1-328c76127ebe@lunn.ch>
+References: <20250325115736.1732721-1-lukma@denx.de>
+ <20250325115736.1732721-3-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250325115736.1732721-3-lukma@denx.de>
 
-On Di, 2025-03-25 at 15:27 +0100, Marek Vasut wrote:
-> On 3/25/25 3:12 PM, Philipp Zabel wrote:
-> > On Mo, 2025-03-24 at 20:05 +0100, Marek Vasut wrote:
-> > > On 3/24/25 9:43 AM, Boris Brezillon wrote:
-> > >=20
-> > > [...]
-> > >=20
-> > > > > @@ -563,6 +585,7 @@ int panthor_device_suspend(struct device *dev=
-)
-> > > > >   =20
-> > > > >    	panthor_devfreq_suspend(ptdev);
-> > > > >   =20
-> > > > > +	reset_control_assert(ptdev->resets);
-> > > >=20
-> > > > Hm, that might be the cause of the fast reset issue (which is a fas=
-t
-> > > > resume more than a fast reset BTW): if you re-assert the reset line=
- on
-> > > > runtime suspend, I guess this causes a full GPU reset, and the MCU =
-ends
-> > > > up in a state where it needs a slow reset (all data sections reset =
-to
-> > > > their initial state). Can you try to move the reset_control_[de]ass=
-ert
-> > > > to the unplug/init functions?
-> > > The reset on the MX95 is not really a reset, it is clear-only
-> > > set-never-again bit which goes only one way, the "unreset" way, so I
-> > > don't think this has any impact.
-> >=20
-> > This sounds like the bit is initially set to 1 (reset asserted) and can
-> > be cleared by writing 0 (once, to deassert the reset). But in the
-> > reset-simple patch it looks to be the other way around (active_low =3D
-> > true)?
-> >=20
-> > If the reset control can't be asserted again on this hardware, it would
-> > be better to have custom driver that doesn't implement the .assert()
-> > callback at all.
-> Maybe the reset-simple driver can be extended with some mode of=20
-> operation like this instead , to make it skip assert once deasserted ,=
-=20
-> for specific reset controllers ?
+> +  phy-reset-gpios:
+> +    deprecated: true
+> +    description:
+> +      Should specify the gpio for phy reset.
 
-How about a second reset_control_ops struct without .assert, selected
-in reset_simple_probe() by a new flag in reset_simple_devdata.
+It seem odd that a new binding has deprecated properties. Maybe add a
+comment in the commit message as to why they are there. I assume this
+is because you are re-using part of the FEC code as is, and it
+implements them?
 
-regards
-Philipp
+	   Andrew
+
