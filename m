@@ -1,600 +1,170 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2066.outbound.protection.outlook.com [40.107.21.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F27C215058
-	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 18:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743015117; cv=fail; b=YT9SNuyskkyxNrhSwRrFEfE94kJ8gp060QRQN41J+/HHD0JaKOE8MTCrItwwRc8hbzPPlz8Kedz6mWOT4rLmgtRzSY31YrEJQawvz+I3+eK8LUv0OOsXwrXeCO5WT9gsUlkRUOpC/ejEAGDuYk9gT4RORWND/C1VVVHZ9qi2nKw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743015117; c=relaxed/simple;
-	bh=GZ3LSMoCfeGSm5xPH4ttqm0N7cGfbkgPDtXmU6onzRQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lVVCuVHVB6ePfgQHlvkN0wnZH9MUYg6vzqZU8Ya1CIaeyQkEeJeBMZNV6kLRrn7kf9aWG4qcWS4aUG0zuNcmzy0JW0mPEULfRZECmuQ1ydu76eo4gEzfFIIyHCRfsaXqHjs46t3QizUz2q6tKYSud+KXAq1jxB1kT8Plb2hKNQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=L4p0HXMB; arc=fail smtp.client-ip=40.107.21.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8983417F7
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 18:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743015182; cv=none; b=WZFxFyMHwiw1ExweVc3H5qjGAWR2tDkFwYpp+eQM36RWtb5bGSbm0KZNn4kkjKCFMyFxZuC3YZhlbPfgmF5blK8aKtMMkI8cruGtb1UMdHSCy1aFf7PKnEPg5zIp/w2SpcnDVFiV+ooiKSeYbaNmHCFAG6UfPDw5EZgvHSsr85w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743015182; c=relaxed/simple;
+	bh=7tnbCUTKMpPo8aoqQiYW410Hhe5LPNkwVR28/52KUGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CR63jnP6nLxtdHeFRa7TEtEaikeVTIesVTzKY4GhAp/L4QsNnTZAjyRmIQAygariWrzHBGXMKELn30Lf4gZkWFtbRf1c4CL513oQiWY4p7nSrFzGUgpcX0yfa2F0Z+ACn/gpMBd8U+8VEKfG9FqH7CgSVqarrXYeNV9/Gzd6h4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=snLlwT1B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="L4p0HXMB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NfwJCq/t9ducNRaLx2qQjDtCyCvFWODqXz84Ti4FbsQnLgbERsnL6/2VtPFLEfleaECP68ZhtINOLAhVxd0PPSBjRlKhi2/q3itTLblON5xgtoitacyDAld0O8AOrPS2OxY0O5UwpAlfM+1SA9r41AjButBw1oumqU/yJ3RlGcAyVoYASd8iRoq2dQ13StRLcoSXLG8OlFJr3Il1Mt8r++DReLQoPJfeEqHbFlVGyWuQ4Hlf4jVMvph2UnRSO0HWMv7+RinpEbX5DYQL3jhR2oYkNtsUNhSuBKU9SwQBTWaEbAjMUTsygQbNurEAUuX8gQae4Gl5odbabIiDgiDVMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L+KNP8OqTYw9MQ+DgCBgwcxKuJJoj51nlpNspN6AiT4=;
- b=SqXhH+vMa6uz/GQz4v2fVNlLoyRDc1W7/wjlI6ZwrEA0FMIm7W/CNsfNufOdlT/w5xzJt+PnbdAgmKaovcMXTWeXWoB4K8rmZKXUzg1OesqN5WvXLWCIdc/REwHQ9UMFV3T9yFR/kQ+P64Rv4Ac119/x/arRqAk7i0eZ55jomAWR9JMFMVFlMBzldnr2X6ED/NpKOP7vuWLHufWXAH2vuNQ/frv4wrEWDYOgxIkCc021HNYIDWKi0zcK/p75l0KNykFGG4+Y+BKJTF3m4TQmH/NwhpInEHwQdoAK7n5KT7mQjXDueX/rk7ka6emEGxZmIPtJ2pfQL/xUVNbUsZ2Pvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L+KNP8OqTYw9MQ+DgCBgwcxKuJJoj51nlpNspN6AiT4=;
- b=L4p0HXMB1Zu3McFI4RPAivOhoKPj+eJNwommEjEyWOMSNEBkI9dMj2EjpeUwg+82tO7sa29sYjP4skT/sCyViMAqSw/d3+r3d/amaMaGPQP48VcqDm26uowT9zTi/d+EaVh1IASZrcEImcTfgBLef8FYZ6+hkAGdKQ16WeS+nJeQ6KvcENBTwBwFOES1uIDymYssaS4p9swvxfE7QAszWeCQByD+JrrByWrQ23NFNn5bkGvzRapgR17gNzHQqCxnREtIl8TEtJqRp/vlTFxfFayUMspHU/AGiW1CXqz0rCy0LgDi+Ev7dE6p2EPFW7yGBg48SfxaFIDPxnUoSA4Asg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB9704.eurprd04.prod.outlook.com (2603:10a6:10:303::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.43; Wed, 26 Mar
- 2025 18:51:51 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8534.040; Wed, 26 Mar 2025
- 18:51:50 +0000
-Date: Wed, 26 Mar 2025 14:51:06 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: dts: mxs: Add support for second revision of
- the XEA board (imx287)
-Message-ID: <Z+RMmm7YKN1IjsCC@lizhi-Precision-Tower-5810>
-References: <20250326173400.2697684-1-lukma@denx.de>
- <20250326173400.2697684-2-lukma@denx.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326173400.2697684-2-lukma@denx.de>
-X-ClientProxiedBy: PH8PR22CA0004.namprd22.prod.outlook.com
- (2603:10b6:510:2d1::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="snLlwT1B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19489C4CEE9
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 18:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743015182;
+	bh=7tnbCUTKMpPo8aoqQiYW410Hhe5LPNkwVR28/52KUGY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=snLlwT1ByOOZ8VDdLTGeiVAiEWrHtg3EvWVkctlzQIGFZzDT7XBzN2DIIFpHVRuA4
+	 QWSXjBNoMYxPNGrYI7EhmcSj0AeKKRNkXc7ncCYbP0fslp4P4+jMIkZIAktw92xzl9
+	 f/6pVTEXC4NSXGu4xof5rtvBej+C0GDqtW1wkGhV6Wi2YRwu2jpb0Lyghf8UlzytoG
+	 WwQ6DMNodUQHQk2VpoXa2/y89pLaPCLpwF+ISbR4hp6cRaabZWfTVWMtcr/ZSfSmh8
+	 jwKqvjyFp2FKpKOIs73vDRG4Rw8NplM2rXgHf/zkk7H07J9bPh8EYwSA5OcJVoLYAh
+	 Co5wZxznPQ7aQ==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab771575040so253933466b.1
+        for <imx@lists.linux.dev>; Wed, 26 Mar 2025 11:53:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWdavv4I6JSRgS/IVj5IDXOsiMbaJRxmaBVHIybKZwh6+52PwMYp1jhzmDzcd0DKF6YsvA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywh9n1AooG0JQWuM+TQF2bR0buL06cFw9GXyrhiHhPlDzK0qWCT
+	RteXNhcNW0F9zEl8Jlc5PjMLEcmVaoDzMConAGQbePJ8gawUd64qq57hwew59ZZhXFdIlG6Ibbd
+	2RKYu6KA9as8aelCF9umsx21Ylw==
+X-Google-Smtp-Source: AGHT+IEi/FLkb6+pDXS2OgDct0wDDLVjgAusO19cQUp3SH7xeV/KwpO2rct7/toV7PxXM7MD6oHfl5OWID6sUvuLyTI=
+X-Received: by 2002:a17:907:7295:b0:ac2:26a6:febf with SMTP id
+ a640c23a62f3a-ac6e0d3384emr557164766b.20.1743015180452; Wed, 26 Mar 2025
+ 11:53:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB9704:EE_
-X-MS-Office365-Filtering-Correlation-Id: b48cc5b8-9991-482c-587c-08dd6c9744cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|366016|376014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zPFjsABfJ/HuuJPT4MHM1vSlKQLKhlkqowKiWqqTLpBNM9qpWQVw8JpOA6Yk?=
- =?us-ascii?Q?GxVaHRL2Vcx2pCS3BT64514MTPUaAC+Bj02/goAck75H5hb2MZTeAnHInFoJ?=
- =?us-ascii?Q?w/XRHwZ9W3XXwOYnFd7qNgfLsYl/GNmVf6KiMwNib/oEY7/JNvPZNjTOMSFc?=
- =?us-ascii?Q?zyADl5FZ0jDgL/0SGTkzSXxQ8QOAqWIWPqt2QV2+58RwNlaZ0ndPnPUAo/oc?=
- =?us-ascii?Q?f3US5yFFJc1zgyKBQRKZY6ykrzUTMSKKOUCa/Z+hz7Vs1I5/JE8PQfoU9ebu?=
- =?us-ascii?Q?R3CPbJ+Ed1b5o32EhpKj8aeUX0/61svwo/Mt6fw3eTPffolTFs46rYaYWZ94?=
- =?us-ascii?Q?YCO1D1K+cMYLX/xTYrOfllwoEJcaRemRvh974tOrYV9+hAm0oFvTLHnlVIvc?=
- =?us-ascii?Q?Uj9SZSAGtuM8rHysSPsCGY7U5sLxKSFjkkKmh0GDglc4DG4rdfZnbJAxmSws?=
- =?us-ascii?Q?ZFig+khRQxO7cFUn7nmxQkMRBLQXBAVPT0bTTpDMun42q601T7iFpV0m+wSt?=
- =?us-ascii?Q?6XkdwHkT9M//3ajCOlAbhXIw1zFZCmHKhiCincMFM/xU4+8+qcHN7K/Wt2ii?=
- =?us-ascii?Q?aBeBv7FuCMsJZi0j+RQVHue430/NKo77DrpjQ4kfpq5FDG+xtH+oEDUX0xc6?=
- =?us-ascii?Q?PP5u/T3BxPMf6ep0x5SwFzDGVKwoK+aLzh7cpYj+XKj1q9cQPeEsqdZicP1I?=
- =?us-ascii?Q?XPIUlbfCd5rr4N+t8jVje3rI38k8nZg9wcRGglj8gkeDNQiv09MnKRg7aFMK?=
- =?us-ascii?Q?OOt4z+0oMA4qKXgYn6qGKxUv7FUt5iqxEGEx6O/9D9pAjpxCx2OKNu3WploG?=
- =?us-ascii?Q?EnnB/Z7ZoLJkuFCmpTIgwe2laaBmbYwHU1GVRpfajkgBoLusfSU6p3qO27D2?=
- =?us-ascii?Q?lO3iU9Ys4ypQQHVFzXFuMb0p7DdVP6BjQ8xdKL2x5oKky8m5Y/7f7ukGVjEE?=
- =?us-ascii?Q?hlt2VlypqvWIgxQPatzOI+LdSxwkOKDSKyuL73Vqr35QpxnpfxRpfjiY0XGD?=
- =?us-ascii?Q?EwsQZIGzuu2VvVgEH2grhP0xnr6zCFqoGGmJbNv0PnysqU9gppwHcWigeB03?=
- =?us-ascii?Q?XPYGALp+wIL29PThY7j9PlG/aZCBN/v/SWxoeOdVKvMg7++S8F4egu2QiU4A?=
- =?us-ascii?Q?c612splZ8k70ADVNoOdtEE709SJHzOL5ayOuQFwLNzbP1kyqUWzNEwjPhEb2?=
- =?us-ascii?Q?CD/Ba7nbs4DO5Mc4e8V1+dTGh0cjDq1mlzJOyEgLTQGmO9Iqx6/gKDxYp0Uu?=
- =?us-ascii?Q?vgtoe1pa43drUq7g/nUZNjkvTRHs1P7oS5yd94Z9OTkwEZylOosSKbL7H2/8?=
- =?us-ascii?Q?frqjQWtNoYtZ6A3YXvF/Rt8re4aKvOyaUjrQQc2SJoUyCOhWpAH1BUJvUVsE?=
- =?us-ascii?Q?mWKjpjUDsDcHo8UBp0YUTLrcxJisbggGJ7cmMUw2zafmlY/gYZPy3AajTtCl?=
- =?us-ascii?Q?F+ca3sY8v9dhL74M4DZ3TN/fNa25kzzl?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(366016)(376014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9KhalWrZeg9CJM8rzwu6NBO+oy6y/p3IuejBBJtlUkNIiUAdKlbiPVekrUXb?=
- =?us-ascii?Q?QuPZVGqmMRMQRL4gxiWLiadwzdQu5lIr5qKL5G5vJ4j6mVhBaHdt7NiY18Xe?=
- =?us-ascii?Q?cadpNcp/Elp67FfzNy3Axqnk2s42m0wLNQ5igBcfmNZ3z6HsfKlIrXHxVgk6?=
- =?us-ascii?Q?729wNZLk7ccl1d/GrHg20dNF6u/E/lNsfBCkXhD3/KF4xzuiH2iA//IPG6G6?=
- =?us-ascii?Q?AQAxXyHLTiYdYmkvIg34C72b7+GFqqmop0y2tjOFlTWTUE0f+hkq1pPn5Loq?=
- =?us-ascii?Q?QC4TIusDOsVw+Yga4FynpPhK5gfk2+QU6PTDak2X86w/diTf8z/c3J+9H0iF?=
- =?us-ascii?Q?uA1JAzvULwG/1CaOieZqD3kccOZHdMep88KluGLiHRl/QIcs1pnIWibFs43G?=
- =?us-ascii?Q?pqkoDMX0+zl4OtQEkSVUf25aPi/XBVCrvNxPWd0pmZIbEsgM8X7BQCmjytB3?=
- =?us-ascii?Q?A7EUEjrf9Q0thfQPk8/VDFVHe4YyVosIrbRzc6T3OBwrOOZVivYjSZFkQ0jL?=
- =?us-ascii?Q?nUdxkCkpTYOtvN5ZtG/z3t4ltfERImaU2g/WKv4NxsWvcsCCCnlswxD/qg0A?=
- =?us-ascii?Q?geGGYxWj9jJkAzSE00DT5Ryquf1QDAORWHX/gtSUjoQGU57e6kGHvNMFTjo4?=
- =?us-ascii?Q?RnLqqFIl7lo6my9JICTUyqZqb8MbTzjBAuFpYsAFVAnPYoY7/HNqO1fSwowA?=
- =?us-ascii?Q?xaaVBuOPsGxNbHOVszXE0Ki2PkZrsLcUQrYkRzoC6D+XnDCR2DfO0ZgcIFzg?=
- =?us-ascii?Q?Opjw+JjnGvtqRbxdcOK85hsSHI3urwv75muZZ0FWQJS6kpXs8xxZhFmkJHIp?=
- =?us-ascii?Q?GY+Nb0Enm9ZKPZ/R2yS7k8Uo4kxZeRy7tiJh/M6Vq6OP7jcmJ4gcfZO4Ouy+?=
- =?us-ascii?Q?PpSzPgzzCE9o1/WGHWW0RRNL0gbbVMx3hjUxhLgDR5EV6kvr1lE2AaVmgnVD?=
- =?us-ascii?Q?JpC5P3PnwyBjkd4sFUfvSzBLAQW24xyYMqjJXtSnQodoEc4J7GTnrBoxUH24?=
- =?us-ascii?Q?Ob497OdZNWK3nsnewKRM26P5IGXMu5NlhEHH+KlTcga7T4Fgos2BC7KDFs9b?=
- =?us-ascii?Q?H680YXfz2ujrMKq+BUHb/QJS1HobCOUjE+ztjpUHJsdD641iu3ICnBhwCjoF?=
- =?us-ascii?Q?twbrP4/iSAWj/0Uqck2Jfoy/SqJIA/5w1Ir9nq0refTt/1rjzqekyFpzNQnR?=
- =?us-ascii?Q?qXkU45etH69CrFBOjA75E7I5qub04n9F14+bs4o2SDQsD4neGzFS5tbaKyWa?=
- =?us-ascii?Q?azl9qddgiJFjySviVx5LAD/Yzq15VFLSu4n6lQtkx/U8L00Wl4Eyi5HDxRX9?=
- =?us-ascii?Q?6/qzZV03RWscGR5Sq8qfqVtRcl5vB/PE/gEJEEchSkZnswHkrAta2puoRBPh?=
- =?us-ascii?Q?UoFIihgkucJlFEGd9Qa+aAamIfQNJAHycsKPy7q1Qs9Ck5PyR7SVjHPPB7Xc?=
- =?us-ascii?Q?tGvcuy8OdjkekgglWfMpH2UfRDDPNWmtjCfIGKF6PVgWYc+OBP2+7Bz962kN?=
- =?us-ascii?Q?zZGMAqz3gtK4DcfkEYRfgBJMABnmlCluVY7rK7E4khsUWMBojz2cT4YFGSuc?=
- =?us-ascii?Q?RgjzDHO1T/8xDScJB1VFiPsgNgCAiP+PMUHvJ8pJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b48cc5b8-9991-482c-587c-08dd6c9744cc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 18:51:50.8478
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z/dsdsgg5ldR1KvRNHb1jpZZKNYgJyhpwkwYp0kC6ch1uHbhTpAgbCLN5hOpesrjjL3RUenOyUNrPlG6rOr2fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9704
+References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-3-robh@kernel.org>
+ <CAGb2v65djD5DLQnjQrp9kSHTQYVd9p_vP9WySj2Cx81rHmh5Mw@mail.gmail.com>
+In-Reply-To: <CAGb2v65djD5DLQnjQrp9kSHTQYVd9p_vP9WySj2Cx81rHmh5Mw@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 26 Mar 2025 13:52:49 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLoJAwPeWjXyQYK1rvVzn6Meapz3iS9gW+QqYpYKuJkBQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jqmc05lmNw-rFmLFhT71JwYvVm4xio8OJGuHie4RorDqomqBJbJolJsSNo
+Message-ID: <CAL_JsqLoJAwPeWjXyQYK1rvVzn6Meapz3iS9gW+QqYpYKuJkBQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] of: Simplify of_dma_set_restricted_buffer() to use of_for_each_phandle()
+To: wens@kernel.org
+Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 26, 2025 at 06:34:00PM +0100, Lukasz Majewski wrote:
-> Up till now the XEA had only single revision supported in Linux kernel.
+On Wed, Mar 26, 2025 at 1:44=E2=80=AFAM Chen-Yu Tsai <wens@kernel.org> wrot=
+e:
 >
-> As some in-HW adjustments were made - it has been required to extend
-> the support with second version.
+> Hi,
 >
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> ---
->  arch/arm/boot/dts/nxp/mxs/Makefile        |   3 +-
->  arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts |  29 ++++
->  arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts |  66 ++++++++
->  arch/arm/boot/dts/nxp/mxs/imx28-xea.dts   | 100 -----------
->  arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi  | 191 ++++++++++++++++++++++
->  5 files changed, 288 insertions(+), 101 deletions(-)
->  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
->  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
->  delete mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
->  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
+> On Tue, Mar 18, 2025 at 7:29=E2=80=AFAM Rob Herring (Arm) <robh@kernel.or=
+g> wrote:
+> >
+> > Simplify of_dma_set_restricted_buffer() by using of_property_present()
+> > and of_for_each_phandle() iterator.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > ---
+> >  drivers/of/device.c | 34 +++++++++++++---------------------
+> >  1 file changed, 13 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/drivers/of/device.c b/drivers/of/device.c
+> > index edf3be197265..bb4a47d58249 100644
+> > --- a/drivers/of/device.c
+> > +++ b/drivers/of/device.c
+> > @@ -35,44 +35,36 @@ EXPORT_SYMBOL(of_match_device);
+> >  static void
+> >  of_dma_set_restricted_buffer(struct device *dev, struct device_node *n=
+p)
+> >  {
+> > -       struct device_node *node, *of_node =3D dev->of_node;
+> > -       int count, i;
+> > +       struct device_node *of_node =3D dev->of_node;
+> > +       struct of_phandle_iterator it;
+> > +       int rc, i =3D 0;
+> >
+> >         if (!IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL))
+> >                 return;
+> >
+> > -       count =3D of_property_count_elems_of_size(of_node, "memory-regi=
+on",
+> > -                                               sizeof(u32));
+> >         /*
+> >          * If dev->of_node doesn't exist or doesn't contain memory-regi=
+on, try
+> >          * the OF node having DMA configuration.
+> >          */
+> > -       if (count <=3D 0) {
+> > +       if (!of_property_present(of_node, "memory-region"))
+> >                 of_node =3D np;
+> > -               count =3D of_property_count_elems_of_size(
+> > -                       of_node, "memory-region", sizeof(u32));
+> > -       }
+> >
+> > -       for (i =3D 0; i < count; i++) {
+> > -               node =3D of_parse_phandle(of_node, "memory-region", i);
+> > +       of_for_each_phandle(&it, rc, of_node, "memory-region", NULL, 0)=
+ {
+> >                 /*
+> >                  * There might be multiple memory regions, but only one
+> >                  * restricted-dma-pool region is allowed.
+> >                  */
+> > -               if (of_device_is_compatible(node, "restricted-dma-pool"=
+) &&
+> > -                   of_device_is_available(node)) {
+> > -                       of_node_put(node);
+> > -                       break;
+> > +               if (of_device_is_compatible(it.node, "restricted-dma-po=
+ol") &&
+> > +                   of_device_is_available(it.node)) {
+> > +                       if (!of_reserved_mem_device_init_by_idx(dev, of=
+_node, i)) {
+> > +                               of_node_put(it.node);
+> > +                               return;
+> > +                       }
+> >                 }
+> > -               of_node_put(node);
+> > +               i++;
+> >         }
+> >
+> > -       /*
+> > -        * Attempt to initialize a restricted-dma-pool region if one wa=
+s found.
+> > -        * Note that count can hold a negative error code.
+> > -        */
+> > -       if (i < count && of_reserved_mem_device_init_by_idx(dev, of_nod=
+e, i))
+> > -               dev_warn(dev, "failed to initialise \"restricted-dma-po=
+ol\" memory node\n");
+> > +       dev_warn(dev, "failed to initialise \"restricted-dma-pool\" mem=
+ory node\n");
 >
-> diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-> index 96dd31ea19ba..de4cafd820c2 100644
-> --- a/arch/arm/boot/dts/nxp/mxs/Makefile
-> +++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-> @@ -31,4 +31,5 @@ dtb-$(CONFIG_ARCH_MXS) += \
->  	imx28-sps1.dtb \
->  	imx28-ts4600.dtb \
->  	imx28-tx28.dtb \
-> -	imx28-xea.dtb
-> +	imx28-xea-1.dtb \
-> +	imx28-xea-2.dtb
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
-> new file mode 100644
-> index 000000000000..a56c9930752a
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
-> @@ -0,0 +1,29 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> +/*
-> + * Copyright 2025
-> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-> + */
-> +
-> +/dts-v1/;
-> +#include "imx28-xea.dtsi"
-> +
-> +/ {
-> +	model = "XEA v1";
-> +};
-> +
-> +&pinctrl {
-> +	pinctrl-0 = <&hog_pins_a &hog_pins_tiva &hog_pins_rev1>;
-> +
-> +	hog_pins_rev1: hog@3 {
-> +		reg = <3>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_SSP1_SCK__GPIO_2_12
-> +			MX28_PAD_SSP1_SCK__GPIO_2_12
-> +			MX28_PAD_SSP2_SS1__GPIO_2_20
-> +			MX28_PAD_SSP2_SS2__GPIO_2_21
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
-> new file mode 100644
-> index 000000000000..498905def9c1
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
-> @@ -0,0 +1,66 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> +/*
-> + * Copyright 2025
-> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-> + */
-> +
-> +/dts-v1/;
-> +#include "imx28-xea.dtsi"
-> +
-> +/ {
-> +	model = "XEA v2";
-> +};
-> +
-> +&pinctrl {
-> +	pinctrl-0 = <&hog_pins_a &hog_pins_tiva &hog_pins_rev1>;
-> +
-> +	hog_pins_rev1: hog@3 {
-> +		reg = <3>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_SAIF0_LRCLK__GPIO_3_21
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +	};
-> +
-> +	spi1_pins_a: spi1@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_SSP1_SCK__SSP1_SCK
-> +			MX28_PAD_SSP1_CMD__SSP1_CMD
-> +			MX28_PAD_SSP1_DATA0__SSP1_D0
-> +			MX28_PAD_SSP1_DATA3__GPIO_2_15
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_8mA>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_ENABLE>;
-> +	};
-> +};
-> +
-> +&ssp1 {
-> +	compatible = "fsl,imx28-spi";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&spi1_pins_a>;
-> +	status = "okay";
-> +
-> +	spidev0@0 {
-> +		compatible = "lwn,btt";
-> +		spi-max-frequency = <100000000>;
-> +		reg = <0>;
-
-reg should after compatible.
-
-> +	};
-> +
-> +	spidev2@2 {
-> +		compatible = "lwn,btt";
-> +		spi-max-frequency = <100000000>;
-> +		reg = <2>;
-> +	};
-> +};
-> +
-> +&ssp3 {
-> +	spidev1@1 {
-> +		compatible = "lwn,btt";
-> +		spi-max-frequency = <100000000>;
-> +		reg = <1>;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-> deleted file mode 100644
-> index 6c5e6856648a..000000000000
-> --- a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-> +++ /dev/null
-> @@ -1,100 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> -/*
-> - * Copyright 2021
-> - * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-> - */
-> -
-> -/dts-v1/;
-> -#include "imx28-lwe.dtsi"
-> -
-> -/ {
-> -	model = "Liebherr XEA board";
-> -	compatible = "lwn,imx28-xea", "fsl,imx28";
-> -};
-> -
-> -&can0 {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&can1_pins_a>;
-> -	status = "okay";
-> -};
-> -
-> -&i2c1 {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&i2c1_pins_b>;
-> -	status = "okay";
-> -};
-> -
-> -&pinctrl {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&hog_pins_a &hog_pins_tiva>;
-> -
-> -	hog_pins_a: hog@0 {
-> -		reg = <0>;
-> -		fsl,pinmux-ids = <
-> -			MX28_PAD_GPMI_D00__GPIO_0_0
-> -			MX28_PAD_GPMI_D02__GPIO_0_2
-> -			MX28_PAD_GPMI_D05__GPIO_0_5
-> -			MX28_PAD_GPMI_CE1N__GPIO_0_17
-> -			MX28_PAD_GPMI_RDY0__GPIO_0_20
-> -			MX28_PAD_GPMI_RDY1__GPIO_0_21
-> -			MX28_PAD_GPMI_RDY2__GPIO_0_22
-> -			MX28_PAD_GPMI_RDN__GPIO_0_24
-> -			MX28_PAD_GPMI_CLE__GPIO_0_27
-> -			MX28_PAD_LCD_VSYNC__GPIO_1_28
-> -			MX28_PAD_SSP1_SCK__GPIO_2_12
-> -			MX28_PAD_SSP1_CMD__GPIO_2_13
-> -			MX28_PAD_SSP2_SS1__GPIO_2_20
-> -			MX28_PAD_SSP2_SS2__GPIO_2_21
-> -			MX28_PAD_LCD_D00__GPIO_1_0
-> -			MX28_PAD_LCD_D01__GPIO_1_1
-> -			MX28_PAD_LCD_D02__GPIO_1_2
-> -			MX28_PAD_LCD_D03__GPIO_1_3
-> -			MX28_PAD_LCD_D04__GPIO_1_4
-> -			MX28_PAD_LCD_D05__GPIO_1_5
-> -			MX28_PAD_LCD_D06__GPIO_1_6
-> -		>;
-> -		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> -		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> -		fsl,pull-up = <MXS_PULL_DISABLE>;
-> -	};
-> -
-> -	hog_pins_tiva: hog@1 {
-> -		reg = <1>;
-> -		fsl,pinmux-ids = <
-> -			MX28_PAD_GPMI_RDY3__GPIO_0_23
-> -			MX28_PAD_GPMI_WRN__GPIO_0_25
-> -		>;
-> -		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> -		fsl,pull-up = <MXS_PULL_DISABLE>;
-> -	};
-> -
-> -	hog_pins_coding: hog@2 {
-> -		reg = <2>;
-> -		fsl,pinmux-ids = <
-> -			MX28_PAD_GPMI_D01__GPIO_0_1
-> -			MX28_PAD_GPMI_D03__GPIO_0_3
-> -			MX28_PAD_GPMI_D04__GPIO_0_4
-> -			MX28_PAD_GPMI_D06__GPIO_0_6
-> -			MX28_PAD_GPMI_D07__GPIO_0_7
-> -		>;
-> -		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> -		fsl,pull-up = <MXS_PULL_DISABLE>;
-> -	};
-> -};
-> -
-> -&reg_fec_3v3 {
-> -	gpio = <&gpio0 0 0>;
-> -};
-> -
-> -&reg_usb_5v {
-> -	gpio = <&gpio0 2 0>;
-> -};
-> -
-> -&spi2_pins_a {
-> -	fsl,pinmux-ids = <
-> -		MX28_PAD_SSP2_SCK__SSP2_SCK
-> -		MX28_PAD_SSP2_MOSI__SSP2_CMD
-> -		MX28_PAD_SSP2_MISO__SSP2_D0
-> -		MX28_PAD_SSP2_SS0__GPIO_2_19
-> -	>;
-> -};
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
-> new file mode 100644
-> index 000000000000..adbdc3871045
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
-> @@ -0,0 +1,191 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> +/*
-> + * Copyright 2025
-> + * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-> + */
-> +
-> +/dts-v1/;
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +#include "imx28-lwe.dtsi"
-> +
-> +/ {
-> +	compatible = "lwn,imx28-xea", "fsl,imx28";
-> +
-> +	reg_standby: regulator-standby {
-> +		compatible = "regulator-fixed";
-> +		gpio = <&gpio0 20 GPIO_ACTIVE_LOW>;
-> +		regulator-name = "enable-standby";
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +	};
-> +};
-> +
-> +&can1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&can1_pins_a>;
-> +	xceiver-supply = <&reg_usb_5v>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c1_pins_b>;
-> +	status = "okay";
-> +};
-> +
-> +&eth_switch {
-
-
-This is new file, suggest order by name
-
-You can use https://github.com/lznuaa/dt-format to order it.
-
-Frank
-
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
-> +	phy-supply = <&reg_fec_3v3>;
-> +	phy-reset-duration = <25>;
-> +	phy-reset-post-delay = <10>;
-> +	status = "okay";
-> +
-> +	ethernet-ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		mtip_port1: port@1 {
-> +			reg = <1>;
-> +			label = "lan0";
-> +			local-mac-address = [ 00 00 00 00 00 00 ];
-> +			phy-mode = "rmii";
-> +			phy-handle = <&ethphy0>;
-> +		};
-> +
-> +		mtip_port2: port@2 {
-> +			reg = <2>;
-> +			label = "lan1";
-> +			local-mac-address = [ 00 00 00 00 00 00 ];
-> +			phy-mode = "rmii";
-> +			phy-handle = <&ethphy1>;
-> +		};
-> +	};
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ethphy0: ethernet-phy@0 {
-> +			reg = <0>;
-> +			smsc,disable-energy-detect;
-> +			/* Both PHYs (i.e. 0,1) have the same, single GPIO, */
-> +			/* line to handle both, their interrupts (AND'ed) */
-> +			interrupt-parent = <&gpio4>;
-> +			interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-> +		};
-> +
-> +		ethphy1: ethernet-phy@1 {
-> +			reg = <1>;
-> +			smsc,disable-energy-detect;
-> +			interrupt-parent = <&gpio4>;
-> +			interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-> +		};
-> +	};
-> +};
-> +
-> +&mac0 {
-> +	phy-mode = "rmii";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mac0_pins_a>;
-> +	phy-supply = <&reg_fec_3v3>;
-> +	phy-reset-duration = <100>;
-> +	local-mac-address = [ 00 11 B8 00 BF 8A ];
-> +	status = "okay";
-> +};
-> +
-> +&mac1 {
-> +	phy-mode = "rmii";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mac1_pins_a>;
-> +	status = "okay";
-> +};
-> +
-> +&pinctrl {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&hog_pins_a &hog_pins_tiva>;
-> +
-> +	hog_pins_a: hog@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_GPMI_D00__GPIO_0_0
-> +			MX28_PAD_GPMI_D02__GPIO_0_2
-> +			MX28_PAD_GPMI_D05__GPIO_0_5
-> +			MX28_PAD_GPMI_CE1N__GPIO_0_17
-> +			MX28_PAD_GPMI_RDY0__GPIO_0_20
-> +			MX28_PAD_GPMI_RDY1__GPIO_0_21
-> +			MX28_PAD_GPMI_RDY2__GPIO_0_22
-> +			MX28_PAD_GPMI_RDN__GPIO_0_24
-> +			MX28_PAD_GPMI_CLE__GPIO_0_27
-> +			MX28_PAD_LCD_VSYNC__GPIO_1_28
-> +			MX28_PAD_LCD_D00__GPIO_1_0
-> +			MX28_PAD_LCD_D01__GPIO_1_1
-> +			MX28_PAD_LCD_D02__GPIO_1_2
-> +			MX28_PAD_LCD_D03__GPIO_1_3
-> +			MX28_PAD_LCD_D04__GPIO_1_4
-> +			MX28_PAD_LCD_D05__GPIO_1_5
-> +			MX28_PAD_LCD_D06__GPIO_1_6
-> +			MX28_PAD_LCD_D15__GPIO_1_15
-> +			MX28_PAD_LCD_D16__GPIO_1_16
-> +			MX28_PAD_LCD_D17__GPIO_1_17
-> +			MX28_PAD_LCD_D18__GPIO_1_18
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +	};
-> +
-> +	hog_pins_tiva: hog@1 {
-> +		reg = <1>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_GPMI_RDY3__GPIO_0_23
-> +			MX28_PAD_GPMI_WRN__GPIO_0_25
-> +		>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +	};
-> +
-> +	hog_pins_coding: hog@2 {
-> +		reg = <2>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_GPMI_D01__GPIO_0_1
-> +			MX28_PAD_GPMI_D03__GPIO_0_3
-> +			MX28_PAD_GPMI_D04__GPIO_0_4
-> +			MX28_PAD_GPMI_D06__GPIO_0_6
-> +			MX28_PAD_GPMI_D07__GPIO_0_7
-> +		>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +	};
-> +};
-> +
-> +&reg_fec_3v3 {
-> +	gpio = <&gpio0 0 0>;
-> +};
-> +
-> +&reg_usb_5v {
-> +	gpio = <&gpio0 2 0>;
-> +};
-> +
-> +&ssp2 {
-> +	spidev1@1 {
-> +		compatible = "lwn,btt";
-> +		spi-max-frequency = <100000000>;
-> +		reg = <1>;
-> +	};
-> +
-> +	spidev2@2 {
-> +		compatible = "lwn,btt";
-> +		spi-max-frequency = <100000000>;
-> +		reg = <2>;
-> +	};
-> +};
-> +
-> +&spi2_pins_a {
-> +	fsl,pinmux-ids = <
-> +		MX28_PAD_SSP2_SCK__SSP2_SCK
-> +		MX28_PAD_SSP2_MOSI__SSP2_CMD
-> +		MX28_PAD_SSP2_MISO__SSP2_D0
-> +		MX28_PAD_SSP2_SS0__GPIO_2_19
-> +	>;
-> +};
-> --
-> 2.39.5
+> This changes the behavior. Before this patch, it was:
 >
+>     if a restricted dma pool was found, but initializing it failed, print
+>     a warning.
+>
+> Whereas now it has become:
+>
+>      print a warning unless a restricted dma pool was found and successfu=
+lly
+>      initialized.
+>
+> This change causes the kernel to print out the warning for devices that
+> don't even do DMA:
+
+Thanks. I fixed it up to only warn if i is non-zero.
+
+Rob
