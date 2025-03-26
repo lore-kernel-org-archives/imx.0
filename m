@@ -1,159 +1,210 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011036.outbound.protection.outlook.com [52.101.65.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D081F4717
-	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 20:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743022529; cv=none; b=sLzQQJCfNhlo8d7bACY8iStACYt6rN6xh2BmjlMXXd25WeIGjd2B5bcYoJvY1istq+uOmjVo7BURiiPHsbVkhsR03U8KrAx1lFv2nKMjxVj8J9nDTX6GQa+K/jSxNP3wOjPV+wfCW7ArZPHwuFcJPAvuvOM2NK6roAMOixuKZ+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743022529; c=relaxed/simple;
-	bh=Xl9hEEBlJ9dSh85SPF5rDHvTpb212NQOd6rM5MloDQM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HWO3pFVz6n+6QKozatPN7WwxC5vA3dGlxreLBvTvLz5HrSUf2GFMAgY1idVg+yHnoSS1FpKBmczaEKgsXNfeAtiAtta8uSA2GX/cm348Zm9/utwf2uxKhVQ1H2cIfIFIMNMdz8JIyawk2+I6qHGGonP0/MLORFsmYvbK05fjMXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=3ZTfnoBi; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A136023E226
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 21:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743025957; cv=fail; b=CilgqdRVYaFYrbGXGg10ORe4skqNmGhqhB0VcUJJ1tbP5ESX2qC0UYSrI1k0Xn2vRwuL3X981F5Ic0rQ3VPY+Xb1kAJ4MUBd9w3uA59XPOPQICPtzh5Ff79Es5sJhdVY98klUUL7OqgVqrNuYGDeqkNhWUtY4nN8zkVvhWw43j8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743025957; c=relaxed/simple;
+	bh=9jgPx8GaQspQ7qjzFA7Wz+bF0umJTWmNOwUNW88ub/s=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=GjXAWRUOak3M3KZJ9UuKvsvnFVvuxde6qB209S++BAZniKAqdK4moKojMGIiXCTTZGWwIpTjI+pTT+IIWmIqnMJDnYZGcusYox7b2ArYalXsrEysKDPowwNb5BblJ2AXHwch5Ta+7DkSHGqFzHzSlYqMzewDtApgS1DAvPMAWUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S/hZDoa5; arc=fail smtp.client-ip=52.101.65.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="3ZTfnoBi"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e8f254b875so1878816d6.1
-        for <imx@lists.linux.dev>; Wed, 26 Mar 2025 13:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1743022527; x=1743627327; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5W7eit3LvJ+Cj4I9mmTKcAopJ4/V9ebVZTl7mNDE+uo=;
-        b=3ZTfnoBiJAznbr/4sfcrZw1t9NIAD569s547OiVqsDrjutXNKK/E2iTa2NZ66Q19w2
-         jR1HYiVlLPLgeUo+APWG/ZaR8qc/97X2o0VHY8u1LjTwj9x3Gjm85TxAQInFhHM/Th0b
-         3ilX5i78R9uVvHuIrpbKrkxpcF6MYkTRQ1auoe7zci9W38wglqjCLhU8SdNiz8XRtEgB
-         VHPSH4WtKzgCuAMnrax88PSaxeaWgp4USGR8f7LxiN8J2RMoU0hmSTtQBswM54+KrWCN
-         IhTlhZF8mh6NAbz56vrytQ8zR6DCc4mtgRw2mLZgZEd8+Omaml9qoa0SROdxxA9haVcq
-         ucKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743022527; x=1743627327;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5W7eit3LvJ+Cj4I9mmTKcAopJ4/V9ebVZTl7mNDE+uo=;
-        b=wL0pf+buuqwRAiEfoY0734ki/Md0/ZJQtbvIHDpPk0iQtFeu4GXjhfQZVjvJmH3wN6
-         8Ag/TbcskBffO5UcSvSSKN0yZ4f0cQGeBFl2jWl9EwL1okwmsiKLqxA9TYFFhPbENWYu
-         CeJajrOun+nN0qYIajnfhL28az2W9aH2NImRdrDaOA0mLSDyTX4CcjgzuzZV21JeBbOT
-         B9OlLNwYOMrUnlRtFXmoVk43AV96L6u7nMkDjNqcxNr0DPUUvNtUq6Dw5KrDVcDJUmLs
-         1H18VprMs/jXQmPG6OvcGAApkOJs0b6A0k8Ou85a9KtbP1ZjXMwQtG1HEkzMa/HHFtb+
-         EGZw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1xlnd3b+3NpV2ar9JW7rHlgKeNApsweEjtephJjvnmXMM0mGIEvH9Cc78fD2sBxyfa4Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5+IzeViYB4xt3WcGLGolSnRRRDER+LczNid+2Y22vYgFRFnUT
-	m8WsadHbkhuaJ66mUdo47cBg4P+vK9LSOPg7CXNXMK1a04fyGvXJbkQr2kCn1tg=
-X-Gm-Gg: ASbGncsc13DmwLFGtVWJNc9x1rpZax1jEarVS/MTFOlXA0xRvAO/EQ1foV/CeAPnG3V
-	v9Hr8Scyqey33gh399U1ZB1oPxyJS7ZJDPoSVxYY0XKGzqzBdK534C2Xhz6MTfNHoGdv+uml9ZD
-	Ftppx0ZeZQdhpB3JhKbneuuxSkn9RhU5g78yJQgJeZYXPpxt/EUwvgZ5SzJVLBJoNtTQzA3QTm3
-	mnYtrqmcxcBRNaTaxxWdxQMg+27ToFCmojKaIWjhvLeXvYb3Man12Vr5kPdd/kT4eA/pZ8aB3fr
-	HPo9uRJ+a4W/Yx+WnhCwcSi6+QeVt4pBuiYmnMdthD4+KIIyRQ==
-X-Google-Smtp-Source: AGHT+IHbfejsmynMze516eRewXRtjx57eaFY2IsodhkGJRNoTFNQq3NQr/NHsm2iVzU1A+1ZgZFRqw==
-X-Received: by 2002:a05:6214:cc1:b0:6eb:2fd4:30a7 with SMTP id 6a1803df08f44-6ed23934b0dmr10501496d6.33.1743022526776;
-        Wed, 26 Mar 2025 13:55:26 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:11:e976::5ac? ([2606:6d00:11:e976::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efda74esm70987466d6.102.2025.03.26.13.55.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 13:55:26 -0700 (PDT)
-Message-ID: <927a67500f3e4495e7efe03f3d3c8250a393192d.camel@ndufresne.ca>
-Subject: Re: [PATCH v3 2/2] media: amphion: Add a frame flush mode for
- decoder
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
-Cc: sebastian.fricke@collabora.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
- linux-imx@nxp.com, xiahong.bao@nxp.com, 	eagle.zhou@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Date: Wed, 26 Mar 2025 16:55:25 -0400
-In-Reply-To: <20250305062630.2329032-2-ming.qian@oss.nxp.com>
-References: <20250305062630.2329032-1-ming.qian@oss.nxp.com>
-	 <20250305062630.2329032-2-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S/hZDoa5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YhBeN1JovSjI+IsTvE3yx2LgeY8tn+lEJdq5xNB4RNnil9JXhEFDWei+HAlqiXUwsxUKynHGerffcLZ9pxcPt6t/X25MYTl3kdzkH8RHZ5jtdGc3qAlU2KmQmHkjffn0cJx+x79qSUEfSg9Ecv1GZNolAabMbn97tcVSCYABFteMBsNtQNoZ4fIZm9iUwANy0OYaJSbnfudXIMhfYt4dIEw0NHGo3bP6TD4XuZJM7qbXFLmxjjm6+RrJBcwrntWNKwqNMN6Ncmmp8MkHfqJy3qXJyaEwslESTztlnK6CqgoscqANvphT+8npMi62IC2/tsKEBcn9ASDLAeaYCHBXBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1xw2BoiZRIg1GWm7LEOPQnDGYalum15Z06BFd2LBL0k=;
+ b=E7gq6udAEhNy0CL4kmBewUTnVljg8DqOXuCBmmpKVlECb20xWDCYkd9ta2jzf0XCmMCS71F0AXvMZf58fUaf/rCKiFGVutMyHGUzHHKtVRKYH9iyZNcyUtCsqrSOw5vT8RkT7U0TjlDATWyRIQs50tZuOqS5CE6ESC++KtORsnMaprzNWtO/Ga0kNqbNrLfUAti81wNoZPHNUJR3tpSjuUiiuXO8zdMQTUcxTReJKOPEzP5eDv0s3V7OgFNRNhtIuT8bx422TqLXmsrxy/dDfgoCbrgoWDUgP7HqUpVNKt2gSFcJ2xsMCsxpM3XkkYx4zLCx31YNTAIuigp7LwqWfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1xw2BoiZRIg1GWm7LEOPQnDGYalum15Z06BFd2LBL0k=;
+ b=S/hZDoa5Bma1Sc70mhamCfdHXSZ0rRkd77S62ykHUUnc2RHYWK06qmc+cEpGlG2Sh4aGOhsrQdpROlw8zz1fSboKjoS1ncbIjkZDOa85H/5Hyqy7qao0R/9IEfdHGSZyVFyNzKSsjHNwGjxbDcXRjpFhzq9iVbc8rBXVvOBAVXyy/iGGNhspjFbh7lqVMZ6R6h+6uQwLcKRQkY8uMn0w0+oHDGlkJnDINpemVpfGH1nzY3VaSOSkqhdsP9nzp/fFpUlUUwdaTb3wa64hq8eou4FYX6kfIS0Uxc6aqdkuA6N7VuOZKeUfH6H5o7C0myo1Uq5YH1jCO8mnNS8D40Yhcw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU7PR04MB11209.eurprd04.prod.outlook.com (2603:10a6:10:5b3::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 26 Mar
+ 2025 21:52:31 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8534.040; Wed, 26 Mar 2025
+ 21:52:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] arm64: dts: imx8qm-mek: consolidate reserved-memory
+Date: Wed, 26 Mar 2025 17:52:14 -0400
+Message-Id: <20250326215214.1706887-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR17CA0039.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU7PR04MB11209:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63690b61-c48e-4f62-a649-08dd6cb081f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BzR/Lr5anPdUKX9AJeyR/gPVl23S+OkCPR9VC0h3nbEiA9m89+w09Bh3BKjR?=
+ =?us-ascii?Q?i5uVQIZ3tt7zBygN8sJ6WMur6/0ZwI8FMNCNGM4SY6/+uPBZGDdO7kcr/WAD?=
+ =?us-ascii?Q?vHx6TpRmP/reB6FpCNA6MGXHV06tD6d0wHNIi5vtkkb308xgbwWbw3/DLcct?=
+ =?us-ascii?Q?LuWUTQndFUg8/PfbFBwEIZWuiVZT753HbWz6Usqk/gRaP0NK39ZS3riQPo13?=
+ =?us-ascii?Q?ebbnFVhC34DyjOi3K4dv7VBrX+qfyxUMa6I/5MZxlSKl3MZZkV68cCNH427D?=
+ =?us-ascii?Q?ndlXwxppWriTSM7dRwIfKIoD9IhnTGJhwSKFPCLvNrjSMaDOkffiZi94PDqG?=
+ =?us-ascii?Q?xSq1e0e8CTQE7aCHpoChW1kcsIu5gW2IMvy+2u4HNKk94YAt94isI3kEu7dz?=
+ =?us-ascii?Q?ViYAoVpgXLa58dbogck6cqqTDUrHGRVh/NfE2BP2Eqc2U5gI/Oz2BgxVdya3?=
+ =?us-ascii?Q?pJGWzy7jR68d9bhHELol0wvC0atlrqKa7s9jZRfojgkkaV0qzQJBe9/F4cih?=
+ =?us-ascii?Q?bL51mmA9JhaX1Qw+qII8eQLlUcR2tI0jkJ09g6RuHhLvojOfGdxXo1+Jl4mb?=
+ =?us-ascii?Q?T1fqJaUnk8cwxof+wRqjMxnT7Gur9QViMeLi25qMhOkZD06z1akFHQbR/LtD?=
+ =?us-ascii?Q?joyQJ43LBg0bcpSn+nAOJnTcRNW9h0bN3l3+xsKjT+qO6kKWuw+2Su6k0IZ8?=
+ =?us-ascii?Q?kj8BJwv9szm8pvERUI0D0bImmV7mx484/vrjEr2yjIqYcNBmVFgOkMQwQAAk?=
+ =?us-ascii?Q?32lRS9lkGM9VIBYKrlSE2Bayu8r0uZWSghzsHi///YARmS+1YCDrQBX5gynl?=
+ =?us-ascii?Q?mDZbSnNU7fYf+/PMCWxN2KSyG0tINMZ3n3OKkmYM3R3SV+VPIgwC6yvG4uNF?=
+ =?us-ascii?Q?ehbBq2X4wWxCcmCQ+uVHo0d3zA+3KmdVWsMATYyxf8+s4wmRc3ZsOZ75+7UT?=
+ =?us-ascii?Q?uHOl2C9Zn2bVd25vQ3TRY9mWoWhNiLkBP6FvGhPnTUEuDn73P0tZjrh7k2Yw?=
+ =?us-ascii?Q?y6WdFcMprlTHn251N5WW64Cw5D8bisrA8sv9maCMGqY0nizstLNpfNRe39Of?=
+ =?us-ascii?Q?fIRKSq9FMWqyWjHISMe3Vtg761LzFsHPDE0hK0lO2wnmTXLGmLyfMKD/57GN?=
+ =?us-ascii?Q?gDlxnkmc3kfsurU68EucB2y/wiY86PHHRkNHCkKtCXSYojMVJZePloz0pX91?=
+ =?us-ascii?Q?Cuvs/EVwgDunLqgtCrTZlgFe+x1YgdXCmuqNV+D2GFJJJAsRWs4FbgiD4Q6a?=
+ =?us-ascii?Q?fNpTL/DCEEteWnZLRp9Yhplr67t+hycg6itAaQKz/IJ2z7fnIs6/ARwH0zgr?=
+ =?us-ascii?Q?FYgfFWEB8CJVH8U/g7MS1sYtqAWuYdC4k21JvXCc/9RtYSbP9Wb9bcaMmero?=
+ =?us-ascii?Q?ixZ8JSZK2jydZHJEMSJ6OpJP/tYcgdc44VqTYd6UcXzHXuUPLZv6Z08L2Hr4?=
+ =?us-ascii?Q?piPp0o5ufsD5v6DX4wO70/kF+zjGe+C4nKSgcJbfrOXMmufVXggqmENwYWOt?=
+ =?us-ascii?Q?7VfWw2woCgs04x4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wWxT5MdOnvj/pnXlbGRSadupz5AesMFk0gNP28DHvXLvvY/nRHvvrd0pTh5X?=
+ =?us-ascii?Q?pzrPPOTJHe1TIWf8WdChQreJ/Txg+HEiDPdPOLNAXOhKNu+igVUgPp+RP7iS?=
+ =?us-ascii?Q?CK4vTn/SR/6N+O0BTMeg/f3keuJs7fx6H+itBXSC43BCR+EH0rmwS7tnNp4i?=
+ =?us-ascii?Q?g60r5TVNhrYlbSscM2kJB49RecHIQuGlg6GcS9CwqwY8Gtxj3vH22Khc7VWP?=
+ =?us-ascii?Q?1D8xXxJfPuVWz5zqef4lR9sGhEP4CcIh1d/YUskPewmYUdlogZ7TNtXuuXBL?=
+ =?us-ascii?Q?zDkGrNDb9vJWhMaBJoaaBpBBP3HDXHnH8i4xoh/iPBv5BqlWBDa3gn5LD7m0?=
+ =?us-ascii?Q?nXWnoGhNNJdpv8Rhhbyo7sXnOpLL7QTcg89v1DneAmwVweeGjtb+SdS1M7ZU?=
+ =?us-ascii?Q?jw2cHqXwl/zmRmA2uFqOgx93TLHYcvuXlJaswr9wPTeQWkAlTqSy5ZMCRkb2?=
+ =?us-ascii?Q?cZ/zAUEs8KEWyfnbz6SRxQPf3SOx8COXtnnNdVWmXvxQkmJBkUYJ8Ipw49JM?=
+ =?us-ascii?Q?8EoK7XCes/6VUOEwT4xRyQOkR1VWBVcmWVwtp1k1iDNzkaFQmlbQtHmwA1IS?=
+ =?us-ascii?Q?5lr0TCvExyS7O20UTrEwOUyWVbR+FAoZyDWBKt/Wf29mx8LwQAYBjuSDkmJy?=
+ =?us-ascii?Q?7zolDqKzNTrXsARlQ64TxDMJ5hTakmyu4XnDa8Go4Hr3aw7/iDS71zlIv4vs?=
+ =?us-ascii?Q?d4+rNN/ZFgoKFYjPzCdBYgm8V2aNLIZ/xFZWKq79vcoyNPBESgoyN29Zn3PI?=
+ =?us-ascii?Q?UgfM8mbwqNdTfnCvU/U4WYJoh1Or20vUM0TGX9MGhMqAPJOTIb7K6i54akRH?=
+ =?us-ascii?Q?RKF+zPV5e7/eX0RvngcnUrkGSNvbVwfbswBv2ACzaptg4KVhCr5x5/gbdF3i?=
+ =?us-ascii?Q?ejqmVjysHF2PDKenmtKXsYkQ8mqilDw2JuWbQLNVRrSeIqcSwlhl8Kiq33IJ?=
+ =?us-ascii?Q?numXkuseiVGBQMm4YiPYnDmZ1pmJSlRAvnjZzKymhcD3nYFwmqVXaMEz5e5j?=
+ =?us-ascii?Q?Muxd78CspZ3d9TNJR3eKjSlVWOW0qEDLl83YEDzR9mxJATVUG8yvs2YTeW76?=
+ =?us-ascii?Q?kLkoU/cyxKQyOAfMGcDf0/RWDx60FxDLn7TH9pHPy4X/FKQ0NFH+I+01hPRn?=
+ =?us-ascii?Q?S8eoB3V9iEjBg9Yc1QmGQkxDPhE7/LMwmzb8T+ZPDKgZClAEw50s15YlnmF9?=
+ =?us-ascii?Q?epC0R/zFGAJtEh6Pi101gRKuQ5gEffvLfQ82Zo8LJxXMNsyVjDkqBzVK7fMj?=
+ =?us-ascii?Q?ltLDyZJGrYgzXwWLEf5cEVrNpY5MBSgMV6sg0L3n6BbnTSR0zcJN8ZxrflNt?=
+ =?us-ascii?Q?bV1ojfEl+MN5VSFaWx6WTjP9aHuU03Ndb8Xxex+TII+gcyxKKryc7xwonupx?=
+ =?us-ascii?Q?9UaEFQhek8WQ13NiXAB9GjSbZmSJJJW2V2uiUBPGpqKTRKvYwz+Q+uQ4oBNX?=
+ =?us-ascii?Q?GZFA7f8LlsCZEzY//8qDML+3qeA3RrJiEXJetMBsvQkiUdpyQyvuVKh7yM9U?=
+ =?us-ascii?Q?SbeMatE6TI37aySbrLlVA9+k8OkppGbrZ/QXxObT1D3IkYBsjfg00N/GZ5fw?=
+ =?us-ascii?Q?/AQZSsRzIK+PBiBYAAR0iqLG8vbtK3k/Paf3BpPv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63690b61-c48e-4f62-a649-08dd6cb081f4
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 21:52:30.9419
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wh35WkIa+FiRI14Lr+D3RAzm2w2MigsbFghyn3nC+Ek7uSQSTtdQtpMMD+6oCalOg45DWaNm4MN4z2tt8XvDug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11209
 
-Le mercredi 05 mars 2025 =C3=A0 14:26 +0800, ming.qian@oss.nxp.com a =C3=A9=
-crit=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> By default the amphion decoder will pre-parse 3 frames before starting
-> to decode the first frame. Alternatively, a block of flush padding data
-> can be appended to the frame, which will ensure that the decoder can
-> start decoding immediately after parsing the flush padding data, thus
-> potentially reducing decoding latency.
->=20
-> This mode was previously only enabled, when the display delay was set to
-> 0. Allow the user to manually toggle the use of that mode via a module
-> parameter called frame_flush_mode, which enables the mode without
-> changing the display order.
+Move dsp_vdev* to under existed reserved-memory node to consolidate all
+reserved-memory together.
 
-Ok, so in short the DISPLAY_DELAY breaks the reodering like intended,
-while this module parameter only reduce the delay. Perhaps I'll ask
-again, is is compliant or does it break some test vectors ?=20
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 34 +++++++++----------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
->=20
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v3
-> - Improve commit message as recommended
-> - Add some comments to avoid code looks cryptic
->=20
-> =C2=A0drivers/media/platform/amphion/vpu_malone.c | 14 +++++++++++++-
-> =C2=A01 file changed, 13 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/=
-platform/amphion/vpu_malone.c
-> index 1d9e10d9bec1..4ef9810d8142 100644
-> --- a/drivers/media/platform/amphion/vpu_malone.c
-> +++ b/drivers/media/platform/amphion/vpu_malone.c
-> @@ -25,6 +25,10 @@
-> =C2=A0#include "vpu_imx8q.h"
-> =C2=A0#include "vpu_malone.h"
-> =C2=A0
-> +static bool frame_flush_mode;
-> +module_param(frame_flush_mode, bool, 0644);
-> +MODULE_PARM_DESC(frame_flush_mode, "Set low latency flush mode: 0 (disab=
-le) or 1 (enable)");
-
-Depending on the explanation, I may come back and suggest a different
-name for it. Meanwhile, have you consider simply "low_latency" ?
-
-> +
-> =C2=A0#define CMD_SIZE			25600
-> =C2=A0#define MSG_SIZE			25600
-> =C2=A0#define CODEC_SIZE			0x1000
-> @@ -1579,7 +1583,15 @@ static int vpu_malone_input_frame_data(struct vpu_=
-malone_str_buffer __iomem *str
-> =C2=A0
-> =C2=A0	vpu_malone_update_wptr(str_buf, wptr);
-> =C2=A0
-> -	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
-> +	/*
-> +	 * Enable the low latency flush mode if display delay is set to 0
-> +	 * or parameter frame_flush_mode is set to 1.
-> +	 * The low latency flush mode requires some padding data to be appended=
- after each frame,
-> +	 * but don't put it in between the sequence header and frame.
-> +	 * Only H264 and HEVC decoder support this module yet,
-> +	 * for other formats, vpu_malone_add_scode() will return 0.
-> +	 */
-> +	if ((disp_imm || frame_flush_mode) && !vpu_vb_is_codecconfig(vbuf)) {
-> =C2=A0		ret =3D vpu_malone_add_scode(inst->core->iface,
-> =C2=A0					=C2=A0=C2=A0 inst->id,
-> =C2=A0					=C2=A0=C2=A0 &inst->stream_buffer,
-
-In principle I'm fine with adding a module parameters, I just want to
-know more about it, perhaps we should add small hints in the
-description (or a comment in the code).
-
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+index a669a5d500d32..4ba8ddd472234 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+@@ -40,24 +40,6 @@ memory@80000000 {
+ 		reg = <0x00000000 0x80000000 0 0x40000000>;
+ 	};
+ 
+-	reserved-memory {
+-		dsp_vdev0vring0: memory@942f0000 {
+-			reg = <0 0x942f0000 0 0x8000>;
+-			no-map;
+-		};
+-
+-		dsp_vdev0vring1: memory@942f8000 {
+-			reg = <0 0x942f8000 0 0x8000>;
+-			no-map;
+-		};
+-
+-		dsp_vdev0buffer: memory@94300000 {
+-			compatible = "shared-dma-pool";
+-			reg = <0 0x94300000 0 0x100000>;
+-			no-map;
+-		};
+-	};
+-
+ 	reg_usdhc2_vmmc: usdhc2-vmmc {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "SD1_SPWR";
+@@ -189,6 +171,22 @@ vdevbuffer: memory@90400000 {
+ 			no-map;
+ 		};
+ 
++		dsp_vdev0vring0: memory@942f0000 {
++			reg = <0 0x942f0000 0 0x8000>;
++			no-map;
++		};
++
++		dsp_vdev0vring1: memory@942f8000 {
++			reg = <0 0x942f8000 0 0x8000>;
++			no-map;
++		};
++
++		dsp_vdev0buffer: memory@94300000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x94300000 0 0x100000>;
++			no-map;
++		};
++
+ 		gpu_reserved: memory@880000000 {
+ 			no-map;
+ 			reg = <0x8 0x80000000 0 0x10000000>;
+-- 
+2.34.1
 
