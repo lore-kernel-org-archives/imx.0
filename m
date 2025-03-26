@@ -1,224 +1,143 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813C1A5B9C
-	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 10:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7911B424A
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 10:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742984736; cv=none; b=nswZYkHRU3ixaUA4U2leXf9AkaZAGhAOPFigaovCzFO3Pdw2eI5fiq1egAhETaWO707WlwAoGCMS/eWNPJA0WTd/MSkvEvdeeLWjFn5dm7dXxm0AjG+BZNYHaH5Fb4u9YYM3FTUfsIfcNdEPyu9fx+bv5QtVwt/rierlPK7yg48=
+	t=1742985533; cv=none; b=FLJjUL++NbHE3l45bgfniL5gr9aqf8fxEhCn/iTL2Wos5VkyjqhLOikAebw47s9k0j0Z/Go0TDRLiTCCkHaA5ijcdpNrT7r/Y691UgA+CODtdSLMUUXjADv5kOMfKzKY1XnjGnqlfii3XZVCKdZmnx/ZolF9YIOrYplCwBVI45o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742984736; c=relaxed/simple;
-	bh=wuFLlvUXlFpsXneQRdiEzeRYO/930T9m8+BICitSVn8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OJTjdLIHvz0YdeaZmdVCj3/0OexM3Wht5eOmHpMmBGXjO2xFyXRv94iwB5Wrq73Hb4Pid1UFcAUfYk+FEvU365D3GlKsgQgRcAGFexq7ms/DCFNv95rE/kjDb4ZVml9bZdU9LQdSMvYXFW8RNoiq/D2vetKeC87PNtqcipeZF8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1txNwp-0008Ep-B0; Wed, 26 Mar 2025 11:25:23 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1txNwo-001jOU-1d;
-	Wed, 26 Mar 2025 11:25:22 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1txNwo-000552-2V;
-	Wed, 26 Mar 2025 11:25:22 +0100
-Date: Wed, 26 Mar 2025 11:25:22 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] dt-bindings: bus: add documentation for the IMX
- AIPSTZ bridge
-Message-ID: <20250326102522.rtsffb37wvolhwd4@pengutronix.de>
-References: <20250324162556.30972-1-laurentiumihalcea111@gmail.com>
- <20250324162556.30972-2-laurentiumihalcea111@gmail.com>
- <20250325032303.GA1624882-robh@kernel.org>
+	s=arc-20240116; t=1742985533; c=relaxed/simple;
+	bh=4sjlpSeiW8BPZ2gloRcNiH1clVDJW6TOW9ZqzX8nOt4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mJ0AGafoaWWRq+Z+bu36RS6LKRgcCSX9vtIrh9bRlQ0cbEcQvoJVaCNSl60VHiAoQekiyQTIRJ8O5ZQA76AV1R+e+cRb74/1c9Z2iQTubEM9bG+Y/LxbPlppMQhn6X9CrkVPYCveRTqdXe2/tPhi2XdirjH9e9nOiCLZeplYrLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ooW5VAdK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ooW5VAdK"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q73JO7004322;
+	Wed, 26 Mar 2025 10:38:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	misQHeiBbzOmvCNgf8vEmI8bJoYtUzpNmKjPdcGR5bk=; b=ooW5VAdKOLtb2zWR
+	zx1t/zcU5VKWUS6nN+re/MF0n8rqEoc06bHAeax9ZRF4u0gaOaIstVp1SO8LT3yJ
+	iX1BSP/EVQHEXigXz+c9O16hx4q6Wzm9i9rCFs5qTShMEBaWngq9PAHZfiMZFf2X
+	PeLBZp83+GZCJDSdWCbY4EySS/QKfBtuC/czA97R1riHvqHy4r1myhH1o18g08Mp
+	/gsbktxtesDP1uagx6Bo/OKP/q9v7ttQ55x0WT4JCW02khKTPobww/haLD3RRiiO
+	48pDO1oJlLjY/rXFebjMJlq9b5zAdb+puyyDibTxZfPpegT7lejCMEe3xFufGmHX
+	ttQHnQ==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45kmcycq6q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 10:38:35 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 52QAcZHP031580
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 10:38:35 GMT
+Received: from [10.217.219.207] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Mar
+ 2025 03:38:31 -0700
+Message-ID: <823ab604-ac59-4b85-8bca-81e8b4c5c63d@quicinc.com>
+Date: Wed, 26 Mar 2025 16:08:28 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250325032303.GA1624882-robh@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] i2c: imx: add some dev_err_probe calls
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Oleksij Rempel
+	<o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha
+ Hauer <s.hauer@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>
+CC: <linux-i2c@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250326084937.3932383-1-alexander.stein@ew.tq-group.com>
+Content-Language: en-US
+From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+In-Reply-To: <20250326084937.3932383-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=EZ3IQOmC c=1 sm=1 tr=0 ts=67e3d92b cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=8f9FM25-AAAA:8 a=T3eNeIW6sh54MCHzbYgA:9 a=QEXdDO2ut3YA:10
+ a=uSNRK0Bqq4PXrUp6LDpb:22
+X-Proofpoint-ORIG-GUID: fBVMLbZVYV5bXMaBHbqWx3iBszV8Mp-n
+X-Proofpoint-GUID: fBVMLbZVYV5bXMaBHbqWx3iBszV8Mp-n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_03,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 clxscore=1011 bulkscore=0 phishscore=0
+ adultscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503260064
 
-Hi Laurentiu,
 
-On 25-03-24, Rob Herring wrote:
-> On Mon, Mar 24, 2025 at 12:25:52PM -0400, Laurentiu Mihalcea wrote:
-> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > 
-> > Add documentation for IMX AIPSTZ bridge.
-> > 
-> > Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > ---
-> >  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 107 ++++++++++++++++++
-> >  1 file changed, 107 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
-> > new file mode 100644
-> > index 000000000000..c0427dfcdaca
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
-> > @@ -0,0 +1,107 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Secure AHB to IP Slave bus (AIPSTZ) bridge
-> > +
-> > +description:
-> > +  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
-> > +  issuing transactions to IP Slave peripherals. Additionally, this module
-> > +  offers access control configurations meant to restrict which peripherals
-> > +  a master can access.
-> 
-> Wrap at 80 chars.
-> 
-> > +
-> > +maintainers:
-> > +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: fsl,imx8mp-aipstz
-> > +
-> > +  reg:
-> > +    maxItems: 2
-> > +
-> > +  reg-names:
-> > +    items:
-> > +      - const: bus
-> > +      - const: ac
-> > +
-> > +  power-domains:
-> > +    maxItems: 1
-> > +
-> > +  "#address-cells":
-> > +    const: 1
-> > +
-> > +  "#size-cells":
-> > +    const: 1
-> > +
-> > +  "#access-controller-cells":
-> > +    const: 0
-> 
-> With 0 cells, how do you identify which device it is?
-> 
-> > +
-> > +  ranges: true
-> > +
-> > +# borrowed from simple-bus.yaml, no additional requirements for children
-> > +patternProperties:
-> > +  "@(0|[1-9a-f][0-9a-f]*)$":
-> > +    type: object
-> > +    additionalProperties: true
-> > +    properties:
-> > +      reg:
-> > +        items:
-> > +          minItems: 2
-> > +          maxItems: 4
-> > +        minItems: 1
-> > +        maxItems: 1024
-> > +      ranges:
-> > +        oneOf:
-> > +          - items:
-> > +              minItems: 3
-> > +              maxItems: 7
-> > +            minItems: 1
-> > +            maxItems: 1024
-> > +          - $ref: /schemas/types.yaml#/definitions/flag
-> > +    anyOf:
-> > +      - required:
-> > +          - reg
-> > +      - required:
-> > +          - ranges
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - reg-names
-> > +  - power-domains
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +  - "#access-controller-cells"
-> > +  - ranges
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/clock/imx8mp-clock.h>
-> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +
-> > +    bus@30c00000 {
-> > +        compatible = "fsl,imx8mp-aipstz";
-> > +        reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
-> 
-> It doesn't look like you have any registers in the 1st entry, but they 
-> are child devices? Then you should use ranges and drop it here:
-> 
-> ranges = <0x0 0x30c00000 0x400000>;
-> 
-> 
-> > +        reg-names = "bus", "ac";
 
-Thanks for picking up my suggestion :) IMHO it does look more logical
-now. I wasn't aware of the 'ranges' property else I would have suggested
-you to use this property instead of having two regs, sorry. Once you
-changed it to ranges we can drop the 'reg-names' as well since you only
-need to supply the 'ac' register space.
+On 3/26/2025 2:19 PM, Alexander Stein wrote:
+> Especially DMA channels might not be available. Add some deferred probe
+> messages accordingly.
+> 
+Anything specific instead of some deferred probe messages ?  Would be 
+good to mention problem like During probe if DMA channels not available, 
+replace regular error messages by deferred probe messages ?
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>   drivers/i2c/busses/i2c-imx.c | 14 +++++++++-----
+>   1 file changed, 9 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 9e5d454d8318e..e6e09d5a2bbd4 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1711,11 +1711,13 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>   
+>   	irq = platform_get_irq(pdev, 0);
+>   	if (irq < 0)
+> -		return irq;
+> +		return dev_err_probe(&pdev->dev, irq,
+> +				     "can't get IRQ\n");
+Can fit into single line ?
+>   
+>   	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+>   	if (IS_ERR(base))
+> -		return PTR_ERR(base);
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(base),
+> +				     "can't get IO memory\n");
+same here if possible.
+>   
+>   	phy_addr = (dma_addr_t)res->start;
+>   	i2c_imx = devm_kzalloc(&pdev->dev, sizeof(*i2c_imx), GFP_KERNEL);
+> @@ -1810,13 +1812,15 @@ static int i2c_imx_probe(struct platform_device *pdev)
+>   	 */
+>   	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
+>   	if (ret) {
+> -		if (ret == -EPROBE_DEFER)
+> +		if (ret == -EPROBE_DEFER) {
+> +			dev_err_probe(&pdev->dev, ret, "can't get DMA channels\n");
+>   			goto clk_notifier_unregister;
+> -		else if (ret == -ENODEV)
+> +		} else if (ret == -ENODEV) {
+>   			dev_dbg(&pdev->dev, "Only use PIO mode\n");
+> -		else
+> +		} else {
+>   			dev_warn(&pdev->dev, "Failed to setup DMA (%pe), only use PIO mode\n",
+>   				 ERR_PTR(ret));
+> +		}
+>   	}
+>   
+>   	/* Add I2C adapter */
 
-Regards,
-  Marco
-
-> > +        power-domains = <&pgc_audio>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <1>;
-> > +        #access-controller-cells = <0>;
-> > +        ranges;
-> > +
-> > +        dma-controller@30e00000 {
-> > +            compatible = "fsl,imx8mp-sdma", "fsl,imx8mq-sdma";
-> > +            reg = <0x30e00000 0x10000>;
-> > +            #dma-cells = <3>;
-> > +            clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SDMA3_ROOT>,
-> > +                     <&clk IMX8MP_CLK_AUDIO_ROOT>;
-> > +            clock-names = "ipg", "ahb";
-> > +            interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
-> > +            fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
-> 
-> No 'access-controllers' here?
-> 
-> > +        };
-> > +    };
-> > -- 
-> > 2.34.1
-> > 
-> 
