@@ -1,499 +1,160 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9191C6FF7
-	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 17:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5D023FC4B
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 17:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743010470; cv=none; b=de4uboI2dE/twtGk8tfLMBjsdQN6lQHrcybdTCvROfMQ2ymLlPlMXIz64kGH026Eh/G289g/vfeEqwycEWPGv05cfEIJeycCQ58WeFPmHtQmtxPJG9ppNgDPpcGFQ8ZsKw49ppMEVy4eIr9OuOSRvmElBQePvv0bjQQP/ZhdGao=
+	t=1743011280; cv=none; b=Vk6WbtAOnh3OPCR7vr+D7/QyuwVMQFHT897CS4EcbPGsd0lPXhpfNfMxwhAlPqbbBKxL3Tj11C/YDMBd5NZL6LlNoSs2w9z3hr9w1Uo3r7nWt7sNR+5jFUbqY56ffTo6uKpWW9SqF81NW9o2SCIoRgOYHUrKHgA6oyUJtkb60o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743010470; c=relaxed/simple;
-	bh=IVMKgayk/wm1ZTUoIFqiZ1irK5MDlnkRKXQmO/1F6pc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MX1StL6gQKZ/f3bWfcE3QJ5LBVDwSWnGA+eeaYGG0c9S1uUtSyHEYzjU+AhW0yGXScnH9b59i25ZyprTi06HRyrM4OxIizM+hA0s1lj6OuUKDJoLr7cvNqH/X2uKrRiu4G24E8M76X8WDHrYpIvdg6mDoP/x5hyTHM3F84afUzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=arDpxXX2; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1743011280; c=relaxed/simple;
+	bh=s+xeRtzp7DeGxh5yCudBfeM51M/NejGIPTAer6VXEWQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UTgnrOqdLQOkBdQerczhFUe5EYa4JE4lx8taLfRgfvS0SzRYIpkbUz12b6n0XjcVnWo7HgqUrG3Q8ZqviblBi07t88Rgy5KIrdFmbAfxwCV09gh0nfFDFauLH5VLgi94re9V8tRsnwOdlmBa8jyiRaYUCCdjml1hTsN6ZeqRHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UnkWmqIB; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="arDpxXX2"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1CFCE101CA7F1;
-	Wed, 26 Mar 2025 18:34:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1743010466; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qJTpC5sAhsfwgi4VUrQhS89cZHgib6KieAtnayphjY8=;
-	b=arDpxXX2gK1beIIYcB/7ptMVLO6s0Gr6S4rMnA5Iiq+KSyqMU0l760UmMtNPsCSRipy5cu
-	JS2RFZF08JXfP+EeveXmqHx/Djaaenq4Vt8xzCNi4sLZ5oAVoC/ysW+CovtSwa6pF6/Bf0
-	0/o6NsxS7PPEvSVL+Vj2x29crj01IgLjzA8brnzAJW8VK5Q+JgjGcH7hED2Uh44ayRHKgD
-	15OCy6hSQhHnNILSN6VgOTl8FtJsprdP2Jy4zrNyk+xBLPIbvhVGWD+0JnM53QSFE52IBR
-	LXINR0YakdwQwMX+CfBEKjaIOy6GPkUAhGPrOjLTfLc5shrzPh9A3qyMFIVa5w==
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH 2/2] ARM: dts: mxs: Add support for second revision of the XEA board (imx287)
-Date: Wed, 26 Mar 2025 18:34:00 +0100
-Message-Id: <20250326173400.2697684-2-lukma@denx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250326173400.2697684-1-lukma@denx.de>
-References: <20250326173400.2697684-1-lukma@denx.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UnkWmqIB"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F416E4443E;
+	Wed, 26 Mar 2025 17:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743011276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZBLEondICNX76+GWcBh7Pwovu0flUSeCsLISBKtY2ck=;
+	b=UnkWmqIBFhzqtIL2x2Wx/VrHCoJBrZYvibGBi3Ef6Rxb4sP/Swn9zmY7W1EIFnuIzlZunA
+	ygHiELr3Lh/r85odAzEep4YQCSnfVcp1srHJw0L7W9fzy5nEFrdNbslyETWZtbK9f1CdW8
+	ivpPbFFuBXCDgewdYNJXDr+9gkvnbVqYxzGPtZl0ubUVu8ZAVDIFAOWlHPlDaowhquegr3
+	fPCB9J/N3MkQIgdiUTnYNqkPf+GaG08BdzVKdeqyUyjOxRQIc+5H0jPFmi7ECoHmACtmwK
+	/0WaxDeP+0LKMO9UNhH+SBDb5g2T/B/sA8beKXzr7q7OhtJHQvM3ADSOi5Tofw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v9 0/5] drm/bridge: add devm_drm_bridge_alloc() with bridge
+ refcount
+Date: Wed, 26 Mar 2025 18:47:34 +0100
+Message-Id: <20250326-drm-bridge-refcount-v9-0-5e0661fe1f84@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALY95GcC/33NTQrCMBAF4KtI1kaStGkTV95DXLT5sQM2kaQGp
+ fTuTrtSEGE2bx7zzUyyS+AyOe5mklyBDDFg0PsdMUMXro6CxUwEE5JVvKY2jbRPYLFJzpv4CBO
+ VympscXxD8PKODTw39XzBPECeYnptT0q7bv97paWMcilky70yja5PfYzTDcLBxJGsYlEfimC/F
+ YVKX1nbddrzqlHfyrIsb9s133L+AAAA
+X-Change-ID: 20250314-drm-bridge-refcount-58d9503503f6
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Anusha Srivatsa <asrivats@redhat.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieeiudejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefgieetkeekgfdtudevueffueffveekheeiudfhfedvhfeukeeuhffhtddtvdekfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegludelvddrudeikedrudejkedrjeehngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefuddprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhgvgiesuggvnhigrdguvgdprhgtphhtthhopehimhigsehlihhst
+ hhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepjfhuihdrrfhusehgvghhvggrlhhthhgtrghrvgdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhm
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Up till now the XEA had only single revision supported in Linux kernel.
+This series improves the way DRM bridges are allocated and initialized and
+makes them reference-counted. The goal of reference counting is to avoid
+use-after-free by drivers which got a pointer to a bridge and keep it
+stored and used even after the bridge has been deallocated.
 
-As some in-HW adjustments were made - it has been required to extend
-the support with second version.
+The overall goal is supporting Linux devices with a DRM pipeline whose
+final components can be hot-plugged and hot-unplugged, including one or
+more bridges. For more details see the big picture [0].
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
+DRM bridge drivers will have to be adapted to the new API -- the change is
+trivial for most cases. This series converts two of them to serve as an
+example. The remaining ones will be done as a follow-up after this first
+part is merged.
+
+After that, refcounting will have to be added on the two sides: all
+functions returning a bridge pointer and all code obtaining such a
+pointer. A few examples have been sent in v7 (link below), they are OK, but
+I removed them since v8 because they must be merged only after converting
+all bridges.
+
+Here's the grand plan:
+
+ A. add new alloc API and refcounting (this series, at least patches 1-3)
+ B. after (A), convert all bridge drivers to new API
+ C. after (A), add documentation and kunit tests
+ D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
+    (patches 3-4 in the v7 series)
+ E. after (B), convert accessors (including patches 5-9 in the v7 series
+    which convert drm_bridge_chain_get_first_bridge() and its users);
+    this is a large work and can be done in chunks
+ F. after (A), debugfs: show refcount, show removed bridges
+ 
+Layout of this:
+
+ 1. Add the new API and refcounting:
+
+    drm/bridge: add devm_drm_bridge_alloc()
+    drm/bridge: add support for refcounting
+    drm/bridge: deprecate old-style bridge allocation
+
+ 2. convert a few bridge drivers (bridge providers) to the new API:
+
+    drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+    drm/bridge: samsung-dsim: use dynamic lifetime management
+
+[0] https://lore.kernel.org/dri-devel/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- arch/arm/boot/dts/nxp/mxs/Makefile        |   3 +-
- arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts |  29 ++++
- arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts |  66 ++++++++
- arch/arm/boot/dts/nxp/mxs/imx28-xea.dts   | 100 -----------
- arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi  | 191 ++++++++++++++++++++++
- 5 files changed, 288 insertions(+), 101 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
- delete mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
+Changes in v9 (only patches 2 and 3 have changes):
+- Made drm_bridge_put() return void
+- Added debugfs improvements to the grand plan (item F)
+- Reworded comment in patch 3
+- Link to v8: https://lore.kernel.org/r/20250320-drm-bridge-refcount-v8-0-b3ddaa9f1368@bootlin.com
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-index 96dd31ea19ba..de4cafd820c2 100644
---- a/arch/arm/boot/dts/nxp/mxs/Makefile
-+++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-@@ -31,4 +31,5 @@ dtb-$(CONFIG_ARCH_MXS) += \
- 	imx28-sps1.dtb \
- 	imx28-ts4600.dtb \
- 	imx28-tx28.dtb \
--	imx28-xea.dtb
-+	imx28-xea-1.dtb \
-+	imx28-xea-2.dtb
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
-new file mode 100644
-index 000000000000..a56c9930752a
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea-1.dts
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2025
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
-+
-+/dts-v1/;
-+#include "imx28-xea.dtsi"
-+
-+/ {
-+	model = "XEA v1";
-+};
-+
-+&pinctrl {
-+	pinctrl-0 = <&hog_pins_a &hog_pins_tiva &hog_pins_rev1>;
-+
-+	hog_pins_rev1: hog@3 {
-+		reg = <3>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP1_SCK__GPIO_2_12
-+			MX28_PAD_SSP1_SCK__GPIO_2_12
-+			MX28_PAD_SSP2_SS1__GPIO_2_20
-+			MX28_PAD_SSP2_SS2__GPIO_2_21
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
-new file mode 100644
-index 000000000000..498905def9c1
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea-2.dts
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2025
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
-+
-+/dts-v1/;
-+#include "imx28-xea.dtsi"
-+
-+/ {
-+	model = "XEA v2";
-+};
-+
-+&pinctrl {
-+	pinctrl-0 = <&hog_pins_a &hog_pins_tiva &hog_pins_rev1>;
-+
-+	hog_pins_rev1: hog@3 {
-+		reg = <3>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SAIF0_LRCLK__GPIO_3_21
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	spi1_pins_a: spi1@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP1_SCK__SSP1_SCK
-+			MX28_PAD_SSP1_CMD__SSP1_CMD
-+			MX28_PAD_SSP1_DATA0__SSP1_D0
-+			MX28_PAD_SSP1_DATA3__GPIO_2_15
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_8mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+	};
-+};
-+
-+&ssp1 {
-+	compatible = "fsl,imx28-spi";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins_a>;
-+	status = "okay";
-+
-+	spidev0@0 {
-+		compatible = "lwn,btt";
-+		spi-max-frequency = <100000000>;
-+		reg = <0>;
-+	};
-+
-+	spidev2@2 {
-+		compatible = "lwn,btt";
-+		spi-max-frequency = <100000000>;
-+		reg = <2>;
-+	};
-+};
-+
-+&ssp3 {
-+	spidev1@1 {
-+		compatible = "lwn,btt";
-+		spi-max-frequency = <100000000>;
-+		reg = <1>;
-+	};
-+};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-deleted file mode 100644
-index 6c5e6856648a..000000000000
---- a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-+++ /dev/null
-@@ -1,100 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
--/*
-- * Copyright 2021
-- * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-- */
--
--/dts-v1/;
--#include "imx28-lwe.dtsi"
--
--/ {
--	model = "Liebherr XEA board";
--	compatible = "lwn,imx28-xea", "fsl,imx28";
--};
--
--&can0 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&can1_pins_a>;
--	status = "okay";
--};
--
--&i2c1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&i2c1_pins_b>;
--	status = "okay";
--};
--
--&pinctrl {
--	pinctrl-names = "default";
--	pinctrl-0 = <&hog_pins_a &hog_pins_tiva>;
--
--	hog_pins_a: hog@0 {
--		reg = <0>;
--		fsl,pinmux-ids = <
--			MX28_PAD_GPMI_D00__GPIO_0_0
--			MX28_PAD_GPMI_D02__GPIO_0_2
--			MX28_PAD_GPMI_D05__GPIO_0_5
--			MX28_PAD_GPMI_CE1N__GPIO_0_17
--			MX28_PAD_GPMI_RDY0__GPIO_0_20
--			MX28_PAD_GPMI_RDY1__GPIO_0_21
--			MX28_PAD_GPMI_RDY2__GPIO_0_22
--			MX28_PAD_GPMI_RDN__GPIO_0_24
--			MX28_PAD_GPMI_CLE__GPIO_0_27
--			MX28_PAD_LCD_VSYNC__GPIO_1_28
--			MX28_PAD_SSP1_SCK__GPIO_2_12
--			MX28_PAD_SSP1_CMD__GPIO_2_13
--			MX28_PAD_SSP2_SS1__GPIO_2_20
--			MX28_PAD_SSP2_SS2__GPIO_2_21
--			MX28_PAD_LCD_D00__GPIO_1_0
--			MX28_PAD_LCD_D01__GPIO_1_1
--			MX28_PAD_LCD_D02__GPIO_1_2
--			MX28_PAD_LCD_D03__GPIO_1_3
--			MX28_PAD_LCD_D04__GPIO_1_4
--			MX28_PAD_LCD_D05__GPIO_1_5
--			MX28_PAD_LCD_D06__GPIO_1_6
--		>;
--		fsl,drive-strength = <MXS_DRIVE_4mA>;
--		fsl,voltage = <MXS_VOLTAGE_HIGH>;
--		fsl,pull-up = <MXS_PULL_DISABLE>;
--	};
--
--	hog_pins_tiva: hog@1 {
--		reg = <1>;
--		fsl,pinmux-ids = <
--			MX28_PAD_GPMI_RDY3__GPIO_0_23
--			MX28_PAD_GPMI_WRN__GPIO_0_25
--		>;
--		fsl,voltage = <MXS_VOLTAGE_HIGH>;
--		fsl,pull-up = <MXS_PULL_DISABLE>;
--	};
--
--	hog_pins_coding: hog@2 {
--		reg = <2>;
--		fsl,pinmux-ids = <
--			MX28_PAD_GPMI_D01__GPIO_0_1
--			MX28_PAD_GPMI_D03__GPIO_0_3
--			MX28_PAD_GPMI_D04__GPIO_0_4
--			MX28_PAD_GPMI_D06__GPIO_0_6
--			MX28_PAD_GPMI_D07__GPIO_0_7
--		>;
--		fsl,voltage = <MXS_VOLTAGE_HIGH>;
--		fsl,pull-up = <MXS_PULL_DISABLE>;
--	};
--};
--
--&reg_fec_3v3 {
--	gpio = <&gpio0 0 0>;
--};
--
--&reg_usb_5v {
--	gpio = <&gpio0 2 0>;
--};
--
--&spi2_pins_a {
--	fsl,pinmux-ids = <
--		MX28_PAD_SSP2_SCK__SSP2_SCK
--		MX28_PAD_SSP2_MOSI__SSP2_CMD
--		MX28_PAD_SSP2_MISO__SSP2_D0
--		MX28_PAD_SSP2_SS0__GPIO_2_19
--	>;
--};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
-new file mode 100644
-index 000000000000..adbdc3871045
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dtsi
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2025
-+ * Lukasz Majewski, DENX Software Engineering, lukma@denx.de
-+ */
-+
-+/dts-v1/;
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include "imx28-lwe.dtsi"
-+
-+/ {
-+	compatible = "lwn,imx28-xea", "fsl,imx28";
-+
-+	reg_standby: regulator-standby {
-+		compatible = "regulator-fixed";
-+		gpio = <&gpio0 20 GPIO_ACTIVE_LOW>;
-+		regulator-name = "enable-standby";
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+};
-+
-+&can1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&can1_pins_a>;
-+	xceiver-supply = <&reg_usb_5v>;
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c1_pins_b>;
-+	status = "okay";
-+};
-+
-+&eth_switch {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
-+	phy-supply = <&reg_fec_3v3>;
-+	phy-reset-duration = <25>;
-+	phy-reset-post-delay = <10>;
-+	status = "okay";
-+
-+	ethernet-ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		mtip_port1: port@1 {
-+			reg = <1>;
-+			label = "lan0";
-+			local-mac-address = [ 00 00 00 00 00 00 ];
-+			phy-mode = "rmii";
-+			phy-handle = <&ethphy0>;
-+		};
-+
-+		mtip_port2: port@2 {
-+			reg = <2>;
-+			label = "lan1";
-+			local-mac-address = [ 00 00 00 00 00 00 ];
-+			phy-mode = "rmii";
-+			phy-handle = <&ethphy1>;
-+		};
-+	};
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@0 {
-+			reg = <0>;
-+			smsc,disable-energy-detect;
-+			/* Both PHYs (i.e. 0,1) have the same, single GPIO, */
-+			/* line to handle both, their interrupts (AND'ed) */
-+			interrupt-parent = <&gpio4>;
-+			interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-+		};
-+
-+		ethphy1: ethernet-phy@1 {
-+			reg = <1>;
-+			smsc,disable-energy-detect;
-+			interrupt-parent = <&gpio4>;
-+			interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-+		};
-+	};
-+};
-+
-+&mac0 {
-+	phy-mode = "rmii";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mac0_pins_a>;
-+	phy-supply = <&reg_fec_3v3>;
-+	phy-reset-duration = <100>;
-+	local-mac-address = [ 00 11 B8 00 BF 8A ];
-+	status = "okay";
-+};
-+
-+&mac1 {
-+	phy-mode = "rmii";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mac1_pins_a>;
-+	status = "okay";
-+};
-+
-+&pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&hog_pins_a &hog_pins_tiva>;
-+
-+	hog_pins_a: hog@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_D00__GPIO_0_0
-+			MX28_PAD_GPMI_D02__GPIO_0_2
-+			MX28_PAD_GPMI_D05__GPIO_0_5
-+			MX28_PAD_GPMI_CE1N__GPIO_0_17
-+			MX28_PAD_GPMI_RDY0__GPIO_0_20
-+			MX28_PAD_GPMI_RDY1__GPIO_0_21
-+			MX28_PAD_GPMI_RDY2__GPIO_0_22
-+			MX28_PAD_GPMI_RDN__GPIO_0_24
-+			MX28_PAD_GPMI_CLE__GPIO_0_27
-+			MX28_PAD_LCD_VSYNC__GPIO_1_28
-+			MX28_PAD_LCD_D00__GPIO_1_0
-+			MX28_PAD_LCD_D01__GPIO_1_1
-+			MX28_PAD_LCD_D02__GPIO_1_2
-+			MX28_PAD_LCD_D03__GPIO_1_3
-+			MX28_PAD_LCD_D04__GPIO_1_4
-+			MX28_PAD_LCD_D05__GPIO_1_5
-+			MX28_PAD_LCD_D06__GPIO_1_6
-+			MX28_PAD_LCD_D15__GPIO_1_15
-+			MX28_PAD_LCD_D16__GPIO_1_16
-+			MX28_PAD_LCD_D17__GPIO_1_17
-+			MX28_PAD_LCD_D18__GPIO_1_18
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	hog_pins_tiva: hog@1 {
-+		reg = <1>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_RDY3__GPIO_0_23
-+			MX28_PAD_GPMI_WRN__GPIO_0_25
-+		>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	hog_pins_coding: hog@2 {
-+		reg = <2>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_D01__GPIO_0_1
-+			MX28_PAD_GPMI_D03__GPIO_0_3
-+			MX28_PAD_GPMI_D04__GPIO_0_4
-+			MX28_PAD_GPMI_D06__GPIO_0_6
-+			MX28_PAD_GPMI_D07__GPIO_0_7
-+		>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+};
-+
-+&reg_fec_3v3 {
-+	gpio = <&gpio0 0 0>;
-+};
-+
-+&reg_usb_5v {
-+	gpio = <&gpio0 2 0>;
-+};
-+
-+&ssp2 {
-+	spidev1@1 {
-+		compatible = "lwn,btt";
-+		spi-max-frequency = <100000000>;
-+		reg = <1>;
-+	};
-+
-+	spidev2@2 {
-+		compatible = "lwn,btt";
-+		spi-max-frequency = <100000000>;
-+		reg = <2>;
-+	};
-+};
-+
-+&spi2_pins_a {
-+	fsl,pinmux-ids = <
-+		MX28_PAD_SSP2_SCK__SSP2_SCK
-+		MX28_PAD_SSP2_MOSI__SSP2_CMD
-+		MX28_PAD_SSP2_MISO__SSP2_D0
-+		MX28_PAD_SSP2_SS0__GPIO_2_19
-+	>;
-+};
+Changes in v8:
+- Applied requested changes to patch 2
+- Add R-by to other patches
+- Removed v7 patches 3-9: they are OK but must wait until all bridge
+  drivers are converted to the new API
+- Added patch to deprecate old-style bridge allocation
+- Link to v7: https://lore.kernel.org/r/20250314-drm-bridge-refcount-v7-0-152571f8c694@bootlin.com
+
+---
+Luca Ceresoli (5):
+      drm/bridge: add devm_drm_bridge_alloc()
+      drm/bridge: add support for refcounting
+      drm/bridge: make devm_drm_bridge_alloc() mandatory for bridge allocation
+      drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+      drm/bridge: samsung-dsim: use dynamic lifetime management
+
+ drivers/gpu/drm/bridge/samsung-dsim.c |  7 ++-
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c |  7 ++-
+ drivers/gpu/drm/drm_bridge.c          | 86 +++++++++++++++++++++++++++++++++++
+ include/drm/drm_bridge.h              | 36 +++++++++++++++
+ 4 files changed, 128 insertions(+), 8 deletions(-)
+---
+base-commit: 8224bc33fdec82533a68486612e6fd78197b95b5
+change-id: 20250314-drm-bridge-refcount-58d9503503f6
+
+Best regards,
 -- 
-2.39.5
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
