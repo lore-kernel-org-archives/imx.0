@@ -1,182 +1,220 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013008.outbound.protection.outlook.com [40.107.162.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB65789D
-	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 01:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742954333; cv=fail; b=EqBHzu4pMhoLGQF1g99X5zk5Kx2iI4XW4BCgHhiawRd9QcYnOJ3OuIQ3XPuEgZslzCwt9Fyy5kUAs1Pzm1JbDjx66+LB6gPPKLe7T5Dm3CoWbuoTf4ZtHW9dJ0gvCQNcSD8CraXci0MBis39CDoM8LL+4fWh3jzeZuw0YqbV2EQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742954333; c=relaxed/simple;
-	bh=qm41Rcf/Fo4dDKtX0dFTBPF46I0W4fgZCg5EQ/t1lbY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cbfhc2R3g8YjkEGP4AlvjNos+YNwtTZWQocvGfPucVghBN8PxRz5mh/xpod6aP65/JmSQuaTXZ7IaZJ3yoTP/o0U0zo7pUNcADzkgVwnQifggcRZNXKF3vcMHlSrZTNfmuXOrUwfZ64edbEp/ZBOLcEkSfaENgeVl7qNqYBhzvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EKwDNW4J; arc=fail smtp.client-ip=40.107.162.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F5B14B965
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 06:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742971491; cv=none; b=pkuZUmLSglBQjuEtK0BR0NkpOCSz9AOaDlilSAwqswd9YBDw7V082I6+F436L4PuWuPt9FGI3R7Zcg+9p2qVvpdaCoz+BN9ChWw7JECGb4fGC48WzUDBNSHUqbtLnVu7YOGXMi8RJvlI8J0kCFqcczMrgr4ZcEoYxmHCIjjpGTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742971491; c=relaxed/simple;
+	bh=N+Le9MFtc/k1LZ1LVkIPmZk2oGdIyqo4T5HKb+AHZPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qUT15Ve5bPs/JkfsZl+Xe1j0zLM4JT4Dof5SrRG7BubS+VRqM15ohoiDIv/lIgkp4OJqhOHMQjBIZmqECFn22dVpRABz61K04O8qWC0kB2NgzdKSOVudimx6xy8Eta/41KjjWKWfrHGMgFCqlx7LHxfXPcYcI4nC/Sy2gAxUW+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGexHaIg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EKwDNW4J"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VuwHqq74NOMhXslpRG6UxA9HQTQgxMNRBEm1h1lxWCUTo35A10QttXAdQ6z0efjlkS9leCoMOSJQ8tp5N+faFqXyJ2Fuq1kItjqGMVFl7Hvjosn8vFzF+ZYj7UQxDT4dDGs/E0U7B5EOyQ3xSdLeDSns9xGEbkcZ2cAus7pBMym+Yw4u4EqJCNcQQ3t523k/+++ciUM9daXNXLWPkC/nL9xdZ2d4MrpEpiwFG8vkhKqe3Mk7b/H74mvD1HbfrBquLGXKvZpBfRpoOs9+ghcw1PCNOP1r3tlHN9xCoxATg1KL8HVqk8Z4K0YU/qrD4cPxW+Pp3fhFkgOlNfHeKYkkDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lvmv/YjyP2BsBolHU4w6h12pYcCOC7Uc8SmJWXhZbwE=;
- b=QHITPASLL1HcL9cKNf0WCSIFTxdlTw183nBbXEKe7Zrp61FsFTt+ZPy1SIcFWL3JSu808f/LimuaB5He5VL5lCLTErAId7MZ2JE13NY8RwWbPD29o+ESVvMlskHIQFMJauo32guzGeEf0D/c0OafcrgkAPRK0xJFZG/vfetq8gyCbhXlPu5OJvX3d3HBQtGYEzOgFSi9clHi/sakitg6XK0xMHQihL8zXMUgE7ORIXQhNjuiq8VX8ENmleSBJUj3nxAXhrCcmJ3sNUSFV2+CHZMs5I2rksIPEr19AhjUt7iQqX5yxuxlKacO97jjkiz5LoyRJS1gyrmHUtZv6MHHGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lvmv/YjyP2BsBolHU4w6h12pYcCOC7Uc8SmJWXhZbwE=;
- b=EKwDNW4JgFkd41WhfaVbMQTmapjSokBBtwmn4Qo5jd5dG+hqG4Ibv/qTkdzvnAfmwzjm0Ymb83FBkE0KcEnWRwNXqkb/vsD0T0BW2UnGqPsewcTCBLkSWKGGDI8S7xknPtXaeMCbTV83XKLU9qQ9BshyMJeM9J1vf9CPjL1N6tEbOUD8mcRCOsdzrOXg8zNMD5ytnswWZeyemSthnHtAT97rc8Xg5BAZC691YC4d7Q1z3ekgdE9+kjGl8321HIFGA/e4Br7zx2z9H+YtCWX3KkJaF1OV0TD8VhYalqvzb3aJc78I6vEI19/ob3IvteAE7oKrJ17MZJ0yDg7o4DAKXg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB8PR04MB7051.eurprd04.prod.outlook.com (2603:10a6:10:fd::20)
- by DB8PR04MB6890.eurprd04.prod.outlook.com (2603:10a6:10:117::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Wed, 26 Mar
- 2025 01:58:48 +0000
-Received: from DB8PR04MB7051.eurprd04.prod.outlook.com
- ([fe80::8f9d:4273:ea83:167a]) by DB8PR04MB7051.eurprd04.prod.outlook.com
- ([fe80::8f9d:4273:ea83:167a%6]) with mapi id 15.20.8534.040; Wed, 26 Mar 2025
- 01:58:48 +0000
-Message-ID: <e82e2cb1-d48c-42f3-9fec-1750717d9ca1@nxp.com>
-Date: Wed, 26 Mar 2025 10:00:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/imx: legacy-bridge: fix inconsistent indenting
- warning
-To: Charles Han <hanchunchao@inspur.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250325075503.3852-1-hanchunchao@inspur.com>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20250325075503.3852-1-hanchunchao@inspur.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR06CA0009.apcprd06.prod.outlook.com
- (2603:1096:4:186::17) To DB8PR04MB7051.eurprd04.prod.outlook.com
- (2603:10a6:10:fd::20)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGexHaIg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8993BC4CEEE
+	for <imx@lists.linux.dev>; Wed, 26 Mar 2025 06:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742971490;
+	bh=N+Le9MFtc/k1LZ1LVkIPmZk2oGdIyqo4T5HKb+AHZPQ=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=mGexHaIgLbSTRVHs1aAeFQlPGcyoCZW7ra4H38PmdGzDelCOcdKx1PSXmCzV7zHg4
+	 t4BXlaPJZl4M++7SmdtJc6OS8JjvQRphtWZwBCWtmx/alHR1Io5/u7TZToVoyJOSou
+	 96VjLRob86BRO7cjMzROfgRLhBnxIvMMr+R4vtlIUeOGTcng2xdyftnauroj5ZowGD
+	 xzqLtB/oFZyge5ZZJr/oxGRcBJ2TtgorNnVd6M4vPVwtA8/remvhxw2JO6w5AmNBGW
+	 LWfgRtD9plTNy/EtRrTL21OA4Ltzhsl8gLg9J9a66/mPT8tJvI+frlHwy6w6//C7jk
+	 Cj6THAiU6V/PQ==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30db3f3c907so14022821fa.1
+        for <imx@lists.linux.dev>; Tue, 25 Mar 2025 23:44:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW9aeZRaEMlN1UyzkfeR9d334LKleb0QdZO7/Oyiga6cgCILbFHQvdsa5BFY6Ahv4E/Opc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzEnHm7Ihlu7PVuPxkCDO+lRezNU1opdPVEGwKm8KlThxupWvFO
+	I/MUYfz7LTZqmhVngbWFxi8VxdnmxpENHc4dFBsCEl6bFdC1rpFMoO0TBz0/Gv9Slv3Jc5FSi+H
+	tyXk8JGsi/9/qY0/uEaQR0eA8Ukg=
+X-Google-Smtp-Source: AGHT+IGMF6j2X+Jr6WCvccPSUBNATvTU7YZt+i3mWvl9VVSwRgH7cCtIrbRrCInxLepNvpLKepp5tmas4mw+ODC5pdo=
+X-Received: by 2002:a05:651c:201c:b0:30b:f924:3554 with SMTP id
+ 38308e7fff4ca-30d7e236c49mr59160551fa.21.1742971488912; Tue, 25 Mar 2025
+ 23:44:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR04MB7051:EE_|DB8PR04MB6890:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9d4c66f-0f3e-4540-3c99-08dd6c09bfa4
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?WU1lWTRIa3k0bHk4NWhYU3ZMWDRXMFFBZTZRWnpKNGI4VUtabG9CK2RHVGI0?=
- =?utf-8?B?S1EzOXJaN1RaaWNxYXIzd2ZQTXhhaEJJRTlTZlY5WGp2S24xbSsvOXBNeVh0?=
- =?utf-8?B?RFhVZG9ac3N6ejFJNlVLNkRPendreFNNcE9leVphZlJTUDhKd3hwZTZZSUNT?=
- =?utf-8?B?dlU1N3lvVEJGankrT2t1Wmx2VHNCVk92RHJvNmV6QysvWlN4Smcza1QrQWxy?=
- =?utf-8?B?MHYxVFhyVjE2QjJtZjRWSkgydFhVdHdYaDZuQURUazFIZVZDOVc4TlAyWWZS?=
- =?utf-8?B?VGNzbzZkcU91TVlDZlhScFJaS2tiUHRUSmprSTE5K3RXcmZuVVZ1ZnNzZnVx?=
- =?utf-8?B?UnNhWnpnRkJnWGlvUlpQb3hxempxeVBuczhucWxZYnl2d3l3Ykl5RzRFbERp?=
- =?utf-8?B?Lzl2VTRVQjBOdTlzdXhibys4WlJ3aHBsZGJHNEJEWHZvWEV4RktrSmxWeXl6?=
- =?utf-8?B?aFM0UFZJaXRzNXEwSVlualE0NmtQR1dVbmp0N0dVc3JaNnRmaUVVR2pjbUhq?=
- =?utf-8?B?NU43WlVMREZPelQwT2RMUkpBWTRsaHB4L3RKSnVqQXBGak16L1RXZEQ5RmtQ?=
- =?utf-8?B?YS9KbzlvMXVzVTFDUmQrVDFadE9WMERhUXJsaG44QnlmRDZOcklEUWY5K3hN?=
- =?utf-8?B?eGlFR0YyblBIZmNpRktrdHhhNjVNQ05FLy9tZWEvMXFrZHNnRnRLR0wya01H?=
- =?utf-8?B?Wnd2SzVtNkx3Z1hFTUxzY0MydjlPUHlyYWl6NDA0SEtVNnRVYm5kS2E2M1E3?=
- =?utf-8?B?R3o2OEJYaG9ubml3ZGJyUkczSEU1OGxHdTVoa254dlo0L0M2SW51SkUrUjI5?=
- =?utf-8?B?emFNT0Z0SElyc3VrWkY0dGg2SWxxWUhUU2pMYTErajB4b2RNZTNGWTJ6eFNw?=
- =?utf-8?B?MXdhZ2lza1BuNDgrV090ajJ0RHE3UFJEMnBwN3owYXNuZVg0V1VDUjRWWXcw?=
- =?utf-8?B?T00zL0x4bzV0cVZIRFNBbHhyQ3l3WW5id0dxUEx2WW5Ga3F4K0JBRVJlbHJj?=
- =?utf-8?B?WGdEMXkyL2FySHVoc002ZE5FYUNrdWR6S0prcjFCUlJ0SmZlT3RVcklyM1JM?=
- =?utf-8?B?UjJReDh5WXN2K1c1L2RWOGlIU1RBWHZrOTg1QUtSVFREN0ZUc2VjVHlSWE9L?=
- =?utf-8?B?WSs1SXhxelVScmJHUDhpSlhUS09ETXpscyt2R3ZUNGlwSDhPNENXc2VWTEw4?=
- =?utf-8?B?L3dlR1MvaE1qWjFEZERJN0lOTXd6RVZaekh0bTAyM2tMRVRwTUZBSGtXMmN6?=
- =?utf-8?B?RUtDeUpXTGZnYXUzTmYrMlViZHdGKzh5RGhJamhWM2hZS1N1anNrUzdCd04v?=
- =?utf-8?B?c0Z1dWRXNmF1Z2M5ZSszSG5SSkQ4SEw2OTBpamFHSHlXYUVFd25sZnBteXdO?=
- =?utf-8?B?bGlwcDUxOXNlMVFmVnhON1FMSUlYeHpHSnp0T09JK1FPNlQzRE1xaGJnR3ZK?=
- =?utf-8?B?c2I2ZDNKR1pPcWZsR1VCVForY3lxbXJkWEpoYzVRVkJ3ZlU5VDZVZllpUVg4?=
- =?utf-8?B?SEdrV1NTTWNKK1orQnhtNm5PbFNhNFdjRUk1clh4WjhmZXp6eVV6WE1ER09D?=
- =?utf-8?B?T1FEU1VYOFdraFRYQW9SbEt3N2hYSFkwWW5nYTlBUERNZzNTZXIyRy9VcVBK?=
- =?utf-8?B?VEFvOUVMcWM2dDR6bENXUnZIV2ZOdnRIN3JMK1NxWmZ5czdBOFA3allPdjRQ?=
- =?utf-8?B?U2x6QzRpVEtWVWlxODJpdVEzN3dNSmxtOGpjVVF0VzB0akJjYWF4eVU2Uldh?=
- =?utf-8?B?c1ZaQTFmOWFKRTVjc1M3SDkwWkR4cFJTR2ZFaCtQSnJTK2wxdGc1eEloN00v?=
- =?utf-8?Q?LlZjk3lLBBp7ibu4DwkRkK3ecetyhaj4vdcIg=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR04MB7051.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?V2lhK1RIcW1rUkhoTXE3b1NvWFd0eS95MkUzMkxjWlp4WmNla1FyTG1ybXFF?=
- =?utf-8?B?alRYV1U2cEFuWTRqWGQvTjRKczd4eGswYVJNZXRaL3ZDTFREK0FheDd1VWww?=
- =?utf-8?B?aFBMOGhMenVrTHJMYTZaL0VRQkRvSEl4ZUl3eWdpWVJCVExkcE13OVBsMlJk?=
- =?utf-8?B?c21PZnd0M3hMRGtvZzNsS0EzUml4RjJsSkpvTzREdGN2NWg1Q1pQU2VjVDFZ?=
- =?utf-8?B?eHo0bGlreGQ0cURsRUpiZlhwWWVwckNvRFliQ2FCbGs4bVI0bWVVMlFpVCt1?=
- =?utf-8?B?ek12c0g1a3BJYkFMbExnRkk4RXpvOWthMFlscStVckxFSFhnd2huMkpyV2Fi?=
- =?utf-8?B?MWIvT1NyNHBPT3V4ZTF3Y1YwbFJoWXIrN1YvdXUrVXh2SS9tQktSOHV5Vlkv?=
- =?utf-8?B?MG51cmxGb3d2dVFoai9mUkw4cVZ6Yk1EajM1c2xJQUE5QTMvcng4aVRhRDBx?=
- =?utf-8?B?MXY3NDZvOWVNZDFBeXErWUVtRGd2cWRWb3B2ZU1UV1B5WlBwQ283OGZYMzQ2?=
- =?utf-8?B?ODhOOWFPTnRvS1NWV1IxZDE2WXp2Z3pqY2dURVVBWC9EdlgxMDBabjBJNmxa?=
- =?utf-8?B?QXlOL3Z3VEc2aUpONFRYY0hnR3JJclNXQm5DdHNrRDRjdzcyWjd3Z1dFZHQ4?=
- =?utf-8?B?QnJkTndYUTFvSHZBY2RCcnNvcHVndzB2eFdOaWgwL2RBdXBnTUMrQ2JtQjNl?=
- =?utf-8?B?ejVqV1ZVd3RYNVZDRisyNXJsOUxNRUw4MWUzbW9rMHFmdTNGYmRyMlFLSDlB?=
- =?utf-8?B?NHdkcjUxWnkzZ3dsVnplbkRmU0oxditCYURBeEhOWGFteFJBUkt3WTV2QjRS?=
- =?utf-8?B?NmJEWTBOVy9NdzlOVkhJdGcybWpJUWQ4MjdtNHhwSzZSMWZUazNHVTNOaDdl?=
- =?utf-8?B?Qm5RemZwZUpvcWRKY29hRE1MNVhsMENOTy92MjhUQzkyQlVJdGVldmpqTmxZ?=
- =?utf-8?B?ZWZvNGJISnB0YUwveFhhdFc2Qk1uRWNGZG0wQ1ZQOUlwbUZhcWVMZ0xiK2VL?=
- =?utf-8?B?KzQzejNSZ2ZlR291eFYwcG9GS2ZuVzFwVVhra3FidXRqaVh6RHp5SUU2NG5K?=
- =?utf-8?B?cHlYTG5Dd21zeHl3djVsb21PeEZhUFJEUHFJQWQxZU9vMnlZL1B1QXJPc2pI?=
- =?utf-8?B?Y0kvbEhYV1E3a0U1SGNucm51QWJlc3RjQmdER0dwY285SkFXejNPZHZYMUJs?=
- =?utf-8?B?bjF4a2w3Z3J0TmNlYnYzUHg2NjlQZkFRaDkzWXQrL3FFNVp1VGh0d0laOVNv?=
- =?utf-8?B?T2Fpek1OakxwUHRzVVRsOUhxUlcvWmlZbmRPcndUWktsYzNkcTJVa0wvVUZl?=
- =?utf-8?B?aEdzcCtINC9ZUjQ1ekNGVjFRZjhwb0RUTUNVcWp1TXRPVjdrWjdCWXVtZ1NF?=
- =?utf-8?B?WVJYN2NpdmY0N0pvaTM5YXE5OU8xaktKempWSVBkOXIwdlYzM1Q0cHpzK2hr?=
- =?utf-8?B?NDN5cyswWm5nc0VyVW5LM2c1OFVnbkdJcG1yd2xSNmI4M1lKNlpSRGNUSzNH?=
- =?utf-8?B?TlMxaGZialJYQmk2dmhudEVDNHRnK0x0bjdBNmV5OTlmUVRFZ1lvdStzeTlP?=
- =?utf-8?B?ZGRRMldUcHV5ZExhVE1HT1NMck9FR2hoY3dFQ2IrZjliQ0s2Nzd2NUN1cDdr?=
- =?utf-8?B?UUR4Mmk4cUtFZlFOVnd0Vy82UEY3b1o3OTNCclNNVHdndFNGWVNTNlh3d091?=
- =?utf-8?B?MjB2MkJCbWEwNVBBSUozUUgyVXR6Y1lYZHVMcFFQbkNPN29RUGdncmozb1Vx?=
- =?utf-8?B?SnhkMFY4ZFZZK1lHNVluU25rZzJ5SHBMWTBydjFPdjRXYVpCcm1VWjF3Y0NL?=
- =?utf-8?B?bXJFQmxZTkFJdXVQanMzZFRGUDRWdWxLcW9GWXVtOFZxdWhOUHVncVdiNStY?=
- =?utf-8?B?bEUvS24yeFZ5U2FKNHlOQkpwckIrS0d4OHdhNERmWlBxV0VKNmF2SWtpSk5S?=
- =?utf-8?B?aHdCL0x0dThISEFFaDZrdjYxek8yM1ZCVGUwcVZTME03bXFDY0ExN1ZINXNX?=
- =?utf-8?B?NUNxQXhQa25uSGxMR2tXbFZtZzVGa04zTlhyQ2dZTG0xc2VNRWVDQ0UyS1Z3?=
- =?utf-8?B?NExHTDNjSHQ1MWNDTGhsSndWTlZrSlVZRkU5ODNodmNEVUZGWWdySk4xYnJt?=
- =?utf-8?Q?QAS8X+ofD5D9DT7VWByILkC4Y?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9d4c66f-0f3e-4540-3c99-08dd6c09bfa4
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR04MB7051.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2025 01:58:48.5607
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X6fsQdsVmtQ8Ia9tdQdAgYGpnyxbgccM8RblK4IDvDv5QX1Sp0uFAr863mSjB04ZoeTjrZqFhRnxVAy5m8Wp4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6890
+References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-3-robh@kernel.org>
+In-Reply-To: <20250317232426.952188-3-robh@kernel.org>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Wed, 26 Mar 2025 14:44:36 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65djD5DLQnjQrp9kSHTQYVd9p_vP9WySj2Cx81rHmh5Mw@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq6AIDujd8iNXwgSFrroWq7EbdFM1zyiw-quoSbfHrKnBQnEEqsHIIoRaI
+Message-ID: <CAGb2v65djD5DLQnjQrp9kSHTQYVd9p_vP9WySj2Cx81rHmh5Mw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] of: Simplify of_dma_set_restricted_buffer() to use of_for_each_phandle()
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03/25/2025, Charles Han wrote:
-> Fix below inconsistent indenting smatch warning.
-> smatch warnings:
-> drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c:79 devm_imx_drm_legacy_bridge() warn: inconsistent indenting
-> 
-> Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Hi,
+
+On Tue, Mar 18, 2025 at 7:29=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
+>
+> Simplify of_dma_set_restricted_buffer() by using of_property_present()
+> and of_for_each_phandle() iterator.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/of/device.c | 34 +++++++++++++---------------------
+>  1 file changed, 13 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/of/device.c b/drivers/of/device.c
+> index edf3be197265..bb4a47d58249 100644
+> --- a/drivers/of/device.c
+> +++ b/drivers/of/device.c
+> @@ -35,44 +35,36 @@ EXPORT_SYMBOL(of_match_device);
+>  static void
+>  of_dma_set_restricted_buffer(struct device *dev, struct device_node *np)
+>  {
+> -       struct device_node *node, *of_node =3D dev->of_node;
+> -       int count, i;
+> +       struct device_node *of_node =3D dev->of_node;
+> +       struct of_phandle_iterator it;
+> +       int rc, i =3D 0;
+>
+>         if (!IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL))
+>                 return;
+>
+> -       count =3D of_property_count_elems_of_size(of_node, "memory-region=
+",
+> -                                               sizeof(u32));
+>         /*
+>          * If dev->of_node doesn't exist or doesn't contain memory-region=
+, try
+>          * the OF node having DMA configuration.
+>          */
+> -       if (count <=3D 0) {
+> +       if (!of_property_present(of_node, "memory-region"))
+>                 of_node =3D np;
+> -               count =3D of_property_count_elems_of_size(
+> -                       of_node, "memory-region", sizeof(u32));
+> -       }
+>
+> -       for (i =3D 0; i < count; i++) {
+> -               node =3D of_parse_phandle(of_node, "memory-region", i);
+> +       of_for_each_phandle(&it, rc, of_node, "memory-region", NULL, 0) {
+>                 /*
+>                  * There might be multiple memory regions, but only one
+>                  * restricted-dma-pool region is allowed.
+>                  */
+> -               if (of_device_is_compatible(node, "restricted-dma-pool") =
+&&
+> -                   of_device_is_available(node)) {
+> -                       of_node_put(node);
+> -                       break;
+> +               if (of_device_is_compatible(it.node, "restricted-dma-pool=
+") &&
+> +                   of_device_is_available(it.node)) {
+> +                       if (!of_reserved_mem_device_init_by_idx(dev, of_n=
+ode, i)) {
+> +                               of_node_put(it.node);
+> +                               return;
+> +                       }
+>                 }
+> -               of_node_put(node);
+> +               i++;
+>         }
+>
+> -       /*
+> -        * Attempt to initialize a restricted-dma-pool region if one was =
+found.
+> -        * Note that count can hold a negative error code.
+> -        */
+> -       if (i < count && of_reserved_mem_device_init_by_idx(dev, of_node,=
+ i))
+> -               dev_warn(dev, "failed to initialise \"restricted-dma-pool=
+\" memory node\n");
+> +       dev_warn(dev, "failed to initialise \"restricted-dma-pool\" memor=
+y node\n");
 
-This was applied[1], as I mentioned in [2].
+This changes the behavior. Before this patch, it was:
 
-[1] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/5f7a654b5ed2828e0da8e8331f236854c70f0893
-[2] https://patchwork.freedesktop.org/patch/641089/?series=145843&rev=1
+    if a restricted dma pool was found, but initializing it failed, print
+    a warning.
 
--- 
-Regards,
-Liu Ying
+Whereas now it has become:
+
+     print a warning unless a restricted dma pool was found and successfull=
+y
+     initialized.
+
+This change causes the kernel to print out the warning for devices that
+don't even do DMA:
+
+simple-pm-bus soc: failed to initialise "restricted-dma-pool" memory node
+simple-pm-bus 10006000.syscon: failed to initialise
+"restricted-dma-pool" memory node
+mtk-tphy soc:t-phy@11c80000: failed to initialise
+"restricted-dma-pool" memory node
+mtk-tphy soc:t-phy@11ca0000: failed to initialise
+"restricted-dma-pool" memory node
+mediatek-mipi-tx 11cc0000.dsi-phy: failed to initialise
+"restricted-dma-pool" memory node
+mediatek-mipi-tx 11cc0000.dsi-phy: can't get nvmem_cell_get, ignore it
+clk-mt8186-apmixed 1000c000.syscon: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-topck 10000000.syscon: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-infra-ao 10001000.syscon: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-cam 1a000000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-cam 1a04f000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-cam 1a06f000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-img 15020000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-img 15820000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-imp_iic_wrap 11017000.clock-controller: failed to
+initialise "restricted-dma-pool" memory node
+clk-mt8186-ipe 1c000000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-mcu c53a000.syscon: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-mdp 1b000000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-mfg 13000000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-vdec 1602f000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-venc 17000000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+clk-mt8186-wpe 14020000.clock-controller: failed to initialise
+"restricted-dma-pool" memory node
+mt-pmic-pwrap 1000d000.pwrap: failed to initialise
+"restricted-dma-pool" memory node
+platform 1000d000.pwrap:pmic: failed to initialise
+"restricted-dma-pool" memory node
+mtk-svs 1100bc00.svs: failed to initialise "restricted-dma-pool" memory nod=
+e
+
+
+ChenYu
+>  }
+>
+>  /**
+> --
+> 2.47.2
+>
+>
