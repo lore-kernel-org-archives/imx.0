@@ -1,54 +1,54 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66132135D5
-	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91C2748F
+	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 12:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743077350; cv=none; b=b3vOisqw9U1V9M/kZxpOVhf9tQFtVNg+fykn9uijbtlyY0D/iO58VuA8Kwn/99cGoAfBNWC6dJZ89KgQMZ+JFbXrjtFfN/IpiCbqKq/FujCVBHvHHcnhe9gMkCGS1pOnV2RTAHvUROq6YwG/syAky/Qy3BL/EzATUTVa2z3iaqo=
+	t=1743079162; cv=none; b=h9oLMjwXFdQZ2Kex0CCr4lIc3KWjFfeAYeYc3OeN56xu8bwU1T2U68AeEA8FwB2oOCEdN2KurAZmLIfGqq8lIR4K2wtPa4gMH2idQlxz+rMh6VXUUqUNGGD49uAKdOt+Wo1V7rU5nj+Sg/zhyQL+Bcd4Cjvjeay97k305mASWI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743077350; c=relaxed/simple;
-	bh=bFWO0Ujod2J1/sQILCVIcp7VRqYjCtT9sVBh0aFkeuE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TTg8UnA/8eCl4xFA2UCenvF72u+sSbGPIdhA3StUSSa7gH39/GAPKqMfQpkbMP5tJin5caH/tJyh1OxxwYaQcaLcgNJNTcDgGPQvmsxE3joDdVog6KBixrChIlKAHi98h311BIf7jri8+tpVU2/mpqxvU6SnGsHftr7XmnyiLxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=SUwCCXnz; arc=none smtp.client-ip=148.251.105.195
+	s=arc-20240116; t=1743079162; c=relaxed/simple;
+	bh=+Yc6vSkobmmBVXogoZOONptQFBfTiBRfWjwHDW2cGNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q8Wug7g+YEtPRr5MjlLvqjEZ0lpVFEi8KXwvmM2ylxGfjBK9ntqxFZ0Swy4VArQHU3SghFxRYJoaeu7UgZYGKHc1joC199Rvnqjk8KHxDMZg6evxOmqfniA5MS0WCOqUJV3UOZGzkI9nOeKmxX0RGO/AwWQ+Fw18URFASPWrCBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=f1RSxon9; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="SUwCCXnz"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="f1RSxon9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1743077345;
-	bh=bFWO0Ujod2J1/sQILCVIcp7VRqYjCtT9sVBh0aFkeuE=;
+	s=mail; t=1743079158;
+	bh=+Yc6vSkobmmBVXogoZOONptQFBfTiBRfWjwHDW2cGNc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SUwCCXnzluwzfyoZmX/XrEUagHmUtXg8GSVXODCJkzin645FwSCFSYOPeFOf/SI1B
-	 dCVgxY/8Y31MMuT3lq2ngRqNDnYwJlnYRsfASW/cssSlE7hxgTkd/iSZNpzWxFVlWD
-	 /Po6x+jrwUt0HOb6VpQe+QWCHIvPqfCaTrgeuBPFNFdb5JpnrBBKPNFXvJA3wtlDMF
-	 +Hz+urVpwWTQuW70zdUIpvPvret1wtV09ZovJXTRgs64p8LfecYYWjVJ+9/rl0pHN2
-	 7jF3MMGJmwDLuKb3r6tWhUAwXpju6fRLTbCkdia2laDlgOxti2G7Y6OTEYzIl+y47H
-	 4idVcSYLaSFMQ==
+	b=f1RSxon9q/l9kojCqkQC8ZnH1KLAZi0F1QiU5DJcyASTkfad27L0318Xtdevg0tPO
+	 FEUDoIZ2jKnJY7xhkJk+JLiF0j5zl4KJB/JQg43sON195DObl5yqq//zRFWgkJKuJQ
+	 NNndcgU+wktAuHX/wViZhsfxx3XCkz9FPvUNbe4sgBT3k+gZkcPpgdpzP9+4DOYLMF
+	 QjACwx4CyF03LSKkzBanxPMSDUb5djTKYG+BtNXqSxlgVNyMtvzi4l1JRLIhrKo41U
+	 ghxKfk4mcUYs/M/xXIzfHM6CvLtA/cUaE4oGK8iLOhSaaOnRxbjLCJdXY0bmaRERku
+	 DH4FWDkNBoffg==
 Received: from pan.localdomain (unknown [IPv6:2a00:23c6:c338:be00:61ad:9488:9583:2010])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: martyn)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 57DE917E0657;
-	Thu, 27 Mar 2025 13:09:05 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7FC6017E0A5D;
+	Thu, 27 Mar 2025 13:39:17 +0100 (CET)
 From: Martyn Welch <martyn.welch@collabora.com>
-To: Shawn Guo <shawnguo@kernel.org>,
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
+	Fabio Estevam <festevam@gmail.com>
 Cc: kernel@collabora.com,
 	Martyn Welch <martyn.welch@collabora.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp: Add device tree for Nitrogen8M Plus ENC Carrier Board
-Date: Thu, 27 Mar 2025 12:08:54 +0000
-Message-ID: <20250327120857.539155-1-martyn.welch@collabora.com>
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2] arm64: dts: imx8mp: Add device tree for Nitrogen8M Plus ENC Carrier Board
+Date: Thu, 27 Mar 2025 12:39:02 +0000
+Message-ID: <20250327123907.542132-1-martyn.welch@collabora.com>
 X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,13 +69,35 @@ Board and it's SOM. Supported interfaces:
 
 Signed-off-by: Martyn Welch <martyn.welch@collabora.com>
 ---
+
+Changes in v2:
+ - Add missing entries to binding documents.
+
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
  arch/arm64/boot/dts/freescale/Makefile        |   1 +
  .../imx8mp-nitrogen-enc-carrier-board.dts     | 478 ++++++++++++++++++
  .../dts/freescale/imx8mp-nitrogen-som.dtsi    | 415 +++++++++++++++
- 3 files changed, 894 insertions(+)
+ 4 files changed, 900 insertions(+)
  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dts
  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
 
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 6e0dcf4307f1..de42f684c462 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1113,6 +1113,12 @@ properties:
+           - const: avnet,sm2s-imx8mp              # SM2S-IMX8PLUS SoM
+           - const: fsl,imx8mp
+ 
++      - description: Boundary Device Nitrogen8M Plus ENC Carrier Board
++        items:
++          - const: boundary,imx8mp-nitrogen-enc-carrier-board
++          - const: boundary,imx8mp-nitrogen-som
++          - const: fsl,imx8mp
++
+       - description: Boundary Device Nitrogen8MP Universal SMARC Carrier Board
+         items:
+           - const: boundary,imx8mp-nitrogen-smarc-universal-board
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
 index 42e6482a31cb..58b33708e4ee 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
