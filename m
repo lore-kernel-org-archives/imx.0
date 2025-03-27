@@ -1,153 +1,188 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E1515533F
-	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 20:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C71176035
+	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 20:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743105763; cv=none; b=Y3jzi4Qs9N9vbRjTE3nryFsE6zuYjfZs/2OoU9Uu7adilCjSLVVtiAdecb9bp1wiuH0miKyIA/uXpyy7TiIioMPaEdUpo1jWCLGS85mwLVHOKD4DJz1zRRYIi3nEfYOZ/PeXzpuW9HfA5mUfxUkqlUYXKDz5iQtsA0xEEqKR0As=
+	t=1743106310; cv=none; b=NpeweXZrMyAqKCoJADJ6vApPGtZQ0V5/aoS362b/lfeW372n2y2HhTHInnKg315vMWpLyWck/Itiea2VZ2vikNz+pLLAc6a2H13OI9+I8SPNGscqlCBuLlOO64BZBI59DXiHUN8PjGbeoIoWxgPcL5w04nkJ3B3FfndXD3owOwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743105763; c=relaxed/simple;
-	bh=upFVl2TTrdrPVb+18Vptv5pAKRaC8ryTOgpQjZLsV/U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q8kmT3kSL6mCumYKlZ4LBsF5mHiIUdX2ySz+i1+Bv5mzKSFf2mUZOKujKHx+pMDb0V873rYMIiAx3r+osTR84sf+Yh7c9b6LIdWvbb04EGlUjI9PAtltZz14cGYZnYmrEjI9CdbmLhNjvEqwGmyQQVCBL2bUV6rlX2QZYsxISeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ixwosobR; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743106310; c=relaxed/simple;
+	bh=LmKNL4zB6Iz8Ceg/EZ9Ki+Bqelt5gOeg9dk/BVwMtr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYH8y0FNF+j4z5cWqPy0WPiHigRn4pfcR/tHcI0MAbBmt2sjexUePrM19IxmarAHc6NtYMK0nBwG/Wk2rK22mqQ2/sisZHjLoTJ1fc4yq0i/Rdofrjmmtic0YLvZdNU3l06h1ay6mPSXdpNNKGLS2SEeRC1AbaUw6KvZSo//UwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=PIzAMG7J; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ixwosobR"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-224100e9a5cso29978575ad.2
-        for <imx@lists.linux.dev>; Thu, 27 Mar 2025 13:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743105761; x=1743710561; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wuAJatc2JmXf0iY6WMCrv4PggaSVzunJXyftBhSJxQY=;
-        b=ixwosobRmfNPGdABdRwRLS26vK6OYmKOWGJ/ObuBasNISUotkL2a/eWvOfNWnr1zeS
-         t+9shFtRlRLVg2J6sOvUOQBNotGNIYieMhn1sYE0DCQQ6+VadfiMu2EWRGREyF9x5VM7
-         hYHX/WEgvcRMAuKZ0w00ZhPG2PEYbF6D8s1X6BipxtbDEW/FM40Vem0M89qLicecx/P8
-         wKvqTTLJyo83jl++/CbO/3HAu+6lDgiPFYWzTo5Kr/dcfXMuDjpvWnvKURpaneqLi6vx
-         nMEtynuLzGM5vHW6ty+FTPL9EdSd4XRR+GpzuJQYWyaBC3Itihs1QoIn74daREHnYHoY
-         rAMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743105761; x=1743710561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wuAJatc2JmXf0iY6WMCrv4PggaSVzunJXyftBhSJxQY=;
-        b=oPuiGVmi+Oe12zfaovlrz0Og/pAZ3V6EWdauP1kcJlaBthommjiMNWBqGceSSGRGHh
-         gccygtiUIDJRdwJwjou9B70B5dIrPx4/jpdU1HT0N2VdnIrj3ZAZRSb2dpt874QaeZY6
-         dqrP5eH3MhR1jVJf5GMtj6iu8Ey3SA7MTONZJUCJHMNLoEDHLJm7crcjRcD4Rd8P/dkZ
-         OfyCuF8+/VXFQ+q6UKSEI5RB4C4Xx/cqGAKqvf1YqTzEQ/U9m8w/2VBmr5YHWTIRX0H9
-         NXHDNlIcMelGhAz/p0yh4s86WwPoDVeCewsL1Qct/7nTcz6tXpp+/f/l+L+6E8MqHVF5
-         ur4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVgjZvReTSbkQru3ml9A/BISCyO5IcEfxy0szK1MHopX1xjUrZBNScGaQoymz6oAWaJ2yc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmZg9zlOR6XXHk1iG3txQDtNb2rVQMhmy5guaau0PCFP6iVvqS
-	LH4OcNfg/ZjmFpdDqBnBBgELCACj3MlLWzh1VBB9LqG/brl76nzKsk0dlQgUkz2QnFIRSROeeg1
-	cveH3uo3eR5rDOWC5tVrFq4XFa44=
-X-Gm-Gg: ASbGncsvkTfsmZap3m2GJTFUImOM4DJttzXVj2fNBud1qoVu/sJ/NybroqgrpbYHD4A
-	O5R7BRHfvbIrmbl5yQ9+BPHmGpXrMsRDm1lLr7ZpLlEMcYiywf70Z93jnSBsK0s2G9wY3tCm6gG
-	4oMgvy5Fpda6Lwz7uzzyXXSmznpQ==
-X-Google-Smtp-Source: AGHT+IFauHqFGz+l5KSmNKiQ87uiI0RmmUS7PE3RtYqUxj+Ju364KNFhZ3pFAY9xmj01bZt3AIVOI+wHC5S3cDOhqvE=
-X-Received: by 2002:a17:90b:5686:b0:2fa:15ab:4dff with SMTP id
- 98e67ed59e1d1-303a906ebc2mr6863917a91.31.1743105760980; Thu, 27 Mar 2025
- 13:02:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="PIzAMG7J"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 91BC0F6;
+	Thu, 27 Mar 2025 21:09:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1743106198;
+	bh=LmKNL4zB6Iz8Ceg/EZ9Ki+Bqelt5gOeg9dk/BVwMtr8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PIzAMG7JaaXrGdj2WRj3GziQY7hur0VwbrnmCods9opEDs5fe3YSJNZVk4bqx+5wO
+	 c29A89plU0IDKIw+qUPypXAl7pMU56aT7QBmkc+0gJEpsaaw1tHMjVZkQCTgYIT+WR
+	 lKskW++LtDibbeOP5LngZMQnLSoTMMP4D0wst2Dc=
+Date: Thu, 27 Mar 2025 22:11:24 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	Robert Chiras <robert.chiras@nxp.com>,
+	"Guoniu.zhou" <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v3 05/12] media: imx8-isi: Add support for i.MX8QM and
+ i.MX8QXP
+Message-ID: <20250327201124.GI4861@pendragon.ideasonboard.com>
+References: <20250210-8qxp_camera-v3-0-324f5105accc@nxp.com>
+ <20250210-8qxp_camera-v3-5-324f5105accc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250210-8qxp_camera-v3-0-324f5105accc@nxp.com> <20250210-8qxp_camera-v3-4-324f5105accc@nxp.com>
-In-Reply-To: <20250210-8qxp_camera-v3-4-324f5105accc@nxp.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Thu, 27 Mar 2025 15:02:29 -0500
-X-Gm-Features: AQ5f1JpXPfB7WcMK1DcTCK1yjsON2ZzVKgj_sI1ozYwDfWnEj3NMxxnXx4v7m90
-Message-ID: <CAHCN7x+6_xxkx-Fft6WnfsVyqy_v3c732uKuEanrP64jv3Kj1g@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] media: nxp: imx8-isi: Allow num_sources to be
- greater than num_sink
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>, 
-	Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
-	Robert Chiras <robert.chiras@nxp.com>, "Guoniu.zhou" <guoniu.zhou@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250210-8qxp_camera-v3-5-324f5105accc@nxp.com>
 
-On Mon, Feb 10, 2025 at 3:01=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Allow num_sources (drvdata: num_channels) to be greater than num_sink
-> (drvdata: num_ports + 1).
->
-> ISI support stream multiplexing, such as differentiates multiple cameras
-> from a single 2-lane MIPI input, or duplicates input stream into multiple
-> outputs. So num_channels may be greater than num_ports at some platform.
+Hi Frank,
 
-Can you tell me which platforms support this?   Is this through
-virtual channels, or do you physically connect lanes 1 and 2 to one
-camera and lanes 3 and 4 to another?
+Thank you for the patch.
 
-adam
->
+On Mon, Feb 10, 2025 at 03:59:24PM -0500, Frank Li wrote:
+> From: Robert Chiras <robert.chiras@nxp.com>
+> 
+> Add compatibles and platform data for i.MX8QM and i.MX8QXP platforms.
+> There are 8 ISI channels on i.MX8QM while there are only 5 channels on
+> i.MX8QXP.
+
+There's a discrepancy between this series and the reference manuals.
+I've raised that issue in the review of the DT bindings, let's discuss
+it there. I'll skip that part of this patch for now.
+
+> Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> change from v1 to v3
+> change from v2 to v3
 > - none
+> 
+> change from v1 to v2
+> - remove intenal review tags
 > ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/dr=
-ivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> index 93a55c97cd173..ba5b2d3617a23 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-> @@ -188,11 +188,11 @@ static int mxc_isi_crossbar_init_state(struct v4l2_=
-subdev *sd,
->          * Create a 1:1 mapping between pixel link inputs and outputs to
->          * pipelines by default.
->          */
-> -       routes =3D kcalloc(xbar->num_sources, sizeof(*routes), GFP_KERNEL=
-);
-> +       routes =3D kcalloc(xbar->num_sinks - 1, sizeof(*routes), GFP_KERN=
-EL);
->         if (!routes)
->                 return -ENOMEM;
->
-> -       for (i =3D 0; i < xbar->num_sources; ++i) {
-> +       for (i =3D 0; i < xbar->num_sinks - 1; ++i) {
->                 struct v4l2_subdev_route *route =3D &routes[i];
->
->                 route->sink_pad =3D i;
-> @@ -200,7 +200,7 @@ static int mxc_isi_crossbar_init_state(struct v4l2_su=
-bdev *sd,
->                 route->flags =3D V4L2_SUBDEV_ROUTE_FL_ACTIVE;
->         }
->
-> -       routing.num_routes =3D xbar->num_sources;
-> +       routing.num_routes =3D xbar->num_sinks - 1;
->         routing.routes =3D routes;
->
->         ret =3D __mxc_isi_crossbar_set_routing(sd, state, &routing);
-> @@ -453,7 +453,7 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
->          * the memory input.
->          */
->         xbar->num_sinks =3D isi->pdata->num_ports + 1;
-> -       xbar->num_sources =3D isi->pdata->num_ports;
-> +       xbar->num_sources =3D isi->pdata->num_channels;
->         num_pads =3D xbar->num_sinks + xbar->num_sources;
->
->         xbar->pads =3D kcalloc(num_pads, sizeof(*xbar->pads), GFP_KERNEL)=
-;
->
-> --
-> 2.34.1
->
->
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 47 ++++++++++++++++++++++
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  2 +
+>  2 files changed, 49 insertions(+)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 1e79b1211b603..a3237d76f7aa5 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -274,6 +274,25 @@ static const struct mxc_isi_set_thd mxc_imx8_isi_thd_v1 = {
+>  	.panic_set_thd_v = { .mask = 0xf0000, .offset = 16, .threshold = 0x7 },
+>  };
+>  
+> +static const struct clk_bulk_data mxc_imx8qm_clks[] = {
+> +	{ .id = "per0" },
+> +	{ .id = "per1" },
+> +	{ .id = "per2" },
+> +	{ .id = "per3" },
+> +	{ .id = "per4" },
+> +	{ .id = "per5" },
+> +	{ .id = "per6" },
+> +	{ .id = "per7" },
+> +};
+> +
+> +static const struct clk_bulk_data mxc_imx8qxp_clks[] = {
+> +	{ .id = "per0" },
+> +	{ .id = "per4" },
+> +	{ .id = "per5" },
+> +	{ .id = "per6" },
+> +	{ .id = "per7" },
+> +};
+> +
+>  static const struct clk_bulk_data mxc_imx8mn_clks[] = {
+>  	{ .id = "axi" },
+>  	{ .id = "apb" },
+> @@ -334,6 +353,32 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
+>  	.has_36bit_dma		= false,
+>  };
+>  
+> +static const struct mxc_isi_plat_data mxc_imx8qm_data = {
+> +	.model			= MXC_ISI_IMX8QM,
+> +	.num_ports		= 5,
+> +	.num_channels		= 8,
+> +	.reg_offset		= 0x10000,
+> +	.ier_reg		= &mxc_imx8_isi_ier_v1,
+
+Are you sure about this ? According to the reference manual, QXP seems
+to match mxc_imx8_isi_ier_v2, and QM doesn't seem to match either v1 or
+v2.
+
+> +	.set_thd		= &mxc_imx8_isi_thd_v1,
+> +	.clks			= mxc_imx8qm_clks,
+> +	.num_clks		= ARRAY_SIZE(mxc_imx8qm_clks),
+> +	.buf_active_reverse	= true,
+
+I'll trust you on this value, I can't verify it.
+
+> +	.has_36bit_dma		= false,
+> +};
+> +
+> +static const struct mxc_isi_plat_data mxc_imx8qxp_data = {
+> +	.model			= MXC_ISI_IMX8QXP,
+> +	.num_ports		= 5,
+> +	.num_channels		= 5,
+> +	.reg_offset		= 0x10000,
+> +	.ier_reg		= &mxc_imx8_isi_ier_v1,
+> +	.set_thd		= &mxc_imx8_isi_thd_v1,
+> +	.clks			= mxc_imx8qxp_clks,
+> +	.num_clks		= ARRAY_SIZE(mxc_imx8qxp_clks),
+> +	.buf_active_reverse	= true,
+> +	.has_36bit_dma		= false,
+> +};
+> +
+>  /* -----------------------------------------------------------------------------
+>   * Power management
+>   */
+> @@ -541,6 +586,8 @@ static void mxc_isi_remove(struct platform_device *pdev)
+>  static const struct of_device_id mxc_isi_of_match[] = {
+>  	{ .compatible = "fsl,imx8mn-isi", .data = &mxc_imx8mn_data },
+>  	{ .compatible = "fsl,imx8mp-isi", .data = &mxc_imx8mp_data },
+> +	{ .compatible = "fsl,imx8qm-isi", .data = &mxc_imx8qm_data },
+> +	{ .compatible = "fsl,imx8qxp-isi", .data = &mxc_imx8qxp_data },
+>  	{ .compatible = "fsl,imx8ulp-isi", .data = &mxc_imx8ulp_data },
+>  	{ .compatible = "fsl,imx93-isi", .data = &mxc_imx93_data },
+>  	{ /* sentinel */ },
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 9c7fe9e5f941f..496cad3f9423d 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -158,6 +158,8 @@ struct mxc_gasket_ops {
+>  enum model {
+>  	MXC_ISI_IMX8MN,
+>  	MXC_ISI_IMX8MP,
+> +	MXC_ISI_IMX8QM,
+> +	MXC_ISI_IMX8QXP,
+>  	MXC_ISI_IMX8ULP,
+>  	MXC_ISI_IMX93,
+>  };
+
+-- 
+Regards,
+
+Laurent Pinchart
