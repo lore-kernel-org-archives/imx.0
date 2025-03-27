@@ -1,79 +1,66 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2050.outbound.protection.outlook.com [40.107.20.50])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C4218599
-	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 14:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E3D186E20
+	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 15:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743086780; cv=fail; b=IOoH4ywXpAn2yUW84QnMWRdSDu9NJYHbCJ46fJ63cLfiPl1s5EUzVBCwY1FlwDCKAyEB+Fol+HrHNE19VAuF7656gc8P+ewDI6K1nTQv9MZ9AMIMgo7NAfsjXPtunfFr+CHPWqhRViwZjE7IvXSBhslwronXpM5zl/OP/AEV8L8=
+	t=1743088825; cv=fail; b=ZeRVuNhcl0h9vGT/0tt8LTOwc/fN+GurAY4iBDDSK5W7liqmLwnlgYOl6ysFlzZ5L2DwY2I8HYpxhfi0Y6BSOi7ylaEjwBMuD674/5LtQWEnJCKFUDqJbMB6/4hpSxe59iF4paj6XOr4fJOZ4w74YJAok7yb2f3ediNh7vhw3OU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743086780; c=relaxed/simple;
-	bh=7yVkEM9lwwlT4yl+4MgskL9fAGD/UsrPKm6GzppqtfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BxZ0j6Q5ryWkXwZADNlMDoD98TveXgKNZ8R4k8UYsIOn+4ZUvhf7+sVwNI+eaLDKiG2fkoyeGqOYUzJx9bjrFv5PKemb33A7NNZy7yXYCeBu4Xg6ziAjJVlxNhnpubADjgQ8q29yJ6JLB4pGB3hKtlOs6jIiHpfVaWaS4rR03Xs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d5wlkbze reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.50
+	s=arc-20240116; t=1743088825; c=relaxed/simple;
+	bh=oMvQ9otym+TS1i9e/nyymwV/ZGSezTlffxWDB9J2uJU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iOMNvU+TTgj+x2eEZEAtHHDS/FaZewcV+AJgrdJUHvFxvU/ygZfvWXvtZN3gVXaZ+PT2IXENqemWYuN8oqUv5Soi9i0AWSlbpN8XuVan2qeQCrc+cG6UdTKJeO5k8AGNioEe0OVQfyL6WZnjg3MzTUhdISgtX6W7v1FNXIqNBKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N2nOGfgS; arc=fail smtp.client-ip=52.101.65.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d5wlkbze"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N2nOGfgS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NiN4Yn0ee997b5U8Hh9DKZWddr9R+MGASGRC83ef0j7sLYZZhU/iTohLoMpt2FQTSjLDiPvhOVhdi7T/c465oV0xwWq+CQBQJRTkG7Xc1mfzs6deN2+SWQ31BjGw90m5Ex80ybGkMb0rNA3xV2WTunUJPNjbHUFHHV77BCpq+xyzhmy3lLguX12p1YinUyTXTTj7q+3h9Rq1ipOU1IeYm5yh8u0kFzy9AHC4R21fd/e3p0OH+hgEnIGk0LmG1fEqk8X8FiUC5qB/t5Ca3S76oE4/qfDdY7YiVUzrKL8Dl6m9tifVmrjxzQvqBGowyHOohs6WfaWQXO3bRxTgW8lbrA==
+ b=TXy1WDIghXbnVFeJYziroav25eWPD4P6eqhefQOzRP8bb2oX7+s/klASlNWRgnHUUKtpZD9AmSlnT4M7Jz+SyanBSKQz7h1BNk9BXUiWkMt6kPx+PCnnN+bK1JiaE96RGNzGXAI5GmzLu9zfDsMPPXO4JiVI6vVE/jBN6csYLCg69uutxf4+BnDS3MI46QnJBV2GoOjwGg9NoXhcT8j6CSKRnyPRw4JC5Dkx39o2xkhHBuX23qax8QTOgx/I3k941Y7HPSVRL+rqc2GCZ7bn7ajkd54iEG8uTrjNHPQalJWoz8ptftJOPDqYdXDdqfSavMYph60xHcUshiCpuGDAIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jap46ox66OTTKgNJPdTsRUR+FGpKz9jNeK4z7EJXdC8=;
- b=G1IiW3wH+qRWQAHWZvoRjNLUFkwv670+SPFG4XkkljWdAmUC5CkJg0YxNNTMk8vm5Y+dyyC1/cF3lXbbWWC8W+6jO6pMCbYND0lR3alz9LrEZIuClLmvC50RRGoDd8evueonEBmY+JA+wpYnRs5QXip1q86uZB3FTlnY5VsG1wwrZf8dEojcOZnIQEkF8JLsM0V9AAAWww6+uDugtNACOaFa/hQ2v3dAUUTGp5TeOuqiNZhiQbpKlrHBMJdaksZyreBLQG9Vq96sDou6xyOSN8iR7m0pOF6fQTv8bnoP0EMs2dMWgT2nxYMlbvx0z8DX6MVUDyDUNsQpLynV5/TqNQ==
+ bh=eOVa/c5APqWBJKyIkOgH/5op46fqMIwfZwq6pznkyT0=;
+ b=h/B9Q4BM9s7WqXvaUyMto6XRYH0n7FXjdOZxqmY4IVMz+5ecEYcK0k89zVuaoJiDJxghn3ZPp3n3mcHKvJNjY1fRds9YYsDC2Cz70/mqOZq8bcYsbXQqyN0MoYQs110zD4IuGw0GK4Jv7HT49mhxjdsd9by1x5LY3GsbtI8HAdGKKqp0+gQOSSTlWdxcGUjJ3olgyYK4dogFzlGYBrOog9BwcMSyjXC8/7Omhd8MQbWjw/xXAwQ0O0X40Ryzift7x4IqiCvQs8mrH54fkmG6QJOANhNtjnaSjgarl2T70W1Wf1raNredb7z6rJTwV7ygHTlHKFkRgPDY9RxBnufkHw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jap46ox66OTTKgNJPdTsRUR+FGpKz9jNeK4z7EJXdC8=;
- b=d5wlkbze0ZfTauCT5hHFcBlmx0kHSYuv4D2Qdp4+a+0BIb2eWuCiLJ6ZMYHDKn+EfuuRpGA23zn6YXcYb2z7t/R18jbDsNpMvJ55o7Ln9HjzkSBnrAE4X8M+Fo35kTXREQx4yY21/V+whfB6mSy5YcbV+49mEJ7SFkFTWaylHtKDPopG9X8dZ908McyUaC9QselsJYZghXugzhh4cotU/J1lK7ul5xbRa4MOHTIleWs08MOhfe6vMUuq6RNO3L2i28Nk5lqbnd1bMIZTX8bhbQc3Z3LlajrbA6BDTnnDlL7//poIreWMtg/z/xDxcVn6YGj76XL2ItJaUQZnNsr2Yg==
+ bh=eOVa/c5APqWBJKyIkOgH/5op46fqMIwfZwq6pznkyT0=;
+ b=N2nOGfgSquLNf2uOTATHHOp2GZrlrOVXuBfWcf3uV+GbUpLT0pQnGyWB5AKQ4dosZTY3y2EUW5qp6n4kcGWOpB7dIHgNh2d+9XI6EM9gjv+vPhuODzG0Z3CBKlfjTYZe16Spm8jjve4W+1NRkocMVvlokIkyY2OX/ws/MJ/AevJGfjNTzlIfuSA77JqYLx+urLKlvgEeo1L8QtHWJ+wpCSBeJtD9ip3rmICvJehXTRHB/udCOtsxzIFcM3BlIUj7c72CNJ2lf3QOW/my2j7ciQOjPFlI6h06BzyJuoDILtP2B6s+swgG2aXn0a9ooOsf16TI+o0B9801x2G9qRpJTA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB9812.eurprd04.prod.outlook.com (2603:10a6:800:1d2::15) with
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
+ by AM0PR04MB7058.eurprd04.prod.outlook.com (2603:10a6:208:195::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
- 2025 14:46:13 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%3]) with mapi id 15.20.8534.040; Thu, 27 Mar 2025
- 14:46:12 +0000
-Date: Thu, 27 Mar 2025 10:45:57 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Joao Goncalves <jpaulo.silvagoncalves@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+ 2025 15:20:20 +0000
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e%5]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
+ 15:20:20 +0000
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-pci@vger.kernel.org
+Cc: imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add initial support for
- i.MX 95 Verdin Evaluation Kit (EVK)
-Message-ID: <Z+VkpZ9boYYhL1zP@lizhi-Precision-Tower-5810>
-References: <20250326223841.193234-1-marex@denx.de>
- <20250326223841.193234-2-marex@denx.de>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Subject: [PATCH] PCI: layerscape: fix index passed to syscon_regmap_lookup_by_phandle_args
+Date: Thu, 27 Mar 2025 17:19:49 +0200
+Message-Id: <20250327151949.2765193-1-ioana.ciornei@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250326223841.193234-2-marex@denx.de>
-X-ClientProxiedBy: PH0PR07CA0047.namprd07.prod.outlook.com
- (2603:10b6:510:e::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+Content-Type: text/plain
+X-ClientProxiedBy: AS4PR09CA0029.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5d4::18) To AS8PR04MB8868.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42f::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -81,854 +68,112 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB9812:EE_
-X-MS-Office365-Filtering-Correlation-Id: 715ce62a-8590-49c2-f980-08dd6d3e1db5
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|AM0PR04MB7058:EE_
+X-MS-Office365-Filtering-Correlation-Id: 324c6d07-bd24-473c-2088-08dd6d42e2ff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|38350700014|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
- =?iso-8859-1?Q?azNl9i4TsSHyGqI5ZI/h9R/ZwTPn7Y32G2fLo8nwNiTXg7Pw/xwBno32x9?=
- =?iso-8859-1?Q?pka3iFeOnvSJrLT0jZQZvHevkeaieAXqgabbEESY85+mFmFyUfNeDHtxUV?=
- =?iso-8859-1?Q?ATYNIeHnsJnAuRsy0sE0AjNlbTtxGgnnISaCLoDxpSgOBeNLX/MCGRELs6?=
- =?iso-8859-1?Q?cihcvGihTOHQSi9nWAGYtWGNn+t6u21DZtElHRcfYF0C60jI37XCs0yGmO?=
- =?iso-8859-1?Q?keN96Ln5d47Ibx+Hv+LtAppqBQbH9Q0HWHUwGhxf5wHKetfwkhNonyuUzi?=
- =?iso-8859-1?Q?gNc+Vn/u/KN/sBih+sjiE6d2/AVrGOZyA4VwgiDhRAefog5Bb+cWMiKMcU?=
- =?iso-8859-1?Q?VNL4XIbwy1iqJMQzHEOXAw/dy/Dz5O47SQvrAyPG7kHw/+D5bTusxqIOpE?=
- =?iso-8859-1?Q?heD/NHiD0YSREI0SATljrNA9Z7z2RTmiHbBwD+WLmkHgYx0nT7BHTU67nE?=
- =?iso-8859-1?Q?QhpMzj3GwUmctj1x1t+4+KMGv5W7e8tjNkbwUH273MGLegVCsmhdHharYT?=
- =?iso-8859-1?Q?MJrPJ8tXSUB4GLTcVNvjSBsVDGPh0isGBGyXHs6o5J0+QSIs2+M+eAX6JZ?=
- =?iso-8859-1?Q?DkiS4TDUxaGKzEaSXt7JFHFUgRmO7JeROjq+GhZD2hcbyu5VRY4sMXGZTB?=
- =?iso-8859-1?Q?WP6XaaFxuiXmEXhtswTwRPGxfZTr5Zb/Gbrskva2mgOqw1MPfRduG9q6a4?=
- =?iso-8859-1?Q?XP7ci1pknNdm3Ofob40ljKDBE+3hlB963pbe9/gXS0VFAJcsoRGys5rmbS?=
- =?iso-8859-1?Q?GxaxErJilKWM1ZO03MQuHKd+sgJlFNOjNIUPo9/4KFmrISB2pOd+y0rvUh?=
- =?iso-8859-1?Q?remR6CiEu/kqjpg+iRsBgqATLfgotKawcAHxix1M4CWtMB1KoeRLIxb75a?=
- =?iso-8859-1?Q?tGYLoXLBiqq7jqGw3m0rGQTmWqKi2MGENJTKZkgkFTMeUt62L2aMcNdJR0?=
- =?iso-8859-1?Q?ZcIxDpFoOenhNSganjbfMtIfAqARpH6d/t4k9dO756RWQdK8sjw20QPEua?=
- =?iso-8859-1?Q?buOLxov9bTfcoPnuqinhg4ZN9HiRz5N6lfuGMxmKD+9HPlmP2oUHxTl8tO?=
- =?iso-8859-1?Q?R3Ns9PCJMDwwT+XeKSgJn3oghZWLU/ERaveehWs6QEUAZvFw0j8idwNlgE?=
- =?iso-8859-1?Q?pAw1ZbG49PtPlA9u928pXcsxqa8iwfP2ucasma6mJc+npSFhWjHqvT29PJ?=
- =?iso-8859-1?Q?dimPM+a2QnsEkK0SzZwmHqlEWAbqNGFBzW0JdLHVmDPUxcatcRMMW+ppRd?=
- =?iso-8859-1?Q?RjzkCOn0dVXgy3hyZCY/t1amvM4hK3lp9SISOa28r/Do6Mw+u3Y8JFwnPS?=
- =?iso-8859-1?Q?i54tTSkr2nL0pPTyGgYwUAM92RYoNr5zGyni5ds6ZjYGAM/1LSbYmcY4KB?=
- =?iso-8859-1?Q?GkfhQgJzFrm3iSwvaRbFY2yZ/44NuVi75ATEvj97OlEVuy7itdKDkPPrbT?=
- =?iso-8859-1?Q?ZitifxKkUuVUhi8k?=
+	=?us-ascii?Q?7D+fqpouWREg6WbFHPbau3wLNVyLMeC0gce0qS9D8ZY6ew2j9Y/eG+8dACvZ?=
+ =?us-ascii?Q?QNdImDW76+x8W+pr9YugGf2s/uZZVzhppAe5VavQVu5LQbs7lLizv/6z6fTV?=
+ =?us-ascii?Q?fVhk1s38OVXklh/+YM6VzpmL0ZEPE5jjttsJo+sh7SktwaCzbiSFwHiuPFHr?=
+ =?us-ascii?Q?Ce1lnanPPPsnwuz0MuOy27zPa9LkIKBjAkHuLxNAChG4rXv4tAQv+5LR//xA?=
+ =?us-ascii?Q?aDLWf+BB/R4KZQZm27qC/z+WvNSYzdu8BlVKBmTzPYNMSDLYfInFTo0KX9wL?=
+ =?us-ascii?Q?27qdLtDxs0pv7Vf0vznRKteSzALlf90QMcCBInAS0BDKC7ZSCYixs9cQPIzc?=
+ =?us-ascii?Q?Ee9J0Y1GThhkFGZvJt9gTTn7Ds9D0+spZ0Sfa3jFDHjHR1WEUgI01znP/Gbd?=
+ =?us-ascii?Q?9KLu/NaUEPEEE4crbpsbMTdGcyPwi4tuycB8l39VZB9NhRwN3XiZtOyyB/Xk?=
+ =?us-ascii?Q?6zHGCwK8CqDdZWTXmytltqFnJFZ2BvXgWGyu9B62IZf+MJOARVrOY1orRJ/H?=
+ =?us-ascii?Q?oPSXntneUsk7Y6GpXv4UxADIoVJsMSKA8nR6xQykpyGb83lCFouJlbVAYLAg?=
+ =?us-ascii?Q?kW/7GkMSnv+mKB7w5EVQBvnWd8swongccKsxyrJqxzmBDD4W//LhuOOSx3P+?=
+ =?us-ascii?Q?6AlZeLCIkvBIU99lssipTk6T1HcjzdQAsxIiUKNmMzQQgEmR2RkAzx1D5UMB?=
+ =?us-ascii?Q?B0dI/fd3pCiEKKKhU0oEkTFoOx+zwAUYs0Jg55IlUPM3gCHM7LsbDp8/cORc?=
+ =?us-ascii?Q?5TfqG6C04EXMlamAL66Tetdpf6E9ThpWxiyyfcIWr1X+Fno36Ap6VAAJlmG0?=
+ =?us-ascii?Q?PLYyaCH9sjW+7xHEkDwP6Y1T7owDi09+AItdUWeQHBl/hw807pPjUYwIP3dc?=
+ =?us-ascii?Q?LOcqkqeeqUX7dHB0WJJhUP/+J/V765QfPhA0ZWd0HVCacPpXiKeZPkSoC1Np?=
+ =?us-ascii?Q?1b93RLTQbKEYs32HjcSn4W3ArKezFbmoKO9PyUUgWvGzk0W5worJ9XklP//f?=
+ =?us-ascii?Q?Qyk5GsF3VZRoyyq7MOPdFzYbP5XLtDyAJhCxe+La23nxfLCp/UV6foswggJC?=
+ =?us-ascii?Q?JJRP2kzOll9G6+zQ1+QFpDjgXozwx5zFBpf+HC3juN3n5+NH99+fPSHwzKjS?=
+ =?us-ascii?Q?cL1jpvk8P39GuM/Y7G4rJ+k+OCfWeKwmtcgaVNOtLWCD8xv5JUchkfpNMJNR?=
+ =?us-ascii?Q?y9AMfVNvpWCFR6Hs7wPUCOxW2Uz75akQeLAoc9kquP4Z8J4CPiV5UIPqEVWN?=
+ =?us-ascii?Q?LQ8GeM1T0MZw7CMApxEUmug3mUt5cAktDvmZ75ydMjnizejQfni/Au43EZb8?=
+ =?us-ascii?Q?AiPQxdUeM/r6mz3iNb6a7cljiTlQnB6+R4bG0iAeHLoo/GpRGJv0SpEmorYM?=
+ =?us-ascii?Q?NpF21mjbEWREelfBOU6sDBnxLphJ?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?iso-8859-1?Q?dUWPG0739cWBo6eqCE2DQrrzvJ6qn48NLpSOywFRVcnIqHBvgioilPUE+F?=
- =?iso-8859-1?Q?MfagRKmEdN6oTZJQ/yCVkBPXo3AI1tCiWhOdvQWpwyauAtsVtoP55az60B?=
- =?iso-8859-1?Q?A1tgLdHq5IDhZC3qIG3K/20unLfXYX5maW351PTomAMqcWNxPSn18n4Wvw?=
- =?iso-8859-1?Q?kk+SLoAb/7rnheWmhJlMyCBqsZp1aSV5qOMicIu4VDhXL4ga8DlqShEFbT?=
- =?iso-8859-1?Q?+ms3dG22kdnBBYGxd1boG81MLBgSBEs7daMXV8jdRRyQtHFrZBku/pn/Qf?=
- =?iso-8859-1?Q?ZIBibER9mDSIqzv7rNhKJ1YzLTB4hJcPSPCjrKFLKkIpC3KeJ4tBopXf5w?=
- =?iso-8859-1?Q?e0nOuCA9lCSGv4e24X9EivDSxDbA0CLfc8FUU9nmUYR9mahfG1VPfS2Gi4?=
- =?iso-8859-1?Q?khYD2peWo8QHw0CEWkT+8l0PeizS8NhU8ihmLSq3c3RHpI3jaw/29qyudL?=
- =?iso-8859-1?Q?uASm0WPgcD/zCRORoxjT6JA6i5oyQB/zkcinKD8IxryACsQa5XjmHnRdgV?=
- =?iso-8859-1?Q?TUYSzwe30mtV06BmuwM5DNQhKkHFMFkEDl6VWOkq9m6Cka2/nkkYyHMZsL?=
- =?iso-8859-1?Q?WtqS99gLvR8kl8jpfIlvd0Ms+DNWuZOFhoQbpn0WOLkIwde8JasjcPYgyS?=
- =?iso-8859-1?Q?Oqqp/4WudsICVE/X4JtiwgYW6ZVIXl6915sZlby2xm7giguWkp7/hJqeOY?=
- =?iso-8859-1?Q?5oe1ugzeeN9i/YbJVpJA7j9ZgQ1t/lCGtaz5uvRLGTE04T47m65q0KV/mT?=
- =?iso-8859-1?Q?ctS85rNQx2dd4rkVru98p1Zd/5RhzxK356+0N6p+3PDXpbeLbYEWbiptXr?=
- =?iso-8859-1?Q?nwX0EA7vV5Ky7DxZw5Vz/IpFVy9BIZelHoDunWROOOagp4AbM22+3WHy7l?=
- =?iso-8859-1?Q?n5yljtQIx3Cj2ctaK9n85BvzhrHxP9kQpfELI3NZWnxIwmpW8PPuiobgIv?=
- =?iso-8859-1?Q?t6J3E4gvkpk8NUrIOlTBpKTL/YK36IJNI+9IPLvuscSs4wGGf2nheMsQ0W?=
- =?iso-8859-1?Q?qRbhjKzU0cpSysUMHuh4QsrDw4zkfTipG9mzQ7hxqn+ycJ3hbeCmwdzpqu?=
- =?iso-8859-1?Q?5xUa22Hij3Ifr3reHqQF7+55SuuW74KRbOzsgpdC2Xm3OrDSEwFygOV4FE?=
- =?iso-8859-1?Q?FVj+hNxuY1c1i9urAxBysFrOLAVQugvGtIjjAnjLDvtpOP2lwQpEZOaqkS?=
- =?iso-8859-1?Q?4nTj0UA2hQoU6F0jT5wnZVFscOIMXW4jYUo9+Rdbd/2kQ3Iz6w4WUvMoyo?=
- =?iso-8859-1?Q?f/Ny9OPo8yxtBl1QmU8unw57DRC1lt9/cDYdhonBzTc9PE4NbXtC6sMIyG?=
- =?iso-8859-1?Q?nPQN8WhEtf5Wj/ZdnJ5z2ht2ycHS/fVMMw+GPmJSOzjwTTKHOlHUqU00mi?=
- =?iso-8859-1?Q?C6xbAA39NWKeTyFW8kVd6I4MoIWMvYfl0m31hDIkGKB2TvfwmVp/3544uN?=
- =?iso-8859-1?Q?39QQ1YlHdvdQj5y/9WDGLQQf0ZCmIkq5UyZ+poMBDN7n4JDzQy6MhrM/aG?=
- =?iso-8859-1?Q?9BLZIp0gQphmYJz76NxX5jrvys5MqP8z2VwqMZaSJlojb3at46Eohz02+Q?=
- =?iso-8859-1?Q?Cd4W/oSEIdcKccWveReU/EdoaVOAyTsBO+5LU2qfAxxKrZHcGTL6W2YYDe?=
- =?iso-8859-1?Q?JHZy3aUMCg3Uc4uo8jWVHA6W4Svgs3oLbX?=
+	=?us-ascii?Q?aLf+mTlM4KePEStOlmXPKAR+EvviOXNCzlyLJQwgTvKX39+89Gryjz+xE3yt?=
+ =?us-ascii?Q?+7IGjGcl2mhqsZ3lN/EJUvb1gxccldJxss+6qetSbPKn1bvazap+/SvxzA97?=
+ =?us-ascii?Q?CHR2sLF2HGpCCdAGFU0IQR29SQ6i+86XO0Ehebj6dog8sS8kk+GtyoJm2SqF?=
+ =?us-ascii?Q?TS0WQ+XIAoqBLhpaqV/jeiPtFDN8AUuKjE253CWBfryHVQ6GDxe9z/B1W5Y5?=
+ =?us-ascii?Q?5vNSx9eZ1gT+hxQJ/QTKQoBkdxNcNnvtuRkgKWhtir4friKIeOVCWMp+kh4F?=
+ =?us-ascii?Q?+VkOEJbR+X23taBiN4JHoqheOd3qU9MiObA97zn6jrt+BIH1+xPCg90bNuYl?=
+ =?us-ascii?Q?pWXARWxSMYFjpkV6EtCc/3rlJRyieCRorl6Em0U60WzC5DEGneCQsWqg0kYP?=
+ =?us-ascii?Q?+SOPpCdzZwZ195wX6lBwGSPeNJ6qlFt5EZFgT8YYsov8tCFAMCAtRLEUOq1U?=
+ =?us-ascii?Q?EA08cUkDKSKTrbcyCv5DWcnmTzL2LChOOWfOZFgj6Nl80zhuFRj4w3Hg3tJp?=
+ =?us-ascii?Q?gA9rlu7Q6s9lSyLNg3H2LpZ6tDu2Hcrr03sXNRGRkDjMZgeq8a58a/h2MU0W?=
+ =?us-ascii?Q?N56SKfs1NWGRw/L/1PUO5/ZZz0MNod4Oq/0xdzSiaX9F5krmWfOVpVQvuwTY?=
+ =?us-ascii?Q?dCnPQzJDw3GGhbA8sfpglGWZeB0HOmofBDQQ/jijr7TX6vhHF5JjzfQMzJJG?=
+ =?us-ascii?Q?tUsoTM7mXbHPO13bzoekBnDmp8fMM70j/ShUzIXpMM6ipFdtmj8lN4B0XIfN?=
+ =?us-ascii?Q?13bfDsYx7+LHtj/EbgaB0+0yRn45aCyg8TPlMW6Xx7KkKw/HXJnBQmSgXDzc?=
+ =?us-ascii?Q?JC6DVP/G3kgrfgRKKlDt+457QaRgFwIzetflJnTYhG5aVJg1sCyAZE7OhvJc?=
+ =?us-ascii?Q?b7trX9nEMms/LAdN8dj2GVwQ23rs6+hHKWLGkPUlMXv4a8U2s3SQQdyK72zL?=
+ =?us-ascii?Q?nmOSFeI+wtykrDjsjy0vSJq2569OeQZzM03YaaZwSE/QicEM6ntf377N26am?=
+ =?us-ascii?Q?xHfVMO8esz7cqvg7LzD0qSNONRCQ2BuviYrFu8crCW+nPa7kfHK5XY98di4j?=
+ =?us-ascii?Q?qRQsc4Okc2MbIE2lAkXYGg0ts8NXuugJ2Vc2yTH9ridLXeSF2xWuzDmNv1yx?=
+ =?us-ascii?Q?xMlQHZpxCaz2llgjcQ3boJ/inZ8ldGQlz8Gt9tuRaV+4v0QfP1HvW5YLwunO?=
+ =?us-ascii?Q?opTAtH8uuwhHZVBiESB7yHlG951gbyaFBJY2b12RIJa0dS5qaZRstF83FY9M?=
+ =?us-ascii?Q?/my4fFKXNQTRY3UOXUKrI/HVZYXsiCfGeW2fCLCIbziBgK5Hj3eTk2N/QjRd?=
+ =?us-ascii?Q?h+KEMhp+WOAIOBsfgAyqLosxNQmjqjrN8ciR0LOE7sDi10FLXpFQAk1/TD6e?=
+ =?us-ascii?Q?j4hN//UxPYhvO92HuD51r/dDKPZlRtUzsbl9b3cTcEvN5waQ790xQ3geU4Kf?=
+ =?us-ascii?Q?tTXx2Cc2C105ZvbOBRVz1sl8PZlASyB0+00Jelb4AeQIPxCRhXlvtwrJSMEo?=
+ =?us-ascii?Q?1ychkWD9P2KxmYy1wmGqacGYv/waOQWIFX3LCqn7ir/TU5tEmEAPdRF93hDU?=
+ =?us-ascii?Q?J33FnLikebjyhFW1F+vGeHclOoFay5+JmUMjSEPi?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 715ce62a-8590-49c2-f980-08dd6d3e1db5
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 324c6d07-bd24-473c-2088-08dd6d42e2ff
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 14:46:12.3106
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 15:20:20.1439
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5bubu2a2+KvVllZwnR/j2+fbOSRPTDl/LX4MXd+HI3cxI14bqHqvEXA9mbQLGLzU1nLkptjXaU6mlGsPVxinLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9812
+X-MS-Exchange-CrossTenant-UserPrincipalName: xVBNNVhozNwOFZ2QmKmueJpUg2w7pahOdqua6wI4qmulXMH/eZ90VPdTMhB9PXX801MDNaSBWh/0iDCPBeuF2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7058
 
-On Wed, Mar 26, 2025 at 11:38:16PM +0100, Marek Vasut wrote:
-> Add initial support for i.MX 95 Verdin Evaluation Kit (EVK), which
-> used to be the Titan EVK. Currently supported is lpuart1 as console,
-> SDHC1/2/3 as storage, WM8904 Audio, USB3.0 and ENETC ethernet RGMII
-> Gigabit port.
->
-> Note that the SoM used in this EVK is a derivative SoM from Verdin
-> line of SoMs, an actual i.MX95 Verdin SoM is under development.
->
-> [1] https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95-evaluation-kit
->
-> Reviewed-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> Tested-by: João Paulo Gonçalves <joao.goncalves@toradex.com> # i.MX95 Verdin EVK
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> ---
-> Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Cc: Frieder Schrempf <frieder.schrempf@kontron.de>
-> Cc: Hiago De Franco <hiago.franco@toradex.com>
-> Cc: Joao Goncalves <joao.goncalves@toradex.com>
-> Cc: Joao Goncalves <jpaulo.silvagoncalves@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
-> Cc: Michael Walle <mwalle@kernel.org>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Tim Harvey <tharvey@gateworks.com>
-> Cc: devicetree@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
-> V2: - Drop pwm.h
->     - Write machine compatible string on single line
->     - Add RB/TB from João
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->  .../dts/freescale/imx95-19x19-verdin-evk.dts  | 695 ++++++++++++++++++
->  2 files changed, 696 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx95-19x19-verdin-evk.dts
->
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index b6d3fe26d6212..e76e3ef863e76 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -303,6 +303,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-verdin-evk.dtb
->
->  imx8mm-kontron-dl-dtbs			:= imx8mm-kontron-bl.dtb imx8mm-kontron-dl.dtbo
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-verdin-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-verdin-evk.dts
-> new file mode 100644
-> index 0000000000000..606dbea5e5f93
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-verdin-evk.dts
-> @@ -0,0 +1,695 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2023 NXP
-> + * Copyright 2025 Marek Vasut <marex@denx.de>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/usb/pd.h>
-> +#include "imx95.dtsi"
-> +
-> +#define FALLING_EDGE			1
-> +#define RISING_EDGE			2
-> +
-> +#define BRD_SM_CTRL_SD3_WAKE		0x8000	/* PCAL6408A-0 */
-> +#define BRD_SM_CTRL_PCIE1_WAKE		0x8001	/* PCAL6408A-4 */
-> +#define BRD_SM_CTRL_BT_WAKE		0x8002	/* PCAL6408A-5 */
-> +#define BRD_SM_CTRL_PCIE2_WAKE		0x8003	/* PCAL6408A-6 */
-> +#define BRD_SM_CTRL_BUTTON		0x8004	/* PCAL6408A-7 */
-> +
-> +/ {
-> +	model = "i.MX 95 Verdin Evaluation Kit (EVK)";
-> +	compatible = "toradex,verdin-imx95-19x19-evk", "fsl,imx95";
-> +
-> +	aliases {
-> +		ethernet0 = &enetc_port0;
-> +		ethernet1 = &enetc_port1;
-> +		ethernet2 = &enetc_port2;
-> +		gpio0 = &gpio1;
-> +		gpio1 = &gpio2;
-> +		gpio2 = &gpio3;
-> +		gpio3 = &gpio4;
-> +		gpio4 = &gpio5;
-> +		i2c0 = &lpi2c1;
-> +		i2c1 = &lpi2c2;
-> +		i2c2 = &lpi2c3;
-> +		i2c3 = &lpi2c4;
-> +		i2c4 = &lpi2c5;
-> +		i2c5 = &lpi2c6;
-> +		i2c6 = &lpi2c7;
-> +		i2c7 = &lpi2c8;
-> +		mmc0 = &usdhc1;
-> +		mmc1 = &usdhc2;
-> +		serial0 = &lpuart1;
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = &lpuart1;
-> +	};
-> +
-> +	memory@80000000 {
-> +		device_type = "memory";
-> +		reg = <0x0 0x80000000 0 0x80000000>;
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		linux_cma: linux,cma {
-> +			compatible = "shared-dma-pool";
-> +			alloc-ranges = <0 0x80000000 0 0x7f000000>;
-> +			size = <0 0x3c000000>;
-> +			linux,cma-default;
-> +			reusable;
-> +		};
-> +	};
-> +
-> +	reg_1p8v: regulator-1p8v {
-> +		compatible = "regulator-fixed";
-> +		regulator-max-microvolt = <1800000>;
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-name = "+V1.8_SW";
-> +	};
-> +
-> +	reg_3p3v: regulator-3p3v {
-> +		compatible = "regulator-fixed";
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-name = "+V3.3_SW";
-> +	};
-> +
-> +	reg_m2_pwr: regulator-m2-pwr {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "M.2-power";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		gpio = <&gpio2 4 GPIO_ACTIVE_LOW>;
-> +	};
-> +
-> +	reg_pcie0: regulator-pcie {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "PCIE_WLAN_EN";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		vin-supply = <&reg_m2_pwr>;
-> +		gpio = <&i2c7_pcal6524 18 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +	};
-> +
-> +	reg_usdhc2_vmmc: regulator-usdhc2 {
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
-> +		regulator-name = "VDD_SD2_3V3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		off-on-delay-us = <12000>;
-> +	};
-> +
-> +	usdhc3_pwrseq: usdhc3-pwrseq {
-> +		compatible = "mmc-pwrseq-simple";
-> +		reset-gpios = <&i2c7_pcal6524 11 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
-> +	sound-wm8904 {
-> +		compatible = "fsl,imx-audio-wm8904";
-> +		model = "wm8904-audio";
-> +		audio-cpu = <&sai3>;
-> +		audio-codec = <&wm8904>;
-> +		audio-routing =
-> +			"Headphone Jack", "HPOUTL",
-> +			"Headphone Jack", "HPOUTR",
-> +			"AMIC", "MICBIAS",
-> +			"IN2L", "AMIC";
-> +	};
-> +};
-> +
-> +&enetc_port0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enetc0>;
-> +	phy-handle = <&ethphy0>;
-> +	phy-mode = "rgmii-id";
-> +	status = "okay";
-> +};
-> +
-> +&flexspi1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_flexspi1>;
-> +	status = "okay";
-> +
-> +	flash@0 {
-> +		compatible = "jedec,spi-nor";
-> +		reg = <0>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_flexspi1_reset>;
-> +		reset-gpios = <&gpio5 11 GPIO_ACTIVE_LOW>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		spi-max-frequency = <200000000>;
-> +		spi-tx-bus-width = <8>;
-> +		spi-rx-bus-width = <8>;
-> +	};
-> +};
-> +
-> +&lpi2c4 {
-> +	clock-frequency = <400000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpi2c4>;
-> +	status = "okay";
-> +
-> +	wm8904: codec@1a {
-> +		#sound-dai-cells = <0>;
-> +		compatible = "wlf,wm8904";
-> +		reg = <0x1a>;
-> +		clocks = <&scmi_clk IMX95_CLK_SAI3>;
-> +		clock-names = "mclk";
-> +		AVDD-supply = <&reg_1p8v>;
-> +		CPVDD-supply = <&reg_1p8v>;
-> +		DBVDD-supply = <&reg_1p8v>;
-> +		DCVDD-supply = <&reg_1p8v>;
-> +		MICVDD-supply = <&reg_1p8v>;
-> +	};
-> +};
-> +
-> +&lpi2c5 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpi2c5>;
-> +	status = "okay";
-> +};
-> +
-> +&lpi2c6 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpi2c6>;
-> +	status = "okay";
-> +};
-> +
-> +&lpi2c7 {
-> +	clock-frequency = <1000000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_lpi2c7>;
-> +	status = "okay";
-> +
-> +	i2c7_pcal6524: i2c7-gpio@23 {
-> +		compatible = "nxp,pcal6524";
-> +		reg = <0x23>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_i2c7_pcal6524>;
-> +		gpio-controller;
-> +		#gpio-cells = <2>;
-> +		interrupt-controller;
-> +		#interrupt-cells = <2>;
-> +		interrupt-parent = <&gpio5>;
-> +		interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-> +	};
-> +
-> +	/* Current measurement at SoM 5V power output */
-> +	hwmon@41 {
-> +		compatible = "ti,ina219";
-> +		reg = <0x41>;
-> +		shunt-resistor = <10000>;
-> +	};
-> +
-> +	/* Current measurement at Board power input */
-> +	hwmon@45 {
-> +		compatible = "ti,ina219";
-> +		reg = <0x45>;
-> +		shunt-resistor = <10000>;
-> +	};
-> +
-> +	eeprom@50 {
-> +		compatible = "st,24c02";
-> +		reg = <0x50>;
-> +	};
-> +
-> +	ptn5110: tcpc@52 {
-> +		compatible = "nxp,ptn5110", "tcpci";
-> +		reg = <0x52>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_typec>;
-> +		interrupt-parent = <&gpio5>;
-> +		interrupts = <14 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +		typec_con: connector {
-> +			compatible = "usb-c-connector";
-> +			label = "USB-C";
-> +			power-role = "dual";
-> +			data-role = "dual";
-> +			try-power-role = "sink";
-> +			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
-> +			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-> +				     PDO_VAR(5000, 20000, 3000)>;
-> +			op-sink-microwatt = <15000000>;
-> +			self-powered;
-> +
-> +			ports {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				port@0 {
-> +					reg = <0>;
-> +
-> +					typec_con_hs: endpoint {
-> +						remote-endpoint = <&usb3_data_hs>;
-> +					};
-> +				};
-> +
-> +				port@1 {
-> +					reg = <1>;
-> +
-> +					typec_con_ss: endpoint {
-> +						remote-endpoint = <&usb3_data_ss>;
-> +					};
-> +				};
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&lpuart1 {
-> +	/* console */
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_uart1>;
-> +	status = "okay";
-> +};
-> +
-> +&mu7 {
-> +	status = "okay";
-> +};
-> +
-> +&netcmix_blk_ctrl {
-> +	status = "okay";
-> +};
-> +
-> +&netc_blk_ctrl {
-> +	status = "okay";
-> +};
-> +
-> +&netc_emdio {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_emdio>;
-> +	status = "okay";
-> +
-> +	ethphy0: ethernet-phy@1 {
-> +		reg = <1>;
-> +		realtek,clkout-disable;
-> +	};
-> +};
-> +
-> +&pcie0 {
-> +	pinctrl-0 = <&pinctrl_pcie0>;
-> +	pinctrl-names = "default";
-> +	reset-gpio = <&i2c7_pcal6524 17 GPIO_ACTIVE_LOW>;
-> +	vpcie-supply = <&reg_pcie0>;
-> +	status = "okay";
-> +};
-> +
-> +&pcie1 {
-> +	pinctrl-0 = <&pinctrl_pcie1>;
-> +	pinctrl-names = "default";
-> +	reset-gpio = <&i2c7_pcal6524 16 GPIO_ACTIVE_LOW>;
-> +	status = "okay";
-> +};
-> +
-> +&sai1 {
-> +	#sound-dai-cells = <0>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai1>;
-> +	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
-> +			  <&scmi_clk IMX95_CLK_SAI1>;
-> +	assigned-clock-parents = <0>, <0>, <0>, <0>,
-> +				 <&scmi_clk IMX95_CLK_AUDIOPLL1>;
-> +	assigned-clock-rates = <3932160000>,
-> +			       <3612672000>, <393216000>,
-> +			       <361267200>, <12288000>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&sai3 {
-> +	#sound-dai-cells = <0>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sai3>;
-> +	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-> +			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
-> +			  <&scmi_clk IMX95_CLK_SAI3>;
-> +	assigned-clock-parents = <0>, <0>, <0>, <0>,
-> +				 <&scmi_clk IMX95_CLK_AUDIOPLL1>;
-> +	assigned-clock-rates = <3932160000>,
-> +			       <3612672000>, <393216000>,
-> +			       <361267200>, <12288000>;
-> +	fsl,sai-mclk-direction-output;
-> +	status = "okay";
-> +};
-> +
-> +&usb3 {
-> +	status = "okay";
-> +};
-> +
-> +&usb3_dwc3 {
-> +	dr_mode = "otg";
-> +	hnp-disable;
-> +	srp-disable;
-> +	adp-disable;
-> +	usb-role-switch;
-> +	role-switch-default-mode = "peripheral";
-> +	snps,dis-u1-entry-quirk;
-> +	snps,dis-u2-entry-quirk;
-> +	status = "okay";
-> +
-> +	port {
-> +		usb3_data_hs: endpoint {
-> +			remote-endpoint = <&typec_con_hs>;
-> +		};
-> +	};
-> +};
-> +
-> +&usb3_phy {
-> +	fsl,phy-tx-preemp-amp-tune-microamp = <600>;
-> +	orientation-switch;
-> +	status = "okay";
-> +
-> +	port {
-> +		usb3_data_ss: endpoint {
-> +			remote-endpoint = <&typec_con_ss>;
-> +		};
-> +	};
-> +};
-> +
-> +&usdhc1 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 = <&pinctrl_usdhc1>;
-> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-> +	pinctrl-3 = <&pinctrl_usdhc1>;
-> +	bus-width = <8>;
-> +	non-removable;
-> +	no-sdio;
-> +	no-sd;
-> +	status = "okay";
-> +};
-> +
-> +&usdhc2 {
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
-> +	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-> +	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-> +	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-> +	pinctrl-3 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-> +	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
-> +	vmmc-supply = <&reg_usdhc2_vmmc>;
-> +	bus-width = <4>;
-> +	status = "okay";
-> +};
-> +
-> +&usdhc3 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_usdhc3>;
-> +	mmc-pwrseq = <&usdhc3_pwrseq>;
-> +	vmmc-supply = <&reg_pcie0>;
-> +	bus-width = <4>;
-> +	keep-power-in-suspend;
-> +	non-removable;
-> +	status = "okay";
-> +};
-> +
-> +&scmi_misc {
-> +	nxp,ctrl-ids = <BRD_SM_CTRL_SD3_WAKE	FALLING_EDGE
-> +			BRD_SM_CTRL_PCIE1_WAKE	FALLING_EDGE
-> +			BRD_SM_CTRL_BT_WAKE	FALLING_EDGE
-> +			BRD_SM_CTRL_PCIE2_WAKE	FALLING_EDGE
-> +			BRD_SM_CTRL_BUTTON	FALLING_EDGE>;
-> +};
-> +
-> +&wdog3 {
-> +	fsl,ext-reset-output;
-> +	status = "okay";
-> +};
+The arg_count variable passed to the
+syscon_regmap_lookup_by_phandle_args() function represents the number of
+argument cells following the phandle. In this case, the number of
+arguments should be 1 instead of 2 since the dt property looks like
+below.
+	fsl,pcie-scfg = <&scfg 0>;
 
-please keep order by names incase add 2 &wdogs later accidently.
+Without this fix, layerscape-pcie fails with the following message on
+LS1043A:
 
-You can try https://github.com/lznuaa/dt-format to order it.
+[    0.157041] OF: /soc/pcie@3500000: phandle scfg@1570000 needs 2, found 1
+[    0.157050] layerscape-pcie 3500000.pcie: No syscfg phandle specified
+[    0.157053] layerscape-pcie 3500000.pcie: probe with driver layerscape-pcie failed with error -22
 
-Frank
+Fixes: 149fc35734e5 ("PCI: layerscape: Use syscon_regmap_lookup_by_phandle_args")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+---
+ drivers/pci/controller/dwc/pci-layerscape.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +
-> +&scmi_iomuxc {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_hog>;
-> +
-> +	pinctrl_hog: hoggrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO04__GPIO2_IO_BIT4			0x3fe>;
-> +	};
-> +
-> +	pinctrl_emdio: emdiogrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_ENET1_MDC__NETCMIX_TOP_NETC_MDC		0x57e>,
-> +			<IMX95_PAD_ENET1_MDIO__NETCMIX_TOP_NETC_MDIO		0x97e>;
-> +	};
-> +
-> +	pinctrl_enetc0: enetc0grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_ENET1_TD3__NETCMIX_TOP_ETH0_RGMII_TD3	0x57e>,
-> +			<IMX95_PAD_ENET1_TD2__NETCMIX_TOP_ETH0_RGMII_TD2	0x57e>,
-> +			<IMX95_PAD_ENET1_TD1__NETCMIX_TOP_ETH0_RGMII_TD1	0x57e>,
-> +			<IMX95_PAD_ENET1_TD0__NETCMIX_TOP_ETH0_RGMII_TD0	0x57e>,
-> +			<IMX95_PAD_ENET1_TX_CTL__NETCMIX_TOP_ETH0_RGMII_TX_CTL	0x57e>,
-> +			<IMX95_PAD_ENET1_TXC__NETCMIX_TOP_ETH0_RGMII_TX_CLK	0x58e>,
-> +			<IMX95_PAD_ENET1_RX_CTL__NETCMIX_TOP_ETH0_RGMII_RX_CTL	0x57e>,
-> +			<IMX95_PAD_ENET1_RXC__NETCMIX_TOP_ETH0_RGMII_RX_CLK	0x58e>,
-> +			<IMX95_PAD_ENET1_RD0__NETCMIX_TOP_ETH0_RGMII_RD0	0x57e>,
-> +			<IMX95_PAD_ENET1_RD1__NETCMIX_TOP_ETH0_RGMII_RD1	0x57e>,
-> +			<IMX95_PAD_ENET1_RD2__NETCMIX_TOP_ETH0_RGMII_RD2	0x57e>,
-> +			<IMX95_PAD_ENET1_RD3__NETCMIX_TOP_ETH0_RGMII_RD3	0x57e>;
-> +	};
-> +
-> +	pinctrl_flexspi1: flexspi1grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_XSPI1_SS0_B__FLEXSPI1_A_SS0_B		0x3fe>,
-> +			<IMX95_PAD_XSPI1_SCLK__FLEXSPI1_A_SCLK			0x3fe>,
-> +			<IMX95_PAD_XSPI1_DQS__FLEXSPI1_A_DQS			0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA0__FLEXSPI1_A_DATA_BIT0		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA1__FLEXSPI1_A_DATA_BIT1		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA2__FLEXSPI1_A_DATA_BIT2		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA3__FLEXSPI1_A_DATA_BIT3		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA4__FLEXSPI1_A_DATA_BIT4		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA5__FLEXSPI1_A_DATA_BIT5		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA6__FLEXSPI1_A_DATA_BIT6		0x3fe>,
-> +			<IMX95_PAD_XSPI1_DATA7__FLEXSPI1_A_DATA_BIT7		0x3fe>;
-> +	};
-> +
-> +	pinctrl_flexspi1_reset: flexspi1-reset-grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_XSPI1_SS1_B__GPIO5_IO_BIT11			0x3fe>;
-> +	};
-> +
-> +	pinctrl_hp: hpgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO11__GPIO2_IO_BIT11			0x31e>;
-> +	};
-> +
-> +	pinctrl_i2c4_pcal6408: i2c4pcal6498grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO18__GPIO2_IO_BIT18			0x31e>;
-> +	};
-> +
-> +	pinctrl_i2c7_pcal6524: i2c7pcal6524grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO36__GPIO5_IO_BIT16			0x31e>;
-> +	};
-> +
-> +	pinctrl_lpi2c4: lpi2c4grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO30__LPI2C4_SDA			0x40000b9e>,
-> +			<IMX95_PAD_GPIO_IO31__LPI2C4_SCL			0x40000b9e>;
-> +	};
-> +
-> +	pinctrl_lpi2c5: lpi2c5grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO22__LPI2C5_SDA			0x40000b9e>,
-> +			<IMX95_PAD_GPIO_IO23__LPI2C5_SCL			0x40000b9e>;
-> +	};
-> +
-> +	pinctrl_lpi2c6: lpi2c6grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO02__LPI2C6_SDA			0x40000b9e>,
-> +			<IMX95_PAD_GPIO_IO03__LPI2C6_SCL			0x40000b9e>;
-> +	};
-> +
-> +	pinctrl_lpi2c7: lpi2c7grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO08__LPI2C7_SDA			0x40000b9e>,
-> +			<IMX95_PAD_GPIO_IO09__LPI2C7_SCL			0x40000b9e>;
-> +	};
-> +
-> +	pinctrl_pcie0: pcie0grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO32__HSIOMIX_TOP_PCIE1_CLKREQ_B	0x4000031e>;
-> +	};
-> +
-> +	pinctrl_pcie1: pcie1grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO35__HSIOMIX_TOP_PCIE2_CLKREQ_B	0x4000031e>;
-> +	};
-> +
-> +	pinctrl_pcal6416: pcal6416grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_CCM_CLKO3__GPIO4_IO_BIT28			0x31e>;
-> +	};
-> +
-> +	pinctrl_pdm: pdmgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_PDM_CLK__AONMIX_TOP_PDM_CLK				0x31e>,
-> +			<IMX95_PAD_PDM_BIT_STREAM0__AONMIX_TOP_PDM_BIT_STREAM_BIT0	0x31e>;
-> +	};
-> +
-> +	pinctrl_sai1: sai1grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SAI1_RXD0__AONMIX_TOP_SAI1_RX_DATA_BIT0	0x31e>,
-> +			<IMX95_PAD_SAI1_TXC__AONMIX_TOP_SAI1_TX_BCLK		0x31e>,
-> +			<IMX95_PAD_SAI1_TXFS__AONMIX_TOP_SAI1_TX_SYNC		0x31e>,
-> +			<IMX95_PAD_SAI1_TXD0__AONMIX_TOP_SAI1_TX_DATA_BIT0	0x31e>;
-> +	};
-> +
-> +	pinctrl_sai2: sai2grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_ENET2_MDIO__NETCMIX_TOP_SAI2_RX_BCLK		0x31e>,
-> +			<IMX95_PAD_ENET2_MDC__NETCMIX_TOP_SAI2_RX_SYNC		0x31e>,
-> +			<IMX95_PAD_ENET2_TD3__NETCMIX_TOP_SAI2_RX_DATA_BIT0	0x31e>,
-> +			<IMX95_PAD_ENET2_TD2__NETCMIX_TOP_SAI2_RX_DATA_BIT1	0x31e>,
-> +			<IMX95_PAD_ENET2_TXC__NETCMIX_TOP_SAI2_TX_BCLK		0x31e>,
-> +			<IMX95_PAD_ENET2_TX_CTL__NETCMIX_TOP_SAI2_TX_SYNC	0x31e>,
-> +			<IMX95_PAD_ENET2_RX_CTL__NETCMIX_TOP_SAI2_TX_DATA_BIT0	0x31e>,
-> +			<IMX95_PAD_ENET2_RXC__NETCMIX_TOP_SAI2_TX_DATA_BIT1	0x31e>,
-> +			<IMX95_PAD_ENET2_RD0__NETCMIX_TOP_SAI2_TX_DATA_BIT2	0x31e>,
-> +			<IMX95_PAD_ENET2_RD1__NETCMIX_TOP_SAI2_TX_DATA_BIT3	0x31e>,
-> +			<IMX95_PAD_ENET2_RD2__NETCMIX_TOP_SAI2_MCLK		0x31e>;
-> +	};
-> +
-> +	pinctrl_sai3: sai3grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO17__SAI3_MCLK			0x31e>,
-> +			<IMX95_PAD_GPIO_IO16__SAI3_TX_BCLK		0x31e>,
-> +			<IMX95_PAD_GPIO_IO26__SAI3_TX_SYNC		0x31e>,
-> +			<IMX95_PAD_GPIO_IO20__SAI3_RX_DATA_BIT0		0x31e>,
-> +			<IMX95_PAD_GPIO_IO21__SAI3_TX_DATA_BIT0		0x31e>;
-> +	};
-> +
-> +	pinctrl_tpm6: tpm6grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO19__TPM6_CH2			0x51e>;
-> +	};
-> +
-> +	pinctrl_uart1: uart1grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX	0x31e>,
-> +			<IMX95_PAD_UART1_TXD__AONMIX_TOP_LPUART1_TX	0x31e>;
-> +	};
-> +
-> +	pinctrl_usdhc1: usdhc1grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD1_CLK__USDHC1_CLK			0x158e>,
-> +			<IMX95_PAD_SD1_CMD__USDHC1_CMD			0x138e>,
-> +			<IMX95_PAD_SD1_DATA0__USDHC1_DATA0		0x138e>,
-> +			<IMX95_PAD_SD1_DATA1__USDHC1_DATA1		0x138e>,
-> +			<IMX95_PAD_SD1_DATA2__USDHC1_DATA2		0x138e>,
-> +			<IMX95_PAD_SD1_DATA3__USDHC1_DATA3		0x138e>,
-> +			<IMX95_PAD_SD1_DATA4__USDHC1_DATA4		0x138e>,
-> +			<IMX95_PAD_SD1_DATA5__USDHC1_DATA5		0x138e>,
-> +			<IMX95_PAD_SD1_DATA6__USDHC1_DATA6		0x138e>,
-> +			<IMX95_PAD_SD1_DATA7__USDHC1_DATA7		0x138e>,
-> +			<IMX95_PAD_SD1_STROBE__USDHC1_STROBE		0x158e>;
-> +	};
-> +
-> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD1_CLK__USDHC1_CLK			0x158e>,
-> +			<IMX95_PAD_SD1_CMD__USDHC1_CMD			0x138e>,
-> +			<IMX95_PAD_SD1_DATA0__USDHC1_DATA0		0x138e>,
-> +			<IMX95_PAD_SD1_DATA1__USDHC1_DATA1		0x138e>,
-> +			<IMX95_PAD_SD1_DATA2__USDHC1_DATA2		0x138e>,
-> +			<IMX95_PAD_SD1_DATA3__USDHC1_DATA3		0x138e>,
-> +			<IMX95_PAD_SD1_DATA4__USDHC1_DATA4		0x138e>,
-> +			<IMX95_PAD_SD1_DATA5__USDHC1_DATA5		0x138e>,
-> +			<IMX95_PAD_SD1_DATA6__USDHC1_DATA6		0x138e>,
-> +			<IMX95_PAD_SD1_DATA7__USDHC1_DATA7		0x138e>,
-> +			<IMX95_PAD_SD1_STROBE__USDHC1_STROBE		0x158e>;
-> +	};
-> +
-> +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD1_CLK__USDHC1_CLK			0x15fe>,
-> +			<IMX95_PAD_SD1_CMD__USDHC1_CMD			0x13fe>,
-> +			<IMX95_PAD_SD1_DATA0__USDHC1_DATA0		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA1__USDHC1_DATA1		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA2__USDHC1_DATA2		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA3__USDHC1_DATA3		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA4__USDHC1_DATA4		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA5__USDHC1_DATA5		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA6__USDHC1_DATA6		0x13fe>,
-> +			<IMX95_PAD_SD1_DATA7__USDHC1_DATA7		0x13fe>,
-> +			<IMX95_PAD_SD1_STROBE__USDHC1_STROBE		0x15fe>;
-> +	};
-> +
-> +	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD2_RESET_B__GPIO3_IO_BIT7		0x31e>;
-> +	};
-> +
-> +	pinctrl_typec: typecgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14		0x31e>;
-> +	};
+diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+index 239a05b36e8e..a44b5c256d6e 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape.c
++++ b/drivers/pci/controller/dwc/pci-layerscape.c
+@@ -356,7 +356,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
+ 	if (pcie->drvdata->scfg_support) {
+ 		pcie->scfg =
+ 			syscon_regmap_lookup_by_phandle_args(dev->of_node,
+-							     "fsl,pcie-scfg", 2,
++							     "fsl,pcie-scfg", 1,
+ 							     index);
+ 		if (IS_ERR(pcie->scfg)) {
+ 			dev_err(dev, "No syscfg phandle specified\n");
+-- 
+2.34.1
 
-please keep order by node name typecgrp, usdhc2gpiogrp
-
-Frank
-
-> +
-> +	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD2_CD_B__GPIO3_IO_BIT0		0x31e>;
-> +	};
-> +
-> +	pinctrl_usdhc2: usdhc2grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD2_CLK__USDHC2_CLK			0x158e>,
-> +			<IMX95_PAD_SD2_CMD__USDHC2_CMD			0x138e>,
-> +			<IMX95_PAD_SD2_DATA0__USDHC2_DATA0		0x138e>,
-> +			<IMX95_PAD_SD2_DATA1__USDHC2_DATA1		0x138e>,
-> +			<IMX95_PAD_SD2_DATA2__USDHC2_DATA2		0x138e>,
-> +			<IMX95_PAD_SD2_DATA3__USDHC2_DATA3		0x138e>,
-> +			<IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT		0x51e>;
-> +	};
-> +
-> +	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD2_CLK__USDHC2_CLK			0x158e>,
-> +			<IMX95_PAD_SD2_CMD__USDHC2_CMD			0x138e>,
-> +			<IMX95_PAD_SD2_DATA0__USDHC2_DATA0		0x138e>,
-> +			<IMX95_PAD_SD2_DATA1__USDHC2_DATA1		0x138e>,
-> +			<IMX95_PAD_SD2_DATA2__USDHC2_DATA2		0x138e>,
-> +			<IMX95_PAD_SD2_DATA3__USDHC2_DATA3		0x138e>,
-> +			<IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT		0x51e>;
-> +	};
-> +
-> +	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD2_CLK__USDHC2_CLK			0x15fe>,
-> +			<IMX95_PAD_SD2_CMD__USDHC2_CMD			0x13fe>,
-> +			<IMX95_PAD_SD2_DATA0__USDHC2_DATA0		0x13fe>,
-> +			<IMX95_PAD_SD2_DATA1__USDHC2_DATA1		0x13fe>,
-> +			<IMX95_PAD_SD2_DATA2__USDHC2_DATA2		0x13fe>,
-> +			<IMX95_PAD_SD2_DATA3__USDHC2_DATA3		0x13fe>,
-> +			<IMX95_PAD_SD2_VSELECT__USDHC2_VSELECT		0x51e>;
-> +	};
-> +
-> +	pinctrl_usdhc3: usdhc3grp {
-> +		fsl,pins =
-> +			<IMX95_PAD_SD3_CLK__USDHC3_CLK			0x158e>,
-> +			<IMX95_PAD_SD3_CMD__USDHC3_CMD			0x138e>,
-> +			<IMX95_PAD_SD3_DATA0__USDHC3_DATA0		0x138e>,
-> +			<IMX95_PAD_SD3_DATA1__USDHC3_DATA1		0x138e>,
-> +			<IMX95_PAD_SD3_DATA2__USDHC3_DATA2		0x138e>,
-> +			<IMX95_PAD_SD3_DATA3__USDHC3_DATA3		0x138e>;
-> +	};
-> +};
-> --
-> 2.47.2
->
