@@ -1,68 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC8420CCEA;
-	Thu, 27 Mar 2025 13:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5CA197A8A;
+	Thu, 27 Mar 2025 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743083230; cv=none; b=ht2fKMrvBHL23zFPlrh6KBNWMYsGNfmB/KN84oOqYjMwTBpN27CzMp75iD7FXmn0rMbP8OfJV+wu4ND+imeYpw8LNU3RlKlBF4lEcI6PW4HEjj4Oh3sDEfa0e22lAj9ALrdJI9EEizEfU+cR5D+NHdA2WMZvi1kjU6b+6jGijEs=
+	t=1743084209; cv=none; b=cIOKqZHMWvwyermGrUiGikvDEg47yJ9awa203AJrfpDBEeQreW0TG4lGJfolOKH2EFr3YkOhbhwXA9tcx3er01G0idduwhbmZxkuSkM3/bLIkMRpAVZ2HnA1okvkKboEIS81GGwc+1CNkPTSpEHIU8wh1b9n1H7U+sUfy3odGEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743083230; c=relaxed/simple;
-	bh=RF3wdOFzL4vQqrB1B0vZ2iCYv5b2RA5x1OV5kLSU3FE=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=bRNrZpZ+2F8i8iDlA7ZwesLxYd/Ndo7gR5U328agm3BetwtRtm1R9RdqZIvV5fqjgrJf8KDPoYFlXDYEF7+Lca6Nv0obPQztkzmfQuHD7dnHkl/DtzaOhKhYksxpl6DRUgf+QFLNIz1G7ps/+e0Swj+Aitc+VsxOicm8uRZbt5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRYR+wJJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743084209; c=relaxed/simple;
+	bh=r2nebabuKIAEpNzA037xHqghzQDApSKNTfnGOqwEwN8=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=Q8BKjnElzvB1n6uWaBKugiXM0ZyXFxhTRfz1BJZX+mEbwMXospV1+NbA8b55256E7EYXzuyp8CIeZvpMe/YiR6WI1W9v8UiE1J5NKNKCLw5hz+wZzX5cTapED2GiJFLpQsAoHc5EH3aesWG0oh9FBgA574y64e8og8Db5l2vnkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=munLR9BX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRYR+wJJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91924C4CEDD;
-	Thu, 27 Mar 2025 13:47:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="munLR9BX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A695C4CEDD;
+	Thu, 27 Mar 2025 14:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743083230;
-	bh=RF3wdOFzL4vQqrB1B0vZ2iCYv5b2RA5x1OV5kLSU3FE=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=TRYR+wJJTnUYnvc1ODN4B9vpFKwvFoCczHvPyqf3uyWcee9vc7G3HqduxGVF99hGj
-	 2Anar/GswBgL04kQZ9wHQpotK+vz0ZpPE6+J7Eb/VTi2PcOmI2BZq3zNIwPhwtQdXG
-	 QbWKDgA4NBm1Wl/MModaDXner0J3IDHY/sZSU8C+1n6tLKZCMO4ElsgXDUpeelYVmE
-	 cv8Vp7Iain2yESM5cV0XyZbYHErfh63L4j48/Ex3hgmA1YRD5vqNgxkueELk2ceCHU
-	 7vcG8O9KKTohmlyEUFTgtyiTklRJvINQ1fdoDiG+RpkeAFVVaw9+WescKG+IQ5mZKj
-	 gfYcPqQWUU29A==
-Message-ID: <83d859d94aeedacc2d5fb058a84bfdac@kernel.org>
-Date: Thu, 27 Mar 2025 13:47:07 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v9 2/5] drm/bridge: add support for refcounting
-In-Reply-To: <20250326-drm-bridge-refcount-v9-2-5e0661fe1f84@bootlin.com>
-References: <20250326-drm-bridge-refcount-v9-2-5e0661fe1f84@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
- Hajda" <andrzej.hajda@intel.com>, "Anusha Srivatsa" <asrivats@redhat.com>, "David
- Airlie" <airlied@gmail.com>, "Dmitry Baryshkov" <lumag@kernel.org>, "Fabio
- Estevam" <festevam@gmail.com>, =?utf-8?b?SGVydsOpIENvZGluYQ==?= <herve.codina@bootlin.com>, "Hui
- Pu" <Hui.Pu@gehealthcare.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan
- Teki" <jagan@amarulasolutions.com>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Jonas
- Karlman" <jonas@kwiboo.se>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Marek
- Vasut" <marex@denx.de>, "Maxime Ripard" <mripard@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Paul Kocialkowski" <paulk@sys-base.io>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, "Robert Foss" <rfoss@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
- Vetter" <simona@ffwll.ch>, "Stefan Agner" <stefan@agner.ch>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann" <tzimmermann@suse.de>
-Content-Transfer-Encoding: quoted-printable
+	s=k20201202; t=1743084208;
+	bh=r2nebabuKIAEpNzA037xHqghzQDApSKNTfnGOqwEwN8=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=munLR9BXsDWJrcnjMNzaDqeLN+axN0GePf7D1fsqRI2yT+YQ343M7qm0RSjtDUKcm
+	 K/GOsPxuGqTy6zorIYUUtuGiTVin6EAzVxItq7XwQqC+2KDFaeCasiV9G9uKbyhaUY
+	 SGx3TGMUsqd+3B7AS4tqoDiUqg6CQDb0Ct6QRnGCmkSEOBi3XuuTPAuXRKqvvEPinr
+	 86IjOI1vMPaWGSKRBlVKXWbzGjXReY7Bdz1zc/8hPkpZpVYG9aSjsIHDX5RTa9acGq
+	 QHa9Sn1RHgqwrfOnnqX3r9XJsIXLNJieyjGF8yHOkU5h4ta2+HSExFnOrRzSBR7CQ8
+	 ZfX9USQFBYs8Q==
+Date: Thu, 27 Mar 2025 09:03:27 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+ kernel@collabora.com, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Conor Dooley <conor+dt@kernel.org>
+To: Martyn Welch <martyn.welch@collabora.com>
+In-Reply-To: <20250327123907.542132-1-martyn.welch@collabora.com>
+References: <20250327123907.542132-1-martyn.welch@collabora.com>
+Message-Id: <174308402878.604918.5811022747265232650.robh@kernel.org>
+Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add device tree for Nitrogen8M
+ Plus ENC Carrier Board
 
-On Wed, 26 Mar 2025 18:47:36 +0100, Luca Ceresoli wrote:
-> DRM bridges are currently considered as a fixed element of a DRM card, and
-> thus their lifetime is assumed to extend for as long as the card
-> exists. New use cases, such as hot-pluggable hardware with video bridges,
-> require DRM bridges to be added to and removed from a DRM card without
-> tearing the card down. This is possible for connectors already (used by DP
->=20
-> [ ... ]
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+On Thu, 27 Mar 2025 12:39:02 +0000, Martyn Welch wrote:
+> Add support for Boundary Devices/Ezurio Nitrogen8M Plus ENC Carrier
+> Board and it's SOM. Supported interfaces:
+> 
+>  - Serial Console
+>  - EQoS Ethernet
+>  - USB
+>  - eMMC
+>  - HDMI
+> 
+> Signed-off-by: Martyn Welch <martyn.welch@collabora.com>
+> ---
+> 
+> Changes in v2:
+>  - Add missing entries to binding documents.
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   6 +
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../imx8mp-nitrogen-enc-carrier-board.dts     | 478 ++++++++++++++++++
+>  .../dts/freescale/imx8mp-nitrogen-som.dtsi    | 415 +++++++++++++++
+>  4 files changed, 900 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
+> 
 
-Thanks!
-Maxime
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: failed to guess base
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250327123907.542132-1-martyn.welch@collabora.com:
+
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: pinctrl@30330000: 'usdhc1grp-100mhz', 'usdhc1grp-200mhz', 'usdhc1grp-gpio' do not match any of the regexes: 'grp$', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,imx8m-pinctrl.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: pinctrl@30330000: usdhc1grp-gpio: {'fsl,pins': [[184, 792, 0, 5, 0, 452]], 'phandle': 71} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: pmic@25: regulators:BUCK2: Unevaluated properties are not allowed ('regulator-limit-microvolt' was unexpected)
+	from schema $id: http://devicetree.org/schemas/regulator/nxp,pca9450-regulator.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: i2cmux9546@70: Unevaluated properties are not allowed ('i2c2@0', 'i2c2@1', 'i2c2@2', 'i2c2@3' were unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-mux-pca954x.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: usb-phy@381f0040: Unevaluated properties are not allowed ('fsl,phy-tx-preemp-amp-tune' was unexpected)
+	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dtb: usb-phy@382f0040: Unevaluated properties are not allowed ('fsl,phy-tx-preemp-amp-tune' was unexpected)
+	from schema $id: http://devicetree.org/schemas/phy/fsl,imx8mq-usb-phy.yaml#
+
+
+
+
+
