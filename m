@@ -1,99 +1,363 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF31F4F1;
-	Thu, 27 Mar 2025 18:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EFC1AA1D5
+	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 18:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743099328; cv=none; b=X7E6NO1dQKXPO3CUYkfX7KYfzZ51yiaNWJmuW6F+Sqjwkqlx3uHk+VahZx0N1fNmnEHBxFO66bOad+aBTPoDyiIqJESNxXsjJk3On1WHm+KIa3pWK4RRd5HuWhvXm8PqYGXj1r9q4xmPo//shmhzOMW2J2MpZxDacm0e6br8F1Q=
+	t=1743101091; cv=none; b=fAWyeoBU5aQpCOhBBuocJxBuo3JZtCDsOroI9J3p1LFSIFzH+FDlmivH/cMwY5JY6tjk02ZVeMljKSbsAweB8CCOEjby12s9DWi/68f4s4SLsfoZzblShuKazn1koqvKsKvO9s/U0QcuNQz8EZis9CKLWapOM6e8iBAuDWMLLTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743099328; c=relaxed/simple;
-	bh=ZEeQ/S/6JeftSF4kJP065O+i5F6+rxtbBgbhnxYIVWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rBvYP2h3xASQuip8zsvNlpUloEYTj/XoHfkqv5KxxI6ifD2z+Rk8ZqtVwCKyxbMlvUztQ41vpiaj7/yksDTaa2/rlLU65LYl3npjnQIwAv1CAVaYBrd0LEHtFwx/+LvXaa9cqKNuvCWmGk90JNdfd7YbhJXccUNWfxtNiGa/w4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFWTkZHB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743101091; c=relaxed/simple;
+	bh=pXUIm6nWnAiapPhAoHswMtXLIViBhZ7ZAd3Lbpjo7xw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=imFdaL/odLjXJ2ZEOhykED6h0AJlH1irsZcd9OB8FqEFXPmh7DlaQ2NNGg6EP6h7cXuL6qTKQP+/y3LjgJx2YcRZ42KFa2+aVRbaquBCbITRIzDZdfbRGrUqbVgKI3WpvzbWvKY0gNGPgIbAnPgWCYLM4vvBYrYm8EWsrJf0j/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=tYG9mACB; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFWTkZHB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3E8C4CEDD;
-	Thu, 27 Mar 2025 18:15:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743099327;
-	bh=ZEeQ/S/6JeftSF4kJP065O+i5F6+rxtbBgbhnxYIVWY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=JFWTkZHB7/ndBiO06/3QxNGLnicTD4KEgTecERc8mrFHQiA9Erkq9fYO0XkmBagc0
-	 A6UsyyPTh2Bbea2UBvZ4XCjELyUEY+HxSpBDtB9/eKl/IQWUaHJsyzIP756MW55LkX
-	 BEbqyaI/iU+j9rIHE1QRX7hx963LBiN6bAAlExoJQqtG/OfU8kmyMrK2L6hNCuCZ42
-	 6UhIY4bnmt32kHIf7mSGF9bTn0JbqODFiYX1BWxluoI4L4hcB+1pphuq1mv9RAi85u
-	 ZNkaLNZ7IFQDPuKV2e0k3nRow+SSPf3Rxb+DTWboRVh6hOmBREzyvQLva3uxI/YsZl
-	 GVyAKOEpYH1Rg==
-Date: Thu, 27 Mar 2025 13:15:26 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: Roy Zang <roy.zang@nxp.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, linux-pci@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: layerscape: fix index passed to
- syscon_regmap_lookup_by_phandle_args
-Message-ID: <20250327181526.GA1470997@bhelgaas>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="tYG9mACB"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 86313F6;
+	Thu, 27 Mar 2025 19:42:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1743100979;
+	bh=pXUIm6nWnAiapPhAoHswMtXLIViBhZ7ZAd3Lbpjo7xw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tYG9mACBY3ADn8xf8BAp4rvGTUig2Ub9OwTOGcYXs7m0wfTboN/gUbqk8+wZxuQEr
+	 jzKsTEQDbnexPVO83zdmMzRTbieG8k+RnIJG6S+XXbeTOro0xUaeAlGhB1XAnmTp7V
+	 DT5jS0qBeICGqbnY67zMyf+kPnyb/njiK32QVMTM=
+Date: Thu, 27 Mar 2025 20:44:25 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	Robert Chiras <robert.chiras@nxp.com>,
+	"Guoniu.zhou" <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v3 03/12] media: dt-bindings: Add binding doc for
+ i.MX8QXP and i.MX8QM ISI
+Message-ID: <20250327184425.GE4861@pendragon.ideasonboard.com>
+References: <20250210-8qxp_camera-v3-0-324f5105accc@nxp.com>
+ <20250210-8qxp_camera-v3-3-324f5105accc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250327175557.GA1438048@bhelgaas>
+In-Reply-To: <20250210-8qxp_camera-v3-3-324f5105accc@nxp.com>
 
-On Thu, Mar 27, 2025 at 12:55:57PM -0500, Bjorn Helgaas wrote:
-> On Thu, Mar 27, 2025 at 05:19:49PM +0200, Ioana Ciornei wrote:
-> > The arg_count variable passed to the
-> > syscon_regmap_lookup_by_phandle_args() function represents the number of
-> > argument cells following the phandle. In this case, the number of
-> > arguments should be 1 instead of 2 since the dt property looks like
-> > below.
-> > 	fsl,pcie-scfg = <&scfg 0>;
-> > 
-> > Without this fix, layerscape-pcie fails with the following message on
-> > LS1043A:
-> > 
-> > [    0.157041] OF: /soc/pcie@3500000: phandle scfg@1570000 needs 2, found 1
-> > [    0.157050] layerscape-pcie 3500000.pcie: No syscfg phandle specified
-> > [    0.157053] layerscape-pcie 3500000.pcie: probe with driver layerscape-pcie failed with error -22
-> > 
-> > Fixes: 149fc35734e5 ("PCI: layerscape: Use syscon_regmap_lookup_by_phandle_args")
-> > Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Hi Frank,
+
+Thank you for the patch.
+
+On Mon, Feb 10, 2025 at 03:59:22PM -0500, Frank Li wrote:
+> Add binding documentation for i.MX8QXP and i.MX8QM ISI. The clock-names,
+> power-domains, and ports differ significantly from the existing
+> nxp,imx8-isi.yaml. Create a new file to avoid complex if-else branches.
+
+Mixed feelings about having different bindings files for what is
+essentially the same IP, but I won't object.
+
+> Add new file to MAINTAINERS.
 > 
-> Thanks, applied to pci/controller/layerscape for v6.15.  Hopefully the
-> last change for this cycle :)
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change from v2 to v3
+> - none
+> change from v1 to v2
+> - create new file for 8qm and 8qxp accroding rob's suggestion.
+> ---
+>  .../devicetree/bindings/media/fsl,imx8qm-isi.yaml  | 117 +++++++++++++++++++++
+>  .../devicetree/bindings/media/fsl,imx8qxp-isi.yaml | 103 ++++++++++++++++++
+>  MAINTAINERS                                        |   1 +
+>  3 files changed, 221 insertions(+)
 > 
-> Thanks for the message sample.  I dropped the timestamps because
-> they're not really relevant here.
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx8qm-isi.yaml b/Documentation/devicetree/bindings/media/fsl,imx8qm-isi.yaml
+> new file mode 100644
+> index 0000000000000..61c551673e2a4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx8qm-isi.yaml
+> @@ -0,0 +1,117 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/fsl,imx8qm-isi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: i.MX8QM Image Sensing Interface
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  The Image Sensing Interface (ISI) combines image processing pipelines with
+> +  DMA engines to process and capture frames originating from a variety of
+> +  sources. The inputs to the ISI go through Pixel Link interfaces, and their
+> +  number and nature is SoC-dependent. They cover both capture interfaces (MIPI
+> +  CSI-2 RX, HDMI RX, ...) and display engine outputs for writeback support.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8qm-isi
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 8
+> +
+> +  clock-names:
+> +    items:
+> +      - const: per0
+> +      - const: per1
+> +      - const: per2
+> +      - const: per3
+> +      - const: per4
+> +      - const: per5
+> +      - const: per6
+> +      - const: per7
+> +
+> +  interrupts:
+> +    maxItems: 8
+> +
+> +  power-domains:
+> +    maxItems: 8
 
-I guess this should have a stable tag since 149fc35734e5 appeared in
-v6.14.  I added one.
+This surprises me. The reference manual does list 8 clocks and
+interrupts, but only 6 channels in the ISI section (for instance in
+15.6.1.1.4). Which one is wrong ?
 
-> > ---
-> >  drivers/pci/controller/dwc/pci-layerscape.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > index 239a05b36e8e..a44b5c256d6e 100644
-> > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > @@ -356,7 +356,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
-> >  	if (pcie->drvdata->scfg_support) {
-> >  		pcie->scfg =
-> >  			syscon_regmap_lookup_by_phandle_args(dev->of_node,
-> > -							     "fsl,pcie-scfg", 2,
-> > +							     "fsl,pcie-scfg", 1,
-> >  							     index);
-> >  		if (IS_ERR(pcie->scfg)) {
-> >  			dev_err(dev, "No syscfg phandle specified\n");
-> > -- 
-> > 2.34.1
-> > 
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +    properties:
+> +      port@2:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: MIPI CSI-2 RX 0
+> +      port@3:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: MIPI CSI-2 RX 1
+> +      port@4:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: HDMI RX
+
+Figure 15-59 in the reference manual list MIPI CSI-2 RX 0 and RX 1 as
+connected to inputs 0 and 1 respectively.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - power-domains
+> +  - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/imx8-clock.h>
+> +    #include <dt-bindings/clock/imx8-lpcg.h>
+> +    #include <dt-bindings/firmware/imx/rsrc.h>
+> +
+> +    image-controller@58100000 {
+> +        compatible = "fsl,imx8qm-isi";
+> +        reg = <0x58100000 0x90000>;
+
+The memory map in the reference manual lists the "Pixel DMA" region as
+ending at 0x5817ffff. Shouldn't the length of the region be 0x80000 ?
+
+> +        interrupts = <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 299 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 303 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 304 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&pdma0_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma1_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma2_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma3_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma4_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma5_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma6_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma7_lpcg IMX_LPCG_CLK_0>;
+> +        clock-names = "per0", "per1", "per2", "per3",
+> +                      "per4", "per5", "per6", "per7";
+> +        power-domains = <&pd IMX_SC_R_ISI_CH0>, <&pd IMX_SC_R_ISI_CH1>,
+> +                        <&pd IMX_SC_R_ISI_CH2>, <&pd IMX_SC_R_ISI_CH3>,
+> +                        <&pd IMX_SC_R_ISI_CH4>, <&pd IMX_SC_R_ISI_CH5>,
+> +                        <&pd IMX_SC_R_ISI_CH6>, <&pd IMX_SC_R_ISI_CH7>;
+> +
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            port@2 {
+> +                reg = <2>;
+> +                endpoint {
+> +                    remote-endpoint = <&mipi_csi0_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx8qxp-isi.yaml b/Documentation/devicetree/bindings/media/fsl,imx8qxp-isi.yaml
+> new file mode 100644
+> index 0000000000000..818fea0e4679f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx8qxp-isi.yaml
+> @@ -0,0 +1,103 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/fsl,imx8qxp-isi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: i.MX8QXP Image Sensing Interface
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  The Image Sensing Interface (ISI) combines image processing pipelines with
+> +  DMA engines to process and capture frames originating from a variety of
+> +  sources. The inputs to the ISI go through Pixel Link interfaces, and their
+> +  number and nature is SoC-dependent. They cover both capture interfaces (MIPI
+> +  CSI-2 RX, HDMI RX, ...) and display engine outputs for writeback support.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8qxp-isi
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 5
+> +
+> +  clock-names:
+> +    items:
+> +      - const: per0
+> +      - const: per4
+> +      - const: per5
+> +      - const: per6
+> +      - const: per7
+> +
+> +  interrupts:
+> +    maxItems: 5
+> +
+> +  power-domains:
+> +    maxItems: 5
+
+Here you have 5 channels, while the reference manual lists 8 interrupts
+and 6 channels in the ISI documentation.
+
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +    properties:
+> +      port@2:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: MIPI CSI-2 RX 0
+> +      port@6:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: CSI-2 Parallel RX
+
+Table 15-6 in the reference manual lists the parallel port as input 4.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - power-domains
+> +  - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/imx8-clock.h>
+> +    #include <dt-bindings/clock/imx8-lpcg.h>
+> +    #include <dt-bindings/firmware/imx/rsrc.h>
+> +
+> +    image-controller@58100000 {
+> +        compatible = "fsl,imx8qxp-isi";
+> +        reg = <0x58100000 0x90000>;
+
+Same comment here about the registers range.
+
+> +        interrupts = <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 303 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 304 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&pdma0_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma4_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma5_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma6_lpcg IMX_LPCG_CLK_0>,
+> +                 <&pdma7_lpcg IMX_LPCG_CLK_0>;
+> +        clock-names = "per0", "per4", "per5", "per6", "per7";
+> +        power-domains = <&pd IMX_SC_R_ISI_CH0>, <&pd IMX_SC_R_ISI_CH4>,
+> +                        <&pd IMX_SC_R_ISI_CH5>, <&pd IMX_SC_R_ISI_CH6>,
+> +                        <&pd IMX_SC_R_ISI_CH7>;
+> +
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            port@2 {
+> +                reg = <2>;
+> +                endpoint {
+> +                    remote-endpoint = <&mipi_csi0_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 40d1b7ec30fde..f243257ef7653 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17000,6 +17000,7 @@ NXP i.MX 8M ISI DRIVER
+>  M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/media/fsl,imx8*-isi.yaml
+>  F:	Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+
+Should nxp,imx8-isi.yaml be renamed to fsl,imx8-isi.yaml ?
+
+>  F:	drivers/media/platform/nxp/imx8-isi/
+>  
+
+-- 
+Regards,
+
+Laurent Pinchart
