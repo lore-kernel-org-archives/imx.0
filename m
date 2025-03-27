@@ -1,187 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA11AAA1C
-	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 04:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743049959; cv=none; b=NZUTS6V+p4Tp27YuoBmnTATRTFfKlfLPoMYyug6IOJOTUdjLyRoJg+80s8DJwmTz8SVHVvav0uWiDNdWY4XG5cEO8Os4ql2WRTDkqRctKq7HV2bocNMm/NSSyePpqaBebMMQxhglr+QvZkcseOIaKiuHWuWKjYN5Y6wWaEc3ZG0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743049959; c=relaxed/simple;
-	bh=vkEar+Bp4mb9U1ErBYXk0ufSXnmYuVhKsrxGSFbrQIw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l0ed8hmUBx6B/SKpAvZmG+fMEWDXh8OzhAMG/YrhvpkTXC+qRKmCQAORA3XRGj3N1fs91tG0+iI7ngTsghWMirX/2/MlpcBZzKjdTQNkRjXdN7ir3aS7pHeWDFIwNesjyL4TeZPKrNd8cmxyvyUDRvm/LIeJt6x165Qy3YYbWc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unNIypE6; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E8D11CA0
+	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 07:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743061736; cv=pass; b=mGMuQG3yes6iu5A97YRjLz5MH6QkfCzDMeuquxHDrTa/l/lGWhjmNERDtYCGaK1aN37bGUEK9kWu8JnnAGtCHWkWoDFYzCWjLPZVeb3fW/uWOvLGdFOC8MG5O2OQI/wU5C4SAU7dAf/hYHsHLf7gDWn2bG5Yk68wjcmVD/+sxlw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743061736; c=relaxed/simple;
+	bh=eWf+lUzuxBC0lic2+0dFJxd6idcICS2Im6Lp/Kckwco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oF8BORRTileclJOo4bohgqqUG36IHBX2nTSfdctPpPzXxed/Ax233r50iIW3QHcmNLAFhPb4CwMOKMd4rVSq73tIqnIe0F6DgN2qyWdyeFPSt+AcGPhEtvozwt7MILLJU9wbDsZH7Y6k3O4h+frHz2F3cJErseFg9bDsAnr9eCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b=WBGOEDGg; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unNIypE6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D3DC4CEEE
-	for <imx@lists.linux.dev>; Thu, 27 Mar 2025 04:32:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743049959;
-	bh=vkEar+Bp4mb9U1ErBYXk0ufSXnmYuVhKsrxGSFbrQIw=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=unNIypE6iqy+ubI9Ya0D9eLbo1mZTw8lYFUzFDiY6evS7og0p4YWv4/xQF6JIcNKV
-	 YZB63Um3ZTLhNx+F/QjCA/RcFQUdswqcOgW4MI0XYIFtTW/acH28hsIN+3vaKBRn/N
-	 UkuhOEEMuWvKiv4GKpFyISlTuC0LGi5hrfsnNPx9Ipgc34LTgE8JtDHA4/zDm8xTbX
-	 JCwg8erYxa5hyVRgWVyKGKFpQ7kVMdFr3OVnqCzlqPQocJKkRmfm5qanKxYhrUJ5u+
-	 IEfNN9iS/upvnkhwdE79CPUUdSbrnJ4bY5DF0cnkr4EUIIubwzdayLNmo325buQEYb
-	 OvNcKRN0DdlcA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30c2d427194so6188161fa.0
-        for <imx@lists.linux.dev>; Wed, 26 Mar 2025 21:32:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVu7jtrbvvec3Ij6FI0av4GhQKKFizGefTFVl/0fMZ+3EaxBPlfj6viGLTxyJXmfD2HH7U=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwyRv0hWS6wL4JiFA2r/o+4062Pg0vSoljCEF8Sf/BgU0cIYnrq
-	mUvBavfP0uwIJVkMgJyDR1C9QjL3mRCd0aWeih7cy4UsTbGuWCZ7X3bJsNd0hVnKaQONgTypJBa
-	xqmucoLBBgAwXtkrEHttf9RZM4ME=
-X-Google-Smtp-Source: AGHT+IF6fAB138KxHWy/pT7d/+7sa0DqbsRN8WZ3PB5VKFSTgeIGYi9SJIdz25/4ZRPKiUb58v/Gi3ZiI0Z3sR4FiZc=
-X-Received: by 2002:a05:651c:1a0b:b0:30b:b7c3:ea71 with SMTP id
- 38308e7fff4ca-30dc5e31b95mr9042391fa.15.1743049957271; Wed, 26 Mar 2025
- 21:32:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b="WBGOEDGg"
+ARC-Seal: i=1; a=rsa-sha256; t=1743061725; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PTK/VnBXW3FY5HLtjhSHlmaHpEQAoUlew0ZnngucI5PgkwQF4TlxD9C7su8vvzsj1Dko8Lf0ABsDQAUSsGZ/+v33wDhhyfscu7j7GcHRGiv5V12y4X0XsP1ZYrBVyPlrzloeL7i7bSzWnfZWNHocp7k2DBJCqbqYCOaTjJGVju0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743061725; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kyCtzHoq8aUFZrJR5s643KhWlSqeHq7AVGaEl+qqeno=; 
+	b=hp6PTMhKpQyN4RQJbn3XDq/ci4oZ7oAOTLoaFGWtEg0kgB9yJsVbEqZn7qyRmsZv2QrM8AfdxWI+nK8mW802m1MXLi7s+bWS04gRe+AND7m/hmkgfV7VlfCmitE4ewYOgPbWnQAiCn62rcCtR7mGlNGo5kwx3OVu7QjGuAaphRE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.fricke@collabora.com;
+	dmarc=pass header.from=<sebastian.fricke@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743061725;
+	s=zohomail; d=collabora.com; i=sebastian.fricke@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=kyCtzHoq8aUFZrJR5s643KhWlSqeHq7AVGaEl+qqeno=;
+	b=WBGOEDGgkGWXrufxSI09IWNEwh3G8obvCm6o2LWWYTmrAI+EjFypnkKf1BAq54tg
+	IK+EqN/Fa6V9emxp/etHcQ1z+gRbhPwSybXFIonkraCXIa3XXuBwipjNMsbld6ObQHG
+	RD9c4tNCXLscaxLY9GCBBjifEjSRzEyUmsUGHSoc=
+Received: by mx.zohomail.com with SMTPS id 1743061723696163.541725841117;
+	Thu, 27 Mar 2025 00:48:43 -0700 (PDT)
+Date: Thu, 27 Mar 2025 08:48:35 +0100
+From: Sebastian Fricke <sebastian.fricke@collabora.com>
+To: ming.qian@oss.nxp.com
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com, imx@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 2/2] media: amphion: Add a frame flush mode for decoder
+Message-ID: <20250327074835.r47kaabtwu5jqvxf@basti-XPS-13-9310>
+References: <20250305062630.2329032-1-ming.qian@oss.nxp.com>
+ <20250305062630.2329032-2-ming.qian@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250317232426.952188-1-robh@kernel.org> <20250317232426.952188-3-robh@kernel.org>
- <CAGb2v65djD5DLQnjQrp9kSHTQYVd9p_vP9WySj2Cx81rHmh5Mw@mail.gmail.com> <CAL_JsqLoJAwPeWjXyQYK1rvVzn6Meapz3iS9gW+QqYpYKuJkBQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqLoJAwPeWjXyQYK1rvVzn6Meapz3iS9gW+QqYpYKuJkBQ@mail.gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 27 Mar 2025 12:32:25 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65nG82vDvTHMW0GQFHed5L4pQFMDggtTpuLqfm=woKm=w@mail.gmail.com>
-X-Gm-Features: AQ5f1JqdFE0VpmnOb9GgVtgJfb7ntGDb2tyu8gNbju_XzgxeziYqnhZQK0zKPKw
-Message-ID: <CAGb2v65nG82vDvTHMW0GQFHed5L4pQFMDggtTpuLqfm=woKm=w@mail.gmail.com>
-Subject: Re: [PATCH 2/3] of: Simplify of_dma_set_restricted_buffer() to use of_for_each_phandle()
-To: Rob Herring <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250305062630.2329032-2-ming.qian@oss.nxp.com>
+X-ZohoMailClient: External
 
-On Thu, Mar 27, 2025 at 2:53=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
+Hey Ming,
+
+On 05.03.2025 14:26, ming.qian@oss.nxp.com wrote:
+>From: Ming Qian <ming.qian@oss.nxp.com>
 >
-> On Wed, Mar 26, 2025 at 1:44=E2=80=AFAM Chen-Yu Tsai <wens@kernel.org> wr=
-ote:
-> >
-> > Hi,
-> >
-> > On Tue, Mar 18, 2025 at 7:29=E2=80=AFAM Rob Herring (Arm) <robh@kernel.=
-org> wrote:
-> > >
-> > > Simplify of_dma_set_restricted_buffer() by using of_property_present(=
-)
-> > > and of_for_each_phandle() iterator.
-> > >
-> > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > ---
-> > >  drivers/of/device.c | 34 +++++++++++++---------------------
-> > >  1 file changed, 13 insertions(+), 21 deletions(-)
-> > >
-> > > diff --git a/drivers/of/device.c b/drivers/of/device.c
-> > > index edf3be197265..bb4a47d58249 100644
-> > > --- a/drivers/of/device.c
-> > > +++ b/drivers/of/device.c
-> > > @@ -35,44 +35,36 @@ EXPORT_SYMBOL(of_match_device);
-> > >  static void
-> > >  of_dma_set_restricted_buffer(struct device *dev, struct device_node =
-*np)
-> > >  {
-> > > -       struct device_node *node, *of_node =3D dev->of_node;
-> > > -       int count, i;
-> > > +       struct device_node *of_node =3D dev->of_node;
-> > > +       struct of_phandle_iterator it;
-> > > +       int rc, i =3D 0;
-> > >
-> > >         if (!IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL))
-> > >                 return;
-> > >
-> > > -       count =3D of_property_count_elems_of_size(of_node, "memory-re=
-gion",
-> > > -                                               sizeof(u32));
-> > >         /*
-> > >          * If dev->of_node doesn't exist or doesn't contain memory-re=
-gion, try
-> > >          * the OF node having DMA configuration.
-> > >          */
-> > > -       if (count <=3D 0) {
-> > > +       if (!of_property_present(of_node, "memory-region"))
-> > >                 of_node =3D np;
-> > > -               count =3D of_property_count_elems_of_size(
-> > > -                       of_node, "memory-region", sizeof(u32));
-> > > -       }
-> > >
-> > > -       for (i =3D 0; i < count; i++) {
-> > > -               node =3D of_parse_phandle(of_node, "memory-region", i=
-);
-> > > +       of_for_each_phandle(&it, rc, of_node, "memory-region", NULL, =
-0) {
-> > >                 /*
-> > >                  * There might be multiple memory regions, but only o=
-ne
-> > >                  * restricted-dma-pool region is allowed.
-> > >                  */
-> > > -               if (of_device_is_compatible(node, "restricted-dma-poo=
-l") &&
-> > > -                   of_device_is_available(node)) {
-> > > -                       of_node_put(node);
-> > > -                       break;
-> > > +               if (of_device_is_compatible(it.node, "restricted-dma-=
-pool") &&
-> > > +                   of_device_is_available(it.node)) {
-> > > +                       if (!of_reserved_mem_device_init_by_idx(dev, =
-of_node, i)) {
-> > > +                               of_node_put(it.node);
-> > > +                               return;
-> > > +                       }
-> > >                 }
-> > > -               of_node_put(node);
-> > > +               i++;
-> > >         }
-> > >
-> > > -       /*
-> > > -        * Attempt to initialize a restricted-dma-pool region if one =
-was found.
-> > > -        * Note that count can hold a negative error code.
-> > > -        */
-> > > -       if (i < count && of_reserved_mem_device_init_by_idx(dev, of_n=
-ode, i))
-> > > -               dev_warn(dev, "failed to initialise \"restricted-dma-=
-pool\" memory node\n");
-> > > +       dev_warn(dev, "failed to initialise \"restricted-dma-pool\" m=
-emory node\n");
-> >
-> > This changes the behavior. Before this patch, it was:
-> >
-> >     if a restricted dma pool was found, but initializing it failed, pri=
-nt
-> >     a warning.
-> >
-> > Whereas now it has become:
-> >
-> >      print a warning unless a restricted dma pool was found and success=
-fully
-> >      initialized.
-> >
-> > This change causes the kernel to print out the warning for devices that
-> > don't even do DMA:
+>By default the amphion decoder will pre-parse 3 frames before starting
+>to decode the first frame. Alternatively, a block of flush padding data
+>can be appended to the frame, which will ensure that the decoder can
+>start decoding immediately after parsing the flush padding data, thus
+>potentially reducing decoding latency.
 >
-> Thanks. I fixed it up to only warn if i is non-zero.
+>This mode was previously only enabled, when the display delay was set to
+>0. Allow the user to manually toggle the use of that mode via a module
+>parameter called frame_flush_mode, which enables the mode without
+>changing the display order.
+>
+>Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>---
+>v3
+>- Improve commit message as recommended
+>- Add some comments to avoid code looks cryptic
+>
+> drivers/media/platform/amphion/vpu_malone.c | 14 +++++++++++++-
+> 1 file changed, 13 insertions(+), 1 deletion(-)
+>
+>diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+>index 1d9e10d9bec1..4ef9810d8142 100644
+>--- a/drivers/media/platform/amphion/vpu_malone.c
+>+++ b/drivers/media/platform/amphion/vpu_malone.c
+>@@ -25,6 +25,10 @@
+> #include "vpu_imx8q.h"
+> #include "vpu_malone.h"
+>
+>+static bool frame_flush_mode;
+>+module_param(frame_flush_mode, bool, 0644);
+>+MODULE_PARM_DESC(frame_flush_mode, "Set low latency flush mode: 0 (disable) or 1 (enable)");
+>+
+> #define CMD_SIZE			25600
+> #define MSG_SIZE			25600
+> #define CODEC_SIZE			0x1000
+>@@ -1579,7 +1583,15 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
+>
+> 	vpu_malone_update_wptr(str_buf, wptr);
+>
+>-	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
+>+	/*
+>+	 * Enable the low latency flush mode if display delay is set to 0
+>+	 * or parameter frame_flush_mode is set to 1.
 
-Not sure if that matches the old behavior though? A node could have
-memory-regions for shared dma pools but not restricted dma pools,
-and i would be non-zero.
+s/or parameter frame_flush_mode is set to 1./
+   or the frame flush mode if it is set to 1./
 
-IMO the warning should be in the "else" branch of
+>+	 * The low latency flush mode requires some padding data to be appended after each frame,
 
-    if (!of_reserved_mem_device_init_by_idx(dev, of_node, i))
+s/appended after each/appended to each/
+(the word append implies that something is added after something else)
 
+>+	 * but don't put it in between the sequence header and frame.
 
-ChenYu
+s/but don't put it in between the sequence header and frame./
+   but there must not be any padding data between the sequence header and the frame./
+
+(As this is not a suggestion for the developer but a description of what
+the code does)
+
+>+	 * Only H264 and HEVC decoder support this module yet,
+
+s/decoder/formats/
+
+I'd rewrite this part:
+This module is currently only supported for the H264 and HEVC formats,
+
+but that is only because this sounds more natural to me.
+
+>+	 * for other formats, vpu_malone_add_scode() will return 0.
+>+	 */
+>+	if ((disp_imm || frame_flush_mode) && !vpu_vb_is_codecconfig(vbuf)) {
+> 		ret = vpu_malone_add_scode(inst->core->iface,
+> 					   inst->id,
+> 					   &inst->stream_buffer,
+>-- 
+>2.43.0-rc1
+>
+>
+
+Thank you!
+
+Regards,
+Sebastian Fricke
