@@ -1,318 +1,249 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011000.outbound.protection.outlook.com [52.101.65.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198411B0F33;
-	Fri, 28 Mar 2025 14:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743171553; cv=none; b=eEjhKKbub266c8QnrKCn23sO1Ytvr5L6GdQWnCFcM7HB5dk4VdAvTsV74MzXJ/MQMSdDGDQztv/ikQpH1rFGVqxJrH06WP52/XXyq4dyNdiAgDeSGRBmyqEXZQ08ILkzjS6odGs6fW5i8g1oaL46L8xJfrgFZXRz9JrYlQYtWwg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743171553; c=relaxed/simple;
-	bh=453jEEEbcZJcDGnlBErpc5uescUKMrgYZjmGEdOp6GQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SR70Eq61xO/szGBOb+4wDfwHsJFHMYYlqRizsql6wEbKMq+Skm40mJxhv+JEAIx89Rp47xf/Mh6ETL9tYuKs+OGZlPo+krr2+hQTCkipJNHl5B8lKDTzvWDZCEX9k633t/qf2cCdMs4lP5dxYasrhZg8FO17n9t/SpNG1blDmn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUvmTKlY; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA82518C322
+	for <imx@lists.linux.dev>; Fri, 28 Mar 2025 14:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743171830; cv=fail; b=Nu0hd3qU4lqRXW+ofye1VmC1g5Lb4NBhGSVfqIgONEute5KRshyThlRl8J5aFzmAI1cFkdXJbRIG0UgxrV0+ZxUo3gZTBKVsEK1L54Q9p+8a1krM+fvQuaAVIhrsmif3aGReRrubrXGTEzZ38OYBuuahr5EZxRl1Orf7GcMVwVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743171830; c=relaxed/simple;
+	bh=9Au4ZXef7R/b8VIl2G/iQt+MexHd1ZLyKPSd6ze4A/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mM0YdZBEOqdRTrrGeH16W8TRhVNQZYKuzTTPac8XFS+pC2QdBhB/5p46kPcj8xZu5WeBAlROxCz3XhbVQmi7/J5XeXjUSGwPVTsEM2J4EA04D/195ffP5MZo+JK/gyTGjWBGGlMylhRydqJkpYEoLvlth0SlF2+5I+hyZIHEcFI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F3SjsVg+; arc=fail smtp.client-ip=52.101.65.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUvmTKlY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D405C4CEEA;
-	Fri, 28 Mar 2025 14:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743171552;
-	bh=453jEEEbcZJcDGnlBErpc5uescUKMrgYZjmGEdOp6GQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BUvmTKlYyRbj7zjwx82dT0AypjOUBmYrA4ki1VWMld0ft0SzEN27whaNl1x4XJFJ8
-	 RsAOC6EpUoah81RAaViXWF5pdyAiLtFj4bi+g8rTq77VroojFuSZAxZdHDFq7EYhOs
-	 Jn/Lm8p6rM4otPXfmQo+qUDQ7P0mV8Mb7anb0EDpuxYDaCTbVFm0vX+bDHs3n50vnb
-	 dFtNY8o7i4XojQBV8NRvagX08s1XHzP84XQ5TkL652BqOKLD8cHYngO0iq9gqgBNBK
-	 zbiXoM02RmhpHSJFJGy04fLBDYGuMhIoSUBc1C9Lu8iMu51fEo7nudBwS6DyIMvhD0
-	 nuHYCYq+AULcQ==
-Message-ID: <060f8fb2-bade-4d80-93bc-effb3657d5a3@kernel.org>
-Date: Fri, 28 Mar 2025 15:19:04 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F3SjsVg+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lx0ENUGNNFdqeofC8mTtNMPitKSy4HajFqnhw996ez/gxmIF2zuNBBlbjYOXLxb8LPQnr1BXRhywu75LmdyOspYW6huzItoUxWLQ6JhsMwmuDkduzKGCtquLS+y19A7F0cAuUm74h5lzXSGLmp2fFiyxTm42JhAyZoBkMxadbMu3ot7iPVY0dRRRf/baX3ag5nhjN4JKY9PUfaZrP/9mIIR2raeTKuD60uScGkWk7wQpy1fGs+IPDSH62oxEz8rBzl6PYXGB/vL5KUwibl4/fkLMApe776r8j2SBQjZBiOlKQ/7PqNyvJUXdhZXaYVUUWmT2Xw2PdmZIzFf1EYT1GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ananZCJv+0x4LI/6MdRB3IxA1bH7PQklr2EVK8DUsfo=;
+ b=Dtffa5lQOPTaeGIRe1OtK+2gCUCv68lRtRd5NJsiyrlMfXMuupkmMUBuC+uDI1KveCc50F18ElpC/qIuutd/slaOBRz9RCHHVEFwMoY0ZgsoAWGkL3Fon89p4JBD375F6Ju9HNd23XS8dCc4EcVLrprF5rk/pYyml/wgYgXxzS3IIwCY6rohz2wz+qf2XfiuokNpiyN4CRa8/zXMaLEAr9CVww4dawkry8PqWgsZ1xlJW1tfGjHv/jeh663AN/qUmdHOfAsri6NKNgwo8M6vjh5Ima2vOsWN8mFh0mCS8Pg+yER0XQCy2HFhPlW5p8OdVrMlXQdvRR53dggnJJ5eag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ananZCJv+0x4LI/6MdRB3IxA1bH7PQklr2EVK8DUsfo=;
+ b=F3SjsVg+9g2xaDuWqXq8sP0nLTTttfdrihYvklN0WmwoTwxyYAdzBPRpxhppIMwb3KWkC2j89MMBVfWl8MyJhXN4Br7hj7JJNka8Bn8vCWp4aeo1wOzZM54SWC6DqktxuPg0IjqFN/4e+mo0+5j88hBLUj/Hv5vgXhAdQvn64b1hQmWSc43Vntxv1bHvXlV6JkEJRdTNP/B1wzpbz64mAH9Y3qYgo8OKm6mhOZrAZXKvFFBqBbMHFhvX2KvOdaO8EhymP272E93iipCs9SXNevjFx+UTvQH+JkWovRhhuqJUdCHGRLWDrt8dvKc7cpgAzZvk+NbAaD+DIm9b5cfW2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DBAPR04MB7301.eurprd04.prod.outlook.com (2603:10a6:10:1a7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Fri, 28 Mar
+ 2025 14:23:45 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8534.043; Fri, 28 Mar 2025
+ 14:23:45 +0000
+Date: Fri, 28 Mar 2025 10:23:37 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: ming.qian@oss.nxp.com
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+	imx@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 1/2] media: amphion: Reduce decoding latency for HEVC
+ decoder
+Message-ID: <Z+aw6bFdwTsxwLTa@lizhi-Precision-Tower-5810>
+References: <20250328064819.784-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250328064819.784-1-ming.qian@oss.nxp.com>
+X-ClientProxiedBy: PH8PR22CA0006.namprd22.prod.outlook.com
+ (2603:10b6:510:2d1::10) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250328133544.4149716-1-lukma@denx.de>
- <20250328133544.4149716-5-lukma@denx.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250328133544.4149716-5-lukma@denx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DBAPR04MB7301:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81ef3c06-bb7b-4495-503b-08dd6e042606
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j9gZXUNcPEU09ZWbQ56x4TcV69/uZ8khv4txh9fQ6zld+SEZ3UhutM+788UA?=
+ =?us-ascii?Q?4Cqr2iDflmgMhdxV7q6Dx1tk3j9ISGkHcIl9JrxAJAFwaD5MvzpfQR3pL8x1?=
+ =?us-ascii?Q?uLH51j+MQIBH2V3LvuDaiIyQAtGPEN7nlumKSQxWOfOG2vxjcQ6ImrVF7by+?=
+ =?us-ascii?Q?zV5SV/9g26Vy3hVKI00xBJTZ2IZexjd+q7JqE6lvUKkGIpXRc3aKwrdPwcor?=
+ =?us-ascii?Q?YXf34ednwW6jyBBs/exvBmw6EPKOlICykpfAHpWZZrOTpmIng5nHVnURJITe?=
+ =?us-ascii?Q?hoAMHFe6HQNoTyss8aa2K87+fRoKC1D66ZrZm8h82U4y/Pz7+Vm0kRzBmnc1?=
+ =?us-ascii?Q?aUas3WUQrSm9wbTFZ3oUh7zjPZksgbUxkTaKL3PX0plvDNYQM7paQaRoI1qg?=
+ =?us-ascii?Q?Nvb6Pg5tAYpaRorrcCnGuuwnEnup/q9LI/75O4zEqNjPVF/EXNe6Tl0AJbE7?=
+ =?us-ascii?Q?MYfVSGtLhRJC6Jxdse3kyOEUpBWC0qsL/pOVSsqVXHsiuo3kSj55025UWt8r?=
+ =?us-ascii?Q?mS+oq8iZUvFpmY/6++c8Be9+8YmvT6rfqSuO4wX4jwwd39V/0gW6Sq37nEn9?=
+ =?us-ascii?Q?i9CFW2nQvF+vyPHCHV155Cf1i2FvRP33ez0Vr8e2WAs4Zh4ZCnHMZmGJ3K5M?=
+ =?us-ascii?Q?STQR948V0h6NL5zKY21xlZH5hvOStBqxF6o+IN9+oBseuopxzvpP/+9w2l5l?=
+ =?us-ascii?Q?WaQmK6mNTXzgdlbuDX8nTZ9LEi5GBM7oIutlpX/6XdcvwXf7CtP996qmvuzM?=
+ =?us-ascii?Q?UyHs4NdcnIZqJvlMEqSXKiyYbOMOK+gj0T1M1VbWEnCM1gtm1REP7vFWZROR?=
+ =?us-ascii?Q?ynjh42WkvwDxGNAws9k+4t2OpdisEm4b3IspGQhAyZMJQpLbbNanVHdTYr6F?=
+ =?us-ascii?Q?rQ8v37Vx7cGv/ucIDw54oXVeV88K3sGPQ6Vsj9cPBf9ONftY2u/Al+yXbSEN?=
+ =?us-ascii?Q?W0mnj5e6GrDhJNIM1M6RhnWh+7OHmSbI75i4mjsXX/1vTXafVJ3LdHwflfMy?=
+ =?us-ascii?Q?DoBLLJIaczjQrgn/u3iVx+f0uMKNDqxKQ7/tzcgIqFvmxD3xh7rv7lWkl1e8?=
+ =?us-ascii?Q?4ndU13eJOKGzTwJamiGn9U0Us6cg5tP3BOkji8T5nQMLHjlDAkkouAaj/MHZ?=
+ =?us-ascii?Q?hgy4k9hYYz+VbyHwlZtyB67jslZf9ns+9npladbNgPsx5Sjr5vQxOjTPiava?=
+ =?us-ascii?Q?MrFwVf8RI7KnIZlGDExaMyOW74asYim+UFutPE6l+i80aa+J/wnQJRaqgHS+?=
+ =?us-ascii?Q?wmj6w0KBNbZkihoBPl4SItticss4rRTwSLg3Nn3vwNdux6GkDwfuj+rPUOWu?=
+ =?us-ascii?Q?+SXWKUJ42WFy6Jzk4kXxeyw9c1WcAsYbbyTO3rZt+NNR/cJ0w4zYZhutS2S8?=
+ =?us-ascii?Q?X+EV/Ab0B6RwROgkil8CSn8xMMNCLPwZrR1gjwKFalblXZOzkjnDVBPmlTMN?=
+ =?us-ascii?Q?U6DRen0F+Yq537JjqQ7LJjf0IbQMnFhK?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a8E7+1Apsfw/ZsL1ox+uFhIZ1V2zZFpj75mavQ8cyG4L0hsNntR+b8XFFqty?=
+ =?us-ascii?Q?42ihuY7BzMv9VCuTmYfr7dTv/mYz2sfUrFnm8TGT/vIz4mzYSid18w/dpHti?=
+ =?us-ascii?Q?vN2HgPm82MAHBz9hqMdxC3B1DH/QK3EOrR+q6U+4QfikK2CQO0F/8DRY/02G?=
+ =?us-ascii?Q?D21sW6R4fE6OhxnYo5nlKFVI80MmI4gXHd28IGD6JkTxfJ/0CR6nTAaMlaMJ?=
+ =?us-ascii?Q?A/QILu+oFiqU//w4ufQQTvc9tCRS1wquDVCyIClHVYhnh9PIopz9SAE8ix8f?=
+ =?us-ascii?Q?rHgnxJMQ4qRwR0gBrR3EGTeJOmNM7D8ZivCCQhZhsqZG5ufPv2mCwrW5lu3T?=
+ =?us-ascii?Q?K1VLgrBa+q3D7itOH1kbmI1GhVKEXAjhtK3UGZYoa7wa53Tg92Ro2vLgrzs/?=
+ =?us-ascii?Q?xSeH2rZcmuuQsYrgp/99Ei4gZM+DmD4JClmwqUubZEzskqqyyF2d0YG5GPhI?=
+ =?us-ascii?Q?mFczR/3GSuhiDv4g5a+3E9jQpcHOcA7v8j3BqxLJAgrjcuye5dV/waDBwPGV?=
+ =?us-ascii?Q?tPyTyznDvmrFBzddUYvZt/GI4HqH0Dm1zjctNwpD14jySU0T7mJkPtB7F6rW?=
+ =?us-ascii?Q?Zzn7WG2H3HRI249pVibooAbCLLwGCer9hPZuKFzxjlKeLUb08IZcPTIV13fN?=
+ =?us-ascii?Q?SF3+KSSwgIWqMm839F7mHVCZ8XhrvsorWlBnznziUJcgxIYpmGISFfhWKOI7?=
+ =?us-ascii?Q?/X0mfPZWiH+9dZcOF7oqIPdrL9DVy6ZichAAM2H+fv4bnDI7lyX6efDChYbF?=
+ =?us-ascii?Q?6d2TmeKYkiX0/RJJTGzxVWnQ04/LI/dT/CaYPA37qFNzFCO/CbavzFodVQOr?=
+ =?us-ascii?Q?uXfP/WdddFAvoM0OnXL8BPuZiIpFCNweHfzBrKFepyGeo9DJgnt/bzodWP0i?=
+ =?us-ascii?Q?5Og41sroDFhkxlbY2RboaU22CHG3TOcoyFUneOcisjBXzq48mtNmPYescnxP?=
+ =?us-ascii?Q?mM6tRigwxO/pcbfeasuNvApZpchyXphZB8vsz3MZaRVZRoar1WBhOXjvCXBs?=
+ =?us-ascii?Q?nhxyIkJh4b2GP+Jm/eHq7ebsuRGKiOTR3f9AFtqbbDPfq7JsBmxw0UPEIOnV?=
+ =?us-ascii?Q?YSLQ1yAy95dovJJPESO4zXFGbgNdQQF9ULb1LW/QheO5lbl1r2bqiWwtyYqL?=
+ =?us-ascii?Q?Syv2OjLAkBKEHzidO5YB5iy+zC8cEs7+wxZliJEpHKcMeVFJT7rV2zgC7BdM?=
+ =?us-ascii?Q?Lpaod4/bUOeNzuKVwSC8YWGzmPlmsPwtYKtYfN6XiMpNLFI5RtZqw7WpYmrn?=
+ =?us-ascii?Q?fSJAWlXtc7CdEyltSIKxXmqvJIvyk0I22A9nzqaaf72tWeNcSTqFs98kuKcx?=
+ =?us-ascii?Q?d+3jt/ubp5l+Zkglapj6+Qt4Yqu6wI7diHrEXchvdrI8MbBOvNDlSAS4y67b?=
+ =?us-ascii?Q?2abbHKNduTmgZ+9b8PTIWTk+YJZQBs/lgF3++YPb1y+68wCQrb1scWlCihXF?=
+ =?us-ascii?Q?cKIbrIeIOR3S4nfQTcZoOwb8e59vFW+yXPCPwxz5spcSmvsvfvn8Vz2QFJSV?=
+ =?us-ascii?Q?3e6pu0QsyR+DYAnafCftdzAITnYeJ9jdWPoxj1abVEdGyRNArWWcauQncqRD?=
+ =?us-ascii?Q?1BlSqaN+tFA71SZe03MCJ/RocIRW10vBjS4GSJTH?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81ef3c06-bb7b-4495-503b-08dd6e042606
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2025 14:23:45.5976
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mFIryxFf8ctf+sqO30dWil8SBcGIvLt8JNjRyj9cBq26f+m/RxGix+FVV8/4CbcsxzFaoC1Ce9MJL/tA/wrqag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7301
 
-On 28/03/2025 14:35, Lukasz Majewski wrote:
+On Fri, Mar 28, 2025 at 02:48:16PM +0800, ming.qian@oss.nxp.com wrote:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>
+> The amphion decoder firmware supports a low latency flush mode for the
+> HEVC format since v1.9.0. This feature, which is enabled when the
+> display delay is set to 0, can help to reduce the decoding latency by
+> appending some padding data to every frame.
+>
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> ---
+> v4
+> - Add CHECK_VERSION macro
+> v3
+> - Improve commit message as recommended
+> v2
+> - Improve commit message
+> - Add firmware version check
+>
+>  drivers/media/platform/amphion/vpu_malone.c | 24 ++++++++++++++++++---
+>  1 file changed, 21 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+> index 5c6b2a841b6f..88f8c16a451e 100644
+> --- a/drivers/media/platform/amphion/vpu_malone.c
+> +++ b/drivers/media/platform/amphion/vpu_malone.c
+> @@ -68,6 +68,12 @@
+>
+>  #define MALONE_DEC_FMT_RV_MASK			BIT(21)
+>
+> +#define MALONE_VERSION_MASK			0xFFFFF
+> +#define MALONE_VERSION(maj, min, inc)		\
+> +		((((maj) << 16) | ((min) << 16) | (inc)) & MALONE_VERSION_MASK)
+> +#define CHECK_VERSION(iface, maj, min)		\
+> +		(((iface)->fw_version & MALONE_VERSION_MASK) >= MALONE_VERSION(maj, min, 0))
 > +
-> +static void mtip_mii_unregister(struct switch_enet_private *fep)
-> +{
-> +	mdiobus_unregister(fep->mii_bus);
-> +	mdiobus_free(fep->mii_bus);
-> +}
-> +
-> +static const struct fec_devinfo fec_imx28_l2switch_info = {
-> +	.quirks = FEC_QUIRK_BUG_CAPTURE | FEC_QUIRK_SINGLE_MDIO,
-> +};
-> +
-> +static struct platform_device_id pdev_id = {
 
-That's const.
+Suggest use FIELD_PREP FILED_GET macro because it can check input value
+exceed the range.
 
-> +	.name = "imx28-l2switch",
-> +	.driver_data = (kernel_ulong_t)&fec_imx28_l2switch_info,
-> +};
-> +
-> +static int __init mtip_sw_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	struct switch_enet_private *fep;
-> +	struct fec_devinfo *dev_info;
-> +	struct switch_t *fecp;
-> +	int ret;
-> +
-> +	fep = devm_kzalloc(&pdev->dev, sizeof(*fep), GFP_KERNEL);
-> +	if (!fep)
-> +		return -ENOMEM;
-> +
-> +	pdev->id_entry = &pdev_id;
+#define FIELD_PREP(_mask, _val)						\
+	({								\
+		__BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");	\
 
-Hm? This is some odd pattern. You are supposed to use OF table and get
-matched by it, not populate some custom/odd handling of platform tables.
+		^^^^
 
-> +
-> +	dev_info = (struct fec_devinfo *)pdev->id_entry->driver_data;
+		((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask);	\
+	})
 
-I did not notice it before, but that's a no - you cannot drop the cast.
-Driver data is always const.
+Frank
 
-> +	if (dev_info)
-> +		fep->quirks = dev_info->quirks;
+>  enum vpu_malone_stream_input_mode {
+>  	INVALID_MODE = 0,
+>  	FRAME_LVL,
+> @@ -332,6 +338,8 @@ struct vpu_dec_ctrl {
+>  	u32 buf_addr[VID_API_NUM_STREAMS];
+>  };
+>
+> +static const struct malone_padding_scode *get_padding_scode(u32 type, u32 fmt);
 > +
-> +	fep->pdev = pdev;
-> +	platform_set_drvdata(pdev, fep);
+>  u32 vpu_malone_get_data_size(void)
+>  {
+>  	return sizeof(struct vpu_dec_ctrl);
+> @@ -654,9 +662,15 @@ static int vpu_malone_set_params(struct vpu_shared_addr *shared,
+>  		hc->jpg[instance].jpg_mjpeg_interlaced = 0;
+>  	}
+>
+> -	hc->codec_param[instance].disp_imm = params->display_delay_enable ? 1 : 0;
+> -	if (malone_format != MALONE_FMT_AVC)
+> +	if (params->display_delay_enable &&
+> +	    get_padding_scode(SCODE_PADDING_BUFFLUSH, params->codec_format))
+> +		hc->codec_param[instance].disp_imm = 1;
+> +	else
+>  		hc->codec_param[instance].disp_imm = 0;
 > +
-> +	fep->enet_addr = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(fep->enet_addr))
-> +		return PTR_ERR(fep->enet_addr);
+> +	if (params->codec_format == V4L2_PIX_FMT_HEVC && !CHECK_VERSION(iface, 1, 9))
+> +		hc->codec_param[instance].disp_imm = 0;
 > +
-> +	fep->irq = platform_get_irq(pdev, 0);
-> +	if (fep->irq < 0)
-> +		return fep->irq;
-> +
-> +	ret = mtip_parse_of(fep, np);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "%s: OF parse error (%d)!\n", __func__,
-> +			ret);
-> +		return ret;
+>  	hc->codec_param[instance].dbglog_enable = 0;
+>  	iface->dbglog_desc.level = 0;
+>
+> @@ -1024,6 +1038,7 @@ static const struct malone_padding_scode padding_scodes[] = {
+>  	{SCODE_PADDING_EOS,      V4L2_PIX_FMT_JPEG,        {0x0, 0x0}},
+>  	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264,        {0x15010000, 0x0}},
+>  	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264_MVC,    {0x15010000, 0x0}},
+> +	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_HEVC,        {0x3e010000, 0x20}},
+>  };
+>
+>  static const struct malone_padding_scode padding_scode_dft = {0x0, 0x0};
+> @@ -1058,8 +1073,11 @@ static int vpu_malone_add_padding_scode(struct vpu_buffer *stream_buffer,
+>  	int ret;
+>
+>  	ps = get_padding_scode(scode_type, pixelformat);
+> -	if (!ps)
+> +	if (!ps) {
+> +		if (scode_type == SCODE_PADDING_BUFFLUSH)
+> +			return 0;
+>  		return -EINVAL;
 > +	}
-> +
-> +	/* Create an Ethernet device instance.
-> +	 * The switch lookup address memory starts at 0x800FC000
-> +	 */
-> +	fep->hwp_enet = fep->enet_addr;
-> +	fecp = (struct switch_t *)(fep->enet_addr + ENET_SWI_PHYS_ADDR_OFFSET);
-> +
-> +	fep->hwp = fecp;
-> +	fep->hwentry = (struct mtip_addr_table_t *)
-> +		((unsigned long)fecp + MCF_ESW_LOOKUP_MEM_OFFSET);
-> +
-> +	ret = devm_regulator_get_enable_optional(&pdev->dev, "phy");
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret,
-> +				     "Unable to get and enable 'phy'\n");
-> +
-> +	fep->clk_ipg = devm_clk_get_enabled(&pdev->dev, "ipg");
-> +	if (IS_ERR(fep->clk_ipg))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_ipg),
-> +				     "Unable to acquire 'ipg' clock\n");
-> +
-> +	fep->clk_ahb = devm_clk_get_enabled(&pdev->dev, "ahb");
-> +	if (IS_ERR(fep->clk_ahb))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_ahb),
-> +				     "Unable to acquire 'ahb' clock\n");
-> +
-> +	fep->clk_enet_out = devm_clk_get_optional_enabled(&pdev->dev,
-> +							  "enet_out");
-> +	if (IS_ERR(fep->clk_enet_out))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_enet_out),
-> +				     "Unable to acquire 'enet_out' clock\n");
-> +
-> +	spin_lock_init(&fep->learn_lock);
-> +	spin_lock_init(&fep->hw_lock);
-> +	spin_lock_init(&fep->mii_lock);
-> +
-> +	ret = devm_request_irq(&pdev->dev, fep->irq, mtip_interrupt, 0,
-> +			       "mtip_l2sw", fep);
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, fep->irq,
-> +				     "Could not alloc IRQ\n");
-> +
-> +	ret = mtip_register_notifiers(fep);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = mtip_ndev_init(fep);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "%s: Failed to create virtual ndev (%d)\n",
-> +			__func__, ret);
-> +		goto ndev_init_err;
-> +	}
-> +
-> +	ret = mtip_switch_dma_init(fep);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "%s: ethernet switch init fail (%d)!\n",
-> +			__func__, ret);
-> +		goto dma_init_err;
-> +	}
-> +
-> +	ret = mtip_mii_init(fep, pdev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "%s: Cannot init phy bus (%d)!\n", __func__,
-> +			ret);
-> +		goto mii_init_err;
-> +	}
-> +	/* setup timer for learning aging function */
-> +	timer_setup(&fep->timer_aging, mtip_aging_timer, 0);
-> +	mod_timer(&fep->timer_aging,
-> +		  jiffies + msecs_to_jiffies(LEARNING_AGING_INTERVAL));
-> +
-> +	fep->task = kthread_run(mtip_sw_learning, fep, "mtip_l2sw_learning");
-> +	if (IS_ERR(fep->task)) {
-> +		ret = PTR_ERR(fep->task);
-> +		dev_err(&pdev->dev, "%s: learning kthread_run error (%d)!\n",
-> +			__func__, ret);
-> +		goto task_learning_err;
-> +	}
-> +
-> +	/* setup MII interface for external switch ports*/
-> +	mtip_enet_init(fep, 1);
-> +	mtip_enet_init(fep, 2);
-> +
-> +	return 0;
-> +
-> + task_learning_err:
-> +	del_timer(&fep->timer_aging);
-> +	mtip_mii_unregister(fep);
-> + mii_init_err:
-> + dma_init_err:
-> +	mtip_ndev_cleanup(fep);
-> + ndev_init_err:
-> +	mtip_unregister_notifiers(fep);
-> +
-> +	return ret;
-> +}
-> +
-> +static void mtip_sw_remove(struct platform_device *pdev)
-> +{
-> +	struct switch_enet_private *fep = platform_get_drvdata(pdev);
-> +
-> +	mtip_unregister_notifiers(fep);
-> +	mtip_ndev_cleanup(fep);
-> +
-> +	mtip_mii_remove(fep);
-> +
-> +	kthread_stop(fep->task);
-> +	del_timer(&fep->timer_aging);
-> +	platform_set_drvdata(pdev, NULL);
-> +
-> +	kfree(fep);
-> +}
-> +
-> +static const struct of_device_id mtipl2_of_match[] = {
-> +	{ .compatible = "nxp,imx287-mtip-switch", },
-> +	{ /* sentinel */ }
-> +};
-
-Missing module device table.
-
-> +
-> +static struct platform_driver mtipl2plat_driver = {
-> +	.driver         = {
-> +		.name   = "mtipl2sw",
-> +		.of_match_table = mtipl2_of_match,
-> +		.suppress_bind_attrs = true,
-> +	},
-> +	.probe          = mtip_sw_probe,
-> +	.remove_new     = mtip_sw_remove,
-> +};
-> +
-> +module_platform_driver(mtipl2plat_driver);
-> +MODULE_AUTHOR("Lukasz Majewski <lukma@denx.de>");
-> +MODULE_DESCRIPTION("Driver for MTIP L2 on SOC switch");
-> +MODULE_VERSION(VERSION);
-
-What is the point of paralell versioning with the kernel? Are you going
-to keep this updated or - just like in other cases - it will stay always
-theh same. Look for example at net/bridge/br.c or some other files -
-they are always the same even if driver changed significantly.
-
-BTW, this would be 1.0, not 1.4. Your out of tree versioning does not
-matter.
-
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:mtipl2sw");
-
-You should not need MODULE_ALIAS() in normal cases. If you need it,
-usually it means your device ID table is wrong (e.g. misses either
-entries or MODULE_DEVICE_TABLE()). MODULE_ALIAS() is not a substitute
-for incomplete ID table.
-
-
-Best regards,
-Krzysztof
+>
+>  	wptr = readl(&str_buf->wptr);
+>  	if (wptr < stream_buffer->phys || wptr > stream_buffer->phys + stream_buffer->length)
+> --
+> 2.43.0-rc1
+>
