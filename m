@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD443214;
-	Fri, 28 Mar 2025 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C119004B;
+	Fri, 28 Mar 2025 14:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743170292; cv=none; b=AVdk6moGJHXEUkdeiIgNSkQp3i++0lWR7u/yAVLQlKWLvC2HivL6p1y4Bu4iFFg2XY6IuQzV0SW8rnFTBFDcNZXq7tNNz1CMlrKSXXRPX1YmrWKHzrru7C8ce9wY+Z8gfSMd3uGTO+P+skNIypWyMOnX0eQ3GXWH67AwtCQbJ9A=
+	t=1743170837; cv=none; b=eWSiEwsIF/vuskxJPr3hAD0O9cKtxhrmMvMi14qCyJdFeEjrhTMZTJbDXrkDKB8X3wkvS7hDaJu1d04V/XjpIcTgqLM15Wa7IcEtCLlqVx5BGl+53tv5wfCZflYZqafk9DdDuYww9tT+Vc1tf/5E6j4Jd/YUVDZlnC79H+VwIY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743170292; c=relaxed/simple;
-	bh=XSCdrJQEWIrHVn8xzc9lalhtcwRlcYbMFTCUYLBYzZo=;
+	s=arc-20240116; t=1743170837; c=relaxed/simple;
+	bh=m017URjN596GwKkMkzZo8oOJMvuSa3Xs2AK+8jl9Z9U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+tzJ3GfskUmODluPzMHq4xnHRd+eQBlvcCygduBZ4Ef0k1Cbsl4EVM6bvH5XKSa/K96joxCNe0TwHo8S0kF5N9GTm3D/YAQh8fxjZzQYzvcPLWY6bs2UttkFxBZjZjTQRinWex3DDNvBGMvbm+tBY/6OigRueIx8+i6tI2/bjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLwVVrH5; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=bsaewQ5SWrQXaYQCGxCr+p/IhMbeLJzym+yHWaUtw1/ZctFO0SEdsTfAXUqQ2hXHAxmMuBAf93sOhAgalNuXT0xl2VOvzO5LrB6zeN6KFD+OP8huMXlW95fzdm0bbcKdrAtGIc9EmD5RTkvtnGTmmZci7VgjM8wjp/HMR3yBHV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5vEc6ow; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLwVVrH5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A7DC4CEE4;
-	Fri, 28 Mar 2025 13:58:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5vEc6ow"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF549C4CEE4;
+	Fri, 28 Mar 2025 14:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743170291;
-	bh=XSCdrJQEWIrHVn8xzc9lalhtcwRlcYbMFTCUYLBYzZo=;
+	s=k20201202; t=1743170837;
+	bh=m017URjN596GwKkMkzZo8oOJMvuSa3Xs2AK+8jl9Z9U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uLwVVrH5ItzcI4ZQSajfKuqiEq5I4+VGtgW/8u/y+sVxdWx2FPjjvo6QTgIrB8SZi
-	 uIZgVVAvJuBBaS5rxVUx3F2LYqlN+aV94yKfoRXzba4iT0DWmfajwob+kRCSjdFNW4
-	 hhEl/5VRAqvsjFRVaSAGChHIHkL/oFCMP0sdn06OFC6Hv6ihWZlejHWjoCRN3IGED3
-	 Ma/qW+1ph9p1J59eZR3lUuKa+8omGfu66/OZwnM3LoEbZ1m9BqdXr0Sd2lyKs5suX/
-	 OpMiYeRT/rMzGHLzVg4M0nbIh7mRg/95fU3x8M8YS3UQS9nuD1169bycGscRhGA+bF
-	 Puhzk33HuXKZA==
-Message-ID: <9a8635d8-631e-483f-9d31-33cf0bea7daf@kernel.org>
-Date: Fri, 28 Mar 2025 14:58:03 +0100
+	b=s5vEc6owtcnEmyzB67vXFa0oU+WhqZIM6jjUTxMoU+QBRxZlqLTVJvm3L2NKv6f11
+	 8NiILl2mebnpAM9BHrNlc9aOg+dbBF8kFTVz8rcvKZQaF5hxLqPgUY84U2Ny3a3la+
+	 iNEIJAr0z7lT5qWSV7Zqt8wAb5KOwF/c5H1mMrv/X/7NKhfIdKo6yTPWP4JgA2TpUe
+	 9/34mL93bdOl9b0SsrVMWy6DgBPBD6q3f0olPNLQtQVxj6LK+Id/eqUa0S3oJ+xGCA
+	 YYr+ViDmrW2+FZ9MeR4NbzvFyiQIXXGPlXTAqk+zCI/JfV3zqCblzr1qAnJny9H8Z7
+	 cRLHcv3/UcFKQ==
+Message-ID: <e6f3e50f-8d97-4dbc-9de3-1d9a137ae09c@kernel.org>
+Date: Fri, 28 Mar 2025 15:07:08 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,20 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: add imx8mp-libra-rdk-fpsc
-To: Yannic Moog <y.moog@phytec.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
+To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: upstream@lists.phytec.de, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Benjamin Hahn <b.hahn@phytec.de>,
- Jan Remmet <j.remmet@phytec.de>, Teresa Remmet <t.remmet@phytec.de>,
- Yashwanth Varakala <y.varakala@phytec.de>
-References: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de>
- <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-1-28324c7f81fa@phytec.de>
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250328133544.4149716-1-lukma@denx.de>
+ <20250328133544.4149716-2-lukma@denx.de>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -94,35 +94,182 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-1-28324c7f81fa@phytec.de>
+In-Reply-To: <20250328133544.4149716-2-lukma@denx.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/03/2025 14:04, Yannic Moog wrote:
-> imx8mp-libra-rdk-fpsc is a development board based on the phyCORE-i.MX 8M
-> Plus FPSC SoM. Add its description and binding.
+On 28/03/2025 14:35, Lukasz Majewski wrote:
+> This patch provides description of the MTIP L2 switch available in some
+> NXP's SOCs - e.g. imx287.
 > 
-> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 > ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> index 1b90870958a22e49355dd1f932bf3d84cd864b5f..22f05e6709fd60bef1d22a378cf0bd57090774d4 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1156,6 +1156,13 @@ properties:
->            - const: kontron,imx8mp-osm-s               # Kontron i.MX8MP OSM-S SoM
->            - const: fsl,imx8mp
->  
-> +      - description: PHYTEC phyCORE-i.MX8MP FPSC based boards
-> +        items:
-> +          - enum:
-> +              - phytec,imx8mp-libra-rdk-fpsc  # i.MX 8M Plus Libra RDK
-> +          - const: phytec,imx8mp-phycore-fpsc # phyCORE-i.MX 8M Plus FPSC
+> Changes for v2:
+> - Rename the file to match exactly the compatible
+>   (nxp,imx287-mtip-switch)
 
-And that's different than existing phycore som? You have entire commit
-msg to explain that.
+Please implement all the changes, not only the rename. I gave several
+comments, although quick glance suggests you did implement them, so then
+changelog is just incomplete.
+
+> ---
+>  .../bindings/net/nxp,imx287-mtip-switch.yaml  | 165 ++++++++++++++++++
+>  1 file changed, 165 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> new file mode 100644
+> index 000000000000..a3e0fe7783ec
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> @@ -0,0 +1,165 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/nxp,imx287-mtip-switch.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +description:
+> +  The 2-port switch ethernet subsystem provides ethernet packet (L2)
+> +  communication and can be configured as an ethernet switch. It provides the
+> +  reduced media independent interface (RMII), the management data input
+> +  output (MDIO) for physical layer device (PHY) management.
+> +
+
+If this is ethernet switch, why it does not reference ethernet-switch
+schema? or dsa.yaml or dsa/ethernet-ports? I am not sure which one
+should go here, but surprising to see none.
+
+> +properties:
+> +  compatible:
+> +    const: nxp,imx287-mtip--switch
+
+Just one -.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description:
+> +      The physical base address and size of the MTIP L2 SW module IO range
+
+Wasn't here, drop.
+
+> +
+> +  phy-supply:
+> +    description:
+> +      Regulator that powers Ethernet PHYs.
+> +
+> +  clocks:
+> +    items:
+> +      - description: Register accessing clock
+> +      - description: Bus access clock
+> +      - description: Output clock for external device - e.g. PHY source clock
+> +      - description: IEEE1588 timer clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ipg
+> +      - const: ahb
+> +      - const: enet_out
+> +      - const: ptp
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Switch interrupt
+> +      - description: ENET0 interrupt
+> +      - description: ENET1 interrupt
+> +
+> +  pinctrl-names: true
+
+Drop
+
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^port@[0-9]+$":
+
+Keep consistent quotes, either " or '. Also [01]
+
+
+> +        type: object
+> +        description: MTIP L2 switch external ports
+> +
+> +        $ref: ethernet-controller.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          reg:
+> +            items:
+> +              - enum: [1, 2]
+> +            description: MTIP L2 switch port number
+> +
+> +          label:
+> +            description: Label associated with this port
+> +
+> +        required:
+> +          - reg
+> +          - label
+> +          - phy-mode
+> +          - phy-handle
+> +
+> +  mdio:
+> +    type: object
+> +    $ref: mdio.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      Specifies the mdio bus in the switch, used as a container for phy nodes.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - mdio
+> +  - ethernet-ports
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include<dt-bindings/interrupt-controller/irq.h>
+> +    switch@800f0000 {
+> +        compatible = "nxp,imx287-mtip-switch";
+> +        reg = <0x800f0000 0x20000>;
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
+> +        phy-supply = <&reg_fec_3v3>;
+> +        interrupts = <100>, <101>, <102>;
+> +        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> +        clock-names = "ipg", "ahb", "enet_out", "ptp";
+> +        status = "okay";
+
+Drop
+
+> +
+> +        ethernet-ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+
+Messed indentation. See example-schema or writing-schema.
+
+
 
 Best regards,
 Krzysztof
