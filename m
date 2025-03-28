@@ -1,297 +1,172 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2134.outbound.protection.outlook.com [40.107.22.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9E5213E7D
-	for <imx@lists.linux.dev>; Fri, 28 Mar 2025 12:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743164527; cv=none; b=G/KoGdafmhW1muxx0rv1avY8mPtpETzdjNmUXtgv5TbEkjw6EasD3I6UeojI5NPq5Y5F41oq7Gtk7X7sRmw8N1u9y8QJOUHNh7PbqRncOWZqfDSW/WB0pjAcE/bv2LPPFYPTu4vJBhu5fbPP1MbRqjHwBWaUoPuMVF3MCVzt76I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743164527; c=relaxed/simple;
-	bh=pmhdXCc9ppKE21BTXPTPut1h94F66CU0TnLRVbgPQDI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tkc9zMHuEzSKhu2g8rLdOuMAldWFJgZlwV4Y7ccUk3BjdiqmJ2IVWqoekE1xycajN+V8BlwynZGGL9nQqDBxg5F3ootMIJ8oBKkqshMdgcx45MkWzxL9HeE0TRHDrn/8/FNBjKrhwDp7gu2k4TDdVW8+QSjQfILUFVknyZwVNy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YL6Skve0; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461F61DFFD
+	for <imx@lists.linux.dev>; Fri, 28 Mar 2025 13:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743167135; cv=fail; b=cknV48G5hlTWrBoNPjBcn26hDzhb4qTze8jwuiGESScRfp1s4rJYCCcYxBXR9juEjPuTAX+q9Fh4l3mX/48vz6XSW++M9nU9b+ICZe4YGpC8vybPXx4KHDnD+P7XcviZU7UhA1eZ0vLmkOJsb77OZvueW9keENG8+wNIwgQa/V4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743167135; c=relaxed/simple;
+	bh=dK1PUOb8fTE3ruVzZWdTBA8rErxhCrEj3bi11sRE0N8=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=IChrXCr32YFTE9osiMGiSySkcyBe3aOYEljl9zzZ0t9jFM/I5eOtsTIB531WJh8Wf0UE58m0TSOpZOixziSFUyjcOCVeqN4Fyam7sr4TiYlRDS4E9k3Cwitwy7yVxLea1xMQFoFBZ3skwH/To/EjBikM29sPkmYzXqyxgaRCryU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=Qy+sQ3N6; arc=fail smtp.client-ip=40.107.22.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YL6Skve0"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-abf3d64849dso322258266b.3
-        for <imx@lists.linux.dev>; Fri, 28 Mar 2025 05:22:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743164524; x=1743769324; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Oc49DJIwJicv0xAMtGUpshz9Iya5BjyoHaAoKmn9GSM=;
-        b=YL6Skve0PSsWGTi5k1K7fMPfn+ys9+lsK4B/qLSLRsIU0VQbJNlWUyN+zwbDC25ckC
-         tdxgRx3So6virK1ZfKUvteB0MfGZTSdB50K88tMmJiUDehCtrfs5jYymn+7mmn/Yvawq
-         4W5X0tQ5Lgl1SUAlOKdFxgVxetWvD8Xy8Yjw/vZzHqOo/gIbThvuyN9giSZQ5eyBaES1
-         fErsAJCByKVCErMXX+V9r+riDUlE+PEPIXUio12sJB7LE0CmfExRej9zA+RuBWnqoNQB
-         WSihuU89LlwtPNaukabhwNgbObplrijA5Mjr/GlrPsL9z+loJBTi+HDfo86C9GV0YRYq
-         Ojpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743164524; x=1743769324;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oc49DJIwJicv0xAMtGUpshz9Iya5BjyoHaAoKmn9GSM=;
-        b=LSkRXmo0t/w7/6y9EjGd1+JVxag5LHKRhWHm8xoEvJQZ3mz9FEna4XvrmqDkjvxySC
-         7zMPZHdiIG19mni1pFru95/SE85TjHzBPHyQM7FBvm4yEogA3wpt+tayZXUcz3LjzqSH
-         wmtEexKjZ+ayZcUcFPOhkEKLkWM0nAxklvkWE8YSDbTnPRAd00N29omLpdqOTMB6cLBS
-         F6VU0odxfQuGxc0eiXxIrw7+JWFpuHPulTOsG79K01lQRKdgyv2kOWPL4oPR7foku8zi
-         JDkU2IVXeamRGmQDtWoLOwtL9uti9LnBa2tcD+AGg9kfWlM6ZkibWnoIaR/P/CJMtbP8
-         WlBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoxJyjjlLG/6qDoTSbjoLQ9s/gCTzhQekmlpdKEONgh6WQ1eM9SsFwtc7ODPn+Vup6ph0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy/pO6UjmoGbwn6S/+DI5622wAUIAzXROphBUxuS/I9101zPqj/
-	oXQ+7D0gHcR1KCAT5dW0JWpqdTGqpwXnmX1diX4zJpmmJb9JOVv2
-X-Gm-Gg: ASbGnctPyxIEZhQRzBpPoK/GkNm+GVMJz4NIQhng9MOHGLev1sJs5H9i0XO/BWEajbN
-	uUCwA59dHZg6HVQzDNf29/FZ6Qxhg58yyBn8c8mUx+QW0raEDcABm0bTTCCLRKhC07txM6mIQhI
-	FJtpp0oNnV4gKeHYFrkR1liI3v3NNzzPilN7Mi65L0mci2VxY7X6xbfASOW1gyzBMiEkVgMOaqT
-	uTqi8Wa81G753Q7Eq0+AZGFtLSdw290O8urgqSsj+hN/PVtM0KBxWwGfbMWCOXkdU65fBXO4x2P
-	CEx/6hWY4dr893mOyyQvcevNgc3+/dvngA3vh/kSCsnWmqbvpDKXRsoVWw1CmmhHdVvd
-X-Google-Smtp-Source: AGHT+IGJV2RjrsEGH4G9E7FfOU9np25O3dZ+J8l0SIo7Gdk10tVsJ6ybpUSbflQFjN7lriWVMh6dCQ==
-X-Received: by 2002:a17:907:7ea4:b0:ac3:2368:9a12 with SMTP id a640c23a62f3a-ac6faf024a2mr719727266b.27.1743164523493;
-        Fri, 28 Mar 2025 05:22:03 -0700 (PDT)
-Received: from [192.168.7.2] ([92.120.5.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71927b184sm159831966b.51.2025.03.28.05.22.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Mar 2025 05:22:03 -0700 (PDT)
-Message-ID: <2301b0f7-1a76-4823-8d3f-d346f8f8e865@gmail.com>
-Date: Fri, 28 Mar 2025 14:34:11 +0200
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="Qy+sQ3N6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PibHe14Xr3FF4nD6uBjdYl2IVBp1oUdPPzD20+7gspjGwAk2Ir0j6dyuFY0wN9PJyN58s8U3fun4SXsuK+jU+HF9YvkTPR4GkMpj1k07LMHeqaNWv2x87AfZXywxvQZvz4sVDEJqglFY8oMZuzUxLmFtv48chhoeEjOCG4diH2/g6texM47yTYQhos/pYCQW50EJUE2doEmGasz7v1eszj4PmtqBZD4tU54wSjz1PqMjUNOCcSxbM6G09EfkpoDzWc36LADqb2eVlJ6ge6+sN0yn0quGoXpAOed7OFmOPzIdWl7mfNkww/b1CUjUEjVEEXYLg1uBdSS2ZUDpn5aImw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ch+xJIhNT6llCQDR65BvcG+QgaGbGi3JSaEvxyGXn08=;
+ b=wvTRm+ZGLTbWaza1eE7pgis9bWKSOps2MG2345V3zc2Yjb/t5J5WYSBEAy62kY+4cKI7hEPUoamyw1DJ/KtpimPcipvp8Zm9Aa0WA0TbSWP1RwbP4CxZbN/gqOMHPnsAlOKhxIiBXFSCWDfFXHfmh7r9TLKsPtLpe6S7+SQNLfq6bsImLhHoOgUBe2oHMMjKd2ufEKcy04ogR6hn02Q5g974JX3ewmkrixTWdY9Emn4P1/Kh3iOdKd9RnOsmSh/yyMlsIf3HNRpGIdwe7U3yEze572SuyTi6iE4qrcr11kuu3k1xaUfr9OifAolKg5qe1RdrAuV8U32olv6L1L3TGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.26.50.189) smtp.rcpttodomain=pengutronix.de smtp.mailfrom=phytec.de;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=phytec.de; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ch+xJIhNT6llCQDR65BvcG+QgaGbGi3JSaEvxyGXn08=;
+ b=Qy+sQ3N6zygoSIQxK0ZeMek1FcgrznZY8XeRbXUu06jUx3pT/547H6PiI7IW1jCrrDre78TWNiWvo8KfFVSWCaKBb+1IpmHMADzO6uUDjI27K6EUfBqqQA0XKizGSP6DDEqNklxnKEdROC7Bo2Kvq5H0vDrNhQ3W4facyDwYtvYntGC9cBNVAwakIxDC5Rg5JS7IqFivrLydgIEVRG0PRY5Xeugx7Lj/D1SxK4kvDsYOWTRHZ3LV/lev5DqvK5Hb+BNfeN26Hk+tcrw3VHhmtKgn3ugUL8mU1w6b73OZjOqZ8it5ypWUFqLMDlEF2uDo6xxhEQV6MStV6ZfOTwqUzw==
+Received: from AS4P195CA0053.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:65a::9)
+ by AM9P195MB1346.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:3a5::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.46; Fri, 28 Mar
+ 2025 13:05:27 +0000
+Received: from AMS0EPF000001A4.eurprd05.prod.outlook.com
+ (2603:10a6:20b:65a:cafe::32) by AS4P195CA0053.outlook.office365.com
+ (2603:10a6:20b:65a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.44 via Frontend Transport; Fri,
+ 28 Mar 2025 13:05:27 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
+ smtp.mailfrom=phytec.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ phytec.de discourages use of 91.26.50.189 as permitted sender)
+Received: from Diagnostix.phytec.de (91.26.50.189) by
+ AMS0EPF000001A4.mail.protection.outlook.com (10.167.16.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8534.20 via Frontend Transport; Fri, 28 Mar 2025 13:05:27 +0000
+Received: from Florix.phytec.de (172.25.0.13) by Diagnostix.phytec.de
+ (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Fri, 28 Mar
+ 2025 14:05:27 +0100
+Received: from [127.0.1.1] (172.25.39.168) by Florix.phytec.de (172.25.0.13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Fri, 28 Mar
+ 2025 14:05:26 +0100
+From: Yannic Moog <y.moog@phytec.de>
+Subject: [PATCH 0/3] Add new imx imx8mp-libra-rdk-fpsc SBC
+Date: Fri, 28 Mar 2025 14:04:36 +0100
+Message-ID: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] dt-bindings: bus: add documentation for the IMX
- AIPSTZ bridge
-Content-Language: en-GB
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250324162556.30972-1-laurentiumihalcea111@gmail.com>
- <20250324162556.30972-2-laurentiumihalcea111@gmail.com>
- <20250325032303.GA1624882-robh@kernel.org>
-From: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20250325032303.GA1624882-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGSe5mcC/42NQQ6CMBBFr0K6dkxnBERX3sOw0HaAWUCbliCEc
+ HcLXsDle/n5b1WRg3BU92xVgSeJ4oYEeMqU6V5DyyA2sSJNORJq+IiHBXrnWvDdMrIBmzb9XPV
+ +F8YFhsZHA4auF01FWVFDKt35wI3MR+pZJ+4kji4sR3nC3e6RQiPm/0cmBA2F1mzfN2RT8uO3P
+ 1tW9bZtX8npie/gAAAA
+X-Change-ID: 20241210-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-c273025682f2
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <upstream@lists.phytec.de>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, Benjamin Hahn <b.hahn@phytec.de>,
+	"Jan Remmet" <j.remmet@phytec.de>, Teresa Remmet <t.remmet@phytec.de>,
+	"Yashwanth Varakala" <y.varakala@phytec.de>, Yannic Moog <y.moog@phytec.de>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: Diagnostix.phytec.de (172.25.0.14) To Florix.phytec.de
+ (172.25.0.13)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A4:EE_|AM9P195MB1346:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2f8babc-84c4-4e62-beda-08dd6df935ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?blo1Q3c3QnZWalFLV0E3dkZKOHNFWFRGZzF5aHNESHVRWFNRMmI0Zk8yTEJi?=
+ =?utf-8?B?TGk0VmRyamVXSmljWXk1V3RnVmIzNTN3czV2bmxScHNGT3E2eE16aVc5TXMz?=
+ =?utf-8?B?U3hpbGVuSndLa1lmbWxYWUIwakVaNTN6R3duaEplK1hYd3J0VE5hb09zaE9W?=
+ =?utf-8?B?V0p5N2JaMkNHNlNDQkwyb2NrcnVVSGU5Sm1MT1FmL0lDb0FHaDlPaWdsZ0VI?=
+ =?utf-8?B?SWcwa2NNQUVsQ3lmL3FHbTUxNFZ1emZENnFUZWNWakZRQ0xvMVJLQWRqTzUz?=
+ =?utf-8?B?Y2dFaGsxajB5SnlmeHBCNUhYODBPSi9jRWxkSkxaQnJGR3dsQnZzdVlGenVR?=
+ =?utf-8?B?cnhYOXpCTWJob2ZlY0hKVTBkQ2NiSllieE1jdmVnTUVlVU1naENqeFZBaG5X?=
+ =?utf-8?B?UFkzdjNnQ0V1SEMyTXY1V2xndEEvL3BjWmRSRWVtMFVtdlVrUTFqL293c2h5?=
+ =?utf-8?B?eU5ud0tobXlvMUV1QUQ1dHZHOFErSi9iYnlSeUpJMWFMZ0pvaVEyTW9kVzRN?=
+ =?utf-8?B?YlFKWkk4NGdmYkRiMUN6NURYNFV2NWxsWUtzZURJUVZDZHBxbUUyVjN6V2Vo?=
+ =?utf-8?B?cGIrY0lhVGUrRFZRUzhUcG1iUFZTUkx2WEltK0Z3TklERG8xaTR5MlE1ZnF5?=
+ =?utf-8?B?Q2psbXYyRDBaZnBOYXo3RXFmM09FSlJKNzRYRUVFeU96azdYVk9uajBTKzgw?=
+ =?utf-8?B?Rktad1JNTDBiSGRlUytOaS8xYmVFdTdQdzVVa01SU24zTlNOL0orRW9XNnVG?=
+ =?utf-8?B?Z29rV1NHQ3ArZldJYUNtc0ZVOWM5K1N2V210QUlJZTFYUEE5MklyV0xoemgy?=
+ =?utf-8?B?TkRyNU5GWUJiVXZTemUzRlJYZkRHcUZkNXN3SjhKUFlPMm9lUDFtMytKbEFi?=
+ =?utf-8?B?b2J6NU44N1RoaHdMZWxtWmNwQi9aMGpWUzFZalBob0NoYTN3MU16eWh2S0dN?=
+ =?utf-8?B?ZjY1ajNSLzVORllWMG1ua1R6UlRiYU1jUGhXSmtNc3dtTThjNlZUVitMellX?=
+ =?utf-8?B?V21BZEFacmF3L0VxZVZBZEMyMDErVHkrZ0N6OUVIVzNkbHRwQnhHT2lXdkRZ?=
+ =?utf-8?B?QzJVRzk1ZjFUMmppWlB0MTI4SXVWU1hJbUt2TklvbmQ2ZFpOU3ZiRjNVTnBS?=
+ =?utf-8?B?aEpIWTZZTjd3b3lERHBLeUh1ZTkyRXRkelMvZlZKTE85NG15TEVMb0pEY2tX?=
+ =?utf-8?B?QlFoV2x4RTVXa2lYVExiY3ZHakVGSCt1UGxySzIva3I5SGtIQmVzMy85d21N?=
+ =?utf-8?B?bUhoaTBFamZGcVBKVS9MZ3M1SlBvcUpWb1U5OEhoRVJlUE8wNmlLUkVsbVJa?=
+ =?utf-8?B?TXpibldCUnBsblAzT0dBQXgyOCtlb3NzTHpkRlozWGkwcVNDRHNtdmRsYUdu?=
+ =?utf-8?B?OG40VmdXOXFoMG45Vk1WaDVEeW5KUmJUNE5SWW5HY0tMV0tBTnlmYkNWRXlF?=
+ =?utf-8?B?aHdxazVFU0FWRy9xWTNvZDJRVFZyTmlQYVIrQnZwUkdWbHU2cUxVVEUrK3FS?=
+ =?utf-8?B?ZzRBNEY0dmhmQWZ4VEphWU5LcDR4VjdHbkZ6cGRMSFFLL2xJWituS0oyZEZ0?=
+ =?utf-8?B?aHo0ZlJWSGdYM2NQaTVaOUd4N09JTWdOeXdWOE9mQk9QUnJBZDUybkROL3hJ?=
+ =?utf-8?B?b081bEhRZGxVYXRxb0FLeVh1SWJGbkhTd205U3U4VDRwYW5Hb2l5UTFVSG1r?=
+ =?utf-8?B?eWduM0pZSkp3VjFLbGs5Wkhqb2xaU1p4YnUva2VqTEtGeWpjL3JyMWpxUTd5?=
+ =?utf-8?B?SWtLK0JkUHdubzFlWkZEYzM2VGlOakZUcWh1L0pRb1NMVnZ0Q29EeElsby9n?=
+ =?utf-8?B?SHZSa3BnanI3MExuV1JrUkN2M04rTWlyNisxd1QwbkgrU3Z0ZGg4My9KUjZR?=
+ =?utf-8?B?SzJKbU5GRC9iQ2RVcDJUcVgzNmVYZjdUNjVYNmZBWUhZVExFK3dhQVNWT01Y?=
+ =?utf-8?B?QzcrckljYXQrTlZrZERvcHdIbGVJSExyNmJuT0x5OGFFZnl0YnBWNmNZS2JH?=
+ =?utf-8?B?OE9Ea1ZNZGJ3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:Diagnostix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024);DIR:OUT;SFP:1102;
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2025 13:05:27.5289
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2f8babc-84c4-4e62-beda-08dd6df935ee
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Diagnostix.phytec.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001A4.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P195MB1346
 
+The Libra i.MX 8M Plus is a SBC that consists of the Libra base board
+and the phyCORE i.MX 8M Plus FPSC SoM.
+This series adds its binding and device trees.
+In addition add an overlay for an LVDS display that may optionally be
+connected to the Libra board.
 
-On 25.03.2025 05:23, Rob Herring wrote:
-> On Mon, Mar 24, 2025 at 12:25:52PM -0400, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> Add documentation for IMX AIPSTZ bridge.
->>
->> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
->> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 107 ++++++++++++++++++
->>  1 file changed, 107 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
->> new file mode 100644
->> index 000000000000..c0427dfcdaca
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
->> @@ -0,0 +1,107 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Secure AHB to IP Slave bus (AIPSTZ) bridge
->> +
->> +description:
->> +  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
->> +  issuing transactions to IP Slave peripherals. Additionally, this module
->> +  offers access control configurations meant to restrict which peripherals
->> +  a master can access.
-> Wrap at 80 chars.
+---
+Yannic Moog (3):
+      dt-bindings: add imx8mp-libra-rdk-fpsc
+      arm64: dts: add imx8mp-libra-rdk-fpsc board
+      arm64: dts: add imx8mp-libra-rdk-fpsc LVDS panel overlay
 
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   7 +
+ arch/arm64/boot/dts/freescale/Makefile             |   3 +
+ .../imx8mp-libra-rdk-fpsc-lvds-etml1010g3dra.dtso  |  44 ++
+ .../boot/dts/freescale/imx8mp-libra-rdk-fpsc.dts   | 291 ++++++++
+ .../boot/dts/freescale/imx8mp-phycore-fpsc.dtsi    | 796 +++++++++++++++++++++
+ 5 files changed, 1141 insertions(+)
+---
+base-commit: 90453dc4dee29b96b9162895f45776bc25526e07
+change-id: 20241210-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-c273025682f2
 
-fix in v4, thx
+Best regards,
+-- 
+Yannic Moog <y.moog@phytec.de>
 
-
->
->> +
->> +maintainers:
->> +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> +
->> +properties:
->> +  compatible:
->> +    const: fsl,imx8mp-aipstz
->> +
->> +  reg:
->> +    maxItems: 2
->> +
->> +  reg-names:
->> +    items:
->> +      - const: bus
->> +      - const: ac
->> +
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +  "#address-cells":
->> +    const: 1
->> +
->> +  "#size-cells":
->> +    const: 1
->> +
->> +  "#access-controller-cells":
->> +    const: 0
-> With 0 cells, how do you identify which device it is?
-
-
-we don't atm. We're relying on the default configuration.
-
-
-we don't have any APIs for AC configuration so I left the
-
-cell number to 0 thinking that the cell number might depend
-
-on the API.
-
-
-if need be, I can set it to the value I was initially thinking of in v4.
-
-
->
->> +
->> +  ranges: true
->> +
->> +# borrowed from simple-bus.yaml, no additional requirements for children
->> +patternProperties:
->> +  "@(0|[1-9a-f][0-9a-f]*)$":
->> +    type: object
->> +    additionalProperties: true
->> +    properties:
->> +      reg:
->> +        items:
->> +          minItems: 2
->> +          maxItems: 4
->> +        minItems: 1
->> +        maxItems: 1024
->> +      ranges:
->> +        oneOf:
->> +          - items:
->> +              minItems: 3
->> +              maxItems: 7
->> +            minItems: 1
->> +            maxItems: 1024
->> +          - $ref: /schemas/types.yaml#/definitions/flag
->> +    anyOf:
->> +      - required:
->> +          - reg
->> +      - required:
->> +          - ranges
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - reg-names
->> +  - power-domains
->> +  - "#address-cells"
->> +  - "#size-cells"
->> +  - "#access-controller-cells"
->> +  - ranges
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/clock/imx8mp-clock.h>
->> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->> +
->> +    bus@30c00000 {
->> +        compatible = "fsl,imx8mp-aipstz";
->> +        reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
-> It doesn't look like you have any registers in the 1st entry, but they 
-> are child devices? Then you should use ranges and drop it here:
->
-> ranges = <0x0 0x30c00000 0x400000>;
-
-
-I guess this would mean switching from global addresses (current way) to
-
-bus-relative addresses for the child devices. This wasn't my intent.
-
-
-I wonder if we could just switch to V2 in which we just use the bridge's AC
-
-configuration space and an empty 'ranges':
-
-
-aips5: bus@30df0000 {
-
-    compatible = "fsl,imx8mp-aipstz";
-
-    reg = <0x30df0000 0x10000>;
-
-    /* some more properties here */
-
-    ranges;
-
-};
-
-
-or as Marco just suggested use
-
-
-ranges = <0x30c00000 0x30c00000 0x400000>;
-
-
-instead of an empty 'ranges' to restrict the bus size.
-
-
-Personally, I'm fine with both approaches but what's your opinion on this?
-
-
->
->
->> +        reg-names = "bus", "ac";
->> +        power-domains = <&pgc_audio>;
->> +        #address-cells = <1>;
->> +        #size-cells = <1>;
->> +        #access-controller-cells = <0>;
->> +        ranges;
->> +
->> +        dma-controller@30e00000 {
->> +            compatible = "fsl,imx8mp-sdma", "fsl,imx8mq-sdma";
->> +            reg = <0x30e00000 0x10000>;
->> +            #dma-cells = <3>;
->> +            clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SDMA3_ROOT>,
->> +                     <&clk IMX8MP_CLK_AUDIO_ROOT>;
->> +            clock-names = "ipg", "ahb";
->> +            interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
->> +            fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
-> No 'access-controllers' here?
-
-
-no need for that unless the child wants to request a specific AC
-
-configuration for itself.
-
-
->
->> +        };
->> +    };
->> -- 
->> 2.34.1
->>
