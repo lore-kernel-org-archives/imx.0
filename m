@@ -1,99 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B914F801;
-	Sat, 29 Mar 2025 01:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F64F17B50F
+	for <imx@lists.linux.dev>; Sat, 29 Mar 2025 10:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.241.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743212223; cv=none; b=LsNr3MW9V1Nd/eU8LoFCuX950dz+iRLB5jnE7HBwlq9nq6kixLAitOVmAvN94xA+Ey7uK+9UkVDqGQPJZRjMLjP3YT3v7T9hicBlQktJwocNql5XwvKdGD6CBjgq4ev7lC880/IzdOoCMMTWg/Exm6jQmCE1CmcUfrFiIepY2iU=
+	t=1743242556; cv=none; b=dnvqJILRjfr/Pn2y5Zcl4wJleJzuA6vuUdlqBlVFU/wajfqru3ZmsNuFoNkjB+9+lEDS/yt1r4HYRw4j6+LbEP5HmemsOhX42kodJSZGbBYMNjZZPVFuwoOyWiz9cF3B86iDvna8xY0Dvf0R2kzUbvSChT/X/Dz11lXxASDMNd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743212223; c=relaxed/simple;
-	bh=o5gMyn/mlm4eQI/Dl0X9AbYok0h90x/eTaw9nzXxVOE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=jBy9MimD4Shw/othgHQKTGNFeFn0GdaTOAZOWQHlhMPO6HjSuyHH/318YhCn/3T8YPJ6CK4+tkdWKUW/kZ0I2ISbJFQdCsA+uX45539qkHpYgcX3LSv9O5gC/4kuCB6XzmTUrouxVMZL6223eD9uPck8StrDAtheicRJKt15+hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxBdoQmZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743242556; c=relaxed/simple;
+	bh=dH9+6RQdoDLhFzbAWFEt6un7a5fTJ8/Aw42J7tuTQSc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nZtu68pRn8kI6yGheEkGmPV2YJxw8rFY20DD3S9ac1cF/J3reyEUlLfwrTUGN+gm3pEAidoiBzXtZQbVYCRVgoHvXJLJCLE1QLZqDIJNBuRdduDUF4S6WtAPr/S3VQ0OO6K3fdP28OC6Hc95kCXWYCHFTJVTuNPSA236F3Y12DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=rwwxVMWs; arc=none smtp.client-ip=84.16.241.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxBdoQmZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6478C4CEE4;
-	Sat, 29 Mar 2025 01:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743212223;
-	bh=o5gMyn/mlm4eQI/Dl0X9AbYok0h90x/eTaw9nzXxVOE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=NxBdoQmZGTDH1AlPECrbDPD9Q2HdKGVHCD+APkAyVEB0q3uQbazXzYky6Uk/oQhz/
-	 pdOGfSrTaKOgAc4VcVRZfAEeiI1qeZe5rcQqtMxARHt39JOCgb5oXdNc/2+oIqllVj
-	 kPhKxEbmrxXvFX44pgNw4bTya/KBOWJsy0KjRBDxKq1Dz1p8lF3wAnWKakTdKgv4h0
-	 WsD3vYjVelPUch+0ShOmeqVCeu6YY4m3tH0m3xXswnSorSpmpTv4rSzOOME1zfSw61
-	 mcWfEv4Lhqbm3mkPpViVSSVrKEeRZWdoBKOdvvFdV+du49Rm3Q6ucakKlxEwxFgCHs
-	 0O//k268HPjvw==
-Date: Fri, 28 Mar 2025 20:37:02 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="rwwxVMWs"
+Received: from [192.168.90.187] (unknown [94.110.49.146])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sander@svanheule.net)
+	by polaris.svanheule.net (Postfix) with ESMTPSA id B3CA15DACBF;
+	Sat, 29 Mar 2025 10:53:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
+	s=mail1707; t=1743242026;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dH9+6RQdoDLhFzbAWFEt6un7a5fTJ8/Aw42J7tuTQSc=;
+	b=rwwxVMWs4hmFUXR5Td3TjP/acvp3cAlIDH0WpWA3tkqqv42r4ZU2uzI+Dr6NRRnaj1VyWq
+	YwQR+xbW0wQSsvZosFiVGmjRy2nhd6qBObzIqS67Wxefh8OC8WU8ptWfvzKnxOtoFlevj2
+	ka1d+rX8A8qDhkJOAty9gQUkKorj6txt8Ueq/WryT0xIHhPEunesc1MvNdSWtgHzpXo7e4
+	dnewaHqKAPgTeDxcfjAXVudN8K87bSuCfGxKE3nxk5zQtfDJHOfXRruuKO3IDSpaC6gtj6
+	OA9GO7oUv7v5Q84NRb5lYQJHYmneUNWPdixJ09rcyHD2BZMfa7NhU3C/hYsIdw==
+Message-ID: <27075369f1d53f840965a09601e10b130f622d16.camel@svanheule.net>
+Subject: Re: [PATCH] dt-bindings: gpio: Correct indentation and style in DTS
+ example
+From: Sander Vanheule <sander@svanheule.net>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Linus Walleij	
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Rob
+ Herring	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley	 <conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+  Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Shawn Guo	 <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Paul Walmsley	
+ <paul.walmsley@sifive.com>, Samuel Holland <samuel.holland@sifive.com>, 
+ Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, Shubhrajyoti Datta
+ <shubhrajyoti.datta@amd.com>, Srinivas Neeli	 <srinivas.neeli@amd.com>,
+ Michal Simek <michal.simek@amd.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Manikandan
+ Muralidharan	 <manikandan.m@microchip.com>, Maxime Ripard
+ <mripard@kernel.org>, Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Bert Vermeulen
+ <bert@biot.com>, 	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org
+Date: Sat, 29 Mar 2025 10:53:45 +0100
+In-Reply-To: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+References: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: davem@davemloft.net, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, netdev@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Fabio Estevam <festevam@gmail.com>, 
- Eric Dumazet <edumazet@google.com>, linux-arm-kernel@lists.infradead.org, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Lukasz Majewski <lukma@denx.de>
-In-Reply-To: <20250328133544.4149716-2-lukma@denx.de>
-References: <20250328133544.4149716-1-lukma@denx.de>
- <20250328133544.4149716-2-lukma@denx.de>
-Message-Id: <174321222112.2172775.16689010014876150131.robh@kernel.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch
- description
 
+Hi Krysztof,
 
-On Fri, 28 Mar 2025 14:35:41 +0100, Lukasz Majewski wrote:
-> This patch provides description of the MTIP L2 switch available in some
-> NXP's SOCs - e.g. imx287.
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+On Mon, 2025-03-24 at 13:53 +0100, Krzysztof Kozlowski wrote:
+> DTS example in the bindings should be indented with 2- or 4-spaces and
+> aligned with opening '- |', so correct any differences like 3-spaces or
+> mixtures 2- and 4-spaces in one binding.=C2=A0 While re-indenting, drop
+> unused labels.
+>=20
+> No functional changes here, but saves some comments during reviews of
+> new patches built on existing code.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
-> Changes for v2:
-> - Rename the file to match exactly the compatible
->   (nxp,imx287-mtip-switch)
-> ---
->  .../bindings/net/nxp,imx287-mtip-switch.yaml  | 165 ++++++++++++++++++
->  1 file changed, 165 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
-> 
+> =C2=A0.../bindings/gpio/atmel,at91rm9200-gpio.yaml=C2=A0 | 16 ++---
+> =C2=A0.../bindings/gpio/fairchild,74hc595.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 20 +++---
+> =C2=A0.../devicetree/bindings/gpio/gpio-mxs.yaml=C2=A0=C2=A0=C2=A0 | 70 +=
+++++++++----------
+> =C2=A0.../devicetree/bindings/gpio/nxp,pcf8575.yaml | 24 +++----
+> =C2=A0.../bindings/gpio/realtek,otto-gpio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 8 +--
+> =C2=A0.../bindings/gpio/renesas,em-gio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 20 +++---
+> =C2=A0.../bindings/gpio/renesas,rcar-gpio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 | 24 +++----
+> =C2=A0.../devicetree/bindings/gpio/sifive,gpio.yaml |=C2=A0 6 +-
+> =C2=A0.../bindings/gpio/toshiba,gpio-visconti.yaml=C2=A0 | 24 +++----
+> =C2=A0.../bindings/gpio/xlnx,gpio-xilinx.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 48 ++++++-------
+> =C2=A010 files changed, 130 insertions(+), 130 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yam=
+l
+> b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
+> index 39fd959c45d2..728099c65824 100644
+> --- a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
+> @@ -81,7 +81,7 @@ dependencies:
+> =C2=A0
+> =C2=A0examples:
+> =C2=A0=C2=A0 - |
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio@3500 {
+> +=C2=A0=C2=A0=C2=A0 gpio@3500 {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "realtek,=
+rtl8380-gpio", "realtek,otto-gpio";
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x3500 0x1c>;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio-controller;
+> @@ -91,9 +91,9 @@ examples:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #interrupt-cells =3D <2>=
+;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&r=
+tlintc>;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <23>;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> +=C2=A0=C2=A0=C2=A0 };
+> =C2=A0=C2=A0 - |
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio@3300 {
+> +=C2=A0=C2=A0=C2=A0 gpio@3300 {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "realtek,=
+rtl9300-gpio", "realtek,otto-gpio";
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x3300 0x1c>, <=
+0x3338 0x8>;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio-controller;
+> @@ -103,6 +103,6 @@ examples:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #interrupt-cells =3D <2>=
+;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&r=
+tlintc>;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <13>;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> +=C2=A0=C2=A0=C2=A0 };
+> =C2=A0
+> =C2=A0...
 
-My bot found errors running 'make dt_binding_check' on your patch:
+FWIW
 
-yamllint warnings/errors:
+Reviewed-by: Sander Vanheule <sander@svanheule.net>
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.example.dtb: /example-0/switch@800f0000: failed to match any schema with compatible: ['nxp,imx287-mtip-switch']
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.example.dtb: ethernet-phy@0: interrupts: [[13], [2]] is too long
-	from schema $id: http://devicetree.org/schemas/net/ethernet-phy.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.example.dtb: ethernet-phy@1: interrupts: [[13], [2]] is too long
-	from schema $id: http://devicetree.org/schemas/net/ethernet-phy.yaml#
+Thanks!
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250328133544.4149716-2-lukma@denx.de
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Best,
+Sander
 
