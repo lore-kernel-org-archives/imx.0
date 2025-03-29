@@ -1,157 +1,243 @@
-Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F64F17B50F
-	for <imx@lists.linux.dev>; Sat, 29 Mar 2025 10:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.241.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A89B134B0;
+	Sat, 29 Mar 2025 17:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743242556; cv=none; b=dnvqJILRjfr/Pn2y5Zcl4wJleJzuA6vuUdlqBlVFU/wajfqru3ZmsNuFoNkjB+9+lEDS/yt1r4HYRw4j6+LbEP5HmemsOhX42kodJSZGbBYMNjZZPVFuwoOyWiz9cF3B86iDvna8xY0Dvf0R2kzUbvSChT/X/Dz11lXxASDMNd4=
+	t=1743268178; cv=none; b=N8hhCqRPnCTCVXXIoiXA4o4/9lTAoO8tluJA/mltEXDLdE/Y0xCI0gzqdk9zreFQFPRgF2ept2ivOLofsmY35Ls61claYUzW+IhBIiOnDrkpr3ZP5vrZUao2GRtgSNkURdvNQo5o40gz1Jdyl2qK9Mkzdk7XTfDhov4dgwf+2fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743242556; c=relaxed/simple;
-	bh=dH9+6RQdoDLhFzbAWFEt6un7a5fTJ8/Aw42J7tuTQSc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nZtu68pRn8kI6yGheEkGmPV2YJxw8rFY20DD3S9ac1cF/J3reyEUlLfwrTUGN+gm3pEAidoiBzXtZQbVYCRVgoHvXJLJCLE1QLZqDIJNBuRdduDUF4S6WtAPr/S3VQ0OO6K3fdP28OC6Hc95kCXWYCHFTJVTuNPSA236F3Y12DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=rwwxVMWs; arc=none smtp.client-ip=84.16.241.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
+	s=arc-20240116; t=1743268178; c=relaxed/simple;
+	bh=Yrw919Z8v9sEOEODycWBG0VcN6JIS2JIx7r8X2SNbqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Afm+7GbCCdgHg55C6hYkxuQ0KHWDT6cOvF4lK9maGgKi6SaqoCtwBcguUmuuTvZ9GMHVe7OPhQXXgvvA5RwbUyW4FxyhbB1rt7mU6Hb9LssYGy8M8KIRTqau1eFcYuH4BywjEWdS+O5qjuSI9tzJQga2xRJ1XKCHjRIOlEgjz0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2e1lVzE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="rwwxVMWs"
-Received: from [192.168.90.187] (unknown [94.110.49.146])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sander@svanheule.net)
-	by polaris.svanheule.net (Postfix) with ESMTPSA id B3CA15DACBF;
-	Sat, 29 Mar 2025 10:53:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
-	s=mail1707; t=1743242026;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dH9+6RQdoDLhFzbAWFEt6un7a5fTJ8/Aw42J7tuTQSc=;
-	b=rwwxVMWs4hmFUXR5Td3TjP/acvp3cAlIDH0WpWA3tkqqv42r4ZU2uzI+Dr6NRRnaj1VyWq
-	YwQR+xbW0wQSsvZosFiVGmjRy2nhd6qBObzIqS67Wxefh8OC8WU8ptWfvzKnxOtoFlevj2
-	ka1d+rX8A8qDhkJOAty9gQUkKorj6txt8Ueq/WryT0xIHhPEunesc1MvNdSWtgHzpXo7e4
-	dnewaHqKAPgTeDxcfjAXVudN8K87bSuCfGxKE3nxk5zQtfDJHOfXRruuKO3IDSpaC6gtj6
-	OA9GO7oUv7v5Q84NRb5lYQJHYmneUNWPdixJ09rcyHD2BZMfa7NhU3C/hYsIdw==
-Message-ID: <27075369f1d53f840965a09601e10b130f622d16.camel@svanheule.net>
-Subject: Re: [PATCH] dt-bindings: gpio: Correct indentation and style in DTS
- example
-From: Sander Vanheule <sander@svanheule.net>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Linus Walleij	
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Rob
- Herring	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley	 <conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
-  Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Shawn Guo	 <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Paul Walmsley	
- <paul.walmsley@sifive.com>, Samuel Holland <samuel.holland@sifive.com>, 
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, Shubhrajyoti Datta
- <shubhrajyoti.datta@amd.com>, Srinivas Neeli	 <srinivas.neeli@amd.com>,
- Michal Simek <michal.simek@amd.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Manikandan
- Muralidharan	 <manikandan.m@microchip.com>, Maxime Ripard
- <mripard@kernel.org>, Laurent Pinchart
- <laurent.pinchart+renesas@ideasonboard.com>, Bert Vermeulen
- <bert@biot.com>, 	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org
-Date: Sat, 29 Mar 2025 10:53:45 +0100
-In-Reply-To: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
-References: <20250324125326.82270-1-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2e1lVzE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620FFC4CEE2;
+	Sat, 29 Mar 2025 17:09:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743268177;
+	bh=Yrw919Z8v9sEOEODycWBG0VcN6JIS2JIx7r8X2SNbqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R2e1lVzEIvqf8lTsrBOSozuxtbCArwAs8UQRY23wwkrO922x4WOT97/YmYE1kBx1h
+	 hrVMXalk0q6ylxGuY63GwGj7vkUCTafxVvG+KXeW0+LpkmXoXfAPjdw+ZqHFaFbS/m
+	 p0km9gIq2073Orqk0UMuOroc/9WQi1mZFq8RtD1mPY76N3y4LD4uk1PUmOGCIMGkoS
+	 U/bt8VATBZu9+hSBrfVxZ0zG9WASaNewvAakSIzZ13y2Dzu1j5r4WEwL1gdY7Asa1y
+	 Xe/km4URkWd6FU13FL6jv4jaXkN5+sKt5bUpMlooiEHVVLugz7mmuJ7G1vnvOMnLbS
+	 xUONiztU+GCmA==
+Date: Sat, 29 Mar 2025 12:09:36 -0500
+From: Rob Herring <robh@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
+Message-ID: <20250329170936.GA2246988-robh@kernel.org>
+References: <20250328133544.4149716-1-lukma@denx.de>
+ <20250328133544.4149716-2-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250328133544.4149716-2-lukma@denx.de>
 
-Hi Krysztof,
-
-On Mon, 2025-03-24 at 13:53 +0100, Krzysztof Kozlowski wrote:
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.=C2=A0 While re-indenting, drop
-> unused labels.
->=20
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Fri, Mar 28, 2025 at 02:35:41PM +0100, Lukasz Majewski wrote:
+> This patch provides description of the MTIP L2 switch available in some
+> NXP's SOCs - e.g. imx287.
+> 
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 > ---
-> =C2=A0.../bindings/gpio/atmel,at91rm9200-gpio.yaml=C2=A0 | 16 ++---
-> =C2=A0.../bindings/gpio/fairchild,74hc595.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 20 +++---
-> =C2=A0.../devicetree/bindings/gpio/gpio-mxs.yaml=C2=A0=C2=A0=C2=A0 | 70 +=
-++++++++----------
-> =C2=A0.../devicetree/bindings/gpio/nxp,pcf8575.yaml | 24 +++----
-> =C2=A0.../bindings/gpio/realtek,otto-gpio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 8 +--
-> =C2=A0.../bindings/gpio/renesas,em-gio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 20 +++---
-> =C2=A0.../bindings/gpio/renesas,rcar-gpio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 24 +++----
-> =C2=A0.../devicetree/bindings/gpio/sifive,gpio.yaml |=C2=A0 6 +-
-> =C2=A0.../bindings/gpio/toshiba,gpio-visconti.yaml=C2=A0 | 24 +++----
-> =C2=A0.../bindings/gpio/xlnx,gpio-xilinx.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 48 ++++++-------
-> =C2=A010 files changed, 130 insertions(+), 130 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yam=
-l
-> b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> index 39fd959c45d2..728099c65824 100644
-> --- a/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/realtek,otto-gpio.yaml
-> @@ -81,7 +81,7 @@ dependencies:
-> =C2=A0
-> =C2=A0examples:
-> =C2=A0=C2=A0 - |
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio@3500 {
-> +=C2=A0=C2=A0=C2=A0 gpio@3500 {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "realtek,=
-rtl8380-gpio", "realtek,otto-gpio";
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x3500 0x1c>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio-controller;
-> @@ -91,9 +91,9 @@ examples:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #interrupt-cells =3D <2>=
-;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&r=
-tlintc>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <23>;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> +=C2=A0=C2=A0=C2=A0 };
-> =C2=A0=C2=A0 - |
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio@3300 {
-> +=C2=A0=C2=A0=C2=A0 gpio@3300 {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "realtek,=
-rtl9300-gpio", "realtek,otto-gpio";
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x3300 0x1c>, <=
-0x3338 0x8>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpio-controller;
-> @@ -103,6 +103,6 @@ examples:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #interrupt-cells =3D <2>=
-;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&r=
-tlintc>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <13>;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> +=C2=A0=C2=A0=C2=A0 };
-> =C2=A0
-> =C2=A0...
+> Changes for v2:
+> - Rename the file to match exactly the compatible
+>   (nxp,imx287-mtip-switch)
+> ---
+>  .../bindings/net/nxp,imx287-mtip-switch.yaml  | 165 ++++++++++++++++++
+>  1 file changed, 165 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> new file mode 100644
+> index 000000000000..a3e0fe7783ec
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+> @@ -0,0 +1,165 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/nxp,imx287-mtip-switch.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
+> +
+> +maintainers:
+> +  - Lukasz Majewski <lukma@denx.de>
+> +
+> +description:
+> +  The 2-port switch ethernet subsystem provides ethernet packet (L2)
+> +  communication and can be configured as an ethernet switch. It provides the
+> +  reduced media independent interface (RMII), the management data input
+> +  output (MDIO) for physical layer device (PHY) management.
+> +
+> +properties:
+> +  compatible:
+> +    const: nxp,imx287-mtip--switch
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description:
+> +      The physical base address and size of the MTIP L2 SW module IO range
+> +
+> +  phy-supply:
+> +    description:
+> +      Regulator that powers Ethernet PHYs.
+> +
+> +  clocks:
+> +    items:
+> +      - description: Register accessing clock
+> +      - description: Bus access clock
+> +      - description: Output clock for external device - e.g. PHY source clock
+> +      - description: IEEE1588 timer clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ipg
+> +      - const: ahb
+> +      - const: enet_out
+> +      - const: ptp
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Switch interrupt
+> +      - description: ENET0 interrupt
+> +      - description: ENET1 interrupt
+> +
+> +  pinctrl-names: true
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^port@[0-9]+$":
+> +        type: object
+> +        description: MTIP L2 switch external ports
+> +
+> +        $ref: ethernet-controller.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          reg:
+> +            items:
+> +              - enum: [1, 2]
+> +            description: MTIP L2 switch port number
+> +
+> +          label:
+> +            description: Label associated with this port
+> +
+> +        required:
+> +          - reg
+> +          - label
+> +          - phy-mode
+> +          - phy-handle
+> +
+> +  mdio:
+> +    type: object
+> +    $ref: mdio.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      Specifies the mdio bus in the switch, used as a container for phy nodes.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - mdio
+> +  - ethernet-ports
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include<dt-bindings/interrupt-controller/irq.h>
+> +    switch@800f0000 {
+> +        compatible = "nxp,imx287-mtip-switch";
+> +        reg = <0x800f0000 0x20000>;
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
+> +        phy-supply = <&reg_fec_3v3>;
+> +        interrupts = <100>, <101>, <102>;
+> +        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> +        clock-names = "ipg", "ahb", "enet_out", "ptp";
+> +        status = "okay";
+> +
+> +        ethernet-ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                mtip_port1: port@1 {
+> +                        reg = <1>;
+> +                        label = "lan0";
+> +                        local-mac-address = [ 00 00 00 00 00 00 ];
+> +                        phy-mode = "rmii";
+> +                        phy-handle = <&ethphy0>;
+> +                };
+> +
+> +                mtip_port2: port@2 {
+> +                        reg = <2>;
+> +                        label = "lan1";
+> +                        local-mac-address = [ 00 00 00 00 00 00 ];
+> +                        phy-mode = "rmii";
+> +                        phy-handle = <&ethphy1>;
+> +                };
+> +        };
+> +
+> +        mdio_sw: mdio {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                reset-gpios = <&gpio2 13 0>;
+> +                reset-delay-us = <25000>;
+> +                reset-post-delay-us = <10000>;
+> +
+> +                ethphy0: ethernet-phy@0 {
+> +                        reg = <0>;
+> +                        smsc,disable-energy-detect;
 
-FWIW
+With a custom property, you should have a specific compatible.
 
-Reviewed-by: Sander Vanheule <sander@svanheule.net>
+> +                        /* Both PHYs (i.e. 0,1) have the same, single GPIO, */
+> +                        /* line to handle both, their interrupts (AND'ed) */
+> +                        interrupt-parent = <&gpio4>;
+> +                        interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
 
-Thanks!
+The error report is because the examples have to guess the number of 
+provider interrupt cells and only 1 guess is supported. It guessed 1 
+from above.
 
-Best,
-Sander
+In any case, unless the phys are built-in and fixed, they are out of 
+scope of this binding. So perhaps drop the interrupts and smsc property.
 
+Rob
