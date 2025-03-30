@@ -1,115 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63400BE67;
-	Sun, 30 Mar 2025 00:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9BD3232
+	for <imx@lists.linux.dev>; Sun, 30 Mar 2025 06:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743294425; cv=none; b=TxG4otbOv1PvI5NW3VfZxKoI8eKcoXNZE5NHStATYyDn3U9MYLcj8HL1EnCMtZNqrFxuPToGaBjv+Gi46g/qgc6KIL1bBEjN9tamfiLZPMBY0JgGEIg8/wlEEzJNoSOeZiHucmvlVZbAElNo8hcWiTGPobH/baRyyw3SS8GQfRk=
+	t=1743316630; cv=none; b=DM6WItTOvYTcfU+wKaiilBaF7Dcg8Cfq9Mgs+mijd7qpT+zCaT3a4z6pTD9p6BZSyiQjIcLHYTii3mCjg4wU5xFCSydYdJ41TZY7KJl7vm6NRyU50MUz/kDT5fKLVBgczBucPF1jIlC3/uxt5AkY5g7UtG19ngfzS3odk7dR0+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743294425; c=relaxed/simple;
-	bh=aiiKdFDmCS0U9MUvBKmwJ6wtLAwgtVEXAZWbVJ4delE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=gFwv/teIznrJ4S9ZbMlf7U08ifmcWC0YcFuvSbJWzSV5RVMR8X1xGOtz7BpCm1jyd6+4Y6qw3God/nYBjXal6M//uzh/usJS355w8Mznd1riqizaPEYG0/ajMVdQPQJbDrkAYAk/lXOfvgsjDzeUlfEQ4kD6Az9n7bkOLz7CYSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YdWoEnL7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743316630; c=relaxed/simple;
+	bh=tSyQjbNInGuPtLhkd6iM6BZo/rKoG+GMc8//uk8Y6FY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uQ0c3SSZCGqd95Ylf5mPwz97jmRU0bHls0EPd2vZY1h9iMC5kW3WAt6MRjc2DthcmDz8+vdm4DeS9v7ezZd+VhUxNFkXNlmou0I0MQb/3rQazoKtiJfIAwqF0A75glhMRttk05jQXZsqYgvvJt0LK/rG0hjpXYCBSKgxoF6oxr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=FQKJ8Z2k; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YdWoEnL7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01651C4CEEA;
-	Sun, 30 Mar 2025 00:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743294425;
-	bh=aiiKdFDmCS0U9MUvBKmwJ6wtLAwgtVEXAZWbVJ4delE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=YdWoEnL7t3+G1eeikHnkF20YlYkfES7CxO/Bpxz0+RX6+FLucVZqHc97etVGahclJ
-	 eJ+W+Jp+4QdjpGCfWCZdXf3yUeZqhZIGppdp0x7S3eqKVs+NASYHeoSgfOjLDY3FmK
-	 5F3AYTFi3pF5aBRlHUUcJI+Qlbaf9f8+HPa+XRIqaj7RPJPt13+oRoDeaBPplp09WI
-	 Dg4FsXV/9d0Euzy4vKTH+xz2hiKWu2g1zVKGSYYQwszyk5OrmkWFwlsYIjiC2whRbY
-	 NBYRMGWh+cIWrmkGZ306mabVDmnSlu0mSHOrfxh4tOVLYGNtdH36Zo9wCP9wFIJ/If
-	 YQCFHairp9IOg==
-Date: Sat, 29 Mar 2025 19:27:04 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="FQKJ8Z2k"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B28F510290279;
+	Sun, 30 Mar 2025 08:37:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1743316625; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=BRteZqX1GzZD63e0WZQkOLe8JTjQebQr5YPHcAOXdOk=;
+	b=FQKJ8Z2kGAokT6ywehaNtgo4kL74MSKFurMp3SWangcCUjXmAxle3cHYj0S2LnQdb2cCSJ
+	hj0+HhGzOwvUKc1/AgP+oaeYhfa8e8CdeLsWGDLn11HEBfrpZMcCeEcx11qQ4qCscVaow4
+	vBVMNsuLE0QblJKPng56DgnRAjIqSyNW7hPQTBX78IAMTDOBhcL11Qkq1ekIYjt+uS+zpo
+	A/NU6/GHm07q9QmQUBWeX1xZ02itODBK8heUFv1pJi2OSmB2gC0B9hVk7FdS9cNMlhx2F5
+	n6/+ykOhOLJED1PAOQLyZxfD4wrWhPFQLRYXRrqk0bgOMqMq0QGuueWmi3zbGQ==
+Date: Sun, 30 Mar 2025 08:36:59 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
+Message-ID: <20250330083659.61c52d2b@wsk>
+In-Reply-To: <45c6cb9d-b329-4b4c-a480-08110a546fb6@lunn.ch>
+References: <20250328133544.4149716-1-lukma@denx.de>
+	<20250328133544.4149716-2-lukma@denx.de>
+	<45c6cb9d-b329-4b4c-a480-08110a546fb6@lunn.ch>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Sascha Hauer <s.hauer@pengutronix.de>, Benjamin Hahn <b.hahn@phytec.de>, 
- linux-kernel@vger.kernel.org, Teresa Remmet <t.remmet@phytec.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, upstream@lists.phytec.de, 
- Yashwanth Varakala <y.varakala@phytec.de>, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Fabio Estevam <festevam@gmail.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Jan Remmet <j.remmet@phytec.de>
-To: Yannic Moog <y.moog@phytec.de>
-In-Reply-To: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de>
-References: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de>
-Message-Id: <174329418273.2439899.17086234453417036380.robh@kernel.org>
-Subject: Re: [PATCH 0/3] Add new imx imx8mp-libra-rdk-fpsc SBC
+Content-Type: multipart/signed; boundary="Sig_/7c2ovTtNXoWn5CzXtf1gA5K";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
+--Sig_/7c2ovTtNXoWn5CzXtf1gA5K
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 28 Mar 2025 14:04:36 +0100, Yannic Moog wrote:
-> The Libra i.MX 8M Plus is a SBC that consists of the Libra base board
-> and the phyCORE i.MX 8M Plus FPSC SoM.
-> This series adds its binding and device trees.
-> In addition add an overlay for an LVDS display that may optionally be
-> connected to the Libra board.
-> 
-> ---
-> Yannic Moog (3):
->       dt-bindings: add imx8mp-libra-rdk-fpsc
->       arm64: dts: add imx8mp-libra-rdk-fpsc board
->       arm64: dts: add imx8mp-libra-rdk-fpsc LVDS panel overlay
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |   7 +
->  arch/arm64/boot/dts/freescale/Makefile             |   3 +
->  .../imx8mp-libra-rdk-fpsc-lvds-etml1010g3dra.dtso  |  44 ++
->  .../boot/dts/freescale/imx8mp-libra-rdk-fpsc.dts   | 291 ++++++++
->  .../boot/dts/freescale/imx8mp-phycore-fpsc.dtsi    | 796 +++++++++++++++++++++
->  5 files changed, 1141 insertions(+)
-> ---
-> base-commit: 90453dc4dee29b96b9162895f45776bc25526e07
-> change-id: 20241210-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-c273025682f2
-> 
-> Best regards,
-> --
-> Yannic Moog <y.moog@phytec.de>
-> 
-> 
-> 
+Hi Andrew,
 
+> > +                ethphy0: ethernet-phy@0 {
+> > +                        reg =3D <0>;
+> > +                        smsc,disable-energy-detect;
+> > +                        /* Both PHYs (i.e. 0,1) have the same,
+> > single GPIO, */
+> > +                        /* line to handle both, their interrupts
+> > (AND'ed) */
+> > +                        interrupt-parent =3D <&gpio4>;
+> > +                        interrupts =3D <13 IRQ_TYPE_EDGE_FALLING>; =20
+>=20
+> Shared interrupts cannot be edge. They are level, so that either can
+> hold the interrupt active until it is cleared.
+>=20
+> Also, PHY interrupts in general are level, because there are multiple
+> interrupt sources within the PHY, and you need to clear them all
+> before the interrupt is released.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Good point, I will update it accordingly. Thanks.
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 90453dc4dee29b96b9162895f45776bc25526e07
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de:
-
-arch/arm64/boot/dts/freescale/imx8mp-libra-rdk-fpsc.dtb: clock-controller@30e20000: clocks: [[2, 284], [2, 123], [2, 124], [2, 125], [2, 127], [2, 128], [2, 182], [2, 321]] is too long
-	from schema $id: http://devicetree.org/schemas/clock/imx8mp-audiomix.yaml#
-arch/arm64/boot/dts/freescale/imx8mp-libra-rdk-fpsc.dtb: clock-controller@30e20000: clock-names: ['ahb', 'sai1', 'sai2', 'sai3', 'sai5', 'sai6', 'sai7', 'axi'] is too long
-	from schema $id: http://devicetree.org/schemas/clock/imx8mp-audiomix.yaml#
+>=20
+> 	Andrew
 
 
 
 
+Best regards,
 
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/7c2ovTtNXoWn5CzXtf1gA5K
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfo5osACgkQAR8vZIA0
+zr3SIwf9EV3MvkqdhVVWSD+ZO9I/1J4aB76//m6svQ5c9dxHZqk0fkXCLWGOilBb
+sm8la7oyGMGoI83LQHg8dPcxjBdxDGA31xCHjuuFFd2DTCfNl4tCvJkarLjsrMmE
+Inug1rJoApfOioU5j1tcNnzcoAmERGpfqOhKhVbPRs9izt6m5WvkuD053JjqK5sg
+0XRWIlMl1WkVwZ37ju/Tb28U8MeUzDiTPMw06IW6HYP0bplP9lxDaV5RZ+2xaMAx
+YQoxlMDe3+kvntv6UrlxGKMUwPwXaV6j3K+NBi9uU0zpIIf/DBa2sJ62LddytSv5
+X0P5l5sMgq7Q5iYO1nCW/1AUuuLYBw==
+=Epnz
+-----END PGP SIGNATURE-----
+
+--Sig_/7c2ovTtNXoWn5CzXtf1gA5K--
