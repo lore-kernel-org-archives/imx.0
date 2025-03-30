@@ -1,149 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0542AEED;
-	Sun, 30 Mar 2025 09:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B04F14B08A
+	for <imx@lists.linux.dev>; Sun, 30 Mar 2025 17:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743328064; cv=none; b=gxfus4byJtXCY/UMc0aeubGrQIX3lz2jLFbJnCAtGrckDT6FLYVjConTggeTIy2VmMyFu8FGR0vrIYTqWyoeV9RSUNQqqKSo34e1EpEcQZajprztuVkv7/0hPh8kyy/Sh4owriq77Hi32OSDtTXs4AcrCWbFFidntkAKrevbz+8=
+	t=1743357154; cv=none; b=dKnfs75jyvUA7Mmnt5AKUlxFeqtAqJnGdiuubrmadR3uHdPvrikHFpeE+1SwfaiBhQLzgEBCVWLEfHw2LPp6modBwaWH61FAFYWccv1szvGjsd05wjuKdGNibOKheHm1sJfWM3G3pqPWAwgQZQXTk4bJtGP1exV7z8gwbe8MeSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743328064; c=relaxed/simple;
-	bh=psvkuZ2HANcXsLHVMnp8FjLK9GuAYITBf0uSmRyuCVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kg6Bqgz/QBF2EwCvJVgdaxvKa0O8bW8Wp+dmDGThPlMbwZfGXCNCYMTYrAa999rCY4k/k7nvIMiQb5WXwL+zHK6B5d5lzouvy9sEg82kkzJ82sEogDN9jy8FKTooFfLgmr2vAEI/8wBD8zzCuIR5DncCahbib0GewKr1nDO0JLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrQZBimv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743357154; c=relaxed/simple;
+	bh=EA4KcZPr3mnA2HfaRwScb1sqX5QQbQGr36NvLllEblY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d/HSEKTyPV9HADBgq8t7AYBcjGw/EDV6c513kDsM2GvqpGJ7JW7g52dvOXsWKpU9LbgfZVEYczoQFfvZlVYnfjB5row/s9qYcHQdGvU/6rh96qBldpzO2anq0SQsRr3V+49Q4vaLbVqDi7/Eyfh6VUO1xkQpK/IgqmLY28QRgp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aFUec8+Y; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrQZBimv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEBFC4CEDD;
-	Sun, 30 Mar 2025 09:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743328063;
-	bh=psvkuZ2HANcXsLHVMnp8FjLK9GuAYITBf0uSmRyuCVY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OrQZBimvw5BmUwfbK5Gie4EbkXBd/xbjkNzSjev9VMI3E8AZ0AsworyQgB5oKmFOn
-	 6lzTnPt+D0zHIgwWwUGCiXDNk1ryT81BK5d4u5BQxBIdHYTovKdofaW3Vq8EPytVkS
-	 viCqYt3fyXJTZ6Qgw10c09IUtbsF15rkhv7Y9WsinV9U5RLY0RIHKWnMBULZ/be/XO
-	 93+iB760B/TyDUBJwpeXTVmRSqXo5fFLjj5k1tqDiAhRXEoWbDK3kN9ZDCtDkrXebQ
-	 Y7rJ/wpYMyn0tpft0Uv4JBURgVddp0XnSGzYNYcytoH6XK3i/a46KUIMW8wpuQllRB
-	 B0gj9i4PybYbA==
-Message-ID: <564768c3-56f0-4236-86e6-00cacb7b6e7d@kernel.org>
-Date: Sun, 30 Mar 2025 11:47:32 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aFUec8+Y"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52UBo2PH020407
+	for <imx@lists.linux.dev>; Sun, 30 Mar 2025 17:52:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=yfNrr9IWXB5j/RFLxcg5ak0n
+	+LLaTpY+LShrMT5MZf0=; b=aFUec8+YWE1jnyv0nk/UwcyIDxhVVm/YbGUA+jt1
+	kB1+g/9hulsP7Th5jWEjH4OsgzywWxhXU2h9XSZCxl0pdUCwiey4JcpYzLXajBlf
+	JqcWj9i+knFv6i+zvuoUJApQ8X04Gd5XxAYMlyESWeLU1v1lH0xYDOHneldKer7h
+	lCjIm5oza06P6dRV1pUFXEWCtzhnBaZhyyS/azLyZahyIBZULLBcju3jKyJTxOSz
+	Mrm5om78MEYR5cIp+DBoZKMuwp8EIZQE+o4RGVjzXoM56bFC9/PuQGSJIUiL6NjA
+	C++vGODQhgxbE0WaScqwObvkDfm39Uo2V4r6HjYc64HDuQ==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45pa1ntgm5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Sun, 30 Mar 2025 17:52:32 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c09f73873fso577677685a.1
+        for <imx@lists.linux.dev>; Sun, 30 Mar 2025 10:52:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743357151; x=1743961951;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yfNrr9IWXB5j/RFLxcg5ak0n+LLaTpY+LShrMT5MZf0=;
+        b=BPmBkazOuGe8lBRhpMHBKeXor3JojiMGfC3CS4+j7hIdnrWS36Kw9JLnvyTvvAWwQF
+         /olzSZNGtiqw3CcfpvoKekbEnO4DtHuy6GojtxUU4wP+Kp0N11lwH77fK+Vc+h0C5Jac
+         6k0MXLUEHHcrwECrsW4f3ztk7foiusacSOcK8fxBd1tGq2urUY3mcU8i8zHfB1qwR71g
+         NI8cqKMs614ZImJOYjBQZMKhD4aVknyajcMbfYLcrx9Wqeyzrl6iOx0yOBfPZrIFwD1g
+         /ES/8T8ARN8jqeXAhb/WOmbB+HiqG8FyJWGYCt0Ixp6TFOVa4YBv/F6bUjoKDwSUklg6
+         JCow==
+X-Forwarded-Encrypted: i=1; AJvYcCUxPLZSnf1urWa8hwmXPlfx1b90NkmN9nMf8mgBSrbpysTXeFQm+chBGEgXmNxOw5BSgM0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy//bgKyKZJnt0zsXR2jGRAffqcli5GWY2cVjLuPd3Ci1e0CDoU
+	VCZ6BfemA6UFR+/Pl6aF/V16Au2plwP12Pyitib2IiAVo0Vr+db5LGK2HiowxyBvf2lcOpzEDAF
+	I8ijhgxTY584wRUK02sqy9EZVVGE9wvtxLqlDDYgaXcR/Ajuygr8=
+X-Gm-Gg: ASbGncv3nNyMuvXVpBe26hLBCPt3nknGu6mt+sDj5vsrhYoOf2IGZl6a0rQ6NgjLTCz
+	4cWI6R6YFZo/pOb8BwHWuEZvb0HJCfNN2bPIxBtHf/+AYE0RBnm0W/OePyJTP6tOpTqtZNnDJ2U
+	UdolZqbILPm3eyZe2YxWN5nEEBOxRtOaR7ueRfagy8maRfXm3eGxLcJbaSSBJsSbCtiVTjEGeNz
+	HWDybwDHf8yxszTWN7NOWm0ms1rAXyWCjRId/05Lq1tgHw+A2lKprSfzVnEFBETc4b1niXARu11
+	Ehui9XFKbTeCjc2MNrPbcHl8ACJwqUAYiYttmcBiCix6xsXqqcrxoWU6sWT0+y//572xYZqdxa6
+	euNA=
+X-Received: by 2002:a05:620a:462b:b0:7c5:e370:5c3 with SMTP id af79cd13be357-7c6862ebacamr786301785a.7.1743357151451;
+        Sun, 30 Mar 2025 10:52:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFy5zLBvgqZ9PHFag3iQjcsiuGTjpjVXIsJR4FiwTqbGCjzxceuXoViknNhd3e/sRnunh8apA==
+X-Received: by 2002:a05:620a:462b:b0:7c5:e370:5c3 with SMTP id af79cd13be357-7c6862ebacamr786299585a.7.1743357151150;
+        Sun, 30 Mar 2025 10:52:31 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30dd2b4cd28sm11640941fa.70.2025.03.30.10.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Mar 2025 10:52:29 -0700 (PDT)
+Date: Sun, 30 Mar 2025 20:52:26 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Charles Han <hanchunchao@inspur.com>
+Cc: victor.liu@nxp.com, andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+        rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+        mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+        simona@ffwll.ch, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        kernel@pengutronix.de, festevam@gmail.com,
+        dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/imx: legacy-bridge: fix inconsistent indenting
+ warning
+Message-ID: <444lkvxa7iuymc6wx2gmcsjm5zv5wa4nq7dyhf4nkxmtfaxrhv@tm4hpcsoxo73>
+References: <20250325075503.3852-1-hanchunchao@inspur.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250328133544.4149716-1-lukma@denx.de>
- <20250328133544.4149716-2-lukma@denx.de>
- <e6f3e50f-8d97-4dbc-9de3-1d9a137ae09c@kernel.org>
- <20250329231004.4432831b@wsk>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250329231004.4432831b@wsk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250325075503.3852-1-hanchunchao@inspur.com>
+X-Proofpoint-ORIG-GUID: 2hziVAhU7tDw0nDuqdtwCHuAkxpvY7RO
+X-Proofpoint-GUID: 2hziVAhU7tDw0nDuqdtwCHuAkxpvY7RO
+X-Authority-Analysis: v=2.4 cv=MPlgmNZl c=1 sm=1 tr=0 ts=67e984e0 cx=c_pps a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Vs1iUdzkB0EA:10 a=F_93P0QhAAAA:8 a=EUspDBNiAAAA:8 a=hZwuMZaz95D9sbrnA4gA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22 a=v2fne3mUlQEKA94IZ0Od:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-30_08,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 spamscore=0 clxscore=1011
+ bulkscore=0 mlxlogscore=722 impostorscore=0 mlxscore=0 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503300125
 
-On 29/03/2025 23:10, Lukasz Majewski wrote:
->>> +  
->>
->> If this is ethernet switch, why it does not reference ethernet-switch
->> schema? or dsa.yaml or dsa/ethernet-ports? I am not sure which one
->> should go here, but surprising to see none.
+On Tue, Mar 25, 2025 at 03:55:03PM +0800, Charles Han wrote:
+> Fix below inconsistent indenting smatch warning.
+> smatch warnings:
+> drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c:79 devm_imx_drm_legacy_bridge() warn: inconsistent indenting
 > 
-> It uses:
-> $ref:·ethernet-controller.yaml#
+> Signed-off-by: Charles Han <hanchunchao@inspur.com>
+> ---
+>  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> for "ports".
-> 
-> Other crucial node is "mdio", which references $ref: mdio.yaml#
 
-These are children, I am speaking about this device node.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-> 
->>
->>> +properties:
->>> +  compatible:
->>> +    const: nxp,imx287-mtip--switch  
->>
->> Just one -.
->>
-> 
-> Ok.
-> 
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +    description:
->>> +      The physical base address and size of the MTIP L2 SW module
->>> IO range  
->>
->> Wasn't here, drop.
->>
-> 
-> The 'reg' property (reg = <0x800f0000 0x20000>;) is defined in
-> imx28.dtsi, where the SoC generic properties (as suggested by Andrew -
-> like clocks, interrupts, clock-names) are moved.
-
-Drop description, not the reg. Reg was in the previous version. You
-added random changes here, not coming from the previous review.
-
-Best regards,
-Krzysztof
+-- 
+With best wishes
+Dmitry
