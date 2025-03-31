@@ -1,142 +1,279 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58306F305;
-	Mon, 31 Mar 2025 06:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7091A5BA4
+	for <imx@lists.linux.dev>; Mon, 31 Mar 2025 06:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743402664; cv=none; b=lAoL55LhOE1ZMEAm4UVvQCvHbgXgl4V8r/Hz4ymAVZT6UpWSfzvsrPN3ywDxPEabqNDjdMQW7DE534m7KY5dLly0c089nUGxDLBWUJmjTwRcY+z3Pi9zoaWXCHVUKPbWpUEmiZM3NgoiijT29AV/JT8Iofj17XhpDMBYf1lw35A=
+	t=1743403342; cv=none; b=HPDQzdxw3CgpViCCgKhkz3EbPSPgH9jsWSRwlCPODZeFOZ97aTe7+yfh3Q795lSzIoQTqC8TCjpcJ/88jexBSOI5prlDX2SikmYQnKmi773e+3hWnRS7UkI+d/KyFT40z4SbcaH9XlL1FdWi9uYy7WvCqjkuwwB7iAqE2L5YKqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743402664; c=relaxed/simple;
-	bh=siK06ks11gqfEFK2GobMJ/GTm/D1N9rEwSRy7MoIxXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ne9dHhY5cQ+ExHnf+T5wn6/0jO1YuJJJZFYP9gVLlyDRAeGdJlBIeX2nTNGqrz7988XgrZMpuEuIidFt7I44/M4bPC6XuPBBzO8OVTO+iHat8IW2aGBQbvDglnWeR6C1EeBmNAQl603eENOGBA2JMDRf+5ZyEs5b+S3nQXcgbgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oc4ls696; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oc4ls696"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12EAC4CEEA;
-	Mon, 31 Mar 2025 06:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743402664;
-	bh=siK06ks11gqfEFK2GobMJ/GTm/D1N9rEwSRy7MoIxXI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oc4ls696St+M4bBAIOvxzG5W8Q0ZYmsFyFe/CN7d+CODeRjyiFKDpkcpOEs+W7lE3
-	 GH0RSnY/DkIL0YvkvrAb9L4w5lSkQidBf8gwJuPCblWXw3ma4w64/P4wGlA9oFu7NA
-	 Dkf4zrfJQIaZqqw1X8lst5V/TjPZzJ6ncHZzsOnpa2Qdw+H0Td23S5BA5rLai0TOO9
-	 xOdgY+MZRKs1sJVKEge8azcERhlePmoP0fRtP5I2loaWygUwGn4gVbgzlcPv307F5p
-	 wtHGhbc5StB4uVxO1yemkqAi54/OddQiGNLAQVwYL9/J1maW2rE5EuXfhs3sKSXpbO
-	 p+5lOREZrF6aQ==
-Message-ID: <d4c8de9b-e52c-480b-a3bf-e82979602477@kernel.org>
-Date: Mon, 31 Mar 2025 08:30:54 +0200
+	s=arc-20240116; t=1743403342; c=relaxed/simple;
+	bh=0OwZaHWomvpAnIL+9eaYPpyuKhZ4WM7AghXgIC29O4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmpUgpVXx4EmmENUMSqiWTNkPxsiRLFk01UycBrq5pUJWdh2fMFoGLbCKCLqanqFKMjkw6w4wcxewlwNuKHCNaY46BXiiZQ/3FFk4+CusLjugolnnmGfRmTFh9sSQ/FIilKPBMgmBF78bSSTq00+yFj5y5/KOz1HAJ0MFdnmmfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tz8qH-0007t0-Bo; Mon, 31 Mar 2025 08:41:53 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tz8qG-002Y6D-0Y;
+	Mon, 31 Mar 2025 08:41:52 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1tz8qG-00996M-06;
+	Mon, 31 Mar 2025 08:41:52 +0200
+Date: Mon, 31 Mar 2025 08:41:52 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] dt-bindings: bus: add documentation for the IMX
+ AIPSTZ bridge
+Message-ID: <20250331064152.g4hlw6pbpzbnlsmp@pengutronix.de>
+References: <20250324162556.30972-1-laurentiumihalcea111@gmail.com>
+ <20250324162556.30972-2-laurentiumihalcea111@gmail.com>
+ <20250325032303.GA1624882-robh@kernel.org>
+ <2301b0f7-1a76-4823-8d3f-d346f8f8e865@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250328133544.4149716-1-lukma@denx.de>
- <20250328133544.4149716-2-lukma@denx.de>
- <e6f3e50f-8d97-4dbc-9de3-1d9a137ae09c@kernel.org>
- <20250329231004.4432831b@wsk>
- <564768c3-56f0-4236-86e6-00cacb7b6e7d@kernel.org>
- <20250330223630.4a0b23cc@wsk>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250330223630.4a0b23cc@wsk>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2301b0f7-1a76-4823-8d3f-d346f8f8e865@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 30/03/2025 23:04, Lukasz Majewski wrote:
-> Hi Krzysztof,
+On 25-03-28, Mihalcea Laurentiu wrote:
 > 
->> On 29/03/2025 23:10, Lukasz Majewski wrote:
->>>>> +    
->>>>
->>>> If this is ethernet switch, why it does not reference
->>>> ethernet-switch schema? or dsa.yaml or dsa/ethernet-ports? I am
->>>> not sure which one should go here, but surprising to see none.  
->>>
->>> It uses:
->>> $ref:Â·ethernet-controller.yaml#
->>>
->>> for "ports".
->>>
->>> Other crucial node is "mdio", which references $ref: mdio.yaml#  
->>
->> These are children, I am speaking about this device node.
+> On 25.03.2025 05:23, Rob Herring wrote:
+> > On Mon, Mar 24, 2025 at 12:25:52PM -0400, Laurentiu Mihalcea wrote:
+> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>
+> >> Add documentation for IMX AIPSTZ bridge.
+> >>
+> >> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> >> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> >> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >> ---
+> >>  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 107 ++++++++++++++++++
+> >>  1 file changed, 107 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >> new file mode 100644
+> >> index 000000000000..c0427dfcdaca
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >> @@ -0,0 +1,107 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: Secure AHB to IP Slave bus (AIPSTZ) bridge
+> >> +
+> >> +description:
+> >> +  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
+> >> +  issuing transactions to IP Slave peripherals. Additionally, this module
+> >> +  offers access control configurations meant to restrict which peripherals
+> >> +  a master can access.
+> > Wrap at 80 chars.
 > 
-> It looks like there is no such reference.
 > 
-> I've checked the aforementioned ti,cpsw-switch.yaml,
-> microchip,lan966x-switch.yaml and renesas,r8a779f0-ether-switch.yaml.
+> fix in v4, thx
 > 
-> Those only have $ref: for ethernet-port children node.
+> >> +maintainers:
+> >> +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    const: fsl,imx8mp-aipstz
+> >> +
+> >> +  reg:
+> >> +    maxItems: 2
+> >> +
+> >> +  reg-names:
+> >> +    items:
+> >> +      - const: bus
+> >> +      - const: ac
+> >> +
+> >> +  power-domains:
+> >> +    maxItems: 1
+> >> +
+> >> +  "#address-cells":
+> >> +    const: 1
+> >> +
+> >> +  "#size-cells":
+> >> +    const: 1
+> >> +
+> >> +  "#access-controller-cells":
+> >> +    const: 0
+> > With 0 cells, how do you identify which device it is?
 > 
-> The "outer" one doesn't have it.
-> 
-> 
-> Or am I missing something?
+> we don't atm. We're relying on the default configuration.
 
-There is ethernet-switch.yaml for non-DSA switches and there is DSA
-(using ethernet switch, btw). I don't know why these devices do not use
-it, I guess no one converted them after we split ethernet-switch out of DSA.
+I think Rob is speaking from DT API pov. What the driver is doing with
+additional information is up to the driver.
 
-Best regards,
-Krzysztof
+> we don't have any APIs for AC configuration so I left the
+> cell number to 0 thinking that the cell number might depend
+> on the API.
+> 
+> if need be, I can set it to the value I was initially thinking of in
+> v4.
+
+Which is?
+
+According the TRM it's a bit tricky to define the API since you need to
+describe two different types:
+ - master configuration
+ - peripheral configuration
+
+One which came up in my mind is:
+
+  <&phandle TYPE ID VALUE>;
+
+e.g.
+
+  <&aipstz AIPSTZ_MASTER 0 0xf>;
+  <&aipstz AIPSTZ_PERI 0 0xf>;
+
+One could use a defien for the magic value of 0xf of course.
+
+> >> +  ranges: true
+> >> +
+> >> +# borrowed from simple-bus.yaml, no additional requirements for children
+> >> +patternProperties:
+> >> +  "@(0|[1-9a-f][0-9a-f]*)$":
+> >> +    type: object
+> >> +    additionalProperties: true
+> >> +    properties:
+> >> +      reg:
+> >> +        items:
+> >> +          minItems: 2
+> >> +          maxItems: 4
+> >> +        minItems: 1
+> >> +        maxItems: 1024
+> >> +      ranges:
+> >> +        oneOf:
+> >> +          - items:
+> >> +              minItems: 3
+> >> +              maxItems: 7
+> >> +            minItems: 1
+> >> +            maxItems: 1024
+> >> +          - $ref: /schemas/types.yaml#/definitions/flag
+> >> +    anyOf:
+> >> +      - required:
+> >> +          - reg
+> >> +      - required:
+> >> +          - ranges
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - reg
+> >> +  - reg-names
+> >> +  - power-domains
+> >> +  - "#address-cells"
+> >> +  - "#size-cells"
+> >> +  - "#access-controller-cells"
+> >> +  - ranges
+> >> +
+> >> +additionalProperties: false
+> >> +
+> >> +examples:
+> >> +  - |
+> >> +    #include <dt-bindings/clock/imx8mp-clock.h>
+> >> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> >> +
+> >> +    bus@30c00000 {
+> >> +        compatible = "fsl,imx8mp-aipstz";
+> >> +        reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
+> > It doesn't look like you have any registers in the 1st entry, but they 
+> > are child devices? Then you should use ranges and drop it here:
+> >
+> > ranges = <0x0 0x30c00000 0x400000>;
+> 
+> 
+> I guess this would mean switching from global addresses (current way) to
+> bus-relative addresses for the child devices. This wasn't my intent.
+> 
+> I wonder if we could just switch to V2 in which we just use the bridge's AC
+> configuration space and an empty 'ranges':
+> 
+> aips5: bus@30df0000 {
+>     compatible = "fsl,imx8mp-aipstz";
+>     reg = <0x30df0000 0x10000>;
+>     /* some more properties here */
+>     ranges;
+> };
+> 
+> or as Marco just suggested use
+> 
+> ranges = <0x30c00000 0x30c00000 0x400000>;
+> 
+> instead of an empty 'ranges' to restrict the bus size.
+> 
+> Personally, I'm fine with both approaches but what's your opinion on
+> this?
+
+Switching from a global addressing to a local one is not favourable IMHO
+since NXP i.MX8M SoC TRMs are mention documenting all IPs with the
+global addressing scheme. So yes either your v2 scheme or the one with
+the limiting site but keeping the 1:1 mapping. Sorry again for the
+ping-pong, wasn't that clear to me until now.
+
+Regards,
+  Marco
+
+> >> +        reg-names = "bus", "ac";
+> >> +        power-domains = <&pgc_audio>;
+> >> +        #address-cells = <1>;
+> >> +        #size-cells = <1>;
+> >> +        #access-controller-cells = <0>;
+> >> +        ranges;
+> >> +
+> >> +        dma-controller@30e00000 {
+> >> +            compatible = "fsl,imx8mp-sdma", "fsl,imx8mq-sdma";
+> >> +            reg = <0x30e00000 0x10000>;
+> >> +            #dma-cells = <3>;
+> >> +            clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SDMA3_ROOT>,
+> >> +                     <&clk IMX8MP_CLK_AUDIO_ROOT>;
+> >> +            clock-names = "ipg", "ahb";
+> >> +            interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
+> >> +            fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
+> > No 'access-controllers' here?
+> 
+> 
+> no need for that unless the child wants to request a specific AC
+> configuration for itself.
+> 
+> 
+> >
+> >> +        };
+> >> +    };
+> >> -- 
+> >> 2.34.1
+> >>
+> 
