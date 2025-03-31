@@ -1,84 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F164946BF;
-	Mon, 31 Mar 2025 08:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4B920B22
+	for <imx@lists.linux.dev>; Mon, 31 Mar 2025 10:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743408963; cv=none; b=qxNVm+SYqR8F1Uem5yKjDD04vNAbDiicEYld0qRWfznWwWXaPuIAQQdkZm2LMLGTMqSN0rI6ve0DTvzRNq7qK9yqKDXejRx3T3ahVliIs7wuNLRKKbQ/NcXkg+Fs62uan8WAwTo/hS+9liORpyvJxh9Ww5noxsX/r8UvxMiUkA4=
+	t=1743417112; cv=none; b=vCVAyT1Bfvr0YgUoONfeh6n7/M+C387IRvIzY6dwMRyW7e0cWicjKEZfd1hw+Ipgxn9Qj8dPTRz20lJqTv6pcT0fDX2ryJvBpkxo9+4BbVbE9d3V67rgXoxfFLTNxUU9pcFCUS9A9UrWYoLZJzYYQ7TTrs9FcqsaRSpKMaialvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743408963; c=relaxed/simple;
-	bh=n/AGtLCTuyDKU9z411GAmNJ6h/6MCP/tI1vTxsGxQ4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rjn646xeOtLd0pVajLy14bDynMSoOx2L9qVxyZSpRRYYVn0ur4t+9yxu9plCumoXlMdEXAFgBMo4xTSZdoUWVt6VrXtaYuYZIFeOsmoLhKMlJKy7eiKvX+TJmHm5b73KeekITJeaevfj8UPsuOTHPtHekJDCgjjy8Iq6RusESB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oc0sePzh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743417112; c=relaxed/simple;
+	bh=ef0/xHtnXB7UZeFcrLVM0z8MLa7kOyzZdou9OiivoKM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jLEd5wFqlIKYBJxMlOUazWzPO2+eqfGlfT+nCojUjg5F3RkE5ZSod2Okpt+9YlQ3kp5GdeDxJaz9exAvn5/TgmeOrJmYW7scQ1u05Fll5ZOG1rONyCP/D5loYomZGk6cRCiiJlk0VarlUy5SfY1k9leNnT3ezSDc0IH7LICgJpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=DyrrMMLH; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oc0sePzh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A3CC4CEE3;
-	Mon, 31 Mar 2025 08:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743408962;
-	bh=n/AGtLCTuyDKU9z411GAmNJ6h/6MCP/tI1vTxsGxQ4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oc0sePzhrGWkcxjuc4eQOHW6D1HRc4Em/XqacKGhSIXT4Cy2upsgVNfGakKfvcMRt
-	 KKYDYowkxiAoQb+R1IJOOE5UcKfO9CMJWVsWKwUGwa1niJXmD+kKUir9RXAVyOIqyd
-	 1RDxi4qUepfn9yUL+86ly1Eajqev/fW3aXIUWNirnLS/6ArdrlzSOG3h++aK/4ihCw
-	 kj4yY+XcUNQy4eYjqxkBi6gUrdHG/K/wRvvAVu+1ZlYa5xDBDFwxlPOyzGwklQ8I4e
-	 IraZFDeidJIc+ixalrvCaAsz6NfyJdcIdqCDuMPvGKFox0YYT49f/BRwAaZyq11N3p
-	 ukQLNMkvFawng==
-Date: Mon, 31 Mar 2025 10:15:58 +0200
-From: "krzk@kernel.org" <krzk@kernel.org>
-To: Yannic Moog <Y.Moog@phytec.de>
-Cc: "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"robh@kernel.org" <robh@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	Benjamin Hahn <B.Hahn@phytec.de>, Yashwanth Varakala <Y.Varakala@phytec.de>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "upstream@lists.phytec.de" <upstream@lists.phytec.de>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	Jan Remmet <J.Remmet@phytec.de>, Teresa Remmet <T.Remmet@phytec.de>
-Subject: Re: [PATCH 1/3] dt-bindings: add imx8mp-libra-rdk-fpsc
-Message-ID: <20250331-zippy-apricot-seriema-cbafe8@krzk-bin>
-References: <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-0-28324c7f81fa@phytec.de>
- <20250328-wip-y-moog-phytec-de-imx8mp-phycore-fpsc-v1-1-28324c7f81fa@phytec.de>
- <9a8635d8-631e-483f-9d31-33cf0bea7daf@kernel.org>
- <4610469e0002796fb0de9feabd3fe328d5bf7aa9.camel@phytec.de>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="DyrrMMLH"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CC291026C8AE;
+	Mon, 31 Mar 2025 12:31:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1743417107; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=6OR5ZX6gnhmwXhcE50/jYL+u26UqK30a7zFCArx/L1g=;
+	b=DyrrMMLH87OXRxD/qEfdtU327Jed9RoYP40D9mxVBA3SxepNbu8oMu4P56o1i+RGmgoQUo
+	O16LrlpZJDgSTe1WyJi++xSKZATz6iHOCFSlRDqcXqFQ8ee6Mdfn1moIr66fS0jGcerBQd
+	3YB1H2PBNd9UF2TqAJ21o6aq2KrPR8tGMK91SBqVS++ezHeSwHqNKXkBd3OOXxDCvAt2li
+	MvNvGozlyQKf9EarKirjEiE16YXlSM0c91JbZ1BDRwGAN4YtvK9PdGDC5Fipv9lJ6U/8rb
+	hdjGFuQHOH4hMqgDuOln95lRF1CKaByzi+qNwNQkON999iTLURc7Lgc5b13i2g==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [PATCH v3 0/4] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Mon, 31 Mar 2025 12:31:12 +0200
+Message-Id: <20250331103116.2223899-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <4610469e0002796fb0de9feabd3fe328d5bf7aa9.camel@phytec.de>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Mar 31, 2025 at 06:03:05AM +0000, Yannic Moog wrote:
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - description: PHYTEC phyCORE-i.MX8MP=
- FPSC based boards
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 items:
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - enum:
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 - phytec,imx8mp-libra-rdk-fpsc=C2=A0 # i.MX 8M Plus Libra RDK
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - const: phyt=
-ec,imx8mp-phycore-fpsc # phyCORE-i.MX 8M Plus FPSC
-> >=20
-> > And that's different than existing phycore som? You have entire commit
-> > msg to explain that.
->=20
-> Yes, it is different to the existing phycore som.
-> I explained the differences in the second patch which introduces the devi=
-ce trees.
-> Would you like me to also add the explanation to this patch, or move it h=
-ere from the second patch?
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Some explanation should be here.
+In the past there has been performed some attempts to upstream this driver:
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
+All three approaches were not accepted as eligible for upstreaming.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+The driver from this series has floowing features:
 
-Best regards,
-Krzysztof
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
+
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
+
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
+
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (4):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+
+ .../bindings/net/nxp,imx287-mtip-switch.yaml  |  154 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   54 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    8 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    3 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1964 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  780 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  113 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  449 ++++
+ 12 files changed, 3545 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+
+-- 
+2.39.5
 
