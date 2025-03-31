@@ -1,219 +1,243 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2065.outbound.protection.outlook.com [40.107.21.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC413234
-	for <imx@lists.linux.dev>; Mon, 31 Mar 2025 14:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743430133; cv=fail; b=ousp9h+HiktaDIpaWBTUIz6aCr8L9CYDImPqj/iFwzDAt1NlzeUQR8FrGm6w8fPUMw+E8JVWpEJMWyBHeXkX9gGrbGm1gZlAwFk9aN3lOzlXM3dIIqcxgyoln0cryRdEQxx1VfaFwOCXVSSWiS8GPb/ITROJjtZcL0HVARSOg+8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743430133; c=relaxed/simple;
-	bh=3TVOCNLtFtaHQh78oo+OeauxBxmXDUlUH6h7DApAykQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bajBHl54UNjDLA4lgdUx3A9mEMSfcMYR1ypcqRA601a0QEyUJB6PgL87xWilj5XIiuv1Fi9l2AQsHv7f5Tw+/w2+LoC1PUlKJ5qonzhZzwgFzF144kqp5xq36t+sVVsFUzTBYgiEBC+xlpoSkXaosNKp8vNmdm3xCsv/l1m6L+w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Zjl+R4ad; arc=fail smtp.client-ip=40.107.21.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14AC1E1E06;
+	Mon, 31 Mar 2025 14:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743430516; cv=none; b=PPkP1AIcU91R9Oy83CxXFqc0z3TMXqw9h8rojbJR310ZZSkWeZ/YVOtYLtp0QU+pXQFt4PLYwRzTESEzVyp+nISHNQrM7oiZy0YZYVAVoNYn5eZr7RSOMf6LOjeXV5FZTzzCadiXEx4exMPsXG39Nz4nPfqHex23KrLLhDwfWmc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743430516; c=relaxed/simple;
+	bh=uEsdbJUqOkrFSbjOqdZnQjQQ9sHHKkcXorShOx3KN0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OfSZtoumFnTi+nYDcU81TCeVNbaxIWDaxVWLzYAi4jKFLWpMWHdGaWdUFhB8zthZUdT/9zC3DUEDrHvJs/mxV40GkfNquuOnLj++YFf0f3zcYDMsDfR55aBTqaqqvx1rOasmPvqEqYUvk4bUGS10rYo7lqOiDVP3hpaeS/5mlFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VjK6+MCL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Zjl+R4ad"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TqnCq40GuAm+8G5kqdBlDwWTt+Vr4HNaK05YQoL0G3UtKJB9RC5ZGgdQaA3avnOdNG4dBHMTTY1thM6jEgvO3hAYQDPBVe/BXipcrsWAMX59AJyExaRvocI7pnnLL7PGaOLknta/F2nxuabEaQvxQsV1Guj37AY5hLGBTllPgrYBT2jMif5QjYkL99+a0lVuO0u17j5PZe5uUlJ2aX9FQtTtpG6Efnf5Ygzsfuhf4aKQGK9lUGaGi4PsEWBHxAn4IJlwIuXN5Wnz4TAHxqrD7iTrunBhw+rknJzipSLHOBBmglEI9XYV7JaV1rG0OiAcJ7QG4mmMicorPabVzttz/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V2Xicuh4ycUz4i6o0EyYf0l3OdxBeiXAs18inUPo/4s=;
- b=e6s7OYzY5VfLhzUKdUUFa0IsQ4F5KWSvyDSKapoNbcqbRS1voa9jS0AJI8eaYS7xDmMCahT3oO31hL2S3WbVJowzSAgkL1fRIpuGFASHXuW9fXubPJRekVVuAHh2D9C1wN+InoikCpQCQtyoOkAQTC6E7qtyeRhpmCoTzoYup2c/GZ/iT1I6QD0C/lBmwiw3lb1/8RJCh0xo/33Y3AqCzn7uwpWT/jla3Yhk0XvgLnOUqC4MAMdZ2QUrpGzZRsFLvbnuGWLsfoo0Md+7t6XGL1QUI88v2GcXE26MZGfxVo4Ec/j3k+euvk+SvhoUnB8R1qWpItWuVZk9UAKz5H17jQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V2Xicuh4ycUz4i6o0EyYf0l3OdxBeiXAs18inUPo/4s=;
- b=Zjl+R4adXWMcL7/q1dFvUARrc6rT+b0cByIONx4/gaqpKjjF/JEhBK4xWmsCl5wC4OKMyfbYYOdTSGbcVVTFJc0nmv+sDJWs8B8sgbGUVGL4/MdshInZFXq1njcc35r776l8lUT6R8OWheAazEXKI/m0mEkQLR9A7Sc9z6fhxi9z9lUmLSUayGFSaolXct+7L43CuMRUm8eSxtL4QFqJHBfh4MIr6urfvIDrzD8/4zxlmINIs+tUE5yCSk2WiyWDuxV5bNQvksZHyFJw3IiILs9e3WbxLAgfKsjd6IGUTDHA3/9G4rYcbL1EjHgTYS5VIUBsLVD/iM53J3l5QsX8Yg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by AM8PR04MB7842.eurprd04.prod.outlook.com (2603:10a6:20b:245::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.46; Mon, 31 Mar
- 2025 14:08:48 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%4]) with mapi id 15.20.8534.048; Mon, 31 Mar 2025
- 14:08:48 +0000
-Date: Mon, 31 Mar 2025 23:16:56 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VjK6+MCL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE160C4CEE3;
+	Mon, 31 Mar 2025 14:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743430515;
+	bh=uEsdbJUqOkrFSbjOqdZnQjQQ9sHHKkcXorShOx3KN0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VjK6+MCLrmXzbGsvRCDsKmQmzOLxXC4QRdJFEljBPGIbNpT5oC3CSykSgvjqOHCIe
+	 IgrsIDMdDZOfHVea30JUefM2UKuLWYYgipTCpApx8sKwTNYsYasv4n/SYX5bfl/WLs
+	 VFzQZy8HiajT5BL+VS3W3idqRQoerbOF+6V4+LRm7+Csz9pkkSjtQn4vTCioFjstB/
+	 EMAuSIHMtvI7QDA0U44PRnSafNXnHxBCcRT1Xz3hzSAVZeGaXhLKsP6gyn4p+YSd3X
+	 wwbG6O6Ptps/tY1AqFwI/LvLQQsyCHEWK3+Er40iRmYw73cjzsbidJgMDyW8F9LdD/
+	 rI8NCcbAc1v5Q==
+Date: Mon, 31 Mar 2025 09:15:13 -0500
+From: Rob Herring <robh@kernel.org>
+To: Mihalcea Laurentiu <laurentiumihalcea111@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" <linux-remoteproc@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Cc: Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: Add mutex protection for workqueue
-Message-ID: <20250331151656.GA15525@nxa18884-linux>
-References: <20250331112246.2407276-1-peng.fan@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250331112246.2407276-1-peng.fan@oss.nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR04CA0007.apcprd04.prod.outlook.com
- (2603:1096:4:197::19) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.li@nxp.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] dt-bindings: bus: add documentation for the IMX
+ AIPSTZ bridge
+Message-ID: <20250331141513.GA2684092-robh@kernel.org>
+References: <20250324162556.30972-1-laurentiumihalcea111@gmail.com>
+ <20250324162556.30972-2-laurentiumihalcea111@gmail.com>
+ <20250325032303.GA1624882-robh@kernel.org>
+ <2301b0f7-1a76-4823-8d3f-d346f8f8e865@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|AM8PR04MB7842:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19de771a-efa1-4654-1ecb-08dd705d8e54
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MbgnicSjjnPTC8UqZ0sxGgKnXcQUPhBflRVHCgwOTswSo6qiat1ogkbmbZBe?=
- =?us-ascii?Q?sXAjE+VhrECgVbpyiATTR+eXcySl10/cK3XhinYnilfX54uQF5Q1pOAOoS4e?=
- =?us-ascii?Q?vzXewd1pwmw9wA/2J/DSMUZmo646q+B1czY39EtzM8KzhZPxJSxY6Ke0eaT7?=
- =?us-ascii?Q?DnOs79BF9FEs3Ql/PM99eXv6J8LoS98H9asTSbLQnriLtaasSaRDOZD/MQ1J?=
- =?us-ascii?Q?YcASAlf8elhsQEO8Hx/ofYNAiMGNRSZNmGiNnxw3pHhg5ig1uZWB69PPNerY?=
- =?us-ascii?Q?rbeozZIANSMHV2Q8zoqWukEFHxSLwR2Vq2q2rRdHa0P074clDmQUTVKpxXCp?=
- =?us-ascii?Q?laV/j3esEJf3I9CIDS1fVZA7tu0cOPwTZdJbBuKGGIml6XdzeJF/yVKLYdS1?=
- =?us-ascii?Q?DZL9lIHWPnMtns2TOEgf83DueKfdCaBbaowpZsklKnT8Y+vGVBFScX3LOhwS?=
- =?us-ascii?Q?IlaXxVo5DhLM80VY9ItcHBfVwBYbiWEw5IsxfV355m210WZda+c4q/gVHixc?=
- =?us-ascii?Q?3V5kroddSIjlrvtSsEbxtc8dibGMdVKSvl77ztgocyeYxjcjZZSM+Fd30i/d?=
- =?us-ascii?Q?QCHBZd838KcMDKqBam13C9m4mm0Bdv9MGWJlVtqn8qrtSmyhwW8nTGVpdpc1?=
- =?us-ascii?Q?UQRV70irgKFofTweYyfl2B7nGgTfnuNRanKsM1wkT7fFSNIEF5vQiW7mVtlq?=
- =?us-ascii?Q?d95IHDDFfEXhvm43KysfzjW1HLEllb8cMrI6lVmva0rrhHbTMQLga1krRG7W?=
- =?us-ascii?Q?aLbz6W1mJvU/WF0lXk9M/8EYf2zBzPkcWAnZHpREq6YWQIDjcyQuRnKlBqIW?=
- =?us-ascii?Q?7X7DZeHJ92pwCc+PgttVEsomsPA6H1gm00fKHoypxOdMRp+BxjfdcL39MdWD?=
- =?us-ascii?Q?Dg+dYiroQ3UKYKZ2EhGJCHc1t0n3qVKwcIpAeJh8vDsHMv26earlc7zZ2lpt?=
- =?us-ascii?Q?R4TXhyXijezW3+VVTQtsevdYmxKU0Usgdq+wbNDlTh1uQPraZJs5TSmggJzn?=
- =?us-ascii?Q?qcDjmrOJ2yzlpLNFjEyRnhROlNLKX0xFWTH/TfojY5LdAmO5OKpIE/J8V7P8?=
- =?us-ascii?Q?vrYpz9rELQ3l7quyn6PRNggjJ3Kqf5wQhkGs6RL/DeYEYksE3TcBgRHxxjoX?=
- =?us-ascii?Q?29Vl60dk/hI4F9Fjt/U2xVdAF+aOIzs3g6pPJfULEQHFaqH8lS0zYEwxNxuR?=
- =?us-ascii?Q?2MEtVPFCNEi5ME0Nj9AFqHKP/Y4Iu05bHwTvHiA/xsfe0FNwmV5OFyCP1S+h?=
- =?us-ascii?Q?M0QAdLauM63gjqLbA4MU52HPlbMXMLqsMML6s5fPE5AfFdn2FeAW/gqE01BI?=
- =?us-ascii?Q?VNlzk7qoCj/e+1puEryRX1W0oVyKepSFiLPMT5uyL4O6fEvv1uChjUWZvQ8v?=
- =?us-ascii?Q?F/nWjNc2RzQwI1PSjye8lL7M2Q4dBsq5T4XW+ZTlHBiPJ3YupKVCVGgeOYki?=
- =?us-ascii?Q?QzCPzvIkTslXnZGuiL1QsVzjmcLoEOYel9Agba5CDoiObZHslK8Avw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gUsJcEMhF4m85iaRR7taQQuh+bldCy6i8qnHZD4NdlHBcIH5rbBXo9JDYykz?=
- =?us-ascii?Q?LB8ueSFkme2HMK61ZIE2MI2KD0m+XMTc+mIDys5Qxs4/pVX6r3hk2fXyQ15B?=
- =?us-ascii?Q?uK/SPYXyRUsstwiRCNKKfiKj/5E3Na5FfY+s+YxLTzkgFg77NTdZNhKx09V6?=
- =?us-ascii?Q?3y8JD+SU1PfhZzc64/HuOheQrQ089hFyNY6zbet/CQhtYutVwJN9WPuTUsSh?=
- =?us-ascii?Q?3KNUlAkxBuwskJBu3K33c88+lFp/g+jFfVO1Hqej6lU9GKEugDASHvKsc98M?=
- =?us-ascii?Q?EDgFDVKUdUG5e+J+7hZ47Vn3DQn8JWcTSSjZ2p9Zf0Ql4Khl9xA8sAODB8xf?=
- =?us-ascii?Q?jxRY/UYbcpTqha4ptEVWLHjePfpDfe8hjfpl585QIs5l8Y9kL5QcNWmgMFlw?=
- =?us-ascii?Q?2e6hqN5xEJow7O135gyDcTlQ+fbnLTCosqGyNNoTg/Kw8Jtlfr5PEmMHmV5b?=
- =?us-ascii?Q?HUQdtOGP8/JOyRutgG4Ego5+Q2icRPDFOrmVEm2aCqwZ5Dv8Ko8+aMlEAWsq?=
- =?us-ascii?Q?HWMDInIh5rB0gKS7pkyHDhFEt/10OsyfttuBH1NuntvESlOv/0nT3Monj+nT?=
- =?us-ascii?Q?JvX3AVaCTk8d6UBWHYKvlMBYyBcnbzYEmEVARwcSJOEndWEvW9A2rrrwaoIH?=
- =?us-ascii?Q?7BcX35kYJ5AkvvRxAkH+obGEcs+Q6O2CIIFaiizK2VgsKqQmkd+z298WseOU?=
- =?us-ascii?Q?psRDeviwopcoIGxKQ1kIDd13BX9iz2pZ/wmukpoA6hCH8OKX0/lfUOqWB9YZ?=
- =?us-ascii?Q?rraWlUOxkyq7KqM66xlXPnBTDv7J9+iv/99n5s8jxLXlmIW4WvphlQ4cjxAv?=
- =?us-ascii?Q?DHFNsb66vW8YxVr6dtTpleGzmvprhKCktfu20XmFszLqejcYQWMF/h3swXMx?=
- =?us-ascii?Q?47aF6dXMiIPqpiOgZqJUkMZvXhDNy0veE0ovePMqzX3j2/te0YvpVYrS3T5y?=
- =?us-ascii?Q?+FV7uAi/+gx8HT1d5O4gvLQ7flQHHmWfp9zv6PZAoKdDjolAW7lvU+9MAzIh?=
- =?us-ascii?Q?1APSj2Bg6a2qRJPPRxk7D1MrEXvTvPClptvT1i0LibECQHDfh70HnhksTTiR?=
- =?us-ascii?Q?r838UC9yJtrek5EET/R+l2tcR8QIlkYljkFt2bG0ViK73gKxlW9Iugh9awkv?=
- =?us-ascii?Q?EDPnCZn9VGf8EAWnJhOBpuMNsQdkFZ4aH3FGIV1P7uUP0dkGAB5nflTXo9Fj?=
- =?us-ascii?Q?p8x6Pvz9KPwukqeA2yA/t/g3k6D47POzLWuHmVRsDjClDanlIvtfmkfumqRv?=
- =?us-ascii?Q?wypV2F6gm/HyRngbPCRvUsr8jYzigPsKxCL3/sY9FVYp55AYJsopBynfriti?=
- =?us-ascii?Q?QfYBfoKsGd2Eu//0r1N67NenhZLqAVyoLyFIHgAjwE9xxoVvSSsuzmlfA5pk?=
- =?us-ascii?Q?9TSg7lC3b15s0FcK5d/xQJyHDTTX9BOHJgfdA2TPNti5Y/7T2ngYkWkvVkf3?=
- =?us-ascii?Q?5tS87Qwb7o0eq6DpjVcg7Evvcl5ATyDldhtClLR1OUGrsiHsOXFXzjpAEf8E?=
- =?us-ascii?Q?+JLzyHDzQ0wlL8lbU9APC9zu69OPXD9t6wORppIU94Z5Ax0JlP2IAfOSdep0?=
- =?us-ascii?Q?tiv9kjfWJPPq9iB/m2iv4R4gkK5Z+Re1nZP6wQBY?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19de771a-efa1-4654-1ecb-08dd705d8e54
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2025 14:08:48.2087
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s1OTNCiYs/NMY1YnMK6RULTEMkcZjQCBGFuqUpjVsrKmwQ1MNNeLU+E1ALy8K1f4JmKDg2tL/L1gT1YJHpOjwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7842
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2301b0f7-1a76-4823-8d3f-d346f8f8e865@gmail.com>
 
-On Mon, Mar 31, 2025 at 07:22:45PM +0800, Peng Fan (OSS) wrote:
->From: Peng Fan <peng.fan@nxp.com>
->
->Same as
->commit 47e6ab07018e ("remoteproc: imx_dsp_rproc: Add mutex
->protection for workqueue") and commit 35bdafda40cc ("remoteproc:
->stm32_rproc: Add mutex protection for workqueue"), imx_rproc driver
->also has similar issue, although no issue reported until now.
->
->Reuse the commit log from the fix to imx_dsp_rproc:
->
->The workqueue may execute late even after remoteproc is stopped or
->stopping, some resources (rpmsg device and endpoint) have been
->released in rproc_stop_subdevices(), then rproc_vq_interrupt()
->accessing these resources will cause kennel dump.
->
->Call trace:
-> virtqueue_add_split
-> virtqueue_add_inbuf
-> rpmsg_recv_done
-> vring_interrupt
-> rproc_vq_interrupt
-> imx_rproc_vq_work
-> process_one_work
-> worker_thread
-> kthread
-> ret_from_fork
->
->Signed-off-by: Peng Fan <peng.fan@nxp.com>
->---
-> drivers/remoteproc/imx_rproc.c | 6 ++++++
-> 1 file changed, 6 insertions(+)
->
->diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
->index 74299af1d7f1..f933c8f4fc8b 100644
->--- a/drivers/remoteproc/imx_rproc.c
->+++ b/drivers/remoteproc/imx_rproc.c
->@@ -5,6 +5,7 @@
+On Fri, Mar 28, 2025 at 02:34:11PM +0200, Mihalcea Laurentiu wrote:
 > 
-> #include <dt-bindings/firmware/imx/rsrc.h>
-> #include <linux/arm-smccc.h>
->+#include <linux/cleanup.h>
-> #include <linux/clk.h>
-> #include <linux/err.h>
-> #include <linux/firmware/imx/sci.h>
->@@ -785,6 +786,11 @@ static void imx_rproc_vq_work(struct work_struct *work)
-> 					      rproc_work);
-> 	struct rproc *rproc = priv->rproc;
+> On 25.03.2025 05:23, Rob Herring wrote:
+> > On Mon, Mar 24, 2025 at 12:25:52PM -0400, Laurentiu Mihalcea wrote:
+> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>
+> >> Add documentation for IMX AIPSTZ bridge.
+> >>
+> >> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> >> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> >> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >> ---
+> >>  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 107 ++++++++++++++++++
+> >>  1 file changed, 107 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >> new file mode 100644
+> >> index 000000000000..c0427dfcdaca
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+> >> @@ -0,0 +1,107 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: Secure AHB to IP Slave bus (AIPSTZ) bridge
+> >> +
+> >> +description:
+> >> +  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters
+> >> +  issuing transactions to IP Slave peripherals. Additionally, this module
+> >> +  offers access control configurations meant to restrict which peripherals
+> >> +  a master can access.
+> > Wrap at 80 chars.
 > 
->+	guard(mutex)(&rproc->lock);
->+
->+	if (rproc->state != RPROC_RUNNING)
-
-Rethink this, I may need update this to
-"if (rproc->state != RPROC_RUNNING && rproc->state != RPROC_ATTACHED)"
-same as stm32_rproc.c.
-
-Thanks,
-Peng
-
->+		return;
->+
-> 	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
-> }
 > 
->-- 
->2.37.1
->
+> fix in v4, thx
+> 
+> 
+> >
+> >> +
+> >> +maintainers:
+> >> +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    const: fsl,imx8mp-aipstz
+> >> +
+> >> +  reg:
+> >> +    maxItems: 2
+> >> +
+> >> +  reg-names:
+> >> +    items:
+> >> +      - const: bus
+> >> +      - const: ac
+> >> +
+> >> +  power-domains:
+> >> +    maxItems: 1
+> >> +
+> >> +  "#address-cells":
+> >> +    const: 1
+> >> +
+> >> +  "#size-cells":
+> >> +    const: 1
+> >> +
+> >> +  "#access-controller-cells":
+> >> +    const: 0
+> > With 0 cells, how do you identify which device it is?
+> 
+> 
+> we don't atm. We're relying on the default configuration.
+
+Then you don't really need the property at all. However, if you ever 
+need the non-default and configure it, adding it or changing it later is 
+an ABI issue. So better to define it correctly sooner rather than later.
+
+> 
+> 
+> we don't have any APIs for AC configuration so I left the
+> 
+> cell number to 0 thinking that the cell number might depend
+> 
+> on the API.
+> 
+> 
+> if need be, I can set it to the value I was initially thinking of in v4.
+> 
+> 
+> >
+> >> +
+> >> +  ranges: true
+> >> +
+> >> +# borrowed from simple-bus.yaml, no additional requirements for children
+> >> +patternProperties:
+> >> +  "@(0|[1-9a-f][0-9a-f]*)$":
+> >> +    type: object
+> >> +    additionalProperties: true
+> >> +    properties:
+> >> +      reg:
+> >> +        items:
+> >> +          minItems: 2
+> >> +          maxItems: 4
+> >> +        minItems: 1
+> >> +        maxItems: 1024
+> >> +      ranges:
+> >> +        oneOf:
+> >> +          - items:
+> >> +              minItems: 3
+> >> +              maxItems: 7
+> >> +            minItems: 1
+> >> +            maxItems: 1024
+> >> +          - $ref: /schemas/types.yaml#/definitions/flag
+> >> +    anyOf:
+> >> +      - required:
+> >> +          - reg
+> >> +      - required:
+> >> +          - ranges
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - reg
+> >> +  - reg-names
+> >> +  - power-domains
+> >> +  - "#address-cells"
+> >> +  - "#size-cells"
+> >> +  - "#access-controller-cells"
+> >> +  - ranges
+> >> +
+> >> +additionalProperties: false
+> >> +
+> >> +examples:
+> >> +  - |
+> >> +    #include <dt-bindings/clock/imx8mp-clock.h>
+> >> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> >> +
+> >> +    bus@30c00000 {
+> >> +        compatible = "fsl,imx8mp-aipstz";
+> >> +        reg = <0x30c00000 0x400000>, <0x30df0000 0x10000>;
+> > It doesn't look like you have any registers in the 1st entry, but they 
+> > are child devices? Then you should use ranges and drop it here:
+> >
+> > ranges = <0x0 0x30c00000 0x400000>;
+> 
+> 
+> I guess this would mean switching from global addresses (current way) to
+> 
+> bus-relative addresses for the child devices. This wasn't my intent.
+> 
+> 
+> I wonder if we could just switch to V2 in which we just use the bridge's AC
+> 
+> configuration space and an empty 'ranges':
+> 
+> 
+> aips5: bus@30df0000 {
+> 
+>     compatible = "fsl,imx8mp-aipstz";
+> 
+>     reg = <0x30df0000 0x10000>;
+> 
+>     /* some more properties here */
+> 
+>     ranges;
+> 
+> };
+> 
+> 
+> or as Marco just suggested use
+> 
+> 
+> ranges = <0x30c00000 0x30c00000 0x400000>;
+> 
+> 
+> instead of an empty 'ranges' to restrict the bus size.
+> 
+> 
+> Personally, I'm fine with both approaches but what's your opinion on this?
+
+The latter restricting the size is my preference.
+
+Rob
