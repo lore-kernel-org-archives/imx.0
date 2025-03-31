@@ -1,150 +1,120 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EDBF9CB
-	for <imx@lists.linux.dev>; Mon, 31 Mar 2025 07:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27521C84C4
+	for <imx@lists.linux.dev>; Mon, 31 Mar 2025 08:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743405585; cv=none; b=Lf8KLiexXoFYvhrn/1GILa57T6gVS1wg3JJKgWI6ZkhoG7potSrbFyU/4NmXU/YxWuQxTFASIxh5WELLILNy+LcrQqawxePWRe7lCbYWIneYNFdkuenG78/LnEYARHsku+4HM2bdt4queu4aeU0HD8/Dn6Gg8mb6QJq5c8wQW0s=
+	t=1743408154; cv=none; b=AxEoMiskWLHJpbj9rZ3K+GwOrB/Hzo7rarN13Q5v6JQ8fRMYhlrqe6l/hZ7SFAZzmi0c0Tf6vvoaUd6yU5Qpt9cmeQKQHwGOYGcCu+fycOxJGPCurB2ip2eQRyWWLoZmeJZ31EjE2Q4MwN/gnT9wh4Q3mVC27Tc05NZGf3dZWQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743405585; c=relaxed/simple;
-	bh=kLv4EqQgwdCrvSrr5EdhdhHZ0fV3NRImHOB9sTXjSBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r2Zf52B1JYP8UPlKv8mohB/3dU8a1Npl5a7zE2gcWIgz2c96ulCxw+Oozyonio7qLCxkRbrB17G0E+iOHIPPa43UaO9ntbvl8RYYx9SHnFWD/EKbJsRc7vot5uu5uXLfIIqmaOAMG/kG20cyYFrhYujvrhs7kIWcPPccEBuX+1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=bkhLB0um; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="bkhLB0um"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E28310252BE4;
-	Mon, 31 Mar 2025 09:19:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1743405581; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=zHC+RUrju8uKC19QVlEvi9qbZzniETFM7Cs0X8sau98=;
-	b=bkhLB0umV2e81WF2Xl3qKpOmUa/m+lCyAO1SLB+J/DjY3URF5h4HBKASO1E764K59F16w1
-	9FXE1LwUK4wbsmZVn0NuYH/B03EWeD59CgoypJrleWWvnlpnNxtwVilL00I1zIo02gHV+n
-	CHXyvOzfTgsA2Lqk444swNg+4KYlHhqM/vjf4XZ/FhwxNz8nB2azqF+0hlN1iqMNXb9kTU
-	BoaLgH9lJMl0iQTZ8jY0nkjDBeZSDTTvkRJwPZ0MKuDVJVB/R1SeYehzf+kpeGyzSeLLxL
-	+gh9/Wn1qrBHUuGBjqYH36qE3cxTegWmzsu1q4/eLg9h0f/fchMFOfoNZSH71A==
-Date: Mon, 31 Mar 2025 09:19:26 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: Add MTIP L2 switch description
-Message-ID: <20250331091926.6f3dba38@wsk>
-In-Reply-To: <d4c8de9b-e52c-480b-a3bf-e82979602477@kernel.org>
-References: <20250328133544.4149716-1-lukma@denx.de>
-	<20250328133544.4149716-2-lukma@denx.de>
-	<e6f3e50f-8d97-4dbc-9de3-1d9a137ae09c@kernel.org>
-	<20250329231004.4432831b@wsk>
-	<564768c3-56f0-4236-86e6-00cacb7b6e7d@kernel.org>
-	<20250330223630.4a0b23cc@wsk>
-	<d4c8de9b-e52c-480b-a3bf-e82979602477@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1743408154; c=relaxed/simple;
+	bh=Rw5ohSoBs7ihq12VPqJvT1/P3g+JZLa+BPqoZgrIT6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OGohsDFaN7NWTsVV1x7WVXAm2ahk/hsrtVXIWxKgyGk6yOGdMP5ORs6HB2B3HMvFgt32GeJ+1z8GzIKJqQBn0WcGFn2CClp25HIZXtEnOj5Plr1YapCo9DoPu3vocXenvgCBJL89R4hJn4c0bWKrSrQhOjW1m1Cs2MC+Uzq+zSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
+ (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 31 Mar
+ 2025 10:02:21 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
+ 15.01.2507.039; Mon, 31 Mar 2025 10:02:20 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Frank Li <Frank.li@nxp.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>, Peter Chen
+	<peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>, Roger Quadros
+	<rogerq@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	Jonas Blixt <jonas.blixt@actia.se>
+Subject: Re: [PATCH v7 00/17] mm, dma, arm64: Reduce ARCH_KMALLOC_MINALIGN to
+ 8
+Thread-Topic: [PATCH v7 00/17] mm, dma, arm64: Reduce ARCH_KMALLOC_MINALIGN to
+ 8
+Thread-Index: AQHboAAzgh/yl+5aq0iI+AsHqQOMo7OI4SUAgAPjxwA=
+Date: Mon, 31 Mar 2025 08:02:20 +0000
+Message-ID: <6f5877cb-e6b7-4420-9a92-d2f44f931e8f@actia.se>
+References: <20230612153201.554742-1-catalin.marinas@arm.com>
+ <ab2776f0-b838-4cf6-a12a-c208eb6aad59@actia.se>
+ <Z+b6qrgXz/NTOs5r@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z+b6qrgXz/NTOs5r@lizhi-Precision-Tower-5810>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-esetresult: clean, is OK
+x-esetid: 37303A2955B144526C7360
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6285582D07366E4D8EF7B74993B8B916@actia.se>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/_S/Kbz_Yl3YhS+ddHATqFlD";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/_S/Kbz_Yl3YhS+ddHATqFlD
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Krzysztof,
-
-> On 30/03/2025 23:04, Lukasz Majewski wrote:
-> > Hi Krzysztof,
-> >  =20
-> >> On 29/03/2025 23:10, Lukasz Majewski wrote: =20
-> >>>>> +     =20
-> >>>>
-> >>>> If this is ethernet switch, why it does not reference
-> >>>> ethernet-switch schema? or dsa.yaml or dsa/ethernet-ports? I am
-> >>>> not sure which one should go here, but surprising to see none.
-> >>>> =20
-> >>>
-> >>> It uses:
-> >>> $ref:=C2=B7ethernet-controller.yaml#
-> >>>
-> >>> for "ports".
-> >>>
-> >>> Other crucial node is "mdio", which references $ref: mdio.yaml#
-> >>> =20
-> >>
-> >> These are children, I am speaking about this device node. =20
-> >=20
-> > It looks like there is no such reference.
-> >=20
-> > I've checked the aforementioned ti,cpsw-switch.yaml,
-> > microchip,lan966x-switch.yaml and
-> > renesas,r8a779f0-ether-switch.yaml.
-> >=20
-> > Those only have $ref: for ethernet-port children node.
-> >=20
-> > The "outer" one doesn't have it.
-> >=20
-> >=20
-> > Or am I missing something? =20
->=20
-> There is ethernet-switch.yaml for non-DSA switches and there is DSA
-> (using ethernet switch, btw). I don't know why these devices do not
-> use it, I guess no one converted them after we split ethernet-switch
-> out of DSA.
-
-In net next there is:
-Documentation/devicetree/bindings/net/dsa/dsa.yaml
-Documentation/devicetree/bindings/net/mscc,vsc7514-switch.yaml
-
-which uses
-$ref: ethernet-switch.yaml#
-
-I will add it in a similar way as it is in dsa.yaml.
-
->=20
-> Best regards,
-> Krzysztof
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/_S/Kbz_Yl3YhS+ddHATqFlD
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfqQf4ACgkQAR8vZIA0
-zr3YwAf/W+aAijdBzs/ijQ5WOVZ40ggbPOSDQyVVgE911O2jLoMAf5iA1mI+/PA5
-y0NhWmAIJajXD/3tu6T2jL+/KGfOPptU0BfJ3W1J5jmGj/rO0VAcESegy115wfBq
-Po6x6ouWXbUymQDWpnAQWp7iABOdYLcYZx1R8vsoGiqpmRbTSVg0gil/+XjcyPH7
-v0B07w8aV4RD3iBnKqM6n0Y+nRWzSUR0ckDEy4bJAz0jJ5Dmf7XS/hlY5UCBVAAv
-2J7dgIMLiAzgLub3niwGAtW2isR30sQC165/6f15tr8int/cM2w9Lhe05nr2EbJ5
-aqmbze9vgtfJAKTyDqq51IBHO8SyDA==
-=zeoN
------END PGP SIGNATURE-----
-
---Sig_/_S/Kbz_Yl3YhS+ddHATqFlD--
+SGkgRnJhbmssDQoNCk9uIDMvMjgvMjUgODozOCBQTSwgRnJhbmsgTGkgd3JvdGU6DQo+IE9uIEZy
+aSwgTWFyIDI4LCAyMDI1IGF0IDA0OjQxOjA1UE0gKzAwMDAsIEpvaG4gRXJuYmVyZyB3cm90ZToN
+Cj4+IE9uIDYvMTIvMjMgNTozMSBQTSwgQ2F0YWxpbiBNYXJpbmFzIHdyb3RlOg0KPj4+IEhpLA0K
+Pj4+DQo+Pj4gVGhhdCdzIHY3IG9mIHRoZSBzZXJpZXMgcmVkdWNpbmcgdGhlIGttYWxsb2MoKSBt
+aW5pbXVtIGFsaWdubWVudCBvbg0KPj4+IGFybTY0IHRvIDggKGZyb20gMTI4KS4gVGhlcmUncyBu
+byBuZXcvZGlmZmVyZW50IGZ1bmN0aW9uYWxpdHksIG1vc3RseQ0KPj4+IGNvc21ldGljIGNoYW5n
+ZXMgYW5kIGFja3MvdGVzdGVkLWJ5cy4NCj4+Pg0KPj4+IEFuZHJldywgaWYgdGhlcmUgYXJlIG5v
+IGZ1cnRoZXIgY29tbWVudHMgb3Igb2JqZWN0aW9ucyB0byB0aGlzIHZlcnNpb24sDQo+Pj4gYXJl
+IHlvdSBvayB0byB0YWtlIHRoZSBzZXJpZXMgdGhyb3VnaCB0aGUgbW0gdHJlZT8gVGhlIGFybTY0
+IGNoYW5nZXMgYXJlDQo+Pj4gZmFpcmx5IHNtYWxsLiBBbHRlcm5hdGl2ZWx5LCBJIGNhbiBwdXNo
+IGl0IGludG8gbGludXgtbmV4dCBub3cgdG8gZ2l2ZQ0KPj4+IGl0IHNvbWUgd2lkZXIgZXhwb3N1
+cmUgYW5kIGRlY2lkZSB3aGV0aGVyIHRvIHVwc3RyZWFtIGl0IHdoZW4gdGhlDQo+Pj4gbWVyZ2lu
+ZyB3aW5kb3cgb3BlbnMuIFRoYW5rcy4NCj4+Pg0KPj4+IFRoZSB1cGRhdGVkIHBhdGNoZXMgYXJl
+IGFsc28gYXZhaWxhYmxlIG9uIHRoaXMgYnJhbmNoOg0KPj4+DQo+Pj4gZ2l0Oi8vZ2l0Lmtlcm5l
+bC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2FybTY0L2xpbnV4IGRldmVsL2ttYWxsb2Mt
+bWluYWxpZ24NCj4+Pg0KPj4NCj4+IChJIHRyaW1tZWQgdGhlIHJlY2lwaWVudHMgYW5kIGFkZGVk
+IGxpbnV4LXVzYiBhbmQgaW14IG1haWxpbmcgbGlzdCwgKw0KPj4gY2RuczMgbWFpbnRhaW5lcnMp
+DQo+Pg0KPj4gSGkgQ2F0YWxpbiwgbGlzdHMsDQo+Pg0KPj4gU2VlbiBvbiBMaW51eCA2LjEyLjIw
+LCBpdCBpcyBub3QgdHJpdmlhbCBmb3IgdXMgdG8gdGVzdCBsYXRlciBrZXJuZWxzIHNvDQo+PiBp
+ZiB0aGUgaXNzdWUgaXMgcG90ZW50aWFsbHkgZml4ZWQgd2UgYXJlIG1vcmUgdGhhbiBoYXBweSB0
+byBjaGVycnktcGljaw0KPj4gdGhlIHBvdGVudGlhbCBmaXhlcyBhbmQgZ2l2ZSB0aGVtIGEgZ28u
+DQo+Pg0KPj4gSGF2aW5nIGFuIFNNU0M5NTEyIChzbXNjOTV4eCkgVVNCIEV0aGVybmV0L0h1YiBj
+aGlwIGF0dGFjaGVkIHRvIHRoZSBhcm12OA0KPj4gU29DIGlNWDhRWFAgb3ZlciB0aGUgQ2FkZW5j
+ZSBVU0IzIFVTQjIgaW50ZXJmYWNlIChjZG5zMy1pbXgpIHdpbGwgc2luY2UNCj4+IHRoZSBwYXRj
+aCBzZXQgYXQgWzBdIGNhdXNlIHJhbmRvbSBpbnRlcnJ1cHQgc3Rvcm1zIG92ZXIgdGhlIFNNU0M5
+NTEyIElOVA0KPj4gRVAuDQo+IA0KPiBEbyB5b3Uga25vdyB3aGVyZSBidXkgU01TQzk1MTIgVVNC
+IEV0aGVybmV0L0h1Yj8NCg0KQSBxdWljayBnb29nbGUgc2VhcmNoIGRpZG4ndCBmaW5kIG15IGFu
+eSBkb25nbGVzIHRoYXQgYXJlIHN0aWxsIA0KYXZhaWxhYmxlLCBob3dldmVyIHRoZSBTTVNDIDk1
+eHggc2VyaWVzIG9mIGNoaXBzIHVzZWQgdG8gYmUgcG9wdWxhciBpbiANClVTQiB0byBFdGhlcm5l
+dCBkb25nbGVzLg0KDQpPdGhlcndpc2UgdGhleSBhcmUgbWFkZSBieSBNaWNyb2NoaXAgdG9kYXks
+IGFueSB2YXJpYW50IG9mIHRoZSBTTVNDIDk1eHggDQpzaG91bGQgYmUgYWJsZSB0byB0cmlnZ2Vy
+IHRoZSBwcm9ibGVtLg0KDQo+IA0KPj4NCj4+IFRoZSByZWFzb24gZm9yIHRoZSBzdG9ybSBpcyB0
+aGF0IHRoZSBhc3luYyBVUkJzIHF1ZXVlZCBhdCBbMV0gcmlnaHQgYmVmb3JlDQo+PiB0aGUgaW50
+ZXJydXB0IGNvbmZpZ3VyYXRpb24gWzJdIGluIHRoZSBkcml2ZXIuDQo+PiBXaXRoIFswXSBhcHBs
+aWVkLCB0aG9zZSBhc3luYyBVUkJzIGFyZSBsaWtlbHkgY2xvYmJlcmluZyBhbnkgVVJCIGxvY2F0
+ZWQNCj4+IGFmdGVyIHRoZW0gaW4gbWVtb3J5IHNvbWV3aGVyZSBpbiB0aGUgeGhjaSBtZW1vcnkg
+c3BhY2UuDQo+PiBUaGUgbWVtb3J5IGNvcnJ1cHRpb24gb25seSBoYXBwZW5zIGlmIHRoZXJlIGlz
+IG1vcmUgdGhhbiBvbmUgVVJCIGluIHRoZQ0KPj4gcXVldWUgYXQgdGhlIHNhbWUgdGltZSwgbWFr
+aW5nIHRoZXNlIGFzeW5jIFVSQnMgYSBnb29kIHRyaWdnZXIgb2YgdGhlDQo+PiBwcm9ibGVtLg0K
+Pj4gSWYgd2UgZm9yY2UgdGhvc2UgVVJCcyB0byBiZSBzeW5jIG9yIHVzZSB0aGUgaGFjayBpbmxp
+bmVkIGJlbG93LCB0aGUNCj4+IHByb2JsZW0gZ29lcyBhd2F5Lg0KPj4NCj4+IFRoZSBjb250ZW50
+IG9mIHJlYWRfYnVmIGluIHRoZSBpbnRlcnJ1cHQgY29uZmlndXJhdGlvbiByZWFkIGF0IFsyXSBs
+b29rcw0KPj4gdG8gYmUgdGhlIGxvLXBhcnQgb2YgYSBwb2ludGVyICstMjAgYnl0ZXMgZGlzdGFu
+Y2UgZnJvbSB0aGUgcG9pbnRlcnMNCj4+IHByZXNlbnQgaW4gdGhlIGFzeW5jIFVSQnMgcXVldWVk
+IGZyb20gWzFdIHdoZW4gd2UgZHVtcGVkIHRoZSBVUkIgc3RydWN0dXJlcw0KPj4gaW5zdGVhZCBv
+ZiB0aGUgZXhwZWN0ZWQgcmVnaXN0ZXIgY29udGVudHMuDQo+Pg0KPj4gQXR0YWNoZWQgYXJlIDMg
+dXNibW9uIGNhcHR1cmVzLCB3aXRoIHNvbWUgYW5ub3RhdGlvbnMsIHdoaWNoIHdlIHRob3VnaHQN
+Cj4+IG1pZ2h0IGNvbnRhaW4gdXNlZnVsIGhpbnRzLg0KPj4NCj4+ICogdXNiLWFubm90YXRlZC1i
+YWQucGNhcG5nIHNob3dzIHRoZSBVUkIgdGhhdCB3aWxsIGdldCBjbG9iYmVyZWQgaXMgcXVldWVk
+DQo+PiAgICAgYXQgcG9zaXRpb24gMjgwLCBhbmQgY29tcGxldGVzIGF0IDI4Mi4NCj4+DQo+PiAq
+IHVzYi1hbm5vdGF0ZWQtZ29vZC5wY2Fwbmcgc2hvd3MgdGhlIFVSQiB0aGF0IGdldHMgY2xvYmJl
+cmVkIGluIHRoZSBiYWQNCj4+ICAgICBjYXNlIGlzIHF1ZXVlZCBhdCBwb3NpdGlvbiAyODIgYW5k
+IGNvbXBsZXRlcyBhdCAyODMuDQo+Pg0KPj4gVGhlIGFib3ZlIGNhcHR1cmVzIGFyZSBmcm9tIGEg
+a2VybmVsIHdoZXJlIHRoZSBoYWNrIGhhcyBub3QgYmVlbiBhcHBsaWVkLg0KPj4NCj4+ICogdXNi
+LWFubm90YXRlZC1oYWNrZml4LnBjYXBuZyBzaG93cyB0aGUgVVJCIHRoYXQgZ2V0cyBjbG9iYmVy
+ZWQgaW4gdGhlDQo+PiAgICAgYmFkIGNhc2UgaXMgcXVldWVkIGF0IHBvc2l0aW9uIDIzOCBhbmQg
+Y29tcGxldGVzIGF0IDI0MC4NCj4gDQo+IE1haWxsaXN0IGhhdmUgbm90IGF0dGFjaG1lbnQuIENh
+biB5b3Ugc2VuZCBpdCB0byBtZSBkaXJlY3RseT8NCg0KDQpUaGUgbGludXgtdXNiIG1haWxpbmcg
+bGlzdCBwaWNrZWQgdXAgdGhlIGF0dGFjaG1lbnRzLg0KDQpodHRwczovL2xvcmUua2VybmVsLm9y
+Zy9saW51eC11c2IvWitiNnFyZ1h6JTJGTlRPczVyQGxpemhpLVByZWNpc2lvbi1Ub3dlci01ODEw
+L1QvI3QNCg0KQmVzdCByZWdhcmRzIC8vIEpvaG4gRXJuYmVyZw==
