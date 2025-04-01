@@ -1,160 +1,65 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C4B204C32
-	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 14:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673A22054ED
+	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 15:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743519513; cv=none; b=pYRrmFeesyG137CEyiOze7oVvJJEMPrgIWWtdniN+LgaJHfPeaP/cJCK+mZyTAgiTpplaZndUXAMvhPy+wzRBUcZs/axwxMnJpd64fCEpLa908xDw8CDRC4xIdy8jDUsGRxc0qT7mcx6pYFzMPDp4V5UeVCM7isXxGgyVuDeAeI=
+	t=1743519656; cv=none; b=AaLIzXv8xbRR6chtJXAyJg5pRZYIDk+4h1OXSIC6tN0TIdrzkHIGwUM9CqEguIxThwj7hXvJZjDa4/CLvFDBFFLfitb8qmX4qTD3sRp1G51WIq64UFN1xTbjjwemhjDuM1Hs9FHTkO2pnyUltXzYT8hRVIeaLfyIRMmGEvyE4KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743519513; c=relaxed/simple;
-	bh=kKrSJRKxG6Oo8a53ImmPS1bX1Mb/wo/W9WNq1FTLY8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L3CC76wfx24Art4Mx1s9DIghRTwIlj7jrTcLuuhMcPuNp3jdL7UnBb+pO/zs/mqpnUhTvJ007Zp/nvErCMxg0vwPYA5fz2mDG8xcNI77/aQ0avodsDXtpMiTYvf0aD2ieskgI0/MqDzYfOiRmCWOBRnzBRS9MXwmtLh4gOvf3I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=pjCS6mef; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OTP42og4; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="pjCS6mef";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OTP42og4"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6D89C1140228;
-	Tue,  1 Apr 2025 10:58:30 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 01 Apr 2025 10:58:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1743519510; x=1743605910; bh=KC
-	7mtGUrl9eJOorNVhvs5IRYDxTtF1iPCLypMstgG1M=; b=pjCS6mef6g09gX95WZ
-	jBXTy/wLyOHduNKnSK3N5s4fGRN29gF3uvFtOwQM0kuicutS+T4avobqYPwGOofV
-	iyLOMyxyvCYVkoO+44arqlsmIKRP3OyzJz0SKfb4Fgfd7CPOs2aneZixLCKhtDuL
-	RuzwiXGPW+Z3eZ1OSq5UoXQ2JEISpdAZ4+MC9b7q1ZndjObLiZfiY7m7kIubq13G
-	2lAvpfo20MjeI5TawaKwQQ1P21EyprmAivtMiKUgrWA9RkRvorRz1ufvJ7qIkIQc
-	s7CfDfq98pazwNVjCAVFD46JqKIbcZfxuN620m2oeOkd1EWPmnyYN+W5s8rxw+/H
-	su+w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1743519510; x=1743605910; bh=KC7mtGUrl9eJOorNVhvs5IRYDxTt
-	F1iPCLypMstgG1M=; b=OTP42og402cI82T+4HldBJdTdKEAkUREAlQH+T4HsUBi
-	8OsjyrJNyhTZ1T3tF2cNDiSsNML4YGsLEXWxnwIon1gQcilbYRzf2w4sM1NBKf17
-	NJQOzlhzUFKIDmCY8eW6t1h9cjyYAt7huivyMaTGl5fKhpcvaF8zYt6c1Cy9WFlN
-	4PY/nPUSqbvJGRV1flX08EfJ6cykryGR8ofe91XaBdXqVxd55Pqfv65m2BXYeV0p
-	ACMgXWaqIaBjS4rJZ8mpwa/PyZHPWbbu7MQSvwswDQll65sXt2qLtZXsFtU9EEIM
-	t9ssjj6pJNoHD4v2NVd4HsZziX9V/nkZP9VDzLDV3A==
-X-ME-Sender: <xms:Ff_rZ3QhDKVzEwqFZBsHX9mDIEWLsHB58IUi4Ocs5UuQHoVqyP5tTA>
-    <xme:Ff_rZ4ySHuMzXcRBQiZGoKQrpCZhjbwpLz9GDpldJDalhbv8ppHK-_i63J0TlqKBL
-    7VoLOv34NDlPimgY1M>
-X-ME-Received: <xmr:Ff_rZ82FHqSchCBN2RO86CLdbYde3CS0sFF8Vh8NgJnk_5oQ4iukIkUNUiKhUoK2aIfexXRCFspxaIt2DMEj_ilu5Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeeftdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhephffvvefufffkofggtgfgsehtkeertdertdej
-    necuhfhrohhmpefpihhklhgrshcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhoug
-    gvrhhluhhnugdorhgvnhgvshgrshesrhgrghhnrghtvggthhdrshgvqeenucggtffrrght
-    thgvrhhnpeehudelteetkefgffefudefuedvjeeivdekhfevieefgeffheeltddvvefhfe
-    etgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehn
-    ihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrghtvggthhdrshgvpdhnsggprhgtph
-    htthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhgvrdhsthgv
-    vhgvnhhsohhnsehrrghsphgsvghrrhihphhirdgtohhmpdhrtghpthhtohepmhgthhgvhh
-    grsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    gtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhho
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhroh
-    hnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
-    pdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:Ff_rZ3CSFLEkejZ_FDMs1pFhiblXqSiZGk5j5mI3joXiAW5s7DIivA>
-    <xmx:Ff_rZwi-1jyDXUfpl12NKeFhecoNaOWq3IqBBLQ-NrE4hDpLyxGzdg>
-    <xmx:Ff_rZ7q1cHbfXjm2atFOF3EkE_y12kpetl9gBt6NZcTwg56eZhatNw>
-    <xmx:Ff_rZ7gNWPeyil3TiqemXrziJH8XLPoP4AV5y40kJELG-A1XeU0Skg>
-    <xmx:Fv_rZw6Vj5Mo1aNJo0S3unYucQho7l_Mj96jOA9_rmAaD7wMuRbinGtQ>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Apr 2025 10:58:29 -0400 (EDT)
-From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	s=arc-20240116; t=1743519656; c=relaxed/simple;
+	bh=7pJrgWLqk1prP4GmnWx1GLVm0go1qORG82fLRSO8ke8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fp7p76/m8ZFSiNhaTqLZ65MCLjsoyIxlqZ6JWqi2rSJoCDx66Vsa37LaOB0p9M+Y+U5uOY6HWrKYAZWjDa1Z3Gg63Md23mm5RNu3akdJ8JDFVHdPjQ2P1LcxXv9Fc6468U0f+hoTE2WGITBg7E+PXueOW60W5lFBvqI/mXY7F+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CCBC14BF;
+	Tue,  1 Apr 2025 08:00:58 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24B923F694;
+	Tue,  1 Apr 2025 08:00:52 -0700 (PDT)
+Date: Tue, 1 Apr 2025 16:00:49 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH] dt-bindings: media: i2c: imx219: Remove redundant description of data-lanes
-Date: Tue,  1 Apr 2025 16:57:58 +0200
-Message-ID: <20250401145759.3253736-1-niklas.soderlund+renesas@ragnatech.se>
-X-Mailer: git-send-email 2.49.0
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 3/7] firmware: arm_scmi: imx: Add i.MX95 LMM protocol
+Message-ID: <Z-v_oTjETSLoX1FB@pluto>
+References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
+ <20250303-imx-lmm-cpu-v3-3-7695f6f61cfc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250303-imx-lmm-cpu-v3-3-7695f6f61cfc@nxp.com>
 
-The bindings already reference video-interfaces.yaml in the endpoint
-node, there is no need to duplicate the description of the data-lanes
-property.
+On Mon, Mar 03, 2025 at 10:53:24AM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Add Logical Machine Management(LMM) protocol which is intended for boot,
+> shutdown, and reset of other logical machines (LM). It is usually used to
+> allow one LM to manager another used as an offload or accelerator engine.
+>
 
-  An array of physical data lane indexes. Position of an entry determines
-  the logical lane number, while the value of an entry indicates physical
-  lane, e.g. for 2-lane MIPI CSI-2 bus we could have "data-lanes = <1 2>;",
-  assuming the clock lane is on hardware lane 0. If the hardware does not
-  support lane reordering, monotonically incremented values shall be used
-  from 0 or 1 onwards, depending on whether or not there is also a clock
-  lane. This property is valid for serial busses only (e.g. MIPI CSI-2).
+Hi,
 
-What the generic binding do not cover is the behavior if the property
-would be omitted. But the imx219 driver have never agreed with the
-description neither. Before commit ceddfd4493b3 ("media: i2c: imx219:
-Support four-lane operation") the driver errored out if not 2 lanes
-where used, and after it if not 2 or 4 lanes where used.
+LGTM.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
----
-Hello,
-
-The data-lanes property is a common property and the driver have always
-operated as the common description, it seemed silly to break the driver
-to adhere to odd specification, then to correct the bindings. However a
-more correct solution would be to do the work on the driver of course.
-
-This is just a drive-by fix in the hope of sparing others the time to
-discover this oddity themself. This is only tested by using the bindings
-themself and by 'make dt_binding_check'.
----
- Documentation/devicetree/bindings/media/i2c/imx219.yaml | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/media/i2c/imx219.yaml b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
-index 07d088cf66e0..31beeb2be2ea 100644
---- a/Documentation/devicetree/bindings/media/i2c/imx219.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
-@@ -55,15 +55,6 @@ properties:
-         unevaluatedProperties: false
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
  
-         properties:
--          data-lanes:
--            description: |-
--              The sensor supports either two-lane, or four-lane operation.
--              If this property is omitted four-lane operation is assumed.
--              For two-lane operation the property must be set to <1 2>.
--            items:
--              - const: 1
--              - const: 2
--
-           clock-noncontinuous: true
-           link-frequencies: true
- 
--- 
-2.49.0
-
+Thanks,
+Cristian
