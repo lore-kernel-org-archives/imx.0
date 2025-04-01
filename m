@@ -1,153 +1,135 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53884207E17
-	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 16:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1E226AF3
+	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 16:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523565; cv=none; b=rJdsXJ6x6FTw0lQpKTjYzRzGWmIFjtkObmodC8q3xaMlX1uu1JaTXaYv04QGDNITCkRFoIJpNy7yZK755wM1Ox+/jul1nhnO76Z70sZi7sxThz4UQ2s4tV5YrIl4/iR9OYMtIVeUCXDzwhPin1qMBp3ZUmCTFzIDRVhb/BEo1R8=
+	t=1743525211; cv=none; b=cRSHHa35e64ntiK1mLe4Pq1Luwqcbp6LXaF++e1gMV1APi9bc7RyiJNp072DemF3ZwR9lfeHoc98D5LfOajY/gT4QtBY2fKjxcz7rgXU1t3arJaLbIJEKQD4Pga7bK00ah5kt+JdeIEW+/3Ou2bHV0e464CdNYc3+bGcJUsJ/TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523565; c=relaxed/simple;
-	bh=2DTe70VGxuBOt/LP/Qp4+Hu35qgNdvgQcrZCfnEFhzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8tBDhpjzQQqeMgWdnqi0dqP4Xkn4MpWOKtS8DoNnQHitn4DluoAR3s5y2B+CoExLjp9lXM+qv4R2xjREyiUje1cZGO61q10j0DMy7AtjzZ2MaPfco/adEtusJcwzQyQC9N8rkb0BgfjIEmMgMWVh2ZozunGE1Qqm+EHy3FnWxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mGbb+0y8; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1743525211; c=relaxed/simple;
+	bh=HBV3OATyBLffFwvC9GNpwqJ+RXlCjrFh9WfrEBF2cPU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=opZs54RTVGe6JbVg7n0Dn+62jJuY8RKpixh11VVXL2rpZaqOu6LBBkV7YS5hmz0R88KaaaqKfQOlapw6Y/LjEsFoGfRw8vBS2F+F995IZmEwqfhesjKh1ufdUtjuOvY+dc9Za7o6Y9XicmfDMV+RJlQpTdmv75sSV8t0JodzCxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=KgHXM3g3; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mGbb+0y8"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22438c356c8so112484605ad.1
-        for <imx@lists.linux.dev>; Tue, 01 Apr 2025 09:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743523560; x=1744128360; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AuO3JoiBaWEWl3zVvnUtjCtMgfiv8CYDUp0HTVXRARo=;
-        b=mGbb+0y8tniAdNvo3sxrhA/rUWaBNAWkM8vcTYSHZ8vXUs6iUZ4RcHPtSesbdca87e
-         P5wQe3179Hpv0etxq7xutGHCUM7zxVOGJnH8tFVAOAj2Zlf2Z6jZ9S37wwpeWsr4jTdt
-         tHNQeNqcEtaXYtrnZ0lFHiFP9SuAJEQlj//TSQDZBBociCqk0+Lccwx6ejwORuvSIHz+
-         p8m+fYr4M1D/aUjzT+a5V1R8ePsLECscAuBUal12Zj5w9CQmwoQ7H/jPQ6hyLL73rQhp
-         VPr2g7vmia5yAVNTKdHLqm2X6EEIHCPMQndol8nxo/sHpZol34T9qNG592rnF5jPa6gm
-         VRYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743523560; x=1744128360;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AuO3JoiBaWEWl3zVvnUtjCtMgfiv8CYDUp0HTVXRARo=;
-        b=VqehlABnzsZqbqHEaRrXXMss+oq87Zx66gq9P0y2AiZYSxauY6Mgt93DZYClmR2R0s
-         bW0a2arJ0SSBfqk9J0xuJaTgRZMidac+a/lRzz1fbkol12d/DIynEcgfZFeKGrL/OPuh
-         fAkyb2kKah29RB5gAX9gY238RfF9k2tr4Rnn9HKm0tqdfhoUu3dXZjUt7C/PjnocdPw5
-         zUjVW09rTtPquC3nrYHc6ZoSqW4aXLIpSlxzsU/SNVKmw63SgzcXtGN/iS1VzGIqCgEV
-         ZLv0rRlEWnNmLA8IuRH4Abh2YYT9bCehuFuTYZd5Tq/bVbarpCRF4NcY8yX9k+gPrvQF
-         KL9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXfDwqE5PjH6hdhY+QXzoYmEAfR+oev56Qs8+54Srs7Rw9OFIXbrxVZwIYV9BnygvwLsNM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQod16QD/ru9+RFE5Yi258Db82MXZg0Mp23uO1T46ex6W4ihr0
-	rsmk2wNPQI+2FlT/9reMtTDUdo65qCX6zCg15iFm64BJe7j4kIVxkoWp6DR8SBKmFlvE43nH8/K
-	3
-X-Gm-Gg: ASbGncvIQwvaMxAzrqi01u75qvvhhO6Y0xUZ5yZ6SuMpkvzJJc5noJkB1HyPSF0bcz4
-	jP1cnAZlLjMlKQtq1sdV17EtO/BWbQUefDDA5S0/7kOlME3Ol7HTjf0XSPVqwaxdt0nfytWmsoc
-	lEBz5iYKyeojmtN3qRrso1uqI8K/BUdawmwP4dCDJpHyE6Di0M/oLtqBfzm9GTOps3oEs8Vk4Ki
-	dsHgEkrW4j5SUGpvbHhbo44BWoXKOxC9i6QvylVHeTnwX8b292z/pDDGyExQhMoXs/VUC+o8+HF
-	RYnOVozj8Ku1wHwCz06rqu54HAzNSMX846hwNzuqEXVFt49q
-X-Google-Smtp-Source: AGHT+IHS665q9tq8I4Rn8gAFViO1Vbyxy5C1fhneAWy0pBzjbtNJpFCpmq60Cuhz94aODSClJDgSTA==
-X-Received: by 2002:a05:6a20:2d0c:b0:1f5:a577:dd24 with SMTP id adf61e73a8af0-2009f645311mr20981139637.25.1743523560465;
-        Tue, 01 Apr 2025 09:06:00 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:62bf:3c83:f3df:dc76])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af95d59a786sm5788320a12.53.2025.04.01.09.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 09:05:59 -0700 (PDT)
-Date: Tue, 1 Apr 2025 10:05:56 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" <linux-remoteproc@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH V2] remoteproc: imx_rproc: Add mutex protection for
- workqueue
-Message-ID: <Z-wO5PLU01Nd3QDU@p14s>
-References: <20250401140402.3676049-1-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="KgHXM3g3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1743525185; x=1744129985; i=wahrenst@gmx.net;
+	bh=HBV3OATyBLffFwvC9GNpwqJ+RXlCjrFh9WfrEBF2cPU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=KgHXM3g3wvKkus+hNzDX4KqqdHvpya2UPFML7PmBqacNzT+gp90UKidMdhQpqice
+	 41kWym4I6DRCuXDGEBDgMeJR0qroOq16ROVzr0xgtX/65dLRblNT3hfYSjD8VBXIq
+	 S76KUVz9uuWqisaKiqX7aaGOs2RKzBG0WpOh5a0lMXp0KpN4h7RpRHurXUjB4AOUs
+	 ZbvJzZYjcS0NIe0d8hjAdM80FFwutYZu4bju+4M2GfmFhzQCAb/2GErcZ6CwA3zD9
+	 yCCaJeStIY3yZdOL7Gd60h4YmFEYJyk/e5eVuKxEfkvWl5ha5N9KvxHntyrxbtmy5
+	 crLEEtpZs2vXZc+fhA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdvmO-1tQ2cB2W0M-00ljrU; Tue, 01
+ Apr 2025 18:33:05 +0200
+Message-ID: <3321314e-7a7f-4d7f-9a9e-6325515dc54c@gmx.net>
+Date: Tue, 1 Apr 2025 18:33:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401140402.3676049-1-peng.fan@oss.nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] net: mtip: Add support for MTIP imx287 L2 switch
+ driver
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250331103116.2223899-1-lukma@denx.de>
+ <20250331101036.68afd26a@kernel.org> <20250331211125.79badeaf@wsk>
+ <ec703b87-91a4-4ed0-a604-aceb90769ab0@gmx.net> <20250331234228.5d8249ac@wsk>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250331234228.5d8249ac@wsk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:68p8hz1F08ZmKCxbkhgcqwkIdROGb+6sGIkTANYH8O7UQdh0Oua
+ eeiOaVLGDtFm9vAyJ/dCjGDI3wReTJlo4Gl0jw24kaN+nedqhpWmi9Q8Y4xrCma/cDAOWoC
+ N+inzLFLNuUNjkOTteQ9kcCA97oiH+1alEEIarJU4maY/l8XQL9vWvhEW5kTe93Qxe9P63b
+ VJfeWo+HiKpA5OZkgEEGw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:VqfWaRwx+Hg=;Fvssj492yIuTEIYQDlpSfvdmJhp
+ xQA5iGGsE+WReEIKKpJcXwTZzPa0DHxxWkKg5gq2m40q4cHtuC0qzbER57LiN7X7IFXYdHCir
+ 8qxY5rxON4iixQk+tiBdcA3O5OZLOhbhipuzyIwT3MszLrXTF7ITHEIpJD0UzW3JApTgYSRcY
+ Qq6009tKfOt7Hl/7PwgExj1wpkjXrM8s3X/HhsbVC96ojFuf79DZYopr2MoW/rZY6UonIuVGt
+ eE6PFuyOKEICa77x4FWqFzKIglddP4PT56KWMJta27OK/zs3aRk9OXwHf2DTy8DYxZ8p1e19D
+ 23q2XMImtyGXCE16K50hmif+4pKccgcQqIFBFhTN327qhNXNIItamBdR1t7vmUbYFQYReiy3z
+ zFp89QT0QYyZhkMIWz4RshFKOiUMsVj8QJJjlloqZLlm5jE0E3EPu5CP+hE+CurV7Ji7qvo1z
+ D06poD78NGOJTyQZ17uyfPKH0dXkpn2wx3+bMmpqbTAbV16/SAway+2vMuw/X3G51ZHd6F/xd
+ 4SlTZaIOGLA/aLT0XAtRDV6zHzWM3jfu1AaiUtBe7qE4R7a03oWtvKHCk4MRn3tOG/MEZ4IbT
+ TEcXQpS018dRGOYMbTGmXWJy7Gd7jesqpQ5jlrRlgZhQoWF0nZ06P4IbSxbrsIHe2o8KlLDeQ
+ nyGiidWAsIrA+xz7vBYjv2S1PMEPUZ8QPAMZMKqpTYpru7BvIByyw/m+LnjI0lyomWR4F1ckU
+ uAYBUDz55LmAKiI0D4ua1WcUasK/YHOAP4WAjmmJocI0KfCiIbHFlnR9/ZmgC1EWiM7y8KmoD
+ lfYFfAJxDKW0dWjcJaBpFhI28oqLAHjfPQ4d511Jd2H5zwLZwuR4BCjwxKrB9kdvZk8P8GtpK
+ vmP5A3OkwQevU36VG8jgICrWna/E/Xt+SEuFsMjLJ7SrTxc/AMxsNOsVUg6Zei1RHxEVCBMin
+ 9NDE0njXBOTXO+MBDJODz4KQRs+BirwdpaZeTzgXDjeYniQnDg+ElhTsq6p5K2nSyl8iuXO3B
+ N5ET6Fp5zZ29UA+/H1l9xXsl/cPyHkXvEXi75NvBLgMbK8gJOH0NpyZJtZadbKI5JnwVw15xg
+ fk6BUhb6UCCYZLG25uclTxYVwDGRY//Ybvp9i04zJpSzz6XmfdR6oSiGJa63a5th3/Pn4JlMu
+ VnwIv1EkHrAQH+cboqGgLF6XzAmmjQSSOtyJEgLrjcy32f58bBchSW+a+zIx9aG0yMQwcgHv8
+ j5+m8vMw+gCASBEwAsz6bYQna7E2B8vG8RY6vmoE6TcJ1TW3ndhAEVNRRgprdqOUi5T7gj2lR
+ wotcO2Rissl2nnqE5f+05BB2gWJX42s/mL4ukq4dZiYHLzRy5L1onRwkqE+tNtgfEjXhyyNaz
+ FnQHb2NgfzfwSHsQ0rDDQnxVjVPTDb/2okqk1jivJiindjnELeRGnN9LW9dZ9mVaVbLI1+XMj
+ 9J7X8PUUqEI2xybQK3wnJ8tmOINpqs4xNSPOKyvB9sP32rNfbCXYJ0of7wKMz+cGKm8b32Fyj
+ r3oFErA43f2H51SeVD0=
 
-On Tue, Apr 01, 2025 at 10:04:02PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Same as commit 47e6ab07018e ("remoteproc: imx_dsp_rproc: Add mutex
-> protection for workqueue") and commit 35bdafda40cc ("remoteproc:
-> stm32_rproc: Add mutex protection for workqueue"), imx_rproc driver
-> also has similar issue, although no issue reported until now.
-> 
-> The workqueue may execute late even after remoteproc is stopped or
-> stopping, some resources (rpmsg device and endpoint) have been
-> released in rproc_stop_subdevices(), then rproc_vq_interrupt()
-> accessing these resources will cause kennel dump.
-> 
-> Call trace:
->  virtqueue_add_split
->  virtqueue_add_inbuf
->  rpmsg_recv_done
->  vring_interrupt
->  rproc_vq_interrupt
->  imx_rproc_vq_work
->  process_one_work
->  worker_thread
->  kthread
->  ret_from_fork
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> 
-> V2:
->  Add RPROC_ATTACHED check, because i.MX supports remote cores started by
->  bootloader.
->  Update commit and add R-b from Frank
-> 
->  drivers/remoteproc/imx_rproc.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
+Am 31.03.25 um 23:42 schrieb Lukasz Majewski:
+> Hi Stefan,
+>
+>> Hi Lukasz,
+>>
+>> Am 31.03.25 um 21:11 schrieb Lukasz Majewski:
+>>> Hi Jakub,
+>>>
+>>>> On Mon, 31 Mar 2025 12:31:12 +0200 Lukasz Majewski wrote:
+>>>>> This patch series adds support for More Than IP's L2 switch driver
+>>>>> embedded in some NXP's SoCs. This one has been tested on imx287,
+>>>>> but is also available in the vf610.
+>>>> Lukasz, please post with RFC in the subject tags during the merge
+>>>> window. As I already said net-next is closed.
+>>> Ach, Ok.
+>>>
+>>> I hope, that we will finish all reviews till 07.04, so v4 would be
+>>> the final version.
+>> well i appreciate your work on this driver,
+> Do you maintain some vf610 or imx28 devices, which would like to use L2
+> switch?
+I've have been working with some i.MX28 devices and still "maintain" one
+i.MX28 platform of my employer. But it doesn't have a L2 switch.
 
-NACK - for the reasons I have explained in "[PATCH V2] remoteproc: core: Clear table_sz when rproc_shutdown"
+Many years again, I tried to mainline a driver for the on-chip regulator
+of i.MX28 SoC with cpufreq support at the end.
 
+https://github.com/lategoodbye/linux-mxs-power
 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 74299af1d7f1..4819a9e57543 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -5,6 +5,7 @@
->  
->  #include <dt-bindings/firmware/imx/rsrc.h>
->  #include <linux/arm-smccc.h>
-> +#include <linux/cleanup.h>
->  #include <linux/clk.h>
->  #include <linux/err.h>
->  #include <linux/firmware/imx/sci.h>
-> @@ -785,6 +786,11 @@ static void imx_rproc_vq_work(struct work_struct *work)
->  					      rproc_work);
->  	struct rproc *rproc = priv->rproc;
->  
-> +	guard(mutex)(&rproc->lock);
-> +
-> +	if (rproc->state != RPROC_RUNNING && rproc->state != RPROC_ATTACHED)
-> +		return;
-> +
->  	idr_for_each(&rproc->notifyids, imx_rproc_notified_idr_cb, rproc);
->  }
->  
-> -- 
-> 2.37.1
-> 
+Regards
