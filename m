@@ -1,253 +1,188 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013041.outbound.protection.outlook.com [52.101.67.41])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12FD1E9B34
-	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 08:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C601EA84
+	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 08:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743496714; cv=fail; b=gxRHqGoKbfnQWPKoOjKF4gonuTImGmxeUbSJ2z++SEDO62beacfA30P3usmnO8qcuI7xllqLuP52DhTN+ZCQ8vbQpjOlQZHPAZmRQdAFqEQg3ZhOlZMRoERtngTeg3WdOI1Yq2QUM8viInVVJ4PpWR9p05d2GvPDDqbmS0og6+Q=
+	t=1743497632; cv=pass; b=l4f+jP99mp9OokvyI7P8NT1puHaEOubFznmMxlGyiPXjZlgzAkUgxvp9ddTOVIzP6QrrulZy65TFVR9QUEFCyMXwWOM8H4UCzHhvWNLuoFFHr9gNnK1R07eyYj8bchuno148qINAwYfZRWXu+tsSnwjXJid5ZFxjeWz2LRUWaVg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743496714; c=relaxed/simple;
-	bh=sl+fakk1rd+OIzS56jjih5HytdC/4anI8EwLYtQigZE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Mvtr5F0KHIgt7DXlHCgZIEeAY0FAumBGKjE10wZiRmH/caxJtYzriyOSrFsZatnqSMVTJi6GiOVnz6Nf5Yr/tqgsWu60HYHRWoed2BNPX/AnCRl5Zy9I4B4kVsrjwA8LOwLVVNYPTTHo73B6ViR1ncFQlfBphIeapkE+oPu1tbc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l1vT2F5r; arc=fail smtp.client-ip=52.101.67.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1743497632; c=relaxed/simple;
+	bh=g9QHVW5E7yxcToZMnqomGt3CW3QJyyIarrxd9/qahdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P41tPyXKmi2gU7xD/BJv4bGjL4PpJ9FBorgw3nZyKIwf5Lrgqr3316flUHAE7qV052VryBVSV/oikWTTH/ROn2PKs+SRJN7cc7W49RnRf4kvK4TsQAFz7VbcsHh3ypno8w1LKs298oYuYsloe/oc+R1GRJiRCgSaKlPvZHGP7v0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b=PpVFWJD0; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l1vT2F5r"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uZ/OUxckt175ApP1/YUVd0DjJc5qRyk6uCF+dO8XJ3uAyIAaavTgnEhIlBHwN++uxBQz7cFBTsVIEssDPRMN66vww/Ul8LD1L+YCfDHASvZjA0UkLDS9mz4sP/rosswvgipAPuCJhy0Sfa3kbzSMwkoP9jsZavZAKZx79ojPfuY5Au/v1yftaQdO+aqYemjLOW5z7J5+f+CVR54AlzTquv36xfZMmsWxEDc9Ax5h1hS47ueVD6tg8d252BTaPHiRqegbKw/dATAuY68O9o0ycftHrXgkBCbsMl/qxaUfbuNybyY/odqNRzHHU2Q7iyZnsGG7G3W6JgBfD75ynAvrlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rpBKSzRuGxORWzLEil3B4+zHVM3drlL16o7EoQvX1YE=;
- b=vNv3q3fRu/h4Qe6Xa16g2GTZOEiHxsqM3zQ6ywmrNnI2mSHuH3h+9I04JleGdLJHygRVumHD5pWCxwyiWcit+uP2/qmuerihA8teaZwLIDOjdjDhqa34Gtsx8wxaxNVISqYU44LBQEpPq85zSnY+bmbUJjncUJaIXuieuT+J7l2OsW8c0y6KpzzuNz5zlrLOEFXhnJUvR4gQsRD/GR7IDAePREG/ozqYxAwZLYobNpuz0ACaVPpy0jIgImdjs5MVjZHcl+zUrS4eEySs3HV0mjTz2TUbSQwmoEXb7TlbZeyIDBjcl9X5TRg4A4rpmAm2N4KhOtM2ijTPf2B1fHpxbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rpBKSzRuGxORWzLEil3B4+zHVM3drlL16o7EoQvX1YE=;
- b=l1vT2F5rFj1p3tGS5UTd2SMjVPcq2O3/xpw/WPGslYiXCGG9hj467NxddAVvpbJTAyrMXi+tJernGuE10BY/PXElqtPC50q1j2AImEVgbMvFyeRfDJy/ewyVvGBcHU09ZkXz18UafnUn7T9sLGsJPFQquvwErXZ4/sDzp+4k6P3k4uZJ/QxYZgiPuc+P9+Yrk40kK4wOeZxZ8QB+Avbo1UVztnOg4yfBCuUSO2YSjszmhVOMvuSSCxl81sX3xnfx9Fj8Vd4qifsqR6IXFiZPCt7xN6BHlLpWBZHCrucPH5GLnkq0QJ2Afxseg6nWrqJtqB0eVFmrL7G381KgU9tzvw==
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
- by PAWPR04MB9862.eurprd04.prod.outlook.com (2603:10a6:102:391::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.46; Tue, 1 Apr
- 2025 08:38:25 +0000
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb%7]) with mapi id 15.20.8534.045; Tue, 1 Apr 2025
- 08:38:25 +0000
-From: Jacky Bai <ping.bai@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-CC: "kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Aisheng Dong <aisheng.dong@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>
-Subject: RE: [PATCH v4 2/3] arm64: dts: freescale: Add basic dtsi for imx943
-Thread-Topic: [PATCH v4 2/3] arm64: dts: freescale: Add basic dtsi for imx943
-Thread-Index: AQHbouFv5HbzsA+lsEu0Hze0QDq44g==
-Date: Tue, 1 Apr 2025 08:38:25 +0000
-Message-ID:
- <AS8PR04MB864236BC6C7DF6A262032E0F87AC2@AS8PR04MB8642.eurprd04.prod.outlook.com>
-References: <20250401071709.1138872-1-ping.bai@nxp.com>
- <20250401071709.1138872-3-ping.bai@nxp.com>
- <VI2PR04MB11147341873DC39C504EB9910E8AC2@VI2PR04MB11147.eurprd04.prod.outlook.com>
-In-Reply-To:
- <VI2PR04MB11147341873DC39C504EB9910E8AC2@VI2PR04MB11147.eurprd04.prod.outlook.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8642:EE_|PAWPR04MB9862:EE_
-x-ms-office365-filtering-correlation-id: 81c63664-ea63-4021-5ff6-08dd70f891a4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?K9B2m19jnbRJGngAdSTBDq0yBb4NCVcTIqFkU7GlF9LeZneSPmkrkw2xDsuI?=
- =?us-ascii?Q?2WkuYdNtaVJH6GmxsXn3tfq7s3RwIuLudOXa7bh6AsHZ9UwlAUqGW6E/lLzI?=
- =?us-ascii?Q?sfyo7OtLP0Tlk55X3Bghwzu/42n1OBfbBixwOiSgLmf7d+xBCci1ZuJDFv7u?=
- =?us-ascii?Q?iN2WVuMKuBPVXodELLmx95CAlGiRg7vBYliWRGTfedIgzRfIIBYppW/CllGY?=
- =?us-ascii?Q?CSzbQMRswGigDEdvJmTylwsrT5PL0e99u63QIhb0QG0XyujImbeIc3SzjX86?=
- =?us-ascii?Q?1AmJpMUC954vZLHNRsaoh7ZLxLlH9iTYdb+k+YLb3JdIPdG1OPUuCC2rJzeN?=
- =?us-ascii?Q?hbvDIc0esWxu64FHSCcJyQQ4K42ILQhAiSxGIyVlhGsqoVDLI44EQ/PK2a2/?=
- =?us-ascii?Q?F2iqht09xLZ3BxOovyUpqevY1AnPSoal+zyxYIhp7dfU7j2wkiWxt3uXdhCy?=
- =?us-ascii?Q?FzWNCvHZ6JwJqg2qIOIe/iW6/5/bmOcGMxecZL0dbUS9olq9sCCC3kxMWYPi?=
- =?us-ascii?Q?ALTes7/3wUrzQ94RahZH4vRYR3aq7y/jVbAS0PDaGAszjA2TKBCOmg7AwzuG?=
- =?us-ascii?Q?Rk+adlJaUvp6QiZeS82bDZbM/2c1RApBrk2w6oJCfzSp4sHIr7auiDhRIwsm?=
- =?us-ascii?Q?+1bk2zckzT0hXWQ8LFviDIPA77hHYKWLua7jNnnEKn0XTXhpjtirBBEBQGMy?=
- =?us-ascii?Q?RRNyq5W86nVmGNFqo/JiHjNb0wrd+F/Ox+OoE43DQ0Z6qSamzxEz81CSNJNq?=
- =?us-ascii?Q?zoK3Tx28K1mtSQenveFdftmSx5Pc68Uhj9ZPbFHMupibuQcy3bTkhvIGhe61?=
- =?us-ascii?Q?VRx4FXiJs/Mhm1bFLtQxm+Cv60nB3u6Sk5RlhO19iDuabXt/7AouMhIInCwZ?=
- =?us-ascii?Q?v4vQmnxfWLZ6Q3zufvvKTapMevSv9NmsyQjVcZE552Nv1NjAX1ff+Cb61BiD?=
- =?us-ascii?Q?W4+JkjgmEApEaICE5rjVY+xRE4VGImL9WmAcIiNJC+LZhF2NIRggM+WcH7qV?=
- =?us-ascii?Q?kjNFNgFgsBZhZ6zUvcEXaOIqnmTpYItBSxBPDERCr8FyEh9y+Lm1PXItB+3g?=
- =?us-ascii?Q?4wEjoMKFUr802uPdHr4x2Ay8Jgp37BlUD3ReAx2eIc6rixVIee0CgDhXXkKS?=
- =?us-ascii?Q?k7AJcycLsHy02uNlyPq3+8yYJNrAzQ/M3U5PBi3a6prP5mlhZNtKl2Eaw+lr?=
- =?us-ascii?Q?jqMWAHyiB+Dvb5qVEeEobR2hEiIYgHh7CFhrZrSe2fhDk/Xh9PfioAK9Z+96?=
- =?us-ascii?Q?V8cOGbQ+MyNGKQMAQRn85IHs+d2MAyTKkwIQ3dxxQfgMpvaPK2ujTg1Dumz9?=
- =?us-ascii?Q?xjydWdEzBMSLW1TaV/G7R/BmIWtlkav1j/aB9fNS6BCLy0mvQYD6LVz8Gkby?=
- =?us-ascii?Q?CkkURtUWNfUB8hz1K2mNfLAc2ERTYH3vHLziPb+aqLeU9WF0dGpAXqe6wLKF?=
- =?us-ascii?Q?MvtI8d6PUOz6OYQPO6YPkEjlzM0pKf7s?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?P2If7o/umim9ZGHJKiSKZ8z8f+WMPU9R21LbAFZ9X3HdWngQl9+Rb4YytjFc?=
- =?us-ascii?Q?qDKJCFaxa2+DDhyE0Hf4M4cO0VraV/6qDXMg9ZEBUMblyU+DNMftJPycOGw/?=
- =?us-ascii?Q?Ej40qOlKRuRvCxgE2Ui6Nu/geWTcRfrij36a1bvPDHf+52ZqtS/2PuuxQX9O?=
- =?us-ascii?Q?AsMKouLBF211VJsgaHXaE8xwX/H74ezJOcjqMfI7RO4RV7izkvfDxIARkVee?=
- =?us-ascii?Q?moemyK12VUOGYelrAcUX5Ksl1/1GL4QS1DaddAxr/yRVlFNipRT9Asb2XHzY?=
- =?us-ascii?Q?LhCQ0zrmQA3+8U5ajqbFgLA/YFCVCXKTWiF7LDAPVeYOJT6ANYgAPLWRn3PE?=
- =?us-ascii?Q?521NxN6n8Fo9Q9rSOmYXVnNq+TR63lynZJdCuIVTLZ6AY3EakBvFAIlZxKLN?=
- =?us-ascii?Q?D6vpfkZ6/FtqVu4/J0Y6LmeSLgCw84UPtQOBWmWUUSdSeYb9GiqoSBgsMgIO?=
- =?us-ascii?Q?6uSDH3a8gRhn/o6HK2l7g6/4l4uEQSxVRJG/28gCtihwIIOm2A2L4vyFbqOF?=
- =?us-ascii?Q?E/Cvim1/vbGmr/EcOMJrIDEof/48JoEmud+fiO1RuXNTZWmCrnfIT0XTJ7Xd?=
- =?us-ascii?Q?L7pC82vjSfmXcNIET6U0H+pfGiSUYVV4I95bWsOsGGqb/m9n//Xhrx6mbJxo?=
- =?us-ascii?Q?Kf9/xKQ+HmX/BjzzpVwPbdPpacnN5fXf7ruf6OlVtmfbFh2l+IZZZvAbYVlS?=
- =?us-ascii?Q?DkUt0qDCx4+aacDGF/3mELH2yBXsVIU10Q9/7LINeBeBHmKTNZdB2WS3ExBu?=
- =?us-ascii?Q?6ED9iCwvyP/up2ykE+IEGpkEqV4Zal7YYKpSvuNgt4pouLStLHCmDd//ydFu?=
- =?us-ascii?Q?VO+lik+ddNxJOnKDFh5UCkTxsWu+T2lELs4fUOPTN1/tYWjsv4YqSKm6UxPV?=
- =?us-ascii?Q?99m/gkm8NnEIptrzz8+cipFYPb4ZyDiGNWYdLZTld6Ivsti9EKuRzcoYG9FP?=
- =?us-ascii?Q?XL50yARke8emBvM5x4plJVk47lGlx2Fdf40Ww0w9oM/RCA7+MvqmdWVDB/lJ?=
- =?us-ascii?Q?AUE9cPC3x14Q86nxyCQEO3icFjahSDMTbXmdNysiISU1DVpklNE6T3yM5Urz?=
- =?us-ascii?Q?SJyoI3PtazXX3+mQFXH7MpoqYuj+iUg2jFub+YeHNP/ShypxEQ4EglvT55wa?=
- =?us-ascii?Q?x2oikE/f57gL5uQSvgu/QSV6X83UaxppNXckxsNHyH7ShqRejieO+GmzVRxB?=
- =?us-ascii?Q?Mc9/guYZw7H3Biv3S9iCBA//wM+58I0hRcWvabxwzBhjEaBrIhb2N4zxknNV?=
- =?us-ascii?Q?+PJd0jVR77QQN2cr0Hp7Kmj5e5bV0BDquh3TqtkeptMl9Uvg9iBC4JmOVUSp?=
- =?us-ascii?Q?COmAXvoaUyc8IabM7IJLv3hw5kvNgyOSfH/bKPFjJRLzZytjDLuhO4t1+37P?=
- =?us-ascii?Q?LRT7R2YhmVndbuGjPO0yAQwithUnSa61uSoBtUSFnefP9pYTdnTrdiSosPoN?=
- =?us-ascii?Q?2NW0B81aO1HkV7hnJqM7L/09ctmUrzb1sS6VqjcS2xb6VR/GYfxcuTiIjk+i?=
- =?us-ascii?Q?lfdjs5hZ/7yQI37rqCUgVnuKMZ27Hdxrbz+dlct1iO0R1CeUBxhXK0eMpeoV?=
- =?us-ascii?Q?6zPlt4rr84lvKLHjSmY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b="PpVFWJD0"
+ARC-Seal: i=1; a=rsa-sha256; t=1743497620; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PwcJR2MjWwXZ3r/9DeFiS6+7HX4LBTkPVG94v4pkYGNOZBUS9NUrLujLNVD9mqpzOo4cyc9mJo+G9bUFzsnlOhmNYJDgPhq0AK/1Fi41oP0GhELU/aZFv7qvREIZk7YKcSqIHykHd5+6agZj7mWOFh0UW6c8EihDUoLQYSaLvMk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743497620; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=cBU0C7170I26NS2nL3j2yZ7Xa8vu3rMrCcjlkS+8Ii4=; 
+	b=Xk1tqxqBkjLezlW5M9t9fVhI7IO7rByPCGQgdkn/nc5otDTywte40BKrWpeAWWsDFBoqENNJpmXLkzlLM8tKZYtFJT45/kWIZTQz9wEfuXX+wIP2yZg1egStBdEh4DvqTC9mn0B1jzgYeUK34FZ1qHJGeXDpW337EKQH2wxRWIg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.fricke@collabora.com;
+	dmarc=pass header.from=<sebastian.fricke@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743497620;
+	s=zohomail; d=collabora.com; i=sebastian.fricke@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=cBU0C7170I26NS2nL3j2yZ7Xa8vu3rMrCcjlkS+8Ii4=;
+	b=PpVFWJD0dLal7/1EEs6FCsTrrBM8vEYAf0kbhBwpuBhgT52qxVjFXSFB2u2I2rco
+	Frr3V9YS7Kg+A08eCo1g1CghgXjD3qG9CkFIt9D4ukX5hhMsLyj9EJXr1sUDhjIcGSb
+	o6bhxAkqJP0wCfEJ11Q5xNPB8D8NKCZ6xpKAvvXE=
+Received: by mx.zohomail.com with SMTPS id 1743497618474415.27018579292655;
+	Tue, 1 Apr 2025 01:53:38 -0700 (PDT)
+Date: Tue, 1 Apr 2025 10:53:30 +0200
+From: Sebastian Fricke <sebastian.fricke@collabora.com>
+To: ming.qian@oss.nxp.com
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com, imx@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 1/2] media: amphion: Reduce decoding latency for HEVC
+ decoder
+Message-ID: <20250401085330.2n6mcyfrxbfgebzf@basti-XPS-13-9310>
+References: <20250401073527.1626-1-ming.qian@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81c63664-ea63-4021-5ff6-08dd70f891a4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2025 08:38:25.3650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: T0fuWjrumekNHVou9cl6MoT6J0rb9gKHjBkekXR4r2yWEN+pmgMGKbqhw6a3RFlUx+AZhEacmQAdjg7qNmR49A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9862
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250401073527.1626-1-ming.qian@oss.nxp.com>
+X-ZohoMailClient: External
 
-> > Add the minimal dtsi support for i.MX943. i.MX943 is the first SoC of
-> > i.MX94 Family, create a common dtsi for the whole i.MX94 family, and
-> > the specific dtsi part for i.MX943.
-> >
-> > The clock, power domain and perf index need to be used by the device
-> > nodes for resource reference, add them along with the dtsi support.
-> >
-> > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> > ---
-> >  - v4 changes:
-> >   - reorder the cpu node compatible string property as suggested by
-> > Frank
-> >
-> >  - v3 changes:
-> >   - remove the blank line
-> >   - add PAD config macro define as suggested by Frank Li
-> >   - update the device nodes compatible strings for imx94 as suggested
-> > by Krzysztof
-> >
-> >  - v2 changes:
-> >   - remove the unnecessary macro define in clock header as suggested
-> > by Krzysztof
-> >   - split the dtsi into imx94.dtsi and imx943.dtsi
-> >   - use low case in the pinfunc header as Frank suggested
-> >   - reorder the device nodes and properties
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx94-clock.h   |  195 ++
-> >  arch/arm64/boot/dts/freescale/imx94-pinfunc.h | 1570
-> +++++++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx94-power.h   |   41 +
-> >  arch/arm64/boot/dts/freescale/imx94.dtsi      | 1140 ++++++++++++
-> >  arch/arm64/boot/dts/freescale/imx943.dtsi     |  148 ++
-> >  5 files changed, 3094 insertions(+)
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx94-clock.h
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx94-pinfunc.h
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx94-power.h
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx94.dtsi
-> >  create mode 100644 arch/arm64/boot/dts/freescale/imx943.dtsi
-> >
->=20
-> ...
-> > diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi
-> > b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> > new file mode 100644
-> > index 000000000000..26e08ac51c36
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> > @@ -0,0 +1,1140 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Copyright 2024-2025 NXP
-> > + */
-> > +
-> > +#include <dt-bindings/dma/fsl-edma.h> #include
-> > +<dt-bindings/gpio/gpio.h> #include <dt-bindings/input/input.h>
-> > +#include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +
-> > +#include "imx94-clock.h"
-> > +#include "imx94-pinfunc.h"
-> > +#include "imx94-power.h"
->=20
-> > +
-> > +                       i3c1: i3c@44330000 {
-> > +                               compatible =3D "silvaco,i3c-master-v1";
-> > +                               reg =3D <0x44330000 0x10000>;
-> > +                               interrupts =3D <GIC_SPI 14
-> IRQ_TYPE_LEVEL_HIGH>;
-> > +                               #address-cells =3D <3>;
-> > +                               #size-cells =3D <0>;
-> > +                               clocks =3D <&scmi_clk
-> IMX94_CLK_I3C1SLOW>,
-> > +                                        <&scmi_clk
-> IMX94_CLK_BUSAON>,
-> > +                                        <&dummy>;
-> Hi, Jacky
->=20
-> Please change this clock order to this like i3c2. pclk is system clock an=
-d fclk is bus
-> clock.
+Hey Ming,
 
-Thanks, will fix it.
+thanks for the patches, unfortunatly our testing pipeline isn't happy
+with them yet.
 
-BR
->=20
->                                  clocks =3D <&scmi_clk
-> IMX94_CLK_BUSAON>,
->                                           <&scmi_clk
-> IMX94_CLK_I3C1SLOW >,
->                                           <&dummy>;
->=20
-> BR
-> Carlos
-> > +                               clock-names =3D "pclk",
-> "fast_clk","slow_clk";
-> > +                               status =3D "disabled";
-> > +                       };
-> > +
->=20
->=20
+See below ...
 
+On 01.04.2025 15:35, ming.qian@oss.nxp.com wrote:
+>From: Ming Qian <ming.qian@oss.nxp.com>
+>
+>The amphion decoder firmware supports a low latency flush mode for the
+>HEVC format since v1.9.0. This feature, which is enabled when the
+>display delay is set to 0, can help to reduce the decoding latency by
+>appending some padding data to every frame.
+>
+>Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+>---
+>v5
+>- Apply FIELD_PREP() and FIELD_GET() in CHECK_VERSION
+>v4
+>- Add CHECK_VERSION macro
+>v3
+>- Improve commit message as recommended
+>v2
+>- Improve commit message
+>- Add firmware version check
+>
+> drivers/media/platform/amphion/vpu_malone.c | 24 ++++++++++++++++++---
+> 1 file changed, 21 insertions(+), 3 deletions(-)
+>
+>diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+>index 5c6b2a841b6f..b6e4996c2d91 100644
+>--- a/drivers/media/platform/amphion/vpu_malone.c
+>+++ b/drivers/media/platform/amphion/vpu_malone.c
+>@@ -68,6 +68,12 @@
+>
+> #define MALONE_DEC_FMT_RV_MASK			BIT(21)
+>
+>+#define MALONE_VERSION_MASK			0xFFFFF
+>+#define MALONE_VERSION(maj, min, inc)		\
+>+		(FIELD_PREP(0xF0000, maj) | FIELD_PREP(0xFF00, min) | FIELD_PREP(0xFF, inc))
+
+drivers/media/platform/amphion/vpu_malone.c:675:52: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   675 |         if (params->codec_format == V4L2_PIX_FMT_HEVC && !CHECK_VERSION(iface, 1, 9))
+       |                                                           ^
+drivers/media/platform/amphion/vpu_malone.c:79:4: note: expanded from macro 'CHECK_VERSION'
+    79 |                 (FIELD_GET(MALONE_VERSION_MASK, (iface)->fw_version) >= MALONE_VERSION(maj, min, 0))
+       |                  ^
+drivers/media/platform/amphion/vpu_malone.c:675:52: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+drivers/media/platform/amphion/vpu_malone.c:79:59: note: expanded from macro 'CHECK_VERSION'
+    79 |                 (FIELD_GET(MALONE_VERSION_MASK, (iface)->fw_version) >= MALONE_VERSION(maj, min, 0))
+       |                                                                         ^
+drivers/media/platform/amphion/vpu_malone.c:77:4: note: expanded from macro 'MALONE_VERSION'
+    77 |                 (FIELD_PREP(0xF0000, maj) | FIELD_PREP(0xFF00, min) | FIELD_PREP(0xFF, inc))
+       |                  ^
+2 errors generated.
+
+https://linux-media.pages.freedesktop.org/-/users/sebastianfricke/-/jobs/73725346/artifacts/report.htm
+
+Regards,
+Sebastian
+
+>+#define CHECK_VERSION(iface, maj, min)		\
+>+		(FIELD_GET(MALONE_VERSION_MASK, (iface)->fw_version) >= MALONE_VERSION(maj, min, 0))
+>+
+> enum vpu_malone_stream_input_mode {
+> 	INVALID_MODE = 0,
+> 	FRAME_LVL,
+>@@ -332,6 +338,8 @@ struct vpu_dec_ctrl {
+> 	u32 buf_addr[VID_API_NUM_STREAMS];
+> };
+>
+>+static const struct malone_padding_scode *get_padding_scode(u32 type, u32 fmt);
+>+
+> u32 vpu_malone_get_data_size(void)
+> {
+> 	return sizeof(struct vpu_dec_ctrl);
+>@@ -654,9 +662,15 @@ static int vpu_malone_set_params(struct vpu_shared_addr *shared,
+> 		hc->jpg[instance].jpg_mjpeg_interlaced = 0;
+> 	}
+>
+>-	hc->codec_param[instance].disp_imm = params->display_delay_enable ? 1 : 0;
+>-	if (malone_format != MALONE_FMT_AVC)
+>+	if (params->display_delay_enable &&
+>+	    get_padding_scode(SCODE_PADDING_BUFFLUSH, params->codec_format))
+>+		hc->codec_param[instance].disp_imm = 1;
+>+	else
+> 		hc->codec_param[instance].disp_imm = 0;
+>+
+>+	if (params->codec_format == V4L2_PIX_FMT_HEVC && !CHECK_VERSION(iface, 1, 9))
+>+		hc->codec_param[instance].disp_imm = 0;
+>+
+> 	hc->codec_param[instance].dbglog_enable = 0;
+> 	iface->dbglog_desc.level = 0;
+>
+>@@ -1024,6 +1038,7 @@ static const struct malone_padding_scode padding_scodes[] = {
+> 	{SCODE_PADDING_EOS,      V4L2_PIX_FMT_JPEG,        {0x0, 0x0}},
+> 	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264,        {0x15010000, 0x0}},
+> 	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_H264_MVC,    {0x15010000, 0x0}},
+>+	{SCODE_PADDING_BUFFLUSH, V4L2_PIX_FMT_HEVC,        {0x3e010000, 0x20}},
+> };
+>
+> static const struct malone_padding_scode padding_scode_dft = {0x0, 0x0};
+>@@ -1058,8 +1073,11 @@ static int vpu_malone_add_padding_scode(struct vpu_buffer *stream_buffer,
+> 	int ret;
+>
+> 	ps = get_padding_scode(scode_type, pixelformat);
+>-	if (!ps)
+>+	if (!ps) {
+>+		if (scode_type == SCODE_PADDING_BUFFLUSH)
+>+			return 0;
+> 		return -EINVAL;
+>+	}
+>
+> 	wptr = readl(&str_buf->wptr);
+> 	if (wptr < stream_buffer->phys || wptr > stream_buffer->phys + stream_buffer->length)
+>-- 
+>2.43.0-rc1
+>
+Sebastian Fricke
+Consultant Software Engineer
+
+Collabora Ltd
+Platinum Building, St John's Innovation Park, Cambridge CB4 0DS, UK
+Registered in England & Wales no 5513718.
