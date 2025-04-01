@@ -1,214 +1,294 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011012.outbound.protection.outlook.com [40.107.130.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DEC1EDA00
-	for <imx@lists.linux.dev>; Tue,  1 Apr 2025 09:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743498488; cv=fail; b=uqT0AS6AVtT5+81xaFYO+7Da2wxzdO7e0Dl0IHY+e4MHX139zW0dkvRF5IcHzokp9OseNdFHTQ8c8Kh4dtOyfXlGfXXycITk9Rv71yKTMJH0Zojgu7JVL5by8ZzG1zj1WWlpg+xgAkJcbcLbr6bf3b6/b2fKBpKn0tkU2v8zays=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743498488; c=relaxed/simple;
-	bh=S8NF5PzALu49HJAQL2yxzSlcVPD0fCNqN8akg2REEk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N6x7gq1hpmL6W+hed5JvP8zgjyEb5q48BCXc5M2SjmXZkya638lhr5MBK8aqUvLZ0sTUDpiOzO3Dssds8Ui+or+IRjSq/lum9wI7PXf8jKrNjAcyi1+vRa553QKSf2Nj3BI44Z64cn0euOiDOih51Abag2WHLy5+dC5RAkwca8M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NJsRO3Qm; arc=fail smtp.client-ip=40.107.130.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E4C1F09AA;
+	Tue,  1 Apr 2025 10:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743501942; cv=none; b=OIoK/WyctHKLRFNeqYxQZBqRf8lfUCixAansixcyHK7RZaGPRYCbujBohXq/Xzq92RWGMXMYUYkhrxPqrS1IGGECzbV06PO03cNXeBKMXCjkYBwvjJveNiktc/cXtV9yr61PXgA22DhS53ZF6daB4ZyRb6jbFJuDYqXdUMO87uI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743501942; c=relaxed/simple;
+	bh=Ji2lkGP1TL66HcrWlzJS1peLnaL9SmcZgErm3flM6Ws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a4rF7Bij0NcfQ/TcctC5sDHEne4BV55mW82IjX+5SrSdvgL66pMkbAbBln4mmF8t5H8EOaxvMeSIYvfMGoPLvB7sTMffaAQYsc3YtgWYfZGmgoaupmJ+LioHfCX8HAUWJ1g/8akq9L27r61tQqnQBh7srRfHMocn73ur63DaE+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMVBBK3G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NJsRO3Qm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mBnMLTw9wAPMzbRH1Xmyufa9lCRNRwb0XRKB1xs7hcMQJZyVszkFDEPOt0QIcYi6YZHpAwc+d7YZeXqhPp3w8Ntn3B2XmLiNfWOtkyrgNFpevTZR9HdjI/MhDGu8RcsVLvE/cLcaxwUIJOfNqA6TuV4Jx8xzJve3eRo9hVFpBValb4voZV26fFSl+DbdYcptOjBpLjO1AlNi0hs1ZtZaxyCHOSIIKNgoOM48mTQclVb9Pw0iKCFo4TwEUO9LQn4gw3r7tMXDrehaULAj5zIybUuzW/LVFFIeOsll9Jbz+8gfaKPHurTcR7Oho8ls/vB6zHc48Bdly83AMpLwEGxMhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JChxjhOJDpk/L7xMKEA8swf7OFz4nQt6GYKlE0r1AbI=;
- b=BwR3KQ2xcjd65ncJ7nDG+qaLSHfXsTgFUT7k45LQfODVMaFFVj6ap2trFY2/fz0CFV6DPbmYnvZpEUPRGipFB0L8T2Rpw0sgGHJhEiv+Ew+TyJT5M/L+T4mFucm3Xj/NgNqEPQjIpK976BF9Bb1y7jN19718iFyYWe4g752J63dMSIEyXpSo480oMzZk+TCGff5wzkVBs1N2TUP4b4rAbrGYrNsdRGssO044Fy5bbYUg2i6WjhrtV4z4Frsr49ElRK7RZyQ8FJa/LzFeXl59oN3EAC5lEInQIlzsKyH6RjoQCzdZx5ai77ea5uzMfUlT9WeGqWNrTALzUc2s1w5uzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JChxjhOJDpk/L7xMKEA8swf7OFz4nQt6GYKlE0r1AbI=;
- b=NJsRO3QmarEe+yVwhOxXrMxwhZ3Ldau7yNtTKLEcP2Z/z+ZHdTrwcZoH9wAzwY78ZiSEoVusQqNwBBNb0mYhqSkYeZlc+EtK7BtzZu1W3wPkYYhQFVH7QnKsJRPCeyQ0AihVLZlJ97u3OwYx8AjpK6ckdCi/wWj0158vOa1b7Up4mdlKRxQapBkB2OvASyClMFidzCZbQkVYeJlPUe5/ZafsiATKmq8Knljtouhbrv+MuxDX9O05uJR8QehaVIlrZc6HerEF1SyYE4Pyg427F0Rl2FdlSruZQYag/YXfhrBLOPFm1jLEkJtK6XbRk66SUJO4dN9v/QCxJYlgRo+MRw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by AM9PR04MB7491.eurprd04.prod.outlook.com (2603:10a6:20b:283::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Tue, 1 Apr
- 2025 09:08:03 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.8534.052; Tue, 1 Apr 2025
- 09:08:03 +0000
-From: ming.qian@oss.nxp.com
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl
-Cc: nicolas@ndufresne.ca,
-	sebastian.fricke@collabora.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-imx@nxp.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v6 2/2] media: amphion: Add a frame flush mode for decoder
-Date: Tue,  1 Apr 2025 17:06:57 +0800
-Message-ID: <20250401090659.1702-2-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <20250401090659.1702-1-ming.qian@oss.nxp.com>
-References: <20250401090659.1702-1-ming.qian@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0153.apcprd04.prod.outlook.com (2603:1096:4::15)
- To PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMVBBK3G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAC9C4CEE4;
+	Tue,  1 Apr 2025 10:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743501941;
+	bh=Ji2lkGP1TL66HcrWlzJS1peLnaL9SmcZgErm3flM6Ws=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DMVBBK3Gsi3w+BSoNVNJbEEGqM5n7gouBqJlC3S0IJVGsewTCr3GrY8UXsZeRarSs
+	 hPRee+83o398+JrceezEanxqvPQ6Q65N8klkWcydPv8LpEIAwpb7YHYCYMvfHprAsH
+	 M6/JQWTCQ9j6Yy2J9bQdyECuydGrfZCcsXbcjdw9rO/PrnbJy/cEuw0FmvoSO7t1pl
+	 1GB1FoSVSDnzZDpeJWqYLy/PEnEYQUAQiI4MLw+z9G8uvAYGMueH0eywvHZOwE0BU8
+	 aWp0dduLIcgrHwhShLg/fLY2FAO09bI0SGiYYdvF8lT3p2wPe4YUvyZiioMoMBkdAv
+	 ZIY+to7BmaTag==
+Date: Tue, 1 Apr 2025 12:05:37 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	"open list:PCI ENDPOINT SUBSYSTEM" <linux-pci@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] misc: pci_endpoint_test: Set .driver_data for
+ PCI_DEVICE_ID_IMX8
+Message-ID: <Z-u6cZs6qncIWF98@ryzen>
+References: <20250331182910.2198877-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AM9PR04MB7491:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12a5a69e-ddb2-4a16-baa4-08dd70fcb4ea
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8nfDEs+m5dhc3PUC8NM6H3LIxXZgM/rbriYe38DEfLkekhgUHc8J24uoBK90?=
- =?us-ascii?Q?R70QWggd1OdtJuKiuV5O2w/yfVyPk52iLgWnZ84McYPiKn/mzWFVjMZHwlRV?=
- =?us-ascii?Q?ZAKelpgZ149NfM4ErvYZ/dl+8IGVMrSWXarvnhEdcVK0b7Ed2UD8fP4/XKsk?=
- =?us-ascii?Q?blXPZ8suDcT52wEkeRgK2oh41kZJka1rpWdbRgYSBruWKeeRXpa+r7AvYux4?=
- =?us-ascii?Q?fSP4KniqaqdUN1g8zx6tvhZuo8c5yShvD/NcvvLfALlS5IbECW9V7rHByowc?=
- =?us-ascii?Q?1ymwql+upAiqW13KcCgVO+/hv9csq3eD5Ldw0ZHl8cfOptfuJ6QJnVkV54Di?=
- =?us-ascii?Q?TRhJNxELlvJ4YNaQt+cxGI9DXxocRjxqSZBe16qQz+WP5CL4gbTl+uRUJ38O?=
- =?us-ascii?Q?x0UQFvcdc5G+tve55sPFDxi0AA9Fce+zvl5iC4PRa53blBtbulzP0tPY6Jpm?=
- =?us-ascii?Q?SeKxjaBJXoPR+S731JiiCbmXnsKwVl0Qmo0Nm5meo9WxrR35NvYC47VzMpDH?=
- =?us-ascii?Q?eqxf7a/eDRQaX8zRl+lkyNOC+btd6sdDfo6mF9X/BUeK7QNIPtcUwQq3cBJ2?=
- =?us-ascii?Q?yQ0PlOETvSrxsTVWRKRzT1OFDM7FA4Sh9CjQiVn1DBwodSZ5jpfBlPPQFJJS?=
- =?us-ascii?Q?rDzGEr+HI4lMTD7hEKCcJ+5KArg84jR50ucOuHYV5lUCthZglucjTXeuscy+?=
- =?us-ascii?Q?M0+tIIru0WSZajELyppukz43yQ9l+bcA/0WxbhDbk4ex6qbaixO+Ar5i1mDY?=
- =?us-ascii?Q?HspOeiBZyvrX1RGesKNWshgiglORvqGJUDUdqMSX+ZYm9GungZ8RYC7F3fdY?=
- =?us-ascii?Q?WVd6PCJpA+xl1OQKB3kjJN9GKheGpkpqKc/wHlcmwuMEyM/sAoxnuchHYzcr?=
- =?us-ascii?Q?g9hwDzQi/rLffaJ8ENQ4OjtbGI4Qh2PzEg204f4+HH7J2d9X5WDCStskOMNA?=
- =?us-ascii?Q?TGzxdCEohTdjN558CtkLru66PCNM6vUoeepefnC323RoyvakBFVQ7qSapnLL?=
- =?us-ascii?Q?BCSb/dOIsfAKPkpb42o/+RiiQebBWrsV4D2rKmwOcqVk+S0NhIygBER7LqRy?=
- =?us-ascii?Q?VG+KWKjAY1dBB4SyINX2C/ahAGXU0oOeGPpFqhiqzgjlVX332bT9SZyF0HGl?=
- =?us-ascii?Q?8J/rk1iyaMAm+Ad71VKaGDRN0cMPQA9/9ZQnTNIrKRGPk3/fAi05mWk4yC13?=
- =?us-ascii?Q?jY53YaKVgOEcTNpQQ9Ad2cupOqGIZsm4yK07pn7hibv5+2a8A9mEhjxxljR3?=
- =?us-ascii?Q?iDFJqP1RHNxR0+W0jPcMD0563MpDcYrgNFm8LERPxV9ZqR5sr13n1/jGoDzs?=
- =?us-ascii?Q?oViF8e+3rTS9jIs9CemJc51nfAecy8MY4ZUgc2fDvm6P75C5jtem0h7regQ4?=
- =?us-ascii?Q?IZzYT0imuPF6GaOUR9vVR3ZQ7EidByOOAftMNJc6dActX7ov6jgFzgaOfIgV?=
- =?us-ascii?Q?ZhukwNikzmMc9gJjA5YztQQsh61DMwD2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bwa8MpPgDEE++xO1fO1KpChdRNBe7/juUG+TjPkpOWlLvxhuztqhtc7dL14Y?=
- =?us-ascii?Q?MtJDtXzl4zM4As1tc9GfWB98xp4LQV7e2fmvjRfd4nwGTUZxoxueO19EOBeR?=
- =?us-ascii?Q?RlIcgZ6+xxeryCLIzxQVFxc2JKjJEArWvv1J2skwkFX4OFGiYM954A83LTl+?=
- =?us-ascii?Q?IGek+CnthmioMAo7d96QAWxpK6QA2LZRzgdmIRUIoUKBAE+L4G7pjefqQM2Q?=
- =?us-ascii?Q?xqtR2iJcpfmUOm/UTLokTKLTEYo/WgAhuf29aJe5/u15TOnjxmJdM2PHNWkc?=
- =?us-ascii?Q?dJrP7fy7dcEPHFoEiIZV0ONLQY0U06/CBvjJXvQbGfNYkx6F9chcaJfE2FfE?=
- =?us-ascii?Q?QDspUS74HIRfFKrM8ZMgwJEICxW76SIB0PIjMPpGhzMQbWUoPFGZvTRHsDw+?=
- =?us-ascii?Q?CIQL5NKdwfCXZdAdZAWB1pPR0oq1ZjJvlFFJMa8z9SHxshLIGsV1TDeam+xa?=
- =?us-ascii?Q?VvLDgPj0bCICYNAYrat/3BEugC8MKLXy6FwmRB4dAc79lN6nk1ZuSAuN+3xM?=
- =?us-ascii?Q?8R51prVwH1SVW1Xa1UOejjZWaapkELKBTDZOK80Oa837AaQC6aZgI8WMNTsF?=
- =?us-ascii?Q?QquB4jiWZy71R2aEKW+dDu0GQ8x70kgzOYHsqrmtnw9nGRDJZPsrtrXImXfd?=
- =?us-ascii?Q?C/AlUufKLQL3kTc9iLUk8v7zlGYZ/oq003594PmgmYPUihMF35QxRMGqv15Y?=
- =?us-ascii?Q?CJdX3QuMwpGqfQoEar41/KboXW94SD0+8v++ycnMaaUe7HhnC3Ij1D23Y2gn?=
- =?us-ascii?Q?xEJQYr9WdR5NIxT6ZkQGXrchoMcJanBwXowBqbKNM6uDobNO9TC75hlIAxiO?=
- =?us-ascii?Q?RXXUKf7z2ae8KUqSf3Gcznjb20Tb0Q1uICDovZWjvA+oDiDTH3HNfcJ5LgKy?=
- =?us-ascii?Q?pY4nxPeGf9WEB3xUDhSGNLFFF2OmBMyZ9E8cXGw3BCqocLZznGLiVu3Y2Qq5?=
- =?us-ascii?Q?NPNWwT9O85vj8ksJ3PAjU5rybQJS41IpTbtDutJJKiQtlo2+QNbjkxSxLZpY?=
- =?us-ascii?Q?SV6qRfsFnNUeYSSGQu1dWqhuo90k6CB6066ZBHpX+GOhASWzX3z9zG0QYkeo?=
- =?us-ascii?Q?z1oQ5l+qVGMuCKpJrlnzHaP3rs/kU27dOLyYgDryyCO/DDt0gskVMkTFuq1K?=
- =?us-ascii?Q?M8FINKmaaTdw8IUsOmsFGhnYmhps8rKVEa3xZplnMknGM1wy0DT0r3uuDfUN?=
- =?us-ascii?Q?03VBaEvXw4cGuvJ1sLxK1qhZRLnksClkoyRHvJELvEjMuie2Bt7Q3670ump9?=
- =?us-ascii?Q?DuKnmSAguOr8iMZKdU4sJvxZo5dcc3tgn30oz4sJcbzznq9TkhlGAP8/YOLc?=
- =?us-ascii?Q?zWVFURR7CCKq5nwChaLgjxO2hZfqxmuyXnouAen+ZxWyXELdbtA5OIV30S1q?=
- =?us-ascii?Q?0pb7I6BVaYIF/K44nYBLEZdZQA2EGBbbprAY4lzTbcjC+tP5L22w6lwlK5c0?=
- =?us-ascii?Q?wK+vMM5BhORX15VpIAtPJc0isEBvPOBZMbKJ8Jrk6llBhFRJ8snsLpcBYkrD?=
- =?us-ascii?Q?Y0EvMYIe8uoEl2tPahFlsiMpNSvyn3MrzVwe3lemqGUs6OjcpnUoaOgWjeDD?=
- =?us-ascii?Q?QXmZc5xlGHLf9grKM6RfBapo3E0nJg0BZHTIo0UA?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12a5a69e-ddb2-4a16-baa4-08dd70fcb4ea
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2025 09:08:03.0067
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: welGMze4BvCXZdtPy2BmBiHc7rJEhU2RvFttqmMpp2Mq+PhdFQ3T84JDZDfpT8rpjnfitinRvGDJAxNO46bkeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7491
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250331182910.2198877-1-Frank.Li@nxp.com>
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+On Mon, Mar 31, 2025 at 02:29:10PM -0400, Frank Li wrote:
+> Ensure driver_data is set for PCI_DEVICE_ID_IMX8 to specify the IRQ type,
+> preventing probe failure.
+> 
+> Fixes the following error:
+>   pci-endpoint-test 0001:01:00.0: Invalid IRQ type selected
+>   pci-endpoint-test 0001:01:00.0: probe with driver pci-endpoint-test failed with error -22
+> 
+> Fixes: a402006d48a9c ("misc: pci_endpoint_test: Remove global 'irq_type' and 'no_msi'")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/misc/pci_endpoint_test.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+> index d294850a35a12..da96dba7357c6 100644
+> --- a/drivers/misc/pci_endpoint_test.c
+> +++ b/drivers/misc/pci_endpoint_test.c
+> @@ -1125,7 +1125,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+>  	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x81c0),
+>  	  .driver_data = (kernel_ulong_t)&default_data,
+>  	},
+> -	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_IMX8),},
+> +	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_IMX8),
+> +	 .driver_data = (kernel_ulong_t)&default_data,
+> +	},
+>  	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_LS1088A),
+>  	  .driver_data = (kernel_ulong_t)&default_data,
+>  	},
+> -- 
+> 2.34.1
+> 
 
-By default the amphion decoder will pre-parse 3 frames before starting
-to decode the first frame. Alternatively, a block of flush padding data
-can be appended to the frame, which will ensure that the decoder can
-start decoding immediately after parsing the flush padding data, thus
-potentially reducing decoding latency.
+So the problem appears to be that:
+a402006d48a9 ("misc: pci_endpoint_test: Remove global 'irq_type' and 'no_msi'")
 
-This mode was previously only enabled, when the display delay was set to
-0. Allow the user to manually toggle the use of that mode via a module
-parameter called low_latency, which enables the mode without
-changing the display order.
+did:
 
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
----
-v4
-- Improve the comment expressing
-v3
-- Improve commit message as recommended
-- Add some comments to avoid code looks cryptic
-
- drivers/media/platform/amphion/vpu_malone.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index 112645b30e15..1b59c77a84db 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -26,6 +26,10 @@
- #include "vpu_imx8q.h"
- #include "vpu_malone.h"
+@@ -939,15 +930,12 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+        test->pdev = pdev;
+        test->irq_type = IRQ_TYPE_UNDEFINED;
  
-+static bool low_latency;
-+module_param(low_latency, bool, 0644);
-+MODULE_PARM_DESC(low_latency, "Set low latency frame flush mode: 0 (disable) or 1 (enable)");
-+
- #define CMD_SIZE			25600
- #define MSG_SIZE			25600
- #define CODEC_SIZE			0x1000
-@@ -1582,7 +1586,15 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
+-       if (no_msi)
+-               irq_type = IRQ_TYPE_INTX;
+-
+        data = (struct pci_endpoint_test_data *)ent->driver_data;
+        if (data) {
+                test_reg_bar = data->test_reg_bar;
+                test->test_reg_bar = test_reg_bar;
+                test->alignment = data->alignment;
+-               irq_type = data->irq_type;
++               test->irq_type = data->irq_type;
+        }
  
- 	vpu_malone_update_wptr(str_buf, wptr);
+        init_completion(&test->irq_raised);
+@@ -969,7 +957,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
  
--	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
-+	/*
-+	 * Enable the low latency flush mode if display delay is set to 0
-+	 * or the low latency frame flush mode if it is set to 1.
-+	 * The low latency flush mode requires some padding data to be appended to each frame,
-+	 * but there must not be any padding data between the sequence header and the frame.
-+	 * This module is currently only supported for the H264 and HEVC formats,
-+	 * for other formats, vpu_malone_add_scode() will return 0.
-+	 */
-+	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
- 		ret = vpu_malone_add_scode(inst->core->iface,
- 					   inst->id,
- 					   &inst->stream_buffer,
--- 
-2.43.0-rc1
+        pci_set_master(pdev);
+ 
+-       ret = pci_endpoint_test_alloc_irq_vectors(test, irq_type);
++       ret = pci_endpoint_test_alloc_irq_vectors(test, test->irq_type);
 
+
+So pci_endpoint_test_probe() calls pci_endpoint_test_alloc_irq_vectors(),
+but test->irq_type is only set if driver_data is defined.
+
+You seem to only fix IMX8, but if we go with your solution, I think that
+you should also update the other entries that do not specify driver_data:
+        { PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774A1),},
+        { PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
+        { PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
+        { PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
+
+
+But... I suggest that we just remove the pci_endpoint_test_alloc_irq_vectors()
+call from pci_endpoint_test_probe().
+
+We know that all tests that requires IRQs will call ioctl(PCITEST_SET_IRQTYPE)
+(which will call pci_endpoint_test_set_irq()), before doing the actual ioctl(),
+and test->irq_type is by default set to PCITEST_IRQ_TYPE_UNDEFINED
+(even if it is overriden with driver_data if it exists), so performing any irq
+allocation in probe seems wrong to me.
+
+Thus, I think we should just do:
+
+
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index d294850a35a12..c4e5e2c977be2 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -122,7 +122,6 @@ struct pci_endpoint_test {
+ struct pci_endpoint_test_data {
+ 	enum pci_barno test_reg_bar;
+ 	size_t alignment;
+-	int irq_type;
+ };
+ 
+ static inline u32 pci_endpoint_test_readl(struct pci_endpoint_test *test,
+@@ -948,7 +947,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 		test_reg_bar = data->test_reg_bar;
+ 		test->test_reg_bar = test_reg_bar;
+ 		test->alignment = data->alignment;
+-		test->irq_type = data->irq_type;
+ 	}
+ 
+ 	init_completion(&test->irq_raised);
+@@ -970,10 +968,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 
+ 	pci_set_master(pdev);
+ 
+-	ret = pci_endpoint_test_alloc_irq_vectors(test, test->irq_type);
+-	if (ret)
+-		goto err_disable_irq;
+-
+ 	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
+ 		if (pci_resource_flags(pdev, bar) & IORESOURCE_MEM) {
+ 			base = pci_ioremap_bar(pdev, bar);
+@@ -1009,10 +1003,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 		goto err_ida_remove;
+ 	}
+ 
+-	ret = pci_endpoint_test_request_irq(test);
+-	if (ret)
+-		goto err_kfree_test_name;
+-
+ 	pci_endpoint_test_get_capabilities(test);
+ 
+ 	misc_device = &test->miscdev;
+@@ -1020,7 +1010,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 	misc_device->name = kstrdup(name, GFP_KERNEL);
+ 	if (!misc_device->name) {
+ 		ret = -ENOMEM;
+-		goto err_release_irq;
++		goto err_kfree_test_name;
+ 	}
+ 	misc_device->parent = &pdev->dev;
+ 	misc_device->fops = &pci_endpoint_test_fops;
+@@ -1036,9 +1026,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ err_kfree_name:
+ 	kfree(misc_device->name);
+ 
+-err_release_irq:
+-	pci_endpoint_test_release_irq(test);
+-
+ err_kfree_test_name:
+ 	kfree(test->name);
+ 
+@@ -1051,8 +1038,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 			pci_iounmap(pdev, test->bar[bar]);
+ 	}
+ 
+-err_disable_irq:
+-	pci_endpoint_test_free_irq_vectors(test);
+ 	pci_release_regions(pdev);
+ 
+ err_disable_pdev:
+@@ -1092,23 +1077,19 @@ static void pci_endpoint_test_remove(struct pci_dev *pdev)
+ static const struct pci_endpoint_test_data default_data = {
+ 	.test_reg_bar = BAR_0,
+ 	.alignment = SZ_4K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data am654_data = {
+ 	.test_reg_bar = BAR_2,
+ 	.alignment = SZ_64K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data j721e_data = {
+ 	.alignment = 256,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data rk3588_data = {
+ 	.alignment = SZ_64K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ /*
+
+
+
+
+Or, if we want to keep allocating some kind of IRQ vector in probe(),
+just to rule out totally broken platforms, I guess we could also do:
+
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index d294850a35a12..ab2088c7937a7 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -122,7 +122,6 @@ struct pci_endpoint_test {
+ struct pci_endpoint_test_data {
+ 	enum pci_barno test_reg_bar;
+ 	size_t alignment;
+-	int irq_type;
+ };
+ 
+ static inline u32 pci_endpoint_test_readl(struct pci_endpoint_test *test,
+@@ -948,7 +947,6 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 		test_reg_bar = data->test_reg_bar;
+ 		test->test_reg_bar = test_reg_bar;
+ 		test->alignment = data->alignment;
+-		test->irq_type = data->irq_type;
+ 	}
+ 
+ 	init_completion(&test->irq_raised);
+@@ -970,7 +968,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 
+ 	pci_set_master(pdev);
+ 
+-	ret = pci_endpoint_test_alloc_irq_vectors(test, test->irq_type);
++	ret = pci_endpoint_test_alloc_irq_vectors(test, PCITEST_IRQ_TYPE_AUTO);
+ 	if (ret)
+ 		goto err_disable_irq;
+ 
+@@ -1092,23 +1090,19 @@ static void pci_endpoint_test_remove(struct pci_dev *pdev)
+ static const struct pci_endpoint_test_data default_data = {
+ 	.test_reg_bar = BAR_0,
+ 	.alignment = SZ_4K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data am654_data = {
+ 	.test_reg_bar = BAR_2,
+ 	.alignment = SZ_64K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data j721e_data = {
+ 	.alignment = 256,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ static const struct pci_endpoint_test_data rk3588_data = {
+ 	.alignment = SZ_64K,
+-	.irq_type = PCITEST_IRQ_TYPE_MSI,
+ };
+ 
+ /*
