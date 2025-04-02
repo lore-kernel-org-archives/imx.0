@@ -1,300 +1,129 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2060.outbound.protection.outlook.com [40.107.104.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401078635A
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 15:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743606148; cv=fail; b=NfIDfihalydDtrt7aZoiCbsDD1Ofsk8xxjN+Ok7+YKQNyzIwS0/Ojz3PswOe2DXF0VrySwgRpSJ07M00yfTb64+KRoaWffDIHzbr/is1IJk4fmBOae6omsIWJi9jBEkE4QFN+wAAaRVTW97qWnI/o88Ib2TEP6i1IIFsYQrW87k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743606148; c=relaxed/simple;
-	bh=HsnUFhnyTrjgRKlF0q+J622LmpmDQRdXugmoXdJjpqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fS8/LLAj4yYGELqdJ+4T+QlPNQArdeHQU591Ne1X/IguPGwWb+dQLH2RXaswsm4iXh2vUyCqK+mkZPNlSX2CgBDyYjpfkJlHdL8ICzilgCvG2EjLjoSGcwZFapaoKc/WXcgsY/PG0WQXyDtj9XtkHTQSsh8qkddxwMFBXl3e0HM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MEotwqvT; arc=fail smtp.client-ip=40.107.104.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13712CDBE
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 15:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743607064; cv=none; b=qOmKADs2H2JHedijGnGBluek0mTF0QVI79zv02lySFkAZ9Gz61eGWaVF2UnhOpkUFDEGQeQj9ab7dul/3XXBfeFupf4aXxz5PANLhKSM7yl108SVVseY3biMiMdXju5rg9EuYAIKRHNB+IoP8dyVNQ/ARJgq9erU3ay9G2pNtd0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743607064; c=relaxed/simple;
+	bh=bz3rHQ1LEZ5GlZRhjsHjlZAaWas133zf2WZHx8MQBRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Iv5AYspGZagy+zZetMxjG3eMZnhBIidNKLa8px7TxSznK+CZToHMfU0Oo2GliYzUhjY67PKxYWL/n9lqwrhAwl/74VntXuHyi5IZicoRIOp/yLuj4wr8pdwC541HtD7O2t8Owb7x28ULuf4ZaBv1HAdwL8TAsZGaFIb+zvuGlOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EyeXfN0m; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MEotwqvT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TyoPNMt6IKY+/yrDqfd4PnTZT1pkGnn6ItSaDQGYeOAGcH2Lt3j5mn59YdmqA8oU/grjdFsAVlv4zlvs5viY3XpwpM1/a0i7ubV2bepd6YY3gcV22ac8tus/EieFgw5FLvG1irZFteBW0Ja9odKp0p3SDI61mMS6ggt6iQD3GOZn7IqcNpqHlu7/B5kf3EGOSqLRzxSglo5Peo9x6Mxb9NesE8CmZlZZKaxoZD13JixMvOMwCIg0xB3RDrp4ev07O5Yh2BwFcxrXyzCCaFpV24TW67iGp54xUhems/mWz4fO6WUnMeFnGaYs2xI18tdYMJhsMyxm+kGA/pTBbLDXwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WMPUPJa4bwMHYw3HIz5sm6Rg7dJAnrax97Q4pfQOMWU=;
- b=LGPbd0pN7I6jgTzt77P6B80FgyycM17XevDO24xqqzgkeR5YEpVBQ5rsKRMFfzqftGrFlzymGnphiW4h4DDmJfiVEdcJOipWPCkbiF2mHQozv0AB77HtbV5IRYPFTlRKx/u08CiPGnyNDgnoVa4BmpUTZQ8xEZM8ChSodEpOP1dVVbQPhI1kgD/V/14poqSj8fpbywLy6GGbiXYcTqn2Ql457wXjCTja17QlaRNk9BDV3LBeWGQk8LxiJKjsFq2edSitlmU8GwkpuUG0GbU4HkO2MaTEWjw1T8RSRyIsaCpitsKNE9eEFjlhqhRP5FTPebwOMauCpRhGE+bvmDcxXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WMPUPJa4bwMHYw3HIz5sm6Rg7dJAnrax97Q4pfQOMWU=;
- b=MEotwqvT9RohqxM23S/upbwTqiTeFiJIl8yv1nzezvA8SgY5Ip5VD3bKsSB6z7Ij0w1bYJUDu1wU2UGedBAH1j3fCH8q+bXD/gROGwfBMUXgPuqvK2eg/WdD8ztQANke7ZxkW+jGgwS29nlNddG+7833brKYZnT9MKNedzTqGBek6FtAUWBZtzuv6TFGp8JVTU56VhRy6Op+cBlW43bg+TBe7kHewlV3HM7WReCZYUKNdbINuUq9bBY1oedSRDzgvYgC9AvYaCLTCP6dWE8xAJLszqsy+3BEsSU+q708kDZWtvYhXI+OIykzQmMV0wFoEvY6sFCJ0jtliGypZOBf5Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA4PR04MB7997.eurprd04.prod.outlook.com (2603:10a6:102:c9::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.50; Wed, 2 Apr
- 2025 15:02:22 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%6]) with mapi id 15.20.8534.048; Wed, 2 Apr 2025
- 15:02:22 +0000
-Date: Thu, 3 Apr 2025 00:10:37 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 1/7] firmware: arm_scmi: imx: Add LMM and CPU
- documentation
-Message-ID: <20250402161037.GC23033@nxa18884-linux>
-References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
- <20250303-imx-lmm-cpu-v3-1-7695f6f61cfc@nxp.com>
- <20250401-quantum-coyote-of-admiration-bf1b68@sudeepholla>
- <20250402123503.GA23033@nxa18884-linux>
- <20250402-acoustic-analytic-guan-d3cda5@sudeepholla>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250402-acoustic-analytic-guan-d3cda5@sudeepholla>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0026.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::16) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EyeXfN0m"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff799d99dcso11803392a91.1
+        for <imx@lists.linux.dev>; Wed, 02 Apr 2025 08:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1743607060; x=1744211860; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=A1VmkVlpRc4WSi9FaO0aW2j/f9rNxZ3VMxxdj/njEz0=;
+        b=EyeXfN0m9MhVu4Vi/a/JZHkXfBkzRHi6K5B1aLIsY5ijD7AbonhvXlcd02fO4Y/rfQ
+         D8BVoT7gxlI8H4pUco0rdap9SCNH8CuWNitjQ8S9LYpxdWFmsweKVNiAd8gYItEY/aG6
+         rowTY4O60cebqxC1NQDFHmvIFTS27aCHsMcgKhUDONh74bt7SJvnof92kdTV2JZjYGFS
+         zad9P8+TCGM22eYRbwxV0MU/x22bKvLuY7phCzsuRQX45PZTMCIjEWdPvyM6264cW64p
+         Vd4MEXQbsMyGfqLV8K3wv3S/RgqHjIYdhw5qsf73G22WfnaN3F85u7aUZu1p5bLnYnIx
+         LX+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743607060; x=1744211860;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A1VmkVlpRc4WSi9FaO0aW2j/f9rNxZ3VMxxdj/njEz0=;
+        b=Lc7H0xlZwq4nzer6jzEU66Jld83qFfqtqLCz346kwMuQNS9sRETf+fq55jSNO2732H
+         NH3/MPbrBfjAbksuAi3b74COsJ7FdyUEaY0ZORD+WS20S5jnuhRK7fh3jJWFBeR5QFPW
+         pNMK0xUtuwZXvkqQyhrL3kh+Kx89os/maa6ycwgRHDYadWeIY/CENTEaRatVQ/DpAUbA
+         YKpAkuVgkZEUfeB1Nk0ud/hRGsSsu4Gr9d/C3Ls5dAbZuLjFEpLb1F8u8Qi9AiY/IUjn
+         TpUECwMAfQIENLrWYJ9fy4dsDHBaou245Z8qARQ+UzIohDIf+TZiDjq0YbwqtxHr+YJm
+         q4qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxUlFyR41GEtDryjAPtnfOgOrNubPooDkZbarrznvo4CvZJihYBAe3B/MjOJvbyuCAxLM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzNPtJgBeAgc8zk74jLn7BUTtO8J7H8J6qFkHhSMahTM1tcUUSt
+	TpfIQmzf77D0cXxRxYLGujwoy4Y7KHE1g4SoXNNsYNRFwmMrHqViD+tTqUSr8Q==
+X-Gm-Gg: ASbGnctRJz8sGlcATEf7qxHpI5fjvRWZSrgKDwfP1oJIj/+sVGxD11FmGS5sQcwnb9M
+	pWeGSrLjfSaVrZIjiGWZFA8o2/XfNQeNr/jTcdmkEHiWAhulIAIyCGQCpI0KTrNjaaHqoyCWeGG
+	kRDMFvBlGFaQTW57RSLWUyAEQIJPEk0CF7psytTKM2P76XJFB52Gy541K9c5VTbBb0tm4PdWncO
+	Y0f91tsHNar8dGPHLoTrdACzwcELClJ/S9b45SAZlrvFvAiDBAN6ro10NREcmkYCgca2qP7Ig/f
+	WS+TbYTGd5L6J3nmBt/8ECVdXPwZX+IKagsPplEnHj3q0bRYsbKrngPk
+X-Google-Smtp-Source: AGHT+IG16MivObzWU33JTwzx5znIxU6+vnQt0ROoOp8Kq1NbarWsZJpr2IHBGg06IH61ZT+KYFb1+A==
+X-Received: by 2002:a17:90a:e7c7:b0:2f4:432d:250d with SMTP id 98e67ed59e1d1-305320b166emr18279561a91.21.1743607059436;
+        Wed, 02 Apr 2025 08:17:39 -0700 (PDT)
+Received: from thinkpad ([120.56.205.103])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eedf9b4sm109376755ad.84.2025.04.02.08.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Apr 2025 08:17:38 -0700 (PDT)
+Date: Wed, 2 Apr 2025 20:47:33 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
+	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
+ L23 ready
+Message-ID: <rqgl5jjauppyudgmugp34fillkeli3qkwf4uf2djghi6nslebg@pyi6rbwyduxd>
+References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
+ <20250328030213.1650990-4-hongxing.zhu@nxp.com>
+ <ovaomfvo7b3uxoss3tzhrkgdy6cvxi4kr2zxmqsfjxds5qfohl@t6kc4rswq6gp>
+ <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA4PR04MB7997:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0cc030db-7ba7-437e-3afc-08dd71f75eb0
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DKAcloq019Wu+Kp2hUg1wIeQu4FOyirRyyEWgBT5WMAgPvoc0K4SHYUSgLpA?=
- =?us-ascii?Q?d8HauuX9SfqZb+l68sLXYNcGvBWvnk8VunGbqzoAZdsYV08aqS+vSaMG9Hty?=
- =?us-ascii?Q?CgInv0iJFTUV4KDXOUXFRSv4IiWLl+2sRfprzrW7jycZpb6MIaEzkJsancVV?=
- =?us-ascii?Q?4e+US7u0IjrDbNWKwUOVKrFJjBU7iPdYT33YrYR39E5CK+2r8DKJ0bCHSGFM?=
- =?us-ascii?Q?dkjxJPaU/oUddW5Ib8nSjG3/lmVYUWaRwDicxVXmz/oLWFY0onqPWdboZMvW?=
- =?us-ascii?Q?VqCBPIj4nCKfVQC6VpR6jkOEiCU4Lr58iRoF2dBXb1YsG09ZqfhnelHM94pO?=
- =?us-ascii?Q?NGrdWqdxgL6Se4Ru2J0BwD2Zb6M8BqSgZ26wvSbZUWNYoNSI8FfzJ7YBp36p?=
- =?us-ascii?Q?NC/fvbfyJtUuh/a63hgf6f39350FxWBdgSFmqzUlNot36eSusqxCTH27948/?=
- =?us-ascii?Q?ZK5h/9ACccbW1EpFMi/2QBq1qxHTetRCKGnS7yNVZSv4UBO89AAZuhGi5Jk+?=
- =?us-ascii?Q?xnouajJzip7VnEidThNJvRtHRgfbYjC21MWD4HWe/cz0HIDxx+B9IWpV+E17?=
- =?us-ascii?Q?L0JXJ4wWE6UQWrltLVV4qHrCDVMFMSWgBxY1Qp/5V3nBplYQGbXcal+lLhdD?=
- =?us-ascii?Q?Rt5J4PRDRLKmXwrBPDxhTyRMkxqhL3jTLZA6Oq2Bp4KlOHIJmLix5BEYTZGD?=
- =?us-ascii?Q?O1kFxpzO97bk4iEIYszmjgVO9Kor16YrkQvPSLNtxwv17V6hmlecflwtpVGN?=
- =?us-ascii?Q?M9vSL57eXTXZ2Lk73/MzPu4K9W9BerOqOAO6gy0NvcC/EXHftPyq88sRxJjJ?=
- =?us-ascii?Q?oQf6+oTip3iB3B5MLHz8sOS5fp5psquvmhYeZD6jwT6loLpf6IvA5cszA09X?=
- =?us-ascii?Q?xtP+jvcfUq6kWzr6W/vxZC8KWEE4k9OI3u0ooUHSsiH2CuwYg4yNkkRvEMbd?=
- =?us-ascii?Q?OZbVvGP36xQE78zD+ajzLhHzSP2TvJEI0pdCd/jBmQ3DDvGNcwY4ioKiFqN4?=
- =?us-ascii?Q?TCkZoO39WmSx0JSI6c8HczhUgTsfEAm1q0GfkGmf5V6thx7oOqRF8RfYqHM/?=
- =?us-ascii?Q?d/d5XzUyCnWuZG3mmCzhY3tYkpc7WklybAZ+SLVDDpNsIpkjH1WT+M1f6gAK?=
- =?us-ascii?Q?poYdcZHPDt6D2pMmfm/Tqkx5tusV8kwIcWAbOa3FPYRN/iKvZUbA3oFgk1hb?=
- =?us-ascii?Q?q54UxdIxjABfbpPII9UcaO1UAJsonI45Fz6UcfrUcUcVqRZVAZLL3np3TkBU?=
- =?us-ascii?Q?BVYoPUwhu/Yp/bxNoQVd3L/LleSJQBJZe8fgn+O2t5Dn9odRCeaoc+mYvWJh?=
- =?us-ascii?Q?+XwLk5eXQtYCbNo0c64nU60uRdBH5qpBkg/GXv8F9SExXmR1HCxM6IWxzj0n?=
- =?us-ascii?Q?P7OXIEaA3Bq6j+xRdUy27HaqAjUOkYZyp8l9bcLou3i5d2aGJ5swV9bviP7y?=
- =?us-ascii?Q?YFQb51u0W0WqY2aGPtxC1q7AiKTnIeVx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2nsGymgkOvnH1CupXpd19cJIbFuySLcaV8JeSXYzreOEjEWiQdzrZfOyqLRV?=
- =?us-ascii?Q?hBZhL5l3PSRpWsmw+340JJ23OLvnKs9sQruqmTaoxwzgxHSXJEMdNVdk7F5A?=
- =?us-ascii?Q?VIJvRGj6RkdzOg+7OUCo9fyxacGauq3EC7sBPYSw1tqwYaEyR96tvQpVEBBF?=
- =?us-ascii?Q?vCGGNqaOBzWoWtb38Hd/FGZD4S5sInChwQttXocmxUQzYx3P1K9duk8k7gl/?=
- =?us-ascii?Q?KyFXWDJnPPeWYsWSvE625QSrS0IcOrrWEtBv1ic7wh+c3cSOiAkHWk0h2bKt?=
- =?us-ascii?Q?e7LUTB1iOA8KF6iPxhIV7GXHwAzIRNgSf3C0QKbuoqeADZ7VPXsEcnWOW0H4?=
- =?us-ascii?Q?4k79YuPjB8V/IvQ6YurEv7NnbLLQSkYsBSfNehGLsmq1kxcpwiwGKMIq4nx1?=
- =?us-ascii?Q?9r7PsTpHtHS9erRY5TsW6RDLozMuenLybw9rjXjK2vaFeyoOW9lXMYngNk13?=
- =?us-ascii?Q?1kRfCGxavU5CtCHa7svG5F+sNh3OpbnYFhErc7CavAIBph0qXXA/U6ad+ldU?=
- =?us-ascii?Q?HRgxhJAWJVrsf2abvadgPta7BxKNmm82LMmhwUqQnzMJbM1Sqet5v58PCwx3?=
- =?us-ascii?Q?dZHyjJmnZxsj4eBRQS53I07e3RE551qEo0WPAmRuYfR1/xL/4HjaAv/WRqye?=
- =?us-ascii?Q?AET+yuzwiUxl5kX1vNe0oR5MB4VutD9241zoEqPfN98dBqxOWZqcdXOaF4zw?=
- =?us-ascii?Q?BF07umeulZx/LZLOYCtq9ziePehNPSVvB9caoQTa/kjuqHKluENYYA2fx4Zd?=
- =?us-ascii?Q?rAcsQFgoHb9nFxF3qGAbXpLRzgAbfzBa591HNFA+TtWjAKk4smKDSBHOx1dQ?=
- =?us-ascii?Q?EYXXlJyh4SnULid7jZqteticGtjT0hN3kLAvxfsSYpolNj818pfQQtz6ylqq?=
- =?us-ascii?Q?ThMiXfef9/5+g8gCM8ZWJK/v1njarnkvSeigEYekjLWh+/Xu69AR6aROL+p7?=
- =?us-ascii?Q?xT9mEynowJMacJLDlqFTKf05uHE9nA30smMC9XYtB5zi8qPDsb0ZMbgdNkV+?=
- =?us-ascii?Q?QqAWuOu5wmqhWXQhgW4iADEJfEiRcVIqcH6GjFL6ldpoLQ8SSN7CLH/EQryw?=
- =?us-ascii?Q?Fpe6Ei2guHbouLYTiQaiw/pTOr0+vlJUzJh1NRPeRGXEYavjeFATtC5/P+/w?=
- =?us-ascii?Q?0+0gtomGsUEC1MCHKBtPuJy0kzwUs1VuZyNwoBkkox7f2Fagkj/kqpjs+QPu?=
- =?us-ascii?Q?8QxFRQ3aqFN8XsYqx2Q0IsqUuLZmgtcigU3ER3hQpAKUv64K15wbZeeQEX1h?=
- =?us-ascii?Q?ISkRTnj7bwBvay8/pIU3FRE1NeXI6aTllBhP3JLK+FpVGeWV3LTualQhJMfP?=
- =?us-ascii?Q?B3TkQJjHu+/bDNVc7Tf7FpCJbvt+FkPDjJEZGmEHNMFc2ss4CJ3kBqIAFfia?=
- =?us-ascii?Q?QRAKo1mzSYkIQXNj/uonNHqkgJbPVCFPlvgqmi74hpVFIHxYjaFEAqW82k9j?=
- =?us-ascii?Q?yy19kKntvzqpqYLkecNXRDKy5MQowz0HkfBRQjoHfm7huCXg+CmaKqu1Q3dK?=
- =?us-ascii?Q?2PdYH1c3Mw6I3uyHXqYFPkSDn4yyMziCM/AzQP55/aQVnn1uyy/AwDGRaK9H?=
- =?us-ascii?Q?OlCJum8Y589Md0jE1tU5Xa3D4YhjEtI0OlVWhIfd?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cc030db-7ba7-437e-3afc-08dd71f75eb0
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 15:02:22.0697
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iooNXMuXWv3ecQ3Q8sGj3d/mVlzZqEPYqS7OKQjSsJho9+UJgtJLSeuL9WfL7i1wKY2dRy2v5TMdTJaS7HRgGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7997
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-Hi Sudeep,
+On Wed, Apr 02, 2025 at 07:59:26AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Sent: 2025年4月2日 15:08
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > kw@linux.com; robh@kernel.org; bhelgaas@google.com;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit L23
+> > ready
+> > 
+> > On Fri, Mar 28, 2025 at 11:02:10AM +0800, Richard Zhu wrote:
+> > > ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through
+> > > Beacon or PERST# De-assertion
+> > 
+> > Is it possible to share the link to the erratum?
+> > 
+> Sorry, the erratum document isn't ready to be published yet.
+> > >
+> > > When the auxiliary power is not available, the controller cannot exit
+> > > from
+> > > L23 Ready with beacon or PERST# de-assertion when main power is not
+> > > removed.
+> > >
+> > 
+> > I don't understand how the presence of Vaux affects the controller. Same goes
+> > for PERST# deassertion. How does that relate to Vaux? Is this erratum for a
+> > specific endpoint behavior?
+> IMHO I don't know the exact details of the power supplies in this IP design.
+> Refer to my guess , maybe the beacon detect or wake-up logic in designs is
+>  relied on the status of SYS_AUX_PWR_DET signals in this case.
 
-On Wed, Apr 02, 2025 at 12:46:14PM +0100, Sudeep Holla wrote:
->On Wed, Apr 02, 2025 at 08:35:03PM +0800, Peng Fan wrote:
->> Hi Sudeep,
->> 
->> Thanks for reviewing the patch.
->> 
->> For comments that I am not very clear, I marked with [TODO] for easily
->> jump to.
->> 
->> On Tue, Apr 01, 2025 at 03:15:46PM +0100, Sudeep Holla wrote:
->> >On Mon, Mar 03, 2025 at 10:53:22AM +0800, Peng Fan (OSS) wrote:
->> >> From: Peng Fan <peng.fan@nxp.com>
->> >> 
->> >> Add i.MX95 Logical Machine Management and CPU Protocol documentation.
->> >> 
->> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> >> ---
->> >>  drivers/firmware/arm_scmi/vendors/imx/imx95.rst | 801 ++++++++++++++++++++++++
->> >>  1 file changed, 801 insertions(+)
->> >> 
->> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
->> >> index b2dfd6c46ca2f5f12f0475c24cb54c060e9fa421..74326bf2ea8586282a735713e0ab7eb90ccce8ff 100644
->> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
->> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
->
->> >> +
->> >> +PROTOCOL_MESSAGE_ATTRIBUTES
->> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> >> +
->> >> +message_id: 0x2
->> >> +protocol_id: 0x80
->> >> +This command is mandatory.
->> >> +
->> >
->> >For completeness add parameters here for message_id as in the spec as it is
->> >referred in the returned value and seems incomplete without it.
->> 
->> [TODO]
->> Sorry, I may not get your point here. You mean below format?
->> 
->> +------------------+-----------------------------------------------------------+
->> |message_id: 0x2
->> |protocol_id: 0x80
->> |This command is mandatory.
->> +------------------+-----------------------------------------------------------+
->> |Return values                                                                 |
->> +------------------+-----------------------------------------------------------+
->> |Name              |Description                                                |
->> +------------------+-----------------------------------------------------------+
->> |int32 status      |SUCCESS: in case the message is implemented and available  |
->> |                  |to use.                                                    |
->> |                  |NOT_FOUND: if the message identified by message_id is      |
->> |                  |invalid or not implemented                                 |
->> +------------------+-----------------------------------------------------------+
->> |uint32 attributes |Flags that are associated with a specific function in the  |
->> |                  |protocol. For all functions in this protocol, this         |
->> 
->> message_id is not put in the table, but it is list above just below
->> the protocol name. I would prefer to keep current layout and align with
->> the MISC and BBM protocol.
->>
->
->I meant why is the input parameter message_id not described in the table,
->but is referred in the return values. For completeness, just add it even
->though it may match the SCMI spec in terms of input parameter.
+Can you please try to get more details? I couldn't understand the errata.
 
-I will add below only for PROTOCOL_MESSAGE_ATTRIBUTES which refer message_id
-in the return values. Please raise if you have concern.
+- Mani
 
-+------------------+-----------------------------------------------------------+
-|Parameters                                                                    |
-+------------------+-----------------------------------------------------------+
-|Name              |Description                                                |
-+------------------+-----------------------------------------------------------+
-|uint32 message_id |ID of the message, const: 0x2                              |
-+------------------+-----------------------------------------------------------+
-|Return values                                                                 |
-
-...
-
->
->
->[...]
->
->> >> +|                     |Bit[23] Valid err ID:                                   |
->> >> +|                     |Set to 1 if the error ID field is valid.                |
->> >> +|                     |Set to 0 if the error ID field is not valid.            |
->> >> +|                     |Bits[22:8] Error ID(Agent ID of the system).            |
->> >> +|                     |Bit[7:0] Reason(WDOG, POR, FCCU and etc)                |
->> >
->> >Is there a mapping for this ?
->> 
->> I will add a note in V4:
->> See the SRESR register description in the System Reset Controller (SRC) section
->> in SoC reference mannual.
->>
->
->A reference would be good here then. I would be hard to imagine what it means
->otherwise.
-
-Understood.
-
->
->> >> +
->> >> +LMM_RESET_VECTOR_SET
->> >> +~~~~~~~~~~~~~~~~~~~~
->> >> +
->> >> +message_id: 0xC
->> >> +protocol_id: 0x80
->> >> +This command is mandatory.
->> >> +
->> >
->> >I can't recall if I had asked this before. How is this different from
->> >CPU_RESET_VECTOR_SET ? Why do you need this ? Why can't you use
->> >CPU_RESET_VECTOR_SET with an additional LMM_* command.
->> >
->> >I am sure there is a valid reason. If so please document the same.
->> 
->> CPU_RESET_VECTOR_SET is for cases that M7 and A55 in the same LM.
->> LMM_RESET_VECTOR_SET is for cases that M7 and A55 in different LM.
->> M7 LM is under control of A55 LM
->>
->
->That still doesn't answer my question. I was asking why do you need this
->extra interface ? If LMM_RESET_VECTOR_SET can take both cpu id and LM id,
->it can be used even for cpus within same LM with current LM ID. Why the
->need for separate interface ?
-
-For this one, I need check with firmware owner. loop you in
-internal mail.
-
-Thanks,
-Peng
-
->
->Other than these 2, I am fine with your response on all other comments.
->
->-- 
->Regards,
->Sudeep
->
+-- 
+மணிவண்ணன் சதாசிவம்
