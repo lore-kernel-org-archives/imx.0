@@ -1,71 +1,66 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2056.outbound.protection.outlook.com [40.107.22.56])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2059.outbound.protection.outlook.com [40.107.103.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189EB19DF81
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 18:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124B01E5B81
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 19:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743617036; cv=fail; b=nKX+70cPDHkt2cOO+3QCGLN8L9D6tE7eK99Y5ZeKOijIuxcSPX2rDDpoE6sbclOKJlmh+JJXeq42bzEUHxpTSTBrxLfDg8qFtyEvqaCBdGiNgyqjDsXXZd2uMk4lhTeWzCKMw5+p6i7YV2Zz/jmrWgp1YWrycJWLu3q5E+ax2L0=
+	t=1743621444; cv=fail; b=YYjyi5POU1+IXyiW1RQYYtn+6CgKxNMgwseI5pjY7UiYbOUOCV3cz7fM3NFLDywxp9UvXW7RArX2fBwZYXN00jmxapKDMCe7dQa99UWK4tcT78LAQmZGgEdMxE//+J6x+GK61+kJxeygcLM49vGssj5Ax0fmTBK/3BVwSTkWmtk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743617036; c=relaxed/simple;
-	bh=lgGKqsfwHtUI/moZaf0qqkjIZkt5sRvexiCV1ZUdZWY=;
+	s=arc-20240116; t=1743621444; c=relaxed/simple;
+	bh=dU9Y6/oShUl2o/DHUIx/eRiFuGxoXwkhOAMkXZNgEVY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sTpxhsC2Ykw5pYc5GuABCOLgZDHTiTWICcJ8YzhHe55JqJLxYX4+Ca38MdMAWHcCXVPciVTDRBGG1ZTrO2JSmjA5CtJCpYBiE7576sCGWGzcPNX+kEGbNU4a5AcnT637D18VFl4s5P556b0kSX/YMYPueyxSDII+d5TaY5K2feY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oOM/h3ca; arc=fail smtp.client-ip=40.107.22.56
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BFFssuE9NzlulUBg+y5eV/9WPY7ZAsUMMcz6CshS7c4esmt9sAzuH0OwGoJWEonzN5hQlhEtWCKO5DLJBSFv4+nL1nsIJuaLn5EW1S8LXdGX78epOqC6nx7qvFplw5qjYIyHYMEhH5wr9JrCnVhZQhe8hLjdAa1ange9fLlgdPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kCJAg9nV; arc=fail smtp.client-ip=40.107.103.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oOM/h3ca"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kCJAg9nV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jJduTeTZ+xv4bI+HhRhYvfwLgFrFaKEcQEqZxzkEFEzji3KuvEv1+D39vkphSzTyakGtmxALB10vxAc8HztRTNee+HPT+4vaWvlZ167JMijaV2KTOkSCkAd18v46dRvgQB/O74bpbeScQwcxeH83XC5nq229Z6RvxhjTeWhVok6K8g/PgMrIASrO6GVUwd2ORX8ACAVS2C04ViqgDM6B4ofPcmu2F851YPYn7YgyzxLNKgaJmA9EutM5X9kMBY0Ut/iZlX3fbpbYzWS0Ec1u6P/38jztlzc8kjZ5hxQTljUhNYBIECVSm0ltUvkW37O6HuDGsOxGRW3yijvoLUz/1g==
+ b=XcRtTwuhETWsCSOLVwWX4qazYSWoo6BWAtAhMqiPwDmqSvheXIohkC5iUIKx2UwJGLVPNYKR9P1LnDAKriAsS/ZrhVVqhGo/bhLol9soH9KCbuejvfwurRQQc20P7UZzGELAGQGVVXnyJtYfyfZF8ZkVy6XMivW1V7do1R7YhN5A8OL5O/y58Dwx4S2Bkkm16LuInq2U5fyAYbo5v4yLQ9Fh/AETCXAiM4FTHLd1Sio3q2qB/FsfQfMpPgrrVSbIkwFzesjIgFt2FS03sooiVUQSQ67Q+m/3CNahlPqWeAVVBA6w7auuQ3aevPxOnTgws8u9pyOiD3MgvPGo+C1fcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LtwyV13W7jXj+sv7O7G/GKWc3g/z/IpECbc1hsFvijQ=;
- b=LR5G4nJlhVIq/4Wpycz1uSTGpUKcGvnz9t2+XZR6EQkYgKJ/+ybph7N9p8g4C8fx1ZSSyp+IoWuABYw2szJFFcDnqzwAuwjtRghKqxU8Z/rmZJDLs2SPjKUrnq8FNyGB0oFkshWyuPrZhTa9dU+xJiw89UoBois8RKMY4SpmIkA9++yb1nsPJsVdKmGd3+/xvjHtkKHbZLb86u68JY2toj2h7bvR5EIydzquq3CZ6onQHq0jL9q6w8ee4cmJaFb4F+Qk9fzCN+fXX1EO9Kgvq731NXohHIgLTNbDE1K1WDzq1J1JLpo0aXYFZ+P8Dxh1T9PrU/1IOIfifz2BFREWqg==
+ bh=DQZDuQ8ovDPrzdi0Sx2Z9qfifqHWJuFNSJ2cRgOFhpo=;
+ b=vsNPlv0OMMlCyIehYdwS1a2nwV757h9iPA2q4saRMIDeb2X1yDBxsmuAjVg+KTHxlQ1EkRAbscGCRaIlOk2pDdYHOUBTRFPYEDLQGoGwuxekQSqdzf8i5//BZcGGicjp/60NDpluviuFXBKAWXwLUryJr4btAnyLY9j64Xo/Itk5wtQ5mzEKvpZx4BnahD2vlr5jZE1Bcl+ALBgC5GGLzMWZ1ksO8/uwNXUGsk+pnGQQrbXZUlB+VhdA6zgQ+UBzVeoRkPO3HFkJTGFHQeZa+Im7+0SDlrJ/HcGAaeoqAUcssSuqWVGCGe+paE3jwTeLDaqbckyjCrFudDVN+EOFIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LtwyV13W7jXj+sv7O7G/GKWc3g/z/IpECbc1hsFvijQ=;
- b=oOM/h3camjBQwW6xky+Pm45rmljPby8ivSNUsaJNzjo7vNmVfQ3oAUsW/tqh0Nsopw3BZY6V2MQ59LLWgwpVfy4bfKKyZPXlqbniROV9bf2ycW5Slh3nREZP8zYTgq5ijhJ7J20ok7Td6oDbxkG91y+fbFFJ7IlZe9+EIdEimOSbB+4KSAJxS8Q2UceYKP21vaQkuIY59GYVIAnYOWX7We0ApWtem4vwtzS+mRS4icsR5b7RamSqOpQV/YilaWOJspLXoS0yHO2ulYgJI/7kgspkCrdUoYSKRqL5aBhpa307w7ujFilRn1hQ6Yg59yqOuO/AsRjFBDolR+Krwa3L9w==
+ bh=DQZDuQ8ovDPrzdi0Sx2Z9qfifqHWJuFNSJ2cRgOFhpo=;
+ b=kCJAg9nVr5ac71fUgjZq1J/AqQKFVpC8Wx7y7GJrm8H5NDPVhWMw8WFTg5jUGiyorlVai1BliDtVA0LCncajAURkDGScpT5xAetNtWIYZTyjwlHYc06KBZO2FjrnlS3I88C45J51fy78Qppnh3pB91tAZKQ9ug2GBhtw1LwfBjjQOwXJzDxbagZJv8DwbiuC7Nh4dn+bj1E8evEphGjRIrQOGsrYDweMe6DZym9UAenCW/92Hthn78eVIEm01GU8yM2Wu9reDczr9fltJg4dQlpByK1/lBd3T6BBTZwI2MHfUQWT/xKQbp6z77njsBshqDaCc7uPBMncESPSvkYEpw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GV1PR04MB10079.eurprd04.prod.outlook.com (2603:10a6:150:1ab::13) with
+ by PA2PR04MB10345.eurprd04.prod.outlook.com (2603:10a6:102:425::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.47; Wed, 2 Apr
- 2025 18:03:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.54; Wed, 2 Apr
+ 2025 19:17:18 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8534.048; Wed, 2 Apr 2025
- 18:03:48 +0000
-Date: Wed, 2 Apr 2025 14:03:37 -0400
+ 19:17:18 +0000
+Date: Wed, 2 Apr 2025 15:17:08 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	xiahong.bao@nxp.com, eagle.zhou@nxp.com, linux-imx@nxp.com,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] media: imx-jpeg: Check decoding is ongoing for
- motion-jpeg
-Message-ID: <Z+17+YucWkGUMIZJ@lizhi-Precision-Tower-5810>
-References: <20250328063056.762-1-ming.qian@oss.nxp.com>
- <20250328063056.762-4-ming.qian@oss.nxp.com>
- <Z+a2G5We38cQw3UD@lizhi-Precision-Tower-5810>
- <99aa5db6-eb75-4fcf-ada7-cc6d519a40cc@oss.nxp.com>
- <Z+qnln8qbHCYVH+e@lizhi-Precision-Tower-5810>
- <22fd3087-6832-4b61-8c78-bc8dd3ac808b@oss.nxp.com>
- <Z+v6Q1TRpJUkF2oh@lizhi-Precision-Tower-5810>
- <3b212947-0495-41fc-a143-c695c0c92269@oss.nxp.com>
+To: maudspierings@gocontroll.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 4/9] MAINTAINERS: add maintainer for the GOcontroll
+ Moduline controllersy
+Message-ID: <Z+2NNFyd3NmfeMSr@lizhi-Precision-Tower-5810>
+References: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
+ <20250402-initial_display-v4-4-9f898838a864@gocontroll.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3b212947-0495-41fc-a143-c695c0c92269@oss.nxp.com>
-X-ClientProxiedBy: PH7PR02CA0024.namprd02.prod.outlook.com
- (2603:10b6:510:33d::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250402-initial_display-v4-4-9f898838a864@gocontroll.com>
+X-ClientProxiedBy: PH7PR17CA0010.namprd17.prod.outlook.com
+ (2603:10b6:510:324::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,334 +69,116 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10079:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08201930-741f-4658-d77d-08dd7210b74e
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10345:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a2949fb-d603-434a-a8d1-08dd721afc24
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|366016|376014|38350700014;
+	BCL:0;ARA:13230040|376014|366016|1800799024|7416014|52116014|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v0wpaXgdZZ4KQzIbcdhjLQcvuVm9YG8h2L67CgnYIMwO4xZ4TSQH02vN7oq4?=
- =?us-ascii?Q?G06eMgAMbG364Sh/Sw8iWhGNWHWbNUAAUa9pRLFwwzt5uIuaDAD5TSAfklL4?=
- =?us-ascii?Q?kQS5C9FcFs2oIPLYYQEAda32lAHxoUT/3kj1UOobvyrMDL3q5v9dMMI4GQOP?=
- =?us-ascii?Q?G65bPh4O/il6LY32LIqFMuFqJud3RCRUvPqQVEhnZqOEBYTck6IHVqFK9CfS?=
- =?us-ascii?Q?zvlnTisG9fAmmBO26/kgrFV7dU5KexXceB2QjtJRImG5+iFzJ6IqoTRFxYKL?=
- =?us-ascii?Q?J40QW9wSVR85Tum8YhjV/5Sa0BURox3Q+vq57wGk5PHXkdwIe/AcFsyz2seu?=
- =?us-ascii?Q?L3yTyIWHQntM7ZV2SVTwJX58RA4omDb1zTC/D4ViMYBf8LgUuYyV84V4I5QJ?=
- =?us-ascii?Q?HtDm2tz75Z9Ht9m+3FhOLQsdWN3Li5lhyupce92YDaNklmeOsUcEjJ9TEdga?=
- =?us-ascii?Q?DGjFdlVUHItVzkgKdXZ2tPeIwlbDUvEnRn9NIqHpqxqGUXUeIYS+p+K+SGGL?=
- =?us-ascii?Q?L3aAIwr3gT25Oeqypeuri9+tULV2D7IOXSe8YyXnBcJO+jCn3GEA8WITc8fO?=
- =?us-ascii?Q?eh9tNnbjMG22tbXqV320A6dCp3Ur4F9vmHb7rjuyJJYSwjs0+8TbZ4mZOKQk?=
- =?us-ascii?Q?ZgkRyNs2Gk+ytdbyjL5QpjwoWTjxY6pBkZxL+nAL2lPA/YK0DnX0iwbJwevJ?=
- =?us-ascii?Q?A6faIUApYxYd8/lsgGrlFMQXDCy6XRBF3qOb2XzwVMTovp4IzbiOLRN6QtQk?=
- =?us-ascii?Q?TR1oGQOYdBE7uYcBk2XqpO/Tgo5xSm6EJ/0yBvfd8wR7z70df4c7SOpLsaeR?=
- =?us-ascii?Q?ozA6nSu6eyrtNxdDr+uynlPmh1XqoxsLpRNjKI6rUy6CBWF9YbsQFm1R4pil?=
- =?us-ascii?Q?vZN8IxCu4nzkY57+BFBUc3M2EJ/EZV825ZA300drRH/SGmooZaGn2mqHcdOH?=
- =?us-ascii?Q?aBUr4KMe4Zxa6MzR/PMyZUJeQXWflRwvg53dk4lEegR7KRMxRRkXP/wSxlKw?=
- =?us-ascii?Q?FeaeY9GLSV4aHCAingucRZxkWBT5Y41QUBR8DdJU9JwBO3TweLzQH8OVZfYj?=
- =?us-ascii?Q?F9BzfJAtjA1o8IHK2fUvOtQX+98VNIlOTMswriIUJrV73isoIFAzgr4nXagf?=
- =?us-ascii?Q?/YFSh6fdl3qzhsbzSBMT3kyiUq+xrIsstRW61jsQX4/L6D98BtQmtSYwIMf+?=
- =?us-ascii?Q?eI2+GP57mg9O3LiBv5I1gW9YxAO3RibyPr+RMjWIOMgYe504fmZxBpVJwLd2?=
- =?us-ascii?Q?awM9ZP8xwfczCNAJIGcf4w74LNqiqHtKwJNFbJy055GX4Q9aqWd5XQszpgx2?=
- =?us-ascii?Q?+LcZ0MUJW0EfcmeINO5biWV56QAFkks3JaUDMtRrWv9+6bI88be6abIKxzf8?=
- =?us-ascii?Q?nfd8KIHVlqqwFdt1UiEnKkq1M4CY8ZxhPZUKTkwQTQd4tu/l4Q=3D=3D?=
+	=?us-ascii?Q?9F0pqLbjmER256oBn5f1NvfYHdSPN4MJwS7iPgIMUSkAPIeuam8i7RZD/bdq?=
+ =?us-ascii?Q?on/QVgCSwu8S17UOqIjkgEjXtuHb+Rwp+asAs/HWoxboOM8KgtWbxIot+tyv?=
+ =?us-ascii?Q?SnGMJVAI2Nuk7ar90D92Q+tP45Q56SPr3oGm+c/hX2xLmFiyDW03WkiamHtw?=
+ =?us-ascii?Q?JKRnxyHoIGVBbkxCXt7h+FIZRROsgVQiibLM1CdVunL2kvEg/dr9YIquKyKL?=
+ =?us-ascii?Q?pu4yE8FujsxoBBz8Kci8FysJzVALt/FJdJWNq3t4hRTz400P6z3dRLcJCqQA?=
+ =?us-ascii?Q?X+OFBPQ9bzhg2SBIJJT/wJoBXlVIX19qtNMVcVLmMY29X7wcAdTyydRIEcD+?=
+ =?us-ascii?Q?UReougKGPwqoZjhXgayUb3atQXIaiMxjIWXooCw2JP9fx0upAeu+RYDsFgDw?=
+ =?us-ascii?Q?hU8CtGwf7xjylw+PPIf6bD9L4dVkO3iIovhvoLwc9NHGyq1IMnnOHabdWhxL?=
+ =?us-ascii?Q?LEHXIxwGmfQgzxH5zzk/Lw1WjXbAWA6vT4gQN2rhcSmPz9MU/3zOoV65ild8?=
+ =?us-ascii?Q?IP9i3tZga1T+x58UWoRg0aLk1MkIMR0siRKePzdheigQvwIHvLX+H28VnLA3?=
+ =?us-ascii?Q?LzWxu+cMUwqtkOdZ3tamn2VGNEsuhOyfeBI+Krv7Eb6EbJb944OUw60ZQ6Xu?=
+ =?us-ascii?Q?pNdXHmuajkCghe1HxhXMVbM6TuUG8k173F7CH39o5BzmWdlvBAlRE1vJQGND?=
+ =?us-ascii?Q?fbFBAII9WpSfQzKV0ffjfJxYRo5HhgD4WWdiVfiQGUjcMMVaK4v6S1JvpS4d?=
+ =?us-ascii?Q?4MzdJoYCk0u0LIf1MO6hVjrjuWviPfNUQoEyy4fy40OlLnfHHokeCOg4H0RX?=
+ =?us-ascii?Q?YycQehp2U+f5UY5H/1FFqKhz0BxoDKI42bQeVTR0OTjXAN9PG8BsWHhCu9NY?=
+ =?us-ascii?Q?wWhGM1d1fAKR6Njhj8vBH5aoNt9Nzl+Pq6MUvFqZKTA0EZDMhAn0SaJGUdba?=
+ =?us-ascii?Q?gHwBhWYu8vimqLyxGkBVcNZf2ZAyQzi3HK/EJr7OQpOCtiqTEd7AKPoeRSDM?=
+ =?us-ascii?Q?OXrZLeDCh9yavTOUVJahYUVd1mI7tAKjWwNvOCYfRmWQZXuwM9AQpdeP9GlX?=
+ =?us-ascii?Q?/Fd5e8iQ07K4psfy8aYt8va7Zt7JJB5GOR4JAnzaPmaW8gl8BWR6j9m9KCGY?=
+ =?us-ascii?Q?T8rfoUHqN7hBcf4d6GhHEWyWHgrfgHE0S60KbBp4TvLXXoGKcIAD6waftQqU?=
+ =?us-ascii?Q?OBGtoCHB6kYtVjAMQ621kRgLM29LKAVgQPE+oTxyZJxCFrI4NLJD6xxI+DHT?=
+ =?us-ascii?Q?oAISgU0AIjpTcqBvWVo1GcIiWuM/t7QE3pmpS/FPq7wlKMowwAte5/glD/Uw?=
+ =?us-ascii?Q?Zx8HpSbDq6/JHLFgjQCdn4YF76RcfCFrKgLwTnkB5dVRugLjq4tqlklj+UEJ?=
+ =?us-ascii?Q?fmHYvCxZpM4KNkv/BUfekty5TFiW00yFci/DZ4g+xuWEYY2XJidQYinO9uOX?=
+ =?us-ascii?Q?bpva6V/UqzjWjHIHHseOUL1cp7TvKh1A?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(52116014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?V9n7lecaYZZ7f0XGUWJghDUP8KPn8YRWs18D/VE5R81vYGGzDmn4TogEC1cm?=
- =?us-ascii?Q?h9AFkkbdTo4etw6JBYOGnPMcI8nut3xDmTjrbsTCaMywIvU6rUF9gnojeikt?=
- =?us-ascii?Q?Royh7PL0Kio/No3L7P0UzP8Jluqm6FNBk9UmLJZU74rOu4YffDWILcDGlmQA?=
- =?us-ascii?Q?ak+Ze2wTMJXTz5bmUzHed+4SfEa1+d/QTLw9urwIFYs7L4h+Um6DLmcLlKmB?=
- =?us-ascii?Q?+JLeigJxGqKes0fkEHVxpxG1X8hzlvQqMnO1oUjdZKCUEcE6OMThBlG8S3cP?=
- =?us-ascii?Q?v5KcuohFwNRbChR1s/1cf4ihxjrHyTsysHoYsN+VS5ZEsoutsG3BCssmUqdh?=
- =?us-ascii?Q?7IlX5ZYjBQ+ehWLT6+xuNdqV5FeMqc8rOxjD1HdY7xdQ3FBqiQ7sDQlVN4Ka?=
- =?us-ascii?Q?oID04ClSid1P3StRi7KUjyiDfFefUqas5w3d6pBuG6aMmv6eUTGmd17JQgTU?=
- =?us-ascii?Q?Su1K/Xa9vDQ70ObBA1r65mEPsBIRdkR6CbFInW1Zhp4ovezrv3B27LPf6ndp?=
- =?us-ascii?Q?oW6wJLEi52iTuvzxPE9WnoHxY7ikjq+6cjzTq0CjlHeF+agFgD85y2Doozl5?=
- =?us-ascii?Q?FaN+jrV1o30TS1BMJtIBSNAyP2QDnJiN6cn/GaDdwzTaGLq/iqPnox02c+rB?=
- =?us-ascii?Q?3Va52u/9nhvBEWce4Fal3NKNg59kxNDzzxc1KcK4OyStWHeXiQdUMBnK2tDj?=
- =?us-ascii?Q?1ckt2BIvGyN+FakL0KezHSyPhKTy9tr9csWiF4dvxWyOnGQozOfcnbpTkjiJ?=
- =?us-ascii?Q?pw8Saqde1IgkjdBrHDPLfD+kx8Xz+f/y4O+LiKskzykkmYQH4AEBJ3KJc63R?=
- =?us-ascii?Q?1bLnoldmVPKHQX+BRyY59nocx6WUO68AeHzMEgXGGtlGy8BYBVqZPrl0WAko?=
- =?us-ascii?Q?7wx40GqbtYyvDEwQgTYyeFh8CfxnXjBi8u4Jz25jN1yPjXihSNZOHgMmZ7Vf?=
- =?us-ascii?Q?K0lhAPJzfj2LvRkaFhhMUisD2ONJ6CteE8Pp38/m4ZrD/Rf1gq+wThX01Phc?=
- =?us-ascii?Q?9A/siHWvTtD9CvSqM39RlSxvhoT+BYigP3fk04nAyKxGJvIacweHHrhBfWEs?=
- =?us-ascii?Q?sM2C9i5DDC2OeK02DM/p6+Vgas8NOte7xxPFb7EfWOvtA/IgLdala9NrLJXg?=
- =?us-ascii?Q?NQc/yzNQ2UtR5XOmwVoYmtvQOxwI+/JlMQoeq5cVhOSZ3vit59qPztyRCXbF?=
- =?us-ascii?Q?Yub6DcL8fY6SX4/lf4XG7syhACetp6VULi1dulRN7GZkBo36lTf413tJRY45?=
- =?us-ascii?Q?Q25k3eFueF8mFJ/Xn4dz1tIc30mTolDm7sI/nZN+BhVSSOp3NPFyPcZ1a30/?=
- =?us-ascii?Q?x51YjqLj0ge6j9UoDZruKXcjsIhr2GPbq2NOXvPFRBHyeqz9iQxAjRwPUDD8?=
- =?us-ascii?Q?SF9l1iGjbw8RUXKQlEtN92JiIOttJnLv1QRLBMd9OZ5bO2OQmwO7YvRO+kYV?=
- =?us-ascii?Q?7jbnFScn8jreTh1DiH3KE12o6unRlP0YdyP8VyOC2KOXGri1obedPJ7AG4GL?=
- =?us-ascii?Q?5zJiucFdNxvpsI8nkzuh7Djdnq9k2DPItGGYpL+ffo85sab2VutiMnU6WN6Z?=
- =?us-ascii?Q?H7nvzonkEfR0wazmvqlU6RCEvZ1/7+fVtu3CCXny?=
+	=?us-ascii?Q?nm+lJdIoDFVOIhoAa+ygOms93Jedps7ir+vF/yXtMSy56XrlGKaT54egUNoI?=
+ =?us-ascii?Q?qKzQyBPy9UsyErrbCZQoPqoFXR8+sDfJGrgwE6HvuMMcGnmOczaCEM4EgK5P?=
+ =?us-ascii?Q?Bp/i3NRVGYe0BrZhzMoLP67R71ESp8EJYYgU+kKTk3B6aWzn8C5tnRENn7jc?=
+ =?us-ascii?Q?Fq4Xry3rqYc9XDpdzs2CKLB8t5SCB7Wig+q6gX7Dg9qhR/1akvKJIUcao3wh?=
+ =?us-ascii?Q?5vRPKTcojT4+n+BwuNtpr/ZyjyxuaBt2eZh8Jhf70zClcnZ6jejEgZgzu1VV?=
+ =?us-ascii?Q?AQ4Py0V7zY5BmASw3Az513ohx4WhllNWliXi1d/udsPiXr0uRvyzMICTR9FZ?=
+ =?us-ascii?Q?ZBwIiJJvv4dvhOg+Yl6XmOHbgUlK0tmE4GVIXH1N0FiRhpnRjGXaOtLvt1rf?=
+ =?us-ascii?Q?EAFa5BBl9ZdiqdXLz8/SWs6tfjlH+iParxyoCxibZNFVKURzNU1nK4ypDpjl?=
+ =?us-ascii?Q?INmTcYdnwn1BDsDe70nvjjkhadc1N86p8ghXZXIIck3y+JQUey69wWgk7SUp?=
+ =?us-ascii?Q?B7HWtCfH3ifIjMXRSpqiUQ7wCleXFvUcLXMPLGlzLf//ahcMD7nd1ZyBCiHq?=
+ =?us-ascii?Q?WUuWhHolYuBDQ5un6rxhAOYuTuz8eEVfc4NlPa5WVZjfHzZyytbc9Gn0CIfm?=
+ =?us-ascii?Q?th67rzqYQYBUzDnkS+RLKhMrsSgsSvL/Y46+4YeZOCMmC/YjRRmsRFZ55U2d?=
+ =?us-ascii?Q?eLb8nuTo4Dg7kMQruxE3J0s7fPUtBywwJ1lAfttWXZYGKDJqspUpVUuJ9son?=
+ =?us-ascii?Q?ms5T9JVAG9duNthWBQGOf/Mv7FTo8DfNlMUyca0Notfc0jSYO9oLltdY0gS5?=
+ =?us-ascii?Q?Fzf/66KKa2Vzgx4I0Vb+P6vHi47BKfGudiRlC8dqDt3T92SUx119ZrGxt34F?=
+ =?us-ascii?Q?NqlAaVLr0SFRHYjhtI2SlB5R0yO72X+QLQKMVBUakJescgkXR2/IXK9Q4399?=
+ =?us-ascii?Q?OkgV/rPeesXzeChgQzKA3tFCiJt9fLtYn6YwlKKc8w6AwAS72ZzBSRZv1MU7?=
+ =?us-ascii?Q?GuGKH0V0GUPV+9KafbRKFhdOVdQj84X14yQWeCCiK6us/vwk3OQxWgWDPlo2?=
+ =?us-ascii?Q?O1Fo/Sg04HfQ16snkrjk4cJhOKAARN+1Aq5nSaZ5djsl0MXrIEbwS0sMnJRU?=
+ =?us-ascii?Q?VIRiR4InXcU3+zWDs5ZSB+K9w3HEij6DSZ50BeHeKf02r0xCotazBEcAe5i7?=
+ =?us-ascii?Q?03iokH6xm5GpGqEaehbuUZ5Hi9MGSu6tsrLojax01fGzx3HpiBk5JBf397nM?=
+ =?us-ascii?Q?1PYdqSqukOa5fo70BNtB8ACQUPQxUJiCN8oGMg/OnXoAomGtUHoNhtMJvoDk?=
+ =?us-ascii?Q?4N4OVvJyzJk3I2TYLlX/IG87QtrfZacRgIHQ5q8Cy26C4nQM0aENgvA5TMVJ?=
+ =?us-ascii?Q?Tp3EkEmGuNS0PJpIV4Ep8z//3Pgz0duWe63a3fFFYFargnincgPhdiilCrLr?=
+ =?us-ascii?Q?raFMeJ9eNiL7M1nxMI2Fc8yfB+iNWYu473X0pDhCZs3YOBJ5whoI0rjywcA/?=
+ =?us-ascii?Q?zJkHKOdMC7xCWRFVogK5QiCO8AntlSJQg/oF/uCnNI9EAWUY792ER6SlE54K?=
+ =?us-ascii?Q?QMAMviQI0sSF5R6h4rc=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08201930-741f-4658-d77d-08dd7210b74e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a2949fb-d603-434a-a8d1-08dd721afc24
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 18:03:48.0976
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 19:17:18.3157
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: elnSL8Y74JrwF4v2v8APOkWL8bxXrFAT8mbGXQGcHAOIldZPLnh1464rOMaFd5TJxrrMP7uxxLx8KtC8kvV4Ng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10079
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7ujhsBU/etdzwFVZEi7bD0ypOR1tjXpMS8e6447glwJObUlsE98Yl2vUZ06HDBQ4IzIVw4Hg2lxIdVAZpHzIFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10345
 
-On Wed, Apr 02, 2025 at 01:34:00PM +0800, Ming Qian(OSS) wrote:
-> Hi Frank,
+On Wed, Apr 02, 2025 at 09:07:07AM +0200, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maudspierings@gocontroll.com>
 >
+> Add a maintainer for the GOcontroll Moduline series of controllers.
 >
-> On 2025/4/1 22:37, Frank Li wrote:
-> > On Tue, Apr 01, 2025 at 11:17:36AM +0800, Ming Qian(OSS) wrote:
-> > >
-> > > Hi Frank,
-> > >
-> > > On 2025/3/31 22:32, Frank Li wrote:
-> > > > On Mon, Mar 31, 2025 at 11:10:20AM +0800, Ming Qian(OSS) wrote:
-> > > > >
-> > > > > Hi Frank,
-> > > > >
-> > > > > On 2025/3/28 22:45, Frank Li wrote:
-> > > > > > On Fri, Mar 28, 2025 at 02:30:52PM +0800, ming.qian@oss.nxp.com wrote:
-> > > > > > > From: Ming Qian <ming.qian@oss.nxp.com>
-> > > > > > >
-> > > > > > > To support decoding motion-jpeg without DHT, driver will try to decode a
-> > > > > > > pattern jpeg before actual jpeg frame by use of linked descriptors
-> > > > > > > (This is called "repeat mode"), then the DHT in the pattern jpeg can be
-> > > > > > > used for decoding the motion-jpeg.
-> > > > > > >
-> > > > > > > In other words, 2 frame done interrupts will be triggered, driver will
-> > > > > > > ignore the first interrupt,
-> > > > > >
-> > > > > > Does any field in linked descriptors to control if issue irq? Generally
-> > > > > > you needn't enable first descriptors's irq and only enable second one.
-> > > > > >
-> > > > >
-> > > > > Unfortunately, we cannot configure interrupts for each descriptor.
-> > > > > So we can't only enable the second irq.
-> > > > >
-> > > > >
-> > > > > > > and wait for the second interrupt.
-> > > > > > > If the resolution is small, and the 2 interrupts may be too close,
-> > > > > >
-> > > > > > It also possible two irqs combine to 1 irqs. If I understand correct, your
-> > > > > > irq handle only handle one descriptors per irq.
-> > > > > >
-> > > > > > Another words,
-> > > > > >
-> > > > > > If second irq already happen just before 1,
-> > > > > >
-> > > > > > 1. dec_ret = readl(reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS));
-> > > > > > 2. writel(dec_ret, reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS)); /* w1c */
-> > > > > >
-> > > > > > Does your driver wait forever because no second irq happen?
-> > > > > >
-> > > > > > Frank
-> > > > >
-> > > > > Before this patch, the answer is yes, the driver will wait 2 seconds
-> > > > > until timeout.
-> > > > > In fact, this is the problem that this patch wants to avoid.
-> > > > > Now I think there are 3 cases for motion-jpeg decoding:
-> > > > > 1. The second irq happens before the first irq status check, the on-going
-> > > > > check
-> > > > > help to hanle this case.
-> > > > > 2. The second irq happens after the first irq status check, but before
-> > > > > on-going check, this on-going check can help handle it, fisnish the
-> > > > > current decoding and reset the jpeg decoder.
-> > > > > 3. The second irq happens after the on-going check, this is the normal
-> > > > > process before. No additional processing required.
-> > > >
-> > > > Okay, not sure if hardware provide current_descript position. Generally
-> > > > descriptor queue irq handle is like
-> > > >
-> > > > cur = queue_header;
-> > > > while(cur != read_hardware_currunt_pos())
-> > > > {
-> > > > 	handle(cur);
-> > > > 	cur = cur->next;
-> > > > 	queue_header = cur;
-> > > > }
-> > > >
-> > > > with above logic, even you queue new request during irq handler, it should
-> > > > work correctly.
-> > > >
-> > > > But it is depend on if hardware can indicate current working queue
-> > > > position, some time, hardware stop last queue posistion when handle last
-> > > > one.
-> > > >
-> > > > Frank
-> > > >
-> > >
-> > > I think it doesn't matter, the 2 descriptors are the cfg descriptor and
-> > > then the image descriptor.
-> > > If the current descriptor register remains the last image descriptor,
-> > > the ongoing check works.
-> > >
-> > > And I guess your concern is as below.
-> > > If the current descriptor register is still the cfg descriptor, but the
-> > > hardware has finished decoding the next image descriptor.
-> > >
-> > > I confirmed with our hardware engineer. This can't happen.
-> > > The first cfg decriptor has a next_descpt_ptr that is pointing to the
-> > > image descriptor, when the hardware read tne next_descpt_ptr, the
-> > > current descriptor register is updated, before the actual decoding.
-> >
-> > Maybe off topic,
-> >
-> > CFG->next = Image
-> >
-> > Image->next = NULL;
-> >
-> > If hardware finish image descriptior, current descriptor is 'Image' or 'NULL'
-> >
-> > If it is 'Image', need extra status bit show 'done'
-> >
-> > 1:	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
-> >
-> > I suppose it should be DONE status if just finish CFG description.
-> >
-> > 2: 	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
-> >
-> > It is possible curr_desc already was 'Image' after 1.
-> >
-> >   if (curr_desc == jpeg->slot_data.cfg_desc_handle)  //not hit this
-> >          return true;
-> >
-> >   if (slot_status & SLOT_STATUS_ONGOING)  // not hit this
-> >          return true;
-> >
-> > fake false may return.
-> >
-> > check two aync condition "slot_status" and "curr_desc" always be risk. But
-> > I don't know what's happen if fake false return here.
-> >
-> > for this type check
-> > 	do {
-> > 		slot_status = readl();
-> > 		curr_desc = readl();
-> > 	} while (slot_status != read());
-> >
-> > to make sure slot_status and cur_desc indicate the hardware status
-> > correctly.
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> I confirmed with the hardware engineer, the curr_desc register is set
-> when hardware load next_descpt_ptr,
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4b3864a9852f9fca2be48987d383c0671e668336..7d4fbfdaaac1776fc7c4a569f7ab667f0a485eab 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10043,6 +10043,12 @@ L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  F:	drivers/media/usb/go7007/
+>
+> +GOCONTROLL MODULINE CONTROLLERS
+> +M:	Maud Spierings <maudspierings@gocontroll.com>
+> +L:	devicetree@vger.kernel.org
+> +S:	Maintained
 
-The key is last one, does last one set curr_desc to NULL when it done.
-If yes, the whole logic will be much simple. You just need check
-curr_desc.
+this one sill need
+ L: imx@lists.linux.dev
 
-> but the ongoing bit is set when
-> hardware finish loading the content of the descriptor, the size is 32
-> bytes.
-> So you are right, the slot_status and curr_desc is not synchronous,
-> but the gap time will be very short
+Frank
 
-Yes, it will be really hard to debug it if met once.
-
+> +F:	arch/arm64/boot/dts/freescale/*moduline*.dts*
+> +
+>  GOCONTROLL MODULINE MODULE SLOT
+>  M:	Maud Spierings <maudspierings@gocontroll.com>
+>  S:	Maintained
 >
-> This patch is a workaround that hardware finish 2 descriptors too soon,
-> irq() is not scheduled on time, the driver keeps waiting until timeout.
+> --
+> 2.49.0
 >
-> And I agree there is still some risk that the ongoing check may return
-> fake false, even if the probability of occurrence is extremely low.
 >
-> When the fake false return, the driver will finish current decoding
-> early, and the decoded image is incomplete.
->
-> But we don't want to change to poll the done status.
-
-It is not poll the done. It's compare if status is the same by twice read.
-Most time needn't retry.
-
-The basic idea is the same as
-https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/clocksource/arm_global_timer.c#L73
-
->
-> Considering the probability of occurrence and the respective
-> consequences, I think this patch still makes sense.
->
-> Maybe we can check the slot_status register twice and add a short delay
-> in between. Then the probability of returning fake false is basically
-> reduced to 0.
->
-> Thanks,
-> Ming
->
-> >
-> > Frank
-> > >
-> > > Thanks,
-> > > Ming
-> > >
-> > > > >
-> > > > > Thanks,
-> > > > > Ming
-> > > > >
-> > > > > > >
-> > > > > > > when driver is handling the first interrupt, two frames are done, then
-> > > > > > > driver will fail to wait for the second interrupt.
-> > > > > > >
-> > > > > > > In such case, driver can check whether the decoding is still ongoing,
-> > > > > > > if not, just done the current decoding.
-> > > > > > >
-> > > > > > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > > > > > > ---
-> > > > > > >     .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |  1 +
-> > > > > > >     .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 20 ++++++++++++++++++-
-> > > > > > >     2 files changed, 20 insertions(+), 1 deletion(-)
-> > > > > > >
-> > > > > > > diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> > > > > > > index d579c804b047..adb93e977be9 100644
-> > > > > > > --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> > > > > > > +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> > > > > > > @@ -89,6 +89,7 @@
-> > > > > > >     /* SLOT_STATUS fields for slots 0..3 */
-> > > > > > >     #define SLOT_STATUS_FRMDONE			(0x1 << 3)
-> > > > > > >     #define SLOT_STATUS_ENC_CONFIG_ERR		(0x1 << 8)
-> > > > > > > +#define SLOT_STATUS_ONGOING			(0x1 << 31)
-> > > > > > >
-> > > > > > >     /* SLOT_IRQ_EN fields TBD */
-> > > > > > >
-> > > > > > > diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> > > > > > > index 45705c606769..e6bb45633a19 100644
-> > > > > > > --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> > > > > > > +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> > > > > > > @@ -910,6 +910,23 @@ static u32 mxc_jpeg_get_plane_size(struct mxc_jpeg_q_data *q_data, u32 plane_no)
-> > > > > > >     	return size;
-> > > > > > >     }
-> > > > > > >
-> > > > > > > +static bool mxc_dec_is_ongoing(struct mxc_jpeg_ctx *ctx)
-> > > > > > > +{
-> > > > > > > +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-> > > > > > > +	u32 curr_desc;
-> > > > > > > +	u32 slot_status;
-> > > > > > > +
-> > > > > > > +	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
-> > > > > > > +	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
-> > > > > > > +
-> > > > > > > +	if (curr_desc == jpeg->slot_data.cfg_desc_handle)
-> > > > > > > +		return true;
-> > > > > > > +	if (slot_status & SLOT_STATUS_ONGOING)
-> > > > > > > +		return true;
-> > > > > > > +
-> > > > > > > +	return false;
-> > > > > > > +}
-> > > > > > > +
-> > > > > > >     static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
-> > > > > > >     {
-> > > > > > >     	struct mxc_jpeg_dev *jpeg = priv;
-> > > > > > > @@ -979,7 +996,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
-> > > > > > >     		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
-> > > > > > >     		goto job_unlock;
-> > > > > > >     	}
-> > > > > > > -	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed) {
-> > > > > > > +	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
-> > > > > > > +	    mxc_dec_is_ongoing(ctx)) {
-> > > > > > >     		jpeg_src_buf->dht_needed = false;
-> > > > > > >     		dev_dbg(dev, "Decoder DHT cfg finished. Start decoding...\n");
-> > > > > > >     		goto job_unlock;
-> > > > > > > --
-> > > > > > > 2.43.0-rc1
-> > > > > > >
