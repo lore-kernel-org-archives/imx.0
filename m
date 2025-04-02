@@ -1,47 +1,51 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D4CF4ED
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 15:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E095735949;
+	Wed,  2 Apr 2025 17:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743607837; cv=none; b=d9gn/FKNLqCbFjMkInPpXttkZ7ISomFyvd11qB4d5S9LAJBI145M8KpIlawWSgPGeXw9OarRFMfyVemiVSwDzMxf4esgLEV94sonm0EnrBMGJt41aQ1p2ExMAVMkSea/TkerZsvNd47oGIi3WtNvKrvthcEudNdktM7UOnwk3UQ=
+	t=1743613620; cv=none; b=rHMaxlwMabZNF+vD1WQn+4rP+VHQ68dTHF5yyyHid0a9g7cFtzM3ByRHrZsZf8sxBUH0N1vmmX4pMRrJatJH/jYq1Dy3l6WYSwBt3/oZlZ7TkZz3GcQsmN2od5t/a3qPcAuF87IBy6JG+vzMeT/x2B3qon7MTSCECcpmkojwX8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743607837; c=relaxed/simple;
-	bh=50ulFjUqXwgfIP0/hz3Pe+E09PZpugkbNUnxMO3Zl9g=;
+	s=arc-20240116; t=1743613620; c=relaxed/simple;
+	bh=H3EcLWboaQM1ylt3ubvjTkM0ys+EHhZAClRtpTU23yA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gW7JtzJRjQ44B+l0JFmYXE7E/KTKqm3aIU2o39PsatidpeNaKO4OzHTZkjy8PD5gWxw69SO4dzT7viriyLftiUaK+QVwoS5CyO2ojrR5mbiajWBwvkBXPhnFsoivARTsqK7Rve/1LJ8tSfiCGOmnZkqyAFyzxISVcqMizBXLyds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27D3A106F;
-	Wed,  2 Apr 2025 08:30:38 -0700 (PDT)
-Received: from bogus (unknown [10.57.41.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E9943F694;
-	Wed,  2 Apr 2025 08:30:32 -0700 (PDT)
-Date: Wed, 2 Apr 2025 16:30:29 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=nJJs5Toc9Cl6F39Po2g3er4nLvWXraEtVbw58V7zbJFbdpfSC0iSFe9WzcpSfRdFO+jMsQ9GCN4WDWoaqBskjjc+4j30e5GUpSgnxov4bzu25pAFfRRmQNtVtKgtSM7SBYwrXa7auncMZeW/ZZUkOmL1AmGyY+mc4E6agpG/fXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2IkIe0/x; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2IkIe0/x"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=eJZNDnvZYJl/v6wAtqRZA40hAuj1eQcDN3vqs62UpXc=; b=2IkIe0/xrkxwiAKy4t0LpTq6k5
+	/rCRyLMMFZZDCwhjeoqr+d+2FBTLgaAXztM7V6t4daPdS3TQHKSxpth3gVcFOELJBkTcTSwwWQmTW
+	T04yRrj1rJRB0Tc+AmMqPSfCtTzbbeYq6UXHNYnBaAq/EijIRKJZvG0sJ7nRsNJGU9cs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u01Xx-007pEN-4K; Wed, 02 Apr 2025 19:06:37 +0200
+Date: Wed, 2 Apr 2025 19:06:37 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 1/7] firmware: arm_scmi: imx: Add LMM and CPU
- documentation
-Message-ID: <20250402-pastoral-screeching-panda-da4a45@sudeepholla>
-References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
- <20250303-imx-lmm-cpu-v3-1-7695f6f61cfc@nxp.com>
- <20250401-quantum-coyote-of-admiration-bf1b68@sudeepholla>
- <20250402123503.GA23033@nxa18884-linux>
- <20250402-acoustic-analytic-guan-d3cda5@sudeepholla>
- <20250402161037.GC23033@nxa18884-linux>
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 4/4] net: mtip: The L2 switch driver for imx287
+Message-ID: <d48796b3-636b-46d4-8e3b-74913d4f77ab@lunn.ch>
+References: <20250331103116.2223899-1-lukma@denx.de>
+ <20250331103116.2223899-5-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,85 +54,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250402161037.GC23033@nxa18884-linux>
+In-Reply-To: <20250331103116.2223899-5-lukma@denx.de>
 
-On Thu, Apr 03, 2025 at 12:10:37AM +0800, Peng Fan wrote:
-> Hi Sudeep,
-> 
-> On Wed, Apr 02, 2025 at 12:46:14PM +0100, Sudeep Holla wrote:
-> >On Wed, Apr 02, 2025 at 08:35:03PM +0800, Peng Fan wrote:
-> >> Hi Sudeep,
-> >> 
-> >> Thanks for reviewing the patch.
-> >> 
-> >> For comments that I am not very clear, I marked with [TODO] for easily
-> >> jump to.
-> >> 
-> >> On Tue, Apr 01, 2025 at 03:15:46PM +0100, Sudeep Holla wrote:
-> >> >On Mon, Mar 03, 2025 at 10:53:22AM +0800, Peng Fan (OSS) wrote:
-> >> >> From: Peng Fan <peng.fan@nxp.com>
-> >> >> 
-> >> >> Add i.MX95 Logical Machine Management and CPU Protocol documentation.
-> >> >> 
-> >> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >> >> ---
-> >> >>  drivers/firmware/arm_scmi/vendors/imx/imx95.rst | 801 ++++++++++++++++++++++++
-> >> >>  1 file changed, 801 insertions(+)
-> >> >> 
-> >> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
-> >> >> index b2dfd6c46ca2f5f12f0475c24cb54c060e9fa421..74326bf2ea8586282a735713e0ab7eb90ccce8ff 100644
-> >> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
-> >> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
-> >
-> >> >> +
-> >> >> +PROTOCOL_MESSAGE_ATTRIBUTES
-> >> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >> >> +
-> >> >> +message_id: 0x2
-> >> >> +protocol_id: 0x80
-> >> >> +This command is mandatory.
-> >> >> +
-> >> >
-> >> >For completeness add parameters here for message_id as in the spec as it is
-> >> >referred in the returned value and seems incomplete without it.
-> >> 
-> >> [TODO]
-> >> Sorry, I may not get your point here. You mean below format?
-> >> 
-> >> +------------------+-----------------------------------------------------------+
-> >> |message_id: 0x2
-> >> |protocol_id: 0x80
-> >> |This command is mandatory.
-> >> +------------------+-----------------------------------------------------------+
-> >> |Return values                                                                 |
-> >> +------------------+-----------------------------------------------------------+
-> >> |Name              |Description                                                |
-> >> +------------------+-----------------------------------------------------------+
-> >> |int32 status      |SUCCESS: in case the message is implemented and available  |
-> >> |                  |to use.                                                    |
-> >> |                  |NOT_FOUND: if the message identified by message_id is      |
-> >> |                  |invalid or not implemented                                 |
-> >> +------------------+-----------------------------------------------------------+
-> >> |uint32 attributes |Flags that are associated with a specific function in the  |
-> >> |                  |protocol. For all functions in this protocol, this         |
-> >> 
-> >> message_id is not put in the table, but it is list above just below
-> >> the protocol name. I would prefer to keep current layout and align with
-> >> the MISC and BBM protocol.
-> >>
-> >
-> >I meant why is the input parameter message_id not described in the table,
-> >but is referred in the return values. For completeness, just add it even
-> >though it may match the SCMI spec in terms of input parameter.
-> 
-> I will add below only for PROTOCOL_MESSAGE_ATTRIBUTES which refer message_id
-> in the return values. Please raise if you have concern.
-> 
+> +struct switch_enet_private *mtip_netdev_get_priv(const struct net_device *ndev)
+> +{
+> +	if (ndev->netdev_ops == &mtip_netdev_ops)
+> +		return netdev_priv(ndev);
+> +
+> +	return NULL;
+> +}
 
-Ignore this. I see even existing BBM and MISC follow the same pattern for
-standard protocol commands(0x0-0x2). We can fix them all at once if it
-needs to be in the future. For now, it should be fine as is.
+> +static bool mtip_port_dev_check(const struct net_device *ndev)
+> +{
+> +	if (!mtip_netdev_get_priv(ndev))
+> +		return false;
+> +
+> +	return true;
+> +}
 
--- 
-Regards,
-Sudeep
+This appears to be the only use of mtip_netdev_get_priv(). It does not
+care what priv actually is. In my previous review i said i think you
+can simply this. I still think that is true.
+
+    Andrew
