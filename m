@@ -1,231 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A9A233703;
-	Wed,  2 Apr 2025 07:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9078B233708
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 07:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743577642; cv=none; b=VbwSoF7iLzpMxasRyQNl/cLn8YqbTf6r+CzfVb5gsk5fKZUx2i1i4LrT4T46vjFOK/cFLspS5TbY6FPYN2/8oEWCiB8jKF51/bc8k7meAq86lxZ2F/7tCr6xes/75wNxvdQQO6K7Zh1aH4v/iIGXevFyw+35PJ2ereG/SM2CZ04=
+	t=1743577662; cv=none; b=D6q996zfrrfiPAwlvwc+L8LDHk9CRtbLgbQgvbxnbtr1npH2EGrZP7ofw3FVAJ/0wAOp1l2NXTl9Xj5qwcFkJ2bAdtIwl6x66bvPiNLNYxFNifNjiI19LN9+LkG+1hfR1vneR1dxBrsWKNu5zPi+iRuKdpZIUYkv+KGPHK99yf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743577642; c=relaxed/simple;
-	bh=XhGh4KWbPw6pg0bsHBmrK4nesThP3rTPxXXdYWM9y/c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ykuzuk9ZWzxQ5FKHDaZfqAth7E7UUIAt++Vmb1eXkocmzHekKI4g4I7rSpL60Zz00nRx7L735ZXjsFbkpnSaIIK3r/xhx/O8QxQNNFwNx/wHRqh0kj6tPNlCCXoTUAprSCoFRbX/bxSOOIb0MSRwm0+MSGuOwW/+YqnZzQbY4/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmbG9SoS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743577662; c=relaxed/simple;
+	bh=NnWGuHjIyJg5ukrQmVNz2nsRNWILWqsyGsXJg48Opm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+BKOzUWJFRE7DIWnZ6So9wGucW2lI/wm6rJVgbcueK1Dt+bb9oz8sHkFqLVgvU22xqD/W4V6GLRb8jfR4CXKkdAwVuqFcpYCEYYAWxf0+OTCapzQfBKyD9uw45dZBVU5zoe+SFw3zDZXK9eMUY/KJXYmkt75jmjZCVsdiA/AzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WavSZVwH; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmbG9SoS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E139C4AF0F;
-	Wed,  2 Apr 2025 07:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743577642;
-	bh=XhGh4KWbPw6pg0bsHBmrK4nesThP3rTPxXXdYWM9y/c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jmbG9SoSJ5E3WonlyK8E83gE/NEew9ZPM6pB7j78kAyC/Py+NCTo1uftf8RuehZff
-	 rT6s4BwSIjQf/o2nRrSR5s+IJs7HcqwYojdhGEZ7N5blqenPSeeyCU5lFg/K+4LJvS
-	 65rDdNyyiKGgpwKPEylA4edvkA0ESrVtKwQ75868wzsV+ZRLy5yzieVuV5hW4ck7mY
-	 VX0dd+/0pyFG/1dbDtcAKKpYbLk5h7ng27+1p10lufiALAK2boLq/fOCoHCFN22fHs
-	 hhudnl2Frh2VwIF8eZwyaNa4o3rrVKg3L+KgZHcbvRE/yXjCiHyvEb6fS2WptWyH46
-	 qSJ/fEEd/vwKg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73728C3601B;
-	Wed,  2 Apr 2025 07:07:22 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Wed, 02 Apr 2025 09:07:11 +0200
-Subject: [PATCH v4 8/9] arm64: dts: freescale: Add the BOE av123z7m-n17
- variant of the Moduline Display
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WavSZVwH"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3032aa1b764so8211517a91.1
+        for <imx@lists.linux.dev>; Wed, 02 Apr 2025 00:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1743577660; x=1744182460; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IhuADULP2/DYR+/MqPtSI6Cci67OQxTxzfXSmiaFrjc=;
+        b=WavSZVwHnutnNZzfGqk8USkZ8hDzWB7NGT/nUcs+dHyFd8NIcRT55jGHWn3wJC+YGp
+         lquMRyFJcEl0RCU5Ld/v+ur3yJaqydBggz+/AA4UGYBN2oK3ZC3ERuI+7gVeT7lc/2mh
+         WWq3z6JQwzbR3djYxPfWI+jqc+CT7WO0ZVMMldRLyIIcoKNJBwosc3e5j6BGyk+U0hGn
+         YtxW70b+/UWKCZOZPXyLzOduZ6cb67F20C4Tm68HcRzQahziCyY0O8gmwxFEHePkPWBq
+         sKanTeoSHVj7uTkaoYpxYAubfkqQr7UfHNfL+5qF96CTrfDbgZoPMKIz4bsIFBw+DbkB
+         9r5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743577660; x=1744182460;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IhuADULP2/DYR+/MqPtSI6Cci67OQxTxzfXSmiaFrjc=;
+        b=ZzLaMQ/pB/7Bp7SMuPSLfvqpgvG/Coa+po5uFoDwGswNKqXDt9AaFs7jNhtj45goek
+         WFZLwPOxeWTXvYWQPrBQKsmIgKiLdTrDt+VoJ6H+LIcO1oDETRpokEW41XUuwB4afJC/
+         ukn1yB5ZgSZeT6RjpuNWfV0YiairFCdOFJlTYAJjpEYmtAYSFNeYa5x7nPhmrUz57UN9
+         R9mF8fm3T9rVx6GnYQBeNeiPVnOL5UA4T/HYVK/t2locn5voBxrJF+B4vGgPqqmiAhE4
+         P4qCPTtDPPWUoWhTlkAni15DPQWbg8h+1lgXlXMMVKE5vtJRwZ2VmFF8nIAU3Z89j9xd
+         iyZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKrV0XwEPqwM+WMuWBDriMJnK3lTCpKvIGubUjbmimayCFYgzpz2ojmaCdvpYlAhqlxJc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVaJlCuYGx7QPVejDWGJ3b4CSGLPkJaLB3mmvMWzSDCWBrOQQB
+	Hyvmm6+207LulyJ0KfS7gUPNw3y0X4Qm8tc6JLOFpM9GDFZ8+BBqk9RYptyMXA==
+X-Gm-Gg: ASbGncsmY0e6o6LDa/CbrX4btM7ALJ9iM/WyVH+Qheiet+8FlGBp8uMKtMigXJoOE2h
+	w3ssu92iBvROQr0Tuwriq1+rGTJeyPwhoAq+qdEb5hmjK1NC6zYbpfffNgP3pO/Wnj6C4zCfbEd
+	GDyYRTVMnueRxw0Lff9HHErKowhbXyBZ94aIgaYRv1SvCBvEuuVpJ4MfToaqR1UlCo2CsWwvROC
+	1Zni+cV4t4dsFB5tSjCkS/AvwwcqU6KHhzc/vZL5OGR9LBgCrt5N18B510u86FSw4TL5T1RMfBr
+	HQ9VHJACGB/3Di4nW8rA7VRC/uS1E6v74oN1rkS66fkSkuYFJXZnzZtvXNM4e/la6mU=
+X-Google-Smtp-Source: AGHT+IE4wHP6J9GXf8X7N3O4gyhGdGcC+e9u9+l3c8VFMifgnYsypn4gjUxr5vUgHQch7GtGcGvLkQ==
+X-Received: by 2002:a17:90b:4f4b:b0:2ee:c2b5:97a0 with SMTP id 98e67ed59e1d1-3053214596cmr20228761a91.25.1743577659803;
+        Wed, 02 Apr 2025 00:07:39 -0700 (PDT)
+Received: from thinkpad ([120.56.205.103])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eec71besm101393275ad.14.2025.04.02.00.07.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Apr 2025 00:07:39 -0700 (PDT)
+Date: Wed, 2 Apr 2025 12:37:34 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kw@linux.com, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
+ L23 ready
+Message-ID: <ovaomfvo7b3uxoss3tzhrkgdy6cvxi4kr2zxmqsfjxds5qfohl@t6kc4rswq6gp>
+References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
+ <20250328030213.1650990-4-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250402-initial_display-v4-8-9f898838a864@gocontroll.com>
-References: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
-In-Reply-To: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1743577640; l=3591;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=SW8C2Ezl9yFyeS4dPDEpBmoVGHoMsH1oLf123qVEKYk=;
- b=4auH9859vkQxbcTaH9n0JGF5j85iALCSA+Ify5jR5o86LVm1vb1zF7FCUaDOGDJBRiWhPF/H5
- /sbGx1GeVe2Co58A5FHlk9E1+D/5ki9K6/ihF5jGYljNSatpT6efLvu
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250328030213.1650990-4-hongxing.zhu@nxp.com>
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On Fri, Mar 28, 2025 at 11:02:10AM +0800, Richard Zhu wrote:
+> ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through Beacon
+> or PERST# De-assertion
 
-Add the BOE av123z7m-n17 variant of the Moduline Display, this variant
-comes with a 12.3" 1920x720 display.
+Is it possible to share the link to the erratum?
 
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> 
+> When the auxiliary power is not available, the controller cannot exit from
+> L23 Ready with beacon or PERST# de-assertion when main power is not
+> removed.
+> 
 
----
-Currently the backlight driver is not available, this will be upstreamed
-in a future patch series. It is a Maxim max25014atg.
----
- ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso | 139 +++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+I don't understand how the presence of Vaux affects the controller. Same goes
+for PERST# deassertion. How does that relate to Vaux? Is this erratum for
+a specific endpoint behavior?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso
-new file mode 100644
-index 0000000000000000000000000000000000000000..dc0f86ca55fb6c21f10fbd333374a89002bb71c0
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso
-@@ -0,0 +1,139 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright 2025 GOcontroll B.V.
-+ * Author: Maud Spierings <maudspierings@gocontroll.com>
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mp-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+/ {
-+	model = "GOcontroll Moduline Display with BOE av123z7m-n17 display";
-+
-+	panel {
-+		compatible = "boe,av123z7m-n17";
-+		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&pinctrl_panel>;
-+		pinctrl-names = "default";
-+		power-supply = <&reg_3v3_per>;
-+		reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				dual-lvds-odd-pixels;
-+
-+				panel_in0: endpoint {
-+					remote-endpoint = <&lvds1_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				dual-lvds-even-pixels;
-+
-+				panel_in1: endpoint {
-+					remote-endpoint = <&lvds0_out>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&i2c4 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	/* sn65dsi85 */
-+	bridge@2d {
-+		compatible = "ti,sn65dsi84";
-+		reg = <0x2d>;
-+		enable-gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&pinctrl_lvds_bridge>;
-+		pinctrl-names = "default";
-+		vcc-supply = <&reg_1v8_per>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				dsi_lvds_bridge_in: endpoint {
-+					data-lanes = <1 2 3 4>;
-+					remote-endpoint = <&mipi_dsi_out>;
-+				};
-+			};
-+
-+			port@2 {
-+				reg = <2>;
-+
-+				lvds0_out: endpoint {
-+					remote-endpoint = <&panel_in1>;
-+				};
-+			};
-+
-+			port@3 {
-+				reg = <3>;
-+
-+				lvds1_out: endpoint {
-+					remote-endpoint = <&panel_in0>;
-+				};
-+			};
-+		};
-+	};
-+
-+	/* max25014 @ 0x6f */
-+};
-+
-+&iomuxc {
-+	pinctrl_lvds_bridge: lvdsbridgegrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXD2__GPIO4_IO14
-+			MX8MP_DSE_X1
-+		>;
-+	};
-+
-+	pinctrl_panel: panelgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07
-+			MX8MP_DSE_X1
-+			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09
-+			MX8MP_DSE_X1
-+		>;
-+	};
-+};
-+
-+&lcdif1 {
-+	status = "okay";
-+};
-+
-+&mipi_dsi {
-+	/*
-+	 * burst has to be at least 2x dsi clock that the sn65dsi85 expects
-+	 * display pixelclock * bpp / lanes / 2 = dsi clock
-+	 * 88.000.000 * 24 / 4 / 2 = 264.000.000
-+	 * range gets rounded up to 265.000.000 - 270.000.000
-+	 * 267.500.000 * 2 = 535.000.000
-+	 */
-+	samsung,burst-clock-frequency = <535000000>;
-+	samsung,esc-clock-frequency = <12000000>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			mipi_dsi_out: endpoint {
-+				data-lanes = <1 2 3 4>;
-+				remote-endpoint = < &dsi_lvds_bridge_in>;
-+			};
-+		};
-+	};
-+};
+- Mani
 
 -- 
-2.49.0
-
-
+மணிவண்ணன் சதாசிவம்
