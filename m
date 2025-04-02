@@ -1,63 +1,63 @@
 Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C11214A71
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 06:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D81C23027C
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 06:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743575246; cv=none; b=m2k3st5Le0t2Nsv0c8l1w0Lu5XUzt4IdukeuBPzezTGV+nBjmeRxFVLZpDeMLyv0yjdxnytf64NEsAYeJxjoWx9Woa01MMl53m7BlVhMQioslWyfKh1YTDM3sh4ULvUcnyPwHxuodrXzbPKY7BDavxPp1ZKbFeQDtr0tS3s8Gj4=
+	t=1743575799; cv=none; b=FbYDQ4t+b7nMu3mT3vGsZAp1XHgwvUw0q5vYwI+wCwD49JVv9OMAREgVTwMBvTA1QMZQ1sG5ovIGCdVVGxFePIJp6tGPg4ySSxx2FsXjOo/Kv5qhKe5MwQhaUUnXGNpIo22nfExHhRo1DKPmgCokmsMzXosIYjmnaFfhzeUOnjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743575246; c=relaxed/simple;
-	bh=dZNfw4e53R/2i9yKfUihZGMQ/0k4D+W1DqhP5bAjhq0=;
+	s=arc-20240116; t=1743575799; c=relaxed/simple;
+	bh=9KYkwa9YJk15TN8slptE6dFITwCH+aL/RFH8C4B55u4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJCsJvO7gfcbCM63vwJUT7VQpPwD/sOkZOV/BAD9VvS2YDA8pB3UqQkVBkaHBjxiipKODYhy0oDfaMuCunsL2bk0Lt/CLXYiwbGajlsmJlkjF3hd9E/qNeAMxsPFP643Uf7ga9ztcJSKadH2AQKLXhpQk+bTdcMM82jABLyLYdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FtGE2Nnp; arc=none smtp.client-ip=209.85.214.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=ucI9T5CXiiTlzVMVmzN1oa5KXlS8IxQ4HsSaC/1SU/tUDe0I4NNzhTxxmbRUhYtCNNWvSy1IJIwzwotec9zU9x+pYhVdOs/A8NBRp4mu/S3/nBoT1pWeYRVrXNM5ZBnHDsxS4dVOSxH0C0tUW/HvCIEaetkpj70xxNP/r+LoTXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wQ75BQNM; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FtGE2Nnp"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-225477548e1so114166945ad.0
-        for <imx@lists.linux.dev>; Tue, 01 Apr 2025 23:27:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wQ75BQNM"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-227d6b530d8so116041795ad.3
+        for <imx@lists.linux.dev>; Tue, 01 Apr 2025 23:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743575244; x=1744180044; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1743575796; x=1744180596; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=0vxtuFvSbsxOaM1zbzEuh2qcT0p6czX42zd3rEEDXyw=;
-        b=FtGE2Nnpe4bED+Qix56BvhXrVsM65DaSwyVAi1YBJzy/m8oBPrcwQEOnq/pdiMIDIx
-         Pt21LHSRI1Xuu0+r0zUu39nMFzPPUYPWzDZp1GZfJffVE38dXYUe6jPE/fP2skkHtTCX
-         z2j7q6y4xEux9icc+UP+oiz3QII1zj0aG+6G7nhuDckp3PL9bpjmNNS/px38dB2FxoB5
-         DAhemrGLvMB97qgKBqG7KbKHvTPwaa5rwi0mqyZkj+w3ltiQgGkA3sn8o5aR+wNTasbS
-         PvWIASI23nY53UbMjdFeAGcuPX37gJOQwb6JluRTI/fljFgr2kHYxRXr3fxpn7ge3Hpg
-         534w==
+        bh=QBpFdjJKRK2wPZJQzSRTw4eJ4hUT7j61gGfvcZ13EGg=;
+        b=wQ75BQNMHsbDagx0tzG0rQ0oTLvyXGe9cK7ZWP1IeRw2ZXauuQj39nm7KjWfKXY917
+         xLmlMVy6Tacbq8kt6WraXT3v73s1BZLnKm8IrCzPK79xSixSpwI5238faMkVS6ZWDxSu
+         FDh+RiuBjW1u9m2LPZ3z85CvdpHfMk3N613oI4vfeK1eaUklW9KvE+DuxvF7ZbH5dk6T
+         mZ9BupdWJg8z3UGf5JgZONsSOmHkDibvYPSTDW86JRsrfKfyd+/o94me6ON2P1/OwNFL
+         vm1UajiRlSRv42WRpNL1GKlTd6QRLxN/QSWiVaDABlnu9gfrFBpZ0r3MV6zTTmiNu0v5
+         z3hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743575244; x=1744180044;
+        d=1e100.net; s=20230601; t=1743575796; x=1744180596;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0vxtuFvSbsxOaM1zbzEuh2qcT0p6czX42zd3rEEDXyw=;
-        b=NxyUs61sKptJ+JHkFagGv3if1/9AmL5jNM8n73GuQ8bkRjHia1S+q8ESD5JeXyD3WG
-         pnqlBoNsI5D0Jyx/ISAaVGz2RyvmcEL98lXXdzK1xdcMtxPD2BVFiAteB04J87vZqTPC
-         CNyCsFzdBkMok1FSXL0cEBGwhvXPpg5jgHQtBXZIbFERniOvXzGuF9pYt6AvtGJFi9Lu
-         XknBYxtv8PALUB0iWBTxyPziovbvSRgh5srglzNztFLPVLVJ+7ovXMKh7339amZh+kU6
-         guX4navtYKWTBgSgOo/Uodj2f+KQF2Wv9e5guTjezOMr9+dOTwOhgb4oqWFPDmoj2kW1
-         x5dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcrHaZ380cm1yklGs90by9TXk7YKOhD6C54o6va9s3K7NhRb153CUOAtCucL/EXn8sX8I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCDr6qiGHo/V48wrEnoyZpKWZoYPsQDrDZDd+EVAmKW80rHsuL
-	R3H2HqI52XER+ZahpdvYFnrrRbZzQlP39ifrd5h4l3FzEtz65iKVXq4stVKWTA==
-X-Gm-Gg: ASbGncsKYAG6liOYWIO5c1IbP/ckr4fPE7kLz9JNLLGs8PkomKm1Xji0XSXOB58o4cs
-	nOzUcuJx33sETQk95ZRfR8jVIC0YxL5ou4iZodDgbEzSNWbnYF9ioUt8QGic5vyjSnjzYIu7zxP
-	Mrqo25JO2DM1HVilrw6nEQjQuFor5sYh4DpAvd3V/cgqhhy4vAee+mk7lbsu4iGPeZcNNI7HUAn
-	I/tFQrKcUwSEXh7kJDmn/RsiJDR6HjP/rR5W6AEmkxrCa+4Lf3kHluGxzXMYFotxOUGkLuoeCaT
-	iSf5QL6RzhG4/UmAnvwIQ4iW0E4zpg0kOr/vE3VszSTZeO0ToYbM+Qhg
-X-Google-Smtp-Source: AGHT+IEftqywmuVKm2jxf0hoVI8+XFFEcICMDydA0YNIWpJc2sWztLxMbLmbc7T+583swHeEhH9wPw==
-X-Received: by 2002:a17:903:11c7:b0:224:1ec0:8a16 with SMTP id d9443c01a7336-2292f9622b5mr229392235ad.21.1743575243714;
-        Tue, 01 Apr 2025 23:27:23 -0700 (PDT)
+        bh=QBpFdjJKRK2wPZJQzSRTw4eJ4hUT7j61gGfvcZ13EGg=;
+        b=W36deL7eGwJ4FbBsSsubFMGvBVjyPMWNwwSGxoRUfC4f2/iWMPUih1EYxM1+lAnNxh
+         0wVlB1SyelKgVeW0pxZYXeYV33JvEYXzau6x/wjYwZ+eOJtFK08j3fB9xEUIEsXUEEZU
+         6x8iyvhkBh1OW1e/WzBsYv/pyRg+FgsoVU4DimeIaVa9BAvlE4MIFCdmsGDel35Yp0VH
+         LDs4mAusKJmhRJWI+jAm6xWM+YTehJXjIJP7W8WHRT0QK1O9YjmRJ9Iz5bPUVlnpj4Ss
+         2oAFrAyfUrwV1/oRe1HZSazkIOmK3bdFW0EM6e7irYogHmwidyySnQmaCuAKlJwxb0EK
+         DNdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtlqFbFCM31Rw+m02T/B6db/Oomf+3xJAY20Ykx/x2iYhs4gRH6UI5qegh3yfLmDUDu/g=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyx9iIlq6OJzW85fpCQYkVRtJKH3zpc3H7wkiV5m0F+BRSzmNNs
+	kQBGni8VyHc8ky+fjoeQMvnlRsc1Rt+M7E4KeP4B9rMOeS3mrN6/dXtQZZk+nA==
+X-Gm-Gg: ASbGnctfnwClGWGYrI8sy1LSkH4on4G0YYlJ0PQinNDdUHJJflX7+IuHt992ijdfhT/
+	wtecoqnopnNiIWZJpgs/DT27ngcf4DM5fbujWgi+JcBXWvEouJ3TQkVgm/x29Os9PR9l7AwUJOX
+	hA+8+VeD3TuAaVUJAABsemwtqyoBfkQva+sH3dll53X58pGxD5wi7uIBXCHKcQk8k1rJeE/rqq2
+	pBkjcd/o/8gqDQZEbO52QwmiMNSitVNWSfb3zeNuLOV302UP7IQFE58ouzig1ZOKiCVfjOas1FT
+	fTkxrhi5F4+Jl1hxzf8xqwAiCb5Pv6F9AtNCACKmrXJPDNp6lGO6PdlI
+X-Google-Smtp-Source: AGHT+IE6fEQRPpZTuVLgYtn/kGTPJXOscRmOwPKgic6LUNeFQjJDmRybRlM29Dg7FxrNgKq/c8uH3g==
+X-Received: by 2002:a05:6a00:1704:b0:736:51ab:7ae1 with SMTP id d2e1a72fcca58-739b60fb6a5mr7052602b3a.16.1743575796230;
+        Tue, 01 Apr 2025 23:36:36 -0700 (PDT)
 Received: from thinkpad ([120.56.205.103])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eee1b3fsm99908325ad.74.2025.04.01.23.27.19
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970e22356sm10115837b3a.39.2025.04.01.23.36.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 23:27:23 -0700 (PDT)
-Date: Wed, 2 Apr 2025 11:57:17 +0530
+        Tue, 01 Apr 2025 23:36:35 -0700 (PDT)
+Date: Wed, 2 Apr 2025 12:06:29 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Richard Zhu <hongxing.zhu@nxp.com>
 Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
@@ -65,11 +65,10 @@ Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
 	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
 	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] PCI: imx6: Start link directly when workaround is
- not required
-Message-ID: <kskqytb67s6qpt2jfn6sry4oj3zq46y5hizyzxxvehtjtqtj6r@qmtfepjzjrpk>
+Subject: Re: [PATCH v3 2/6] PCI: imx6: Toggle the cold reset for i.MX95 PCIe
+Message-ID: <fatfobrf53l3ngps3rl67gayhnlsqncgd2tabgcspac3n3o4xt@a4yrmtvaitai>
 References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
- <20250328030213.1650990-2-hongxing.zhu@nxp.com>
+ <20250328030213.1650990-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,95 +78,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250328030213.1650990-2-hongxing.zhu@nxp.com>
+In-Reply-To: <20250328030213.1650990-3-hongxing.zhu@nxp.com>
 
-On Fri, Mar 28, 2025 at 11:02:08AM +0800, Richard Zhu wrote:
-> The current link setup procedure is one workaround to detect the device
-> behind PCIe switches on some i.MX6 platforms.
-> 
-> To describe more accurately, change the flag name from
-> IMX_PCIE_FLAG_IMX_SPEED_CHANGE to IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND.
-> 
-> Start PCIe link directly when this flag is not set on i.MX7 or later
-> platforms to simple and speed up link training.
+On Fri, Mar 28, 2025 at 11:02:09AM +0800, Richard Zhu wrote:
+> Add the cold reset toggle for i.MX95 PCIe to align PHY's power up sequency.
+
+What do you mean by 'cold' reset? Is it 'core' reset? I see both terminologies
+used in the code.
+
 > 
 > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-One observation below (not related to this change).
-
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 34 +++++++++++----------------
->  1 file changed, 14 insertions(+), 20 deletions(-)
+>  drivers/pci/controller/dwc/pci-imx6.c | 42 +++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
 > 
 > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index c1f7904e3600..57aa777231ae 100644
+> index 57aa777231ae..6051b3b5928f 100644
 > --- a/drivers/pci/controller/dwc/pci-imx6.c
 > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -91,7 +91,7 @@ enum imx_pcie_variants {
->  };
+> @@ -71,6 +71,9 @@
+>  #define IMX95_SID_MASK				GENMASK(5, 0)
+>  #define IMX95_MAX_LUT				32
 >  
->  #define IMX_PCIE_FLAG_IMX_PHY			BIT(0)
-> -#define IMX_PCIE_FLAG_IMX_SPEED_CHANGE		BIT(1)
-> +#define IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND	BIT(1)
->  #define IMX_PCIE_FLAG_SUPPORTS_SUSPEND		BIT(2)
->  #define IMX_PCIE_FLAG_HAS_PHYDRV		BIT(3)
->  #define IMX_PCIE_FLAG_HAS_APP_RESET		BIT(4)
-> @@ -860,6 +860,12 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
->  	u32 tmp;
->  	int ret;
+> +#define IMX95_PCIE_RST_CTRL			0x3010
+> +#define IMX95_PCIE_COLD_RST			BIT(0)
+> +
+>  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
 >  
-> +	if (!(imx_pcie->drvdata->flags &
-> +	    IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND)) {
-> +		imx_pcie_ltssm_enable(dev);
-> +		return 0;
+>  enum imx_pcie_variants {
+> @@ -773,6 +776,43 @@ static int imx7d_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>  	return 0;
+>  }
+>  
+> +static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+> +{
+> +	u32 val;
+> +
+> +	if (assert) {
+> +		/*
+> +		 * From i.MX95 PCIe PHY perspective, the COLD reset toggle
+> +		 * should be complete after power-up by the following sequence.
+> +		 *                 > 10us(at power-up)
+> +		 *                 > 10ns(warm reset)
+> +		 *               |<------------>|
+> +		 *                ______________
+> +		 * phy_reset ____/              \________________
+> +		 *                                   ____________
+> +		 * ref_clk_en_______________________/
+> +		 * Toggle COLD reset aligned with this sequence for i.MX95 PCIe.
+> +		 */
+> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
+> +				IMX95_PCIE_COLD_RST);
 
-While looking into the code, I realized that we could skip waiting for link
-during the workaround in atleast one instance:
+Is this really COLD reset? Or CORE reset?
 
-```
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 5f267dd261b5..9dbfbd9de2da 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -875,11 +875,11 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
-        /* Start LTSSM. */
-        imx_pcie_ltssm_enable(dev);
- 
--       ret = dw_pcie_wait_for_link(pci);
--       if (ret)
--               goto err_reset_phy;
--
-        if (pci->max_link_speed > 1) {
-+               ret = dw_pcie_wait_for_link(pci);
-+               if (ret)
-+                       goto err_reset_phy;
-+
-                /* Allow faster modes after the link is up */
-                dw_pcie_dbi_ro_wr_en(pci);
-                tmp = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-@@ -913,17 +913,10 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
-                                goto err_reset_phy;
-                        }
-                }
--
--               /* Make sure link training is finished as well! */
--               ret = dw_pcie_wait_for_link(pci);
--               if (ret)
--                       goto err_reset_phy;
-        } else {
-                dev_info(dev, "Link: Only Gen1 is enabled\n");
-        }
- 
--       tmp = dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA);
--       dev_info(dev, "Link up, Gen%i\n", tmp & PCI_EXP_LNKSTA_CLS);
-        return 0;
- 
- err_reset_phy:
-```
+> +		/*
+> +		 * To make sure delay enough time, do regmap_read_bypassed
+> +		 * before udelay(). Since udelay() might not use MMIO, and cause
+> +		 * delay time less than setting value.
+> +		 */
 
-dw_pcie_wait_for_link() in DWC core should serve the purpose.
+This comment could be rephrased:
+
+		/*
+		 * Make sure the write to IMX95_PCIE_RST_CTRL is flushed to the
+		 * hardware by doing a read. Otherwise, there is no guarantee
+		 * that the write has reached the hardware before udelay().
+		 */
 
 - Mani
 
