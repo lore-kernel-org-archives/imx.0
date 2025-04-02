@@ -1,316 +1,204 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2699220E00B
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 09:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A921F37BA
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 09:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743584952; cv=none; b=HsMFzuGLWC+CUO5UrGc6G32Cb/7Of7YZ69pAaET1bfjoW8EfbfBy2ADAHOpbYobghqvNqMXinTCRG1RZv06EJ+G8bEaz2lInxQfc35KiR8ocwYtSJaCfR7Gba5uxdOnHCg98gJjhEgRsp1DWoAYTKuqx41oBIDOhhiGWiA2f1hw=
+	t=1743587877; cv=none; b=WuPXggaNRy6T71LobKuR53TK8XkK9Hbw63NNbG/DOttGo5c0o8WpDgg7Un7mPv1jAvawZK/1C1XO1QDHqiAbZM/byPrOJufgxU6RWjfO+fe9P5CbCj7Oe25Amd5USvWD7iYbofltwYKUjQxdm9dIluOSEFFzRN0J3okT6QrtTpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743584952; c=relaxed/simple;
-	bh=l9yAr0wAEJgeNm6nW7xi8ljAC/OGlVK+n3Mp4tG6MWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rgqJuTA5e6q2GUVEYTzq+tkMVjebTSGkQKwoICCkD59KOYY4Zo9zUcYwgbNdW9sRM1N2UU4yZDcLrHTUx7arAebWKBcvS0uyJeAnie8LjdGFaqtRke6STEGrjIwoiU71blSLETjcRaMuzzyyD1mZ4RlRXOj3BE4/E01gSGEwX7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CqkqJPFc; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1743587877; c=relaxed/simple;
+	bh=Wzmiam7fC2XrJAx0ApWPltrQIlXQu8gNNfucIjVSzrs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ui3SFVqdZ3WY25x5rhGgN6mbTrgPHRL4OktVhLsHsmjjBwryhzCMZ215/lpJD0AVaNox2yyUIRV376kM/ykSEDheLWY9BwY44t0NCVoV+wDp5gKeLcJ+tTVMmmNXjRyXm8tkUSFRc52BTyfWa0kB1o4kVX4E2mMlibUED5uramM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=r5HTYuj9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oo+BcD0S; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CqkqJPFc"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41F29102780A3;
-	Wed,  2 Apr 2025 11:09:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1743584947; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=HCl71+B/mWDteASs/fx+ejiotd32rdy+bdrr9fbBE6E=;
-	b=CqkqJPFcH1TcNaBCn2t6uGeAIdCw2h1slnVMqXrmW/JT7ppsePNm2Vx3Q2fLQ7nvPxArQ+
-	J1K5fTD3ipeu1yjmqhLq0RRyvx7shceWlUM1p+ib55UYqtU2i/kqpILONhteDluRPFdrYI
-	JDIye+0JirnA0n1JJfFIhZkOXMWfI6dS9lTDkYxilQtHqHo2dATH/kBIPgczgkR+b0DoNu
-	eWqx7dqwKSpEhbOHAPM6aW7JvYsMK/chP/8Y5BoulEJCYTd+jI6yKtW37M3REMvtaxrC8d
-	ccoh8qVabatxQ/hZhOQvuwZPRPG1yf9BSSkSIClM8Xasovt/AFmIFnKWOeR8Zw==
-Date: Wed, 2 Apr 2025 11:09:00 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: net: Add MTIP L2 switch description
-Message-ID: <20250402110900.6141cc1b@wsk>
-In-Reply-To: <20250401230346.GA28557-robh@kernel.org>
-References: <20250331103116.2223899-1-lukma@denx.de>
-	<20250331103116.2223899-2-lukma@denx.de>
-	<20250331235518.GA2823373-robh@kernel.org>
-	<20250401123507.2e3bf0a6@wsk>
-	<20250401230346.GA28557-robh@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="r5HTYuj9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oo+BcD0S"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 83CCE1140141;
+	Wed,  2 Apr 2025 05:57:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 02 Apr 2025 05:57:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1743587873;
+	 x=1743674273; bh=rak6b2Fa/8kffSjsRHf56Le1CRC43LwC4W2VuTrqGwE=; b=
+	r5HTYuj93IzPjwXpww5oC0WxIKuNrPueiuF75hPA6bFQ8YDPhtV544udfHIaCvty
+	pVcAX8z5pGjl7fBYZo/Q5N/cao8YkUQMcsqy/pxRX/pi1l9AHXMoBFFyP6vb+KqB
+	t33WXs5et3tq7RsuZWYkt6zu8tGfdDrVK/cadO+nXVfwqQ5vq8SXvaYg1q1flWQe
+	1ELifkijWyUB4neEHuY1X3PhFJcJ+tNH70iPAllEkBHHhcfKsxqxBkbLdisQUDqr
+	LxD1VSpWpYrRr7Ikz9SHY4dDQI+csnhZRGc64Yztjh8XkE4ArLUU0iKmsUcMdJXo
+	6mnVsLfSUlsmCP/6TTZ2Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1743587873; x=
+	1743674273; bh=rak6b2Fa/8kffSjsRHf56Le1CRC43LwC4W2VuTrqGwE=; b=o
+	o+BcD0S/UnhqG9r8DBpolomNhnM7ZzsU+CSqObWvIdInQ1doqScqh8/FQB6gxOku
+	5tVLRR7+SIxtcjD1iwT6mKNfYc1VpM5ufHCTqfXK5AFTL/Uepa9p0VcVgbYSCWPM
+	7jrQMt68xfuwjgBaBYpgpPr2aiw98MprwgFGybyDockFQdxm0hg0JfTkX6vcWEN2
+	1NVpBl1/u/QKwGtmXRcEFR6ZjZsC/6rUYKIoN+T2dtK5hMEF/O2Fb6/LnRNl1/2g
+	ki1LPzf+QseJJw3Acz7zsEU8616yD2Mb7fZx+B4JhjxjNxEa6WeoFl0L7AnqTV79
+	LBx8udlQD9BUZ06LrbnFQ==
+X-ME-Sender: <xms:IQrtZzrfM7sUGpPGhTzNGjp_jmtWO9GqMD-du44R5RJVw6zIBOObog>
+    <xme:IQrtZ9pDEq3kCqz10OcNYIM-8FuIeZwETUI3ml6wseRrejtcalR0lCjroqwhrYMsz
+    2kDeypO4EDhL_VdZmQ>
+X-ME-Received: <xmr:IQrtZwMYFareqeYCCX0SPiUiMGDSP5NDr_Zao2IpTc0bAc8Qrg9oNd5-oLrMxqsCGPia0B1uYM7tEScMNvcP606hGzTS0nFBkQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeehfeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tdejnecuhfhrohhmpefpihhklhgrshcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrsh
+    houggvrhhluhhnugdorhgvnhgvshgrshesrhgrghhnrghtvggthhdrshgvqeenucggtffr
+    rghtthgvrhhnpeefhfellefhffejgfefudfggeejlefhveehieekhfeulefgtdefueehff
+    dtvdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+    pehnihhklhgrshdrshhouggvrhhluhhnugdorhgvnhgvshgrshesrhgrghhnrghtvggthh
+    drshgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvgdrshhtvghvvg
+    hnshhonhesrhgrshhpsggvrhhrhihpihdrtghomhdprhgtphhtthhopehmtghhvghhrggs
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptgho
+    nhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhi
+    gidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-ME-Proxy: <xmx:IQrtZ25XNWAt2JiLikQ61Hm1dbZeL42qEQtmpQJmZ0f2zRKZOyzDfg>
+    <xmx:IQrtZy7S7hyJxtl1GdJ9fmuvJ-FkDS6-U29Ch9-MrgbQAsS7X0uzXQ>
+    <xmx:IQrtZ-ht0wnqSzS4PM2T0kN7vyk6nCppkmtdosuCDXjuIN5yQbsrZQ>
+    <xmx:IQrtZ07NQRhBWKqx3sLq7bPZFwHpNnl2ugGoielE2NNaBGMy9VxfCQ>
+    <xmx:IQrtZ3IBkyDMLtbzpQVLWoLLTQ-kVmlWdREII44eNI7kh-f2HVSKGGJK>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Apr 2025 05:57:52 -0400 (EDT)
+Date: Wed, 2 Apr 2025 11:57:49 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: media: i2c: imx219: Remove redundant
+ description of data-lanes
+Message-ID: <20250402095749.GJ1240431@ragnatech.se>
+References: <20250401145759.3253736-1-niklas.soderlund+renesas@ragnatech.se>
+ <20250402-real-enthusiastic-ostrich-dcc243@krzk-bin>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/0sOa=FWTe.Vb=8T9Ymlk/qv";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250402-real-enthusiastic-ostrich-dcc243@krzk-bin>
 
---Sig_/0sOa=FWTe.Vb=8T9Ymlk/qv
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Krzysztof,
 
-On Tue, 1 Apr 2025 18:03:46 -0500
-Rob Herring <robh@kernel.org> wrote:
+Thanks for your feedback.
 
-> On Tue, Apr 01, 2025 at 12:35:07PM +0200, Lukasz Majewski wrote:
-> > Hi Rob,
-> >  =20
-> > > On Mon, Mar 31, 2025 at 12:31:13PM +0200, Lukasz Majewski wrote: =20
-> > > > This patch provides description of the MTIP L2 switch available
-> > > > in some NXP's SOCs - e.g. imx287.
-> > > >=20
-> > > > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > > > ---
-> > > > Changes for v2:
-> > > > - Rename the file to match exactly the compatible
-> > > >   (nxp,imx287-mtip-switch)
-> > > >=20
-> > > > Changes for v3:
-> > > > - Remove '-' from const:'nxp,imx287-mtip-switch'
-> > > > - Use '^port@[12]+$' for port patternProperties
-> > > > - Drop status =3D "okay";
-> > > > - Provide proper indentation for 'example' binding (replace 8
-> > > >   spaces with 4 spaces)
-> > > > - Remove smsc,disable-energy-detect; property
-> > > > - Remove interrupt-parent and interrupts properties as not
-> > > > required
-> > > > - Remove #address-cells and #size-cells from required properties
-> > > > check
-> > > > - remove description from reg:
-> > > > - Add $ref: ethernet-switch.yaml#
-> > > > ---
-> > > >  .../bindings/net/nxp,imx287-mtip-switch.yaml  | 154
-> > > > ++++++++++++++++++ 1 file changed, 154 insertions(+)
-> > > >  create mode 100644
-> > > > Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
-> > > >=20
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
-> > > > b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
-> > > > new file mode 100644 index 000000000000..98eba3665f32 ---
-> > > > /dev/null +++
-> > > > b/Documentation/devicetree/bindings/net/nxp,imx287-mtip-switch.yaml
-> > > > @@ -0,0 +1,154 @@ +# SPDX-License-Identifier: (GPL-2.0-only OR
-> > > > BSD-2-Clause) +%YAML 1.2
-> > > > +---
-> > > > +$id:
-> > > > http://devicetree.org/schemas/net/nxp,imx287-mtip-switch.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
-> > > > +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP
-> > > > switch) +
-> > > > +maintainers:
-> > > > +  - Lukasz Majewski <lukma@denx.de>
-> > > > +
-> > > > +description:
-> > > > +  The 2-port switch ethernet subsystem provides ethernet packet
-> > > > (L2)
-> > > > +  communication and can be configured as an ethernet switch. It
-> > > > provides the
-> > > > +  reduced media independent interface (RMII), the management
-> > > > data input
-> > > > +  output (MDIO) for physical layer device (PHY) management.
-> > > > +
-> > > > +$ref: ethernet-switch.yaml#   =20
-> > >=20
-> > > This needs to be: ethernet-switch.yaml#/$defs/ethernet-ports
-> > >=20
-> > > With that, you can drop much of the below part. More below...
-> > >  =20
-> > > > +
-> > > > +properties: =20
-> >=20
-> > So it shall be after the "properties:"
-> >=20
-> > $ref: ethernet-switch.yaml#/$defs/ethernet-ports   [*] =20
->=20
-> It can stay where it is, just add "/$defs/ethernet-ports"
->=20
->=20
-> > > > +  compatible:
-> > > > +    const: nxp,imx287-mtip-switch
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  phy-supply:
-> > > > +    description:
-> > > > +      Regulator that powers Ethernet PHYs.
-> > > > +
-> > > > +  clocks:
-> > > > +    items:
-> > > > +      - description: Register accessing clock
-> > > > +      - description: Bus access clock
-> > > > +      - description: Output clock for external device - e.g.
-> > > > PHY source clock
-> > > > +      - description: IEEE1588 timer clock
-> > > > +
-> > > > +  clock-names:
-> > > > +    items:
-> > > > +      - const: ipg
-> > > > +      - const: ahb
-> > > > +      - const: enet_out
-> > > > +      - const: ptp
-> > > > +
-> > > > +  interrupts:
-> > > > +    items:
-> > > > +      - description: Switch interrupt
-> > > > +      - description: ENET0 interrupt
-> > > > +      - description: ENET1 interrupt
-> > > > +
-> > > > +  pinctrl-names: true
-> > > > +   =20
-> > >  =20
-> > > > +  ethernet-ports: =20
-> >=20
-> > And then this "node" can be removed as it has been referenced above
-> > [*]? =20
->=20
-> Well, you have to keep it to have 'required' in the child nodes.
->=20
-> >=20
-> > (I shall only keep the properties, which are not standard to [*] if
-> > any).
-> >  =20
-> > > > +    type: object
-> > > > +    additionalProperties: false
-> > > > +
-> > > > +    properties:
-> > > > +      '#address-cells':
-> > > > +        const: 1
-> > > > +      '#size-cells':
-> > > > +        const: 0
-> > > > +
-> > > > +    patternProperties:
-> > > > +      '^port@[12]+$':   =20
-> > >=20
-> > > Note that 'ethernet-port' is the preferred node name though
-> > > 'port' is allowed. =20
-> >=20
-> > Ok. That would be the correct define:
-> >=20
-> > ethernet-ports {
-> >      mtip_port1: ethernet-port@1 {
-> >                reg =3D <1>;
-> >                label =3D "lan0";
-> >                local-mac-address =3D [ 00 00 00 00 00 00 ];
-> >                phy-mode =3D "rmii";
-> >                phy-handle =3D <&ethphy0>;
-> > 	       };
-> >=20
-> >                mtip_port2: port@2 { =20
->=20
-> And here...
->=20
-> > 		....
-> > 	       };
-> >  =20
-> > >  =20
-> > > > +        type: object
-> > > > +        description: MTIP L2 switch external ports
-> > > > +
-> > > > +        $ref: ethernet-controller.yaml#
-> > > > +        unevaluatedProperties: false
-> > > > +
-> > > > +        properties:
-> > > > +          reg:
-> > > > +            items:
-> > > > +              - enum: [1, 2]
-> > > > +            description: MTIP L2 switch port number
-> > > > +
-> > > > +          label:
-> > > > +            description: Label associated with this port
-> > > > +
-> > > > +        required:
-> > > > +          - reg
-> > > > +          - label
-> > > > +          - phy-mode
-> > > > +          - phy-handle   =20
-> > >=20
-> > > All the above under 'ethernet-ports' can be dropped though you
-> > > might want to keep 'required' part. =20
-> >=20
-> > Ok, I will keep it. =20
->=20
-> So I think you just want this:
->=20
-> ethernet-ports:
->   type: object
->   additionalProperties: true  # Check if you need this
->=20
->   patternProperties:
->     '^ethernet-port@[12]$':
->       required:
->         - label
->         - phy-mode
->         - phy-handle
->=20
+On 2025-04-02 10:21:42 +0200, Krzysztof Kozlowski wrote:
+> On Tue, Apr 01, 2025 at 04:57:58PM +0200, Niklas Söderlund wrote:
+> > The bindings already reference video-interfaces.yaml in the endpoint
+> > node, there is no need to duplicate the description of the data-lanes
+> > property.
+> > 
+> >   An array of physical data lane indexes. Position of an entry determines
+> >   the logical lane number, while the value of an entry indicates physical
+> >   lane, e.g. for 2-lane MIPI CSI-2 bus we could have "data-lanes = <1 2>;",
+> >   assuming the clock lane is on hardware lane 0. If the hardware does not
+> >   support lane reordering, monotonically incremented values shall be used
+> >   from 0 or 1 onwards, depending on whether or not there is also a clock
+> >   lane. This property is valid for serial busses only (e.g. MIPI CSI-2).
+> 
+> Please do not quote bindings in commit. It's never helpful.
+> 
+> > 
+> > What the generic binding do not cover is the behavior if the property
+> > would be omitted. But the imx219 driver have never agreed with the
+> > description neither. Before commit ceddfd4493b3 ("media: i2c: imx219:
+> 
+> It did not have to agree. See discussion for v3 of patch adding this binding.
 
-I had to add:
+Thar discussion was in 2020, the common definition video-interfaces.yaml 
+was merged in 2021 AFIK.
 
-$ref: ethernet-switch.yaml#/$defs/ethernet-ports
-patternProperties:
-  "^(ethernet-)?ports$":
-    type: object
-    additionalProperties: true
+> 
+> > Support four-lane operation") the driver errored out if not 2 lanes
+> > where used, and after it if not 2 or 4 lanes where used.
+> 
+> Then... fix the driver?
+> 
+> This property describes hardware, not driver. Why current driver
+> implementation, e.g. 1 year ago or now, would change the hardware (so
+> the bindings)?
 
-after the=20
-description:
+I agree, I thought that here we have a case where the bindings predate 
+the standardisation. The driver do not match the bindings, in fact it 
+breaks if the imx219 specific instructions are followed. So the risk of 
+breaking stuff is likely low. And this was an opportunity to align the 
+imx219 with video-interfaces.yaml.
 
-to avoid issues when checking DT schema.
+I wasted time trying to use the imx219 bindings when bringing up a 
+device, only wanted to try to help others avoid that.
 
-Simple adding=20
+> 
+> > 
+> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> > ---
+> > Hello,
+> > 
+> > The data-lanes property is a common property and the driver have always
+> > operated as the common description, it seemed silly to break the driver
+> > to adhere to odd specification, then to correct the bindings. However a
+> > more correct solution would be to do the work on the driver of course.
+> > 
+> > This is just a drive-by fix in the hope of sparing others the time to
+> > discover this oddity themself. This is only tested by using the bindings
+> > themself and by 'make dt_binding_check'.
+> > ---
+> >  Documentation/devicetree/bindings/media/i2c/imx219.yaml | 9 ---------
+> >  1 file changed, 9 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/media/i2c/imx219.yaml b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> > index 07d088cf66e0..31beeb2be2ea 100644
+> > --- a/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> > +++ b/Documentation/devicetree/bindings/media/i2c/imx219.yaml
+> > @@ -55,15 +55,6 @@ properties:
+> >          unevaluatedProperties: false
+> >  
+> >          properties:
+> > -          data-lanes:
+> > -            description: |-
+> > -              The sensor supports either two-lane, or four-lane operation.
+> > -              If this property is omitted four-lane operation is assumed.
+> > -              For two-lane operation the property must be set to <1 2>.
+> > -            items:
+> > -              - const: 1
+> > -              - const: 2
+> 
+> So 1 lane is also fine? 8 lanes are as well? Previously lack of the
+> property in DTS meant 4 lanes, now lack of property means anything.
 
-   patternProperties:
-     '^ethernet-port@[12]$':
-       required:
-         - label
-         - phy-mode
-         - phy-handle
+Good point, if this patch where to be followed the data-lanes should be 
+made a required property.
 
-Causes more errors.
+> 
+> Best regards,
+> Krzysztof
+> 
 
-> Rob
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/0sOa=FWTe.Vb=8T9Ymlk/qv
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfs/qwACgkQAR8vZIA0
-zr086wgA5Jn0IbIaaEpVjBvcYY2ArHgPvw/BZFmTl1ybvb3477EmZI1iEIn1UHyW
-qMO4jx5mlSoR9QkP/GfI9DE99ySe+EQgqSqPqcY79JPlqq6WeT578E9NBqLO7YT5
-h59WwQShvBR4np37X5r26HtcdP8CXEWYUFITteTqh+EYiXDKPeXi4e6KiGmcJAuJ
-jT4riux80AJ4ImCRjnj9S/pv3ODm6Q//Rd9DKse/k/RPUKRrqCM9MvLval02tdzV
-SD+MsepkMI+j/NXayLHABP++2Lcl3lNNW3fnAGKckvqdGBPmIRlS4MnqN+PzAprB
-tkiD4bkrDW3Eu65fMpIQtsnOT47bkA==
-=9mZL
------END PGP SIGNATURE-----
-
---Sig_/0sOa=FWTe.Vb=8T9Ymlk/qv--
+-- 
+Kind Regards,
+Niklas Söderlund
