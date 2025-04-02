@@ -1,45 +1,52 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495BB23645F
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 11:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA49239565;
+	Wed,  2 Apr 2025 12:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743594382; cv=none; b=uy7075j0zXOY9pD9KBA9LaWl8bFcZND9z2mlnMJbc7RxI2+SG7EqXqyeGJHDxY50iCGT3k7+uAhi5a3eBMCDhOeoYHxPkHu71V25gnK8BRHMyZKwA3WNMbnjyWmCkiTQtg9foivTeTRqU7nGuFXReNvmUlld0BVLOGyJhPKm69M=
+	t=1743596591; cv=none; b=cLZ7Y2IKOOmUFkTrk+FCVvoBmLtUf0di1nFVAdkNmP7D9EKRs//gwEOTrTTQW1SU9S6vu0soAhXuUOFrdz2AlTEarCDTC6ITTpon1rW7jz0WaGgrjzKP67U0yUwKZBPIN7u23+O/9uU1yibJE9iIKk3TtmWGNsklPR5MaHMcpLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743594382; c=relaxed/simple;
-	bh=13/ZTgkQNn8YLYBwvB18oJqhNzSjCyZ6MMrKnzIuUK0=;
+	s=arc-20240116; t=1743596591; c=relaxed/simple;
+	bh=hyIORvcjc8cnOrwXJJLDQlnMlsVxwobtC9HnweVC5sY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lqw3EZuWbk+5wEAK3PuoyvITLZ1HfK1iIMTyeGOg6XCNL21/VA/WPlwiwiEmsHV+bJ514Kow6+ZDMeD+G/ZJ/nQrb+FHiJu2qeEbYRqh9eEV59/1Y20+H5J4fNRcyrTR0r+bd8KmphDKRke+lCasn95F22RlZP0o7eQMo+qi6xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6526106F;
-	Wed,  2 Apr 2025 04:46:23 -0700 (PDT)
-Received: from bogus (unknown [10.57.41.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CBB53F694;
-	Wed,  2 Apr 2025 04:46:17 -0700 (PDT)
-Date: Wed, 2 Apr 2025 12:46:14 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=GceIoZVk0dKlpUxyFCzOEvLm1NEZDNqvNUchYzp72gb3Cm8Y2SM1thDy8WKvyfn1SRjduOkHgWCHX1/rd2t3plo0I0g9w6cSWHoCLG2IXIjO+Mtf8oSR2IPldCtCfRXz9WGntWz9RstxXm/5BlNfVuW3wECswPzTZ90R/fIMVnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bLpZ6hHr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bLpZ6hHr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=m5oPUg4ARF8TnNRDBE3jh/Qug56RDVjQifVvp49cFpw=; b=bLpZ6hHr1wVANQ2fF9WBWqeuN5
+	HVjQWpQ1OlZggMUP4tufjE3uKqSb0br7f/rT6FWm8LhBf6MhyCRlxMQs6R1eqCC9lnu1A6+Eobou1
+	m1u67bO/yEmqZ75JIdUdL/wSSunPuHVf26lfRw+VeWvfOXSXW13frBpp8eGw8qPszd/w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tzx7O-007mpD-0W; Wed, 02 Apr 2025 14:22:54 +0200
+Date: Wed, 2 Apr 2025 14:22:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 1/7] firmware: arm_scmi: imx: Add LMM and CPU
- documentation
-Message-ID: <20250402-acoustic-analytic-guan-d3cda5@sudeepholla>
-References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
- <20250303-imx-lmm-cpu-v3-1-7695f6f61cfc@nxp.com>
- <20250401-quantum-coyote-of-admiration-bf1b68@sudeepholla>
- <20250402123503.GA23033@nxa18884-linux>
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 2/4] ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2
+ switch description
+Message-ID: <82fde123-4783-4d4c-a061-e07731ae7bfd@lunn.ch>
+References: <20250331103116.2223899-1-lukma@denx.de>
+ <20250331103116.2223899-3-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,119 +55,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250402123503.GA23033@nxa18884-linux>
+In-Reply-To: <20250331103116.2223899-3-lukma@denx.de>
 
-On Wed, Apr 02, 2025 at 08:35:03PM +0800, Peng Fan wrote:
-> Hi Sudeep,
+On Mon, Mar 31, 2025 at 12:31:14PM +0200, Lukasz Majewski wrote:
+> The current range of 'reg' property is too small to allow full control
+> of the L2 switch on imx287.
 > 
-> Thanks for reviewing the patch.
+> As this IP block also uses ENET-MAC blocks for its operation, the address
+> range for it must be included as well.
 > 
-> For comments that I am not very clear, I marked with [TODO] for easily
-> jump to.
+> Moreover, some SoC common properties (like compatible, clocks, interrupts
+> numbers) have been moved to this node.
 > 
-> On Tue, Apr 01, 2025 at 03:15:46PM +0100, Sudeep Holla wrote:
-> >On Mon, Mar 03, 2025 at 10:53:22AM +0800, Peng Fan (OSS) wrote:
-> >> From: Peng Fan <peng.fan@nxp.com>
-> >> 
-> >> Add i.MX95 Logical Machine Management and CPU Protocol documentation.
-> >> 
-> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >> ---
-> >>  drivers/firmware/arm_scmi/vendors/imx/imx95.rst | 801 ++++++++++++++++++++++++
-> >>  1 file changed, 801 insertions(+)
-> >> 
-> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
-> >> index b2dfd6c46ca2f5f12f0475c24cb54c060e9fa421..74326bf2ea8586282a735713e0ab7eb90ccce8ff 100644
-> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
-> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-> >> +
-> >> +PROTOCOL_MESSAGE_ATTRIBUTES
-> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >> +
-> >> +message_id: 0x2
-> >> +protocol_id: 0x80
-> >> +This command is mandatory.
-> >> +
-> >
-> >For completeness add parameters here for message_id as in the spec as it is
-> >referred in the returned value and seems incomplete without it.
-> 
-> [TODO]
-> Sorry, I may not get your point here. You mean below format?
-> 
-> +------------------+-----------------------------------------------------------+
-> |message_id: 0x2
-> |protocol_id: 0x80
-> |This command is mandatory.
-> +------------------+-----------------------------------------------------------+
-> |Return values                                                                 |
-> +------------------+-----------------------------------------------------------+
-> |Name              |Description                                                |
-> +------------------+-----------------------------------------------------------+
-> |int32 status      |SUCCESS: in case the message is implemented and available  |
-> |                  |to use.                                                    |
-> |                  |NOT_FOUND: if the message identified by message_id is      |
-> |                  |invalid or not implemented                                 |
-> +------------------+-----------------------------------------------------------+
-> |uint32 attributes |Flags that are associated with a specific function in the  |
-> |                  |protocol. For all functions in this protocol, this         |
-> 
-> message_id is not put in the table, but it is list above just below
-> the protocol name. I would prefer to keep current layout and align with
-> the MISC and BBM protocol.
->
+Assuming it passed the DT checking:
 
-I meant why is the input parameter message_id not described in the table,
-but is referred in the return values. For completeness, just add it even
-though it may match the SCMI spec in terms of input parameter.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-
-[...]
-
-> >> +|                     |Bit[23] Valid err ID:                                   |
-> >> +|                     |Set to 1 if the error ID field is valid.                |
-> >> +|                     |Set to 0 if the error ID field is not valid.            |
-> >> +|                     |Bits[22:8] Error ID(Agent ID of the system).            |
-> >> +|                     |Bit[7:0] Reason(WDOG, POR, FCCU and etc)                |
-> >
-> >Is there a mapping for this ?
-> 
-> I will add a note in V4:
-> See the SRESR register description in the System Reset Controller (SRC) section
-> in SoC reference mannual.
->
-
-A reference would be good here then. I would be hard to imagine what it means
-otherwise.
-
-> >> +
-> >> +LMM_RESET_VECTOR_SET
-> >> +~~~~~~~~~~~~~~~~~~~~
-> >> +
-> >> +message_id: 0xC
-> >> +protocol_id: 0x80
-> >> +This command is mandatory.
-> >> +
-> >
-> >I can't recall if I had asked this before. How is this different from
-> >CPU_RESET_VECTOR_SET ? Why do you need this ? Why can't you use
-> >CPU_RESET_VECTOR_SET with an additional LMM_* command.
-> >
-> >I am sure there is a valid reason. If so please document the same.
-> 
-> CPU_RESET_VECTOR_SET is for cases that M7 and A55 in the same LM.
-> LMM_RESET_VECTOR_SET is for cases that M7 and A55 in different LM.
-> M7 LM is under control of A55 LM
->
-
-That still doesn't answer my question. I was asking why do you need this
-extra interface ? If LMM_RESET_VECTOR_SET can take both cpu id and LM id,
-it can be used even for cpus within same LM with current LM ID. Why the
-need for separate interface ?
-
-Other than these 2, I am fine with your response on all other comments.
-
--- 
-Regards,
-Sudeep
+    Andrew
