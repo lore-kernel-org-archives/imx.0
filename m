@@ -1,129 +1,134 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13712CDBE
-	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 15:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D4CF4ED
+	for <imx@lists.linux.dev>; Wed,  2 Apr 2025 15:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743607064; cv=none; b=qOmKADs2H2JHedijGnGBluek0mTF0QVI79zv02lySFkAZ9Gz61eGWaVF2UnhOpkUFDEGQeQj9ab7dul/3XXBfeFupf4aXxz5PANLhKSM7yl108SVVseY3biMiMdXju5rg9EuYAIKRHNB+IoP8dyVNQ/ARJgq9erU3ay9G2pNtd0=
+	t=1743607837; cv=none; b=d9gn/FKNLqCbFjMkInPpXttkZ7ISomFyvd11qB4d5S9LAJBI145M8KpIlawWSgPGeXw9OarRFMfyVemiVSwDzMxf4esgLEV94sonm0EnrBMGJt41aQ1p2ExMAVMkSea/TkerZsvNd47oGIi3WtNvKrvthcEudNdktM7UOnwk3UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743607064; c=relaxed/simple;
-	bh=bz3rHQ1LEZ5GlZRhjsHjlZAaWas133zf2WZHx8MQBRw=;
+	s=arc-20240116; t=1743607837; c=relaxed/simple;
+	bh=50ulFjUqXwgfIP0/hz3Pe+E09PZpugkbNUnxMO3Zl9g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iv5AYspGZagy+zZetMxjG3eMZnhBIidNKLa8px7TxSznK+CZToHMfU0Oo2GliYzUhjY67PKxYWL/n9lqwrhAwl/74VntXuHyi5IZicoRIOp/yLuj4wr8pdwC541HtD7O2t8Owb7x28ULuf4ZaBv1HAdwL8TAsZGaFIb+zvuGlOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EyeXfN0m; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EyeXfN0m"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff799d99dcso11803392a91.1
-        for <imx@lists.linux.dev>; Wed, 02 Apr 2025 08:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743607060; x=1744211860; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A1VmkVlpRc4WSi9FaO0aW2j/f9rNxZ3VMxxdj/njEz0=;
-        b=EyeXfN0m9MhVu4Vi/a/JZHkXfBkzRHi6K5B1aLIsY5ijD7AbonhvXlcd02fO4Y/rfQ
-         D8BVoT7gxlI8H4pUco0rdap9SCNH8CuWNitjQ8S9LYpxdWFmsweKVNiAd8gYItEY/aG6
-         rowTY4O60cebqxC1NQDFHmvIFTS27aCHsMcgKhUDONh74bt7SJvnof92kdTV2JZjYGFS
-         zad9P8+TCGM22eYRbwxV0MU/x22bKvLuY7phCzsuRQX45PZTMCIjEWdPvyM6264cW64p
-         Vd4MEXQbsMyGfqLV8K3wv3S/RgqHjIYdhw5qsf73G22WfnaN3F85u7aUZu1p5bLnYnIx
-         LX+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743607060; x=1744211860;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1VmkVlpRc4WSi9FaO0aW2j/f9rNxZ3VMxxdj/njEz0=;
-        b=Lc7H0xlZwq4nzer6jzEU66Jld83qFfqtqLCz346kwMuQNS9sRETf+fq55jSNO2732H
-         NH3/MPbrBfjAbksuAi3b74COsJ7FdyUEaY0ZORD+WS20S5jnuhRK7fh3jJWFBeR5QFPW
-         pNMK0xUtuwZXvkqQyhrL3kh+Kx89os/maa6ycwgRHDYadWeIY/CENTEaRatVQ/DpAUbA
-         YKpAkuVgkZEUfeB1Nk0ud/hRGsSsu4Gr9d/C3Ls5dAbZuLjFEpLb1F8u8Qi9AiY/IUjn
-         TpUECwMAfQIENLrWYJ9fy4dsDHBaou245Z8qARQ+UzIohDIf+TZiDjq0YbwqtxHr+YJm
-         q4qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxUlFyR41GEtDryjAPtnfOgOrNubPooDkZbarrznvo4CvZJihYBAe3B/MjOJvbyuCAxLM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzNPtJgBeAgc8zk74jLn7BUTtO8J7H8J6qFkHhSMahTM1tcUUSt
-	TpfIQmzf77D0cXxRxYLGujwoy4Y7KHE1g4SoXNNsYNRFwmMrHqViD+tTqUSr8Q==
-X-Gm-Gg: ASbGnctRJz8sGlcATEf7qxHpI5fjvRWZSrgKDwfP1oJIj/+sVGxD11FmGS5sQcwnb9M
-	pWeGSrLjfSaVrZIjiGWZFA8o2/XfNQeNr/jTcdmkEHiWAhulIAIyCGQCpI0KTrNjaaHqoyCWeGG
-	kRDMFvBlGFaQTW57RSLWUyAEQIJPEk0CF7psytTKM2P76XJFB52Gy541K9c5VTbBb0tm4PdWncO
-	Y0f91tsHNar8dGPHLoTrdACzwcELClJ/S9b45SAZlrvFvAiDBAN6ro10NREcmkYCgca2qP7Ig/f
-	WS+TbYTGd5L6J3nmBt/8ECVdXPwZX+IKagsPplEnHj3q0bRYsbKrngPk
-X-Google-Smtp-Source: AGHT+IG16MivObzWU33JTwzx5znIxU6+vnQt0ROoOp8Kq1NbarWsZJpr2IHBGg06IH61ZT+KYFb1+A==
-X-Received: by 2002:a17:90a:e7c7:b0:2f4:432d:250d with SMTP id 98e67ed59e1d1-305320b166emr18279561a91.21.1743607059436;
-        Wed, 02 Apr 2025 08:17:39 -0700 (PDT)
-Received: from thinkpad ([120.56.205.103])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eedf9b4sm109376755ad.84.2025.04.02.08.17.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Apr 2025 08:17:38 -0700 (PDT)
-Date: Wed, 2 Apr 2025 20:47:33 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
- L23 ready
-Message-ID: <rqgl5jjauppyudgmugp34fillkeli3qkwf4uf2djghi6nslebg@pyi6rbwyduxd>
-References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
- <20250328030213.1650990-4-hongxing.zhu@nxp.com>
- <ovaomfvo7b3uxoss3tzhrkgdy6cvxi4kr2zxmqsfjxds5qfohl@t6kc4rswq6gp>
- <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gW7JtzJRjQ44B+l0JFmYXE7E/KTKqm3aIU2o39PsatidpeNaKO4OzHTZkjy8PD5gWxw69SO4dzT7viriyLftiUaK+QVwoS5CyO2ojrR5mbiajWBwvkBXPhnFsoivARTsqK7Rve/1LJ8tSfiCGOmnZkqyAFyzxISVcqMizBXLyds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27D3A106F;
+	Wed,  2 Apr 2025 08:30:38 -0700 (PDT)
+Received: from bogus (unknown [10.57.41.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E9943F694;
+	Wed,  2 Apr 2025 08:30:32 -0700 (PDT)
+Date: Wed, 2 Apr 2025 16:30:29 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 1/7] firmware: arm_scmi: imx: Add LMM and CPU
+ documentation
+Message-ID: <20250402-pastoral-screeching-panda-da4a45@sudeepholla>
+References: <20250303-imx-lmm-cpu-v3-0-7695f6f61cfc@nxp.com>
+ <20250303-imx-lmm-cpu-v3-1-7695f6f61cfc@nxp.com>
+ <20250401-quantum-coyote-of-admiration-bf1b68@sudeepholla>
+ <20250402123503.GA23033@nxa18884-linux>
+ <20250402-acoustic-analytic-guan-d3cda5@sudeepholla>
+ <20250402161037.GC23033@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+In-Reply-To: <20250402161037.GC23033@nxa18884-linux>
 
-On Wed, Apr 02, 2025 at 07:59:26AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Sent: 2025年4月2日 15:08
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
-> > kw@linux.com; robh@kernel.org; bhelgaas@google.com;
-> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > festevam@gmail.com; linux-pci@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit L23
-> > ready
-> > 
-> > On Fri, Mar 28, 2025 at 11:02:10AM +0800, Richard Zhu wrote:
-> > > ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through
-> > > Beacon or PERST# De-assertion
-> > 
-> > Is it possible to share the link to the erratum?
-> > 
-> Sorry, the erratum document isn't ready to be published yet.
-> > >
-> > > When the auxiliary power is not available, the controller cannot exit
-> > > from
-> > > L23 Ready with beacon or PERST# de-assertion when main power is not
-> > > removed.
-> > >
-> > 
-> > I don't understand how the presence of Vaux affects the controller. Same goes
-> > for PERST# deassertion. How does that relate to Vaux? Is this erratum for a
-> > specific endpoint behavior?
-> IMHO I don't know the exact details of the power supplies in this IP design.
-> Refer to my guess , maybe the beacon detect or wake-up logic in designs is
->  relied on the status of SYS_AUX_PWR_DET signals in this case.
+On Thu, Apr 03, 2025 at 12:10:37AM +0800, Peng Fan wrote:
+> Hi Sudeep,
+> 
+> On Wed, Apr 02, 2025 at 12:46:14PM +0100, Sudeep Holla wrote:
+> >On Wed, Apr 02, 2025 at 08:35:03PM +0800, Peng Fan wrote:
+> >> Hi Sudeep,
+> >> 
+> >> Thanks for reviewing the patch.
+> >> 
+> >> For comments that I am not very clear, I marked with [TODO] for easily
+> >> jump to.
+> >> 
+> >> On Tue, Apr 01, 2025 at 03:15:46PM +0100, Sudeep Holla wrote:
+> >> >On Mon, Mar 03, 2025 at 10:53:22AM +0800, Peng Fan (OSS) wrote:
+> >> >> From: Peng Fan <peng.fan@nxp.com>
+> >> >> 
+> >> >> Add i.MX95 Logical Machine Management and CPU Protocol documentation.
+> >> >> 
+> >> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> >> >> ---
+> >> >>  drivers/firmware/arm_scmi/vendors/imx/imx95.rst | 801 ++++++++++++++++++++++++
+> >> >>  1 file changed, 801 insertions(+)
+> >> >> 
+> >> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >> >> index b2dfd6c46ca2f5f12f0475c24cb54c060e9fa421..74326bf2ea8586282a735713e0ab7eb90ccce8ff 100644
+> >> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx95.rst
+> >
+> >> >> +
+> >> >> +PROTOCOL_MESSAGE_ATTRIBUTES
+> >> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> >> +
+> >> >> +message_id: 0x2
+> >> >> +protocol_id: 0x80
+> >> >> +This command is mandatory.
+> >> >> +
+> >> >
+> >> >For completeness add parameters here for message_id as in the spec as it is
+> >> >referred in the returned value and seems incomplete without it.
+> >> 
+> >> [TODO]
+> >> Sorry, I may not get your point here. You mean below format?
+> >> 
+> >> +------------------+-----------------------------------------------------------+
+> >> |message_id: 0x2
+> >> |protocol_id: 0x80
+> >> |This command is mandatory.
+> >> +------------------+-----------------------------------------------------------+
+> >> |Return values                                                                 |
+> >> +------------------+-----------------------------------------------------------+
+> >> |Name              |Description                                                |
+> >> +------------------+-----------------------------------------------------------+
+> >> |int32 status      |SUCCESS: in case the message is implemented and available  |
+> >> |                  |to use.                                                    |
+> >> |                  |NOT_FOUND: if the message identified by message_id is      |
+> >> |                  |invalid or not implemented                                 |
+> >> +------------------+-----------------------------------------------------------+
+> >> |uint32 attributes |Flags that are associated with a specific function in the  |
+> >> |                  |protocol. For all functions in this protocol, this         |
+> >> 
+> >> message_id is not put in the table, but it is list above just below
+> >> the protocol name. I would prefer to keep current layout and align with
+> >> the MISC and BBM protocol.
+> >>
+> >
+> >I meant why is the input parameter message_id not described in the table,
+> >but is referred in the return values. For completeness, just add it even
+> >though it may match the SCMI spec in terms of input parameter.
+> 
+> I will add below only for PROTOCOL_MESSAGE_ATTRIBUTES which refer message_id
+> in the return values. Please raise if you have concern.
+> 
 
-Can you please try to get more details? I couldn't understand the errata.
-
-- Mani
+Ignore this. I see even existing BBM and MISC follow the same pattern for
+standard protocol commands(0x0-0x2). We can fix them all at once if it
+needs to be in the future. For now, it should be fine as is.
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Regards,
+Sudeep
