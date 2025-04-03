@@ -1,170 +1,118 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3710E1F4706
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 12:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EFF2E3385
+	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 12:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743682510; cv=none; b=t4rAn8HEEZ7VR2yAkvsGq6IkzaPRcjK7FtVvfTsYq4ybOtt2fSr7SrAyh0/CYlvH1Sr+1S9fczWmdaaJz3G9rVTgZN4NZSMgCGMh5WTZisSwa5pmhLfVYvj7Ilic4mIaQ5QUcwZEEZonqW+V6vgLkbdnxUAbplsm0RwnzJPGPcI=
+	t=1743684565; cv=none; b=pEpnYXUdwa04K9csAXOn21D3b5oQcTK+0wc7IBvCF+2Bmfjl4OrWBgIbaOBJHB0PTRxMOwJa3ksP5iEWJ45EvL/dqQHTeZqxugdj+60AvRBLfMjw9YyKxoU+i/iOMh2qcKqCUmTFcMzaEQXS5wR3r+GvIVLw6sM/1wb8VAphRWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743682510; c=relaxed/simple;
-	bh=Bftxkh4bHFoiu3H0g5ZPpdrSHV6AgFSlGYQ4+hfbMdw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fRZktukGjbk6nlACdP2dUMrYJ6Hk7cnh/EEVN89mrM2gBdp9tm3gvNkzI2NoO/vqQB4W72rN4GfzXvroiO2yKJxQi7t/zyCrtYHSS/RGTWHL0davs12K7UIIDQmm4EYp4Uw8c2tqQYOkqDiG7LyaqnQAQFZhdjKFCCXBLRLtIdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAAzyO3H; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1743684565; c=relaxed/simple;
+	bh=RxMLz6M+rqNa78DbwQakLvxhMZ+1yEief3w4mMeOKag=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iGSk7qcBPYOB/a3qIrLUrvKQlTsugxjQYSkUaTk7maWdCW4Mb11UWbhXw5cPL1GW62yk2HARz8GUywnCHHb5YJseHQ/XalZ/pfT6J4luC9yz8GvS0NSEYS3K0QEBK4SgkWpDYekd+Jb5LK0FEXKtfpayfI+EvuIDCbF4Ytzx+Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJt6bAnG; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAAzyO3H"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22409077c06so12027345ad.1
-        for <imx@lists.linux.dev>; Thu, 03 Apr 2025 05:15:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJt6bAnG"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3015001f862so568745a91.3
+        for <imx@lists.linux.dev>; Thu, 03 Apr 2025 05:49:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743682507; x=1744287307; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=MPG36/Xl3AvNG1FiiDUMt54TrdxpwOFTfcyH2y+w3F8=;
-        b=SAAzyO3HHnNLMmZBsgOotpuQirHVXOeZ7Lx79qMFDLRUm9LkSRnpO0TdyL7tWIUHFs
-         vAmtYFfnn/NkmPw/00F/aBr8VNZOehj61Keju7gWqdlF+kyiiceVSp148oxQ456YEI/+
-         eq/wgB3dIlBn9N38cz+YFpItfxSkpgF0JBx8T41/g9GiaH9Pk7+owpDKaKuTEyss+BQs
-         UvZUO9vUc/nCaNiGYKXoua0IWsgFiab1EBcTR2r8dY4z0nwQrhGtjtb5bbKF7YAmBGC/
-         vfyBXBtSxdYUoVlVI/QrUu2+bpG20DyGISU+Db6t+MCVq7iYRSl41cs7iwSL8/x3hQ3P
-         yVJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743682507; x=1744287307;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1743684563; x=1744289363; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MPG36/Xl3AvNG1FiiDUMt54TrdxpwOFTfcyH2y+w3F8=;
-        b=kJB1Nq61X5jynDV3J/DEevJ/8YLwsnqt30NbZS8NMvWVhgVFZzBWxk3DTnxxbuSGMZ
-         QiB28dm/WgWXG+3v9qb3sIA9a3WH/kWyCL8nzcp90+GRQ76Ek30lC7zoWwlzMznZVpj1
-         iDlPwT2zL366uwiG3zQAhrUPEA9vJYN2kQWkH4ohxWzT4lXNjWpkh/AL0eB4RnPIAwl5
-         xWIbyiCTtjTKrXLAeNk/0llVm6Y/96BgSco4qDRDfZqFAIJu5WYTEBCKcsDg1bG1rb0S
-         OE2dErwn41+x5fnh5hnehRVVLW9nTLnFUlLE/3gpYtakPAJpWgKLQygcCjxC7cpQwIRz
-         VcuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXyFOw3ZEVZwlPPLtn1wk37qwuAM6CA61gFcTw+lrJXAjt2bgL4Amiaf1FUzgPjcVsu6Es=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwfAkPpDyXIxaT7emrZ6s+NNJ/GjjNdojijz/LLcD7lfgqp9xvT
-	rZS3TqWKl8hs9kttHU0e+QoaQRzHp+RuxyOCaqntXkaSB7QkC7Ve
-X-Gm-Gg: ASbGnctmaSAYDsl5Q8+7/KAOnK6hEgEZFl/1T2iviu3kPWencsJArIErZUqiAzSpO6T
-	sfsePopZ0rmgn5wo2hkf7YNPoMIll1/orhnBfMR2HYRkTlUSKnnaJl0ety9y+c9IE11DFTS3YpX
-	LlsKG9NOUrX8doAHMz1tqknEcpS068fGngvkoig9xIffzutjg64nA/GELAomnrsDP6sjCesgKeo
-	ER12v4hrVMaxCyTcn7/2VMhruYJBR4wi3JJAWSKusOhOzXphA+VKdAo4hMeB+Qfe1Cb9x0mUcgL
-	gCN8FUw8T/aYesUsj8iaSbVAzdJIbCHxqE1NcGEptSkzIlaRfPN6vMyK2cxiYa9vDJlLH2YrAIs
-	b2ioLVAuTOYtm6ao9vg==
-X-Google-Smtp-Source: AGHT+IGNTOyNKFX1ox2cARvuLnsrRIZYhN/3/6mcnFnVhog2TVj4X+gtJH0rjiyodRdh5fgAkPaLfw==
-X-Received: by 2002:a17:903:1ca:b0:224:24d5:f20a with SMTP id d9443c01a7336-2292fa1add0mr356936755ad.48.1743682507345;
-        Thu, 03 Apr 2025 05:15:07 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2297866dccbsm12632115ad.176.2025.04.03.05.15.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Apr 2025 05:15:06 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <dab2f459-240f-4e4c-9bf6-8c0285354cfb@roeck-us.net>
-Date: Thu, 3 Apr 2025 05:15:03 -0700
+        bh=br0qzftHCKz3sbr3SzuiqhOwZoMQzE2LZ4g8CLoOd0Y=;
+        b=aJt6bAnG+MvDKHN8wzpFJ0+uEzUN5Fx+UNu85sN2bELQ2pmCuTvnuCyzmZW5LIkt+p
+         tDkeYLJrGYOMtbNYqOIAtw4TpCz9NbkfPpgjU9vWL4fLF5mUpc5drN+3nDqf+SzlGEvA
+         jQA5YdBENFk8NsUGWE3KZc7UDCo8O0PFiCAqSq5gdF63U27W0eKEAorsmt0HgFoDQwKn
+         sGfcvmEIUqWsUHHv4aQo5O58CIBAxWgUX3l+pxZR3gw+V4wQhJ7jlJQ/iiVWvUFAIC16
+         C3wtvMpTOCPuUQ7qCRR7w4Bxh8f5talZ5pKKhzlgQocYSWTWn1W+vktST/95LgM6TB0L
+         13ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743684563; x=1744289363;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=br0qzftHCKz3sbr3SzuiqhOwZoMQzE2LZ4g8CLoOd0Y=;
+        b=rbTj7Fb+KRCSLfbdSiMJmBdD+Ab4e7CymMMjU9A7UWDvpMvOb2cnsd1ejp+iTT1h9B
+         8lpsCRNa/MgIpI3XQlpGCxMYvopceTIEfWgV3XYHbIlRAkuamEhS5CsGPh0AwtLPe9mg
+         hPtoGAU+fHxnenvP51Tcry+9ikuInx1yMmtfHEiY6S0xIZChjU3GxxX+t/3IjIg/OueA
+         9DaIBNgfVykGNPnEb1CzhysI+prpsUV0nTnPn8yOUfmXPNRH0zqZiCx/rHgwELuydwbc
+         w1BNuzNSO0u9O+9reUlaMJMR3b5o8H5TrYjhqVrxKKugtqXsgc3vEKT0CACtXl5uC1Ec
+         nsxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNHWqrAUgyBAiFt7Ma+PlUcBkxCpXo0QB7243hM2EFlLpIRAaUIq+G4Rjtb7lCo1aXqpc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwjtQY845nl7TDAzJuGd3XjK9kUq7aMkJnzvFpPnNIHOlHQdCVM
+	eXoXadwh/NGyqRaPhPqjV4nP/sXkLTG9wLS4PEjIvVzr2QpVTTxPHH2b65CGaJjMIogaxwk3NXW
+	SyigR7rrB4Zzd/VIYCpGgkpQ4PM4=
+X-Gm-Gg: ASbGnctYhfkfAF591HDpfMhsXjdlJv/1EqKrq7F9E9ER0DdzJPJJ7kUSJH+y4IGPJYE
+	IQR8/2Z84tbC8+eoRykDm+NI77SvecizGfTgiDsKs7DQHKzOdh8B4QiKPit7avmnF2qjLLml6AF
+	WOB+8i6/EswH8Z2gqPpGHUQIA=
+X-Google-Smtp-Source: AGHT+IFYW9MnslIX+WD/W4yqFkahfmkMt3j4de0kYP5osy79qxqlNhQHimSlJ+WSDyjW98VqmFgbjK1vYEjgozBE86s=
+X-Received: by 2002:a17:90b:2644:b0:2ea:a9ac:eee1 with SMTP id
+ 98e67ed59e1d1-3056ee3148fmr8807692a91.10.1743684563426; Thu, 03 Apr 2025
+ 05:49:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hwmon: (ina2xx) make regulator 'vs' support optional
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Jean Delvare <jdelvare@suse.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>,
- Florin Buica <florin.buica@nxp.com>
-References: <20250403101516.3047802-1-ciprianmarian.costea@oss.nxp.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20250403101516.3047802-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
+ <20250402-initial_display-v4-3-9f898838a864@gocontroll.com> <f75fb67a-91ac-4e3d-8ce7-5e0c6c2bb2cb@kernel.org>
+In-Reply-To: <f75fb67a-91ac-4e3d-8ce7-5e0c6c2bb2cb@kernel.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 3 Apr 2025 15:50:47 +0300
+X-Gm-Features: AQ5f1JpOn26KtD3CJ794gf42_16EcVqDVeshPu-zxnT2qzP-_yIum74GI60JHY4
+Message-ID: <CAEnQRZC9Exfb5FL+gpMuwU6jLP8vO9hjrxm1+OHQBeLy0J1Wsg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/9] MAINTAINERS: add maintainer for the Ka-Ro
+ tx8p-ml81 COM module
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: maudspierings@gocontroll.com, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/3/25 03:15, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> 
-> S32G2/S32G3 based boards which integrate the ina231 sensor do not have a
-> dedicated voltage regulator.
-> 
-> Co-developed-by: Florin Buica <florin.buica@nxp.com>
-> Signed-off-by: Florin Buica <florin.buica@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> ---
->   drivers/hwmon/ina2xx.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
-> index 345fe7db9de9..ab4972f94a8c 100644
-> --- a/drivers/hwmon/ina2xx.c
-> +++ b/drivers/hwmon/ina2xx.c
-> @@ -959,8 +959,8 @@ static int ina2xx_probe(struct i2c_client *client)
->   		return PTR_ERR(data->regmap);
->   	}
->   
-> -	ret = (dev, "vs");
-> -	if (ret)
-> +	ret = devm_regulator_get_enable_optional(dev, "vs");
+On Thu, Apr 3, 2025 at 10:45=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 02/04/2025 09:07, Maud Spierings via B4 Relay wrote:
+> > From: Maud Spierings <maudspierings@gocontroll.com>
+> >
+> > Add GOcontroll as unofficial maintainers of the Ka-Ro tx8p-ml81 COM
+> > module bindings.
+> >
+> > This support is not officially done by Ka-Ro electronics, if they at
+> > some point will supporting mainline, this should be changed to them.
+> >
+> > Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> > ---
+> >  MAINTAINERS | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 322ee00547f6e494a96d2495092f72148da22bd0..4b3864a9852f9fca2be4898=
+7d383c0671e668336 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -12752,6 +12752,13 @@ S:   Maintained
+> >  F:   Documentation/hwmon/k8temp.rst
+> >  F:   drivers/hwmon/k8temp.c
+> >
+> > +KA-RO TX8P COM MODULE
+> > +M:   Maud Spierings <maudspierings@gocontroll.com>
+> > +L:   devicetree@vger.kernel.org
+>
+> Drop
+>
+> > +L:   imx@lists.linux.dev
+>
+> I would say this as well, but not my subsystem to worry.
 
-devm_regulator_get_enable() should provide a dummy regulator if there is
-no explicit regulator. Why does this not work ?
-
-> +	if (ret < 0 && ret != -ENODEV)
-
-Why this added check ?
-
-I know it used to be necessary if regulator support is disabled,
-but that is no longer the case.
-
-Guenter
-
->   		return dev_err_probe(dev, ret, "failed to enable vs regulator\n");
->   
->   	ret = ina2xx_init(dev, data);
-
+We don't actually mind to gather all i.MX based boards development on
+this mailinglist.
