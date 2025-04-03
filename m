@@ -1,132 +1,274 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751491E9B1A;
-	Thu,  3 Apr 2025 07:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2081F5FD
+	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 08:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743666332; cv=none; b=OsutC2Favq2i4qsYR4tx7LioTu+a+AyvkDBzYIcFxhtucVtcnyn9Lb9r5pAz7MeMHitzNN69fxtn1oC5k/sxQNBzLUVItMw9HJdpVH8LVHoWPo/Zi0A7IYTaSwV2qDxSejkjCv00eUriJLtHbIRYioOMWtZy453ch2ll5xcXl8A=
+	t=1743669069; cv=none; b=iLsYigdLZUOPOgzVVX+k8O6fT2RCAZT/a814Kaz+kgOEijgAOmewRs6Fgwtm6IeUZ1QMyzjerk3YaoVy0Cm9abWRltvsVPF55Zjn6Suqe6bKE9HCjd8/mhoMBM5xFvY/XH7WEBtr/dpxX5HwMyicVo2EVa75S905BDtROoWWPAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743666332; c=relaxed/simple;
-	bh=A03wrDYWnmPYNNfdVZ6NmbPrlqWAhypxVHx4h/4zM9o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V5IRS1EYckWEBI+f0xNrHLT3p9kJTMrPSfh5maxCAAmbxUUpQpNm+H4uR2F0sJseBqosBwYKUxnoeCvmzjOo5gyz710jvcyw4RFeXGeAywthvo8Ui27Sy1/OFmRPyWmtJAiV5lK5S8dqRAsM+Xba/sXA1rv3nhXyWsYHsqtsDPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gk1jHHo6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743669069; c=relaxed/simple;
+	bh=xxy4IB9V+YReFFQ75CIvILVkd625+dHYGZ3SClcB5ZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kNvpB5/7/b+xIYP/uw0RUU6uIXEpYAXghEwPhMJY0Cb2B3LXXdUrbLcrGQJpZLmSxo6SBa8XNiz2gZRz9RasJJuh8e3l+G4abKgzDbgxHo56T3bntw2hLrsSbBKJ8bj9501NpMYWadLeEpFjjBsVydq2vAS+3M5iu+phMiVeVBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=qI/xXcjl; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MFA2khVH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gk1jHHo6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322F5C4CEE9;
-	Thu,  3 Apr 2025 07:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743666331;
-	bh=A03wrDYWnmPYNNfdVZ6NmbPrlqWAhypxVHx4h/4zM9o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gk1jHHo6QVDUUetLKNaQQzcYrrNKt2243VfA07O1kd5OxromHrg+GjL8PWstYB1ez
-	 lYyGq77xenWIrUx+b0s1ei5vb6oTVMnJLVXbBZyCPgf2Sy0Pf+JauSxVAL8L8kfDJg
-	 jDZ6t5jcvcAqB5dXFCP5WCLlPX+5RDK8MVSLNLv7cjlJB1msvgQaDGX1a6N6OjkC7V
-	 D3BuuJDT0rX7SvkKIbDw1xYjpAWKW/41v1w10o8S/olKg5XofMFyiP7cyRjv6p3D5K
-	 OntDybXLahtGon1M+StSjYCBk3ft8q1O+PUE3JWT3gY2ta4SaY8YJIBxMnOp2jjd+C
-	 0uyD8OA2QERMw==
-Message-ID: <f75fb67a-91ac-4e3d-8ce7-5e0c6c2bb2cb@kernel.org>
-Date: Thu, 3 Apr 2025 09:45:24 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="qI/xXcjl";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MFA2khVH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1743669067; x=1775205067;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=z30Hkz7WP91LKSi1mbcYaIhwFiizr5KX8hW+28FpYjM=;
+  b=qI/xXcjl7R/DWnLqs99s66PnF5zwSJZyt+i7A70D2a3zJNhur1MBrEXa
+   WaMH3cRvyTXdUhspLmWYWWAuBf+6jokK5AeYaao/DqGAaL30tYHCPq8Bc
+   TL49OvC0Qf1tPU93DXrbl96MiTvmGA/NIXSk/yFs6xefrQjcAQ8YB/OAE
+   fgfb9p+sSUVzvQUO7aeruvwhCWteoZYHuo7LdS/Qq9XzJDpmhyWF8nVNa
+   ysHevItix14BSmKKXXnKfM4oMzKxLsdh2fFbxURR/Ch/AplNy5EubB6Aw
+   U1NDVkMOcfVOsVSwTzIcELJR0f5q0BhTKBNMKkjJ2Imb6gmyUh6ZDMyW/
+   g==;
+X-CSE-ConnectionGUID: vMhXcl4PRBKz0akpcwaElA==
+X-CSE-MsgGUID: bvHI11ApQxCSbxlZcR24Gg==
+X-IronPort-AV: E=Sophos;i="6.15,184,1739833200"; 
+   d="scan'208";a="43316639"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 03 Apr 2025 10:30:57 +0200
+X-CheckPoint: {67EE4741-18-903EAEAC-E04C76C8}
+X-MAIL-CPID: 08543546ED19CD2066CD1002AB8F1EFC_5
+X-Control-Analysis: str=0001.0A006398.67EE4741.0034,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB29C160A4C;
+	Thu,  3 Apr 2025 10:30:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1743669052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z30Hkz7WP91LKSi1mbcYaIhwFiizr5KX8hW+28FpYjM=;
+	b=MFA2khVHsO9qV5hdk9cd0/pcVX682KD0GtS0M6VN3AxVm9+XSFCVn04K24B8iQNljR9cJj
+	G67QnYXLq+84Y7oOpvWOsPipUVPHdp6Z2fjxr5xPpEozOo/8I5Ag81ioDDdizDu2NzZvck
+	QStRpM0Dq9q5sBTSEaWb3rOfX0vqk7o2vSVlF4exzCjmQLiKLeVuSkG9d7hstguUx0XOHt
+	27DIa7zuLPkP2LTN2IP7v77YQ7Z7SgMNoB7bZ3wDaWBoeC0qJBACV+ReT+gfJ6sPuUVIP/
+	8P3cqLxozVoRjdkU/gq8cH8FY/oJ3OZkkXRoxvbeXvkQ9jwSMNSnBhypeVd0zQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Frank Li <Frank.li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, linux-arm-kernel@lists.infradead.org
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH v4 3/6] bus: add driver for IMX AIPSTZ bridge
+Date: Thu, 03 Apr 2025 10:30:51 +0200
+Message-ID: <12639974.O9o76ZdvQC@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250401154404.45932-4-laurentiumihalcea111@gmail.com>
+References:
+ <20250401154404.45932-1-laurentiumihalcea111@gmail.com>
+ <20250401154404.45932-4-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] MAINTAINERS: add maintainer for the Ka-Ro
- tx8p-ml81 COM module
-To: maudspierings@gocontroll.com, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
- <20250402-initial_display-v4-3-9f898838a864@gocontroll.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250402-initial_display-v4-3-9f898838a864@gocontroll.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 02/04/2025 09:07, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
-> 
-> Add GOcontroll as unofficial maintainers of the Ka-Ro tx8p-ml81 COM
-> module bindings.
-> 
-> This support is not officially done by Ka-Ro electronics, if they at
-> some point will supporting mainline, this should be changed to them.
-> 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Hi,
+
+Am Dienstag, 1. April 2025, 17:44:01 CEST schrieb Laurentiu Mihalcea:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>=20
+> The secure AHB to IP Slave (AIPSTZ) bus bridge provides access control
+> configurations meant to restrict access to certain peripherals.
+> Some of the configurations include:
+>=20
+> 	1) Marking masters as trusted for R/W. Based on this
+> 	(and the configuration of the accessed peripheral), the bridge
+> 	may choose to abort the R/W transactions issued by certain
+> 	masters.
+>=20
+> 	2) Allowing/disallowing write accesses to peripherals.
+>=20
+> Add driver for this IP. Since there's currently no framework for
+> access controllers (and since there's currently no need for having
+> flexibility w.r.t the configurations) all this driver does is it
+> applies a relaxed, "default" configuration, in which all masters
+> are trusted for R/W.
+>=20
+> Note that some instances of this IP (e.g: AIPSTZ5 on i.MX8MP) may be tied
+> to a power domain and may lose their configuration when the domain is
+> powered off. This is why the configuration has to be restored when the
+> domain is powered on.
+>=20
+> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  MAINTAINERS | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 322ee00547f6e494a96d2495092f72148da22bd0..4b3864a9852f9fca2be48987d383c0671e668336 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12752,6 +12752,13 @@ S:	Maintained
->  F:	Documentation/hwmon/k8temp.rst
->  F:	drivers/hwmon/k8temp.c
->  
-> +KA-RO TX8P COM MODULE
-> +M:	Maud Spierings <maudspierings@gocontroll.com>
-> +L:	devicetree@vger.kernel.org
+>  drivers/bus/Kconfig      |  6 +++
+>  drivers/bus/Makefile     |  1 +
+>  drivers/bus/imx-aipstz.c | 92 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 99 insertions(+)
+>  create mode 100644 drivers/bus/imx-aipstz.c
+>=20
+> diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
+> index ff669a8ccad9..fe7600283e70 100644
+> --- a/drivers/bus/Kconfig
+> +++ b/drivers/bus/Kconfig
+> @@ -87,6 +87,12 @@ config HISILICON_LPC
+>  	  Driver to enable I/O access to devices attached to the Low Pin
+>  	  Count bus on the HiSilicon Hip06/7 SoC.
+> =20
+> +config IMX_AIPSTZ
+> +	tristate "Support for IMX Secure AHB to IP Slave bus (AIPSTZ) bridge"
+> +	depends on ARCH_MXC
+> +	help
+> +	  Enable support for IMX AIPSTZ bridge.
+> +
+>  config IMX_WEIM
+>  	bool "Freescale EIM DRIVER"
+>  	depends on ARCH_MXC || COMPILE_TEST
+> diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
+> index cddd4984d6af..8e693fe8a03a 100644
+> --- a/drivers/bus/Makefile
+> +++ b/drivers/bus/Makefile
+> @@ -15,6 +15,7 @@ obj-$(CONFIG_FSL_MC_BUS)	+=3D fsl-mc/
+> =20
+>  obj-$(CONFIG_BT1_APB)		+=3D bt1-apb.o
+>  obj-$(CONFIG_BT1_AXI)		+=3D bt1-axi.o
+> +obj-$(CONFIG_IMX_AIPSTZ)	+=3D imx-aipstz.o
+>  obj-$(CONFIG_IMX_WEIM)		+=3D imx-weim.o
+>  obj-$(CONFIG_INTEL_IXP4XX_EB)	+=3D intel-ixp4xx-eb.o
+>  obj-$(CONFIG_MIPS_CDMM)		+=3D mips_cdmm.o
+> diff --git a/drivers/bus/imx-aipstz.c b/drivers/bus/imx-aipstz.c
+> new file mode 100644
+> index 000000000000..44db40dae71b
+> --- /dev/null
+> +++ b/drivers/bus/imx-aipstz.c
+> @@ -0,0 +1,92 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regmap.h>
+> +
+> +#define IMX_AIPSTZ_MPR0 0x0
+> +
+> +struct imx_aipstz_config {
+> +	u32 mpr0;
+> +};
+> +
+> +static void imx_aipstz_apply_default(void __iomem *base,
+> +				     const struct imx_aipstz_config *default_cfg)
+> +{
+> +	writel(default_cfg->mpr0, base + IMX_AIPSTZ_MPR0);
+> +}
+> +
+> +static int imx_aipstz_probe(struct platform_device *pdev)
+> +{
+> +	const struct imx_aipstz_config *default_cfg;
+> +	void __iomem *base;
+> +
+> +	base =3D devm_platform_get_and_ioremap_resource(pdev, 0, NULL);
+> +	if (IS_ERR(base))
+> +		return dev_err_probe(&pdev->dev, -ENOMEM,
+> +				     "failed to get/ioremap AC memory\n");
+> +
+> +	default_cfg =3D of_device_get_match_data(&pdev->dev);
 
-Drop
+Shouldn't you use the configuration setup by trusted firmware (TF-A)?
 
-> +L:	imx@lists.linux.dev
+> +
+> +	imx_aipstz_apply_default(base, default_cfg);
+> +
+> +	dev_set_drvdata(&pdev->dev, base);
+> +
+> +	pm_runtime_set_active(&pdev->dev);
+> +	devm_pm_runtime_enable(&pdev->dev);
+> +
+> +	return devm_of_platform_populate(&pdev->dev);
+> +}
+> +
+> +static int imx_aipstz_runtime_resume(struct device *dev)
+> +{
+> +	const struct imx_aipstz_config *default_cfg;
+> +	void __iomem *base;
+> +
+> +	base =3D dev_get_drvdata(dev);
+> +	default_cfg =3D of_device_get_match_data(dev);
+> +
+> +	/* restore potentially lost configuration during domain power-off */
+> +	imx_aipstz_apply_default(base, default_cfg);
 
-I would say this as well, but not my subsystem to worry.
+Shouldn't you store the configuration at suspend and restore that one
+instead of this fixed one?
 
-Best regards,
-Krzysztof
+What's going to happen if trusted firmware decides that Cortex-A53 domain
+is not allowed to access AIPSTZ?
+
+Best regards
+Alexander
+
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct dev_pm_ops imx_aipstz_pm_ops =3D {
+> +	RUNTIME_PM_OPS(NULL, imx_aipstz_runtime_resume, NULL)
+> +	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
+> +};
+> +
+> +/*
+> + * following configuration is equivalent to:
+> + *	masters 0-7 =3D> trusted for R/W + use AHB's HPROT[1] to det. privile=
+ge
+> + */
+> +static const struct imx_aipstz_config imx8mp_aipstz_default_cfg =3D {
+> +	.mpr0 =3D 0x77777777,
+> +};
+> +
+> +static const struct of_device_id imx_aipstz_of_ids[] =3D {
+> +	{ .compatible =3D "fsl,imx8mp-aipstz", .data =3D &imx8mp_aipstz_default=
+_cfg },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, imx_aipstz_of_ids);
+> +
+> +static struct platform_driver imx_aipstz_of_driver =3D {
+> +	.probe =3D imx_aipstz_probe,
+> +	.driver =3D {
+> +		.name =3D "imx-aipstz",
+> +		.of_match_table =3D imx_aipstz_of_ids,
+> +		.pm =3D pm_ptr(&imx_aipstz_pm_ops),
+> +	},
+> +};
+> +module_platform_driver(imx_aipstz_of_driver);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("IMX secure AHB to IP Slave bus (AIPSTZ) bridge drive=
+r");
+> +MODULE_AUTHOR("Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>");
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
