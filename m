@@ -1,126 +1,146 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EF324E4A0
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 12:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9691D24E4B4
+	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 13:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743684855; cv=none; b=GV/So5VgOuM0fpCrVr4tYEcS/WGRikRiWrFtfStWz64ZTkVZqNGdrlTmhGWp1qS4Thh/7AuVvORGImYAA2wK2/QMmpmp2v6kKPuOrSoLzxbbZEMxbPlh6kabgiEP5ueEGCtcX+/+WmxaEQpN3KrT3uL3RiUFqTiilKl8UaINCfo=
+	t=1743686034; cv=none; b=IV9/dfvOgZOe6PMnrvAYmjSmWalStxb8Oux31ePIFm9QCbNJdET3r92+7BkioZmGakOxISlHGlpi6ZOXPGD0jkcnUojgctjgMpkGnpwXr30BocxVNthG1eZyOT7VuFj+zkmyZuVOqodtsoAM0wUZPdFrozdXzlKN9koVue1tBsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743684855; c=relaxed/simple;
-	bh=ypmiH/puGa4EAcldjZXT1WNtw2ksYWeUqQ7AXlx3nWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qG1w+vCE1AasVUI3Yok5SWJi8Rg1PDplxmz+yMk6O1jBMDmvtJFZd7iVML+tlZgQS3nvr1mc6qmUgxiCB9vLXLnSG53q4s9sssODdGHoIWQNrLsTE2xys0y52M3oLvA9RJ5/+GZvj6EHq6qkXHA9zMhC5nww6YnCqrFu/QYcRy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6CB941BB2
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 05:54:15 -0700 (PDT)
-Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 900923F63F
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 05:54:12 -0700 (PDT)
-Date: Thu, 3 Apr 2025 13:53:47 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-arm-kernel@lists.infradead.org,
-	"Rob Herring (Arm)" <robh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sebastian Reichel <sre@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Steven Price <steven.price@arm.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2 3/9] dt-bindings: gpu: mali-valhall-csf: Document
- optional reset
-Message-ID: <Z-6E262OIoJC5aC3@e110455-lin.cambridge.arm.com>
-References: <20250321200625.132494-1-marex@denx.de>
- <20250321200625.132494-4-marex@denx.de>
+	s=arc-20240116; t=1743686034; c=relaxed/simple;
+	bh=oO2YyQYecVr+L4x0Yq8tpuXt1Blol50iC56ZhetCIAw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=pvTykyIBgyTT0Epi13THv5eWhrgfIwvkcIaEgxAesPiF5sYnVAC8Wh4ffdvTTaXZRjda4LpD2xtm1jbdzgCtzs0I9s5iwI1jX2Ngls3U4L52bEsphkC/aDDeacPmW/4R9t+4vp6CRQmwv2EqN+oAI6avlADyau41HO/MzBjyTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=jfpaWPDn; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="jfpaWPDn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1743686000; x=1744290800; i=frank.scheiner@web.de;
+	bh=tq7Ewy84FWklJ0DM2lQqRrm1CFpORg7fNcv68fsFdoI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jfpaWPDnqJlnn7d/eeKA+Q2dZ6gal+i27mW+REj0gdj86oe2hrp1rhPGmf7hy4Ps
+	 ucG7L7EDOF3MG/YJSYMNsvXaoeAKKiuPIFKvghBUxWs4T0rF+acXD/NDt/siXGzgj
+	 X8f+hJQZhTuPvqizGbwQAxuDK/ujk+GUPNZiM23PgGRC+xqSE/cfFEUrP53QV4RkI
+	 /N9DJ3bgz0roFD3YAqpyx7Bhmo015EwlCP2gSdoAbC8cJABBh/AsC+r5dxNClp5Tq
+	 L8ZyLbPeuNYG25J7trpGWIC1FtQp75NBD/OGH5SqZaeU8skoKP3ftavD+VnXM6vfa
+	 S+xM5OLloka1ig34xA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([84.152.250.142]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MZSBG-1tco0U2pmQ-00IJ9N; Thu, 03
+ Apr 2025 15:13:20 +0200
+Message-ID: <667d272f-2b51-49d6-84ea-1156027e00a7@web.de>
+Date: Thu, 3 Apr 2025 15:13:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250321200625.132494-4-marex@denx.de>
+User-Agent: Mozilla Thunderbird
+To: apatel@ventanamicro.com
+Cc: ajones@ventanamicro.com, andrew@lunn.ch, anup@brainfault.org,
+ atishp@atishpatra.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ gregory.clement@bootlin.com, hpa@zytor.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ maz@kernel.org, mingo@redhat.com, palmer@dabbelt.com,
+ paul.walmsley@sifive.com, s.hauer@pengutronix.de,
+ sebastian.hesselbarth@gmail.com, shawnguo@kernel.org,
+ sunilvl@ventanamicro.com, tglx@linutronix.de, x86@kernel.org,
+ linux-ia64@vger.kernel.org
+References: <20250217085657.789309-5-apatel@ventanamicro.com>
+Subject: Re: [PATCH v6 04/10] genirq: Introduce common
+ irq_force_complete_move() implementation
+Content-Language: en-US
+From: Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <20250217085657.789309-5-apatel@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:XEpgZJH4hjXKrAVtN6WYfb76caRsH3G/1YZh0k6iv/5gAuOD6JZ
+ /5tde3RwkXrkd/Pey4Lz/oZqXIOJwitxEp+fORe/ccUTmOxTdKdt1JHSPo7f6gtuJfxNzDZ
+ CT0pBBS+/1TDZFBQT8c7xRTvQ04Ld/hNbLksOh9snnDnKPRk4pMuFmuPo7JqqG7e0gsfnuM
+ o7r8alGP5hXS3FrAzPIkg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Of7XFgulvNQ=;OVh5LHzbZMeUCHWhdl2nXotRgit
+ jM6j1jgD5opSeNE7yy/Joxn4dWxgFOVQNAKd/9JrMF5rl1I5wvE1WrzuIA55muGKCafDi+qNf
+ VM/TKsQ5FYBPmRxIMIODE9vSzoN8nXhbs4547OCs/oQraFxSR2fQCUvX+/XD/H2fu07WZxDF5
+ JiKyCXLZkwYuP49khkI1RPsWSuznFlZUD8xkeB8OkRIsOAAn1AmhQGeWaigIF8080IM0X8SJC
+ /Q0MEC4U0PoYB6fVozKBItqDoDSyPT8v2xUPgpM4eqIEUz/mnXKAAbNZqlQhNx7VJQwkdljWy
+ hanRggjC+qcyvNnLv4+wWV361WVPE0XqVtSWkPJVSerVB5ZvzYYDvKDy3rAZSunshNvPPkjjd
+ nF2CDEmIkniaETkOsdfzv/bGnskgZxhNsUDmjt12xjJgtp7/OfqAJ4sV12Ni2o06jYqHCIntJ
+ lAv1rJYy7HWdYf1eu5xtCgIz2GZossoQJvhoC6EMXI4aAS2+xuYfuaoQARne38XIb6Vp4yv7p
+ LJ2UP9ONGwFBoW/2qaBKubFr/6edJ0npfgdLzR0HkovRPwe1Xw1xCOO6OOwvVoklqrUOZ2iQ3
+ EJVg8HRlqql/7e0imy9xYuEaQpU6K7d9u4FYppWQILPTr0N8xW1vJ9P0YUf7Rf4znCKxsoS1F
+ MKPB83tuLCXlQ5bG+q1Q9bxzHNyPNlhWh6AuWdY0+XbRKYXf1JTDJUlxSn3J464O2RPfPmqdH
+ HDVSisM8e0I7C2Fzl9Gi2irOvjG78Pena6EpnNuhC2GbMVwM0HuEH9dVI8ZqtVQp9koggzIzA
+ h126Bu/qYCnPX6wXzAfJAnf4X/8HbAQowX13W7CCxhdd4U+PioOYYWXHPkYx6nO5OiCCvJ6wC
+ t4DcaQPA6IPUC2xmwpZ1iuyUMpNNT/3wbfPwE64sa6/CZXKN9f+9j4UnsQDKfw4okD1iQnwhd
+ Me4LKEO/bYQrmX4ZB7PwRFV4KFK7498IYaO26+frpSRi3Qdo8SKDIS462jGpd0qsELf3rporN
+ VSGoBRFYikvqgrNVjiF9ItOmcRROIjXooW4kWaQj0kEyKbuqUP/QBtx+e553himBLKWRbXQgL
+ 2mT4LxpzgUB8pez1+EeTuoBBpnKPHLs8Lb5+MyIBhjxgyhlQcXmCWF8K/4PyimOqbld6BVBkB
+ b9c897IE7qU4qZr4claegKPHTOt4zT3q3ERrHiC9shhf1l2jKNJAghCAwuQFOgZ2fudl7W8dH
+ KvEZ3v9n2hpNTq6auTCW9guBFFRV8x/yI6TBWhZCNwS1me+uL8jO2BFF7UsXh1k0o21Lr6g01
+ 9aVgDoQ7l/vgmrgyB4Q8U0n33dGHKGuujhqJuFENBBhBe/faxIMPYUI8/pmGoK9/KWTKz1rqf
+ Mtr0mYNyydPx0M/YfvQCBhIITMLSUsU8z8F7zjYKtscMJFtszwQTLMRjqgV9A/k+5dxBAIvcW
+ KOMwjXQ==
 
-On Fri, Mar 21, 2025 at 09:05:53PM +0100, Marek Vasut wrote:
-> The instance of the GPU populated in Freescale i.MX95 does require
-> release from reset by writing into a single GPUMIX block controller
-> GPURESET register bit 0. Document support for one optional reset.
-> 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Marek Vasut <marex@denx.de>
+Hi there,
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+this change, specfically the introduction of irq_force_complete_move()
+to `kernel/irq/migration.c`, strangely breaks our builds for the hp-sim
+platform (i.e. Linux/ia64 for Ski):
 
-Best regards,
-Liviu
+```
+  CC      kernel/irq/affinity.o
+kernel/irq/migration.c: In function 'irq_force_complete_move':
+kernel/irq/migration.c:40:72: error: 'struct irq_data' has no member named 'parent_data'
+   40 |         for (struct irq_data *d = irq_desc_get_irq_data(desc); d; d = d->parent_data) {
+      |                                                                        ^~
+make[4]: *** [scripts/Makefile.build:207: kernel/irq/migration.o] Error 1
+```
 
-> ---
-> Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> ---
-> V2: - Add RB from Frank
->     - Add AB from Rob
-> ---
->  .../devicetree/bindings/gpu/arm,mali-valhall-csf.yaml          | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> index a5b4e00217587..0efa06822a543 100644
-> --- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-> @@ -61,6 +61,9 @@ properties:
->      minItems: 1
->      maxItems: 5
->  
-> +  resets:
-> +    maxItems: 1
-> +
->    sram-supply: true
->  
->    "#cooling-cells":
-> -- 
-> 2.47.2
-> 
+The reason seems to be that "d->parent_data" (i.e.
+"irq_data.parent_data") is used unguarded in this function:
 
--- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+```
+void irq_force_complete_move(struct irq_desc *desc)
+{
+    for (struct irq_data *d = irq_desc_get_irq_data(desc); d; d = d->parent_data) {
+        if (d->chip && d->chip->irq_force_complete_move) {
+            d->chip->irq_force_complete_move(d);
+            return;
+        }
+    }
+}
+```
+
+...but "parent_data" is only present in `include/linux/irq.h` if
+`CONFIG_IRQ_DOMAIN_HIERARCHY` was selected.
+
+```
+struct irq_data {
+    u32            mask;
+    unsigned int        irq;
+    irq_hw_number_t        hwirq;
+    struct irq_common_data    *common;
+    struct irq_chip        *chip;
+    struct irq_domain    *domain;
+#ifdef    CONFIG_IRQ_DOMAIN_HIERARCHY
+    struct irq_data        *parent_data;
+#endif
+    void            *chip_data;
+};
+```
+
+So I guess, either the requirement in `linux/include/linux/irq.h` needs
+to go, or the use of "d->parent_data" or the whole of
+irq_force_complete_move() and its use needs to be guarded as well.
+
+Cheers,
+Frank
+
