@@ -1,481 +1,759 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013023.outbound.protection.outlook.com [40.107.162.23])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2106.outbound.protection.outlook.com [40.107.21.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327B7188724
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 06:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4435024113A
+	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 07:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.106
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743661411; cv=fail; b=IPVTtmMfeYQQLoGJjmBJISg/IZPDRg8UOTkg7M+T+Rd1JB5mETIBG4hby5YXWR8FzdOlBJRhDsEuAqjP2tXIq1H6OKG1h7Q0QVbYUq8oBoY+6rVY7oheCIXXVI2deTFwyBHfLPUUWQylw1hBlI5T5S3agUg5wlbCjB8qEo5LBSw=
+	t=1743665792; cv=fail; b=CnUH9KPvumpKtKzSFl56hhurKYiG5nopSQCmM4JuBQCeYOeZeImQD55LQKPhrvw0OUosPfoy+vMrS62QW9OGS9HbLyLIQesF/4ts5iQ4/A0bKRQ6+9UJu8ZW2nWZ/4EbgdQAJI/rPrqE2jw1XaObNbQ0Pbs2Dgt3JaN+/YwmjFk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743661411; c=relaxed/simple;
-	bh=vpwZ7uUu5fQncbyYIvWK4QqBdX7piBaNFwimXyFivRw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CxEAwiB1+2D7rsM4zrDBLuzlgcrFiIqPIA6EO99uCwxnRECT990naLCTCbN0mP0EoLh7YIhr0xNXCUsVlIwroMoMMtrYC2Iiz2LvNuOiDfWhdVvg6Tm151xLJ9cEHdhoctv6QS3EznXNx91q64JH1D8dGN54FSu2B/U+xrA8w0g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fWkQqjzl; arc=fail smtp.client-ip=40.107.162.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1743665792; c=relaxed/simple;
+	bh=okirV3Rr2dvCKv/mkVqxyuff6W5z394X2UaJmHfc8Uo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=KTMLHvXib6TuRtekQhl5AKFR42WRH8/9nAO50sBFlSrE3+d1Cvm8gquORpQOgX1hNxdkTBoREucbnpwArw3+iiVb/NpYhIZVK2GsemWC0dbCFoHZshmnZnuyI7GXhlQxcwC9EN6p53hKKQQEGfobGwpN2zVGV3Cv04i8qJ1rQbY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=XQqARJBl; arc=fail smtp.client-ip=40.107.21.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fWkQqjzl"
+	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="XQqARJBl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DLWjn/q2XMg6KM+Q/n4Bhoz734Un0hraje+ikajCCVME/1TF8V4cntOrZNiwNqHdMxubMdySRMg91yA9xVwBDmbflALSNWb0vmIENta67ZQj6U8hmgGoXuLXp6i7+2of3Q+KQva2iTFYL6b75JqnOobiy1e9r4hAbLFajbsSsVQy9KG6wgkPMhpplxEk0KoCz/qg5Kxp9jvKc6sgm8dq5ViKsarQeUOFa5rq/tMF9896cslDFUQpNjO8tMGET+rVXVnG4F2wBfGzZKw4sz77g3P14hLg02eIa53MDjAWVa0bqlWRzrGnFzjTsYW3HVFooBCdzss4DLhXVkZAqaH3GA==
+ b=TtzfBdjPL988ZDG3yea3FLZg5apWaxnyHsKgF+Cu7z0n6T/hrxgfYheJscboEdbSbLq5R+08SER1VCB+76JrSFhZdmQKku5IW66detw955BBSH10iFGfsfDE/6s29nkMfi1npsTU6WLkGsT4D7yqnZCg0DIiutA6x4v8YV/lZsXxNEiNRcjytTzWrKuO3S/P+G7gJ7wiU6TxoDTgWZswiSFpy3Wpxn5W6gqDbEeM6CV5Vm8rw78Cdqc/sbdEW9DtP5BsMzbtsPxgLzHvy7dkuICby16k3zbb8Inqkpwh2B2Dixo1ImA6QQDxsfccKnumnqOgNLJtIotRj5AhSzWpJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PPR3MyF7keRVFpNEspdzTHzSH2dHcOZdfSbXNdAJRkg=;
- b=J7JokhaPVKLne0FaMLk8PGe7Jrz6MVLhXzuLRIuUMujdJ9/CNfZsVfkt1C20NGn0IupJ71i75tteKE0IOIpM4FwsF6xQNQ9kY60Z6jWY11Sh56ivO9kof3zJ8oN7s55q+3cYTKdus4Dx/1UlidtLJfcdV/crU7IWEqT8HNwDsjFCtTbEFkifQEtfR70kqPxtsAxDwNU3ybfIPQutwW0cZBu8R9P/xrcCetK4T9x+h5xw+7cWsQvzB7cpstmnuM3cDLzNEa3izuHKvusewvW6Et3xzpQzJmv5jAAKSAZtZPwE+j1ZQjxDdCz/Gqd7LsEq5Fe3BKtUPMd3BzhI6D9O8Q==
+ bh=3g4pYG/4Z0DV2XFO5ur7nVnL5cwlqxyf8sEm3YrEm0Q=;
+ b=S/ihyu6yCmi4kXQryigdZ80F5Jp5NcF08Xx4Re5fzl616f3iI8lZhUzgWFcfqTFeG/2253+PJRI9s/lzYT0nvg0+1ZQ5NoASB6/deZFDSXk6xxGOTtR72NCOF7HTcIqjlB+8vj4VWNAHg+k7sSfFhYsGTHBfH3jimZt2CkxBafseN5YRqfDPcezaIggIwMtb/4fH3VcFW0/eD/3bDYbQqxy3L52/51Yr3eI47d6TNhOaqKZ5cUOTAyJzJqD2zXvE7jYxw3zTEnJ39wNCiGm5pkpuff7hPYXKXyHGZqPQyLga8+SrAFPKi8AChBjRXjCHkGeCjB0349THH9zjVGurAw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=gocontroll.com; dmarc=pass action=none
+ header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PPR3MyF7keRVFpNEspdzTHzSH2dHcOZdfSbXNdAJRkg=;
- b=fWkQqjzlFWQsCrtmwdBajGnSMjZIfgIAhgDtEH6ByUf6XXybovxDSQgHKdpb6CDf4T1yt9Z98J6hiC8McOpc9+8KN34XSBxA/quC3IOeh5dU+s2bgV2sAGfa5s+DExudntTXZ6k3Ohtftb8HG1olqrQ8AhJvZqT39FK1NOzev2fLbBKGjgmgabwNGn1gLvIFXJJgU6en+L5VghYXdk1cT+rhW6k2oa1gj68ngTaWVDbC3M3OtGr81exaahlPE9D3hebT0LePNbVkk06cQRBjWv1rz+xyKDpkG6xIFr+ZzhfCj+2oCRuY68qD+xGzAFMiCFCi21H3tqUnzRC9tcdYSQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by DU2PR04MB8789.eurprd04.prod.outlook.com (2603:10a6:10:2e0::11) with
+ bh=3g4pYG/4Z0DV2XFO5ur7nVnL5cwlqxyf8sEm3YrEm0Q=;
+ b=XQqARJBlvPOhLXcKhVn9RUOAiA5tvwNpC2/kJvnER2p8ywO2wGLydqwCA/mKxZvQOYb/3aER96y0KXCWdZji3E2WQLQecAbtkWO+HRhiT8FmFfxk14JrnjcIMl6yoQ3ogwcge3snHsjPxgc0eYUooAGxaQ1kWST8Oh8BnHatWQnYE/yMUPvNoG+W2tn5DCoKHpd2kVjvg9VdaOjKNMV1t3qyKL0ae0OQJ7jeS0Qy9kBmux6Kl7qEStooUf/0wO/gJG0XWvt3rZ6HF64mkGf1rmOV1eDtv/yTz5hBRCzLq3Ts5rYNEMx+rpbVB6g0PmRBWdNjaZ4Biz33mLlemO0dUQ==
+Received: from PA4PR04MB7630.eurprd04.prod.outlook.com (2603:10a6:102:ec::16)
+ by DB9PR04MB10067.eurprd04.prod.outlook.com (2603:10a6:10:4c8::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.49; Thu, 3 Apr
- 2025 06:23:25 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.8534.052; Thu, 3 Apr 2025
- 06:23:25 +0000
-Message-ID: <c97c6fab-cc13-4fb9-a91c-58ce0bb5e593@oss.nxp.com>
-Date: Thu, 3 Apr 2025 14:23:15 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] media: imx-jpeg: Check decoding is ongoing for
- motion-jpeg
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.50; Thu, 3 Apr
+ 2025 07:36:25 +0000
+Received: from PA4PR04MB7630.eurprd04.prod.outlook.com
+ ([fe80::311b:ad3a:4a62:7b5f]) by PA4PR04MB7630.eurprd04.prod.outlook.com
+ ([fe80::311b:ad3a:4a62:7b5f%4]) with mapi id 15.20.8534.043; Thu, 3 Apr 2025
+ 07:36:24 +0000
+From: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
 To: Frank Li <Frank.li@nxp.com>
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, mirela.rabulea@oss.nxp.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
- linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250328063056.762-1-ming.qian@oss.nxp.com>
- <20250328063056.762-4-ming.qian@oss.nxp.com>
- <Z+a2G5We38cQw3UD@lizhi-Precision-Tower-5810>
- <99aa5db6-eb75-4fcf-ada7-cc6d519a40cc@oss.nxp.com>
- <Z+qnln8qbHCYVH+e@lizhi-Precision-Tower-5810>
- <22fd3087-6832-4b61-8c78-bc8dd3ac808b@oss.nxp.com>
- <Z+v6Q1TRpJUkF2oh@lizhi-Precision-Tower-5810>
- <3b212947-0495-41fc-a143-c695c0c92269@oss.nxp.com>
- <Z+17+YucWkGUMIZJ@lizhi-Precision-Tower-5810>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <Z+17+YucWkGUMIZJ@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:3:17::36) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v4 5/9] arm64: dts: freescale: add Ka-Ro Electronics
+ tx8p-ml81 COMy
+Thread-Topic: [PATCH v4 5/9] arm64: dts: freescale: add Ka-Ro Electronics
+ tx8p-ml81 COMy
+Thread-Index: AQHbpATYHQy6ZlVHS0Oim8hxs5J+S7ORjbGc
+Date: Thu, 3 Apr 2025 07:36:24 +0000
+Message-ID:
+ <PA4PR04MB763033995576A03705DB2FBFC5AE2@PA4PR04MB7630.eurprd04.prod.outlook.com>
+References: <20250402-initial_display-v4-0-9f898838a864@gocontroll.com>
+ <20250402-initial_display-v4-5-9f898838a864@gocontroll.com>
+ <Z+2O0MeWOz/MeKOS@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z+2O0MeWOz/MeKOS@lizhi-Precision-Tower-5810>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=gocontroll.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB7630:EE_|DB9PR04MB10067:EE_
+x-ms-office365-filtering-correlation-id: 76c8cf6f-5cec-4baa-a794-08dd72823cba
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?ncD9bPnj2HrsoW/Gltqs7q0iB5Vxisffe8IaQ9EhFAeB7lgsn9R8DTbQSl?=
+ =?iso-8859-1?Q?C7LC85tQlWKJr46BBrJk5e0TS5tXQTT8CaYpunaCdXgeyhL3xe8KVJ4Za1?=
+ =?iso-8859-1?Q?GDbAq2qz72eDJQa+hfP0TDT+ob1PeIB6IrAB6iAUNOyQKWjQa4DW2qYmgQ?=
+ =?iso-8859-1?Q?kW3FDp+R3orVxL87LdDY7yAdtErgpdyh889p+/aI+0yzFc1l0J2OVxYdcC?=
+ =?iso-8859-1?Q?s0XyxUj56PyuYsUVgXtQTTJ1l/333NeFBfZa7JhiIdTHcziwfp3gQQPMu0?=
+ =?iso-8859-1?Q?dNO/uqLt9A+nhSlgZj/yTS9WeVQwhGy5aMZO9mHbCIaQkH3R8Zb6uBZyiM?=
+ =?iso-8859-1?Q?mkCodgzcQHbF7I2w4YgtnHXSg4TRAw8VHPQyoNdm0TcSjiV2POc/xLuvyQ?=
+ =?iso-8859-1?Q?g5qMoqzq50SevM2QUYOHJfR+r00cWwkSfnHYAWEJQPwOU8kgEtHi8LhnZw?=
+ =?iso-8859-1?Q?d7QA7HWQbEm7qQ6sr4jCYWCj1mnVcpVQoYwlBWOUrp+ce/SBbqxbsm3a/Q?=
+ =?iso-8859-1?Q?e6NSwqzuxoAPYASlFh4hDtociXcibtcgrjxMr97e30ENNLeuM5LR/tGrAt?=
+ =?iso-8859-1?Q?D/SfPiPI8v5gKmTtHM29IqZCYqm5Dish877MSBbDZRuZqrnmVfETfgRB5J?=
+ =?iso-8859-1?Q?oKVU4Wl5VVJfH/Jm1dolmYPARxgzbse7hQl2is03eFNL2wTdcTSfL7NL+3?=
+ =?iso-8859-1?Q?YxIz1cFXELTuHKNcj3YXbdtW68YlU/sixv4INgQnlAn2ZOqVjbaMahKAlf?=
+ =?iso-8859-1?Q?jXutIIbZGDQpy7g0St+XW2Z7wrykKJ2ormZc0leHtdY2QC/arQTAe+q3yx?=
+ =?iso-8859-1?Q?ZM0tJmz1SR8ev11M5PuCrnUrlJnWfl/vOvsR0OLJo910fhP4lpeSLoXqAT?=
+ =?iso-8859-1?Q?vVAhUhTOjV9G+gC/vVmpKq+ZufA2nOj38LPIepan2e/v4bDkUNkGyDUSSH?=
+ =?iso-8859-1?Q?GrsifqSVGMBjSp5jEyy1H/bdgxaBGmiRTDW1tCYTG6HRKp1fM1CBVDHyc+?=
+ =?iso-8859-1?Q?OSohV7AbaUnlah2GZ20PkD+OPcxyOYYcnIpsHv+hzKEWp4l68ZMpZsqlg8?=
+ =?iso-8859-1?Q?sLZQrVbPt8G3M2o1ieEt7tKJ1zCcU8utrinf64UJzpK5MoWhFNqqZpvgfs?=
+ =?iso-8859-1?Q?w+U8N1kZDaufXp5P6NVsXGs6TNewn+ZD38kaJRqOcC4KvzQncYiGp0DzBu?=
+ =?iso-8859-1?Q?yXn8dL+Cul65jDX0E6NE9cmWTZO1QHsF34OfJaInLSG1D5LiL99EFwNpNf?=
+ =?iso-8859-1?Q?SjeIwmBlyxh8Z4F/MSRCHejxpDTZtPE4ctEMWrVYrM+3JmBfitlOr1rezl?=
+ =?iso-8859-1?Q?rnM9lCz0e3EpTxnu3URmpc6T9jvyfwA0Wbb+MiW2nYvW+qEHXcK+XT5Kc0?=
+ =?iso-8859-1?Q?UZKyiFte4JDgb5mVYkxg1SWD7u7+vp6b00NkAMCmPo9sAxpDf7BLgJsHjk?=
+ =?iso-8859-1?Q?sQvWNccml8uzkPvcJgV0FRNhxDX925X4ni2w5Allc+ANXKQn0CiRRpUhV8?=
+ =?iso-8859-1?Q?ZHCogrIpPix8ooovFtAxYa?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?1PaOUSLRLX+GMIVkzJz6T7Tn0WKQabSH2ydOM+ydeKftG7pTlLXThOUaVh?=
+ =?iso-8859-1?Q?NQHhvgIqvKmBQYYFUZL/RsEIji7wK4Pp/roUUD9wSh5GCTVQX32iX4tF3o?=
+ =?iso-8859-1?Q?SyJeXZZFK248AWuOL8ln9M97cbjoYEDtglfgb3yFXju1IdEqIzvYrLyOAX?=
+ =?iso-8859-1?Q?rhMQwoNBzqTUrrFR2x5xQ73bYBb5HPQriBIbyyOc3afmbFCcdKuCw+RwkV?=
+ =?iso-8859-1?Q?Wrn4nneUVfddCp6m5QJO72jaD49yxU7agG9+ZhfSB5zSyEYF9JA/GhEsgR?=
+ =?iso-8859-1?Q?7pLJK6hePIajNTBobAnfuOS3c8wuh4n//kNLNy6rKSQDWhwuYwjRh0FPk/?=
+ =?iso-8859-1?Q?O3GxwlxoUqfVgzQlkPhaawLrZnLndncBneJ/zBCPgDOWZs99kWZMiTTO4y?=
+ =?iso-8859-1?Q?0bWaYyH+Ssawxkdlk0lt/BcwEKz0RPgjVV+H0+YKMH/bv6rrhSh8DDU0/V?=
+ =?iso-8859-1?Q?4eHLQPynBVxXPjMoQj6Aw3Yc6YG8zTznXGVw02Srh+2EYYgxa3ljARnb+j?=
+ =?iso-8859-1?Q?GFW+P+S0cXLrfi52qyFjH6s7EqyTbjNQNT62rzKFVLjuvGA4TGYTRUksTY?=
+ =?iso-8859-1?Q?26TWoJKZ1eYlMibwdnIM1Lbo+zHhAUDfJyf9M9kvDVljTg80PrVJbP91nD?=
+ =?iso-8859-1?Q?5OQj6wjOKv3Jtp/KJlHohb8rePyj8q7uwRLQ18zM3gUumaIJ34YMhZDyQQ?=
+ =?iso-8859-1?Q?qiSfkI7anurueSVw7YzqvnRv63BIo119UkyV3kw0wtXe+F6sJQf5r+05AS?=
+ =?iso-8859-1?Q?vJcguarOqPoU8YYnyCIaGN7qnVEmhN2cMyK2SNtQMyQZaDytNEd/kTwMr8?=
+ =?iso-8859-1?Q?uTAyAYV+vPi0pHoClmTHUYEbRM+d456iZm+PsjuwtXB+PIMnd8kp6CNlup?=
+ =?iso-8859-1?Q?k/oM9+ZL/As2hxtR8CbUdAq9iDkw5RHCiyUhfyMDRT1vkSVsdkwQYIwpG6?=
+ =?iso-8859-1?Q?kzDOmluDthnY5POe45eu6osBtm33GlFLdY4JcTveza8rEbZIztoFEcSDbX?=
+ =?iso-8859-1?Q?mDGciiMZRSRpXE9oCsDNQVhYavXJXG0uE8tMwFLPlnKItGDgS57cREeHRW?=
+ =?iso-8859-1?Q?c2JhE8RDFk859T1kMlEzBx/GI6TCKHlVMjvJmK1ih6XkIvYeFfVc6y+pdV?=
+ =?iso-8859-1?Q?XujtxPE9Qp5swEQgQYe8RJ4WbcPizY/1bTGOGzYwsK3e6kqVmVY2XpVIQq?=
+ =?iso-8859-1?Q?VppfxgWUuQN/to4KJcrzxy7wI2eY9dhNzhDvpln3ILeognCYLjaawMeCP1?=
+ =?iso-8859-1?Q?fxVlHGhyWENYhnxJxsojDTbIvdarVJL9T/7m8y38S1EGc9RGF0DV2F6Rpo?=
+ =?iso-8859-1?Q?sIDh3N+2iKdfg6aR76T+6anZY33ch5m+3ipGk9BgPOboeGR4vKuVjZaR3L?=
+ =?iso-8859-1?Q?OGjmk8hTIqgHnx3cCrEy5rhI8xIdsDrgh+jTtRCi3Bp58SS/2waBJBeauZ?=
+ =?iso-8859-1?Q?CZF5JX52jkgsOMPua4FOY2onUK1YWETE6sQVy9kcQEngeHZJKuYtMiwZKW?=
+ =?iso-8859-1?Q?YDm0TwPHkEWNNjiF8WUsGO1bJUR19enJ8LGlUvZmm7Iura55XCwM3t3Ldq?=
+ =?iso-8859-1?Q?e3DgtM4D3iPNcy8iH9rqN3Tad2z5YQN0POcqQ5HVAynKSCXq6Y2xrLPzac?=
+ =?iso-8859-1?Q?m7fFmuv8hAMfMsMJ2+LkqCrRgKdKgvk98XOsI8M313gEhzS4oOgL+KMIBf?=
+ =?iso-8859-1?Q?zuZGTCpiGhR85u7CmD93YxwhyZUqZwiXyYtvp+qhfdkZwEoFrYFdCKpDRj?=
+ =?iso-8859-1?Q?37vA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DU2PR04MB8789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54d2f06d-79ef-4baf-9824-08dd72780a20
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eTA2L0FxS0VUQmZUcW9jTTNDV1ZadThZMzNjcHpJSDhqL21sd3RmeWcrOXdl?=
- =?utf-8?B?M3kweHdvYTdxb09zZklqcklHZmpSSU1UNnF6U3hEVUZXd3RZYlc3dXo5Z3lZ?=
- =?utf-8?B?cE1SM0RmQUlSYXpoMjc5WERaS0huVmhSOWZPUSs3b1AyWWRjd0dmcVNkRHlV?=
- =?utf-8?B?T2lpRDhwVnp5K0JCb2pBZ0o0aFd5Wkd1WDVXUS8wNSt6ckE0d0xNZENuTll4?=
- =?utf-8?B?MndLWkN1VGlCYlppWjV1UXlSNjRNVlBacmxzOHVzeHpyQlREcHpxNnIxbjBs?=
- =?utf-8?B?a0NFVGo1amEzelRGVjRFMDRsYVZCbWgrNURFaWpJNVV6Rzlzb3MvL0dUdE1H?=
- =?utf-8?B?aCtkRW9HdTFBUS9ZMlFUbHI4NStuelNtc04yeDY3QitYazAxelZUOEVPUUFO?=
- =?utf-8?B?cmtpeDlUcWEzbmxhWjN1M1YvUDgzNWY2eWhLZE1ZcFkvSnFia1hJZ3NoTVJJ?=
- =?utf-8?B?MDM2TEpaR0tvc1Vmc1hWejdoRGwwOS9BSVlqeW03ZVpmSHV3OVFjMHplTisy?=
- =?utf-8?B?Tmx1ZnV1M3ExNWN0U0lpQ2piSGZkak0vV25uOFlQbDZxY3o0TlY3UVBpQlYv?=
- =?utf-8?B?UVZXK3J6RXRkVTlGL29RRExFL1NVbnRJUzVhZ0JEZ0FQeit0bGRLYkw5aS9j?=
- =?utf-8?B?ejNWMEFDdC85OEgwMDVva0x0R2d1eDBQV3l5b05VRGpIVkc4UkxOZTBkdzM4?=
- =?utf-8?B?S29DbzFSOTlIVThnK1ZvZ1hDdnBXc1gwamxMcnJxeGxYNmw2dDRQdVhvWkZD?=
- =?utf-8?B?TzNXMmlpTlVyY0VOb05GS2VRTVpjWU9xdHQxV2J1VVV1dkdabFBYdnVueU83?=
- =?utf-8?B?aHdhNlg5bzhGV2l6QTNhNEN0NlhxMkpmczJjM096V1QwdGJ3elFxWEJpc0Ux?=
- =?utf-8?B?anBiM3ZIWjdXTlBHeUZEQmZHbXJVeHBSRkdkSDV1czd6RjZ4MnBIYUNJZkp5?=
- =?utf-8?B?bTJGMmI1d0tabzhnVUc5VWVrSWk0UUtrUElUZXVjZ1g5MlJQblhtZnhIaFRo?=
- =?utf-8?B?RUMvYXI0L3IzQlFMQUhGVWpaSWJVTWZ6YTdiS1JJSmtLZmNJT25JMHJaNDln?=
- =?utf-8?B?NU9yZjZjbzVZTm5kZDZDZUNtZURTMUZhbnhFWVVFWjVCbXcxT3pieTNEQXVh?=
- =?utf-8?B?Q3VkNGxQUGVpOU1LQnp1aWZKc3UwWFk3SU96dzlEbTAwMXYwZ3REbW9CZzQ0?=
- =?utf-8?B?cnBkNzhCMFdUalFhTXI2ci8yeFo2emZDNVM5dEZhdVhjUWNzbGVtYVhTeDFI?=
- =?utf-8?B?SDREV1JSWkZ5RnV0UERlZTNRSUVKNjRYZXhUbVhQanhGSG5DUXgyczA4M1hJ?=
- =?utf-8?B?clpVN2xNNFRpa1JSRTdIODI5c2c1SS9DZ2Q0MmdxWmZLeEZDdzl6Vmp2MGxC?=
- =?utf-8?B?R2V5d2gzYmVJUkFRYm1qQVdIYSthN3dEMnFvK252c0U4WUVsaURRclBjTHBU?=
- =?utf-8?B?TjdHT1VVU1ZsRFgzRHhYUzVhU1dLNjdFbks0NEdsM3cxcDBDazBpOGZjb0gr?=
- =?utf-8?B?WFJOSTQ5UEkvMFIxb3hUZ2hIQzdsb2Vrcmt5dDVmOTgwK242eS9FMEVPejBy?=
- =?utf-8?B?eFRsSHpOcFlCWm9kcC9xRWtwUVY1QnlCQ25jdmdPWkc4T25jTEMxS1ZRaFNL?=
- =?utf-8?B?RmJyWU1EZFM5UXhKcHdCY0JsZkFkazNaOTM3dnZEKzkybXZiWlpUVmFJOHgz?=
- =?utf-8?B?YjRsVW5UeDVaSjlXbUg2SGRaYTBEMzVMbzRLTmxnNkRaV0NwQUlaUGVlaTN0?=
- =?utf-8?B?dlcxeFB2U2hQbHN4c0lKeVVsK2lJMFk1UXJDWFFXbDF6WnBQd2cyTk02d2dm?=
- =?utf-8?B?OXRoc3hKdWxheWJXUUxjUT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHdmWE5YOGQwR2w1UmQ5bUV1WVRQWTRYNVA3dElsKzZCREtUdVJnSG9reXNv?=
- =?utf-8?B?czRKeDlpUkozSWZVZ2VqdFpjWkxSbUtNYTVldXJQZlAxQlRqVkJWMktlSXpn?=
- =?utf-8?B?ellIclYzNVgzNldFZjVSNHUvRDVrV3FGMUkwdVNLR2cya1RHUkpQS2VQYUg5?=
- =?utf-8?B?NFVXVUt2Z0F6L3BCZ1lpZytabklabnFsdmVORzBMUzlSZm1IK0kwRTlKdzdK?=
- =?utf-8?B?WmdYY29VN09NNFhQaTVDbkZvYTBJWld1UmRiQ3EzRml3Vmc1L3BJNVozb2li?=
- =?utf-8?B?elN4ZDNsaVVqZUwwQ1VUT3Jwa2tENkpVVFBIWURjVjlTSWFoKzFGY1lsaXY2?=
- =?utf-8?B?VFBQeVNuWUhtUDEzSytMR1lNZHZ1TTNIcUo0eGdkNkEzc3dnVkhSZVlTS3JF?=
- =?utf-8?B?SHUrdDZLMDdNRzJubWJ4ZG1qcWFtRGNsaS9vNEJkQWdIdS90Y3NTaERZOW5w?=
- =?utf-8?B?TzRvSVpLTzh2Tjdyeit1NXdPL1BieG9KSFpYd2c2dDFzY1pUTE56b3YzV3lo?=
- =?utf-8?B?bWF3TnZka0ZSaE1FQytxbVI4eTNjYldJVkdySm9SK1RUWUloWDVwQStFZTVG?=
- =?utf-8?B?UUxja0haQkNEem4wMFFvMlNwNVBEZXkrZ2xqbnRuN09nM0Zic1ltQWRuSW1U?=
- =?utf-8?B?QWo3WUtRN0NjODFRT2xxVGw0QUFnc0FuK2svNE81T1RMejQ1YVZpWnVidnZ3?=
- =?utf-8?B?UjVQdExiaEQrOGFwaml6VFNQZ0d3cDFUUmNyTEVQNTJpRmd0b29uR016c2JO?=
- =?utf-8?B?Wk9sOWdRMllIRWpxaWdJVWYvVXc2VXVxN0MwZ3J2eEZrbzV3RkxnMzVlTHI0?=
- =?utf-8?B?Rkx2Z0tvVnBCejkrL1BDU2ladGlwRGJZZmVmdGZib2hoc1BCTWhqZXZZOWNL?=
- =?utf-8?B?NmNVc015Q2E3YkdZSEJOdURYNzNGR3VBZ25LVUtIQ2wzWDE5b0xKN1B3YXdM?=
- =?utf-8?B?L1BIZ0REdUs2bzV5RGw3ejllMGVIMWdDc09yK1dOKzFVamZaWXZWaFlSZmNE?=
- =?utf-8?B?UDB1U0J5SGxEM0dCTURWSWpkR2JMaGZ1RTFZZSt6M1lDSDN0aDJYQVNzOWZh?=
- =?utf-8?B?Vnk0UE5CVDExQlQzek1hd2FtN2lzWDNRL1daS0kyR0RLWDJMRGxFRnF2bmJm?=
- =?utf-8?B?Yjc0bkRlKzhqNW44S2hJQ0hHaWp6RWlvRDFnRUl6M2N5OXM0M1JmN1ppRmRD?=
- =?utf-8?B?a3FnRDBWRzZOWUVMSWx4blFVWDZCVlNHTDlrUDVGaEVCaGtUUFdqTmdTY3M1?=
- =?utf-8?B?ZTJLaEJKMUlHcUpvVExPcWRxZ1o4Yk1KcTJlRTRON0FtNURJbEptVlR6ZUl3?=
- =?utf-8?B?eEFlSENTWEtGRUxzZEtzNXd1NjhnaXZrMUNJb0hyODJJcm4zTitmRUpudXVL?=
- =?utf-8?B?NWVxN3VRbENGTzhvTENaOGw1TWlYTnR6alkwaDNub0hQa2hJU2owWU9tQnlt?=
- =?utf-8?B?c2FLVUNIM0Q4eVcrK0VSODV0MlRnQ04vTlY4TUJiUlVOcnY2MThPZFpLMHpT?=
- =?utf-8?B?QWFVY2FSOEppSXh3VWdoQVl2T2EvZnhXaFJwSWR3VU5GRjhEWEZYbGtQTjJK?=
- =?utf-8?B?TEJEbkdBSEFmbCtWbk5uVzFnK2ZpeGhSc2dhdG9KNXRNZU9jS1JWZCtyYmZO?=
- =?utf-8?B?ejl5eVVhRUZlK3lHc1JjVFVHVk9zQnE4UnNEb1JEUGpzOVVPczJoVDh5WlYz?=
- =?utf-8?B?WW9OcTBQN3V1dE91SFcyMmQ4aklOZzNsUlQyZlE4NmtjdjVzNy9BTXlaYWMz?=
- =?utf-8?B?WGNpdm1YWkdhZHRqOXc0TUNaM2NSVXFYYWJBZFVFY2tCTU5NUW00WUxWMEE2?=
- =?utf-8?B?L1JmK1lmMWUvbGIzRkdOeFZQa0xjZTNTRVQwS2p0TU8rdGdPL1E3YW1mazlo?=
- =?utf-8?B?N1JHbGY4eDZjNjlscjBnNnBlSUFnVHZkTlpZcmx4WVlqV2loc1BFQUF3THhN?=
- =?utf-8?B?Z3lIY08yOURna1FkY080dEtlUlVzUWttWWxkeTFtamlkczMvcjBmUUlkLysr?=
- =?utf-8?B?c1dHVHdZeHB0aGJObk5IWVRPSlU1TGh6UExlM20vcjBiZ3hwN0VMaVh6VDV5?=
- =?utf-8?B?VE1wc213ME15VjAvckJxeitEYWxuaWRvZEJJWWNIRjY1QU1HYk42d3ZMSm5l?=
- =?utf-8?Q?vcj35pUcIoN51f47+tGde3yXN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54d2f06d-79ef-4baf-9824-08dd72780a20
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-OriginatorOrg: gocontroll.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 06:23:25.3182
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7630.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76c8cf6f-5cec-4baa-a794-08dd72823cba
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Apr 2025 07:36:24.6346
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZRH/ahDZClPQhEjzALGpJD9a9GIkxZX35y4zfy0+e1/9SAcKSCKGGPYpgy5oR7q3sdY+JPWWVrSdwib28r3L0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8789
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BYMqerjXuuJyMMepVQ7NUmlBlhNLYpEVt1oA6T6+f/ggVc67g/X0+PtSR6l29J67awM3IMzJancnwed+U1e6Dq33lLqNJaG5nCvjrSGMXwo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB10067
 
-Hi Frank,
-
-On 2025/4/3 2:03, Frank Li wrote:
-> On Wed, Apr 02, 2025 at 01:34:00PM +0800, Ming Qian(OSS) wrote:
->> Hi Frank,
->>
->>
->> On 2025/4/1 22:37, Frank Li wrote:
->>> On Tue, Apr 01, 2025 at 11:17:36AM +0800, Ming Qian(OSS) wrote:
->>>>
->>>> Hi Frank,
->>>>
->>>> On 2025/3/31 22:32, Frank Li wrote:
->>>>> On Mon, Mar 31, 2025 at 11:10:20AM +0800, Ming Qian(OSS) wrote:
->>>>>>
->>>>>> Hi Frank,
->>>>>>
->>>>>> On 2025/3/28 22:45, Frank Li wrote:
->>>>>>> On Fri, Mar 28, 2025 at 02:30:52PM +0800, ming.qian@oss.nxp.com wrote:
->>>>>>>> From: Ming Qian <ming.qian@oss.nxp.com>
->>>>>>>>
->>>>>>>> To support decoding motion-jpeg without DHT, driver will try to decode a
->>>>>>>> pattern jpeg before actual jpeg frame by use of linked descriptors
->>>>>>>> (This is called "repeat mode"), then the DHT in the pattern jpeg can be
->>>>>>>> used for decoding the motion-jpeg.
->>>>>>>>
->>>>>>>> In other words, 2 frame done interrupts will be triggered, driver will
->>>>>>>> ignore the first interrupt,
->>>>>>>
->>>>>>> Does any field in linked descriptors to control if issue irq? Generally
->>>>>>> you needn't enable first descriptors's irq and only enable second one.
->>>>>>>
->>>>>>
->>>>>> Unfortunately, we cannot configure interrupts for each descriptor.
->>>>>> So we can't only enable the second irq.
->>>>>>
->>>>>>
->>>>>>>> and wait for the second interrupt.
->>>>>>>> If the resolution is small, and the 2 interrupts may be too close,
->>>>>>>
->>>>>>> It also possible two irqs combine to 1 irqs. If I understand correct, your
->>>>>>> irq handle only handle one descriptors per irq.
->>>>>>>
->>>>>>> Another words,
->>>>>>>
->>>>>>> If second irq already happen just before 1,
->>>>>>>
->>>>>>> 1. dec_ret = readl(reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS));
->>>>>>> 2. writel(dec_ret, reg + MXC_SLOT_OFFSET(slot, SLOT_STATUS)); /* w1c */
->>>>>>>
->>>>>>> Does your driver wait forever because no second irq happen?
->>>>>>>
->>>>>>> Frank
->>>>>>
->>>>>> Before this patch, the answer is yes, the driver will wait 2 seconds
->>>>>> until timeout.
->>>>>> In fact, this is the problem that this patch wants to avoid.
->>>>>> Now I think there are 3 cases for motion-jpeg decoding:
->>>>>> 1. The second irq happens before the first irq status check, the on-going
->>>>>> check
->>>>>> help to hanle this case.
->>>>>> 2. The second irq happens after the first irq status check, but before
->>>>>> on-going check, this on-going check can help handle it, fisnish the
->>>>>> current decoding and reset the jpeg decoder.
->>>>>> 3. The second irq happens after the on-going check, this is the normal
->>>>>> process before. No additional processing required.
->>>>>
->>>>> Okay, not sure if hardware provide current_descript position. Generally
->>>>> descriptor queue irq handle is like
->>>>>
->>>>> cur = queue_header;
->>>>> while(cur != read_hardware_currunt_pos())
->>>>> {
->>>>> 	handle(cur);
->>>>> 	cur = cur->next;
->>>>> 	queue_header = cur;
->>>>> }
->>>>>
->>>>> with above logic, even you queue new request during irq handler, it should
->>>>> work correctly.
->>>>>
->>>>> But it is depend on if hardware can indicate current working queue
->>>>> position, some time, hardware stop last queue posistion when handle last
->>>>> one.
->>>>>
->>>>> Frank
->>>>>
->>>>
->>>> I think it doesn't matter, the 2 descriptors are the cfg descriptor and
->>>> then the image descriptor.
->>>> If the current descriptor register remains the last image descriptor,
->>>> the ongoing check works.
->>>>
->>>> And I guess your concern is as below.
->>>> If the current descriptor register is still the cfg descriptor, but the
->>>> hardware has finished decoding the next image descriptor.
->>>>
->>>> I confirmed with our hardware engineer. This can't happen.
->>>> The first cfg decriptor has a next_descpt_ptr that is pointing to the
->>>> image descriptor, when the hardware read tne next_descpt_ptr, the
->>>> current descriptor register is updated, before the actual decoding.
->>>
->>> Maybe off topic,
->>>
->>> CFG->next = Image
->>>
->>> Image->next = NULL;
->>>
->>> If hardware finish image descriptior, current descriptor is 'Image' or 'NULL'
->>>
->>> If it is 'Image', need extra status bit show 'done'
->>>
->>> 1:	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
->>>
->>> I suppose it should be DONE status if just finish CFG description.
->>>
->>> 2: 	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
->>>
->>> It is possible curr_desc already was 'Image' after 1.
->>>
->>>    if (curr_desc == jpeg->slot_data.cfg_desc_handle)  //not hit this
->>>           return true;
->>>
->>>    if (slot_status & SLOT_STATUS_ONGOING)  // not hit this
->>>           return true;
->>>
->>> fake false may return.
->>>
->>> check two aync condition "slot_status" and "curr_desc" always be risk. But
->>> I don't know what's happen if fake false return here.
->>>
->>> for this type check
->>> 	do {
->>> 		slot_status = readl();
->>> 		curr_desc = readl();
->>> 	} while (slot_status != read());
->>>
->>> to make sure slot_status and cur_desc indicate the hardware status
->>> correctly.
->>
->> I confirmed with the hardware engineer, the curr_desc register is set
->> when hardware load next_descpt_ptr,
-> 
-> The key is last one, does last one set curr_desc to NULL when it done.
-> If yes, the whole logic will be much simple. You just need check
-> curr_desc.
-
-No, the curr_desc will remain the last image descripor even after done.
-
-> 
->> but the ongoing bit is set when
->> hardware finish loading the content of the descriptor, the size is 32
->> bytes.
->> So you are right, the slot_status and curr_desc is not synchronous,
->> but the gap time will be very short
-> 
-> Yes, it will be really hard to debug it if met once.
-> 
-
-I think we can read the slot_status twice to reduce the probability to
-almost 0.
-
-
-
->>
->> This patch is a workaround that hardware finish 2 descriptors too soon,
->> irq() is not scheduled on time, the driver keeps waiting until timeout.
->>
->> And I agree there is still some risk that the ongoing check may return
->> fake false, even if the probability of occurrence is extremely low.
->>
->> When the fake false return, the driver will finish current decoding
->> early, and the decoded image is incomplete.
->>
->> But we don't want to change to poll the done status.
-> 
-> It is not poll the done. It's compare if status is the same by twice read.
-> Most time needn't retry.
-> 
-> The basic idea is the same as
-> https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/clocksource/arm_global_timer.c#L73
-> 
-
-I checked the _gt_counter_read(), But I think its usage scenario is
-different from here.
-
-In _gt_counter_read(), its purpose is to ensure that the upper 32-bits
-do not change when reading the lower 32-bits.
-1. Read the upper 32-bit timer counter register
-2. Read the lower 32-bit timer counter register
-3. Read the upper 32-bit timer counter register again.
-If the value in step 1 is equal to step 3, it means the upper 32 bits
-are not changed, and the lower 32-bits are right.
-
-But here, we don't expect the slot_status is the same by twice read.
-Now the case is:
-1. curr_desc is switched to the image descriptor.
-2. the ongoing bit is set after the 32 bytes descriptor is loaded.
-The 2 steps are not synchronized.
-
-If slot_status is read twice between step 1 and 2, the value is same,
-but still return fake false.
-
-I'd like to check the slot_status twice and add a delay:
-
-slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, 
-SLOT_STATUS));
-if (slot_status & SLOT_STATUS_ONGOING)
-	return true;
-
-udelay(10);
-
-slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, 
-SLOT_STATUS));
-if (slot_status & SLOT_STATUS_ONGOING)
-	return true;
-
-return false;
-
-This delay should be able to avoid stepping into the intermediate state
-between steps 1 and 2.
-
-Thanks,
-Ming
-
->>
->> Considering the probability of occurrence and the respective
->> consequences, I think this patch still makes sense.
->>
->> Maybe we can check the slot_status register twice and add a short delay
->> in between. Then the probability of returning fake false is basically
->> reduced to 0.
->>
->> Thanks,
->> Ming
->>
->>>
->>> Frank
->>>>
->>>> Thanks,
->>>> Ming
->>>>
->>>>>>
->>>>>> Thanks,
->>>>>> Ming
->>>>>>
->>>>>>>>
->>>>>>>> when driver is handling the first interrupt, two frames are done, then
->>>>>>>> driver will fail to wait for the second interrupt.
->>>>>>>>
->>>>>>>> In such case, driver can check whether the decoding is still ongoing,
->>>>>>>> if not, just done the current decoding.
->>>>>>>>
->>>>>>>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->>>>>>>> ---
->>>>>>>>      .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |  1 +
->>>>>>>>      .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 20 ++++++++++++++++++-
->>>>>>>>      2 files changed, 20 insertions(+), 1 deletion(-)
->>>>>>>>
->>>>>>>> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->>>>>>>> index d579c804b047..adb93e977be9 100644
->>>>>>>> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->>>>>>>> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->>>>>>>> @@ -89,6 +89,7 @@
->>>>>>>>      /* SLOT_STATUS fields for slots 0..3 */
->>>>>>>>      #define SLOT_STATUS_FRMDONE			(0x1 << 3)
->>>>>>>>      #define SLOT_STATUS_ENC_CONFIG_ERR		(0x1 << 8)
->>>>>>>> +#define SLOT_STATUS_ONGOING			(0x1 << 31)
->>>>>>>>
->>>>>>>>      /* SLOT_IRQ_EN fields TBD */
->>>>>>>>
->>>>>>>> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->>>>>>>> index 45705c606769..e6bb45633a19 100644
->>>>>>>> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->>>>>>>> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->>>>>>>> @@ -910,6 +910,23 @@ static u32 mxc_jpeg_get_plane_size(struct mxc_jpeg_q_data *q_data, u32 plane_no)
->>>>>>>>      	return size;
->>>>>>>>      }
->>>>>>>>
->>>>>>>> +static bool mxc_dec_is_ongoing(struct mxc_jpeg_ctx *ctx)
->>>>>>>> +{
->>>>>>>> +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
->>>>>>>> +	u32 curr_desc;
->>>>>>>> +	u32 slot_status;
->>>>>>>> +
->>>>>>>> +	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
->>>>>>>> +	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
->>>>>>>> +
->>>>>>>> +	if (curr_desc == jpeg->slot_data.cfg_desc_handle)
->>>>>>>> +		return true;
->>>>>>>> +	if (slot_status & SLOT_STATUS_ONGOING)
->>>>>>>> +		return true;
->>>>>>>> +
->>>>>>>> +	return false;
->>>>>>>> +}
->>>>>>>> +
->>>>>>>>      static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
->>>>>>>>      {
->>>>>>>>      	struct mxc_jpeg_dev *jpeg = priv;
->>>>>>>> @@ -979,7 +996,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
->>>>>>>>      		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
->>>>>>>>      		goto job_unlock;
->>>>>>>>      	}
->>>>>>>> -	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed) {
->>>>>>>> +	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
->>>>>>>> +	    mxc_dec_is_ongoing(ctx)) {
->>>>>>>>      		jpeg_src_buf->dht_needed = false;
->>>>>>>>      		dev_dbg(dev, "Decoder DHT cfg finished. Start decoding...\n");
->>>>>>>>      		goto job_unlock;
->>>>>>>> --
->>>>>>>> 2.43.0-rc1
->>>>>>>>
+=0A=
+On 4/2/25 21:24, Frank Li wrote:=0A=
+> On Wed, Apr 02, 2025 at 09:07:08AM +0200, Maud Spierings via B4 Relay wro=
+te:=0A=
+>> From: Maud Spierings <maudspierings@gocontroll.com>=0A=
+>>=0A=
+>> The Ka-Ro Electronics tx8p-ml81 is a COM based on the imx8mp SOC. It has=
+=0A=
+>> 2 GB or ram and 8 GB of eMMC storage on board.=0A=
+>>=0A=
+>> Add it to enable boards based on this Module=0A=
+>>=0A=
+>> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>=0A=
+>> ---=0A=
+>>   .../arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi | 548 +++++++++++++=
+++++++++=0A=
+>>   1 file changed, 548 insertions(+)=0A=
+>>=0A=
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi b/arch/=
+arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi=0A=
+>> new file mode 100644=0A=
+>> index 0000000000000000000000000000000000000000..9c69228a2cd28ce767fa4054=
+d10b19a196668ea2=0A=
+>> --- /dev/null=0A=
+>> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi=0A=
+>> @@ -0,0 +1,548 @@=0A=
+>> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)=0A=
+>> +/*=0A=
+>> + * Copyright (C) 2020 Lothar Wa=DFmann <LW@KARO-electronics.de>=0A=
+>> + * 2025 Maud Spierings <maudspierings@gocontroll.com>=0A=
+>> + */=0A=
+>> +=0A=
+>> +#include "imx8mp.dtsi"=0A=
+>> +=0A=
+>> +/ {=0A=
+>> +	/* PHY regulator */=0A=
+>> +	regulator-3v3-etn {=0A=
+>> +		compatible =3D "regulator-fixed";=0A=
+>> +		gpios =3D <&gpio1 23 GPIO_ACTIVE_HIGH>;=0A=
+>> +		pinctrl-0 =3D <&pinctrl_reg_3v3_etn>;=0A=
+>> +		pinctrl-names =3D "default";=0A=
+>> +		regulator-always-on;=0A=
+>> +		regulator-boot-on;=0A=
+>> +		regulator-max-microvolt =3D <3300000>;=0A=
+>> +		regulator-min-microvolt =3D <3300000>;=0A=
+>> +		regulator-name =3D "3v3-etn";=0A=
+>> +		vin-supply =3D <&reg_vdd_3v3>;=0A=
+>> +		enable-active-high;=0A=
+>> +	};=0A=
+>> +};=0A=
+>> +=0A=
+>> +&A53_0 {=0A=
+>> +	cpu-supply =3D <&reg_vdd_arm>;=0A=
+>> +};=0A=
+>> +=0A=
+>> +&A53_1 {=0A=
+>> +	cpu-supply =3D <&reg_vdd_arm>;=0A=
+>> +};=0A=
+>> +=0A=
+>> +&A53_2 {=0A=
+>> +	cpu-supply =3D <&reg_vdd_arm>;=0A=
+>> +};=0A=
+>> +=0A=
+>> +&A53_3 {=0A=
+>> +	cpu-supply =3D <&reg_vdd_arm>;=0A=
+>> +};=0A=
+>> +=0A=
+>> +&eqos {=0A=
+>> +	assigned-clocks =3D <&clk IMX8MP_CLK_ENET_AXI>,=0A=
+>> +			  <&clk IMX8MP_CLK_ENET_QOS_TIMER>,=0A=
+>> +			  <&clk IMX8MP_CLK_ENET_QOS>;=0A=
+>> +	assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL1_266M>,=0A=
+>> +				 <&clk IMX8MP_SYS_PLL2_100M>,=0A=
+>> +				 <&clk IMX8MP_SYS_PLL2_50M>;=0A=
+>> +	assigned-clock-rates =3D <0>, <100000000>, <50000000>;=0A=
+> =0A=
+> clock rate 0 is quite strange, do you means 266000000?=0A=
+=0A=
+I must admit I blindly copied that from the source, it does make more=0A=
+sense given the name of the parent clock. I changed it and it does seem=0A=
+to work fine.=0A=
+=0A=
+It seems that in imx8mp.dtsi it is also set to 0, so I think that is=0A=
+where it comes from.=0A=
+=0A=
+>> +	phy-handle =3D <&ethphy0>;=0A=
+>> +	phy-mode =3D "rmii";=0A=
+>> +	pinctrl-0 =3D <&pinctrl_eqos>;=0A=
+>> +	pinctrl-1 =3D <&pinctrl_eqos_sleep>;=0A=
+>> +	pinctrl-names =3D "default", "sleep";=0A=
+>> +	status =3D "okay";=0A=
+>> +=0A=
+>> +	mdio {=0A=
+>> +		compatible =3D "snps,dwmac-mdio";=0A=
+>> +		#address-cells =3D <1>;=0A=
+>> +		#size-cells =3D <0>;=0A=
+>> +		pinctrl-0 =3D <&pinctrl_ethphy_rst_b>;=0A=
+>> +		pinctrl-names =3D "default";=0A=
+>> +		reset-delay-us =3D <25000>;=0A=
+>> +		reset-gpios =3D <&gpio4 22 GPIO_ACTIVE_LOW>;=0A=
+>> +=0A=
+>> +		ethphy0: ethernet-phy@0 {=0A=
+>> +			reg =3D <0>;=0A=
+>> +			interrupt-parent =3D <&gpio4>;=0A=
+>> +			interrupts =3D <21 IRQ_TYPE_EDGE_FALLING>;=0A=
+>> +			clocks =3D <&clk IMX8MP_CLK_ENET_QOS>;=0A=
+>> +			pinctrl-0 =3D <&pinctrl_ethphy_int_b>;=0A=
+>> +			pinctrl-names =3D "default";=0A=
+>> +			smsc,disable-energy-detect;=0A=
+>> +		};=0A=
+>> +	};=0A=
+>> +};=0A=
+>> +=0A=
+>> +&gpio1 {=0A=
+>> +	gpio-line-names =3D "SODIMM_152",=0A=
+>> +		"SODIMM_42",=0A=
+> =0A=
+> Please align to "SODIMM_152"=0A=
+will do=0A=
+=0A=
+Met vriendelijke groeten/with kind regards,=0A=
+Maud Spierings =0A=
+> Frank=0A=
+>> +		"PMIC_WDOG_B SODIMM_153",=0A=
+>> +		"PMIC_IRQ_B",=0A=
+>> +		"SODIMM_154",=0A=
+>> +		"SODIMM_155",=0A=
+>> +		"SODIMM_156",=0A=
+>> +		"SODIMM_157",=0A=
+>> +		"SODIMM_158",=0A=
+>> +		"SODIMM_159",=0A=
+>> +		"SODIMM_161",=0A=
+>> +		"SODIMM_162",=0A=
+>> +		"SODIMM_34",=0A=
+>> +		"SODIMM_36",=0A=
+>> +		"SODIMM_27",=0A=
+>> +		"SODIMM_28",=0A=
+>> +		"ENET_MDC",=0A=
+>> +		"ENET_MDIO",=0A=
+>> +		"",=0A=
+>> +		"ENET_XTAL1/CLKIN",=0A=
+>> +		"ENET_TXD1",=0A=
+>> +		"ENET_TXD0",=0A=
+>> +		"ENET_TXEN",=0A=
+>> +		"ENET_POWER",=0A=
+>> +		"ENET_COL/CRS_DV",=0A=
+>> +		"ENET_RXER",=0A=
+>> +		"ENET_RXD0",=0A=
+>> +		"ENET_RXD1",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"";=0A=
+>> +};=0A=
+>> +=0A=
+>> +&gpio2 {=0A=
+>> +	gpio-line-names =3D "",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"SODIMM_51",=0A=
+>> +		"SODIMM_57",=0A=
+>> +		"SODIMM_56",=0A=
+>> +		"SODIMM_52",=0A=
+>> +		"SODIMM_53",=0A=
+>> +		"SODIMM_54",=0A=
+>> +		"SODIMM_55",=0A=
+>> +		"SODIMM_15",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"";=0A=
+>> +};=0A=
+>> +=0A=
+>> +&gpio3 {=0A=
+>> +	gpio-line-names =3D "",=0A=
+>> +		"",=0A=
+>> +		"EMMC_DS",=0A=
+>> +		"EMMC_DAT5",=0A=
+>> +		"EMMC_DAT6",=0A=
+>> +		"EMMC_DAT7",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"EMMC_DAT0",=0A=
+>> +		"EMMC_DAT1",=0A=
+>> +		"EMMC_DAT2",=0A=
+>> +		"EMMC_DAT3",=0A=
+>> +		"",=0A=
+>> +		"EMMC_DAT4",=0A=
+>> +		"",=0A=
+>> +		"EMMC_CLK",=0A=
+>> +		"EMMC_CMD",=0A=
+>> +		"SODIMM_75",=0A=
+>> +		"SODIMM_145",=0A=
+>> +		"SODIMM_163",=0A=
+>> +		"SODIMM_164",=0A=
+>> +		"SODIMM_165",=0A=
+>> +		"SODIMM_143",=0A=
+>> +		"SODIMM_144",=0A=
+>> +		"SODIMM_72",=0A=
+>> +		"SODIMM_73",=0A=
+>> +		"SODIMM_74",=0A=
+>> +		"SODIMM_93",=0A=
+>> +		"",=0A=
+>> +		"";=0A=
+>> +};=0A=
+>> +=0A=
+>> +&gpio4 {=0A=
+>> +	gpio-line-names =3D "SODIMM_98",=0A=
+>> +		"SODIMM_99",=0A=
+>> +		"SODIMM_100",=0A=
+>> +		"SODIMM_101",=0A=
+>> +		"SODIMM_45",=0A=
+>> +		"SODIMM_43",=0A=
+>> +		"SODIMM_105",=0A=
+>> +		"SODIMM_106",=0A=
+>> +		"SODIMM_107",=0A=
+>> +		"SODIMM_108",=0A=
+>> +		"SODIMM_104",=0A=
+>> +		"SODIMM_103",=0A=
+>> +		"SODIMM_115",=0A=
+>> +		"SODIMM_114",=0A=
+>> +		"SODIMM_113",=0A=
+>> +		"SODIMM_112",=0A=
+>> +		"SODIMM_109",=0A=
+>> +		"SODIMM_110",=0A=
+>> +		"SODIMM_95",=0A=
+>> +		"SODIMM_96",=0A=
+>> +		"SODIMM_97",=0A=
+>> +		"ENET_nINT",=0A=
+>> +		"ENET_nRST",=0A=
+>> +		"SODIMM_84",=0A=
+>> +		"SODIMM_87",=0A=
+>> +		"SODIMM_86",=0A=
+>> +		"SODIMM_85",=0A=
+>> +		"SODIMM_83",=0A=
+>> +		"",=0A=
+>> +		"SODIMM_66",=0A=
+>> +		"SODIMM_65",=0A=
+>> +		"";=0A=
+>> +};=0A=
+>> +=0A=
+>> +&gpio5 {=0A=
+>> +	gpio-line-names =3D "",=0A=
+>> +		"",=0A=
+>> +		"",=0A=
+>> +		"SODIMM_76",=0A=
+>> +		"SODIMM_81",=0A=
+>> +		"SODIMM_146",=0A=
+>> +		"SODIMM_48",=0A=
+>> +		"SODIMM_46",=0A=
+>> +		"SODIMM_47",=0A=
+>> +		"SODIMM_44",=0A=
+>> +		"SODIMM_49",=0A=
+>> +		"",=0A=
+>> +		"SODIMM_70",=0A=
+>> +		"SODIMM_69",=0A=
+>> +		"PMIC_SCL",=0A=
+>> +		"PMIC_SDA",=0A=
+>> +		"SODIMM_41",=0A=
+>> +		"SODIMM_40",=0A=
+>> +		"SODIMM_148",=0A=
+>> +		"SODIMM_149",=0A=
+>> +		"SODIMM_150",=0A=
+>> +		"SODIMM_151",=0A=
+>> +		"SODIMM_60",=0A=
+>> +		"SODIMM_59",=0A=
+>> +		"SODIMM_64",=0A=
+>> +		"SODIMM_63",=0A=
+>> +		"SODIMM_62",=0A=
+>> +		"SODIMM_61",=0A=
+>> +		"SODIMM_68",=0A=
+>> +		"SODIMM_67",=0A=
+>> +		"",=0A=
+>> +		"";=0A=
+>> +};=0A=
+>> +=0A=
+>> +&i2c1 {=0A=
+>> +	clock-frequency =3D <400000>;=0A=
+>> +	pinctrl-0 =3D <&pinctrl_i2c1>;=0A=
+>> +	pinctrl-1 =3D <&pinctrl_i2c1_gpio>;=0A=
+>> +	pinctrl-names =3D "default", "gpio";=0A=
+>> +	scl-gpios =3D <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;=0A=
+>> +	sda-gpios =3D <&gpio5 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;=0A=
+>> +	status =3D "okay";=0A=
+>> +=0A=
+>> +	pmic@25 {=0A=
+>> +		compatible =3D "nxp,pca9450c";=0A=
+>> +		reg =3D <0x25>;=0A=
+>> +		interrupt-parent =3D <&gpio1>;=0A=
+>> +		interrupts =3D <3 IRQ_TYPE_EDGE_FALLING>;=0A=
+>> +		pinctrl-0 =3D <&pinctrl_pmic>;=0A=
+>> +		pinctrl-names =3D "default";=0A=
+>> +=0A=
+>> +		regulators {=0A=
+>> +			reg_vdd_soc: BUCK1 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <900000>;=0A=
+>> +				regulator-min-microvolt =3D <805000>;=0A=
+>> +				regulator-name =3D "vdd-soc";=0A=
+>> +				regulator-ramp-delay =3D <3125>;=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_vdd_arm: BUCK2 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <950000>;=0A=
+>> +				regulator-min-microvolt =3D <805000>;=0A=
+>> +				regulator-name =3D "vdd-core";=0A=
+>> +				regulator-ramp-delay =3D <3125>;=0A=
+>> +				nxp,dvs-run-voltage =3D <950000>;=0A=
+>> +				nxp,dvs-standby-voltage =3D <850000>;=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_vdd_3v3: BUCK4 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <3300000>;=0A=
+>> +				regulator-min-microvolt =3D <3300000>;=0A=
+>> +				regulator-name =3D "3v3";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_nvcc_nand: BUCK5 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <1800000>;=0A=
+>> +				regulator-min-microvolt =3D <1800000>;=0A=
+>> +				regulator-name =3D "nvcc-nand";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_nvcc_dram: BUCK6 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <1100000>;=0A=
+>> +				regulator-min-microvolt =3D <1100000>;=0A=
+>> +				regulator-name =3D "nvcc-dram";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_snvs_1v8: LDO1 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <1800000>;=0A=
+>> +				regulator-min-microvolt =3D <1800000>;=0A=
+>> +				regulator-name =3D "snvs-1v8";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			ldo2_reg: LDO2 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-max-microvolt =3D <1150000>;=0A=
+>> +				regulator-min-microvolt =3D <800000>;=0A=
+>> +				regulator-name =3D "LDO2";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			reg_vdda_1v8: LDO3 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <1800000>;=0A=
+>> +				regulator-min-microvolt =3D <1800000>;=0A=
+>> +				regulator-name =3D "vdda-1v8";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			ldo4_reg: LDO4 {=0A=
+>> +				regulator-max-microvolt =3D <3300000>;=0A=
+>> +				regulator-min-microvolt =3D <800000>;=0A=
+>> +				regulator-name =3D "LDO4";=0A=
+>> +			};=0A=
+>> +=0A=
+>> +			ldo5_reg: LDO5 {=0A=
+>> +				regulator-always-on;=0A=
+>> +				regulator-boot-on;=0A=
+>> +				regulator-max-microvolt =3D <3300000>;=0A=
+>> +				regulator-min-microvolt =3D <1800000>;=0A=
+>> +				regulator-name =3D "LDO5";=0A=
+>> +			};=0A=
+>> +		};=0A=
+>> +	};=0A=
+>> +};=0A=
+>> +=0A=
+>> +&iomuxc {=0A=
+>> +	pinctrl_eqos: eqosgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_ENET_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK=0A=
+>> +			(MX8MP_DSE_X4 | MX8MP_PULL_UP | MX8MP_PULL_ENABLE | MX8MP_SION)=0A=
+>> +			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC=0A=
+>> +			(MX8MP_DSE_X4 | MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO=0A=
+>> +			(MX8MP_DSE_X4 | MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST)=0A=
+>> +			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST)=0A=
+>> +			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RXC__ENET_QOS_RX_ER=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_eqos_sleep: eqos-sleep-grp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_ENET_TD2__GPIO1_IO19=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_MDC__GPIO1_IO16=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_MDIO__GPIO1_IO17=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_TD0__GPIO1_IO21=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_TD1__GPIO1_IO20=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RD0__GPIO1_IO26=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RD1__GPIO1_IO27=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RXC__GPIO1_IO25=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_RX_CTL__GPIO1_IO24=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_ENET_TX_CTL__GPIO1_IO22=0A=
+>> +			(MX8MP_ODE_ENABLE | MX8MP_PULL_ENABLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_ethphy_int_b: ethphy-int-bgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_SAI2_RXFS__GPIO4_IO21=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_ethphy_rst_b: ethphy-rst-bgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22=0A=
+>> +			(MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_i2c1: i2c1grp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL=0A=
+>> +			MX8MP_I2C_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA=0A=
+>> +			MX8MP_I2C_DEFAULT=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_i2c1_gpio: i2c1-gpiogrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14=0A=
+>> +			MX8MP_I2C_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15=0A=
+>> +			MX8MP_I2C_DEFAULT=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_pmic: pmicgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03=0A=
+>> +			(MX8MP_PULL_UP | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_reg_3v3_etn: reg-3v3-etngrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_ENET_TXC__GPIO1_IO23=0A=
+>> +			(MX8MP_PULL_UP | MX8MP_PULL_ENABLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_usdhc3: usdhc3grp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)=0A=
+>> +			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7=0A=
+>> +			MX8MP_USDHC_DATA_DEFAULT=0A=
+>> +			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE=0A=
+>> +			(MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENABLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENA=
+BLE)=0A=
+>> +			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE=0A=
+>> +			(MX8MP_DSE_X2 | MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENA=
+BLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +=0A=
+>> +	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {=0A=
+>> +		fsl,pins =3D <=0A=
+>> +			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENA=
+BLE)=0A=
+>> +			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_USDHC_DATA_DEFAULT)=0A=
+>> +			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE=0A=
+>> +			(MX8MP_DSE_X6 | MX8MP_FSEL_FAST | MX8MP_HYS_SCHMITT | MX8MP_PULL_ENA=
+BLE)=0A=
+>> +		>;=0A=
+>> +	};=0A=
+>> +};=0A=
+>> +=0A=
+>> +&usdhc3 {=0A=
+>> +	assigned-clocks =3D <&clk IMX8MP_CLK_USDHC3>;=0A=
+>> +	assigned-clock-rates =3D <200000000>;=0A=
+>> +	bus-width =3D <8>;=0A=
+>> +	max-frequency =3D <200000000>;=0A=
+>> +	non-removable;=0A=
+>> +	pinctrl-0 =3D <&pinctrl_usdhc3>;=0A=
+>> +	pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;=0A=
+>> +	pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;=0A=
+>> +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";=0A=
+>> +	vmmc-supply =3D <&reg_vdd_3v3>;=0A=
+>> +	voltage-ranges =3D <3300 3300>;=0A=
+>> +	vqmmc-supply =3D <&reg_nvcc_nand>;=0A=
+>> +	status =3D "okay";=0A=
+>> +};=0A=
+>>=0A=
+>> --=0A=
+>> 2.49.0=0A=
+>>=0A=
+>>=
