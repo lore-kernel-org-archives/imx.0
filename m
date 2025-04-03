@@ -1,51 +1,58 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2088.outbound.protection.outlook.com [40.107.247.88])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2070.outbound.protection.outlook.com [40.107.247.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D875E161320
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 10:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4A31F150A
+	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 10:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743675326; cv=fail; b=Ceh6F2JmLmcAUsnD18NpBrdjC3wZ5oPAY7wIonFRSKwxZUcmd0/Je3ZFv6epx7aVFpWgCJqiajqnYwG+DxwLeuI9J07uQjy/kCov2Y7ILZ0n0S6BWN88+hFHI1P1GGKVUR3YhYAr7zv7JI2ZyPqdt1+2Eexb108xJ3ORRtvTx4k=
+	t=1743676443; cv=fail; b=UE/zxdyZFS/K63s4zgBM++ansHD8YmK2/sUAOZlUyfs9pXNo927WDHwNYGp8ZKetq2mtQUJ1chZe3VFZKaAMVUEPJ9nkJmK/5/ezOEfh7HpdPQlgTbTZkwB86Rmu4wHkrTDUzzqtNlfW9p1f3n/CJEpyH8lx2Irqlh4D3MKAeZw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743675326; c=relaxed/simple;
-	bh=GGdHJF4qkClCEd6d/gvFk/GyDAvX3FqBN7HuL6Wwk44=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZV9vr3h1P/DWFQQA90F+b408XFggcmisAiHtkrvZKyzYCElsmBJRAg91pM13F5cTm3L6Hc4rA7p+/DociiLhtd06oCo2XCLFS++NGKXyrTx/dy6ZLFqBngm4b9IN9CcxT+rK+jxthvbCnpX6YIauH7BERt1FspoYW220sYPd+xA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Z48NFqnd; arc=fail smtp.client-ip=40.107.247.88
+	s=arc-20240116; t=1743676443; c=relaxed/simple;
+	bh=OelRowMual/JKhfgpEdwCiXB1AOp7/F5HAylD5m0kuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=p9+eh6FTo0IzwbBUP+AvdSwmZyYjtBCmWdRxg7O2n4gvC8+63t1sgius7lGrzMFd9iD29HRj1Y2nuKuDznBrYwG16ELG0WRvjOWpN2iNbSCwH3ZpNRGeVdz/T/7c1SSZbChhr7Ep/cIm+4dEix+zNCGxaGtV/oluF1q9wdvX3+k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Gm8NLtDI; arc=fail smtp.client-ip=40.107.247.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Z48NFqnd"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Gm8NLtDI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LUmlRd70y6bey7p18eGZHmNNAzBEvGuwblvWWfQNhfMAKj88uT1UdOvtwtx0iKjA+SsXnjfXE+ojhXLYMTCLJeddSvl5j8f0QHr9JuCVS8lFkWvVVuoc7X/PEt2DoSTZwxPwUDONGw0azu/fnN4g84hnofCWAM/bjMwA1tMZwEh9YDKNfRBNaxdPwaYASTzdR3zW1wwxdFki3BKrjVQk9z063P3aEFIPM6q8ArN7c7n4LEqAk48yR/qLcPGUnsTJpIivY7mFLb43M3Rnmz23RAqAg0rMSNpmTchZOreE6N9kg/MmZPW4IvqrYBZ4HAZeJOK4u+Z4qyilqZOlcWu5tg==
+ b=oDuy+pwD5Z23R++tslgpqEZHvNfIA7FeIelpnsaL0Sde4JYm1ofgQxg9DiwIWmCZqJYfzrB66aYjnfKGDLipQEKznZs5cKomDxn/nGLMkrmxAyimW+H1Z2nN+Ye9ctxLFG+D/RPHDN1Z70UNMFDtjxMlefnX+25rzUnU6WaqE0wosemnVJftcT37B69BLU23UpbKfOBBKWouUm1on3jk5chsHlGdZCZdnQECN+ph0S3Q8JFiH9vdtWjEttslluB7h30u6omDGYCIFYas9Fb4t4/2qoqFGC7IzAK6F+jRvBDzXg9fthO7E68NXelqb5YtBF4/k7Spgu6Xl+H7qOIOHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NW9ymndXZZ1kA06JY6T4Hx0P9QW7wyO2doedh6OpVV0=;
- b=htpJfgZI56+XaY40e5j2SxquS6+tVjA0i7sbKvlFwFMjfPeetH0FAWnb4aSaDPg6HY3Vmq1YBezkVOYoUw2aOA0XEGpDSCKzVcKkdV9D7P0Kw6zi8SK4IeXnmY9u+MKUFCpIF9HgU2E7SKCl3mTaT6yinpLXnegdKrOMM3PTljM/Cu1HDuOfdLudvAYW3t5/n0V1c34Do1ph7yHyug3SpglkysNAg919eyH8jxCjwClR9nx7q2ZBvs88E6AyC+0wH/pZ3X1W6rrqTPiqEzetK3f8n/XCf07yjrIBa0ck/Ns/+P1q07YzonbNW4NuH3jyV09xuQmgZH7nFhWv3UyGFg==
+ bh=UvKplru0XYC4azUPl/dSWB9rmpGtBlHZRXHnW2ITD9o=;
+ b=y/AL4vNETTBBMB9R7VN+hvybFL3SgKZK/wj56/bqk4XRkGiraB6UTVSJwuY9cYjq9h0XdRcIHEetQdVNlLBI+tTj19a4G6n/3zhO29SS4HPy4BSFLoo6rMjmFD/8GUjQBe0aBurtz2l6L485XiX1AHFPkfSSR/d7uXtZSuI2D6OF9DNt5f1EBrs68RiwLOkhMrjGKoWm3R6nVw/k0tNRw86pz/dsn/lrN0AYPn5nYVhrdwiQmMxvRYxlvlpoTzN9o/qdSCmVGFX/OkrIE5ZGwR981lZlc7PXNWboF+sRkBNHlcaFg83ywnoxFsW6MbfnoVIFiOqrQ2/PSNXbCYUeVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NW9ymndXZZ1kA06JY6T4Hx0P9QW7wyO2doedh6OpVV0=;
- b=Z48NFqndawcms6u9wNGh9PK7VhhmxW1Xc3vlyvRNyW2BQeS0mC44+8dkuM9p2LUATP8s5ZWOruazh+5nU2KaHePSwBaAJvYtTtnECI+c3iusx+1nZLw/kp+bk9xt6uz69BNzuU72Zu9ogs9Jf80rXsZGLmnGm+8LErSSWMdKXGiqmXQDP7d1BeQ+JM2af58Mx33o1gKgW/+7vACT3SCtbwI1326NkW08uTpHZ6AO+Utkp8pWHXM8Pk7STm0C0lFPZTXV9xo79XBhxNOSnnlmjz2GCgxhgjnvNE9UlegBB7PN7LvDR+PvHQPNrTnmsKTbGoeMbjKTMhiTIe0GxMZ9yA==
+ bh=UvKplru0XYC4azUPl/dSWB9rmpGtBlHZRXHnW2ITD9o=;
+ b=Gm8NLtDIOCa9DiwSknZ1zR57VsI/X18HJN8rs9APUkXcv1q5mudm16NXyBm3EGfxO7bpNjtMTMF0nPP967x5bnDA8ieqMTgmEsevn2FLkTmpePJPlrqvk3B2y+8H8tmB+XQhiBK7fuKUuHQv6lgt3pYULKwpwYQ3KgxCPp7OEBAuYqNKwilGxCQ15s01nmOerx0g24zJuvuFdGufI5bHbaKO2ALshInf5hej6doTcronwjehZ9uLFfdyvDuWfLQNQiWRLu/7sYJWjU/iuWsSB8W8596GpPH+G9tK9e0ubzplNZWrADRlLMuFWoOPBhgannZ1yMXy/W6VVyqlRvGPNw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by GV1PR04MB10821.eurprd04.prod.outlook.com (2603:10a6:150:200::19) with
+ by VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 3 Apr
- 2025 10:15:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.54; Thu, 3 Apr
+ 2025 10:33:57 +0000
 Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
  ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
  ([fe80::708f:69ee:15df:6ebd%4]) with mapi id 15.20.8534.043; Thu, 3 Apr 2025
- 10:15:20 +0000
+ 10:33:57 +0000
 From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org,
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: linux-rtc@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	NXP S32 Linux <s32@nxp.com>,
 	imx@lists.linux.dev,
 	Christophe Lizzi <clizzi@redhat.com>,
@@ -53,15 +60,19 @@ Cc: linux-hwmon@vger.kernel.org,
 	Enric Balletbo <eballetb@redhat.com>,
 	Eric Chanudet <echanude@redhat.com>,
 	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Florin Buica <florin.buica@nxp.com>
-Subject: [PATCH] hwmon: (ina2xx) make regulator 'vs' support optional
-Date: Thu,  3 Apr 2025 13:15:16 +0300
-Message-ID: <20250403101516.3047802-1-ciprianmarian.costea@oss.nxp.com>
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v9 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
+Date: Thu,  3 Apr 2025 13:33:44 +0300
+Message-ID: <20250403103346.3064895-3-ciprianmarian.costea@oss.nxp.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250403103346.3064895-1-ciprianmarian.costea@oss.nxp.com>
+References: <20250403103346.3064895-1-ciprianmarian.costea@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM0PR02CA0203.eurprd02.prod.outlook.com
- (2603:10a6:20b:28f::10) To DU0PR04MB9251.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM0P190CA0013.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:208:190::23) To DU0PR04MB9251.eurprd04.prod.outlook.com
  (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,125 +82,545 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|GV1PR04MB10821:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5acc6dd6-5230-41af-dfc1-08dd72987045
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|VE1PR04MB7216:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16226cdb-0c61-4707-7456-08dd729b08d9
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Rm9TbGQ1cU1UU0RQUHUvL2lFUWtLRDZzVzB1TERiNUpLOVBIL21zN2NiRDFP?=
- =?utf-8?B?bitWRUdMT0x3SERMNXJLNlR3d29ZZnQyNll0d1ErMVdzLzNXdjRjdXR3OGp4?=
- =?utf-8?B?L05VMm9aajNzV0FuSXpJRTdMN2Z1Y2xqeWdCZFI1dkRETHhjUHRVS0dDYWQz?=
- =?utf-8?B?djFUVm5NT0dKNm1HRDdiRjZ5bGhveFZWcWJOOTdtSU01ZzdJRS9qMWpmWEZS?=
- =?utf-8?B?UHorVFdnUUVHS1pHM2srYnVZZTZ0bjE4cWtRbVhwSnR4QnBpeXNPbkpzT2Nt?=
- =?utf-8?B?TFZ3Rm1tOW1Sa2JYcis4UU1PN1hITGFVYk1Id243TzZEeCs3eE43MUgzUE5D?=
- =?utf-8?B?YUEyWkRRTVlrTGdxWDZsR053UFhSRVpIa0c2TzBWcnRyNmxPQnpTMlRldnFH?=
- =?utf-8?B?T3RyR2Z0dUwzSGl6c1lpeGQyZFdIQUxSak8zMVBjRWErd0xSUHM3Q2d5bXJP?=
- =?utf-8?B?ZFh4SVJwb081MERDZVFNQ3NRYnY3aUNMK3docWRUQ1NVb0dKY09nWlVIY1cy?=
- =?utf-8?B?c0UvOHR1RFlOeUxYdEdrVkQ4eGE0L2lmZXFDTnpVRkJWcGV3OEloOTdGNmdV?=
- =?utf-8?B?Tm9rQVgwWG9tT1pEMVVKRWxtbExWSGJJMkx2cGNUcEFHSFA1RGNTVnhIbEVS?=
- =?utf-8?B?QWp2SnRSLzVaZmJlaXRDaTdxMWNsRjc2UEthQi9pd0hEVWpPWDNtWG9oRVBs?=
- =?utf-8?B?YkcyN0lYTGZHRm42VzMxY0tOU3puWFNFRGhZUkNZM3kzSTRQNkhaYlVjL3Vu?=
- =?utf-8?B?QmNjNkVkYmVpbWFPSmFiRUlmTmMxY3FZdlVhTmpTeWs5OExqaEdaYjRkTlpN?=
- =?utf-8?B?TmJVcEpZS2dHSXFnb3g3Sk5MTE1WWm1qbmlMZVlsM204TFE2V1ZnejJSTkxt?=
- =?utf-8?B?djhKMGRxMjR5TVc4SlZ1Z0NNV0RGTU5VYndXZnZYUStzZ25XT2c5cDhrbFpZ?=
- =?utf-8?B?YkFxKzdDWWZSL0c2WHJhVGMwWGY1eUFTdFBDdXJQZ1U1VUhLeHNCaHRXSEVC?=
- =?utf-8?B?aWhPdSt1SStTSGJnekJpakFva2tkVHZZbXNFbU9vUkNVRHRzZEtmY25iU1VG?=
- =?utf-8?B?YlVlYUoyeG5QMDM1czFZeWxoSGVtRHYzYXhQaUpOZUlKT0RsMkZvYzNmczc4?=
- =?utf-8?B?WVVsSVBMZXZOTm9FM1lFMlpEUUlsK2p4QjZDRTdwOXRMUW9NZVlYN0xEeWF2?=
- =?utf-8?B?TUpBcVMzdmlzWEFWTGZRRmZtZmlUeXovZEtoTk8xajJ2d3JVdVRpNGRUb1dm?=
- =?utf-8?B?YzdtVjh2ZVRnR3lxQlJ1WHlQdUZHSXkwUWJpRVBOenI1NHJTNFhYRWR1Y1lY?=
- =?utf-8?B?N3ZXYlAzUk5CMVduNG1RaWI0Y09MaitQVHVWUk1sSXlZM2Q2MVlDaHd5UXpo?=
- =?utf-8?B?Q2k0T0tiMWQxTktRL3lweFh3ZFk2RlZkMWlLUHRaQTZwOWQ4S0ZDVUhLWm5K?=
- =?utf-8?B?bDh5UmxsWmU4NlI1VEllcU9YYmNUYUx3VEoxM0Y3TXFsL1p3RDdJUlU3NkNE?=
- =?utf-8?B?NmZBeDJxQXYwRHVhd2o2RVB2QnpFZWlWVnhRN3NxTDI1SVBJMkhBMU1pdVRR?=
- =?utf-8?B?OTl3QXlVMjRPUE9aNjlDdCtFL25PVC9iKzRUMEJQVUgvYitrUldSV2YzcmdX?=
- =?utf-8?B?WTVWQkNLT1YwSnBDM1AzSjgvSEhWZVFZeG1RRkhEM1N4cHR1MUd5enNGNjZw?=
- =?utf-8?B?OEY1c2FxMmluMWh0aHFIQzVDZkJ1UEl5dDJIQXV4Y3lDRE5lZ1pPTk9uczRR?=
- =?utf-8?B?QXpWUzlPNXJ6TWZiK1ZpRElORjI4YThrRFVINUQ1VVkzMUVJcEY5MFFpaklw?=
- =?utf-8?B?V3hSZk9FN1dXMElnVkpvVmRZWHIrL1BIV1Z2M1p4VDA4bWlCZlFmK2JyUEM1?=
- =?utf-8?Q?k8AqX9FdmlLpO?=
+	=?utf-8?B?OTkyZzlHRVRkaFBBZGd2TkdwWnUweHNMQkpQRHJPeGcrbTZtK0kwRWx6cnFj?=
+ =?utf-8?B?d1cyczI5UnozVzFjNDYvTXJjUm4ySEVVcytrSkM3M2c5RkI2TEU5SFhkOUcr?=
+ =?utf-8?B?K01OeHF4Ynh6ek10ZmlWc2wvamtLaTlYdUZyOGMveHpTZmRtcUJ4WExSMW5J?=
+ =?utf-8?B?bkJ0aGowd2lBUFBuNW9QT3hQRGJoMTBUMGR0djcyUGRETnljSmVRSTRNNGlL?=
+ =?utf-8?B?TlphTUw5eGFtTG1SSEVtS1dpV1g1ZmNTVjZ6S1BkVVkzbHFnSDVmazM2UmlZ?=
+ =?utf-8?B?M0FpTmkyOXJkajdSM3hIUis5VjA1QklZOVlvTjQ5L0lxbTh5SHQwN3BUNmdj?=
+ =?utf-8?B?ajdLenFpbCtBeUlSZHVUZDlXbW9LU0JRYkZrRFhQU0FyZWxmZ2dWNEJsZFBM?=
+ =?utf-8?B?OFQrUGFPT216bkNaZkVodFJMT2RWK0tKUW51Y3plZUZUVjJjK2p4NDZObFFq?=
+ =?utf-8?B?STkrRnhJMmVtYWcxWEQ5bTlnNEN5NjNYR25uTUVOckVpVnprcHMvM0Mvc3VF?=
+ =?utf-8?B?ZWFadUNXeEh5alFyQmJYclZtTEFpTDR2RkpEaWp1OUM5N3M3cVFmUGszdjFn?=
+ =?utf-8?B?ZzEyUEc3VHpVaHh1YnBOSjkwRVpQcEllUG5aQ1FndklQTVE5bEUyZDB6QmVO?=
+ =?utf-8?B?b0FTeUJvWFUrVVJtbjFkME8yUmFGaVNseUkyUEMvRmV2STh2eTg3QktFdlJy?=
+ =?utf-8?B?NmtSdU0waXFucnAvZnd1MmtCRGQyUGcwenJ5WWlDKzl1UlRxcThaWlJMR2lV?=
+ =?utf-8?B?S2J5SDVRWVUxNDdkak9BSE01cGx4c2RNVjUwSDdVUVRmd2FsRDQ0WkZEOGZh?=
+ =?utf-8?B?ZzJBT292bjRlaTl1dlR3cGxoQ1ZCMXI1bGZoQnpnYXBJZFpUcmpOODNRZmFB?=
+ =?utf-8?B?V21FZ0pvdXZJdTE0V2YwQ3dLanh4VVZtMXVHeDcrQzU5STY0czJrUU9ZcVpY?=
+ =?utf-8?B?SEh4aENCMEdXeVk3RlViN2xPZUo0Qk9oTU9KVko5MzhPbGJKZmcyMy9RUWpi?=
+ =?utf-8?B?TlVUcDg1YU1LUDF3YUlDSmNLMFZOS0JTdDJRbWFWTk5VdnF2eFQ4UGdYaTNo?=
+ =?utf-8?B?MUE3R2lIb2haZnVhVTFFdUNraFlqRDc2RkpoQXdGWGxvK2dQc0xROUhKZ0lH?=
+ =?utf-8?B?Vzg3bTUvWHhOR3p3UjlWVGpyR29JZnZNcHRmTnZlTmtYUkpkaGRBeUJDRGY4?=
+ =?utf-8?B?S3VyWFMrQXpUekJpN25zQUM4clVuZjFWckVTYWs5MTBzRjVEMkkzY1dhRnRJ?=
+ =?utf-8?B?YVBtSFZOc2FBM3UzdVVlS2xhYTY4UXJMb3RKNFBWNUMzMGsvSFVEa3BqYURG?=
+ =?utf-8?B?VTdaSDZUSlkrT3NXSWs2MXpBZzUxcXNQMlJkLzRyNWlkNUM4N1p6MW9TLysw?=
+ =?utf-8?B?am85RTErUzZUWEdMU3M1eW5YWTN6OEY4SllSMlJMR3VyUlJWTTQrMExzL3Zk?=
+ =?utf-8?B?MTU2dkpySUFDRVJlTHVVRnk5N1lJNFpGVk9USFdzcUpmdnlGSU8xbjZVR1Fa?=
+ =?utf-8?B?TnZZZldobkNzTk5mZTBEQnZnWTJKOGVCeEZSRGY3L2NZcU1oa2NZQ29tRGQ5?=
+ =?utf-8?B?eXBKUGFWY1Z3OFZYenI1N0lSUTVCMWlsT1pkdS9CWEcySno2ZitqM1g4TG9m?=
+ =?utf-8?B?OEE5UEFzUDlPMjgxMzREU0Q3VnpHKzZDYWJXVUgxK2Z2QzIzSklVcG9ESmYr?=
+ =?utf-8?B?RFovWU44QzMvUUFzbFV6bHRaWnBIWWhmMG81dHdXeW1uU2dvVlZSczJDZFBE?=
+ =?utf-8?B?bzJLWFNFZjNxMEI5Rkx5M1M2MlZLSDRDZXRrdUFDZXNib3VYWXRRUDR4UEh0?=
+ =?utf-8?B?UGN5cENhTjRQSkw0UFdiTllMc0x2clFaaEdCWGc0ZFp6MzcvVDRmOE1BL3Y5?=
+ =?utf-8?B?SU1meThTaTN3ZFZDZVE1Q3p2UlFIZ0FPUlVHWXdPUXFXS1lualRlM0FlZHBk?=
+ =?utf-8?Q?U/jL6sCZ3JU=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cW5ldFlQK0IyQ0hJc2s3T3prbnhhd1MrdGVFcWsrUUNmaFVhbzB1ZXVTQzNk?=
- =?utf-8?B?M1FGNFZ6NXB5LzNkU0JZK1lpTEpIMU5OZkF6Zm1iMU5QOUxVNG9mNTdkTlBX?=
- =?utf-8?B?VHNESUxka3UzWXRueXZ5MkFod2hnbDFqL0w5eXNNY1RmK3V1VjNIcmJBSktH?=
- =?utf-8?B?d09SNHBxYnRIWjBYUUNXWmF1L3AxVTJ2L25Wb0ZUUXF2Q1RvTWRLVHR5cUZh?=
- =?utf-8?B?VTFsYUpvekxXYmxROG45Z1pzaFJPQ3NKNzFDbkJteTFLWlVvblp2bGdySHg2?=
- =?utf-8?B?N1FpMVFXVE40RXQ5eTN1UEozT2d5V0ZObTM0aVczU2RKWHBVOTZEOHFmM3Mr?=
- =?utf-8?B?TmRsZzFpWEJ3NmNNRWFia0R3Q1BqMTVUS2NMbk9zUlJIUjNJd3piTi9ZMlpC?=
- =?utf-8?B?UFIvVWJYUHBuS3NoVVZUZElUYitkb1d6Si8zNFNnbFpRRnFyU1M4aGpzcUc1?=
- =?utf-8?B?SHJ6NDNnaHltUytEZnhoVnhoMS9UMDZ4dHhDcGcwMFJvekpZOTBtWHV2YnFn?=
- =?utf-8?B?QSsxbTVKMm1xUThMWWExKzhKQXZvdU9zRnh0TU5GVXlncjh1ajk0a3hVeVg1?=
- =?utf-8?B?dmpKTzZFMC9xZGVjWFNtblpnbWRnQ0xRY2NUMWZwOUM4eTkwbEFJVlJHVllN?=
- =?utf-8?B?UjhIV1VQYWpDVTVEaWJxYmgvdGR1RWtHbGlXZ2tML1VrRzhjWFlid0lOOE9Q?=
- =?utf-8?B?SWdvNmxCNFBBT1RPMnlRQVp3REZVQk52UFhTekZDUWZzaUdvVGl5cTladjhY?=
- =?utf-8?B?ZUdLc2NOSHJacDdTbWxSNytlY05HbHkzaVNBenBmb3dvMTE5Y2YyNlFGbXBP?=
- =?utf-8?B?NVVyWFlkN0NRWmpvZW90eVJaN1JUZnVhQ09wZmsyZENoempLUmwxZ3lPc3RP?=
- =?utf-8?B?MEl1UFRPZ0U3NFh0TU43eTk1UTBhbnVtNmNyeDdlVGVrUDdvK01yOEtWU1FL?=
- =?utf-8?B?ZFlWKyswcGFPalR3NE51VDR6Z2RGVHZDK1k5WmVhRG9JcS8wR0hOZVczK0NP?=
- =?utf-8?B?ZkxjUXMyc0F2TFcwZmpzSEpaVkI4NDgrN05EeWtLSVhyd2JjQ2hYbHBEbUly?=
- =?utf-8?B?NkpVNzIrSngvRTVTeEJCalZBY2paeW03UFNVQjhBOHM4Y1VzaFh6Z1VsRy83?=
- =?utf-8?B?Rm5QcnpQNDB6blJqZTBFQ0JGUmVxNFZEYTB6QStqWVBqUldDSkNmL1Q3QjM3?=
- =?utf-8?B?eVJ5aWxZem1EU1dDYUlFMVJiYmhvc0NBWGRpeERFTlpkMktJeHhrN0FiTzJO?=
- =?utf-8?B?c2pEeVVlWDhVbGY0Rlg0YlkybWE3SDJmMGx6T0tVck1rQ1JwMk16Ykx6bC9n?=
- =?utf-8?B?b0wvTGt2ZGVvcTR4WTZJcVNHRzdMakRUK1RLZVM4b1JHRmpYWkYrVjBIUmow?=
- =?utf-8?B?RTZGUU9MVmZhMk9NRVZqQVhKT0NpRGNtR20rY084azVyUU9XUUFicFNKVHpB?=
- =?utf-8?B?WEk4M0M3MGZrdlpmUWE3aGJtRXlPMzVjd05Zc0VBa0U2TE44T3NWbjZmaEUw?=
- =?utf-8?B?QldIZkdMa3VZUFpvL1NQR01VRFQ4ak1vN0RaTXZFVFliUFRWOXhHQSszMVBr?=
- =?utf-8?B?VFQzeWJIM3NqdXYvU3F2QlVRT0RyajFDekVlYkxlOHpLWmNZekxSYTdOYmpG?=
- =?utf-8?B?dU1KZDdzUWt3U2k2U01XZkh5UGRtSVFOU2Y4SmVvaEg3SnpTRnZ3YmxYWWxF?=
- =?utf-8?B?TTZ3Y2NjTzFnT2I0ZDNzU1lYSVROVE9jWVlVYlc3MHlyMmdST3hiek1YYjdS?=
- =?utf-8?B?M25xSndieC9LK21zVGpzSDVQZjhXTG5uZWo2dGZ0NWV2WmxDZENOa3FDMHlW?=
- =?utf-8?B?N0wyL0NYb0pRS1pvRlNMSEtvOG9Ia2xoMHFwMEkxSnBMdzlqNEllTDZBZ2Ra?=
- =?utf-8?B?Sk1iaGN1RHZTUzJTQjQ5TmNYcFZEVUszM1loN002ZzE0NFRrK2Z0ZXRlOHR4?=
- =?utf-8?B?d2NhNHNBUEdqNDJZdE94bzJUM2lYUGlBeFdiN0F0U3YvUVV5TFZLK0YwYmlW?=
- =?utf-8?B?M0F5MEhiQTlwWnNtR1hKR0diTk55SUZRM29IbnlSNEthMmUyZGhqVGZrYzZQ?=
- =?utf-8?B?UXdqcDFZODJGOVFaZk9Gb3hZR0xqWlRXUkN3VDRZR2NxVWMyQ1VtMFpmNUJI?=
- =?utf-8?B?dDNuZ1VMQXdqQUFwbysyVjQ0NTcyVmRoaUZXQ0NRK1NQUUdWVE1wVG55cUNa?=
- =?utf-8?B?ZXc9PQ==?=
+	=?utf-8?B?MzFUeW5rbWpNeU5sOHcxZGxzMWk2ZXRUR2E0ZVc1UVhhWTlUcy9Od0RBOXVR?=
+ =?utf-8?B?NmVERjltZWdObVJ6d3QvVzViSFRiSlpyeGU5eUlNZnFLOTJodU5tRm5XQTVl?=
+ =?utf-8?B?ckZkalRXb1hOa0dETnIyeUNPdXU2Y3o4akdMcHQzcHJ1L20zY2FxZDJYM0FC?=
+ =?utf-8?B?ekRYdStoM25ZdWl1cDA5Y0hxa0FDRm1Va1g0aXhqaDdXWXp0SWMydjdSYWNS?=
+ =?utf-8?B?aGZRbDdDSnE5bC9pQ3pjYWg3dW9tMHRySnN6NTBEMHkwQWIxemRXUVVSdFBU?=
+ =?utf-8?B?dFF0SlRpeGxFRnJHZXUvaTlpc0J0RDltMGlyQnFtcVZPSC9nczgyVi9aZ1Uz?=
+ =?utf-8?B?YkdqNDNRaE1RanJQcDFHeHBOS0VHQzNQOTBCczRVWkRGRC9KM0RWVFZsYzEz?=
+ =?utf-8?B?c0ZJUzhDK0dERXNpS1JtSWhhaVVSZ2RSVS9mUjYrNk9qN3NmTHpmTy93UitJ?=
+ =?utf-8?B?L2JFblBwMjEzVGMrSUc0TjBJcG1GNlVZS1EvQmIvVlcyd29wZ2FzL2pxMmts?=
+ =?utf-8?B?eXZUUGx1Qk1yZXJONjVVT2tKYXN3SU1mejVmTGlLQU9lYU04SlNNdlluYWRM?=
+ =?utf-8?B?ZkZUTTVUK0VFWGF2WThEellYcy9ucE9TbGFvWS85ZStFcHBERStxYnJQUUVM?=
+ =?utf-8?B?Q3IxQ2czejJBb0w5NmpjZXBxMVNjRy80a2JDclNHTmdMR2N5cW9FejAvZHpJ?=
+ =?utf-8?B?VG5VN1pOckpoMUJ4ckptaUtuM2JhLzdOWjV0TW16dWlXc2ZhRE9CK2NqS2Vw?=
+ =?utf-8?B?SXlJa0VtdzlEUThtb1pmc3I1TkF5eGdjWkUvLzJnRTBCZHpnOUJOMWkxMWlN?=
+ =?utf-8?B?RkhSVnlmU2RHYk4wd1ZUSTBRbVgxb056cThNakVVLzBEOW1maS9JSHlMV08w?=
+ =?utf-8?B?dTB6TE0zWUZtdklCV2UvYXQ0c1VkV3BmODhGb3VnR2J2Q3A2TnluS3pzdzF3?=
+ =?utf-8?B?Vmk5ajFqbVEzbzl5SUNoeHpWOTdnVDYwcDI5ZzRMSlFQTDRqczNGTzdOY3p1?=
+ =?utf-8?B?Unpod0VJOCswSWN1M1hHbnJ2Nlc5b1hYL2YvL0t3Y096aG1qTDFwL0NUMzlR?=
+ =?utf-8?B?a1phREdOekk5VU5hYll3bi9JK0J1S29SdjdBVVppb2VheFJWVmtzOEZOUUpx?=
+ =?utf-8?B?eEVxWkhPMXdDNFFWZ01DK0ZsWFRXRG9SMnVsWk9IcmhVSGEwdXpxZkpvbDVE?=
+ =?utf-8?B?ZVUvTWxQT1NSdkJjMVExbVNna3kyK250WFEzdXV2ek92L2MwdTdVK1M4ZStQ?=
+ =?utf-8?B?WW1Fb1RGeENnUEpSd2ppejVWb1pYZTFJYWNiV2FvV2h0OGY5UCtVeXM5OUY5?=
+ =?utf-8?B?UUVHOU8xeDlvT0pVWkNFallIUnozS09hYXFxdmcyeDlRZmFYaXRpN3FTemZl?=
+ =?utf-8?B?dmJQQWdYL0lhWTgwemI5dVVWWWRyNnJFYkFJMHRzNFN4aUxPYkpmUkJoZU5K?=
+ =?utf-8?B?Tk9MVkpOZGZVMWcxZHZZOU9DclNKTnRham13cUdyT1l1OFl2T3hqVTJPNjAx?=
+ =?utf-8?B?cTZETTkyNnBzcVVJbFp4NUVQRml5bFY2aWczTWZhdVIreG5sZXQrOThHYkNS?=
+ =?utf-8?B?UUUyOFdNOGFkQWVBMk84cDh4ZzNkRE5EV044V2k4c3E2VVVOSE9VT3ZwYkRF?=
+ =?utf-8?B?bUNHLzVzbjFVREFhSHVvK2NpT0JmSjhkTmErTlJmZm9xUDk2ZkFucnh0ekd4?=
+ =?utf-8?B?VkY0SFUyU2FyWS96L2RXWGJJV1dWejN3SXhHUnBKRE12RXdOcDQ5UlVmTVYz?=
+ =?utf-8?B?WXRVKzN0eVErMXNzUzNTZDNhcjhlYVdENjJ3Tkg2TDdvdm1aQldFQWxtYUZC?=
+ =?utf-8?B?OGNSMG5qV1o4cGtQWTMzT2xJaWNlcDNmeEhlM0pVOStIdDFSVSs1V1dPbHNG?=
+ =?utf-8?B?NTNqV3dNakYyNVN5djFueVQxWnhTL3lpRzQwTFVJZGY3UDVQa2h4OFR4Q0VJ?=
+ =?utf-8?B?TTZUWXRTc0ZBMEhpZWpqYWpzNHZpQTdpM1ozbW9nSEJsR0I4ZGp2UmFkL3JV?=
+ =?utf-8?B?dzRISWoyZ0ttRnhVWXhTQmU3U296WUtka2M5V2w1V2l3SVR3Vk9SQzBROUR5?=
+ =?utf-8?B?cUJsQitMSmhKZW5Qei9WdFF4M1hJSVFjZ3Y3MFRhN2tESlpXNzZCQW9lOFpC?=
+ =?utf-8?B?OHNmMVAzV2ZSWEYvTG5wVWVWSGJDcURTTDhIMnpkUmhuSEVLWmxaZTM0eFFD?=
+ =?utf-8?B?NlE9PQ==?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5acc6dd6-5230-41af-dfc1-08dd72987045
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16226cdb-0c61-4707-7456-08dd729b08d9
 X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 10:15:20.3845
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 10:33:55.1656
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oORq53bmslFcFt6pwWu41JbofsWnp8zAjV1RhFT/FzsdvOG09wwKgIwRkBopSZ9nOw9tfKgbdIhA5QgCMoNGH+16mnStS1GqrH0vCcglMAI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10821
+X-MS-Exchange-CrossTenant-UserPrincipalName: gI7aMn3gwIqAQbyhG2Awtq8jm6eY07vLLl1wb0IJ1C8xFO1jOnbUbbAgA9AO5NahLpysq523cpeylJ0jlaY35n/5rB6mJq57D4JEenMGF/A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7216
 
 From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-S32G2/S32G3 based boards which integrate the ina231 sensor do not have a
-dedicated voltage regulator.
+Add a RTC driver for NXP S32G2/S32G3 SoCs.
 
-Co-developed-by: Florin Buica <florin.buica@nxp.com>
-Signed-off-by: Florin Buica <florin.buica@nxp.com>
+RTC tracks clock time during system suspend. It can be a wakeup source
+for the S32G2/S32G3 SoC based boards.
+
+The RTC module from S32G2/S32G3 is not battery-powered and it is not kept
+alive during system reset.
+
+Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
 Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- drivers/hwmon/ina2xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/Kconfig    |  11 ++
+ drivers/rtc/Makefile   |   1 +
+ drivers/rtc/rtc-s32g.c | 385 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 397 insertions(+)
+ create mode 100644 drivers/rtc/rtc-s32g.c
 
-diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
-index 345fe7db9de9..ab4972f94a8c 100644
---- a/drivers/hwmon/ina2xx.c
-+++ b/drivers/hwmon/ina2xx.c
-@@ -959,8 +959,8 @@ static int ina2xx_probe(struct i2c_client *client)
- 		return PTR_ERR(data->regmap);
- 	}
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index 0bbbf778ecfa..510dc2db745d 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -2103,4 +2103,15 @@ config RTC_DRV_AMLOGIC_A4
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called "rtc-amlogic-a4".
  
--	ret = devm_regulator_get_enable(dev, "vs");
--	if (ret)
-+	ret = devm_regulator_get_enable_optional(dev, "vs");
-+	if (ret < 0 && ret != -ENODEV)
- 		return dev_err_probe(dev, ret, "failed to enable vs regulator\n");
- 
- 	ret = ina2xx_init(dev, data);
++config RTC_DRV_S32G
++	tristate "RTC driver for S32G2/S32G3 SoCs"
++	depends on ARCH_S32 || COMPILE_TEST
++	depends on COMMON_CLK
++	help
++	  Say yes to enable RTC driver for platforms based on the
++	  S32G2/S32G3 SoC family.
++
++	  This RTC module can be used as a wakeup source.
++	  Please note that it is not battery-powered.
++
+ endif # RTC_CLASS
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 489b4ab07068..e4b616ecd5ce 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -161,6 +161,7 @@ obj-$(CONFIG_RTC_DRV_RX8111)	+= rtc-rx8111.o
+ obj-$(CONFIG_RTC_DRV_RX8581)	+= rtc-rx8581.o
+ obj-$(CONFIG_RTC_DRV_RZN1)	+= rtc-rzn1.o
+ obj-$(CONFIG_RTC_DRV_RENESAS_RTCA3)	+= rtc-renesas-rtca3.o
++obj-$(CONFIG_RTC_DRV_S32G)	+= rtc-s32g.o
+ obj-$(CONFIG_RTC_DRV_S35390A)	+= rtc-s35390a.o
+ obj-$(CONFIG_RTC_DRV_S3C)	+= rtc-s3c.o
+ obj-$(CONFIG_RTC_DRV_S5M)	+= rtc-s5m.o
+diff --git a/drivers/rtc/rtc-s32g.c b/drivers/rtc/rtc-s32g.c
+new file mode 100644
+index 000000000000..3a0818e972eb
+--- /dev/null
++++ b/drivers/rtc/rtc-s32g.c
+@@ -0,0 +1,385 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright 2025 NXP
++ */
++
++#include <linux/bitfield.h>
++#include <linux/clk.h>
++#include <linux/iopoll.h>
++#include <linux/of_irq.h>
++#include <linux/platform_device.h>
++#include <linux/rtc.h>
++
++#define RTCC_OFFSET	0x4ul
++#define RTCS_OFFSET	0x8ul
++#define APIVAL_OFFSET	0x10ul
++
++/* RTCC fields */
++#define RTCC_CNTEN				BIT(31)
++#define RTCC_APIEN				BIT(15)
++#define RTCC_APIIE				BIT(14)
++#define RTCC_CLKSEL_MASK		GENMASK(13, 12)
++#define RTCC_DIV512EN			BIT(11)
++#define RTCC_DIV32EN			BIT(10)
++
++/* RTCS fields */
++#define RTCS_INV_API	BIT(17)
++#define RTCS_APIF		BIT(13)
++
++#define APIVAL_MAX_VAL		GENMASK(31, 0)
++#define RTC_SYNCH_TIMEOUT	(100 * USEC_PER_MSEC)
++
++/*
++ * S32G2 and S32G3 SoCs have RTC clock source1 reserved and
++ * should not be used.
++ */
++#define RTC_CLK_SRC1_RESERVED		BIT(1)
++
++/*
++ * S32G RTC module has a 512 value and a 32 value hardware frequency
++ * divisors (DIV512 and DIV32) which could be used to achieve higher
++ * counter ranges by lowering the RTC frequency.
++ */
++enum {
++	DIV1 = 1,
++	DIV32 = 32,
++	DIV512 = 512,
++	DIV512_32 = 16384
++};
++
++static const char *const rtc_clk_src[] = {
++	"source0",
++	"source1",
++	"source2",
++	"source3"
++};
++
++struct rtc_priv {
++	struct rtc_device *rdev;
++	void __iomem *rtc_base;
++	struct clk *ipg;
++	struct clk *clk_src;
++	const struct rtc_soc_data *rtc_data;
++	u64 rtc_hz;
++	time64_t sleep_sec;
++	int irq;
++	u32 clk_src_idx;
++};
++
++struct rtc_soc_data {
++	u32 clk_div;
++	u32 reserved_clk_mask;
++};
++
++static const struct rtc_soc_data rtc_s32g2_data = {
++	.clk_div = DIV512_32,
++	.reserved_clk_mask = RTC_CLK_SRC1_RESERVED,
++};
++
++static irqreturn_t s32g_rtc_handler(int irq, void *dev)
++{
++	struct rtc_priv *priv = platform_get_drvdata(dev);
++	u32 status;
++
++	status = readl(priv->rtc_base + RTCS_OFFSET);
++
++	if (status & RTCS_APIF) {
++		writel(0x0, priv->rtc_base + APIVAL_OFFSET);
++		writel(status | RTCS_APIF, priv->rtc_base + RTCS_OFFSET);
++	}
++
++	rtc_update_irq(priv->rdev, 1, RTC_IRQF | RTC_AF);
++
++	return IRQ_HANDLED;
++}
++
++/*
++ * The function is not really getting time from the RTC since the S32G RTC
++ * has several limitations. Thus, to setup alarm use system time.
++ */
++static int s32g_rtc_read_time(struct device *dev,
++			      struct rtc_time *tm)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++	time64_t sec;
++
++	if (check_add_overflow(ktime_get_real_seconds(),
++			       priv->sleep_sec, &sec))
++		return -ERANGE;
++
++	rtc_time64_to_tm(sec, tm);
++
++	return 0;
++}
++
++static int s32g_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++	u32 rtcc, rtcs;
++
++	rtcc = readl(priv->rtc_base + RTCC_OFFSET);
++	rtcs = readl(priv->rtc_base + RTCS_OFFSET);
++
++	alrm->enabled = rtcc & RTCC_APIIE;
++	if (alrm->enabled)
++		alrm->pending = !(rtcs & RTCS_APIF);
++
++	return 0;
++}
++
++static int s32g_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++	u32 rtcc;
++
++	/* RTC API functionality is used both for triggering interrupts
++	 * and as a wakeup event. Hence it should always be enabled.
++	 */
++	rtcc = readl(priv->rtc_base + RTCC_OFFSET);
++	rtcc |= RTCC_APIEN | RTCC_APIIE;
++	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
++
++	return 0;
++}
++
++static int s32g_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++	unsigned long long cycles;
++	long long t_offset;
++	time64_t alrm_time;
++	u32 rtcs;
++	int ret;
++
++	alrm_time = rtc_tm_to_time64(&alrm->time);
++	t_offset = alrm_time - ktime_get_real_seconds() - priv->sleep_sec;
++	if (t_offset < 0)
++		return -ERANGE;
++
++	cycles = t_offset * priv->rtc_hz;
++	if (cycles > APIVAL_MAX_VAL)
++		return -ERANGE;
++
++	/* APIVAL could have been reset from the IRQ handler.
++	 * Hence, we wait in case there is a synchronization process.
++	 */
++	ret = read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
++				0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
++	if (ret)
++		return ret;
++
++	writel(cycles, priv->rtc_base + APIVAL_OFFSET);
++
++	return read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
++				0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
++}
++
++/*
++ * Disable the 32-bit free running counter.
++ * This allows Clock Source and Divisors selection
++ * to be performed without causing synchronization issues.
++ */
++static void s32g_rtc_disable(struct rtc_priv *priv)
++{
++	u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
++
++	rtcc &= ~RTCC_CNTEN;
++	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
++}
++
++static void s32g_rtc_enable(struct rtc_priv *priv)
++{
++	u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
++
++	rtcc |= RTCC_CNTEN;
++	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
++}
++
++static int rtc_clk_src_setup(struct rtc_priv *priv)
++{
++	u32 rtcc;
++
++	rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
++
++	switch (priv->rtc_data->clk_div) {
++	case DIV512_32:
++		rtcc |= RTCC_DIV512EN;
++		rtcc |= RTCC_DIV32EN;
++		break;
++	case DIV512:
++		rtcc |= RTCC_DIV512EN;
++		break;
++	case DIV32:
++		rtcc |= RTCC_DIV32EN;
++		break;
++	case DIV1:
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	rtcc |= RTCC_APIEN | RTCC_APIIE;
++	/*
++	 * Make sure the CNTEN is 0 before we configure
++	 * the clock source and dividers.
++	 */
++	s32g_rtc_disable(priv);
++	writel(rtcc, priv->rtc_base + RTCC_OFFSET);
++	s32g_rtc_enable(priv);
++
++	return 0;
++}
++
++static const struct rtc_class_ops rtc_ops = {
++	.read_time = s32g_rtc_read_time,
++	.read_alarm = s32g_rtc_read_alarm,
++	.set_alarm = s32g_rtc_set_alarm,
++	.alarm_irq_enable = s32g_rtc_alarm_irq_enable,
++};
++
++static int rtc_clk_dts_setup(struct rtc_priv *priv,
++			     struct device *dev)
++{
++	u32 i;
++
++	priv->ipg = devm_clk_get_enabled(dev, "ipg");
++	if (IS_ERR(priv->ipg))
++		return dev_err_probe(dev, PTR_ERR(priv->ipg),
++				"Failed to get 'ipg' clock\n");
++
++	for (i = 0; i < ARRAY_SIZE(rtc_clk_src); i++) {
++		if (priv->rtc_data->reserved_clk_mask & BIT(i))
++			return -EOPNOTSUPP;
++
++		priv->clk_src = devm_clk_get_enabled(dev, rtc_clk_src[i]);
++		if (!IS_ERR(priv->clk_src)) {
++			priv->clk_src_idx = i;
++			break;
++		}
++	}
++
++	if (IS_ERR(priv->clk_src))
++		return dev_err_probe(dev, PTR_ERR(priv->clk_src),
++				"Failed to get rtc module clock source\n");
++
++	return 0;
++}
++
++static int s32g_rtc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct rtc_priv *priv;
++	unsigned long rtc_hz;
++	int ret;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->rtc_data = of_device_get_match_data(dev);
++	if (!priv->rtc_data)
++		return -ENODEV;
++
++	priv->rtc_base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(priv->rtc_base))
++		return PTR_ERR(priv->rtc_base);
++
++	device_init_wakeup(dev, true);
++
++	ret = rtc_clk_dts_setup(priv, dev);
++	if (ret)
++		return ret;
++
++	priv->rdev = devm_rtc_allocate_device(dev);
++	if (IS_ERR(priv->rdev))
++		return PTR_ERR(priv->rdev);
++
++	ret = rtc_clk_src_setup(priv);
++	if (ret)
++		return ret;
++
++	priv->irq = platform_get_irq(pdev, 0);
++	if (priv->irq < 0) {
++		ret = priv->irq;
++		goto disable_rtc;
++	}
++
++	rtc_hz = clk_get_rate(priv->clk_src);
++	if (!rtc_hz) {
++		dev_err(dev, "Failed to get RTC frequency\n");
++		ret = -EINVAL;
++		goto disable_rtc;
++	}
++
++	priv->rtc_hz = DIV_ROUND_UP(rtc_hz, priv->rtc_data->clk_div);
++
++	platform_set_drvdata(pdev, priv);
++	priv->rdev->ops = &rtc_ops;
++
++	ret = devm_request_irq(dev, priv->irq,
++			       s32g_rtc_handler, 0, dev_name(dev), pdev);
++	if (ret) {
++		dev_err(dev, "Request interrupt %d failed, error: %d\n",
++			priv->irq, ret);
++		goto disable_rtc;
++	}
++
++	ret = devm_rtc_register_device(priv->rdev);
++	if (ret)
++		goto disable_rtc;
++
++	return 0;
++
++disable_rtc:
++	s32g_rtc_disable(priv);
++	return ret;
++}
++
++static int s32g_rtc_suspend(struct device *dev)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++	u32 apival = readl(priv->rtc_base + APIVAL_OFFSET);
++
++	if (check_add_overflow(priv->sleep_sec, div64_u64(apival, priv->rtc_hz),
++			       &priv->sleep_sec)) {
++		dev_warn(dev, "Overflow on sleep cycles occurred. Resetting to 0.\n");
++		priv->sleep_sec = 0;
++	}
++
++	return 0;
++}
++
++static int s32g_rtc_resume(struct device *dev)
++{
++	struct rtc_priv *priv = dev_get_drvdata(dev);
++
++	/* The transition from resume to run is a reset event.
++	 * This leads to the RTC registers being reset after resume from
++	 * suspend. It is uncommon, but this behaviour has been observed
++	 * on S32G RTC after issuing a Suspend to RAM operation.
++	 * Thus, reconfigure RTC registers on the resume path.
++	 */
++	return rtc_clk_src_setup(priv);
++}
++
++static const struct of_device_id rtc_dt_ids[] = {
++	{ .compatible = "nxp,s32g2-rtc", .data = &rtc_s32g2_data },
++	{ /* sentinel */ },
++};
++
++static DEFINE_SIMPLE_DEV_PM_OPS(s32g_rtc_pm_ops,
++			 s32g_rtc_suspend, s32g_rtc_resume);
++
++static struct platform_driver s32g_rtc_driver = {
++	.driver = {
++		.name = "s32g-rtc",
++		.pm = pm_sleep_ptr(&s32g_rtc_pm_ops),
++		.of_match_table = rtc_dt_ids,
++	},
++	.probe = s32g_rtc_probe,
++};
++module_platform_driver(s32g_rtc_driver);
++
++MODULE_AUTHOR("NXP");
++MODULE_DESCRIPTION("NXP RTC driver for S32G2/S32G3");
++MODULE_LICENSE("GPL");
 -- 
 2.45.2
 
