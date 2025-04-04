@@ -1,123 +1,159 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C3A18EFD4
-	for <imx@lists.linux.dev>; Fri,  4 Apr 2025 11:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8D31DE4D3;
+	Fri,  4 Apr 2025 11:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743765948; cv=none; b=GuK8fzZfmuqwYUs8lNo9L7hAC68StIKw4OutGeozfMbLWA//setHwqtvO8cIyJ3SO7Pfa846AASS1frDJ7geDVNAnYaon/CMaEthsM4S3L0plNabXp6xgFeveZGyG/3WWLkGsY5QvpkWlAXCuB5VbB0qB4PgkI/kP3BC14BwceY=
+	t=1743766334; cv=none; b=ZKnlk/qb43cPBSv/MgZN6TRpiQqLUZ3pZus9wtWvKnYfr8dlROXt63qatGjMrMEm2V0oO7p26CFRC1L2CvaxbTqDTSOKSpdYtHRXjz0SZqCFCnHJ9zSmI6AdcFdgps0O78RCDu6wwi5+vKb6kUiRPXiovttp5uw7VydyhBKWysA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743765948; c=relaxed/simple;
-	bh=0tQ/t1mzdr6retFmDkrkFsBJ3Zo6UBCaL1vFCtbj47w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ErHXJL1yykwi0hCyqGS8C7zFfLAzl3vk3RmmcK/ATRYRObIQrXj2P99ezXoS2c2Tdjp7cIUYPuJgJJEusfvD4U/4afd9e1MF0+ogyXcUEY/cnuaMjzXvWvuqfbr1kSZS3SAaRX4+y78xI2+NHbyiytCPdCRZCpG7ZMjFmyIDefk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GD9WVjaW; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743766334; c=relaxed/simple;
+	bh=mKsqKGG/7YSKHNxFBBuOvn0Q62p5t5UmUS+Llf4Xv+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r5Q81Do0BtxVzswItm4V42X73wouKNmELhW3YiCUQ+i0BScSLpy/BhqKJCPAS5DrSY1bHNEWE+8LX0KaS1RrniBCXkBRd8E3Bv1z/xduAWtoSXNai+If3yINOeZA4Azu2RaaL4trrt6P7s85MTdIyclbRR2l9wt0wt/lchiZt2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=nJwsmtKf; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GD9WVjaW"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3014ae35534so1602320a91.0
-        for <imx@lists.linux.dev>; Fri, 04 Apr 2025 04:25:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743765946; x=1744370746; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2H82D3ceyz7r5Ot6awJCahu6BBXmvQb/jfXpvl9UcwY=;
-        b=GD9WVjaWqie4QEmz8EF2Fsm8MCKFuG51bxsk2HoAZy+vBWrace8MGJHAzgNfkLwEC9
-         vveQkGvJZx4pyko2xGm96WY8qrqKuCSgtZLoZaoJKfGSVNggSn/09W67SyjbCdc37iw+
-         gLDofw+OqBDV1K60iaAGgvOqTZvkpyvsDU90qhbUNu1JkZ0HF4MBmhwWQyA9QQaEzcyZ
-         YLRehg8xvVuiFcc8oWH+HHv3MYRKukrmmbwCV00bUiUK8dZjejTrCZfyalT8u2+Z6D7U
-         wOWYV6KdbjxppnWu8YNYzmWQ1eyNIw+RYG1mmuS0QS+0FFRpFflszOArTv0dSZY1qpyL
-         vOMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743765946; x=1744370746;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2H82D3ceyz7r5Ot6awJCahu6BBXmvQb/jfXpvl9UcwY=;
-        b=fop6oho2cWr0Kb/okqGCAA1AZATV2TNNfSa2q0ztcllfXPe7l/2qe+Tg10m0J0AEkZ
-         KwK197f/LSXEHEmeSEArsvgtplJjefKyexOOAlqkBEkg6w3nMqSzKyI7JmPkvTwmLJ+c
-         CGAH6nQJTTdwFj7CkF6GP0tudNal1VS4dRtC9LaHJI+upGzx5vfvWHnsgtWyFpHHYOGB
-         ig+Vgwgvwbz0Nrw4Jp8Fkb94YWV522KzJ2pG1ycJs5KJU2d/SbMfh8tAysOa3F1XkVDs
-         3XksiMbktukYAY5RDPk/EwMOjU27z8wofwrkS0mRhL/xRPOR2anULTW2D/sF+8aPeo5L
-         V/4g==
-X-Forwarded-Encrypted: i=1; AJvYcCV7g8rzbtrevzyb12nPFF8qmNKjnQ9W4O50wynnjtS0H3PIFZnjYq+/vxDeRqr52ey8lyk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxK+ucL18yEfF/DuoCQJCbNGS8ME9oLxYXtYmT440Ql+Ot0A22n
-	9fn2K+eyBlGLnzkXeEBMtCUo0s6BQrW7n4jqSESUPF5i3QODGnt3wM2r/VZFZOjwOqcpCLqmzzp
-	Ug6X+lX2h9OkuFJBYbX0UWIMCdqGmbzgxFVn2HA==
-X-Gm-Gg: ASbGncvtK+s8emqi298zLVFov3KNjX/Ps2TlPp4AzLHy92mv0zdQuWz5/nQPRV6ub50
-	x1kXW48o2omi3Yhegl2t5VU4GZwAFUX2pqKaHzsvtXWtAXK9ktpHw/YTVvVAm0+DjsyycLaI0hG
-	Tq18CPcit6F28tArFfPpkwsgg=
-X-Google-Smtp-Source: AGHT+IHzfIJRZpdeONCKC1hscbpEHgL+eOok3ABpVp7t0jI5xsF+h571shGT73MMq7pH/ucoJCkY3wGkF1YG+WPKcMw=
-X-Received: by 2002:a17:90b:5443:b0:2ff:796b:4d05 with SMTP id
- 98e67ed59e1d1-306a485edb0mr4690761a91.11.1743765945929; Fri, 04 Apr 2025
- 04:25:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="nJwsmtKf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1743766330;
+	bh=mKsqKGG/7YSKHNxFBBuOvn0Q62p5t5UmUS+Llf4Xv+o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nJwsmtKfCOFaRLtdheNLsrNXHau0c/Rn80fSu9DFp9dqh0mpVplJjf/RJDWsDppZj
+	 K1nRgU79IM9C/BB+INNLF9qPLoZM7FIfqo2dV2MHBZUrapbHXtTlVoq7Ee9D1ZuTvA
+	 8qMfMD5BzgJZ3gmloXl2Iny0cRXUy6qQFCGB+CGeaUn3O6T65csyfoVewC2Of83ZOo
+	 DuOsYQX6Qzp1rE1hL6kbztBjhtqz9ZmJEip0zPfqu9MltVplyd30pOV4KbwFUoQRBU
+	 iTCF9mpsJt0L86KQv1XekkmXzJkOvzzXy+fkz+jnQl6cJXvttX+etNTWbve4UriaIw
+	 PY8YN9NjjTqAA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 17A6A17E0865;
+	Fri,  4 Apr 2025 13:32:08 +0200 (CEST)
+Message-ID: <2a12c4e7-7df7-49c7-8abe-1c5ee769cfcc@collabora.com>
+Date: Fri, 4 Apr 2025 13:32:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250404105359.18632-1-ivitro@gmail.com> <20250404105359.18632-2-ivitro@gmail.com>
-In-Reply-To: <20250404105359.18632-2-ivitro@gmail.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 4 Apr 2025 14:27:31 +0300
-X-Gm-Features: AQ5f1Jo_vwVCsJBIV6IqomEQgPPhk2OrizKxFzdzrwjdmKaE32nMnNYDWv9ZEsk
-Message-ID: <CAEnQRZAkPJJRit7qrxHc4KtaR8Xej9qBZYgYTukWtKM6fwTSnw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] arm64: dts: freescale: add Toradex SMARC iMX8MP
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vitor Soares <vitor.soares@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/19] dt-bindings: arm/cpus: Add missing properties
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com,
+ Conor Dooley <conor@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
+References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
+ <20250403-dt-cpu-schema-v1-17-076be7171a85@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20250403-dt-cpu-schema-v1-17-076be7171a85@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 4, 2025 at 1:56=E2=80=AFPM Vitor Soares <ivitro@gmail.com> wrot=
-e:
->
-> From: Vitor Soares <vitor.soares@toradex.com>
->
-> Add DT support for Toradex SMARC iMX8MP SoM and Toradex SMARC Development
-> carrier board.
->
-> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-im=
-x-8m-plus
-> Link: https://www.toradex.com/products/carrier-board/smarc-development-bo=
-ard-kit
-> Co-developed-by: Hiago De Franco <hiago.franco@toradex.com>
-> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+Il 04/04/25 04:59, Rob Herring (Arm) ha scritto:
+> The Arm CPU schema is missing a number of properties already in use.
+> This has gone unnoticed as extra properties have not been restricted.
+> Add a missing reference to cpu.yaml, and add all the missing properties.
+> 
+> As "clock-latency" and "voltage-tolerance" are related to opp-v1, add
+> those properties to the opp-v1.yaml schema.
+> 
+> With this, other properties can be prevented from creeping in with
+> 'unevaluatedProperties: false'.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  arch/arm64/boot/dts/freescale/Makefile        |    1 +
->  .../freescale/imx8mp-toradex-smarc-dev.dts    |  297 ++++
->  .../dts/freescale/imx8mp-toradex-smarc.dtsi   | 1288 +++++++++++++++++
->  3 files changed, 1586 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-de=
-v.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dt=
-si
->
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
-/freescale/Makefile
-> index b6d3fe26d621..8106dbeffd3e 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -221,6 +221,7 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-venice-gw73xx-2x.d=
-tb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-venice-gw74xx.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-venice-gw75xx-2x.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-venice-gw82xx-2x.dtb
-> +dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-toradex-smarc-dev.dtb
+>   Documentation/devicetree/bindings/arm/cpus.yaml   | 46 ++++++++++++++++++++++-
+>   Documentation/devicetree/bindings/opp/opp-v1.yaml | 16 ++++++++
+>   2 files changed, 61 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/cpus.yaml b/Documentation/devicetree/bindings/arm/cpus.yaml
+> index 3d2b6286efb8..6f74ebfd38df 100644
+> --- a/Documentation/devicetree/bindings/arm/cpus.yaml
+> +++ b/Documentation/devicetree/bindings/arm/cpus.yaml
+> @@ -299,6 +299,16 @@ properties:
+>   
+>         where voltage is in V, frequency is in MHz.
+>   
+> +  interconnects:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  nvmem-cells:
+> +    maxItems: 1
+> +
+> +  nvmem-cell-names:
+> +    const: speed_grade
+> +
+>     performance-domains:
+>       maxItems: 1
+>   
+> @@ -317,6 +327,31 @@ properties:
+>         corresponding to the index of an SCMI performance domain provider, must be
+>         "perf".
+>   
+> +  resets:
+> +    maxItems: 1
+> +
+> +  arm-supply:
+> +    deprecated: true
+> +    description: Use 'cpu-supply' instead
+> +
+> +  cpu0-supply:
+> +    deprecated: true
+> +    description: Use 'cpu-supply' instead
+> +
+> +  mem-supply: true
+> +
+> +  proc-supply:
+> +    deprecated: true
+> +    description: Use 'cpu-supply' instead
+> +
+> +  sram-supply:
+> +    deprecated: true
+> +    description: Use 'mem-supply' instead
+> +
+> +  mediatek,cci:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: Link to Mediatek Cache Coherent Interconnect
 
-I think here we should go in alphabetical order. So move this in the
-proper place.
+s/Mediatek/MediaTek/g please :-)
 
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-verdin-nonwifi-dahlia.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-verdin-nonwifi-dev.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx8mp-verdin-nonwifi-ivy.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts b=
-/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
+Anyway:
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+
