@@ -1,349 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FFE1EA7D3;
-	Fri,  4 Apr 2025 03:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E8C2E62D4;
+	Fri,  4 Apr 2025 06:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743735608; cv=none; b=frHoOBV7NCnisA2+wTi4HiKeuSxTYqH/revKdfIvqSAs8HZtgCXQ9vOJclGu1uo7YHKA0VwJSvdian7OwFzV7gXY0v75xWdTVJLZPBRkZEonaKlEr/zhwEMVms0aqPPQSQ8/0g9e2hJhromRgqgj6QWYIWEpXxt4vHF9EcHWP1g=
+	t=1743747445; cv=none; b=K9YxU3etUbgkQCvD3rGcE+O/eNnQZeLqLsleIeX32wdDU13GUvXHCvbaNAI9E+Rx0s8byBYlad9Hc2Kxvh1Sf+tAq6PVGEkoekOxIWIaBmsdG5fpFGntXP83yan47yZB8mljhaXXha4nc118T4np15C9XeHl67jeGDSfUwuLK1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743735608; c=relaxed/simple;
-	bh=+bglFes+JWUyYqhoWvdBTyyAUTU6Hu68wW9iKCwLBnY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T3vzCW2csWyQQwS3YUVXhlHwsgdSP1pP5zga5dn5g/rM8iZ/laffF1ocfXgt7Yqnosc6LquwTtSq+u/SITm2gSE65OujzqnB2tnaPh5Yo51D4YaF6BtntGkuc9DsCR4dHLV0vi74CJjENCGN17TKddxpUME/aaLQHGA3DTt8ak4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzYCy357; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743747445; c=relaxed/simple;
+	bh=zzuIoIHMmboa56JX2clz3G2WJCX1g9JFwev72MAeTDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sj7xA+89jDEFpYmB2cKMOlt7Ex208cYToQhaECXjAhsAbM7ZdduNcEm8Qrq4uVBVth9Ho+nNPnVwoJVXDmlMo3E3o9IQZDBBOF7owTYoD2P151y80s3pKz3UQCiva+QYirBflZlONCzjUQ8zkGOBr9zwjt1mtEP3P21Lh11fzUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvzoC6dq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzYCy357"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F80C4CEE3;
-	Fri,  4 Apr 2025 03:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvzoC6dq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA084C4CEE9;
+	Fri,  4 Apr 2025 06:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743735606;
-	bh=+bglFes+JWUyYqhoWvdBTyyAUTU6Hu68wW9iKCwLBnY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZzYCy3572wAcb8VXN5IFR/xxSAoz+Ll8686K4A7qg8wIFI38fvJ8QSFQwX/eI7L6g
-	 9GswgwONrsiJoNkwsyrplALvNfCFcd8MaJKyb2kpDe/SMbAsiOEjmnUMrHu/+qEU44
-	 fc6+c+FKbR7mO9dkD4/sTpNP2Yvqw5zu1a79e2a7C/Y3mq9VrjXacawISc3gE7kwgm
-	 R1rrrZ20y/p8is2HZkHzkIPf4pvhIgTK1ctQnusjL0OrXjK1ZXlPMNFNLcVp0TxB9Z
-	 E9pl1+SlJ/3xi8ckKlkbV5SPf06nhMkBkco7rmYFgKHjgOa8xRquq6E/AnK3C/a00M
-	 T7EX1lGR7l7NQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Thu, 03 Apr 2025 21:59:40 -0500
-Subject: [PATCH 19/19] dt-bindings: cpufreq: Drop redundant Mediatek
- binding
+	s=k20201202; t=1743747444;
+	bh=zzuIoIHMmboa56JX2clz3G2WJCX1g9JFwev72MAeTDU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OvzoC6dqqE/7J7Uqq1TsdbtKi+Wqhb1nEqTLFdGHJXKabmUrvtQEsBazV3ZwM9Dpf
+	 kYA+uBGwiC/nkJ3SPQLKz65cSUPla9vaD2msoJg6tsLiV1VPY4wRY131572PrcVsAA
+	 4uJ6UZyYyXqp+CrHVtEsn7KMiCz+dvxyocKbcJW5ZsZdHcN1XAOScHmqraf3S2Jh98
+	 s3aeiGR/RCntwrxrB83czJ3rbjKuGT5UF9h36Y1lWxYUO4lOlfLZwU9Syz4dNrSDRd
+	 dPUy7mlKuFMtUh9mj7s4VrhAtYQgPQEVhUArlrLEINkf05Vxy/ciEf+KzL/MOANVu6
+	 3b3nN4Pl+CmgQ==
+Message-ID: <c4a80c1f-56a0-4cdf-afbd-cb2c13cc0b8b@kernel.org>
+Date: Fri, 4 Apr 2025 08:17:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/4] arm64: defconfig: add S32G RTC module support
+To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
+References: <20250403103346.3064895-1-ciprianmarian.costea@oss.nxp.com>
+ <20250403103346.3064895-4-ciprianmarian.costea@oss.nxp.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250403103346.3064895-4-ciprianmarian.costea@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250403-dt-cpu-schema-v1-19-076be7171a85@kernel.org>
-References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
-In-Reply-To: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
- Conor Dooley <conor@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Steen Hegelund <Steen.Hegelund@microchip.com>, 
- Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org, 
- imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
-X-Mailer: b4 0.15-dev
 
-The Mediatek CPUFreq binding document just describes properties from
-the CPU node which the driver uses. This is redundant as all the
-properties are described in the arm/cpus.yaml schema.
+On 03/04/2025 12:33, Ciprian Costea wrote:
+> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> 
+> The RTC hardware module present on S32G based SoCs tracks clock time
+> during system suspend and it is used as a wakeup source on S32G2/S32G3
+> architecture.
+Which boards are using it? I don't see any DTS (nowhere), so I do not
+see single reason for this patch.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../bindings/cpufreq/cpufreq-mediatek.txt          | 250 ---------------------
- 1 file changed, 250 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt b/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt
-deleted file mode 100644
-index e0a4ba599abc..000000000000
---- a/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt
-+++ /dev/null
-@@ -1,250 +0,0 @@
--Binding for MediaTek's CPUFreq driver
--=====================================
--
--Required properties:
--- clocks: A list of phandle + clock-specifier pairs for the clocks listed in clock names.
--- clock-names: Should contain the following:
--	"cpu"		- The multiplexer for clock input of CPU cluster.
--	"intermediate"	- A parent of "cpu" clock which is used as "intermediate" clock
--			  source (usually MAINPLL) when the original CPU PLL is under
--			  transition and not stable yet.
--	Please refer to Documentation/devicetree/bindings/clock/clock-bindings.txt for
--	generic clock consumer properties.
--- operating-points-v2: Please refer to Documentation/devicetree/bindings/opp/opp-v2.yaml
--	for detail.
--- proc-supply: Regulator for Vproc of CPU cluster.
--
--Optional properties:
--- sram-supply: Regulator for Vsram of CPU cluster. When present, the cpufreq driver
--	       needs to do "voltage tracking" to step by step scale up/down Vproc and
--	       Vsram to fit SoC specific needs. When absent, the voltage scaling
--	       flow is handled by hardware, hence no software "voltage tracking" is
--	       needed.
--- mediatek,cci:
--	Used to confirm the link status between cpufreq and mediatek cci. Because
--	cpufreq and mediatek cci could share the same regulator in some MediaTek SoCs.
--	To prevent the issue of high frequency and low voltage, we need to use this
--	property to make sure mediatek cci is ready.
--	For details of mediatek cci, please refer to
--	Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml
--- #cooling-cells:
--	For details, please refer to
--	Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
--
--Example 1 (MT7623 SoC):
--
--	cpu_opp_table: opp_table {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-598000000 {
--			opp-hz = /bits/ 64 <598000000>;
--			opp-microvolt = <1050000>;
--		};
--
--		opp-747500000 {
--			opp-hz = /bits/ 64 <747500000>;
--			opp-microvolt = <1050000>;
--		};
--
--		opp-1040000000 {
--			opp-hz = /bits/ 64 <1040000000>;
--			opp-microvolt = <1150000>;
--		};
--
--		opp-1196000000 {
--			opp-hz = /bits/ 64 <1196000000>;
--			opp-microvolt = <1200000>;
--		};
--
--		opp-1300000000 {
--			opp-hz = /bits/ 64 <1300000000>;
--			opp-microvolt = <1300000>;
--		};
--	};
--
--	cpu0: cpu@0 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x0>;
--		clocks = <&infracfg CLK_INFRA_CPUSEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table>;
--		#cooling-cells = <2>;
--	};
--	cpu@1 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x1>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--	cpu@2 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x2>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--	cpu@3 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x3>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--
--Example 2 (MT8173 SoC):
--	cpu_opp_table_a: opp_table_a {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-507000000 {
--			opp-hz = /bits/ 64 <507000000>;
--			opp-microvolt = <859000>;
--		};
--
--		opp-702000000 {
--			opp-hz = /bits/ 64 <702000000>;
--			opp-microvolt = <908000>;
--		};
--
--		opp-1001000000 {
--			opp-hz = /bits/ 64 <1001000000>;
--			opp-microvolt = <983000>;
--		};
--
--		opp-1105000000 {
--			opp-hz = /bits/ 64 <1105000000>;
--			opp-microvolt = <1009000>;
--		};
--
--		opp-1183000000 {
--			opp-hz = /bits/ 64 <1183000000>;
--			opp-microvolt = <1028000>;
--		};
--
--		opp-1404000000 {
--			opp-hz = /bits/ 64 <1404000000>;
--			opp-microvolt = <1083000>;
--		};
--
--		opp-1508000000 {
--			opp-hz = /bits/ 64 <1508000000>;
--			opp-microvolt = <1109000>;
--		};
--
--		opp-1573000000 {
--			opp-hz = /bits/ 64 <1573000000>;
--			opp-microvolt = <1125000>;
--		};
--	};
--
--	cpu_opp_table_b: opp_table_b {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-507000000 {
--			opp-hz = /bits/ 64 <507000000>;
--			opp-microvolt = <828000>;
--		};
--
--		opp-702000000 {
--			opp-hz = /bits/ 64 <702000000>;
--			opp-microvolt = <867000>;
--		};
--
--		opp-1001000000 {
--			opp-hz = /bits/ 64 <1001000000>;
--			opp-microvolt = <927000>;
--		};
--
--		opp-1209000000 {
--			opp-hz = /bits/ 64 <1209000000>;
--			opp-microvolt = <968000>;
--		};
--
--		opp-1404000000 {
--			opp-hz = /bits/ 64 <1007000000>;
--			opp-microvolt = <1028000>;
--		};
--
--		opp-1612000000 {
--			opp-hz = /bits/ 64 <1612000000>;
--			opp-microvolt = <1049000>;
--		};
--
--		opp-1807000000 {
--			opp-hz = /bits/ 64 <1807000000>;
--			opp-microvolt = <1089000>;
--		};
--
--		opp-1989000000 {
--			opp-hz = /bits/ 64 <1989000000>;
--			opp-microvolt = <1125000>;
--		};
--	};
--
--	cpu0: cpu@0 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a53";
--		reg = <0x000>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA53SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_a>;
--	};
--
--	cpu1: cpu@1 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a53";
--		reg = <0x001>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA53SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_a>;
--	};
--
--	cpu2: cpu@100 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a72";
--		reg = <0x100>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA72SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_b>;
--	};
--
--	cpu3: cpu@101 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a72";
--		reg = <0x101>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA72SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_b>;
--	};
--
--	&cpu0 {
--		proc-supply = <&mt6397_vpca15_reg>;
--	};
--
--	&cpu1 {
--		proc-supply = <&mt6397_vpca15_reg>;
--	};
--
--	&cpu2 {
--		proc-supply = <&da9211_vcpu_reg>;
--		sram-supply = <&mt6397_vsramca7_reg>;
--	};
--
--	&cpu3 {
--		proc-supply = <&da9211_vcpu_reg>;
--		sram-supply = <&mt6397_vsramca7_reg>;
--	};
-
--- 
-2.47.2
-
+Best regards,
+Krzysztof
