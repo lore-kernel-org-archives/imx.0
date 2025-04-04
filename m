@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1471E834C;
-	Fri,  4 Apr 2025 13:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC59E82D98;
+	Fri,  4 Apr 2025 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743772169; cv=none; b=DOJiP3UWeAMufjg0uKO4aamRya32iuuLfZYrfLtCTvCpa81Zv+kzBTayLEphoEmY19NeJ0qhFw2rOEy1JKZGZf7/CcdB4wqlKYsyzoIYhjYLRFtdWGs9vqakaHjSzwprrZUUqplhFP0xIOaGLhIPMNOeIkMvmjT3TV2p+5cTOtM=
+	t=1743772723; cv=none; b=WBHtB2gECLN3nVmSfJXc9J83/HAPpYVVBjX8KMq6rwFjjzOML+6+X+oQWfFFFz0jVLuZbcKLg4u3HT0y0Y0hkBWRMATV3ouW9PFjw/a5kgKGptbAuLAT8g136HS5KPZoSqd1DGYk4G3I7F6QwhFzkGxOMac3O82l0oPsWLRKsdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743772169; c=relaxed/simple;
-	bh=dXvLo65uum190+DYUNNlALy+j1eqU6jZE1YhXB2VRzw=;
+	s=arc-20240116; t=1743772723; c=relaxed/simple;
+	bh=8p+c4MB2Vz2NLD+RiN8PNGA7Pc+YAFAuwCP+/mMX5Bs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X0C38h8UEJzIXSS/9JOIPJiJ6AB+cj8YLrkPrMKqB7h4qfOqC8nPG7puMNDrd2W4Dq6dyluCNQTX/FuNno8sX+WZeBsbz8z0/1Yb/xNAqLTiWlozLxLJ2GzV3CsTfRshfpbnHI074deaV0xSgy+HJnhjtC48ZsCOM4wUevbLdzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDd3H0n4; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=AWCGWZhp7YoZZlgfZZe7UyhWysKClJPho1HADKGbjANSYTkBFqmzFQld4lxkAbBOwONv07sSO6+tZzfMUODb+kb0hxWBoAZ83WEGFTBQrLKx0svUjuWeQu5oBQFfjuuGro0uWI3eBXKkQfven8hkKdEdmomw4MB/VqPEzsI6/dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKW8BkEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDd3H0n4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85A0C4CEF1;
-	Fri,  4 Apr 2025 13:09:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKW8BkEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72201C4CEE9;
+	Fri,  4 Apr 2025 13:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743772168;
-	bh=dXvLo65uum190+DYUNNlALy+j1eqU6jZE1YhXB2VRzw=;
+	s=k20201202; t=1743772723;
+	bh=8p+c4MB2Vz2NLD+RiN8PNGA7Pc+YAFAuwCP+/mMX5Bs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GDd3H0n4Z0vbzhOAKBtX4aBm2VvNF3+IHAlBZcY+prFuXi8cUpHIAmcgMJANZtdgc
-	 SadmKjqoeeP3emGC4LnYFxHT6I2Z5k4Qigi/ixTpN0IjDgoC2YwqzWaLtiFw6MVdWY
-	 R51uqx4Vo1nBKrHVzBG0y29dCta48Jc5BLa59kSTc1THSL1yXM0eoSE65ifw4Hc4m9
-	 SWymD+qBgYbMWGz01AIzxcp4EAbHrwklRmWGHBAZsGAPODfBKuc22jPpwnuD0PsKUb
-	 4WzCQ8fABsmztu+A1EYwZSW/Iy8dxRsSFMwWpTf8Ntbimo0rh1MzNq8RAHcck28ns7
-	 PlZqBwK10PG0Q==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e5deb6482cso5753506a12.1;
-        Fri, 04 Apr 2025 06:09:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW/2n2Sf4PPXKtbmjFiPnRnrFw818H9QZudj4hlRfG8wAev/MqyjEcEVwU0g1bdzCnV6jE=@lists.linux.dev, AJvYcCXGFnloZKLbflIQYztN3HNFVSZbhky1RL4dbV3a5tvwm32bZHmoLkXdYr1haleCC2hFuYpX09NMDLT1Q7A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzx5msEQkyYCxu9xq1/qwVpwRwlHmy889aMSaCgU4HaAAJj/EZM
-	IDKIXgcmtJpk8ji7K3MSYZA2FZzQ8dZKNeijU1TQ2fKSgUhAkzFKCyzp/s4knVwKC8bXGQ2RfFG
-	DXWTRX0ywg4mmo2027eddgSerDA==
-X-Google-Smtp-Source: AGHT+IFIyAD0iksJ2rEYwVDKxfXp9paMa26qoweWItquite8ZOPf4g5g6GK5SE+pbTwu/1QEMoBYtzOxpeaG2eY6PCU=
-X-Received: by 2002:a17:907:6e8e:b0:ac2:d5d3:2b77 with SMTP id
- a640c23a62f3a-ac7d2e1b9c5mr344142866b.8.1743772167150; Fri, 04 Apr 2025
- 06:09:27 -0700 (PDT)
+	b=eKW8BkEPXJzBEfA6eyTODP0H96m9hqR98uXmWJ+NQbzBwEXHrdYrjtSd1C8RWZmfz
+	 2rcbpHdZXLJRVcFaE9n5Kp4yS8ugzHBQqGEDWJS2qXvoobc+wP2LpgFooZ3AZGa3xa
+	 6bKGGVFi85i5+b/AfCt8XkZRJhnqVnGqQ0ftCT5vqRVzGTuQFelxLx7V8tqxC1gZv7
+	 u1xcnhxGxabJM0V87wUWYVqmKLm/TNRviJGpd0rTUcnJlFhcHwhwwXhdKoE4G2UVgz
+	 pjRM+2K+IxITVbj+DgcmSYFJK28J91/7Ppto2N1C+xXzQUFvu+zdmpvR8Gf7606QS7
+	 J6mnKZPky2aVw==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac29af3382dso320292266b.2;
+        Fri, 04 Apr 2025 06:18:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUHY3hVErVrbFzeFT8hqHf6hPGNsvzJkmpme4MLUnkSmsBHwKvDijJmEbwWUTG3s+kq9yacS74SdRQDorU=@lists.linux.dev, AJvYcCWK0BgazMPYcWoqbaUz4bpn/Eb5RJp9eXyrRR/w3LCBfBEwtGbmEF4D6wElW1YXHHK4qWY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8bsNlt2G19BiaJZLBqQoxorSOeJEvcT/D8L4Ap8AP4p82sjcZ
+	DnNO7YusPYqQC85xAujZ5B/mprpj8vZhXnaj6HFoeqJkAwdqjj7LlIvB0j8BEiHxQLaAOlXHn7Z
+	+Zu20zC4htDA+eAqD5lEv31FJkQ==
+X-Google-Smtp-Source: AGHT+IGeMGvCEeK8AclL93nVBIzL9ZaOIe89VJXnsQlCY86LywWmTQFiXrpurfnLdBj4EjlXLbq/bSkPsN9UQIZ0bQ0=
+X-Received: by 2002:a17:907:7209:b0:ac3:45c6:a1ec with SMTP id
+ a640c23a62f3a-ac7d6d5dff4mr229454566b.25.1743772721929; Fri, 04 Apr 2025
+ 06:18:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,15 +43,16 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
- <20250403-dt-cpu-schema-v1-18-076be7171a85@kernel.org> <CAPDyKFrFRrPVJ_t0JrAE1VTbS02hwr=L-EHtqb7CQiWzB1MnQg@mail.gmail.com>
-In-Reply-To: <CAPDyKFrFRrPVJ_t0JrAE1VTbS02hwr=L-EHtqb7CQiWzB1MnQg@mail.gmail.com>
+ <20250403-dt-cpu-schema-v1-6-076be7171a85@kernel.org> <Z-_K2XDEcbtcCMVM@linaro.org>
+In-Reply-To: <Z-_K2XDEcbtcCMVM@linaro.org>
 From: Rob Herring <robh@kernel.org>
-Date: Fri, 4 Apr 2025 08:09:15 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKygxhcQ=PZW84sfiW7BVXKF839vfNyxS9GwAXuqmN=8g@mail.gmail.com>
-X-Gm-Features: ATxdqUFqb3GyPW1xY4MYIKArvKkAjEGffj80G84cX0XvObx4_cAf9jnDsr6emp0
-Message-ID: <CAL_JsqKygxhcQ=PZW84sfiW7BVXKF839vfNyxS9GwAXuqmN=8g@mail.gmail.com>
-Subject: Re: [PATCH 18/19] dt-bindings: arm/cpus: Add power-domains constraints
-To: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Fri, 4 Apr 2025 08:18:30 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJT-0gwvJnMb63izy6WwJpBVsswkauL8OMLCrF08q9HYQ@mail.gmail.com>
+X-Gm-Features: ATxdqUHOgMca65CFxOkpc1GwFhcina94zKtpSzj7uSzh0WZ2vI4WGj4U0KjYQTw
+Message-ID: <CAL_JsqJT-0gwvJnMb63izy6WwJpBVsswkauL8OMLCrF08q9HYQ@mail.gmail.com>
+Subject: Re: [PATCH 06/19] arm64: dts: qcom: msm8939: Fix CPU node
+ "enable-method" property dependencies
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
 Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
 	Samuel Holland <samuel@sholland.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -80,39 +81,29 @@ Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 4, 2025 at 5:37=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.org>=
- wrote:
+On Fri, Apr 4, 2025 at 7:04=E2=80=AFAM Stephan Gerhold
+<stephan.gerhold@linaro.org> wrote:
 >
-> On Fri, 4 Apr 2025 at 05:06, Rob Herring (Arm) <robh@kernel.org> wrote:
+> On Thu, Apr 03, 2025 at 09:59:27PM -0500, Rob Herring (Arm) wrote:
+> > The "qcom,acc" and "qcom,saw" properties aren't valid with "spin-table"
+> > enable-method nor are they used on 64-bit kernels, so they can be
+> > dropped.
 > >
-> > The "power-domains" and "power-domains-names" properties are missing an=
-y
-> > constraints. Add the constraints and drop the generic descriptions.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
-> >  Documentation/devicetree/bindings/arm/cpus.yaml | 8 ++------
-> >  1 file changed, 2 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/arm/cpus.yaml b/Document=
-ation/devicetree/bindings/arm/cpus.yaml
-> > index 6f74ebfd38df..5bd5822db8af 100644
-> > --- a/Documentation/devicetree/bindings/arm/cpus.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/cpus.yaml
-> > @@ -313,19 +313,15 @@ properties:
-> >      maxItems: 1
-> >
-> >    power-domains:
-> > -    description:
-> > -      List of phandles and PM domain specifiers, as defined by binding=
-s of the
-> > -      PM domain provider (see also ../power_domain.txt).
-> > +    maxItems: 1
 >
-> There are more than one in some cases. The most is probably three, I thin=
-k.
+> The bootloader we currently use on these devices reads these properties
+> to set up the spin-table, so removing these will break booting secondary
+> CPU cores.
+>
+> The motivation for implementing it that way was that 32-bit vs 64-bit
+> kernel shouldn't be relevant for the describing the hardware blocks in
+> the device tree. The code in the bootloader is generic and handles
+> different SoCs (e.g. msm8916 with 4 cores and msm8939 with 8 cores, the
+> enable sequences are identical).
+>
+> Can we keep this in somehow? To be fair, I'm not sure what property we
+> could match on to check if these properties are allowed ...
 
-Unless I missed it, testing says otherwise. What would the names be if
-more than 1 entry?
+Yes, we can keep them. We'll have to allow them with "spin-table" and
+"psci" I guess.
 
 Rob
