@@ -1,72 +1,72 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E571F2C5B
-	for <imx@lists.linux.dev>; Fri,  4 Apr 2025 20:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9F221C9F9
+	for <imx@lists.linux.dev>; Fri,  4 Apr 2025 20:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743798500; cv=none; b=NRUAmBinwRE3zakNwNEPqVCk0wdyRpJrpxKbkY6fop2KujCvlTuMYaYDXA8ZblPQY6GtA9p4dnfy7o2LjDapFFbmLOytgcTYc7ETV78qFSkplC4RWKUz/mbN20Ce1381sa8BTef/Qks3gxUu3GmY4DRXgXedmoXgK0AMpQZIe4U=
+	t=1743798654; cv=none; b=ncL0+F0eH1fwz7yarLimBaMbyb1ZDuy6uAiBr/ZY5t9/f+1CKJrI493BIDYtkgFJrwjKzWkh+KD+RBkv6cqSJYcUvHswxiHUrjRf+gnFIvZlRoXbSmek/YM1QZmYXqw0uruCNWEbeE66I+r8wcFjNJ/OCEKV1fr5OOceMLD+0dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743798500; c=relaxed/simple;
-	bh=6VdnbYhGy3r5+8eECcpomK5pToziEFD72vAtfF1wNLU=;
+	s=arc-20240116; t=1743798654; c=relaxed/simple;
+	bh=oBT4dqU35i3jNYaDg/R08akXO2az0Oc76Luk1EkR+II=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fghDya8L4CFl+Dryxq3RKJnilAfZRcetJBabAiqRHV8H9U1sFLgdjmNEJSIcfxWkTGnSO0TLHyplJj/P8ZmsLo8xxh10iCB8sq5uYNg7b9kkpDu+P1D/vvN8RlkG5D2+mJsZmG5y1ddFQOQQGZvu2cwAHlJA0DAF66pQbrsdJSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pJVvUSiH; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=ijcd4UW0dB1+aDRC9djSYPyJr4C8OgkCmoNm/ftY/Edxxm8MAYcIUEMXcOKYf6OlCtR42l3f3QhJo7OJnSiPEdmUxjS89pQK+G8aOsfmYE9A0Af33723gYei/TvWO6kruF5fukNqRAVaKThRnc+oMwHA7HO/sGtBu0Jn8C3Dn3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VEtxvX0y; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pJVvUSiH"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 534JEced005717
-	for <imx@lists.linux.dev>; Fri, 4 Apr 2025 20:28:16 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VEtxvX0y"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 534JEgq8014168
+	for <imx@lists.linux.dev>; Fri, 4 Apr 2025 20:30:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GHRYAy9VYazkChkIxg8YtCXwmpRsQX0Tl5KM+EPPgvU=; b=pJVvUSiHwqmvo86h
-	Mqz4Q/WnqANpbfqZlCaDSPUWlkMubqtdXp/NaRc9naRXuxP0prRMEmBbAV49djOi
-	UK+On9tkJ5vdP0DhZ1mRJXRhJXZ5vwWRG8XadPvXFA7XtnAQtQQrfaKi999ImzN9
-	BbLTI7PMR2ayw1pjmyL2JNIMFBjOIa/UvqdlknD7EToePBBBl2wQv0qZI1bqeDL5
-	xPLtEJAugYwpzUGlPHz+tngdqJ9Ss8wnwxuAxNHJOyJ4KtmGPSbkZ7v9QzqrdQkU
-	2hdWTedgIQq3DFuV39YYB9DewaZ+Y+vxeInHLQfMyWokX4IGTGB57SrId8+LNDot
-	T7f62Q==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45t2d52vw1-1
+	7hWRzIPdUXdKBlWVaK7wwLn27NVVJ/zKlX8uz3CkEsU=; b=VEtxvX0y4phHJf4s
+	ehGLNsWkMXWxhM24EkpJXM1djb9W9Wd/DqXBlImXSexeCSqf0aHinkAWtpXeOUhm
+	T+bWRnySeVvjcmTbRvIJomfylivgX/XwN/q3x4eAIK9k4UaX83gwQivU0WML71ri
+	uFCGE35Hcpe1+xzY3YzLhY2hpPMu3O7nqNlV4ZL258Gxr+ppYvexR29GlatgQ0sD
+	7hYD1Gz4H4T4IIH/iI7zM9TDUKiPJxWmkmlOgCw/HyhoKDcF2jHiWzj94JFbf2dG
+	q5YHPB+Jn3QTgI3w5YXw0TPSfNoPfRjQr/xuuyhR2pi32nZy1WHUqP8XyES3Pwhj
+	MYhTyA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45t2datw9t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 04 Apr 2025 20:28:16 +0000 (GMT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e8f3766737so4825036d6.1
-        for <imx@lists.linux.dev>; Fri, 04 Apr 2025 13:28:16 -0700 (PDT)
+	for <imx@lists.linux.dev>; Fri, 04 Apr 2025 20:30:51 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-477608e8e4aso995211cf.1
+        for <imx@lists.linux.dev>; Fri, 04 Apr 2025 13:30:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743798495; x=1744403295;
+        d=1e100.net; s=20230601; t=1743798650; x=1744403450;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GHRYAy9VYazkChkIxg8YtCXwmpRsQX0Tl5KM+EPPgvU=;
-        b=H+gagRI7Wq29azIIrnAoE129XKaCsL/5tLGxHNwxDSuv6t07ZAjZT5OQK/N78+t96I
-         LgUUSu94JMxV7M45f3KXxBL2alZg2H9QbXpsdAXMJea9x2SxUelf87yk7mQ8hf4K3ki6
-         M91TGPC8tJy6+GUWzcgAly3THkM1Vn+s+7cxDHbakCg52ihyVoat2t1uRhNMl7RF55nV
-         mEQKRjk16TDiQuNbuT8t4YtKSbGIDymf12l0mfwfdgeHgeT8daqmRwXUPamv8F67TTUN
-         kAxceQYw45uCZbRladTF/X86A1ClEFfjA8VSD71y0fBptybkKDYCpjHjxO4eXHceHSpU
-         V+hg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7N1pywUMIJ/wlOEqNEztjQiI86MZbjlZnEhSLRv8TYH7klYhp2z8pBl+ladwkQjJbS/E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmtjZBwSRLtD7JRcEjwjH0pJ3tbX/xMY80xs2UnxT8yc0kxITd
-	EWO5YqRygCBNGeA7oQIlC4k/6sRogrevHPZYiMaQ6D7NIN7brvlfpW0NJv/X3gtGCC0vcwXLiz5
-	s870w+j5Q5UmKcl2ET63njD2IDaN6Zjg4Ek8g79xPi5NxuSrR5B8=
-X-Gm-Gg: ASbGncuT80xhlw4xtrzKhfT3N3w24hgipX8RXevtbuGrMn2+HyK6WQPhstMuteSFK/Z
-	hFQaqKf0HWfLjeoWxwkYWFCi252viEuS9IRoGd8RuY4I4okMj6nsYPM2m3plnYacXJDvOm4/jyd
-	7wqlxh1sK7g9dHTDnip3CTV650g+flQ+sebjiANvOyxtuxxP57+9VTx2ni0h5hT6nHbPrYhwwxE
-	h7t29BgitZVxcLoTEn2B2ICyUiK6XGpJu+gDQ53iAusQvQSt7TfS8mI0M3eQNFb85Jxq3bC8uU7
-	bvXvKUwfq1d/708BhzMpaRChRJqp/KX00UWxwi3dcF5qlYzt2fdgopo2SjmTrAPAD7FPqQ==
-X-Received: by 2002:ad4:4eee:0:b0:6e8:fbaf:fad8 with SMTP id 6a1803df08f44-6f00deb2207mr23904606d6.5.1743798495084;
-        Fri, 04 Apr 2025 13:28:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoIVAXrUTfJsMNH3k0XqfcfQJdY+GOn1kP1o4noSEmw/2wsl4BJad6Is0Sd5MjPz2dbgObFw==
-X-Received: by 2002:ad4:4eee:0:b0:6e8:fbaf:fad8 with SMTP id 6a1803df08f44-6f00deb2207mr23904146d6.5.1743798494647;
-        Fri, 04 Apr 2025 13:28:14 -0700 (PDT)
+        bh=7hWRzIPdUXdKBlWVaK7wwLn27NVVJ/zKlX8uz3CkEsU=;
+        b=FENSFFiKTtYkrhox8GuYJ1lM4cHkwrkuNs6F6Amk1Jv0HJhXIq4/joEVU9XRCy4Nud
+         J+VT+n01PHYsn6gUYd7WrEfGSULPeC4l7SE/YKCqwmrkqXca3lMDDUksr6CB88S7NdDF
+         XGKNDnUSj3O1+bW0dDrYKLjYEjWqC0IL0qgvZF5irL3472MaYatkahQduMhEBSDvE5gg
+         KmM+8NeufDhv6l/kXleZVlen43UzRYUv2YBd+LXu8TO8KhWr0I2UFYMJaXBgsMkuFdzV
+         /rfio/bU0HTS3I4FyqOOe4L5mpYK862Jhb072umrIUJWfq5TR59TNEvxC1gM+qXp2IJD
+         LItA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTiKievsLX4S2Bso6MtCvBWqbRsyr7tLnhud/IbuhpUYypJMhwB8Puef6pWZMGsSI/odE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyLc4UfMRgpbEQQExUeQMWk75LHYu9ZzLLNwwtt784jld+FK10V
+	JhdUG+Vt3Bv7HMeUkk3fjTNRCKgH8RbOuVDpGUGm0LAK6JeY7sXULsG8f1sa/apwvcrG7gaqgi1
+	Wy9b/cCS7JhxJZGqPUKnHJCz7dNnQSBBKrA2WGkYC0XJGxEIYnBM=
+X-Gm-Gg: ASbGncvUSiIodMLQNRyaVA9F9G91ivAx1F+ZSDiSP25YNAztc02yg0IZPAu7QAdj4dl
+	WnpTxShqvbsxQyWWFmvorNhg/4VFG8E7ruC5VeXrx/wCZeFCzzYDI79YWktalbLowCYH8k+0TiT
+	Ij5GPLY+5T/C754fSDrwKSXY6HISlZZfFsNvfKq7Kr6AeCUTSHsNT+Vk5MZTNILgOHNC16FUWkT
+	FzqGC9ucxgD39e90BsB6SphMxJDP/G62jueG0/dY+EJ/eB0nWrSeI0vFSGb5PQneBffKccYvEkE
+	FD25DvTgr78ut0jpk76pzxjXC0t46bKDgKMnTXnwWeGL6AIBmITgADYZZCxEykStq7TvdA==
+X-Received: by 2002:a05:622a:2c3:b0:474:e4bd:834 with SMTP id d75a77b69052e-4792490427fmr26497661cf.2.1743798650372;
+        Fri, 04 Apr 2025 13:30:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuSVd6Czwiac8qs9SQtzY9AT0v4N+1AWxlKTXMwazPDheG9mDDd7uUgjlpULwCLJqJUrfzww==
+X-Received: by 2002:a05:622a:2c3:b0:474:e4bd:834 with SMTP id d75a77b69052e-4792490427fmr26497151cf.2.1743798649900;
+        Fri, 04 Apr 2025 13:30:49 -0700 (PDT)
 Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac7bfe5d420sm309414066b.2.2025.04.04.13.28.09
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f0880a4027sm2911588a12.73.2025.04.04.13.30.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 13:28:14 -0700 (PDT)
-Message-ID: <69da0db9-8f32-476a-a8fb-ddb5e6e185e7@oss.qualcomm.com>
-Date: Fri, 4 Apr 2025 22:28:08 +0200
+        Fri, 04 Apr 2025 13:30:48 -0700 (PDT)
+Message-ID: <470e2155-7145-44ab-9d6d-117a2d98d7f8@oss.qualcomm.com>
+Date: Fri, 4 Apr 2025 22:30:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,7 +74,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/19] arm64: dts: qcom: qdu1000: Fix qcom,freq-domain
+Subject: Re: [PATCH 07/19] arm64: dts: qcom: msm8992-lg-h815: Fix CPU node
+ "enable-method" property dependencies
 To: "Rob Herring (Arm)" <robh@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley
@@ -117,35 +118,38 @@ Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
         linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
 References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
- <20250403-dt-cpu-schema-v1-5-076be7171a85@kernel.org>
+ <20250403-dt-cpu-schema-v1-7-076be7171a85@kernel.org>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250403-dt-cpu-schema-v1-5-076be7171a85@kernel.org>
+In-Reply-To: <20250403-dt-cpu-schema-v1-7-076be7171a85@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: kaJvq9zILDCRCj_hNe2wvK5THRa-06xm
-X-Proofpoint-ORIG-GUID: kaJvq9zILDCRCj_hNe2wvK5THRa-06xm
-X-Authority-Analysis: v=2.4 cv=bZtrUPPB c=1 sm=1 tr=0 ts=67f040e0 cx=c_pps a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=nTi4DTMcPcBUEvcNss0A:9 a=QEXdDO2ut3YA:10
- a=3T6Gmkx0uuYA:10 a=pJ04lnu7RYOZP9TFuWaZ:22
+X-Proofpoint-ORIG-GUID: NvYQAYev4ACBYN2Yzrx9r2umQcCnIdj2
+X-Authority-Analysis: v=2.4 cv=MqFS63ae c=1 sm=1 tr=0 ts=67f0417b cx=c_pps a=JbAStetqSzwMeJznSMzCyw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=HGLQH7UMpQlDbUUNBC0A:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-GUID: NvYQAYev4ACBYN2Yzrx9r2umQcCnIdj2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-04_09,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=0 mlxlogscore=978
- mlxscore=0 bulkscore=0 priorityscore=1501 spamscore=0 adultscore=0
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504040139
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=796 clxscore=1011 mlxscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504040140
 
 On 4/4/25 4:59 AM, Rob Herring (Arm) wrote:
-> The correct property name is 'qcom,freq-domain', not
-> 'qcom,freq-domains'.
+> The "spin-table" enable-method requires "cpu-release-addr" property,
+> so add a dummy entry. It is assumed the bootloader will fill in the
+> correct values.
 > 
 > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
 
-Thanks for spotting this!
+This looks good to me without knowing any better about the specifics
+of this device..
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
++Alexander - does the bootloader you use take care of this? Otherwise
+we can just do what Sony devices do and stop on removing the psci node
 
 Konrad
