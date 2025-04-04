@@ -1,201 +1,173 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB2E25D54E
-	for <imx@lists.linux.dev>; Thu,  3 Apr 2025 20:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743710989; cv=fail; b=O//K/6O2rdW2u8Jgbjz4YGobOCI/b1Qh+qEZxrWMf8ZA/MP1lg8pni5vZpZdae1A15HiexGeI9hqb48CvTESKpjZJTkMLHX6taf7s2FNXyjmAmPDpc9wz4lJHSX+QitxdjwKvK1P+TOPDvhVdFHrAb2EhY1wgWb0dzAq6p3YJ0w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743710989; c=relaxed/simple;
-	bh=56xqh9x8v4SH6GZwxySL/2luTZkLPMWeKAt47MG3fPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kQqZBeP3/USbRLhvA26G+3Y5J+7Nch4e3dSRKZ5iSmBucYcSlhkQ70HHLKFbjJSMHmcxFUEsH2SCCstnoqfWcUb0iQ1hxPFAZGwhvbeLdNUrfq7hq1I50ZQzqH92lAMdYAhIJsOK75VpnnYvHncQhMV6CxBvmMUZXf/sCREaHWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Hcr3gAcQ; arc=fail smtp.client-ip=40.107.162.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A9A2940B;
+	Fri,  4 Apr 2025 02:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743735582; cv=none; b=QdCGRTlFKvqA0tTq79/yv41gWNPRuz+ghLFdkaun49H2SJ3syq8o69oZdzPl1KiYUN7lwo0zNauMv4lNa/viWN+5EnU9w9N7VTG22z3F/JmlE206S+XzfC7xB/wigaws8P48vs2+vV9r5Oi2ifmiWmgKyuyl2EqdW6PR2nCRMcc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743735582; c=relaxed/simple;
+	bh=R97K1edD4zHvzCCaN7fvUpcILyjz5fPxwxzTH3c208Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k3DG/IxuSLJ22FF19hOLr2kbkty9UYL4+uWPFPld1sj7EB9gTBLAT3YgNOXkpsuPNqy0fO31bVkwb0cVPFKQ3TAUpJAv72dHhUVW8/Jx84weWNCnGaCludFQIohFBrLkI7SWljZNHOOA9T4qfasrVekKCRmaTZaASK3yEvU+45Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DInFV6Zz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Hcr3gAcQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R5ACojtzGEYRG7ETJTVZj+u54uJdf60H0kTWH4wB0Z8MWGTiKAJxsibfocH6WmIeSzCV6UgQVz+2jPk5lU5YdWHBWsW0Xq2hYhFr8QCDHBSQ+MpLhcWUqM7z08WYBOxcVGdXJmV6arKBb5cj0R0YBrPeleTX8gBr3F4TLPOgJhjXvG4Um/9F7wHPUYXgNqDFGoOFsKgzQpxKZUSV8NwFuquTp5KArJnwzKFqTw9G0jtXSuXcdHjDWWj9e0hUUSmd4DDZd1GfKi3f4XQNxZX74p7m5oxBEP18Q1ULHB/sXb9+dz61t4eTubZo168Xj6WAGKJCfmOxkVwdS2+OmMoYgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uMV+Xz9n0b68b9HiZoE8C7lRQbJMV76GSvjicXEpVIw=;
- b=aGUxhuruyZStqgE20N7zsw2l1vOkX54nK3jaYXjI7O7/HAsGiyW8qJ8gMorN0L7eg9gT5ADx2uMpGz/M4jaDxjHyMUcsC+83D7EnRvs4xE7E6XkY+boUdE+qNQE/2lcw0aW7Opop/UqHMkBox9UNUbRYyDZXR7qGkgirJolu/nI9n3IMbgJx2kOlCQ0tNnysT0ElsOotzGVk4gV85qGfomoE2tn1juJWolFlxZQM8wgYkY8L50QydvnxLm2NHtBLHmrbFRzXb7aWw2p74VfGlNHNHiL6hBeW32cwQz8GSRuwsZTyqwAFYHSBm7s6G3kbsq9Xcvz+VWa23TmwHTpSJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uMV+Xz9n0b68b9HiZoE8C7lRQbJMV76GSvjicXEpVIw=;
- b=Hcr3gAcQ4mNkugLeJKWqxSbaIEDVbItz1KBQqrchW1OkBqKRMllLfhR5QwlFWzpKi7LARKjctrJuhY+TIqvp8726UIs350E+krFyUOxxu91lsVi6gtHMATGPt2qjhv/Ydf9yxQwFW4DrrzNIp7x0rPMz/H0xqCbJRtJ25X8BXl2NL/CpgyxhT7XTyhi+yIvY/q48rM5j0x+//Q2EVGZSsf5yyLJOGkdfmhB3+Aeq3PIJSU3K2VuPBUKXhbbMx/Qj3W/rXKiVIyYTpiekJENSVcV9DAD3Yx8dI+zn9YhKfHxvarzq9UENVI5Qcezz0MJsgYPP4EwYHQBXtUA080EAfQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS5PR04MB9828.eurprd04.prod.outlook.com (2603:10a6:20b:678::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.50; Thu, 3 Apr
- 2025 20:09:43 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8534.048; Thu, 3 Apr 2025
- 20:09:43 +0000
-Date: Thu, 3 Apr 2025 16:09:34 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	iinux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/7] PCI: imx6: Skip one dw_pcie_wait_for_link() in
- workaround link training
-Message-ID: <Z+7q/okGW9uBlT/w@lizhi-Precision-Tower-5810>
-References: <20250403053937.765849-1-hongxing.zhu@nxp.com>
- <20250403053937.765849-3-hongxing.zhu@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250403053937.765849-3-hongxing.zhu@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0039.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DInFV6Zz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770AFC4CEE3;
+	Fri,  4 Apr 2025 02:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743735580;
+	bh=R97K1edD4zHvzCCaN7fvUpcILyjz5fPxwxzTH3c208Y=;
+	h=From:Subject:Date:To:Cc:From;
+	b=DInFV6ZzZBtDCjprD0wNsyVhBlrl/OLVq59Qc8WDA3UnSu6pzYrn/+z8sAldu048T
+	 ECwlYcs9UBoRPnPvxrGuu3EVcEF6J+/4r0wCEVgadFKl7SSEGWPQGtFvgKZ1uGx6Gw
+	 NTLPe6lvFsgBfDYD7MVxeaup6ebGs1VhLDI2kWsioUB4+zEg5amoqw+NwiA92bLggV
+	 DiTcm1B9ZIta65dj/bHTQlKbhzaJ+b8ojif64yPJtiGJ9m0NXcBKtR4YA89r3Wz/hE
+	 JDizBDNh1vovQRv3FZYw5ee6m1E8APjoQChggwO8qym2IVuWiSgZhxgZi6eSXcB4yL
+	 +O4eazKiulj1g==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 00/19] Arm cpu schema clean-ups
+Date: Thu, 03 Apr 2025 21:59:21 -0500
+Message-Id: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS5PR04MB9828:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9318e76a-68d0-41ec-60d3-08dd72eb7920
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Z96QYwGYhd8JY8n3S+jz1p7aFuqPqUJ4BSKRZfHuWU9yUqgpGN/4E0+LPvYu?=
- =?us-ascii?Q?zXxZVfOq+KUNg+irGR1K56f1UFC4mS74AsgPeZSvHrFrb2B9QuaUCP6F/QMU?=
- =?us-ascii?Q?WGV7Zygj2fNDjCbQ/4mZxVSef1GU2/tqfre5sGIhGH3HpDWMQGDK5k2CRWQ2?=
- =?us-ascii?Q?ea8Zie0X/I8TaNCT6ujTnb31f1T4RRLROp68pMy65j2rFHeEmmhHS0w9rcFS?=
- =?us-ascii?Q?FBeiLtK8OPIONRICiPAUfEg9OssPMkBpVGnTnKDQRyTs8iAERsR4jSzhfnAE?=
- =?us-ascii?Q?p1dZcVSnjGNmlJlDRbJfF39UJ7pTAY9WGtGxPX9O+3MpHbs6RhlFIs3J+BOs?=
- =?us-ascii?Q?tcQVWCVPAWcJOOn5L7f4cmiYa+hL4xNyYc7VDp4PKYpUvxw1x4tYg71WdCe+?=
- =?us-ascii?Q?EGpviRFNJlK3CWxJaFuyLJlDe3srdLhljGGkvY5vHap7ezcJJZyQd4tVNQ0S?=
- =?us-ascii?Q?159VqWWa2k89vfuD3EXRo8ZdYzSqO73vBEOJBEepyt6MHoeLQGcxuW+CvCkc?=
- =?us-ascii?Q?1kqPECGCXgNe9wUIiLp0sn5CFcpuP7N8oYOFrBPX8DMcJyu5lNVeJjUjBPvl?=
- =?us-ascii?Q?msUGH0tYs7NFRfGatM/XOnj01EdI4mV/3GYI6ZhIaE14C6VdnhYgHGGX5HDy?=
- =?us-ascii?Q?yUW4F0wctqFUKfwux0qJJtSqKC45r8x9NP0z7LUP3AhywOxkSiRRHPleQMVx?=
- =?us-ascii?Q?q+ZuKvbikcvu4rzovvqOdH7IvnxewMexkqhCRTgZti68r9V5dcL2jKoWeWjp?=
- =?us-ascii?Q?Nwxs7baGB3EQPPX3WwWroehicxcsXdlMENLTqy9R46ceorJPrI+5zYMoPLRL?=
- =?us-ascii?Q?UFmPtDKUGuaW5gLCn2OOe+mgPIXsaK0kOjSWftYiKtN/zNPrl57N9TSJa5QU?=
- =?us-ascii?Q?IcxvI3enaobw/I1WHEM+lWq/UK8WdH3jPTHkqJ3pezjvPJO1O2Vlcq5bNCVQ?=
- =?us-ascii?Q?VBV6pZsUEU99T14MalvzOEGJyozrep3TNhbWYvRjp/wYlHon6OxHOpZnRk0B?=
- =?us-ascii?Q?UWWSkcgDwQnXWL1jHyO4EjHk20Z/cEk00zfPT25K+UIZut+QOOQTLd9IKCPK?=
- =?us-ascii?Q?5IlGuhc0ZsIJihQlAYZ0B22maXmmbvjMtF1S83ZVur8j0i6JP2rWqdjWErKP?=
- =?us-ascii?Q?ddlTMhjld3+O2F97no8hEaswgJN6J/8cPkZdrXgedmHeladUn+vsONTnbGTw?=
- =?us-ascii?Q?ZNW0rsDQUqbCKkegKIqm/d6OFFokUjNgvG8kf5323lJ2fse7qVa1kEOppO5x?=
- =?us-ascii?Q?mW1EioZEum/4Mn2tA7ESkaycU04GE0OmTyKRsEr5pCJf9pa9lp7hUpFzbdPZ?=
- =?us-ascii?Q?wSpnP/aydzlLV38DriR5dGXWgTT5Ke2CMBSKt1qZl/aBC5XSDPHbftqE0I6K?=
- =?us-ascii?Q?xq1Z4I0n+2PhgKyGS8J+2OBtm+2uF8QiA5jGL6qTNUdFZb37Cx+uU2kjl/XG?=
- =?us-ascii?Q?W28oqS9DUYe9UiVnvFy6A5G4kKgMLxEN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5bv7qYpU21rFSBDsTPFwMTQHoM82jO30FI/JJwwxrdfhhV1JtKhjcn9F/9rT?=
- =?us-ascii?Q?1xoey7mv0eWCEwk7w3kTp62IqfirsVM5hg3P1YtHe8d8nkv06HY2ps7mYnDk?=
- =?us-ascii?Q?PNOQ58psL0Vbnv/2D2YAVs6P4H1WsXmvjEsO7TsEcWl1gx08Htm4LG+k3fNt?=
- =?us-ascii?Q?QJ86RoKpQksyJsvpV9sxoqfd6dM6Ro6eVoK2IDRAmryuKfWKw/CaznFwmdDE?=
- =?us-ascii?Q?kFNg9icUkpcgQoPSbSe3hPwc5AW3Zvln1arX3G/uIfrs6T3gWnQmk/kW1Acx?=
- =?us-ascii?Q?53Mr8MQDON6v7aofDjQt6Y0vnmcuhn7O12HOJdEEuNIxarNP3K2r2G1aU++r?=
- =?us-ascii?Q?F8vVNjrhEAVxBwFMK9ih56ml95J4p/M9ZbFs7ZRsNtuAGfR0tOH0KGs5y2Dy?=
- =?us-ascii?Q?PXLC8at+HJ4rqMuhW/OmlNOiwstfFSITaVZProLEvZdu75bKKjgPfnOc77Zt?=
- =?us-ascii?Q?CnwDxlxwI8bv6rRZ0wLsEqfaRs/pnUGUzztK8b4PasVwEOoa6weezXflhcEc?=
- =?us-ascii?Q?CXbliJm4NHmOl4Eon5YDeRSudmm2vGVjsAraCXgTT1IBVRdLnISAtQBkhCfv?=
- =?us-ascii?Q?vYme5nzDtQDxnLT4NhpnY66za9W6lPdUqVKd7coaavDgiFwG7mgFwnpjtzPF?=
- =?us-ascii?Q?/LvLNRiyKvgcPiQTPr4WZFVBV3o00SkzCAwjb7rqaXHfghtISoJZbHZWN94C?=
- =?us-ascii?Q?YjNOv455wYzvCpdP7fBo4Ui3lWXwBBKxsx3Yhd5KKD5q4wyTCZ43dX6riwSY?=
- =?us-ascii?Q?2QEghR7QvuamzVFb7CLv3puwenuGdBBSnP/09Wm5ojQyFFDZnbCO0z9wAxOf?=
- =?us-ascii?Q?RPDmqU2aWXhuysqKAe/UD3Ek1eb1WYUi1hjEqj9okbQ8AgTqG8/zapbL/V6A?=
- =?us-ascii?Q?ioB1vFqNqf4LalPYVy4XuGMld755klVxOLycx8xP2g1RAtQEEQjzW3GgJoQK?=
- =?us-ascii?Q?tF2H69hJBkv92z31kxP0sVM2qRrKVFa4SMGwMzamYfbsPCPi5JUtrmJMsP8w?=
- =?us-ascii?Q?uIbh2NgBKi7MmAO9QxZsjFzfbafTJgyhSEyLRCjpcgmAXOe6ELwbQqR80B85?=
- =?us-ascii?Q?KDQAjGxio7p2VeESEYA/GOtV4g9eCisGE0VwIyP/qhpsUD+v2UVUtcCBEIsn?=
- =?us-ascii?Q?K/4m+rD6T6/YJ65kpZQzYg2kVaqiINv+Za9YpdFtL0bLmf5iwjfpIXpPFlyr?=
- =?us-ascii?Q?Qc5ckrU8j4H1/PK6ei06nSlJrL3n5otYNWZC1CRjJ+EwISYWp4KxyJ9zYZVj?=
- =?us-ascii?Q?juQobL06YPqraZBsuBZZGbH1fG/sjJ/+aqbxQIKvQNcZQD4HUVWgprzDwpN2?=
- =?us-ascii?Q?XFrwLQrTgZKORCUFxPK81S6E52fnc3LarbhR+uRqoUzNEIQ2H3GZKoLpK5iF?=
- =?us-ascii?Q?blJj8MDY8QhQFxMDayO2GaMEfZfuOGXAGNLC7kx/WrftjUhrrjBETRzv+P9p?=
- =?us-ascii?Q?L1nwqYXPOAJ/LPmvy0cw4iXvIxgsm1Uv7/i01fibiobbH52mlHdEPelst8uY?=
- =?us-ascii?Q?3hncXmN4zpvQtZfeyStLlu4jSLaXbcWOMsW4FXnfrmfoKPIvULcW2KVg/T8i?=
- =?us-ascii?Q?2z8FFXcrCZlSjIUNOoQ=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9318e76a-68d0-41ec-60d3-08dd72eb7920
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 20:09:43.2954
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T96cmRhG5knS54U+xS7QvVyE5Qs1712faQdqHKpiaE9ql5TojY8HVCTCR6CA4Fb5HuRSx0IFvpkiF9s7Pd2cMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9828
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAlL72cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwNj3ZQS3eSCUt3i5IzU3ERdE4tUM7Nk8zSzREsDJaCegqLUtMwKsHn
+ RsbW1AGXLomtfAAAA
+X-Change-ID: 20250403-dt-cpu-schema-48e66c7f6a90
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
+ Conor Dooley <conor@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Steen Hegelund <Steen.Hegelund@microchip.com>, 
+ Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org, 
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
+X-Mailer: b4 0.15-dev
 
-On Thu, Apr 03, 2025 at 01:39:32PM +0800, Richard Zhu wrote:
-> Skip one dw_pcie_wait_for_link() in workaround link training.
+The Arm cpu.yaml schema fails to restrict allowed properties in 'cpu' 
+nodes. The result, not surprisely, is a number of additional properties 
+and errors in .dts files. This series resolves those issues.
 
-Remove one reduntant dw_pcie_wait_for_link() in link traning workaround
-because common framework already do that.
+There's still more properties in arm32 DTS files which I have not 
+documented. Mostly yet more supply names and "fsl,soc-operating-points". 
+What's a few more warnings on the 10000s of warnings...
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+The .dts files can be taken by the respective SoC maintainers. I will 
+take the binding changes.
 
->
-> Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 15 ++++-----------
->  1 file changed, 4 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 57aa777231ae..84d2f94e3da0 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -881,11 +881,11 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
->  	/* Start LTSSM. */
->  	imx_pcie_ltssm_enable(dev);
->
-> -	ret = dw_pcie_wait_for_link(pci);
-> -	if (ret)
-> -		goto err_reset_phy;
-> -
->  	if (pci->max_link_speed > 1) {
-> +		ret = dw_pcie_wait_for_link(pci);
-> +		if (ret)
-> +			goto err_reset_phy;
-> +
->  		/* Allow faster modes after the link is up */
->  		dw_pcie_dbi_ro_wr_en(pci);
->  		tmp = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> @@ -907,17 +907,10 @@ static int imx_pcie_start_link(struct dw_pcie *pci)
->  			dev_err(dev, "Failed to bring link up!\n");
->  			goto err_reset_phy;
->  		}
-> -
-> -		/* Make sure link training is finished as well! */
-> -		ret = dw_pcie_wait_for_link(pci);
-> -		if (ret)
-> -			goto err_reset_phy;
->  	} else {
->  		dev_info(dev, "Link: Only Gen1 is enabled\n");
->  	}
->
-> -	tmp = dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA);
-> -	dev_info(dev, "Link up, Gen%i\n", tmp & PCI_EXP_LNKSTA_CLS);
->  	return 0;
->
->  err_reset_phy:
-> --
-> 2.37.1
->
+Signed-off-by: "Rob Herring (Arm)" <robh@kernel.org>
+---
+Rob Herring (Arm) (19):
+      arm64: dts: allwinner: h5/h6: Drop spurious 'clock-latency-ns' properties
+      arm64: dts: broadcom: bcm2712: Use "l2-cache" for L2 cache node names
+      arm64: dts: morello: Fix-up cache nodes
+      arm64: dts: microchip: sparx5: Fix CPU node "enable-method" property dependencies
+      arm64: dts: qcom: qdu1000: Fix qcom,freq-domain
+      arm64: dts: qcom: msm8939: Fix CPU node "enable-method" property dependencies
+      arm64: dts: qcom: msm8992-lg-h815: Fix CPU node "enable-method" property dependencies
+      arm: dts: qcom: msm8916: Move "qcom,acc" and "qcom,saw" to 32-bit .dtsi
+      arm: dts: qcom: sdx55/sdx65: Fix CPU power-domain-names
+      arm/arm64: dts: imx: Drop redundant CPU "clock-latency"
+      arm: dts: qcom: ipq4019: Drop redundant CPU "clock-latency"
+      arm: dts: rockchip: Drop redundant CPU "clock-latency"
+      arm64: dts: amlogic: Drop redundant CPU "clock-latency"
+      dt-bindings: arm/cpus: Add schemas for "enable-method" dependencies
+      dt-bindings: arm/cpus: Re-wrap 'description' entries
+      dt-bindings: Reference opp-v1 schema in CPU schemas
+      dt-bindings: arm/cpus: Add missing properties
+      dt-bindings: arm/cpus: Add power-domains constraints
+      dt-bindings: cpufreq: Drop redundant Mediatek binding
+
+ Documentation/devicetree/bindings/arm/cpus.yaml    | 220 ++++++++++--------
+ .../bindings/cpufreq/cpufreq-mediatek.txt          | 250 ---------------------
+ Documentation/devicetree/bindings/mips/cpus.yaml   |   3 +-
+ Documentation/devicetree/bindings/opp/opp-v1.yaml  |  18 +-
+ arch/arm/boot/dts/nxp/imx/imx7s.dtsi               |   1 -
+ arch/arm/boot/dts/qcom/qcom-ipq4019.dtsi           |   4 -
+ arch/arm/boot/dts/qcom/qcom-msm8916-smp.dtsi       |   8 +
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi             |   2 +-
+ arch/arm/boot/dts/qcom/qcom-sdx65.dtsi             |   2 +-
+ arch/arm/boot/dts/rockchip/rk3128.dtsi             |   8 +-
+ arch/arm/boot/dts/rockchip/rk3188.dtsi             |   1 -
+ arch/arm/boot/dts/rockchip/rk322x.dtsi             |   1 -
+ arch/arm/boot/dts/rockchip/rk3288.dtsi             |   5 +-
+ arch/arm/boot/dts/rockchip/rv1108.dtsi             |   1 -
+ arch/arm64/boot/dts/allwinner/sun50i-h5.dtsi       |   4 -
+ arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi       |   4 -
+ arch/arm64/boot/dts/amlogic/meson-g12a-fbx8am.dts  |   4 -
+ .../boot/dts/amlogic/meson-g12a-radxa-zero.dts     |   4 -
+ arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dts  |   4 -
+ arch/arm64/boot/dts/amlogic/meson-g12a-u200.dts    |   4 -
+ arch/arm64/boot/dts/amlogic/meson-g12a-x96-max.dts |   4 -
+ arch/arm64/boot/dts/amlogic/meson-g12a.dtsi        |   1 +
+ .../dts/amlogic/meson-g12b-a311d-libretech-cc.dts  |   6 -
+ arch/arm64/boot/dts/amlogic/meson-g12b-a311d.dtsi  |   2 +
+ .../boot/dts/amlogic/meson-g12b-bananapi-cm4.dtsi  |   6 -
+ .../boot/dts/amlogic/meson-g12b-bananapi.dtsi      |   6 -
+ .../boot/dts/amlogic/meson-g12b-khadas-vim3.dtsi   |   6 -
+ .../dts/amlogic/meson-g12b-odroid-go-ultra.dts     |   6 -
+ arch/arm64/boot/dts/amlogic/meson-g12b-odroid.dtsi |   6 -
+ .../boot/dts/amlogic/meson-g12b-radxa-zero2.dts    |   6 -
+ arch/arm64/boot/dts/amlogic/meson-g12b-s922x.dtsi  |   2 +
+ arch/arm64/boot/dts/amlogic/meson-g12b-w400.dtsi   |   6 -
+ arch/arm64/boot/dts/amlogic/meson-sm1-ac2xx.dtsi   |   4 -
+ .../arm64/boot/dts/amlogic/meson-sm1-bananapi.dtsi |   4 -
+ .../boot/dts/amlogic/meson-sm1-khadas-vim3l.dts    |   4 -
+ arch/arm64/boot/dts/amlogic/meson-sm1-odroid.dtsi  |   4 -
+ .../dts/amlogic/meson-sm1-s905d3-libretech-cc.dts  |   4 -
+ arch/arm64/boot/dts/amlogic/meson-sm1-sei610.dts   |   4 -
+ arch/arm64/boot/dts/amlogic/meson-sm1.dtsi         |   1 +
+ arch/arm64/boot/dts/arm/morello.dtsi               |  22 +-
+ arch/arm64/boot/dts/broadcom/bcm2712.dtsi          |   8 +-
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi          |   4 -
+ arch/arm64/boot/dts/freescale/imx8mn.dtsi          |   4 -
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi          |   4 -
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi          |   4 -
+ .../boot/dts/microchip/sparx5_pcb_common.dtsi      |   2 +
+ arch/arm64/boot/dts/qcom/msm8916.dtsi              |   8 -
+ arch/arm64/boot/dts/qcom/msm8939.dtsi              |  24 +-
+ arch/arm64/boot/dts/qcom/msm8992-lg-h815.dts       |   6 +
+ arch/arm64/boot/dts/qcom/qdu1000.dtsi              |   8 +-
+ 50 files changed, 210 insertions(+), 514 deletions(-)
+---
+base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+change-id: 20250403-dt-cpu-schema-48e66c7f6a90
+
+Best regards,
+-- 
+Rob Herring (Arm) <robh@kernel.org>
+
