@@ -1,171 +1,120 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EC61A23AD
-	for <imx@lists.linux.dev>; Sat,  5 Apr 2025 11:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743853198; cv=pass; b=sck0+RMeWxKNZPaZBThcozPaHZg8ISZl7LiRmirrDpZXmFFBwNNSJIacFNGcTioFtz4Fgo22X2yjA0FWmzB0dRLvkPaxFNZnQya89aX+rDFjIOUr/PqgGimGOznNM5FgU5bMtZ36PU8OjZdsnOTnsH/A8pRZti3lfsoqus3nUoM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743853198; c=relaxed/simple;
-	bh=YZadl+yLPrZm8P8cf6VUmKDW6UATrz99dXVhQSX50Ms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BV6hNeuna6p9OurwcQxbLjVDDf+FONKKOBR+jUwCAOq7mfQZdmlpg/4Bn2l84tZmRe2fSGgksyrnjtM3x5sJ4Amys6WESYdqzaJ4DCrCIL8PmsAcwFmoqh78xCFNZBYtMGf90AvZTuyHIOu1MIkr/Yqk8dqiAv+aya2pE54VfNU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b=N5V51+Jb; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4541BC07E
+	for <imx@lists.linux.dev>; Sat,  5 Apr 2025 14:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743864159; cv=none; b=dWChLrsd/ZUNeJQcSdQ8baVQ0MOCbXucnaNQTy7g7fAEB49LF8iS1lqFiJIu8oSSNOgEp0KuhEd8eZWyGOe1TXtAiOs5VFyZcyXWIMw4QdkA/oIFl4n1e/siH48CeQYmSbyuNy3YYyqm1AokTmbxqSN5ElmQ0P7O84lr0wT2LV4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743864159; c=relaxed/simple;
+	bh=XfnEVi3ovC/zw6g3a+nScy1RtngEkEo5Aoq+dlPJPpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ljRxpPjt7DfUez+YANFpaOrD4HyLdPALd+tPfRXfe1GIzeA5CN+FiDUsTXfNJtUwr4VHZvJ/eWTiyzMpDMoHsCAd8Ja7fGMjy++9Z9F82lgb3fo/CJQTcFJksBqIGSl350pXKSVXIUqNwtlnq9K7Jqh+9N4N25EV86qUhz9J4pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=kpKTySCR; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b="N5V51+Jb"
-ARC-Seal: i=1; a=rsa-sha256; t=1743853187; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Aa6oaPo1O8q5AnU3Y1pDWWTPdKizSQIPiPsuolBj0+UXeYqsgn0k47Anir04kue1g6//wjVUP2WdE5A5T1jazvVJ+dRrp+PeVACtY7tDohXss+Dy6KSxROCdjHxfq138OoQ6nk540GNEiVO7kf2DWUPZnlSLqiEOS0lVvGQkv5Y=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1743853187; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=u22/p801QpjbmO2uhuEVgNGBkidyKPFcQ/iS9BFuS5s=; 
-	b=C6tx3IbtjTxMSj1ltGQIdc0SqC41cRFACrYH6ttVX+mZ0bAu/JRCUlY7SDnMlzS/F2uPl+b1I+67ID/JPyyVD0iYag6OvfmnT6n/X3T0X8P54b+wFS0VN8XDL0BzEheNhrUPzaEud8+Nxc7sLGGI2w0w8VTNFzFuBkAIaAVs0ck=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.fricke@collabora.com;
-	dmarc=pass header.from=<sebastian.fricke@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743853187;
-	s=zohomail; d=collabora.com; i=sebastian.fricke@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=u22/p801QpjbmO2uhuEVgNGBkidyKPFcQ/iS9BFuS5s=;
-	b=N5V51+Jb9Oh2VGeiRlqjxid+joMaQTSEkiQ9MwACEgsC7n39G9abF4/SBpLXjn+3
-	k0EBFHBIzQ+Buelbr5cpB2kxwFQ9i0zv3t7mUBJZlUFlcZf01TgEZNpBYSPdaG5HCLD
-	8NQpC9CzYLcbnkQBXVUcc0bjmGU7L9QQal3l2dO0=
-Received: by mx.zohomail.com with SMTPS id 1743853184816112.34259230527698;
-	Sat, 5 Apr 2025 04:39:44 -0700 (PDT)
-Date: Sat, 5 Apr 2025 13:39:36 +0200
-From: Sebastian Fricke <sebastian.fricke@collabora.com>
-To: ming.qian@oss.nxp.com
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	xiahong.bao@nxp.com, eagle.zhou@nxp.com, linux-imx@nxp.com,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] media: imx-jpeg: Enhance error handling in buffer
- allocation
-Message-ID: <20250405113936.oepkmoz2czytbuxy@basti-XPS-13-9310>
-References: <20250328063056.762-1-ming.qian@oss.nxp.com>
- <20250328063056.762-2-ming.qian@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="kpKTySCR"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id B076B240104
+	for <imx@lists.linux.dev>; Sat,  5 Apr 2025 16:42:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1743864148; bh=XfnEVi3ovC/zw6g3a+nScy1RtngEkEo5Aoq+dlPJPpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:Autocrypt:OpenPGP:From;
+	b=kpKTySCR9tVzJeZkrRR96FmaI5z2uTfS1UgZ1LpQ3uiZDUhk5hZl1Wg7atK7sF7Py
+	 t2asO+qjhckqLWTAXxzO0qKwssbnQJVHhCap2/Ttyl5qFKDRg6KUJBn1mT57NZN74A
+	 U2yd4Y81VINm50wKMQoE5w5YEKYFNIWFZlwKMcZMeKWKbJuW5GTkUsl3J5sqBlokOe
+	 HlMB62MvRhv1jhGOhOHSSQuYMBXt7PXHJVTolJDFbkwv334aH2+ZC//yE6KFT/KF6+
+	 fWFBhnGyRrDLlxlIWTNnqZLWzpqSPXXxc6mO/SFGpd74DILF9X3KADVWBTc4IBkgvM
+	 JBCaAeSLwoOlg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZVJ8s527hz9rxK;
+	Sat,  5 Apr 2025 16:42:21 +0200 (CEST)
+From: Alexander Reimelt <alexander.reimelt@posteo.de>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com,
+ Conor Dooley <conor@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
+Subject:
+ Re: [PATCH 07/19] arm64: dts: qcom: msm8992-lg-h815: Fix CPU node
+ "enable-method" property dependencies
+Date: Sat, 05 Apr 2025 14:42:21 +0000
+Message-ID: <4999945.OV4Wx5bFTl@stinkpad>
+In-Reply-To: <d3592f32-e29c-4b40-b045-7267795a9617@oss.qualcomm.com>
+References:
+ <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
+ <470e2155-7145-44ab-9d6d-117a2d98d7f8@oss.qualcomm.com>
+ <d3592f32-e29c-4b40-b045-7267795a9617@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250328063056.762-2-ming.qian@oss.nxp.com>
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+Autocrypt: addr=alexander.reimelt@posteo.de;
+  keydata=xjMEZg0fSRYJKwYBBAHaRw8BAQdAIcaNTdj3NWDe5HQPCUs6oYyQygAJWP9LCzhr+C7RwMrNG2Fs
+  ZXhhbmRlci5yZWltZWx0QHBvc3Rlby5kZcKZBBMWCgBBFiEEM+Wy6sI/mP5S0zIFHqi3OKk8uRIF
+  AmYNH0kCGwMFCQWjo9cFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQHqi3OKk8uRJ8ogD9
+  EVg4zgfmC2SqXCgms6LETAzVX4CrAS8yMhyd7Md921cA/R8lhm9B96RYgA7MvFPFJb1T6JFY75Jg
+  QLXrtIE5llwHzjgEZg0fSRIKKwYBBAGXVQEFAQEHQBGDuxZLOTvppxyM4G18fSR6xzT0xkkPOia7
+  Bh6L1vAAAwEIB8J+BBgWCgAmFiEEM+Wy6sI/mP5S0zIFHqi3OKk8uRIFAmYNH0kCGwwFCQWjo9cA
+  CgkQHqi3OKk8uRIa1wD8CZDdCAKXstgXY96eeSSP7MecEF5TBdmWOiVgjlEIpoEA/RnGuDaj06B1
+  F51wyGAjYXSmn5qFoNHu3yXyLUkFz1ME
+OpenPGP: url=https://posteo.de/keys/alexander.reimelt@posteo.de.asc
 
-Hey Ming,
+> On 4/4/25 10:30 PM, Konrad Dybcio wrote:
+> > On 4/4/25 4:59 AM, Rob Herring (Arm) wrote:
+> >> The "spin-table" enable-method requires "cpu-release-addr" property,
+> >> so add a dummy entry. It is assumed the bootloader will fill in the
+> >> correct values.
+> >> 
+> >> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> >> ---
+> > 
+> > This looks good to me without knowing any better about the specifics
+> > of this device..
+> > 
+> > +Alexander - does the bootloader you use take care of this? Otherwise
+> > we can just do what Sony devices do and stop on removing the psci node
 
-In the title I'd suggest:
-media: imx-jpeg: Cleanup after an allocation error
+I currently can't test this, but the bootloader (lk2nd) will set it.
 
-To be a bit more concrete, enhance error handling can mean pretty much
-anything.
+Alexander
 
-On 28.03.2025 14:30, ming.qian@oss.nxp.com wrote:
->From: Ming Qian <ming.qian@oss.nxp.com>
->
->In function mxc_jpeg_alloc_slot_data, driver will allocate some dma
->buffer, but only return error if certain allocation failed.
->
->Without cleanup the allocation failure, the next time it will return
->success directly, but let some buffer be uninitialized.
->It may result in accessing a null pointer.
->
->Clean up if error occurs in the allocation.
 
-I'd suggest:
-
-When allocation failures are not cleaned up by the driver, further allocation
-errors will be false-positives, which will cause buffers to remain
-uninitialized and cause NULL pointer dereferences.
-Clean up the errors accordingly.
-
->
->Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
->Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->---
->v2
->- Add the Fixes tag
->
-> .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 47 +++++++++++--------
-> 1 file changed, 27 insertions(+), 20 deletions(-)
->
->diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->index 0e6ee997284b..12661c177f5a 100644
->--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->@@ -752,6 +752,32 @@ static int mxc_get_free_slot(struct mxc_jpeg_slot_data *slot_data)
-> 	return -1;
-> }
->
->+static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
->+{
->+	/* free descriptor for decoding/encoding phase */
->+	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
->+			  jpeg->slot_data.desc,
->+			  jpeg->slot_data.desc_handle);
->+	jpeg->slot_data.desc = NULL;
->+	jpeg->slot_data.desc_handle = 0;
->+
->+	/* free descriptor for encoder configuration phase / decoder DHT */
->+	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
->+			  jpeg->slot_data.cfg_desc,
->+			  jpeg->slot_data.cfg_desc_handle);
->+	jpeg->slot_data.cfg_desc_handle = 0;
->+	jpeg->slot_data.cfg_desc = NULL;
->+
->+	/* free configuration stream */
->+	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
->+			  jpeg->slot_data.cfg_stream_vaddr,
->+			  jpeg->slot_data.cfg_stream_handle);
->+	jpeg->slot_data.cfg_stream_vaddr = NULL;
->+	jpeg->slot_data.cfg_stream_handle = 0;
->+
->+	jpeg->slot_data.used = false;
->+}
->+
-> static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
-> {
-> 	struct mxc_jpeg_desc *desc;
->@@ -794,30 +820,11 @@ static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
-> 	return true;
-> err:
-> 	dev_err(jpeg->dev, "Could not allocate descriptors for slot %d", jpeg->slot_data.slot);
->+	mxc_jpeg_free_slot_data(jpeg);
->
-> 	return false;
-> }
->
->-static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
->-{
->-	/* free descriptor for decoding/encoding phase */
->-	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
->-			  jpeg->slot_data.desc,
->-			  jpeg->slot_data.desc_handle);
->-
->-	/* free descriptor for encoder configuration phase / decoder DHT */
->-	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
->-			  jpeg->slot_data.cfg_desc,
->-			  jpeg->slot_data.cfg_desc_handle);
->-
->-	/* free configuration stream */
->-	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
->-			  jpeg->slot_data.cfg_stream_vaddr,
->-			  jpeg->slot_data.cfg_stream_handle);
->-
->-	jpeg->slot_data.used = false;
->-}
-
-Can you split the moving of the code from the changes you do?
-Otherwise the reviewer is forced to get the diff manually.
-
-Regards,
-Sebastian Fricke
