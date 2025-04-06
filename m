@@ -1,162 +1,114 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB08BEC
-	for <imx@lists.linux.dev>; Sat,  5 Apr 2025 15:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743867475; cv=pass; b=NENjfIWEIq2AVT3va/bK/lF7lrvq5fTQAHB/neVPD4OUee5RN1Foz7J9mwQXLMZZkBuxSiFCzwPHhh/8TBQ7K8qA7gSX8T2TSowBk8NB6CBeDFIPVKlxKHtt7JXoUXJhnSZsjOj+I5l3CoOhb+nigi7fKwAdK6JKZzDP0c40qbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743867475; c=relaxed/simple;
-	bh=CK6ygHAUCsm/eH+FoOd0f5wwhChL/wFEEP7u2AKcsqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bZSPEfiVB8Rggi/fb8O54NpoNoiohE8rjckQVQinrf1BDj7EhflPFnm4EP6xr7OaRhd7mGg1jnBR7o3kVNWNC8k2284yloSc+28w9Zw7+hWTaQ1jcDZtQmK3vc4rMsV77yBVXFYya36rhPZKVIz7zdly1UbbFwGp+HNJF2/ssvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b=jYUJylMc; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D687F9EC
+	for <imx@lists.linux.dev>; Sun,  6 Apr 2025 21:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743973740; cv=none; b=qsVvF5bJVQzYvTFygpRYllozajoIoJlmk8eDiXVbBIZhr+YAw8ogtRnqzdVlGBY8nJ8/J/VYhRibveq5tlG4I4k+OLLnGS5NDZOS4A2srb48eII698zWU0C31+Ildcv1QYVS0iqs45wXKWgy+pEr7k9oUwny4ieVp7BvpvdKoTE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743973740; c=relaxed/simple;
+	bh=gNVT4boTweoATyBcAwIKoTgbb0/FKU67SzYhH3omknQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZKNW2vteIvdeAS4yLNbqJOxK2MZX8k0Wqhqc5AvJ5AT2m9dZ/bUN3xUkbiHH3uGnHP87WNHEr4e62iTS24WvEGeSr8D1Vg0Tt3FinXp0DOz7m+hwqlPdOFvayrckKqQfuNLO2EFA4emkfc/1R3iTHaYrR14PYnC9xkpeVUx9I4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RO6RLh10; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.fricke@collabora.com header.b="jYUJylMc"
-ARC-Seal: i=1; a=rsa-sha256; t=1743867465; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=N7TYLJRZD6ltPOJ0w6zkwmqoCX8a9oPm0e3j9fFcAyICmX6Wso/h3+qeUlum4T5aS7VueRg1cnQsh0OCXcNi2FhfQO4hh9TN17kbh7VnDXeVqO/N5zb7QlAzEp8BoqmTfmnh6K1pBVl3yvy9/looxNI4f2o6IIT/4fKnzwS+bE4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1743867465; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=BugjcZAgjg+SxWM6msfC6lZpG578nU3iM1C5nasdLKg=; 
-	b=Yj2IFgu51s6yzD3LROPXgD2p1O6Z7PhKFJzdOcttzMgGqZDPblfR8SPaXDiRfiizP5hqCuPINUVpwBMbYJEEibD+u3IMDO0E8yJM+XzP6IRdm4Vhx6TtqXwirI03sE6fkLKoPlFVBD9dPojfA1NCAJRn78A94rNwVE7C01PsykI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.fricke@collabora.com;
-	dmarc=pass header.from=<sebastian.fricke@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743867465;
-	s=zohomail; d=collabora.com; i=sebastian.fricke@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=BugjcZAgjg+SxWM6msfC6lZpG578nU3iM1C5nasdLKg=;
-	b=jYUJylMc4wasWcn/B1RmXJTAM+mJqN90T/VAhxFdLDid9c3AlqIgL90ta4/CTSPa
-	3onteTmoLzeh1fh0usB1I1+QDb9sCpsfl8M59sx0BQ5ZcLunt29rfJpnoPh79lZqzaz
-	8XD0eMp87mc2VWrQstA3g409VOqD9ONBPn3P0w4Y=
-Received: by mx.zohomail.com with SMTPS id 1743867462417829.8012660744155;
-	Sat, 5 Apr 2025 08:37:42 -0700 (PDT)
-Date: Sat, 5 Apr 2025 17:37:32 +0200
-From: Sebastian Fricke <sebastian.fricke@collabora.com>
-To: ming.qian@oss.nxp.com
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	xiahong.bao@nxp.com, eagle.zhou@nxp.com, linux-imx@nxp.com,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] media: imx-jpeg: Check decoding is ongoing for
- motion-jpeg
-Message-ID: <20250405153732.sitanh6tucpzvkoe@basti-XPS-13-9310>
-References: <20250328063056.762-1-ming.qian@oss.nxp.com>
- <20250328063056.762-4-ming.qian@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RO6RLh10"
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-86d587c61a1so258260241.1
+        for <imx@lists.linux.dev>; Sun, 06 Apr 2025 14:08:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743973737; x=1744578537; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uO0kiqoq6Pl2+MksHXiWbGo7Ymj7pCMwZir/Mc87ed8=;
+        b=RO6RLh10gxLeOXVvi1wn44oPp2YM/60csVQulcaAZcjULW+/iuPmxg+SNxcCixEtYm
+         mAmNAFOTdXkGftYSJZuHYT69OmuQi5BkCGFeneGlNRTKPn8hMgdhWNBZLgDavYGMErLO
+         3H2YQH7ZIGTP8cdjcbENrInjo/4Yhz0ejKLaAwyjiby464iEjQXUdYRm2wckNRLstf0S
+         mPgD5veEHODkXmwzhqsZ/IBZ2172UAn5SlpaBQuOFnw7fyNYARnSi0u4SGseVrC6B99J
+         ZiTBOp2b9D1I5/HxotwI+E/j3y1xkmYYXnNOs1Ed48JO4CN7JgKTjBZcp8FXGL6pdTYT
+         Sw6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743973737; x=1744578537;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uO0kiqoq6Pl2+MksHXiWbGo7Ymj7pCMwZir/Mc87ed8=;
+        b=bOBm+VX4CDXOjt+VHZflgYA2YBbsSbBp00XOmVYszxBsv+JJOLhvYUoSBaKa+CRQ7O
+         DSckM/vWdnnGdVTeZYMy1XeKNb6mWMXZpTDzV13GeAymAu0gTjkWScD4XGgfIMYN44jL
+         6ntRX631bYiFrwmbPBe72fKIcnbUWgkGiasWaxgaGd8YnLbo0xHSP8MLjjaWv5Bc85oO
+         u9sc4tZp/ajsYvOvR03pXejLNqnzS2l9/RDj2v8VVe2yQS5fsIQhjtWFauEBx7qswx0f
+         ZLjBSO1F1P1SWlQ/oJnnfVJPBBsup1MST8aE4CGsCyMnezGfEvZ59CiBHHVCeQriBmah
+         ALLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnCZzXGlMfJGuhtwAS5SAHZ7Z9hMk3VrBgvHcuzW+TZHqFSe+H8hXuWjyqx6ouf7SDhTg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy7ArCXolJSdPRdltLi0fKS/JzDQ1RwwXYIUMvRBeSwjD9xu+LM
+	o+Ujzdcge9SuPNRGFa0YSCKHmZES6AzB7zafvMfOANuEfuBzQMs=
+X-Gm-Gg: ASbGncv5LFBnIrNmS6AbERB5DMOZ2+SBI9CC3T3ZvAYNXYK/+T9WxrBgmNjly8IcU+g
+	1SRgFgrsNyaj62U2bzZCUQcbs4rv404VwZ2HJSupWB19yE1NEuQ9Dldcnxgp9FRKXKlbQeYYWYE
+	G+KYMpJ8wInvq9hckgY8cpXr4NonkNbs1M2YX1VQV7QS94DDPhqhwKHgR/gB9ZTgggh8HiRJa8O
+	z6JvwnKyV+Ux6mPjis9wg1DGu9vQfixzXC98P4CgrIQsnLhnwxEgCx0IbdYpI1d739y0HqxpRnP
+	g8YRxwIp/NQjDOyo4mTXdXU9FBx4yXnltl2BaU6erKMizf1IOUsJ
+X-Google-Smtp-Source: AGHT+IGTpGiCEbxTarSt7y732oj9f2PCf4kNvnO3XFvF0pPA3Ka+/n2IuVGjqKpGPACv04v8yPFYeA==
+X-Received: by 2002:a05:6122:46a0:b0:520:3f83:fdca with SMTP id 71dfb90a1353d-527642fd2d7mr2662608e0c.0.1743973737408;
+        Sun, 06 Apr 2025 14:08:57 -0700 (PDT)
+Received: from ise-alpha.. ([2620:0:e00:550a:642:1aff:fee8:511b])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5275afa73b5sm1615080e0c.41.2025.04.06.14.08.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Apr 2025 14:08:57 -0700 (PDT)
+From: Chenyuan Yang <chenyuan0y@gmail.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de
+Cc: linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Date: Sun,  6 Apr 2025 16:08:54 -0500
+Message-Id: <20250406210854.149316-1-chenyuan0y@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250328063056.762-4-ming.qian@oss.nxp.com>
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-Hey Ming,
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-On 28.03.2025 14:30, ming.qian@oss.nxp.com wrote:
->From: Ming Qian <ming.qian@oss.nxp.com>
->
->To support decoding motion-jpeg without DHT, driver will try to decode a
->pattern jpeg before actual jpeg frame by use of linked descriptors
->(This is called "repeat mode"), then the DHT in the pattern jpeg can be
->used for decoding the motion-jpeg.
+This is found by our static analysis tool.
 
-Hmm do we need to repeat the description from the previous patch?
->
->In other words, 2 frame done interrupts will be triggered, driver will
->ignore the first interrupt, and wait for the second interrupt.
->If the resolution is small, and the 2 interrupts may be too close,
->when driver is handling the first interrupt, two frames are done, then
->driver will fail to wait for the second interrupt.
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+---
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Okay this first part is a bit hard to understand, how about:
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 3686d468506b..45e000f61ecc 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -544,7 +544,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
+ 
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
+ 
+-- 
+2.34.1
 
-As the first frame in "repeat-mode" is the pattern, the first interrupt
-is ignored by the driver. With small resolution bitstreams, the
-interrupts might fire too quickly and thus the driver might miss the
-second interrupt from the first actual frame.
-
-Is that what you mean?
-
->
->In such case, driver can check whether the decoding is still ongoing,
->if not, just done the current decoding.
-
-That doesn't answer to me why this solves the issue of missing the
-second interrupt, can you elaborate your solution a bit so that the
-reader of the commit description understands why this is needed?
-
-Regards,
-Sebastian
-
->
->Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->---
-> .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |  1 +
-> .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 20 ++++++++++++++++++-
-> 2 files changed, 20 insertions(+), 1 deletion(-)
->
->diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->index d579c804b047..adb93e977be9 100644
->--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
->@@ -89,6 +89,7 @@
-> /* SLOT_STATUS fields for slots 0..3 */
-> #define SLOT_STATUS_FRMDONE			(0x1 << 3)
-> #define SLOT_STATUS_ENC_CONFIG_ERR		(0x1 << 8)
->+#define SLOT_STATUS_ONGOING			(0x1 << 31)
->
-> /* SLOT_IRQ_EN fields TBD */
->
->diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->index 45705c606769..e6bb45633a19 100644
->--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->@@ -910,6 +910,23 @@ static u32 mxc_jpeg_get_plane_size(struct mxc_jpeg_q_data *q_data, u32 plane_no)
-> 	return size;
-> }
->
->+static bool mxc_dec_is_ongoing(struct mxc_jpeg_ctx *ctx)
->+{
->+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
->+	u32 curr_desc;
->+	u32 slot_status;
->+
->+	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
->+	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
->+
->+	if (curr_desc == jpeg->slot_data.cfg_desc_handle)
->+		return true;
->+	if (slot_status & SLOT_STATUS_ONGOING)
->+		return true;
->+
->+	return false;
->+}
->+
-> static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
-> {
-> 	struct mxc_jpeg_dev *jpeg = priv;
->@@ -979,7 +996,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
-> 		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
-> 		goto job_unlock;
-> 	}
->-	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed) {
->+	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
->+	    mxc_dec_is_ongoing(ctx)) {
-> 		jpeg_src_buf->dht_needed = false;
-> 		dev_dbg(dev, "Decoder DHT cfg finished. Start decoding...\n");
-> 		goto job_unlock;
->-- 
->2.43.0-rc1
->
->
