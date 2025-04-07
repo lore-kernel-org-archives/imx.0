@@ -1,206 +1,188 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3208922F166
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 09:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447E24C6D
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 09:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744018971; cv=none; b=m1cVqM/PLowI5q8aqWcv3+OZJhOP/AIbx32AXMc2piW/PpRE+lZQ6X1DIOi6qtmv/M646rXLvc8avNmgGLJyfAsDoNn9ceJnCrkurauY7MvjyHP+a2lslt6Ox2b+b6LH5EZ79ZsfnebhLRTfsH62qlHMrZO+fKWBICUMDZzEprg=
+	t=1744019451; cv=none; b=jJBfFaMiO8BAz1m5Bj5sCXP2JxbuSktzx6xzaGaY4K3Y21v6N/LEtTQvm0FD5PYHvT2D/iBraYPxTdlQ0SqDhPYAyXV5QcvhyjCVkicj1bXHXni3Bxl7BOpMNK9pIEXpLAALxsdUeaIiDWDD6B/GUGlz4eprpkQTvSkuJ1MWqTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744018971; c=relaxed/simple;
-	bh=jlMLDaRl/HXp6hB4/manLhQoCEE1VaFTEITq3lNkrEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkseHulpQ975h0Q+hk3F7a8CXFD5jcF9kQ6E+AncJrRGld8VX3V58T6w0UrEnIb6ujOZh+aCXuEfxclqRxcM1THZzXYp8aHtCrO2BemP+cF14R+5z/LtjPNLSHt4Ec9HT8cgN7rkt3pw8ZEMLoUJL+sLrvRJqG4G0lfpYRmOu4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=OacILLR0; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1744019451; c=relaxed/simple;
+	bh=918JyGq2JULBb2VBV8xSHWvUe12OuXjvjyi1QXWH9+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZZ+A3G1Dq3xlny7ot8iguFDIGQlNb/r/WKb85Mywvrg0btQJJFZRxdmb3BaUa3j9DEKrgg6MCvwciN46MVt3QECjDADlVJi3LcVzXF79RTTyKAI4OxSnaBNdPtNADO7ZkiJGSeKO0qRViZ1RPIjPVrszJOfyYSdGgrfLVfssRRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Al0JkPmX; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="OacILLR0"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6097103B92D0;
-	Mon,  7 Apr 2025 11:42:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744018966; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=4eDjRS2hC0vlG/zR57fnDcqGBidSBNVgWKh9+kcMn9o=;
-	b=OacILLR0PwfGSFd3hcH03M4AGX0eCI+iwWLGOHkju2e/YjCChp42qafsC7ngwfwStcTbGB
-	yBEfpNQezQ8CC9+MjOI9E+r3mkWD8hWIOlJzQNlT5lJxe/lU9M1BrOmdbZ6NxsCEJTbFmh
-	CBPP6rIic66CUcRi0f/AbztRI4GnG/frJ+runK2heeTWaE6cDDM5t+G3ZvhRWD7MW/Fu9u
-	BxpzTVV/ikPpPimshka6Te0UALX8btX3TIYzZneD2IH/A8dx54upW92ZdWdSZEgTiispCF
-	/7cyDDgUJMTi/kVsrbeVtZibZKzfKm8Q4p5IaaJx5rqt3+ykqd+uKzG7MOLPfQ==
-Date: Mon, 7 Apr 2025 11:42:39 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250407114239.193cd217@wsk>
-In-Reply-To: <33394d5b-9a67-4acc-bdd1-bf43dc3bd8ab@lunn.ch>
-References: <20250331103116.2223899-1-lukma@denx.de>
-	<20250331103116.2223899-5-lukma@denx.de>
-	<33394d5b-9a67-4acc-bdd1-bf43dc3bd8ab@lunn.ch>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Al0JkPmX"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D07D6432F4;
+	Mon,  7 Apr 2025 09:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744019447;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=un1sepzSSrQyyA7E1EuGMdvogzWZ9PqXPPCQRmW27Io=;
+	b=Al0JkPmXCMyWKJwSKMD/zgMi561P28OTCGtw1w/ulS8iOmM1CI/GUhAcysU+67PDUIL+Vd
+	uwo3RZ01D/S8pUF1px+RS6314PIns7DAUyk0suG62RlPxpE6Xf2SNLAOC/jYGiAHxIsgVX
+	jbGTH5pQtzbTzn8eoqT2GDntvXwjEejIuSGRVGlshP5o3eT4yeAzEn1/FCSg3JzLns5WXf
+	qqgXXqls8zI8Zadt1RADniTCbnCU7G5ARScilubNhH//63BovGULrHoKFAqCuax09s3KsX
+	UKO4WijJBM6WKXBOsct0awVkg62RcMVCinNok49h2EsKRDt1e/TmAxU3H5+FGQ==
+Message-ID: <f902bafa-6102-4a8c-a74f-48e3975e8ffd@bootlin.com>
+Date: Mon, 7 Apr 2025 11:50:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/dGGFaEc2.hmY7aZKdqC+Kiu";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
-
---Sig_/dGGFaEc2.hmY7aZKdqC+Kiu
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Andrew,
-
-> > +struct switch_enet_private *mtip_netdev_get_priv(const struct
-> > net_device *ndev) +{
-> > +	if (ndev->netdev_ops =3D=3D &mtip_netdev_ops)
-> > +		return netdev_priv(ndev);
-> > +
-> > +	return NULL;
-> > +} =20
->=20
-> > +static bool mtip_port_dev_check(const struct net_device *ndev)
-> > +{
-> > +	if (!mtip_netdev_get_priv(ndev))
-> > +		return false;
-> > +
-> > +	return true;
-> > +}
-> > + =20
->=20
-> Rearranging the code a bit to make my point....
->=20
-> mtip_port_dev_check() tells us if this ndev is one of the ports of
-> this switch.
->=20
-> > +/* netdev notifier */
-> > +static int mtip_netdevice_event(struct notifier_block *unused,
-> > +				unsigned long event, void *ptr)
-> > +{
-> > +	struct net_device *ndev =3D netdev_notifier_info_to_dev(ptr);
-> > +	struct netdev_notifier_changeupper_info *info;
-> > +	int ret =3D NOTIFY_DONE;
-> > +
-> > +	if (!mtip_port_dev_check(ndev))
-> > +		return NOTIFY_DONE; =20
->=20
-> We have received a notification about some interface. This filters out
-> all but the switches interfaces.
->=20
-> > +
-> > +	switch (event) {
-> > +	case NETDEV_CHANGEUPPER:
-> > +		info =3D ptr; =20
->=20
-> CHANGERUPPER is that a netdev has been added or removed from a bridge,
-> or some other sort of master device, e.g. a bond.
->=20
-> > +
-> > +		if (netif_is_bridge_master(info->upper_dev)) {
-> > +			if (info->linking)
-> > +				ret =3D mtip_ndev_port_link(ndev,
-> > +
-> > info->upper_dev); =20
->=20
-> Call mtip_ndev_port_link() has been added to some bridge.
->=20
-> > +static int mtip_ndev_port_link(struct net_device *ndev,
-> > +			       struct net_device *br_ndev)
-> > +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(ndev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +
-> > +	dev_dbg(&ndev->dev, "%s: ndev: %s br: %s fep: 0x%x\n",
-> > +		__func__, ndev->name,  br_ndev->name, (unsigned
-> > int)fep); +
-> > +	/* Check if MTIP switch is already enabled */
-> > +	if (!fep->br_offload) {
-> > +		if (!priv->master_dev)
-> > +			priv->master_dev =3D br_ndev;
-> > +
-> > +		fep->br_offload =3D 1;
-> > +		mtip_switch_dis_port_separation(fep);
-> > +		mtip_clear_atable(fep);
-> > +	} =20
->=20
-> So lets consider
->=20
-> ip link add br0 type bridge
-> ip link add br1 type bridge
-> ip link set dev lan1 master br0
->=20
-> We create two bridges, and add the first port to one of the bridges.
->=20
-> fep->br_offload should be False
-> priv->master_dev should be NULL.
->=20
-> So fep->br_offload is set to 1, priv->master_dev is set to br0 and the
-> separation between the ports is removed.
->=20
-> It seems like the hardware will now be bridging packets between the
-> two interfaces, despite lan2 not being a member of any bridge....
->=20
-> Now
->=20
-> ip link set dev lan2 master br1
->=20
-> I make the second port a member of some other bridge. fep->br_offload
-> is True, so nothing happens.
->=20
-> This is why i said this code needs expanding.
->=20
-> If you look at other switch drivers, you will see each port keeps
-> track of what bridge it has been joined to. There is then logic which
-> iterates over the ports, finds which ports are members of the same
-> bridge, and enables packets to flow between those ports.
->=20
-> With only two ports, you can make some simplifications, but you should
-> only disable the separation once both ports are the member of the same
-> bridge.
->=20
-
-I think that I do have your point. Thanks for the info.
-
-> 	Andrew
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/5] drm/bridge: add devm_drm_bridge_alloc() with
+ bridge refcount
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>,
+ Jagan Teki <jagan@amarulasolutions.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Anusha Srivatsa <asrivats@redhat.com>, Paul Kocialkowski
+ <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
+ =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250326-drm-bridge-refcount-v9-0-5e0661fe1f84@bootlin.com>
+Content-Language: en-US
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
+ 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
+In-Reply-To: <20250326-drm-bridge-refcount-v9-0-5e0661fe1f84@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleelkeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejgeejgedutdekhfffgfegudeutdetgfeuveegteeftddtfeevueffgfevgfevkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddvkegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkv
+ ghrnhgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-GND-Sasl: louis.chauvet@bootlin.com
 
 
 
+Le 26/03/2025 à 18:47, Luca Ceresoli a écrit :
+> This series improves the way DRM bridges are allocated and initialized and
+> makes them reference-counted. The goal of reference counting is to avoid
+> use-after-free by drivers which got a pointer to a bridge and keep it
+> stored and used even after the bridge has been deallocated.
+> 
+> The overall goal is supporting Linux devices with a DRM pipeline whose
+> final components can be hot-plugged and hot-unplugged, including one or
+> more bridges. For more details see the big picture [0].
+> 
+> DRM bridge drivers will have to be adapted to the new API -- the change is
+> trivial for most cases. This series converts two of them to serve as an
+> example. The remaining ones will be done as a follow-up after this first
+> part is merged.
+> 
+> After that, refcounting will have to be added on the two sides: all
+> functions returning a bridge pointer and all code obtaining such a
+> pointer. A few examples have been sent in v7 (link below), they are OK, but
+> I removed them since v8 because they must be merged only after converting
+> all bridges.
+> 
+> Here's the grand plan:
+> 
+>   A. add new alloc API and refcounting (this series, at least patches 1-3)
+>   B. after (A), convert all bridge drivers to new API
+>   C. after (A), add documentation and kunit tests
+>   D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
+>      (patches 3-4 in the v7 series)
+>   E. after (B), convert accessors (including patches 5-9 in the v7 series
+>      which convert drm_bridge_chain_get_first_bridge() and its users);
+>      this is a large work and can be done in chunks
+>   F. after (A), debugfs: show refcount, show removed bridges
+>   
+> Layout of this:
+> 
+>   1. Add the new API and refcounting:
+> 
+>      drm/bridge: add devm_drm_bridge_alloc()
+>      drm/bridge: add support for refcounting
+>      drm/bridge: deprecate old-style bridge allocation
+> 
+>   2. convert a few bridge drivers (bridge providers) to the new API:
+> 
+>      drm/bridge: ti-sn65dsi83: use dynamic lifetime management
+>      drm/bridge: samsung-dsim: use dynamic lifetime management
+> 
+> [0] https://lore.kernel.org/dri-devel/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Applied on drm-misc-next, thanks!
 
-Best regards,
+-- 
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/dGGFaEc2.hmY7aZKdqC+Kiu
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfzng8ACgkQAR8vZIA0
-zr1QPggAx9Y8piyOWlU04a35TryOc69ycDWnjqzMqg11YaCSKZRe0597B8yD8gCi
-aNIIj+tSDbWmJS9aghABK6uFYyWdHV6reZPoDA2FSIyc+HnmNyJG8l+467EJyVyE
-cfPbcXsw/Pg0eAgEJVbcXoCrzLi+sAwBXzsegu6xFVOOcZoVpwJ37I7sSzTC/7zZ
-T90PsPu/sBksuaIr0xMW/VbYG5I0FLCEaOf06iThR3xQOTpWisjgdwmYPSvigPoq
-HmVQXp0w4LsfRTTvLavgpwa9YBJXOk87Jnyi86KvPoRxCVFNUvlSU432qzCV/7AN
-eXojuGHIx4+E2CgGqhfOCrcv/Ffnxg==
-=nOs3
------END PGP SIGNATURE-----
-
---Sig_/dGGFaEc2.hmY7aZKdqC+Kiu--
