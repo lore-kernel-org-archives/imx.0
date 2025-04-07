@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F512561C0;
-	Mon,  7 Apr 2025 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B0E25D1F7;
+	Mon,  7 Apr 2025 18:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049496; cv=none; b=ceoch/5Cltqfa4RRfJD7Y4OBtM8pzCthPpMXncVjYsOVhN1DALKTPmdplBYI7iAY9Je4+kQH5QvQxFWkmgMj0M/NSDDHtRja0Qj/uIhVgAd0jdoAVppXLTykBhd8vMcLyH+wIOJ/jiJLw3rIHx5gXRCyOI6Unqam8XbbYLu7/Fc=
+	t=1744049570; cv=none; b=sz+SxaBY/QsJtpdAbtNsdJ52iwa6Pzzn7pvCwWkjjLhY0FpA+wozp+Um7JLAn6JIQDyi0Ewe6/u2Alxjl/OuYNoNDnOt3Euwtp9HYKQyrLOG1X+Yo7QNikDE8LL1fASEwG+nLHNs8E0QHR7NLIDJ6S7XPQit44wZN8XHqv+XGYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049496; c=relaxed/simple;
+	s=arc-20240116; t=1744049570; c=relaxed/simple;
 	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KryaBK67vVh49PDgkLxDStll9DpgAk18DaFhW7pJMKDKamOHVNh/B0eqgrtpP7+CwRC1bbuSf1bEZ6jEGA1NvKsejEZtRwbb3Bb0zgRGcaA/mUcERxkZpKPATLD8KtrHvrzOAbLveenjAWDJI73uUht4hKPaSLVtTQbrQDXiqH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/f751f+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=UZdynsM4d7rt3F+xZn5CkzICL7cFGdA+RxogkF2uAgqZ4skMHiz8bDWG9tLk+j1hNJDjW3q1LBQNjwqeOG1zlcUMdG11PhmOTVRAhSUDR6zcw2LmrOWhguIW1P9RTyWr2uPTSwW0am9kmhlhcPvwHX4fMO8Tg1Nx1dM/eThHmQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LludQa5x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/f751f+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF86C4CEDD;
-	Mon,  7 Apr 2025 18:11:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LludQa5x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDDDC4CEDD;
+	Mon,  7 Apr 2025 18:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049495;
+	s=k20201202; t=1744049570;
 	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/f751f+6K97vUwzUAzl1v8XnRuu+Zc6H9nXT9uy4S076rItQngMo80xI5gk/UFa7
-	 m6FGmuwJuk3kl9ErVCT79dLTBZ4R2932VMW6Zo7Nd4A/aH3AfPKQ8km7Zo6bzKJ3Av
-	 WjkUMV85WS1o/D77CNzrdVSiugLS9tvRwvAlrsOfoCJS/zLyXz9DA+gO0WjeWcPcGI
-	 yGAz94RgG0MTslBNA23+4wWPfhAEN4kWxB7kFjRPG6GpAQ0KUlcxG67/Xk4OcS5VEI
-	 OMVNz24N9QGcALevUVHAIkXDn33mAdrq+fTyCk5fHCBnhsPa0cdQ8h9WNQAGbgvsJO
-	 Tppb4Xjt1GRTw==
+	b=LludQa5xe6NA9ZDizMkvRzBPNFFs6JcTIG4S7VomaGAABy0yPQ+GIbFT8NoqCoj5R
+	 86beydL4csr8vN6Ab5366M9Am7puetlWz6MXbs4hWP5nQ10GHSmVgLczh4E9BuetbG
+	 fmzvmEe2G617+c4ccDoNAWrOWGq72fSG8CrsvBWEFWxHahA+neRa2MNQBXphTAkrOo
+	 FVo/KzY4QjLHCDe/7QSJyIDXXfZCJVcofGQhaA4H7yD+znEBHV4UB9emPqB7H1KCCp
+	 FQZBLABlbGXp5xzTlgAB6R38BzN3pN+cl66B88sIijF4jJrW2RNR4fRH+g1SrgozRk
+	 hoSHwub30mx3A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,12 +36,12 @@ Cc: Stanley Chu <yschu@nuvoton.com>,
 	miquel.raynal@bootlin.com,
 	linux-i3c@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 16/31] i3c: master: svc: Add support for Nuvoton npcm845 i3c
-Date: Mon,  7 Apr 2025 14:10:32 -0400
-Message-Id: <20250407181054.3177479-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 13/28] i3c: master: svc: Add support for Nuvoton npcm845 i3c
+Date: Mon,  7 Apr 2025 14:12:03 -0400
+Message-Id: <20250407181224.3180941-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181054.3177479-1-sashal@kernel.org>
-References: <20250407181054.3177479-1-sashal@kernel.org>
+In-Reply-To: <20250407181224.3180941-1-sashal@kernel.org>
+References: <20250407181224.3180941-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.1
+X-stable-base: Linux 6.13.10
 Content-Transfer-Encoding: 8bit
 
 From: Stanley Chu <yschu@nuvoton.com>
