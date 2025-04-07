@@ -1,193 +1,138 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4291EB5CE;
-	Mon,  7 Apr 2025 15:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825EC1FA177
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 15:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744039671; cv=none; b=FNmUxuPZLH89SmIcL4ZN61gdcBk0twYgM66rmyifV7uXT6z7QINMw2NDIUJGi6/BAEvoiBW6Iig/yaugBWB6aK8cJhzOsLuzlqdfRUrDx8bRVdRx7LTjJ5NdJFs9pgkA8lmPZTzliEEABq4cH9Tvq2zeYt7TjyChH5VYqjmC5jo=
+	t=1744039829; cv=none; b=YpWcqMX4hgh8GMc0l7gXsIUhLZBi/60X99HW8YlD5iezo8oZbCLAcIqnL7LjG8ZUEhp29JgaYYRt60MloqlRLsLgtk0t/HbMOq1Sdga+ld8oEKpeUUowDnI1vh+H7AwqQ/DFSfnvPHQRy6m4AGJ1Cq0OBQ3a9bjrI+bYBedAM00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744039671; c=relaxed/simple;
-	bh=ft5fAVeWE1b1HKhaLeGcIb2VFYMlP13maxhipyRumJQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qOmy1pJbtMw+C8w1Zp5m5ToEOXS9PVfXQumtzcGhWKFWzpCQ4qD3p9gtJ69vpKukljjUjf/uvRG0qlyVTY5tIqBKvRpJxSkCQkzMZf/x1F03+hJcjIGdHDVrAE1VsuxRHNpLNSAmh11pmZeOYQ8AdnVcIYkR6ZmOD5bKgpSyM0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LBZvLE2G; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744039829; c=relaxed/simple;
+	bh=g0yyqdpKhTJeG+BAd0Yg/gUdc7l4ULmzVrzx9Rpmr6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pBxalocNEFs7gTvKfVEtz4QbVkAyytoX30xhNsIWFJaZig1tJw1Y80yXfy1rF3nzpc0qRXpbaovopL0cNeJTow+ZrzQfRDQIry2fB/Pe/ytXLROlgRseEKOHPgATVjG1YSv0cYl9zYH7irAf85uSo4w54qetb++Ln+YmFyr1To8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m8CzBLsT; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LBZvLE2G"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 72646431EA;
-	Mon,  7 Apr 2025 15:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744039667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WgX6S64ngnXsjU0lQPqeLHBfnA+UnbXv6BjQk1oGXZU=;
-	b=LBZvLE2G+afaVJ2bwhuBl1x1YRR/aqaZ2Xm5yU+xaLjjIqM+WbNAKPx85Swnqti9EdXmCR
-	jxm3gIWcOaG1co2jTwQSHLMwRfa/o37ZW3TL5sERhaicxQw3i4iyp8UcVcTXkH1w4KSGdk
-	Y19KevZYjLYHr3HXXP8AducFPd1YdMFTPsJeGctmaMWsKIGeEO+n7SDKrX8kxYN5Z1gWgI
-	+UT+rfLgfI9oZV+al0AMr7X1Hj0w9CZsV0S3DJwxwGrF5CvYlrRAnPH725fFHTQ9VF1+RR
-	KAa03YipbyuRmYOv8qQstJ9OZTNaCvUkN6DRY2d/JonMQilxNjXgv50w/l7c9A==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m8CzBLsT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744039827; x=1775575827;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=g0yyqdpKhTJeG+BAd0Yg/gUdc7l4ULmzVrzx9Rpmr6U=;
+  b=m8CzBLsTptY3Xf6g3XGx7Ym50hFjohPW/qs+GBGQ6LppT0LzwxgHXsF3
+   b0RlRYiFnDC69Xo5CEYZNaKCkyoRN2N+6Gvdv+SEzmGn3jUkdORwPheSW
+   W45YupKX0EaGQIamqCggIelu14V1pNYZWcNQavmy/uwfbkz+rwy+9xVJL
+   z+cp9ChupGNaBLWvhp3iDkRHy/kWSbReTKXr8Fl7sVhufSFgnQly11azp
+   FVR3MKMEqMSNWG5j5/1QRBvzy3skwEOedskXRt9kymYNaHmesK7E6h8rr
+   5HyiXcZGDJYYYI8eB06pfXDtTezsXuHiiyxuC6gTcGeTBArKJ1iGRZe/K
+   w==;
+X-CSE-ConnectionGUID: AtKlNbJlSJamWqsiVAL4gw==
+X-CSE-MsgGUID: Pn0iFksHQ9OwCLi2VOeDkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="62980191"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="62980191"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:30:26 -0700
+X-CSE-ConnectionGUID: GDqsXhTrRFKRa8fqJC2lKA==
+X-CSE-MsgGUID: vQcAL9GpSRixUUMsO+9hag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="158982543"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 08:30:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u1oQP-0000000A6tV-2nff;
+	Mon, 07 Apr 2025 18:30:13 +0300
+Date: Mon, 7 Apr 2025 18:30:13 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	=?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>,
-	Hui Pu <Hui.Pu@gehealthcare.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	dri-devel@lists.freedesktop.org,
-	asahi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH 34/34] drm/bridge: panel: convert to devm_drm_bridge_alloc() API
-Date: Mon,  7 Apr 2025 17:27:39 +0200
-Message-ID: <20250407-drm-bridge-convert-to-alloc-api-v1-34-42113ff8d9c0@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
-References: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 06/16] PCI: of: Set fwnode.dev of newly created PCI
+ device nodes
+Message-ID: <Z_PvhVkdhubA9jAe@smile.fi.intel.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-7-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.14.2
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddtheegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfgggtoffgsehtkeertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudffiefgvdfftdffkeejjefhffduleejleeuieetieetgeehtefhjedtgeegieegnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihrdhfrhhithiirdgsohigpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedupdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvp
- dhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhg
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407145546.270683-7-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-This is the new API for allocating DRM bridges.
+On Mon, Apr 07, 2025 at 04:55:35PM +0200, Herve Codina wrote:
+> Device-tree node can be created when CONFIG_PCI_DYNAMIC_OF_NODES. Those
+> node are created and filled based on PCI core information but the
+> fwnode.dev field is not set.
+> 
+> When later an overlay is applied, this consuses fw_devlink. Indeed,
+> without any device attached to the node, fw_devlink considers that this
+> node will never become a device. When this node is pointed as a
+> supplier, devlink looks at its ancestors in order to find a node with a
+> device that could be used as the supplier.
+> 
+> In the PCI use case, this leads to links that wrongly use the PCI root
+> bridge device as the supplier instead of the expected PCI device.
+> 
+> Setting fwnode.dev to the dev of the PCI device allows devlink to use
+> this device as a supplier and so, correct links are created.
 
-The devm lifetime management of this driver is peculiar. The underlying
-device for the panel_bridge is the panel, and the devm lifetime is tied the
-panel device (panel->dev). However the panel_bridge allocation is not
-performed by the panel driver, but rather by a separate entity (typically
-the previous bridge in the encoder chain).
+...
 
-Thus when that separate entoty is destroyed, the panel_bridge is not
-removed automatically by devm, so it is rather done explicitly by calling
-drm_panel_bridge_remove(). This is the function that does devm_kfree() the
-panel_bridge in current code, so update it as well to put the bridge
-reference instead.
+> +	/*
+> +	 * Set the fwnode.dev in order to have fw_devlink creating links
+> +	 * pointing to this PCI device instead of walking up to the PCI host
+> +	 * bridge.
+> +	 */
+> +	np->fwnode.dev = &pdev->dev;
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
+This is too invasive. I suppose here should be a helper for this kind of
+operation. If not, create one.
 
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: Maxime Ripard <mripard@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-To: Robert Foss <rfoss@kernel.org>
-To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-To: Jonas Karlman <jonas@kwiboo.se>
-To: Jernej Skrabec <jernej.skrabec@gmail.com>
-To: Jagan Teki <jagan@amarulasolutions.com>
-To: Shawn Guo <shawnguo@kernel.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Pengutronix Kernel Team <kernel@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-To: Douglas Anderson <dianders@chromium.org>
-To: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Paul Kocialkowski <paulk@sys-base.io>
-Cc: Dmitry Baryshkov <lumag@kernel.org>
-Cc: Hervé Codina <herve.codina@bootlin.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: asahi@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Cc: chrome-platform@lists.linux.dev
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-amlogic@lists.infradead.org
-Cc: linux-renesas-soc@vger.kernel.org
-Cc: platform-driver-x86@vger.kernel.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: linux-arm-msm@vger.kernel.org
-Cc: freedreno@lists.freedesktop.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
----
- drivers/gpu/drm/bridge/panel.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+	fw_devlink_set_device(...);
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index 79b009ab9396048eac57ad47631a902e949d77c6..ddd1e91970d09b93aa64f50cd9155939a12a2c6f 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -287,15 +287,14 @@ struct drm_bridge *drm_panel_bridge_add_typed(struct drm_panel *panel,
- 	if (!panel)
- 		return ERR_PTR(-EINVAL);
- 
--	panel_bridge = devm_kzalloc(panel->dev, sizeof(*panel_bridge),
--				    GFP_KERNEL);
--	if (!panel_bridge)
--		return ERR_PTR(-ENOMEM);
-+	panel_bridge = devm_drm_bridge_alloc(panel->dev, struct panel_bridge, bridge,
-+					     &panel_bridge_bridge_funcs);
-+	if (IS_ERR(panel_bridge))
-+		return (void *)panel_bridge;
- 
- 	panel_bridge->connector_type = connector_type;
- 	panel_bridge->panel = panel;
- 
--	panel_bridge->bridge.funcs = &panel_bridge_bridge_funcs;
- 	panel_bridge->bridge.of_node = panel->dev->of_node;
- 	panel_bridge->bridge.ops = DRM_BRIDGE_OP_MODES;
- 	panel_bridge->bridge.type = connector_type;
-@@ -327,7 +326,7 @@ void drm_panel_bridge_remove(struct drm_bridge *bridge)
- 	panel_bridge = drm_bridge_to_panel_bridge(bridge);
- 
- 	drm_bridge_remove(bridge);
--	devm_kfree(panel_bridge->panel->dev, bridge);
-+	devm_drm_put_bridge(panel_bridge->panel->dev, bridge);
- }
- EXPORT_SYMBOL(drm_panel_bridge_remove);
- 
+
+or alike.
 
 -- 
-2.49.0
+With Best Regards,
+Andy Shevchenko
+
 
