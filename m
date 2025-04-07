@@ -1,261 +1,292 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2059.outbound.protection.outlook.com [40.107.22.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9BF4A21
-	for <imx@lists.linux.dev>; Sun,  6 Apr 2025 21:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743974689; cv=none; b=rLxCUTqLAV8sh6KDL1fQinEmSMF0vH3YxmY69Ev+zwS365lxIJKseKoss+verSZDOvaF/P75PCm3HO2+ADBbWLK2as4pF/gvJUtVGvBcLayJ70Iv4FXcfSI3a98rRchLcC6oXFxADRvAm5AYmqjIK+Thv8MYC/yjZCNu67A2k2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743974689; c=relaxed/simple;
-	bh=kcLBmHUDELpVIjBDW7WOFfPs229RgQceNLXEbd1UJOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CkEwiZbNGMWan3r+1lMGGL135ZwVVgLnwG38t4K/Aeisqa0B+xKhXxwoq08Q0IvWAQE5eyOEetLmr3fqF1grENGYd0TUl9QhTXhiKS1JNPqkGI8kOvzJYQeOxsw1Vqi8Ylofj4CU1kkstMfocd5FpgTJ6CucRi61aSwuGvwVdBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=hXR1Cj6J; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935E3199939
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 02:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743994436; cv=fail; b=UVRCrWWW1KsgYo5O17m3s6dO3PbvU9ItBbQ7f+YYeo+BcDz7FQTCkx/lGw5SpxcVCEPZXC6SlFLYnfX4/A5Jt6lyJgisGWPmdhcUtLGcvKPiLVwUDaR7MTW1oyhBHGMLmNTayNgVP1HqstCIKHfm0w3+LuvTrsKHaCvAaxxJnzY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743994436; c=relaxed/simple;
+	bh=Pdvf1MkSzAk4JXpJ+qcUb316rupfsDYOqWdTXGfYQjQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U0vo0kR2xgstr51li/T+HO7jhiQ3jRSSB4za/S9l0z8gw202uRcNlXvMqWCFlZNDw3k2uYd8Y1oB0EgLqNM8ZoaEarRBXUrAeSFWE4yu5HFUJ8M3Af9jy0ShloYSJ528ugqroMvjZp8FVeEvOd6rFYVGIZmiyqQf856/vCE7/gE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mx7b/d9Y; arc=fail smtp.client-ip=40.107.22.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="hXR1Cj6J"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 941EA103B92CE;
-	Sun,  6 Apr 2025 23:24:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1743974677; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=AmDn6RQJ+QRV6q6JMcajnOpUP8bbZFJKY8h5RYYtrj0=;
-	b=hXR1Cj6JiEpHHtfFp5082ABIz3Ak8Om151NMhGXcN0eH+00EcXMRaWfTWSG4ICuq8+a6kk
-	PTS24XASiBCImp0rsWts4wT8v0c/Slugz744qxWJRN1sbi4+u6/4baMRPLwQd8522KXcNN
-	qo6OUWirQp7OJ3ZJHc2xC4X1VvNfUh6/Iu+Ex2LIK4o87Y2dDRieYlvDaDdFdMsh9eytzY
-	3R5MwONrRpoDy+r/VhjddzNeqj92p2pnTavGmB7kWO2N0y0/DerCac0yZShc+CzNarlZ5U
-	QfHW1q0jnpXP0b7+2htYYXjI4A1eYZZ4f1hJfC+v0s1Y6ANJ7Ahmt3nDB87Jvw==
-Date: Sun, 6 Apr 2025 23:24:31 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250406232431.48e837e0@wsk>
-In-Reply-To: <8f431197-474e-4cd5-9c3e-d573c3f3e6b5@lunn.ch>
-References: <20250331103116.2223899-1-lukma@denx.de>
-	<20250331103116.2223899-5-lukma@denx.de>
-	<8f431197-474e-4cd5-9c3e-d573c3f3e6b5@lunn.ch>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mx7b/d9Y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VmlGyazlsguLLJViiyQz1nlSeFk9AhvL/UpSdCPEb1OzJqLCKyOpFA32aydTgVG39/0hK7M5psLNsBOXE5Ncll4vK3xP9fEeHKB8CFCZbAe9PIxVp60hY7AafkqKRC9ZQwZsLZv+AkJNQ7/4hpgvJy4tSZZKKffJ4VuEYhClfhOTvRrS8nMR+ZExE+7hmws+UIaCq++XN79RDt3BxaF0iMoW0axqmq2obFrYU/jyTdAUDN6ixIaQmoxvp9b2qCtZLGRgy/IkSDXQ8IvkOTFYu8+iOAzXD4ujZlQ5eOE7kjuN/YEa86VH0vqJbA0uk1mEBy1r4B+AlZyU69RdWlhgsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OfvIV59H9ViSrmdJzqKZgZRASpvrzVATDKHNsi1badA=;
+ b=GBkhadbwmyhkSwIqO+yAznIq7O9l9xuLRM1Z8/b3AejNvJEVyPs5PrUuYTXQZ6TtAJjPlGEZvPk/oKYdTgtxf+Eains0cVOiWBf7DJ2YDLXpzYo1hicdM4gz4qxiq9e0F4OEDNaIrEqyYlmRkY85acuHRd/g+RermGfLP6KH6seQeSU7GydUoP1Jd8RGLJsnyvjpBauecj299M9sYvhSVpGKdbU2/0V05hsvlQwNgRk/Xv7lbPjsiARtXfC20rrbSTG6f23P3gQdm3IZc01U3fxSpXAZ11w5ktQz5I11sDF904lKIn8z68u+m/wCpi391IxWtT2CAnF59KViesDd/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OfvIV59H9ViSrmdJzqKZgZRASpvrzVATDKHNsi1badA=;
+ b=mx7b/d9YtHMtYjnBFJ1pjroeOdoKecWrfkFcYe8iZ2RRqnUeKjVszztCBm/1vQQDgU10vv9dDtTamhmrwotVJgSzmTOxehdVQHLPVVg66XCc5q1t3YuNwPUNQ/zjz/qItFlff6bcdEtgwm9Upghp95CZ9b/jQ59bJpyB3NvxnC2qGK17tpImFMXd+VSotg1umxBftHayOW1qulIGmjZ0S2sxsEe7zvN6ojGxH+oi85aQpdZJkGx2SGP7XyKZteLZxLVIIFxaoX/jtbMUTkakRFWGKaIkT5A555rQGAw7evlqHtq2d69ULtAmF1YTwqnlhxDrIIsAheLQRk5Xrz1XDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by AS1PR04MB9263.eurprd04.prod.outlook.com (2603:10a6:20b:4c5::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.31; Mon, 7 Apr
+ 2025 02:53:51 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.8606.029; Mon, 7 Apr 2025
+ 02:53:51 +0000
+Message-ID: <92c8f778-cd94-4113-8b9e-699b8ffa9fa2@oss.nxp.com>
+Date: Mon, 7 Apr 2025 10:52:10 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] media: imx-jpeg: Enhance error handling in buffer
+ allocation
+To: Sebastian Fricke <sebastian.fricke@collabora.com>
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, mirela.rabulea@oss.nxp.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+ linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20250328063056.762-1-ming.qian@oss.nxp.com>
+ <20250328063056.762-2-ming.qian@oss.nxp.com>
+ <20250405113936.oepkmoz2czytbuxy@basti-XPS-13-9310>
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+In-Reply-To: <20250405113936.oepkmoz2czytbuxy@basti-XPS-13-9310>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR02CA0008.apcprd02.prod.outlook.com
+ (2603:1096:3:17::20) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/ACv8R=knW+t0ni5QKQO7U2=";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
-
---Sig_/ACv8R=knW+t0ni5QKQO7U2=
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Andrew,
-
-> > +static void read_atable(struct switch_enet_private *fep, int index,
-> > +			unsigned long *read_lo, unsigned long
-> > *read_hi) +{
-> > +	unsigned long atable_base =3D (unsigned long)fep->hwentry;
-> > +
-> > +	*read_lo =3D readl((const void *)atable_base + (index << 3));
-> > +	*read_hi =3D readl((const void *)atable_base + (index << 3)
-> > + 4); +}
-> > +
-> > +static void write_atable(struct switch_enet_private *fep, int
-> > index,
-> > +			 unsigned long write_lo, unsigned long
-> > write_hi) +{
-> > +	unsigned long atable_base =3D (unsigned long)fep->hwentry;
-> > +
-> > +	writel(write_lo, (void *)atable_base + (index << 3));
-> > +	writel(write_hi, (void *)atable_base + (index << 3) + 4);
-> > +} =20
->=20
-> It would be nice to have the mtip_ prefix on all functions.
-
-Ok.
-
->=20
-> > +static int mtip_open(struct net_device *dev)
-> > +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	int ret, port_idx =3D priv->portnum - 1;
-> > +
-> > +	if (fep->usage_count =3D=3D 0) {
-> > +		clk_enable(fep->clk_ipg);
-> > +		netif_napi_add(dev, &fep->napi, mtip_rx_napi);
-> > +
-> > +		ret =3D mtip_alloc_buffers(dev);
-> > +		if (ret)
-> > +			return ret; =20
->=20
-> nitpick: You might want to turn the clock off before returning the
-> error.
-
-Ok.
-
->=20
-> > +	}
-> > +
-> > +	fep->link[port_idx] =3D 0;
-> > +
-> > +	/* Probe and connect to PHY when open the interface, if
-> > already
-> > +	 * NOT done in the switch driver probe (or when the device
-> > is
-> > +	 * re-opened).
-> > +	 */
-> > +	ret =3D mtip_mii_probe(dev);
-> > +	if (ret) {
-> > +		mtip_free_buffers(dev); =20
->=20
-> I've not checked. Does this do the opposite of netif_napi_add()?
-
-No, the netif_napi_add() is required here as well.
-
->=20
-> > +static void mtip_set_multicast_list(struct net_device *dev)
-> > +{
-> > +	unsigned int i, bit, data, crc;
-> > +
-> > +	if (dev->flags & IFF_PROMISC) {
-> > +		dev_info(&dev->dev, "%s: IFF_PROMISC\n",
-> > __func__); =20
->=20
-> You can save one level of indentation with a return here.
-
-Ok.
-
->=20
-> > +	} else {
-> > +		if (dev->flags & IFF_ALLMULTI) {
-> > +			dev_info(&dev->dev, "%s: IFF_ALLMULTI\n",
-> > __func__); =20
->=20
-> and other level here.
-
-Ok.
-
->=20
-> > +		} else {
-> > +			struct netdev_hw_addr *ha;
-> > +			u_char *addrs;
-> > +
-> > +			netdev_for_each_mc_addr(ha, dev) {
-> > +				addrs =3D ha->addr;
-> > +				/* Only support group multicast
-> > for now */
-> > +				if (!(*addrs & 1))
-> > +					continue; =20
->=20
-> You could pull there CRC caluclation out into a helper. You might also
-> want to search the tree and see if it exists somewhere else.
->=20
-
-The ether_crc_le(ndev->addr_len,=C2=B7ha->addr); could be the replacement.
-
-However, when I look on the code and compare it with fec_main.c's
-set_multicast_list() - it looks like a dead code.
-
-The calculated hash is not used at all (in fec_main.c it is written to
-some registers).
-
-I've refactored the code to do similar things, but taking into account
-already set switch setup (promisc must be enabled from the outset).
-
-> > +
-> > +				/* calculate crc32 value of mac
-> > address */
-> > +				crc =3D 0xffffffff;
-> > +
-> > +				for (i =3D 0; i < 6; i++) { =20
->=20
-> Is 6 the lengh of a MAC address? There is a #define for that.
-
-This is not needed and can be replaced with already present function.
-
->=20
-> > +					data =3D addrs[i];
-> > +					for (bit =3D 0; bit < 8;
-> > +					     bit++, data >>=3D 1) {
-> > +						crc =3D (crc >> 1) ^
-> > +						(((crc ^ data) &
-> > 1) ?
-> > +						CRC32_POLY : 0);
-> > +					}
-> > +				}
-> > +			}
-> > +		}
-> > +	}
-> > +}
-> > + =20
->=20
-> > +struct switch_enet_private *mtip_netdev_get_priv(const struct
-> > net_device *ndev) +{
-> > +	if (ndev->netdev_ops =3D=3D &mtip_netdev_ops)
-> > +		return netdev_priv(ndev);
-> > +
-> > +	return NULL;
-> > +}
-> > + =20
->=20
-> > +static int __init mtip_switch_dma_init(struct switch_enet_private
-> > *fep) +{
-> > +	struct cbd_t *bdp, *cbd_base;
-> > +	int ret, i;
-> > +
-> > +	/* Check mask of the streaming and coherent API */
-> > +	ret =3D dma_set_mask_and_coherent(&fep->pdev->dev,
-> > DMA_BIT_MASK(32));
-> > +	if (ret < 0) {
-> > +		dev_warn(&fep->pdev->dev, "No suitable DMA
-> > available\n"); =20
->=20
-> Can you recover from this? Or should it be dev_err()?
->=20
-
-It was my mistake - of course there shall be dev_err().
-
-> More later...
->=20
-> 	Andrew
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AS1PR04MB9263:EE_
+X-MS-Office365-Filtering-Correlation-Id: 819f5bdb-c70c-4dca-4331-08dd757f6d1f
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bGlSR2oyYTRsekhYTDVlZXZMS1BENVd4b09qbmFvK3dQcU1SbmVLcDI3Q1Qy?=
+ =?utf-8?B?Q1pLUk9IZWI0K1BUaEUzdHp1RXEwTkU2YW5BcEN2dlRwT0RaQTQxL1lLeWNN?=
+ =?utf-8?B?aU41dEtpOEpMKytRWklyMGtjOTcrZHdEZ0VnUE1Pa3JDS2Uwa3ovKzJHZEw3?=
+ =?utf-8?B?WFZoWE4zSk9hSHNndEJ6L092eDh2eWlwWXRURXZvQ08wNVp6czJhaXk0WXpu?=
+ =?utf-8?B?c2EyV0EwM05uV21DS0tWV0FWMzRWajBTV2VjdFROZU1SSkhxdU9TTzlVTlJO?=
+ =?utf-8?B?M1VYbm5QV3Fnd3BkRVJXOTFuNVZzbjFmbUFkeXhMbjlmeDR1MmIvbndnbWgr?=
+ =?utf-8?B?L0VsejNFakhiWlE4NjVCZzBkZERUb0tyMGhENFN3eG1KQncxY3IrN09rdG1h?=
+ =?utf-8?B?TXhoSCtrTm5UNWliNVdzSWJ4ajBLbk1PMXlTSlpUaFpIaHZmN3hUQ0FQd2VZ?=
+ =?utf-8?B?ZnZ3TVZ0M2FPRmxZSE5SYy9tUHF6OHJnbDhETUdnY0c1ME5CY1RkRllkb3JL?=
+ =?utf-8?B?bjhRL2tDc0ZzNXo3TWpSZ1liRWpoN0ZyM0tvdXZmNDJab3BnN3o2REdyeFdy?=
+ =?utf-8?B?QVJRbGRzLzdoWnp2Z2Q5cStyNUFkNS9kVEhYZ0xhNy9lRnRjN242OUFaTHZu?=
+ =?utf-8?B?ak8vWXFGc2VDK3ZWOHVjL1RUY09ReFFIKzhEY1dqZmVSS0pzdUl5eDQ4Zm9G?=
+ =?utf-8?B?eSthYzNCUUJJMUoyaUhXSVYwckQrMGZJNTI4TVN3TTc3eWs5MjNHYnBwNWVS?=
+ =?utf-8?B?dFdHVFRtVkY4R1hVRGxEcTNkblFiUVlDMUNFNXZMa0I5N3VuakE5V0xTd0RP?=
+ =?utf-8?B?MUVTaHdMeFZwQWlRTVh5SGJTRWVHMnV2bHJTeHVzN1ZoMEx2TjYxSFczOXlU?=
+ =?utf-8?B?QjZxRzFxKzZvOHpHYnpUNGRGUzNoeDE5RG1RTFc0S1VMZ01Zc21oZUFOcnl1?=
+ =?utf-8?B?ZFFPZUxLUWJQWVA0WHBPQko5NDdIM2ZwWjVmWDk3eDJWZU9zblYvSktGWWhX?=
+ =?utf-8?B?b3B5QkJLNmlBRk54bVJRclJocE5aWFRjUUJCcFg4b1ZHT0F3YzZJbTZ0Y3ht?=
+ =?utf-8?B?am5scVFhaUpTRkQxK3pVSnBSSy9pRHl4K0dYdUx0cGYvVlVFRGRwSTY3cThC?=
+ =?utf-8?B?cTMzUGtzc3ErMWI4T09BK2dGTStFS25WMnVBSElLVmI0Y2pvRVgyYTlNMXJs?=
+ =?utf-8?B?cDd6ZHFveVpyKzQwK2xWUDJwSXM5NHVrMmtsUWl5eVFHbWY0UWlxV3pyemln?=
+ =?utf-8?B?MDdLZWI1RnNFZ2xDUVBpT01OanVsTWxYWU5NZFBOQ2tSd3FHY1pVaWxFMFJa?=
+ =?utf-8?B?VUhQbnJjQ1ZEWGZBZDZRbGk1bGRlT0xFeHVUQmtaZ0Nsa3lmb3hDSW1BMlJL?=
+ =?utf-8?B?NGQ0elhSejFUcW41STFYS2lmSU0xUmdtL0RQeTh1MmxTOUo0Qzl3VlFNWlNH?=
+ =?utf-8?B?RU1sc00zaHhod0MwanpsN3V5VEI3dlhKQ1N0QkhOeFhzQVlrSDlaSnVTWEJ6?=
+ =?utf-8?B?aFFpd0l4ZzBPU2JuTWk3REdRNFN6aSt4RytZcnQ0S1VEUEdkS0FYeCtlL3Z4?=
+ =?utf-8?B?R1crbGNSTmNHcnV0dEh2eWhJTkEwdDdPVjZ5QTdweWI2NzRtTkJ0eHZReHpy?=
+ =?utf-8?B?T3dCY2l3VzN1NllJZlkva0FYNVNnbmk5U2sxS0hPRmVFVmR5Rjk2clZRRzFv?=
+ =?utf-8?B?STlHTEFKS1ZLSTJFQXdpMm5VVFdYcVhUd1J5MGpPamtNZHhsS3VNdkRIU1FU?=
+ =?utf-8?B?c2R5ZjUyQlNxZFIvMDdaT2RMWGZXYmQ5VUk2U1M2N3o3L1pwRHdkb2lqMi93?=
+ =?utf-8?B?WkJ4czd4aDFVUmw4VzV2RnUzVHlIVG1Bcml3RWI4dVBoK3M1ZVVyZ3krVWNi?=
+ =?utf-8?Q?O/XEiWl2Z2apy?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cUExMllFblFkZ1poWjJBdnB6dzc0dFcrWGhTaG56N2M0WUUrak5TS1QvWW5m?=
+ =?utf-8?B?emlSVmFvMTB4dDRXSm9VU2JIREZtd2tFdUVLbS9TZHlJNm1kKytTcUQxM2My?=
+ =?utf-8?B?ZTNvRTdNZHlMSm9aV3NOQi9LbS96Zmo4RS9ZdUJBenZyQm9zODRXb1hRSTkr?=
+ =?utf-8?B?VlMwVFFHU1REeE9KVWx4WlVFRE92T3Ruc2ZlZE81d1EzTm1vZklkTWlOMzdZ?=
+ =?utf-8?B?MlNxVU5Ed0VFblZpZ04rWUN1eDBESGVPN29RTVI0blIwY2JCMjE1bUdtamJS?=
+ =?utf-8?B?N1lHMmMyV1l1bXVya29ZdjBqQnlCWUFQU3BaVk1Ma2M4OTVjblRCMlgzRE9v?=
+ =?utf-8?B?Y0M5OWFnRjdCdTRoOEFSU0g4SC9FL1RCSURHa1FaMWYwdmxJVnp3cXQvWEhX?=
+ =?utf-8?B?QmNveE96ZTFtQzdsRTdqYTV5R0xEZ0tlQlJnNU9pYWt4QzF0ZzFVa0oyZ0tu?=
+ =?utf-8?B?MHpVY083Q3JXQmVFNWZXdk0yQlVFMFpqKzBSdUE5c1hCN1A0ZEpWMEo3cUNw?=
+ =?utf-8?B?NU0yaWJvN0xxUDJiMmZBblgvSGNJRi9iSFRZb2ptLzU2Nk9oZmhYaGxQeGZO?=
+ =?utf-8?B?ZytPVFhjZWltTmRnMG1SbmFsam12eTAzbXJuRkZkZGNHMWhtVFdTditrdzVi?=
+ =?utf-8?B?Umc5SSszU2NlYWdVRFFrQ1E2b2FiU0U3ZERWTTNRU2UrY0hGbkpaTXM2WFZI?=
+ =?utf-8?B?Q2t5Z0l6bnNsN2Y0ODBadGkxMlN3R0VlMGFobDVmR0pYT00wWngzRUpRY010?=
+ =?utf-8?B?MXRlOE1uWW1PWFNZR2hHaFo5SU1QcDBxTm9kNnBXTUFIYXNsM2tmTVRXOFdq?=
+ =?utf-8?B?RTAzSHd1d1g0Y25rTndubFdnQ0FvVERlbS9pTnhaOVFtakZrdk1idXp4ODZD?=
+ =?utf-8?B?MkRXOHJNOTVYUmJxQVRuRkMwSkk5cHZkaXFmTmw3ekRaVmxqdkhhZHVTTmVI?=
+ =?utf-8?B?QS9MZ0lNNFM0a3htb01EcXdwcWJIdTBGOVY3YmVtekcrRFFPcG1NVVRpcDNn?=
+ =?utf-8?B?ZDRCTDIweVJHOUdRVFdVbHhkNXFmZVl6SkZjSVZ3MVZkOVJpUXFiSGxBc2dI?=
+ =?utf-8?B?a1REZjdyVyt1UVUzeDZidW1ENkpCclQ1ZGlZV1owZHJIYjhQNC9qeGx2QzJF?=
+ =?utf-8?B?Y3dRditDbTM4azJWRlI5WFlzNWNSSllTbGNQc1drNXFnNGNMaVowdzBGMXJH?=
+ =?utf-8?B?WXdwZS9qTnE2T0x5TCttcDRCUUhQaGlnTDY4V1ZSTnRDTnl4REQ0RDdEYTNx?=
+ =?utf-8?B?aU9TV0FFZ3VSRTB6c2lZNnNSOHlvZzB1K21VT2dRUVFUekN1eFJTdWxZRDlB?=
+ =?utf-8?B?QWhiWE81VWlVVGluMVErcXFZQjlLZW1qUjV5M0hUZzU2aVZTc1h6c05mUGYz?=
+ =?utf-8?B?TkhYcjByQU1COVlJMVVmdDc3NS9GT1RzWFoveFFKbWRUdXRES1JBYk1zMmc4?=
+ =?utf-8?B?dWZVRUg4WHRRdHZLS1ZvTnU5ZngveFJWSVV6eitGSW1LQ09sVjVRNXZJZ0pO?=
+ =?utf-8?B?ZDNjQStwaU00T0trTmFrZXdYdnd4cXNMK0VZbjBLclo0Nm9xZ1lKLzZ0YXdz?=
+ =?utf-8?B?VzhxTStzVFhydGlEWXZNc0gzVFJza0xINXlOZkxXQS9MRlRDNHlPaVVURHRw?=
+ =?utf-8?B?V0hQMS9KOFZERmhLR2hxRVZGTTlPSDFwNTdJdFV4OHVPcThScVBsWTN5c0NX?=
+ =?utf-8?B?UktHMFUxRTlkdUN6QWR5Zi9yVmxkcmZ0MXVpVW1sdG5wTlR0MEJZNk9mWVpE?=
+ =?utf-8?B?RTBqU2NIYzJ0b1MwQjVGTXNFRnlxNHY4aGdsek8rdkFsdlJROTQrdzRLV2Nu?=
+ =?utf-8?B?UThFUkZma1lkcHhocmFReGRndldwL0g0cnRUYmFIRnk0TzBnbUdyUWxGRkkz?=
+ =?utf-8?B?N2dLRGxCN0lBZnpGU2MxTnRxL2YyV0d2ZzdJTU9QMlRTTkc1M0kvWHVGTktQ?=
+ =?utf-8?B?akZaWHlHdnYrL21GUGxQenE4NHVtNGJQb21LeTVOOVJUNlVUK3VHR1hIT0hz?=
+ =?utf-8?B?b2NmRmxoc1FuRm1DNEc0Vi9XVEdYVExOOHlIRmZ1blliWW54NUpxbmg3dk5j?=
+ =?utf-8?B?bTRqZm92U21ENXJLTEZXQ1A2SmtrUUZ0c2EvZWRWMWhxbEMrQVhrS2UzV1Jt?=
+ =?utf-8?Q?F7YogwMMOInFERIiryKfwZMZc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 819f5bdb-c70c-4dca-4331-08dd757f6d1f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2025 02:53:51.4587
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yY/2eMWcxZItlIuqtA7hycP4A797LPojUZNiGn0VcX+lvk94P9nn9LXiOfEYpTSMzroNInPXh2zJW0d5xepwqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9263
 
 
-Best regards,
+Hi Sebastian,
 
-Lukasz Majewski
 
---
+On 2025/4/5 19:39, Sebastian Fricke wrote:
+> Hey Ming,
+> 
+> In the title I'd suggest:
+> media: imx-jpeg: Cleanup after an allocation error
+> 
+> To be a bit more concrete, enhance error handling can mean pretty much
+> anything.
+> 
 
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+Thanks, I'll apply your suggestion
 
---Sig_/ACv8R=knW+t0ni5QKQO7U2=
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> On 28.03.2025 14:30, ming.qian@oss.nxp.com wrote:
+>> From: Ming Qian <ming.qian@oss.nxp.com>
+>>
+>> In function mxc_jpeg_alloc_slot_data, driver will allocate some dma
+>> buffer, but only return error if certain allocation failed.
+>>
+>> Without cleanup the allocation failure, the next time it will return
+>> success directly, but let some buffer be uninitialized.
+>> It may result in accessing a null pointer.
+>>
+>> Clean up if error occurs in the allocation.
+> 
+> I'd suggest:
+> 
+> When allocation failures are not cleaned up by the driver, further 
+> allocation
+> errors will be false-positives, which will cause buffers to remain
+> uninitialized and cause NULL pointer dereferences.
+> Clean up the errors accordingly.
+> 
 
------BEGIN PGP SIGNATURE-----
+Thanks, I'll apply your suggestion
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmfy8Q8ACgkQAR8vZIA0
-zr2K6gf+IeVFnsg+cnEFsWjR/QZHoQEjkMHlOs/vdNba2jlurd4lPwjLvpxs75Lw
-o6ISVIdS1JlB/6kmNCSiL8Ktz0H77nfuz1IpJju2duk9TPTwq0/qoHbQqWaxWGVg
-1++fPBxV4EYRfR2I4JXTHTGuPVoREgsCTGcd2sF1JUX5RLxjYg8phEd+LV7TpZnT
-aIyh6gBIDZKfZ3hTpS73Dzkb+FIqt3EhRuPBX49Gq8ch69mXgEC9PXe0JTe5Xoww
-W1P9HKOuUptjr/i+g6V1sQ9t8IGzMxaVme2Ya/TlR4S11+uX4mLZUJGg3Bbi6wVT
-tKRaF1x3+3vfVWuSkSY+NiPr5q3aLw==
-=eAzq
------END PGP SIGNATURE-----
+>>
+>> Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG 
+>> Encoder/Decoder")
+>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>> ---
+>> v2
+>> - Add the Fixes tag
+>>
+>> .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 47 +++++++++++--------
+>> 1 file changed, 27 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c 
+>> b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> index 0e6ee997284b..12661c177f5a 100644
+>> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> @@ -752,6 +752,32 @@ static int mxc_get_free_slot(struct 
+>> mxc_jpeg_slot_data *slot_data)
+>>     return -1;
+>> }
+>>
+>> +static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
+>> +{
+>> +    /* free descriptor for decoding/encoding phase */
+>> +    dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+>> +              jpeg->slot_data.desc,
+>> +              jpeg->slot_data.desc_handle);
+>> +    jpeg->slot_data.desc = NULL;
+>> +    jpeg->slot_data.desc_handle = 0;
+>> +
+>> +    /* free descriptor for encoder configuration phase / decoder DHT */
+>> +    dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+>> +              jpeg->slot_data.cfg_desc,
+>> +              jpeg->slot_data.cfg_desc_handle);
+>> +    jpeg->slot_data.cfg_desc_handle = 0;
+>> +    jpeg->slot_data.cfg_desc = NULL;
+>> +
+>> +    /* free configuration stream */
+>> +    dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+>> +              jpeg->slot_data.cfg_stream_vaddr,
+>> +              jpeg->slot_data.cfg_stream_handle);
+>> +    jpeg->slot_data.cfg_stream_vaddr = NULL;
+>> +    jpeg->slot_data.cfg_stream_handle = 0;
+>> +
+>> +    jpeg->slot_data.used = false;
+>> +}
+>> +
+>> static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
+>> {
+>>     struct mxc_jpeg_desc *desc;
+>> @@ -794,30 +820,11 @@ static bool mxc_jpeg_alloc_slot_data(struct 
+>> mxc_jpeg_dev *jpeg)
+>>     return true;
+>> err:
+>>     dev_err(jpeg->dev, "Could not allocate descriptors for slot %d", 
+>> jpeg->slot_data.slot);
+>> +    mxc_jpeg_free_slot_data(jpeg);
+>>
+>>     return false;
+>> }
+>>
+>> -static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
+>> -{
+>> -    /* free descriptor for decoding/encoding phase */
+>> -    dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+>> -              jpeg->slot_data.desc,
+>> -              jpeg->slot_data.desc_handle);
+>> -
+>> -    /* free descriptor for encoder configuration phase / decoder DHT */
+>> -    dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+>> -              jpeg->slot_data.cfg_desc,
+>> -              jpeg->slot_data.cfg_desc_handle);
+>> -
+>> -    /* free configuration stream */
+>> -    dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+>> -              jpeg->slot_data.cfg_stream_vaddr,
+>> -              jpeg->slot_data.cfg_stream_handle);
+>> -
+>> -    jpeg->slot_data.used = false;
+>> -}
+> 
+> Can you split the moving of the code from the changes you do?
+> Otherwise the reviewer is forced to get the diff manually.
 
---Sig_/ACv8R=knW+t0ni5QKQO7U2=--
+Sure, this will be done in v3
+
+> 
+> Regards,
+> Sebastian Fricke
