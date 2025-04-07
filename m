@@ -1,677 +1,188 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013063.outbound.protection.outlook.com [40.107.162.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2D921C19C
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 20:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744056369; cv=fail; b=AdYvQYGiiOdEblreq+HmbLm8OwZvTzOSRT0ppFZvdV1mD4NlaPAmVDUzbpMO1ASY8P8Ov17iOWo3MFT50eXI4UfCFW8+97x+RSx55fo9JA/cL2NjDvAjj/PfHL2mC15iwiGNR5vjBuDQZYejc2wHSVc4IjtUTl09HKo2NyyxoxI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744056369; c=relaxed/simple;
-	bh=BEucYzbZxWUGU9S4l0VB5a9jcxliPYBfbRtXLrc1nUs=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=qw/x1oAOlIfYvSm4dCgRdnkuALA4vQCplOzATrpCLBItm20H/lxmavL+zwkOBWdaT9CbWs+qBNE6+PtaOCugiPb6lWA/B7joHWY1Jx6CG6/Jd7n6OMIObxXT3DP5BzkTKGpxNDtWibo6Q2H0y1HOw7ynbUxECwkLCtdf/ciO820=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DieP5xRl; arc=fail smtp.client-ip=40.107.162.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3713225A29
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 22:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744066321; cv=none; b=nxFkfaNCpQAYITx00P46wSkQmroz3gXVZg1CbRgefqvsMJb3NX9F8IMCgE0sLUteW47X2ZPPoAmlfpsGn51pu9qBGHAIEfZzVnpBABIHuKhiHD5iuScBMA0ad7oDvnUNNYcwOWvqfrMy0+A0FHD+wG6ErI83YcX5zIJn/inqHZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744066321; c=relaxed/simple;
+	bh=xk6+GuIlJyPcOF97rvioGdrmfsj08TuNFKPTnNBPVcU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h1w1LTK1o3OhxXhhxAe3u3HewR22bS9l2AH3ydXVH/SHItrRn/O4v38LY0yT37N3h7Nkr9HMzN/dvNVlRXMamjjEIjb7Tf+4oUXq6LuBAVx2jtfTBVENm38CxhAt263uGMMTRm2yuMoDcWlUGMbEUCgdoRPc7mlzwAGgCGkq1og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P1r+4D5o; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DieP5xRl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BHR0MHxlCvj9G0HVh9vyIv4QgSp6Nq4j0nPAnBmZS/as7wcUYFF0qSFv3NfiTeVmuBfJWcy0NcPK2jGc2n0puSh3l18k2pHcs+J0GknBAVckFnh1+W0rhIkZJBjjgswukZ5DQ25jkba7xaLXEUQwYVfzbuTakZYjZqPnSEQx7Gr8apLQFYTFG1Z+U+PXkhkqk4sXwJXStjADG57H3hawRInDylxpLbMxDszRsU1ZpryPbU0zWhDqATX+mg4xyDOwtzYFOToABsuMFeAZBmLYTUkM+vEvCZT8SEd3SBwKG4CdFzL+MJXf+1LLTgiKejdpQoVeIHs0fhlvsVtsaP4ExA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+sQy6RP37N5DItN0jZmXVqQOx+o2I5IWnuXAaMnsVFk=;
- b=D8K3czkwbVBk9KtImgg7Z25+bd+GCQwt7CpCl6LX3oh/Ue3ib7nGsukER0nsq8RypImRYAvNfP2r0fasbtwxayUvo+naUxNz88PqJKgGotCfit6oI6yVJ2MbJk96eUV+EwZX90hYKcz7IW9aMBo/9HPMRqVyVme0asB/r5iU5QY5je3EeMAVQkLPyR+IdaC2OukmD1g0qGl2omTtpHqdzavIyn36j9jHBj6MyOG6coIqbbd722aAyCBRbyCUm0X+16eSJNdbju//EFUlOEvwykktMibAXF64XGa5M+kqaz0/cgsQ3AZ47rgF1fCL5J58MVwHc8RVAJcUXz8lpSedUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+sQy6RP37N5DItN0jZmXVqQOx+o2I5IWnuXAaMnsVFk=;
- b=DieP5xRl31K6E207q/NDw64CpGxkUxcPMKaVftkIqfohYp3xgNpx2YbmZTZsZNLvflZyXCIyt2mtvSsdMun70QGynCW/s+DY6GftaeZy21CBxZlAPbD+jdMfvILvxLNPQahJ6LKuTCT1olFNhcLMQyohgsyn16dc7FcIhXUwGCcHAsVW3dwORaZzSYalHD4pc/fsKN6NT06xYCkSl6gh1QvJoZynX8TPgvx0q6eOD/FI4zMg5aNOHJPAG6u/1xNTreMC8Yp/FL+YehU/+RHHAhQAyp/HarKNJWLZUFyIZ6zq5mGpdxf1Zv6HP/VXtrf1PAV8h7Vs1Ptgw9AhzFmsvw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7668.eurprd04.prod.outlook.com (2603:10a6:20b:2dd::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.43; Mon, 7 Apr
- 2025 20:06:04 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8606.029; Mon, 7 Apr 2025
- 20:06:04 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 07 Apr 2025 16:05:40 -0400
-Subject: [PATCH RESEND v6 2/2] thermal: imx91: Add support for i.MX91
- thermal monitoring unit
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250407-imx91tmu-v6-2-e48c2aa3ae44@nxp.com>
-References: <20250407-imx91tmu-v6-0-e48c2aa3ae44@nxp.com>
-In-Reply-To: <20250407-imx91tmu-v6-0-e48c2aa3ae44@nxp.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Pengfei Li <pengfei.li_1@nxp.com>, 
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, ye.li@nxp.com, joy.zou@nxp.com, 
- Frank Li <Frank.Li@nxp.com>, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744056350; l=15172;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=ZmDXRbH6wNI0VwbN7e+E+vQyFtq4jtjbaOSLMJUl0ws=;
- b=2NJHfdmQ5OejDSQshoKXU7gcILHrrvdr9gRVlQSwWUeZujz1WT8FhGDSyzdH4gCgaoJnitYXw
- ZxhtcXGaMwIBk8G8B0pJpWLVK9XyJGmcFO6ZY67ZJZqaz7KmUGqxtN9
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: PH0PR07CA0026.namprd07.prod.outlook.com
- (2603:10b6:510:5::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P1r+4D5o"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54ac9b3ddf6so4599560e87.1
+        for <imx@lists.linux.dev>; Mon, 07 Apr 2025 15:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744066317; x=1744671117; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9T1LuFxtlhisA25vk0GSN9ZyiZy+KSvd4XC01LmHfFI=;
+        b=P1r+4D5odBK/AuZWGy0s0/bzOgSfldvdEDS0A/+8AiSD6quczDRI/NP+m1L85HFw0k
+         PJ7J/ax8CH4pMn1K+a3G6eIkhjzxEy3fIn+qNqkjvld0lWcjQ12g3iUEBoKtb8mEacV+
+         ph8+QGX3Fd3yFuEf2CzFlHZDUUlLFIpHjbv6Fib+4GRExx4qezf7wBmSfUYLbmLvIuW0
+         9B1QuxxwrJ+8FVTSd/qmDrUFxBk1PF6e/P9jAXf7Jzrt4o02w+Q+K3IDQNBeT3P2qy6+
+         uJBb/Fz2NWQe88O/51MS8PqziEwWMqUml4Di62wYIl/sAC3zN/i7XaGZYv9zKHip2P8t
+         w+/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744066317; x=1744671117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9T1LuFxtlhisA25vk0GSN9ZyiZy+KSvd4XC01LmHfFI=;
+        b=GbSgJDGgDOS5zWcJTOBO2Vf6oulEptqwklQwdvhKjykz8UDRZFKa9C9xaysUHoLTda
+         7mmq9vvyBoJCPrcsNj++Scq95+pFnqpl6WKQIIE4MsxO6/t1smv26tuVCK0P9JYVEWju
+         uqCVGQ1ZFK3YewV3sIpNGhLucxtxyBO8mmUkWiX88EFClpERB5jmodUJUR14MQ+OqTSV
+         vWDrRaYVHNQivN3z7W6KVM0Uip5ELeBfBRfbZMWdjzQK+2+qToB+/I6Y96GOc4ltAs+W
+         96/RTZ4HG+lBP60wcSFTFM1Z/0rkncRWcHpAbY9tcu4UVL1QyhuPLz67Xyqx1xFy4pmR
+         2F0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWpeQg9JWWra6Ax6wmK7aRBiKc2K31/4/pz5EEdQuv646kslXdNyIFKhS5FGRw2g5po5RE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyzqTJsksizVpqBzlNEusoAEZzrI+LMQY1jfI5Agv4qjnZTn0Q7
+	S6BJfth7kcM9Bwg3RwGi59+voKkbHXVQFW9YrFDvNj/TsCqGab6h0pthIIFPm+5KJyH8qpMdp1g
+	0+tyJP9ZbzHgXUGzaqE76ih5bhvWuqZ3jFGc6
+X-Gm-Gg: ASbGnctQ5ENbkKjYSaT5ph3L5lXutyxw42h2CDZ0ZdGjjdTPzwKddb3s2Gi2kGU1mxt
+	EUWHAHJbbGaMhjveXIXcK63NcOuPoQo2vht+BkuGMXoSVPMSAjTEO32bqdwsodurUYQKcEC8ocG
+	6PluzmzOuu/qEJFpf+frEkVXuRphW5VGp2Guo=
+X-Google-Smtp-Source: AGHT+IGZy1cH5XFvxf4qYN6nMiZKkGDS0+s79ElF1xv6IXDDdsnr740VlwJkyiHI3RPM0cEI5hC/q03/uRkTb7Y8OD0=
+X-Received: by 2002:a05:6512:2341:b0:549:86c8:113a with SMTP id
+ 2adb3069b0e04-54c297d0929mr2593762e87.15.1744066316436; Mon, 07 Apr 2025
+ 15:51:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b84f96b-cd2b-473f-6e48-08dd760fa002
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?b0xtMGhLb0JFWG1kejdnWHRyZmpzK0QxSUdyb2VuK1RleWJ1QVNzdHE0MjlG?=
- =?utf-8?B?M3gvbVJYSFBib0xoKzZxMnBLNWp1d2tqenVJcy9xT094OTdQeUpQVXp3Q2Mv?=
- =?utf-8?B?WUJMKzdZYjV2K0xvekVTcS9NM2dPU3NpclZYR1V5RVhjOUFrVTVYdlFjMUhC?=
- =?utf-8?B?TGJnYTFvb2xuaU81OUNYS1o0MUtQZklPblRkWEZybHc5d2VDVUJaMi92MEJh?=
- =?utf-8?B?WndnNURCMTVFOWUrS2phdUxkdzYxN1QvQTVXN0VIVmZsNlZnL09KemxLdDNu?=
- =?utf-8?B?UmtBZXZtVFNSWnkvVzBCTGd6bXYvczVxSjRzK2NjREZWTVJZM0djQWIzZzR0?=
- =?utf-8?B?YmNGZ1VXTmFpUkZYWUp1cWs4UkR4c0daekJJajZzN2l6eGd3ZUFkRkw5ZUhB?=
- =?utf-8?B?ZGVKbE5pOElTSjczSnNsajBWUloyR3hNTDlhQS91QjFKTVVIakdURjI5V2du?=
- =?utf-8?B?TVlzb3RCR21DSWxFVkZOSUsxdmM5d1hlMVA4bVF3dHptUkxQMXdWcklXMmgv?=
- =?utf-8?B?dkFpQjN4RGcyRE5BdUUvMExCUnZGcmNOenRtSHUzMksvZ1lyalFTalhscHpR?=
- =?utf-8?B?SFBHNHdjckl2WjRPSmQ2R3RNVG5HNW1XWm0zTDFmYnNwamh3MXREZnMreTNi?=
- =?utf-8?B?b25sT1luOUY1dEhLVDJReExPckJPUkRZUjEwUDNSekhMWWFBMWxRR1BGQU1n?=
- =?utf-8?B?ZUs2eHFPbHJBSlVMOE9taWs3YnFUL1dOWld0eHZYclB4cU80Q0hUekJWTFRm?=
- =?utf-8?B?ZTBOcDVIODh3R0RvaEpmWmh3MnFjcnFDU00reWUrTUZ1Ykc1RGFhM0cxY2pm?=
- =?utf-8?B?NjZhcWd3eFhrRmhHM204VXVBV2NpbzhjVjNwem91RGdJVVQwNXYvNFowOFE4?=
- =?utf-8?B?NWc1eFJvMjNsczVDNFNYZlBBdmtwUWk1THFkZENyOExOalhUc2hocm40WWw1?=
- =?utf-8?B?VHZQS0xwU2JqcE1WK3I3anNBeHBlckE2dk0va0h4WCtnS0VGcW1DaGJjamdt?=
- =?utf-8?B?ZGM0bitZUHMwNFpDaWd0UURVM29PekJiVFB3Q3dzczhKb2p6N2xWNnZSTVVX?=
- =?utf-8?B?dklzaXdCeFFuZDNIWno4a3grTytxYWNOSDNieUJ4NDdyT1J5SnNSSTZmbDJy?=
- =?utf-8?B?U0hOKzBNbDB2cEdjMnBXYUVINS9mdHZXZkVza3dzVVZ2M3czbjF6VXJac2Rp?=
- =?utf-8?B?dStTb1RDL2MxVkQvdVdlYVBNTGRoUTJ5bXpMVnRzQmdUTGt1a0dYdk1xTEVL?=
- =?utf-8?B?TEdhNGZQTFJ6RFgzWnM0c1JLSXNQUWwxQTFLem1jYTk0akRiV0pjMk5lTHFs?=
- =?utf-8?B?LytLSUZ0allVVXNVcVBuWFNoQm5GT2JabW5mUlV0cDRIWGNZMzBVTDIzOXZU?=
- =?utf-8?B?VkpvaVFRVmd3SnBtQ0xyZWliOTBtL0xNT2FKbVFzcFp4bFgxQWdCUVM1WlBN?=
- =?utf-8?B?N1l2YS9uS3pPWWh3OXFPWDI2dDNINzJjcHdTVDRYTWhtTXJESWR4NUVnb0VL?=
- =?utf-8?B?eExjSnBmZW9vcHhCb2Y2aFVkUFR0MGdVMXF0SjlPUFJyOFRMMXVLN0EwMXJY?=
- =?utf-8?B?NVZnay9UeTYxTEhJd3V4dVpCL2k3ZjRHaVRsWkpZK2F2V3I4WlZDQzFyVTJX?=
- =?utf-8?B?ZVI1SkxXallYVWJyU2xLTVY4eUdNdGVoVjc3TjU1c3R2SGRXTSttcytWYkph?=
- =?utf-8?B?ejVnWFB0bzkxc01MbVRTeFBIcU4wWjEwQm5YZ0VzbUJXYzliNTRBTzJIc2h1?=
- =?utf-8?B?MkZDbzg0dmJyNk8zemFCL0h0MWRaSUcyMDFvZkVrMGRESWxLZVFXcStkTGk5?=
- =?utf-8?B?TEZoamhZUlZJMitpT1NFYTJDOENSWGxzNWxVTHhyaEo0YllDVWd6em9zREhU?=
- =?utf-8?B?MDc1SG9IYllHMHI3WGdnNzJUWVNaN29iMGpTNEpwZmsvWkFrWktpeHUvWktn?=
- =?utf-8?B?VERiY2ViclhENy81U2xYUjg2TGZDd01SdUdHM2FqY3orcUY3UlVtemM1c1l5?=
- =?utf-8?B?TFlHQnhWSitaYktNR2hKRmxITis3dWo0RUo4NHVEWVduQ3Fjd3lSYS9aMkd4?=
- =?utf-8?Q?hZvq3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cmpPUldPcXMwU1NvMWt6aHJoR2tIOW1HVitaRFU5Uk0yQ3hVUDlyYXh4UzRa?=
- =?utf-8?B?Q1Bid3dqZEtVNi9RTlJyYlUvN2U5ZUJhQnl2UGx2T0Q2a2tLZHpycDBTdzVs?=
- =?utf-8?B?UHVpUHF1dlErN0N0RkhSb1dtQmo0RUZIMk1XckdtbENXcjBjRXVTd1JZMWRM?=
- =?utf-8?B?QVhUWURBMkVseWl5cTV1b3YrRU10VnV3NURWREJKVWsvMXlUTGNFUW1ucUI1?=
- =?utf-8?B?M1d4V3o3NDBjRndMMmZHTGJMR1ZuYlFDNG1zaURrQzYrSS83bnNKb0ZReHZi?=
- =?utf-8?B?TGZLVEJ1enQwSE43N2RtSGpOSjkwL2pFSjhLTmJ1Rjg4Q2FDQ2UyTXowbjRR?=
- =?utf-8?B?Y0tKSlJnM01TZHVTZER5OXBBY2NzRUpzWWwxQWJENy92c1hQRU1BQzFaRHZ5?=
- =?utf-8?B?eTlhQWlhc25FeVF0bjFNM0w0dHZtNFd1QU4wRThFUEVtcmxHN21nU2xsSlBC?=
- =?utf-8?B?U3o4NFA4ZGdXZGQ2TTFhUmloK2RxSVcwT3ZSbmZwcGxlMHdVUzNqZlhtVCt1?=
- =?utf-8?B?eW9UbFlIVVZzNGZXY24wK3BIODFsYVVOR25MbmFIRENoSlN0UDZuSkxRdzNi?=
- =?utf-8?B?bTluSTFOUTR3K1lBUUpHeFNyUVEwTW5vLzRIS0ZUQm9Oa0VOYzhLQ2tPbHZk?=
- =?utf-8?B?ZjBUY2h1NGdwb1poUzZKNlQ5N2xuZ0g3S1JDK1d6VVJzTG1SZFQzdEh1Zk5q?=
- =?utf-8?B?WXUxVXJZaDhKQ2szRjVvRlFHNEg3YU9SN01nWWtRUWprVGh6enFZUFEraUF3?=
- =?utf-8?B?YkdNTHJSNnpMR0FsZlJhN25VbHJOeVFvQW9sZjhPRzJrVlFHMzE0VXF0M2pP?=
- =?utf-8?B?SzltNElkbllIMUxGanYxSHVTd0FyZFpEVlNaMDExSWgrQnlpUk1La2lqRHFp?=
- =?utf-8?B?a0kvVnoySm1xUDZ1elBPTFdtRXArMitLNlFtMElwcm1VbnRpK2V1LzJWUDh6?=
- =?utf-8?B?QnhsdU1zc0tGN052UzkvbklCS3NqSzU0aTc5RGlYRnlxUEpLS2Jidit1RytS?=
- =?utf-8?B?NGJXdFNqaXVxSEtDSGxvUmdQSW1Ca0wxSVoycEYyWjJqOU42aW5iODJKV3Rq?=
- =?utf-8?B?K0ZweU8zVEtUQ2J5MUdObW1jZzFzTXJhMkpoc1FxSmFuOFZsRUVlSEhiYTJv?=
- =?utf-8?B?Yy9vQUZiNXZGVHV4cDhsRU5WRE9RakpCZG01bWZTYVUvQWJhVXU5RjI4NE1x?=
- =?utf-8?B?M3EyMHpHUWRZWllXb0cveEhtV2hzbk1LU2N3M3BieUpQS0dzVVlsK2s0TjlV?=
- =?utf-8?B?RWUxZm1RNktJMlBIbHJKN1ovSHRRMHVUODBUVFJzSG5RYjlCOXBrSHNqcWE4?=
- =?utf-8?B?V2w0T0hQYXR3Q3lPa3daMWJSWGlnUUNoOUF4Zk9WNlB6OTJzZ3lGRWREcnlY?=
- =?utf-8?B?UzBSYVVicjRCcGZCdW5haGlMbWJwZjRhNE5VeXF4MkZSMTFKUDlHY0ZUaHdH?=
- =?utf-8?B?QVJuazBrajJ6M2ZXenMyMkRGZm5UenNGNnJxYS9QQTExd0txa3ZnV3JCMUVM?=
- =?utf-8?B?WmpDdGd6ZFdXTE5jM2w5UDJmYWl5b3JBcHh4WktvdnVtWnh2UkNVcVBWNEhm?=
- =?utf-8?B?RHNoNGJRalpKanRReTZhdTNYR0N1Zm1sY255dEZ4SFM1T3l1Qk96eVVUWWNY?=
- =?utf-8?B?L054WjNTU0d5ODdHZndZTmJ2WGJLN1pqKzkyYkczdFZ6aEgzLzFVZnJWT3Vj?=
- =?utf-8?B?a294a2Z4cEVDemxVK2NWc040UVo3Y285Y0VYRWtJaHVnZlVFODgzZ0YveVRl?=
- =?utf-8?B?aC9vNjdIcFl4cVl6VzBJVm5EbGo1azBLSGpRSHRTQmNNYlEzZ081NmtLZkpI?=
- =?utf-8?B?QUNRTlE3YkNFdytGOWdRVE4yWGYvdUdUYzBTNnZqZ3hxR1grcUsyTmZ0TTFF?=
- =?utf-8?B?NERNV1YrZ2ZYWUM0N1ZUWjlXdWQ3UVBlWDFzUDhNZVREQ01xODEvaTZsNlpo?=
- =?utf-8?B?bkNGODJQTzFXd2FYUlFuT3FCdU0zZG4vODFwSFpkOENXdVk3MnFGSnQxdms2?=
- =?utf-8?B?eWl4VFNob293Y1g4ZEhidTk0WUtRc1dob05JZGNMYWI2TlVDQW0zd1JGaEpI?=
- =?utf-8?B?NTMwZmJNbXU4N2xQV1htSUswQmkyUmVVZXpRYlZQN25jVzRaY1pjZW5JTUtL?=
- =?utf-8?Q?w+WY=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b84f96b-cd2b-473f-6e48-08dd760fa002
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2025 20:06:04.0796
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ls6GhX/8G35VHDmbrzUc+6yV4AyaABmestkklIgRKhdNWY38pSp26ngqZVsqzJmTmGdvhUuspIFm3g6lxvmp6Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7668
+References: <20250407145546.270683-1-herve.codina@bootlin.com> <20250407145546.270683-3-herve.codina@bootlin.com>
+In-Reply-To: <20250407145546.270683-3-herve.codina@bootlin.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Mon, 7 Apr 2025 15:51:20 -0700
+X-Gm-Features: ATxdqUHzf_3trxjbd35DyDptpEJ-bBNCqGhzKGi2OGpUI_J2cUir_Gap-o-BFA4
+Message-ID: <CAGETcx81G7Bk3AswqGu1hoybuGL1znN7gvX5+baJurfWFx+xuA@mail.gmail.com>
+Subject: Re: [PATCH 02/16] driver core: Rename get_dev_from_fwnode() wrapper
+ to get_device_from_fwnode()
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Pengfei Li <pengfei.li_1@nxp.com>
+On Mon, Apr 7, 2025 at 7:56=E2=80=AFAM Herve Codina <herve.codina@bootlin.c=
+om> wrote:
+>
+> get_dev_from_fwnode() calls get_device() and so it acquires a reference
+> on the device returned.
+>
+> In order to be more obvious that this wrapper is a get_device() variant,
+> rename it to get_device_from_fwnode().
+>
+> Suggested-by: Mark Brown <broonie@kernel.org>
+> Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=
+=3DiEkKPNbNOccYmA@mail.gmail.com/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-Introduce support for the i.MX91 thermal monitoring unit, which features a
-single sensor for the CPU. The register layout differs from other chips,
-necessitating the creation of a dedicated file for this.
+Thank you!
 
-This sensor provides a resolution of 1/64°C (6-bit fraction). For actual
-accuracy, refer to the datasheet, as it varies depending on the chip grade.
-Provide an interrupt for end of measurement and threshold violation and
-Contain temperature threshold comparators, in normal and secure address
-space, with direction and threshold programmability.
+Reviewed-by: Saravana Kannan <saravanak@google.com>
 
-Datasheet Link: https://www.nxp.com/docs/en/data-sheet/IMX91CEC.pdf
-
-Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v5 to v6
-- remove Macro's review tag
-- remove mutex lock
-- use set_trips callback
-
-Change from v4 to v5
-- add irq support
-- use period mode
-- Marco, if need drop review tag, let me know
-
-Change from v3 to v4
-- Add Macro's review tag
-- Use devm_add_action()
-- Move pm_runtim_put before thermal_of_zone_register()
-
-change from v2 to v3
-- add IMX91_TMU_ prefix for register define
-- remove unused register define
-- fix missed pm_runtime_put() at error path in imx91_tmu_get_temp()
-- use dev variable in probe function
-- use pm_runtime_set_active() in probe
-- move START to imx91_tmu_get_temp()
-- use DEFINE_RUNTIME_DEV_PM_OPS()
-- keep set reset value because there are not sw "reset" bit in controller,
-uboot may change and enable tmu.
-
-change from v1 to v2
-- use low case for hexvalue
-- combine struct imx91_tmu and tmu_sensor
-- simplify imx91_tmu_start() and imx91_tmu_enable()
-- use s16 for imx91_tmu_get_temp(), which may negative value
-- use reverse christmas tree style
-- use run time pm
-- use oneshot to sample temp
-- register thermal zone after hardware init
----
- drivers/thermal/Kconfig         |  10 +
- drivers/thermal/Makefile        |   1 +
- drivers/thermal/imx91_thermal.c | 398 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 409 insertions(+)
-
-diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
-index d3f9686e26e71..78a05d1030882 100644
---- a/drivers/thermal/Kconfig
-+++ b/drivers/thermal/Kconfig
-@@ -296,6 +296,16 @@ config IMX8MM_THERMAL
- 	  cpufreq is used as the cooling device to throttle CPUs when the passive
- 	  trip is crossed.
- 
-+config IMX91_THERMAL
-+	tristate "Temperature sensor driver for NXP i.MX91 SoC"
-+	depends on ARCH_MXC || COMPILE_TEST
-+	depends on OF
-+	help
-+	  Include one sensor and six comparators. Each of them compares the
-+	  temperature value (from the sensor) against the programmable
-+	  threshold values. The direction of the comparison is configurable
-+	  (greater / lesser than).
-+
- config K3_THERMAL
- 	tristate "Texas Instruments K3 thermal support"
- 	depends on ARCH_K3 || COMPILE_TEST
-diff --git a/drivers/thermal/Makefile b/drivers/thermal/Makefile
-index 9abf43a74f2bb..08da241e6a598 100644
---- a/drivers/thermal/Makefile
-+++ b/drivers/thermal/Makefile
-@@ -50,6 +50,7 @@ obj-$(CONFIG_ARMADA_THERMAL)	+= armada_thermal.o
- obj-$(CONFIG_IMX_THERMAL)	+= imx_thermal.o
- obj-$(CONFIG_IMX_SC_THERMAL)	+= imx_sc_thermal.o
- obj-$(CONFIG_IMX8MM_THERMAL)	+= imx8mm_thermal.o
-+obj-$(CONFIG_IMX91_THERMAL)	+= imx91_thermal.o
- obj-$(CONFIG_MAX77620_THERMAL)	+= max77620_thermal.o
- obj-$(CONFIG_QORIQ_THERMAL)	+= qoriq_thermal.o
- obj-$(CONFIG_DA9062_THERMAL)	+= da9062-thermal.o
-diff --git a/drivers/thermal/imx91_thermal.c b/drivers/thermal/imx91_thermal.c
-new file mode 100644
-index 0000000000000..e8deb0b07dc98
---- /dev/null
-+++ b/drivers/thermal/imx91_thermal.c
-@@ -0,0 +1,398 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2025 NXP.
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/iopoll.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/thermal.h>
-+#include <linux/units.h>
-+
-+#define REG_SET					0x4
-+#define REG_CLR					0x8
-+#define REG_TOG					0xc
-+
-+#define IMX91_TMU_CTRL0				0x0
-+#define   IMX91_TMU_CTRL0_THR1_IE		BIT(9)
-+#define   IMX91_TMU_CTRL0_THR1_MASK		GENMASK(3, 2)
-+#define   IMX91_TMU_CTRL0_CLR_FLT1		BIT(21)
-+
-+#define IMX91_TMU_THR_MODE_LE			0
-+#define IMX91_TMU_THR_MODE_GE			1
-+
-+#define IMX91_TMU_STAT0				0x10
-+#define   IMX91_TMU_STAT0_THR1_IF		BIT(9)
-+#define   IMX91_TMU_STAT0_THR1_STAT		BIT(13)
-+#define   IMX91_TMU_STAT0_DRDY0_IF_MASK		BIT(16)
-+
-+#define IMX91_TMU_DATA0				0x20
-+
-+#define IMX91_TMU_CTRL1				0x200
-+#define IMX91_TMU_CTRL1_EN			BIT(31)
-+#define IMX91_TMU_CTRL1_START			BIT(30)
-+#define IMX91_TMU_CTRL1_STOP			BIT(29)
-+#define IMX91_TMU_CTRL1_RES_MASK		GENMASK(19, 18)
-+#define IMX91_TMU_CTRL1_MEAS_MODE_MASK		GENMASK(25, 24)
-+#define   IMX91_TMU_CTRL1_MEAS_MODE_SINGLE	0
-+#define   IMX91_TMU_CTRL1_MEAS_MODE_CONTINUES	1
-+#define   IMX91_TMU_CTRL1_MEAS_MODE_PERIODIC	2
-+
-+#define IMX91_TMU_THR_CTRL01			0x30
-+#define   IMX91_TMU_THR_CTRL01_THR1_MASK	GENMASK(31, 16)
-+
-+#define IMX91_TMU_REF_DIV			0x280
-+#define IMX91_TMU_DIV_EN			BIT(31)
-+#define IMX91_TMU_DIV_MASK			GENMASK(23, 16)
-+#define IMX91_TMU_DIV_MAX			255
-+
-+#define IMX91_TMU_PUD_ST_CTRL			0x2b0
-+#define IMX91_TMU_PUDL_MASK			GENMASK(23, 16)
-+
-+#define IMX91_TMU_TRIM1				0x2e0
-+#define IMX91_TMU_TRIM2				0x2f0
-+
-+#define IMX91_TMU_TEMP_LOW_LIMIT		-40000
-+#define IMX91_TMU_TEMP_HIGH_LIMIT		125000
-+
-+#define IMX91_TMU_DEFAULT_TRIM1_CONFIG		0xb561bc2d
-+#define IMX91_TMU_DEFAULT_TRIM2_CONFIG		0x65d4
-+
-+#define IMX91_TMU_PERIOD_CTRL			0x270
-+#define   IMX91_TMU_PERIOD_CTRL_MEAS_MASK	GENMASK(23, 0)
-+
-+#define IMX91_TMP_FRAC				64
-+
-+struct imx91_tmu {
-+	void __iomem *base;
-+	struct clk *clk;
-+	struct device *dev;
-+	struct thermal_zone_device *tzd;
-+	int high;
-+	bool enable;
-+};
-+
-+static void imx91_tmu_start(struct imx91_tmu *tmu, bool start)
-+{
-+	u32 val = start ? IMX91_TMU_CTRL1_START : IMX91_TMU_CTRL1_STOP;
-+
-+	writel_relaxed(val, tmu->base + IMX91_TMU_CTRL1 + REG_SET);
-+}
-+
-+static void imx91_tmu_enable(struct imx91_tmu *tmu, bool enable)
-+{
-+	u32 reg = IMX91_TMU_CTRL1;
-+
-+	reg += enable ? REG_SET : REG_CLR;
-+
-+	writel_relaxed(IMX91_TMU_CTRL1_EN, tmu->base + reg);
-+}
-+
-+static int imx91_tmu_to_mcelsius(int x)
-+{
-+	return x * MILLIDEGREE_PER_DEGREE / IMX91_TMP_FRAC;
-+}
-+
-+static int imx91_tmu_from_mcelsius(int x)
-+{
-+	return x * IMX91_TMP_FRAC / MILLIDEGREE_PER_DEGREE;
-+}
-+
-+static int imx91_tmu_get_temp(struct thermal_zone_device *tz, int *temp)
-+{
-+	struct imx91_tmu *tmu = thermal_zone_device_priv(tz);
-+	s16 data;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(tmu->dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* DATA0 is 16bit signed number */
-+	data = readw_relaxed(tmu->base + IMX91_TMU_DATA0);
-+	*temp = imx91_tmu_to_mcelsius(data);
-+	if (*temp < IMX91_TMU_TEMP_LOW_LIMIT || *temp > IMX91_TMU_TEMP_HIGH_LIMIT)
-+		ret = -EAGAIN;
-+
-+	if (*temp <= tmu->high && tmu->enable) {
-+		writel_relaxed(IMX91_TMU_STAT0_THR1_IF, tmu->base + IMX91_TMU_STAT0 + REG_CLR);
-+		writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_SET);
-+	}
-+
-+	pm_runtime_put(tmu->dev);
-+
-+	return ret;
-+}
-+
-+static int imx91_tmu_set_trips(struct thermal_zone_device *tz, int low, int high)
-+{
-+	struct imx91_tmu *tmu = thermal_zone_device_priv(tz);
-+	int val;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(tmu->dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (high >= IMX91_TMU_TEMP_HIGH_LIMIT)
-+		return -EINVAL;
-+
-+	writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-+
-+	/* Comparator1 for temperature threshold */
-+	writel_relaxed(IMX91_TMU_THR_CTRL01_THR1_MASK, tmu->base + IMX91_TMU_THR_CTRL01 + REG_CLR);
-+	val = FIELD_PREP(IMX91_TMU_THR_CTRL01_THR1_MASK, imx91_tmu_from_mcelsius(high));
-+	writel_relaxed(val, tmu->base + IMX91_TMU_THR_CTRL01 + REG_SET);
-+
-+	writel_relaxed(IMX91_TMU_STAT0_THR1_IF, tmu->base + IMX91_TMU_STAT0 + REG_CLR);
-+
-+	tmu->high = high;
-+
-+	writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_SET);
-+	pm_runtime_put(tmu->dev);
-+
-+	return 0;
-+}
-+
-+static int imx91_init_from_nvmem_cells(struct imx91_tmu *tmu)
-+{
-+	struct device *dev = tmu->dev;
-+	u32 trim1, trim2;
-+	int ret;
-+
-+	ret = nvmem_cell_read_u32(dev, "trim1", &trim1);
-+	if (ret)
-+		return ret;
-+
-+	ret = nvmem_cell_read_u32(dev, "trim2", &trim2);
-+	if (ret)
-+		return ret;
-+
-+	if (trim1 == 0 || trim2 == 0)
-+		return -EINVAL;
-+
-+	writel_relaxed(trim1, tmu->base + IMX91_TMU_TRIM1);
-+	writel_relaxed(trim2, tmu->base + IMX91_TMU_TRIM2);
-+
-+	return 0;
-+}
-+
-+static void imx91_tmu_action_remove(void *data)
-+{
-+	struct imx91_tmu *tmu = data;
-+
-+	/* disable tmu */
-+	imx91_tmu_enable(tmu, false);
-+}
-+
-+static irqreturn_t imx91_tmu_alarm_irq_thread(int irq, void *dev)
-+{
-+	struct imx91_tmu *tmu = dev;
-+	int val;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(tmu->dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	thermal_zone_device_update(tmu->tzd, THERMAL_EVENT_UNSPECIFIED);
-+
-+	val = readl_relaxed(tmu->base + IMX91_TMU_STAT0);
-+	/* Have to use CLR register to clean up w1c bits */
-+	writel_relaxed(val, tmu->base + IMX91_TMU_STAT0 + REG_CLR);
-+
-+	writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-+
-+	pm_runtime_put(tmu->dev);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int imx91_tmu_change_mode(struct thermal_zone_device *tz, enum thermal_device_mode mode)
-+{
-+	struct imx91_tmu *tmu = thermal_zone_device_priv(tz);
-+	int ret;
-+
-+	if (mode == THERMAL_DEVICE_ENABLED) {
-+		ret = pm_runtime_get(tmu->dev);
-+		if (ret < 0)
-+			return ret;
-+
-+		imx91_tmu_start(tmu, true);
-+		writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_SET);
-+		tmu->enable = true;
-+	} else {
-+		writel_relaxed(IMX91_TMU_CTRL0_THR1_IE, tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-+		imx91_tmu_start(tmu, false);
-+		pm_runtime_put(tmu->dev);
-+		tmu->enable = false;
-+	}
-+
-+	return 0;
-+}
-+
-+static struct thermal_zone_device_ops tmu_tz_ops = {
-+	.get_temp = imx91_tmu_get_temp,
-+	.change_mode = imx91_tmu_change_mode,
-+	.set_trips = imx91_tmu_set_trips,
-+};
-+
-+static int imx91_tmu_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct imx91_tmu *tmu;
-+	unsigned long rate;
-+	int irq, ret;
-+	u32 div;
-+
-+	tmu = devm_kzalloc(dev, sizeof(struct imx91_tmu), GFP_KERNEL);
-+	if (!tmu)
-+		return -ENOMEM;
-+
-+	tmu->dev = dev;
-+
-+	tmu->base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(tmu->base))
-+		return dev_err_probe(dev, PTR_ERR(tmu->base), "failed to get io resource");
-+
-+	tmu->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(tmu->clk))
-+		return dev_err_probe(dev, PTR_ERR(tmu->clk), "failed to get tmu clock\n");
-+
-+	platform_set_drvdata(pdev, tmu);
-+
-+	/* disable the monitor during initialization */
-+	imx91_tmu_enable(tmu, false);
-+	imx91_tmu_start(tmu, false);
-+
-+	ret = imx91_init_from_nvmem_cells(tmu);
-+	if (ret) {
-+		writel_relaxed(IMX91_TMU_DEFAULT_TRIM1_CONFIG, tmu->base + IMX91_TMU_TRIM1);
-+		writel_relaxed(IMX91_TMU_DEFAULT_TRIM2_CONFIG, tmu->base + IMX91_TMU_TRIM2);
-+	}
-+
-+	/* The typical conv clk is 4MHz, the output freq is 'rate / (div + 1)' */
-+	rate = clk_get_rate(tmu->clk);
-+	div = (rate / (4 * HZ_PER_MHZ)) - 1;
-+	if (div > IMX91_TMU_DIV_MAX)
-+		return dev_err_probe(dev, -EINVAL, "clock divider exceed hardware limitation");
-+
-+	/* Set divider value and enable divider */
-+	writel_relaxed(IMX91_TMU_DIV_EN | FIELD_PREP(IMX91_TMU_DIV_MASK, div),
-+		       tmu->base + IMX91_TMU_REF_DIV);
-+
-+	/* Set max power up delay: 'Tpud(ms) = 0xFF * 1000 / 4000000' */
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_PUDL_MASK, 100U), tmu->base + IMX91_TMU_PUD_ST_CTRL);
-+
-+	/*
-+	 * Set resolution mode
-+	 * 00b - Conversion time = 0.59325 ms
-+	 * 01b - Conversion time = 1.10525 ms
-+	 * 10b - Conversion time = 2.12925 ms
-+	 * 11b - Conversion time = 4.17725 ms
-+	 */
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_CTRL1_RES_MASK, 0x3),
-+		       tmu->base + IMX91_TMU_CTRL1 + REG_CLR);
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_CTRL1_RES_MASK, 0x1),
-+		       tmu->base + IMX91_TMU_CTRL1 + REG_SET);
-+
-+	writel_relaxed(IMX91_TMU_CTRL1_MEAS_MODE_MASK, tmu->base + IMX91_TMU_CTRL1 + REG_CLR);
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_CTRL1_MEAS_MODE_MASK,
-+				  IMX91_TMU_CTRL1_MEAS_MODE_PERIODIC),
-+		       tmu->base + IMX91_TMU_CTRL1 + REG_SET);
-+
-+	/*
-+	 * Set Periodic Measurement Frequency to 25Hz:
-+	 * tMEAS_FREQ = tCONV_CLK * PERIOD_CTRL[MEAS_FREQ]
-+	 */
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_PERIOD_CTRL_MEAS_MASK, 4 * HZ_PER_MHZ / 25),
-+		       tmu->base + IMX91_TMU_PERIOD_CTRL);
-+
-+	writel_relaxed(IMX91_TMU_CTRL0_THR1_IE | IMX91_TMU_CTRL0_THR1_MASK,
-+		       tmu->base + IMX91_TMU_CTRL0 + REG_CLR);
-+
-+	writel_relaxed(FIELD_PREP(IMX91_TMU_CTRL0_THR1_MASK, IMX91_TMU_THR_MODE_GE),
-+		       tmu->base + IMX91_TMU_CTRL0 + REG_SET);
-+
-+	pm_runtime_set_active(dev);
-+	devm_pm_runtime_enable(dev);
-+	pm_runtime_suspend(dev);
-+
-+	tmu->tzd = devm_thermal_of_zone_register(dev, 0, tmu, &tmu_tz_ops);
-+	if (IS_ERR(tmu->tzd))
-+		return dev_err_probe(dev, PTR_ERR(tmu->tzd),
-+				     "failed to register thermal zone sensor\n");
-+
-+	ret = devm_add_action(dev, imx91_tmu_action_remove, tmu);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failure to add action imx91_tmu_action_remove()\n");
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
-+
-+	ret = devm_request_threaded_irq(dev, irq, NULL, imx91_tmu_alarm_irq_thread,
-+					IRQF_ONESHOT, "imx91_thermal", tmu);
-+
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to request alarm irq\n");
-+
-+	return 0;
-+}
-+
-+static int imx91_tmu_runtime_suspend(struct device *dev)
-+{
-+	struct imx91_tmu *tmu = dev_get_drvdata(dev);
-+
-+	/* disable tmu */
-+	imx91_tmu_enable(tmu, false);
-+
-+	clk_disable_unprepare(tmu->clk);
-+
-+	return 0;
-+}
-+
-+static int imx91_tmu_runtime_resume(struct device *dev)
-+{
-+	struct imx91_tmu *tmu = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = clk_prepare_enable(tmu->clk);
-+	if (ret)
-+		return ret;
-+
-+	imx91_tmu_enable(tmu, true);
-+
-+	return 0;
-+}
-+
-+static DEFINE_RUNTIME_DEV_PM_OPS(imx91_tmu_pm_ops, imx91_tmu_runtime_suspend,
-+				 imx91_tmu_runtime_resume, NULL);
-+
-+static const struct of_device_id imx91_tmu_table[] = {
-+	{ .compatible = "fsl,imx91-tmu", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, imx91_tmu_table);
-+
-+static struct platform_driver imx91_tmu = {
-+	.driver = {
-+		.name	= "imx91_thermal",
-+		.pm	= pm_ptr(&imx91_tmu_pm_ops),
-+		.of_match_table = imx91_tmu_table,
-+	},
-+	.probe = imx91_tmu_probe,
-+};
-+module_platform_driver(imx91_tmu);
-+
-+MODULE_AUTHOR("Peng Fan <peng.fan@nxp.com>");
-+MODULE_DESCRIPTION("i.MX91 Thermal Monitor Unit driver");
-+MODULE_LICENSE("GPL");
-
--- 
-2.34.1
-
+> ---
+>  drivers/base/core.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index d2f9d3a59d6b..f30260fd3031 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -1881,7 +1881,7 @@ static void fw_devlink_unblock_consumers(struct dev=
+ice *dev)
+>         device_links_write_unlock();
+>  }
+>
+> -#define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
+> +#define get_device_from_fwnode(fwnode) get_device((fwnode)->dev)
+>
+>  static bool fwnode_init_without_drv(struct fwnode_handle *fwnode)
+>  {
+> @@ -1891,7 +1891,7 @@ static bool fwnode_init_without_drv(struct fwnode_h=
+andle *fwnode)
+>         if (!(fwnode->flags & FWNODE_FLAG_INITIALIZED))
+>                 return false;
+>
+> -       dev =3D get_dev_from_fwnode(fwnode);
+> +       dev =3D get_device_from_fwnode(fwnode);
+>         ret =3D !dev || dev->links.status =3D=3D DL_DEV_NO_DRIVER;
+>         put_device(dev);
+>
+> @@ -1960,7 +1960,7 @@ static struct device *fwnode_get_next_parent_dev(co=
+nst struct fwnode_handle *fwn
+>         struct device *dev;
+>
+>         fwnode_for_each_parent_node(fwnode, parent) {
+> -               dev =3D get_dev_from_fwnode(parent);
+> +               dev =3D get_device_from_fwnode(parent);
+>                 if (dev) {
+>                         fwnode_handle_put(parent);
+>                         return dev;
+> @@ -2016,8 +2016,8 @@ static bool __fw_devlink_relax_cycles(struct fwnode=
+_handle *con_handle,
+>                 goto out;
+>         }
+>
+> -       sup_dev =3D get_dev_from_fwnode(sup_handle);
+> -       con_dev =3D get_dev_from_fwnode(con_handle);
+> +       sup_dev =3D get_device_from_fwnode(sup_handle);
+> +       con_dev =3D get_device_from_fwnode(con_handle);
+>         /*
+>          * If sup_dev is bound to a driver and @con hasn't started bindin=
+g to a
+>          * driver, sup_dev can't be a consumer of @con. So, no need to ch=
+eck
+> @@ -2156,7 +2156,7 @@ static int fw_devlink_create_devlink(struct device =
+*con,
+>         if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
+>                 sup_dev =3D fwnode_get_next_parent_dev(sup_handle);
+>         else
+> -               sup_dev =3D get_dev_from_fwnode(sup_handle);
+> +               sup_dev =3D get_device_from_fwnode(sup_handle);
+>
+>         if (sup_dev) {
+>                 /*
+> @@ -2225,7 +2225,7 @@ static void __fw_devlink_link_to_consumers(struct d=
+evice *dev)
+>                 bool own_link =3D true;
+>                 int ret;
+>
+> -               con_dev =3D get_dev_from_fwnode(link->consumer);
+> +               con_dev =3D get_device_from_fwnode(link->consumer);
+>                 /*
+>                  * If consumer device is not available yet, make a "proxy=
+"
+>                  * SYNC_STATE_ONLY link from the consumer's parent device=
+ to
+> --
+> 2.49.0
+>
