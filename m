@@ -1,130 +1,116 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D33220897C
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 16:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91E5209F59
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 16:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744043269; cv=none; b=lSaLnp08OIfD/q8h32C+Ypi7/rMRH8P630L/q/G141uSiUxsulIRYXJOazgF2I2u0PaaA5wSNnBswn174UGksZX5ngZwa1KVxgHDeflOtkWzclX4SRIeR8l0qnBJnbZMmJOXdJiu52g+8djJ3SwUctLT6PStdrRjhA6z0mfBUh8=
+	t=1744043622; cv=none; b=gcObRMnhB3r5rLeiagnCGCn/YpXmdmMl7oqYQBbsPAntXroKPysuYZR+i9V7LyFGGvKuMcGGF+zhcCB/lqOKZ+iHTdvpIjDS9b1IrwNFTzShVBJvdNV/MjMsCNxTCwQqupBx9zVyNhp+hieLjulc1U3SrZCONjdwSM6Bz6ihMpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744043269; c=relaxed/simple;
-	bh=2E83vRDeGBi2KQKmMy4PdlP5hsTnpBPGTayVZg7p9Bg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e3NgSGzR3BgsG54y8SK/nAT8zK1kLxp7R42BEdpzYPcTxTWkO9WGYwME2Py2J3+ANBGuSAaAFPl9wqkeYbmKHW+1DdrErxkVrxPaaCDp1AeZbhRNTSAmVP7X39ruWO5PL+MhQim9fXVfsr10euYN7+w6Nty0QJt8Py9J+yuUkDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IxwYQwrY; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744043622; c=relaxed/simple;
+	bh=anBURer+NUbId9TRyOLh3MVO9AZan0YdjFquvwr88fY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hQWwmqLv7/lYyxx0+V5fLzWEVFCEyAKPGqvrmWUOJicUrPjq9n/kJZYgtzLUYuOxMewEq1Haen0u5xmVJsXPyx6Rs5Pixwvr6SykTCxtcymG5ZeQ7pM33GsXX8DFL31zFfF71hplHxEy4bDnrGYwGWLsBuiYVU1kFBLnS4YaR0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UJWGbxFq; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IxwYQwrY"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6f6ca9a3425so53850267b3.2
-        for <imx@lists.linux.dev>; Mon, 07 Apr 2025 09:27:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744043266; x=1744648066; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2E83vRDeGBi2KQKmMy4PdlP5hsTnpBPGTayVZg7p9Bg=;
-        b=IxwYQwrYRK2gIVFr/4GMJaH0jfXRzMcdXpnNPEAZpjER77IgRAynGAHJTBp0bVHPbs
-         9vT0E0FsKDn7H7MSKggJEWxY+owdkV52oLBIKUUQW6nh830eeVpQR8c9Tj1UrEIhxZHi
-         Pg5znQ+gU1sdLmMfsfdJHhGJml8h0EjoaLZC13Owu3IihQszt5i2TQJpJ/qUs2CTDAQV
-         33TJhwv1fDOuGYt3WVcpe1LHn86LSjjU2PQ3xF426+VKNlOGVXe9CznW0ntKLhcTNsOE
-         zGuUoWxzYo7twvmEDsVh9NARplaB4E2HM3pGL/6kbLUK0VV1xoem8uZRwW4oJ3J7Z4bh
-         OvXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744043266; x=1744648066;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2E83vRDeGBi2KQKmMy4PdlP5hsTnpBPGTayVZg7p9Bg=;
-        b=jqebcoeRtodMYEwR668Yp74UaipntGucf3C8DDeXZRyMH9ys+aSd0w9x7K+WQqiQea
-         iF8A5Js8Y5pNg2ainvx0Hmnl3Pj77JCWtBJhyOYhQtCbo4H3BZP5WfgNV0zsoJ/ypMgn
-         jVpyINihQO3st6xwLHoSt6hpP1vTKvn9NdqD4qaEUMtw/gEx8M/zlIsKXlmUB6I0q8NC
-         0O/JRUhuD8OesYcEQhHcUvNh3BWj5BAQIkiNY7AqZ+ACHAuY8tvG8cPBJIZGKBnpsQrx
-         b371Ocla2pMbuKhzGLcurwSeJ8A1zRUSKFRDh5PSvszPYgSPvx3Zz81RnzG1yHyaKaED
-         DtPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzwVNvDwkD8v2zdcw/ZXLU8yILWOTYiDs3yujRsTJVWFWfU9KWI9dCG/pRmCChocAkcPA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy4wFQJHgyTzQWpJpjqZtjwZJEkCgfooyaUQ310kds73SLaeFcj
-	3Em0bQ7z4fnlxsxMuEoWR4rhkRcODOJqmcN3IJ2ScvBN46oXY4UibnnhxsY4wyDLuXRbV/RUUXM
-	dTgi0amrD7+/WFt9eiZ0F1e4q00+W98TDSFtQpA==
-X-Gm-Gg: ASbGnctRir1muH6WIyJInjnkmaXMIqN7uSE7rvNW4JjAyyDLgqXDdrT9J+Kvw9ABDI1
-	gqpo3tRyKDCx8aaexVqG4/3bhAV4b31BRqkoLl3+l99g/JDI/63wnD1dMsncQSF+wY173JNVWnR
-	dCVlSk4CjqUFePpQ2gV+dyzFilf/U=
-X-Google-Smtp-Source: AGHT+IGtNp2BrAkn3PRcCBrP5vhlJ1looux4OpDWyP6ljq92N0vWykgYWHtVBu01P5IBh7MS/lbuITHOgr8FD7w/MVE=
-X-Received: by 2002:a05:690c:a84:b0:6f9:9d40:35cb with SMTP id
- 00721157ae682-703f41267b0mr168266747b3.6.1744043266227; Mon, 07 Apr 2025
- 09:27:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UJWGbxFq"
+Message-ID: <720b6db8-49c5-47e7-98da-f044fc38fc1a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1744043618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KFg4OMSXqyZAd4XoQGwUdaygVVdJ30SNWIcU9tJnxO4=;
+	b=UJWGbxFqDDyMWF8b4G2fYOD53tA+BWAfWoGwac3pflGNx/7Q8PgHH198LIFtBZ+wsx8gh/
+	XnnznK1WuR4pSzwX7dn9Bt8JcNWp1s5DrdqgsT/GTNhH4Vgnu+/qhtSKjA+JF6SZ4FceM1
+	MRxTN0uezDbNPzPZHXbHspuUXvMOgC8=
+Date: Mon, 7 Apr 2025 12:33:28 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
- <20250403-dt-cpu-schema-v1-9-076be7171a85@kernel.org> <03011a33-174b-4027-bdd2-043aa685380b@oss.qualcomm.com>
-In-Reply-To: <03011a33-174b-4027-bdd2-043aa685380b@oss.qualcomm.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 7 Apr 2025 18:27:10 +0200
-X-Gm-Features: ATxdqUE6-dDNiPO2iJ2zywPixm7KYg2Lx2vGxVH4s4tPgli0QW4REXdhqc3rxfE
-Message-ID: <CAPDyKFoZ7NfN+pkCPnusvTOEaxbQhr=1FJqzdDGrLcKAzBpGyQ@mail.gmail.com>
-Subject: Re: [PATCH 09/19] arm: dts: qcom: sdx55/sdx65: Fix CPU power-domain-names
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: "Rob Herring (Arm)" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Viresh Kumar <vireshk@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
-	Conor Dooley <conor@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
-	Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ linux-kernel@vger.kernel.org, Christian Marangi <ansuelsmth@gmail.com>,
+ upstream@airoha.com, Heiner Kallweit <hkallweit1@gmail.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Clark Wang <xiaoning.wang@nxp.com>,
+ Claudiu Beznea <claudiu.beznea@microchip.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
+ Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+ Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Li Yang <leoyang.li@nxp.com>, Madalin Bucur <madalin.bucur@nxp.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <michal.simek@amd.com>,
+ Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ Robert Hancock <robert.hancock@calian.com>,
+ Saravana Kannan <saravanak@google.com>, Shawn Guo <shawnguo@kernel.org>,
+ UNGLinuxDriver@microchip.com, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linuxppc-dev@lists.ozlabs.org
+References: <20250403181907.1947517-1-sean.anderson@linux.dev>
+ <20250407182738.498d96b0@kmaincent-XPS-13-7390>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20250407182738.498d96b0@kmaincent-XPS-13-7390>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 4 Apr 2025 at 22:41, Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 4/4/25 4:59 AM, Rob Herring (Arm) wrote:
-> > "rpmhpd" is not documented nor used anywhere. As the enable-method is
-> > "psci" use "psci" for the power-domain name.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
->
-> "psci" is what we want here, but these platforms require some more
-> massaging..
+On 4/7/25 12:27, Kory Maincent wrote:
+> On Thu,  3 Apr 2025 14:18:54 -0400
+> Sean Anderson <sean.anderson@linux.dev> wrote:
+> 
+>> This series adds support for creating PCSs as devices on a bus with a
+>> driver (patch 3). As initial users,
+>> 
+>> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
+>> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+>> - The Cadence MACB driver is converted to support external PCSs (namely
+>>   the Xilinx PCS) (patches 9-10).
+>> 
+>> The last few patches add device links for pcs-handle to improve boot times,
+>> and add compatibles for all Lynx PCSs.
+>> 
+>> Care has been taken to ensure backwards-compatibility. The main source
+>> of this is that many PCS devices lack compatibles and get detected as
+>> PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
+>> the devicetree to add appropriate compatibles.
+> 
+> I don't dive into your patch series and I don't know if you have heard about it
+> but Christian Marangi is currently working on fwnode for PCS:
+> https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com
+> 
+> Maybe you should sync with him!
 
-So this isn't for CPU performance scaling?
+I saw that series and made some comments. He is CC'd on this one.
 
->
-> These SoCs don't seem to have any PSCI idle states (deeper than WFI)
-> described, which is no bueno, as they support some..
+I think this approach has two advantages:
 
-If PSCI PC mode is the only supported CPU suspend mode, we don't need
-the power-domain topology to be described in DT as it's optional to
-use.
+- It completely solves the problem of the PCS being unregistered while the netdev
+  (or whatever) is up
+- I have designed the interface to make it easy to convert existing
+  drivers that may not be able to use the "standard" probing process
+  (because they have to support other devicetree structures for
+  backwards-compatibility).
 
-Is this a PC or OSI based platform?
-
->
-> I'll try to improve this.
->
-> Konrad
->
-
-Kind regards
-Uffe
+--Sean
