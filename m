@@ -1,343 +1,155 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7779E2046A5;
-	Mon,  7 Apr 2025 14:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE241E51E9
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 14:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744035943; cv=none; b=T75TWtBWwAIiUxTx0bEhRzsYxvdwRNkRWGNd+ZJFIzxGh5LOcThL3otrmkYkyx+C9pDkOh3ov+7ggtI161KGUnJnPWOH/zb51g3X774hHCljr7proHCTMGYxbdWbu2+wRtUPg94VjgmkAZ8BdEASg1jH0Z5aI2zILnTS2HpzGjg=
+	t=1744037548; cv=none; b=Y7JpTfbSBccaxPytmkM3hzL2s67BmduT6jiPOto3EJWAH+r3A4pYLg9GRSLOjcZL1RwvKFdXk3Zsk0pNzAF6VHwXmXyD/Ipg6OQdEdCzeRWSJnkMmLyWelYeUSTpwBeTG7o/TChsDVNx2fW0I7nbjot5lP58aEXf/++1mukW+vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744035943; c=relaxed/simple;
-	bh=rbzilaqVuyHoMPv7ZhAr8kUXXPHqxFNlXlBe7MkiJCw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=E6V8IgPzOo+GuEpnP2T+gGsALxXq5nncp392H8SyXUOhF9kjcro0PX6eNVjX+VBkOMNU8JvoCkldEy6t89hFZMVZB0GN7xGtY2E1G+ZEqJ0SsQYDa/L3e6D3mt/71VuK9nbSSL3qrsVMefpMQSqHYppSKxkZ1C1xXKRNr/uRigs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lM7vJvKv; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744037548; c=relaxed/simple;
+	bh=yYroXKKtoX+wkq3hBAqIfvmFTIzepSA8ADEKA/LNwI0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Az0jpdXRNquH+c7d9z0mnUZbdvxRtNPxeTs+sCrG2XEwPAwNPRRcye5nKoc85dNIuLOiAOJxJOLGArcgWlr1p3Ysuf4Ol3/bKdvTobJfk5+fXHbj82zMzmvqpjll6syaUjl+Uwb8/88DvrQtAGNbxPo47aRKR/qqX4YhfHkm0d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=iFa0jpRR; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lM7vJvKv"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1AB77442B9;
-	Mon,  7 Apr 2025 14:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744035940;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebgCpKb0JBnNyBzMJIKOLuwJd1meFjjT61fyzD63fBQ=;
-	b=lM7vJvKvBKYwHDIqNg9m3hu0vb4jPOkECMiAsXsESARSvZnpOjIAjGzvaM/5i+nq9n2SBO
-	YtBRrm574LAiOzMnAO9HrNMZCkEiSROPGlWsfHDWPfz7V3XlGeVEkBKILnpY1GccdFEMi8
-	sRYEC1xRJvmvyR14c6t/p5Qf/OjP2RRZLItT+jnl8JtWHtkU+g+ofusmSAsKDsQwH4/BCi
-	a7nm6y0DFtMvOvar/IHOpkQaeTruncyAbMr4BIib0lywGqvCIiy+subPgADw/GmsCc1woM
-	oXvYIgNRYfImNH0cyIFRsSap2efDKkLC44W4+1kLi78zA+IKX+2yFUMWLh2W3g==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Mon, 07 Apr 2025 16:23:46 +0200
-Subject: [PATCH 31/34] drm/bridge: imx8*-ldb: convert to
- devm_drm_bridge_alloc() API
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="iFa0jpRR"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 575EF102EB9FB;
+	Mon,  7 Apr 2025 16:52:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744037541; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=7aXt2koPsf4jatl2BEaDbyBltL8GupCo0peGOg+vXXs=;
+	b=iFa0jpRR+XykMU6AK6AhSCuqS6EhaK8e0fGvWfzxnF4aNWS3SpeeQTftCC0y1DY4FWCDT/
+	zGJ1UogWEXjz5e7YM4uOUBCY3nYyaCJR28BpBRXBhOUmqxED1mQJNq3YyinFyUya85ny+d
+	GU7TcGs1KLPjfJJooWNCDI3jaDFQWQtKhHkmEL0eZCay6or3IuaTtsrbetLP/rngyCdba5
+	KVIgww5Fk9c3bmMFZ4aZj5w2E01sJZ/PYzJw/NTc/IY3VfS0CU/khwBUJfeAuJnV4+EVbP
+	ReXEEyeX4tGl916NRzibF5Y+8Mzq2EEH801jTHhguzRl6aqBvxjSttgddyxP8g==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [net-next v4 0/5] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Mon,  7 Apr 2025 16:51:52 +0200
+Message-Id: <20250407145157.3626463-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250407-drm-bridge-convert-to-alloc-api-v1-31-42113ff8d9c0@bootlin.com>
-References: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
-In-Reply-To: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Anusha Srivatsa <asrivats@redhat.com>, 
- Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Liu Ying <victor.liu@nxp.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddtgedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiieeuvdfftefgueduleehueetgffgjeeitedtteetkeeuueeuueekveevvdeuveenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedvieenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegludelvddrudeikedrudejkedrjeehngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegvddprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigqdhmvgguihgrthgvkheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvr
- hhnvghlrdhorhhgpdhrtghpthhtohepjfhuihdrrfhusehgvghhvggrlhhthhgtrghrvgdrtghomhdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhm
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is the new API for allocating DRM bridges.
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-These two drivers are tangled together by the ldb_add_bridge_helper(), so
-they are converted at once.
+In the past there has been performed some attempts to upstream this driver:
 
-They also have a similar design, each embedding an array of channels in
-their main struct, and each channel embeds a drm_bridge. This prevents
-dynamic, refcount-based deallocation of the bridges.
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-To make the new, dynamic bridge allocation possible:
+All three approaches were not accepted as eligible for upstreaming.
 
- * change the array of channels into an array of channel pointers
- * allocate each channel using devm_drm_bridge_alloc()
- * adapt ldb_add_bridge_helper() to not set the funcs pointer
-   (now done by devm_drm_bridge_alloc())
- * adapt the code wherever using the channels
+The driver from this series has floowing features:
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
 
----
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
 
-Cc: Liu Ying <victor.liu@nxp.com>
----
- drivers/gpu/drm/bridge/imx/imx-ldb-helper.c |  4 +---
- drivers/gpu/drm/bridge/imx/imx-ldb-helper.h |  3 +--
- drivers/gpu/drm/bridge/imx/imx8qm-ldb.c     | 32 ++++++++++++++++++-----------
- drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c    | 20 ++++++++++++------
- 4 files changed, 36 insertions(+), 23 deletions(-)
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c b/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c
-index 61347f6ec33d906264f7e06902b0d915d263f3f8..6149ba141a389a04b3c347a67f13e049328c07ff 100644
---- a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c
-+++ b/drivers/gpu/drm/bridge/imx/imx-ldb-helper.c
-@@ -190,8 +190,7 @@ int ldb_find_next_bridge_helper(struct ldb *ldb)
- }
- EXPORT_SYMBOL_GPL(ldb_find_next_bridge_helper);
- 
--void ldb_add_bridge_helper(struct ldb *ldb,
--			   const struct drm_bridge_funcs *bridge_funcs)
-+void ldb_add_bridge_helper(struct ldb *ldb)
- {
- 	struct ldb_channel *ldb_ch;
- 	int i;
-@@ -203,7 +202,6 @@ void ldb_add_bridge_helper(struct ldb *ldb,
- 			continue;
- 
- 		ldb_ch->bridge.driver_private = ldb_ch;
--		ldb_ch->bridge.funcs = bridge_funcs;
- 		ldb_ch->bridge.of_node = ldb_ch->np;
- 
- 		drm_bridge_add(&ldb_ch->bridge);
-diff --git a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.h b/drivers/gpu/drm/bridge/imx/imx-ldb-helper.h
-index 38a8a54b37a60e1be942aaa60b1d1bc375a7a131..de187e3269996d284ecad451dd857271056812e1 100644
---- a/drivers/gpu/drm/bridge/imx/imx-ldb-helper.h
-+++ b/drivers/gpu/drm/bridge/imx/imx-ldb-helper.h
-@@ -88,8 +88,7 @@ int ldb_init_helper(struct ldb *ldb);
- 
- int ldb_find_next_bridge_helper(struct ldb *ldb);
- 
--void ldb_add_bridge_helper(struct ldb *ldb,
--			   const struct drm_bridge_funcs *bridge_funcs);
-+void ldb_add_bridge_helper(struct ldb *ldb);
- 
- void ldb_remove_bridge_helper(struct ldb *ldb);
- 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c b/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c
-index 524aac751359f5cd377807508cbeeb6a597529e1..47aa65938e6a521cd6f111535f6feb3920a0dfb7 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c
-@@ -47,7 +47,7 @@ struct imx8qm_ldb_channel {
- struct imx8qm_ldb {
- 	struct ldb base;
- 	struct device *dev;
--	struct imx8qm_ldb_channel channel[MAX_LDB_CHAN_NUM];
-+	struct imx8qm_ldb_channel *channel[MAX_LDB_CHAN_NUM];
- 	struct clk *clk_pixel;
- 	struct clk *clk_bypass;
- 	int active_chno;
-@@ -107,7 +107,7 @@ static int imx8qm_ldb_bridge_atomic_check(struct drm_bridge *bridge,
- 
- 	if (is_split) {
- 		imx8qm_ldb_ch =
--			&imx8qm_ldb->channel[imx8qm_ldb->active_chno ^ 1];
-+			imx8qm_ldb->channel[imx8qm_ldb->active_chno ^ 1];
- 		imx8qm_ldb_set_phy_cfg(imx8qm_ldb, di_clk, is_split, true,
- 				       phy_cfg);
- 		ret = phy_validate(imx8qm_ldb_ch->phy, PHY_MODE_LVDS, 0, &opts);
-@@ -158,7 +158,7 @@ imx8qm_ldb_bridge_mode_set(struct drm_bridge *bridge,
- 
- 	if (is_split) {
- 		imx8qm_ldb_ch =
--			&imx8qm_ldb->channel[imx8qm_ldb->active_chno ^ 1];
-+			imx8qm_ldb->channel[imx8qm_ldb->active_chno ^ 1];
- 		imx8qm_ldb_set_phy_cfg(imx8qm_ldb, di_clk, is_split, true,
- 				       phy_cfg);
- 		ret = phy_configure(imx8qm_ldb_ch->phy, &opts);
-@@ -226,13 +226,13 @@ static void imx8qm_ldb_bridge_atomic_enable(struct drm_bridge *bridge,
- 	}
- 
- 	if (is_split) {
--		ret = phy_power_on(imx8qm_ldb->channel[0].phy);
-+		ret = phy_power_on(imx8qm_ldb->channel[0]->phy);
- 		if (ret)
- 			DRM_DEV_ERROR(dev,
- 				      "failed to power on channel0 PHY: %d\n",
- 				      ret);
- 
--		ret = phy_power_on(imx8qm_ldb->channel[1].phy);
-+		ret = phy_power_on(imx8qm_ldb->channel[1]->phy);
- 		if (ret)
- 			DRM_DEV_ERROR(dev,
- 				      "failed to power on channel1 PHY: %d\n",
-@@ -261,12 +261,12 @@ static void imx8qm_ldb_bridge_atomic_disable(struct drm_bridge *bridge,
- 	ldb_bridge_disable_helper(bridge);
- 
- 	if (is_split) {
--		ret = phy_power_off(imx8qm_ldb->channel[0].phy);
-+		ret = phy_power_off(imx8qm_ldb->channel[0]->phy);
- 		if (ret)
- 			DRM_DEV_ERROR(dev,
- 				      "failed to power off channel0 PHY: %d\n",
- 				      ret);
--		ret = phy_power_off(imx8qm_ldb->channel[1].phy);
-+		ret = phy_power_off(imx8qm_ldb->channel[1]->phy);
- 		if (ret)
- 			DRM_DEV_ERROR(dev,
- 				      "failed to power off channel1 PHY: %d\n",
-@@ -412,7 +412,7 @@ static int imx8qm_ldb_get_phy(struct imx8qm_ldb *imx8qm_ldb)
- 	int i, ret;
- 
- 	for (i = 0; i < MAX_LDB_CHAN_NUM; i++) {
--		imx8qm_ldb_ch = &imx8qm_ldb->channel[i];
-+		imx8qm_ldb_ch = imx8qm_ldb->channel[i];
- 		ldb_ch = &imx8qm_ldb_ch->base;
- 
- 		if (!ldb_ch->is_available)
-@@ -448,6 +448,14 @@ static int imx8qm_ldb_probe(struct platform_device *pdev)
- 	if (!imx8qm_ldb)
- 		return -ENOMEM;
- 
-+	for (i = 0; i < MAX_LDB_CHAN_NUM; i++) {
-+		imx8qm_ldb->channel[i] =
-+			devm_drm_bridge_alloc(dev, struct imx8qm_ldb_channel, base.bridge,
-+					      &imx8qm_ldb_bridge_funcs);
-+		if (IS_ERR(imx8qm_ldb->channel[i]))
-+			return PTR_ERR(imx8qm_ldb->channel[i]);
-+	}
-+
- 	imx8qm_ldb->clk_pixel = devm_clk_get(dev, "pixel");
- 	if (IS_ERR(imx8qm_ldb->clk_pixel)) {
- 		ret = PTR_ERR(imx8qm_ldb->clk_pixel);
-@@ -473,7 +481,7 @@ static int imx8qm_ldb_probe(struct platform_device *pdev)
- 	ldb->ctrl_reg = 0xe0;
- 
- 	for (i = 0; i < MAX_LDB_CHAN_NUM; i++)
--		ldb->channel[i] = &imx8qm_ldb->channel[i].base;
-+		ldb->channel[i] = &imx8qm_ldb->channel[i]->base;
- 
- 	ret = ldb_init_helper(ldb);
- 	if (ret)
-@@ -499,12 +507,12 @@ static int imx8qm_ldb_probe(struct platform_device *pdev)
- 		}
- 
- 		imx8qm_ldb->active_chno = 0;
--		imx8qm_ldb_ch = &imx8qm_ldb->channel[0];
-+		imx8qm_ldb_ch = imx8qm_ldb->channel[0];
- 		ldb_ch = &imx8qm_ldb_ch->base;
- 		ldb_ch->link_type = pixel_order;
- 	} else {
- 		for (i = 0; i < MAX_LDB_CHAN_NUM; i++) {
--			imx8qm_ldb_ch = &imx8qm_ldb->channel[i];
-+			imx8qm_ldb_ch = imx8qm_ldb->channel[i];
- 			ldb_ch = &imx8qm_ldb_ch->base;
- 
- 			if (ldb_ch->is_available) {
-@@ -525,7 +533,7 @@ static int imx8qm_ldb_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, imx8qm_ldb);
- 	pm_runtime_enable(dev);
- 
--	ldb_add_bridge_helper(ldb, &imx8qm_ldb_bridge_funcs);
-+	ldb_add_bridge_helper(ldb);
- 
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
-index d4f3492ca5abf65a3327d7fa62214832946eb218..5d272916e200980f7253a032701dcd990e0e34f2 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
-@@ -44,7 +44,7 @@ struct imx8qxp_ldb_channel {
- struct imx8qxp_ldb {
- 	struct ldb base;
- 	struct device *dev;
--	struct imx8qxp_ldb_channel channel[MAX_LDB_CHAN_NUM];
-+	struct imx8qxp_ldb_channel *channel[MAX_LDB_CHAN_NUM];
- 	struct clk *clk_pixel;
- 	struct clk *clk_bypass;
- 	struct drm_bridge *companion;
-@@ -410,7 +410,7 @@ static const struct drm_bridge_funcs imx8qxp_ldb_bridge_funcs = {
- static int imx8qxp_ldb_set_di_id(struct imx8qxp_ldb *imx8qxp_ldb)
- {
- 	struct imx8qxp_ldb_channel *imx8qxp_ldb_ch =
--			 &imx8qxp_ldb->channel[imx8qxp_ldb->active_chno];
-+			 imx8qxp_ldb->channel[imx8qxp_ldb->active_chno];
- 	struct ldb_channel *ldb_ch = &imx8qxp_ldb_ch->base;
- 	struct device_node *ep, *remote;
- 	struct device *dev = imx8qxp_ldb->dev;
-@@ -456,7 +456,7 @@ imx8qxp_ldb_check_chno_and_dual_link(struct ldb_channel *ldb_ch, int link)
- static int imx8qxp_ldb_parse_dt_companion(struct imx8qxp_ldb *imx8qxp_ldb)
- {
- 	struct imx8qxp_ldb_channel *imx8qxp_ldb_ch =
--			 &imx8qxp_ldb->channel[imx8qxp_ldb->active_chno];
-+			 imx8qxp_ldb->channel[imx8qxp_ldb->active_chno];
- 	struct ldb_channel *ldb_ch = &imx8qxp_ldb_ch->base;
- 	struct ldb_channel *companion_ldb_ch;
- 	struct device_node *companion;
-@@ -586,6 +586,14 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
- 	if (!imx8qxp_ldb)
- 		return -ENOMEM;
- 
-+	for (i = 0; i < MAX_LDB_CHAN_NUM; i++) {
-+		imx8qxp_ldb->channel[i] =
-+			devm_drm_bridge_alloc(dev, struct imx8qxp_ldb_channel, base.bridge,
-+					      &imx8qxp_ldb_bridge_funcs);
-+		if (IS_ERR(imx8qxp_ldb->channel[i]))
-+			return PTR_ERR(imx8qxp_ldb->channel[i]);
-+	}
-+
- 	imx8qxp_ldb->clk_pixel = devm_clk_get(dev, "pixel");
- 	if (IS_ERR(imx8qxp_ldb->clk_pixel)) {
- 		ret = PTR_ERR(imx8qxp_ldb->clk_pixel);
-@@ -611,7 +619,7 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
- 	ldb->ctrl_reg = 0xe0;
- 
- 	for (i = 0; i < MAX_LDB_CHAN_NUM; i++)
--		ldb->channel[i] = &imx8qxp_ldb->channel[i].base;
-+		ldb->channel[i] = &imx8qxp_ldb->channel[i]->base;
- 
- 	ret = ldb_init_helper(ldb);
- 	if (ret)
-@@ -627,7 +635,7 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
- 	}
- 
- 	for (i = 0; i < MAX_LDB_CHAN_NUM; i++) {
--		imx8qxp_ldb_ch = &imx8qxp_ldb->channel[i];
-+		imx8qxp_ldb_ch = imx8qxp_ldb->channel[i];
- 		ldb_ch = &imx8qxp_ldb_ch->base;
- 
- 		if (ldb_ch->is_available) {
-@@ -660,7 +668,7 @@ static int imx8qxp_ldb_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, imx8qxp_ldb);
- 	pm_runtime_enable(dev);
- 
--	ldb_add_bridge_helper(ldb, &imx8qxp_ldb_bridge_funcs);
-+	ldb_add_bridge_helper(ldb);
- 
- 	return 0;
- }
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (5):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  126 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   54 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    8 +-
+ arch/arm/configs/mxs_defconfig                |   14 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    3 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1970 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  782 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  122 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  449 ++++
+ 13 files changed, 3537 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
 
 -- 
-2.49.0
+2.39.5
 
