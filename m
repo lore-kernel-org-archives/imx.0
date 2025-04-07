@@ -1,33 +1,33 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450A921ABDB
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 17:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12F2192E2
+	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 18:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744047662; cv=none; b=pjHPZ59FLIeDlltTLV6nIBjZt6hCFvuu5NROuAqY5NRDwtvGOLcgV2ZSjGH4dmUVATeN/R+1RKrRPTuiGUpZiznAujYi5HfI7OXIq47AxRkb+hTxdm7rlonB5Fhfivdt5iPAMZSVtzjJJuXeM57DpTq6oTTNGHhf2fXjRPvV+NQ=
+	t=1744049205; cv=none; b=SeXEOqbvBv3xtlWpQ/HmrGP5Ikh8dpR2QgZEHciI1lNSwk+LIodhe26eci3JAM0lvvCepndJkmZs8Puwnonkno+x/H1i6zTBTRG6QhO0QIA3xYDhgd37vV68i3EzRbC7vqRFDOWt8IC8ZNNGQCxc2dTx8nGHaKE2RvWtHaO/KRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744047662; c=relaxed/simple;
-	bh=4dpy4CCXBZ160IpiheubjMEcEqckuALRGNKKOE3oDQY=;
+	s=arc-20240116; t=1744049205; c=relaxed/simple;
+	bh=aPHlSmphASyw/e6OtF5BrnhEcXrJ3Tl5hTVdsy/Yibc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jpFK1eGaxzd46sbocIe96h2lnS8t8SOALiy3btoUdZSVwaBNn3NlyUTvGvmTb6Mp6/Ac0Mp16KZAijPxlfFlm7BT6GcJuAZ00qVZF8NvdCn2h9SIi+xap+GaishD4FMuZ0kB3NZrxCW//czbpQEKlSbMkSLT2yeDHtuGh1fRf2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DK9a5CGf; arc=none smtp.client-ip=95.215.58.181
+	 In-Reply-To:Content-Type; b=ZgZkzv4WYTFI5nWzBwBEUP7M76KNBb3OQ4k2sKSFcS+XU1WkpvrVSdXbPQ7ir0UR0p6y7BQ+BrO1b9sQW9/k+y4AR6Ct5teNcm6Bsr16bzXqeiybIFKQ/GXYHZV/LMLch9sXRnnD5aiIGE7stYM7RR5I2qci9sBy3eBNed2joK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kybWyAZ0; arc=none smtp.client-ip=91.218.175.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DK9a5CGf"
-Message-ID: <ed5990bd-e671-4f96-bec8-543de3b48712@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kybWyAZ0"
+Message-ID: <3203955d-b0fa-4ef6-bcec-6d23a5b6441d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744047656;
+	t=1744049190;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=++KpZ5uwY1Janf+N2PmBTtktOp7tWbX3i2J7W2ip/E4=;
-	b=DK9a5CGfgWrjLUaQxeq3ptm/moAts7IV3ci0gsTJzHJivLe+sJaFymatq0QIC6jWTCNwMu
-	Q99N888ii24jACU37tbV8TN2AH/EV9OfsoMU0BFj8NRJZh5cUxFBUwwkPmdN5RROHGw35w
-	0Rl++5YUu0v1A2j5dPo8wVs5LvznUIk=
-Date: Mon, 7 Apr 2025 13:40:45 -0400
+	bh=kFU4PCOFCF2t2dPmfjFQsFfH3+loT9oNKaTNo2jAsrw=;
+	b=kybWyAZ0LNPljlzODiID9MCxmPkOsj3+XZ3NOBA1SJ+GUkEwxi2q4YG6Tqzxu5OztwOoy2
+	4FWNfu+DxWPsP6v4QiY6skK5eZddzEVCNMMTHOBHgUXOXHrueBs+hUmpIpZBJYNh/tQl0M
+	sPWqXv7raQ0Wc9svTCLcg7RV8xLYw7E=
+Date: Mon, 7 Apr 2025 14:06:21 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
-To: Daniel Golle <daniel@makrotopia.org>,
- "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
+To: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
 Cc: Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -73,38 +72,125 @@ References: <20250403181907.1947517-1-sean.anderson@linux.dev>
  <CA+_ehUyAo7fMTe_P0ws_9zrcbLEWVwBXDKbezcKVkvDUUNg0rg@mail.gmail.com>
  <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
  <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
- <Z_QKl-4563l05WB3@makrotopia.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <Z_QKl-4563l05WB3@makrotopia.org>
+In-Reply-To: <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 4/7/25 13:25, Daniel Golle wrote:
-> On Mon, Apr 07, 2025 at 07:21:38PM +0200, Christian Marangi (Ansuel) wrote:
->> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
->> > I agree that a "cells" approach would require this, but
+On 4/7/25 13:21, Christian Marangi (Ansuel) wrote:
+> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
+> <sean.anderson@linux.dev> ha scritto:
+>>
+>> On 4/7/25 12:46, Christian Marangi (Ansuel) wrote:
+>> > Il giorno lun 7 apr 2025 alle ore 18:33 Sean Anderson
+>> > <sean.anderson@linux.dev> ha scritto:
+>> >>
+>> >> On 4/7/25 12:27, Kory Maincent wrote:
+>> >> > On Thu,  3 Apr 2025 14:18:54 -0400
+>> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
+>> >> >
+>> >> >> This series adds support for creating PCSs as devices on a bus with a
+>> >> >> driver (patch 3). As initial users,
+>> >> >>
+>> >> >> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
+>> >> >> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+>> >> >> - The Cadence MACB driver is converted to support external PCSs (namely
+>> >> >>   the Xilinx PCS) (patches 9-10).
+>> >> >>
+>> >> >> The last few patches add device links for pcs-handle to improve boot times,
+>> >> >> and add compatibles for all Lynx PCSs.
+>> >> >>
+>> >> >> Care has been taken to ensure backwards-compatibility. The main source
+>> >> >> of this is that many PCS devices lack compatibles and get detected as
+>> >> >> PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
+>> >> >> the devicetree to add appropriate compatibles.
+>> >> >
+>> >> > I don't dive into your patch series and I don't know if you have heard about it
+>> >> > but Christian Marangi is currently working on fwnode for PCS:
+>> >> > https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com
+>> >> >
+>> >> > Maybe you should sync with him!
+>> >>
+>> >> I saw that series and made some comments. He is CC'd on this one.
+>> >>
+>> >> I think this approach has two advantages:
+>> >>
+>> >> - It completely solves the problem of the PCS being unregistered while the netdev
+>> >>   (or whatever) is up
+>> >> - I have designed the interface to make it easy to convert existing
+>> >>   drivers that may not be able to use the "standard" probing process
+>> >>   (because they have to support other devicetree structures for
+>> >>   backwards-compatibility).
+>> >>
 >> >
->> > - There are no in-tree examples of where this is necessary
->> > - I think this would be easy to add when necessary
+>> > I notice this and it's my fault for taking too long to post v2 of the PCS patch.
+>> > There was also this idea of entering the wrapper hell but I scrapped that early
+>> > as I really feel it's a workaround to the current problem present for
+>> > PCS handling.
+>>
+>> It's no workaround. The fundamental problem is that drivers can become
+>> unbound at any time, and we cannot make consumers drop their references.
+>> Every subsystem must deal with this reality, or suffer from
+>> user-after-free bugs. See [1-3] for discussion of this problem in
+>> relation to PCSs and PHYs, and [4] for more discussion of my approach.
+>>
+>> [1] https://lore.kernel.org/netdev/YV7Kp2k8VvN7J0fY@shell.armlinux.org.uk/
+>> [2] https://lore.kernel.org/netdev/20220816163701.1578850-1-sean.anderson@seco.com/
+>> [3] https://lore.kernel.org/netdev/9747f8ef-66b3-0870-cbc0-c1783896b30d@seco.com/
+>> [3] https://lpc.events/event/17/contributions/1627/
+>>
+>> > And the real problem IMHO is that currently PCS handling is fragile and with too
+>> > many assumptions. With Daniel we also discussed backwards-compatibility.
+>> > (mainly needed for mt7621 and mt7986 (for mediatek side those are the 2
+>> > that slipped in before it was correctly complained that things were
+>> > taking a bad path)
 >> >
->> 
->> There are no in-tree cause only now we are starting to support
->> complex configuration with multiple PCS placed outside the MAC.
->> 
->> I feel it's better to define a standard API for them now before
->> we permit even more MAC driver to implement custom property
->> and have to address tons of workaround for compatibility.
+>> > We feel v2 permits correct support of old implementations.
+>> > The ""legacy"" implementation pose the assumption that PCS is never removed
+>> > (unless the MAC driver is removed)
+>> > That fits v2 where a MAC has to initially provide a list of PCS to
+>> > phylink instance.
+>>
+>> And what happens when the driver is unbound from the device and suddenly
+>> a PCS on that list is free'd memory but is in active use by a netdev?
+>>
 > 
-> Qualcomm's PCS driver will require offering multiple phylink_pcs by a
-> single device/of_node. So while it's true that there is currently no
-> in-tree user for that, that very user is already knocking on our doors.
+> driver bug for not correctly implementing the removal task.
 > 
-> See
-> https://patchwork.kernel.org/project/netdevbpf/list/?series=931658&state=*
+> The approach is remove as provider and call phylink removal phase
+> under rtnl lock.
+> We tested this with unbind, that is actually the main problem we are
+> trying to address
+> and works correctly.
 
-OK, but I still think this is quite easy to add.
+OK, so this is a different approach since your last submission. Please
+CC me on your series.
+
+- Fundamentally this is going to make backwards compatibility very
+  difficult, since your approach cannot work with mac_select_pcs. How
+  are you going to handle the case of MAC-internal PCSs? Are you going
+  to make them create a swnode and bind to it just to create a PCS for
+  e.g. MMIO registers? And how is the MAC supposed to know how to select
+  the PCS? From what I can tell you don't even notify the MAC about
+  which PCS it's using.
+
+  I considered an approach like this, where the phylink would be in the
+  driver's seat (so to speak), but I decided not to persue it due to
+  the problems listed above. A lot of PCSs are tightly-integrated with
+  their MACs, so it does not make sense to introduce this little
+  coupling. I think it is better to let the MAC select the PCS e.g.
+  based on the phy interface. This tends to be a few lines of code for
+  the MAC and saves so much complexity in phylink.
+
+  I think you should try doing the macb and lynx conversions for your
+  approach. It will make the above problems obvious.
+
+- Your approach is very intrusive. There are lots of changes all over
+  phylink across several patches and it is hard to verify all the
+  assumptions. Whereas a wrapper keeps everything contained to one file,
+  and most of the functions can be evaluated independently.
 
 --Sean
