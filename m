@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0951922B597;
-	Mon,  7 Apr 2025 23:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95736225419;
+	Mon,  7 Apr 2025 23:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744069695; cv=none; b=IJSQxx3d450TmlmDgmc6HKi3bfbbv+ws30Ql3ZUCgXAP+oQDOIfYHgU0nBQTHiYLuBz3neOAcvUkKdxd3tBU7GPNFceH8O5g6KInB1Pxog4I8P+dpZWhr6HCxAyf+e6fxBVjUgUhpysz/qGvRNehrnLf5wKmwynQGJbcNE4SJmY=
+	t=1744069834; cv=none; b=QjXenET8smcAVcueH9VvKLOGXwSPrnT/EXWoiUj9XyAFJ2cwGHvyRFsFXI3WCHOpBlVg0tDGeCpxR/cfAtODw25Vugj7ueT7dIR+vvAfLFeFXeqLgp/2SYRMv9CzsNsIK18zczvzs1KvBmBvUEWGjwS3RxH9Z7sDR0Ec8v3DB9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744069695; c=relaxed/simple;
-	bh=61FySSGCFmYcaDfbgWfsvj/rq0z+27TihchOLygJZyk=;
+	s=arc-20240116; t=1744069834; c=relaxed/simple;
+	bh=C91TU6EiUXUNu4pLkJLVbWTW2q/Tk5LKELt/9k63UA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o0szJ4Pv1iFlUOrR6ycD0ugm6bHWP1VwAB4veF+VpX40SH+z53xJEcSrGjPGZovet2XxVx3xfRYumixSirI3PT0sPE4mX4nsrCAj7CLGIArYrFXFvUrqaVKPgXZ2E6Swbw2TbRXXUpWTE/ov7l/KekPGlvEEuyFnzMaQboPk0kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8Z86gJo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aHfSN6OMtFIRt8i95aSKWUm8fPnzE0zZsH8LsQ5mMsdTFjdrD17WEssRPBYpWGDgRQkb0q0oMw76qgXqLaEhj4VsacPnIgJIW5jHR01NN+cTk0oJMXfX1rYaJU+zHS1p0JMmzkzj0/Gifu+A40sZE0m44ca4sG5cYOrp2iG/IXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdTVhS5Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8Z86gJo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2EAC4CEDD;
-	Mon,  7 Apr 2025 23:48:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdTVhS5Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1E8C4CEDD;
+	Mon,  7 Apr 2025 23:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744069694;
-	bh=61FySSGCFmYcaDfbgWfsvj/rq0z+27TihchOLygJZyk=;
+	s=k20201202; t=1744069834;
+	bh=C91TU6EiUXUNu4pLkJLVbWTW2q/Tk5LKELt/9k63UA4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r8Z86gJojkJUri5K0AWxvKlU4zjP2gmuFhQCGbJJmxFyihKwvvFO2IAaHOb/0bNdE
-	 kfHzhAJ1AWCxi/DIZyppPOBls8mrv/D68nZDU041XdNOBYZnH4wmyMQ7jLJY1vyA37
-	 iamK6ikTJoTmU1a5w7jxK60NIJIgKZzT4rvKqRGyRUoEKkQLLSEG5k8rF/SYG2P04Q
-	 VnooibXuzPc7+YQhHahs+2glJGfTyZyaPiah8itex2xNcm7DkaBdT4sQJxv4SMf1L7
-	 FyQNSiSz/m0l31nbQaAstYp5b1G02XyZmcYcsa9b7uJU/RHjVyYV+BcO/dJVdlxcEn
-	 6p1n/baAFJIaA==
-Date: Mon, 7 Apr 2025 18:48:13 -0500
+	b=rdTVhS5ZF/q6VWszeFbbLbHPed6Ap/IcFPv6CxsDSjmCGcUNsMcss9fMKz35lKM4r
+	 gUYc8CUOwsFMhpig1Pib33mNQ489qn1dxjZxElN87LCE/M0k5SjHwWevgNGtIN08kW
+	 OL/s1N7bZNiBZaI4T83DibO+THYU/FHWHoOc1avJ7EOcqBnLTxjmTgNDc0DF414qP5
+	 aFU3+h2P05ujvoagU9cgbYofsebjs52hkmGYDvS6QBgeDY2MfuU2RAfZbcIFwm+b5O
+	 CgHcrdXvHIKYSNGrotA7bG7FGZbgln3w7Rxlo7f3ZI+PaojoncZyjuihh/dTYfqSJX
+	 wDRsljzjVTS4g==
+Date: Mon, 7 Apr 2025 18:50:32 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: jernej.skrabec@gmail.com, krzk@kernel.org, agx@sigxcpu.org,
-	linux-kernel@vger.kernel.org, robert.chiras@nxp.com,
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de, devicetree@vger.kernel.org, mripard@kernel.org,
-	andrzej.hajda@intel.com, jonas@kwiboo.se,
-	Laurent.pinchart@ideasonboard.com, neil.armstrong@linaro.org,
-	rfoss@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	airlied@gmail.com
-Subject: Re: [PATCH RESEND V2 1/1] dt-bindings: display: nwl-dsi: Allow
- 'data-lanes' property for port@1
-Message-ID: <174406969099.171841.8161329634639318848.robh@kernel.org>
-References: <20250407150442.2778299-1-Frank.Li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Joy Zou <joy.zou@nxp.com>, dmaengine@vger.kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Vinod Koul <vkoul@kernel.org>,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: dma: fsl-edma: increase maxItems of
+ interrupts and interrupt-names
+Message-ID: <174406980425.184285.7437048033861841180.robh@kernel.org>
+References: <20250407-edma_err-v2-0-9d7e5b77fcc4@nxp.com>
+ <20250407-edma_err-v2-1-9d7e5b77fcc4@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,42 +51,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250407150442.2778299-1-Frank.Li@nxp.com>
+In-Reply-To: <20250407-edma_err-v2-1-9d7e5b77fcc4@nxp.com>
 
 
-On Mon, 07 Apr 2025 11:04:42 -0400, Frank Li wrote:
-> This controller support scalable data lanes from 1 to 4. Add the
-> 'data-lanes' property to configure the number of MIPI display panel lanes
-> selected for boards.
+On Mon, 07 Apr 2025 12:46:35 -0400, Frank Li wrote:
+> From: Joy Zou <joy.zou@nxp.com>
 > 
-> Change $ref of port@1 from 'port' to 'port-base' and add 'endpoint'
-> property referencing video-interfaces.yaml. Allow 'data-lanes' values
-> 1, 2, 3, and 4 for port@1.
+> The edma controller support optional error interrupt, so update interrupts
+> and interrupt-names's maxItems.
 > 
-> Fix below CHECK_DTB warnings:
-> arch/arm64/boot/dts/freescale/imx8mq-tqma8mq-mba8mx-lvds-tm070jvhg33.dtb:
->  dsi@30a00000: ports:port@1:endpoint: Unevaluated properties are not allowed ('data-lanes' was unexpected)
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Missed v6.15 merge windows.
-> 
-> This one elimiate last two lines warning under arm64: dts/freescale
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> Resend V2: include Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> tags.
-> 
-> Original v2 thread:
-> https://lore.kernel.org/imx/c5y6mocsd77wj5lah6n47vtteqc5ekcrbdod6z5vtcnxhleudw@kfhpyoiylqqp/
-> 
-> Change from v1 to v2
-> - Add the reason why need 'data-lanes' property in commit message.
-> ---
->  .../bindings/display/bridge/nwl-dsi.yaml       | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/dma/fsl,edma.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 
-Applied, thanks!
+
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
+
+If a tag was not added on purpose, please state why and what changed.
+
+Missing tags:
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
+
 
