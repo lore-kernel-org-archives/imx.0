@@ -1,196 +1,136 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12F2192E2
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 18:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F512561C0;
+	Mon,  7 Apr 2025 18:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049205; cv=none; b=SeXEOqbvBv3xtlWpQ/HmrGP5Ikh8dpR2QgZEHciI1lNSwk+LIodhe26eci3JAM0lvvCepndJkmZs8Puwnonkno+x/H1i6zTBTRG6QhO0QIA3xYDhgd37vV68i3EzRbC7vqRFDOWt8IC8ZNNGQCxc2dTx8nGHaKE2RvWtHaO/KRg=
+	t=1744049496; cv=none; b=ceoch/5Cltqfa4RRfJD7Y4OBtM8pzCthPpMXncVjYsOVhN1DALKTPmdplBYI7iAY9Je4+kQH5QvQxFWkmgMj0M/NSDDHtRja0Qj/uIhVgAd0jdoAVppXLTykBhd8vMcLyH+wIOJ/jiJLw3rIHx5gXRCyOI6Unqam8XbbYLu7/Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049205; c=relaxed/simple;
-	bh=aPHlSmphASyw/e6OtF5BrnhEcXrJ3Tl5hTVdsy/Yibc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZgZkzv4WYTFI5nWzBwBEUP7M76KNBb3OQ4k2sKSFcS+XU1WkpvrVSdXbPQ7ir0UR0p6y7BQ+BrO1b9sQW9/k+y4AR6Ct5teNcm6Bsr16bzXqeiybIFKQ/GXYHZV/LMLch9sXRnnD5aiIGE7stYM7RR5I2qci9sBy3eBNed2joK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kybWyAZ0; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1744049496; c=relaxed/simple;
+	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KryaBK67vVh49PDgkLxDStll9DpgAk18DaFhW7pJMKDKamOHVNh/B0eqgrtpP7+CwRC1bbuSf1bEZ6jEGA1NvKsejEZtRwbb3Bb0zgRGcaA/mUcERxkZpKPATLD8KtrHvrzOAbLveenjAWDJI73uUht4hKPaSLVtTQbrQDXiqH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/f751f+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kybWyAZ0"
-Message-ID: <3203955d-b0fa-4ef6-bcec-6d23a5b6441d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744049190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kFU4PCOFCF2t2dPmfjFQsFfH3+loT9oNKaTNo2jAsrw=;
-	b=kybWyAZ0LNPljlzODiID9MCxmPkOsj3+XZ3NOBA1SJ+GUkEwxi2q4YG6Tqzxu5OztwOoy2
-	4FWNfu+DxWPsP6v4QiY6skK5eZddzEVCNMMTHOBHgUXOXHrueBs+hUmpIpZBJYNh/tQl0M
-	sPWqXv7raQ0Wc9svTCLcg7RV8xLYw7E=
-Date: Mon, 7 Apr 2025 14:06:21 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/f751f+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF86C4CEDD;
+	Mon,  7 Apr 2025 18:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744049495;
+	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=C/f751f+6K97vUwzUAzl1v8XnRuu+Zc6H9nXT9uy4S076rItQngMo80xI5gk/UFa7
+	 m6FGmuwJuk3kl9ErVCT79dLTBZ4R2932VMW6Zo7Nd4A/aH3AfPKQ8km7Zo6bzKJ3Av
+	 WjkUMV85WS1o/D77CNzrdVSiugLS9tvRwvAlrsOfoCJS/zLyXz9DA+gO0WjeWcPcGI
+	 yGAz94RgG0MTslBNA23+4wWPfhAEN4kWxB7kFjRPG6GpAQ0KUlcxG67/Xk4OcS5VEI
+	 OMVNz24N9QGcALevUVHAIkXDn33mAdrq+fTyCk5fHCBnhsPa0cdQ8h9WNQAGbgvsJO
+	 Tppb4Xjt1GRTw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>,
+	miquel.raynal@bootlin.com,
+	linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 16/31] i3c: master: svc: Add support for Nuvoton npcm845 i3c
+Date: Mon,  7 Apr 2025 14:10:32 -0400
+Message-Id: <20250407181054.3177479-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250407181054.3177479-1-sashal@kernel.org>
+References: <20250407181054.3177479-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
-To: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Cc: Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- upstream@airoha.com, Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Li Yang <leoyang.li@nxp.com>, Madalin Bucur <madalin.bucur@nxp.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <michal.simek@amd.com>,
- Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, Shawn Guo <shawnguo@kernel.org>,
- UNGLinuxDriver@microchip.com, Vladimir Oltean <vladimir.oltean@nxp.com>,
- Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linuxppc-dev@lists.ozlabs.org
-References: <20250403181907.1947517-1-sean.anderson@linux.dev>
- <20250407182738.498d96b0@kmaincent-XPS-13-7390>
- <720b6db8-49c5-47e7-98da-f044fc38fc1a@linux.dev>
- <CA+_ehUyAo7fMTe_P0ws_9zrcbLEWVwBXDKbezcKVkvDUUNg0rg@mail.gmail.com>
- <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
- <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.1
+Content-Transfer-Encoding: 8bit
 
-On 4/7/25 13:21, Christian Marangi (Ansuel) wrote:
-> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
-> <sean.anderson@linux.dev> ha scritto:
->>
->> On 4/7/25 12:46, Christian Marangi (Ansuel) wrote:
->> > Il giorno lun 7 apr 2025 alle ore 18:33 Sean Anderson
->> > <sean.anderson@linux.dev> ha scritto:
->> >>
->> >> On 4/7/25 12:27, Kory Maincent wrote:
->> >> > On Thu,  3 Apr 2025 14:18:54 -0400
->> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
->> >> >
->> >> >> This series adds support for creating PCSs as devices on a bus with a
->> >> >> driver (patch 3). As initial users,
->> >> >>
->> >> >> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
->> >> >> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
->> >> >> - The Cadence MACB driver is converted to support external PCSs (namely
->> >> >>   the Xilinx PCS) (patches 9-10).
->> >> >>
->> >> >> The last few patches add device links for pcs-handle to improve boot times,
->> >> >> and add compatibles for all Lynx PCSs.
->> >> >>
->> >> >> Care has been taken to ensure backwards-compatibility. The main source
->> >> >> of this is that many PCS devices lack compatibles and get detected as
->> >> >> PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
->> >> >> the devicetree to add appropriate compatibles.
->> >> >
->> >> > I don't dive into your patch series and I don't know if you have heard about it
->> >> > but Christian Marangi is currently working on fwnode for PCS:
->> >> > https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com
->> >> >
->> >> > Maybe you should sync with him!
->> >>
->> >> I saw that series and made some comments. He is CC'd on this one.
->> >>
->> >> I think this approach has two advantages:
->> >>
->> >> - It completely solves the problem of the PCS being unregistered while the netdev
->> >>   (or whatever) is up
->> >> - I have designed the interface to make it easy to convert existing
->> >>   drivers that may not be able to use the "standard" probing process
->> >>   (because they have to support other devicetree structures for
->> >>   backwards-compatibility).
->> >>
->> >
->> > I notice this and it's my fault for taking too long to post v2 of the PCS patch.
->> > There was also this idea of entering the wrapper hell but I scrapped that early
->> > as I really feel it's a workaround to the current problem present for
->> > PCS handling.
->>
->> It's no workaround. The fundamental problem is that drivers can become
->> unbound at any time, and we cannot make consumers drop their references.
->> Every subsystem must deal with this reality, or suffer from
->> user-after-free bugs. See [1-3] for discussion of this problem in
->> relation to PCSs and PHYs, and [4] for more discussion of my approach.
->>
->> [1] https://lore.kernel.org/netdev/YV7Kp2k8VvN7J0fY@shell.armlinux.org.uk/
->> [2] https://lore.kernel.org/netdev/20220816163701.1578850-1-sean.anderson@seco.com/
->> [3] https://lore.kernel.org/netdev/9747f8ef-66b3-0870-cbc0-c1783896b30d@seco.com/
->> [3] https://lpc.events/event/17/contributions/1627/
->>
->> > And the real problem IMHO is that currently PCS handling is fragile and with too
->> > many assumptions. With Daniel we also discussed backwards-compatibility.
->> > (mainly needed for mt7621 and mt7986 (for mediatek side those are the 2
->> > that slipped in before it was correctly complained that things were
->> > taking a bad path)
->> >
->> > We feel v2 permits correct support of old implementations.
->> > The ""legacy"" implementation pose the assumption that PCS is never removed
->> > (unless the MAC driver is removed)
->> > That fits v2 where a MAC has to initially provide a list of PCS to
->> > phylink instance.
->>
->> And what happens when the driver is unbound from the device and suddenly
->> a PCS on that list is free'd memory but is in active use by a netdev?
->>
-> 
-> driver bug for not correctly implementing the removal task.
-> 
-> The approach is remove as provider and call phylink removal phase
-> under rtnl lock.
-> We tested this with unbind, that is actually the main problem we are
-> trying to address
-> and works correctly.
+From: Stanley Chu <yschu@nuvoton.com>
 
-OK, so this is a different approach since your last submission. Please
-CC me on your series.
+[ Upstream commit 98d87600a04e42282797631aa6b98dd43999e274 ]
 
-- Fundamentally this is going to make backwards compatibility very
-  difficult, since your approach cannot work with mac_select_pcs. How
-  are you going to handle the case of MAC-internal PCSs? Are you going
-  to make them create a swnode and bind to it just to create a PCS for
-  e.g. MMIO registers? And how is the MAC supposed to know how to select
-  the PCS? From what I can tell you don't even notify the MAC about
-  which PCS it's using.
+Nuvoton npcm845 SoC uses an older IP version, which has specific
+hardware issues that need to be addressed with a different compatible
+string.
 
-  I considered an approach like this, where the phylink would be in the
-  driver's seat (so to speak), but I decided not to persue it due to
-  the problems listed above. A lot of PCSs are tightly-integrated with
-  their MACs, so it does not make sense to introduce this little
-  coupling. I think it is better to let the MAC select the PCS e.g.
-  based on the phy interface. This tends to be a few lines of code for
-  the MAC and saves so much complexity in phylink.
+Add driver data for different compatible strings to define platform
+specific quirks.
+Add compatible string for npcm845 to define its own driver data.
 
-  I think you should try doing the macb and lynx conversions for your
-  approach. It will make the above problems obvious.
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250306075429.2265183-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/i3c/master/svc-i3c-master.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-- Your approach is very intrusive. There are lots of changes all over
-  phylink across several patches and it is hard to verify all the
-  assumptions. Whereas a wrapper keeps everything contained to one file,
-  and most of the functions can be evaluated independently.
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index d6057d8c7dec4..40269b692aa87 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
+ 	u32 mdynaddr;
+ };
+ 
++struct svc_i3c_drvdata {
++	u32 quirks;
++};
++
+ /**
+  * struct svc_i3c_master - Silvaco I3C Master structure
+  * @base: I3C master controller
+@@ -183,6 +187,7 @@ struct svc_i3c_regs_save {
+  * @ibi.tbq_slot: To be queued IBI slot
+  * @ibi.lock: IBI lock
+  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
++ * @drvdata: Driver data
+  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
+  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
+  */
+@@ -214,6 +219,7 @@ struct svc_i3c_master {
+ 		spinlock_t lock;
+ 	} ibi;
+ 	struct mutex lock;
++	const struct svc_i3c_drvdata *drvdata;
+ 	u32 enabled_events;
+ 	u32 mctrl_config;
+ };
+@@ -1817,6 +1823,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
+ 
++	master->drvdata = of_device_get_match_data(dev);
++	if (!master->drvdata)
++		return -EINVAL;
++
+ 	master->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(master->regs))
+ 		return PTR_ERR(master->regs);
+@@ -1958,8 +1968,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
+ 			   svc_i3c_runtime_resume, NULL)
+ };
+ 
++static const struct svc_i3c_drvdata npcm845_drvdata = {};
++
++static const struct svc_i3c_drvdata svc_default_drvdata = {};
++
+ static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
+-	{ .compatible = "silvaco,i3c-master-v1"},
++	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
++	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
+-- 
+2.39.5
 
---Sean
