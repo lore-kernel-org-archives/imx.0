@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B0E25D1F7;
-	Mon,  7 Apr 2025 18:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0A3222595;
+	Mon,  7 Apr 2025 18:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049570; cv=none; b=sz+SxaBY/QsJtpdAbtNsdJ52iwa6Pzzn7pvCwWkjjLhY0FpA+wozp+Um7JLAn6JIQDyi0Ewe6/u2Alxjl/OuYNoNDnOt3Euwtp9HYKQyrLOG1X+Yo7QNikDE8LL1fASEwG+nLHNs8E0QHR7NLIDJ6S7XPQit44wZN8XHqv+XGYk=
+	t=1744049631; cv=none; b=n2wID7E6JawIwBqM7wQud+e/1OBBF6Xv32rAO5k8LJoDfMPpulEH8dDASGuTdEDJgq5f809HkkdtOt+453fQVQg40u4AOmTaiCA9kBNyOCnNErIR+uTOkY+CO0JTsW8R2JGE1ln/lozXsl43rDWW8jBcjXZmruGYgIff7YI25vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049570; c=relaxed/simple;
-	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	s=arc-20240116; t=1744049631; c=relaxed/simple;
+	bh=nlsl4MmX2aSKvBsnuu0xxL0InBNhhOSW42914oQmX+I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UZdynsM4d7rt3F+xZn5CkzICL7cFGdA+RxogkF2uAgqZ4skMHiz8bDWG9tLk+j1hNJDjW3q1LBQNjwqeOG1zlcUMdG11PhmOTVRAhSUDR6zcw2LmrOWhguIW1P9RTyWr2uPTSwW0am9kmhlhcPvwHX4fMO8Tg1Nx1dM/eThHmQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LludQa5x; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=X6uodgn9msekJ+zY6J/84sxXcCj18G8TuzSpFIG5Y6hmYzkyT0Wg7oOyy9dUjdXQynfVFZcsMdp9gq1vYk5K4dNl5bRqTakfCnzyXzIzKmvonQ0/kdQNseohuPcjZEegIkA2YxD5WHNP+DyJPt7oW7r2PNp5d0gGfTE4ojOfDpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sje/SYKo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LludQa5x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDDDC4CEDD;
-	Mon,  7 Apr 2025 18:12:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sje/SYKo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE14C4CEDD;
+	Mon,  7 Apr 2025 18:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049570;
-	bh=2t8t0F9zeWJL6ngosXiE6XTK7TFO9G0uejD+Xa30WN0=;
+	s=k20201202; t=1744049631;
+	bh=nlsl4MmX2aSKvBsnuu0xxL0InBNhhOSW42914oQmX+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LludQa5xe6NA9ZDizMkvRzBPNFFs6JcTIG4S7VomaGAABy0yPQ+GIbFT8NoqCoj5R
-	 86beydL4csr8vN6Ab5366M9Am7puetlWz6MXbs4hWP5nQ10GHSmVgLczh4E9BuetbG
-	 fmzvmEe2G617+c4ccDoNAWrOWGq72fSG8CrsvBWEFWxHahA+neRa2MNQBXphTAkrOo
-	 FVo/KzY4QjLHCDe/7QSJyIDXXfZCJVcofGQhaA4H7yD+znEBHV4UB9emPqB7H1KCCp
-	 FQZBLABlbGXp5xzTlgAB6R38BzN3pN+cl66B88sIijF4jJrW2RNR4fRH+g1SrgozRk
-	 hoSHwub30mx3A==
+	b=Sje/SYKoDjkV/Ys4tRIBAQg72jpoqNgjVNAP4hL6lmytQTrFqLqIm9ygYdHpXtadD
+	 +cby1DAGZRLvyAJHmY+6Ki7ObGcQNsxb1Epr/MxTpMXt2er1UnTysq8OBStFska1FS
+	 kc9YJlVq6BWILSd9UdMhf/Mvd55PvJP2ZZ8kCWzDxZiz04B1PWoIUVoSZp5LghFsXy
+	 B6yWb4exYKbUVRPQ003qqD2H0zeV4Yu9NXauyaytmSmmP39GcPxMk7Z4jSMzkqo/k0
+	 D+UZTcelJevCGWEN0EUbtDW59x3lnBctO0qDQdRNDaSd6rv8TSYQo4+3PyLOWYB65H
+	 uOVBAaltHH4Wg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,12 +36,12 @@ Cc: Stanley Chu <yschu@nuvoton.com>,
 	miquel.raynal@bootlin.com,
 	linux-i3c@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.13 13/28] i3c: master: svc: Add support for Nuvoton npcm845 i3c
-Date: Mon,  7 Apr 2025 14:12:03 -0400
-Message-Id: <20250407181224.3180941-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 10/22] i3c: master: svc: Add support for Nuvoton npcm845 i3c
+Date: Mon,  7 Apr 2025 14:13:20 -0400
+Message-Id: <20250407181333.3182622-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250407181224.3180941-1-sashal@kernel.org>
-References: <20250407181224.3180941-1-sashal@kernel.org>
+In-Reply-To: <20250407181333.3182622-1-sashal@kernel.org>
+References: <20250407181333.3182622-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.10
+X-stable-base: Linux 6.12.22
 Content-Transfer-Encoding: 8bit
 
 From: Stanley Chu <yschu@nuvoton.com>
@@ -75,7 +75,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index d6057d8c7dec4..40269b692aa87 100644
+index 565af3759813b..1d2dad45db87b 100644
 --- a/drivers/i3c/master/svc-i3c-master.c
 +++ b/drivers/i3c/master/svc-i3c-master.c
 @@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
@@ -105,7 +105,7 @@ index d6057d8c7dec4..40269b692aa87 100644
  	u32 enabled_events;
  	u32 mctrl_config;
  };
-@@ -1817,6 +1823,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+@@ -1768,6 +1774,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
  	if (!master)
  		return -ENOMEM;
  
@@ -116,7 +116,7 @@ index d6057d8c7dec4..40269b692aa87 100644
  	master->regs = devm_platform_ioremap_resource(pdev, 0);
  	if (IS_ERR(master->regs))
  		return PTR_ERR(master->regs);
-@@ -1958,8 +1968,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
+@@ -1909,8 +1919,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
  			   svc_i3c_runtime_resume, NULL)
  };
  
