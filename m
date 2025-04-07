@@ -1,109 +1,146 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1213A926
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 13:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43630146593;
+	Mon,  7 Apr 2025 13:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744031005; cv=none; b=uE0yn+reA3YeS18xxCVZ3Yxg8pdgTrtoFkLJUaON32F/ZDOgUz2C0byMi9TC2oJf4JPjkCGIvtHnCKB3n+ngqPl9q1ey2sCqEvNTGOB3V7evuGUoEWZKdKAtkqeNVblCL/rgmyWd0iElNd91cfyKm/cJczGJsxZBtEsNyr1n/Ng=
+	t=1744033337; cv=none; b=pdZRB2808zFuvltgKMn1/jGYh4VkNrcKj7EJAQPuGUTJUyivrbKxLVneP1VYde5/rVllWN3buNDUA1ptEXi8inebSA7W4JHEFxdxm+n7S0LtBuu1CuC9+UroYq54TRsvJQpF77z1eqCCgoDGGyLnZgAJxLPMjTYQ/iXA6BRa9KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744031005; c=relaxed/simple;
-	bh=RnFytON1oEiOwl7kLssTjnWwvt6YbDHMajfNtWPwXGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TtO1w7RPDxxLxwxNkCZP3W1duXNJcVMMrOgkoz8W9k5hmaNkRhDG6K+tlpvSmmnPmTwF4LbUjFhWjEbtbSy8YgX5ZLRHOAOijy6M9kUo9K+tV7DSB0PyfbGPEgIvykBYWpMDrHVdtfAUMMZOuHGrLOrCt+n8aPsPbMOIHi4Hew4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QaKULHF2; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1744033337; c=relaxed/simple;
+	bh=OChTPvbOHKXpnQ6w50WNp/bYpibG4OEAg9afouZx3SQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BiAmpxxFhbd2MnZv+mpcOsCF4r8iw5W9WUN5Dh9rDW+PQc6R/qurcH1HAplTeeZdovw1VXun5ZkbI4Kcr+jpenBbszfAnlSkZvuC2YVznO7VvxleSsVrz8qoKwnZ1OfN6dH0iIlP7zVrU2bAgobiEvXb/L3T6ZXFQWx84hkERXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IMMohk2u; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QaKULHF2"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 154B7236;
-	Mon,  7 Apr 2025 15:01:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1744030885;
-	bh=RnFytON1oEiOwl7kLssTjnWwvt6YbDHMajfNtWPwXGw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QaKULHF2Ddzs5ZgvY6rIEiizhuv8sBkbees4KB+AnVd2imw1tB6Wf/dE5AwOb7MzZ
-	 XjrMOK/ADmVaXiB4tJH3IbDLzlYlg8ucg3OOjy+wrzeyPZBRT9JmNJiEwSS4WEEMYW
-	 IA8l6aciwm1JP5orhPx5BdZdOf2YohHZkdohaGLM=
-Date: Mon, 7 Apr 2025 16:02:57 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: Need Help Enabling HDMI on Debix Model A
-Message-ID: <20250407130257.GD3924@pendragon.ideasonboard.com>
-References: <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IMMohk2u"
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 537Dfndh934145
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Apr 2025 08:41:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744033309;
+	bh=P4I/pxj6ciOAfSgArhJmnl0xdOFa83L6gzoY+P6C+iM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=IMMohk2u3wiR6fvLuezX71e9of8d79SGM/5R+5VoQVwqu8aEV8B3zFzs2KZ0e3l9A
+	 Gdt2wVepxeMWF7bFnM04l6zESyT4HIfWy0Y9E/zneEUMksY1PTfb2lRz5W4pVPKuTe
+	 x8neLtgPraeoaDIgKxbX0BLm/Rb8VebiTXycnsNI=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 537DfnZq077164
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 7 Apr 2025 08:41:49 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 7
+ Apr 2025 08:41:48 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 7 Apr 2025 08:41:48 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 537DfmfQ070173;
+	Mon, 7 Apr 2025 08:41:48 -0500
+Date: Mon, 7 Apr 2025 08:41:48 -0500
+From: Nishanth Menon <nm@ti.com>
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+CC: <vigneshr@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
+        <jai.luthra@linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <u-kumar1@ti.com>
+Subject: Re: [PATCH 1/5] arm64: dts: ti: j721e-sk: Add DT nodes for power
+ regulators
+Message-ID: <20250407134148.jk43mzr5iyk4htyy@unplanned>
+References: <20250401114053.229534-1-y-abhilashchandra@ti.com>
+ <20250401114053.229534-2-y-abhilashchandra@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+In-Reply-To: <20250401114053.229534-2-y-abhilashchandra@ti.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Tarang,
+On 17:10-20250401, Yemike Abhilash Chandra wrote:
+> Add device tree nodes for two power regulators on the J721E SK board.
+> vsys_5v0: A fixed regulator representing the 5V supply output from the
+> LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+> 
+> J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>  arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 31 ++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> index 440ef57be294..4965957e6545 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> @@ -184,6 +184,17 @@ vsys_3v3: fixedregulator-vsys3v3 {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	vsys_5v0: fixedregulator-vsys5v0 {
+> +		/* Output of LM61460 */
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vsys_5v0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vusb_main>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+>  	vdd_mmc1: fixedregulator-sd {
+>  		compatible = "regulator-fixed";
+>  		pinctrl-names = "default";
+> @@ -211,6 +222,20 @@ vdd_sd_dv_alt: gpio-regulator-tps659411 {
+>  			 <3300000 0x1>;
+>  	};
+>  
+> +	vdd_sd_dv: gpio-regulator-TLV71033 {
 
-On Mon, Apr 07, 2025 at 11:10:23AM +0000, Tarang Raval wrote:
-> Hi Laurent,
-> 
-> I’m trying to bring up HDMI on the Debix Model A board using the
-> mainline kernel, but I’m currently facing issues.
-> 
-> I saw that you tested the patch for HDMI support on this board in
-> mainline, so I am hoping you could help me figure out what might be
-> missing.
-> 
-> To clarify — I'm using the prebuilt image provided by Debix, but I replaced
-> the kernel image and the device tree (DTS) file in the /boot directory with
-> ones built from the mainline kernel.
-> 
-> I’ve enabled the following configurations in the kernel:
-> CONFIG_DRM_DISPLAY_CONNECTOR=y
-> CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=y
-> CONFIG_DRM_IMX8MP_HDMI_PVI=y
-> CONFIG_DRM_IMX_LCDIF=y
-> CONFIG_PHY_FSL_SAMSUNG_HDMI_PHY=y
-> 
-> When I boot the board, I see the following HDMI/DRM related logs:
-> debix@imx8mp-debix:~$ dmesg | grep -iE "drm|hdmi"
-> [    0.121979] /soc@0/bus@32c00000/display-bridge@32fc4000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
-> [    0.122164] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/display-bridge@32fc4000
-> [    0.127417] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /hdmi-connector
-> [    0.127608] /hdmi-connector: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
-> [    1.947962] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (SAMSUNG HDMI TX PHY)
-> [    1.949220] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver
-> [    1.956365] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-controller on minor 0
-> [    2.016601] imx-lcdif 32fc6000.display-controller: [drm] fb0: imx-lcdifdrmfb frame buffer device
-> [    8.380915] systemd[1]: Starting Load Kernel Module drm...
-> 
-> 
-> I also checked that the display's modeline is recognized under sysfs :
-> 
-> root@imx8mp-debix:~# ls /sys/class/drm/card0-HDMI-A-1/
-> connector_id  dpms          modes         subsystem/   
-> ddc/          edid          power/        uevent       
-> device/       enabled       status       
-> 
-> However, there is still no HDMI output on the display. Instead,
-> I only see a white blinking cursor on the screen.. I'm not sure
-> what I'm missing.
+Where is this used?
 
-The white blinking cursor means the display is working from the kernel
-point of view. What are you expecting, are you running an X server or
-Wayland compositor ?
-
-> Could you please help me out or point me in the right direction?
+> +		compatible = "regulator-gpio";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&vdd_sd_dv_pins_default>;
+> +		regulator-name = "tlv71033";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-boot-on;
+> +		vin-supply = <&vsys_5v0>;
+> +		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
+> +		states = <1800000 0x0>,
+> +			 <3300000 0x1>;
+> +	};
+> +
+>  	transceiver1: can-phy1 {
+>  		compatible = "ti,tcan1042";
+>  		#phy-cells = <0>;
+> @@ -613,6 +638,12 @@ J721E_WKUP_IOPAD(0xd4, PIN_OUTPUT, 7) /* (G26) WKUP_GPIO0_9 */
+>  		>;
+>  	};
+>  
+> +	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+> +		pinctrl-single,pins = <
+> +			J721E_IOPAD(0x1dc, PIN_INPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+> +		>;
+> +	};
+> +
+>  	wkup_uart0_pins_default: wkup-uart0-default-pins {
+>  		pinctrl-single,pins = <
+>  			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
+> -- 
+> 2.34.1
 > 
-> Thank you for your time.
-> 
-> Best Regards,
-> Tarang
 
 -- 
 Regards,
-
-Laurent Pinchart
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
