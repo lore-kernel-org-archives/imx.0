@@ -1,242 +1,305 @@
-Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazon11020095.outbound.protection.outlook.com [52.101.227.95])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9F719DF44
-	for <imx@lists.linux.dev>; Mon,  7 Apr 2025 14:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.227.95
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744034801; cv=fail; b=gsVKJDld5Sk3k+9532/il1XdFt7j0Ig2gHz7oeurUMjnt/sgT+//q8WDMaMKxIxp5HFxDibjFjjHh0C5TC2WWibQU41n8sQFOlu3ZuRCIAajtfAQoQ1F+ThIORP/Me7qUibCZwt5Uw4dRuJ4QO2vdwHw98WM5SFgIoHakH3NIFo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744034801; c=relaxed/simple;
-	bh=u3QrI7uzPdWQttr1rK3K0jR2sAzqjyaYBGx6y/fKmio=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LKXGqXI/ehF+8qkfpmDFJOn31asrsFU06483S6GnLcstiJbvUP8+YPzqJPP3WPEPsOFxAhA7voP9cQGDSFd55meYBd3B5r4HeHDfy6xtKlX0QPe2mI6toehn7aAstyGNVaEv7IFCsLmCg6mcKalwKLzAEAonfREq8RYc1sNQap0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=52.101.227.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ws1tzb/TuN2cIa2/YRYHCjrC2JSIrjwIuX3lPIPu7S1OJmGqWefJHGeTrsIGs84VCsHNECTV4snYmiGZiUkIYxO7bC5Zsovoz9v+a1uDuokQ7H7ZSu2Fe8RgTlXwVB2JPrq5Wf1X8/JGlE82PVWeX1Wx8sLW/r1ZIu+VgvQ5f1oz3va0/77NlgaVwAR9XqFkaHAfULv4K1dPNxtlIT1wHCAkBbACeZz5gKqoBDfx0wMF7JSVTZayQfRtbdLNw9D3B39kgX04S9w4QhkytxjfUIJwKmLoAWOz87+x1/1kGyZU0i1dcNxJek09GB7pzrJL53+Yw8KL55/FAinanS9Skw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u3QrI7uzPdWQttr1rK3K0jR2sAzqjyaYBGx6y/fKmio=;
- b=yPFfU3L7A5OiC5GQ837zYlpOa7ermqQPV082xrWwDk/lNJWrI4b8vXBpbvpn42fyvram7if413P6s9Jy9zdq9COaYlrC9B0YHG7vtdNJ/P2r14IX0e0+fVBN2oimucXl8ScLxOOSTMfIVnCgrjTHOuucNUH04/q0GVk7pX1Ehcxa/psvHSIIDgw/Q2WllQeaOZre1dzvBvw/9AmzXGu0Jib6wEUv085Lo2WrVipFp+0v+F7QMar8vOVYc19IQ81oidOzGE5+3vn+P1E8oozwi38ovGggsfFRQgENGmXKDa/9I58Ca6ALmcWm/7JZl5XOhUdAWKXFwGYAMssBSUtG0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
- by PN2P287MB1279.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1ad::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Mon, 7 Apr
- 2025 14:06:35 +0000
-Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
- ([fe80::58ec:81a0:9454:689f%2]) with mapi id 15.20.8606.033; Mon, 7 Apr 2025
- 14:06:35 +0000
-From: Tarang Raval <tarang.raval@siliconsignals.io>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: Need Help Enabling HDMI on Debix Model A
-Thread-Topic: Need Help Enabling HDMI on Debix Model A
-Thread-Index: AQHbp61bJ8rSy9+zQkebTS5KwgzRBLOYK2mAgAAM5vM=
-Date: Mon, 7 Apr 2025 14:06:35 +0000
-Message-ID:
- <PN3P287MB1829692B4C3D5AD273CB62DE8BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
-References:
- <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250407130257.GD3924@pendragon.ideasonboard.com>
-In-Reply-To: <20250407130257.GD3924@pendragon.ideasonboard.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN3P287MB1829:EE_|PN2P287MB1279:EE_
-x-ms-office365-filtering-correlation-id: 249c2875-4c01-46a2-0103-08dd75dd6862
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?Windows-1252?Q?4ttF5B16HrhxsvhJ0vXy3a5dY+kpvXAX7/65Fqj+ohM1FvMcUUVtLs2y?=
- =?Windows-1252?Q?g86WNm/sQDRgSYFZ/5VJl0WkNFn3iQGAoDOD0GJGQjw7O7TkM/iB2MRe?=
- =?Windows-1252?Q?cg8P7BiHkVU3QRQCdNlHXOd9oUainvbiHshB3APuVIFb1ChHKn7Jaaky?=
- =?Windows-1252?Q?PxJ3it6XnSuI2h7obYmw+zeFDydMOcczrRbz1t0NFrI+AvZjes+T+ZkB?=
- =?Windows-1252?Q?33w4iGPwqqLK1Cr0SHSxDdehk10wQjQJwIKw9Qfw26Dw7ExaYC/8bH7W?=
- =?Windows-1252?Q?uKZg8sgYyQSDGIh86Qs4mI5WqWlOPBNOWM58EXKmZfi4ATOG5QF5FiH5?=
- =?Windows-1252?Q?JajBkP1C5n7UHkNiE7zZC0c0f6kEMzn7qsbi+3seX+qX21mmPsV0f2p5?=
- =?Windows-1252?Q?Ef9BYb97B6gu7MW6oefRPMeUfZuQQtS30kOhtOswcpn1y4Kbt7wZb0IF?=
- =?Windows-1252?Q?fwgHXKPdlrIz89FWnuScEjcbdpNNS5TqvdvsulqnNS7xuXQRGBl+QMXd?=
- =?Windows-1252?Q?dXjvAPfmRTMVaz+SK0d0uGjvfeXNKc0ve2OlzNvyEkBokK1lALoWLpWO?=
- =?Windows-1252?Q?bJsFWNGAHG+vBrGUz4PgPaneWgWg/j+cty2NvPNSI+n4xZO/4cdc6Uhk?=
- =?Windows-1252?Q?3msDOR277dJ3Y0/q/bqgmL1Ts5/hH+C5WD2hzrA9Vdh6oTuxtf8h0L5H?=
- =?Windows-1252?Q?33k6TyCSgaOh0C+cz//PYbzTDGXfSDdp+gQ3ZSuwjYY5YoXtzT+l9/bn?=
- =?Windows-1252?Q?QOhO6i34acKz1/t1V3ofaO2s9aAlIVTg1K7FtFJSJPIK7XSOMs6w62lX?=
- =?Windows-1252?Q?im+6NvKHdjt/VViGLh47T3moB8x9kaEFjtcIof8u08c18LvNppzrUWUu?=
- =?Windows-1252?Q?W9JxFZTcO2yqCR/Ylw4GQG8/TSRXO6MAEAMrr+nMWu/ptwg9YQJaaO0r?=
- =?Windows-1252?Q?bDSZqzpVmJRuGneZ68B5V8b+1lsrdp1DadrasAdotuZIesiB4PSB6Kbz?=
- =?Windows-1252?Q?cMRt7N2sVc/XBjmat5EWbeKx/mTToU8JAidCMfsS7s4LdUrvaihlCqO8?=
- =?Windows-1252?Q?RB8nmETgFqMctaDpKLvntzFxhITO6R9FwVBQECebrX+pukAqY2RlQypd?=
- =?Windows-1252?Q?LpvRd9St74x2OVD9QcD3+YQ1N4TALRga+yHGxieLnoWMShV0EG7P51Ol?=
- =?Windows-1252?Q?iilcHoE4KXd+FJ69UiQGT/JzMzYSVTWBfUhF4S+JB9hssVh699sxKM5h?=
- =?Windows-1252?Q?nkPx2heFRcXMfiGqEKosJG2ngzDCdUu0R1tA0JlUmjWBZkgLsMvX13KL?=
- =?Windows-1252?Q?4aXkg3cbzbqNCAXWquLUir8ZuZI+wBA/NaulnYkKOT9AeWuuUezLhuVu?=
- =?Windows-1252?Q?VHorVKJHxvydkaL72ZdPtSRlzGUN4NPbC36c/0xqy/ecfPz4WiseH3w9?=
- =?Windows-1252?Q?n7fS/M7hChCwJrpPySwGN64+t2bSXKUex5xywjPMKfsRSIDBNbEPhES9?=
- =?Windows-1252?Q?5uPY6cCXCa0F6mVq6d4i9iOiTxHoOcR8+aLnWW4LxCDeajtiMEIDpvtm?=
- =?Windows-1252?Q?ou3cbhn2KMCmATXJ?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?Windows-1252?Q?03B1ZR7w5wQXaNO4DEaY5Y5DmStDaNlNJyuncCM8SSiZnxfD3m6WVeQ1?=
- =?Windows-1252?Q?RVze4X33Va29Ncy1d07C/lpuxxQqi/Se3xhQo3EqcwR/Gz5LCZJ4xURI?=
- =?Windows-1252?Q?8QBevRJKV6yc8esQQejxwpC4G3FlXdeGLASB6Rc/tgyh6eAzPlNm6DLn?=
- =?Windows-1252?Q?Eei7mSF+CoSOqShOqOihFCaBUp0gSiKeeCRuqGiFgSsgaigjw0XRN9B/?=
- =?Windows-1252?Q?iDYWELlQ2u0h78AQXeFLuwSDKzXSxPPSBOqkVDiiS2fwNVU1r3n/STu9?=
- =?Windows-1252?Q?aLKk/DOHxfVmb4CCdO6LDh5CXfZoGktyiLHBuxt0wdBrqq9aw9xu8ss+?=
- =?Windows-1252?Q?GWcJpkxPNocmfzElddiqMvMyl+FyCqnexH9KzfsWzFsQok45jC41Yu2U?=
- =?Windows-1252?Q?DSwdsoMa3DiYIAHDBc2e7uQOMWys974vCTGcotVgxYkhoZ3qmz8Y1SkF?=
- =?Windows-1252?Q?J+jTiQ43a4wOeyXiNfI5YZxMeIrSVa1C16L72x5dscVeKtWRlUPMGL5l?=
- =?Windows-1252?Q?L8pPd2T7/XYhPOxzGMbJr5YmjCoCLbmRiTTafPeY/K8wZsczCuOXY57F?=
- =?Windows-1252?Q?JVMHhQAJ/rFjw/20w3ZhBEsEpjE3w5mVEBK3jDWyXcQpXameCbacHBRN?=
- =?Windows-1252?Q?ZzP8fT3NkAmymvjN3KJDPGU9ZTpIG0+w7595KxxQoOYEL49zDCCfZJYk?=
- =?Windows-1252?Q?c69/1Kd5udfYu7/9BLKi8BqefBtjRbEtY5l0kWaNfchY56Bawumeq2wo?=
- =?Windows-1252?Q?AKtKEBdMSEnNcJHzVjvf7/gbPAv9Bb38j0rnQTfvVQndBd3wS4ObHFV9?=
- =?Windows-1252?Q?i6MOH+JgHhAuHFSVVqosuO1s9/8DllYxtgVaKhh28A/I+u/HHoT5lS/L?=
- =?Windows-1252?Q?s3tv6Z9zDTFhy4by1O7nig4q79LD2RVsis5Z4BxNJ8L+sZQzZczCPaX3?=
- =?Windows-1252?Q?NQhyF2c5HNIEpLAuUpcxJPpaRoN6Am/8hP4eEKH/tSUqBiQ9+vZ5p8Gy?=
- =?Windows-1252?Q?8UXeEsYRTUAXA1L4VvnEo6MrCI3S9SYe37j38jzrGcm1B6Of1kiMX8wg?=
- =?Windows-1252?Q?37pUbWAaQ9Fz1A+gBgnLjSLoS7E9HbOpjNoqD8gmU0xnYowLWl2Zt/Vx?=
- =?Windows-1252?Q?mmTfljF4IG0UvxAUKV543FenuJsLNTaiyhNx0CHjwyjuFiHXaFmKbKqB?=
- =?Windows-1252?Q?PDCNcM+Keg0LGO4XI0L0k/bobsx3hBypzX+1ryMou/z6KtxxbOG9zYhj?=
- =?Windows-1252?Q?zKjXqI3c688IFiTrMBoF0zMsYHFihccgYrzHyssCBb6PbQ08cdaXAr4l?=
- =?Windows-1252?Q?Jc9a5bXNw0INNRd3RbSr087ft9A5YncUmluJxnRT1oE55WAj3b2Kid0o?=
- =?Windows-1252?Q?ICgK7dZcE2GQ5AUVS3U8Pln8zK6LFOMfbwfmBwmUlcekk8weVhwTkn6K?=
- =?Windows-1252?Q?UqyC3Hf8Jn3dWtE+Q7ISuHmI0HGBqJxl9I+ggZUG+ry2925mHlk+dZRx?=
- =?Windows-1252?Q?F/AgHHEm8Yoz00s3IdAu5KsBcdm9JEWD/pbPnplR1WkRCbfkK1J6+kjv?=
- =?Windows-1252?Q?MNwwTuZ07NBPlVDfCMgPJwHSt5RmiAlKXoGBPXuul5EQ+Xv96x7ztDgY?=
- =?Windows-1252?Q?Mo2sGlkOz6ETDCFAlDBZIx/ur6ExN+28/yHSu7PiTJvwU12SehzFU1sL?=
- =?Windows-1252?Q?Rsz+jKBEWR65kp2FNqrP1W4jocwOI34wbgJa/0a2gvO3bd/QKvpB4w?=
- =?Windows-1252?Q?=3D=3D?=
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8E51DA634;
+	Mon,  7 Apr 2025 14:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744035845; cv=none; b=Mtju7a/so6Rsb8ltUBJ7GvpP/pDCGWqpLM1pGGW1/Xk3x8uYWHvAZW+abizowsPH0Sid2cfW2uT9++MvMgrkZC9cUw+8D5dHmH3RjQMHxOXrOfqQv1qdebROB3QyNgnYvuEQzexT1OptcTI9PCduZxEBz8G+vMLSPzamqti/HNM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744035845; c=relaxed/simple;
+	bh=itSY3MbNemlo1jM4kMObnOpx0PwFg7LbJwBkuQDcMY4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BinqQc9h9TS6A6l8E5QiYTqP5bYlnL4MqxziZRgYoGeAw7IITHoDWttVILugbj/m467freSfEygy4jderSep4lNtyiMfE5lRoy7fWeEeRv3j6YAIHv/S3tRdJgQpdaz5qeOq2NFuJswStcULNa9cCFqNuuLjf/LDfJf6AaOsTy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZpF3iYw2; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZpF3iYw2"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 619A143281;
+	Mon,  7 Apr 2025 14:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744035838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vOkWTDkaWqhHq1Y4W7agfsE9Y+5yrRlMq2iiUf0n4NM=;
+	b=ZpF3iYw2Xj1SLfGI3tRB2yHigFy/oDTkUYICDm/tJpzx9bK0IOsEYXjxhxmkeK5WnoAEJm
+	HyVZ1EXFuJRezu8putKQB4eRCLvS2T7qsQ8kk3Iu6zx2nLVWKY2ssnJf50zUGniwkmwKQk
+	hiAQth6a9vlsmgeSdAg1hpyENcfJ1fWMO1Gcf7zxhGYUd2J7hHu8Md7Dv3mSav0dHxBFtV
+	U1pYmZ85envObCNONKWpUOnLStUwWnKZhrkj3vFhbvdQDvkc2vz3yRhvBMdAqe8nIzrGoS
+	sv0K4jHhwh0TNbpSBCSYEX6dWcz2a0PJ1slkUXO+rZqq6ScPL6OsIkU3Ui7X/w==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/34] drm: convert all bridges to devm_drm_bridge_alloc()
+Date: Mon, 07 Apr 2025 16:23:15 +0200
+Message-Id: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 249c2875-4c01-46a2-0103-08dd75dd6862
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2025 14:06:35.5692
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L5hdIxR27/XeJ8m7uzEt6zYgjxoy35eTzKz7G2K6/k0QCYEIBC+g1eDK+4AG2poTH0XeVL68mOlC9oLGyLKGNCebP23tcyUGQHv6H7ygA20=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB1279
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANTf82cC/x2NSQqAMAwAvyI5G6ilCvoV8dAlakBbSUUE8e8Wj
+ 8PAzAOZhCnDUD0gdHHmFAs0dQV+tXEh5FAYtNKtMspgkB2dcCjGp3iRnHgmtNuWPNqDsWuMIz9
+ 3WvcGSuUQmvn+D+P0vh8Deqr4cQAAAA==
+X-Change-ID: 20250404-drm-bridge-convert-to-alloc-api-614becf62294
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Douglas Anderson <dianders@chromium.org>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Anusha Srivatsa <asrivats@redhat.com>, 
+ Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, Adam Ford <aford173@gmail.com>, 
+ Adrien Grassein <adrien.grassein@gmail.com>, 
+ Aleksandr Mishin <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
+ Christoph Fritz <chf.fritz@googlemail.com>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+ Detlev Casanova <detlev.casanova@collabora.com>, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Guenter Roeck <groeck@chromium.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
+ Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
+ Kevin Hilman <khilman@baylibre.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Liu Ying <victor.liu@nxp.com>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>, 
+ Sasha Finkelstein <fnkl.kernel@gmail.com>, 
+ Sugar Zhang <sugar.zhang@rock-chips.com>, 
+ Sui Jingfeng <sui.jingfeng@linux.dev>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ Vitalii Mordan <mordan@ispras.ru>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ "Rob Herring (Arm)" <robh@kernel.org>, 
+ Hsin-Te Yuan <yuanhsinte@chromium.org>, 
+ Pin-yen Lin <treapking@chromium.org>, Xin Ji <xji@analogixsemi.com>, 
+ Aradhya Bhatia <a-bhatia1@ti.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@ge.com>, 
+ Martyn Welch <martyn.welch@collabora.co.uk>, 
+ Peter Senna Tschudin <peter.senna@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Inki Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Bjorn Andersson <quic_bjorande@quicinc.com>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, 
+ Helge Deller <deller@gmx.de>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Michal Simek <michal.simek@amd.com>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddtgedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelgfeugfeludffleevudfhfffhleekjedvkeduudefvdekgfefuddvffelffelffenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghloheplgduledvrdduieekrddujeekrdejhegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudduuddprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigqdhmvgguihgrthgvkheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnv
+ ghlrdhorhhgpdhrtghpthhtohepphdriigrsggvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepjfhuihdrrfhusehgvghhvggrlhhthhgtrghrvgdrtghomhdprhgtphhtthhopegrqdgshhgrthhirgdusehtihdrtghomhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Laurent,=0A=
-=0A=
-Thanks for the response.=0A=
-=0A=
-> On Mon, Apr 07, 2025 at 11:10:23AM +0000, Tarang Raval wrote:=0A=
-> > Hi Laurent,=0A=
-> >=0A=
-> > I=92m trying to bring up HDMI on the Debix Model A board using the=0A=
-> > mainline kernel, but I=92m currently facing issues.=0A=
-> >=0A=
-> > I saw that you tested the patch for HDMI support on this board in=0A=
-> > mainline, so I am hoping you could help me figure out what might be=0A=
-> > missing.=0A=
-> >=0A=
-> > To clarify =97 I'm using the prebuilt image provided by Debix, but I re=
-placed=0A=
-> > the kernel image and the device tree (DTS) file in the /boot directory =
-with=0A=
-> > ones built from the mainline kernel.=0A=
-> >=0A=
-> > I=92ve enabled the following configurations in the kernel:=0A=
-> > CONFIG_DRM_DISPLAY_CONNECTOR=3Dy=0A=
-> > CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=3Dy=0A=
-> > CONFIG_DRM_IMX8MP_HDMI_PVI=3Dy=0A=
-> > CONFIG_DRM_IMX_LCDIF=3Dy=0A=
-> > CONFIG_PHY_FSL_SAMSUNG_HDMI_PHY=3Dy=0A=
-> >=0A=
-> > When I boot the board, I see the following HDMI/DRM related logs:=0A=
-> > debix@imx8mp-debix:~$ dmesg | grep -iE "drm|hdmi"=0A=
-> > [ =A0 =A00.121979] /soc@0/bus@32c00000/display-bridge@32fc4000: Fixed d=
-ependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000=0A=
-> > [ =A0 =A00.122164] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency =
-cycle(s) with /soc@0/bus@32c00000/display-bridge@32fc4000=0A=
-> > [ =A0 =A00.127417] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency =
-cycle(s) with /hdmi-connector=0A=
-> > [ =A0 =A00.127608] /hdmi-connector: Fixed dependency cycle(s) with /soc=
-@0/bus@32c00000/hdmi@32fd8000=0A=
-> > [ =A0 =A01.947962] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI TX co=
-ntroller v2.13a with HDCP (SAMSUNG HDMI TX PHY)=0A=
-> > [ =A0 =A01.949220] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered DesignWa=
-re HDMI I2C bus driver=0A=
-> > [ =A0 =A01.956365] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.displ=
-ay-controller on minor 0=0A=
-> > [ =A0 =A02.016601] imx-lcdif 32fc6000.display-controller: [drm] fb0: im=
-x-lcdifdrmfb frame buffer device=0A=
-> > [ =A0 =A08.380915] systemd[1]: Starting Load Kernel Module drm...=0A=
-> >=0A=
-> >=0A=
-> > I also checked that the display's modeline is recognized under sysfs :=
-=0A=
-> >=0A=
-> > root@imx8mp-debix:~# ls /sys/class/drm/card0-HDMI-A-1/=0A=
-> > connector_id =A0dpms =A0 =A0 =A0 =A0 =A0modes =A0 =A0 =A0 =A0 subsystem=
-/=0A=
-> > ddc/ =A0 =A0 =A0 =A0 =A0edid =A0 =A0 =A0 =A0 =A0power/ =A0 =A0 =A0 =A0u=
-event=0A=
-> > device/ =A0 =A0 =A0 enabled =A0 =A0 =A0 status=0A=
-> >=0A=
-> > However, there is still no HDMI output on the display. Instead,=0A=
-> > I only see a white blinking cursor on the screen.. I'm not sure=0A=
-> > what I'm missing.=0A=
->=A0=0A=
-> The white blinking cursor means the display is working from the kernel=0A=
-> point of view. What are you expecting, are you running an X server or=0A=
-> Wayland compositor ?=0A=
-=0A=
-I'm expecting to see the Ubuntu desktop environment on the HDMI =0A=
-display =97 just like how it appears with the original prebuilt image provi=
-ded =0A=
-by Debix. I'm running the default Ubuntu 22.04 LTS prebuilt image, and I on=
-ly=0A=
-replaced the Image and .dtb file=0A=
-=0A=
-I'm not explicitly launching an X server or Wayland compositor myself=0A=
-=0A=
-However, based on your response, I now realize that I may also need to =0A=
-enable GPU support in the mainline device tree. Specifically, I believe I =
-=0A=
-need to enable the gpu2D and gpu3D nodes to allow the graphical =0A=
-environment to start properly and render the desktop over HDMI.=0A=
-=0A=
-Does that sound correct, or is there anything else I should check or =0A=
-enable?=0A=
-=0A=
-Best Regards,=0A=
-Tarang=0A=
-=0A=
-> > Could you please help me out or point me in the right direction?=0A=
-> >=0A=
-> > Thank you for your time.=0A=
-> >=0A=
-> > Best Regards,=0A=
-> > Tarang=0A=
->=A0=0A=
-> --=0A=
-> Regards,=0A=
->=A0=0A=
-> Laurent Pinchart=
+devm_drm_bridge_alloc() is the new API to allocate and initialize a DRM
+bridge, and the only one supported from now on. It is also necessary for
+implementing reference counting and thus needed to support removal of
+bridges from a still existing DRM pipeline without use-after-free.
+
+This series converts all DRM bridges to the new API.
+
+Patch 1 uses a coccinelle semantic patch to mass-convert some of those
+drivers -- thanks Maxime for having suggested the patch that served as a
+starting point for me. I was unable to come up with a better patch
+converting more drivers though, so I converted all others manually. Most of
+them were trivial. I left the non-trivial ones at the end of the series to
+help reviewers know where to look at more carefully.
+
+Due to the large number of touched files, the list of recipients generated
+by get_maintainers (b4 actually) was huge, 60~70 people (not counting
+mailing lists), so I took the liberty of trimming the list as reasonably as
+I could to DRM maintainers and frequent contributors, and added all other
+recipients individually per-patch. I hope this is fine. Don't hesitate to
+suggest more people which should be Cc-ed in a future series, or a better
+Cc policy.
+
+Current plan and status of the DRM bridge refcounting work:
+
+ A. ✔ add new alloc API and refcounting -> (now in drm-misc-next)
+ B. ➜ convert all bridge drivers to new API (this series)
+ C. documentation, kunit tests, debugfs improvements
+ D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
+ E. after (B), convert accessors; this is a large work and can be done
+    in chunks
+
+Luca
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (34):
+      drm: convert many bridge drivers from devm_kzalloc() to devm_drm_bridge_alloc() API
+      platform: arm64: acer-aspire1-ec: convert to devm_drm_bridge_alloc() API
+      drm/bridge: analogix-anx6345: convert to devm_drm_bridge_alloc() API
+      drm/bridge: anx7625: convert to devm_drm_bridge_alloc() API
+      drm/bridge: cdns-dsi: convert to devm_drm_bridge_alloc() API
+      drm/bridge: display-connector: convert to devm_drm_bridge_alloc() API
+      drm/bridge: lt9611uxc: convert to devm_drm_bridge_alloc() API
+      drm/bridge: megachips-stdpxxxx-ge-b850v3-fw: convert to devm_drm_bridge_alloc() API
+      drm/bridge: nxp-ptn3460: convert to devm_drm_bridge_alloc() API
+      drm/bridge: sii902x: convert to devm_drm_bridge_alloc() API
+      drm/bridge: dw-hdmi: convert to devm_drm_bridge_alloc() API
+      drm/bridge: tda998x: convert to devm_drm_bridge_alloc() API
+      drm/bridge: ti-sn65dsi86: convert to devm_drm_bridge_alloc() API
+      drm/exynos: mic: convert to devm_drm_bridge_alloc() API
+      drm/mcde: convert to devm_drm_bridge_alloc() API
+      drm/msm/dp: convert to devm_drm_bridge_alloc() API
+      drm/msm/dsi: convert to devm_drm_bridge_alloc() API
+      drm/msm/hdmi: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: dpi: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: dsi: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: hdmi4: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: hdmi5: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: sdi: convert to devm_drm_bridge_alloc() API
+      drm/omap: dss: venc: convert to devm_drm_bridge_alloc() API
+      drm/rcar-du: dsi: convert to devm_drm_bridge_alloc() API
+      drm/bridge: stm_lvds: convert to devm_drm_bridge_alloc() API
+      drm/vc4: convert to devm_drm_bridge_alloc() API
+      drm/sti: dvo: convert to devm_drm_bridge_alloc() API
+      drm: zynqmp_dp: convert to devm_drm_bridge_alloc() API
+      drm/bridge: imx8qxp-pixel-combiner: convert to devm_drm_bridge_alloc() API
+      drm/bridge: imx8*-ldb: convert to devm_drm_bridge_alloc() API
+      drm/bridge: tc358767: convert to devm_drm_bridge_alloc() API
+      drm/bridge: add devm_drm_put_bridge()
+      drm/bridge: panel: convert to devm_drm_bridge_alloc() API
+
+ drivers/gpu/drm/adp/adp-mipi.c                     |  8 ++--
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c       |  9 ++--
+ drivers/gpu/drm/bridge/analogix/analogix-anx6345.c |  8 ++--
+ drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c |  9 ++--
+ drivers/gpu/drm/bridge/analogix/anx7625.c          |  7 ++-
+ drivers/gpu/drm/bridge/aux-bridge.c                |  9 ++--
+ drivers/gpu/drm/bridge/aux-hpd-bridge.c            |  9 ++--
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c     |  8 ++--
+ .../gpu/drm/bridge/cadence/cdns-mhdp8546-core.c    |  8 ++--
+ drivers/gpu/drm/bridge/chipone-icn6211.c           |  9 ++--
+ drivers/gpu/drm/bridge/chrontel-ch7033.c           |  8 ++--
+ drivers/gpu/drm/bridge/cros-ec-anx7688.c           |  9 ++--
+ drivers/gpu/drm/bridge/display-connector.c         |  8 ++--
+ drivers/gpu/drm/bridge/fsl-ldb.c                   |  7 ++-
+ drivers/gpu/drm/bridge/imx/imx-ldb-helper.c        |  4 +-
+ drivers/gpu/drm/bridge/imx/imx-ldb-helper.h        |  3 +-
+ drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c     |  9 ++--
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c       | 10 ++--
+ drivers/gpu/drm/bridge/imx/imx8qm-ldb.c            | 32 ++++++++-----
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c           | 20 +++++---
+ .../gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    | 18 ++++---
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c    |  8 ++--
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c       |  8 ++--
+ drivers/gpu/drm/bridge/ite-it6263.c                |  9 ++--
+ drivers/gpu/drm/bridge/ite-it6505.c                |  9 ++--
+ drivers/gpu/drm/bridge/ite-it66121.c               |  9 ++--
+ drivers/gpu/drm/bridge/lontium-lt8912b.c           |  9 ++--
+ drivers/gpu/drm/bridge/lontium-lt9211.c            |  8 ++--
+ drivers/gpu/drm/bridge/lontium-lt9611.c            |  9 ++--
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c         |  7 ++-
+ drivers/gpu/drm/bridge/lvds-codec.c                |  9 ++--
+ .../drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c   | 11 ++---
+ drivers/gpu/drm/bridge/microchip-lvds.c            |  8 ++--
+ drivers/gpu/drm/bridge/nwl-dsi.c                   |  8 ++--
+ drivers/gpu/drm/bridge/nxp-ptn3460.c               |  9 ++--
+ drivers/gpu/drm/bridge/panel.c                     | 11 ++---
+ drivers/gpu/drm/bridge/parade-ps8622.c             |  9 ++--
+ drivers/gpu/drm/bridge/parade-ps8640.c             |  9 ++--
+ drivers/gpu/drm/bridge/sii902x.c                   |  7 ++-
+ drivers/gpu/drm/bridge/sii9234.c                   |  9 ++--
+ drivers/gpu/drm/bridge/sil-sii8620.c               |  9 ++--
+ drivers/gpu/drm/bridge/simple-bridge.c             | 10 ++--
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c       |  8 ++--
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          |  7 ++-
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c      |  8 ++--
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c     |  8 ++--
+ drivers/gpu/drm/bridge/tc358762.c                  |  9 ++--
+ drivers/gpu/drm/bridge/tc358764.c                  |  9 ++--
+ drivers/gpu/drm/bridge/tc358767.c                  | 56 +++++++++++++++-------
+ drivers/gpu/drm/bridge/tc358768.c                  |  9 ++--
+ drivers/gpu/drm/bridge/tc358775.c                  |  9 ++--
+ drivers/gpu/drm/bridge/tda998x_drv.c               |  7 ++-
+ drivers/gpu/drm/bridge/thc63lvd1024.c              |  8 ++--
+ drivers/gpu/drm/bridge/ti-dlpc3433.c               |  9 ++--
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c              |  7 ++-
+ drivers/gpu/drm/bridge/ti-tdp158.c                 |  8 ++--
+ drivers/gpu/drm/bridge/ti-tfp410.c                 |  9 ++--
+ drivers/gpu/drm/bridge/ti-tpd12s015.c              |  9 ++--
+ drivers/gpu/drm/drm_bridge.c                       | 14 ++++++
+ drivers/gpu/drm/exynos/exynos_drm_mic.c            |  7 ++-
+ drivers/gpu/drm/mcde/mcde_dsi.c                    |  7 ++-
+ drivers/gpu/drm/mediatek/mtk_dp.c                  |  9 ++--
+ drivers/gpu/drm/mediatek/mtk_dpi.c                 |  9 ++--
+ drivers/gpu/drm/mediatek/mtk_dsi.c                 |  9 ++--
+ drivers/gpu/drm/mediatek/mtk_hdmi.c                |  9 ++--
+ drivers/gpu/drm/meson/meson_encoder_cvbs.c         | 12 ++---
+ drivers/gpu/drm/meson/meson_encoder_dsi.c          | 12 ++---
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c         | 12 ++---
+ drivers/gpu/drm/msm/dp/dp_drm.c                    |  9 ++--
+ drivers/gpu/drm/msm/dsi/dsi_manager.c              |  9 ++--
+ drivers/gpu/drm/msm/hdmi/hdmi_bridge.c             |  9 ++--
+ drivers/gpu/drm/omapdrm/dss/dpi.c                  |  7 ++-
+ drivers/gpu/drm/omapdrm/dss/dsi.c                  |  7 ++-
+ drivers/gpu/drm/omapdrm/dss/hdmi4.c                | 26 ++++------
+ drivers/gpu/drm/omapdrm/dss/hdmi5.c                | 26 ++++------
+ drivers/gpu/drm/omapdrm/dss/sdi.c                  | 25 ++++------
+ drivers/gpu/drm/omapdrm/dss/venc.c                 | 23 ++++-----
+ drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  9 ++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c    |  8 ++--
+ drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c     | 10 ++--
+ drivers/gpu/drm/sti/sti_dvo.c                      | 29 +++++------
+ drivers/gpu/drm/stm/lvds.c                         |  7 ++-
+ drivers/gpu/drm/vc4/vc4_dsi.c                      | 30 ++----------
+ drivers/gpu/drm/xlnx/zynqmp_dp.c                   |  7 ++-
+ drivers/platform/arm64/acer-aspire1-ec.c           |  7 ++-
+ include/drm/drm_bridge.h                           |  4 ++
+ 86 files changed, 438 insertions(+), 491 deletions(-)
+---
+base-commit: 0bed7a4df3efaeaeec3e48fa1dfa3aefc1b07e37
+change-id: 20250404-drm-bridge-convert-to-alloc-api-614becf62294
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
