@@ -1,104 +1,254 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6B253331
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 20:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C18C21A931
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 21:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744144193; cv=none; b=l1prasSH3Mj/O4kgsktyXWUgahDdzVwtu85HiSs0I8vZBx0b4X9jzbuaBOnxpReCmTQwQBRoTlnrXw2ECfisSSsqt9oKX0Z4BeHeBsPICNX9E78heL8C50lOeCH2FkRarEJevzJJ5es1oR6lRvdY3NMAeNtkKsYstn/QBEr2lDk=
+	t=1744146219; cv=none; b=lwHpouYw0SVEL9HDaTtJPaytmrH5/ewTuE2jR4QbI24uqLzdVvvdFao7O9pqFsYx3RAPz386tP3dmwqVG8j/bwUJGi6BuqegLaHEF7IsOtPctHyYtt7yHuapcYdYJRQlR4w7nPwwIDYWv7iWKYYq6KU7U90oPxMf1Ws7dc0leSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744144193; c=relaxed/simple;
-	bh=mIa7jVwadNiDyZ5ABZyjBRnpoIsoCuNlDg8BjuOS5iI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AE5HyoIv2LkgoHUtegSiP12oHWqB8dTsqe3fgpp04hKB85pysECf5w5XllrcvS74523oqzdOyMDx1JpgtWsd3uHEJrh5DGdw5czgxqNfYz9hETAu436ylBWjRBDXyC4wMzhneCqM2QV8XgIuWl35XEtBfpbtbJWSUnpDLvtdzk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=ut9D8oqq; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1744146219; c=relaxed/simple;
+	bh=y8zs7myUh/XxhHHshPzfVZ+iRzf6l2Y4xTvulmW7Yco=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VqYAlUyGjKLLzXYu3tqI55y25lOj7mUmuPPKoSG9At7/jDJt9el+/jqJ7k0bqO2gccjjI8wOTrGumQadq0FCjpXMg2BxnmwPE1Suk9fNBKQ2A8aCI5tCDcuvCbUnYMOmPXRMBYDfTNBmY/pFLfk8kcwZhvGql22oCMRXwdzULrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=oJzio3zX; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="ut9D8oqq"
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2C21A1FB4D;
-	Tue,  8 Apr 2025 22:29:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1744144188;
-	bh=rbuSfZMlCXke2NoxpZ7BBY2YV7E+cslEawa7Eg1inps=; h=From:To:Subject;
-	b=ut9D8oqqEa1vpgS5PSz1kbV2wc06nIfi82YWIsTv0FjqSt71rgT3p6SG4H08IOT4r
-	 KawO7DDxIwL10JRd35ptLd/neiOBlEkflY1VbMaaaWxFR3svE0e+X6MtP19CfYmENY
-	 KN71ApBFsCOAEgxrHv6PECIfPQEXBHYt2gceODjyw26NudOj41xxewsyFqzzx2m7j8
-	 qxRxbM6Ykpj1BA0Sm2d2O+zmfRmptjZdYMns8Hek0ExAXauAcB6XsVMEnyz3OD5jg4
-	 TKhzhBr0g0dR/UtC9SJVTM00a800zGApo6VSjXWGwDMd1x29Bn+GTKzjE7wDTtPEog
-	 7qIV3HfODdjvQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/2] arm64: dts: freescale: imx8mp-verdin: Add EEPROM compatible fallback
-Date: Tue,  8 Apr 2025 22:29:38 +0200
-Message-Id: <20250408202939.6887-2-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250408202939.6887-1-francesco@dolcini.it>
-References: <20250408202939.6887-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="oJzio3zX"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c6a59a515aso374944385a.0
+        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 14:03:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1744146215; x=1744751015; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=StXUt2o98UrEzmCyhxaifjhbyPqbhX1WlryMmKDUzOY=;
+        b=oJzio3zXnxtH6qUQDcrF0mQmzmKBR1AzT8OIpvUilKGBDDfg7m/36syhnz6Tmg5kzX
+         28AXjWzOrOLTPJVvTKCImwSUOu3agI0IXlv4P40GyQNMc+TceH3+pka8nl3cUDB/hRRy
+         QmYo8pADRVBKY7drOkjPbSBbuQgM94+eKZxe2T7pefQbMHMVXr+eiQvURMYAQxF26Q6s
+         QyvNovTe2XRY2DdascIcyRLFaMxGjwOkMxoC7fUzzPmENQpRngXBLGtpS1VPXdhTdM1Z
+         Nyt3SNuNw6V4p+x+L3NUtEflnf4AB44byKVDjLU2G7Lr8nTzRf2F1Ncpr/wCXOtsr7BD
+         GQHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744146215; x=1744751015;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=StXUt2o98UrEzmCyhxaifjhbyPqbhX1WlryMmKDUzOY=;
+        b=hH4mBdox/h6slXK08VpYNjgx1J8gCXifeKMK4+rKw4KTVMgj40QhH1Y7KO2UGwlv4u
+         bga+bCc1nlfbHTHCeyt6P/ZIC96iHnee8vDPvXSc85PKTPEUtNhomCZtIxnDycO+Jcfe
+         Dc2pV7YmB/KL7qSAW5v8vNwa9lwJ0nNh953ze6hcAWJMX02t8JBhgrRU0nLARSDKTHaP
+         /CMELnpPwZ8roywj3vH+EzI3WqFLQfcn8BbQt552vQkiu3PGLCIGidLTG1vlGA9dmBAY
+         gp+01FcXkzzU0dwVx9p9ksgIr8qUucoCvWpzt94aVHqiVa43oICcEz6VeFczB0S4yydE
+         aJsw==
+X-Forwarded-Encrypted: i=1; AJvYcCXva6+lR2w5xnKtv1icBX3Y5AivWqPiGrt0zWq3ywW1X1irLSzbDVG/jbfu9bj7w9pqBao=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWxkC5gYjXcrZ5DduXPXzaympU8yPnRR5Zhcn2U14mxugBjIYA
+	MNnkAVb6/0/dWTFXzThOgNomB2ifRHNCPZ3wxS+6stndPIvF4AIxZbHQr7CpzZo=
+X-Gm-Gg: ASbGncsJyYJXuCjuyO1ONa02kjsLuU0p9TYKMoz4IfK50ezG86CSVyEwBwZ1dOLW5p/
+	aifYo5fBEta6DbOt96qW+YqFRs0aWXKaMeUCTG0bGu8/axTeRbF4YB26QiatJBjvwKYtEOpiRc9
+	xHsCkAdm3aZDKBnWZRoIeXd81oAapltywjp2+xyXlfBELqXCNeG+1w8u+UsqiQD6cJmCzf5F42e
+	N2Bp1gp+eYtr2G1YgC2U9ypb2WHWM43PnXpYufvI28735SPrFVk02+4NULwWrBmhy/1ovijVlvW
+	kDLuNwAZ62d/DBn5ng3XTwzQe1AohHNgIwi3ChrvRd7NGs7da5yVK5xJ/kIn
+X-Google-Smtp-Source: AGHT+IFgnJHxAWsuf+QM5cxegWPMvcG8OTlQh/+tfcVS0Sbd6RBnpzz0kQLkyoaYTeZ2+H1M6atR2A==
+X-Received: by 2002:a05:620a:40c8:b0:7c5:6375:144c with SMTP id af79cd13be357-7c79cbd7654mr96683485a.23.1744146215399;
+        Tue, 08 Apr 2025 14:03:35 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:11:e976::5ac? ([2606:6d00:11:e976::5ac])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c76e75bcbesm803695785a.38.2025.04.08.14.03.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 14:03:34 -0700 (PDT)
+Message-ID: <d4515a3dbbba33a45c0dc1c68e47b9a1f0dbbb6e.camel@ndufresne.ca>
+Subject: Re: [PATCH v2 1/4] media: v4l: dev-decoder: Add source change
+ V4L2_EVENT_SRC_CH_COLORSPACE
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Hans Verkuil <hverkuil-cisco@xs4all.nl>, Ming Qian
+ <ming.qian@oss.nxp.com>, 	mchehab@kernel.org
+Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
+ imx@lists.linux.dev, 	linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
+Date: Tue, 08 Apr 2025 17:03:33 -0400
+In-Reply-To: <3e5f003a-f689-4f5a-ac75-6bf95379637b@xs4all.nl>
+References: <20250117061938.3923516-1-ming.qian@oss.nxp.com>
+	 <3e5f003a-f689-4f5a-ac75-6bf95379637b@xs4all.nl>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mQGiBEUQN0MRBACQYceNSezSdMjx7sx6gwKkMghrrODgl3B0eXBTgNp6c431IfOOEsdvk
+ oOh1kwoYcQgbg4MXw6beOltysX4e8fFWsiRkc2nvvRW9ir9kHDm49MkBLqaDjTqOkYKNMiurFW+go
+ zpr/lUW15QqT6v68RYe0zRdtwGZqeLzX2LVuukGwCg4AISzswrrYHNV7vQLcbaUhPgIl0D+gILYT9
+ TJgAEK4YHW+bFRcY+cgUFoLQqQayECMlctKoLOE69nIYOc/hDr9uih1wxrQ/yL0NJvQCohSPyoyLF
+ 9b2EuIGhQVp05XP7FzlTxhYvGO/DtO08ec85+bTfVBMV6eeY4MS3ZU+1z7ObD7Pf29YjyTehN2Dan
+ 6w1g2rBk5MoA/9nDocSlk4pbFpsYSFmVHsDiAOFje3+iY4ftVDKunKYWMhwRVBjAREOByBagmRau0
+ cLEcElpf4hX5f978GoxSGIsiKoDAlXX+ICDOWC1/EXhEEmBR1gL0QJgiVviNyLfGJlZWnPjw6xhhm
+ tHYWTDxBOP5peztyc2PqeKsLsLWzAr7QnTmljb2xhcyBEdWZyZXNuZSA8bmljb2xhc0BuZHVmcmVz
+ bmUuY2E+iGIEExECACIFAlXA3CACGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFTAi2sB
+ qgcJngAnRDBTr8bhzuH0KQwFP1nEYtfgpKdAKCrQ/sJfuG/8zsd7J8wVl7y3e8ARbRDTmljb2xhcy
+ BEdWZyZXNuZSAoQi4gU2MuIEluZm9ybWF0aXF1ZSkgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29
+ tPohgBBMRAgAgBQJFlCyOAhsDBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQcVMCLawGqBwhLQCg
+ zYlrLBj6KIAZ4gmsfjXD6ZtddT8AoIeGDicVq5WvMHNWign6ApQcZUihtElOaWNvbGFzIER1ZnJlc
+ 25lIChCLiBTYy4gSW5mb3JtYXRpcXVlKSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY28udW
+ s+iGIEExECACIFAkuzca8CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFTAi2sBqgcQX8
+ An2By6LDEeMxi4B9hUbpvRnzaaeNqAJ9Rox8rfqHZnSErw9bCHiBwvwJZ77QxTmljb2xhcyBEdWZy
+ ZXNuZSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY29tPohiBBMRAgAiBQJNzZzPAhsDBgsJC
+ AcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBxUwItrAaoHLlxAKCYAGf4JL7DYDLs/188CPMGuwLypw
+ CfWKc9DorA9f5pyYlD5pQo6SgSoiC0R05pY29sYXMgRHVmcmVzbmUgKEIgU2MuIEluZm9ybWF0aXF
+ 1ZSkgPG5pY29sYXMuZHVmcmVzbmVAdXNoZXJicm9va2UuY2E+iGAEExECACAFAkUQN0MCGwMGCwkI
+ BwMCBBUCCAMEFgIDAQIeAQIXgAAKCRBxUwItrAaoHPTnAJ0WGgJJVspoctAvEcI00mtp5WAFGgCgr
+ +E7ItOqZEHAs+xabBgknYZIFPU=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Hi Hans,
 
-According to the AT24 EEPROM bindings the compatible string should
-contain first the actual manufacturer, and second the corresponding
-atmel model.
+Le lundi 07 avril 2025 =C3=A0 11:54 +0200, Hans Verkuil a =C3=A9crit=C2=A0:
+> On 17/01/2025 07:19, Ming Qian wrote:
+> > Add a new source change V4L2_EVENT_SRC_CH_COLORSPACE that
+> > indicates colorspace change in the stream.
+> > The change V4L2_EVENT_SRC_CH_RESOLUTION will always affect
+> > the allocation, but V4L2_EVENT_SRC_CH_COLORSPACE won't.
+> >=20
+> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > ---
+> > =C2=A0Documentation/userspace-api/media/v4l/vidioc-dqevent.rst | 9 ++++=
++++++
+> > =C2=A0.../userspace-api/media/videodev2.h.rst.exceptions=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> > =C2=A0include/uapi/linux/videodev2.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> > =C2=A03 files changed, 11 insertions(+)
+> >=20
+> > diff --git a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst b=
+/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
+> > index 8db103760930..91e6b86c976d 100644
+> > --- a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
+> > +++ b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
+> > @@ -369,6 +369,15 @@ call.
+> > =C2=A0	loss of signal and so restarting streaming I/O is required in or=
+der for
+> > =C2=A0	the hardware to synchronize to the video signal.
+> > =C2=A0
+> > +=C2=A0=C2=A0=C2=A0 * - ``V4L2_EVENT_SRC_CH_COLORSPACE``
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 0x0002
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - This event gets triggered when a colo=
+rsapce change is detected at
+>=20
+> colorsapce -> colorspace
+>=20
+> > +	an input. This can come from a video decoder. Applications will query
+>=20
+> It can also come from a video receiver. E.g. an HDMI source changes color=
+space
+> signaling, but not the resolution.
+>=20
+> > +	the new colorspace information (if any, the signal may also have been
+> > +	lost)
+>=20
+> Missing . at the end. Also, if the signal is lost, then that is a CH_RESO=
+LUTION
+> change, not CH_COLORSPACE.
+>=20
+> > +
+> > +	For stateful decoders follow the guidelines in :ref:`decoder`.
+>=20
+> I think this should emphasize that if CH_COLORSPACE is set, but not CH_RE=
+SOLUTION,
+> then only the colorspace changed and there is no need to reallocate buffe=
+rs.
+>=20
+> I also wonder if the description of CH_RESOLUTION should be enhanced to e=
+xplain
+> that this might also imply a colorspace change. I'm not sure what existin=
+g codec
+> drivers do if there is a colorspace change but no resolution change.
+>=20
+> I'm a bit concerned about backwards compatibility issues: if a userspace =
+application
+> doesn't understand this new flag and just honors CH_RESOLUTION, then it w=
+ould
+> never react to just a colorspace change.
+>=20
+> Nicolas, does gstreamer look at these flags?
 
-Add the atmel compatible fallback accordingly.
+So its used in two places:
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+At runtime (shared between HDMI receiver and decoders):
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index e3869efe4fd0..d43ba0087126 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -657,7 +657,7 @@ channel@7 {
- 	};
- 
- 	eeprom@50 {
--		compatible = "st,24c02";
-+		compatible = "st,24c02", "atmel,24c02";
- 		pagesize = <16>;
- 		reg = <0x50>;
- 	};
-@@ -770,7 +770,7 @@ hwmon_temp: sensor@4f {
- 
- 	/* EEPROM on display adapter (MIPI DSI Display Adapter) */
- 	eeprom_display_adapter: eeprom@50 {
--		compatible = "st,24c02";
-+		compatible = "st,24c02", "atmel,24c02";
- 		pagesize = <16>;
- 		reg = <0x50>;
- 		status = "disabled";
-@@ -778,7 +778,7 @@ eeprom_display_adapter: eeprom@50 {
- 
- 	/* EEPROM on carrier board */
- 	eeprom_carrier_board: eeprom@57 {
--		compatible = "st,24c02";
-+		compatible = "st,24c02", "atmel,24c02";
- 		pagesize = <16>;
- 		reg = <0x57>;
- 		status = "disabled";
--- 
-2.39.5
+    if ((event.u.src_change.changes & V4L2_EVENT_SRC_CH_RESOLUTION) =3D=3D
+0) {
+      GST_DEBUG_OBJECT (v4l2object->dbg_obj,
+          "Received non-resolution source-change, ignoring.");
+      goto again;
+    }
 
+
+Meaning we currently completely ignore the event if it does not have
+the flag. And the second usage is while waiting for the initial
+resolution:
+
+      if (event.type =3D=3D V4L2_EVENT_SOURCE_CHANGE &&
+          (event.u.src_change.changes & V4L2_EVENT_SRC_CH_RESOLUTION))
+{
+        GST_DEBUG_OBJECT (v4l2object->dbg_obj,
+            "Can't streamon capture as the resolution have changed.");
+        ret =3D GST_V4L2_FLOW_RESOLUTION_CHANGE;
+      }
+
+
+
+I remember some doc explaining that once we receive that even we must
+cycle through streamoff/on, but can't find it now, I'll check further
+tomorrow. I wanted to check if that was specific to
+V4L2_EVENT_SRC_CH_RESOLUTION or global to V4L2_EVENT_SOURCE_CHANGE.
+Also, there is likely some difference between codec and HDMI.
+
+I think backward compatibility will be difficult on that one. I'm happy
+that you find the time to have a look, and looking for good ideas.
+
+Nicolas
+
+
+>=20
+> Regards,
+>=20
+> 	Hans
+>=20
+> > +
+> > =C2=A0Return Value
+> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > =C2=A0
+> > diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptio=
+ns b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > index 35d3456cc812..ac47c6d9448b 100644
+> > --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > @@ -526,6 +526,7 @@ replace define V4L2_EVENT_CTRL_CH_RANGE ctrl-change=
+s-flags
+> > =C2=A0replace define V4L2_EVENT_CTRL_CH_DIMENSIONS ctrl-changes-flags
+> > =C2=A0
+> > =C2=A0replace define V4L2_EVENT_SRC_CH_RESOLUTION src-changes-flags
+> > +replace define V4L2_EVENT_SRC_CH_COLORSPACE src-changes-flags
+> > =C2=A0
+> > =C2=A0replace define V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ :c:type:`v4l2_even=
+t_motion_det`
+> > =C2=A0
+> > diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videod=
+ev2.h
+> > index c8cb2796130f..242242c8e57b 100644
+> > --- a/include/uapi/linux/videodev2.h
+> > +++ b/include/uapi/linux/videodev2.h
+> > @@ -2559,6 +2559,7 @@ struct v4l2_event_frame_sync {
+> > =C2=A0};
+> > =C2=A0
+> > =C2=A0#define V4L2_EVENT_SRC_CH_RESOLUTION		(1 << 0)
+> > +#define V4L2_EVENT_SRC_CH_COLORSPACE		(1 << 1)
+> > =C2=A0
+> > =C2=A0struct v4l2_event_src_change {
+> > =C2=A0	__u32 changes;
