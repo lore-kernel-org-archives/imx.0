@@ -1,105 +1,120 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE351EA65
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 14:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59398175D50
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 14:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744121153; cv=none; b=YvJjt2rtdXKm0JmZaLahhYA+EiU7LdHWNmTKFdJUrDggxSnUzX5+nAxJvPV30bmsYJUyPSEXoJl/OBj/+0XrQqoH415aJ2qfjBSSSe9JUPMENEBY0gmIcfK/T+8MbASFCSC3kJX6tyn/JXMTmnXAMRW9Q7sdYzCbbGcglXMr4NM=
+	t=1744121353; cv=none; b=kZ+HrdJE8E2nZmHuvb3DOI/U/i3GrNv/Q61eyZPVg8UsSotPrnUSaCQFkkb/uPWISXdh4sssO81ialgQV+zjRGxcu/MmEGRA3UNU2k4pTNznEia/LuLGcN9qu34fGFPzYLYlM3GZWRRZgrmH6Uqmg/jWX2FfIFkXCtAeka65o+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744121153; c=relaxed/simple;
-	bh=krfSXjfZeWQRXkJflCUdRZC8X/IhC/mZgFEqqBj1vZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IuW47sJbiUKknIJsvlM2jgB3ACN0gfswLx3mOsWOnrNnqd2bRKzHIPhOmTwYkTQHgik8NwLCZalYJB6qxX9kzQFavKIkPqLU/mnFsdGu31hot/W2QFwuSPqQEAPSHs/BWCu6IUPH/iEo/8c/zPZ8m8qBoioR3czDdm4/iP3PjtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OKkDXDR6; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744121353; c=relaxed/simple;
+	bh=2PzR4o4IgAn+Nu6fMktFxMnhkTqEfpHCjvngioSwPZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q2k2OkNjFv/pHgAa0G/EX+pQxnUhniTELHWNBAFhn3XqDUzp9Ih9QS/tR1zNKk22JLsXUhHAMabDZuhSS5FlkXhJ4E4OiNeKf6V9Oh/sDmx6RvFIK5bCG7JN+m1GvcspPPoXmh4doqtxMA/m30SsDkotM0OI+nhQlKzHS+1eBSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=OFMcVlxe; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=O2NHqlNx reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OKkDXDR6"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D8C1A4433E;
-	Tue,  8 Apr 2025 14:05:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744121150;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="OFMcVlxe";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="O2NHqlNx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1744121349; x=1775657349;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=v/+gO/eDzqiwoj1Zge9Nk2I670NLxBB25O6xAQ9lBnE=;
+  b=OFMcVlxeO4iRVtNGtuVjoE1+Fk7hBNrGuclTcFhzyEKvcTQiaq6+L1nF
+   rgYJjtJIGo7ZP9hhhm+Yy4rMLZdmAifvhFfkrxcRRIu1AhEbNFL7o4fYu
+   T5ced933P+h1GN7O/0h5a4wcZreNTbjDCb8ja+MOwZEidkux+lsIqkYK+
+   KbUD37E2xfTryw8gdWEJnVE6BkzSykOtDqo3lR9ufUHquzrlxSDlMqCQU
+   EhJmKl3kd1TbQAfN2bqvhI8xary8jRg9Y12ef5UHGGE9lTFZeQrfe0q10
+   5saohgqczrqnb11fzJSPlrhFFATSgoEQ3pSYk/pHLME7LuWZfk5a+w1GG
+   A==;
+X-CSE-ConnectionGUID: zjMQrJlkQkWcpQZUvIOG0g==
+X-CSE-MsgGUID: +nLC5QXzQlSqn/wuiTVC1w==
+X-IronPort-AV: E=Sophos;i="6.15,198,1739833200"; 
+   d="scan'208";a="43405800"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 08 Apr 2025 16:09:06 +0200
+X-CheckPoint: {67F52E02-1E-903EAEAC-E04C76C8}
+X-MAIL-CPID: 5A79930083A7B365114DC689F0D41E81_5
+X-Control-Analysis: str=0001.0A006374.67F52DF3.0056,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 413701621A9;
+	Tue,  8 Apr 2025 16:09:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1744121342;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pu1GCurYBEeBEHD5ue7wgscszjfmcKubyyhFO/17Ga0=;
-	b=OKkDXDR6kOgIdgXe/d5FjMq93Zab1MiEXDqj2nV8J0I3ItL9YtPeY/fNV0RPMCXVb39Mqe
-	ozM5VujxZfToV2bzGHEczSyWfFSv1wRn1WCAwD/v3YjBynKYz4TTePLuNIBTO8LIUtMi1G
-	TVBfqRdJpYwl1YKDgnfSgCl36l/kyWG6HIXIY/6djSba96tih3meWXywSFVoEzYCg6t98O
-	y9KNF8m+EpLip3P+ZZFJ9w7GFVoMbc+hf1PzJUcxlehlVrdg65bWxgcY5/fLHwccUuDOWV
-	fqOxMWolT0T3z4IBKHtw+BriYc3dEiBqW2XdWs62aAyEZK6dbdBKl23D50KUwA==
-Date: Tue, 8 Apr 2025 16:05:46 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 13/16] i2c: busses: at91: Add MCHP_LAN966X_PCI
- dependency
-Message-ID: <20250408160546.07ae304b@bootlin.com>
-In-Reply-To: <Z_PyfyBq5cDeIQwS@smile.fi.intel.com>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-14-herve.codina@bootlin.com>
-	<Z_PyfyBq5cDeIQwS@smile.fi.intel.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=v/+gO/eDzqiwoj1Zge9Nk2I670NLxBB25O6xAQ9lBnE=;
+	b=O2NHqlNxp5QNXDjVYtpGLSWdOKX/ELTWx7c0ZkMlBrZ6jfsrZTKAtW0urzHAC5VSs1TGDR
+	l5pxaOE01iUdjI7Y2sRKMWfRCqSENvTXuVQxC1xZO4292d8bXyMkHE4jp8dIa3/7okOlpb
+	1E4zSFZalXoUlvf3VxrzS40BFVS7D2jZ8EGB5ONcbdVSDHTY/6z6hXuAtTX6MAThWOuAQR
+	/OHjID+4VjpmKvTpTPs75X8ndO37jpVLiMWvLh/yApSaWMUs63PjKs5u8THXw1Xukr85gs
+	5USJ/OvTaNlXFg5l2j4CvOMoxYMI9+LI9rtThOoXI4Weh0Ij1z6B6kuTZ9WfDQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com
+Subject: [PATCH 1/1] arm64: dts: tqma8mpql-mba8mpxl-lvds: Rename overlay to include display name
+Date: Tue,  8 Apr 2025 16:08:55 +0200
+Message-ID: <20250408140856.1143290-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdefvdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
- egurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
-X-GND-Sasl: herve.codina@bootlin.com
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Andy,
+This platform supports several displays, so rename the overlay to reflect
+the actual display being used. This also aligns the name to the other
+TQMa8M* modules.
 
-On Mon, 7 Apr 2025 18:42:55 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/Makefile                        | 4 ++--
+ ...s.dtso => imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso} | 0
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+ rename arch/arm64/boot/dts/freescale/{imx8mp-tqma8mpql-mba8mpxl-lvds.dtso => imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso} (100%)
 
-> On Mon, Apr 07, 2025 at 04:55:42PM +0200, Herve Codina wrote:
-> > The AT91 I2C driver depends on ARCH_AT91.
-> > 
-> > This I2C controller can be used by the LAN966x PCI device and so
-> > it needs to be available when the LAN966x PCI device is enabled.  
-> 
-> ...
-> 
-> >  config I2C_AT91
-> >  	tristate "Atmel AT91 I2C Two-Wire interface (TWI)"
-> > -	depends on ARCH_AT91 || COMPILE_TEST
-> > +	depends on ARCH_AT91 || MCHP_LAN966X_PCI || COMPILE_TEST  
-> 
-> I would drop it altogether in similar way as suggested for the clock driver.
-> 
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 93cbd8d5081b3..38ce3d1c41c10 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -263,7 +263,7 @@ imx8mp-tqma8mpql-mba8mpxl-imx327-isp1-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8
+ imx8mp-tqma8mpql-mba8mpxl-imx327-isp2-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-isp2.dtbo imx8mp-tqma8mpql-mba8mpxl-imx327.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-imx327-isi1-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-isi1.dtbo imx8mp-tqma8mpql-mba8mpxl-imx327.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-imx415-isp1-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-isp1.dtbo imx8mp-tqma8mpql-mba8mpxl-imx415.dtbo
+-imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
++imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-lvds-lb070wv8-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-lb070wv8.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-ov9281-isi1-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb  imx8mp-isi1.dtbo imx8mp-tqma8mpql-mba8mpxl-ov9281.dtbo
+@@ -277,7 +277,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-imx327-isp1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-imx327-isp2.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-imx327-isi1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-imx415-isp1.dtb
+-dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-lb070wv8.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-ov9281-isi1.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso
+similarity index 100%
+rename from arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds.dtso
+rename to arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso
+-- 
+2.43.0
 
-IMHO, they should be kept for the reason mentionned for the clock driver.
-
-Best regards,
-Hervé
