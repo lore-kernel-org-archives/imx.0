@@ -1,113 +1,95 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F215639ACF
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 15:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0756A224222
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 15:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744125489; cv=none; b=qvYwZHClzBXoraWgy/pGTB0Z9XBvobpANMfZr4avexO0hJGORve4iU39qZKz5aka41+N0uhk526mGlhTq32XQnBkbS97gds4f8v5TJRLTmsciXvT7FZpYqkyuH8scjZgso+UUTSeSY13vmmLoeV/fMD9pmvKr6j2fC9CfEUdxxc=
+	t=1744126256; cv=none; b=TBKkpvMrqj7NBEYx7G8tagZjnsWm0HvNGUrqsf5Oyiz584iJ9RhKUW8kj3rIOHWzIRbyDu7m7Fxz8O1DHnWMWEOVeuxATlQ+lkCnyr8UPc2H+qU/97LIXcsCNr9lISQu/C0ymDeFHOA3IPnF9ubxmtxrKZL+968faeOnTlwDfwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744125489; c=relaxed/simple;
-	bh=R7gt85kpHUgOXrzFifbXZ9lqyoRD668hCe7Kpfratak=;
+	s=arc-20240116; t=1744126256; c=relaxed/simple;
+	bh=0YFuHjXItMALCF9I61SplNMuKtnWRp5UV2h38diSEak=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FcVsVDIHI6nuTmlIpDV2PP6MdM2Q6lji9GeJWFcZ6Z97pazSOosimt3rsQ69yiLPGEpIvvI5RklpSg0SfGUX3GGQxcCC/8EJ1fnixHjKocHnPDhbCuOVZVy6I4SboESFtNBHJD8agpNDJdqsX5w9DVEc8Z6bv5RjWwnRP5LsE8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qYN9elIQ; arc=none smtp.client-ip=91.218.175.183
+	 In-Reply-To:Content-Type; b=WutHwTuxJSmA8FgbodCoAWjd7STLOAMmby4ijumkr2rzQd2z2nxFVs/Xzq+z5yHf8KZhwudAvpz4+uNrobeGx7RYbwFnbM3DbKez5U8y5zFEGXLiSH+D4lx0G06Tg4JoXKCgsTyruAjvA4G/2xcGFIX0SkAZ6KZ6/DG8zCCVE5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xHjiYEdg; arc=none smtp.client-ip=95.215.58.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qYN9elIQ"
-Message-ID: <e7720741-93c5-450b-99a0-3434a5d535f5@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xHjiYEdg"
+Message-ID: <08c0e1eb-2de6-45bf-95a4-e817008209ab@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744125482;
+	t=1744126252;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6A0hK4GqrFidtzfUsz5pZ3otqeWdeUksBm3Ffeph64Q=;
-	b=qYN9elIQgFBvOhzsXh3Ym4aLFX9ciaThNCjNQYCkgf6ZQB63IU9qXvViaXtNZ3HsvQ90R2
-	bXwC/4E6c8pVQoaCzqtHCDvwW1Y9QVSXLmO7XXnkXVMao7Ct/yZv1K1u/knJG7IlU0EOxa
-	VCPfs97vLfLKyJjO9Ti4Badxnbc5Kjk=
-Date: Tue, 8 Apr 2025 11:17:52 -0400
+	bh=8BoOWeNe+pe93MVOTNw72S8eDhTJzWNGVCLyplYdrjU=;
+	b=xHjiYEdgV7tMnhbjUS9rxzHVYtisqRgofwAbFgKBjHeCW/w+sALVnUMiySoFUarrOrSbJp
+	Ecqv/CNdAQM8aUz/+aPqTRou80iDO+z9ZzmUuIVt85PyF9sLMmnGUY26Em+RgqaMhsISwv
+	mClV4f4j7VSPhAIpytBuD78aAgb4MhI=
+Date: Tue, 8 Apr 2025 11:30:43 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
-To: Daniel Golle <daniel@makrotopia.org>,
- "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Cc: Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+Subject: Re: [net-next PATCH v2 00/14] Add PCS core support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
  Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
- upstream@airoha.com, Heiner Kallweit <hkallweit1@gmail.com>,
+ upstream@airoha.com, Christian Marangi <ansuelsmth@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
  Alexandre Belloni <alexandre.belloni@bootlin.com>,
  Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
  Clark Wang <xiaoning.wang@nxp.com>,
  Claudiu Beznea <claudiu.beznea@microchip.com>,
  Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
  Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
  Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Li Yang <leoyang.li@nxp.com>, Madalin Bucur <madalin.bucur@nxp.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <michal.simek@amd.com>,
- Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Michal Simek <michal.simek@amd.com>,
  Nicolas Ferre <nicolas.ferre@microchip.com>,
  Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
  Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
  Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, Shawn Guo <shawnguo@kernel.org>,
- UNGLinuxDriver@microchip.com, Vladimir Oltean <vladimir.oltean@nxp.com>,
- Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linuxppc-dev@lists.ozlabs.org
-References: <20250403181907.1947517-1-sean.anderson@linux.dev>
- <20250407182738.498d96b0@kmaincent-XPS-13-7390>
- <720b6db8-49c5-47e7-98da-f044fc38fc1a@linux.dev>
- <CA+_ehUyAo7fMTe_P0ws_9zrcbLEWVwBXDKbezcKVkvDUUNg0rg@mail.gmail.com>
- <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
- <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
- <Z_QKl-4563l05WB3@makrotopia.org>
+ Saravana Kannan <saravanak@google.com>, UNGLinuxDriver@microchip.com,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20250407231746.2316518-1-sean.anderson@linux.dev>
+ <20250408075047.69d031a9@kernel.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <Z_QKl-4563l05WB3@makrotopia.org>
+In-Reply-To: <20250408075047.69d031a9@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On 4/7/25 13:25, Daniel Golle wrote:
-> On Mon, Apr 07, 2025 at 07:21:38PM +0200, Christian Marangi (Ansuel) wrote:
->> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
->> > I agree that a "cells" approach would require this, but
->> >
->> > - There are no in-tree examples of where this is necessary
->> > - I think this would be easy to add when necessary
->> >
->> 
->> There are no in-tree cause only now we are starting to support
->> complex configuration with multiple PCS placed outside the MAC.
->> 
->> I feel it's better to define a standard API for them now before
->> we permit even more MAC driver to implement custom property
->> and have to address tons of workaround for compatibility.
+On 4/8/25 10:50, Jakub Kicinski wrote:
+> On Mon,  7 Apr 2025 19:17:31 -0400 Sean Anderson wrote:
+>> This series depends on [1,2], and they have been included at the
+>> beginning so CI will run. However, I expect them to be reviewed/applied
+>> outside the net-next tree.
 > 
-> Qualcomm's PCS driver will require offering multiple phylink_pcs by a
-> single device/of_node. So while it's true that there is currently no
-> in-tree user for that, that very user is already knocking on our doors.
+> These appear to break the build:
 > 
-> See
-> https://patchwork.kernel.org/project/netdevbpf/list/?series=931658&state=*
+> drivers/acpi/property.c:1669:39: error: initialization of ‘int (*)(const struct fwnode_handle *, const char *, const char *, int,  unsigned int,  struct fwnode_reference_args *)’ from incompatible pointer type ‘int (*)(const struct fwnode_handle *, const char *, const char *, unsigned int,  unsigned int,  struct fwnode_reference_args *)’ [-Wincompatible-pointer-types]
+>  1669 |                 .get_reference_args = acpi_fwnode_get_reference_args,   \
+> 
+> Could you post as RFC until we can actually merge this? I'm worried 
+> some sleep deprived maintainer may miss the note in the cover letter
+> and just apply it all to net-next..
 
-OK, but you have separate nodes for each PCS? So maybe the best thing is to
-allow customizing the fwnode? E.g. something like
+I would really like to keep RFC off the titles since some reviewers don't
+pay attention to RFC series.
 
-pcs_register_fwnode(struct device *dev, struct phylink_pcs *pcs, struct fwnode_handle *fwnode)
+Would [DO NOT MERGE] in the subject be OK?
 
 --Sean
