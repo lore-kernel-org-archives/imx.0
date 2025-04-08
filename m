@@ -1,90 +1,121 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315B721859D;
-	Tue,  8 Apr 2025 16:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BBE22DFA9
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 17:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744128799; cv=none; b=NvXO8s+GLnKEGcqKwfzyqCQAZKqbBvTchdBapUPh17hV6RrKPg/2LZSgk9gbC3xJVEzPwFn+/zAF35Aqi2pG/hLGwBT5bUziTs22vIu7mDHFjqIc0DFN3pAq4lkweFlXqkcxJAsC2pZi8R1R27WKaLi9X1o9eu2vKQygYmRnzmI=
+	t=1744133298; cv=none; b=HKPsQ5kBdzXqz3hmlsVSt1zpNfYLIiwUE4LpRIHiLlAh5RwMzyrBaNCt95ZXns5KdmRjdqc0MnakR1k4QWItadVUOb/g0ypw7HJ2twukHgChHdfOHh6mosHcHq2cSudbBnxOCBtQ9GtrTTaZ5D1NyMtakbXbnj6XqzW0oCA79XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744128799; c=relaxed/simple;
-	bh=Qc1TY5TBgRWiRlw2g3PMWP+HHylhaLXQ7+7HE1eiRc8=;
+	s=arc-20240116; t=1744133298; c=relaxed/simple;
+	bh=iGs2ZZHWszBkgjha1A2dY+//qUbJ939WmeteH4R9VoY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eijevH6/NRruoWAaaZbmLZHt9qSsPTBb6me8OFJENyr7ir8QNPHW3o43FJY+EKp/+8jbr/LizyqbBokueNn4H5JS0I2JXy5A2+FmhDq2mBYIy3T/BRefHjiBnPr+I4HLkEYvx+QppzGQIIxZslG2+125QHwVP75CvUV5Kjxl9DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xQHDKD9Z; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=ma6JbrvQNS8VhhOD5Bw7K7S5Fh9/WMK0tG3EoWQKRJ4GtbsQRfKQJKFbln+y0KpyrnrJY32kjtNwxSAjvbyyw76oAHJBTS8RHqCPBsLquPicCMxmZThRr4wJadzDdjUiXmY5mS576NzLUZHsRAs0bXRCBCQXckEu99JHUuXshvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Gug+5dJk; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xQHDKD9Z"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=iHamA6MmAQln3g+ph5RzN9L5CgRNW7XpNoZqh01YomM=; b=xQHDKD9ZXptDaSK+dQASAxx790
-	Ybh87tS1nZ3FusAZGh77bUylZwpxjm6ICZWRNMCCbeK3BDFf+XrZwIaTUeNHNl2mncQZsxLkl7Acq
-	FR96apk9s3xS4f0APOr0XRJuOag3yS2jFyDzyK/zpm+y9Y37zDhSdhTY1OCd/dS4J8es=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u2BZW-008QBU-Ty; Tue, 08 Apr 2025 18:13:10 +0200
-Date: Tue, 8 Apr 2025 18:13:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Martyn Welch <martyn.welch@collabora.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, kernel <kernel@collabora.com>,
-	devicetree <devicetree@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	imx <imx@lists.linux.dev>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2] arm64: dts: imx8mp: Add device tree for Nitrogen8M
- Plus ENC Carrier Board
-Message-ID: <22e7df8e-51a2-4549-ad80-0e7fd256de0a@lunn.ch>
-References: <20250327123907.542132-1-martyn.welch@collabora.com>
- <cf525617-b895-4d58-8455-a5c7fa9bbeab@lunn.ch>
- <196162332ff.b61ad5b5564260.8672918780815538746@collabora.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Gug+5dJk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Y8RWM2V6ZnehV9xCG2Wi7D3YFpwSdHlPKuNFJkQ/bqQ=; b=Gug+5dJkFQ2rbCZ5IXZX4osrkc
+	z4jCLXuY8M+Deo7TGvO4X3azXzNOY81Pym6BE1wRVtlX0j1A55PWe5bI2sC3crPMPxHw1CeStLy2o
+	/V0QKXahJUMiiC0QA75pZ0B71CSfo3v561yu0Dz00hSkJbrLJPo2YlqRoNq7PJUrXxcRgH84YKKRU
+	OmVjnaBReXWpYspNTe4XnqnxjIhTFm+dq6EUTbPorz00lCBHEMhGAjD6JCR7I3D0tHI4klOBUjGmX
+	WZfuxE+cKAVpE7S62ePuI4c2mcHsgReKBCz99EZlrG7OMoPEVQAv2csuoYJ61Ua+C90ZhC8XailZA
+	nZx7znGQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51470)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1u2Cjb-0007pu-0I;
+	Tue, 08 Apr 2025 18:27:39 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1u2CjV-0001bg-19;
+	Tue, 08 Apr 2025 18:27:33 +0100
+Date: Tue, 8 Apr 2025 18:27:33 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, upstream@airoha.com,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jonathan Corbet <corbet@lwn.net>, Joyce Ooi <joyce.ooi@intel.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	Robert Hancock <robert.hancock@calian.com>,
+	Saravana Kannan <saravanak@google.com>,
+	UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next PATCH v2 00/14] Add PCS core support
+Message-ID: <Z_VchfzoKOTvy5TQ@shell.armlinux.org.uk>
+References: <20250407231746.2316518-1-sean.anderson@linux.dev>
+ <20250408075047.69d031a9@kernel.org>
+ <08c0e1eb-2de6-45bf-95a4-e817008209ab@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <196162332ff.b61ad5b5564260.8672918780815538746@collabora.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <08c0e1eb-2de6-45bf-95a4-e817008209ab@linux.dev>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Apr 08, 2025 at 05:02:07PM +0100, Martyn Welch wrote:
->  ---- On Thu, 27 Mar 2025 14:25:38 +0000  Andrew Lunn <andrew@lunn.ch> wrote --- 
->  > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
->  > > @@ -0,0 +1,415 @@
->  > > +&eqos {
->  > > +    pinctrl-names = "default";
->  > > +    pinctrl-0 = <&pinctrl_eqos>;
->  > > +    phy-handle = <&ethphy0>;
->  > > +    phy-mode = "rgmii-id";
->  > > +    status = "okay";
->  > > +
->  > > +    mdio {
->  > > +        compatible = "snps,dwmac-mdio";
->  > > +        #address-cells = <1>;
->  > > +        #size-cells = <0>;
->  > > +
->  > > +        ethphy0: ethernet-phy@4 {
->  > 
->  > Just conformation, the PHY is on the SOM? Are the magnetics and RJ45
->  > socket on the SOM, or the carrier?
->  > 
+On Tue, Apr 08, 2025 at 11:30:43AM -0400, Sean Anderson wrote:
+> On 4/8/25 10:50, Jakub Kicinski wrote:
+> > On Mon,  7 Apr 2025 19:17:31 -0400 Sean Anderson wrote:
+> >> This series depends on [1,2], and they have been included at the
+> >> beginning so CI will run. However, I expect them to be reviewed/applied
+> >> outside the net-next tree.
+> > 
+> > These appear to break the build:
+> > 
+> > drivers/acpi/property.c:1669:39: error: initialization of ‘int (*)(const struct fwnode_handle *, const char *, const char *, int,  unsigned int,  struct fwnode_reference_args *)’ from incompatible pointer type ‘int (*)(const struct fwnode_handle *, const char *, const char *, unsigned int,  unsigned int,  struct fwnode_reference_args *)’ [-Wincompatible-pointer-types]
+> >  1669 |                 .get_reference_args = acpi_fwnode_get_reference_args,   \
+> > 
+> > Could you post as RFC until we can actually merge this? I'm worried 
+> > some sleep deprived maintainer may miss the note in the cover letter
+> > and just apply it all to net-next..
 > 
-> The PHY is on the SOM, the magnetics and RJ45 socket are on the carrier.
-
-Thanks. So phy-mode is in the right place.
-
+> I would really like to keep RFC off the titles since some reviewers don't
+> pay attention to RFC series.
 > 
->  > > +            compatible = "ethernet-phy-ieee802.3-c22";
->  > > +            reg = <4>;
+> Would [DO NOT MERGE] in the subject be OK?
 
-and the reg value is fixed.
+I'd bet that those who have decided "RFC means the patch series is not
+ready" will take such a notice to also mean the same, and ignore it.
 
-    Andrew
+I think there needs to be some kind of push-back against these
+maintainers who explicitly state that they ignore RFC series - making
+it basically anti-social behaviour in the kernel community.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
