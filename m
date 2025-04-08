@@ -1,99 +1,122 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052826A0B4
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 10:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A54268FD7
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 10:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744107439; cv=none; b=l+J3EYlWM+db5axkFBm4VU8DI70RxM+Y9poR3FQro3oQCvIbL1gQD9Psy14JvTpkxosA9oTtj89VJgGXwYb6F3LY5oG1rBKcGWFLuirauF0EJ05a/xAQ33OWWNCKzOb8ZRFRds+cenqvP2M4mX9Zkl1Tmi/oIsKswry3YETJBPc=
+	t=1744108612; cv=none; b=D5PFQ4Zo3T7qVGnJy1TxnADq8hbFUuv39irCpv6v/EZ08aOk4+YZMsdH+6xzFgXvNVDK3Xjw7CXAFCgQehFMWon3hOQMmxxNgZZhDIFCTpBhh66E2fcVZZKDBTVBMUMm06q+yxomB8FxaAa3ACWlud+IM8tUjLfVUy376IEx/yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744107439; c=relaxed/simple;
-	bh=UBGYZav1sanbx9q68R4VI0oFmTxYxEmCfw0AJTso0aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RbzBplswz3mJ3dtMJYFlF1xIWSflmJv4yEaNNOzJ/ZWr/pAHeakogfd8/B06rdMa/oFXy3U4uUbH725OTAGfKt8z6zTinGKxH7cz6KSd6SIjsj7/VXglTOkqkMtjQoIaArYmt6GsFBkoidat6S6atVQwEgta4uX4hW+UihSQYKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GI0V/SKA; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744108612; c=relaxed/simple;
+	bh=wzJvWLjTqiJYfQ5XdcRzN/rVMxfu+Qr9nqKFKHXaH7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IDZ3utGcPDQJ6EYRJCUqHvKhYDDeFvM6Bv9UbSsc2yODrlevU8Jg6wS59HjGpAoCX7Recyg7/c4+rycloKBmv5iirxaXBPUf0VvsplhLMMNLHXGR17ITtkljSyfwy8cqnBDeo70QwkURujNa4Xde/UHdX6U2wEJ3ZWKz+v4gFp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N4V9CBt8; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GI0V/SKA"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 56B6F441FE;
-	Tue,  8 Apr 2025 10:17:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744107434;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7EJi+ZuhZowHiCbZufnU+eePBnn+fZT6fo+kvEqiL/s=;
-	b=GI0V/SKAsO35ZWDwGAfhEesNMakWysFGWJ4QTbZxAqAJJ0b1kNMghx58bk8Gl0z+1VY1wU
-	kJfKX7aMWiGs51h+rkpopeRcFN+hTylkpy0WOSbm9Z+BSpwSi6Tne1W1Ev/otmPSiOzr2a
-	QrO7UMWkNGTMxUGh0LHFoO/+n5n3CWQjxZqGV7wJ+IMldDefYyDPetl7dvz9yDj2e9Vomp
-	OT9diWAl2mg2dnFtADrgHVXNhxzQKk/YVtGCMZVztHstkQpk7WUrDunFsaBhnalLVvQ095
-	V/6g8QLaq+MmjdstxHuqSQmuW3X1dC6u0u112TYwnZy6qLgowk5oLq65LcVDQw==
-Date: Tue, 8 Apr 2025 12:17:08 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 02/16] driver core: Rename get_dev_from_fwnode() wrapper
- to get_device_from_fwnode()
-Message-ID: <20250408121708.6b436b2c@booty>
-In-Reply-To: <20250407145546.270683-3-herve.codina@bootlin.com>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-3-herve.codina@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N4V9CBt8"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ede096d73so22334865e9.2
+        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 03:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744108609; x=1744713409; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+O8LIaQE6WLNSGODkrJEsZ72gySO7jid8n0Swavjxzs=;
+        b=N4V9CBt8LeTLZKw/UHasWEl8yNkPhXfJ7BEWAS7P5pgb5qpc8Afr+tZmuZPNL1Sj46
+         VPOANF+rKn6b/k5Ke6sOMYdVL7S9sD1Pf+XGmxkyWysHzw7AD3p5Cy3pxaFD5YRg/oKP
+         aAJIqLvS5uXXOgvbfZEcTjq+pI+iDwFOogYKXAt1h6oS+D8SMn18uBRYt0hLuG19WYS5
+         TVNXSqRkAncZ73Abunu4rXIK9wpMXnPSktGd7UqaOE2u4r99jPlp06/Qjvy9DeLapItI
+         decQ/nfsKRx1V8cCJCWpBnhIQHZjzLAOudohrVHUsfrxiqJH8jtYj9oBa6JGRfvTplDe
+         bgpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744108609; x=1744713409;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+O8LIaQE6WLNSGODkrJEsZ72gySO7jid8n0Swavjxzs=;
+        b=ElWwW0R8fuUSoX4UOxu7+BAl3NjCFLb3XS+3ErDOKgnw6ipL2kEKwY6dqGXgvHaWFb
+         be5Cv+qn666AGlc4cR0wNvR14EnjFyPHCcRsu5tyz0YrzjbIEQ+yQQakassVRFsf2Udv
+         UBssvut7dPsX3w1dPA/d0lV8VlSadODRsyDFkLOuMDgmkvhvkiermm2DC1VWlqG3NMKr
+         OYN117zWRnBiAsBAg+HyLkxlWELF/SXTfHC7XhMyloIjNLdj70yaRy6RxHtyBHYxNYxu
+         VNKKIF7hInGXXSCYuBwucUaMwn+RkEcfdZmjyglEq/qrBDbxpCo4EGMJCYQPgdAefa/2
+         W8ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCW0XxPTNHKuT5bbTi+yzpRRL896IpAbPdXI2Y07ItT9BJ1BAbuba33Leh7ngoHrlJoCfdQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzH98hRPqWMDw5T2I8i594QoZkFY54ghDk9AUJjzKGmMPLXAaSA
+	ZycD2iulb5Hm1lSFTLxFeML2RchiTsTh1XkQgOBpfYa4AlEfydv8ZP3Ghy32vTI=
+X-Gm-Gg: ASbGncvL6JUYd9rUxtlghVLlZBLTACHaGjg1KWDcIHmFCa4rYVwoDaiToU6VL7qswKX
+	e8aJPcDPuVY1HsgNj8Muf0slBJPeaYrhZ3c63MKFYh0wVtq23GcVz+rDeZcD0zFiLBsGRVN1dfx
+	SytKw59WBWmR1IryfuySsGXf+UDOJ9mNCBc3eSxhha3oZGmdLKx8xi0JwWc3jDxT3JsW2rNHTra
+	IzImKj41LSGHxJ7bNoY/MviXBcW12t6UfhhMKWWZOLu8Uzx37KctD2MSOZ+YXtKtHEW/ZCHU9+K
+	x6R1rtz0nD20k/8QpV1J9hTc2evsXXQWmmKNrj43OJpU2aQKTw==
+X-Google-Smtp-Source: AGHT+IGOw9Xy8oGk0GJfiu7VaitjR/t55edX0t5tshdnocYA+5fRdb4Pypir8G5VxuDaVk6MtoCiMg==
+X-Received: by 2002:a05:600c:3494:b0:43c:f8fc:f697 with SMTP id 5b1f17b1804b1-43ed0bc8d96mr155476115e9.9.1744108608941;
+        Tue, 08 Apr 2025 03:36:48 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39c30095ea8sm14397521f8f.20.2025.04.08.03.36.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 03:36:48 -0700 (PDT)
+Date: Tue, 8 Apr 2025 12:17:54 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v4 3/7] firmware: arm_scmi: imx: Add i.MX95 LMM protocol
+Message-ID: <c71fb862-85a5-42d4-91f8-398d0d532872@stanley.mountain>
+References: <20250408-imx-lmm-cpu-v4-0-4c5f4a456e49@nxp.com>
+ <20250408-imx-lmm-cpu-v4-3-4c5f4a456e49@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddvkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdeljeejuddvudetffdtudelfedugfduledtueffuedufefgudegkeegtdeihedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhop
- ehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408-imx-lmm-cpu-v4-3-4c5f4a456e49@nxp.com>
 
-On Mon,  7 Apr 2025 16:55:31 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Tue, Apr 08, 2025 at 04:44:27PM +0800, Peng Fan (OSS) wrote:
+> +static int scmi_imx_lmm_protocol_attributes_get(const struct scmi_protocol_handle *ph,
+> +						struct scmi_imx_lmm_priv *priv)
+> +{
+> +	struct scmi_msg_imx_lmm_protocol_attributes *attr;
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, PROTOCOL_ATTRIBUTES, 0,
+> +				      sizeof(*attr), &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	attr = t->rx.buf;
+> +
+> +	ret = ph->xops->do_xfer(ph, t);
+> +	if (!ret) {
+> +		priv->nr_lmm = le32_get_bits(attr->attributes, SCMI_IMX_LMM_NR_LM_MASK);
+> +		if (priv->nr_lmm > SCMI_IMX_LMM_NR_MAX) {
+> +			dev_err(ph->dev, "i.MX LMM: %d:Exceed max supported Logical Machines\n",
+> +				priv->nr_lmm);
+> +			return -EINVAL;
 
-> get_dev_from_fwnode() calls get_device() and so it acquires a reference
-> on the device returned.
-> 
-> In order to be more obvious that this wrapper is a get_device() variant,
-> rename it to get_device_from_fwnode().
-> 
-> Suggested-by: Mark Brown <broonie@kernel.org>
-> Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+This needs to call ph->xops->xfer_put(ph, t) before returning.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> +		}
+> +		dev_info(ph->dev, "i.MX LMM: %d Logical Machines\n", priv->nr_lmm);
+> +	}
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+regards,
+dan carpenter
