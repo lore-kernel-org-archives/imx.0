@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE48265CB1
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 09:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA7D266596
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 09:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744104695; cv=none; b=SZgWRB32tAYUk8lPTj3ENpaqLI3IotSmHcbU+3mIYU4hc6wVT/RGeLkbZ3VfYE7IMta0zXGmCVQvLrIZix95TJgURcrQUPAbgJN0pCq8tqvvGxNp1/Bm6CAui7OKoPT6MO5sPa+G478bvThll7c+8khYXbKhj2C/hj1DxlTbuJw=
+	t=1744104701; cv=none; b=r2UVlMH1wOW2r2A2IxxBg096MLV2MUTaQR1bFHh8GNllxC2/r/8C8eJb2EOVlKiKZnRQPCJasHAGKsWqnPvsYNL9rIw3LgbwCE8LsOlWrEUXAkV1KVn47wJoJFu1yoh7+1EkBtEzscAnbyguL1r9XExj+utZLfT9HPUMM4DK5Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744104695; c=relaxed/simple;
-	bh=G5xj9j0efrC3N99Nf8kAjp/+6DSPyu8ymmPavJTCzFY=;
+	s=arc-20240116; t=1744104701; c=relaxed/simple;
+	bh=PwheQ7XWr2HfBpe7Fbk4XD7Oa+SPx2X9kPrumZppBkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ju0+H7LJKlBYPJplMT3hJX/vo7HkcVCLrpT5kTGFUAR4UIaqF6aAD//DrTT8Q1Pnc3tn8hGykdA4heVtxSyxGW46buTRSqG2TU0vJ7ftZWCCZ/KZwZxXoeNXIqFrJlrqHv5/ymFe7AhVzePxYhQbDH+Zu1FR2uBsunjWahbdvyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZlVAHDJ5; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Z5562KSn reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=tZ2qwoY4IPZ6zwVi4QOqLYv1ca0RK01URQaJP3LNghrudtPGBZ7xycNZZ/4OdVZHaVPQjENtjC5eGs5JfwIE249JJ25e9dCpheYrYFR18VTleKok2FMCh16py36hx+8vAjgT7PlWG2lSg2jHE20WnFK+LGAW2JyQW1M7lGy8Yeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=HVKMXhlF; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=t68yO3LK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZlVAHDJ5";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Z5562KSn"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="HVKMXhlF";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="t68yO3LK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1744104693; x=1775640693;
+  t=1744104698; x=1775640698;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xVN//MuR4wm6RUmqVn0fG6wm0+/9v921P5UHDogrHwg=;
-  b=ZlVAHDJ5zQ+hf6gOcaZ9lPzF2Z3z8D2zNlV+SLr+7rmhqyCs4RdN8ZgA
-   0iFRnp20ho75OlPpeU4T7Wyu5xVSawHvoRGsliAP2y3zWFSEwpl19HkgJ
-   iIFuvvdAIp1buK7PKbqd7HqKHkGrir/Td7vu7zANPORlLJyMliEyD4P38
-   PRi+k9GpdAlcPJ9BdIk6L2PmV3GTIKtMzo/5B4G2kjN8OfBsbmaXrUb1v
-   IEtTl9JjFQMAD7acoE41Oly2pT8y+HdP8FybOZBe+/EXSlkkh5MrNynyg
-   7L7MeZFlDZif0Olft/E58ceo+B2kWw3pFDggSRwWqzQfVeHKtrAy/sRr+
+  bh=QVNXOS2LxVQSHIpbDIVfnXE7eeQe+su9AU3LUdFEW9U=;
+  b=HVKMXhlF3gEYyNY40kQwb6P9Z8/fl90EqFMCbIgkDGk1yqd5sWt6kDmK
+   mRdKWCZj/L60SKSGfhT28rL154yyqvOBmZJtIv1G9DTS4AkMPZr5pi3Sk
+   guBJQ4rFnWtDBI/XzFD7F4UBoN/0Bae2NYrCY9y0fAzEMEM99Yvb/Fyee
+   2630dWR2S4g7X3VzczuVIgChL9Avi0ZzRnaWgSVTyc+5dGqkbUjvD4iQE
+   IytMz0fdT7okVbcQCW6OMzUYRlZmayZ02SkuxidBBmSBmo3Au46yGSb3H
+   8vKhy3KsWHN/i88wcxUVhWJWjtWQnRW3An5fzkZrJEYLgNZFqBNjT9Dk/
    Q==;
-X-CSE-ConnectionGUID: ynzVERnIQKmWPsPEt8TdYg==
-X-CSE-MsgGUID: 0ibdHDc9Ta60iCwm60/znw==
+X-CSE-ConnectionGUID: Fer817JuQEqiAbn7FiTHKg==
+X-CSE-MsgGUID: 5cq2tzgmRViDP83LL+9mVg==
 X-IronPort-AV: E=Sophos;i="6.15,197,1739833200"; 
-   d="scan'208";a="43397369"
+   d="scan'208";a="43397375"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 08 Apr 2025 11:31:32 +0200
-X-CheckPoint: {67F4ECF4-19-2417938-F0170C2B}
-X-MAIL-CPID: C7C12BB62A1A0985F39A56B6586A990E_2
-X-Control-Analysis: str=0001.0A00639A.67F4ECEF.006B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A53AD169635;
-	Tue,  8 Apr 2025 11:31:27 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 08 Apr 2025 11:31:37 +0200
+X-CheckPoint: {67F4ECF9-2A-2417938-F0170C2B}
+X-MAIL-CPID: 0D72C79C590BE6ED7C163F3117526E61_2
+X-Control-Analysis: str=0001.0A006371.67F4ECF6.006A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 25A2A169635;
+	Tue,  8 Apr 2025 11:31:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1744104687;
+	s=dkim; t=1744104693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xVN//MuR4wm6RUmqVn0fG6wm0+/9v921P5UHDogrHwg=;
-	b=Z5562KSnIZtr6IocODh6/+XRXyiIs7RhQvVrNwFTpj9ss/L/yKT9mFtUb0dd5VH6O68e9w
-	6I8rWGkt707mn4pwOTHIpybPi8HJz7tU2L8IJEJMJl644Az71xMYKE5YZfEiM6ljE6/tDX
-	3BlqjK3A926Gu+bqSOYF24LvGiIZAR3cvwwmMnSyllbTLg5TTRbNL+lZjp/jToPYKGGwN0
-	ix2QasvSfKhSQIqb0Y8tCH6JWHS/m4eOpFLNiZmI6bmiR06aM7c/RgcV+Uo1U4hyd4669c
-	VAahsrY7Cqpz8+zDuWM2RMVpFbRJw69d0O/LrpqL/mWOczw/h91yqeRkNwaFug==
+	bh=QVNXOS2LxVQSHIpbDIVfnXE7eeQe+su9AU3LUdFEW9U=;
+	b=t68yO3LK17uQFVgtIS6VKO+YAtnSNsSsuwGom0tnJE3ho3m45+YjapyHaJqXUImaNGemvS
+	hj8nLsDu65/AS9d8QwgVRxRGPCQLwf/p1HSR03klka4Z3wsFioTnFeCHu7IGrVCk/E43LY
+	SX+NCJwnxS/Bw+ZL65WWCMHYuKJfAwVm8PEO+JtL3grLQ2Hj6N5WwAryzI9lLJMn53BwhX
+	3lM70Gxs494XoUzZyW2G3ZP4K/V91VhlB1pZBiQdx1nZweJu1hh2tt8DmHPZ2HQef7BA3P
+	w23Z3/Rdn+LAkaabzOsbAqXpP233aDsQIs3bQnqOBNrX4Xgsoc+2MGOXOKpoyQ==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Shawn Guo <shawnguo@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -62,11 +62,10 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v2 3/7] ARM: dts: ls1021a-tqmals1021a: Add HDMI overlay
-Date: Tue,  8 Apr 2025 11:30:50 +0200
-Message-ID: <20250408093059.551700-4-alexander.stein@ew.tq-group.com>
+	imx@lists.linux.dev
+Subject: [PATCH v2 4/7] ARM: dts: ls1021a-tqmals1021a: Add LVDS overlay for Tianma TM070JVGH33
+Date: Tue,  8 Apr 2025 11:30:51 +0200
+Message-ID: <20250408093059.551700-5-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250408093059.551700-1-alexander.stein@ew.tq-group.com>
 References: <20250408093059.551700-1-alexander.stein@ew.tq-group.com>
@@ -79,35 +78,35 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-This add an overlay for using the RGB-to-HDMI bridge.
-Note: As DDC is directly connected to general I2C bus, there might be I2C
-address conflicts. Hence not all displays might work.
+This adds an overlay for the supported LVDS display tianma tm070jvhg33.
+The on-board RGB-to-LVDS encoder and DCU graphics chain are configured
+accordingly. Add power supply as well, which had been missing all the time.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm/boot/dts/nxp/ls/Makefile             |  3 ++
- .../ls/ls1021a-tqmls1021a-mbls1021a-hdmi.dtso | 32 +++++++++++++++++++
- 2 files changed, 35 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-hdmi.dtso
+ arch/arm/boot/dts/nxp/ls/Makefile             |  2 +
+ ...tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtso | 47 +++++++++++++++++++
+ .../nxp/ls/ls1021a-tqmls1021a-mbls1021a.dts   |  1 +
+ 3 files changed, 50 insertions(+)
+ create mode 100644 arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtso
 
 diff --git a/arch/arm/boot/dts/nxp/ls/Makefile b/arch/arm/boot/dts/nxp/ls/Makefile
-index 14759331dba24..225a7665b8ad1 100644
+index 225a7665b8ad1..7f96de6f80224 100644
 --- a/arch/arm/boot/dts/nxp/ls/Makefile
 +++ b/arch/arm/boot/dts/nxp/ls/Makefile
-@@ -6,3 +6,6 @@ dtb-$(CONFIG_SOC_LS1021A) += \
- 	ls1021a-tqmls1021a-mbls1021a.dtb \
- 	ls1021a-tsn.dtb \
+@@ -8,4 +8,6 @@ dtb-$(CONFIG_SOC_LS1021A) += \
  	ls1021a-twr.dtb
-+
-+ls1021a-tqmls1021a-mbls1021a-hdmi-dtbs += ls1021a-tqmls1021a-mbls1021a.dtb ls1021a-tqmls1021a-mbls1021a-hdmi.dtbo
-+dtb-$(CONFIG_SOC_LS1021A) += ls1021a-tqmls1021a-mbls1021a-hdmi.dtb
-diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-hdmi.dtso b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-hdmi.dtso
+ 
+ ls1021a-tqmls1021a-mbls1021a-hdmi-dtbs += ls1021a-tqmls1021a-mbls1021a.dtb ls1021a-tqmls1021a-mbls1021a-hdmi.dtbo
++ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33-dtbs += ls1021a-tqmls1021a-mbls1021a.dtb ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtbo
+ dtb-$(CONFIG_SOC_LS1021A) += ls1021a-tqmls1021a-mbls1021a-hdmi.dtb
++dtb-$(CONFIG_SOC_LS1021A) += ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtb
+diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtso b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtso
 new file mode 100644
-index 0000000000000..e713a2ecbfc25
+index 0000000000000..e9708f3c67403
 --- /dev/null
-+++ b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-hdmi.dtso
-@@ -0,0 +1,32 @@
++++ b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-lvds-tm070jvhg33.dtso
+@@ -0,0 +1,47 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 +/*
 + * Copyright 2013-2014 Freescale Semiconductor, Inc.
@@ -116,30 +115,57 @@ index 0000000000000..e713a2ecbfc25
 + * Author: Alexander Stein
 + */
 +
++#include <dt-bindings/gpio/gpio.h>
++
 +/dts-v1/;
 +/plugin/;
++
++&backlight_dcu {
++	status = "okay";
++};
 +
 +&dcu {
 +	status = "okay";
 +
 +	port {
 +		dcu_out: endpoint {
-+			remote-endpoint = <&sii9022a_in>;
++			remote-endpoint = <&lvds_encoder_in>;
 +		};
 +	};
 +};
 +
-+&hdmi_out {
++&display {
++	compatible = "tianma,tm070jvhg33";
 +	status = "okay";
 +};
 +
-+&sii9022a {
++&lvds_encoder {
 +	status = "okay";
 +};
 +
-+&sii9022a_in {
++&lvds_encoder_in {
 +	remote-endpoint = <&dcu_out>;
 +};
++
++&lvds_encoder_out {
++	remote-endpoint = <&panel_in>;
++};
++
++&panel_in {
++	remote-endpoint = <&lvds_encoder_out>;
++};
+diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a.dts b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a.dts
+index 27a55fa638128..80dae0c09542d 100644
+--- a/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a.dts
++++ b/arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a.dts
+@@ -147,6 +147,7 @@ hdmi_in: endpoint {
+ 	display: panel {
+ 		backlight = <&backlight_dcu>;
+ 		enable-gpios = <&pca9554_1 3 GPIO_ACTIVE_HIGH>;
++		power-supply = <&reg_3p3v>;
+ 		status = "disabled";
+ 
+ 		port {
 -- 
 2.43.0
 
