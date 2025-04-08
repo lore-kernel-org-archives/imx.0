@@ -1,36 +1,36 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D14E1C460A
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 14:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE351EA65
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 14:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744121035; cv=none; b=iBJ1hKumZhvyRXX4qBxXKQ3uol8Gd853Yh7YdKh9Iin+kwA0AdjChexzhCZbslteHYwfzg9PHzDju5ZoGrVa/o3Punyb/2NeB2hFP3XQRu/Us5zRRGvPUgqNGQP5mMhmUJpXSXZQsD5/lSfI+HngUVGPTZIOklAWS2rMd05mj1I=
+	t=1744121153; cv=none; b=YvJjt2rtdXKm0JmZaLahhYA+EiU7LdHWNmTKFdJUrDggxSnUzX5+nAxJvPV30bmsYJUyPSEXoJl/OBj/+0XrQqoH415aJ2qfjBSSSe9JUPMENEBY0gmIcfK/T+8MbASFCSC3kJX6tyn/JXMTmnXAMRW9Q7sdYzCbbGcglXMr4NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744121035; c=relaxed/simple;
-	bh=Sf45kr7cUtCH9nLRIxWk9P6majZZZ7qoDJBtQNh1WRs=;
+	s=arc-20240116; t=1744121153; c=relaxed/simple;
+	bh=krfSXjfZeWQRXkJflCUdRZC8X/IhC/mZgFEqqBj1vZE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdXr2JGpRyyJk3FeUnPUUVV4X8kGBxqVtOOZfJW+CmM1wvLJSf4nS+JgFP21ezNXf1n8k6hpNIWRsL+9b2bOT7OVMaWNh7elHH44aj5LLUWOZidVOTCkyUJnfqKoaMkwxKlpQRCn9OZlEgwxiJ2HtEfpDpaT3rRX4TKDLA6j9yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=l4hAQeZm; arc=none smtp.client-ip=217.70.183.197
+	 MIME-Version:Content-Type; b=IuW47sJbiUKknIJsvlM2jgB3ACN0gfswLx3mOsWOnrNnqd2bRKzHIPhOmTwYkTQHgik8NwLCZalYJB6qxX9kzQFavKIkPqLU/mnFsdGu31hot/W2QFwuSPqQEAPSHs/BWCu6IUPH/iEo/8c/zPZ8m8qBoioR3czDdm4/iP3PjtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OKkDXDR6; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="l4hAQeZm"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F197044327;
-	Tue,  8 Apr 2025 14:03:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OKkDXDR6"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D8C1A4433E;
+	Tue,  8 Apr 2025 14:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744121031;
+	t=1744121150;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JoHpHGrHvAWvhU7WqsQUuRPEF36RuyRVdBvT8MviKt0=;
-	b=l4hAQeZmLC5TBAns0oXotjt35VFAVSgOe8VItJYKZBXR/JTgmG4mFx+mLLC+YZ09PT1PQn
-	IgcQ5XgjFd6R+LQZ/Ca/rD8cIIxblv50Pc0HceVa4xxDBag3jg70UiwZsK+W/ffrwkXTXm
-	J/NlvHM0suGF4SfgCPO/f/VMxvOJZfb1deFP9s60qCPHuX9egj4CjqXBI2Hq0O0irkW5Vj
-	6qQ5wnA7slRnIBspIo+Q6eHd6vwsgouiokXn6ChDwTS7ZGR69VRxSze3J2xk/sA0yzw+nB
-	W4Jfz79hgJsczIM+2YjLZ6eT/b7Uw8IHPn3d7X/fYDzjv9gEC09G204x/G4VmQ==
-Date: Tue, 8 Apr 2025 16:03:44 +0200
+	bh=Pu1GCurYBEeBEHD5ue7wgscszjfmcKubyyhFO/17Ga0=;
+	b=OKkDXDR6kOgIdgXe/d5FjMq93Zab1MiEXDqj2nV8J0I3ItL9YtPeY/fNV0RPMCXVb39Mqe
+	ozM5VujxZfToV2bzGHEczSyWfFSv1wRn1WCAwD/v3YjBynKYz4TTePLuNIBTO8LIUtMi1G
+	TVBfqRdJpYwl1YKDgnfSgCl36l/kyWG6HIXIY/6djSba96tih3meWXywSFVoEzYCg6t98O
+	y9KNF8m+EpLip3P+ZZFJ9w7GFVoMbc+hf1PzJUcxlehlVrdg65bWxgcY5/fLHwccUuDOWV
+	fqOxMWolT0T3z4IBKHtw+BriYc3dEiBqW2XdWs62aAyEZK6dbdBKl23D50KUwA==
+Date: Tue, 8 Apr 2025 16:05:46 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
@@ -55,12 +55,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
  <horatiu.vultur@microchip.com>, Steen Hegelund
  <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 12/16] clk: lan966x: Add MCHP_LAN966X_PCI dependency
-Message-ID: <20250408160344.3d3c834b@bootlin.com>
-In-Reply-To: <Z_PxdmKbBGlhpQpr@smile.fi.intel.com>
+Subject: Re: [PATCH 13/16] i2c: busses: at91: Add MCHP_LAN966X_PCI
+ dependency
+Message-ID: <20250408160546.07ae304b@bootlin.com>
+In-Reply-To: <Z_PyfyBq5cDeIQwS@smile.fi.intel.com>
 References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-13-herve.codina@bootlin.com>
-	<Z_PxdmKbBGlhpQpr@smile.fi.intel.com>
+	<20250407145546.270683-14-herve.codina@bootlin.com>
+	<Z_PyfyBq5cDeIQwS@smile.fi.intel.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -73,52 +74,32 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdefvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdfhleejtdeftdejveffgedtuddtgefhtedtudfhuefhtddtffeiueeigfdvhfdvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedtpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvl
- heskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdefvdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
+ egurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
 X-GND-Sasl: herve.codina@bootlin.com
 
 Hi Andy,
 
-On Mon, 7 Apr 2025 18:38:30 +0300
+On Mon, 7 Apr 2025 18:42:55 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Mon, Apr 07, 2025 at 04:55:41PM +0200, Herve Codina wrote:
-> > The lan966x clock controller depends on the LAN969x architecture or the
-> > LAN966x SoC.
+> On Mon, Apr 07, 2025 at 04:55:42PM +0200, Herve Codina wrote:
+> > The AT91 I2C driver depends on ARCH_AT91.
 > > 
-> > This clock controller can be used by the LAN966x PCI device and so it
-> > needs to be available when the LAN966x PCI device is enabled.  
+> > This I2C controller can be used by the LAN966x PCI device and so
+> > it needs to be available when the LAN966x PCI device is enabled.  
 > 
 > ...
 > 
-> >  	depends on HAS_IOMEM
-> >  	depends on OF
-> > -	depends on SOC_LAN966 || ARCH_LAN969X || COMPILE_TEST
-> > +	depends on SOC_LAN966 || ARCH_LAN969X || MCHP_LAN966X_PCI || COMPILE_TEST  
+> >  config I2C_AT91
+> >  	tristate "Atmel AT91 I2C Two-Wire interface (TWI)"
+> > -	depends on ARCH_AT91 || COMPILE_TEST
+> > +	depends on ARCH_AT91 || MCHP_LAN966X_PCI || COMPILE_TEST  
 > 
-> This doesn't seem to scale. Why not simply
-> 
-> 	depends on HAS_IOMEM
-> 	depends on OF || COMPILE_TEST
-> 
-> ?
+> I would drop it altogether in similar way as suggested for the clock driver.
 > 
 
-With your proposal, if we configure a kernel without SOC_LAN966x or
-ARCH_LAN969x or MCHP_LAN966X_PCI, in other words we configure a kernel
-without a real needed for this clock controller driver, the user will be
-asked about this driver.
-
-This was already reported by Geert
-   https://lore.kernel.org/all/369233dfded88ff6fb342e03794fe31985d84d82.1737383314.git.geert+renesas@glider.be/
-
-I agreed with Geert that asking the user about those driver the LAN966x
-depends on was not a good things and leads to confusion.
-
-So, to prevent asking the user about this driver, I followed the same
-strategy and added the dependencies.
-
-IMHO, we should keep those dependencies here.
+IMHO, they should be kept for the reason mentionned for the clock driver.
 
 Best regards,
 Hervé
