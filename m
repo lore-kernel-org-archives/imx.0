@@ -1,141 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9151E521A;
-	Tue,  8 Apr 2025 14:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFAE1E8348
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 15:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744124323; cv=none; b=iFOhGE8JzrF9u4rGbr+srhMFuPtguOQ4PdBh1kCajz5DFYK2S7dfq6iS6gFwNt8RmFuEBOAxRcVleMiSD7UOmYm9Th60s9vWmjkEKjLPYAdKHfdevb8Ft0kUh2M3ZsvicUE9uOlzu46YBIZdhc5hSjwLzaXNHgIrF98x/lVYa+U=
+	t=1744125243; cv=none; b=YZpPgX34K1okvZ6EitRJ7B24uk99YVu8yINzvZuytcZO+ChYVh5rMhgEh+6RHgR/HH3zFRlXCB4aUvliqDE+t2nio0ATfLVOTek8AMXyZMOEcCHUCdbryj8LXnTgdfz/TWMeuAdvZi+g5UyYXI5der6p0L1yhzi6lR7t4h9i4Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744124323; c=relaxed/simple;
-	bh=5qALSFBZ7L1tAKOyN1L/oKlk3jA7LDA7goT+jZYqeQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=mrIMN3ilD9cMlYVR1eY7tQpogWL+wx8BranSByhW86xBppr3E5iT4gboH/2jOsnzY6CkMjDN/kbOsYXbHbY9AdXgfKtJovTpHCPoA+Y5VmA8z1to3lPj78UtDL167u1JZUktNADGLJK/Rn3v6RyFyoM0Jp2haeLS3qn6jozJ/Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4GkieZE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744125243; c=relaxed/simple;
+	bh=8p3t0lkqP6MY+gt6AiZADjhwdZ+1gjcjLL6bW89DHiY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=JmoiNPr4Gmv7j17tl6HFjKvWaGWm+xKn7q56N6qJe1qGYqKkAE3JLV6HI26sFzcj1zRjuDxyqDGvRygUMkL2CBi4ptxVGBWyIJN5VY7njz9RzxQiyCdU46m/b8yU8631AqdvRfTiOCM1NlpjJ7DJXDdIXdvbylZaC3GBkeKpjac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e0UNBGod; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4GkieZE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514B8C4CEE7;
-	Tue,  8 Apr 2025 14:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744124322;
-	bh=5qALSFBZ7L1tAKOyN1L/oKlk3jA7LDA7goT+jZYqeQE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=K4GkieZEjPaQUxrBjrfFf+HbVXS8mw+BEAtGOYNOXTvf4VF8m3MCpnlZPMPOSRlfH
-	 8vYR05N6YB7ZEJ5MQ87vjONWAfQkVD6jETSGWA2UFuQ/szVITaH3AIVNLrcoGCj003
-	 87PFmhZtVwUET57ZIpb/XhgdSo4xkltqb1f9Zj3ylSM9NY6sqLG6A0EH2344ToQiuD
-	 KEgwjURPS77QNjkzaQIq3IlTuPLSVd2U8mTP3DjYmhIOMPV9v8vLBzcvzI8rGj1Y6D
-	 9mZLYg6pM+BxUWkElUqJrUaxNif2yaFj/pmr0rTbAPnFBQy4FK5AqLp/ut01PAtYPr
-	 T3bEU0hrhAEGA==
-Date: Tue, 8 Apr 2025 09:58:40 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: jingoohan1@gmail.com, frank.li@nxp.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kw@linux.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/4] PCI: dwc: Add quirk to fix hang issue in L2 poll
- of suspend
-Message-ID: <20250408145840.GA231894@bhelgaas>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e0UNBGod"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9081E44304;
+	Tue,  8 Apr 2025 15:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744125238;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ABDY6poh0HThAHrjisqjJxeh621Yt7h0FayEtDXs8a4=;
+	b=e0UNBGodg2EZ86zi6OaGzuuF6bdNAYXjeXAwUVqzhoUgJk2DB2OMM6UbxH+GaL6AF+S6TE
+	WkhDhb3vRWVzj8KS2Vo3uRT9UIX6UrANzHhaZRDIsbJjlyA9j5yw6aIO07XYDvRx3OD9Or
+	++LdKi+50MW2olNWpkpYdKOgu5xHjzLp7FoMmdqO6uRWLkJtd4DE88vXIZKS8nFNgH1eo3
+	cow28PW5jz2i+yrtMIr3ZuGX1iHJFoPmPLgeNBgvsMGdsnS53/bJEG5ob1SoFUe4v5Jplj
+	pwubq7Ej8hXCwX4zDyec0KJ0k9PEgTFo7RNt8rel/Ra1V7jxu6MZmM4zscARAg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250408065221.1941928-2-hongxing.zhu@nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Apr 2025 17:13:54 +0200
+Message-Id: <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
+Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
+ support SFPs
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Andi Shyti" <andi.shyti@kernel.org>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Peter Rosin"
+ <peda@axentia.se>, "Derek Kiernan" <derek.kiernan@amd.com>, "Dragan Cvetic"
+ <dragan.cvetic@amd.com>, "Arnd Bergmann" <arnd@arndb.de>, "Rob Herring"
+ <robh@kernel.org>, "Saravana Kannan" <saravanak@google.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Mark Brown" <broonie@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Daniel Scally" <djrscally@gmail.com>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>, "Sakari Ailus"
+ <sakari.ailus@linux.intel.com>, "Wolfram Sang" <wsa@kernel.org>, "Geert
+ Uytterhoeven" <geert+renesas@glider.be>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>, "Allan Nielsen"
+ <allan.nielsen@microchip.com>, "Horatiu Vultur"
+ <horatiu.vultur@microchip.com>, "Steen Hegelund"
+ <steen.hegelund@microchip.com>, "Luca Ceresoli"
+ <luca.ceresoli@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>
+From: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+To: "Herve Codina" <herve.codina@bootlin.com>, "Andrew Lunn"
+ <andrew@lunn.ch>
+X-Mailer: aerc
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-16-herve.codina@bootlin.com>
+ <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
+ <20250408162603.02d6c3a1@bootlin.com>
+In-Reply-To: <20250408162603.02d6c3a1@bootlin.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdefgedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdfvhhhomhgrshcurfgvthgriiiiohhnihdfuceothhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhgfeijeduheejtdduteffleeggeejieffiedvteefjeefudekvdeggfeihfeivdenucffohhmrghinheplhhptgdrvghvvghnthhspdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegvddprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnv
+ ghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: thomas.petazzoni@bootlin.com
 
-On Tue, Apr 08, 2025 at 02:52:18PM +0800, Richard Zhu wrote:
-> i.MX6QP PCIe is hang in L2 poll during suspend when one endpoint device is
-> connected, for example the Intel e1000e network card.
-> 
-> Refer to Figure5-1 Link Power Management State Flow Diagram of PCI
-> Express Base Spec Rev6.0. L0 can be transferred to LDn directly.
+Andrew, Herv=C3=A9,
 
-Please include the section number.  Section numbers are easy to find
-because they're in the spec PDF contents, but figures are not.  E.g.,
-"PCIe r6.0, sec 5.2, fig 5-1"
+On Tue Apr 8, 2025 at 4:26 PM CEST, Herve Codina wrote:
 
-> It's harmless to let dw_pcie_suspend_noirq() proceed suspend after the
-> PME_Turn_Off is sent out, whatever the ltssm state is in L2 or L3 on
-> some PME_Turn_Off handshake broken platforms.
+>> What exactly does this DTSO file represent?
+>
+> The dsto represents de board connected to the PCI slot and identified
+> by its PCI vendor/device IDs.
 
-Maybe we don't need to poll for these LTSSM states on *any* platform,
-and we could just remove the poll and timeout completely?
+If I may extend on that by providing what I believe is a more
+accurate/precise definition.
 
-If not, we need to explain why it is safe to skip the poll on some
-platforms.  "Skipping the poll avoids a hang" is not a sufficient
-explanation.
+The DTSO doesn't represent the board, rather it describes the HW
+topology of the devices inside the PCI endpoint. Indeed, the PCI
+endpoint is a full-blown SoC with lots of different HW blocks that
+already have drivers in the kernel (because the same chip can be used
+with Linux running on an ARM core embedded in the SoC, rather than
+access as a PCI endpoint). So the DTSO describes the full topology of
+the HW blocks inside this complex PCI endpoint, just like the DTS
+describes the full topology of the HW blocks inside an SoC.
 
-s/ltssm/LTSSM/
+Please see:
 
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -947,7 +947,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  {
->  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
->  	u32 val;
-> -	int ret;
-> +	int ret = 0;
->  
->  	/*
->  	 * If L1SS is supported, then do not put the link into L2 as some
-> @@ -964,15 +964,17 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
->  			return ret;
->  	}
->  
-> -	ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> -				val == DW_PCIE_LTSSM_L2_IDLE ||
-> -				val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> -				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> -	if (ret) {
-> -		/* Only log message when LTSSM isn't in DETECT or POLL */
-> -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> -		return ret;
-> +	if (!dwc_check_quirk(pci, QUIRK_NOL2POLL_IN_PM)) {
-> +		ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> +					val == DW_PCIE_LTSSM_L2_IDLE ||
-> +					val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> +					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> +		if (ret) {
-> +			/* Only log message when LTSSM isn't in DETECT or POLL */
-> +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n", val);
-> +			return ret;
-> +		}
->  	}
->  
->  	/*
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 56aafdbcdaca..05fe654d7761 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -282,6 +282,9 @@
->  /* Default eDMA LLP memory size */
->  #define DMA_LLP_MEM_SIZE		PAGE_SIZE
->  
-> +#define QUIRK_NOL2POLL_IN_PM		BIT(0)
-> +#define dwc_check_quirk(pci, val)	(pci->quirk_flag & val)
+  https://lpc.events/event/17/contributions/1421/attachments/1337/2680/LPC2=
+023%20Non-discoverable%20devices%20in%20PCI.pdf
 
-Maybe just my personal preference, but I don't like things named
-"check" because that just means "look at"; it doesn't give any hint
-about how to interpret the result of looking at it.
+And most notably slide 6.
 
->  struct dw_pcie;
->  struct dw_pcie_rp;
->  struct dw_pcie_ep;
-> @@ -491,6 +494,7 @@ struct dw_pcie {
->  	const struct dw_pcie_ops *ops;
->  	u32			version;
->  	u32			type;
-> +	u32			quirk_flag;
->  	unsigned long		caps;
->  	int			num_lanes;
->  	int			max_link_speed;
-> -- 
-> 2.37.1
-> 
+Best regards,
+
+Thomas
+--=20
+Thomas Petazzoni, co-owner and CEO, Bootlin
+Embedded Linux and Kernel engineering and training
+https://bootlin.com
+
