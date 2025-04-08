@@ -1,316 +1,216 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF29A1A8407
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 17:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744135163; cv=fail; b=mZGYX+qnwRjt/4POHp14TrUAdJTihYh+ba5GM2G5E/wAsRqZbPrcXH6Cg92OvWfYzURWrFTHgugPaXjvmin4tuoLJecRNlBPmUiZ3+XNvYBIDFLx6S6fPdUEqOMXIIDkEtshDu0TNU+QsC0Pj7bIqBPA3QaZw+CZSqIbsFP9h5o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744135163; c=relaxed/simple;
-	bh=wtbErmBJdPCK3CWcSFyEBkYRSACU/uWM/QqWpB/SxPc=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AE8fSywosNSLkEaVC7+5ex3/gDqMj0uXHUOSEkh+FMVt3GqJPzWM7H/U3Q1ZfXQYk10CSWa0N//EH0dbTNXSZZex27+gnethOSVSYKmQtMjXq6VTCHTs+0j8TnQT1R/Nl/Lt5guk5qIqpXTcN8q0XTy0EbkJ17dS9mGOLmgXpbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WR0zwELd; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F11235BF5
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 18:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744135672; cv=none; b=ZZZ9m+fcCwWmB/HWQlAFiFT5zSShtIb30yKWdGpMMPL2lk2adIugwGd/7wTEjDYOHc0g347uzv4yk/HGg8zn8KGHQHDd8E5/JL3u3vZ0rOhv6gAHH9dpgoKaGBxHtuvzvX+fUW9zzuTrg6RamD/HqRulKTWGU5yIFswkM+1vEhc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744135672; c=relaxed/simple;
+	bh=rkXra9kOREWmAsORcy0+XvfydkiyhJbKXo+APNRCe5M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sXZ+99wjvVQ3VXbSwOOQmU3MJ8ErZ79YQoaxaBjprO1WGJPdvJhvQMCye+qBNEo4C0m10R7xgmAt+aBIZm42a1pRppcFnGUIfPjtOasQIjXyOWy4q/882/VVoOmozxq6uXf9aXFZHvH4LBNhwNJHP9+qX+mDm3NOdab0z8NZMkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMBHz/Dk; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WR0zwELd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744135161; x=1775671161;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=wtbErmBJdPCK3CWcSFyEBkYRSACU/uWM/QqWpB/SxPc=;
-  b=WR0zwELdEjgnt6Qz6vF5vcOO7koMWjSf85CCTbMbzywK4z/89aM3ePnw
-   aP0dro+dWHsj5g01vgUXwi9b0aHLDfjNAYW0B786HgdZJBuq7XDlXSixK
-   +5a/sj1kqPiENd8zuNvUsW/NAKTtC5dAMu/shfX1zgNVDWaC+jLnpvD/f
-   Yn8ZywSjDHwTt7pgYmump/5nBhaxdwyZZMX4bpjcoS/k0j7g48Q1MXKID
-   iN93I9xaHEvujIHz3J+90zCiz+HcWhaA6O9JNJhkD2vyl4OSVTtih+B7s
-   AH+5ZcOwQC+CuEmoI/fSIPklUU0fbzvsiLHOzuh36zfblbNjR40u+hPoD
-   w==;
-X-CSE-ConnectionGUID: DTRW2ty+Qke1UTchNQ7ODw==
-X-CSE-MsgGUID: JAXuRYDWRYOsMhmIMkmZYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45704109"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="45704109"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 10:59:20 -0700
-X-CSE-ConnectionGUID: 5sPg+HRER065AP3T7Cf1+w==
-X-CSE-MsgGUID: kYxNIOK1RI+aFcwBg8pVYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="133058727"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 10:59:19 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 8 Apr 2025 10:59:18 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 8 Apr 2025 10:59:18 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 8 Apr 2025 10:59:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xi7OCC7MgHV64xuw1mOPtZ8BLm/C94rcjgELR/+VofrBKb8m0FyrK+RczBth4dTIRizW5SWSfqaDqG1ynP5Sod7CEF96DWnsNB0PoZ5+pr4+kwc248qj0tjePJAA1MumY7MCif7VING9PVowKJbwtZOuGL1rr5avD+KuWTOq6hxkiyIHXjjKlGCReMq3UiZF48yX6y8mwCm0aI4z0Nc2nAbU6sNSn0kB7klatbm1uPdYUeqiRdz2YqDHIp65/JkUje29dEK0H3BXxb2naxJS2DxsdxTBY4ekCwfgkjCDYnZUFBpF4FwCX0aLvD904pxiGwyI0NB/UTVz3/jVkHhrCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2it5QBX0TILYpCIRIpKPOgUMojQNgkQjzuK1kPITvF4=;
- b=PyVGrWN2bzmVxFeNUWV8BholaMVmMX91ltKiycGgvC/VvNTBpYFgJkiEeeDQpX+7WpYp06Tp5Oz999wZJiKOjFiIJP5cGKopaDugHg4bdPsDNnkU+krnzV9Q9M9q3zKmnuCXArLD0yg8cTlGI6PbpzT0Jc4GTHeg+kJsZwgxHVdnfMVQcfXDrYmqOS7lTMQs4hDejPrtLHitmkYkEHPs6Dr4CVwpwDBxW2WZ2CKA8JrM6I85TzaqmDqtUqroLgRmUHbZ4LPJV9M9gkOypnS+EYPLwwaPJdKOFAa/oNmw73LunFAD/LF6KnBzwxghQy9fBxoqHJeZOp4L9js9Ddp3yw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB3605.namprd11.prod.outlook.com (2603:10b6:a03:f5::33)
- by BN9PR11MB5226.namprd11.prod.outlook.com (2603:10b6:408:133::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Tue, 8 Apr
- 2025 17:58:59 +0000
-Received: from BYAPR11MB3605.namprd11.prod.outlook.com
- ([fe80::1c0:cc01:1bf0:fb89]) by BYAPR11MB3605.namprd11.prod.outlook.com
- ([fe80::1c0:cc01:1bf0:fb89%3]) with mapi id 15.20.8606.033; Tue, 8 Apr 2025
- 17:58:59 +0000
-Message-ID: <72e24e74-8c9d-4d4e-8a22-c2f55941c6ef@intel.com>
-Date: Tue, 8 Apr 2025 20:58:49 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mmc: sdhci-esdhc-imx: calclute data timeout value
- based on clock
-To: <ziniu.wang_1@nxp.com>, <ulf.hansson@linaro.org>, <haibo.chen@nxp.com>
-CC: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-	<festevam@gmail.com>, <imx@lists.linux.dev>, <linux-mmc@vger.kernel.org>,
-	<s32@nxp.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20250324092336.2231385-1-ziniu.wang_1@nxp.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20250324092336.2231385-1-ziniu.wang_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA0P291CA0009.POLP291.PROD.OUTLOOK.COM (2603:10a6:1d0:1::9)
- To BYAPR11MB3605.namprd11.prod.outlook.com (2603:10b6:a03:f5::33)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMBHz/Dk"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7394945d37eso5031552b3a.3
+        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 11:07:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744135670; x=1744740470; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhshArBE7GFfsDqBVcijf6Rw3bHMYKXCJZahS7CtZaw=;
+        b=DMBHz/DkwyhmneKRGjNIpW0F/h+M4QJxpZrbWScfNT+OXBbu66r+58EfxPq8ZiDfJ6
+         WxNkjjTquiP1LRKjqmyJinX2yOOZ3u0aY/hQF/01N+gZCoBXwZ1OjdTtLjF6rSDUFuRT
+         uRhyVlEGFB71FF4IsqcvwJrHPYmYdwYQyeK+S6rQAjXxC9Ucw4b3lifQ3wnwWK3KZxtl
+         VZ+meNEfRRzqMyCuPb8Qr0L5F/jSnNLXee6O/GLRICI4hl0woyAOnt/yVEfHPrd+jtAN
+         +uUi4T6bXsoD0rdSh18NOdtAvtlmAwNTBZi6HF3kBJtD0Aeac42V6MAlze0YoZM000cU
+         OVZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744135670; x=1744740470;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vhshArBE7GFfsDqBVcijf6Rw3bHMYKXCJZahS7CtZaw=;
+        b=bt64lBAuQxNAnpn95U+O0sojoWRwcjkWgyIvqkcwQY/fimFeE2Ek48RlppQz31zSnX
+         8d61HhoCU7fF2Cfjo2JyIvHEgUQXb4lxOGdlsT60HFEN3ccaAf8XTicXJskc84/QnmtW
+         TCryxQojmF5S9hs+cZChCiUKe4rdcartHJU32R1f6W74XiBocq4UMzJJaSX4z/cVy1vK
+         1x5V15MxtyzSe5uWkKAlMoEwxPRY/Doq16Q6c77+adDdNLqGdeGn0fJFSO8cGIcHN26V
+         /116AWbDFV6hDs8V3Gy6n0MYzA2frO2QGQGZcQ1k8bpLhqUWdW64zIMdFyT6pGrYYL/e
+         AqNg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+B2/vbDNYtKs0Fxu0hKYn0AJ3nXm/WOeLpFJu3ghvyhOdKMF2Ur4SGAzvaVLYB7cVNqE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnAzSTWCq3HPuZZlGQEIlB+08IUjm2cA+064/tSsyjKfEtrblA
+	dRwrYQbc1eLOtXto8fv8FBI3w0YGUrDz5DETcwRaGTrUPLTkSNKq
+X-Gm-Gg: ASbGnctFoO/+NTISSkd2SlRYx5tjbNMsXEvyJ+f110WNNQqWNgV9E43aOuTOvw4anHO
+	nKznzKUR7n3+bVyIg2hyQPRNALD08LHN1GqO53Pw86NE0stCDosfpvpFuSrcnNH7ObBf9XwBbmG
+	29dXPK7nQMRX/mgB6yFzKt8uNrJACnTOphng7Lbh0jh5906F215H34KEFamoD8k+sUO4FqjYxYg
+	uoTig6+/UziutpOMwW/dQOKiXO4ofgk0sp1QnW2iNefdkqsp+W22OgWb65DCH7sCtOhIQbp8OKY
+	MGZOhg1Rv/o6fyAWW63Fvkhdq2eL5ZZ6KeWI9nIH2RAQBFZQXjrBnhy1VtBdmF8evmB3kPSTAv9
+	fw5SnXjYmjq7UD/kCQH9wqZ67b34Y
+X-Google-Smtp-Source: AGHT+IHqyMpIU1FUrhiZ3RNfjRFR3xnQKMeYbX4DWdX1+YH1sAAApL39/kjWHb41qHpmaFxZzgHBMg==
+X-Received: by 2002:a05:6a00:2355:b0:736:6ac4:d204 with SMTP id d2e1a72fcca58-73bae4d11e8mr9150b3a.11.1744135670081;
+        Tue, 08 Apr 2025 11:07:50 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739da0b2d76sm10881998b3a.122.2025.04.08.11.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 11:07:49 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <661f972b-cd0f-4d9c-b429-5990edf8f13f@roeck-us.net>
+Date: Tue, 8 Apr 2025 11:07:48 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB3605:EE_|BN9PR11MB5226:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3f6a582-73a1-455c-9346-08dd76c70994
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OW9FcWtmZ1c4SFVEZ2FtMitTQW1nVmgrcWxNaUVVRG8zWXNzbXY1U1E5eXFx?=
- =?utf-8?B?R3lYMER2bFhTYTNVbkZBbmtXd251SWtaM1Z3dUZKVXN3ZnN6enVNRUVEOHhN?=
- =?utf-8?B?bDVlVUJOeW94bFZuOERrRlAvcDFySTR0RFg1VVU3UFZDK3BzTWpmMXlTbXNL?=
- =?utf-8?B?QzlEYTkyU0dLZTFiVHNFYmR3UWVUQU1rU1J5UVU1RStuQ25rbW4xMVBJMVN2?=
- =?utf-8?B?NXMzQzVmcjJJMVF1YXpKNEdOaG9WaEVCS2U4djBjb1YxQXM1OGp3eGJmTnBm?=
- =?utf-8?B?Zi8veDVCQlZNdHBLZTcwbjd1UEtmbXFuL04wNEEwZ2Z0UEJtbHQ4Sy9iMHRw?=
- =?utf-8?B?SU1FQ293ODFEdmRmb09JVlA4TmlkTDlhSmJRTUJRTU5xc0pzRU5tWU96MFl0?=
- =?utf-8?B?Z0Fra01BdEFKYUhUazhoYUdZZXhaL0R6Z3pHR2J1VGNMeTRnNlVORkFRQjFp?=
- =?utf-8?B?dnpHUTI5U3dINms4SURzQ0xsaWtGYTVIcytxeCszSHdwSTNsZ2tOMHh4NGJQ?=
- =?utf-8?B?N09RVGlMVU9ycmlrc3ZxUldwdWdKNGtTSHhUNTZKODJzMzlsM0grTUREVU5K?=
- =?utf-8?B?MWpHcGErOUNOeGRYRUZTQnYzUlo2U0UrS3lXMUhPU29vUGF6dXptNm1ZbVFO?=
- =?utf-8?B?SitLbjc1eFB0ZU5RcnRNZHRLYW5Sb1RjUU9DeXBCQ2c4Z2xkS2tMYXFjUUVy?=
- =?utf-8?B?Mmc3cjQ0MWQ1RHRVSVVvQ2M4dlBKdDd4cndodzBmQTdQV1M3Um9wTFdwWlFZ?=
- =?utf-8?B?VUxyU29lWHdsdWhHU2dXcVNmOHBpZlR4eGZ3QWI4dWVsTEJCSkRCTnJVdXkv?=
- =?utf-8?B?ZVRCWjB2Vk41NVhJNDZOWkt5U3lmNUdwL0JCcTkwbllRMXNnL1MwM01SeU9Y?=
- =?utf-8?B?NThzbHkveUs5L0UrcG9qMEFJbTMwUFU0RHlZUUtHZlp6NFlCZC9haERXU2VQ?=
- =?utf-8?B?dHgyandGWVozSFdqaWdockVERWE4RldiTVd5QmtsdmIzNnZnbmJab001bUZS?=
- =?utf-8?B?bUd1TGw1aHlWNjg2Rjc5SEM0Rlh2cENYWDE0cHVIcG5ubmpQSVUrQ0NZOVFz?=
- =?utf-8?B?T1JWMmM5dituWVp1eDk3SFBpOG51WW1MUGNGUWl2SHhHRzZVUW5URVlwTTVP?=
- =?utf-8?B?YWd5RlVQcDMySVVNWU04UkF4Q2pBdnBER3VqR3VwUzVVYTQxOGhkMHlGS2FH?=
- =?utf-8?B?MjJQdHBvdmdLSGVuU2FFUGhkNFFmV3R1YnBVUGZyRUN1aldtL0cwbHRuZ1FQ?=
- =?utf-8?B?Wi9ZV1diNUxSbVowM2hWSkFVS1BpVVphbXc0Rjk0aVAxM05abVR6V1M5UVRG?=
- =?utf-8?B?dkxMMFN5SEJNb05JRW9GZzRsSnJVd05aY1hOWHZ6Y1FyKzE5MjF1WGJTd0w5?=
- =?utf-8?B?MURHdGF3WjV6OTB6eFQ0YmpjWGN4WmhNRm5kOWQ2b2g4b0RDcSthNFdXVmkv?=
- =?utf-8?B?ZGJ1R2xsS0NraEZrRWlkNk0zb1NqSW5ucm4xYzIrOStHZmYwZnVaR1k3YlR0?=
- =?utf-8?B?RkY2Sk1DMlo0Z0p4clIwRStkMENRZUxzbS8vM2NuNUN0clZhNzVIaDZ3OC83?=
- =?utf-8?B?cEZVdUd0VUIxM2RDbTVtbFpjN1hZWjZQcUFQbnEyaXdiM3p6M1ZjTW5qNnly?=
- =?utf-8?B?ZlBENTBZSnY2TEJaTk5obEFnTzR1TlA5QTZrRG1wdDRqSFdUY3QveCtiR3BM?=
- =?utf-8?B?anZ5V21TeTBTc0hDVGZlb1EwbVlibEVidnh5RGZ1QmZGaEdPanlnVU5QdG5X?=
- =?utf-8?B?Yy94UFlERTdHOEluMUpzWEJlKzFkZXNYSGsxSmJXd3Nsa0RnSTQwWGllMnpm?=
- =?utf-8?B?cUE1Q0hXTjc0R25ETWxQK0VWakxKVytFVzF2ZEpEa2Y4cElCaEsyT01tR0J2?=
- =?utf-8?Q?CDFCWUvd4RH6o?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aUtvVzU5S0pCVmMyOXhieUhWR0FQYTQzMUIvUHhoS3JDK0VsRTYvdlhrdkh0?=
- =?utf-8?B?T3NtMUZGUFZNMHNQYUNzZnBZRVhFOUFDWWF0alZQaks2RGJGcGR2UHdkRlAy?=
- =?utf-8?B?Ynl2VDc3YktwZDlQcmJ6NDNXdlBSbjAxRmVWMDFtVjFnNllFbGl2U25wRU9M?=
- =?utf-8?B?T1NoRTI3bmt5cHBkUmMvUEhvQ1IwcXQ4KzV2ZkZ0S3FnYnJyRno5RnZwSktV?=
- =?utf-8?B?bHdUREVCZkQ1bmhCa3BCUWw3ZWxLN2QyU2ZMOWRqL29kQmlITGd5ZTRjMEJL?=
- =?utf-8?B?WTk2ajB5SUUrdUl3NEZuR294UFRualk1YmMvcldMTFAxTXFLSFR3ekhnYm9k?=
- =?utf-8?B?bmNnSUc3TG5pU25yYW5HMktlaURlOVpkNU04V0V6bi9BM2FTS2hnYUc1NnNt?=
- =?utf-8?B?bUN1alhmSHU0STIzVUZMUDlwcXVTWnlTb0lLMkgvSlRkZXloQ1A4SnNXbDlE?=
- =?utf-8?B?OEE4S3ZRUisxcVE5dW04bktITVhYemNkcTg2MU1HTUI2V0wremRRanhnK1Zy?=
- =?utf-8?B?TTdXYnRadDc2SXFSMkZEYTNYSVhrbytLN3hmdHVOcCtPdWJRaGIvMHZFRXNO?=
- =?utf-8?B?Um93WHpPNkdSSHB4VEY0eVdyZHk0MWFCSmtJdWxYYzZVTzg2MGdpVVVoczhF?=
- =?utf-8?B?VDcvN1hoM3R3YndXam5iQzMwYVFwd0cyUFkwZXhZNmUxWmoyUXQ0REU4ZkVx?=
- =?utf-8?B?QjlYSTl1RS8xN3oxb2cwRmlqYkZiZWJzWnVEL29KQ2dWNXZxL0VDdHlFWUFY?=
- =?utf-8?B?QWt3bDVReDdtRS8xTVVqY25OdnlLUXBLS1kzOEIvZzI1NHhsL2cxa3V6UGkv?=
- =?utf-8?B?aVpnYmhIMXRaMEswUmRYallVRnozRnFxVGNweWV2WWNIYTk3Q2dhbkF1N2Zs?=
- =?utf-8?B?QzNRYnZ6UDV2YUtXcFlHS01XM3pEbk03Y1lhL1RFQ01vdEY5aGFHVkIvWEs3?=
- =?utf-8?B?UHMxYnhFdEJvUGxCMmMvdmthOXNOUTFmbDBzSjFXenJza09TdUVINzhkbnRS?=
- =?utf-8?B?c3hnWFhOeDQ1T3l5RFF6K3hZbUdkR2tKNGUyZFA5aWVpR1hyQ2Z2TWE4R1dT?=
- =?utf-8?B?cDNQM0pPWS8yT09YZTlEcmNjYkxDQ0JVTHo2UDhLTTh3dmpKaVp0clIxUlNJ?=
- =?utf-8?B?d3BkalR4NGtpVnZNaVNuUzI4UlVTQ0QwUkc1bGxYOUNtNGx6QU1YQ2hwRDZR?=
- =?utf-8?B?OTl6akNyc2hmT2FMMXRMUHozTzlZWUlvV3hZTDU1RUNtaXptck5mS3JTSXQz?=
- =?utf-8?B?bkZ3Y0FWRjVqR2J2c3pCY2RvTG04UXJtQWoyQmZaVXlLZUZUME05N3hxVEtX?=
- =?utf-8?B?S0xoUFc2WW1haDJTUWlCN21CbUJraTlLdS9VZlZySGJpT1NETHFTVC9HRklC?=
- =?utf-8?B?UDNtb0FmVmliSDZpU2cwZzBZMlgzQWJieUpHeVRZYnRlMnZ5Yk11MHJndU15?=
- =?utf-8?B?RjM2eUU0WG5kd1F3SVVUcjYvR1NFTzA1dU16OFRrb2FQV1R3VytsV0NYb3NG?=
- =?utf-8?B?aG9KcGZNUHdTZzIrZDY1dUluMHNzZ0w2S2RyWDdESmFwVTNnV3ltbUJBWnQ0?=
- =?utf-8?B?anRWU0hydFlOZG1nM1EyOWtObTVIL0R6eGNsZkhLSHY0NnIvSlZVTWIzWXJi?=
- =?utf-8?B?TUVPdENLY1ZpK1FDMmF2OWdCczFRcW52d0NnckpNMUo1YmpTekFRK29GT05j?=
- =?utf-8?B?L3JERWZORkNCalFHKzRJVDJPdVZ0RzVwWFBZdnVZSjRHc3cwd2V6U0JBMzYv?=
- =?utf-8?B?ZllEN1dnQlNxZDYvN0JKdTgzYW5lc2lNYlFGbWhFS0ZhTENxOHFZb3c4a3Iw?=
- =?utf-8?B?L0dHNHA5Q1lqVXlHV1RzTzF5bFN0SkFxUzd5K21qUlNFc1JzVnRxS25kQUpM?=
- =?utf-8?B?QmZkSDl3YXZIVUdDZVhXUjNuRUd6aXBUb0RZcCtXckd3NFcxMmxxWE15RUVJ?=
- =?utf-8?B?K05Xb1dISnIzWjIzMERiSXo2akpjTFJtTTdJM29ETXZ0NnJGaFhBOVRJbVBV?=
- =?utf-8?B?TTZKVHh4ZWZtY29ZdmhNaTcyNnVReXBMTlF5WkliNnZXZmR5eGZkZGlYQ3JI?=
- =?utf-8?B?ZlpjMjNiZy9TWnF5dW8zektKV2NPcy9Jb0ZkL1hJN1g2eGVwTTlFTm93aE9M?=
- =?utf-8?B?ZUZBS0pwcDhNa3ZOSzN6QW9VV2FUQURkTnA2NFM0alZuMHdWSElyQVppVVQw?=
- =?utf-8?B?M1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3f6a582-73a1-455c-9346-08dd76c70994
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3605.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 17:58:59.1143
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wf5E3t5J2EVcsdhhowvz0dbD3Q88wnKlwR4f9vF6gBWJIPgSa8xN91bOv56Ar36u/clLVVhz7BaIKRVmdSSlBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5226
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hwmon: (ina2xx) make regulator 'vs' support optional
+To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Cc: Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux <s32@nxp.com>,
+ imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, Florin Buica <florin.buica@nxp.com>
+References: <20250403101516.3047802-1-ciprianmarian.costea@oss.nxp.com>
+ <dab2f459-240f-4e4c-9bf6-8c0285354cfb@roeck-us.net>
+ <4efff19d-b5e6-49b5-9a15-e4af622c6ebf@oss.nxp.com>
+ <2a12e6be-c253-4542-86a0-aacb71671ed6@roeck-us.net>
+ <1d7318bf-9971-41aa-a952-85367f001c9c@oss.nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <1d7318bf-9971-41aa-a952-85367f001c9c@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 24/03/25 11:23, ziniu.wang_1@nxp.com wrote:
-> From: Luke Wang <ziniu.wang_1@nxp.com>
+On 4/4/25 01:36, Ciprian Marian Costea wrote:
+> On 4/3/2025 7:06 PM, Guenter Roeck wrote:
+>> On Thu, Apr 03, 2025 at 05:29:26PM +0300, Ciprian Marian Costea wrote:
+>>> On 4/3/2025 3:15 PM, Guenter Roeck wrote:
+>>>> On 4/3/25 03:15, Ciprian Costea wrote:
+>>>>> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>>>
+>>>>> S32G2/S32G3 based boards which integrate the ina231 sensor do not have a
+>>>>> dedicated voltage regulator.
+>>>>>
+>>>>> Co-developed-by: Florin Buica <florin.buica@nxp.com>
+>>>>> Signed-off-by: Florin Buica <florin.buica@nxp.com>
+>>>>> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+>>>>> ---
+>>>>>    drivers/hwmon/ina2xx.c | 4 ++--
+>>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
+>>>>> index 345fe7db9de9..ab4972f94a8c 100644
+>>>>> --- a/drivers/hwmon/ina2xx.c
+>>>>> +++ b/drivers/hwmon/ina2xx.c
+>>>>> @@ -959,8 +959,8 @@ static int ina2xx_probe(struct i2c_client *client)
+>>>>>            return PTR_ERR(data->regmap);
+>>>>>        }
+>>>>> -    ret = (dev, "vs");
+>>>>> -    if (ret)
+>>>>> +    ret = devm_regulator_get_enable_optional(dev, "vs");
+>>>>
+>>>> devm_regulator_get_enable() should provide a dummy regulator if there is
+>>>> no explicit regulator. Why does this not work ?
+>>>>
+>>>>> +    if (ret < 0 && ret != -ENODEV)
+>>>>
+>>>> Why this added check ?
+>>>>
+>>>> I know it used to be necessary if regulator support is disabled,
+>>>> but that is no longer the case.
+>>>>
+>>>> Guenter
+>>>>
+>>>
+>>> Hello Guenter,
+>>>
+>>> I've just tested and devm_regulator_get_enable() does work as you've
+>>> described, providing a dummy regulator.
+>>>
+>>> But, according to the 'ti,ina2xx' binding [1] I see that the `vs-supply`
+>>> property is not required. Hence wouldn't it be correct for `vs-supply` to be
+>>> optional ? Using 'devm_regulator_get_enable_optional()'
+>>>
+>> Yes, but the reasoning you provided is different and suggested that the
+>> current code would not work. Since that is not the case, the change would
+>> be purely cosmetic. Also, I still don't see why the -ENODEV check would be
+>> necessary.
+>>
+>> Guenter
 > 
-> Calclute data timeout value based on clock instead of using max value.
-
-And the subject:
-
-	Calclute -> Calculate
-
-Presumably the driver has been working OK up until now with max value.
-Is there any particular reason to change it?
-
+> For boards such as S32G274A-EVB, S32G274A-RDB2 and S32G399A-RDB3 which do not have a voltage regulator, 'devm_regulator_get_enable_optional()' would return error value -19 (-ENODEV). Also, other usages from the Linux Kernel seem to perform the same error check when using 'devm_regulator_get_enable_optional()' [1], [2] and [3].
 > 
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
+> This patch would help in S32G2 and S32G3 to not print an unnecessary kernel log warning hinting usage of a dummy regulator when such a regulator is not required according to the binding.
 > 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index ff78a7c6a04c..e7316ecff64e 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -31,6 +31,7 @@
->  #include "cqhci.h"
->  
->  #define ESDHC_SYS_CTRL_DTOCV_MASK	GENMASK(19, 16)
-> +#define ESDHC_SYS_CTRL_DTOCV_SHIFT	16
->  #define ESDHC_SYS_CTRL_IPP_RST_N	BIT(23)
->  #define	ESDHC_CTRL_D3CD			0x08
->  #define ESDHC_BURST_LEN_EN_INCR		(1 << 27)
-> @@ -1387,12 +1388,16 @@ static unsigned int esdhc_get_max_timeout_count(struct sdhci_host *host)
->  
->  static void esdhc_set_timeout(struct sdhci_host *host, struct mmc_command *cmd)
->  {
-> -	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-> -	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
-> +	bool too_big = false;
-> +	u8 count = sdhci_calc_timeout(host, cmd, &too_big);
->  
-> -	/* use maximum timeout counter */
-> +	/*
-> +	 * ESDHC_SYSTEM_CONTROL bit[23] used to control hardware reset
-> +	 * pin of the card. Write 0 to bit[23] will reset the card.
-> +	 * Only write DTOCV filed here.
+> Would you like me to send a V2 with the commit title updated as follows ?
+> 
+> "
+> hwmon: (ina2xx) make regulator 'vs' support optional
+> 
+> According to the 'ti,ina2xx' binding, the 'vs-supply' property is optional. Furthermore, S32G2/S32G3 based boards which integrate the ina231 sensor do not have a dedicated voltage regulator. Thus, making regulator support optional would help in avoiding any unnecessary kernel log warnings during boot.
+> "
 
-filed -> field ?
+Make it:
 
-> +	 */
->  	esdhc_clrset_le(host, ESDHC_SYS_CTRL_DTOCV_MASK,
-> -			esdhc_is_usdhc(imx_data) ? 0xF0000 : 0xE0000,
-> +			count << ESDHC_SYS_CTRL_DTOCV_SHIFT,
+"According to the 'ti,ina2xx' binding, the 'vs-supply' property is optional.
+  Use devm_regulator_get_enable_optional() to avoid a kernel warning message
+  if the property is not provided.
+"
 
-Could use FIELD_PREP() here
+Then add a note to the code explaining that the check for -ENODEV is necessary
+because the regulator core returns -ENODEV if the regulator is not available.
 
->  			ESDHC_SYSTEM_CONTROL);
+Why it makes sense for this function to return -ENODEV if an _optional_ regulator
+is not available escapes me, but that is a different issue.
 
-Another way to do this could be to add SDHCI_TIMEOUT_CONTROL to
-esdhc_writeb_le() and remove esdhc_set_timeout().  That would
-avoid having to export sdhci_calc_timeout() and is perhaps
-slightly more consistent with other code in this driver.
-Probably look something like below:
-
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index ff78a7c6a04c..66477fc0ba82 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -870,6 +870,16 @@ static void esdhc_writeb_le(struct sdhci_host *host, u8 val, int reg)
- 
- 		esdhc_clrset_le(host, mask, new_val, reg);
- 		return;
-+	case SDHCI_TIMEOUT_CONTROL:
-+		/*
-+		 * ESDHC_SYSTEM_CONTROL bit[23] used to control hardware reset
-+		 * pin of the card. Write 0 to bit[23] will reset the card.
-+		 * Only write DTOCV field here.
-+		 */
-+		esdhc_clrset_le(host, ESDHC_SYS_CTRL_DTOCV_MASK,
-+				FIELD_PREP(ESDHC_SYS_CTRL_DTOCV_MASK, val),
-+				ESDHC_SYSTEM_CONTROL);
-+		return;
- 	case SDHCI_SOFTWARE_RESET:
- 		if (val & SDHCI_RESET_DATA)
- 			new_val = readl(host->ioaddr + SDHCI_HOST_CONTROL);
-@@ -1385,17 +1395,6 @@ static unsigned int esdhc_get_max_timeout_count(struct sdhci_host *host)
- 	return esdhc_is_usdhc(imx_data) ? 1 << 29 : 1 << 27;
- }
- 
--static void esdhc_set_timeout(struct sdhci_host *host, struct mmc_command *cmd)
--{
--	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
--	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
--
--	/* use maximum timeout counter */
--	esdhc_clrset_le(host, ESDHC_SYS_CTRL_DTOCV_MASK,
--			esdhc_is_usdhc(imx_data) ? 0xF0000 : 0xE0000,
--			ESDHC_SYSTEM_CONTROL);
--}
--
- static u32 esdhc_cqhci_irq(struct sdhci_host *host, u32 intmask)
- {
- 	int cmd_error = 0;
-@@ -1432,7 +1431,6 @@ static struct sdhci_ops sdhci_esdhc_ops = {
- 	.get_min_clock = esdhc_pltfm_get_min_clock,
- 	.get_max_timeout_count = esdhc_get_max_timeout_count,
- 	.get_ro = esdhc_pltfm_get_ro,
--	.set_timeout = esdhc_set_timeout,
- 	.set_bus_width = esdhc_pltfm_set_bus_width,
- 	.set_uhs_signaling = esdhc_set_uhs_signaling,
- 	.reset = esdhc_reset,
-
-
->  }
->  
-> @@ -1777,6 +1782,8 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
->  		 * to distinguish the card type.
->  		 */
->  		host->mmc_host_ops.init_card = usdhc_init_card;
-> +
-> +		host->max_timeout_count = 0xF;
->  	}
->  
->  	if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING)
+Guenter
 
