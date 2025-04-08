@@ -1,222 +1,133 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F052063C6
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 09:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F23266B49
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 10:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744105264; cv=none; b=KT238z/a6qMDeXzgss/bdhwM5O+Ivvy1+ZsDLbaOIKcYA3fOxqpGRlcVOUoZOV4tnSRtvEZ61HfaF12OE+FPZ2xxLDHo83wP2YjAGAAnqTocFDuD+z4LxXjCG6BIirbUsHdl5gYo76zKs4lG4Ka7S6VP5nmuRt0kusN/0LX0ZSo=
+	t=1744106600; cv=none; b=J8veXe2ELiEfxsIEtsq5rV+1Az3ff4JZN/60gvm0+p8SivVxGbR2ZBtUB7bQ02tQKkbHUyn/UL40swNTH7WI7ZCY1uR3azFgl5bpZRoLlSIs42DRlseWAERKFNP1okrW6aeVHwxloLVUO649h2XCnbbKfJ3+Id/ooxeSc056Wr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744105264; c=relaxed/simple;
-	bh=kBAcBfslxJGz8Pxf5uz1abWpns5XyvtoS0wjq14nBBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pU3EFezDVyFRqcGmRCfYe8qTsEseN+LJxMmYaZlWofA1BQ4s1CWQMu2kBcC+LY0w4iIxHG8DPWzqAJv2+NpBHJl63XheIen+sE5biOmwBQ6J/ql/FsIbmEjJN74zw4EaIWUp+SXb1Bj9+Kuiicve2GW/cfG9cTiBBNOWs8qTNIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=OTcxFdqd; arc=none smtp.client-ip=195.121.94.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	s=arc-20240116; t=1744106600; c=relaxed/simple;
+	bh=wYU/aYREgE3W0hdTscAVN9PMVpiUQEmQ1AJFcZuwLi8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X4QqrTHdhhQtDVcS5rBXIf/6kvinb55wb/HbZ6gwn5NS6kfrSM7DI7OKklnRYG4BvLIpZF3YjrmZQ8R/tR0FpZM6/p9qTifDEVjDOFi817x3bOUjUhZA47+Ein7bVAQAs8IusR8kM9pnca9M4NxK+pYUo3VdUY9m35Cz3bFiHog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Y5lgJREw; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=k00Fyls/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="OTcxFdqd"
-X-KPN-MessageId: 7cae0a4c-145d-11f0-8ec8-005056994fde
-Received: from smtp.kpnmail.nl (unknown [10.31.155.7])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 7cae0a4c-145d-11f0-8ec8-005056994fde;
-	Tue, 08 Apr 2025 11:40:20 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Y5lgJREw";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="k00Fyls/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:from:to:subject:mime-version:date:message-id;
-	bh=jjYN1q3Ms1tSUdQDQ/wwfCGr5RGocV911yRQJir+ALo=;
-	b=OTcxFdqdrVrN5CKLasySyCr1E0onpVrt4+3D6iDdkZN7WH5QloXmDgPo2eS+0s8w4bVqwwtTj5bLJ
-	 mR93N7qPJA9u7oq3pdMMDEfEJrO1QbCpuaA6kSYOCQgkyZuChnXUIYV5yj5tXKuegHEouOAf+o9ejq
-	 l3ftXLefZ//iXFncCHdby0VE8Qi4AYVuwQEv1mavirc4F5MYaoZQRusoPdTB6vK6Xm3pi3dJOcIJ8J
-	 LE5+zo6SmRMHJ4M9UFd8hQ20szlrwtuqN2yj5wzcMyyYEdFb4Ene3m5I9R+RSM68UcVP8XzwLLTNXv
-	 949EdBRcfHAZ0l7GpMflv8VrXLlIsjw==
-X-KPN-MID: 33|g+xnS26cNzt8wErNkdEFALrZe2Mu+m0s0xvGObYCBXJEo3puK9g1wlRrHW4pDjT
- gvhLhNNCuh0fZXVrqsVTereT1iDJ9cWBA+qHazu9TAq0=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|u76Tcj/Ul03SflLAUVahVOQyELJUfw8e1vzqjd7qYMyIVNJ+32FEb+F2UerQ9BN
- MCH7HmYiMOHd6pEDt03Wx6Q==
-Received: from [10.47.75.249] (unknown [173.38.220.43])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 6bb6836a-145d-11f0-af99-005056998788;
-	Tue, 08 Apr 2025 11:39:52 +0200 (CEST)
-Message-ID: <d2a1a4d2-dbce-40e2-9cca-fe2fbf1d6daa@xs4all.nl>
-Date: Tue, 8 Apr 2025 11:39:51 +0200
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1744106596; x=1775642596;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NRu5VEWAgUj7SCiDTK/gXnFvCKSyajFgcf/tgq1fgrU=;
+  b=Y5lgJREws9kZS2KvvVZb5zJtVE3x/5y6sRJavX8sTl4seiDFpxpEqbur
+   oDiI/YPH5dY9O3H6rwFBwXz+E4n9iwttV25NM7kbqxLYq4jiIrcpf63LX
+   CUT7qiealjpl3oTT8OL3/o/OqDqO5lqflY2m2v8fhm+ZQEd7MhUe0cF+m
+   LyI1AM0Zv2ESFbtc/3EUttYSAvf7lozC8uuGUwaqrCILDa8oL9Yxx+d+X
+   ejcSEABs/Luw7zdeVj2fE2OoBE5vApNKqrf+WsSlMBGr5Ws8tyVfwe9IT
+   Y4B4gKRjnB0T+s9BflzprCDaglvCIs1p4wHzCgkn3lgfcKQKE3JSs5nq9
+   A==;
+X-CSE-ConnectionGUID: ro84a8UtRg+nnfyWNlRU3A==
+X-CSE-MsgGUID: bDfvC6sCQ2Kpg3otsM4lRA==
+X-IronPort-AV: E=Sophos;i="6.15,197,1739833200"; 
+   d="scan'208";a="43398465"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 08 Apr 2025 12:03:13 +0200
+X-CheckPoint: {67F4F461-4A-B1D34AC3-DEA5B19F}
+X-MAIL-CPID: BE892603A1D2EC333F5B88991BFBD7E4_4
+X-Control-Analysis: str=0001.0A006376.67F4F464.006A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B32AA168E33;
+	Tue,  8 Apr 2025 12:03:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1744106589;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NRu5VEWAgUj7SCiDTK/gXnFvCKSyajFgcf/tgq1fgrU=;
+	b=k00Fyls/m3KgLE78hcX0bEq5oEHb8Gr95YN8sD62t2wdIHHvcWNow22U+tSsihSlt33/dw
+	kHCHIOIOyPhnuGPnmH4pogzbiRM0upVGyySZqVQ9ni5FJjWECfLRb2/Rjm/ztbWzXMOc23
+	s/yKOcEJoHkmrK1qZZmGkv/9qXZSjMVyE5kIKd85QeZ+135uUlhcTe7ou4BI2+o1fz2dcM
+	gVg/Lg4ixlcothZ3vL8QGyXDkJswfzwWLC1m1VruUKt91Cf11Y/10V1Ox1IANPOCRpmn3a
+	9lG6Tk+ZRpRGA+S6VNPk0NwzzB5Tf9UtDhqSpZC13+KvGO/9Mne3Fnd++4UCoQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 1/1] i2c: imx: add some dev_err_probe calls
+Date: Tue,  8 Apr 2025 12:02:59 +0200
+Message-ID: <20250408100300.556703-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] media: v4l: dev-decoder: Add source change
- V4L2_EVENT_SRC_CH_COLORSPACE
-Content-Language: en-US
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, mchehab@kernel.org
-Cc: nicolas@ndufresne.ca, shawnguo@kernel.org, robh+dt@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
- tao.jiang_2@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250117061938.3923516-1-ming.qian@oss.nxp.com>
- <3e5f003a-f689-4f5a-ac75-6bf95379637b@xs4all.nl>
- <50ce67b7-ef06-4e8e-bf4f-f4b0d5e40961@oss.nxp.com>
- <d5a8988f-1038-4a8b-8478-968ceca37879@xs4all.nl>
- <c9aef3f6-43cd-48fb-8aba-0abd33c4e263@oss.nxp.com>
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <c9aef3f6-43cd-48fb-8aba-0abd33c4e263@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 4/8/25 10:45, Ming Qian(OSS) wrote:
-> Hi Hans,
-> 
-> On 2025/4/8 16:30, Hans Verkuil wrote:
->> On 08/04/2025 08:34, Ming Qian(OSS) wrote:
->>> Hi Hans,
->>>
->>> On 2025/4/7 17:54, Hans Verkuil wrote:
->>>> On 17/01/2025 07:19, Ming Qian wrote:
->>>>> Add a new source change V4L2_EVENT_SRC_CH_COLORSPACE that
->>>>> indicates colorspace change in the stream.
->>>>> The change V4L2_EVENT_SRC_CH_RESOLUTION will always affect
->>>>> the allocation, but V4L2_EVENT_SRC_CH_COLORSPACE won't.
->>>>>
->>>>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->>>>> ---
->>>>>    Documentation/userspace-api/media/v4l/vidioc-dqevent.rst | 9 +++++++++
->>>>>    .../userspace-api/media/videodev2.h.rst.exceptions       | 1 +
->>>>>    include/uapi/linux/videodev2.h                           | 1 +
->>>>>    3 files changed, 11 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
->>>>> index 8db103760930..91e6b86c976d 100644
->>>>> --- a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
->>>>> +++ b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
->>>>> @@ -369,6 +369,15 @@ call.
->>>>>    	loss of signal and so restarting streaming I/O is required in order for
->>>>>    	the hardware to synchronize to the video signal.
->>>>>    
->>>>> +    * - ``V4L2_EVENT_SRC_CH_COLORSPACE``
->>>>> +      - 0x0002
->>>>> +      - This event gets triggered when a colorsapce change is detected at
->>>>
->>>> colorsapce -> colorspace
->>>>
->>>
->>> Will fix in v3
->>>
->>>>> +	an input. This can come from a video decoder. Applications will query
->>>>
->>>> It can also come from a video receiver. E.g. an HDMI source changes colorspace
->>>> signaling, but not the resolution.
->>>>
->>>>> +	the new colorspace information (if any, the signal may also have been
->>>>> +	lost)
->>>>
->>>> Missing . at the end. Also, if the signal is lost, then that is a CH_RESOLUTION
->>>> change, not CH_COLORSPACE.
->>>>
->>> OK, will fix in v3
->>>>> +
->>>>> +	For stateful decoders follow the guidelines in :ref:`decoder`.
->>>>
->>>> I think this should emphasize that if CH_COLORSPACE is set, but not CH_RESOLUTION,
->>>> then only the colorspace changed and there is no need to reallocate buffers.
->>>>
->>>
->>> OK, will add in v3
->>>
->>>> I also wonder if the description of CH_RESOLUTION should be enhanced to explain
->>>> that this might also imply a colorspace change. I'm not sure what existing codec
->>>> drivers do if there is a colorspace change but no resolution change.
->>>
->>> I think there is no uniform behavior at the moment, it depends on the
->>> behavior of the decoder. Maybe most decoders ignore this.
->>
->> Can you try to do a quick analysis of this? Don't spend too much time on this,
->> but it is helpful to have an idea of how existing codecs handle this.
->>
->> Regards,
->>
->> 	Hans
->>
-> 
-> I checked the vpu used in our platforms,
-> 1. amphion vpu, it will ignore the colorspace change.
-> 2. hantro g1/g2 decoder, it also ignore the colorspace change.
-> 3. chipsnmedia wave6 decoder, the firmware detect the colorspace change
-> for HEVC format, but ignore for AVC format. But its driver just ignore
-> it.
-> 4. chipsnmedia wave511 decoder, same as wave6.
+Add corresponding error messages if DMA channels are not available during
+probe. Using dev_err_probe adds deferred probe messages as well.
 
-I meant stateful codec drivers that are in mainline. Out-of-tree drivers do not
-concern me.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+* Improved commit message
+* Collected Frank's R-b
+* Put error message into a single line
 
-Regards,
+ drivers/i2c/busses/i2c-imx.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-	Hans
-
-> 
-> Regards,
-> Ming
-> 
->>>
->>>>
->>>> I'm a bit concerned about backwards compatibility issues: if a userspace application
->>>> doesn't understand this new flag and just honors CH_RESOLUTION, then it would
->>>> never react to just a colorspace change.
->>>>
->>>> Nicolas, does gstreamer look at these flags?
->>>
->>> I checked the gstreamer code, it does check this flag:
->>>
->>> if (event.type == V4L2_EVENT_SOURCE_CHANGE &&
->>>       (event.u.src_change.changes & V4L2_EVENT_SRC_CH_RESOLUTION)) {
->>>     GST_DEBUG_OBJECT (v4l2object->dbg_obj,
->>>         "Can't streamon capture as the resolution have changed.");
->>>     ret = GST_V4L2_FLOW_RESOLUTION_CHANGE;
->>> }
->>>
->>> Currently the gstreamer can't handle the CH_COLORSPACE flag.
->>>
->>> Thanks,
->>> Ming
->>>
->>>>
->>>> Regards,
->>>>
->>>> 	Hans
->>>>
->>>>> +
->>>>>    Return Value
->>>>>    ============
->>>>>    
->>>>> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>>>> index 35d3456cc812..ac47c6d9448b 100644
->>>>> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>>>> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>>>> @@ -526,6 +526,7 @@ replace define V4L2_EVENT_CTRL_CH_RANGE ctrl-changes-flags
->>>>>    replace define V4L2_EVENT_CTRL_CH_DIMENSIONS ctrl-changes-flags
->>>>>    
->>>>>    replace define V4L2_EVENT_SRC_CH_RESOLUTION src-changes-flags
->>>>> +replace define V4L2_EVENT_SRC_CH_COLORSPACE src-changes-flags
->>>>>    
->>>>>    replace define V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ :c:type:`v4l2_event_motion_det`
->>>>>    
->>>>> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
->>>>> index c8cb2796130f..242242c8e57b 100644
->>>>> --- a/include/uapi/linux/videodev2.h
->>>>> +++ b/include/uapi/linux/videodev2.h
->>>>> @@ -2559,6 +2559,7 @@ struct v4l2_event_frame_sync {
->>>>>    };
->>>>>    
->>>>>    #define V4L2_EVENT_SRC_CH_RESOLUTION		(1 << 0)
->>>>> +#define V4L2_EVENT_SRC_CH_COLORSPACE		(1 << 1)
->>>>>    
->>>>>    struct v4l2_event_src_change {
->>>>>    	__u32 changes;
->>>>
->>>
->>
-> 
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 9e5d454d8318e..de01dfecb16e6 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1711,11 +1711,11 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		return irq;
++		return dev_err_probe(&pdev->dev, irq, "can't get IRQ\n");
+ 
+ 	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(base))
+-		return PTR_ERR(base);
++		return dev_err_probe(&pdev->dev, PTR_ERR(base), "can't get IO memory\n");
+ 
+ 	phy_addr = (dma_addr_t)res->start;
+ 	i2c_imx = devm_kzalloc(&pdev->dev, sizeof(*i2c_imx), GFP_KERNEL);
+@@ -1810,13 +1810,15 @@ static int i2c_imx_probe(struct platform_device *pdev)
+ 	 */
+ 	ret = i2c_imx_dma_request(i2c_imx, phy_addr);
+ 	if (ret) {
+-		if (ret == -EPROBE_DEFER)
++		if (ret == -EPROBE_DEFER) {
++			dev_err_probe(&pdev->dev, ret, "can't get DMA channels\n");
+ 			goto clk_notifier_unregister;
+-		else if (ret == -ENODEV)
++		} else if (ret == -ENODEV) {
+ 			dev_dbg(&pdev->dev, "Only use PIO mode\n");
+-		else
++		} else {
+ 			dev_warn(&pdev->dev, "Failed to setup DMA (%pe), only use PIO mode\n",
+ 				 ERR_PTR(ret));
++		}
+ 	}
+ 
+ 	/* Add I2C adapter */
+-- 
+2.43.0
 
