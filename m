@@ -1,61 +1,63 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70C522F38E
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 15:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9196622B8AC
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 15:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744126974; cv=none; b=IHVdK9Gn8QQE3xk7Wm0gsBybmkmQgiRyQq/3VDORVawJRgyDEJXYn6ObHreUtseFPrCZcnJCAIUiK0h1PsMMjRFk2ecS9jYAOso7UBN7saTeHhgrvUyCrdBqtTJtIb7Fe9wuUkg9xwq4/6OVYizP0DFDgl7pEaU8CtTzZszca3I=
+	t=1744126976; cv=none; b=RwRahi+PKaTl7PZk0oE3w41WraAlqtPZA82nPEgqLQukFau3T7dG8t5rLDGk4cjd+EZtUCHEqMGes2Gd+uZdIDjxv0OTkBqA7CHjgrSXJ6CrG+24nJcis5iCPfi4WFL47W3RrUD7AjX98O0Ee+vZrSxxLmpWiZY1p0R72/e5imw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744126974; c=relaxed/simple;
-	bh=aU8QBFtLgQjelJCNVNjdB/oGNPTciJe5rUczc8N4X9s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mrS3ZP69o/IvgFXzswAZ3vKwQXs2YjJ9iEF5mL01YKjiCS2lciJYn5649PKawzsyhoXWiF2J8k20yuhUp9vtSjldNUj8XYSzfwfbosYbZicD5s0NZdtpfBpW/ksvL2OfAywtPNXlpoReWjY5cZzhNgORclR+Heiwq4DORKd7vVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KlFZwDBJ; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1744126976; c=relaxed/simple;
+	bh=8SwzwiF3L1lLhZxn48ptrUsj4inEKH5uscaXsLfQ1bk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=SUvwVeWmFFUFyAhTzzv+hrRbRd4jGzCQXGafvZFlsZAWONR4v0wJXeNly5IF2xpfZfwV4ijVY3Ni8E3Cp0tr/Tui3yHhtX8t7G3wy8PfpUtizRJGrqXRBAjU0y6Hpy8UnOzydtYA1i5LrAb1Jvpjw5tYKFx/rjPQ2zyqgG6EzL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5HgACkk; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KlFZwDBJ"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d04dc73b7so62027945e9.3
-        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 08:42:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5HgACkk"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cf257158fso40803525e9.2
+        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 08:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744126971; x=1744731771; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9L/RZ+p4NJbk4dcC+rTyDYkbHqicPrFhMjMSCL9eOJA=;
-        b=KlFZwDBJYkpX/CoZVOj690EDZ5GUWBu2vg/wzgwBPY2fBhBVeWxmYn/Bn77kwcH7HC
-         aBMczaS0r7V4J+DYgU6K2GvirjYjJAYQmIfLGZnce3hiqOucRPqlCj0ncW1UqxRHerXH
-         83qj+4kVieTsCpsMwDbIgrBM6EuvYKkk/l5fwPojkDSFJVeElBmuIGwSfLo9Qtr8JOeo
-         Xw3AWQUH5NMi/bWwRFdKsutsJDl3HjrZfp+AsV73qFYfaMXptyyZjTkURuULwO4CTTCi
-         3dCICfxZB4ZuVIIMIr8PA8INmuBqrJPMfsKr60AvH6F7oqUXsv6m+F6LEuTnN5RZeILk
-         9IsA==
+        d=gmail.com; s=20230601; t=1744126973; x=1744731773; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GbtPn6g2ba6LqMlbQ/ymd85CrpL3SBE6bf/tvrNqLXQ=;
+        b=e5HgACkkU9iau+eQmjiozJxrqvwt/nW0rNXeMjFmfhPklXXE7vkNQQLfpyEdGQBV0u
+         B+wgS0YWx3wsUQ7dZA0KAq3zPIiDuEf1Np6Hr5njK8xr7s52Rl0AJCLD41xW2+pFaVgh
+         rlU50NKBQLh71tJGk2Sn/i6Tj9mGkRMO9Guk6PHt++lf95CU0KIRnAHHqXBYpR8HG2+g
+         Bk3GWIiLeIBWteN3wldxOXDzuqmZ+y7+4pwAaF+T82UvI0ZqzKIcpF0WzdKLRPeSy2Qd
+         VH3oh7PQ99/v4q3RVumvhqGyzm6EpjSglNMf4HnTDqMikAE13W+uJMO1s6+tfGgrkimv
+         uTYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744126971; x=1744731771;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9L/RZ+p4NJbk4dcC+rTyDYkbHqicPrFhMjMSCL9eOJA=;
-        b=Ww85tfbatJePfl3Ur45DkyxlYGZR/AihtkVgNdLHFz7xkA1r9pLy3HXwkABJ9YIqJk
-         tFyx8dkAkS/wkitYqbou6rIDr6aGqVqA/I5WQWqOLZXFCx3+nbcY7N4M4IUiYnQvbi17
-         Lr9GDk2FH1g/ad12N4z31QyfD8zxXBhnxQBx+VXJQgTJe9QTtB3NzOXBtObt11DwNWws
-         3MHI6SM4oeV6nxJQFz6wY40olWcawQhInAM7LRsx0DGoqDrHsUQXFQvVcWZikxNjG4Ev
-         QVTpSdj47xcRj8wp+IrdVuX3U33zQSwq6KbXjFDeLNH6MaKWxubtoz/ashxWb3941jkO
-         ec8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVVo1UN0lWduUQruA79d8DLDz94/LvrFScTChG9iSH3UxtGcUnvmYHOxK7Rdxw3AvXhia0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3QRiXCZ6iHvzCZk2WvUozkpleyUt42KpZ0kLrp4qoxgqKqsAI
-	2ED3mKdTlrPt5g+RB7RZ0mn4iqbrGOWt1p+V+a8wsrN63UyeLPf5
-X-Gm-Gg: ASbGncuoEq9jEG0LzHrSOqBsjwywMj/87IcQCgIunviTnrSwiYQHENznjPw5HWHFcgr
-	/02+vFuDG2uoghWKDhu8rcGv12L5luoqYASne7qkDviOgbzjBJB1uuegojnqmT6ZU5B3QVrdTCA
-	nyhINMccnaEjqn938n75G8txCHPp9jHmMVMgXRLLHhh4UbqoMEWC+tMaz1F8IXRqzm0zIJS/Efs
-	GFChp8uqleDFBkasXnoMynGHivPchk8iA7gWycE2OF98EJqYbUy6pxcAbBzd5Yg16HeqBqNuzs1
-	sXkzqE+OYmzgrDPRUN3gdvRZSsPhIUwtLQhPNvbVc9b3/LlYJBM2c9jJkVclvuXq7gTt5cQ2ohw
-	vi4M/DwU=
-X-Google-Smtp-Source: AGHT+IEsYOAvrRYx9U7RkXBzKdYrz1m/zDGUfOXgzDK4kgV+9jgyDCOg9AoAc+QioVKMgn9BFwQyuA==
-X-Received: by 2002:a05:600c:1387:b0:43c:f513:9585 with SMTP id 5b1f17b1804b1-43ed0bde88amr180587605e9.13.1744126970824;
-        Tue, 08 Apr 2025 08:42:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744126973; x=1744731773;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GbtPn6g2ba6LqMlbQ/ymd85CrpL3SBE6bf/tvrNqLXQ=;
+        b=tyiikqRMYVL7HPxFV0mioNhL45o1YtgyALQRVh5lyh3xIYymxPOc7BMY1nHo5YOX9v
+         5p6LDXV/zfb2OZBL1d3+RYcjZffDwj99x0uXJcylmCwjxBrF/GMaK8wLTPn2oXflxCJx
+         NCFBP9SY6cxn5ao3XdYDSIBAP2u0BS59zF0moWeQwB2N1Txx6jCngaT6ACWSDbVQEbnW
+         jmJcScN2xQo3bdozGrHx++pytF6DFQz1prLcS9p2Ug+5jOcH+Wul3El+wC+pT+QySsoV
+         c4YS1t4ems3FOSsJVu4UCBBSl10ijBLHYu+KKl8n6Ap1+OopiK+6KaYGciDEoHwnno+A
+         oEwg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlXZtMrRf+GWLm3+X5yV9pxyW4JUkOdEDUlYXAt4H6eDKe5M6dMgg2x8FX9paQDZ/rlHU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVA65L5fbBoAbFyBVd82er0Bt3FMBNN/r3pHL6/d8d7Qpuzwel
+	NlmYmsRVhmRmrL08qM6cbPfv2ITFPPVsbz6ADoFfxnSJ3pxReXrA
+X-Gm-Gg: ASbGnctHm4JzNWX+NB+kLfwXLlsE9TvNEST707m13ZvG3TKeZ5/X9j1qyxsg1xh8bzY
+	UFGxV1kHp1FN+sAGM3WeZOqKfLZTY9IY/JFQi1iOkadkgiqK8njnVe5sqp3R4pEwEvhC2OLDN6e
+	3cY8bGg8ga9LuILk6HwQRyRPCiAzdC/00HWA0X/pUk/eOGfggKwYVulD2gYcUoMQVAV2hpTuvZZ
+	7r0yytReIa1hPbUn0y/QiX0shoUPaspVhCk27NTdMbiKAeVXdoJPkwqYXD4Z6wZElisgX0jExpL
+	RfZT02fYTToiIKeRMZ0maF9vMA86A2OwjgW0GkPRUau5kxASU9/4p5STe4zL2IFsNgwcNHZpzuV
+	D1GKF1a8=
+X-Google-Smtp-Source: AGHT+IFk7cvDwgAw3nFZfm84dQ1FS2LuGuxYv+hFlv1TribSda71cj+K9r2JkQI9n5O3/VthOjyvmw==
+X-Received: by 2002:a05:600c:6986:b0:43d:a90:9f1 with SMTP id 5b1f17b1804b1-43ecf822cf4mr136552845e9.6.1744126972777;
+        Tue, 08 Apr 2025 08:42:52 -0700 (PDT)
 Received: from playground.localdomain ([82.79.237.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec34be2e6sm164476675e9.18.2025.04.08.08.42.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec34be2e6sm164476675e9.18.2025.04.08.08.42.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 08:42:50 -0700 (PDT)
+        Tue, 08 Apr 2025 08:42:52 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -74,10 +76,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 0/6] imx8mp: add support for the IMX AIPSTZ bridge
-Date: Tue,  8 Apr 2025 11:42:30 -0400
-Message-Id: <20250408154236.49421-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v5 1/6] dt-bindings: bus: document the IMX AIPSTZ bridge
+Date: Tue,  8 Apr 2025 11:42:31 -0400
+Message-Id: <20250408154236.49421-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250408154236.49421-1-laurentiumihalcea111@gmail.com>
+References: <20250408154236.49421-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,87 +92,126 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The AIPSTZ bridge offers some security-related configurations which can
-be used to restrict master access to certain peripherals on the bridge.
+Add documentation for IMX AIPSTZ bridge.
 
-Normally, this could be done from a secure environment such as ATF before
-Linux boots but the configuration of AIPSTZ5 is lost each time the power
-domain is powered off and then powered on. Because of this, it has to be
-configured each time the power domain is turned on and before any master
-tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
-
-The child-parent relationship between the bridge and its peripherals
-should guarantee that the bridge is configured before the AP attempts
-to access the IPs.
-
-Other masters should use the 'access-controllers' property to enforce
-a dependency between their device and the bridge device (see the DSP,
-for example).
-
-The initial version of the series can be found at [1]. The new version
-should provide better management of the device dependencies.
-
-[1]: https://lore.kernel.org/linux-arm-kernel/20241119130726.2761726-1-daniel.baluta@nxp.com/
-
+Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
-Changes in v5:
-* merge imx-aipstz.h into imx8mp-aipstz.h. imx-aipstz.h is
-currently only used in the DTS so it can't be added as a binding.
-* place 'ranges' property just after 'reg' in the binding DT example
-as Frank suggested.
-* use the  (1 << x) notation for the configuration bits. Previously,
-hex values were used which didn't make it very clear that the
-configuration options are bits.
-* shorten the description of the bridge's AC cells.
-* shorten the message of the commit introducing the bridge's binding.
-* pick up some more R-b's on patches that remained untouched since V4.
-* link to v4: https://lore.kernel.org/lkml/20250401154404.45932-1-laurentiumihalcea111@gmail.com/
-
-Changes in v4:
-* AIPS5 node now only contains a single memory region: that of the AC
-(just like in V2). 'reg-names' property is dropped.
-* AIPS5 node now uses 'ranges' property to restrict the size of the bus
-(1:1 mapping)
-* change the number of AC cells from 0 to 3
-* add binding headers
-* link to v3: https://lore.kernel.org/lkml/20250324162556.30972-1-laurentiumihalcea111@gmail.com/
-
-Changes in v3:
-* make '#address-cells' and '#size-cells' constants and equal to 1 in the
-binding. The bus is 32-bit.
-* add child node in the example DT snippet.
-* the 'aips5' DT node now contains 2 memory regions: that of the
-peripherals accessible via this bridge and that of the access controller.
-* link to v2: https://lore.kernel.org/lkml/20250226165314.34205-1-laurentiumihalcea111@gmail.com/
-
-Changes in v2:
-* adress Frank Li's comments
-* pick up some A-b/R-b's
-* don't use "simple-bus" as the second compatible. As per Krzysztof's
-comment, AIPSTZ is not a "simple-bus".
-* link to v1: https://lore.kernel.org/lkml/20250221191909.31874-1-laurentiumihalcea111@gmail.com/
----
-
-Laurentiu Mihalcea (6):
-  dt-bindings: bus: document the IMX AIPSTZ bridge
-  dt-bindings: dsp: fsl,dsp: document 'access-controllers' property
-  bus: add driver for IMX AIPSTZ bridge
-  arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-  arm64: dts: imx8mp: add aipstz-related definitions
-  arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-
  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 104 ++++++++++++++++++
- .../devicetree/bindings/dsp/fsl,dsp.yaml      |   3 +
- arch/arm64/boot/dts/freescale/imx8mp-aipstz.h |  39 +++++++
- arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  12 +-
- drivers/bus/Kconfig                           |   6 +
- drivers/bus/Makefile                          |   1 +
- drivers/bus/imx-aipstz.c                      |  92 ++++++++++++++++
- 7 files changed, 253 insertions(+), 4 deletions(-)
+ 1 file changed, 104 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aipstz.h
- create mode 100644 drivers/bus/imx-aipstz.c
 
+diff --git a/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+new file mode 100644
+index 000000000000..3e2ada7fcdf9
+--- /dev/null
++++ b/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
+@@ -0,0 +1,104 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bus/fsl,imx8mp-aipstz.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Secure AHB to IP Slave bus (AIPSTZ) bridge
++
++description:
++  The secure AIPS bridge (AIPSTZ) acts as a bridge for AHB masters issuing
++  transactions to IP Slave peripherals. Additionally, this module offers access
++  control configurations meant to restrict which peripherals a master can
++  access.
++
++maintainers:
++  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx8mp-aipstz
++
++  reg:
++    maxItems: 1
++
++  power-domains:
++    maxItems: 1
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 1
++
++  "#access-controller-cells":
++    const: 3
++    description:
++      First cell - consumer type (master or peripheral)
++      Second cell - consumer ID
++      Third cell - configuration value
++
++  ranges: true
++
++# borrowed from simple-bus.yaml, no additional requirements for children
++patternProperties:
++  "@(0|[1-9a-f][0-9a-f]*)$":
++    type: object
++    additionalProperties: true
++    properties:
++      reg:
++        items:
++          minItems: 2
++          maxItems: 4
++        minItems: 1
++        maxItems: 1024
++      ranges:
++        oneOf:
++          - items:
++              minItems: 3
++              maxItems: 7
++            minItems: 1
++            maxItems: 1024
++          - $ref: /schemas/types.yaml#/definitions/flag
++    anyOf:
++      - required:
++          - reg
++      - required:
++          - ranges
++
++required:
++  - compatible
++  - reg
++  - power-domains
++  - "#address-cells"
++  - "#size-cells"
++  - "#access-controller-cells"
++  - ranges
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx8mp-clock.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    bus@30df0000 {
++        compatible = "fsl,imx8mp-aipstz";
++        reg = <0x30df0000 0x10000>;
++        ranges = <0x30c00000 0x30c00000 0x400000>;
++        power-domains = <&pgc_audio>;
++        #address-cells = <1>;
++        #size-cells = <1>;
++        #access-controller-cells = <3>;
++
++        dma-controller@30e00000 {
++            compatible = "fsl,imx8mp-sdma", "fsl,imx8mq-sdma";
++            reg = <0x30e00000 0x10000>;
++            #dma-cells = <3>;
++            clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SDMA3_ROOT>,
++                     <&clk IMX8MP_CLK_AUDIO_ROOT>;
++            clock-names = "ipg", "ahb";
++            interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
++            fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
++        };
++    };
 -- 
 2.34.1
 
