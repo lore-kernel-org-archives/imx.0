@@ -1,254 +1,258 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2085.outbound.protection.outlook.com [40.107.241.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C18C21A931
-	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 21:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744146219; cv=none; b=lwHpouYw0SVEL9HDaTtJPaytmrH5/ewTuE2jR4QbI24uqLzdVvvdFao7O9pqFsYx3RAPz386tP3dmwqVG8j/bwUJGi6BuqegLaHEF7IsOtPctHyYtt7yHuapcYdYJRQlR4w7nPwwIDYWv7iWKYYq6KU7U90oPxMf1Ws7dc0leSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744146219; c=relaxed/simple;
-	bh=y8zs7myUh/XxhHHshPzfVZ+iRzf6l2Y4xTvulmW7Yco=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VqYAlUyGjKLLzXYu3tqI55y25lOj7mUmuPPKoSG9At7/jDJt9el+/jqJ7k0bqO2gccjjI8wOTrGumQadq0FCjpXMg2BxnmwPE1Suk9fNBKQ2A8aCI5tCDcuvCbUnYMOmPXRMBYDfTNBmY/pFLfk8kcwZhvGql22oCMRXwdzULrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=oJzio3zX; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1E920E32F
+	for <imx@lists.linux.dev>; Tue,  8 Apr 2025 21:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744149239; cv=fail; b=AmUgRKhU34qvUgv7belA4yYsixuAie7lJyI3Ykt9KJNlT8ERQa64F1zxRSqPn1IACEOGm+MFKyDbm8Szxi4ktiBQFiUVRQtOzTS+0UvSrON6EMInSBjWAC4kegP8Kt2s6M+CxOTUn7IWCkzzKrERAKw3t1QsliIlOWjlWO5Cr/4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744149239; c=relaxed/simple;
+	bh=g1fY95P8WjfgaXTPePR1Dlmfcc1XaeXEDaiXdoLrYG4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=tV1DIworblYlDJvDm5x5ZxnXdZH9Qv9f/8HnJMM4rkD2sbz4RKK2+3xr8J+IZ8jCdK3zMcslTyuDMKxHo8CEpW1xWippjF24Yi0W8LsuOhFB4IX46QOht/sEBtM7OspUjNQxoEVYYjY7ZbZxJ8+2LkDtzH1wJqzkTutxCktZX34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K5eJNiFr; arc=fail smtp.client-ip=40.107.241.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="oJzio3zX"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c6a59a515aso374944385a.0
-        for <imx@lists.linux.dev>; Tue, 08 Apr 2025 14:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1744146215; x=1744751015; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=StXUt2o98UrEzmCyhxaifjhbyPqbhX1WlryMmKDUzOY=;
-        b=oJzio3zXnxtH6qUQDcrF0mQmzmKBR1AzT8OIpvUilKGBDDfg7m/36syhnz6Tmg5kzX
-         28AXjWzOrOLTPJVvTKCImwSUOu3agI0IXlv4P40GyQNMc+TceH3+pka8nl3cUDB/hRRy
-         QmYo8pADRVBKY7drOkjPbSBbuQgM94+eKZxe2T7pefQbMHMVXr+eiQvURMYAQxF26Q6s
-         QyvNovTe2XRY2DdascIcyRLFaMxGjwOkMxoC7fUzzPmENQpRngXBLGtpS1VPXdhTdM1Z
-         Nyt3SNuNw6V4p+x+L3NUtEflnf4AB44byKVDjLU2G7Lr8nTzRf2F1Ncpr/wCXOtsr7BD
-         GQHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744146215; x=1744751015;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=StXUt2o98UrEzmCyhxaifjhbyPqbhX1WlryMmKDUzOY=;
-        b=hH4mBdox/h6slXK08VpYNjgx1J8gCXifeKMK4+rKw4KTVMgj40QhH1Y7KO2UGwlv4u
-         bga+bCc1nlfbHTHCeyt6P/ZIC96iHnee8vDPvXSc85PKTPEUtNhomCZtIxnDycO+Jcfe
-         Dc2pV7YmB/KL7qSAW5v8vNwa9lwJ0nNh953ze6hcAWJMX02t8JBhgrRU0nLARSDKTHaP
-         /CMELnpPwZ8roywj3vH+EzI3WqFLQfcn8BbQt552vQkiu3PGLCIGidLTG1vlGA9dmBAY
-         gp+01FcXkzzU0dwVx9p9ksgIr8qUucoCvWpzt94aVHqiVa43oICcEz6VeFczB0S4yydE
-         aJsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXva6+lR2w5xnKtv1icBX3Y5AivWqPiGrt0zWq3ywW1X1irLSzbDVG/jbfu9bj7w9pqBao=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWxkC5gYjXcrZ5DduXPXzaympU8yPnRR5Zhcn2U14mxugBjIYA
-	MNnkAVb6/0/dWTFXzThOgNomB2ifRHNCPZ3wxS+6stndPIvF4AIxZbHQr7CpzZo=
-X-Gm-Gg: ASbGncsJyYJXuCjuyO1ONa02kjsLuU0p9TYKMoz4IfK50ezG86CSVyEwBwZ1dOLW5p/
-	aifYo5fBEta6DbOt96qW+YqFRs0aWXKaMeUCTG0bGu8/axTeRbF4YB26QiatJBjvwKYtEOpiRc9
-	xHsCkAdm3aZDKBnWZRoIeXd81oAapltywjp2+xyXlfBELqXCNeG+1w8u+UsqiQD6cJmCzf5F42e
-	N2Bp1gp+eYtr2G1YgC2U9ypb2WHWM43PnXpYufvI28735SPrFVk02+4NULwWrBmhy/1ovijVlvW
-	kDLuNwAZ62d/DBn5ng3XTwzQe1AohHNgIwi3ChrvRd7NGs7da5yVK5xJ/kIn
-X-Google-Smtp-Source: AGHT+IFgnJHxAWsuf+QM5cxegWPMvcG8OTlQh/+tfcVS0Sbd6RBnpzz0kQLkyoaYTeZ2+H1M6atR2A==
-X-Received: by 2002:a05:620a:40c8:b0:7c5:6375:144c with SMTP id af79cd13be357-7c79cbd7654mr96683485a.23.1744146215399;
-        Tue, 08 Apr 2025 14:03:35 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:11:e976::5ac? ([2606:6d00:11:e976::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c76e75bcbesm803695785a.38.2025.04.08.14.03.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 14:03:34 -0700 (PDT)
-Message-ID: <d4515a3dbbba33a45c0dc1c68e47b9a1f0dbbb6e.camel@ndufresne.ca>
-Subject: Re: [PATCH v2 1/4] media: v4l: dev-decoder: Add source change
- V4L2_EVENT_SRC_CH_COLORSPACE
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Hans Verkuil <hverkuil-cisco@xs4all.nl>, Ming Qian
- <ming.qian@oss.nxp.com>, 	mchehab@kernel.org
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, 	linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Tue, 08 Apr 2025 17:03:33 -0400
-In-Reply-To: <3e5f003a-f689-4f5a-ac75-6bf95379637b@xs4all.nl>
-References: <20250117061938.3923516-1-ming.qian@oss.nxp.com>
-	 <3e5f003a-f689-4f5a-ac75-6bf95379637b@xs4all.nl>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mQGiBEUQN0MRBACQYceNSezSdMjx7sx6gwKkMghrrODgl3B0eXBTgNp6c431IfOOEsdvk
- oOh1kwoYcQgbg4MXw6beOltysX4e8fFWsiRkc2nvvRW9ir9kHDm49MkBLqaDjTqOkYKNMiurFW+go
- zpr/lUW15QqT6v68RYe0zRdtwGZqeLzX2LVuukGwCg4AISzswrrYHNV7vQLcbaUhPgIl0D+gILYT9
- TJgAEK4YHW+bFRcY+cgUFoLQqQayECMlctKoLOE69nIYOc/hDr9uih1wxrQ/yL0NJvQCohSPyoyLF
- 9b2EuIGhQVp05XP7FzlTxhYvGO/DtO08ec85+bTfVBMV6eeY4MS3ZU+1z7ObD7Pf29YjyTehN2Dan
- 6w1g2rBk5MoA/9nDocSlk4pbFpsYSFmVHsDiAOFje3+iY4ftVDKunKYWMhwRVBjAREOByBagmRau0
- cLEcElpf4hX5f978GoxSGIsiKoDAlXX+ICDOWC1/EXhEEmBR1gL0QJgiVviNyLfGJlZWnPjw6xhhm
- tHYWTDxBOP5peztyc2PqeKsLsLWzAr7QnTmljb2xhcyBEdWZyZXNuZSA8bmljb2xhc0BuZHVmcmVz
- bmUuY2E+iGIEExECACIFAlXA3CACGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFTAi2sB
- qgcJngAnRDBTr8bhzuH0KQwFP1nEYtfgpKdAKCrQ/sJfuG/8zsd7J8wVl7y3e8ARbRDTmljb2xhcy
- BEdWZyZXNuZSAoQi4gU2MuIEluZm9ybWF0aXF1ZSkgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29
- tPohgBBMRAgAgBQJFlCyOAhsDBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQcVMCLawGqBwhLQCg
- zYlrLBj6KIAZ4gmsfjXD6ZtddT8AoIeGDicVq5WvMHNWign6ApQcZUihtElOaWNvbGFzIER1ZnJlc
- 25lIChCLiBTYy4gSW5mb3JtYXRpcXVlKSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY28udW
- s+iGIEExECACIFAkuzca8CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFTAi2sBqgcQX8
- An2By6LDEeMxi4B9hUbpvRnzaaeNqAJ9Rox8rfqHZnSErw9bCHiBwvwJZ77QxTmljb2xhcyBEdWZy
- ZXNuZSA8bmljb2xhcy5kdWZyZXNuZUBjb2xsYWJvcmEuY29tPohiBBMRAgAiBQJNzZzPAhsDBgsJC
- AcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRBxUwItrAaoHLlxAKCYAGf4JL7DYDLs/188CPMGuwLypw
- CfWKc9DorA9f5pyYlD5pQo6SgSoiC0R05pY29sYXMgRHVmcmVzbmUgKEIgU2MuIEluZm9ybWF0aXF
- 1ZSkgPG5pY29sYXMuZHVmcmVzbmVAdXNoZXJicm9va2UuY2E+iGAEExECACAFAkUQN0MCGwMGCwkI
- BwMCBBUCCAMEFgIDAQIeAQIXgAAKCRBxUwItrAaoHPTnAJ0WGgJJVspoctAvEcI00mtp5WAFGgCgr
- +E7ItOqZEHAs+xabBgknYZIFPU=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K5eJNiFr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eBX2ASafdOrswRtW+ZQcdVyfx58WE7ROKtV4WnbxBesjgjk3K72W76RF3r9yNsY2xXTVYyP7Y66L+gPU0bwf2Lj23F9t76kqTTjmdFgb4L3AtXinnYLZXImTodJ+lbo9ZuDvgo2rvKSv+7HbFmSdy0m7Ii4k7v7RkqgcReH6T4k4pVJ8tybUfg968cBqPpVGM4iaTSR+FyCmZHl4yBNL/oPfqTK4a/z82JnUxdkLQfOq0gEXHlTJKpxFpP38FjSbp646zDPpmgoOkw6XvPP+HhWfneuEf8Bd7lP/6BZGHuMa1wQO4G8uCaR4GgGJ0s4U0bpgq7QtrCrBa8mAarFvpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DbmBTDc/N9bwv7GP6tMoLmfcF5DZ/CZlC82CTcYIIeI=;
+ b=HkOM7TqgEj5enCv38YmCHUjAVwHeKsw2fI0383hgfeXnbBhS2aAZ3NWlxnSUzMjAijqObp+EUoJpOb9oD6NC+Gmg0dgUzPIKm96Pq2BU2Vge6YPI6e4YGMPOpxBFpXwSCue5imJb3kc63v0cA/8AiGh2NmnA0R3Y22ZPFQ4D1kUm5x0Maw0ouQg3lRpAZBXTgYO4sL+bW0F4OZW62tpGX+eaGf4bTQRHVfDNWV8w9s+8WyFlS7IhxHaSh6Tw/jfL/JsKh9N++Qs1Kw5Xp9rXRXnHkGDj69ttiu3SJF6dp1HCf4GA4Omub0zQWGTIw+1AT35exYstSqeVVPdCNlIzFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DbmBTDc/N9bwv7GP6tMoLmfcF5DZ/CZlC82CTcYIIeI=;
+ b=K5eJNiFrzNXLq7ocbqU12eYyqYnlDP8V41VINJqVkGkww3cKycHI1XydHqg+L9jDqwYpmh16r2Vu+OCLZ10Gd/cDiE0SfsZ6fXLDonJ5hLrATZWXPaHXqec11Cu5osmvzohcBSPMkx2T6OwjuzSfpWJCsceAY6D7ONGKbKw0uzLIDbY8g2ufcA3mkFvqGNK1CRS4DZlWkPPVx+C/aURM7KIF/ma3jFWFtEk49RN4uKHFjVkVn2fOtj8zZx7w34wANRRW8i0pG6n0UxbZQsAfzo9BZ2oopxQF99n6KpUfJFFcuPfjLI3M1E3wrnzfcgI/nGNgjl/dXB9iCbJq/GUTAw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM0PR04MB6993.eurprd04.prod.outlook.com (2603:10a6:208:17d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Tue, 8 Apr
+ 2025 21:53:53 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8606.029; Tue, 8 Apr 2025
+ 21:53:53 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v4 00/13] media: imx8: add camera support
+Date: Tue, 08 Apr 2025 17:52:58 -0400
+Message-Id: <20250408-8qxp_camera-v4-0-ef695f1b47c4@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALqa9WcC/1XNywrCMBCF4VcpWRuZyaW1rnwPEYlpYrPoxURCp
+ fTdTYtQszwD3z8zCcY7E8i5mIk30QU39GmIQ0F0q/qnoa5JmzBgEhAFPb2m8a5VZ7yiGpWVlag
+ bDoIkMXpj3bTVrre0Wxfeg/9s8Yjr9dfhmHUiUqAcawFMPUoo1aWfxqMeOrJWItslA5lLlmTFU
+ XHTWFYJkUv+JxFyydefTFiJIJXWepfLsnwB/B4JlxgBAAA=
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>, 
+ Purism Kernel Team <kernel@puri.sm>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Robert Chiras <robert.chiras@nxp.com>, 
+ "Guoniu.zhou" <guoniu.zhou@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744149229; l=3867;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=g1fY95P8WjfgaXTPePR1Dlmfcc1XaeXEDaiXdoLrYG4=;
+ b=bfecjaVpXPSMqtTEwTbXe+bLmM4hHYp6Axck9WJ45Fild7Gm6WuijLnuv7DZPSTXkz6mdKdw0
+ ky1CVDEDpOCCOCZcpOaxP0yuxhZkWsAQvHGHyIERGan+10DuJhxOVPA
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH8PR02CA0047.namprd02.prod.outlook.com
+ (2603:10b6:510:2da::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM0PR04MB6993:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15d67b15-3e5c-4a46-12ea-08dd76e7da74
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?MHU0WDdnbDZQeUFhNk9zcWhsb3IwTlFFNlZ2eVNoTVRocHVsK0k5WWtrdG1Q?=
+ =?utf-8?B?bjNpVGRDNmdDRWRDRitQc05qWUpDUmVGVEpEQzVQdUJMVTJSZHRCUTFCWXNO?=
+ =?utf-8?B?bGZLaUZBcnMvRUdWUFFVOUJ0RVd5b1o5TDVsajRJR2tBRlpURHFzZE1WZ1dZ?=
+ =?utf-8?B?akIrTEhSSDl6Zy82VXo2RERPTlpyMlRxemRnT1k3SEt2dkJXMmZNL1FWVk1y?=
+ =?utf-8?B?bHhSdklWRDdiQjQ4ZlY5bkVVbk1TNUdCeVVFL2pWRDAreWlxeE9YMlFORTlN?=
+ =?utf-8?B?a0I3WTlOc2w1d0dnOXBUTGpWMnZmVjFxVEVlSFhrQTZ2RE4xQVAyWmdmQXZo?=
+ =?utf-8?B?REJpVzlxYXNJRk5kQlJLc0c1VUFILy92NFB4aGNiMXNpZmxSYW12ZmcxQVVn?=
+ =?utf-8?B?Qy8xUFVEcGdGSTFJNWlrdXJYbmFEOGJKaTVPSzJBSExpM2xQUmFWRys3SERF?=
+ =?utf-8?B?clFCQnF6VXdvak51WEpmYnc2TkJ0K0R2djVibjVldEpuQzBMT25YU3pnNEMr?=
+ =?utf-8?B?Zm52ZUNKbmRjRHpBdGsweW1kR1cxRDVkTW5uMkZGd3lpZ0YzV2lwWGp2SVd5?=
+ =?utf-8?B?TzNrWGp0SGJSTC8wcUk4ZVBSVzN6em9Yckt0NzVOSDhoSmd2L0NHUzBxcytq?=
+ =?utf-8?B?enRzc2xnQ3VPeSs2azVqK0tWTXpSbkVGbTNyQkhZMjdUdzdIem4yc2VLTHkw?=
+ =?utf-8?B?TmEzTm1xdlJjcVRMYU90ckE3OGRRamxFVWpIMTFpQVl0UXY5bTdIejlqWXZm?=
+ =?utf-8?B?Vm9odnVCTjZUemN1VGlLZmZoNEkyZFZyajZJRW55cGk2N2phNGdWdGhYUGlO?=
+ =?utf-8?B?MGlUZW5acTh2MklQUTZudWd4TGZVREhCcklhQ0dtb0JaRk04QnF1TCtOS2ZP?=
+ =?utf-8?B?S0pleGszdTJ5dnRVZ1U5NVlaSDVsYnVrcXJKUEZValE0N0ZTZFBjTUdNQU9T?=
+ =?utf-8?B?WU5sL0RLWGV4QkNLQ0JGSXB5REdvdXpqOC9NaVJmMTI1VWJYcUZSR3J2VVlx?=
+ =?utf-8?B?dno1N1JEdlZ4SlJMWEtBRXRUcUZLR3hZMEFVWkl3UVVoNzRBeVRmcGdyc0da?=
+ =?utf-8?B?U05WR2ltQmZlWFpRcFpiQUpsbFZnY0JOMkljOENpcnV2NW94ZHE3bnVzTzhx?=
+ =?utf-8?B?bDZoVTI4TDEzemNsQUFmZ1F1TlBDelhZTlh1VHQ2aXU3WjJEQzAxOHorUUhJ?=
+ =?utf-8?B?WW9ScmdqSjFUY2N2Rnd0bE9oN1pUdTRYWHJEYklkdStUUHg2Smh5VEdJbDg5?=
+ =?utf-8?B?azhaMzFGaWp1OEJwb0N2NWxWWHgva2xzN3RGdFloakJXeGRMUVZsT1JSSlJV?=
+ =?utf-8?B?TnVIWHEwdmlyVG5XZ1NIMlY0ZlBBcmhhc3pLREFFa1JyOTVSSm8wV2JqQ2J6?=
+ =?utf-8?B?b1R6SW9FSjlBMWRiUXl2UGJBVzlxNitzZ0cva096bWd2cnQ0eGh2bytLUmlr?=
+ =?utf-8?B?Z09NSVgyTU1iZ1Rkd2N3S21KK24xcGpCdWxsV040RzdadE5EdWZxUzhsRFU2?=
+ =?utf-8?B?bTVuQWY4Sm92ZXd2eFVqY1N3YlV3UnovSEtVRmZRRVRDaVNhQVBIRGc1ZXNo?=
+ =?utf-8?B?enJObjR3RFlvSUpRazk1d2p0YTkybTBaOW05OGZONlpjcjQrVzkyZ0ZqWGhM?=
+ =?utf-8?B?djZ6QzNURWowMXFJSEZDN3BWU2JnU1JVa1VJWS9aVVNjMlV3SVIvamZsRlUz?=
+ =?utf-8?B?SlZLc3pZVE1HVE1sMnpnSXcxMU1nTHk0cnJkUktCdUppWGpCMjhCd1FnRGg1?=
+ =?utf-8?B?VC9MbWNhNFlRNktLUWZTak53VjZ6b3JIK2JaQ0tQdjFpSFp5aXVWSXlDRGNT?=
+ =?utf-8?B?SHM0RWJLSzN5M0ZhNm1SWFpKcVgvMzZTa2dxYXltcWpZMjJpMXc3MThtcnZZ?=
+ =?utf-8?B?dlNVODl6cE1xSERNelo0S0pqNWx4VlZ6YStQdkI2bnBNNThTRDJPTHZpdHd2?=
+ =?utf-8?B?T01YZDM3bUI0ZndGeXorWi84UjBVRHowTEVCQ3VnbzM1aXZIQUt4cEFlTUNH?=
+ =?utf-8?B?UXl0bkdCZXF3PT0=?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?RXJpN0FTTDJXN3Z1VWtDVE9jZzl4MTRNalgyQWRqYW12UjJtTDVNVzI3ZlJS?=
+ =?utf-8?B?Vzl4MVRtTEI4SnBkbWdNU0NHMTRCNEVVY3IydEpSdnJrQWtxNW8ra1YzU3ln?=
+ =?utf-8?B?TXRFRjEvL3c4VG1yb2NmMkRiVnd4ekJRb0dJMG1JRzVhTDB6VGNjcm1LV1ZG?=
+ =?utf-8?B?d0tWYXBQOVZmRGhzMEI1M1hTcHVHZFlkeEY2Sy9YY3BZWCt4cEJaaXBFQW11?=
+ =?utf-8?B?cm8wWnUzV21ZZ2c2VjVIUllzekFjSzRxOXBWUUhYSzZRU3pzeWQxbFlsSEd1?=
+ =?utf-8?B?M045TG05Z3ZKMWxOZy82UWFsaVVZTUc2M1dWN09nMWpxampPdWlqQ0tFQVVE?=
+ =?utf-8?B?Mk1lTENZM0IySHk5cUVTSUJBR2Rua1lTdGlOTmZZSWxpYTJ4ZkZ5aTBDR2Q2?=
+ =?utf-8?B?UC9VeEJyMEdJVGJXQzcxSVArZ05DMmpPZXZtWks3VGIxQzJzZjNSdXdtcXVu?=
+ =?utf-8?B?cjRNREkrWk1OU0NVSTAyWGUzSkNEMDZkR3RWSDlmMXdZQ3dBSTlzTFQ5Zi9S?=
+ =?utf-8?B?RHlTekMyT05tbkpmaStQSmhkT0tmdEUzd3ZWUVBRZklhT0pxcEJqWjg4OFJ2?=
+ =?utf-8?B?dldJR3pZZXRBdTNvQ3FyS0FKZTQ1djVSbWwrTkRYR2FxdUptMlZ1OVp0SXJC?=
+ =?utf-8?B?cTNrQWpoSDB3YTU5Wkdpa2x4WFFOaW5YMW9ZckUzVERuMnJ6Q0hTZ3RBZStT?=
+ =?utf-8?B?MzJUeW9udHRJcE1tYWtCTWRDdy8rMG10MkhhV2RWYStITkVZS3N4OWtNWk1r?=
+ =?utf-8?B?b0lMR1lxKzRWUzNPRVcySStsclIva29SQVljTUNhNzh4UUlpRk9HOVhDaUEy?=
+ =?utf-8?B?YjVTTDJUN2ZMN3J0OWFkODhGend4a3c4Z0dxRG55WjEwMHJKem5UWEdyTENo?=
+ =?utf-8?B?UXpiLzE2ZGtPZHJnQUIyQ0VUWHFiMzE2aEp6SkN5eWc5eUY4eVNWdEZpWUJP?=
+ =?utf-8?B?dzRock1lczJIcmdoVkNWcjlOSHdmdU4vbElnR3JpbFlJQ2JxMlJiaVYwZDht?=
+ =?utf-8?B?RmxzY2QxTnZWNUlaQlVrZWlML2h4MmhRc0w2QWxwcjJIQTRxeFdQekxRSlo2?=
+ =?utf-8?B?Mi9OOTlGcTBrVXNpTFIzaUpKWHNuMTVYZi9YbERnR2ExL0ZWaHZna1NIcmQ2?=
+ =?utf-8?B?bFNlVWdZWEtUOVhtU0kwRUpBeWNsUHh0eTlLRUQyMUxteHJLQUw3RTZpYVZK?=
+ =?utf-8?B?QjQ0bW1OdVhhTk9MTkVzQm0zTENYaHArSTR3WjlQWVpob2RnbU9QTS9LcER2?=
+ =?utf-8?B?dlZlQ1Y0NkxqVnBia1hFSjNyaU1jQkIwYktheGNUU2dJbVNBYjVubUYwUnNt?=
+ =?utf-8?B?WEdOSU9uMnhSeTh3bGNYbmFOaVZHRVpXRmlPbGhaZ0xzYi81K212Sy8yZTM2?=
+ =?utf-8?B?SlUrY29pSm1GV2VGVVlId3JQZ1JqbnBvN0x3TDVEalVVUk5RYUdreDFrb2lI?=
+ =?utf-8?B?NGpjZ0JUaUpiQWlVVmp6cmhjVyttdkJXaGt0Z3dnWG04T2ZJdUFxZHFGd2Er?=
+ =?utf-8?B?Umh5aDdPTGlodmU0OXlyY1FFVXZsVUs3WGpBTTN2bnJXelRTS2Q2QVQ3a1RW?=
+ =?utf-8?B?QWh6cnNDOTJYcXFLRzVQaHd2NXJNakJId3l1WEFhaUtUdEVWYnBLTlRUalR3?=
+ =?utf-8?B?eUk1cjlsKzhTTmRJOTlMMWk3MWc5dGQ2QlNPc0ttaEthTkFtc2ZEeVhmaGsv?=
+ =?utf-8?B?ZDFzVXR4NXNBMFQzWW1nVmFMNlZub1ZBc1F1Ri9zSXhqSGZEcFJyWS85VCtM?=
+ =?utf-8?B?SzRWM1JVaUdvdkVpSXA1bEkzYVh5emQ5eFZNamdPM09IOG5naEpuTlJCaEpP?=
+ =?utf-8?B?NmNuYlFwTjcybHR5WURWZGFtZVpJalRhRmp0bnlpZ2dHbjhaSTA4MWhQVXQr?=
+ =?utf-8?B?QkhmQ0F6MEw5dytlTit2MU9kWFRDUDU3cm54aUFKYUk2UWM3Zm5COEFPbXBk?=
+ =?utf-8?B?eUgvQ2hnbm1sdFFtVXRiY2ZCRUM4azJONUY2ZzcwdEFFQlFsOUdjaTBJbm8x?=
+ =?utf-8?B?TEVZZjVNY2J3YVVXU0hwMVEvWTM2VE50VG1ISFBXWHY5VnlERXFlekZnOEdR?=
+ =?utf-8?B?eW1NK2JhUnViSGhqQ0Z4Z3p3V1haTSt6TG5ZM1dJYmJQNngxNmZucW1STWQz?=
+ =?utf-8?Q?n6OM=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15d67b15-3e5c-4a46-12ea-08dd76e7da74
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 21:53:53.4935
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vp/YlgdhkJo6Z5kQ7bb69KCYY5AzzQwsoet88UrOtQtqRYI/tSdq2YYgfmY85QxVyGWGSjpnLNH62/JO87k1qg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6993
 
-Hi Hans,
+Add SCU reset driver for i.MX8QM/i.MX8QXP.
+Update binding doc.
+Update driver for imx8qxp and imx8qm.
+Add dts files for it.
 
-Le lundi 07 avril 2025 =C3=A0 11:54 +0200, Hans Verkuil a =C3=A9crit=C2=A0:
-> On 17/01/2025 07:19, Ming Qian wrote:
-> > Add a new source change V4L2_EVENT_SRC_CH_COLORSPACE that
-> > indicates colorspace change in the stream.
-> > The change V4L2_EVENT_SRC_CH_RESOLUTION will always affect
-> > the allocation, but V4L2_EVENT_SRC_CH_COLORSPACE won't.
-> >=20
-> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > ---
-> > =C2=A0Documentation/userspace-api/media/v4l/vidioc-dqevent.rst | 9 ++++=
-+++++
-> > =C2=A0.../userspace-api/media/videodev2.h.rst.exceptions=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 1 +
-> > =C2=A0include/uapi/linux/videodev2.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
-> > =C2=A03 files changed, 11 insertions(+)
-> >=20
-> > diff --git a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst b=
-/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> > index 8db103760930..91e6b86c976d 100644
-> > --- a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> > +++ b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> > @@ -369,6 +369,15 @@ call.
-> > =C2=A0	loss of signal and so restarting streaming I/O is required in or=
-der for
-> > =C2=A0	the hardware to synchronize to the video signal.
-> > =C2=A0
-> > +=C2=A0=C2=A0=C2=A0 * - ``V4L2_EVENT_SRC_CH_COLORSPACE``
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 0x0002
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - This event gets triggered when a colo=
-rsapce change is detected at
->=20
-> colorsapce -> colorspace
->=20
-> > +	an input. This can come from a video decoder. Applications will query
->=20
-> It can also come from a video receiver. E.g. an HDMI source changes color=
-space
-> signaling, but not the resolution.
->=20
-> > +	the new colorspace information (if any, the signal may also have been
-> > +	lost)
->=20
-> Missing . at the end. Also, if the signal is lost, then that is a CH_RESO=
-LUTION
-> change, not CH_COLORSPACE.
->=20
-> > +
-> > +	For stateful decoders follow the guidelines in :ref:`decoder`.
->=20
-> I think this should emphasize that if CH_COLORSPACE is set, but not CH_RE=
-SOLUTION,
-> then only the colorspace changed and there is no need to reallocate buffe=
-rs.
->=20
-> I also wonder if the description of CH_RESOLUTION should be enhanced to e=
-xplain
-> that this might also imply a colorspace change. I'm not sure what existin=
-g codec
-> drivers do if there is a colorspace change but no resolution change.
->=20
-> I'm a bit concerned about backwards compatibility issues: if a userspace =
-application
-> doesn't understand this new flag and just honors CH_RESOLUTION, then it w=
-ould
-> never react to just a colorspace change.
->=20
-> Nicolas, does gstreamer look at these flags?
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-So its used in two places:
+Changes in v4:
+- Add 4 clean up patches
+	media: nxp: imx8-isi: Remove unused offset in mxc_isi_reg and use BIT() macro for mask
+	media: nxp: imx8-isi: Use dev_err_probe() simplify code
+	media: nxp: imx8-isi: Remove redundant check for dma_set_mask_and_coherent()
+	media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
+- rebase to v6.15-rc1.
+- Remove scu reset patches, which already in linux-next
+- Remove patch
+	 Add fixed clock node clock-xtal24m to prepare to add camera support.
+- other detail change log see each patch's change log
+- Link to v3: https://lore.kernel.org/r/20250210-8qxp_camera-v3-0-324f5105accc@nxp.com
 
-At runtime (shared between HDMI receiver and decoders):
+Changes in v3:
+- Remove phy driver parts.
+- csr is dedicate for mipi csi2, so add it as second register space. csr is
+mixed with PHY and link control with csi2.
+- Link to v2: https://lore.kernel.org/r/20250205-8qxp_camera-v2-0-731a3edf2744@nxp.com
 
-    if ((event.u.src_change.changes & V4L2_EVENT_SRC_CH_RESOLUTION) =3D=3D
-0) {
-      GST_DEBUG_OBJECT (v4l2object->dbg_obj,
-          "Received non-resolution source-change, ignoring.");
-      goto again;
-    }
+Changes in v2:
+- move scu reset binding doc to top scu doc.
+- isi use seperate binding doc for imx8qxp and imx8qm.
+- phy and csi2, compatible string 8qm fallback to qxp
+- remove internal review tags
+- Link to v1: https://lore.kernel.org/r/20250131-8qxp_camera-v1-0-319402ab606a@nxp.com
 
+---
+Frank Li (10):
+      media: dt-bindings: Add binding doc for i.MX8QXP and i.MX8QM ISI
+      media: nxp: imx8-isi: Allow num_sources to be greater than num_sink
+      media: nxp: imx8-isi: Remove unused offset in mxc_isi_reg and use BIT() macro for mask
+      media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
+      media: nxp: imx8-isi: Remove redundant check for dma_set_mask_and_coherent()
+      media: nxp: imx8-isi: Use dev_err_probe() simplify code
+      media: imx8mq-mipi-csi2: Add support for i.MX8QXP
+      arm64: dts: imx8: add capture controller for i.MX8's img subsystem
+      arm64: dts: imx8q: add linux,cma node for imx8qm-mek and imx8qxp-mek
+      arm64: dts: imx8q: add camera ov5640 support for imx8qm-mek and imx8qxp-mek
 
-Meaning we currently completely ignore the event if it does not have
-the flag. And the second usage is while waiting for the initial
-resolution:
+Guoniu.zhou (1):
+      media: imx8mq-mipi-csi2: Add imx8mq_plat_data for different compatible strings
 
-      if (event.type =3D=3D V4L2_EVENT_SOURCE_CHANGE &&
-          (event.u.src_change.changes & V4L2_EVENT_SRC_CH_RESOLUTION))
-{
-        GST_DEBUG_OBJECT (v4l2object->dbg_obj,
-            "Can't streamon capture as the resolution have changed.");
-        ret =3D GST_V4L2_FLOW_RESOLUTION_CHANGE;
-      }
+Robert Chiras (2):
+      media: imx8-isi: Add support for i.MX8QM and i.MX8QXP
+      media: dt-bindings: nxp,imx8mq-mipi-csi2: Add i.MX8QM(QXP) compatible strings
 
+ .../devicetree/bindings/media/fsl,imx8qm-isi.yaml  | 117 +++++++
+ .../devicetree/bindings/media/fsl,imx8qxp-isi.yaml | 106 ++++++
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       |  38 ++-
+ MAINTAINERS                                        |   1 +
+ arch/arm64/boot/dts/freescale/Makefile             |  11 +
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     | 362 +++++++++++++++++++++
+ .../boot/dts/freescale/imx8qm-mek-ov5640-csi0.dtso |  60 ++++
+ .../boot/dts/freescale/imx8qm-mek-ov5640-csi1.dtso |  60 ++++
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts       |  67 ++++
+ arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi   |  85 +++++
+ arch/arm64/boot/dts/freescale/imx8qm.dtsi          |   5 +
+ .../boot/dts/freescale/imx8qxp-mek-ov5640-csi.dtso |  59 ++++
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts      |  44 +++
+ arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi  |  86 +++++
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi         |   5 +
+ .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 133 ++++----
+ .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |   6 +-
+ .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      |   8 +-
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c      | 169 +++++++++-
+ 19 files changed, 1328 insertions(+), 94 deletions(-)
+---
+base-commit: 1f665976a7c4e8779566e153b8854d7829ce33ac
+change-id: 20250114-8qxp_camera-c1af5749d304
 
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
-I remember some doc explaining that once we receive that even we must
-cycle through streamoff/on, but can't find it now, I'll check further
-tomorrow. I wanted to check if that was specific to
-V4L2_EVENT_SRC_CH_RESOLUTION or global to V4L2_EVENT_SOURCE_CHANGE.
-Also, there is likely some difference between codec and HDMI.
-
-I think backward compatibility will be difficult on that one. I'm happy
-that you find the time to have a look, and looking for good ideas.
-
-Nicolas
-
-
->=20
-> Regards,
->=20
-> 	Hans
->=20
-> > +
-> > =C2=A0Return Value
-> > =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =C2=A0
-> > diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptio=
-ns b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> > index 35d3456cc812..ac47c6d9448b 100644
-> > --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> > +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> > @@ -526,6 +526,7 @@ replace define V4L2_EVENT_CTRL_CH_RANGE ctrl-change=
-s-flags
-> > =C2=A0replace define V4L2_EVENT_CTRL_CH_DIMENSIONS ctrl-changes-flags
-> > =C2=A0
-> > =C2=A0replace define V4L2_EVENT_SRC_CH_RESOLUTION src-changes-flags
-> > +replace define V4L2_EVENT_SRC_CH_COLORSPACE src-changes-flags
-> > =C2=A0
-> > =C2=A0replace define V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ :c:type:`v4l2_even=
-t_motion_det`
-> > =C2=A0
-> > diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videod=
-ev2.h
-> > index c8cb2796130f..242242c8e57b 100644
-> > --- a/include/uapi/linux/videodev2.h
-> > +++ b/include/uapi/linux/videodev2.h
-> > @@ -2559,6 +2559,7 @@ struct v4l2_event_frame_sync {
-> > =C2=A0};
-> > =C2=A0
-> > =C2=A0#define V4L2_EVENT_SRC_CH_RESOLUTION		(1 << 0)
-> > +#define V4L2_EVENT_SRC_CH_COLORSPACE		(1 << 1)
-> > =C2=A0
-> > =C2=A0struct v4l2_event_src_change {
-> > =C2=A0	__u32 changes;
