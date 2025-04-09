@@ -1,81 +1,74 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7A825D54E
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 10:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE0F1B87F3
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 10:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744193702; cv=none; b=O90fbZGVMf1V9FT7TckeIV3WYtw9ofKxQBFYMZFcVr8h3HsFE1EOigZrOJk7LDTccjrhAZ8/PUwDOhlTaJWRNvl335i1OUx5QS3sVLphU6ZEKvBsdFJACzNcrmY7W2mty3wrpE1GsOIj4uUaPBRq7glIdrI9CP3IYZpLx6v8FOo=
+	t=1744196402; cv=none; b=lD5lIkH121py/2uZpyssD7xbCJLgtfHqIvhzu3Ql7IIvSSCk9X+zpOBUFMlAjvjlTTxt/c2U8psis7yXs/fVnsCjrckkHjE+qlnVZOdhMT8T0Z32IwW+uRD68bKdHlMAIPi/u9uXuBdlR6E5x3FqHj06ixETjM7dHKIYNx0GsnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744193702; c=relaxed/simple;
-	bh=Wro90VfYL3b5j7TbNKN81Xu/BV5HuwqQ7RbveyBWuXo=;
+	s=arc-20240116; t=1744196402; c=relaxed/simple;
+	bh=TfB1w3nVESPRx1uoE2Mc5Ze55+L0OBKpgUXDoSKfnCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Faw3FHmwdn306b3UBTgTcooLY/0etgxSlscwA2nBssX/6UrEDSSeWcLue2LnlA9SeOYxjU3V9abuCgPvIPWIKMIdGmYLxlzsLSHiYltBmUSUsRpkLfhXE2+nERQiLv4fs0scTb1QouQN660/eTJnmetURU2mEuuATQ+/Xp7TZ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=T+zpQimh; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=U5co9zDH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=rSFga0DvM0JFzLyIKseeh3xn5JiLUgoY+L7sMbat7BRowMkcxwO5OxDIIipanNxp3W4nIzGAO6MvQ9WIY/nY8btqG6ynb/ekVUzcM/GZyPV6BfOI77YarUJuZuNP+mZT3+Jp3hZzEBbdzIh43N0QOX6rSvVCi2gn+oIBK2DaECo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=V2Z7uA2m; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=c6yWtWu5 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="T+zpQimh";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="U5co9zDH"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="V2Z7uA2m";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="c6yWtWu5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1744193698; x=1775729698;
+  t=1744196398; x=1775732398;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BNoNE6e64sEYfFsroSfsCY8QuIvX813ZAxY1wFGvAfs=;
-  b=T+zpQimh7RJ4+BqmTQBXiIZxRCB852eTKHJjZwAneooHbdMdUIjiZqhR
-   8oIGOTBJICzfc14e+ByxKw50IUyHQA/Kvfvr5801VRp0pA9YCn+f2NSqV
-   YPJFeo0W53YJ2te1FVYQQEIUuivB9SUZSgNeu3QW6JpZf2ZxnhVdmCcQA
-   OKOz04ilJc7yqh1lA/p+OvnIGjHV5gMpv5iWiAue5tJEITCwn4932sSjw
-   wN2Wp8JrBTAoIGy1aq+Rfv44evD/rFkDcZxoPnCNfrLpKPkyaz8DjS+Ym
-   UqFrpG7NoZQ1+papy14qIHLgvOXiBsaXLakX2LWUY/Sa3vIm9jYIvpImB
-   w==;
-X-CSE-ConnectionGUID: QsBY5tYfRvO4jvFCFUdRaw==
-X-CSE-MsgGUID: aXOJ8JttQUS4xI0EqVv4JA==
+  bh=Kn75fkqPv9i2aiN1xOdOZGSnE5xqACnS+FveSU5qwDo=;
+  b=V2Z7uA2mAZV2TClqy585B964kToWo7P2fLpTfqpjZJXmA8L6kBnFnADQ
+   XjHxU9ohb+imDhm62aDXwnLEnRW5vU24sOIrmxz8NNjwI6qhpPlvuKaq1
+   Sh/bmnT6tmDHFLQnYXrXyIJE85EVnRHQLuQ9vXMIKollw4l8O7l8NI58W
+   +H2fdny5UFldJx37zx1VRIWlX3A07FUACn705OwWbjUm22PQk802ktkR+
+   BuyIcHJCkxdeEeLhyYQQgVJAMnA682B5p1JChf1Xof0Iq1R4JFd+EFE5X
+   Bbf9DA/R89u5kayYrPHFvnajNweS9rHCsrCT3C39SQA+FoBIDCakVW16i
+   A==;
+X-CSE-ConnectionGUID: FaxeuNCfQkWKH7AtI6ab7g==
+X-CSE-MsgGUID: 5VwsxvJMQVCKcn0dBh+4hA==
 X-IronPort-AV: E=Sophos;i="6.15,200,1739833200"; 
-   d="scan'208";a="43425758"
+   d="scan'208";a="43426690"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 09 Apr 2025 12:14:55 +0200
-X-CheckPoint: {67F6489F-13-7141A0B0-E6EDEC14}
-X-MAIL-CPID: AD203921DB3D5B5D91448C1600452817_3
-X-Control-Analysis: str=0001.0A006371.67F6489C.0095,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4929164F85;
-	Wed,  9 Apr 2025 12:14:48 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 09 Apr 2025 12:59:56 +0200
+X-CheckPoint: {67F6532B-59-7141A0B0-E6EDEC14}
+X-MAIL-CPID: C309E74E949F8B32217D51A50BFA7CA5_3
+X-Control-Analysis: str=0001.0A006371.67F65329.000F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B4609165763;
+	Wed,  9 Apr 2025 12:59:50 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1744193690;
+	s=dkim; t=1744196391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BNoNE6e64sEYfFsroSfsCY8QuIvX813ZAxY1wFGvAfs=;
-	b=U5co9zDHmUiL4PoV2Bj2nlNzBH5Iw4uyo0kqMS2d6jtR4Z5RRyNUgOHxnyq53EzUGy9Hs1
-	X1kpcaOShYEFlPCqXOlvyCdjzA0qcaogFMx4vIRjMzJo9cHvrvkqqGl02d3U5f7d16MQGQ
-	UL5wPE6Zjx4+f34EB7abO0z0TGl1JdUWax3kcWhx7AUrgNe9NX0QqF9Iq2mApQgzjqOw+I
-	mX+nEs5xCCxaSughpJRy4a4v4gDxI+Z0XZQrSLD2z2RED29IdYaENPyjIF3ueEvZpBa0H0
-	6uNRtF3XLiaBKXoVOiaocRtSUeM74EPUb6/tPFMBPxvEdEBKrtSyw5IQdgMjQw==
+	bh=Kn75fkqPv9i2aiN1xOdOZGSnE5xqACnS+FveSU5qwDo=;
+	b=c6yWtWu5ldp40FtgZLvlKrLPY8tZFdZikCLZSAcQjmnId/U1Z42jqJJzy/rq+jP4UqS4Hf
+	SLkiGUErbtWr5TQ6KSRVKwv6NjWsBOAx4GrxWkl+HOBqBEk6iYFgIMKQbuzrnhUN44zOqe
+	2P4t+3fKlVkeuur7IWfG8M6AjMTT3Ui0rFqoUU6gveNIhFl7l1N0wely8wPDYYE3OrtLVG
+	2mrthxPtuqoAv5GNLJwvrjVcFNJiq9dVMVdEZhu5XEfvRDmsXnLig9ktLHjeUh4U/rOyQt
+	6x8jvhu+Jsu9eBSbzO0eHVsHZYL+MkisR4MZEBnVRHtvGcE4CQ2Ley5EF7aIbg==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Subject:
- Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map property
-Date: Wed, 09 Apr 2025 12:14:48 +0200
-Message-ID: <10643619.nUPlyArG6x@steina-w>
+ Re: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow linux,code for
+ protocol@81
+Date: Wed, 09 Apr 2025 12:59:50 +0200
+Message-ID: <2003940.PYKUYFuaPT@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <Z+WdgWQo4dbPG5tP@lizhi-Precision-Tower-5810>
-References:
- <20250128211559.1582598-1-Frank.Li@nxp.com>
- <Z8HuU6ULEN756lyr@lizhi-Precision-Tower-5810>
- <Z+WdgWQo4dbPG5tP@lizhi-Precision-Tower-5810>
+In-Reply-To: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+References: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,90 +79,59 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+Hi,
 
-Am Donnerstag, 27. M=E4rz 2025, 19:48:33 CEST schrieb Frank Li:
-> [snip]
-> Finially we get realtek PCI card
+Am Montag, 4. November 2024, 09:56:21 CEST schrieb Alexander Stein:
+> BBM protocol supports a single power button, supported by driver
+> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritt=
+en
+> using linux,code. Add a reference to this schema and add linux,code as a
+> supported property.
 >=20
-> it quite complex, there are one PCIe switch to split it to two pci bus.
->=20
->  lspci -t
-> -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-03.0-[03]----00.0
->                                            \-07.0-[04]----00.0
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Interesting. Mine looks slightly different:
+Is there any other feedback or things to do here?
 
-$ lspci -t
-=2D[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-01.0-[03]----00.0
-                                           \-02.0-[04]----00.0
-
->=20
->=20
-> 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
-> 0000:01:00.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe x1 =
-Gen2 Packet Switch
-> 0000:02:03.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe x1 =
-Gen2 Packet Switch
-> 0000:02:07.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe x1 =
-Gen2 Packet Switch
-
-It seems you have a newer hardware revision. I have
-0000:01:00.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-0000:02:01.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-0000:02:02.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-
-PCIe bridges.
-
-> 0000:03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111=
-/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
-> 0000:04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111=
-/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
->=20
-> It need below change
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx95.dtsi
-> index 9bb26b466a061..9dbf395b9a67b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -1660,10 +1660,18 @@ pcie0: pcie@4c300000 {
->                         power-domains =3D <&scmi_devpd IMX95_PD_HSIO_TOP>;
->                         /* pcie0's Devid(BIT[7:6]) is 0x00, stream id(BIT=
-[5:0]) is 0x10~0x17 */
->                         msi-map =3D <0x0 &its 0x10 0x1>,
-> -                                 <0x100 &its 0x11 0x7>;
-> +                                 <0x100 &its 0x11 0x1>,
-> +                                 <0x218 &its 0x12 0x1>,
-> +                                 <0x238 &its 0x13 0x1>,
-> +                                 <0x300 &its 0x14 0x1>,
-> +                                 <0x400 &its 0x15 0x1>;
->                         iommu-map =3D <0x000 &smmu 0x10 0x1>,
-> -                                   <0x100 &smmu 0x11 0x7>;
-> -                       iommu-map-mask =3D <0x1ff>;
-> +                                   <0x100 &smmu 0x11 0x1>,
-> +                                   <0x218 &smmu 0x12 0x1>,
-> +                                   <0x238 &smmu 0x13 0x1>,
-> +                                   <0x300 &smmu 0x14 0x1>,
-> +                                   <0x400 &smmu 0x15 0x1>;
-> +                       //iommu-map-mask =3D <0x1ff>;
->                         fsl,max-link-speed =3D <3>;
->                         status =3D "disabled";
->=20
->=20
-> Only 8 stream id assign to PCIe0 device, it is hard to dynamaic alloce on=
-e,
-> or need extra works
-
-Uh, this looks awefully complicated. Even worse this doesn't work on
-my hardware. I need mappings for IDs 0x208 and 0x210, so I replaced 0x218
-and 0x238 from your diff into my numbers.
-
-So I take that PCIe bridges are not supported properly. What would be
-necessary to support this?
-
-Best regards,
+Thanks
 Alexander
+
+> ---
+> Changes in v2:
+> * Added default value
+>=20
+>  .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml   | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.ya=
+ml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> index 1a95010a546b1..c1b7140ee0098 100644
+> --- a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> +++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> @@ -12,13 +12,19 @@ maintainers:
+> =20
+>  properties:
+>    protocol@81:
+> -    $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+> -    unevaluatedProperties: false
+> +    type: object
+> +    allOf:
+> +      - $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+> +      - $ref: /schemas/input/input.yaml#
+> +    additionalProperties: false
+> =20
+>      properties:
+>        reg:
+>          const: 0x81
+> =20
+> +      linux,code:
+> +        default: 116  # KEY_POWER
+> +
+>    protocol@84:
+>      $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+>      unevaluatedProperties: false
+>=20
+
+
 =2D-=20
 TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht M=FCnchen, HRB 105018
