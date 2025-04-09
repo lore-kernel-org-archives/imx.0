@@ -1,223 +1,377 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012031.outbound.protection.outlook.com [52.101.66.31])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2467DA6C
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 02:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80701DC9B5
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 05:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744166529; cv=fail; b=MS9UCltabW9Xpewbr8SwfHyazfoJLqEKZ7QGaNtdwP08Wkj40E9RSXvinSCTjHxGLdmBC4uKuQiq2nJai92U0Rox08FBPjlOq5+t0hBlFcLxsD+uxMCAIIgFs//NGK+O584TCQI0Ok0w0fD9Z3/ZI5aQI8MCHMyEP1ZHrYJCtWk=
+	t=1744176980; cv=fail; b=DIcro6nLlM4fPiLvdxTCM2LKSh5rE+N7ErlKAm8l2sNQalgOy+4TjN/17REeshih4GP4Ffp444HY02yez5vBke7yvvahbGmreWyPykWmI5v/o9SQlLykH77mnxNO5hPH7Cn8rB9rGvkRz1x519JySMYXtRPUoPuX2wCGjKhT5F8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744166529; c=relaxed/simple;
-	bh=pMNlS56Cg3s8f2MQrGRQGek8KN2GaLY1RMFk2e8Ow+Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UiNT4VpKaNXE77KG9w2xA9pGdXB5r45/N547dzBFSiO3PiapHVNIQrHUOU4L0gQvgXz3xlLZezTaI0tIqSuV+45FadsaihazCttHvbaYgqXZ0PK5kL6gpYVkhHg1sY4XsuUfLFkCzYSMt6XNy3I4NE94UhkN5baZeuBTEfSVc4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o63vkUY3; arc=fail smtp.client-ip=52.101.66.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1744176980; c=relaxed/simple;
+	bh=VnEUf+FhXX9ey4ODXNvoHC1+Ak0nlHu+vyLERKIEflI=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kW6fYitVqEZlW7PR/FWieNHQnUBEommN1/N+EomUGa4ZrpPMVhaiJRJvlVmNSOitAXi4wWs/tyJWpy3YwSCNKV3WPef8aElFSN3Yv8/G5GXhLb1KQKWs6/sXHe6Kx96+1Smxdj1mjMPkfFBMt1hgcp4U2CxUHdyHgXE4OllxREg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D9Tla2sW; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o63vkUY3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D9Tla2sW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744176979; x=1775712979;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=VnEUf+FhXX9ey4ODXNvoHC1+Ak0nlHu+vyLERKIEflI=;
+  b=D9Tla2sWwlIFGQNP+TjVnryUnvbkSS+pP1MEVDnuRzSi5K9e1PAhLp2d
+   bakqvM6i6buasQSWChof/1ZLP1JVhfTMrSG7av8ncsW/Y4eyVAbty0a/D
+   2KwqmMcS6FzTP059BEeQqU89RvSw6X/KMvBkab48BuKNqcykZhAgULoaR
+   l91nr8xiRjz8Y/onABEFb6rCUEEDQ+sKzk+LsPgrROk5EYRK2kHrKyU9T
+   wFKGIGpZI6+4RqD59r+J8D2HYqxc9mNNwyjemKs5RFVhTT7Ti/gIWgXro
+   p6lBx+iX+aXKHGPEG4K6PrTHIChegb8ZGkQD+AOeMuMNBZR5b0wzMk6HK
+   A==;
+X-CSE-ConnectionGUID: Faj+I0QzRVOLMO/MQJOFOQ==
+X-CSE-MsgGUID: v216eJDFSimJ7rgGXNQ5Zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="49478007"
+X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
+   d="scan'208";a="49478007"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 22:36:18 -0700
+X-CSE-ConnectionGUID: xbf6mbQNRrCtw0s0jMPkjw==
+X-CSE-MsgGUID: zyRlpK1kQsSW94aF2vGWAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
+   d="scan'208";a="129427380"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 22:36:17 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 8 Apr 2025 22:36:17 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 8 Apr 2025 22:36:17 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 8 Apr 2025 22:35:48 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LYrxvbnrBVq7D2i4j7taFjeT9Gys1GqW9i4RmFN28D5Kni2IReal/CrQ4VDFfdRl4TqORWS+YyBpRAzCWSF9MPF1ZOZow+iDfhGWANx3IC2MMFLQdnCtAULZz5vHSAzOIZfWMSFHBybiZ3cDEM4icLwcCNxeTP+AKVrDGWRHhNgd9l+/TymxEk2BL0HfeXkIAQoO+cqW1jILzEunpSSp1fbRJLNrxV5CswCUq8BRT1OHmwc50zNQm1kbEHRIRD4LxR9RIa/ZAhf+hPsTXeIwToSJbmgD/B+a3lEWZyoc1HhN5w1yWA6Kwj6WFTF88HdaiXGGCN/1ADLckAdWiXKsgQ==
+ b=BlUSXkdrhfDL/a6G5cdkmKBBAdbEDJ30dMlNkbVFOsid4fUVFsBakJtETzOP5eNqwm5GhuCeduVPdvvbdoQNh7ugUMVgbSam2n8uMpeAIo/f5aXUH+M54RyMiJIkEf7bDMhbPqU46ZW1+HwQsq32gsurfrIFJPZd5GEwjjMHnAMvzRy5gEUUD0Z2PnZlGJsfAMhehuaen8/gc8ET6MkYwz/V/1SrjzJgmj2NpazqZFB3tzVHPYFdVHuzdi5+e53eO2vxOHLJ22cz4hdpn61rWTfSJHhsrOe2BhVkghKpvY0zPGe0I6VqgRBU/jWd5QCp+Iq+UsBOihvzBCrPRV5xCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TQWROgvO7UznuBbKM2utIK2k+c11TvDzAXmVPXfsUnI=;
- b=SKixCEaWrlhXDQtrPJYd2fOBwsrr3Ijqb4xmy7meSkI06bDppoO/6uHCp4LKZgUT0vh1p3auFYxdzIu8muav/MGyfrNRGPFODJ76eq5uos1Y5afWa4O+NHtiEOTM8uBdDAzF6mJtgVC93puRn+hQ9TAHzoyBUHHvRynvqP8FqDWFu5Cjy78Lu0twX/d0+ypbLsv9hM68fcnYZDXfuAPC/hyDhHiZ9yFqlHMKUsDw4XsN64ca3EclLi/cBPBWWSHI10/OBRCJ+hW8dMO5+nuilnV8eCn2x1KK2sukud5U/SiO7JUfGMupBZt7ro/X+N8jTiGX9S/xf1k4ifSOLufEbQ==
+ bh=3+csfxrxVm4HuIT7S5HVyaEDcgCRyMhLE+g5QRaz+kw=;
+ b=Mb0i+ZwTK4+2ZgMDKqpzuceJljRNuz3veJL1EF6V0TGfAGOSUtvrvW9MiSqIzFEbEbsWHxeHmbredKbM4ddiyKgc3DELoYwfzU9zHCH661uS6gDfg245O8Dbd+9giuw4tffDfbWNRnqYijdO5a8awgI9SR5BeZl3X9k8HycRgg2PFQwbvGcDspHD6mNhq3tojM8JseNKfxnwQSFYJzY4hsqOodYxs4EVsxBPBvBaO/3aVFuK1X51l+G2VebPH8VTZNIGWGm48B1sU9LUu58q6tW2hKCauVJWt94vPxAiK488gIXUBIw4pFvVpxH3fhlPHm+hrjhmI8HtDS8CO/SxPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TQWROgvO7UznuBbKM2utIK2k+c11TvDzAXmVPXfsUnI=;
- b=o63vkUY3l88bQNyWp7441ui3yvda55SD19v+KOEAzqlFKjteWTj4x3bOWEcvBVk8ka6cBMzQo9h+Z4Ulbbxqu7rAiJSqR2CvPiIoldCMGNOke9E3XxvRMOMN3evdaETs4HiThibHdTXqVRWTIGCPb77AbFZUyYe8TVY8p1SNtksnFJgxJXkepmsmPkWJ8KDq/sBMTsBafie7HotUcL+hfGMf2QrWyGE2X95SwkC9i1Tx5qxnFPpyoNyS6hEz3k99rRxXqdT4oej8yboQOSyZPGOuU8JLWyaDQgjghoGNoD3Jn+CaxLrx5+Rp+uUpRQY6mmmk4OtoIGKPC6Nr3xb1nA==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8127.eurprd04.prod.outlook.com (2603:10a6:102:1c5::21) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3605.namprd11.prod.outlook.com (2603:10b6:a03:f5::33)
+ by DS7PR11MB8805.namprd11.prod.outlook.com (2603:10b6:8:254::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.28; Wed, 9 Apr
- 2025 02:42:03 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%6]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
- 02:42:03 +0000
-Date: Wed, 9 Apr 2025 11:50:29 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <20250409035029.GC27988@nxa18884-linux>
-References: <Z86w3ZRS6T2MvV3X@bogus>
- <DB9PR04MB84614FBF96E7BC0D125D97F688D62@DB9PR04MB8461.eurprd04.prod.outlook.com>
- <Z87UJdhiTWhssnbl@bogus>
- <Z87sGF_jHKau_FMe@bogus>
- <PAXPR04MB8459EA5C7898393E51C246AD88D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <PAXPR04MB8459A73179FFF0ED0C9A51E488D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Z9AdICiyaCmzKh-N@bogus>
- <Z9FnZzBQuZ1j5k3I@bogus>
- <Z9Fv9JPdF5OWUHfk@bogus>
- <20250313052309.GA11131@nxa18884-linux>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250313052309.GA11131@nxa18884-linux>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR04CA0011.apcprd04.prod.outlook.com
- (2603:1096:4:197::10) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Wed, 9 Apr
+ 2025 05:35:11 +0000
+Received: from BYAPR11MB3605.namprd11.prod.outlook.com
+ ([fe80::1c0:cc01:1bf0:fb89]) by BYAPR11MB3605.namprd11.prod.outlook.com
+ ([fe80::1c0:cc01:1bf0:fb89%3]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
+ 05:35:09 +0000
+Message-ID: <6ac3472f-13d4-4637-8a13-f8b98a90c3e4@intel.com>
+Date: Wed, 9 Apr 2025 08:35:00 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mmc: host: sdhci-esdhc-imx: save tuning value for the
+ card which keep power in suspend
+To: <ziniu.wang_1@nxp.com>, <ulf.hansson@linaro.org>, <haibo.chen@nxp.com>
+CC: <frank.li@nxp.com>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>, <imx@lists.linux.dev>,
+	<linux-mmc@vger.kernel.org>, <s32@nxp.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250328112517.2624806-1-ziniu.wang_1@nxp.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20250328112517.2624806-1-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1P190CA0046.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:800:1bb::11) To BYAPR11MB3605.namprd11.prod.outlook.com
+ (2603:10b6:a03:f5::33)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAXPR04MB8127:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1660983-6dec-4e55-86d5-08dd77101be3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3605:EE_|DS7PR11MB8805:EE_
+X-MS-Office365-Filtering-Correlation-Id: 159e9519-f5de-4a16-363e-08dd77284a8f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5NkN1YhdQCmYQDkd45RZyZzxZwHGrlyGZHA98V0ZXrHIyC9JpMbWUhTmYzhf?=
- =?us-ascii?Q?WI6vjWf38cw0WQXotmYNFouSqVwPJ4IZ8DTA4WfG4r9E4cJ2w7tQ6eQ4WapL?=
- =?us-ascii?Q?XV5vwqGezD9PSV3aNlf89k/ufZtXplZLDbRXC+eGPGsgA4lIBL0EbC5j3peM?=
- =?us-ascii?Q?GC/YIGy8VPhhYpP54t7iox2IgdJ3NZ68RhuHs7j2xRdc5R2R+WAsaB1xtfsJ?=
- =?us-ascii?Q?U0meZe3OR796AiIvlhy8shfVrjm0W3men2KOlBYrLwB1DIs3lrXNTVQBEAYs?=
- =?us-ascii?Q?7V7hO2AnKnWNHBV3UBDyqFTDzO8EGhiZ2/4zmTCRWevBj3zk+F5xet+pLLom?=
- =?us-ascii?Q?GcwQnH8gPBfDI0oEUx/b1n1RhvZQZm1aFtlQatKyh0o0oDTGUeawzP1RfXgi?=
- =?us-ascii?Q?g0KD1kDl9x9h20suVCB7tIe6ca45mls+u4DaK++qxIr3ZhSwL3jVf87+GtKl?=
- =?us-ascii?Q?u33/LqKXai3uXVacRD2MRTzATJWrdz9M5gRSJtDSPtgVlMPKhUR5emjVh4/d?=
- =?us-ascii?Q?bA3T5HuEZQ3SO1Lxj1eUG/m8RShNZDSYgKiEvZMmmH4qf4tkY4GyYZEkZLYR?=
- =?us-ascii?Q?z4Fer68kGy1tRUHBTn2xMDaP+Eo0Zjy/WfPwseUV+LH9GPAPjMJHRIgodjgg?=
- =?us-ascii?Q?E9NhOPLrrvwHjkLF1n3K8RsbI19Envzk5eMuFD+zxcC6J3v1EalAJCJRU5nr?=
- =?us-ascii?Q?0RmJVmVrCgZkGsJOJg4ZQlDQbt5fPJ7xXcrs3NnG4O7op6/ROwfWyiMkN1lb?=
- =?us-ascii?Q?Z5gE1b7QyQ87seCt3VKIUNV16FMPpBwSZ8NzXvU0gGLfsAj/wCoGYCvrgscc?=
- =?us-ascii?Q?yfsa8GoIQXt5EsODN8lGHE8vYyK8RRVL0KphIj6fbQLAfglP74i/6qcPOiH8?=
- =?us-ascii?Q?8W4JEHoG/AF+58CiQyuuvjLbA3vL2T+8ZgDRnmXwr4vY7TUexLq1FVg6CHWP?=
- =?us-ascii?Q?5omEFZ3mdVU78dAMZhtAM/mW+z1/ExdQCRcK51IXUqZaAvpn7bCCw6dKTuMg?=
- =?us-ascii?Q?RwmpeTTCF+WhTSYmuIOpKqlQr3WlVaMQMWYsrvTabyV1CVc0wlHBq6PlJDgO?=
- =?us-ascii?Q?D8QGzCyGsDpFTFmsW+9O9hEWv5zzVjnP2g26K0lb9KzNJJCv0vX0VZ1x6r69?=
- =?us-ascii?Q?Tr2eQC54cqnDrHkEAsoLKFzRnT3LfcMWbsYoYb87Iz6Jusy7AE3zf9/RIStG?=
- =?us-ascii?Q?SPokqkQnXsxy3S48SMddVf0RHr5fHPnwk7OfkT5CABmENX+U2AkrJVT9IX0G?=
- =?us-ascii?Q?b22WxHdX1KZceZRtcHBUwDYflHJHvlFny+juLrqRb4n4Ogza6uCj5bBXmtfU?=
- =?us-ascii?Q?k7O9jHMzamL2x7gVS1HLqDq5TOXzIuVwYKejT4KvOCdluERr6EuaSoX1HW+f?=
- =?us-ascii?Q?yzrYTQ2XO4olnJMcV7m7yX0BkAt/qaUW7kiLxA3PJE8aVKd+nerdgDIyqRMK?=
- =?us-ascii?Q?dK5A9q/4Mq/A6BNNrgBA8nJAEwnzG1ru?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NnNkRVZPd0tyOUxGVUR2VDJqSXo5UjJLOWc2MTNwQ0ZKRHhLRmhEeFhBVWYv?=
+ =?utf-8?B?TWdhYmpLYzVleGNiNGJrYWhldm11K0V4NSsyNi9YRmt4cXpFWk1NVlBUTjMw?=
+ =?utf-8?B?SnUzSEh2dHlFd3F2T0RvcjJFczg4Yjk0eDVFeE5IMjlPanV6Q0oxTkxtYTAx?=
+ =?utf-8?B?MHQ4aHBPWTZUZ2RKQWJYazRZY05ZSWRtNGhDWWhYYkhYNE12SXNHRDVWZUpD?=
+ =?utf-8?B?bFIxcy95VUZjckU5UGx1R1ZTa0ptdExudk8xZDl2c0hzLzZUWVh2WWxwb01p?=
+ =?utf-8?B?WWtQL1RNOTlsUldZTG41VzZnM1c2ZERianRXaWg2R1VrbTcyVnZYRWZzNVNw?=
+ =?utf-8?B?N21Zc29XL0lWV1B4NjNzRjZKdC9vdkFYb2JwTmlFZk9WS3ZadHVjemRMRDZz?=
+ =?utf-8?B?ZTZST0tGcEd5UG9PajFyaldpTGpweVMzR0JOOWw0YU42eEpLK09BTHdTbVFE?=
+ =?utf-8?B?RmsyQnRZM2Q4N3dyMHFMTk9WVnNlaUVKblZmUHhkN1RYQTRJNFhhenJUcFA3?=
+ =?utf-8?B?Yk05RUVDMmRsV1dxUlRKbUNFUzhDME4xak9MWHFsSEcvYVRIdFFVZE5pU3hY?=
+ =?utf-8?B?UExJdjlLcEE4a3YrcTQzTXpnaEdRWTFRbFE3eDlEWkdDT0hiNldUbTJiOG5p?=
+ =?utf-8?B?UVZ2Rk5VY2lNdFBBeHdFTko3aDVBZlUxdWpDLzBZeFp0Rlk5Y1R0NFJUZUl4?=
+ =?utf-8?B?UXRLeGxkMmtMQkl3WXJqaGl3SmxydFNpUE11T1ptcGhoTU53MHZVQzJSOXlI?=
+ =?utf-8?B?cWFiSmxsOU5uZ0hKYlYxUUpzNmo3MzJUSXNtczhPNVowb0NwZEljOWVtQndm?=
+ =?utf-8?B?UHdXRlp3RGUraDFSdkFjRU8xRVlrdnU2djFScmduazBYYTFoQXgrSGVFQlFk?=
+ =?utf-8?B?cjZOR0lTSG9aNWY2alo3OUJkcGNlTWJUaFFjMHhyNmJTbmVBTkVsV0NUL2hK?=
+ =?utf-8?B?TStlSHk4Z2ZGYjh4TW1mc0RYSGF3aHU1cDZ5eEcwaFg3TlVsQlJ3Ym1ib05R?=
+ =?utf-8?B?VURFUG02MVhmN28wTVVBM05Wd3BMd0pRZEpTQjhiaWhiZU9jVEVFZTliMlZZ?=
+ =?utf-8?B?bjIwVmlPSlBHNmwvc2RYYjNoTlMrVk9TeFZYR2pWT3dpUFdFVTZqdWpqdElK?=
+ =?utf-8?B?dHVPeVBobFZWK0M4aG5MbzhUMllodFl0NkoyVEN0N243OTJpcEk1UlROalI4?=
+ =?utf-8?B?emRGUXIzeUNLOTNFSkJWd29YazMrd1phckZwNEp4VWJRRDU5NUMyTU91Y3Bh?=
+ =?utf-8?B?d0VYTXBDNWRGelA1eUNmYlVPVzZxaWgxNnZNMW14NFluZlU2VVF1Z3g3QUNV?=
+ =?utf-8?B?OGQ1L0x2QjUzdDIxSlovZWxBcjN2aEhZN0Q1akpMcEJXMzNJMkpMUkxtdHBS?=
+ =?utf-8?B?Uzk5QVd4cnpCSE5QOURVUkhoYnQyaGYwYzZiV0RYaVhPcmRvOCt6Wk9GakE0?=
+ =?utf-8?B?Q1B1OEhSaXBCSm9IYTlnSTJnOXpxbldZUUErb1AxVnhneEIvWU5iR1dnSGpq?=
+ =?utf-8?B?UUNOU1JWSWdlRkd2dkhVYWp2WlJQTXhhTmxkL3pWT1JlV0V0TkIraVQyMmJ4?=
+ =?utf-8?B?UGtOazl6ZW9wR1p2V0Z3UmxCNW91a1A1UjFxaWNmZ0ZMTzhtSzg0YlcvSnZ0?=
+ =?utf-8?B?SHROVWJvWTFGaXk5ckhid3dQUGsrbE10dTRmcGFaSk1vL1NRM1A4RlFmbVdm?=
+ =?utf-8?Q?IBVLWnKEzppwWv9HOZ/V?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6ZsFgNYxpe9/ofWcKZLu+PTg7OWGjdRWj3e21db9mUBUL7D5eqkt8IE2o+/7?=
- =?us-ascii?Q?HWt8Q4MGnaQOXKzEW9OUfRoPPfBXIo2GGwrFGYpjJSq1yj3CsytP5HjIrr3n?=
- =?us-ascii?Q?CF0OQw4PPhXddOfQIDeglQI/SeRx+vk4NrMOQX5ZTlfwDF1T8c50Nw6IJ7FK?=
- =?us-ascii?Q?rvzST4TH2mqqeDePVoX92V3BoSJYRxS32wrKKaFnupjO/TbtVSNMcvwUvEvu?=
- =?us-ascii?Q?qbs5rMMx3WP22zFfGnLDs2o79mhZlVXfgv54Cwhhv/s83ev/xC1g+gdrE/lB?=
- =?us-ascii?Q?TwxbqyzDyTvJ9wvEne/ETXlstTr27HEFS0vLj70123EgcvoPMR/+MEcY6ETm?=
- =?us-ascii?Q?YSzXQVIGL4DX/GbYwj1xUnfu3GDy79ZbrKZ2uArs2n/VBKJ6zen4WU3SLBIt?=
- =?us-ascii?Q?Qa56m7W3BQLGX391n5kiIQl2DUdo+zq3mxtHFyV2JliqUt5wJLZAf7D6QM+b?=
- =?us-ascii?Q?J1NyMGozNcxZKQyX7GOGqTJsLxUCXm9PiRYtziwGyETkaaElR8/QT9OPPJnW?=
- =?us-ascii?Q?UHYnZowrt788Iz2vW9K1+2gUgOqyDknEXD8fOpCrYtdSRk16mG0uOCxhMcp3?=
- =?us-ascii?Q?/ufw10FHsCaAKRI11eBS66uvA80F6pO9cXdk8c9N+jc8ecVy5tRSti96mIit?=
- =?us-ascii?Q?iyEKBWRzOksLaIIVax6otiSwf9DSi8ug/ci0Cp+Uvo4W1tGUPLF87zlHOvKy?=
- =?us-ascii?Q?3nV/0CJgoWlI+lY5BZWB6FrRccBqJTxLZhGlK4ag28PBPfiSRMAqPOWqpf/p?=
- =?us-ascii?Q?CjIMJaL+pOEO0lRB6P4vxOJFGJCJZ53Rb7kCiupzn6kXQBo2zwIFeE1W3fmL?=
- =?us-ascii?Q?uDaw04WRQdq7fr0ewUkBNK3dzru1H/o2db6iO5ffAYHTev5KYieIcnGZvdFc?=
- =?us-ascii?Q?fz4dp0nVDHr2tBjaFIHWuHbl4jfyobGdRQdygBxBivXXsAE3vsM9K7u+tZZF?=
- =?us-ascii?Q?kY8I7vUznBp8BxTVsv0B0OfXFpJ+YKl2ZBTmFXrzvGAe4s9YLsfYqZ3bdBUe?=
- =?us-ascii?Q?Aq6FTZPy1HGxNrymYOyrSh/YMr+kcut0uzuXGihpJPdcTfCz7Uh1+c8M0YTW?=
- =?us-ascii?Q?LM4w1ctq9QvwOIqofCBe+KNi8H3I8wvx66FOJ9k6HZ/Ckrzgdqv55QymnhB1?=
- =?us-ascii?Q?5ykCP20Pm62pj1BRFU7C6Ucve01qjxda+6W8cNoVxfkwqpYfHo26LZfsEliy?=
- =?us-ascii?Q?53Q5ul/oANxxqZh9NBOe/uTAPWvqu46fzZbcOPG13h8JVj61s9W2okmvJuG+?=
- =?us-ascii?Q?DmB37C//WlsrLWOWwTyAwPzKFnI9c0xPArSbzzvP8fPazsr1z1ABiHHhxLbX?=
- =?us-ascii?Q?WOnlw0dnfxT+syaLEyoNusEoR3sNC7X3MjEOibVp8g66xYfQgfS8C0Bmp+FX?=
- =?us-ascii?Q?U92cgd/CyIpyID2Ma7iuRA+Ak4RPSCYgPz6kgpR3DNZJXa8doUwDBzw7Yw3m?=
- =?us-ascii?Q?fvx1ftnnd5luK6zYSp+so8w8Ur+FxsbD8IE+LkBz89UOgDBFFv2JHmwdZmW/?=
- =?us-ascii?Q?DKgoZidzDXX2N61WkA23pNLiBKWnp76dHDwFM5np3jeZ4fBIavuJ8kzXvh81?=
- =?us-ascii?Q?d6rncy6EX8wTGexrfnRR/SvjAylkUGkPUaunVHth?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1660983-6dec-4e55-86d5-08dd77101be3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3JtRFRQanZIY0QvVE41U2lSUkJEdzBVYTJnN2dHQUs0RE1OWjFRNUJUU3Mv?=
+ =?utf-8?B?SnFOMEhsRDhwSlBaN3NpNERmU09qNkxDR1NVRjNOVDlSRytBU1E3MGNUcDll?=
+ =?utf-8?B?VG8vcmRXMHFQTVUycGs5TEJZV2NoNHFEOHNlbEFmdENKSHRHbkNBMzAzcTFC?=
+ =?utf-8?B?REVUb29OaDhNL2hqUHNpVUdubGhBR3VPT3JzZklnSTNBbFJqL21DaTA5Rkp5?=
+ =?utf-8?B?RVdNNXBZU2cyWHZFYjFUMmZKVzhoemtaY0o4bjJhOHhyQ1pOdnB1dStnWVRa?=
+ =?utf-8?B?NkVUQUZJWktqbTlSbTJDenY4eWFsbHJ5d3E2dWhOQk1ZN0lUOCtiVEZwak1K?=
+ =?utf-8?B?a3Jnd1M5ZnFQVk9PWmFUOHpldzFnMnJXVGNNcEdUd0NTYWRTZnZ0Vm1JSVdw?=
+ =?utf-8?B?b2FyaytBeVljSFAzVElHT0hYR1VSQWY2b21TeDFQZlZZcHIrWWtCQWpHWnlW?=
+ =?utf-8?B?OGFDdlpZTVR4S0Z5MkI2S1l6WHdBSXVuSkNuSm5NMlpGa1RHVFdTZFFjQkZN?=
+ =?utf-8?B?QWNYOW0xaTlGZFhIQjI5Q2tIWVNFMG8yTk9rMXMrcTZhVUNuVzhUd2JKMnlo?=
+ =?utf-8?B?NmRTUExpWXRQSGlsVEpmcWQvWmRPb2Q5VDhZUEtRUlhpdDV2RW1tRjdLbkJK?=
+ =?utf-8?B?cmxNUWJnd2JUcExPbTlZbWowYTIrekptL0NmNzJnR2dTTU5aeHFhRFZhaHhY?=
+ =?utf-8?B?MXdhREdmcEUzbFhncXVTNzk4WXFVRzNuWkVuYjNJbjNDQUIxMytUWEpPVXA0?=
+ =?utf-8?B?YTFaNUZVYjhpRm80ZlQxalY5bUIvV0hIejhCTFlEcDN4U2MyQlprbDlIMitT?=
+ =?utf-8?B?OHVyVGRYVmdQQ0pJRVFjQlpKczYvMkRaTDhNOVdvQktyakpCWVphZFFjRXI4?=
+ =?utf-8?B?Tm5jYk9vd2lFd1cxUi8xdWgyQ3hPU3FSZmhxL1NnZXdmWHliQTBxc1VudU5h?=
+ =?utf-8?B?aDc5Q1lqQTNCUFc1Rm9Zb2FFNG81SmF6cDVWMHB3MTdsRTVuM3RaSENyK2Jt?=
+ =?utf-8?B?SGNub3B3cG4wRTZjQTZ1d1BDT1JSbEZtYU9kQmdNSUh1NlBzQUZzMTl5clFw?=
+ =?utf-8?B?M0F1L0J3b0pBUnVxR3VqNnFBcytGaXFGQjNlRVBNVGcxRDdObE9WZ3d3VmdD?=
+ =?utf-8?B?Y1BKRVQ0bitoRjNuSVZWakxLcWdIU3hPSkpCSk54aXBPdlJGcGdFWlBCQlVq?=
+ =?utf-8?B?ejRzemtTS0VqVUMwLytWVWJET255S0xhV2xCbUFnam9KU1BFUmlYYXRmRWJa?=
+ =?utf-8?B?RXI4VEpDSzRNNjkwWktQcFRUazJtcko2Mm5WU3UySzM2UkRZTEVoM2tQOXNP?=
+ =?utf-8?B?YmZneDcwbjU5WStGWnFiM2Fud2R6WUNpN2lBM3cxbnBmenhhMGMrVnN4eXE1?=
+ =?utf-8?B?ZVZiM0IzbUNGa01LamdjRHhtcGJjRUs0Vy96SUd5b2FSejdJTzlTZExzQjRX?=
+ =?utf-8?B?eThBRmdxc0tUQ1VxOE1DRkZmcHdSNGQ3aHB6WDA5RFp4SFNIUHNqYzA2dDU0?=
+ =?utf-8?B?bk94aENhNDlmUTZ2dlNvV2dQRjh3blBsYTBWVHlmbU1aczUyVnN5Sk0yRHU1?=
+ =?utf-8?B?QjQ4THlFQ2RkQnpKZmxCY1VWN09aeXdMelRBTVVGQis5dWJXM1h4VEF2L0Jy?=
+ =?utf-8?B?b3FoL24ySWdodTV3STZ1cjk0SEZ1dXBDMS9RaDBLa0tBN2JIY21XNktORTRx?=
+ =?utf-8?B?N1UwU29CSDNrd1FZY3hJWHY1ckpVNnJwVy82NUNrTDVBOVRhTDhyaTB6YytN?=
+ =?utf-8?B?YlRydnhvSzQ5a3lxdFFubi9vdnZVNGZCU2l0K3ltSS9VTW15V0V5ZS85MFU4?=
+ =?utf-8?B?OEh4bmM4S2FsZktoTWZkV3gwd2p2STYxMEpBYkVZd21xSFNXNXZxU0dDM1FC?=
+ =?utf-8?B?K3p6dDNKVU1keWdldjBxb3A4TEM3OVR2NmhnTEVudXRKd3ZlOEM0a2tTcm5j?=
+ =?utf-8?B?OVBFTVg1RjVLdFFrclN5SVllbU5ZbW9MT09MeEJ1QllnVFJoVnR1akg2bUxY?=
+ =?utf-8?B?ejljZnR5N3c3RlJXME5Qbk03U2Q0VUdxSyttbmhUME04ZDlyN3NvN2twalVB?=
+ =?utf-8?B?NXJ5QzlPYWg3WVdyZ01CY1o2MjNNS1c2MEF3RC93QUpBbVRya0t5QThYWkxr?=
+ =?utf-8?B?aUJvZ1hzbnIxc1B0RjJmOFp3OVEyQjhSaVZIUStwSXBwRWgrNWtvQ3pwT016?=
+ =?utf-8?B?RHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 159e9519-f5de-4a16-363e-08dd77284a8f
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3605.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 02:42:02.9434
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 05:35:09.3301
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ufO6XECNCVzxQvLLQGWrB2OBZU+5Hhaml9YiJHehaFYvNN+vpjGm1hWlVrGwD2QbgIhnwTEUjg9Xp+HhLKSTWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8127
+X-MS-Exchange-CrossTenant-UserPrincipalName: S51CbZmBNSc5wFT2z5co7g9zfMggdvzx7yUnjt+fOyPfabJkaI/uWtZINZK1FepH1fJZgnSgRAoSz0EiQ9YmpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB8805
+X-OriginatorOrg: intel.com
 
-Hi Sudeep, Cristian
+On 28/03/25 13:25, ziniu.wang_1@nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+> 
+> For SoCs like i.MX6UL(L/Z) and i.MX7D, USDHC powers off completely during
+> system power management (PM), causing the internal tuning status to be
+> lost. To address this, save the tuning value when system suspend and
+> restore it for any command issued after system resume when re-tuning is
+> held.
+> 
+> A typical case involves SDIO WiFi devices with the MMC_PM_KEEP_POWER and
+> MMC_PM_WAKE_SDIO_IRQ flag, which retain power during system PM. To
+> conserve power, WiFi switches to 1-bit mode and restores 4-bit mode upon
+> resume. As per the specification, tuning commands are not supported in
+> 1-bit mode. When sending CMD52 to restore 4-bit mode, re-tuning must be
+> held. However, CMD52 still requires a correct sample point to avoid CRC
+> errors, necessitating preservation of the previous tuning value.
+> 
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
 
-On Thu, Mar 13, 2025 at 01:23:27PM +0800, Peng Fan wrote:
->On Wed, Mar 12, 2025 at 11:28:52AM +0000, Sudeep Holla wrote:
->>On Wed, Mar 12, 2025 at 10:52:23AM +0000, Sudeep Holla wrote:
->>> On Tue, Mar 11, 2025 at 11:23:12AM +0000, Sudeep Holla wrote:
->>> > On Tue, Mar 11, 2025 at 11:12:45AM +0000, Peng Fan wrote:
->>> > >
->>> > > So it is clear that wrong fw_devlink is created, it is because scmi cpufreq device is
->>> > > created earlier and when device_add, the below logic makes the fwnode pointer points
->>> > > to scmi cpufreq device.
->>> > >         if (dev->fwnode && !dev->fwnode->dev) {
->>> > >                 dev->fwnode->dev = dev;
->>> > >                 fw_devlink_link_device(dev);
->>> > >         }
->>> > >
->>> >
->>> > Thanks, looks like simple way to reproduce the issue. I will give it a try.
->>> >
->>> 
->>> I could reproduce but none of my solution solved the problem completely
->>> or properly. And I don't like the DT proposal you came up with. I am
->>> not inclined to just drop this fwnode setting in the scmi devices and
->>> just use of_node.
->>>
->>
->>Sorry for the typo that changes the meaning: s/not/now
->>
->>I meant "I am now inclined ..", until we figure out a way to make this
->>work with devlinks properly.
->
->when you have time, please give a look at
->https://github.com/MrVan/linux/commit/b500c29cb7f6f32a38b1ed462e333db5a3e301e4
->
->The upper patch was to follow Cristian's and Dan's suggestion in V2[1] to use
->a flag SCMI_DEVICE_NO_FWNODE for scmi device.
->
->I could post out the upper patch as V3 if it basically looks no design flaw.
->I will drop the pinctrl patch in v3, considering we are first going
->to resolve the fw_devlink issue for cpufreq/devfreq.
->
->[1] https://lore.kernel.org/all/Z6SgFGb4Z88v783c@pluto/
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Not sure you gave a look on this or not. I am thinking to bring this V3
-out to mailing list later this week. Please raise if you have any concern.
+> ---
+> v1->v2:
+>  * Used GENMASK/FIELD_GET/FIELD_PREP macro
+>  * Added check MMC_PM_WAKE_SDIO_IRQ for save/restore tuning value
+>  * Fixed typo and tune commit message
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 88 +++++++++++++++++++++++++++++-
+>  1 file changed, 86 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index ff78a7c6a04c..7e8addaed697 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -81,6 +81,8 @@
+>  #define  ESDHC_TUNE_CTRL_STEP		1
+>  #define  ESDHC_TUNE_CTRL_MIN		0
+>  #define  ESDHC_TUNE_CTRL_MAX		((1 << 7) - 1)
+> +#define  ESDHC_TUNE_CTRL_STATUS_TAP_SEL_PRE_MASK	GENMASK(30, 24)
+> +#define  ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK	GENMASK(14, 8)
+>  
+>  /* strobe dll register */
+>  #define ESDHC_STROBE_DLL_CTRL		0x70
+> @@ -235,6 +237,7 @@ struct esdhc_platform_data {
+>  	unsigned int tuning_step;       /* The delay cell steps in tuning procedure */
+>  	unsigned int tuning_start_tap;	/* The start delay cell point in tuning procedure */
+>  	unsigned int strobe_dll_delay_target;	/* The delay cell for strobe pad (read clock) */
+> +	unsigned int saved_tuning_delay_cell;	/* save the value of tuning delay cell */
+>  };
+>  
+>  struct esdhc_soc_data {
+> @@ -1057,7 +1060,7 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+>  {
+>  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+>  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+> -	u32 ctrl;
+> +	u32 ctrl, tuning_ctrl;
+>  	int ret;
+>  
+>  	/* Reset the tuning circuit */
+> @@ -1071,6 +1074,16 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+>  			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+>  		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+>  			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
+> +			/*
+> +			 * enable the std tuning just in case it cleared in
+> +			 * sdhc_esdhc_tuning_restore.
+> +			 */
+> +			tuning_ctrl = readl(host->ioaddr + ESDHC_TUNING_CTRL);
+> +			if (!(tuning_ctrl & ESDHC_STD_TUNING_EN)) {
+> +				tuning_ctrl |= ESDHC_STD_TUNING_EN;
+> +				writel(tuning_ctrl, host->ioaddr + ESDHC_TUNING_CTRL);
+> +			}
+> +
+>  			ctrl = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+>  			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+>  			ctrl &= ~ESDHC_MIX_CTRL_EXE_TUNE;
+> @@ -1149,7 +1162,8 @@ static void esdhc_prepare_tuning(struct sdhci_host *host, u32 val)
+>  	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL |
+>  			ESDHC_MIX_CTRL_FBCLK_SEL;
+>  	writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
+> -	writel(val << 8, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> +	writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK, val),
+> +	       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+>  	dev_dbg(mmc_dev(host->mmc),
+>  		"tuning with delay 0x%x ESDHC_TUNE_CTRL_STATUS 0x%x\n",
+>  			val, readl(host->ioaddr + ESDHC_TUNE_CTRL_STATUS));
+> @@ -1569,6 +1583,57 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
+>  	}
+>  }
+>  
+> +static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+> +{
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+> +	u32 reg;
+> +
+> +	/*
+> +	 * SD/eMMC do not need this tuning save because it will re-init
+> +	 * after system resume back.
+> +	 * Here save the tuning delay value for SDIO device since it may
+> +	 * keep power during system PM. And for usdhc, only SDR50 and
+> +	 * SDR104 mode for SDIO device need to do tuning, and need to
+> +	 * save/restore.
+> +	 */
+> +	if (host->timing == MMC_TIMING_UHS_SDR50 ||
+> +	    host->timing == MMC_TIMING_UHS_SDR104) {
+> +		reg = readl(host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> +		reg = FIELD_GET(ESDHC_TUNE_CTRL_STATUS_TAP_SEL_PRE_MASK, reg);
+> +		imx_data->boarddata.saved_tuning_delay_cell = reg;
+> +	}
+> +}
+> +
+> +static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
+> +{
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+> +	u32 reg;
+> +
+> +	if (host->timing == MMC_TIMING_UHS_SDR50 ||
+> +	    host->timing == MMC_TIMING_UHS_SDR104) {
+> +		/*
+> +		 * restore the tuning delay value actually is a
+> +		 * manual tuning method, so clear the standard
+> +		 * tuning enable bit here. Will set back this
+> +		 * ESDHC_STD_TUNING_EN in esdhc_reset_tuning()
+> +		 * when trigger re-tuning.
+> +		 */
+> +		reg = readl(host->ioaddr + ESDHC_TUNING_CTRL);
+> +		reg &= ~ESDHC_STD_TUNING_EN;
+> +		writel(reg, host->ioaddr + ESDHC_TUNING_CTRL);
+> +
+> +		reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
+> +		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL | ESDHC_MIX_CTRL_FBCLK_SEL;
+> +		writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
+> +
+> +		writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK,
+> +				  imx_data->boarddata.saved_tuning_delay_cell),
+> +		       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> +	}
+> +}
+> +
+>  static void esdhc_cqe_enable(struct mmc_host *mmc)
+>  {
+>  	struct sdhci_host *host = mmc_priv(mmc);
+> @@ -1900,6 +1965,15 @@ static int sdhci_esdhc_suspend(struct device *dev)
+>  	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+>  		mmc_retune_needed(host->mmc);
+>  
+> +	/*
+> +	 * For the device need to keep power during system PM, need
+> +	 * to save the tuning delay value just in case the usdhc
+> +	 * lost power during system PM.
+> +	 */
+> +	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc) &&
+> +	    esdhc_is_usdhc(imx_data))
+> +		sdhc_esdhc_tuning_save(host);
+> +
+>  	ret = sdhci_suspend_host(host);
+>  	if (ret)
+>  		return ret;
+> @@ -1916,6 +1990,8 @@ static int sdhci_esdhc_suspend(struct device *dev)
+>  static int sdhci_esdhc_resume(struct device *dev)
+>  {
+>  	struct sdhci_host *host = dev_get_drvdata(dev);
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+>  	int ret;
+>  
+>  	ret = pinctrl_pm_select_default_state(dev);
+> @@ -1929,6 +2005,14 @@ static int sdhci_esdhc_resume(struct device *dev)
+>  	if (ret)
+>  		return ret;
+>  
+> +	/*
+> +	 * restore the saved tuning delay value for the device which keep
+> +	 * power during system PM.
+> +	 */
+> +	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc) &&
+> +	    esdhc_is_usdhc(imx_data))
+> +		sdhc_esdhc_tuning_restore(host);
+> +
+>  	if (host->mmc->caps2 & MMC_CAP2_CQE)
+>  		ret = cqhci_resume(host->mmc);
+>  
 
-Thanks,
-Peng
-
->
->Thanks,
->Peng.
->
->>
->>-- 
->>Regards,
->>Sudeep
