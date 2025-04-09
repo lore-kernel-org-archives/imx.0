@@ -1,129 +1,68 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8D31DFFD
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 21:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0FE1D5ADE;
+	Wed,  9 Apr 2025 21:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744232733; cv=none; b=fwK8eY9nhWtDCZxBFEKOb1BD1IM7H4RvzZZYwMx2GIigLO+c9XbbLJF9pHpwf9C4FGbAtJHgxSBMYZ+2/5Hgv5gGupDwFtM12bFJo7XvMHKYg3SpQtsfxCAVn8O2gxU3PR4dKvay1uxMHqsSuHrQDTZa7vYxDZQzlAUbyk6RYBs=
+	t=1744232806; cv=none; b=iFLiqIEUdjrZQx2Y8ktEvdiRHIhwQGWnM8zkWh3SIi3LH2KUqAEFOyHPCii3M+6r9TUmb1EsULUl01UuykP0hVgTIW2HdcMB4zX2b4dbm7Lwm+ZyN1Id2yagyADH9vI8feh75F1LvhMsSPPtLWq3Da4+vtOajQju5ksGlGyfViI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744232733; c=relaxed/simple;
-	bh=N5hlXF96Ode30eEYmbK2mv3z6B7j9bK3qeuxbUlrazg=;
+	s=arc-20240116; t=1744232806; c=relaxed/simple;
+	bh=A5tiqZuk19Z9E9HTBmsdD/Utrq5L4fPz7jKOjnNEIJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aakGjemUQiEt1puBvy/ITR1SMnWplAW+kUZuC4y67UAavmMQLu5zCMpg29WYGrietk1Gwd9fWDks/RYmLYZMr5+suI5MTYpt25Gc3enipVB7SvUDmMou4o46Xvcrnri0m0MhHWtFpaLTsN+aRDzIAHrNJGqYj3K+XMgGBlCywFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=nw/pc+I1; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0wNMJs4GaG7P2PmAk49WOM9u1T7Un7m2WkJKbGbhtz+0iFuZ8iwy7zjtDCWewnbaBxatImkfo3FPPNOhjpSFUs6czej6Je3YNHDALBxtmnYBU2jEu0OXrIKma4bBdNs7gmk+VSYJmkIb+5kFExQTgYFRztwv0Drt5m28EZ7wFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qba/6MvM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="nw/pc+I1"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5B67E82E;
-	Wed,  9 Apr 2025 23:03:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1744232611;
-	bh=N5hlXF96Ode30eEYmbK2mv3z6B7j9bK3qeuxbUlrazg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nw/pc+I16ePWEVbKyb01L2UFQxqyd/+UIweSrUTVP3P5jyEYnukYlgV7CGSAx3xn0
-	 woOxLCKtUkthcbk5Qx1e1GD4PkByWdVkFt2w/UK5g32SY5uWLUt5amY0Xl+fHbuI5y
-	 hIaqLva2mobQgbxZFvn7aSzAsRpQ8jPEVsVOu+8M=
-Date: Thu, 10 Apr 2025 00:05:04 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: Need Help Enabling HDMI on Debix Model A
-Message-ID: <20250409210504.GB12162@pendragon.ideasonboard.com>
-References: <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250407130257.GD3924@pendragon.ideasonboard.com>
- <PN3P287MB1829692B4C3D5AD273CB62DE8BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qba/6MvM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=iay7Qa9sHNdJmcKXfDHG/I+AIXVYDO+D/QQZnAThWT4=; b=qba/6MvMpUVqbjjCqTUqeAW+ne
+	H+o9Nsni77/pVeMjpWzHLi5WCNgJevjaPJ8xhwIIpr0YtybM40VTypQ3eX82igMkWUYgClhYpK1w5
+	UEcDIHOHgdzBuEgbIJ3FO7uvz6bRITBehc+JonQGPEZLyr8vyyJCzuTZSWiOfRfo992w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u2ccw-008azr-2R; Wed, 09 Apr 2025 23:06:30 +0200
+Date: Wed, 9 Apr 2025 23:06:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: Re: [net-next v4 3/5] ARM: dts: nxp: mxs: Adjust XEA board's DTS to
+ support L2 switch
+Message-ID: <b380c764-5a46-49e8-9241-675a6b9d85b6@lunn.ch>
+References: <20250407145157.3626463-1-lukma@denx.de>
+ <20250407145157.3626463-4-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN3P287MB1829692B4C3D5AD273CB62DE8BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+In-Reply-To: <20250407145157.3626463-4-lukma@denx.de>
 
-Hi Tarang,
-
-On Mon, Apr 07, 2025 at 02:06:35PM +0000, Tarang Raval wrote:
-> > On Mon, Apr 07, 2025 at 11:10:23AM +0000, Tarang Raval wrote:
-> > > Hi Laurent,
-> > >
-> > > I’m trying to bring up HDMI on the Debix Model A board using the
-> > > mainline kernel, but I’m currently facing issues.
-> > >
-> > > I saw that you tested the patch for HDMI support on this board in
-> > > mainline, so I am hoping you could help me figure out what might be
-> > > missing.
-> > >
-> > > To clarify — I'm using the prebuilt image provided by Debix, but I replaced
-> > > the kernel image and the device tree (DTS) file in the /boot directory with
-> > > ones built from the mainline kernel.
-> > >
-> > > I’ve enabled the following configurations in the kernel:
-> > > CONFIG_DRM_DISPLAY_CONNECTOR=y
-> > > CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=y
-> > > CONFIG_DRM_IMX8MP_HDMI_PVI=y
-> > > CONFIG_DRM_IMX_LCDIF=y
-> > > CONFIG_PHY_FSL_SAMSUNG_HDMI_PHY=y
-> > >
-> > > When I boot the board, I see the following HDMI/DRM related logs:
-> > > debix@imx8mp-debix:~$ dmesg | grep -iE "drm|hdmi"
-> > > [    0.121979] /soc@0/bus@32c00000/display-bridge@32fc4000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
-> > > [    0.122164] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/display-bridge@32fc4000
-> > > [    0.127417] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /hdmi-connector
-> > > [    0.127608] /hdmi-connector: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
-> > > [    1.947962] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (SAMSUNG HDMI TX PHY)
-> > > [    1.949220] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver
-> > > [    1.956365] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-controller on minor 0
-> > > [    2.016601] imx-lcdif 32fc6000.display-controller: [drm] fb0: imx-lcdifdrmfb frame buffer device
-> > > [    8.380915] systemd[1]: Starting Load Kernel Module drm...
-> > >
-> > >
-> > > I also checked that the display's modeline is recognized under sysfs :
-> > >
-> > > root@imx8mp-debix:~# ls /sys/class/drm/card0-HDMI-A-1/
-> > > connector_id  dpms          modes         subsystem/
-> > > ddc/          edid          power/        uevent
-> > > device/       enabled       status
-> > >
-> > > However, there is still no HDMI output on the display. Instead,
-> > > I only see a white blinking cursor on the screen.. I'm not sure
-> > > what I'm missing.
-> > 
-> > The white blinking cursor means the display is working from the kernel
-> > point of view. What are you expecting, are you running an X server or
-> > Wayland compositor ?
+On Mon, Apr 07, 2025 at 04:51:55PM +0200, Lukasz Majewski wrote:
+> The description is similar to the one used with the new CPSW driver.
 > 
-> I'm expecting to see the Ubuntu desktop environment on the HDMI 
-> display — just like how it appears with the original prebuilt image provided 
-> by Debix. I'm running the default Ubuntu 22.04 LTS prebuilt image, and I only
-> replaced the Image and .dtb file
-> 
-> I'm not explicitly launching an X server or Wayland compositor myself
-> 
-> However, based on your response, I now realize that I may also need to 
-> enable GPU support in the mainline device tree. Specifically, I believe I 
-> need to enable the gpu2D and gpu3D nodes to allow the graphical 
-> environment to start properly and render the desktop over HDMI.
-> 
-> Does that sound correct, or is there anything else I should check or 
-> enable?
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-That's a plausible explanation. The 2D GPU is probably not used by the
-compositor, but a 3D GPU could be required. I'd recommend checking the
-system logs to see why the compositor (or session manager) failed to
-start.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-> > > Could you please help me out or point me in the right direction?
-> > >
-> > > Thank you for your time.
-
--- 
-Regards,
-
-Laurent Pinchart
+    Andrew
