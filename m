@@ -1,117 +1,137 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A641E5718
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 08:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA4C3D76
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 08:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744186762; cv=none; b=jqah6y0JEqTFYckkXXKKE7T32mZPtgUxP80lXmTmuR9AXoER7u4XfR5dSEFP7TmWFBf4/EqO14HAUhPdeoCKZ7DlA7vNf8qzBfhpxTbUbxSlSPJ4VeJfB883WBwTAn28SsNUHXnszLATjyXuLJVhzmFkRqb/t3G919pcIAt430o=
+	t=1744187246; cv=none; b=tm5EJxTyerq3wiCNMMV2+jkO+1cg7Ijx8mVTC6iYBYh9jYyvHlZNJO977IPsYbxknVTdLlAsOab43/zp84Jz1JX0Qyl0+79pm+wJlM2BJZy75LZICNGqWV8QcpNzIz5X6yG93o1fQwHfFP1+SShCmixlFG6WNmA4FP9hv5Ncohs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744186762; c=relaxed/simple;
-	bh=cARZ3MoSB/llLZWC/nfsNQVqtIuVgsB9ugipQScHhzg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=aP3R7ZYVNvYCpdOopnczI57qDAr5xu3diRlL2/YzZ3CFNbHllk1wcHRYaVf7NEaZ7azNfFLICApabQ3DXm0ZCLuhXpmam02e5BEAs/bGFxmRk5KCnVakQLmR3x0TqsQdeRyQUV9lwyv3c6YkXy/5GVIQY50popMn2+esQ1CV3LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Ky13OstA; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Ky13OstA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744186756; x=1744791556; i=wahrenst@gmx.net;
-	bh=cARZ3MoSB/llLZWC/nfsNQVqtIuVgsB9ugipQScHhzg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Ky13OstA/q5D2hES1XeCKmo3E5yjeuRFIWY61QEPcf8dAh4q3ZNQ44sz7eHfwCrC
-	 uzIEF+qiqmFuBPNlzwrsVlXVCpRooKs6vq6dBjYYK9hdOPNESjQO1Wtw1fA7lXONW
-	 PznwuwnHBtzvBPwyKCcPs6X4lmR2hDjgzDAlVirEP+Afq6zI4XafHL0r8Ih2pnGjY
-	 NSg+ot379GSTxa7Kg/moSz62AOhvPEsf2ut+67NscBajwHQw22AzKRV1Ij/Gsc6Jj
-	 rZT1hfuAbu9YwxyVYcfPhjHfRYZdjW0MJ3jVJ4pGLPHUsSzETnrf/rj4RxY8h00t2
-	 LMNMz+WKgQY1J5WxCw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYNJg-1tX8Qz3sZu-00OaZm; Wed, 09
- Apr 2025 10:19:16 +0200
-Message-ID: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
-Date: Wed, 9 Apr 2025 10:19:15 +0200
+	s=arc-20240116; t=1744187246; c=relaxed/simple;
+	bh=wEowYpxBCkDlmNfLtfV7R7h7B7J60vMLNj1+hOWh9KI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ml3UBzPYiTRL3uXs/FZT4ypcW3pUKkgsq8mIcXrA1K+7ieioZG/b5Uws4z2QDCyv2VwomCuP7XQ4XUNuN2x/Fjt4FOPKu344OREWddh8kGDSi9JoWlH3CrS0Sq3fAvJxLctxIxs2hRl6UQB6MVuzpSCQHwk7mGt0G4gBRcZOiFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-86cce5dac90so2817613241.0
+        for <imx@lists.linux.dev>; Wed, 09 Apr 2025 01:27:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744187243; x=1744792043;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GV/VIz9Dal9GidNfi3rZQigxcHcKa0Red1OY/otJy2Q=;
+        b=WyJyrsGOep6lGuxhMpQpgbqn7hYNfr1MbzH9oUItk2FvTv/efCR7XjXXId8XOavCqj
+         OO1f7ZXTbDp1Sl9UGAYUbvWkrXuRB1hxVjqF//z0wT7C3xbkDx1Yd8Z9UKegdAGUsjcH
+         0iJAeEvljyiaPcjuyPSbkMZt5JCnMem37ZYoZkGQUOpq4TNwbxpkuUSuAUoF42W/Uxg1
+         3kK5G27RjtBZU0igK8R1YJPWm7+bODMS15JRwf302ChhsUYSUGQqWyhOhdfEQcyjom7P
+         gAAtvj07R8WYB+Pv4cbGMvKFMM4boUTTZFGlNb5sjjmBlisojUhv3QEvvFRKTSdOhuMu
+         m7RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaVKr5/Iw0mZVS+K9pXtCNgzMsgYF3p7OQZx/IMVRmCfA5xAZB/wBLGUUAaiyj0OQbOOA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzoFwyTnfEu6qgmGKCqeQGrwwEj2A2EFUWLkAQBsOkRwKzFsx/7
+	yzkhxK1lvCBzFvPPcXb1GDOxSLqJySMl8CjhD9ylbRX928l3waLhSabXo0C3be4=
+X-Gm-Gg: ASbGncvp0z2ERvLtT5uwvS+ToHQKIg+OICLLcHnF64v85CH+vHzxxB7X6rWKZkp8Oao
+	YuPL7eN8YKgedYekjPFVTWOa9l70zAGMVk1ghLMLBRRitiJ2d3j9++oJDhfy3/juzw75EPWNgEN
+	kUh39azp4JJqfdYtafgybhdjUj8uCIECXFv6P50VlPzELlftAnT0w0xotnRWiiKy/G6nven4/gp
+	Jc9YmMvdIFd4MykvaLqGoGfK/7jLdq+6Wahn9skOOwlMq7d3Lvnqo8l31w8NkDuvcwBQjlD91BE
+	RRRfrdaWuSrDJs8upAOjXxHKbggX0eznvmi8oVs8gFOFpoy+JJKAoMcAv2ZcNMMIDcHyJAeR48B
+	xXHw=
+X-Google-Smtp-Source: AGHT+IGcOiRCm/94lUJCVXe+6U3/xZQ8mvQU7S9IyI8GW3iRqqIHlaH9RUrQcxfC3X7DDQhX44KhWA==
+X-Received: by 2002:a05:6102:5f05:b0:4bb:c8e5:aa8b with SMTP id ada2fe7eead31-4c9c6b88013mr731003137.22.1744187243170;
+        Wed, 09 Apr 2025 01:27:23 -0700 (PDT)
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-875571374c5sm141030241.11.2025.04.09.01.27.17
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Apr 2025 01:27:20 -0700 (PDT)
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-86b9d9b02cbso2741931241.1
+        for <imx@lists.linux.dev>; Wed, 09 Apr 2025 01:27:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWHqYuH+UIZN2nwv7j3fXF+zN8nW+snZiuiYxuFy+SpWtSTDY4h+xZb/vu7LizLMvfQlvM=@lists.linux.dev
+X-Received: by 2002:a05:6102:801b:b0:4bb:e8c5:b149 with SMTP id
+ ada2fe7eead31-4c9c6a728e2mr725401137.7.1744187236860; Wed, 09 Apr 2025
+ 01:27:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sherry Sun <sherry.sun@nxp.com>, Peng Fan <peng.fan@nxp.com>,
- Frank Li <Frank.li@nxp.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- linux-serial <linux-serial@vger.kernel.org>, dmaengine@vger.kernel.org,
- Fabio Estevam <festevam@gmail.com>, Christoph Stoidner <C.Stoidner@phytec.de>
-From: Stefan Wahren <wahrenst@gmx.net>
-Subject: fsl_lpuart: imx93: Rare dataloss during DMA receive
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OJM6wNRlhitf8b2UKdZrXaP32BiAer6DsVF/VBciG+2tf3jObDJ
- +NGBkRPUd6D31eBI32fahWPGzAQd2IoErWmrGBA6HOKjHck4MgFjr4riUO2kJvNxWqJD93a
- 1lXLGwHfsln+YZIdLwsdiC+mFv7X6+TMlQ/eQkvDoPxO6i+dEi0v1iXMxl0RYDK1/fXN4Aw
- gNA3UcYsI3D4GnA9MQpLQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SiBV9w7+K/8=;UCcCE8vRt2bQlX9Qq3i4lY+Nu91
- Tsm1BvlZJA9rPZjsYunVslyZ+siHFGPTuXiOrO3uuHkUOkvYkYZbRplsWqi6dOLp08exFO2M1
- OR3WwjUB1tB8jrVgBdxejZCG4swz5fH9zfBGAkx48OExo73Ymut+U3Xx/3SgqbjdsiCYWgyhz
- fxBOtrZu4mX0PCwBOcC/VDsjGA8S3c8Sxs78pLQZ+yJoOsIdX13nG4L7Ry2OvL1FhH0GRn/n3
- pDI5L0SNFouFroKy4Hcf5QX4ib6cPi90/5dsv9Xj95KYoTwFvsDWq5qn7Qqt8WU6XQFMpHa5x
- e711I+QeIqnh3mcgkEAA3elbxWciHWWNR2Z3Sy4FylteQK77Nv4Ktk9CFhEvEA0NVx4VmF6t2
- 6D8PLUy6i8K01hAlCMs/gY1ucPk8Q2jMcNz2hwHQzKkv2TFzbsqHM/xoCs+q7KUkuGYt/mhh8
- 7P8i9e0yIpGVTS2MGlDden/cTyuu9L4wCGDGY9o8T39NQR+3CbSmKsFo8yJqhvjh+8bwzCwwH
- Omt846CZwuD1b6zmRYngK9NB4oPSrVX9gvKCAz3+5d9IEp8wS7JvUwvyqehMTyLsB8E9emS2A
- 2mh8BfG7xuElwLKhmIHKsaeB7foyh7U4wqHXVQpQcm4/uUPxOjtYA2cxO0JrWjB5ansj2tGxu
- 3E2yQFETgX/HEylv6SBr+6kItGloipXsJeBgFVuo9M+idLe22LAixNwrSGGiEhrMW13K7QSq0
- 7yntHVMX1rgYF1hmqqohRAZvrcPkLYJ/gZZvFN5TUieQdQIYTEau3MCM/Pdd8ynZaOLjLJ8xm
- CQ85zfatbbNsfR3c9iVN5PM1MbkX8hiKAlW8YrDNYUaeOlL9MX/FF1jlGJrnv7Onw4c/d6P78
- 0plRCKg1pIMHF+AP1c+vyTCM2Jnj4WIte2E9WvjlkNbdQTgDovN1KdRaH7uMUTrmiUPO3jYou
- 4f+rft42ITN1SmLxRQRPLtBXVNSzzFnmIlCCYtNgt4i21LasiOokPqK4J6lRrHd0uqhbdrZmP
- /R8gdngBBGOaaBqzGK6dqVRRqOwzso/E5QhKDwUPPrHvnz2pkOpSg6y2zvT4xY+Fqw2w5po8F
- R7x6JnYKHQdueZnUBn4lEcOggq6m0Co9A63OzV2ScEi/TbFutGJzg3jmJvJw+tJZzg9oPWPXt
- K9jH35CfN9yLFvKv4Fpqym/ZqmIClk9gzPlCvHvp1L56kk393fFJroSDAt+g4tKbCnKwESoIO
- Qx4mKemdk4BgDZkJx2PQQGPQQT68Tg0GNfhZXNnJp/UaV44uqECKJ/E2X3hKI3v3gd5YGPik2
- rGwGhCgF05pC98ADi1XQ0Ou5pGvS/UXo2NkQ6AO6kWCa/LRtLnMZEG92eVllxpB92FfUEKycD
- hGPlnvPcKxOD5i4/RF4E65/jnRKjsdgXnFYCHjtpy8zslt9cQ39Cmd+Qzv1EHzYdWgW7YXfj2
- i1vFNspVzv+neYkuG43hTLC4fLVE=
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-16-herve.codina@bootlin.com> <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
+ <20250408162603.02d6c3a1@bootlin.com> <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
+ <c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch> <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
+In-Reply-To: <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 9 Apr 2025 10:27:05 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVtrmh207usW45c0v5EmxgM+JgfQ=m55tXXNT0m4o5aGg@mail.gmail.com>
+X-Gm-Features: ATxdqUFWOu-H2GpmZpjc1_rOXM2aP80PMBbJa2DlVS33R9lalUc2jSOHZ1dg-j8
+Message-ID: <CAMuHMdVtrmh207usW45c0v5EmxgM+JgfQ=m55tXXNT0m4o5aGg@mail.gmail.com>
+Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
+ support SFPs
+To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Wed, 9 Apr 2025 at 09:44, Thomas Petazzoni
+<thomas.petazzoni@bootlin.com> wrote:
+> On Tue Apr 8, 2025 at 5:38 PM CEST, Andrew Lunn wrote:
+> > "HW blocks inside an SoC." That would be the SoC .dtsi file. Anything
+> > outside of the SoC is in the .dts file. OEM vendors take the SoC,
+> > build a board around it, and name there .dts file after the board,
+> > describing how the board components are connected to the SoC.
+> >
+> > So..
+> >
+> > So by PCI endpoint, you mean the PCIe chip? So it sounds like there
+> > should be a .dtsi file describing the chip.
+> >
+> > Everything outside of the chip, like the SFP cages, are up to the
+> > vendor building the board. I would say that should be described in a
+> > .dtso file, which describes how the board components are connected to
+> > the PCIe chip? And that .dtso file should be named after the board,
+> > since there are going to many of them, from different OEM vendors.
+>
+> Indeed, that makes sense. So if I get correctly your suggestion,
+> instead of having a .dtso that describes everything, it should be
+> split between:
+>
+>  - A .dtsi that describes what's inside the LAN996x when used in PCI
+>    endpoint mode
+>
+>  - A .dtso that includes the above .dtsi, and that describes what on
+>    the PCI board around the LAN966x.
+>
+> Correct?
 
-we have a custom i.MX93 board and on this board the i.MX93=C2=A0(A1 steppi=
-ng)
-is connected via LPUART3 to another MCU. Both processors communicate via
-a small protocol (request/response are smaller than 16 bytes) at 115200
-baud (no parity, no hardware flow control). The i.MX93 is the initiator
-and the other MCU is the responder.
+Sounds good to me!
 
-So we noticed via logic analyzer that the i.MX93 sometimes doesn't
-receive the complete response (no framing issues). In our setup it
-usually takes 1 or 2 minutes to reproduce this issue. Interestingly this
-issue is not reproducible, if we disable DMA and operate via IRQ.
+Gr{oetje,eeting}s,
 
-The issue is still reproducible, if we disable all other DMA channel
-except the ones for LPUART3.
+                        Geert
 
-We tested with Linux Mainline 6.14 and Linux NXP 6.6.23, in both cases
-the issue was also reproducible. We debugged the relevant drivers and
-noticed that the UART detects (UARTSTAT has RX pin edge detected) the RX
-signal, but there is not reaction within the DMA driver.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Is anyone at NXP aware of such an issue?
-Do you have some suggestions to analyze this further?
-
-Best regards
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
