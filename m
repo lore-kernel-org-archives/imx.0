@@ -1,251 +1,117 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2056.outbound.protection.outlook.com [40.107.105.56])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F018825C701
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 07:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744185315; cv=fail; b=qiaov7Jux6JSQxkOYOXhGpH0W7ycRrVNjNd61fN1bc0Ubl3X9KJ4Wc+mc0wlcZGHAYBFLUOAVRIsc+u/ahDqzUWUG0HnRT2YYeGFsp0y+7SHBsO8bQVWvGkOQymH5Zl0fIf+GU2VORyunjReo1m2FnoFSORvhIT8H9q/bB3HV08=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744185315; c=relaxed/simple;
-	bh=QZGnkPuf6SvZ2KfGAGFfbIz+fT3Ju4EZouR+LkcBpQc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iTqxntWrEbtozaWXIjALzxNwfpKNr+cans3BbxgHCU7gw10D5To33g1xNm0zo/CP404iPPYztsWxPt+mSsJy3m7bexzyyDNpG43bHdWApB1DXpMrA+TZyfLQLuMbvkEtjEu9neV+u6ysDnaJM3mrk5Dp1XNSoaHVrAFT4xJib58=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jXWhqqZN; arc=fail smtp.client-ip=40.107.105.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A641E5718
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 08:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744186762; cv=none; b=jqah6y0JEqTFYckkXXKKE7T32mZPtgUxP80lXmTmuR9AXoER7u4XfR5dSEFP7TmWFBf4/EqO14HAUhPdeoCKZ7DlA7vNf8qzBfhpxTbUbxSlSPJ4VeJfB883WBwTAn28SsNUHXnszLATjyXuLJVhzmFkRqb/t3G919pcIAt430o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744186762; c=relaxed/simple;
+	bh=cARZ3MoSB/llLZWC/nfsNQVqtIuVgsB9ugipQScHhzg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=aP3R7ZYVNvYCpdOopnczI57qDAr5xu3diRlL2/YzZ3CFNbHllk1wcHRYaVf7NEaZ7azNfFLICApabQ3DXm0ZCLuhXpmam02e5BEAs/bGFxmRk5KCnVakQLmR3x0TqsQdeRyQUV9lwyv3c6YkXy/5GVIQY50popMn2+esQ1CV3LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Ky13OstA; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jXWhqqZN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GS/rsxqdMyCKrARbb7fit2zRUeKCCVPugUS4nuHubji3HWOLYWHvB1wHFnHh034IG16z9yaWJgxkVYK+S1PUKEA8Sbdv0pdWoeD7yI64A+9dkGeuVjWxTawdeejMjZsQ/XkJhZNuW6b5MNR9u2WWjEn+5rfmcv+UZjyyaXJNAOUr+2K/9rgJxnQ4e5U4mfbhTbDBaTyEBDuTa1q7hbDe53iT1JVoDkLjgrONs1OuJ/9jCp8QEAzgcSH9J1tEZwruJI25nIFX55lps2cstCHYgQlWkhRt+LT8ML28OA/SEJE9weRTlziL5nDA0J+R2ZMU5F/+w08PLQwxj3epnx3ymQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VtTbZdax7gKgfxsZ0IXnSYW7YdGHtlHjCqcFH94yt4s=;
- b=cncvOHLyNqYbNEAvegx+FgkDpf3QeH+GFS7aDgaXXuf/Psl1nDu4AEuzHDDc0dQP/JqK9Kzv2Cav2WwENvPhLcGME84rWmI75b1IQA13fsiPWxBFcctUyIkL3Gc/XXHH4fNaPXNfWqyK5fATRjUpnZZYeugeDQRLBOZzAOXfkkM/SxYW/Prn6cknbAsJ/RBvV2YU6QrBZ0zpifH7Rrtcgq16UpNN/yO/xx2PXLRLsN3dDeWboXFVw2MknPAEv5s8rPecyxyPj5sMUQA8LV7MBchuGqA+Aa+DSCfjX6b/TjVsweJq/rvM0mjY9/ChPbbxh2zmTIhejAKM03w+TBE2Hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VtTbZdax7gKgfxsZ0IXnSYW7YdGHtlHjCqcFH94yt4s=;
- b=jXWhqqZNLJsq1EiwrLSW6hBoW5QIxxpgSOq0nxdIpUuofJS9MzY4XczL7PNun2TnpBSTK3oH1MIGNnGIl9V+8/v4h5IubkSnCBvBBqlvPnqomFdLPfHck9m6KvAlTtmFFKL+Yf0Sv8SZdAmvE6GJ4cqtXpIaalI6ZK/MwEsXywWspoFXMsKge1ETwvUJgUKl6s8UB1UsVRHCn0yovMID4DChWmTUO4tNyB0MEyhbXFS9hTeR8PJsa2LaAjXGOKiPaBPClLl+/fuzrCA6Z5hxjwqxcBmpy0PJSYsDxgVJhEUGePojQAmOpXIUNnPe9qOubOcq7XdZecF1vxjzoFE3FQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
- by AM9PR04MB8196.eurprd04.prod.outlook.com (2603:10a6:20b:3e9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.31; Wed, 9 Apr
- 2025 07:55:10 +0000
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::4db:3dc0:c292:493a]) by DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::4db:3dc0:c292:493a%5]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
- 07:55:09 +0000
-From: ziniu.wang_1@nxp.com
-To: adrian.hunter@intel.com,
-	ulf.hansson@linaro.org,
-	haibo.chen@nxp.com
-Cc: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-mmc@vger.kernel.org,
-	s32@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] mmc: sdhci-esdhc-imx: switch standard tuning to manual tuning
-Date: Wed,  9 Apr 2025 15:55:50 +0800
-Message-Id: <20250409075550.3413032-7-ziniu.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250409075550.3413032-1-ziniu.wang_1@nxp.com>
-References: <20250409075550.3413032-1-ziniu.wang_1@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0026.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::11) To DU2PR04MB8567.eurprd04.prod.outlook.com
- (2603:10a6:10:2d6::21)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Ky13OstA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1744186756; x=1744791556; i=wahrenst@gmx.net;
+	bh=cARZ3MoSB/llLZWC/nfsNQVqtIuVgsB9ugipQScHhzg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Ky13OstA/q5D2hES1XeCKmo3E5yjeuRFIWY61QEPcf8dAh4q3ZNQ44sz7eHfwCrC
+	 uzIEF+qiqmFuBPNlzwrsVlXVCpRooKs6vq6dBjYYK9hdOPNESjQO1Wtw1fA7lXONW
+	 PznwuwnHBtzvBPwyKCcPs6X4lmR2hDjgzDAlVirEP+Afq6zI4XafHL0r8Ih2pnGjY
+	 NSg+ot379GSTxa7Kg/moSz62AOhvPEsf2ut+67NscBajwHQw22AzKRV1Ij/Gsc6Jj
+	 rZT1hfuAbu9YwxyVYcfPhjHfRYZdjW0MJ3jVJ4pGLPHUsSzETnrf/rj4RxY8h00t2
+	 LMNMz+WKgQY1J5WxCw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYNJg-1tX8Qz3sZu-00OaZm; Wed, 09
+ Apr 2025 10:19:16 +0200
+Message-ID: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
+Date: Wed, 9 Apr 2025 10:19:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|AM9PR04MB8196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30df3b85-0d72-4a3b-32c5-08dd773bd9b1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Qx/5e8akIL8xwIM9Gi1oaz8zawSZCYAQLpvT0vyZQE4HEFOBJgoMhhgH+XOf?=
- =?us-ascii?Q?JfakfrTQKIFQ4Q9nmZAXILuBWZATlqlPKWnvUNm8UchvkPIR5kY8Z0Fg82eh?=
- =?us-ascii?Q?JEKK9RPxajzq1i+e61fqaQIzKxGm5+NkUWspdVMAjSDXr/4O+3M0aJWOZh3A?=
- =?us-ascii?Q?jqfzCoVlBpvrp1ilKQijQkmDGNyZhE3p+aUlX8Tly1on9sD71oDIxBBFAZJ7?=
- =?us-ascii?Q?FjFnSpleUa0O65TDOawM52JVo68RbDLMDaA7I3tbnwmoihpIFuJkhxVswkHr?=
- =?us-ascii?Q?l57AbEkVuP2CHPScvaX8JHmEgs8pjfZbfvlTGvxJk2H8/tAMHXP8BGTnU7cd?=
- =?us-ascii?Q?YrnMHb3xTr09NIYevge+KxVS/82c8Vdb/15OMjKpGiV0OsOm/N5cFSlH/zu2?=
- =?us-ascii?Q?W70G2QnvJGvQU5eRTGfaI2Xum5BVVsQWSqf1lsJZy7TP2L8aE3B5RRhg2VwH?=
- =?us-ascii?Q?JW/Ab3UOZLipMdzaQFjsrunVAuwXWnm2Hw8bdg9iP9ZXGGeKW+rDiV6yTdUu?=
- =?us-ascii?Q?vPRj4a52eeq9Gd8wHJ75soDCQoyY4Id5aqNYC65j4nfdwkMzF4LoQITFuN67?=
- =?us-ascii?Q?UuN6JsslcOEnkwksY07lElc1Ors4h9enF4e/faC7bc578SQD6U8R2NBDHt3W?=
- =?us-ascii?Q?U3M/lbGgAcJILIhQYYkUEx8PENWd2dOwlLwokzZ1No50eUP/Aqs6lnxN1BNf?=
- =?us-ascii?Q?7NY2ltJnP8t3BfuBap9UosvzV/4aEB/ZHy+JGTxyYADtI8AQ8MnywKd7/nX/?=
- =?us-ascii?Q?GnTNw9s4QG/LOYdTmh01Xz0/v3OvJPrtZ1KEjPRK/z0Vk1sryudLUQkb/spE?=
- =?us-ascii?Q?ssNInXQWXpk5bme6vILwPJkofDc9jq/Fsd5aDfDs8qPJyWl5n8b9EwOMgQYF?=
- =?us-ascii?Q?26sczSmjBfXLEg6qKDEA5xNg3Vj0dtgagyFcN74ANFUJ/LvhTw2zU8L9zHS9?=
- =?us-ascii?Q?yYmQl4SwAgJaoqhUhhUvteSua1wZ3UUk8v5hSifjRhV7H3X7ZF5P5KSC/5pk?=
- =?us-ascii?Q?DK21rzGqEluUN7rIm7YTwsjAzNrxVUCPwXFmtD10Yymlas9NRowO2GWP8G9A?=
- =?us-ascii?Q?G1/OrqyDIGkEtq2nv9U+pLOTT17h0tlre0WRp8hlqZxjfLolGdlnJEhjm0KP?=
- =?us-ascii?Q?kG2n5g+g4B38kw+YFBiPUr74R1VmGRJ2gT1oJ0DywO67XGdgfB7uaF8Q4zca?=
- =?us-ascii?Q?mhKWwQw6xb490uFwwKhkX6ZlXUa/GHR6C0tOfZsPy8o5hPRZuEDn3dITj1fS?=
- =?us-ascii?Q?ipnN/zfwF7Uyp4aln/3A+CZjTgVyTkp301BYT8l80vqtn+HeA6SXKjC33nB1?=
- =?us-ascii?Q?fQVJs7g8+G7lPe+dznnGrEuGgBRG8BgZytOk7TnQvZPRM0gwVt5AJZPLDTCX?=
- =?us-ascii?Q?NZt6eslHwF5qNBn6sf6N1MDgQHgb3RrDOlctdE+hYpxepm8DUbHbVKbCHCuJ?=
- =?us-ascii?Q?4vMH1WNMlUTa0SABUTUJiW76S7UwkMQr+NjGK6ytJIH3TeXDkWDWgA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NgVhQhojrTaReJQ23WFFcd3Us8M6BT+ozOuoIWKPV1LVNIiqXTqnI7FjAGeW?=
- =?us-ascii?Q?19CkSG5jZaIpsVWlb5b2NGd2d8pNheLumOOfcGMTbLC7nrdc8KAxXGo+fwJD?=
- =?us-ascii?Q?kLJK5UP5gDRD2EcqUPl38yselQAcLtZ3/MLquziov3SH6WhfqcgI3LRsO8V+?=
- =?us-ascii?Q?1CDtK5Twy7SA2QmGTIjg/dCbT2z56YJBA1lpUnlEdJ39FB2ejjeneyfd8hrZ?=
- =?us-ascii?Q?xXjlNSEJaGFPa/ejZ+DKuBJ2HawLxSRZt5pjuc/vbGc4yV68nzlLqanIF5Zt?=
- =?us-ascii?Q?0mwpj7k/MTZS5pyIMlrvwjnVGGrKnNmQEW9CKP5bInsIYQbyd93Wlyix8Yh4?=
- =?us-ascii?Q?kCfxRr3GEj37/fLwsTktQJyEXijSGaio0RDQbvfYFB2vYTJYuWbC8tzBjqDT?=
- =?us-ascii?Q?tKUC49vhc6PTkPRb1Kmaan9Cv4Kc5mQBGt98MFjYw945AGlPgEhkwgtQ6zip?=
- =?us-ascii?Q?0acOYnRyT5dt/BLTtqaHBykarsAitkTLrc81es5doYWUSOud2lrUCmI5AAAC?=
- =?us-ascii?Q?7HT0nl2DfdxWpgBBePYlHvbUfxm/Nb43N9MrWAwDzGJUiVi/19j1/EUefpuH?=
- =?us-ascii?Q?Xf4QuYnbD/unh0DsA3n22vAWs8Hh4SUnIhQ/SiGMJhQyslGK4CTaAH8MSyPl?=
- =?us-ascii?Q?gGsULBUuEYrkC/td23qUOeAEClesc7WpuwaoKwApTaYbHP7f+DfF/LsHMMp2?=
- =?us-ascii?Q?7apUx92JX0ZGmcOnucRPMxbNclorP6x6zAo4H3tFMTz3VCeEIppOFTo4+T29?=
- =?us-ascii?Q?FvfNixTq+knHA6BytYjELz1T4vsG5jsepZ63W1Ykvjlv/OH69ln0ukFwsppi?=
- =?us-ascii?Q?kDKlbVKdIyczA231TXuvorwDxdNltyOh1IdA8H8ieIjs4JN/8gC+c157++rO?=
- =?us-ascii?Q?YT8L43fDHVfeTpp58mSRZFLyTiKY6Cuh2N06SsNc8yIsW+9bc8z7Ea0aYfsR?=
- =?us-ascii?Q?ub+9IpQZdkq65xhO2nwrFKgLtaN2QNvwlZWOh84rTHfG9RMjGYPkQr5AsyVk?=
- =?us-ascii?Q?3TnkASu2X9rWa0lbsAMVM9x2WMLt8ko+Z3NyKn5LxHLVx8L3EWON4oJMvmCR?=
- =?us-ascii?Q?NHz0lnZEKFNJOS3W81PKWvUReSruIsGqRh+KVgsj9uKSWUer24CmDvrfNmXd?=
- =?us-ascii?Q?xvmrMTqiqBmm9UAB8+QRQ79jre3Y7rYav/ek6exAogShJipx/rPQHVlrkm0W?=
- =?us-ascii?Q?P4vlODBKdEbMTWx4bePZYqINv2mMDK8buBZn8ayzqoGsN2KfuYJskH54WzPE?=
- =?us-ascii?Q?2n1KGG3pkRegmbQGxk4QzkKVdfldCBj3EJUNVO8Gb+R4VPzPHEsSVfnTS8x4?=
- =?us-ascii?Q?PvSeNGX1Z+TiWvR3l22LA8euUhYJ3v1+4xwbNM0AhCOFbWr6kbc1xAiC+Nmb?=
- =?us-ascii?Q?YshEttUIe6YfGXiiLKMRr6fGJdjHDhUNKq5SAD6yOHdQPC9/YT2ncMxiX5jF?=
- =?us-ascii?Q?oJHH4wDyph8hkk1kpw9RHI6Tii9haOgTkmnIB0vWr4dl3BA7dEagVQgBVdpj?=
- =?us-ascii?Q?OAb6aQFdQJ5C6nrL6PbXCexzZFjAJW4Ui8Ob0LWh27LA5GUzcAuUyTk1A5rQ?=
- =?us-ascii?Q?3HznlIHb339qkaG2l8BO+xUAD+1yJpZw4G1VBepw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30df3b85-0d72-4a3b-32c5-08dd773bd9b1
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 07:55:09.7374
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wqT/92Bxrghx0S1cHp6Zws+qW5516IxUIMmwPkW+6wR8LFu8K8lK7DbzHNJogUJpBB0+dWJ5EXQVXori8AHT2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8196
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Sherry Sun <sherry.sun@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+ Frank Li <Frank.li@nxp.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ linux-serial <linux-serial@vger.kernel.org>, dmaengine@vger.kernel.org,
+ Fabio Estevam <festevam@gmail.com>, Christoph Stoidner <C.Stoidner@phytec.de>
+From: Stefan Wahren <wahrenst@gmx.net>
+Subject: fsl_lpuart: imx93: Rare dataloss during DMA receive
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OJM6wNRlhitf8b2UKdZrXaP32BiAer6DsVF/VBciG+2tf3jObDJ
+ +NGBkRPUd6D31eBI32fahWPGzAQd2IoErWmrGBA6HOKjHck4MgFjr4riUO2kJvNxWqJD93a
+ 1lXLGwHfsln+YZIdLwsdiC+mFv7X6+TMlQ/eQkvDoPxO6i+dEi0v1iXMxl0RYDK1/fXN4Aw
+ gNA3UcYsI3D4GnA9MQpLQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:SiBV9w7+K/8=;UCcCE8vRt2bQlX9Qq3i4lY+Nu91
+ Tsm1BvlZJA9rPZjsYunVslyZ+siHFGPTuXiOrO3uuHkUOkvYkYZbRplsWqi6dOLp08exFO2M1
+ OR3WwjUB1tB8jrVgBdxejZCG4swz5fH9zfBGAkx48OExo73Ymut+U3Xx/3SgqbjdsiCYWgyhz
+ fxBOtrZu4mX0PCwBOcC/VDsjGA8S3c8Sxs78pLQZ+yJoOsIdX13nG4L7Ry2OvL1FhH0GRn/n3
+ pDI5L0SNFouFroKy4Hcf5QX4ib6cPi90/5dsv9Xj95KYoTwFvsDWq5qn7Qqt8WU6XQFMpHa5x
+ e711I+QeIqnh3mcgkEAA3elbxWciHWWNR2Z3Sy4FylteQK77Nv4Ktk9CFhEvEA0NVx4VmF6t2
+ 6D8PLUy6i8K01hAlCMs/gY1ucPk8Q2jMcNz2hwHQzKkv2TFzbsqHM/xoCs+q7KUkuGYt/mhh8
+ 7P8i9e0yIpGVTS2MGlDden/cTyuu9L4wCGDGY9o8T39NQR+3CbSmKsFo8yJqhvjh+8bwzCwwH
+ Omt846CZwuD1b6zmRYngK9NB4oPSrVX9gvKCAz3+5d9IEp8wS7JvUwvyqehMTyLsB8E9emS2A
+ 2mh8BfG7xuElwLKhmIHKsaeB7foyh7U4wqHXVQpQcm4/uUPxOjtYA2cxO0JrWjB5ansj2tGxu
+ 3E2yQFETgX/HEylv6SBr+6kItGloipXsJeBgFVuo9M+idLe22LAixNwrSGGiEhrMW13K7QSq0
+ 7yntHVMX1rgYF1hmqqohRAZvrcPkLYJ/gZZvFN5TUieQdQIYTEau3MCM/Pdd8ynZaOLjLJ8xm
+ CQ85zfatbbNsfR3c9iVN5PM1MbkX8hiKAlW8YrDNYUaeOlL9MX/FF1jlGJrnv7Onw4c/d6P78
+ 0plRCKg1pIMHF+AP1c+vyTCM2Jnj4WIte2E9WvjlkNbdQTgDovN1KdRaH7uMUTrmiUPO3jYou
+ 4f+rft42ITN1SmLxRQRPLtBXVNSzzFnmIlCCYtNgt4i21LasiOokPqK4J6lRrHd0uqhbdrZmP
+ /R8gdngBBGOaaBqzGK6dqVRRqOwzso/E5QhKDwUPPrHvnz2pkOpSg6y2zvT4xY+Fqw2w5po8F
+ R7x6JnYKHQdueZnUBn4lEcOggq6m0Co9A63OzV2ScEi/TbFutGJzg3jmJvJw+tJZzg9oPWPXt
+ K9jH35CfN9yLFvKv4Fpqym/ZqmIClk9gzPlCvHvp1L56kk393fFJroSDAt+g4tKbCnKwESoIO
+ Qx4mKemdk4BgDZkJx2PQQGPQQT68Tg0GNfhZXNnJp/UaV44uqECKJ/E2X3hKI3v3gd5YGPik2
+ rGwGhCgF05pC98ADi1XQ0Ou5pGvS/UXo2NkQ6AO6kWCa/LRtLnMZEG92eVllxpB92FfUEKycD
+ hGPlnvPcKxOD5i4/RF4E65/jnRKjsdgXnFYCHjtpy8zslt9cQ39Cmd+Qzv1EHzYdWgW7YXfj2
+ i1vFNspVzv+neYkuG43hTLC4fLVE=
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+Hi,
 
-Current standard tuning has some limitations:
+we have a custom i.MX93 board and on this board the i.MX93=C2=A0(A1 steppi=
+ng)
+is connected via LPUART3 to another MCU. Both processors communicate via
+a small protocol (request/response are smaller than 16 bytes) at 115200
+baud (no parity, no hardware flow control). The i.MX93 is the initiator
+and the other MCU is the responder.
 
-1. Standard tuning only try 40 times to find first pass window, but this
-pass window maybe not the best pass window.
+So we noticed via logic analyzer that the i.MX93 sometimes doesn't
+receive the complete response (no framing issues). In our setup it
+usually takes 1 or 2 minutes to reproduce this issue. Interestingly this
+issue is not reproducible, if we disable DMA and operate via IRQ.
 
-2. Sometimes there are two tuning pass windows and the gap between
-those two windows may only have one cell. If tuning step > 1, the gap may
-just be skipped and host assumes those two windows as a continuous
-windows. This will cause a bad delay cell near the gap to be selected.
+The issue is still reproducible, if we disable all other DMA channel
+except the ones for LPUART3.
 
-3. Standard tuning logic need to detect at least one success and failure
-to pass the tuning. If all cells in the tuning window pass, the hardware
-will not set the SDHCI_CTRL_TUNED_CLK bit, causing tuning failed.
+We tested with Linux Mainline 6.14 and Linux NXP 6.6.23, in both cases
+the issue was also reproducible. We debugged the relevant drivers and
+noticed that the UART detects (UARTSTAT has RX pin edge detected) the RX
+signal, but there is not reaction within the DMA driver.
 
-4. Standard tuning logic only check the CRC, do not really compare the data
-pattern. If data pins are connected incorrectly, standard will not detect
-this kind of issue.
+Is anyone at NXP aware of such an issue?
+Do you have some suggestions to analyze this further?
 
-Switch to manual tuning to avoid those limitations
-
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index fd0ad0ad1519..9b66e07ed8e7 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -275,35 +275,35 @@ static const struct esdhc_soc_data usdhc_imx6q_data = {
- };
- 
- static const struct esdhc_soc_data usdhc_imx6sl_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_ERR004536
- 			| ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
- };
- 
- static const struct esdhc_soc_data usdhc_imx6sll_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
- };
- 
- static const struct esdhc_soc_data usdhc_imx6sx_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
- 			| ESDHC_FLAG_BROKEN_AUTO_CMD23,
- };
- 
- static const struct esdhc_soc_data usdhc_imx6ull_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_ERR010450
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
- };
- 
- static const struct esdhc_soc_data usdhc_imx7d_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
-@@ -319,7 +319,7 @@ static struct esdhc_soc_data usdhc_s32g2_data = {
- };
- 
- static struct esdhc_soc_data usdhc_imx7ulp_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-@@ -332,7 +332,7 @@ static struct esdhc_soc_data usdhc_imxrt1050_data = {
- };
- 
- static struct esdhc_soc_data usdhc_imx8qxp_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
-@@ -341,7 +341,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
- };
- 
- static struct esdhc_soc_data usdhc_imx8mm_data = {
--	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
--- 
-2.34.1
+Best regards
 
