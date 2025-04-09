@@ -1,196 +1,174 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135031C1F0C
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 16:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385FD25E838
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 16:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744214540; cv=none; b=mlaGiH7ncxxitwKFL8eJS3Qs+NBR7mply1li1g7auFiblV1XAu4KLHqht1rCaq9fp71BFucz5VkAJXQ6wa3ODoSdyD5vzlikVX0AWvksTmARo+ci6WPtKvpITUEFEqgiFJQYGH1qNxzJtkRqYcVTF4RRbpWZ4EAIZoIwRaBOzIk=
+	t=1744217024; cv=none; b=i+fGapTG6YAp2lWH2/0Ja6iXhk6Ip9aMCIScmAK4FiNUB7K+nuxeEJXYdhM1Lusd8afwjVTXCNABUAUJ/mEBr3ztrxR3gZCfiFPgLIGdlHeKZqX6WuEvNQuOP//K0ojIAKLWk75fxLfDqrvxtO4njljzHvX5fIxQhmdQTdFIKCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744214540; c=relaxed/simple;
-	bh=bWjKZWGcLrX2LMShH+VAwIZzXlyUx/AVkhZt7QnY6P0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uJ0+0GOEON5dWFX3nCGTDHqhv25CTPzi8mD969TwkfnQpL2MTz6q5GKKoBltqqmKuQbu+3mJoR12eRbrvvuEtwCv7ML2NzGzhzFXemgvRa6r4koAgSDlQD1VVYh6fpm3exi0mHJwOo1W04JRUVTcjxXDsCqdd6mokafPf6q2CWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=uh1XqO9m; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1744217024; c=relaxed/simple;
+	bh=5eUj6yBdJ8a0mINwGc3NfXDTNv0qkC5CznahgFCyhNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bjrzEN0j23dPIHuWVbUOpJ2AxUSrGdnRVTJf84MwLa3ckyBd5xZBKe4eyTnJz6pAqZhmTjK4MoA6ZSI3YT+5VdnH16A5rwtqjLJbVEESahj5rvjgRNP6RQVHJYLc5tBVyoLQ4aWf8TlpnQWcBZnpfgM2m3vgwE4qZLJRVwbFBbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VRxghgJW; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="uh1XqO9m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744214503; x=1744819303; i=wahrenst@gmx.net;
-	bh=GT+e0rgk5at2BiS7exBI3n9s8/eUZISH0DmawBVE9Ck=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=uh1XqO9m44OLywMw5J3jhDWcs77Cz+bVQp+9fgKs3nfx5wbZmNJez6sm+T/kVtkS
-	 alfyOcM/+iU91cSeARDCZGgzPUc+bVs+lsW32UzaNYxE0zMGh9b4h7tvMzmclJLtf
-	 haSAQlZhWqAdWsE91HBq5CZpRLjMeLgKyiuEQjRf5/o8USje8g/l5Rg4SE/ue1JBC
-	 +UfhFwR92XIAB4MJwQdxWIhpn/DEKKX2JjQWfwsEkI+DXwGaSVj6YuFOw/qIXutpS
-	 LLQvA4h3kI1L2ra0dRdMhQ704HyFhrKk5EWP57DnbIuRrWCQUwqrxuDyhRlBBeJsk
-	 okdS0xNFonCPsLoUMA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQe5u-1texFJ1NfK-00Nnw3; Wed, 09
- Apr 2025 18:01:43 +0200
-Message-ID: <c67ad9fa-6255-48e8-9537-2fceb0510127@gmx.net>
-Date: Wed, 9 Apr 2025 18:01:40 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VRxghgJW"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-227a8cdd241so82364995ad.3
+        for <imx@lists.linux.dev>; Wed, 09 Apr 2025 09:43:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744217022; x=1744821822; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vY1cCwOeuEYKDsSiTLX+gpvDg+AadEDeAOXISK1ljl4=;
+        b=VRxghgJWwJkY2Q6RmEQfb2Kn9DnPXmRPZLrc6GQ+ajWiRf4z5sWyijSlgOGC+CI/fb
+         ud2lqusBgSv0FMJq6ep9x0E169VnEEYzdO6mBzZMc1M5WyRAU1t2M6iyvUuol9xx3Fkq
+         QwaUrhHlVTPrgH0vihs+Xq/IIY7qJ7gjcvOC4fzwgHB26nRf8nuvPb0k/wK4uPTyRZva
+         hrC+aKmtl5oi7h354Ov2QSAMKc90qWMU2T1jrre+qQX3Z9Ie97XYgs6Y+IhIO2ENZOY6
+         KE0JE9nlHzF92wMG1hjoC07b/3ivzLxRxmWju2NiTZrQNszPQP9fyNth4SCd74dcY3ca
+         2MgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744217022; x=1744821822;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vY1cCwOeuEYKDsSiTLX+gpvDg+AadEDeAOXISK1ljl4=;
+        b=bLa3Dox8EYvPO26qKVtAWYduxD6fZeKwSqjFNxvUn8XwynGrv/gUh85Jo3k+9AUuTe
+         z2JiBbqLsqP/+DP56MmW/WxKfMhUGvxftcuk25EQvdn9PxsPSLTI2JFi4wcUixe6w0SI
+         tuETlejauyN480uczaqOc1+/YmWCDpRkUYOtwG/3JfQZO0yEueGMHu6+ZEB09slqu0rB
+         0FUBcmHLdhUcqWr7kzKPrmm+jGoUBx7tcIAkD9cWl5dZdvcg/cQNW8xCZsg5eElebXsC
+         7y9vV9W+J2Tl3RAwS8+fXqlJFiwKlMPimOG7C32Pc+wMbBD9CdZpehWBiaOT/rG9gTzQ
+         3mUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEZ3QcS9O3nqO3LA3k+uUY6J3gWCGfmCH+7o0QnfLzxtfbRXH+1p0pQgbOhwlvpMw46zI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxQF5QLZspe2/NX2bT+ORi/MKo7pL8GAcosBNbFKWSOD6IiP8Gt
+	y3giuO4nQkQ0u3/c/m37fQ49Jc5MZmBfLna5l5CMoQ7h8n3+/XriXjTPXPaahw==
+X-Gm-Gg: ASbGncsIB+RFETYcQRcyG/BuOn4iENEJhgm4kSoPoJEhrNfDn9Z34vQWU0mwSVDr+Bv
+	/8h8ie4CzJjyXAF+P4Tt1GhO2IAq7bQErcv5Iep5ER2VIs70Ji4mcgJU7lgqtn3CAY9e9e8f2la
+	QNQxXrgh29VjfcuCtWpAaH+OWpymT7UrD66TgrOSkIfWf6+MDj7d6z8cvzxPTK22bCq+g54HsR8
+	fAB4etbnnP/wyskQFWyh20I6Bn02s72n5ViF4Z70g3dPojcmhfoVBE7RTGxNqfYxW/9xPpG4mNs
+	OgJlxvwQbRxqNSHeilNLD/CACclO0p0T07plLDm0RAocs/FHGZAW/ZYv4t6Qvw==
+X-Google-Smtp-Source: AGHT+IGmox3LqV854DFPIki4F+4Ez1MkIE7qgsYtzCRr9m1FgmnFh+N3/PD/p2Tx05KbHuOZaTpH7A==
+X-Received: by 2002:a17:903:32ce:b0:224:7a4:b2a with SMTP id d9443c01a7336-22ac297c916mr55618525ad.11.1744217022535;
+        Wed, 09 Apr 2025 09:43:42 -0700 (PDT)
+Received: from thinkpad ([120.56.198.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b642besm14327585ad.46.2025.04.09.09.43.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Apr 2025 09:43:41 -0700 (PDT)
+Date: Wed, 9 Apr 2025 22:13:36 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
+	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
+ L23 ready
+Message-ID: <4qrfkx3ckywcbk7qbjplal5j7v6sjs3zebeehe5dnrgjz2ej2t@krdwjb4xm2sx>
+References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
+ <20250328030213.1650990-4-hongxing.zhu@nxp.com>
+ <ovaomfvo7b3uxoss3tzhrkgdy6cvxi4kr2zxmqsfjxds5qfohl@t6kc4rswq6gp>
+ <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <rqgl5jjauppyudgmugp34fillkeli3qkwf4uf2djghi6nslebg@pyi6rbwyduxd>
+ <AS8PR04MB8676BB3EDFCF3E5A490AC0628CAE2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <AS8PR04MB8676C5D0DB84975D34C4C65A8CB52@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v4 5/5] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW
- to support MTIP L2 switch
-To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250407145157.3626463-1-lukma@denx.de>
- <20250407145157.3626463-6-lukma@denx.de>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250407145157.3626463-6-lukma@denx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:C+u//MOKrD6OdwvSME77qybiBXe8adc+njD77MBHM1ou1SB80g9
- CfCohUvsktjxjtntt5js9Ty3COdHeULgaRnhBHHLgQIAwUJwW5jpBMHhH/y28PpuTcVa0Xt
- NUZzHDi8osc+iFVGUZEnfhgcpRZmvQO63hb/o9UYD2DifW+ODJqnrPlxGgcKLL5f4D8l72r
- DnIvoB9kQQrjxQQ6QPh0A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:h0HaSYSRWiA=;9+RUTCpsfpjtjY9+/fAxrUKZlov
- en9y0HFgHTqcg/tTomRJXXnKDodyPsrawVBHjmREAT+vi9nezDT1o3dXhmnjyrPzCGbiAYqO9
- m5aTfBilljd+4GP8Fd0eiBknFpE/RW2JUKOr7PDqsfZO39RqdMTugoZMcb+KwBN678RNijbUz
- ZadVP+Pagi9G3ek4w6BJ0sJBpNsinoPp9gQXJd9D1E6py+KrLqQ1DCiQBrAGzA2csvJKNocLy
- 2JMgJrGWuEvii3JW/QsZFeyA5tUaOzSr88pHzmb7ppaRdfCnIV14yl4eQInAiz2WoDxkhQJTH
- s1gpWGw0nJPKlNmO96ZOHI6s6UqiITzy++DGlf90aTN83+rW3b8i91D+ZemFvMZSYX5pNIfrD
- l8E5FngLmD/fJ8ZUAgzSN6HEip1IrKv5kjgKjck9bmkl2JAdS+vc0pfmAbpKzY5riUNv156BV
- s8hWUkxFU6hYV+uNK0TcG4akL3K9J/w/XEjWxg44kCZtnvbNCcu8cXY5TA1S/OWtbpr9ph5AP
- SGzz37iNu9PFdnOj6Rxg1tuEwqw0nVe3Hy162pyMiyA+NcEcIwo/0OPRN+iwyLKqjwH8WsgRA
- NRpX6GSN8kW004v22qYLKQmCCltpdN/qSkl+4ZNnTAlixCrnM6kXtyUV9IaVmGRCh/MM8bFgc
- mmdzQz54c6SjBRkFpn4CYW3k2Phw6eqw+VR+9x+8TMRuudOHlE9uf2W+gT6kFv3xMre/HhfQc
- I8/n44itpdaTDiH6SUOGux/r2p3oGL1UVHesvkgZ3YIsO74hU4v/w15PAYJEXOHdZffIsBhnt
- QwjNy7Sst1rMF5e4IwhjH3jQn2JDApo+6FebR8YvrAwocR3e6UNgbHJ4No1rin7af0mjDbB3K
- 6rlODNmQoHCA7fVsqR+gHAUkrBKn/PnPTgfqONjwJPyKnVKK73VUPAdDL3MGcT4wYbH2VRk+j
- J0g1VFdQYwYWj+3gXragNVb8UPO9sVbb/JhMC7lldzzNmeKdPazCtQRqdJiKWlwcJwQBjj5t2
- kHMaXhvqHWkFKxidP1pWXy8xaTgWgBq4iDy4+fsjslurKS1+ImyhEd3WjKeks49/R8rbfjHfx
- 4vdDSHAFYmkbmVXMFlqPYoSq5QPRADXqca+YtIk9s4Ji8KM2fj2ORaO6XwG/DbZrZTPhdZs3C
- +83/UadyftJ02TTSh67jc2cDyhcXfJVQv4tOpefzok3wJ4/J+NbqwIY5/aeGRyrbV9FjJCGzy
- DBTnUeC7Ax/ObUIJxQKeUXFFl0A0RaYDlyRw+sV0iIel4IRQXpFic/v/JrOS72KTUF0MbuIkG
- 7z6szCO/Vdawq8BcPZKS3BigX3DEyDNeEFxkT4wyDMXe9/vas9OF0m/C2wPoqgQwuBJhzivvS
- Rhsm6/vWInQLqWIZhomLfqsRSqrWqaVeYkwCLvzqv7y/wPtGjqw/jTyJ8i+eHSc6S+lW/FtJM
- SMMWrrp2+Er+POSLNtsK24LHUW94=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB8676C5D0DB84975D34C4C65A8CB52@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-Hi Lukasz,
+On Tue, Apr 08, 2025 at 03:02:42AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Hongxing Zhu
+> > Sent: 2025年4月3日 11:23
+> > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > kw@linux.com; robh@kernel.org; bhelgaas@google.com;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
+> > linux-kernel@vger.kernel.org
+> > Subject: RE: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
+> > L23 ready
+> > 
+> > > -----Original Message-----
+> > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > Sent: 2025年4月2日 23:18
+> > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > lpieralisi@kernel.org; kw@linux.com; robh@kernel.org;
+> > > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > kernel@pengutronix.de; festevam@gmail.com; linux-pci@vger.kernel.org;
+> > > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
+> > > linux-kernel@vger.kernel.org
+> > > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not
+> > > exit L23 ready
+> > >
+> > > On Wed, Apr 02, 2025 at 07:59:26AM +0000, Hongxing Zhu wrote:
+> > > > > -----Original Message-----
+> > > > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > > > Sent: 2025年4月2日 15:08
+> > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > > > lpieralisi@kernel.org; kw@linux.com; robh@kernel.org;
+> > > > > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > > > kernel@pengutronix.de; festevam@gmail.com;
+> > > > > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+> > > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > > > > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may
+> > > > > not exit L23 ready
+> > > > >
+> > > > > On Fri, Mar 28, 2025 at 11:02:10AM +0800, Richard Zhu wrote:
+> > > > > > ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
+> > > > > > Through Beacon or PERST# De-assertion
+> > > > >
+> > > > > Is it possible to share the link to the erratum?
+> > > > >
+> > > > Sorry, the erratum document isn't ready to be published yet.
+> > > > > >
+> > > > > > When the auxiliary power is not available, the controller cannot
+> > > > > > exit from
+> > > > > > L23 Ready with beacon or PERST# de-assertion when main power is
+> > > > > > not removed.
+> > > > > >
+> > > > >
+> > > > > I don't understand how the presence of Vaux affects the controller.
+> > > > > Same goes for PERST# deassertion. How does that relate to Vaux? Is
+> > > > > this erratum for a specific endpoint behavior?
+> > > > IMHO I don't know the exact details of the power supplies in this IP design.
+> > > > Refer to my guess , maybe the beacon detect or wake-up logic in
+> > > > designs is  relied on the status of SYS_AUX_PWR_DET signals in this case.
+> > >
+> > > Can you please try to get more details? I couldn't understand the errata.
+> > >
+> > Sure. Will contact designer and try to get more details.
+> Hi Mani:
+> Get some information from designs, the internal design logic is relied on the
+>  status of SYS_AUX_PWR_DET signal to handle the low power stuff.
+> So, the SYS_AUX_PWR_DET is required to be 1b'1 in the SW workaround.
+> 
 
-Am 07.04.25 um 16:51 schrieb Lukasz Majewski:
-> This patch enables support for More Than IP switch available on some
-> imx28[7] devices.
->
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-thanks adding the driver to mxs_defconfig. Unfortunately it's not
-possible for reviewers to identify the relevant changes, also the commit
-messages doesn't provide further information.
+Ok. So due to the errata, when the link enters L23 Ready state, it cannot
+transition to L3 when Vaux is not available. And the workaround requires setting
+SYS_AUX_PWR_DET bit?
 
-In general there are two approaches to solves this:
-1) prepend an additional patch which synchronizes mxs_defconfig with
-current mainline
-2) manually create the relevant changes against mxs_defconfig
+IIUC, the issue here is that the controller is not able to detect the presence
+of Vaux in the L23 Ready state. So it relies on the SYS_AUX_PWR_DET bit. But
+even in that case, how would you support the endpoint *with* Vaux?
 
-The decision about the approaches is up to the maintainer.
+- Mani
 
-Btw driver review will follow ...
-
-Regards
-> ---
-> Changes for v4:
-> - New patch
-> ---
->   arch/arm/configs/mxs_defconfig | 14 +++-----------
->   1 file changed, 3 insertions(+), 11 deletions(-)
->
-> diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defco=
-nfig
-> index d8a6e43c401e..4dc4306c035f 100644
-> --- a/arch/arm/configs/mxs_defconfig
-> +++ b/arch/arm/configs/mxs_defconfig
-> @@ -32,11 +32,10 @@ CONFIG_INET=3Dy
->   CONFIG_IP_PNP=3Dy
->   CONFIG_IP_PNP_DHCP=3Dy
->   CONFIG_SYN_COOKIES=3Dy
-> -# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-> -# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-> -# CONFIG_INET_XFRM_MODE_BEET is not set
->   # CONFIG_INET_DIAG is not set
->   # CONFIG_IPV6 is not set
-> +CONFIG_BRIDGE=3Dy
-> +CONFIG_NET_SWITCHDEV=3Dy
->   CONFIG_CAN=3Dm
->   # CONFIG_WIRELESS is not set
->   CONFIG_DEVTMPFS=3Dy
-> @@ -45,7 +44,6 @@ CONFIG_MTD=3Dy
->   CONFIG_MTD_CMDLINE_PARTS=3Dy
->   CONFIG_MTD_BLOCK=3Dy
->   CONFIG_MTD_DATAFLASH=3Dy
-> -CONFIG_MTD_M25P80=3Dy
->   CONFIG_MTD_SST25L=3Dy
->   CONFIG_MTD_RAW_NAND=3Dy
->   CONFIG_MTD_NAND_GPMI_NAND=3Dy
-> @@ -56,11 +54,11 @@ CONFIG_EEPROM_AT24=3Dy
->   CONFIG_SCSI=3Dy
->   CONFIG_BLK_DEV_SD=3Dy
->   CONFIG_NETDEVICES=3Dy
-> +CONFIG_FEC_MTIP_L2SW=3Dy
->   CONFIG_ENC28J60=3Dy
->   CONFIG_ICPLUS_PHY=3Dy
->   CONFIG_MICREL_PHY=3Dy
->   CONFIG_REALTEK_PHY=3Dy
-> -CONFIG_SMSC_PHY=3Dy
->   CONFIG_CAN_FLEXCAN=3Dm
->   CONFIG_USB_USBNET=3Dy
->   CONFIG_USB_NET_SMSC95XX=3Dy
-> @@ -77,13 +75,11 @@ CONFIG_SERIAL_AMBA_PL011=3Dy
->   CONFIG_SERIAL_AMBA_PL011_CONSOLE=3Dy
->   CONFIG_SERIAL_MXS_AUART=3Dy
->   # CONFIG_HW_RANDOM is not set
-> -# CONFIG_I2C_COMPAT is not set
->   CONFIG_I2C_CHARDEV=3Dy
->   CONFIG_I2C_MXS=3Dy
->   CONFIG_SPI=3Dy
->   CONFIG_SPI_GPIO=3Dm
->   CONFIG_SPI_MXS=3Dy
-> -CONFIG_GPIO_SYSFS=3Dy
->   # CONFIG_HWMON is not set
->   CONFIG_WATCHDOG=3Dy
->   CONFIG_STMP3XXX_RTC_WATCHDOG=3Dy
-> @@ -138,10 +134,6 @@ CONFIG_PWM_MXS=3Dy
->   CONFIG_NVMEM_MXS_OCOTP=3Dy
->   CONFIG_EXT4_FS=3Dy
->   # CONFIG_DNOTIFY is not set
-> -CONFIG_NETFS_SUPPORT=3Dm
-> -CONFIG_FSCACHE=3Dy
-> -CONFIG_FSCACHE_STATS=3Dy
-> -CONFIG_CACHEFILES=3Dm
->   CONFIG_VFAT_FS=3Dy
->   CONFIG_TMPFS=3Dy
->   CONFIG_TMPFS_POSIX_ACL=3Dy
-
+-- 
+மணிவண்ணன் சதாசிவம்
