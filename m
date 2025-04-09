@@ -1,204 +1,358 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2081.outbound.protection.outlook.com [40.107.249.81])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B356D25291E
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 09:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744192286; cv=fail; b=mYz+c3+fwQZfA+ptikLRhm5tNGyknKTYbKUEUeXdyMBrBdfXNGySut+hBxUPfEdz8GWBbORk3v2yEOZNLRicAF6+0KAcH+88bk9owrnQ1mssdZQlREjFRqAuMmtb3wTeSBJZ/Xc2+SQEV+rq/U0/oxC/nJuZ8XyyPD9tcLdWGOU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744192286; c=relaxed/simple;
-	bh=vNztbsWclpkMdFwf8dpcl6pkZUFZy8h1nkorWySa1K8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=V2/XJ/+Hj7RRSoOe9x7pxNJ6FgCvuBJC6XlgVvTSLOXLDhkPMr2VwUyU4B3UB7zsfPsTfREdcf0BwmDdYzl/NjF7DypBm3RWnJCdKSELelW8jsKjunqlHJqUPWwZRSacdSP6/6keTkO4web5h64Zn0NARXOvFdpKyHZCVjVdi7k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VPl2DgCR; arc=fail smtp.client-ip=40.107.249.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E9E2417C3
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 09:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744192330; cv=none; b=lC+EjDZ9k+gOecXaQK5fqmQe9u5uFW7uR4MkbTr7P57ZTuXJyxL3ZhfFHH4k5MF/ZAbZACMsFQfv98tizlpng1G8TsmPtTt1X+DKr0K0KqH0fFMYJxU3+1cAlkoRJ0EgVx30xryAp4gN9PwgY3tmHip/QTPzBX6fUFM4ElAydbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744192330; c=relaxed/simple;
+	bh=9HfoOow1u3OlQ99nimInZ/BXdlpsvS+JF1uWNYbbCMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GTIqShoouUrcJ3vc3b+kF9m9TdXLGBvMneYu8uYY/BBsuiX3W+peZYBikHMEKe9S0OlIFKiR9Vqc80ZrEP50ttRKDT1e1BBVGMhVdt6Li6yg3fJnpMOJFXYcalSnNlOV0aCSlPJhGCZ6rtC/Z+cakjlofB3mTW6EoLPozM+kfrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=HC8AvnhI; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=m3kLtg1v reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VPl2DgCR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K1wf5tAgNqSFgHpaxc4lF+US2AjC68MaST3fBJRXHscN5jNzCWaxjR/j5mwQRPGjd8JS5Ybzp+gdz+DB7X+9LLAvhlK2OmLJSm7RlMB0pxLEKRoJB4vG75UG9bP0EaPQTbXlQNbSKF+qv++C8Jq2bE7twTi6GqqYAg9Alj8vaXLpY9x09HpVOAyOXJEikdOW36FdLKzf4Bi+LwvNyXs+5TV0hr70u6oMfLZbCD8gDh8FlJxolMSXKqk0HWN3dloP7pWhNnjRv5gHsj0UjNbjU2fk8iZhZrSIMXfupMUB4erbCmiSt5e/w40Z40v1zen2P6iHX9bfUEpQhmuZxC9qeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vNztbsWclpkMdFwf8dpcl6pkZUFZy8h1nkorWySa1K8=;
- b=EFO8GSxZJeqnS0dU88ZfI7gAO3r/9Q5NMFcjfvf+zyHTIPMU3RQZgJJknlwYL8EQ1+b54UNpygFY6M4CBFLNmjT5cfI4VMG/Dx9Zl5wXO2ywCWzhR1Q/UgvUlqAqWgR4XMtf8EOrsPXGPAlldTY4lV1KLSQwXThNJCL1D0tElEUoI5bvVTFT0HoYeHFtMiejlMMOqlemFdkotgQ4dEQPnDnYAZ1k22Z3YtNXPykWqh238sJEb8fP+zsHi98+dZwgP5PNqtPA4/gasLcdFzeWbtXDmxX9BslKn4HMeQerIWkXXc/oowc2LLV92qbXInMIsHrVfbb9Kl2LgJSxufInDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vNztbsWclpkMdFwf8dpcl6pkZUFZy8h1nkorWySa1K8=;
- b=VPl2DgCRqk60YWnjQYtl6pqb2H4l+qPetGaTAqWFx8hi+UfTGeMmm8lk9qFk/HPlqIEZrsGcOybwy7H9UoJ/eIuJ7X1ZeFmKAgyiH9CnAn8WWsFaHIeWLDoQNO3Jzm92zWmjOhsAMiSg971SnhEfFUugNbvCo3Pyhk4VAoi2YgULQgo2QRHhbEbDehsDkZwlyf1A21BltevEmtJzGLfczX/Y5Zu1tKNRzLKyUKtw2dbaVxcQbiORWtmCsFFJZMv8BqgB7P5MtBwjHxkAjKi/cbleHo90kUJVpBx8mE1tjPqwzQ4Fq+I2j8SHEMXYnMIAsmivX8jSiRBOOye5+s5w1Q==
-Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
- by VI0PR04MB10591.eurprd04.prod.outlook.com (2603:10a6:800:25b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.31; Wed, 9 Apr
- 2025 09:51:20 +0000
-Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
- ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
- ([fe80::2edf:edc4:794f:4e37%5]) with mapi id 15.20.8583.041; Wed, 9 Apr 2025
- 09:51:20 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: Stefan Wahren <wahrenst@gmx.net>, Peng Fan <peng.fan@nxp.com>, Frank Li
-	<frank.li@nxp.com>, Joy Zou <joy.zou@nxp.com>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, linux-serial
-	<linux-serial@vger.kernel.org>, "dmaengine@vger.kernel.org"
-	<dmaengine@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Christoph
- Stoidner <c.stoidner@phytec.de>
-Subject: RE: fsl_lpuart: imx93: Rare dataloss during DMA receive
-Thread-Topic: fsl_lpuart: imx93: Rare dataloss during DMA receive
-Thread-Index: AQHbqSgXmF0lJ7q5rkuUhpKjo5mhwbObEITw
-Date: Wed, 9 Apr 2025 09:51:20 +0000
-Message-ID:
- <DB9PR04MB84299ACCDAFE6427B30699F592B42@DB9PR04MB8429.eurprd04.prod.outlook.com>
-References: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
-In-Reply-To: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR04MB8429:EE_|VI0PR04MB10591:EE_
-x-ms-office365-filtering-correlation-id: 379a5782-9dfc-44b4-ad0e-08dd774c1489
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?YUJDb1NmbWNxcXNUU0piN01sbjdnRXV3NDdHTDZyRmJDblFhLzF5Mm9nWTF0?=
- =?utf-8?B?cDkwS24zNWhDZEllQURhRjNqN2xVZWVrVmF4WE1XTHJiNWFTUjVBSVJpR21R?=
- =?utf-8?B?b1hQNlFtS25KbzI1c1V4b0hUbm1WeHBjUkV4VFc0bHcxWkVuYnB3TkRNaGEw?=
- =?utf-8?B?L2I3ZStiKzJJT1dHVWMvM2hYUStSL1JZSERNOThzelM3WmdyYkJwYklKNTNx?=
- =?utf-8?B?TmhtU2pEWmY3dm9qUmpoSHlPYTE1STdTMUJIeTh1TFNlMDVwZERXbU15bWF0?=
- =?utf-8?B?WGRXUG1KUElFaVQxRjFzVEd4bjVYZDBxL1MwM2RpcWYrQWlHUWFpblBtRTMy?=
- =?utf-8?B?WVFQdjhMTUVqTnJWdXlGSWNMZTRabzlvbGNKWGpLM0RWM3VWb25YTEh5ODFD?=
- =?utf-8?B?WHJFcjc0N0RqUG5aN21iRkFLMFU0WHIvNVE0WUwvYkNadlpWWm1TaThIR2Va?=
- =?utf-8?B?ZnQ1MW1yU0hsemQxSCtBM2J4NXlHTmdNejJiUUhZZXM0YVUwdmg2ZTZ3cjhB?=
- =?utf-8?B?dWFId1JzVFpYVjRLbnRqbHd6Nm9NWTBMZEJOdHgzY2Zad1ovNXIrc2hDWVhQ?=
- =?utf-8?B?MlplZ1FZcmpnaEd1TTZCWWZDWElmUm52U3lKK2tncDRSblVpT2U2TW9vdGEv?=
- =?utf-8?B?b25QWm1CeXZ6dm94a1VYSUptdko2V2Q0WFhNMlQvaDVaZXE3MGRHcmVXdGRX?=
- =?utf-8?B?elBHRUpybXUwaVQ5UXd2QXkxU3dDbGkzaFpUam1CTmM0ZE5tZ1lXUGVQYzZN?=
- =?utf-8?B?MmhUSEZpNlIxcmtlVXQ0SEZ6WGk1aVByQ090RmEyTjZwMkYwaXV3RjRJZEhn?=
- =?utf-8?B?ZjN1WHlIUCtZcHdKdUg0M01LdlB1R2dOZ2l5Y084a1ZhTitsaVVGaXRFbi8x?=
- =?utf-8?B?S2xOTWtHSm94cDByZUY0bW02bEREcmJGeHUyMGl5djdvS2hPR29qT2pMZEQz?=
- =?utf-8?B?RVUwcktIUWhwMStIaWRPVzVrMGNpYnNpQkYyVWpjR3pNVmQrdVpLejdXMVFo?=
- =?utf-8?B?VFZHWi9ER2xMU2pqb0FETkdFYzVMWmZtTERjSjZ2eFBRektvQ0tSamNYd1VG?=
- =?utf-8?B?djgwdlpGUnNLcitqYkJBTEY5QjB0Nk5jQ2krN0MxOVJ6N1BSVytPRGUxOFVV?=
- =?utf-8?B?NTdMODN3bmxGODBLRUhjSW1WMFYxb0JKdURsTzV2c0VCcXdZRDlqZ1BKSzl1?=
- =?utf-8?B?QzcrY2FFbEJmTXBYakNxU0FMRi9EMjZjWGRXQnVuSnZyZklHVHh6WDBzRUs3?=
- =?utf-8?B?VGdXTFlJbEwxTHY2cytSMzBIKy9JeUFyVGkxcXJYUEFud01IeXJGZjFkY2tM?=
- =?utf-8?B?a3BydktYNTMySDcrY0dRQnI0UjBXSHFFZjhaMnZISFNxUXFmUytnb2phaDlW?=
- =?utf-8?B?YVEvTlR0UWtKYjF5am5kdENYSzlGakwrcG0wdW14bHZXLy92T1ZVZ2l6SHN1?=
- =?utf-8?B?bDZaYWgyVTdaK2V5UnQyMEs1VTNKcEE4RFpHczlYOWdUckgxanlDOWVIMlhi?=
- =?utf-8?B?VDhTbFpzYkl5amtyY3lRblVSZU5wS1NFOVcvVGVPVGtEb1VheWJtYk04UVYz?=
- =?utf-8?B?bU9lb3NFcjNWWmhEN0tyY2x1MGFtV3NUMlEwRU9HYUNORTJnZ1dra3pFUHds?=
- =?utf-8?B?TmhScWdOVzNFTFBQMW5ITHdEOFZrUTRwZGd5OHIzWXJ5UnlNUlBqZnh0cHdw?=
- =?utf-8?B?aE54cDZhK3hxcExsY3d5UExuckJXTnlFTXR6dit5cEZpblJUMlViYzhIcFFo?=
- =?utf-8?B?QjdtVG1WNEgwTmpTZll5UFlNMktDQVZIZjhjdjBObVFUZWQxQndlb1ZIN0VF?=
- =?utf-8?B?Yk5sWlVLR0o4eFl2ZXlmdmZsYmlnQ0pTT3lzZ2pJSHZPbUtsZ0VFaldyc1BT?=
- =?utf-8?B?Y1AwbmhmblBpUmt3UVNlNk1LdUdqNUU5YTZjVWtLeW5UdUZva21SWFpSZ042?=
- =?utf-8?B?blFDVWxTV3BlanI1dDlGNDVPc0doQ0VTU0RjRXdPellSZDVQS3pmeU15cDlO?=
- =?utf-8?Q?5eEVR+l+EM1dKAUarE2T3EVyPS6FR4=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RklETE8yQ3hRK2tMd0ZzYkJhNjZNUGhRYitudDFuVENGMVJoQ2g1WmVkUTd3?=
- =?utf-8?B?bkU4VlRRUjNvLzZzYVNHSFhqRSt5UklHcWdtK1RRWTV5a3R0VlZWRmExTlJR?=
- =?utf-8?B?cnRMOFpzcmw5S2tQN2pUVnVBY1R5b2dPT3pGOEZqWk9LVHZCZG5aNVo4SzFh?=
- =?utf-8?B?RlJWSCtMaFJSeUNRbXdYemkwWnBGTzV4cVo1SG9SSmtEeUZ6b3RFU2dxUGp4?=
- =?utf-8?B?ZGk5VmNYTVpyUFJaRHRnZUcxWFZNM2Y2UXBuQzlsbm1GSlVRRGFiTjdDWWFV?=
- =?utf-8?B?MzJFZEVUcXRydjlDajROZjZ5MStpeEZNdFpJT3BZUTBzQ3VJaFE3aEo1ZlNw?=
- =?utf-8?B?eWFtM3FWUlUwM21BUVUzNzUrZWNuRkozQ2VKbERLbndIY21Sa3ZtL1ZwZFAv?=
- =?utf-8?B?NDAxbWJoWC9DTzZNWEc0blBHOEtiWGVnaTJiQyt2YlNPYmlZYXRxdTZLYUNu?=
- =?utf-8?B?Q25MSXlOekRuWTFRWTV5K3BVdk4vMnR4aENQajFUQmpHQmpDVGQyYkh4aGdV?=
- =?utf-8?B?bFliMDd1aHpqZVkrd1hhSEpUSUphRU9ud3pxWmErSzBvaUhJS3N4ek9mbnVi?=
- =?utf-8?B?YkFuTWZ1NlRtQ1hrSk1DWkxkZmNoSkJVNFJnb0VBY0lGTVFnSE96bGdkZ2xy?=
- =?utf-8?B?Z1ExSUxNWVlDZmFpSmc5STMvU2pEbWJNcXV4Nzl5Vlh6TElyNVhoeXdSVFBE?=
- =?utf-8?B?bVJ5WGxpNTJIcTVTSThRWXZHZkVySFY1dzBDdzVpbmlMRTR0dHZLa3lvaU8z?=
- =?utf-8?B?UGNVL0hleDJVSEc4VVJXaVNqVkZUTWZUMlhmZzJRYzJFVG1Sc2YrMlZZa3NK?=
- =?utf-8?B?b1padDBKeGliMWRhL011aTVrWWo3RjlmN1VTSGgvTEpzSFdrVTVvdnF4MjdG?=
- =?utf-8?B?ZXk0YXRNdTNFY2x0WXVkWngvbFZZOHlpdXhUcmNSYVZVSjk3ckFVMWhLVC9C?=
- =?utf-8?B?cVhkbEp0TUhvbHJxV0N2VEM1THJkelZzRVNVZzhxbkxzLzVBWUhONkxEKzIr?=
- =?utf-8?B?RDZzQzRKV3FtY3I2Nm9tMXRTTWZSNzFFODJBdzlrTnJnMXZ2NHRMdGg2OGpI?=
- =?utf-8?B?S1d3MnYvR203WlFBN09oSEx1ZUFhV3p5RnpvMktMTGNDUkR4RmdtY0ZhRHht?=
- =?utf-8?B?OHNVcjk1bHJQOXlubjBLRmFxSGczVmRGVERTbGNjZWpGcGFTNUFGam5YUnlu?=
- =?utf-8?B?WjNtaDFMNWhGd2lKNzNaS1hwVGpiQ05HTlBLSmtIaHpIRGZXdzhKb1BnWkd0?=
- =?utf-8?B?VzZOeURJckZsbE9rc2ptdWhxR2drcVl0TVg3TWc2RUViS2JVT3BsalFWNE9z?=
- =?utf-8?B?eU81N0hqczdiN0dnVUFZNndkcGhuaVB4aWJsTEcvMko0MXkvUTlXSkNPbm9h?=
- =?utf-8?B?VjE1WlVoeFd6V2ZWNHcySkxTS0VWRkJnQjduL3JXTERKQnFnNVg3M2NJUEJC?=
- =?utf-8?B?K2wrSDdhaEJlZ3VtNytLYjdFS0FuZnAvbEJOT1VaWDRKSHYrOTMwTWlxcitD?=
- =?utf-8?B?UDFLRXU2dWNpUVNUdUg5TmNBemRYeVpoZHJwUzAySkozVTlNMEQvcVNObmdq?=
- =?utf-8?B?WVJEUDEra0Y0Y1JBMjJ3VHlBblk4R0lDc0h5SGJVZjFjM1FVVkFIUjZiejQv?=
- =?utf-8?B?aXZ5V0doUlVQTnlmY2hobEpWTTF0OEFlbzBsR001VjJYZHFaVTEwYWlGY1kx?=
- =?utf-8?B?dU5TK0dpMGJZaWk2ZTFEWEhEZ21jalZhQjFnWk45K0E5NTkxOUVrY0NLeGtB?=
- =?utf-8?B?a3RWRFMvdVB0SDk3VWVTSTlRT3FyOER6emJFekU5RHZ1cDNrNTJDWFh4Y3Nk?=
- =?utf-8?B?QVg1Y3lUV05tVUhwdEhZZHVYS1J2eVZhUU5adnNiS21yMHpqVVoyZEZaSGF1?=
- =?utf-8?B?bVVDT3VPQUpOSDFpUjJxeERVQk5JaStSYmJKemMvejdmN3plY1FoRjA5SFRI?=
- =?utf-8?B?Uk9rcjUzUjQyS1dGb0hYN21mUnN6bktlbnc0RzUydzVXdzdSZzgvOVpPQlhR?=
- =?utf-8?B?Zm81TGZqbTZ1Rnh5ZTQ1WnduYklNemF2SWYvTkVXaHZZalVwY2tyVTNOQnJx?=
- =?utf-8?B?Rmw1S3FSNTlwZ0Q0SndleXZhRnVQN1YvOExkN0N2TjZpc1owZXdZYnlHQTk5?=
- =?utf-8?Q?neyM=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="HC8AvnhI";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="m3kLtg1v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1744192325; x=1775728325;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BwJ4JjVuW0owDIj4lhQZlNw78vzSAnna/M+1aYgN5Ps=;
+  b=HC8AvnhI077XiuSmgFAr+xU+r+gqFg8ummRNntbLkEvff1U/I34BlTtg
+   lAOameIJCKw9rTsl7fLV2l1kXBSSsTbKaVSXCrYkFm8hgvtfwWGySApsD
+   vEkKmek6kz6UOgJY32gBQ3flWnyWAxj95jnj4mLVoq5+gdHfSaUsFPGJa
+   Cy8qnUiJWHSJiBNO2OnBT7jo8mtBmIQK14V2WVEnaVdE1XNTCHbkK98ge
+   MgR7djaZbTbk+bKDuwHKS2rqo5fUwPBHGnABwWu1W77k68Ifzj1iO+5g/
+   nOoQExaBKM0qLBXFz/yaZav6xGaVdvw7oVy2hvS1lTKu/Q6OzzjAOJznw
+   w==;
+X-CSE-ConnectionGUID: Oz1g1cdlSxCyk3H/RQxwwg==
+X-CSE-MsgGUID: s+m6D76ZTvW8PCwplIMQ+g==
+X-IronPort-AV: E=Sophos;i="6.15,200,1739833200"; 
+   d="scan'208";a="43425007"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 09 Apr 2025 11:52:01 +0200
+X-CheckPoint: {67F64341-30-DC4DC9A0-F4F29281}
+X-MAIL-CPID: 40F2E6F11F590AF8BB2A12417A0B3E0A_0
+X-Control-Analysis: str=0001.0A006376.67F64345.0015,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC7421654E8;
+	Wed,  9 Apr 2025 11:51:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1744192316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BwJ4JjVuW0owDIj4lhQZlNw78vzSAnna/M+1aYgN5Ps=;
+	b=m3kLtg1vBRoGo0pR0MXT0M8ZSUwba+jbDz1IMwSPGBjId/gF8IE86yru8BpBXkk+DIt85W
+	SDKLZeyBByFKQBs7E9gNrPJtx0PmM2bd+RipFes0x8kzB4iqxfjRFcNU2qYksVPuerP1/N
+	+ZgTIKD7AikoGY0utgvP5QXoHrce8loqv2mRPVx6qY5fywABfYzUhgO+/BMWVmN8I3wMHd
+	aL+tJV7ZL5TDTAG2+ztEVXSkCCu2QJgJHpZDEDw0c1XPODc3H8zmpXFzk4bHxlHnPMcly7
+	0gjDCZziULkjEV9Xau0kEXJqNHbyVdXgabnndPDhUGPXv1uxTXwFg9jyFe2e3A==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+ kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+ bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Richard Zhu <hongxing.zhu@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Richard Zhu <hongxing.zhu@nxp.com>
+Subject: Re: [PATCH v5 3/7] PCI: imx6: Toggle the cold reset for i.MX95 PCIe
+Date: Wed, 09 Apr 2025 11:51:53 +0200
+Message-ID: <2989817.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250408025930.1863551-4-hongxing.zhu@nxp.com>
+References:
+ <20250408025930.1863551-1-hongxing.zhu@nxp.com>
+ <20250408025930.1863551-4-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 379a5782-9dfc-44b4-ad0e-08dd774c1489
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2025 09:51:20.2085
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0r0W5CzvNz199+YRecZGBS37VbIk3wlOgLxNgCQXX5FZba34A5Ffqlbmrs0/+TW3/Mckrcsnsl8rYZRPvKN7Cw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10591
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3RlZmFuIFdhaHJlbiA8
-d2FocmVuc3RAZ214Lm5ldD4NCj4gU2VudDogV2VkbmVzZGF5LCBBcHJpbCA5LCAyMDI1IDQ6MTkg
-UE0NCj4gVG86IFNoZXJyeSBTdW4gPHNoZXJyeS5zdW5AbnhwLmNvbT47IFBlbmcgRmFuIDxwZW5n
-LmZhbkBueHAuY29tPjsNCj4gRnJhbmsgTGkgPGZyYW5rLmxpQG54cC5jb20+DQo+IENjOiBpbXhA
-bGlzdHMubGludXguZGV2OyBsaW51eC1zZXJpYWwgPGxpbnV4LXNlcmlhbEB2Z2VyLmtlcm5lbC5v
-cmc+Ow0KPiBkbWFlbmdpbmVAdmdlci5rZXJuZWwub3JnOyBGYWJpbyBFc3RldmFtIDxmZXN0ZXZh
-bUBnbWFpbC5jb20+Ow0KPiBDaHJpc3RvcGggU3RvaWRuZXIgPGMuc3RvaWRuZXJAcGh5dGVjLmRl
-Pg0KPiBTdWJqZWN0OiBmc2xfbHB1YXJ0OiBpbXg5MzogUmFyZSBkYXRhbG9zcyBkdXJpbmcgRE1B
-IHJlY2VpdmUNCj4gDQo+IEhpLA0KPiANCj4gd2UgaGF2ZSBhIGN1c3RvbSBpLk1YOTMgYm9hcmQg
-YW5kIG9uIHRoaXMgYm9hcmQgdGhlIGkuTVg5M8KgKEExIHN0ZXBwaW5nKSBpcw0KPiBjb25uZWN0
-ZWQgdmlhIExQVUFSVDMgdG8gYW5vdGhlciBNQ1UuIEJvdGggcHJvY2Vzc29ycyBjb21tdW5pY2F0
-ZSB2aWEgYQ0KPiBzbWFsbCBwcm90b2NvbCAocmVxdWVzdC9yZXNwb25zZSBhcmUgc21hbGxlciB0
-aGFuIDE2IGJ5dGVzKSBhdCAxMTUyMDAgYmF1ZA0KPiAobm8gcGFyaXR5LCBubyBoYXJkd2FyZSBm
-bG93IGNvbnRyb2wpLiBUaGUgaS5NWDkzIGlzIHRoZSBpbml0aWF0b3IgYW5kIHRoZSBvdGhlcg0K
-PiBNQ1UgaXMgdGhlIHJlc3BvbmRlci4NCj4gDQo+IFNvIHdlIG5vdGljZWQgdmlhIGxvZ2ljIGFu
-YWx5emVyIHRoYXQgdGhlIGkuTVg5MyBzb21ldGltZXMgZG9lc24ndCByZWNlaXZlDQo+IHRoZSBj
-b21wbGV0ZSByZXNwb25zZSAobm8gZnJhbWluZyBpc3N1ZXMpLiBJbiBvdXIgc2V0dXAgaXQgdXN1
-YWxseSB0YWtlcyAxIG9yIDINCj4gbWludXRlcyB0byByZXByb2R1Y2UgdGhpcyBpc3N1ZS4gSW50
-ZXJlc3RpbmdseSB0aGlzIGlzc3VlIGlzIG5vdCByZXByb2R1Y2libGUsIGlmDQo+IHdlIGRpc2Fi
-bGUgRE1BIGFuZCBvcGVyYXRlIHZpYSBJUlEuDQo+IA0KPiBUaGUgaXNzdWUgaXMgc3RpbGwgcmVw
-cm9kdWNpYmxlLCBpZiB3ZSBkaXNhYmxlIGFsbCBvdGhlciBETUEgY2hhbm5lbCBleGNlcHQgdGhl
-DQo+IG9uZXMgZm9yIExQVUFSVDMuDQo+IA0KPiBXZSB0ZXN0ZWQgd2l0aCBMaW51eCBNYWlubGlu
-ZSA2LjE0IGFuZCBMaW51eCBOWFAgNi42LjIzLCBpbiBib3RoIGNhc2VzIHRoZQ0KPiBpc3N1ZSB3
-YXMgYWxzbyByZXByb2R1Y2libGUuIFdlIGRlYnVnZ2VkIHRoZSByZWxldmFudCBkcml2ZXJzIGFu
-ZCBub3RpY2VkDQo+IHRoYXQgdGhlIFVBUlQgZGV0ZWN0cyAoVUFSVFNUQVQgaGFzIFJYIHBpbiBl
-ZGdlIGRldGVjdGVkKSB0aGUgUlggc2lnbmFsLCBidXQNCj4gdGhlcmUgaXMgbm90IHJlYWN0aW9u
-IHdpdGhpbiB0aGUgRE1BIGRyaXZlci4NCj4gDQo+IElzIGFueW9uZSBhdCBOWFAgYXdhcmUgb2Yg
-c3VjaCBhbiBpc3N1ZT8NCj4gRG8geW91IGhhdmUgc29tZSBzdWdnZXN0aW9ucyB0byBhbmFseXpl
-IHRoaXMgZnVydGhlcj8NCg0KV2UgaGF2ZSBub3Qgb2JzZXJ2ZWQgdGhpcyBpc3N1ZSBpbiBvdXIg
-aW50ZXJuYWwgdGVzdGluZywgc29tZSBkZWJ1ZyBzdWdnZXN0aW9ucyBmcm9tIGZzbC1scHVhcnQg
-c2lkZS4gUGVyaGFwcyBKb3kgY2FuIGdpdmUgc29tZSBzdWdnZXN0aW9ucyBmcm9tIGVETUEgc2lk
-ZS4NClBsZWFzZSB0cnkgd2l0aCBMaW51eCBNYWlubGluZSA2LjE0Lg0KMS4gQ2FuIHlvdSBwbGVh
-c2UgcnVuICJjYXQgL3Byb2MvdHR5L2RyaXZlci9mc2wtbHB1YXJ0IiBhbmQgImNhdCAvcHJvYy9p
-bnRlcnJ1cHQgfCBncmVwIHNlcmlhbCIgd2hlbiBpc3N1ZSBvYnNlcnZlZD8gVGhhdCBtYXkgaGVs
-cCB0byBnZXQgbW9yZSBpbmZvLg0KMi4gQ2FuIHlvdSBwbGVhc2UgY2hlY2sgaWYgdGhlIGlzc3Vl
-IGlzIHN0aWxsIG9ic2VydmVkIGFmdGVyIGVuYWJsaW5nIGhhcmR3YXJlIGZsb3cgY29udHJvbD8N
-CjMuIENhbiB5b3UgcGxlYXNlIGNoZWNrIGlmIHRoaXMgaXMgc3RpbGwgb2JzZXJ2ZWQgaWYgc2V0
-dGluZyByeF93YXRlcm1hcms9MT8NCjQuIElzIHRoZXJlIGFuIGVhc3kgd2F5IHRvIHJlcHJvZHVj
-ZSB0aGlzIGlzc3VlPyBNYXliZSB3ZSBjYW4gZ2l2ZSBpdCBhIHRyeS4NCg0KQmVzdCBSZWdhcmRz
-DQpTaGVycnkNCg==
+Hi,
+
+Am Dienstag, 8. April 2025, 04:59:26 CEST schrieb Richard Zhu:
+> Add the cold reset toggle for i.MX95 PCIe to align PHY's power up sequenc=
+y.
+>=20
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 42 +++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+>=20
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index c5871c3d4194..7c60b712480a 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -71,6 +71,9 @@
+>  #define IMX95_SID_MASK				GENMASK(5, 0)
+>  #define IMX95_MAX_LUT				32
+> =20
+> +#define IMX95_PCIE_RST_CTRL			0x3010
+> +#define IMX95_PCIE_COLD_RST			BIT(0)
+> +
+>  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
+> =20
+>  enum imx_pcie_variants {
+> @@ -773,6 +776,43 @@ static int imx7d_pcie_core_reset(struct imx_pcie *im=
+x_pcie, bool assert)
+>  	return 0;
+>  }
+> =20
+> +static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+> +{
+> +	u32 val;
+> +
+> +	if (assert) {
+> +		/*
+> +		 * From i.MX95 PCIe PHY perspective, the COLD reset toggle
+> +		 * should be complete after power-up by the following sequence.
+> +		 *                 > 10us(at power-up)
+> +		 *                 > 10ns(warm reset)
+> +		 *               |<------------>|
+> +		 *                ______________
+> +		 * phy_reset ____/              \________________
+> +		 *                                   ____________
+> +		 * ref_clk_en_______________________/
+> +		 * Toggle COLD reset aligned with this sequence for i.MX95 PCIe.
+> +		 */
+> +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
+> +				IMX95_PCIE_COLD_RST);
+> +		/*
+> +		 * Make sure the write to IMX95_PCIE_RST_CTRL is flushed to the
+> +		 * hardware by doing a read. Otherwise, there is no guarantee
+> +		 * that the write has reached the hardware before udelay().
+> +		 */
+> +		regmap_read_bypassed(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
+> +				     &val);
+> +		udelay(15);
+> +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
+> +				  IMX95_PCIE_COLD_RST);
+> +		regmap_read_bypassed(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
+> +				     &val);
+> +		udelay(10);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>  	reset_control_assert(imx_pcie->pciephy_reset);
+> @@ -1739,6 +1779,7 @@ static const struct imx_pcie_drvdata drvdata[] =3D {
+>  		.ltssm_mask =3D IMX95_PCIE_LTSSM_EN,
+>  		.mode_off[0]  =3D IMX95_PE0_GEN_CTRL_1,
+>  		.mode_mask[0] =3D IMX95_PCIE_DEVICE_TYPE,
+> +		.core_reset =3D imx95_pcie_core_reset,
+>  		.init_phy =3D imx95_pcie_init_phy,
+>  	},
+>  	[IMX8MQ_EP] =3D {
+> @@ -1792,6 +1833,7 @@ static const struct imx_pcie_drvdata drvdata[] =3D {
+>  		.mode_off[0]  =3D IMX95_PE0_GEN_CTRL_1,
+>  		.mode_mask[0] =3D IMX95_PCIE_DEVICE_TYPE,
+>  		.init_phy =3D imx95_pcie_init_phy,
+> +		.core_reset =3D imx95_pcie_core_reset,
+>  		.epc_features =3D &imx95_pcie_epc_features,
+>  		.mode =3D DW_PCIE_EP_TYPE,
+>  	},
+>=20
+
+This change introduces an invalid memory access on my platform. There is not
+even a PCIe device attached to it.
+
+> imx6q-pcie 4c380000.pcie: host bridge /soc/pcie@4c380000 ranges:
+> imx6q-pcie 4c300000.pcie: host bridge /soc/pcie@4c300000 ranges:
+> imx6q-pcie 4c380000.pcie:       IO 0x088ff00000..0x088fffffff -> 0x000000=
+0000
+> imx6q-pcie 4c300000.pcie:       IO 0x006ff00000..0x006fffffff -> 0x000000=
+0000
+> imx6q-pcie 4c380000.pcie:      MEM 0x0a10000000..0x0a1fffffff -> 0x001000=
+0000
+> imx6q-pcie 4c300000.pcie:      MEM 0x0910000000..0x091fffffff -> 0x001000=
+0000
+> imx6q-pcie 4c380000.pcie: config reg[1] 0x880100000 =3D=3D cpu 0x880100000
+> ; no fixup was ever needed for this devicetree
+> imx6q-pcie 4c300000.pcie: config reg[1] 0x60100000 =3D=3D cpu 0x60100000
+> ; no fixup was ever needed for this devicetree
+> Unable to handle kernel paging request at virtual address ffff800081dc5010
+> Unable to handle kernel paging request at virtual address ffff8000821bd010
+> Mem abort info:
+>=20
+> Mem abort info:
+>   ESR =3D 0x0000000096000007
+>   ESR =3D 0x0000000096000007
+>   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+>   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+>=20
+> fsl_enetc_mdio 0003:01:00.0: enabling device (0000 -> 0002)
+>=20
+>   SET =3D 0, FnV =3D 0
+>   SET =3D 0, FnV =3D 0
+>   EA =3D 0, S1PTW =3D 0
+>   EA =3D 0, S1PTW =3D 0
+>   FSC =3D 0x07: level 3 translation fault
+>   FSC =3D 0x07: level 3 translation fault
+>=20
+> Data abort info:
+>=20
+> Data abort info:
+>   ISV =3D 0, ISS =3D 0x00000007, ISS2 =3D 0x00000000
+>   ISV =3D 0, ISS =3D 0x00000007, ISS2 =3D 0x00000000
+>   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
+>   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
+>   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+>   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+>=20
+> swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000091a47000
+> swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000091a47000
+> [ffff800081dc5010] pgd=3D1000000092002003
+> [ffff8000821bd010] pgd=3D1000000092002003
+> , p4d=3D1000000092002003
+> , p4d=3D1000000092002003
+> , pud=3D1000000092003003
+> , pud=3D1000000092003003
+> , pmd=3D1000000092008003
+> , pmd=3D100000009299f403
+> , pte=3D0000000000000000
+> , pte=3D0000000000000000
+>=20
+>=20
+> Internal error: Oops: 0000000096000007 [#1]  SMP
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 63 Comm: kworker/u24:4 Tainted: G                T =20
+> 6.15.0-rc1-next-20250409+ #3009 PREEMPT=20
+> f6bd3cc6346487744ae55f6115e728ff2bc7088b Tainted: [T]=3DRANDSTRUCT
+> Hardware name: TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2 (DT)
+> Workqueue: async async_run_entry_fn
+> pstate: 204000c9 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+> pc : regmap_mmio_read32le+0x1c/0x3c
+> lr : regmap_mmio_read+0x40/0x68
+> sp : ffff80008223b860
+> x29: ffff80008223b860 x28: ffff00001000c800 x27: ffff8000818679c0
+> x26: ffff000013340410 x25: 0000000000000001 x24: 0000000000000000
+> x23: ffff000012f5e400 x22: ffff80008223b934 x21: ffff80008223b934
+> x20: ffff000012fc4900 x19: 0000000000003010 x18: 00000000a7aa953f
+> x17: 3e2d206666666666 x16: 666631393078302e x15: 2e30303030303030
+> x14: 3139307830204d45 x13: 3030303030303031 x12: 30307830203e2d20
+> x11: 6666666666666631 x10: 393078302e2e3030 x9 : 4d2020202020203a
+> x8 : 656963702e303030 x7 : 205d313236353838 x6 : ffff0000134e0000
+> x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff8000809bf028
+> x2 : ffff8000809bfb0c x1 : 0000000000003010 x0 : ffff800081dc5010
+>=20
+> Call trace:
+>  regmap_mmio_read32le+0x1c/0x3c (P)
+>  regmap_mmio_read+0x40/0x68
+>  _regmap_bus_reg_read+0x58/0x9c
+>  _regmap_read+0x70/0x1c4
+>  _regmap_update_bits+0xe4/0x174
+>  regmap_update_bits_base+0x60/0x90
+>  imx95_pcie_core_reset+0x78/0xd0
+>  imx_pcie_assert_core_reset+0x38/0x50
+>  imx_pcie_host_init+0x68/0x4a0
+>  dw_pcie_host_init+0x16c/0x500
+>  imx_pcie_probe+0x2f4/0x71c
+>  platform_probe+0x64/0x100
+>  really_probe+0xc8/0x3bc
+>  __driver_probe_device+0x84/0x16c
+>  driver_probe_device+0x40/0x160
+>  __device_attach_driver+0xcc/0x1a0
+>  bus_for_each_drv+0x88/0xe4
+>  __device_attach_async_helper+0xac/0x108
+>  async_run_entry_fn+0x30/0x144
+>  process_one_work+0x14c/0x3e0
+>  worker_thread+0x2f0/0x3fc
+>  kthread+0x128/0x1ec
+>  ret_from_fork+0x10/0x20
+>=20
+> Code: aa0003f4 2a0103f3 f9400280 8b334000 (b9400000)
+> ---[ end trace 0000000000000000 ]---
+> note: kworker/u24:4[63] exited with irqs disabled
+> Internal error: Oops: 0000000096000007 [#2]  SMP
+> Modules linked in:
+> note: kworker/u24:4[63] exited with preempt_count 1
+>=20
+> CPU: 4 UID: 0 PID: 52 Comm: kworker/u24:1 Tainted: G      D         T =20
+> 6.15.0-rc1-next-20250409+ #3009 PREEMPT=20
+> f6bd3cc6346487744ae55f6115e728ff2bc7088b Tainted: [D]=3DDIE, [T]=3DRANDST=
+RUCT
+> Hardware name: TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2 (DT)
+> Workqueue: async async_run_entry_fn
+> pstate: 204000c9 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+> pc : regmap_mmio_read32le+0x1c/0x3c
+> lr : regmap_mmio_read+0x40/0x68
+> mmc0: new HS400 Enhanced strobe MMC card at address 0001
+> sp : ffff8000821e3860
+> mmcblk0: mmc0:0001 DG4016 14.7 GiB
+> x29: ffff8000821e3860 x28: ffff00001000c800 x27: ffff8000818679c0
+> mmcblk0boot0: mmc0:0001 DG4016 4.00 MiB
+> x26: ffff00001333fc10 x25: 0000000000000001 x24: 0000000000000000
+> x23: ffff000013895400 x22: ffff8000821e3934 x21: ffff8000821e3934
+> x20: ffff0000134672c0
+> mmcblk0boot1: mmc0:0001 DG4016 4.00 MiB
+>=20
+>  x19: 0000000000003010 x18: 0000000038868210
+>=20
+> x17: 3038387830207570 x16: 63203d3d20303030 x15: 3030313038387830
+> x14: 205d315b67657220
+> mmcblk0rpmb: mmc0:0001 DG4016 4.00 MiB, chardev (237:0)
+>=20
+>  x13: 6565727465636976 x12: 6564207369687420
+>=20
+> x11: 726f662064656465 x10: 656e207265766520 x9 : 7420726f66206465
+> x8 : 6465656e20726576 x7 : 205d303033353938 x6 : ffff000013371280
+> x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff8000809bf028
+> x2 : ffff8000809bfb0c x1 : 0000000000003010 x0 : ffff8000821bd010
+>=20
+> Call trace:
+>  regmap_mmio_read32le+0x1c/0x3c (P)
+>  regmap_mmio_read+0x40/0x68
+>  _regmap_bus_reg_read+0x58/0x9c
+>  _regmap_read+0x70/0x1c4
+>  _regmap_update_bits+0xe4/0x174
+>  regmap_update_bits_base+0x60/0x90
+>  imx95_pcie_core_reset+0x78/0xd0
+>  imx_pcie_assert_core_reset+0x38/0x50
+>  imx_pcie_host_init+0x68/0x4a0
+>  dw_pcie_host_init+0x16c/0x500
+>  imx_pcie_probe+0x2f4/0x71c
+>  platform_probe+0x64/0x100
+>  really_probe+0xc8/0x3bc
+>  __driver_probe_device+0x84/0x16c
+>  driver_probe_device+0x40/0x160
+>  __device_attach_driver+0xcc/0x1a0
+>  bus_for_each_drv+0x88/0xe4
+>  __device_attach_async_helper+0xac/0x108
+>  async_run_entry_fn+0x30/0x144
+>  process_one_work+0x14c/0x3e0
+>  worker_thread+0x2f0/0x3fc
+>  kthread+0x128/0x1ec
+>  ret_from_fork+0x10/0x20
+>=20
+> Code: aa0003f4 2a0103f3 f9400280 8b334000 (b9400000)
+> ---[ end trace 0000000000000000 ]---
+
+Is this series dependent on any other series/patches?
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
