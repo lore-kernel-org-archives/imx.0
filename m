@@ -1,55 +1,43 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CAD25DCFD
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 11:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1D62620DE
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 12:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744197248; cv=none; b=VBRJEPEPpczO6md73/YHVPkRqgFZsuz45AZbvMDMY/0gzuQs+S4ogo7yUPROrfNC20lT0TkrdOMhnVn5ZtDFIDGnJRRKypACpFKkUlkDWzsYl8mUw0gcLV8PQThFFKRqUw991P+lwkhlJQ9a1miM7OaXe8s9diutKj7I9hpsowk=
+	t=1744201928; cv=none; b=AdLW3ZS93CvpwliFWz1GJzEX3e23K5moNi1EkHaFn2eSLEx+bpDsuuQe6c1LGHU9O2bnL5BeLtn58YEY5xAv+tScQxQ4Wx+JCuEMdcpNL9ihFuQr4QdayEwYjf0KHMi685X6G01lDP3mLPmS9K6ayJJad2JUegtZJRJRRYiiYAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744197248; c=relaxed/simple;
-	bh=HX06AXwlwFb+zyiqr4dlDx5tRPTTjJS5hvDRJEZ1yTE=;
+	s=arc-20240116; t=1744201928; c=relaxed/simple;
+	bh=XOh91lN8AEqXFXIq3i+RvJ8nO5R+kWkUOOoTRfSQYXU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OWIksP2i24VYAGKCDXjDEyYJOdbjvyM4wlrYKQlTOMyrig46GOvhKQdxe18U2vvVMtQh4/q1ZwxmIHLj631CsbUl3Vmd5eHysnjBMDWJPtYbp4eP4vpaji58E5gjh881i/QNyXojRWwiAcFmPLSPsT9BjuFRrgp2pMtlekMZorw=
+	 Content-Type:Content-Disposition:In-Reply-To; b=HDnNmqcU8UTOZMK/a2pvRauWW9PU7sb9sieljoJX8nY48YmZ5NEHUNnvR9h7c3E9keWe3LEl+fYV6uAUGnpANjom3JFa0xJNLytTpsnCLLC8Vx/6ms8mSMl2IIkVGlmhn8m4Yg/kOiIN+aY8YnEu6jDQBfTRo/f1Csp2FtNa62g=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01B081595;
-	Wed,  9 Apr 2025 04:14:07 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C452915A1;
+	Wed,  9 Apr 2025 05:32:04 -0700 (PDT)
 Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 947573F694;
-	Wed,  9 Apr 2025 04:14:03 -0700 (PDT)
-Date: Wed, 9 Apr 2025 12:14:00 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AFEB33F59E;
+	Wed,  9 Apr 2025 05:32:01 -0700 (PDT)
+Date: Wed, 9 Apr 2025 13:31:58 +0100
 From: Sudeep Holla <sudeep.holla@arm.com>
 To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sudeep Holla <sudeep.holla@arm.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
- scmi cpufreq
-Message-ID: <20250409-incredible-attentive-scorpion-fa9def@sudeepholla>
-References: <DB9PR04MB84614FBF96E7BC0D125D97F688D62@DB9PR04MB8461.eurprd04.prod.outlook.com>
- <Z87UJdhiTWhssnbl@bogus>
- <Z87sGF_jHKau_FMe@bogus>
- <PAXPR04MB8459EA5C7898393E51C246AD88D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <PAXPR04MB8459A73179FFF0ED0C9A51E488D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <Z9AdICiyaCmzKh-N@bogus>
- <Z9FnZzBQuZ1j5k3I@bogus>
- <Z9Fv9JPdF5OWUHfk@bogus>
- <20250313052309.GA11131@nxa18884-linux>
- <20250409035029.GC27988@nxa18884-linux>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow
+ linux,code for protocol@81
+Message-ID: <20250409-heavenly-sceptical-ara-bceeb9@sudeepholla>
+References: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+ <2003940.PYKUYFuaPT@steina-w>
+ <20250409121829.GA11949@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,57 +46,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250409035029.GC27988@nxa18884-linux>
+In-Reply-To: <20250409121829.GA11949@nxa18884-linux>
 
-On Wed, Apr 09, 2025 at 11:50:29AM +0800, Peng Fan wrote:
-> Hi Sudeep, Cristian
+On Wed, Apr 09, 2025 at 08:18:29PM +0800, Peng Fan wrote:
+> + SCMI maintainer, Sudeep and Cristian
 > 
-> On Thu, Mar 13, 2025 at 01:23:27PM +0800, Peng Fan wrote:
-> >On Wed, Mar 12, 2025 at 11:28:52AM +0000, Sudeep Holla wrote:
-> >>On Wed, Mar 12, 2025 at 10:52:23AM +0000, Sudeep Holla wrote:
-> >>> On Tue, Mar 11, 2025 at 11:23:12AM +0000, Sudeep Holla wrote:
-> >>> > On Tue, Mar 11, 2025 at 11:12:45AM +0000, Peng Fan wrote:
-> >>> > >
-> >>> > > So it is clear that wrong fw_devlink is created, it is because scmi cpufreq device is
-> >>> > > created earlier and when device_add, the below logic makes the fwnode pointer points
-> >>> > > to scmi cpufreq device.
-> >>> > >         if (dev->fwnode && !dev->fwnode->dev) {
-> >>> > >                 dev->fwnode->dev = dev;
-> >>> > >                 fw_devlink_link_device(dev);
-> >>> > >         }
-> >>> > >
-> >>> >
-> >>> > Thanks, looks like simple way to reproduce the issue. I will give it a try.
-> >>> >
-> >>> 
-> >>> I could reproduce but none of my solution solved the problem completely
-> >>> or properly. And I don't like the DT proposal you came up with. I am
-> >>> not inclined to just drop this fwnode setting in the scmi devices and
-> >>> just use of_node.
-> >>>
-> >>
-> >>Sorry for the typo that changes the meaning: s/not/now
-> >>
-> >>I meant "I am now inclined ..", until we figure out a way to make this
-> >>work with devlinks properly.
+> On Wed, Apr 09, 2025 at 12:59:50PM +0200, Alexander Stein wrote:
+> >Hi,
 > >
-> >when you have time, please give a look at
-> >https://github.com/MrVan/linux/commit/b500c29cb7f6f32a38b1ed462e333db5a3e301e4
+> >Am Montag, 4. November 2024, 09:56:21 CEST schrieb Alexander Stein:
+> >> BBM protocol supports a single power button, supported by driver
+> >> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
+> >> using linux,code. Add a reference to this schema and add linux,code as a
+> >> supported property.
+> >> 
+> >> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > >
-> >The upper patch was to follow Cristian's and Dan's suggestion in V2[1] to use
-> >a flag SCMI_DEVICE_NO_FWNODE for scmi device.
-> >
-> >I could post out the upper patch as V3 if it basically looks no design flaw.
-> >I will drop the pinctrl patch in v3, considering we are first going
-> >to resolve the fw_devlink issue for cpufreq/devfreq.
-> >
-> >[1] https://lore.kernel.org/all/Z6SgFGb4Z88v783c@pluto/
+> >Is there any other feedback or things to do here?
 > 
-> Not sure you gave a look on this or not. I am thinking to bring this V3
-> out to mailing list later this week. Please raise if you have any concern.
+> I see Rob already gave R-b.
+> 
+> Not sure this should go through Shawn's or Sudeep's tree.
 > 
 
-Yes I had some thoughts. I will take a look and refresh my memories first.
+I am fine either way. Peng, just let me know if you want to pick this up.
 
 -- 
 Regards,
