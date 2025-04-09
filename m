@@ -1,701 +1,816 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2049.outbound.protection.outlook.com [40.107.20.49])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B256F18CBE1
-	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 14:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744208774; cv=fail; b=btc1IH7uDGss1F6YatXRKhJ86w5KabrUqxxHMpcZYLNF29u5Q29Meou87SfsA9C5lXGL4QtoSpzvc8bj48VPETlXl9fta/zBv6fv8vuLuGciCcs4pRyGgkqjPn1xnHPBpkFufuDti99X7UgKFUZznUHst8FdAQkrUHzBqq943z0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744208774; c=relaxed/simple;
-	bh=5t+gYuN8qvc2B8M3J4a+XUh56ryAUD03o3ncQv5AywQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AxMewPqhS/A6UotYFduIZGNH6ehX+7tz2irTrQKFgPMUa2Y/LwBiAw2Oma/oHUZsuOclkSC94bTopqNn3LnSk8b8xlsKu/5yzrBR822snLJ7dtMpmIc+dG12HpNCIiGfr+cGRUQFdw/weap0nwqVCTifRzcwNzgCXDX/BHqk3s0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mYD/iziE; arc=fail smtp.client-ip=40.107.20.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475293C30
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 14:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744208947; cv=none; b=dECQ1bI+2ilG6M64CcDsExLAYqqT5m5LkW9nLfkvdOsZnY+ngmMGdCu9aGJzGNBrmQOMqif/t3l+uVVxSw+EpMqNurGUx/xQpCwVcqZLyqeOCd7+yzRUK+OJQiaN9GE29AwpFsm05cJ95BvnYuxmx9mFdlrltbNWA6Hsd+rEMtc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744208947; c=relaxed/simple;
+	bh=DY5hr/N79Zj8jPciVFTpI3C4aMEkV1Ymqa3zJVQ4klA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hq3cPk8PqVj9ipkrJEaif7KSiMVBEL+WnmmkZN1JU98YgJMJFsKJ3FeQNYpwl3HsHyN7ZgUmGhtBK+dfOKXVkNJhdEDYDNBXtlmaeyNv65pzHeiHmjYTBr1hvu9JuDwSNXc6tChqe1T40Lp1WPkNjeI9VHs/bRVWkCc6M705EsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=BUOI5u4N; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mYD/iziE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cfPyWYlqJeF2+qJnAUI2noqh4I9XxIfg0rsAxAN+S/qwnC+2l/I5+cGWF4G7Z0HwD8D47m5wvW+ybyGCBrcmVboto/+DfyK4mgrYDyna4yaEN0lqsSrYWnI/SQ+23NhJmyMiZU43EDFpCcyoTVELXR/rYUfgxVx1ZwfjP+0KZzBWZAAqqygqRzKKMgRwlmtReFSXdcdR6wssw6x/3/0Q2IJRqY1kHlHqrDl6El0NIuMsVdWwvBHs+Ds1FrgjM0KQFlnK5q4bJZvunTdV5Szri4Oefc6uj1ZnXjqt24sxXzW7P9puhoJj5HS3mgrG1whcLNfGotYAe6znaAT7O8YtaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mpMcH3KcvJYYcwjk7sWpW/J74oxHOCVf4laqYgRSSPE=;
- b=v4Ouab3KdagzzXRLPMYU3KOYL0DLMoNVLJtQsMc/Ju6a/eC12t9JEhugY0uZtQPdz9eMR4CiQR9ooeJw9z8IdKGYbcMi5fVndPryHnOhwJUq2gQXckl1Huropho/bVm2JL9aL1Dezuy4MtslkswM54piC9oR4R8REMY5SYQEXFIX/7J5KHAb/vOQYrBwyEV0aCEMkI8+CatBzSIUzQqM/BC6hcF6szvqTSaxrLS7rSska7rFP+C0Y8rz6Ub3m+prQcr4CYTMmweiG1RwMAXE2QEE4TtwwlutabKv1ZQq+/1uFoZs22Py0SVVjGrtCVzK/L0/uHzsd6VonLKUl0fbEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mpMcH3KcvJYYcwjk7sWpW/J74oxHOCVf4laqYgRSSPE=;
- b=mYD/iziEV3gfoNMHtHcevmp1xp3fIaFP9xp/UjaGHqBgmh74dA4f6GaTb1VWgUTn5r/HGsijGJ0XnKVwE4hQmG4HkAR0yK50cwC+KUCSW5Wjbc+huws5ZgK5ttscNfrFHhNQr9PCjFGoNa0exIfW6wJzOn+RDtbRfvLbq9lnOhqEc3YPBrBb5uijAWBIaTe7VxvBktxeEnF43ZuMDg2YmF4PJLk0nAsUMZ0/V3JbRSiFHD8nPLxpVTIN1lVTWKi/rklCa13xnHXc/alD9+aGw4TjWmSfjEGkRz3qYTaLo/LmTujIuo8oh6UgNSbF/q1UTlKZVQR1c79coLY6gMawvw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by PA4PR04MB9566.eurprd04.prod.outlook.com (2603:10a6:102:26c::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.33; Wed, 9 Apr
- 2025 14:26:06 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%4]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
- 14:26:06 +0000
-Message-ID: <9f982548-c5e3-45ed-963a-afb5256acf31@oss.nxp.com>
-Date: Wed, 9 Apr 2025 17:26:01 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/4] rtc: s32g: add NXP S32G2/S32G3 SoC support
-To: Enric Balletbo i Serra <eballetb@redhat.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- NXP S32 Linux <s32@nxp.com>, imx@lists.linux.dev,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Eric Chanudet <echanude@redhat.com>, Bogdan Hamciuc
- <bogdan.hamciuc@nxp.com>, Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
- Frank Li <Frank.Li@nxp.com>
-References: <20250403103346.3064895-1-ciprianmarian.costea@oss.nxp.com>
- <20250403103346.3064895-3-ciprianmarian.costea@oss.nxp.com>
- <CALE0LRs3VA9kLy4QSEOBCixZbptW4B4DVjZqbN=GDoONHq2oeA@mail.gmail.com>
-Content-Language: en-US
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-In-Reply-To: <CALE0LRs3VA9kLy4QSEOBCixZbptW4B4DVjZqbN=GDoONHq2oeA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4PR09CA0008.eurprd09.prod.outlook.com
- (2603:10a6:20b:5e0::18) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="BUOI5u4N"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DEDD102EB98D;
+	Wed,  9 Apr 2025 16:28:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744208941; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=LsvOV40rHLHEO52M3MfyuhChr2LG3bnILrU9gU+hjVA=;
+	b=BUOI5u4Nz4QAKa223h8Jo/UxWNb/XU4MK3bBv4zNnM1ZsW16drAvqFRxZZXxVIw3k2LGku
+	jdhi6ipcYTDKmLwcDCBEEEE/6F7jywUB3ghtGFrw6Y0SB7izpIWgSnprVlD9anRVcoiGvW
+	Xd8KqfVpmiQgNg0ScUk99aiEIMcGwIkJBBoyBToO/wgnBjrIb/vbYBzUXLYVodWVohp2e9
+	Aa/yXU8+5Pan4ZLYcJsi7X9V1h2/0qL3yv7KgZ+pTd2KfkEX5kjslUIg0qz+/tae+fJQfn
+	BjW9F1f9KWA3ohtSlfnn1+3D3PwSSuDA/zePSt0t4LwuI2nYOvflDGr90vuMnA==
+Date: Wed, 9 Apr 2025 16:28:54 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Simon Horman <horms@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>
+Subject: Re: [net-next v4 4/5] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250409162854.069abe88@wsk>
+In-Reply-To: <20250408151447.GX395307@horms.kernel.org>
+References: <20250407145157.3626463-1-lukma@denx.de>
+	<20250407145157.3626463-5-lukma@denx.de>
+	<20250408151447.GX395307@horms.kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|PA4PR04MB9566:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7816ee67-e8ea-4841-fe6c-08dd77727689
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SkczS2UxdXluUVlQcWRtT1ZFQlAvcFNhU0JYN3lHWU9QVFV2dGlpNHh6c25M?=
- =?utf-8?B?UVZQMjduK0x0MEZVZlpjc3BpU0JsYys0UFdaeXU3dU8wZzhWL05PclRBM0dw?=
- =?utf-8?B?dmd2Y1dzbzZjVGJKQVlnbkFhd1pvNTNxRllvai9KL3kwbzUyZVpoVTF0U0dH?=
- =?utf-8?B?elZQSWxqUFNFSyt3eGg3WUF5eWwyb25EenVHRDF2R3NLNVhXM1ZGYjI1RW0x?=
- =?utf-8?B?U0h2VnNZTFFpTHNNcGtZVHREM3FGVWpneG1sczArYnF5d0RoK1czNkZYUmFs?=
- =?utf-8?B?NVpIZUR3WU9mVE9Bd2tYMlIycWtmdE9tcTFxTGhuME9sSkhKRE5XaW44dDMx?=
- =?utf-8?B?YkdFcFNhOGxIUE8rMk9saXNnMWxFa24reVlkd0VPakhpVkxvUVB6czlpZWd4?=
- =?utf-8?B?bmh2S2ZBMXlFdE9PeThVcnViTmo0SnYwN0JFcWI5RXpsdlgvK3MrczZ3M21P?=
- =?utf-8?B?UTBwb3VvV1F2aEgvdHU3TFdsbFc5SUhoeFc2TU5Kbk1WS1pSUkVtdnR3ckpy?=
- =?utf-8?B?Q2hJYXRhRkxpUUtxVEZGVjNVZUFWQkJJMVFTdXdRZ0VJcTlOK2NRc0pZQS9j?=
- =?utf-8?B?amozLzdTMjRGZVNYeXpXb1o2RW1PYStCSEwyNFlRekJiWUJGcVo4bjY2Qmtn?=
- =?utf-8?B?N1FlRjV1WUxsWTdDMDVZeFprS0w4S3U3VWM0NUZIdzBNU3hVTzlzbWx5WC9B?=
- =?utf-8?B?MXlWdHZBRXU1VGNVckRaLzVUSjI3YStKNFcwMC9FTkV5OTZ0bE5icjVTS1VU?=
- =?utf-8?B?QUVocU4vS2NsZW1hMHZyanB5MU1YeDdObHcrMkRucnY0Wkl2dTVYVUtHUXNv?=
- =?utf-8?B?cnFqMWgwNldhczdZbDlYR2JCTWIzbktPdm13MXZEcFEzM1diNzY0YTNITUNj?=
- =?utf-8?B?VjNVUWhGU2N0VkJmaWlBRG0wNnFsVFJ6OW95ZXFXNnFaUGpFelFudGM3UVF3?=
- =?utf-8?B?eVB1OTczeVNxTVVzbklocTRaT21vcHpjVmkvNDZhVDRHK1FkRDFmSlZvdTZO?=
- =?utf-8?B?MThCbmFkcVp1VEhsRXRJNWxwTS8vcUlWWWhIMm1LOEllNEEyZElSR1VTS1o4?=
- =?utf-8?B?S0tyTzNxTTQ0SEt0MUYxK3UxdEZOdk9GbDdJQTEyYm9Pc2RLVmhOK3BTSU9C?=
- =?utf-8?B?RGFpT3VaRmFiN2c3ekgzRmxiUWdCbzd4TWNDa3FMWlZXWTI1MENUdEJtYy84?=
- =?utf-8?B?aHV1aDFWYks1RHdHcjNKalQvZDI1R053K1A2QnM1dGJ1aUtQZy9zZ3IwWCtJ?=
- =?utf-8?B?QUhObkVwakFHL1hGVkU1TnpZSXVDSkExNml0QmdNU3Q3TURhQXlVSGc4YUhF?=
- =?utf-8?B?aUpEakFjUnR4V1dtSVM5VVQ2WHozSlBPN1RmSUNWWE80eWZnakJSZG9paFJ5?=
- =?utf-8?B?dmsxamNMYTNjTDExeDZwMTZMSVZlMjk3RUhvUmdZY0pLa3FNSytqTExtbE54?=
- =?utf-8?B?eXlaOWp3NVJPTWgwbVp5dXhTUDVSQStxS2FOSWozbW9Pb0dTLzcwcXBDYUgv?=
- =?utf-8?B?RG5KbEI4RE1NQzZvQlJiWGhNckw3d0UxL2Y3L1JDZ09tbDA1K3RqUExkVFZU?=
- =?utf-8?B?cHphbHpJVkJETDY5SHdQWUtBZGkrQjBvRnRJM09IRjd3bkhlREYwcW5TbUxX?=
- =?utf-8?B?U2twZTM1MmhpU1kxT2pPVnR4UHFsT1A5ZFBoQ1FGOVhVNDlFdTMzMXRYcEp1?=
- =?utf-8?B?ZFZvK2p4MXpDbDdMbWltK3ZpUU1aVWFJaVFzb1pISThqYUF5QnI2YjJUb2Vr?=
- =?utf-8?B?SWtyVE5YeVVYNXVsbWY0MDIvQ1AwK0tDSDBPQ2JscHVBVTE2QWZWYlZhajhG?=
- =?utf-8?B?bzRrcktjRVAvcHREbGtxZlo4dTlNU3JtMVh0OHZVNml0R3o2eSthUFVreXJj?=
- =?utf-8?Q?ABX3gxnpMoWXD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?clZoZkpQYUorUWVUMGlBQk92VGRMQlBSdEtINEp4YXc4RHdrbmU3ZVdZSjRh?=
- =?utf-8?B?TUEvOFhDcW5LK1g1bVA4N2l4ZmMvMTJIdlpEaEhQTkJLRWoxR09uRXgrdllp?=
- =?utf-8?B?ZWo4WEsyMGdMaFRFVEtwdlpWbU5BNldJVVpxMzI3SkNIMkhRYnRTNG0reFZD?=
- =?utf-8?B?U25LYm5tQlUrYUYxTWZ0Y3VlQXFQR0p0aUh1K1YzYXlxVjNnMFFRRzNUVjlO?=
- =?utf-8?B?U3FWUFR3aU5renpyM2hGMU1VcGJRK3JRMTBrd3lkUkxWeUYyRlZVSEhTdEhp?=
- =?utf-8?B?eTRjTWhHMXA1VGRmZkFLSm1uWno5NVQzK3JNN0tBREZPQURGTkZSbnBLa1ln?=
- =?utf-8?B?Y1NZekgwNnVQQnNtY0xtYzAzenoyTTMrNmtiSkoxcnFOSjRKSndoUDdwT2hk?=
- =?utf-8?B?dzN4OUZleEcyNEpLVFA5TzJZQjNmdGwwR1dOVDJjdmdNQldna0RwMXErM25S?=
- =?utf-8?B?S2ptNGtnOCs3RVloYjhjelJlTlU0Q3hGWTJibXNZNkhKL3pOOWpLaW81ZnYz?=
- =?utf-8?B?Sk85TW8yakxHS1J5bVV0UnlUa1c3QXU4MHp2b3ZydUFIb2dmV09reEFQbXpE?=
- =?utf-8?B?UDE3YkxVMTFEWTYraWlWWEJ4QjNXSVd2N0p1bHRWQ3lFQURSSUdIOVlqV3Zm?=
- =?utf-8?B?K2hBTmQyeUJjSUplRkd4NUtvV3p1M1FxZ3VmWnlndU94WTVycEVnNWpWU2FY?=
- =?utf-8?B?ZUduc1gzWDZVL3FtdmVnUkhHU3RiY2VvMTVJQ2c2aFpKckdJOStONFRwWFVW?=
- =?utf-8?B?SitzZXprTG9WeVk3SzhVSEM4OGhGdHdUbGYzemZINGFkN1BiclNLSm9kajht?=
- =?utf-8?B?N0FTTFdOZm5mOVRyS25KbFdSMmh5MHA3dXdmOVdURW9aTDQ5NTE0Um95L3RV?=
- =?utf-8?B?Y1lPUVZSRzlWZG0vY1NxcXBIb3ZJOVhEQkg4dEVGWTdQaDZnenozc1Y3RENG?=
- =?utf-8?B?UnlBQm0xUHFPY1ZuRjNIUDVvNHlrekhYRU8zcFBDUHRrR3A3anJ1VTVYcWx5?=
- =?utf-8?B?N1BNOFMwc3hKcndkV2RueFBNSkJFay9lWmV1TmNLd2JCRzVFdXNqNzlYWkdW?=
- =?utf-8?B?eE1rRUEvc0VvenVCZkJJM1o4TE16YVg3ZHcreDZWcHRPMG5PT0dSUVh6VXVU?=
- =?utf-8?B?ckdVbzgyMndhTDIzaG9tTExVRGNjT09IZktlK1FtOENKTmJFTnR5R1ZweVFJ?=
- =?utf-8?B?MzVuSE9lZmQzSWFVYjlMc0N4THN1dERWUDhveUtpc0dqSEE0bEdzVWZwdWtt?=
- =?utf-8?B?Si9NbjBUSXJ5UGk1UHNZSWVoWUlWbytRQWZpTkc4UnZCeHhTeFRNb21CY3hm?=
- =?utf-8?B?SmdoaGp3djZYbkVsTGpIUUl0Z3ZSaGRxM0ZLS1l0a0x0TmpqK1RVVUxWMk9M?=
- =?utf-8?B?SnVqN3BIbFppR0JXcUIvajBuNG1qRTB1VHh1d1RHdTgrNWR2RUM3VStxdFd0?=
- =?utf-8?B?ZzJpVDg3NEVEUklVYkhQOGV0T2swbTRzaWJ4ekQ2ZG52Y3gwYXkwUTQvWjFp?=
- =?utf-8?B?eVZMYXUyQWtpdTd6REtNbWY2RlBzMFZ3QjV2RndYdkJjTkJZWmJvR1g2SEwr?=
- =?utf-8?B?WEhhdXEvVDhDeXdUWndJbDJldXFMWUp2cEtCa2dMNngzK3dNQkp1ZVpJV2NP?=
- =?utf-8?B?RHZGdVhJc1NMN1BqRE52VFltUDJDVW4zZmVtd1FkZks5anlOOUZDdkIxUi8v?=
- =?utf-8?B?S3loM3VSNkJMc3d6bEFKa2hYeC9WWHd5NnAyMVFmT1VTb29XZXY3UUFlalZX?=
- =?utf-8?B?U1RXMnY3MDI5RTBvSjR3MUowTTIreE9XK01VNVBjR3I3WlJCOXFqQ003Mzdn?=
- =?utf-8?B?Z3R2d0dlY3VXMzVlOHdtcHBKSnc4c0V1dkI0SGE0WmlQdUpka0JwV1E2dlNa?=
- =?utf-8?B?K2hNRjV1aWlYdFIrRVdVdU9xS2Q4WlhlTGZLSkgybExXNExRVXZHRVMxUVha?=
- =?utf-8?B?VStVUDFHTFdNVHJzTTVtQzU3YzJuQkNoQ0padEFnank1Sk5kOHFqYzJiWHN3?=
- =?utf-8?B?NHZBY3hiTENsRzNSelNmcCtncGNlMU5LcUJoWXM1ZVBydzVNVERYRFdLTXZv?=
- =?utf-8?B?UHV0ZTliR2Z6dUlkUTB5UGFsa0lyZTh2R1YxTzdyYkVobTNQMHhQZUI1UzZF?=
- =?utf-8?B?YzZCYitmQUE5WkhsOGMrTnZxSUs1VVZkSGdmd1VRS2xXdE1tbmtrb09Iam81?=
- =?utf-8?B?OGc9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7816ee67-e8ea-4841-fe6c-08dd77727689
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 14:26:05.8879
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UrOzRa4V/OGYZnq8QH63kSzL67LOMja9/GmTdxJkHgEn3UD2xbtT97ilDKzJq5o1V13QjVcHGTYlmmWnxSFlxuwzNG2Iutg5rc0ADKDE+uI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9566
+Content-Type: multipart/signed; boundary="Sig_/dNduXPY5UY6jbpqt=Tj7eFz";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 4/9/2025 5:14 PM, Enric Balletbo i Serra wrote:
-> Hi Ciprian,
-> 
-> Many thanks for your patch.
-> 
-> On Thu, Apr 3, 2025 at 12:34 PM Ciprian Costea
-> <ciprianmarian.costea@oss.nxp.com> wrote:
->>
->> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->>
->> Add a RTC driver for NXP S32G2/S32G3 SoCs.
->>
->> RTC tracks clock time during system suspend. It can be a wakeup source
->> for the S32G2/S32G3 SoC based boards.
->>
->> The RTC module from S32G2/S32G3 is not battery-powered and it is not kept
->> alive during system reset.
->>
->> Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
->> Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
->> Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
->> Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
->> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> I went through the code and it looks good to me, so:
-> 
-> However, I did a basic rtctest selftest in my S32G-VNP-RDB3 board,
-> and some tests failed (it shows a small deviation), any idea what
-> could be wrong?
-> 
-> This is the output of the test:
-> 
-> # ./rtctest
-> TAP version 13
-> 1..8
-> # Starting 8 tests from 1 test cases.
-> #  RUN           rtc.date_read ...
-> # rtctest.c:59:date_read:Current RTC date/time is 28/01/2025 00:17:49.
-> #            OK  rtc.date_read
-> ok 1 rtc.date_read
-> #  RUN           rtc.date_read_loop ...
-> # rtctest.c:124:date_read_loop:Continuously reading RTC time for 30s
-> (with 11ms breaks after every read).
-> # rtctest.c:151:date_read_loop:Performed 2638 RTC time reads.
-> #            OK  rtc.date_read_loop
-> ok 2 rtc.date_read_loop
-> #  RUN           rtc.uie_read ...
-> #            OK  rtc.uie_read
-> ok 3 rtc.uie_read
-> #  RUN           rtc.uie_select ...
-> #            OK  rtc.uie_select
-> ok 4 rtc.uie_select
-> #  RUN           rtc.alarm_alm_set ...
-> # rtctest.c:262:alarm_alm_set:Alarm time now set to 00:18:31.
-> # rtctest.c:282:alarm_alm_set:data: 1a0
-> #            OK  rtc.alarm_alm_set
-> ok 5 rtc.alarm_alm_set
-> #  RUN           rtc.alarm_wkalm_set ...
-> # rtctest.c:334:alarm_wkalm_set:Alarm time now set to 28/01/2025 00:18:34.
-> # rtctest.c:353:alarm_wkalm_set:Expected new (1738023515) == secs (1738023514)
-> # alarm_wkalm_set: Test terminated by assertion
-> #          FAIL  rtc.alarm_wkalm_set
-> not ok 6 rtc.alarm_wkalm_set
-> #  RUN           rtc.alarm_alm_set_minute ...
-> # rtctest.c:394:alarm_alm_set_minute:Alarm time now set to 00:19:00.
-> # rtctest.c:414:alarm_alm_set_minute:data: 1a0
-> # rtctest.c:420:alarm_alm_set_minute:Expected new (1738023541) == secs
-> (1738023540)
-> # alarm_alm_set_minute: Test terminated by assertion
-> #          FAIL  rtc.alarm_alm_set_minute
-> not ok 7 rtc.alarm_alm_set_minute
-> #  RUN           rtc.alarm_wkalm_set_minute ...
-> # rtctest.c:464:alarm_wkalm_set_minute:Alarm time now set to
-> 28/01/2025 00:20:00.
-> # rtctest.c:483:alarm_wkalm_set_minute:Expected new (1738023601) ==
-> secs (1738023600)
-> # alarm_wkalm_set_minute: Test terminated by assertion
-> #          FAIL  rtc.alarm_wkalm_set_minute
-> not ok 8 rtc.alarm_wkalm_set_minute
-> # FAILED: 5 / 8 tests passed.
-> # Totals: pass:5 fail:3 xfail:0 xpass:0 skip:0 error:0
-> 
-> Best regards,
->    Enric
-> 
+--Sig_/dNduXPY5UY6jbpqt=Tj7eFz
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hello Enric,
+Hi Simon,
 
-In order to obtain a better resolution/precision you could try to only 
-use DIV512 hardware divisor instead of both DIV32 and DIV512.
+> On Mon, Apr 07, 2025 at 04:51:56PM +0200, Lukasz Majewski wrote:
+> > This patch series provides support for More Than IP L2 switch
+> > embedded in the imx287 SoC.
+> >=20
+> > This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
+> > which can be used for offloading the network traffic.
+> >=20
+> > It can be used interchangeably with current FEC driver - to be more
+> > specific: one can use either of it, depending on the requirements.
+> >=20
+> > The biggest difference is the usage of DMA - when FEC is used,
+> > separate DMAs are available for each ENET-MAC block.
+> > However, with switch enabled - only the DMA0 is used to
+> > send/receive data to/form switch (and then switch sends them to
+> > respecitive ports).
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de> =20
+>=20
+> Hi Lukasz,
+>=20
+> This is not a complete review, but I did spend a bit of time
+> looking over this and have provided some feedback on
+> things I noticed below.
+>=20
 
-Regards,
-Ciprian
+Thanks for your feedback.
 
->> ---
->>   drivers/rtc/Kconfig    |  11 ++
->>   drivers/rtc/Makefile   |   1 +
->>   drivers/rtc/rtc-s32g.c | 385 +++++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 397 insertions(+)
->>   create mode 100644 drivers/rtc/rtc-s32g.c
->>
->> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
->> index 0bbbf778ecfa..510dc2db745d 100644
->> --- a/drivers/rtc/Kconfig
->> +++ b/drivers/rtc/Kconfig
->> @@ -2103,4 +2103,15 @@ config RTC_DRV_AMLOGIC_A4
->>            This driver can also be built as a module. If so, the module
->>            will be called "rtc-amlogic-a4".
->>
->> +config RTC_DRV_S32G
->> +       tristate "RTC driver for S32G2/S32G3 SoCs"
->> +       depends on ARCH_S32 || COMPILE_TEST
->> +       depends on COMMON_CLK
->> +       help
->> +         Say yes to enable RTC driver for platforms based on the
->> +         S32G2/S32G3 SoC family.
->> +
->> +         This RTC module can be used as a wakeup source.
->> +         Please note that it is not battery-powered.
->> +
->>   endif # RTC_CLASS
->> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
->> index 489b4ab07068..e4b616ecd5ce 100644
->> --- a/drivers/rtc/Makefile
->> +++ b/drivers/rtc/Makefile
->> @@ -161,6 +161,7 @@ obj-$(CONFIG_RTC_DRV_RX8111)        += rtc-rx8111.o
->>   obj-$(CONFIG_RTC_DRV_RX8581)   += rtc-rx8581.o
->>   obj-$(CONFIG_RTC_DRV_RZN1)     += rtc-rzn1.o
->>   obj-$(CONFIG_RTC_DRV_RENESAS_RTCA3)    += rtc-renesas-rtca3.o
->> +obj-$(CONFIG_RTC_DRV_S32G)     += rtc-s32g.o
->>   obj-$(CONFIG_RTC_DRV_S35390A)  += rtc-s35390a.o
->>   obj-$(CONFIG_RTC_DRV_S3C)      += rtc-s3c.o
->>   obj-$(CONFIG_RTC_DRV_S5M)      += rtc-s5m.o
->> diff --git a/drivers/rtc/rtc-s32g.c b/drivers/rtc/rtc-s32g.c
->> new file mode 100644
->> index 000000000000..3a0818e972eb
->> --- /dev/null
->> +++ b/drivers/rtc/rtc-s32g.c
->> @@ -0,0 +1,385 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * Copyright 2025 NXP
->> + */
->> +
->> +#include <linux/bitfield.h>
->> +#include <linux/clk.h>
->> +#include <linux/iopoll.h>
->> +#include <linux/of_irq.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/rtc.h>
->> +
->> +#define RTCC_OFFSET    0x4ul
->> +#define RTCS_OFFSET    0x8ul
->> +#define APIVAL_OFFSET  0x10ul
->> +
->> +/* RTCC fields */
->> +#define RTCC_CNTEN                             BIT(31)
->> +#define RTCC_APIEN                             BIT(15)
->> +#define RTCC_APIIE                             BIT(14)
->> +#define RTCC_CLKSEL_MASK               GENMASK(13, 12)
->> +#define RTCC_DIV512EN                  BIT(11)
->> +#define RTCC_DIV32EN                   BIT(10)
->> +
->> +/* RTCS fields */
->> +#define RTCS_INV_API   BIT(17)
->> +#define RTCS_APIF              BIT(13)
->> +
->> +#define APIVAL_MAX_VAL         GENMASK(31, 0)
->> +#define RTC_SYNCH_TIMEOUT      (100 * USEC_PER_MSEC)
->> +
->> +/*
->> + * S32G2 and S32G3 SoCs have RTC clock source1 reserved and
->> + * should not be used.
->> + */
->> +#define RTC_CLK_SRC1_RESERVED          BIT(1)
->> +
->> +/*
->> + * S32G RTC module has a 512 value and a 32 value hardware frequency
->> + * divisors (DIV512 and DIV32) which could be used to achieve higher
->> + * counter ranges by lowering the RTC frequency.
->> + */
->> +enum {
->> +       DIV1 = 1,
->> +       DIV32 = 32,
->> +       DIV512 = 512,
->> +       DIV512_32 = 16384
->> +};
->> +
->> +static const char *const rtc_clk_src[] = {
->> +       "source0",
->> +       "source1",
->> +       "source2",
->> +       "source3"
->> +};
->> +
->> +struct rtc_priv {
->> +       struct rtc_device *rdev;
->> +       void __iomem *rtc_base;
->> +       struct clk *ipg;
->> +       struct clk *clk_src;
->> +       const struct rtc_soc_data *rtc_data;
->> +       u64 rtc_hz;
->> +       time64_t sleep_sec;
->> +       int irq;
->> +       u32 clk_src_idx;
->> +};
->> +
->> +struct rtc_soc_data {
->> +       u32 clk_div;
->> +       u32 reserved_clk_mask;
->> +};
->> +
->> +static const struct rtc_soc_data rtc_s32g2_data = {
->> +       .clk_div = DIV512_32,
->> +       .reserved_clk_mask = RTC_CLK_SRC1_RESERVED,
->> +};
->> +
->> +static irqreturn_t s32g_rtc_handler(int irq, void *dev)
->> +{
->> +       struct rtc_priv *priv = platform_get_drvdata(dev);
->> +       u32 status;
->> +
->> +       status = readl(priv->rtc_base + RTCS_OFFSET);
->> +
->> +       if (status & RTCS_APIF) {
->> +               writel(0x0, priv->rtc_base + APIVAL_OFFSET);
->> +               writel(status | RTCS_APIF, priv->rtc_base + RTCS_OFFSET);
->> +       }
->> +
->> +       rtc_update_irq(priv->rdev, 1, RTC_IRQF | RTC_AF);
->> +
->> +       return IRQ_HANDLED;
->> +}
->> +
->> +/*
->> + * The function is not really getting time from the RTC since the S32G RTC
->> + * has several limitations. Thus, to setup alarm use system time.
->> + */
->> +static int s32g_rtc_read_time(struct device *dev,
->> +                             struct rtc_time *tm)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +       time64_t sec;
->> +
->> +       if (check_add_overflow(ktime_get_real_seconds(),
->> +                              priv->sleep_sec, &sec))
->> +               return -ERANGE;
->> +
->> +       rtc_time64_to_tm(sec, tm);
->> +
->> +       return 0;
->> +}
->> +
->> +static int s32g_rtc_read_alarm(struct device *dev, struct rtc_wkalrm *alrm)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +       u32 rtcc, rtcs;
->> +
->> +       rtcc = readl(priv->rtc_base + RTCC_OFFSET);
->> +       rtcs = readl(priv->rtc_base + RTCS_OFFSET);
->> +
->> +       alrm->enabled = rtcc & RTCC_APIIE;
->> +       if (alrm->enabled)
->> +               alrm->pending = !(rtcs & RTCS_APIF);
->> +
->> +       return 0;
->> +}
->> +
->> +static int s32g_rtc_alarm_irq_enable(struct device *dev, unsigned int enabled)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +       u32 rtcc;
->> +
->> +       /* RTC API functionality is used both for triggering interrupts
->> +        * and as a wakeup event. Hence it should always be enabled.
->> +        */
->> +       rtcc = readl(priv->rtc_base + RTCC_OFFSET);
->> +       rtcc |= RTCC_APIEN | RTCC_APIIE;
->> +       writel(rtcc, priv->rtc_base + RTCC_OFFSET);
->> +
->> +       return 0;
->> +}
->> +
->> +static int s32g_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alrm)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +       unsigned long long cycles;
->> +       long long t_offset;
->> +       time64_t alrm_time;
->> +       u32 rtcs;
->> +       int ret;
->> +
->> +       alrm_time = rtc_tm_to_time64(&alrm->time);
->> +       t_offset = alrm_time - ktime_get_real_seconds() - priv->sleep_sec;
->> +       if (t_offset < 0)
->> +               return -ERANGE;
->> +
->> +       cycles = t_offset * priv->rtc_hz;
->> +       if (cycles > APIVAL_MAX_VAL)
->> +               return -ERANGE;
->> +
->> +       /* APIVAL could have been reset from the IRQ handler.
->> +        * Hence, we wait in case there is a synchronization process.
->> +        */
->> +       ret = read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
->> +                               0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
->> +       if (ret)
->> +               return ret;
->> +
->> +       writel(cycles, priv->rtc_base + APIVAL_OFFSET);
->> +
->> +       return read_poll_timeout(readl, rtcs, !(rtcs & RTCS_INV_API),
->> +                               0, RTC_SYNCH_TIMEOUT, false, priv->rtc_base + RTCS_OFFSET);
->> +}
->> +
->> +/*
->> + * Disable the 32-bit free running counter.
->> + * This allows Clock Source and Divisors selection
->> + * to be performed without causing synchronization issues.
->> + */
->> +static void s32g_rtc_disable(struct rtc_priv *priv)
->> +{
->> +       u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
->> +
->> +       rtcc &= ~RTCC_CNTEN;
->> +       writel(rtcc, priv->rtc_base + RTCC_OFFSET);
->> +}
->> +
->> +static void s32g_rtc_enable(struct rtc_priv *priv)
->> +{
->> +       u32 rtcc = readl(priv->rtc_base + RTCC_OFFSET);
->> +
->> +       rtcc |= RTCC_CNTEN;
->> +       writel(rtcc, priv->rtc_base + RTCC_OFFSET);
->> +}
->> +
->> +static int rtc_clk_src_setup(struct rtc_priv *priv)
->> +{
->> +       u32 rtcc;
->> +
->> +       rtcc = FIELD_PREP(RTCC_CLKSEL_MASK, priv->clk_src_idx);
->> +
->> +       switch (priv->rtc_data->clk_div) {
->> +       case DIV512_32:
->> +               rtcc |= RTCC_DIV512EN;
->> +               rtcc |= RTCC_DIV32EN;
->> +               break;
->> +       case DIV512:
->> +               rtcc |= RTCC_DIV512EN;
->> +               break;
->> +       case DIV32:
->> +               rtcc |= RTCC_DIV32EN;
->> +               break;
->> +       case DIV1:
->> +               break;
->> +       default:
->> +               return -EINVAL;
->> +       }
->> +
->> +       rtcc |= RTCC_APIEN | RTCC_APIIE;
->> +       /*
->> +        * Make sure the CNTEN is 0 before we configure
->> +        * the clock source and dividers.
->> +        */
->> +       s32g_rtc_disable(priv);
->> +       writel(rtcc, priv->rtc_base + RTCC_OFFSET);
->> +       s32g_rtc_enable(priv);
->> +
->> +       return 0;
->> +}
->> +
->> +static const struct rtc_class_ops rtc_ops = {
->> +       .read_time = s32g_rtc_read_time,
->> +       .read_alarm = s32g_rtc_read_alarm,
->> +       .set_alarm = s32g_rtc_set_alarm,
->> +       .alarm_irq_enable = s32g_rtc_alarm_irq_enable,
->> +};
->> +
->> +static int rtc_clk_dts_setup(struct rtc_priv *priv,
->> +                            struct device *dev)
->> +{
->> +       u32 i;
->> +
->> +       priv->ipg = devm_clk_get_enabled(dev, "ipg");
->> +       if (IS_ERR(priv->ipg))
->> +               return dev_err_probe(dev, PTR_ERR(priv->ipg),
->> +                               "Failed to get 'ipg' clock\n");
->> +
->> +       for (i = 0; i < ARRAY_SIZE(rtc_clk_src); i++) {
->> +               if (priv->rtc_data->reserved_clk_mask & BIT(i))
->> +                       return -EOPNOTSUPP;
->> +
->> +               priv->clk_src = devm_clk_get_enabled(dev, rtc_clk_src[i]);
->> +               if (!IS_ERR(priv->clk_src)) {
->> +                       priv->clk_src_idx = i;
->> +                       break;
->> +               }
->> +       }
->> +
->> +       if (IS_ERR(priv->clk_src))
->> +               return dev_err_probe(dev, PTR_ERR(priv->clk_src),
->> +                               "Failed to get rtc module clock source\n");
->> +
->> +       return 0;
->> +}
->> +
->> +static int s32g_rtc_probe(struct platform_device *pdev)
->> +{
->> +       struct device *dev = &pdev->dev;
->> +       struct rtc_priv *priv;
->> +       unsigned long rtc_hz;
->> +       int ret;
->> +
->> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->> +       if (!priv)
->> +               return -ENOMEM;
->> +
->> +       priv->rtc_data = of_device_get_match_data(dev);
->> +       if (!priv->rtc_data)
->> +               return -ENODEV;
->> +
->> +       priv->rtc_base = devm_platform_ioremap_resource(pdev, 0);
->> +       if (IS_ERR(priv->rtc_base))
->> +               return PTR_ERR(priv->rtc_base);
->> +
->> +       device_init_wakeup(dev, true);
->> +
->> +       ret = rtc_clk_dts_setup(priv, dev);
->> +       if (ret)
->> +               return ret;
->> +
->> +       priv->rdev = devm_rtc_allocate_device(dev);
->> +       if (IS_ERR(priv->rdev))
->> +               return PTR_ERR(priv->rdev);
->> +
->> +       ret = rtc_clk_src_setup(priv);
->> +       if (ret)
->> +               return ret;
->> +
->> +       priv->irq = platform_get_irq(pdev, 0);
->> +       if (priv->irq < 0) {
->> +               ret = priv->irq;
->> +               goto disable_rtc;
->> +       }
->> +
->> +       rtc_hz = clk_get_rate(priv->clk_src);
->> +       if (!rtc_hz) {
->> +               dev_err(dev, "Failed to get RTC frequency\n");
->> +               ret = -EINVAL;
->> +               goto disable_rtc;
->> +       }
->> +
->> +       priv->rtc_hz = DIV_ROUND_UP(rtc_hz, priv->rtc_data->clk_div);
->> +
->> +       platform_set_drvdata(pdev, priv);
->> +       priv->rdev->ops = &rtc_ops;
->> +
->> +       ret = devm_request_irq(dev, priv->irq,
->> +                              s32g_rtc_handler, 0, dev_name(dev), pdev);
->> +       if (ret) {
->> +               dev_err(dev, "Request interrupt %d failed, error: %d\n",
->> +                       priv->irq, ret);
->> +               goto disable_rtc;
->> +       }
->> +
->> +       ret = devm_rtc_register_device(priv->rdev);
->> +       if (ret)
->> +               goto disable_rtc;
->> +
->> +       return 0;
->> +
->> +disable_rtc:
->> +       s32g_rtc_disable(priv);
->> +       return ret;
->> +}
->> +
->> +static int s32g_rtc_suspend(struct device *dev)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +       u32 apival = readl(priv->rtc_base + APIVAL_OFFSET);
->> +
->> +       if (check_add_overflow(priv->sleep_sec, div64_u64(apival, priv->rtc_hz),
->> +                              &priv->sleep_sec)) {
->> +               dev_warn(dev, "Overflow on sleep cycles occurred. Resetting to 0.\n");
->> +               priv->sleep_sec = 0;
->> +       }
->> +
->> +       return 0;
->> +}
->> +
->> +static int s32g_rtc_resume(struct device *dev)
->> +{
->> +       struct rtc_priv *priv = dev_get_drvdata(dev);
->> +
->> +       /* The transition from resume to run is a reset event.
->> +        * This leads to the RTC registers being reset after resume from
->> +        * suspend. It is uncommon, but this behaviour has been observed
->> +        * on S32G RTC after issuing a Suspend to RAM operation.
->> +        * Thus, reconfigure RTC registers on the resume path.
->> +        */
->> +       return rtc_clk_src_setup(priv);
->> +}
->> +
->> +static const struct of_device_id rtc_dt_ids[] = {
->> +       { .compatible = "nxp,s32g2-rtc", .data = &rtc_s32g2_data },
->> +       { /* sentinel */ },
->> +};
->> +
->> +static DEFINE_SIMPLE_DEV_PM_OPS(s32g_rtc_pm_ops,
->> +                        s32g_rtc_suspend, s32g_rtc_resume);
->> +
->> +static struct platform_driver s32g_rtc_driver = {
->> +       .driver = {
->> +               .name = "s32g-rtc",
->> +               .pm = pm_sleep_ptr(&s32g_rtc_pm_ops),
->> +               .of_match_table = rtc_dt_ids,
->> +       },
->> +       .probe = s32g_rtc_probe,
->> +};
->> +module_platform_driver(s32g_rtc_driver);
->> +
->> +MODULE_AUTHOR("NXP");
->> +MODULE_DESCRIPTION("NXP RTC driver for S32G2/S32G3");
->> +MODULE_LICENSE("GPL");
->> --
->> 2.45.2
->>
-> 
+> ...
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> > b/drivers/net/ethernet/freescale/mtipsw/Kconfig new file mode 100644
+> > index 000000000000..450ff734a321
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> > @@ -0,0 +1,13 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only
+> > +config FEC_MTIP_L2SW
+> > +	tristate "MoreThanIP L2 switch support to FEC driver"
+> > +	depends on OF
+> > +	depends on NET_SWITCHDEV
+> > +	depends on BRIDGE
+> > +	depends on ARCH_MXS || ARCH_MXC || COMPILE_TEST
+> > +	help
+> > +	  This enables support for the MoreThan IP L2 switch on
+> > i.MX
+> > +	  SoCs (e.g. iMX28, vf610). It offloads bridging to this
+> > IP block's
+> > +	  hardware and allows switch management with standard
+> > Linux tools.
+> > +	  This switch driver can be used interchangeable with the
+> > already
+> > +	  available FEC driver, depending on the use case's
+> > requirments. =20
+>=20
+> nit: requirements
+>=20
+> Flagged by checkpatch.pl --codespell
+>=20
 
+Ok.
+
+> ...
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c =20
+>=20
+> ...
+>=20
+> > +static void mtip_enet_init(struct switch_enet_private *fep, int
+> > port) +{
+> > +	void __iomem *enet_addr =3D fep->enet_addr;
+> > +	u32 mii_speed, holdtime, tmp; =20
+>=20
+> I think it would be best to avoid variable names like tmp which have
+> little meaning. Although still rather generic, perhaps reg would be
+> more appropriate. Or better still something relating to the name the
+> register, say rcr.
+
+Ok, I will use reg/rcr instead of tmp.
+
+>=20
+> > +
+> > +	if (port =3D=3D 2)
+> > +		enet_addr +=3D MCF_ESW_ENET_PORT_OFFSET;
+> > +
+> > +	tmp =3D MCF_FEC_RCR_PROM | MCF_FEC_RCR_MII_MODE |
+> > +		MCF_FEC_RCR_MAX_FL(1522);
+> > +
+> > +	if (fep->phy_interface[port - 1]  =3D=3D
+> > PHY_INTERFACE_MODE_RMII)
+> > +		tmp |=3D MCF_FEC_RCR_RMII_MODE;
+> > +
+> > +	writel(tmp, enet_addr + MCF_FEC_RCR);
+> > +
+> > +	/* TCR */
+> > +	writel(MCF_FEC_TCR_FDEN, enet_addr + MCF_FEC_TCR);
+> > +
+> > +	/* ECR */
+> > +	writel(MCF_FEC_ECR_ETHER_EN, enet_addr + MCF_FEC_ECR);
+> > +
+> > +	/* Set MII speed to 2.5 MHz
+> > +	 */
+> > +	mii_speed =3D DIV_ROUND_UP(clk_get_rate(fep->clk_ipg),
+> > 5000000);
+> > +	mii_speed--;
+> > +
+> > +	/* The i.MX28 and i.MX6 types have another filed in the
+> > MSCR (aka
+> > +	 * MII_SPEED) register that defines the MDIO output hold
+> > time. Earlier
+> > +	 * versions are RAZ there, so just ignore the difference
+> > and write the
+> > +	 * register always.
+> > +	 * The minimal hold time according to IEE802.3 (clause 22)
+> > is 10 ns.
+> > +	 * HOLDTIME + 1 is the number of clk cycles the fec is
+> > holding the
+> > +	 * output.
+> > +	 * The HOLDTIME bitfield takes values between 0 and 7
+> > (inclusive).
+> > +	 * Given that ceil(clkrate / 5000000) <=3D 64, the
+> > calculation for
+> > +	 * holdtime cannot result in a value greater than 3.
+> > +	 */
+> > +	holdtime =3D DIV_ROUND_UP(clk_get_rate(fep->clk_ipg),
+> > 100000000) - 1; +
+> > +	fep->phy_speed =3D mii_speed << 1 | holdtime << 8;
+> > +
+> > +	writel(fep->phy_speed, enet_addr + MCF_FEC_MSCR);
+> > +}
+> > +
+> > +static int mtip_setup_mac(struct net_device *dev)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned char *iap, tmpaddr[ETH_ALEN]; =20
+>=20
+> Maybe mac_addr instead of tmpaddr.
+
+Ok.
+
+>=20
+> > +
+> > +	/* Use MAC address from DTS */
+> > +	iap =3D &fep->mac[priv->portnum - 1][0];
+> > +
+> > +	/* Use MAC address set by bootloader */
+> > +	if (!is_valid_ether_addr(iap)) {
+> > +		*((unsigned long *)&tmpaddr[0]) =3D
+> > +			be32_to_cpu(readl(fep->enet_addr +
+> > MCF_FEC_PALR));
+> > +		*((unsigned short *)&tmpaddr[4]) =3D
+> > +			be16_to_cpu(readl(fep->enet_addr +
+> > +					  MCF_FEC_PAUR) >> 16); =20
+>=20
+> * Above, and elsewhere in this patch unsigned long seems to be
+>   used for 32 bit values. But unsigned long can be 64 bits wide.
+>=20
+
+As fair as I know - from the outset - this driver had some implicit
+assumption to be used on 32 bit SoCs (imx28, vf610).
+
+As a result the unsigned long would be 32 bits.
+
+On the other hand - the documentation clearly says that registers in
+this IP block implementation are 32 bit wide.
+
+>   I would suggest using u32, u16, and friends throughout this
+>   patch where an integer has a specific number of bits.
+>=20
+
+I think that values, which directly readl()/writel() values from the
+registers shall be u32. However, more generic code could use int/
+unsigned int though.
+
+> * readl returns a 32-bit value in host byte order.
+>   But the above assumes it returns a big endian value.
+>=20
+>   This does not seem correct.
+>=20
+
+Please consult similar implementation from fec_main.c:
+https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/net/ethernet/free=
+scale/fec_main.c#L2044
+
+I would use the same approach as in the above link.
+
+> * The point immediately above aside, the assignment of
+>   host byte order values to the byte-array tmpaddr
+>   seems to assume an endianness (little endian?).
+>=20
+>   It should work on either endian.
+>=20
+
+I guess that implementation from above link is the correct one.
+
+> > +		iap =3D &tmpaddr[0];
+> > +	}
+> > +
+> > +	/* Use random MAC address */
+> > +	if (!is_valid_ether_addr(iap)) {
+> > +		eth_hw_addr_random(dev);
+> > +		dev_info(&fep->pdev->dev, "Using random MAC
+> > address: %pM\n",
+> > +			 dev->dev_addr);
+> > +		iap =3D (unsigned char *)dev->dev_addr;
+> > +	}
+> > +
+> > +	/* Adjust MAC if using macaddr (and increment if needed) */
+> > +	eth_hw_addr_gen(dev, iap, priv->portnum - 1);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +/**
+> > + * crc8_calc - calculate CRC for MAC storage
+> > + *
+> > + * @pmacaddress: A 6-byte array with the MAC address. The first
+> > byte is
+> > + *               the first byte transmitted.
+> > + *
+> > + * Calculate Galois Field Arithmetic CRC for Polynom x^8+x^2+x+1.
+> > + * It omits the final shift in of 8 zeroes a "normal" CRC would do
+> > + * (getting the remainder).
+> > + *
+> > + *  Examples (hexadecimal values):<br>
+> > + *   10-11-12-13-14-15  =3D> CRC=3D0xc2
+> > + *   10-11-cc-dd-ee-00  =3D> CRC=3D0xe6
+> > + *
+> > + * Return: The 8-bit CRC in bits 7:0
+> > + */
+> > +static int crc8_calc(unsigned char *pmacaddress) =20
+>=20
+> Can lib/crc8.c:crc8() be used here?
+
+This seems a bit problematic, as the above code is taken from the
+vendor driver.
+
+The documentation states - that the hash uses CRC-8 with following
+polynomial:
+
+x^8 + x^2 + x + 1 (0x07), which shall correspond to available in Linux:
+
+static unsigned char mac1[] =3D {0x10, 0x11, 0x12, 0x13, 0x14, 0x15};
+crc8_populate_msb(mtipl2sw_crc8_table, 0x07);
+crc8(mtipl2sw_crc8_table, mac1, sizeof(mac1), CRC8_INIT_VALUE);
+
+However, those results don't match (either with 0xFF and 0x00 as the
+initial value).
+
+I've also searched the Internet to compare different CRC
+implementations used in field:
+https://crccalc.com/?crc=3D0x10 0x11 0x12 0x13 0x14
+0x15&method=3DCRC-8&datatype=3Dhex&outtype=3Dhex
+
+they also doesn't match results from this code.
+
+Hence, the question - which implementation is right?
+
+Vendor developer could have known a bit more than we do, so I would
+prefer to keep this code as is - especially that switch internally may
+use this crc8 calculation to find proper "slot/index" in the atable.
+
+>=20
+> > +{
+> > +	int byt; /* byte index */
+> > +	int bit; /* bit index */
+> > +	int crc =3D 0x12;
+> > +	int inval;
+> > +
+> > +	for (byt =3D 0; byt < 6; byt++) {
+> > +		inval =3D (((int)pmacaddress[byt]) & 0xff);
+> > +		/* shift bit 0 to bit 8 so all our bits
+> > +		 * travel through bit 8
+> > +		 * (simplifies below calc)
+> > +		 */
+> > +		inval <<=3D 8;
+> > +
+> > +		for (bit =3D 0; bit < 8; bit++) {
+> > +			/* next input bit comes into d7 after
+> > shift */
+> > +			crc |=3D inval & 0x100;
+> > +			if (crc & 0x01)
+> > +				/* before shift  */
+> > +				crc ^=3D 0x1c0;
+> > +
+> > +			crc >>=3D 1;
+> > +			inval >>=3D 1;
+> > +		}
+> > +	}
+> > +	/* upper bits are clean as we shifted in zeroes! */
+> > +	return crc;
+> > +}
+> > +
+> > +static void mtip_read_atable(struct switch_enet_private *fep, int
+> > index,
+> > +			     unsigned long *read_lo, unsigned long
+> > *read_hi) +{
+> > +	unsigned long atable_base =3D (unsigned long)fep->hwentry;
+> > +
+> > +	*read_lo =3D readl((const void *)atable_base + (index << 3));
+> > +	*read_hi =3D readl((const void *)atable_base + (index << 3)
+> > + 4); +} =20
+>=20
+> It is unclear why hwentry, which is a pointer, is being cast to an
+> integer and then back to a pointer. I see pointer arithmetic, but
+> that can operate on pointers just as well as integers, without making
+> assumptions about how wide pointers are with respect to longs.
+>=20
+> And in any case, can't the types be used to directly access the
+> offsets needed like this?
+>=20
+> 	atable =3D fep->hwentry.mtip_table64b_entry;
+>=20
+> 	*read_lo =3D readl(&atable[index].lo);
+> 	*read_hi =3D readl(&atable[index].hi);
+>=20
+
+The code as is seems to be OK.
+
+The (atable) memory structure is as follows:
+
+1. You can store 2048 MAC addresses (2x32 bit each).
+
+2. Memory from point 1 is addressed as follows:
+	2.1 -> from MAC address the CRC8 is calculated (0x00 - 0xFF).
+	This is the 'index' in the original code.
+	2.2 -> as it may happen that for two different MAC address the
+	same CRC8 is calculated (i.e. 'index' is the same), each
+	'index' can store 8 entries for MAC addresses (and it is
+	searched in a linear way if needed).
+
+IMHO, the index above shall be multiplied by 8.
+
+> Also, and perhaps more importantly, readl expects to be passed
+> a pointer to __iomem. But the appropriate annotations seem
+> to be missing (forcing them with a cast is not advisable here IMHO).
+>=20
+
+I think that the code below:
+unsigned long atable_base =3D (unsigned long)fep->hwentry;
+
+could be replaced with
+void __iomem *atable_base =3D fep->hwentry;
+
+and the (index << 3) with (index * ATABLE_ENTRY_PER_SLOT)
+
+> Please do run sparse over your patches to iron out __iomem
+> (and endian) issues.
+>=20
+
+Ok, I will run the make C=3D1 when compiling.
+
+> > +
+> > +static void mtip_write_atable(struct switch_enet_private *fep, int
+> > index,
+> > +			      unsigned long write_lo, unsigned
+> > long write_hi) +{
+> > +	unsigned long atable_base =3D (unsigned long)fep->hwentry;
+> > +
+> > +	writel(write_lo, (void *)atable_base + (index << 3));
+> > +	writel(write_hi, (void *)atable_base + (index << 3) + 4); =20
+>=20
+> Likewise here.
+
+Please see the above comment.
+
+>=20
+> > +} =20
+>=20
+> ...
+>=20
+> > +/* Clear complete MAC Look Up Table */
+> > +void mtip_clear_atable(struct switch_enet_private *fep)
+> > +{
+> > +	int index;
+> > +
+> > +	for (index =3D 0; index < 2048; index++)
+> > +		mtip_write_atable(fep, index, 0, 0);
+> > +}
+> > +
+> > +/**
+> > + * mtip_update_atable_static - Update switch static address table
+> > + *
+> > + * @mac_addr: Pointer to the array containing MAC address to
+> > + *            be put as static entry
+> > + * @port:     Port bitmask numbers to be added in static entry,
+> > + *            valid values are 1-7
+> > + * @priority: The priority for the static entry in table =20
+>=20
+> @fep should also be documented here.
+>=20
+
+OK.
+
+> Flagged by ./scripts/kernel-doc -none
+> and W=3D1 builds.
+>=20
+> > + *
+> > + * Updates MAC address lookup table with a static entry.
+> > + *
+> > + * Searches if the MAC address is already there in the block and
+> > replaces
+> > + * the older entry with the new one. If MAC address is not there
+> > then puts
+> > + * a new entry in the first empty slot available in the block.
+> > + *
+> > + * Return: 0 for a successful update else -ENOSPC when no slot
+> > available
+> > + */
+> > +static int mtip_update_atable_static(unsigned char *mac_addr,
+> > unsigned int port,
+> > +				     unsigned int priority,
+> > +				     struct switch_enet_private
+> > *fep) =20
+>=20
+> ...
+>=20
+> > +/* During a receive, the cur_rx points to the current incoming
+> > buffer.
+> > + * When we update through the ring, if the next incoming buffer has
+> > + * not been given to the system, we just set the empty indicator,
+> > + * effectively tossing the packet.
+> > + */
+> > +static int mtip_switch_rx(struct net_device *dev, int budget, int
+> > *port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct switch_t *fecp =3D fep->hwp;
+> > +	unsigned short status, pkt_len;
+> > +	struct net_device *pndev;
+> > +	u8 *data, rx_port =3D 0xFF;
+> > +	struct ethhdr *eth_hdr;
+> > +	int pkt_received =3D 0;
+> > +	struct sk_buff *skb;
+> > +	unsigned long flags;
+> > +	struct cbd_t *bdp;
+> > +
+> > +	spin_lock_irqsave(&fep->hw_lock, flags);
+> > +
+> > +	/* First, grab all of the stats for the incoming packet.
+> > +	 * These get messed up if we get called due to a busy
+> > condition.
+> > +	 */
+> > +	bdp =3D fep->cur_rx;
+> > +
+> > +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) { =20
+>=20
+> ...
+>=20
+> > +	} /* while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY))
+> > */ +
+> > +	writel(bdp, &fep->cur_rx); =20
+>=20
+> I'm confused buy this.
+>=20
+> At the top of this function, bdp is assigned using:
+>=20
+> 	bdp =3D fep->cur_rx;
+>=20
+> But here writel() is used to assign bdp to &fep->cur_rx.
+> Which assumes that bdp is a 32-bit little endian value.
+> But it is a pointer in host byte order which may be wide than 32-bits.
+>=20
+> On x86_64 int is 32-bits while pointers are 64 bits.
+
+I will cross compile with make W=3D1 and C=3D1 to find all problematic
+places.
+
+> W=3D1 builds with gcc 14.2.0 flag this problem like this:
+>=20
+>=20
+> .../mtipl2sw.c:1108:9: error: incompatible pointer to integer
+> conversion passing 'struct cbd_t *' to parameter of type 'unsigned
+> int' [-Wint-conversion] 1108 |         writel(bdp, &fep->cur_rx); |
+>              ^~~
+>=20
+>=20
+> This also assumes that &fep->cur_rx is a pointer to __iomem,
+> but that does not seem to be the case.
+
+The writel(bdp, &fep->cur_rx); shall be just replaced with fep->cur_rx
+=3D bdp.
+
+Thanks for spotting.
+
+>=20
+> > +	spin_unlock_irqrestore(&fep->hw_lock, flags);
+> > +
+> > +	return pkt_received;
+> > +} =20
+>=20
+> ...
+>=20
+> > +static int __init mtip_switch_dma_init(struct switch_enet_private
+> > *fep) +{
+> > +	struct cbd_t *bdp, *cbd_base;
+> > +	int ret, i;
+> > +
+> > +	/* Check mask of the streaming and coherent API */
+> > +	ret =3D dma_set_mask_and_coherent(&fep->pdev->dev,
+> > DMA_BIT_MASK(32));
+> > +	if (ret < 0) {
+> > +		dev_err(&fep->pdev->dev, "No suitable DMA
+> > available\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	/* Allocate memory for buffer descriptors */
+> > +	cbd_base =3D dma_alloc_coherent(&fep->pdev->dev, PAGE_SIZE,
+> > &fep->bd_dma,
+> > +				      GFP_KERNEL);
+> > +	if (!cbd_base)
+> > +		return -ENOMEM;
+> > +
+> > +	/* Set receive and transmit descriptor base */
+> > +	fep->rx_bd_base =3D cbd_base;
+> > +	fep->tx_bd_base =3D cbd_base + RX_RING_SIZE;
+> > +
+> > +	/* Initialize the receive buffer descriptors */
+> > +	bdp =3D fep->rx_bd_base;
+> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
+> > +		bdp->cbd_sc =3D 0;
+> > +		bdp++;
+> > +	}
+> > +
+> > +	/* Set the last buffer to wrap */
+> > +	bdp--;
+> > +	bdp->cbd_sc |=3D BD_SC_WRAP;
+> > +
+> > +	/* ...and the same for transmmit */ =20
+>=20
+> nit: transmit
+
+Ok.
+
+>=20
+> > +	bdp =3D fep->tx_bd_base;
+> > +	for (i =3D 0; i < TX_RING_SIZE; i++) {
+> > +		/* Initialize the BD for every fragment in the
+> > page */
+> > +		bdp->cbd_sc =3D 0;
+> > +		bdp->cbd_bufaddr =3D 0;
+> > +		bdp++;
+> > +	}
+> > +
+> > +	/* Set the last buffer to wrap */
+> > +	bdp--;
+> > +	bdp->cbd_sc |=3D BD_SC_WRAP;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void mtip_ndev_cleanup(struct switch_enet_private *fep)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i =3D 0; i < SWITCH_EPORT_NUMBER; i++) {
+> > +		if (fep->ndev[i]) {
+> > +			unregister_netdev(fep->ndev[i]);
+> > +			free_netdev(fep->ndev[i]);
+> > +		}
+> > +	}
+> > +} =20
+>=20
+> ...
+>=20
+> > +static const struct of_device_id mtipl2_of_match[] =3D {
+> > +	{ .compatible =3D "nxp,imx28-mtip-switch",
+> > +	  .data =3D &mtip_imx28_l2switch_info},
+> > +	{ /* sentinel */ }
+> > +} =20
+>=20
+> There should be a trailing ';' on the line above.
+>=20
+
++1
+
+> ...
+>=20
+> > +struct  addr_table64b_entry { =20
+>=20
+> One space after struct is enough.
+>=20
+> > +	unsigned int lo;  /* lower 32 bits */
+> > +	unsigned int hi;  /* upper 32 bits */
+> > +};
+> > +
+> > +struct  mtip_addr_table_t { =20
+>=20
+> I think you can drop the '_t' from the name of this struct.
+> We know it is a type :)
+
+Ok.
+
+>=20
+> > +	struct addr_table64b_entry  mtip_table64b_entry[2048]; =20
+>=20
+> One space is enough after addr_table64b_entry.
+> And in general, unless the aim is to align field names
+> (not here because there is only one field :)
+>=20
+> > +};
+> > +
+> > +#define MCF_ESW_LOOKUP_MEM_OFFSET      0x4000
+> > +#define MCF_ESW_ENET_PORT_OFFSET      0x4000
+> > +#define ENET_SWI_PHYS_ADDR_OFFSET	0x8000 =20
+>=20
+> Ditto.
+>=20
+
++1
+
+> ...
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c =20
+>=20
+> > new file mode 100644
+> > index 000000000000..0b76a60858a5
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+> > @@ -0,0 +1,122 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + *  L2 switch Controller driver for MTIP block - bridge network
+> > interface
+> > + *
+> > + *  Copyright (C) 2025 DENX Software Engineering GmbH
+> > + *  Lukasz Majewski <lukma@denx.de>
+> > + */
+> > +
+> > +#include <linux/netdevice.h>
+> > +#include <linux/etherdevice.h>
+> > +#include <linux/platform_device.h>
+> > +
+> > +#include "mtipl2sw.h" =20
+>=20
+> Blank line here please.
+>=20
+
+Ok.
+
+> > +static int mtip_ndev_port_link(struct net_device *ndev,
+> > +			       struct net_device *br_ndev,
+> > +			       struct netlink_ext_ack *extack)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(ndev),
+> > *other_priv;
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct net_device *other_ndev;
+> > +
+> > +	/* Check if one port of MTIP switch is already bridged */
+> > +	if (fep->br_members && !fep->br_offload) {
+> > +		/* Get the second bridge ndev */
+> > +		other_ndev =3D fep->ndev[fep->br_members - 1];
+> > +		other_priv =3D netdev_priv(other_ndev);
+> > +		if (other_priv->master_dev !=3D br_ndev) {
+> > +			NL_SET_ERR_MSG_MOD(extack,
+> > +					   "L2 offloading only
+> > possible for the same bridge!");
+> > +			return notifier_from_errno(-EOPNOTSUPP);
+> > +		}
+> > +
+> > +		fep->br_offload =3D 1;
+> > +		mtip_switch_dis_port_separation(fep);
+> > +		mtip_clear_atable(fep);
+> > +	}
+> > +
+> > +	if (!priv->master_dev)
+> > +		priv->master_dev =3D br_ndev;
+> > +
+> > +	fep->br_members |=3D BIT(priv->portnum - 1);
+> > +
+> > +	dev_dbg(&ndev->dev,
+> > +		"%s: ndev: %s br: %s fep: 0x%x members: 0x%x
+> > offload: %d\n",
+> > +		__func__, ndev->name,  br_ndev->name, (unsigned
+> > int)fep, =20
+>=20
+> Perhaps it would be best to use %p as the format specifier for fep
+> and not cast it.
+>=20
+> On x86_64 int is 32-bits while pointers are 64 bits.
+> W=3D1 builds with gcc 14.2.0 flag this problem like this:
+>=20
+> .../mtipl2sw_br.c:45:55: warning: cast from pointer to integer of
+> different size [-Wpointer-to-int-cast] 45 |                 __func__,
+> ndev->name,  br_ndev->name, (unsigned int)fep, |
+>                                  ^
+
+Ok.
+
+>=20
+> > +		fep->br_members, fep->br_offload);
+> > +
+> > +	return NOTIFY_DONE;
+> > +}
+> > +
+> > +static void mtip_netdevice_port_unlink(struct net_device *ndev)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(ndev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +
+> > +	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n",
+> > __func__,
+> > +		ndev->name, fep->br_members);
+> > +
+> > +	fep->br_members &=3D ~BIT(priv->portnum - 1);
+> > +	priv->master_dev =3D NULL;
+> > +
+> > +	if (!fep->br_members) {
+> > +		fep->br_offload =3D 0;
+> > +		mtip_switch_en_port_separation(fep);
+> > +		mtip_clear_atable(fep);
+> > +	}
+> > +} =20
+>=20
+> ...
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/dNduXPY5UY6jbpqt=Tj7eFz
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf2hCYACgkQAR8vZIA0
+zr2eWggAnGaPnum/oDc9V7qV5DGHw6FRQcrvaw74UOyG0zMT9ozngRyzM0MDhXRa
+4ax8CFkyfUp7XmffyYlhE1S7iSec4hSCf2CFb+yTfKKO2hKBrU7DYLYyN7AMy8gK
+EI9PE6n2k4pJS9XpU9aN5LOWCVgy33jSrwDKZBUtOAaMN9iomoFsFUOk1ooc99Q9
+g3Su044eov6gxiKibN8mtv5S9imrPIBUdLuNASbejZG4ChXv4sQLjiWpoMSP9RSE
+EZGzKqVSXtUo02Qm8ZZtnjLcp+FufjfbEbfdwq/aPWZj5lZvnFuOt4lKflaj4YOT
+Qafg2fTOqthKpwSsPn5uhqsaHnJU0w==
+=R/iR
+-----END PGP SIGNATURE-----
+
+--Sig_/dNduXPY5UY6jbpqt=Tj7eFz--
