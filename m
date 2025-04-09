@@ -1,111 +1,196 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C0526F475;
-	Wed,  9 Apr 2025 15:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135031C1F0C
+	for <imx@lists.linux.dev>; Wed,  9 Apr 2025 16:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744211053; cv=none; b=G7pqSl4qf0ktcTp7bQenkhWXwL8Azk583hpf51iIHuD+jFCUVhLRHSLNxf6rufYB5wxsV8dXRHT1Pp10QkQnWNL7svucaO4ryzvcc5bQezSkXlYJMOiq7DVxdgTVNdPELQO0t0/iypSJEiEa9orNZgPjwhqhjjNCczUh/Z7Jjh0=
+	t=1744214540; cv=none; b=mlaGiH7ncxxitwKFL8eJS3Qs+NBR7mply1li1g7auFiblV1XAu4KLHqht1rCaq9fp71BFucz5VkAJXQ6wa3ODoSdyD5vzlikVX0AWvksTmARo+ci6WPtKvpITUEFEqgiFJQYGH1qNxzJtkRqYcVTF4RRbpWZ4EAIZoIwRaBOzIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744211053; c=relaxed/simple;
-	bh=VPw47VFikKf8fTolInwOS7M/6m1lsw75MF8AshQmubI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DLAi5NvwImkGZFwf1+UFOfdzlvndREMJQeshi7Oe0FgtxlzmidXjT3edRI8cIq5+589lHFoUHxvQ4WtiBbindclhD4s5V0oP8wtQ3tdrT6450utLsfsXqmxz5+MSIkGIcyLuw5zxXwOXgwm3R7yibFrZ53JrWvyDEQdACB0jCXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EDb9t9ug; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744214540; c=relaxed/simple;
+	bh=bWjKZWGcLrX2LMShH+VAwIZzXlyUx/AVkhZt7QnY6P0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uJ0+0GOEON5dWFX3nCGTDHqhv25CTPzi8mD969TwkfnQpL2MTz6q5GKKoBltqqmKuQbu+3mJoR12eRbrvvuEtwCv7ML2NzGzhzFXemgvRa6r4koAgSDlQD1VVYh6fpm3exi0mHJwOo1W04JRUVTcjxXDsCqdd6mokafPf6q2CWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=uh1XqO9m; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EDb9t9ug"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Lhtq1pefqTUVYOAkJzIOHqWiVsfsbUWsRek0JSSJoaM=; b=EDb9t9ug3VAuhsP2v5wV6dRtb9
-	iS7Wnq8zgIJ18meTszE5HNwkmgb/DJWG2rzHMpIlo2YO2DjOhaxa1Afh/x+VSB6uO5Dtr7QEl5l6y
-	CTgeIulElJ7lZgvn0u/oTdY7ogOeKQ9FUbXWyrwgM8EocLlJ/LQT6+wOPKMDD0UK5Eds=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u2Wxt-008Ymd-Uk; Wed, 09 Apr 2025 17:03:45 +0200
-Date: Wed, 9 Apr 2025 17:03:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc: Herve Codina <herve.codina@bootlin.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
- support SFPs
-Message-ID: <c6257afe-36bb-46d8-8c22-da3b85028105@lunn.ch>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
- <20250407145546.270683-16-herve.codina@bootlin.com>
- <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
- <20250408162603.02d6c3a1@bootlin.com>
- <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
- <c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch>
- <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
- <b1b33000-4c10-43cd-bcf4-d24fc73902b1@lunn.ch>
- <20250409161444.6158d388@windsurf>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="uh1XqO9m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1744214503; x=1744819303; i=wahrenst@gmx.net;
+	bh=GT+e0rgk5at2BiS7exBI3n9s8/eUZISH0DmawBVE9Ck=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=uh1XqO9m44OLywMw5J3jhDWcs77Cz+bVQp+9fgKs3nfx5wbZmNJez6sm+T/kVtkS
+	 alfyOcM/+iU91cSeARDCZGgzPUc+bVs+lsW32UzaNYxE0zMGh9b4h7tvMzmclJLtf
+	 haSAQlZhWqAdWsE91HBq5CZpRLjMeLgKyiuEQjRf5/o8USje8g/l5Rg4SE/ue1JBC
+	 +UfhFwR92XIAB4MJwQdxWIhpn/DEKKX2JjQWfwsEkI+DXwGaSVj6YuFOw/qIXutpS
+	 LLQvA4h3kI1L2ra0dRdMhQ704HyFhrKk5EWP57DnbIuRrWCQUwqrxuDyhRlBBeJsk
+	 okdS0xNFonCPsLoUMA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQe5u-1texFJ1NfK-00Nnw3; Wed, 09
+ Apr 2025 18:01:43 +0200
+Message-ID: <c67ad9fa-6255-48e8-9537-2fceb0510127@gmx.net>
+Date: Wed, 9 Apr 2025 18:01:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250409161444.6158d388@windsurf>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v4 5/5] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW
+ to support MTIP L2 switch
+To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250407145157.3626463-1-lukma@denx.de>
+ <20250407145157.3626463-6-lukma@denx.de>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250407145157.3626463-6-lukma@denx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:C+u//MOKrD6OdwvSME77qybiBXe8adc+njD77MBHM1ou1SB80g9
+ CfCohUvsktjxjtntt5js9Ty3COdHeULgaRnhBHHLgQIAwUJwW5jpBMHhH/y28PpuTcVa0Xt
+ NUZzHDi8osc+iFVGUZEnfhgcpRZmvQO63hb/o9UYD2DifW+ODJqnrPlxGgcKLL5f4D8l72r
+ DnIvoB9kQQrjxQQ6QPh0A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:h0HaSYSRWiA=;9+RUTCpsfpjtjY9+/fAxrUKZlov
+ en9y0HFgHTqcg/tTomRJXXnKDodyPsrawVBHjmREAT+vi9nezDT1o3dXhmnjyrPzCGbiAYqO9
+ m5aTfBilljd+4GP8Fd0eiBknFpE/RW2JUKOr7PDqsfZO39RqdMTugoZMcb+KwBN678RNijbUz
+ ZadVP+Pagi9G3ek4w6BJ0sJBpNsinoPp9gQXJd9D1E6py+KrLqQ1DCiQBrAGzA2csvJKNocLy
+ 2JMgJrGWuEvii3JW/QsZFeyA5tUaOzSr88pHzmb7ppaRdfCnIV14yl4eQInAiz2WoDxkhQJTH
+ s1gpWGw0nJPKlNmO96ZOHI6s6UqiITzy++DGlf90aTN83+rW3b8i91D+ZemFvMZSYX5pNIfrD
+ l8E5FngLmD/fJ8ZUAgzSN6HEip1IrKv5kjgKjck9bmkl2JAdS+vc0pfmAbpKzY5riUNv156BV
+ s8hWUkxFU6hYV+uNK0TcG4akL3K9J/w/XEjWxg44kCZtnvbNCcu8cXY5TA1S/OWtbpr9ph5AP
+ SGzz37iNu9PFdnOj6Rxg1tuEwqw0nVe3Hy162pyMiyA+NcEcIwo/0OPRN+iwyLKqjwH8WsgRA
+ NRpX6GSN8kW004v22qYLKQmCCltpdN/qSkl+4ZNnTAlixCrnM6kXtyUV9IaVmGRCh/MM8bFgc
+ mmdzQz54c6SjBRkFpn4CYW3k2Phw6eqw+VR+9x+8TMRuudOHlE9uf2W+gT6kFv3xMre/HhfQc
+ I8/n44itpdaTDiH6SUOGux/r2p3oGL1UVHesvkgZ3YIsO74hU4v/w15PAYJEXOHdZffIsBhnt
+ QwjNy7Sst1rMF5e4IwhjH3jQn2JDApo+6FebR8YvrAwocR3e6UNgbHJ4No1rin7af0mjDbB3K
+ 6rlODNmQoHCA7fVsqR+gHAUkrBKn/PnPTgfqONjwJPyKnVKK73VUPAdDL3MGcT4wYbH2VRk+j
+ J0g1VFdQYwYWj+3gXragNVb8UPO9sVbb/JhMC7lldzzNmeKdPazCtQRqdJiKWlwcJwQBjj5t2
+ kHMaXhvqHWkFKxidP1pWXy8xaTgWgBq4iDy4+fsjslurKS1+ImyhEd3WjKeks49/R8rbfjHfx
+ 4vdDSHAFYmkbmVXMFlqPYoSq5QPRADXqca+YtIk9s4Ji8KM2fj2ORaO6XwG/DbZrZTPhdZs3C
+ +83/UadyftJ02TTSh67jc2cDyhcXfJVQv4tOpefzok3wJ4/J+NbqwIY5/aeGRyrbV9FjJCGzy
+ DBTnUeC7Ax/ObUIJxQKeUXFFl0A0RaYDlyRw+sV0iIel4IRQXpFic/v/JrOS72KTUF0MbuIkG
+ 7z6szCO/Vdawq8BcPZKS3BigX3DEyDNeEFxkT4wyDMXe9/vas9OF0m/C2wPoqgQwuBJhzivvS
+ Rhsm6/vWInQLqWIZhomLfqsRSqrWqaVeYkwCLvzqv7y/wPtGjqw/jTyJ8i+eHSc6S+lW/FtJM
+ SMMWrrp2+Er+POSLNtsK24LHUW94=
 
-On Wed, Apr 09, 2025 at 04:14:44PM +0200, Thomas Petazzoni wrote:
-> On Wed, 9 Apr 2025 16:04:51 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
-> 
-> > And you need some way to map the PCI ID to the correct .dtso file.
-> > Maybe that is just a lookup table in the driver, or maybe you can pack
-> > the .dtso file into a kernel module with the correct
-> > MODULE_DEVICE_TABLE(pci, ...) so that PCI probing pulls in the
-> > specific driver module with the .dtso, which via dependencies pulls in
-> > the core driver which can actually make use of the .dtso?
-> 
-> Well, check the already upstream driver:
-> 
->   https://elixir.bootlin.com/linux/v6.13.7/source/drivers/misc/lan966x_pci.c
-> 
-> It indeed binds on the PCI ID, and the driver bundles the .dtbo.
+Hi Lukasz,
 
-So it only supports a single .dtbo. In its current form it does not
-scale to multiple .dtso files for multiple different boards built
-around the PCIe chip.
+Am 07.04.25 um 16:51 schrieb Lukasz Majewski:
+> This patch enables support for More Than IP switch available on some
+> imx28[7] devices.
+>
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+thanks adding the driver to mxs_defconfig. Unfortunately it's not
+possible for reviewers to identify the relevant changes, also the commit
+messages doesn't provide further information.
 
-At the moment, that is not really an issue, but when the second board
-comes along, some refactoring will be needed.
+In general there are two approaches to solves this:
+1) prepend an additional patch which synchronizes mxs_defconfig with
+current mainline
+2) manually create the relevant changes against mxs_defconfig
 
-      Andrew
+The decision about the approaches is up to the maintainer.
+
+Btw driver review will follow ...
+
+Regards
+> ---
+> Changes for v4:
+> - New patch
+> ---
+>   arch/arm/configs/mxs_defconfig | 14 +++-----------
+>   1 file changed, 3 insertions(+), 11 deletions(-)
+>
+> diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defco=
+nfig
+> index d8a6e43c401e..4dc4306c035f 100644
+> --- a/arch/arm/configs/mxs_defconfig
+> +++ b/arch/arm/configs/mxs_defconfig
+> @@ -32,11 +32,10 @@ CONFIG_INET=3Dy
+>   CONFIG_IP_PNP=3Dy
+>   CONFIG_IP_PNP_DHCP=3Dy
+>   CONFIG_SYN_COOKIES=3Dy
+> -# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+> -# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+> -# CONFIG_INET_XFRM_MODE_BEET is not set
+>   # CONFIG_INET_DIAG is not set
+>   # CONFIG_IPV6 is not set
+> +CONFIG_BRIDGE=3Dy
+> +CONFIG_NET_SWITCHDEV=3Dy
+>   CONFIG_CAN=3Dm
+>   # CONFIG_WIRELESS is not set
+>   CONFIG_DEVTMPFS=3Dy
+> @@ -45,7 +44,6 @@ CONFIG_MTD=3Dy
+>   CONFIG_MTD_CMDLINE_PARTS=3Dy
+>   CONFIG_MTD_BLOCK=3Dy
+>   CONFIG_MTD_DATAFLASH=3Dy
+> -CONFIG_MTD_M25P80=3Dy
+>   CONFIG_MTD_SST25L=3Dy
+>   CONFIG_MTD_RAW_NAND=3Dy
+>   CONFIG_MTD_NAND_GPMI_NAND=3Dy
+> @@ -56,11 +54,11 @@ CONFIG_EEPROM_AT24=3Dy
+>   CONFIG_SCSI=3Dy
+>   CONFIG_BLK_DEV_SD=3Dy
+>   CONFIG_NETDEVICES=3Dy
+> +CONFIG_FEC_MTIP_L2SW=3Dy
+>   CONFIG_ENC28J60=3Dy
+>   CONFIG_ICPLUS_PHY=3Dy
+>   CONFIG_MICREL_PHY=3Dy
+>   CONFIG_REALTEK_PHY=3Dy
+> -CONFIG_SMSC_PHY=3Dy
+>   CONFIG_CAN_FLEXCAN=3Dm
+>   CONFIG_USB_USBNET=3Dy
+>   CONFIG_USB_NET_SMSC95XX=3Dy
+> @@ -77,13 +75,11 @@ CONFIG_SERIAL_AMBA_PL011=3Dy
+>   CONFIG_SERIAL_AMBA_PL011_CONSOLE=3Dy
+>   CONFIG_SERIAL_MXS_AUART=3Dy
+>   # CONFIG_HW_RANDOM is not set
+> -# CONFIG_I2C_COMPAT is not set
+>   CONFIG_I2C_CHARDEV=3Dy
+>   CONFIG_I2C_MXS=3Dy
+>   CONFIG_SPI=3Dy
+>   CONFIG_SPI_GPIO=3Dm
+>   CONFIG_SPI_MXS=3Dy
+> -CONFIG_GPIO_SYSFS=3Dy
+>   # CONFIG_HWMON is not set
+>   CONFIG_WATCHDOG=3Dy
+>   CONFIG_STMP3XXX_RTC_WATCHDOG=3Dy
+> @@ -138,10 +134,6 @@ CONFIG_PWM_MXS=3Dy
+>   CONFIG_NVMEM_MXS_OCOTP=3Dy
+>   CONFIG_EXT4_FS=3Dy
+>   # CONFIG_DNOTIFY is not set
+> -CONFIG_NETFS_SUPPORT=3Dm
+> -CONFIG_FSCACHE=3Dy
+> -CONFIG_FSCACHE_STATS=3Dy
+> -CONFIG_CACHEFILES=3Dm
+>   CONFIG_VFAT_FS=3Dy
+>   CONFIG_TMPFS=3Dy
+>   CONFIG_TMPFS_POSIX_ACL=3Dy
+
