@@ -1,128 +1,125 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBE5213E81;
-	Wed,  9 Apr 2025 21:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D978B1E0DFE;
+	Wed,  9 Apr 2025 21:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744233469; cv=none; b=ibSwp/HQTvf/9XFI6tbvuSjK88G3vqYvwy7TW89pWtdOTujOykTFbDu8e+J6MX6Gg0LAwBzh7f0HDV8z/XAtN+UR0m/aYbjK3K6I4Kmt1KA+7AlqlMA+spJSXpRHaUb0xnpaLTuWOUXnIAY71vOIGPWskbe0/VQ/TgsbTZFILUg=
+	t=1744233979; cv=none; b=piz2Bx7T9QNqND4Sx3eiQm/Wt7iEbxSQEbEfnQ2o1xSkj4a+h7bbk00zDlfLQcEPJaO2rRA0hVlqiouxM7xvu54FSZ8uiMdM19ckOWkQnc8XBLdutKKzTVuBUUbgorAUE5OrDSOYZ/lHvUYpli9toAu/gz5BNgJkyisv3ceZV7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744233469; c=relaxed/simple;
-	bh=JVLsErMm1lbZgGTUGBXuZBa0TVE6alCzPguq9pnhM9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tt0vewtrz6LYEBAKEYS13QILexq9HSNbpeNAR7hSgEh/XSELjh8snks5pRpXkccm5CfxAd115uSAlseUsxtGFymNGzdvgIyiAx3GqrNQjzKXPcw4Klxc4+ucWWD1pg8WEKEaK3r13FHCneq2sUNBC/zeWfHFUnCRvLSs+vaJfp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDW7qdgy; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744233979; c=relaxed/simple;
+	bh=HCT2J58XuVwyOeRbcEAzik/3vDnC8KMZUY5rshQ3O04=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g5c7c1Om/LKvE5e1U1wFkBGrQ0mU42H7RoI6pSp98cP8XsDVExijalxBzFfU+ZSeuc2JK0p7qRRBizezNTaZnDiflfsU03cqUz75myroj5SleqDQTiRL8q1utWvFBNW4tUTXztZguUALCo3UOTgo1otL4vudmk/rcMYsm8bi7D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WK7GO7rw; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDW7qdgy"
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso87959b3a.2;
-        Wed, 09 Apr 2025 14:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744233466; x=1744838266; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6pVlwzrEmx32p/oFLtQxJLU3h+GY6t/2EgH6uv7p6PI=;
-        b=QDW7qdgyRRpf1PMMxCk8j7EqYbw0tVSG75lrug7tBr8iaYkNEmtcHCrNdzKhE0GK+p
-         +VuOfi9LYHU12/A1xr2t+nYblOGca2gm/lXePxwAX9zYjmwo/VeFGRjwOT9Y/tCTpKL7
-         BoAD6PLrnZ+JxnzVkQav+yzL7LkCS1+v739Tpns+lnW/5gV8SrIG4gIHjqoeb9tjZvcc
-         qZ8LWecwk9uQoj+nedakKZ1pDoT3Ped0u0S7l6MtiGXQ1D3Trzku9qsUsNK6MYb9bfTW
-         l7ZfbAZvSLyPGoQUrZKsgKwhWaIp/LJI2dMCLpFtViRRFH08WkuzlbjYsweTryYKYlF7
-         CYRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744233466; x=1744838266;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6pVlwzrEmx32p/oFLtQxJLU3h+GY6t/2EgH6uv7p6PI=;
-        b=SiILWyrHRnYgv1tul1PxCEu8LhoJFhdcXRMhl8JBTtrfvN0Kwa2R6P/ESs1nSjHixS
-         gbSEYq2gyJnZQM/Hjl8ip9ahV0/A8vtbMGtQCiMx/q3OD1U8tUDs2kf3lGAxfqOdSnhP
-         ISTe9hWuorXSBOfeJW+ZhTZgQSRR98OzdZNqOvDSMP806C1hZY0oQIbu6VNOgx6wPhJF
-         NiMq1XmKvlMmnjcMK8Y6xLRlg28h7L88OY68m+us0/+FObXYrXX2GJ/W9lbq6M0IQHII
-         8R9nl0SrX2+n72ZA2JrbYVrrgjnfEdeEzGXIO+7Jrri3i6+WEEv9trb8Pk7+66ZM0RiQ
-         nEgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjwwI9U/mA0z7YiFhcUGTJ5AzEfCAaUP0kRFAj5+ZCXn3g7iF9VEVeYhk4f1Wdx8293Gg=@lists.linux.dev, AJvYcCWqd6zJUujbhuxZIqgEGawC213J9zlISU2QFgb4q6gX0c/CroCjoLaIbBu86hPBfLUCkrJm7HRLjISDM577vQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwoeYaJ2a9MBKmtYEo5lBN2mNtMBcEb/iD89xssNUKH/8LSS7yH
-	gUNgUOEPQm/+Fps26nHRFKqdFYYuekNFT/wqBNLvc6nR2AYSmjGi
-X-Gm-Gg: ASbGnct9KUgXVS5JNTxcIJY60kEH9f+mzlmYaRiQK8ugAtqAJKOR+N5UdGtTDVmEUbR
-	ZnfhY93xG6nZhXCFjXMHwm2GSaK9W3p58vRKER4TVmsiwNZ0w7L/iKezfAc89338FwHeRcnT8FR
-	UQz89QyrzZiPzaBL5bLnRqnVR8dCfNVsbuo8zJyyI3W1f9GQT6go05TxmyvQ1sOi8xKmT7+tmcz
-	Iiy7DCylz8cClMjQcHXxyDGXoeMEAoCuptedcQYxQyq52IRz6Cf+oiemJuou9p23IhkPz972Vxf
-	UKIEJBMLI0Tl/u8ZmIueNr3xKeLHIzoFOQU47UMlnykJSwKL6+qpCIfohv0=
-X-Google-Smtp-Source: AGHT+IGmPmWoSu8tga2SfVkZJNouE0+nOCKOrGe4roKu39WWRmF9KPusYmzx3vw22zaprVmqFp/tNw==
-X-Received: by 2002:a05:6a20:94c7:b0:1f3:3c5d:cd86 with SMTP id adf61e73a8af0-20169480cf3mr905809637.11.1744233466357;
-        Wed, 09 Apr 2025 14:17:46 -0700 (PDT)
-Received: from sid-Inspiron-15-3525.. ([106.222.229.33])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b02a2d3abffsm1475046a12.48.2025.04.09.14.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 14:17:45 -0700 (PDT)
-From: Siddarth G <siddarthsgml@gmail.com>
-To: slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	mchehab@kernel.org,
-	gregkh@linuxfoundation.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Siddarth G <siddarthsgml@gmail.com>
-Subject: [PATCH] staging/media/imx: fix null pointer dereference
-Date: Thu, 10 Apr 2025 02:47:27 +0530
-Message-ID: <20250409211727.62710-1-siddarthsgml@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WK7GO7rw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=E/MX9avaogn96WadiZO2Oqso/YPMCh/5um7QBJv0kHw=; b=WK7GO7rwpGDxsAOictNGBcT49S
+	QMp9vX/ibb/xLjVw8hKqAmC0QTtJRz1I0s9PS0DteFgDvqAT+KUunoRP1mJWNUa+wqyPL7QRVyad1
+	YMwdGitlQgnq1kL+JdmSTav2OmngAkPzVPqagj83eIpJJA9OJeCh6NF5CtaGbyNcof+w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u2cvw-008b6l-9k; Wed, 09 Apr 2025 23:26:08 +0200
+Date: Wed, 9 Apr 2025 23:26:08 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: Re: [net-next v4 4/5] net: mtip: The L2 switch driver for imx287
+Message-ID: <cab89673-6126-43ff-b7eb-1f311fa4498b@lunn.ch>
+References: <20250407145157.3626463-1-lukma@denx.de>
+ <20250407145157.3626463-5-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407145157.3626463-5-lukma@denx.de>
 
-Cppcheck warnings:
+> +static int mtip_ndev_port_link(struct net_device *ndev,
+> +			       struct net_device *br_ndev,
+> +			       struct netlink_ext_ack *extack)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(ndev), *other_priv;
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct net_device *other_ndev;
+> +
+> +	/* Check if one port of MTIP switch is already bridged */
+> +	if (fep->br_members && !fep->br_offload) {
+> +		/* Get the second bridge ndev */
+> +		other_ndev = fep->ndev[fep->br_members - 1];
+> +		other_priv = netdev_priv(other_ndev);
+> +		if (other_priv->master_dev != br_ndev) {
+> +			NL_SET_ERR_MSG_MOD(extack,
+> +					   "L2 offloading only possible for the same bridge!");
+> +			return notifier_from_errno(-EOPNOTSUPP);
 
-drivers/staging/media/imx/imx-media-fim.c:79:6:
-error: Null pointer dereference: fi [ctunullpointer]
-  if (fi->denominator == 0) {
+This is not an error condition as such. The switch cannot do it, so
+-EOPNOTSUPP is correct, but the Linux software bridge can, and it
+will. So there is no need to use NL_SET_ERR_MSG_MOD().
 
-drivers/staging/media/imx/imx-media-csi.c:795:27:
-note: Calling function imx_media_fim_set_stream, 2nd argument is null
-  imx_media_fim_set_stream(priv->fim, NULL, false);
 
-drivers/staging/media/imx/imx-media-fim.c:388:3:
-note: Calling function update_fim_nominal, 2nd argument is null
-  update_fim_nominal(fim, fi);
+> +		}
+> +
+> +		fep->br_offload = 1;
+> +		mtip_switch_dis_port_separation(fep);
+> +		mtip_clear_atable(fep);
+> +	}
+> +
+> +	if (!priv->master_dev)
+> +		priv->master_dev = br_ndev;
+> +
+> +	fep->br_members |= BIT(priv->portnum - 1);
+> +
+> +	dev_dbg(&ndev->dev,
+> +		"%s: ndev: %s br: %s fep: 0x%x members: 0x%x offload: %d\n",
+> +		__func__, ndev->name,  br_ndev->name, (unsigned int)fep,
+> +		fep->br_members, fep->br_offload);
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static void mtip_netdevice_port_unlink(struct net_device *ndev)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(ndev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +
+> +	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n", __func__,
+> +		ndev->name, fep->br_members);
+> +
+> +	fep->br_members &= ~BIT(priv->portnum - 1);
+> +	priv->master_dev = NULL;
+> +
+> +	if (!fep->br_members) {
+> +		fep->br_offload = 0;
+> +		mtip_switch_en_port_separation(fep);
+> +		mtip_clear_atable(fep);
+> +	}
 
-drivers/staging/media/imx/imx-media-fim.c:79:6:
-note: Dereferencing argument fi that is null
-  if (fi->denominator == 0) {
+This does not look quite correct. So you disable port separation once
+both ports are a member of the same bridge. So you should enable port
+separation as soon as one leaves. So if fep->br_members has 0 or 1
+bits set, you need to enable port separation.
 
-To fix the issue, add a check to validate that the 'fi' is not
-null before accessing its members.
-
-Signed-off-by: Siddarth G <siddarthsgml@gmail.com>
----
- drivers/staging/media/imx/imx-media-fim.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/staging/media/imx/imx-media-fim.c b/drivers/staging/media/imx/imx-media-fim.c
-index ccbc0371fba2..25f79d0f87b9 100644
---- a/drivers/staging/media/imx/imx-media-fim.c
-+++ b/drivers/staging/media/imx/imx-media-fim.c
-@@ -76,6 +76,9 @@ static bool icap_enabled(struct imx_media_fim *fim)
- static void update_fim_nominal(struct imx_media_fim *fim,
- 			       const struct v4l2_fract *fi)
- {
-+	if (!fi)
-+		return;
-+
- 	if (fi->denominator == 0) {
- 		dev_dbg(fim->sd->dev, "no frame interval, FIM disabled\n");
- 		fim->enabled = false;
--- 
-2.43.0
-
+	Andrew
