@@ -1,65 +1,66 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045692045A3
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 06:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2AA204C3F
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 06:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744268203; cv=none; b=SQ7D/YxDahbewtRo2to1UUG2XuACILEmtK3gH5Ybj3b/9P2uchu7i+FdLzt6A6owzz4d+sfmPYtF9Ta4sIfajVEOufP9zC1FrLY6rDGdg8sIfdegKZkdT/iSN/lgUjrkK0v4bdwsmx/TmwPdncKgc6FXticmm8RD8f/3jq/psNI=
+	t=1744268208; cv=none; b=ubTepTnb1MIoxhLwkhoRxKvQkfgptUVPAEwBJHVxmUmicb358gT4ARHJ+QJ8fBdTe5lU/t/OH5c7djAZm3GJKTVTMjOjn8QO/wDQCsf4QR/sjJ16281Nnt6I9pna4vbhpHM7ElsbscHWDVdcvq1CO3U855gpha225de2ulpm2fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744268203; c=relaxed/simple;
-	bh=YNMWPXST4GmkU82cqtCWweSG8CvPoxSqJXedn/pDLfY=;
+	s=arc-20240116; t=1744268208; c=relaxed/simple;
+	bh=G4sTbhNh1HTjBc3AK7UszlyRR4xFAT2Sr/GT5PBoscw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mGVl6JqIw8b6kNuXeyw3Zm23/2Mz6v2OgbsxwairDOu9TXkbLr2kqdwuDx6h3eDzhqGJWpbLd90I/CDEh5gou6LymOl98HKezdIuZu+SPgX6B6jikrj+EJhijDPWVISup+rlL4aepbP9QwaFQG11a984B3nPTWAUjdoPpEsClqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrcCrFCf; arc=none smtp.client-ip=209.85.222.181
+	 In-Reply-To:To:Cc; b=GlmSzULjqZAm8/HhTC6VmR3vaHK8K3BmfLxSOb1OZ3r0mMWpdj25RnoKyIuSYNzHlZ72XbCiOrgXsLuM4a5gyqqMVPZ0B7cGlUWQSStXZc9lhB6XVnU4a+Gq8+tM2UNXZsQh9nQwA15eGOq8Hk2ynGPY4V/YKrVChCsQ4B6MH8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GVHO32jz; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrcCrFCf"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c5e39d1db2so25373785a.3
-        for <imx@lists.linux.dev>; Wed, 09 Apr 2025 23:56:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GVHO32jz"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c54b651310so76805085a.0
+        for <imx@lists.linux.dev>; Wed, 09 Apr 2025 23:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744268201; x=1744873001; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1744268205; x=1744873005; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qQNsJ3ZOiZBcYiwdRb4mVkjkRmdE4On94lqt+0SKelw=;
-        b=IrcCrFCfbQrbur0mGV1QwEcZBqx2wv5JR/msncgY4wd0Fl6pwEFAvn4jV7LT664Z3g
-         t31CP2qx/XmFlvWoYyOedrdnFwjxxlzBUWrhIPOQ2vD5Mg9dfFE3APgBivVu+/byJOyb
-         bUNgi11zrVgVl5zyIryACDiofJdroVu8elT7zIAqTjrST7SfVExZZ9USYrFeOT+LZDz4
-         nvzZZ0MlgOcKxgMEm2q4RMSCO30T0L0rRPqY8/oqdP07IwIukD3RwiOebSA7CNJ267pj
-         N+xGKyQUCBGCZ+YR3jz+1m8sZMaPz5xde4HcTJybIzXtOI2HOEfbbTn/GM88sb5Kidet
-         oYBg==
+        bh=g+wsQP3176D0izkxKNDHdPvv/TXJHsloHJ6cokdroh8=;
+        b=GVHO32jzLRh1sDfM4SQwjkW5BExcaWLVm00BaaYuJFDcQwq0Lga/lf1P6NEjmWf81E
+         ktJs9VeWs9s9SuTGOzKQXf2XILgz8WY95HdF25jBVRJrbOUHW8HadqsWuNPUPZWw72JD
+         tax6CtHtfQqLClIhp6y2W8v4QAbwi92OJrjT7xEknO1SYLAZgumoGHejdShblI/2ABFe
+         saRBDgahRJFoFczhSgSsILUINdk2Tod9M5+J2LqsUzIQIDfjEadS+mWmMjSAYSz8WRVt
+         Ovv9zQOQ8Ev3NYyG5Miib0iAnquS5nKGvvUWFCheYjJVf0PWbS7cMpHIH6J5fWxtMzja
+         tjKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744268201; x=1744873001;
+        d=1e100.net; s=20230601; t=1744268205; x=1744873005;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qQNsJ3ZOiZBcYiwdRb4mVkjkRmdE4On94lqt+0SKelw=;
-        b=qw5EGTqk8cHANUwmiNaGuGI1NQRnltJfjl4FBoMZxJuaR8Imb+dKNSSqZOKpYm/6eg
-         2rZoOv1tcv6ZB+pN3q1ekzwLJmhoZb62Gvx2TOtBUBOSYj4NdejxUT8XBbNuMYUkRg4O
-         +EhFaa7ok2hW4tvbZqvL/OtNGvk2el5hvrQ0cahrTdcWZilhrHSuzeolKVreBsUp7GIC
-         KUdLlgg7lewv6Sqr+ITR6G67raeZHyqbOooRWeGCGQmEMJdGOs9tVJi5+a83G1UcSpBa
-         CTX4aOyG7hC9i46e1WcX+8Z+7sGPT2JjX3VFxaVvYuoQek067MOuTbKL5FZYHU6HwOMB
-         m7Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCWElZyWpJqOumBs6ANK7XDqe67z8lqNwNZfF2HIlArzOFTAje9AnZWqByJOUdoEVaTf3Yg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXbl7y6G4jujLySKeHEiL16ZzJl9mp2rFDhGvCcHIiOdbcbefK
-	+BVlo48m4xKnQ1o3w/b6vlMVqKLqc1OdP6pEq+icO8ji4DuSOVu328VeHh3Q
-X-Gm-Gg: ASbGnct4y4MV5HhHd6ERasdwwMhAnBO7oOTEnlNj9GHUMUZijv9Xe0aTGaiZPI2h932
-	Co3A2IboovniaazUbnWUse5mgyEsB1lSRfpDN+iPi+TxtFav/w+Yg0sXMBHezgVHZudTM6VKCjQ
-	/NKhGLYH7N4c9CbbPFLNX2ar65NfoA6CO09w2kKZy28dFr96KvecuA757CCrZcCjA++kX9rZ9lY
-	AtA5SSUcVFWI4QjdMSoVSvpjJmLgApkAbhLay20hrl16FgpOxICEtzhjOW+BX6pmsiawaN4X2Or
-	/3rrR0o0/RANxvoeV5f8GQDiy6HjVK90+Zv0kbxU83txRzadnAw=
-X-Google-Smtp-Source: AGHT+IH8Rh4oQxmbv52IflL2wfwTmNN62cTX1Kblk1rng58eaLwD7Uk6UckMElDU3x7WC4HYPwlgCg==
-X-Received: by 2002:a05:620a:178c:b0:7c5:464b:6718 with SMTP id af79cd13be357-7c7a81c077fmr192043285a.54.1744268200969;
-        Wed, 09 Apr 2025 23:56:40 -0700 (PDT)
+        bh=g+wsQP3176D0izkxKNDHdPvv/TXJHsloHJ6cokdroh8=;
+        b=Q5pQU0cI+pQTcFdZIam7ZMNj2Yh2Aj32efHDpax5fPCBU/bWErKPf4pJOnhtWuL5e2
+         ken/AEwSP16ffmPlRRQLu3LahpHz6kEqwhsTnyIdEEBQ9izNRVvxXo2L4t0iUxnMcQyV
+         +xYsF96Sue80QnymfjaGazA0BkUZh2LbNuF6H/GgXXBIa381DqCyeX9OqX90CT5e1HFZ
+         jr/NDR41kx095/6EWTJ47GWcCKpA2UPfMZmko7+BklaMg5oBMkJKUPfXyHYuEnmSqV9l
+         Vq1Jpd2yIxbFysXBLXAhamvw42WXQakuAxZobeGLrHwfNI33Fct+3GduayYQN4NAqbMm
+         0P5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVIMGV8HF2irrmdHkgxqzV1VP7CWx+ugiuVzojNmZyajtbK+JHRv4wvPQIZpvBHtNHLs8Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxfzejAhcWhdw4kgymB00fbxf7XY0B+5dKbx2MD4TTZZGdWpVhF
+	6zJLtIsvEXAJs9nvOQBLU8nNx3ZtNS5QGGeF54Wjvmw9W+rgO3T7
+X-Gm-Gg: ASbGncvFoISg+nNilBOloYLaufv4iHVyHWsUT16C1Kx3OLK5J47jnUfjb4LG7fn8hx5
+	dUd7JP/ysiHLkV0qZJ/Vyv3vAnEiy+l/A68KUMXPmuB8BOiXHHg0JUh9pSt0U+jYP6jiY92pGXj
+	zJfxG9mIhbbU/vcmAScuXsPquW9vQd6aun9JM0PnX6H9D/EFPnrTIWWzuK3zsLPP2Z33HifuczT
+	QWacsFEvqjQ1ZsfliRaQHcxXXeUNFLgfn/G9JRwcx8rydXpg0K9x3c+5upgkW00zOouu9P2fJlB
+	h9OBJvaJtCTdkxtKrBl6XNlej70z9elAebHY9jbUc/w2vvz5pOG0XVzvptdwjA==
+X-Google-Smtp-Source: AGHT+IH4InyUfXvFHy9wew0zGMTWWAUknYjQnXzFYFulhKKW5BvpTJXx+LSGl6iMSBJor0GjmjMP+A==
+X-Received: by 2002:a05:620a:17a6:b0:7c5:d888:7098 with SMTP id af79cd13be357-7c7a76bffbemr229908685a.44.1744268205265;
+        Wed, 09 Apr 2025 23:56:45 -0700 (PDT)
 Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a89515e4sm46547285a.26.2025.04.09.23.56.38
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a89515e4sm46547285a.26.2025.04.09.23.56.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 23:56:40 -0700 (PDT)
+        Wed, 09 Apr 2025 23:56:44 -0700 (PDT)
 From: Kevin Hao <haokexin@gmail.com>
-Date: Thu, 10 Apr 2025 14:56:10 +0800
-Subject: [PATCH 2/3] spi: fsl-spi: Remove redundant probe error message
+Date: Thu, 10 Apr 2025 14:56:11 +0800
+Subject: [PATCH 3/3] spi: fsl-qspi: Simplify probe error handling using
+ managed API
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250410-spi-v1-2-56e867cc19cf@gmail.com>
+Message-Id: <20250410-spi-v1-3-56e867cc19cf@gmail.com>
 References: <20250410-spi-v1-0-56e867cc19cf@gmail.com>
 In-Reply-To: <20250410-spi-v1-0-56e867cc19cf@gmail.com>
 To: linux-spi@vger.kernel.org
@@ -76,27 +77,175 @@ Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
  imx@lists.linux.dev
 X-Mailer: b4 0.14.2
 
-An error message is already emitted by the driver core function
-call_driver_probe() when the driver probe fails. Therefore, this
-redundant probe error message is removed.
+- Switch to devm_spi_alloc_host() to avoid manual spi_controller_put()
+  calls in error paths.
+
+- Factor out the hardware disable logic into a dedicated
+  fsl_qspi_disable() helper and register it as a managed cleanup action,
+  removing the need to explicitly disable hardware after
+  fsl_qspi_default_setup() failures.
+
+- Move fsl_qspi_cleanup() earlier in the probe sequence to eliminate
+  the need for manual cleanup in the irq failure path.
+
+With these changes we can completely eliminate the messy goto labels
+in probe function.
 
 Signed-off-by: Kevin Hao <haokexin@gmail.com>
 ---
- drivers/spi/spi-fsl-qspi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-fsl-qspi.c | 73 ++++++++++++++++++++--------------------------
+ 1 file changed, 31 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 2f54dc09d11b1c56cfe57ceec8452fbb29322d3f..b5ecffcaf7955e2ec9bb3e2857f8bc14d73a2f90 100644
+index b5ecffcaf7955e2ec9bb3e2857f8bc14d73a2f90..f879533535e853dac6bff22a3a5e87431a44a1d2 100644
 --- a/drivers/spi/spi-fsl-qspi.c
 +++ b/drivers/spi/spi-fsl-qspi.c
-@@ -963,7 +963,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- err_put_ctrl:
- 	spi_controller_put(ctlr);
+@@ -844,13 +844,18 @@ static const struct spi_controller_mem_caps fsl_qspi_mem_caps = {
+ 	.per_op_freq = true,
+ };
  
--	dev_err(dev, "Freescale QuadSPI probe failed\n");
- 	return ret;
+-static void fsl_qspi_cleanup(void *data)
++static void fsl_qspi_disable(void *data)
+ {
+ 	struct fsl_qspi *q = data;
+ 
+ 	/* disable the hardware */
+ 	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
+ 	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
++}
++
++static void fsl_qspi_cleanup(void *data)
++{
++	struct fsl_qspi *q = data;
+ 
+ 	fsl_qspi_clk_disable_unprep(q);
+ 
+@@ -866,7 +871,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 	struct fsl_qspi *q;
+ 	int ret;
+ 
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(*q));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*q));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -876,68 +881,60 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 	q = spi_controller_get_devdata(ctlr);
+ 	q->dev = dev;
+ 	q->devtype_data = of_device_get_match_data(dev);
+-	if (!q->devtype_data) {
+-		ret = -ENODEV;
+-		goto err_put_ctrl;
+-	}
++	if (!q->devtype_data)
++		return -ENODEV;
+ 
+ 	platform_set_drvdata(pdev, q);
+ 
+ 	/* find the resources */
+ 	q->iobase = devm_platform_ioremap_resource_byname(pdev, "QuadSPI");
+-	if (IS_ERR(q->iobase)) {
+-		ret = PTR_ERR(q->iobase);
+-		goto err_put_ctrl;
+-	}
++	if (IS_ERR(q->iobase))
++		return PTR_ERR(q->iobase);
+ 
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+ 					"QuadSPI-memory");
+-	if (!res) {
+-		ret = -EINVAL;
+-		goto err_put_ctrl;
+-	}
++	if (!res)
++		return -EINVAL;
+ 	q->memmap_phy = res->start;
+ 	/* Since there are 4 cs, map size required is 4 times ahb_buf_size */
+ 	q->ahb_addr = devm_ioremap(dev, q->memmap_phy,
+ 				   (q->devtype_data->ahb_buf_size * 4));
+-	if (!q->ahb_addr) {
+-		ret = -ENOMEM;
+-		goto err_put_ctrl;
+-	}
++	if (!q->ahb_addr)
++		return -ENOMEM;
+ 
+ 	/* find the clocks */
+ 	q->clk_en = devm_clk_get(dev, "qspi_en");
+-	if (IS_ERR(q->clk_en)) {
+-		ret = PTR_ERR(q->clk_en);
+-		goto err_put_ctrl;
+-	}
++	if (IS_ERR(q->clk_en))
++		return PTR_ERR(q->clk_en);
+ 
+ 	q->clk = devm_clk_get(dev, "qspi");
+-	if (IS_ERR(q->clk)) {
+-		ret = PTR_ERR(q->clk);
+-		goto err_put_ctrl;
+-	}
++	if (IS_ERR(q->clk))
++		return PTR_ERR(q->clk);
++
++	mutex_init(&q->lock);
+ 
+ 	ret = fsl_qspi_clk_prep_enable(q);
+ 	if (ret) {
+ 		dev_err(dev, "can not enable the clock\n");
+-		goto err_put_ctrl;
++		return ret;
+ 	}
+ 
++	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
++	if (ret)
++		return ret;
++
+ 	/* find the irq */
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		goto err_disable_clk;
++		return ret;
+ 
+ 	ret = devm_request_irq(dev, ret,
+ 			fsl_qspi_irq_handler, 0, pdev->name, q);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request irq: %d\n", ret);
+-		goto err_disable_clk;
++		return ret;
+ 	}
+ 
+-	mutex_init(&q->lock);
+-
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = 4;
+ 	ctlr->mem_ops = &fsl_qspi_mem_ops;
+@@ -947,23 +944,15 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dev.of_node = np;
+ 
+-	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
++	ret = devm_add_action_or_reset(dev, fsl_qspi_disable, q);
+ 	if (ret)
+-		goto err_put_ctrl;
++		return ret;
+ 
+ 	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+-		goto err_put_ctrl;
++		return ret;
+ 
+ 	return 0;
+-
+-err_disable_clk:
+-	fsl_qspi_clk_disable_unprep(q);
+-
+-err_put_ctrl:
+-	spi_controller_put(ctlr);
+-
+-	return ret;
  }
  
+ static int fsl_qspi_suspend(struct device *dev)
 
 -- 
 2.49.0
