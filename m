@@ -1,65 +1,65 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7488B2857C1
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 12:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BC1284B54
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 12:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744288577; cv=none; b=uTcmbtI0uIdueAKzzwhivUoRnXGnRQ5qQIxVk3OhI3LgzJCsFKuWZZqATDxTERvmM+bLX5WiVTM6ARZloEV40XvnqBjGM7IXza+FSDeLnQk7olNICZjxv7t4JJb14tuu1eqw6SeuUlCSAEG5hCnmzZuzAyY6k5F1SiEs7oYBkcQ=
+	t=1744288627; cv=none; b=Yt0jcm/Mq3Fx1UxKwKVWKOTpFUetLAMvxzQQ6qDvHhxDu32mXdRQwfR4ugYSQN1HCljI9D7/gY9Qw5PwHxcl/cZDJznFtZ3gvDkg0f9b0fjxCUaPYxWpwcQlPt3Clhv+EAJimYEeaFrqMZRXW/Td2gR20i0IkF+gjECCp0Hxjj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744288577; c=relaxed/simple;
-	bh=H2rAYnbGeFgX5saZ/b7X46QHeJfq5kinlY6BpgEnd3Q=;
+	s=arc-20240116; t=1744288627; c=relaxed/simple;
+	bh=ABz4cDqiNS3kQXrpTOAbpSPw5QYVtGShy0gfjNUg76g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QsCmEVqz78QG7+mMJkSjXGwJwW4+roJ5IXDfpD7GJivmkjnRqA+yDMim6iK2TFVS4lmvYIPVB7T4hnUHTQnddpUjzZfbEdwWbP0/XR/utSRVzmYtHC02QTguzJYkFwjbw/m+5oJeSJqr61IqfX3Ga9XdNwUAbSrSNjkY2OhJ21c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vo6OASiq; arc=none smtp.client-ip=209.85.221.43
+	 In-Reply-To:Content-Type; b=AUexvdIoG+Ijl4ker+YmRPkZtu13vlNanFiuTlAj1jam9K64diNPxD850EQWCTBEjY3PJ6nw1aHwKJri2km8o/kHOSPBHosJD3HquQCgR0EkzhAfMDRodl0OpC17dcLefS+eaX9JkXt1uHf0DJF9POZucnCNgpelp3gFIJc3HcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tbrzCnaZ; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vo6OASiq"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-39141ffa9fcso836778f8f.0
-        for <imx@lists.linux.dev>; Thu, 10 Apr 2025 05:36:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tbrzCnaZ"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43d0782d787so5361135e9.0
+        for <imx@lists.linux.dev>; Thu, 10 Apr 2025 05:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744288574; x=1744893374; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1744288623; x=1744893423; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=iQ0j7wMSGTmXUuOHtflR052mxHlsC9aOf5SK3WIqsvY=;
-        b=vo6OASiqokQVZ6XgKn1EOd3hpAdOiO/X/+6A9SNT8rbrfMiDwv3mna3sgIXHzNd8So
-         ApclJAOHXMog3kk1ccFWGMFvMpt0gixhZ7pTAgFXIuGHjsljFC50lnyekeUGRoXJHx+m
-         5Gj1pN1SSEU7qtcqyjXPj2lvZ3Zw0u1adj/EYLQTJDZYOf/1Jjp+N0xeM1nQg4ZHpuNC
-         IoyDg8+GFMm+S7q2GZtuah5w8S6itoPwsamF4PQ3HpEtGX2TkK1uoTApI8ubzTmpXEgM
-         ImR5d7iwQjDiqVxw2P/acqwdIXkWh9CfelCgWLw7N92MDslKtuY8UtKNhUvaxKSGCS+g
-         mfDA==
+        bh=9VoKRS+yOUVccmHWqHCUYdtGt2QnJX1Av3s20gfz76g=;
+        b=tbrzCnaZjHoA/gYJaxMuRWfgDPa+1OaKZnixB/fyiXQaWoEl2rY+0HRynA+Ghwp+tX
+         CykRf1JiuM3HBu068VDK+FpsqI/4AdUebJWRzzTWtHATJ1FOqTG2mh7HOex101fdqPKF
+         MKnCwSGBwrwL4KeXbU9kgrfyg9N/POUL1YsP9ohf5BzANPwWmGtJtZZMHrZwkH1TzmWo
+         e9qYBun1+gmUWNYmwMUzqI9ZlHjbJZF1cyltrKWtRkB4aw2cGDmdTu6abxiExxfBTMoP
+         7O3Yl7oo5uEEvEa2UUmDTFS3JqF5fuEF61snH336UEazu4BVEirezIO43JHLo9kAGlEW
+         Frnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744288574; x=1744893374;
+        d=1e100.net; s=20230601; t=1744288623; x=1744893423;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iQ0j7wMSGTmXUuOHtflR052mxHlsC9aOf5SK3WIqsvY=;
-        b=pE3LeuUeus8Es+NlPYt6bEAe0eXuBfQcw0A3p+zLd53HTUO2NYX6DXx0yJXLOYzqMQ
-         A0dflBrkHtX4i/0ZXDcECfs27Zc/37chSyZ80A2w3yg8OHNdAw6qOUM71Vn7jlQOhCCh
-         2oosmdG+vn4cb0N4ixJpxypqBM3crE0sZatWom5K7kHVsdMZw96g0o6F2Sl7T8aFdYUg
-         GOrGFxXWarjyxzqAga8uiSd0T1yWWh98F3O+dCcogk9Dye93EVQ7xhQP0dsH2JzIJTXl
-         VhCEm9HTmGwinYInWbb509oxllac2wnaBiitPE2Bj4NUyBLHCxNGRuy7WsGRT+1wP2wh
-         7Q+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXSiKU3oDvHxgNmlZGwMcPwGyj7wwSPLSAKERGlS2sUZDx2OpTDUVOsVpLn8ir24rc/NYY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy7uuV5NzoXNTSNk0rYIezNCA5Cr2JyRLIcyUEF0LgtUqwRS/nW
-	Zp6zkpRtXyJfzYgYkJu0by1xxDJX3VWNESz0ePwOZ0QTJZKfyEtG4YtV4WcW4G4=
-X-Gm-Gg: ASbGncs3noW/cugTDQqzKvfN3qldgysQG06Ix/QUbSf+gcM4Hbni7h+N5QampRTj8n8
-	ItbDftmlp9Jw3JVUk80LOOXjUcrgwXf25Ov8n+Gc5wenDQidgCy1culyE2goaJIrmu+Id+Y1Jpf
-	YWEOEQGxMk6xPZSRs7rEMl5iVwSbE1L4mqkYuCMH/hjJq+ElIpHImAW8FiT+RTp7J20AcAB2VBO
-	QjhCWhBv8fpwBsA5EaJ4VZP0YW5NRz6ZgSEyUHdmLAXm0LB4PUEAEHus2quJMICTV4frjAGX4Ue
-	QzP+wCf5yBCjdSIq1OKr4emo7MVH7fr3ghH4KieOiLFhKbJxSLGo/6x8+GasMJySYSnJST+EEXT
-	lMbDSR8S+R+L+XA==
-X-Google-Smtp-Source: AGHT+IFetWy1yp/dwylC0fW3Xc3rkEsOkh6f7DWozfmMsr0xNplY7KcWpRd6urR6Mieq6r6/8yNM9w==
-X-Received: by 2002:a05:6000:4285:b0:39a:c80b:8283 with SMTP id ffacd0b85a97d-39d8f498980mr2285415f8f.31.1744288573720;
-        Thu, 10 Apr 2025 05:36:13 -0700 (PDT)
+        bh=9VoKRS+yOUVccmHWqHCUYdtGt2QnJX1Av3s20gfz76g=;
+        b=lhSHf7/rIDwsYaPBT+oul7T1pKKgeqRbiMvfWOhRYjSJ4uPl6H7Bge6w2iHX8tOo/G
+         MdyHl3j2Pk1HpyEUYNLsIbgnVY6SRnCESSfz4Mr73t0cSZCIwnrSBiVNfJijzUCTTB7/
+         9Z1t22OUPnkAEwejyS5U+0sH9qP1ym82I3YY8oavlkTcVRaHBlF+vNcA5qyUBoM0W0jv
+         rTJWGeQnZHOMLUSOlndq33vh/8KZEVtVdRJaYgoVsk3Q5B7fWslQzmKg2rCjpdY9e6zr
+         atHiTdxK9K32AF9QEp7oP/51jx54PgXkmglsDw95czWZ2svabbLYj/2NUI322nErXeTY
+         1kJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeL75udIOmw+RsKly7yFGLnmgQ5CwVlu6nGhDirpn3fpyC5amZSSIfA8UarsLwHz+ZdYg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxO/a5CWmjChp+Swi3JdvYiNHrLxLEl8yWOGj1To8KB9MgFGT9n
+	s9jHs5keV+n/QJjW4VvSMjN3X1+Wh1rNPE2dvI89qaMEBYMLV0BjkUBaTSwxqVo=
+X-Gm-Gg: ASbGncv/or3j/mdP+LFPEth8Onlcga5pQc50ID5zhiAzkghHN9LL7eJsnY8jcUYF/RD
+	dbf757Ej1iN0NVyWGqGiLOj4JrpVfw6cPHwbBC+yY/VxmnWvzLer+UYvEabsz27pCsR2yuYG/UI
+	dLKP6/bQTjry87VNK0agJwvL+FtIhWwFx5LrZKzTDoHiVrH1TS3AbagrJhg44hFk52Uo0cPFI2U
+	ioOqvz6Q0ANjjYhAHNT/MYaP0HhUOO4AsSAy+Huz43VAkqEdfG/4PHcL758mfHb+E8xNTUv72s7
+	54/c14B3QOgvXIkTvvntYA3V7cjjg4+/WqvyJ8fBeDIEBCy47hMbO0PQIla/XtOhTOuO3ueZsAp
+	PQYDHEevCBAg6PA==
+X-Google-Smtp-Source: AGHT+IGMoIZKu18tKxGlE0nCM035PBeR69RdqmMHuq8h1Eu58CnOlQWvz4UQddkUAElDY1GsfzU8ew==
+X-Received: by 2002:a05:600c:348a:b0:43c:fdbe:4398 with SMTP id 5b1f17b1804b1-43f2fdceccfmr22721935e9.6.1744288622955;
+        Thu, 10 Apr 2025 05:37:02 -0700 (PDT)
 Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d893fdf8fsm4624182f8f.91.2025.04.10.05.36.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f207cb88asm53015095e9.37.2025.04.10.05.37.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Apr 2025 05:36:13 -0700 (PDT)
-Message-ID: <17b9ff87-899e-44ca-b902-ab965cff0879@linaro.org>
-Date: Thu, 10 Apr 2025 14:36:10 +0200
+        Thu, 10 Apr 2025 05:37:02 -0700 (PDT)
+Message-ID: <20de7ce7-1cfc-40bb-9457-84e462cf4483@linaro.org>
+Date: Thu, 10 Apr 2025 14:37:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,8 +67,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/19] arm64: dts: broadcom: bcm2712: Use "l2-cache" for
- L2 cache node names
+Subject: Re: [PATCH 03/19] arm64: dts: morello: Fix-up cache nodes
 To: "Rob Herring (Arm)" <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
@@ -104,10 +103,10 @@ Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
  linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
 References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
- <20250403-dt-cpu-schema-v1-2-076be7171a85@kernel.org>
+ <20250403-dt-cpu-schema-v1-3-076be7171a85@kernel.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250403-dt-cpu-schema-v1-2-076be7171a85@kernel.org>
+In-Reply-To: <20250403-dt-cpu-schema-v1-3-076be7171a85@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -116,10 +115,14 @@ On 4/4/25 04:59, Rob Herring (Arm) wrote:
 > the names are local to the CPU nodes. The documented node name is
 > also just "l2-cache".
 > 
+> The L3 cache is not part of cpu@0/l2-cache as it is shared among all
+> cores. Move it to /cpus node which is the typical place for shared
+> caches.
+> 
 > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->   arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+>   arch/arm64/boot/dts/arm/morello.dtsi | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
