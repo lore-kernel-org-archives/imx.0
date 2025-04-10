@@ -1,351 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2089.outbound.protection.outlook.com [40.107.241.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C53296179;
-	Thu, 10 Apr 2025 15:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744300090; cv=none; b=jTxvYSDPtODN46dHTyHO1m3p5dNJN4mUlgKT7L6yM3Kv814KuX3VIxqxoTRIAxN9mcQbgjQ3G6JiYuaR/Mc5v8ORRka4C/8A1A7qfqyO7l4GlFuynXb+ITp1D9i7blrZP5qEPhKWEfOzYq3PYMfHl3Q9QEipvmHqecX4nFC+aUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744300090; c=relaxed/simple;
-	bh=8tfaaNZ4HrH7opoaFMg4/Qd0jHKomOYwuo5NwUKhvx0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o6OC9b5c/+N5GMTQ5LbJtf7PzJ3I6fzGefSZ8txVUURU1i3yCfOZqYXc2CQFIf4aX4mTVJebpWaVGvzoakCL3pQ3qnBxxlTk1qYVb+C/sz9FS+7xBLFfKdFfJags/qIxcrw1ORGQa/9cfh3H0jKhyYAz8v4lc6ds0F6f/m6pzAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F07Lc4bp; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371BC1EBA16
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 15:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744300367; cv=fail; b=e/MlJyHMZrmzWk4FQwhOqX5DoPraDr3kieW1MSmtDBCA2yKfYqcLosHpoE6JBD+djEFqVmdeMa5c826TNBsNmqI/usyEaXOs0MQ1CxycYxH6fqSDN3skDnxOBmR5Z8zxivl+9gZXBjFvWbwQxI8FrjN8p2NV9YosR5CAYa6+ipo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744300367; c=relaxed/simple;
+	bh=t7taD8igi0ONId7IFIf21gU1QCpQFFmSpIahBLPsivY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=D8j7MxjYYViZUztafv5UUElM36aLT7bIF/ywmJTcaCs3WcVtSfyR2mPJwB6eyoj8EbYRBrAbFA4ubAeiNcHRtIUL4JbRG3kU9QMcXzoodlWAOZ5bYvAKsUwNVT5hMNIKVLgkL4NfKJrzurVAC1uzX2yUumHracbtWSQmwJ6Fdmw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IK06yl3J; arc=fail smtp.client-ip=40.107.241.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F07Lc4bp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FF4C4CEDD;
-	Thu, 10 Apr 2025 15:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744300090;
-	bh=8tfaaNZ4HrH7opoaFMg4/Qd0jHKomOYwuo5NwUKhvx0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=F07Lc4bpt+yN+th4lZJNLUif9Vsbs8jnsVA6h1SEMAAxVrX+FL4/Au5KWenw+1DH9
-	 BH6yiYIZmka6TMCrTmOJ6M1rp46sGn4toqpLPa+fzTNNn8OBVUk5tm+MrmGeLGtp4v
-	 0t08uUIYAhHkGvs4IpQOEZEHXIojnzNcl2f+3yHjgP0JTy6xYRjxiWwtaTjbg95rz7
-	 /uEl+E10tBzh5CvL3m6w6qy/ck4AJQjiwbobS6qZG66/NYkbJ1QRHlGCA8SAlCgNUE
-	 Ud/S2sHTPErUfalr4V9fg1m5v0/lTQklRsHgcL77c5S3/NmmfVOtoujb6pTEDjlGaj
-	 WsGZ5T9YPKZbQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Thu, 10 Apr 2025 10:47:38 -0500
-Subject: [PATCH v2 17/17] dt-bindings: cpufreq: Drop redundant Mediatek
- binding
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IK06yl3J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nrM3jjjWmdP0aoxuRr34lhhBIwC1ZtBzwTrpeX8uZ+/mFOMg+A40fnf9XNOyGMP1Dv/nFDb5mEgn+jIBtBojfWB2QHt+GZpMX3seLMXTz9QdQw7RH25DPX50at5jpvvvI/TDz5nJuaTNMvH/pCuOaYmiLOH5+xAPwEDhgYsDdGdKFcWtVnnlDJQT2BUaVqjLpxnAanvTIGodPXp2oVnbKGx8aQ65/+VFSaIfQf+GYOjDkmHI98g8Ys480bA0Y491H6pJkpEr5cCyNj0mo4766U06lQv2Y4NfxlVPRPr5+F5WFOBl9oEIR6n07RkE9qZjHBtsVnjyJJYVTju3mEPHow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DyndTudwH/xZOqm2bIiBCZwGUsx3uXTq+iLHluntUEc=;
+ b=gCTPzeTe7rMr5zRXx0OzfHWc6MoiVEqNyoUMVCIA1JZvVo6WSkwGAFJbf9IM6txyydIl1zhoLMIlT7bmkuKoF6ShPWrm7wseUB+YDVO2jFIePGAXbI1vG2D3XZ+1Hq3Ch7AOcVdrVZzBq8IfA2qnOyu+jD1icFiTgHhNlLSNUuP/1mk7UR6TgFWkkyvJEcum2mJp2PNMOaOsEBaiJn2OgIcdd+Q6/QosNPuZQz6wkZApSTzbCryKjhpQQJ66UfrpIOafFp67hC9z/gpWgEhjvJL27rqmmwV1UC07Qjs50aFguSekZ2R/IBWex9hY72QEberGFeHkol/lI7VREnsMxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DyndTudwH/xZOqm2bIiBCZwGUsx3uXTq+iLHluntUEc=;
+ b=IK06yl3JAtegTL40tgPXfPtyaA85C+VJPF4Mk5n0iDvd1HXcqk2R6CnIZWIPrUkHZAwbyfsQYGE7OfclkeWg+/jxtsnws0VGuxAJp9riqCkdaBeK72O/60kNfEW/x9Q/yANGlRDesz19GJExgd8FVuwWt272StKNlFe99jJ8wthxo8OaL5O2XmH1zqqnJhS/osEc3BFkAXvQ6a/9wwtmUcMZpfezoSvK2qI+K5e3KzV6dSffCnmH0sXOpD1r0+D1VX0ELS4XHkUShm3qLoWJHHJ5kkZ65hBICN4gco8DxfpusqHC7ZN45tCqFMniNv1TQ8pErMEk7FAAhGfKjbELHw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB7602.eurprd04.prod.outlook.com (2603:10a6:20b:2db::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.23; Thu, 10 Apr
+ 2025 15:52:42 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
+ 15:52:42 +0000
+Date: Thu, 10 Apr 2025 11:52:35 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>,
+	Mark Brown <broonie@kernel.org>, imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] spi: fsl-qspi: Fix double cleanup in probe error path
+Message-ID: <Z/fpQ5Qf9KZwK0LE@lizhi-Precision-Tower-5810>
+References: <20250410-spi-v1-0-56e867cc19cf@gmail.com>
+ <20250410-spi-v1-1-56e867cc19cf@gmail.com>
+ <Z/fniXBnfnx7RHxR@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z/fniXBnfnx7RHxR@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: PH7P220CA0032.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32b::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250410-dt-cpu-schema-v2-17-63d7dc9ddd0a@kernel.org>
-References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
-In-Reply-To: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Conor Dooley <conor@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Steen Hegelund <Steen.Hegelund@microchip.com>, 
- Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Andy Gross <agross@kernel.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
- linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- Sudeep Holla <sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>
-X-Mailer: b4 0.15-dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7602:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4200998b-1836-4e52-5fdc-08dd7847ba33
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?tZfs39dU3KIfKncXiYK7Val2LdI800YiKqT59WZkRq2cL2KhMheXW1/4yBzy?=
+ =?us-ascii?Q?3xZg2PFAxm2g0fETI4bwlaybHfSnYB1QiE5y06QToUuZXaMNWrsOG5GjAljT?=
+ =?us-ascii?Q?LUcBYArIJy5BEi8853LPsfqXy/F8x4nji+4cZ7yKJsamfvqFb8kkcHytKH4B?=
+ =?us-ascii?Q?BsAYbW8a4UN0q+wylcDapl20enr+2ffZJPHbioNmV01VbDQ7FA3WFuSYlQ9E?=
+ =?us-ascii?Q?sRYZR97MG/EVU+dihw+VP9qDXX5jpBQw4OzFKWRa6mH7gdaqUA3LKodgIZVV?=
+ =?us-ascii?Q?vkbVCpU8UOQV8dfp4dqX1iuvYk1Odqw9top5qG6OYlba2gyISiB/huEWAgSq?=
+ =?us-ascii?Q?9kHi1BVvTYK2xJqt4t+8w1TnGqY79Y8+FEY602eM3SdTaohHRJaexa/g0Htr?=
+ =?us-ascii?Q?EbVtmrBv9V862erYHVWTGXMXLYHuHYk7jAZtDuQy2uwUz7+q/WNODjFlfA7f?=
+ =?us-ascii?Q?WM/EzJ6oISoj7bJii/GK03ndcehYGpAWcXjJs0XMdgwMRL4F9gJkXfl98vPX?=
+ =?us-ascii?Q?99w6sU8a13ofgQzr+ZFBmPBkFhoo2AEtwDLSr800XO1X4BP4MdahvvIDgnhc?=
+ =?us-ascii?Q?Z+DyV+yf1J12zAPmATaWYNC6H+QWO0CYZ2DoH+qvQdXYu2ij+YTtg6H+oJAu?=
+ =?us-ascii?Q?ZqclSwWFLepb2PGt5G06CdMsMzI1+1HDc+F4p1kQM7CcUL39+ZNXrlqrSARr?=
+ =?us-ascii?Q?nGaFK66xgnno6oCMboTHrKU3XFwr+LJ6LDL6DC3MAvccN2jWGUuvATFK2O9H?=
+ =?us-ascii?Q?LTTYJlLL7COZk4IUsEoToaMrhblEkR7QIHMnUcYzhiWsKxS5UNuPa/KyFbhr?=
+ =?us-ascii?Q?tUnz67P38otblP233MDu2/OMlv1pPMHKzWHj8JER+RONitunbU63r/TpgNcA?=
+ =?us-ascii?Q?Q3cy4bwK6fJgNTCW6WnCG22oyx6X85M/ZRMy/8Se6T+92c1rvtY12wgPm1px?=
+ =?us-ascii?Q?stS61VX6JdYaHEij5yBzrVGuRYZQcpzkcV2Cacda5/Go9m0kAFpifQozM5ga?=
+ =?us-ascii?Q?9jASYBlTQv2e43Dc8OA8B8xSgKZo2QAdtej2KVFjc60OFdwowoSB6cEKo0KO?=
+ =?us-ascii?Q?nByWWNgKsYZbf8EG19DxXcVsmEzq//6ke5/pQPYxDGpK/qZKFHBlmSKnLuK1?=
+ =?us-ascii?Q?4lGVqH5t66HkQ5FsbvePIiulkJ7Dz6VoGeEZCOHCQtwJTvj9TO+tEl5iTq6H?=
+ =?us-ascii?Q?+o8kP6sO8nXYwzW3uLjSB0kNEznNCvBXGFEuVhWaSz+y8wW5LKv8QLT+lSEg?=
+ =?us-ascii?Q?bM3LkvNxYHComd2/B1R8m7qKh4byGfQBumRAqCvFOYA4jA/jc7j+C0ozVl6m?=
+ =?us-ascii?Q?kgiY2FTsMwfByt/PolpVcK8TBRKOmg4Xz7+2zwk0L8gf7awIilX2ig+jggJ1?=
+ =?us-ascii?Q?EbSOF+2r5YMyHrCdRj/q/tektQtTBvnvCbw1H9S5hEkhB/3axyC6r4IsFqYB?=
+ =?us-ascii?Q?0jNXCIm3GGvo4RN4t/5SDvpo+TYJY0et?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FI9fpe9Ga4suXE30CSgSkOY+jb/GB3RPuXKwr7/po0wSxGLcGLJJGd0Cmes7?=
+ =?us-ascii?Q?+54jZkb1/3yR/u1yU4kxd7xbKlSDodgWhXKfrdfSQZROV9aJb0kHQBcGfOcF?=
+ =?us-ascii?Q?+aGaijhVzliYiNiwzC+ne0zM37Czd1NniaHDJRsQvaysfqEsSEVS+ju67u1a?=
+ =?us-ascii?Q?Ax8G1d69sB1OQxt9d+jjiuxSmjZUOWey0K6Eb/odh6aHGcE2z/1uXxhqJu7y?=
+ =?us-ascii?Q?bjkftwoqYdP04QHLwiCL2JG+ltL9ruItulg44F910R74mHC87Gqx8nEApfsB?=
+ =?us-ascii?Q?KKP4nZOhUS0TCkTOcPzYxqa3Efd7R/OMCYrvHtW2Bn02x0ufyTKBUvJDrwTC?=
+ =?us-ascii?Q?HifAEmHVQIM3gbXRGxsidDosm19zTdK+Oj/lIJ8pUAv4SCS2poCxuwTQorG1?=
+ =?us-ascii?Q?d6s9ydYw728OdefYEtI8wppspOk0N0OyB0Qou2KBDdG8/JJ2QjNe8Z2u/X9d?=
+ =?us-ascii?Q?8Tw+8Ckz0B2c9vlpVrRfPKA86c2VjVa2WsEhuJrrhio/K4DHPDYoZObyO30o?=
+ =?us-ascii?Q?boTzI2b+Bn+lEWF/MjvHNmX7cmFEuL5eJzQOAJYesIn7iFvxbj9QLsfU3dsB?=
+ =?us-ascii?Q?wpV+9fZ1ulH126A+SEX0bNeIfb13QiDW+8j/bnea28tqpg29/7jR+Pza/JHl?=
+ =?us-ascii?Q?N3qL7QtWzBZvuDarMSPawGC5dVXxpX/jDyTwrbDsJpdlZFiIKAn8boXI7EfP?=
+ =?us-ascii?Q?wqWlBAcUfYoHqsAn4zpKb3ZrnobcPeLYUFGayU/4DVk0xUegUC12mlZFamUl?=
+ =?us-ascii?Q?CygQV/df/+vKB5PiollvMxEPbOIzR3vKPZRfcXyEYfDvYEK01EejCulJA6Sh?=
+ =?us-ascii?Q?3/zOnhkqKHGWImq+E5+yHP2MBLFoIeysD9mY42OnZq0d1nwmCKDu1MSkUDL5?=
+ =?us-ascii?Q?uW9GUl2dA3ecM1GLQj66DcYK/5mOMl0yXtvQd5Zn2B7auJ9kkR2Gyywr2lDk?=
+ =?us-ascii?Q?cMIhdwx585W25NRrKVM2qpDucGp3iVVSh4xmCsW1+0llqmzFmraPy2QtMPyT?=
+ =?us-ascii?Q?WPujMADqnNsg1fBnHBHZFEV3UbmOP1nM7qfiVa34qcq5DDCOpMHD13NAkq3q?=
+ =?us-ascii?Q?s1Vxb9o5EVqVzkaAEy8frVz/plY7nV8eJaH3OPXdVgoLzRp16T7YGGaGbMZ0?=
+ =?us-ascii?Q?U2n62okOtArhuAFJc3rBAiFcse3S0cywYO3I2riqRsPu4LECcSIvffpYu5Gc?=
+ =?us-ascii?Q?I5zIWLFE0RfI0nXom7NIG5gC3zmFNBido1tcbZkyAKAoZm18lX7s8BA3bLNb?=
+ =?us-ascii?Q?cl+C655IqFGPgp32dP1lyCfQWfSxjBypQdvd3H1se4qHv1lK71S4M7EQ9hBM?=
+ =?us-ascii?Q?gxWthtJrnB3agri52saKKWVqOCs9ZOaTjBPE6r/ZUGRSUCvd2qg+X6NTJQ9C?=
+ =?us-ascii?Q?5hOkF/z1YPrgFc4y0VyPSsAjQIVtL+wLJMX5laA21/2QxnfyHaTP7HHcRUDm?=
+ =?us-ascii?Q?VtqWkc5YM/ZBM00JOkLic98lIxsLPtfv8RHW3oQM0AM65D2/d580g6OqyPxj?=
+ =?us-ascii?Q?Wu36O0zCm2t2HeIdMjSX0shNgLZuut4F47UOLcNogwNr7PAKeRevWJLZK4uJ?=
+ =?us-ascii?Q?p291gl8PxxwT1NYw1O72k3uwvSMQ49hrhES1fOrm?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4200998b-1836-4e52-5fdc-08dd7847ba33
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 15:52:41.9504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KzAtli+DdKvSwjY2uZ1qIDnTnxFAQOUEufzEcaI6LAQ8299bKXUKHk+brRfhs386YxswCyP/7GAhVxLfy7Oozw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7602
 
-The Mediatek CPUFreq binding document just describes properties from
-the CPU node which the driver uses. This is redundant as all the
-properties are described in the arm/cpus.yaml schema.
+On Thu, Apr 10, 2025 at 11:45:13AM -0400, Frank Li wrote:
+> On Thu, Apr 10, 2025 at 02:56:09PM +0800, Kevin Hao wrote:
+> > Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
+> > remove") introduced managed cleanup via fsl_qspi_cleanup(), but
+> > incorrectly retain manual cleanup in two scenarios:
+> >
+> > - On devm_add_action_or_reset() failure, the function automatically call
+> >   fsl_qspi_cleanup(). However, the current code still jumps to
+> >   err_destroy_mutex, repeating cleanup.
+> >
+> > - After the fsl_qspi_cleanup() action is added successfully, there is no
+> >   need to manually perform the cleanup in the subsequent error path.
+> >   However, the current code still jumps to err_destroy_mutex on spi
+> >   controller failure, repeating cleanup.
+> >
+> > Skip redundant manual cleanup calls to fix these issues.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
+> > Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> > ---
+> >  drivers/spi/spi-fsl-qspi.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+> > index 5c59fddb32c1b9cc030e7abb49484662ec7b382c..2f54dc09d11b1c56cfe57ceec8452fbb29322d3f 100644
+> > --- a/drivers/spi/spi-fsl-qspi.c
+> > +++ b/drivers/spi/spi-fsl-qspi.c
+> > @@ -949,17 +949,14 @@ static int fsl_qspi_probe(struct platform_device *pdev)
+> >
+> >  	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
+> >  	if (ret)
+> > -		goto err_destroy_mutex;
+> > +		goto err_put_ctrl;
+>
+> fsl_qspi_cleanup() already included mutex_destroy() and
+> fsl_qspi_clk_disable_unprep()
+>
+> simple
+> 		return ret;
+> >
+> >  	ret = devm_spi_register_controller(dev, ctlr);
+> >  	if (ret)
+> > -		goto err_destroy_mutex;
+> > +		goto err_put_ctrl;
+>
+> return ret;
+> >
+> >  	return 0;
+> >
+> > -err_destroy_mutex:
+> > -	mutex_destroy(&q->lock);
+> > -
+> >  err_disable_clk:
+> >  	fsl_qspi_clk_disable_unprep(q);
+>
+> remove these two labels
 
-Signed-off-by: "Rob Herring (Arm)" <robh@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- .../bindings/cpufreq/cpufreq-mediatek.txt          | 250 ---------------------
- 1 file changed, 250 deletions(-)
+Sorry, I missed your patch3 and Mark already applied. Please discard
+my comment. it should be fine.
 
-diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt b/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt
-deleted file mode 100644
-index e0a4ba599abc..000000000000
---- a/Documentation/devicetree/bindings/cpufreq/cpufreq-mediatek.txt
-+++ /dev/null
-@@ -1,250 +0,0 @@
--Binding for MediaTek's CPUFreq driver
--=====================================
--
--Required properties:
--- clocks: A list of phandle + clock-specifier pairs for the clocks listed in clock names.
--- clock-names: Should contain the following:
--	"cpu"		- The multiplexer for clock input of CPU cluster.
--	"intermediate"	- A parent of "cpu" clock which is used as "intermediate" clock
--			  source (usually MAINPLL) when the original CPU PLL is under
--			  transition and not stable yet.
--	Please refer to Documentation/devicetree/bindings/clock/clock-bindings.txt for
--	generic clock consumer properties.
--- operating-points-v2: Please refer to Documentation/devicetree/bindings/opp/opp-v2.yaml
--	for detail.
--- proc-supply: Regulator for Vproc of CPU cluster.
--
--Optional properties:
--- sram-supply: Regulator for Vsram of CPU cluster. When present, the cpufreq driver
--	       needs to do "voltage tracking" to step by step scale up/down Vproc and
--	       Vsram to fit SoC specific needs. When absent, the voltage scaling
--	       flow is handled by hardware, hence no software "voltage tracking" is
--	       needed.
--- mediatek,cci:
--	Used to confirm the link status between cpufreq and mediatek cci. Because
--	cpufreq and mediatek cci could share the same regulator in some MediaTek SoCs.
--	To prevent the issue of high frequency and low voltage, we need to use this
--	property to make sure mediatek cci is ready.
--	For details of mediatek cci, please refer to
--	Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml
--- #cooling-cells:
--	For details, please refer to
--	Documentation/devicetree/bindings/thermal/thermal-cooling-devices.yaml
--
--Example 1 (MT7623 SoC):
--
--	cpu_opp_table: opp_table {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-598000000 {
--			opp-hz = /bits/ 64 <598000000>;
--			opp-microvolt = <1050000>;
--		};
--
--		opp-747500000 {
--			opp-hz = /bits/ 64 <747500000>;
--			opp-microvolt = <1050000>;
--		};
--
--		opp-1040000000 {
--			opp-hz = /bits/ 64 <1040000000>;
--			opp-microvolt = <1150000>;
--		};
--
--		opp-1196000000 {
--			opp-hz = /bits/ 64 <1196000000>;
--			opp-microvolt = <1200000>;
--		};
--
--		opp-1300000000 {
--			opp-hz = /bits/ 64 <1300000000>;
--			opp-microvolt = <1300000>;
--		};
--	};
--
--	cpu0: cpu@0 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x0>;
--		clocks = <&infracfg CLK_INFRA_CPUSEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table>;
--		#cooling-cells = <2>;
--	};
--	cpu@1 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x1>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--	cpu@2 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x2>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--	cpu@3 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a7";
--		reg = <0x3>;
--		operating-points-v2 = <&cpu_opp_table>;
--	};
--
--Example 2 (MT8173 SoC):
--	cpu_opp_table_a: opp_table_a {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-507000000 {
--			opp-hz = /bits/ 64 <507000000>;
--			opp-microvolt = <859000>;
--		};
--
--		opp-702000000 {
--			opp-hz = /bits/ 64 <702000000>;
--			opp-microvolt = <908000>;
--		};
--
--		opp-1001000000 {
--			opp-hz = /bits/ 64 <1001000000>;
--			opp-microvolt = <983000>;
--		};
--
--		opp-1105000000 {
--			opp-hz = /bits/ 64 <1105000000>;
--			opp-microvolt = <1009000>;
--		};
--
--		opp-1183000000 {
--			opp-hz = /bits/ 64 <1183000000>;
--			opp-microvolt = <1028000>;
--		};
--
--		opp-1404000000 {
--			opp-hz = /bits/ 64 <1404000000>;
--			opp-microvolt = <1083000>;
--		};
--
--		opp-1508000000 {
--			opp-hz = /bits/ 64 <1508000000>;
--			opp-microvolt = <1109000>;
--		};
--
--		opp-1573000000 {
--			opp-hz = /bits/ 64 <1573000000>;
--			opp-microvolt = <1125000>;
--		};
--	};
--
--	cpu_opp_table_b: opp_table_b {
--		compatible = "operating-points-v2";
--		opp-shared;
--
--		opp-507000000 {
--			opp-hz = /bits/ 64 <507000000>;
--			opp-microvolt = <828000>;
--		};
--
--		opp-702000000 {
--			opp-hz = /bits/ 64 <702000000>;
--			opp-microvolt = <867000>;
--		};
--
--		opp-1001000000 {
--			opp-hz = /bits/ 64 <1001000000>;
--			opp-microvolt = <927000>;
--		};
--
--		opp-1209000000 {
--			opp-hz = /bits/ 64 <1209000000>;
--			opp-microvolt = <968000>;
--		};
--
--		opp-1404000000 {
--			opp-hz = /bits/ 64 <1007000000>;
--			opp-microvolt = <1028000>;
--		};
--
--		opp-1612000000 {
--			opp-hz = /bits/ 64 <1612000000>;
--			opp-microvolt = <1049000>;
--		};
--
--		opp-1807000000 {
--			opp-hz = /bits/ 64 <1807000000>;
--			opp-microvolt = <1089000>;
--		};
--
--		opp-1989000000 {
--			opp-hz = /bits/ 64 <1989000000>;
--			opp-microvolt = <1125000>;
--		};
--	};
--
--	cpu0: cpu@0 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a53";
--		reg = <0x000>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA53SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_a>;
--	};
--
--	cpu1: cpu@1 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a53";
--		reg = <0x001>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA53SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_a>;
--	};
--
--	cpu2: cpu@100 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a72";
--		reg = <0x100>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA72SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_b>;
--	};
--
--	cpu3: cpu@101 {
--		device_type = "cpu";
--		compatible = "arm,cortex-a72";
--		reg = <0x101>;
--		enable-method = "psci";
--		cpu-idle-states = <&CPU_SLEEP_0>;
--		clocks = <&infracfg CLK_INFRA_CA72SEL>,
--			 <&apmixedsys CLK_APMIXED_MAINPLL>;
--		clock-names = "cpu", "intermediate";
--		operating-points-v2 = <&cpu_opp_table_b>;
--	};
--
--	&cpu0 {
--		proc-supply = <&mt6397_vpca15_reg>;
--	};
--
--	&cpu1 {
--		proc-supply = <&mt6397_vpca15_reg>;
--	};
--
--	&cpu2 {
--		proc-supply = <&da9211_vcpu_reg>;
--		sram-supply = <&mt6397_vsramca7_reg>;
--	};
--
--	&cpu3 {
--		proc-supply = <&da9211_vcpu_reg>;
--		sram-supply = <&mt6397_vsramca7_reg>;
--	};
-
--- 
-2.47.2
-
+Frank
+>
+> Frank
+> >
+> >
+> > --
+> > 2.49.0
+> >
