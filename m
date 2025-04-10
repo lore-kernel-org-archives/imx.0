@@ -1,201 +1,194 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2065.outbound.protection.outlook.com [40.107.249.65])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776F41EBFE3
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 16:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744301656; cv=fail; b=aBE8CdwpzC30DYa0xN4mqQa52BG3/4WCslNMIef0q93ulU0vE6R/4TBLJKhDV+qvXENpW56PniZ87gPCsASFpLsWDpKi+u9h072jXPlCbOZlUxb/r2dcWZosn1dMUC+ENGFMB0mtLilp2arBQuEefKJFbOpYWVbuYnvgtAw2Vtg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744301656; c=relaxed/simple;
-	bh=iK4zw91/TxjCXEG+au4Ia3E0wKTOqWBFSp0Sl/kfo8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=T/8dWFCYSlBwF09GXCZLS6cJCg1y//DBQe5KWA83EfQFhIHDGod/vgcrvxKCg7W6hcct890VC0CPH5qPnhA0oZsSJi/1kasUfeUUhWjD5W/adHKbLfSPByXWyMHCDfhbIlwQNFPPrDtMDz3Bn6iHIatca0BR0Bl39H9JwRCssqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DbLTzQeK; arc=fail smtp.client-ip=40.107.249.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB831EE039
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 16:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744302328; cv=none; b=HaQSMAtL8/h80BtUki6jd5S6U5ywGI5lonqehNh+Dt8gwiHLwCRgUtfw1iV/PmIUnouKK3DHDh+1mHZc+ksX+Rh0kY14J3C38e8MLQM6lXqlHrup1PGekw7cga5KKtyke3FWlXJ2G8uaxL6usQAfzOoozPfmU5lqwDWoMpME1Ag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744302328; c=relaxed/simple;
+	bh=vIUbdxOYqvSTKo9IQatuZE5t3HopXP85AqmNwZ7+JzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gVak5oO/VO/y69mKE5u8TTKv6kIw842A5xvAzinpNdVE57y8PwOPSp4AhgLIlWpCXh4nW/iQYzypLMwz53VDyGApvg8Pmzhkb8k8oDHrMd4aNuXRjQUTj3jnUoFny4nBteKLBxcrXweMvu60VuoJavrWenuxdWorcFRYsDYEWVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DRKNXxAb; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DbLTzQeK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SM/7cy2frBtx8NVJWX/sGwL2D9+csJR+irCS4IoaM7sgsAwU8sXeau3e+rk1ZliBRzFNvqC6y8SW6ibzfNkTgf1gGkZpVvOt8kHMT78whqgpO+LxEiydNcMRf3oO0j3w9HcC/nKDYZhZYyxIGnpHVabQeZy34RUVn0ZxqVAIJZFywAZGwID5Z0X0qhXnI7sMcfid8Zv1PURTo/64izByJawzc68NVjh8KXf4RlLDjwy1/QeDG7y4amvx4f5kAF8E+HncZJxcftvrPjJ+7mnE7IhRkRgA6tJ48KXm0fXwaAjY/fv9yhwdh30Z+ze8CbQErHhoZHFqQUv6EREo/BQA0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+ILE8H9NQb63ud9M/Eh8usfRsdP+E505V1P2o4Q9l9k=;
- b=H6G+/03ZKca7izQ+SkdRcmgLZf84d1Hi8pm/eB0N6G6sSzzfGvMA9k+kqRq+/AaJtrRr8sHMM4nr9zpl/J9Na2lYdqnKXubgocoAH0gM4+kPJ8MN+THo3TLjUiU1OpOrb3R+GYu3PU9IfCigmC1g8To2+SnUFnRNlXPCdH0RbgxLzdKtj0Yv4lNFM558LnZo5KAgTthznYWHvR9F93I1UWE9DMlc7o0J2UlMlGeeTk1Q3IOuZBApTskGXbpuiaomEyQkSr+4U3Ci+RCdcHh9fM1gc/PzQurp08qicIHO+ICP/ZFBj8op01M6PoXGvZH9qDfNPt5Jdg2rsBE2FgF8yQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+ILE8H9NQb63ud9M/Eh8usfRsdP+E505V1P2o4Q9l9k=;
- b=DbLTzQeKxZ31joh+UMkDZWyzIcuDOo+iITNwOrBSmS3pAAI7YAYmNjS8HDkgNSZRgKYdMRLjKOenQLk3rRq6QkQX53Fz4N1QGNbBY/0GOgH3XOheUEbSBCD+quG7OftS1qYtI+MwdUSuUXw0irLJDxTlqhtXwZHv4FbwBpkZONiQ0jdraDGh6kj1qrpjexhxM6bVlIhd8ImsFWLksPd6STicxxpqQt5En3p/JtNfpF50nmjr4Alazoh1L+CSkenACkx+kWYVetnAmeIhMYWjqg0PUl15bvk/Zwj9/+VfmfG4MPr+tA1n03C4M0pglrAGZoLBjkA2f29n1tbZ/Ut9fg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8258.eurprd04.prod.outlook.com (2603:10a6:20b:3e2::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.38; Thu, 10 Apr
- 2025 16:14:11 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
- 16:14:11 +0000
-Date: Thu, 10 Apr 2025 12:14:04 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/9] arm64: dts: imx8mm-beacon: Enable RTC interrupt and
- wakeup-source
-Message-ID: <Z/fuTHDdrbp2yApZ@lizhi-Precision-Tower-5810>
-References: <20250410005912.118732-1-aford173@gmail.com>
- <20250410005912.118732-8-aford173@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410005912.118732-8-aford173@gmail.com>
-X-ClientProxiedBy: PH0PR07CA0001.namprd07.prod.outlook.com
- (2603:10b6:510:5::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DRKNXxAb"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53AG1Lnu032650
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 16:25:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zR4+XiWiYcCAIsEskE+Pa3uKadOj7H5b8EyZw08afF4=; b=DRKNXxAb/WCjQgrY
+	hz9jTbcUmyc+6kpdmMafLPwR+le4Cq1jMeyTjCxsCejceOyQfmi7oALTlTQNZWmt
+	HZ6ObdJEu2UlNJkxKLh981hjfDcheQK0YO0wpLYTB3oAE0bD7z6wPJkf39uMqmv3
+	CuXvn7AHdYvhyvsQsOt9vExk3T9+laF7gO/oW+l2c7/SeICL+lhWMeaeZjtfRw2b
+	SiKNTFqzXURqsJ0+m/R/jLELMHOJ18HrzMql88kcjtfnQ+hgcZkTDD8CVSedDpi7
+	E+HHxl/0WDpxjk88guiiXC047QSHSRPQvoSO7HNYuo0vrP/LcMl7CKsMAUYEQ12n
+	hZULkA==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twfkqcry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 16:25:19 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c54788bdf7so23731885a.2
+        for <imx@lists.linux.dev>; Thu, 10 Apr 2025 09:25:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744302319; x=1744907119;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zR4+XiWiYcCAIsEskE+Pa3uKadOj7H5b8EyZw08afF4=;
+        b=kwJJV6cX3ptend1nuxePA1ijluL3vg/D/BZMOWEWNW7mRAZMeZ4eNn2XTsj24hOtAi
+         NayN+uEnUQ/iMnA2R9J8qWcQkFCQdH8KWGmEG4Lk7v9ZCi5QdEaewlJ9lKrCOKsSLJsw
+         KZoqhPfx/QQjJLfK7JH+LbtZX/QGBifH5qaZ7XznbSWMcwyaubslgpfjiVOH8wBWq8Ge
+         8pukQRMmYh97gv1DawjLKnKPPZZuFBYpsEThgjEWJMOTQXCx6U5CzDU5yFq+57acFAAQ
+         52C07mIHeOksLXEiQrGxlZKtw4skq/hYw5TZX4fl5vDq1DPzkcE0yzU/s79342EtmKtu
+         tySQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXO436slLCtuDrjF37HJQ0mxGb3ga0Qt8Jonq65mn2rOyK2HRpOhY7SiIEKMohqQ0yo59Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1JR3qdDcvKl2nX8lXODBk8D5YN0VAzpiqt0Clo5gYIX2CPcGK
+	PX7j0+IMff95tSWvXLA/A57Fs0XGJzed/hdBnQBWn5FP3Sm5HmBDqfA7hVB0TFS83Yew/AtDoqH
+	qRvUzoEz1IaAtsbRbx047q5RsCh/xVSVUkoHHZvKDWoqeXFiJTko=
+X-Gm-Gg: ASbGncsyr7c1tanL0IQHwMkBhX25qv6WfVb5xToeSWFolK5W9wYAgR9MIbN0y2/nmmy
+	LUHCTLmhpuh774kcVKc2u0lFojcJG5GBZt8wLTu+NYBrpqmCX+ifv5mAgSGu/JSjiHY6OD1K6vA
+	2ZvyuIwufcmcpvtHl4PhR+zwRBBdgL/uIx3tWT03BPqJ5T9Xi8b1tDwlAiXY3bJoWLHh+nO0/gE
+	e+U1bMgQYIfVFaKI+9j71biYxC3ISO4QFybruEeYxsmZ8RRCkW4RFS2MiGHeXLLM4GhvVVAD568
+	6qyz5GIUJTSdfli2hBPv2/cEgcK/XVLbg98nnZGTbNmtcF2vLua6QL+fTnpmxwPHGw==
+X-Received: by 2002:a05:620a:f11:b0:7c5:8f37:1eb2 with SMTP id af79cd13be357-7c79cbed7e5mr390018685a.9.1744302319227;
+        Thu, 10 Apr 2025 09:25:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGh0TA+XXGeyGhF/XKIz0cXHA6zoUdAUUcHCD76IoGVEG3eLbl5iKlo88Yqsik48pUsXmHeg==
+X-Received: by 2002:a05:620a:f11:b0:7c5:8f37:1eb2 with SMTP id af79cd13be357-7c79cbed7e5mr390015185a.9.1744302318810;
+        Thu, 10 Apr 2025 09:25:18 -0700 (PDT)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1ce818bsm297826166b.182.2025.04.10.09.25.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 09:25:18 -0700 (PDT)
+Message-ID: <898bebc3-e2b1-4819-9869-05b783509146@oss.qualcomm.com>
+Date: Thu, 10 Apr 2025 18:25:11 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8258:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc28ad3b-7f66-4936-2a07-08dd784abac2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|366016|7416014|376014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?lCXJv7gtFhzREtyLua0gwL1H71TQa5+9zkXnGVccEwigeDGaAZBSD2LjOdKh?=
- =?us-ascii?Q?+fb7sAQPjSCZHcOEMTKDpHOZ7vAcIN7QPmc4LCK1ST0qhtowugHtvnLLISAO?=
- =?us-ascii?Q?b/7WBpCfSkWvIo95X9NAJLu0llyh7IkNj7JCsNMaCL2JL4aCkJlJTWrBpkwZ?=
- =?us-ascii?Q?Membnn38CO1BKjvNoEJd2c1qxT3gvq0CzDmG4ai+k/6kWQTPUKvhQvjUXI9q?=
- =?us-ascii?Q?lGedGjxUTLSTa9H6f0PeUZMQWgAx0uwVkdYCoeAW1xQ6ApBF9YxYQotj41p7?=
- =?us-ascii?Q?lqQE4eVRfRkIkcBIeq/AFoczkLoYF4DxGkzrnKDu3EyQKNqu6f8fSlybfMun?=
- =?us-ascii?Q?xwCfbqCpjIWGN8LQlkPkqBetUgILhWxOlde1qyWCLmTIRpyEITii7Lcn7o08?=
- =?us-ascii?Q?J/PX3+FLdL+ZQplbDShl7ubAa4RZ2Hs4G7PLJnaPZ8Te/fgpFOTMt7JZzR+Z?=
- =?us-ascii?Q?tIxO/0Dw2mH7cdGieAVbyjXP+ARSRQtE7q5w/E6RuUyRf56JyxbrRQNWopEE?=
- =?us-ascii?Q?1SMqXwinybYFnn4YqrrI7CMqdz/apPjFyKLRwdmPbSFQl6I8S1Lq3Hm23xhX?=
- =?us-ascii?Q?E1g1rYO1rxBR264imX+NgPJ2+tEq/LMI+VVGq2LGUsziPa/KFcJaLMUV/yAL?=
- =?us-ascii?Q?h8J6GmwoA/XW9W+rFO5IEFVw2AuUNGMvYuFIbO+yUOOmmIirqwb9NEKxJXrk?=
- =?us-ascii?Q?dc2I0fheLT5Zh+2/39YR9iGNQss9GPh/8RR4AJCMLOgY2yUuyfVAnzFIfb69?=
- =?us-ascii?Q?IMkQoN/MvXVOfU9ZAGNqgWm6BBmd9VCHj3e0gdaXOi97XiurPH4ff1BqKy4j?=
- =?us-ascii?Q?z/OHdPDocpp01JMekwu3Dxo8zuFFqHptJIymTW4MnN1v1pGSkToFnQs8n6xs?=
- =?us-ascii?Q?SCZ78vutu5ksQXU/pMiP+1h+6REcRE7OAG/AfIqAzonf4v21Aur+H6mHDTWH?=
- =?us-ascii?Q?2VYU0dY4cWa4YhGK+noSs2KEpDC75W/uzF6LewWk5DrrzlMHFTB/y/InSma6?=
- =?us-ascii?Q?NZyOqYCXwb1QFNIA/6MTVY+oCiGfYPu77w6S4HFQNSTn76WDg1Oj5tEdFug6?=
- =?us-ascii?Q?ty+JtbEQqrcBWLQLRsQT4vfh126ekHxl2Ugq7+v5CSZeAnR4SPifraNWnVud?=
- =?us-ascii?Q?cUzpNOOWLUI+hdZj2xDu7s1TrwXR9ZZWEvbMeTu0J5Kd+fSLReIzgjmaGDMQ?=
- =?us-ascii?Q?qoqD4mpE2KcfeT1bGtV6A64htBcnBB2f7laxyBaVXPzOcz6dtxacf6rAznuM?=
- =?us-ascii?Q?slhhjpkIT0Nu5rkfCz8P0PC3JgbMlwMwubC1IBir2EnbzwznItE5thiO9NJa?=
- =?us-ascii?Q?LJmOh0CRfzhA/E8NqCuKo0dsn0vtbTTklOnQY6VDO0tXHoPJGONdI7Krc+Jm?=
- =?us-ascii?Q?1V6jbVMiZQYWqhQ7O+7gtkFiaBUazTDP9VMHHJhjh0AeWoZgAy6Rx1Dc4OwN?=
- =?us-ascii?Q?7QTMJQ6/Nlx7GwO+UyJUzFlaMG6+zT1FYfXictDB61FIa1vP8EtmCg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(7416014)(376014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dYjOH/Izp+qXvWggeCpFQMyIxhrfH2yF9OGzVV/F2a0e4mslQF/cKcpCcGLb?=
- =?us-ascii?Q?MWsgcyaZw9cbZQjik0c2pP0O7Jyra4/61OjSwE49dU2qctXSjWH6cU6LKPK2?=
- =?us-ascii?Q?hhazbymbyqIvBa+kkyTjtdOPS49QEa9NG1mq7JcuZpbVGg5u1BJVIPlXTQZe?=
- =?us-ascii?Q?sxsDCpg+qSjywNjiNkkNkISM+1lTsyOIyB8bjEWwA5zqZrtYdYnpS/99qLj6?=
- =?us-ascii?Q?GZ/gdST3/5gBmMIvu5K50l6VyNgEMc0r6PGlkR7fnroShjtyUH5/GH+NNkPc?=
- =?us-ascii?Q?fdfe4bKDAongjJGubCROfHw3Wmh9CAzAfqREVzQg9DoW59ogj2R9G6Fxmaac?=
- =?us-ascii?Q?1aa5C2lo3V1pZKVvTpzfCeyKAs1P8sng4cMzPO3kUsuzpPRk/al4kIGYmbBu?=
- =?us-ascii?Q?H5oj/u3csRgTWCKuOYxVBlTioZGMshxIj9/yBqu1LmtsP7/qfTFCqI81Rhz5?=
- =?us-ascii?Q?bm+usB+2TqsZjk25s5/7Gld7LB+JUP2IcgUMXsDFoPac39fTXKOe9Cb99nsE?=
- =?us-ascii?Q?CDFRRWdpJIZv/w0h/+ckoF/ffp62vhpdU7ixnuVH4IFZD5kCVvly6wMzf1mK?=
- =?us-ascii?Q?hTzRI8YULlf9rUkttnkuz3NP/ABX5mqctbs62/oCKQrjaj3RHCJ/wYHZ+WTE?=
- =?us-ascii?Q?OhqYZQl8nPY7xmvdXmSn37i8YJHoE3Ijll5okmt46I5gynX0Ocz+rH8MZqFV?=
- =?us-ascii?Q?ojDR/2aX4+0wM6VhNn76qnWbMrON/Tn2vtbY+03BNBLVb35uVu6jsaeAWxh7?=
- =?us-ascii?Q?JxJTfVRWDNuekiy5D8szSSbhwjWvu9MZoYDNbXlehaGAWyKT9SehNQhBMQZL?=
- =?us-ascii?Q?ivcLEPWIDFxlPDcQd6V5/cfM9CsUP5u1cm4T6ZktRozWjK/XHkzT46/T8gVp?=
- =?us-ascii?Q?TeS1Z98s8Opslx1AfsuZM7Pe6ZTbNHGVtn9s1oxiBZ9fM/XtFdpgMwwMne3c?=
- =?us-ascii?Q?ypLD3Zi1Tk0jnSv+oU6jGnfnc4y/7bj8AxULZrCst0pZt8bt21frVv0LoeP/?=
- =?us-ascii?Q?0ToR2YGvE8Lg7gXyhFn8CbdevUROoHYRVbtamAeTM4V0kct4Bz3qL9YBLL4c?=
- =?us-ascii?Q?UfQMeOljHoLsYgQPHhH5iK4tRpafZBfIleGxj89K3hxiCbjJKjqxWSdE97MZ?=
- =?us-ascii?Q?VpuqRWuZkwx/mu2YhsA+HOWkcPevGDRv7c6vr8hwwsRKAreoVN4na6aXvVka?=
- =?us-ascii?Q?N1DFWJGYP3VAFZsqVe1qTHv7yLFy5VgoPfELAJOrSl+1vFBba0GkVTf2j0t7?=
- =?us-ascii?Q?s5oTyaHMNZmYgXQ3smar509vBoqkFaQd/Nr34f+Zr+IM1xJzruAtCeOu9Cd5?=
- =?us-ascii?Q?YbyZh7QDob41Z/0LH+wZe6WL467KeBGkvrQsF23v7H8KdgUemgdB44eQfMGX?=
- =?us-ascii?Q?nrAzEgf9VIOW1QotVgakznocoHUOPtXIOoc70j/52ciihj8/Fn0q0p9L31H2?=
- =?us-ascii?Q?hE333KDRgONd04OT8wys2rhayROCEeU8lFTbH1b/TBvhkd81WkwitCbpuwZ3?=
- =?us-ascii?Q?OfWZ2lo6PCRXNUnz+DSMjHHz1E3y81dXF59TcVkgI//Z0UqWggHJlczthg4o?=
- =?us-ascii?Q?dEw5SCoAeRI1slLfDOvGE7r3GjiTH3pIa7L1ad5N?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc28ad3b-7f66-4936-2a07-08dd784abac2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 16:14:11.3866
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z/LMnbMcZaV9sV1SBCbmEHU40Q9R9KPetNXJMokxUUbPRX2xPkZTdYgsDwDSCbJdsoRa9mUlolNPvKHsCMOuRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8258
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/19] arm: dts: qcom: sdx55/sdx65: Fix CPU
+ power-domain-names
+To: Stephan Gerhold <stephan.gerhold@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rob Herring (Arm)"
+ <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        "Rafael J. Wysocki"
+ <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com,
+        Conor Dooley <conor@kernel.org>,
+        Nicolas Ferre
+ <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        Daniel Machon <daniel.machon@microchip.com>,
+        UNGLinuxDriver@microchip.com, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-mips@vger.kernel.org, imx@lists.linux.dev,
+        linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
+ <20250403-dt-cpu-schema-v1-9-076be7171a85@kernel.org>
+ <03011a33-174b-4027-bdd2-043aa685380b@oss.qualcomm.com>
+ <CAPDyKFoZ7NfN+pkCPnusvTOEaxbQhr=1FJqzdDGrLcKAzBpGyQ@mail.gmail.com>
+ <66f8d957-f7a5-4aec-b8e7-5bcc7ff7f569@oss.qualcomm.com>
+ <Z_dvAT7LdR7xbH45@linaro.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <Z_dvAT7LdR7xbH45@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: P-_R6xe5gsvV3RgPJaO2yTHDKEyB_I5d
+X-Proofpoint-ORIG-GUID: P-_R6xe5gsvV3RgPJaO2yTHDKEyB_I5d
+X-Authority-Analysis: v=2.4 cv=b7Oy4sGx c=1 sm=1 tr=0 ts=67f7f0ef cx=c_pps a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=LizfDJ_PtI4Zq51CQE4A:9
+ a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-10_04,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 mlxscore=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504100119
 
-On Wed, Apr 09, 2025 at 07:59:02PM -0500, Adam Ford wrote:
-> The external RTC has the ability to be used as an alarm when
-> interrupts are enabled and configured as a wakeup-source.
+On 4/10/25 9:10 AM, Stephan Gerhold wrote:
+> On Wed, Apr 09, 2025 at 08:35:29PM +0200, Konrad Dybcio wrote:
+>> On 4/7/25 6:27 PM, Ulf Hansson wrote:
+>>> On Fri, 4 Apr 2025 at 22:41, Konrad Dybcio
+>>> <konrad.dybcio@oss.qualcomm.com> wrote:
+>>>>
+>>>> On 4/4/25 4:59 AM, Rob Herring (Arm) wrote:
+>>>>> "rpmhpd" is not documented nor used anywhere. As the enable-method is
+>>>>> "psci" use "psci" for the power-domain name.
+>>>>>
+>>>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>>>>> ---
+>>>>
+>>>> "psci" is what we want here, but these platforms require some more
+>>>> massaging..
+>>>
+>>> So this isn't for CPU performance scaling?
+>>
+>> Nope!
+>>
+> 
+> Huh, this is definitely "perf" (= cpufreq) and not "psci" (= cpuidle).
+> If you run blame on this line you get to:
+> 
+> commit 0ec7bde7b590f8efa5823df3b52b32dd373060ff
+> Author: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Date:   Thu Apr 8 22:34:45 2021 +0530
+> 
+>     ARM: dts: qcom: sdx55: Add CPUFreq support
+> 
+>     Add CPUFreq support to SDX55 platform using the cpufreq-dt driver.
+>     There is no dedicated hardware block available on this platform to
+>     carry on the CPUFreq duties. Hence, it is accomplished using the CPU
+>     clock and regulators tied together by the operating points table.
+> 
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0ec7bde7b590f8efa5823df3b52b32dd373060ff
+> 
+> The OPP table looks like it's supposed to set SDX55_CX performance
+> states according to the chosen CPU frequency. MSM8909 has a similar
+> setup where the CPU is supplied directly by VDDCX and we describe that
+> with "perf" too [1].
 
-configure it as a wakeup-source.
+Ohh right I was under the impression that qcom,cpufreq-hw is used on
+those too, but apparently not..
 
-wrap at 75 char to max ulitize screen width.
-
->
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> index ed7a1be4a1a6..8d4d1c86ad71 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> @@ -235,8 +235,13 @@ eeprom@50 {
->
->  	rtc: rtc@51 {
->  		compatible = "nxp,pcf85263";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_rtc>;
->  		reg = <0x51>;
-
-reg should be after compatible
-
-so pinctrl-names should be after reg;
-
-Frank
-> +		interrupt-parent = <&gpio1>;
-> +		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
->  		quartz-load-femtofarads = <12500>;
-> +		wakeup-source;
->  	};
->  };
->
-> @@ -354,6 +359,12 @@ MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3	0x141
->  		>;
->  	};
->
-> +	pinctrl_rtc: rtcgrp {
-> +		fsl,pins = <
-> +			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13	0x146
-> +		>;
-> +	};
-> +
->  	pinctrl_uart1: uart1grp {
->  		fsl,pins = <
->  			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
-> --
-> 2.48.1
->
+Konrad
