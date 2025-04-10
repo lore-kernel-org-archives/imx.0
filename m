@@ -1,161 +1,200 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9311F215184
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 09:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0970426B948
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 10:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744277041; cv=none; b=U4ggbGw0a0/KCFpm86skTsAk9cRX/jJ2DuiO2UQ5glgcWxQTCpRw2gmcPWiaiVJ9bKiAD0QjYhtIO3suIhYq0h2G+QkAzoS8LOeusaO8A6aGZ7r4hmYYlVALH4kxC1qzipJqCaFUSQhBjOD//L0ZBIeIy/lnV83B0sZTjubTNcI=
+	t=1744279205; cv=none; b=Kp/OOYCaLyzWo/x0ZaRRpRWuLzMgWk5ayaqKLvCvXsUgh7A4N1XreYmkfUCnr/jQwMU77oIgyR4QXrXalknN+6dcEiQcfwb2agJUaVJdlSB3/9NBrxKujimzbIe8ygeJMOYwLnAjYmrSj5Za6EtcH7Ohe3Qu6kI5Sg3z55td15s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744277041; c=relaxed/simple;
-	bh=cr1XqsGW0Is9QsImdjqJUZfHSWRAI+91hWhEgPxCyMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZKznoyHXyjydrDoBvB8up3xwj9+ACrAZ55xC8xEvDXRAUnAoo8r5ewTQTyz4JXiFd7ckn3trh3U00amG5/Mb5WBM4hAuaGHXjtRFfS2lQBHz+jcc+IvowT96cYLAmCzGw+hLVvylGxC5WCGlDrNbN0Kr67FYGU/xaSzMmg82cFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CI4cOCBP; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1744279205; c=relaxed/simple;
+	bh=/xVqE6KTM08KjuSLRPX6e0EvocZOj5iFDBuw0DD17Sc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DMDwp0MhY7jZosRyh2ea78XnOOYSblP1cq2W3nxB6mkbG159zMmMRagzIPvYcpzLb/WdQvSN40lKrEVzVgZqXjyT79D+I5qW+gi1xSvFMK7OBlLPj7wCABD6mr1VcLYZ9dAirjWEO79Bi//8WVc7UOgU0PtcLU0JRgvHuBXq7pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=JYY1Sp/M; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CI4cOCBP"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0309A1034EAEC;
-	Thu, 10 Apr 2025 11:23:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744277036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=azBeY/ABdzLCK2gCU3irIQ43T5ERKSG6fIfSiV5Z92s=;
-	b=CI4cOCBPBMLylFiXGeRD7c3jrqxluWRjSNAlIVxYBRtfkxu65x+EH4XLY/RWNVQLhZosUf
-	SNRanfj363p0NmPSjDBbtK4Aa0/DGdWK1QYocBqQRsROGf+9BoyW+6BUpmDG3PEKT72AzW
-	Kt0PPuHmbSfEeymFfHcUdhia9ba74M+Bizo3HQVmUWtKhZT/AhaMEzY9AJ4/fJLJUAXNpY
-	4VbjZzMTsHkVRJjxPHOrMpaKk7G7pLhyYiuIE6wCsNy8CwGb2UNE/d5gH5CO/Bw5ahhDaN
-	a64VEcfrTUvWWIGW92YyCAn0cDiUW4xAL3k3/Y/X8EwEnICsbdvfcnGQmm3EIQ==
-Date: Thu, 10 Apr 2025 11:23:50 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Stefan Wahren <wahrenst@gmx.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [net-next v4 5/5] ARM: mxs_defconfig: Enable
- CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
-Message-ID: <20250410112350.7dbb299c@wsk>
-In-Reply-To: <ea8cc94c-b212-4ae2-8c5b-7697e9b358aa@kernel.org>
-References: <20250407145157.3626463-1-lukma@denx.de>
-	<20250407145157.3626463-6-lukma@denx.de>
-	<c67ad9fa-6255-48e8-9537-2fceb0510127@gmx.net>
-	<20250410090122.0e4cadef@wsk>
-	<ea8cc94c-b212-4ae2-8c5b-7697e9b358aa@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="JYY1Sp/M"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=PPW29SQXJzR0vrIgTW34aJ4jnnjbpwhhSIoTivBL8ag=; b=JYY1Sp/MOY/UGWBrv+0lzK1DPq
+	LiV6y05vgLz6iohBkgWOAwp80mv32I9lgDIIiaFH9ahmqC8VLWVXy5blBNLBN07pxd2v6kmkJC3GU
+	R+DKlKLQsxSl/LXFTYFrhqJ8BMXi7SSdbchNOLiuGRNIacEdS+4N+6Obezi5h14Jd7j4NNR3yhxCo
+	TJ1CXtRxDwVhA4PP2l7zshMSIOmIZk5Eqg3kls7iieabih/pI5D8xVRT3sXMqvSiKPAvF04pk6Ka7
+	7LnDlOQSdY52RyFFIaOYvSnCngEYB/W3jK6Tm7j4cQXtu48v3uC+Rjb3fDwqhmfC1ATd9LGU4v5oJ
+	kuiBRGyA==;
+Received: from [89.212.21.243] (port=41926 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1u2noE-000Djj-3C;
+	Thu, 10 Apr 2025 11:02:54 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH 01/13] arm64: dts: freescale: imx93-phycore-som: Add PMIC support
+Date: Thu, 10 Apr 2025 11:02:39 +0200
+Message-Id: <20250410090251.1103979-2-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250410090251.1103979-1-primoz.fiser@norik.com>
+References: <20250410090251.1103979-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/r5tjFsU34eWBYPJ.iEWYDwo";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
---Sig_/r5tjFsU34eWBYPJ.iEWYDwo
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+PMIC driver for PCA9451A used on phyCORE-i.MX93 SOM is available since
+commit 5edeb7d31262 ("regulator: pca9450: add pca9451a support"). Add
+support for it in the SOM device-tree.
 
-Hi Krzysztof,
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ .../boot/dts/freescale/imx93-phycore-som.dtsi | 97 +++++++++++++++++++
+ 1 file changed, 97 insertions(+)
 
-> On 10/04/2025 09:01, Lukasz Majewski wrote:
-> > Hi Stefan,
-> >  =20
-> >> Hi Lukasz,
-> >>
-> >> Am 07.04.25 um 16:51 schrieb Lukasz Majewski: =20
-> >>> This patch enables support for More Than IP switch available on
-> >>> some imx28[7] devices.
-> >>>
-> >>> Signed-off-by: Lukasz Majewski <lukma@denx.de>   =20
-> >> thanks adding the driver to mxs_defconfig. Unfortunately it's not
-> >> possible for reviewers to identify the relevant changes, =20
-> >=20
-> > Could you be more specific here?
-> > As fair as I see - there is only 14 LOCs changed for review. =20
->=20
-> Really, the comment was very specific. You make multiple independent,
-> looking irrelevant changes to the file.
->=20
-> >=20
-> > Please also be aware that MTIP L2 switch driver has some
-> > dependencies - on e.g. SWITCHDEV and BRIDGE, which had to be
-> > enabled to allow the former one to be active.
-> >  =20
-> >> also the
-> >> commit messages doesn't provide further information.
-> >> =20
-> >=20
-> > What kind of extra information shall I provide? IMHO the patch is
-> > self-explaining. =20
->=20
-> For example explain why do you think GPIO_SYSFS should be dropped.
->=20
-> >  =20
-> >> In general there are two approaches to solves this:
-> >> 1) prepend an additional patch which synchronizes mxs_defconfig
-> >> with current mainline
-> >> 2) manually create the relevant changes against mxs_defconfig
-> >>
-> >> The decision about the approaches is up to the maintainer. =20
-> >=20
-> > I took the linux-next's (or net-next) mxs defconfig (cp it to be
-> > .config)
-> >=20
-> > Then run CROSS_COMPILE=3D ... make ARCH=3Darm menuconfig
-> > Enabled all the relevant Kconfig options and run
-> >=20
-> > CROSS_COMPILE=3D ... make ARCH=3Darm savedefconfig
-> > and copy defconfig to mxs_defconfig.
-> > Then I used git to prepare the patch.
-> >=20
-> > Isn't the above procedure correct? =20
->=20
-> No, it is not correct. Do not make any changes in the "Enabled all the
-> relevant Kconfig options and run" step and check the result. Do you
-> see difference in result file? If yes, then why such difference
-> should be part of this commit?
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 88c2657b50e6..507a71f9294b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -72,6 +72,90 @@ ethphy1: ethernet-phy@1 {
+ 	};
+ };
+ 
++/* I2C3 */
++&lpi2c3 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c3>;
++	status = "okay";
++
++	pmic@25 {
++		compatible = "nxp,pca9451a";
++		reg = <0x25>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pmic>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
++
++		regulators {
++			buck1: BUCK1 {
++				regulator-name = "VDD_SOC";
++				regulator-min-microvolt = <610000>;
++				regulator-max-microvolt = <950000>;
++				regulator-boot-on;
++				regulator-always-on;
++				regulator-ramp-delay = <3125>;
++			};
++
++			buck2: BUCK2 {
++				regulator-name = "VDDQ_0V6";
++				regulator-min-microvolt = <600000>;
++				regulator-max-microvolt = <600000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck4: BUCK4 {
++				regulator-name = "VDD_3V3_BUCK";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck5: BUCK5 {
++				regulator-name = "VDD_1V8";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck6: BUCK6 {
++				regulator-name = "VDD_1V1";
++				regulator-min-microvolt = <1100000>;
++				regulator-max-microvolt = <1100000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo1: LDO1 {
++				regulator-name = "PMIC_SNVS_1V8";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo4: LDO4 {
++				regulator-name = "VDD_0V8";
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo5: LDO5 {
++				regulator-name = "NVCC_SD2";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
++	};
++};
++
+ /* eMMC */
+ &usdhc1 {
+ 	pinctrl-names = "default";
+@@ -108,6 +192,19 @@ MX93_PAD_I2C1_SDA__GPIO1_IO01		0x31e
+ 		>;
+ 	};
+ 
++	pinctrl_lpi2c3: lpi2c3grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO28__LPI2C3_SDA		0x40000b9e
++			MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x40000b9e
++		>;
++	};
++
++	pinctrl_pmic: pmicgrp {
++		fsl,pins = <
++			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
++		>;
++	};
++
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX93_PAD_SD1_CLK__USDHC1_CLK		0x179e
+-- 
+2.34.1
 
-Ok, I get your point. Then I shall prepare a separate, pre-patch.
-Thanks for info.
-
->=20
-> Best regards,
-> Krzysztof
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/r5tjFsU34eWBYPJ.iEWYDwo
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf3jiYACgkQAR8vZIA0
-zr2DEgf+KE3yYGEwlrYyU8JplEso25aCWU0x5ENkFsHPsIds+J9TLbxooFsu53fP
-6Y2JsJPakI0iBlKqW55uuZWh20wPWTFpIoqAk77FautHOO3BcML3lov3upWRH273
-RGVQEJHRGURV/Q2w2jGM6fNH7JjWZjNHRS6WqNZnRm4WedNh5o3MJobE60k/yNOn
-0RFMSqPOegpWpEJQnSmcip2s66i50dy2ou8kqmUwpDX6OMwJP8sELshq2eJDgH2G
-z/p9pXjh5tfkJw3KO/LUktGgHfCdsjhP4pK3WNaLpSIHEMd1kDEnrrbhaQwMyVwt
-qfkJipgw2GEVOxmgaUF5g4GIJ92exQ==
-=Cxw1
------END PGP SIGNATURE-----
-
---Sig_/r5tjFsU34eWBYPJ.iEWYDwo--
