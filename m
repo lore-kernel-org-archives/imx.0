@@ -1,98 +1,210 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EC3212FAC
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 10:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743C421B19F
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 11:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744279266; cv=none; b=NpS4XnsO4xs7IjOoQbLDfDKgnUrcMt40KzYM6SMbwXvgsABZoyE8oMaNaDY6F1H3K5IoPicYYCmXPJYHQSqbqu7Qna+ensCqwSVZ0ILiqHge5GOSuaqXK2trOQg5kavWXxcudMiN1SgtT9yzyhXtkLY+gqJ3wBqwUC2eyWD5bPU=
+	t=1744283001; cv=none; b=YcSE4xbq0eGU91W9CPluxOFqj13BHBDWr/NOc6YhR385ETEms6AXnlgj/Vi2GpHWRHwK4bf24aqdmc6N0a7cDDAxLhXxCwcEkAmCKyfQYtLHq6xMFqVbsG8Mns3id8K1f1vEMzc+9icvWSTgb0twOJcW143gCzL6LppGuTlOA8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744279266; c=relaxed/simple;
-	bh=CuzwSRjIjB++UW1NXXcwKxjTcrmJ81BeSSs8ect0bII=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZCFAo8CSACR4m8FwSOVHLhgnAIgVtefLGGfwMTOMOmupkZRrv1VvV2765mhQQx5Id/CwdzKWyQTw4X8oFN0U8B1kGCGzbhmPuRGKFJmjPCDVx1OUYMEHGYcaJ5OZWKdRHPbPs+MCCpLnW+RUdP9EPc5Mhd9YPDnd7j8hnmCBYck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=PW5/4B8F; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1744283001; c=relaxed/simple;
+	bh=b7+R5N8tjAIPHixahjtSIzvDtEzOx7UBmOpOEyK0+20=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i/lM+IXcWcm/O2j1Z85UwVm8IqqX4Vje2S4Xm+TxwmFCM83052Fvxig5hGi9szvwuhWpJn7BHG1/QnN/cavcBfPyylrij0Tpt4uoaqsj3OEKfhlkQF1QZ6wP6h5aTYKeYXOCzt9cH8m2yoCWwbhWB2wx1Nk3YGISb/xuk2RTTzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UUSpCSfR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="PW5/4B8F"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=KcfXboWvRClaopQK1Ywk6QojNldDv/qICGsRE6ZbcuI=; b=PW5/4B8FmgYCrfJDfOC32JoDkG
-	bwrjRQRtDsuOQBCUe2WSVVcXtKWrPf76CSoRhd0SGPfe2Twl5Ncm0m9juNCqR3Ib4jhujJEL8ZN19
-	tSG0n3/P8myntkd+aNC4Ikz4soxUpbJ426GCNAXa3HBphD7l2TQmWPkiAmK0m1VKTRN9ieHpCjpqc
-	qBBI8HeVqztFuEYjtgHlrgSOJfPnQO3C1XeCMIGCCtObygMaot3I4JkocBx6115TtqS+V2B2ZOWv3
-	F+YPONWJ2K91JQru2eq4ZVROU39M3tdQhFSISoOORYFPi3DvB+6EmDSnIK2QI8LVVgXl6nTCwT8tR
-	oQ8erJng==;
-Received: from [89.212.21.243] (port=41926 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1u2noF-000Djj-0j;
-	Thu, 10 Apr 2025 11:02:54 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH 03/13] arm64: dts: freescale: imx93-phycore-som: Disable LED pull-up
-Date: Thu, 10 Apr 2025 11:02:41 +0200
-Message-Id: <20250410090251.1103979-4-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250410090251.1103979-1-primoz.fiser@norik.com>
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UUSpCSfR"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0243D455;
+	Thu, 10 Apr 2025 13:01:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1744282878;
+	bh=b7+R5N8tjAIPHixahjtSIzvDtEzOx7UBmOpOEyK0+20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UUSpCSfRq6QdZV4n0VDzQMQkOF0j2p+SqHK0jijo3wv8cFl33LHz3WSQXWJlUu9yi
+	 MxQpNKdW2ktYAAu8PQOfN28CZX48NtECrSMw3ZUgIUJ0j5/L7aIc6aDLrM8TfMXT4n
+	 xlxSILfXHB+Eths3PYgFnI0TrP1IlCAroLv7N49c=
+Date: Thu, 10 Apr 2025 14:02:50 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: Need Help Enabling HDMI on Debix Model A
+Message-ID: <20250410110250.GB24866@pendragon.ideasonboard.com>
+References: <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250407130257.GD3924@pendragon.ideasonboard.com>
+ <PN3P287MB1829692B4C3D5AD273CB62DE8BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250409210504.GB12162@pendragon.ideasonboard.com>
+ <PN3P287MB18297239252C1032A05686558BB72@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+In-Reply-To: <PN3P287MB18297239252C1032A05686558BB72@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 
-There is already an external pull-down resistor on the LED output line.
-It makes no sense to have both pull-down and pull-up resistors enabled
-at the same time. Thus disable the internal pull-down.
+Hi Tarang,
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Apr 10, 2025 at 08:13:17AM +0000, Tarang Raval wrote:
+> > On Mon, Apr 07, 2025 at 02:06:35PM +0000, Tarang Raval wrote:
+> > > > On Mon, Apr 07, 2025 at 11:10:23AM +0000, Tarang Raval wrote:
+> > > > > Hi Laurent,
+> > > > >
+> > > > > I’m trying to bring up HDMI on the Debix Model A board using the
+> > > > > mainline kernel, but I’m currently facing issues.
+> > > > >
+> > > > > I saw that you tested the patch for HDMI support on this board in
+> > > > > mainline, so I am hoping you could help me figure out what might be
+> > > > > missing.
+> > > > >
+> > > > > To clarify — I'm using the prebuilt image provided by Debix, but I replaced
+> > > > > the kernel image and the device tree (DTS) file in the /boot directory with
+> > > > > ones built from the mainline kernel.
+> > > > >
+> > > > > I’ve enabled the following configurations in the kernel:
+> > > > > CONFIG_DRM_DISPLAY_CONNECTOR=y
+> > > > > CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=y
+> > > > > CONFIG_DRM_IMX8MP_HDMI_PVI=y
+> > > > > CONFIG_DRM_IMX_LCDIF=y
+> > > > > CONFIG_PHY_FSL_SAMSUNG_HDMI_PHY=y
+> > > > >
+> > > > > When I boot the board, I see the following HDMI/DRM related logs:
+> > > > > debix@imx8mp-debix:~$ dmesg | grep -iE "drm|hdmi"
+> > > > > [    0.121979] /soc@0/bus@32c00000/display-bridge@32fc4000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
+> > > > > [    0.122164] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /soc@0/bus@32c00000/display-bridge@32fc4000
+> > > > > [    0.127417] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed dependency cycle(s) with /hdmi-connector
+> > > > > [    0.127608] /hdmi-connector: Fixed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000
+> > > > > [    1.947962] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (SAMSUNG HDMI TX PHY)
+> > > > > [    1.949220] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver
+> > > > > [    1.956365] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-controller on minor 0
+> > > > > [    2.016601] imx-lcdif 32fc6000.display-controller: [drm] fb0: imx-lcdifdrmfb frame buffer device
+> > > > > [    8.380915] systemd[1]: Starting Load Kernel Module drm...
+> > > > >
+> > > > >
+> > > > > I also checked that the display's modeline is recognized under sysfs :
+> > > > >
+> > > > > root@imx8mp-debix:~# ls /sys/class/drm/card0-HDMI-A-1/
+> > > > > connector_id  dpms          modes         subsystem/
+> > > > > ddc/          edid          power/        uevent
+> > > > > device/       enabled       status
+> > > > >
+> > > > > However, there is still no HDMI output on the display. Instead,
+> > > > > I only see a white blinking cursor on the screen.. I'm not sure
+> > > > > what I'm missing.
+> > > > 
+> > > > The white blinking cursor means the display is working from the kernel
+> > > > point of view. What are you expecting, are you running an X server or
+> > > > Wayland compositor ?
+> > >
+> > > I'm expecting to see the Ubuntu desktop environment on the HDMI
+> > > display — just like how it appears with the original prebuilt image provided
+> > > by Debix. I'm running the default Ubuntu 22.04 LTS prebuilt image, and I only
+> > > replaced the Image and .dtb file
+> > >
+> > > I'm not explicitly launching an X server or Wayland compositor myself
+> > >
+> > > However, based on your response, I now realize that I may also need to
+> > > enable GPU support in the mainline device tree. Specifically, I believe I
+> > > need to enable the gpu2D and gpu3D nodes to allow the graphical
+> > > environment to start properly and render the desktop over HDMI.
+> > >
+> > > Does that sound correct, or is there anything else I should check or
+> > > enable?
+> > 
+> > That's a plausible explanation. The 2D GPU is probably not used by the
+> > compositor, but a 3D GPU could be required. I'd recommend checking the
+> > system logs to see why the compositor (or session manager) failed to
+> > start.
+> 
+> I reviewed the system logs for more context regarding the failure of the 
+> compositor (or session manager) to start.
+> 
+> Here are some relevant log entries from journalctl -b -p err:
+> 
+> debix@imx8mp-debix:~$ journalctl -b -p err
+> Hint: You are currently not seeing messages from other users and the system.
+>       Users in groups 'adm', 'systemd-journal' can see all messages.
+>       Pass -q to turn off this notice.
+> Apr 10 06:37:29 imx8mp-debix pulseaudio[766]: GetManagedObjects() failed: org.freedesktop.systemd1.NoSuchUnit: Unit dbus-org.bluez.serv>
+> Apr 10 06:37:29 imx8mp-debix systemd[757]: Failed to start Application launched by gnome-session-binary.
+> Apr 10 06:37:29 imx8mp-debix systemd[757]: Failed to start Application launched by gnome-session-binary.
+> Apr 10 06:37:30 imx8mp-debix systemd[757]: Failed to start GNOME Shell on Wayland.
+> 
+> Additionally, from journalctl -b | grep -i gnome, the following lines appear to be significant:
+> 
+> Apr 10 06:37:29 imx8mp-debix systemd[757]: org.gnome.Shell@x11.service: Skipped due to 'exec-condition'.
+> Apr 10 06:37:29 imx8mp-debix systemd[757]: Started GNOME Shell on X11.
+> Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Running GNOME Shell (using mutter 42.9) as a Wayland display server
+> Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: g_hash_table_destroy: assertion 'hash_table != NULL' failed
+> Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Failed to open gpu '/dev/dri/card0': No suitable mode setting backend found
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 442ee067a047..82f680d891c2 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -196,7 +196,7 @@ MX93_PAD_ENET2_TD2__ENET1_TX_CLK		0x4000050e
- 
- 	pinctrl_leds: ledsgrp {
- 		fsl,pins = <
--			MX93_PAD_I2C1_SDA__GPIO1_IO01		0x31e
-+			MX93_PAD_I2C1_SDA__GPIO1_IO01		0x11e
- 		>;
- 	};
- 
+I don't know how gnome-shell finds the GPU, if Ubuntu ships a modified
+version, or possibly configuration files specific to the closed-source
+GPU stack shipped with the BSP kernel. It could also be that the mesa
+version they ship does not support the upstream kernel driver. You will
+have to investigate all this.
+
+> Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Added device '/dev/dri/card1' (imx-lcdif) using atomic mode setting.
+> Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Failed to setup: No GPUs with outputs found
+> 
+> the GNOME Shell logs indicate that no GPUs with outputs were found but the dmesg 
+> output suggests that the GPU is successfully probed and initialized:
+> 
+> debix@imx8mp-debix:~$ dmesg | grep -i -e drm -e gpu -e galcore -e etnaviv
+> [    2.156784] etnaviv etnaviv: bound 38000000.gpu (ops gpu_ops)
+> [    2.157294] etnaviv etnaviv: bound 38008000.gpu (ops gpu_ops)
+> [    2.157753] etnaviv etnaviv: bound 38500000.npu (ops gpu_ops)
+> [    2.157852] etnaviv-gpu 38000000.gpu: model: GC7000, revision: 6204
+> [    2.157986] etnaviv-gpu 38008000.gpu: model: GC520, revision: 5341
+> [    2.158111] etnaviv-gpu 38500000.npu: model: GC8000, revision: 8002
+> [    2.158118] etnaviv-gpu 38500000.npu: etnaviv has been instantiated on a NPU, for which the UAPI is still experimental
+> [    2.158905] [drm] Initialized etnaviv 1.4.0 for etnaviv on minor 0
+> [    2.161597] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-controller on minor 1
+> [    2.161637] imx-lcdif 32fc6000.display-controller: [drm] Cannot find any crtc or sizes
+
+This doesn't seem right. Here's the corresponding part of my boot log:
+
+[    3.347606] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (SAMSUNG HDMI TX PHY)
+[    3.352436] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered DesignWare HDMI I2C bus driver
+[    3.378609] etnaviv etnaviv: bound 38000000.gpu (ops gpu_ops)
+[    3.379829] etnaviv etnaviv: bound 38008000.gpu (ops gpu_ops)
+[    3.381695] etnaviv etnaviv: bound 38500000.npu (ops gpu_ops)
+[    3.382290] etnaviv-gpu 38000000.gpu: model: GC7000, revision: 6204
+[    3.383178] etnaviv-gpu 38008000.gpu: model: GC520, revision: 5341
+[    3.383735] etnaviv-gpu 38500000.npu: model: GC8000, revision: 8002
+[    3.383753] etnaviv-gpu 38500000.npu: etnaviv has been instantiated on a NPU, for which the UAPI is still experimental
+[    3.386818] [drm] Initialized etnaviv 1.4.0 for etnaviv on minor 0
+[    3.390018] stackdepot: allocating hash table of 131072 entries via kvcalloc
+[    3.399113] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-controller on minor 1
+[    3.523021] Console: switching to colour frame buffer device 180x56
+[    3.539272] imx-lcdif 32fc6000.display-controller: [drm] fb0: imx-lcdifdrmfb frame buffer device
+
+> [   10.201152] systemd[1]: Starting Load Kernel Module drm...
+> 
+> I have not yet identified a conclusive reason for GNOME Shell's failure to start.  
+> 
+> However, since my primary objective was to preview the camera output 
+> on the display, I initially suspected the issue might be related to the HDMI 
+> display, as I encountered errors while using autovideosink. After your 
+> confirmation that the display was functioning correctly, I explored alternative 
+> video sinks and was able to successfully achieve a working preview using 
+> fbdevsink.
+> 
+> I may revisit the GNOME Shell issue when time permits. If you have any 
+> suggestions or insights regarding the compositor or GPU setup failure, I’d be 
+> happy to take them into consideration.
+> 
+> > > > > Could you please help me out or point me in the right direction?
+> > > > >
+> > > > > Thank you for your time.
+
 -- 
-2.34.1
+Regards,
 
+Laurent Pinchart
