@@ -1,386 +1,203 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010014.outbound.protection.outlook.com [52.101.69.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7566328D842
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 13:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744290508; cv=none; b=r9uFrxWvA/epLbWQgimylN/jQqcdHiBCygYrfNSjAmrHYz2BBrYUAsf2+3OpISmzXWwHf8TaEMXg5/vN+XSD8kYOfPPa0KEAf+J8nERg7PlevjoPkOeRE8w2ZbGmK3SbdTRjV8XUtXOp+rDkqnw8jYZEPRD9+LlAXH58F1s4I8k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744290508; c=relaxed/simple;
-	bh=Gd8sT5Ybk23B/BKAHg+6XeWluc175lcJptWU1zjwNkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BgjysMX8MTKTkUxboCOotEoHUnRVmwQlNfI1POcNYztD4f6WEN0YTjcYMLmtLFKdost1d4Fue9vV39MYSgHt3A282LrQrgCcW0PAXEVVLQ277p7g63tuzg5yOXcMDSXzjxW/SkU+VYe9S5slzrnR+rkxUEidcNR8n2f1A/ZMbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=FznoYLRl; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=E7K9yqQY reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2C913D521
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 13:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744291837; cv=fail; b=YgL2kvrQZEU6MxhxKbJXv5xfBFVWLsbV407lybb2pe6gqsWWhYM0dUQwiMb5b7NiMLh/oMKmu3HkXv4zr6SeZHDE3aNMvEtiW2Xg1dmwYzjAXMgNp+gCteS87Y6iy04Rp20kqjJ34RJR6tCTjdDjMqy61eOOBvVjGiwMcTDA1Oc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744291837; c=relaxed/simple;
+	bh=kNFrlvuWokrLxVTyyDqfMiooIQGZ4Eg7sQtPeO1zeq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=VL7s7bEcGKhZm+crL+9bFkXh0cuYd43kIkot5XuPICLQ8FOjYPCiaJbwKPmOCu0Gv/pXVtRDDpI2Cd9clZKlJf7Y1Nmh8VOMSUyPgIq0Thkk7hCqAQxbFYHqM0NQhN4Zdbs9JT87ktW8zofRTrh3/NUDxDxt8zYhwZ2weYXI6Yo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=uIawje35; arc=fail smtp.client-ip=52.101.69.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="FznoYLRl";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="E7K9yqQY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1744290503; x=1775826503;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QVdiJMdVRditmTaU3yJ352a55qApIGIRQtRUJroKBTk=;
-  b=FznoYLRl4oBJweQRC8yehF1PlzY+v/dDGEQGKjuBRc2RN4PuEbH3LS6q
-   WRVdNthD9awPaP+d7x6H31IMYaJDfDM1KO7zSf1xB+c3aEo3ILX01Jp4S
-   /X6cUYo7YZaRk3rEBMcNnhDcE2Z4k+pPEWdFeSdnHfRQ2+zegN49CWEyL
-   FHZTMqlMmzbhUBj1EQtrOPEtmyRws+wrg7RB49K0qG+Pnr724a8Ng9sxa
-   qksPpyj6wpI/5svreciVbU6W8aaQYmu4JT9M6wjQZbsqZ0ux12vtw6+Nr
-   02TcZsSOGn1Tb/83iqOI1Mal7DBTQKri75YJRjbCmMnC8qNkOMa2ML3NG
-   g==;
-X-CSE-ConnectionGUID: lbpYRk4PS/mI/z45p6MTZQ==
-X-CSE-MsgGUID: SMq4bV+eQfiBSnAmzGp/qg==
-X-IronPort-AV: E=Sophos;i="6.15,202,1739833200"; 
-   d="scan'208";a="43458005"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 10 Apr 2025 15:08:20 +0200
-X-CheckPoint: {67F7C2C4-F-F35B2447-E1635CDE}
-X-MAIL-CPID: 17832DFD67D46C94EB93AA4223F7775F_1
-X-Control-Analysis: str=0001.0A006399.67F7C2C4.001F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D206516473E;
-	Thu, 10 Apr 2025 15:08:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1744290496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QVdiJMdVRditmTaU3yJ352a55qApIGIRQtRUJroKBTk=;
-	b=E7K9yqQYR/vYtviPWGy6vXqyumVs9VO0kOMcrsQLc53E5jJuuAQW50qlr0f/B9LCCa8ntt
-	mwP8iwwhUwFMTC1R5EJ8RPWixUk1+8PFZDKPclSksZwLBgQJfbIP2DigIGv1sdpK0RF8Is
-	BIamWR52HQYixfw3GQ1EOjxMLC6hdChQHbtzZ0hkcU93A4HNYAPY5b4CPAkFS7AiLYPjbN
-	OdnCj9Cy7tJomVopY993I5oiya9heo0b7+jiTSf1pnaZ30lHgzObPCViFHOrFl6CgKSIGd
-	ANYt+c+jDQwGpFIaq3O3ZBr5NTOhMe011AfJKmujE190I1rsH7mljX6o1utLAg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: l.stach@pengutronix.de, lpieralisi@kernel.org, kw@linux.com,
- manivannan.sadhasivam@linaro.org, robh@kernel.org, bhelgaas@google.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- Richard Zhu <hongxing.zhu@nxp.com>
-Subject: Re: [PATCH v5 3/7] PCI: imx6: Toggle the cold reset for i.MX95 PCIe
-Date: Thu, 10 Apr 2025 15:08:14 +0200
-Message-ID: <1827155.VLH7GnMWUR@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <Z/aME4QwgGUBs2nH@lizhi-Precision-Tower-5810>
-References:
- <20250408025930.1863551-1-hongxing.zhu@nxp.com> <2989817.e9J7NaK4W3@steina-w>
- <Z/aME4QwgGUBs2nH@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="uIawje35"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TL2RyJ+zBoXuWlL17UnDMgkn5cPMCT1kDQ+Zl2BECx5VdqcZL6Lab0ZWEXlQKkPVD93nQvzqsLy9Nu5Tpvs9WQ9ZS4z5Ll5Rzg2Wvo1WKxmHWDfjevQO8LaIGuB0/vdsNJCxLzm3g9bt0E2ZkKuPUiwS8i9VhZUzE4e2PaZ2hh0T9F+cYD9tTLPS/31h/s9fxCKr4zKIIvnxUIfptFARc7GqkjrJdhwZW8BwV8iNgYXO3D8PFj9Hu4qYElmwMz3d37FrKuaKVEJkcYpsmoZwDDOas4ywBb6mgjVfCSwjPXVuaam3XVPvlx9VHTf7ZcybU/x/uKENnMvT9V3181QHrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lBtfMvI5EjQ+mEoX+o97JhXXXpMzme6J3M6iCWCTuqE=;
+ b=MHd44UevA4VzyQJBdDhiFgHiQE2cBBsbW+/1ckZgS7lYtskZLVZHDKBXqFYwC1oP7sUdedBTexNQHnkGc3Vex9pOgnZF7Aek9+yMi1+pQ3g9JOA19bVOPVaz8+/jgW94LhKBD3QjmKsvrlsD0LW913XNVfJCEWOruFhesPXWfP2Vpxama3ttKggGAQNeJPljgiB7us9qS/N80PdHWQZb7SZZtXJfHCES3yZlBpefExkjYgYKyyFXiODEVceJaB7f9AoR1fpFwwfRjwb5bYC5uWC1ZZ9iE8cMo1U+yJgCrnuaqvOLtV2nVYP0f4devZOpPZgcDU4+pbLf8bHfQOx2Tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lBtfMvI5EjQ+mEoX+o97JhXXXpMzme6J3M6iCWCTuqE=;
+ b=uIawje35scdpkH+2+/PdNxV0epajcgfu9dKf8urBbW3nEXC2Qz7DgtBHbMOIqbN8uwrb2qFGDa8Nrwi/3HDPmjDvV/A68WH3DMOhoS/GC6y2mk661Ks+iCw++bxvCP1UU7DgQIzcYkvOixCsGmXSHnPpl48B5950TP1arj4mTm5ZtTy3ujKBPN/PxLZh3rbAKr2ez3JNq6CqgsjQ/6budk9vJPWRcHkW+NIa5CbMaU6b40ajOgxg1cSUXU8gUxR1n6INhhdnvntXpTdfYJ6R3ONESFW/u0MuAU7vrI5YGdN+piwKBb0EH37BE4v6SkuurLjc8glE8AfBMmDxvFPYRA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by AS1PR04MB9630.eurprd04.prod.outlook.com (2603:10a6:20b:475::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.31; Thu, 10 Apr
+ 2025 13:30:31 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%4]) with mapi id 15.20.8606.033; Thu, 10 Apr 2025
+ 13:30:31 +0000
+From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
+To: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	s32@nxp.com,
+	imx@lists.linux.dev,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: [PATCH] arm64: dts: s32gxxxa-rdb: add RTC module over I2C0
+Date: Thu, 10 Apr 2025 16:30:28 +0300
+Message-ID: <20250410133028.5871-1-ciprianmarian.costea@oss.nxp.com>
+X-Mailer: git-send-email 2.45.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR02CA0157.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28d::24) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AS1PR04MB9630:EE_
+X-MS-Office365-Filtering-Correlation-Id: c31a53a9-5bbb-4235-8d37-08dd7833dda7
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V1daSVpxZlA3dDN1WTJBQ2xKeVNIaWZrcHo5TVMwQnVGR2VPYWY0Sk1WQWwv?=
+ =?utf-8?B?SzhjS1IxenJkMWh4OWJiTmpCVFpQRG9IVUpHVGpQRklIR08rNDZIM0ttV3dW?=
+ =?utf-8?B?QkxyOGVUamZ5ZmptaE9ubzliam43UldUWThHdWZHa045QjZLK3krV0VVRHN0?=
+ =?utf-8?B?RVVRZ040N3ByVS9sUHNoaWdTQmxYbnlSSExaK1VKSVZjMkVxdGVJak9RZTlr?=
+ =?utf-8?B?N1NCVkV6Wm85WDRMYTRORVdYN3FnNVQ2N2p1THZLN1pidEw0OGFiLzdGODJK?=
+ =?utf-8?B?cDhyTFVHMlVUMEJ4NmE4alJWSEJ5aCtiREozWndYTkVCdndGODEzTVVOSkFn?=
+ =?utf-8?B?Q1V6bVlQN2ZJVWpJc21XaGVxUk9NMUM3K1lmSSszNHI0Tm5sZEc0Vys1Mmxh?=
+ =?utf-8?B?MUY0T3p1bXE5L2VQN1dBREU1NjY1R0Jha0RGZUdSMkdXVnlVeUZJakFZd3JU?=
+ =?utf-8?B?enlYS0FoUmlpRnljMEdmaXZzczQyWHB1TFBYY2hPT0tlSEh4QWVlMnBKcDhR?=
+ =?utf-8?B?Nm9pYWhoNmUxVzNHcjU0YVRXbXA3aDNnSXhUWG55aGU0Yk5FZTRzaThOV3dM?=
+ =?utf-8?B?NjFudW5qUU5TYVgwT2FLWE9udkpQNzgrTHl3L0Zhc3h0aFpVU3o1WFZHckVo?=
+ =?utf-8?B?Qjh1VXJzZE94dFlHaEowMS93bjE5ZmIyTi9VR09VYnFBN3N5ZHRleTBKcnVE?=
+ =?utf-8?B?NStuVGpNUFpLQTNXZXpnRXZpMDZuVFE5OGdkbFZXYVJ5aFRNNnk2QmFaa2gw?=
+ =?utf-8?B?R1hmN2t6Y3JURVFTZTkzRHN2R3hJNTNSUjNnM2hPOU03Mm54UVRYYWhoRVhk?=
+ =?utf-8?B?ZDJyaStxbllab0hiR29TZ2hNMkpBQ2FOdEd2UStCSzRYVzJ2QnNxWG54N2RB?=
+ =?utf-8?B?WXN6eDlBeXVpYmZVdmNRNDQ5U0xUZEJZWHhyeE1jNXptWEExMkc3Y2N6M3Bh?=
+ =?utf-8?B?bk9nWlZLanF4RHVVVkxRU3BqVmR3dGF5ajJKMTBROGpZMGZuSDc3bXdnV1pq?=
+ =?utf-8?B?djBBZVBOTjM2NFREa0FlYWdWb0FqamhZdnJUNUZyT0JvbDN0VzhvWXp5bGRJ?=
+ =?utf-8?B?U0RvUDFIT014VlFBeDd3bmQ4ZmM4Z3pCeXlNRDA5YnlEdndDUXpWQTQ5U21Z?=
+ =?utf-8?B?OUthbEszSlJLWmE4bGxJMjNNNDcwZW5IbUJvczNLRHl0OW1jS0lGYkNzMWJL?=
+ =?utf-8?B?NldhMTRpUXAyUUNLOXlIbHFRVHpFcDF3WXFRemlzUFVUbTUwMGxsUElPRVYw?=
+ =?utf-8?B?ZUVDbWR4bUJweHJYaHhVWWxkQmpLd3BhMVd3bHFML2c5MzBuaDU4alhaS0tS?=
+ =?utf-8?B?UkdtaVU4K2ltYnFTbDAxUDRLYkZzMEZuR09oZ2Q5S2RBNk9BYkIvK2IrQWUr?=
+ =?utf-8?B?ckl2b1VhSVpTNEdyT1cwU0FlR01pQkdBMjJUSnVjNTV1WjEyTTRaZ0ZpNGFL?=
+ =?utf-8?B?akM1aFdEK3NrWkV0MG5MOUM5emh3c0M2TFZKcVE5dDNjWnp5T2RaTitGZ3U5?=
+ =?utf-8?B?Y0RvSTBFQ3F0dlNiQisyL2hEQjl0dEpQbXRpK0x5a2YvZlJUNm9PVnliSEZZ?=
+ =?utf-8?B?Q3EvMWluYkFZTC9qazhjTUhQd0NtRURtTEoyV3NDM2R3Qk9TbTdjcGo1WXA4?=
+ =?utf-8?B?Tjc4RkVoeHFYVnZSeW5CdEJuNi9MYnpQcWp1YnVkakVFWEZhS0lRTG9WeFpR?=
+ =?utf-8?B?R093Qk9GVnZ2RUZIODhsYzAxQjZkS2dIdE1UWXRVR0hhTWVoanBweU13M0Zk?=
+ =?utf-8?B?UDd3YnJBVFJGUUppZm5UV1lkUnQ1aXhCWW1qQTBxOU5IVWkvR3NrU3FReXJz?=
+ =?utf-8?B?cnp0dDVPejJrbzVLbTRGOVZweEdRanF5OXQycmxoZFFtV09jcEFaRGJsd0Yv?=
+ =?utf-8?Q?6MV/io2Eh3uXo?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aXVBVmlaam5NNlhRVStiUzI4Vlh5Y1hTOWk5RWsyc3gyUDNuRXQ0a2tMUC9t?=
+ =?utf-8?B?TDF0cG5reTlxVnRoM09iQXBSZ1Y0ekRxaGg0RmE4Z0phb2JZN2xZd05GVnFQ?=
+ =?utf-8?B?V1ZFNmlidXpkT0hhY2dCZzZZeWYvZDdVVklLalB5Y1FpYnBZZ2JkK0JBYkIx?=
+ =?utf-8?B?bWV3dFZFQVhPcWxNUHdlQUMveXY0OTVSK0N6UHJrZG41R1o5RjN2TXFlYTVq?=
+ =?utf-8?B?aS9qMTJLYTFrTmxDYVFnQmI3d0NES3IzeXc1ZkkwN2tIT2NvRkYvRElUa0d3?=
+ =?utf-8?B?TW93MjljeUpXM3BqT2xvWm9WY3VLU25nSy9VYUsxVGdROGVOaTJVQ0paY21O?=
+ =?utf-8?B?czZ2VjZCNFo2TEdNVHhnK2dhTVNsVWZWdkwyV0o5WDZrcXZVVkNiVEFQT0hG?=
+ =?utf-8?B?eC8zdU50Z1pwMmNDMWFBQlNNRTQ3dTJERTZocFFrejFrRjFGRmZJS05vQXZa?=
+ =?utf-8?B?eFZsdlY5TzZsYXBKZG9pOVhndjFRMU5kM016cmpROE5JcFd1T2dPN3I2Q3Vx?=
+ =?utf-8?B?ZnNqUTRqcFNvYTlNMjVxYzloYk5iL09iZS91TlJibUpNVjJodWErWHdOWkMz?=
+ =?utf-8?B?WUxkeG5YajBUaHFBdm1zZCtSVDAvTHZFcVpvVDdTVXRpMFVaUHNZK3lKQ0R6?=
+ =?utf-8?B?bmpkWjZOMklnVE9VL0JmbnhQL1JVM1duNXd5SlgzVTIvOUgzZVZWSDRUb3Fp?=
+ =?utf-8?B?c29DUm90aHRrN2lvc2xmNFVuQjNKM0VPbTRwTnlaZlRYV3FMOTdMNEtzQU5n?=
+ =?utf-8?B?SXRuUU9pcmw3V2Q4Z1U2RHo3cnQ5WmtMY1pGanhTejUrclpWM1RVZHBUbjhO?=
+ =?utf-8?B?bDJGRDBtNVlkTElkbnM5L25mQm1GamtMaHV5ckJId3RwVUdCdk5tQ3pxdTRP?=
+ =?utf-8?B?eDUwSVQvcHMwMzJ0WXl0Uk92MGhYWEpxbmtWZEpRWitPNk92dkJkZ0k0ZzQ3?=
+ =?utf-8?B?V09rWWVJQStDa2F3Qi9ZTUdhd3Q4aHgzYzVzRUlxOWtRNE9BYy9UWFVyajRq?=
+ =?utf-8?B?SE43NjV5Tm0vdEJ1bmZTSEZYc0hWUkFHbXdnWTB6aFZvNkg4MmlUSENmM2FX?=
+ =?utf-8?B?anVMRCtZdTNEVEF6a3RXL0RpM0hlanBzb2lod2RUS2NMcG1Xck5zSTlGNkVq?=
+ =?utf-8?B?c3pLdDJwZmxJdVR0dURuTG1LMmFQSG9EVjVWeHd4QmMwOWpGOGs2WXJ6b0lt?=
+ =?utf-8?B?OUFHczQrZ3dqM3U5UHlvakJzYnNkMzBFQm9GUlpJZ2xraTdwOWxoMzZxRjFB?=
+ =?utf-8?B?NDZkUXA1bWJNbSszY3VjUXZGOGExMUpBVi9iU1NoV0xjc096UVUrQkdkaFg0?=
+ =?utf-8?B?MWlZTUJ5NmxPT1ZkQkpwZXRGUHhQdHlzbUZ0ekxmTXZUODU4bEJjcW84NmVC?=
+ =?utf-8?B?ZWhDY1NvcXJ1MFlnNlhPKzh2REJMVlUyRWRrd0wrTmp1U2p1d3diQ2txY3Nv?=
+ =?utf-8?B?Ynh4cEE4a0JhaWdHZUQwUWIwSGlKRDVmc1JIVWNQM2JJS3pKYjdDdmEvSGxE?=
+ =?utf-8?B?Y2dOc0R4Vks4eTMvMVpXRENuNkw0SmhucDc3YXlRZ0lWQzFJK0NZR0ozczdB?=
+ =?utf-8?B?U2EzbWxyYVFCc3ZkQXM2R3ZUbGhlb1QwNkhjeE9WQ2s4YU56dHV2NmhoTmph?=
+ =?utf-8?B?SkdJYlE5VWpxb2ppWGJSQVBoNUM4bTZOQkMwT1FoM1ZkNHJGUlNQSE10aFNH?=
+ =?utf-8?B?UDJac3pQYm1Vd2kxdyt6TWFmWkdZcG1ac3hhWW1KV1B5SWhXWThSSGgrQ3Nh?=
+ =?utf-8?B?M2pZdyt6RUwyQkVFUE1xU2tGb2lXcGowRVVSeklLZmZvd0NLNjlQQStQYm1L?=
+ =?utf-8?B?MDBXY0NYWG5VZ1VQWW1nZ2QvTU1RaXdGano0SEFVcXJGa05VWUlZQWh0dHFr?=
+ =?utf-8?B?WWsxM2o3S21Fd2RhQWZTc1VtT1pNaSt1b1FobC9zZXkrZy9NSVRiR3JMUHR5?=
+ =?utf-8?B?cVlhRDF4ZndWSmJxaStCb1phNitlZVl5b3RxTE1YWlNOVnRKUEhNRUNMOHE0?=
+ =?utf-8?B?QWVCbkoreFJDVHF5VkFwSEZwRE1IcGgrMWEvbk5BbVA2Q3J6N21UVDdsRjJQ?=
+ =?utf-8?B?L2tqUUFRemVjUXp2WGxVQlR1YXFEOHpaSXhEQmRlcGMvVzF1eFcycGZPNSsv?=
+ =?utf-8?B?VE84UEFxOURIQ3hWN2NDQlZYbmZmU0tnQ1dnQmVXR0lhYVRtUWFuY0IySnV5?=
+ =?utf-8?B?WXc9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c31a53a9-5bbb-4235-8d37-08dd7833dda7
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 13:30:31.5899
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jUPEM76khiaiyX8n1UFOCOvhEMDL5I8+lmCxjvCyI7zd+wLXDbpzL1HUns9iHHdP2k5Ov73E3MSV9tdYXW8AjIVAkERVMBMFCTp/m01qcBo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9630
 
-Am Mittwoch, 9. April 2025, 17:02:43 CEST schrieb Frank Li:
-> ********************
-> Achtung externe E-Mail: =D6ffnen Sie Anh=E4nge und Links nur, wenn Sie wi=
-ssen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten =
-Sie die E-Mail im Zweifelsfall zur Pr=FCfung an den IT-Helpdesk weiter.
-> Attention external email: Open attachments and links only if you know tha=
-t they are from a secure source and are safe. In doubt forward the email to=
- the IT-Helpdesk to check it.
-> ********************
->=20
-> On Wed, Apr 09, 2025 at 11:51:53AM +0200, Alexander Stein wrote:
-> > Hi,
-> >
-> > Am Dienstag, 8. April 2025, 04:59:26 CEST schrieb Richard Zhu:
-> > > Add the cold reset toggle for i.MX95 PCIe to align PHY's power up seq=
-uency.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 42 +++++++++++++++++++++++++=
-++
-> > >  1 file changed, 42 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/cont=
-roller/dwc/pci-imx6.c
-> > > index c5871c3d4194..7c60b712480a 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -71,6 +71,9 @@
-> > >  #define IMX95_SID_MASK				GENMASK(5, 0)
-> > >  #define IMX95_MAX_LUT				32
-> > >
-> > > +#define IMX95_PCIE_RST_CTRL			0x3010
-> > > +#define IMX95_PCIE_COLD_RST			BIT(0)
-> > > +
-> > >  #define to_imx_pcie(x)	dev_get_drvdata((x)->dev)
-> > >
-> > >  enum imx_pcie_variants {
-> > > @@ -773,6 +776,43 @@ static int imx7d_pcie_core_reset(struct imx_pcie=
- *imx_pcie, bool assert)
-> > >  	return 0;
-> > >  }
-> > >
-> > > +static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool ass=
-ert)
-> > > +{
-> > > +	u32 val;
-> > > +
-> > > +	if (assert) {
-> > > +		/*
-> > > +		 * From i.MX95 PCIe PHY perspective, the COLD reset toggle
-> > > +		 * should be complete after power-up by the following sequence.
-> > > +		 *                 > 10us(at power-up)
-> > > +		 *                 > 10ns(warm reset)
-> > > +		 *               |<------------>|
-> > > +		 *                ______________
-> > > +		 * phy_reset ____/              \________________
-> > > +		 *                                   ____________
-> > > +		 * ref_clk_en_______________________/
-> > > +		 * Toggle COLD reset aligned with this sequence for i.MX95 PCIe.
-> > > +		 */
-> > > +		regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
-> > > +				IMX95_PCIE_COLD_RST);
-> > > +		/*
-> > > +		 * Make sure the write to IMX95_PCIE_RST_CTRL is flushed to the
-> > > +		 * hardware by doing a read. Otherwise, there is no guarantee
-> > > +		 * that the write has reached the hardware before udelay().
-> > > +		 */
-> > > +		regmap_read_bypassed(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
-> > > +				     &val);
-> > > +		udelay(15);
-> > > +		regmap_clear_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
-> > > +				  IMX95_PCIE_COLD_RST);
-> > > +		regmap_read_bypassed(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
-> > > +				     &val);
-> > > +		udelay(10);
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
-> > >  {
-> > >  	reset_control_assert(imx_pcie->pciephy_reset);
-> > > @@ -1739,6 +1779,7 @@ static const struct imx_pcie_drvdata drvdata[] =
-=3D {
-> > >  		.ltssm_mask =3D IMX95_PCIE_LTSSM_EN,
-> > >  		.mode_off[0]  =3D IMX95_PE0_GEN_CTRL_1,
-> > >  		.mode_mask[0] =3D IMX95_PCIE_DEVICE_TYPE,
-> > > +		.core_reset =3D imx95_pcie_core_reset,
-> > >  		.init_phy =3D imx95_pcie_init_phy,
-> > >  	},
-> > >  	[IMX8MQ_EP] =3D {
-> > > @@ -1792,6 +1833,7 @@ static const struct imx_pcie_drvdata drvdata[] =
-=3D {
-> > >  		.mode_off[0]  =3D IMX95_PE0_GEN_CTRL_1,
-> > >  		.mode_mask[0] =3D IMX95_PCIE_DEVICE_TYPE,
-> > >  		.init_phy =3D imx95_pcie_init_phy,
-> > > +		.core_reset =3D imx95_pcie_core_reset,
-> > >  		.epc_features =3D &imx95_pcie_epc_features,
-> > >  		.mode =3D DW_PCIE_EP_TYPE,
-> > >  	},
-> > >
-> >
-> > This change introduces an invalid memory access on my platform. There i=
-s not
-> > even a PCIe device attached to it.
-> >
-> > > imx6q-pcie 4c380000.pcie: host bridge /soc/pcie@4c380000 ranges:
-> > > imx6q-pcie 4c300000.pcie: host bridge /soc/pcie@4c300000 ranges:
-> > > imx6q-pcie 4c380000.pcie:       IO 0x088ff00000..0x088fffffff -> 0x00=
-00000000
-> > > imx6q-pcie 4c300000.pcie:       IO 0x006ff00000..0x006fffffff -> 0x00=
-00000000
-> > > imx6q-pcie 4c380000.pcie:      MEM 0x0a10000000..0x0a1fffffff -> 0x00=
-10000000
-> > > imx6q-pcie 4c300000.pcie:      MEM 0x0910000000..0x091fffffff -> 0x00=
-10000000
-> > > imx6q-pcie 4c380000.pcie: config reg[1] 0x880100000 =3D=3D cpu 0x8801=
-00000
-> > > ; no fixup was ever needed for this devicetree
-> > > imx6q-pcie 4c300000.pcie: config reg[1] 0x60100000 =3D=3D cpu 0x60100=
-000
-> > > ; no fixup was ever needed for this devicetree
-> > > Unable to handle kernel paging request at virtual address ffff800081d=
-c5010
-> > > Unable to handle kernel paging request at virtual address ffff8000821=
-bd010
-> > > Mem abort info:
-> > >
-> > > Mem abort info:
-> > >   ESR =3D 0x0000000096000007
-> > >   ESR =3D 0x0000000096000007
-> > >   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> > >   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> > >
-> > > fsl_enetc_mdio 0003:01:00.0: enabling device (0000 -> 0002)
-> > >
-> > >   SET =3D 0, FnV =3D 0
-> > >   SET =3D 0, FnV =3D 0
-> > >   EA =3D 0, S1PTW =3D 0
-> > >   EA =3D 0, S1PTW =3D 0
-> > >   FSC =3D 0x07: level 3 translation fault
-> > >   FSC =3D 0x07: level 3 translation fault
-> > >
-> > > Data abort info:
-> > >
-> > > Data abort info:
-> > >   ISV =3D 0, ISS =3D 0x00000007, ISS2 =3D 0x00000000
-> > >   ISV =3D 0, ISS =3D 0x00000007, ISS2 =3D 0x00000000
-> > >   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-> > >   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-> > >   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-> > >   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-> > >
-> > > swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000091a47000
-> > > swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000091a47000
-> > > [ffff800081dc5010] pgd=3D1000000092002003
-> > > [ffff8000821bd010] pgd=3D1000000092002003
-> > > , p4d=3D1000000092002003
-> > > , p4d=3D1000000092002003
-> > > , pud=3D1000000092003003
-> > > , pud=3D1000000092003003
-> > > , pmd=3D1000000092008003
-> > > , pmd=3D100000009299f403
-> > > , pte=3D0000000000000000
-> > > , pte=3D0000000000000000
-> > >
-> > >
-> > > Internal error: Oops: 0000000096000007 [#1]  SMP
-> > > Modules linked in:
-> > > CPU: 0 UID: 0 PID: 63 Comm: kworker/u24:4 Tainted: G                T
-> > > 6.15.0-rc1-next-20250409+ #3009 PREEMPT
-> > > f6bd3cc6346487744ae55f6115e728ff2bc7088b Tainted: [T]=3DRANDSTRUCT
-> > > Hardware name: TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2 (DT)
-> > > Workqueue: async async_run_entry_fn
-> > > pstate: 204000c9 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-> > > pc : regmap_mmio_read32le+0x1c/0x3c
-> > > lr : regmap_mmio_read+0x40/0x68
-> > > sp : ffff80008223b860
-> > > x29: ffff80008223b860 x28: ffff00001000c800 x27: ffff8000818679c0
-> > > x26: ffff000013340410 x25: 0000000000000001 x24: 0000000000000000
-> > > x23: ffff000012f5e400 x22: ffff80008223b934 x21: ffff80008223b934
-> > > x20: ffff000012fc4900 x19: 0000000000003010 x18: 00000000a7aa953f
-> > > x17: 3e2d206666666666 x16: 666631393078302e x15: 2e30303030303030
-> > > x14: 3139307830204d45 x13: 3030303030303031 x12: 30307830203e2d20
-> > > x11: 6666666666666631 x10: 393078302e2e3030 x9 : 4d2020202020203a
-> > > x8 : 656963702e303030 x7 : 205d313236353838 x6 : ffff0000134e0000
-> > > x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff8000809bf028
-> > > x2 : ffff8000809bfb0c x1 : 0000000000003010 x0 : ffff800081dc5010
-> > >
-> > > Call trace:
-> > >  regmap_mmio_read32le+0x1c/0x3c (P)
-> > >  regmap_mmio_read+0x40/0x68
-> > >  _regmap_bus_reg_read+0x58/0x9c
-> > >  _regmap_read+0x70/0x1c4
-> > >  _regmap_update_bits+0xe4/0x174
-> > >  regmap_update_bits_base+0x60/0x90
-> > >  imx95_pcie_core_reset+0x78/0xd0
-> > >  imx_pcie_assert_core_reset+0x38/0x50
-> > >  imx_pcie_host_init+0x68/0x4a0
-> > >  dw_pcie_host_init+0x16c/0x500
-> > >  imx_pcie_probe+0x2f4/0x71c
-> > >  platform_probe+0x64/0x100
-> > >  really_probe+0xc8/0x3bc
-> > >  __driver_probe_device+0x84/0x16c
-> > >  driver_probe_device+0x40/0x160
-> > >  __device_attach_driver+0xcc/0x1a0
-> > >  bus_for_each_drv+0x88/0xe4
-> > >  __device_attach_async_helper+0xac/0x108
-> > >  async_run_entry_fn+0x30/0x144
-> > >  process_one_work+0x14c/0x3e0
-> > >  worker_thread+0x2f0/0x3fc
-> > >  kthread+0x128/0x1ec
-> > >  ret_from_fork+0x10/0x20
-> > >
-> > > Code: aa0003f4 2a0103f3 f9400280 8b334000 (b9400000)
-> > > ---[ end trace 0000000000000000 ]---
-> > > note: kworker/u24:4[63] exited with irqs disabled
-> > > Internal error: Oops: 0000000096000007 [#2]  SMP
-> > > Modules linked in:
-> > > note: kworker/u24:4[63] exited with preempt_count 1
-> > >
-> > > CPU: 4 UID: 0 PID: 52 Comm: kworker/u24:1 Tainted: G      D         T
-> > > 6.15.0-rc1-next-20250409+ #3009 PREEMPT
-> > > f6bd3cc6346487744ae55f6115e728ff2bc7088b Tainted: [D]=3DDIE, [T]=3DRA=
-NDSTRUCT
-> > > Hardware name: TQ-Systems i.MX95 TQMa95xxSA on MB-SMARC-2 (DT)
-> > > Workqueue: async async_run_entry_fn
-> > > pstate: 204000c9 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-> > > pc : regmap_mmio_read32le+0x1c/0x3c
-> > > lr : regmap_mmio_read+0x40/0x68
-> > > mmc0: new HS400 Enhanced strobe MMC card at address 0001
-> > > sp : ffff8000821e3860
-> > > mmcblk0: mmc0:0001 DG4016 14.7 GiB
-> > > x29: ffff8000821e3860 x28: ffff00001000c800 x27: ffff8000818679c0
-> > > mmcblk0boot0: mmc0:0001 DG4016 4.00 MiB
-> > > x26: ffff00001333fc10 x25: 0000000000000001 x24: 0000000000000000
-> > > x23: ffff000013895400 x22: ffff8000821e3934 x21: ffff8000821e3934
-> > > x20: ffff0000134672c0
-> > > mmcblk0boot1: mmc0:0001 DG4016 4.00 MiB
-> > >
-> > >  x19: 0000000000003010 x18: 0000000038868210
-> > >
-> > > x17: 3038387830207570 x16: 63203d3d20303030 x15: 3030313038387830
-> > > x14: 205d315b67657220
-> > > mmcblk0rpmb: mmc0:0001 DG4016 4.00 MiB, chardev (237:0)
-> > >
-> > >  x13: 6565727465636976 x12: 6564207369687420
-> > >
-> > > x11: 726f662064656465 x10: 656e207265766520 x9 : 7420726f66206465
-> > > x8 : 6465656e20726576 x7 : 205d303033353938 x6 : ffff000013371280
-> > > x5 : 0000000000000000 x4 : 0000000000000000 x3 : ffff8000809bf028
-> > > x2 : ffff8000809bfb0c x1 : 0000000000003010 x0 : ffff8000821bd010
-> > >
-> > > Call trace:
-> > >  regmap_mmio_read32le+0x1c/0x3c (P)
-> > >  regmap_mmio_read+0x40/0x68
-> > >  _regmap_bus_reg_read+0x58/0x9c
-> > >  _regmap_read+0x70/0x1c4
-> > >  _regmap_update_bits+0xe4/0x174
-> > >  regmap_update_bits_base+0x60/0x90
-> > >  imx95_pcie_core_reset+0x78/0xd0
-> > >  imx_pcie_assert_core_reset+0x38/0x50
-> > >  imx_pcie_host_init+0x68/0x4a0
-> > >  dw_pcie_host_init+0x16c/0x500
-> > >  imx_pcie_probe+0x2f4/0x71c
-> > >  platform_probe+0x64/0x100
-> > >  really_probe+0xc8/0x3bc
-> > >  __driver_probe_device+0x84/0x16c
-> > >  driver_probe_device+0x40/0x160
-> > >  __device_attach_driver+0xcc/0x1a0
-> > >  bus_for_each_drv+0x88/0xe4
-> > >  __device_attach_async_helper+0xac/0x108
-> > >  async_run_entry_fn+0x30/0x144
-> > >  process_one_work+0x14c/0x3e0
-> > >  worker_thread+0x2f0/0x3fc
-> > >  kthread+0x128/0x1ec
-> > >  ret_from_fork+0x10/0x20
-> > >
-> > > Code: aa0003f4 2a0103f3 f9400280 8b334000 (b9400000)
-> > > ---[ end trace 0000000000000000 ]---
-> >
-> > Is this series dependent on any other series/patches?
->=20
-> Please update dts
->=20
-> https://lore.kernel.org/imx/20250314060104.390065-1-hongxing.zhu@nxp.com/
-> arm64: dts: imx95: Correct the range of PCIe app-reg region
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
 
-This should have been mentioned in the cover letter that there are some
-dependencies.
-Anyway, the series looks okay. Even though I have no documentation
-regarding the erratas.
+S32G274A-RDB2 and S32G399A-RDB3 boards have a PCA85073A RTC hardware module
+available and connected over I2C0. Note that the RTC module is not battery
+backed.
 
-Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+---
+ arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+index ba53ec622f0b..4587e1cb8835 100644
+--- a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
+@@ -153,6 +153,11 @@ pcal6524: gpio-expander@22 {
+ 		gpio-controller;
+ 		#gpio-cells = <2>;
+ 	};
++
++	pca85073a: rtc@51 {
++		compatible = "nxp,pca85073a";
++		reg = <0x51>;
++	};
+ };
+ 
+ &i2c2 {
+-- 
+2.45.2
 
