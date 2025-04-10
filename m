@@ -1,110 +1,161 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C316020FA9C
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 09:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9311F215184
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 09:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744276664; cv=none; b=SqvrhJWk6eTPlwQpJvCYeCf/okM2GKd3jiunZcIc0do95lxZInEr5VXlWMgUxvrmas8Le+PV0KZ7j05730gZLZJOEJzrh2335FVKG942a233RVfPUnZYcujsa37UYLnvLZTNbgR67HxrLux/uKWs1ks999B/e+hDQfkRDME9Cs0=
+	t=1744277041; cv=none; b=U4ggbGw0a0/KCFpm86skTsAk9cRX/jJ2DuiO2UQ5glgcWxQTCpRw2gmcPWiaiVJ9bKiAD0QjYhtIO3suIhYq0h2G+QkAzoS8LOeusaO8A6aGZ7r4hmYYlVALH4kxC1qzipJqCaFUSQhBjOD//L0ZBIeIy/lnV83B0sZTjubTNcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744276664; c=relaxed/simple;
-	bh=2AyLsA6kpaZlc9OA+14Q7DYMgAO3xGKomEWFDhjNkAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAwfEvkeFTOHt/PGqItTuumMDIaZXHm9M27ZE4SXdUqFmJSAd6qZaZqmwlvMVcdJEQm4ZGk4hSXxLfSQ77ryzlUJE0oV8uj1kJDDqo+BnvJMQ70IXrhC2IEqV0hyR4B/FS6SAsRTCWhD2gz0XS8wic7qRX2pvzBe6ieG2pXYrAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BPZ6lc22; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744277041; c=relaxed/simple;
+	bh=cr1XqsGW0Is9QsImdjqJUZfHSWRAI+91hWhEgPxCyMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZKznoyHXyjydrDoBvB8up3xwj9+ACrAZ55xC8xEvDXRAUnAoo8r5ewTQTyz4JXiFd7ckn3trh3U00amG5/Mb5WBM4hAuaGHXjtRFfS2lQBHz+jcc+IvowT96cYLAmCzGw+hLVvylGxC5WCGlDrNbN0Kr67FYGU/xaSzMmg82cFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CI4cOCBP; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BPZ6lc22"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4E08844204;
-	Thu, 10 Apr 2025 09:17:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744276661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gVo01i0PNBk6lg4xGIJ8PjEi6i48tSdwoY71vr+3/ZY=;
-	b=BPZ6lc22WEcSMe8CUuDX6IdWkZjegNMuPMHhuQnIHsABPK4+qY/y7h7txbaVdU4DuLyh7j
-	7F045SrvyIJD2DGlJYSZEQTBqN24+L2eFO3yQ9VuqDXa45BZJ19mDLEqczz312FWfM9pke
-	HRkAnO0QHbIX+XZ3F2JFIQ8psy3H4AyvQdHDGsJ1fN6dAxS9qTFfCijywHNWCvbU7bOlNm
-	h3VF9UiXrJFb3aKhTMyiZpryGQVcCH14nd6MIt1zW0vsN+i41AtMEUbZ//1dYL/VfkT+2O
-	IlHQlvoEd//ZRVGSuf6h8PcoUTtwi1EJOMKMa94Vdxdi3iKmF1sDu30eWaoFhQ==
-Date: Thu, 10 Apr 2025 11:17:39 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, s32@nxp.com, imx@lists.linux.dev,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>
-Subject: Re: [PATCH 2/2] rtc: pcf85063: handle stopped oscillator at startup
-Message-ID: <202504100917398f7244e9@mail.local>
-References: <20250410082548.3821228-1-ciprianmarian.costea@oss.nxp.com>
- <20250410082548.3821228-3-ciprianmarian.costea@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CI4cOCBP"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0309A1034EAEC;
+	Thu, 10 Apr 2025 11:23:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744277036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=azBeY/ABdzLCK2gCU3irIQ43T5ERKSG6fIfSiV5Z92s=;
+	b=CI4cOCBPBMLylFiXGeRD7c3jrqxluWRjSNAlIVxYBRtfkxu65x+EH4XLY/RWNVQLhZosUf
+	SNRanfj363p0NmPSjDBbtK4Aa0/DGdWK1QYocBqQRsROGf+9BoyW+6BUpmDG3PEKT72AzW
+	Kt0PPuHmbSfEeymFfHcUdhia9ba74M+Bizo3HQVmUWtKhZT/AhaMEzY9AJ4/fJLJUAXNpY
+	4VbjZzMTsHkVRJjxPHOrMpaKk7G7pLhyYiuIE6wCsNy8CwGb2UNE/d5gH5CO/Bw5ahhDaN
+	a64VEcfrTUvWWIGW92YyCAn0cDiUW4xAL3k3/Y/X8EwEnICsbdvfcnGQmm3EIQ==
+Date: Thu, 10 Apr 2025 11:23:50 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Stefan Wahren <wahrenst@gmx.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [net-next v4 5/5] ARM: mxs_defconfig: Enable
+ CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
+Message-ID: <20250410112350.7dbb299c@wsk>
+In-Reply-To: <ea8cc94c-b212-4ae2-8c5b-7697e9b358aa@kernel.org>
+References: <20250407145157.3626463-1-lukma@denx.de>
+	<20250407145157.3626463-6-lukma@denx.de>
+	<c67ad9fa-6255-48e8-9537-2fceb0510127@gmx.net>
+	<20250410090122.0e4cadef@wsk>
+	<ea8cc94c-b212-4ae2-8c5b-7697e9b358aa@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410082548.3821228-3-ciprianmarian.costea@oss.nxp.com>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdekhedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetlhgvgigrnhgurhgvuceuvghllhhonhhiuceorghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeeiudeuteehhfekgeejveefhfeiudejuefhgfeljefgjeegkeeujeeugfehgefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemugekjegvmedusgdusgemledtkeegmegttghftgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemugekjegvmedusgdusgemledtkeegmegttghftgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudehpdhrtghpthhtoheptghiphhrihgrnhhmrghrihgrnhdrtghoshhtvggrsehoshhsrdhngihprdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtt
- hhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhtvghinhesvgifrdhtqhdqghhrohhuphdrtghomhdprhgtphhtthhopehlihhnuhigqdhrthgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: multipart/signed; boundary="Sig_/r5tjFsU34eWBYPJ.iEWYDwo";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/04/2025 11:25:48+0300, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> 
-> If the RTC is not linked to any battery, the oscillator is stopped at
-> startup and a SW reset command is generated to the PCF85063 RTC.
-> Manually start the oscillator in case the PCF85063 RTC is not battery
-> backed.
-> 
+--Sig_/r5tjFsU34eWBYPJ.iEWYDwo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-No, there is no point in starting the oscillator with a know wrong
-time/date. The oscillator must only be started once the time is known
-good, that is in .set_time
+Hi Krzysztof,
 
-> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> ---
->  drivers/rtc/rtc-pcf85063.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-> index 4fa5c4ecdd5a..6de7344d2469 100644
-> --- a/drivers/rtc/rtc-pcf85063.c
-> +++ b/drivers/rtc/rtc-pcf85063.c
-> @@ -590,6 +590,14 @@ static int pcf85063_probe(struct i2c_client *client)
->  
->  	i2c_set_clientdata(client, pcf85063);
->  
-> +	if (of_property_read_bool(client->dev.of_node, "no-battery")) {
-> +		err = regmap_update_bits(pcf85063->regmap, PCF85063_REG_SC,
-> +					 PCF85063_REG_SC_OS, 0);
-> +		if (err)
-> +			return dev_err_probe(&client->dev, err,
-> +					"Failed to start the oscillator\n");
-> +	}
-> +
->  	err = regmap_read(pcf85063->regmap, PCF85063_REG_SC, &tmp);
->  	if (err)
->  		return dev_err_probe(&client->dev, err, "RTC chip is not present\n");
-> -- 
-> 2.45.2
-> 
+> On 10/04/2025 09:01, Lukasz Majewski wrote:
+> > Hi Stefan,
+> >  =20
+> >> Hi Lukasz,
+> >>
+> >> Am 07.04.25 um 16:51 schrieb Lukasz Majewski: =20
+> >>> This patch enables support for More Than IP switch available on
+> >>> some imx28[7] devices.
+> >>>
+> >>> Signed-off-by: Lukasz Majewski <lukma@denx.de>   =20
+> >> thanks adding the driver to mxs_defconfig. Unfortunately it's not
+> >> possible for reviewers to identify the relevant changes, =20
+> >=20
+> > Could you be more specific here?
+> > As fair as I see - there is only 14 LOCs changed for review. =20
+>=20
+> Really, the comment was very specific. You make multiple independent,
+> looking irrelevant changes to the file.
+>=20
+> >=20
+> > Please also be aware that MTIP L2 switch driver has some
+> > dependencies - on e.g. SWITCHDEV and BRIDGE, which had to be
+> > enabled to allow the former one to be active.
+> >  =20
+> >> also the
+> >> commit messages doesn't provide further information.
+> >> =20
+> >=20
+> > What kind of extra information shall I provide? IMHO the patch is
+> > self-explaining. =20
+>=20
+> For example explain why do you think GPIO_SYSFS should be dropped.
+>=20
+> >  =20
+> >> In general there are two approaches to solves this:
+> >> 1) prepend an additional patch which synchronizes mxs_defconfig
+> >> with current mainline
+> >> 2) manually create the relevant changes against mxs_defconfig
+> >>
+> >> The decision about the approaches is up to the maintainer. =20
+> >=20
+> > I took the linux-next's (or net-next) mxs defconfig (cp it to be
+> > .config)
+> >=20
+> > Then run CROSS_COMPILE=3D ... make ARCH=3Darm menuconfig
+> > Enabled all the relevant Kconfig options and run
+> >=20
+> > CROSS_COMPILE=3D ... make ARCH=3Darm savedefconfig
+> > and copy defconfig to mxs_defconfig.
+> > Then I used git to prepare the patch.
+> >=20
+> > Isn't the above procedure correct? =20
+>=20
+> No, it is not correct. Do not make any changes in the "Enabled all the
+> relevant Kconfig options and run" step and check the result. Do you
+> see difference in result file? If yes, then why such difference
+> should be part of this commit?
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Ok, I get your point. Then I shall prepare a separate, pre-patch.
+Thanks for info.
+
+>=20
+> Best regards,
+> Krzysztof
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/r5tjFsU34eWBYPJ.iEWYDwo
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf3jiYACgkQAR8vZIA0
+zr2DEgf+KE3yYGEwlrYyU8JplEso25aCWU0x5ENkFsHPsIds+J9TLbxooFsu53fP
+6Y2JsJPakI0iBlKqW55uuZWh20wPWTFpIoqAk77FautHOO3BcML3lov3upWRH273
+RGVQEJHRGURV/Q2w2jGM6fNH7JjWZjNHRS6WqNZnRm4WedNh5o3MJobE60k/yNOn
+0RFMSqPOegpWpEJQnSmcip2s66i50dy2ou8kqmUwpDX6OMwJP8sELshq2eJDgH2G
+z/p9pXjh5tfkJw3KO/LUktGgHfCdsjhP4pK3WNaLpSIHEMd1kDEnrrbhaQwMyVwt
+qfkJipgw2GEVOxmgaUF5g4GIJ92exQ==
+=Cxw1
+-----END PGP SIGNATURE-----
+
+--Sig_/r5tjFsU34eWBYPJ.iEWYDwo--
