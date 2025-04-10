@@ -1,64 +1,65 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFCE283CBA
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 12:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7488B2857C1
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 12:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744287832; cv=none; b=s4OjQRrVf4YEtWWW+3YKdu2pKwPtVg6vXawnyYfB5eI82939ZOwvLmZc4fZdLUTn17KiMrpIt1pgqajEYNzEkjff6NDpi7KcbbsFs7zxje2uOVwnq5iPpdcYVe1E/kjs4tK8Nlx6L6r1wtgXf1rRSLwtJbKNn58EW0N8QC6fjTY=
+	t=1744288577; cv=none; b=uTcmbtI0uIdueAKzzwhivUoRnXGnRQ5qQIxVk3OhI3LgzJCsFKuWZZqATDxTERvmM+bLX5WiVTM6ARZloEV40XvnqBjGM7IXza+FSDeLnQk7olNICZjxv7t4JJb14tuu1eqw6SeuUlCSAEG5hCnmzZuzAyY6k5F1SiEs7oYBkcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744287832; c=relaxed/simple;
-	bh=WQ/Zg5pbALkIDSUKET7wO/sepfxFHacC6w9xaLnf7Wk=;
+	s=arc-20240116; t=1744288577; c=relaxed/simple;
+	bh=H2rAYnbGeFgX5saZ/b7X46QHeJfq5kinlY6BpgEnd3Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRqR3w9WhP0qqEOPtXWQWRYxovdIUZ6wX01Y3yx6VvBOEiWoUaadw92RrPBIbFEWHbBv4/+MtXomDaY8dIUMX4WsRUyVNskdh1arUKcLQAcWD0MCdYxOntqr82Vbb9+PiJDT1RHmnmGUqUSLcysvveLiGW56g8+V6O8jJV54ygo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vstscdrh; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=QsCmEVqz78QG7+mMJkSjXGwJwW4+roJ5IXDfpD7GJivmkjnRqA+yDMim6iK2TFVS4lmvYIPVB7T4hnUHTQnddpUjzZfbEdwWbP0/XR/utSRVzmYtHC02QTguzJYkFwjbw/m+5oJeSJqr61IqfX3Ga9XdNwUAbSrSNjkY2OhJ21c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vo6OASiq; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vstscdrh"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43edb40f357so6659465e9.0
-        for <imx@lists.linux.dev>; Thu, 10 Apr 2025 05:23:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vo6OASiq"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-39141ffa9fcso836778f8f.0
+        for <imx@lists.linux.dev>; Thu, 10 Apr 2025 05:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744287829; x=1744892629; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1744288574; x=1744893374; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PpGCun6OnLyj/iO45IrhWhjo8NHmRNo/yGae+dtnKsQ=;
-        b=VstscdrhSO24Ha5hATITTnSJ6yraOU1u/Nwb9WA3bFKr5KKt7wg7714Q8o5gRC6crK
-         pu1v2sRxUX+AmU2EtqmnMxEkoIAk1y6mmuukAdrpk4u81qnyeb2YUsiSNd2NhRmZRVfK
-         V7VqXKOeFb5lnLHtsQ+K6LjVO0IYCoTFHXUQtRUp3UEPN8+zKgSIzbCm2qQLGYVpHWja
-         CPXgpITNNNPiTplqxmPhoYpsXpBubjL76B71sLrbQWT+nhA1BKH6xxCMPTWH9b3Ry8Ag
-         lcBeYB1e+RQrwqL7+srS5f3EgV0B3lietHY3y+FL6O1mtRPWtWer7Tbi65xe6cDiikqO
-         gONw==
+        bh=iQ0j7wMSGTmXUuOHtflR052mxHlsC9aOf5SK3WIqsvY=;
+        b=vo6OASiqokQVZ6XgKn1EOd3hpAdOiO/X/+6A9SNT8rbrfMiDwv3mna3sgIXHzNd8So
+         ApclJAOHXMog3kk1ccFWGMFvMpt0gixhZ7pTAgFXIuGHjsljFC50lnyekeUGRoXJHx+m
+         5Gj1pN1SSEU7qtcqyjXPj2lvZ3Zw0u1adj/EYLQTJDZYOf/1Jjp+N0xeM1nQg4ZHpuNC
+         IoyDg8+GFMm+S7q2GZtuah5w8S6itoPwsamF4PQ3HpEtGX2TkK1uoTApI8ubzTmpXEgM
+         ImR5d7iwQjDiqVxw2P/acqwdIXkWh9CfelCgWLw7N92MDslKtuY8UtKNhUvaxKSGCS+g
+         mfDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744287829; x=1744892629;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1744288574; x=1744893374;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PpGCun6OnLyj/iO45IrhWhjo8NHmRNo/yGae+dtnKsQ=;
-        b=BZ61G57b0oJJVCtSqI+Rd9K6KMm0U/IZUiNeRK2v0V+DmHK/TsuHwtNe1tFaT9duKS
-         1pM7wcCbp8UDSHO/Or6sf0Pwk16KtYaEdHDa+GLM8ujG8rfonhsdD993bLTg/84l6W7M
-         SSi6+leME1J53KXCP2Tg8/aIImMQY8KW1IEp2tUTuONsSyfO51z9G2EYdI1i1GEEq2i2
-         CP3X39Kia8dFOHHQShFqRqAozgbOs8SlWQ0Xi7s/n+M3AoOLm8ICnrhR2WPMI1Ktd3lx
-         tXYWzbslSaoN3p/q45g1nwE5W4xEv+cStS9h9LLpzlpwa6MOzLbYPLPms1/u4pXZSdWg
-         THFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTw6An0G47YxL/cy7xaB0zLoEbHfNUPWZgMoZfAVqsKV6Rie5V4vouHQ5O+mEEfMv8/DM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3aNdolIPnludHf0cAWalwtNxXnjHxB1Sc/uNB55YxY8aM5lCL
-	s/5xLFjFRUemtgL1CFqBz0sLn1bXslacW9Wujl24sTt4KtFWKfPa
-X-Gm-Gg: ASbGncsmxBbb0Ln+j0tC0yQ+MftRiEaOrFmcSycTXBfv22jAlcH6zUO3wuCR+bQs4y9
-	924V+SIS9fSzbPUeGfqPqbV1Ih+PxV2xEqQm+28ZWjUmPZT6RGnDWuBeGscZBS6QJsyBuzFIIIK
-	BN8oGzvfhUj6f5Wf8k2o8cI3TdAF5wq85b90PE1O3qQqOp8DntxqipvbBvj+oMC0JbqYwuJTXpy
-	xI9Ir5I3xzQlIoEW4DTcaeBhftWAlxK/4vyDz2+t87HRSdRAJSTNh0hm7qPcF8laS6QGqWx1SuZ
-	9Ia2qTrymFQTOtT93w/w9km+kYqlLNI6zZY20MGGkyTDxgsThdsh+/X6arGsEqZTnwQ8/w==
-X-Google-Smtp-Source: AGHT+IHJYqLm2bNlTIV0OaPKSdoxtU3W2Hk6krFGdZj7Augauu5oSQ67P5k0PX48vM11HcU7mHRvqw==
-X-Received: by 2002:a05:600c:3c91:b0:43c:fab3:4fad with SMTP id 5b1f17b1804b1-43f2d7e932emr33093865e9.16.1744287828716;
-        Thu, 10 Apr 2025 05:23:48 -0700 (PDT)
-Received: from [192.168.1.132] ([82.79.237.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f206264a1sm54736005e9.9.2025.04.10.05.23.46
+        bh=iQ0j7wMSGTmXUuOHtflR052mxHlsC9aOf5SK3WIqsvY=;
+        b=pE3LeuUeus8Es+NlPYt6bEAe0eXuBfQcw0A3p+zLd53HTUO2NYX6DXx0yJXLOYzqMQ
+         A0dflBrkHtX4i/0ZXDcECfs27Zc/37chSyZ80A2w3yg8OHNdAw6qOUM71Vn7jlQOhCCh
+         2oosmdG+vn4cb0N4ixJpxypqBM3crE0sZatWom5K7kHVsdMZw96g0o6F2Sl7T8aFdYUg
+         GOrGFxXWarjyxzqAga8uiSd0T1yWWh98F3O+dCcogk9Dye93EVQ7xhQP0dsH2JzIJTXl
+         VhCEm9HTmGwinYInWbb509oxllac2wnaBiitPE2Bj4NUyBLHCxNGRuy7WsGRT+1wP2wh
+         7Q+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXSiKU3oDvHxgNmlZGwMcPwGyj7wwSPLSAKERGlS2sUZDx2OpTDUVOsVpLn8ir24rc/NYY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy7uuV5NzoXNTSNk0rYIezNCA5Cr2JyRLIcyUEF0LgtUqwRS/nW
+	Zp6zkpRtXyJfzYgYkJu0by1xxDJX3VWNESz0ePwOZ0QTJZKfyEtG4YtV4WcW4G4=
+X-Gm-Gg: ASbGncs3noW/cugTDQqzKvfN3qldgysQG06Ix/QUbSf+gcM4Hbni7h+N5QampRTj8n8
+	ItbDftmlp9Jw3JVUk80LOOXjUcrgwXf25Ov8n+Gc5wenDQidgCy1culyE2goaJIrmu+Id+Y1Jpf
+	YWEOEQGxMk6xPZSRs7rEMl5iVwSbE1L4mqkYuCMH/hjJq+ElIpHImAW8FiT+RTp7J20AcAB2VBO
+	QjhCWhBv8fpwBsA5EaJ4VZP0YW5NRz6ZgSEyUHdmLAXm0LB4PUEAEHus2quJMICTV4frjAGX4Ue
+	QzP+wCf5yBCjdSIq1OKr4emo7MVH7fr3ghH4KieOiLFhKbJxSLGo/6x8+GasMJySYSnJST+EEXT
+	lMbDSR8S+R+L+XA==
+X-Google-Smtp-Source: AGHT+IFetWy1yp/dwylC0fW3Xc3rkEsOkh6f7DWozfmMsr0xNplY7KcWpRd6urR6Mieq6r6/8yNM9w==
+X-Received: by 2002:a05:6000:4285:b0:39a:c80b:8283 with SMTP id ffacd0b85a97d-39d8f498980mr2285415f8f.31.1744288573720;
+        Thu, 10 Apr 2025 05:36:13 -0700 (PDT)
+Received: from [192.168.69.238] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d893fdf8fsm4624182f8f.91.2025.04.10.05.36.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Apr 2025 05:23:48 -0700 (PDT)
-Message-ID: <fb40d405-9f76-4117-88f9-423ea5fac3f0@gmail.com>
-Date: Thu, 10 Apr 2025 15:23:45 +0300
+        Thu, 10 Apr 2025 05:36:13 -0700 (PDT)
+Message-ID: <17b9ff87-899e-44ca-b902-ab965cff0879@linaro.org>
+Date: Thu, 10 Apr 2025 14:36:10 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,72 +67,59 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/5] Configure imx8mp dsp node for rproc usage
+Subject: Re: [PATCH 02/19] arm64: dts: broadcom: bcm2712: Use "l2-cache" for
+ L2 cache node names
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com,
+ Conor Dooley <conor@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-rockchip@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org
+References: <20250403-dt-cpu-schema-v1-0-076be7171a85@kernel.org>
+ <20250403-dt-cpu-schema-v1-2-076be7171a85@kernel.org>
 Content-Language: en-US
-To: Daniel Baluta <daniel.baluta@nxp.com>, shawnguo@kernel.org,
- robh@kernel.org
-Cc: s.hauer@pengutronix.de, kernel@pengutronix.de, krzk+dt@kernel.org,
- conor+dt@kernel.org, festevam@gmail.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, frank.li@nxp.com, aisheng.dong@nxp.com,
- daniel.baluta@gmail.com, laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com,
- iuliana.prodan@nxp.com, a.fatoum@pengutronix.de, mathieu.poirier@linaro.org,
- linux-remoteproc@vger.kernel.org
-References: <20250320121004.2542314-1-daniel.baluta@nxp.com>
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20250320121004.2542314-1-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250403-dt-cpu-schema-v1-2-076be7171a85@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 4/4/25 04:59, Rob Herring (Arm) wrote:
+> There's no need include the CPU number in the L2 cache node names as
+> the names are local to the CPU nodes. The documented node name is
+> also just "l2-cache".
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>   arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-On 3/20/2025 2:09 PM, Daniel Baluta wrote:
-> DSP found in i.MX8MP SOC can be used by multiple frameworks in order to
-> enable various applications:                                                                                                                                                            
->         - rproc/rpmsg framework, used to load for example Zephyr samples
->         - Sound Open Firmware, used to enable various audio processing
->           pipelines.
->
-> Current dsp node was configured with SOF in mind but it doesn't work
-> well with imx8mp-evk dts. SOF controls audio IPs from firmware side
-> while imx8mp-evk.dts preffers to control audio IPs from Linux side.
->
-> So, configure 'dsp' node to be used with rproc scenario and later will
-> add a separate dts or an overlay to configure the node for SOF.
->
-> This patch series configures and enables dsp node to be used with rproc.
->
-> Changes since v6:
-> 	- addressed Alexander Stein comments
-> 	- enable mu2 separately in patch 5/5
-> 	- put "status" always as the last in node definition
->
-> Changes since v5:
->        - do not enable mu2 node by default
->        - fix dt_bindings errors
->
-> Changes since v4:
-> (https://lore.kernel.org/linux-arm-kernel/Z6zGLn3B6SVXhTV1@lizhi-Precision-Tower-5810/T/)·······························································································
->        - after comments received on v4, we implemented the run/stall
->          bits using reset controller API (changes merged ->
-> https://patchwork.kernel.org/project/linux-arm-kernel/cover/20250311085812.1296243-1-daniel.baluta@nxp.com/)
->         - drop patches related to DSP run/stall/reset via syscon
->        - picked up patch related to using run_stall via reset
->          controller API.
->
->
-> Daniel Baluta (5):
->   arm64: dts: imx8mp: Use resets property
->   arm64: dts: imx8mp: Add mu2 root clock
->   arm64: dts: imx8mp: Configure dsp node for rproc usage
->   arm64: dts: imx8mp: Add DSP clocks
->   arm64: dts: Enable DSP node for remoteproc usage
->
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 14 +++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi    | 22 +++++++++++++-------
->  2 files changed, 29 insertions(+), 7 deletions(-)
->
-
-For the whole series:
-
-Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
